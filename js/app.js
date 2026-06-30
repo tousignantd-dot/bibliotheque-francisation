@@ -108,14 +108,14 @@ function buildCard(activity) {
           <span class="card-badge">${escHtml(activity.level || 'Niveau 4')}</span>
         </div>
         <div class="card-actions">
-          <a href="${escHtml(activity.interactive)}"
+          <a href="${escHtml(encodePath(activity.interactive))}"
              class="btn btn-primary"
              target="_blank" rel="noopener"
              onclick="trackOpen('interactive', '${escHtml(activity.title)}')">
             <span class="btn-icon">${iconPlay()}</span>
             Activité interactive
           </a>
-          <a href="${escHtml(activity.studentDoc)}"
+          <a href="${escHtml(encodePath(activity.studentDoc))}"
              class="btn btn-secondary"
              target="_blank" rel="noopener"
              onclick="trackOpen('document', '${escHtml(activity.title)}')">
@@ -123,7 +123,7 @@ function buildCard(activity) {
             Document élève
           </a>
           ${activity.slideshow
-            ? `<a href="${escHtml(activity.slideshow)}"
+            ? `<a href="${escHtml(encodePath(activity.slideshow))}"
                  class="btn btn-slideshow"
                  target="_blank" rel="noopener"
                  onclick="trackOpen('slideshow', '${escHtml(activity.title)}')">
@@ -324,6 +324,11 @@ function iconChevronRight() {
 /* =========================================
    UTILITAIRES
    ========================================= */
+function encodePath(path) {
+  if (!path) return '';
+  return path.split('/').map(segment => encodeURIComponent(segment)).join('/');
+}
+
 function escHtml(str) {
   return String(str ?? '')
     .replace(/&/g, '&amp;')
