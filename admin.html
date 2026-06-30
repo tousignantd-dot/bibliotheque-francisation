@@ -1,0 +1,745 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Administration — Bibliothèque Francisation</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet" />
+  <style>
+    :root {
+      --bg: #f8f9fb;
+      --surface: #fff;
+      --border: #e8eaed;
+      --border-hover: #d0d5dd;
+      --text: #0f1117;
+      --text-2: #5c6470;
+      --text-3: #9aa0aa;
+      --accent: #3b6ff6;
+      --accent-light: #eef2ff;
+      --accent-hover: #2d5ce8;
+      --danger: #ef4444;
+      --danger-light: #fef2f2;
+      --danger-hover: #dc2626;
+      --success: #22c55e;
+      --success-light: #f0fdf4;
+      --radius: 10px;
+      --radius-sm: 7px;
+      --shadow: 0 1px 3px rgba(0,0,0,.06), 0 2px 8px rgba(0,0,0,.04);
+      --shadow-lg: 0 8px 32px rgba(0,0,0,.12);
+      --font: 'Inter', system-ui, sans-serif;
+    }
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    html { font-size: 16px; }
+    body { font-family: var(--font); background: var(--bg); color: var(--text); -webkit-font-smoothing: antialiased; min-height: 100vh; }
+
+    /* ---- HEADER ---- */
+    .header {
+      position: sticky; top: 0; z-index: 50;
+      background: rgba(255,255,255,.92); backdrop-filter: blur(12px);
+      border-bottom: 1px solid var(--border);
+    }
+    .header-inner {
+      max-width: 1100px; margin: 0 auto;
+      padding: 0 28px; height: 64px;
+      display: flex; align-items: center; justify-content: space-between; gap: 16px;
+    }
+    .header-brand { display: flex; flex-direction: column; }
+    .header-title { font-size: 16px; font-weight: 700; letter-spacing: -.3px; }
+    .header-sub { font-size: 12px; color: var(--text-3); margin-top: 2px; }
+    .header-nav { display: flex; gap: 8px; }
+    .nav-link {
+      font-size: 13px; font-weight: 500; color: var(--text-2);
+      text-decoration: none; padding: 6px 14px; border-radius: var(--radius-sm);
+      border: 1.5px solid var(--border); background: var(--surface);
+      transition: all .15s ease; display: flex; align-items: center; gap: 6px;
+    }
+    .nav-link:hover { border-color: var(--accent); color: var(--accent); background: var(--accent-light); }
+
+    /* ---- LAYOUT ---- */
+    .page { max-width: 1100px; margin: 0 auto; padding: 32px 28px 64px; display: grid; grid-template-columns: 380px 1fr; gap: 28px; align-items: start; }
+
+    /* ---- PANELS ---- */
+    .panel {
+      background: var(--surface); border: 1.5px solid var(--border);
+      border-radius: var(--radius); box-shadow: var(--shadow); overflow: hidden;
+    }
+    .panel-header {
+      padding: 18px 22px 16px; border-bottom: 1px solid var(--border);
+      display: flex; align-items: center; gap: 10px;
+    }
+    .panel-icon {
+      width: 32px; height: 32px; border-radius: 8px;
+      background: var(--accent-light); color: var(--accent);
+      display: flex; align-items: center; justify-content: center; flex-shrink: 0;
+    }
+    .panel-title { font-size: 14px; font-weight: 700; }
+    .panel-body { padding: 20px 22px; }
+
+    /* ---- FORM ---- */
+    .form-group { margin-bottom: 16px; }
+    .form-group:last-child { margin-bottom: 0; }
+    label { display: block; font-size: 12px; font-weight: 600; color: var(--text-2); margin-bottom: 6px; letter-spacing: .2px; }
+    .required::after { content: ' *'; color: var(--danger); }
+
+    input[type="text"] {
+      width: 100%; height: 38px; padding: 0 12px;
+      border: 1.5px solid var(--border); border-radius: var(--radius-sm);
+      font-family: var(--font); font-size: 14px; color: var(--text);
+      background: var(--surface); outline: none;
+      transition: border-color .15s, box-shadow .15s;
+    }
+    input[type="text"]:focus { border-color: var(--accent); box-shadow: 0 0 0 3px rgba(59,111,246,.12); }
+    input[type="text"]::placeholder { color: var(--text-3); }
+
+    /* Drop zone */
+    .drop-zone {
+      border: 2px dashed var(--border); border-radius: var(--radius-sm);
+      padding: 20px 16px; text-align: center; cursor: pointer;
+      transition: all .2s ease; position: relative; background: var(--bg);
+    }
+    .drop-zone:hover, .drop-zone.drag-over {
+      border-color: var(--accent); background: var(--accent-light);
+    }
+    .drop-zone input[type="file"] {
+      position: absolute; inset: 0; opacity: 0; cursor: pointer; width: 100%; height: 100%;
+    }
+    .drop-zone-icon { color: var(--text-3); margin-bottom: 8px; }
+    .drop-zone-text { font-size: 13px; color: var(--text-2); font-weight: 500; }
+    .drop-zone-hint { font-size: 11px; color: var(--text-3); margin-top: 3px; }
+    .drop-zone-preview {
+      display: none; align-items: center; gap: 10px;
+      padding: 8px 12px; background: var(--surface); border-radius: 6px;
+      border: 1px solid var(--border); text-align: left; margin-top: 10px;
+    }
+    .drop-zone-preview.visible { display: flex; }
+    .drop-zone-preview-icon { color: var(--accent); flex-shrink: 0; }
+    .drop-zone-preview-name { font-size: 12px; font-weight: 500; color: var(--text); overflow: hidden; text-overflow: ellipsis; white-space: nowrap; flex: 1; }
+    .drop-zone-preview-size { font-size: 11px; color: var(--text-3); flex-shrink: 0; }
+
+    /* Thumbnail preview */
+    .thumb-preview {
+      display: none; width: 100%; aspect-ratio: 16/9; object-fit: cover;
+      border-radius: 6px; margin-top: 10px; border: 1px solid var(--border);
+    }
+    .thumb-preview.visible { display: block; }
+
+    /* Buttons */
+    .btn {
+      display: inline-flex; align-items: center; justify-content: center; gap: 7px;
+      height: 38px; padding: 0 18px; border-radius: var(--radius-sm);
+      font-family: var(--font); font-size: 13px; font-weight: 600;
+      cursor: pointer; border: 1.5px solid transparent;
+      transition: all .15s ease; text-decoration: none; white-space: nowrap;
+    }
+    .btn:active { transform: scale(.97); }
+    .btn-primary { background: var(--accent); color: #fff; border-color: var(--accent); width: 100%; height: 42px; font-size: 14px; }
+    .btn-primary:hover { background: var(--accent-hover); border-color: var(--accent-hover); box-shadow: 0 2px 8px rgba(59,111,246,.3); }
+    .btn-primary:disabled { opacity: .5; cursor: not-allowed; transform: none; }
+    .btn-ghost { background: transparent; color: var(--text-2); border-color: transparent; height: 32px; padding: 0 10px; font-size: 12px; }
+    .btn-ghost:hover { background: var(--bg); color: var(--text); }
+    .btn-danger { background: var(--danger-light); color: var(--danger); border-color: #fecaca; height: 32px; padding: 0 12px; font-size: 12px; }
+    .btn-danger:hover { background: var(--danger); color: #fff; border-color: var(--danger); }
+    .btn-save { background: var(--accent-light); color: var(--accent); border-color: #bfdbfe; height: 32px; padding: 0 12px; font-size: 12px; }
+    .btn-save:hover { background: var(--accent); color: #fff; border-color: var(--accent); }
+    .spinner {
+      width: 16px; height: 16px; border: 2px solid rgba(255,255,255,.4);
+      border-top-color: #fff; border-radius: 50%;
+      animation: spin .7s linear infinite; display: none;
+    }
+    .btn-primary.loading .spinner { display: block; }
+    .btn-primary.loading .btn-text { display: none; }
+    @keyframes spin { to { transform: rotate(360deg); } }
+
+    /* ---- LISTE DES ACTIVITÉS ---- */
+    .list-header {
+      display: flex; align-items: center; justify-content: space-between;
+      padding: 18px 22px 16px; border-bottom: 1px solid var(--border);
+    }
+    .list-search {
+      position: relative; width: 220px;
+    }
+    .list-search-icon { position: absolute; left: 10px; top: 50%; transform: translateY(-50%); color: var(--text-3); pointer-events: none; }
+    .list-search input {
+      width: 100%; height: 34px; padding: 0 10px 0 32px;
+      border: 1.5px solid var(--border); border-radius: var(--radius-sm);
+      font-family: var(--font); font-size: 13px; color: var(--text);
+      background: var(--bg); outline: none; transition: border-color .15s, box-shadow .15s;
+    }
+    .list-search input:focus { border-color: var(--accent); box-shadow: 0 0 0 3px rgba(59,111,246,.12); background: var(--surface); }
+
+    .activity-list { list-style: none; }
+    .activity-item {
+      display: flex; align-items: center; gap: 12px;
+      padding: 12px 22px; border-bottom: 1px solid var(--border);
+      transition: background .12s;
+    }
+    .activity-item:last-child { border-bottom: none; }
+    .activity-item:hover { background: var(--bg); }
+
+    .activity-thumb {
+      width: 52px; height: 34px; object-fit: cover;
+      border-radius: 5px; border: 1px solid var(--border); flex-shrink: 0;
+      background: var(--bg);
+    }
+    .activity-thumb-placeholder {
+      width: 52px; height: 34px; border-radius: 5px;
+      border: 1px solid var(--border); background: #f0f4ff;
+      display: flex; align-items: center; justify-content: center;
+      color: var(--text-3); flex-shrink: 0;
+    }
+
+    .activity-info { flex: 1; min-width: 0; }
+    .activity-name-display { font-size: 13px; font-weight: 600; color: var(--text); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+    .activity-name-edit { display: none; }
+    .activity-name-edit input {
+      width: 100%; height: 30px; padding: 0 8px;
+      border: 1.5px solid var(--accent); border-radius: 5px;
+      font-family: var(--font); font-size: 13px; font-weight: 600;
+      outline: none; box-shadow: 0 0 0 3px rgba(59,111,246,.12);
+    }
+
+    .activity-actions { display: flex; gap: 6px; flex-shrink: 0; }
+
+    .activity-id { font-size: 11px; color: var(--text-3); flex-shrink: 0; width: 24px; text-align: right; }
+
+    .empty-list {
+      display: none; padding: 48px 22px; text-align: center;
+      color: var(--text-3); font-size: 13px;
+    }
+    .empty-list.visible { display: block; }
+
+    /* ---- TOAST ---- */
+    .toast-wrap { position: fixed; bottom: 24px; right: 24px; z-index: 999; display: flex; flex-direction: column; gap: 8px; pointer-events: none; }
+    .toast {
+      background: #1a1f2e; color: #fff; padding: 11px 16px;
+      border-radius: 9px; font-size: 13px; font-weight: 500;
+      box-shadow: 0 4px 20px rgba(0,0,0,.25);
+      opacity: 0; transform: translateY(8px);
+      transition: opacity .2s, transform .2s;
+      display: flex; align-items: center; gap: 9px;
+      pointer-events: auto; max-width: 300px;
+    }
+    .toast.show { opacity: 1; transform: translateY(0); }
+    .toast.success .t-dot { color: var(--success); }
+    .toast.error .t-dot { color: var(--danger); }
+
+    /* ---- MODAL CONFIRM ---- */
+    .modal-overlay {
+      display: none; position: fixed; inset: 0; z-index: 200;
+      background: rgba(0,0,0,.4); backdrop-filter: blur(4px);
+      align-items: center; justify-content: center;
+    }
+    .modal-overlay.open { display: flex; }
+    .modal {
+      background: var(--surface); border-radius: var(--radius);
+      box-shadow: var(--shadow-lg); padding: 28px; width: 380px; max-width: 90vw;
+    }
+    .modal-title { font-size: 16px; font-weight: 700; margin-bottom: 10px; }
+    .modal-desc { font-size: 14px; color: var(--text-2); line-height: 1.55; margin-bottom: 22px; }
+    .modal-actions { display: flex; gap: 10px; justify-content: flex-end; }
+    .btn-modal-cancel { background: var(--bg); color: var(--text-2); border: 1.5px solid var(--border); height: 36px; padding: 0 16px; font-size: 13px; }
+    .btn-modal-cancel:hover { background: var(--border); }
+    .btn-modal-confirm { background: var(--danger); color: #fff; border-color: var(--danger); height: 36px; padding: 0 16px; font-size: 13px; }
+    .btn-modal-confirm:hover { background: var(--danger-hover); }
+
+    /* ---- PROGRESS BAR ---- */
+    .progress-bar-wrap { display: none; height: 4px; background: var(--border); border-radius: 4px; overflow: hidden; margin-top: 14px; }
+    .progress-bar-wrap.visible { display: block; }
+    .progress-bar { height: 100%; background: var(--accent); border-radius: 4px; width: 0%; transition: width .3s ease; }
+
+    @media (max-width: 820px) {
+      .page { grid-template-columns: 1fr; }
+    }
+    @media (max-width: 560px) {
+      .header-inner { padding: 0 16px; }
+      .page { padding: 20px 16px 48px; gap: 20px; }
+      .panel-body { padding: 16px; }
+    }
+  </style>
+</head>
+<body>
+
+<!-- HEADER -->
+<header class="header">
+  <div class="header-inner">
+    <div class="header-brand">
+      <span class="header-title">Administration</span>
+      <span class="header-sub">Bibliothèque — Francisation Niveau 4</span>
+    </div>
+    <nav class="header-nav">
+      <a href="index.html" class="nav-link">
+        <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="9 18 15 12 9 6"></polyline></svg>
+        Voir la bibliothèque
+      </a>
+    </nav>
+  </div>
+</header>
+
+<!-- Bannière serveur non démarré -->
+<div id="serverBanner" style="display:none;background:#fef2f2;border-bottom:1px solid #fecaca;padding:12px 28px;font-size:13px;color:#991b1b;text-align:center;">
+  ⚠️ Le serveur local n'est pas démarré. Ouvrez un Terminal et lancez :
+  <code style="background:#fff;padding:2px 8px;border-radius:4px;border:1px solid #fca5a5;margin:0 6px;font-size:12px;">python3 /Users/danieltousignant/Claude/bibliotheque-francisation/server.py</code>
+  puis rafraîchissez la page.
+</div>
+
+<!-- Bannière mode local uniquement -->
+<div id="localBanner" style="display:none;background:#fef9c3;border-bottom:1px solid #fde047;padding:10px 28px;font-size:13px;color:#854d0e;text-align:center;">
+  ⚠️ L'administration fonctionne uniquement en local. Pour mettre à jour le site en ligne, redéposez le dossier sur Netlify après vos modifications.
+</div>
+
+<!-- PAGE -->
+<div class="page">
+
+  <!-- ======== PANNEAU AJOUT ======== -->
+  <div class="panel">
+    <div class="panel-header">
+      <div class="panel-icon">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><line x1="12" y1="5" x2="12" y2="19"></line><line x1="5" y1="12" x2="19" y2="12"></line></svg>
+      </div>
+      <span class="panel-title">Ajouter une activité</span>
+    </div>
+    <div class="panel-body">
+      <form id="addForm" novalidate>
+
+        <div class="form-group">
+          <label class="required" for="titleInput">Titre de l'activité</label>
+          <input type="text" id="titleInput" placeholder="Ex : Le Vieux-Port de Montréal" maxlength="120" required />
+        </div>
+
+        <!-- Thumbnail -->
+        <div class="form-group">
+          <label>Image miniature</label>
+          <div class="drop-zone" id="thumbZone">
+            <input type="file" id="thumbFile" accept="image/*" />
+            <div class="drop-zone-icon">
+              <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="8.5" cy="8.5" r="1.5"/><polyline points="21 15 16 10 5 21"/></svg>
+            </div>
+            <div class="drop-zone-text">Cliquer ou glisser une image</div>
+            <div class="drop-zone-hint">JPG, PNG, WEBP — recommandé 16:9</div>
+          </div>
+          <img id="thumbPreview" class="thumb-preview" alt="Miniature" />
+        </div>
+
+        <!-- Interactive -->
+        <div class="form-group">
+          <label>Activité interactive</label>
+          <div class="drop-zone" id="interactiveZone">
+            <input type="file" id="interactiveFile" accept=".html,.htm,.zip" />
+            <div class="drop-zone-icon">
+              <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><polygon points="5 3 19 12 5 21 5 3"/></svg>
+            </div>
+            <div class="drop-zone-text">Cliquer ou glisser le fichier</div>
+            <div class="drop-zone-hint">Fichier HTML ou ZIP (dossier compressé)</div>
+          </div>
+          <div class="drop-zone-preview" id="interactivePreview">
+            <span class="drop-zone-preview-icon"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polygon points="5 3 19 12 5 21"/></svg></span>
+            <span class="drop-zone-preview-name" id="interactiveName"></span>
+            <span class="drop-zone-preview-size" id="interactiveSize"></span>
+          </div>
+        </div>
+
+        <!-- Document élève -->
+        <div class="form-group">
+          <label>Document élève</label>
+          <div class="drop-zone" id="docZone">
+            <input type="file" id="docFile" accept=".pdf,.doc,.docx" />
+            <div class="drop-zone-icon">
+              <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/></svg>
+            </div>
+            <div class="drop-zone-text">Cliquer ou glisser le document</div>
+            <div class="drop-zone-hint">PDF, DOC, DOCX</div>
+          </div>
+          <div class="drop-zone-preview" id="docPreview">
+            <span class="drop-zone-preview-icon"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/></svg></span>
+            <span class="drop-zone-preview-name" id="docName"></span>
+            <span class="drop-zone-preview-size" id="docSize"></span>
+          </div>
+        </div>
+
+        <!-- Diaporama PPT -->
+        <div class="form-group">
+          <label>Diaporama photos (PPT)</label>
+          <div class="drop-zone" id="slideshowZone">
+            <input type="file" id="slideshowFile" accept=".ppt,.pptx" />
+            <div class="drop-zone-icon">
+              <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="3" width="20" height="14" rx="2"/><line x1="8" y1="21" x2="16" y2="21"/><line x1="12" y1="17" x2="12" y2="21"/></svg>
+            </div>
+            <div class="drop-zone-text">Cliquer ou glisser le diaporama</div>
+            <div class="drop-zone-hint">Fichier PPT ou PPTX</div>
+          </div>
+          <div class="drop-zone-preview" id="slideshowPreview">
+            <span class="drop-zone-preview-icon"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><rect x="2" y="3" width="20" height="14" rx="2"/><line x1="12" y1="17" x2="12" y2="21"/></svg></span>
+            <span class="drop-zone-preview-name" id="slideshowName"></span>
+            <span class="drop-zone-preview-size" id="slideshowSize"></span>
+          </div>
+        </div>
+
+        <div class="progress-bar-wrap" id="progressWrap">
+          <div class="progress-bar" id="progressBar"></div>
+        </div>
+
+        <div class="form-group" style="margin-top:20px">
+          <button type="submit" class="btn btn-primary" id="submitBtn">
+            <span class="btn-text">Ajouter l'activité</span>
+            <span class="spinner"></span>
+          </button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <!-- ======== PANNEAU LISTE ======== -->
+  <div class="panel">
+    <div class="list-header">
+      <div class="panel-header" style="padding:0;border:none;flex:1">
+        <div class="panel-icon" style="background:#f0fdf4;color:#22c55e">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><line x1="8" y1="6" x2="21" y2="6"/><line x1="8" y1="12" x2="21" y2="12"/><line x1="8" y1="18" x2="21" y2="18"/><line x1="3" y1="6" x2="3.01" y2="6"/><line x1="3" y1="12" x2="3.01" y2="12"/><line x1="3" y1="18" x2="3.01" y2="18"/></svg>
+        </div>
+        <span class="panel-title">Activités <span id="listCount" style="font-weight:400;color:var(--text-3)"></span></span>
+      </div>
+      <div class="list-search">
+        <span class="list-search-icon"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg></span>
+        <input type="text" id="listSearch" placeholder="Filtrer…" />
+      </div>
+    </div>
+
+    <ul class="activity-list" id="activityList"></ul>
+    <div class="empty-list" id="emptyList">Aucune activité trouvée.</div>
+  </div>
+
+</div>
+
+<!-- MODAL SUPPRESSION -->
+<div class="modal-overlay" id="deleteModal">
+  <div class="modal">
+    <div class="modal-title">Supprimer l'activité ?</div>
+    <div class="modal-desc" id="deleteModalDesc">Cette action est irréversible. Les fichiers associés (miniature, activité interactive, document) seront également supprimés.</div>
+    <div class="modal-actions">
+      <button class="btn btn-modal-cancel" id="deleteCancelBtn">Annuler</button>
+      <button class="btn btn-modal-confirm" id="deleteConfirmBtn">Supprimer</button>
+    </div>
+  </div>
+</div>
+
+<!-- TOASTS -->
+<div class="toast-wrap" id="toastWrap"></div>
+
+<script>
+/* ======================================================
+   Utilitaires
+   ====================================================== */
+function toast(msg, type = 'success') {
+  const wrap = document.getElementById('toastWrap');
+  const t = document.createElement('div');
+  t.className = `toast ${type}`;
+  const dot = type === 'success' ? '✓' : '✕';
+  t.innerHTML = `<span class="t-dot">${dot}</span>${escHtml(msg)}`;
+  wrap.appendChild(t);
+  requestAnimationFrame(() => requestAnimationFrame(() => t.classList.add('show')));
+  setTimeout(() => { t.classList.remove('show'); setTimeout(() => t.remove(), 250); }, 3200);
+}
+
+function escHtml(s) {
+  return String(s ?? '').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');
+}
+
+function fmtSize(bytes) {
+  if (bytes < 1024) return bytes + ' o';
+  if (bytes < 1048576) return (bytes / 1024).toFixed(0) + ' Ko';
+  return (bytes / 1048576).toFixed(1) + ' Mo';
+}
+
+/* ======================================================
+   Drop zones
+   ====================================================== */
+function setupDropZone(zoneId, inputId, onFile) {
+  const zone = document.getElementById(zoneId);
+  const input = document.getElementById(inputId);
+
+  zone.addEventListener('dragover', e => { e.preventDefault(); zone.classList.add('drag-over'); });
+  zone.addEventListener('dragleave', () => zone.classList.remove('drag-over'));
+  zone.addEventListener('drop', e => {
+    e.preventDefault(); zone.classList.remove('drag-over');
+    const file = e.dataTransfer.files[0];
+    if (file) { input.files = e.dataTransfer.files; onFile(file); }
+  });
+  input.addEventListener('change', () => { if (input.files[0]) onFile(input.files[0]); });
+}
+
+setupDropZone('thumbZone', 'thumbFile', file => {
+  const preview = document.getElementById('thumbPreview');
+  const reader = new FileReader();
+  reader.onload = e => { preview.src = e.target.result; preview.classList.add('visible'); };
+  reader.readAsDataURL(file);
+});
+
+setupDropZone('interactiveZone', 'interactiveFile', file => {
+  const p = document.getElementById('interactivePreview');
+  document.getElementById('interactiveName').textContent = file.name;
+  document.getElementById('interactiveSize').textContent = fmtSize(file.size);
+  p.classList.add('visible');
+});
+
+setupDropZone('docZone', 'docFile', file => {
+  const p = document.getElementById('docPreview');
+  document.getElementById('docName').textContent = file.name;
+  document.getElementById('docSize').textContent = fmtSize(file.size);
+  p.classList.add('visible');
+});
+
+setupDropZone('slideshowZone', 'slideshowFile', file => {
+  const p = document.getElementById('slideshowPreview');
+  document.getElementById('slideshowName').textContent = file.name;
+  document.getElementById('slideshowSize').textContent = fmtSize(file.size);
+  p.classList.add('visible');
+});
+
+/* ======================================================
+   Soumission du formulaire
+   ====================================================== */
+document.getElementById('addForm').addEventListener('submit', async e => {
+  e.preventDefault();
+
+  const title = document.getElementById('titleInput').value.trim();
+  if (!title) { toast('Le titre est requis.', 'error'); return; }
+
+  const btn = document.getElementById('submitBtn');
+  btn.classList.add('loading');
+  btn.disabled = true;
+
+  const progressWrap = document.getElementById('progressWrap');
+  const progressBar = document.getElementById('progressBar');
+  progressWrap.classList.add('visible');
+  progressBar.style.width = '10%';
+
+  const fd = new FormData();
+  fd.append('title', title);
+
+  const thumb = document.getElementById('thumbFile').files[0];
+  const interactive = document.getElementById('interactiveFile').files[0];
+  const doc = document.getElementById('docFile').files[0];
+  const slideshow = document.getElementById('slideshowFile').files[0];
+
+  if (thumb) fd.append('thumbnail', thumb);
+  if (interactive) fd.append('interactive', interactive);
+  if (doc) fd.append('studentDoc', doc);
+  if (slideshow) fd.append('slideshow', slideshow);
+
+  // Simulation de progression
+  let pct = 10;
+  const tick = setInterval(() => {
+    pct = Math.min(pct + 12, 80);
+    progressBar.style.width = pct + '%';
+  }, 200);
+
+  try {
+    const res = await fetch('/api/activities', { method: 'POST', body: fd });
+    const data = await res.json();
+
+    clearInterval(tick);
+    progressBar.style.width = '100%';
+
+    if (!res.ok) throw new Error(data.error || 'Erreur serveur');
+
+    toast(`"${title}" ajoutée avec succès !`);
+    document.getElementById('addForm').reset();
+    document.getElementById('thumbPreview').classList.remove('visible');
+    document.getElementById('interactivePreview').classList.remove('visible');
+    document.getElementById('docPreview').classList.remove('visible');
+    document.getElementById('slideshowPreview').classList.remove('visible');
+    await loadList();
+
+  } catch (err) {
+    clearInterval(tick);
+    const msg = err.message?.includes('fetch')
+      ? 'Serveur non démarré. Lancez server.py dans un Terminal.'
+      : (err.message || 'Erreur lors de l\'ajout.');
+    toast(msg, 'error');
+    document.getElementById('serverBanner').style.display = 'block';
+  } finally {
+    btn.classList.remove('loading');
+    btn.disabled = false;
+    setTimeout(() => { progressWrap.classList.remove('visible'); progressBar.style.width = '0%'; }, 600);
+  }
+});
+
+/* ======================================================
+   Liste des activités
+   ====================================================== */
+let allActivities = [];
+let deleteTargetId = null;
+
+async function loadList() {
+  try {
+    const res = await fetch('/api/activities');
+    if (!res.ok) throw new Error();
+    allActivities = await res.json();
+    renderList(allActivities);
+    document.getElementById('serverBanner').style.display = 'none';
+  } catch {
+    document.getElementById('serverBanner').style.display = 'block';
+    renderList([]);
+  }
+}
+
+function renderList(items) {
+  const list = document.getElementById('activityList');
+  const empty = document.getElementById('emptyList');
+  const count = document.getElementById('listCount');
+
+  count.textContent = `(${items.length})`;
+
+  if (items.length === 0) {
+    list.innerHTML = '';
+    empty.classList.add('visible');
+    return;
+  }
+
+  empty.classList.remove('visible');
+  list.innerHTML = items.map(a => `
+    <li class="activity-item" data-id="${a.id}">
+      ${a.thumbnail
+        ? `<img class="activity-thumb" src="${escHtml(a.thumbnail)}" alt="" onerror="this.style.display='none';this.nextElementSibling.style.display='flex'">`
+        : ''}
+      <div class="activity-thumb-placeholder" ${a.thumbnail ? 'style="display:none"' : ''}>
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="8.5" cy="8.5" r="1.5"/><polyline points="21 15 16 10 5 21"/></svg>
+      </div>
+      <div class="activity-info">
+        <div class="activity-name-display">${escHtml(a.title)}</div>
+        <div class="activity-name-edit">
+          <input type="text" value="${escHtml(a.title)}" maxlength="120" data-id="${a.id}" />
+        </div>
+      </div>
+      <div class="activity-actions">
+        <button class="btn btn-ghost edit-btn" data-id="${a.id}" title="Renommer">
+          <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"/><path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"/></svg>
+        </button>
+        <button class="btn btn-save save-btn" data-id="${a.id}" style="display:none" title="Enregistrer">
+          <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>
+          Enregistrer
+        </button>
+        <button class="btn btn-danger delete-btn" data-id="${a.id}" data-title="${escHtml(a.title)}" title="Supprimer">
+          <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="3 6 5 6 21 6"/><path d="M19 6l-1 14H6L5 6"/><path d="M10 11v6M14 11v6"/><path d="M9 6V4h6v2"/></svg>
+        </button>
+      </div>
+      <span class="activity-id">#${a.id}</span>
+    </li>`).join('');
+
+  attachListEvents();
+}
+
+function attachListEvents() {
+  // Renommer — ouvrir mode édition
+  document.querySelectorAll('.edit-btn').forEach(btn => {
+    btn.addEventListener('click', () => {
+      const id = btn.dataset.id;
+      const item = btn.closest('.activity-item');
+      item.querySelector('.activity-name-display').style.display = 'none';
+      item.querySelector('.activity-name-edit').style.display = 'block';
+      item.querySelector('.save-btn').style.display = 'inline-flex';
+      btn.style.display = 'none';
+      item.querySelector('.activity-name-edit input').focus();
+    });
+  });
+
+  // Renommer — enregistrer
+  document.querySelectorAll('.save-btn').forEach(btn => {
+    btn.addEventListener('click', () => saveRename(btn.dataset.id, btn.closest('.activity-item')));
+  });
+
+  // Renommer — touche Entrée
+  document.querySelectorAll('.activity-name-edit input').forEach(input => {
+    input.addEventListener('keydown', e => {
+      if (e.key === 'Enter') {
+        e.preventDefault();
+        saveRename(input.dataset.id, input.closest('.activity-item'));
+      }
+      if (e.key === 'Escape') loadList();
+    });
+  });
+
+  // Supprimer
+  document.querySelectorAll('.delete-btn').forEach(btn => {
+    btn.addEventListener('click', () => {
+      deleteTargetId = Number(btn.dataset.id);
+      document.getElementById('deleteModalDesc').textContent =
+        `Vous allez supprimer "${btn.dataset.title}". Cette action est irréversible. Les fichiers associés seront également supprimés.`;
+      document.getElementById('deleteModal').classList.add('open');
+    });
+  });
+}
+
+async function saveRename(id, item) {
+  const input = item.querySelector('.activity-name-edit input');
+  const newTitle = input.value.trim();
+  if (!newTitle) { toast('Le titre ne peut pas être vide.', 'error'); return; }
+
+  try {
+    const res = await fetch(`/api/activities/${id}/rename`, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ title: newTitle }),
+    });
+    const data = await res.json();
+    if (!res.ok) throw new Error(data.error);
+    toast('Titre mis à jour.');
+    await loadList();
+  } catch (err) {
+    toast(err.message || 'Erreur lors du renommage.', 'error');
+  }
+}
+
+/* ======================================================
+   Suppression — modal
+   ====================================================== */
+document.getElementById('deleteCancelBtn').addEventListener('click', () => {
+  document.getElementById('deleteModal').classList.remove('open');
+  deleteTargetId = null;
+});
+
+document.getElementById('deleteModal').addEventListener('click', e => {
+  if (e.target === e.currentTarget) {
+    e.currentTarget.classList.remove('open');
+    deleteTargetId = null;
+  }
+});
+
+document.getElementById('deleteConfirmBtn').addEventListener('click', async () => {
+  if (!deleteTargetId) return;
+  document.getElementById('deleteModal').classList.remove('open');
+
+  try {
+    const res = await fetch(`/api/activities/${deleteTargetId}`, { method: 'DELETE' });
+    const data = await res.json();
+    if (!res.ok) throw new Error(data.error);
+    toast('Activité supprimée.');
+    await loadList();
+  } catch (err) {
+    toast(err.message || 'Erreur lors de la suppression.', 'error');
+  }
+
+  deleteTargetId = null;
+});
+
+/* ======================================================
+   Filtre de la liste
+   ====================================================== */
+document.getElementById('listSearch').addEventListener('input', e => {
+  const q = e.target.value.trim().toLowerCase();
+  renderList(q ? allActivities.filter(a => a.title.toLowerCase().includes(q)) : allActivities);
+});
+
+/* ======================================================
+   Init
+   ====================================================== */
+// Afficher la bannière si on n'est pas en local
+if (!['localhost', '127.0.0.1'].includes(location.hostname)) {
+  document.getElementById('localBanner').style.display = 'block';
+}
+
+loadList();
+</script>
+</body>
+</html>

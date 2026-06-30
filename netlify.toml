@@ -1,0 +1,31 @@
+[build]
+  publish = "."
+
+[[headers]]
+  for = "/*"
+  [headers.values]
+    X-Frame-Options = "SAMEORIGIN"
+    X-Content-Type-Options = "nosniff"
+
+[[headers]]
+  for = "*.pptx"
+  [headers.values]
+    Content-Type = "application/vnd.openxmlformats-officedocument.presentationml.presentation"
+    Content-Disposition = "attachment"
+
+[[headers]]
+  for = "*.ppt"
+  [headers.values]
+    Content-Type = "application/vnd.ms-powerpoint"
+    Content-Disposition = "attachment"
+
+[[headers]]
+  for = "*.pdf"
+  [headers.values]
+    Content-Disposition = "inline"
+
+# L'admin et le serveur Python ne fonctionnent qu'en local
+[[redirects]]
+  from = "/api/*"
+  to = "/index.html"
+  status = 200

@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Bibliothèque d'activités — Francisation Niveau 4</title>
+  <meta name="description" content="Bibliothèque d'activités pédagogiques de francisation pour les élèves de niveau 4." />
+
+  <!-- Google Fonts — Inter -->
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet" />
+
+  <link rel="stylesheet" href="css/style.css" />
+</head>
+<body>
+
+  <!-- ====== HEADER ====== -->
+  <header class="header" role="banner">
+    <div class="header-inner">
+
+      <div class="header-brand">
+        <h1 class="header-title">Bibliothèque d'activités pédagogiques</h1>
+        <p class="header-subtitle">Francisation — Niveau 4</p>
+      </div>
+
+      <div class="header-controls">
+        <!-- Barre de recherche -->
+        <div class="search-wrapper" role="search">
+          <span class="search-icon" aria-hidden="true"></span>
+          <input
+            type="search"
+            id="searchInput"
+            class="search-input"
+            placeholder="Rechercher une activité…"
+            autocomplete="off"
+            spellcheck="false"
+            aria-label="Rechercher une activité"
+          />
+          <button
+            id="searchClear"
+            class="search-clear"
+            type="button"
+            aria-label="Effacer la recherche"
+          ></button>
+        </div>
+
+        <!-- Compteur -->
+        <div class="activity-counter" aria-live="polite" aria-atomic="true">
+          <span id="counter"><span id="counterTotal">—</span> activités</span>
+        </div>
+      </div>
+
+    </div>
+  </header>
+
+  <!-- ====== CONTENU PRINCIPAL ====== -->
+  <main class="main" id="main" role="main">
+
+    <!-- État vide / aucun résultat -->
+    <div class="empty-state" id="emptyState" role="status" aria-live="polite">
+      <div class="empty-state-icon" aria-hidden="true"></div>
+      <p class="empty-state-title">Aucune activité trouvée</p>
+      <p class="empty-state-desc">Essayez un autre terme de recherche.</p>
+    </div>
+
+    <!-- Grille des activités -->
+    <section
+      class="grid"
+      id="grid"
+      aria-label="Activités pédagogiques"
+    ></section>
+
+    <!-- Pagination -->
+    <nav
+      class="pagination hidden"
+      id="pagination"
+      aria-label="Navigation entre les pages"
+    ></nav>
+
+  </main>
+
+  <!-- ====== TOASTS ====== -->
+  <div class="toast-container" id="toastContainer" aria-live="polite" aria-atomic="false"></div>
+
+  <script src="js/app.js"></script>
+</body>
+</html>
