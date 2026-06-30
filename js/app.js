@@ -109,16 +109,16 @@ function buildCard(activity) {
           <span class="card-badge">${escHtml(activity.level || 'Niveau 4')}</span>
         </div>
         <div class="card-dates">
-          <div class="card-date-field">
+          <div class="card-date-field vue ${activity.dateVue ? 'filled' : ''}">
             <span class="card-date-label vue">Vue</span>
-            <input type="date" class="card-date-input vue ${activity.dateVue ? 'filled' : ''}"
+            <input type="date" class="card-date-input"
                    value="${escHtml(activity.dateVue || '')}"
                    data-id="${activity.id}" data-field="dateVue"
                    title="Date vue" />
           </div>
-          <div class="card-date-field">
+          <div class="card-date-field prevue ${activity.datePrevue ? 'filled' : ''}">
             <span class="card-date-label prevue">Prévue</span>
-            <input type="date" class="card-date-input prevue ${activity.datePrevue ? 'filled' : ''}"
+            <input type="date" class="card-date-input"
                    value="${escHtml(activity.datePrevue || '')}"
                    data-id="${activity.id}" data-field="datePrevue"
                    title="Date prévue" />
@@ -167,7 +167,7 @@ function attachDateEvents() {
       const field = input.dataset.field;
       const value = input.value;
 
-      input.classList.toggle('filled', !!value);
+      input.closest('.card-date-field').classList.toggle('filled', !!value);
 
       try {
         await fetch(`/api/activities/${id}/dates`, {
