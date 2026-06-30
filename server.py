@@ -101,6 +101,9 @@ class Handler(http.server.SimpleHTTPRequestHandler):
         elif re.match(r"^/api/activities/\d+/update$", path):
             activity_id = int(path.split("/")[3])
             self._handle_update(activity_id)
+        elif re.match(r"^/api/activities/\d+/dates$", path):
+            activity_id = int(path.split("/")[3])
+            self._handle_dates(activity_id)
         elif re.match(r"^/api/activities/\d+/clear-file$", path):
             activity_id = int(path.split("/")[3])
             self._handle_clear_file(activity_id)
@@ -274,6 +277,25 @@ class Handler(http.server.SimpleHTTPRequestHandler):
 
         save_activities(activities)
         json_response(self, {"success": True, "activity": target})
+
+    # ------------------------------------------------------------------
+    def _handle_dates(self, activity_id):
+        length = int(self.headers.get("Content-Length", 0))
+        body = json.loads(self.rfile.read(length))
+
+        activities = load_activities()
+        target = next((a for a in activities if a["id"] == activity_id), None)
+        if not target:
+            json_response(self, {"error": "Activité introuvable"}, 404)
+            return
+
+        if "dateVue" in body:
+            target["dateVue"] = body["dateVue"]
+        if "datePrevue" in body:
+            target["datePrevue"] = body["datePrevue"]
+
+        save_activities(activities)
+        json_response(self, {"success": True})
 
     # ------------------------------------------------------------------
     def _handle_clear_file(self, activity_id):

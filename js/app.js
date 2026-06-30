@@ -66,6 +66,7 @@ function render() {
 
   DOM.emptyState.classList.remove('visible');
   DOM.grid.innerHTML = pageItems.map(buildCard).join('');
+  attachDateEvents();
   renderPagination();
 }
 
@@ -107,6 +108,22 @@ function buildCard(activity) {
           <h2 class="card-title">${escHtml(activity.title)}</h2>
           <span class="card-badge">${escHtml(activity.level || 'Niveau 4')}</span>
         </div>
+        <div class="card-dates">
+          <div class="card-date-field">
+            <span class="card-date-label vue">Vue</span>
+            <input type="date" class="card-date-input vue ${activity.dateVue ? 'filled' : ''}"
+                   value="${escHtml(activity.dateVue || '')}"
+                   data-id="${activity.id}" data-field="dateVue"
+                   title="Date vue" />
+          </div>
+          <div class="card-date-field">
+            <span class="card-date-label prevue">Prévue</span>
+            <input type="date" class="card-date-input prevue ${activity.datePrevue ? 'filled' : ''}"
+                   value="${escHtml(activity.datePrevue || '')}"
+                   data-id="${activity.id}" data-field="datePrevue"
+                   title="Date prévue" />
+          </div>
+        </div>
         <div class="card-actions">
           <a href="${escHtml(encodePath(activity.interactive))}"
              class="btn btn-primary"
@@ -138,6 +155,31 @@ function buildCard(activity) {
         </div>
       </div>
     </article>`;
+}
+
+/* =========================================
+   SAUVEGARDE DES DATES
+   ========================================= */
+function attachDateEvents() {
+  document.querySelectorAll('.card-date-input').forEach(input => {
+    input.addEventListener('change', async () => {
+      const id = input.dataset.id;
+      const field = input.dataset.field;
+      const value = input.value;
+
+      input.classList.toggle('filled', !!value);
+
+      try {
+        await fetch(`/api/activities/${id}/dates`, {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ [field]: value }),
+        });
+      } catch {
+        // En mode statique (Netlify), la sauvegarde n'est pas disponible
+      }
+    });
+  });
 }
 
 /* =========================================
