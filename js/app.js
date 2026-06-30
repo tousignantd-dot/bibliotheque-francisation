@@ -44,9 +44,34 @@ async function loadActivities() {
     state.activities = getDemoActivities();
   }
 
-  state.filtered = [...state.activities];
+  state.filtered = sortActivities([...state.activities]);
   updateCounter();
   render();
+}
+
+/* =========================================
+   TRI
+   ========================================= */
+function sortActivities(list) {
+  const FAR = '9999-99-99';
+  return list.sort((a, b) => {
+    const aHasPrevue = !!a.datePrevue;
+    const bHasPrevue = !!b.datePrevue;
+    const aHasVue   = !!a.dateVue && !a.datePrevue;
+    const bHasVue   = !!b.dateVue && !b.datePrevue;
+
+    // Groupe 1 : datePrevue définie
+    // Groupe 2 : dateVue définie (sans datePrevue)
+    // Groupe 3 : aucune date
+    const groupA = aHasPrevue ? 0 : aHasVue ? 1 : 2;
+    const groupB = bHasPrevue ? 0 : bHasVue ? 1 : 2;
+
+    if (groupA !== groupB) return groupA - groupB;
+
+    if (groupA === 0) return (a.datePrevue || FAR).localeCompare(b.datePrevue || FAR);
+    if (groupA === 1) return (a.dateVue || FAR).localeCompare(b.dateVue || FAR);
+    return 0;
+  });
 }
 
 /* =========================================
@@ -259,12 +284,12 @@ function applySearch(query) {
   state.currentPage = 1;
 
   if (!state.searchQuery) {
-    state.filtered = [...state.activities];
+    state.filtered = sortActivities([...state.activities]);
   } else {
-    state.filtered = state.activities.filter(a =>
+    state.filtered = sortActivities(state.activities.filter(a =>
       a.title.toLowerCase().includes(state.searchQuery) ||
       (a.keywords || []).some(k => k.toLowerCase().includes(state.searchQuery))
-    );
+    ));
   }
 
   updateCounter();
