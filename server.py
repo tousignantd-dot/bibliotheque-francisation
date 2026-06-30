@@ -9,6 +9,10 @@ import os
 import shutil
 import cgi
 import urllib.parse
+import unicodedata
+import re
+import zipfile
+import io
 from pathlib import Path
 
 BASE_DIR = Path(__file__).parent.resolve()
@@ -33,13 +37,19 @@ def next_id(activities):
 
 
 def slugify(text):
-    import unicodedata, re
     text = unicodedata.normalize("NFD", text)
     text = "".join(c for c in text if unicodedata.category(c) != "Mn")
     text = text.lower().strip()
     text = re.sub(r"[^\w\s-]", "", text)
     text = re.sub(r"[\s_-]+", "-", text)
     return text[:60]
+
+
+def safe_filename(filename):
+    """Normalise un nom de fichier : supprime accents, espaces et caractères spéciaux."""
+    stem = Path(filename).stem
+    ext = Path(filename).suffix.lower()
+    return slugify(stem) + ext
 
 
 def json_response(handler, data, status=200):
@@ -50,6 +60,15 @@ def json_response(handler, data, status=200):
     handler.send_header("Access-Control-Allow-Origin", "*")
     handler.end_headers()
     handler.wfile.write(body)
+
+
+def save_file(form, field, dest_path):
+    """Sauvegarde un fichier uploadé vers dest_path. Retourne True si réussi."""
+    if field not in form or not form[field].filename:
+        return False
+    dest_path.parent.mkdir(parents=True, exist_ok=True)
+    dest_path.write_bytes(form[field].file.read())
+    return True
 
 
 class Handler(http.server.SimpleHTTPRequestHandler):
@@ -68,7 +87,6 @@ class Handler(http.server.SimpleHTTPRequestHandler):
         self.end_headers()
 
     def do_GET(self):
-        # API : liste des activités
         if self.path == "/api/activities":
             json_response(self, load_activities())
             return
@@ -78,15 +96,14 @@ class Handler(http.server.SimpleHTTPRequestHandler):
         parsed = urllib.parse.urlparse(self.path)
         path = parsed.path
 
-        # ---- Ajouter une activité ----
         if path == "/api/activities":
             self._handle_add()
-
-        # ---- Modifier une activité ----
-        elif path.startswith("/api/activities/") and path.endswith("/rename"):
+        elif re.match(r"^/api/activities/\d+/update$", path):
+            activity_id = int(path.split("/")[3])
+            self._handle_update(activity_id)
+        elif re.match(r"^/api/activities/\d+/rename$", path):
             activity_id = int(path.split("/")[3])
             self._handle_rename(activity_id)
-
         else:
             self.send_error(404)
 
@@ -94,7 +111,7 @@ class Handler(http.server.SimpleHTTPRequestHandler):
         parsed = urllib.parse.urlparse(self.path)
         path = parsed.path
 
-        if path.startswith("/api/activities/"):
+        if re.match(r"^/api/activities/\d+$", path):
             try:
                 activity_id = int(path.split("/")[3])
                 self._handle_delete(activity_id)
@@ -104,18 +121,87 @@ class Handler(http.server.SimpleHTTPRequestHandler):
             self.send_error(404)
 
     # ------------------------------------------------------------------
-    def _handle_add(self):
+    def _parse_multipart(self):
         content_type = self.headers.get("Content-Type", "")
-
         if "multipart/form-data" not in content_type:
-            json_response(self, {"error": "multipart requis"}, 400)
-            return
-
-        form = cgi.FieldStorage(
+            return None
+        return cgi.FieldStorage(
             fp=self.rfile,
             headers=self.headers,
             environ={"REQUEST_METHOD": "POST", "CONTENT_TYPE": content_type},
         )
+
+    def _upload_thumbnail(self, form, slug):
+        if "thumbnail" not in form or not form["thumbnail"].filename:
+            return ""
+        f = form["thumbnail"]
+        ext = Path(f.filename).suffix.lower()
+        dest = BASE_DIR / "assets" / "thumbnails" / f"{slug}{ext}"
+        dest.parent.mkdir(parents=True, exist_ok=True)
+        dest.write_bytes(f.file.read())
+        return f"assets/thumbnails/{slug}{ext}"
+
+    def _upload_interactive(self, form, slug):
+        if "interactive" not in form or not form["interactive"].filename:
+            return ""
+        f = form["interactive"]
+        ext = Path(f.filename).suffix.lower()
+        dest_dir = BASE_DIR / "assets" / "interactive" / slug
+        dest_dir.mkdir(parents=True, exist_ok=True)
+        if ext == ".zip":
+            with zipfile.ZipFile(io.BytesIO(f.file.read())) as zf:
+                zf.extractall(dest_dir)
+            return f"assets/interactive/{slug}/index.html"
+        else:
+            safe_name = safe_filename(f.filename)
+            dest = dest_dir / safe_name
+            dest.write_bytes(f.file.read())
+            return f"assets/interactive/{slug}/{safe_name}"
+
+    def _upload_doc(self, form, slug):
+        if "studentDoc" not in form or not form["studentDoc"].filename:
+            return ""
+        f = form["studentDoc"]
+        ext = Path(f.filename).suffix.lower()
+        safe_name = safe_filename(f.filename)
+        dest = BASE_DIR / "assets" / "documents" / f"{slug}{ext}"
+        dest.parent.mkdir(parents=True, exist_ok=True)
+        dest.write_bytes(f.file.read())
+        return f"assets/documents/{slug}{ext}"
+
+    def _upload_slideshow(self, form, slug):
+        if "slideshow" not in form or not form["slideshow"].filename:
+            return ""
+        f = form["slideshow"]
+        ext = Path(f.filename).suffix.lower()
+        dest = BASE_DIR / "assets" / "slideshows" / f"{slug}{ext}"
+        dest.parent.mkdir(parents=True, exist_ok=True)
+        dest.write_bytes(f.file.read())
+        return f"assets/slideshows/{slug}{ext}"
+
+    def _delete_file(self, rel_path, key=""):
+        if not rel_path:
+            return
+        p = BASE_DIR / rel_path
+        if p.exists():
+            if p.is_dir():
+                shutil.rmtree(p)
+            else:
+                p.unlink()
+        if key == "interactive":
+            parent = p.parent
+            if parent.exists() and parent != BASE_DIR / "assets" / "interactive":
+                try:
+                    parent.rmdir()
+                except OSError:
+                    pass
+
+    # ------------------------------------------------------------------
+    def _handle_add(self):
+        form = self._parse_multipart()
+        if form is None:
+            json_response(self, {"error": "multipart requis"}, 400)
+            return
 
         title = form.getvalue("title", "").strip()
         if not title:
@@ -126,68 +212,65 @@ class Handler(http.server.SimpleHTTPRequestHandler):
         activities = load_activities()
         new_id = next_id(activities)
 
-        thumb_path = ""
-        interactive_path = ""
-        doc_path = ""
-
-        # Thumbnail
-        if "thumbnail" in form and form["thumbnail"].filename:
-            f = form["thumbnail"]
-            ext = Path(f.filename).suffix.lower()
-            dest = BASE_DIR / "assets" / "thumbnails" / f"{slug}{ext}"
-            dest.parent.mkdir(parents=True, exist_ok=True)
-            dest.write_bytes(f.file.read())
-            thumb_path = f"assets/thumbnails/{slug}{ext}"
-
-        # Fichier interactif (ZIP ou HTML)
-        if "interactive" in form and form["interactive"].filename:
-            f = form["interactive"]
-            ext = Path(f.filename).suffix.lower()
-            dest_dir = BASE_DIR / "assets" / "interactive" / slug
-            dest_dir.mkdir(parents=True, exist_ok=True)
-            if ext == ".zip":
-                import zipfile, io
-                with zipfile.ZipFile(io.BytesIO(f.file.read())) as zf:
-                    zf.extractall(dest_dir)
-                interactive_path = f"assets/interactive/{slug}/index.html"
-            else:
-                dest = dest_dir / f.filename
-                dest.write_bytes(f.file.read())
-                interactive_path = f"assets/interactive/{slug}/{f.filename}"
-
-        # Document élève
-        if "studentDoc" in form and form["studentDoc"].filename:
-            f = form["studentDoc"]
-            ext = Path(f.filename).suffix.lower()
-            dest = BASE_DIR / "assets" / "documents" / f"{slug}{ext}"
-            dest.parent.mkdir(parents=True, exist_ok=True)
-            dest.write_bytes(f.file.read())
-            doc_path = f"assets/documents/{slug}{ext}"
-
-        # Diaporama PPT
-        slideshow_path = ""
-        if "slideshow" in form and form["slideshow"].filename:
-            f = form["slideshow"]
-            ext = Path(f.filename).suffix.lower()
-            dest = BASE_DIR / "assets" / "slideshows" / f"{slug}{ext}"
-            dest.parent.mkdir(parents=True, exist_ok=True)
-            dest.write_bytes(f.file.read())
-            slideshow_path = f"assets/slideshows/{slug}{ext}"
-
         activity = {
             "id": new_id,
             "title": title,
             "level": "Niveau 4",
-            "thumbnail": thumb_path,
-            "interactive": interactive_path,
-            "studentDoc": doc_path,
-            "slideshow": slideshow_path,
+            "thumbnail": self._upload_thumbnail(form, slug),
+            "interactive": self._upload_interactive(form, slug),
+            "studentDoc": self._upload_doc(form, slug),
+            "slideshow": self._upload_slideshow(form, slug),
             "keywords": [],
         }
 
         activities.append(activity)
         save_activities(activities)
         json_response(self, {"success": True, "activity": activity}, 201)
+
+    # ------------------------------------------------------------------
+    def _handle_update(self, activity_id):
+        form = self._parse_multipart()
+        if form is None:
+            json_response(self, {"error": "multipart requis"}, 400)
+            return
+
+        activities = load_activities()
+        target = next((a for a in activities if a["id"] == activity_id), None)
+        if not target:
+            json_response(self, {"error": "Activité introuvable"}, 404)
+            return
+
+        slug = slugify(target["title"])
+
+        # Titre
+        new_title = form.getvalue("title", "").strip()
+        if new_title:
+            target["title"] = new_title
+            slug = slugify(new_title)
+
+        # Remplacer chaque fichier si un nouveau est fourni
+        new_thumb = self._upload_thumbnail(form, slug)
+        if new_thumb:
+            self._delete_file(target.get("thumbnail"))
+            target["thumbnail"] = new_thumb
+
+        new_interactive = self._upload_interactive(form, slug)
+        if new_interactive:
+            self._delete_file(target.get("interactive"), "interactive")
+            target["interactive"] = new_interactive
+
+        new_doc = self._upload_doc(form, slug)
+        if new_doc:
+            self._delete_file(target.get("studentDoc"))
+            target["studentDoc"] = new_doc
+
+        new_slideshow = self._upload_slideshow(form, slug)
+        if new_slideshow:
+            self._delete_file(target.get("slideshow"))
+            target["slideshow"] = new_slideshow
+
+        save_activities(activities)
+        json_response(self, {"success": True, "activity": target})
 
     # ------------------------------------------------------------------
     def _handle_rename(self, activity_id):
@@ -218,21 +301,8 @@ class Handler(http.server.SimpleHTTPRequestHandler):
             json_response(self, {"error": "Activité introuvable"}, 404)
             return
 
-        # Supprimer les fichiers associés
         for key in ("thumbnail", "interactive", "studentDoc", "slideshow"):
-            rel = target.get(key, "")
-            if rel:
-                p = BASE_DIR / rel
-                if p.exists():
-                    if p.is_dir():
-                        shutil.rmtree(p)
-                    else:
-                        p.unlink()
-                # Dossier parent interactive
-                if key == "interactive":
-                    parent = p.parent
-                    if parent.exists() and not any(parent.iterdir()):
-                        parent.rmdir()
+            self._delete_file(target.get(key, ""), key)
 
         activities = [a for a in activities if a["id"] != activity_id]
         save_activities(activities)

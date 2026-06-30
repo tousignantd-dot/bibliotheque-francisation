@@ -225,13 +225,15 @@
     .toast.success .t-dot { color: var(--success); }
     .toast.error .t-dot { color: var(--danger); }
 
-    /* ---- MODAL CONFIRM ---- */
+    /* ---- MODALS ---- */
     .modal-overlay {
       display: none; position: fixed; inset: 0; z-index: 200;
-      background: rgba(0,0,0,.4); backdrop-filter: blur(4px);
-      align-items: center; justify-content: center;
+      background: rgba(0,0,0,.45); backdrop-filter: blur(4px);
+      align-items: center; justify-content: center; padding: 16px;
     }
     .modal-overlay.open { display: flex; }
+
+    /* Modal suppression */
     .modal {
       background: var(--surface); border-radius: var(--radius);
       box-shadow: var(--shadow-lg); padding: 28px; width: 380px; max-width: 90vw;
@@ -243,6 +245,50 @@
     .btn-modal-cancel:hover { background: var(--border); }
     .btn-modal-confirm { background: var(--danger); color: #fff; border-color: var(--danger); height: 36px; padding: 0 16px; font-size: 13px; }
     .btn-modal-confirm:hover { background: var(--danger-hover); }
+
+    /* Modal édition complète */
+    .edit-modal {
+      background: var(--surface); border-radius: var(--radius);
+      box-shadow: var(--shadow-lg); width: 520px; max-width: 95vw;
+      max-height: 90vh; display: flex; flex-direction: column;
+      overflow: hidden;
+    }
+    .edit-modal-header {
+      padding: 20px 24px 18px; border-bottom: 1px solid var(--border);
+      display: flex; align-items: center; justify-content: space-between; flex-shrink: 0;
+    }
+    .edit-modal-title { font-size: 15px; font-weight: 700; }
+    .edit-modal-close {
+      width: 30px; height: 30px; border: none; background: var(--bg);
+      border-radius: 6px; cursor: pointer; display: flex; align-items: center;
+      justify-content: center; color: var(--text-2);
+      transition: background .15s, color .15s;
+    }
+    .edit-modal-close:hover { background: var(--border); color: var(--text); }
+    .edit-modal-body {
+      padding: 20px 24px; overflow-y: auto; flex: 1;
+    }
+    .edit-modal-footer {
+      padding: 16px 24px; border-top: 1px solid var(--border);
+      display: flex; gap: 10px; justify-content: flex-end; flex-shrink: 0;
+    }
+    .btn-edit-save {
+      background: var(--accent); color: #fff; border-color: var(--accent);
+      height: 38px; padding: 0 20px; font-size: 13px;
+    }
+    .btn-edit-save:hover { background: var(--accent-hover); }
+    .btn-edit-save:disabled { opacity: .5; cursor: not-allowed; transform: none; }
+
+    /* Badge fichier existant */
+    .current-file {
+      display: flex; align-items: center; gap: 8px;
+      padding: 7px 10px; background: var(--success-light);
+      border: 1px solid #bbf7d0; border-radius: 6px; margin-top: 8px;
+      font-size: 12px; color: #166534;
+    }
+    .current-file svg { flex-shrink: 0; color: var(--success); }
+    .current-file-name { overflow: hidden; text-overflow: ellipsis; white-space: nowrap; flex: 1; }
+    .current-file-label { font-size: 11px; color: #4ade80; flex-shrink: 0; font-weight: 600; }
 
     /* ---- PROGRESS BAR ---- */
     .progress-bar-wrap { display: none; height: 4px; background: var(--border); border-radius: 4px; overflow: hidden; margin-top: 14px; }
@@ -344,12 +390,12 @@
         <div class="form-group">
           <label>Document élève</label>
           <div class="drop-zone" id="docZone">
-            <input type="file" id="docFile" accept=".pdf,.doc,.docx" />
+            <input type="file" id="docFile" accept=".html,.htm,.pdf" />
             <div class="drop-zone-icon">
               <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/></svg>
             </div>
             <div class="drop-zone-text">Cliquer ou glisser le document</div>
-            <div class="drop-zone-hint">PDF, DOC, DOCX</div>
+            <div class="drop-zone-hint">HTML, PDF</div>
           </div>
           <div class="drop-zone-preview" id="docPreview">
             <span class="drop-zone-preview-icon"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/></svg></span>
@@ -419,6 +465,109 @@
     <div class="modal-actions">
       <button class="btn btn-modal-cancel" id="deleteCancelBtn">Annuler</button>
       <button class="btn btn-modal-confirm" id="deleteConfirmBtn">Supprimer</button>
+    </div>
+  </div>
+</div>
+
+<!-- MODAL ÉDITION COMPLÈTE -->
+<div class="modal-overlay" id="editModal">
+  <div class="edit-modal">
+    <div class="edit-modal-header">
+      <span class="edit-modal-title">Modifier l'activité</span>
+      <button class="edit-modal-close" id="editModalClose">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+      </button>
+    </div>
+    <div class="edit-modal-body">
+
+      <div class="form-group">
+        <label class="required" for="editTitle">Titre</label>
+        <input type="text" id="editTitle" maxlength="120" />
+      </div>
+
+      <div class="form-group">
+        <label>Image miniature</label>
+        <div id="editThumbCurrent" class="current-file" style="display:none">
+          <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="8.5" cy="8.5" r="1.5"/><polyline points="21 15 16 10 5 21"/></svg>
+          <span class="current-file-name" id="editThumbName"></span>
+          <span class="current-file-label">Actuel</span>
+        </div>
+        <div class="drop-zone" id="editThumbZone" style="margin-top:8px">
+          <input type="file" id="editThumbFile" accept="image/*" />
+          <div class="drop-zone-icon"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="8.5" cy="8.5" r="1.5"/><polyline points="21 15 16 10 5 21"/></svg></div>
+          <div class="drop-zone-text">Remplacer l'image</div>
+          <div class="drop-zone-hint">JPG, PNG, WEBP</div>
+        </div>
+        <img id="editThumbPreview" class="thumb-preview" alt="" />
+      </div>
+
+      <div class="form-group">
+        <label>Activité interactive</label>
+        <div id="editInteractiveCurrent" class="current-file" style="display:none">
+          <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polygon points="5 3 19 12 5 21 5 3"/></svg>
+          <span class="current-file-name" id="editInteractiveName"></span>
+          <span class="current-file-label">Actuel</span>
+        </div>
+        <div class="drop-zone" id="editInteractiveZone" style="margin-top:8px">
+          <input type="file" id="editInteractiveFile" accept=".html,.htm,.zip" />
+          <div class="drop-zone-icon"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><polygon points="5 3 19 12 5 21 5 3"/></svg></div>
+          <div class="drop-zone-text">Remplacer le fichier</div>
+          <div class="drop-zone-hint">HTML ou ZIP</div>
+        </div>
+        <div class="drop-zone-preview" id="editInteractivePreview">
+          <span class="drop-zone-preview-icon"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polygon points="5 3 19 12 5 21"/></svg></span>
+          <span class="drop-zone-preview-name" id="editInteractiveFileName"></span>
+          <span class="drop-zone-preview-size" id="editInteractiveFileSize"></span>
+        </div>
+      </div>
+
+      <div class="form-group">
+        <label>Document élève</label>
+        <div id="editDocCurrent" class="current-file" style="display:none">
+          <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/></svg>
+          <span class="current-file-name" id="editDocName"></span>
+          <span class="current-file-label">Actuel</span>
+        </div>
+        <div class="drop-zone" id="editDocZone" style="margin-top:8px">
+          <input type="file" id="editDocFile" accept=".html,.htm,.pdf" />
+          <div class="drop-zone-icon"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/></svg></div>
+          <div class="drop-zone-text">Remplacer le document</div>
+          <div class="drop-zone-hint">PDF, DOC, DOCX</div>
+        </div>
+        <div class="drop-zone-preview" id="editDocPreview">
+          <span class="drop-zone-preview-icon"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/></svg></span>
+          <span class="drop-zone-preview-name" id="editDocFileName"></span>
+          <span class="drop-zone-preview-size" id="editDocFileSize"></span>
+        </div>
+      </div>
+
+      <div class="form-group">
+        <label>Diaporama photos (PPT)</label>
+        <div id="editSlideshowCurrent" class="current-file" style="display:none">
+          <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><rect x="2" y="3" width="20" height="14" rx="2"/><line x1="12" y1="17" x2="12" y2="21"/></svg>
+          <span class="current-file-name" id="editSlideshowName"></span>
+          <span class="current-file-label">Actuel</span>
+        </div>
+        <div class="drop-zone" id="editSlideshowZone" style="margin-top:8px">
+          <input type="file" id="editSlideshowFile" accept=".ppt,.pptx" />
+          <div class="drop-zone-icon"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="2" y="3" width="20" height="14" rx="2"/><line x1="12" y1="17" x2="12" y2="21"/></svg></div>
+          <div class="drop-zone-text">Remplacer le diaporama</div>
+          <div class="drop-zone-hint">PPT, PPTX</div>
+        </div>
+        <div class="drop-zone-preview" id="editSlideshowPreview">
+          <span class="drop-zone-preview-icon"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><rect x="2" y="3" width="20" height="14" rx="2"/><line x1="12" y1="17" x2="12" y2="21"/></svg></span>
+          <span class="drop-zone-preview-name" id="editSlideshowFileName"></span>
+          <span class="drop-zone-preview-size" id="editSlideshowFileSize"></span>
+        </div>
+      </div>
+
+    </div>
+    <div class="edit-modal-footer">
+      <button class="btn btn-modal-cancel" id="editCancelBtn">Annuler</button>
+      <button class="btn btn-edit-save" id="editSaveBtn">
+        <span class="btn-text">Enregistrer les modifications</span>
+        <span class="spinner"></span>
+      </button>
     </div>
   </div>
 </div>
@@ -608,17 +757,17 @@ function renderList(items) {
       </div>
       <div class="activity-info">
         <div class="activity-name-display">${escHtml(a.title)}</div>
-        <div class="activity-name-edit">
-          <input type="text" value="${escHtml(a.title)}" maxlength="120" data-id="${a.id}" />
+        <div style="font-size:11px;color:var(--text-3);margin-top:2px;display:flex;gap:8px">
+          ${a.interactive ? '<span style="color:#22c55e">✓ Interactif</span>' : '<span>— Interactif</span>'}
+          ${a.studentDoc  ? '<span style="color:#22c55e">✓ Doc</span>'       : '<span>— Doc</span>'}
+          ${a.slideshow   ? '<span style="color:#22c55e">✓ PPT</span>'       : '<span>— PPT</span>'}
+          ${a.thumbnail   ? '<span style="color:#22c55e">✓ Image</span>'     : '<span>— Image</span>'}
         </div>
       </div>
       <div class="activity-actions">
-        <button class="btn btn-ghost edit-btn" data-id="${a.id}" title="Renommer">
+        <button class="btn btn-save edit-btn" data-id="${a.id}" title="Modifier">
           <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"/><path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"/></svg>
-        </button>
-        <button class="btn btn-save save-btn" data-id="${a.id}" style="display:none" title="Enregistrer">
-          <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>
-          Enregistrer
+          Modifier
         </button>
         <button class="btn btn-danger delete-btn" data-id="${a.id}" data-title="${escHtml(a.title)}" title="Supprimer">
           <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="3 6 5 6 21 6"/><path d="M19 6l-1 14H6L5 6"/><path d="M10 11v6M14 11v6"/><path d="M9 6V4h6v2"/></svg>
@@ -631,36 +780,13 @@ function renderList(items) {
 }
 
 function attachListEvents() {
-  // Renommer — ouvrir mode édition
   document.querySelectorAll('.edit-btn').forEach(btn => {
     btn.addEventListener('click', () => {
-      const id = btn.dataset.id;
-      const item = btn.closest('.activity-item');
-      item.querySelector('.activity-name-display').style.display = 'none';
-      item.querySelector('.activity-name-edit').style.display = 'block';
-      item.querySelector('.save-btn').style.display = 'inline-flex';
-      btn.style.display = 'none';
-      item.querySelector('.activity-name-edit input').focus();
+      const activity = allActivities.find(a => a.id === Number(btn.dataset.id));
+      if (activity) openEditModal(activity);
     });
   });
 
-  // Renommer — enregistrer
-  document.querySelectorAll('.save-btn').forEach(btn => {
-    btn.addEventListener('click', () => saveRename(btn.dataset.id, btn.closest('.activity-item')));
-  });
-
-  // Renommer — touche Entrée
-  document.querySelectorAll('.activity-name-edit input').forEach(input => {
-    input.addEventListener('keydown', e => {
-      if (e.key === 'Enter') {
-        e.preventDefault();
-        saveRename(input.dataset.id, input.closest('.activity-item'));
-      }
-      if (e.key === 'Escape') loadList();
-    });
-  });
-
-  // Supprimer
   document.querySelectorAll('.delete-btn').forEach(btn => {
     btn.addEventListener('click', () => {
       deleteTargetId = Number(btn.dataset.id);
@@ -671,25 +797,125 @@ function attachListEvents() {
   });
 }
 
-async function saveRename(id, item) {
-  const input = item.querySelector('.activity-name-edit input');
-  const newTitle = input.value.trim();
-  if (!newTitle) { toast('Le titre ne peut pas être vide.', 'error'); return; }
+/* ======================================================
+   Modal d'édition complète
+   ====================================================== */
+let editTargetId = null;
 
-  try {
-    const res = await fetch(`/api/activities/${id}/rename`, {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ title: newTitle }),
-    });
-    const data = await res.json();
-    if (!res.ok) throw new Error(data.error);
-    toast('Titre mis à jour.');
-    await loadList();
-  } catch (err) {
-    toast(err.message || 'Erreur lors du renommage.', 'error');
+function openEditModal(activity) {
+  editTargetId = activity.id;
+
+  // Titre
+  document.getElementById('editTitle').value = activity.title;
+
+  // Fichiers existants
+  setCurrentFile('editThumbCurrent', 'editThumbName', activity.thumbnail);
+  setCurrentFile('editInteractiveCurrent', 'editInteractiveName', activity.interactive);
+  setCurrentFile('editDocCurrent', 'editDocName', activity.studentDoc);
+  setCurrentFile('editSlideshowCurrent', 'editSlideshowName', activity.slideshow);
+
+  // Réinitialiser les zones de dépôt
+  ['editThumbFile','editInteractiveFile','editDocFile','editSlideshowFile'].forEach(id => {
+    document.getElementById(id).value = '';
+  });
+  document.getElementById('editThumbPreview').classList.remove('visible');
+  document.getElementById('editInteractivePreview').classList.remove('visible');
+  document.getElementById('editDocPreview').classList.remove('visible');
+  document.getElementById('editSlideshowPreview').classList.remove('visible');
+
+  document.getElementById('editModal').classList.add('open');
+  setTimeout(() => document.getElementById('editTitle').focus(), 100);
+}
+
+function setCurrentFile(divId, nameId, path) {
+  const div = document.getElementById(divId);
+  const nameEl = document.getElementById(nameId);
+  if (path) {
+    nameEl.textContent = path.split('/').pop();
+    div.style.display = 'flex';
+  } else {
+    div.style.display = 'none';
   }
 }
+
+function closeEditModal() {
+  document.getElementById('editModal').classList.remove('open');
+  editTargetId = null;
+}
+
+document.getElementById('editModalClose').addEventListener('click', closeEditModal);
+document.getElementById('editCancelBtn').addEventListener('click', closeEditModal);
+document.getElementById('editModal').addEventListener('click', e => {
+  if (e.target === e.currentTarget) closeEditModal();
+});
+
+// Drop zones du modal d'édition
+setupDropZone('editThumbZone', 'editThumbFile', file => {
+  const preview = document.getElementById('editThumbPreview');
+  const reader = new FileReader();
+  reader.onload = e => { preview.src = e.target.result; preview.classList.add('visible'); };
+  reader.readAsDataURL(file);
+});
+setupDropZone('editInteractiveZone', 'editInteractiveFile', file => {
+  const p = document.getElementById('editInteractivePreview');
+  document.getElementById('editInteractiveFileName').textContent = file.name;
+  document.getElementById('editInteractiveFileSize').textContent = fmtSize(file.size);
+  p.classList.add('visible');
+});
+setupDropZone('editDocZone', 'editDocFile', file => {
+  const p = document.getElementById('editDocPreview');
+  document.getElementById('editDocFileName').textContent = file.name;
+  document.getElementById('editDocFileSize').textContent = fmtSize(file.size);
+  p.classList.add('visible');
+});
+setupDropZone('editSlideshowZone', 'editSlideshowFile', file => {
+  const p = document.getElementById('editSlideshowPreview');
+  document.getElementById('editSlideshowFileName').textContent = file.name;
+  document.getElementById('editSlideshowFileSize').textContent = fmtSize(file.size);
+  p.classList.add('visible');
+});
+
+// Enregistrer les modifications
+document.getElementById('editSaveBtn').addEventListener('click', async () => {
+  if (!editTargetId) return;
+
+  const title = document.getElementById('editTitle').value.trim();
+  if (!title) { toast('Le titre est requis.', 'error'); return; }
+
+  const btn = document.getElementById('editSaveBtn');
+  btn.classList.add('loading');
+  btn.disabled = true;
+
+  const fd = new FormData();
+  fd.append('title', title);
+
+  const thumb = document.getElementById('editThumbFile').files[0];
+  const interactive = document.getElementById('editInteractiveFile').files[0];
+  const doc = document.getElementById('editDocFile').files[0];
+  const slideshow = document.getElementById('editSlideshowFile').files[0];
+
+  if (thumb) fd.append('thumbnail', thumb);
+  if (interactive) fd.append('interactive', interactive);
+  if (doc) fd.append('studentDoc', doc);
+  if (slideshow) fd.append('slideshow', slideshow);
+
+  try {
+    const res = await fetch(`/api/activities/${editTargetId}/update`, { method: 'POST', body: fd });
+    const data = await res.json();
+    if (!res.ok) throw new Error(data.error || 'Erreur serveur');
+    toast('Activité mise à jour !');
+    closeEditModal();
+    await loadList();
+  } catch (err) {
+    const msg = err.message?.includes('fetch')
+      ? 'Serveur non démarré.'
+      : (err.message || 'Erreur lors de la mise à jour.');
+    toast(msg, 'error');
+  } finally {
+    btn.classList.remove('loading');
+    btn.disabled = false;
+  }
+});
 
 /* ======================================================
    Suppression — modal

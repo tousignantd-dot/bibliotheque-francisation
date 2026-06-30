@@ -72,19 +72,32 @@ function render() {
 /* =========================================
    CONSTRUCTION D'UNE CARTE
    ========================================= */
+const CARD_PALETTE = [
+  { card: 'linear-gradient(90deg,#3b6ff6,#7c3aed)', thumb: 'linear-gradient(135deg,#dbeafe 0%,#ede9fe 100%)', icon: '#6d85f0' },
+  { card: 'linear-gradient(90deg,#0ea5e9,#06b6d4)', thumb: 'linear-gradient(135deg,#e0f2fe 0%,#cffafe 100%)', icon: '#22b8d4' },
+  { card: 'linear-gradient(90deg,#10b981,#059669)', thumb: 'linear-gradient(135deg,#d1fae5 0%,#a7f3d0 100%)', icon: '#10b981' },
+  { card: 'linear-gradient(90deg,#f59e0b,#ef4444)', thumb: 'linear-gradient(135deg,#fef3c7 0%,#fee2e2 100%)', icon: '#f59e0b' },
+  { card: 'linear-gradient(90deg,#ec4899,#a855f7)', thumb: 'linear-gradient(135deg,#fce7f3 0%,#f3e8ff 100%)', icon: '#e879b4' },
+  { card: 'linear-gradient(90deg,#f97316,#eab308)', thumb: 'linear-gradient(135deg,#ffedd5 0%,#fef9c3 100%)', icon: '#f97316' },
+  { card: 'linear-gradient(90deg,#6366f1,#0ea5e9)', thumb: 'linear-gradient(135deg,#e0e7ff 0%,#e0f2fe 100%)', icon: '#6366f1' },
+  { card: 'linear-gradient(90deg,#14b8a6,#3b82f6)', thumb: 'linear-gradient(135deg,#ccfbf1 0%,#dbeafe 100%)', icon: '#14b8a6' },
+];
+
 function buildCard(activity) {
+  const palette = CARD_PALETTE[(activity.id - 1) % CARD_PALETTE.length];
   const thumb = activity.thumbnail
     ? `<img src="${escHtml(activity.thumbnail)}" alt="${escHtml(activity.title)}"
             loading="lazy" onerror="this.style.display='none';this.nextElementSibling.style.display='flex'">`
     : '';
 
   const placeholder = `
-    <div class="card-thumbnail-placeholder" ${activity.thumbnail ? 'style="display:none"' : ''}>
+    <div class="card-thumbnail-placeholder"
+         style="${activity.thumbnail ? 'display:none;' : ''}background:${palette.thumb};color:${palette.icon}">
       ${iconImage()}
     </div>`;
 
   return `
-    <article class="card" data-id="${activity.id}">
+    <article class="card" data-id="${activity.id}" style="--card-color:${palette.card}">
       <div class="card-thumbnail">
         ${thumb}
         ${placeholder}
