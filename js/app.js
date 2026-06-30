@@ -29,6 +29,12 @@ const DOM = {
   toastContainer: document.getElementById('toastContainer'),
 };
 
+function formatDate(iso) {
+  if (!iso) return '';
+  const [y, m, d] = iso.split('-');
+  return `${d}/${m}/${y}`;
+}
+
 /* =========================================
    CHARGEMENT DES DONNÉES
    ========================================= */
@@ -91,7 +97,6 @@ function render() {
 
   DOM.emptyState.classList.remove('visible');
   DOM.grid.innerHTML = pageItems.map(buildCard).join('');
-  attachDateEvents();
   renderPagination();
 }
 
@@ -133,22 +138,19 @@ function buildCard(activity) {
           <h2 class="card-title">${escHtml(activity.title)}</h2>
           <span class="card-badge">${escHtml(activity.level || 'Niveau 4')}</span>
         </div>
+        ${(activity.dateVue || activity.datePrevue) ? `
         <div class="card-dates">
-          <div class="card-date-field vue ${activity.dateVue ? 'filled' : ''}">
+          ${activity.dateVue ? `
+          <div class="card-date-field vue filled">
             <span class="card-date-label vue">Vue</span>
-            <input type="date" class="card-date-input"
-                   value="${escHtml(activity.dateVue || '')}"
-                   data-id="${activity.id}" data-field="dateVue"
-                   title="Date vue" />
-          </div>
-          <div class="card-date-field prevue ${activity.datePrevue ? 'filled' : ''}">
+            <span class="card-date-text">${escHtml(formatDate(activity.dateVue))}</span>
+          </div>` : ''}
+          ${activity.datePrevue ? `
+          <div class="card-date-field prevue filled">
             <span class="card-date-label prevue">Prévue</span>
-            <input type="date" class="card-date-input"
-                   value="${escHtml(activity.datePrevue || '')}"
-                   data-id="${activity.id}" data-field="datePrevue"
-                   title="Date prévue" />
-          </div>
-        </div>
+            <span class="card-date-text">${escHtml(formatDate(activity.datePrevue))}</span>
+          </div>` : ''}
+        </div>` : ''}
         <div class="card-actions">
           <a href="${escHtml(encodePath(activity.interactive))}"
              class="btn btn-primary"

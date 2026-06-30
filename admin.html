@@ -580,6 +580,20 @@
         </div>
       </div>
 
+      <div class="form-group">
+        <label>Dates</label>
+        <div style="display:flex; gap:10px; margin-top:4px">
+          <div style="flex:1">
+            <label style="font-size:11px; font-weight:600; color:#16a34a; display:block; margin-bottom:4px">Vue</label>
+            <input type="date" id="editDateVue" style="width:100%; padding:6px 8px; border:1.5px solid #d1d5db; border-radius:6px; font-size:13px; outline:none" />
+          </div>
+          <div style="flex:1">
+            <label style="font-size:11px; font-weight:600; color:#9333ea; display:block; margin-bottom:4px">Prévue</label>
+            <input type="date" id="editDatePrevue" style="width:100%; padding:6px 8px; border:1.5px solid #d1d5db; border-radius:6px; font-size:13px; outline:none" />
+          </div>
+        </div>
+      </div>
+
     </div>
     <div class="edit-modal-footer">
       <button class="btn btn-modal-cancel" id="editCancelBtn">Annuler</button>
@@ -833,6 +847,9 @@ function openEditModal(activity) {
   setCurrentFile('editDocCurrent', 'editDocName', activity.studentDoc);
   setCurrentFile('editSlideshowCurrent', 'editSlideshowName', activity.slideshow);
 
+  document.getElementById('editDateVue').value = activity.dateVue || '';
+  document.getElementById('editDatePrevue').value = activity.datePrevue || '';
+
   // Réinitialiser les zones de dépôt
   ['editThumbFile','editInteractiveFile','editDocFile','editSlideshowFile'].forEach(id => {
     document.getElementById(id).value = '';
@@ -948,6 +965,15 @@ document.getElementById('editSaveBtn').addEventListener('click', async () => {
     const res = await fetch(`/api/activities/${editTargetId}/update`, { method: 'POST', body: fd });
     const data = await res.json();
     if (!res.ok) throw new Error(data.error || 'Erreur serveur');
+
+    const dateVue = document.getElementById('editDateVue').value;
+    const datePrevue = document.getElementById('editDatePrevue').value;
+    await fetch(`/api/activities/${editTargetId}/dates`, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ dateVue, datePrevue }),
+    });
+
     toast('Activité mise à jour !');
     closeEditModal();
     await loadList();
