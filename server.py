@@ -101,6 +101,9 @@ class Handler(http.server.SimpleHTTPRequestHandler):
         elif re.match(r"^/api/activities/\d+/update$", path):
             activity_id = int(path.split("/")[3])
             self._handle_update(activity_id)
+        elif re.match(r"^/api/activities/\d+/clear-file$", path):
+            activity_id = int(path.split("/")[3])
+            self._handle_clear_file(activity_id)
         elif re.match(r"^/api/activities/\d+/rename$", path):
             activity_id = int(path.split("/")[3])
             self._handle_rename(activity_id)
@@ -271,6 +274,28 @@ class Handler(http.server.SimpleHTTPRequestHandler):
 
         save_activities(activities)
         json_response(self, {"success": True, "activity": target})
+
+    # ------------------------------------------------------------------
+    def _handle_clear_file(self, activity_id):
+        length = int(self.headers.get("Content-Length", 0))
+        body = json.loads(self.rfile.read(length))
+        field = body.get("field", "")
+
+        allowed = ("thumbnail", "interactive", "studentDoc", "slideshow")
+        if field not in allowed:
+            json_response(self, {"error": "Champ invalide"}, 400)
+            return
+
+        activities = load_activities()
+        target = next((a for a in activities if a["id"] == activity_id), None)
+        if not target:
+            json_response(self, {"error": "Activité introuvable"}, 404)
+            return
+
+        self._delete_file(target.get(field, ""), field)
+        target[field] = ""
+        save_activities(activities)
+        json_response(self, {"success": True})
 
     # ------------------------------------------------------------------
     def _handle_rename(self, activity_id):
