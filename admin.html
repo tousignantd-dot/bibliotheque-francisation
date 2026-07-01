@@ -581,6 +581,52 @@
       </div>
 
       <div class="form-group">
+        <label>Plan de cours</label>
+        <div id="editPlanCoursCurrent" class="current-file" style="display:none">
+          <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M2 3h6a4 4 0 0 1 4 4v14a3 3 0 0 0-3-3H2z"/><path d="M22 3h-6a4 4 0 0 0-4 4v14a3 3 0 0 1 3-3h7z"/></svg>
+          <span class="current-file-name" id="editPlanCoursName"></span>
+          <span class="current-file-label">Actuel</span>
+          <button class="current-file-delete" data-field="planCours" title="Supprimer ce fichier">
+            <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="3 6 5 6 21 6"/><path d="M19 6l-1 14H6L5 6"/><path d="M10 11v6M14 11v6"/><path d="M9 6V4h6v2"/></svg> Supprimer
+          </button>
+        </div>
+        <div class="drop-zone" id="editPlanCoursZone" style="margin-top:8px">
+          <input type="file" id="editPlanCoursFile" accept=".docx" />
+          <div class="drop-zone-icon"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M2 3h6a4 4 0 0 1 4 4v14a3 3 0 0 0-3-3H2z"/><path d="M22 3h-6a4 4 0 0 0-4 4v14a3 3 0 0 1 3-3h7z"/></svg></div>
+          <div class="drop-zone-text">Déposer le plan de cours</div>
+          <div class="drop-zone-hint">DOCX</div>
+        </div>
+        <div class="drop-zone-preview" id="editPlanCoursPreview">
+          <span class="drop-zone-preview-icon"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M2 3h6a4 4 0 0 1 4 4v14a3 3 0 0 0-3-3H2z"/><path d="M22 3h-6a4 4 0 0 0-4 4v14a3 3 0 0 1 3-3h7z"/></svg></span>
+          <span class="drop-zone-preview-name" id="editPlanCoursFileName"></span>
+          <span class="drop-zone-preview-size" id="editPlanCoursFileSize"></span>
+        </div>
+      </div>
+
+      <div class="form-group">
+        <label>Autres</label>
+        <div id="editAutresCurrent" class="current-file" style="display:none">
+          <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/></svg>
+          <span class="current-file-name" id="editAutresName"></span>
+          <span class="current-file-label">Actuel</span>
+          <button class="current-file-delete" data-field="autres" title="Supprimer ce fichier">
+            <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="3 6 5 6 21 6"/><path d="M19 6l-1 14H6L5 6"/><path d="M10 11v6M14 11v6"/><path d="M9 6V4h6v2"/></svg> Supprimer
+          </button>
+        </div>
+        <div class="drop-zone" id="editAutresZone" style="margin-top:8px">
+          <input type="file" id="editAutresFile" accept=".pdf,.docx,.ppt,.pptx,.html,.htm" />
+          <div class="drop-zone-icon"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/></svg></div>
+          <div class="drop-zone-text">Déposer un document</div>
+          <div class="drop-zone-hint">PDF, DOCX, PPT, HTML</div>
+        </div>
+        <div class="drop-zone-preview" id="editAutresPreview">
+          <span class="drop-zone-preview-icon"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/></svg></span>
+          <span class="drop-zone-preview-name" id="editAutresFileName"></span>
+          <span class="drop-zone-preview-size" id="editAutresFileSize"></span>
+        </div>
+      </div>
+
+      <div class="form-group">
         <label>Dates</label>
         <div style="display:flex; gap:10px; margin-top:4px">
           <div style="flex:1">
@@ -850,14 +896,19 @@ function openEditModal(activity) {
   document.getElementById('editDateVue').value = activity.dateVue || '';
   document.getElementById('editDatePrevue').value = activity.datePrevue || '';
 
+  setCurrentFile('editPlanCoursCurrent', 'editPlanCoursName', activity.planCours);
+  setCurrentFile('editAutresCurrent', 'editAutresName', activity.autres);
+
   // Réinitialiser les zones de dépôt
-  ['editThumbFile','editInteractiveFile','editDocFile','editSlideshowFile'].forEach(id => {
+  ['editThumbFile','editInteractiveFile','editDocFile','editSlideshowFile','editPlanCoursFile','editAutresFile'].forEach(id => {
     document.getElementById(id).value = '';
   });
   document.getElementById('editThumbPreview').classList.remove('visible');
   document.getElementById('editInteractivePreview').classList.remove('visible');
   document.getElementById('editDocPreview').classList.remove('visible');
   document.getElementById('editSlideshowPreview').classList.remove('visible');
+  document.getElementById('editPlanCoursPreview').classList.remove('visible');
+  document.getElementById('editAutresPreview').classList.remove('visible');
 
   document.getElementById('editModal').classList.add('open');
   setTimeout(() => document.getElementById('editTitle').focus(), 100);
@@ -936,6 +987,18 @@ setupDropZone('editSlideshowZone', 'editSlideshowFile', file => {
   document.getElementById('editSlideshowFileSize').textContent = fmtSize(file.size);
   p.classList.add('visible');
 });
+setupDropZone('editPlanCoursZone', 'editPlanCoursFile', file => {
+  const p = document.getElementById('editPlanCoursPreview');
+  document.getElementById('editPlanCoursFileName').textContent = file.name;
+  document.getElementById('editPlanCoursFileSize').textContent = fmtSize(file.size);
+  p.classList.add('visible');
+});
+setupDropZone('editAutresZone', 'editAutresFile', file => {
+  const p = document.getElementById('editAutresPreview');
+  document.getElementById('editAutresFileName').textContent = file.name;
+  document.getElementById('editAutresFileSize').textContent = fmtSize(file.size);
+  p.classList.add('visible');
+});
 
 // Enregistrer les modifications
 document.getElementById('editSaveBtn').addEventListener('click', async () => {
@@ -955,11 +1018,15 @@ document.getElementById('editSaveBtn').addEventListener('click', async () => {
   const interactive = document.getElementById('editInteractiveFile').files[0];
   const doc = document.getElementById('editDocFile').files[0];
   const slideshow = document.getElementById('editSlideshowFile').files[0];
+  const planCours = document.getElementById('editPlanCoursFile').files[0];
+  const autres = document.getElementById('editAutresFile').files[0];
 
   if (thumb) fd.append('thumbnail', thumb);
   if (interactive) fd.append('interactive', interactive);
   if (doc) fd.append('studentDoc', doc);
   if (slideshow) fd.append('slideshow', slideshow);
+  if (planCours) fd.append('planCours', planCours);
+  if (autres) fd.append('autres', autres);
 
   try {
     const res = await fetch(`/api/activities/${editTargetId}/update`, { method: 'POST', body: fd });

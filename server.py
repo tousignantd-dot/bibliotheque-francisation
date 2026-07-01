@@ -185,6 +185,26 @@ class Handler(http.server.SimpleHTTPRequestHandler):
         dest.write_bytes(f.file.read())
         return f"assets/slideshows/{slug}{ext}"
 
+    def _upload_plan_cours(self, form, slug):
+        if "planCours" not in form or not form["planCours"].filename:
+            return ""
+        f = form["planCours"]
+        ext = Path(f.filename).suffix.lower()
+        dest = BASE_DIR / "assets" / "plans" / f"{slug}{ext}"
+        dest.parent.mkdir(parents=True, exist_ok=True)
+        dest.write_bytes(f.file.read())
+        return f"assets/plans/{slug}{ext}"
+
+    def _upload_autres(self, form, slug):
+        if "autres" not in form or not form["autres"].filename:
+            return ""
+        f = form["autres"]
+        ext = Path(f.filename).suffix.lower()
+        dest = BASE_DIR / "assets" / "autres" / f"{slug}{ext}"
+        dest.parent.mkdir(parents=True, exist_ok=True)
+        dest.write_bytes(f.file.read())
+        return f"assets/autres/{slug}{ext}"
+
     def _delete_file(self, rel_path, key=""):
         if not rel_path:
             return
@@ -226,6 +246,8 @@ class Handler(http.server.SimpleHTTPRequestHandler):
             "interactive": self._upload_interactive(form, slug),
             "studentDoc": self._upload_doc(form, slug),
             "slideshow": self._upload_slideshow(form, slug),
+            "planCours": self._upload_plan_cours(form, slug),
+            "autres": self._upload_autres(form, slug),
             "keywords": [],
         }
 
@@ -275,6 +297,16 @@ class Handler(http.server.SimpleHTTPRequestHandler):
             self._delete_file(target.get("slideshow"))
             target["slideshow"] = new_slideshow
 
+        new_plan = self._upload_plan_cours(form, slug)
+        if new_plan:
+            self._delete_file(target.get("planCours"))
+            target["planCours"] = new_plan
+
+        new_autres = self._upload_autres(form, slug)
+        if new_autres:
+            self._delete_file(target.get("autres"))
+            target["autres"] = new_autres
+
         save_activities(activities)
         json_response(self, {"success": True, "activity": target})
 
@@ -303,7 +335,7 @@ class Handler(http.server.SimpleHTTPRequestHandler):
         body = json.loads(self.rfile.read(length))
         field = body.get("field", "")
 
-        allowed = ("thumbnail", "interactive", "studentDoc", "slideshow")
+        allowed = ("thumbnail", "interactive", "studentDoc", "slideshow", "planCours", "autres")
         if field not in allowed:
             json_response(self, {"error": "Champ invalide"}, 400)
             return
@@ -348,7 +380,7 @@ class Handler(http.server.SimpleHTTPRequestHandler):
             json_response(self, {"error": "Activité introuvable"}, 404)
             return
 
-        for key in ("thumbnail", "interactive", "studentDoc", "slideshow"):
+        for key in ("thumbnail", "interactive", "studentDoc", "slideshow", "planCours", "autres"):
             self._delete_file(target.get(key, ""), key)
 
         activities = [a for a in activities if a["id"] != activity_id]

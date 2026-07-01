@@ -179,6 +179,32 @@ function buildCard(activity) {
                 Diaporama photos
                </button>`
           }
+          ${activity.planCours
+            ? `<a href="${escHtml(encodePath(activity.planCours))}"
+                 class="btn btn-plancours"
+                 target="_blank" rel="noopener"
+                 onclick="trackOpen('planCours', '${escHtml(activity.title)}')">
+                <span class="btn-icon">${iconPlan()}</span>
+                Plan de cours
+               </a>`
+            : `<button class="btn btn-plancours btn-disabled" disabled title="Aucun plan de cours disponible">
+                <span class="btn-icon">${iconPlan()}</span>
+                Plan de cours
+               </button>`
+          }
+          ${activity.autres
+            ? `<a href="${escHtml(encodePath(activity.autres))}"
+                 class="btn btn-autres"
+                 target="_blank" rel="noopener"
+                 onclick="trackOpen('autres', '${escHtml(activity.title)}')">
+                <span class="btn-icon">${iconDoc()}</span>
+                Autres
+               </a>`
+            : `<button class="btn btn-autres btn-disabled" disabled title="Aucun document disponible">
+                <span class="btn-icon">${iconDoc()}</span>
+                Autres
+               </button>`
+          }
         </div>
       </div>
     </article>`;
@@ -351,6 +377,11 @@ function iconDoc() {
   return `<svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
     <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path>
     <polyline points="14 2 14 8 20 8"></polyline></svg>`;
+}
+function iconPlan() {
+  return `<svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+    <path d="M2 3h6a4 4 0 0 1 4 4v14a3 3 0 0 0-3-3H2z"></path>
+    <path d="M22 3h-6a4 4 0 0 0-4 4v14a3 3 0 0 1 3-3h7z"></path></svg>`;
 }
 function iconSlideshow() {
   return `<svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
