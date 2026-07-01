@@ -429,6 +429,42 @@
           </div>
         </div>
 
+        <!-- Plan de cours -->
+        <div class="form-group">
+          <label>Plan de cours</label>
+          <div class="drop-zone" id="planCoursZone">
+            <input type="file" id="planCoursFile" accept=".docx" />
+            <div class="drop-zone-icon">
+              <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M2 3h6a4 4 0 0 1 4 4v14a3 3 0 0 0-3-3H2z"/><path d="M22 3h-6a4 4 0 0 0-4 4v14a3 3 0 0 1 3-3h7z"/></svg>
+            </div>
+            <div class="drop-zone-text">Cliquer ou glisser le plan de cours</div>
+            <div class="drop-zone-hint">DOCX</div>
+          </div>
+          <div class="drop-zone-preview" id="planCoursPreview">
+            <span class="drop-zone-preview-icon"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M2 3h6a4 4 0 0 1 4 4v14a3 3 0 0 0-3-3H2z"/><path d="M22 3h-6a4 4 0 0 0-4 4v14a3 3 0 0 1 3-3h7z"/></svg></span>
+            <span class="drop-zone-preview-name" id="planCoursName"></span>
+            <span class="drop-zone-preview-size" id="planCoursSize"></span>
+          </div>
+        </div>
+
+        <!-- Autres -->
+        <div class="form-group">
+          <label>Autres</label>
+          <div class="drop-zone" id="autresZone">
+            <input type="file" id="autresFile" accept=".pdf,.docx,.ppt,.pptx,.html,.htm" />
+            <div class="drop-zone-icon">
+              <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/></svg>
+            </div>
+            <div class="drop-zone-text">Cliquer ou glisser un document</div>
+            <div class="drop-zone-hint">PDF, DOCX, PPT, HTML</div>
+          </div>
+          <div class="drop-zone-preview" id="autresPreview">
+            <span class="drop-zone-preview-icon"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/></svg></span>
+            <span class="drop-zone-preview-name" id="autresName"></span>
+            <span class="drop-zone-preview-size" id="autresSize"></span>
+          </div>
+        </div>
+
         <div class="progress-bar-wrap" id="progressWrap">
           <div class="progress-bar" id="progressBar"></div>
         </div>
@@ -723,6 +759,18 @@ setupDropZone('slideshowZone', 'slideshowFile', file => {
   document.getElementById('slideshowSize').textContent = fmtSize(file.size);
   p.classList.add('visible');
 });
+setupDropZone('planCoursZone', 'planCoursFile', file => {
+  const p = document.getElementById('planCoursPreview');
+  document.getElementById('planCoursName').textContent = file.name;
+  document.getElementById('planCoursSize').textContent = fmtSize(file.size);
+  p.classList.add('visible');
+});
+setupDropZone('autresZone', 'autresFile', file => {
+  const p = document.getElementById('autresPreview');
+  document.getElementById('autresName').textContent = file.name;
+  document.getElementById('autresSize').textContent = fmtSize(file.size);
+  p.classList.add('visible');
+});
 
 /* ======================================================
    Soumission du formulaire
@@ -749,11 +797,15 @@ document.getElementById('addForm').addEventListener('submit', async e => {
   const interactive = document.getElementById('interactiveFile').files[0];
   const doc = document.getElementById('docFile').files[0];
   const slideshow = document.getElementById('slideshowFile').files[0];
+  const planCours = document.getElementById('planCoursFile').files[0];
+  const autres = document.getElementById('autresFile').files[0];
 
   if (thumb) fd.append('thumbnail', thumb);
   if (interactive) fd.append('interactive', interactive);
   if (doc) fd.append('studentDoc', doc);
   if (slideshow) fd.append('slideshow', slideshow);
+  if (planCours) fd.append('planCours', planCours);
+  if (autres) fd.append('autres', autres);
 
   // Simulation de progression
   let pct = 10;
