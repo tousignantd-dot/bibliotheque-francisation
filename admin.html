@@ -841,6 +841,8 @@ function renderList(items) {
           ${a.studentDoc  ? '<span style="color:#22c55e">✓ Doc</span>'       : '<span>— Doc</span>'}
           ${a.slideshow   ? '<span style="color:#22c55e">✓ PPT</span>'       : '<span>— PPT</span>'}
           ${a.thumbnail   ? '<span style="color:#22c55e">✓ Image</span>'     : '<span>— Image</span>'}
+          ${a.planCours   ? '<span style="color:#22c55e">✓ Plan</span>'      : '<span>— Plan</span>'}
+          ${a.autres      ? '<span style="color:#22c55e">✓ Autres</span>'    : '<span>— Autres</span>'}
         </div>
       </div>
       <div class="activity-actions">
@@ -930,30 +932,28 @@ function closeEditModal() {
   editTargetId = null;
 }
 
-// Suppression d'un fichier individuel
-document.querySelectorAll('.current-file-delete').forEach(btn => {
-  btn.addEventListener('click', async () => {
-    if (!editTargetId) return;
-    const field = btn.dataset.field;
-    if (!confirm('Supprimer ce fichier ?')) return;
+// Suppression d'un fichier individuel (délégation pour couvrir tous les boutons du modal)
+document.getElementById('editModal').addEventListener('click', async e => {
+  const btn = e.target.closest('.current-file-delete');
+  if (!btn || !editTargetId) return;
+  const field = btn.dataset.field;
+  if (!confirm('Supprimer ce fichier ?')) return;
 
-    try {
-      const res = await fetch(`/api/activities/${editTargetId}/clear-file`, {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ field }),
-      });
-      const data = await res.json();
-      if (!res.ok) throw new Error(data.error);
+  try {
+    const res = await fetch(`/api/activities/${editTargetId}/clear-file`, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ field }),
+    });
+    const data = await res.json();
+    if (!res.ok) throw new Error(data.error);
 
-      // Masquer le badge du fichier supprimé
-      btn.closest('.current-file').style.display = 'none';
-      toast('Fichier supprimé.');
-      await loadList();
-    } catch (err) {
-      toast(err.message || 'Erreur lors de la suppression.', 'error');
-    }
-  });
+    btn.closest('.current-file').style.display = 'none';
+    toast('Fichier supprimé.');
+    await loadList();
+  } catch (err) {
+    toast(err.message || 'Erreur lors de la suppression.', 'error');
+  }
 });
 
 document.getElementById('editModalClose').addEventListener('click', closeEditModal);
