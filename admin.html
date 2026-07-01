@@ -722,12 +722,17 @@ function setupDropZone(zoneId, inputId, onFile) {
   const zone = document.getElementById(zoneId);
   const input = document.getElementById(inputId);
 
-  zone.addEventListener('dragover', e => { e.preventDefault(); zone.classList.add('drag-over'); });
+  zone.addEventListener('dragover', e => { e.preventDefault(); e.stopPropagation(); zone.classList.add('drag-over'); });
   zone.addEventListener('dragleave', () => zone.classList.remove('drag-over'));
   zone.addEventListener('drop', e => {
-    e.preventDefault(); zone.classList.remove('drag-over');
+    e.preventDefault(); e.stopPropagation(); zone.classList.remove('drag-over');
     const file = e.dataTransfer.files[0];
-    if (file) { input.files = e.dataTransfer.files; onFile(file); }
+    if (file) {
+      const dt = new DataTransfer();
+      dt.items.add(file);
+      input.files = dt.files;
+      onFile(file);
+    }
   });
   input.addEventListener('change', () => { if (input.files[0]) onFile(input.files[0]); });
 }

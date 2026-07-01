@@ -1,0 +1,334 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="utf-8">
+<title>Le sport et les loisirs — Fiche élève</title>
+<link href="https://fonts.googleapis.com/css2?family=Nunito:wght@600;700;800;900&display=swap" rel="stylesheet">
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+html{background:#bbb}
+body{
+  font-family:'Nunito','Arial Rounded MT Bold',sans-serif;
+  background:#fff;
+  color:#000;
+  width:215.9mm;
+  margin:0 auto;
+  font-size:10.5pt;
+}
+
+/* PAGE BREAKS */
+.page{
+  width:215.9mm;
+  min-height:279.4mm;
+  padding:10mm 13mm 8mm;
+  background:#fff;
+  position:relative;
+}
+.page+.page{border-top:3px dashed #aaa;}
+
+/* ── HEADER ── */
+.hdr{
+  border-top:4px solid #000;
+  border-bottom:2.5px solid #000;
+  padding:7px 0 7px;
+  display:flex;
+  align-items:center;
+  gap:12px;
+  margin-bottom:9px;
+}
+.hdr-ic{
+  width:36px;height:36px;border-radius:50%;
+  border:2.5px solid #000;
+  display:flex;align-items:center;justify-content:center;
+  flex-shrink:0;
+}
+.hdr-eye{font-size:7.5pt;font-weight:800;text-transform:uppercase;letter-spacing:0.18em;color:#555;line-height:1;margin-bottom:2px;}
+.hdr-h1{font-size:20pt;font-weight:900;line-height:1.1;letter-spacing:-0.01em;}
+.hdr-r{margin-left:auto;display:flex;align-items:center;gap:8px;flex-shrink:0;}
+.nom-lbl{font-size:9pt;font-weight:800;text-transform:uppercase;letter-spacing:0.08em;}
+.nom-line{width:140px;border-bottom:2px solid #000;height:20px;display:inline-block;}
+
+/* ── DIALOGUE ── */
+.dial{
+  border:2px solid #000;
+  border-left:5px solid #000;
+  border-radius:0 6px 6px 0;
+  padding:7px 10px 8px;
+  margin-bottom:8px;
+}
+.sec-lbl{
+  font-size:7.5pt;font-weight:800;text-transform:uppercase;
+  letter-spacing:0.15em;color:#555;margin-bottom:4px;
+}
+.dial-lines{display:flex;flex-direction:column;gap:1px;font-size:9.5pt;line-height:1.6;font-weight:600;}
+.mb{font-weight:900;font-style:italic;}
+.dr{font-weight:900;}
+.narr{opacity:0.5;font-size:8.5pt;font-style:normal;}
+
+/* ── VOCABULARY ── */
+.vocab{
+  border:2px solid #000;
+  border-radius:6px;
+  padding:7px 10px 8px;
+  margin-bottom:8px;
+}
+.vocab-hdr{display:flex;align-items:center;gap:9px;margin-bottom:6px;}
+.sec-tag{
+  border:2px solid #000;border-radius:999px;
+  padding:2px 11px;font-size:8pt;font-weight:800;
+  text-transform:uppercase;letter-spacing:0.1em;white-space:nowrap;
+}
+.sec-sub{font-size:9pt;font-weight:700;color:#444;}
+.vocab-grid{display:grid;grid-template-columns:1fr 1fr;gap:2px 16px;}
+.vocab-item{display:flex;align-items:baseline;gap:6px;padding:2px 6px;}
+.vocab-item::before{content:'•';font-size:10pt;font-weight:900;flex-shrink:0;}
+.vocab-item span{font-size:10pt;font-weight:700;}
+
+/* ── EXERCISE CARDS ── */
+.ex{border:2px solid #000;border-radius:6px;margin-bottom:8px;overflow:hidden;}
+.ex-hdr{
+  border-bottom:2px solid #000;
+  padding:5px 10px;
+  display:flex;align-items:center;gap:9px;
+  background:#f2f2f2;
+}
+.ex-num{
+  width:24px;height:24px;border-radius:50%;
+  border:2.5px solid #000;
+  display:flex;align-items:center;justify-content:center;
+  font-size:11pt;font-weight:900;flex-shrink:0;
+  background:#fff;
+}
+.ex-title{font-size:12pt;font-weight:900;}
+.ex-instr{font-size:8pt;color:#555;margin-left:auto;font-weight:700;font-style:italic;}
+.ex-body{padding:8px 10px;}
+
+/* EX1 TABLE */
+.vf-table{width:100%;border-collapse:collapse;font-size:10pt;}
+.vf-table thead th{
+  font-size:8.5pt;font-weight:900;text-transform:uppercase;letter-spacing:0.06em;
+  padding:4px 8px;border:1.5px solid #000;text-align:center;
+  background:#e8e8e8;
+}
+.vf-table thead th:first-child{text-align:left;}
+.vf-table tbody td{
+  padding:6px 8px;border:1.5px solid #000;
+  font-weight:700;vertical-align:middle;
+}
+.vf-table tbody td:nth-child(2),
+.vf-table tbody td:nth-child(3){text-align:center;width:70px;}
+.vf-table tbody tr:nth-child(even) td{background:#f8f8f8;}
+.cb{display:inline-block;width:20px;height:20px;border:2px solid #666;border-radius:2px;}
+
+/* EX2 */
+.q-item{margin-bottom:7px;}
+.q-item:last-child{margin-bottom:0}
+.q-text{font-size:10.5pt;font-weight:700;}
+.ans-line{display:block;margin-top:3px;margin-left:14px;border-bottom:1.5px solid #888;height:18px;width:calc(100% - 14px);}
+
+/* EX3 */
+.fill-block{font-size:10.5pt;font-weight:600;line-height:2.4;}
+.fill-block .speaker{font-weight:900;}
+.blank{
+  display:inline-block;min-width:80px;
+  border-bottom:2px solid #000;
+  vertical-align:baseline;
+  margin:0 4px;
+  position:relative;
+}
+.blank .num{
+  position:absolute;
+  top:1px;
+  left:50%;
+  transform:translateX(-50%);
+  font-size:7pt;font-weight:800;color:#555;
+  white-space:nowrap;
+}
+
+/* EX4 */
+.ex4-prompt{font-size:10.5pt;font-weight:700;margin-bottom:8px;}
+.ex4-lines{display:flex;flex-direction:column;gap:10px;}
+.ex4-line{border-bottom:1.5px solid #bbb;height:20px;}
+
+/* FOOTER */
+.footer{
+  position:absolute;bottom:6mm;left:13mm;right:13mm;
+  border-top:1.5px solid #ccc;padding-top:4px;
+  font-size:7.5pt;font-weight:700;color:#888;
+  display:flex;justify-content:space-between;
+  letter-spacing:0.04em;
+}
+
+/* PRINT */
+@media print{
+  html,body{background:#fff}
+  body{margin:0;width:100%}
+  .page{page-break-after:always;min-height:auto}
+  .page+.page{border-top:none;}
+  @page{size:letter;margin:0}
+}
+</style>
+</head>
+<body>
+
+<!-- PAGE 1 -->
+<div class="page">
+
+  <div class="hdr">
+    <div class="hdr-ic">
+      <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#000" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M12 6v4"/><path d="M14 14h-4"/><path d="M14 18h-4"/><path d="M14 8h-4"/><rect x="6" y="2" width="12" height="20" rx="2"/></svg>
+    </div>
+    <div>
+      <div class="hdr-eye">Francisation · Niveau 4 · Québec</div>
+      <div class="hdr-h1">Le sport et les loisirs</div>
+    </div>
+    <div class="hdr-r">
+      <span class="nom-lbl">Nom :</span>
+      <span class="nom-line"></span>
+    </div>
+  </div>
+
+  <!-- DIALOGUE -->
+  <div class="dial">
+    <div class="sec-lbl">Dialogue — Le sport et les loisirs — Écoutez et lisez</div>
+    <div class="dial-lines">
+      <div><span class="mb">Sofia :</span> Salut Karim ! Qu'est-ce que tu fais pendant ton temps libre ?</div>
+      <div><span class="dr">Karim :</span> Salut ! Moi, j'adore le sport. Je joue au hockey une fois par semaine.</div>
+      <div><span class="mb">Sofia :</span> Ah oui ? Tu joues seul ou en équipe ?</div>
+      <div><span class="dr">Karim :</span> En équipe ! On dispute un match tous les samedis. Et toi, tu fais du sport ?</div>
+      <div><span class="mb">Sofia :</span> Oui, mais un sport individuel. Je fais de la natation.</div>
+      <div><span class="dr">Karim :</span> Super ! Tu nages souvent ?</div>
+      <div><span class="mb">Sofia :</span> Oui, presque tous les matins, avant le travail. Ça me détend beaucoup.</div>
+      <div><span class="dr">Karim :</span> C'est une bonne habitude ! Est-ce que tu gagnes des compétitions ?</div>
+      <div><span class="mb">Sofia :</span> Parfois ! Mais pour moi, ce n'est pas important de gagner. J'aime juste bouger.</div>
+      <div><span class="dr">Karim :</span> Tu as raison. La prochaine fois, viens voir mon match de hockey !</div>
+      <div><span class="mb">Sofia :</span> Avec plaisir ! J'adore les sports d'équipe à regarder.</div>
+    </div>
+  </div>
+
+  <!-- VOCABULAIRE -->
+  <div class="vocab">
+    <div class="vocab-hdr">
+      <span class="sec-tag">Vocabulaire</span>
+      <span class="sec-sub">Mots et expressions du dialogue</span>
+    </div>
+    <div class="vocab-grid">
+      <div class="vocab-item"><span>un sport</span></div>
+      <div class="vocab-item"><span>le hockey</span></div>
+      <div class="vocab-item"><span>un loisir</span></div>
+      <div class="vocab-item"><span>la natation</span></div>
+      <div class="vocab-item"><span>une équipe</span></div>
+      <div class="vocab-item"><span>souvent / parfois</span></div>
+      <div class="vocab-item"><span>un match</span></div>
+      <div class="vocab-item"><span>gagner / perdre</span></div>
+      <div class="vocab-item"><span>s'entraîner</span></div>
+      <div class="vocab-item"><span>le temps libre</span></div>
+      <div class="vocab-item"><span>pratiquer</span></div>
+      <div class="vocab-item"><span>se détendre</span></div>
+    </div>
+  </div>
+
+  <!-- EX 1 -->
+  <div class="ex">
+    <div class="ex-hdr">
+      <div class="ex-num">①</div>
+      <div class="ex-title">Vrai ou Faux</div>
+      <div class="ex-instr">Sans regarder le dialogue !</div>
+    </div>
+    <div class="ex-body">
+      <table class="vf-table">
+        <thead>
+          <tr><th>Affirmation</th><th>VRAI</th><th>FAUX</th></tr>
+        </thead>
+        <tbody>
+          <tr><td>1. Karim joue au hockey une fois par semaine.</td><td><span class="cb"></span></td><td><span class="cb"></span></td></tr>
+          <tr><td>2. Karim fait partie d'une équipe.</td><td><span class="cb"></span></td><td><span class="cb"></span></td></tr>
+          <tr><td>3. Sofia pratique un sport d'équipe.</td><td><span class="cb"></span></td><td><span class="cb"></span></td></tr>
+          <tr><td>4. Sofia nage souvent, le matin.</td><td><span class="cb"></span></td><td><span class="cb"></span></td></tr>
+          <tr><td>5. Karim et Sofia détestent le sport.</td><td><span class="cb"></span></td><td><span class="cb"></span></td></tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+  <div class="footer">
+    <span>Francisation · Niveau 4 · Québec</span>
+    <span>Sport et loisirs — page 1 / 2</span>
+  </div>
+</div>
+
+<!-- PAGE 2 -->
+<div class="page">
+
+  <div class="hdr">
+    <div class="hdr-ic">
+      <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#000" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M12 6v4"/><path d="M14 14h-4"/><path d="M14 18h-4"/><path d="M14 8h-4"/><rect x="6" y="2" width="12" height="20" rx="2"/></svg>
+    </div>
+    <div>
+      <div class="hdr-eye">Francisation · Niveau 4 · Québec</div>
+      <div class="hdr-h1">Le sport et les loisirs</div>
+    </div>
+    <div class="hdr-r">
+      <span class="nom-lbl">Nom :</span>
+      <span class="nom-line"></span>
+    </div>
+  </div>
+
+  <!-- EX 2 -->
+  <div class="ex">
+    <div class="ex-hdr">
+      <div class="ex-num">②</div>
+      <div class="ex-title">Questions</div>
+      <div class="ex-instr">Sans regarder le dialogue !</div>
+    </div>
+    <div class="ex-body">
+      <div class="q-item"><span class="q-text">1. Quel sport Karim pratique-t-il ?</span><span class="ans-line"></span></div>
+      <div class="q-item"><span class="q-text">2. À quelle fréquence Karim joue-t-il ?</span><span class="ans-line"></span></div>
+      <div class="q-item"><span class="q-text">3. Quel sport Sofia préfère-t-elle ?</span><span class="ans-line"></span></div>
+      <div class="q-item"><span class="q-text">4. Quand est-ce que Sofia nage ?</span><span class="ans-line"></span></div>
+      <div class="q-item"><span class="q-text">5. Qu'est-ce que Karim propose à Sofia à la fin ?</span><span class="ans-line"></span></div>
+    </div>
+  </div>
+
+  <!-- EX 3 -->
+  <div class="ex">
+    <div class="ex-hdr">
+      <div class="ex-num">③</div>
+      <div class="ex-title">Complétez le dialogue</div>
+      <div class="ex-instr">Utilisez les mots du vocabulaire</div>
+    </div>
+    <div class="ex-body">
+      <div class="fill-block">
+        <div><span class="speaker mb">Sofia :</span> Qu'est-ce que tu fais pendant ton temps <span class="blank"><span class="num">(1)</span></span> ?</div>
+        <div><span class="speaker dr">Karim :</span> J'adore le <span class="blank"><span class="num">(2)</span></span>. Je joue au hockey une fois par <span class="blank"><span class="num">(3)</span></span>.</div>
+        <div><span class="speaker mb">Sofia :</span> Tu joues en <span class="blank"><span class="num">(4)</span></span> ?</div>
+        <div><span class="speaker dr">Karim :</span> Oui ! On <span class="blank"><span class="num">(5)</span></span> un match tous les samedis. Et toi ?</div>
+        <div><span class="speaker mb">Sofia :</span> Je fais de la <span class="blank"><span class="num">(6)</span></span>.</div>
+        <div><span class="speaker dr">Karim :</span> Tu nages <span class="blank"><span class="num">(7)</span></span> ?</div>
+        <div><span class="speaker mb">Sofia :</span> Oui, tous les matins avant le <span class="blank"><span class="num">(8)</span></span>. C'est une bonne <span class="blank"><span class="num">(9)</span></span> !</div>
+        <div><span class="speaker dr">Karim :</span> Est-ce que c'est important de <span class="blank"><span class="num">(10)</span></span> ?</div>
+        <div><span class="speaker mb">Sofia :</span> Non, j'aime juste bouger !</div>
+        <div><span class="speaker dr">Karim :</span> Viens voir mon <span class="blank"><span class="num">(11)</span></span> de hockey !</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- EX 4 -->
+  <div class="ex">
+    <div class="ex-hdr">
+      <div class="ex-num">④</div>
+      <div class="ex-title">À vous !</div>
+    </div>
+    <div class="ex-body">
+      <div class="ex4-prompt">Vous parlez de vos sports et de vos loisirs préférés avec un ami. Vous dites ce que vous pratiquez, à quelle fréquence et pourquoi vous aimez ça.</div>
+    </div>
+  </div>
+
+  <div class="footer">
+    <span>Francisation · Niveau 4 · Québec</span>
+    <span>Sport et loisirs — page 2 / 2</span>
+  </div>
+</div>
+
+</body>
+</html>

@@ -131,10 +131,15 @@ class Handler(http.server.SimpleHTTPRequestHandler):
         content_type = self.headers.get("Content-Type", "")
         if "multipart/form-data" not in content_type:
             return None
+        content_length = self.headers.get("Content-Length", "0")
         return cgi.FieldStorage(
             fp=self.rfile,
             headers=self.headers,
-            environ={"REQUEST_METHOD": "POST", "CONTENT_TYPE": content_type},
+            environ={
+                "REQUEST_METHOD": "POST",
+                "CONTENT_TYPE": content_type,
+                "CONTENT_LENGTH": content_length,
+            },
         )
 
     def _upload_thumbnail(self, form, slug):
@@ -189,21 +194,21 @@ class Handler(http.server.SimpleHTTPRequestHandler):
         if "planCours" not in form or not form["planCours"].filename:
             return ""
         f = form["planCours"]
-        ext = Path(f.filename).suffix.lower()
-        dest = BASE_DIR / "assets" / "plans" / f"{slug}{ext}"
+        safe_name = safe_filename(f.filename)
+        dest = BASE_DIR / "assets" / "plans" / safe_name
         dest.parent.mkdir(parents=True, exist_ok=True)
         dest.write_bytes(f.file.read())
-        return f"assets/plans/{slug}{ext}"
+        return f"assets/plans/{safe_name}"
 
     def _upload_autres(self, form, slug):
         if "autres" not in form or not form["autres"].filename:
             return ""
         f = form["autres"]
-        ext = Path(f.filename).suffix.lower()
-        dest = BASE_DIR / "assets" / "autres" / f"{slug}{ext}"
+        safe_name = safe_filename(f.filename)
+        dest = BASE_DIR / "assets" / "autres" / safe_name
         dest.parent.mkdir(parents=True, exist_ok=True)
         dest.write_bytes(f.file.read())
-        return f"assets/autres/{slug}{ext}"
+        return f"assets/autres/{safe_name}"
 
     def _delete_file(self, rel_path, key=""):
         if not rel_path:
