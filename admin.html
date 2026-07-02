@@ -1078,6 +1078,12 @@ document.getElementById('editSaveBtn').addEventListener('click', async () => {
   const planCours = document.getElementById('editPlanCoursFile').files[0];
   const autres = document.getElementById('editAutresFile').files[0];
 
+  console.log('Fichiers modal édition:', {
+    thumb: thumb?.name, interactive: interactive?.name,
+    doc: doc?.name, slideshow: slideshow?.name,
+    planCours: planCours?.name, autres: autres?.name
+  });
+
   if (thumb) fd.append('thumbnail', thumb);
   if (interactive) fd.append('interactive', interactive);
   if (doc) fd.append('studentDoc', doc);
