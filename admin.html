@@ -667,17 +667,23 @@
       </div>
 
       <div class="form-group">
-        <label>Dates</label>
-        <div style="display:flex; gap:10px; margin-top:4px">
+        <label>Disponibilité pour les élèves</label>
+        <div style="display:flex; gap:8px; align-items:flex-end; margin-top:4px">
           <div style="flex:1">
-            <label style="font-size:11px; font-weight:600; color:#16a34a; display:block; margin-bottom:4px">Vue</label>
-            <input type="date" id="editDateVue" style="width:100%; padding:6px 8px; border:1.5px solid #d1d5db; border-radius:6px; font-size:13px; outline:none" />
-          </div>
-          <div style="flex:1">
-            <label style="font-size:11px; font-weight:600; color:#9333ea; display:block; margin-bottom:4px">Prévue</label>
+            <label style="font-size:11px; font-weight:600; color:#3b6ff6; display:block; margin-bottom:4px">Du</label>
             <input type="date" id="editDatePrevue" style="width:100%; padding:6px 8px; border:1.5px solid #d1d5db; border-radius:6px; font-size:13px; outline:none" />
           </div>
+          <span style="color:#9aa0aa; font-size:18px; padding-bottom:8px; flex-shrink:0">→</span>
+          <div style="flex:1">
+            <label style="font-size:11px; font-weight:600; color:#ef4444; display:block; margin-bottom:4px">Au</label>
+            <input type="date" id="editDateFin" style="width:100%; padding:6px 8px; border:1.5px solid #d1d5db; border-radius:6px; font-size:13px; outline:none" />
+          </div>
         </div>
+        <p style="font-size:11px; color:#9aa0aa; margin-top:5px">Laisser vide = toujours disponible / jamais disponible</p>
+      </div>
+      <div class="form-group">
+        <label style="font-size:11px; font-weight:600; color:#16a34a;">Vue en classe</label>
+        <input type="date" id="editDateVue" style="width:100%; padding:6px 8px; border:1.5px solid #d1d5db; border-radius:6px; font-size:13px; outline:none; margin-top:4px" />
       </div>
 
     </div>
@@ -707,6 +713,12 @@ function toast(msg, type = 'success') {
   wrap.appendChild(t);
   requestAnimationFrame(() => requestAnimationFrame(() => t.classList.add('show')));
   setTimeout(() => { t.classList.remove('show'); setTimeout(() => t.remove(), 250); }, 3200);
+}
+
+function fmtD(iso) {
+  if (!iso) return '';
+  const [y, m, d] = iso.split('-');
+  return `${d}/${m}/${y}`;
 }
 
 function escHtml(s) {
@@ -897,7 +909,7 @@ function renderList(items) {
       </div>
       <div class="activity-info">
         <div class="activity-name-display">${escHtml(a.title)}</div>
-        <div style="font-size:11px;color:var(--text-3);margin-top:2px;display:flex;gap:8px">
+        <div style="font-size:11px;color:var(--text-3);margin-top:2px;display:flex;gap:8px;flex-wrap:wrap">
           ${a.interactive ? '<span style="color:#22c55e">✓ Interactif</span>' : '<span>— Interactif</span>'}
           ${a.studentDoc  ? '<span style="color:#22c55e">✓ Doc</span>'       : '<span>— Doc</span>'}
           ${a.slideshow   ? '<span style="color:#22c55e">✓ PPT</span>'       : '<span>— PPT</span>'}
@@ -905,6 +917,12 @@ function renderList(items) {
           ${a.planCours   ? '<span style="color:#22c55e">✓ Plan</span>'      : '<span>— Plan</span>'}
           ${a.autres      ? '<span style="color:#22c55e">✓ Autres</span>'    : '<span>— Autres</span>'}
         </div>
+        ${(a.datePrevue || a.dateFin) ? `<div style="font-size:11px;margin-top:3px;display:flex;align-items:center;gap:4px">
+          <svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="#3b6ff6" stroke-width="2.5"><rect x="3" y="4" width="18" height="18" rx="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg>
+          <span style="color:#3b6ff6;font-weight:600">${a.datePrevue ? fmtD(a.datePrevue) : '…'}</span>
+          <span style="color:#9aa0aa">→</span>
+          <span style="color:#ef4444;font-weight:600">${a.dateFin ? fmtD(a.dateFin) : '…'}</span>
+        </div>` : ''}
       </div>
       <div class="activity-actions">
         <button class="btn btn-save edit-btn" data-id="${a.id}" title="Modifier">
@@ -958,6 +976,7 @@ function openEditModal(activity) {
 
   document.getElementById('editDateVue').value = activity.dateVue || '';
   document.getElementById('editDatePrevue').value = activity.datePrevue || '';
+  document.getElementById('editDateFin').value = activity.dateFin || '';
 
   setCurrentFile('editPlanCoursCurrent', 'editPlanCoursName', activity.planCours);
   setCurrentFile('editAutresCurrent', 'editAutresName', activity.autres);
@@ -1096,10 +1115,11 @@ document.getElementById('editSaveBtn').addEventListener('click', async () => {
 
     const dateVue = document.getElementById('editDateVue').value;
     const datePrevue = document.getElementById('editDatePrevue').value;
+    const dateFin = document.getElementById('editDateFin').value;
     await fetch(`/api/activities/${editTargetId}/dates`, {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ dateVue, datePrevue }),
+      body: JSON.stringify({ dateVue, datePrevue, dateFin }),
     });
 
     toast('Activité mise à jour !');

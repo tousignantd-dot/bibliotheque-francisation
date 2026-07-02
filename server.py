@@ -456,6 +456,8 @@ class Handler(http.server.SimpleHTTPRequestHandler):
             target["dateVue"] = body["dateVue"]
         if "datePrevue" in body:
             target["datePrevue"] = body["datePrevue"]
+        if "dateFin" in body:
+            target["dateFin"] = body["dateFin"]
 
         save_activities(activities)
         json_response(self, {"success": True})
@@ -537,7 +539,11 @@ class Handler(http.server.SimpleHTTPRequestHandler):
         result = []
         for a in activities:
             dp = a.get("datePrevue", "")
-            available = (not dp) or (dp <= today)
+            df = a.get("dateFin", "")
+            # Masquer les activités dont la période est terminée
+            if df and df < today:
+                continue
+            available = (not dp or dp <= today)
             result.append({
                 "id": a["id"],
                 "title": a["title"],
