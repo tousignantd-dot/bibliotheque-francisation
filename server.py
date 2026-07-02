@@ -76,6 +76,36 @@ def init_storage():
             shutil.rmtree(str(dst_interactive))
         shutil.copytree(str(src_interactive), str(dst_interactive))
 
+    # Fusionner les nouvelles activités intégrées au code dans le volume
+    # (les ids présents dans BASE_DIR/data/activities.json mais absents du
+    # volume sont ajoutés ; les données existantes du volume sont préservées)
+    src_acts = BASE_DIR / "data" / "activities.json"
+    dst_acts = STORAGE_DIR / "data" / "activities.json"
+    if src_acts.exists() and dst_acts.exists():
+        try:
+            with open(src_acts, encoding="utf-8") as f:
+                builtin = json.load(f)
+            with open(dst_acts, encoding="utf-8") as f:
+                current = json.load(f)
+            existing_ids = {a["id"] for a in current}
+            new_entries = [a for a in builtin if a["id"] not in existing_ids]
+            if new_entries:
+                current.extend(new_entries)
+                with open(dst_acts, "w", encoding="utf-8") as f:
+                    json.dump(current, f, ensure_ascii=False, indent=2)
+                print(f"[init] {len(new_entries)} nouvelle(s) activité(s) ajoutée(s) au volume", flush=True)
+        except (json.JSONDecodeError, KeyError) as e:
+            print(f"[WARN] Fusion activities.json échouée : {e}", flush=True)
+
+    # Synchroniser les vignettes intégrées au code (sans écraser les uploads)
+    src_thumbs = BASE_DIR / "assets" / "thumbnails"
+    dst_thumbs = STORAGE_DIR / "assets" / "thumbnails"
+    if src_thumbs.exists():
+        dst_thumbs.mkdir(parents=True, exist_ok=True)
+        for f in src_thumbs.iterdir():
+            if f.is_file() and not (dst_thumbs / f.name).exists():
+                shutil.copy2(str(f), str(dst_thumbs / f.name))
+
 
 # ── Helpers données ─────────────────────────────────────────────────────────
 
