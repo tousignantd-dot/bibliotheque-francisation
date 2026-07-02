@@ -13,10 +13,15 @@ import unicodedata
 import re
 import zipfile
 import io
+import random
+import string
 from pathlib import Path
+from datetime import date, datetime
 
 BASE_DIR = Path(__file__).parent.resolve()
 DATA_FILE = BASE_DIR / "data" / "activities.json"
+STUDENTS_FILE = BASE_DIR / "data" / "students.json"
+ACCESS_LOG_FILE = BASE_DIR / "data" / "access_log.json"
 PORT = 5173
 
 
@@ -30,6 +35,47 @@ def load_activities():
 def save_activities(activities):
     with open(DATA_FILE, "w", encoding="utf-8") as f:
         json.dump(activities, f, ensure_ascii=False, indent=2)
+
+
+def load_students():
+    if STUDENTS_FILE.exists():
+        with open(STUDENTS_FILE, "r", encoding="utf-8") as f:
+            return json.load(f)
+    return []
+
+
+def save_students(students):
+    with open(STUDENTS_FILE, "w", encoding="utf-8") as f:
+        json.dump(students, f, ensure_ascii=False, indent=2)
+
+
+def load_access_log():
+    if ACCESS_LOG_FILE.exists():
+        with open(ACCESS_LOG_FILE, "r", encoding="utf-8") as f:
+            return json.load(f)
+    return []
+
+
+def save_access_log(log):
+    with open(ACCESS_LOG_FILE, "w", encoding="utf-8") as f:
+        json.dump(log, f, ensure_ascii=False, indent=2)
+
+
+def generate_code(existing_codes):
+    chars = [c for c in string.ascii_uppercase + string.digits if c not in "OI01"]
+    for _ in range(100):
+        code = ''.join(random.choices(chars, k=6))
+        if code not in existing_codes:
+            return code
+    return ''.join(random.choices(chars, k=8))
+
+
+def validate_student_code(code):
+    """Retourne l'élève si le code est valide, sinon None."""
+    for s in load_students():
+        if s.get("code") == code:
+            return s
+    return None
 
 
 def next_id(activities):
@@ -94,8 +140,21 @@ class Handler(http.server.SimpleHTTPRequestHandler):
         self.end_headers()
 
     def do_GET(self):
-        if self.path == "/api/activities":
+        parsed = urllib.parse.urlparse(self.path)
+        path = parsed.path
+        params = urllib.parse.parse_qs(parsed.query)
+
+        if path == "/api/activities":
             json_response(self, load_activities())
+            return
+        if path == "/api/student/activities":
+            self._handle_student_activities(params)
+            return
+        if path == "/api/admin/students":
+            json_response(self, load_students())
+            return
+        if path == "/api/admin/access-log":
+            json_response(self, load_access_log())
             return
         super().do_GET()
 
@@ -103,7 +162,16 @@ class Handler(http.server.SimpleHTTPRequestHandler):
         parsed = urllib.parse.urlparse(self.path)
         path = parsed.path
 
-        if path == "/api/activities":
+        if path == "/api/auth":
+            self._handle_auth()
+        elif path == "/api/student/access":
+            self._handle_log_access()
+        elif path == "/api/admin/students":
+            self._handle_add_student()
+        elif path == "/api/admin/clear-log":
+            save_access_log([])
+            json_response(self, {"success": True})
+        elif path == "/api/activities":
             self._handle_add()
         elif re.match(r"^/api/activities/\d+/update$", path):
             activity_id = int(path.split("/")[3])
@@ -124,7 +192,13 @@ class Handler(http.server.SimpleHTTPRequestHandler):
         parsed = urllib.parse.urlparse(self.path)
         path = parsed.path
 
-        if re.match(r"^/api/activities/\d+$", path):
+        if re.match(r"^/api/admin/students/\d+$", path):
+            try:
+                student_id = int(path.split("/")[4])
+                self._handle_delete_student(student_id)
+            except (ValueError, IndexError):
+                self.send_error(400, "ID invalide")
+        elif re.match(r"^/api/activities/\d+$", path):
             try:
                 activity_id = int(path.split("/")[3])
                 self._handle_delete(activity_id)
@@ -399,6 +473,96 @@ class Handler(http.server.SimpleHTTPRequestHandler):
         save_activities(activities)
         json_response(self, {"success": True})
 
+
+    # ------------------------------------------------------------------
+    def _handle_auth(self):
+        length = int(self.headers.get("Content-Length", 0))
+        body = json.loads(self.rfile.read(length))
+        code = body.get("code", "").strip().upper()
+        student = validate_student_code(code)
+        if not student:
+            json_response(self, {"error": "Code invalide"}, 401)
+            return
+        json_response(self, {"success": True, "studentId": student["id"], "label": student.get("label", "")})
+
+    def _handle_student_activities(self, params):
+        code = params.get("code", [""])[0].strip().upper()
+        if not validate_student_code(code):
+            json_response(self, {"error": "Non autorisé"}, 401)
+            return
+        today = date.today().isoformat()
+        activities = load_activities()
+        result = []
+        for a in activities:
+            dp = a.get("datePrevue", "")
+            available = (not dp) or (dp <= today)
+            result.append({
+                "id": a["id"],
+                "title": a["title"],
+                "thumbnail": a.get("thumbnail", ""),
+                "datePrevue": dp,
+                "dateVue": a.get("dateVue", ""),
+                "available": available,
+                "files": {
+                    "interactive": a.get("interactive", "") if available else "",
+                    "studentDoc": a.get("studentDoc", "") if available else "",
+                    "slideshow": a.get("slideshow", "") if available else "",
+                    "planCours": a.get("planCours", "") if available else "",
+                    "autres": a.get("autres", "") if available else "",
+                },
+            })
+        json_response(self, result)
+
+    def _handle_log_access(self):
+        length = int(self.headers.get("Content-Length", 0))
+        body = json.loads(self.rfile.read(length))
+        code = body.get("code", "").strip().upper()
+        student = validate_student_code(code)
+        if not student:
+            json_response(self, {"error": "Non autorisé"}, 401)
+            return
+        log = load_access_log()
+        entry = {
+            "studentId": student["id"],
+            "studentLabel": student.get("label", ""),
+            "activityId": body.get("activityId"),
+            "activityTitle": body.get("activityTitle", ""),
+            "file": body.get("file", ""),
+            "timestamp": datetime.now().isoformat(timespec="seconds"),
+        }
+        log.append(entry)
+        save_access_log(log)
+        json_response(self, {"success": True})
+
+    def _handle_add_student(self):
+        length = int(self.headers.get("Content-Length", 0))
+        body = json.loads(self.rfile.read(length))
+        students = load_students()
+        existing_codes = {s["code"] for s in students}
+        count = max(1, int(body.get("count", 1)))
+        added = []
+        for _ in range(count):
+            label = body.get("label", "").strip()
+            new_id = max((s["id"] for s in students + added), default=0) + 1
+            student = {
+                "id": new_id,
+                "code": generate_code(existing_codes),
+                "label": label or f"Élève {new_id}",
+                "createdAt": date.today().isoformat(),
+            }
+            existing_codes.add(student["code"])
+            added.append(student)
+        students.extend(added)
+        save_students(students)
+        json_response(self, {"success": True, "students": added}, 201)
+
+    def _handle_delete_student(self, student_id):
+        students = load_students()
+        students = [s for s in students if s["id"] != student_id]
+        save_students(students)
+        json_response(self, {"success": True})
+
+    # ------------------------------------------------------------------
 
 if __name__ == "__main__":
     import socketserver

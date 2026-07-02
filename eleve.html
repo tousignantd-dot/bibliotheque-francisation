@@ -1,0 +1,397 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Activités — Francisation Niveau 4</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet" />
+  <style>
+    :root {
+      --bg: #f0f4ff;
+      --surface: #fff;
+      --border: #e4e8f0;
+      --text: #0f1117;
+      --text-2: #5c6470;
+      --text-3: #9aa0aa;
+      --accent: #3b6ff6;
+      --accent-light: #eef2ff;
+      --accent-hover: #2d5ce8;
+      --success: #16a34a;
+      --success-light: #f0fdf4;
+      --warn: #b45309;
+      --warn-light: #fffbeb;
+      --radius: 12px;
+      --radius-sm: 8px;
+      --shadow: 0 1px 4px rgba(0,0,0,.07), 0 2px 12px rgba(0,0,0,.05);
+      --font: 'Inter', system-ui, sans-serif;
+    }
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    body { font-family: var(--font); background: var(--bg); color: var(--text); -webkit-font-smoothing: antialiased; min-height: 100vh; }
+
+    /* ---- LOGIN ---- */
+    .login-wrap {
+      min-height: 100vh; display: flex; align-items: center; justify-content: center;
+      padding: 24px;
+    }
+    .login-card {
+      background: var(--surface); border-radius: 20px; box-shadow: 0 8px 40px rgba(59,111,246,.15);
+      padding: 48px 40px; width: 100%; max-width: 400px; text-align: center;
+    }
+    .login-logo {
+      width: 64px; height: 64px; background: var(--accent-light); border-radius: 16px;
+      display: flex; align-items: center; justify-content: center; margin: 0 auto 24px;
+      color: var(--accent);
+    }
+    .login-title { font-size: 22px; font-weight: 700; margin-bottom: 6px; letter-spacing: -.4px; }
+    .login-sub { font-size: 14px; color: var(--text-2); margin-bottom: 32px; }
+    .login-label { display: block; font-size: 12px; font-weight: 600; color: var(--text-2); margin-bottom: 8px; text-align: left; letter-spacing: .2px; }
+    .login-input {
+      width: 100%; height: 52px; border: 2px solid var(--border); border-radius: var(--radius-sm);
+      font-family: var(--font); font-size: 24px; font-weight: 700; text-align: center;
+      letter-spacing: 6px; color: var(--text); background: var(--bg); outline: none;
+      text-transform: uppercase; transition: border-color .15s, box-shadow .15s;
+    }
+    .login-input:focus { border-color: var(--accent); box-shadow: 0 0 0 4px rgba(59,111,246,.12); background: #fff; }
+    .login-input::placeholder { letter-spacing: 2px; color: var(--text-3); font-size: 16px; font-weight: 400; }
+    .login-error {
+      margin-top: 10px; font-size: 13px; color: #dc2626; background: #fef2f2;
+      border: 1px solid #fecaca; border-radius: 6px; padding: 8px 12px; display: none;
+    }
+    .login-btn {
+      width: 100%; height: 50px; margin-top: 20px; background: var(--accent); color: #fff;
+      border: none; border-radius: var(--radius-sm); font-family: var(--font); font-size: 16px;
+      font-weight: 700; cursor: pointer; transition: all .15s; letter-spacing: .2px;
+    }
+    .login-btn:hover { background: var(--accent-hover); box-shadow: 0 4px 16px rgba(59,111,246,.3); }
+    .login-btn:active { transform: scale(.98); }
+    .login-btn:disabled { opacity: .5; cursor: not-allowed; }
+
+    /* ---- APP ---- */
+    #app { display: none; }
+
+    .header {
+      background: rgba(255,255,255,.92); backdrop-filter: blur(12px);
+      border-bottom: 1px solid var(--border); position: sticky; top: 0; z-index: 50;
+    }
+    .header-inner {
+      max-width: 1000px; margin: 0 auto; padding: 0 24px; height: 60px;
+      display: flex; align-items: center; justify-content: space-between;
+    }
+    .header-brand { font-size: 15px; font-weight: 700; letter-spacing: -.3px; }
+    .header-sub { font-size: 12px; color: var(--text-3); margin-top: 1px; }
+    .header-right { display: flex; align-items: center; gap: 12px; }
+    .badge-code {
+      font-size: 12px; font-weight: 700; letter-spacing: 2px; color: var(--accent);
+      background: var(--accent-light); padding: 4px 10px; border-radius: 6px;
+      border: 1px solid #c7d7fd;
+    }
+    .btn-logout {
+      font-size: 12px; font-weight: 600; color: var(--text-2); background: none;
+      border: 1.5px solid var(--border); border-radius: 6px; padding: 5px 12px;
+      cursor: pointer; font-family: var(--font); transition: all .15s;
+    }
+    .btn-logout:hover { border-color: #dc2626; color: #dc2626; background: #fef2f2; }
+
+    .main { max-width: 1000px; margin: 0 auto; padding: 32px 24px 64px; }
+
+    /* ---- SECTION HEADERS ---- */
+    .section-title {
+      font-size: 11px; font-weight: 700; letter-spacing: 1px; text-transform: uppercase;
+      color: var(--text-3); margin-bottom: 14px; margin-top: 32px;
+      display: flex; align-items: center; gap: 8px;
+    }
+    .section-title:first-child { margin-top: 0; }
+    .section-title::after { content: ''; flex: 1; height: 1px; background: var(--border); }
+
+    /* ---- ACTIVITY GRID ---- */
+    .activity-grid {
+      display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap: 16px;
+    }
+
+    /* ---- ACTIVITY CARD ---- */
+    .act-card {
+      background: var(--surface); border-radius: var(--radius); border: 1.5px solid var(--border);
+      box-shadow: var(--shadow); overflow: hidden; transition: box-shadow .2s, border-color .2s;
+    }
+    .act-card.available:hover { box-shadow: 0 4px 20px rgba(59,111,246,.12); border-color: #c7d7fd; }
+    .act-card.locked { opacity: .75; }
+
+    .act-thumb {
+      width: 100%; aspect-ratio: 16/9; object-fit: cover; display: block; background: var(--bg);
+    }
+    .act-thumb-placeholder {
+      width: 100%; aspect-ratio: 16/9; background: linear-gradient(135deg, #eef2ff 0%, #e0e7ff 100%);
+      display: flex; align-items: center; justify-content: center; color: #a5b4fc;
+    }
+
+    .act-body { padding: 14px 16px 16px; }
+    .act-title { font-size: 14px; font-weight: 700; margin-bottom: 6px; line-height: 1.35; }
+    .act-date {
+      font-size: 11px; font-weight: 600; margin-bottom: 12px;
+      display: flex; align-items: center; gap: 5px;
+    }
+    .act-date.available { color: var(--success); }
+    .act-date.soon { color: var(--warn); }
+    .act-date.nodate { color: var(--text-3); }
+
+    /* ---- FILE BUTTONS ---- */
+    .act-files { display: flex; flex-direction: column; gap: 7px; }
+    .file-btn {
+      display: flex; align-items: center; gap: 9px; padding: 9px 12px;
+      border-radius: var(--radius-sm); border: 1.5px solid var(--border);
+      background: var(--bg); cursor: pointer; font-family: var(--font);
+      font-size: 12px; font-weight: 600; color: var(--text-2); text-decoration: none;
+      transition: all .15s;
+    }
+    .file-btn:hover { background: var(--accent-light); border-color: #c7d7fd; color: var(--accent); }
+    .file-btn:active { transform: scale(.98); }
+    .file-btn .file-icon { flex-shrink: 0; width: 28px; height: 28px; border-radius: 6px; display: flex; align-items: center; justify-content: center; }
+    .file-btn.interactive .file-icon { background: #ede9fe; color: #7c3aed; }
+    .file-btn.doc .file-icon { background: #dbeafe; color: #1d4ed8; }
+    .file-btn.slides .file-icon { background: #fce7f3; color: #be185d; }
+    .file-btn.plan .file-icon { background: #dcfce7; color: #15803d; }
+    .file-btn.autres .file-icon { background: #ffedd5; color: #c2410c; }
+    .file-btn .file-label { flex: 1; }
+    .file-btn .file-arrow { color: var(--text-3); flex-shrink: 0; }
+    .file-btn:hover .file-arrow { color: var(--accent); }
+
+    .locked-msg {
+      display: flex; align-items: center; gap: 8px; padding: 10px 12px;
+      background: var(--warn-light); border: 1.5px solid #fde68a; border-radius: var(--radius-sm);
+      font-size: 12px; font-weight: 600; color: var(--warn);
+    }
+
+    .empty-state {
+      grid-column: 1/-1; text-align: center; padding: 60px 24px; color: var(--text-3);
+    }
+    .empty-state svg { margin-bottom: 12px; color: #c7d7fd; }
+    .empty-state p { font-size: 14px; font-weight: 500; }
+
+    @media (max-width: 600px) {
+      .login-card { padding: 36px 24px; }
+      .main { padding: 20px 16px 48px; }
+      .activity-grid { grid-template-columns: 1fr; }
+    }
+  </style>
+</head>
+<body>
+
+<!-- LOGIN -->
+<div class="login-wrap" id="loginWrap">
+  <div class="login-card">
+    <div class="login-logo">
+      <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+        <path d="M2 3h6a4 4 0 0 1 4 4v14a3 3 0 0 0-3-3H2z"/><path d="M22 3h-6a4 4 0 0 0-4 4v14a3 3 0 0 1 3-3h7z"/>
+      </svg>
+    </div>
+    <div class="login-title">Bibliothèque d'activités</div>
+    <div class="login-sub">Francisation — Niveau 4</div>
+    <label class="login-label" for="codeInput">Entrez votre code d'accès</label>
+    <input id="codeInput" class="login-input" type="text" maxlength="8" placeholder="XXXXXX" autocomplete="off" autocapitalize="characters" spellcheck="false" />
+    <div class="login-error" id="loginError">Code invalide. Vérifiez votre code et réessayez.</div>
+    <button class="login-btn" id="loginBtn">Accéder aux activités</button>
+  </div>
+</div>
+
+<!-- APP -->
+<div id="app">
+  <header class="header">
+    <div class="header-inner">
+      <div>
+        <div class="header-brand">Activités pédagogiques</div>
+        <div class="header-sub">Francisation — Niveau 4</div>
+      </div>
+      <div class="header-right">
+        <span class="badge-code" id="codeDisplay"></span>
+        <button class="btn-logout" id="logoutBtn">Déconnexion</button>
+      </div>
+    </div>
+  </header>
+  <main class="main" id="mainContent"></main>
+</div>
+
+<script>
+  const API = 'http://localhost:5173';
+  let session = null;
+
+  // ---- RESTORE SESSION ----
+  const saved = localStorage.getItem('eleve_session');
+  if (saved) {
+    try { session = JSON.parse(saved); } catch(e) {}
+    if (session) showApp();
+  }
+
+  // ---- LOGIN ----
+  document.getElementById('codeInput').addEventListener('keydown', e => {
+    if (e.key === 'Enter') login();
+  });
+  document.getElementById('loginBtn').addEventListener('click', login);
+
+  async function login() {
+    const code = document.getElementById('codeInput').value.trim().toUpperCase();
+    if (!code) return;
+    const btn = document.getElementById('loginBtn');
+    btn.disabled = true; btn.textContent = 'Vérification…';
+    const errEl = document.getElementById('loginError');
+    errEl.style.display = 'none';
+    try {
+      const res = await fetch(`${API}/api/auth`, {
+        method: 'POST',
+        headers: {'Content-Type': 'application/json'},
+        body: JSON.stringify({code}),
+      });
+      const data = await res.json();
+      if (!res.ok) throw new Error(data.error || 'Erreur');
+      session = {code, studentId: data.studentId, label: data.label};
+      localStorage.setItem('eleve_session', JSON.stringify(session));
+      showApp();
+    } catch(e) {
+      errEl.style.display = 'block';
+      btn.disabled = false; btn.textContent = 'Accéder aux activités';
+    }
+  }
+
+  function showApp() {
+    document.getElementById('loginWrap').style.display = 'none';
+    document.getElementById('app').style.display = 'block';
+    document.getElementById('codeDisplay').textContent = session.code;
+    loadActivities();
+  }
+
+  document.getElementById('logoutBtn').addEventListener('click', () => {
+    localStorage.removeItem('eleve_session');
+    session = null;
+    document.getElementById('loginWrap').style.display = 'flex';
+    document.getElementById('app').style.display = 'none';
+    document.getElementById('codeInput').value = '';
+  });
+
+  // ---- ACTIVITIES ----
+  async function loadActivities() {
+    const main = document.getElementById('mainContent');
+    main.innerHTML = '<p style="color:var(--text-3);font-size:14px;text-align:center;padding:40px">Chargement…</p>';
+    try {
+      const res = await fetch(`${API}/api/student/activities?code=${encodeURIComponent(session.code)}`);
+      if (res.status === 401) { logout(); return; }
+      const activities = await res.json();
+      renderActivities(activities);
+    } catch(e) {
+      main.innerHTML = `<p style="color:#dc2626;font-size:13px;text-align:center;padding:40px">Impossible de contacter le serveur.<br>Vérifiez que le serveur local est démarré.</p>`;
+    }
+  }
+
+  function formatDate(iso) {
+    if (!iso) return '';
+    const [y, m, d] = iso.split('-');
+    return `${d}/${m}/${y}`;
+  }
+
+  function renderActivities(list) {
+    const main = document.getElementById('mainContent');
+    const today = new Date().toISOString().slice(0, 10);
+
+    const available = list.filter(a => a.available);
+    const upcoming  = list.filter(a => !a.available && a.datePrevue);
+
+    let html = '';
+
+    if (available.length === 0 && upcoming.length === 0) {
+      html = `<div class="empty-state">
+        <svg width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M2 3h6a4 4 0 0 1 4 4v14a3 3 0 0 0-3-3H2z"/><path d="M22 3h-6a4 4 0 0 0-4 4v14a3 3 0 0 1 3-3h7z"/></svg>
+        <p>Aucune activité disponible pour l'instant.</p></div>`;
+    } else {
+      if (available.length > 0) {
+        html += `<div class="section-title">Activités disponibles</div>
+          <div class="activity-grid">${available.map(buildCard).join('')}</div>`;
+      }
+      if (upcoming.length > 0) {
+        html += `<div class="section-title">À venir</div>
+          <div class="activity-grid">${upcoming.map(buildCard).join('')}</div>`;
+      }
+    }
+
+    main.innerHTML = html;
+  }
+
+  function buildCard(a) {
+    const thumb = a.thumbnail
+      ? `<img class="act-thumb" src="${API}/${a.thumbnail}" alt="" loading="lazy" />`
+      : `<div class="act-thumb-placeholder"><svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M2 3h6a4 4 0 0 1 4 4v14a3 3 0 0 0-3-3H2z"/><path d="M22 3h-6a4 4 0 0 0-4 4v14a3 3 0 0 1 3-3h7z"/></svg></div>`;
+
+    let dateHtml = '';
+    if (a.available && a.datePrevue) {
+      dateHtml = `<div class="act-date available">
+        <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg>
+        Disponible depuis le ${formatDate(a.datePrevue)}</div>`;
+    } else if (!a.available && a.datePrevue) {
+      dateHtml = `<div class="act-date soon">
+        <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
+        Disponible le ${formatDate(a.datePrevue)}</div>`;
+    }
+
+    let filesHtml = '';
+    if (a.available) {
+      const files = a.files;
+      const btns = [];
+      if (files.interactive) btns.push(fileBtn('interactive', 'Activité interactive', files.interactive, a));
+      if (files.studentDoc) btns.push(fileBtn('doc', 'Document élève', files.studentDoc, a));
+      if (files.slideshow) btns.push(fileBtn('slides', 'Diaporama', files.slideshow, a));
+      if (files.planCours) btns.push(fileBtn('plan', 'Plan de cours', files.planCours, a));
+      if (files.autres) btns.push(fileBtn('autres', 'Autres', files.autres, a));
+      if (btns.length === 0) {
+        filesHtml = `<p style="font-size:12px;color:var(--text-3);">Aucun fichier disponible.</p>`;
+      } else {
+        filesHtml = `<div class="act-files">${btns.join('')}</div>`;
+      }
+    } else {
+      filesHtml = `<div class="locked-msg">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><rect x="3" y="11" width="18" height="11" rx="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>
+        Activité non encore disponible</div>`;
+    }
+
+    return `<div class="act-card ${a.available ? 'available' : 'locked'}">
+      ${thumb}
+      <div class="act-body">
+        <div class="act-title">${escHtml(a.title)}</div>
+        ${dateHtml}
+        ${filesHtml}
+      </div>
+    </div>`;
+  }
+
+  function fileBtn(type, label, path, activity) {
+    const icons = {
+      interactive: `<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M10.325 4.317c.426-1.756 2.924-1.756 3.35 0a1.724 1.724 0 0 0 2.573 1.066c1.543-.94 3.31.826 2.37 2.37a1.724 1.724 0 0 0 1.065 2.572c1.756.426 1.756 2.924 0 3.35a1.724 1.724 0 0 0-1.066 2.573c.94 1.543-.826 3.31-2.37 2.37a1.724 1.724 0 0 0-2.572 1.065c-.426 1.756-2.924 1.756-3.35 0a1.724 1.724 0 0 0-2.573-1.066c-1.543.94-3.31-.826-2.37-2.37a1.724 1.724 0 0 0-1.065-2.572c-1.756-.426-1.756-2.924 0-3.35a1.724 1.724 0 0 0 1.066-2.573c-.94-1.543.826-3.31 2.37-2.37.996.608 2.296.07 2.572-1.065z"/><circle cx="12" cy="12" r="3"/></svg>`,
+      doc: `<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/></svg>`,
+      slides: `<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><rect x="2" y="3" width="20" height="14" rx="2"/><line x1="8" y1="21" x2="16" y2="21"/><line x1="12" y1="17" x2="12" y2="21"/></svg>`,
+      plan: `<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M9 11l3 3L22 4"/><path d="M21 12v7a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11"/></svg>`,
+      autres: `<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>`,
+    };
+    const fileKey = {interactive:'interactive', doc:'studentDoc', slides:'slideshow', plan:'planCours', autres:'autres'}[type];
+    const encodedPath = encodeURIComponent(JSON.stringify({activityId: activity.id, activityTitle: activity.title, file: fileKey}));
+    return `<a href="#" class="file-btn ${type}" onclick="openFile(event,'${API}/${path}',${activity.id},'${activity.title.replace(/'/g,"\\'")}','${fileKey}')">
+      <span class="file-icon">${icons[type]}</span>
+      <span class="file-label">${label}</span>
+      <span class="file-arrow"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="9 18 15 12 9 6"/></svg></span>
+    </a>`;
+  }
+
+  async function openFile(e, url, activityId, activityTitle, fileKey) {
+    e.preventDefault();
+    // Log access
+    fetch(`${API}/api/student/access`, {
+      method: 'POST',
+      headers: {'Content-Type': 'application/json'},
+      body: JSON.stringify({code: session.code, activityId, activityTitle, file: fileKey}),
+    }).catch(() => {});
+    window.open(url, '_blank');
+  }
+
+  function escHtml(s) {
+    return s.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');
+  }
+</script>
+</body>
+</html>
