@@ -377,13 +377,24 @@
 
   async function openFile(e, url, activityId, activityTitle, fileKey) {
     e.preventDefault();
-    // Log access
     fetch(`${API}/api/student/access`, {
       method: 'POST',
       headers: {'Content-Type': 'application/json'},
       body: JSON.stringify({code: session.code, activityId, activityTitle, file: fileKey}),
     }).catch(() => {});
-    window.open(url, '_blank');
+
+    if (fileKey === 'interactive') {
+      // Passer par viewer.html pour le suivi dialogue/exercices
+      const params = new URLSearchParams({
+        src: url,
+        activityId,
+        title: activityTitle,
+        code: session.code,
+      });
+      window.open(`viewer.html?${params}`, '_blank');
+    } else {
+      window.open(url, '_blank');
+    }
   }
 
   function escHtml(s) {

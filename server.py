@@ -24,9 +24,10 @@ BASE_DIR = Path(__file__).parent.resolve()
 # STORAGE_DIR : répertoire persistant (volume Railway en production, BASE_DIR en local)
 STORAGE_DIR = Path(os.environ.get('STORAGE_DIR', str(BASE_DIR)))
 
-DATA_FILE     = STORAGE_DIR / "data" / "activities.json"
-STUDENTS_FILE = STORAGE_DIR / "data" / "students.json"
+DATA_FILE       = STORAGE_DIR / "data" / "activities.json"
+STUDENTS_FILE   = STORAGE_DIR / "data" / "students.json"
 ACCESS_LOG_FILE = STORAGE_DIR / "data" / "access_log.json"
+PROGRESS_FILE   = STORAGE_DIR / "data" / "progress.json"
 
 PORT = int(os.environ.get('PORT', 5173))
 
@@ -100,6 +101,19 @@ def save_access_log(log):
     ACCESS_LOG_FILE.parent.mkdir(parents=True, exist_ok=True)
     with open(ACCESS_LOG_FILE, "w", encoding="utf-8") as f:
         json.dump(log, f, ensure_ascii=False, indent=2)
+
+
+def load_progress():
+    if PROGRESS_FILE.exists():
+        with open(PROGRESS_FILE, "r", encoding="utf-8") as f:
+            return json.load(f)
+    return []
+
+
+def save_progress(data):
+    PROGRESS_FILE.parent.mkdir(parents=True, exist_ok=True)
+    with open(PROGRESS_FILE, "w", encoding="utf-8") as f:
+        json.dump(data, f, ensure_ascii=False, indent=2)
 
 
 def generate_code(existing_codes):
@@ -182,6 +196,9 @@ class Handler(http.server.SimpleHTTPRequestHandler):
         if path == "/api/admin/access-log":
             json_response(self, load_access_log())
             return
+        if path == "/api/admin/progress":
+            json_response(self, load_progress())
+            return
 
         # Assets uploadés : servir depuis STORAGE_DIR (différent de BASE_DIR en prod)
         if STORAGE_DIR != BASE_DIR and path.startswith("/assets/"):
@@ -218,6 +235,8 @@ class Handler(http.server.SimpleHTTPRequestHandler):
         elif path == "/api/admin/clear-log":
             save_access_log([])
             json_response(self, {"success": True})
+        elif path == "/api/student/progress":
+            self._handle_student_progress()
         elif path == "/api/activities":
             self._handle_add()
         elif re.match(r"^/api/activities/\d+/update$", path):
@@ -603,6 +622,41 @@ class Handler(http.server.SimpleHTTPRequestHandler):
         students.extend(added)
         save_students(students)
         json_response(self, {"success": True, "students": added}, 201)
+
+    def _handle_student_progress(self):
+        length = int(self.headers.get("Content-Length", 0))
+        body = json.loads(self.rfile.read(length))
+        code = body.get("code", "").strip().upper()
+        student = validate_student_code(code)
+        if not student:
+            json_response(self, {"error": "Non autorisé"}, 401)
+            return
+        allowed_events = {"dialogue_listened", "exercise_completed", "file_opened"}
+        event = body.get("event", "")
+        if event not in allowed_events:
+            json_response(self, {"error": "Événement invalide"}, 400)
+            return
+        progress = load_progress()
+        # Évite les doublons : un seul enregistrement par (élève, activité, événement)
+        exists = any(
+            p["studentId"] == student["id"]
+            and p["activityId"] == body.get("activityId")
+            and p["event"] == event
+            for p in progress
+        )
+        if not exists:
+            entry = {
+                "studentId": student["id"],
+                "studentLabel": student.get("label", ""),
+                "activityId": body.get("activityId"),
+                "activityTitle": body.get("activityTitle", ""),
+                "event": event,
+                "score": body.get("score"),
+                "timestamp": datetime.now().isoformat(timespec="seconds"),
+            }
+            progress.append(entry)
+            save_progress(progress)
+        json_response(self, {"success": True})
 
     def _handle_delete_student(self, student_id):
         students = load_students()
