@@ -696,14 +696,17 @@ class Handler(http.server.SimpleHTTPRequestHandler):
             json_response(self, {"error": "Événement invalide"}, 400)
             return
         progress = load_progress()
-        # Évite les doublons : un seul enregistrement par (élève, activité, événement)
-        exists = any(
-            p["studentId"] == student["id"]
-            and p["activityId"] == body.get("activityId")
-            and p["event"] == event
-            for p in progress
+        # Un seul enregistrement par (élève, activité, événement).
+        # Pour exercise_completed, on met à jour l'enregistrement avec les
+        # dernières statistiques cumulées (progression partielle en temps réel).
+        existing = next(
+            (p for p in progress
+             if p["studentId"] == student["id"]
+             and p["activityId"] == body.get("activityId")
+             and p["event"] == event),
+            None,
         )
-        if not exists:
+        if existing is None:
             entry = {
                 "studentId": student["id"],
                 "studentLabel": student.get("label", ""),
@@ -712,11 +715,20 @@ class Handler(http.server.SimpleHTTPRequestHandler):
                 "event": event,
                 "score": body.get("score"),
                 "zones": body.get("zones"),
+                "zonesDone": body.get("zonesDone"),
                 "firstTry": body.get("firstTry"),
                 "totalErrors": body.get("totalErrors"),
                 "timestamp": datetime.now().isoformat(timespec="seconds"),
             }
             progress.append(entry)
+            save_progress(progress)
+        elif event == "exercise_completed":
+            existing["score"] = body.get("score")
+            existing["zones"] = body.get("zones")
+            existing["zonesDone"] = body.get("zonesDone")
+            existing["firstTry"] = body.get("firstTry")
+            existing["totalErrors"] = body.get("totalErrors")
+            existing["timestamp"] = datetime.now().isoformat(timespec="seconds")
             save_progress(progress)
         json_response(self, {"success": True})
 

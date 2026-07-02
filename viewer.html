@@ -108,12 +108,7 @@
     const d = e.data;
     if (!d || !d.lms) return;
     if (d.event === 'dialogue_listened') track('dialogue_listened');
-    if (d.event === 'exercise_completed') track('exercise_completed', {
-      score: d.score,
-      zones: d.zones,
-      firstTry: d.firstTry,
-      totalErrors: d.totalErrors,
-    });
+    if (d.event === 'exercise_completed') markDone('badgeExercise');
   });
 
   // Enregistrer l'ouverture (si pas déjà fait par eleve.html)
