@@ -254,6 +254,27 @@ class Handler(http.server.SimpleHTTPRequestHandler):
         else:
             self.send_error(404)
 
+    def do_PATCH(self):
+        parsed = urllib.parse.urlparse(self.path)
+        path = parsed.path
+        if re.match(r"^/api/admin/students/\d+$", path):
+            try:
+                student_id = int(path.split("/")[4])
+                length = int(self.headers.get("Content-Length", 0))
+                body = json.loads(self.rfile.read(length)) if length else {}
+                students = load_students()
+                for s in students:
+                    if s["id"] == student_id:
+                        if "prenom" in body:
+                            s["prenom"] = body["prenom"]
+                        break
+                save_students(students)
+                json_response(self, {"success": True})
+            except (ValueError, IndexError):
+                self.send_error(400, "ID invalide")
+        else:
+            self.send_error(404)
+
     def do_DELETE(self):
         parsed = urllib.parse.urlparse(self.path)
         path = parsed.path
