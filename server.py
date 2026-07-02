@@ -209,7 +209,12 @@ class Handler(http.server.SimpleHTTPRequestHandler):
             json_response(self, load_progress())
             return
 
-        # Assets uploadés : servir depuis STORAGE_DIR (différent de BASE_DIR en prod)
+        # Fichiers interactifs intégrés au code : servir directement depuis BASE_DIR
+        if path.startswith("/assets/interactive/"):
+            super().do_GET()
+            return
+
+        # Autres assets uploadés (thumbnails, docs, slideshows) : servir depuis STORAGE_DIR
         if STORAGE_DIR != BASE_DIR and path.startswith("/assets/"):
             self._serve_from_storage(path)
             return
