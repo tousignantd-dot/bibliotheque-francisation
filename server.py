@@ -1,10 +1,11 @@
 """
-Serveur local — Bibliothèque d'activités pédagogiques
+Serveur — Bibliothèque d'activités pédagogiques
 Gère les fichiers statiques + les opérations d'administration (ajout, modification, suppression).
 """
 
 import http.server
 import json
+import mimetypes
 import os
 import shutil
 import cgi
@@ -19,11 +20,48 @@ from pathlib import Path
 from datetime import date, datetime
 
 BASE_DIR = Path(__file__).parent.resolve()
-DATA_FILE = BASE_DIR / "data" / "activities.json"
-STUDENTS_FILE = BASE_DIR / "data" / "students.json"
-ACCESS_LOG_FILE = BASE_DIR / "data" / "access_log.json"
-PORT = 5173
 
+# STORAGE_DIR : répertoire persistant (volume Railway en production, BASE_DIR en local)
+STORAGE_DIR = Path(os.environ.get('STORAGE_DIR', str(BASE_DIR)))
+
+DATA_FILE     = STORAGE_DIR / "data" / "activities.json"
+STUDENTS_FILE = STORAGE_DIR / "data" / "students.json"
+ACCESS_LOG_FILE = STORAGE_DIR / "data" / "access_log.json"
+
+PORT = int(os.environ.get('PORT', 5173))
+
+
+# ── Initialisation du stockage ──────────────────────────────────────────────
+
+def init_storage():
+    """Crée les répertoires nécessaires et migre les données initiales si besoin."""
+    if STORAGE_DIR == BASE_DIR:
+        return
+
+    data_dst = STORAGE_DIR / "data"
+    assets_dst = STORAGE_DIR / "assets"
+
+    # Première exécution : copier data/ depuis BASE_DIR
+    if not data_dst.exists():
+        src = BASE_DIR / "data"
+        if src.exists():
+            shutil.copytree(str(src), str(data_dst))
+        else:
+            data_dst.mkdir(parents=True)
+
+    # Première exécution : copier assets/ depuis BASE_DIR
+    if not assets_dst.exists():
+        src = BASE_DIR / "assets"
+        if src.exists():
+            shutil.copytree(str(src), str(assets_dst))
+        else:
+            assets_dst.mkdir(parents=True)
+
+    data_dst.mkdir(parents=True, exist_ok=True)
+    assets_dst.mkdir(parents=True, exist_ok=True)
+
+
+# ── Helpers données ─────────────────────────────────────────────────────────
 
 def load_activities():
     if DATA_FILE.exists():
@@ -33,6 +71,7 @@ def load_activities():
 
 
 def save_activities(activities):
+    DATA_FILE.parent.mkdir(parents=True, exist_ok=True)
     with open(DATA_FILE, "w", encoding="utf-8") as f:
         json.dump(activities, f, ensure_ascii=False, indent=2)
 
@@ -45,6 +84,7 @@ def load_students():
 
 
 def save_students(students):
+    STUDENTS_FILE.parent.mkdir(parents=True, exist_ok=True)
     with open(STUDENTS_FILE, "w", encoding="utf-8") as f:
         json.dump(students, f, ensure_ascii=False, indent=2)
 
@@ -57,6 +97,7 @@ def load_access_log():
 
 
 def save_access_log(log):
+    ACCESS_LOG_FILE.parent.mkdir(parents=True, exist_ok=True)
     with open(ACCESS_LOG_FILE, "w", encoding="utf-8") as f:
         json.dump(log, f, ensure_ascii=False, indent=2)
 
@@ -71,7 +112,6 @@ def generate_code(existing_codes):
 
 
 def validate_student_code(code):
-    """Retourne l'élève si le code est valide, sinon None."""
     for s in load_students():
         if s.get("code") == code:
             return s
@@ -92,17 +132,10 @@ def slugify(text):
 
 
 def safe_filename(filename):
-    """Garde le nom original, supprime seulement les caractères dangereux (/, \, ..)."""
     name = Path(filename).name
-    name = re.sub(r'[/\\:*?"<>|]', '_', name)  # caractères interdits
-    name = name.lstrip('.')                       # évite les fichiers cachés
+    name = re.sub(r'[/\\:*?"<>|]', '_', name)
+    name = name.lstrip('.')
     return name or "fichier"
-
-def safe_filename_slugified(filename):
-    """Version slugifiée pour les fichiers dont le nom doit être normalisé."""
-    stem = Path(filename).stem
-    ext = Path(filename).suffix.lower()
-    return slugify(stem) + ext
 
 
 def json_response(handler, data, status=200):
@@ -115,14 +148,7 @@ def json_response(handler, data, status=200):
     handler.wfile.write(body)
 
 
-def save_file(form, field, dest_path):
-    """Sauvegarde un fichier uploadé vers dest_path. Retourne True si réussi."""
-    if field not in form or not form[field].filename:
-        return False
-    dest_path.parent.mkdir(parents=True, exist_ok=True)
-    dest_path.write_bytes(form[field].file.read())
-    return True
-
+# ── Gestionnaire HTTP ────────────────────────────────────────────────────────
 
 class Handler(http.server.SimpleHTTPRequestHandler):
 
@@ -156,7 +182,28 @@ class Handler(http.server.SimpleHTTPRequestHandler):
         if path == "/api/admin/access-log":
             json_response(self, load_access_log())
             return
+
+        # Assets uploadés : servir depuis STORAGE_DIR (différent de BASE_DIR en prod)
+        if STORAGE_DIR != BASE_DIR and path.startswith("/assets/"):
+            self._serve_from_storage(path)
+            return
+
         super().do_GET()
+
+    def _serve_from_storage(self, url_path):
+        rel = url_path.lstrip("/")
+        file_path = STORAGE_DIR / rel
+        if not file_path.exists() or not file_path.is_file():
+            self.send_error(404)
+            return
+        mime = mimetypes.guess_type(str(file_path))[0] or "application/octet-stream"
+        data = file_path.read_bytes()
+        self.send_response(200)
+        self.send_header("Content-Type", mime)
+        self.send_header("Content-Length", str(len(data)))
+        self.send_header("Access-Control-Allow-Origin", "*")
+        self.end_headers()
+        self.wfile.write(data)
 
     def do_POST(self):
         parsed = urllib.parse.urlparse(self.path)
@@ -207,7 +254,8 @@ class Handler(http.server.SimpleHTTPRequestHandler):
         else:
             self.send_error(404)
 
-    # ------------------------------------------------------------------
+    # ── Multipart ──────────────────────────────────────────────────────────
+
     def _parse_multipart(self):
         content_type = self.headers.get("Content-Type", "")
         if "multipart/form-data" not in content_type:
@@ -223,12 +271,14 @@ class Handler(http.server.SimpleHTTPRequestHandler):
             },
         )
 
+    # ── Upload ─────────────────────────────────────────────────────────────
+
     def _upload_thumbnail(self, form, slug):
         if "thumbnail" not in form or not form["thumbnail"].filename:
             return ""
         f = form["thumbnail"]
         ext = Path(f.filename).suffix.lower()
-        dest = BASE_DIR / "assets" / "thumbnails" / f"{slug}{ext}"
+        dest = STORAGE_DIR / "assets" / "thumbnails" / f"{slug}{ext}"
         dest.parent.mkdir(parents=True, exist_ok=True)
         dest.write_bytes(f.file.read())
         return f"assets/thumbnails/{slug}{ext}"
@@ -238,7 +288,7 @@ class Handler(http.server.SimpleHTTPRequestHandler):
             return ""
         f = form["interactive"]
         ext = Path(f.filename).suffix.lower()
-        dest_dir = BASE_DIR / "assets" / "interactive" / slug
+        dest_dir = STORAGE_DIR / "assets" / "interactive" / slug
         dest_dir.mkdir(parents=True, exist_ok=True)
         if ext == ".zip":
             with zipfile.ZipFile(io.BytesIO(f.file.read())) as zf:
@@ -255,8 +305,7 @@ class Handler(http.server.SimpleHTTPRequestHandler):
             return ""
         f = form["studentDoc"]
         ext = Path(f.filename).suffix.lower()
-        safe_name = safe_filename(f.filename)
-        dest = BASE_DIR / "assets" / "documents" / f"{slug}{ext}"
+        dest = STORAGE_DIR / "assets" / "documents" / f"{slug}{ext}"
         dest.parent.mkdir(parents=True, exist_ok=True)
         dest.write_bytes(f.file.read())
         return f"assets/documents/{slug}{ext}"
@@ -266,7 +315,7 @@ class Handler(http.server.SimpleHTTPRequestHandler):
             return ""
         f = form["slideshow"]
         ext = Path(f.filename).suffix.lower()
-        dest = BASE_DIR / "assets" / "slideshows" / f"{slug}{ext}"
+        dest = STORAGE_DIR / "assets" / "slideshows" / f"{slug}{ext}"
         dest.parent.mkdir(parents=True, exist_ok=True)
         dest.write_bytes(f.file.read())
         return f"assets/slideshows/{slug}{ext}"
@@ -276,7 +325,7 @@ class Handler(http.server.SimpleHTTPRequestHandler):
             return ""
         f = form["planCours"]
         safe_name = safe_filename(f.filename)
-        dest = BASE_DIR / "assets" / "plans" / safe_name
+        dest = STORAGE_DIR / "assets" / "plans" / safe_name
         dest.parent.mkdir(parents=True, exist_ok=True)
         dest.write_bytes(f.file.read())
         return f"assets/plans/{safe_name}"
@@ -286,7 +335,7 @@ class Handler(http.server.SimpleHTTPRequestHandler):
             return ""
         f = form["autres"]
         safe_name = safe_filename(f.filename)
-        dest = BASE_DIR / "assets" / "autres" / safe_name
+        dest = STORAGE_DIR / "assets" / "autres" / safe_name
         dest.parent.mkdir(parents=True, exist_ok=True)
         dest.write_bytes(f.file.read())
         return f"assets/autres/{safe_name}"
@@ -294,7 +343,7 @@ class Handler(http.server.SimpleHTTPRequestHandler):
     def _delete_file(self, rel_path, key=""):
         if not rel_path:
             return
-        p = BASE_DIR / rel_path
+        p = STORAGE_DIR / rel_path
         if p.exists():
             if p.is_dir():
                 shutil.rmtree(p)
@@ -302,13 +351,14 @@ class Handler(http.server.SimpleHTTPRequestHandler):
                 p.unlink()
         if key == "interactive":
             parent = p.parent
-            if parent.exists() and parent != BASE_DIR / "assets" / "interactive":
+            if parent.exists() and parent != STORAGE_DIR / "assets" / "interactive":
                 try:
                     parent.rmdir()
                 except OSError:
                     pass
 
-    # ------------------------------------------------------------------
+    # ── Handlers activités ────────────────────────────────────────────────
+
     def _handle_add(self):
         form = self._parse_multipart()
         if form is None:
@@ -341,7 +391,6 @@ class Handler(http.server.SimpleHTTPRequestHandler):
         save_activities(activities)
         json_response(self, {"success": True, "activity": activity}, 201)
 
-    # ------------------------------------------------------------------
     def _handle_update(self, activity_id):
         form = self._parse_multipart()
         if form is None:
@@ -355,14 +404,11 @@ class Handler(http.server.SimpleHTTPRequestHandler):
             return
 
         slug = slugify(target["title"])
-
-        # Titre
         new_title = form.getvalue("title", "").strip()
         if new_title:
             target["title"] = new_title
             slug = slugify(new_title)
 
-        # Remplacer chaque fichier si un nouveau est fourni
         new_thumb = self._upload_thumbnail(form, slug)
         if new_thumb:
             self._delete_file(target.get("thumbnail"))
@@ -396,7 +442,6 @@ class Handler(http.server.SimpleHTTPRequestHandler):
         save_activities(activities)
         json_response(self, {"success": True, "activity": target})
 
-    # ------------------------------------------------------------------
     def _handle_dates(self, activity_id):
         length = int(self.headers.get("Content-Length", 0))
         body = json.loads(self.rfile.read(length))
@@ -415,7 +460,6 @@ class Handler(http.server.SimpleHTTPRequestHandler):
         save_activities(activities)
         json_response(self, {"success": True})
 
-    # ------------------------------------------------------------------
     def _handle_clear_file(self, activity_id):
         length = int(self.headers.get("Content-Length", 0))
         body = json.loads(self.rfile.read(length))
@@ -437,7 +481,6 @@ class Handler(http.server.SimpleHTTPRequestHandler):
         save_activities(activities)
         json_response(self, {"success": True})
 
-    # ------------------------------------------------------------------
     def _handle_rename(self, activity_id):
         length = int(self.headers.get("Content-Length", 0))
         body = json.loads(self.rfile.read(length))
@@ -457,7 +500,6 @@ class Handler(http.server.SimpleHTTPRequestHandler):
 
         json_response(self, {"error": "Activité introuvable"}, 404)
 
-    # ------------------------------------------------------------------
     def _handle_delete(self, activity_id):
         activities = load_activities()
         target = next((a for a in activities if a["id"] == activity_id), None)
@@ -473,8 +515,8 @@ class Handler(http.server.SimpleHTTPRequestHandler):
         save_activities(activities)
         json_response(self, {"success": True})
 
+    # ── Handlers élèves / LMS ─────────────────────────────────────────────
 
-    # ------------------------------------------------------------------
     def _handle_auth(self):
         length = int(self.headers.get("Content-Length", 0))
         body = json.loads(self.rfile.read(length))
@@ -562,11 +604,14 @@ class Handler(http.server.SimpleHTTPRequestHandler):
         save_students(students)
         json_response(self, {"success": True})
 
-    # ------------------------------------------------------------------
+
+# ── Point d'entrée ──────────────────────────────────────────────────────────
 
 if __name__ == "__main__":
     import socketserver
+    init_storage()
     socketserver.TCPServer.allow_reuse_address = True
     with socketserver.TCPServer(("", PORT), Handler) as httpd:
-        print(f"Serveur démarré sur http://localhost:{PORT}")
+        print(f"Serveur démarré sur http://localhost:{PORT}", flush=True)
+        print(f"STORAGE_DIR = {STORAGE_DIR}", flush=True)
         httpd.serve_forever()
