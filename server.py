@@ -46,7 +46,14 @@ def slugify(text):
 
 
 def safe_filename(filename):
-    """Normalise un nom de fichier : supprime accents, espaces et caractères spéciaux."""
+    """Garde le nom original, supprime seulement les caractères dangereux (/, \, ..)."""
+    name = Path(filename).name
+    name = re.sub(r'[/\\:*?"<>|]', '_', name)  # caractères interdits
+    name = name.lstrip('.')                       # évite les fichiers cachés
+    return name or "fichier"
+
+def safe_filename_slugified(filename):
+    """Version slugifiée pour les fichiers dont le nom doit être normalisé."""
     stem = Path(filename).stem
     ext = Path(filename).suffix.lower()
     return slugify(stem) + ext
@@ -191,19 +198,13 @@ class Handler(http.server.SimpleHTTPRequestHandler):
         return f"assets/slideshows/{slug}{ext}"
 
     def _upload_plan_cours(self, form, slug):
-        print(f"[PLAN] 'planCours' in form: {'planCours' in form}", flush=True)
-        if "planCours" in form:
-            print(f"[PLAN] filename: {repr(form['planCours'].filename)}", flush=True)
         if "planCours" not in form or not form["planCours"].filename:
             return ""
         f = form["planCours"]
         safe_name = safe_filename(f.filename)
-        data = f.file.read()
-        print(f"[PLAN] data size: {len(data)} bytes, dest: assets/plans/{safe_name}", flush=True)
         dest = BASE_DIR / "assets" / "plans" / safe_name
         dest.parent.mkdir(parents=True, exist_ok=True)
-        dest.write_bytes(data)
-        print(f"[PLAN] sauvegardé: {dest}", flush=True)
+        dest.write_bytes(f.file.read())
         return f"assets/plans/{safe_name}"
 
     def _upload_autres(self, form, slug):
@@ -272,10 +273,6 @@ class Handler(http.server.SimpleHTTPRequestHandler):
         if form is None:
             json_response(self, {"error": "multipart requis"}, 400)
             return
-
-        # DEBUG: afficher les champs reçus
-        champs = {k: (form[k].filename if hasattr(form[k], 'filename') else form[k].value) for k in form.keys()}
-        print(f"[UPDATE {activity_id}] champs reçus: {champs}", flush=True)
 
         activities = load_activities()
         target = next((a for a in activities if a["id"] == activity_id), None)
