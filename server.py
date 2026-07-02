@@ -219,6 +219,9 @@ class Handler(http.server.SimpleHTTPRequestHandler):
     def _serve_from_storage(self, url_path):
         rel = url_path.lstrip("/")
         file_path = STORAGE_DIR / rel
+        # Fallback vers BASE_DIR si le fichier n'est pas dans le volume (assets intégrés au déploiement)
+        if not file_path.exists() or not file_path.is_file():
+            file_path = BASE_DIR / rel
         if not file_path.exists() or not file_path.is_file():
             self.send_error(404)
             return
