@@ -193,6 +193,21 @@ class Handler(http.server.SimpleHTTPRequestHandler):
         path = parsed.path
         params = urllib.parse.parse_qs(parsed.query)
 
+        if path == "/api/debug":
+            import os as _os
+            interactive_dir = BASE_DIR / "assets" / "interactive"
+            files = []
+            if interactive_dir.exists():
+                for root, dirs, fs in _os.walk(str(interactive_dir)):
+                    for f in fs:
+                        files.append(_os.path.join(root, f).replace(str(BASE_DIR), ''))
+            json_response(self, {
+                "BASE_DIR": str(BASE_DIR),
+                "STORAGE_DIR": str(STORAGE_DIR),
+                "interactive_exists": interactive_dir.exists(),
+                "files": files[:20],
+            })
+            return
         if path == "/api/activities":
             json_response(self, load_activities())
             return
