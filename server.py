@@ -22,7 +22,13 @@ from datetime import date, datetime
 BASE_DIR = Path(__file__).parent.resolve()
 
 # STORAGE_DIR : répertoire persistant (volume Railway en production, BASE_DIR en local)
-STORAGE_DIR = Path(os.environ.get('STORAGE_DIR', str(BASE_DIR)))
+_storage_raw = os.environ.get('STORAGE_DIR', str(BASE_DIR))
+# Valider que STORAGE_DIR est un chemin absolu simple (pas de '=' parasite)
+if '=' in _storage_raw or not os.path.isabs(_storage_raw):
+    print(f"[WARN] STORAGE_DIR invalide ({_storage_raw!r}), repli sur BASE_DIR", flush=True)
+    STORAGE_DIR = BASE_DIR
+else:
+    STORAGE_DIR = Path(_storage_raw)
 
 DATA_FILE       = STORAGE_DIR / "data" / "activities.json"
 STUDENTS_FILE   = STORAGE_DIR / "data" / "students.json"
