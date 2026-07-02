@@ -50,7 +50,7 @@ def init_storage():
         else:
             data_dst.mkdir(parents=True)
 
-    # Première exécution : copier assets/ depuis BASE_DIR
+    # Première exécution : copier assets/ depuis BASE_DIR (sauf interactive/)
     if not assets_dst.exists():
         src = BASE_DIR / "assets"
         if src.exists():
@@ -60,6 +60,15 @@ def init_storage():
 
     data_dst.mkdir(parents=True, exist_ok=True)
     assets_dst.mkdir(parents=True, exist_ok=True)
+
+    # Toujours synchroniser assets/interactive/ depuis BASE_DIR à chaque démarrage
+    # (les fichiers interactifs évoluent avec chaque déploiement)
+    src_interactive = BASE_DIR / "assets" / "interactive"
+    dst_interactive = STORAGE_DIR / "assets" / "interactive"
+    if src_interactive.exists():
+        if dst_interactive.exists():
+            shutil.rmtree(str(dst_interactive))
+        shutil.copytree(str(src_interactive), str(dst_interactive))
 
 
 # ── Helpers données ─────────────────────────────────────────────────────────
@@ -673,6 +682,9 @@ class Handler(http.server.SimpleHTTPRequestHandler):
                 "activityTitle": body.get("activityTitle", ""),
                 "event": event,
                 "score": body.get("score"),
+                "zones": body.get("zones"),
+                "firstTry": body.get("firstTry"),
+                "totalErrors": body.get("totalErrors"),
                 "timestamp": datetime.now().isoformat(timespec="seconds"),
             }
             progress.append(entry)
