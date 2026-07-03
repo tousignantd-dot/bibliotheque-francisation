@@ -1,0 +1,597 @@
+<!DOCTYPE html>
+<html lang="fr"><head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+<title>Visite du Vieux-Montréal</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Nunito:wght@600;700;800;900&display=swap" rel="stylesheet">
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+html,body{height:100%;background:#F4F0F8;font-family:'Nunito','Arial Rounded MT Bold',sans-serif;color:#1A2E35}
+body{display:flex;flex-direction:column;min-height:100vh}
+::-webkit-scrollbar{width:6px;height:6px}::-webkit-scrollbar-track{background:rgba(0,0,0,.04);border-radius:3px}::-webkit-scrollbar-thumb{background:rgba(0,0,0,.15);border-radius:3px}
+
+/* HEADER */
+#hdr{background:#5B8DBF;color:#fff;padding:14px 32px;display:flex;align-items:center;justify-content:space-between;position:sticky;top:0;z-index:200;box-shadow:0 3px 16px rgba(91,141,191,.3);flex-shrink:0}
+.hdr-l{display:flex;align-items:center;gap:14px}
+.hdr-ic{width:44px;height:44px;background:rgba(255,255,255,.18);border-radius:50%;display:flex;align-items:center;justify-content:center;flex-shrink:0;font-size:22px}
+.hdr-eye{font-size:11px;font-weight:800;text-transform:uppercase;letter-spacing:.2em;opacity:.7;line-height:1}
+.hdr-h1{font-size:28px;font-weight:900;line-height:1.15}
+.hdr-r{display:flex;align-items:center;gap:14px}
+#prog-chip{background:rgba(255,255,255,.15);border:2px solid rgba(255,255,255,.45);border-radius:999px;padding:8px 18px;font-size:16px;font-weight:900;white-space:nowrap}
+#btn-reset{background:rgba(255,255,255,.15);color:#fff;border:2px solid rgba(255,255,255,.45);border-radius:10px;padding:10px 18px;font-family:'Nunito',sans-serif;font-size:16px;font-weight:800;cursor:pointer;white-space:nowrap;transition:background .15s}
+#btn-reset:hover{background:rgba(255,255,255,.28)}
+
+/* TABS */
+#tabs{background:#fff;display:flex;gap:6px;padding:10px 32px;position:sticky;top:76px;z-index:190;box-shadow:0 2px 12px rgba(0,0,0,.07);flex-wrap:wrap}
+.tab{border:2.5px solid transparent;border-radius:999px;padding:9px 20px;font-family:'Nunito',sans-serif;font-size:15px;font-weight:800;cursor:pointer;background:#F4F0F8;color:#6B8E97;transition:all .15s;display:flex;align-items:center;gap:8px}
+.tab .tno{width:24px;height:24px;border-radius:50%;background:#D8C8EC;color:#fff;display:flex;align-items:center;justify-content:center;font-size:13px;font-weight:900;flex-shrink:0}
+.tab.on{background:#5B8DBF;color:#fff}
+.tab.on .tno{background:rgba(255,255,255,.28)}
+.tab .tchk{display:none;color:#4ADE80;font-size:15px}
+.tab.done .tchk{display:inline}
+
+/* SECTIONS */
+.sec{display:none;flex-direction:column}
+.sec.on{display:flex}
+
+/* DIALOGUE */
+.dial-sec{background:#1D3545;color:#E8F5F7;padding:16px 32px;display:flex;gap:24px;border-bottom:4px solid #5B8DBF;flex-shrink:0}
+.audio-pl{flex:0 0 148px;display:flex;flex-direction:column;align-items:center;justify-content:flex-start;padding-top:6px;gap:10px;border-right:1px solid rgba(255,255,255,.1);padding-right:24px}
+.audio-lbl{font-size:11px;font-weight:800;text-transform:uppercase;letter-spacing:.15em;opacity:.6;text-align:center}
+.btn-lu{background:rgba(255,255,255,.12);color:#E8F5F7;border:2px solid rgba(255,255,255,.35);border-radius:10px;padding:10px 14px;font-family:'Nunito',sans-serif;font-size:14px;font-weight:800;cursor:pointer;transition:all .15s;text-align:center;line-height:1.3}
+.btn-lu:hover{background:rgba(255,255,255,.25)}
+.btn-lu.done{background:#166534;border-color:#4ADE80;color:#DCFCE7;cursor:default}
+.dial-txt{flex:1;display:flex;flex-direction:column;gap:7px;font-size:20px;font-weight:600;line-height:1.75;padding-right:8px}
+.d-lbl{font-size:14px;font-weight:800;text-transform:uppercase;letter-spacing:.15em;color:#C3A8E0;margin-bottom:6px;opacity:.75}
+.dl{line-height:1.7}.mb{color:#FCA5A5;font-weight:800}.dr{color:#C3A8E0;font-weight:800}
+
+/* INTRO STRIP */
+.intro{background:#EDE4F6;padding:14px 32px;font-size:18px;font-weight:700;color:#4C1D95;line-height:1.5;border-bottom:2px solid #D8C8EC}
+
+/* MAIN */
+.exs{flex:1;padding:22px 32px 48px;display:flex;flex-direction:column;gap:20px}
+
+/* CARDS */
+.card{background:#fff;border-radius:18px;padding:22px 26px;box-shadow:0 4px 20px rgba(91,141,191,.08)}
+.c-hdr{display:flex;align-items:center;gap:10px;margin-bottom:14px;flex-wrap:wrap}
+.tag{color:#fff;border-radius:999px;padding:5px 16px;font-size:13px;font-weight:800;text-transform:uppercase;letter-spacing:.1em;white-space:nowrap}
+.ctit{font-size:22px;font-weight:900}
+.csub{font-size:16px;color:#6B8E97;font-weight:600}
+
+/* ROWS */
+.rows{display:flex;flex-direction:column;gap:8px}
+.rrow{display:flex;align-items:center;gap:10px}
+.stxt{flex:1;background:#F4F9FA;border-radius:10px;padding:14px 18px;font-size:22px;font-weight:700;color:#1A2E35;line-height:1.4}
+.rrow2{display:grid;grid-template-columns:1fr 1fr;gap:8px;align-items:stretch}
+.qcard{background:#FFF6F3;border-left:4px solid #5B8DBF;border-radius:0 10px 10px 0;padding:12px 16px;display:flex;flex-direction:column;justify-content:center}
+.qlbl{font-size:13px;font-weight:800;color:#5B8DBF;text-transform:uppercase;letter-spacing:.1em;margin-bottom:4px}
+.qtxt{font-size:20px;font-weight:700;color:#1A2E35;line-height:1.4}
+
+/* ZONES */
+.zone{display:flex;align-items:center;justify-content:center;min-height:56px;border-radius:10px;font-weight:800;font-family:'Nunito',sans-serif;cursor:pointer;transition:background .18s,border-color .18s,color .18s,transform .12s;user-select:none;text-align:center;padding:10px 14px;border:2.5px solid;line-height:1.35}
+.zone.empty{background:#F0F9FF;border-color:#93C5D6;border-style:dashed;color:#94A3B8;font-size:18px}
+.zone.dov{background:#E0F2FE!important;border-color:#38BDF8!important;border-style:solid!important;transform:scale(1.02)}
+.zvf{min-width:150px;font-size:20px}
+.f-vrai{background:#DCFCE7;border-color:#4ADE80;border-style:solid;color:#166534}
+.f-faux{background:#FEE2E2;border-color:#FCA5A5;border-style:solid;color:#991B1B}
+.zone.filled{background:#DBEAFE;border-color:#60A5FA;border-style:solid;color:#1E3A8A;font-size:18px}
+.fb-ok{background:#D1FAE5!important;border-color:#34D399!important;border-style:solid!important;color:#065F46!important}
+.fb-no{background:#FEE2E2!important;border-color:#F87171!important;border-style:solid!important;color:#991B1B!important;animation:shk .5s ease}
+@keyframes shk{0%,100%{transform:translateX(0)}20%{transform:translateX(-6px)}60%{transform:translateX(6px)}80%{transform:translateX(-3px)}}
+
+/* FLASHCARDS */
+#fc-overlay{display:none;position:fixed;inset:0;z-index:9000;background:rgba(15,25,35,.6);backdrop-filter:blur(5px);align-items:center;justify-content:center}
+#fc-overlay.on{display:flex}
+#fc-box{background:#5B8DBF;border-radius:24px;padding:44px 56px;max-width:760px;width:92%;box-shadow:0 24px 64px rgba(0,0,0,.4);display:flex;flex-direction:column;align-items:center;gap:20px;animation:fcPop .3s cubic-bezier(.34,1.4,.64,1)}
+@keyframes fcPop{from{transform:scale(.82);opacity:0}to{transform:scale(1);opacity:1}}
+#fc-counter{font-size:12px;font-weight:900;text-transform:uppercase;letter-spacing:.22em;color:rgba(255,255,255,.5)}
+#fc-word{font-size:38px;font-weight:900;color:#fff;text-align:center;line-height:1.2;border-bottom:2px solid rgba(255,255,255,.18);padding-bottom:18px;width:100%}
+#fc-def{font-size:22px;font-weight:700;color:#fff;line-height:1.65;text-align:center}
+#fc-ex{font-size:19px;font-weight:600;color:rgba(255,255,255,.78);line-height:1.6;text-align:center;font-style:italic}
+#fc-ex strong{font-weight:900;font-style:normal;color:#fff}
+#fc-def.hidden,#fc-ex.hidden{display:none}
+#fc-reveal-btn{background:rgba(255,255,255,.18);border:1px solid rgba(255,255,255,.4);color:#fff;border-radius:8px;padding:8px 20px;font-family:'Nunito',sans-serif;font-size:14px;font-weight:800;cursor:pointer;letter-spacing:.04em}
+#fc-reveal-btn:hover{background:rgba(255,255,255,.38)}
+#fc-reveal-btn.hidden{display:none}
+#fc-btns{display:flex;gap:14px;margin-top:6px}
+.fc-btn{background:rgba(255,255,255,.15);border:2px solid rgba(255,255,255,.38);color:#fff;border-radius:10px;padding:10px 22px;font-family:'Nunito',sans-serif;font-size:15px;font-weight:800;cursor:pointer}
+.fc-btn:hover{background:rgba(255,255,255,.28)}
+
+/* VOCAB STRIP */
+.vocab-sec{background:#F4F0F8;border-bottom:3px solid rgba(91,141,191,.15);padding:14px 32px 18px}
+.vocab-grid{display:grid;grid-template-columns:1fr 1fr 1fr;gap:5px 20px}
+.vw{display:flex;align-items:baseline;gap:8px;padding:7px 10px;border-radius:8px;background:rgba(255,255,255,.55)}
+.vw span.dot{display:inline-block;width:8px;height:8px;border-radius:50%;background:#5B8DBF;flex-shrink:0}
+.vw span.w{font-size:18px;font-weight:700;color:#1A2E35}
+
+/* INFO BOX */
+.info-box{background:#F0F7FF;border-left:5px solid #5B8DBF;border-radius:0 10px 10px 0;padding:16px 22px;margin:10px 0}
+.info-box h4{font-size:14px;font-weight:900;color:#5B8DBF;text-transform:uppercase;letter-spacing:.08em;margin-bottom:10px}
+.info-box p{font-size:16px;font-weight:600;color:#1A2E35;line-height:1.6;margin-bottom:8px}
+.info-box p:last-child{margin-bottom:0}
+
+@media(max-width:900px){.vocab-grid{grid-template-columns:1fr 1fr}.rrow2{grid-template-columns:1fr}}
+</style>
+</head>
+<body>
+
+<div id="hdr">
+  <div class="hdr-l">
+    <div class="hdr-ic">🏛️</div>
+    <div><div class="hdr-eye">Francisation · Niveau 4</div><div class="hdr-h1">Visite du Vieux-Montréal</div></div>
+  </div>
+  <div class="hdr-r">
+    <div id="prog-chip">⭐ 0 / 24</div>
+    <button id="btn-reset">↺ Réinitialiser</button>
+  </div>
+</div>
+
+<div id="tabs"></div>
+<div id="sections"></div>
+
+<div id="fc-overlay">
+  <div id="fc-box">
+    <div id="fc-counter">Carte 1 / 12</div>
+    <div id="fc-word">—</div>
+    <button id="fc-reveal-btn">Voir la définition</button>
+    <div id="fc-def" class="hidden">—</div>
+    <div id="fc-ex" class="hidden">—</div>
+    <div id="fc-btns">
+      <button class="fc-btn" id="fc-prev">← Précédente</button>
+      <button class="fc-btn" id="fc-next">Suivante →</button>
+      <button class="fc-btn" id="fc-close">✕ Fermer</button>
+    </div>
+  </div>
+</div>
+
+<script>
+// ═══════════════════════════════════════════════════════════════════════
+//  VISITE DU VIEUX-MONTRÉAL — Activité interactive Niveau 4 (CO + EO)
+//  4 dialogues + 24 zones CO (V/F + questions) + 4 tâches EO
+// ═══════════════════════════════════════════════════════════════════════
+
+// ── DIALOGUES ─────────────────────────────────────────────────────────
+const DIALOGUES = {
+  prep: {
+    label: "Dialogue — Planifier la visite",
+    lines: [
+      ["LÉA","Karim, ce week-end, j'aimerais visiter le Vieux-Montréal. Tu veux venir avec moi ?"],
+      ["KARIM","Oui, avec plaisir ! Je ne connais pas bien ce quartier. Qu'est-ce qu'on peut voir ?"],
+      ["LÉA","Il y a beaucoup de choses ! La place Jacques-Cartier, la basilique Notre-Dame, le Vieux-Port…"],
+      ["KARIM","Super ! Est-ce qu'il y a des visites guidées ?"],
+      ["LÉA","Oui. On peut suivre un guide. Il explique l'histoire et il montre les beaux bâtiments."],
+      ["KARIM","Bonne idée ! Comment est-ce qu'on va là-bas ?"],
+      ["LÉA","On prend le métro, direction Champ-de-Mars. Après, on marche cinq minutes."],
+      ["KARIM","Parfait. On part à quelle heure ?"],
+      ["LÉA","On part à dix heures. Comme ça, on a toute la journée. Ça te va ?"],
+      ["KARIM","Ça me va ! J'ai hâte. Je vais apporter mon appareil photo."],
+    ]
+  },
+  t1: {
+    label: "Dialogue — L'histoire du Vieux-Montréal",
+    lines: [
+      ["LE GUIDE","Bonjour à tous ! Bienvenue dans le Vieux-Montréal, le quartier le plus ancien de la ville."],
+      ["LÉA","C'est vraiment vieux ?"],
+      ["LE GUIDE","Oui ! On fonde Montréal ici, en 1642. C'est le début de la ville."],
+      ["LÉA","Wow ! Et ces rues, elles sont anciennes aussi ?"],
+      ["LE GUIDE","Exactement. Regardez : ce sont des rues pavées, avec de vieilles maisons en pierre."],
+      ["LÉA","C'est magnifique ! On dirait un autre siècle."],
+      ["LE GUIDE","D'abord, on visite la place. Ensuite, on va voir la grande basilique. Suivez-moi !"],
+    ]
+  },
+  t2: {
+    label: "Dialogue — Décrire les lieux et les bâtiments",
+    lines: [
+      ["LE GUIDE","Nous voici sur la place Jacques-Cartier. C'est une grande place très animée."],
+      ["KARIM","Qu'est-ce qu'il y a autour de la place ?"],
+      ["LE GUIDE","À gauche, il y a des restaurants avec des terrasses. En face, vous voyez l'hôtel de ville."],
+      ["KARIM","Et ce grand bâtiment en pierre, à droite ?"],
+      ["LE GUIDE","C'est un ancien édifice. Il date de plus de cent ans. Il est en pierre grise."],
+      ["KARIM","Il est magnifique ! Et où est la basilique ?"],
+      ["LE GUIDE","Continuez tout droit, puis tournez à droite. La basilique Notre-Dame est au coin de la place d'Armes."],
+      ["KARIM","Parfait, merci ! On y va."],
+    ]
+  },
+  t3: {
+    label: "Dialogue — Donner un conseil, exprimer une opinion",
+    lines: [
+      ["LÉA","Excusez-moi, monsieur. On visite le quartier. Qu'est-ce que vous nous conseillez ?"],
+      ["LE PASSANT","Ah, vous devez voir la basilique Notre-Dame ! L'intérieur est magnifique, tout en bleu et or."],
+      ["LÉA","Super ! Et pour manger ?"],
+      ["LE PASSANT","Je vous conseille les petits restaurants de la place. La nourriture est bonne et l'ambiance est agréable."],
+      ["LÉA","Merci beaucoup ! Et le soir, qu'est-ce qu'il faut voir ?"],
+      ["LE PASSANT","Le soir, allez au Vieux-Port. Il y a de belles lumières et une vue sur le fleuve. C'est mon endroit préféré."],
+      ["LÉA","Merci pour vos conseils, monsieur ! Bonne journée."],
+      ["LE PASSANT","Bonne visite ! Profitez bien du Vieux-Montréal."],
+    ]
+  },
+};
+
+// ── SECTIONS ──────────────────────────────────────────────────────────
+const SECTIONS = [
+  {id:'prep', no:'▶', title:'Étape préparatoire', color:'#5B8DBF',
+   intro:"🏥 Léa veut visiter le Vieux-Montréal et invite Karim. Écoutez le dialogue, puis faites les exercices de compréhension.",
+   dialogue:'prep'},
+  {id:'t1', no:'1', title:'L\'histoire du Vieux-Montréal', color:'#C0573A',
+   intro:"📜 Tâche 1 — Un guide explique l'histoire du quartier le plus ancien de Montréal, fondé en 1642.",
+   dialogue:'t1'},
+  {id:'t2', no:'2', title:'Décrire les lieux et les bâtiments', color:'#2E7D6B',
+   intro:"🏛️ Tâche 2 — Le guide décrit les places, les bâtiments en pierre anciens et situe les lieux touristiques.",
+   dialogue:'t2'},
+  {id:'t3', no:'3', title:'Donner un conseil, exprimer une opinion', color:'#B4457E',
+   intro:"💬 Tâche 3 — Léa rencontre un passant qui lui donne des conseils et des opinions sur les attraits du Vieux-Montréal.",
+   dialogue:'t3'},
+];
+
+// ── EXERCICES CO (COMPRÉHENSION ORALE) ─────────────────────────────────
+const EXOS = [
+  // ── ÉTAPE PRÉPARATOIRE ──
+  {sec:'prep', id:'p1', type:'vf', num:'Exercice 1', tit:'Vrai ou Faux - Planifier la visite', color:'#5B8DBF',
+   sub:'Écoutez le dialogue, puis répondez.', tiles:['VRAI','FAUX'],
+   rows:[
+    {id:'p1a', txt:"Léa veut visiter le Vieux-Montréal ce week-end.", ok:'VRAI'},
+    {id:'p1b', txt:"Karim connaît déjà très bien le quartier.", ok:'FAUX'},
+    {id:'p1c', txt:"Ils décident de prendre le métro.", ok:'VRAI'},
+    {id:'p1d', txt:"Ils partent à midi.", ok:'FAUX'},
+   ]},
+  {sec:'prep', id:'p2', type:'vf', num:'Exercice 2', tit:'Questions de compréhension', color:'#5B8DBF',
+   sub:'Répondez aux questions sur le dialogue.',
+   rows:[
+    {id:'p2a', txt:"Qu'est-ce que Léa veut visiter ?", ok:'Le Vieux-Montréal'},
+    {id:'p2b', txt:"Comment vont-ils aller dans le Vieux-Montréal ?", ok:'En métro'},
+    {id:'p2c', txt:"À quelle heure partent-ils ?", ok:'À dix heures'},
+   ]},
+
+  // ── TÂCHE 1 ──
+  {sec:'t1', id:'t1a', type:'vf', num:'Exercice 1', tit:'Vrai ou Faux - L\'histoire', color:'#C0573A',
+   sub:'Écoutez le dialogue, puis répondez.', tiles:['VRAI','FAUX'],
+   rows:[
+    {id:'t1a1', txt:"Le Vieux-Montréal est le quartier le plus ancien de la ville.", ok:'VRAI'},
+    {id:'t1a2', txt:"On fonde Montréal en 1842.", ok:'FAUX'},
+    {id:'t1a3', txt:"Les rues sont pavées et les maisons sont en pierre.", ok:'VRAI'},
+   ]},
+  {sec:'t1', id:'t1b', type:'vf', num:'Exercice 2', tit:'Questions de compréhension', color:'#C0573A',
+   sub:'Répondez aux questions sur le dialogue.',
+   rows:[
+    {id:'t1b1', txt:"En quelle année fonde-t-on Montréal ?", ok:'En 1642'},
+    {id:'t1b2', txt:"Comment sont les rues et les maisons du Vieux-Montréal ?", ok:'Pavées et en pierre'},
+    {id:'t1b3', txt:"Qu'est-ce que le groupe va visiter après la place ?", ok:'La basilique'},
+   ]},
+
+  // ── TÂCHE 2 ──
+  {sec:'t2', id:'t2a', type:'vf', num:'Exercice 1', tit:'Vrai ou Faux - Les lieux', color:'#2E7D6B',
+   sub:'Écoutez le dialogue, puis répondez.', tiles:['VRAI','FAUX'],
+   rows:[
+    {id:'t2a1', txt:"La place Jacques-Cartier est une grande place animée.", ok:'VRAI'},
+    {id:'t2a2', txt:"L'hôtel de ville est à gauche de la place.", ok:'FAUX'},
+    {id:'t2a3', txt:"La basilique est au coin de la place d'Armes.", ok:'VRAI'},
+   ]},
+  {sec:'t2', id:'t2b', type:'vf', num:'Exercice 2', tit:'Questions de compréhension', color:'#2E7D6B',
+   sub:'Répondez aux questions sur le dialogue.',
+   rows:[
+    {id:'t2b1', txt:"Qu'est-ce qu'il y a à gauche de la place ?", ok:'Des restaurants avec terrasses'},
+    {id:'t2b2', txt:"Où se trouve l'hôtel de ville ?", ok:'En face'},
+    {id:'t2b3', txt:"Comment aller à la basilique Notre-Dame ?", ok:'Tout droit, puis tourner à droite'},
+   ]},
+
+  // ── TÂCHE 3 ──
+  {sec:'t3', id:'t3a', type:'vf', num:'Exercice 1', tit:'Vrai ou Faux - Conseils et opinions', color:'#B4457E',
+   sub:'Écoutez le dialogue, puis répondez.', tiles:['VRAI','FAUX'],
+   rows:[
+    {id:'t3a1', txt:"Le passant conseille de voir la basilique Notre-Dame.", ok:'VRAI'},
+    {id:'t3a2', txt:"Il dit que l'intérieur de la basilique est laid.", ok:'FAUX'},
+    {id:'t3a3', txt:"Le soir, il conseille d'aller au Vieux-Port.", ok:'VRAI'},
+   ]},
+  {sec:'t3', id:'t3b', type:'vf', num:'Exercice 2', tit:'Questions de compréhension', color:'#B4457E',
+   sub:'Répondez aux questions sur le dialogue.',
+   rows:[
+    {id:'t3b1', txt:"Qu'est-ce que le passant conseille de visiter ?", ok:'La basilique Notre-Dame'},
+    {id:'t3b2', txt:"Où conseille-t-il d'aller manger ?", ok:'Les petits restaurants de la place'},
+    {id:'t3b3', txt:"Quel est son endroit préféré le soir ? Pourquoi ?", ok:'Le Vieux-Port, pour les lumières et la vue'},
+   ]},
+];
+
+// ── FLASHCARDS ────────────────────────────────────────────────────────
+const FC_CARDS = [
+  {word:"une visite guidée", def:"Quand une personne (un guide) montre un lieu et l'explique à un groupe.", ex:"On fait une <strong>visite guidée</strong> du Vieux-Montréal."},
+  {word:"un guide", def:"C'est la personne qui montre un lieu et donne des explications.", ex:"Le <strong>guide</strong> raconte l'histoire de la ville."},
+  {word:"un touriste", def:"Une personne qui visite une ville ou un pays pour le plaisir.", ex:"Les <strong>touristes</strong> prennent des photos de la place."},
+  {word:"une place", def:"Un grand espace ouvert dans une ville, entouré de bâtiments.", ex:"La place Jacques-Cartier est très <strong>animée</strong> l'été."},
+  {word:"une basilique", def:"Une très grande et belle église.", ex:"La <strong>basilique</strong> Notre-Dame est magnifique à l'intérieur."},
+  {word:"un bâtiment", def:"Une construction : une maison, un édifice, une église.", ex:"Ce <strong>bâtiment</strong> en pierre est très ancien."},
+  {word:"ancien(ne)", def:"Très vieux, qui vient d'il y a longtemps.", ex:"Le Vieux-Montréal a des maisons <strong>anciennes</strong>."},
+  {word:"la pierre", def:"Un matériau dur et naturel pour construire les vieux murs.", ex:"Les rues sont bordées de maisons en <strong>pierre</strong>."},
+  {word:"une rue pavée", def:"Une rue faite de petites pierres, pas d'asphalte.", ex:"On marche sur une belle <strong>rue pavée</strong>."},
+  {word:"le port", def:"L'endroit au bord de l'eau où arrivent les bateaux.", ex:"Le <strong>Vieux-Port</strong> est près du fleuve."},
+  {word:"un attrait", def:"Un lieu intéressant à visiter pour les touristes.", ex:"La basilique est un grand <strong>attrait</strong> de Montréal."},
+  {word:"fonder", def:"Créer une ville pour la première fois.", ex:"On <strong>fonde</strong> Montréal en 1642."},
+];
+
+// ── ÉTAT ──────────────────────────────────────────────────────────────
+const S = {pl:{}, sel:null, fb:{}};
+let curSec = 'prep';
+
+const ZONES = {};
+EXOS.forEach(ex => {
+  if (ex.type === 'vf') ex.rows.forEach(r => ZONES[r.id] = {cv:r.ok, zcat:'vf', exo:ex.id});
+});
+
+const TOTAL_ZONES = Object.keys(ZONES).length;
+
+// ── LMS TRACKING ──────────────────────────────────────────────────────
+const TR = {attempts:{}, correct:{}};
+function trackPlacement(zid, ok) {
+  if (ok && !TR.correct[zid]) {
+    TR.correct[zid] = true;
+    if (!(zid in TR.attempts)) TR.attempts[zid] = 0;
+    const zonesDone = Object.keys(TR.correct).length;
+    const firstTry = Object.keys(TR.correct).filter(k => (TR.attempts[k]||0)===0).length;
+    const totalErrors = Object.keys(TR.attempts).reduce((s,k)=>s+(TR.attempts[k]||0),0);
+    lmsTrack('exercise_completed', {zones:TOTAL_ZONES, zonesDone, firstTry, totalErrors});
+  } else if (!ok && !TR.correct[zid]) {
+    TR.attempts[zid] = (TR.attempts[zid]||0) + 1;
+  }
+  updateChip();
+}
+let dialogueRead = false;
+let currentDialogueAudio = null;
+
+function getDialogueId(btn) {
+  const dialSec = btn.closest('.dial-sec');
+  const section = dialSec.closest('.sec');
+  const secId = section.id.replace('sec-', '');
+  const secObj = SECTIONS.find(s => s.id === secId);
+  return secObj ? secObj.dialogue : null;
+}
+
+function getDialogueDir(dialogueId) {
+  const dialogueMap = { prep: 'dialogue-1', t1: 'dialogue-2', t2: 'dialogue-3', t3: 'dialogue-4' };
+  return dialogueMap[dialogueId] || 'dialogue-1';
+}
+
+function markDialogueRead(btn) {
+  const dialogueId = getDialogueId(btn);
+  const dialogueDir = getDialogueDir(dialogueId);
+  const basePath = `/assets/interactive/visite-vieux-montreal/${dialogueDir}`;
+
+  if (!btn.classList.contains('done')) {
+    btn.classList.add('done');
+    btn.textContent = '▶ En cours...';
+
+    if (!currentDialogueAudio) {
+      currentDialogueAudio = document.createElement('audio');
+      currentDialogueAudio.controls = true;
+      currentDialogueAudio.style.width = '100%';
+      currentDialogueAudio.style.marginTop = '8px';
+      btn.after(currentDialogueAudio);
+    }
+
+    const lines = DIALOGUES[dialogueId]?.lines || [];
+    const audioList = [];
+    for (let i = 1; i <= lines.length; i++) {
+      const num = String(i).padStart(2, '0');
+      const char = lines[i-1][0].toLowerCase().replace(/\s+/g, '_');
+      audioList.push(`${basePath}/line_${num}_${char}.mp3`);
+    }
+
+    if (audioList.length > 0) {
+      currentDialogueAudio.src = audioList[0];
+      currentDialogueAudio.onended = () => {
+        const idx = audioList.indexOf(currentDialogueAudio.src);
+        if (idx < audioList.length - 1) {
+          currentDialogueAudio.src = audioList[idx + 1];
+          currentDialogueAudio.play();
+        } else {
+          btn.textContent = '✓ Dialogue écouté !';
+          if (!dialogueRead) { dialogueRead = true; lmsTrack('dialogue_listened'); }
+        }
+      };
+      currentDialogueAudio.play();
+    }
+  }
+}
+
+function checkOk(zid, lbl) {
+  const z = ZONES[zid];
+  if (!z) return false;
+  return lbl === z.cv;
+}
+
+function zoneClick(zid, lbl) {
+  const ok = checkOk(zid, lbl);
+  S.fb[zid] = ok ? 'ok' : 'no';
+  if (ok) { S.pl[zid] = {lbl}; }
+  trackPlacement(zid, ok);
+  render();
+  setTimeout(() => { delete S.fb[zid]; if (!ok) delete S.pl[zid]; render(); }, ok ? 1400 : 850);
+}
+
+function updateChip() {
+  const done = Object.keys(TR.correct).length;
+  document.getElementById('prog-chip').textContent = `⭐ ${done} / ${TOTAL_ZONES}`;
+}
+
+// ── CONSTRUCTION DU DOM ───────────────────────────────────────────────
+function buildStatic(){
+  // tabs
+  const tabs=document.getElementById('tabs');
+  SECTIONS.forEach(sec=>{
+    const b=document.createElement('button');
+    b.className='tab'; b.id='tab-'+sec.id;
+    b.innerHTML='<span class="tno">'+sec.no+'</span>'+sec.title+'<span class="tchk">✓</span>';
+    b.addEventListener('click',()=>{curSec=sec.id;render();window.scrollTo({top:0,behavior:'smooth'})});
+    tabs.appendChild(b);
+  });
+  // sections
+  const wrap=document.getElementById('sections');
+  SECTIONS.forEach(sec=>{
+    const d=document.createElement('div');
+    d.className='sec'; d.id='sec-'+sec.id;
+    let h='';
+    h+='<div class="intro" style="border-color:'+sec.color+'33">'+sec.intro+'</div>';
+    if(sec.dialogue){
+      const dia=DIALOGUES[sec.dialogue];
+      h+='<div class="dial-sec" style="border-bottom-color:'+sec.color+'">';
+      h+='<div class="audio-pl"><div class="audio-lbl">Dialogue</div>';
+      h+='<button class="btn-lu" onclick="markDialogueRead(this)">📖 Écoutez<br>le dialogue</button></div>';
+      h+='<div class="dial-txt"><div class="d-lbl">'+dia.label+'</div>';
+      dia.lines.forEach((l,i)=>{
+        const cls=(i%2===0)?'mb':'dr';
+        h+='<div class="dl"><span class="'+cls+'">'+l[0]+' :</span> '+l[1]+'</div>';
+      });
+      h+='</div></div>';
+    }
+    if(sec.id==='prep'){
+      h+='<div class="vocab-sec"><div style="display:flex;align-items:center;gap:10px;margin-bottom:12px;">';
+      h+='<div style="background:#5B8DBF;color:#fff;border-radius:999px;padding:3px 14px;font-size:11px;font-weight:800;text-transform:uppercase;letter-spacing:.12em;">Vocabulaire</div>';
+      h+='<div style="font-size:15px;font-weight:700;color:#4A7A82;">Mots du module — <span style="font-weight:900;cursor:pointer;text-decoration:underline dotted;" onclick="fcOpen(0)">Cliquez pour les flashcards 🃏</span></div></div>';
+      h+='<div class="vocab-grid">';
+      FC_CARDS.forEach(c=>{h+='<div class="vw" style="cursor:pointer" onclick="fcOpenWord(\''+c.word.replace(/'/g,"\\'")+'\')"><span class="dot"></span><span class="w">'+c.word+'</span></div>'});
+      h+='</div></div>';
+    }
+    h+='<div class="exs" id="exs-'+sec.id+'"></div>';
+    d.innerHTML=h;
+    wrap.appendChild(d);
+  });
+  // exercise cards
+  EXOS.forEach(ex=>{
+    const host=document.getElementById('exs-'+ex.sec);
+    const card=document.createElement('div');
+    card.className='card';
+    let h='';
+    h+='<div style="display:flex;gap:20px;align-items:flex-start;flex-wrap:wrap">';
+    h+='<div style="flex:1;min-width:300px">';
+    h+='<div class="c-hdr"><span class="tag" style="background:'+ex.color+'">'+ex.num+'</span><span class="ctit" style="color:'+ex.color+'">'+ex.tit+'</span><span class="csub">'+ex.sub+'</span></div>';
+    h+='<div class="rows" id="mount-'+ex.id+'"></div>';
+    h+='</div></div>';
+    card.innerHTML=h;
+    host.appendChild(card);
+  });
+
+  // Tâches EO (production orale) pour la dernière section
+  const t3Host = document.getElementById('exs-t3');
+  const eoCard = document.createElement('div');
+  eoCard.className = 'card';
+  eoCard.innerHTML = `
+    <div class="c-hdr"><span class="tag" style="background:#B4457E">TÂCHES EO</span><span class="ctit" style="color:#B4457E">Production orale</span><span class="csub">Exprimez-vous !</span></div>
+    <div class="info-box">
+      <h4>🗣️ Tâche 1 : Réagir et donner son avis</h4>
+      <p>Après l'écoute des dialogues, dites quel lieu du Vieux-Montréal vous aimeriez visiter et pourquoi. Utilisez : "J'aimerais voir… parce que…"</p>
+    </div>
+    <div class="info-box">
+      <h4>🗣️ Tâche 2 : Jeu de rôle — Demander son chemin</h4>
+      <p>En dyade : un touriste demande à un passant comment aller à un lieu (la basilique, le Vieux-Port). Le passant explique l'itinéraire avec des verbes de déplacement (continuer, tourner, traverser).</p>
+    </div>
+    <div class="info-box">
+      <h4>🗣️ Tâche 3 : Jeu de rôle — Le guide</h4>
+      <p>Un·e élève joue le guide et décrit un lieu (place, bâtiment) à un petit groupe. Situez dans l'espace : à gauche, en face, à droite, au coin.</p>
+    </div>
+    <div class="info-box">
+      <h4>🗣️ Tâche 4 : Donner un conseil</h4>
+      <p>En dyade, un·e élève demande conseil ("Qu'est-ce que tu me conseilles ?") et l'autre répond ("Je te conseille de…", "Tu devrais…", "C'est magnifique !").</p>
+    </div>
+  `;
+  t3Host.appendChild(eoCard);
+}
+
+// ── RENDER ────────────────────────────────────────────────────────────
+function render(){
+  // tabs + sections visibility
+  SECTIONS.forEach(sec=>{
+    document.getElementById('tab-'+sec.id).classList.toggle('on', curSec===sec.id);
+    document.getElementById('sec-'+sec.id).classList.toggle('on', curSec===sec.id);
+    // done check
+    const exos = EXOS.filter(e => e.sec === sec.id);
+    const zids = exos.flatMap(ex => ex.rows.map(r => r.id));
+    const done = zids.length > 0 && zids.every(z => TR.correct[z]);
+    document.getElementById('tab-'+sec.id).classList.toggle('done', done);
+  });
+
+  // render exercises
+  EXOS.forEach(ex => {
+    const mount = document.getElementById('mount-'+ex.id);
+    if (!mount) return;
+    mount.innerHTML = '';
+
+    ex.rows.forEach(r => {
+      const row = document.createElement('div');
+      row.className = 'rrow';
+
+      const txt = document.createElement('div');
+      txt.className = 'stxt';
+      txt.textContent = r.txt;
+      row.appendChild(txt);
+
+      const rrow2 = document.createElement('div');
+      rrow2.className = 'rrow2';
+
+      if (ex.type === 'vf') {
+        ['VRAI', 'FAUX'].forEach(lbl => {
+          const z = document.createElement('div');
+          z.className = 'zone zvf';
+          const placed = S.pl[r.id];
+          const fb = S.fb[r.id];
+
+          if (fb) z.classList.add('fb-' + fb);
+          else if (placed && placed.lbl === lbl) {
+            if (lbl === 'VRAI') z.classList.add('f-vrai');
+            else z.classList.add('f-faux');
+          }
+
+          z.textContent = lbl;
+          z.onclick = () => zoneClick(r.id, lbl);
+          rrow2.appendChild(z);
+        });
+      }
+      row.appendChild(rrow2);
+      mount.appendChild(row);
+    });
+  });
+}
+
+// ── FLASHCARDS ────────────────────────────────────────────────────────
+let fcIdx = 0;
+function fcOpen(idx) { fcIdx = idx; showCard(); document.getElementById('fc-overlay').classList.add('on'); }
+function fcOpenWord(word) { fcIdx = FC_CARDS.findIndex(c => c.word === word); showCard(); document.getElementById('fc-overlay').classList.add('on'); }
+function showCard() {
+  const c = FC_CARDS[fcIdx];
+  document.getElementById('fc-counter').textContent = `Carte ${fcIdx+1} / ${FC_CARDS.length}`;
+  document.getElementById('fc-word').textContent = c.word;
+  document.getElementById('fc-def').textContent = c.def;
+  document.getElementById('fc-ex').innerHTML = c.ex;
+  document.getElementById('fc-def').classList.add('hidden');
+  document.getElementById('fc-ex').classList.add('hidden');
+  document.getElementById('fc-reveal-btn').classList.remove('hidden');
+}
+document.addEventListener('DOMContentLoaded', () => {
+  buildStatic();
+  render();
+  document.getElementById('btn-reset').onclick = () => { S.pl = {}; S.fb = {}; TR.attempts = {}; TR.correct = {}; dialogueRead = false; updateChip(); render(); };
+  document.getElementById('fc-reveal-btn').onclick = () => { document.getElementById('fc-def').classList.remove('hidden'); document.getElementById('fc-ex').classList.remove('hidden'); document.getElementById('fc-reveal-btn').classList.add('hidden'); };
+  document.getElementById('fc-prev').onclick = () => { fcIdx = (fcIdx - 1 + FC_CARDS.length) % FC_CARDS.length; showCard(); };
+  document.getElementById('fc-next').onclick = () => { fcIdx = (fcIdx + 1) % FC_CARDS.length; showCard(); };
+  document.getElementById('fc-close').onclick = () => { document.getElementById('fc-overlay').classList.remove('on'); };
+});
+
+// ── LMS TRACKING FUNCTION ─────────────────────────────────────────────
+function lmsTrack(event, data) {
+  const code = localStorage.getItem('studentCode');
+  const actId = 17;
+  const title = 'Visite du Vieux-Montréal';
+  try {
+    if (window.parent !== window) {
+      window.parent.postMessage({event, data}, '*');
+    }
+    if (code && actId) {
+      fetch('/api/student/progress', {
+        method:'POST', headers:{'Content-Type':'application/json'},
+        body: JSON.stringify(Object.assign({code, activityId:actId, activityTitle:title, event}, data||{})),
+      }).catch(()=>{});
+    }
+  } catch(e2) {}
+}
+</script>
+</body>
+</html>
