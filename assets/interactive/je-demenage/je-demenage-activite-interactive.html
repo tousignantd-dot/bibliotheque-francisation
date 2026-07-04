@@ -563,11 +563,12 @@ function markDialogueRead(btn) {
 
     // Charger et jouer
     if (audioList.length > 0) {
-      currentDialogueAudio.src = audioList[0];
+      let currentAudioIndex = 0;
+      currentDialogueAudio.src = audioList[currentAudioIndex];
       currentDialogueAudio.onended = () => {
-        const idx = audioList.indexOf(currentDialogueAudio.src);
-        if (idx < audioList.length - 1) {
-          currentDialogueAudio.src = audioList[idx + 1];
+        if (currentAudioIndex < audioList.length - 1) {
+          currentAudioIndex++;
+          currentDialogueAudio.src = audioList[currentAudioIndex];
           currentDialogueAudio.play();
         } else {
           btn.textContent = '✓ Dialogue écouté !';
