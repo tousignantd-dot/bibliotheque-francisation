@@ -76,24 +76,50 @@ def init_storage():
             shutil.rmtree(str(dst_interactive))
         shutil.copytree(str(src_interactive), str(dst_interactive))
 
-    # Fusionner les nouvelles activités intégrées au code dans le volume
-    # (les ids présents dans BASE_DIR/data/activities.json mais absents du
-    # volume sont ajoutés ; les données existantes du volume sont préservées)
+    # Fusionner les activités intégrées au code dans le volume :
+    #  - les ids présents dans git mais absents du volume sont ajoutés ;
+    #  - pour les ids présents dans les deux, les chemins de fichiers et
+    #    métadonnées définis dans le code font autorité (ils évoluent avec
+    #    chaque déploiement), tandis que les dates saisies par l'utilisateur
+    #    dans le volume sont préservées.
     src_acts = BASE_DIR / "data" / "activities.json"
     dst_acts = STORAGE_DIR / "data" / "activities.json"
+    # Champs dont le volume (choix de l'utilisateur) fait autorité
+    USER_FIELDS = ("dateVue", "datePrevue", "dateFin")
     if src_acts.exists() and dst_acts.exists():
         try:
             with open(src_acts, encoding="utf-8") as f:
                 builtin = json.load(f)
             with open(dst_acts, encoding="utf-8") as f:
                 current = json.load(f)
-            existing_ids = {a["id"] for a in current}
-            new_entries = [a for a in builtin if a["id"] not in existing_ids]
-            if new_entries:
-                current.extend(new_entries)
+            current_by_id = {a["id"]: a for a in current}
+            changed = False
+            merged = []
+            for a in builtin:
+                vol = current_by_id.get(a["id"])
+                if vol is None:
+                    # Nouvelle activité : ajout intégral depuis le code
+                    merged.append(a)
+                    changed = True
+                else:
+                    # Activité existante : le code fait autorité, sauf les
+                    # dates saisies par l'utilisateur qui sont conservées.
+                    entry = dict(a)
+                    for field in USER_FIELDS:
+                        if vol.get(field):
+                            entry[field] = vol[field]
+                    if entry != vol:
+                        changed = True
+                    merged.append(entry)
+            # Préserver les activités du volume absentes du code (créées via admin)
+            builtin_ids = {a["id"] for a in builtin}
+            for a in current:
+                if a["id"] not in builtin_ids:
+                    merged.append(a)
+            if changed:
                 with open(dst_acts, "w", encoding="utf-8") as f:
-                    json.dump(current, f, ensure_ascii=False, indent=2)
-                print(f"[init] {len(new_entries)} nouvelle(s) activité(s) ajoutée(s) au volume", flush=True)
+                    json.dump(merged, f, ensure_ascii=False, indent=2)
+                print("[init] activities.json du volume resynchronisé avec le code", flush=True)
         except (json.JSONDecodeError, KeyError) as e:
             print(f"[WARN] Fusion activities.json échouée : {e}", flush=True)
 
@@ -773,7 +799,21 @@ class Handler(http.server.SimpleHTTPRequestHandler):
 
 if __name__ == "__main__":
     import socketserver
-    init_storage()
+    import threading
+
+    # init_storage() peut copier plusieurs Mo vers le volume Railway, ce qui
+    # dépasse parfois le délai du healthcheck. On lie d'abord le serveur au
+    # port (le healthcheck passe immédiatement), puis on initialise le stockage
+    # en arrière-plan sans jamais faire planter le serveur.
+    def _init_storage_safe():
+        try:
+            init_storage()
+            print("[init] Stockage initialisé", flush=True)
+        except Exception as e:
+            print(f"[WARN] init_storage a échoué : {e}", flush=True)
+
+    threading.Thread(target=_init_storage_safe, daemon=True).start()
+
     socketserver.TCPServer.allow_reuse_address = True
     with socketserver.TCPServer(("", PORT), Handler) as httpd:
         print(f"Serveur démarré sur http://localhost:{PORT}", flush=True)
