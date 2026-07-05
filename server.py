@@ -685,6 +685,9 @@ class Handler(http.server.SimpleHTTPRequestHandler):
                 "datePrevue": dp,
                 "dateVue": a.get("dateVue", ""),
                 "available": available,
+                "competences": a.get("competences", []),
+                "tempsVerbaux": a.get("tempsVerbaux", []),
+                "domaineDeVie": a.get("domaineDeVie", ""),
                 "files": {
                     "interactive": a.get("interactive", "") if available else "",
                     "studentDoc": a.get("studentDoc", "") if available else "",

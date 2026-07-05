@@ -136,6 +136,15 @@
     .act-date.soon { color: var(--warn); }
     .act-date.nodate { color: var(--text-3); }
 
+    /* ---- TAGS PÉDAGOGIQUES ---- */
+    .act-tags { display: flex; flex-wrap: wrap; gap: 5px; margin-bottom: 12px; }
+    .act-tag {
+      font-size: 10.5px; font-weight: 600; border-radius: 8px; padding: 2px 7px;
+    }
+    .act-tag-comp    { background: #eef2ff; color: #4338ca; }
+    .act-tag-temps   { background: #fef3c7; color: #92400e; }
+    .act-tag-domaine { background: #ecfdf5; color: #065f46; }
+
     /* ---- FILE BUTTONS ---- */
     .act-files { display: flex; flex-direction: column; gap: 7px; }
     .file-btn {
@@ -348,11 +357,22 @@
         Activité non encore disponible</div>`;
     }
 
+    let tagsHtml = '';
+    if ((a.competences && a.competences.length) || (a.tempsVerbaux && a.tempsVerbaux.length) || a.domaineDeVie) {
+      const chips = [
+        ...(a.competences || []).map(c => `<span class="act-tag act-tag-comp">${escHtml(c)}</span>`),
+        ...(a.tempsVerbaux || []).map(t => `<span class="act-tag act-tag-temps">${escHtml(t)}</span>`),
+        a.domaineDeVie ? `<span class="act-tag act-tag-domaine">${escHtml(a.domaineDeVie)}</span>` : ''
+      ].join('');
+      tagsHtml = `<div class="act-tags">${chips}</div>`;
+    }
+
     return `<div class="act-card ${a.available ? 'available' : 'locked'}">
       ${thumb}
       <div class="act-body">
         <div class="act-title">${escHtml(a.title)}</div>
         ${dateHtml}
+        ${tagsHtml}
         ${filesHtml}
       </div>
     </div>`;
