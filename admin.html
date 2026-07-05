@@ -496,6 +496,12 @@
         <span class="list-search-icon"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg></span>
         <input type="text" id="listSearch" placeholder="Filtrer…" />
       </div>
+      <select id="filterTemps" style="margin-left:8px;font-size:12px;padding:4px 6px;border-radius:6px;border:1px solid var(--border,#ddd);background:var(--bg,#fff);color:inherit">
+        <option value="">Tous les temps de verbe</option>
+      </select>
+      <select id="filterDomaine" style="margin-left:8px;font-size:12px;padding:4px 6px;border-radius:6px;border:1px solid var(--border,#ddd);background:var(--bg,#fff);color:inherit">
+        <option value="">Tous les domaines</option>
+      </select>
     </div>
 
     <ul class="activity-list" id="activityList"></ul>
@@ -877,12 +883,51 @@ async function loadList() {
     const res = await fetch('/api/activities');
     if (!res.ok) throw new Error();
     allActivities = await res.json();
-    renderList(allActivities);
+    populateFilterOptions();
+    applyFilters();
     document.getElementById('serverBanner').style.display = 'none';
   } catch {
     document.getElementById('serverBanner').style.display = 'block';
     renderList([]);
   }
+}
+
+function populateFilterOptions() {
+  const temps = new Set();
+  const domaines = new Set();
+  allActivities.forEach(a => {
+    (a.tempsVerbaux || []).forEach(t => temps.add(t));
+    if (a.domaineDeVie) domaines.add(a.domaineDeVie);
+  });
+
+  const fillSelect = (select, values) => {
+    const current = select.value;
+    select.innerHTML = `<option value="">${select.dataset.allLabel}</option>` +
+      [...values].sort().map(v => `<option value="${escHtml(v)}">${escHtml(v)}</option>`).join('');
+    if ([...values].includes(current)) select.value = current;
+  };
+
+  const selTemps = document.getElementById('filterTemps');
+  const selDomaine = document.getElementById('filterDomaine');
+  selTemps.dataset.allLabel = 'Tous les temps de verbe';
+  selDomaine.dataset.allLabel = 'Tous les domaines';
+  fillSelect(selTemps, temps);
+  fillSelect(selDomaine, domaines);
+}
+
+function applyFilters() {
+  const q = document.getElementById('listSearch').value.trim().toLowerCase();
+  const temps = document.getElementById('filterTemps').value;
+  const domaine = document.getElementById('filterDomaine').value;
+
+  const filtered = allActivities.filter(a => {
+    if (q && !a.title.toLowerCase().includes(q)) return false;
+    if (temps && !(a.tempsVerbaux || []).includes(temps)) return false;
+    if (domaine && a.domaineDeVie !== domaine) return false;
+    return true;
+  });
+
+  renderList(filtered);
 }
 
 function renderList(items) {
@@ -922,6 +967,11 @@ function renderList(items) {
           <span style="color:#3b6ff6;font-weight:600">${a.datePrevue ? fmtD(a.datePrevue) : '…'}</span>
           <span style="color:#9aa0aa">→</span>
           <span style="color:#ef4444;font-weight:600">${a.dateFin ? fmtD(a.dateFin) : '…'}</span>
+        </div>` : ''}
+        ${(a.competences?.length || a.tempsVerbaux?.length || a.domaineDeVie) ? `<div style="font-size:10.5px;margin-top:3px;display:flex;gap:5px;flex-wrap:wrap">
+          ${(a.competences || []).map(c => `<span style="background:#eef2ff;color:#4338ca;border-radius:8px;padding:1px 6px">${escHtml(c)}</span>`).join('')}
+          ${(a.tempsVerbaux || []).map(t => `<span style="background:#fef3c7;color:#92400e;border-radius:8px;padding:1px 6px">${escHtml(t)}</span>`).join('')}
+          ${a.domaineDeVie ? `<span style="background:#ecfdf5;color:#065f46;border-radius:8px;padding:1px 6px">${escHtml(a.domaineDeVie)}</span>` : ''}
         </div>` : ''}
       </div>
       <div class="activity-actions">
@@ -1171,10 +1221,9 @@ document.getElementById('deleteConfirmBtn').addEventListener('click', async () =
 /* ======================================================
    Filtre de la liste
    ====================================================== */
-document.getElementById('listSearch').addEventListener('input', e => {
-  const q = e.target.value.trim().toLowerCase();
-  renderList(q ? allActivities.filter(a => a.title.toLowerCase().includes(q)) : allActivities);
-});
+document.getElementById('listSearch').addEventListener('input', applyFilters);
+document.getElementById('filterTemps').addEventListener('change', applyFilters);
+document.getElementById('filterDomaine').addEventListener('change', applyFilters);
 
 /* ======================================================
    Init
