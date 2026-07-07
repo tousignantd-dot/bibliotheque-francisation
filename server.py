@@ -123,14 +123,20 @@ def init_storage():
         except (json.JSONDecodeError, KeyError) as e:
             print(f"[WARN] Fusion activities.json échouée : {e}", flush=True)
 
-    # Synchroniser les vignettes intégrées au code (sans écraser les uploads)
-    src_thumbs = BASE_DIR / "assets" / "thumbnails"
-    dst_thumbs = STORAGE_DIR / "assets" / "thumbnails"
-    if src_thumbs.exists():
-        dst_thumbs.mkdir(parents=True, exist_ok=True)
-        for f in src_thumbs.iterdir():
-            if f.is_file() and not (dst_thumbs / f.name).exists():
-                shutil.copy2(str(f), str(dst_thumbs / f.name))
+    # Synchroniser les fichiers ajoutés au code (fiches, plans, diaporamas,
+    # vignettes, autres) sans écraser les uploads faits depuis l'admin en
+    # production. Sans ceci, un fichier ajouté par git dans ces dossiers reste
+    # invisible tant que le volume Railway existe déjà (le copytree initial
+    # à la ligne ~60 ne s'exécute qu'à la toute première création du volume).
+    for subdir in ("thumbnails", "documents", "slideshows", "plans", "autres"):
+        src_dir = BASE_DIR / "assets" / subdir
+        dst_dir = STORAGE_DIR / "assets" / subdir
+        if not src_dir.exists():
+            continue
+        dst_dir.mkdir(parents=True, exist_ok=True)
+        for f in src_dir.iterdir():
+            if f.is_file() and not (dst_dir / f.name).exists():
+                shutil.copy2(str(f), str(dst_dir / f.name))
 
 
 # ── Helpers données ─────────────────────────────────────────────────────────
