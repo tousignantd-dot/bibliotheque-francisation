@@ -1,0 +1,395 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="utf-8">
+<title>Une journée au Vieux-Port — Fiche élève</title>
+<link href="https://fonts.googleapis.com/css2?family=Nunito:wght@600;700;800;900&display=swap" rel="stylesheet">
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+html{background:#bbb}
+body{
+  font-family:'Nunito','Arial Rounded MT Bold',sans-serif;
+  background:#fff;
+  color:#000;
+  width:215.9mm;
+  margin:0 auto;
+  font-size:10.5pt;
+}
+
+/* PAGE BREAKS */
+.page{
+  width:215.9mm;
+  min-height:279.4mm;
+  padding:10mm 13mm 8mm;
+  background:#fff;
+  position:relative;
+}
+.page+.page{border-top:3px dashed #aaa;}
+
+/* ── HEADER ── */
+.hdr{
+  border-top:4px solid #000;
+  border-bottom:2.5px solid #000;
+  padding:7px 0 7px;
+  display:flex;
+  align-items:center;
+  gap:12px;
+  margin-bottom:9px;
+}
+.hdr-ic{
+  width:36px;height:36px;border-radius:50%;
+  border:2.5px solid #000;
+  display:flex;align-items:center;justify-content:center;
+  flex-shrink:0;
+}
+.hdr-eye{font-size:7.5pt;font-weight:800;text-transform:uppercase;letter-spacing:0.18em;color:#555;line-height:1;margin-bottom:2px;}
+.hdr-h1{font-size:20pt;font-weight:900;line-height:1.1;letter-spacing:-0.01em;}
+.hdr-r{margin-left:auto;display:flex;align-items:center;gap:8px;flex-shrink:0;}
+.nom-lbl{font-size:9pt;font-weight:800;text-transform:uppercase;letter-spacing:0.08em;}
+.nom-line{width:140px;border-bottom:2px solid #000;height:20px;display:inline-block;}
+
+/* ── DIALOGUE ── */
+.dial{
+  border:2px solid #000;
+  border-left:5px solid #000;
+  border-radius:0 6px 6px 0;
+  padding:7px 10px 8px;
+  margin-bottom:8px;
+}
+.sec-lbl{
+  font-size:7.5pt;font-weight:800;text-transform:uppercase;
+  letter-spacing:0.15em;color:#555;margin-bottom:4px;
+}
+.dial-lines{display:flex;flex-direction:column;gap:1px;font-size:9.5pt;line-height:1.6;font-weight:600;}
+.mb{font-weight:900;font-style:italic;}
+.dr{font-weight:900;}
+.narr{opacity:0.5;font-size:8.5pt;font-style:normal;}
+
+/* ── VOCABULARY ── */
+.vocab{
+  border:2px solid #000;
+  border-radius:6px;
+  padding:7px 10px 8px;
+  margin-bottom:8px;
+}
+.vocab-hdr{display:flex;align-items:center;gap:9px;margin-bottom:6px;}
+.sec-tag{
+  border:2px solid #000;border-radius:999px;
+  padding:2px 11px;font-size:8pt;font-weight:800;
+  text-transform:uppercase;letter-spacing:0.1em;white-space:nowrap;
+}
+.sec-sub{font-size:9pt;font-weight:700;color:#444;}
+.vocab-grid{display:grid;grid-template-columns:1fr 1fr;gap:2px 16px;}
+.vocab-item{display:flex;align-items:baseline;gap:6px;padding:2px 6px;}
+.vocab-item::before{content:'•';font-size:10pt;font-weight:900;flex-shrink:0;}
+.vocab-item span{font-size:10pt;font-weight:700;}
+
+/* ── EXERCISE CARDS ── */
+.ex{border:2px solid #000;border-radius:6px;margin-bottom:8px;overflow:hidden;}
+.ex-hdr{
+  border-bottom:2px solid #000;
+  padding:5px 10px;
+  display:flex;align-items:center;gap:9px;
+  background:#f2f2f2;
+}
+.ex-num{
+  width:24px;height:24px;border-radius:50%;
+  border:2.5px solid #000;
+  display:flex;align-items:center;justify-content:center;
+  font-size:11pt;font-weight:900;flex-shrink:0;
+  background:#fff;
+}
+.ex-title{font-size:12pt;font-weight:900;}
+.ex-instr{font-size:8pt;color:#555;margin-left:auto;font-weight:700;font-style:italic;}
+.ex-body{padding:8px 10px;}
+
+/* EX1 TABLE */
+.vf-table{width:100%;border-collapse:collapse;font-size:10pt;}
+.vf-table thead th{
+  font-size:8.5pt;font-weight:900;text-transform:uppercase;letter-spacing:0.06em;
+  padding:4px 8px;border:1.5px solid #000;text-align:center;
+  background:#e8e8e8;
+}
+.vf-table thead th:first-child{text-align:left;}
+.vf-table tbody td{
+  padding:6px 8px;border:1.5px solid #000;
+  font-weight:700;vertical-align:middle;
+}
+.vf-table tbody td:nth-child(2),
+.vf-table tbody td:nth-child(3){text-align:center;width:70px;}
+.vf-table tbody tr:nth-child(even) td{background:#f8f8f8;}
+.cb{display:inline-block;width:20px;height:20px;border:2px solid #666;border-radius:2px;}
+
+/* EX2 */
+.q-item{margin-bottom:7px;}
+.q-item:last-child{margin-bottom:0}
+.q-text{font-size:10.5pt;font-weight:700;}
+.ans-line{display:block;margin-top:3px;margin-left:14px;border-bottom:1.5px solid #888;height:18px;width:calc(100% - 14px);}
+
+/* EX3 */
+.fill-block{font-size:10.5pt;font-weight:600;line-height:2.4;}
+.fill-block .speaker{font-weight:900;}
+.blank{
+  display:inline-block;min-width:80px;
+  border-bottom:2px solid #000;
+  vertical-align:baseline;
+  margin:0 4px;
+  position:relative;
+}
+.blank .num{
+  position:absolute;
+  top:1px;
+  left:50%;
+  transform:translateX(-50%);
+  font-size:7pt;font-weight:800;color:#555;
+  white-space:nowrap;
+}
+
+/* EX4 */
+.ex4-prompt{font-size:10.5pt;font-weight:700;margin-bottom:8px;}
+.ex4-lines{display:flex;flex-direction:column;gap:10px;}
+.ex4-line{border-bottom:1.5px solid #bbb;height:20px;}
+
+/* FOOTER */
+.footer{
+  position:absolute;bottom:6mm;left:13mm;right:13mm;
+  border-top:1.5px solid #ccc;padding-top:4px;
+  font-size:7.5pt;font-weight:700;color:#888;
+  display:flex;justify-content:space-between;
+  letter-spacing:0.04em;
+}
+
+/* PRINT */
+@media print{
+  html,body{background:#fff!important;width:auto!important;margin:0!important;}
+  .page{width:100%!important;min-height:0!important;padding:10mm 13mm 8mm!important;page-break-after:always;break-after:page;}
+  .page:last-of-type{page-break-after:avoid;break-after:avoid;}
+  .page+.page{border-top:none!important;}
+  #btn-print{display:none!important;}
+}
+@page{size:letter portrait;margin:0;}
+}
+</style>
+</head>
+<body>
+
+<!-- PAGE 1 -->
+<div class="page">
+
+  <div class="hdr">
+    <div class="hdr-ic">
+      <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#000" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M12 6v4"/><path d="M14 14h-4"/><path d="M14 18h-4"/><path d="M14 8h-4"/><rect x="6" y="2" width="12" height="20" rx="2"/></svg>
+    </div>
+    <div>
+      <div class="hdr-eye">Francisation · Niveau 4 · Québec</div>
+      <div class="hdr-h1">Une journée au Vieux-Port</div>
+    </div>
+    <div class="hdr-r">
+      <span class="nom-lbl">Nom :</span>
+      <span class="nom-line"></span>
+    </div>
+  </div>
+
+  <!-- DIALOGUE -->
+  <div class="dial">
+    <div class="sec-lbl">Dialogue — Une journée au Vieux-Port — Écoutez et lisez</div>
+    <div class="dial-lines">
+      <div><span class="mb">Léa :</span> Quelle belle journée ! J'adore le Vieux-Port. Il y a toujours quelque chose à faire.</div>
+      <div><span class="dr">Karim :</span> C'est vrai ! Regarde, on voit le fleuve Saint-Laurent juste devant nous.</div>
+      <div><span class="mb">Léa :</span> D'abord, je veux faire un tour de grande roue ! On monte à soixante mètres.</div>
+      <div><span class="dr">Karim :</span> Bonne idée. Du haut, on voit tout le Vieux-Montréal et le centre-ville.</div>
+      <div><span class="mb">Léa :</span> J'ai hâte ! Après, qu'est-ce qu'on fait ?</div>
+      <div><span class="dr">Karim :</span> On peut aller sur l'eau. Il y a des pédalos ou une petite croisière sur le fleuve.</div>
+      <div><span class="mb">Léa :</span> Super ! Et ce soir, il y a un spectacle ?</div>
+      <div><span class="dr">Karim :</span> Oui ! Le Cirque du Soleil présente un nouveau spectacle. Et il y a aussi des festivals toute la semaine.</div>
+      <div><span class="mb">Léa :</span> J'adore cet endroit. Il y a des activités pour tout le monde !</div>
+      <div><span class="dr">Karim :</span> Et c'est ouvert toute l'année. Allez, on commence par la grande roue !</div>
+    </div>
+  </div>
+
+  <!-- VOCABULAIRE -->
+  <div class="vocab">
+    <div class="vocab-hdr">
+      <span class="sec-tag">Vocabulaire</span>
+      <span class="sec-sub">Mots et expressions du dialogue</span>
+    </div>
+    <div class="vocab-grid">
+      <div class="vocab-item"><span>le Vieux-Port</span></div>
+      <div class="vocab-item"><span>une activité</span></div>
+      <div class="vocab-item"><span>le fleuve</span></div>
+      <div class="vocab-item"><span>un festival</span></div>
+      <div class="vocab-item"><span>la grande roue</span></div>
+      <div class="vocab-item"><span>un pédalo</span></div>
+      <div class="vocab-item"><span>une croisière</span></div>
+      <div class="vocab-item"><span>une vue</span></div>
+      <div class="vocab-item"><span>un spectacle</span></div>
+      <div class="vocab-item"><span>un billet</span></div>
+      <div class="vocab-item"><span>se promener</span></div>
+      <div class="vocab-item"><span>s'amuser</span></div>
+    </div>
+  </div>
+
+  <!-- EX 1 -->
+  <div class="ex">
+    <div class="ex-hdr">
+      <div class="ex-num">①</div>
+      <div class="ex-title">Vrai ou Faux</div>
+      <div class="ex-instr">Sans regarder le dialogue !</div>
+    </div>
+    <div class="ex-body">
+      <table class="vf-table">
+        <thead>
+          <tr><th>Affirmation</th><th>VRAI</th><th>FAUX</th></tr>
+        </thead>
+        <tbody>
+          <tr><td>1. Le Vieux-Port se trouve au bord du fleuve Saint-Laurent.</td><td><span class="cb"></span></td><td><span class="cb"></span></td></tr>
+          <tr><td>2. La grande roue offre une vue sur la ville.</td><td><span class="cb"></span></td><td><span class="cb"></span></td></tr>
+          <tr><td>3. Le Vieux-Port est ouvert seulement en été.</td><td><span class="cb"></span></td><td><span class="cb"></span></td></tr>
+          <tr><td>4. On peut faire une croisière sur le fleuve.</td><td><span class="cb"></span></td><td><span class="cb"></span></td></tr>
+          <tr><td>5. Léa veut visiter un musée scientifique aujourd'hui.</td><td><span class="cb"></span></td><td><span class="cb"></span></td></tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+  <div class="footer">
+    <span>Francisation · Niveau 4 · Québec</span>
+    <span>Vieux-Port — page 1 / 2</span>
+  </div>
+</div>
+
+<!-- PAGE 2 -->
+<div class="page">
+
+  <div class="hdr">
+    <div class="hdr-ic">
+      <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#000" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M12 6v4"/><path d="M14 14h-4"/><path d="M14 18h-4"/><path d="M14 8h-4"/><rect x="6" y="2" width="12" height="20" rx="2"/></svg>
+    </div>
+    <div>
+      <div class="hdr-eye">Francisation · Niveau 4 · Québec</div>
+      <div class="hdr-h1">Une journée au Vieux-Port</div>
+    </div>
+    <div class="hdr-r">
+      <span class="nom-lbl">Nom :</span>
+      <span class="nom-line"></span>
+    </div>
+  </div>
+
+  <!-- EX 2 -->
+  <div class="ex">
+    <div class="ex-hdr">
+      <div class="ex-num">②</div>
+      <div class="ex-title">Questions</div>
+      <div class="ex-instr">Sans regarder le dialogue !</div>
+    </div>
+    <div class="ex-body">
+      <div class="q-item"><span class="q-text">1. Où Léa et Karim passent-ils la journée ?</span><span class="ans-line"></span></div>
+      <div class="q-item"><span class="q-text">2. Quelle activité Léa veut-elle faire en premier ?</span><span class="ans-line"></span></div>
+      <div class="q-item"><span class="q-text">3. Qu'est-ce qu'on voit du haut de la grande roue ?</span><span class="ans-line"></span></div>
+      <div class="q-item"><span class="q-text">4. Quelle activité Karim propose-t-il sur l'eau ?</span><span class="ans-line"></span></div>
+      <div class="q-item"><span class="q-text">5. Pourquoi le Vieux-Port est-il agréable selon le dialogue ?</span><span class="ans-line"></span></div>
+    </div>
+  </div>
+
+  <!-- EX 3 -->
+  <div class="ex">
+    <div class="ex-hdr">
+      <div class="ex-num">③</div>
+      <div class="ex-title">Complétez le dialogue</div>
+      <div class="ex-instr">Utilisez les mots du vocabulaire</div>
+    </div>
+    <div class="ex-body">
+      <div class="fill-block">
+        <div><span class="speaker mb">Léa :</span> Quelle belle journée ! J'adore le <span class="blank"><span class="num">(1)</span></span>. Il y a toujours quelque chose à faire.</div>
+        <div><span class="speaker dr">Karim :</span> C'est vrai ! On voit le <span class="blank"><span class="num">(2)</span></span> Saint-Laurent juste devant nous.</div>
+        <div><span class="speaker mb">Léa :</span> D'abord, je veux faire un tour de grande <span class="blank"><span class="num">(3)</span></span> ! On monte à soixante mètres.</div>
+        <div><span class="speaker dr">Karim :</span> Bonne idée. Du haut, on <span class="blank"><span class="num">(4)</span></span> tout le Vieux-Montréal et le centre-ville.</div>
+        <div><span class="speaker mb">Léa :</span> J'ai hâte ! Après, qu'est-ce qu'on <span class="blank"><span class="num">(5)</span></span> ?</div>
+        <div><span class="speaker dr">Karim :</span> On peut aller sur l'<span class="blank"><span class="num">(6)</span></span>. Il y a des <span class="blank"><span class="num">(7)</span></span> ou une croisière sur le fleuve.</div>
+        <div><span class="speaker mb">Léa :</span> Super ! Et ce soir, il y a un <span class="blank"><span class="num">(8)</span></span> ?</div>
+        <div><span class="speaker dr">Karim :</span> Oui ! Le Cirque du Soleil <span class="blank"><span class="num">(9)</span></span> un nouveau spectacle. Et il y a aussi des <span class="blank"><span class="num">(10)</span></span> toute la semaine.</div>
+        <div><span class="speaker mb">Léa :</span> J'adore cet endroit. Il y a des activités pour tout le <span class="blank"><span class="num">(11)</span></span> !</div>
+        <div><span class="speaker dr">Karim :</span> Et c'est ouvert toute l'année. Allez, on commence par la grande roue !</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- EX 4 -->
+  <div class="ex">
+    <div class="ex-hdr">
+      <div class="ex-num">④</div>
+      <div class="ex-title">À vous !</div>
+    </div>
+    <div class="ex-body">
+      <div class="ex4-prompt">Vous passez une journée dans un endroit que vous aimez à Montréal. Décrivez les activités et ce que vous voyez.</div>
+    </div>
+  </div>
+
+  <div class="footer">
+    <span>Francisation · Niveau 4 · Québec</span>
+    <span>Vieux-Port — page 2 / 3</span>
+  </div>
+</div>
+
+
+<!-- PAGE 3 -->
+<div class="page">
+
+  <div class="hdr">
+    <div class="hdr-ic">
+      <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#000" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M12 6v4"/><path d="M14 14h-4"/><path d="M14 18h-4"/><path d="M14 8h-4"/><rect x="6" y="2" width="12" height="20" rx="2"/></svg>
+    </div>
+    <div>
+      <div class="hdr-eye">Francisation · Niveau 4 · Québec</div>
+      <div class="hdr-h1">Vieux-Port</div>
+    </div>
+    <div class="hdr-r">
+      <span class="nom-lbl">Nom :</span>
+      <span class="nom-line"></span>
+    </div>
+  </div>
+
+  <div class="ex-card" style="margin-top:14pt;break-inside:avoid;">
+    <div class="ex-hdr" style="background:#2C2C2C;color:#fff;">
+      <div class="ex-num" style="background:#444;color:#fff;">⑤</div>
+      <div class="ex-title" style="color:#fff;">Activités en dyade</div>
+    </div>
+    <div class="ex-body" style="padding:10pt 12pt;">
+      <div style="font-size:8pt;font-style:italic;margin-bottom:10pt;color:#555;">Trois activités de production orale à faire à deux. Réutilise le vocabulaire et les structures de la fiche.</div>
+      
+      <div style="margin-bottom:12pt;padding-bottom:10pt;border-bottom:1px solid #ddd;">
+        <div style="font-size:9.5pt;font-weight:800;margin-bottom:3pt;">Dyade 1 — Qu'est-ce qu'on fait ?</div>
+        <div style="font-size:8.5pt;margin-bottom:3pt;"><strong>But :</strong> proposer et choisir des activités.</div>
+        <div style="font-size:8pt;margin-bottom:4pt;">Les deux élèves sont au Vieux-Port. Ils proposent chacun des activités et décident quoi faire ensemble.</div>
+        <ul style="margin:0 0 4pt 14pt;padding:0;font-size:8pt;">
+          <li>Exemple : « On fait de la grande roue ? » — « Oui ! Et après, une croisière ? »</li><li>Utilise le vocabulaire de la fiche (grande roue, pédalo, croisière, spectacle…).</li>
+        </ul>
+        <div style="font-size:8pt;"><strong>Structures cibles :</strong> <em>on peut… ; est-ce que tu veux… ? ; d'abord… ensuite…</em></div>
+      </div>
+      <div style="margin-bottom:12pt;padding-bottom:10pt;border-bottom:1px solid #ddd;">
+        <div style="font-size:9.5pt;font-weight:800;margin-bottom:3pt;">Dyade 2 — Le guide du Vieux-Port</div>
+        <div style="font-size:8.5pt;margin-bottom:3pt;"><strong>But :</strong> décrire un lieu et situer.</div>
+        <div style="font-size:8pt;margin-bottom:4pt;">Un·e élève est un guide, l'autre un visiteur. Le guide décrit le Vieux-Port et situe les attractions. On inverse.</div>
+        <ul style="margin:0 0 4pt 14pt;padding:0;font-size:8pt;">
+          <li>Guide : tu décris ce qu'on voit et où c'est (« Devant nous, il y a le fleuve. À droite, la grande roue »).</li><li>Visiteur : tu poses des questions et tu réagis.</li>
+        </ul>
+        <div style="font-size:8pt;"><strong>Structures cibles :</strong> <em>il y a ; devant / à droite / à gauche ; on voit…</em></div>
+      </div>
+      <div style="margin-bottom:12pt;padding-bottom:10pt;border-bottom:1px solid #ddd;">
+        <div style="font-size:9.5pt;font-weight:800;margin-bottom:3pt;">Dyade 3 — La meilleure activité</div>
+        <div style="font-size:8.5pt;margin-bottom:3pt;"><strong>But :</strong> donner son opinion et convaincre.</div>
+        <div style="font-size:8pt;margin-bottom:4pt;">Chaque élève choisit son activité préférée au Vieux-Port et essaie de convaincre l'autre. À la fin, ils choisissent ensemble.</div>
+        <ul style="margin:0 0 4pt 14pt;padding:0;font-size:8pt;">
+          <li>Exemple : « La grande roue, c'est génial, on voit toute la ville ! »</li><li>Chacun donne au moins deux raisons.</li>
+        </ul>
+        <div style="font-size:8pt;"><strong>Structures cibles :</strong> <em>j'aime / je préfère ; c'est génial / amusant parce que… ; on devrait…</em></div>
+      </div>
+    </div>
+  </div>
+  <div class="footer">
+    <span>Francisation · Niveau 4 · Québec</span>
+    <span>Vieux-Port — page 3 / 3</span>
+  </div>
+</div>
+</body>
+</html>
