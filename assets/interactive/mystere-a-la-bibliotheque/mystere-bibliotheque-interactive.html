@@ -1,0 +1,447 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Le mystère de la bibliothèque — Qui a emprunté les livres en secret ?</title>
+<link href="https://fonts.googleapis.com/css2?family=Nunito:wght@600;700;800;900&family=Special+Elite&display=swap" rel="stylesheet">
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+html,body{min-height:100%;background:#14181F;font-family:'Nunito',sans-serif;color:#E8E4DA}
+
+/* HEADER */
+#hdr{background:#0D1017;color:#fff;padding:20px 36px;display:flex;align-items:center;justify-content:space-between;position:sticky;top:0;z-index:300;border-bottom:3px solid #D9A441;box-shadow:0 6px 24px rgba(0,0,0,.6)}
+.hdr-l{display:flex;align-items:center;gap:18px}
+.hdr-badge{width:54px;height:54px;border-radius:50%;border:3px solid #D9A441;display:flex;align-items:center;justify-content:center;font-size:26px;flex-shrink:0;background:#1A1F2B}
+.hdr-eye{font-size:11px;font-weight:800;text-transform:uppercase;letter-spacing:.28em;color:#D9A441;margin-bottom:3px}
+.hdr-h1{font-size:26px;font-weight:900;line-height:1.15}
+.hdr-h1 .sub{font-family:'Special Elite',cursive;font-size:15px;font-weight:400;color:#9AA3B2;display:block;margin-top:2px}
+.hdr-r{display:flex;gap:12px}
+.btn{background:rgba(217,164,65,.12);color:#D9A441;border:2px solid rgba(217,164,65,.5);border-radius:10px;padding:10px 18px;font-family:'Nunito',sans-serif;font-size:15px;font-weight:800;cursor:pointer;white-space:nowrap;transition:all .15s}
+.btn:hover{background:rgba(217,164,65,.28)}
+
+/* SECTIONS */
+.sec{max-width:1500px;margin:0 auto;padding:30px 36px}
+.sec-lbl{display:flex;align-items:center;gap:14px;margin-bottom:20px}
+.sec-num{width:40px;height:40px;border-radius:50%;background:#D9A441;color:#14181F;font-weight:900;font-size:19px;display:flex;align-items:center;justify-content:center;flex-shrink:0}
+.sec-title{font-size:24px;font-weight:900;color:#fff}
+.sec-instr{font-size:15px;color:#9AA3B2;font-weight:700;margin-left:auto;font-style:italic}
+
+/* MISSION */
+#mission{background:linear-gradient(180deg,#0D1017,#1A1F2B);border-bottom:1px solid #2A3140}
+.mission-card{background:#1E2430;border:2px solid #2E3646;border-radius:16px;padding:28px 32px;box-shadow:0 10px 40px rgba(0,0,0,.4)}
+.gram-note{background:#171C26;border-left:4px solid #D9A441;border-radius:0 8px 8px 0;padding:14px 18px;margin-bottom:18px;font-size:14.5px;color:#C9CFDA;line-height:1.6}
+.gram-note b{color:#D9A441}
+.call-box{background:#171C26;border:2px dashed #2E3646;border-radius:14px;padding:8px 20px;cursor:pointer;transition:border-color .2s}
+.call-box:hover{border-color:#D9A441}
+.call-lbl{font-family:'Special Elite',cursive;font-size:13px;color:#D9A441;letter-spacing:.1em;padding-top:14px}
+.call-cta{font-size:12.5px;font-weight:800;color:#D9A441;text-transform:uppercase;letter-spacing:.1em;padding-bottom:14px}
+.call-box.revealed .call-cta{display:none}
+.call-lines{display:none;padding-bottom:16px}
+.call-box.revealed .call-lines{display:block;animation:slideDown .3s ease-out}
+@keyframes slideDown{from{opacity:0;transform:translateY(-8px)}to{opacity:1;transform:translateY(0)}}
+.line-row{display:flex;gap:10px;margin-bottom:9px;font-size:15px;line-height:1.55}
+.who{flex:0 0 150px;font-weight:900;color:#D9A441}
+.said{color:#C9CFDA}
+.mission-txt{margin-top:18px}
+.mission-txt p{font-size:16.5px;line-height:1.65;color:#C9CFDA;margin-bottom:8px}
+.mission-txt strong{color:#fff}
+
+/* SUSPECTS */
+#suspects-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:20px}
+@media(max-width:1200px){#suspects-grid{grid-template-columns:repeat(2,1fr)}}
+.suspect{background:#1E2430;border:2px solid #2E3646;border-radius:16px;overflow:hidden;cursor:pointer;transition:transform .2s,border-color .2s}
+.suspect:hover{transform:translateY(-4px);border-color:#D9A441}
+.suspect-photo{height:130px;background:#252C3A;display:flex;align-items:center;justify-content:center;font-size:64px;border-bottom:2px solid #2E3646;position:relative}
+.suspect-num{position:absolute;top:10px;left:10px;background:#D9A441;color:#14181F;font-size:11px;font-weight:900;padding:4px 10px;border-radius:6px;letter-spacing:.1em}
+.suspect-body{padding:18px 20px}
+.suspect-name{font-size:19px;font-weight:900;color:#fff;margin-bottom:2px}
+.suspect-role{font-family:'Special Elite',cursive;font-size:13px;color:#D9A441;margin-bottom:10px}
+.suspect-desc{font-size:14px;color:#9AA3B2;line-height:1.5;margin-bottom:12px}
+.suspect-cta{font-size:12.5px;font-weight:800;color:#D9A441;text-transform:uppercase;letter-spacing:.1em}
+.suspect.revealed .suspect-cta{display:none}
+.alibi{display:none;background:#171C26;margin:0 -20px -18px;padding:16px 20px;border-top:2px dashed #2E3646}
+.suspect.revealed .alibi{display:block;animation:slideDown .3s ease-out}
+.alibi-lbl{font-size:11px;font-weight:900;text-transform:uppercase;letter-spacing:.18em;color:#D9A441;margin-bottom:8px}
+.alibi q{display:block;font-size:14px;color:#C9CFDA;line-height:1.55;margin-bottom:6px;quotes:"« " " »"}
+.mini-indice{margin-top:10px;padding-top:10px;border-top:1px dotted #2E3646;font-size:12.5px;color:#7A8494;font-style:italic}
+
+/* INDICES */
+#indice-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:20px}
+@media(max-width:1000px){#indice-grid{grid-template-columns:1fr}}
+.indice{background:#1E2430;border:2px solid #2E3646;border-radius:16px;padding:22px 24px;cursor:pointer;transition:border-color .2s;min-height:150px;position:relative}
+.indice:hover{border-color:#D9A441}
+.indice-name{font-size:17px;font-weight:900;color:#fff;margin-bottom:4px;display:flex;align-items:center;gap:10px}
+.indice-txt{display:none;font-size:15px;color:#C9CFDA;line-height:1.6;margin-top:10px}
+.indice.revealed .indice-txt{display:block;animation:slideDown .3s ease-out}
+.indice-cta{font-size:12.5px;font-weight:800;color:#D9A441;text-transform:uppercase;letter-spacing:.1em;position:absolute;bottom:18px}
+.indice.revealed .indice-cta{display:none}
+
+/* GRILLE DE DÉDUCTION */
+#grille-zone{background:#1A1F2B;border-top:1px solid #2A3140;border-bottom:1px solid #2A3140}
+.grille-wrap{overflow-x:auto}
+table.grille{width:100%;border-collapse:collapse;background:#1E2430;border-radius:12px;overflow:hidden}
+table.grille th{background:#171C26;color:#D9A441;font-size:13px;text-transform:uppercase;letter-spacing:.06em;padding:14px 16px;text-align:left;border-bottom:2px solid #2E3646}
+table.grille td{padding:12px 16px;border-bottom:1px solid #2E3646;font-size:15px;color:#C9CFDA}
+table.grille tr:last-child td{border-bottom:none}
+.gname{font-weight:900;color:#fff}
+.toggle-cell{display:flex;gap:8px}
+.tgl{border:2px solid #2E3646;background:#171C26;color:#9AA3B2;border-radius:8px;padding:6px 14px;font-family:'Nunito',sans-serif;font-size:13px;font-weight:800;cursor:pointer;transition:all .12s}
+.tgl:hover{border-color:#D9A441}
+.tgl.oui.sel{background:rgba(74,222,128,.15);border-color:#4ADE80;color:#4ADE80}
+.tgl.non.sel{background:rgba(248,113,113,.12);border-color:#F87171;color:#F87171}
+
+/* VERDICT */
+#verdict-zone .sec{padding-top:30px}
+.verdict-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:16px;margin-bottom:22px}
+@media(max-width:1200px){.verdict-grid{grid-template-columns:repeat(2,1fr)}}
+.verdict-opt{background:#1E2430;border:3px solid #2E3646;border-radius:14px;padding:18px;text-align:center;cursor:pointer;transition:all .15s;font-size:17px;font-weight:800;color:#C9CFDA}
+.verdict-opt:hover{border-color:#D9A441;color:#fff}
+.verdict-opt .em{font-size:38px;display:block;margin-bottom:8px}
+.verdict-opt.sel{border-color:#D9A441;background:rgba(217,164,65,.1);color:#D9A441}
+.verdict-opt.good{border-color:#4ADE80;background:rgba(74,222,128,.1);color:#4ADE80;animation:pulse .5s}
+.verdict-opt.bad{border-color:#F87171;background:rgba(248,113,113,.08);color:#F87171;animation:shake .4s}
+@keyframes pulse{0%{transform:scale(1)}50%{transform:scale(1.05)}100%{transform:scale(1)}}
+@keyframes shake{0%,100%{transform:translateX(0)}25%{transform:translateX(-7px)}75%{transform:translateX(7px)}}
+#verdict-actions{display:flex;gap:14px;align-items:center}
+#btn-verdict{background:#D9A441;color:#14181F;border:none;border-radius:10px;padding:14px 32px;font-family:'Nunito',sans-serif;font-size:17px;font-weight:900;cursor:pointer;letter-spacing:.03em;transition:filter .15s}
+#btn-verdict:hover{filter:brightness(1.12)}
+#btn-verdict:disabled{opacity:.35;cursor:not-allowed}
+#verdict-msg{font-size:16px;font-weight:800}
+#verdict-msg.ok{color:#4ADE80}
+#verdict-msg.ko{color:#F87171}
+
+/* RAPPORT */
+.rapport{background:#F5F0E4;color:#2A2A2A;border-radius:16px;padding:30px 36px;font-family:'Special Elite',cursive;max-width:900px;box-shadow:0 14px 50px rgba(0,0,0,.5)}
+.rapport h3{font-size:21px;margin-bottom:18px;border-bottom:2px solid #2A2A2A;padding-bottom:10px;letter-spacing:.05em}
+.rapport .fld{margin-bottom:16px;font-size:16px;line-height:1.8}
+.rapport .line{display:inline-block;border-bottom:2px solid #555;min-width:280px;height:20px;vertical-align:bottom}
+.rapport .line.short{min-width:160px}
+
+/* TIMELINE */
+.steps{display:grid;grid-template-columns:repeat(7,1fr);gap:12px}
+@media(max-width:1200px){.steps{grid-template-columns:repeat(4,1fr)}}
+@media(max-width:800px){.steps{grid-template-columns:repeat(2,1fr)}}
+.step{background:#1E2430;border:2px solid #2E3646;border-radius:12px;padding:16px 14px;text-align:center}
+.step-n{width:32px;height:32px;border-radius:50%;background:#2E3646;color:#D9A441;font-weight:900;font-size:15px;display:flex;align-items:center;justify-content:center;margin:0 auto 10px}
+.step-t{font-size:13.5px;font-weight:800;color:#fff;margin-bottom:4px;line-height:1.3}
+.step-d{font-size:11.5px;color:#7A8494;font-weight:700}
+
+/* SOLUTION (teacher) */
+#solution-box{display:none;background:#1E2430;border:2px solid #D9A441;border-radius:16px;padding:26px 30px;margin-top:20px;animation:slideDown .3s ease-out}
+#solution-box.on{display:block}
+#solution-box h4{color:#D9A441;font-size:19px;margin-bottom:12px}
+#solution-box p{font-size:15.5px;line-height:1.7;color:#C9CFDA}
+#solution-box strong{color:#fff}
+
+.footer{padding:26px 36px;text-align:center;font-size:13px;color:#5A6374;font-weight:700;letter-spacing:.06em}
+</style>
+</head>
+<body>
+
+<div id="hdr">
+  <div class="hdr-l">
+    <div class="hdr-badge">📚</div>
+    <div>
+      <div class="hdr-eye">Dossier confidentiel · Francisation Niveau 4</div>
+      <div class="hdr-h1">Le mystère de la bibliothèque
+        <span class="sub">Qui a emprunté les livres en secret ?</span>
+      </div>
+    </div>
+  </div>
+  <div class="hdr-r">
+    <button class="btn" id="btn-reset">↺ Réinitialiser</button>
+  </div>
+</div>
+
+<!-- 1. MISSION -->
+<div id="mission">
+  <div class="sec">
+    <div class="sec-lbl">
+      <div class="sec-num">1</div>
+      <div class="sec-title">La mission</div>
+      <div class="sec-instr">Lisez l'appel de la bibliothécaire</div>
+    </div>
+    <div class="mission-card">
+      <div class="gram-note">📖 <b>Rappel :</b> le passé composé se forme avec <b>AVOIR</b> ou <b>ÊTRE</b> au présent + participe passé. Avec avoir : <i>j'ai lu, il a emprunté</i>. Avec être (mouvement) : <i>je suis allé(e), il est venu, elle est restée</i>. Attention à l'accord avec être !</div>
+      <div class="call-box">
+        <div class="call-lbl">📻 L'APPEL DE LA BIBLIOTHÉCAIRE</div>
+        <div class="call-cta">▸ Lire l'appel</div>
+        <div class="call-lines">
+          <div class="line-row"><span class="who">La bibliothécaire</span><span class="said">Bonjour ! Il s'est passé quelque chose d'étrange à la bibliothèque.</span></div>
+          <div class="line-row"><span class="who">La bibliothécaire</span><span class="said">Vendredi dernier, trois livres ont disparu de l'étagère.</span></div>
+          <div class="line-row"><span class="who">Le détective en chef</span><span class="said">Ils ont disparu ? Est-ce que quelqu'un les a volés ?</span></div>
+          <div class="line-row"><span class="who">La bibliothécaire</span><span class="said">Non ! Lundi matin, les livres sont revenus. Quelqu'un les a rapportés !</span></div>
+          <div class="line-row"><span class="who">La bibliothécaire</span><span class="said">Et dans chaque livre, j'ai trouvé un petit mot : « Merci pour ce beau livre. »</span></div>
+          <div class="line-row"><span class="who">Le détective en chef</span><span class="said">Écoutez bien, détectives. Votre mission : vous avez quatre suspects.</span></div>
+          <div class="line-row"><span class="who">Le détective en chef</span><span class="said">Vous leur demandez ce qu'ils ont fait vendredi dernier. Écoutez bien leurs réponses !</span></div>
+          <div class="line-row"><span class="who">La bibliothécaire</span><span class="said">Attention ! La personne la plus suspecte n'est pas toujours la coupable. Réfléchissez bien !</span></div>
+          <div class="line-row"><span class="who">Le détective en chef</span><span class="said">À la fin, votre équipe présente la personne mystère. L'enquête commence maintenant !</span></div>
+        </div>
+      </div>
+      <div class="mission-txt">
+        <p>Vendredi dernier, <strong>trois livres ont disparu</strong> de la bibliothèque. Lundi matin, ils sont revenus — avec un petit mot gentil dans chacun !</p>
+        <p><strong>Interrogez</strong> les quatre suspects sur ce qu'ils ont fait vendredi dernier, <strong>recoupez</strong> les indices, puis présentez la personne mystère. Attention : la personne la plus suspecte n'est pas toujours la coupable !</p>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- 2. SUSPECTS -->
+<div class="sec">
+  <div class="sec-lbl">
+    <div class="sec-num">2</div>
+    <div class="sec-title">Les 4 suspects</div>
+    <div class="sec-instr">Cliquez sur un suspect pour lire son témoignage</div>
+  </div>
+  <div id="suspects-grid">
+    <div class="suspect" data-s="theo">
+      <div class="suspect-photo">📖<span class="suspect-num">SUSPECT 1</span></div>
+      <div class="suspect-body">
+        <div class="suspect-name">Théo</div>
+        <div class="suspect-role">le lecteur passionné</div>
+        <div class="suspect-desc">Grand, cheveux bruns, toujours un livre à la main, un sac plein de romans.</div>
+        <div class="suspect-cta">🔍 Voir son témoignage</div>
+        <div class="alibi">
+          <div class="alibi-lbl">Son témoignage</div>
+          <q>Vendredi dernier, je suis allé à la bibliothèque, comme d'habitude.</q>
+          <q>J'ai emprunté quatre livres. J'adore lire !</q>
+          <q>Je me suis assis près de la fenêtre et j'ai lu pendant une heure.</q>
+          <q>Mais j'ai utilisé ma carte, comme toujours. Je n'ai rien pris en secret !</q>
+          <div class="mini-indice">🔎 Il est allé à la bibliothèque vendredi et il a emprunté beaucoup de livres. Mais il a utilisé sa carte…</div>
+        </div>
+      </div>
+    </div>
+    <div class="suspect" data-s="leo">
+      <div class="suspect-photo">🧢<span class="suspect-num">SUSPECT 2</span></div>
+      <div class="suspect-body">
+        <div class="suspect-name">Léo</div>
+        <div class="suspect-role">le mystérieux</div>
+        <div class="suspect-desc">Petit, casquette noire, il parle peu, il regarde souvent autour de lui.</div>
+        <div class="suspect-cta">🔍 Voir son témoignage</div>
+        <div class="alibi">
+          <div class="alibi-lbl">Son témoignage</div>
+          <q>Vendredi, je suis entré dans la bibliothèque le midi, quand il n'y avait personne.</q>
+          <q>Je suis resté près de l'étagère des romans. J'ai regardé les couvertures.</q>
+          <q>Je n'ai parlé à personne. Je suis parti après vingt minutes.</q>
+          <q>Mais je n'ai rien écrit ! Je ne sais pas écrire en français.</q>
+          <div class="mini-indice">🔎 Il est venu quand il n'y avait personne et il est resté près des étagères. Mais il n'a rien écrit…</div>
+        </div>
+      </div>
+    </div>
+    <div class="suspect" data-s="nadia">
+      <div class="suspect-photo">🖊️<span class="suspect-num">SUSPECT 3</span></div>
+      <div class="suspect-body">
+        <div class="suspect-name">Nadia</div>
+        <div class="suspect-role">la discrète</div>
+        <div class="suspect-desc">Cheveux noirs attachés, un chandail bleu, un beau stylo dans sa poche.</div>
+        <div class="suspect-cta">🔍 Voir son témoignage</div>
+        <div class="alibi">
+          <div class="alibi-lbl">Son témoignage</div>
+          <q>Vendredi dernier, je suis venue à la bibliothèque après les cours.</q>
+          <q>J'ai pris trois livres, mais je n'ai pas de carte de bibliothèque…</q>
+          <q>J'ai lu les livres pendant la fin de semaine. Ils étaient magnifiques !</q>
+          <q>Alors, j'ai écrit un petit mot de remerciement dans chaque livre, avec mon stylo bleu.</q>
+          <div class="mini-indice">🔎 Elle est venue le vendredi après les cours, elle n'a pas de carte, et elle a écrit des mots…</div>
+        </div>
+      </div>
+    </div>
+    <div class="suspect" data-s="emma">
+      <div class="suspect-photo">📋<span class="suspect-num">SUSPECT 4</span></div>
+      <div class="suspect-body">
+        <div class="suspect-name">Emma</div>
+        <div class="suspect-role">l'organisatrice</div>
+        <div class="suspect-desc">Cheveux blonds, des lunettes, toujours un cahier et un horaire.</div>
+        <div class="suspect-cta">🔍 Voir son témoignage</div>
+        <div class="alibi">
+          <div class="alibi-lbl">Son témoignage</div>
+          <q>Je travaille à la bibliothèque le mardi et le jeudi. J'aide la bibliothécaire.</q>
+          <q>Mardi, j'ai rangé beaucoup de livres sur les étagères.</q>
+          <q>Mais vendredi dernier, je ne suis pas venue. J'ai fait du sport toute la journée.</q>
+          <q>J'ai une carte de bibliothèque. J'emprunte toujours normalement.</q>
+          <div class="mini-indice">🔎 Elle travaille à la bibliothèque, mais elle n'est pas venue vendredi.</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- 3. INDICES -->
+<div class="sec">
+  <div class="sec-lbl">
+    <div class="sec-num">3</div>
+    <div class="sec-title">Les cartes-indices</div>
+    <div class="sec-instr">Révélez les indices un à un</div>
+  </div>
+  <div id="indice-grid">
+    <div class="indice">
+      <div class="indice-name">📇 Indice A — Le registre des emprunts</div>
+      <div class="indice-txt">« Les trois livres qui ont disparu ne sont pas dans le registre. La personne n'a pas utilisé de carte de bibliothèque. »</div>
+      <div class="indice-cta">🔍 Révéler l'indice</div>
+    </div>
+    <div class="indice">
+      <div class="indice-name">🧹 Indice B — Le concierge</div>
+      <div class="indice-txt">« Vendredi soir, quand j'ai nettoyé, j'ai vu quelqu'un sortir de la bibliothèque avec des livres. »</div>
+      <div class="indice-cta">🔍 Révéler l'indice</div>
+    </div>
+    <div class="indice">
+      <div class="indice-name">✉️ Indice C — Le petit mot</div>
+      <div class="indice-txt">« Le mot dans le livre a été écrit à la main, en très beau français, avec un stylo bleu. »</div>
+      <div class="indice-cta">🔍 Révéler l'indice</div>
+    </div>
+  </div>
+</div>
+
+<!-- 4. GRILLE DE DÉDUCTION -->
+<div id="grille-zone">
+  <div class="sec">
+    <div class="sec-lbl">
+      <div class="sec-num">4</div>
+      <div class="sec-title">Grille de déduction</div>
+      <div class="sec-instr">Le coupable dit OUI aux trois indices !</div>
+    </div>
+    <div class="grille-wrap">
+      <table class="grille">
+        <tr><th>Suspect</th><th>A. Sans carte ?</th><th>B. Venu(e) vendredi ?</th><th>C. A écrit le mot ?</th></tr>
+        <tr><td class="gname">1. Théo</td><td><div class="toggle-cell" data-row="theo" data-col="a"><button class="tgl oui">oui</button><button class="tgl non">non</button></div></td><td><div class="toggle-cell" data-row="theo" data-col="b"><button class="tgl oui">oui</button><button class="tgl non">non</button></div></td><td><div class="toggle-cell" data-row="theo" data-col="c"><button class="tgl oui">oui</button><button class="tgl non">non</button></div></td></tr>
+        <tr><td class="gname">2. Léo</td><td><div class="toggle-cell" data-row="leo" data-col="a"><button class="tgl oui">oui</button><button class="tgl non">non</button></div></td><td><div class="toggle-cell" data-row="leo" data-col="b"><button class="tgl oui">oui</button><button class="tgl non">non</button></div></td><td><div class="toggle-cell" data-row="leo" data-col="c"><button class="tgl oui">oui</button><button class="tgl non">non</button></div></td></tr>
+        <tr><td class="gname">3. Nadia</td><td><div class="toggle-cell" data-row="nadia" data-col="a"><button class="tgl oui">oui</button><button class="tgl non">non</button></div></td><td><div class="toggle-cell" data-row="nadia" data-col="b"><button class="tgl oui">oui</button><button class="tgl non">non</button></div></td><td><div class="toggle-cell" data-row="nadia" data-col="c"><button class="tgl oui">oui</button><button class="tgl non">non</button></div></td></tr>
+        <tr><td class="gname">4. Emma</td><td><div class="toggle-cell" data-row="emma" data-col="a"><button class="tgl oui">oui</button><button class="tgl non">non</button></div></td><td><div class="toggle-cell" data-row="emma" data-col="b"><button class="tgl oui">oui</button><button class="tgl non">non</button></div></td><td><div class="toggle-cell" data-row="emma" data-col="c"><button class="tgl oui">oui</button><button class="tgl non">non</button></div></td></tr>
+      </table>
+    </div>
+  </div>
+</div>
+
+<!-- 5. VERDICT -->
+<div id="verdict-zone">
+  <div class="sec">
+    <div class="sec-lbl">
+      <div class="sec-num">5</div>
+      <div class="sec-title">Le verdict de l'équipe</div>
+      <div class="sec-instr">Discutez, puis choisissez la personne mystère</div>
+    </div>
+    <div class="verdict-grid">
+      <div class="verdict-opt" data-v="theo"><span class="em">📖</span>Théo</div>
+      <div class="verdict-opt" data-v="leo"><span class="em">🧢</span>Léo</div>
+      <div class="verdict-opt" data-v="nadia"><span class="em">🖊️</span>Nadia</div>
+      <div class="verdict-opt" data-v="emma"><span class="em">📋</span>Emma</div>
+    </div>
+    <div id="verdict-actions">
+      <button id="btn-verdict" disabled>⚖️ Rendre le verdict</button>
+      <div id="verdict-msg"></div>
+    </div>
+  </div>
+</div>
+
+<!-- 6. RAPPORT -->
+<div class="sec">
+  <div class="sec-lbl">
+    <div class="sec-num">6</div>
+    <div class="sec-title">Le rapport d'enquête</div>
+    <div class="sec-instr">À rédiger en équipe — au passé composé !</div>
+  </div>
+  <div class="rapport">
+    <h3>RAPPORT D'ENQUÊTE — ÉQUIPE Nº ____</h3>
+    <div class="fld">La personne mystère est : <span class="line"></span></div>
+    <div class="fld">Elle est venue à la bibliothèque : <span class="line short"></span></div>
+    <div class="fld">Preuve 1 (la carte) : <span class="line" style="min-width:420px"></span></div>
+    <div class="fld">Preuve 2 (le jour) : <span class="line" style="min-width:420px"></span></div>
+    <div class="fld">Preuve 3 (l'écriture) : <span class="line" style="min-width:420px"></span></div>
+    <div class="fld">Nous éliminons <span class="line short"></span> parce qu'il/elle a <span class="line" style="min-width:280px"></span></div>
+  </div>
+</div>
+
+<!-- 7. DÉROULEMENT -->
+<div class="sec">
+  <div class="sec-lbl">
+    <div class="sec-num">7</div>
+    <div class="sec-title">Déroulement de l'enquête</div>
+    <div class="sec-instr">≈ 3 heures, divisible en 2 séances</div>
+  </div>
+  <div class="steps">
+    <div class="step"><div class="step-n">1</div><div class="step-t">L'appel de la bibliothécaire</div><div class="step-d">15 min · Groupe</div></div>
+    <div class="step"><div class="step-n">2</div><div class="step-t">Préparer les questions</div><div class="step-d">20 min · Équipe</div></div>
+    <div class="step"><div class="step-n">3</div><div class="step-t">Interroger les suspects</div><div class="step-d">45 min · Dyade / Groupe</div></div>
+    <div class="step"><div class="step-n">4</div><div class="step-t">Les indices</div><div class="step-d">20 min · Équipe</div></div>
+    <div class="step"><div class="step-n">5</div><div class="step-t">Éliminer les fausses pistes</div><div class="step-d">25 min · Équipe</div></div>
+    <div class="step"><div class="step-n">6</div><div class="step-t">La conclusion</div><div class="step-d">25 min · Équipe</div></div>
+    <div class="step"><div class="step-n">7</div><div class="step-t">La révélation</div><div class="step-d">15 min · Groupe</div></div>
+  </div>
+
+  <button class="btn" id="btn-solution" style="margin-top:24px">🗝️ Solution (réservée à l'enseignant·e)</button>
+  <div id="solution-box">
+    <h4>🗝️ La solution</h4>
+    <p>La personne mystère est <strong>Nadia (Suspecte 3)</strong>. <strong>Théo (Suspect 1)</strong> semble très suspect (il a emprunté quatre livres vendredi), MAIS il a utilisé sa carte — or l'Indice A dit que la personne n'a pas utilisé de carte. <strong>Léo (Suspect 2)</strong> semble mystérieux, MAIS il n'a rien écrit et ne sait pas écrire en français — or l'Indice C dit que le mot a été écrit en très beau français. <strong>Emma (Suspecte 4)</strong> travaille à la bibliothèque, MAIS elle n'est pas venue vendredi — or l'Indice B dit que ça s'est passé vendredi. Nadia correspond aux trois indices : elle n'a pas de carte (A), elle est venue vendredi après les cours (B), et elle a écrit les mots avec son stylo bleu (C). Leçon : la personne la plus suspecte n'est pas toujours la coupable !</p>
+  </div>
+</div>
+
+<div class="footer">Francisation · Niveau 4 (LAN-4049-8) · Production orale, compréhension orale et production écrite · Passé composé — avoir et être</div>
+
+<script>
+// Mission call reveal
+document.querySelectorAll('.call-box').forEach(c => c.addEventListener('click', () => c.classList.toggle('revealed')));
+// Suspects reveal
+document.querySelectorAll('.suspect').forEach(s => s.addEventListener('click', () => s.classList.toggle('revealed')));
+// Indices reveal
+document.querySelectorAll('.indice').forEach(t => t.addEventListener('click', () => t.classList.toggle('revealed')));
+
+// Grille de déduction
+document.querySelectorAll('.toggle-cell').forEach(cell => {
+  cell.querySelectorAll('.tgl').forEach(btn => {
+    btn.addEventListener('click', (e) => {
+      e.stopPropagation();
+      cell.querySelectorAll('.tgl').forEach(b => b.classList.remove('sel'));
+      btn.classList.add('sel');
+    });
+  });
+});
+
+// Verdict
+let selected = null;
+const btnV = document.getElementById('btn-verdict');
+const msg = document.getElementById('verdict-msg');
+document.querySelectorAll('.verdict-opt').forEach(o => {
+  o.addEventListener('click', () => {
+    document.querySelectorAll('.verdict-opt').forEach(x => x.classList.remove('sel','good','bad'));
+    o.classList.add('sel');
+    selected = o.dataset.v;
+    btnV.disabled = false;
+    msg.textContent = '';
+    msg.className = '';
+  });
+});
+btnV.addEventListener('click', () => {
+  if (!selected) return;
+  const el = document.querySelector('.verdict-opt.sel');
+  if (selected === 'nadia') {
+    el.classList.remove('sel'); el.classList.add('good');
+    msg.textContent = '✓ Bravo, détectives ! Vous avez trouvé la personne mystère. Expliquez vos preuves au passé composé !';
+    msg.className = 'ok';
+  } else {
+    el.classList.remove('sel'); el.classList.add('bad');
+    msg.textContent = '✗ Hum… les indices ne concordent pas. Recroisez chaque suspect avec les 3 indices.';
+    msg.className = 'ko';
+  }
+});
+
+// Solution toggle
+document.getElementById('btn-solution').addEventListener('click', () => {
+  const box = document.getElementById('solution-box');
+  if (box.classList.contains('on')) { box.classList.remove('on'); return; }
+  if (confirm('Cette section est réservée à l\'enseignant·e. Afficher la solution ?')) {
+    box.classList.add('on');
+  }
+});
+
+// Reset
+document.getElementById('btn-reset').addEventListener('click', () => {
+  document.querySelectorAll('.suspect,.indice,.call-box').forEach(x => x.classList.remove('revealed'));
+  document.querySelectorAll('.verdict-opt').forEach(x => x.classList.remove('sel','good','bad'));
+  document.querySelectorAll('.tgl').forEach(x => x.classList.remove('sel'));
+  document.getElementById('solution-box').classList.remove('on');
+  selected = null; btnV.disabled = true;
+  msg.textContent = ''; msg.className = '';
+});
+</script>
+</body>
+</html>
