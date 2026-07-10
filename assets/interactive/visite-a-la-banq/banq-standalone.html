@@ -1,0 +1,471 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Une journée à la Grande Bibliothèque — Découvrir BAnQ</title>
+<link href="https://fonts.googleapis.com/css2?family=Nunito:wght@600;700;800;900&family=Fraunces:wght@600;700&display=swap" rel="stylesheet">
+<template id="__bundler_thumbnail" data-bg-color="#EAF2F5">
+  <svg viewBox="0 0 800 500" xmlns="http://www.w3.org/2000/svg">
+    <rect width="800" height="500" fill="#EAF2F5"/>
+    <rect x="180" y="150" width="440" height="220" fill="#1B4D6B"/>
+    <rect x="220" y="190" width="60" height="140" fill="#EAF2F5"/>
+    <rect x="300" y="190" width="60" height="140" fill="#EAF2F5"/>
+    <rect x="380" y="190" width="60" height="140" fill="#EAF2F5"/>
+    <rect x="460" y="190" width="60" height="140" fill="#EAF2F5"/>
+    <rect x="540" y="190" width="60" height="140" fill="#EAF2F5"/>
+    <circle cx="400" cy="120" r="34" fill="#E0A526"/>
+  </svg>
+</template>
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+html,body{min-height:100%;background:#EAF2F5;font-family:'Nunito',sans-serif;color:#1E2E38}
+
+/* HEADER */
+#hdr{background:#1B4D6B;color:#fff;padding:20px 36px;display:flex;align-items:center;justify-content:space-between;position:sticky;top:0;z-index:300;border-bottom:4px solid #E0A526;box-shadow:0 4px 18px rgba(27,77,107,.3)}
+.hdr-l{display:flex;align-items:center;gap:18px}
+.hdr-badge{width:56px;height:56px;border-radius:50%;border:3px solid #fff;display:flex;align-items:center;justify-content:center;font-size:28px;flex-shrink:0;background:rgba(255,255,255,.16)}
+.hdr-eye{font-size:11px;font-weight:800;text-transform:uppercase;letter-spacing:.24em;color:#FBE0A0;margin-bottom:3px}
+.hdr-h1{font-size:25px;font-weight:900;line-height:1.15}
+.hdr-h1 .sub{font-family:'Fraunces',serif;font-size:16px;font-weight:600;font-style:italic;color:#CFE1EB;display:block;margin-top:4px}
+.hdr-r{display:flex;gap:12px}
+.btn{background:rgba(255,255,255,.14);color:#fff;border:2px solid rgba(255,255,255,.55);border-radius:10px;padding:10px 18px;font-family:'Nunito',sans-serif;font-size:15px;font-weight:800;cursor:pointer;white-space:nowrap;transition:all .15s}
+.btn:hover{background:rgba(255,255,255,.28)}
+
+/* SECTIONS */
+.sec{max-width:1500px;margin:0 auto;padding:30px 36px}
+.sec-lbl{display:flex;align-items:center;gap:14px;margin-bottom:20px;flex-wrap:wrap}
+.sec-num{width:40px;height:40px;border-radius:50%;background:#1B4D6B;color:#fff;font-weight:900;font-size:19px;display:flex;align-items:center;justify-content:center;flex-shrink:0}
+.sec-title{font-size:24px;font-weight:900;color:#1B4D6B}
+.sec-instr{font-size:15px;color:#5C7A8C;font-weight:700;margin-left:auto;font-style:italic}
+
+/* CONTEXTE */
+#contexte{background:linear-gradient(180deg,#DCEAF0,#EAF2F5);border-bottom:1px solid #C8DCE4}
+.ctx-card{background:#fff;border:2px solid #C8DCE4;border-radius:16px;padding:28px 32px;box-shadow:0 8px 30px rgba(27,77,107,.1)}
+.ctx-card h3{font-family:'Fraunces',serif;font-size:22px;color:#1B4D6B;margin-bottom:12px}
+.ctx-card p{font-size:16.5px;line-height:1.65;color:#3A4C56;margin-bottom:8px}
+.ctx-card strong{color:#1B4D6B}
+
+/* DIALOGUES */
+#dial-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:20px}
+@media(max-width:1100px){#dial-grid{grid-template-columns:1fr}}
+.dial{background:#fff;border:2px solid #C8DCE4;border-radius:16px;overflow:hidden;cursor:pointer;transition:transform .2s,border-color .2s,box-shadow .2s;box-shadow:0 3px 12px rgba(27,77,107,.08)}
+.dial:hover{transform:translateY(-4px);border-color:#1B4D6B;box-shadow:0 10px 24px rgba(27,77,107,.16)}
+.dial-head{padding:18px 22px;background:linear-gradient(150deg,#1B4D6B,#123650);color:#fff}
+.dial:nth-child(2) .dial-head{background:linear-gradient(150deg,#2E7D6B,#1F5C4E)}
+.dial:nth-child(3) .dial-head{background:linear-gradient(150deg,#C0813A,#9E651F)}
+.dial-num{font-size:11px;font-weight:900;letter-spacing:.16em;text-transform:uppercase;opacity:.85;margin-bottom:4px}
+.dial-title{font-size:18px;font-weight:900;line-height:1.2}
+.dial-goal{font-size:12px;font-weight:700;opacity:.9;margin-top:6px}
+.dial-body{padding:18px 22px}
+.dial-voix{font-size:12.5px;color:#5C7A8C;font-weight:800;margin-bottom:10px}
+.dial-cta{font-size:12px;font-weight:800;color:#1B4D6B;text-transform:uppercase;letter-spacing:.1em}
+.dial.revealed .dial-cta{display:none}
+.dial-lines{display:none;margin-top:6px}
+.dial.revealed .dial-lines{display:block;animation:slideDown .3s ease-out}
+@keyframes slideDown{from{opacity:0;transform:translateY(-8px)}to{opacity:1;transform:translateY(0)}}
+.line-row{display:flex;gap:10px;margin-bottom:9px;font-size:14px;line-height:1.5}
+.who{flex:0 0 74px;font-weight:900;color:#1B4D6B}
+.dial:nth-child(2) .who{color:#1F5C4E}
+.dial:nth-child(3) .who{color:#9E651F}
+.said{color:#3A4C56}
+
+/* GRAMMAIRE - blocs */
+.gram-block{background:#fff;border:2px solid #C8DCE4;border-radius:16px;padding:26px 30px;margin-bottom:20px;box-shadow:0 3px 12px rgba(27,77,107,.08)}
+.gram-block h3{font-size:19px;font-weight:900;color:#1B4D6B;margin-bottom:8px}
+.gram-block .expl{font-size:14.5px;color:#3A4C56;line-height:1.6;margin-bottom:16px}
+.gram-block .prog-note{background:#EAF2F5;border-left:4px solid #1B4D6B;border-radius:0 8px 8px 0;padding:10px 14px;font-size:13px;color:#3A5566;margin-top:14px;line-height:1.5}
+
+/* Sigles matching */
+.match-wrap{display:flex;gap:28px;flex-wrap:wrap}
+.match-col{flex:1;min-width:260px}
+.match-col-lbl{font-size:12px;font-weight:800;text-transform:uppercase;letter-spacing:.08em;color:#5C7A8C;margin-bottom:10px}
+.match-chip{background:#F4F9FA;border:2px solid #D6E5EA;border-radius:10px;padding:12px 16px;margin-bottom:8px;cursor:pointer;font-size:15px;font-weight:800;color:#1E2E38;transition:all .15s}
+.match-chip:hover{border-color:#1B4D6B}
+.match-chip.sel{border-color:#1B4D6B;background:#E3EEF2}
+.match-chip.matched{border-color:#2E9E5B;background:#E3F5EA;color:#1E7040;cursor:default}
+.match-chip.wrong{border-color:#D64545;background:#FBE3E1;animation:shake .4s}
+@keyframes shake{0%,100%{transform:translateX(0)}25%{transform:translateX(-6px)}75%{transform:translateX(6px)}}
+
+/* Verbes exercice */
+.verbe-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:16px;margin-bottom:16px}
+@media(max-width:900px){.verbe-grid{grid-template-columns:1fr}}
+.verbe-card{background:#F4F9FA;border:2px solid #D6E5EA;border-radius:12px;padding:16px 18px}
+.verbe-card h4{font-size:15px;font-weight:900;color:#1B4D6B;margin-bottom:6px;text-transform:uppercase;letter-spacing:.04em}
+.verbe-card p{font-size:13.5px;color:#3A4C56;line-height:1.5}
+.fill-ex{background:#F4F9FA;border:2px dashed #C8DCE4;border-radius:10px;padding:16px 20px;font-size:15px;line-height:1.9;color:#1E2E38}
+.fill-ex input{border:none;border-bottom:2px solid #1B4D6B;background:transparent;font-family:'Nunito',sans-serif;font-weight:800;font-size:15px;color:#1B4D6B;width:150px;padding:2px 4px;text-align:center}
+.fill-ex input:focus{outline:none;background:#fff}
+
+/* Phrases utiles */
+.phrase-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:16px}
+@media(max-width:900px){.phrase-grid{grid-template-columns:1fr}}
+.phrase-card{background:#fff;border:2px solid #C8DCE4;border-radius:14px;padding:18px 20px;box-shadow:0 3px 12px rgba(27,77,107,.06)}
+.phrase-card h4{font-size:14px;font-weight:900;color:#1B4D6B;text-transform:uppercase;letter-spacing:.05em;margin-bottom:8px}
+.phrase-card p{font-size:14px;color:#3A4C56;line-height:1.6}
+
+/* VOCABULAIRE */
+#vocab-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:16px}
+@media(max-width:1200px){#vocab-grid{grid-template-columns:repeat(2,1fr)}}
+@media(max-width:640px){#vocab-grid{grid-template-columns:1fr}}
+.voc{background:#fff;border:2px solid #C8DCE4;border-radius:14px;padding:18px 20px;cursor:pointer;transition:border-color .2s,box-shadow .2s,transform .2s;box-shadow:0 3px 12px rgba(27,77,107,.08);min-height:90px}
+.voc:hover{transform:translateY(-3px);border-color:#1B4D6B;box-shadow:0 10px 24px rgba(27,77,107,.14)}
+.voc-word{font-size:17px;font-weight:900;color:#1B4D6B}
+.voc-cta{font-size:11px;font-weight:800;color:#5C7A8C;text-transform:uppercase;letter-spacing:.1em;margin-top:8px}
+.voc.revealed .voc-cta{display:none}
+.voc-def{display:none;margin-top:10px}
+.voc.revealed .voc-def{display:block;animation:slideDown .3s ease-out}
+.voc-def p{font-size:13px;color:#3A4C56;line-height:1.5}
+.voc-def .ex{font-size:12px;color:#5C7A8C;font-style:italic;margin-top:6px;border-top:1px dotted #C8DCE4;padding-top:6px}
+
+/* TÂCHES */
+.tasks{display:grid;grid-template-columns:repeat(3,1fr);gap:18px}
+@media(max-width:1000px){.tasks{grid-template-columns:1fr}}
+.task{background:#fff;border:2px solid #C8DCE4;border-radius:14px;padding:20px 22px;box-shadow:0 3px 12px rgba(27,77,107,.08)}
+.task-n{display:inline-flex;align-items:center;justify-content:center;width:30px;height:30px;border-radius:50%;background:#1B4D6B;color:#fff;font-weight:900;font-size:14px;margin-bottom:10px}
+.task-t{font-size:16px;font-weight:900;color:#1E2E38;margin-bottom:6px}
+.task-d{font-size:13.5px;color:#5C7A8C;line-height:1.55}
+
+/* FICHE INSCRIPTION */
+.inscr-box{background:#fff;border:3px dashed #E0A526;border-radius:16px;padding:28px 34px;max-width:760px;box-shadow:0 10px 30px rgba(27,77,107,.1)}
+.inscr-box h3{font-family:'Fraunces',serif;font-size:22px;color:#1B4D6B;text-align:center;margin-bottom:18px}
+.inscr-fld{display:flex;align-items:center;gap:10px;margin-bottom:14px;font-size:14.5px;font-weight:800;color:#1E2E38}
+.inscr-fld label{flex:0 0 220px}
+.inscr-fld input{flex:1;border:none;border-bottom:2px solid #C8DCE4;background:transparent;font-family:'Nunito',sans-serif;font-size:14.5px;padding:6px 4px;color:#1E2E38}
+.inscr-fld input:focus{outline:none;border-color:#1B4D6B}
+
+/* TIMELINE */
+.steps{display:grid;grid-template-columns:repeat(4,1fr);gap:12px}
+@media(max-width:1000px){.steps{grid-template-columns:repeat(2,1fr)}}
+.step{background:#fff;border:2px solid #C8DCE4;border-radius:12px;padding:16px 14px;text-align:center;box-shadow:0 2px 8px rgba(27,77,107,.06)}
+.step-n{width:32px;height:32px;border-radius:50%;background:#EAF2F5;color:#1B4D6B;font-weight:900;font-size:15px;display:flex;align-items:center;justify-content:center;margin:0 auto 10px}
+.step-t{font-size:13.5px;font-weight:800;color:#1E2E38;margin-bottom:4px;line-height:1.3}
+.step-d{font-size:11.5px;color:#8098A6;font-weight:700}
+
+.footer{padding:26px 36px;text-align:center;font-size:13px;color:#7C97A5;font-weight:700;letter-spacing:.05em}
+</style>
+</head>
+<body>
+
+<div id="hdr">
+  <div class="hdr-l">
+    <div class="hdr-badge">📖</div>
+    <div>
+      <div class="hdr-eye">Service public · Francisation Niveau 4</div>
+      <div class="hdr-h1">Une journée à la Grande Bibliothèque
+        <span class="sub">Découvrir BAnQ — s'inscrire, emprunter, s'informer</span>
+      </div>
+    </div>
+  </div>
+  <div class="hdr-r">
+    <button class="btn" id="btn-reset">↺ Réinitialiser</button>
+  </div>
+</div>
+
+<!-- 1. CONTEXTE -->
+<div id="contexte">
+  <div class="sec">
+    <div class="sec-lbl">
+      <div class="sec-num">1</div>
+      <div class="sec-title">Qu'est-ce que BAnQ ?</div>
+    </div>
+    <div class="ctx-card">
+      <h3>La Grande Bibliothèque</h3>
+      <p><strong>BAnQ</strong>, c'est Bibliothèque et Archives nationales du Québec. La Grande Bibliothèque, à Montréal, est <strong>gratuite</strong> pour tous les Québécois.</p>
+      <p>On y trouve la plus grande collection de livres en français en Amérique : des livres, des revues, des disques, des films et même des jeux vidéo ! On peut aussi utiliser les ordinateurs, chercher un emploi et participer à des activités culturelles.</p>
+      <p>Dans cette activité, vous apprenez à <strong>vous inscrire</strong>, à <strong>emprunter</strong> des documents et à <strong>poser des questions</strong> à un employé. Un service utile pour toute la vie au Québec !</p>
+    </div>
+  </div>
+</div>
+
+<!-- 2. DIALOGUES -->
+<div class="sec">
+  <div class="sec-lbl">
+    <div class="sec-num">2</div>
+    <div class="sec-title">Les 3 dialogues</div>
+    <div class="sec-instr">Cliquez sur un dialogue pour lire le texte</div>
+  </div>
+  <div id="dial-grid">
+    <div class="dial">
+      <div class="dial-head">
+        <div class="dial-num">Dialogue 1</div>
+        <div class="dial-title">S'inscrire à la bibliothèque</div>
+        <div class="dial-goal">Donner ses coordonnées · épeler · poser des questions</div>
+      </div>
+      <div class="dial-body">
+        <div class="dial-voix">🗣️ L'employée &amp; Karim</div>
+        <div class="dial-cta">▸ Lire le dialogue</div>
+        <div class="dial-lines">
+          <div class="line-row"><span class="who">L'employée</span><span class="said">Bonjour ! Bienvenue à la Grande Bibliothèque. Je peux vous aider ?</span></div>
+          <div class="line-row"><span class="who">Karim</span><span class="said">Bonjour ! Je voudrais m'inscrire, s'il vous plaît. Est-ce que c'est gratuit ?</span></div>
+          <div class="line-row"><span class="who">L'employée</span><span class="said">Oui, c'est complètement gratuit pour tous les Québécois !</span></div>
+          <div class="line-row"><span class="who">Karim</span><span class="said">Parfait ! Qu'est-ce qu'il me faut ?</span></div>
+          <div class="line-row"><span class="who">L'employée</span><span class="said">Une pièce d'identité avec votre adresse. Vous avez ça ?</span></div>
+          <div class="line-row"><span class="who">Karim</span><span class="said">Oui, voici ma carte. Mon nom est Karim Diallo. D, I, A, deux L, O.</span></div>
+          <div class="line-row"><span class="who">L'employée</span><span class="said">Merci ! Voici votre carte de bibliothèque. Vous pouvez emprunter dès maintenant.</span></div>
+          <div class="line-row"><span class="who">Karim</span><span class="said">Excellent ! Merci beaucoup, madame.</span></div>
+        </div>
+      </div>
+    </div>
+    <div class="dial">
+      <div class="dial-head">
+        <div class="dial-num">Dialogue 2</div>
+        <div class="dial-title">Emprunter des documents</div>
+        <div class="dial-goal">Emprunter · demander une information · les quantités</div>
+      </div>
+      <div class="dial-body">
+        <div class="dial-voix">🗣️ Sofia &amp; l'employé</div>
+        <div class="dial-cta">▸ Lire le dialogue</div>
+        <div class="dial-lines">
+          <div class="line-row"><span class="who">Sofia</span><span class="said">Excusez-moi, je voudrais emprunter ces livres. Combien est-ce que je peux en prendre ?</span></div>
+          <div class="line-row"><span class="who">L'employé</span><span class="said">Vous pouvez emprunter jusqu'à trente documents en même temps !</span></div>
+          <div class="line-row"><span class="who">Sofia</span><span class="said">Trente ? C'est beaucoup ! Et pour combien de temps ?</span></div>
+          <div class="line-row"><span class="who">L'employé</span><span class="said">Trois semaines pour les livres. Deux semaines pour les films.</span></div>
+          <div class="line-row"><span class="who">Sofia</span><span class="said">D'accord. Est-ce que je peux aussi emprunter des disques ?</span></div>
+          <div class="line-row"><span class="who">L'employé</span><span class="said">Bien sûr ! Des disques, des films, et même des jeux vidéo.</span></div>
+          <div class="line-row"><span class="who">Sofia</span><span class="said">Super ! Et si je finis en retard, qu'est-ce que je fais ?</span></div>
+          <div class="line-row"><span class="who">L'employé</span><span class="said">Vous pouvez prolonger en ligne, sur le site de BAnQ. C'est facile !</span></div>
+        </div>
+      </div>
+    </div>
+    <div class="dial">
+      <div class="dial-head">
+        <div class="dial-num">Dialogue 3</div>
+        <div class="dial-title">Chercher de l'information</div>
+        <div class="dial-goal">Exprimer un besoin · comprendre une directive · situer</div>
+      </div>
+      <div class="dial-body">
+        <div class="dial-voix">🗣️ Léa &amp; l'employée</div>
+        <div class="dial-cta">▸ Lire le dialogue</div>
+        <div class="dial-lines">
+          <div class="line-row"><span class="who">Léa</span><span class="said">Bonjour ! Je cherche des livres pour apprendre le français. Où est-ce que je peux les trouver ?</span></div>
+          <div class="line-row"><span class="who">L'employée</span><span class="said">Au deuxième étage, dans la section « Apprentissage des langues ».</span></div>
+          <div class="line-row"><span class="who">Léa</span><span class="said">Merci ! Est-ce qu'il y a aussi des ordinateurs ?</span></div>
+          <div class="line-row"><span class="who">L'employée</span><span class="said">Oui, il y a des ordis au premier étage. C'est gratuit avec votre carte.</span></div>
+          <div class="line-row"><span class="who">Léa</span><span class="said">Formidable ! Et est-ce qu'on peut chercher un emploi ici ?</span></div>
+          <div class="line-row"><span class="who">L'employée</span><span class="said">Oui ! Nous avons un service d'aide à la recherche d'emploi, avec Services Québec.</span></div>
+          <div class="line-row"><span class="who">Léa</span><span class="said">Je ne savais pas ! Merci pour toutes ces informations.</span></div>
+          <div class="line-row"><span class="who">L'employée</span><span class="said">Ça me fait plaisir. Bonne visite à la bibli !</span></div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- 3. GRAMMAIRE -->
+<div class="sec">
+  <div class="sec-lbl">
+    <div class="sec-num">3</div>
+    <div class="sec-title">Trois points de grammaire québécois</div>
+  </div>
+
+  <div class="gram-block">
+    <h3>① Les sigles et les acronymes</h3>
+    <p class="expl">Un sigle est formé avec les premières lettres de plusieurs mots. On l'utilise beaucoup au Québec ! Certains se prononcent lettre par lettre, d'autres se prononcent comme un mot (BAnQ = « bank »).</p>
+    <div class="match-wrap" id="sigle-match">
+      <div class="match-col">
+        <div class="match-col-lbl">Sigle</div>
+        <div class="match-chip" data-pair="1">BAnQ</div>
+        <div class="match-chip" data-pair="2">SAQ</div>
+        <div class="match-chip" data-pair="3">RAMQ</div>
+        <div class="match-chip" data-pair="4">STM</div>
+        <div class="match-chip" data-pair="5">SAAQ</div>
+        <div class="match-chip" data-pair="6">CV</div>
+      </div>
+      <div class="match-col">
+        <div class="match-col-lbl">Signification</div>
+        <div class="match-chip" data-pair="3">Régie de l'assurance maladie du Québec</div>
+        <div class="match-chip" data-pair="1">Bibliothèque et Archives nationales du Québec</div>
+        <div class="match-chip" data-pair="5">Société de l'assurance automobile du Québec</div>
+        <div class="match-chip" data-pair="2">Société des alcools du Québec</div>
+        <div class="match-chip" data-pair="6">Curriculum vitæ</div>
+        <div class="match-chip" data-pair="4">Société de transport de Montréal</div>
+      </div>
+    </div>
+    <div class="prog-note">🖊️ <b>Exercice à l'oral :</b> l'enseignant·e donne une situation, vous nommez le sigle. Exemple : « Je vais acheter du vin à la… » → la SAQ !</div>
+  </div>
+
+  <div class="gram-block">
+    <h3>② Les mots tronqués (les mots courts)</h3>
+    <p class="expl">Au Québec, on raccourcit souvent les mots à l'oral. C'est très courant et très utile à comprendre !</p>
+    <div class="match-wrap" id="tronque-match">
+      <div class="match-col">
+        <div class="match-col-lbl">Mot court</div>
+        <div class="match-chip" data-pair="1">la bibli</div>
+        <div class="match-chip" data-pair="2">l'ordi</div>
+        <div class="match-chip" data-pair="3">le cell</div>
+        <div class="match-chip" data-pair="4">la télé</div>
+        <div class="match-chip" data-pair="5">le prof</div>
+        <div class="match-chip" data-pair="6">la météo</div>
+      </div>
+      <div class="match-col">
+        <div class="match-col-lbl">Mot standard</div>
+        <div class="match-chip" data-pair="4">la télévision</div>
+        <div class="match-chip" data-pair="2">l'ordinateur</div>
+        <div class="match-chip" data-pair="6">la météorologie</div>
+        <div class="match-chip" data-pair="1">la bibliothèque</div>
+        <div class="match-chip" data-pair="5">le professeur</div>
+        <div class="match-chip" data-pair="3">le cellulaire</div>
+      </div>
+    </div>
+    <div class="prog-note">🖊️ <b>Exercice en dyade :</b> votre partenaire dit le mot court, vous dites le mot long. Puis on inverse.</div>
+  </div>
+
+  <div class="gram-block">
+    <h3>③ Les verbes emprunter, rendre, prêter</h3>
+    <p class="expl">Attention ! Ces trois verbes sont souvent confondus. Regardez bien qui fait l'action.</p>
+    <div class="verbe-grid">
+      <div class="verbe-card"><h4>Emprunter</h4><p>Je prends un livre à la bibliothèque. → <strong>J'emprunte</strong> un livre.</p></div>
+      <div class="verbe-card"><h4>Rendre</h4><p>Je redonne le livre à la bibliothèque. → Je <strong>rends</strong> le livre.</p></div>
+      <div class="verbe-card"><h4>Prêter</h4><p>Je donne mon livre à un ami pour un moment. → Je <strong>prête</strong> mon livre.</p></div>
+    </div>
+    <div class="fill-ex">
+      Hier, j'<input type="text" placeholder="__________"> (emprunter) deux romans. Demain, je vais les <input type="text" placeholder="__________"> (rendre).
+    </div>
+    <div class="prog-note">✏️ Puis inventez deux phrases avec le verbe « prêter » dans votre cahier.</div>
+  </div>
+</div>
+
+<!-- 4. PHRASES UTILES -->
+<div class="sec">
+  <div class="sec-lbl">
+    <div class="sec-num">4</div>
+    <div class="sec-title">Banque de phrases utiles</div>
+  </div>
+  <div class="phrase-grid">
+    <div class="phrase-card"><h4>Pour s'inscrire</h4><p>Je voudrais m'inscrire. · Est-ce que c'est gratuit ? · Qu'est-ce qu'il me faut ?</p></div>
+    <div class="phrase-card"><h4>Pour emprunter</h4><p>Je voudrais emprunter ce livre. · Combien puis-je en prendre ? · Pour combien de temps ?</p></div>
+    <div class="phrase-card"><h4>Pour rendre</h4><p>Je viens rendre ces documents. · Est-ce que je peux prolonger ?</p></div>
+    <div class="phrase-card"><h4>Pour chercher</h4><p>Je cherche… · Où est-ce que je peux trouver… ? · C'est à quel étage ?</p></div>
+    <div class="phrase-card" style="grid-column:1/-1"><h4>Pour être poli</h4><p>Excusez-moi… · S'il vous plaît. · Merci beaucoup ! · Pourriez-vous m'aider ?</p></div>
+  </div>
+</div>
+
+<!-- 5. VOCABULAIRE -->
+<div class="sec">
+  <div class="sec-lbl">
+    <div class="sec-num">5</div>
+    <div class="sec-title">Vocabulaire</div>
+    <div class="sec-instr">Cliquez sur un mot pour lire sa définition</div>
+  </div>
+  <div id="vocab-grid">
+    <div class="voc"><div class="voc-word">une bibliothèque</div><div class="voc-cta">Voir la définition</div><div class="voc-def"><p>Un endroit public où on peut lire et emprunter des livres gratuitement.</p><div class="ex">Je vais à la bibliothèque chaque samedi.</div></div></div>
+    <div class="voc"><div class="voc-word">s'inscrire</div><div class="voc-cta">Voir la définition</div><div class="voc-def"><p>Donner son nom pour devenir membre d'un service.</p><div class="ex">Je m'inscris à la bibliothèque avec ma carte d'identité.</div></div></div>
+    <div class="voc"><div class="voc-word">une carte de membre</div><div class="voc-cta">Voir la définition</div><div class="voc-def"><p>La carte qui prouve qu'on est inscrit à un service.</p><div class="ex">Je montre ma carte de membre pour emprunter un livre.</div></div></div>
+    <div class="voc"><div class="voc-word">emprunter</div><div class="voc-cta">Voir la définition</div><div class="voc-def"><p>Prendre un livre pour un moment, puis le redonner.</p><div class="ex">J'emprunte trois romans pour les vacances.</div></div></div>
+    <div class="voc"><div class="voc-word">rendre</div><div class="voc-cta">Voir la définition</div><div class="voc-def"><p>Redonner ce qu'on a emprunté.</p><div class="ex">Je dois rendre ce livre avant vendredi.</div></div></div>
+    <div class="voc"><div class="voc-word">prolonger</div><div class="voc-cta">Voir la définition</div><div class="voc-def"><p>Garder le livre plus longtemps.</p><div class="ex">Je prolonge mon emprunt sur le site Web.</div></div></div>
+    <div class="voc"><div class="voc-word">gratuit / gratuite</div><div class="voc-cta">Voir la définition</div><div class="voc-def"><p>Quand on ne paie rien.</p><div class="ex">L'inscription à la bibliothèque est gratuite !</div></div></div>
+    <div class="voc"><div class="voc-word">une revue</div><div class="voc-cta">Voir la définition</div><div class="voc-def"><p>Un magazine qu'on lit régulièrement.</p><div class="ex">Je lis une revue sur les voyages.</div></div></div>
+    <div class="voc"><div class="voc-word">un document</div><div class="voc-cta">Voir la définition</div><div class="voc-def"><p>Un livre, un film, un disque ou un papier important.</p><div class="ex">On peut emprunter trente documents.</div></div></div>
+    <div class="voc"><div class="voc-word">une pièce d'identité</div><div class="voc-cta">Voir la définition</div><div class="voc-def"><p>Un papier officiel avec son nom et sa photo.</p><div class="ex">Apportez une pièce d'identité pour vous inscrire.</div></div></div>
+    <div class="voc"><div class="voc-word">un étage</div><div class="voc-cta">Voir la définition</div><div class="voc-def"><p>Un niveau dans un bâtiment (premier, deuxième…).</p><div class="ex">Les ordinateurs sont au premier étage.</div></div></div>
+    <div class="voc"><div class="voc-word">une section</div><div class="voc-cta">Voir la définition</div><div class="voc-def"><p>Une partie de la bibliothèque, avec un sujet précis.</p><div class="ex">La section des langues est au deuxième étage.</div></div></div>
+  </div>
+</div>
+
+<!-- 6. TÂCHES -->
+<div class="sec">
+  <div class="sec-lbl">
+    <div class="sec-num">6</div>
+    <div class="sec-title">Les 6 tâches</div>
+    <div class="sec-instr">En dyade ou en équipe</div>
+  </div>
+  <div class="tasks">
+    <div class="task"><div class="task-n">1</div><div class="task-t">S'inscrire</div><div class="task-d">Jeu de rôle en dyade : un·e élève est l'employé·e, l'autre s'inscrit. Épelez votre nom et donnez votre adresse. Puis on inverse.</div></div>
+    <div class="task"><div class="task-n">2</div><div class="task-t">Emprunter</div><div class="task-d">En dyade : vous voulez emprunter des documents. Demandez combien, pour combien de temps, et ce qu'on peut emprunter.</div></div>
+    <div class="task"><div class="task-n">3</div><div class="task-t">Chercher</div><div class="task-d">En dyade : vous cherchez quelque chose (un livre, un ordi, un film). Demandez où c'est et si c'est gratuit.</div></div>
+    <div class="task"><div class="task-n">4</div><div class="task-t">Les sigles</div><div class="task-d">En équipe : trouvez cinq sigles québécois et écrivez ce qu'ils signifient (BAnQ, SAQ, STM, RAMQ, SAAQ…).</div></div>
+    <div class="task"><div class="task-n">5</div><div class="task-t">Les mots courts</div><div class="task-d">En équipe : faites une liste de dix mots tronqués et de leur mot long. Puis lisez-les à la classe.</div></div>
+    <div class="task"><div class="task-n">6</div><div class="task-t">Ma visite</div><div class="task-d">Présentation orale : décrivez une visite à la bibliothèque. Qu'est-ce que vous empruntez ? Pourquoi ?</div></div>
+  </div>
+</div>
+
+<!-- 7. FICHE D'INSCRIPTION -->
+<div class="sec">
+  <div class="sec-lbl">
+    <div class="sec-num">7</div>
+    <div class="sec-title">Fiche d'inscription</div>
+    <div class="sec-instr">À remplir individuellement</div>
+  </div>
+  <div class="inscr-box">
+    <h3>📋 Fiche d'inscription — Grande Bibliothèque</h3>
+    <div class="inscr-fld"><label>Nom de famille</label><input type="text"></div>
+    <div class="inscr-fld"><label>Prénom</label><input type="text"></div>
+    <div class="inscr-fld"><label>Date de naissance (j/m/a)</label><input type="text"></div>
+    <div class="inscr-fld"><label>Adresse</label><input type="text"></div>
+    <div class="inscr-fld"><label>Ville</label><input type="text"></div>
+    <div class="inscr-fld"><label>Code postal</label><input type="text"></div>
+    <div class="inscr-fld"><label>Numéro de téléphone</label><input type="text"></div>
+    <div class="inscr-fld"><label>Courriel</label><input type="text"></div>
+    <div class="inscr-fld"><label>Pièce d'identité présentée</label><input type="text"></div>
+  </div>
+</div>
+
+<!-- 8. DÉROULEMENT -->
+<div class="sec">
+  <div class="sec-lbl">
+    <div class="sec-num">8</div>
+    <div class="sec-title">Déroulement de l'activité</div>
+    <div class="sec-instr">≈ 4 heures, divisible en 2 séances de 2 h</div>
+  </div>
+  <div class="steps">
+    <div class="step"><div class="step-n">1</div><div class="step-t">Mise en train</div><div class="step-d">15 min · Groupe</div></div>
+    <div class="step"><div class="step-n">2</div><div class="step-t">Les dialogues</div><div class="step-d">30 min · Groupe / Dyade</div></div>
+    <div class="step"><div class="step-n">3</div><div class="step-t">Les sigles</div><div class="step-d">25 min · Groupe</div></div>
+    <div class="step"><div class="step-n">4</div><div class="step-t">Les mots tronqués</div><div class="step-d">25 min · Dyade</div></div>
+    <div class="step"><div class="step-n">5</div><div class="step-t">Emprunter / rendre / prêter</div><div class="step-d">30 min · Groupe</div></div>
+    <div class="step"><div class="step-n">6</div><div class="step-t">La fiche d'inscription</div><div class="step-d">25 min · Individuel</div></div>
+    <div class="step"><div class="step-n">7</div><div class="step-t">Les tâches en dyade</div><div class="step-d">40 min · Dyade / Équipe</div></div>
+    <div class="step"><div class="step-n">8</div><div class="step-t">Présentations et clôture</div><div class="step-d">30 min · Groupe</div></div>
+  </div>
+</div>
+
+<div class="footer">Francisation · Niveau 4 (LAN-4049-8) · Sigles et acronymes · Mots tronqués · Emprunter, rendre, prêter</div>
+
+<script>
+// Dialogues reveal
+document.querySelectorAll('.dial').forEach(d => d.addEventListener('click', () => d.classList.toggle('revealed')));
+// Vocabulaire reveal
+document.querySelectorAll('.voc').forEach(v => v.addEventListener('click', () => v.classList.toggle('revealed')));
+
+// Matching games (sigles + mots tronqués)
+function setupMatch(containerId){
+  const container = document.getElementById(containerId);
+  let firstSel = null;
+  container.querySelectorAll('.match-chip').forEach(chip => {
+    chip.addEventListener('click', () => {
+      if (chip.classList.contains('matched')) return;
+      if (!firstSel) {
+        firstSel = chip;
+        chip.classList.add('sel');
+        return;
+      }
+      if (firstSel === chip) { chip.classList.remove('sel'); firstSel = null; return; }
+      if (firstSel.dataset.pair === chip.dataset.pair) {
+        firstSel.classList.remove('sel'); firstSel.classList.add('matched');
+        chip.classList.add('matched');
+      } else {
+        chip.classList.add('wrong');
+        firstSel.classList.add('wrong');
+        setTimeout(() => {
+          firstSel.classList.remove('sel','wrong');
+          chip.classList.remove('wrong');
+        }, 500);
+      }
+      firstSel = null;
+    });
+  });
+}
+setupMatch('sigle-match');
+setupMatch('tronque-match');
+
+// Reset
+document.getElementById('btn-reset').addEventListener('click', () => {
+  document.querySelectorAll('.dial,.voc').forEach(x => x.classList.remove('revealed'));
+  document.querySelectorAll('.match-chip').forEach(x => x.classList.remove('sel','matched','wrong'));
+  document.querySelectorAll('input[type="text"]').forEach(i => i.value = '');
+});
+</script>
+</body>
+</html>
