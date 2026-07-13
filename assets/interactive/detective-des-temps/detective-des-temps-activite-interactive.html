@@ -1,0 +1,258 @@
+<!DOCTYPE html>
+<html lang="fr"><head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+<title>Détective des temps</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Nunito:wght@600;700;800;900&display=swap" rel="stylesheet">
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+html,body{height:100%;background:#F4F0F8;font-family:'Nunito','Arial Rounded MT Bold',sans-serif;color:#1A2E35}
+body{display:flex;flex-direction:column;min-height:100vh}
+
+#hdr{background:#7B4F9E;color:#fff;padding:14px 32px;display:flex;align-items:center;justify-content:space-between;flex-shrink:0;box-shadow:0 3px 16px rgba(123,79,158,.3)}
+.hdr-l{display:flex;align-items:center;gap:14px}
+.hdr-ic{width:44px;height:44px;background:rgba(255,255,255,.18);border-radius:50%;display:flex;align-items:center;justify-content:center;flex-shrink:0;font-size:22px}
+.hdr-eye{font-size:11px;font-weight:800;text-transform:uppercase;letter-spacing:.2em;opacity:.7;line-height:1}
+.hdr-h1{font-size:26px;font-weight:900;line-height:1.15}
+.hdr-r{display:flex;align-items:center;gap:14px}
+#prog-chip{background:rgba(255,255,255,.15);border:2px solid rgba(255,255,255,.45);border-radius:999px;padding:8px 18px;font-size:15px;font-weight:900;white-space:nowrap}
+#btn-reset{background:rgba(255,255,255,.15);color:#fff;border:2px solid rgba(255,255,255,.45);border-radius:10px;padding:10px 18px;font-family:'Nunito',sans-serif;font-size:15px;font-weight:800;cursor:pointer;white-space:nowrap;transition:background .15s}
+#btn-reset:hover{background:rgba(255,255,255,.28)}
+
+#main{flex:1;display:flex;justify-content:center;padding:32px 20px;overflow-y:auto}
+#card{width:100%;max-width:680px;display:flex;flex-direction:column;gap:18px}
+
+#progbar{display:flex;gap:4px}
+.pseg{height:5px;flex:1;border-radius:3px;background:#E0D4EE}
+.pseg.done{background:#4ADE80}
+.pseg.now{background:#7B4F9E}
+
+#ref-toggle{align-self:flex-start;background:#fff;border:2px solid #D8C8EC;border-radius:999px;padding:7px 16px;font-family:'Nunito',sans-serif;font-size:13px;font-weight:800;color:#7B4F9E;cursor:pointer;display:flex;align-items:center;gap:6px}
+#ref-panel{display:none;background:#fff;border:2px solid #D8C8EC;border-radius:14px;padding:16px 20px}
+#ref-panel.on{display:block}
+#ref-panel h3{font-size:13px;font-weight:900;text-transform:uppercase;letter-spacing:.08em;color:#7B4F9E;margin-bottom:10px}
+.ref-grid{display:grid;grid-template-columns:1fr 1fr;gap:6px 20px}
+.ref-row{display:flex;justify-content:space-between;font-size:13px;padding:4px 0;border-bottom:1px solid #F0EAF8}
+.ref-row b{color:#4C1D95}
+.ref-row span{color:#6B6280}
+
+.qcard{background:#fff;border-radius:18px;padding:28px 30px;box-shadow:0 2px 14px rgba(0,0,0,.06)}
+.marker{display:inline-block;background:#FEF3C7;color:#92400E;font-weight:900;padding:5px 14px;border-radius:8px;font-size:16px;margin-bottom:14px}
+.sentence{font-size:21px;line-height:1.8;font-weight:700}
+.infinitive{font-size:15px;color:#8A7FA0;font-weight:700}
+#verbInput{width:170px;text-align:center;font-family:'Nunito',sans-serif;font-size:19px;font-weight:900;color:#1A2E35;border:2.5px solid #C3A8E0;border-radius:10px;padding:6px 10px;background:#F9F6FC;margin:0 4px}
+#verbInput:focus{outline:none;border-color:#7B4F9E;background:#fff}
+#verbInput.correct{border-color:#4ADE80;background:#ECFDF5;color:#166534}
+#verbInput.wrong{border-color:#F87171;background:#FEF2F2;color:#991B1B}
+
+.actions{display:flex;gap:10px;margin-top:20px}
+.btn{font-family:'Nunito',sans-serif;font-size:15px;font-weight:800;border-radius:10px;padding:12px 22px;cursor:pointer;border:2.5px solid transparent;transition:all .15s}
+.btn-primary{background:#7B4F9E;color:#fff;flex:1}
+.btn-primary:hover{background:#673F87}
+.btn-ghost{background:#F4F0F8;color:#7B4F9E;border-color:#D8C8EC}
+.btn-ghost:hover{background:#EDE4F6}
+.btn-next{background:#166534;color:#fff;flex:1;display:none}
+.btn-next.on{display:block}
+
+#feedback{display:none;border-radius:12px;padding:14px 18px;font-size:15px;line-height:1.55;font-weight:700}
+#feedback.on{display:block}
+#feedback.ok{background:#ECFDF5;color:#166534;border:2px solid #86EFAC}
+#feedback.no{background:#FEF2F2;color:#991B1B;border:2px solid #FCA5A5}
+#feedback.hint{background:#F4F0F8;color:#4C1D95;border:2px solid #D8C8EC}
+#feedback .tag{display:inline-block;background:rgba(255,255,255,.6);border-radius:6px;padding:2px 8px;font-size:12px;text-transform:uppercase;letter-spacing:.06em;margin-right:8px}
+
+#final{display:none;background:#fff;border-radius:18px;padding:36px 30px;text-align:center;box-shadow:0 2px 14px rgba(0,0,0,.06)}
+#final.on{display:block}
+#final .emoji{font-size:52px;margin-bottom:10px}
+#final h2{font-size:24px;font-weight:900;color:#1A2E35;margin-bottom:6px}
+#final p{font-size:15px;color:#6B6280;margin-bottom:20px}
+#final .score{font-size:40px;font-weight:900;color:#7B4F9E;margin-bottom:20px}
+</style>
+</head>
+<body>
+
+<div id="hdr">
+  <div class="hdr-l">
+    <div class="hdr-ic">🕵️</div>
+    <div>
+      <div class="hdr-eye">Francisation · Niveau 4</div>
+      <div class="hdr-h1">Détective des temps</div>
+    </div>
+  </div>
+  <div class="hdr-r">
+    <span id="prog-chip">Question 1 / 16</span>
+    <button id="btn-reset">↺ Recommencer</button>
+  </div>
+</div>
+
+<div id="main">
+  <div id="card">
+
+    <div id="progbar"></div>
+
+    <button id="ref-toggle">💡 Aide-mémoire des indices de temps</button>
+    <div id="ref-panel">
+      <h3>Quel indice → quel temps ?</h3>
+      <div class="ref-grid">
+        <div class="ref-row"><b>hier, la semaine dernière</b><span>passé composé</span></div>
+        <div class="ref-row"><b>chaque jour (dans le passé)</b><span>imparfait</span></div>
+        <div class="ref-row"><b>demain, bientôt, dans + durée</b><span>futur simple</span></div>
+        <div class="ref-row"><b>si + imparfait, …</b><span>conditionnel présent</span></div>
+        <div class="ref-row"><b>à ta place, pourriez-vous</b><span>conditionnel (conseil/politesse)</span></div>
+        <div class="ref-row"><b>en ce moment, maintenant</b><span>présent</span></div>
+      </div>
+    </div>
+
+    <div class="qcard">
+      <span class="marker" id="marker"></span>
+      <div class="sentence" id="sentenceBefore"></div>
+      <div class="actions">
+        <button class="btn btn-ghost" id="hintBtn">💡 Indice</button>
+        <button class="btn btn-primary" id="checkBtn">Vérifier</button>
+        <button class="btn btn-next" id="nextBtn">Suivant →</button>
+      </div>
+      <div id="feedback"></div>
+    </div>
+
+  </div>
+
+  <div id="final">
+    <div class="emoji">🏆</div>
+    <h2>Enquête terminée !</h2>
+    <p>Voici ton résultat final</p>
+    <div class="score" id="finalScore"></div>
+    <button class="btn btn-primary" id="restartBtn" style="max-width:220px;margin:0 auto">Recommencer</button>
+  </div>
+</div>
+
+<script>
+const Q = [
+  {marker:"Demain matin", before:"je", after:"tôt pour le travail.", inf:"partir", answers:["partirai"], tense:"futur simple", explain:"« Demain matin » annonce une action à venir : futur simple. Partir → je partirai."},
+  {marker:"L'été prochain", before:"nous", after:"le Vieux-Port.", inf:"visiter", answers:["visiterons"], tense:"futur simple", explain:"« L'été prochain » = futur simple. Visiter (1er groupe) : nous visiterons."},
+  {marker:"Dans dix minutes", before:"le cours", after:".", inf:"commencer", answers:["commencera"], tense:"futur simple", explain:"« Dans + durée » annonce le futur simple : il commencera."},
+  {marker:"L'année prochaine", before:"le loyer", after:"de cinquante dollars.", inf:"augmenter", answers:["augmentera"], tense:"futur simple", explain:"« L'année prochaine » = futur simple. Augmenter : il augmentera."},
+  {marker:"Dans deux ans", before:"elle", after:"ses études.", inf:"finir", answers:["finira"], tense:"futur simple", explain:"« Dans deux ans » = futur simple. Finir (2e groupe) : elle finira."},
+  {marker:"La semaine prochaine", before:"vous", after:"votre carte d'assurance maladie.", inf:"recevoir", answers:["recevrez"], tense:"futur simple", explain:"« La semaine prochaine » = futur simple. Recevoir (irrégulier) : vous recevrez."},
+  {marker:"Un jour", before:"je", after:"français couramment.", inf:"parler", answers:["parlerai"], tense:"futur simple", explain:"« Un jour » annonce un projet futur : je parlerai."},
+  {marker:"Si j'avais plus de temps", before:"je", after:"tous les soirs.", inf:"cuisiner", answers:["cuisinerais"], tense:"conditionnel présent", explain:"« Si + imparfait » annonce le conditionnel présent : je cuisinerais."},
+  {marker:"À ta place", before:"je", after:"l'autobus.", inf:"prendre", answers:["prendrais"], tense:"conditionnel présent", explain:"« À ta place » = conseil, conditionnel présent. Prendre : je prendrais."},
+  {marker:"Si je gagnais à la loterie", before:"je", after:"tout de suite.", inf:"déménager", answers:["déménagerais"], tense:"conditionnel présent", explain:"« Si + imparfait » → conditionnel présent. Déménager : je déménagerais."},
+  {marker:"Normalement", before:"on", after:"porter un masque, mais ce n'est plus obligatoire.", inf:"devoir", answers:["devrait"], tense:"conditionnel présent", explain:"Le conditionnel exprime ici une règle atténuée. Devoir : on devrait."},
+  {marker:"Formule de politesse", before:"", after:"-vous m'aider avec ce formulaire ?", inf:"pouvoir", answers:["pourriez"], tense:"conditionnel de politesse", explain:"Le conditionnel de politesse adoucit une demande : pourriez-vous… ?"},
+  {marker:"Si tu étudiais plus", before:"tu", after:"tes examens.", inf:"réussir", answers:["réussirais"], tense:"conditionnel présent", explain:"« Si + imparfait » → conditionnel. Réussir : tu réussirais."},
+  {marker:"Hier", before:"nous", after:"au marché Jean-Talon.", inf:"aller", answers:["sommes allés","sommes allées","sommes allé","sommes allée"], tense:"passé composé", explain:"« Hier » = passé composé. Aller (mouvement) se conjugue avec être : nous sommes allé(e)s."},
+  {marker:"Quand elle était étudiante, chaque matin", before:"elle", after:"un café avant de partir.", inf:"boire", answers:["buvait"], tense:"imparfait", explain:"Habitude répétée dans le passé = imparfait. Boire : elle buvait."},
+  {marker:"En ce moment", before:"je", after:"une nouvelle activité de francisation.", inf:"créer", answers:["crée"], tense:"présent", explain:"« En ce moment » = action en cours = présent. Créer : je crée."},
+];
+
+let idx = 0, score = 0, errors = 0, hintUsed = false;
+
+function buildProgbar(){
+  const bar = document.getElementById('progbar');
+  bar.innerHTML = '';
+  Q.forEach((_, i) => {
+    const seg = document.createElement('div');
+    seg.className = 'pseg' + (i < idx ? ' done' : i === idx ? ' now' : '');
+    bar.appendChild(seg);
+  });
+}
+
+function renderQuestion(){
+  const q = Q[idx];
+  document.getElementById('prog-chip').textContent = `Question ${idx+1} / ${Q.length}`;
+  document.getElementById('marker').textContent = q.marker;
+  const before = q.before ? q.before + ' ' : '';
+  document.getElementById('sentenceBefore').innerHTML =
+    before + '<input type="text" id="verbInput" placeholder="conjugue" autocomplete="off"> ' +
+    '<span class="infinitive">(' + q.inf + ')</span> ' + q.after;
+  document.getElementById('feedback').className = '';
+  document.getElementById('feedback').innerHTML = '';
+  document.getElementById('nextBtn').classList.remove('on');
+  document.getElementById('checkBtn').style.display = '';
+  document.getElementById('hintBtn').style.display = '';
+  hintUsed = false;
+  buildProgbar();
+  document.getElementById('verbInput').addEventListener('keydown', e => {
+    if (e.key === 'Enter') document.getElementById('checkBtn').click();
+  });
+  document.getElementById('verbInput').focus();
+}
+
+function normalize(s){
+  return s.trim().toLowerCase().replace(/\s+/g, ' ');
+}
+
+document.getElementById('checkBtn').addEventListener('click', () => {
+  const q = Q[idx];
+  const input = document.getElementById('verbInput');
+  const val = normalize(input.value);
+  const ok = q.answers.some(a => normalize(a) === val);
+  const fb = document.getElementById('feedback');
+  fb.classList.add('on');
+
+  if (ok){
+    input.classList.add('correct');
+    fb.className = 'feedback on ok';
+    fb.innerHTML = '<span class="tag">' + q.tense + '</span>✓ Exact ! ' + q.explain;
+    if (!hintUsed) score++;
+  } else {
+    input.classList.add('wrong');
+    fb.className = 'feedback on no';
+    fb.innerHTML = '<span class="tag">' + q.tense + '</span>✗ Pas tout à fait. ' + q.explain;
+    errors++;
+  }
+  document.getElementById('checkBtn').style.display = 'none';
+  document.getElementById('hintBtn').style.display = 'none';
+  document.getElementById('nextBtn').classList.add('on');
+  input.disabled = true;
+});
+
+document.getElementById('hintBtn').addEventListener('click', () => {
+  const q = Q[idx];
+  hintUsed = true;
+  const fb = document.getElementById('feedback');
+  fb.classList.add('on');
+  fb.className = 'feedback on hint';
+  fb.innerHTML = '<span class="tag">indice</span>💡 « ' + q.marker + ' » appelle le <b>' + q.tense + '</b>.';
+});
+
+document.getElementById('nextBtn').addEventListener('click', () => {
+  idx++;
+  if (idx >= Q.length){
+    showFinal();
+  } else {
+    renderQuestion();
+  }
+});
+
+function showFinal(){
+  document.getElementById('card').style.display = 'none';
+  const final = document.getElementById('final');
+  final.classList.add('on');
+  document.getElementById('finalScore').textContent = score + ' / ' + Q.length;
+  lmsTrack('exercise_completed', {
+    score: Math.round((score / Q.length) * 100),
+    zonesDone: score,
+    zones: Q.length,
+    firstTry: score,
+    totalErrors: errors,
+  });
+}
+
+document.getElementById('restartBtn').addEventListener('click', () => location.reload());
+document.getElementById('btn-reset').addEventListener('click', () => location.reload());
+
+document.getElementById('ref-toggle').addEventListener('click', () => {
+  document.getElementById('ref-panel').classList.toggle('on');
+});
+
+function lmsTrack(event, data) {
+  try { window.parent.postMessage(Object.assign({lms: true, event: event}, data||{}), '*'); } catch(e) {}
+}
+
+renderQuestion();
+</script>
+</body>
+</html>
