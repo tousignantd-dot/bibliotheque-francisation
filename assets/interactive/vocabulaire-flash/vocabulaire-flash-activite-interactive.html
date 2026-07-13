@@ -1,0 +1,251 @@
+<!DOCTYPE html>
+<html lang="fr"><head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+<title>Vocabulaire — Cartes mémoire</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Nunito:wght@600;700;800;900&display=swap" rel="stylesheet">
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+html,body{height:100%;background:#EEF7F0;font-family:'Nunito','Arial Rounded MT Bold',sans-serif;color:#123321}
+body{display:flex;flex-direction:column;min-height:100vh}
+
+#hdr{background:#2E7D4F;color:#fff;padding:14px 32px;display:flex;align-items:center;justify-content:space-between;flex-shrink:0;box-shadow:0 3px 16px rgba(46,125,79,.3)}
+.hdr-l{display:flex;align-items:center;gap:14px}
+.hdr-ic{width:44px;height:44px;background:rgba(255,255,255,.18);border-radius:50%;display:flex;align-items:center;justify-content:center;flex-shrink:0;font-size:22px}
+.hdr-eye{font-size:11px;font-weight:800;text-transform:uppercase;letter-spacing:.2em;opacity:.7;line-height:1}
+.hdr-h1{font-size:24px;font-weight:900;line-height:1.15}
+.hdr-r{display:flex;align-items:center;gap:12px}
+#prog-chip{background:rgba(255,255,255,.15);border:2px solid rgba(255,255,255,.45);border-radius:999px;padding:8px 18px;font-size:14px;font-weight:900;white-space:nowrap}
+
+#main{flex:1;display:flex;justify-content:center;padding:32px 20px;overflow-y:auto}
+#card{width:100%;max-width:560px;display:flex;flex-direction:column;gap:18px}
+
+/* Écran de démarrage */
+#startView .field{margin-bottom:16px}
+#startView label{display:block;font-size:13px;font-weight:800;color:#2E7D4F;margin-bottom:6px}
+#startView select{width:100%;height:44px;border:2.5px solid #B8DEC4;border-radius:10px;padding:0 14px;font-family:'Nunito',sans-serif;font-size:15px;font-weight:700;color:#123321;background:#fff}
+.start-card{background:#fff;border-radius:18px;padding:28px 30px;box-shadow:0 2px 14px rgba(0,0,0,.06)}
+.start-stats{display:flex;gap:10px;margin-bottom:18px}
+.stat-box{flex:1;background:#F0FAF3;border-radius:10px;padding:10px 14px;text-align:center}
+.stat-box .n{font-size:22px;font-weight:900;color:#2E7D4F}
+.stat-box .l{font-size:11px;font-weight:800;color:#5A8A6D;text-transform:uppercase;letter-spacing:.06em}
+
+#progbar{display:flex;gap:4px}
+.pseg{height:5px;flex:1;border-radius:3px;background:#D0EBD9}
+.pseg.done{background:#2E7D4F}
+
+/* Carte flash */
+#flashcard{background:#fff;border-radius:18px;padding:40px 32px;box-shadow:0 2px 14px rgba(0,0,0,.06);min-height:220px;display:flex;flex-direction:column;justify-content:center;align-items:center;text-align:center;gap:14px;cursor:pointer}
+.card-domaine{display:inline-block;background:#EAF6EE;color:#2E7D4F;font-size:11px;font-weight:900;text-transform:uppercase;letter-spacing:.08em;padding:4px 12px;border-radius:8px}
+.card-definition{font-size:19px;font-weight:700;line-height:1.6;color:#123321}
+.card-hint{font-size:13px;color:#7A9885;font-weight:700}
+.card-word{font-size:26px;font-weight:900;color:#2E7D4F}
+.card-exemple{font-size:15px;font-style:italic;color:#4A6B57;line-height:1.6}
+
+.actions{display:flex;gap:10px}
+.btn{font-family:'Nunito',sans-serif;font-size:15px;font-weight:800;border-radius:10px;padding:14px 18px;cursor:pointer;border:2.5px solid transparent;transition:all .15s;flex:1}
+.btn-primary{background:#2E7D4F;color:#fff}
+.btn-primary:hover{background:#256640}
+.btn-encore{background:#FEF2F2;color:#B91C1C;border-color:#FCA5A5}
+.btn-encore:hover{background:#FEE2E2}
+.btn-difficile{background:#FFF7ED;color:#92400E;border-color:#FBBF24}
+.btn-difficile:hover{background:#FEF3C7}
+.btn-facile{background:#ECFDF5;color:#166534;border-color:#86EFAC}
+.btn-facile:hover{background:#D1FAE5}
+
+/* Écran final */
+#endView{display:none;background:#fff;border-radius:18px;padding:36px 30px;text-align:center;box-shadow:0 2px 14px rgba(0,0,0,.06)}
+#endView.on{display:block}
+#endView .emoji{font-size:52px;margin-bottom:10px}
+#endView h2{font-size:24px;font-weight:900;margin-bottom:6px}
+#endView p{font-size:15px;color:#5A8A6D;margin-bottom:20px}
+
+.hidden{display:none}
+</style>
+</head>
+<body>
+
+<div id="hdr">
+  <div class="hdr-l">
+    <div class="hdr-ic">🃏</div>
+    <div>
+      <div class="hdr-eye">Francisation · Niveau 4</div>
+      <div class="hdr-h1">Vocabulaire — Cartes mémoire</div>
+    </div>
+  </div>
+  <div class="hdr-r">
+    <span id="prog-chip"></span>
+  </div>
+</div>
+
+<div id="main">
+  <div id="card">
+
+    <div id="startView">
+      <div class="start-card">
+        <div class="field">
+          <label>Domaine à réviser</label>
+          <select id="domainSelect">
+            <option value="">Tous les domaines</option>
+          </select>
+        </div>
+        <div class="start-stats" id="startStats"></div>
+        <button class="btn btn-primary" id="startBtn" style="width:100%">Commencer la session</button>
+      </div>
+    </div>
+
+    <div id="sessionView" class="hidden">
+      <div id="progbar"></div>
+      <div id="flashcard">
+        <span class="card-domaine" id="cardDomaine"></span>
+        <div class="card-definition" id="cardFront"></div>
+        <div class="card-hint" id="cardHint">👆 Clique sur la carte pour voir le mot</div>
+        <div id="cardBack" class="hidden">
+          <div class="card-word" id="cardWord"></div>
+          <div class="card-exemple" id="cardExemple"></div>
+        </div>
+      </div>
+      <div class="actions hidden" id="rateActions">
+        <button class="btn btn-encore" id="btnEncore">😵 Encore</button>
+        <button class="btn btn-difficile" id="btnDifficile">🤔 Difficile</button>
+        <button class="btn btn-facile" id="btnFacile">😊 Facile</button>
+      </div>
+    </div>
+
+    <div id="endView">
+      <div class="emoji">🎉</div>
+      <h2>Session terminée !</h2>
+      <p id="endSummary"></p>
+      <button class="btn btn-primary" id="restartBtn" style="max-width:240px;margin:0 auto">Nouvelle session</button>
+    </div>
+
+  </div>
+</div>
+
+<script>
+const params = new URLSearchParams(location.search);
+const studentCode = params.get('code') || '';
+
+let cards = [];
+let idx = 0;
+let revealed = false;
+let counts = { encore: 0, difficile: 0, facile: 0 };
+
+async function loadDomains(){
+  try {
+    const res = await fetch('/api/vocab/session?code=' + encodeURIComponent(studentCode) + '&n=1');
+    const data = await res.json();
+    if (!res.ok) return;
+    const sel = document.getElementById('domainSelect');
+    (data.domaines || []).forEach(d => {
+      const opt = document.createElement('option');
+      opt.value = d; opt.textContent = d;
+      sel.appendChild(opt);
+    });
+    document.getElementById('startStats').innerHTML =
+      '<div class="stat-box"><div class="n">' + data.dueCount + '</div><div class="l">à réviser</div></div>' +
+      '<div class="stat-box"><div class="n">' + data.newCount + '</div><div class="l">nouveaux mots</div></div>';
+  } catch (e) { /* silencieux */ }
+}
+
+document.getElementById('startBtn').addEventListener('click', startSession);
+
+async function startSession(){
+  const domain = document.getElementById('domainSelect').value;
+  try {
+    const res = await fetch('/api/vocab/session?code=' + encodeURIComponent(studentCode) + '&n=10' + (domain ? '&domain=' + encodeURIComponent(domain) : ''));
+    const data = await res.json();
+    if (!res.ok || !data.cards || data.cards.length === 0) {
+      alert('Aucune carte disponible pour le moment.');
+      return;
+    }
+    cards = data.cards;
+    idx = 0;
+    counts = { encore: 0, difficile: 0, facile: 0 };
+    document.getElementById('startView').classList.add('hidden');
+    document.getElementById('sessionView').classList.remove('hidden');
+    document.getElementById('endView').classList.remove('on');
+    renderCard();
+  } catch (e) {
+    alert('Impossible de charger les cartes. Vérifie ta connexion.');
+  }
+}
+
+function buildProgbar(){
+  const bar = document.getElementById('progbar');
+  bar.innerHTML = '';
+  cards.forEach((_, i) => {
+    const seg = document.createElement('div');
+    seg.className = 'pseg' + (i < idx ? ' done' : '');
+    bar.appendChild(seg);
+  });
+}
+
+function renderCard(){
+  const c = cards[idx];
+  document.getElementById('prog-chip').textContent = 'Carte ' + (idx+1) + ' / ' + cards.length;
+  document.getElementById('cardDomaine').textContent = c.domaine;
+  document.getElementById('cardFront').textContent = c.definition;
+  document.getElementById('cardHint').classList.remove('hidden');
+  document.getElementById('cardBack').classList.add('hidden');
+  document.getElementById('rateActions').classList.add('hidden');
+  document.getElementById('cardWord').textContent = c.mot;
+  document.getElementById('cardExemple').textContent = c.exemple;
+  revealed = false;
+  buildProgbar();
+}
+
+document.getElementById('flashcard').addEventListener('click', () => {
+  if (revealed) return;
+  revealed = true;
+  document.getElementById('cardHint').classList.add('hidden');
+  document.getElementById('cardBack').classList.remove('hidden');
+  document.getElementById('rateActions').classList.remove('hidden');
+});
+
+function rate(quality){
+  const c = cards[idx];
+  counts[quality]++;
+  fetch('/api/vocab/answer', {
+    method: 'POST',
+    headers: {'Content-Type': 'application/json'},
+    body: JSON.stringify({ code: studentCode, wordId: c.id, quality }),
+  }).catch(() => {});
+
+  idx++;
+  if (idx >= cards.length) {
+    endSession();
+  } else {
+    renderCard();
+  }
+}
+
+document.getElementById('btnEncore').addEventListener('click', () => rate('encore'));
+document.getElementById('btnDifficile').addEventListener('click', () => rate('difficile'));
+document.getElementById('btnFacile').addEventListener('click', () => rate('facile'));
+
+function endSession(){
+  document.getElementById('sessionView').classList.add('hidden');
+  document.getElementById('endView').classList.add('on');
+  document.getElementById('endSummary').textContent =
+    cards.length + ' mots revus — ' + counts.facile + ' faciles, ' + counts.difficile + ' difficiles, ' + counts.encore + ' à revoir.';
+  document.getElementById('prog-chip').textContent = '';
+  lmsTrack('exercise_completed', { zonesDone: cards.length, score: Math.round((counts.facile / cards.length) * 100) });
+}
+
+document.getElementById('restartBtn').addEventListener('click', () => {
+  document.getElementById('endView').classList.remove('on');
+  document.getElementById('startView').classList.remove('hidden');
+  loadDomains();
+});
+
+function lmsTrack(event, data) {
+  try { window.parent.postMessage(Object.assign({lms: true, event: event}, data||{}), '*'); } catch(e) {}
+}
+
+loadDomains();
+</script>
+</body>
+</html>

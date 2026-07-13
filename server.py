@@ -19,7 +19,7 @@ import io
 import random
 import string
 from pathlib import Path
-from datetime import date, datetime
+from datetime import date, datetime, timedelta
 
 BASE_DIR = Path(__file__).parent.resolve()
 
@@ -36,6 +36,7 @@ DATA_FILE       = STORAGE_DIR / "data" / "activities.json"
 STUDENTS_FILE   = STORAGE_DIR / "data" / "students.json"
 ACCESS_LOG_FILE = STORAGE_DIR / "data" / "access_log.json"
 PROGRESS_FILE   = STORAGE_DIR / "data" / "progress.json"
+VOCAB_PROGRESS_FILE = STORAGE_DIR / "data" / "vocab_progress.json"
 
 PORT = int(os.environ.get('PORT', 5173))
 
@@ -195,6 +196,77 @@ def save_progress(data):
         json.dump(data, f, ensure_ascii=False, indent=2)
 
 
+def load_vocab_progress():
+    if VOCAB_PROGRESS_FILE.exists():
+        with open(VOCAB_PROGRESS_FILE, "r", encoding="utf-8") as f:
+            return json.load(f)
+    return []
+
+
+def save_vocab_progress(data):
+    VOCAB_PROGRESS_FILE.parent.mkdir(parents=True, exist_ok=True)
+    with open(VOCAB_PROGRESS_FILE, "w", encoding="utf-8") as f:
+        json.dump(data, f, ensure_ascii=False, indent=2)
+
+
+# Boîtes de répétition espacée (système Leitner) : plus la boîte est haute,
+# plus l'intervalle avant la prochaine révision est grand.
+VOCAB_INTERVALS_DAYS = [0, 1, 3, 7, 14, 30, 60]
+
+VOCAB_BANK = [
+    {"id": "w1",  "mot": "un rendez-vous", "domaine": "Santé", "definition": "Un moment fixé à l'avance pour voir quelqu'un.", "exemple": "J'ai un rendez-vous à dix heures avec le docteur."},
+    {"id": "w2",  "mot": "la salle d'attente", "domaine": "Santé", "definition": "L'endroit où on attend avant de voir le médecin.", "exemple": "Prenez un siège dans la salle d'attente."},
+    {"id": "w3",  "mot": "la carte d'assurance maladie", "domaine": "Santé", "definition": "Le document qui donne accès aux soins de santé gratuits au Québec.", "exemple": "Avez-vous votre carte d'assurance maladie avec vous ?"},
+    {"id": "w4",  "mot": "tousser", "domaine": "Santé", "definition": "Faire un bruit sec avec la gorge à cause d'une irritation.", "exemple": "Est-ce que vous toussez beaucoup ?"},
+    {"id": "w5",  "mot": "un sirop", "domaine": "Santé", "definition": "Un médicament liquide et sucré.", "exemple": "Je vais vous prescrire un sirop pour la gorge."},
+    {"id": "w6",  "mot": "un antibiotique", "domaine": "Santé", "definition": "Un médicament qui combat une infection.", "exemple": "Le docteur m'a mis sous antibiotique."},
+    {"id": "w7",  "mot": "la fièvre", "domaine": "Santé", "definition": "Une température du corps plus élevée que la normale.", "exemple": "Vous n'avez pas de fièvre."},
+    {"id": "w8",  "mot": "empirer", "domaine": "Santé", "definition": "Devenir pire.", "exemple": "J'ai peur que ma toux empire."},
+    {"id": "w9",  "mot": "un symptôme", "domaine": "Santé", "definition": "Un signe qui indique une maladie.", "exemple": "Quels sont vos symptômes ?"},
+    {"id": "w10", "mot": "un spécialiste", "domaine": "Santé", "definition": "Un médecin expert dans un domaine précis.", "exemple": "Le médecin m'a référé à un spécialiste."},
+    {"id": "w11", "mot": "la prévention", "domaine": "Santé", "definition": "Les actions pour éviter une maladie.", "exemple": "La prévention est importante pour rester en santé."},
+    {"id": "w12", "mot": "fraîches", "domaine": "Consommation", "definition": "Récemment récoltées ou préparées, pas vieilles.", "exemple": "Les fraises sont très fraîches."},
+    {"id": "w13", "mot": "un rabais", "domaine": "Consommation", "definition": "Une réduction de prix.", "exemple": "Les fraises sont en rabais cette semaine."},
+    {"id": "w14", "mot": "un produit local", "domaine": "Consommation", "definition": "Un aliment cultivé ou fabriqué dans la région.", "exemple": "Ce sont des produits locaux du Québec."},
+    {"id": "w15", "mot": "un kilo", "domaine": "Consommation", "definition": "Une unité de poids (1000 grammes).", "exemple": "Je prends un kilo de pommes."},
+    {"id": "w16", "mot": "le réfrigérateur", "domaine": "Consommation", "definition": "L'appareil qui garde les aliments au froid.", "exemple": "Gardez-les au réfrigérateur."},
+    {"id": "w17", "mot": "le fromage en grains", "domaine": "Consommation", "definition": "Un fromage frais utilisé dans la poutine.", "exemple": "La poutine, c'est des frites, du fromage en grains et de la sauce."},
+    {"id": "w18", "mot": "un kiosque", "domaine": "Consommation", "definition": "Un petit comptoir de vente au marché.", "exemple": "On peut parler avec les gens aux kiosques du marché."},
+    {"id": "w19", "mot": "le loyer", "domaine": "Logement", "definition": "Le montant payé chaque mois pour habiter un logement.", "exemple": "Le loyer est de 950 $ par mois."},
+    {"id": "w20", "mot": "un quatre et demi", "domaine": "Logement", "definition": "Un appartement avec quatre pièces plus la salle de bain.", "exemple": "C'est un beau quatre et demi."},
+    {"id": "w21", "mot": "le bail", "domaine": "Logement", "definition": "Le contrat de location d'un logement.", "exemple": "J'ai signé le bail hier."},
+    {"id": "w22", "mot": "le chauffage", "domaine": "Logement", "definition": "Le système qui réchauffe un logement.", "exemple": "Le chauffage ne fonctionne plus."},
+    {"id": "w23", "mot": "un dépôt", "domaine": "Logement", "definition": "Une somme d'argent versée en garantie.", "exemple": "Le propriétaire demande un dépôt."},
+    {"id": "w24", "mot": "déménager", "domaine": "Logement", "definition": "Changer de logement.", "exemple": "Je déménage la semaine prochaine."},
+    {"id": "w25", "mot": "les meubles", "domaine": "Logement", "definition": "Les objets comme une table, un lit, une chaise.", "exemple": "On a acheté de nouveaux meubles."},
+    {"id": "w26", "mot": "une tâche", "domaine": "Monde du travail", "definition": "Un travail précis à faire.", "exemple": "Voici tes tâches pour aujourd'hui."},
+    {"id": "w27", "mot": "un superviseur", "domaine": "Monde du travail", "definition": "La personne qui dirige les employés.", "exemple": "Mon superviseur m'a expliqué mon horaire."},
+    {"id": "w28", "mot": "un horaire", "domaine": "Monde du travail", "definition": "La liste des heures de travail.", "exemple": "Est-ce qu'il y a une pause dans mon horaire ?"},
+    {"id": "w29", "mot": "accueillir", "domaine": "Monde du travail", "definition": "Recevoir quelqu'un avec politesse.", "exemple": "Tu accueilles les clients à la porte."},
+    {"id": "w30", "mot": "une pause", "domaine": "Monde du travail", "definition": "Un moment de repos pendant le travail.", "exemple": "Il y a une pause à dix heures."},
+    {"id": "w31", "mot": "une équipe", "domaine": "Loisirs", "definition": "Un groupe de personnes qui jouent ensemble.", "exemple": "Je joue au hockey en équipe."},
+    {"id": "w32", "mot": "individuel", "domaine": "Loisirs", "definition": "Qui se pratique seul.", "exemple": "La natation est un sport individuel."},
+    {"id": "w33", "mot": "disputer un match", "domaine": "Loisirs", "definition": "Jouer une partie sportive.", "exemple": "On dispute un match tous les samedis."},
+    {"id": "w34", "mot": "le métro", "domaine": "Vie citoyenne — orientation", "definition": "Un train souterrain de transport en commun.", "exemple": "Vous prenez la ligne verte du métro."},
+    {"id": "w35", "mot": "une correspondance", "domaine": "Vie citoyenne — orientation", "definition": "Un changement de ligne de métro ou d'autobus.", "exemple": "À Berri-UQAM, vous faites une correspondance."},
+    {"id": "w36", "mot": "une station", "domaine": "Vie citoyenne — orientation", "definition": "Un arrêt de métro.", "exemple": "Descendez à la station Champ-de-Mars."},
+    {"id": "w37", "mot": "un belvédère", "domaine": "Culture / histoire", "definition": "Un endroit en hauteur pour admirer la vue.", "exemple": "Du belvédère, on voit toute la ville."},
+    {"id": "w38", "mot": "un explorateur", "domaine": "Culture / histoire", "definition": "Une personne qui découvre de nouveaux lieux.", "exemple": "Jacques Cartier était un explorateur."},
+    {"id": "w39", "mot": "le fleuve", "domaine": "Culture / histoire", "definition": "Un grand cours d'eau qui se jette dans la mer.", "exemple": "On voit le fleuve Saint-Laurent."},
+    {"id": "w40", "mot": "une croisière", "domaine": "Culture / loisirs", "definition": "Une promenade en bateau.", "exemple": "Il y a une croisière sur le fleuve."},
+    {"id": "w41", "mot": "un pédalo", "domaine": "Culture / loisirs", "definition": "Un petit bateau à pédales.", "exemple": "On peut faire du pédalo au Vieux-Port."},
+    {"id": "w42", "mot": "un spectacle", "domaine": "Culture / loisirs", "definition": "Une présentation artistique devant un public.", "exemple": "Le Cirque du Soleil présente un nouveau spectacle."},
+    {"id": "w43", "mot": "une exposition", "domaine": "Culture / histoire", "definition": "Une présentation d'objets à voir dans un musée.", "exemple": "Il y a une nouvelle exposition au musée."},
+    {"id": "w44", "mot": "un athlète", "domaine": "Culture / histoire", "definition": "Une personne qui pratique un sport de haut niveau.", "exemple": "L'athlète a gagné une médaille."},
+    {"id": "w45", "mot": "une médaille", "domaine": "Culture / histoire", "definition": "Une récompense donnée aux gagnants d'une compétition.", "exemple": "Il a gagné la médaille d'argent."},
+    {"id": "w46", "mot": "un exploit", "domaine": "Culture / histoire", "definition": "Une action remarquable et difficile à réaliser.", "exemple": "L'exposition présente un grand exploit sportif."},
+    {"id": "w47", "mot": "une basilique", "domaine": "Culture / histoire", "definition": "Une très grande église importante.", "exemple": "La basilique Notre-Dame est magnifique."},
+    {"id": "w48", "mot": "pavée", "domaine": "Culture / histoire", "definition": "Couverte de pierres, en parlant d'une rue.", "exemple": "Les rues du Vieux-Montréal sont pavées."},
+    {"id": "w49", "mot": "un attrait", "domaine": "Culture / loisirs", "definition": "Un lieu ou une chose qui attire les visiteurs.", "exemple": "Le Vieux-Port est un attrait touristique."},
+    {"id": "w50", "mot": "fonder", "domaine": "Culture / histoire", "definition": "Créer une ville ou une organisation pour la première fois.", "exemple": "Montréal a été fondée en 1642."},
+]
+
+
 def generate_code(existing_codes):
     chars = [c for c in string.ascii_uppercase + string.digits if c not in "OI01"]
     for _ in range(100):
@@ -284,6 +356,9 @@ class Handler(http.server.SimpleHTTPRequestHandler):
         if path == "/api/student/activities":
             self._handle_student_activities(params)
             return
+        if path == "/api/vocab/session":
+            self._handle_vocab_session(params)
+            return
         if path == "/api/admin/students":
             json_response(self, load_students())
             return
@@ -343,6 +418,8 @@ class Handler(http.server.SimpleHTTPRequestHandler):
             self._handle_correct_french()
         elif path == "/api/correct-email":
             self._handle_correct_email()
+        elif path == "/api/vocab/answer":
+            self._handle_vocab_answer()
         elif path == "/api/activities":
             self._handle_add()
         elif re.match(r"^/api/activities/\d+/update$", path):
@@ -674,6 +751,90 @@ class Handler(http.server.SimpleHTTPRequestHandler):
             json_response(self, {"error": "Code invalide"}, 401)
             return
         json_response(self, {"success": True, "studentId": student["id"], "label": student.get("label", "")})
+
+    def _handle_vocab_session(self, params):
+        code = params.get("code", [""])[0].strip().upper()
+        student = validate_student_code(code)
+        if not student:
+            json_response(self, {"error": "Non autorisé"}, 401)
+            return
+
+        domain = params.get("domain", [""])[0]
+        try:
+            n = max(1, min(30, int(params.get("n", ["10"])[0])))
+        except ValueError:
+            n = 10
+
+        pool = [w for w in VOCAB_BANK if not domain or w["domaine"] == domain]
+        progress = load_vocab_progress()
+        by_word = {
+            p["wordId"]: p for p in progress if p["studentId"] == student["id"]
+        }
+
+        today = date.today().isoformat()
+        due = []
+        new = []
+        for w in pool:
+            p = by_word.get(w["id"])
+            if p is None:
+                new.append(w)
+            elif p["dueDate"] <= today:
+                due.append((p["box"], w))
+
+        due.sort(key=lambda pair: pair[0])
+        selected = [w for _, w in due[:n]]
+        if len(selected) < n:
+            selected += new[: n - len(selected)]
+        random.shuffle(selected)
+
+        json_response(self, {
+            "cards": selected,
+            "domaines": sorted(set(w["domaine"] for w in VOCAB_BANK)),
+            "dueCount": len(due),
+            "newCount": len(new),
+        })
+
+    def _handle_vocab_answer(self):
+        length = int(self.headers.get("Content-Length", 0))
+        body = json.loads(self.rfile.read(length))
+        code = body.get("code", "").strip().upper()
+        student = validate_student_code(code)
+        if not student:
+            json_response(self, {"error": "Non autorisé"}, 401)
+            return
+
+        word_id = body.get("wordId", "")
+        quality = body.get("quality", "")
+        if quality not in ("encore", "difficile", "facile"):
+            json_response(self, {"error": "Valeur invalide"}, 400)
+            return
+        if not any(w["id"] == word_id for w in VOCAB_BANK):
+            json_response(self, {"error": "Mot inconnu"}, 400)
+            return
+
+        progress = load_vocab_progress()
+        entry = next(
+            (p for p in progress
+             if p["studentId"] == student["id"] and p["wordId"] == word_id),
+            None,
+        )
+        if entry is None:
+            entry = {"studentId": student["id"], "wordId": word_id, "box": 0, "dueDate": "", "lastReview": None}
+            progress.append(entry)
+
+        box = entry["box"]
+        if quality == "encore":
+            box = 0
+        elif quality == "facile":
+            box = min(box + 1, len(VOCAB_INTERVALS_DAYS) - 1)
+        # "difficile" garde la même boîte
+
+        entry["box"] = box
+        entry["dueDate"] = (date.today() + timedelta(days=VOCAB_INTERVALS_DAYS[box])).isoformat()
+        entry["lastReview"] = datetime.now().isoformat(timespec="seconds")
+        save_vocab_progress(progress)
+
+        json_response(self, {"success": True, "box": box, "dueDate": entry["dueDate"]})
 
     def _handle_student_activities(self, params):
         code = params.get("code", [""])[0].strip().upper()
