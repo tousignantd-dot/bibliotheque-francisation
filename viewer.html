@@ -74,7 +74,14 @@
   const code       = params.get('code') || '';
 
   document.getElementById('actTitle').textContent = title;
-  document.getElementById('actFrame').src = src;
+  // Relayer le code élève à l'iframe (ex. pour authentifier un appel API
+  // fait depuis l'activité, comme la correction assistée par IA).
+  if (src && code) {
+    const sep = src.includes('?') ? '&' : '?';
+    document.getElementById('actFrame').src = src + sep + 'code=' + encodeURIComponent(code);
+  } else {
+    document.getElementById('actFrame').src = src;
+  }
 
   // ── Suivi d'événements ──────────────────────────────────────────────────
 

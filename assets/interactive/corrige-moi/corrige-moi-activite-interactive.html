@@ -1,0 +1,292 @@
+<!DOCTYPE html>
+<html lang="fr"><head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+<title>Corrige-moi !</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Nunito:wght@600;700;800;900&display=swap" rel="stylesheet">
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+html,body{height:100%;background:#EAF6F4;font-family:'Nunito','Arial Rounded MT Bold',sans-serif;color:#123B36}
+body{display:flex;flex-direction:column;min-height:100vh}
+
+#hdr{background:#1F8A8F;color:#fff;padding:14px 32px;display:flex;align-items:center;justify-content:space-between;flex-shrink:0;box-shadow:0 3px 16px rgba(31,138,143,.3)}
+.hdr-l{display:flex;align-items:center;gap:14px}
+.hdr-ic{width:44px;height:44px;background:rgba(255,255,255,.18);border-radius:50%;display:flex;align-items:center;justify-content:center;flex-shrink:0;font-size:22px}
+.hdr-eye{font-size:11px;font-weight:800;text-transform:uppercase;letter-spacing:.2em;opacity:.7;line-height:1}
+.hdr-h1{font-size:26px;font-weight:900;line-height:1.15}
+#counter-chip{background:rgba(255,255,255,.15);border:2px solid rgba(255,255,255,.45);border-radius:999px;padding:8px 18px;font-size:15px;font-weight:900;white-space:nowrap}
+
+#main{flex:1;display:flex;justify-content:center;padding:32px 20px;overflow-y:auto}
+#card{width:100%;max-width:640px;display:flex;flex-direction:column;gap:18px}
+
+.intro{background:#D7EFEA;border-radius:14px;padding:14px 18px;font-size:15px;line-height:1.6;color:#0F5851;font-weight:700}
+
+.mic-zone{background:#fff;border-radius:18px;padding:32px 30px;box-shadow:0 2px 14px rgba(0,0,0,.06);display:flex;flex-direction:column;align-items:center;gap:16px}
+#micBtn{width:96px;height:96px;border-radius:50%;border:none;background:#1F8A8F;color:#fff;font-size:38px;cursor:pointer;display:flex;align-items:center;justify-content:center;transition:transform .15s,background .15s;box-shadow:0 4px 18px rgba(31,138,143,.35)}
+#micBtn:hover{background:#186F73}
+#micBtn.listening{background:#D8492E;animation:pulse 1.2s infinite}
+#micBtn:disabled{opacity:.5;cursor:not-allowed}
+@keyframes pulse{0%{box-shadow:0 0 0 0 rgba(216,73,46,.45)}70%{box-shadow:0 0 0 20px rgba(216,73,46,0)}100%{box-shadow:0 0 0 0 rgba(216,73,46,0)}}
+#micLabel{font-size:15px;font-weight:800;color:#5A7A76}
+
+#transcriptWrap{width:100%;display:none}
+#transcriptWrap.on{display:block}
+#transcriptLabel{font-size:13px;font-weight:800;text-transform:uppercase;letter-spacing:.08em;color:#5A7A76;margin-bottom:6px}
+#transcriptBox{width:100%;min-height:70px;border:2.5px solid #C3E4DE;border-radius:12px;padding:12px 16px;font-family:'Nunito',sans-serif;font-size:17px;font-weight:700;color:#123B36;background:#F7FCFB;resize:vertical}
+#transcriptBox:focus{outline:none;border-color:#1F8A8F}
+
+.textFallback{display:none;width:100%;gap:10px}
+.textFallback.on{display:flex}
+
+.actions{display:flex;gap:10px;margin-top:8px}
+.btn{font-family:'Nunito',sans-serif;font-size:15px;font-weight:800;border-radius:10px;padding:12px 22px;cursor:pointer;border:2.5px solid transparent;transition:all .15s}
+.btn-primary{background:#1F8A8F;color:#fff;flex:1}
+.btn-primary:hover{background:#186F73}
+.btn-primary:disabled{opacity:.5;cursor:not-allowed}
+.btn-ghost{background:#EAF6F4;color:#1F8A8F;border-color:#C3E4DE}
+.btn-ghost:hover{background:#D7EFEA}
+
+#resultCard{display:none;background:#fff;border-radius:18px;padding:26px 28px;box-shadow:0 2px 14px rgba(0,0,0,.06)}
+#resultCard.on{display:block}
+.res-label{font-size:12px;font-weight:800;text-transform:uppercase;letter-spacing:.08em;color:#8A8A80;margin-bottom:4px}
+.res-original{font-size:15px;color:#7A7A70;font-style:italic;margin-bottom:16px;line-height:1.5}
+.res-corrige{font-size:20px;font-weight:800;color:#0F5851;background:#ECFDF5;border:2px solid #86EFAC;border-radius:12px;padding:14px 18px;margin-bottom:16px;line-height:1.55}
+.res-perfect{font-size:16px;font-weight:800;color:#0F5851}
+.err-item{background:#FFF7ED;border-left:4px solid #F59E0B;border-radius:0 8px 8px 0;padding:10px 14px;font-size:14px;line-height:1.55;color:#7C4A03;margin-bottom:8px;font-weight:700}
+#errWrap{margin-top:6px}
+
+#statusMsg{font-size:14px;font-weight:800;color:#8A8A80;text-align:center;display:none}
+#statusMsg.on{display:block}
+#errorMsg{font-size:14px;font-weight:800;color:#B91C1C;background:#FEF2F2;border:2px solid #FCA5A5;border-radius:10px;padding:12px 16px;display:none}
+#errorMsg.on{display:block}
+
+.spin{display:inline-block;width:14px;height:14px;border:2.5px solid #C3E4DE;border-top-color:#1F8A8F;border-radius:50%;animation:spin .7s linear infinite;margin-right:8px;vertical-align:-2px}
+@keyframes spin{to{transform:rotate(360deg)}}
+</style>
+</head>
+<body>
+
+<div id="hdr">
+  <div class="hdr-l">
+    <div class="hdr-ic">🎙️</div>
+    <div>
+      <div class="hdr-eye">Francisation · Niveau 4</div>
+      <div class="hdr-h1">Corrige-moi !</div>
+    </div>
+  </div>
+  <span id="counter-chip">0 phrase corrigée</span>
+</div>
+
+<div id="main">
+  <div id="card">
+
+    <div class="intro">🎯 Parle en français à voix haute (ou écris ta phrase). L'assistant transcrit, corrige et t'explique les erreurs.</div>
+
+    <div class="mic-zone">
+      <button id="micBtn" aria-label="Parler"><span id="micIcon">🎤</span></button>
+      <div id="micLabel">Appuie et parle</div>
+
+      <div class="textFallback" id="textFallback">
+        <textarea id="fallbackInput" placeholder="Écris ta phrase ici…" style="flex:1;min-height:60px;border:2.5px solid #C3E4DE;border-radius:12px;padding:10px 14px;font-family:'Nunito',sans-serif;font-size:16px;font-weight:700;color:#123B36"></textarea>
+      </div>
+
+      <div id="transcriptWrap">
+        <div id="transcriptLabel">Ta phrase (tu peux la corriger avant d'envoyer)</div>
+        <textarea id="transcriptBox"></textarea>
+        <div class="actions">
+          <button class="btn btn-ghost" id="retryBtn">↺ Recommencer</button>
+          <button class="btn btn-primary" id="correctBtn">Corriger ma phrase</button>
+        </div>
+      </div>
+
+      <div id="statusMsg"><span class="spin"></span>Correction en cours…</div>
+      <div id="errorMsg"></div>
+    </div>
+
+    <div id="resultCard">
+      <div class="res-label">Tu as dit</div>
+      <div class="res-original" id="resOriginal"></div>
+      <div id="resBody"></div>
+      <div id="errWrap"></div>
+      <div class="actions">
+        <button class="btn btn-primary" id="againBtn">🎤 Dire une autre phrase</button>
+      </div>
+    </div>
+
+  </div>
+</div>
+
+<script>
+const params = new URLSearchParams(location.search);
+const studentCode = params.get('code') || '';
+let correctedCount = 0;
+
+const micBtn = document.getElementById('micBtn');
+const micLabel = document.getElementById('micLabel');
+const transcriptWrap = document.getElementById('transcriptWrap');
+const transcriptBox = document.getElementById('transcriptBox');
+const textFallback = document.getElementById('textFallback');
+const fallbackInput = document.getElementById('fallbackInput');
+const statusMsg = document.getElementById('statusMsg');
+const errorMsg = document.getElementById('errorMsg');
+const resultCard = document.getElementById('resultCard');
+
+const SpeechRecognitionCtor = window.SpeechRecognition || window.webkitSpeechRecognition;
+let recognition = null;
+let listening = false;
+
+function showError(msg){
+  errorMsg.textContent = msg;
+  errorMsg.classList.add('on');
+}
+function hideError(){ errorMsg.classList.remove('on'); }
+
+if (SpeechRecognitionCtor) {
+  recognition = new SpeechRecognitionCtor();
+  recognition.lang = 'fr-CA';
+  recognition.interimResults = false;
+  recognition.maxAlternatives = 1;
+
+  recognition.addEventListener('start', () => {
+    listening = true;
+    micBtn.classList.add('listening');
+    micLabel.textContent = 'J\'écoute… parle maintenant';
+    hideError();
+  });
+
+  recognition.addEventListener('result', (e) => {
+    const text = e.results[0][0].transcript;
+    transcriptBox.value = text;
+    transcriptWrap.classList.add('on');
+    transcriptBox.focus();
+  });
+
+  recognition.addEventListener('error', (e) => {
+    listening = false;
+    micBtn.classList.remove('listening');
+    micLabel.textContent = 'Appuie et parle';
+    if (e.error === 'not-allowed' || e.error === 'service-not-allowed') {
+      showError('Le micro est bloqué. Autorise le micro dans ton navigateur, ou écris ta phrase ci-dessous.');
+      switchToFallback();
+    } else if (e.error === 'no-speech') {
+      showError('Je n\'ai rien entendu. Réessaie !');
+    } else {
+      showError('Problème avec le micro. Tu peux écrire ta phrase à la place.');
+      switchToFallback();
+    }
+  });
+
+  recognition.addEventListener('end', () => {
+    listening = false;
+    micBtn.classList.remove('listening');
+    micLabel.textContent = 'Appuie et parle';
+  });
+
+  micBtn.addEventListener('click', () => {
+    if (listening) { recognition.stop(); return; }
+    hideError();
+    resultCard.classList.remove('on');
+    try { recognition.start(); } catch(err) { /* déjà démarré */ }
+  });
+} else {
+  switchToFallback();
+}
+
+function switchToFallback(){
+  document.querySelector('.mic-zone > button').style.display = 'none';
+  micLabel.style.display = 'none';
+  textFallback.classList.add('on');
+  const sendBtn = document.createElement('button');
+  sendBtn.className = 'btn btn-primary';
+  sendBtn.textContent = 'Utiliser cette phrase';
+  sendBtn.style.marginTop = '10px';
+  sendBtn.addEventListener('click', () => {
+    if (!fallbackInput.value.trim()) return;
+    transcriptBox.value = fallbackInput.value.trim();
+    transcriptWrap.classList.add('on');
+  });
+  textFallback.appendChild(sendBtn);
+}
+
+document.getElementById('retryBtn').addEventListener('click', () => {
+  transcriptWrap.classList.remove('on');
+  transcriptBox.value = '';
+  fallbackInput.value = '';
+  hideError();
+});
+
+document.getElementById('correctBtn').addEventListener('click', async () => {
+  const text = transcriptBox.value.trim();
+  if (!text) return;
+  hideError();
+  statusMsg.classList.add('on');
+  document.getElementById('correctBtn').disabled = true;
+
+  try {
+    const res = await fetch('/api/correct-french', {
+      method: 'POST',
+      headers: {'Content-Type': 'application/json'},
+      body: JSON.stringify({ code: studentCode, text }),
+    });
+    const data = await res.json();
+    statusMsg.classList.remove('on');
+    document.getElementById('correctBtn').disabled = false;
+
+    if (!res.ok) {
+      showError(data.error || 'Une erreur est survenue. Réessaie.');
+      return;
+    }
+
+    renderResult(data);
+    transcriptWrap.classList.remove('on');
+    correctedCount++;
+    document.getElementById('counter-chip').textContent =
+      correctedCount + (correctedCount > 1 ? ' phrases corrigées' : ' phrase corrigée');
+    lmsTrack('exercise_completed', { zonesDone: correctedCount, score: null });
+  } catch (err) {
+    statusMsg.classList.remove('on');
+    document.getElementById('correctBtn').disabled = false;
+    showError('Impossible de joindre le service de correction. Vérifie ta connexion.');
+  }
+});
+
+function renderResult(data){
+  document.getElementById('resOriginal').textContent = '« ' + data.original + ' »';
+  const body = document.getElementById('resBody');
+  const errWrap = document.getElementById('errWrap');
+  errWrap.innerHTML = '';
+
+  if (data.memePhrase) {
+    body.innerHTML = '<div class="res-perfect">✓ Très bien ! Ta phrase était déjà correcte.</div>';
+  } else {
+    body.innerHTML = '<div class="res-label">Phrase corrigée</div><div class="res-corrige">' + escHtml(data.corrige) + '</div>';
+    (data.erreurs || []).forEach(err => {
+      const div = document.createElement('div');
+      div.className = 'err-item';
+      div.textContent = '💡 ' + err.explication;
+      errWrap.appendChild(div);
+    });
+  }
+  resultCard.classList.add('on');
+  resultCard.scrollIntoView({behavior:'smooth', block:'center'});
+}
+
+document.getElementById('againBtn').addEventListener('click', () => {
+  resultCard.classList.remove('on');
+  transcriptBox.value = '';
+  fallbackInput.value = '';
+  transcriptWrap.classList.remove('on');
+});
+
+function escHtml(s){
+  return s.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');
+}
+
+function lmsTrack(event, data) {
+  try { window.parent.postMessage(Object.assign({lms: true, event: event}, data||{}), '*'); } catch(e) {}
+}
+</script>
+</body>
+</html>

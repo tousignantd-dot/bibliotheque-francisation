@@ -10,6 +10,8 @@ import os
 import shutil
 import cgi
 import urllib.parse
+import urllib.request
+import urllib.error
 import unicodedata
 import re
 import zipfile
@@ -337,6 +339,8 @@ class Handler(http.server.SimpleHTTPRequestHandler):
             json_response(self, {"success": True})
         elif path == "/api/student/progress":
             self._handle_student_progress()
+        elif path == "/api/correct-french":
+            self._handle_correct_french()
         elif path == "/api/activities":
             self._handle_add()
         elif re.match(r"^/api/activities/\d+/update$", path):
@@ -725,6 +729,92 @@ class Handler(http.server.SimpleHTTPRequestHandler):
         save_access_log(log)
         json_response(self, {"success": True})
 
+    def _handle_correct_french(self):
+        length = int(self.headers.get("Content-Length", 0))
+        body = json.loads(self.rfile.read(length))
+        code = body.get("code", "").strip().upper()
+        if not validate_student_code(code):
+            json_response(self, {"error": "Non autorisé"}, 401)
+            return
+
+        text = body.get("text", "").strip()
+        if not text:
+            json_response(self, {"error": "Aucun texte fourni"}, 400)
+            return
+        if len(text) > 500:
+            text = text[:500]
+
+        api_key = os.environ.get("ANTHROPIC_API_KEY", "")
+        if not api_key:
+            json_response(self, {"error": "Clé API non configurée sur le serveur"}, 503)
+            return
+
+        system_prompt = (
+            "Tu es un tuteur de francisation pour des élèves adultes de Niveau 4 "
+            "au Québec (niveau intermédiaire). L'élève a dit une phrase à voix "
+            "haute, transcrite automatiquement (elle peut donc contenir des "
+            "erreurs de transcription en plus d'erreurs de langue). Corrige la "
+            "phrase en français correct et naturel (français québécois standard "
+            "accepté). Réponds UNIQUEMENT avec un objet JSON valide, sans texte "
+            "avant ni après, exactement dans ce format : "
+            '{"corrige": "...", "erreurs": [{"explication": "..."}], '
+            '"memePhrase": true} — "memePhrase" est true si la phrase était déjà '
+            'correcte. "erreurs" contient au maximum 3 explications courtes '
+            "(une phrase chacune), en français simple adapté à un élève de "
+            "Niveau 4. Ne commente jamais les erreurs de transcription probables "
+            "(ex. homophones) — corrige comme si la transcription reflétait "
+            "fidèlement l'intention de l'élève."
+        )
+
+        payload = json.dumps({
+            "model": "claude-haiku-4-5-20251001",
+            "max_tokens": 400,
+            "system": system_prompt,
+            "messages": [{"role": "user", "content": text}],
+        }).encode("utf-8")
+
+        req = urllib.request.Request(
+            "https://api.anthropic.com/v1/messages",
+            data=payload,
+            headers={
+                "x-api-key": api_key,
+                "anthropic-version": "2023-06-01",
+                "content-type": "application/json",
+            },
+            method="POST",
+        )
+
+        try:
+            with urllib.request.urlopen(req, timeout=25) as resp:
+                result = json.loads(resp.read().decode("utf-8"))
+        except urllib.error.HTTPError as e:
+            detail = e.read().decode("utf-8", errors="replace")
+            print(f"[WARN] Anthropic API HTTPError {e.code}: {detail}", flush=True)
+            json_response(self, {"error": "Le service de correction est momentanément indisponible"}, 502)
+            return
+        except (urllib.error.URLError, TimeoutError) as e:
+            print(f"[WARN] Anthropic API injoignable : {e}", flush=True)
+            json_response(self, {"error": "Le service de correction est momentanément indisponible"}, 502)
+            return
+
+        try:
+            raw_text = result["content"][0]["text"].strip()
+            if raw_text.startswith("```"):
+                raw_text = re.sub(r"^```(json)?\n?", "", raw_text)
+                raw_text = re.sub(r"\n?```$", "", raw_text)
+            parsed = json.loads(raw_text)
+        except (KeyError, IndexError, json.JSONDecodeError) as e:
+            print(f"[WARN] Réponse IA non structurée : {e}", flush=True)
+            json_response(self, {"error": "Réponse inattendue du service de correction"}, 502)
+            return
+
+        json_response(self, {
+            "original": text,
+            "corrige": parsed.get("corrige", text),
+            "erreurs": parsed.get("erreurs", []),
+            "memePhrase": parsed.get("memePhrase", False),
+        })
+
     def _handle_add_student(self):
         length = int(self.headers.get("Content-Length", 0))
         body = json.loads(self.rfile.read(length))
@@ -823,8 +913,14 @@ if __name__ == "__main__":
 
     threading.Thread(target=_init_storage_safe, daemon=True).start()
 
-    socketserver.TCPServer.allow_reuse_address = True
-    with socketserver.TCPServer(("", PORT), Handler) as httpd:
+    class ThreadingServer(socketserver.ThreadingMixIn, socketserver.TCPServer):
+        # Un serveur mono-thread bloquerait tous les élèves pendant chaque
+        # appel réseau (ex. correction IA, qui prend 1-3 s) ; daemon_threads
+        # évite que des requêtes lentes empêchent l'arrêt propre du serveur.
+        daemon_threads = True
+        allow_reuse_address = True
+
+    with ThreadingServer(("", PORT), Handler) as httpd:
         print(f"Serveur démarré sur http://localhost:{PORT}", flush=True)
         print(f"STORAGE_DIR = {STORAGE_DIR}", flush=True)
         httpd.serve_forever()
