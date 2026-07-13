@@ -1,0 +1,226 @@
+<!DOCTYPE html>
+<html lang="fr"><head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+<title>Rédaction de courriel</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Nunito:wght@600;700;800;900&display=swap" rel="stylesheet">
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+html,body{height:100%;background:#EEF1F6;font-family:'Nunito','Arial Rounded MT Bold',sans-serif;color:#1A2430}
+body{display:flex;flex-direction:column;min-height:100vh}
+
+#hdr{background:#33465E;color:#fff;padding:14px 32px;display:flex;align-items:center;justify-content:space-between;flex-shrink:0;box-shadow:0 3px 16px rgba(51,70,94,.3)}
+.hdr-l{display:flex;align-items:center;gap:14px}
+.hdr-ic{width:44px;height:44px;background:rgba(255,255,255,.18);border-radius:50%;display:flex;align-items:center;justify-content:center;flex-shrink:0;font-size:22px}
+.hdr-eye{font-size:11px;font-weight:800;text-transform:uppercase;letter-spacing:.2em;opacity:.7;line-height:1}
+.hdr-h1{font-size:24px;font-weight:900;line-height:1.15}
+#counter-chip{background:rgba(255,255,255,.15);border:2px solid rgba(255,255,255,.45);border-radius:999px;padding:8px 18px;font-size:14px;font-weight:900;white-space:nowrap}
+
+#main{flex:1;display:flex;justify-content:center;padding:32px 20px;overflow-y:auto}
+#card{width:100%;max-width:700px;display:flex;flex-direction:column;gap:18px}
+
+.scenario{background:#fff;border-left:5px solid #33465E;border-radius:0 14px 14px 0;padding:18px 22px;box-shadow:0 2px 14px rgba(0,0,0,.05)}
+.scenario-tag{display:inline-block;background:#33465E;color:#fff;font-size:11px;font-weight:900;text-transform:uppercase;letter-spacing:.1em;padding:3px 10px;border-radius:6px;margin-bottom:10px}
+.scenario-txt{font-size:15px;line-height:1.65;color:#33465E;font-weight:600}
+
+.mail-card{background:#fff;border-radius:14px;box-shadow:0 2px 14px rgba(0,0,0,.06);overflow:hidden}
+.mail-toolbar{background:#F1F3F7;border-bottom:1px solid #DDE2EA;padding:10px 18px;display:flex;gap:22px;font-size:14px;font-weight:800;color:#7A8296}
+.mail-toolbar span{display:flex;align-items:center;gap:6px}
+.mail-body{padding:18px 22px;display:flex;flex-direction:column;gap:0}
+.mail-row{display:flex;align-items:center;gap:10px;border-bottom:1px solid #EEF1F6;padding:10px 0}
+.mail-row label{font-size:13px;font-weight:800;color:#8A93A6;width:44px;flex-shrink:0}
+.mail-row input{flex:1;border:none;font-family:'Nunito',sans-serif;font-size:15px;font-weight:700;color:#1A2430;background:transparent}
+.mail-row input:focus{outline:none}
+#bodyText{width:100%;min-height:220px;border:none;font-family:'Nunito',sans-serif;font-size:15px;font-weight:600;color:#1A2430;line-height:1.75;padding:16px 0;resize:vertical}
+#bodyText:focus{outline:none}
+
+.actions{display:flex;gap:10px;padding:14px 22px;background:#F8F9FB;border-top:1px solid #EEF1F6}
+.btn{font-family:'Nunito',sans-serif;font-size:15px;font-weight:800;border-radius:10px;padding:12px 22px;cursor:pointer;border:2.5px solid transparent;transition:all .15s}
+.btn-primary{background:#33465E;color:#fff;flex:1}
+.btn-primary:hover{background:#28374A}
+.btn-primary:disabled{opacity:.5;cursor:not-allowed}
+.btn-ghost{background:#fff;color:#33465E;border-color:#DDE2EA}
+.btn-ghost:hover{background:#F1F3F7}
+
+#statusMsg{font-size:14px;font-weight:800;color:#8A8A80;text-align:center;display:none;padding:10px}
+#statusMsg.on{display:block}
+#errorMsg{font-size:14px;font-weight:800;color:#B91C1C;background:#FEF2F2;border:2px solid #FCA5A5;border-radius:10px;padding:12px 16px;display:none}
+#errorMsg.on{display:block}
+
+#resultCard{display:none;background:#fff;border-radius:14px;padding:26px 28px;box-shadow:0 2px 14px rgba(0,0,0,.06)}
+#resultCard.on{display:block}
+.res-label{font-size:12px;font-weight:800;text-transform:uppercase;letter-spacing:.08em;color:#8A8A80;margin-bottom:6px}
+.pertinence{border-radius:12px;padding:12px 16px;margin-bottom:18px;font-size:14px;font-weight:700;line-height:1.55}
+.pertinence.ok{background:#ECFDF5;color:#166534;border:2px solid #86EFAC}
+.pertinence.no{background:#FFF7ED;color:#92400E;border:2px solid #FBBF24}
+.res-field{margin-bottom:16px}
+.res-corrige-subject{font-size:16px;font-weight:800;color:#0F5851;background:#ECFDF5;border:2px solid #86EFAC;border-radius:10px;padding:10px 14px}
+.res-corrige-body{font-size:15px;font-weight:600;color:#0F5851;background:#ECFDF5;border:2px solid #86EFAC;border-radius:10px;padding:14px 18px;line-height:1.7;white-space:pre-wrap}
+.err-item{background:#FFF7ED;border-left:4px solid #F59E0B;border-radius:0 8px 8px 0;padding:10px 14px;font-size:14px;line-height:1.55;color:#7C4A03;margin-bottom:8px;font-weight:700}
+
+.spin{display:inline-block;width:14px;height:14px;border:2.5px solid #C3E4DE;border-top-color:#33465E;border-radius:50%;animation:spin .7s linear infinite;margin-right:8px;vertical-align:-2px}
+@keyframes spin{to{transform:rotate(360deg)}}
+</style>
+</head>
+<body>
+
+<div id="hdr">
+  <div class="hdr-l">
+    <div class="hdr-ic">✉️</div>
+    <div>
+      <div class="hdr-eye">Francisation · Niveau 4</div>
+      <div class="hdr-h1">Rédaction de courriel</div>
+    </div>
+  </div>
+  <span id="counter-chip">0 courriel corrigé</span>
+</div>
+
+<div id="main">
+  <div id="card">
+
+    <div class="scenario">
+      <div class="scenario-tag">Mise en situation</div>
+      <div class="scenario-txt">Dans votre pays d'origine, vous avez travaillé comme biochimiste. Arrivé au Canada, vous n'avez pas trouvé d'emploi dans votre domaine. Vous avez décidé de changer de carrière et de vous inscrire au programme en électricité. Vous avez commencé vos cours, mais vous avez reçu hier une excellente offre d'emploi comme biochimiste.</div>
+    </div>
+    <div class="scenario" style="border-left-color:#7A8296">
+      <div class="scenario-tag" style="background:#7A8296">Consigne</div>
+      <div class="scenario-txt">Écrivez un courriel pour expliquer votre situation et indiquer la décision que vous avez prise. Utilisez le passé composé pour raconter les faits et un registre professionnel.</div>
+    </div>
+
+    <div class="mail-card">
+      <div class="mail-toolbar">
+        <span>✉️ Envoyer</span>
+        <span>📎 Joindre</span>
+        <span>Annuler</span>
+      </div>
+      <div class="mail-body">
+        <div class="mail-row"><label>De :</label><input type="text" value="vous@courriel.com" disabled></div>
+        <div class="mail-row"><label>À :</label><input type="text" id="toField" placeholder="conseiller.formation@cegep.qc.ca"></div>
+        <div class="mail-row"><label>Objet :</label><input type="text" id="subjectField" placeholder="Ex. : Ma situation concernant le programme en électricité"></div>
+        <textarea id="bodyText" placeholder="Rédigez votre courriel ici…"></textarea>
+      </div>
+      <div class="actions">
+        <button class="btn btn-ghost" id="clearBtn">↺ Effacer</button>
+        <button class="btn btn-primary" id="correctBtn">Corriger mon courriel</button>
+      </div>
+    </div>
+
+    <div id="statusMsg"><span class="spin"></span>Correction en cours… (ça peut prendre quelques secondes)</div>
+    <div id="errorMsg"></div>
+
+    <div id="resultCard">
+      <div id="pertinenceWrap"></div>
+      <div class="res-field">
+        <div class="res-label">Objet corrigé</div>
+        <div class="res-corrige-subject" id="resSubject"></div>
+      </div>
+      <div class="res-field">
+        <div class="res-label">Corps du courriel corrigé</div>
+        <div class="res-corrige-body" id="resBody"></div>
+      </div>
+      <div id="errWrap"></div>
+      <div class="actions" style="padding:0;background:transparent;border:none;margin-top:8px">
+        <button class="btn btn-primary" id="againBtn">✉️ Écrire un autre courriel</button>
+      </div>
+    </div>
+
+  </div>
+</div>
+
+<script>
+const params = new URLSearchParams(location.search);
+const studentCode = params.get('code') || '';
+let correctedCount = 0;
+
+const scenario = document.querySelector('.scenario-txt').textContent;
+const statusMsg = document.getElementById('statusMsg');
+const errorMsg = document.getElementById('errorMsg');
+const resultCard = document.getElementById('resultCard');
+const correctBtn = document.getElementById('correctBtn');
+
+function showError(msg){ errorMsg.textContent = msg; errorMsg.classList.add('on'); }
+function hideError(){ errorMsg.classList.remove('on'); }
+
+document.getElementById('clearBtn').addEventListener('click', () => {
+  document.getElementById('toField').value = '';
+  document.getElementById('subjectField').value = '';
+  document.getElementById('bodyText').value = '';
+  hideError();
+  resultCard.classList.remove('on');
+});
+
+correctBtn.addEventListener('click', async () => {
+  const subject = document.getElementById('subjectField').value.trim();
+  const text = document.getElementById('bodyText').value.trim();
+  if (!text) { showError('Écris d\'abord le corps de ton courriel.'); return; }
+
+  hideError();
+  statusMsg.classList.add('on');
+  correctBtn.disabled = true;
+
+  try {
+    const res = await fetch('/api/correct-email', {
+      method: 'POST',
+      headers: {'Content-Type': 'application/json'},
+      body: JSON.stringify({ code: studentCode, scenario, subject, text }),
+    });
+    const data = await res.json();
+    statusMsg.classList.remove('on');
+    correctBtn.disabled = false;
+
+    if (!res.ok) {
+      showError(data.error || 'Une erreur est survenue. Réessaie.');
+      return;
+    }
+
+    renderResult(data);
+    correctedCount++;
+    document.getElementById('counter-chip').textContent =
+      correctedCount + (correctedCount > 1 ? ' courriels corrigés' : ' courriel corrigé');
+    lmsTrack('exercise_completed', { zonesDone: correctedCount, score: null });
+  } catch (err) {
+    statusMsg.classList.remove('on');
+    correctBtn.disabled = false;
+    showError('Impossible de joindre le service de correction. Vérifie ta connexion.');
+  }
+});
+
+function renderResult(data){
+  const pertWrap = document.getElementById('pertinenceWrap');
+  pertWrap.innerHTML = '';
+  const p = document.createElement('div');
+  p.className = 'pertinence ' + (data.pertinent ? 'ok' : 'no');
+  p.textContent = (data.pertinent ? '✓ ' : '⚠️ ') + (data.commentairePertinence || (data.pertinent ? 'Le contenu répond bien à la situation.' : 'Le contenu pourrait mieux répondre à la situation.'));
+  pertWrap.appendChild(p);
+
+  document.getElementById('resSubject').textContent = data.objetCorrige || '';
+  document.getElementById('resBody').textContent = data.corpsCorrige || '';
+
+  const errWrap = document.getElementById('errWrap');
+  errWrap.innerHTML = '';
+  (data.erreurs || []).forEach(err => {
+    const div = document.createElement('div');
+    div.className = 'err-item';
+    div.textContent = '💡 ' + err.explication;
+    errWrap.appendChild(div);
+  });
+
+  resultCard.classList.add('on');
+  resultCard.scrollIntoView({behavior:'smooth', block:'center'});
+}
+
+document.getElementById('againBtn').addEventListener('click', () => {
+  resultCard.classList.remove('on');
+  document.getElementById('toField').value = '';
+  document.getElementById('subjectField').value = '';
+  document.getElementById('bodyText').value = '';
+});
+
+function lmsTrack(event, data) {
+  try { window.parent.postMessage(Object.assign({lms: true, event: event}, data||{}), '*'); } catch(e) {}
+}
+</script>
+</body>
+</html>

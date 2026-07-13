@@ -341,6 +341,8 @@ class Handler(http.server.SimpleHTTPRequestHandler):
             self._handle_student_progress()
         elif path == "/api/correct-french":
             self._handle_correct_french()
+        elif path == "/api/correct-email":
+            self._handle_correct_email()
         elif path == "/api/activities":
             self._handle_add()
         elif re.match(r"^/api/activities/\d+/update$", path):
@@ -729,48 +731,19 @@ class Handler(http.server.SimpleHTTPRequestHandler):
         save_access_log(log)
         json_response(self, {"success": True})
 
-    def _handle_correct_french(self):
-        length = int(self.headers.get("Content-Length", 0))
-        body = json.loads(self.rfile.read(length))
-        code = body.get("code", "").strip().upper()
-        if not validate_student_code(code):
-            json_response(self, {"error": "Non autorisé"}, 401)
-            return
-
-        text = body.get("text", "").strip()
-        if not text:
-            json_response(self, {"error": "Aucun texte fourni"}, 400)
-            return
-        if len(text) > 500:
-            text = text[:500]
-
+    def _call_anthropic_json(self, system_prompt, user_content, max_tokens=400):
+        """Appelle l'API Anthropic et retourne (parsed_dict, None) en cas de
+        succès, ou (None, (error_message, status_code)) en cas d'échec. Le
+        modèle doit répondre avec un objet JSON pur (voir prompts appelants)."""
         api_key = os.environ.get("ANTHROPIC_API_KEY", "")
         if not api_key:
-            json_response(self, {"error": "Clé API non configurée sur le serveur"}, 503)
-            return
-
-        system_prompt = (
-            "Tu es un tuteur de francisation pour des élèves adultes de Niveau 4 "
-            "au Québec (niveau intermédiaire). L'élève a dit une phrase à voix "
-            "haute, transcrite automatiquement (elle peut donc contenir des "
-            "erreurs de transcription en plus d'erreurs de langue). Corrige la "
-            "phrase en français correct et naturel (français québécois standard "
-            "accepté). Réponds UNIQUEMENT avec un objet JSON valide, sans texte "
-            "avant ni après, exactement dans ce format : "
-            '{"corrige": "...", "erreurs": [{"explication": "..."}], '
-            '"memePhrase": true} — "memePhrase" est true si la phrase était déjà '
-            'correcte. "erreurs" contient au maximum 3 explications courtes '
-            "(une phrase chacune), en français simple adapté à un élève de "
-            "Niveau 4. Ne commente jamais les erreurs de transcription probables "
-            "(ex. homophones) — corrige comme si la transcription reflétait "
-            "fidèlement l'intention de l'élève."
-        )
+            return None, ("Clé API non configurée sur le serveur", 503)
 
         payload = json.dumps({
             "model": "claude-haiku-4-5-20251001",
-            "max_tokens": 400,
+            "max_tokens": max_tokens,
             "system": system_prompt,
-            "messages": [{"role": "user", "content": text}],
+            "messages": [{"role": "user", "content": user_content}],
         }).encode("utf-8")
 
         req = urllib.request.Request(
@@ -790,22 +763,56 @@ class Handler(http.server.SimpleHTTPRequestHandler):
         except urllib.error.HTTPError as e:
             detail = e.read().decode("utf-8", errors="replace")
             print(f"[WARN] Anthropic API HTTPError {e.code}: {detail}", flush=True)
-            json_response(self, {"error": "Le service de correction est momentanément indisponible"}, 502)
-            return
+            return None, ("Le service de correction est momentanément indisponible", 502)
         except (urllib.error.URLError, TimeoutError) as e:
             print(f"[WARN] Anthropic API injoignable : {e}", flush=True)
-            json_response(self, {"error": "Le service de correction est momentanément indisponible"}, 502)
-            return
+            return None, ("Le service de correction est momentanément indisponible", 502)
 
         try:
             raw_text = result["content"][0]["text"].strip()
             if raw_text.startswith("```"):
                 raw_text = re.sub(r"^```(json)?\n?", "", raw_text)
                 raw_text = re.sub(r"\n?```$", "", raw_text)
-            parsed = json.loads(raw_text)
+            return json.loads(raw_text), None
         except (KeyError, IndexError, json.JSONDecodeError) as e:
             print(f"[WARN] Réponse IA non structurée : {e}", flush=True)
-            json_response(self, {"error": "Réponse inattendue du service de correction"}, 502)
+            return None, ("Réponse inattendue du service de correction", 502)
+
+    def _handle_correct_french(self):
+        length = int(self.headers.get("Content-Length", 0))
+        body = json.loads(self.rfile.read(length))
+        code = body.get("code", "").strip().upper()
+        if not validate_student_code(code):
+            json_response(self, {"error": "Non autorisé"}, 401)
+            return
+
+        text = body.get("text", "").strip()
+        if not text:
+            json_response(self, {"error": "Aucun texte fourni"}, 400)
+            return
+        if len(text) > 500:
+            text = text[:500]
+
+        system_prompt = (
+            "Tu es un tuteur de francisation pour des élèves adultes de Niveau 4 "
+            "au Québec (niveau intermédiaire). L'élève a dit une phrase à voix "
+            "haute, transcrite automatiquement (elle peut donc contenir des "
+            "erreurs de transcription en plus d'erreurs de langue). Corrige la "
+            "phrase en français correct et naturel (français québécois standard "
+            "accepté). Réponds UNIQUEMENT avec un objet JSON valide, sans texte "
+            "avant ni après, exactement dans ce format : "
+            '{"corrige": "...", "erreurs": [{"explication": "..."}], '
+            '"memePhrase": true} — "memePhrase" est true si la phrase était déjà '
+            'correcte. "erreurs" contient au maximum 3 explications courtes '
+            "(une phrase chacune), en français simple adapté à un élève de "
+            "Niveau 4. Ne commente jamais les erreurs de transcription probables "
+            "(ex. homophones) — corrige comme si la transcription reflétait "
+            "fidèlement l'intention de l'élève."
+        )
+
+        parsed, err = self._call_anthropic_json(system_prompt, text)
+        if err:
+            json_response(self, {"error": err[0]}, err[1])
             return
 
         json_response(self, {
@@ -813,6 +820,64 @@ class Handler(http.server.SimpleHTTPRequestHandler):
             "corrige": parsed.get("corrige", text),
             "erreurs": parsed.get("erreurs", []),
             "memePhrase": parsed.get("memePhrase", False),
+        })
+
+    def _handle_correct_email(self):
+        length = int(self.headers.get("Content-Length", 0))
+        body = json.loads(self.rfile.read(length))
+        code = body.get("code", "").strip().upper()
+        if not validate_student_code(code):
+            json_response(self, {"error": "Non autorisé"}, 401)
+            return
+
+        scenario = body.get("scenario", "").strip()[:1500]
+        subject = body.get("subject", "").strip()[:200]
+        text = body.get("text", "").strip()
+        if not text:
+            json_response(self, {"error": "Aucun texte fourni"}, 400)
+            return
+        if len(text) > 3000:
+            text = text[:3000]
+
+        system_prompt = (
+            "Tu es un tuteur de francisation pour des élèves adultes de Niveau 4 "
+            "au Québec (niveau intermédiaire). L'élève rédige un courriel en "
+            "réponse à une mise en situation, généralement au passé composé "
+            "pour raconter les faits. Voici la mise en situation : "
+            f'"{scenario}"\n\n'
+            "Analyse le courriel de l'élève (objet et corps fournis par "
+            "l'utilisateur) et réponds UNIQUEMENT avec un objet JSON valide, "
+            "sans texte avant ni après, exactement dans ce format : "
+            '{"pertinent": true, "commentairePertinence": "...", '
+            '"objetCorrige": "...", "corpsCorrige": "...", '
+            '"erreurs": [{"explication": "..."}]} — '
+            '"pertinent" indique si le contenu répond bien à la situation '
+            "donnée. \"commentairePertinence\" est une phrase courte (adaptée "
+            "Niveau 4) qui explique pourquoi, ou ce qui manque si pertinent "
+            "est false. \"objetCorrige\" et \"corpsCorrige\" sont l'objet et le "
+            "corps du courriel corrigés en français correct et naturel "
+            "(français québécois standard accepté), avec un registre "
+            "professionnel adapté à un courriel (formules de politesse). "
+            "\"erreurs\" contient au maximum 5 explications courtes (une "
+            "phrase chacune) des principales erreurs de grammaire, "
+            "conjugaison (surtout passé composé) ou syntaxe, en français "
+            "simple adapté à un élève de Niveau 4."
+        )
+
+        user_content = f"Objet : {subject}\n\n{text}"
+        parsed, err = self._call_anthropic_json(system_prompt, user_content, max_tokens=900)
+        if err:
+            json_response(self, {"error": err[0]}, err[1])
+            return
+
+        json_response(self, {
+            "originalSubject": subject,
+            "originalText": text,
+            "pertinent": parsed.get("pertinent", True),
+            "commentairePertinence": parsed.get("commentairePertinence", ""),
+            "objetCorrige": parsed.get("objetCorrige", subject),
+            "corpsCorrige": parsed.get("corpsCorrige", text),
+            "erreurs": parsed.get("erreurs", []),
         })
 
     def _handle_add_student(self):
