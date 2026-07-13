@@ -16,10 +16,24 @@ body{display:flex;flex-direction:column;min-height:100vh}
 .hdr-ic{width:44px;height:44px;background:rgba(255,255,255,.18);border-radius:50%;display:flex;align-items:center;justify-content:center;flex-shrink:0;font-size:22px}
 .hdr-eye{font-size:11px;font-weight:800;text-transform:uppercase;letter-spacing:.2em;opacity:.7;line-height:1}
 .hdr-h1{font-size:24px;font-weight:900;line-height:1.15}
+.hdr-r{display:flex;align-items:center;gap:12px}
 #counter-chip{background:rgba(255,255,255,.15);border:2px solid rgba(255,255,255,.45);border-radius:999px;padding:8px 18px;font-size:14px;font-weight:900;white-space:nowrap}
+#changeScenarioBtn{display:none;background:rgba(255,255,255,.15);color:#fff;border:2px solid rgba(255,255,255,.45);border-radius:10px;padding:8px 16px;font-family:'Nunito',sans-serif;font-size:13px;font-weight:800;cursor:pointer;white-space:nowrap}
+#changeScenarioBtn:hover{background:rgba(255,255,255,.28)}
+#changeScenarioBtn.on{display:block}
 
 #main{flex:1;display:flex;justify-content:center;padding:32px 20px;overflow-y:auto}
 #card{width:100%;max-width:700px;display:flex;flex-direction:column;gap:18px}
+
+/* Sélection de scénario */
+#scenarioPicker.hidden{display:none}
+.picker-title{font-size:15px;font-weight:800;color:#33465E;margin-bottom:4px}
+.scenario-card{background:#fff;border:2.5px solid #DDE2EA;border-radius:14px;padding:18px 22px;cursor:pointer;transition:all .15s;margin-bottom:12px}
+.scenario-card:hover{border-color:#33465E;box-shadow:0 2px 14px rgba(51,70,94,.1)}
+.scenario-card-tag{display:inline-block;background:#EEF1F6;color:#33465E;font-size:11px;font-weight:900;text-transform:uppercase;letter-spacing:.08em;padding:3px 10px;border-radius:6px;margin-bottom:8px}
+.scenario-card-txt{font-size:14px;line-height:1.6;color:#33465E;font-weight:600}
+
+#composeView.hidden{display:none}
 
 .scenario{background:#fff;border-left:5px solid #33465E;border-radius:0 14px 14px 0;padding:18px 22px;box-shadow:0 2px 14px rgba(0,0,0,.05)}
 .scenario-tag{display:inline-block;background:#33465E;color:#fff;font-size:11px;font-weight:900;text-transform:uppercase;letter-spacing:.1em;padding:3px 10px;border-radius:6px;margin-bottom:10px}
@@ -74,82 +88,140 @@ body{display:flex;flex-direction:column;min-height:100vh}
       <div class="hdr-h1">Rédaction de courriel</div>
     </div>
   </div>
-  <span id="counter-chip">0 courriel corrigé</span>
+  <div class="hdr-r">
+    <button id="changeScenarioBtn">↺ Changer de mise en situation</button>
+    <span id="counter-chip">0 courriel corrigé</span>
+  </div>
 </div>
 
 <div id="main">
   <div id="card">
 
-    <div class="scenario">
-      <div class="scenario-tag">Mise en situation</div>
-      <div class="scenario-txt">Dans votre pays d'origine, vous avez travaillé comme biochimiste. Arrivé au Canada, vous n'avez pas trouvé d'emploi dans votre domaine. Vous avez décidé de changer de carrière et de vous inscrire au programme en électricité. Vous avez commencé vos cours, mais vous avez reçu hier une excellente offre d'emploi comme biochimiste.</div>
-    </div>
-    <div class="scenario" style="border-left-color:#7A8296">
-      <div class="scenario-tag" style="background:#7A8296">Consigne</div>
-      <div class="scenario-txt">Écrivez un courriel pour expliquer votre situation et indiquer la décision que vous avez prise. Utilisez le passé composé pour raconter les faits et un registre professionnel.</div>
+    <div id="scenarioPicker">
+      <div class="picker-title">Choisis une mise en situation :</div>
+      <div id="scenarioList"></div>
     </div>
 
-    <div class="mail-card">
-      <div class="mail-toolbar">
-        <span>✉️ Envoyer</span>
-        <span>📎 Joindre</span>
-        <span>Annuler</span>
+    <div id="composeView" class="hidden">
+
+      <div class="scenario">
+        <div class="scenario-tag">Mise en situation</div>
+        <div class="scenario-txt" id="scenarioTxt"></div>
       </div>
-      <div class="mail-body">
-        <div class="mail-row"><label>De :</label><input type="text" value="vous@courriel.com" disabled></div>
-        <div class="mail-row"><label>À :</label><input type="text" id="toField" placeholder="conseiller.formation@cegep.qc.ca"></div>
-        <div class="mail-row"><label>Objet :</label><input type="text" id="subjectField" placeholder="Ex. : Ma situation concernant le programme en électricité"></div>
-        <textarea id="bodyText" placeholder="Rédigez votre courriel ici…"></textarea>
+      <div class="scenario" style="border-left-color:#7A8296">
+        <div class="scenario-tag" style="background:#7A8296">Consigne</div>
+        <div class="scenario-txt" id="consigneTxt"></div>
       </div>
-      <div class="actions">
-        <button class="btn btn-ghost" id="clearBtn">↺ Effacer</button>
-        <button class="btn btn-primary" id="correctBtn">Corriger mon courriel</button>
+
+      <div class="mail-card">
+        <div class="mail-toolbar">
+          <span>✉️ Envoyer</span>
+          <span>📎 Joindre</span>
+          <span>Annuler</span>
+        </div>
+        <div class="mail-body">
+          <div class="mail-row"><label>De :</label><input type="text" value="vous@courriel.com" disabled></div>
+          <div class="mail-row"><label>À :</label><input type="text" id="toField" placeholder="destinataire@courriel.com"></div>
+          <div class="mail-row"><label>Objet :</label><input type="text" id="subjectField" placeholder="Objet de votre courriel"></div>
+          <textarea id="bodyText" placeholder="Rédigez votre courriel ici…"></textarea>
+        </div>
+        <div class="actions">
+          <button class="btn btn-ghost" id="clearBtn">↺ Effacer</button>
+          <button class="btn btn-primary" id="correctBtn">Corriger mon courriel</button>
+        </div>
       </div>
+
+      <div id="statusMsg"><span class="spin"></span>Correction en cours… (ça peut prendre quelques secondes)</div>
+      <div id="errorMsg"></div>
+
+      <div id="resultCard">
+        <div id="pertinenceWrap"></div>
+        <div class="res-field">
+          <div class="res-label">Objet corrigé</div>
+          <div class="res-corrige-subject" id="resSubject"></div>
+        </div>
+        <div class="res-field">
+          <div class="res-label">Corps du courriel corrigé</div>
+          <div class="res-corrige-body" id="resBody"></div>
+        </div>
+        <div id="errWrap"></div>
+        <div class="actions" style="padding:0;background:transparent;border:none;margin-top:8px">
+          <button class="btn btn-primary" id="againBtn">✉️ Écrire un autre courriel</button>
+        </div>
+      </div>
+
     </div>
-
-    <div id="statusMsg"><span class="spin"></span>Correction en cours… (ça peut prendre quelques secondes)</div>
-    <div id="errorMsg"></div>
-
-    <div id="resultCard">
-      <div id="pertinenceWrap"></div>
-      <div class="res-field">
-        <div class="res-label">Objet corrigé</div>
-        <div class="res-corrige-subject" id="resSubject"></div>
-      </div>
-      <div class="res-field">
-        <div class="res-label">Corps du courriel corrigé</div>
-        <div class="res-corrige-body" id="resBody"></div>
-      </div>
-      <div id="errWrap"></div>
-      <div class="actions" style="padding:0;background:transparent;border:none;margin-top:8px">
-        <button class="btn btn-primary" id="againBtn">✉️ Écrire un autre courriel</button>
-      </div>
-    </div>
-
   </div>
 </div>
 
 <script>
+const SCENARIOS = [
+  {
+    id: 1,
+    tag: "Mise en situation 3",
+    situation: "Dans votre pays d'origine, vous avez travaillé comme biochimiste. Arrivé au Canada, vous n'avez pas trouvé d'emploi dans votre domaine. Vous avez décidé de changer de carrière et de vous inscrire au programme en électricité. Vous avez commencé vos cours, mais vous avez reçu hier une excellente offre d'emploi comme biochimiste.",
+    consigne: "Écrivez un courriel pour expliquer votre situation et indiquer la décision que vous avez prise. Utilisez le passé composé pour raconter les faits et un registre professionnel.",
+    toPlaceholder: "conseiller.formation@cegep.qc.ca",
+    subjectPlaceholder: "Ex. : Ma situation concernant le programme en électricité",
+  },
+  // D'autres mises en situation seront ajoutées ici au fur et à mesure.
+];
+
 const params = new URLSearchParams(location.search);
 const studentCode = params.get('code') || '';
 let correctedCount = 0;
+let currentScenario = null;
 
-const scenario = document.querySelector('.scenario-txt').textContent;
+const scenarioPicker = document.getElementById('scenarioPicker');
+const composeView = document.getElementById('composeView');
+const changeScenarioBtn = document.getElementById('changeScenarioBtn');
 const statusMsg = document.getElementById('statusMsg');
 const errorMsg = document.getElementById('errorMsg');
 const resultCard = document.getElementById('resultCard');
 const correctBtn = document.getElementById('correctBtn');
 
-function showError(msg){ errorMsg.textContent = msg; errorMsg.classList.add('on'); }
-function hideError(){ errorMsg.classList.remove('on'); }
+function renderScenarioPicker(){
+  const list = document.getElementById('scenarioList');
+  list.innerHTML = '';
+  SCENARIOS.forEach(sc => {
+    const card = document.createElement('div');
+    card.className = 'scenario-card';
+    card.innerHTML = '<div class="scenario-card-tag">' + escHtml(sc.tag) + '</div><div class="scenario-card-txt">' + escHtml(sc.situation) + '</div>';
+    card.addEventListener('click', () => selectScenario(sc));
+    list.appendChild(card);
+  });
+}
 
-document.getElementById('clearBtn').addEventListener('click', () => {
+function selectScenario(sc){
+  currentScenario = sc;
+  document.getElementById('scenarioTxt').textContent = sc.situation;
+  document.getElementById('consigneTxt').textContent = sc.consigne;
+  document.getElementById('toField').placeholder = sc.toPlaceholder || '';
+  document.getElementById('subjectField').placeholder = sc.subjectPlaceholder || '';
+  scenarioPicker.classList.add('hidden');
+  composeView.classList.remove('hidden');
+  changeScenarioBtn.classList.add('on');
+  resetCompose();
+}
+
+changeScenarioBtn.addEventListener('click', () => {
+  composeView.classList.add('hidden');
+  scenarioPicker.classList.remove('hidden');
+  changeScenarioBtn.classList.remove('on');
+});
+
+function resetCompose(){
   document.getElementById('toField').value = '';
   document.getElementById('subjectField').value = '';
   document.getElementById('bodyText').value = '';
   hideError();
   resultCard.classList.remove('on');
-});
+}
+
+function showError(msg){ errorMsg.textContent = msg; errorMsg.classList.add('on'); }
+function hideError(){ errorMsg.classList.remove('on'); }
+
+document.getElementById('clearBtn').addEventListener('click', resetCompose);
 
 correctBtn.addEventListener('click', async () => {
   const subject = document.getElementById('subjectField').value.trim();
@@ -164,7 +236,7 @@ correctBtn.addEventListener('click', async () => {
     const res = await fetch('/api/correct-email', {
       method: 'POST',
       headers: {'Content-Type': 'application/json'},
-      body: JSON.stringify({ code: studentCode, scenario, subject, text }),
+      body: JSON.stringify({ code: studentCode, scenario: currentScenario.situation + ' ' + currentScenario.consigne, subject, text }),
     });
     const data = await res.json();
     statusMsg.classList.remove('on');
@@ -211,16 +283,18 @@ function renderResult(data){
   resultCard.scrollIntoView({behavior:'smooth', block:'center'});
 }
 
-document.getElementById('againBtn').addEventListener('click', () => {
-  resultCard.classList.remove('on');
-  document.getElementById('toField').value = '';
-  document.getElementById('subjectField').value = '';
-  document.getElementById('bodyText').value = '';
-});
+document.getElementById('againBtn').addEventListener('click', resetCompose);
+
+function escHtml(s){
+  return s.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');
+}
 
 function lmsTrack(event, data) {
   try { window.parent.postMessage(Object.assign({lms: true, event: event}, data||{}), '*'); } catch(e) {}
 }
+
+renderScenarioPicker();
+if (SCENARIOS.length === 1) selectScenario(SCENARIOS[0]);
 </script>
 </body>
 </html>
