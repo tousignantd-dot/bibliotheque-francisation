@@ -346,28 +346,64 @@ function updateStreakChip(){
   setTimeout(() => chip.classList.remove('bump'), 200);
 }
 
-document.getElementById('checkGuessBtn').addEventListener('click', () => {
+function markGuessCorrect(guessInput, feedback){
+  guessInput.classList.remove('wrong');
+  guessInput.classList.add('correct');
+  streak++;
+  bestStreak = Math.max(bestStreak, streak);
+  updateStreakChip();
+  feedback.className = 'guess-feedback ok';
+  feedback.textContent = '🎉 Bravo ! Bonne réponse.';
+  setTimeout(revealCard, 500);
+}
+
+function markGuessWrong(guessInput, feedback){
+  guessInput.classList.remove('correct');
+  guessInput.classList.add('wrong');
+  streak = 0;
+  updateStreakChip();
+  feedback.className = 'guess-feedback no';
+  feedback.textContent = 'Pas tout à fait… réessaie ou révèle la réponse.';
+}
+
+document.getElementById('checkGuessBtn').addEventListener('click', async () => {
   const c = cards[idx];
   const guessInput = document.getElementById('guessInput');
   const feedback = document.getElementById('guessFeedback');
-  const ok = normalizeGuess(guessInput.value) === normalizeGuess(c.mot);
+  const checkBtn = document.getElementById('checkGuessBtn');
+  const guessValue = guessInput.value;
 
-  if (ok){
-    guessInput.classList.remove('wrong');
-    guessInput.classList.add('correct');
-    streak++;
-    bestStreak = Math.max(bestStreak, streak);
-    updateStreakChip();
-    feedback.className = 'guess-feedback ok';
-    feedback.textContent = '🎉 Bravo ! Bonne réponse.';
-    setTimeout(revealCard, 500);
-  } else {
-    guessInput.classList.remove('correct');
-    guessInput.classList.add('wrong');
-    streak = 0;
-    updateStreakChip();
-    feedback.className = 'guess-feedback no';
-    feedback.textContent = 'Pas tout à fait… réessaie ou révèle la réponse.';
+  if (normalizeGuess(guessValue) === normalizeGuess(c.mot)) {
+    markGuessCorrect(guessInput, feedback);
+    return;
+  }
+  if (!guessValue.trim()) {
+    markGuessWrong(guessInput, feedback);
+    return;
+  }
+
+  // Pas de correspondance exacte : on demande un second avis avant de
+  // refuser, pour accepter les variantes valides (« médecin spécialiste »
+  // pour « spécialiste », synonymes, articles en trop, etc.).
+  checkBtn.disabled = true;
+  feedback.className = 'guess-feedback';
+  feedback.textContent = 'Vérification…';
+  try {
+    const res = await fetch('/api/vocab/check-answer', {
+      method: 'POST',
+      headers: {'Content-Type': 'application/json'},
+      body: JSON.stringify({ code: studentCode, wordId: c.id, guess: guessValue }),
+    });
+    const data = await res.json();
+    checkBtn.disabled = false;
+    if (res.ok && data.correct) {
+      markGuessCorrect(guessInput, feedback);
+    } else {
+      markGuessWrong(guessInput, feedback);
+    }
+  } catch (err) {
+    checkBtn.disabled = false;
+    markGuessWrong(guessInput, feedback);
   }
 });
 

@@ -422,6 +422,8 @@ class Handler(http.server.SimpleHTTPRequestHandler):
             self._handle_vocab_answer()
         elif path == "/api/vocab/translate":
             self._handle_vocab_translate()
+        elif path == "/api/vocab/check-answer":
+            self._handle_vocab_check_answer()
         elif path == "/api/activities":
             self._handle_add()
         elif re.match(r"^/api/activities/\d+/update$", path):
@@ -842,6 +844,49 @@ class Handler(http.server.SimpleHTTPRequestHandler):
         save_vocab_progress(progress)
 
         json_response(self, {"success": True, "box": box, "dueDate": entry["dueDate"]})
+
+    def _handle_vocab_check_answer(self):
+        length = int(self.headers.get("Content-Length", 0))
+        body = json.loads(self.rfile.read(length))
+        code = body.get("code", "").strip().upper()
+        if not validate_student_code(code):
+            json_response(self, {"error": "Non autorisé"}, 401)
+            return
+
+        word_id = body.get("wordId", "")
+        guess = body.get("guess", "").strip()[:100]
+        word = next((w for w in VOCAB_BANK if w["id"] == word_id), None)
+        if word is None:
+            json_response(self, {"error": "Mot inconnu"}, 400)
+            return
+        if not guess:
+            json_response(self, {"correct": False})
+            return
+
+        system_prompt = (
+            "Tu corriges un exercice de vocabulaire pour des élèves adultes "
+            "en francisation au Québec (Niveau 4). Le mot à trouver est : "
+            f"« {word['mot']} ». Définition : « {word['definition']} ». "
+            "L'élève a écrit une réponse qui ne correspond pas exactement au "
+            "mot attendu (accents/majuscules déjà ignorés). Détermine si sa "
+            "réponse est quand même acceptable : une variante orthographique "
+            "raisonnable, une expression équivalente (ex. « médecin "
+            "spécialiste » pour « spécialiste »), un synonyme correct, ou "
+            "l'oubli/l'ajout d'un article. Refuse si c'est un mot différent "
+            "ou clairement incorrect. Réponds UNIQUEMENT avec un objet JSON "
+            'valide, sans texte avant ni après : {"correct": true} ou '
+            '{"correct": false}.'
+        )
+        user_content = f"Réponse de l'élève : {guess}"
+
+        parsed, err = self._call_anthropic_json(system_prompt, user_content, max_tokens=20)
+        if err:
+            # Le service IA est indisponible : on retombe sur le refus strict
+            # déjà appliqué côté client plutôt que de bloquer l'élève.
+            json_response(self, {"correct": False, "aiUnavailable": True})
+            return
+
+        json_response(self, {"correct": bool(parsed.get("correct", False))})
 
     def _handle_vocab_translate(self):
         length = int(self.headers.get("Content-Length", 0))
