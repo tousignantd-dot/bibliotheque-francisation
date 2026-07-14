@@ -1,0 +1,279 @@
+<!DOCTYPE html>
+<html lang="fr"><head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+<title>Analyse grammaticale</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Nunito:wght@600;700;800;900&display=swap" rel="stylesheet">
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+html,body{height:100%;background:#EEF0FB;font-family:'Nunito','Arial Rounded MT Bold',sans-serif;color:#2B2350}
+body{display:flex;flex-direction:column;min-height:100vh}
+
+#hdr{background:#4C51BF;color:#fff;padding:14px 32px;display:flex;align-items:center;justify-content:space-between;flex-shrink:0;box-shadow:0 3px 16px rgba(76,81,191,.3)}
+.hdr-l{display:flex;align-items:center;gap:14px}
+.hdr-ic{width:44px;height:44px;background:rgba(255,255,255,.18);border-radius:50%;display:flex;align-items:center;justify-content:center;flex-shrink:0;font-size:22px}
+.hdr-eye{font-size:11px;font-weight:800;text-transform:uppercase;letter-spacing:.2em;opacity:.7;line-height:1}
+.hdr-h1{font-size:24px;font-weight:900;line-height:1.15}
+
+#main{flex:1;display:flex;justify-content:center;padding:32px 20px;overflow-y:auto}
+#card{width:100%;max-width:760px;display:flex;flex-direction:column;gap:18px}
+
+.intro{background:#E0E2F7;border-radius:14px;padding:14px 18px;font-size:14px;line-height:1.6;color:#332B6B;font-weight:700}
+
+/* Sélecteur de mode */
+.mode-tabs{display:flex;gap:8px;background:#fff;padding:6px;border-radius:14px;box-shadow:0 2px 10px rgba(0,0,0,.05)}
+.mode-tab{flex:1;text-align:center;padding:10px 14px;border-radius:10px;font-size:14px;font-weight:800;color:#6B6693;cursor:pointer;transition:all .15s}
+.mode-tab.active{background:#4C51BF;color:#fff}
+
+#bankView.hidden{display:none}
+#freeView.hidden{display:none}
+
+.bank-list{display:flex;flex-direction:column;gap:10px}
+.bank-item{background:#fff;border:2.5px solid #DCDEF3;border-radius:14px;padding:16px 20px;cursor:pointer;transition:all .15s}
+.bank-item:hover{border-color:#4C51BF;box-shadow:0 2px 14px rgba(76,81,191,.1)}
+.bank-item-tag{font-size:11px;font-weight:900;text-transform:uppercase;letter-spacing:.08em;color:#4C51BF;margin-bottom:4px}
+.bank-item-txt{font-size:15px;font-weight:700;color:#2B2350}
+
+.free-box{background:#fff;border-radius:18px;padding:24px;box-shadow:0 2px 14px rgba(0,0,0,.06);display:flex;flex-direction:column;gap:14px}
+#freeInput{width:100%;min-height:110px;border:2.5px solid #DCDEF3;border-radius:12px;padding:14px 16px;font-family:'Nunito',sans-serif;font-size:16px;font-weight:700;color:#2B2350;background:#F8F8FD;resize:vertical}
+#freeInput:focus{outline:none;border-color:#4C51BF}
+.free-hint{font-size:12.5px;color:#6B6693;font-weight:600}
+
+.btn{font-family:'Nunito',sans-serif;font-size:15px;font-weight:800;border-radius:10px;padding:12px 22px;cursor:pointer;border:2.5px solid transparent;transition:all .15s}
+.btn-primary{background:#4C51BF;color:#fff}
+.btn-primary:hover{background:#3C4099}
+.btn-primary:disabled{opacity:.5;cursor:not-allowed}
+.btn-ghost{background:#EEF0FB;color:#4C51BF;border-color:#DCDEF3}
+.btn-ghost:hover{background:#E0E2F7}
+
+#statusMsg{font-size:14px;font-weight:800;color:#8A8A80;text-align:center;display:none}
+#statusMsg.on{display:block}
+#errorMsg{font-size:14px;font-weight:800;color:#B91C1C;background:#FEF2F2;border:2px solid #FCA5A5;border-radius:10px;padding:12px 16px;display:none}
+#errorMsg.on{display:block}
+
+/* Résultats */
+#results{display:flex;flex-direction:column;gap:22px}
+#results.hidden{display:none}
+.phrase-block{background:#fff;border-radius:16px;padding:20px 22px;box-shadow:0 2px 14px rgba(0,0,0,.06)}
+.phrase-annotated{font-size:19px;line-height:2.4;font-weight:700;color:#2B2350;margin-bottom:16px}
+.grp{padding:2px 4px;border-radius:5px;border-bottom:3px solid transparent;display:inline;white-space:pre-wrap}
+
+table.analyse-table{width:100%;border-collapse:collapse;font-size:13.5px}
+table.analyse-table th{text-align:left;padding:8px 10px;color:#6B6693;font-weight:800;text-transform:uppercase;font-size:11px;letter-spacing:.04em;border-bottom:2px solid #E0E2F7}
+table.analyse-table td{padding:9px 10px;border-bottom:1px solid #EEF0FB;color:#2B2350;font-weight:700}
+.fn-dot{width:10px;height:10px;border-radius:50%;display:inline-block;margin-right:6px;vertical-align:middle}
+
+.legend{display:flex;flex-wrap:wrap;gap:12px;margin-top:14px;font-size:12px;font-weight:700;color:#6B6693}
+.legend span{display:flex;align-items:center;gap:5px}
+
+.actions{display:flex;gap:10px;justify-content:flex-end}
+</style>
+</head>
+<body>
+
+<div id="hdr">
+  <div class="hdr-l">
+    <div class="hdr-ic">🔍</div>
+    <div>
+      <div class="hdr-eye">Grammaire</div>
+      <div class="hdr-h1">Analyse grammaticale</div>
+    </div>
+  </div>
+</div>
+
+<div id="main">
+  <div id="card">
+    <div class="intro">Choisis une phrase de la banque ou écris la tienne. L'outil découpe la phrase en groupes de mots et indique la <strong>fonction</strong> (sujet, verbe, complément...) et la <strong>nature</strong> (groupe nominal, groupe verbal...) de chacun.</div>
+
+    <div class="mode-tabs">
+      <div class="mode-tab active" id="tabBank">Banque de phrases</div>
+      <div class="mode-tab" id="tabFree">Mes propres phrases</div>
+    </div>
+
+    <div id="bankView">
+      <div class="bank-list" id="bankList"></div>
+    </div>
+
+    <div id="freeView" class="hidden">
+      <div class="free-box">
+        <textarea id="freeInput" placeholder="Écris une ou plusieurs phrases en français..."></textarea>
+        <div class="free-hint">Tu peux écrire plusieurs phrases à la suite.</div>
+        <div class="actions">
+          <button class="btn btn-primary" id="analyzeFreeBtn">Analyser</button>
+        </div>
+      </div>
+    </div>
+
+    <div id="statusMsg">Analyse en cours…</div>
+    <div id="errorMsg"></div>
+
+    <div id="results" class="hidden"></div>
+  </div>
+</div>
+
+<script>
+const FN_COLORS = {
+  "Sujet": "#3B82F6",
+  "Verbe": "#EF4444",
+  "Complément direct": "#22C55E",
+  "Complément indirect": "#F59E0B",
+  "Complément de phrase": "#A855F7",
+  "Attribut du sujet": "#14B8A6",
+  "Autre": "#94A3B8",
+};
+
+const BANK = [
+  { tag: "Santé", texte: "Le médecin m'a prescrit un antibiotique pour l'infection." },
+  { tag: "Consommation", texte: "Les fraises fraîches sont en rabais cette semaine au marché." },
+  { tag: "Logement", texte: "Nous avons signé le bail hier avec le propriétaire." },
+  { tag: "Monde du travail", texte: "Mon superviseur m'a expliqué mon horaire ce matin." },
+  { tag: "Culture / histoire", texte: "Jacques Cartier a exploré le fleuve Saint-Laurent en 1535." },
+  { tag: "Vie citoyenne", texte: "Vous devez faire une correspondance à la station Berri-UQAM." },
+  { tag: "Grammaire libre", texte: "Elle est devenue infirmière après ses études au Québec." },
+];
+
+const params = new URLSearchParams(location.search);
+const studentCode = params.get('code') || '';
+let analysisCount = 0;
+
+const tabBank = document.getElementById('tabBank');
+const tabFree = document.getElementById('tabFree');
+const bankView = document.getElementById('bankView');
+const freeView = document.getElementById('freeView');
+const statusMsg = document.getElementById('statusMsg');
+const errorMsg = document.getElementById('errorMsg');
+const resultsEl = document.getElementById('results');
+
+function renderBank() {
+  const list = document.getElementById('bankList');
+  list.innerHTML = '';
+  BANK.forEach(item => {
+    const div = document.createElement('div');
+    div.className = 'bank-item';
+    div.innerHTML = '<div class="bank-item-tag">' + escHtml(item.tag) + '</div>' +
+      '<div class="bank-item-txt">' + escHtml(item.texte) + '</div>';
+    div.addEventListener('click', () => analyze(item.texte));
+    list.appendChild(div);
+  });
+}
+
+tabBank.addEventListener('click', () => {
+  tabBank.classList.add('active');
+  tabFree.classList.remove('active');
+  bankView.classList.remove('hidden');
+  freeView.classList.add('hidden');
+});
+
+tabFree.addEventListener('click', () => {
+  tabFree.classList.add('active');
+  tabBank.classList.remove('active');
+  freeView.classList.remove('hidden');
+  bankView.classList.add('hidden');
+});
+
+document.getElementById('analyzeFreeBtn').addEventListener('click', () => {
+  const text = document.getElementById('freeInput').value.trim();
+  if (!text) return;
+  analyze(text);
+});
+
+async function analyze(text) {
+  hideError();
+  resultsEl.classList.add('hidden');
+  statusMsg.classList.add('on');
+
+  try {
+    const res = await fetch('/api/analyze-grammar', {
+      method: 'POST',
+      headers: {'Content-Type': 'application/json'},
+      body: JSON.stringify({ code: studentCode, text }),
+    });
+    const data = await res.json();
+    statusMsg.classList.remove('on');
+
+    if (!res.ok) {
+      showError(data.error || 'Une erreur est survenue. Réessaie.');
+      return;
+    }
+
+    renderResults(data.phrases || []);
+    analysisCount++;
+    lmsTrack('exercise_completed', { zonesDone: analysisCount, score: null });
+  } catch (err) {
+    statusMsg.classList.remove('on');
+    showError('Impossible de contacter le serveur. Réessaie dans quelques instants.');
+  }
+}
+
+function renderResults(phrases) {
+  resultsEl.innerHTML = '';
+  if (!phrases.length) {
+    showError('Aucune analyse n\'a pu être générée pour ce texte.');
+    return;
+  }
+
+  phrases.forEach(p => {
+    const block = document.createElement('div');
+    block.className = 'phrase-block';
+
+    const annotated = document.createElement('div');
+    annotated.className = 'phrase-annotated';
+    (p.groupes || []).forEach((g, i) => {
+      const span = document.createElement('span');
+      span.className = 'grp';
+      span.style.borderBottomColor = FN_COLORS[g.fonction] || FN_COLORS['Autre'];
+      span.textContent = g.mots + (i < p.groupes.length - 1 ? ' ' : '');
+      annotated.appendChild(span);
+    });
+    block.appendChild(annotated);
+
+    const table = document.createElement('table');
+    table.className = 'analyse-table';
+    table.innerHTML = '<thead><tr><th>Groupe de mots</th><th>Fonction</th><th>Nature</th></tr></thead>';
+    const tbody = document.createElement('tbody');
+    (p.groupes || []).forEach(g => {
+      const tr = document.createElement('tr');
+      const color = FN_COLORS[g.fonction] || FN_COLORS['Autre'];
+      tr.innerHTML = '<td>' + escHtml(g.mots) + '</td>' +
+        '<td><span class="fn-dot" style="background:' + color + '"></span>' + escHtml(g.fonction) + '</td>' +
+        '<td>' + escHtml(g.nature) + '</td>';
+      tbody.appendChild(tr);
+    });
+    table.appendChild(tbody);
+    block.appendChild(table);
+
+    const legend = document.createElement('div');
+    legend.className = 'legend';
+    Object.keys(FN_COLORS).forEach(fn => {
+      legend.innerHTML += '<span><span class="fn-dot" style="background:' + FN_COLORS[fn] + '"></span>' + fn + '</span>';
+    });
+    block.appendChild(legend);
+
+    resultsEl.appendChild(block);
+  });
+
+  resultsEl.classList.remove('hidden');
+}
+
+function showError(msg) {
+  errorMsg.textContent = msg;
+  errorMsg.classList.add('on');
+}
+function hideError() {
+  errorMsg.classList.remove('on');
+}
+
+function escHtml(s) {
+  return (s || '').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');
+}
+
+function lmsTrack(event, data) {
+  try { window.parent.postMessage(Object.assign({lms: true, event: event}, data||{}), '*'); } catch(e) {}
+}
+
+renderBank();
+</script>
+</body>
+</html>

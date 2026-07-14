@@ -449,6 +449,8 @@ class Handler(http.server.SimpleHTTPRequestHandler):
             self._handle_vocab_translate()
         elif path == "/api/vocab/check-answer":
             self._handle_vocab_check_answer()
+        elif path == "/api/analyze-grammar":
+            self._handle_analyze_grammar()
         elif path == "/api/activities":
             self._handle_add()
         elif re.match(r"^/api/activities/\d+/update$", path):
@@ -1239,6 +1241,53 @@ class Handler(http.server.SimpleHTTPRequestHandler):
             "objetCorrige": parsed.get("objetCorrige", subject),
             "corpsCorrige": parsed.get("corpsCorrige", text),
             "erreurs": parsed.get("erreurs", []),
+        })
+
+    def _handle_analyze_grammar(self):
+        length = int(self.headers.get("Content-Length", 0))
+        body = json.loads(self.rfile.read(length))
+        code = body.get("code", "").strip().upper()
+        if not validate_student_code(code):
+            json_response(self, {"error": "Non autorisé"}, 401)
+            return
+
+        text = body.get("text", "").strip()
+        if not text:
+            json_response(self, {"error": "Aucun texte fourni"}, 400)
+            return
+        if len(text) > 800:
+            text = text[:800]
+
+        system_prompt = (
+            "Tu es un professeur de grammaire française pour des élèves adultes "
+            "de Niveau 4 en francisation au Québec (niveau intermédiaire). "
+            "L'élève te donne une ou plusieurs phrases en français. Découpe le "
+            "texte en phrases, puis pour chaque phrase, découpe-la en groupes "
+            "syntaxiques (pas mot par mot, mais par groupe : groupe sujet, "
+            "groupe verbal, compléments, etc.) et identifie pour chaque groupe "
+            "sa fonction ET sa nature dominante. Réponds UNIQUEMENT avec un "
+            "objet JSON valide, sans texte avant ni après, exactement dans ce "
+            'format : {"phrases": [{"texte": "...", "groupes": [{"mots": "...", '
+            '"fonction": "...", "nature": "..."}]}]} — '
+            '"mots" est le groupe de mots exact tiré de la phrase (les groupes '
+            "mis bout à bout, séparés par des espaces, doivent reconstituer "
+            'exactement la phrase originale, ponctuation incluse). "fonction" '
+            "est une des valeurs suivantes : \"Sujet\", \"Verbe\", \"Complément "
+            "direct\", \"Complément indirect\", \"Complément de phrase\", "
+            "\"Attribut du sujet\", \"Autre\". \"nature\" est une des valeurs "
+            "suivantes : \"Groupe nominal\", \"Groupe verbal\", \"Groupe "
+            "adjectival\", \"Groupe adverbial\", \"Groupe prépositionnel\", "
+            "\"Pronom\", \"Autre\". Ne saute aucun mot de la phrase originale."
+        )
+
+        parsed, err = self._call_anthropic_json(system_prompt, text, max_tokens=1400)
+        if err:
+            json_response(self, {"error": err[0]}, err[1])
+            return
+
+        json_response(self, {
+            "original": text,
+            "phrases": parsed.get("phrases", []),
         })
 
     def _handle_add_student(self):
