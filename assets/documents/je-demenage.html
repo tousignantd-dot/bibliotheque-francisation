@@ -1,0 +1,337 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="utf-8">
+<title>Je déménage ! — Fiche élève</title>
+<link href="https://fonts.googleapis.com/css2?family=Nunito:wght@600;700;800;900&display=swap" rel="stylesheet">
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+html{background:#bbb}
+body{
+  font-family:'Nunito','Arial Rounded MT Bold',sans-serif;
+  background:#fff;
+  color:#000;
+  width:215.9mm;
+  margin:0 auto;
+  font-size:10.5pt;
+}
+
+/* PAGE BREAKS */
+.page{
+  width:215.9mm;
+  min-height:279.4mm;
+  padding:10mm 13mm 8mm;
+  background:#fff;
+  position:relative;
+}
+.page+.page{border-top:3px dashed #aaa;}
+
+/* ── HEADER ── */
+.hdr{
+  border-top:4px solid #7B4F9E;
+  border-bottom:2.5px solid #000;
+  padding:7px 0 7px;
+  display:flex;
+  align-items:center;
+  gap:12px;
+  margin-bottom:9px;
+}
+.hdr-ic{
+  width:36px;height:36px;border-radius:50%;
+  border:2.5px solid #7B4F9E;
+  display:flex;align-items:center;justify-content:center;
+  flex-shrink:0;font-size:18px;
+}
+.hdr-eye{font-size:7.5pt;font-weight:800;text-transform:uppercase;letter-spacing:0.18em;color:#555;line-height:1;margin-bottom:2px;}
+.hdr-h1{font-size:20pt;font-weight:900;line-height:1.1;letter-spacing:-0.01em;color:#1A2E35}
+.hdr-r{margin-left:auto;display:flex;align-items:center;gap:8px;flex-shrink:0;}
+.nom-lbl{font-size:9pt;font-weight:800;text-transform:uppercase;letter-spacing:0.08em;}
+.nom-line{width:140px;border-bottom:2px solid #000;height:20px;display:inline-block;}
+
+.intro{font-size:9.5pt;font-style:italic;color:#555;margin-bottom:10px;line-height:1.5}
+
+/* ── DIALOGUE ── */
+.dial{
+  border:2px solid #7B4F9E;
+  border-left:5px solid #7B4F9E;
+  border-radius:0 6px 6px 0;
+  padding:7px 10px 8px;
+  margin-bottom:8px;
+}
+.sec-lbl{
+  font-size:7.5pt;font-weight:800;text-transform:uppercase;
+  letter-spacing:0.15em;color:#7B4F9E;margin-bottom:4px;
+}
+.dial-lines{display:flex;flex-direction:column;gap:1px;font-size:9.5pt;line-height:1.6;font-weight:600;}
+.dl{line-height:1.7}
+.mb{color:#7B4F9E;font-weight:800}
+.dr{color:#0E7490;font-weight:800}
+
+/* ── QUESTIONS ── */
+.q-item{margin-bottom:7px;}
+.q-item:last-child{margin-bottom:0}
+.q-text{font-size:9.5pt;font-weight:700;}
+.ans-line{display:block;margin-top:3px;margin-left:14px;border-bottom:1.5px solid #888;height:16px;width:calc(100% - 14px);}
+
+/* ── SAVOIR ── */
+.savoir{
+  border:2px solid #6B4FBB;
+  border-radius:6px;
+  padding:7px 10px 8px;
+  margin-bottom:8px;
+}
+.savoir-hdr{font-size:9.5pt;font-weight:900;color:#6B4FBB;margin-bottom:5px;}
+.savoir-row{display:flex;gap:10px;font-size:8.8pt;margin-bottom:3px;line-height:1.4}
+.savoir-row b{color:#6B4FBB;flex:0 0 34%;}
+.savoir-row span{flex:1;color:#333}
+
+/* ── ANNONCE ── */
+.annonce{
+  border:2px solid #E2E8F0;border-radius:10px;overflow:hidden;
+  margin-bottom:8px;max-width:100%;
+}
+.annonce-body{padding:10px 14px;background:#F8FAFC}
+.annonce-t{font-size:13pt;font-weight:900;color:#0F172A}
+.annonce-p{font-size:15pt;font-weight:900;color:#16A34A;margin:2px 0 5px}
+.annonce-d{font-size:9pt;font-weight:600;color:#334155;line-height:1.5}
+
+/* ── FICHE-CONSEIL (planning) ── */
+.plan-table{width:100%;border-collapse:collapse;font-size:8.8pt;margin-bottom:8px}
+.plan-table td{padding:5px 8px;border-bottom:1px solid #eee;vertical-align:top}
+.plan-table td:first-child{font-weight:800;color:#92400E;width:32%;background:#FFF7ED}
+
+/* ── VOCABULAIRE ── */
+.vocab{border:2px solid #7B4F9E;border-radius:6px;padding:7px 10px 8px;margin-bottom:8px}
+.vocab-hdr{display:flex;align-items:center;gap:9px;margin-bottom:6px;}
+.sec-tag{
+  border:2px solid #7B4F9E;border-radius:999px;
+  padding:2px 11px;font-size:8pt;font-weight:800;color:#7B4F9E;
+  text-transform:uppercase;letter-spacing:0.1em;white-space:nowrap;
+}
+.vocab-grid{display:grid;grid-template-columns:1fr 1fr;gap:2px 16px;}
+.vocab-item{font-size:8.8pt;padding:2px 0;line-height:1.4}
+.vocab-item b{color:#7B4F9E}
+
+.footer{font-size:7.5pt;color:#999;text-align:center;border-top:1px solid #ddd;padding-top:6px;margin-top:8px}
+
+@media print{
+  html,body{background:#fff!important;width:auto!important;margin:0!important;}
+  .page{width:100%!important;min-height:0!important;padding:10mm 13mm 8mm!important;page-break-after:always;break-after:page;}
+  .page:last-of-type{page-break-after:avoid;break-after:avoid;}
+  .page+.page{border-top:none!important;}
+}
+@page{size:letter portrait;margin:0;}
+</style>
+</head>
+<body>
+
+<!-- PAGE 1 -->
+<div class="page">
+  <div class="hdr">
+    <div class="hdr-ic">🏠</div>
+    <div>
+      <div class="hdr-eye">Francisation · Niveau 4</div>
+      <div class="hdr-h1">Je déménage !</div>
+    </div>
+    <div class="hdr-r">
+      <span class="nom-lbl">Nom :</span>
+      <span class="nom-line"></span>
+    </div>
+  </div>
+
+  <div class="intro">🏠 Amara vient d'arriver à Montréal. Elle cherche un appartement à louer près de son travail. Suivez son histoire : la recherche d'un logement, la visite, l'ameublement, le déménagement et la pendaison de crémaillère !</div>
+
+  <div class="dial">
+    <div class="sec-lbl">Dialogue 1 — À la recherche d'un appartement</div>
+    <div class="dial-lines">
+      <div class="dl"><span class="mb">Amara :</span> Bonjour, j'appelle pour l'appartement à louer sur la rue Fleury. Est-ce qu'il est encore disponible ?</div>
+      <div class="dl"><span class="dr">M. Bélanger :</span> Oui, tout à fait ! C'est un 4½, meublé, chauffé et éclairé. L'électricité est comprise dans le loyer.</div>
+      <div class="dl"><span class="mb">Amara :</span> Combien de chambres est-ce qu'il y a ?</div>
+      <div class="dl"><span class="dr">M. Bélanger :</span> Il y a une chambre, un salon, une cuisine et une salle de bain. Il y a aussi un grand balcon.</div>
+      <div class="dl"><span class="mb">Amara :</span> Est-ce qu'il y a une laveuse et une sécheuse ?</div>
+      <div class="dl"><span class="dr">M. Bélanger :</span> Non, il n'y en a pas, mais il y a une buanderie dans l'immeuble.</div>
+      <div class="dl"><span class="mb">Amara :</span> Parfait. Quel est le montant du loyer ?</div>
+      <div class="dl"><span class="dr">M. Bélanger :</span> Le loyer est de neuf cent cinquante dollars par mois. Il faut signer un bail d'un an.</div>
+      <div class="dl"><span class="mb">Amara :</span> Est-ce que je peux visiter l'appartement cette semaine ?</div>
+      <div class="dl"><span class="dr">M. Bélanger :</span> Bien sûr ! Êtes-vous libre jeudi à dix-huit heures ?</div>
+      <div class="dl"><span class="mb">Amara :</span> Oui, parfait. Merci beaucoup, à jeudi !</div>
+    </div>
+  </div>
+
+  <div class="q-item"><span class="q-text">1. Pourquoi Amara téléphone-t-elle à M. Bélanger ?</span><span class="ans-line"></span></div>
+  <div class="q-item"><span class="q-text">2. Qu'est-ce qui est compris dans le loyer ?</span><span class="ans-line"></span></div>
+  <div class="q-item"><span class="q-text">3. Combien coûte le loyer par mois ?</span><span class="ans-line"></span></div>
+  <div class="q-item"><span class="q-text">4. Quand Amara peut-elle visiter l'appartement ?</span><span class="ans-line"></span></div>
+
+  <div class="savoir">
+    <div class="savoir-hdr">📖 La lettre finale muette</div>
+    <div class="savoir-row"><b>-s, -t, -d final</b><span>On ne l'entend pas : un apparteme<u>nt</u>, un li<u>t</u>, chau<u>d</u>, un coli<u>s</u></span></div>
+    <div class="savoir-row"><b>-e final</b><span>On ne l'entend pas : une chambr<u>e</u>, une commod<u>e</u>, une lamp<u>e</u></span></div>
+    <div class="savoir-row"><b>-ent (verbes, 3ᵉ pers. pl.)</b><span>Toute la terminaison est muette : ils lou<u>ent</u>, elles emménag<u>ent</u></span></div>
+  </div>
+
+  <div class="footer">Page 1 · Francisation Niveau 4 · Je déménage !</div>
+</div>
+
+<!-- PAGE 2 -->
+<div class="page">
+  <div class="hdr">
+    <div class="hdr-ic">🏠</div>
+    <div>
+      <div class="hdr-eye">Francisation · Niveau 4</div>
+      <div class="hdr-h1">Je déménage !</div>
+    </div>
+    <div class="hdr-r">
+      <span class="nom-lbl">Nom :</span>
+      <span class="nom-line"></span>
+    </div>
+  </div>
+
+  <div class="dial">
+    <div class="sec-lbl">Dialogue 2 — La visite de l'appartement</div>
+    <div class="dial-lines">
+      <div class="dl"><span class="dr">M. Bélanger :</span> Bienvenue ! Entrez, je vous en prie. Voici le salon.</div>
+      <div class="dl"><span class="mb">Amara :</span> Oh, c'est plus grand que ce que j'imaginais ! Et le salon est très ensoleillé.</div>
+      <div class="dl"><span class="dr">M. Bélanger :</span> Oui, les fenêtres donnent sur le sud. La cuisine a été rénovée l'année passée.</div>
+      <div class="dl"><span class="mb">Amara :</span> Elle est vraiment belle. Est-ce que le stationnement est compris dans le loyer ?</div>
+      <div class="dl"><span class="dr">M. Bélanger :</span> Non, le stationnement coûte cinquante dollars de plus par mois.</div>
+      <div class="dl"><span class="mb">Amara :</span> Je vois… Est-ce que le prix du loyer est négociable ?</div>
+      <div class="dl"><span class="dr">M. Bélanger :</span> Hum… Je ne peux pas baisser le loyer, mais je peux vous offrir le stationnement à moitié prix la première année.</div>
+      <div class="dl"><span class="mb">Amara :</span> C'est une bonne offre ! Je vais réfléchir et je vous rappelle demain.</div>
+    </div>
+  </div>
+
+  <div class="q-item"><span class="q-text">1. Comment est le salon de l'appartement ?</span><span class="ans-line"></span></div>
+  <div class="q-item"><span class="q-text">2. Est-ce que le stationnement est inclus dans le loyer ?</span><span class="ans-line"></span></div>
+  <div class="q-item"><span class="q-text">3. Quelle offre M. Bélanger fait-il à Amara ?</span><span class="ans-line"></span></div>
+
+  <div class="savoir">
+    <div class="savoir-hdr">📖 Le comparatif</div>
+    <div class="savoir-row"><b>plus … que</b><span>Cet appartement est plus grand que l'autre. (+)</span></div>
+    <div class="savoir-row"><b>moins … que</b><span>Le loyer est moins élevé que prévu. (−)</span></div>
+    <div class="savoir-row"><b>aussi … que</b><span>Ce quartier est aussi calme que le mien. (=)</span></div>
+    <div class="savoir-row"><b>meilleur / pire</b><span>Ce logement est meilleur que le précédent.</span></div>
+  </div>
+
+  <div class="sec-lbl" style="margin-bottom:6px">La petite annonce</div>
+  <div class="annonce">
+    <div class="annonce-body">
+      <div class="annonce-t">DIVAN 3 PLACES</div>
+      <div class="annonce-p">150 $</div>
+      <div class="annonce-d">Divan gris en tissu, en très bon état, provenant d'une maison non-fumeur. Peu utilisé. Dimensions : 200 cm × 90 cm. <b>Prix ferme.</b> Disponible pour ramassage ce week-end. Écrivez-moi ou appelez au 514-555-0123.</div>
+    </div>
+  </div>
+
+  <div class="q-item"><span class="q-text">4. Quel meuble est à vendre, et combien coûte-t-il ?</span><span class="ans-line"></span></div>
+  <div class="q-item"><span class="q-text">5. Dans quel état est le divan ?</span><span class="ans-line"></span></div>
+  <div class="q-item"><span class="q-text">6. Est-ce que le prix est négociable ? Comment peut-on contacter le vendeur ?</span><span class="ans-line"></span></div>
+
+  <div class="footer">Page 2 · Francisation Niveau 4 · Je déménage !</div>
+</div>
+
+<!-- PAGE 3 -->
+<div class="page">
+  <div class="hdr">
+    <div class="hdr-ic">🏠</div>
+    <div>
+      <div class="hdr-eye">Francisation · Niveau 4</div>
+      <div class="hdr-h1">Je déménage !</div>
+    </div>
+    <div class="hdr-r">
+      <span class="nom-lbl">Nom :</span>
+      <span class="nom-line"></span>
+    </div>
+  </div>
+
+  <div class="savoir">
+    <div class="savoir-hdr">📖 L'impératif présent</div>
+    <div class="savoir-row"><b>2ᵉ pers. s. (tu)</b><span>Viens voir le divan avant de payer.</span></div>
+    <div class="savoir-row"><b>1ʳᵉ pers. pl. (nous)</b><span>Vérifions l'état du meuble ensemble.</span></div>
+    <div class="savoir-row"><b>2ᵉ pers. pl. (vous)</b><span>Apportez du liquide pour l'achat.</span></div>
+    <div class="savoir-row"><b>forme négative</b><span>Ne payez pas avant d'avoir vu le meuble.</span></div>
+  </div>
+
+  <div class="savoir">
+    <div class="savoir-hdr">📖 Le futur proche (aller + infinitif)</div>
+    <div class="savoir-row"><b>je vais + infinitif</b><span>Je vais emballer mes affaires cette semaine.</span></div>
+    <div class="savoir-row"><b>nous allons + infinitif</b><span>Nous allons louer un camion samedi matin.</span></div>
+    <div class="savoir-row"><b>ils / elles vont + infinitif</b><span>Les déménageurs vont arriver à neuf heures.</span></div>
+  </div>
+
+  <div class="sec-lbl" style="margin-bottom:6px">Bien planifier son déménagement</div>
+  <table class="plan-table">
+    <tr><td>📅 Un mois avant</td><td>Réserver la compagnie de déménagement et trier ses affaires</td></tr>
+    <tr><td>📅 Deux semaines avant</td><td>Emballer les objets utilisés rarement et étiqueter les boîtes</td></tr>
+    <tr><td>📅 Une semaine avant</td><td>Faire son changement d'adresse (poste, banque, employeur)</td></tr>
+    <tr><td>🚚 Le jour du déménagement</td><td>Garder ses documents importants et ses médicaments avec soi</td></tr>
+    <tr><td>🏡 Après le déménagement</td><td>Déballer d'abord la cuisine et la salle de bain</td></tr>
+  </table>
+
+  <div class="dial">
+    <div class="sec-lbl">Dialogue 3 — Organiser la pendaison de crémaillère</div>
+    <div class="dial-lines">
+      <div class="dl"><span class="mb">Amara :</span> Allô Julie ! Je t'appelle parce que j'organise une pendaison de crémaillère pour célébrer mon nouvel appartement !</div>
+      <div class="dl"><span class="dr">Julie :</span> Quelle bonne idée ! C'est quand ?</div>
+      <div class="dl"><span class="mb">Amara :</span> Samedi soir, à dix-neuf heures. J'invite dix personnes.</div>
+      <div class="dl"><span class="dr">Julie :</span> Super ! Est-ce que je peux apporter quelque chose ? Un dessert, peut-être ?</div>
+      <div class="dl"><span class="mb">Amara :</span> Oui, avec plaisir ! Chacun apporte son plat préféré. Pas besoin de cadeau pour la maison.</div>
+      <div class="dl"><span class="dr">Julie :</span> Parfait. Tu veux de l'aide pour préparer ?</div>
+      <div class="dl"><span class="mb">Amara :</span> Oui ! Est-ce que tu peux venir m'aider à décorer vendredi soir ?</div>
+      <div class="dl"><span class="dr">Julie :</span> Bien sûr ! Je les adore, tes soirées. À vendredi !</div>
+    </div>
+  </div>
+
+  <div class="q-item"><span class="q-text">1. Pourquoi Amara organise-t-elle une fête ?</span><span class="ans-line"></span></div>
+  <div class="q-item"><span class="q-text">2. Quand la fête a-t-elle lieu, et combien de personnes sont invitées ?</span><span class="ans-line"></span></div>
+  <div class="q-item"><span class="q-text">3. Qu'est-ce que chaque invité doit apporter ?</span><span class="ans-line"></span></div>
+
+  <div class="footer">Page 3 · Francisation Niveau 4 · Je déménage !</div>
+</div>
+
+<!-- PAGE 4 -->
+<div class="page">
+  <div class="hdr">
+    <div class="hdr-ic">🏠</div>
+    <div>
+      <div class="hdr-eye">Francisation · Niveau 4</div>
+      <div class="hdr-h1">Je déménage !</div>
+    </div>
+    <div class="hdr-r">
+      <span class="nom-lbl">Nom :</span>
+      <span class="nom-line"></span>
+    </div>
+  </div>
+
+  <div class="savoir">
+    <div class="savoir-hdr">📖 Les pronoms compléments directs (le, la, les)</div>
+    <div class="savoir-row"><b>le (masc. singulier)</b><span>J'invite mon collègue. → Je l'invite.</span></div>
+    <div class="savoir-row"><b>la (fém. singulier)</b><span>J'appelle ma sœur. → Je l'appelle.</span></div>
+    <div class="savoir-row"><b>les (pluriel)</b><span>J'invite mes voisins. → Je les invite.</span></div>
+  </div>
+
+  <div class="vocab">
+    <div class="vocab-hdr">
+      <span class="sec-tag">Vocabulaire</span>
+      <span style="font-size:9pt;font-weight:700;color:#444">Mots et expressions à retenir</span>
+    </div>
+    <div class="vocab-grid">
+      <div class="vocab-item"><b>un bail</b> — Contrat de location signé entre le locataire et le propriétaire.</div>
+      <div class="vocab-item"><b>le loyer</b> — Somme d'argent payée chaque mois pour habiter un logement.</div>
+      <div class="vocab-item"><b>un 4½</b> — Au Québec : appartement de quatre pièces et une salle de bain.</div>
+      <div class="vocab-item"><b>meublé</b> — Qui contient déjà des meubles (lit, table, divan…).</div>
+      <div class="vocab-item"><b>une buanderie</b> — Salle avec des laveuses et des sécheuses.</div>
+      <div class="vocab-item"><b>négocier</b> — Discuter pour obtenir un meilleur prix ou de meilleures conditions.</div>
+      <div class="vocab-item"><b>un divan</b> — Long siège confortable pour plusieurs personnes (un sofa).</div>
+      <div class="vocab-item"><b>le prix est ferme</b> — Le prix ne change pas : on ne peut pas négocier.</div>
+      <div class="vocab-item"><b>emballer</b> — Mettre des objets dans des boîtes pour les protéger.</div>
+      <div class="vocab-item"><b>étiqueter</b> — Coller une étiquette pour identifier le contenu d'une boîte.</div>
+      <div class="vocab-item"><b>un déménageur</b> — Personne dont le métier est de transporter les meubles.</div>
+      <div class="vocab-item"><b>une pendaison de crémaillère</b> — Fête pour célébrer son nouveau logement.</div>
+    </div>
+  </div>
+
+  <div class="footer">Page 4 · Francisation Niveau 4 · Je déménage !</div>
+</div>
+
+</body>
+</html>
