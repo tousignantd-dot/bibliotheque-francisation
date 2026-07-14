@@ -96,6 +96,43 @@
 
     .main { max-width: 1000px; margin: 0 auto; padding: 32px 24px 64px; }
 
+    /* ---- ANNONCE ---- */
+    .announcement-banner {
+      background: var(--warn-light); border-bottom: 1px solid #fde68a;
+      color: var(--warn); font-size: 13px; font-weight: 600;
+      text-align: center; padding: 10px 24px;
+    }
+    .announcement-banner.hidden { display: none; }
+
+    /* ---- TABLEAU DE BORD ---- */
+    .dashboard.hidden { display: none; }
+    .dashboard {
+      display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 14px;
+      margin-bottom: 8px;
+    }
+    .dash-card {
+      background: var(--surface); border: 1.5px solid var(--border); border-radius: var(--radius);
+      box-shadow: var(--shadow); padding: 16px 18px;
+    }
+    .dash-label {
+      font-size: 10.5px; font-weight: 700; text-transform: uppercase; letter-spacing: .6px;
+      color: var(--text-3); margin-bottom: 8px; display: flex; align-items: center; gap: 6px;
+    }
+    .dash-value { font-size: 22px; font-weight: 700; color: var(--text); line-height: 1.2; }
+    .dash-sub { font-size: 12px; color: var(--text-2); margin-top: 2px; }
+    .dash-progress-track {
+      height: 6px; background: var(--bg); border-radius: 999px; margin-top: 10px; overflow: hidden;
+    }
+    .dash-progress-fill { height: 100%; background: var(--accent); border-radius: 999px; transition: width .3s; }
+    .dash-vocab-bars { display: flex; gap: 4px; margin-top: 10px; height: 8px; }
+    .dash-vocab-seg { border-radius: 999px; }
+    .dash-vocab-legend { display: flex; gap: 12px; margin-top: 8px; font-size: 11px; color: var(--text-2); flex-wrap: wrap; }
+    .dash-vocab-legend span { display: flex; align-items: center; gap: 4px; }
+    .dash-dot { width: 8px; height: 8px; border-radius: 50%; display: inline-block; }
+    .dash-card.link { cursor: pointer; transition: box-shadow .15s, border-color .15s; text-decoration: none; display: block; }
+    .dash-card.link:hover { box-shadow: 0 4px 20px rgba(59,111,246,.12); border-color: #c7d7fd; }
+    .dash-cta { font-size: 13px; font-weight: 700; color: var(--accent); margin-top: 8px; }
+
     /* ---- SECTION HEADERS ---- */
     .section-title {
       font-size: 11px; font-weight: 700; letter-spacing: 1px; text-transform: uppercase;
@@ -210,12 +247,20 @@
       </div>
     </div>
   </header>
+  <div id="announcementBanner" class="announcement-banner hidden"></div>
+  <div class="main" style="padding-bottom:0">
+    <div id="dashboard" class="dashboard hidden"></div>
+  </div>
   <main class="main" id="mainContent"></main>
 </div>
 
 <script>
   const API = '';
   let session = null;
+
+  // ---- CONFIGURATION (à ajuster au besoin) ----
+  const TEAMS_LINK = 'https://teams.microsoft.com/l/meetup-join/REMPLACER_PAR_LE_VRAI_LIEN';
+  const ANNOUNCEMENT = ''; // Laisser vide pour ne rien afficher.
 
   // ---- RESTORE SESSION ----
   const saved = localStorage.getItem('eleve_session');
@@ -259,6 +304,7 @@
     document.getElementById('app').style.display = 'block';
     document.getElementById('codeDisplay').textContent = session.prenom ? `${session.prenom} · ${session.code}` : session.code;
     loadActivities();
+    loadDashboard();
   }
 
   document.getElementById('logoutBtn').addEventListener('click', () => {
@@ -281,6 +327,82 @@
     } catch(e) {
       main.innerHTML = `<p style="color:#dc2626;font-size:13px;text-align:center;padding:40px">Impossible de charger les activités.<br>Veuillez rafraîchir la page ou réessayer dans quelques instants.</p>`;
     }
+  }
+
+  // ---- DASHBOARD ----
+  async function loadDashboard() {
+    const banner = document.getElementById('announcementBanner');
+    if (ANNOUNCEMENT) {
+      banner.textContent = ANNOUNCEMENT;
+      banner.classList.remove('hidden');
+    } else {
+      banner.classList.add('hidden');
+    }
+
+    const dash = document.getElementById('dashboard');
+    try {
+      const res = await fetch(`${API}/api/student/dashboard?code=${encodeURIComponent(session.code)}`);
+      if (res.status === 401) { return; }
+      const d = await res.json();
+      renderDashboard(d);
+      dash.classList.remove('hidden');
+    } catch(e) {
+      dash.classList.add('hidden');
+    }
+  }
+
+  function renderDashboard(d) {
+    const dash = document.getElementById('dashboard');
+    const pct = d.activitiesTotal ? Math.round((d.activitiesCompleted / d.activitiesTotal) * 100) : 0;
+    const v = d.vocab || { total: 0, mastered: 0, learning: 0, new: 0 };
+    const vTotal = v.total || 1;
+    const streakLine = d.streak > 0
+      ? `🔥 ${d.streak} jour${d.streak > 1 ? 's' : ''} de suite`
+      : `Commence une série aujourd'hui !`;
+
+    const nextCard = d.nextActivity
+      ? `<a href="#" class="dash-card link" onclick="document.getElementById('mainContent').scrollIntoView({behavior:'smooth'});return false;">
+           <div class="dash-label">▶️ Prochaine activité</div>
+           <div class="dash-value" style="font-size:16px">${d.nextActivity.title}</div>
+           <div class="dash-cta">Commencer →</div>
+         </a>`
+      : `<div class="dash-card">
+           <div class="dash-label">▶️ Prochaine activité</div>
+           <div class="dash-sub">Toutes les activités disponibles sont commencées. Bravo !</div>
+         </div>`;
+
+    dash.innerHTML = `
+      <div class="dash-card">
+        <div class="dash-label">📈 Progression</div>
+        <div class="dash-value">${d.activitiesCompleted} / ${d.activitiesTotal}</div>
+        <div class="dash-sub">activités complétées · ${streakLine}</div>
+        <div class="dash-progress-track"><div class="dash-progress-fill" style="width:${pct}%"></div></div>
+      </div>
+
+      <div class="dash-card">
+        <div class="dash-label">📚 Maîtrise du vocabulaire</div>
+        <div class="dash-value">${v.mastered} / ${v.total}</div>
+        <div class="dash-sub">mots maîtrisés</div>
+        <div class="dash-vocab-bars">
+          <div class="dash-vocab-seg" style="background:var(--success);width:${(v.mastered/vTotal)*100}%"></div>
+          <div class="dash-vocab-seg" style="background:var(--warn);width:${(v.learning/vTotal)*100}%"></div>
+          <div class="dash-vocab-seg" style="background:var(--border);width:${(v.new/vTotal)*100}%"></div>
+        </div>
+        <div class="dash-vocab-legend">
+          <span><span class="dash-dot" style="background:var(--success)"></span>Maîtrisés (${v.mastered})</span>
+          <span><span class="dash-dot" style="background:var(--warn)"></span>En cours (${v.learning})</span>
+          <span><span class="dash-dot" style="background:var(--border)"></span>Non vus (${v.new})</span>
+        </div>
+      </div>
+
+      ${nextCard}
+
+      <a href="${TEAMS_LINK}" target="_blank" class="dash-card link">
+        <div class="dash-label">🎥 Rencontre Teams</div>
+        <div class="dash-sub">Rejoindre la rencontre avec l'enseignant</div>
+        <div class="dash-cta">Rejoindre →</div>
+      </a>
+    `;
   }
 
   function formatDate(iso) {

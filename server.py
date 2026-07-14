@@ -356,6 +356,9 @@ class Handler(http.server.SimpleHTTPRequestHandler):
         if path == "/api/student/activities":
             self._handle_student_activities(params)
             return
+        if path == "/api/student/dashboard":
+            self._handle_student_dashboard(params)
+            return
         if path == "/api/vocab/session":
             self._handle_vocab_session(params)
             return
@@ -930,6 +933,78 @@ class Handler(http.server.SimpleHTTPRequestHandler):
             "traduction": parsed.get("traduction", ""),
             "definitionTraduite": parsed.get("definitionTraduite", ""),
             "exempleTraduit": parsed.get("exempleTraduit", ""),
+        })
+
+    def _handle_student_dashboard(self, params):
+        code = params.get("code", [""])[0].strip().upper()
+        student = validate_student_code(code)
+        if not student:
+            json_response(self, {"error": "Non autorisé"}, 401)
+            return
+
+        today_str = date.today().isoformat()
+        activities = load_activities()
+        available_activities = []
+        for a in activities:
+            dp = a.get("datePrevue", "")
+            df = a.get("dateFin", "")
+            if df and df < today_str:
+                continue
+            if not dp or dp <= today_str:
+                available_activities.append(a)
+
+        progress = [p for p in load_progress() if p["studentId"] == student["id"]]
+        started_ids = {p["activityId"] for p in progress}
+        completed_ids = {p["activityId"] for p in progress if p["event"] == "exercise_completed"}
+
+        next_activity = None
+        for a in available_activities:
+            if a["id"] not in started_ids:
+                next_activity = {"id": a["id"], "title": a["title"]}
+                break
+        if next_activity is None:
+            for a in available_activities:
+                if a["id"] not in completed_ids:
+                    next_activity = {"id": a["id"], "title": a["title"]}
+                    break
+
+        # ── Série de jours consécutifs (streak) ─────────────────────────
+        dates_done = set()
+        for p in progress:
+            ts = p.get("timestamp", "")
+            if ts:
+                try:
+                    dates_done.add(datetime.fromisoformat(ts).date())
+                except ValueError:
+                    pass
+        streak = 0
+        cursor = date.today()
+        if cursor not in dates_done:
+            cursor = cursor - timedelta(days=1)
+        while cursor in dates_done:
+            streak += 1
+            cursor = cursor - timedelta(days=1)
+
+        # ── Maîtrise du vocabulaire ──────────────────────────────────────
+        vocab_progress = [p for p in load_vocab_progress() if p["studentId"] == student["id"]]
+        total_words = len(VOCAB_BANK)
+        reviewed_words = len(vocab_progress)
+        mastered_words = sum(1 for p in vocab_progress if p["box"] >= 4)
+        learning_words = reviewed_words - mastered_words
+        new_words = total_words - reviewed_words
+
+        json_response(self, {
+            "activitiesTotal": len(available_activities),
+            "activitiesStarted": len(started_ids & {a["id"] for a in available_activities}),
+            "activitiesCompleted": len(completed_ids & {a["id"] for a in available_activities}),
+            "nextActivity": next_activity,
+            "streak": streak,
+            "vocab": {
+                "total": total_words,
+                "mastered": mastered_words,
+                "learning": learning_words,
+                "new": new_words,
+            },
         })
 
     def _handle_student_activities(self, params):
