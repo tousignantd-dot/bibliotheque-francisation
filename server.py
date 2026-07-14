@@ -1050,15 +1050,25 @@ class Handler(http.server.SimpleHTTPRequestHandler):
         if len(text) > 500:
             text = text[:500]
 
+        question = body.get("question", "").strip()[:300]
+        context_line = (
+            f"\n\nContexte : l'élève répond à cette question posée dans un "
+            f"dialogue : « {question} ». Corrige sa réponse comme une réplique "
+            "naturelle dans cette conversation (les réponses courtes et "
+            "elliptiques sont normales à l'oral, ne les pénalise pas si elles "
+            "sont grammaticalement correctes dans ce contexte)."
+            if question else ""
+        )
+
         system_prompt = (
             "Tu es un tuteur de francisation pour des élèves adultes de Niveau 4 "
             "au Québec (niveau intermédiaire). L'élève a dit une phrase à voix "
             "haute, transcrite automatiquement (elle peut donc contenir des "
             "erreurs de transcription en plus d'erreurs de langue). Corrige la "
             "phrase en français correct et naturel (français québécois standard "
-            "accepté). Réponds UNIQUEMENT avec un objet JSON valide, sans texte "
-            "avant ni après, exactement dans ce format : "
-            '{"corrige": "...", "erreurs": [{"explication": "..."}], '
+            "accepté)." + context_line + " Réponds UNIQUEMENT avec un objet "
+            "JSON valide, sans texte avant ni après, exactement dans ce "
+            'format : {"corrige": "...", "erreurs": [{"explication": "..."}], '
             '"memePhrase": true} — "memePhrase" est true si la phrase était déjà '
             'correcte. "erreurs" contient au maximum 3 explications courtes '
             "(une phrase chacune), en français simple adapté à un élève de "

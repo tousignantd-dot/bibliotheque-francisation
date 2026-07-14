@@ -15,32 +15,59 @@ body{display:flex;flex-direction:column;min-height:100vh}
 .hdr-l{display:flex;align-items:center;gap:14px}
 .hdr-ic{width:44px;height:44px;background:rgba(255,255,255,.18);border-radius:50%;display:flex;align-items:center;justify-content:center;flex-shrink:0;font-size:22px}
 .hdr-eye{font-size:11px;font-weight:800;text-transform:uppercase;letter-spacing:.2em;opacity:.7;line-height:1}
-.hdr-h1{font-size:26px;font-weight:900;line-height:1.15}
-#counter-chip{background:rgba(255,255,255,.15);border:2px solid rgba(255,255,255,.45);border-radius:999px;padding:8px 18px;font-size:15px;font-weight:900;white-space:nowrap}
+.hdr-h1{font-size:24px;font-weight:900;line-height:1.15}
+.hdr-r{display:flex;align-items:center;gap:12px}
+#counter-chip{background:rgba(255,255,255,.15);border:2px solid rgba(255,255,255,.45);border-radius:999px;padding:8px 18px;font-size:14px;font-weight:900;white-space:nowrap}
+#changeThemeBtn{display:none;background:rgba(255,255,255,.15);color:#fff;border:2px solid rgba(255,255,255,.45);border-radius:10px;padding:8px 16px;font-family:'Nunito',sans-serif;font-size:13px;font-weight:800;cursor:pointer;white-space:nowrap}
+#changeThemeBtn:hover{background:rgba(255,255,255,.28)}
+#changeThemeBtn.on{display:block}
 
 #main{flex:1;display:flex;justify-content:center;padding:32px 20px;overflow-y:auto}
 #card{width:100%;max-width:640px;display:flex;flex-direction:column;gap:18px}
 
-.intro{background:#D7EFEA;border-radius:14px;padding:14px 18px;font-size:15px;line-height:1.6;color:#0F5851;font-weight:700}
+/* Sélection de thème */
+.picker-title{font-size:15px;font-weight:800;color:#1F8A8F;margin-bottom:4px}
+.theme-card{background:#fff;border:2.5px solid #DDE2EA;border-radius:14px;padding:18px 22px;cursor:pointer;transition:all .15s;margin-bottom:12px;display:flex;align-items:center;gap:16px}
+.theme-card:hover{border-color:#1F8A8F;box-shadow:0 2px 14px rgba(31,138,143,.1)}
+.theme-ic{font-size:32px;flex-shrink:0}
+.theme-card-tag{font-size:11px;font-weight:900;text-transform:uppercase;letter-spacing:.08em;color:#1F8A8F;margin-bottom:3px}
+.theme-card-txt{font-size:15px;font-weight:700;color:#123B36}
+.theme-card-sub{font-size:12.5px;color:#7A9885;font-weight:700;margin-top:2px}
 
-.mic-zone{background:#fff;border-radius:18px;padding:32px 30px;box-shadow:0 2px 14px rgba(0,0,0,.06);display:flex;flex-direction:column;align-items:center;gap:16px}
-#micBtn{width:96px;height:96px;border-radius:50%;border:none;background:#1F8A8F;color:#fff;font-size:38px;cursor:pointer;display:flex;align-items:center;justify-content:center;transition:transform .15s,background .15s;box-shadow:0 4px 18px rgba(31,138,143,.35)}
+#composeView.hidden{display:none}
+#themePicker.hidden{display:none}
+
+.intro{background:#D7EFEA;border-radius:14px;padding:14px 18px;font-size:14px;line-height:1.6;color:#0F5851;font-weight:700}
+
+/* Transcript de dialogue */
+#transcriptLog{display:flex;flex-direction:column;gap:10px}
+.bubble{max-width:82%;padding:12px 16px;border-radius:14px;font-size:15px;line-height:1.55;font-weight:700}
+.bubble-npc{align-self:flex-start;background:#fff;border:2px solid #DDE2EA;color:#123B36;border-bottom-left-radius:4px}
+.bubble-npc .who{font-size:11px;font-weight:900;text-transform:uppercase;letter-spacing:.06em;color:#1F8A8F;margin-bottom:4px}
+.bubble-student{align-self:flex-end;background:#ECFDF5;border:2px solid #86EFAC;color:#0F5851;border-bottom-right-radius:4px}
+.bubble-student .who{font-size:11px;font-weight:900;text-transform:uppercase;letter-spacing:.06em;color:#166534;margin-bottom:4px}
+.bubble-orig{font-size:12.5px;font-style:italic;color:#7A9885;font-weight:600;margin-top:6px}
+.bubble-err{font-size:12.5px;color:#92400E;font-weight:700;margin-top:4px}
+
+/* Réponse (mic + saisie) */
+.mic-zone{background:#fff;border-radius:18px;padding:28px 30px;box-shadow:0 2px 14px rgba(0,0,0,.06);display:flex;flex-direction:column;align-items:center;gap:14px}
+#micBtn{width:88px;height:88px;border-radius:50%;border:none;background:#1F8A8F;color:#fff;font-size:34px;cursor:pointer;display:flex;align-items:center;justify-content:center;transition:transform .15s,background .15s;box-shadow:0 4px 18px rgba(31,138,143,.35)}
 #micBtn:hover{background:#186F73}
 #micBtn.listening{background:#D8492E;animation:pulse 1.2s infinite}
 #micBtn:disabled{opacity:.5;cursor:not-allowed}
 @keyframes pulse{0%{box-shadow:0 0 0 0 rgba(216,73,46,.45)}70%{box-shadow:0 0 0 20px rgba(216,73,46,0)}100%{box-shadow:0 0 0 0 rgba(216,73,46,0)}}
-#micLabel{font-size:15px;font-weight:800;color:#5A7A76}
+#micLabel{font-size:14px;font-weight:800;color:#5A7A76}
 
 #transcriptWrap{width:100%;display:none}
 #transcriptWrap.on{display:block}
-#transcriptLabel{font-size:13px;font-weight:800;text-transform:uppercase;letter-spacing:.08em;color:#5A7A76;margin-bottom:6px}
-#transcriptBox{width:100%;min-height:70px;border:2.5px solid #C3E4DE;border-radius:12px;padding:12px 16px;font-family:'Nunito',sans-serif;font-size:17px;font-weight:700;color:#123B36;background:#F7FCFB;resize:vertical}
+#transcriptLabel{font-size:12px;font-weight:800;text-transform:uppercase;letter-spacing:.08em;color:#5A7A76;margin-bottom:6px}
+#transcriptBox{width:100%;min-height:60px;border:2.5px solid #C3E4DE;border-radius:12px;padding:12px 16px;font-family:'Nunito',sans-serif;font-size:16px;font-weight:700;color:#123B36;background:#F7FCFB;resize:vertical}
 #transcriptBox:focus{outline:none;border-color:#1F8A8F}
 
-.textFallback{display:none;width:100%;gap:10px}
+.textFallback{display:none;width:100%;gap:10px;flex-direction:column}
 .textFallback.on{display:flex}
 
-.actions{display:flex;gap:10px;margin-top:8px}
+.actions{display:flex;gap:10px;margin-top:6px;width:100%}
 .btn{font-family:'Nunito',sans-serif;font-size:15px;font-weight:800;border-radius:10px;padding:12px 22px;cursor:pointer;border:2.5px solid transparent;transition:all .15s}
 .btn-primary{background:#1F8A8F;color:#fff;flex:1}
 .btn-primary:hover{background:#186F73}
@@ -48,22 +75,20 @@ body{display:flex;flex-direction:column;min-height:100vh}
 .btn-ghost{background:#EAF6F4;color:#1F8A8F;border-color:#C3E4DE}
 .btn-ghost:hover{background:#D7EFEA}
 
-#resultCard{display:none;background:#fff;border-radius:18px;padding:26px 28px;box-shadow:0 2px 14px rgba(0,0,0,.06)}
-#resultCard.on{display:block}
-.res-label{font-size:12px;font-weight:800;text-transform:uppercase;letter-spacing:.08em;color:#8A8A80;margin-bottom:4px}
-.res-original{font-size:15px;color:#7A7A70;font-style:italic;margin-bottom:16px;line-height:1.5}
-.res-corrige{font-size:20px;font-weight:800;color:#0F5851;background:#ECFDF5;border:2px solid #86EFAC;border-radius:12px;padding:14px 18px;margin-bottom:16px;line-height:1.55}
-.res-perfect{font-size:16px;font-weight:800;color:#0F5851}
-.err-item{background:#FFF7ED;border-left:4px solid #F59E0B;border-radius:0 8px 8px 0;padding:10px 14px;font-size:14px;line-height:1.55;color:#7C4A03;margin-bottom:8px;font-weight:700}
-#errWrap{margin-top:6px}
-
 #statusMsg{font-size:14px;font-weight:800;color:#8A8A80;text-align:center;display:none}
 #statusMsg.on{display:block}
-#errorMsg{font-size:14px;font-weight:800;color:#B91C1C;background:#FEF2F2;border:2px solid #FCA5A5;border-radius:10px;padding:12px 16px;display:none}
+#errorMsg{font-size:14px;font-weight:800;color:#B91C1C;background:#FEF2F2;border:2px solid #FCA5A5;border-radius:10px;padding:12px 16px;display:none;width:100%}
 #errorMsg.on{display:block}
+
+#endView{display:none;background:#fff;border-radius:18px;padding:36px 30px;text-align:center;box-shadow:0 2px 14px rgba(0,0,0,.06)}
+#endView.on{display:block}
+#endView .emoji{font-size:52px;margin-bottom:10px}
+#endView h2{font-size:24px;font-weight:900;margin-bottom:6px}
+#endView p{font-size:15px;color:#5A8A6D;margin-bottom:20px}
 
 .spin{display:inline-block;width:14px;height:14px;border:2.5px solid #C3E4DE;border-top-color:#1F8A8F;border-radius:50%;animation:spin .7s linear infinite;margin-right:8px;vertical-align:-2px}
 @keyframes spin{to{transform:rotate(360deg)}}
+.hidden{display:none}
 </style>
 </head>
 <body>
@@ -76,53 +101,132 @@ body{display:flex;flex-direction:column;min-height:100vh}
       <div class="hdr-h1">Corrige-moi !</div>
     </div>
   </div>
-  <span id="counter-chip">0 phrase corrigée</span>
+  <div class="hdr-r">
+    <button id="changeThemeBtn">↺ Changer de thème</button>
+    <span id="counter-chip"></span>
+  </div>
 </div>
 
 <div id="main">
   <div id="card">
 
-    <div class="intro">🎯 Parle en français à voix haute (ou écris ta phrase). L'assistant transcrit, corrige et t'explique les erreurs.</div>
-
-    <div class="mic-zone">
-      <button id="micBtn" aria-label="Parler"><span id="micIcon">🎤</span></button>
-      <div id="micLabel">Appuie et parle</div>
-
-      <div class="textFallback" id="textFallback">
-        <textarea id="fallbackInput" placeholder="Écris ta phrase ici…" style="flex:1;min-height:60px;border:2.5px solid #C3E4DE;border-radius:12px;padding:10px 14px;font-family:'Nunito',sans-serif;font-size:16px;font-weight:700;color:#123B36"></textarea>
-      </div>
-
-      <div id="transcriptWrap">
-        <div id="transcriptLabel">Ta phrase (tu peux la corriger avant d'envoyer)</div>
-        <textarea id="transcriptBox"></textarea>
-        <div class="actions">
-          <button class="btn btn-ghost" id="retryBtn">↺ Recommencer</button>
-          <button class="btn btn-primary" id="correctBtn">Corriger ma phrase</button>
-        </div>
-      </div>
-
-      <div id="statusMsg"><span class="spin"></span>Correction en cours…</div>
-      <div id="errorMsg"></div>
+    <div id="themePicker">
+      <div class="picker-title">Choisis un thème de conversation :</div>
+      <div id="themeList"></div>
     </div>
 
-    <div id="resultCard">
-      <div class="res-label">Tu as dit</div>
-      <div class="res-original" id="resOriginal"></div>
-      <div id="resBody"></div>
-      <div id="errWrap"></div>
-      <div class="actions">
-        <button class="btn btn-primary" id="againBtn">🎤 Dire une autre phrase</button>
+    <div id="composeView" class="hidden">
+      <div class="intro" id="themeIntro"></div>
+
+      <div id="transcriptLog"></div>
+
+      <div class="mic-zone">
+        <button id="micBtn" aria-label="Parler"><span id="micIcon">🎤</span></button>
+        <div id="micLabel">Appuie et parle</div>
+
+        <div class="textFallback" id="textFallback">
+          <textarea id="fallbackInput" placeholder="Écris ta réponse ici…" style="min-height:60px;border:2.5px solid #C3E4DE;border-radius:12px;padding:10px 14px;font-family:'Nunito',sans-serif;font-size:16px;font-weight:700;color:#123B36"></textarea>
+        </div>
+
+        <div id="transcriptWrap">
+          <div id="transcriptLabel">Ta réponse (tu peux la corriger avant d'envoyer)</div>
+          <textarea id="transcriptBox"></textarea>
+          <div class="actions">
+            <button class="btn btn-ghost" id="retryBtn">↺ Recommencer</button>
+            <button class="btn btn-primary" id="correctBtn">Envoyer ma réponse</button>
+          </div>
+        </div>
+
+        <div id="statusMsg"><span class="spin"></span>Correction en cours…</div>
+        <div id="errorMsg"></div>
       </div>
+    </div>
+
+    <div id="endView">
+      <div class="emoji">🎉</div>
+      <h2>Dialogue terminé !</h2>
+      <p id="endSummary"></p>
+      <button class="btn btn-primary" id="restartBtn" style="max-width:240px;margin:0 auto">Choisir un autre thème</button>
     </div>
 
   </div>
 </div>
 
 <script>
+const THEMES = [
+  {
+    id: 'medecin', tag: 'Chez le médecin', icon: '🩺', interlocuteur: 'Le médecin',
+    intro: '🎯 Tu es chez le médecin. Réponds à ses questions au micro (ou par écrit). Chaque réponse est corrigée avant de continuer.',
+    questions: [
+      "Bonjour ! Qu'est-ce qui ne va pas aujourd'hui ?",
+      "Depuis quand avez-vous ces symptômes ?",
+      "Avez-vous de la fièvre ?",
+      "Est-ce que vous prenez des médicaments en ce moment ?",
+      "Avez-vous des allergies ?",
+      "Pouvez-vous me décrire la douleur exactement ?",
+    ],
+  },
+  {
+    id: 'entrevue', tag: "Entrevue d'embauche", icon: '💼', interlocuteur: 'Le recruteur',
+    intro: "🎯 Tu passes une entrevue d'embauche. Réponds aux questions du recruteur au micro (ou par écrit).",
+    questions: [
+      "Bonjour, merci d'être venu. Pouvez-vous vous présenter ?",
+      "Quelle expérience de travail avez-vous ?",
+      "Pourquoi voulez-vous travailler pour notre entreprise ?",
+      "Quelles sont vos disponibilités ?",
+      "Quel est votre plus grand défi au travail ?",
+      "Avez-vous des questions pour moi ?",
+    ],
+  },
+  {
+    id: 'restaurant', tag: 'Au restaurant', icon: '🍽️', interlocuteur: 'Le serveur',
+    intro: '🎯 Tu es au restaurant. Réponds aux questions du serveur au micro (ou par écrit).',
+    questions: [
+      "Bonjour ! Une table pour combien de personnes ?",
+      "Qu'est-ce que je vous sers à boire ?",
+      "Avez-vous choisi votre plat ?",
+      "Avez-vous des allergies alimentaires ?",
+      "Voulez-vous voir le menu des desserts ?",
+      "Est-ce que tout était à votre goût ?",
+    ],
+  },
+  {
+    id: 'logement', tag: 'Louer un logement', icon: '🏠', interlocuteur: 'Le propriétaire',
+    intro: "🎯 Tu appelles pour un appartement à louer. Réponds aux questions du propriétaire au micro (ou par écrit).",
+    questions: [
+      "Bonjour, vous appelez pour l'appartement à louer ?",
+      "Combien de personnes vont habiter dans l'appartement ?",
+      "Avez-vous des animaux de compagnie ?",
+      "Quand voulez-vous emménager ?",
+      "Avez-vous des questions sur le bail ?",
+      "Voulez-vous visiter l'appartement cette semaine ?",
+    ],
+  },
+  {
+    id: 'classe', tag: 'Premier jour de classe', icon: '📚', interlocuteur: "L'enseignant·e",
+    intro: "🎯 C'est ton premier jour de cours de francisation. Réponds aux questions de l'enseignant·e au micro (ou par écrit).",
+    questions: [
+      "Bonjour ! Comment vous appelez-vous ?",
+      "D'où venez-vous ?",
+      "Depuis combien de temps êtes-vous au Québec ?",
+      "Pourquoi apprenez-vous le français ?",
+      "Qu'est-ce que vous aimez faire pendant votre temps libre ?",
+      "Avez-vous des questions sur le cours ?",
+    ],
+  },
+];
+
 const params = new URLSearchParams(location.search);
 const studentCode = params.get('code') || '';
+let currentTheme = null;
+let qIdx = 0;
 let correctedCount = 0;
+let perfectCount = 0;
 
+const themePicker = document.getElementById('themePicker');
+const composeView = document.getElementById('composeView');
+const changeThemeBtn = document.getElementById('changeThemeBtn');
+const transcriptLog = document.getElementById('transcriptLog');
 const micBtn = document.getElementById('micBtn');
 const micLabel = document.getElementById('micLabel');
 const transcriptWrap = document.getElementById('transcriptWrap');
@@ -131,16 +235,91 @@ const textFallback = document.getElementById('textFallback');
 const fallbackInput = document.getElementById('fallbackInput');
 const statusMsg = document.getElementById('statusMsg');
 const errorMsg = document.getElementById('errorMsg');
-const resultCard = document.getElementById('resultCard');
+const endView = document.getElementById('endView');
 
+function renderThemePicker(){
+  const list = document.getElementById('themeList');
+  list.innerHTML = '';
+  THEMES.forEach(th => {
+    const card = document.createElement('div');
+    card.className = 'theme-card';
+    card.innerHTML =
+      '<div class="theme-ic">' + th.icon + '</div><div>' +
+      '<div class="theme-card-tag">' + escHtml(th.tag) + '</div>' +
+      '<div class="theme-card-txt">Dialogue avec ' + escHtml(th.interlocuteur) + '</div>' +
+      '<div class="theme-card-sub">' + th.questions.length + ' questions</div></div>';
+    card.addEventListener('click', () => selectTheme(th));
+    list.appendChild(card);
+  });
+}
+
+function selectTheme(th){
+  currentTheme = th;
+  qIdx = 0;
+  correctedCount = 0;
+  perfectCount = 0;
+  document.getElementById('themeIntro').textContent = th.intro;
+  transcriptLog.innerHTML = '';
+  themePicker.classList.add('hidden');
+  composeView.classList.remove('hidden');
+  changeThemeBtn.classList.add('on');
+  endView.classList.remove('on');
+  updateCounter();
+  askNextQuestion();
+}
+
+changeThemeBtn.addEventListener('click', () => {
+  composeView.classList.add('hidden');
+  themePicker.classList.remove('hidden');
+  changeThemeBtn.classList.remove('on');
+  document.getElementById('counter-chip').textContent = '';
+});
+
+function updateCounter(){
+  document.getElementById('counter-chip').textContent = 'Question ' + Math.min(qIdx + 1, currentTheme.questions.length) + ' / ' + currentTheme.questions.length;
+}
+
+function addBubble(who, label, text, extra){
+  const div = document.createElement('div');
+  div.className = 'bubble ' + (who === 'npc' ? 'bubble-npc' : 'bubble-student');
+  let html = '<div class="who">' + escHtml(label) + '</div>' + escHtml(text);
+  if (extra && extra.original) {
+    html += '<div class="bubble-orig">Dit : « ' + escHtml(extra.original) + ' »</div>';
+  }
+  if (extra && extra.erreurs && extra.erreurs.length) {
+    extra.erreurs.forEach(e => { html += '<div class="bubble-err">💡 ' + escHtml(e.explication) + '</div>'; });
+  }
+  div.innerHTML = html;
+  transcriptLog.appendChild(div);
+  div.scrollIntoView({behavior:'smooth', block:'end'});
+}
+
+function askNextQuestion(){
+  if (qIdx >= currentTheme.questions.length) {
+    endDialogue();
+    return;
+  }
+  const q = currentTheme.questions[qIdx];
+  addBubble('npc', currentTheme.interlocuteur, q);
+  updateCounter();
+  resetAnswerZone();
+}
+
+function resetAnswerZone(){
+  hideError();
+  transcriptWrap.classList.remove('on');
+  transcriptBox.value = '';
+  fallbackInput.value = '';
+  micLabel.textContent = 'Appuie et parle';
+  micBtn.classList.remove('listening');
+}
+
+/* ── Reconnaissance vocale ─────────────────────────────────────────── */
 const SpeechRecognitionCtor = window.SpeechRecognition || window.webkitSpeechRecognition;
 let recognition = null;
 let listening = false;
 
-function showError(msg){
-  errorMsg.textContent = msg;
-  errorMsg.classList.add('on');
-}
+function showError(msg){ errorMsg.textContent = msg; errorMsg.classList.add('on'); }
 function hideError(){ errorMsg.classList.remove('on'); }
 
 if (SpeechRecognitionCtor) {
@@ -168,12 +347,12 @@ if (SpeechRecognitionCtor) {
     micBtn.classList.remove('listening');
     micLabel.textContent = 'Appuie et parle';
     if (e.error === 'not-allowed' || e.error === 'service-not-allowed') {
-      showError('Le micro est bloqué. Autorise le micro dans ton navigateur, ou écris ta phrase ci-dessous.');
+      showError('Le micro est bloqué. Autorise le micro dans ton navigateur, ou écris ta réponse ci-dessous.');
       switchToFallback();
     } else if (e.error === 'no-speech') {
       showError('Je n\'ai rien entendu. Réessaie !');
     } else {
-      showError('Problème avec le micro. Tu peux écrire ta phrase à la place.');
+      showError('Problème avec le micro. Tu peux écrire ta réponse à la place.');
       switchToFallback();
     }
   });
@@ -187,7 +366,6 @@ if (SpeechRecognitionCtor) {
   micBtn.addEventListener('click', () => {
     if (listening) { recognition.stop(); return; }
     hideError();
-    resultCard.classList.remove('on');
     try { recognition.start(); } catch(err) { /* déjà démarré */ }
   });
 } else {
@@ -195,31 +373,30 @@ if (SpeechRecognitionCtor) {
 }
 
 function switchToFallback(){
-  document.querySelector('.mic-zone > button').style.display = 'none';
+  micBtn.style.display = 'none';
   micLabel.style.display = 'none';
   textFallback.classList.add('on');
-  const sendBtn = document.createElement('button');
-  sendBtn.className = 'btn btn-primary';
-  sendBtn.textContent = 'Utiliser cette phrase';
-  sendBtn.style.marginTop = '10px';
-  sendBtn.addEventListener('click', () => {
-    if (!fallbackInput.value.trim()) return;
-    transcriptBox.value = fallbackInput.value.trim();
-    transcriptWrap.classList.add('on');
-  });
-  textFallback.appendChild(sendBtn);
+  if (!document.getElementById('useTextBtn')) {
+    const sendBtn = document.createElement('button');
+    sendBtn.id = 'useTextBtn';
+    sendBtn.className = 'btn btn-primary';
+    sendBtn.textContent = 'Utiliser cette réponse';
+    sendBtn.style.marginTop = '10px';
+    sendBtn.addEventListener('click', () => {
+      if (!fallbackInput.value.trim()) return;
+      transcriptBox.value = fallbackInput.value.trim();
+      transcriptWrap.classList.add('on');
+    });
+    textFallback.appendChild(sendBtn);
+  }
 }
 
-document.getElementById('retryBtn').addEventListener('click', () => {
-  transcriptWrap.classList.remove('on');
-  transcriptBox.value = '';
-  fallbackInput.value = '';
-  hideError();
-});
+document.getElementById('retryBtn').addEventListener('click', resetAnswerZone);
 
 document.getElementById('correctBtn').addEventListener('click', async () => {
   const text = transcriptBox.value.trim();
   if (!text) return;
+  const question = currentTheme.questions[qIdx];
   hideError();
   statusMsg.classList.add('on');
   document.getElementById('correctBtn').disabled = true;
@@ -228,7 +405,7 @@ document.getElementById('correctBtn').addEventListener('click', async () => {
     const res = await fetch('/api/correct-french', {
       method: 'POST',
       headers: {'Content-Type': 'application/json'},
-      body: JSON.stringify({ code: studentCode, text }),
+      body: JSON.stringify({ code: studentCode, text, question }),
     });
     const data = await res.json();
     statusMsg.classList.remove('on');
@@ -239,12 +416,17 @@ document.getElementById('correctBtn').addEventListener('click', async () => {
       return;
     }
 
-    renderResult(data);
-    transcriptWrap.classList.remove('on');
+    if (data.memePhrase) {
+      perfectCount++;
+      addBubble('student', 'Toi', data.original);
+    } else {
+      addBubble('student', 'Toi', data.corrige, { original: data.original, erreurs: data.erreurs });
+    }
     correctedCount++;
-    document.getElementById('counter-chip').textContent =
-      correctedCount + (correctedCount > 1 ? ' phrases corrigées' : ' phrase corrigée');
+    qIdx++;
+    transcriptWrap.classList.remove('on');
     lmsTrack('exercise_completed', { zonesDone: correctedCount, score: null });
+    askNextQuestion();
   } catch (err) {
     statusMsg.classList.remove('on');
     document.getElementById('correctBtn').disabled = false;
@@ -252,41 +434,29 @@ document.getElementById('correctBtn').addEventListener('click', async () => {
   }
 });
 
-function renderResult(data){
-  document.getElementById('resOriginal').textContent = '« ' + data.original + ' »';
-  const body = document.getElementById('resBody');
-  const errWrap = document.getElementById('errWrap');
-  errWrap.innerHTML = '';
-
-  if (data.memePhrase) {
-    body.innerHTML = '<div class="res-perfect">✓ Très bien ! Ta phrase était déjà correcte.</div>';
-  } else {
-    body.innerHTML = '<div class="res-label">Phrase corrigée</div><div class="res-corrige">' + escHtml(data.corrige) + '</div>';
-    (data.erreurs || []).forEach(err => {
-      const div = document.createElement('div');
-      div.className = 'err-item';
-      div.textContent = '💡 ' + err.explication;
-      errWrap.appendChild(div);
-    });
-  }
-  resultCard.classList.add('on');
-  resultCard.scrollIntoView({behavior:'smooth', block:'center'});
+function endDialogue(){
+  composeView.classList.add('hidden');
+  endView.classList.add('on');
+  document.getElementById('endSummary').textContent =
+    correctedCount + ' réponses données, dont ' + perfectCount + ' déjà parfaites. Beau travail !';
+  document.getElementById('counter-chip').textContent = '';
 }
 
-document.getElementById('againBtn').addEventListener('click', () => {
-  resultCard.classList.remove('on');
-  transcriptBox.value = '';
-  fallbackInput.value = '';
-  transcriptWrap.classList.remove('on');
+document.getElementById('restartBtn').addEventListener('click', () => {
+  endView.classList.remove('on');
+  themePicker.classList.remove('hidden');
+  changeThemeBtn.classList.remove('on');
 });
 
 function escHtml(s){
-  return s.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');
+  return (s || '').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');
 }
 
 function lmsTrack(event, data) {
   try { window.parent.postMessage(Object.assign({lms: true, event: event}, data||{}), '*'); } catch(e) {}
 }
+
+renderThemePicker();
 </script>
 </body>
 </html>
