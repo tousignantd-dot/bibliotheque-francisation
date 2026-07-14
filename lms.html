@@ -246,6 +246,24 @@
   <!-- PANNEAU DROIT -->
   <div style="display:flex;flex-direction:column;gap:20px;">
 
+  <!-- ENREGISTREMENTS ORAUX -->
+  <div class="panel">
+    <div class="panel-header">
+      <div class="panel-icon" style="background:#ecfdf5;color:#0d7a54;">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M12 1a3 3 0 0 0-3 3v8a3 3 0 0 0 6 0V4a3 3 0 0 0-3-3z"/><path d="M19 10v2a7 7 0 0 1-14 0v-2"/><line x1="12" y1="19" x2="12" y2="23"/><line x1="8" y1="23" x2="16" y2="23"/></svg>
+      </div>
+      <span class="panel-title">Enregistrements oraux des élèves</span>
+    </div>
+    <div class="log-toolbar">
+      <input type="text" class="log-search" id="oralSearch" placeholder="Filtrer par prénom, code, thème…" oninput="filterOral()" />
+      <span class="log-count" id="oralCount"></span>
+      <button class="btn" style="height:30px;padding:0 12px;font-size:12px;background:var(--bg);border-color:var(--border);color:var(--text-2);" onclick="loadOral()">↻ Rafraîchir</button>
+    </div>
+    <div class="log-table-wrap">
+      <div id="oralContent" class="log-empty">Chargement…</div>
+    </div>
+  </div>
+
   <!-- PROGRESSION -->
   <div class="panel">
     <div class="panel-header">
@@ -293,14 +311,61 @@
   let allStudents = [];
   let allLog = [];
   let allProgress = [];
+  let allOral = [];
 
   // ---- INIT ----
   async function init() {
     try {
-      await Promise.all([loadStudents(), loadLog(), loadProgress()]);
+      await Promise.all([loadStudents(), loadLog(), loadProgress(), loadOral()]);
     } catch(e) {
       document.getElementById('serverBanner').style.display = 'block';
     }
+  }
+
+  // ---- ENREGISTREMENTS ORAUX ----
+  async function loadOral() {
+    const res = await fetch(`${API}/api/admin/oral-submissions`);
+    allOral = await res.json();
+    filterOral();
+  }
+
+  function filterOral() {
+    const q = document.getElementById('oralSearch').value.toLowerCase();
+    const rows = allOral.filter(s => {
+      const hay = `${s.prenom||''} ${s.studentCode||''} ${s.theme||''} ${s.taskLabel||''}`.toLowerCase();
+      return !q || hay.includes(q);
+    });
+    document.getElementById('oralCount').textContent =
+      rows.length + (rows.length === 1 ? ' enregistrement' : ' enregistrements');
+    const container = document.getElementById('oralContent');
+    if (!rows.length) {
+      container.className = 'log-empty';
+      container.textContent = allOral.length ? 'Aucun résultat.' : 'Aucun enregistrement reçu pour l\'instant.';
+      return;
+    }
+    container.className = '';
+    container.innerHTML = rows.map(s => {
+      const who = s.prenom ? `${escHtml(s.prenom)} · ${escHtml(s.studentCode)}` : escHtml(s.studentCode);
+      return `<div style="border:1px solid var(--border);border-radius:10px;padding:12px 14px;margin-bottom:10px;background:var(--surface);">
+        <div style="display:flex;align-items:center;gap:8px;flex-wrap:wrap;margin-bottom:8px;">
+          <strong style="font-size:13px;">${who}</strong>
+          <span style="font-size:11px;font-weight:700;background:#ecfdf5;color:#0d7a54;border-radius:999px;padding:2px 8px;">${escHtml(s.theme||'')} · ${escHtml(s.taskLabel||'')}</span>
+          <span style="font-size:11px;color:var(--text-3);margin-left:auto;">${formatDateTime(s.createdAt)}</span>
+        </div>
+        <div style="font-size:12.5px;color:var(--text-2);margin-bottom:8px;"><em>« ${escHtml(s.question||'')} »</em></div>
+        <audio controls preload="none" src="${escHtml(s.audioUrl||'')}" style="width:100%;height:36px;margin-bottom:8px;"></audio>
+        <div style="font-size:13px;margin-bottom:4px;"><strong>Transcription :</strong> ${escHtml(s.transcription||'(vide)')}</div>
+        ${s.feedback ? `<div style="font-size:12px;color:var(--text-3);margin-bottom:8px;"><strong>Rétroaction IA :</strong> ${escHtml(s.feedback)}</div>` : ''}
+        <button class="btn" style="height:28px;padding:0 12px;font-size:11.5px;background:var(--bg);border-color:var(--border);color:var(--text-2);" onclick="deleteOral('${s.id}')">Supprimer</button>
+      </div>`;
+    }).join('');
+  }
+
+  async function deleteOral(id) {
+    if (!confirm('Supprimer cet enregistrement définitivement ?')) return;
+    await fetch(`${API}/api/admin/oral-submissions/${id}`, { method: 'DELETE' }).catch(() => {});
+    allOral = allOral.filter(s => s.id !== id);
+    filterOral();
   }
 
   async function loadStudents() {
@@ -670,6 +735,12 @@
     if (!iso) return '—';
     const [y, m, d] = iso.slice(0, 10).split('-');
     return `${d}/${m}/${y}`;
+  }
+  function formatDateTime(iso) {
+    if (!iso) return '—';
+    const d = new Date(iso);
+    if (isNaN(d)) return formatDate(iso);
+    return d.toLocaleString('fr-CA', { day: '2-digit', month: '2-digit', year: 'numeric', hour: '2-digit', minute: '2-digit' });
   }
   function escHtml(s) {
     return String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');

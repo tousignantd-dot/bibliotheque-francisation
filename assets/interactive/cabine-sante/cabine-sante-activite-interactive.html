@@ -1,0 +1,471 @@
+<!DOCTYPE html>
+<html lang="fr"><head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+<title>Cabine d'enregistrement — Santé</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Nunito:wght@600;700;800;900&display=swap" rel="stylesheet">
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+html,body{height:100%;background:#EAF7F1;font-family:'Nunito','Arial Rounded MT Bold',sans-serif;color:#123B32}
+body{display:flex;flex-direction:column;min-height:100vh}
+
+#hdr{background:#12996B;color:#fff;padding:14px 32px;display:flex;align-items:center;justify-content:space-between;flex-shrink:0;box-shadow:0 3px 16px rgba(18,153,107,.3)}
+.hdr-l{display:flex;align-items:center;gap:14px}
+.hdr-ic{width:44px;height:44px;background:rgba(255,255,255,.18);border-radius:50%;display:flex;align-items:center;justify-content:center;flex-shrink:0;font-size:22px}
+.hdr-eye{font-size:11px;font-weight:800;text-transform:uppercase;letter-spacing:.2em;opacity:.75;line-height:1}
+.hdr-h1{font-size:23px;font-weight:900;line-height:1.15}
+#counter-chip{background:rgba(255,255,255,.15);border:2px solid rgba(255,255,255,.45);border-radius:999px;padding:8px 16px;font-size:14px;font-weight:900;white-space:nowrap}
+
+#main{flex:1;display:flex;justify-content:center;padding:28px 20px;overflow-y:auto}
+#card{width:100%;max-width:620px;display:flex;flex-direction:column;gap:18px}
+
+.intro{background:#D3EFE3;border-radius:14px;padding:14px 18px;font-size:13.5px;line-height:1.6;color:#0D5C42;font-weight:700}
+
+/* Barre de progression / échelle */
+.ladder{display:flex;gap:8px}
+.rung{flex:1;text-align:center;padding:8px 4px;border-radius:10px;font-size:11.5px;font-weight:800;background:#fff;border:2px solid #DDE7E2;color:#8AA79B}
+.rung.active{background:#12996B;color:#fff;border-color:#12996B}
+.rung.done{background:#D3EFE3;color:#0D5C42;border-color:#B7E3D2}
+
+/* Carte de tâche */
+.task{background:#fff;border-radius:18px;padding:22px 24px;box-shadow:0 2px 14px rgba(0,0,0,.06);display:flex;flex-direction:column;gap:14px}
+.task-tag{font-size:11px;font-weight:900;text-transform:uppercase;letter-spacing:.08em;color:#12996B}
+.task-instr{font-size:15px;font-weight:800;color:#123B32;line-height:1.5}
+.target{background:#EAF7F1;border:2px dashed #9FD6BF;border-radius:12px;padding:14px 16px;font-size:19px;font-weight:800;color:#0D5C42;line-height:1.5}
+.amorce{font-size:13.5px;font-weight:700;color:#6B8C81;font-style:italic}
+.listen-btn{align-self:flex-start;background:#EAF7F1;color:#12996B;border:2px solid #B7E3D2;border-radius:10px;padding:9px 16px;font-family:'Nunito',sans-serif;font-size:13.5px;font-weight:800;cursor:pointer}
+.listen-btn:hover{background:#D3EFE3}
+
+/* Zone d'enregistrement */
+.rec-zone{display:flex;flex-direction:column;align-items:center;gap:12px;padding-top:4px}
+#recBtn{width:84px;height:84px;border-radius:50%;border:none;background:#12996B;color:#fff;font-size:32px;cursor:pointer;display:flex;align-items:center;justify-content:center;transition:transform .15s,background .15s;box-shadow:0 4px 18px rgba(18,153,107,.35)}
+#recBtn:hover{background:#0E7F58}
+#recBtn.recording{background:#E23D2E;animation:pulse 1.2s infinite}
+#recBtn:disabled{opacity:.5;cursor:not-allowed}
+@keyframes pulse{0%{box-shadow:0 0 0 0 rgba(226,61,46,.45)}70%{box-shadow:0 0 0 18px rgba(226,61,46,0)}100%{box-shadow:0 0 0 0 rgba(226,61,46,0)}}
+#recLabel{font-size:14px;font-weight:800;color:#5A7A70}
+
+/* Aperçu enregistrement */
+#preview{display:none;flex-direction:column;gap:12px}
+#preview.on{display:flex}
+audio{width:100%;height:40px}
+.transcript-label{font-size:11px;font-weight:800;text-transform:uppercase;letter-spacing:.08em;color:#5A7A70}
+#transcriptBox{width:100%;min-height:56px;border:2.5px solid #C3E4D8;border-radius:12px;padding:11px 15px;font-family:'Nunito',sans-serif;font-size:15px;font-weight:700;color:#123B32;background:#F7FCFA;resize:vertical}
+#transcriptBox:focus{outline:none;border-color:#12996B}
+.preview-actions{display:flex;gap:10px;flex-wrap:wrap}
+
+.btn{font-family:'Nunito',sans-serif;font-size:14.5px;font-weight:800;border-radius:10px;padding:11px 18px;cursor:pointer;border:2.5px solid transparent;transition:all .15s}
+.btn-primary{background:#12996B;color:#fff;flex:1;min-width:150px}
+.btn-primary:hover{background:#0E7F58}
+.btn-primary:disabled{opacity:.5;cursor:not-allowed}
+.btn-ghost{background:#EAF7F1;color:#12996B;border-color:#C3E4D8}
+.btn-ghost:hover{background:#D3EFE3}
+.btn-send{background:#12556B;color:#fff}
+.btn-send:hover{background:#0E4356}
+.btn-send:disabled{opacity:.5;cursor:not-allowed}
+
+/* Rétroaction */
+#feedback{display:none;flex-direction:column;gap:10px;background:#F0FAF5;border:2px solid #B7E3D2;border-radius:14px;padding:16px 18px}
+#feedback.on{display:flex}
+.fb-title{font-size:12px;font-weight:900;text-transform:uppercase;letter-spacing:.06em;color:#0D5C42}
+.fb-corrige{font-size:15.5px;font-weight:800;color:#0D5C42;line-height:1.5}
+.fb-note{font-size:13px;font-weight:700;color:#3B6156;line-height:1.5}
+.fb-err{font-size:13px;font-weight:700;color:#92400E;line-height:1.5;padding-left:16px;position:relative}
+.fb-err::before{content:"•";position:absolute;left:2px}
+.fb-perfect{font-size:14.5px;font-weight:800;color:#0D5C42}
+.word-ok{color:#0D5C42;font-weight:900}
+.word-miss{color:#B4B4B4;font-weight:700}
+
+.send-row{display:flex;gap:10px;flex-wrap:wrap;align-items:center}
+.sent-note{font-size:13px;font-weight:800;color:#12556B}
+
+#statusMsg{font-size:14px;font-weight:800;color:#8A8A80;text-align:center;display:none}
+#statusMsg.on{display:block}
+#errorMsg{font-size:13.5px;font-weight:800;color:#B91C1C;background:#FEF2F2;border:2px solid #FCA5A5;border-radius:10px;padding:11px 15px;display:none}
+#errorMsg.on{display:block}
+
+/* Écran final */
+#endView{display:none;flex-direction:column;gap:16px;text-align:center;background:#fff;border-radius:18px;padding:34px 26px;box-shadow:0 2px 14px rgba(0,0,0,.06)}
+#endView.on{display:flex}
+.end-ic{font-size:52px}
+.end-title{font-size:22px;font-weight:900;color:#12996B}
+.end-sub{font-size:14.5px;font-weight:700;color:#5A7A70;line-height:1.6}
+</style>
+</head>
+<body>
+
+<div id="hdr">
+  <div class="hdr-l">
+    <div class="hdr-ic">🎙️</div>
+    <div>
+      <div class="hdr-eye">Cabine d'enregistrement · Santé</div>
+      <div class="hdr-h1">Pratique orale privée</div>
+    </div>
+  </div>
+  <div id="counter-chip">1 / 6</div>
+</div>
+
+<div id="main">
+  <div id="card">
+    <div class="intro">🔒 Ici, personne ne t'écoute. Enregistre-toi autant de fois que tu veux, obtiens une rétroaction privée, puis — <strong>si tu le veux</strong> — envoie ta meilleure prise à ton enseignant.</div>
+
+    <div class="ladder" id="ladder"></div>
+
+    <div class="task" id="taskCard"></div>
+
+    <div id="statusMsg">Analyse en cours…</div>
+    <div id="errorMsg"></div>
+
+    <div id="endView">
+      <div class="end-ic">🌟</div>
+      <div class="end-title">Bravo, tu as terminé la cabine !</div>
+      <div class="end-sub" id="endSub"></div>
+      <button class="btn btn-primary" id="restartBtn" style="flex:none;align-self:center">Recommencer</button>
+    </div>
+  </div>
+</div>
+
+<script>
+const THEME = "Santé";
+
+const TASKS = [
+  { id: "s1", niveau: 1, cible: "Bonjour, j'ai un rendez-vous à quatorze heures." },
+  { id: "s2", niveau: 1, cible: "J'ai mal à la gorge depuis trois jours." },
+  { id: "s3", niveau: 2, question: "Quels sont vos symptômes aujourd'hui ?", amorce: "Tu peux commencer par : « J'ai… et je… »" },
+  { id: "s4", niveau: 2, question: "Depuis quand êtes-vous malade ?", amorce: "Tu peux commencer par : « Je suis malade depuis… »" },
+  { id: "s5", niveau: 3, question: "Décrivez comment vous vous sentez aujourd'hui." },
+  { id: "s6", niveau: 3, question: "Vous téléphonez à la clinique pour prendre un rendez-vous. Que dites-vous à la réceptionniste ?" },
+];
+
+const NIVEAU_LABEL = { 1: "Répéter", 2: "Répondre avec appui", 3: "Répondre librement" };
+
+const params = new URLSearchParams(location.search);
+const studentCode = params.get('code') || '';
+
+let taskIdx = 0;
+let mediaRecorder = null;
+let audioChunks = [];
+let audioBlob = null;
+let audioUrl = null;
+let recognition = null;
+let isRecording = false;
+let lastFeedback = "";
+
+const ladderEl = document.getElementById('ladder');
+const taskCard = document.getElementById('taskCard');
+const statusMsg = document.getElementById('statusMsg');
+const errorMsg = document.getElementById('errorMsg');
+const endView = document.getElementById('endView');
+const counterChip = document.getElementById('counter-chip');
+
+const SR = window.SpeechRecognition || window.webkitSpeechRecognition;
+const canRecognize = !!SR;
+
+lmsTrack('exercise_started', {});
+renderTask();
+
+function renderLadder() {
+  const groups = [1, 2, 3];
+  ladderEl.innerHTML = '';
+  groups.forEach(n => {
+    const div = document.createElement('div');
+    const current = TASKS[taskIdx].niveau;
+    div.className = 'rung' + (n === current ? ' active' : (n < current ? ' done' : ''));
+    div.textContent = NIVEAU_LABEL[n];
+    ladderEl.appendChild(div);
+  });
+}
+
+function renderTask() {
+  hideError();
+  audioBlob = null;
+  if (audioUrl) { URL.revokeObjectURL(audioUrl); audioUrl = null; }
+  lastFeedback = "";
+
+  if (taskIdx >= TASKS.length) { showEnd(); return; }
+  const t = TASKS[taskIdx];
+  counterChip.textContent = (taskIdx + 1) + ' / ' + TASKS.length;
+  renderLadder();
+
+  let inner = '<div class="task-tag">' + escHtml(NIVEAU_LABEL[t.niveau]) + '</div>';
+  if (t.niveau === 1) {
+    inner += '<div class="task-instr">Écoute le modèle, puis répète la phrase à voix haute.</div>';
+    inner += '<div class="target" id="targetPhrase">' + escHtml(t.cible) + '</div>';
+    inner += '<button class="listen-btn" id="listenBtn">🔊 Écouter le modèle</button>';
+  } else if (t.niveau === 2) {
+    inner += '<div class="task-instr">' + escHtml(t.question) + '</div>';
+    inner += '<div class="amorce">' + escHtml(t.amorce) + '</div>';
+  } else {
+    inner += '<div class="task-instr">' + escHtml(t.question) + '</div>';
+  }
+
+  inner += `
+    <div class="rec-zone">
+      <button id="recBtn">🎤</button>
+      <div id="recLabel">Touche pour t'enregistrer</div>
+    </div>
+    <div id="preview">
+      <audio id="audioPlayer" controls></audio>
+      <div>
+        <div class="transcript-label">Ce que tu as dit (transcription automatique)</div>
+        <textarea id="transcriptBox" placeholder="La transcription apparaîtra ici. Tu peux la corriger au besoin."></textarea>
+      </div>
+      <div class="preview-actions">
+        <button class="btn btn-ghost" id="redoBtn">↺ Recommencer</button>
+        <button class="btn btn-primary" id="feedbackBtn">💬 Obtenir une rétroaction</button>
+      </div>
+      <div id="feedback"></div>
+      <div class="send-row" id="sendRow" style="display:none">
+        <button class="btn btn-send" id="sendBtn">📨 Envoyer à mon enseignant</button>
+        <button class="btn btn-ghost" id="nextBtn">Tâche suivante →</button>
+      </div>
+    </div>`;
+
+  taskCard.innerHTML = inner;
+
+  if (t.niveau === 1) {
+    document.getElementById('listenBtn').addEventListener('click', () => speak(t.cible));
+  }
+  document.getElementById('recBtn').addEventListener('click', toggleRecord);
+  document.getElementById('redoBtn').addEventListener('click', resetRecording);
+  document.getElementById('feedbackBtn').addEventListener('click', getFeedback);
+  document.getElementById('sendBtn').addEventListener('click', sendToTeacher);
+  document.getElementById('nextBtn').addEventListener('click', nextTask);
+}
+
+function speak(text) {
+  try {
+    speechSynthesis.cancel();
+    const u = new SpeechSynthesisUtterance(text);
+    u.lang = 'fr-CA';
+    const voices = speechSynthesis.getVoices();
+    const v = voices.find(v => /fr[-_]CA/i.test(v.lang)) || voices.find(v => /^fr/i.test(v.lang));
+    if (v) u.voice = v;
+    u.rate = 0.95;
+    speechSynthesis.speak(u);
+  } catch (e) {}
+}
+
+async function toggleRecord() {
+  if (isRecording) { stopRecording(); return; }
+  hideError();
+
+  let stream;
+  try {
+    stream = await navigator.mediaDevices.getUserMedia({ audio: true });
+  } catch (e) {
+    showError("Impossible d'accéder au microphone. Vérifie les autorisations de ton navigateur.");
+    return;
+  }
+
+  audioChunks = [];
+  const mime = MediaRecorder.isTypeSupported('audio/webm') ? 'audio/webm'
+             : (MediaRecorder.isTypeSupported('audio/mp4') ? 'audio/mp4' : '');
+  mediaRecorder = mime ? new MediaRecorder(stream, { mimeType: mime }) : new MediaRecorder(stream);
+  mediaRecorder.ondataavailable = e => { if (e.data.size > 0) audioChunks.push(e.data); };
+  mediaRecorder.onstop = () => {
+    stream.getTracks().forEach(t => t.stop());
+    audioBlob = new Blob(audioChunks, { type: mediaRecorder.mimeType || 'audio/webm' });
+    if (audioUrl) URL.revokeObjectURL(audioUrl);
+    audioUrl = URL.createObjectURL(audioBlob);
+    const player = document.getElementById('audioPlayer');
+    if (player) player.src = audioUrl;
+    document.getElementById('preview').classList.add('on');
+  };
+  mediaRecorder.start();
+
+  // Transcription en parallèle (si disponible)
+  if (canRecognize) {
+    recognition = new SR();
+    recognition.lang = 'fr-CA';
+    recognition.continuous = true;
+    recognition.interimResults = false;
+    let transcript = '';
+    recognition.onresult = e => {
+      for (let i = e.resultIndex; i < e.results.length; i++) {
+        if (e.results[i].isFinal) transcript += e.results[i][0].transcript + ' ';
+      }
+      const box = document.getElementById('transcriptBox');
+      if (box) box.value = transcript.trim();
+    };
+    recognition.onerror = () => {};
+    try { recognition.start(); } catch (e) {}
+  }
+
+  isRecording = true;
+  const btn = document.getElementById('recBtn');
+  btn.classList.add('recording');
+  btn.textContent = '⏹';
+  document.getElementById('recLabel').textContent = 'En train d\'enregistrer… touche pour arrêter';
+}
+
+function stopRecording() {
+  isRecording = false;
+  if (mediaRecorder && mediaRecorder.state !== 'inactive') mediaRecorder.stop();
+  if (recognition) { try { recognition.stop(); } catch (e) {} }
+  const btn = document.getElementById('recBtn');
+  if (btn) { btn.classList.remove('recording'); btn.textContent = '🎤'; }
+  const lbl = document.getElementById('recLabel');
+  if (lbl) lbl.textContent = 'Touche pour réenregistrer';
+}
+
+function resetRecording() {
+  audioBlob = null;
+  if (audioUrl) { URL.revokeObjectURL(audioUrl); audioUrl = null; }
+  document.getElementById('preview').classList.remove('on');
+  document.getElementById('transcriptBox').value = '';
+  const fb = document.getElementById('feedback');
+  fb.classList.remove('on'); fb.innerHTML = '';
+  document.getElementById('sendRow').style.display = 'none';
+  hideError();
+}
+
+async function getFeedback() {
+  const t = TASKS[taskIdx];
+  const text = document.getElementById('transcriptBox').value.trim();
+  const fb = document.getElementById('feedback');
+
+  if (t.niveau === 1) {
+    // Comparaison à la phrase cible (aucun appel IA nécessaire)
+    renderShadowingFeedback(t.cible, text);
+    lastFeedback = "Exercice de répétition (comparaison à la phrase modèle).";
+    document.getElementById('sendRow').style.display = 'flex';
+    return;
+  }
+
+  if (!text) { showError("Je n'ai pas capté ta réponse. Réenregistre-toi ou écris ta phrase dans la case."); return; }
+
+  hideError();
+  statusMsg.classList.add('on');
+  document.getElementById('feedbackBtn').disabled = true;
+
+  try {
+    const res = await fetch('/api/correct-french', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ code: studentCode, text, question: t.question || '' }),
+    });
+    const data = await res.json();
+    statusMsg.classList.remove('on');
+    document.getElementById('feedbackBtn').disabled = false;
+
+    if (!res.ok) { showError(data.error || 'Une erreur est survenue. Réessaie.'); return; }
+
+    let html = '<div class="fb-title">Rétroaction privée</div>';
+    if (data.memePhrase) {
+      html += '<div class="fb-perfect">✅ Ta phrase est déjà correcte. Bravo !</div>';
+      lastFeedback = "Phrase correcte : " + (data.corrige || text);
+    } else {
+      html += '<div class="fb-corrige">✍️ ' + escHtml(data.corrige || '') + '</div>';
+      (data.erreurs || []).forEach(e => {
+        html += '<div class="fb-err">' + escHtml(e.explication || '') + '</div>';
+      });
+      lastFeedback = "Correction : " + (data.corrige || '') +
+        (data.erreurs && data.erreurs.length ? ' | ' + data.erreurs.map(e => e.explication).join(' ') : '');
+    }
+    fb.innerHTML = html;
+    fb.classList.add('on');
+    document.getElementById('sendRow').style.display = 'flex';
+  } catch (err) {
+    statusMsg.classList.remove('on');
+    document.getElementById('feedbackBtn').disabled = false;
+    showError('Impossible de contacter le serveur. Réessaie dans quelques instants.');
+  }
+}
+
+function renderShadowingFeedback(cible, dit) {
+  const said = new Set(normalizeWords(dit));
+  const targetWords = cible.split(/\s+/);
+  let matched = 0, total = 0;
+  const spans = targetWords.map(w => {
+    const sub = normalizeWords(w);
+    if (!sub.length) return '<span>' + escHtml(w) + '</span>';
+    total++;
+    if (sub.every(tk => said.has(tk))) { matched++; return '<span class="word-ok">' + escHtml(w) + '</span>'; }
+    return '<span class="word-miss">' + escHtml(w) + '</span>';
+  });
+  const pct = total ? Math.round(matched / total * 100) : 0;
+  let msg = pct >= 80 ? "🌟 Excellent ! Ta prononciation est très claire."
+          : pct >= 50 ? "👍 Bon travail ! Réécoute le modèle et réessaie les mots en gris."
+          : "🙂 Continue à pratiquer. Écoute bien le modèle, puis répète lentement.";
+  const fb = document.getElementById('feedback');
+  fb.innerHTML = '<div class="fb-title">Ta répétition</div>' +
+    '<div class="fb-corrige" style="font-weight:700;line-height:2">' + spans.join(' ') + '</div>' +
+    '<div class="fb-note">' + msg + ' (' + matched + '/' + total + ' mots reconnus)</div>';
+  fb.classList.add('on');
+}
+
+function normalizeWords(s) {
+  return (s || '').toLowerCase().normalize('NFD').replace(/[̀-ͯ]/g, '')
+    .replace(/[^\w\s]/g, ' ').split(/\s+/).filter(Boolean);
+}
+
+async function sendToTeacher() {
+  if (!audioBlob) { showError("Enregistre-toi d'abord avant d'envoyer."); return; }
+  const t = TASKS[taskIdx];
+  const sendBtn = document.getElementById('sendBtn');
+  sendBtn.disabled = true;
+  sendBtn.textContent = 'Envoi…';
+  hideError();
+
+  const ext = (audioBlob.type || '').includes('mp4') ? 'm4a' : 'webm';
+  const fd = new FormData();
+  fd.append('code', studentCode);
+  fd.append('theme', THEME);
+  fd.append('taskId', t.id);
+  fd.append('taskLabel', NIVEAU_LABEL[t.niveau]);
+  fd.append('question', t.question || t.cible || '');
+  fd.append('transcription', document.getElementById('transcriptBox').value.trim());
+  fd.append('feedback', lastFeedback);
+  fd.append('audio', audioBlob, 'enregistrement.' + ext);
+
+  try {
+    const res = await fetch('/api/oral/submit', { method: 'POST', body: fd });
+    const data = await res.json();
+    if (!res.ok) { showError(data.error || "L'envoi a échoué. Réessaie."); sendBtn.disabled = false; sendBtn.textContent = '📨 Envoyer à mon enseignant'; return; }
+    const row = document.getElementById('sendRow');
+    row.innerHTML = '<span class="sent-note">✅ Envoyé à ton enseignant !</span>' +
+      '<button class="btn btn-ghost" id="nextBtn2">Tâche suivante →</button>';
+    document.getElementById('nextBtn2').addEventListener('click', nextTask);
+    lmsTrack('exercise_completed', { taskId: t.id, score: null });
+  } catch (err) {
+    showError("Impossible d'envoyer. Vérifie ta connexion et réessaie.");
+    sendBtn.disabled = false; sendBtn.textContent = '📨 Envoyer à mon enseignant';
+  }
+}
+
+function nextTask() {
+  taskIdx++;
+  window.scrollTo(0, 0);
+  if (taskIdx >= TASKS.length) { showEnd(); } else { renderTask(); }
+}
+
+function showEnd() {
+  taskCard.style.display = 'none';
+  ladderEl.style.display = 'none';
+  counterChip.textContent = '✓';
+  document.getElementById('endSub').textContent =
+    "Tu as pratiqué les 6 tâches de la cabine Santé. Tu peux recommencer autant de fois que tu veux — plus tu pratiques, plus tu gagnes de confiance à l'oral.";
+  endView.classList.add('on');
+  lmsTrack('exercise_completed', { finished: true, score: null });
+}
+
+document.getElementById('restartBtn').addEventListener('click', () => {
+  taskIdx = 0;
+  taskCard.style.display = 'flex';
+  ladderEl.style.display = 'flex';
+  endView.classList.remove('on');
+  renderTask();
+});
+
+function showError(msg) { errorMsg.textContent = msg; errorMsg.classList.add('on'); }
+function hideError() { errorMsg.classList.remove('on'); }
+function escHtml(s) { return (s || '').replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;'); }
+function lmsTrack(event, data) {
+  try { window.parent.postMessage(Object.assign({ lms: true, event: event }, data || {}), '*'); } catch (e) {}
+}
+</script>
+</body>
+</html>

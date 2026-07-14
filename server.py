@@ -18,6 +18,7 @@ import zipfile
 import io
 import random
 import string
+import uuid
 from pathlib import Path
 from datetime import date, datetime, timedelta
 
@@ -37,6 +38,8 @@ STUDENTS_FILE   = STORAGE_DIR / "data" / "students.json"
 ACCESS_LOG_FILE = STORAGE_DIR / "data" / "access_log.json"
 PROGRESS_FILE   = STORAGE_DIR / "data" / "progress.json"
 VOCAB_PROGRESS_FILE = STORAGE_DIR / "data" / "vocab_progress.json"
+ORAL_SUBMISSIONS_FILE = STORAGE_DIR / "data" / "oral_submissions.json"
+ORAL_AUDIO_DIR = STORAGE_DIR / "assets" / "oral-submissions"
 
 PORT = int(os.environ.get('PORT', 5173))
 
@@ -231,6 +234,19 @@ def save_vocab_progress(data):
         json.dump(data, f, ensure_ascii=False, indent=2)
 
 
+def load_oral_submissions():
+    if ORAL_SUBMISSIONS_FILE.exists():
+        with open(ORAL_SUBMISSIONS_FILE, "r", encoding="utf-8") as f:
+            return json.load(f)
+    return []
+
+
+def save_oral_submissions(data):
+    ORAL_SUBMISSIONS_FILE.parent.mkdir(parents=True, exist_ok=True)
+    with open(ORAL_SUBMISSIONS_FILE, "w", encoding="utf-8") as f:
+        json.dump(data, f, ensure_ascii=False, indent=2)
+
+
 # Boîtes de répétition espacée (système Leitner) : plus la boîte est haute,
 # plus l'intervalle avant la prochaine révision est grand.
 VOCAB_INTERVALS_DAYS = [0, 1, 3, 7, 14, 30, 60]
@@ -393,6 +409,9 @@ class Handler(http.server.SimpleHTTPRequestHandler):
         if path == "/api/admin/progress":
             json_response(self, load_progress())
             return
+        if path == "/api/admin/oral-submissions":
+            self._handle_oral_submissions_list()
+            return
 
         # Fichiers interactifs intégrés au code : servir directement depuis BASE_DIR
         if path.startswith("/assets/interactive/"):
@@ -451,6 +470,8 @@ class Handler(http.server.SimpleHTTPRequestHandler):
             self._handle_vocab_check_answer()
         elif path == "/api/analyze-grammar":
             self._handle_analyze_grammar()
+        elif path == "/api/oral/submit":
+            self._handle_oral_submit()
         elif path == "/api/activities":
             self._handle_add()
         elif re.match(r"^/api/activities/\d+/update$", path):
@@ -505,6 +526,8 @@ class Handler(http.server.SimpleHTTPRequestHandler):
                 self._handle_delete(activity_id)
             except (ValueError, IndexError):
                 self.send_error(400, "ID invalide")
+        elif re.match(r"^/api/admin/oral-submissions/[\w-]+$", path):
+            self._handle_oral_submission_delete(path.rsplit("/", 1)[1])
         else:
             self.send_error(404)
 
@@ -1289,6 +1312,94 @@ class Handler(http.server.SimpleHTTPRequestHandler):
             "original": text,
             "phrases": parsed.get("phrases", []),
         })
+
+    # ── Cabine d'enregistrement (production orale) ───────────────────────────
+
+    def _handle_oral_submit(self):
+        form = self._parse_multipart()
+        if form is None:
+            json_response(self, {"error": "multipart requis"}, 400)
+            return
+
+        def field(name, default=""):
+            if name in form:
+                val = form[name]
+                if not getattr(val, "filename", None):
+                    return (val.value or "").strip()
+            return default
+
+        code = field("code").upper()
+        student = validate_student_code(code)
+        if not student:
+            json_response(self, {"error": "Non autorisé"}, 401)
+            return
+
+        if "audio" not in form or not form["audio"].filename:
+            json_response(self, {"error": "Aucun enregistrement fourni"}, 400)
+            return
+
+        audio_item = form["audio"]
+        audio_bytes = audio_item.file.read()
+        if not audio_bytes:
+            json_response(self, {"error": "Enregistrement vide"}, 400)
+            return
+        if len(audio_bytes) > 8 * 1024 * 1024:  # garde-fou : 8 Mo max
+            json_response(self, {"error": "Enregistrement trop volumineux"}, 400)
+            return
+
+        mime = (audio_item.type or "audio/webm").split(";")[0]
+        ext = {
+            "audio/webm": "webm", "audio/ogg": "ogg", "audio/mp4": "m4a",
+            "audio/mpeg": "mp3", "audio/wav": "wav",
+        }.get(mime, "webm")
+
+        sub_id = uuid.uuid4().hex
+        ORAL_AUDIO_DIR.mkdir(parents=True, exist_ok=True)
+        audio_name = f"{sub_id}.{ext}"
+        (ORAL_AUDIO_DIR / audio_name).write_bytes(audio_bytes)
+
+        record = {
+            "id": sub_id,
+            "studentId": student["id"],
+            "studentCode": code,
+            "prenom": student.get("prenom", ""),
+            "theme": field("theme"),
+            "taskId": field("taskId"),
+            "taskLabel": field("taskLabel"),
+            "question": field("question")[:400],
+            "transcription": field("transcription")[:2000],
+            "feedback": field("feedback")[:2000],
+            "audioUrl": f"/assets/oral-submissions/{audio_name}",
+            "createdAt": datetime.now().isoformat(timespec="seconds"),
+        }
+        subs = load_oral_submissions()
+        subs.append(record)
+        save_oral_submissions(subs)
+
+        json_response(self, {"success": True, "id": sub_id})
+
+    def _handle_oral_submissions_list(self):
+        subs = sorted(load_oral_submissions(),
+                      key=lambda s: s.get("createdAt", ""), reverse=True)
+        json_response(self, subs)
+
+    def _handle_oral_submission_delete(self, sub_id):
+        subs = load_oral_submissions()
+        target = next((s for s in subs if s["id"] == sub_id), None)
+        if target is None:
+            json_response(self, {"error": "Introuvable"}, 404)
+            return
+        audio_url = target.get("audioUrl", "")
+        if audio_url:
+            fp = STORAGE_DIR / audio_url.lstrip("/")
+            try:
+                if fp.exists():
+                    fp.unlink()
+            except OSError:
+                pass
+        subs = [s for s in subs if s["id"] != sub_id]
+        save_oral_submissions(subs)
+        json_response(self, {"success": True})
 
     def _handle_add_student(self):
         length = int(self.headers.get("Content-Length", 0))
