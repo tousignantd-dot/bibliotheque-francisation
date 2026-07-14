@@ -57,7 +57,7 @@
         Exercices
       </span>
     </div>
-    <a href="javascript:history.back()" class="btn-back">
+    <a href="#" class="btn-back" id="btnBack">
       <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="15 18 9 12 15 6"/></svg>
       Retour
     </a>
@@ -74,6 +74,17 @@
   const code       = params.get('code') || '';
 
   document.getElementById('actTitle').textContent = title;
+
+  // Cette page s'ouvre toujours dans un nouvel onglet (window.open depuis
+  // eleve.html), donc history.back() n'a rien à faire et ne réagit pas.
+  // On ferme l'onglet (ça fonctionne car il a été ouvert par script) et,
+  // si ça échoue (onglet ouvert autrement), on retombe sur eleve.html.
+  document.getElementById('btnBack').addEventListener('click', (e) => {
+    e.preventDefault();
+    window.close();
+    setTimeout(() => { location.href = 'eleve.html'; }, 250);
+  });
+
   // Relayer le code élève à l'iframe (ex. pour authentifier un appel API
   // fait depuis l'activité, comme la correction assistée par IA).
   if (src && code) {
