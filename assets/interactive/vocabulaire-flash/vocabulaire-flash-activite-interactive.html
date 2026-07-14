@@ -18,6 +18,8 @@ body{display:flex;flex-direction:column;min-height:100vh}
 .hdr-h1{font-size:24px;font-weight:900;line-height:1.15}
 .hdr-r{display:flex;align-items:center;gap:12px}
 #prog-chip{background:rgba(255,255,255,.15);border:2px solid rgba(255,255,255,.45);border-radius:999px;padding:8px 18px;font-size:14px;font-weight:900;white-space:nowrap}
+#langSelect{background:rgba(255,255,255,.15);border:2px solid rgba(255,255,255,.45);border-radius:999px;padding:8px 14px;font-size:13px;font-weight:800;color:#fff;font-family:'Nunito',sans-serif;cursor:pointer}
+#langSelect option{color:#123321}
 
 #main{flex:1;display:flex;justify-content:center;padding:32px 20px;overflow-y:auto}
 #card{width:100%;max-width:560px;display:flex;flex-direction:column;gap:18px}
@@ -43,6 +45,11 @@ body{display:flex;flex-direction:column;min-height:100vh}
 .card-hint{font-size:13px;color:#7A9885;font-weight:700}
 .card-word{font-size:26px;font-weight:900;color:#2E7D4F}
 .card-exemple{font-size:15px;font-style:italic;color:#4A6B57;line-height:1.6}
+.btn-translate{background:#EFF6FF;color:#1D4ED8;border:2px solid #BFDBFE;border-radius:10px;padding:8px 16px;font-family:'Nunito',sans-serif;font-size:13px;font-weight:800;cursor:pointer;transition:all .15s}
+.btn-translate:hover{background:#DBEAFE}
+.btn-translate:disabled{opacity:.6;cursor:wait}
+.translation-box{background:#EFF6FF;border:2px solid #BFDBFE;border-radius:10px;padding:10px 16px;font-size:14px;color:#1E3A8A;line-height:1.55}
+.translation-box b{font-size:17px}
 
 .actions{display:flex;gap:10px}
 .btn{font-family:'Nunito',sans-serif;font-size:15px;font-weight:800;border-radius:10px;padding:14px 18px;cursor:pointer;border:2.5px solid transparent;transition:all .15s;flex:1}
@@ -76,6 +83,27 @@ body{display:flex;flex-direction:column;min-height:100vh}
     </div>
   </div>
   <div class="hdr-r">
+    <select id="langSelect" title="Ma langue maternelle">
+      <option value="">🌐 Choisir ma langue</option>
+      <option value="anglais">English</option>
+      <option value="espagnol">Español</option>
+      <option value="arabe">العربية</option>
+      <option value="créole haïtien">Kreyòl ayisyen</option>
+      <option value="mandarin">中文</option>
+      <option value="portugais">Português</option>
+      <option value="tagalog">Tagalog</option>
+      <option value="vietnamien">Tiếng Việt</option>
+      <option value="hindi">हिन्दी</option>
+      <option value="ourdou">اردو</option>
+      <option value="bengali">বাংলা</option>
+      <option value="russe">Русский</option>
+      <option value="ukrainien">Українська</option>
+      <option value="roumain">Română</option>
+      <option value="persan">فارسی</option>
+      <option value="turc">Türkçe</option>
+      <option value="italien">Italiano</option>
+      <option value="__autre__">Autre…</option>
+    </select>
     <span id="prog-chip"></span>
   </div>
 </div>
@@ -105,6 +133,8 @@ body{display:flex;flex-direction:column;min-height:100vh}
         <div id="cardBack" class="hidden">
           <div class="card-word" id="cardWord"></div>
           <div class="card-exemple" id="cardExemple"></div>
+          <button class="btn-translate" id="translateBtn" style="margin-top:10px">🌐 Traduire dans ma langue</button>
+          <div class="translation-box hidden" id="translationBox" style="margin-top:10px"></div>
         </div>
       </div>
       <div class="actions hidden" id="rateActions">
@@ -132,6 +162,39 @@ let cards = [];
 let idx = 0;
 let revealed = false;
 let counts = { encore: 0, difficile: 0, facile: 0 };
+
+/* ── Langue maternelle ─────────────────────────────────────────────── */
+const langSelect = document.getElementById('langSelect');
+const savedLang = localStorage.getItem('vocabLang') || '';
+const savedLangLabel = localStorage.getItem('vocabLangLabel') || '';
+if (savedLang && [...langSelect.options].some(o => o.value === savedLang)) {
+  langSelect.value = savedLang;
+} else if (savedLangLabel) {
+  const opt = document.createElement('option');
+  opt.value = savedLangLabel; opt.textContent = savedLangLabel;
+  langSelect.insertBefore(opt, langSelect.querySelector('option[value="__autre__"]'));
+  langSelect.value = savedLangLabel;
+}
+
+langSelect.addEventListener('change', () => {
+  if (langSelect.value === '__autre__') {
+    const custom = prompt('Quelle est ta langue maternelle ?');
+    if (custom && custom.trim()) {
+      const label = custom.trim();
+      const opt = document.createElement('option');
+      opt.value = label; opt.textContent = label;
+      langSelect.insertBefore(opt, langSelect.querySelector('option[value="__autre__"]'));
+      langSelect.value = label;
+      localStorage.setItem('vocabLang', label);
+      localStorage.setItem('vocabLangLabel', label);
+    } else {
+      langSelect.value = savedLang || '';
+    }
+  } else {
+    localStorage.setItem('vocabLang', langSelect.value);
+    localStorage.removeItem('vocabLangLabel');
+  }
+});
 
 async function loadDomains(){
   try {
@@ -193,8 +256,55 @@ function renderCard(){
   document.getElementById('rateActions').classList.add('hidden');
   document.getElementById('cardWord').textContent = c.mot;
   document.getElementById('cardExemple').textContent = c.exemple;
+  const translationBox = document.getElementById('translationBox');
+  translationBox.classList.add('hidden');
+  translationBox.textContent = '';
+  const translateBtn = document.getElementById('translateBtn');
+  translateBtn.disabled = false;
+  translateBtn.textContent = '🌐 Traduire dans ma langue';
+  translateBtn.classList.remove('hidden');
   revealed = false;
   buildProgbar();
+}
+
+document.getElementById('translateBtn').addEventListener('click', async (e) => {
+  e.stopPropagation();
+  const lang = langSelect.value;
+  if (!lang || lang === '__autre__') {
+    alert('Choisis d\'abord ta langue maternelle en haut de la page.');
+    return;
+  }
+  const translateBtn = document.getElementById('translateBtn');
+  const translationBox = document.getElementById('translationBox');
+  translateBtn.disabled = true;
+  translateBtn.textContent = 'Traduction en cours…';
+
+  try {
+    const res = await fetch('/api/vocab/translate', {
+      method: 'POST',
+      headers: {'Content-Type': 'application/json'},
+      body: JSON.stringify({ code: studentCode, wordId: cards[idx].id, language: lang }),
+    });
+    const data = await res.json();
+    if (!res.ok) {
+      translationBox.textContent = data.error || 'Traduction indisponible pour le moment.';
+      translationBox.classList.remove('hidden');
+      translateBtn.classList.add('hidden');
+      return;
+    }
+    translationBox.innerHTML = '<b>' + escHtml(data.traduction) + '</b><br>' + escHtml(data.exempleTraduit);
+    translationBox.classList.remove('hidden');
+    translateBtn.classList.add('hidden');
+  } catch (err) {
+    translationBox.textContent = 'Impossible de joindre le service de traduction.';
+    translationBox.classList.remove('hidden');
+    translateBtn.disabled = false;
+    translateBtn.textContent = '🌐 Traduire dans ma langue';
+  }
+});
+
+function escHtml(s){
+  return (s || '').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');
 }
 
 document.getElementById('flashcard').addEventListener('click', () => {

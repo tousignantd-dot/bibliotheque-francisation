@@ -420,6 +420,8 @@ class Handler(http.server.SimpleHTTPRequestHandler):
             self._handle_correct_email()
         elif path == "/api/vocab/answer":
             self._handle_vocab_answer()
+        elif path == "/api/vocab/translate":
+            self._handle_vocab_translate()
         elif path == "/api/activities":
             self._handle_add()
         elif re.match(r"^/api/activities/\d+/update$", path):
@@ -835,6 +837,48 @@ class Handler(http.server.SimpleHTTPRequestHandler):
         save_vocab_progress(progress)
 
         json_response(self, {"success": True, "box": box, "dueDate": entry["dueDate"]})
+
+    def _handle_vocab_translate(self):
+        length = int(self.headers.get("Content-Length", 0))
+        body = json.loads(self.rfile.read(length))
+        code = body.get("code", "").strip().upper()
+        if not validate_student_code(code):
+            json_response(self, {"error": "Non autorisé"}, 401)
+            return
+
+        word_id = body.get("wordId", "")
+        language = body.get("language", "").strip()[:60]
+        word = next((w for w in VOCAB_BANK if w["id"] == word_id), None)
+        if word is None:
+            json_response(self, {"error": "Mot inconnu"}, 400)
+            return
+        if not language:
+            json_response(self, {"error": "Langue non précisée"}, 400)
+            return
+
+        system_prompt = (
+            "Tu es un assistant de traduction pour des élèves adultes en "
+            "francisation au Québec. Traduis un mot de vocabulaire français "
+            f"et sa phrase d'exemple vers cette langue : {language}. Réponds "
+            "UNIQUEMENT avec un objet JSON valide, sans texte avant ni après, "
+            'exactement dans ce format : {"traduction": "...", '
+            '"exempleTraduit": "..."} — "traduction" est la traduction du mot '
+            "seul (garde un article si naturel dans la langue cible). "
+            '"exempleTraduit" est la traduction de la phrase d\'exemple '
+            "complète. Utilise une traduction naturelle et courante, pas "
+            "littérale."
+        )
+        user_content = f"Mot : {word['mot']}\nExemple : {word['exemple']}"
+
+        parsed, err = self._call_anthropic_json(system_prompt, user_content, max_tokens=200)
+        if err:
+            json_response(self, {"error": err[0]}, err[1])
+            return
+
+        json_response(self, {
+            "traduction": parsed.get("traduction", ""),
+            "exempleTraduit": parsed.get("exempleTraduit", ""),
+        })
 
     def _handle_student_activities(self, params):
         code = params.get("code", [""])[0].strip().upper()
