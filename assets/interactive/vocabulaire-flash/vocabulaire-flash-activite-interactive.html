@@ -18,6 +18,8 @@ body{display:flex;flex-direction:column;min-height:100vh}
 .hdr-h1{font-size:24px;font-weight:900;line-height:1.15}
 .hdr-r{display:flex;align-items:center;gap:12px}
 #prog-chip{background:rgba(255,255,255,.15);border:2px solid rgba(255,255,255,.45);border-radius:999px;padding:8px 18px;font-size:14px;font-weight:900;white-space:nowrap}
+#streak-chip{background:rgba(255,255,255,.15);border:2px solid rgba(255,255,255,.45);border-radius:999px;padding:8px 16px;font-size:14px;font-weight:900;white-space:nowrap;transition:transform .2s}
+#streak-chip.bump{transform:scale(1.15)}
 #langSelect{background:rgba(255,255,255,.15);border:2px solid rgba(255,255,255,.45);border-radius:999px;padding:8px 14px;font-size:13px;font-weight:800;color:#fff;font-family:'Nunito',sans-serif;cursor:pointer}
 #langSelect option{color:#123321}
 
@@ -48,8 +50,21 @@ body{display:flex;flex-direction:column;min-height:100vh}
 .btn-translate{background:#EFF6FF;color:#1D4ED8;border:2px solid #BFDBFE;border-radius:10px;padding:8px 16px;font-family:'Nunito',sans-serif;font-size:13px;font-weight:800;cursor:pointer;transition:all .15s}
 .btn-translate:hover{background:#DBEAFE}
 .btn-translate:disabled{opacity:.6;cursor:wait}
-.translation-box{background:#EFF6FF;border:2px solid #BFDBFE;border-radius:10px;padding:10px 16px;font-size:14px;color:#1E3A8A;line-height:1.55}
+.translation-box{background:#EFF6FF;border:2px solid #BFDBFE;border-radius:10px;padding:10px 16px;font-size:14px;color:#1E3A8A;line-height:1.55;text-align:left}
 .translation-box b{font-size:17px}
+
+.guess-zone{width:100%;display:flex;flex-direction:column;gap:10px;align-items:center}
+#guessInput{width:100%;max-width:320px;height:48px;border:2.5px solid #B8DEC4;border-radius:10px;padding:0 16px;font-family:'Nunito',sans-serif;font-size:18px;font-weight:800;text-align:center;color:#123321;background:#F7FCFB}
+#guessInput:focus{outline:none;border-color:#2E7D4F;background:#fff}
+#guessInput.correct{border-color:#4ADE80;background:#ECFDF5;color:#166534}
+#guessInput.wrong{border-color:#F87171;background:#FEF2F2;color:#991B1B}
+.guess-actions{display:flex;gap:8px;width:100%;max-width:320px}
+.guess-actions .btn{padding:10px 14px;font-size:14px}
+.btn-secondary{background:#F0FAF3;color:#2E7D4F;border-color:#D0EBD9}
+.btn-secondary:hover{background:#E1F4E7}
+.guess-feedback{font-size:14px;font-weight:800;min-height:20px}
+.guess-feedback.ok{color:#166534}
+.guess-feedback.no{color:#B91C1C}
 
 .actions{display:flex;gap:10px}
 .btn{font-family:'Nunito',sans-serif;font-size:15px;font-weight:800;border-radius:10px;padding:14px 18px;cursor:pointer;border:2.5px solid transparent;transition:all .15s;flex:1}
@@ -104,6 +119,7 @@ body{display:flex;flex-direction:column;min-height:100vh}
       <option value="italien">Italiano</option>
       <option value="__autre__">Autre…</option>
     </select>
+    <span id="streak-chip"></span>
     <span id="prog-chip"></span>
   </div>
 </div>
@@ -126,10 +142,21 @@ body{display:flex;flex-direction:column;min-height:100vh}
 
     <div id="sessionView" class="hidden">
       <div id="progbar"></div>
-      <div id="flashcard">
+      <div id="flashcard" style="cursor:default">
         <span class="card-domaine" id="cardDomaine"></span>
         <div class="card-definition" id="cardFront"></div>
-        <div class="card-hint" id="cardHint">👆 Clique sur la carte pour voir le mot</div>
+        <button class="btn-translate" id="translateDefBtn">🌐 Traduire la définition</button>
+        <div class="translation-box hidden" id="translationDefBox"></div>
+
+        <div class="guess-zone" id="guessZone">
+          <input type="text" id="guessInput" placeholder="Écris le mot ici…" autocomplete="off" autocapitalize="off" spellcheck="false" />
+          <div class="guess-feedback" id="guessFeedback"></div>
+          <div class="guess-actions">
+            <button class="btn btn-secondary" id="giveUpBtn">🙈 Je ne sais pas</button>
+            <button class="btn btn-primary" id="checkGuessBtn">Vérifier</button>
+          </div>
+        </div>
+
         <div id="cardBack" class="hidden">
           <div class="card-word" id="cardWord"></div>
           <div class="card-exemple" id="cardExemple"></div>
@@ -162,6 +189,9 @@ let cards = [];
 let idx = 0;
 let revealed = false;
 let counts = { encore: 0, difficile: 0, facile: 0 };
+let streak = 0;
+let bestStreak = 0;
+let cachedTranslation = null; // {wordId, traduction, definitionTraduite, exempleTraduit}
 
 /* ── Langue maternelle ─────────────────────────────────────────────── */
 const langSelect = document.getElementById('langSelect');
@@ -227,6 +257,9 @@ async function startSession(){
     cards = data.cards;
     idx = 0;
     counts = { encore: 0, difficile: 0, facile: 0 };
+    streak = 0;
+    bestStreak = 0;
+    updateStreakChip();
     document.getElementById('startView').classList.add('hidden');
     document.getElementById('sessionView').classList.remove('hidden');
     document.getElementById('endView').classList.remove('on');
@@ -251,11 +284,11 @@ function renderCard(){
   document.getElementById('prog-chip').textContent = 'Carte ' + (idx+1) + ' / ' + cards.length;
   document.getElementById('cardDomaine').textContent = c.domaine;
   document.getElementById('cardFront').textContent = c.definition;
-  document.getElementById('cardHint').classList.remove('hidden');
   document.getElementById('cardBack').classList.add('hidden');
   document.getElementById('rateActions').classList.add('hidden');
   document.getElementById('cardWord').textContent = c.mot;
   document.getElementById('cardExemple').textContent = c.exemple;
+
   const translationBox = document.getElementById('translationBox');
   translationBox.classList.add('hidden');
   translationBox.textContent = '';
@@ -263,12 +296,129 @@ function renderCard(){
   translateBtn.disabled = false;
   translateBtn.textContent = '🌐 Traduire dans ma langue';
   translateBtn.classList.remove('hidden');
+
+  const translationDefBox = document.getElementById('translationDefBox');
+  translationDefBox.classList.add('hidden');
+  translationDefBox.textContent = '';
+  const translateDefBtn = document.getElementById('translateDefBtn');
+  translateDefBtn.disabled = false;
+  translateDefBtn.textContent = '🌐 Traduire la définition';
+  translateDefBtn.classList.remove('hidden');
+
+  const guessInput = document.getElementById('guessInput');
+  guessInput.value = '';
+  guessInput.disabled = false;
+  guessInput.classList.remove('correct', 'wrong');
+  document.getElementById('guessFeedback').textContent = '';
+  document.getElementById('guessFeedback').className = 'guess-feedback';
+  document.getElementById('guessZone').classList.remove('hidden');
+  document.getElementById('checkGuessBtn').disabled = false;
+  document.getElementById('giveUpBtn').disabled = false;
+
+  cachedTranslation = null;
   revealed = false;
   buildProgbar();
+  guessInput.focus();
 }
 
-document.getElementById('translateBtn').addEventListener('click', async (e) => {
-  e.stopPropagation();
+function normalizeGuess(s){
+  return (s || '')
+    .trim().toLowerCase()
+    .normalize('NFD').replace(/[\u0300-\u036f]/g, '')
+    .replace(/^(un |une |le |la |les |l')/, '')
+    .trim();
+}
+
+function revealCard(){
+  if (revealed) return;
+  revealed = true;
+  document.getElementById('cardBack').classList.remove('hidden');
+  document.getElementById('rateActions').classList.remove('hidden');
+  document.getElementById('guessInput').disabled = true;
+  document.getElementById('checkGuessBtn').disabled = true;
+  document.getElementById('giveUpBtn').disabled = true;
+}
+
+function updateStreakChip(){
+  const chip = document.getElementById('streak-chip');
+  chip.textContent = '🔥 ' + streak;
+  chip.classList.add('bump');
+  setTimeout(() => chip.classList.remove('bump'), 200);
+}
+
+document.getElementById('checkGuessBtn').addEventListener('click', () => {
+  const c = cards[idx];
+  const guessInput = document.getElementById('guessInput');
+  const feedback = document.getElementById('guessFeedback');
+  const ok = normalizeGuess(guessInput.value) === normalizeGuess(c.mot);
+
+  if (ok){
+    guessInput.classList.remove('wrong');
+    guessInput.classList.add('correct');
+    streak++;
+    bestStreak = Math.max(bestStreak, streak);
+    updateStreakChip();
+    feedback.className = 'guess-feedback ok';
+    feedback.textContent = '🎉 Bravo ! Bonne réponse.';
+    setTimeout(revealCard, 500);
+  } else {
+    guessInput.classList.remove('correct');
+    guessInput.classList.add('wrong');
+    streak = 0;
+    updateStreakChip();
+    feedback.className = 'guess-feedback no';
+    feedback.textContent = 'Pas tout à fait… réessaie ou révèle la réponse.';
+  }
+});
+
+document.getElementById('guessInput').addEventListener('keydown', (e) => {
+  if (e.key === 'Enter') document.getElementById('checkGuessBtn').click();
+});
+
+document.getElementById('giveUpBtn').addEventListener('click', () => {
+  streak = 0;
+  updateStreakChip();
+  revealCard();
+});
+
+async function getTranslation(){
+  const c = cards[idx];
+  if (cachedTranslation && cachedTranslation.wordId === c.id) return cachedTranslation;
+  const res = await fetch('/api/vocab/translate', {
+    method: 'POST',
+    headers: {'Content-Type': 'application/json'},
+    body: JSON.stringify({ code: studentCode, wordId: c.id, language: langSelect.value }),
+  });
+  const data = await res.json();
+  if (!res.ok) throw new Error(data.error || 'Traduction indisponible pour le moment.');
+  cachedTranslation = Object.assign({ wordId: c.id }, data);
+  return cachedTranslation;
+}
+
+document.getElementById('translateDefBtn').addEventListener('click', async () => {
+  const lang = langSelect.value;
+  if (!lang || lang === '__autre__') {
+    alert('Choisis d\'abord ta langue maternelle en haut de la page.');
+    return;
+  }
+  const btn = document.getElementById('translateDefBtn');
+  const box = document.getElementById('translationDefBox');
+  btn.disabled = true;
+  btn.textContent = 'Traduction en cours…';
+  try {
+    const data = await getTranslation();
+    box.textContent = data.definitionTraduite;
+    box.classList.remove('hidden');
+    btn.classList.add('hidden');
+  } catch (err) {
+    box.textContent = err.message;
+    box.classList.remove('hidden');
+    btn.disabled = false;
+    btn.textContent = '🌐 Traduire la définition';
+  }
+});
+
+document.getElementById('translateBtn').addEventListener('click', async () => {
   const lang = langSelect.value;
   if (!lang || lang === '__autre__') {
     alert('Choisis d\'abord ta langue maternelle en haut de la page.');
@@ -278,25 +428,13 @@ document.getElementById('translateBtn').addEventListener('click', async (e) => {
   const translationBox = document.getElementById('translationBox');
   translateBtn.disabled = true;
   translateBtn.textContent = 'Traduction en cours…';
-
   try {
-    const res = await fetch('/api/vocab/translate', {
-      method: 'POST',
-      headers: {'Content-Type': 'application/json'},
-      body: JSON.stringify({ code: studentCode, wordId: cards[idx].id, language: lang }),
-    });
-    const data = await res.json();
-    if (!res.ok) {
-      translationBox.textContent = data.error || 'Traduction indisponible pour le moment.';
-      translationBox.classList.remove('hidden');
-      translateBtn.classList.add('hidden');
-      return;
-    }
+    const data = await getTranslation();
     translationBox.innerHTML = '<b>' + escHtml(data.traduction) + '</b><br>' + escHtml(data.exempleTraduit);
     translationBox.classList.remove('hidden');
     translateBtn.classList.add('hidden');
   } catch (err) {
-    translationBox.textContent = 'Impossible de joindre le service de traduction.';
+    translationBox.textContent = err.message;
     translationBox.classList.remove('hidden');
     translateBtn.disabled = false;
     translateBtn.textContent = '🌐 Traduire dans ma langue';
@@ -306,14 +444,6 @@ document.getElementById('translateBtn').addEventListener('click', async (e) => {
 function escHtml(s){
   return (s || '').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');
 }
-
-document.getElementById('flashcard').addEventListener('click', () => {
-  if (revealed) return;
-  revealed = true;
-  document.getElementById('cardHint').classList.add('hidden');
-  document.getElementById('cardBack').classList.remove('hidden');
-  document.getElementById('rateActions').classList.remove('hidden');
-});
 
 function rate(quality){
   const c = cards[idx];
@@ -340,8 +470,9 @@ function endSession(){
   document.getElementById('sessionView').classList.add('hidden');
   document.getElementById('endView').classList.add('on');
   document.getElementById('endSummary').textContent =
-    cards.length + ' mots revus — ' + counts.facile + ' faciles, ' + counts.difficile + ' difficiles, ' + counts.encore + ' à revoir.';
+    cards.length + ' mots revus — ' + counts.facile + ' faciles, ' + counts.difficile + ' difficiles, ' + counts.encore + ' à revoir. Meilleure série : 🔥 ' + bestStreak + '.';
   document.getElementById('prog-chip').textContent = '';
+  document.getElementById('streak-chip').textContent = '';
   lmsTrack('exercise_completed', { zonesDone: cards.length, score: Math.round((counts.facile / cards.length) * 100) });
 }
 

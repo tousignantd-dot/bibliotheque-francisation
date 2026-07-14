@@ -863,25 +863,27 @@ class Handler(http.server.SimpleHTTPRequestHandler):
 
         system_prompt = (
             "Tu es un assistant de traduction pour des élèves adultes en "
-            "francisation au Québec. Traduis un mot de vocabulaire français "
-            f"et sa phrase d'exemple vers cette langue : {language}. Réponds "
-            "UNIQUEMENT avec un objet JSON valide, sans texte avant ni après, "
-            'exactement dans ce format : {"traduction": "...", '
-            '"exempleTraduit": "..."} — "traduction" est la traduction du mot '
-            "seul (garde un article si naturel dans la langue cible). "
-            '"exempleTraduit" est la traduction de la phrase d\'exemple '
-            "complète. Utilise une traduction naturelle et courante, pas "
-            "littérale."
+            "francisation au Québec. Traduis un mot de vocabulaire français, "
+            "sa définition et sa phrase d'exemple vers cette langue : "
+            f"{language}. Réponds UNIQUEMENT avec un objet JSON valide, sans "
+            'texte avant ni après, exactement dans ce format : {"traduction": '
+            '"...", "definitionTraduite": "...", "exempleTraduit": "..."} — '
+            '"traduction" est la traduction du mot seul (garde un article si '
+            'naturel dans la langue cible). "definitionTraduite" est la '
+            'traduction de la définition. "exempleTraduit" est la traduction '
+            "de la phrase d'exemple complète. Utilise une traduction "
+            "naturelle et courante, pas littérale."
         )
-        user_content = f"Mot : {word['mot']}\nExemple : {word['exemple']}"
+        user_content = f"Mot : {word['mot']}\nDéfinition : {word['definition']}\nExemple : {word['exemple']}"
 
-        parsed, err = self._call_anthropic_json(system_prompt, user_content, max_tokens=200)
+        parsed, err = self._call_anthropic_json(system_prompt, user_content, max_tokens=300)
         if err:
             json_response(self, {"error": err[0]}, err[1])
             return
 
         json_response(self, {
             "traduction": parsed.get("traduction", ""),
+            "definitionTraduite": parsed.get("definitionTraduite", ""),
             "exempleTraduit": parsed.get("exempleTraduit", ""),
         })
 
