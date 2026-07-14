@@ -78,7 +78,7 @@
     .btn-primary { background: var(--accent); color: #fff; border-color: var(--accent); width: 100%; height: 42px; font-size: 14px; }
     .btn-primary:hover { background: var(--accent-hover); border-color: var(--accent-hover); box-shadow: 0 2px 8px rgba(59,111,246,.3); }
     .btn-primary:disabled { opacity: .5; cursor: not-allowed; transform: none; }
-    .btn-danger-sm { background: var(--danger-light); color: var(--danger); border-color: #fecaca; height: 28px; padding: 0 10px; font-size: 11px; border-radius: 5px; cursor: pointer; font-family: var(--font); font-weight: 600; border-width: 1px; transition: all .15s; }
+    .btn-danger-sm { background: var(--danger-light); color: var(--danger); border-color: #fecaca; width: 26px; height: 26px; padding: 0; font-size: 15px; line-height: 1; border-radius: 6px; cursor: pointer; font-family: var(--font); font-weight: 700; border-width: 1px; transition: all .15s; flex-shrink: 0; margin-left: auto; }
     .btn-danger-sm:hover { background: var(--danger); color: #fff; border-color: var(--danger); }
 
     .row-split { display: flex; gap: 12px; }
@@ -88,11 +88,12 @@
     /* STUDENT LIST */
     .student-list { display: flex; flex-direction: column; gap: 0; }
     .student-row {
-      display: flex; align-items: center; gap: 10px; padding: 10px 16px;
+      display: flex; flex-direction: column; gap: 8px; padding: 10px 16px;
       border-bottom: 1px solid var(--border); transition: background .1s;
     }
     .student-row:last-child { border-bottom: none; }
     .student-row:hover { background: var(--bg); }
+    .student-row-top { display: flex; align-items: center; gap: 8px; }
     .student-code {
       font-size: 14px; font-weight: 700; letter-spacing: 2px; color: var(--accent);
       background: var(--accent-light); padding: 5px 10px; border-radius: 6px;
@@ -101,9 +102,16 @@
     }
     .student-code:hover { background: var(--accent); color: #fff; border-color: var(--accent); }
     .student-code.selected { background: var(--accent); color: #fff; border-color: var(--accent); box-shadow: 0 0 0 3px rgba(59,111,246,.2); }
+    .btn-copy-sm {
+      flex-shrink: 0; width: 26px; height: 26px; border-radius: 6px; border: 1px solid var(--border);
+      background: #fff; color: var(--text-2); cursor: pointer; display: flex; align-items: center; justify-content: center;
+      transition: all .15s;
+    }
+    .btn-copy-sm:hover { background: var(--accent-light); color: var(--accent); border-color: #c7d7fd; }
+    .btn-copy-sm.copied { background: #dcfce7; color: #16a34a; border-color: #86efac; }
     .student-prenom {
-      flex: 1; height: 30px; padding: 0 8px; font-size: 13px; font-family: var(--font);
-      border: 1.5px solid transparent; border-radius: 5px; background: transparent;
+      width: 100%; height: 32px; padding: 0 10px; font-size: 13px; font-family: var(--font);
+      border: 1.5px solid var(--border); border-radius: 6px; background: var(--bg);
       color: var(--text); outline: none; transition: all .15s; min-width: 0;
     }
     .student-prenom:hover { background: var(--bg); border-color: var(--border); }
@@ -223,6 +231,10 @@
           <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>
         </div>
         <span class="panel-title">Codes actifs</span>
+        <button class="btn" style="margin-left:auto;height:30px;padding:0 12px;font-size:12px;background:var(--bg);border-color:var(--border);color:var(--text-2);" id="copyAllBtn" onclick="copyAllCodes()">
+          <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg>
+          Copier tous les codes
+        </button>
       </div>
       <div class="student-list" id="studentList">
         <div class="empty-list">Aucun élève. Générez des codes ci-dessus.</div>
@@ -463,20 +475,62 @@
     }
     list.innerHTML = allStudents.map(s => `
       <div class="student-row" id="srow-${s.id}">
-        <span class="student-code${selectedStudentId === s.id ? ' selected' : ''}"
-              onclick="selectStudent(${s.id})"
-              title="Cliquer pour filtrer la progression">${s.code}</span>
+        <div class="student-row-top">
+          <span class="student-code${selectedStudentId === s.id ? ' selected' : ''}"
+                onclick="selectStudent(${s.id})"
+                title="Cliquer pour filtrer la progression">${s.code}</span>
+          <button class="btn-copy-sm" onclick="event.stopPropagation();copySingleCode('${s.code}', this)" title="Copier ce code">
+            <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg>
+          </button>
+          <span class="student-date">${formatDate(s.createdAt)}</span>
+          <button class="btn-danger-sm" onclick="deleteStudent(${s.id})" title="Supprimer ce code">×</button>
+        </div>
         <input type="text" class="student-prenom"
                id="prenom-${s.id}"
                placeholder="Nom…"
                value="${escHtml(s.prenom || '')}"
                onblur="savePrenom(${s.id})"
                onkeydown="if(event.key==='Enter')this.blur()" />
-        <span class="student-date">${formatDate(s.createdAt)}</span>
-        <button class="btn-danger-sm" onclick="deleteStudent(${s.id})">Supprimer</button>
       </div>`).join('');
     count.textContent = `${allStudents.length} code${allStudents.length > 1 ? 's' : ''} actif${allStudents.length > 1 ? 's' : ''}`;
     count.style.display = 'block';
+  }
+
+  async function copyToClipboard(text) {
+    try {
+      await navigator.clipboard.writeText(text);
+      return true;
+    } catch (e) {
+      // Repli pour contextes sans permission clipboard (ex. http non sécurisé)
+      const ta = document.createElement('textarea');
+      ta.value = text;
+      ta.style.position = 'fixed';
+      ta.style.opacity = '0';
+      document.body.appendChild(ta);
+      ta.select();
+      let ok = false;
+      try { ok = document.execCommand('copy'); } catch (e2) { /* ignore */ }
+      document.body.removeChild(ta);
+      return ok;
+    }
+  }
+
+  async function copySingleCode(code, btn) {
+    const ok = await copyToClipboard(code);
+    if (!ok) { alert('Impossible de copier automatiquement. Code : ' + code); return; }
+    btn.classList.add('copied');
+    setTimeout(() => btn.classList.remove('copied'), 1200);
+  }
+
+  async function copyAllCodes() {
+    if (allStudents.length === 0) { alert('Aucun code à copier.'); return; }
+    const text = allStudents.map(s => s.prenom ? `${s.code}\t${s.prenom}` : s.code).join('\n');
+    const ok = await copyToClipboard(text);
+    const btn = document.getElementById('copyAllBtn');
+    if (!ok) { alert('Impossible de copier automatiquement les codes.'); return; }
+    const original = btn.innerHTML;
+    btn.innerHTML = '✓ Codes copiés !';
+    setTimeout(() => { btn.innerHTML = original; }, 1500);
   }
 
   function selectStudent(id) {
