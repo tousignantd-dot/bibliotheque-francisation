@@ -196,6 +196,28 @@ def save_progress(data):
         json.dump(data, f, ensure_ascii=False, indent=2)
 
 
+def get_available_activity_ids():
+    today_str = date.today().isoformat()
+    ids = set()
+    for a in load_activities():
+        dp = a.get("datePrevue", "")
+        df = a.get("dateFin", "")
+        if df and df < today_str:
+            continue
+        if not dp or dp <= today_str:
+            ids.add(a["id"])
+    return ids
+
+
+def get_student_vocab_pool():
+    """Ne garde que les mots liés aux activités déjà accessibles à l'élève."""
+    available_ids = get_available_activity_ids()
+    return [
+        w for w in VOCAB_BANK
+        if not w.get("activityIds") or available_ids & set(w["activityIds"])
+    ]
+
+
 def load_vocab_progress():
     if VOCAB_PROGRESS_FILE.exists():
         with open(VOCAB_PROGRESS_FILE, "r", encoding="utf-8") as f:
@@ -214,56 +236,56 @@ def save_vocab_progress(data):
 VOCAB_INTERVALS_DAYS = [0, 1, 3, 7, 14, 30, 60]
 
 VOCAB_BANK = [
-    {"id": "w1",  "mot": "un rendez-vous", "domaine": "Santé", "definition": "Un moment fixé à l'avance pour voir quelqu'un.", "exemple": "J'ai un rendez-vous à dix heures avec le docteur."},
-    {"id": "w2",  "mot": "la salle d'attente", "domaine": "Santé", "definition": "L'endroit où on attend avant de voir le médecin.", "exemple": "Prenez un siège dans la salle d'attente."},
-    {"id": "w3",  "mot": "la carte d'assurance maladie", "domaine": "Santé", "definition": "Le document qui donne accès aux soins de santé gratuits au Québec.", "exemple": "Avez-vous votre carte d'assurance maladie avec vous ?"},
-    {"id": "w4",  "mot": "tousser", "domaine": "Santé", "definition": "Faire un bruit sec avec la gorge à cause d'une irritation.", "exemple": "Est-ce que vous toussez beaucoup ?"},
-    {"id": "w5",  "mot": "un sirop", "domaine": "Santé", "definition": "Un médicament liquide et sucré.", "exemple": "Je vais vous prescrire un sirop pour la gorge."},
-    {"id": "w6",  "mot": "un antibiotique", "domaine": "Santé", "definition": "Un médicament qui combat une infection.", "exemple": "Le docteur m'a mis sous antibiotique."},
-    {"id": "w7",  "mot": "la fièvre", "domaine": "Santé", "definition": "Une température du corps plus élevée que la normale.", "exemple": "Vous n'avez pas de fièvre."},
-    {"id": "w8",  "mot": "empirer", "domaine": "Santé", "definition": "Devenir pire.", "exemple": "J'ai peur que ma toux empire."},
-    {"id": "w9",  "mot": "un symptôme", "domaine": "Santé", "definition": "Un signe qui indique une maladie.", "exemple": "Quels sont vos symptômes ?"},
-    {"id": "w10", "mot": "un spécialiste", "domaine": "Santé", "definition": "Un médecin expert dans un domaine précis.", "exemple": "Le médecin m'a référé à un spécialiste."},
-    {"id": "w11", "mot": "la prévention", "domaine": "Santé", "definition": "Les actions pour éviter une maladie.", "exemple": "La prévention est importante pour rester en santé."},
-    {"id": "w12", "mot": "fraîches", "domaine": "Consommation", "definition": "Récemment récoltées ou préparées, pas vieilles.", "exemple": "Les fraises sont très fraîches."},
-    {"id": "w13", "mot": "un rabais", "domaine": "Consommation", "definition": "Une réduction de prix.", "exemple": "Les fraises sont en rabais cette semaine."},
-    {"id": "w14", "mot": "un produit local", "domaine": "Consommation", "definition": "Un aliment cultivé ou fabriqué dans la région.", "exemple": "Ce sont des produits locaux du Québec."},
-    {"id": "w15", "mot": "un kilo", "domaine": "Consommation", "definition": "Une unité de poids (1000 grammes).", "exemple": "Je prends un kilo de pommes."},
-    {"id": "w16", "mot": "le réfrigérateur", "domaine": "Consommation", "definition": "L'appareil qui garde les aliments au froid.", "exemple": "Gardez-les au réfrigérateur."},
-    {"id": "w17", "mot": "le fromage en grains", "domaine": "Consommation", "definition": "Un fromage frais utilisé dans la poutine.", "exemple": "La poutine, c'est des frites, du fromage en grains et de la sauce."},
-    {"id": "w18", "mot": "un kiosque", "domaine": "Consommation", "definition": "Un petit comptoir de vente au marché.", "exemple": "On peut parler avec les gens aux kiosques du marché."},
-    {"id": "w19", "mot": "le loyer", "domaine": "Logement", "definition": "Le montant payé chaque mois pour habiter un logement.", "exemple": "Le loyer est de 950 $ par mois."},
-    {"id": "w20", "mot": "un quatre et demi", "domaine": "Logement", "definition": "Un appartement avec quatre pièces plus la salle de bain.", "exemple": "C'est un beau quatre et demi."},
-    {"id": "w21", "mot": "le bail", "domaine": "Logement", "definition": "Le contrat de location d'un logement.", "exemple": "J'ai signé le bail hier."},
-    {"id": "w22", "mot": "le chauffage", "domaine": "Logement", "definition": "Le système qui réchauffe un logement.", "exemple": "Le chauffage ne fonctionne plus."},
-    {"id": "w23", "mot": "un dépôt", "domaine": "Logement", "definition": "Une somme d'argent versée en garantie.", "exemple": "Le propriétaire demande un dépôt."},
-    {"id": "w24", "mot": "déménager", "domaine": "Logement", "definition": "Changer de logement.", "exemple": "Je déménage la semaine prochaine."},
-    {"id": "w25", "mot": "les meubles", "domaine": "Logement", "definition": "Les objets comme une table, un lit, une chaise.", "exemple": "On a acheté de nouveaux meubles."},
-    {"id": "w26", "mot": "une tâche", "domaine": "Monde du travail", "definition": "Un travail précis à faire.", "exemple": "Voici tes tâches pour aujourd'hui."},
-    {"id": "w27", "mot": "un superviseur", "domaine": "Monde du travail", "definition": "La personne qui dirige les employés.", "exemple": "Mon superviseur m'a expliqué mon horaire."},
-    {"id": "w28", "mot": "un horaire", "domaine": "Monde du travail", "definition": "La liste des heures de travail.", "exemple": "Est-ce qu'il y a une pause dans mon horaire ?"},
-    {"id": "w29", "mot": "accueillir", "domaine": "Monde du travail", "definition": "Recevoir quelqu'un avec politesse.", "exemple": "Tu accueilles les clients à la porte."},
-    {"id": "w30", "mot": "une pause", "domaine": "Monde du travail", "definition": "Un moment de repos pendant le travail.", "exemple": "Il y a une pause à dix heures."},
-    {"id": "w31", "mot": "une équipe", "domaine": "Loisirs", "definition": "Un groupe de personnes qui jouent ensemble.", "exemple": "Je joue au hockey en équipe."},
-    {"id": "w32", "mot": "individuel", "domaine": "Loisirs", "definition": "Qui se pratique seul.", "exemple": "La natation est un sport individuel."},
-    {"id": "w33", "mot": "disputer un match", "domaine": "Loisirs", "definition": "Jouer une partie sportive.", "exemple": "On dispute un match tous les samedis."},
-    {"id": "w34", "mot": "le métro", "domaine": "Vie citoyenne — orientation", "definition": "Un train souterrain de transport en commun.", "exemple": "Vous prenez la ligne verte du métro."},
-    {"id": "w35", "mot": "une correspondance", "domaine": "Vie citoyenne — orientation", "definition": "Un changement de ligne de métro ou d'autobus.", "exemple": "À Berri-UQAM, vous faites une correspondance."},
-    {"id": "w36", "mot": "une station", "domaine": "Vie citoyenne — orientation", "definition": "Un arrêt de métro.", "exemple": "Descendez à la station Champ-de-Mars."},
-    {"id": "w37", "mot": "un belvédère", "domaine": "Culture / histoire", "definition": "Un endroit en hauteur pour admirer la vue.", "exemple": "Du belvédère, on voit toute la ville."},
-    {"id": "w38", "mot": "un explorateur", "domaine": "Culture / histoire", "definition": "Une personne qui découvre de nouveaux lieux.", "exemple": "Jacques Cartier était un explorateur."},
-    {"id": "w39", "mot": "le fleuve", "domaine": "Culture / histoire", "definition": "Un grand cours d'eau qui se jette dans la mer.", "exemple": "On voit le fleuve Saint-Laurent."},
-    {"id": "w40", "mot": "une croisière", "domaine": "Culture / loisirs", "definition": "Une promenade en bateau.", "exemple": "Il y a une croisière sur le fleuve."},
-    {"id": "w41", "mot": "un pédalo", "domaine": "Culture / loisirs", "definition": "Un petit bateau à pédales.", "exemple": "On peut faire du pédalo au Vieux-Port."},
-    {"id": "w42", "mot": "un spectacle", "domaine": "Culture / loisirs", "definition": "Une présentation artistique devant un public.", "exemple": "Le Cirque du Soleil présente un nouveau spectacle."},
-    {"id": "w43", "mot": "une exposition", "domaine": "Culture / histoire", "definition": "Une présentation d'objets à voir dans un musée.", "exemple": "Il y a une nouvelle exposition au musée."},
-    {"id": "w44", "mot": "un athlète", "domaine": "Culture / histoire", "definition": "Une personne qui pratique un sport de haut niveau.", "exemple": "L'athlète a gagné une médaille."},
-    {"id": "w45", "mot": "une médaille", "domaine": "Culture / histoire", "definition": "Une récompense donnée aux gagnants d'une compétition.", "exemple": "Il a gagné la médaille d'argent."},
-    {"id": "w46", "mot": "un exploit", "domaine": "Culture / histoire", "definition": "Une action remarquable et difficile à réaliser.", "exemple": "L'exposition présente un grand exploit sportif."},
-    {"id": "w47", "mot": "une basilique", "domaine": "Culture / histoire", "definition": "Une très grande église importante.", "exemple": "La basilique Notre-Dame est magnifique."},
-    {"id": "w48", "mot": "pavée", "domaine": "Culture / histoire", "definition": "Couverte de pierres, en parlant d'une rue.", "exemple": "Les rues du Vieux-Montréal sont pavées."},
-    {"id": "w49", "mot": "un attrait", "domaine": "Culture / loisirs", "definition": "Un lieu ou une chose qui attire les visiteurs.", "exemple": "Le Vieux-Port est un attrait touristique."},
-    {"id": "w50", "mot": "fonder", "domaine": "Culture / histoire", "definition": "Créer une ville ou une organisation pour la première fois.", "exemple": "Montréal a été fondée en 1642."},
+    {"id": "w1", "activityIds": [4, 8, 17],  "mot": "un rendez-vous", "domaine": "Santé", "definition": "Un moment fixé à l'avance pour voir quelqu'un.", "exemple": "J'ai un rendez-vous à dix heures avec le docteur."},
+    {"id": "w2", "activityIds": [4, 8, 17],  "mot": "la salle d'attente", "domaine": "Santé", "definition": "L'endroit où on attend avant de voir le médecin.", "exemple": "Prenez un siège dans la salle d'attente."},
+    {"id": "w3", "activityIds": [4, 8, 17],  "mot": "la carte d'assurance maladie", "domaine": "Santé", "definition": "Le document qui donne accès aux soins de santé gratuits au Québec.", "exemple": "Avez-vous votre carte d'assurance maladie avec vous ?"},
+    {"id": "w4", "activityIds": [4, 8, 17],  "mot": "tousser", "domaine": "Santé", "definition": "Faire un bruit sec avec la gorge à cause d'une irritation.", "exemple": "Est-ce que vous toussez beaucoup ?"},
+    {"id": "w5", "activityIds": [4, 8, 17],  "mot": "un sirop", "domaine": "Santé", "definition": "Un médicament liquide et sucré.", "exemple": "Je vais vous prescrire un sirop pour la gorge."},
+    {"id": "w6", "activityIds": [4, 8, 17],  "mot": "un antibiotique", "domaine": "Santé", "definition": "Un médicament qui combat une infection.", "exemple": "Le docteur m'a mis sous antibiotique."},
+    {"id": "w7", "activityIds": [4, 8, 17],  "mot": "la fièvre", "domaine": "Santé", "definition": "Une température du corps plus élevée que la normale.", "exemple": "Vous n'avez pas de fièvre."},
+    {"id": "w8", "activityIds": [4, 8, 17],  "mot": "empirer", "domaine": "Santé", "definition": "Devenir pire.", "exemple": "J'ai peur que ma toux empire."},
+    {"id": "w9", "activityIds": [4, 8, 17],  "mot": "un symptôme", "domaine": "Santé", "definition": "Un signe qui indique une maladie.", "exemple": "Quels sont vos symptômes ?"},
+    {"id": "w10", "activityIds": [4, 8, 17], "mot": "un spécialiste", "domaine": "Santé", "definition": "Un médecin expert dans un domaine précis.", "exemple": "Le médecin m'a référé à un spécialiste."},
+    {"id": "w11", "activityIds": [4, 8, 17], "mot": "la prévention", "domaine": "Santé", "definition": "Les actions pour éviter une maladie.", "exemple": "La prévention est importante pour rester en santé."},
+    {"id": "w12", "activityIds": [5, 7], "mot": "fraîches", "domaine": "Consommation", "definition": "Récemment récoltées ou préparées, pas vieilles.", "exemple": "Les fraises sont très fraîches."},
+    {"id": "w13", "activityIds": [5, 7], "mot": "un rabais", "domaine": "Consommation", "definition": "Une réduction de prix.", "exemple": "Les fraises sont en rabais cette semaine."},
+    {"id": "w14", "activityIds": [5, 7], "mot": "un produit local", "domaine": "Consommation", "definition": "Un aliment cultivé ou fabriqué dans la région.", "exemple": "Ce sont des produits locaux du Québec."},
+    {"id": "w15", "activityIds": [5, 7], "mot": "un kilo", "domaine": "Consommation", "definition": "Une unité de poids (1000 grammes).", "exemple": "Je prends un kilo de pommes."},
+    {"id": "w16", "activityIds": [7], "mot": "le réfrigérateur", "domaine": "Consommation", "definition": "L'appareil qui garde les aliments au froid.", "exemple": "Gardez-les au réfrigérateur."},
+    {"id": "w17", "activityIds": [6], "mot": "le fromage en grains", "domaine": "Consommation", "definition": "Un fromage frais utilisé dans la poutine.", "exemple": "La poutine, c'est des frites, du fromage en grains et de la sauce."},
+    {"id": "w18", "activityIds": [5], "mot": "un kiosque", "domaine": "Consommation", "definition": "Un petit comptoir de vente au marché.", "exemple": "On peut parler avec les gens aux kiosques du marché."},
+    {"id": "w19", "activityIds": [11, 16], "mot": "le loyer", "domaine": "Logement", "definition": "Le montant payé chaque mois pour habiter un logement.", "exemple": "Le loyer est de 950 $ par mois."},
+    {"id": "w20", "activityIds": [11, 16], "mot": "un quatre et demi", "domaine": "Logement", "definition": "Un appartement avec quatre pièces plus la salle de bain.", "exemple": "C'est un beau quatre et demi."},
+    {"id": "w21", "activityIds": [11, 16], "mot": "le bail", "domaine": "Logement", "definition": "Le contrat de location d'un logement.", "exemple": "J'ai signé le bail hier."},
+    {"id": "w22", "activityIds": [11, 16], "mot": "le chauffage", "domaine": "Logement", "definition": "Le système qui réchauffe un logement.", "exemple": "Le chauffage ne fonctionne plus."},
+    {"id": "w23", "activityIds": [11, 16], "mot": "un dépôt", "domaine": "Logement", "definition": "Une somme d'argent versée en garantie.", "exemple": "Le propriétaire demande un dépôt."},
+    {"id": "w24", "activityIds": [11, 16], "mot": "déménager", "domaine": "Logement", "definition": "Changer de logement.", "exemple": "Je déménage la semaine prochaine."},
+    {"id": "w25", "activityIds": [11, 16], "mot": "les meubles", "domaine": "Logement", "definition": "Les objets comme une table, un lit, une chaise.", "exemple": "On a acheté de nouveaux meubles."},
+    {"id": "w26", "activityIds": [12], "mot": "une tâche", "domaine": "Monde du travail", "definition": "Un travail précis à faire.", "exemple": "Voici tes tâches pour aujourd'hui."},
+    {"id": "w27", "activityIds": [12], "mot": "un superviseur", "domaine": "Monde du travail", "definition": "La personne qui dirige les employés.", "exemple": "Mon superviseur m'a expliqué mon horaire."},
+    {"id": "w28", "activityIds": [12], "mot": "un horaire", "domaine": "Monde du travail", "definition": "La liste des heures de travail.", "exemple": "Est-ce qu'il y a une pause dans mon horaire ?"},
+    {"id": "w29", "activityIds": [12], "mot": "accueillir", "domaine": "Monde du travail", "definition": "Recevoir quelqu'un avec politesse.", "exemple": "Tu accueilles les clients à la porte."},
+    {"id": "w30", "activityIds": [12], "mot": "une pause", "domaine": "Monde du travail", "definition": "Un moment de repos pendant le travail.", "exemple": "Il y a une pause à dix heures."},
+    {"id": "w31", "activityIds": [13], "mot": "une équipe", "domaine": "Loisirs", "definition": "Un groupe de personnes qui jouent ensemble.", "exemple": "Je joue au hockey en équipe."},
+    {"id": "w32", "activityIds": [13], "mot": "individuel", "domaine": "Loisirs", "definition": "Qui se pratique seul.", "exemple": "La natation est un sport individuel."},
+    {"id": "w33", "activityIds": [13], "mot": "disputer un match", "domaine": "Loisirs", "definition": "Jouer une partie sportive.", "exemple": "On dispute un match tous les samedis."},
+    {"id": "w34", "activityIds": [14], "mot": "le métro", "domaine": "Vie citoyenne — orientation", "definition": "Un train souterrain de transport en commun.", "exemple": "Vous prenez la ligne verte du métro."},
+    {"id": "w35", "activityIds": [14], "mot": "une correspondance", "domaine": "Vie citoyenne — orientation", "definition": "Un changement de ligne de métro ou d'autobus.", "exemple": "À Berri-UQAM, vous faites une correspondance."},
+    {"id": "w36", "activityIds": [14], "mot": "une station", "domaine": "Vie citoyenne — orientation", "definition": "Un arrêt de métro.", "exemple": "Descendez à la station Champ-de-Mars."},
+    {"id": "w37", "activityIds": [9], "mot": "un belvédère", "domaine": "Culture / histoire", "definition": "Un endroit en hauteur pour admirer la vue.", "exemple": "Du belvédère, on voit toute la ville."},
+    {"id": "w38", "activityIds": [18], "mot": "un explorateur", "domaine": "Culture / histoire", "definition": "Une personne qui découvre de nouveaux lieux.", "exemple": "Jacques Cartier était un explorateur."},
+    {"id": "w39", "activityIds": [9, 15], "mot": "le fleuve", "domaine": "Culture / histoire", "definition": "Un grand cours d'eau qui se jette dans la mer.", "exemple": "On voit le fleuve Saint-Laurent."},
+    {"id": "w40", "activityIds": [15], "mot": "une croisière", "domaine": "Culture / loisirs", "definition": "Une promenade en bateau.", "exemple": "Il y a une croisière sur le fleuve."},
+    {"id": "w41", "activityIds": [15], "mot": "un pédalo", "domaine": "Culture / loisirs", "definition": "Un petit bateau à pédales.", "exemple": "On peut faire du pédalo au Vieux-Port."},
+    {"id": "w42", "activityIds": [15], "mot": "un spectacle", "domaine": "Culture / loisirs", "definition": "Une présentation artistique devant un public.", "exemple": "Le Cirque du Soleil présente un nouveau spectacle."},
+    {"id": "w43", "activityIds": [10], "mot": "une exposition", "domaine": "Culture / histoire", "definition": "Une présentation d'objets à voir dans un musée.", "exemple": "Il y a une nouvelle exposition au musée."},
+    {"id": "w44", "activityIds": [10], "mot": "un athlète", "domaine": "Culture / histoire", "definition": "Une personne qui pratique un sport de haut niveau.", "exemple": "L'athlète a gagné une médaille."},
+    {"id": "w45", "activityIds": [10], "mot": "une médaille", "domaine": "Culture / histoire", "definition": "Une récompense donnée aux gagnants d'une compétition.", "exemple": "Il a gagné la médaille d'argent."},
+    {"id": "w46", "activityIds": [10], "mot": "un exploit", "domaine": "Culture / histoire", "definition": "Une action remarquable et difficile à réaliser.", "exemple": "L'exposition présente un grand exploit sportif."},
+    {"id": "w47", "activityIds": [18], "mot": "une basilique", "domaine": "Culture / histoire", "definition": "Une très grande église importante.", "exemple": "La basilique Notre-Dame est magnifique."},
+    {"id": "w48", "activityIds": [18], "mot": "pavée", "domaine": "Culture / histoire", "definition": "Couverte de pierres, en parlant d'une rue.", "exemple": "Les rues du Vieux-Montréal sont pavées."},
+    {"id": "w49", "activityIds": [15], "mot": "un attrait", "domaine": "Culture / loisirs", "definition": "Un lieu ou une chose qui attire les visiteurs.", "exemple": "Le Vieux-Port est un attrait touristique."},
+    {"id": "w50", "activityIds": [18], "mot": "fonder", "domaine": "Culture / histoire", "definition": "Créer une ville ou une organisation pour la première fois.", "exemple": "Montréal a été fondée en 1642."},
 ]
 
 
@@ -777,7 +799,8 @@ class Handler(http.server.SimpleHTTPRequestHandler):
         except ValueError:
             n = 10
 
-        pool = [w for w in VOCAB_BANK if not domain or w["domaine"] == domain]
+        available_pool = get_student_vocab_pool()
+        pool = [w for w in available_pool if not domain or w["domaine"] == domain]
         progress = load_vocab_progress()
         by_word = {
             p["wordId"]: p for p in progress if p["studentId"] == student["id"]
@@ -801,7 +824,7 @@ class Handler(http.server.SimpleHTTPRequestHandler):
 
         json_response(self, {
             "cards": selected,
-            "domaines": sorted(set(w["domaine"] for w in VOCAB_BANK)),
+            "domaines": sorted(set(w["domaine"] for w in available_pool)),
             "dueCount": len(due),
             "newCount": len(new),
         })
@@ -942,16 +965,8 @@ class Handler(http.server.SimpleHTTPRequestHandler):
             json_response(self, {"error": "Non autorisé"}, 401)
             return
 
-        today_str = date.today().isoformat()
-        activities = load_activities()
-        available_activities = []
-        for a in activities:
-            dp = a.get("datePrevue", "")
-            df = a.get("dateFin", "")
-            if df and df < today_str:
-                continue
-            if not dp or dp <= today_str:
-                available_activities.append(a)
+        available_ids = get_available_activity_ids()
+        available_activities = [a for a in load_activities() if a["id"] in available_ids]
 
         progress = [p for p in load_progress() if p["studentId"] == student["id"]]
         started_ids = {p["activityId"] for p in progress}
@@ -985,9 +1000,13 @@ class Handler(http.server.SimpleHTTPRequestHandler):
             streak += 1
             cursor = cursor - timedelta(days=1)
 
-        # ── Maîtrise du vocabulaire ──────────────────────────────────────
-        vocab_progress = [p for p in load_vocab_progress() if p["studentId"] == student["id"]]
-        total_words = len(VOCAB_BANK)
+        # ── Maîtrise du vocabulaire (mots des activités déjà au dossier) ──
+        pool_ids = {w["id"] for w in get_student_vocab_pool()}
+        vocab_progress = [
+            p for p in load_vocab_progress()
+            if p["studentId"] == student["id"] and p["wordId"] in pool_ids
+        ]
+        total_words = len(pool_ids)
         reviewed_words = len(vocab_progress)
         mastered_words = sum(1 for p in vocab_progress if p["box"] >= 4)
         learning_words = reviewed_words - mastered_words
