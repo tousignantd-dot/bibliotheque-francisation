@@ -752,7 +752,12 @@ class Handler(http.server.SimpleHTTPRequestHandler):
         if not student:
             json_response(self, {"error": "Code invalide"}, 401)
             return
-        json_response(self, {"success": True, "studentId": student["id"], "label": student.get("label", "")})
+        json_response(self, {
+            "success": True,
+            "studentId": student["id"],
+            "label": student.get("label", ""),
+            "prenom": student.get("prenom", ""),
+        })
 
     def _handle_vocab_session(self, params):
         code = params.get("code", [""])[0].strip().upper()

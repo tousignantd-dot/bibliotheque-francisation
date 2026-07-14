@@ -118,14 +118,6 @@
     .act-card.available:hover { box-shadow: 0 4px 20px rgba(59,111,246,.12); border-color: #c7d7fd; }
     .act-card.locked { opacity: .75; }
 
-    .act-thumb {
-      width: 100%; aspect-ratio: 16/9; object-fit: cover; display: block; background: var(--bg);
-    }
-    .act-thumb-placeholder {
-      width: 100%; aspect-ratio: 16/9; background: linear-gradient(135deg, #eef2ff 0%, #e0e7ff 100%);
-      display: flex; align-items: center; justify-content: center; color: #a5b4fc;
-    }
-
     .act-body { padding: 14px 16px 16px; }
     .act-title { font-size: 14px; font-weight: 700; margin-bottom: 6px; line-height: 1.35; }
     .act-date {
@@ -209,7 +201,7 @@
   <header class="header">
     <div class="header-inner">
       <div>
-        <div class="header-brand">Activités pédagogiques</div>
+        <div class="header-brand">Centre Lartigue CSSDM</div>
         <div class="header-sub">Francisation — Niveau 4</div>
       </div>
       <div class="header-right">
@@ -253,7 +245,7 @@
       });
       const data = await res.json();
       if (!res.ok) throw new Error(data.error || 'Erreur');
-      session = {code, studentId: data.studentId, label: data.label};
+      session = {code, studentId: data.studentId, label: data.label, prenom: data.prenom || ''};
       localStorage.setItem('eleve_session', JSON.stringify(session));
       showApp();
     } catch(e) {
@@ -265,7 +257,7 @@
   function showApp() {
     document.getElementById('loginWrap').style.display = 'none';
     document.getElementById('app').style.display = 'block';
-    document.getElementById('codeDisplay').textContent = session.code;
+    document.getElementById('codeDisplay').textContent = session.prenom ? `${session.prenom} · ${session.code}` : session.code;
     loadActivities();
   }
 
@@ -325,10 +317,6 @@
   }
 
   function buildCard(a) {
-    const thumb = a.thumbnail
-      ? `<img class="act-thumb" src="${API}/${a.thumbnail}" alt="" loading="lazy" />`
-      : `<div class="act-thumb-placeholder"><svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M2 3h6a4 4 0 0 1 4 4v14a3 3 0 0 0-3-3H2z"/><path d="M22 3h-6a4 4 0 0 0-4 4v14a3 3 0 0 1 3-3h7z"/></svg></div>`;
-
     let dateHtml = '';
     if (a.available && a.datePrevue) {
       dateHtml = `<div class="act-date available">
@@ -368,7 +356,6 @@
     }
 
     return `<div class="act-card ${a.available ? 'available' : 'locked'}">
-      ${thumb}
       <div class="act-body">
         <div class="act-title">${escHtml(a.title)}</div>
         ${dateHtml}
