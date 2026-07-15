@@ -1,395 +1,713 @@
 <!DOCTYPE html>
 <html lang="fr"><head>
 <meta charset="utf-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Module Santé — parcours complet</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+<title>La santé — Module Niveau 4</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@600;700;800;900&display=swap" rel="stylesheet">
 <style>
 *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
-:root{--pri:#0F766E;--pri-d:#0B5C56;--pri-l:#E6F4F2;--pri-l2:#CDE9E5;--ink:#0F332F;--ink2:#48706A;--warn:#B45309;--warn-l:#FEF3C7;--ok:#0D7A54;--bg:#EAF6F4;--border:#CADDD9}
-html,body{height:100%;background:var(--bg);font-family:'Nunito',sans-serif;color:var(--ink)}
+html,body{height:100%;background:#EDF6F4;font-family:'Nunito','Arial Rounded MT Bold',sans-serif;color:#123B32}
 body{display:flex;flex-direction:column;min-height:100vh}
+::-webkit-scrollbar{width:6px;height:6px}::-webkit-scrollbar-track{background:rgba(0,0,0,.04);border-radius:3px}::-webkit-scrollbar-thumb{background:rgba(0,0,0,.15);border-radius:3px}
 
-#hdr{background:var(--pri);color:#fff;padding:12px 28px;flex-shrink:0;box-shadow:0 3px 16px rgba(15,118,110,.28)}
-.hdr-top{display:flex;align-items:center;gap:12px}
-.hdr-ic{width:40px;height:40px;background:rgba(255,255,255,.18);border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:20px;flex-shrink:0}
-.hdr-eye{font-size:10.5px;font-weight:800;text-transform:uppercase;letter-spacing:.2em;opacity:.8}
-.hdr-h1{font-size:21px;font-weight:900}
-/* Stepper */
-#steps{display:flex;gap:4px;margin-top:12px;overflow-x:auto;padding-bottom:2px}
-.step{flex:1;min-width:80px;text-align:center;cursor:pointer;position:relative}
-.step-dot{width:26px;height:26px;border-radius:50%;background:rgba(255,255,255,.22);border:2px solid rgba(255,255,255,.4);margin:0 auto 4px;display:flex;align-items:center;justify-content:center;font-size:12px;font-weight:900;color:#fff}
-.step.active .step-dot{background:#fff;color:var(--pri);border-color:#fff}
-.step.done .step-dot{background:#7FD4C9;border-color:#7FD4C9;color:var(--pri-d)}
-.step-lbl{font-size:9.5px;font-weight:800;color:rgba(255,255,255,.9);line-height:1.15}
+#hdr{background:#12996B;color:#fff;padding:14px 32px;display:flex;align-items:center;justify-content:space-between;position:sticky;top:0;z-index:200;box-shadow:0 3px 16px rgba(15,118,110,.3);flex-shrink:0}
+.hdr-l{display:flex;align-items:center;gap:14px}
+.hdr-ic{width:44px;height:44px;background:rgba(255,255,255,.18);border-radius:50%;display:flex;align-items:center;justify-content:center;flex-shrink:0;font-size:22px}
+.hdr-eye{font-size:11px;font-weight:800;text-transform:uppercase;letter-spacing:.2em;opacity:.7;line-height:1}
+.hdr-h1{font-size:27px;font-weight:900;line-height:1.15}
+.hdr-r{display:flex;align-items:center;gap:14px}
+#prog-chip{background:rgba(255,255,255,.15);border:2px solid rgba(255,255,255,.45);border-radius:999px;padding:8px 18px;font-size:16px;font-weight:900;white-space:nowrap}
+#btn-reset{background:rgba(255,255,255,.15);color:#fff;border:2px solid rgba(255,255,255,.45);border-radius:10px;padding:10px 18px;font-family:'Nunito',sans-serif;font-size:15px;font-weight:800;cursor:pointer;white-space:nowrap;transition:background .15s}
+#btn-reset:hover{background:rgba(255,255,255,.28)}
 
-#main{flex:1;display:flex;justify-content:center;padding:24px 18px 40px;overflow-y:auto}
-#panel{width:100%;max-width:640px;display:flex;flex-direction:column;gap:16px}
+#tabs{background:#fff;display:flex;gap:6px;padding:10px 32px;position:sticky;top:76px;z-index:190;box-shadow:0 2px 12px rgba(0,0,0,.07);flex-wrap:wrap}
+.tab{border:2.5px solid transparent;border-radius:999px;padding:9px 18px;font-family:'Nunito',sans-serif;font-size:14.5px;font-weight:800;cursor:pointer;background:#EDF6F4;color:#5E8A82;transition:all .15s;display:flex;align-items:center;gap:8px}
+.tab .tno{width:24px;height:24px;border-radius:50%;background:#B7DED7;color:#fff;display:flex;align-items:center;justify-content:center;font-size:13px;font-weight:900;flex-shrink:0}
+.tab.on{background:#12996B;color:#fff}
+.tab.on .tno{background:rgba(255,255,255,.28)}
+.tab .tchk{display:none;color:#4ADE80;font-size:15px}
+.tab.done .tchk{display:inline}
 
-.card{background:#fff;border-radius:16px;padding:22px 24px;box-shadow:0 2px 12px rgba(0,0,0,.05);display:flex;flex-direction:column;gap:14px}
-.tag{font-size:11px;font-weight:900;text-transform:uppercase;letter-spacing:.08em;color:var(--pri)}
-h2.title{font-size:20px;font-weight:900;color:var(--ink)}
-p.lead{font-size:14.5px;font-weight:700;color:var(--ink2);line-height:1.6}
-.obj{background:var(--pri-l);border-radius:12px;padding:14px 16px}
-.obj li{list-style:none;font-size:14px;font-weight:700;color:var(--pri-d);padding:4px 0 4px 24px;position:relative;line-height:1.4}
-.obj li::before{content:"✓";position:absolute;left:2px;color:var(--pri);font-weight:900}
+#sel-banner{background:#FEF3C7;border-bottom:3px solid #F59E0B;padding:10px 32px;display:none;align-items:center;gap:10px;font-size:19px;font-weight:800;color:#92400E;flex-shrink:0;position:sticky;top:132px;z-index:180}
+#sel-banner.on{display:flex}
 
-.chips{display:flex;flex-wrap:wrap;gap:8px}
-.chip{background:var(--pri-l);border:2px solid var(--pri-l2);border-radius:999px;padding:8px 14px;font-size:13.5px;font-weight:800;color:var(--pri-d);cursor:pointer;user-select:none}
-.chip.on{background:var(--pri);color:#fff;border-color:var(--pri)}
+.sec{display:none;flex-direction:column}
+.sec.on{display:flex}
 
-textarea,input.txt{width:100%;border:2.5px solid var(--pri-l2);border-radius:12px;padding:11px 14px;font-family:'Nunito',sans-serif;font-size:15px;font-weight:700;color:var(--ink);background:#F7FCFB;resize:vertical}
-textarea:focus,input.txt:focus{outline:none;border-color:var(--pri)}
+.dial-sec{background:#123B32;color:#E8F5F2;padding:16px 32px;display:flex;gap:24px;border-bottom:4px solid #12996B;flex-shrink:0;flex-wrap:wrap}
+.audio-pl{flex:0 0 160px;display:flex;flex-direction:column;align-items:center;justify-content:flex-start;padding-top:6px;gap:10px}
+.audio-lbl{font-size:11px;font-weight:800;text-transform:uppercase;letter-spacing:.15em;opacity:.6;text-align:center}
+.btn-lu{background:rgba(255,255,255,.12);color:#E8F5F2;border:2px solid rgba(255,255,255,.35);border-radius:10px;padding:10px 14px;font-family:'Nunito',sans-serif;font-size:14px;font-weight:800;cursor:pointer;transition:all .15s;text-align:center;line-height:1.3;width:100%}
+.btn-lu:hover{background:rgba(255,255,255,.25)}
+.btn-lu.done{background:#166534;border-color:#4ADE80;color:#DCFCE7}
+.dial-txt{flex:1;min-width:280px;display:flex;flex-direction:column;gap:7px;font-size:19px;font-weight:600;line-height:1.7;padding-right:8px}
+.d-lbl{font-size:14px;font-weight:800;text-transform:uppercase;letter-spacing:.15em;color:#7FD4C9;margin-bottom:6px;opacity:.85}
+.dl{line-height:1.7}.mb{color:#FCA5A5;font-weight:800}.dr{color:#7FD4C9;font-weight:800}
 
-.dialogue{background:var(--pri-l);border-radius:12px;padding:6px 4px}
-.dl-line{padding:8px 14px;font-size:14.5px;font-weight:700;line-height:1.5}
-.dl-a{color:var(--pri-d)}.dl-b{color:#7A3E00}
-.dl-who{font-weight:900}
-.hidden{display:none!important}
+.intro{background:#DCEFEB;padding:14px 32px;font-size:17px;font-weight:700;color:#0C7A53;line-height:1.5;border-bottom:2px solid #B7DED7}
 
-.q{background:#F7FCFB;border:2px solid var(--border);border-radius:12px;padding:13px 15px;display:flex;flex-direction:column;gap:9px}
-.q-txt{font-size:14.5px;font-weight:800;color:var(--ink)}
-.vf{display:flex;gap:8px}
-.vf button{flex:1;border:2px solid var(--pri-l2);background:#fff;border-radius:9px;padding:8px;font-family:'Nunito',sans-serif;font-size:14px;font-weight:800;color:var(--ink2);cursor:pointer}
-.vf button.sel{background:var(--pri);color:#fff;border-color:var(--pri)}
-.vf button.good{background:#DCFCE7;color:#166534;border-color:#86EFAC}
-.vf button.bad{background:#FEE2E2;color:#991B1B;border-color:#FCA5A5}
-.q-fb{font-size:13px;font-weight:800;display:none}
-.q-fb.on{display:block}
-.q-fb.ok{color:var(--ok)}.q-fb.no{color:#B91C1C}
+.exs{flex:1;padding:22px 32px 48px;display:flex;flex-direction:column;gap:20px}
 
-.flash{display:flex;flex-wrap:wrap;gap:10px}
-.fc{flex:1 1 46%;min-width:180px;background:var(--pri-l);border:2px solid var(--pri-l2);border-radius:12px;padding:12px 14px;cursor:pointer;min-height:78px;display:flex;flex-direction:column;justify-content:center;gap:4px}
-.fc-word{font-size:15.5px;font-weight:900;color:var(--pri-d)}
-.fc-def{font-size:12.5px;font-weight:700;color:var(--ink2);line-height:1.4}
-.fc-ex{font-size:11.5px;font-style:italic;color:var(--ink2)}
+.card{background:#fff;border-radius:18px;padding:22px 26px;box-shadow:0 4px 20px rgba(15,118,110,.08)}
+.c-hdr{display:flex;align-items:center;gap:10px;margin-bottom:14px;flex-wrap:wrap}
+.tag{color:#fff;border-radius:999px;padding:5px 16px;font-size:13px;font-weight:800;text-transform:uppercase;letter-spacing:.1em;white-space:nowrap}
+.ctit{font-size:21px;font-weight:900}
+.csub{font-size:15.5px;color:#5E8A82;font-weight:600}
 
-.savoir{background:var(--warn-l);border:1px solid #FCD34D;border-radius:12px;padding:14px 16px}
-.savoir b{color:var(--warn)}
-.savoir table{width:100%;border-collapse:collapse;margin-top:8px;font-size:14px;font-weight:700}
-.savoir td{padding:5px 8px;border-bottom:1px solid #FCD34D80}
-.gap{display:inline-block;min-width:66px}
-.gap input{width:74px;text-align:center;padding:5px;border:2px solid var(--pri-l2);border-radius:7px;font-family:'Nunito',sans-serif;font-weight:800;font-size:14px}
+.savoir{background:#F1FBF9;border-left:5px solid #12996B;border-radius:0 14px 14px 0;padding:16px 22px;margin-bottom:4px}
+.savoir h3{font-size:15.5px;font-weight:900;color:#0C7A53;text-transform:uppercase;letter-spacing:.08em;margin-bottom:8px}
+.savoir table{border-collapse:collapse;width:100%}
+.savoir td{padding:6px 12px;font-size:16.5px;font-weight:600;line-height:1.5;border-bottom:1px dashed #B7DED7;vertical-align:top}
+.savoir td:first-child{font-weight:900;color:#0C7A53;white-space:nowrap}
+.savoir em{font-style:italic;color:#0D9488}
 
-.rec-zone{display:flex;flex-direction:column;align-items:center;gap:10px}
-#recBtn{width:74px;height:74px;border-radius:50%;border:none;background:var(--pri);color:#fff;font-size:28px;cursor:pointer;box-shadow:0 4px 16px rgba(15,118,110,.32)}
+.rows{display:flex;flex-direction:column;gap:8px}
+.rrow{display:flex;align-items:center;gap:10px}
+.stxt{flex:1;background:#F1F9F7;border-radius:10px;padding:14px 18px;font-size:20px;font-weight:700;color:#123B32;line-height:1.4}
+.rrow2{display:grid;grid-template-columns:1fr 1fr;gap:8px;align-items:stretch}
+.qcard{background:#F0FAF7;border-left:4px solid #12996B;border-radius:0 10px 10px 0;padding:12px 16px;display:flex;flex-direction:column;justify-content:center}
+.qlbl{font-size:13px;font-weight:800;color:#12996B;text-transform:uppercase;letter-spacing:.1em;margin-bottom:4px}
+.qtxt{font-size:19px;font-weight:700;color:#123B32;line-height:1.4}
+.blanks-p{font-size:22px;line-height:2.9;font-weight:600;color:#123B32}
+
+.zone{display:flex;align-items:center;justify-content:center;min-height:54px;border-radius:10px;font-weight:800;font-family:'Nunito',sans-serif;cursor:pointer;transition:background .18s,border-color .18s,color .18s,transform .12s;user-select:none;text-align:center;padding:10px 14px;border:2.5px solid;line-height:1.35}
+.zone.empty{background:#F0F9FF;border-color:#93C5D6;border-style:dashed;color:#94A3B8;font-size:17px}
+.zone.dov{background:#E0F2FE!important;border-color:#38BDF8!important;border-style:solid!important;transform:scale(1.02)}
+.zvf{min-width:150px;font-size:19px}
+.f-vrai{background:#DCFCE7;border-color:#4ADE80;border-style:solid;color:#166534}
+.f-faux{background:#FEE2E2;border-color:#FCA5A5;border-style:solid;color:#991B1B}
+.zone.filled{background:#DBEAFE;border-color:#60A5FA;border-style:solid;color:#1E3A8A;font-size:17px}
+.fb-ok{background:#D1FAE5!important;border-color:#34D399!important;border-style:solid!important;color:#065F46!important}
+.fb-no{background:#FEE2E2!important;border-color:#F87171!important;border-style:solid!important;color:#991B1B!important;animation:shk .5s ease}
+@keyframes shk{0%,100%{transform:translateX(0)}20%{transform:translateX(-6px)}60%{transform:translateX(6px)}80%{transform:translateX(-3px)}}
+
+.blank{display:inline-block;min-width:130px;padding:4px 14px;margin:0 3px;border-radius:8px;font-weight:800;vertical-align:middle;cursor:pointer;transition:background .18s,border-color .18s,color .18s;user-select:none;border:2.5px dashed #93C5D6;background:#F0F9FF;color:#94A3B8;font-size:20px;text-align:center}
+.blank.filled{border-style:solid;border-color:#5EEAD4;background:#CCFBF1;color:#0C7A53}
+.blank.fb-ok{border-style:solid;border-color:#34D399;background:#D1FAE5;color:#065F46}
+.blank.fb-no{border-style:solid;border-color:#F87171;background:#FEE2E2;color:#991B1B;animation:shk .5s ease}
+.blank.dov{border-style:solid;border-color:#38BDF8;background:#E0F2FE}
+
+.bsec{border-radius:12px;padding:14px 12px;flex-shrink:0}
+.bsec.b1{background:#EDF6F4;border:1.5px solid #B7DED7}
+.blbl{font-size:12px;font-weight:800;text-transform:uppercase;letter-spacing:.14em;margin-bottom:10px;color:#12996B}
+.btiles{display:flex;flex-wrap:wrap;gap:8px;justify-content:center}
+.btiles.vert{flex-direction:column;flex-wrap:nowrap}
+
+.tile{border-radius:10px;font-weight:800;font-family:'Nunito',sans-serif;cursor:grab;transition:all .15s;user-select:none;border:2.5px solid;box-shadow:0 2px 7px rgba(0,0,0,.08);padding:10px 14px;display:flex;align-items:center;justify-content:center;text-align:center;line-height:1.35}
+.tile:active{cursor:grabbing;transform:scale(1.04);box-shadow:0 5px 14px rgba(0,0,0,.15)}
+.tile.sel{background:#FEF9C3!important;border-color:#FBBF24!important;color:#92400E!important;box-shadow:0 0 0 4px rgba(245,158,11,.22),0 2px 7px rgba(0,0,0,.08)!important;transform:translateY(-1px)}
+.tv{background:#DCFCE7;border-color:#4ADE80;color:#166534;font-size:19px;padding:13px 22px}
+.tf{background:#FEE2E2;border-color:#FCA5A5;color:#991B1B;font-size:19px;padding:13px 22px}
+.tn{background:#F0FDFA;border-color:#5EEAD4;color:#0C7A53;font-size:16px}
+.ta{background:#FFF7ED;border-color:#FDBA74;color:#9A3412;font-size:15px}
+.bempty{font-size:13px;color:#94A3B8;font-weight:600;text-align:center;padding:8px 0;font-style:italic}
+
+.ghost{position:fixed;z-index:9999;pointer-events:none;opacity:.88;transform:scale(1.06) rotate(1.5deg);box-shadow:0 8px 24px rgba(0,0,0,.25);border-radius:10px}
+
+#fc-overlay{display:none;position:fixed;inset:0;z-index:9000;background:rgba(15,25,35,.6);backdrop-filter:blur(5px);align-items:center;justify-content:center}
+#fc-overlay.on{display:flex}
+#fc-box{background:#12996B;border-radius:24px;padding:44px 56px;max-width:760px;width:92%;box-shadow:0 24px 64px rgba(0,0,0,.4);display:flex;flex-direction:column;align-items:center;gap:20px;animation:fcPop .3s cubic-bezier(.34,1.4,.64,1)}
+@keyframes fcPop{from{transform:scale(.82);opacity:0}to{transform:scale(1);opacity:1}}
+#fc-counter{font-size:12px;font-weight:900;text-transform:uppercase;letter-spacing:.22em;color:rgba(255,255,255,.5)}
+#fc-word{font-size:36px;font-weight:900;color:#fff;text-align:center;line-height:1.2;border-bottom:2px solid rgba(255,255,255,.18);padding-bottom:18px;width:100%}
+#fc-def{font-size:21px;font-weight:700;color:#fff;line-height:1.6;text-align:center}
+#fc-ex{font-size:18px;font-weight:600;color:rgba(255,255,255,.78);line-height:1.6;text-align:center;font-style:italic}
+#fc-ex strong{font-weight:900;font-style:normal;color:#fff}
+#fc-def.hidden,#fc-ex.hidden{display:none}
+#fc-reveal-btn{background:rgba(255,255,255,.18);border:1px solid rgba(255,255,255,.4);color:#fff;border-radius:8px;padding:8px 20px;font-family:'Nunito',sans-serif;font-size:14px;font-weight:800;cursor:pointer}
+#fc-reveal-btn:hover{background:rgba(255,255,255,.38)}
+#fc-reveal-btn.hidden{display:none}
+#fc-btns{display:flex;gap:14px;margin-top:6px;flex-wrap:wrap;justify-content:center}
+.fc-btn{background:rgba(255,255,255,.15);border:2px solid rgba(255,255,255,.38);color:#fff;border-radius:10px;padding:10px 22px;font-family:'Nunito',sans-serif;font-size:15px;font-weight:800;cursor:pointer}
+.fc-btn:hover{background:rgba(255,255,255,.28)}
+
+.vocab-sec{background:#EDF6F4;border-bottom:3px solid rgba(15,118,110,.15);padding:14px 32px 18px}
+.vocab-grid{display:grid;grid-template-columns:1fr 1fr 1fr;gap:5px 20px}
+.vw{display:flex;align-items:baseline;gap:8px;padding:7px 10px;border-radius:8px;background:rgba(255,255,255,.6);cursor:pointer}
+.vw span.dot{display:inline-block;width:8px;height:8px;border-radius:50%;background:#12996B;flex-shrink:0}
+.vw span.w{font-size:17px;font-weight:700;color:#123B32}
+
+/* Sections personnalisées (oral / écrit / autoéval) */
+.custom{max-width:660px}
+.lead{font-size:16px;font-weight:700;color:#3B6156;line-height:1.6;margin-bottom:14px}
+.rec-zone{display:flex;flex-direction:column;align-items:center;gap:10px;margin:8px 0}
+#recBtn{width:78px;height:78px;border-radius:50%;border:none;background:#12996B;color:#fff;font-size:30px;cursor:pointer;box-shadow:0 4px 16px rgba(15,118,110,.32)}
 #recBtn.recording{background:#E23D2E;animation:pulse 1.2s infinite}
 @keyframes pulse{0%{box-shadow:0 0 0 0 rgba(226,61,46,.45)}70%{box-shadow:0 0 0 16px rgba(226,61,46,0)}100%{box-shadow:0 0 0 0 rgba(226,61,46,0)}}
-.rec-lbl{font-size:13px;font-weight:800;color:var(--ink2)}
-
-.btn{font-family:'Nunito',sans-serif;font-size:14.5px;font-weight:800;border-radius:10px;padding:11px 18px;cursor:pointer;border:2.5px solid transparent;transition:all .15s}
-.btn-pri{background:var(--pri);color:#fff}
-.btn-pri:hover{background:var(--pri-d)}
-.btn-pri:disabled{opacity:.5;cursor:not-allowed}
-.btn-ghost{background:var(--pri-l);color:var(--pri);border-color:var(--pri-l2)}
-.btn-ghost:hover{background:var(--pri-l2)}
-.btn-send{background:#12556B;color:#fff}
-.btn-send:disabled{opacity:.5}
-
-.fb{background:#F0FAF7;border:2px solid var(--pri-l2);border-radius:12px;padding:14px 16px;display:none;flex-direction:column;gap:8px}
+.rec-lbl{font-size:13.5px;font-weight:800;color:#5E8A82}
+textarea,input.txt{width:100%;border:2.5px solid #B7DED7;border-radius:12px;padding:11px 14px;font-family:'Nunito',sans-serif;font-size:15px;font-weight:700;color:#123B32;background:#F7FCFB;resize:vertical}
+textarea:focus{outline:none;border-color:#12996B}
+.btn{font-family:'Nunito',sans-serif;font-size:14.5px;font-weight:800;border-radius:10px;padding:11px 18px;cursor:pointer;border:2.5px solid transparent}
+.btn-pri{background:#12996B;color:#fff}.btn-pri:hover{background:#0C7A53}.btn-pri:disabled{opacity:.5;cursor:not-allowed}
+.btn-ghost{background:#EDF6F4;color:#12996B;border-color:#B7DED7}.btn-ghost:hover{background:#DCEFEB}
+.btn-send{background:#12556B;color:#fff}.btn-send:disabled{opacity:.5}
+.fb{background:#F0FAF7;border:2px solid #B7DED7;border-radius:12px;padding:14px 16px;display:none;flex-direction:column;gap:8px;margin-top:12px}
 .fb.on{display:flex}
-.fb-t{font-size:11.5px;font-weight:900;text-transform:uppercase;letter-spacing:.06em;color:var(--pri-d)}
-.fb-c{font-size:15px;font-weight:800;color:var(--pri-d);line-height:1.5}
-.fb-e{font-size:12.5px;font-weight:700;color:var(--warn);line-height:1.5;padding-left:14px;position:relative}
+.fb-t{font-size:11.5px;font-weight:900;text-transform:uppercase;letter-spacing:.06em;color:#0C7A53}
+.fb-c{font-size:15px;font-weight:800;color:#0C7A53;line-height:1.5}
+.fb-e{font-size:12.5px;font-weight:700;color:#B45309;line-height:1.5;padding-left:14px;position:relative}
 .fb-e::before{content:"•";position:absolute;left:2px}
-
-.selfrow{display:flex;align-items:center;justify-content:space-between;gap:10px;padding:10px 0;border-bottom:1px solid var(--border)}
-.self-txt{font-size:14px;font-weight:800;color:var(--ink)}
-.self-opts{display:flex;gap:6px}
-.self-opts button{width:38px;height:38px;border-radius:9px;border:2px solid var(--pri-l2);background:#fff;font-size:18px;cursor:pointer}
-.self-opts button.sel{border-color:var(--pri);background:var(--pri-l)}
-
-.nav{display:flex;gap:10px;justify-content:space-between;padding-top:4px}
-.status{font-size:13.5px;font-weight:800;color:var(--ink2);text-align:center;display:none}
+.status{font-size:13.5px;font-weight:800;color:#5E8A82;text-align:center;display:none;margin-top:8px}
 .status.on{display:block}
-.err{font-size:13px;font-weight:800;color:#B91C1C;background:#FEF2F2;border:2px solid #FCA5A5;border-radius:10px;padding:10px 14px;display:none}
+.err{font-size:13px;font-weight:800;color:#B91C1C;background:#FEF2F2;border:2px solid #FCA5A5;border-radius:10px;padding:10px 14px;display:none;margin-top:8px}
 .err.on{display:block}
 .sent{font-size:13px;font-weight:800;color:#12556B}
+.selfrow{display:flex;align-items:center;justify-content:space-between;gap:10px;padding:11px 0;border-bottom:1px solid #DCEFEB}
+.self-txt{font-size:15px;font-weight:800;color:#123B32}
+.self-opts{display:flex;gap:6px}
+.self-opts button{width:40px;height:40px;border-radius:9px;border:2px solid #B7DED7;background:#fff;font-size:19px;cursor:pointer}
+.self-opts button.sel{border-color:#12996B;background:#DCEFEB}
+.hidden{display:none!important}
 
-.end{text-align:center;display:flex;flex-direction:column;gap:12px;align-items:center;padding:12px}
-.end-ic{font-size:48px}
-</style></head>
+@media(max-width:900px){.vocab-grid{grid-template-columns:1fr 1fr}.rrow2{grid-template-columns:1fr}.hdr-h1{font-size:22px}}
+</style>
+</head>
 <body>
 
 <div id="hdr">
-  <div class="hdr-top">
+  <div class="hdr-l">
     <div class="hdr-ic">🩺</div>
-    <div>
-      <div class="hdr-eye">Module Niveau 4 · Parcours complet</div>
-      <div class="hdr-h1">La santé</div>
-    </div>
+    <div><div class="hdr-eye">Francisation · Niveau 4 · Module complet</div><div class="hdr-h1">La santé — prendre rendez-vous</div></div>
   </div>
-  <div id="steps"></div>
+  <div class="hdr-r">
+    <div id="prog-chip">⭐ 0 / 0</div>
+    <button id="btn-reset">↺ Réinitialiser</button>
+  </div>
 </div>
 
-<div id="main"><div id="panel"></div></div>
+<div id="tabs"></div>
+
+<div id="sel-banner">
+  ✋ Sélectionné : «&nbsp;<span id="sel-lbl">—</span>&nbsp;» — Cliquez sur une case pour le placer.
+</div>
+
+<div id="sections"></div>
+
+<div id="fc-overlay">
+  <div id="fc-box">
+    <div id="fc-counter">Carte 1 / 12</div>
+    <div id="fc-word">—</div>
+    <button id="fc-reveal-btn">Voir la définition</button>
+    <div id="fc-def" class="hidden">—</div>
+    <div id="fc-ex" class="hidden">—</div>
+    <div id="fc-btns">
+      <button class="fc-btn" id="fc-prev">← Précédente</button>
+      <button class="fc-btn" id="fc-next">Suivante →</button>
+      <button class="fc-btn" id="fc-close">✕ Fermer</button>
+    </div>
+  </div>
+</div>
 
 <script>
-const params = new URLSearchParams(location.search);
-const studentCode = params.get('code') || '';
+// ═══════════════════════════════════════════════════════════════════════
+//  LA VISITE CHEZ LE MÉDECIN — Module interactif Niveau 4 (FLS)
+//  Sections : Je me prépare · Chez le médecin · La langue · Je parle ·
+//             J'écris · Je m'évalue — suivi LMS intégré
+// ═══════════════════════════════════════════════════════════════════════
 
-const STEP_LABELS = ["Mise en train","Compréhension orale","Vocabulaire","Travail de la langue","Production orale","Production écrite","Autoévaluation"];
-let current = 0;
-const done = new Array(STEP_LABELS.length).fill(false);
+function getCode(){
+  const own=new URLSearchParams(location.search).get('code');
+  if(own) return own;
+  try{ return new URLSearchParams(window.parent.location.search).get('code')||''; }catch(e){ return ''; }
+}
+const studentCode=getCode();
 
-// ---- Données du module ----
-const DIALOGUE = [
-  ["a","La réceptionniste","Clinique Saint-Laurent, bonjour."],
-  ["b","Sami","Bonjour, j'aimerais prendre un rendez-vous. Je ne me sens pas bien."],
-  ["a","La réceptionniste","Quels sont vos symptômes ?"],
-  ["b","Sami","J'ai mal à la gorge et je tousse depuis trois jours. J'ai aussi un peu de fièvre."],
-  ["a","La réceptionniste","Avez-vous votre carte d'assurance maladie ?"],
-  ["b","Sami","Oui, je l'ai."],
-  ["a","La réceptionniste","Parfait. Pouvez-vous venir demain à quatorze heures ?"],
-  ["b","Sami","Oui, c'est parfait. Merci beaucoup."],
-];
-const CO_QUESTIONS = [
-  { t:"Sami veut prendre un rendez-vous.", a:true },
-  { t:"Sami a mal au dos.", a:false, note:"Il a mal à la gorge." },
-  { t:"Le rendez-vous est demain à quatorze heures.", a:true },
-];
-const CO_OPEN = [
-  { t:"Depuis combien de temps Sami est-il malade ?", a:"Depuis trois jours." },
-  { t:"Qu'est-ce que la réceptionniste demande à Sami ?", a:"Sa carte d'assurance maladie." },
-];
-const VOCAB = [
-  { m:"un rendez-vous", d:"Un moment fixé à l'avance pour voir quelqu'un.", e:"J'ai un rendez-vous à dix heures." },
-  { m:"un symptôme", d:"Un signe qui indique une maladie.", e:"Quels sont vos symptômes ?" },
-  { m:"tousser", d:"Faire un bruit sec avec la gorge.", e:"Est-ce que vous toussez beaucoup ?" },
-  { m:"la fièvre", d:"Une température du corps plus élevée que la normale.", e:"Vous n'avez pas de fièvre." },
-  { m:"la carte d'assurance maladie", d:"Le document qui donne accès aux soins gratuits au Québec.", e:"Avez-vous votre carte d'assurance maladie ?" },
-  { m:"un médicament", d:"Un produit qui soigne une maladie.", e:"Le pharmacien me donne un médicament." },
-];
-const GAP = [
-  { before:"J'ai mal ", after:" tête.", a:["a la","à la"] },
-  { before:"Il a mal ", after:" ventre.", a:["au"] },
-  { before:"Elle a mal ", after:" dents.", a:["aux"] },
-  { before:"Tu as mal ", after:" oreille.", a:["a l'","à l'","a l","à l"] },
-];
-const SELF = [
-  "Je comprends un échange chez le médecin.",
-  "Je peux décrire mes symptômes.",
-  "Je peux prendre un rendez-vous.",
-  "Je connais le vocabulaire de la santé.",
-  "Je peux donner une information sur ma santé.",
+// ── DIALOGUES ─────────────────────────────────────────────────────────
+const DIALOGUES = {
+  prep: {
+    label: "Dialogue — Appeler la clinique",
+    lines: [
+      ["LA RÉCEPTIONNISTE","Clinique Notre-Dame, bonjour."],
+      ["MARIA","Bonjour, je voudrais prendre un rendez-vous avec un médecin, s'il vous plaît."],
+      ["LA RÉCEPTIONNISTE","Bien sûr. Est-ce que vous êtes déjà venue à notre clinique ?"],
+      ["MARIA","Oui, l'année dernière. Je m'appelle Maria Silva."],
+      ["LA RÉCEPTIONNISTE","Parfait. Quelle est la raison de votre visite ?"],
+      ["MARIA","Je me sens fatiguée depuis deux semaines et j'ai souvent mal à la tête."],
+      ["LA RÉCEPTIONNISTE","Je comprends. Le docteur Tremblay est libre jeudi à onze heures. Est-ce que ça vous convient ?"],
+      ["MARIA","Oui, c'est parfait. Merci beaucoup !"],
+      ["LA RÉCEPTIONNISTE","N'oubliez pas votre carte d'assurance maladie. À jeudi !"],
+    ]
+  },
+  co: {
+    label: "Dialogue — À la pharmacie",
+    lines: [
+      ["LE PHARMACIEN","Bonjour, est-ce que je peux vous aider ?"],
+      ["MARIA","Oui, j'ai une ordonnance du médecin pour des antibiotiques."],
+      ["LE PHARMACIEN","D'accord. Est-ce que vous avez déjà pris ce médicament avant ?"],
+      ["MARIA","Non, c'est la première fois. Comment est-ce que je dois le prendre ?"],
+      ["LE PHARMACIEN","Prenez un comprimé deux fois par jour, matin et soir, pendant sept jours."],
+      ["MARIA","Est-ce que je peux le prendre avec de la nourriture ?"],
+      ["LE PHARMACIEN","Oui, c'est même recommandé. Ne buvez pas d'alcool pendant le traitement."],
+      ["MARIA","Merci beaucoup pour vos conseils !"],
+    ]
+  },
+};
+
+// ── SECTIONS ──────────────────────────────────────────────────────────
+const SECTIONS = [
+  {id:'prep', no:'▶', title:'Je me prépare', color:'#12996B',
+   intro:"🩺 Maria ne se sent pas bien. Elle veut voir un médecin. D'abord, elle apprend où s'adresser et comment prendre un rendez-vous.",
+   dialogue:'prep'},
+  {id:'co', no:'1', title:'À la pharmacie', color:'#C0573A',
+   intro:"💊 Maria a vu le médecin. Maintenant, elle va chercher ses médicaments à la pharmacie. Écoutez le dialogue, puis faites les exercices.",
+   dialogue:'co'},
+  {id:'langue', no:'2', title:'La langue', color:'#6B4FBB',
+   intro:"✍️ Travaillons la grammaire utile pour parler de sa santé : le futur proche, les verbes pronominaux, « avoir besoin de » et les adverbes d'intensité."},
+  {id:'parle', no:'3', title:'Je parle', color:'#0D9488', custom:true,
+   intro:"🎤 À ton tour ! Tu appelles la clinique pour prendre un rendez-vous. Enregistre-toi en privé, obtiens une rétroaction, puis envoie ta prise si tu le veux."},
+  {id:'ecris', no:'4', title:"J'écris", color:'#0E7490', custom:true,
+   intro:"📝 Écris un courriel à la clinique pour demander un rendez-vous. L'assistant corrige ton texte en privé."},
+  {id:'eval', no:'✓', title:'Je m\'évalue', color:'#166534', custom:true,
+   intro:"🌟 Fais le point : qu'est-ce que tu es maintenant capable de faire ?"},
 ];
 
-const panel = document.getElementById('panel');
-lmsTrack('exercise_started', {});
-renderSteps();
-renderStep();
+// ── EXERCICES ─────────────────────────────────────────────────────────
+// type 'vf'     : lignes {id,txt,ok} — tuiles fixes (labels)
+// type 'match'  : lignes {id,q,aid,a} — banque = réponses
+// type 'blanks' : segs {k:'t'/'b',id,c} + words {id,l}
+const EXOS = [
+  // ── JE ME PRÉPARE ──
+  {sec:'prep', id:'pr1', type:'match', num:'Exercice 1', tit:'Où s\'adresser ?', color:'#12996B',
+   sub:'Associez chaque situation à la bonne ressource de santé.',
+   rows:[
+    {id:'pr1a', q:"Une urgence grave (un accident).", aid:'pa1', a:"le 911"},
+    {id:'pr1b', q:"Une question de santé, jour et nuit.", aid:'pa2', a:"Info-Santé (811)"},
+    {id:'pr1c', q:"Acheter un médicament.", aid:'pa3', a:"la pharmacie"},
+    {id:'pr1d', q:"Un rendez-vous avec son médecin.", aid:'pa4', a:"la clinique"},
+    {id:'pr1e', q:"Voir un médecin vite, sans rendez-vous.", aid:'pa5', a:"la clinique sans rendez-vous"},
+   ]},
 
-function renderSteps(){
-  const el = document.getElementById('steps');
-  el.innerHTML = '';
-  STEP_LABELS.forEach((lbl,i)=>{
-    const d = document.createElement('div');
-    d.className = 'step'+(i===current?' active':'')+(done[i]?' done':'');
-    d.innerHTML = `<div class="step-dot">${done[i]?'✓':(i+1)}</div><div class="step-lbl">${lbl}</div>`;
-    d.onclick = ()=>{ current=i; renderSteps(); renderStep(); };
-    el.appendChild(d);
-  });
+  // ── À LA PHARMACIE (compréhension) ──
+  {sec:'co', id:'co1', type:'vf', num:'Exercice 1', tit:'Vrai ou Faux — À la pharmacie', color:'#C0573A',
+   sub:'Écoutez le dialogue, puis répondez.', tiles:['VRAI','FAUX'],
+   rows:[
+    {id:'co1a', txt:"Maria a une ordonnance du médecin.", ok:'VRAI'},
+    {id:'co1b', txt:"Maria a déjà pris ce médicament avant.", ok:'FAUX'},
+    {id:'co1c', txt:"Elle doit prendre un comprimé deux fois par jour.", ok:'VRAI'},
+    {id:'co1d', txt:"Elle doit prendre le médicament pendant sept jours.", ok:'VRAI'},
+    {id:'co1e', txt:"Elle peut boire de l'alcool pendant le traitement.", ok:'FAUX'},
+    {id:'co1f', txt:"Elle peut prendre le médicament avec de la nourriture.", ok:'VRAI'},
+   ]},
+  {sec:'co', id:'co2', type:'match', num:'Exercice 2', tit:'L\'heure du rendez-vous', color:'#C0573A',
+   sub:'Associez l\'heure écrite en lettres à sa forme en chiffres.',
+   rows:[
+    {id:'co2a', q:"onze heures", aid:'ca1', a:"11 h"},
+    {id:'co2b', q:"quatorze heures", aid:'ca2', a:"14 h"},
+    {id:'co2c', q:"neuf heures et demie", aid:'ca3', a:"9 h 30"},
+    {id:'co2d', q:"seize heures quinze", aid:'ca4', a:"16 h 15"},
+    {id:'co2e', q:"dix heures moins le quart", aid:'ca5', a:"9 h 45"},
+   ]},
+  {sec:'co', id:'co3', type:'match', num:'Exercice 3', tit:'Les consignes du pharmacien', color:'#0D9488',
+   sub:'Associez chaque consigne à son explication.',
+   rows:[
+    {id:'co3a', q:"Deux fois par jour.", aid:'cb1', a:"Le matin et le soir."},
+    {id:'co3b', q:"Avec de la nourriture.", aid:'cb2', a:"Pendant le repas."},
+    {id:'co3c', q:"Pendant sept jours.", aid:'cb3', a:"Toute la semaine."},
+    {id:'co3d', q:"Pas d'alcool.", aid:'cb4', a:"Ne buvez pas de vin ni de bière."},
+   ]},
+
+  // ── LA LANGUE ──
+  {sec:'langue', id:'l1', type:'blanks', num:'Exercice 1', tit:'Le futur proche', color:'#6B4FBB',
+   sub:'Glissez le verbe au futur proche (aller + infinitif) dans la bonne phrase.',
+   savoir:{h:"› Le futur proche (aller + infinitif)", rows:[
+     ["je vais + inf.","Je <em>vais prendre</em> un rendez-vous demain."],
+     ["nous allons + inf.","Nous <em>allons attendre</em> dans la salle d'attente."],
+     ["ils / elles vont + inf.","Les patients <em>vont arriver</em> à neuf heures."],
+   ]},
+   words:[{id:'f1',l:'vais prendre'},{id:'f2',l:'vas appeler'},{id:'f3',l:'va voir'},{id:'f4',l:'allons attendre'},{id:'f5',l:'allez recevoir'},{id:'f6',l:'vont arriver'}],
+   segs:[
+    {k:'t',t:"a)  Demain, je "},{k:'b',id:'fb1',c:'f1'},{k:'t',t:" un rendez-vous.    "},
+    {k:'t',t:"b)  Tu "},{k:'b',id:'fb2',c:'f2'},{k:'t',t:" la clinique.    "},
+    {k:'t',t:"c)  Elle "},{k:'b',id:'fb3',c:'f3'},{k:'t',t:" le médecin jeudi.    "},
+    {k:'t',t:"d)  Nous "},{k:'b',id:'fb4',c:'f4'},{k:'t',t:" notre tour.    "},
+    {k:'t',t:"e)  Vous "},{k:'b',id:'fb5',c:'f5'},{k:'t',t:" vos résultats bientôt.    "},
+    {k:'t',t:"f)  Les patients "},{k:'b',id:'fb6',c:'f6'},{k:'t',t:" à neuf heures."},
+   ]},
+  {sec:'langue', id:'l2', type:'blanks', num:'Exercice 2', tit:'Les verbes pronominaux', color:'#6B4FBB',
+   sub:'Complétez avec la bonne forme du verbe pronominal au présent.',
+   savoir:{h:"› Les verbes pronominaux (présent)", rows:[
+     ["se sentir","je <em>me sens</em>, tu <em>te sens</em>, il <em>se sent</em>."],
+     ["se reposer","nous <em>nous reposons</em>, vous <em>vous reposez</em>."],
+     ["se réveiller","il <em>se réveille</em>, ils <em>se réveillent</em>."],
+   ]},
+   words:[{id:'p1',l:'me sens'},{id:'p2',l:'te reposes'},{id:'p3',l:'se réveille'},{id:'p4',l:'nous reposons'},{id:'p5',l:'se sentent'}],
+   segs:[
+    {k:'t',t:"a)  Je "},{k:'b',id:'pb1',c:'p1'},{k:'t',t:" très fatiguée.    "},
+    {k:'t',t:"b)  Tu "},{k:'b',id:'pb2',c:'p2'},{k:'t',t:" à la maison.    "},
+    {k:'t',t:"c)  Il "},{k:'b',id:'pb3',c:'p3'},{k:'t',t:" souvent la nuit.    "},
+    {k:'t',t:"d)  Nous "},{k:'b',id:'pb4',c:'p4'},{k:'t',t:" le week-end.    "},
+    {k:'t',t:"e)  Les enfants "},{k:'b',id:'pb5',c:'p5'},{k:'t',t:" mieux aujourd'hui."},
+   ]},
+  {sec:'langue', id:'l3', type:'blanks', num:'Exercice 3', tit:'Avoir besoin de', color:'#6B4FBB',
+   sub:'Complétez avec « de + nom » ou « de + infinitif ».',
+   savoir:{h:"› Avoir besoin de", rows:[
+     ["de + nom","J'ai besoin <em>d'un rendez-vous</em>, <em>de médicaments</em>."],
+     ["de + infinitif","J'ai besoin <em>de me reposer</em>, <em>de dormir</em>."],
+   ]},
+   words:[{id:'b1',l:"d'un rendez-vous"},{id:'b2',l:'de me reposer'},{id:'b3',l:'de médicaments'},{id:'b4',l:'de dormir'},{id:'b5',l:"d'aide"}],
+   segs:[
+    {k:'t',t:"a)  J'ai besoin "},{k:'b',id:'bb1',c:'b1'},{k:'t',t:" avec le médecin.    "},
+    {k:'t',t:"b)  J'ai besoin "},{k:'b',id:'bb2',c:'b2'},{k:'t',t:" quelques jours.    "},
+    {k:'t',t:"c)  J'ai besoin "},{k:'b',id:'bb3',c:'b3'},{k:'t',t:" pour la toux.    "},
+    {k:'t',t:"d)  J'ai besoin "},{k:'b',id:'bb4',c:'b4'},{k:'t',t:" au moins huit heures.    "},
+    {k:'t',t:"e)  J'ai besoin "},{k:'b',id:'bb5',c:'b5'},{k:'t',t:" pour remplir le formulaire."},
+   ]},
+  {sec:'langue', id:'l4', type:'blanks', num:'Exercice 4', tit:"Les adverbes d'intensité", color:'#6B4FBB',
+   sub:'Complétez avec un peu, assez, très ou trop selon l\'indice.',
+   savoir:{h:"› Un peu / assez / très / trop", rows:[
+     ["un peu (+)","J'ai <em>un peu</em> mal à la tête."],
+     ["assez (bien)","Ce médicament est <em>assez</em> efficace."],
+     ["très (++)","Je suis <em>très</em> fatiguée."],
+     ["trop (excès)","J'ai <em>trop</em> de travail, je suis épuisée."],
+   ]},
+   byLabel:true,
+   words:[{id:'a1',l:'très'},{id:'a2',l:'un peu'},{id:'a3',l:'trop'},{id:'a4',l:'assez'},{id:'a5',l:'très'}],
+   segs:[
+    {k:'t',t:"a)  Je suis "},{k:'b',id:'ab1',c:'très'},{k:'t',t:" fatiguée. (++)    "},
+    {k:'t',t:"b)  J'ai "},{k:'b',id:'ab2',c:'un peu'},{k:'t',t:" mal à la tête. (+)    "},
+    {k:'t',t:"c)  J'ai "},{k:'b',id:'ab3',c:'trop'},{k:'t',t:" de travail, je suis épuisée. (excès)    "},
+    {k:'t',t:"d)  Ce médicament est "},{k:'b',id:'ab4',c:'assez'},{k:'t',t:" efficace. (bien)    "},
+    {k:'t',t:"e)  Le médecin est "},{k:'b',id:'ab5',c:'très'},{k:'t',t:" gentil. (++)"},
+   ]},
+];
+
+// ── FLASHCARDS ────────────────────────────────────────────────────────
+const FC_CARDS = [
+  {word:"prendre un rendez-vous", def:"Fixer un moment pour voir un médecin.", ex:"Je voudrais <strong>prendre un rendez-vous</strong>."},
+  {word:"une clinique", def:"Un endroit où on consulte des médecins.", ex:"La <strong>clinique</strong> ouvre à huit heures."},
+  {word:"la salle d'attente", def:"L'endroit où on attend avant de voir le médecin.", ex:"Asseyez-vous dans la <strong>salle d'attente</strong>."},
+  {word:"Info-Santé (811)", def:"Un service téléphonique de conseils de santé, jour et nuit.", ex:"J'ai appelé <strong>Info-Santé</strong> pour un conseil."},
+  {word:"une ordonnance", def:"Le papier du médecin pour acheter des médicaments.", ex:"Voici votre <strong>ordonnance</strong> pour la pharmacie."},
+  {word:"la posologie", def:"La façon de prendre un médicament (combien et quand).", ex:"Suivez bien la <strong>posologie</strong>."},
+  {word:"un comprimé", def:"Un petit médicament solide à avaler.", ex:"Prenez un <strong>comprimé</strong> le matin."},
+  {word:"le traitement", def:"L'ensemble des soins pour guérir.", ex:"Le <strong>traitement</strong> dure sept jours."},
+  {word:"se sentir", def:"Percevoir son état physique ou moral.", ex:"Je <strong>me sens</strong> mieux aujourd'hui."},
+  {word:"un pharmacien", def:"La personne qui prépare et vend les médicaments.", ex:"Le <strong>pharmacien</strong> explique la posologie."},
+  {word:"la carte d'assurance maladie", def:"Le document qui donne accès aux soins gratuits au Québec.", ex:"N'oubliez pas votre <strong>carte d'assurance maladie</strong>."},
+  {word:"une urgence", def:"Une situation grave qui demande des soins immédiats.", ex:"En cas d'<strong>urgence</strong>, appelez le 911."},
+];
+
+// ── ÉTAT ──────────────────────────────────────────────────────────────
+const S = {pl:{}, sel:null, fb:{}};
+let curSec = 'prep';
+
+const ZONES = {};
+EXOS.forEach(ex => {
+  if (ex.type === 'vf')     ex.rows.forEach(r => ZONES[r.id] = {cv:r.ok, zcat:'vf', exo:ex.id});
+  if (ex.type === 'match')  ex.rows.forEach(r => ZONES[r.id] = {cv:r.aid, zcat:'id', exo:ex.id});
+  if (ex.type === 'rows')   ex.rows.forEach(r => ZONES[r.id] = {cv:r.cv, zcat:'id', exo:ex.id});
+  if (ex.type === 'blanks') ex.segs.filter(s=>s.k==='b').forEach(s =>
+    ZONES[s.id] = {cv:s.c, zcat: ex.byLabel ? 'lbl' : 'id', exo:ex.id});
+});
+const TOTAL_ZONES = Object.keys(ZONES).length;
+
+// ── LMS TRACKING ──────────────────────────────────────────────────────
+function lmsTrack(event, data) {
+  try { window.parent.postMessage(Object.assign({lms:true, event:event}, data||{}), '*'); } catch(e) {}
+  try {
+    const up = new URLSearchParams(window.parent.location.search);
+    const code = up.get('code'), actId = parseInt(up.get('activityId'))||null, title = up.get('title')||'';
+    if (code && actId) {
+      fetch('/api/student/progress', {
+        method:'POST', headers:{'Content-Type':'application/json'},
+        body: JSON.stringify(Object.assign({code, activityId:actId, activityTitle:title, event}, data||{})),
+      }).catch(()=>{});
+    }
+  } catch(e2) {}
+}
+const TR = {attempts:{}, correct:{}};
+function trackPlacement(zid, ok) {
+  if (ok && !TR.correct[zid]) {
+    TR.correct[zid] = true;
+    if (!(zid in TR.attempts)) TR.attempts[zid] = 0;
+    const zonesDone = Object.keys(TR.correct).length;
+    const firstTry = Object.keys(TR.correct).filter(k => (TR.attempts[k]||0)===0).length;
+    const totalErrors = Object.keys(TR.attempts).reduce((s,k)=>s+(TR.attempts[k]||0),0);
+    lmsTrack('exercise_completed', {zones:TOTAL_ZONES, zonesDone, firstTry, totalErrors});
+  } else if (!ok && !TR.correct[zid]) {
+    TR.attempts[zid] = (TR.attempts[zid]||0) + 1;
+  }
+  updateChip();
 }
 
-function nav(){
-  return `<div class="nav">
-    <button class="btn btn-ghost" ${current===0?'style="visibility:hidden"':''} onclick="go(-1)">← Précédent</button>
-    <button class="btn btn-pri" onclick="go(1)">${current===STEP_LABELS.length-1?'Terminer':'Suivant →'}</button>
-  </div>`;
-}
-function go(dir){
-  if(dir>0){ done[current]=true; }
-  const next = current+dir;
-  if(next>=STEP_LABELS.length){ showEnd(); return; }
-  current = Math.max(0, next);
-  window.scrollTo(0,0);
-  renderSteps(); renderStep();
-}
-
-function renderStep(){
-  const fns=[stepIntro,stepCO,stepVocab,stepLangue,stepPO,stepPE,stepAuto];
-  panel.innerHTML='';
-  fns[current]();
-}
-
-// ---- Étape 1 : Mise en train ----
-function stepIntro(){
-  panel.innerHTML = `
-  <div class="card">
-    <div class="tag">Mise en train</div>
-    <h2 class="title">Prendre soin de sa santé</h2>
-    <p class="lead">Dans ce module, tu vas apprendre à parler de ta santé, à comprendre un rendez-vous chez le médecin et à décrire tes symptômes.</p>
-    <ul class="obj">
-      <li>Comprendre un échange chez le médecin</li>
-      <li>Décrire un symptôme et dire depuis quand</li>
-      <li>Prendre un rendez-vous</li>
-      <li>Utiliser le vocabulaire de la santé</li>
-    </ul>
-    <p class="lead" style="margin-top:4px">Pour commencer : quand tu es malade, qu'est-ce que tu fais ?</p>
-    <div class="chips" id="chips">
-      ${["Je vais à la clinique","Je me repose","Je prends un médicament","J'appelle Info-Santé (811)","Je bois beaucoup d'eau"].map(c=>`<div class="chip" onclick="this.classList.toggle('on')">${c}</div>`).join('')}
-    </div>
-    <textarea rows="2" placeholder="Écris une autre chose que tu fais quand tu es malade…"></textarea>
-  </div>
-  ${nav()}`;
-}
-
-// ---- Étape 2 : Compréhension orale ----
-function stepCO(){
-  panel.innerHTML = `
-  <div class="card">
-    <div class="tag">Compréhension orale</div>
-    <h2 class="title">Au téléphone avec la clinique</h2>
-    <p class="lead">Écoute le dialogue, puis réponds aux questions. Tu peux réécouter autant de fois que tu veux.</p>
-    <div style="display:flex;gap:10px;flex-wrap:wrap">
-      <button class="btn btn-pri" id="playBtn" onclick="playDialogue()">🔊 Écouter le dialogue</button>
-      <button class="btn btn-ghost" onclick="toggleText()">Afficher le texte</button>
-    </div>
-    <div class="dialogue hidden" id="dlgText">
-      ${DIALOGUE.map(l=>`<div class="dl-line dl-${l[0]}"><span class="dl-who">${l[1]} :</span> ${l[2]}</div>`).join('')}
-    </div>
-    <div id="coQ" style="display:flex;flex-direction:column;gap:10px">
-      ${CO_QUESTIONS.map((q,i)=>`
-        <div class="q">
-          <div class="q-txt">${i+1}. ${q.t}</div>
-          <div class="vf">
-            <button onclick="answerVF(${i},true,this)">Vrai</button>
-            <button onclick="answerVF(${i},false,this)">Faux</button>
-          </div>
-          <div class="q-fb" id="cofb${i}"></div>
-        </div>`).join('')}
-      ${CO_OPEN.map((q,i)=>`
-        <div class="q">
-          <div class="q-txt">${CO_QUESTIONS.length+i+1}. ${q.t}</div>
-          <input class="txt" id="coopen${i}" placeholder="Écris ta réponse…">
-          <button class="btn btn-ghost" style="align-self:flex-start" onclick="showAnswer(${i})">Voir la réponse suggérée</button>
-          <div class="q-fb" id="coopenfb${i}"></div>
-        </div>`).join('')}
-    </div>
-  </div>
-  ${nav()}`;
-}
-function toggleText(){ document.getElementById('dlgText').classList.toggle('hidden'); }
-function playDialogue(){
+// ── DIALOGUE (synthèse vocale) ────────────────────────────────────────
+let dialogueRead = false;
+function playDialogue(dialId, btn){
   try{
     speechSynthesis.cancel();
     const voices = speechSynthesis.getVoices();
     const fr = voices.filter(v=>/^fr/i.test(v.lang));
-    DIALOGUE.forEach(l=>{
-      const u = new SpeechSynthesisUtterance(l[2]);
-      u.lang='fr-CA'; u.rate=0.95;
-      u.pitch = l[0]==='a'?1.15:0.85;
-      if(fr.length) u.voice = l[0]==='a'?(fr[0]):(fr[1]||fr[0]);
+    (DIALOGUES[dialId].lines||[]).forEach((l,i)=>{
+      const u=new SpeechSynthesisUtterance(l[1]);
+      u.lang='fr-CA'; u.rate=0.95; u.pitch=(i%2===0)?1.12:0.9;
+      if(fr.length) u.voice=(i%2===0)?fr[0]:(fr[1]||fr[0]);
       speechSynthesis.speak(u);
     });
-    lmsTrack('dialogue_listened', {});
+    if(!dialogueRead){ dialogueRead=true; lmsTrack('dialogue_listened'); }
   }catch(e){}
 }
-function answerVF(i,val,btn){
-  const q=CO_QUESTIONS[i];
-  const parent=btn.parentElement;
-  [...parent.children].forEach(b=>b.classList.remove('sel','good','bad'));
-  const correct = val===q.a;
-  btn.classList.add(correct?'good':'bad');
-  const fb=document.getElementById('cofb'+i);
-  fb.className='q-fb on '+(correct?'ok':'no');
-  fb.textContent = correct ? '✅ Bonne réponse !' : ('❌ '+(q.note||('La bonne réponse est : '+(q.a?'Vrai':'Faux')+'.')));
-}
-function showAnswer(i){
-  const fb=document.getElementById('coopenfb'+i);
-  fb.className='q-fb on ok';
-  fb.textContent='💡 Réponse suggérée : '+CO_OPEN[i].a;
+function markRead(btn){
+  btn.classList.add('done'); btn.textContent='✓ Lu';
+  if(!dialogueRead){ dialogueRead=true; lmsTrack('dialogue_listened'); }
 }
 
-// ---- Étape 3 : Vocabulaire ----
-function stepVocab(){
-  panel.innerHTML = `
-  <div class="card">
-    <div class="tag">Vocabulaire</div>
-    <h2 class="title">Les mots de la santé</h2>
-    <p class="lead">Touche une carte pour révéler la définition et un exemple.</p>
-    <div class="flash">
-      ${VOCAB.map((v,i)=>`
-        <div class="fc" onclick="flipCard(${i})" id="fc${i}">
-          <div class="fc-word">${v.m}</div>
-          <div class="fc-def hidden" id="fcd${i}">${v.d}</div>
-          <div class="fc-ex hidden" id="fce${i}">« ${v.e} »</div>
-        </div>`).join('')}
-    </div>
-  </div>
-  ${nav()}`;
+// ── LOGIQUE DE PLACEMENT ──────────────────────────────────────────────
+function checkOk(zid, iid, lbl) {
+  const z = ZONES[zid];
+  if (!z) return false;
+  if (z.zcat === 'vf' || z.zcat === 'lbl') return lbl === z.cv;
+  return iid === z.cv;
 }
-function flipCard(i){
-  document.getElementById('fcd'+i).classList.toggle('hidden');
-  document.getElementById('fce'+i).classList.toggle('hidden');
+function doPlace(zid, iid, lbl, cat, from) {
+  if (from === zid) { S.sel = null; render(); return; }
+  if (from && from !== zid) { if (S.pl[zid]) S.pl[from] = S.pl[zid]; else delete S.pl[from]; delete S.fb[from]; delete S.fb[zid]; }
+  else if (!from && S.pl[zid]) { delete S.pl[zid]; delete S.fb[zid]; }
+  S.pl[zid] = {iid, lbl, cat}; S.sel = null;
+  const ok = checkOk(zid, iid, lbl);
+  S.fb[zid] = ok ? 'ok' : 'no';
+  trackPlacement(zid, ok);
+  render();
+  setTimeout(() => { delete S.fb[zid]; if (!ok) delete S.pl[zid]; render(); }, ok ? 1400 : 850);
+}
+function zoneClick(zid) {
+  if (S.sel) { doPlace(zid, S.sel.iid, S.sel.lbl, S.sel.cat, S.sel.from); }
+  else if (S.pl[zid] && !S.fb[zid]) {
+    const {iid,lbl,cat} = S.pl[zid];
+    delete S.pl[zid]; delete S.fb[zid];
+    S.sel = {iid,lbl,cat,from:zid}; render();
+  }
+}
+function tileClick(iid, lbl, cat) {
+  if (S.sel && S.sel.iid === iid && !S.sel.from) S.sel = null;
+  else S.sel = {iid,lbl,cat,from:null};
+  render();
 }
 
-// ---- Étape 4 : Travail de la langue ----
-function stepLangue(){
-  panel.innerHTML = `
-  <div class="card">
-    <div class="tag">Travail de la langue</div>
-    <h2 class="title">« Avoir mal à » + le corps</h2>
-    <div class="savoir">
-      <b>Rappel</b> — après « avoir mal à », l'article change selon le mot :
-      <table>
-        <tr><td>avoir mal <b>à la</b></td><td>à la gorge, à la tête</td></tr>
-        <tr><td>avoir mal <b>au</b></td><td>au dos, au ventre</td></tr>
-        <tr><td>avoir mal <b>à l'</b></td><td>à l'oreille, à l'estomac</td></tr>
-        <tr><td>avoir mal <b>aux</b></td><td>aux dents, aux yeux</td></tr>
-      </table>
-    </div>
-    <p class="lead">Complète avec <b>à la</b>, <b>au</b>, <b>à l'</b> ou <b>aux</b> :</p>
-    <div style="display:flex;flex-direction:column;gap:12px">
-      ${GAP.map((g,i)=>`<div class="q"><div class="q-txt">${g.before}<span class="gap"><input id="gap${i}" placeholder="…"></span>${g.after}</div><div class="q-fb" id="gapfb${i}"></div></div>`).join('')}
-    </div>
-    <button class="btn btn-pri" style="align-self:flex-start" onclick="checkGaps()">Vérifier</button>
-  </div>
-  ${nav()}`;
+// ── DRAG & DROP ───────────────────────────────────────────────────────
+let dd = null;
+function drg(el, iid, lbl, cat, from) {
+  el.draggable = true;
+  el.addEventListener('dragstart', e => { dd = {iid,lbl,cat,from:from||null}; e.dataTransfer.setData('text/plain', JSON.stringify(dd)); e.dataTransfer.effectAllowed='move'; setTimeout(()=>el.style.opacity='.45',0); });
+  el.addEventListener('dragend', () => { el.style.opacity=''; dd=null; });
 }
-function norm(s){ return (s||'').toLowerCase().trim().normalize('NFD').replace(/[̀-ͯ]/g,'').replace(/\s+/g,' '); }
-function checkGaps(){
-  GAP.forEach((g,i)=>{
-    const val=norm(document.getElementById('gap'+i).value);
-    const ok=g.a.map(norm).includes(val);
-    const fb=document.getElementById('gapfb'+i);
-    fb.className='q-fb on '+(ok?'ok':'no');
-    fb.textContent = ok?'✅ Correct !':('❌ Réponse : '+g.a[g.a.length-1]);
+function drp(el, zid) {
+  el.addEventListener('dragover', e => { e.preventDefault(); el.classList.add('dov'); });
+  el.addEventListener('dragleave', () => el.classList.remove('dov'));
+  el.addEventListener('drop', e => { e.preventDefault(); el.classList.remove('dov'); let d=dd; if(!d){try{d=JSON.parse(e.dataTransfer.getData('text/plain'))}catch{}} if(!d)return; doPlace(zid, d.iid, d.lbl, d.cat, d.from); dd=null; });
+}
+let ts=null, ghost=null;
+function tch(el, iid, lbl, cat, from) {
+  el.addEventListener('touchstart', e => { const t=e.touches[0]; ts={x:t.clientX,y:t.clientY,iid,lbl,cat,from:from||null,el,moved:false}; }, {passive:true});
+}
+document.addEventListener('touchmove', e => {
+  if(!ts) return;
+  const t=e.touches[0], dx=t.clientX-ts.x, dy=t.clientY-ts.y;
+  if(!ts.moved && Math.sqrt(dx*dx+dy*dy)>8){
+    ts.moved=true;
+    const r=ts.el.getBoundingClientRect();
+    ghost=ts.el.cloneNode(true);
+    ghost.className=ts.el.className+' ghost'; ghost.style.width=r.width+'px';
+    ghost.style.left=(t.clientX-r.width/2)+'px'; ghost.style.top=(t.clientY-r.height/2)+'px';
+    document.body.appendChild(ghost);
+  }
+  if(ts.moved && ghost){ e.preventDefault(); ghost.style.left=(t.clientX-ghost.offsetWidth/2)+'px'; ghost.style.top=(t.clientY-ghost.offsetHeight/2)+'px'; }
+}, {passive:false});
+document.addEventListener('touchend', e => {
+  if(!ts) return;
+  if(ts.moved && ghost){
+    ghost.remove(); ghost=null;
+    const t=e.changedTouches[0];
+    const zel=document.elementsFromPoint(t.clientX,t.clientY).find(x=>x.dataset&&x.dataset.zid);
+    if(zel) doPlace(zel.dataset.zid, ts.iid, ts.lbl, ts.cat, ts.from);
+    e.preventDefault();
+  }
+  ts=null;
+});
+
+// ── HELPERS ───────────────────────────────────────────────────────────
+function esc(s){return String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;')}
+function usedIds(){return new Set(Object.values(S.pl).map(p=>p.iid))}
+function shuffled(arr, seed){
+  const a=arr.slice(); let s=seed||42;
+  for(let i=a.length-1;i>0;i--){ s=(s*9301+49297)%233280; const j=Math.floor((s/233280)*(i+1)); [a[i],a[j]]=[a[j],a[i]]; }
+  return a;
+}
+function mkZone(zid, extra, placeholder){
+  const el=document.createElement('div');
+  const placed=S.pl[zid], fb=S.fb[zid], z=ZONES[zid];
+  let cls=['zone']; if(extra)cls.push(extra);
+  if(fb)cls.push('fb-'+fb);
+  else if(placed){
+    if(z.zcat==='vf'&&(placed.lbl==='VRAI'||placed.lbl==='FAUX'))cls.push(placed.lbl==='VRAI'?'f-vrai':'f-faux');
+    else cls.push('filled');
+  } else cls.push('empty');
+  el.className=cls.join(' ');
+  el.dataset.zid=zid;
+  el.textContent=placed?placed.lbl:(placeholder||'déposer ici');
+  el.addEventListener('click',()=>zoneClick(zid));
+  drp(el,zid);
+  if(placed&&!fb){drg(el,placed.iid,placed.lbl,placed.cat,zid);tch(el,placed.iid,placed.lbl,placed.cat,zid)}
+  return el;
+}
+function mkBlank(zid){
+  const el=document.createElement('span');
+  const placed=S.pl[zid], fb=S.fb[zid];
+  let cls=['blank'];
+  if(fb)cls.push('fb-'+fb); else if(placed)cls.push('filled');
+  el.className=cls.join(' ');
+  el.dataset.zid=zid;
+  el.textContent=placed?placed.lbl:'…';
+  el.addEventListener('click',()=>zoneClick(zid));
+  drp(el,zid);
+  if(placed&&!fb){drg(el,placed.iid,placed.lbl,placed.cat,zid);tch(el,placed.iid,placed.lbl,placed.cat,zid)}
+  return el;
+}
+function mkTile(iid,lbl,cat,cls){
+  const t=document.createElement('div');
+  t.className='tile '+cls+(S.sel&&S.sel.iid===iid&&!S.sel.from?' sel':'');
+  t.textContent=lbl;
+  t.addEventListener('click',()=>tileClick(iid,lbl,cat));
+  drg(t,iid,lbl,cat,null); tch(t,iid,lbl,cat,null);
+  return t;
+}
+
+// ── CONSTRUCTION DU DOM ───────────────────────────────────────────────
+function buildStatic(){
+  const tabs=document.getElementById('tabs');
+  SECTIONS.forEach(sec=>{
+    const b=document.createElement('button');
+    b.className='tab'; b.id='tab-'+sec.id;
+    b.innerHTML='<span class="tno">'+sec.no+'</span>'+esc(sec.title)+'<span class="tchk">✓</span>';
+    b.addEventListener('click',()=>{curSec=sec.id;render();window.scrollTo({top:0,behavior:'smooth'})});
+    tabs.appendChild(b);
   });
+  const wrap=document.getElementById('sections');
+  SECTIONS.forEach(sec=>{
+    const d=document.createElement('div');
+    d.className='sec'; d.id='sec-'+sec.id;
+    let h='';
+    h+='<div class="intro" style="border-color:'+sec.color+'33">'+sec.intro+'</div>';
+    if(sec.dialogue){
+      const dia=DIALOGUES[sec.dialogue];
+      h+='<div class="dial-sec" style="border-bottom-color:'+sec.color+'">';
+      h+='<div class="audio-pl"><div class="audio-lbl">Dialogue</div>';
+      h+='<button class="btn-lu" onclick="playDialogue(\''+sec.dialogue+'\',this)">🔊 Écouter</button>';
+      h+='<button class="btn-lu" onclick="markRead(this)">📖 J\'ai lu</button></div>';
+      h+='<div class="dial-txt"><div class="d-lbl">'+esc(dia.label)+'</div>';
+      dia.lines.forEach((l,i)=>{
+        const cls=(i%2===0)?'mb':'dr';
+        h+='<div class="dl"><span class="'+cls+'">'+esc(l[0])+' :</span> '+esc(l[1])+'</div>';
+      });
+      h+='</div></div>';
+    }
+    if(sec.id==='prep'){
+      h+='<div class="vocab-sec"><div style="display:flex;align-items:center;gap:10px;margin-bottom:12px;">';
+      h+='<div style="background:#12996B;color:#fff;border-radius:999px;padding:3px 14px;font-size:11px;font-weight:800;text-transform:uppercase;letter-spacing:.12em;">Vocabulaire</div>';
+      h+='<div style="font-size:15px;font-weight:700;color:#0C7A53;">Mots du module — <span style="font-weight:900;cursor:pointer;text-decoration:underline dotted;" onclick="fcOpen(0)">Cliquez pour les cartes mémoire 🃏</span></div></div>';
+      h+='<div class="vocab-grid">';
+      FC_CARDS.forEach(c=>{h+='<div class="vw" onclick="fcOpenWord(\''+c.word.replace(/'/g,"\\'")+'\')"><span class="dot"></span><span class="w">'+esc(c.word)+'</span></div>'});
+      h+='</div></div>';
+    }
+    h+='<div class="exs" id="exs-'+sec.id+'"></div>';
+    d.innerHTML=h;
+    wrap.appendChild(d);
+  });
+  // cartes d'exercices (sections à moteur)
+  EXOS.forEach(ex=>{
+    const host=document.getElementById('exs-'+ex.sec);
+    const card=document.createElement('div');
+    card.className='card';
+    let h='';
+    if(ex.savoir){
+      h+='<div class="savoir"><h3>'+ex.savoir.h+'</h3><table>';
+      ex.savoir.rows.forEach(r=>{h+='<tr><td>'+r[0]+'</td><td>'+r[1]+'</td></tr>'});
+      h+='</table></div>';
+    }
+    h+='<div style="display:flex;gap:20px;align-items:flex-start;flex-wrap:wrap">';
+    h+='<div style="flex:1;min-width:300px">';
+    h+='<div class="c-hdr"><span class="tag" style="background:'+ex.color+'">'+esc(ex.num)+'</span><span class="ctit" style="color:'+ex.color+'">'+esc(ex.tit)+'</span><span class="csub">'+esc(ex.sub)+'</span></div>';
+    if(ex.type==='blanks') h+='<p class="blanks-p" id="mount-'+ex.id+'"></p>';
+    else h+='<div class="rows" id="mount-'+ex.id+'"></div>';
+    h+='</div>';
+    const vert=(ex.type==='match'||ex.type==='rows')?' vert':'';
+    const bw=(ex.type==='match'||ex.type==='rows')?'300px':'220px';
+    h+='<div class="bsec b1" style="flex:0 0 '+bw+'"><div class="blbl">Réponses</div><div class="btiles'+vert+'" id="bank-'+ex.id+'"></div></div>';
+    h+='</div>';
+    card.innerHTML=h;
+    host.appendChild(card);
+  });
+  injectCustom();
 }
 
-// ---- Étape 5 : Production orale ----
+// ── SECTIONS PERSONNALISÉES (oral / écrit / autoéval) ─────────────────
+function injectCustom(){
+  // JE PARLE
+  document.getElementById('exs-parle').innerHTML = `
+   <div class="card custom">
+     <div class="c-hdr"><span class="tag" style="background:#0D9488">Production orale</span><span class="ctit" style="color:#0D9488">Prends un rendez-vous</span></div>
+     <p class="lead">Tu appelles la clinique. <b>Explique pourquoi tu veux voir un médecin et demande un rendez-vous.</b></p>
+     <div class="rec-zone"><button id="recBtn">🎤</button><div class="rec-lbl" id="recLbl">Touche pour t'enregistrer</div></div>
+     <div id="poPrev" class="hidden" style="display:flex;flex-direction:column;gap:12px">
+       <audio id="poAudio" controls style="width:100%"></audio>
+       <textarea id="poText" rows="2" placeholder="Transcription automatique (tu peux la corriger)…"></textarea>
+       <div style="display:flex;gap:10px;flex-wrap:wrap">
+         <button class="btn btn-ghost" onclick="resetRec()">↺ Recommencer</button>
+         <button class="btn btn-pri" id="poFbBtn" onclick="poGetFeedback()">💬 Obtenir une rétroaction</button>
+       </div>
+       <div class="fb" id="poFb"></div>
+       <div id="poSend" style="display:none;gap:10px;flex-wrap:wrap;align-items:center">
+         <button class="btn btn-send" id="poSendBtn" onclick="poSend()">📨 Envoyer à mon enseignant</button>
+       </div>
+     </div>
+     <div class="status" id="poStatus">Analyse en cours…</div>
+     <div class="err" id="poErr"></div>
+   </div>`;
+  const rb=document.getElementById('recBtn'); if(rb) rb.addEventListener('click',toggleRec);
+
+  // J'ÉCRIS
+  document.getElementById('exs-ecris').innerHTML = `
+   <div class="card custom">
+     <div class="c-hdr"><span class="tag" style="background:#0E7490">Production écrite</span><span class="ctit" style="color:#0E7490">Écris à la clinique</span></div>
+     <p class="lead">Écris un court courriel à la clinique pour <b>demander un rendez-vous</b> : dis qui tu es, pourquoi tu veux voir un médecin et quand tu es disponible. (3 à 5 phrases)</p>
+     <textarea id="peText" rows="6" placeholder="Bonjour,&#10;Je m'appelle… J'aimerais prendre un rendez-vous parce que…"></textarea>
+     <div style="margin-top:12px"><button class="btn btn-pri" id="peBtn" onclick="peCheck()">✍️ Vérifier mon texte</button></div>
+     <div class="fb" id="peFb"></div>
+     <div class="status" id="peStatus">Analyse en cours…</div>
+     <div class="err" id="peErr"></div>
+   </div>`;
+
+  // JE M'ÉVALUE
+  const SELF=[
+    "Je sais où m'adresser selon mon problème de santé.",
+    "Je peux prendre un rendez-vous au téléphone.",
+    "Je comprends les consignes du pharmacien.",
+    "Je peux parler de mon état (fatigue, douleur).",
+    "Je connais le vocabulaire de la santé.",
+  ];
+  document.getElementById('exs-eval').innerHTML = `
+   <div class="card custom">
+     <div class="c-hdr"><span class="tag" style="background:#166534">Autoévaluation</span><span class="ctit" style="color:#166534">Qu'est-ce que je suis capable de faire ?</span></div>
+     <p class="lead">Pour chaque énoncé, choisis : pas encore 😟, un peu 🙂, ou oui 😃.</p>
+     ${SELF.map((s,i)=>`<div class="selfrow"><div class="self-txt">${s}</div><div class="self-opts">
+        <button onclick="rate(${i},this)">😟</button><button onclick="rate(${i},this)">🙂</button><button onclick="rate(${i},this)">😃</button>
+     </div></div>`).join('')}
+     <div style="margin-top:16px"><button class="btn btn-pri" onclick="finishEval()">Terminer le module 🎉</button></div>
+     <div id="evalDone" class="fb"></div>
+   </div>`;
+}
+function rate(i,btn){ [...btn.parentElement.children].forEach(b=>b.classList.remove('sel')); btn.classList.add('sel'); }
+function finishEval(){
+  const el=document.getElementById('evalDone');
+  el.innerHTML='<div class="fb-c">🎉 Bravo, tu as terminé le module « La santé » ! Tu peux revenir sur n\'importe quel onglet pour pratiquer encore.</div>';
+  el.classList.add('on');
+  lmsTrack('exercise_completed',{finished:true});
+}
+
+// ── ENREGISTREMENT (production orale) ─────────────────────────────────
 let mediaRecorder=null, audioChunks=[], audioBlob=null, audioUrl=null, recognition=null, isRec=false, poFeedback="";
 const SR = window.SpeechRecognition || window.webkitSpeechRecognition;
-function stepPO(){
-  panel.innerHTML = `
-  <div class="card">
-    <div class="tag">Production orale</div>
-    <h2 class="title">Prends un rendez-vous</h2>
-    <p class="lead">Tu téléphones à la clinique. <b>Décris tes symptômes et demande un rendez-vous.</b> Enregistre-toi, obtiens une rétroaction privée, puis — si tu veux — envoie ta prise à ton enseignant.</p>
-    <div class="rec-zone">
-      <button id="recBtn" onclick="toggleRec()">🎤</button>
-      <div class="rec-lbl" id="recLbl">Touche pour t'enregistrer</div>
-    </div>
-    <div id="poPrev" class="hidden" style="display:flex;flex-direction:column;gap:12px">
-      <audio id="poAudio" controls style="width:100%"></audio>
-      <textarea id="poText" rows="2" placeholder="Transcription automatique (tu peux la corriger)…"></textarea>
-      <div style="display:flex;gap:10px;flex-wrap:wrap">
-        <button class="btn btn-ghost" onclick="resetRec()">↺ Recommencer</button>
-        <button class="btn btn-pri" id="poFbBtn" onclick="poGetFeedback()">💬 Obtenir une rétroaction</button>
-      </div>
-      <div class="fb" id="poFb"></div>
-      <div id="poSend" style="display:none;gap:10px;flex-wrap:wrap;align-items:center">
-        <button class="btn btn-send" id="poSendBtn" onclick="poSend()">📨 Envoyer à mon enseignant</button>
-      </div>
-    </div>
-    <div class="status" id="poStatus">Analyse en cours…</div>
-    <div class="err" id="poErr"></div>
-  </div>
-  ${nav()}`;
-}
 async function toggleRec(){
   if(isRec){ stopRec(); return; }
   hideErr('poErr');
@@ -441,12 +759,12 @@ async function poGetFeedback(){
   document.getElementById('poStatus').classList.add('on');
   document.getElementById('poFbBtn').disabled=true;
   try{
-    const res=await fetch('/api/correct-french',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({code:studentCode,text,question:"Tu téléphones à la clinique pour décrire tes symptômes et prendre un rendez-vous."})});
+    const res=await fetch('/api/correct-french',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({code:studentCode,text,question:"L'élève appelle la clinique pour prendre un rendez-vous : il explique pourquoi il veut voir un médecin et demande un moment."})});
     const data=await res.json();
     document.getElementById('poStatus').classList.remove('on');
     document.getElementById('poFbBtn').disabled=false;
     if(!res.ok){ showErr('poErr',data.error||'Une erreur est survenue.'); return; }
-    renderCorr('poFb',data,text); poFeedback = corrSummary(data,text);
+    renderCorr('poFb',data,text); poFeedback=corrSummary(data,text);
     document.getElementById('poSend').style.display='flex';
   }catch(e){
     document.getElementById('poStatus').classList.remove('on');
@@ -459,8 +777,8 @@ async function poSend(){
   const btn=document.getElementById('poSendBtn'); btn.disabled=true; btn.textContent='Envoi…';
   const ext=(audioBlob.type||'').includes('mp4')?'m4a':'webm';
   const fd=new FormData();
-  fd.append('code',studentCode); fd.append('theme','Santé'); fd.append('taskId','module-po');
-  fd.append('taskLabel','Production orale — module'); fd.append('question','Prendre un rendez-vous à la clinique');
+  fd.append('code',studentCode); fd.append('theme','Santé'); fd.append('taskId','module-sante-po');
+  fd.append('taskLabel','Production orale — rendez-vous'); fd.append('question','Appeler la clinique pour prendre un rendez-vous');
   fd.append('transcription',document.getElementById('poText').value.trim()); fd.append('feedback',poFeedback);
   fd.append('audio',audioBlob,'enregistrement.'+ext);
   try{
@@ -471,21 +789,7 @@ async function poSend(){
   }catch(e){ showErr('poErr',"Impossible d'envoyer."); btn.disabled=false; btn.textContent='📨 Envoyer à mon enseignant'; }
 }
 
-// ---- Étape 6 : Production écrite ----
-function stepPE(){
-  panel.innerHTML = `
-  <div class="card">
-    <div class="tag">Production écrite</div>
-    <h2 class="title">Écris à la clinique</h2>
-    <p class="lead">Écris un court message à la clinique pour <b>annuler ton rendez-vous</b> et en <b>demander un autre</b>. (2 à 4 phrases)</p>
-    <textarea id="peText" rows="5" placeholder="Bonjour,&#10;J'aimerais annuler mon rendez-vous de…"></textarea>
-    <button class="btn btn-pri" style="align-self:flex-start" id="peBtn" onclick="peCheck()">✍️ Vérifier mon texte</button>
-    <div class="fb" id="peFb"></div>
-    <div class="status" id="peStatus">Analyse en cours…</div>
-    <div class="err" id="peErr"></div>
-  </div>
-  ${nav()}`;
-}
+// ── CORRECTION ÉCRITE ─────────────────────────────────────────────────
 async function peCheck(){
   const text=document.getElementById('peText').value.trim();
   if(!text){ showErr('peErr',"Écris ton message d'abord."); return; }
@@ -505,16 +809,13 @@ async function peCheck(){
     showErr('peErr','Impossible de contacter le serveur.');
   }
 }
-
-// Rendu de correction partagé (formats /api/correct-french et /api/correct-email)
 function renderCorr(elId,data,orig){
   const fb=document.getElementById(elId);
-  const corr = data.corrige || data.corrected || data.texteCorrige || '';
-  const errs = data.erreurs || data.errors || [];
+  const corr=data.corrige||data.corrected||'';
+  const errs=data.erreurs||data.errors||[];
   let html='<div class="fb-t">Rétroaction privée</div>';
-  if(data.memePhrase || (corr && norm(corr)===norm(orig) && !errs.length)){
-    html+='<div class="fb-c">✅ Ton texte est déjà correct. Bravo !</div>';
-  }else{
+  if(data.memePhrase){ html+='<div class="fb-c">✅ Ton texte est déjà correct. Bravo !</div>'; }
+  else{
     if(corr) html+='<div class="fb-c">✍️ '+esc(corr)+'</div>';
     errs.forEach(e=>{ html+='<div class="fb-e">'+esc(e.explication||e.explanation||e)+'</div>'; });
   }
@@ -526,50 +827,93 @@ function corrSummary(data,orig){
   if(data.memePhrase) return "Phrase correcte : "+(corr||orig);
   return "Correction : "+corr+(errs.length?' | '+errs.map(e=>e.explication||e.explanation||e).join(' '):'');
 }
-
-// ---- Étape 7 : Autoévaluation ----
-function stepAuto(){
-  panel.innerHTML = `
-  <div class="card">
-    <div class="tag">Autoévaluation</div>
-    <h2 class="title">Qu'est-ce que je suis capable de faire ?</h2>
-    <p class="lead">Pour chaque énoncé, choisis : pas encore 😟, un peu 🙂, ou oui 😃.</p>
-    <div>
-      ${SELF.map((s,i)=>`
-        <div class="selfrow">
-          <div class="self-txt">${s}</div>
-          <div class="self-opts">
-            <button onclick="rate(${i},this)">😟</button>
-            <button onclick="rate(${i},this)">🙂</button>
-            <button onclick="rate(${i},this)">😃</button>
-          </div>
-        </div>`).join('')}
-    </div>
-  </div>
-  ${nav()}`;
-}
-function rate(i,btn){
-  [...btn.parentElement.children].forEach(b=>b.classList.remove('sel'));
-  btn.classList.add('sel');
-}
-
-function showEnd(){
-  done[done.length-1]=true;
-  renderSteps();
-  panel.innerHTML=`
-  <div class="card end">
-    <div class="end-ic">🎉</div>
-    <h2 class="title">Bravo, tu as terminé le module Santé !</h2>
-    <p class="lead">Tu as pratiqué la compréhension, le vocabulaire, la grammaire, l'oral et l'écrit. Tu peux revenir sur n'importe quelle étape en cliquant sur les numéros en haut.</p>
-    <button class="btn btn-pri" onclick="current=0;renderSteps();renderStep();window.scrollTo(0,0)">Revoir le module</button>
-  </div>`;
-  lmsTrack('exercise_completed', { finished:true, score:null });
-}
-
-// ---- Utilitaires ----
-function showErr(id,msg){ const e=document.getElementById(id); e.textContent=msg; e.classList.add('on'); }
+function showErr(id,msg){ const e=document.getElementById(id); if(e){e.textContent=msg; e.classList.add('on');} }
 function hideErr(id){ const e=document.getElementById(id); if(e)e.classList.remove('on'); }
-function esc(s){ return String(s||'').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;'); }
-function lmsTrack(event,data){ try{ window.parent.postMessage(Object.assign({lms:true,event},data||{}),'*'); }catch(e){} }
+
+// ── RENDER ────────────────────────────────────────────────────────────
+function render(){
+  SECTIONS.forEach(sec=>{
+    document.getElementById('tab-'+sec.id).classList.toggle('on', curSec===sec.id);
+    document.getElementById('sec-'+sec.id).classList.toggle('on', curSec===sec.id);
+    const zids=Object.keys(ZONES).filter(z=>{const ex=EXOS.find(e=>e.id===ZONES[z].exo);return ex.sec===sec.id});
+    const done=zids.length>0&&zids.every(z=>TR.correct[z]);
+    document.getElementById('tab-'+sec.id).classList.toggle('done',done);
+  });
+  const ban=document.getElementById('sel-banner');
+  if(S.sel){ban.classList.add('on');document.getElementById('sel-lbl').textContent=S.sel.lbl}
+  else ban.classList.remove('on');
+
+  const used=usedIds();
+  EXOS.forEach(ex=>{
+    const mount=document.getElementById('mount-'+ex.id);
+    const bank=document.getElementById('bank-'+ex.id);
+    if(!mount||!bank) return;
+    mount.innerHTML=''; bank.innerHTML='';
+
+    if(ex.type==='vf'){
+      ex.rows.forEach(r=>{
+        const row=document.createElement('div');row.className='rrow';
+        const txt=document.createElement('div');txt.className='stxt';txt.innerHTML=r.txt;
+        row.appendChild(txt);row.appendChild(mkZone(r.id,'zvf'));
+        mount.appendChild(row);
+      });
+      ex.tiles.forEach((lbl,i)=>{
+        bank.appendChild(mkTile(ex.id+'_t'+i,lbl,ex.id,lbl==='VRAI'||lbl==='MUETTE'?'tv':'tf'));
+      });
+    }
+    if(ex.type==='match'){
+      ex.rows.forEach(r=>{
+        const row=document.createElement('div');row.className='rrow2';
+        const qc=document.createElement('div');qc.className='qcard';
+        qc.innerHTML='<div class="qlbl">Question</div><div class="qtxt">'+esc(r.q)+'</div>';
+        row.appendChild(qc);row.appendChild(mkZone(r.id,null,'glissez la réponse ici'));
+        mount.appendChild(row);
+      });
+      shuffled(ex.rows,7).forEach(r=>{ if(used.has(r.aid))return; bank.appendChild(mkTile(r.aid,r.a,ex.id,'ta')); });
+      if(!bank.children.length)bank.innerHTML='<div class="bempty">Toutes les réponses sont placées !</div>';
+    }
+    if(ex.type==='blanks'){
+      ex.segs.forEach(sg=>{ if(sg.k==='t'){mount.appendChild(document.createTextNode(sg.t))} else{mount.appendChild(mkBlank(sg.id))} });
+      shuffled(ex.words,23).forEach(w=>{ if(used.has(w.id))return; bank.appendChild(mkTile(w.id,w.l,ex.id,'tn')); });
+      if(!bank.children.length)bank.innerHTML='<div class="bempty">Tous les mots sont placés !</div>';
+    }
+  });
+  updateChip();
+}
+function updateChip(){
+  const n=Object.keys(TR.correct).length;
+  document.getElementById('prog-chip').textContent='⭐ '+n+' / '+TOTAL_ZONES;
+}
+
+document.getElementById('btn-reset').addEventListener('click',()=>{ S.pl={};S.sel=null;S.fb={};render(); });
+
+// ── FLASHCARDS ────────────────────────────────────────────────────────
+let fcIdx=0;
+function fcShow(){
+  const c=FC_CARDS[fcIdx];
+  document.getElementById('fc-counter').textContent='Carte '+(fcIdx+1)+' / '+FC_CARDS.length;
+  document.getElementById('fc-word').textContent=c.word;
+  document.getElementById('fc-def').textContent=c.def;
+  document.getElementById('fc-ex').innerHTML=c.ex;
+  document.getElementById('fc-def').classList.add('hidden');
+  document.getElementById('fc-ex').classList.add('hidden');
+  document.getElementById('fc-reveal-btn').classList.remove('hidden');
+}
+function fcOpen(i){fcIdx=i||0;fcShow();document.getElementById('fc-overlay').classList.add('on')}
+function fcOpenWord(w){const i=FC_CARDS.findIndex(c=>c.word===w);fcOpen(i>=0?i:0)}
+document.getElementById('fc-reveal-btn').addEventListener('click',()=>{
+  document.getElementById('fc-def').classList.remove('hidden');
+  document.getElementById('fc-ex').classList.remove('hidden');
+  document.getElementById('fc-reveal-btn').classList.add('hidden');
+});
+document.getElementById('fc-prev').addEventListener('click',()=>{fcIdx=(fcIdx-1+FC_CARDS.length)%FC_CARDS.length;fcShow()});
+document.getElementById('fc-next').addEventListener('click',()=>{fcIdx=(fcIdx+1)%FC_CARDS.length;fcShow()});
+document.getElementById('fc-close').addEventListener('click',()=>document.getElementById('fc-overlay').classList.remove('on'));
+document.getElementById('fc-overlay').addEventListener('click',e=>{if(e.target.id==='fc-overlay')document.getElementById('fc-overlay').classList.remove('on')});
+
+// ── GO ────────────────────────────────────────────────────────────────
+buildStatic();
+render();
+lmsTrack('file_opened');
 </script>
 </body></html>
