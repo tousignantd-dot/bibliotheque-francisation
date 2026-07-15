@@ -1,0 +1,575 @@
+<!DOCTYPE html>
+<html lang="fr"><head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Module Santé — parcours complet</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Nunito:wght@600;700;800;900&display=swap" rel="stylesheet">
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+:root{--pri:#0F766E;--pri-d:#0B5C56;--pri-l:#E6F4F2;--pri-l2:#CDE9E5;--ink:#0F332F;--ink2:#48706A;--warn:#B45309;--warn-l:#FEF3C7;--ok:#0D7A54;--bg:#EAF6F4;--border:#CADDD9}
+html,body{height:100%;background:var(--bg);font-family:'Nunito',sans-serif;color:var(--ink)}
+body{display:flex;flex-direction:column;min-height:100vh}
+
+#hdr{background:var(--pri);color:#fff;padding:12px 28px;flex-shrink:0;box-shadow:0 3px 16px rgba(15,118,110,.28)}
+.hdr-top{display:flex;align-items:center;gap:12px}
+.hdr-ic{width:40px;height:40px;background:rgba(255,255,255,.18);border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:20px;flex-shrink:0}
+.hdr-eye{font-size:10.5px;font-weight:800;text-transform:uppercase;letter-spacing:.2em;opacity:.8}
+.hdr-h1{font-size:21px;font-weight:900}
+/* Stepper */
+#steps{display:flex;gap:4px;margin-top:12px;overflow-x:auto;padding-bottom:2px}
+.step{flex:1;min-width:80px;text-align:center;cursor:pointer;position:relative}
+.step-dot{width:26px;height:26px;border-radius:50%;background:rgba(255,255,255,.22);border:2px solid rgba(255,255,255,.4);margin:0 auto 4px;display:flex;align-items:center;justify-content:center;font-size:12px;font-weight:900;color:#fff}
+.step.active .step-dot{background:#fff;color:var(--pri);border-color:#fff}
+.step.done .step-dot{background:#7FD4C9;border-color:#7FD4C9;color:var(--pri-d)}
+.step-lbl{font-size:9.5px;font-weight:800;color:rgba(255,255,255,.9);line-height:1.15}
+
+#main{flex:1;display:flex;justify-content:center;padding:24px 18px 40px;overflow-y:auto}
+#panel{width:100%;max-width:640px;display:flex;flex-direction:column;gap:16px}
+
+.card{background:#fff;border-radius:16px;padding:22px 24px;box-shadow:0 2px 12px rgba(0,0,0,.05);display:flex;flex-direction:column;gap:14px}
+.tag{font-size:11px;font-weight:900;text-transform:uppercase;letter-spacing:.08em;color:var(--pri)}
+h2.title{font-size:20px;font-weight:900;color:var(--ink)}
+p.lead{font-size:14.5px;font-weight:700;color:var(--ink2);line-height:1.6}
+.obj{background:var(--pri-l);border-radius:12px;padding:14px 16px}
+.obj li{list-style:none;font-size:14px;font-weight:700;color:var(--pri-d);padding:4px 0 4px 24px;position:relative;line-height:1.4}
+.obj li::before{content:"✓";position:absolute;left:2px;color:var(--pri);font-weight:900}
+
+.chips{display:flex;flex-wrap:wrap;gap:8px}
+.chip{background:var(--pri-l);border:2px solid var(--pri-l2);border-radius:999px;padding:8px 14px;font-size:13.5px;font-weight:800;color:var(--pri-d);cursor:pointer;user-select:none}
+.chip.on{background:var(--pri);color:#fff;border-color:var(--pri)}
+
+textarea,input.txt{width:100%;border:2.5px solid var(--pri-l2);border-radius:12px;padding:11px 14px;font-family:'Nunito',sans-serif;font-size:15px;font-weight:700;color:var(--ink);background:#F7FCFB;resize:vertical}
+textarea:focus,input.txt:focus{outline:none;border-color:var(--pri)}
+
+.dialogue{background:var(--pri-l);border-radius:12px;padding:6px 4px}
+.dl-line{padding:8px 14px;font-size:14.5px;font-weight:700;line-height:1.5}
+.dl-a{color:var(--pri-d)}.dl-b{color:#7A3E00}
+.dl-who{font-weight:900}
+.hidden{display:none!important}
+
+.q{background:#F7FCFB;border:2px solid var(--border);border-radius:12px;padding:13px 15px;display:flex;flex-direction:column;gap:9px}
+.q-txt{font-size:14.5px;font-weight:800;color:var(--ink)}
+.vf{display:flex;gap:8px}
+.vf button{flex:1;border:2px solid var(--pri-l2);background:#fff;border-radius:9px;padding:8px;font-family:'Nunito',sans-serif;font-size:14px;font-weight:800;color:var(--ink2);cursor:pointer}
+.vf button.sel{background:var(--pri);color:#fff;border-color:var(--pri)}
+.vf button.good{background:#DCFCE7;color:#166534;border-color:#86EFAC}
+.vf button.bad{background:#FEE2E2;color:#991B1B;border-color:#FCA5A5}
+.q-fb{font-size:13px;font-weight:800;display:none}
+.q-fb.on{display:block}
+.q-fb.ok{color:var(--ok)}.q-fb.no{color:#B91C1C}
+
+.flash{display:flex;flex-wrap:wrap;gap:10px}
+.fc{flex:1 1 46%;min-width:180px;background:var(--pri-l);border:2px solid var(--pri-l2);border-radius:12px;padding:12px 14px;cursor:pointer;min-height:78px;display:flex;flex-direction:column;justify-content:center;gap:4px}
+.fc-word{font-size:15.5px;font-weight:900;color:var(--pri-d)}
+.fc-def{font-size:12.5px;font-weight:700;color:var(--ink2);line-height:1.4}
+.fc-ex{font-size:11.5px;font-style:italic;color:var(--ink2)}
+
+.savoir{background:var(--warn-l);border:1px solid #FCD34D;border-radius:12px;padding:14px 16px}
+.savoir b{color:var(--warn)}
+.savoir table{width:100%;border-collapse:collapse;margin-top:8px;font-size:14px;font-weight:700}
+.savoir td{padding:5px 8px;border-bottom:1px solid #FCD34D80}
+.gap{display:inline-block;min-width:66px}
+.gap input{width:74px;text-align:center;padding:5px;border:2px solid var(--pri-l2);border-radius:7px;font-family:'Nunito',sans-serif;font-weight:800;font-size:14px}
+
+.rec-zone{display:flex;flex-direction:column;align-items:center;gap:10px}
+#recBtn{width:74px;height:74px;border-radius:50%;border:none;background:var(--pri);color:#fff;font-size:28px;cursor:pointer;box-shadow:0 4px 16px rgba(15,118,110,.32)}
+#recBtn.recording{background:#E23D2E;animation:pulse 1.2s infinite}
+@keyframes pulse{0%{box-shadow:0 0 0 0 rgba(226,61,46,.45)}70%{box-shadow:0 0 0 16px rgba(226,61,46,0)}100%{box-shadow:0 0 0 0 rgba(226,61,46,0)}}
+.rec-lbl{font-size:13px;font-weight:800;color:var(--ink2)}
+
+.btn{font-family:'Nunito',sans-serif;font-size:14.5px;font-weight:800;border-radius:10px;padding:11px 18px;cursor:pointer;border:2.5px solid transparent;transition:all .15s}
+.btn-pri{background:var(--pri);color:#fff}
+.btn-pri:hover{background:var(--pri-d)}
+.btn-pri:disabled{opacity:.5;cursor:not-allowed}
+.btn-ghost{background:var(--pri-l);color:var(--pri);border-color:var(--pri-l2)}
+.btn-ghost:hover{background:var(--pri-l2)}
+.btn-send{background:#12556B;color:#fff}
+.btn-send:disabled{opacity:.5}
+
+.fb{background:#F0FAF7;border:2px solid var(--pri-l2);border-radius:12px;padding:14px 16px;display:none;flex-direction:column;gap:8px}
+.fb.on{display:flex}
+.fb-t{font-size:11.5px;font-weight:900;text-transform:uppercase;letter-spacing:.06em;color:var(--pri-d)}
+.fb-c{font-size:15px;font-weight:800;color:var(--pri-d);line-height:1.5}
+.fb-e{font-size:12.5px;font-weight:700;color:var(--warn);line-height:1.5;padding-left:14px;position:relative}
+.fb-e::before{content:"•";position:absolute;left:2px}
+
+.selfrow{display:flex;align-items:center;justify-content:space-between;gap:10px;padding:10px 0;border-bottom:1px solid var(--border)}
+.self-txt{font-size:14px;font-weight:800;color:var(--ink)}
+.self-opts{display:flex;gap:6px}
+.self-opts button{width:38px;height:38px;border-radius:9px;border:2px solid var(--pri-l2);background:#fff;font-size:18px;cursor:pointer}
+.self-opts button.sel{border-color:var(--pri);background:var(--pri-l)}
+
+.nav{display:flex;gap:10px;justify-content:space-between;padding-top:4px}
+.status{font-size:13.5px;font-weight:800;color:var(--ink2);text-align:center;display:none}
+.status.on{display:block}
+.err{font-size:13px;font-weight:800;color:#B91C1C;background:#FEF2F2;border:2px solid #FCA5A5;border-radius:10px;padding:10px 14px;display:none}
+.err.on{display:block}
+.sent{font-size:13px;font-weight:800;color:#12556B}
+
+.end{text-align:center;display:flex;flex-direction:column;gap:12px;align-items:center;padding:12px}
+.end-ic{font-size:48px}
+</style></head>
+<body>
+
+<div id="hdr">
+  <div class="hdr-top">
+    <div class="hdr-ic">🩺</div>
+    <div>
+      <div class="hdr-eye">Module Niveau 4 · Parcours complet</div>
+      <div class="hdr-h1">La santé</div>
+    </div>
+  </div>
+  <div id="steps"></div>
+</div>
+
+<div id="main"><div id="panel"></div></div>
+
+<script>
+const params = new URLSearchParams(location.search);
+const studentCode = params.get('code') || '';
+
+const STEP_LABELS = ["Mise en train","Compréhension orale","Vocabulaire","Travail de la langue","Production orale","Production écrite","Autoévaluation"];
+let current = 0;
+const done = new Array(STEP_LABELS.length).fill(false);
+
+// ---- Données du module ----
+const DIALOGUE = [
+  ["a","La réceptionniste","Clinique Saint-Laurent, bonjour."],
+  ["b","Sami","Bonjour, j'aimerais prendre un rendez-vous. Je ne me sens pas bien."],
+  ["a","La réceptionniste","Quels sont vos symptômes ?"],
+  ["b","Sami","J'ai mal à la gorge et je tousse depuis trois jours. J'ai aussi un peu de fièvre."],
+  ["a","La réceptionniste","Avez-vous votre carte d'assurance maladie ?"],
+  ["b","Sami","Oui, je l'ai."],
+  ["a","La réceptionniste","Parfait. Pouvez-vous venir demain à quatorze heures ?"],
+  ["b","Sami","Oui, c'est parfait. Merci beaucoup."],
+];
+const CO_QUESTIONS = [
+  { t:"Sami veut prendre un rendez-vous.", a:true },
+  { t:"Sami a mal au dos.", a:false, note:"Il a mal à la gorge." },
+  { t:"Le rendez-vous est demain à quatorze heures.", a:true },
+];
+const CO_OPEN = [
+  { t:"Depuis combien de temps Sami est-il malade ?", a:"Depuis trois jours." },
+  { t:"Qu'est-ce que la réceptionniste demande à Sami ?", a:"Sa carte d'assurance maladie." },
+];
+const VOCAB = [
+  { m:"un rendez-vous", d:"Un moment fixé à l'avance pour voir quelqu'un.", e:"J'ai un rendez-vous à dix heures." },
+  { m:"un symptôme", d:"Un signe qui indique une maladie.", e:"Quels sont vos symptômes ?" },
+  { m:"tousser", d:"Faire un bruit sec avec la gorge.", e:"Est-ce que vous toussez beaucoup ?" },
+  { m:"la fièvre", d:"Une température du corps plus élevée que la normale.", e:"Vous n'avez pas de fièvre." },
+  { m:"la carte d'assurance maladie", d:"Le document qui donne accès aux soins gratuits au Québec.", e:"Avez-vous votre carte d'assurance maladie ?" },
+  { m:"un médicament", d:"Un produit qui soigne une maladie.", e:"Le pharmacien me donne un médicament." },
+];
+const GAP = [
+  { before:"J'ai mal ", after:" tête.", a:["a la","à la"] },
+  { before:"Il a mal ", after:" ventre.", a:["au"] },
+  { before:"Elle a mal ", after:" dents.", a:["aux"] },
+  { before:"Tu as mal ", after:" oreille.", a:["a l'","à l'","a l","à l"] },
+];
+const SELF = [
+  "Je comprends un échange chez le médecin.",
+  "Je peux décrire mes symptômes.",
+  "Je peux prendre un rendez-vous.",
+  "Je connais le vocabulaire de la santé.",
+  "Je peux donner une information sur ma santé.",
+];
+
+const panel = document.getElementById('panel');
+lmsTrack('exercise_started', {});
+renderSteps();
+renderStep();
+
+function renderSteps(){
+  const el = document.getElementById('steps');
+  el.innerHTML = '';
+  STEP_LABELS.forEach((lbl,i)=>{
+    const d = document.createElement('div');
+    d.className = 'step'+(i===current?' active':'')+(done[i]?' done':'');
+    d.innerHTML = `<div class="step-dot">${done[i]?'✓':(i+1)}</div><div class="step-lbl">${lbl}</div>`;
+    d.onclick = ()=>{ current=i; renderSteps(); renderStep(); };
+    el.appendChild(d);
+  });
+}
+
+function nav(){
+  return `<div class="nav">
+    <button class="btn btn-ghost" ${current===0?'style="visibility:hidden"':''} onclick="go(-1)">← Précédent</button>
+    <button class="btn btn-pri" onclick="go(1)">${current===STEP_LABELS.length-1?'Terminer':'Suivant →'}</button>
+  </div>`;
+}
+function go(dir){
+  if(dir>0){ done[current]=true; }
+  const next = current+dir;
+  if(next>=STEP_LABELS.length){ showEnd(); return; }
+  current = Math.max(0, next);
+  window.scrollTo(0,0);
+  renderSteps(); renderStep();
+}
+
+function renderStep(){
+  const fns=[stepIntro,stepCO,stepVocab,stepLangue,stepPO,stepPE,stepAuto];
+  panel.innerHTML='';
+  fns[current]();
+}
+
+// ---- Étape 1 : Mise en train ----
+function stepIntro(){
+  panel.innerHTML = `
+  <div class="card">
+    <div class="tag">Mise en train</div>
+    <h2 class="title">Prendre soin de sa santé</h2>
+    <p class="lead">Dans ce module, tu vas apprendre à parler de ta santé, à comprendre un rendez-vous chez le médecin et à décrire tes symptômes.</p>
+    <ul class="obj">
+      <li>Comprendre un échange chez le médecin</li>
+      <li>Décrire un symptôme et dire depuis quand</li>
+      <li>Prendre un rendez-vous</li>
+      <li>Utiliser le vocabulaire de la santé</li>
+    </ul>
+    <p class="lead" style="margin-top:4px">Pour commencer : quand tu es malade, qu'est-ce que tu fais ?</p>
+    <div class="chips" id="chips">
+      ${["Je vais à la clinique","Je me repose","Je prends un médicament","J'appelle Info-Santé (811)","Je bois beaucoup d'eau"].map(c=>`<div class="chip" onclick="this.classList.toggle('on')">${c}</div>`).join('')}
+    </div>
+    <textarea rows="2" placeholder="Écris une autre chose que tu fais quand tu es malade…"></textarea>
+  </div>
+  ${nav()}`;
+}
+
+// ---- Étape 2 : Compréhension orale ----
+function stepCO(){
+  panel.innerHTML = `
+  <div class="card">
+    <div class="tag">Compréhension orale</div>
+    <h2 class="title">Au téléphone avec la clinique</h2>
+    <p class="lead">Écoute le dialogue, puis réponds aux questions. Tu peux réécouter autant de fois que tu veux.</p>
+    <div style="display:flex;gap:10px;flex-wrap:wrap">
+      <button class="btn btn-pri" id="playBtn" onclick="playDialogue()">🔊 Écouter le dialogue</button>
+      <button class="btn btn-ghost" onclick="toggleText()">Afficher le texte</button>
+    </div>
+    <div class="dialogue hidden" id="dlgText">
+      ${DIALOGUE.map(l=>`<div class="dl-line dl-${l[0]}"><span class="dl-who">${l[1]} :</span> ${l[2]}</div>`).join('')}
+    </div>
+    <div id="coQ" style="display:flex;flex-direction:column;gap:10px">
+      ${CO_QUESTIONS.map((q,i)=>`
+        <div class="q">
+          <div class="q-txt">${i+1}. ${q.t}</div>
+          <div class="vf">
+            <button onclick="answerVF(${i},true,this)">Vrai</button>
+            <button onclick="answerVF(${i},false,this)">Faux</button>
+          </div>
+          <div class="q-fb" id="cofb${i}"></div>
+        </div>`).join('')}
+      ${CO_OPEN.map((q,i)=>`
+        <div class="q">
+          <div class="q-txt">${CO_QUESTIONS.length+i+1}. ${q.t}</div>
+          <input class="txt" id="coopen${i}" placeholder="Écris ta réponse…">
+          <button class="btn btn-ghost" style="align-self:flex-start" onclick="showAnswer(${i})">Voir la réponse suggérée</button>
+          <div class="q-fb" id="coopenfb${i}"></div>
+        </div>`).join('')}
+    </div>
+  </div>
+  ${nav()}`;
+}
+function toggleText(){ document.getElementById('dlgText').classList.toggle('hidden'); }
+function playDialogue(){
+  try{
+    speechSynthesis.cancel();
+    const voices = speechSynthesis.getVoices();
+    const fr = voices.filter(v=>/^fr/i.test(v.lang));
+    DIALOGUE.forEach(l=>{
+      const u = new SpeechSynthesisUtterance(l[2]);
+      u.lang='fr-CA'; u.rate=0.95;
+      u.pitch = l[0]==='a'?1.15:0.85;
+      if(fr.length) u.voice = l[0]==='a'?(fr[0]):(fr[1]||fr[0]);
+      speechSynthesis.speak(u);
+    });
+    lmsTrack('dialogue_listened', {});
+  }catch(e){}
+}
+function answerVF(i,val,btn){
+  const q=CO_QUESTIONS[i];
+  const parent=btn.parentElement;
+  [...parent.children].forEach(b=>b.classList.remove('sel','good','bad'));
+  const correct = val===q.a;
+  btn.classList.add(correct?'good':'bad');
+  const fb=document.getElementById('cofb'+i);
+  fb.className='q-fb on '+(correct?'ok':'no');
+  fb.textContent = correct ? '✅ Bonne réponse !' : ('❌ '+(q.note||('La bonne réponse est : '+(q.a?'Vrai':'Faux')+'.')));
+}
+function showAnswer(i){
+  const fb=document.getElementById('coopenfb'+i);
+  fb.className='q-fb on ok';
+  fb.textContent='💡 Réponse suggérée : '+CO_OPEN[i].a;
+}
+
+// ---- Étape 3 : Vocabulaire ----
+function stepVocab(){
+  panel.innerHTML = `
+  <div class="card">
+    <div class="tag">Vocabulaire</div>
+    <h2 class="title">Les mots de la santé</h2>
+    <p class="lead">Touche une carte pour révéler la définition et un exemple.</p>
+    <div class="flash">
+      ${VOCAB.map((v,i)=>`
+        <div class="fc" onclick="flipCard(${i})" id="fc${i}">
+          <div class="fc-word">${v.m}</div>
+          <div class="fc-def hidden" id="fcd${i}">${v.d}</div>
+          <div class="fc-ex hidden" id="fce${i}">« ${v.e} »</div>
+        </div>`).join('')}
+    </div>
+  </div>
+  ${nav()}`;
+}
+function flipCard(i){
+  document.getElementById('fcd'+i).classList.toggle('hidden');
+  document.getElementById('fce'+i).classList.toggle('hidden');
+}
+
+// ---- Étape 4 : Travail de la langue ----
+function stepLangue(){
+  panel.innerHTML = `
+  <div class="card">
+    <div class="tag">Travail de la langue</div>
+    <h2 class="title">« Avoir mal à » + le corps</h2>
+    <div class="savoir">
+      <b>Rappel</b> — après « avoir mal à », l'article change selon le mot :
+      <table>
+        <tr><td>avoir mal <b>à la</b></td><td>à la gorge, à la tête</td></tr>
+        <tr><td>avoir mal <b>au</b></td><td>au dos, au ventre</td></tr>
+        <tr><td>avoir mal <b>à l'</b></td><td>à l'oreille, à l'estomac</td></tr>
+        <tr><td>avoir mal <b>aux</b></td><td>aux dents, aux yeux</td></tr>
+      </table>
+    </div>
+    <p class="lead">Complète avec <b>à la</b>, <b>au</b>, <b>à l'</b> ou <b>aux</b> :</p>
+    <div style="display:flex;flex-direction:column;gap:12px">
+      ${GAP.map((g,i)=>`<div class="q"><div class="q-txt">${g.before}<span class="gap"><input id="gap${i}" placeholder="…"></span>${g.after}</div><div class="q-fb" id="gapfb${i}"></div></div>`).join('')}
+    </div>
+    <button class="btn btn-pri" style="align-self:flex-start" onclick="checkGaps()">Vérifier</button>
+  </div>
+  ${nav()}`;
+}
+function norm(s){ return (s||'').toLowerCase().trim().normalize('NFD').replace(/[̀-ͯ]/g,'').replace(/\s+/g,' '); }
+function checkGaps(){
+  GAP.forEach((g,i)=>{
+    const val=norm(document.getElementById('gap'+i).value);
+    const ok=g.a.map(norm).includes(val);
+    const fb=document.getElementById('gapfb'+i);
+    fb.className='q-fb on '+(ok?'ok':'no');
+    fb.textContent = ok?'✅ Correct !':('❌ Réponse : '+g.a[g.a.length-1]);
+  });
+}
+
+// ---- Étape 5 : Production orale ----
+let mediaRecorder=null, audioChunks=[], audioBlob=null, audioUrl=null, recognition=null, isRec=false, poFeedback="";
+const SR = window.SpeechRecognition || window.webkitSpeechRecognition;
+function stepPO(){
+  panel.innerHTML = `
+  <div class="card">
+    <div class="tag">Production orale</div>
+    <h2 class="title">Prends un rendez-vous</h2>
+    <p class="lead">Tu téléphones à la clinique. <b>Décris tes symptômes et demande un rendez-vous.</b> Enregistre-toi, obtiens une rétroaction privée, puis — si tu veux — envoie ta prise à ton enseignant.</p>
+    <div class="rec-zone">
+      <button id="recBtn" onclick="toggleRec()">🎤</button>
+      <div class="rec-lbl" id="recLbl">Touche pour t'enregistrer</div>
+    </div>
+    <div id="poPrev" class="hidden" style="display:flex;flex-direction:column;gap:12px">
+      <audio id="poAudio" controls style="width:100%"></audio>
+      <textarea id="poText" rows="2" placeholder="Transcription automatique (tu peux la corriger)…"></textarea>
+      <div style="display:flex;gap:10px;flex-wrap:wrap">
+        <button class="btn btn-ghost" onclick="resetRec()">↺ Recommencer</button>
+        <button class="btn btn-pri" id="poFbBtn" onclick="poGetFeedback()">💬 Obtenir une rétroaction</button>
+      </div>
+      <div class="fb" id="poFb"></div>
+      <div id="poSend" style="display:none;gap:10px;flex-wrap:wrap;align-items:center">
+        <button class="btn btn-send" id="poSendBtn" onclick="poSend()">📨 Envoyer à mon enseignant</button>
+      </div>
+    </div>
+    <div class="status" id="poStatus">Analyse en cours…</div>
+    <div class="err" id="poErr"></div>
+  </div>
+  ${nav()}`;
+}
+async function toggleRec(){
+  if(isRec){ stopRec(); return; }
+  hideErr('poErr');
+  let stream;
+  try{ stream=await navigator.mediaDevices.getUserMedia({audio:true}); }
+  catch(e){ showErr('poErr',"Impossible d'accéder au micro. Vérifie les autorisations."); return; }
+  audioChunks=[];
+  const mime = MediaRecorder.isTypeSupported('audio/webm')?'audio/webm':(MediaRecorder.isTypeSupported('audio/mp4')?'audio/mp4':'');
+  mediaRecorder = mime?new MediaRecorder(stream,{mimeType:mime}):new MediaRecorder(stream);
+  mediaRecorder.ondataavailable=e=>{ if(e.data.size>0)audioChunks.push(e.data); };
+  mediaRecorder.onstop=()=>{
+    stream.getTracks().forEach(t=>t.stop());
+    audioBlob=new Blob(audioChunks,{type:mediaRecorder.mimeType||'audio/webm'});
+    if(audioUrl)URL.revokeObjectURL(audioUrl);
+    audioUrl=URL.createObjectURL(audioBlob);
+    const a=document.getElementById('poAudio'); if(a)a.src=audioUrl;
+    document.getElementById('poPrev').classList.remove('hidden');
+  };
+  mediaRecorder.start();
+  if(SR){
+    recognition=new SR(); recognition.lang='fr-CA'; recognition.continuous=true; recognition.interimResults=false;
+    let tr='';
+    recognition.onresult=e=>{ for(let i=e.resultIndex;i<e.results.length;i++){ if(e.results[i].isFinal)tr+=e.results[i][0].transcript+' '; } const b=document.getElementById('poText'); if(b)b.value=tr.trim(); };
+    try{ recognition.start(); }catch(e){}
+  }
+  isRec=true;
+  const btn=document.getElementById('recBtn'); btn.classList.add('recording'); btn.textContent='⏹';
+  document.getElementById('recLbl').textContent="Enregistrement… touche pour arrêter";
+}
+function stopRec(){
+  isRec=false;
+  if(mediaRecorder&&mediaRecorder.state!=='inactive')mediaRecorder.stop();
+  if(recognition){ try{recognition.stop();}catch(e){} }
+  const btn=document.getElementById('recBtn'); if(btn){ btn.classList.remove('recording'); btn.textContent='🎤'; }
+  const l=document.getElementById('recLbl'); if(l)l.textContent="Touche pour réenregistrer";
+}
+function resetRec(){
+  audioBlob=null; if(audioUrl){URL.revokeObjectURL(audioUrl);audioUrl=null;}
+  document.getElementById('poPrev').classList.add('hidden');
+  document.getElementById('poText').value='';
+  const fb=document.getElementById('poFb'); fb.classList.remove('on'); fb.innerHTML='';
+  document.getElementById('poSend').style.display='none';
+  hideErr('poErr');
+}
+async function poGetFeedback(){
+  const text=document.getElementById('poText').value.trim();
+  if(!text){ showErr('poErr',"Je n'ai pas capté ta réponse. Réenregistre-toi ou écris ta phrase."); return; }
+  hideErr('poErr');
+  document.getElementById('poStatus').classList.add('on');
+  document.getElementById('poFbBtn').disabled=true;
+  try{
+    const res=await fetch('/api/correct-french',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({code:studentCode,text,question:"Tu téléphones à la clinique pour décrire tes symptômes et prendre un rendez-vous."})});
+    const data=await res.json();
+    document.getElementById('poStatus').classList.remove('on');
+    document.getElementById('poFbBtn').disabled=false;
+    if(!res.ok){ showErr('poErr',data.error||'Une erreur est survenue.'); return; }
+    renderCorr('poFb',data,text); poFeedback = corrSummary(data,text);
+    document.getElementById('poSend').style.display='flex';
+  }catch(e){
+    document.getElementById('poStatus').classList.remove('on');
+    document.getElementById('poFbBtn').disabled=false;
+    showErr('poErr','Impossible de contacter le serveur.');
+  }
+}
+async function poSend(){
+  if(!audioBlob){ showErr('poErr',"Enregistre-toi d'abord."); return; }
+  const btn=document.getElementById('poSendBtn'); btn.disabled=true; btn.textContent='Envoi…';
+  const ext=(audioBlob.type||'').includes('mp4')?'m4a':'webm';
+  const fd=new FormData();
+  fd.append('code',studentCode); fd.append('theme','Santé'); fd.append('taskId','module-po');
+  fd.append('taskLabel','Production orale — module'); fd.append('question','Prendre un rendez-vous à la clinique');
+  fd.append('transcription',document.getElementById('poText').value.trim()); fd.append('feedback',poFeedback);
+  fd.append('audio',audioBlob,'enregistrement.'+ext);
+  try{
+    const res=await fetch('/api/oral/submit',{method:'POST',body:fd});
+    const data=await res.json();
+    if(!res.ok){ showErr('poErr',data.error||"L'envoi a échoué."); btn.disabled=false; btn.textContent='📨 Envoyer à mon enseignant'; return; }
+    document.getElementById('poSend').innerHTML='<span class="sent">✅ Envoyé à ton enseignant !</span>';
+  }catch(e){ showErr('poErr',"Impossible d'envoyer."); btn.disabled=false; btn.textContent='📨 Envoyer à mon enseignant'; }
+}
+
+// ---- Étape 6 : Production écrite ----
+function stepPE(){
+  panel.innerHTML = `
+  <div class="card">
+    <div class="tag">Production écrite</div>
+    <h2 class="title">Écris à la clinique</h2>
+    <p class="lead">Écris un court message à la clinique pour <b>annuler ton rendez-vous</b> et en <b>demander un autre</b>. (2 à 4 phrases)</p>
+    <textarea id="peText" rows="5" placeholder="Bonjour,&#10;J'aimerais annuler mon rendez-vous de…"></textarea>
+    <button class="btn btn-pri" style="align-self:flex-start" id="peBtn" onclick="peCheck()">✍️ Vérifier mon texte</button>
+    <div class="fb" id="peFb"></div>
+    <div class="status" id="peStatus">Analyse en cours…</div>
+    <div class="err" id="peErr"></div>
+  </div>
+  ${nav()}`;
+}
+async function peCheck(){
+  const text=document.getElementById('peText').value.trim();
+  if(!text){ showErr('peErr',"Écris ton message d'abord."); return; }
+  hideErr('peErr');
+  document.getElementById('peStatus').classList.add('on');
+  document.getElementById('peBtn').disabled=true;
+  try{
+    const res=await fetch('/api/correct-email',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({code:studentCode,text})});
+    const data=await res.json();
+    document.getElementById('peStatus').classList.remove('on');
+    document.getElementById('peBtn').disabled=false;
+    if(!res.ok){ showErr('peErr',data.error||'Une erreur est survenue.'); return; }
+    renderCorr('peFb',data,text);
+  }catch(e){
+    document.getElementById('peStatus').classList.remove('on');
+    document.getElementById('peBtn').disabled=false;
+    showErr('peErr','Impossible de contacter le serveur.');
+  }
+}
+
+// Rendu de correction partagé (formats /api/correct-french et /api/correct-email)
+function renderCorr(elId,data,orig){
+  const fb=document.getElementById(elId);
+  const corr = data.corrige || data.corrected || data.texteCorrige || '';
+  const errs = data.erreurs || data.errors || [];
+  let html='<div class="fb-t">Rétroaction privée</div>';
+  if(data.memePhrase || (corr && norm(corr)===norm(orig) && !errs.length)){
+    html+='<div class="fb-c">✅ Ton texte est déjà correct. Bravo !</div>';
+  }else{
+    if(corr) html+='<div class="fb-c">✍️ '+esc(corr)+'</div>';
+    errs.forEach(e=>{ html+='<div class="fb-e">'+esc(e.explication||e.explanation||e)+'</div>'; });
+  }
+  fb.innerHTML=html; fb.classList.add('on');
+}
+function corrSummary(data,orig){
+  const corr=data.corrige||data.corrected||'';
+  const errs=data.erreurs||data.errors||[];
+  if(data.memePhrase) return "Phrase correcte : "+(corr||orig);
+  return "Correction : "+corr+(errs.length?' | '+errs.map(e=>e.explication||e.explanation||e).join(' '):'');
+}
+
+// ---- Étape 7 : Autoévaluation ----
+function stepAuto(){
+  panel.innerHTML = `
+  <div class="card">
+    <div class="tag">Autoévaluation</div>
+    <h2 class="title">Qu'est-ce que je suis capable de faire ?</h2>
+    <p class="lead">Pour chaque énoncé, choisis : pas encore 😟, un peu 🙂, ou oui 😃.</p>
+    <div>
+      ${SELF.map((s,i)=>`
+        <div class="selfrow">
+          <div class="self-txt">${s}</div>
+          <div class="self-opts">
+            <button onclick="rate(${i},this)">😟</button>
+            <button onclick="rate(${i},this)">🙂</button>
+            <button onclick="rate(${i},this)">😃</button>
+          </div>
+        </div>`).join('')}
+    </div>
+  </div>
+  ${nav()}`;
+}
+function rate(i,btn){
+  [...btn.parentElement.children].forEach(b=>b.classList.remove('sel'));
+  btn.classList.add('sel');
+}
+
+function showEnd(){
+  done[done.length-1]=true;
+  renderSteps();
+  panel.innerHTML=`
+  <div class="card end">
+    <div class="end-ic">🎉</div>
+    <h2 class="title">Bravo, tu as terminé le module Santé !</h2>
+    <p class="lead">Tu as pratiqué la compréhension, le vocabulaire, la grammaire, l'oral et l'écrit. Tu peux revenir sur n'importe quelle étape en cliquant sur les numéros en haut.</p>
+    <button class="btn btn-pri" onclick="current=0;renderSteps();renderStep();window.scrollTo(0,0)">Revoir le module</button>
+  </div>`;
+  lmsTrack('exercise_completed', { finished:true, score:null });
+}
+
+// ---- Utilitaires ----
+function showErr(id,msg){ const e=document.getElementById(id); e.textContent=msg; e.classList.add('on'); }
+function hideErr(id){ const e=document.getElementById(id); if(e)e.classList.remove('on'); }
+function esc(s){ return String(s||'').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;'); }
+function lmsTrack(event,data){ try{ window.parent.postMessage(Object.assign({lms:true,event},data||{}),'*'); }catch(e){} }
+</script>
+</body></html>
