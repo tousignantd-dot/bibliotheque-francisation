@@ -1,395 +1,722 @@
 <!DOCTYPE html>
 <html lang="fr"><head>
 <meta charset="utf-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Module — La visite chez le médecin</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+<title>La visite chez le médecin — Module Niveau 4</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@600;700;800;900&display=swap" rel="stylesheet">
 <style>
 *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
-:root{--pri:#0F766E;--pri-d:#0B5C56;--pri-l:#E6F4F2;--pri-l2:#CDE9E5;--ink:#0F332F;--ink2:#48706A;--warn:#B45309;--warn-l:#FEF3C7;--ok:#0D7A54;--bg:#EAF6F4;--border:#CADDD9}
-html,body{height:100%;background:var(--bg);font-family:'Nunito',sans-serif;color:var(--ink)}
+html,body{height:100%;background:#EDF6F4;font-family:'Nunito','Arial Rounded MT Bold',sans-serif;color:#123B32}
 body{display:flex;flex-direction:column;min-height:100vh}
+::-webkit-scrollbar{width:6px;height:6px}::-webkit-scrollbar-track{background:rgba(0,0,0,.04);border-radius:3px}::-webkit-scrollbar-thumb{background:rgba(0,0,0,.15);border-radius:3px}
 
-#hdr{background:var(--pri);color:#fff;padding:12px 28px;flex-shrink:0;box-shadow:0 3px 16px rgba(15,118,110,.28)}
-.hdr-top{display:flex;align-items:center;gap:12px}
-.hdr-ic{width:40px;height:40px;background:rgba(255,255,255,.18);border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:20px;flex-shrink:0}
-.hdr-eye{font-size:10.5px;font-weight:800;text-transform:uppercase;letter-spacing:.2em;opacity:.8}
-.hdr-h1{font-size:21px;font-weight:900}
-/* Stepper */
-#steps{display:flex;gap:4px;margin-top:12px;overflow-x:auto;padding-bottom:2px}
-.step{flex:1;min-width:80px;text-align:center;cursor:pointer;position:relative}
-.step-dot{width:26px;height:26px;border-radius:50%;background:rgba(255,255,255,.22);border:2px solid rgba(255,255,255,.4);margin:0 auto 4px;display:flex;align-items:center;justify-content:center;font-size:12px;font-weight:900;color:#fff}
-.step.active .step-dot{background:#fff;color:var(--pri);border-color:#fff}
-.step.done .step-dot{background:#7FD4C9;border-color:#7FD4C9;color:var(--pri-d)}
-.step-lbl{font-size:9.5px;font-weight:800;color:rgba(255,255,255,.9);line-height:1.15}
+#hdr{background:#0F766E;color:#fff;padding:14px 32px;display:flex;align-items:center;justify-content:space-between;position:sticky;top:0;z-index:200;box-shadow:0 3px 16px rgba(15,118,110,.3);flex-shrink:0}
+.hdr-l{display:flex;align-items:center;gap:14px}
+.hdr-ic{width:44px;height:44px;background:rgba(255,255,255,.18);border-radius:50%;display:flex;align-items:center;justify-content:center;flex-shrink:0;font-size:22px}
+.hdr-eye{font-size:11px;font-weight:800;text-transform:uppercase;letter-spacing:.2em;opacity:.7;line-height:1}
+.hdr-h1{font-size:27px;font-weight:900;line-height:1.15}
+.hdr-r{display:flex;align-items:center;gap:14px}
+#prog-chip{background:rgba(255,255,255,.15);border:2px solid rgba(255,255,255,.45);border-radius:999px;padding:8px 18px;font-size:16px;font-weight:900;white-space:nowrap}
+#btn-reset{background:rgba(255,255,255,.15);color:#fff;border:2px solid rgba(255,255,255,.45);border-radius:10px;padding:10px 18px;font-family:'Nunito',sans-serif;font-size:15px;font-weight:800;cursor:pointer;white-space:nowrap;transition:background .15s}
+#btn-reset:hover{background:rgba(255,255,255,.28)}
 
-#main{flex:1;display:flex;justify-content:center;padding:24px 18px 40px;overflow-y:auto}
-#panel{width:100%;max-width:640px;display:flex;flex-direction:column;gap:16px}
+#tabs{background:#fff;display:flex;gap:6px;padding:10px 32px;position:sticky;top:76px;z-index:190;box-shadow:0 2px 12px rgba(0,0,0,.07);flex-wrap:wrap}
+.tab{border:2.5px solid transparent;border-radius:999px;padding:9px 18px;font-family:'Nunito',sans-serif;font-size:14.5px;font-weight:800;cursor:pointer;background:#EDF6F4;color:#5E8A82;transition:all .15s;display:flex;align-items:center;gap:8px}
+.tab .tno{width:24px;height:24px;border-radius:50%;background:#B7DED7;color:#fff;display:flex;align-items:center;justify-content:center;font-size:13px;font-weight:900;flex-shrink:0}
+.tab.on{background:#0F766E;color:#fff}
+.tab.on .tno{background:rgba(255,255,255,.28)}
+.tab .tchk{display:none;color:#4ADE80;font-size:15px}
+.tab.done .tchk{display:inline}
 
-.card{background:#fff;border-radius:16px;padding:22px 24px;box-shadow:0 2px 12px rgba(0,0,0,.05);display:flex;flex-direction:column;gap:14px}
-.tag{font-size:11px;font-weight:900;text-transform:uppercase;letter-spacing:.08em;color:var(--pri)}
-h2.title{font-size:20px;font-weight:900;color:var(--ink)}
-p.lead{font-size:14.5px;font-weight:700;color:var(--ink2);line-height:1.6}
-.obj{background:var(--pri-l);border-radius:12px;padding:14px 16px}
-.obj li{list-style:none;font-size:14px;font-weight:700;color:var(--pri-d);padding:4px 0 4px 24px;position:relative;line-height:1.4}
-.obj li::before{content:"✓";position:absolute;left:2px;color:var(--pri);font-weight:900}
+#sel-banner{background:#FEF3C7;border-bottom:3px solid #F59E0B;padding:10px 32px;display:none;align-items:center;gap:10px;font-size:19px;font-weight:800;color:#92400E;flex-shrink:0;position:sticky;top:132px;z-index:180}
+#sel-banner.on{display:flex}
 
-.chips{display:flex;flex-wrap:wrap;gap:8px}
-.chip{background:var(--pri-l);border:2px solid var(--pri-l2);border-radius:999px;padding:8px 14px;font-size:13.5px;font-weight:800;color:var(--pri-d);cursor:pointer;user-select:none}
-.chip.on{background:var(--pri);color:#fff;border-color:var(--pri)}
+.sec{display:none;flex-direction:column}
+.sec.on{display:flex}
 
-textarea,input.txt{width:100%;border:2.5px solid var(--pri-l2);border-radius:12px;padding:11px 14px;font-family:'Nunito',sans-serif;font-size:15px;font-weight:700;color:var(--ink);background:#F7FCFB;resize:vertical}
-textarea:focus,input.txt:focus{outline:none;border-color:var(--pri)}
+.dial-sec{background:#123B32;color:#E8F5F2;padding:16px 32px;display:flex;gap:24px;border-bottom:4px solid #0F766E;flex-shrink:0;flex-wrap:wrap}
+.audio-pl{flex:0 0 160px;display:flex;flex-direction:column;align-items:center;justify-content:flex-start;padding-top:6px;gap:10px}
+.audio-lbl{font-size:11px;font-weight:800;text-transform:uppercase;letter-spacing:.15em;opacity:.6;text-align:center}
+.btn-lu{background:rgba(255,255,255,.12);color:#E8F5F2;border:2px solid rgba(255,255,255,.35);border-radius:10px;padding:10px 14px;font-family:'Nunito',sans-serif;font-size:14px;font-weight:800;cursor:pointer;transition:all .15s;text-align:center;line-height:1.3;width:100%}
+.btn-lu:hover{background:rgba(255,255,255,.25)}
+.btn-lu.done{background:#166534;border-color:#4ADE80;color:#DCFCE7}
+.dial-txt{flex:1;min-width:280px;display:flex;flex-direction:column;gap:7px;font-size:19px;font-weight:600;line-height:1.7;padding-right:8px}
+.d-lbl{font-size:14px;font-weight:800;text-transform:uppercase;letter-spacing:.15em;color:#7FD4C9;margin-bottom:6px;opacity:.85}
+.dl{line-height:1.7}.mb{color:#FCA5A5;font-weight:800}.dr{color:#7FD4C9;font-weight:800}
 
-.dialogue{background:var(--pri-l);border-radius:12px;padding:6px 4px}
-.dl-line{padding:8px 14px;font-size:14.5px;font-weight:700;line-height:1.5}
-.dl-a{color:var(--pri-d)}.dl-b{color:#7A3E00}
-.dl-who{font-weight:900}
-.hidden{display:none!important}
+.intro{background:#DCEFEB;padding:14px 32px;font-size:17px;font-weight:700;color:#0B5C56;line-height:1.5;border-bottom:2px solid #B7DED7}
 
-.q{background:#F7FCFB;border:2px solid var(--border);border-radius:12px;padding:13px 15px;display:flex;flex-direction:column;gap:9px}
-.q-txt{font-size:14.5px;font-weight:800;color:var(--ink)}
-.vf{display:flex;gap:8px}
-.vf button{flex:1;border:2px solid var(--pri-l2);background:#fff;border-radius:9px;padding:8px;font-family:'Nunito',sans-serif;font-size:14px;font-weight:800;color:var(--ink2);cursor:pointer}
-.vf button.sel{background:var(--pri);color:#fff;border-color:var(--pri)}
-.vf button.good{background:#DCFCE7;color:#166534;border-color:#86EFAC}
-.vf button.bad{background:#FEE2E2;color:#991B1B;border-color:#FCA5A5}
-.q-fb{font-size:13px;font-weight:800;display:none}
-.q-fb.on{display:block}
-.q-fb.ok{color:var(--ok)}.q-fb.no{color:#B91C1C}
+.exs{flex:1;padding:22px 32px 48px;display:flex;flex-direction:column;gap:20px}
 
-.flash{display:flex;flex-wrap:wrap;gap:10px}
-.fc{flex:1 1 46%;min-width:180px;background:var(--pri-l);border:2px solid var(--pri-l2);border-radius:12px;padding:12px 14px;cursor:pointer;min-height:78px;display:flex;flex-direction:column;justify-content:center;gap:4px}
-.fc-word{font-size:15.5px;font-weight:900;color:var(--pri-d)}
-.fc-def{font-size:12.5px;font-weight:700;color:var(--ink2);line-height:1.4}
-.fc-ex{font-size:11.5px;font-style:italic;color:var(--ink2)}
+.card{background:#fff;border-radius:18px;padding:22px 26px;box-shadow:0 4px 20px rgba(15,118,110,.08)}
+.c-hdr{display:flex;align-items:center;gap:10px;margin-bottom:14px;flex-wrap:wrap}
+.tag{color:#fff;border-radius:999px;padding:5px 16px;font-size:13px;font-weight:800;text-transform:uppercase;letter-spacing:.1em;white-space:nowrap}
+.ctit{font-size:21px;font-weight:900}
+.csub{font-size:15.5px;color:#5E8A82;font-weight:600}
 
-.savoir{background:var(--warn-l);border:1px solid #FCD34D;border-radius:12px;padding:14px 16px}
-.savoir b{color:var(--warn)}
-.savoir table{width:100%;border-collapse:collapse;margin-top:8px;font-size:14px;font-weight:700}
-.savoir td{padding:5px 8px;border-bottom:1px solid #FCD34D80}
-.gap{display:inline-block;min-width:66px}
-.gap input{width:74px;text-align:center;padding:5px;border:2px solid var(--pri-l2);border-radius:7px;font-family:'Nunito',sans-serif;font-weight:800;font-size:14px}
+.savoir{background:#F1FBF9;border-left:5px solid #0F766E;border-radius:0 14px 14px 0;padding:16px 22px;margin-bottom:4px}
+.savoir h3{font-size:15.5px;font-weight:900;color:#0B5C56;text-transform:uppercase;letter-spacing:.08em;margin-bottom:8px}
+.savoir table{border-collapse:collapse;width:100%}
+.savoir td{padding:6px 12px;font-size:16.5px;font-weight:600;line-height:1.5;border-bottom:1px dashed #B7DED7;vertical-align:top}
+.savoir td:first-child{font-weight:900;color:#0B5C56;white-space:nowrap}
+.savoir em{font-style:italic;color:#0D9488}
 
-.rec-zone{display:flex;flex-direction:column;align-items:center;gap:10px}
-#recBtn{width:74px;height:74px;border-radius:50%;border:none;background:var(--pri);color:#fff;font-size:28px;cursor:pointer;box-shadow:0 4px 16px rgba(15,118,110,.32)}
+.rows{display:flex;flex-direction:column;gap:8px}
+.rrow{display:flex;align-items:center;gap:10px}
+.stxt{flex:1;background:#F1F9F7;border-radius:10px;padding:14px 18px;font-size:20px;font-weight:700;color:#123B32;line-height:1.4}
+.rrow2{display:grid;grid-template-columns:1fr 1fr;gap:8px;align-items:stretch}
+.qcard{background:#F0FAF7;border-left:4px solid #0F766E;border-radius:0 10px 10px 0;padding:12px 16px;display:flex;flex-direction:column;justify-content:center}
+.qlbl{font-size:13px;font-weight:800;color:#0F766E;text-transform:uppercase;letter-spacing:.1em;margin-bottom:4px}
+.qtxt{font-size:19px;font-weight:700;color:#123B32;line-height:1.4}
+.blanks-p{font-size:22px;line-height:2.9;font-weight:600;color:#123B32}
+
+.zone{display:flex;align-items:center;justify-content:center;min-height:54px;border-radius:10px;font-weight:800;font-family:'Nunito',sans-serif;cursor:pointer;transition:background .18s,border-color .18s,color .18s,transform .12s;user-select:none;text-align:center;padding:10px 14px;border:2.5px solid;line-height:1.35}
+.zone.empty{background:#F0F9FF;border-color:#93C5D6;border-style:dashed;color:#94A3B8;font-size:17px}
+.zone.dov{background:#E0F2FE!important;border-color:#38BDF8!important;border-style:solid!important;transform:scale(1.02)}
+.zvf{min-width:150px;font-size:19px}
+.f-vrai{background:#DCFCE7;border-color:#4ADE80;border-style:solid;color:#166534}
+.f-faux{background:#FEE2E2;border-color:#FCA5A5;border-style:solid;color:#991B1B}
+.zone.filled{background:#DBEAFE;border-color:#60A5FA;border-style:solid;color:#1E3A8A;font-size:17px}
+.fb-ok{background:#D1FAE5!important;border-color:#34D399!important;border-style:solid!important;color:#065F46!important}
+.fb-no{background:#FEE2E2!important;border-color:#F87171!important;border-style:solid!important;color:#991B1B!important;animation:shk .5s ease}
+@keyframes shk{0%,100%{transform:translateX(0)}20%{transform:translateX(-6px)}60%{transform:translateX(6px)}80%{transform:translateX(-3px)}}
+
+.blank{display:inline-block;min-width:130px;padding:4px 14px;margin:0 3px;border-radius:8px;font-weight:800;vertical-align:middle;cursor:pointer;transition:background .18s,border-color .18s,color .18s;user-select:none;border:2.5px dashed #93C5D6;background:#F0F9FF;color:#94A3B8;font-size:20px;text-align:center}
+.blank.filled{border-style:solid;border-color:#5EEAD4;background:#CCFBF1;color:#0B5C56}
+.blank.fb-ok{border-style:solid;border-color:#34D399;background:#D1FAE5;color:#065F46}
+.blank.fb-no{border-style:solid;border-color:#F87171;background:#FEE2E2;color:#991B1B;animation:shk .5s ease}
+.blank.dov{border-style:solid;border-color:#38BDF8;background:#E0F2FE}
+
+.bsec{border-radius:12px;padding:14px 12px;flex-shrink:0}
+.bsec.b1{background:#EDF6F4;border:1.5px solid #B7DED7}
+.blbl{font-size:12px;font-weight:800;text-transform:uppercase;letter-spacing:.14em;margin-bottom:10px;color:#0F766E}
+.btiles{display:flex;flex-wrap:wrap;gap:8px;justify-content:center}
+.btiles.vert{flex-direction:column;flex-wrap:nowrap}
+
+.tile{border-radius:10px;font-weight:800;font-family:'Nunito',sans-serif;cursor:grab;transition:all .15s;user-select:none;border:2.5px solid;box-shadow:0 2px 7px rgba(0,0,0,.08);padding:10px 14px;display:flex;align-items:center;justify-content:center;text-align:center;line-height:1.35}
+.tile:active{cursor:grabbing;transform:scale(1.04);box-shadow:0 5px 14px rgba(0,0,0,.15)}
+.tile.sel{background:#FEF9C3!important;border-color:#FBBF24!important;color:#92400E!important;box-shadow:0 0 0 4px rgba(245,158,11,.22),0 2px 7px rgba(0,0,0,.08)!important;transform:translateY(-1px)}
+.tv{background:#DCFCE7;border-color:#4ADE80;color:#166534;font-size:19px;padding:13px 22px}
+.tf{background:#FEE2E2;border-color:#FCA5A5;color:#991B1B;font-size:19px;padding:13px 22px}
+.tn{background:#F0FDFA;border-color:#5EEAD4;color:#0B5C56;font-size:16px}
+.ta{background:#FFF7ED;border-color:#FDBA74;color:#9A3412;font-size:15px}
+.bempty{font-size:13px;color:#94A3B8;font-weight:600;text-align:center;padding:8px 0;font-style:italic}
+
+.ghost{position:fixed;z-index:9999;pointer-events:none;opacity:.88;transform:scale(1.06) rotate(1.5deg);box-shadow:0 8px 24px rgba(0,0,0,.25);border-radius:10px}
+
+#fc-overlay{display:none;position:fixed;inset:0;z-index:9000;background:rgba(15,25,35,.6);backdrop-filter:blur(5px);align-items:center;justify-content:center}
+#fc-overlay.on{display:flex}
+#fc-box{background:#0F766E;border-radius:24px;padding:44px 56px;max-width:760px;width:92%;box-shadow:0 24px 64px rgba(0,0,0,.4);display:flex;flex-direction:column;align-items:center;gap:20px;animation:fcPop .3s cubic-bezier(.34,1.4,.64,1)}
+@keyframes fcPop{from{transform:scale(.82);opacity:0}to{transform:scale(1);opacity:1}}
+#fc-counter{font-size:12px;font-weight:900;text-transform:uppercase;letter-spacing:.22em;color:rgba(255,255,255,.5)}
+#fc-word{font-size:36px;font-weight:900;color:#fff;text-align:center;line-height:1.2;border-bottom:2px solid rgba(255,255,255,.18);padding-bottom:18px;width:100%}
+#fc-def{font-size:21px;font-weight:700;color:#fff;line-height:1.6;text-align:center}
+#fc-ex{font-size:18px;font-weight:600;color:rgba(255,255,255,.78);line-height:1.6;text-align:center;font-style:italic}
+#fc-ex strong{font-weight:900;font-style:normal;color:#fff}
+#fc-def.hidden,#fc-ex.hidden{display:none}
+#fc-reveal-btn{background:rgba(255,255,255,.18);border:1px solid rgba(255,255,255,.4);color:#fff;border-radius:8px;padding:8px 20px;font-family:'Nunito',sans-serif;font-size:14px;font-weight:800;cursor:pointer}
+#fc-reveal-btn:hover{background:rgba(255,255,255,.38)}
+#fc-reveal-btn.hidden{display:none}
+#fc-btns{display:flex;gap:14px;margin-top:6px;flex-wrap:wrap;justify-content:center}
+.fc-btn{background:rgba(255,255,255,.15);border:2px solid rgba(255,255,255,.38);color:#fff;border-radius:10px;padding:10px 22px;font-family:'Nunito',sans-serif;font-size:15px;font-weight:800;cursor:pointer}
+.fc-btn:hover{background:rgba(255,255,255,.28)}
+
+.vocab-sec{background:#EDF6F4;border-bottom:3px solid rgba(15,118,110,.15);padding:14px 32px 18px}
+.vocab-grid{display:grid;grid-template-columns:1fr 1fr 1fr;gap:5px 20px}
+.vw{display:flex;align-items:baseline;gap:8px;padding:7px 10px;border-radius:8px;background:rgba(255,255,255,.6);cursor:pointer}
+.vw span.dot{display:inline-block;width:8px;height:8px;border-radius:50%;background:#0F766E;flex-shrink:0}
+.vw span.w{font-size:17px;font-weight:700;color:#123B32}
+
+/* Sections personnalisées (oral / écrit / autoéval) */
+.custom{max-width:660px}
+.lead{font-size:16px;font-weight:700;color:#3B6156;line-height:1.6;margin-bottom:14px}
+.rec-zone{display:flex;flex-direction:column;align-items:center;gap:10px;margin:8px 0}
+#recBtn{width:78px;height:78px;border-radius:50%;border:none;background:#0F766E;color:#fff;font-size:30px;cursor:pointer;box-shadow:0 4px 16px rgba(15,118,110,.32)}
 #recBtn.recording{background:#E23D2E;animation:pulse 1.2s infinite}
 @keyframes pulse{0%{box-shadow:0 0 0 0 rgba(226,61,46,.45)}70%{box-shadow:0 0 0 16px rgba(226,61,46,0)}100%{box-shadow:0 0 0 0 rgba(226,61,46,0)}}
-.rec-lbl{font-size:13px;font-weight:800;color:var(--ink2)}
-
-.btn{font-family:'Nunito',sans-serif;font-size:14.5px;font-weight:800;border-radius:10px;padding:11px 18px;cursor:pointer;border:2.5px solid transparent;transition:all .15s}
-.btn-pri{background:var(--pri);color:#fff}
-.btn-pri:hover{background:var(--pri-d)}
-.btn-pri:disabled{opacity:.5;cursor:not-allowed}
-.btn-ghost{background:var(--pri-l);color:var(--pri);border-color:var(--pri-l2)}
-.btn-ghost:hover{background:var(--pri-l2)}
-.btn-send{background:#12556B;color:#fff}
-.btn-send:disabled{opacity:.5}
-
-.fb{background:#F0FAF7;border:2px solid var(--pri-l2);border-radius:12px;padding:14px 16px;display:none;flex-direction:column;gap:8px}
+.rec-lbl{font-size:13.5px;font-weight:800;color:#5E8A82}
+textarea,input.txt{width:100%;border:2.5px solid #B7DED7;border-radius:12px;padding:11px 14px;font-family:'Nunito',sans-serif;font-size:15px;font-weight:700;color:#123B32;background:#F7FCFB;resize:vertical}
+textarea:focus{outline:none;border-color:#0F766E}
+.btn{font-family:'Nunito',sans-serif;font-size:14.5px;font-weight:800;border-radius:10px;padding:11px 18px;cursor:pointer;border:2.5px solid transparent}
+.btn-pri{background:#0F766E;color:#fff}.btn-pri:hover{background:#0B5C56}.btn-pri:disabled{opacity:.5;cursor:not-allowed}
+.btn-ghost{background:#EDF6F4;color:#0F766E;border-color:#B7DED7}.btn-ghost:hover{background:#DCEFEB}
+.btn-send{background:#12556B;color:#fff}.btn-send:disabled{opacity:.5}
+.fb{background:#F0FAF7;border:2px solid #B7DED7;border-radius:12px;padding:14px 16px;display:none;flex-direction:column;gap:8px;margin-top:12px}
 .fb.on{display:flex}
-.fb-t{font-size:11.5px;font-weight:900;text-transform:uppercase;letter-spacing:.06em;color:var(--pri-d)}
-.fb-c{font-size:15px;font-weight:800;color:var(--pri-d);line-height:1.5}
-.fb-e{font-size:12.5px;font-weight:700;color:var(--warn);line-height:1.5;padding-left:14px;position:relative}
+.fb-t{font-size:11.5px;font-weight:900;text-transform:uppercase;letter-spacing:.06em;color:#0B5C56}
+.fb-c{font-size:15px;font-weight:800;color:#0B5C56;line-height:1.5}
+.fb-e{font-size:12.5px;font-weight:700;color:#B45309;line-height:1.5;padding-left:14px;position:relative}
 .fb-e::before{content:"•";position:absolute;left:2px}
-
-.selfrow{display:flex;align-items:center;justify-content:space-between;gap:10px;padding:10px 0;border-bottom:1px solid var(--border)}
-.self-txt{font-size:14px;font-weight:800;color:var(--ink)}
-.self-opts{display:flex;gap:6px}
-.self-opts button{width:38px;height:38px;border-radius:9px;border:2px solid var(--pri-l2);background:#fff;font-size:18px;cursor:pointer}
-.self-opts button.sel{border-color:var(--pri);background:var(--pri-l)}
-
-.nav{display:flex;gap:10px;justify-content:space-between;padding-top:4px}
-.status{font-size:13.5px;font-weight:800;color:var(--ink2);text-align:center;display:none}
+.status{font-size:13.5px;font-weight:800;color:#5E8A82;text-align:center;display:none;margin-top:8px}
 .status.on{display:block}
-.err{font-size:13px;font-weight:800;color:#B91C1C;background:#FEF2F2;border:2px solid #FCA5A5;border-radius:10px;padding:10px 14px;display:none}
+.err{font-size:13px;font-weight:800;color:#B91C1C;background:#FEF2F2;border:2px solid #FCA5A5;border-radius:10px;padding:10px 14px;display:none;margin-top:8px}
 .err.on{display:block}
 .sent{font-size:13px;font-weight:800;color:#12556B}
+.selfrow{display:flex;align-items:center;justify-content:space-between;gap:10px;padding:11px 0;border-bottom:1px solid #DCEFEB}
+.self-txt{font-size:15px;font-weight:800;color:#123B32}
+.self-opts{display:flex;gap:6px}
+.self-opts button{width:40px;height:40px;border-radius:9px;border:2px solid #B7DED7;background:#fff;font-size:19px;cursor:pointer}
+.self-opts button.sel{border-color:#0F766E;background:#DCEFEB}
+.hidden{display:none!important}
 
-.end{text-align:center;display:flex;flex-direction:column;gap:12px;align-items:center;padding:12px}
-.end-ic{font-size:48px}
-</style></head>
+@media(max-width:900px){.vocab-grid{grid-template-columns:1fr 1fr}.rrow2{grid-template-columns:1fr}.hdr-h1{font-size:22px}}
+</style>
+</head>
 <body>
 
 <div id="hdr">
-  <div class="hdr-top">
+  <div class="hdr-l">
     <div class="hdr-ic">👨‍⚕️</div>
-    <div>
-      <div class="hdr-eye">Module Niveau 4 · Parcours complet</div>
-      <div class="hdr-h1">La visite chez le médecin</div>
-    </div>
+    <div><div class="hdr-eye">Francisation · Niveau 4 · Module complet</div><div class="hdr-h1">La visite chez le médecin</div></div>
   </div>
-  <div id="steps"></div>
+  <div class="hdr-r">
+    <div id="prog-chip">⭐ 0 / 0</div>
+    <button id="btn-reset">↺ Réinitialiser</button>
+  </div>
 </div>
 
-<div id="main"><div id="panel"></div></div>
+<div id="tabs"></div>
+
+<div id="sel-banner">
+  ✋ Sélectionné : «&nbsp;<span id="sel-lbl">—</span>&nbsp;» — Cliquez sur une case pour le placer.
+</div>
+
+<div id="sections"></div>
+
+<div id="fc-overlay">
+  <div id="fc-box">
+    <div id="fc-counter">Carte 1 / 12</div>
+    <div id="fc-word">—</div>
+    <button id="fc-reveal-btn">Voir la définition</button>
+    <div id="fc-def" class="hidden">—</div>
+    <div id="fc-ex" class="hidden">—</div>
+    <div id="fc-btns">
+      <button class="fc-btn" id="fc-prev">← Précédente</button>
+      <button class="fc-btn" id="fc-next">Suivante →</button>
+      <button class="fc-btn" id="fc-close">✕ Fermer</button>
+    </div>
+  </div>
+</div>
 
 <script>
-const params = new URLSearchParams(location.search);
-const studentCode = params.get('code') || '';
+// ═══════════════════════════════════════════════════════════════════════
+//  LA VISITE CHEZ LE MÉDECIN — Module interactif Niveau 4 (FLS)
+//  Sections : Je me prépare · Chez le médecin · La langue · Je parle ·
+//             J'écris · Je m'évalue — suivi LMS intégré
+// ═══════════════════════════════════════════════════════════════════════
 
-const STEP_LABELS = ["Mise en train","Compréhension orale","Vocabulaire","Travail de la langue","Production orale","Production écrite","Autoévaluation"];
-let current = 0;
-const done = new Array(STEP_LABELS.length).fill(false);
+function getCode(){
+  const own=new URLSearchParams(location.search).get('code');
+  if(own) return own;
+  try{ return new URLSearchParams(window.parent.location.search).get('code')||''; }catch(e){ return ''; }
+}
+const studentCode=getCode();
 
-// ---- Données du module ----
-const DIALOGUE = [
-  ["a","Le médecin","Bonjour, installez-vous. Qu'est-ce qui vous amène aujourd'hui ?"],
-  ["b","Fatima","Bonjour docteur. J'ai très mal à la tête depuis une semaine."],
-  ["a","Le médecin","Est-ce que vous avez aussi de la fièvre ?"],
-  ["b","Fatima","Oui, un peu. Et je suis très fatiguée."],
-  ["a","Le médecin","Est-ce que vous dormez bien la nuit ?"],
-  ["b","Fatima","Non, pas très bien. Je me réveille souvent."],
-  ["a","Le médecin","Je comprends. Ce n'est rien de grave. Je vais vous prescrire un médicament pour la douleur. Reposez-vous et buvez beaucoup d'eau."],
-  ["b","Fatima","D'accord. Merci beaucoup, docteur."],
-];
-const CO_QUESTIONS = [
-  { t:"Fatima a mal à la tête depuis une semaine.", a:true },
-  { t:"Fatima dort très bien la nuit.", a:false, note:"Elle se réveille souvent." },
-  { t:"Le médecin dit que c'est grave.", a:false, note:"Il dit : « Ce n'est rien de grave. »" },
-];
-const CO_OPEN = [
-  { t:"Qu'est-ce que le médecin prescrit à Fatima ?", a:"Un médicament pour la douleur." },
-  { t:"Quels conseils le médecin donne-t-il ?", a:"Se reposer et boire beaucoup d'eau." },
-];
-const VOCAB = [
-  { m:"examiner", d:"Regarder le corps du patient pour trouver la maladie.", e:"Le médecin m'examine." },
-  { m:"une ordonnance", d:"Le papier du médecin pour acheter des médicaments.", e:"Le médecin me donne une ordonnance." },
-  { m:"la douleur", d:"Une sensation désagréable dans le corps.", e:"J'ai une douleur au dos." },
-  { m:"se reposer", d:"Arrêter ses activités pour récupérer.", e:"Reposez-vous quelques jours." },
-  { m:"grave", d:"Très sérieux, dangereux.", e:"Ce n'est rien de grave." },
-  { m:"guérir", d:"Redevenir en bonne santé.", e:"Vous allez guérir vite." },
-];
-const GAP = [
-  { before:"", after:" beaucoup d'eau. (boire)", a:["buvez"] },
-  { before:"", after:" ce médicament. (prendre)", a:["prenez"] },
-  { before:"", after:" des fruits et des légumes. (manger)", a:["mangez"] },
-  { before:"Ne ", after:" pas. (fumer)", a:["fumez"] },
-];
-const SELF = [
-  "Je comprends les questions du médecin.",
-  "Je peux décrire mes symptômes en détail.",
-  "Je comprends un diagnostic simple.",
-  "Je comprends une ordonnance et des conseils.",
-  "Je peux donner un conseil de santé (impératif).",
+// ── DIALOGUES ─────────────────────────────────────────────────────────
+const DIALOGUES = {
+  prep: {
+    label: "Dialogue — Prendre un rendez-vous",
+    lines: [
+      ["LA RÉCEPTIONNISTE","Clinique Saint-Laurent, bonjour."],
+      ["SAMI","Bonjour, j'aimerais prendre un rendez-vous. Je ne me sens pas bien."],
+      ["LA RÉCEPTIONNISTE","Quels sont vos symptômes ?"],
+      ["SAMI","J'ai mal à la gorge et je tousse depuis trois jours. J'ai aussi un peu de fièvre."],
+      ["LA RÉCEPTIONNISTE","Avez-vous votre carte d'assurance maladie ?"],
+      ["SAMI","Oui, je l'ai."],
+      ["LA RÉCEPTIONNISTE","Parfait. Pouvez-vous venir demain à quatorze heures ?"],
+      ["SAMI","Oui, c'est parfait. Merci beaucoup."],
+    ]
+  },
+  co: {
+    label: "Dialogue — La consultation",
+    lines: [
+      ["LE MÉDECIN","Bonjour, installez-vous. Qu'est-ce qui vous amène aujourd'hui ?"],
+      ["FATIMA","Bonjour docteur. J'ai très mal à la tête depuis une semaine."],
+      ["LE MÉDECIN","Est-ce que vous avez aussi de la fièvre ?"],
+      ["FATIMA","Oui, un peu. Et je suis très fatiguée."],
+      ["LE MÉDECIN","Est-ce que vous dormez bien la nuit ?"],
+      ["FATIMA","Non, pas très bien. Je me réveille souvent."],
+      ["LE MÉDECIN","Je comprends. Ce n'est rien de grave. Je vais vous prescrire un médicament pour la douleur. Reposez-vous et buvez beaucoup d'eau."],
+      ["FATIMA","D'accord. Merci beaucoup, docteur."],
+    ]
+  },
+};
+
+// ── SECTIONS ──────────────────────────────────────────────────────────
+const SECTIONS = [
+  {id:'prep', no:'▶', title:'Je me prépare', color:'#0F766E',
+   intro:"🩺 Fatima ne se sent pas bien. Avant de voir le médecin, elle prend un rendez-vous. Lisez le dialogue, découvrez le vocabulaire, puis faites les exercices.",
+   dialogue:'prep'},
+  {id:'co', no:'1', title:'Chez le médecin', color:'#C0573A',
+   intro:"👨‍⚕️ Fatima est maintenant dans le bureau du médecin. Écoutez la consultation, puis répondez aux exercices de compréhension.",
+   dialogue:'co'},
+  {id:'langue', no:'2', title:'La langue', color:'#6B4FBB',
+   intro:"✍️ Travaillons la grammaire utile chez le médecin : parler de la douleur, donner un conseil, poser une question et parler de la durée."},
+  {id:'parle', no:'3', title:'Je parle', color:'#0D9488', custom:true,
+   intro:"🎤 À ton tour de parler ! Enregistre-toi en privé, obtiens une rétroaction, puis envoie ta meilleure prise à ton enseignant si tu le veux."},
+  {id:'ecris', no:'4', title:"J'écris", color:'#0E7490', custom:true,
+   intro:"📝 Raconte ta visite par écrit. L'assistant corrige ton texte en privé."},
+  {id:'eval', no:'✓', title:'Je m\'évalue', color:'#166534', custom:true,
+   intro:"🌟 Fais le point : qu'est-ce que tu es maintenant capable de faire ?"},
 ];
 
-const panel = document.getElementById('panel');
-lmsTrack('exercise_started', {});
-renderSteps();
-renderStep();
+// ── EXERCICES ─────────────────────────────────────────────────────────
+// type 'vf'     : lignes {id,txt,ok} — tuiles fixes (labels)
+// type 'match'  : lignes {id,q,aid,a} — banque = réponses
+// type 'blanks' : segs {k:'t'/'b',id,c} + words {id,l}
+const EXOS = [
+  // ── JE ME PRÉPARE ──
+  {sec:'prep', id:'pr1', type:'match', num:'Exercice 1', tit:'Le bon professionnel', color:'#0F766E',
+   sub:'Associez chaque problème au bon professionnel de la santé.',
+   rows:[
+    {id:'pr1a', q:"J'ai mal aux dents.", aid:'pa1', a:"le dentiste"},
+    {id:'pr1b', q:"Je vois mal de loin.", aid:'pa2', a:"l'optométriste"},
+    {id:'pr1c', q:"J'ai un bouton sur la peau.", aid:'pa3', a:"le dermatologue"},
+    {id:'pr1d', q:"Mon bébé est malade.", aid:'pa4', a:"le pédiatre"},
+    {id:'pr1e', q:"J'ai besoin d'un médicament.", aid:'pa5', a:"le pharmacien"},
+   ]},
 
-function renderSteps(){
-  const el = document.getElementById('steps');
-  el.innerHTML = '';
-  STEP_LABELS.forEach((lbl,i)=>{
-    const d = document.createElement('div');
-    d.className = 'step'+(i===current?' active':'')+(done[i]?' done':'');
-    d.innerHTML = `<div class="step-dot">${done[i]?'✓':(i+1)}</div><div class="step-lbl">${lbl}</div>`;
-    d.onclick = ()=>{ current=i; renderSteps(); renderStep(); };
-    el.appendChild(d);
-  });
+  // ── CHEZ LE MÉDECIN (compréhension) ──
+  {sec:'co', id:'co1', type:'vf', num:'Exercice 1', tit:'Vrai ou Faux — La consultation', color:'#C0573A',
+   sub:'Écoutez le dialogue, puis répondez.', tiles:['VRAI','FAUX'],
+   rows:[
+    {id:'co1a', txt:"Fatima a mal à la tête depuis une semaine.", ok:'VRAI'},
+    {id:'co1b', txt:"Fatima dort très bien la nuit.", ok:'FAUX'},
+    {id:'co1c', txt:"Fatima a un peu de fièvre.", ok:'VRAI'},
+    {id:'co1d', txt:"Le médecin dit que c'est grave.", ok:'FAUX'},
+    {id:'co1e', txt:"Le médecin prescrit un médicament pour la douleur.", ok:'VRAI'},
+    {id:'co1f', txt:"Le médecin conseille de se reposer.", ok:'VRAI'},
+   ]},
+  {sec:'co', id:'co2', type:'match', num:'Exercice 2', tit:'Les questions du médecin', color:'#C0573A',
+   sub:'Associez chaque question du médecin à la bonne réponse de Fatima.',
+   rows:[
+    {id:'co2a', q:"Qu'est-ce qui vous amène aujourd'hui ?", aid:'ca1', a:"J'ai mal à la tête."},
+    {id:'co2b', q:"Est-ce que vous avez de la fièvre ?", aid:'ca2', a:"Oui, un peu."},
+    {id:'co2c', q:"Est-ce que vous dormez bien ?", aid:'ca3', a:"Non, je me réveille souvent."},
+    {id:'co2d', q:"Depuis combien de temps ?", aid:'ca4', a:"Depuis une semaine."},
+   ]},
+  {sec:'co', id:'co3', type:'vf', num:'Exercice 3', tit:'La lettre finale', color:'#0D9488',
+   sub:'Graphie-phonie : la dernière lettre de ce mot est-elle muette ou prononcée ?',
+   tiles:['MUETTE','PRONONCÉE'],
+   savoir:{h:"› La lettre finale muette", rows:[
+     ["-s, -t, -p, -d final","On ne l'entend pas : un rendez-vou<em>s</em>, un médicamen<em>t</em>, un siro<em>p</em>"],
+     ["-e final","On ne l'entend pas : un symptôm<em>e</em>, une ordonnanc<em>e</em>"],
+     ["-r, -l final","On l'entend souvent : la douleu<em>r</em>, un hôpita<em>l</em>, un docteu<em>r</em>"],
+   ]},
+   rows:[
+    {id:'co3a', txt:"un rendez-vou<b>s</b>", ok:'MUETTE'},
+    {id:'co3b', txt:"un médicamen<b>t</b>", ok:'MUETTE'},
+    {id:'co3c', txt:"un siro<b>p</b>", ok:'MUETTE'},
+    {id:'co3d', txt:"un symptôm<b>e</b>", ok:'MUETTE'},
+    {id:'co3e', txt:"la douleu<b>r</b>", ok:'PRONONCÉE'},
+    {id:'co3f', txt:"un hôpita<b>l</b>", ok:'PRONONCÉE'},
+    {id:'co3g', txt:"un docteu<b>r</b>", ok:'PRONONCÉE'},
+   ]},
+
+  // ── LA LANGUE ──
+  {sec:'langue', id:'l1', type:'blanks', num:'Exercice 1', tit:'« Avoir mal à » + le corps', color:'#6B4FBB',
+   sub:"Complétez avec à la, au, à l' ou aux.",
+   savoir:{h:"› Avoir mal à + article", rows:[
+     ["à la","J'ai mal <em>à la</em> gorge, <em>à la</em> tête."],
+     ["au","J'ai mal <em>au</em> dos, <em>au</em> ventre."],
+     ["à l'","J'ai mal <em>à l'</em>oreille, <em>à l'</em>estomac."],
+     ["aux","J'ai mal <em>aux</em> dents, <em>aux</em> yeux."],
+   ]},
+   byLabel:true,
+   words:[{id:'m1',l:'à la'},{id:'m2',l:'au'},{id:'m3',l:"à l'"},{id:'m4',l:'aux'},{id:'m5',l:'au'},{id:'m6',l:'aux'}],
+   segs:[
+    {k:'t',t:"a)  J'ai mal "},{k:'b',id:'lb1',c:'à la'},{k:'t',t:" gorge.    "},
+    {k:'t',t:"b)  Il a mal "},{k:'b',id:'lb2',c:'au'},{k:'t',t:" dos.    "},
+    {k:'t',t:"c)  Elle a mal "},{k:'b',id:'lb3',c:'aux'},{k:'t',t:" dents.    "},
+    {k:'t',t:"d)  Tu as mal "},{k:'b',id:'lb4',c:"à l'"},{k:'t',t:" oreille.    "},
+    {k:'t',t:"e)  Nous avons mal "},{k:'b',id:'lb5',c:'au'},{k:'t',t:" ventre.    "},
+    {k:'t',t:"f)  J'ai mal "},{k:'b',id:'lb6',c:'aux'},{k:'t',t:" yeux."},
+   ]},
+  {sec:'langue', id:'l2', type:'blanks', num:'Exercice 2', tit:"L'impératif — donner un conseil", color:'#6B4FBB',
+   sub:"Glissez le verbe conjugué à l'impératif (forme « vous ») dans la bonne phrase.",
+   savoir:{h:"› L'impératif présent (conseils)", rows:[
+     ["forme « vous »","On enlève « vous » : <em>Buvez</em>, <em>Prenez</em>, <em>Dormez</em>."],
+     ["verbe pronominal","<em>Reposez-vous</em> bien."],
+     ["forme négative","<em>Ne fumez pas</em>, <em>ne travaillez pas</em> trop."],
+   ]},
+   words:[{id:'v1',l:'Buvez'},{id:'v2',l:'Prenez'},{id:'v3',l:'Mangez'},{id:'v4',l:'Reposez-vous'},{id:'v5',l:'Dormez'},{id:'v6',l:'Ne fumez pas'}],
+   segs:[
+    {k:'t',t:"a)  (boire) "},{k:'b',id:'vb1',c:'v1'},{k:'t',t:" beaucoup d'eau.    "},
+    {k:'t',t:"b)  (prendre) "},{k:'b',id:'vb2',c:'v2'},{k:'t',t:" ce médicament.    "},
+    {k:'t',t:"c)  (manger) "},{k:'b',id:'vb3',c:'v3'},{k:'t',t:" des fruits et des légumes.    "},
+    {k:'t',t:"d)  (se reposer) "},{k:'b',id:'vb4',c:'v4'},{k:'t',t:" bien.    "},
+    {k:'t',t:"e)  (dormir) "},{k:'b',id:'vb5',c:'v5'},{k:'t',t:" au moins huit heures.    "},
+    {k:'t',t:"f)  (ne pas fumer) "},{k:'b',id:'vb6',c:'v6'},{k:'t',t:"."},
+   ]},
+  {sec:'langue', id:'l3', type:'blanks', num:'Exercice 3', tit:'Poser une question', color:'#6B4FBB',
+   sub:'Complétez chaque question avec le bon mot interrogatif.',
+   savoir:{h:"› Poser une question", rows:[
+     ["Est-ce que…?","<em>Est-ce que</em> vous toussez ?"],
+     ["Qu'est-ce que…?","<em>Qu'est-ce que</em> vous avez ?"],
+     ["Depuis quand…?","<em>Depuis quand</em> êtes-vous malade ?"],
+     ["Avez-vous…?","<em>Avez-vous</em> de la fièvre ?"],
+   ]},
+   words:[{id:'q1',l:"Qu'est-ce que"},{id:'q2',l:'Depuis quand'},{id:'q3',l:'Est-ce que'},{id:'q4',l:'Avez-vous'},{id:'q5',l:'Combien de'}],
+   segs:[
+    {k:'t',t:"a)  "},{k:'b',id:'qb1',c:'q1'},{k:'t',t:" vous ressentez ?    "},
+    {k:'t',t:"b)  "},{k:'b',id:'qb2',c:'q2'},{k:'t',t:" avez-vous mal ?    "},
+    {k:'t',t:"c)  "},{k:'b',id:'qb3',c:'q3'},{k:'t',t:" vous dormez bien ?    "},
+    {k:'t',t:"d)  "},{k:'b',id:'qb4',c:'q4'},{k:'t',t:" votre carte d'assurance maladie ?    "},
+    {k:'t',t:"e)  "},{k:'b',id:'qb5',c:'q5'},{k:'t',t:" fois par jour prenez-vous le sirop ?"},
+   ]},
+  {sec:'langue', id:'l4', type:'blanks', num:'Exercice 4', tit:'Depuis ou il y a ?', color:'#6B4FBB',
+   sub:'Complétez avec depuis (situation qui continue) ou il y a (moment passé et fini).',
+   savoir:{h:"› Depuis / il y a", rows:[
+     ["depuis + durée","La situation continue : Je suis malade <em>depuis</em> trois jours."],
+     ["il y a + moment","Une action finie dans le passé : J'ai vu le médecin <em>il y a</em> deux jours."],
+   ]},
+   byLabel:true,
+   words:[{id:'d1',l:'depuis'},{id:'d2',l:'il y a'},{id:'d3',l:'depuis'},{id:'d4',l:'il y a'}],
+   segs:[
+    {k:'t',t:"a)  Je tousse "},{k:'b',id:'db1',c:'depuis'},{k:'t',t:" une semaine.    "},
+    {k:'t',t:"b)  J'ai commencé à avoir de la fièvre "},{k:'b',id:'db2',c:'il y a'},{k:'t',t:" trois jours.    "},
+    {k:'t',t:"c)  J'ai mal à la tête "},{k:'b',id:'db3',c:'depuis'},{k:'t',t:" hier.    "},
+    {k:'t',t:"d)  Je suis allé à la pharmacie "},{k:'b',id:'db4',c:'il y a'},{k:'t',t:" deux jours."},
+   ]},
+];
+
+// ── FLASHCARDS ────────────────────────────────────────────────────────
+const FC_CARDS = [
+  {word:"un rendez-vous", def:"Un moment fixé à l'avance pour voir quelqu'un.", ex:"J'ai un <strong>rendez-vous</strong> à dix heures."},
+  {word:"un symptôme", def:"Un signe qui indique une maladie.", ex:"Quels sont vos <strong>symptômes</strong> ?"},
+  {word:"la fièvre", def:"Une température du corps plus élevée que la normale.", ex:"Vous n'avez pas de <strong>fièvre</strong>."},
+  {word:"tousser", def:"Faire un bruit sec avec la gorge à cause d'une irritation.", ex:"Est-ce que vous <strong>toussez</strong> beaucoup ?"},
+  {word:"la douleur", def:"Une sensation désagréable dans le corps.", ex:"J'ai une <strong>douleur</strong> au dos."},
+  {word:"une ordonnance", def:"Le papier du médecin pour acheter des médicaments.", ex:"Le médecin me donne une <strong>ordonnance</strong>."},
+  {word:"examiner", def:"Regarder le corps du patient pour trouver la maladie.", ex:"Le médecin m'<strong>examine</strong>."},
+  {word:"se reposer", def:"Arrêter ses activités pour récupérer.", ex:"<strong>Reposez-vous</strong> quelques jours."},
+  {word:"guérir", def:"Redevenir en bonne santé.", ex:"Vous allez <strong>guérir</strong> vite."},
+  {word:"un antibiotique", def:"Un médicament qui combat une infection.", ex:"Le médecin me prescrit un <strong>antibiotique</strong>."},
+  {word:"la carte d'assurance maladie", def:"Le document qui donne accès aux soins gratuits au Québec.", ex:"Avez-vous votre <strong>carte d'assurance maladie</strong> ?"},
+  {word:"une pharmacie", def:"Le magasin où on achète des médicaments.", ex:"La <strong>pharmacie</strong> est ouverte jusqu'à 22 h."},
+];
+
+// ── ÉTAT ──────────────────────────────────────────────────────────────
+const S = {pl:{}, sel:null, fb:{}};
+let curSec = 'prep';
+
+const ZONES = {};
+EXOS.forEach(ex => {
+  if (ex.type === 'vf')     ex.rows.forEach(r => ZONES[r.id] = {cv:r.ok, zcat:'vf', exo:ex.id});
+  if (ex.type === 'match')  ex.rows.forEach(r => ZONES[r.id] = {cv:r.aid, zcat:'id', exo:ex.id});
+  if (ex.type === 'rows')   ex.rows.forEach(r => ZONES[r.id] = {cv:r.cv, zcat:'id', exo:ex.id});
+  if (ex.type === 'blanks') ex.segs.filter(s=>s.k==='b').forEach(s =>
+    ZONES[s.id] = {cv:s.c, zcat: ex.byLabel ? 'lbl' : 'id', exo:ex.id});
+});
+const TOTAL_ZONES = Object.keys(ZONES).length;
+
+// ── LMS TRACKING ──────────────────────────────────────────────────────
+function lmsTrack(event, data) {
+  try { window.parent.postMessage(Object.assign({lms:true, event:event}, data||{}), '*'); } catch(e) {}
+  try {
+    const up = new URLSearchParams(window.parent.location.search);
+    const code = up.get('code'), actId = parseInt(up.get('activityId'))||null, title = up.get('title')||'';
+    if (code && actId) {
+      fetch('/api/student/progress', {
+        method:'POST', headers:{'Content-Type':'application/json'},
+        body: JSON.stringify(Object.assign({code, activityId:actId, activityTitle:title, event}, data||{})),
+      }).catch(()=>{});
+    }
+  } catch(e2) {}
+}
+const TR = {attempts:{}, correct:{}};
+function trackPlacement(zid, ok) {
+  if (ok && !TR.correct[zid]) {
+    TR.correct[zid] = true;
+    if (!(zid in TR.attempts)) TR.attempts[zid] = 0;
+    const zonesDone = Object.keys(TR.correct).length;
+    const firstTry = Object.keys(TR.correct).filter(k => (TR.attempts[k]||0)===0).length;
+    const totalErrors = Object.keys(TR.attempts).reduce((s,k)=>s+(TR.attempts[k]||0),0);
+    lmsTrack('exercise_completed', {zones:TOTAL_ZONES, zonesDone, firstTry, totalErrors});
+  } else if (!ok && !TR.correct[zid]) {
+    TR.attempts[zid] = (TR.attempts[zid]||0) + 1;
+  }
+  updateChip();
 }
 
-function nav(){
-  return `<div class="nav">
-    <button class="btn btn-ghost" ${current===0?'style="visibility:hidden"':''} onclick="go(-1)">← Précédent</button>
-    <button class="btn btn-pri" onclick="go(1)">${current===STEP_LABELS.length-1?'Terminer':'Suivant →'}</button>
-  </div>`;
-}
-function go(dir){
-  if(dir>0){ done[current]=true; }
-  const next = current+dir;
-  if(next>=STEP_LABELS.length){ showEnd(); return; }
-  current = Math.max(0, next);
-  window.scrollTo(0,0);
-  renderSteps(); renderStep();
-}
-
-function renderStep(){
-  const fns=[stepIntro,stepCO,stepVocab,stepLangue,stepPO,stepPE,stepAuto];
-  panel.innerHTML='';
-  fns[current]();
-}
-
-// ---- Étape 1 : Mise en train ----
-function stepIntro(){
-  panel.innerHTML = `
-  <div class="card">
-    <div class="tag">Mise en train</div>
-    <h2 class="title">La visite chez le médecin</h2>
-    <p class="lead">Dans ce module, tu vas apprendre à te débrouiller pendant une consultation : comprendre les questions du médecin, décrire tes symptômes et comprendre ses conseils.</p>
-    <ul class="obj">
-      <li>Comprendre les questions du médecin</li>
-      <li>Décrire ses symptômes en détail</li>
-      <li>Comprendre un diagnostic et une ordonnance</li>
-      <li>Comprendre et donner des conseils de santé</li>
-    </ul>
-    <p class="lead" style="margin-top:4px">Pour commencer : que se passe-t-il pendant une visite chez le médecin ?</p>
-    <div class="chips" id="chips">
-      ${["Le médecin pose des questions","Le médecin m'examine","Le médecin donne une ordonnance","Le médecin donne des conseils","Je prends un autre rendez-vous"].map(c=>`<div class="chip" onclick="this.classList.toggle('on')">${c}</div>`).join('')}
-    </div>
-    <textarea rows="2" placeholder="As-tu déjà vu un médecin au Québec ? Écris une chose dont tu te souviens…"></textarea>
-  </div>
-  ${nav()}`;
-}
-
-// ---- Étape 2 : Compréhension orale ----
-function stepCO(){
-  panel.innerHTML = `
-  <div class="card">
-    <div class="tag">Compréhension orale</div>
-    <h2 class="title">Dans le bureau du médecin</h2>
-    <p class="lead">Écoute le dialogue, puis réponds aux questions. Tu peux réécouter autant de fois que tu veux.</p>
-    <div style="display:flex;gap:10px;flex-wrap:wrap">
-      <button class="btn btn-pri" id="playBtn" onclick="playDialogue()">🔊 Écouter le dialogue</button>
-      <button class="btn btn-ghost" onclick="toggleText()">Afficher le texte</button>
-    </div>
-    <div class="dialogue hidden" id="dlgText">
-      ${DIALOGUE.map(l=>`<div class="dl-line dl-${l[0]}"><span class="dl-who">${l[1]} :</span> ${l[2]}</div>`).join('')}
-    </div>
-    <div id="coQ" style="display:flex;flex-direction:column;gap:10px">
-      ${CO_QUESTIONS.map((q,i)=>`
-        <div class="q">
-          <div class="q-txt">${i+1}. ${q.t}</div>
-          <div class="vf">
-            <button onclick="answerVF(${i},true,this)">Vrai</button>
-            <button onclick="answerVF(${i},false,this)">Faux</button>
-          </div>
-          <div class="q-fb" id="cofb${i}"></div>
-        </div>`).join('')}
-      ${CO_OPEN.map((q,i)=>`
-        <div class="q">
-          <div class="q-txt">${CO_QUESTIONS.length+i+1}. ${q.t}</div>
-          <input class="txt" id="coopen${i}" placeholder="Écris ta réponse…">
-          <button class="btn btn-ghost" style="align-self:flex-start" onclick="showAnswer(${i})">Voir la réponse suggérée</button>
-          <div class="q-fb" id="coopenfb${i}"></div>
-        </div>`).join('')}
-    </div>
-  </div>
-  ${nav()}`;
-}
-function toggleText(){ document.getElementById('dlgText').classList.toggle('hidden'); }
-function playDialogue(){
+// ── DIALOGUE (synthèse vocale) ────────────────────────────────────────
+let dialogueRead = false;
+function playDialogue(dialId, btn){
   try{
     speechSynthesis.cancel();
     const voices = speechSynthesis.getVoices();
     const fr = voices.filter(v=>/^fr/i.test(v.lang));
-    DIALOGUE.forEach(l=>{
-      const u = new SpeechSynthesisUtterance(l[2]);
-      u.lang='fr-CA'; u.rate=0.95;
-      u.pitch = l[0]==='a'?1.15:0.85;
-      if(fr.length) u.voice = l[0]==='a'?(fr[0]):(fr[1]||fr[0]);
+    (DIALOGUES[dialId].lines||[]).forEach((l,i)=>{
+      const u=new SpeechSynthesisUtterance(l[1]);
+      u.lang='fr-CA'; u.rate=0.95; u.pitch=(i%2===0)?1.12:0.9;
+      if(fr.length) u.voice=(i%2===0)?fr[0]:(fr[1]||fr[0]);
       speechSynthesis.speak(u);
     });
-    lmsTrack('dialogue_listened', {});
+    if(!dialogueRead){ dialogueRead=true; lmsTrack('dialogue_listened'); }
   }catch(e){}
 }
-function answerVF(i,val,btn){
-  const q=CO_QUESTIONS[i];
-  const parent=btn.parentElement;
-  [...parent.children].forEach(b=>b.classList.remove('sel','good','bad'));
-  const correct = val===q.a;
-  btn.classList.add(correct?'good':'bad');
-  const fb=document.getElementById('cofb'+i);
-  fb.className='q-fb on '+(correct?'ok':'no');
-  fb.textContent = correct ? '✅ Bonne réponse !' : ('❌ '+(q.note||('La bonne réponse est : '+(q.a?'Vrai':'Faux')+'.')));
-}
-function showAnswer(i){
-  const fb=document.getElementById('coopenfb'+i);
-  fb.className='q-fb on ok';
-  fb.textContent='💡 Réponse suggérée : '+CO_OPEN[i].a;
+function markRead(btn){
+  btn.classList.add('done'); btn.textContent='✓ Lu';
+  if(!dialogueRead){ dialogueRead=true; lmsTrack('dialogue_listened'); }
 }
 
-// ---- Étape 3 : Vocabulaire ----
-function stepVocab(){
-  panel.innerHTML = `
-  <div class="card">
-    <div class="tag">Vocabulaire</div>
-    <h2 class="title">Les mots de la consultation</h2>
-    <p class="lead">Touche une carte pour révéler la définition et un exemple.</p>
-    <div class="flash">
-      ${VOCAB.map((v,i)=>`
-        <div class="fc" onclick="flipCard(${i})" id="fc${i}">
-          <div class="fc-word">${v.m}</div>
-          <div class="fc-def hidden" id="fcd${i}">${v.d}</div>
-          <div class="fc-ex hidden" id="fce${i}">« ${v.e} »</div>
-        </div>`).join('')}
-    </div>
-  </div>
-  ${nav()}`;
+// ── LOGIQUE DE PLACEMENT ──────────────────────────────────────────────
+function checkOk(zid, iid, lbl) {
+  const z = ZONES[zid];
+  if (!z) return false;
+  if (z.zcat === 'vf' || z.zcat === 'lbl') return lbl === z.cv;
+  return iid === z.cv;
 }
-function flipCard(i){
-  document.getElementById('fcd'+i).classList.toggle('hidden');
-  document.getElementById('fce'+i).classList.toggle('hidden');
+function doPlace(zid, iid, lbl, cat, from) {
+  if (from === zid) { S.sel = null; render(); return; }
+  if (from && from !== zid) { if (S.pl[zid]) S.pl[from] = S.pl[zid]; else delete S.pl[from]; delete S.fb[from]; delete S.fb[zid]; }
+  else if (!from && S.pl[zid]) { delete S.pl[zid]; delete S.fb[zid]; }
+  S.pl[zid] = {iid, lbl, cat}; S.sel = null;
+  const ok = checkOk(zid, iid, lbl);
+  S.fb[zid] = ok ? 'ok' : 'no';
+  trackPlacement(zid, ok);
+  render();
+  setTimeout(() => { delete S.fb[zid]; if (!ok) delete S.pl[zid]; render(); }, ok ? 1400 : 850);
+}
+function zoneClick(zid) {
+  if (S.sel) { doPlace(zid, S.sel.iid, S.sel.lbl, S.sel.cat, S.sel.from); }
+  else if (S.pl[zid] && !S.fb[zid]) {
+    const {iid,lbl,cat} = S.pl[zid];
+    delete S.pl[zid]; delete S.fb[zid];
+    S.sel = {iid,lbl,cat,from:zid}; render();
+  }
+}
+function tileClick(iid, lbl, cat) {
+  if (S.sel && S.sel.iid === iid && !S.sel.from) S.sel = null;
+  else S.sel = {iid,lbl,cat,from:null};
+  render();
 }
 
-// ---- Étape 4 : Travail de la langue ----
-function stepLangue(){
-  panel.innerHTML = `
-  <div class="card">
-    <div class="tag">Travail de la langue</div>
-    <h2 class="title">L'impératif pour donner des conseils</h2>
-    <div class="savoir">
-      <b>Rappel</b> — pour donner un conseil, le médecin utilise l'impératif (forme « vous »). On enlève le « vous » :
-      <table>
-        <tr><td><b>Buvez</b> beaucoup d'eau.</td><td>(boire)</td></tr>
-        <tr><td><b>Prenez</b> ce médicament.</td><td>(prendre)</td></tr>
-        <tr><td><b>Reposez-vous.</b></td><td>(se reposer)</td></tr>
-        <tr><td>Ne <b>fumez</b> pas.</td><td>(forme négative)</td></tr>
-      </table>
-    </div>
-    <p class="lead">Complète avec le verbe à l'impératif (forme « vous ») :</p>
-    <div style="display:flex;flex-direction:column;gap:12px">
-      ${GAP.map((g,i)=>`<div class="q"><div class="q-txt">${g.before}<span class="gap"><input id="gap${i}" placeholder="…"></span>${g.after}</div><div class="q-fb" id="gapfb${i}"></div></div>`).join('')}
-    </div>
-    <button class="btn btn-pri" style="align-self:flex-start" onclick="checkGaps()">Vérifier</button>
-  </div>
-  ${nav()}`;
+// ── DRAG & DROP ───────────────────────────────────────────────────────
+let dd = null;
+function drg(el, iid, lbl, cat, from) {
+  el.draggable = true;
+  el.addEventListener('dragstart', e => { dd = {iid,lbl,cat,from:from||null}; e.dataTransfer.setData('text/plain', JSON.stringify(dd)); e.dataTransfer.effectAllowed='move'; setTimeout(()=>el.style.opacity='.45',0); });
+  el.addEventListener('dragend', () => { el.style.opacity=''; dd=null; });
 }
-function norm(s){ return (s||'').toLowerCase().trim().normalize('NFD').replace(/[̀-ͯ]/g,'').replace(/\s+/g,' '); }
-function checkGaps(){
-  GAP.forEach((g,i)=>{
-    const val=norm(document.getElementById('gap'+i).value);
-    const ok=g.a.map(norm).includes(val);
-    const fb=document.getElementById('gapfb'+i);
-    fb.className='q-fb on '+(ok?'ok':'no');
-    fb.textContent = ok?'✅ Correct !':('❌ Réponse : '+g.a[g.a.length-1]);
+function drp(el, zid) {
+  el.addEventListener('dragover', e => { e.preventDefault(); el.classList.add('dov'); });
+  el.addEventListener('dragleave', () => el.classList.remove('dov'));
+  el.addEventListener('drop', e => { e.preventDefault(); el.classList.remove('dov'); let d=dd; if(!d){try{d=JSON.parse(e.dataTransfer.getData('text/plain'))}catch{}} if(!d)return; doPlace(zid, d.iid, d.lbl, d.cat, d.from); dd=null; });
+}
+let ts=null, ghost=null;
+function tch(el, iid, lbl, cat, from) {
+  el.addEventListener('touchstart', e => { const t=e.touches[0]; ts={x:t.clientX,y:t.clientY,iid,lbl,cat,from:from||null,el,moved:false}; }, {passive:true});
+}
+document.addEventListener('touchmove', e => {
+  if(!ts) return;
+  const t=e.touches[0], dx=t.clientX-ts.x, dy=t.clientY-ts.y;
+  if(!ts.moved && Math.sqrt(dx*dx+dy*dy)>8){
+    ts.moved=true;
+    const r=ts.el.getBoundingClientRect();
+    ghost=ts.el.cloneNode(true);
+    ghost.className=ts.el.className+' ghost'; ghost.style.width=r.width+'px';
+    ghost.style.left=(t.clientX-r.width/2)+'px'; ghost.style.top=(t.clientY-r.height/2)+'px';
+    document.body.appendChild(ghost);
+  }
+  if(ts.moved && ghost){ e.preventDefault(); ghost.style.left=(t.clientX-ghost.offsetWidth/2)+'px'; ghost.style.top=(t.clientY-ghost.offsetHeight/2)+'px'; }
+}, {passive:false});
+document.addEventListener('touchend', e => {
+  if(!ts) return;
+  if(ts.moved && ghost){
+    ghost.remove(); ghost=null;
+    const t=e.changedTouches[0];
+    const zel=document.elementsFromPoint(t.clientX,t.clientY).find(x=>x.dataset&&x.dataset.zid);
+    if(zel) doPlace(zel.dataset.zid, ts.iid, ts.lbl, ts.cat, ts.from);
+    e.preventDefault();
+  }
+  ts=null;
+});
+
+// ── HELPERS ───────────────────────────────────────────────────────────
+function esc(s){return String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;')}
+function usedIds(){return new Set(Object.values(S.pl).map(p=>p.iid))}
+function shuffled(arr, seed){
+  const a=arr.slice(); let s=seed||42;
+  for(let i=a.length-1;i>0;i--){ s=(s*9301+49297)%233280; const j=Math.floor((s/233280)*(i+1)); [a[i],a[j]]=[a[j],a[i]]; }
+  return a;
+}
+function mkZone(zid, extra, placeholder){
+  const el=document.createElement('div');
+  const placed=S.pl[zid], fb=S.fb[zid], z=ZONES[zid];
+  let cls=['zone']; if(extra)cls.push(extra);
+  if(fb)cls.push('fb-'+fb);
+  else if(placed){
+    if(z.zcat==='vf'&&(placed.lbl==='VRAI'||placed.lbl==='FAUX'))cls.push(placed.lbl==='VRAI'?'f-vrai':'f-faux');
+    else cls.push('filled');
+  } else cls.push('empty');
+  el.className=cls.join(' ');
+  el.dataset.zid=zid;
+  el.textContent=placed?placed.lbl:(placeholder||'déposer ici');
+  el.addEventListener('click',()=>zoneClick(zid));
+  drp(el,zid);
+  if(placed&&!fb){drg(el,placed.iid,placed.lbl,placed.cat,zid);tch(el,placed.iid,placed.lbl,placed.cat,zid)}
+  return el;
+}
+function mkBlank(zid){
+  const el=document.createElement('span');
+  const placed=S.pl[zid], fb=S.fb[zid];
+  let cls=['blank'];
+  if(fb)cls.push('fb-'+fb); else if(placed)cls.push('filled');
+  el.className=cls.join(' ');
+  el.dataset.zid=zid;
+  el.textContent=placed?placed.lbl:'…';
+  el.addEventListener('click',()=>zoneClick(zid));
+  drp(el,zid);
+  if(placed&&!fb){drg(el,placed.iid,placed.lbl,placed.cat,zid);tch(el,placed.iid,placed.lbl,placed.cat,zid)}
+  return el;
+}
+function mkTile(iid,lbl,cat,cls){
+  const t=document.createElement('div');
+  t.className='tile '+cls+(S.sel&&S.sel.iid===iid&&!S.sel.from?' sel':'');
+  t.textContent=lbl;
+  t.addEventListener('click',()=>tileClick(iid,lbl,cat));
+  drg(t,iid,lbl,cat,null); tch(t,iid,lbl,cat,null);
+  return t;
+}
+
+// ── CONSTRUCTION DU DOM ───────────────────────────────────────────────
+function buildStatic(){
+  const tabs=document.getElementById('tabs');
+  SECTIONS.forEach(sec=>{
+    const b=document.createElement('button');
+    b.className='tab'; b.id='tab-'+sec.id;
+    b.innerHTML='<span class="tno">'+sec.no+'</span>'+esc(sec.title)+'<span class="tchk">✓</span>';
+    b.addEventListener('click',()=>{curSec=sec.id;render();window.scrollTo({top:0,behavior:'smooth'})});
+    tabs.appendChild(b);
   });
+  const wrap=document.getElementById('sections');
+  SECTIONS.forEach(sec=>{
+    const d=document.createElement('div');
+    d.className='sec'; d.id='sec-'+sec.id;
+    let h='';
+    h+='<div class="intro" style="border-color:'+sec.color+'33">'+sec.intro+'</div>';
+    if(sec.dialogue){
+      const dia=DIALOGUES[sec.dialogue];
+      h+='<div class="dial-sec" style="border-bottom-color:'+sec.color+'">';
+      h+='<div class="audio-pl"><div class="audio-lbl">Dialogue</div>';
+      h+='<button class="btn-lu" onclick="playDialogue(\''+sec.dialogue+'\',this)">🔊 Écouter</button>';
+      h+='<button class="btn-lu" onclick="markRead(this)">📖 J\'ai lu</button></div>';
+      h+='<div class="dial-txt"><div class="d-lbl">'+esc(dia.label)+'</div>';
+      dia.lines.forEach((l,i)=>{
+        const cls=(i%2===0)?'mb':'dr';
+        h+='<div class="dl"><span class="'+cls+'">'+esc(l[0])+' :</span> '+esc(l[1])+'</div>';
+      });
+      h+='</div></div>';
+    }
+    if(sec.id==='prep'){
+      h+='<div class="vocab-sec"><div style="display:flex;align-items:center;gap:10px;margin-bottom:12px;">';
+      h+='<div style="background:#0F766E;color:#fff;border-radius:999px;padding:3px 14px;font-size:11px;font-weight:800;text-transform:uppercase;letter-spacing:.12em;">Vocabulaire</div>';
+      h+='<div style="font-size:15px;font-weight:700;color:#0B5C56;">Mots du module — <span style="font-weight:900;cursor:pointer;text-decoration:underline dotted;" onclick="fcOpen(0)">Cliquez pour les cartes mémoire 🃏</span></div></div>';
+      h+='<div class="vocab-grid">';
+      FC_CARDS.forEach(c=>{h+='<div class="vw" onclick="fcOpenWord(\''+c.word.replace(/'/g,"\\'")+'\')"><span class="dot"></span><span class="w">'+esc(c.word)+'</span></div>'});
+      h+='</div></div>';
+    }
+    h+='<div class="exs" id="exs-'+sec.id+'"></div>';
+    d.innerHTML=h;
+    wrap.appendChild(d);
+  });
+  // cartes d'exercices (sections à moteur)
+  EXOS.forEach(ex=>{
+    const host=document.getElementById('exs-'+ex.sec);
+    const card=document.createElement('div');
+    card.className='card';
+    let h='';
+    if(ex.savoir){
+      h+='<div class="savoir"><h3>'+ex.savoir.h+'</h3><table>';
+      ex.savoir.rows.forEach(r=>{h+='<tr><td>'+r[0]+'</td><td>'+r[1]+'</td></tr>'});
+      h+='</table></div>';
+    }
+    h+='<div style="display:flex;gap:20px;align-items:flex-start;flex-wrap:wrap">';
+    h+='<div style="flex:1;min-width:300px">';
+    h+='<div class="c-hdr"><span class="tag" style="background:'+ex.color+'">'+esc(ex.num)+'</span><span class="ctit" style="color:'+ex.color+'">'+esc(ex.tit)+'</span><span class="csub">'+esc(ex.sub)+'</span></div>';
+    if(ex.type==='blanks') h+='<p class="blanks-p" id="mount-'+ex.id+'"></p>';
+    else h+='<div class="rows" id="mount-'+ex.id+'"></div>';
+    h+='</div>';
+    const vert=(ex.type==='match'||ex.type==='rows')?' vert':'';
+    const bw=(ex.type==='match'||ex.type==='rows')?'300px':'220px';
+    h+='<div class="bsec b1" style="flex:0 0 '+bw+'"><div class="blbl">Réponses</div><div class="btiles'+vert+'" id="bank-'+ex.id+'"></div></div>';
+    h+='</div>';
+    card.innerHTML=h;
+    host.appendChild(card);
+  });
+  injectCustom();
 }
 
-// ---- Étape 5 : Production orale ----
+// ── SECTIONS PERSONNALISÉES (oral / écrit / autoéval) ─────────────────
+function injectCustom(){
+  // JE PARLE
+  document.getElementById('exs-parle').innerHTML = `
+   <div class="card custom">
+     <div class="c-hdr"><span class="tag" style="background:#0D9488">Production orale</span><span class="ctit" style="color:#0D9488">Décris tes symptômes</span></div>
+     <p class="lead">Le médecin te demande : « <b>Qu'est-ce qui vous amène aujourd'hui ?</b> » Décris tes symptômes (réels ou inventés).</p>
+     <div class="rec-zone"><button id="recBtn">🎤</button><div class="rec-lbl" id="recLbl">Touche pour t'enregistrer</div></div>
+     <div id="poPrev" class="hidden" style="display:flex;flex-direction:column;gap:12px">
+       <audio id="poAudio" controls style="width:100%"></audio>
+       <textarea id="poText" rows="2" placeholder="Transcription automatique (tu peux la corriger)…"></textarea>
+       <div style="display:flex;gap:10px;flex-wrap:wrap">
+         <button class="btn btn-ghost" onclick="resetRec()">↺ Recommencer</button>
+         <button class="btn btn-pri" id="poFbBtn" onclick="poGetFeedback()">💬 Obtenir une rétroaction</button>
+       </div>
+       <div class="fb" id="poFb"></div>
+       <div id="poSend" style="display:none;gap:10px;flex-wrap:wrap;align-items:center">
+         <button class="btn btn-send" id="poSendBtn" onclick="poSend()">📨 Envoyer à mon enseignant</button>
+       </div>
+     </div>
+     <div class="status" id="poStatus">Analyse en cours…</div>
+     <div class="err" id="poErr"></div>
+   </div>`;
+  const rb=document.getElementById('recBtn'); if(rb) rb.addEventListener('click',toggleRec);
+
+  // J'ÉCRIS
+  document.getElementById('exs-ecris').innerHTML = `
+   <div class="card custom">
+     <div class="c-hdr"><span class="tag" style="background:#0E7490">Production écrite</span><span class="ctit" style="color:#0E7490">Raconte ta visite</span></div>
+     <p class="lead">Après ta visite, écris un court message à un ami : ton <b>diagnostic</b> et les <b>conseils</b> du médecin. (2 à 4 phrases)</p>
+     <textarea id="peText" rows="5" placeholder="Salut ! Je suis allé chez le médecin. Il m'a dit que…"></textarea>
+     <div style="margin-top:12px"><button class="btn btn-pri" id="peBtn" onclick="peCheck()">✍️ Vérifier mon texte</button></div>
+     <div class="fb" id="peFb"></div>
+     <div class="status" id="peStatus">Analyse en cours…</div>
+     <div class="err" id="peErr"></div>
+   </div>`;
+
+  // JE M'ÉVALUE
+  const SELF=[
+    "Je comprends les questions du médecin.",
+    "Je peux décrire mes symptômes en détail.",
+    "Je comprends un diagnostic simple.",
+    "Je comprends une ordonnance et des conseils.",
+    "Je peux donner un conseil de santé (impératif).",
+  ];
+  document.getElementById('exs-eval').innerHTML = `
+   <div class="card custom">
+     <div class="c-hdr"><span class="tag" style="background:#166534">Autoévaluation</span><span class="ctit" style="color:#166534">Qu'est-ce que je suis capable de faire ?</span></div>
+     <p class="lead">Pour chaque énoncé, choisis : pas encore 😟, un peu 🙂, ou oui 😃.</p>
+     ${SELF.map((s,i)=>`<div class="selfrow"><div class="self-txt">${s}</div><div class="self-opts">
+        <button onclick="rate(${i},this)">😟</button><button onclick="rate(${i},this)">🙂</button><button onclick="rate(${i},this)">😃</button>
+     </div></div>`).join('')}
+     <div style="margin-top:16px"><button class="btn btn-pri" onclick="finishEval()">Terminer le module 🎉</button></div>
+     <div id="evalDone" class="fb"></div>
+   </div>`;
+}
+function rate(i,btn){ [...btn.parentElement.children].forEach(b=>b.classList.remove('sel')); btn.classList.add('sel'); }
+function finishEval(){
+  const el=document.getElementById('evalDone');
+  el.innerHTML='<div class="fb-c">🎉 Bravo, tu as terminé le module « La visite chez le médecin » ! Tu peux revenir sur n\'importe quel onglet pour pratiquer encore.</div>';
+  el.classList.add('on');
+  lmsTrack('exercise_completed',{finished:true});
+}
+
+// ── ENREGISTREMENT (production orale) ─────────────────────────────────
 let mediaRecorder=null, audioChunks=[], audioBlob=null, audioUrl=null, recognition=null, isRec=false, poFeedback="";
 const SR = window.SpeechRecognition || window.webkitSpeechRecognition;
-function stepPO(){
-  panel.innerHTML = `
-  <div class="card">
-    <div class="tag">Production orale</div>
-    <h2 class="title">Décris tes symptômes</h2>
-    <p class="lead">Le médecin te demande : « <b>Qu'est-ce qui vous amène aujourd'hui ?</b> » Décris tes symptômes (réels ou inventés). Enregistre-toi, obtiens une rétroaction privée, puis — si tu veux — envoie ta prise à ton enseignant.</p>
-    <div class="rec-zone">
-      <button id="recBtn" onclick="toggleRec()">🎤</button>
-      <div class="rec-lbl" id="recLbl">Touche pour t'enregistrer</div>
-    </div>
-    <div id="poPrev" class="hidden" style="display:flex;flex-direction:column;gap:12px">
-      <audio id="poAudio" controls style="width:100%"></audio>
-      <textarea id="poText" rows="2" placeholder="Transcription automatique (tu peux la corriger)…"></textarea>
-      <div style="display:flex;gap:10px;flex-wrap:wrap">
-        <button class="btn btn-ghost" onclick="resetRec()">↺ Recommencer</button>
-        <button class="btn btn-pri" id="poFbBtn" onclick="poGetFeedback()">💬 Obtenir une rétroaction</button>
-      </div>
-      <div class="fb" id="poFb"></div>
-      <div id="poSend" style="display:none;gap:10px;flex-wrap:wrap;align-items:center">
-        <button class="btn btn-send" id="poSendBtn" onclick="poSend()">📨 Envoyer à mon enseignant</button>
-      </div>
-    </div>
-    <div class="status" id="poStatus">Analyse en cours…</div>
-    <div class="err" id="poErr"></div>
-  </div>
-  ${nav()}`;
-}
 async function toggleRec(){
   if(isRec){ stopRec(); return; }
   hideErr('poErr');
@@ -441,12 +768,12 @@ async function poGetFeedback(){
   document.getElementById('poStatus').classList.add('on');
   document.getElementById('poFbBtn').disabled=true;
   try{
-    const res=await fetch('/api/correct-french',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({code:studentCode,text,question:"Le médecin demande « Qu'est-ce qui vous amène aujourd'hui ? » et l'élève décrit ses symptômes pendant la consultation."})});
+    const res=await fetch('/api/correct-french',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({code:studentCode,text,question:"Le médecin demande « Qu'est-ce qui vous amène aujourd'hui ? » et l'élève décrit ses symptômes."})});
     const data=await res.json();
     document.getElementById('poStatus').classList.remove('on');
     document.getElementById('poFbBtn').disabled=false;
     if(!res.ok){ showErr('poErr',data.error||'Une erreur est survenue.'); return; }
-    renderCorr('poFb',data,text); poFeedback = corrSummary(data,text);
+    renderCorr('poFb',data,text); poFeedback=corrSummary(data,text);
     document.getElementById('poSend').style.display='flex';
   }catch(e){
     document.getElementById('poStatus').classList.remove('on');
@@ -471,21 +798,7 @@ async function poSend(){
   }catch(e){ showErr('poErr',"Impossible d'envoyer."); btn.disabled=false; btn.textContent='📨 Envoyer à mon enseignant'; }
 }
 
-// ---- Étape 6 : Production écrite ----
-function stepPE(){
-  panel.innerHTML = `
-  <div class="card">
-    <div class="tag">Production écrite</div>
-    <h2 class="title">Raconte ta visite</h2>
-    <p class="lead">Après ta visite, écris un court message à un ami pour lui raconter ce que le médecin a dit : ton <b>diagnostic</b> et ses <b>conseils</b>. (2 à 4 phrases)</p>
-    <textarea id="peText" rows="5" placeholder="Salut ! Je suis allé chez le médecin. Il m'a dit que…"></textarea>
-    <button class="btn btn-pri" style="align-self:flex-start" id="peBtn" onclick="peCheck()">✍️ Vérifier mon texte</button>
-    <div class="fb" id="peFb"></div>
-    <div class="status" id="peStatus">Analyse en cours…</div>
-    <div class="err" id="peErr"></div>
-  </div>
-  ${nav()}`;
-}
+// ── CORRECTION ÉCRITE ─────────────────────────────────────────────────
 async function peCheck(){
   const text=document.getElementById('peText').value.trim();
   if(!text){ showErr('peErr',"Écris ton message d'abord."); return; }
@@ -505,16 +818,13 @@ async function peCheck(){
     showErr('peErr','Impossible de contacter le serveur.');
   }
 }
-
-// Rendu de correction partagé (formats /api/correct-french et /api/correct-email)
 function renderCorr(elId,data,orig){
   const fb=document.getElementById(elId);
-  const corr = data.corrige || data.corrected || data.texteCorrige || '';
-  const errs = data.erreurs || data.errors || [];
+  const corr=data.corrige||data.corrected||'';
+  const errs=data.erreurs||data.errors||[];
   let html='<div class="fb-t">Rétroaction privée</div>';
-  if(data.memePhrase || (corr && norm(corr)===norm(orig) && !errs.length)){
-    html+='<div class="fb-c">✅ Ton texte est déjà correct. Bravo !</div>';
-  }else{
+  if(data.memePhrase){ html+='<div class="fb-c">✅ Ton texte est déjà correct. Bravo !</div>'; }
+  else{
     if(corr) html+='<div class="fb-c">✍️ '+esc(corr)+'</div>';
     errs.forEach(e=>{ html+='<div class="fb-e">'+esc(e.explication||e.explanation||e)+'</div>'; });
   }
@@ -526,50 +836,93 @@ function corrSummary(data,orig){
   if(data.memePhrase) return "Phrase correcte : "+(corr||orig);
   return "Correction : "+corr+(errs.length?' | '+errs.map(e=>e.explication||e.explanation||e).join(' '):'');
 }
-
-// ---- Étape 7 : Autoévaluation ----
-function stepAuto(){
-  panel.innerHTML = `
-  <div class="card">
-    <div class="tag">Autoévaluation</div>
-    <h2 class="title">Qu'est-ce que je suis capable de faire ?</h2>
-    <p class="lead">Pour chaque énoncé, choisis : pas encore 😟, un peu 🙂, ou oui 😃.</p>
-    <div>
-      ${SELF.map((s,i)=>`
-        <div class="selfrow">
-          <div class="self-txt">${s}</div>
-          <div class="self-opts">
-            <button onclick="rate(${i},this)">😟</button>
-            <button onclick="rate(${i},this)">🙂</button>
-            <button onclick="rate(${i},this)">😃</button>
-          </div>
-        </div>`).join('')}
-    </div>
-  </div>
-  ${nav()}`;
-}
-function rate(i,btn){
-  [...btn.parentElement.children].forEach(b=>b.classList.remove('sel'));
-  btn.classList.add('sel');
-}
-
-function showEnd(){
-  done[done.length-1]=true;
-  renderSteps();
-  panel.innerHTML=`
-  <div class="card end">
-    <div class="end-ic">🎉</div>
-    <h2 class="title">Bravo, tu as terminé le module !</h2>
-    <p class="lead">Tu as pratiqué la compréhension, le vocabulaire, la grammaire, l'oral et l'écrit. Tu peux revenir sur n'importe quelle étape en cliquant sur les numéros en haut.</p>
-    <button class="btn btn-pri" onclick="current=0;renderSteps();renderStep();window.scrollTo(0,0)">Revoir le module</button>
-  </div>`;
-  lmsTrack('exercise_completed', { finished:true, score:null });
-}
-
-// ---- Utilitaires ----
-function showErr(id,msg){ const e=document.getElementById(id); e.textContent=msg; e.classList.add('on'); }
+function showErr(id,msg){ const e=document.getElementById(id); if(e){e.textContent=msg; e.classList.add('on');} }
 function hideErr(id){ const e=document.getElementById(id); if(e)e.classList.remove('on'); }
-function esc(s){ return String(s||'').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;'); }
-function lmsTrack(event,data){ try{ window.parent.postMessage(Object.assign({lms:true,event},data||{}),'*'); }catch(e){} }
+
+// ── RENDER ────────────────────────────────────────────────────────────
+function render(){
+  SECTIONS.forEach(sec=>{
+    document.getElementById('tab-'+sec.id).classList.toggle('on', curSec===sec.id);
+    document.getElementById('sec-'+sec.id).classList.toggle('on', curSec===sec.id);
+    const zids=Object.keys(ZONES).filter(z=>{const ex=EXOS.find(e=>e.id===ZONES[z].exo);return ex.sec===sec.id});
+    const done=zids.length>0&&zids.every(z=>TR.correct[z]);
+    document.getElementById('tab-'+sec.id).classList.toggle('done',done);
+  });
+  const ban=document.getElementById('sel-banner');
+  if(S.sel){ban.classList.add('on');document.getElementById('sel-lbl').textContent=S.sel.lbl}
+  else ban.classList.remove('on');
+
+  const used=usedIds();
+  EXOS.forEach(ex=>{
+    const mount=document.getElementById('mount-'+ex.id);
+    const bank=document.getElementById('bank-'+ex.id);
+    if(!mount||!bank) return;
+    mount.innerHTML=''; bank.innerHTML='';
+
+    if(ex.type==='vf'){
+      ex.rows.forEach(r=>{
+        const row=document.createElement('div');row.className='rrow';
+        const txt=document.createElement('div');txt.className='stxt';txt.innerHTML=r.txt;
+        row.appendChild(txt);row.appendChild(mkZone(r.id,'zvf'));
+        mount.appendChild(row);
+      });
+      ex.tiles.forEach((lbl,i)=>{
+        bank.appendChild(mkTile(ex.id+'_t'+i,lbl,ex.id,lbl==='VRAI'||lbl==='MUETTE'?'tv':'tf'));
+      });
+    }
+    if(ex.type==='match'){
+      ex.rows.forEach(r=>{
+        const row=document.createElement('div');row.className='rrow2';
+        const qc=document.createElement('div');qc.className='qcard';
+        qc.innerHTML='<div class="qlbl">Question</div><div class="qtxt">'+esc(r.q)+'</div>';
+        row.appendChild(qc);row.appendChild(mkZone(r.id,null,'glissez la réponse ici'));
+        mount.appendChild(row);
+      });
+      shuffled(ex.rows,7).forEach(r=>{ if(used.has(r.aid))return; bank.appendChild(mkTile(r.aid,r.a,ex.id,'ta')); });
+      if(!bank.children.length)bank.innerHTML='<div class="bempty">Toutes les réponses sont placées !</div>';
+    }
+    if(ex.type==='blanks'){
+      ex.segs.forEach(sg=>{ if(sg.k==='t'){mount.appendChild(document.createTextNode(sg.t))} else{mount.appendChild(mkBlank(sg.id))} });
+      shuffled(ex.words,23).forEach(w=>{ if(used.has(w.id))return; bank.appendChild(mkTile(w.id,w.l,ex.id,'tn')); });
+      if(!bank.children.length)bank.innerHTML='<div class="bempty">Tous les mots sont placés !</div>';
+    }
+  });
+  updateChip();
+}
+function updateChip(){
+  const n=Object.keys(TR.correct).length;
+  document.getElementById('prog-chip').textContent='⭐ '+n+' / '+TOTAL_ZONES;
+}
+
+document.getElementById('btn-reset').addEventListener('click',()=>{ S.pl={};S.sel=null;S.fb={};render(); });
+
+// ── FLASHCARDS ────────────────────────────────────────────────────────
+let fcIdx=0;
+function fcShow(){
+  const c=FC_CARDS[fcIdx];
+  document.getElementById('fc-counter').textContent='Carte '+(fcIdx+1)+' / '+FC_CARDS.length;
+  document.getElementById('fc-word').textContent=c.word;
+  document.getElementById('fc-def').textContent=c.def;
+  document.getElementById('fc-ex').innerHTML=c.ex;
+  document.getElementById('fc-def').classList.add('hidden');
+  document.getElementById('fc-ex').classList.add('hidden');
+  document.getElementById('fc-reveal-btn').classList.remove('hidden');
+}
+function fcOpen(i){fcIdx=i||0;fcShow();document.getElementById('fc-overlay').classList.add('on')}
+function fcOpenWord(w){const i=FC_CARDS.findIndex(c=>c.word===w);fcOpen(i>=0?i:0)}
+document.getElementById('fc-reveal-btn').addEventListener('click',()=>{
+  document.getElementById('fc-def').classList.remove('hidden');
+  document.getElementById('fc-ex').classList.remove('hidden');
+  document.getElementById('fc-reveal-btn').classList.add('hidden');
+});
+document.getElementById('fc-prev').addEventListener('click',()=>{fcIdx=(fcIdx-1+FC_CARDS.length)%FC_CARDS.length;fcShow()});
+document.getElementById('fc-next').addEventListener('click',()=>{fcIdx=(fcIdx+1)%FC_CARDS.length;fcShow()});
+document.getElementById('fc-close').addEventListener('click',()=>document.getElementById('fc-overlay').classList.remove('on'));
+document.getElementById('fc-overlay').addEventListener('click',e=>{if(e.target.id==='fc-overlay')document.getElementById('fc-overlay').classList.remove('on')});
+
+// ── GO ────────────────────────────────────────────────────────────────
+buildStatic();
+render();
+lmsTrack('file_opened');
 </script>
 </body></html>
