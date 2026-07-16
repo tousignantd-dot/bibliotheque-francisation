@@ -2,7 +2,7 @@
 <html lang="fr"><head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
-<title>La visite chez le médecin — Module Niveau 4</title>
+<title>Quel spécialiste dois-je consulter ? — Module Niveau 4</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@600;700;800;900&display=swap" rel="stylesheet">
@@ -161,6 +161,20 @@ textarea:focus{outline:none;border-color:#0F766E}
 .self-opts button.sel{border-color:#0F766E;background:#DCEFEB}
 .hidden{display:none!important}
 
+/* Exercices à écrire */
+.wlist{display:flex;flex-direction:column;gap:14px}
+.witem{background:#F7FCFB;border:1.5px solid #B7DED7;border-radius:12px;padding:13px 16px}
+.wq{font-size:16px;font-weight:800;color:#123B32;line-height:1.45;margin-bottom:8px}
+.wrow{display:flex;gap:8px;flex-wrap:wrap}
+.winput{flex:1;min-width:180px;border:2.5px solid #B7DED7;border-radius:9px;padding:9px 13px;font-family:'Nunito',sans-serif;font-size:15.5px;font-weight:700;color:#123B32;background:#fff}
+.winput:focus{outline:none;border-color:#0F766E}
+.winput.good{border-color:#34D399;background:#ECFDF5}
+.wbtn{flex:0 0 auto;padding:9px 16px}
+.wfb{font-size:13.5px;font-weight:700;line-height:1.5;margin-top:8px;display:none}
+.wfb.ok,.wfb.no,.wfb.wait{display:block}
+.wfb.ok{color:#0B5C56}.wfb.no{color:#B45309}.wfb.wait{color:#5E8A82}
+.wfb b{color:#0B5C56}
+
 @media(max-width:900px){.vocab-grid{grid-template-columns:1fr 1fr}.rrow2{grid-template-columns:1fr}.hdr-h1{font-size:22px}}
 </style>
 </head>
@@ -169,7 +183,7 @@ textarea:focus{outline:none;border-color:#0F766E}
 <div id="hdr">
   <div class="hdr-l">
     <div class="hdr-ic">👨‍⚕️</div>
-    <div><div class="hdr-eye">Francisation · Niveau 4 · Module complet</div><div class="hdr-h1">La visite chez le médecin</div></div>
+    <div><div class="hdr-eye">Santé et bien-être · Niveau 4</div><div class="hdr-h1">Quel spécialiste dois-je consulter ?</div></div>
   </div>
   <div class="hdr-r">
     <div id="prog-chip">⭐ 0 / 0</div>
@@ -247,19 +261,19 @@ const DIALOGUES = {
 // ── SECTIONS ──────────────────────────────────────────────────────────
 const SECTIONS = [
   {id:'prep', no:'▶', title:'Je me prépare', color:'#0F766E',
-   intro:"🩺 Fatima ne se sent pas bien. Avant de voir le médecin, elle prend un rendez-vous. Lisez le dialogue, découvrez le vocabulaire, puis faites les exercices.",
+   intro:"🩺 Fatima ne se sent pas bien. Avant de voir le médecin, elle prend un rendez-vous et apprend à qui s'adresser.",
    dialogue:'prep'},
-  {id:'co', no:'1', title:'Chez le médecin', color:'#C0573A',
-   intro:"👨‍⚕️ Fatima est maintenant dans le bureau du médecin. Écoutez la consultation, puis répondez aux exercices de compréhension.",
+  {id:'t1', no:'1', title:'Tâche 1 · Le problème', color:'#C0573A',
+   intro:"👨‍⚕️ Tâche 1 — Parler d'un problème de santé. Écoute la consultation, puis exprime une cause et pose des questions.",
    dialogue:'co'},
-  {id:'langue', no:'2', title:'La langue', color:'#6B4FBB',
-   intro:"✍️ Travaillons la grammaire utile chez le médecin : parler de la douleur, donner un conseil, poser une question et parler de la durée."},
-  {id:'parle', no:'3', title:'Je parle', color:'#0D9488', custom:true,
-   intro:"🎤 À ton tour de parler ! Enregistre-toi en privé, obtiens une rétroaction, puis envoie ta meilleure prise à ton enseignant si tu le veux."},
-  {id:'ecris', no:'4', title:"J'écris", color:'#0E7490', custom:true,
-   intro:"📝 Raconte ta visite par écrit. L'assistant corrige ton texte en privé."},
-  {id:'eval', no:'✓', title:'Je m\'évalue', color:'#166534', custom:true,
-   intro:"🌟 Fais le point : qu'est-ce que tu es maintenant capable de faire ?"},
+  {id:'t2', no:'2', title:'Tâche 2 · Les conseils', color:'#6B4FBB',
+   intro:"💊 Tâche 2 — Comprendre les conseils du médecin. Le présent de l'indicatif, la forme négative et les médicaments."},
+  {id:'t3', no:'3', title:'Tâche 3 · Formulaire', color:'#B45309',
+   intro:"📋 Tâche 3 — Remplir un formulaire et lire une fiche-conseil. Le pluriel des noms et des adjectifs."},
+  {id:'appli', no:'▶', title:'Je mets en application', color:'#0D9488', custom:true,
+   intro:"🎤 Je mets en application — Un jeu de rôle patient/médecin à l'oral, puis un court texte à écrire. L'assistant te donne une rétroaction."},
+  {id:'retiens', no:'✓', title:'Je retiens des mots', color:'#166534', custom:true,
+   intro:"📝 Je retiens des mots — Note le vocabulaire utile et révise avec les cartes mémoire."},
 ];
 
 // ── EXERCICES ─────────────────────────────────────────────────────────
@@ -277,108 +291,119 @@ const EXOS = [
     {id:'pr1d', q:"Mon bébé est malade.", aid:'pa4', a:"le pédiatre"},
     {id:'pr1e', q:"J'ai besoin d'un médicament.", aid:'pa5', a:"le pharmacien"},
    ]},
+  {sec:'prep', id:'prW', type:'write', num:'Exercice 2', tit:'Quel spécialiste ?', color:'#0F766E',
+   sub:'Complétez la phrase avec le bon nom de spécialiste.',
+   items:[
+    {q:"Ton enfant est malade depuis trois jours. Tu dois consulter un…", accept:["pédiatre","un pédiatre","pediatre"], ph:"un…"},
+    {q:"Tante Julia a des boutons sur le visage. Elle doit consulter un…", accept:["dermatologue","un dermatologue"], ph:"un…"},
+    {q:"Le pouls de mon père est très élevé. Il doit consulter un…", accept:["cardiologue","un cardiologue"], ph:"un…"},
+    {q:"Hamid commence à marcher après une fracture. Il doit consulter un…", accept:["physiothérapeute","un physiothérapeute","physiotherapeute"], ph:"un…"},
+    {q:"Leila voit mal de loin. Elle doit consulter un…", accept:["optométriste","un optométriste","optometriste"], ph:"un…"},
+   ]},
 
-  // ── CHEZ LE MÉDECIN (compréhension) ──
-  {sec:'co', id:'co1', type:'vf', num:'Exercice 1', tit:'Vrai ou Faux — La consultation', color:'#C0573A',
+  // ── TÂCHE 1 · PARLER D'UN PROBLÈME DE SANTÉ ──
+  {sec:'t1', id:'co1', type:'vf', num:'Exercice 1', tit:'Vrai ou Faux — La consultation', color:'#C0573A',
    sub:'Écoutez le dialogue, puis répondez.', tiles:['VRAI','FAUX'],
    rows:[
     {id:'co1a', txt:"Fatima a mal à la tête depuis une semaine.", ok:'VRAI'},
     {id:'co1b', txt:"Fatima dort très bien la nuit.", ok:'FAUX'},
     {id:'co1c', txt:"Fatima a un peu de fièvre.", ok:'VRAI'},
     {id:'co1d', txt:"Le médecin dit que c'est grave.", ok:'FAUX'},
-    {id:'co1e', txt:"Le médecin prescrit un médicament pour la douleur.", ok:'VRAI'},
-    {id:'co1f', txt:"Le médecin conseille de se reposer.", ok:'VRAI'},
+    {id:'co1e', txt:"Le médecin conseille de se reposer.", ok:'VRAI'},
    ]},
-  {sec:'co', id:'co2', type:'match', num:'Exercice 2', tit:'Les questions du médecin', color:'#C0573A',
-   sub:'Associez chaque question du médecin à la bonne réponse de Fatima.',
-   rows:[
-    {id:'co2a', q:"Qu'est-ce qui vous amène aujourd'hui ?", aid:'ca1', a:"J'ai mal à la tête."},
-    {id:'co2b', q:"Est-ce que vous avez de la fièvre ?", aid:'ca2', a:"Oui, un peu."},
-    {id:'co2c', q:"Est-ce que vous dormez bien ?", aid:'ca3', a:"Non, je me réveille souvent."},
-    {id:'co2d', q:"Depuis combien de temps ?", aid:'ca4', a:"Depuis une semaine."},
+  {sec:'t1', id:'t1cause', type:'write', num:'Exercice 2', tit:'Exprimer une cause', color:'#C0573A',
+   sub:'Complétez avec « grâce à », « à cause de » ou « parce que ».',
+   savoir:{h:"› Pour exprimer une cause", rows:[
+     ["grâce à","(cause positive) Je vois mieux <em>grâce à</em> mes lunettes."],
+     ["à cause de","(cause négative) Elle a le bras cassé <em>à cause d'</em>un accident."],
+     ["parce que","(+ une phrase) José consulte un médecin <em>parce qu'</em>il est malade."],
    ]},
-  {sec:'co', id:'co3', type:'vf', num:'Exercice 3', tit:'La lettre finale', color:'#0D9488',
-   sub:'Graphie-phonie : la dernière lettre de ce mot est-elle muette ou prononcée ?',
-   tiles:['MUETTE','PRONONCÉE'],
-   savoir:{h:"› La lettre finale muette", rows:[
-     ["-s, -t, -p, -d final","On ne l'entend pas : un rendez-vou<em>s</em>, un médicamen<em>t</em>, un siro<em>p</em>"],
-     ["-e final","On ne l'entend pas : un symptôm<em>e</em>, une ordonnanc<em>e</em>"],
-     ["-r, -l final","On l'entend souvent : la douleu<em>r</em>, un hôpita<em>l</em>, un docteu<em>r</em>"],
+   items:[
+    {q:"Je ne mange pas ce dessert ___ je suis allergique aux noix.", accept:["parce que","parce qu'","parce quе"], ph:"…"},
+    {q:"Elle a de la difficulté à marcher ___ son entorse.", accept:["à cause de","a cause de","à cause d'","a cause d'"], ph:"…"},
+    {q:"Il va pouvoir marcher bientôt ___ sa chirurgie.", accept:["grâce à","grace a"], ph:"…"},
+    {q:"Tu es très fatigué ___ tu ne dors pas assez.", accept:["parce que","parce qu'"], ph:"…"},
    ]},
-   rows:[
-    {id:'co3a', txt:"un rendez-vou<b>s</b>", ok:'MUETTE'},
-    {id:'co3b', txt:"un médicamen<b>t</b>", ok:'MUETTE'},
-    {id:'co3c', txt:"un siro<b>p</b>", ok:'MUETTE'},
-    {id:'co3d', txt:"un symptôm<b>e</b>", ok:'MUETTE'},
-    {id:'co3e', txt:"la douleu<b>r</b>", ok:'PRONONCÉE'},
-    {id:'co3f', txt:"un hôpita<b>l</b>", ok:'PRONONCÉE'},
-    {id:'co3g', txt:"un docteu<b>r</b>", ok:'PRONONCÉE'},
+  {sec:'t1', id:'t1quest', type:'write', num:'Exercice 3', tit:'Écris la question', color:'#C0573A',
+   sub:'Lis la réponse, puis écris la question. Utilise le bon mot interrogatif et fais l\'inversion.',
+   savoir:{h:"› La phrase interrogative", rows:[
+     ["mot interrogatif + inversion","<em>Où</em> se trouve la salle d'attente ? <em>Comment</em> allez-vous ?"],
+     ["inversion seule","<em>Peux-tu</em> nous aider ? <em>Avez-vous</em> des questions ?"],
+     ["trait d'union","Quand on inverse : Où étudies-<em>tu</em> ?"],
+   ]},
+   items:[
+    {q:"Réponse : La clinique se trouve sur la rue des Rivières. → Pose la question avec « où ».", hint:"Où se trouve la clinique ?", ph:"Où… ?"},
+    {q:"Réponse : Je vais à l'hôpital cet après-midi. → Pose la question avec « quand ».", hint:"Quand vas-tu à l'hôpital ?", ph:"Quand… ?"},
+    {q:"Réponse : Vous devez payer 90 $ pour la prise de sang. → Pose la question avec « combien ».", hint:"Combien dois-je payer pour la prise de sang ?", ph:"Combien… ?"},
+    {q:"Réponse : Oui, je suis très malade. → Pose la question (inversion seule, sans mot interrogatif).", hint:"Es-tu malade ?", ph:"…-tu… ?"},
    ]},
 
-  // ── LA LANGUE ──
-  {sec:'langue', id:'l1', type:'blanks', num:'Exercice 1', tit:'« Avoir mal à » + le corps', color:'#6B4FBB',
-   sub:"Complétez avec à la, au, à l' ou aux.",
-   savoir:{h:"› Avoir mal à + article", rows:[
-     ["à la","J'ai mal <em>à la</em> gorge, <em>à la</em> tête."],
-     ["au","J'ai mal <em>au</em> dos, <em>au</em> ventre."],
-     ["à l'","J'ai mal <em>à l'</em>oreille, <em>à l'</em>estomac."],
-     ["aux","J'ai mal <em>aux</em> dents, <em>aux</em> yeux."],
+  // ── TÂCHE 2 · COMPRENDRE LES CONSEILS DU MÉDECIN ──
+  {sec:'t2', id:'t2present', type:'write', num:'Exercice 1', tit:'Le présent de l\'indicatif', color:'#6B4FBB',
+   sub:'Conjuguez les verbes au présent de l\'indicatif.',
+   savoir:{h:"› Le présent de l'indicatif", rows:[
+     ["verbes en -er","je regard<em>e</em>, tu aim<em>es</em>, nous aim<em>ons</em>, ils aim<em>ent</em>"],
+     ["comme finir","je fini<em>s</em>, il fini<em>t</em>, nous finiss<em>ons</em>"],
+     ["autres verbes","je reçoi<em>s</em>, il répon<em>d</em>, ils reçoiv<em>ent</em>"],
    ]},
-   byLabel:true,
-   words:[{id:'m1',l:'à la'},{id:'m2',l:'au'},{id:'m3',l:"à l'"},{id:'m4',l:'aux'},{id:'m5',l:'au'},{id:'m6',l:'aux'}],
-   segs:[
-    {k:'t',t:"a)  J'ai mal "},{k:'b',id:'lb1',c:'à la'},{k:'t',t:" gorge.    "},
-    {k:'t',t:"b)  Il a mal "},{k:'b',id:'lb2',c:'au'},{k:'t',t:" dos.    "},
-    {k:'t',t:"c)  Elle a mal "},{k:'b',id:'lb3',c:'aux'},{k:'t',t:" dents.    "},
-    {k:'t',t:"d)  Tu as mal "},{k:'b',id:'lb4',c:"à l'"},{k:'t',t:" oreille.    "},
-    {k:'t',t:"e)  Nous avons mal "},{k:'b',id:'lb5',c:'au'},{k:'t',t:" ventre.    "},
-    {k:'t',t:"f)  J'ai mal "},{k:'b',id:'lb6',c:'aux'},{k:'t',t:" yeux."},
+   items:[
+    {q:"(remplir) tu…", accept:["remplis"], ph:"tu…"},
+    {q:"(devoir) ils…", accept:["doivent"], ph:"ils…"},
+    {q:"(dire) vous…", accept:["dites"], ph:"vous…"},
+    {q:"(prendre) il…", accept:["prend"], ph:"il…"},
+    {q:"(recevoir) ils…", accept:["reçoivent","recoivent"], ph:"ils…"},
+    {q:"(connaître) je…", accept:["connais"], ph:"je…"},
    ]},
-  {sec:'langue', id:'l2', type:'blanks', num:'Exercice 2', tit:"L'impératif — donner un conseil", color:'#6B4FBB',
-   sub:"Glissez le verbe conjugué à l'impératif (forme « vous ») dans la bonne phrase.",
-   savoir:{h:"› L'impératif présent (conseils)", rows:[
-     ["forme « vous »","On enlève « vous » : <em>Buvez</em>, <em>Prenez</em>, <em>Dormez</em>."],
-     ["verbe pronominal","<em>Reposez-vous</em> bien."],
-     ["forme négative","<em>Ne fumez pas</em>, <em>ne travaillez pas</em> trop."],
+  {sec:'t2', id:'t2neg', type:'write', num:'Exercice 2', tit:'La forme négative', color:'#6B4FBB',
+   sub:'Réécris la phrase à la forme négative avec « ne… pas » ou « ne… plus ».',
+   savoir:{h:"› La phrase négative", rows:[
+     ["ne… pas","(le contraire) Je <em>ne</em> travaille <em>pas</em>."],
+     ["ne… plus","(la fin d'une action) Il <em>n'</em>entend <em>plus</em>."],
+     ["pronom complément","On écrit le <em>ne</em> devant : Elle <em>ne lui</em> parle pas."],
    ]},
-   words:[{id:'v1',l:'Buvez'},{id:'v2',l:'Prenez'},{id:'v3',l:'Mangez'},{id:'v4',l:'Reposez-vous'},{id:'v5',l:'Dormez'},{id:'v6',l:'Ne fumez pas'}],
-   segs:[
-    {k:'t',t:"a)  (boire) "},{k:'b',id:'vb1',c:'v1'},{k:'t',t:" beaucoup d'eau.    "},
-    {k:'t',t:"b)  (prendre) "},{k:'b',id:'vb2',c:'v2'},{k:'t',t:" ce médicament.    "},
-    {k:'t',t:"c)  (manger) "},{k:'b',id:'vb3',c:'v3'},{k:'t',t:" des fruits et des légumes.    "},
-    {k:'t',t:"d)  (se reposer) "},{k:'b',id:'vb4',c:'v4'},{k:'t',t:" bien.    "},
-    {k:'t',t:"e)  (dormir) "},{k:'b',id:'vb5',c:'v5'},{k:'t',t:" au moins huit heures.    "},
-    {k:'t',t:"f)  (ne pas fumer) "},{k:'b',id:'vb6',c:'v6'},{k:'t',t:"."},
+   items:[
+    {q:"Le cardiologue lui prépare une ordonnance.", hint:"Le cardiologue ne lui prépare pas d'ordonnance.", ph:"Le cardiologue…"},
+    {q:"Elle travaille toujours à la pharmacie.", hint:"Elle ne travaille plus à la pharmacie.", ph:"Elle…"},
+    {q:"Vous la surveillez encore.", hint:"Vous ne la surveillez plus.", ph:"Vous…"},
    ]},
-  {sec:'langue', id:'l3', type:'blanks', num:'Exercice 3', tit:'Poser une question', color:'#6B4FBB',
-   sub:'Complétez chaque question avec le bon mot interrogatif.',
-   savoir:{h:"› Poser une question", rows:[
-     ["Est-ce que…?","<em>Est-ce que</em> vous toussez ?"],
-     ["Qu'est-ce que…?","<em>Qu'est-ce que</em> vous avez ?"],
-     ["Depuis quand…?","<em>Depuis quand</em> êtes-vous malade ?"],
-     ["Avez-vous…?","<em>Avez-vous</em> de la fièvre ?"],
+  {sec:'t2', id:'t2med', type:'match', num:'Exercice 3', tit:'Parler de médicaments', color:'#6B4FBB',
+   sub:'Associez chaque description au bon type de médicament.',
+   rows:[
+    {id:'t2m1', q:"C'est la copie d'un médicament original, approuvée par Santé Canada.", aid:'ma1', a:"un médicament générique"},
+    {id:'t2m2', q:"On peut se le procurer en pharmacie sans ordonnance.", aid:'ma2', a:"un médicament en vente libre"},
+    {id:'t2m3', q:"Sa date de conservation est dépassée : on ne doit pas le consommer.", aid:'ma3', a:"un médicament périmé"},
    ]},
-   words:[{id:'q1',l:"Qu'est-ce que"},{id:'q2',l:'Depuis quand'},{id:'q3',l:'Est-ce que'},{id:'q4',l:'Avez-vous'},{id:'q5',l:'Combien de'}],
-   segs:[
-    {k:'t',t:"a)  "},{k:'b',id:'qb1',c:'q1'},{k:'t',t:" vous ressentez ?    "},
-    {k:'t',t:"b)  "},{k:'b',id:'qb2',c:'q2'},{k:'t',t:" avez-vous mal ?    "},
-    {k:'t',t:"c)  "},{k:'b',id:'qb3',c:'q3'},{k:'t',t:" vous dormez bien ?    "},
-    {k:'t',t:"d)  "},{k:'b',id:'qb4',c:'q4'},{k:'t',t:" votre carte d'assurance maladie ?    "},
-    {k:'t',t:"e)  "},{k:'b',id:'qb5',c:'q5'},{k:'t',t:" fois par jour prenez-vous le sirop ?"},
+
+  // ── TÂCHE 3 · FORMULAIRE & FICHE-CONSEIL ──
+  {sec:'t3', id:'t3plur', type:'write', num:'Exercice 1', tit:'Le pluriel des noms et adjectifs', color:'#B45309',
+   sub:'Écris au pluriel les noms et les adjectifs entre parenthèses.',
+   savoir:{h:"› Le pluriel", rows:[
+     ["général : + s","un enfant malade → des enfant<em>s</em> malade<em>s</em>"],
+     ["-au, -eau, -eu : + x","un jeu → des jeu<em>x</em>, un tuyau → des tuyau<em>x</em>"],
+     ["-al → -aux","un hôpital régional → des hôpit<em>aux</em> région<em>aux</em>"],
+     ["cas : genou → genoux","festival → festival<em>s</em> (exception)"],
    ]},
-  {sec:'langue', id:'l4', type:'blanks', num:'Exercice 4', tit:'Depuis ou il y a ?', color:'#6B4FBB',
-   sub:'Complétez avec depuis (situation qui continue) ou il y a (moment passé et fini).',
-   savoir:{h:"› Depuis / il y a", rows:[
-     ["depuis + durée","La situation continue : Je suis malade <em>depuis</em> trois jours."],
-     ["il y a + moment","Une action finie dans le passé : J'ai vu le médecin <em>il y a</em> deux jours."],
+   items:[
+    {q:"Elles portent des (chandail bleu)…", accept:["chandails bleus"], ph:"des…"},
+    {q:"Mes (genou)… me font mal.", accept:["genoux"], ph:"mes…"},
+    {q:"Ce sont des (festival intéressant)…", accept:["festivals intéressants","festivals interessants"], ph:"des…"},
+    {q:"Ils jouent à des (jeu dangereux)…", accept:["jeux dangereux"], ph:"des…"},
    ]},
-   byLabel:true,
-   words:[{id:'d1',l:'depuis'},{id:'d2',l:'il y a'},{id:'d3',l:'depuis'},{id:'d4',l:'il y a'}],
-   segs:[
-    {k:'t',t:"a)  Je tousse "},{k:'b',id:'db1',c:'depuis'},{k:'t',t:" une semaine.    "},
-    {k:'t',t:"b)  J'ai commencé à avoir de la fièvre "},{k:'b',id:'db2',c:'il y a'},{k:'t',t:" trois jours.    "},
-    {k:'t',t:"c)  J'ai mal à la tête "},{k:'b',id:'db3',c:'depuis'},{k:'t',t:" hier.    "},
-    {k:'t',t:"d)  Je suis allé à la pharmacie "},{k:'b',id:'db4',c:'il y a'},{k:'t',t:" deux jours."},
+  {sec:'t3', id:'t3lar', type:'vf', num:'Exercice 2', tit:'Vrai ou Faux — La laryngite', color:'#B45309',
+   sub:'Lisez la fiche-conseil sur la laryngite, puis répondez.', tiles:['VRAI','FAUX'],
+   rows:[
+    {id:'t3l1', txt:"On peut perdre la voix quand on a une laryngite.", ok:'VRAI'},
+    {id:'t3l2', txt:"Il faut boire beaucoup d'eau pour guérir une laryngite.", ok:'VRAI'},
+    {id:'t3l3', txt:"On peut prendre un antibiotique pour guérir la laryngite.", ok:'FAUX'},
+    {id:'t3l4', txt:"La laryngite peut être causée par une trop grande utilisation de la voix.", ok:'VRAI'},
+    {id:'t3l5', txt:"La laryngite dure plus d'une semaine.", ok:'FAUX'},
+   ]},
+  {sec:'t3', id:'t3form', type:'write', num:'Exercice 3', tit:'Le questionnaire de santé', color:'#B45309',
+   sub:'Réponds à ces questions du formulaire par une phrase complète.',
+   items:[
+    {q:"Avez-vous un médecin de famille ?", hint:"Oui, j'ai un médecin de famille. / Non, je n'ai pas de médecin de famille.", ph:"Oui,… / Non,…"},
+    {q:"Souffrez-vous d'allergies ? Si oui, précisez.", hint:"Non, je ne souffre pas d'allergies. / Oui, je suis allergique à…", ph:"…"},
+    {q:"Ressentez-vous du stress ? Explique avec une phrase complète.", hint:"Oui, je ressens souvent du stress. / Non, je ne ressens pas de stress.", ph:"…"},
    ]},
 ];
 
@@ -409,6 +434,8 @@ EXOS.forEach(ex => {
   if (ex.type === 'rows')   ex.rows.forEach(r => ZONES[r.id] = {cv:r.cv, zcat:'id', exo:ex.id});
   if (ex.type === 'blanks') ex.segs.filter(s=>s.k==='b').forEach(s =>
     ZONES[s.id] = {cv:s.c, zcat: ex.byLabel ? 'lbl' : 'id', exo:ex.id});
+  if (ex.type === 'write')  ex.items.forEach((it,i) =>
+    ZONES['w_'+ex.id+'_'+i] = {zcat:'write', exo:ex.id});
 });
 const TOTAL_ZONES = Object.keys(ZONES).length;
 
@@ -634,6 +661,20 @@ function buildStatic(){
       ex.savoir.rows.forEach(r=>{h+='<tr><td>'+r[0]+'</td><td>'+r[1]+'</td></tr>'});
       h+='</table></div>';
     }
+    // ── Exercice à écrire (autocorrection ou correction IA) ──
+    if(ex.type==='write'){
+      h+='<div class="c-hdr"><span class="tag" style="background:'+ex.color+'">'+esc(ex.num)+'</span><span class="ctit" style="color:'+ex.color+'">'+esc(ex.tit)+'</span><span class="csub">'+esc(ex.sub)+'</span></div>';
+      const aiBadge = ex.items.some(it=>!it.accept) ? '<div style="font-size:12px;font-weight:800;color:#0D9488;margin-bottom:10px">🤖 Un assistant corrige ce que tu écris et te donne une rétroaction.</div>' : '';
+      h+=aiBadge+'<div class="wlist">';
+      ex.items.forEach((it,i)=>{
+        h+='<div class="witem"><div class="wq">'+(it.q||'')+'</div>';
+        h+='<div class="wrow"><input class="winput" id="wi_'+ex.id+'_'+i+'" placeholder="'+(it.ph||'Écris ta réponse…')+'" autocomplete="off">';
+        h+='<button class="btn btn-pri wbtn" onclick="checkWrite(\''+ex.id+'\','+i+')">Vérifier</button></div>';
+        h+='<div class="wfb" id="wf_'+ex.id+'_'+i+'"></div></div>';
+      });
+      h+='</div>';
+      card.innerHTML=h; host.appendChild(card); return;
+    }
     h+='<div style="display:flex;gap:20px;align-items:flex-start;flex-wrap:wrap">';
     h+='<div style="flex:1;min-width:300px">';
     h+='<div class="c-hdr"><span class="tag" style="background:'+ex.color+'">'+esc(ex.num)+'</span><span class="ctit" style="color:'+ex.color+'">'+esc(ex.tit)+'</span><span class="csub">'+esc(ex.sub)+'</span></div>';
@@ -652,11 +693,11 @@ function buildStatic(){
 
 // ── SECTIONS PERSONNALISÉES (oral / écrit / autoéval) ─────────────────
 function injectCustom(){
-  // JE PARLE
-  document.getElementById('exs-parle').innerHTML = `
+  // JE METS EN APPLICATION — jeu de rôle oral + écriture corrigée par l'IA
+  document.getElementById('exs-appli').innerHTML = `
    <div class="card custom">
-     <div class="c-hdr"><span class="tag" style="background:#0D9488">Production orale</span><span class="ctit" style="color:#0D9488">Décris tes symptômes</span></div>
-     <p class="lead">Le médecin te demande : « <b>Qu'est-ce qui vous amène aujourd'hui ?</b> » Décris tes symptômes (réels ou inventés).</p>
+     <div class="c-hdr"><span class="tag" style="background:#0D9488">Production orale</span><span class="ctit" style="color:#0D9488">Jeu de rôle — chez le médecin</span></div>
+     <p class="lead">Tu es le patient. Choisis un problème (une allergie, une entorse, une indigestion…). <b>Décris tes symptômes au médecin.</b> Enregistre-toi, obtiens une rétroaction, puis envoie ta prise si tu le veux.</p>
      <div class="rec-zone"><button id="recBtn">🎤</button><div class="rec-lbl" id="recLbl">Touche pour t'enregistrer</div></div>
      <div id="poPrev" class="hidden" style="display:flex;flex-direction:column;gap:12px">
        <audio id="poAudio" controls style="width:100%"></audio>
@@ -672,30 +713,37 @@ function injectCustom(){
      </div>
      <div class="status" id="poStatus">Analyse en cours…</div>
      <div class="err" id="poErr"></div>
-   </div>`;
-  const rb=document.getElementById('recBtn'); if(rb) rb.addEventListener('click',toggleRec);
-
-  // J'ÉCRIS
-  document.getElementById('exs-ecris').innerHTML = `
+   </div>
    <div class="card custom">
-     <div class="c-hdr"><span class="tag" style="background:#0E7490">Production écrite</span><span class="ctit" style="color:#0E7490">Raconte ta visite</span></div>
-     <p class="lead">Après ta visite, écris un court message à un ami : ton <b>diagnostic</b> et les <b>conseils</b> du médecin. (2 à 4 phrases)</p>
-     <textarea id="peText" rows="5" placeholder="Salut ! Je suis allé chez le médecin. Il m'a dit que…"></textarea>
-     <div style="margin-top:12px"><button class="btn btn-pri" id="peBtn" onclick="peCheck()">✍️ Vérifier mon texte</button></div>
+     <div class="c-hdr"><span class="tag" style="background:#0E7490">Production écrite</span><span class="ctit" style="color:#0E7490">Écris à la clinique</span></div>
+     <p class="lead">Écris un court courriel à la clinique pour <b>demander un rendez-vous</b> : dis qui tu es, pourquoi et quand tu es disponible. (3 à 5 phrases)</p>
+     <textarea id="peText" rows="6" placeholder="Bonjour,&#10;Je m'appelle… J'aimerais prendre un rendez-vous parce que…"></textarea>
+     <div style="margin-top:12px"><button class="btn btn-pri" id="peBtn" onclick="peCheck()">✍️ Vérifier mon courriel</button></div>
      <div class="fb" id="peFb"></div>
      <div class="status" id="peStatus">Analyse en cours…</div>
      <div class="err" id="peErr"></div>
    </div>`;
+  const rb=document.getElementById('recBtn'); if(rb) rb.addEventListener('click',toggleRec);
 
-  // JE M'ÉVALUE
+  // JE RETIENS DES MOTS — notes + cartes mémoire + autoévaluation
   const SELF=[
-    "Je comprends les questions du médecin.",
-    "Je peux décrire mes symptômes en détail.",
-    "Je comprends un diagnostic simple.",
-    "Je comprends une ordonnance et des conseils.",
-    "Je peux donner un conseil de santé (impératif).",
+    "Je peux nommer le bon spécialiste selon un problème.",
+    "Je peux exprimer une cause (parce que, à cause de, grâce à).",
+    "Je peux poser une question au médecin.",
+    "Je peux conjuguer des verbes au présent.",
+    "Je comprends une fiche-conseil et un formulaire de santé.",
   ];
-  document.getElementById('exs-eval').innerHTML = `
+  document.getElementById('exs-retiens').innerHTML = `
+   <div class="card custom">
+     <div class="c-hdr"><span class="tag" style="background:#166534">Je retiens des mots</span><span class="ctit" style="color:#166534">Mes mots utiles</span></div>
+     <p class="lead">Note ici les mots et expressions à retenir. Tu peux aussi <span style="font-weight:900;cursor:pointer;text-decoration:underline dotted;color:#166534" onclick="fcOpen(0)">réviser les cartes mémoire 🃏</span>.</p>
+     <div style="font-weight:800;color:#166534;font-size:13px;margin:6px 0 4px">Des problèmes de santé et des symptômes</div>
+     <textarea rows="2" placeholder="Ex. : avoir mal à la gorge, tousser, la fièvre…"></textarea>
+     <div style="font-weight:800;color:#166534;font-size:13px;margin:12px 0 4px">Des recommandations du médecin</div>
+     <textarea rows="2" placeholder="Ex. : reposez-vous, buvez de l'eau, prenez ce médicament…"></textarea>
+     <div style="font-weight:800;color:#166534;font-size:13px;margin:12px 0 4px">Les formulaires et les fiches-conseils</div>
+     <textarea rows="2" placeholder="Ex. : une ordonnance, un antibiotique, une allergie…"></textarea>
+   </div>
    <div class="card custom">
      <div class="c-hdr"><span class="tag" style="background:#166534">Autoévaluation</span><span class="ctit" style="color:#166534">Qu'est-ce que je suis capable de faire ?</span></div>
      <p class="lead">Pour chaque énoncé, choisis : pas encore 😟, un peu 🙂, ou oui 😃.</p>
@@ -709,7 +757,7 @@ function injectCustom(){
 function rate(i,btn){ [...btn.parentElement.children].forEach(b=>b.classList.remove('sel')); btn.classList.add('sel'); }
 function finishEval(){
   const el=document.getElementById('evalDone');
-  el.innerHTML='<div class="fb-c">🎉 Bravo, tu as terminé le module « La visite chez le médecin » ! Tu peux revenir sur n\'importe quel onglet pour pratiquer encore.</div>';
+  el.innerHTML='<div class="fb-c">🎉 Bravo, tu as terminé le module « Quel spécialiste dois-je consulter ? » ! Tu peux revenir sur n\'importe quel onglet pour pratiquer encore.</div>';
   el.classList.add('on');
   lmsTrack('exercise_completed',{finished:true});
 }
@@ -838,6 +886,51 @@ function corrSummary(data,orig){
 }
 function showErr(id,msg){ const e=document.getElementById(id); if(e){e.textContent=msg; e.classList.add('on');} }
 function hideErr(id){ const e=document.getElementById(id); if(e)e.classList.remove('on'); }
+
+// ── EXERCICES À ÉCRIRE ────────────────────────────────────────────────
+function normWrite(s){
+  return (s||'').toLowerCase().trim().normalize('NFD').replace(/[̀-ͯ]/g,'')
+    .replace(/\s+/g,' ').replace(/[.!?;:]+$/,'').replace(/^["«»']+|["«»']+$/g,'').trim();
+}
+async function checkWrite(exId, i){
+  const ex=EXOS.find(e=>e.id===exId); if(!ex) return;
+  const it=ex.items[i];
+  const inp=document.getElementById('wi_'+exId+'_'+i);
+  const fb=document.getElementById('wf_'+exId+'_'+i);
+  const val=inp.value.trim();
+  const zid='w_'+exId+'_'+i;
+  if(!val){ fb.className='wfb no'; fb.textContent="✏️ Écris ta réponse d'abord."; return; }
+
+  // Mode autocorrection (réponse connue)
+  if(it.accept){
+    const ok=it.accept.map(normWrite).includes(normWrite(val));
+    fb.className='wfb '+(ok?'ok':'no');
+    fb.innerHTML= ok ? '✅ Bravo, c\'est exact !'
+      : '❌ Presque ! La bonne réponse est : <b>'+esc(it.accept[0])+'</b>';
+    if(ok){ inp.classList.add('good'); inp.disabled=true; trackPlacement(zid,true); }
+    else { trackPlacement(zid,false); }
+    return;
+  }
+
+  // Mode IA (réponse ouverte)
+  fb.className='wfb wait'; fb.textContent='⏳ L\'assistant corrige ta réponse…';
+  const btn=inp.parentElement.querySelector('.wbtn'); if(btn) btn.disabled=true;
+  try{
+    const res=await fetch('/api/check-written',{method:'POST',headers:{'Content-Type':'application/json'},
+      body:JSON.stringify({code:studentCode, consigne:(ex.sub||'')+' '+(it.q||''), reponse:val, attendu:it.hint||''})});
+    const d=await res.json();
+    if(btn) btn.disabled=false;
+    if(!res.ok){ fb.className='wfb no'; fb.textContent=d.error||'Service momentanément indisponible.'; return; }
+    fb.className='wfb '+(d.correct?'ok':'no');
+    let html=(d.correct?'✅ ':'💡 ')+esc(d.feedback||'');
+    if(!d.correct && d.correction){ html+='<br><b>Suggestion :</b> '+esc(d.correction); }
+    fb.innerHTML=html;
+    if(d.correct){ inp.classList.add('good'); trackPlacement(zid,true); }
+  }catch(e){
+    if(btn) btn.disabled=false;
+    fb.className='wfb no'; fb.textContent='Impossible de contacter le serveur. Réessaie.';
+  }
+}
 
 // ── RENDER ────────────────────────────────────────────────────────────
 function render(){

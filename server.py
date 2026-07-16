@@ -470,6 +470,8 @@ class Handler(http.server.SimpleHTTPRequestHandler):
             self._handle_vocab_check_answer()
         elif path == "/api/analyze-grammar":
             self._handle_analyze_grammar()
+        elif path == "/api/check-written":
+            self._handle_check_written()
         elif path == "/api/oral/submit":
             self._handle_oral_submit()
         elif path == "/api/activities":
@@ -1153,6 +1155,60 @@ class Handler(http.server.SimpleHTTPRequestHandler):
         except (KeyError, IndexError, json.JSONDecodeError) as e:
             print(f"[WARN] Réponse IA non structurée : {e}", flush=True)
             return None, ("Réponse inattendue du service de correction", 502)
+
+    def _handle_check_written(self):
+        """Évalue une réponse écrite d'élève (conjugaison, question, phrase
+        négative, réponse de compréhension…) et renvoie une rétroaction
+        bienveillante. Corps attendu : {code, consigne, reponse, attendu?}."""
+        length = int(self.headers.get("Content-Length", 0))
+        try:
+            body = json.loads(self.rfile.read(length)) if length else {}
+        except json.JSONDecodeError:
+            json_response(self, {"error": "Requête invalide"}, 400)
+            return
+
+        code = body.get("code", "").strip().upper()
+        if not validate_student_code(code):
+            json_response(self, {"error": "Non autorisé"}, 401)
+            return
+
+        consigne = body.get("consigne", "").strip()[:400]
+        reponse = body.get("reponse", "").strip()[:600]
+        attendu = body.get("attendu", "").strip()[:400]
+        if not reponse:
+            json_response(self, {"error": "Réponse vide"}, 400)
+            return
+
+        system_prompt = (
+            "Tu es un enseignant de francisation (FLS) au Québec, niveau 4 "
+            "(débutant-intermédiaire). Tu évalues UNE réponse écrite d'un élève "
+            "adulte immigrant. Sois bienveillant, encourageant et bref. "
+            "Vérifie si la réponse respecte la consigne ET si le français est "
+            "correct (orthographe, conjugaison, accords, syntaxe). "
+            "Accepte les réponses courtes ou différentes si elles sont correctes "
+            "et pertinentes. Ne pénalise pas les majuscules ni la ponctuation "
+            "finale manquantes.\n"
+            "Réponds UNIQUEMENT par un objet JSON strict, sans texte autour :\n"
+            '{\"correct\": true|false, \"feedback\": \"une phrase courte, en '
+            'tutoyant l\'élève, qui explique ce qui va ou ce qui cloche\", '
+            '\"correction\": \"la réponse corrigée si besoin, sinon la même '
+            'réponse\"}'
+        )
+        user_content = (
+            f"Consigne de l'exercice : « {consigne} »\n"
+            + (f"Réponse attendue (indice) : « {attendu} »\n" if attendu else "")
+            + f"Réponse de l'élève : « {reponse} »"
+        )
+
+        parsed, err = self._call_anthropic_json(system_prompt, user_content, max_tokens=250)
+        if err:
+            json_response(self, {"error": err[0]}, err[1])
+            return
+        json_response(self, {
+            "correct": bool(parsed.get("correct", False)),
+            "feedback": parsed.get("feedback", ""),
+            "correction": parsed.get("correction", ""),
+        })
 
     def _handle_correct_french(self):
         length = int(self.headers.get("Content-Length", 0))
