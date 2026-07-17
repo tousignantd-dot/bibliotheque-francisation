@@ -106,6 +106,19 @@ body{display:flex;flex-direction:column;min-height:100vh}
 
 .ghost{position:fixed;z-index:9999;pointer-events:none;opacity:.88;transform:scale(1.06) rotate(1.5deg);box-shadow:0 8px 24px rgba(0,0,0,.25);border-radius:10px}
 
+/* Association image */
+.imgtile{width:100px;height:100px;border-radius:10px;overflow:hidden;cursor:grab;border:2.5px solid #5EEAD4;box-shadow:0 2px 7px rgba(0,0,0,.08);transition:all .15s;flex:none}
+.imgtile img{width:100%;height:100%;object-fit:cover;display:block;pointer-events:none}
+.imgtile:active{cursor:grabbing;transform:scale(1.04)}
+.imgtile.sel{border-color:#FBBF24;box-shadow:0 0 0 4px rgba(245,158,11,.22)}
+.imgzone{width:100%;min-height:110px;border-radius:10px;border:2.5px dashed #93C5D6;background:#F0F9FF;display:flex;align-items:center;justify-content:center;cursor:pointer;overflow:hidden;transition:all .15s}
+.imgzone img{width:100%;height:100%;object-fit:cover;display:block;pointer-events:none}
+.imgzone-ph{font-size:13px;color:#94A3B8;padding:10px}
+.imgzone.dov{border-color:#38BDF8;background:#E0F2FE}
+.imgzone.filled{border-style:solid;border-color:#5EEAD4}
+.imgzone.fb-ok{border-style:solid;border-color:#34D399}
+.imgzone.fb-no{border-style:solid;border-color:#F87171;animation:shk .5s ease}
+
 #fc-overlay{display:none;position:fixed;inset:0;z-index:9000;background:rgba(15,25,35,.6);backdrop-filter:blur(5px);align-items:center;justify-content:center}
 #fc-overlay.on{display:flex}
 #fc-box{background:#0F766E;border-radius:24px;padding:44px 56px;max-width:760px;width:92%;box-shadow:0 24px 64px rgba(0,0,0,.4);display:flex;flex-direction:column;align-items:center;gap:20px;animation:fcPop .3s cubic-bezier(.34,1.4,.64,1)}
@@ -325,6 +338,22 @@ const EXOS = [
     {id:'s5d', q:"Elle observe les radiographies et les analyse.", aid:'se4', a:"la vue (voir)"},
     {id:'s5e', q:"Tu dégustes un bon repas.", aid:'se5', a:"le goût (goûter)"},
    ]},
+  {sec:'prep', id:'prImg', type:'imgmatch', num:'Exercice 5', tit:"Associer l'image au spécialiste", color:'#0F766E',
+   sub:'Glisse chaque image sur le bon énoncé.',
+   images:[
+    {id:'im1', src:'images/pediatre.jpg'},
+    {id:'im2', src:'images/dentiste.jpg'},
+    {id:'im3', src:'images/dermatologue.jpg'},
+    {id:'im4', src:'images/optometriste.jpg'},
+    {id:'im5', src:'images/pharmacien.jpg'},
+   ],
+   rows:[
+    {id:'pi1', txt:"Le pédiatre examine un jeune enfant.", aid:'im1'},
+    {id:'pi2', txt:"Le dentiste examine les dents de la patiente.", aid:'im2'},
+    {id:'pi3', txt:"La dermatologue examine la peau du bras.", aid:'im3'},
+    {id:'pi4', txt:"L'optométriste fait passer un examen de la vue.", aid:'im4'},
+    {id:'pi5', txt:"Le pharmacien explique un médicament au client.", aid:'im5'},
+   ]},
 
   // ── TÂCHE 1 · PARLER D'UN PROBLÈME DE SANTÉ ──
   {sec:'t1', id:'co1', type:'vf', num:'Exercice 1', tit:'Vrai ou Faux — La consultation', color:'#C0573A',
@@ -456,6 +485,7 @@ const ZONES = {};
 EXOS.forEach(ex => {
   if (ex.type === 'vf')     ex.rows.forEach(r => ZONES[r.id] = {cv:r.ok, zcat:'vf', exo:ex.id});
   if (ex.type === 'match')  ex.rows.forEach(r => ZONES[r.id] = {cv:r.aid, zcat:'id', exo:ex.id});
+  if (ex.type === 'imgmatch') ex.rows.forEach(r => ZONES[r.id] = {cv:r.aid, zcat:'id', exo:ex.id});
   if (ex.type === 'rows')   ex.rows.forEach(r => ZONES[r.id] = {cv:r.cv, zcat:'id', exo:ex.id});
   if (ex.type === 'blanks') ex.segs.filter(s=>s.k==='b').forEach(s =>
     ZONES[s.id] = {cv:s.c, zcat: ex.byLabel ? 'lbl' : 'id', exo:ex.id});
@@ -463,6 +493,7 @@ EXOS.forEach(ex => {
     ZONES['w_'+ex.id+'_'+i] = {zcat:'write', exo:ex.id});
 });
 const TOTAL_ZONES = Object.keys(ZONES).length;
+const ALL_IMAGES = EXOS.filter(e=>e.type==='imgmatch').flatMap(e=>e.images);
 
 // ── LMS TRACKING ──────────────────────────────────────────────────────
 function lmsTrack(event, data) {
@@ -633,6 +664,27 @@ function mkTile(iid,lbl,cat,cls){
   drg(t,iid,lbl,cat,null); tch(t,iid,lbl,cat,null);
   return t;
 }
+function mkImgTile(im,cat){
+  const t=document.createElement('div');
+  t.className='imgtile'+(S.sel&&S.sel.iid===im.id&&!S.sel.from?' sel':'');
+  t.innerHTML='<img src="'+im.src+'" alt="" loading="lazy">';
+  t.addEventListener('click',()=>tileClick(im.id,im.id,cat));
+  drg(t,im.id,im.id,cat,null); tch(t,im.id,im.id,cat,null);
+  return t;
+}
+function mkImgZone(zid, im){
+  const el=document.createElement('div');
+  const placed=S.pl[zid], fb=S.fb[zid];
+  let cls=['imgzone']; if(fb)cls.push('fb-'+fb); else if(placed)cls.push('filled'); else cls.push('empty');
+  el.className=cls.join(' ');
+  el.dataset.zid=zid;
+  if(placed){ const src=(ALL_IMAGES.find(i=>i.id===placed.iid)||{}).src; el.innerHTML=src?'<img src="'+src+'" alt="">':''; }
+  else{ el.innerHTML='<span class="imgzone-ph">glissez l\'image ici</span>'; }
+  el.addEventListener('click',()=>zoneClick(zid));
+  drp(el,zid);
+  if(placed&&!fb){drg(el,placed.iid,placed.lbl,placed.cat,zid);tch(el,placed.iid,placed.lbl,placed.cat,zid)}
+  return el;
+}
 
 // ── CONSTRUCTION DU DOM ───────────────────────────────────────────────
 function buildStatic(){
@@ -706,8 +758,8 @@ function buildStatic(){
     if(ex.type==='blanks') h+='<p class="blanks-p" id="mount-'+ex.id+'"></p>';
     else h+='<div class="rows" id="mount-'+ex.id+'"></div>';
     h+='</div>';
-    const vert=(ex.type==='match'||ex.type==='rows')?' vert':'';
-    const bw=(ex.type==='match'||ex.type==='rows')?'300px':'220px';
+    const vert=(ex.type==='match'||ex.type==='rows'||ex.type==='imgmatch')?' vert':'';
+    const bw=ex.type==='imgmatch'?'240px':((ex.type==='match'||ex.type==='rows')?'300px':'220px');
     h+='<div class="bsec b1" style="flex:0 0 '+bw+'"><div class="blbl">Réponses</div><div class="btiles'+vert+'" id="bank-'+ex.id+'"></div></div>';
     h+='</div>';
     card.innerHTML=h;
@@ -998,6 +1050,19 @@ function render(){
       });
       shuffled(ex.rows,7).forEach(r=>{ if(used.has(r.aid))return; bank.appendChild(mkTile(r.aid,r.a,ex.id,'ta')); });
       if(!bank.children.length)bank.innerHTML='<div class="bempty">Toutes les réponses sont placées !</div>';
+    }
+    if(ex.type==='imgmatch'){
+      ex.rows.forEach(r=>{
+        const row=document.createElement('div');row.className='rrow2';
+        const qc=document.createElement('div');qc.className='qcard';
+        qc.innerHTML='<div class="qlbl">Énoncé</div><div class="qtxt">'+esc(r.txt)+'</div>';
+        row.appendChild(qc);
+        const z=mkImgZone(r.id, ex.images.find(im=>im.id===r.aid));
+        row.appendChild(z);
+        mount.appendChild(row);
+      });
+      shuffled(ex.images,11).forEach(im=>{ if(used.has(im.id))return; bank.appendChild(mkImgTile(im,ex.id)); });
+      if(!bank.children.length)bank.innerHTML='<div class="bempty">Toutes les images sont placées !</div>';
     }
     if(ex.type==='blanks'){
       ex.segs.forEach(sg=>{ if(sg.k==='t'){mount.appendChild(document.createTextNode(sg.t))} else{mount.appendChild(mkBlank(sg.id))} });
