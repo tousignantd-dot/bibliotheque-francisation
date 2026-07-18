@@ -1,0 +1,1144 @@
+<!DOCTYPE html>
+<html lang="fr"><head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+<title>Comment elle va ? — Module Niveau 4</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Nunito:wght@600;700;800;900&display=swap" rel="stylesheet">
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+html,body{height:100%;background:#EDF6F4;font-family:'Nunito','Arial Rounded MT Bold',sans-serif;color:#123B32}
+body{display:flex;flex-direction:column;min-height:100vh}
+::-webkit-scrollbar{width:6px;height:6px}::-webkit-scrollbar-track{background:rgba(0,0,0,.04);border-radius:3px}::-webkit-scrollbar-thumb{background:rgba(0,0,0,.15);border-radius:3px}
+
+#hdr{background:#C2410C;color:#fff;padding:14px 32px;display:flex;align-items:center;justify-content:space-between;position:sticky;top:0;z-index:200;box-shadow:0 3px 16px rgba(15,118,110,.3);flex-shrink:0}
+.hdr-l{display:flex;align-items:center;gap:14px}
+.hdr-ic{width:44px;height:44px;background:rgba(255,255,255,.18);border-radius:50%;display:flex;align-items:center;justify-content:center;flex-shrink:0;font-size:22px}
+.hdr-eye{font-size:11px;font-weight:800;text-transform:uppercase;letter-spacing:.2em;opacity:.7;line-height:1}
+.hdr-h1{font-size:27px;font-weight:900;line-height:1.15}
+.hdr-r{display:flex;align-items:center;gap:14px}
+#prog-chip{background:rgba(255,255,255,.15);border:2px solid rgba(255,255,255,.45);border-radius:999px;padding:8px 18px;font-size:16px;font-weight:900;white-space:nowrap}
+#btn-reset{background:rgba(255,255,255,.15);color:#fff;border:2px solid rgba(255,255,255,.45);border-radius:10px;padding:10px 18px;font-family:'Nunito',sans-serif;font-size:15px;font-weight:800;cursor:pointer;white-space:nowrap;transition:background .15s}
+#btn-reset:hover{background:rgba(255,255,255,.28)}
+
+#tabs{background:#fff;display:flex;gap:6px;padding:10px 32px;position:sticky;top:76px;z-index:190;box-shadow:0 2px 12px rgba(0,0,0,.07);flex-wrap:wrap}
+.tab{border:2.5px solid transparent;border-radius:999px;padding:9px 18px;font-family:'Nunito',sans-serif;font-size:14.5px;font-weight:800;cursor:pointer;background:#EDF6F4;color:#5E8A82;transition:all .15s;display:flex;align-items:center;gap:8px}
+.tab .tno{width:24px;height:24px;border-radius:50%;background:#B7DED7;color:#fff;display:flex;align-items:center;justify-content:center;font-size:13px;font-weight:900;flex-shrink:0}
+.tab.on{background:#C2410C;color:#fff}
+.tab.on .tno{background:rgba(255,255,255,.28)}
+.tab .tchk{display:none;color:#4ADE80;font-size:15px}
+.tab.done .tchk{display:inline}
+
+#sel-banner{background:#FEF3C7;border-bottom:3px solid #F59E0B;padding:10px 32px;display:none;align-items:center;gap:10px;font-size:19px;font-weight:800;color:#92400E;flex-shrink:0;position:sticky;top:132px;z-index:180}
+#sel-banner.on{display:flex}
+
+.sec{display:none;flex-direction:column}
+.sec.on{display:flex}
+
+.dial-sec{background:#123B32;color:#E8F5F2;padding:16px 32px;display:flex;gap:24px;border-bottom:4px solid #C2410C;flex-shrink:0;flex-wrap:wrap}
+.audio-pl{flex:0 0 160px;display:flex;flex-direction:column;align-items:center;justify-content:flex-start;padding-top:6px;gap:10px}
+.audio-lbl{font-size:11px;font-weight:800;text-transform:uppercase;letter-spacing:.15em;opacity:.6;text-align:center}
+.btn-lu{background:rgba(255,255,255,.12);color:#E8F5F2;border:2px solid rgba(255,255,255,.35);border-radius:10px;padding:10px 14px;font-family:'Nunito',sans-serif;font-size:14px;font-weight:800;cursor:pointer;transition:all .15s;text-align:center;line-height:1.3;width:100%}
+.btn-lu:hover{background:rgba(255,255,255,.25)}
+.btn-lu.done{background:#166534;border-color:#4ADE80;color:#DCFCE7}
+.dial-txt{flex:1;min-width:280px;display:flex;flex-direction:column;gap:7px;font-size:19px;font-weight:600;line-height:1.7;padding-right:8px}
+.d-lbl{font-size:14px;font-weight:800;text-transform:uppercase;letter-spacing:.15em;color:#7FD4C9;margin-bottom:6px;opacity:.85}
+.dl{line-height:1.7}.mb{color:#FCA5A5;font-weight:800}.dr{color:#7FD4C9;font-weight:800}
+
+.intro{background:#DCEFEB;padding:14px 32px;font-size:17px;font-weight:700;color:#9A3412;line-height:1.5;border-bottom:2px solid #B7DED7}
+
+.exs{flex:1;padding:22px 32px 48px;display:flex;flex-direction:column;gap:20px}
+
+.card{background:#fff;border-radius:18px;padding:22px 26px;box-shadow:0 4px 20px rgba(15,118,110,.08)}
+.c-hdr{display:flex;align-items:center;gap:10px;margin-bottom:14px;flex-wrap:wrap}
+.tag{color:#fff;border-radius:999px;padding:5px 16px;font-size:13px;font-weight:800;text-transform:uppercase;letter-spacing:.1em;white-space:nowrap}
+.ctit{font-size:21px;font-weight:900}
+.csub{font-size:15.5px;color:#5E8A82;font-weight:600}
+
+.savoir{background:#F1FBF9;border-left:5px solid #C2410C;border-radius:0 14px 14px 0;padding:16px 22px;margin-bottom:4px}
+.savoir h3{font-size:15.5px;font-weight:900;color:#9A3412;text-transform:uppercase;letter-spacing:.08em;margin-bottom:8px}
+.savoir table{border-collapse:collapse;width:100%}
+.savoir td{padding:6px 12px;font-size:16.5px;font-weight:600;line-height:1.5;border-bottom:1px dashed #B7DED7;vertical-align:top}
+.savoir td:first-child{font-weight:900;color:#9A3412;white-space:nowrap}
+.savoir em{font-style:italic;color:#0D9488}
+
+.rows{display:flex;flex-direction:column;gap:8px}
+.rrow{display:flex;align-items:center;gap:10px}
+.stxt{flex:1;background:#F1F9F7;border-radius:10px;padding:14px 18px;font-size:20px;font-weight:700;color:#123B32;line-height:1.4}
+.rrow2{display:grid;grid-template-columns:1fr 1fr;gap:8px;align-items:stretch}
+.qcard{background:#F0FAF7;border-left:4px solid #C2410C;border-radius:0 10px 10px 0;padding:12px 16px;display:flex;flex-direction:column;justify-content:center}
+.qlbl{font-size:13px;font-weight:800;color:#C2410C;text-transform:uppercase;letter-spacing:.1em;margin-bottom:4px}
+.qtxt{font-size:19px;font-weight:700;color:#123B32;line-height:1.4}
+.blanks-p{font-size:22px;line-height:2.9;font-weight:600;color:#123B32}
+
+.zone{display:flex;align-items:center;justify-content:center;min-height:54px;border-radius:10px;font-weight:800;font-family:'Nunito',sans-serif;cursor:pointer;transition:background .18s,border-color .18s,color .18s,transform .12s;user-select:none;text-align:center;padding:10px 14px;border:2.5px solid;line-height:1.35}
+.zone.empty{background:#F0F9FF;border-color:#93C5D6;border-style:dashed;color:#94A3B8;font-size:17px}
+.zone.dov{background:#E0F2FE!important;border-color:#38BDF8!important;border-style:solid!important;transform:scale(1.02)}
+.zvf{min-width:150px;font-size:19px}
+.f-vrai{background:#DCFCE7;border-color:#4ADE80;border-style:solid;color:#166534}
+.f-faux{background:#FEE2E2;border-color:#FCA5A5;border-style:solid;color:#991B1B}
+.zone.filled{background:#DBEAFE;border-color:#60A5FA;border-style:solid;color:#1E3A8A;font-size:17px}
+.fb-ok{background:#D1FAE5!important;border-color:#34D399!important;border-style:solid!important;color:#065F46!important}
+.fb-no{background:#FEE2E2!important;border-color:#F87171!important;border-style:solid!important;color:#991B1B!important;animation:shk .5s ease}
+@keyframes shk{0%,100%{transform:translateX(0)}20%{transform:translateX(-6px)}60%{transform:translateX(6px)}80%{transform:translateX(-3px)}}
+
+.blank{display:inline-block;min-width:130px;padding:4px 14px;margin:0 3px;border-radius:8px;font-weight:800;vertical-align:middle;cursor:pointer;transition:background .18s,border-color .18s,color .18s;user-select:none;border:2.5px dashed #93C5D6;background:#F0F9FF;color:#94A3B8;font-size:20px;text-align:center}
+.blank.filled{border-style:solid;border-color:#5EEAD4;background:#CCFBF1;color:#9A3412}
+.blank.fb-ok{border-style:solid;border-color:#34D399;background:#D1FAE5;color:#065F46}
+.blank.fb-no{border-style:solid;border-color:#F87171;background:#FEE2E2;color:#991B1B;animation:shk .5s ease}
+.blank.dov{border-style:solid;border-color:#38BDF8;background:#E0F2FE}
+
+.bsec{border-radius:12px;padding:14px 12px;flex-shrink:0}
+.bsec.b1{background:#EDF6F4;border:1.5px solid #B7DED7}
+.blbl{font-size:12px;font-weight:800;text-transform:uppercase;letter-spacing:.14em;margin-bottom:10px;color:#C2410C}
+.btiles{display:flex;flex-wrap:wrap;gap:8px;justify-content:center}
+.btiles.vert{flex-direction:column;flex-wrap:nowrap}
+
+.tile{border-radius:10px;font-weight:800;font-family:'Nunito',sans-serif;cursor:grab;transition:all .15s;user-select:none;border:2.5px solid;box-shadow:0 2px 7px rgba(0,0,0,.08);padding:10px 14px;display:flex;align-items:center;justify-content:center;text-align:center;line-height:1.35}
+.tile:active{cursor:grabbing;transform:scale(1.04);box-shadow:0 5px 14px rgba(0,0,0,.15)}
+.tile.sel{background:#FEF9C3!important;border-color:#FBBF24!important;color:#92400E!important;box-shadow:0 0 0 4px rgba(245,158,11,.22),0 2px 7px rgba(0,0,0,.08)!important;transform:translateY(-1px)}
+.tv{background:#DCFCE7;border-color:#4ADE80;color:#166534;font-size:19px;padding:13px 22px}
+.tf{background:#FEE2E2;border-color:#FCA5A5;color:#991B1B;font-size:19px;padding:13px 22px}
+.tn{background:#F0FDFA;border-color:#5EEAD4;color:#9A3412;font-size:16px}
+.ta{background:#FFF7ED;border-color:#FDBA74;color:#9A3412;font-size:15px}
+.bempty{font-size:13px;color:#94A3B8;font-weight:600;text-align:center;padding:8px 0;font-style:italic}
+
+.ghost{position:fixed;z-index:9999;pointer-events:none;opacity:.88;transform:scale(1.06) rotate(1.5deg);box-shadow:0 8px 24px rgba(0,0,0,.25);border-radius:10px}
+
+/* Association image */
+.imgtile{width:100px;height:100px;border-radius:10px;overflow:hidden;cursor:grab;border:2.5px solid #5EEAD4;box-shadow:0 2px 7px rgba(0,0,0,.08);transition:all .15s;flex:none}
+.imgtile img{width:100%;height:100%;object-fit:cover;display:block;pointer-events:none}
+.imgtile:active{cursor:grabbing;transform:scale(1.04)}
+.imgtile.sel{border-color:#FBBF24;box-shadow:0 0 0 4px rgba(245,158,11,.22)}
+.imgzone{width:100%;min-height:110px;border-radius:10px;border:2.5px dashed #93C5D6;background:#F0F9FF;display:flex;align-items:center;justify-content:center;cursor:pointer;overflow:hidden;transition:all .15s}
+.imgzone img{width:100%;height:100%;object-fit:cover;display:block;pointer-events:none}
+.imgzone-ph{font-size:13px;color:#94A3B8;padding:10px}
+.imgzone.dov{border-color:#38BDF8;background:#E0F2FE}
+.imgzone.filled{border-style:solid;border-color:#5EEAD4}
+.imgzone.fb-ok{border-style:solid;border-color:#34D399}
+.imgzone.fb-no{border-style:solid;border-color:#F87171;animation:shk .5s ease}
+
+#fc-overlay{display:none;position:fixed;inset:0;z-index:9000;background:rgba(15,25,35,.6);backdrop-filter:blur(5px);align-items:center;justify-content:center}
+#fc-overlay.on{display:flex}
+#fc-box{background:#C2410C;border-radius:24px;padding:44px 56px;max-width:760px;width:92%;box-shadow:0 24px 64px rgba(0,0,0,.4);display:flex;flex-direction:column;align-items:center;gap:20px;animation:fcPop .3s cubic-bezier(.34,1.4,.64,1)}
+@keyframes fcPop{from{transform:scale(.82);opacity:0}to{transform:scale(1);opacity:1}}
+#fc-counter{font-size:12px;font-weight:900;text-transform:uppercase;letter-spacing:.22em;color:rgba(255,255,255,.5)}
+#fc-word{font-size:36px;font-weight:900;color:#fff;text-align:center;line-height:1.2;border-bottom:2px solid rgba(255,255,255,.18);padding-bottom:18px;width:100%}
+#fc-def{font-size:21px;font-weight:700;color:#fff;line-height:1.6;text-align:center}
+#fc-ex{font-size:18px;font-weight:600;color:rgba(255,255,255,.78);line-height:1.6;text-align:center;font-style:italic}
+#fc-ex strong{font-weight:900;font-style:normal;color:#fff}
+#fc-def.hidden,#fc-ex.hidden{display:none}
+#fc-reveal-btn{background:rgba(255,255,255,.18);border:1px solid rgba(255,255,255,.4);color:#fff;border-radius:8px;padding:8px 20px;font-family:'Nunito',sans-serif;font-size:14px;font-weight:800;cursor:pointer}
+#fc-reveal-btn:hover{background:rgba(255,255,255,.38)}
+#fc-reveal-btn.hidden{display:none}
+#fc-btns{display:flex;gap:14px;margin-top:6px;flex-wrap:wrap;justify-content:center}
+.fc-btn{background:rgba(255,255,255,.15);border:2px solid rgba(255,255,255,.38);color:#fff;border-radius:10px;padding:10px 22px;font-family:'Nunito',sans-serif;font-size:15px;font-weight:800;cursor:pointer}
+.fc-btn:hover{background:rgba(255,255,255,.28)}
+
+.vocab-sec{background:#EDF6F4;border-bottom:3px solid rgba(15,118,110,.15);padding:14px 32px 18px}
+.vocab-grid{display:grid;grid-template-columns:1fr 1fr 1fr;gap:5px 20px}
+.vw{display:flex;align-items:baseline;gap:8px;padding:7px 10px;border-radius:8px;background:rgba(255,255,255,.6);cursor:pointer}
+.vw span.dot{display:inline-block;width:8px;height:8px;border-radius:50%;background:#C2410C;flex-shrink:0}
+.vw span.w{font-size:17px;font-weight:700;color:#123B32}
+
+/* Sections personnalisées (oral / écrit / autoéval) */
+.custom{max-width:660px}
+.lead{font-size:16px;font-weight:700;color:#3B6156;line-height:1.6;margin-bottom:14px}
+.rec-zone{display:flex;flex-direction:column;align-items:center;gap:10px;margin:8px 0}
+#recBtn{width:78px;height:78px;border-radius:50%;border:none;background:#C2410C;color:#fff;font-size:30px;cursor:pointer;box-shadow:0 4px 16px rgba(15,118,110,.32)}
+#recBtn.recording{background:#E23D2E;animation:pulse 1.2s infinite}
+@keyframes pulse{0%{box-shadow:0 0 0 0 rgba(226,61,46,.45)}70%{box-shadow:0 0 0 16px rgba(226,61,46,0)}100%{box-shadow:0 0 0 0 rgba(226,61,46,0)}}
+.rec-lbl{font-size:13.5px;font-weight:800;color:#5E8A82}
+textarea,input.txt{width:100%;border:2.5px solid #B7DED7;border-radius:12px;padding:11px 14px;font-family:'Nunito',sans-serif;font-size:15px;font-weight:700;color:#123B32;background:#F7FCFB;resize:vertical}
+textarea:focus{outline:none;border-color:#C2410C}
+.btn{font-family:'Nunito',sans-serif;font-size:14.5px;font-weight:800;border-radius:10px;padding:11px 18px;cursor:pointer;border:2.5px solid transparent}
+.btn-pri{background:#C2410C;color:#fff}.btn-pri:hover{background:#9A3412}.btn-pri:disabled{opacity:.5;cursor:not-allowed}
+.btn-ghost{background:#EDF6F4;color:#C2410C;border-color:#B7DED7}.btn-ghost:hover{background:#DCEFEB}
+.btn-send{background:#12556B;color:#fff}.btn-send:disabled{opacity:.5}
+.fb{background:#F0FAF7;border:2px solid #B7DED7;border-radius:12px;padding:14px 16px;display:none;flex-direction:column;gap:8px;margin-top:12px}
+.fb.on{display:flex}
+.fb-t{font-size:11.5px;font-weight:900;text-transform:uppercase;letter-spacing:.06em;color:#9A3412}
+.fb-c{font-size:15px;font-weight:800;color:#9A3412;line-height:1.5}
+.fb-e{font-size:12.5px;font-weight:700;color:#B45309;line-height:1.5;padding-left:14px;position:relative}
+.fb-e::before{content:"•";position:absolute;left:2px}
+.status{font-size:13.5px;font-weight:800;color:#5E8A82;text-align:center;display:none;margin-top:8px}
+.status.on{display:block}
+.err{font-size:13px;font-weight:800;color:#B91C1C;background:#FEF2F2;border:2px solid #FCA5A5;border-radius:10px;padding:10px 14px;display:none;margin-top:8px}
+.err.on{display:block}
+.sent{font-size:13px;font-weight:800;color:#12556B}
+.selfrow{display:flex;align-items:center;justify-content:space-between;gap:10px;padding:11px 0;border-bottom:1px solid #DCEFEB}
+.self-txt{font-size:15px;font-weight:800;color:#123B32}
+.self-opts{display:flex;gap:6px}
+.self-opts button{width:40px;height:40px;border-radius:9px;border:2px solid #B7DED7;background:#fff;font-size:19px;cursor:pointer}
+.self-opts button.sel{border-color:#C2410C;background:#DCEFEB}
+.hidden{display:none!important}
+
+/* Exercices à écrire */
+.wlist{display:flex;flex-direction:column;gap:14px}
+.witem{background:#F7FCFB;border:1.5px solid #B7DED7;border-radius:12px;padding:13px 16px}
+.wq{font-size:16px;font-weight:800;color:#123B32;line-height:1.45;margin-bottom:8px}
+.wrow{display:flex;gap:8px;flex-wrap:wrap}
+.winput{flex:1;min-width:180px;border:2.5px solid #B7DED7;border-radius:9px;padding:9px 13px;font-family:'Nunito',sans-serif;font-size:15.5px;font-weight:700;color:#123B32;background:#fff}
+.winput:focus{outline:none;border-color:#C2410C}
+.winput.good{border-color:#34D399;background:#ECFDF5}
+.wbtn{flex:0 0 auto;padding:9px 16px}
+.wfb{font-size:13.5px;font-weight:700;line-height:1.5;margin-top:8px;display:none}
+.wfb.ok,.wfb.no,.wfb.wait{display:block}
+.wfb.ok{color:#9A3412}.wfb.no{color:#B45309}.wfb.wait{color:#5E8A82}
+.wfb b{color:#9A3412}
+
+@media(max-width:900px){.vocab-grid{grid-template-columns:1fr 1fr}.rrow2{grid-template-columns:1fr}.hdr-h1{font-size:22px}}
+</style>
+</head>
+<body>
+
+<div id="hdr">
+  <div class="hdr-l">
+    <div class="hdr-ic">🚑</div>
+    <div><div class="hdr-eye">Santé et bien-être · Niveau 4</div><div class="hdr-h1">Comment elle va ?</div></div>
+  </div>
+  <div class="hdr-r">
+    <div id="prog-chip">⭐ 0 / 0</div>
+    <button id="btn-reset">↺ Réinitialiser</button>
+  </div>
+</div>
+
+<div id="tabs"></div>
+
+<div id="sel-banner">
+  ✋ Sélectionné : «&nbsp;<span id="sel-lbl">—</span>&nbsp;» — Cliquez sur une case pour le placer.
+</div>
+
+<div id="sections"></div>
+
+<div id="fc-overlay">
+  <div id="fc-box">
+    <div id="fc-counter">Carte 1 / 12</div>
+    <div id="fc-word">—</div>
+    <button id="fc-reveal-btn">Voir la définition</button>
+    <div id="fc-def" class="hidden">—</div>
+    <div id="fc-ex" class="hidden">—</div>
+    <div id="fc-btns">
+      <button class="fc-btn" id="fc-prev">← Précédente</button>
+      <button class="fc-btn" id="fc-next">Suivante →</button>
+      <button class="fc-btn" id="fc-close">✕ Fermer</button>
+    </div>
+  </div>
+</div>
+
+<script>
+// ═══════════════════════════════════════════════════════════════════════
+//  LA VISITE CHEZ LE MÉDECIN — Module interactif Niveau 4 (FLS)
+//  Sections : Je me prépare · Chez le médecin · La langue · Je parle ·
+//             J'écris · Je m'évalue — suivi LMS intégré
+// ═══════════════════════════════════════════════════════════════════════
+
+function getCode(){
+  const own=new URLSearchParams(location.search).get('code');
+  if(own) return own;
+  try{ return new URLSearchParams(window.parent.location.search).get('code')||''; }catch(e){ return ''; }
+}
+const studentCode=getCode();
+
+// ── DIALOGUES ─────────────────────────────────────────────────────────
+const DIALOGUES = {
+  prep: {
+    label: "Dialogue — Un accident",
+    lines: [
+      ["ÉRIC LALIBERTÉ","Bonjour Monsieur. Je vous appelle parce que j'ai trouvé votre numéro dans le cellulaire de Madame Leila."],
+      ["HAMID","Leila est ma femme. Qu'est-ce qui se passe ?"],
+      ["ÉRIC LALIBERTÉ","Votre femme a causé un accident en traversant la rue. Elle n'a pas vu le feu rouge. Une auto l'a heurtée et elle est tombée au sol."],
+      ["HAMID","Est-ce qu'elle va bien ?"],
+      ["ÉRIC LALIBERTÉ","J'ai appelé le 911. Une ambulance est arrivée en dix minutes. On l'a transportée à l'hôpital. Je suis avec elle."],
+      ["HAMID","Oui, bien sûr. J'arrive !"],
+    ]
+  },
+  t1: {
+    label: "Dialogue — Docteur, j'ai mal à...",
+    lines: [
+      ["HAMID","Docteur, ma femme entend très mal depuis l'accident. Je pense qu'elle a un problème d'audition."],
+      ["LE MÉDECIN","Depuis quand a-t-elle ce problème exactement ?"],
+      ["HAMID","Depuis l'accident, il y a deux heures. Avant, elle entendait très bien."],
+      ["LE MÉDECIN","C'est possible que le choc ait affecté son oreille interne. Est-ce qu'elle prend des médicaments ?"],
+      ["HAMID","Non, elle ne prend pas de médicament."],
+      ["LE MÉDECIN","Je vais demander à un audiologiste d'examiner Leila pour comprendre la cause."],
+      ["HAMID","Merci beaucoup, docteur."],
+    ]
+  },
+  t2: {
+    label: "Dialogue — Ce n'est pas dangereux",
+    lines: [
+      ["L'URGENTOLOGUE","Monsieur, je viens vous parler de l'état de Leila. Elle est stable."],
+      ["HAMID","Est-ce qu'elle doit rester longtemps à l'hôpital ?"],
+      ["L'URGENTOLOGUE","Elle a subi un traumatisme, mais ce n'est pas grave. Elle devra rester en observation pour la nuit."],
+      ["HAMID","Est-ce que je peux la voir maintenant ?"],
+      ["L'URGENTOLOGUE","Elle est avec l'audiologiste en ce moment. Vous pourrez la voir dans une heure."],
+      ["HAMID","D'accord, je vais attendre. Merci docteur."],
+    ]
+  },
+  t3: {
+    label: "Dialogue — À l'accueil de l'hôpital",
+    lines: [
+      ["LA RÉCEPTIONNISTE","Bonjour, je peux vous aider ?"],
+      ["LÉO","Bonjour, je viens voir ma grand-mère. Quelles sont les heures de visite ?"],
+      ["LA RÉCEPTIONNISTE","En semaine, c'est de 10 h à 20 h. La fin de semaine, c'est de 11 h à 18 h."],
+      ["LÉO","Est-ce que mon petit frère de huit ans peut venir avec moi ?"],
+      ["LA RÉCEPTIONNISTE","Un enfant doit être accompagné d'un adulte pour visiter un patient."],
+      ["LÉO","D'accord. Combien de personnes peuvent entrer dans la chambre en même temps ?"],
+      ["LA RÉCEPTIONNISTE","Maximum deux visiteurs à la fois, s'il vous plaît."],
+      ["LÉO","Merci beaucoup !"],
+    ]
+  },
+};
+
+// ── SECTIONS ──────────────────────────────────────────────────────────
+const SECTIONS = [
+  {id:'prep', no:'▶', title:'Je me prépare', color:'#C2410C',
+   intro:"🚑 Leila a eu un accident. On l'a transportée à l'hôpital. Un témoin appelle Hamid, son mari, pour le prévenir.",
+   dialogue:'prep'},
+  {id:'t1', no:'1', title:"Tâche 1 · J'ai mal à...", color:'#C0573A',
+   intro:"👨‍⚕️ Tâche 1 — Hamid se rend à l'urgence. Il décrit le problème d'audition de Leila au médecin.",
+   dialogue:'t1'},
+  {id:'t2', no:'2', title:"Tâche 2 · Pas dangereux", color:'#6B4FBB',
+   intro:"🩹 Tâche 2 — L'urgentologue discute avec Hamid. L'état de Leila est stable, elle va se rétablir."},
+  {id:'t3', no:'3', title:'Tâche 3 · Comment ça va', color:'#B45309',
+   intro:"🏥 Tâche 3 — Léo se rend à l'hôpital pour visiter sa grand-mère. Il s'informe des règles de visite."},
+  {id:'appli', no:'▶', title:'Je mets en application', color:'#0D9488', custom:true,
+   intro:"🎤 Je mets en application — Décris une situation d'urgence à l'oral, puis écris un message à un ami en convalescence."},
+  {id:'retiens', no:'✓', title:'Je retiens des mots', color:'#166534', custom:true,
+   intro:"📝 Je retiens des mots — Note le vocabulaire utile et révise avec les cartes mémoire."},
+];
+
+// ── EXERCICES ─────────────────────────────────────────────────────────
+// type 'vf'     : lignes {id,txt,ok} — tuiles fixes (labels)
+// type 'match'  : lignes {id,q,aid,a} — banque = réponses
+// type 'blanks' : segs {k:'t'/'b',id,c} + words {id,l}
+const EXOS = [
+  // ── JE ME PRÉPARE ──
+  {sec:'prep', id:'pr1', type:'vf', num:'Exercice 1', tit:'Vrai ou Faux — Un accident', color:'#C2410C',
+   sub:'Écoutez le dialogue, puis répondez.', tiles:['VRAI','FAUX'],
+   rows:[
+    {id:'pr1a', txt:"Un témoin téléphone à Hamid pour lui parler de sa femme.", ok:'VRAI'},
+    {id:'pr1b', txt:"Leila a causé l'accident en ne respectant pas le feu rouge.", ok:'VRAI'},
+    {id:'pr1c', txt:"L'ambulance est arrivée après une heure.", ok:'FAUX'},
+    {id:'pr1d', txt:"Hamid ne peut pas se rendre à l'hôpital tout de suite.", ok:'FAUX'},
+    {id:'pr1e', txt:"Le témoin reste avec Leila jusqu'à l'hôpital.", ok:'VRAI'},
+    {id:'pr1f', txt:"Leila est dans un état très grave et dangereux.", ok:'FAUX'},
+   ]},
+  {sec:'prep', id:'pr2', type:'match', num:'Exercice 2', tit:"Qui suis-je ? Matériel médical", color:'#C2410C',
+   sub:'Associez chaque description au bon matériel médical.',
+   rows:[
+    {id:'pr2a', q:"Je transporte un patient couché, en le portant à plat.", aid:'ma1', a:"un brancard"},
+    {id:'pr2b', q:"Je sers à arrêter une hémorragie en serrant fort un membre.", aid:'ma2', a:"un garrot"},
+    {id:'pr2c', q:"J'immobilise un os cassé.", aid:'ma3', a:"un plâtre"},
+    {id:'pr2d', q:"J'écoute les battements du cœur et la respiration.", aid:'ma4', a:"un stéthoscope"},
+    {id:'pr2e', q:"J'aide à marcher quand on a une jambe blessée.", aid:'ma5', a:"des béquilles"},
+   ]},
+  {sec:'prep', id:'prImg', type:'imgmatch', num:'Exercice 3', tit:'Associer l\'image à la situation', color:'#C2410C',
+   sub:'Glisse chaque image sur le bon énoncé.',
+   images:[
+    {id:'im1', src:'images/crise-cardiaque.jpg'},
+    {id:'im2', src:'images/cheville-foulee.jpg'},
+    {id:'im3', src:'images/bebe-cuisiniere.jpg'},
+    {id:'im4', src:'images/genou-soccer.jpg'},
+   ],
+   rows:[
+    {id:'pi1', txt:"Cet homme fait une crise cardiaque.", aid:'im1'},
+    {id:'pi2', txt:"Cette coureuse s'est foulé la cheville.", aid:'im2'},
+    {id:'pi3', txt:"Ce bébé touche dangereusement la cuisinière.", aid:'im3'},
+    {id:'pi4', txt:"Ce garçon s'est blessé au genou en jouant au soccer.", aid:'im4'},
+   ]},
+
+  // ── TÂCHE 1 · DOCTEUR, J'AI MAL À... ──
+  {sec:'t1', id:'t1vf', type:'vf', num:'Exercice 1', tit:"Vrai ou Faux — Le problème d'audition", color:'#C0573A',
+   sub:'Écoutez le dialogue, puis répondez.', tiles:['VRAI','FAUX'],
+   rows:[
+    {id:'t1vfa', txt:"Hamid dit que Leila entend très mal depuis l'accident.", ok:'VRAI'},
+    {id:'t1vfb', txt:"Le problème d'audition existait avant l'accident.", ok:'FAUX'},
+    {id:'t1vfc', txt:"Leila prend plusieurs médicaments.", ok:'FAUX'},
+    {id:'t1vfd', txt:"Le médecin pense que le choc peut avoir causé le problème.", ok:'VRAI'},
+    {id:'t1vfe', txt:"Un audiologiste va examiner Leila.", ok:'VRAI'},
+   ]},
+  {sec:'t1', id:'t1pc', type:'write', num:'Exercice 2', tit:'Le passé composé', color:'#C0573A',
+   sub:'Conjuguez les verbes au passé composé.',
+   savoir:{h:"› Le passé composé", rows:[
+     ["la plupart des verbes","avoir au présent + participe passé : j'<em>ai toussé</em>, elle <em>a pris</em>"],
+     ["verbes de mouvement","être au présent + participe passé (accord) : nous <em>sommes allés</em>, elles <em>sont sorties</em>"],
+   ]},
+   items:[
+    {q:"(aller) Nous … à la clinique ce matin.", accept:["sommes allés","sommes allées"], ph:"nous…"},
+    {q:"(contracter) Tu … une grippe.", accept:["as contracté"], ph:"tu…"},
+    {q:"(tousser) J' … toute la nuit.", accept:["ai toussé"], ph:"j'…"},
+    {q:"(prendre) Elle … son ordonnance.", accept:["a pris"], ph:"elle…"},
+    {q:"(sortir) Elles … de la pharmacie.", accept:["sont sorties","sont sortis"], ph:"elles…"},
+    {q:"(arriver) Je … en retard.", accept:["suis arrivé","suis arrivée"], ph:"je…"},
+   ]},
+  {sec:'t1', id:'t1pron', type:'write', num:'Exercice 3', tit:'Les verbes pronominaux au passé composé', color:'#C0573A',
+   sub:'Conjuguez les verbes pronominaux au passé composé.',
+   savoir:{h:"› Les verbes pronominaux au passé composé", rows:[
+     ["auxiliaire être","je <em>me suis coupé</em>, elle <em>s'est blessée</em>, il <em>s'est réveillé</em>"],
+   ]},
+   items:[
+    {q:"(se couper) Je … à la main en cuisinant.", accept:["me suis coupé","me suis coupée"], ph:"je…"},
+    {q:"(se blesser) Elle … au dos hier.", accept:["s'est blessée","s'est blessé"], ph:"elle…"},
+    {q:"(se réveiller) Il … tôt ce matin.", accept:["s'est réveillé"], ph:"il…"},
+    {q:"(s'absenter) Je … du travail toute la semaine.", accept:["me suis absenté","me suis absentée"], ph:"je…"},
+    {q:"(s'évanouir) Le patient … après la piqûre.", accept:["s'est évanoui"], ph:"le patient…"},
+   ]},
+  {sec:'t1', id:'t1match', type:'match', num:'Exercice 4', tit:"Décrire une situation d'urgence", color:'#C0573A',
+   sub:'Associez chaque situation à la bonne expression.',
+   rows:[
+    {id:'t1ma', q:"La personne ne bouge plus et ne répond pas.", aid:'ea1', a:"être inconscient"},
+    {id:'t1mb', q:"Le cœur bat de façon anormale et cause de la douleur.", aid:'ea2', a:"avoir un malaise cardiaque"},
+    {id:'t1mc', q:"La personne respire avec beaucoup de difficulté.", aid:'ea3', a:"être en détresse respiratoire"},
+    {id:'t1md', q:"La poitrine se serre et la respiration devient très difficile.", aid:'ea4', a:"faire une crise d'asthme"},
+    {id:'t1me', q:"Le sang coule abondamment d'une blessure.", aid:'ea5', a:"saigner beaucoup"},
+   ]},
+
+  // ── TÂCHE 2 · CE N'EST PAS DANGEREUX ──
+  {sec:'t2', id:'t2vf', type:'vf', num:'Exercice 1', tit:"Vrai ou Faux — L'état de Leila", color:'#6B4FBB',
+   sub:'Écoutez le dialogue, puis répondez.', tiles:['VRAI','FAUX'],
+   rows:[
+    {id:'t2vfa', txt:"L'urgentologue dit que Leila est stable.", ok:'VRAI'},
+    {id:'t2vfb', txt:"Leila doit rester à l'hôpital plusieurs semaines.", ok:'FAUX'},
+    {id:'t2vfc', txt:"Leila a subi un traumatisme.", ok:'VRAI'},
+    {id:'t2vfd', txt:"Hamid peut voir Leila immédiatement.", ok:'FAUX'},
+    {id:'t2vfe', txt:"Hamid devra attendre environ une heure.", ok:'VRAI'},
+   ]},
+  {sec:'t2', id:'t2exam', type:'match', num:'Exercice 2', tit:'Les examens médicaux', color:'#6B4FBB',
+   sub:'Associez chaque examen à sa définition.',
+   rows:[
+    {id:'t2ea', q:"une radiographie", aid:'xa1', a:"Une image des os avec des rayons X."},
+    {id:'t2eb', q:"une tomographie (scanner)", aid:'xa2', a:"Des images détaillées en coupes du corps."},
+    {id:'t2ec', q:"une mammographie", aid:'xa3', a:"Une radiographie des seins."},
+    {id:'t2ed', q:"un électrocardiogramme", aid:'xa4', a:"Un examen qui mesure l'activité du cœur."},
+    {id:'t2ee', q:"une échographie", aid:'xa5', a:"Des images faites avec des ultrasons."},
+   ]},
+  {sec:'t2', id:'t2pron', type:'write', num:'Exercice 3', tit:'Répondre avec un pronom complément', color:'#6B4FBB',
+   sub:'Réponds à la question en remplaçant le groupe de mots par un pronom complément.',
+   savoir:{h:"› Les pronoms compléments", rows:[
+     ["CD : le, la, les","Elle voit <em>le médecin</em>. → Elle <em>le</em> voit."],
+     ["CI : lui, leur","Il parle <em>à Hamid</em>. → Il <em>lui</em> parle."],
+   ]},
+   items:[
+    {q:"Est-ce que Hamid rencontre le médecin ? (remplace « le médecin »)", hint:"Oui, il le rencontre.", ph:"Oui,…"},
+    {q:"Est-ce que l'infirmière parle à Hamid ? (remplace « à Hamid »)", hint:"Oui, elle lui parle.", ph:"Oui,…"},
+    {q:"Est-ce que Leila voit ses amis aujourd'hui ? (remplace « ses amis »)", hint:"Non, elle ne les voit pas aujourd'hui.", ph:"Non,…"},
+    {q:"Est-ce que le médecin explique la situation aux parents ? (remplace « aux parents »)", hint:"Oui, il leur explique la situation.", ph:"Oui,…"},
+    {q:"Est-ce que Hamid attend Leila à l'hôpital ? (remplace « Leila »)", hint:"Oui, il l'attend à l'hôpital.", ph:"Oui,…"},
+   ]},
+  {sec:'t2', id:'t2call', type:'match', num:'Exercice 4', tit:'Un appel au 911', color:'#6B4FBB',
+   sub:'Vous êtes témoin d\'un accident. Associez chaque question du répartiteur à la bonne réponse.',
+   rows:[
+    {id:'t2ca', q:"Quelle est la situation ?", aid:'da1', a:"Un accident, au coin de la rue Principale. Un homme est couché par terre. Il a perdu connaissance."},
+    {id:'t2cb', q:"Est-ce qu'il respire ? Est-ce que vous sentez son pouls ?", aid:'da2', a:"Oui, je sens son pouls. Il respire."},
+    {id:'t2cc', q:"Est-ce qu'il saigne ?", aid:'da3', a:"Non, je ne vois pas de sang."},
+    {id:'t2cd', q:"Restez calme. Est-ce qu'il y a d'autres victimes ?", aid:'da4', a:"Non, il est seul."},
+    {id:'t2ce', q:"J'ai envoyé une ambulance. Elle arrive dans cinq minutes.", aid:'da5', a:"D'accord, je reste avec lui."},
+    {id:'t2cf', q:"Très bien. Au revoir, Monsieur.", aid:'da6', a:"Merci, au revoir."},
+   ]},
+  {sec:'t2', id:'t2ped', type:'write', num:'Exercice 5', tit:'La consultation de Mayeli', color:'#6B4FBB',
+   sub:'Réponds aux questions par une phrase complète.',
+   items:[
+    {q:"D'après le pédiatre, quel est le diagnostic de Mayeli ?", hint:"Elle a une otite, une infection de l'oreille.", ph:"…"},
+    {q:"Qu'est-ce que le médecin lui prescrit ?", hint:"Il lui prescrit un antibiotique et un sirop.", ph:"…"},
+    {q:"Pendant combien de jours doit-elle prendre l'antibiotique ?", hint:"Pendant sept jours.", ph:"…"},
+    {q:"Pourquoi doit-elle consulter un ORL ?", hint:"Parce que ses otites reviennent souvent.", ph:"…"},
+   ]},
+  {sec:'t2', id:'t2derm', type:'vf', num:'Exercice 6', tit:'Vrai ou Faux — La dermatologue', color:'#6B4FBB',
+   sub:'Écoutez les explications, puis répondez.', tiles:['VRAI','FAUX'],
+   rows:[
+    {id:'t2da', txt:"La patiente souffre d'eczéma.", ok:'VRAI'},
+    {id:'t2db', txt:"L'eczéma est très rare.", ok:'FAUX'},
+    {id:'t2dc', txt:"La patiente a de l'eczéma seulement sur le cou.", ok:'FAUX'},
+    {id:'t2dd', txt:"La dermatologue prescrit une crème.", ok:'VRAI'},
+    {id:'t2de', txt:"La patiente doit éviter les produits parfumés.", ok:'VRAI'},
+   ]},
+
+  // ── TÂCHE 3 · COMMENT VOUS SENTEZ-VOUS ? ──
+  {sec:'t3', id:'t3hosp', type:'write', num:'Exercice 1', tit:'Les règles de visite', color:'#B45309',
+   sub:'Réponds aux questions par une phrase complète.',
+   items:[
+    {q:"Quelles sont les heures de visite en semaine à l'hôpital ?", hint:"Les heures de visite sont de 10 h à 20 h en semaine.", ph:"…"},
+    {q:"Quelles sont les heures de visite la fin de semaine ?", hint:"Les heures de visite sont de 11 h à 18 h la fin de semaine.", ph:"…"},
+    {q:"Combien de visiteurs sont permis dans la chambre en même temps ?", hint:"Maximum deux visiteurs à la fois.", ph:"…"},
+    {q:"Est-ce qu'un enfant peut visiter seul un patient ?", hint:"Non, un enfant doit être accompagné d'un adulte.", ph:"…"},
+   ]},
+  {sec:'t3', id:'t3polite', type:'write', num:'Exercice 2', tit:'Poser une question polie', color:'#B45309',
+   sub:"Formule une question polie pour t'orienter dans l'hôpital.",
+   savoir:{h:"› Poser une question polie", rows:[
+     ["Pourriez-vous…","<em>Pourriez-vous</em> m'indiquer où se trouve la radiologie, s'il vous plaît ?"],
+     ["Excusez-moi, où…","<em>Excusez-moi</em>, où se trouve l'ascenseur ?"],
+   ]},
+   items:[
+    {q:"Tu cherches le département de cardiologie. Pose une question polie à un employé.", hint:"Pourriez-vous m'indiquer où se trouve le département de cardiologie, s'il vous plaît ?", ph:"…"},
+    {q:"Tu cherches l'ascenseur pour monter au troisième étage. Pose une question polie.", hint:"Excusez-moi, où se trouve l'ascenseur pour monter au troisième étage ?", ph:"…"},
+    {q:"Tu tousses depuis deux semaines et tu as très mal dans le dos. Demande dans quel service te rendre.", hint:"Pourriez-vous me dire où se trouve la pneumologie, s'il vous plaît ?", ph:"…"},
+   ]},
+  {sec:'t3', id:'t3etage', type:'match', num:'Exercice 3', tit:"Le plan de l'hôpital", color:'#B45309',
+   sub:'Associez chaque département au bon étage.',
+   rows:[
+    {id:'t3ea', q:"Urgence", aid:'ea1', a:"1er étage"},
+    {id:'t3eb', q:"Radiologie", aid:'ea1b', a:"1er étage"},
+    {id:'t3ec', q:"Cardiologie", aid:'ea2', a:"2e étage"},
+    {id:'t3ed', q:"Obstétrique", aid:'ea2b', a:"2e étage"},
+    {id:'t3ee', q:"Psychiatrie", aid:'ea1c', a:"1er étage"},
+   ]},
+  {sec:'t3', id:'t3comfort', type:'write', num:'Exercice 4', tit:'Écrire une phrase de réconfort', color:'#B45309',
+   sub:'Un ami te parle de son état de santé. Écris une phrase de réconfort.',
+   items:[
+    {q:"Un ami te dit : « Je me sens très fatigué et j'ai mal partout. »", hint:"Repose-toi bien, ça va aller mieux bientôt.", ph:"…"},
+    {q:"Un ami te dit : « J'ai une forte pression dans la poitrine. »", hint:"Ne t'inquiète pas, les médecins s'occupent bien de toi.", ph:"…"},
+    {q:"Un ami te dit : « Je dois rester encore trois jours à l'hôpital. »", hint:"Prends soin de toi, je viendrai te visiter bientôt.", ph:"…"},
+   ]},
+];
+
+// ── FLASHCARDS ────────────────────────────────────────────────────────
+const FC_CARDS = [
+  {word:"un accident", def:"Un événement soudain et dangereux, non voulu.", ex:"Leila a eu un <strong>accident</strong> de la route."},
+  {word:"une ambulance", def:"Le véhicule qui transporte les patients d'urgence.", ex:"L'<strong>ambulance</strong> est arrivée en dix minutes."},
+  {word:"un brancard", def:"Une civière pour transporter un patient couché.", ex:"Les ambulanciers l'ont mise sur un <strong>brancard</strong>."},
+  {word:"un traumatisme", def:"Une blessure physique causée par un choc.", ex:"Elle a subi un <strong>traumatisme</strong> à la tête."},
+  {word:"stable", def:"Dont l'état de santé ne s'aggrave pas.", ex:"Son état est <strong>stable</strong>."},
+  {word:"la convalescence", def:"La période de repos après une maladie ou un accident.", ex:"Il est en <strong>convalescence</strong> à la maison."},
+  {word:"se rétablir", def:"Retrouver la santé après une maladie.", ex:"Elle va se <strong>rétablir</strong> rapidement."},
+  {word:"être hospitalisé", def:"Être admis à l'hôpital pour des soins.", ex:"Il a été <strong>hospitalisé</strong> hier."},
+  {word:"la priorité", def:"L'ordre d'urgence pour être soigné.", ex:"Son cas est la <strong>priorité</strong> 1."},
+  {word:"un urgentologue", def:"Le médecin spécialiste de la salle d'urgence.", ex:"L'<strong>urgentologue</strong> a examiné Leila."},
+  {word:"être inconscient", def:"Avoir perdu connaissance, ne plus réagir.", ex:"L'homme est <strong>inconscient</strong> sur le sol."},
+  {word:"saigner", def:"Perdre du sang à cause d'une blessure.", ex:"Sa blessure au bras <strong>saigne</strong> beaucoup."},
+];
+
+// ── ÉTAT ──────────────────────────────────────────────────────────────
+const S = {pl:{}, sel:null, fb:{}};
+let curSec = 'prep';
+
+const ZONES = {};
+EXOS.forEach(ex => {
+  if (ex.type === 'vf')     ex.rows.forEach(r => ZONES[r.id] = {cv:r.ok, zcat:'vf', exo:ex.id});
+  if (ex.type === 'match')  ex.rows.forEach(r => ZONES[r.id] = {cv:r.aid, zcat:'id', exo:ex.id});
+  if (ex.type === 'imgmatch') ex.rows.forEach(r => ZONES[r.id] = {cv:r.aid, zcat:'id', exo:ex.id});
+  if (ex.type === 'rows')   ex.rows.forEach(r => ZONES[r.id] = {cv:r.cv, zcat:'id', exo:ex.id});
+  if (ex.type === 'blanks') ex.segs.filter(s=>s.k==='b').forEach(s =>
+    ZONES[s.id] = {cv:s.c, zcat: ex.byLabel ? 'lbl' : 'id', exo:ex.id});
+  if (ex.type === 'write')  ex.items.forEach((it,i) =>
+    ZONES['w_'+ex.id+'_'+i] = {zcat:'write', exo:ex.id});
+});
+const TOTAL_ZONES = Object.keys(ZONES).length;
+const ALL_IMAGES = EXOS.filter(e=>e.type==='imgmatch').flatMap(e=>e.images);
+
+// ── LMS TRACKING ──────────────────────────────────────────────────────
+function lmsTrack(event, data) {
+  try { window.parent.postMessage(Object.assign({lms:true, event:event}, data||{}), '*'); } catch(e) {}
+  try {
+    const up = new URLSearchParams(window.parent.location.search);
+    const code = up.get('code'), actId = parseInt(up.get('activityId'))||null, title = up.get('title')||'';
+    if (code && actId) {
+      fetch('/api/student/progress', {
+        method:'POST', headers:{'Content-Type':'application/json'},
+        body: JSON.stringify(Object.assign({code, activityId:actId, activityTitle:title, event}, data||{})),
+      }).catch(()=>{});
+    }
+  } catch(e2) {}
+}
+const TR = {attempts:{}, correct:{}};
+function trackPlacement(zid, ok) {
+  if (ok && !TR.correct[zid]) {
+    TR.correct[zid] = true;
+    if (!(zid in TR.attempts)) TR.attempts[zid] = 0;
+    const zonesDone = Object.keys(TR.correct).length;
+    const firstTry = Object.keys(TR.correct).filter(k => (TR.attempts[k]||0)===0).length;
+    const totalErrors = Object.keys(TR.attempts).reduce((s,k)=>s+(TR.attempts[k]||0),0);
+    lmsTrack('exercise_completed', {zones:TOTAL_ZONES, zonesDone, firstTry, totalErrors});
+  } else if (!ok && !TR.correct[zid]) {
+    TR.attempts[zid] = (TR.attempts[zid]||0) + 1;
+  }
+  updateChip();
+}
+
+// ── DIALOGUE (synthèse vocale) ────────────────────────────────────────
+let dialogueRead = false;
+function playDialogue(dialId, btn){
+  try{
+    speechSynthesis.cancel();
+    const voices = speechSynthesis.getVoices();
+    const fr = voices.filter(v=>/^fr/i.test(v.lang));
+    (DIALOGUES[dialId].lines||[]).forEach((l,i)=>{
+      const u=new SpeechSynthesisUtterance(l[1]);
+      u.lang='fr-CA'; u.rate=0.95; u.pitch=(i%2===0)?1.12:0.9;
+      if(fr.length) u.voice=(i%2===0)?fr[0]:(fr[1]||fr[0]);
+      speechSynthesis.speak(u);
+    });
+    if(!dialogueRead){ dialogueRead=true; lmsTrack('dialogue_listened'); }
+  }catch(e){}
+}
+function markRead(btn){
+  btn.classList.add('done'); btn.textContent='✓ Lu';
+  if(!dialogueRead){ dialogueRead=true; lmsTrack('dialogue_listened'); }
+}
+
+// ── LOGIQUE DE PLACEMENT ──────────────────────────────────────────────
+function checkOk(zid, iid, lbl) {
+  const z = ZONES[zid];
+  if (!z) return false;
+  if (z.zcat === 'vf' || z.zcat === 'lbl') return lbl === z.cv;
+  return iid === z.cv;
+}
+function doPlace(zid, iid, lbl, cat, from) {
+  if (from === zid) { S.sel = null; render(); return; }
+  if (from && from !== zid) { if (S.pl[zid]) S.pl[from] = S.pl[zid]; else delete S.pl[from]; delete S.fb[from]; delete S.fb[zid]; }
+  else if (!from && S.pl[zid]) { delete S.pl[zid]; delete S.fb[zid]; }
+  S.pl[zid] = {iid, lbl, cat}; S.sel = null;
+  const ok = checkOk(zid, iid, lbl);
+  S.fb[zid] = ok ? 'ok' : 'no';
+  trackPlacement(zid, ok);
+  render();
+  setTimeout(() => { delete S.fb[zid]; if (!ok) delete S.pl[zid]; render(); }, ok ? 1400 : 850);
+}
+function zoneClick(zid) {
+  if (S.sel) { doPlace(zid, S.sel.iid, S.sel.lbl, S.sel.cat, S.sel.from); }
+  else if (S.pl[zid] && !S.fb[zid]) {
+    const {iid,lbl,cat} = S.pl[zid];
+    delete S.pl[zid]; delete S.fb[zid];
+    S.sel = {iid,lbl,cat,from:zid}; render();
+  }
+}
+function tileClick(iid, lbl, cat) {
+  if (S.sel && S.sel.iid === iid && !S.sel.from) S.sel = null;
+  else S.sel = {iid,lbl,cat,from:null};
+  render();
+}
+
+// ── DRAG & DROP ───────────────────────────────────────────────────────
+let dd = null;
+function drg(el, iid, lbl, cat, from) {
+  el.draggable = true;
+  el.addEventListener('dragstart', e => { dd = {iid,lbl,cat,from:from||null}; e.dataTransfer.setData('text/plain', JSON.stringify(dd)); e.dataTransfer.effectAllowed='move'; setTimeout(()=>el.style.opacity='.45',0); });
+  el.addEventListener('dragend', () => { el.style.opacity=''; dd=null; });
+}
+function drp(el, zid) {
+  el.addEventListener('dragover', e => { e.preventDefault(); el.classList.add('dov'); });
+  el.addEventListener('dragleave', () => el.classList.remove('dov'));
+  el.addEventListener('drop', e => { e.preventDefault(); el.classList.remove('dov'); let d=dd; if(!d){try{d=JSON.parse(e.dataTransfer.getData('text/plain'))}catch{}} if(!d)return; doPlace(zid, d.iid, d.lbl, d.cat, d.from); dd=null; });
+}
+let ts=null, ghost=null;
+function tch(el, iid, lbl, cat, from) {
+  el.addEventListener('touchstart', e => { const t=e.touches[0]; ts={x:t.clientX,y:t.clientY,iid,lbl,cat,from:from||null,el,moved:false}; }, {passive:true});
+}
+document.addEventListener('touchmove', e => {
+  if(!ts) return;
+  const t=e.touches[0], dx=t.clientX-ts.x, dy=t.clientY-ts.y;
+  if(!ts.moved && Math.sqrt(dx*dx+dy*dy)>8){
+    ts.moved=true;
+    const r=ts.el.getBoundingClientRect();
+    ghost=ts.el.cloneNode(true);
+    ghost.className=ts.el.className+' ghost'; ghost.style.width=r.width+'px';
+    ghost.style.left=(t.clientX-r.width/2)+'px'; ghost.style.top=(t.clientY-r.height/2)+'px';
+    document.body.appendChild(ghost);
+  }
+  if(ts.moved && ghost){ e.preventDefault(); ghost.style.left=(t.clientX-ghost.offsetWidth/2)+'px'; ghost.style.top=(t.clientY-ghost.offsetHeight/2)+'px'; }
+}, {passive:false});
+document.addEventListener('touchend', e => {
+  if(!ts) return;
+  if(ts.moved && ghost){
+    ghost.remove(); ghost=null;
+    const t=e.changedTouches[0];
+    const zel=document.elementsFromPoint(t.clientX,t.clientY).find(x=>x.dataset&&x.dataset.zid);
+    if(zel) doPlace(zel.dataset.zid, ts.iid, ts.lbl, ts.cat, ts.from);
+    e.preventDefault();
+  }
+  ts=null;
+});
+
+// ── HELPERS ───────────────────────────────────────────────────────────
+function esc(s){return String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;')}
+function usedIds(){return new Set(Object.values(S.pl).map(p=>p.iid))}
+function shuffled(arr, seed){
+  const a=arr.slice(); let s=seed||42;
+  for(let i=a.length-1;i>0;i--){ s=(s*9301+49297)%233280; const j=Math.floor((s/233280)*(i+1)); [a[i],a[j]]=[a[j],a[i]]; }
+  return a;
+}
+function mkZone(zid, extra, placeholder){
+  const el=document.createElement('div');
+  const placed=S.pl[zid], fb=S.fb[zid], z=ZONES[zid];
+  let cls=['zone']; if(extra)cls.push(extra);
+  if(fb)cls.push('fb-'+fb);
+  else if(placed){
+    if(z.zcat==='vf'&&(placed.lbl==='VRAI'||placed.lbl==='FAUX'))cls.push(placed.lbl==='VRAI'?'f-vrai':'f-faux');
+    else cls.push('filled');
+  } else cls.push('empty');
+  el.className=cls.join(' ');
+  el.dataset.zid=zid;
+  el.textContent=placed?placed.lbl:(placeholder||'déposer ici');
+  el.addEventListener('click',()=>zoneClick(zid));
+  drp(el,zid);
+  if(placed&&!fb){drg(el,placed.iid,placed.lbl,placed.cat,zid);tch(el,placed.iid,placed.lbl,placed.cat,zid)}
+  return el;
+}
+function mkBlank(zid){
+  const el=document.createElement('span');
+  const placed=S.pl[zid], fb=S.fb[zid];
+  let cls=['blank'];
+  if(fb)cls.push('fb-'+fb); else if(placed)cls.push('filled');
+  el.className=cls.join(' ');
+  el.dataset.zid=zid;
+  el.textContent=placed?placed.lbl:'…';
+  el.addEventListener('click',()=>zoneClick(zid));
+  drp(el,zid);
+  if(placed&&!fb){drg(el,placed.iid,placed.lbl,placed.cat,zid);tch(el,placed.iid,placed.lbl,placed.cat,zid)}
+  return el;
+}
+function mkTile(iid,lbl,cat,cls){
+  const t=document.createElement('div');
+  t.className='tile '+cls+(S.sel&&S.sel.iid===iid&&!S.sel.from?' sel':'');
+  t.textContent=lbl;
+  t.addEventListener('click',()=>tileClick(iid,lbl,cat));
+  drg(t,iid,lbl,cat,null); tch(t,iid,lbl,cat,null);
+  return t;
+}
+function mkImgTile(im,cat){
+  const t=document.createElement('div');
+  t.className='imgtile'+(S.sel&&S.sel.iid===im.id&&!S.sel.from?' sel':'');
+  t.innerHTML='<img src="'+im.src+'" alt="" loading="lazy">';
+  t.addEventListener('click',()=>tileClick(im.id,im.id,cat));
+  drg(t,im.id,im.id,cat,null); tch(t,im.id,im.id,cat,null);
+  return t;
+}
+function mkImgZone(zid, im){
+  const el=document.createElement('div');
+  const placed=S.pl[zid], fb=S.fb[zid];
+  let cls=['imgzone']; if(fb)cls.push('fb-'+fb); else if(placed)cls.push('filled'); else cls.push('empty');
+  el.className=cls.join(' ');
+  el.dataset.zid=zid;
+  if(placed){ const src=(ALL_IMAGES.find(i=>i.id===placed.iid)||{}).src; el.innerHTML=src?'<img src="'+src+'" alt="">':''; }
+  else{ el.innerHTML='<span class="imgzone-ph">glissez l\'image ici</span>'; }
+  el.addEventListener('click',()=>zoneClick(zid));
+  drp(el,zid);
+  if(placed&&!fb){drg(el,placed.iid,placed.lbl,placed.cat,zid);tch(el,placed.iid,placed.lbl,placed.cat,zid)}
+  return el;
+}
+
+// ── CONSTRUCTION DU DOM ───────────────────────────────────────────────
+function buildStatic(){
+  const tabs=document.getElementById('tabs');
+  SECTIONS.forEach(sec=>{
+    const b=document.createElement('button');
+    b.className='tab'; b.id='tab-'+sec.id;
+    b.innerHTML='<span class="tno">'+sec.no+'</span>'+esc(sec.title)+'<span class="tchk">✓</span>';
+    b.addEventListener('click',()=>{curSec=sec.id;render();window.scrollTo({top:0,behavior:'smooth'})});
+    tabs.appendChild(b);
+  });
+  const wrap=document.getElementById('sections');
+  SECTIONS.forEach(sec=>{
+    const d=document.createElement('div');
+    d.className='sec'; d.id='sec-'+sec.id;
+    let h='';
+    h+='<div class="intro" style="border-color:'+sec.color+'33">'+sec.intro+'</div>';
+    if(sec.dialogue){
+      const dia=DIALOGUES[sec.dialogue];
+      h+='<div class="dial-sec" style="border-bottom-color:'+sec.color+'">';
+      h+='<div class="audio-pl"><div class="audio-lbl">Dialogue</div>';
+      h+='<button class="btn-lu" onclick="playDialogue(\''+sec.dialogue+'\',this)">🔊 Écouter</button>';
+      h+='<button class="btn-lu" onclick="markRead(this)">📖 J\'ai lu</button></div>';
+      h+='<div class="dial-txt"><div class="d-lbl">'+esc(dia.label)+'</div>';
+      dia.lines.forEach((l,i)=>{
+        const cls=(i%2===0)?'mb':'dr';
+        h+='<div class="dl"><span class="'+cls+'">'+esc(l[0])+' :</span> '+esc(l[1])+'</div>';
+      });
+      h+='</div></div>';
+    }
+    if(sec.id==='prep'){
+      h+='<div class="vocab-sec"><div style="display:flex;align-items:center;gap:10px;margin-bottom:12px;">';
+      h+='<div style="background:#C2410C;color:#fff;border-radius:999px;padding:3px 14px;font-size:11px;font-weight:800;text-transform:uppercase;letter-spacing:.12em;">Vocabulaire</div>';
+      h+='<div style="font-size:15px;font-weight:700;color:#9A3412;">Mots du module — <span style="font-weight:900;cursor:pointer;text-decoration:underline dotted;" onclick="fcOpen(0)">Cliquez pour les cartes mémoire 🃏</span></div></div>';
+      h+='<div class="vocab-grid">';
+      FC_CARDS.forEach(c=>{h+='<div class="vw" onclick="fcOpenWord(\''+c.word.replace(/'/g,"\\'")+'\')"><span class="dot"></span><span class="w">'+esc(c.word)+'</span></div>'});
+      h+='</div></div>';
+    }
+    h+='<div class="exs" id="exs-'+sec.id+'"></div>';
+    d.innerHTML=h;
+    wrap.appendChild(d);
+  });
+  // cartes d'exercices (sections à moteur)
+  EXOS.forEach(ex=>{
+    const host=document.getElementById('exs-'+ex.sec);
+    const card=document.createElement('div');
+    card.className='card';
+    let h='';
+    if(ex.savoir){
+      h+='<div class="savoir"><h3>'+ex.savoir.h+'</h3><table>';
+      ex.savoir.rows.forEach(r=>{h+='<tr><td>'+r[0]+'</td><td>'+r[1]+'</td></tr>'});
+      h+='</table></div>';
+    }
+    // ── Exercice à écrire (autocorrection ou correction IA) ──
+    if(ex.type==='write'){
+      h+='<div class="c-hdr"><span class="tag" style="background:'+ex.color+'">'+esc(ex.num)+'</span><span class="ctit" style="color:'+ex.color+'">'+esc(ex.tit)+'</span><span class="csub">'+esc(ex.sub)+'</span></div>';
+      const aiBadge = ex.items.some(it=>!it.accept) ? '<div style="font-size:12px;font-weight:800;color:#0D9488;margin-bottom:10px">🤖 Un assistant corrige ce que tu écris et te donne une rétroaction.</div>' : '';
+      h+=aiBadge+'<div class="wlist">';
+      ex.items.forEach((it,i)=>{
+        h+='<div class="witem"><div class="wq">'+(it.q||'')+'</div>';
+        h+='<div class="wrow"><input class="winput" id="wi_'+ex.id+'_'+i+'" placeholder="'+(it.ph||'Écris ta réponse…')+'" autocomplete="off">';
+        h+='<button class="btn btn-pri wbtn" onclick="checkWrite(\''+ex.id+'\','+i+')">Vérifier</button></div>';
+        h+='<div class="wfb" id="wf_'+ex.id+'_'+i+'"></div></div>';
+      });
+      h+='</div>';
+      card.innerHTML=h; host.appendChild(card); return;
+    }
+    h+='<div style="display:flex;gap:20px;align-items:flex-start;flex-wrap:wrap">';
+    h+='<div style="flex:1;min-width:300px">';
+    h+='<div class="c-hdr"><span class="tag" style="background:'+ex.color+'">'+esc(ex.num)+'</span><span class="ctit" style="color:'+ex.color+'">'+esc(ex.tit)+'</span><span class="csub">'+esc(ex.sub)+'</span></div>';
+    if(ex.type==='blanks') h+='<p class="blanks-p" id="mount-'+ex.id+'"></p>';
+    else h+='<div class="rows" id="mount-'+ex.id+'"></div>';
+    h+='</div>';
+    const vert=(ex.type==='match'||ex.type==='rows'||ex.type==='imgmatch')?' vert':'';
+    const bw=ex.type==='imgmatch'?'240px':((ex.type==='match'||ex.type==='rows')?'300px':'220px');
+    h+='<div class="bsec b1" style="flex:0 0 '+bw+'"><div class="blbl">Réponses</div><div class="btiles'+vert+'" id="bank-'+ex.id+'"></div></div>';
+    h+='</div>';
+    card.innerHTML=h;
+    host.appendChild(card);
+  });
+  injectCustom();
+}
+
+// ── SECTIONS PERSONNALISÉES (oral / écrit / autoéval) ─────────────────
+function injectCustom(){
+  // JE METS EN APPLICATION — jeu de rôle oral + écriture corrigée par l'IA
+  document.getElementById('exs-appli').innerHTML = `
+   <div class="card custom">
+     <div class="c-hdr"><span class="tag" style="background:#0D9488">Production orale</span><span class="ctit" style="color:#0D9488">Décris une urgence</span></div>
+     <p class="lead">Ton enfant vient de se blesser (choisis une situation : une chute, une brûlure, un malaise…). <b>Tu es au téléphone avec l'urgentologue : décris ce qui s'est passé et l'état de ton enfant.</b> Enregistre-toi, obtiens une rétroaction, puis envoie ta prise si tu le veux.</p>
+     <div class="rec-zone"><button id="recBtn">🎤</button><div class="rec-lbl" id="recLbl">Touche pour t'enregistrer</div></div>
+     <div id="poPrev" class="hidden" style="display:flex;flex-direction:column;gap:12px">
+       <audio id="poAudio" controls style="width:100%"></audio>
+       <textarea id="poText" rows="2" placeholder="Transcription automatique (tu peux la corriger)…"></textarea>
+       <div style="display:flex;gap:10px;flex-wrap:wrap">
+         <button class="btn btn-ghost" onclick="resetRec()">↺ Recommencer</button>
+         <button class="btn btn-pri" id="poFbBtn" onclick="poGetFeedback()">💬 Obtenir une rétroaction</button>
+       </div>
+       <div class="fb" id="poFb"></div>
+       <div id="poSend" style="display:none;gap:10px;flex-wrap:wrap;align-items:center">
+         <button class="btn btn-send" id="poSendBtn" onclick="poSend()">📨 Envoyer à mon enseignant</button>
+       </div>
+     </div>
+     <div class="status" id="poStatus">Analyse en cours…</div>
+     <div class="err" id="poErr"></div>
+   </div>
+   <div class="card custom">
+     <div class="c-hdr"><span class="tag" style="background:#0E7490">Production écrite</span><span class="ctit" style="color:#0E7490">Écris à un ami en convalescence</span></div>
+     <p class="lead">Ton ami d'enfance a eu un accident il y a deux jours. Écris-lui un message pour <b>t'informer de son état de santé et le réconforter</b>. (3 à 5 phrases)</p>
+     <textarea id="peText" rows="6" placeholder="Salut ! J'ai appris que tu as eu un accident. Comment te sens-tu ?…"></textarea>
+     <div style="margin-top:12px"><button class="btn btn-pri" id="peBtn" onclick="peCheck()">✍️ Vérifier mon message</button></div>
+     <div class="fb" id="peFb"></div>
+     <div class="status" id="peStatus">Analyse en cours…</div>
+     <div class="err" id="peErr"></div>
+   </div>`;
+  const rb=document.getElementById('recBtn'); if(rb) rb.addEventListener('click',toggleRec);
+
+  // JE RETIENS DES MOTS — notes + cartes mémoire + autoévaluation
+  const SELF=[
+    "Je peux décrire un problème de santé urgent.",
+    "Je peux m'informer sur l'état de santé d'un proche.",
+    "Je peux appeler le 911 et répondre aux questions du répartiteur.",
+    "Je comprends les consignes en cas d'urgence.",
+    "Je peux m'orienter dans un hôpital.",
+  ];
+  document.getElementById('exs-retiens').innerHTML = `
+   <div class="card custom">
+     <div class="c-hdr"><span class="tag" style="background:#166534">Je retiens des mots</span><span class="ctit" style="color:#166534">Mes mots utiles</span></div>
+     <p class="lead">Note ici les mots et expressions à retenir. Tu peux aussi <span style="font-weight:900;cursor:pointer;text-decoration:underline dotted;color:#166534" onclick="fcOpen(0)">réviser les cartes mémoire 🃏</span>.</p>
+     <div style="font-weight:800;color:#166534;font-size:13px;margin:6px 0 4px">Pour décrire un problème de santé</div>
+     <textarea rows="2" placeholder="Ex. : être inconscient, saigner, avoir un malaise cardiaque…"></textarea>
+     <div style="font-weight:800;color:#166534;font-size:13px;margin:12px 0 4px">Pour s'informer sur l'état de santé d'un proche</div>
+     <textarea rows="2" placeholder="Ex. : Est-ce qu'elle va bien ? Elle est stable. Elle va se rétablir…"></textarea>
+     <div style="font-weight:800;color:#166534;font-size:13px;margin:12px 0 4px">Pour s'orienter dans un hôpital</div>
+     <textarea rows="2" placeholder="Ex. : Pourriez-vous m'indiquer où se trouve… ? les heures de visite…"></textarea>
+   </div>
+   <div class="card custom">
+     <div class="c-hdr"><span class="tag" style="background:#166534">Autoévaluation</span><span class="ctit" style="color:#166534">Qu'est-ce que je suis capable de faire ?</span></div>
+     <p class="lead">Pour chaque énoncé, choisis : pas encore 😟, un peu 🙂, ou oui 😃.</p>
+     ${SELF.map((s,i)=>`<div class="selfrow"><div class="self-txt">${s}</div><div class="self-opts">
+        <button onclick="rate(${i},this)">😟</button><button onclick="rate(${i},this)">🙂</button><button onclick="rate(${i},this)">😃</button>
+     </div></div>`).join('')}
+     <div style="margin-top:16px"><button class="btn btn-pri" onclick="finishEval()">Terminer le module 🎉</button></div>
+     <div id="evalDone" class="fb"></div>
+   </div>`;
+}
+function rate(i,btn){ [...btn.parentElement.children].forEach(b=>b.classList.remove('sel')); btn.classList.add('sel'); }
+function finishEval(){
+  const el=document.getElementById('evalDone');
+  el.innerHTML='<div class="fb-c">🎉 Bravo, tu as terminé le module « Comment elle va ? » ! Tu peux revenir sur n\'importe quel onglet pour pratiquer encore.</div>';
+  el.classList.add('on');
+  lmsTrack('exercise_completed',{finished:true});
+}
+
+// ── ENREGISTREMENT (production orale) ─────────────────────────────────
+let mediaRecorder=null, audioChunks=[], audioBlob=null, audioUrl=null, recognition=null, isRec=false, poFeedback="";
+const SR = window.SpeechRecognition || window.webkitSpeechRecognition;
+async function toggleRec(){
+  if(isRec){ stopRec(); return; }
+  hideErr('poErr');
+  let stream;
+  try{ stream=await navigator.mediaDevices.getUserMedia({audio:true}); }
+  catch(e){ showErr('poErr',"Impossible d'accéder au micro. Vérifie les autorisations."); return; }
+  audioChunks=[];
+  const mime = MediaRecorder.isTypeSupported('audio/webm')?'audio/webm':(MediaRecorder.isTypeSupported('audio/mp4')?'audio/mp4':'');
+  mediaRecorder = mime?new MediaRecorder(stream,{mimeType:mime}):new MediaRecorder(stream);
+  mediaRecorder.ondataavailable=e=>{ if(e.data.size>0)audioChunks.push(e.data); };
+  mediaRecorder.onstop=()=>{
+    stream.getTracks().forEach(t=>t.stop());
+    audioBlob=new Blob(audioChunks,{type:mediaRecorder.mimeType||'audio/webm'});
+    if(audioUrl)URL.revokeObjectURL(audioUrl);
+    audioUrl=URL.createObjectURL(audioBlob);
+    const a=document.getElementById('poAudio'); if(a)a.src=audioUrl;
+    document.getElementById('poPrev').classList.remove('hidden');
+  };
+  mediaRecorder.start();
+  if(SR){
+    recognition=new SR(); recognition.lang='fr-CA'; recognition.continuous=true; recognition.interimResults=false;
+    let tr='';
+    recognition.onresult=e=>{ for(let i=e.resultIndex;i<e.results.length;i++){ if(e.results[i].isFinal)tr+=e.results[i][0].transcript+' '; } const b=document.getElementById('poText'); if(b)b.value=tr.trim(); };
+    try{ recognition.start(); }catch(e){}
+  }
+  isRec=true;
+  const btn=document.getElementById('recBtn'); btn.classList.add('recording'); btn.textContent='⏹';
+  document.getElementById('recLbl').textContent="Enregistrement… touche pour arrêter";
+}
+function stopRec(){
+  isRec=false;
+  if(mediaRecorder&&mediaRecorder.state!=='inactive')mediaRecorder.stop();
+  if(recognition){ try{recognition.stop();}catch(e){} }
+  const btn=document.getElementById('recBtn'); if(btn){ btn.classList.remove('recording'); btn.textContent='🎤'; }
+  const l=document.getElementById('recLbl'); if(l)l.textContent="Touche pour réenregistrer";
+}
+function resetRec(){
+  audioBlob=null; if(audioUrl){URL.revokeObjectURL(audioUrl);audioUrl=null;}
+  document.getElementById('poPrev').classList.add('hidden');
+  document.getElementById('poText').value='';
+  const fb=document.getElementById('poFb'); fb.classList.remove('on'); fb.innerHTML='';
+  document.getElementById('poSend').style.display='none';
+  hideErr('poErr');
+}
+async function poGetFeedback(){
+  const text=document.getElementById('poText').value.trim();
+  if(!text){ showErr('poErr',"Je n'ai pas capté ta réponse. Réenregistre-toi ou écris ta phrase."); return; }
+  hideErr('poErr');
+  document.getElementById('poStatus').classList.add('on');
+  document.getElementById('poFbBtn').disabled=true;
+  try{
+    const res=await fetch('/api/correct-french',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({code:studentCode,text,question:"L'élève est au téléphone avec un urgentologue et décrit une blessure ou un malaise de son enfant : ce qui s'est passé et l'état actuel."})});
+    const data=await res.json();
+    document.getElementById('poStatus').classList.remove('on');
+    document.getElementById('poFbBtn').disabled=false;
+    if(!res.ok){ showErr('poErr',data.error||'Une erreur est survenue.'); return; }
+    renderCorr('poFb',data,text); poFeedback=corrSummary(data,text);
+    document.getElementById('poSend').style.display='flex';
+  }catch(e){
+    document.getElementById('poStatus').classList.remove('on');
+    document.getElementById('poFbBtn').disabled=false;
+    showErr('poErr','Impossible de contacter le serveur.');
+  }
+}
+async function poSend(){
+  if(!audioBlob){ showErr('poErr',"Enregistre-toi d'abord."); return; }
+  const btn=document.getElementById('poSendBtn'); btn.disabled=true; btn.textContent='Envoi…';
+  const ext=(audioBlob.type||'').includes('mp4')?'m4a':'webm';
+  const fd=new FormData();
+  fd.append('code',studentCode); fd.append('theme','Santé'); fd.append('taskId','module-urgence-po');
+  fd.append('taskLabel','Production orale — urgence'); fd.append('question','Décrire une urgence à l\'urgentologue');
+  fd.append('transcription',document.getElementById('poText').value.trim()); fd.append('feedback',poFeedback);
+  fd.append('audio',audioBlob,'enregistrement.'+ext);
+  try{
+    const res=await fetch('/api/oral/submit',{method:'POST',body:fd});
+    const data=await res.json();
+    if(!res.ok){ showErr('poErr',data.error||"L'envoi a échoué."); btn.disabled=false; btn.textContent='📨 Envoyer à mon enseignant'; return; }
+    document.getElementById('poSend').innerHTML='<span class="sent">✅ Envoyé à ton enseignant !</span>';
+  }catch(e){ showErr('poErr',"Impossible d'envoyer."); btn.disabled=false; btn.textContent='📨 Envoyer à mon enseignant'; }
+}
+
+// ── CORRECTION ÉCRITE ─────────────────────────────────────────────────
+async function peCheck(){
+  const text=document.getElementById('peText').value.trim();
+  if(!text){ showErr('peErr',"Écris ton message d'abord."); return; }
+  hideErr('peErr');
+  document.getElementById('peStatus').classList.add('on');
+  document.getElementById('peBtn').disabled=true;
+  try{
+    const res=await fetch('/api/correct-french',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({code:studentCode,text,question:"L'élève écrit un court message à un ami qui a eu un accident il y a deux jours, pour s'informer de son état de santé et le réconforter."})});
+    const data=await res.json();
+    document.getElementById('peStatus').classList.remove('on');
+    document.getElementById('peBtn').disabled=false;
+    if(!res.ok){ showErr('peErr',data.error||'Une erreur est survenue.'); return; }
+    renderCorr('peFb',data,text);
+  }catch(e){
+    document.getElementById('peStatus').classList.remove('on');
+    document.getElementById('peBtn').disabled=false;
+    showErr('peErr','Impossible de contacter le serveur.');
+  }
+}
+function renderCorr(elId,data,orig){
+  const fb=document.getElementById(elId);
+  const corr=data.corrige||data.corrected||'';
+  const errs=data.erreurs||data.errors||[];
+  let html='<div class="fb-t">Rétroaction privée</div>';
+  if(data.memePhrase){ html+='<div class="fb-c">✅ Ton texte est déjà correct. Bravo !</div>'; }
+  else{
+    if(corr) html+='<div class="fb-c">✍️ '+esc(corr)+'</div>';
+    errs.forEach(e=>{ html+='<div class="fb-e">'+esc(e.explication||e.explanation||e)+'</div>'; });
+  }
+  fb.innerHTML=html; fb.classList.add('on');
+}
+function corrSummary(data,orig){
+  const corr=data.corrige||data.corrected||'';
+  const errs=data.erreurs||data.errors||[];
+  if(data.memePhrase) return "Phrase correcte : "+(corr||orig);
+  return "Correction : "+corr+(errs.length?' | '+errs.map(e=>e.explication||e.explanation||e).join(' '):'');
+}
+function showErr(id,msg){ const e=document.getElementById(id); if(e){e.textContent=msg; e.classList.add('on');} }
+function hideErr(id){ const e=document.getElementById(id); if(e)e.classList.remove('on'); }
+
+// ── EXERCICES À ÉCRIRE ────────────────────────────────────────────────
+function normWrite(s){
+  return (s||'').toLowerCase().trim().normalize('NFD').replace(/[̀-ͯ]/g,'')
+    .replace(/\s+/g,' ').replace(/[.!?;:]+$/,'').replace(/^["«»']+|["«»']+$/g,'').trim();
+}
+async function checkWrite(exId, i){
+  const ex=EXOS.find(e=>e.id===exId); if(!ex) return;
+  const it=ex.items[i];
+  const inp=document.getElementById('wi_'+exId+'_'+i);
+  const fb=document.getElementById('wf_'+exId+'_'+i);
+  const val=inp.value.trim();
+  const zid='w_'+exId+'_'+i;
+  if(!val){ fb.className='wfb no'; fb.textContent="✏️ Écris ta réponse d'abord."; return; }
+
+  // Mode autocorrection (réponse connue)
+  if(it.accept){
+    const ok=it.accept.map(normWrite).includes(normWrite(val));
+    fb.className='wfb '+(ok?'ok':'no');
+    fb.innerHTML= ok ? '✅ Bravo, c\'est exact !'
+      : '❌ Presque ! La bonne réponse est : <b>'+esc(it.accept[0])+'</b>';
+    if(ok){ inp.classList.add('good'); inp.disabled=true; trackPlacement(zid,true); }
+    else { trackPlacement(zid,false); }
+    return;
+  }
+
+  // Mode IA (réponse ouverte)
+  fb.className='wfb wait'; fb.textContent='⏳ L\'assistant corrige ta réponse…';
+  const btn=inp.parentElement.querySelector('.wbtn'); if(btn) btn.disabled=true;
+  try{
+    const res=await fetch('/api/check-written',{method:'POST',headers:{'Content-Type':'application/json'},
+      body:JSON.stringify({code:studentCode, consigne:(ex.sub||'')+' '+(it.q||''), reponse:val, attendu:it.hint||''})});
+    const d=await res.json();
+    if(btn) btn.disabled=false;
+    if(!res.ok){ fb.className='wfb no'; fb.textContent=d.error||'Service momentanément indisponible.'; return; }
+    fb.className='wfb '+(d.correct?'ok':'no');
+    let html=(d.correct?'✅ ':'💡 ')+esc(d.feedback||'');
+    if(!d.correct && d.correction){ html+='<br><b>Suggestion :</b> '+esc(d.correction); }
+    fb.innerHTML=html;
+    if(d.correct){ inp.classList.add('good'); trackPlacement(zid,true); }
+  }catch(e){
+    if(btn) btn.disabled=false;
+    fb.className='wfb no'; fb.textContent='Impossible de contacter le serveur. Réessaie.';
+  }
+}
+
+// ── RENDER ────────────────────────────────────────────────────────────
+function render(){
+  SECTIONS.forEach(sec=>{
+    document.getElementById('tab-'+sec.id).classList.toggle('on', curSec===sec.id);
+    document.getElementById('sec-'+sec.id).classList.toggle('on', curSec===sec.id);
+    const zids=Object.keys(ZONES).filter(z=>{const ex=EXOS.find(e=>e.id===ZONES[z].exo);return ex.sec===sec.id});
+    const done=zids.length>0&&zids.every(z=>TR.correct[z]);
+    document.getElementById('tab-'+sec.id).classList.toggle('done',done);
+  });
+  const ban=document.getElementById('sel-banner');
+  if(S.sel){ban.classList.add('on');document.getElementById('sel-lbl').textContent=S.sel.lbl}
+  else ban.classList.remove('on');
+
+  const used=usedIds();
+  EXOS.forEach(ex=>{
+    const mount=document.getElementById('mount-'+ex.id);
+    const bank=document.getElementById('bank-'+ex.id);
+    if(!mount||!bank) return;
+    mount.innerHTML=''; bank.innerHTML='';
+
+    if(ex.type==='vf'){
+      ex.rows.forEach(r=>{
+        const row=document.createElement('div');row.className='rrow';
+        const txt=document.createElement('div');txt.className='stxt';txt.innerHTML=r.txt;
+        row.appendChild(txt);row.appendChild(mkZone(r.id,'zvf'));
+        mount.appendChild(row);
+      });
+      ex.tiles.forEach((lbl,i)=>{
+        bank.appendChild(mkTile(ex.id+'_t'+i,lbl,ex.id,lbl==='VRAI'||lbl==='MUETTE'?'tv':'tf'));
+      });
+    }
+    if(ex.type==='match'){
+      ex.rows.forEach(r=>{
+        const row=document.createElement('div');row.className='rrow2';
+        const qc=document.createElement('div');qc.className='qcard';
+        qc.innerHTML='<div class="qlbl">Question</div><div class="qtxt">'+esc(r.q)+'</div>';
+        row.appendChild(qc);row.appendChild(mkZone(r.id,null,'glissez la réponse ici'));
+        mount.appendChild(row);
+      });
+      shuffled(ex.rows,7).forEach(r=>{ if(used.has(r.aid))return; bank.appendChild(mkTile(r.aid,r.a,ex.id,'ta')); });
+      if(!bank.children.length)bank.innerHTML='<div class="bempty">Toutes les réponses sont placées !</div>';
+    }
+    if(ex.type==='imgmatch'){
+      ex.rows.forEach(r=>{
+        const row=document.createElement('div');row.className='rrow2';
+        const qc=document.createElement('div');qc.className='qcard';
+        qc.innerHTML='<div class="qlbl">Énoncé</div><div class="qtxt">'+esc(r.txt)+'</div>';
+        row.appendChild(qc);
+        const z=mkImgZone(r.id, ex.images.find(im=>im.id===r.aid));
+        row.appendChild(z);
+        mount.appendChild(row);
+      });
+      shuffled(ex.images,11).forEach(im=>{ if(used.has(im.id))return; bank.appendChild(mkImgTile(im,ex.id)); });
+      if(!bank.children.length)bank.innerHTML='<div class="bempty">Toutes les images sont placées !</div>';
+    }
+    if(ex.type==='blanks'){
+      ex.segs.forEach(sg=>{ if(sg.k==='t'){mount.appendChild(document.createTextNode(sg.t))} else{mount.appendChild(mkBlank(sg.id))} });
+      shuffled(ex.words,23).forEach(w=>{ if(used.has(w.id))return; bank.appendChild(mkTile(w.id,w.l,ex.id,'tn')); });
+      if(!bank.children.length)bank.innerHTML='<div class="bempty">Tous les mots sont placés !</div>';
+    }
+  });
+  updateChip();
+}
+function updateChip(){
+  const n=Object.keys(TR.correct).length;
+  document.getElementById('prog-chip').textContent='⭐ '+n+' / '+TOTAL_ZONES;
+}
+
+document.getElementById('btn-reset').addEventListener('click',()=>{ S.pl={};S.sel=null;S.fb={};render(); });
+
+// ── FLASHCARDS ────────────────────────────────────────────────────────
+let fcIdx=0;
+function fcShow(){
+  const c=FC_CARDS[fcIdx];
+  document.getElementById('fc-counter').textContent='Carte '+(fcIdx+1)+' / '+FC_CARDS.length;
+  document.getElementById('fc-word').textContent=c.word;
+  document.getElementById('fc-def').textContent=c.def;
+  document.getElementById('fc-ex').innerHTML=c.ex;
+  document.getElementById('fc-def').classList.add('hidden');
+  document.getElementById('fc-ex').classList.add('hidden');
+  document.getElementById('fc-reveal-btn').classList.remove('hidden');
+}
+function fcOpen(i){fcIdx=i||0;fcShow();document.getElementById('fc-overlay').classList.add('on')}
+function fcOpenWord(w){const i=FC_CARDS.findIndex(c=>c.word===w);fcOpen(i>=0?i:0)}
+document.getElementById('fc-reveal-btn').addEventListener('click',()=>{
+  document.getElementById('fc-def').classList.remove('hidden');
+  document.getElementById('fc-ex').classList.remove('hidden');
+  document.getElementById('fc-reveal-btn').classList.add('hidden');
+});
+document.getElementById('fc-prev').addEventListener('click',()=>{fcIdx=(fcIdx-1+FC_CARDS.length)%FC_CARDS.length;fcShow()});
+document.getElementById('fc-next').addEventListener('click',()=>{fcIdx=(fcIdx+1)%FC_CARDS.length;fcShow()});
+document.getElementById('fc-close').addEventListener('click',()=>document.getElementById('fc-overlay').classList.remove('on'));
+document.getElementById('fc-overlay').addEventListener('click',e=>{if(e.target.id==='fc-overlay')document.getElementById('fc-overlay').classList.remove('on')});
+
+// ── GO ────────────────────────────────────────────────────────────────
+buildStatic();
+render();
+lmsTrack('file_opened');
+</script>
+</body></html>
