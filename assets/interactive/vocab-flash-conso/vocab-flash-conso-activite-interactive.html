@@ -1,0 +1,590 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Francisation Flash V2 — Consommation</title>
+<style>
+:root{
+  --navy:#17364d;--navy2:#0f293a;--blue:#2f7192;--green:#2e8a61;
+  --orange:#e28a38;--bg:#eef4f5;--card:#ffffff;--ink:#17252e;
+  --muted:#6b7b84;--line:#dbe4e7;--shadow:0 16px 45px rgba(23,54,77,.13);
+}
+*{box-sizing:border-box}
+html,body{margin:0;min-height:100%;font-family:Inter,system-ui,-apple-system,"Segoe UI",Arial,sans-serif;background:linear-gradient(145deg,#e8f2f4,#f8faf9);color:var(--ink)}
+button{font:inherit}
+.app{max-width:1500px;margin:auto;padding:14px}
+.topbar{display:flex;align-items:center;gap:14px;background:#fff;border-radius:18px;padding:12px 16px;box-shadow:var(--shadow);position:sticky;top:8px;z-index:20}
+.logo{width:48px;height:48px;border-radius:15px;background:var(--navy);display:grid;place-items:center;font-size:26px}
+.brand{flex:1} .brand h1{margin:0;font-size:1.18rem} .brand p{margin:3px 0 0;color:var(--muted);font-size:.88rem}
+.top-actions{display:flex;gap:8px;flex-wrap:wrap;justify-content:flex-end}
+.top-btn{border:0;border-radius:12px;padding:10px 13px;background:#e8eff1;color:var(--navy);font-weight:850;cursor:pointer}
+.top-btn.active{background:var(--green);color:#fff}
+.layout{display:grid;grid-template-columns:270px 1fr;gap:14px;margin-top:14px}
+.sidebar{background:#fff;border-radius:20px;box-shadow:var(--shadow);padding:14px;min-height:720px}
+.side-head{display:flex;align-items:center;justify-content:space-between;margin-bottom:12px}
+.side-head h2{font-size:1rem;margin:0;color:var(--navy)}
+.word-list{display:grid;gap:7px}
+.word-btn{border:1px solid var(--line);background:#f8fafb;border-radius:12px;padding:10px 11px;text-align:left;cursor:pointer;font-weight:750;color:#35515f;display:flex;gap:8px;align-items:center}
+.word-btn.active{background:var(--navy);color:white;border-color:var(--navy)}
+.word-btn .state{width:18px;text-align:center}
+.stage{background:#fff;border-radius:22px;box-shadow:var(--shadow);overflow:hidden;min-height:720px;display:flex;flex-direction:column}
+.progress-wrap{padding:12px 16px;border-bottom:1px solid var(--line);display:flex;align-items:center;gap:12px}
+.progress-track{height:9px;background:#e0e9eb;border-radius:99px;overflow:hidden;flex:1}
+.progress-bar{height:100%;background:var(--green);width:0;transition:.25s}
+.progress-count{font-weight:850;color:var(--muted);font-size:.9rem}
+.card-grid{display:grid;grid-template-columns:minmax(430px,56%) 1fr;flex:1;min-height:640px}
+.image-zone{background:#dfe7ea;display:flex;align-items:center;justify-content:center;overflow:hidden;position:relative}
+.image-zone img{width:100%;height:100%;object-fit:contain;display:block;background:#dfe7ea}
+.image-label{position:absolute;left:16px;top:16px;background:rgba(15,41,58,.82);color:white;border-radius:99px;padding:8px 12px;font-weight:900;font-size:.82rem}
+.info-zone{padding:26px 30px;display:flex;flex-direction:column;gap:16px}
+.term{font-size:clamp(3rem,4.3vw,5rem);line-height:1.02;color:var(--navy);font-weight:950}
+.grammar{font-size:1.08rem;color:var(--muted);font-weight:850}
+.section{border-top:1px solid var(--line);padding-top:15px}
+.label{font-size:.82rem;letter-spacing:.12em;text-transform:uppercase;color:var(--blue);font-weight:950;margin-bottom:8px}
+.definition{font-size:1.48rem;line-height:1.48}
+.example{font-size:1.35rem;line-height:1.48;background:#fff7eb;border-left:6px solid var(--orange);padding:14px 16px;border-radius:10px;font-style:italic}
+.chips{display:flex;gap:8px;flex-wrap:wrap}
+.chip{background:#edf3f5;border-radius:99px;padding:8px 12px;font-weight:800}
+.audio-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:9px;margin-top:auto}
+.audio-btn{border:0;border-radius:13px;padding:14px 12px;background:var(--orange);color:#fff;font-weight:900;cursor:pointer;position:relative;overflow:hidden}
+.audio-btn.playing{background:var(--green)}
+.audio-btn.playing::after{content:"";position:absolute;left:0;bottom:0;height:5px;background:rgba(255,255,255,.78);animation:bar 2.3s linear infinite}
+@keyframes bar{from{width:0}to{width:100%}}
+.navrow{display:flex;justify-content:space-between;gap:10px;margin-top:2px}
+.navbtn{border:0;border-radius:12px;padding:12px 16px;background:#e7eef0;color:var(--navy);font-weight:900;cursor:pointer}
+.navbtn.primary{background:var(--navy);color:#fff}
+.hidden-content{filter:blur(8px);user-select:none;cursor:pointer;transition:.18s}
+.hidden-content:hover{filter:blur(5px)}
+.hidden-content.revealed{filter:none}
+.teacher-panel{display:none;border-top:1px solid var(--line);padding:12px 16px;background:#f7fafb}
+.teacher-panel.open{display:flex;gap:12px;flex-wrap:wrap}
+.teacher-panel label{display:flex;align-items:center;gap:6px;font-weight:800}
+.shortcut{margin-left:auto;color:var(--muted);font-size:.84rem}
+.presentation .sidebar,.presentation .topbar,.presentation .teacher-panel,.presentation .progress-wrap{display:none!important}
+.presentation .layout{grid-template-columns:1fr;margin-top:0}
+.presentation .stage{min-height:100vh;border-radius:0}
+.presentation .card-grid{min-height:100vh}
+.presentation .term{font-size:clamp(4rem,6vw,7rem)}
+.presentation .definition{font-size:2rem}
+.presentation .example{font-size:1.8rem}
+@media(max-width:1050px){
+  .layout{grid-template-columns:1fr} .sidebar{min-height:0} .word-list{grid-template-columns:repeat(2,1fr)}
+  .card-grid{grid-template-columns:1fr} .image-zone{min-height:390px} .image-zone img{height:390px}
+}
+@media(max-width:680px){
+  .app{padding:8px} .topbar{position:static} .top-actions{display:grid;grid-template-columns:1fr 1fr}
+  .word-list{grid-template-columns:1fr} .info-zone{padding:22px 18px} .audio-grid{grid-template-columns:1fr}
+}
+
+.main-tabs{display:grid;grid-template-columns:repeat(4,1fr);gap:9px;margin:14px 0}
+.main-tab{border:0;border-radius:14px;padding:13px;background:#dfeaec;color:#2a5263;font-weight:900;cursor:pointer}
+.main-tab.active{background:var(--navy);color:#fff}
+.view{display:none}.view.active{display:block}
+.game-card{background:#fff;border-radius:22px;box-shadow:var(--shadow);padding:28px;min-height:650px}
+.game-head{display:flex;align-items:flex-start;justify-content:space-between;gap:18px;border-bottom:1px solid var(--line);padding-bottom:18px}
+.game-head h2{margin:4px 0 6px;font-size:2rem;color:var(--navy)}
+.game-head p{margin:0;color:var(--muted);font-size:1.05rem}
+.game-kicker{font-size:.78rem;letter-spacing:.12em;font-weight:950;color:var(--blue)}
+.score-pill,.level-badge{background:var(--navy);color:#fff;border-radius:99px;padding:10px 16px;font-weight:950;white-space:nowrap}
+.question-box{margin:28px auto 20px;max-width:900px;text-align:center;font-size:1.55rem;line-height:1.45}
+.question-box img{width:min(760px,100%);max-height:360px;object-fit:contain;border-radius:18px;background:#e4ecee;display:block;margin:0 auto 18px}
+.answer-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:14px;max-width:1000px;margin:0 auto}
+.answer-btn{border:3px solid transparent;background:#f8fafb;border-radius:16px;padding:17px;text-align:left;font-weight:850;cursor:pointer;box-shadow:0 7px 22px rgba(23,54,77,.07)}
+.answer-btn.correct{border-color:#3aa66d;background:#edf9f2}
+.answer-btn.wrong{border-color:#d65b5b;background:#fff0f0}
+.game-feedback{min-height:38px;text-align:center;font-weight:950;font-size:1.1rem;margin:16px}
+.game-actions{display:flex;justify-content:center;gap:10px;flex-wrap:wrap}
+.review-progress{height:12px;background:#e3ebed;border-radius:99px;overflow:hidden;margin:20px 0}
+.review-progress>div{height:100%;width:0;background:var(--green);transition:.25s}
+.mastery-summary{display:grid;grid-template-columns:repeat(4,1fr);gap:12px;margin:22px 0}
+.summary-card{background:#f4f8f9;border:1px solid var(--line);border-radius:16px;padding:18px;text-align:center}
+.summary-card strong{display:block;font-size:2rem;color:var(--navy)}
+.summary-card span{color:var(--muted);font-weight:800;font-size:.9rem}
+.badge-row{display:flex;gap:10px;flex-wrap:wrap;margin-bottom:18px}
+.badge{padding:9px 12px;border-radius:99px;background:#e7ecee;color:#7b878d;font-weight:900}
+.badge.unlocked{background:#fff1c9;color:#8a6500}
+.mastery-list{display:grid;gap:10px}
+.mastery-item{display:grid;grid-template-columns:minmax(180px,1fr) 2fr auto;gap:14px;align-items:center;border:1px solid var(--line);border-radius:15px;padding:13px 15px;background:#fbfcfc}
+.mastery-word{font-weight:900;color:var(--navy)}
+.mastery-track{height:11px;background:#e2e9eb;border-radius:99px;overflow:hidden}
+.mastery-fill{height:100%;background:linear-gradient(90deg,var(--blue),var(--green));transition:.3s}
+.mastery-stars{font-size:1.2rem;color:#e4a62c;letter-spacing:2px}
+@media(max-width:800px){
+  .main-tabs{grid-template-columns:repeat(2,1fr)}
+  .answer-grid{grid-template-columns:1fr}
+  .mastery-summary{grid-template-columns:repeat(2,1fr)}
+  .mastery-item{grid-template-columns:1fr}
+}
+
+
+.exit-presentation{display:none;position:fixed;top:18px;right:18px;z-index:9999;border:0;border-radius:999px;padding:12px 16px;background:rgba(15,41,58,.92);color:#fff;font-weight:900;cursor:pointer;box-shadow:0 10px 30px rgba(0,0,0,.22)}
+.presentation .exit-presentation{display:block}
+.help-button{position:fixed;right:18px;bottom:18px;z-index:9998;width:46px;height:46px;border-radius:50%;border:0;background:var(--navy);color:#fff;font-size:1.35rem;font-weight:950;cursor:pointer;box-shadow:0 10px 28px rgba(23,54,77,.25)}
+.help-modal{display:none;position:fixed;inset:0;z-index:10000;background:rgba(8,24,34,.58);align-items:center;justify-content:center;padding:20px}
+.help-modal.open{display:flex}
+.help-card{width:min(620px,100%);background:#fff;border-radius:22px;padding:26px;box-shadow:0 24px 70px rgba(0,0,0,.28);position:relative}
+.help-card h2{margin:0 0 18px;color:var(--navy)}
+.help-close{position:absolute;right:14px;top:14px;border:0;background:#e9eff1;width:38px;height:38px;border-radius:50%;font-weight:900;cursor:pointer}
+.shortcut-grid{display:grid;grid-template-columns:120px 1fr;gap:10px 16px;align-items:center}
+.shortcut-grid span{background:#eef4f6;border-radius:10px;padding:8px 10px;font-weight:950;text-align:center}
+.shortcut-grid strong{color:#405866}
+@media(max-width:620px){.exit-presentation{top:10px;right:10px;padding:10px 13px;font-size:.9rem}.shortcut-grid{grid-template-columns:90px 1fr}}
+
+</style>
+</head>
+<body>
+<div class="app" id="app">
+<button id="exitPresentation" class="exit-presentation" aria-label="Quitter le mode présentation">✕ Quitter la présentation</button>
+<button id="helpButton" class="help-button" aria-label="Afficher les raccourcis">?</button>
+<div id="helpModal" class="help-modal" aria-hidden="true">
+  <div class="help-card">
+    <button id="closeHelp" class="help-close" aria-label="Fermer">✕</button>
+    <h2>Raccourcis clavier</h2>
+    <div class="shortcut-grid">
+      <span>← / →</span><strong>Mot précédent / suivant</strong>
+      <span>1</span><strong>Écouter le mot</strong>
+      <span>2</span><strong>Écouter la définition</strong>
+      <span>3</span><strong>Écouter l’exemple</strong>
+      <span>Espace</span><strong>Rejouer le dernier audio</strong>
+      <span>P</span><strong>Activer ou quitter la présentation</strong>
+      <span>Échap</span><strong>Quitter la présentation</strong>
+      <span>F</span><strong>Activer ou quitter le plein écran</strong>
+      <span>E</span><strong>Mode enseignant</strong>
+    </div>
+  </div>
+</div>
+  <header class="topbar">
+    <div class="logo">🛒</div>
+    <div class="brand"><h1>Francisation Flash V2</h1><p>Consommation · Niveau 4</p></div>
+    <div class="top-actions">
+      <button class="top-btn" id="teacherToggle">👩‍🏫 Mode enseignant</button>
+      <button class="top-btn" id="presentationToggle">🖥 Présentation</button>
+      <button class="top-btn" id="resetProgress">↺ Réinitialiser</button>
+    </div>
+  </header>
+
+  <nav class="main-tabs">
+    <button class="main-tab active" data-view="discoverView">📖 Découvrir</button>
+    <button class="main-tab" data-view="practiceView">✍️ Pratiquer</button>
+    <button class="main-tab" data-view="reviewView">🎮 Réviser</button>
+    <button class="main-tab" data-view="masteryView">🏆 Maîtrise</button>
+  </nav>
+
+  <div class="view active" id="discoverView">
+  <div class="layout">
+    <aside class="sidebar">
+      <div class="side-head"><h2>Mots du thème</h2><span id="seenCount">0/7</span></div>
+      <div class="word-list" id="wordList"></div>
+    </aside>
+
+    <section class="stage">
+      <div class="progress-wrap">
+        <div class="progress-track"><div class="progress-bar" id="progressBar"></div></div>
+        <div class="progress-count" id="progressCount">0 / 7</div>
+      </div>
+
+      <div class="card-grid">
+        <div class="image-zone">
+          <img id="photo" alt="">
+          <div class="image-label">CONSOMMATION</div>
+        </div>
+        <div class="info-zone">
+          <div>
+            <div class="term revealable" id="term"></div>
+            <div class="grammar revealable" id="grammar"></div>
+          </div>
+
+          <div class="section">
+            <div class="label">Définition</div>
+            <div class="definition revealable" id="definition"></div>
+          </div>
+
+          <div class="section">
+            <div class="label">Exemple</div>
+            <div class="example revealable" id="example"></div>
+          </div>
+
+          <div class="section">
+            <div class="label">Expressions utiles</div>
+            <div class="chips revealable" id="expressions"></div>
+          </div>
+
+          <div class="audio-grid">
+            <button class="audio-btn" data-audio="mot">🔊 Mot</button>
+            <button class="audio-btn" data-audio="definition">🔊 Définition</button>
+            <button class="audio-btn" data-audio="exemple">🔊 Exemple</button>
+          </div>
+
+          <div class="navrow">
+            <button class="navbtn" id="prev">← Précédent</button>
+            <button class="navbtn primary" id="next">Suivant →</button>
+          </div>
+        </div>
+      </div>
+
+      <div class="teacher-panel" id="teacherPanel">
+        <label><input type="checkbox" data-hide="term"> Masquer le mot</label>
+        <label><input type="checkbox" data-hide="definition"> Masquer la définition</label>
+        <label><input type="checkbox" data-hide="example"> Masquer l'exemple</label>
+        <label><input type="checkbox" data-hide="expressions"> Masquer les expressions</label>
+        <span class="shortcut">Clavier : ← → · 1 mot · 2 définition · 3 exemple · espace rejoue</span>
+      </div>
+    </section>
+  </div>
+  </div>
+
+  <section class="view" id="practiceView">
+    <div class="game-card">
+      <div class="game-head">
+        <div>
+          <span class="game-kicker">ENTRAÎNEMENT</span>
+          <h2>Pratiquer les mots</h2>
+          <p>Répondez correctement pour gagner des points de maîtrise.</p>
+        </div>
+        <div class="score-pill"><span id="practicePoints">0</span> points</div>
+      </div>
+      <div class="question-box" id="practiceQuestion"></div>
+      <div class="answer-grid" id="practiceAnswers"></div>
+      <div class="game-feedback" id="practiceFeedback"></div>
+      <div class="game-actions">
+        <button class="navbtn" id="practiceListen">🔊 Écouter</button>
+        <button class="navbtn primary" id="nextPractice">Question suivante</button>
+      </div>
+    </div>
+  </section>
+
+  <section class="view" id="reviewView">
+    <div class="game-card">
+      <div class="game-head">
+        <div>
+          <span class="game-kicker">DÉFI</span>
+          <h2>Révision éclair</h2>
+          <p>Une série de 10 questions pour tester votre vocabulaire.</p>
+        </div>
+        <div class="score-pill"><span id="reviewScore">0</span> / 10</div>
+      </div>
+      <div class="review-progress"><div id="reviewProgressBar"></div></div>
+      <div class="question-box" id="reviewQuestion"></div>
+      <div class="answer-grid" id="reviewAnswers"></div>
+      <div class="game-feedback" id="reviewFeedback"></div>
+      <div class="game-actions">
+        <button class="navbtn primary" id="startReview">Commencer le défi</button>
+      </div>
+    </div>
+  </section>
+
+  <section class="view" id="masteryView">
+    <div class="game-card">
+      <div class="game-head">
+        <div>
+          <span class="game-kicker">PROGRESSION</span>
+          <h2>Ma maîtrise du vocabulaire</h2>
+          <p>Chaque mot progresse selon vos bonnes réponses.</p>
+        </div>
+        <div class="level-badge" id="levelBadge">Niveau 1</div>
+      </div>
+
+      <div class="mastery-summary">
+        <div class="summary-card"><strong id="totalXP">0</strong><span>XP</span></div>
+        <div class="summary-card"><strong id="masteredCount">0</strong><span>mots maîtrisés</span></div>
+        <div class="summary-card"><strong id="averageMastery">0%</strong><span>maîtrise moyenne</span></div>
+        <div class="summary-card"><strong id="streakCount">0</strong><span>série actuelle</span></div>
+      </div>
+
+      <div class="badge-row" id="badgeRow"></div>
+      <div class="mastery-list" id="masteryList"></div>
+      <div class="game-actions">
+        <button class="navbtn" id="resetMastery">Réinitialiser la progression</button>
+      </div>
+    </div>
+  </section>
+</div>
+
+<script>
+const items=[{"term": "fraîches", "definition": "Récemment récoltées ou préparées, pas vieilles.", "example": "Les fraises sont très fraîches.", "grammar": "Adjectif", "expressions": ["des légumes frais", "de l'air frais", "rester frais"], "slug": "fraiches", "image": "images/fraiches.jpg", "audio": {"mot": "audio/fraiches-mot.mp3", "definition": "audio/fraiches-definition.mp3", "exemple": "audio/fraiches-exemple.mp3"}}, {"term": "un rabais", "definition": "Une réduction de prix.", "example": "Les fraises sont en rabais cette semaine.", "grammar": "Nom masculin", "expressions": ["profiter d'un rabais", "offrir un rabais", "un gros rabais"], "slug": "un_rabais", "image": "images/un_rabais.jpg", "audio": {"mot": "audio/un_rabais-mot.mp3", "definition": "audio/un_rabais-definition.mp3", "exemple": "audio/un_rabais-exemple.mp3"}}, {"term": "un produit local", "definition": "Un aliment cultivé ou fabriqué dans la région.", "example": "Ce sont des produits locaux du Québec.", "grammar": "Nom masculin", "expressions": ["acheter local", "les produits locaux", "favoriser les produits locaux"], "slug": "un_produit_local", "image": "images/un_produit_local.jpg", "audio": {"mot": "audio/un_produit_local-mot.mp3", "definition": "audio/un_produit_local-definition.mp3", "exemple": "audio/un_produit_local-exemple.mp3"}}, {"term": "un kilo", "definition": "Une unité de poids (1000 grammes).", "example": "Je prends un kilo de pommes.", "grammar": "Nom masculin", "expressions": ["un demi-kilo", "peser en kilos", "un kilo de..."], "slug": "un_kilo", "image": "images/un_kilo.jpg", "audio": {"mot": "audio/un_kilo-mot.mp3", "definition": "audio/un_kilo-definition.mp3", "exemple": "audio/un_kilo-exemple.mp3"}}, {"term": "le réfrigérateur", "definition": "L'appareil qui garde les aliments au froid.", "example": "Gardez-les au réfrigérateur.", "grammar": "Nom masculin", "expressions": ["mettre au réfrigérateur", "ouvrir le réfrigérateur", "un réfrigérateur plein"], "slug": "le_refrigerateur", "image": "images/le_refrigerateur.jpg", "audio": {"mot": "audio/le_refrigerateur-mot.mp3", "definition": "audio/le_refrigerateur-definition.mp3", "exemple": "audio/le_refrigerateur-exemple.mp3"}}, {"term": "le fromage en grains", "definition": "Un fromage frais utilisé dans la poutine.", "example": "La poutine, c'est des frites, du fromage en grains et de la sauce.", "grammar": "Nom masculin", "expressions": ["du fromage en grains frais", "acheter du fromage en grains"], "slug": "le_fromage_en_grains", "image": "images/le_fromage_en_grains.jpg", "audio": {"mot": "audio/le_fromage_en_grains-mot.mp3", "definition": "audio/le_fromage_en_grains-definition.mp3", "exemple": "audio/le_fromage_en_grains-exemple.mp3"}}, {"term": "un kiosque", "definition": "Un petit comptoir de vente au marché.", "example": "On peut parler avec les gens aux kiosques du marché.", "grammar": "Nom masculin", "expressions": ["un kiosque de fruits", "tenir un kiosque", "visiter les kiosques"], "slug": "un_kiosque", "image": "images/un_kiosque.jpg", "audio": {"mot": "audio/un_kiosque-mot.mp3", "definition": "audio/un_kiosque-definition.mp3", "exemple": ""}}];
+
+const $=s=>document.querySelector(s), $$=s=>[...document.querySelectorAll(s)];
+let index=0, seen=new Set(), currentAudio=null, currentButton=null, lastAudio=null;
+const hidden={term:false,definition:false,example:false,expressions:false};
+
+function play(src,button){
+  if(currentAudio){currentAudio.pause();currentAudio.currentTime=0}
+  if(currentButton)currentButton.classList.remove("playing");
+  currentAudio=new Audio(src);currentButton=button;lastAudio={src,button};
+  button.classList.add("playing");
+  currentAudio.onended=()=>button.classList.remove("playing");
+  currentAudio.onerror=()=>button.classList.remove("playing");
+  currentAudio.play().catch(()=>button.classList.remove("playing"));
+}
+
+function renderList(){
+  const list=$("#wordList"); list.innerHTML="";
+  items.forEach((item,i)=>{
+    const b=document.createElement("button");
+    b.className="word-btn"+(i===index?" active":"");
+    b.innerHTML=`<span class="state">${seen.has(i)?"✓":"○"}</span><span>${item.term}</span>`;
+    b.onclick=()=>{index=i;render()};
+    list.appendChild(b);
+  });
+}
+
+function applyHidden(){
+  const mapping={term:["#term","#grammar"],definition:["#definition"],example:["#example"],expressions:["#expressions"]};
+  Object.entries(mapping).forEach(([key,selectors])=>selectors.forEach(sel=>{
+    const el=$(sel); el.classList.toggle("hidden-content",hidden[key]); el.classList.remove("revealed");
+    el.onclick=()=>{if(hidden[key])el.classList.toggle("revealed")};
+  }));
+}
+
+function render(){
+  const x=items[index];
+  $("#photo").src=x.image;$("#photo").alt=x.term;
+  $("#term").textContent=x.term;$("#grammar").textContent=x.grammar;
+  $("#definition").textContent=x.definition;$("#example").textContent=x.example;
+  $("#expressions").innerHTML=x.expressions.map(e=>`<span class="chip">${e}</span>`).join("");
+  seen.add(index);
+  $("#progressBar").style.width=(seen.size/items.length*100)+"%";
+  $("#progressCount").textContent=`${seen.size} / ${items.length}`;
+  $("#seenCount").textContent=`${seen.size}/${items.length}`;
+  $("#prev").disabled=index===0;
+  $("#next").textContent=index===items.length-1?"Recommencer":"Suivant →";
+  renderList();applyHidden();
+}
+
+$$(".audio-btn").forEach(b=>b.onclick=()=>play(items[index].audio[b.dataset.audio],b));
+$("#prev").onclick=()=>{index=Math.max(0,index-1);render()};
+$("#next").onclick=()=>{index=index===items.length-1?0:index+1;render()};
+
+$("#teacherToggle").onclick=()=>{
+  $("#teacherPanel").classList.toggle("open");
+  $("#teacherToggle").classList.toggle("active");
+};
+function setPresentation(active){
+  $("#app").classList.toggle("presentation",active);
+  $("#presentationToggle").classList.toggle("active",active);
+}
+$("#presentationToggle").onclick=()=>setPresentation(!$("#app").classList.contains("presentation"));
+$("#exitPresentation").onclick=()=>setPresentation(false);
+$("#resetProgress").onclick=()=>{seen.clear();render()};
+
+$$('#teacherPanel input[type="checkbox"]').forEach(cb=>cb.onchange=()=>{
+  hidden[cb.dataset.hide]=cb.checked;applyHidden();
+});
+
+
+function toggleHelp(force){
+  const modal=$("#helpModal");
+  const open=typeof force==="boolean"?force:!modal.classList.contains("open");
+  modal.classList.toggle("open",open);
+  modal.setAttribute("aria-hidden",String(!open));
+}
+$("#helpButton").onclick=()=>toggleHelp();
+$("#closeHelp").onclick=()=>toggleHelp(false);
+$("#helpModal").onclick=e=>{if(e.target===$("#helpModal"))toggleHelp(false)};
+
+async function toggleFullscreen(){
+  try{
+    if(!document.fullscreenElement) await document.documentElement.requestFullscreen();
+    else await document.exitFullscreen();
+  }catch(err){console.warn("Plein écran non disponible",err)}
+}
+
+document.addEventListener("keydown",e=>{
+  if(e.key==="Escape"){
+    if($("#helpModal").classList.contains("open")) toggleHelp(false);
+    if($("#app").classList.contains("presentation")) setPresentation(false);
+    return;
+  }
+  if(["INPUT","TEXTAREA"].includes(document.activeElement.tagName))return;
+  if(e.key==="ArrowRight"){index=index===items.length-1?0:index+1;render()}
+  else if(e.key==="ArrowLeft"){index=Math.max(0,index-1);render()}
+  else if(e.key==="1")$$(".audio-btn")[0].click();
+  else if(e.key==="2")$$(".audio-btn")[1].click();
+  else if(e.key==="3")$$(".audio-btn")[2].click();
+  else if(e.code==="Space"&&lastAudio){e.preventDefault();play(lastAudio.src,lastAudio.button)}
+  else if(e.key.toLowerCase()==="p")setPresentation(!$("#app").classList.contains("presentation"));
+  else if(e.key.toLowerCase()==="f")toggleFullscreen();
+  else if(e.key.toLowerCase()==="e")$("#teacherToggle").click();
+  else if(e.key==="?")toggleHelp();
+});
+
+
+const STORAGE_KEY="francisationFlashConsoMasteryV1";
+let masteryData=JSON.parse(localStorage.getItem(STORAGE_KEY)||"null")||{
+  xp:0,streak:0,bestStreak:0,mastery:Array(items.length).fill(0)
+};
+function saveMastery(){localStorage.setItem(STORAGE_KEY,JSON.stringify(masteryData))}
+function shuffle(a){return [...a].sort(()=>Math.random()-.5)}
+function normalizeText(s){return s.toLowerCase().normalize("NFD").replace(/[\u0300-\u036f]/g,"").trim()}
+function addMastery(itemIndex,amount){
+  masteryData.mastery[itemIndex]=Math.max(0,Math.min(100,masteryData.mastery[itemIndex]+amount));
+  masteryData.xp+=Math.max(0,amount);
+  if(amount>0){
+    masteryData.streak++;
+    masteryData.bestStreak=Math.max(masteryData.bestStreak,masteryData.streak);
+  }else{
+    masteryData.streak=0;
+  }
+  saveMastery();renderMastery();
+}
+function starsFor(value){
+  const n=value>=100?3:value>=70?2:value>=35?1:0;
+  return "★".repeat(n)+"☆".repeat(3-n);
+}
+function renderMastery(){
+  const avg=Math.round(masteryData.mastery.reduce((a,b)=>a+b,0)/items.length);
+  const mastered=masteryData.mastery.filter(v=>v>=100).length;
+  const level=Math.floor(masteryData.xp/100)+1;
+  $("#totalXP").textContent=masteryData.xp;
+  $("#masteredCount").textContent=mastered;
+  $("#averageMastery").textContent=avg+"%";
+  $("#streakCount").textContent=masteryData.streak;
+  $("#levelBadge").textContent="Niveau "+level;
+  const badges=[
+    {label:"🌱 Premiers pas",ok:masteryData.xp>=20},
+    {label:"🔥 Série de 5",ok:masteryData.bestStreak>=5},
+    {label:"⭐ 3 mots maîtrisés",ok:mastered>=3},
+    {label:"🏆 Thème maîtrisé",ok:mastered===items.length}
+  ];
+  $("#badgeRow").innerHTML=badges.map(b=>`<span class="badge ${b.ok?"unlocked":""}">${b.label}</span>`).join("");
+  $("#masteryList").innerHTML=items.map((item,i)=>{
+    const val=masteryData.mastery[i];
+    return `<div class="mastery-item">
+      <div class="mastery-word">${item.term}</div>
+      <div class="mastery-track"><div class="mastery-fill" style="width:${val}%"></div></div>
+      <div class="mastery-stars">${starsFor(val)}</div>
+    </div>`;
+  }).join("");
+}
+
+$$(".main-tab").forEach(b=>b.onclick=()=>{
+  $$(".main-tab").forEach(x=>x.classList.toggle("active",x===b));
+  $$(".view").forEach(v=>v.classList.toggle("active",v.id===b.dataset.view));
+  if(b.dataset.view==="masteryView")renderMastery();
+});
+
+let practiceTarget=null,practiceType="definition",practiceAnswered=false;
+function buildPractice(){
+  practiceAnswered=false;
+  $("#practiceFeedback").textContent="";
+  practiceTarget=items[Math.floor(Math.random()*items.length)];
+  const targetIndex=items.indexOf(practiceTarget);
+  practiceType=["image","definition","audio"][Math.floor(Math.random()*3)];
+  let prompt="";
+  if(practiceType==="image"){
+    prompt=`<img src="${practiceTarget.image}" alt=""><div>Quel mot correspond à cette image ?</div>`;
+  }else if(practiceType==="definition"){
+    prompt=`<div>${practiceTarget.definition}</div><div style="margin-top:8px;color:var(--muted)">Quel est le mot ?</div>`;
+  }else{
+    prompt=`<div style="font-size:3rem">🔊</div><div>Écoutez, puis choisissez le mot entendu.</div>`;
+  }
+  $("#practiceQuestion").innerHTML=prompt;
+  const options=shuffle([practiceTarget,...shuffle(items.filter(x=>x!==practiceTarget)).slice(0,3)]);
+  $("#practiceAnswers").innerHTML="";
+  options.forEach(opt=>{
+    const btn=document.createElement("button");
+    btn.className="answer-btn";btn.textContent=opt.term;
+    btn.onclick=()=>{
+      if(practiceAnswered)return;
+      practiceAnswered=true;
+      $$("#practiceAnswers .answer-btn").forEach(x=>x.disabled=true);
+      if(opt===practiceTarget){
+        btn.classList.add("correct");
+        $("#practiceFeedback").textContent="+10 XP — Bonne réponse !";
+        addMastery(targetIndex,10);
+        play(practiceTarget.audio.mot,btn);
+      }else{
+        btn.classList.add("wrong");
+        $("#practiceFeedback").textContent=`Réponse : ${practiceTarget.term}`;
+        addMastery(targetIndex,-3);
+      }
+      $("#practicePoints").textContent=masteryData.xp;
+    };
+    $("#practiceAnswers").appendChild(btn);
+  });
+  if(practiceType==="audio")setTimeout(()=>play(practiceTarget.audio.mot,$("#practiceListen")),250);
+}
+$("#practiceListen").onclick=()=>practiceTarget&&play(practiceTarget.audio.mot,$("#practiceListen"));
+$("#nextPractice").onclick=buildPractice;
+
+let reviewActive=false,reviewQ=0,reviewCorrect=0,reviewTarget=null;
+function startReview(){
+  reviewActive=true;reviewQ=0;reviewCorrect=0;
+  $("#reviewScore").textContent="0";
+  $("#startReview").textContent="Recommencer";
+  buildReviewQuestion();
+}
+function buildReviewQuestion(){
+  if(reviewQ>=10){
+    reviewActive=false;
+    lmsTrack('exercise_completed', {score: reviewCorrect, total: 10});
+    $("#reviewQuestion").innerHTML=`<div style="font-size:4rem">${reviewCorrect>=8?"🏆":reviewCorrect>=5?"👏":"🌱"}</div><h3>Résultat : ${reviewCorrect} / 10</h3>`;
+    $("#reviewAnswers").innerHTML="";
+    $("#reviewFeedback").textContent=reviewCorrect>=8?"Très bonne maîtrise.":reviewCorrect>=5?"Bon travail. Continuez à pratiquer.":"Retournez à l'onglet Pratiquer.";
+    $("#reviewProgressBar").style.width="100%";
+    return;
+  }
+  $("#reviewFeedback").textContent="";
+  reviewTarget=items[Math.floor(Math.random()*items.length)];
+  const targetIndex=items.indexOf(reviewTarget);
+  const type=Math.floor(Math.random()*3);
+  let prompt="";
+  if(type===0)prompt=`<img src="${reviewTarget.image}" alt=""><div>Choisissez le bon mot.</div>`;
+  else if(type===1)prompt=`<div>${reviewTarget.definition}</div><div style="margin-top:8px;color:var(--muted)">Choisissez le bon mot.</div>`;
+  else prompt=`<div>${reviewTarget.example.replace(new RegExp(reviewTarget.term.replace(/^(un|une|le|la|les)\s+/i,""),"i"),"__________")}</div>`;
+  $("#reviewQuestion").innerHTML=prompt;
+  $("#reviewProgressBar").style.width=(reviewQ/10*100)+"%";
+  const options=shuffle([reviewTarget,...shuffle(items.filter(x=>x!==reviewTarget)).slice(0,3)]);
+  $("#reviewAnswers").innerHTML="";
+  options.forEach(opt=>{
+    const btn=document.createElement("button");
+    btn.className="answer-btn";btn.textContent=opt.term;
+    btn.onclick=()=>{
+      $$("#reviewAnswers .answer-btn").forEach(x=>x.disabled=true);
+      if(opt===reviewTarget){
+        reviewCorrect++;
+        btn.classList.add("correct");
+        $("#reviewFeedback").textContent="+15 XP";
+        addMastery(targetIndex,15);
+      }else{
+        btn.classList.add("wrong");
+        $("#reviewFeedback").textContent=`Réponse : ${reviewTarget.term}`;
+        addMastery(targetIndex,-5);
+      }
+      reviewQ++;
+      $("#reviewScore").textContent=reviewCorrect;
+      setTimeout(buildReviewQuestion,850);
+    };
+    $("#reviewAnswers").appendChild(btn);
+  });
+}
+$("#startReview").onclick=startReview;
+$("#resetMastery").onclick=()=>{
+  if(confirm("Réinitialiser toute la progression ?")){
+    masteryData={xp:0,streak:0,bestStreak:0,mastery:Array(items.length).fill(0)};
+    saveMastery();renderMastery();$("#practicePoints").textContent="0";
+  }
+};
+buildPractice();
+renderMastery();
+
+render();
+
+function lmsTrack(event, data) {
+  try { window.parent.postMessage(Object.assign({lms:true, event:event}, data||{}), '*'); } catch(e) {}
+  try {
+    const up = new URLSearchParams(window.parent.location.search);
+    const code = up.get('code'), actId = parseInt(up.get('activityId'))||null, title = up.get('title')||'';
+    if (code && actId) {
+      fetch('/api/student/progress', {
+        method:'POST', headers:{'Content-Type':'application/json'},
+        body: JSON.stringify(Object.assign({code, activityId:actId, activityTitle:title, event}, data||{})),
+      }).catch(()=>{});
+    }
+  } catch(e2) {}
+}
+lmsTrack('file_opened');
+</script>
+</body>
+</html>
