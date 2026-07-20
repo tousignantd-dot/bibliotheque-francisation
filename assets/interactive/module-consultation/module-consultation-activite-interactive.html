@@ -445,12 +445,23 @@ const EXOS = [
    ]},
   {sec:'t3', id:'t3lar', type:'vf', num:'Exercice 2', tit:'Vrai ou Faux — La laryngite', color:'#B45309',
    sub:'Lisez la fiche-conseil sur la laryngite, puis répondez.', tiles:['VRAI','FAUX'],
+   savoir:{h:"› Les moyens de prévention", rows:[
+     ["Note","Les antibiotiques sont inutiles, car la laryngite est une infection virale. Si les symptômes persistent plus de 7 jours, consultez un médecin."],
+     ["Pour prévenir la laryngite","se laver souvent les mains avec du savon · tousser ou éternuer dans un mouchoir · éviter d'utiliser le verre, la tasse ou les ustensiles d'une autre personne"],
+   ]},
    rows:[
-    {id:'t3l1', txt:"On peut perdre la voix quand on a une laryngite.", ok:'VRAI'},
-    {id:'t3l2', txt:"Il faut boire beaucoup d'eau pour guérir une laryngite.", ok:'VRAI'},
-    {id:'t3l3', txt:"On peut prendre un antibiotique pour guérir la laryngite.", ok:'FAUX'},
-    {id:'t3l4', txt:"La laryngite peut être causée par une trop grande utilisation de la voix.", ok:'VRAI'},
-    {id:'t3l5', txt:"La laryngite dure plus d'une semaine.", ok:'FAUX'},
+    {id:'t3l1', txt:"Il faut éviter de crier pour ne pas faire de laryngite.", ok:'VRAI'},
+    {id:'t3l2', txt:"Il ne faut pas boire beaucoup d'eau si vous voulez guérir la laryngite.", ok:'FAUX'},
+    {id:'t3l3', txt:"Vous pouvez prendre un antibiotique pour guérir la laryngite.", ok:'FAUX'},
+    {id:'t3l4', txt:"On peut faire une laryngite à cause de brûlures d'estomac.", ok:'VRAI'},
+    {id:'t3l5', txt:"On peut ressentir de la douleur quand on a une laryngite.", ok:'VRAI'},
+    {id:'t3l6', txt:"L'utilisation d'un humidificateur est inutile quand on a une laryngite.", ok:'FAUX'},
+    {id:'t3l7', txt:"On peut perdre la voix quand on a une laryngite.", ok:'VRAI'},
+    {id:'t3l8', txt:"La laryngite peut être causée par une bactérie ou par un virus.", ok:'VRAI'},
+    {id:'t3l9', txt:"La laryngite ne peut pas être causée par la fumée.", ok:'FAUX'},
+    {id:'t3l10', txt:"Les cordes vocales sont affectées quand on a une laryngite.", ok:'VRAI'},
+    {id:'t3l11', txt:"La laryngite dure plus d'une semaine.", ok:'FAUX'},
+    {id:'t3l12', txt:"Si on boit dans le verre d'une autre personne, ça ne peut pas causer une laryngite.", ok:'FAUX'},
    ]},
   {sec:'t3', id:'t3form', type:'write', num:'Exercice 3', tit:'Le questionnaire de santé', color:'#B45309',
    sub:'Réponds à ces questions du formulaire par une phrase complète.',
@@ -458,6 +469,21 @@ const EXOS = [
     {q:"Avez-vous un médecin de famille ?", hint:"Oui, j'ai un médecin de famille. / Non, je n'ai pas de médecin de famille.", ph:"Oui,… / Non,…"},
     {q:"Souffrez-vous d'allergies ? Si oui, précisez.", hint:"Non, je ne souffre pas d'allergies. / Oui, je suis allergique à…", ph:"…"},
     {q:"Ressentez-vous du stress ? Explique avec une phrase complète.", hint:"Oui, je ressens souvent du stress. / Non, je ne ressens pas de stress.", ph:"…"},
+   ]},
+  {sec:'t3', id:'t3brul', type:'write', num:'Exercice 4', tit:'Fiche-conseil — Les brûlures d\'estomac', color:'#B45309',
+   sub:'Lis la fiche-conseil « Brûlures d\'estomac : comment les soulager et les éviter ? », puis réponds aux questions.',
+   savoir:{h:"› Brûlures d'estomac — comment les soulager et les éviter ?", rows:[
+     ["Les causes","Le reflux gastrique cause les brûlures d'estomac : l'acide de l'estomac remonte dans l'œsophage. Facteurs : alimentation épicée, grasse ou acide, alcool, cigarette, surplus de poids, stress."],
+     ["Les symptômes","Des maux à l'estomac (partie haute du ventre), de la difficulté à avaler, une mauvaise digestion, un mauvais goût dans la bouche ou une mauvaise haleine."],
+     ["Soulager","Boire beaucoup d'eau. Des médicaments antiacides vendus sans ordonnance soulagent les symptômes. Si le reflux persiste, consulter un médecin."],
+     ["Prévenir","Éviter les gros repas, les aliments gras et épicés, et les agrumes. Bien mastiquer. Manger 4-5 petits repas par jour. Éviter l'alcool, les boissons gazeuses et le café. Cesser de fumer, éviter le stress, perdre du poids en cas de surplus."],
+   ]},
+   items:[
+    {q:"Quelles sont les causes des brûlures d'estomac ? Nommes-en trois.", hint:"L'alimentation épicée, grasse ou acide ; la consommation d'alcool ; la cigarette (ou un surplus de poids, le stress).", ph:"…"},
+    {q:"Qu'est-ce qu'on peut faire pour soulager les brûlures d'estomac ?", hint:"Boire beaucoup d'eau et prendre des médicaments antiacides vendus sans ordonnance.", ph:"…"},
+    {q:"Quand devez-vous consulter un médecin ?", hint:"Si le reflux persiste.", ph:"…"},
+    {q:"Nommez deux symptômes des brûlures d'estomac.", hint:"Des maux à l'estomac et de la difficulté à avaler (ou une mauvaise haleine).", ph:"…"},
+    {q:"De quelles façons peut-on prévenir les brûlures d'estomac ? Nommez deux actions.", hint:"Éviter les gros repas gras et épicés, bien mastiquer (ou manger 4-5 petits repas par jour, éviter l'alcool et le café, cesser de fumer).", ph:"…"},
    ]},
 ];
 
@@ -774,7 +800,31 @@ function injectCustom(){
   document.getElementById('exs-appli').innerHTML = `
    <div class="card custom">
      <div class="c-hdr"><span class="tag" style="background:#0D9488">Production orale</span><span class="ctit" style="color:#0D9488">Jeu de rôle — chez le médecin</span></div>
-     <p class="lead">Tu es le patient. Choisis un problème (une allergie, une entorse, une indigestion…). <b>Décris tes symptômes au médecin.</b> Enregistre-toi, obtiens une rétroaction, puis envoie ta prise si tu le veux.</p>
+     <p class="lead">Choisis une des deux situations, puis <b>joue le patient</b> (décris tes symptômes et pose des questions) <b>ou le médecin</b> (pose des questions et donne les recommandations). Enregistre-toi, obtiens une rétroaction, puis envoie ta prise si tu le veux.</p>
+     <div style="display:grid;grid-template-columns:1fr 1fr;gap:14px;margin-bottom:6px">
+       <div style="background:#F0FDFA;border:1.5px solid #99F6E4;border-radius:12px;padding:14px 16px">
+         <div style="font-weight:900;color:#0D9488;margin-bottom:6px">Une allergie</div>
+         <div style="font-size:13.5px;color:#3B6156;margin-bottom:8px">Tu es allergique aux chats. Chez ton ami Naroth, tu ne peux pas rester à l'intérieur parce qu'il a deux chats.</div>
+         <div style="font-size:12px;font-weight:800;color:#0D9488;margin-bottom:4px">RECOMMANDATIONS</div>
+         <ul style="margin:0;padding-left:18px;font-size:12.5px;color:#3B6156;line-height:1.6">
+           <li>Prendre un antihistaminique deux heures avant la visite.</li>
+           <li>Ne pas être dans la même pièce que les chats.</li>
+           <li>Demander à Naroth de passer l'aspirateur avant l'arrivée.</li>
+           <li>Éviter de caresser les chats.</li>
+         </ul>
+       </div>
+       <div style="background:#F0FDFA;border:1.5px solid #99F6E4;border-radius:12px;padding:14px 16px">
+         <div style="font-weight:900;color:#0D9488;margin-bottom:6px">Une entorse</div>
+         <div style="font-size:13.5px;color:#3B6156;margin-bottom:8px">Tu as une entorse légère. Tes symptômes sont une enflure, une douleur intense à la cheville et de la difficulté à marcher.</div>
+         <div style="font-size:12px;font-weight:800;color:#0D9488;margin-bottom:4px">RECOMMANDATIONS</div>
+         <ul style="margin:0;padding-left:18px;font-size:12.5px;color:#3B6156;line-height:1.6">
+           <li>Appliquer de la glace (20 minutes, 4 à 8 fois par jour).</li>
+           <li>Utiliser des béquilles ou une canne.</li>
+           <li>Mettre un bandage élastique sur la cheville.</li>
+           <li>Prendre un antidouleur.</li>
+         </ul>
+       </div>
+     </div>
      <div class="rec-zone"><button id="recBtn">🎤</button><div class="rec-lbl" id="recLbl">Touche pour t'enregistrer</div></div>
      <div id="poPrev" class="hidden" style="display:flex;flex-direction:column;gap:12px">
        <audio id="poAudio" controls style="width:100%"></audio>
@@ -893,7 +943,7 @@ async function poGetFeedback(){
   document.getElementById('poStatus').classList.add('on');
   document.getElementById('poFbBtn').disabled=true;
   try{
-    const res=await fetch('/api/correct-french',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({code:studentCode,text,question:"Le médecin demande « Qu'est-ce qui vous amène aujourd'hui ? » et l'élève décrit ses symptômes."})});
+    const res=await fetch('/api/correct-french',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({code:studentCode,text,question:"L'élève joue un jeu de rôle patient/médecin sur une allergie ou une entorse : il décrit des symptômes, pose des questions ou donne des recommandations."})});
     const data=await res.json();
     document.getElementById('poStatus').classList.remove('on');
     document.getElementById('poFbBtn').disabled=false;
