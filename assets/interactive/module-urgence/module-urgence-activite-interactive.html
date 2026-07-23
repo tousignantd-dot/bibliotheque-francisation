@@ -608,21 +608,72 @@ function trackPlacement(zid, ok) {
   updateChip();
 }
 
-// ── DIALOGUE (synthèse vocale) ────────────────────────────────────────
+// ── DIALOGUE (audio réel si disponible, sinon synthèse vocale) ────────
 let dialogueRead = false;
+const MODULE_SLUG = 'module-urgence';
+let dlgAudio=null, dlgBtn=null, dlgState='idle', dlgUsingSpeech=false, dlgFallbackLines=null, dlgPollIv=null;
+
+function charSlug(name){ return name.toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g,'').replace(/'/g,'').replace(/\s+/g,'_'); }
+
 function playDialogue(dialId, btn){
+  if(dlgBtn===btn && dlgState==='playing'){ pauseDialogue(); return; }
+  if(dlgBtn===btn && dlgState==='paused'){ resumeDialogue(); return; }
+  stopDialogue();
+  dlgBtn=btn;
+  const lines=(DIALOGUES[dialId]&&DIALOGUES[dialId].lines)||[];
+  dlgFallbackLines=lines;
+  const urls=lines.map((l,i)=>`${MODULE_SLUG}/${dialId}/line_${String(i+1).padStart(2,'0')}_${charSlug(l[0])}.mp3`);
+  playAudioQueue(urls,0,btn,dialId,true);
+}
+function playAudioQueue(urls, idx, btn, dialId, allowFallback){
+  if(idx>=urls.length){ finishDialogue(btn,dialId); return; }
+  dlgAudio=new Audio(urls[idx]);
+  dlgUsingSpeech=false;
+  dlgState='playing'; btn.textContent='⏸ Pause';
+  dlgAudio.onended=()=>playAudioQueue(urls, idx+1, btn, dialId, false);
+  dlgAudio.onerror=()=>{
+    if(allowFallback && idx===0){ playSpeechQueue(dlgFallbackLines, btn, dialId); }
+    else{ playAudioQueue(urls, idx+1, btn, dialId, false); }
+  };
+  dlgAudio.play().catch(()=>{ if(allowFallback && idx===0){ playSpeechQueue(dlgFallbackLines, btn, dialId); } });
+}
+function playSpeechQueue(lines, btn, dialId){
   try{
     speechSynthesis.cancel();
+    dlgUsingSpeech=true;
     const voices = speechSynthesis.getVoices();
     const fr = voices.filter(v=>/^fr/i.test(v.lang));
-    (DIALOGUES[dialId].lines||[]).forEach((l,i)=>{
+    lines.forEach((l,i)=>{
       const u=new SpeechSynthesisUtterance(l[1]);
       u.lang='fr-CA'; u.rate=0.95; u.pitch=(i%2===0)?1.12:0.9;
       if(fr.length) u.voice=(i%2===0)?fr[0]:(fr[1]||fr[0]);
       speechSynthesis.speak(u);
     });
-    if(!dialogueRead){ dialogueRead=true; lmsTrack('dialogue_listened'); }
+    dlgState='playing'; btn.textContent='⏸ Pause';
+    clearInterval(dlgPollIv);
+    dlgPollIv=setInterval(()=>{
+      if(!speechSynthesis.speaking){ clearInterval(dlgPollIv); finishDialogue(btn,dialId); }
+    },400);
   }catch(e){}
+}
+function pauseDialogue(){
+  if(dlgUsingSpeech){ try{speechSynthesis.pause();}catch(e){} } else if(dlgAudio){ dlgAudio.pause(); }
+  dlgState='paused'; if(dlgBtn) dlgBtn.textContent='▶ Reprendre';
+}
+function resumeDialogue(){
+  if(dlgUsingSpeech){ try{speechSynthesis.resume();}catch(e){} } else if(dlgAudio){ dlgAudio.play().catch(()=>{}); }
+  dlgState='playing'; if(dlgBtn) dlgBtn.textContent='⏸ Pause';
+}
+function stopDialogue(){
+  clearInterval(dlgPollIv);
+  try{ speechSynthesis.cancel(); }catch(e){}
+  if(dlgAudio){ try{dlgAudio.pause();}catch(e){} dlgAudio=null; }
+  if(dlgBtn){ dlgBtn.textContent='🔊 Écouter'; }
+  dlgState='idle'; dlgBtn=null; dlgUsingSpeech=false;
+}
+function finishDialogue(btn,dialId){
+  dlgState='idle'; btn.textContent='🔊 Écouter'; dlgBtn=null; dlgUsingSpeech=false;
+  if(!dialogueRead){ dialogueRead=true; lmsTrack('dialogue_listened'); }
 }
 function markRead(btn){
   btn.classList.add('done'); btn.textContent='✓ Lu';
