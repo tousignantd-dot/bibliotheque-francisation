@@ -1,0 +1,1222 @@
+<!DOCTYPE html>
+<html lang="fr"><head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+<title>Quelle est la procédure ? — Module Niveau 4</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Nunito:wght@600;700;800;900&display=swap" rel="stylesheet">
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+html,body{height:100%;background:#EDF6F4;font-family:'Nunito','Arial Rounded MT Bold',sans-serif;color:#123B32}
+body{display:flex;flex-direction:column;min-height:100vh}
+::-webkit-scrollbar{width:6px;height:6px}::-webkit-scrollbar-track{background:rgba(0,0,0,.04);border-radius:3px}::-webkit-scrollbar-thumb{background:rgba(0,0,0,.15);border-radius:3px}
+
+#hdr{background:#7C3AED;color:#fff;padding:14px 32px;display:flex;align-items:center;justify-content:space-between;position:sticky;top:0;z-index:200;box-shadow:0 3px 16px rgba(15,118,110,.3);flex-shrink:0}
+.hdr-l{display:flex;align-items:center;gap:14px}
+.hdr-ic{width:44px;height:44px;background:rgba(255,255,255,.18);border-radius:50%;display:flex;align-items:center;justify-content:center;flex-shrink:0;font-size:22px}
+.hdr-eye{font-size:11px;font-weight:800;text-transform:uppercase;letter-spacing:.2em;opacity:.7;line-height:1}
+.hdr-h1{font-size:27px;font-weight:900;line-height:1.15}
+.hdr-r{display:flex;align-items:center;gap:14px}
+#prog-chip{background:rgba(255,255,255,.15);border:2px solid rgba(255,255,255,.45);border-radius:999px;padding:8px 18px;font-size:16px;font-weight:900;white-space:nowrap}
+#btn-reset{background:rgba(255,255,255,.15);color:#fff;border:2px solid rgba(255,255,255,.45);border-radius:10px;padding:10px 18px;font-family:'Nunito',sans-serif;font-size:15px;font-weight:800;cursor:pointer;white-space:nowrap;transition:background .15s}
+#btn-reset:hover{background:rgba(255,255,255,.28)}
+
+#tabs{background:#fff;display:flex;gap:6px;padding:10px 32px;position:sticky;top:76px;z-index:190;box-shadow:0 2px 12px rgba(0,0,0,.07);flex-wrap:wrap}
+.tab{border:2.5px solid transparent;border-radius:999px;padding:9px 18px;font-family:'Nunito',sans-serif;font-size:14.5px;font-weight:800;cursor:pointer;background:#EDF6F4;color:#5E8A82;transition:all .15s;display:flex;align-items:center;gap:8px}
+.tab .tno{width:24px;height:24px;border-radius:50%;background:#B7DED7;color:#fff;display:flex;align-items:center;justify-content:center;font-size:13px;font-weight:900;flex-shrink:0}
+.tab.on{background:#7C3AED;color:#fff}
+.tab.on .tno{background:rgba(255,255,255,.28)}
+.tab .tchk{display:none;color:#4ADE80;font-size:15px}
+.tab.done .tchk{display:inline}
+
+#sel-banner{background:#FEF3C7;border-bottom:3px solid #F59E0B;padding:10px 32px;display:none;align-items:center;gap:10px;font-size:19px;font-weight:800;color:#92400E;flex-shrink:0;position:sticky;top:132px;z-index:180}
+#sel-banner.on{display:flex}
+
+.sec{display:none;flex-direction:column}
+.sec.on{display:flex}
+
+.dial-sec{background:#123B32;color:#E8F5F2;padding:16px 32px;display:flex;gap:24px;border-bottom:4px solid #7C3AED;flex-shrink:0;flex-wrap:wrap}
+.audio-pl{flex:0 0 160px;display:flex;flex-direction:column;align-items:center;justify-content:flex-start;padding-top:6px;gap:10px}
+.audio-lbl{font-size:11px;font-weight:800;text-transform:uppercase;letter-spacing:.15em;opacity:.6;text-align:center}
+.btn-lu{background:rgba(255,255,255,.12);color:#E8F5F2;border:2px solid rgba(255,255,255,.35);border-radius:10px;padding:10px 14px;font-family:'Nunito',sans-serif;font-size:14px;font-weight:800;cursor:pointer;transition:all .15s;text-align:center;line-height:1.3;width:100%}
+.btn-lu:hover{background:rgba(255,255,255,.25)}
+.btn-lu.done{background:#166534;border-color:#4ADE80;color:#DCFCE7}
+.dial-txt{flex:1;min-width:280px;display:flex;flex-direction:column;gap:7px;font-size:19px;font-weight:600;line-height:1.7;padding-right:8px}
+.d-lbl{font-size:14px;font-weight:800;text-transform:uppercase;letter-spacing:.15em;color:#7FD4C9;margin-bottom:6px;opacity:.85}
+.dl{line-height:1.7}.mb{color:#FCA5A5;font-weight:800}.dr{color:#7FD4C9;font-weight:800}
+
+.intro{background:#DCEFEB;padding:14px 32px;font-size:17px;font-weight:700;color:#5B21B6;line-height:1.5;border-bottom:2px solid #B7DED7}
+
+.exs{flex:1;padding:22px 32px 48px;display:flex;flex-direction:column;gap:20px}
+
+.card{background:#fff;border-radius:18px;padding:22px 26px;box-shadow:0 4px 20px rgba(15,118,110,.08)}
+.c-hdr{display:flex;align-items:center;gap:10px;margin-bottom:14px;flex-wrap:wrap}
+.tag{color:#fff;border-radius:999px;padding:5px 16px;font-size:13px;font-weight:800;text-transform:uppercase;letter-spacing:.1em;white-space:nowrap}
+.ctit{font-size:21px;font-weight:900}
+.csub{font-size:15.5px;color:#5E8A82;font-weight:600}
+
+.savoir{background:#F1FBF9;border-left:5px solid #7C3AED;border-radius:0 14px 14px 0;padding:16px 22px;margin-bottom:4px}
+.savoir h3{font-size:15.5px;font-weight:900;color:#5B21B6;text-transform:uppercase;letter-spacing:.08em;margin-bottom:8px}
+.savoir table{border-collapse:collapse;width:100%}
+.savoir td{padding:6px 12px;font-size:16.5px;font-weight:600;line-height:1.5;border-bottom:1px dashed #B7DED7;vertical-align:top}
+.savoir td:first-child{font-weight:900;color:#5B21B6;white-space:nowrap}
+.savoir em{font-style:italic;color:#0D9488}
+
+.rows{display:flex;flex-direction:column;gap:8px}
+.rrow{display:flex;align-items:center;gap:10px}
+.stxt{flex:1;background:#F1F9F7;border-radius:10px;padding:14px 18px;font-size:20px;font-weight:700;color:#123B32;line-height:1.4}
+.rrow2{display:grid;grid-template-columns:1fr 1fr;gap:8px;align-items:stretch}
+.qcard{background:#F0FAF7;border-left:4px solid #7C3AED;border-radius:0 10px 10px 0;padding:12px 16px;display:flex;flex-direction:column;justify-content:center}
+.qlbl{font-size:13px;font-weight:800;color:#7C3AED;text-transform:uppercase;letter-spacing:.1em;margin-bottom:4px}
+.qtxt{font-size:19px;font-weight:700;color:#123B32;line-height:1.4}
+.timelbl{flex:0 0 90px;background:#FEF3C7;border-radius:10px;padding:12px 8px;font-size:15px;font-weight:900;color:#92400E;text-align:center}
+.blanks-p{font-size:22px;line-height:2.9;font-weight:600;color:#123B32}
+
+.zone{display:flex;align-items:center;justify-content:center;min-height:54px;border-radius:10px;font-weight:800;font-family:'Nunito',sans-serif;cursor:pointer;transition:background .18s,border-color .18s,color .18s,transform .12s;user-select:none;text-align:center;padding:10px 14px;border:2.5px solid;line-height:1.35}
+.zone.empty{background:#F0F9FF;border-color:#93C5D6;border-style:dashed;color:#94A3B8;font-size:17px}
+.zone.dov{background:#E0F2FE!important;border-color:#38BDF8!important;border-style:solid!important;transform:scale(1.02)}
+.zvf{min-width:150px;font-size:19px}
+.f-vrai{background:#DCFCE7;border-color:#4ADE80;border-style:solid;color:#166534}
+.f-faux{background:#FEE2E2;border-color:#FCA5A5;border-style:solid;color:#991B1B}
+.zone.filled{background:#DBEAFE;border-color:#60A5FA;border-style:solid;color:#1E3A8A;font-size:17px}
+.fb-ok{background:#D1FAE5!important;border-color:#34D399!important;border-style:solid!important;color:#065F46!important}
+.fb-no{background:#FEE2E2!important;border-color:#F87171!important;border-style:solid!important;color:#991B1B!important;animation:shk .5s ease}
+@keyframes shk{0%,100%{transform:translateX(0)}20%{transform:translateX(-6px)}60%{transform:translateX(6px)}80%{transform:translateX(-3px)}}
+
+.blank{display:inline-block;min-width:130px;padding:4px 14px;margin:0 3px;border-radius:8px;font-weight:800;vertical-align:middle;cursor:pointer;transition:background .18s,border-color .18s,color .18s;user-select:none;border:2.5px dashed #93C5D6;background:#F0F9FF;color:#94A3B8;font-size:20px;text-align:center}
+.blank.filled{border-style:solid;border-color:#5EEAD4;background:#CCFBF1;color:#5B21B6}
+.blank.fb-ok{border-style:solid;border-color:#34D399;background:#D1FAE5;color:#065F46}
+.blank.fb-no{border-style:solid;border-color:#F87171;background:#FEE2E2;color:#991B1B;animation:shk .5s ease}
+.blank.dov{border-style:solid;border-color:#38BDF8;background:#E0F2FE}
+
+.bsec{border-radius:12px;padding:14px 12px;flex-shrink:0}
+.bsec.b1{background:#EDF6F4;border:1.5px solid #B7DED7}
+.blbl{font-size:12px;font-weight:800;text-transform:uppercase;letter-spacing:.14em;margin-bottom:10px;color:#7C3AED}
+.btiles{display:flex;flex-wrap:wrap;gap:8px;justify-content:center}
+.btiles.vert{flex-direction:column;flex-wrap:nowrap}
+
+.tile{border-radius:10px;font-weight:800;font-family:'Nunito',sans-serif;cursor:grab;transition:all .15s;user-select:none;border:2.5px solid;box-shadow:0 2px 7px rgba(0,0,0,.08);padding:10px 14px;display:flex;align-items:center;justify-content:center;text-align:center;line-height:1.35}
+.tile:active{cursor:grabbing;transform:scale(1.04);box-shadow:0 5px 14px rgba(0,0,0,.15)}
+.tile.sel{background:#FEF9C3!important;border-color:#FBBF24!important;color:#92400E!important;box-shadow:0 0 0 4px rgba(245,158,11,.22),0 2px 7px rgba(0,0,0,.08)!important;transform:translateY(-1px)}
+.tv{background:#DCFCE7;border-color:#4ADE80;color:#166534;font-size:19px;padding:13px 22px}
+.tf{background:#FEE2E2;border-color:#FCA5A5;color:#991B1B;font-size:19px;padding:13px 22px}
+.tn{background:#F0FDFA;border-color:#5EEAD4;color:#5B21B6;font-size:16px}
+.ta{background:#FFF7ED;border-color:#FDBA74;color:#5B21B6;font-size:15px}
+.bempty{font-size:13px;color:#94A3B8;font-weight:600;text-align:center;padding:8px 0;font-style:italic}
+
+.ghost{position:fixed;z-index:9999;pointer-events:none;opacity:.88;transform:scale(1.06) rotate(1.5deg);box-shadow:0 8px 24px rgba(0,0,0,.25);border-radius:10px}
+
+/* Association image */
+.imgtile{width:100px;height:100px;border-radius:10px;overflow:hidden;cursor:grab;border:2.5px solid #5EEAD4;box-shadow:0 2px 7px rgba(0,0,0,.08);transition:all .15s;flex:none}
+.imgtile img{width:100%;height:100%;object-fit:cover;display:block;pointer-events:none}
+.imgtile:active{cursor:grabbing;transform:scale(1.04)}
+.imgtile.sel{border-color:#FBBF24;box-shadow:0 0 0 4px rgba(245,158,11,.22)}
+.imgzone{width:100%;min-height:110px;border-radius:10px;border:2.5px dashed #93C5D6;background:#F0F9FF;display:flex;align-items:center;justify-content:center;cursor:pointer;overflow:hidden;transition:all .15s}
+.imgzone img{width:100%;height:100%;object-fit:cover;display:block;pointer-events:none}
+.imgzone-ph{font-size:13px;color:#94A3B8;padding:10px}
+.imgzone.dov{border-color:#38BDF8;background:#E0F2FE}
+.imgzone.filled{border-style:solid;border-color:#5EEAD4}
+.imgzone.fb-ok{border-style:solid;border-color:#34D399}
+.imgzone.fb-no{border-style:solid;border-color:#F87171;animation:shk .5s ease}
+
+#fc-overlay{display:none;position:fixed;inset:0;z-index:9000;background:rgba(15,25,35,.6);backdrop-filter:blur(5px);align-items:center;justify-content:center}
+#fc-overlay.on{display:flex}
+#fc-box{background:#7C3AED;border-radius:24px;padding:44px 56px;max-width:760px;width:92%;box-shadow:0 24px 64px rgba(0,0,0,.4);display:flex;flex-direction:column;align-items:center;gap:20px;animation:fcPop .3s cubic-bezier(.34,1.4,.64,1)}
+@keyframes fcPop{from{transform:scale(.82);opacity:0}to{transform:scale(1);opacity:1}}
+#fc-counter{font-size:12px;font-weight:900;text-transform:uppercase;letter-spacing:.22em;color:rgba(255,255,255,.5)}
+#fc-word{font-size:36px;font-weight:900;color:#fff;text-align:center;line-height:1.2;border-bottom:2px solid rgba(255,255,255,.18);padding-bottom:18px;width:100%}
+#fc-def{font-size:21px;font-weight:700;color:#fff;line-height:1.6;text-align:center}
+#fc-ex{font-size:18px;font-weight:600;color:rgba(255,255,255,.78);line-height:1.6;text-align:center;font-style:italic}
+#fc-ex strong{font-weight:900;font-style:normal;color:#fff}
+#fc-def.hidden,#fc-ex.hidden{display:none}
+#fc-reveal-btn{background:rgba(255,255,255,.18);border:1px solid rgba(255,255,255,.4);color:#fff;border-radius:8px;padding:8px 20px;font-family:'Nunito',sans-serif;font-size:14px;font-weight:800;cursor:pointer}
+#fc-reveal-btn:hover{background:rgba(255,255,255,.38)}
+#fc-reveal-btn.hidden{display:none}
+#fc-btns{display:flex;gap:14px;margin-top:6px;flex-wrap:wrap;justify-content:center}
+.fc-btn{background:rgba(255,255,255,.15);border:2px solid rgba(255,255,255,.38);color:#fff;border-radius:10px;padding:10px 22px;font-family:'Nunito',sans-serif;font-size:15px;font-weight:800;cursor:pointer}
+.fc-btn:hover{background:rgba(255,255,255,.28)}
+
+.vocab-sec{background:#EDF6F4;border-bottom:3px solid rgba(15,118,110,.15);padding:14px 32px 18px}
+.vocab-grid{display:grid;grid-template-columns:1fr 1fr 1fr;gap:5px 20px}
+.vw{display:flex;align-items:baseline;gap:8px;padding:7px 10px;border-radius:8px;background:rgba(255,255,255,.6);cursor:pointer}
+.vw span.dot{display:inline-block;width:8px;height:8px;border-radius:50%;background:#7C3AED;flex-shrink:0}
+.vw span.w{font-size:17px;font-weight:700;color:#123B32}
+
+/* Sections personnalisées (oral / écrit / autoéval) */
+.custom{max-width:660px}
+.lead{font-size:16px;font-weight:700;color:#3B6156;line-height:1.6;margin-bottom:14px}
+.rec-zone{display:flex;flex-direction:column;align-items:center;gap:10px;margin:8px 0}
+#recBtn{width:78px;height:78px;border-radius:50%;border:none;background:#7C3AED;color:#fff;font-size:30px;cursor:pointer;box-shadow:0 4px 16px rgba(15,118,110,.32)}
+#recBtn.recording{background:#E23D2E;animation:pulse 1.2s infinite}
+@keyframes pulse{0%{box-shadow:0 0 0 0 rgba(226,61,46,.45)}70%{box-shadow:0 0 0 16px rgba(226,61,46,0)}100%{box-shadow:0 0 0 0 rgba(226,61,46,0)}}
+.rec-lbl{font-size:13.5px;font-weight:800;color:#5E8A82}
+textarea,input.txt{width:100%;border:2.5px solid #B7DED7;border-radius:12px;padding:11px 14px;font-family:'Nunito',sans-serif;font-size:15px;font-weight:700;color:#123B32;background:#F7FCFB;resize:vertical}
+textarea:focus{outline:none;border-color:#7C3AED}
+.btn{font-family:'Nunito',sans-serif;font-size:14.5px;font-weight:800;border-radius:10px;padding:11px 18px;cursor:pointer;border:2.5px solid transparent}
+.btn-pri{background:#7C3AED;color:#fff}.btn-pri:hover{background:#5B21B6}.btn-pri:disabled{opacity:.5;cursor:not-allowed}
+.btn-ghost{background:#EDF6F4;color:#7C3AED;border-color:#B7DED7}.btn-ghost:hover{background:#DCEFEB}
+.btn-send{background:#12556B;color:#fff}.btn-send:disabled{opacity:.5}
+.fb{background:#F0FAF7;border:2px solid #B7DED7;border-radius:12px;padding:14px 16px;display:none;flex-direction:column;gap:8px;margin-top:12px}
+.fb.on{display:flex}
+.fb-t{font-size:11.5px;font-weight:900;text-transform:uppercase;letter-spacing:.06em;color:#5B21B6}
+.fb-c{font-size:15px;font-weight:800;color:#5B21B6;line-height:1.5}
+.fb-e{font-size:12.5px;font-weight:700;color:#B45309;line-height:1.5;padding-left:14px;position:relative}
+.fb-e::before{content:"•";position:absolute;left:2px}
+.status{font-size:13.5px;font-weight:800;color:#5E8A82;text-align:center;display:none;margin-top:8px}
+.status.on{display:block}
+.err{font-size:13px;font-weight:800;color:#B91C1C;background:#FEF2F2;border:2px solid #FCA5A5;border-radius:10px;padding:10px 14px;display:none;margin-top:8px}
+.err.on{display:block}
+.sent{font-size:13px;font-weight:800;color:#12556B}
+.selfrow{display:flex;align-items:center;justify-content:space-between;gap:10px;padding:11px 0;border-bottom:1px solid #DCEFEB}
+.self-txt{font-size:15px;font-weight:800;color:#123B32}
+.self-opts{display:flex;gap:6px}
+.self-opts button{width:40px;height:40px;border-radius:9px;border:2px solid #B7DED7;background:#fff;font-size:19px;cursor:pointer}
+.self-opts button.sel{border-color:#7C3AED;background:#DCEFEB}
+.hidden{display:none!important}
+
+/* Exercices à écrire */
+.wlist{display:flex;flex-direction:column;gap:14px}
+.witem{background:#F7FCFB;border:1.5px solid #B7DED7;border-radius:12px;padding:13px 16px}
+.wq{font-size:16px;font-weight:800;color:#123B32;line-height:1.45;margin-bottom:8px}
+.wrow{display:flex;gap:8px;flex-wrap:wrap}
+.winput{flex:1;min-width:180px;border:2.5px solid #B7DED7;border-radius:9px;padding:9px 13px;font-family:'Nunito',sans-serif;font-size:15.5px;font-weight:700;color:#123B32;background:#fff}
+.winput:focus{outline:none;border-color:#7C3AED}
+.winput.good{border-color:#34D399;background:#ECFDF5}
+.wbtn{flex:0 0 auto;padding:9px 16px}
+.wfb{font-size:13.5px;font-weight:700;line-height:1.5;margin-top:8px;display:none}
+.wfb.ok,.wfb.no,.wfb.wait{display:block}
+.wfb.ok{color:#5B21B6}.wfb.no{color:#B45309}.wfb.wait{color:#5E8A82}
+.wfb b{color:#5B21B6}
+
+@media(max-width:900px){.vocab-grid{grid-template-columns:1fr 1fr}.rrow2{grid-template-columns:1fr}.hdr-h1{font-size:22px}}
+</style>
+</head>
+<body>
+
+<div id="hdr">
+  <div class="hdr-l">
+    <div class="hdr-ic">🏭</div>
+    <div><div class="hdr-eye">Monde du travail · Niveau 4</div><div class="hdr-h1">Quelle est la procédure ?</div></div>
+  </div>
+  <div class="hdr-r">
+    <div id="prog-chip">⭐ 0 / 0</div>
+    <button id="btn-reset">↺ Réinitialiser</button>
+  </div>
+</div>
+
+<div id="tabs"></div>
+
+<div id="sel-banner">
+  ✋ Sélectionné : «&nbsp;<span id="sel-lbl">—</span>&nbsp;» — Cliquez sur une case pour le placer.
+</div>
+
+<div id="sections"></div>
+
+<div id="fc-overlay">
+  <div id="fc-box">
+    <div id="fc-counter">Carte 1 / 12</div>
+    <div id="fc-word">—</div>
+    <button id="fc-reveal-btn">Voir la définition</button>
+    <div id="fc-def" class="hidden">—</div>
+    <div id="fc-ex" class="hidden">—</div>
+    <div id="fc-btns">
+      <button class="fc-btn" id="fc-prev">← Précédente</button>
+      <button class="fc-btn" id="fc-next">Suivante →</button>
+      <button class="fc-btn" id="fc-close">✕ Fermer</button>
+    </div>
+  </div>
+</div>
+
+<script>
+// ═══════════════════════════════════════════════════════════════════════
+//  LA VISITE CHEZ LE MÉDECIN — Module interactif Niveau 4 (FLS)
+//  Sections : Je me prépare · Chez le médecin · La langue · Je parle ·
+//             J'écris · Je m'évalue — suivi LMS intégré
+// ═══════════════════════════════════════════════════════════════════════
+
+function getCode(){
+  const own=new URLSearchParams(location.search).get('code');
+  if(own) return own;
+  try{ return new URLSearchParams(window.parent.location.search).get('code')||''; }catch(e){ return ''; }
+}
+const studentCode=getCode();
+
+// ── DIALOGUES ─────────────────────────────────────────────────────────
+const DIALOGUES = {
+  prep: {
+    label: "Dialogue — Demander un congé",
+    lines: [
+      ["MALIKA","Mes parents sont en Inde. Je ne les ai pas vus depuis longtemps, ils ont tellement hâte de me voir et moi aussi."],
+      ["CHENG","Vas-y ! Qu'est-ce que tu attends ?"],
+      ["MALIKA","Essaie de comprendre. Je ne peux pas partir n'importe quand : il y a une procédure que je dois suivre. Je vais parler à la personne responsable des congés au département des ressources humaines. À mon avis, je dois remplir un formulaire."],
+      ["CHENG","Quand tu auras l'information, écris-moi un texto, s'il te plaît. Moi aussi, j'aimerais aller voir mes parents en Chine. Mes parents me le demandent toutes les semaines !"],
+      ["MALIKA","D'accord. Je vais aussi t'envoyer le lien du site Internet d'une compagnie qui vend des billets d'avion pas trop cher. J'ai découvert ce site en naviguant sur un réseau social."],
+      ["CHENG","Ah oui ! C'est super ! C'est quoi, ce site ?"],
+      ["MALIKA","Je ne m'en souviens pas par cœur. Pendant que je vais attendre mon tour au département des ressources humaines, je vais vérifier sur mon téléphone."],
+      ["CHENG","Merci, Malika ! C'est très apprécié !"],
+    ]
+  },
+  t1: {
+    label: "Dialogue — Malika et la préposée aux ressources humaines",
+    lines: [
+      ["MALIKA","Bonjour, j'aimerais savoir comment faire une demande de congé."],
+      ["LA PRÉPOSÉE","Bonjour. Vous pouvez remplir le formulaire jaune en ligne, sur l'intranet de l'entreprise."],
+      ["MALIKA","D'accord. Est-ce que je peux l'envoyer par courriel une fois rempli ?"],
+      ["LA PRÉPOSÉE","Oui, tout à fait. Vous pouvez aussi numériser le formulaire et l'envoyer par courriel."],
+      ["MALIKA","Parfait. Combien de temps faut-il pour recevoir une réponse ?"],
+      ["LA PRÉPOSÉE","Vous devriez recevoir une réponse dans les 48 heures."],
+    ]
+  },
+  t2: {
+    label: "Dialogue — Cheng explique comment numériser",
+    lines: [
+      ["CHENG","D'abord, tu places le document sur le plateau supérieur du photocopieur."],
+      ["MALIKA","D'accord, et ensuite ?"],
+      ["CHENG","Tu sélectionnes l'opération à faire, puis tu appuies sur le bouton Démarrer."],
+      ["MALIKA","Et pour l'envoyer par courriel ?"],
+      ["CHENG","Tu saisis ton courriel sur le clavier, puis tu enregistres le document sous un autre nom."],
+      ["MALIKA","Merci, Cheng, c'est très clair !"],
+    ]
+  },
+};
+
+// ── SECTIONS ──────────────────────────────────────────────────────────
+const SECTIONS = [
+  {id:'prep', no:'▶', title:'Je me prépare', color:'#7C3AED',
+   intro:"🏭 Malika veut prendre congé pour rendre visite à sa famille en Inde. Cheng, de son côté, veut aller en Chine. Observez la bande dessinée, puis faites les exercices.",
+   dialogue:'prep'},
+  {id:'t1', no:'1', title:'Tâche 1 · La demande de congé', color:'#C0573A',
+   intro:"📋 Tâche 1 — Comment faire une demande de congé ? Malika s'informe auprès des ressources humaines.",
+   dialogue:'t1'},
+  {id:'t2', no:'2', title:'Tâche 2 · Des directives claires', color:'#6B4FBB',
+   intro:"🖨️ Tâche 2 — Cheng explique à Malika comment numériser son formulaire.",
+   dialogue:'t2'},
+  {id:'t3', no:'3', title:'Tâche 3 · Vous avez lu les directives ?', color:'#B45309',
+   intro:"📖 Tâche 3 — Lire et comprendre des directives écrites (réservation de salle, salubrité en restauration)."},
+  {id:'appli', no:'▶', title:'Je mets en application', color:'#0D9488', custom:true,
+   intro:"🎤 Je mets en application — Donne des directives à l'oral, puis explique une procédure par écrit."},
+  {id:'retiens', no:'✓', title:'Je retiens des mots', color:'#166534', custom:true,
+   intro:"📝 Je retiens des mots — Note le vocabulaire utile et révise avec les cartes mémoire."},
+];
+
+// ── EXERCICES ─────────────────────────────────────────────────────────
+// type 'vf'     : lignes {id,txt,ok} — tuiles fixes (labels)
+// type 'match'  : lignes {id,q,aid,a} — banque = réponses
+// type 'blanks' : segs {k:'t'/'b',id,c} + words {id,l}
+const EXOS = [
+  // ── JE ME PRÉPARE ──
+  {sec:'prep', id:'pr1', type:'write', num:'Exercice 1', tit:'La bande dessinée', color:'#7C3AED',
+   sub:'Écoutez de nouveau le dialogue, puis répondez.',
+   items:[
+    {q:"À quel service Malika doit-elle s'adresser pour demander un congé ?", hint:"Au département des ressources humaines.", ph:"…"},
+    {q:"Pourquoi Cheng veut-il aller en Chine ?", hint:"Pour rendre visite à ses parents, qu'il n'a pas vus depuis longtemps.", ph:"…"},
+    {q:"Qu'est-ce que Malika va envoyer à Cheng par texto ?", hint:"Le lien du site Internet d'une compagnie qui vend des billets d'avion pas trop chers.", ph:"…"},
+    {q:"Comment Malika a-t-elle découvert le site d'une compagnie où les billets d'avion ne sont pas trop chers ?", hint:"En naviguant sur un réseau social.", ph:"…"},
+   ]},
+  {sec:'prep', id:'prPhon', type:'vf', num:'Exercice 2', tit:'La phonétique — [ɥ], [ʒ] et [ɲ]', color:'#7C3AED',
+   sub:'Écoutez, puis indiquez le son entendu dans chaque mot.', tiles:['[ɥ]','[ʒ]','[ɲ]'],
+   savoir:{h:"› Les sons [ɥ], [ʒ] et [ɲ]", rows:[
+     ["[ɥ]","aujourd'hui, nuit, parapluie — on prononce rapidement les voyelles [y] et [i]."],
+     ["[ʒ]","partager, girafe, gymnase, jaser, jouer, jeune — le g devant e/i/y se prononce comme j."],
+     ["[ɲ]","gagner, ligne, montagne — les consonnes g et n s'unissent pour former un seul son."],
+   ]},
+   rows:[
+    {id:'pha', txt:"aujourd'hui", ok:'[ɥ]'},
+    {id:'phb', txt:"parapluie", ok:'[ɥ]'},
+    {id:'phc', txt:"girafe", ok:'[ʒ]'},
+    {id:'phd', txt:"jouer", ok:'[ʒ]'},
+    {id:'phe', txt:"gymnase", ok:'[ʒ]'},
+    {id:'phf', txt:"gagner", ok:'[ɲ]'},
+    {id:'phg', txt:"montagne", ok:'[ɲ]'},
+    {id:'phh', txt:"nuit", ok:'[ɥ]'},
+   ]},
+  {sec:'prep', id:'prVocab', type:'write', num:'Exercice 3', tit:'Du vocabulaire de bureau', color:'#7C3AED',
+   sub:'Complète les phrases avec un mot de la rubrique (parfois plus d\'une réponse est possible).',
+   savoir:{h:"› Du vocabulaire courant dans les milieux de travail", rows:[
+     ["Au téléphone","un clavier, un combiné, une ligne, une boîte vocale, le numéro de poste, une mise en attente"],
+     ["À l'ordinateur","un clavier d'ordinateur, une souris, un réseau, un ordinateur portable, un courriel, une boîte de réception"],
+   ]},
+   items:[
+    {q:"Le ______ de la directrice est le 232.", accept:["numéro de poste","numero de poste"], ph:"…"},
+    {q:"J'ai trois courriels dans ma ______.", accept:["boîte de réception","boite de reception"], ph:"…"},
+    {q:"Le ______ informatique est en panne ce matin.", accept:["réseau","reseau"], ph:"…"},
+    {q:"On est dirigé directement vers la ______ .", accept:["boîte vocale","boite vocale"], ph:"…"},
+    {q:"Mon ______ est utile en télétravail.", accept:["ordinateur portable"], ph:"…"},
+   ]},
+  {sec:'prep', id:'prVerbe', type:'write', num:'Exercice 4', tit:'Le bon verbe de bureau', color:'#7C3AED',
+   sub:'Consultez la page du magazine et complétez les phrases avec le verbe approprié.',
+   items:[
+    {q:"N'oubliez pas de ______ le document à votre courriel.", accept:["joindre"], ph:"…"},
+    {q:"Désolée, je dois ______ le téléphone. La réunion commence bientôt.", accept:["raccrocher"], ph:"…"},
+    {q:"Il faut ______ ce document papier avant de l'envoyer par courriel.", accept:["numériser","scanner"], ph:"…"},
+    {q:"Allez à la réception pour récupérer le formulaire et le ______ .", accept:["remplir"], ph:"…"},
+    {q:"Je vous conseille de ______ le document, de l'enregistrer sur un support informatique, puis de le remplir de façon électronique.", accept:["imprimer"], ph:"…"},
+    {q:"N'oubliez pas d'______ le document sur une clé USB.", accept:["enregistrer"], ph:"…"},
+    {q:"Il y a un photocopieur à la réception. Vous pouvez demander à la secrétaire de ______ votre document.", accept:["photocopier"], ph:"…"},
+    {q:"Si ce client appelle, il faut ______ le téléphone sans attendre ! Il s'agit d'un appel très important.", accept:["répondre à","repondre a"], ph:"…"},
+    {q:"Pour numériser le document, il faut ______ sur la touche en haut à droite de l'écran tactile.", accept:["appuyer"], ph:"…"},
+   ]},
+
+  {sec:'appli', id:'aHoraire', type:'write', num:'Exercice 1', tit:'Un horaire allégé', color:'#0D9488',
+   sub:"Lis le communiqué sur l'horaire allégé, puis réponds aux questions d'un collègue.",
+   savoir:{h:"› Étapes pour demander un horaire allégé", rows:[
+     ["1","Remplissez le formulaire de demande d'horaire allégé, disponible sur l'intranet."],
+     ["2","Remettez le formulaire à votre superviseur avant la date limite indiquée dans le communiqué."],
+     ["3","Attendez la confirmation par courriel des ressources humaines."],
+     ["4","Si la demande est acceptée, votre nouvel horaire entre en vigueur le mois suivant."],
+   ]},
+   items:[
+    {q:"C'est quoi, un horaire allégé ?", hint:"C'est un horaire de travail avec moins d'heures.", ph:"…"},
+    {q:"Quelle est la première étape pour faire ma demande ?", hint:"Remplir le formulaire de demande d'horaire allégé, disponible sur l'intranet.", ph:"…"},
+    {q:"À qui dois-je remettre le formulaire ?", hint:"À mon superviseur.", ph:"…"},
+    {q:"Est-ce que je peux remplir le formulaire en ligne ?", hint:"Oui, il est disponible sur l'intranet.", ph:"…"},
+   ]},
+
+  // ── TÂCHE 1 · COMMENT FAIRE UNE DEMANDE DE CONGÉ ? ──
+  {sec:'t1', id:'t1vf', type:'vf', num:'Exercice 1', tit:'Vrai ou Faux — La demande de congé', color:'#C0573A',
+   sub:'Écoutez la conversation entre Malika et une préposée aux ressources humaines, puis répondez.', tiles:['VRAI','FAUX'],
+   rows:[
+    {id:'t1va', txt:"On peut numériser le formulaire et l'envoyer par courriel.", ok:'VRAI'},
+    {id:'t1vb', txt:"Il faut remplir le formulaire en ligne.", ok:'VRAI'},
+    {id:'t1vc', txt:"Malika va recevoir une réponse à sa demande dans les 24 heures.", ok:'FAUX'},
+    {id:'t1vd', txt:"On doit aller chercher le formulaire aux ressources humaines.", ok:'FAUX'},
+   ]},
+  {sec:'t1', id:'t1qui', type:'write', num:'Exercice 2', tit:'La reprise de l\'information par le pronom que', color:'#C0573A',
+   sub:'Indique le groupe nominal repris par le pronom que, en gras dans la phrase.',
+   savoir:{h:"› La reprise de l'information par le pronom que", rows:[
+     ["Le pronom que reprend un GN","Il me donne des conseils. J'apprécie ses conseils. → Il me donne des conseils que j'apprécie."],
+     ["Exemples","J'occupe un emploi que j'aime. · Il suit les directives que son employeur donne. · Elle porte l'uniforme qu'elle a acheté."],
+   ]},
+   items:[
+    {q:"Voici le formulaire que vous devez remplir pour l'inscription. Que reprend « que » ?", accept:["le formulaire"], ph:"…"},
+    {q:"Vous devez imprimer le document que je vous ai envoyé par courriel. Que reprend « que » ?", accept:["le document"], ph:"…"},
+    {q:"Nous allons faire la rencontre dans le bureau que je vous ai montré hier. Que reprend « que » ?", accept:["le bureau"], ph:"…"},
+    {q:"Apportez tous les documents pour la visite que nous allons faire à 14 h. Que reprend « que » ?", accept:["la visite"], ph:"…"},
+    {q:"Ce matin, il faut discuter d'un sujet que je trouve important. Que reprend « que » ?", accept:["un sujet"], ph:"…"},
+    {q:"Je vais rencontrer l'employé que vous avez embauché la semaine passée. Que reprend « que » ?", accept:["l'employé","l employe"], ph:"…"},
+   ]},
+
+  // ── TÂCHE 2 · DES DIRECTIVES CLAIRES ──
+  {sec:'t2', id:'t2ord', type:'rows', num:'Exercice 1', tit:'Remets les directives dans l\'ordre', color:'#6B4FBB',
+   sub:"Cheng explique à Malika comment numériser son formulaire. Écoutez le dialogue, puis remettez les directives dans l'ordre (de 1 à 5).",
+   fiche:false,
+   bank:[
+    {id:'ea', l:"Placer le document sur le plateau supérieur du photocopieur."},
+    {id:'eb', l:"Sélectionner l'opération à faire."},
+    {id:'ec', l:"Peser sur le bouton Démarrer."},
+    {id:'ed', l:"Saisir son courriel sur le clavier."},
+    {id:'ee', l:"Enregistrer le document sous un autre nom."},
+   ],
+   rows:[
+    {id:'er1', lbl:'1er', cv:'ea'},
+    {id:'er2', lbl:'2e', cv:'eb'},
+    {id:'er3', lbl:'3e', cv:'ec'},
+    {id:'er4', lbl:'4e', cv:'ed'},
+    {id:'er5', lbl:'5e', cv:'ee'},
+   ]},
+  {sec:'t2', id:'t2pendant', type:'write', num:'Exercice 2', tit:'Pendant que pour situer une action', color:'#6B4FBB',
+   sub:'Utilise pendant que pour joindre les deux actions. Tu peux situer l\'action dans le présent, le passé ou le futur.',
+   savoir:{h:"› Pendant que pour situer une action", rows:[
+     ["présent","Elle accueille les clients pendant que je réponds au téléphone."],
+     ["passé","Pendant que je passais le balai, elle a nettoyé les tables."],
+     ["futur","Nous allons préparer les commandes pendant qu'il va à l'épicerie."],
+   ]},
+   items:[
+    {q:"donner des directives / prendre des notes", hint:"La superviseure donne des directives pendant que les employés prennent des notes.", ph:"…"},
+    {q:"faire l'épicerie / cuisiner un bon repas", hint:"Je fais l'épicerie pendant que tu cuisines un bon repas.", ph:"…"},
+    {q:"travailler dans une garderie / être à l'école", hint:"Elle travaille dans une garderie pendant que ses enfants sont à l'école.", ph:"…"},
+   ]},
+  {sec:'t2', id:'t2gerond', type:'vf', num:'Exercice 3', tit:'Le gérondif — simultanéité ou manière ?', color:'#6B4FBB',
+   sub:'Indique si le gérondif en gras exprime la simultanéité ou la manière.', tiles:['Simultanéité','Manière'],
+   savoir:{h:"› Le participe présent employé avec en (le gérondif)", rows:[
+     ["La simultanéité","Deux actions se font en même temps : Je lis en marchant lentement."],
+     ["La manière","Pour dire comment on fait une chose : J'attrape l'autobus en courant."],
+   ]},
+   rows:[
+    {id:'ga', txt:"Mia lit les directives <b>en se concentrant</b>.", ok:'Manière'},
+    {id:'gb', txt:"Il consulte le document <b>en tournant les pages rapidement</b>.", ok:'Manière'},
+    {id:'gc', txt:"Il parle de sa fin de semaine <b>en numérisant le document</b>.", ok:'Simultanéité'},
+    {id:'gd', txt:"Elle travaille <b>en écoutant de la musique</b>.", ok:'Simultanéité'},
+    {id:'ge', txt:"J'aime discuter avec mes collègues <b>en mangeant au dîner</b>.", ok:'Simultanéité'},
+    {id:'gf', txt:"Le concierge s'est blessé <b>en réparant la vitre</b>.", ok:'Simultanéité'},
+    {id:'gg', txt:"Julien fait des photocopies <b>en chantant</b>.", ok:'Simultanéité'},
+    {id:'gh', txt:"Myriam remplit le formulaire <b>en suivant les consignes</b>.", ok:'Manière'},
+   ]},
+  {sec:'t2', id:'t2lavage', type:'write', num:'Exercice 4', tit:'Se laver les mains — à l\'impératif', color:'#6B4FBB',
+   sub:"Écoutez les directives pour se laver les mains, puis écrivez-les à la 2e personne du pluriel de l'impératif présent.",
+   savoir:{h:"› L'impératif présent", rows:[
+     ["2e pers. pl. (vous)","Remplissez le formulaire. · Entendez-vous ! · Reposez-vous."],
+     ["être, avoir, aller","Soyez, ayez, allez."],
+   ]},
+   items:[
+    {q:"Vous devez mouiller vos mains à l'eau tiède.", accept:["mouillez vos mains à l'eau tiède","mouillez vos mains a l'eau tiede"], ph:"Mouillez…"},
+    {q:"Vous devez appliquer du savon sur vos mains.", accept:["appliquez du savon sur vos mains"], ph:"Appliquez…"},
+    {q:"Vous devez frotter vos mains pendant vingt secondes.", accept:["frottez vos mains pendant vingt secondes"], ph:"Frottez…"},
+    {q:"Vous devez nettoyer aussi le dessous de vos ongles.", accept:["nettoyez aussi le dessous de vos ongles"], ph:"Nettoyez…"},
+    {q:"Vous devez rincer vos mains à l'eau claire.", accept:["rincez vos mains à l'eau claire","rincez vos mains a l'eau claire"], ph:"Rincez…"},
+    {q:"Vous devez sécher vos mains avec une serviette propre.", accept:["séchez vos mains avec une serviette propre","sechez vos mains avec une serviette propre"], ph:"Séchez…"},
+    {q:"Vous ne devez pas oublier de fermer le robinet avec la serviette.", accept:["n'oubliez pas de fermer le robinet avec la serviette","n oubliez pas de fermer le robinet avec la serviette"], ph:"N'oubliez pas…"},
+   ]},
+  {sec:'t2', id:'t2pronom', type:'write', num:'Exercice 5', tit:'Impératif + pronom complément', color:'#6B4FBB',
+   sub:'Écris les directives à l\'impératif présent en remplaçant le complément du verbe par un pronom complément.',
+   savoir:{h:"› Le pronom complément à l'impératif", rows:[
+     ["Après le verbe","Vous retirez vos bijoux. → Retirez-les."],
+     ["Certains pronoms changent de forme","Vous me remettez le dossier. → Remettez-moi le dossier."],
+   ]},
+   items:[
+    {q:"Vous avisez la secrétaire de ce changement.", accept:["avisez-la de ce changement","avisez la de ce changement"], ph:"Avisez…"},
+    {q:"Tu transfères le fichier à ton collègue.", accept:["transfère-le-lui","transfere le lui"], ph:"Transfère…"},
+    {q:"Vous demandez le formulaire à la secrétaire.", accept:["demandez-le-lui","demandez le lui"], ph:"Demandez…"},
+    {q:"Vous préparez les documents pour la réunion.", accept:["préparez-les","preparez les"], ph:"Préparez…"},
+    {q:"Tu m'appelles demain matin.", accept:["appelle-moi demain matin","appelle moi demain matin"], ph:"Appelle…"},
+    {q:"Vous me contactez bientôt.", accept:["contactez-moi bientôt","contactez moi bientot"], ph:"Contactez…"},
+   ]},
+
+  // ── TÂCHE 3 · VOUS AVEZ LU LES DIRECTIVES ? ──
+  {sec:'t3', id:'t3salle', type:'vf', num:'Exercice 1', tit:'Vrai ou Faux — Réservation de salles', color:'#B45309',
+   sub:'Lisez les directives pour réserver une salle, puis répondez.', tiles:['VRAI','FAUX'],
+   savoir:{h:"› Réservation de salles", rows:[
+     ["Pour réserver","Entrez votre nom et votre numéro d'employé, sélectionnez la date, l'heure de début et de fin, le nombre de personnes, puis cochez vos besoins spécifiques."],
+     ["Ensuite","Cliquez sur Rechercher, sélectionnez la salle souhaitée, puis appuyez sur Réserver. Vous recevrez un accusé de réception."],
+     ["En cas de difficulté","Communiquez avec la secrétaire, au poste 1."],
+   ]},
+   rows:[
+    {id:'t3sa', txt:"Pour réserver une salle, vous devez indiquer seulement votre nom.", ok:'FAUX'},
+    {id:'t3sb', txt:"Vous devez indiquer la date, l'heure du début et de la fin de la rencontre.", ok:'VRAI'},
+    {id:'t3sc', txt:"Si vous avez des besoins spécifiques, vous les demandez à la secrétaire.", ok:'FAUX'},
+    {id:'t3sd', txt:"Vous recevrez un accusé de réception quand la réservation sera faite.", ok:'VRAI'},
+    {id:'t3se', txt:"Si vous éprouvez des difficultés, vous pouvez appeler le secrétariat.", ok:'VRAI'},
+   ]},
+  {sec:'t3', id:'t3salleC', type:'write', num:'Exercice 2', tit:'Corrige les énoncés faux', color:'#B45309',
+   sub:'Corrige les deux énoncés faux de l\'exercice précédent.',
+   items:[
+    {q:"Corrige : « Pour réserver une salle, vous devez indiquer seulement votre nom. »", hint:"Vous devez indiquer votre nom et votre numéro d'employé.", ph:"…"},
+    {q:"Corrige : « Si vous avez des besoins spécifiques, vous les demandez à la secrétaire. »", hint:"Vous cochez vos besoins spécifiques directement dans le système de réservation.", ph:"…"},
+   ]},
+  {sec:'t3', id:'t3salubrite', type:'write', num:'Exercice 3', tit:'La salubrité dans le milieu de la restauration', color:'#B45309',
+   sub:'Lis le rappel sur la salubrité, puis réponds aux questions.',
+   savoir:{h:"› La salubrité dans le milieu de la restauration", rows:[
+     ["Rappel","Porter la tenue et la coiffe réglementaires, garder les ongles courts, non vernis et propres, se laver les mains avant de manipuler les équipements et les aliments, couvrir toute brûlure ou blessure aux mains avec un gant adapté au contact alimentaire."],
+   ]},
+   items:[
+    {q:"Comment les ongles doivent-ils être ?", hint:"Courts, non vernis et propres.", ph:"…"},
+    {q:"Qu'est-ce qu'il faut faire si on a une blessure ou une brûlure à la main ?", hint:"La couvrir entièrement avec un gant adapté au contact alimentaire.", ph:"…"},
+    {q:"Comment doivent être les vêtements de travail ?", hint:"Propres et réglementaires.", ph:"…"},
+    {q:"Expliquez dans vos mots ce que signifie le mot réglementaire.", hint:"Qui respecte le règlement, les normes établies par l'employeur.", ph:"…"},
+    {q:"Qu'est-ce qu'il faut faire avant de manipuler les équipements et les aliments ?", hint:"Se laver les mains.", ph:"…"},
+    {q:"Écrivez deux synonymes du mot salubrité.", hint:"Propreté, hygiène.", ph:"…"},
+   ]},
+];
+
+// ── FLASHCARDS ────────────────────────────────────────────────────────
+const FC_CARDS = [
+  {word:"une procédure", def:"La façon officielle de faire une demande ou une tâche.", ex:"Il y a une <strong>procédure</strong> à suivre pour un congé."},
+  {word:"numériser", def:"Transformer un document papier en fichier numérique.", ex:"Il faut <strong>numériser</strong> ce document."},
+  {word:"une directive", def:"Une instruction précise à suivre.", ex:"Lisez bien les <strong>directives</strong>."},
+  {word:"les ressources humaines", def:"Le service qui s'occupe des employés (congés, embauche…).", ex:"Adressez-vous aux <strong>ressources humaines</strong>."},
+  {word:"un accusé de réception", def:"Une confirmation qu'une demande a été reçue.", ex:"Vous recevrez un <strong>accusé de réception</strong>."},
+  {word:"réglementaire", def:"Qui respecte le règlement établi.", ex:"Portez la tenue <strong>réglementaire</strong>."},
+  {word:"la salubrité", def:"La propreté et l'hygiène dans un milieu de travail.", ex:"La <strong>salubrité</strong> est essentielle en restauration."},
+  {word:"une boîte vocale", def:"Le système qui enregistre un message téléphonique.", ex:"J'ai laissé un message dans sa <strong>boîte vocale</strong>."},
+  {word:"un intranet", def:"Le réseau informatique interne d'une entreprise.", ex:"Le formulaire est sur l'<strong>intranet</strong>."},
+  {word:"un horaire allégé", def:"Un horaire de travail avec moins d'heures.", ex:"Elle a demandé un <strong>horaire allégé</strong>."},
+  {word:"consulter", def:"Regarder un document pour trouver une information.", ex:"<strong>Consultez</strong> le magazine à la page 25."},
+  {word:"le numéro de poste", def:"Le numéro qui permet de joindre une personne dans une entreprise.", ex:"Le <strong>numéro de poste</strong> de la directrice est le 232."},
+];
+
+// ── ÉTAT ──────────────────────────────────────────────────────────────
+const S = {pl:{}, sel:null, fb:{}};
+let curSec = 'prep';
+
+const ZONES = {};
+EXOS.forEach(ex => {
+  if (ex.type === 'vf')     ex.rows.forEach(r => ZONES[r.id] = {cv:r.ok, zcat:'vf', exo:ex.id});
+  if (ex.type === 'match')  ex.rows.forEach(r => ZONES[r.id] = {cv:r.aid, zcat:'id', exo:ex.id});
+  if (ex.type === 'imgmatch') ex.rows.forEach(r => ZONES[r.id] = {cv:r.aid, zcat:'id', exo:ex.id});
+  if (ex.type === 'rows')   ex.rows.forEach(r => ZONES[r.id] = {cv:r.cv, zcat:'id', exo:ex.id});
+  if (ex.type === 'blanks') ex.segs.filter(s=>s.k==='b').forEach(s =>
+    ZONES[s.id] = {cv:s.c, zcat: ex.byLabel ? 'lbl' : 'id', exo:ex.id});
+  if (ex.type === 'write')  ex.items.forEach((it,i) =>
+    ZONES['w_'+ex.id+'_'+i] = {zcat:'write', exo:ex.id});
+});
+const TOTAL_ZONES = Object.keys(ZONES).length;
+const ALL_IMAGES = EXOS.filter(e=>e.type==='imgmatch').flatMap(e=>e.images);
+
+// ── LMS TRACKING ──────────────────────────────────────────────────────
+function lmsTrack(event, data) {
+  try { window.parent.postMessage(Object.assign({lms:true, event:event}, data||{}), '*'); } catch(e) {}
+  try {
+    const up = new URLSearchParams(window.parent.location.search);
+    const code = up.get('code'), actId = parseInt(up.get('activityId'))||null, title = up.get('title')||'';
+    if (code && actId) {
+      fetch('/api/student/progress', {
+        method:'POST', headers:{'Content-Type':'application/json'},
+        body: JSON.stringify(Object.assign({code, activityId:actId, activityTitle:title, event}, data||{})),
+      }).catch(()=>{});
+    }
+  } catch(e2) {}
+}
+const TR = {attempts:{}, correct:{}};
+function trackPlacement(zid, ok) {
+  if (ok && !TR.correct[zid]) {
+    TR.correct[zid] = true;
+    if (!(zid in TR.attempts)) TR.attempts[zid] = 0;
+    const zonesDone = Object.keys(TR.correct).length;
+    const firstTry = Object.keys(TR.correct).filter(k => (TR.attempts[k]||0)===0).length;
+    const totalErrors = Object.keys(TR.attempts).reduce((s,k)=>s+(TR.attempts[k]||0),0);
+    lmsTrack('exercise_completed', {zones:TOTAL_ZONES, zonesDone, firstTry, totalErrors});
+  } else if (!ok && !TR.correct[zid]) {
+    TR.attempts[zid] = (TR.attempts[zid]||0) + 1;
+  }
+  updateChip();
+}
+
+// ── DIALOGUE (audio réel si disponible, sinon synthèse vocale) ────────
+let dialogueRead = false;
+const MODULE_SLUG = 'module-procedure';
+let dlgAudio=null, dlgBtn=null, dlgState='idle', dlgUsingSpeech=false, dlgFallbackLines=null, dlgPollIv=null;
+
+function charSlug(name){ return name.toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g,'').replace(/'/g,'').replace(/\s+/g,'_'); }
+
+function playDialogue(dialId, btn){
+  if(dlgBtn===btn && dlgState==='playing'){ pauseDialogue(); return; }
+  if(dlgBtn===btn && dlgState==='paused'){ resumeDialogue(); return; }
+  stopDialogue();
+  dlgBtn=btn;
+  const lines=(DIALOGUES[dialId]&&DIALOGUES[dialId].lines)||[];
+  dlgFallbackLines=lines;
+  const urls=lines.map((l,i)=>`${MODULE_SLUG}/${dialId}/line_${String(i+1).padStart(2,'0')}_${charSlug(l[0])}.mp3`);
+  playAudioQueue(urls,0,btn,dialId,true);
+}
+function playAudioQueue(urls, idx, btn, dialId, allowFallback){
+  if(idx>=urls.length){ finishDialogue(btn,dialId); return; }
+  dlgAudio=new Audio(urls[idx]);
+  dlgUsingSpeech=false;
+  dlgState='playing'; btn.textContent='⏸ Pause';
+  dlgAudio.onended=()=>playAudioQueue(urls, idx+1, btn, dialId, false);
+  dlgAudio.onerror=()=>{
+    if(allowFallback && idx===0){ playSpeechQueue(dlgFallbackLines, btn, dialId); }
+    else{ playAudioQueue(urls, idx+1, btn, dialId, false); }
+  };
+  dlgAudio.play().catch(()=>{ if(allowFallback && idx===0){ playSpeechQueue(dlgFallbackLines, btn, dialId); } });
+}
+function playSpeechQueue(lines, btn, dialId){
+  try{
+    speechSynthesis.cancel();
+    dlgUsingSpeech=true;
+    const voices = speechSynthesis.getVoices();
+    const fr = voices.filter(v=>/^fr/i.test(v.lang));
+    lines.forEach((l,i)=>{
+      const u=new SpeechSynthesisUtterance(l[1]);
+      u.lang='fr-CA'; u.rate=0.95; u.pitch=(i%2===0)?1.12:0.9;
+      if(fr.length) u.voice=(i%2===0)?fr[0]:(fr[1]||fr[0]);
+      speechSynthesis.speak(u);
+    });
+    dlgState='playing'; btn.textContent='⏸ Pause';
+    clearInterval(dlgPollIv);
+    dlgPollIv=setInterval(()=>{
+      if(!speechSynthesis.speaking){ clearInterval(dlgPollIv); finishDialogue(btn,dialId); }
+    },400);
+  }catch(e){}
+}
+function pauseDialogue(){
+  if(dlgUsingSpeech){ try{speechSynthesis.pause();}catch(e){} } else if(dlgAudio){ dlgAudio.pause(); }
+  dlgState='paused'; if(dlgBtn) dlgBtn.textContent='▶ Reprendre';
+}
+function resumeDialogue(){
+  if(dlgUsingSpeech){ try{speechSynthesis.resume();}catch(e){} } else if(dlgAudio){ dlgAudio.play().catch(()=>{}); }
+  dlgState='playing'; if(dlgBtn) dlgBtn.textContent='⏸ Pause';
+}
+function stopDialogue(){
+  clearInterval(dlgPollIv);
+  try{ speechSynthesis.cancel(); }catch(e){}
+  if(dlgAudio){ try{dlgAudio.pause();}catch(e){} dlgAudio=null; }
+  if(dlgBtn){ dlgBtn.textContent='🔊 Écouter'; }
+  dlgState='idle'; dlgBtn=null; dlgUsingSpeech=false;
+}
+function finishDialogue(btn,dialId){
+  dlgState='idle'; btn.textContent='🔊 Écouter'; dlgBtn=null; dlgUsingSpeech=false;
+  if(!dialogueRead){ dialogueRead=true; lmsTrack('dialogue_listened'); }
+}
+function markRead(btn){
+  btn.classList.add('done'); btn.textContent='✓ Lu';
+  if(!dialogueRead){ dialogueRead=true; lmsTrack('dialogue_listened'); }
+}
+
+// ── LOGIQUE DE PLACEMENT ──────────────────────────────────────────────
+function checkOk(zid, iid, lbl) {
+  const z = ZONES[zid];
+  if (!z) return false;
+  if (z.zcat === 'vf' || z.zcat === 'lbl') return lbl === z.cv;
+  return iid === z.cv;
+}
+function doPlace(zid, iid, lbl, cat, from) {
+  if (from === zid) { S.sel = null; render(); return; }
+  if (from && from !== zid) { if (S.pl[zid]) S.pl[from] = S.pl[zid]; else delete S.pl[from]; delete S.fb[from]; delete S.fb[zid]; }
+  else if (!from && S.pl[zid]) { delete S.pl[zid]; delete S.fb[zid]; }
+  S.pl[zid] = {iid, lbl, cat}; S.sel = null;
+  const ok = checkOk(zid, iid, lbl);
+  S.fb[zid] = ok ? 'ok' : 'no';
+  trackPlacement(zid, ok);
+  render();
+  setTimeout(() => { delete S.fb[zid]; if (!ok) delete S.pl[zid]; render(); }, ok ? 1400 : 850);
+}
+function zoneClick(zid) {
+  if (S.sel) { doPlace(zid, S.sel.iid, S.sel.lbl, S.sel.cat, S.sel.from); }
+  else if (S.pl[zid] && !S.fb[zid]) {
+    const {iid,lbl,cat} = S.pl[zid];
+    delete S.pl[zid]; delete S.fb[zid];
+    S.sel = {iid,lbl,cat,from:zid}; render();
+  }
+}
+function tileClick(iid, lbl, cat) {
+  if (S.sel && S.sel.iid === iid && !S.sel.from) S.sel = null;
+  else S.sel = {iid,lbl,cat,from:null};
+  render();
+}
+
+// ── DRAG & DROP ───────────────────────────────────────────────────────
+let dd = null;
+function drg(el, iid, lbl, cat, from) {
+  el.draggable = true;
+  el.addEventListener('dragstart', e => { dd = {iid,lbl,cat,from:from||null}; e.dataTransfer.setData('text/plain', JSON.stringify(dd)); e.dataTransfer.effectAllowed='move'; setTimeout(()=>el.style.opacity='.45',0); });
+  el.addEventListener('dragend', () => { el.style.opacity=''; dd=null; });
+}
+function drp(el, zid) {
+  el.addEventListener('dragover', e => { e.preventDefault(); el.classList.add('dov'); });
+  el.addEventListener('dragleave', () => el.classList.remove('dov'));
+  el.addEventListener('drop', e => { e.preventDefault(); el.classList.remove('dov'); let d=dd; if(!d){try{d=JSON.parse(e.dataTransfer.getData('text/plain'))}catch{}} if(!d)return; doPlace(zid, d.iid, d.lbl, d.cat, d.from); dd=null; });
+}
+let ts=null, ghost=null;
+function tch(el, iid, lbl, cat, from) {
+  el.addEventListener('touchstart', e => { const t=e.touches[0]; ts={x:t.clientX,y:t.clientY,iid,lbl,cat,from:from||null,el,moved:false}; }, {passive:true});
+}
+document.addEventListener('touchmove', e => {
+  if(!ts) return;
+  const t=e.touches[0], dx=t.clientX-ts.x, dy=t.clientY-ts.y;
+  if(!ts.moved && Math.sqrt(dx*dx+dy*dy)>8){
+    ts.moved=true;
+    const r=ts.el.getBoundingClientRect();
+    ghost=ts.el.cloneNode(true);
+    ghost.className=ts.el.className+' ghost'; ghost.style.width=r.width+'px';
+    ghost.style.left=(t.clientX-r.width/2)+'px'; ghost.style.top=(t.clientY-r.height/2)+'px';
+    document.body.appendChild(ghost);
+  }
+  if(ts.moved && ghost){ e.preventDefault(); ghost.style.left=(t.clientX-ghost.offsetWidth/2)+'px'; ghost.style.top=(t.clientY-ghost.offsetHeight/2)+'px'; }
+}, {passive:false});
+document.addEventListener('touchend', e => {
+  if(!ts) return;
+  if(ts.moved && ghost){
+    ghost.remove(); ghost=null;
+    const t=e.changedTouches[0];
+    const zel=document.elementsFromPoint(t.clientX,t.clientY).find(x=>x.dataset&&x.dataset.zid);
+    if(zel) doPlace(zel.dataset.zid, ts.iid, ts.lbl, ts.cat, ts.from);
+    e.preventDefault();
+  }
+  ts=null;
+});
+
+// ── HELPERS ───────────────────────────────────────────────────────────
+function esc(s){return String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;')}
+function usedIds(){return new Set(Object.values(S.pl).map(p=>p.iid))}
+function shuffled(arr, seed){
+  const a=arr.slice(); let s=seed||42;
+  for(let i=a.length-1;i>0;i--){ s=(s*9301+49297)%233280; const j=Math.floor((s/233280)*(i+1)); [a[i],a[j]]=[a[j],a[i]]; }
+  return a;
+}
+function mkZone(zid, extra, placeholder){
+  const el=document.createElement('div');
+  const placed=S.pl[zid], fb=S.fb[zid], z=ZONES[zid];
+  let cls=['zone']; if(extra)cls.push(extra);
+  if(fb)cls.push('fb-'+fb);
+  else if(placed){
+    if(z.zcat==='vf'&&(placed.lbl==='VRAI'||placed.lbl==='FAUX'))cls.push(placed.lbl==='VRAI'?'f-vrai':'f-faux');
+    else cls.push('filled');
+  } else cls.push('empty');
+  el.className=cls.join(' ');
+  el.dataset.zid=zid;
+  el.textContent=placed?placed.lbl:(placeholder||'déposer ici');
+  el.addEventListener('click',()=>zoneClick(zid));
+  drp(el,zid);
+  if(placed&&!fb){drg(el,placed.iid,placed.lbl,placed.cat,zid);tch(el,placed.iid,placed.lbl,placed.cat,zid)}
+  return el;
+}
+function mkBlank(zid){
+  const el=document.createElement('span');
+  const placed=S.pl[zid], fb=S.fb[zid];
+  let cls=['blank'];
+  if(fb)cls.push('fb-'+fb); else if(placed)cls.push('filled');
+  el.className=cls.join(' ');
+  el.dataset.zid=zid;
+  el.textContent=placed?placed.lbl:'…';
+  el.addEventListener('click',()=>zoneClick(zid));
+  drp(el,zid);
+  if(placed&&!fb){drg(el,placed.iid,placed.lbl,placed.cat,zid);tch(el,placed.iid,placed.lbl,placed.cat,zid)}
+  return el;
+}
+function mkTile(iid,lbl,cat,cls){
+  const t=document.createElement('div');
+  t.className='tile '+cls+(S.sel&&S.sel.iid===iid&&!S.sel.from?' sel':'');
+  t.textContent=lbl;
+  t.addEventListener('click',()=>tileClick(iid,lbl,cat));
+  drg(t,iid,lbl,cat,null); tch(t,iid,lbl,cat,null);
+  return t;
+}
+function mkImgTile(im,cat){
+  const t=document.createElement('div');
+  t.className='imgtile'+(S.sel&&S.sel.iid===im.id&&!S.sel.from?' sel':'');
+  t.innerHTML='<img src="'+im.src+'" alt="" loading="lazy">';
+  t.addEventListener('click',()=>tileClick(im.id,im.id,cat));
+  drg(t,im.id,im.id,cat,null); tch(t,im.id,im.id,cat,null);
+  return t;
+}
+function mkImgZone(zid, im){
+  const el=document.createElement('div');
+  const placed=S.pl[zid], fb=S.fb[zid];
+  let cls=['imgzone']; if(fb)cls.push('fb-'+fb); else if(placed)cls.push('filled'); else cls.push('empty');
+  el.className=cls.join(' ');
+  el.dataset.zid=zid;
+  if(placed){ const src=(ALL_IMAGES.find(i=>i.id===placed.iid)||{}).src; el.innerHTML=src?'<img src="'+src+'" alt="">':''; }
+  else{ el.innerHTML='<span class="imgzone-ph">glissez l\'image ici</span>'; }
+  el.addEventListener('click',()=>zoneClick(zid));
+  drp(el,zid);
+  if(placed&&!fb){drg(el,placed.iid,placed.lbl,placed.cat,zid);tch(el,placed.iid,placed.lbl,placed.cat,zid)}
+  return el;
+}
+
+// ── CONSTRUCTION DU DOM ───────────────────────────────────────────────
+function buildStatic(){
+  const tabs=document.getElementById('tabs');
+  SECTIONS.forEach(sec=>{
+    const b=document.createElement('button');
+    b.className='tab'; b.id='tab-'+sec.id;
+    b.innerHTML='<span class="tno">'+sec.no+'</span>'+esc(sec.title)+'<span class="tchk">✓</span>';
+    b.addEventListener('click',()=>{curSec=sec.id;render();window.scrollTo({top:0,behavior:'smooth'})});
+    tabs.appendChild(b);
+  });
+  const wrap=document.getElementById('sections');
+  SECTIONS.forEach(sec=>{
+    const d=document.createElement('div');
+    d.className='sec'; d.id='sec-'+sec.id;
+    let h='';
+    h+='<div class="intro" style="border-color:'+sec.color+'33">'+sec.intro+'</div>';
+    if(sec.dialogue){
+      const dia=DIALOGUES[sec.dialogue];
+      h+='<div class="dial-sec" style="border-bottom-color:'+sec.color+'">';
+      h+='<div class="audio-pl"><div class="audio-lbl">Dialogue</div>';
+      h+='<button class="btn-lu" onclick="playDialogue(\''+sec.dialogue+'\',this)">🔊 Écouter</button>';
+      h+='<button class="btn-lu" onclick="markRead(this)">📖 J\'ai lu</button></div>';
+      h+='<div class="dial-txt"><div class="d-lbl">'+esc(dia.label)+'</div>';
+      dia.lines.forEach((l,i)=>{
+        const cls=(i%2===0)?'mb':'dr';
+        h+='<div class="dl"><span class="'+cls+'">'+esc(l[0])+' :</span> '+esc(l[1])+'</div>';
+      });
+      h+='</div></div>';
+    }
+    if(sec.id==='prep'){
+      h+='<div class="vocab-sec"><div style="display:flex;align-items:center;gap:10px;margin-bottom:12px;">';
+      h+='<div style="background:#7C3AED;color:#fff;border-radius:999px;padding:3px 14px;font-size:11px;font-weight:800;text-transform:uppercase;letter-spacing:.12em;">Vocabulaire</div>';
+      h+='<div style="font-size:15px;font-weight:700;color:#5B21B6;">Mots du module — <span style="font-weight:900;cursor:pointer;text-decoration:underline dotted;" onclick="fcOpen(0)">Cliquez pour les cartes mémoire 🃏</span></div></div>';
+      h+='<div class="vocab-grid">';
+      FC_CARDS.forEach(c=>{h+='<div class="vw" onclick="fcOpenWord(\''+c.word.replace(/'/g,"\\'")+'\')"><span class="dot"></span><span class="w">'+esc(c.word)+'</span></div>'});
+      h+='</div></div>';
+    }
+    h+='<div class="exs" id="exs-'+sec.id+'"></div>';
+    d.innerHTML=h;
+    wrap.appendChild(d);
+  });
+  // cartes d'exercices (sections à moteur)
+  EXOS.forEach(ex=>{
+    const host=document.getElementById('exs-'+ex.sec);
+    const card=document.createElement('div');
+    card.className='card';
+    let h='';
+    if(ex.savoir){
+      h+='<div class="savoir"><h3>'+ex.savoir.h+'</h3><table>';
+      ex.savoir.rows.forEach(r=>{h+='<tr><td>'+r[0]+'</td><td>'+r[1]+'</td></tr>'});
+      h+='</table></div>';
+    }
+    // ── Exercice à écrire (autocorrection ou correction IA) ──
+    if(ex.type==='write'){
+      h+='<div class="c-hdr"><span class="tag" style="background:'+ex.color+'">'+esc(ex.num)+'</span><span class="ctit" style="color:'+ex.color+'">'+esc(ex.tit)+'</span><span class="csub">'+esc(ex.sub)+'</span></div>';
+      const aiBadge = ex.items.some(it=>!it.accept) ? '<div style="font-size:12px;font-weight:800;color:#0D9488;margin-bottom:10px">🤖 Un assistant corrige ce que tu écris et te donne une rétroaction.</div>' : '';
+      h+=aiBadge+'<div class="wlist">';
+      ex.items.forEach((it,i)=>{
+        h+='<div class="witem"><div class="wq">'+(it.q||'')+'</div>';
+        h+='<div class="wrow"><input class="winput" id="wi_'+ex.id+'_'+i+'" placeholder="'+(it.ph||'Écris ta réponse…')+'" autocomplete="off">';
+        h+='<button class="btn btn-pri wbtn" onclick="checkWrite(\''+ex.id+'\','+i+')">Vérifier</button></div>';
+        h+='<div class="wfb" id="wf_'+ex.id+'_'+i+'"></div></div>';
+      });
+      h+='</div>';
+      card.innerHTML=h; host.appendChild(card); return;
+    }
+    h+='<div style="display:flex;gap:20px;align-items:flex-start;flex-wrap:wrap">';
+    h+='<div style="flex:1;min-width:300px">';
+    h+='<div class="c-hdr"><span class="tag" style="background:'+ex.color+'">'+esc(ex.num)+'</span><span class="ctit" style="color:'+ex.color+'">'+esc(ex.tit)+'</span><span class="csub">'+esc(ex.sub)+'</span></div>';
+    if(ex.type==='blanks') h+='<p class="blanks-p" id="mount-'+ex.id+'"></p>';
+    else h+='<div class="rows" id="mount-'+ex.id+'"></div>';
+    h+='</div>';
+    const vert=(ex.type==='match'||ex.type==='rows'||ex.type==='imgmatch')?' vert':'';
+    const bw=ex.type==='imgmatch'?'240px':((ex.type==='match'||ex.type==='rows')?'300px':'220px');
+    h+='<div class="bsec b1" style="flex:0 0 '+bw+'"><div class="blbl">Réponses</div><div class="btiles'+vert+'" id="bank-'+ex.id+'"></div></div>';
+    h+='</div>';
+    card.innerHTML=h;
+    host.appendChild(card);
+  });
+  injectCustom();
+}
+
+// ── SECTIONS PERSONNALISÉES (oral / écrit / autoéval) ─────────────────
+function injectCustom(){
+  // JE METS EN APPLICATION — jeu de rôle oral + écriture corrigée par l'IA
+  document.getElementById('exs-appli').innerHTML += `
+   <div class="card custom">
+     <div class="c-hdr"><span class="tag" style="background:#0D9488">Production orale</span><span class="ctit" style="color:#0D9488">Donne des directives</span></div>
+     <p class="lead">Tu es superviseur sur un chantier de construction. <b>Donne des directives à voix haute</b> sur le code vestimentaire à respecter (casque, bottes à cap d'acier, gants, dossard, etc.) en utilisant l'impératif. Enregistre-toi, obtiens une rétroaction, puis envoie ta prise si tu le veux.</p>
+     <div class="rec-zone"><button id="recBtn">🎤</button><div class="rec-lbl" id="recLbl">Touche pour t'enregistrer</div></div>
+     <div id="poPrev" class="hidden" style="display:flex;flex-direction:column;gap:12px">
+       <audio id="poAudio" controls style="width:100%"></audio>
+       <textarea id="poText" rows="2" placeholder="Transcription automatique (tu peux la corriger)…"></textarea>
+       <div style="display:flex;gap:10px;flex-wrap:wrap">
+         <button class="btn btn-ghost" onclick="resetRec()">↺ Recommencer</button>
+         <button class="btn btn-pri" id="poFbBtn" onclick="poGetFeedback()">💬 Obtenir une rétroaction</button>
+       </div>
+       <div class="fb" id="poFb"></div>
+       <div id="poSend" style="display:none;gap:10px;flex-wrap:wrap;align-items:center">
+         <button class="btn btn-send" id="poSendBtn" onclick="poSend()">📨 Envoyer à mon enseignant</button>
+       </div>
+     </div>
+     <div class="status" id="poStatus">Analyse en cours…</div>
+     <div class="err" id="poErr"></div>
+   </div>
+   <div class="card custom">
+     <div class="c-hdr"><span class="tag" style="background:#0E7490">Production écrite</span><span class="ctit" style="color:#0E7490">Explique une procédure</span></div>
+     <p class="lead">Un nouveau collègue te demande comment faire une demande de congé dans votre entreprise. <b>Explique-lui la procédure par écrit</b>, étape par étape. (4 à 6 phrases)</p>
+     <textarea id="peText" rows="6" placeholder="Bonjour,&#10;Pour faire une demande de congé, tu dois d'abord…"></textarea>
+     <div style="margin-top:12px"><button class="btn btn-pri" id="peBtn" onclick="peCheck()">✍️ Vérifier mon message</button></div>
+     <div class="fb" id="peFb"></div>
+     <div class="status" id="peStatus">Analyse en cours…</div>
+     <div class="err" id="peErr"></div>
+   </div>`;
+  const rb=document.getElementById('recBtn'); if(rb) rb.addEventListener('click',toggleRec);
+
+  // JE RETIENS DES MOTS — notes + cartes mémoire + autoévaluation
+  const SELF=[
+    "Je peux comprendre une demande de renseignements sur une procédure.",
+    "Je peux comprendre et donner des directives.",
+    "Je peux lire et vérifier des directives écrites.",
+    "Je connais le vocabulaire courant des milieux de travail.",
+    "Je peux utiliser l'impératif présent pour donner une consigne.",
+  ];
+  document.getElementById('exs-retiens').innerHTML = `
+   <div class="card custom">
+     <div class="c-hdr"><span class="tag" style="background:#166534">Je retiens des mots</span><span class="ctit" style="color:#166534">Mes mots utiles</span></div>
+     <p class="lead">Note ici les mots et expressions à retenir. Tu peux aussi <span style="font-weight:900;cursor:pointer;text-decoration:underline dotted;color:#166534" onclick="fcOpen(0)">réviser les cartes mémoire 🃏</span>.</p>
+     <div style="font-weight:800;color:#166534;font-size:13px;margin:6px 0 4px">Pour demander des renseignements</div>
+     <textarea rows="2" placeholder="Ex. : Comment faire pour… ? Quelle est la procédure pour… ?"></textarea>
+     <div style="font-weight:800;color:#166534;font-size:13px;margin:12px 0 4px">Pour expliquer des étapes</div>
+     <textarea rows="2" placeholder="Ex. : D'abord… Ensuite… Puis… Pour terminer…"></textarea>
+     <div style="font-weight:800;color:#166534;font-size:13px;margin:12px 0 4px">Pour donner des directives</div>
+     <textarea rows="2" placeholder="Ex. : Remplissez… N'oubliez pas de… Il faut…"></textarea>
+   </div>
+   <div class="card custom">
+     <div class="c-hdr"><span class="tag" style="background:#166534">Autoévaluation</span><span class="ctit" style="color:#166534">Qu'est-ce que je suis capable de faire ?</span></div>
+     <p class="lead">Pour chaque énoncé, choisis : pas encore 😟, un peu 🙂, ou oui 😃.</p>
+     ${SELF.map((s,i)=>`<div class="selfrow"><div class="self-txt">${s}</div><div class="self-opts">
+        <button onclick="rate(${i},this)">😟</button><button onclick="rate(${i},this)">🙂</button><button onclick="rate(${i},this)">😃</button>
+     </div></div>`).join('')}
+     <div style="margin-top:16px"><button class="btn btn-pri" onclick="finishEval()">Terminer le module 🎉</button></div>
+     <div id="evalDone" class="fb"></div>
+   </div>`;
+}
+function rate(i,btn){ [...btn.parentElement.children].forEach(b=>b.classList.remove('sel')); btn.classList.add('sel'); }
+function finishEval(){
+  const el=document.getElementById('evalDone');
+  el.innerHTML='<div class="fb-c">🎉 Bravo, tu as terminé le module « Quelle est la procédure ? » ! Tu peux revenir sur n\'importe quel onglet pour pratiquer encore.</div>';
+  el.classList.add('on');
+  lmsTrack('exercise_completed',{finished:true});
+}
+
+// ── ENREGISTREMENT (production orale) ─────────────────────────────────
+let mediaRecorder=null, audioChunks=[], audioBlob=null, audioUrl=null, recognition=null, isRec=false, poFeedback="";
+const SR = window.SpeechRecognition || window.webkitSpeechRecognition;
+async function toggleRec(){
+  if(isRec){ stopRec(); return; }
+  hideErr('poErr');
+  let stream;
+  try{ stream=await navigator.mediaDevices.getUserMedia({audio:true}); }
+  catch(e){ showErr('poErr',"Impossible d'accéder au micro. Vérifie les autorisations."); return; }
+  audioChunks=[];
+  const mime = MediaRecorder.isTypeSupported('audio/webm')?'audio/webm':(MediaRecorder.isTypeSupported('audio/mp4')?'audio/mp4':'');
+  mediaRecorder = mime?new MediaRecorder(stream,{mimeType:mime}):new MediaRecorder(stream);
+  mediaRecorder.ondataavailable=e=>{ if(e.data.size>0)audioChunks.push(e.data); };
+  mediaRecorder.onstop=()=>{
+    stream.getTracks().forEach(t=>t.stop());
+    audioBlob=new Blob(audioChunks,{type:mediaRecorder.mimeType||'audio/webm'});
+    if(audioUrl)URL.revokeObjectURL(audioUrl);
+    audioUrl=URL.createObjectURL(audioBlob);
+    const a=document.getElementById('poAudio'); if(a)a.src=audioUrl;
+    document.getElementById('poPrev').classList.remove('hidden');
+  };
+  mediaRecorder.start();
+  if(SR){
+    recognition=new SR(); recognition.lang='fr-CA'; recognition.continuous=true; recognition.interimResults=false;
+    let tr='';
+    recognition.onresult=e=>{ for(let i=e.resultIndex;i<e.results.length;i++){ if(e.results[i].isFinal)tr+=e.results[i][0].transcript+' '; } const b=document.getElementById('poText'); if(b)b.value=tr.trim(); };
+    try{ recognition.start(); }catch(e){}
+  }
+  isRec=true;
+  const btn=document.getElementById('recBtn'); btn.classList.add('recording'); btn.textContent='⏹';
+  document.getElementById('recLbl').textContent="Enregistrement… touche pour arrêter";
+}
+function stopRec(){
+  isRec=false;
+  if(mediaRecorder&&mediaRecorder.state!=='inactive')mediaRecorder.stop();
+  if(recognition){ try{recognition.stop();}catch(e){} }
+  const btn=document.getElementById('recBtn'); if(btn){ btn.classList.remove('recording'); btn.textContent='🎤'; }
+  const l=document.getElementById('recLbl'); if(l)l.textContent="Touche pour réenregistrer";
+}
+function resetRec(){
+  audioBlob=null; if(audioUrl){URL.revokeObjectURL(audioUrl);audioUrl=null;}
+  document.getElementById('poPrev').classList.add('hidden');
+  document.getElementById('poText').value='';
+  const fb=document.getElementById('poFb'); fb.classList.remove('on'); fb.innerHTML='';
+  document.getElementById('poSend').style.display='none';
+  hideErr('poErr');
+}
+async function poGetFeedback(){
+  const text=document.getElementById('poText').value.trim();
+  if(!text){ showErr('poErr',"Je n'ai pas capté ta réponse. Réenregistre-toi ou écris ta phrase."); return; }
+  hideErr('poErr');
+  document.getElementById('poStatus').classList.add('on');
+  document.getElementById('poFbBtn').disabled=true;
+  try{
+    const res=await fetch('/api/correct-french',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({code:studentCode,text,question:"L'élève, superviseur sur un chantier, donne des directives à l'impératif sur le code vestimentaire à respecter."})});
+    const data=await res.json();
+    document.getElementById('poStatus').classList.remove('on');
+    document.getElementById('poFbBtn').disabled=false;
+    if(!res.ok){ showErr('poErr',data.error||'Une erreur est survenue.'); return; }
+    renderCorr('poFb',data,text); poFeedback=corrSummary(data,text);
+    document.getElementById('poSend').style.display='flex';
+  }catch(e){
+    document.getElementById('poStatus').classList.remove('on');
+    document.getElementById('poFbBtn').disabled=false;
+    showErr('poErr','Impossible de contacter le serveur.');
+  }
+}
+async function poSend(){
+  if(!audioBlob){ showErr('poErr',"Enregistre-toi d'abord."); return; }
+  const btn=document.getElementById('poSendBtn'); btn.disabled=true; btn.textContent='Envoi…';
+  const ext=(audioBlob.type||'').includes('mp4')?'m4a':'webm';
+  const fd=new FormData();
+  fd.append('code',studentCode); fd.append('theme','Monde du travail'); fd.append('taskId','module-procedure-po');
+  fd.append('taskLabel','Production orale — directives'); fd.append('question','Donner des directives sur le code vestimentaire d\'un chantier');
+  fd.append('transcription',document.getElementById('poText').value.trim()); fd.append('feedback',poFeedback);
+  fd.append('audio',audioBlob,'enregistrement.'+ext);
+  try{
+    const res=await fetch('/api/oral/submit',{method:'POST',body:fd});
+    const data=await res.json();
+    if(!res.ok){ showErr('poErr',data.error||"L'envoi a échoué."); btn.disabled=false; btn.textContent='📨 Envoyer à mon enseignant'; return; }
+    document.getElementById('poSend').innerHTML='<span class="sent">✅ Envoyé à ton enseignant !</span>';
+  }catch(e){ showErr('poErr',"Impossible d'envoyer."); btn.disabled=false; btn.textContent='📨 Envoyer à mon enseignant'; }
+}
+
+// ── CORRECTION ÉCRITE ─────────────────────────────────────────────────
+async function peCheck(){
+  const text=document.getElementById('peText').value.trim();
+  if(!text){ showErr('peErr',"Écris ton message d'abord."); return; }
+  hideErr('peErr');
+  document.getElementById('peStatus').classList.add('on');
+  document.getElementById('peBtn').disabled=true;
+  try{
+    const res=await fetch('/api/correct-french',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({code:studentCode,text,question:"L'élève explique par écrit à un nouveau collègue la procédure à suivre pour faire une demande de congé."})});
+    const data=await res.json();
+    document.getElementById('peStatus').classList.remove('on');
+    document.getElementById('peBtn').disabled=false;
+    if(!res.ok){ showErr('peErr',data.error||'Une erreur est survenue.'); return; }
+    renderCorr('peFb',data,text);
+  }catch(e){
+    document.getElementById('peStatus').classList.remove('on');
+    document.getElementById('peBtn').disabled=false;
+    showErr('peErr','Impossible de contacter le serveur.');
+  }
+}
+function renderCorr(elId,data,orig){
+  const fb=document.getElementById(elId);
+  const corr=data.corrige||data.corrected||'';
+  const errs=data.erreurs||data.errors||[];
+  let html='<div class="fb-t">Rétroaction privée</div>';
+  if(data.memePhrase){ html+='<div class="fb-c">✅ Ton texte est déjà correct. Bravo !</div>'; }
+  else{
+    if(corr) html+='<div class="fb-c">✍️ '+esc(corr)+'</div>';
+    errs.forEach(e=>{ html+='<div class="fb-e">'+esc(e.explication||e.explanation||e)+'</div>'; });
+  }
+  fb.innerHTML=html; fb.classList.add('on');
+}
+function corrSummary(data,orig){
+  const corr=data.corrige||data.corrected||'';
+  const errs=data.erreurs||data.errors||[];
+  if(data.memePhrase) return "Phrase correcte : "+(corr||orig);
+  return "Correction : "+corr+(errs.length?' | '+errs.map(e=>e.explication||e.explanation||e).join(' '):'');
+}
+function showErr(id,msg){ const e=document.getElementById(id); if(e){e.textContent=msg; e.classList.add('on');} }
+function hideErr(id){ const e=document.getElementById(id); if(e)e.classList.remove('on'); }
+
+// ── EXERCICES À ÉCRIRE ────────────────────────────────────────────────
+function normWrite(s){
+  return (s||'').toLowerCase().trim().normalize('NFD').replace(/[̀-ͯ]/g,'')
+    .replace(/\s+/g,' ').replace(/[.!?;:]+$/,'').replace(/^["«»']+|["«»']+$/g,'').trim();
+}
+async function checkWrite(exId, i){
+  const ex=EXOS.find(e=>e.id===exId); if(!ex) return;
+  const it=ex.items[i];
+  const inp=document.getElementById('wi_'+exId+'_'+i);
+  const fb=document.getElementById('wf_'+exId+'_'+i);
+  const val=inp.value.trim();
+  const zid='w_'+exId+'_'+i;
+  if(!val){ fb.className='wfb no'; fb.textContent="✏️ Écris ta réponse d'abord."; return; }
+
+  // Mode autocorrection (réponse connue)
+  if(it.accept){
+    const ok=it.accept.map(normWrite).includes(normWrite(val));
+    fb.className='wfb '+(ok?'ok':'no');
+    fb.innerHTML= ok ? '✅ Bravo, c\'est exact !'
+      : '❌ Presque ! La bonne réponse est : <b>'+esc(it.accept[0])+'</b>';
+    if(ok){ inp.classList.add('good'); inp.disabled=true; trackPlacement(zid,true); }
+    else { trackPlacement(zid,false); }
+    return;
+  }
+
+  // Mode IA (réponse ouverte)
+  fb.className='wfb wait'; fb.textContent='⏳ L\'assistant corrige ta réponse…';
+  const btn=inp.parentElement.querySelector('.wbtn'); if(btn) btn.disabled=true;
+  try{
+    const res=await fetch('/api/check-written',{method:'POST',headers:{'Content-Type':'application/json'},
+      body:JSON.stringify({code:studentCode, consigne:(ex.sub||'')+' '+(it.q||''), reponse:val, attendu:it.hint||''})});
+    const d=await res.json();
+    if(btn) btn.disabled=false;
+    if(!res.ok){ fb.className='wfb no'; fb.textContent=d.error||'Service momentanément indisponible.'; return; }
+    fb.className='wfb '+(d.correct?'ok':'no');
+    let html=(d.correct?'✅ ':'💡 ')+esc(d.feedback||'');
+    if(!d.correct && d.correction){ html+='<br><b>Suggestion :</b> '+esc(d.correction); }
+    fb.innerHTML=html;
+    if(d.correct){ inp.classList.add('good'); trackPlacement(zid,true); }
+  }catch(e){
+    if(btn) btn.disabled=false;
+    fb.className='wfb no'; fb.textContent='Impossible de contacter le serveur. Réessaie.';
+  }
+}
+
+// ── RENDER ────────────────────────────────────────────────────────────
+function render(){
+  SECTIONS.forEach(sec=>{
+    document.getElementById('tab-'+sec.id).classList.toggle('on', curSec===sec.id);
+    document.getElementById('sec-'+sec.id).classList.toggle('on', curSec===sec.id);
+    const zids=Object.keys(ZONES).filter(z=>{const ex=EXOS.find(e=>e.id===ZONES[z].exo);return ex.sec===sec.id});
+    const done=zids.length>0&&zids.every(z=>TR.correct[z]);
+    document.getElementById('tab-'+sec.id).classList.toggle('done',done);
+  });
+  const ban=document.getElementById('sel-banner');
+  if(S.sel){ban.classList.add('on');document.getElementById('sel-lbl').textContent=S.sel.lbl}
+  else ban.classList.remove('on');
+
+  const used=usedIds();
+  EXOS.forEach(ex=>{
+    const mount=document.getElementById('mount-'+ex.id);
+    const bank=document.getElementById('bank-'+ex.id);
+    if(!mount||!bank) return;
+    mount.innerHTML=''; bank.innerHTML='';
+
+    if(ex.type==='vf'){
+      ex.rows.forEach(r=>{
+        const row=document.createElement('div');row.className='rrow';
+        const txt=document.createElement('div');txt.className='stxt';txt.innerHTML=r.txt;
+        row.appendChild(txt);row.appendChild(mkZone(r.id,'zvf'));
+        mount.appendChild(row);
+      });
+      ex.tiles.forEach((lbl,i)=>{
+        bank.appendChild(mkTile(ex.id+'_t'+i,lbl,ex.id,lbl==='VRAI'||lbl==='MUETTE'?'tv':'tf'));
+      });
+    }
+    if(ex.type==='match'){
+      ex.rows.forEach(r=>{
+        const row=document.createElement('div');row.className='rrow2';
+        const qc=document.createElement('div');qc.className='qcard';
+        qc.innerHTML='<div class="qlbl">Question</div><div class="qtxt">'+esc(r.q)+'</div>';
+        row.appendChild(qc);row.appendChild(mkZone(r.id,null,'glissez la réponse ici'));
+        mount.appendChild(row);
+      });
+      shuffled(ex.rows,7).forEach(r=>{ if(used.has(r.aid))return; bank.appendChild(mkTile(r.aid,r.a,ex.id,'ta')); });
+      if(!bank.children.length)bank.innerHTML='<div class="bempty">Toutes les réponses sont placées !</div>';
+    }
+    if(ex.type==='imgmatch'){
+      ex.rows.forEach(r=>{
+        const row=document.createElement('div');row.className='rrow2';
+        const qc=document.createElement('div');qc.className='qcard';
+        qc.innerHTML='<div class="qlbl">Énoncé</div><div class="qtxt">'+esc(r.txt)+'</div>';
+        row.appendChild(qc);
+        const z=mkImgZone(r.id, ex.images.find(im=>im.id===r.aid));
+        row.appendChild(z);
+        mount.appendChild(row);
+      });
+      shuffled(ex.images,11).forEach(im=>{ if(used.has(im.id))return; bank.appendChild(mkImgTile(im,ex.id)); });
+      if(!bank.children.length)bank.innerHTML='<div class="bempty">Toutes les images sont placées !</div>';
+    }
+    if(ex.type==='blanks'){
+      ex.segs.forEach(sg=>{ if(sg.k==='t'){mount.appendChild(document.createTextNode(sg.t))} else{mount.appendChild(mkBlank(sg.id))} });
+      shuffled(ex.words,23).forEach(w=>{ if(used.has(w.id))return; bank.appendChild(mkTile(w.id,w.l,ex.id,'tn')); });
+      if(!bank.children.length)bank.innerHTML='<div class="bempty">Tous les mots sont placés !</div>';
+    }
+    if(ex.type==='rows'){
+      ex.rows.forEach(r=>{
+        const row=document.createElement('div');row.className='rrow';
+        const lb=document.createElement('div');lb.className='timelbl';lb.textContent=r.lbl;
+        row.appendChild(lb);
+        const z=mkZone(r.id,null,'glissez la phrase ici');z.style.flex='1';
+        row.appendChild(z);
+        mount.appendChild(row);
+      });
+      shuffled(ex.bank,13).forEach(b=>{ if(used.has(b.id))return; bank.appendChild(mkTile(b.id,b.l,ex.id,'ta')); });
+      if(!bank.children.length)bank.innerHTML='<div class="bempty">Toutes les phrases sont placées !</div>';
+    }
+  });
+  updateChip();
+}
+function updateChip(){
+  const n=Object.keys(TR.correct).length;
+  document.getElementById('prog-chip').textContent='⭐ '+n+' / '+TOTAL_ZONES;
+}
+
+document.getElementById('btn-reset').addEventListener('click',()=>{ S.pl={};S.sel=null;S.fb={};render(); });
+
+// ── FLASHCARDS ────────────────────────────────────────────────────────
+let fcIdx=0;
+function fcShow(){
+  const c=FC_CARDS[fcIdx];
+  document.getElementById('fc-counter').textContent='Carte '+(fcIdx+1)+' / '+FC_CARDS.length;
+  document.getElementById('fc-word').textContent=c.word;
+  document.getElementById('fc-def').textContent=c.def;
+  document.getElementById('fc-ex').innerHTML=c.ex;
+  document.getElementById('fc-def').classList.add('hidden');
+  document.getElementById('fc-ex').classList.add('hidden');
+  document.getElementById('fc-reveal-btn').classList.remove('hidden');
+}
+function fcOpen(i){fcIdx=i||0;fcShow();document.getElementById('fc-overlay').classList.add('on')}
+function fcOpenWord(w){const i=FC_CARDS.findIndex(c=>c.word===w);fcOpen(i>=0?i:0)}
+document.getElementById('fc-reveal-btn').addEventListener('click',()=>{
+  document.getElementById('fc-def').classList.remove('hidden');
+  document.getElementById('fc-ex').classList.remove('hidden');
+  document.getElementById('fc-reveal-btn').classList.add('hidden');
+});
+document.getElementById('fc-prev').addEventListener('click',()=>{fcIdx=(fcIdx-1+FC_CARDS.length)%FC_CARDS.length;fcShow()});
+document.getElementById('fc-next').addEventListener('click',()=>{fcIdx=(fcIdx+1)%FC_CARDS.length;fcShow()});
+document.getElementById('fc-close').addEventListener('click',()=>document.getElementById('fc-overlay').classList.remove('on'));
+document.getElementById('fc-overlay').addEventListener('click',e=>{if(e.target.id==='fc-overlay')document.getElementById('fc-overlay').classList.remove('on')});
+
+// ── GO ────────────────────────────────────────────────────────────────
+buildStatic();
+render();
+lmsTrack('file_opened');
+</script>
+</body></html>
