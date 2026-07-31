@@ -1,0 +1,1205 @@
+<!DOCTYPE html>
+<html lang="fr"><head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+<title>Pouvez-vous régler le problème ? — Module Niveau 4</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Nunito:wght@600;700;800;900&display=swap" rel="stylesheet">
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+html,body{height:100%;background:#EDF6F4;font-family:'Nunito','Arial Rounded MT Bold',sans-serif;color:#123B32}
+body{display:flex;flex-direction:column;min-height:100vh}
+::-webkit-scrollbar{width:6px;height:6px}::-webkit-scrollbar-track{background:rgba(0,0,0,.04);border-radius:3px}::-webkit-scrollbar-thumb{background:rgba(0,0,0,.15);border-radius:3px}
+
+#hdr{background:#B45309;color:#fff;padding:14px 32px;display:flex;align-items:center;justify-content:space-between;position:sticky;top:0;z-index:200;box-shadow:0 3px 16px rgba(15,118,110,.3);flex-shrink:0}
+.hdr-l{display:flex;align-items:center;gap:14px}
+.hdr-ic{width:44px;height:44px;background:rgba(255,255,255,.18);border-radius:50%;display:flex;align-items:center;justify-content:center;flex-shrink:0;font-size:22px}
+.hdr-eye{font-size:11px;font-weight:800;text-transform:uppercase;letter-spacing:.2em;opacity:.7;line-height:1}
+.hdr-h1{font-size:27px;font-weight:900;line-height:1.15}
+.hdr-r{display:flex;align-items:center;gap:14px}
+#prog-chip{background:rgba(255,255,255,.15);border:2px solid rgba(255,255,255,.45);border-radius:999px;padding:8px 18px;font-size:16px;font-weight:900;white-space:nowrap}
+#btn-reset{background:rgba(255,255,255,.15);color:#fff;border:2px solid rgba(255,255,255,.45);border-radius:10px;padding:10px 18px;font-family:'Nunito',sans-serif;font-size:15px;font-weight:800;cursor:pointer;white-space:nowrap;transition:background .15s}
+#btn-reset:hover{background:rgba(255,255,255,.28)}
+
+#tabs{background:#fff;display:flex;gap:6px;padding:10px 32px;position:sticky;top:76px;z-index:190;box-shadow:0 2px 12px rgba(0,0,0,.07);flex-wrap:wrap}
+.tab{border:2.5px solid transparent;border-radius:999px;padding:9px 18px;font-family:'Nunito',sans-serif;font-size:14.5px;font-weight:800;cursor:pointer;background:#EDF6F4;color:#5E8A82;transition:all .15s;display:flex;align-items:center;gap:8px}
+.tab .tno{width:24px;height:24px;border-radius:50%;background:#B7DED7;color:#fff;display:flex;align-items:center;justify-content:center;font-size:13px;font-weight:900;flex-shrink:0}
+.tab.on{background:#B45309;color:#fff}
+.tab.on .tno{background:rgba(255,255,255,.28)}
+.tab .tchk{display:none;color:#4ADE80;font-size:15px}
+.tab.done .tchk{display:inline}
+
+#sel-banner{background:#FEF3C7;border-bottom:3px solid #F59E0B;padding:10px 32px;display:none;align-items:center;gap:10px;font-size:19px;font-weight:800;color:#92400E;flex-shrink:0;position:sticky;top:132px;z-index:180}
+#sel-banner.on{display:flex}
+
+.sec{display:none;flex-direction:column}
+.sec.on{display:flex}
+
+.dial-sec{background:#123B32;color:#E8F5F2;padding:16px 32px;display:flex;gap:24px;border-bottom:4px solid #B45309;flex-shrink:0;flex-wrap:wrap}
+.audio-pl{flex:0 0 160px;display:flex;flex-direction:column;align-items:center;justify-content:flex-start;padding-top:6px;gap:10px}
+.audio-lbl{font-size:11px;font-weight:800;text-transform:uppercase;letter-spacing:.15em;opacity:.6;text-align:center}
+.btn-lu{background:rgba(255,255,255,.12);color:#E8F5F2;border:2px solid rgba(255,255,255,.35);border-radius:10px;padding:10px 14px;font-family:'Nunito',sans-serif;font-size:14px;font-weight:800;cursor:pointer;transition:all .15s;text-align:center;line-height:1.3;width:100%}
+.btn-lu:hover{background:rgba(255,255,255,.25)}
+.btn-lu.done{background:#166534;border-color:#4ADE80;color:#DCFCE7}
+.dial-txt{flex:1;min-width:280px;display:flex;flex-direction:column;gap:7px;font-size:19px;font-weight:600;line-height:1.7;padding-right:8px}
+.d-lbl{font-size:14px;font-weight:800;text-transform:uppercase;letter-spacing:.15em;color:#7FD4C9;margin-bottom:6px;opacity:.85}
+.dl{line-height:1.7}.mb{color:#FCA5A5;font-weight:800}.dr{color:#7FD4C9;font-weight:800}
+
+.intro{background:#DCEFEB;padding:14px 32px;font-size:17px;font-weight:700;color:#164E63;line-height:1.5;border-bottom:2px solid #B7DED7}
+
+.exs{flex:1;padding:22px 32px 48px;display:flex;flex-direction:column;gap:20px}
+
+.card{background:#fff;border-radius:18px;padding:22px 26px;box-shadow:0 4px 20px rgba(15,118,110,.08)}
+.c-hdr{display:flex;align-items:center;gap:10px;margin-bottom:14px;flex-wrap:wrap}
+.tag{color:#fff;border-radius:999px;padding:5px 16px;font-size:13px;font-weight:800;text-transform:uppercase;letter-spacing:.1em;white-space:nowrap}
+.ctit{font-size:21px;font-weight:900}
+.csub{font-size:15.5px;color:#5E8A82;font-weight:600}
+
+.savoir{background:#F1FBF9;border-left:5px solid #B45309;border-radius:0 14px 14px 0;padding:16px 22px;margin-bottom:4px}
+.savoir h3{font-size:15.5px;font-weight:900;color:#164E63;text-transform:uppercase;letter-spacing:.08em;margin-bottom:8px}
+.savoir table{border-collapse:collapse;width:100%}
+.savoir td{padding:6px 12px;font-size:16.5px;font-weight:600;line-height:1.5;border-bottom:1px dashed #B7DED7;vertical-align:top}
+.savoir td:first-child{font-weight:900;color:#164E63;white-space:nowrap}
+.savoir em{font-style:italic;color:#0D9488}
+
+.rows{display:flex;flex-direction:column;gap:8px}
+.rrow{display:flex;align-items:center;gap:10px}
+.stxt{flex:1;background:#F1F9F7;border-radius:10px;padding:14px 18px;font-size:20px;font-weight:700;color:#123B32;line-height:1.4}
+.rrow2{display:grid;grid-template-columns:1fr 1fr;gap:8px;align-items:stretch}
+.qcard{background:#F0FAF7;border-left:4px solid #B45309;border-radius:0 10px 10px 0;padding:12px 16px;display:flex;flex-direction:column;justify-content:center}
+.qlbl{font-size:13px;font-weight:800;color:#B45309;text-transform:uppercase;letter-spacing:.1em;margin-bottom:4px}
+.qtxt{font-size:19px;font-weight:700;color:#123B32;line-height:1.4}
+.timelbl{flex:0 0 90px;background:#FEF3C7;border-radius:10px;padding:12px 8px;font-size:15px;font-weight:900;color:#92400E;text-align:center}
+.blanks-p{font-size:22px;line-height:2.9;font-weight:600;color:#123B32}
+
+.zone{display:flex;align-items:center;justify-content:center;min-height:54px;border-radius:10px;font-weight:800;font-family:'Nunito',sans-serif;cursor:pointer;transition:background .18s,border-color .18s,color .18s,transform .12s;user-select:none;text-align:center;padding:10px 14px;border:2.5px solid;line-height:1.35}
+.zone.empty{background:#F0F9FF;border-color:#93C5D6;border-style:dashed;color:#94A3B8;font-size:17px}
+.zone.dov{background:#E0F2FE!important;border-color:#38BDF8!important;border-style:solid!important;transform:scale(1.02)}
+.zvf{min-width:150px;font-size:19px}
+.f-vrai{background:#DCFCE7;border-color:#4ADE80;border-style:solid;color:#166534}
+.f-faux{background:#FEE2E2;border-color:#FCA5A5;border-style:solid;color:#991B1B}
+.zone.filled{background:#DBEAFE;border-color:#60A5FA;border-style:solid;color:#1E3A8A;font-size:17px}
+.fb-ok{background:#D1FAE5!important;border-color:#34D399!important;border-style:solid!important;color:#065F46!important}
+.fb-no{background:#FEE2E2!important;border-color:#F87171!important;border-style:solid!important;color:#991B1B!important;animation:shk .5s ease}
+@keyframes shk{0%,100%{transform:translateX(0)}20%{transform:translateX(-6px)}60%{transform:translateX(6px)}80%{transform:translateX(-3px)}}
+
+.blank{display:inline-block;min-width:130px;padding:4px 14px;margin:0 3px;border-radius:8px;font-weight:800;vertical-align:middle;cursor:pointer;transition:background .18s,border-color .18s,color .18s;user-select:none;border:2.5px dashed #93C5D6;background:#F0F9FF;color:#94A3B8;font-size:20px;text-align:center}
+.blank.filled{border-style:solid;border-color:#5EEAD4;background:#CCFBF1;color:#164E63}
+.blank.fb-ok{border-style:solid;border-color:#34D399;background:#D1FAE5;color:#065F46}
+.blank.fb-no{border-style:solid;border-color:#F87171;background:#FEE2E2;color:#991B1B;animation:shk .5s ease}
+.blank.dov{border-style:solid;border-color:#38BDF8;background:#E0F2FE}
+
+.bsec{border-radius:12px;padding:14px 12px;flex-shrink:0}
+.bsec.b1{background:#EDF6F4;border:1.5px solid #B7DED7}
+.blbl{font-size:12px;font-weight:800;text-transform:uppercase;letter-spacing:.14em;margin-bottom:10px;color:#B45309}
+.btiles{display:flex;flex-wrap:wrap;gap:8px;justify-content:center}
+.btiles.vert{flex-direction:column;flex-wrap:nowrap}
+
+.tile{border-radius:10px;font-weight:800;font-family:'Nunito',sans-serif;cursor:grab;transition:all .15s;user-select:none;border:2.5px solid;box-shadow:0 2px 7px rgba(0,0,0,.08);padding:10px 14px;display:flex;align-items:center;justify-content:center;text-align:center;line-height:1.35}
+.tile:active{cursor:grabbing;transform:scale(1.04);box-shadow:0 5px 14px rgba(0,0,0,.15)}
+.tile.sel{background:#FEF9C3!important;border-color:#FBBF24!important;color:#92400E!important;box-shadow:0 0 0 4px rgba(245,158,11,.22),0 2px 7px rgba(0,0,0,.08)!important;transform:translateY(-1px)}
+.tv{background:#DCFCE7;border-color:#4ADE80;color:#166534;font-size:19px;padding:13px 22px}
+.tf{background:#FEE2E2;border-color:#FCA5A5;color:#991B1B;font-size:19px;padding:13px 22px}
+.tn{background:#F0FDFA;border-color:#5EEAD4;color:#164E63;font-size:16px}
+.ta{background:#FFF7ED;border-color:#FDBA74;color:#164E63;font-size:15px}
+.bempty{font-size:13px;color:#94A3B8;font-weight:600;text-align:center;padding:8px 0;font-style:italic}
+
+.ghost{position:fixed;z-index:9999;pointer-events:none;opacity:.88;transform:scale(1.06) rotate(1.5deg);box-shadow:0 8px 24px rgba(0,0,0,.25);border-radius:10px}
+
+/* Association image */
+.imgtile{width:100px;height:100px;border-radius:10px;overflow:hidden;cursor:grab;border:2.5px solid #5EEAD4;box-shadow:0 2px 7px rgba(0,0,0,.08);transition:all .15s;flex:none}
+.imgtile img{width:100%;height:100%;object-fit:cover;display:block;pointer-events:none}
+.imgtile:active{cursor:grabbing;transform:scale(1.04)}
+.imgtile.sel{border-color:#FBBF24;box-shadow:0 0 0 4px rgba(245,158,11,.22)}
+.imgzone{width:100%;min-height:110px;border-radius:10px;border:2.5px dashed #93C5D6;background:#F0F9FF;display:flex;align-items:center;justify-content:center;cursor:pointer;overflow:hidden;transition:all .15s}
+.imgzone img{width:100%;height:100%;object-fit:cover;display:block;pointer-events:none}
+.imgzone-ph{font-size:13px;color:#94A3B8;padding:10px}
+.imgzone.dov{border-color:#38BDF8;background:#E0F2FE}
+.imgzone.filled{border-style:solid;border-color:#5EEAD4}
+.imgzone.fb-ok{border-style:solid;border-color:#34D399}
+.imgzone.fb-no{border-style:solid;border-color:#F87171;animation:shk .5s ease}
+
+#fc-overlay{display:none;position:fixed;inset:0;z-index:9000;background:rgba(15,25,35,.6);backdrop-filter:blur(5px);align-items:center;justify-content:center}
+#fc-overlay.on{display:flex}
+#fc-box{background:#B45309;border-radius:24px;padding:44px 56px;max-width:760px;width:92%;box-shadow:0 24px 64px rgba(0,0,0,.4);display:flex;flex-direction:column;align-items:center;gap:20px;animation:fcPop .3s cubic-bezier(.34,1.4,.64,1)}
+@keyframes fcPop{from{transform:scale(.82);opacity:0}to{transform:scale(1);opacity:1}}
+#fc-counter{font-size:12px;font-weight:900;text-transform:uppercase;letter-spacing:.22em;color:rgba(255,255,255,.5)}
+#fc-word{font-size:36px;font-weight:900;color:#fff;text-align:center;line-height:1.2;border-bottom:2px solid rgba(255,255,255,.18);padding-bottom:18px;width:100%}
+#fc-def{font-size:21px;font-weight:700;color:#fff;line-height:1.6;text-align:center}
+#fc-ex{font-size:18px;font-weight:600;color:rgba(255,255,255,.78);line-height:1.6;text-align:center;font-style:italic}
+#fc-ex strong{font-weight:900;font-style:normal;color:#fff}
+#fc-def.hidden,#fc-ex.hidden{display:none}
+#fc-reveal-btn{background:rgba(255,255,255,.18);border:1px solid rgba(255,255,255,.4);color:#fff;border-radius:8px;padding:8px 20px;font-family:'Nunito',sans-serif;font-size:14px;font-weight:800;cursor:pointer}
+#fc-reveal-btn:hover{background:rgba(255,255,255,.38)}
+#fc-reveal-btn.hidden{display:none}
+#fc-btns{display:flex;gap:14px;margin-top:6px;flex-wrap:wrap;justify-content:center}
+.fc-btn{background:rgba(255,255,255,.15);border:2px solid rgba(255,255,255,.38);color:#fff;border-radius:10px;padding:10px 22px;font-family:'Nunito',sans-serif;font-size:15px;font-weight:800;cursor:pointer}
+.fc-btn:hover{background:rgba(255,255,255,.28)}
+
+.vocab-sec{background:#EDF6F4;border-bottom:3px solid rgba(15,118,110,.15);padding:14px 32px 18px}
+.vocab-grid{display:grid;grid-template-columns:1fr 1fr 1fr;gap:5px 20px}
+.vw{display:flex;align-items:baseline;gap:8px;padding:7px 10px;border-radius:8px;background:rgba(255,255,255,.6);cursor:pointer}
+.vw span.dot{display:inline-block;width:8px;height:8px;border-radius:50%;background:#B45309;flex-shrink:0}
+.vw span.w{font-size:17px;font-weight:700;color:#123B32}
+
+/* Sections personnalisées (oral / écrit / autoéval) */
+.custom{max-width:660px}
+.lead{font-size:16px;font-weight:700;color:#3B6156;line-height:1.6;margin-bottom:14px}
+.rec-zone{display:flex;flex-direction:column;align-items:center;gap:10px;margin:8px 0}
+#recBtn{width:78px;height:78px;border-radius:50%;border:none;background:#B45309;color:#fff;font-size:30px;cursor:pointer;box-shadow:0 4px 16px rgba(15,118,110,.32)}
+#recBtn.recording{background:#E23D2E;animation:pulse 1.2s infinite}
+@keyframes pulse{0%{box-shadow:0 0 0 0 rgba(226,61,46,.45)}70%{box-shadow:0 0 0 16px rgba(226,61,46,0)}100%{box-shadow:0 0 0 0 rgba(226,61,46,0)}}
+.rec-lbl{font-size:13.5px;font-weight:800;color:#5E8A82}
+textarea,input.txt{width:100%;border:2.5px solid #B7DED7;border-radius:12px;padding:11px 14px;font-family:'Nunito',sans-serif;font-size:15px;font-weight:700;color:#123B32;background:#F7FCFB;resize:vertical}
+textarea:focus{outline:none;border-color:#B45309}
+.btn{font-family:'Nunito',sans-serif;font-size:14.5px;font-weight:800;border-radius:10px;padding:11px 18px;cursor:pointer;border:2.5px solid transparent}
+.btn-pri{background:#B45309;color:#fff}.btn-pri:hover{background:#164E63}.btn-pri:disabled{opacity:.5;cursor:not-allowed}
+.btn-ghost{background:#EDF6F4;color:#B45309;border-color:#B7DED7}.btn-ghost:hover{background:#DCEFEB}
+.btn-send{background:#12556B;color:#fff}.btn-send:disabled{opacity:.5}
+.fb{background:#F0FAF7;border:2px solid #B7DED7;border-radius:12px;padding:14px 16px;display:none;flex-direction:column;gap:8px;margin-top:12px}
+.fb.on{display:flex}
+.fb-t{font-size:11.5px;font-weight:900;text-transform:uppercase;letter-spacing:.06em;color:#164E63}
+.fb-c{font-size:15px;font-weight:800;color:#164E63;line-height:1.5}
+.fb-e{font-size:12.5px;font-weight:700;color:#B45309;line-height:1.5;padding-left:14px;position:relative}
+.fb-e::before{content:"•";position:absolute;left:2px}
+.status{font-size:13.5px;font-weight:800;color:#5E8A82;text-align:center;display:none;margin-top:8px}
+.status.on{display:block}
+.err{font-size:13px;font-weight:800;color:#B91C1C;background:#FEF2F2;border:2px solid #FCA5A5;border-radius:10px;padding:10px 14px;display:none;margin-top:8px}
+.err.on{display:block}
+.sent{font-size:13px;font-weight:800;color:#12556B}
+.selfrow{display:flex;align-items:center;justify-content:space-between;gap:10px;padding:11px 0;border-bottom:1px solid #DCEFEB}
+.self-txt{font-size:15px;font-weight:800;color:#123B32}
+.self-opts{display:flex;gap:6px}
+.self-opts button{width:40px;height:40px;border-radius:9px;border:2px solid #B7DED7;background:#fff;font-size:19px;cursor:pointer}
+.self-opts button.sel{border-color:#B45309;background:#DCEFEB}
+.hidden{display:none!important}
+
+/* Exercices à écrire */
+.wlist{display:flex;flex-direction:column;gap:14px}
+.witem{background:#F7FCFB;border:1.5px solid #B7DED7;border-radius:12px;padding:13px 16px}
+.wq{font-size:16px;font-weight:800;color:#123B32;line-height:1.45;margin-bottom:8px}
+.wrow{display:flex;gap:8px;flex-wrap:wrap}
+.winput{flex:1;min-width:180px;border:2.5px solid #B7DED7;border-radius:9px;padding:9px 13px;font-family:'Nunito',sans-serif;font-size:15.5px;font-weight:700;color:#123B32;background:#fff}
+.winput:focus{outline:none;border-color:#B45309}
+.winput.good{border-color:#34D399;background:#ECFDF5}
+.wbtn{flex:0 0 auto;padding:9px 16px}
+.wfb{font-size:13.5px;font-weight:700;line-height:1.5;margin-top:8px;display:none}
+.wfb.ok,.wfb.no,.wfb.wait{display:block}
+.wfb.ok{color:#164E63}.wfb.no{color:#B45309}.wfb.wait{color:#5E8A82}
+.wfb b{color:#164E63}
+
+@media(max-width:900px){.vocab-grid{grid-template-columns:1fr 1fr}.rrow2{grid-template-columns:1fr}.hdr-h1{font-size:22px}}
+</style>
+</head>
+<body>
+
+<div id="hdr">
+  <div class="hdr-l">
+    <div class="hdr-ic">🔧</div>
+    <div><div class="hdr-eye">Logement · Niveau 4</div><div class="hdr-h1">Pouvez-vous régler le problème ?</div></div>
+  </div>
+  <div class="hdr-r">
+    <div id="prog-chip">⭐ 0 / 0</div>
+    <button id="btn-reset">↺ Réinitialiser</button>
+  </div>
+</div>
+
+<div id="tabs"></div>
+
+<div id="sel-banner">
+  ✋ Sélectionné : «&nbsp;<span id="sel-lbl">—</span>&nbsp;» — Cliquez sur une case pour le placer.
+</div>
+
+<div id="sections"></div>
+
+<div id="fc-overlay">
+  <div id="fc-box">
+    <div id="fc-counter">Carte 1 / 12</div>
+    <div id="fc-word">—</div>
+    <button id="fc-reveal-btn">Voir la définition</button>
+    <div id="fc-def" class="hidden">—</div>
+    <div id="fc-ex" class="hidden">—</div>
+    <div id="fc-btns">
+      <button class="fc-btn" id="fc-prev">← Précédente</button>
+      <button class="fc-btn" id="fc-next">Suivante →</button>
+      <button class="fc-btn" id="fc-close">✕ Fermer</button>
+    </div>
+  </div>
+</div>
+
+<script>
+// ═══════════════════════════════════════════════════════════════════════
+//  LA VISITE CHEZ LE MÉDECIN — Module interactif Niveau 4 (FLS)
+//  Sections : Je me prépare · Chez le médecin · La langue · Je parle ·
+//             J'écris · Je m'évalue — suivi LMS intégré
+// ═══════════════════════════════════════════════════════════════════════
+
+function getCode(){
+  const own=new URLSearchParams(location.search).get('code');
+  if(own) return own;
+  try{ return new URLSearchParams(window.parent.location.search).get('code')||''; }catch(e){ return ''; }
+}
+const studentCode=getCode();
+
+// ── DIALOGUES ─────────────────────────────────────────────────────────
+const DIALOGUES = {
+  prep: {
+    label: "Dialogue — Un dégât d'eau chez Sofia",
+    lines: [
+      ["SOFIA","La catastrophe chez moi ! J'ai un dégât d'eau dans ma cuisine ! J'ai épongé l'eau sur le plancher, mais il y a un tuyau brisé sous l'évier."],
+      ["ÉMILIE","Comment est-ce que je dois faire ?"],
+      ["SOFIA","Ferme tout de suite l'eau avant de faire un dégât d'eau chez le voisin du dessous."],
+      ["ÉMILIE","Regarde en dessous de l'évier, là où il y a deux tuyaux droits, un pour l'eau chaude et l'autre pour l'eau froide. Normalement, il y a une valve qui sert à ouvrir et à fermer l'eau sous les deux tuyaux. Tu vois bien les deux valves ?"],
+      ["SOFIA","Oui, je les vois."],
+      ["ÉMILIE","Oui, je les ferme."],
+      ["SOFIA","Maintenant, il faut appeler un plombier. Si tu veux, je te donne le numéro de téléphone du plombier qui habite tout près. Je te le recommande."],
+      ["ÉMILIE","Tu as déjà fait appel à ses services ?"],
+      ["SOFIA","Oui, il effectue tous nos travaux de plomberie. Les voisins d'en face lui ont aussi fait installer la tuyauterie de leur nouvelle salle de bain. Tu vas voir, il est très efficace."],
+      ["ÉMILIE","D'accord."],
+      ["SOFIA","J'y pense, je peux lui téléphoner pour toi si tu veux. Pendant que je l'appelle, tu continues d'essuyer l'eau sur le plancher."],
+      ["ÉMILIE","Oui, bonne idée !"],
+      ["SOFIA","Après avoir appelé le plombier, je vais venir t'aider."],
+      ["ÉMILIE","Ah ! Merci ! Tu me sauves la vie !"],
+    ]
+  },
+  t2: {
+    label: "Dialogue — Miguel et le concierge",
+    lines: [
+      ["LE CONCIERGE","Miguel, des locataires de l'immeuble se plaignent de vos pratiques au saxophone. Ils disent que vous jouez tard le soir et que ça réveille leurs enfants, qui se couchent vers 20 heures."],
+      ["MIGUEL","Oh, je suis désolé, je ne voulais pas déranger. C'est mon gagne-pain, je dois jouer au moins cinq fois par semaine pour rester à niveau."],
+      ["LE CONCIERGE","Je comprends que c'est important pour vous, mais il faut trouver une solution pour ne pas déranger les voisins."],
+      ["MIGUEL","Je pourrais m'acheter une sourdine, ça diminue beaucoup le son de l'instrument. Ou je pourrais pratiquer plus tôt en soirée, avant 20 heures."],
+      ["LE CONCIERGE","Ce serait une bonne solution. Je vais informer les locataires qui se sont plaints."],
+      ["MIGUEL","Merci de votre compréhension."],
+    ]
+  },
+  t3moisissure: {
+    label: "Dialogue — Un problème de moisissure",
+    lines: [
+      ["LE LOCATAIRE","Bonjour, Monsieur Poirier. Il y a de la moisissure sur un mur dans la salle de bain."],
+      ["LE PROPRIÉTAIRE","Ah oui ? Et depuis quand avez-vous de la moisissure ? Ça fait longtemps ?"],
+      ["LE LOCATAIRE","Ça fait au moins deux mois. J'aimerais beaucoup régler le problème. Ça m'inquiète, parce que ça peut être dangereux pour la santé."],
+      ["LE PROPRIÉTAIRE","Avez-vous beaucoup d'humidité dans votre salle de bain ?"],
+      ["LE LOCATAIRE","Oui ! C'est très humide. La fenêtre est très difficile à ouvrir et nous n'avons pas de ventilateur."],
+      ["LE PROPRIÉTAIRE","Oh ! J'étais sûr que vous aviez un ventilateur. C'est important, une bonne ventilation. Y a-t-il de la moisissure ailleurs dans la pièce ?"],
+      ["LE LOCATAIRE","Non. Est-ce que ce serait possible de faire installer un ventilateur ? Nous serions beaucoup plus à l'aise dans la salle de bain si elle était moins humide."],
+      ["LE PROPRIÉTAIRE","Oui, parfaitement. Et peut-être faut-il appeler un professionnel pour nettoyer la moisissure ?"],
+      ["LE LOCATAIRE","Oui, c'est possible. Je vais aller voir ça demain sans faute. Est-ce que 10 h demain matin vous convient ?"],
+      ["LE PROPRIÉTAIRE","Je vais aller constater votre problème d'abord. À demain !"],
+    ]
+  },
+};
+
+// ── SECTIONS ──────────────────────────────────────────────────────────
+const SECTIONS = [
+  {id:'prep', no:'▶', title:'Je me prépare', color:'#0E7490',
+   intro:"💧 Sofia est un peu paniquée : il y a un dégât d'eau dans son appartement. Elle appelle Émilie pour avoir des conseils.",
+   dialogue:'prep'},
+  {id:'t1', no:'1', title:'Tâche 1 · Un problème dans le logement', color:'#C0573A',
+   intro:"🔧 Tâche 1 — Sofia raconte son dégât d'eau à son propriétaire. Écoutez le dialogue, puis faites les exercices.",
+   dialogue:'prep'},
+  {id:'t2', no:'2', title:'Tâche 2 · Des problèmes dans l\'immeuble', color:'#6B4FBB',
+   intro:"🎷 Tâche 2 — Le concierge rencontre Miguel parce que des locataires de l'immeuble se plaignent de ses pratiques au saxophone.",
+   dialogue:'t2'},
+  {id:'t3', no:'3', title:'Tâche 3 · Une situation inacceptable', color:'#B45309',
+   intro:"😤 Tâche 3 — Différentes situations inacceptables à signaler à un propriétaire ou un concierge."},
+  {id:'appli', no:'▶', title:'Je mets en application', color:'#0D9488', custom:true,
+   intro:"🎤 Je mets en application — Explique un problème à voix haute, puis rétablis l'ordre d'un dialogue pour régler un problème de moisissure."},
+  {id:'retiens', no:'✓', title:'Je retiens des mots', color:'#166534', custom:true,
+   intro:"📝 Je retiens des mots — Note le vocabulaire utile et révise avec les cartes mémoire."},
+];
+
+// ── EXERCICES ─────────────────────────────────────────────────────────
+// type 'vf'     : lignes {id,txt,ok} — tuiles fixes (labels)
+// type 'match'  : lignes {id,q,aid,a} — banque = réponses
+// type 'blanks' : segs {k:'t'/'b',id,c} + words {id,l}
+const EXOS = [
+  // ── JE ME PRÉPARE ──
+  {sec:'prep', id:'pr1', type:'vf', num:'Exercice 1', tit:"Vrai ou Faux — Le dégât d'eau", color:'#0E7490',
+   sub:'Écoutez de nouveau le dialogue, puis répondez.', tiles:['VRAI','FAUX'],
+   rows:[
+    {id:'pr1a', txt:"Émilie va venir aider Sofia et ensuite appeler le plombier.", ok:'FAUX'},
+    {id:'pr1b', txt:"Émilie recommande un plombier à Sofia.", ok:'FAUX'},
+    {id:'pr1c', txt:"Un tuyau est brisé sous l'évier de la cuisine.", ok:'VRAI'},
+    {id:'pr1d', txt:"Une valve sert à ouvrir et à fermer l'eau sous l'évier.", ok:'VRAI'},
+    {id:'pr1e', txt:"Le plombier habite proche de chez Sofia.", ok:'VRAI'},
+    {id:'pr1f', txt:"Le plombier a effectué des travaux chez les voisins de Sofia.", ok:'VRAI'},
+    {id:'pr1g', txt:"Émilie va appeler le plombier en attendant l'arrivée de Sofia.", ok:'FAUX'},
+    {id:'pr1h', txt:"Émilie a déjà fait appel au plombier que recommande Sofia.", ok:'FAUX'},
+   ]},
+  {sec:'prep', id:'pr2', type:'write', num:'Exercice 2', tit:'Comprendre le dialogue', color:'#0E7490',
+   sub:"Réponds aux questions sur le dialogue.",
+   items:[
+    {q:"Quel mot du dialogue est de la même famille que le mot tuyau ?", hint:"Tuyauterie.", ph:"…"},
+    {q:"Que veut dire l'expression « Tu me sauves la vie ! » ?", hint:"Tu as réglé mon problème, tu m'as aidée.", ph:"…"},
+    {q:"Dans les phrases « Oui, je les vois. Je les ferme. », qu'est-ce que le pronom les reprend ?", hint:"Les deux valves (ou les deux tuyaux).", ph:"…"},
+   ]},
+  {sec:'prep', id:'pr3', type:'write', num:'Exercice 3', tit:'Le type de problème', color:'#0E7490',
+   sub:'Indique le type de problème décrit dans chaque énoncé.',
+   savoir:{h:"› Les types de problèmes dans un logement", rows:[
+     ["Types","une invasion (insectes, rongeurs) · une fuite (eau) · une défectuosité · un bris · un problème d'électricité · l'insalubrité (moisissure, odeurs) · un mauvais fonctionnement · la présence d'animaux nuisibles"],
+   ]},
+   items:[
+    {q:"Il y a des fourmis partout dans la cuisine.", accept:["invasion","une invasion"], ph:"…"},
+    {q:"L'eau coule sans arrêt sous l'évier.", accept:["fuite","une fuite"], ph:"…"},
+    {q:"Le four ne chauffe plus depuis une semaine.", accept:["défectuosité","une défectuosité","defectuosite"], ph:"…"},
+    {q:"La fenêtre du salon est fissurée.", accept:["bris","un bris"], ph:"…"},
+    {q:"La prise électrique fait des étincelles.", accept:["électricité","un problème d'électricité","electricite"], ph:"…"},
+   ]},
+
+  {sec:'appli', id:'aMoisi', type:'rows', num:'Exercice 2', tit:"Remets le dialogue dans l'ordre", color:'#0D9488',
+   sub:"Un locataire parle à son propriétaire d'un problème de moisissure. Remets les phrases dans l'ordre (de 1 à 10).",
+   fiche:false,
+   bank:[
+    {id:'ma', l:"Bonjour, Monsieur Poirier. Il y a de la moisissure sur un mur dans la salle de bain."},
+    {id:'mb', l:"Ah oui ? Et depuis quand avez-vous de la moisissure ? Ça fait longtemps ?"},
+    {id:'mc', l:"Ça fait au moins deux mois. J'aimerais beaucoup régler le problème. Ça m'inquiète, parce que ça peut être dangereux pour la santé."},
+    {id:'md', l:"Avez-vous beaucoup d'humidité dans votre salle de bain ?"},
+    {id:'me', l:"Oui ! C'est très humide. La fenêtre est très difficile à ouvrir et nous n'avons pas de ventilateur."},
+    {id:'mf', l:"Oh ! J'étais sûr que vous aviez un ventilateur. C'est important, une bonne ventilation. Y a-t-il de la moisissure ailleurs dans la pièce ?"},
+    {id:'mg', l:"Non. Est-ce que ce serait possible de faire installer un ventilateur ? Nous serions beaucoup plus à l'aise dans la salle de bain si elle était moins humide."},
+    {id:'mh', l:"Oui, parfaitement. Et peut-être faut-il appeler un professionnel pour nettoyer la moisissure ?"},
+    {id:'mi', l:"Oui, c'est possible. Je vais aller voir ça demain sans faute. Est-ce que 10 h demain matin vous convient ?"},
+    {id:'mj', l:"Je vais aller constater votre problème d'abord. À demain !"},
+   ],
+   rows:[
+    {id:'mr1', lbl:'1re', cv:'ma'},
+    {id:'mr2', lbl:'2e', cv:'mb'},
+    {id:'mr3', lbl:'3e', cv:'mc'},
+    {id:'mr4', lbl:'4e', cv:'md'},
+    {id:'mr5', lbl:'5e', cv:'me'},
+    {id:'mr6', lbl:'6e', cv:'mf'},
+    {id:'mr7', lbl:'7e', cv:'mg'},
+    {id:'mr8', lbl:'8e', cv:'mh'},
+    {id:'mr9', lbl:'9e', cv:'mi'},
+    {id:'mr10', lbl:'10e', cv:'mj'},
+   ]},
+
+  // ── TÂCHE 1 · UN PROBLÈME DANS LE LOGEMENT ──
+  {sec:'t1', id:'t1vocab', type:'write', num:'Exercice 1', tit:'Le sens des mots', color:'#C0573A',
+   sub:"Que signifient les mots en gras dans les phrases ? Réponds dans tes mots.",
+   items:[
+    {q:"« Cela me permettra de constater l'ampleur des dégâts. » Que signifie ampleur ?", hint:"L'importance, la grandeur.", ph:"…"},
+    {q:"« Merci de me prévenir. » Que signifie prévenir ?", hint:"Annoncer à l'avance.", ph:"…"},
+    {q:"« Ne vous tracassez pas. » Que signifie se tracasser ?", hint:"Être inquiet, se poser des questions.", ph:"…"},
+    {q:"« J'ai un dégât d'eau majeur. » Que signifie majeur ?", hint:"Gros et important.", ph:"…"},
+   ]},
+  {sec:'t1', id:'t1coop', type:'write', num:'Exercice 2', tit:'Comprendre le dialogue avec le propriétaire', color:'#C0573A',
+   sub:"Écoute le dialogue entre Sofia et son propriétaire, puis réponds aux questions.",
+   items:[
+    {q:"Le propriétaire de Sofia coopère. Notez deux de ses paroles qui démontrent sa coopération.", hint:"Il propose de venir constater les dégâts et il dit à Sofia de ne pas s'inquiéter.", ph:"…"},
+    {q:"Dans combien de temps le plombier va-t-il arriver ?", hint:"Dans environ une heure.", ph:"…"},
+    {q:"Qui va payer le plombier ?", hint:"Le propriétaire.", ph:"…"},
+   ]},
+  {sec:'t1', id:'t1leur', type:'write', num:'Exercice 3', tit:'Le déterminant possessif leur / leurs', color:'#C0573A',
+   sub:'Complète les phrases avec leur ou leurs.',
+   savoir:{h:"› Le déterminant possessif leur / leurs", rows:[
+     ["leur (m. s. ou f. s.)","Ils déménagent dans leur appartement. (l'appartement qui leur appartient)"],
+     ["leurs (m. pl. ou f. pl.)","Elles visitent leurs immeubles. (les immeubles qui leur appartiennent)"],
+   ]},
+   items:[
+    {q:"J'entends souvent la musique de mes voisins le soir. ___ musique me dérange parfois.", accept:["leur"], ph:"…"},
+    {q:"Nous aimerions rencontrer le propriétaire de nos amis. ___ propriétaire est bienveillant envers les locataires.", accept:["leur"], ph:"…"},
+    {q:"J'ai emprunté les clés des propriétaires. ___ clés ne fonctionnent pas non plus.", accept:["leurs"], ph:"…"},
+   ]},
+  {sec:'t1', id:'t1depuis', type:'write', num:'Exercice 4', tit:'Depuis, depuis que, ça fait... que', color:'#C0573A',
+   sub:"Lis les phrases, puis note la durée de l'événement présenté.",
+   savoir:{h:"› Les marqueurs de temps depuis, depuis que et ça fait... que", rows:[
+     ["depuis","situe à un moment précis une action qui n'est pas terminée : L'alarme sonne depuis deux minutes."],
+     ["depuis que","montre l'effet d'une action qui dure à la suite d'une autre : L'escalier reste propre depuis que le concierge a posé un tapis."],
+     ["ça fait... que","a le sens de depuis, se place en début de phrase : Ça fait trois jours que l'ampoule est brûlée."],
+   ]},
+   items:[
+    {q:"Ça fait deux semaines que Mia est déménagée.", accept:["deux semaines"], ph:"…"},
+    {q:"La serrure est brisée depuis la semaine passée.", accept:["une semaine","la semaine passée"], ph:"…"},
+    {q:"Le robinet de la cuisine coule depuis deux jours.", accept:["deux jours"], ph:"…"},
+    {q:"Ça fait une semaine que le climatiseur est défectueux.", accept:["une semaine"], ph:"…"},
+    {q:"Ça fait trois heures que nous attendons le plombier.", accept:["trois heures"], ph:"…"},
+   ]},
+  {sec:'t1', id:'t1souligne', type:'write', num:'Exercice 5', tit:"L'action qui continue", color:'#C0573A',
+   sub:"Dans chaque phrase, deux actions sont mentionnées. Indique celle qui s'est déroulée en dernier et qui continue dans le présent.",
+   items:[
+    {q:"Depuis que nous avons déménagé, nous faisons plusieurs rénovations.", hint:"Nous faisons plusieurs rénovations.", ph:"…"},
+    {q:"Les gens sont prudents dans l'escalier depuis que notre voisine a fait une chute.", hint:"Les gens sont prudents dans l'escalier.", ph:"…"},
+    {q:"Vous utilisez l'autre sortie depuis qu'on a rénové l'entrée principale.", hint:"Vous utilisez l'autre sortie.", ph:"…"},
+    {q:"Depuis que nous avons adopté un chien, les voisins se plaignent beaucoup.", hint:"Les voisins se plaignent beaucoup.", ph:"…"},
+    {q:"J'apprécie mon logement depuis qu'il a été rénové.", hint:"J'apprécie mon logement.", ph:"…"},
+   ]},
+
+  // ── TÂCHE 2 · DES PROBLÈMES DANS L'IMMEUBLE ──
+  {sec:'t2', id:'t2vocab', type:'match', num:'Exercice 1', tit:'Le vocabulaire du dialogue', color:'#6B4FBB',
+   sub:'Associez chaque mot à sa définition.',
+   rows:[
+    {id:'t2va', q:"gagne-pain", aid:'ga1', a:"travail, emploi"},
+    {id:'t2vb', q:"sourdine", aid:'ga2', a:"accessoire qui diminue le son d'un instrument"},
+   ]},
+  {sec:'t2', id:'t2plaindre', type:'write', num:'Exercice 2', tit:'Comprendre le dialogue avec le concierge', color:'#6B4FBB',
+   sub:"Écoute le dialogue entre Miguel et le concierge, puis réponds.",
+   items:[
+    {q:"Pourquoi le concierge va-t-il parler à Miguel ?", hint:"Des locataires se plaignent qu'il joue du saxophone tard le soir.", ph:"…"},
+    {q:"Vers quelle heure se couchent les enfants des voisins ?", hint:"Vers 20 heures.", ph:"…"},
+    {q:"Au moins combien de fois par semaine Miguel doit-il jouer du saxophone ?", hint:"Au moins cinq fois par semaine.", ph:"…"},
+    {q:"Quelle est la solution choisie par Miguel ?", hint:"S'acheter une sourdine ou pratiquer plus tôt en soirée, avant 20 heures.", ph:"…"},
+    {q:"Dans le dialogue, le verbe se plaindre est utilisé. À quelle personne est-il conjugué ? Au singulier ou au pluriel ?", hint:"À la 3e personne du pluriel (ils se plaignent).", ph:"…"},
+   ]},
+  {sec:'t2', id:'t2avantapres', type:'write', num:'Exercice 3', tit:'Avant de et après avoir', color:'#6B4FBB',
+   sub:"Indique quelle action a lieu en premier dans le temps.",
+   savoir:{h:"› Les marqueurs de temps avant de et après", rows:[
+     ["avant de + infinitif présent","L'action de la phrase se passe avant une autre action : Je répare les murs avant de peinturer."],
+     ["après + infinitif passé","L'action de la phrase se passe après une autre action : Tu remercies le propriétaire après avoir vu les travaux."],
+   ]},
+   items:[
+    {q:"Avant de déménager, nous devons nettoyer tout le logement.", hint:"Nettoyer tout le logement.", ph:"…"},
+    {q:"Tu as essuyé le dégât d'eau avant d'appeler le plombier.", hint:"Essuyer le dégât d'eau.", ph:"…"},
+    {q:"Nous avons constaté un bris du calorifère après avoir déménagé.", hint:"Déménager.", ph:"…"},
+    {q:"Après avoir exterminé les fourmis, nous reviendrons dans notre logement.", hint:"Exterminer les fourmis.", ph:"…"},
+    {q:"Avant de calfeutrer les fenêtres, il faut bien les nettoyer.", hint:"Nettoyer les fenêtres.", ph:"…"},
+   ]},
+  {sec:'t2', id:'t2faire', type:'write', num:'Exercice 4', tit:'Le verbe faire + infinitif', color:'#6B4FBB',
+   sub:"Complète les phrases avec faire + un verbe à l'infinitif + par, selon l'indice.",
+   savoir:{h:"› Le verbe faire suivi d'un verbe à l'infinitif", rows:[
+     ["faire + infinitif","Le sujet ne fait pas l'action lui-même : Elle fait peindre les murs dans sa cuisine."],
+     ["faire + infinitif + par","On précise qui fait l'action : Wafa fait laver ses fenêtres par un laveur de vitres."],
+   ]},
+   items:[
+    {q:"(faire réparer / le plombier) La serrure...", hint:"Elle fait réparer la serrure par le plombier.", ph:"…"},
+    {q:"(faire installer / un électricien) Le luminaire...", hint:"Il fait installer le luminaire par un électricien.", ph:"…"},
+    {q:"(faire peinturer / un professionnel) L'appartement...", hint:"Nous faisons peinturer l'appartement par un professionnel.", ph:"…"},
+   ]},
+
+  // ── TÂCHE 3 · UNE SITUATION INACCEPTABLE ──
+  {sec:'t3', id:'t3situations', type:'match', num:'Exercice 1', tit:'À quelle situation est-ce que ça correspond ?', color:'#B45309',
+   sub:"Associez chaque énoncé à la situation qu'il décrit.",
+   rows:[
+    {id:'t3sa', q:"Ça m'empêche de dormir et ça réveille les enfants.", aid:'sa1', a:"Un voisin fait du bruit tard le soir."},
+    {id:'t3sb', q:"L'odeur ne part pas.", aid:'sa2', a:"Des visiteurs fument dans les corridors."},
+    {id:'t3sc', q:"Cela peut entraîner de la vermine et devenir insalubre.", aid:'sa3', a:"Des voisins laissent des déchets dans les corridors."},
+    {id:'t3sd', q:"Les odeurs de cigarette circulent partout dans l'immeuble.", aid:'sa4', a:"La ventilation de l'immeuble laisse circuler la fumée."},
+   ]},
+  {sec:'t3', id:'t3plaindre', type:'write', num:'Exercice 2', tit:'Formuler une plainte', color:'#B45309',
+   sub:"Pour chaque situation, formule une phrase pour te plaindre à ton propriétaire.",
+   savoir:{h:"› Pour se plaindre, pour exprimer son mécontentement", rows:[
+     ["Expressions","Cette situation est dérangeante... · C'est très difficile de... · Je suis irrité(e) par... · C'est décevant... · Je suis fâché(e) de... · C'est vraiment injuste... · Je ne peux plus tolérer... · C'est inacceptable..."],
+   ]},
+   items:[
+    {q:"Le luminaire de la cuisine est brisé depuis trois semaines.", hint:"Je suis contrarié. Le luminaire de la cuisine est brisé depuis trois semaines. C'est vraiment inacceptable.", ph:"…"},
+    {q:"Votre voisin du dessus danse tous les mercredis soirs jusqu'à minuit.", hint:"Cette situation est dérangeante. Mon voisin du dessus danse tous les mercredis soirs jusqu'à minuit et ça m'empêche de dormir.", ph:"…"},
+    {q:"Des voisins laissent leurs déchets dans les corridors.", hint:"Je suis irrité par cette situation. Des voisins laissent leurs déchets dans les corridors, ce n'est pas hygiénique.", ph:"…"},
+    {q:"La rampe de l'escalier est instable depuis cinq semaines. C'est très dangereux.", hint:"Je ne peux plus tolérer cette situation. La rampe de l'escalier est instable depuis cinq semaines et c'est dangereux pour la sécurité.", ph:"…"},
+    {q:"Votre clé n'ouvre plus la porte d'entrée. Pour entrer, vous devez appeler une personne de l'immeuble par interphone.", hint:"C'est vraiment injuste. Ma clé n'ouvre plus la porte d'entrée et je dois appeler quelqu'un chaque fois pour entrer.", ph:"…"},
+   ]},
+];
+
+// ── FLASHCARDS ────────────────────────────────────────────────────────
+const FC_CARDS = [
+  {word:"un dégât d'eau", def:"Un dommage causé par de l'eau dans un logement.", ex:"J'ai un <strong>dégât d'eau</strong> dans ma cuisine."},
+  {word:"une fuite", def:"De l'eau qui coule sans arrêt à un endroit.", ex:"Il y a une <strong>fuite</strong> sous l'évier."},
+  {word:"une invasion", def:"La présence en grand nombre d'insectes ou de rongeurs.", ex:"Nous avons une <strong>invasion</strong> de fourmis."},
+  {word:"une défectuosité", def:"Un défaut, un mauvais fonctionnement d'un appareil.", ex:"Le four a une <strong>défectuosité</strong>."},
+  {word:"la moisissure", def:"Un champignon qui se développe dans l'humidité.", ex:"Il y a de la <strong>moisissure</strong> dans la salle de bain."},
+  {word:"un plombier / une plombière", def:"La personne qui répare la tuyauterie.", ex:"J'ai appelé un <strong>plombier</strong>."},
+  {word:"un concierge / une concierge", def:"La personne responsable de l'entretien d'un immeuble.", ex:"Le <strong>concierge</strong> a réglé le problème."},
+  {word:"se plaindre", def:"Exprimer son mécontentement à propos d'une situation.", ex:"Les locataires <strong>se plaignent</strong> du bruit."},
+  {word:"insalubre", def:"Qui n'est pas propre, dangereux pour la santé.", ex:"Cet appartement est devenu <strong>insalubre</strong>."},
+  {word:"un bris", def:"Un objet cassé, brisé.", ex:"Il y a un <strong>bris</strong> de fenêtre."},
+  {word:"une valve", def:"Un mécanisme qui sert à ouvrir et fermer l'eau.", ex:"Ferme la <strong>valve</strong> sous l'évier."},
+  {word:"un exterminateur / une exterminatrice", def:"La personne qui élimine les insectes ou les rongeurs nuisibles.", ex:"On a appelé un <strong>exterminateur</strong>."},
+];
+
+// ── ÉTAT ──────────────────────────────────────────────────────────────
+const S = {pl:{}, sel:null, fb:{}};
+let curSec = 'prep';
+
+const ZONES = {};
+EXOS.forEach(ex => {
+  if (ex.type === 'vf')     ex.rows.forEach(r => ZONES[r.id] = {cv:r.ok, zcat:'vf', exo:ex.id});
+  if (ex.type === 'match')  ex.rows.forEach(r => ZONES[r.id] = {cv:r.aid, zcat:'id', exo:ex.id});
+  if (ex.type === 'imgmatch') ex.rows.forEach(r => ZONES[r.id] = {cv:r.aid, zcat:'id', exo:ex.id});
+  if (ex.type === 'rows')   ex.rows.forEach(r => ZONES[r.id] = {cv:r.cv, zcat:'id', exo:ex.id});
+  if (ex.type === 'blanks') ex.segs.filter(s=>s.k==='b').forEach(s =>
+    ZONES[s.id] = {cv:s.c, zcat: ex.byLabel ? 'lbl' : 'id', exo:ex.id});
+  if (ex.type === 'write')  ex.items.forEach((it,i) =>
+    ZONES['w_'+ex.id+'_'+i] = {zcat:'write', exo:ex.id});
+});
+const TOTAL_ZONES = Object.keys(ZONES).length;
+const ALL_IMAGES = EXOS.filter(e=>e.type==='imgmatch').flatMap(e=>e.images);
+
+// ── LMS TRACKING ──────────────────────────────────────────────────────
+function lmsTrack(event, data) {
+  try { window.parent.postMessage(Object.assign({lms:true, event:event}, data||{}), '*'); } catch(e) {}
+  try {
+    const up = new URLSearchParams(window.parent.location.search);
+    const code = up.get('code'), actId = parseInt(up.get('activityId'))||null, title = up.get('title')||'';
+    if (code && actId) {
+      fetch('/api/student/progress', {
+        method:'POST', headers:{'Content-Type':'application/json'},
+        body: JSON.stringify(Object.assign({code, activityId:actId, activityTitle:title, event}, data||{})),
+      }).catch(()=>{});
+    }
+  } catch(e2) {}
+}
+const TR = {attempts:{}, correct:{}};
+function trackPlacement(zid, ok) {
+  if (ok && !TR.correct[zid]) {
+    TR.correct[zid] = true;
+    if (!(zid in TR.attempts)) TR.attempts[zid] = 0;
+    const zonesDone = Object.keys(TR.correct).length;
+    const firstTry = Object.keys(TR.correct).filter(k => (TR.attempts[k]||0)===0).length;
+    const totalErrors = Object.keys(TR.attempts).reduce((s,k)=>s+(TR.attempts[k]||0),0);
+    lmsTrack('exercise_completed', {zones:TOTAL_ZONES, zonesDone, firstTry, totalErrors});
+  } else if (!ok && !TR.correct[zid]) {
+    TR.attempts[zid] = (TR.attempts[zid]||0) + 1;
+  }
+  updateChip();
+}
+
+// ── DIALOGUE (audio réel si disponible, sinon synthèse vocale) ────────
+let dialogueRead = false;
+const MODULE_SLUG = 'module-meteo';
+let dlgAudio=null, dlgBtn=null, dlgState='idle', dlgUsingSpeech=false, dlgFallbackLines=null, dlgPollIv=null;
+
+function charSlug(name){ return name.toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g,'').replace(/'/g,'').replace(/\s+/g,'_'); }
+
+function playDialogue(dialId, btn){
+  if(dlgBtn===btn && dlgState==='playing'){ pauseDialogue(); return; }
+  if(dlgBtn===btn && dlgState==='paused'){ resumeDialogue(); return; }
+  stopDialogue();
+  dlgBtn=btn;
+  const lines=(DIALOGUES[dialId]&&DIALOGUES[dialId].lines)||[];
+  dlgFallbackLines=lines;
+  const urls=lines.map((l,i)=>`${MODULE_SLUG}/${dialId}/line_${String(i+1).padStart(2,'0')}_${charSlug(l[0])}.mp3`);
+  playAudioQueue(urls,0,btn,dialId,true);
+}
+function playAudioQueue(urls, idx, btn, dialId, allowFallback){
+  if(idx>=urls.length){ finishDialogue(btn,dialId); return; }
+  dlgAudio=new Audio(urls[idx]);
+  dlgUsingSpeech=false;
+  dlgState='playing'; btn.textContent='⏸ Pause';
+  dlgAudio.onended=()=>playAudioQueue(urls, idx+1, btn, dialId, false);
+  dlgAudio.onerror=()=>{
+    if(allowFallback && idx===0){ playSpeechQueue(dlgFallbackLines, btn, dialId); }
+    else{ playAudioQueue(urls, idx+1, btn, dialId, false); }
+  };
+  dlgAudio.play().catch(()=>{ if(allowFallback && idx===0){ playSpeechQueue(dlgFallbackLines, btn, dialId); } });
+}
+function playSpeechQueue(lines, btn, dialId){
+  try{
+    speechSynthesis.cancel();
+    dlgUsingSpeech=true;
+    const voices = speechSynthesis.getVoices();
+    const fr = voices.filter(v=>/^fr/i.test(v.lang));
+    lines.forEach((l,i)=>{
+      const u=new SpeechSynthesisUtterance(l[1]);
+      u.lang='fr-CA'; u.rate=0.95; u.pitch=(i%2===0)?1.12:0.9;
+      if(fr.length) u.voice=(i%2===0)?fr[0]:(fr[1]||fr[0]);
+      speechSynthesis.speak(u);
+    });
+    dlgState='playing'; btn.textContent='⏸ Pause';
+    clearInterval(dlgPollIv);
+    dlgPollIv=setInterval(()=>{
+      if(!speechSynthesis.speaking){ clearInterval(dlgPollIv); finishDialogue(btn,dialId); }
+    },400);
+  }catch(e){}
+}
+function pauseDialogue(){
+  if(dlgUsingSpeech){ try{speechSynthesis.pause();}catch(e){} } else if(dlgAudio){ dlgAudio.pause(); }
+  dlgState='paused'; if(dlgBtn) dlgBtn.textContent='▶ Reprendre';
+}
+function resumeDialogue(){
+  if(dlgUsingSpeech){ try{speechSynthesis.resume();}catch(e){} } else if(dlgAudio){ dlgAudio.play().catch(()=>{}); }
+  dlgState='playing'; if(dlgBtn) dlgBtn.textContent='⏸ Pause';
+}
+function stopDialogue(){
+  clearInterval(dlgPollIv);
+  try{ speechSynthesis.cancel(); }catch(e){}
+  if(dlgAudio){ try{dlgAudio.pause();}catch(e){} dlgAudio=null; }
+  if(dlgBtn){ dlgBtn.textContent='🔊 Écouter'; }
+  dlgState='idle'; dlgBtn=null; dlgUsingSpeech=false;
+}
+function finishDialogue(btn,dialId){
+  dlgState='idle'; btn.textContent='🔊 Écouter'; dlgBtn=null; dlgUsingSpeech=false;
+  if(!dialogueRead){ dialogueRead=true; lmsTrack('dialogue_listened'); }
+}
+function markRead(btn){
+  btn.classList.add('done'); btn.textContent='✓ Lu';
+  if(!dialogueRead){ dialogueRead=true; lmsTrack('dialogue_listened'); }
+}
+
+// ── LOGIQUE DE PLACEMENT ──────────────────────────────────────────────
+function checkOk(zid, iid, lbl) {
+  const z = ZONES[zid];
+  if (!z) return false;
+  if (z.zcat === 'vf' || z.zcat === 'lbl') return lbl === z.cv;
+  return iid === z.cv;
+}
+function doPlace(zid, iid, lbl, cat, from) {
+  if (from === zid) { S.sel = null; render(); return; }
+  if (from && from !== zid) { if (S.pl[zid]) S.pl[from] = S.pl[zid]; else delete S.pl[from]; delete S.fb[from]; delete S.fb[zid]; }
+  else if (!from && S.pl[zid]) { delete S.pl[zid]; delete S.fb[zid]; }
+  S.pl[zid] = {iid, lbl, cat}; S.sel = null;
+  const ok = checkOk(zid, iid, lbl);
+  S.fb[zid] = ok ? 'ok' : 'no';
+  trackPlacement(zid, ok);
+  render();
+  setTimeout(() => { delete S.fb[zid]; if (!ok) delete S.pl[zid]; render(); }, ok ? 1400 : 850);
+}
+function zoneClick(zid) {
+  if (S.sel) { doPlace(zid, S.sel.iid, S.sel.lbl, S.sel.cat, S.sel.from); }
+  else if (S.pl[zid] && !S.fb[zid]) {
+    const {iid,lbl,cat} = S.pl[zid];
+    delete S.pl[zid]; delete S.fb[zid];
+    S.sel = {iid,lbl,cat,from:zid}; render();
+  }
+}
+function tileClick(iid, lbl, cat) {
+  if (S.sel && S.sel.iid === iid && !S.sel.from) S.sel = null;
+  else S.sel = {iid,lbl,cat,from:null};
+  render();
+}
+
+// ── DRAG & DROP ───────────────────────────────────────────────────────
+let dd = null;
+function drg(el, iid, lbl, cat, from) {
+  el.draggable = true;
+  el.addEventListener('dragstart', e => { dd = {iid,lbl,cat,from:from||null}; e.dataTransfer.setData('text/plain', JSON.stringify(dd)); e.dataTransfer.effectAllowed='move'; setTimeout(()=>el.style.opacity='.45',0); });
+  el.addEventListener('dragend', () => { el.style.opacity=''; dd=null; });
+}
+function drp(el, zid) {
+  el.addEventListener('dragover', e => { e.preventDefault(); el.classList.add('dov'); });
+  el.addEventListener('dragleave', () => el.classList.remove('dov'));
+  el.addEventListener('drop', e => { e.preventDefault(); el.classList.remove('dov'); let d=dd; if(!d){try{d=JSON.parse(e.dataTransfer.getData('text/plain'))}catch{}} if(!d)return; doPlace(zid, d.iid, d.lbl, d.cat, d.from); dd=null; });
+}
+let ts=null, ghost=null;
+function tch(el, iid, lbl, cat, from) {
+  el.addEventListener('touchstart', e => { const t=e.touches[0]; ts={x:t.clientX,y:t.clientY,iid,lbl,cat,from:from||null,el,moved:false}; }, {passive:true});
+}
+document.addEventListener('touchmove', e => {
+  if(!ts) return;
+  const t=e.touches[0], dx=t.clientX-ts.x, dy=t.clientY-ts.y;
+  if(!ts.moved && Math.sqrt(dx*dx+dy*dy)>8){
+    ts.moved=true;
+    const r=ts.el.getBoundingClientRect();
+    ghost=ts.el.cloneNode(true);
+    ghost.className=ts.el.className+' ghost'; ghost.style.width=r.width+'px';
+    ghost.style.left=(t.clientX-r.width/2)+'px'; ghost.style.top=(t.clientY-r.height/2)+'px';
+    document.body.appendChild(ghost);
+  }
+  if(ts.moved && ghost){ e.preventDefault(); ghost.style.left=(t.clientX-ghost.offsetWidth/2)+'px'; ghost.style.top=(t.clientY-ghost.offsetHeight/2)+'px'; }
+}, {passive:false});
+document.addEventListener('touchend', e => {
+  if(!ts) return;
+  if(ts.moved && ghost){
+    ghost.remove(); ghost=null;
+    const t=e.changedTouches[0];
+    const zel=document.elementsFromPoint(t.clientX,t.clientY).find(x=>x.dataset&&x.dataset.zid);
+    if(zel) doPlace(zel.dataset.zid, ts.iid, ts.lbl, ts.cat, ts.from);
+    e.preventDefault();
+  }
+  ts=null;
+});
+
+// ── HELPERS ───────────────────────────────────────────────────────────
+function esc(s){return String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;')}
+function usedIds(){return new Set(Object.values(S.pl).map(p=>p.iid))}
+function shuffled(arr, seed){
+  const a=arr.slice(); let s=seed||42;
+  for(let i=a.length-1;i>0;i--){ s=(s*9301+49297)%233280; const j=Math.floor((s/233280)*(i+1)); [a[i],a[j]]=[a[j],a[i]]; }
+  return a;
+}
+function mkZone(zid, extra, placeholder){
+  const el=document.createElement('div');
+  const placed=S.pl[zid], fb=S.fb[zid], z=ZONES[zid];
+  let cls=['zone']; if(extra)cls.push(extra);
+  if(fb)cls.push('fb-'+fb);
+  else if(placed){
+    if(z.zcat==='vf'&&(placed.lbl==='VRAI'||placed.lbl==='FAUX'))cls.push(placed.lbl==='VRAI'?'f-vrai':'f-faux');
+    else cls.push('filled');
+  } else cls.push('empty');
+  el.className=cls.join(' ');
+  el.dataset.zid=zid;
+  el.textContent=placed?placed.lbl:(placeholder||'déposer ici');
+  el.addEventListener('click',()=>zoneClick(zid));
+  drp(el,zid);
+  if(placed&&!fb){drg(el,placed.iid,placed.lbl,placed.cat,zid);tch(el,placed.iid,placed.lbl,placed.cat,zid)}
+  return el;
+}
+function mkBlank(zid){
+  const el=document.createElement('span');
+  const placed=S.pl[zid], fb=S.fb[zid];
+  let cls=['blank'];
+  if(fb)cls.push('fb-'+fb); else if(placed)cls.push('filled');
+  el.className=cls.join(' ');
+  el.dataset.zid=zid;
+  el.textContent=placed?placed.lbl:'…';
+  el.addEventListener('click',()=>zoneClick(zid));
+  drp(el,zid);
+  if(placed&&!fb){drg(el,placed.iid,placed.lbl,placed.cat,zid);tch(el,placed.iid,placed.lbl,placed.cat,zid)}
+  return el;
+}
+function mkTile(iid,lbl,cat,cls){
+  const t=document.createElement('div');
+  t.className='tile '+cls+(S.sel&&S.sel.iid===iid&&!S.sel.from?' sel':'');
+  t.textContent=lbl;
+  t.addEventListener('click',()=>tileClick(iid,lbl,cat));
+  drg(t,iid,lbl,cat,null); tch(t,iid,lbl,cat,null);
+  return t;
+}
+function mkImgTile(im,cat){
+  const t=document.createElement('div');
+  t.className='imgtile'+(S.sel&&S.sel.iid===im.id&&!S.sel.from?' sel':'');
+  t.innerHTML='<img src="'+im.src+'" alt="" loading="lazy">';
+  t.addEventListener('click',()=>tileClick(im.id,im.id,cat));
+  drg(t,im.id,im.id,cat,null); tch(t,im.id,im.id,cat,null);
+  return t;
+}
+function mkImgZone(zid, im){
+  const el=document.createElement('div');
+  const placed=S.pl[zid], fb=S.fb[zid];
+  let cls=['imgzone']; if(fb)cls.push('fb-'+fb); else if(placed)cls.push('filled'); else cls.push('empty');
+  el.className=cls.join(' ');
+  el.dataset.zid=zid;
+  if(placed){ const src=(ALL_IMAGES.find(i=>i.id===placed.iid)||{}).src; el.innerHTML=src?'<img src="'+src+'" alt="">':''; }
+  else{ el.innerHTML='<span class="imgzone-ph">glissez l\'image ici</span>'; }
+  el.addEventListener('click',()=>zoneClick(zid));
+  drp(el,zid);
+  if(placed&&!fb){drg(el,placed.iid,placed.lbl,placed.cat,zid);tch(el,placed.iid,placed.lbl,placed.cat,zid)}
+  return el;
+}
+
+// ── CONSTRUCTION DU DOM ───────────────────────────────────────────────
+function buildStatic(){
+  const tabs=document.getElementById('tabs');
+  SECTIONS.forEach(sec=>{
+    const b=document.createElement('button');
+    b.className='tab'; b.id='tab-'+sec.id;
+    b.innerHTML='<span class="tno">'+sec.no+'</span>'+esc(sec.title)+'<span class="tchk">✓</span>';
+    b.addEventListener('click',()=>{curSec=sec.id;render();window.scrollTo({top:0,behavior:'smooth'})});
+    tabs.appendChild(b);
+  });
+  const wrap=document.getElementById('sections');
+  SECTIONS.forEach(sec=>{
+    const d=document.createElement('div');
+    d.className='sec'; d.id='sec-'+sec.id;
+    let h='';
+    h+='<div class="intro" style="border-color:'+sec.color+'33">'+sec.intro+'</div>';
+    if(sec.dialogue){
+      const dia=DIALOGUES[sec.dialogue];
+      h+='<div class="dial-sec" style="border-bottom-color:'+sec.color+'">';
+      h+='<div class="audio-pl"><div class="audio-lbl">Dialogue</div>';
+      h+='<button class="btn-lu" onclick="playDialogue(\''+sec.dialogue+'\',this)">🔊 Écouter</button>';
+      h+='<button class="btn-lu" onclick="markRead(this)">📖 J\'ai lu</button></div>';
+      h+='<div class="dial-txt"><div class="d-lbl">'+esc(dia.label)+'</div>';
+      dia.lines.forEach((l,i)=>{
+        const cls=(i%2===0)?'mb':'dr';
+        h+='<div class="dl"><span class="'+cls+'">'+esc(l[0])+' :</span> '+esc(l[1])+'</div>';
+      });
+      h+='</div></div>';
+    }
+    if(sec.id==='prep'){
+      h+='<div class="vocab-sec"><div style="display:flex;align-items:center;gap:10px;margin-bottom:12px;">';
+      h+='<div style="background:#B45309;color:#fff;border-radius:999px;padding:3px 14px;font-size:11px;font-weight:800;text-transform:uppercase;letter-spacing:.12em;">Vocabulaire</div>';
+      h+='<div style="font-size:15px;font-weight:700;color:#164E63;">Mots du module — <span style="font-weight:900;cursor:pointer;text-decoration:underline dotted;" onclick="fcOpen(0)">Cliquez pour les cartes mémoire 🃏</span></div></div>';
+      h+='<div class="vocab-grid">';
+      FC_CARDS.forEach(c=>{h+='<div class="vw" onclick="fcOpenWord(\''+c.word.replace(/'/g,"\\'")+'\')"><span class="dot"></span><span class="w">'+esc(c.word)+'</span></div>'});
+      h+='</div></div>';
+    }
+    h+='<div class="exs" id="exs-'+sec.id+'"></div>';
+    d.innerHTML=h;
+    wrap.appendChild(d);
+  });
+  // cartes d'exercices (sections à moteur)
+  EXOS.forEach(ex=>{
+    const host=document.getElementById('exs-'+ex.sec);
+    const card=document.createElement('div');
+    card.className='card';
+    let h='';
+    if(ex.savoir){
+      h+='<div class="savoir"><h3>'+ex.savoir.h+'</h3><table>';
+      ex.savoir.rows.forEach(r=>{h+='<tr><td>'+r[0]+'</td><td>'+r[1]+'</td></tr>'});
+      h+='</table></div>';
+    }
+    // ── Exercice à écrire (autocorrection ou correction IA) ──
+    if(ex.type==='write'){
+      h+='<div class="c-hdr"><span class="tag" style="background:'+ex.color+'">'+esc(ex.num)+'</span><span class="ctit" style="color:'+ex.color+'">'+esc(ex.tit)+'</span><span class="csub">'+esc(ex.sub)+'</span></div>';
+      const aiBadge = ex.items.some(it=>!it.accept) ? '<div style="font-size:12px;font-weight:800;color:#0D9488;margin-bottom:10px">🤖 Un assistant corrige ce que tu écris et te donne une rétroaction.</div>' : '';
+      h+=aiBadge+'<div class="wlist">';
+      ex.items.forEach((it,i)=>{
+        h+='<div class="witem"><div class="wq">'+(it.q||'')+'</div>';
+        h+='<div class="wrow"><input class="winput" id="wi_'+ex.id+'_'+i+'" placeholder="'+(it.ph||'Écris ta réponse…')+'" autocomplete="off">';
+        h+='<button class="btn btn-pri wbtn" onclick="checkWrite(\''+ex.id+'\','+i+')">Vérifier</button></div>';
+        h+='<div class="wfb" id="wf_'+ex.id+'_'+i+'"></div></div>';
+      });
+      h+='</div>';
+      card.innerHTML=h; host.appendChild(card); return;
+    }
+    h+='<div style="display:flex;gap:20px;align-items:flex-start;flex-wrap:wrap">';
+    h+='<div style="flex:1;min-width:300px">';
+    h+='<div class="c-hdr"><span class="tag" style="background:'+ex.color+'">'+esc(ex.num)+'</span><span class="ctit" style="color:'+ex.color+'">'+esc(ex.tit)+'</span><span class="csub">'+esc(ex.sub)+'</span></div>';
+    if(ex.type==='blanks') h+='<p class="blanks-p" id="mount-'+ex.id+'"></p>';
+    else h+='<div class="rows" id="mount-'+ex.id+'"></div>';
+    h+='</div>';
+    const vert=(ex.type==='match'||ex.type==='rows'||ex.type==='imgmatch')?' vert':'';
+    const bw=ex.type==='imgmatch'?'240px':((ex.type==='match'||ex.type==='rows')?'300px':'220px');
+    h+='<div class="bsec b1" style="flex:0 0 '+bw+'"><div class="blbl">Réponses</div><div class="btiles'+vert+'" id="bank-'+ex.id+'"></div></div>';
+    h+='</div>';
+    card.innerHTML=h;
+    host.appendChild(card);
+  });
+  injectCustom();
+}
+
+// ── SECTIONS PERSONNALISÉES (oral / écrit / autoéval) ─────────────────
+function injectCustom(){
+  // JE METS EN APPLICATION — jeu de rôle oral + écriture corrigée par l'IA
+  document.getElementById('exs-appli').innerHTML += `
+   <div class="card custom">
+     <div class="c-hdr"><span class="tag" style="background:#0D9488">Production orale</span><span class="ctit" style="color:#0D9488">Explique un problème</span></div>
+     <p class="lead">Choisis une situation (au choix) et <b>explique le problème à voix haute</b> à ton propriétaire : décris-le, précise depuis quand ça dure, et demande de l'aide.</p>
+     <div style="display:grid;grid-template-columns:1fr 1fr;gap:14px;margin-bottom:6px">
+       <div style="background:#F0FDFA;border:1.5px solid #99F6E4;border-radius:12px;padding:14px 16px">
+         <div style="font-weight:900;color:#0D9488;margin-bottom:6px">Problème 1</div>
+         <div style="font-size:13.5px;color:#3B6156">Le plancher de la cuisine est très abîmé. Vous avez des blessures aux pieds à cause du plancher. Ça fait plus de trois semaines que vous désirez en parler avec votre propriétaire. Il faudrait changer le plancher au complet.</div>
+       </div>
+       <div style="background:#F0FDFA;border:1.5px solid #99F6E4;border-radius:12px;padding:14px 16px">
+         <div style="font-weight:900;color:#0D9488;margin-bottom:6px">Problème 2</div>
+         <div style="font-size:13.5px;color:#3B6156">Le gazon de la cour arrière est rarement tondu. De plus, les voisins de gauche laissent traîner leurs ordures dans la cour. Vous désirez profiter de la cour avec vos enfants, mais elle est peu entretenue.</div>
+       </div>
+     </div>
+     <div class="rec-zone"><button id="recBtn">🎤</button><div class="rec-lbl" id="recLbl">Touche pour t'enregistrer</div></div>
+     <div id="poPrev" class="hidden" style="display:flex;flex-direction:column;gap:12px">
+       <audio id="poAudio" controls style="width:100%"></audio>
+       <textarea id="poText" rows="2" placeholder="Transcription automatique (tu peux la corriger)…"></textarea>
+       <div style="display:flex;gap:10px;flex-wrap:wrap">
+         <button class="btn btn-ghost" onclick="resetRec()">↺ Recommencer</button>
+         <button class="btn btn-pri" id="poFbBtn" onclick="poGetFeedback()">💬 Obtenir une rétroaction</button>
+       </div>
+       <div class="fb" id="poFb"></div>
+       <div id="poSend" style="display:none;gap:10px;flex-wrap:wrap;align-items:center">
+         <button class="btn btn-send" id="poSendBtn" onclick="poSend()">📨 Envoyer à mon enseignant</button>
+       </div>
+     </div>
+     <div class="status" id="poStatus">Analyse en cours…</div>
+     <div class="err" id="poErr"></div>
+   </div>`;
+  const rb=document.getElementById('recBtn'); if(rb) rb.addEventListener('click',toggleRec);
+
+  // JE RETIENS DES MOTS — notes + cartes mémoire + autoévaluation
+  const SELF=[
+    "Je peux décrire un problème dans mon logement.",
+    "Je peux dire depuis quand un problème existe.",
+    "Je peux me plaindre poliment à un propriétaire ou un concierge.",
+    "Je peux comprendre les étapes pour régler un problème.",
+    "Je connais les professionnels à contacter selon le problème.",
+  ];
+  document.getElementById('exs-retiens').innerHTML = `
+   <div class="card custom">
+     <div class="c-hdr"><span class="tag" style="background:#166534">Je retiens des mots</span><span class="ctit" style="color:#166534">Mes mots utiles</span></div>
+     <p class="lead">Note ici les mots et expressions à retenir. Tu peux aussi <span style="font-weight:900;cursor:pointer;text-decoration:underline dotted;color:#166534" onclick="fcOpen(0)">réviser les cartes mémoire 🃏</span>.</p>
+     <div style="font-weight:800;color:#166534;font-size:13px;margin:6px 0 4px">Différents problèmes dans un logement ou un immeuble</div>
+     <textarea rows="2" placeholder="Ex. : une fuite, une invasion, un bris, de la moisissure…"></textarea>
+     <div style="font-weight:800;color:#166534;font-size:13px;margin:12px 0 4px">Des adjectifs pour décrire des problèmes</div>
+     <textarea rows="2" placeholder="Ex. : dangereux, insalubre, défectueux, majeur…"></textarea>
+     <div style="font-weight:800;color:#166534;font-size:13px;margin:12px 0 4px">Des professionnels pour régler des problèmes</div>
+     <textarea rows="2" placeholder="Ex. : un plombier, un électricien, un exterminateur…"></textarea>
+   </div>
+   <div class="card custom">
+     <div class="c-hdr"><span class="tag" style="background:#166534">Autoévaluation</span><span class="ctit" style="color:#166534">Qu'est-ce que je suis capable de faire ?</span></div>
+     <p class="lead">Pour chaque énoncé, choisis : pas encore 😟, un peu 🙂, ou oui 😃.</p>
+     ${SELF.map((s,i)=>`<div class="selfrow"><div class="self-txt">${s}</div><div class="self-opts">
+        <button onclick="rate(${i},this)">😟</button><button onclick="rate(${i},this)">🙂</button><button onclick="rate(${i},this)">😃</button>
+     </div></div>`).join('')}
+     <div style="margin-top:16px"><button class="btn btn-pri" onclick="finishEval()">Terminer le module 🎉</button></div>
+     <div id="evalDone" class="fb"></div>
+   </div>`;
+}
+function rate(i,btn){ [...btn.parentElement.children].forEach(b=>b.classList.remove('sel')); btn.classList.add('sel'); }
+function finishEval(){
+  const el=document.getElementById('evalDone');
+  el.innerHTML='<div class="fb-c">🎉 Bravo, tu as terminé le module « Pouvez-vous régler le problème ? » ! Tu peux revenir sur n\'importe quel onglet pour pratiquer encore.</div>';
+  el.classList.add('on');
+  lmsTrack('exercise_completed',{finished:true});
+}
+
+// ── ENREGISTREMENT (production orale) ─────────────────────────────────
+let mediaRecorder=null, audioChunks=[], audioBlob=null, audioUrl=null, recognition=null, isRec=false, poFeedback="";
+const SR = window.SpeechRecognition || window.webkitSpeechRecognition;
+async function toggleRec(){
+  if(isRec){ stopRec(); return; }
+  hideErr('poErr');
+  let stream;
+  try{ stream=await navigator.mediaDevices.getUserMedia({audio:true}); }
+  catch(e){ showErr('poErr',"Impossible d'accéder au micro. Vérifie les autorisations."); return; }
+  audioChunks=[];
+  const mime = MediaRecorder.isTypeSupported('audio/webm')?'audio/webm':(MediaRecorder.isTypeSupported('audio/mp4')?'audio/mp4':'');
+  mediaRecorder = mime?new MediaRecorder(stream,{mimeType:mime}):new MediaRecorder(stream);
+  mediaRecorder.ondataavailable=e=>{ if(e.data.size>0)audioChunks.push(e.data); };
+  mediaRecorder.onstop=()=>{
+    stream.getTracks().forEach(t=>t.stop());
+    audioBlob=new Blob(audioChunks,{type:mediaRecorder.mimeType||'audio/webm'});
+    if(audioUrl)URL.revokeObjectURL(audioUrl);
+    audioUrl=URL.createObjectURL(audioBlob);
+    const a=document.getElementById('poAudio'); if(a)a.src=audioUrl;
+    document.getElementById('poPrev').classList.remove('hidden');
+  };
+  mediaRecorder.start();
+  if(SR){
+    recognition=new SR(); recognition.lang='fr-CA'; recognition.continuous=true; recognition.interimResults=false;
+    let tr='';
+    recognition.onresult=e=>{ for(let i=e.resultIndex;i<e.results.length;i++){ if(e.results[i].isFinal)tr+=e.results[i][0].transcript+' '; } const b=document.getElementById('poText'); if(b)b.value=tr.trim(); };
+    try{ recognition.start(); }catch(e){}
+  }
+  isRec=true;
+  const btn=document.getElementById('recBtn'); btn.classList.add('recording'); btn.textContent='⏹';
+  document.getElementById('recLbl').textContent="Enregistrement… touche pour arrêter";
+}
+function stopRec(){
+  isRec=false;
+  if(mediaRecorder&&mediaRecorder.state!=='inactive')mediaRecorder.stop();
+  if(recognition){ try{recognition.stop();}catch(e){} }
+  const btn=document.getElementById('recBtn'); if(btn){ btn.classList.remove('recording'); btn.textContent='🎤'; }
+  const l=document.getElementById('recLbl'); if(l)l.textContent="Touche pour réenregistrer";
+}
+function resetRec(){
+  audioBlob=null; if(audioUrl){URL.revokeObjectURL(audioUrl);audioUrl=null;}
+  document.getElementById('poPrev').classList.add('hidden');
+  document.getElementById('poText').value='';
+  const fb=document.getElementById('poFb'); fb.classList.remove('on'); fb.innerHTML='';
+  document.getElementById('poSend').style.display='none';
+  hideErr('poErr');
+}
+async function poGetFeedback(){
+  const text=document.getElementById('poText').value.trim();
+  if(!text){ showErr('poErr',"Je n'ai pas capté ta réponse. Réenregistre-toi ou écris ta phrase."); return; }
+  hideErr('poErr');
+  document.getElementById('poStatus').classList.add('on');
+  document.getElementById('poFbBtn').disabled=true;
+  try{
+    const res=await fetch('/api/correct-french',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({code:studentCode,text,question:"L'élève explique à son propriétaire un problème dans son logement : ce qui ne va pas, depuis quand, et il demande de l'aide pour le régler."})});
+    const data=await res.json();
+    document.getElementById('poStatus').classList.remove('on');
+    document.getElementById('poFbBtn').disabled=false;
+    if(!res.ok){ showErr('poErr',data.error||'Une erreur est survenue.'); return; }
+    renderCorr('poFb',data,text); poFeedback=corrSummary(data,text);
+    document.getElementById('poSend').style.display='flex';
+  }catch(e){
+    document.getElementById('poStatus').classList.remove('on');
+    document.getElementById('poFbBtn').disabled=false;
+    showErr('poErr','Impossible de contacter le serveur.');
+  }
+}
+async function poSend(){
+  if(!audioBlob){ showErr('poErr',"Enregistre-toi d'abord."); return; }
+  const btn=document.getElementById('poSendBtn'); btn.disabled=true; btn.textContent='Envoi…';
+  const ext=(audioBlob.type||'').includes('mp4')?'m4a':'webm';
+  const fd=new FormData();
+  fd.append('code',studentCode); fd.append('theme','Logement'); fd.append('taskId','module-probleme-po');
+  fd.append('taskLabel','Production orale — expliquer un problème'); fd.append('question','Expliquer un problème de logement à son propriétaire');
+  fd.append('transcription',document.getElementById('poText').value.trim()); fd.append('feedback',poFeedback);
+  fd.append('audio',audioBlob,'enregistrement.'+ext);
+  try{
+    const res=await fetch('/api/oral/submit',{method:'POST',body:fd});
+    const data=await res.json();
+    if(!res.ok){ showErr('poErr',data.error||"L'envoi a échoué."); btn.disabled=false; btn.textContent='📨 Envoyer à mon enseignant'; return; }
+    document.getElementById('poSend').innerHTML='<span class="sent">✅ Envoyé à ton enseignant !</span>';
+  }catch(e){ showErr('poErr',"Impossible d'envoyer."); btn.disabled=false; btn.textContent='📨 Envoyer à mon enseignant'; }
+}
+
+// ── CORRECTION ÉCRITE ─────────────────────────────────────────────────
+async function peCheck(){
+  const text=document.getElementById('peText').value.trim();
+  if(!text){ showErr('peErr',"Écris ton message d'abord."); return; }
+  hideErr('peErr');
+  document.getElementById('peStatus').classList.add('on');
+  document.getElementById('peBtn').disabled=true;
+  try{
+    const res=await fetch('/api/correct-french',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({code:studentCode,text,question:"L'élève écrit une petite annonce pour louer un appartement : nombre de pièces, loyer, inclusions et conditions."})});
+    const data=await res.json();
+    document.getElementById('peStatus').classList.remove('on');
+    document.getElementById('peBtn').disabled=false;
+    if(!res.ok){ showErr('peErr',data.error||'Une erreur est survenue.'); return; }
+    renderCorr('peFb',data,text);
+  }catch(e){
+    document.getElementById('peStatus').classList.remove('on');
+    document.getElementById('peBtn').disabled=false;
+    showErr('peErr','Impossible de contacter le serveur.');
+  }
+}
+function renderCorr(elId,data,orig){
+  const fb=document.getElementById(elId);
+  const corr=data.corrige||data.corrected||'';
+  const errs=data.erreurs||data.errors||[];
+  let html='<div class="fb-t">Rétroaction privée</div>';
+  if(data.memePhrase){ html+='<div class="fb-c">✅ Ton texte est déjà correct. Bravo !</div>'; }
+  else{
+    if(corr) html+='<div class="fb-c">✍️ '+esc(corr)+'</div>';
+    errs.forEach(e=>{ html+='<div class="fb-e">'+esc(e.explication||e.explanation||e)+'</div>'; });
+  }
+  fb.innerHTML=html; fb.classList.add('on');
+}
+function corrSummary(data,orig){
+  const corr=data.corrige||data.corrected||'';
+  const errs=data.erreurs||data.errors||[];
+  if(data.memePhrase) return "Phrase correcte : "+(corr||orig);
+  return "Correction : "+corr+(errs.length?' | '+errs.map(e=>e.explication||e.explanation||e).join(' '):'');
+}
+function showErr(id,msg){ const e=document.getElementById(id); if(e){e.textContent=msg; e.classList.add('on');} }
+function hideErr(id){ const e=document.getElementById(id); if(e)e.classList.remove('on'); }
+
+// ── EXERCICES À ÉCRIRE ────────────────────────────────────────────────
+function normWrite(s){
+  return (s||'').toLowerCase().trim().normalize('NFD').replace(/[̀-ͯ]/g,'')
+    .replace(/\s+/g,' ').replace(/[.!?;:]+$/,'').replace(/^["«»']+|["«»']+$/g,'').trim();
+}
+async function checkWrite(exId, i){
+  const ex=EXOS.find(e=>e.id===exId); if(!ex) return;
+  const it=ex.items[i];
+  const inp=document.getElementById('wi_'+exId+'_'+i);
+  const fb=document.getElementById('wf_'+exId+'_'+i);
+  const val=inp.value.trim();
+  const zid='w_'+exId+'_'+i;
+  if(!val){ fb.className='wfb no'; fb.textContent="✏️ Écris ta réponse d'abord."; return; }
+
+  // Mode autocorrection (réponse connue)
+  if(it.accept){
+    const ok=it.accept.map(normWrite).includes(normWrite(val));
+    fb.className='wfb '+(ok?'ok':'no');
+    fb.innerHTML= ok ? '✅ Bravo, c\'est exact !'
+      : '❌ Presque ! La bonne réponse est : <b>'+esc(it.accept[0])+'</b>';
+    if(ok){ inp.classList.add('good'); inp.disabled=true; trackPlacement(zid,true); }
+    else { trackPlacement(zid,false); }
+    return;
+  }
+
+  // Mode IA (réponse ouverte)
+  fb.className='wfb wait'; fb.textContent='⏳ L\'assistant corrige ta réponse…';
+  const btn=inp.parentElement.querySelector('.wbtn'); if(btn) btn.disabled=true;
+  try{
+    const res=await fetch('/api/check-written',{method:'POST',headers:{'Content-Type':'application/json'},
+      body:JSON.stringify({code:studentCode, consigne:(ex.sub||'')+' '+(it.q||''), reponse:val, attendu:it.hint||''})});
+    const d=await res.json();
+    if(btn) btn.disabled=false;
+    if(!res.ok){ fb.className='wfb no'; fb.textContent=d.error||'Service momentanément indisponible.'; return; }
+    fb.className='wfb '+(d.correct?'ok':'no');
+    let html=(d.correct?'✅ ':'💡 ')+esc(d.feedback||'');
+    if(!d.correct && d.correction){ html+='<br><b>Suggestion :</b> '+esc(d.correction); }
+    fb.innerHTML=html;
+    if(d.correct){ inp.classList.add('good'); trackPlacement(zid,true); }
+  }catch(e){
+    if(btn) btn.disabled=false;
+    fb.className='wfb no'; fb.textContent='Impossible de contacter le serveur. Réessaie.';
+  }
+}
+
+// ── RENDER ────────────────────────────────────────────────────────────
+function render(){
+  SECTIONS.forEach(sec=>{
+    document.getElementById('tab-'+sec.id).classList.toggle('on', curSec===sec.id);
+    document.getElementById('sec-'+sec.id).classList.toggle('on', curSec===sec.id);
+    const zids=Object.keys(ZONES).filter(z=>{const ex=EXOS.find(e=>e.id===ZONES[z].exo);return ex.sec===sec.id});
+    const done=zids.length>0&&zids.every(z=>TR.correct[z]);
+    document.getElementById('tab-'+sec.id).classList.toggle('done',done);
+  });
+  const ban=document.getElementById('sel-banner');
+  if(S.sel){ban.classList.add('on');document.getElementById('sel-lbl').textContent=S.sel.lbl}
+  else ban.classList.remove('on');
+
+  const used=usedIds();
+  EXOS.forEach(ex=>{
+    const mount=document.getElementById('mount-'+ex.id);
+    const bank=document.getElementById('bank-'+ex.id);
+    if(!mount||!bank) return;
+    mount.innerHTML=''; bank.innerHTML='';
+
+    if(ex.type==='vf'){
+      ex.rows.forEach(r=>{
+        const row=document.createElement('div');row.className='rrow';
+        const txt=document.createElement('div');txt.className='stxt';txt.innerHTML=r.txt;
+        row.appendChild(txt);row.appendChild(mkZone(r.id,'zvf'));
+        mount.appendChild(row);
+      });
+      ex.tiles.forEach((lbl,i)=>{
+        bank.appendChild(mkTile(ex.id+'_t'+i,lbl,ex.id,lbl==='VRAI'||lbl==='MUETTE'?'tv':'tf'));
+      });
+    }
+    if(ex.type==='match'){
+      ex.rows.forEach(r=>{
+        const row=document.createElement('div');row.className='rrow2';
+        const qc=document.createElement('div');qc.className='qcard';
+        qc.innerHTML='<div class="qlbl">Question</div><div class="qtxt">'+esc(r.q)+'</div>';
+        row.appendChild(qc);row.appendChild(mkZone(r.id,null,'glissez la réponse ici'));
+        mount.appendChild(row);
+      });
+      shuffled(ex.rows,7).forEach(r=>{ if(used.has(r.aid))return; bank.appendChild(mkTile(r.aid,r.a,ex.id,'ta')); });
+      if(!bank.children.length)bank.innerHTML='<div class="bempty">Toutes les réponses sont placées !</div>';
+    }
+    if(ex.type==='imgmatch'){
+      ex.rows.forEach(r=>{
+        const row=document.createElement('div');row.className='rrow2';
+        const qc=document.createElement('div');qc.className='qcard';
+        qc.innerHTML='<div class="qlbl">Énoncé</div><div class="qtxt">'+esc(r.txt)+'</div>';
+        row.appendChild(qc);
+        const z=mkImgZone(r.id, ex.images.find(im=>im.id===r.aid));
+        row.appendChild(z);
+        mount.appendChild(row);
+      });
+      shuffled(ex.images,11).forEach(im=>{ if(used.has(im.id))return; bank.appendChild(mkImgTile(im,ex.id)); });
+      if(!bank.children.length)bank.innerHTML='<div class="bempty">Toutes les images sont placées !</div>';
+    }
+    if(ex.type==='blanks'){
+      ex.segs.forEach(sg=>{ if(sg.k==='t'){mount.appendChild(document.createTextNode(sg.t))} else{mount.appendChild(mkBlank(sg.id))} });
+      shuffled(ex.words,23).forEach(w=>{ if(used.has(w.id))return; bank.appendChild(mkTile(w.id,w.l,ex.id,'tn')); });
+      if(!bank.children.length)bank.innerHTML='<div class="bempty">Tous les mots sont placés !</div>';
+    }
+    if(ex.type==='rows'){
+      ex.rows.forEach(r=>{
+        const row=document.createElement('div');row.className='rrow';
+        const lb=document.createElement('div');lb.className='timelbl';lb.textContent=r.lbl;
+        row.appendChild(lb);
+        const z=mkZone(r.id,null,'glissez la phrase ici');z.style.flex='1';
+        row.appendChild(z);
+        mount.appendChild(row);
+      });
+      shuffled(ex.bank,13).forEach(b=>{ if(used.has(b.id))return; bank.appendChild(mkTile(b.id,b.l,ex.id,'ta')); });
+      if(!bank.children.length)bank.innerHTML='<div class="bempty">Toutes les phrases sont placées !</div>';
+    }
+  });
+  updateChip();
+}
+function updateChip(){
+  const n=Object.keys(TR.correct).length;
+  document.getElementById('prog-chip').textContent='⭐ '+n+' / '+TOTAL_ZONES;
+}
+
+document.getElementById('btn-reset').addEventListener('click',()=>{ S.pl={};S.sel=null;S.fb={};render(); });
+
+// ── FLASHCARDS ────────────────────────────────────────────────────────
+let fcIdx=0;
+function fcShow(){
+  const c=FC_CARDS[fcIdx];
+  document.getElementById('fc-counter').textContent='Carte '+(fcIdx+1)+' / '+FC_CARDS.length;
+  document.getElementById('fc-word').textContent=c.word;
+  document.getElementById('fc-def').textContent=c.def;
+  document.getElementById('fc-ex').innerHTML=c.ex;
+  document.getElementById('fc-def').classList.add('hidden');
+  document.getElementById('fc-ex').classList.add('hidden');
+  document.getElementById('fc-reveal-btn').classList.remove('hidden');
+}
+function fcOpen(i){fcIdx=i||0;fcShow();document.getElementById('fc-overlay').classList.add('on')}
+function fcOpenWord(w){const i=FC_CARDS.findIndex(c=>c.word===w);fcOpen(i>=0?i:0)}
+document.getElementById('fc-reveal-btn').addEventListener('click',()=>{
+  document.getElementById('fc-def').classList.remove('hidden');
+  document.getElementById('fc-ex').classList.remove('hidden');
+  document.getElementById('fc-reveal-btn').classList.add('hidden');
+});
+document.getElementById('fc-prev').addEventListener('click',()=>{fcIdx=(fcIdx-1+FC_CARDS.length)%FC_CARDS.length;fcShow()});
+document.getElementById('fc-next').addEventListener('click',()=>{fcIdx=(fcIdx+1)%FC_CARDS.length;fcShow()});
+document.getElementById('fc-close').addEventListener('click',()=>document.getElementById('fc-overlay').classList.remove('on'));
+document.getElementById('fc-overlay').addEventListener('click',e=>{if(e.target.id==='fc-overlay')document.getElementById('fc-overlay').classList.remove('on')});
+
+// ── GO ────────────────────────────────────────────────────────────────
+buildStatic();
+render();
+lmsTrack('file_opened');
+</script>
+</body></html>
