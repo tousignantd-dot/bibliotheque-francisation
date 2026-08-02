@@ -23,30 +23,57 @@ VOICES = {
     "narrateur": "IPgYtHTNLjC7Bq7IPHrm",        # 👨 Narrateur
 }
 
+# Chaque personnage doit avoir une voix distincte de son ou sa
+# partenaire de dialogue, pour qu'on puisse reconnaître qui parle
+# sans jamais entendre le nom du personnage à voix haute.
 VOICE_ASSOC = {
-    "SOFIA": "feminin_2",
-    "MIGUEL": "masculin_1",
-    "MIRNA": "enseignante",
+    "KARIM": "masculin_1",
+    "NADIA": "feminin_2",
+    "FARIDA": "enseignante",
+    "SECRETAIRE": "feminin_2",
+    "OMAR": "masculin_1",
+    "EMPLOYEUSE": "enseignante",
+    "AZIZ": "narrateur",
 }
 
 # ── DIALOGUES ─────────────────────────────────────────────────────────
 DIALOGUES = {
     "module-travail/prep": {
-        "title": "C'est une absence ou un retard — Je me prépare (Remplacer une collègue)",
+        "title": "C'est une absence ou un retard — Je me prépare (Un départ précipité)",
         "lines": [
-            ("SOFIA", "J'ai eu un appel de madame Labonté, ma superviseure à la pharmacie. Ma collègue Tanya est malade aujourd'hui. Je dois la remplacer, mais j'ai un cours de francisation qui dure toute la journée. Qu'est-ce que je dois faire ? Je rentre au travail ou je vais à mon cours ?"),
-            ("MIGUEL", "Selon moi, il faut aller à ton cours. La pharmacie peut appeler une autre employée."),
-            ("SOFIA", "Non, il n'y a personne d'autre pour remplacer Tanya aujourd'hui. En plus, elle a bien voulu me remplacer la semaine passée. J'ai promis de lui rendre service à mon tour une prochaine fois…"),
-            ("MIGUEL", "Je comprends. Appelle la personne responsable des absences au centre de formation et explique-lui la situation. Puis, rappelle madame Labonté pour lui donner ton accord, mais seulement pour aujourd'hui. Elle doit trouver une autre personne pour remplacer demain, au besoin. Qu'est-ce que tu en penses ?"),
-            ("SOFIA", "Oui, bonne idée ! C'est vraiment un bon compromis."),
+            ("KARIM", "Nadia, je viens de recevoir un appel de l'école. Ma fille Sarah a de la fièvre, je dois aller la chercher tout de suite. Mais c'est déjà ma deuxième absence ce mois-ci… j'ai peur que mon superviseur soit fâché."),
+            ("NADIA", "Ne t'inquiète pas, la santé de ta fille passe avant tout. L'important, c'est de prévenir ton superviseur tout de suite, avant de partir, pas après."),
+            ("KARIM", "Tu as raison. Mais qu'est-ce que je dis si on me demande pourquoi c'est déjà la deuxième fois ce mois-ci ?"),
+            ("NADIA", "Explique la situation calmement, sans t'excuser trop longtemps, et propose de reprendre les heures manquées plus tard dans la semaine. Ça montre ta bonne volonté."),
+            ("KARIM", "D'accord, je l'appelle maintenant. Merci pour le conseil, Nadia."),
         ]
     },
     "module-travail/t1": {
-        "title": "C'est une absence ou un retard — Tâche 1 (Boîte vocale de Mirna)",
+        "title": "C'est une absence ou un retard — Tâche 1 (Boîte vocale de Farida)",
         "lines": [
-            ("MIRNA", "Bonjour, c'est Mirna. Je vous appelle parce que j'ai un rendez-vous à l'école de mon fils avec l'enseignante d'Édouard, et avec l'orthopédagogue de l'école, madame Martine Dulac."),
-            ("MIRNA", "Le rendez-vous est à 10 h 15 demain. Mon fils a de la difficulté en lecture, et je dois apporter une preuve pour justifier mon absence au cours de francisation."),
-            ("MIRNA", "La rencontre va durer environ une heure. Je devrais être de retour au centre de formation vers 10 h 45. Merci de votre compréhension."),
+            ("FARIDA", "Bonjour, c'est Farida. Je vous appelle parce que j'ai un rendez-vous à l'hôpital avec le spécialiste de ma fille, le docteur Bernard, orthopédiste."),
+            ("FARIDA", "Le rendez-vous est à 9 h 30 demain matin. Ma fille s'est blessée au bras la semaine dernière, et je dois apporter une preuve pour justifier mon absence au cours de francisation."),
+            ("FARIDA", "La consultation devrait durer environ 45 minutes. Je devrais être de retour au centre de formation vers 10 h 15. Merci de votre compréhension."),
+        ]
+    },
+    "module-travail/dial1": {
+        "title": "C'est une absence ou un retard — Exercice 4 (Un changement d'horaire)",
+        "lines": [
+            ("SECRETAIRE", "Bonjour, centre de formation, je vous écoute."),
+            ("OMAR", "Bonjour, j'aimerais savoir s'il est possible de changer mon horaire de cours."),
+            ("SECRETAIRE", "Oui, c'est possible. Vous devez seulement apporter une preuve d'emploi et remplir un formulaire signé."),
+            ("OMAR", "D'accord, et la nouvelle grille horaire s'applique à partir de quand ?"),
+            ("SECRETAIRE", "Dès le mois prochain."),
+        ]
+    },
+    "module-travail/dial2": {
+        "title": "C'est une absence ou un retard — Exercice 5 (Une confirmation de poste)",
+        "lines": [
+            ("EMPLOYEUSE", "Bonjour, je vous appelle pour confirmer votre entrevue pour le poste d'aide-cuisinier."),
+            ("AZIZ", "Ah oui, parfait, merci de me rappeler."),
+            ("EMPLOYEUSE", "Est-ce que quinze heures cet après-midi vous convient ?"),
+            ("AZIZ", "Oui, tout à fait, je serai là."),
+            ("EMPLOYEUSE", "Très bien, à tout à l'heure."),
         ]
     },
 }

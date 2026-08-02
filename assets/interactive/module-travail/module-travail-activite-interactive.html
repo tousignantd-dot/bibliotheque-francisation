@@ -262,6 +262,26 @@ const DIALOGUES = {
       ["FARIDA","La consultation devrait durer environ 45 minutes. Je devrais être de retour au centre de formation vers 10 h 15. Merci de votre compréhension."],
     ]
   },
+  dial1: {
+    label: "Dialogue 1 — Un changement d'horaire",
+    lines: [
+      ["SECRETAIRE","Bonjour, centre de formation, je vous écoute."],
+      ["OMAR","Bonjour, j'aimerais savoir s'il est possible de changer mon horaire de cours."],
+      ["SECRETAIRE","Oui, c'est possible. Vous devez seulement apporter une preuve d'emploi et remplir un formulaire signé."],
+      ["OMAR","D'accord, et la nouvelle grille horaire s'applique à partir de quand ?"],
+      ["SECRETAIRE","Dès le mois prochain."],
+    ]
+  },
+  dial2: {
+    label: "Dialogue 2 — Une confirmation de poste",
+    lines: [
+      ["EMPLOYEUSE","Bonjour, je vous appelle pour confirmer votre entrevue pour le poste d'aide-cuisinier."],
+      ["AZIZ","Ah oui, parfait, merci de me rappeler."],
+      ["EMPLOYEUSE","Est-ce que quinze heures cet après-midi vous convient ?"],
+      ["AZIZ","Oui, tout à fait, je serai là."],
+      ["EMPLOYEUSE","Très bien, à tout à l'heure."],
+    ]
+  },
 };
 
 // ── SECTIONS ──────────────────────────────────────────────────────────
@@ -329,7 +349,7 @@ const EXOS = [
    ]},
   {sec:'prep', id:'prDial1', type:'write', num:'Exercice 4', tit:"Dialogue 1 — Un changement d\'horaire", color:'#1D6B8F',
    sub:'Écoutez le dialogue, puis répondez aux questions.',
-   groupAudio:"La secrétaire : Bonjour, centre de formation, je vous écoute. L'étudiant : Bonjour, j'aimerais changer mon horaire de cours, est-ce possible ? La secrétaire : Oui, vous devez apporter une preuve d'emploi et remplir un formulaire signé. L'étudiant : D'accord, et la nouvelle grille s'applique à partir de quand ? La secrétaire : Dès le mois prochain.",
+   dialogue:'dial1',
    items:[
     {q:"Le but de l'appel concerne un changement de...", hint:"horaire de cours.", ph:"…"},
     {q:"Nommez les documents nécessaires pour faire la demande.", hint:"Une preuve d'emploi et un formulaire signé.", ph:"…"},
@@ -337,7 +357,7 @@ const EXOS = [
    ]},
   {sec:'prep', id:'prDial2', type:'write', num:'Exercice 5', tit:'Dialogue 2 — Une confirmation de poste', color:'#1D6B8F',
    sub:'Écoutez le dialogue, puis répondez aux questions.',
-   groupAudio:"L'employeuse : Bonjour, je vous appelle pour confirmer votre entrevue pour le poste d'aide-cuisinier. Monsieur Aziz : Ah oui, parfait, merci de me rappeler. L'employeuse : Est-ce que quinze heures cet après-midi vous convient ? Monsieur Aziz : Oui, tout à fait, je serai là. L'employeuse : Très bien, à tout à l'heure.",
+   dialogue:'dial2',
    items:[
     {q:"Quel est le but de l'appel ?", hint:"Confirmer à monsieur Aziz une entrevue pour un poste d'aide-cuisinier.", ph:"…"},
     {q:"Pour quel poste monsieur Aziz a-t-il postulé ?", hint:"Il a postulé pour un poste d'aide-cuisinier.", ph:"…"},
@@ -944,8 +964,18 @@ function buildStatic(){
     if(ex.type==='write'){
       h+='<div class="c-hdr"><span class="tag" style="background:'+ex.color+'">'+esc(ex.num)+'</span><span class="ctit" style="color:'+ex.color+'">'+esc(ex.tit)+'</span><span class="csub">'+esc(ex.sub)+'</span></div>';
       const aiBadge = ex.items.some(it=>!it.accept) ? '<div style="font-size:12px;font-weight:800;color:#0D9488;margin-bottom:10px">🤖 Un assistant corrige ce que tu écris et te donne une rétroaction.</div>' : '';
-      if(ex.groupAudio){
-        h+='<button class="btn btn-ghost wlisten" type="button" onclick="speakText(this,\''+jsq(ex.groupAudio)+'\')" style="margin-bottom:12px">🔊 Écouter le dialogue</button>';
+      if(ex.dialogue && DIALOGUES[ex.dialogue]){
+        const dia=DIALOGUES[ex.dialogue];
+        h+='<div class="audio-pl" style="margin-bottom:12px"><div class="audio-lbl">Dialogue</div>';
+        h+='<button class="btn-lu" onclick="playDialogue(\''+ex.dialogue+'\',this)">🔊 Écouter</button>';
+        h+='<button class="btn-lu" onclick="markRead(this)">📖 J\'ai lu</button></div>';
+        h+='<details style="margin-bottom:12px"><summary style="cursor:pointer;font-size:13px;font-weight:700;color:'+ex.color+'">Afficher le texte du dialogue</summary>';
+        h+='<div class="dial-txt"><div class="d-lbl">'+esc(dia.label)+'</div>';
+        dia.lines.forEach((l,i)=>{
+          const cls=(i%2===0)?'mb':'dr';
+          h+='<div class="dl"><span class="'+cls+'">'+esc(l[0])+' :</span> '+esc(l[1])+'</div>';
+        });
+        h+='</div></details>';
       }
       h+=aiBadge+'<div class="wlist">';
       ex.items.forEach((it,i)=>{
