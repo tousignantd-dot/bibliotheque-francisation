@@ -686,6 +686,7 @@ function playSpeechQueue(lines, btn, dialId){
     },400);
   }catch(e){}
 }
+function jsq(s){ return String(s).replace(/\\/g,'\\\\').replace(/'/g,"\\'"); }
 // ── LECTURE AUDIO D'UN MOT OU D'UNE PHRASE ISOLÉE (synthèse vocale) ────
 function speakText(btn, text){
   try{
@@ -931,7 +932,7 @@ function buildStatic(){
         if(ex.savoir.speak && r[2]){
           h+='<div style="margin-top:6px">';
           r[2].forEach(w=>{
-            h+='<button class="btn btn-ghost" type="button" onclick="speakText(this,'+JSON.stringify(w)+')" style="padding:2px 8px;font-size:12px;margin:2px 4px 0 0">🔊 '+esc(w)+'</button>';
+            h+='<button class="btn btn-ghost" type="button" onclick="speakText(this,\''+jsq(w)+'\')" style="padding:2px 8px;font-size:12px;margin:2px 4px 0 0">🔊 '+esc(w)+'</button>';
           });
           h+='</div>';
         }
@@ -944,13 +945,13 @@ function buildStatic(){
       h+='<div class="c-hdr"><span class="tag" style="background:'+ex.color+'">'+esc(ex.num)+'</span><span class="ctit" style="color:'+ex.color+'">'+esc(ex.tit)+'</span><span class="csub">'+esc(ex.sub)+'</span></div>';
       const aiBadge = ex.items.some(it=>!it.accept) ? '<div style="font-size:12px;font-weight:800;color:#0D9488;margin-bottom:10px">🤖 Un assistant corrige ce que tu écris et te donne une rétroaction.</div>' : '';
       if(ex.groupAudio){
-        h+='<button class="btn btn-ghost wlisten" type="button" onclick="speakText(this,'+JSON.stringify(ex.groupAudio)+')" style="margin-bottom:12px">🔊 Écouter le dialogue</button>';
+        h+='<button class="btn btn-ghost wlisten" type="button" onclick="speakText(this,\''+jsq(ex.groupAudio)+'\')" style="margin-bottom:12px">🔊 Écouter le dialogue</button>';
       }
       h+=aiBadge+'<div class="wlist">';
       ex.items.forEach((it,i)=>{
         h+='<div class="witem"><div class="wq">'+(it.q||'')+'</div>';
         if(it.audio){
-          h+='<button class="btn btn-ghost wlisten" type="button" onclick="speakText(this,'+JSON.stringify(it.audio)+')" style="margin-bottom:8px">🔊 Écouter</button>';
+          h+='<button class="btn btn-ghost wlisten" type="button" onclick="speakText(this,\''+jsq(it.audio)+'\')" style="margin-bottom:8px">🔊 Écouter</button>';
         }
         h+='<div class="wrow"><input class="winput" id="wi_'+ex.id+'_'+i+'" placeholder="'+(it.ph||'Écris ta réponse…')+'" autocomplete="off">';
         h+='<button class="btn btn-pri wbtn" onclick="checkWrite(\''+ex.id+'\','+i+')">Vérifier</button></div>';
