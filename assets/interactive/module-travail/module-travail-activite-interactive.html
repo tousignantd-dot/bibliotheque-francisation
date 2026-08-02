@@ -672,7 +672,7 @@ function playDialogue(dialId, btn){
   dlgBtn=btn;
   const lines=(DIALOGUES[dialId]&&DIALOGUES[dialId].lines)||[];
   dlgFallbackLines=lines;
-  const urls=lines.map((l,i)=>`${MODULE_SLUG}/${dialId}/line_${String(i+1).padStart(2,'0')}_${charSlug(l[0])}.mp3`);
+  const urls=lines.map((l,i)=>`/assets/interactive/${MODULE_SLUG}/${dialId}/line_${String(i+1).padStart(2,'0')}_${charSlug(l[0])}.mp3`);
   playAudioQueue(urls,0,btn,dialId,true);
 }
 function playAudioQueue(urls, idx, btn, dialId, allowFallback){
