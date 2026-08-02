@@ -661,6 +661,9 @@ function trackPlacement(zid, ok) {
 // ── DIALOGUE (audio réel si disponible, sinon synthèse vocale) ────────
 let dialogueRead = false;
 const MODULE_SLUG = 'module-travail';
+// Bump ce numéro chaque fois qu'un MP3 est régénéré, pour forcer le
+// navigateur à recharger le fichier au lieu de servir une version en cache.
+const AUDIO_V = '2';
 let dlgAudio=null, dlgBtn=null, dlgState='idle', dlgUsingSpeech=false, dlgFallbackLines=null, dlgPollIv=null;
 
 function charSlug(name){ return name.toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g,'').replace(/'/g,'').replace(/\s+/g,'_'); }
@@ -672,7 +675,7 @@ function playDialogue(dialId, btn){
   dlgBtn=btn;
   const lines=(DIALOGUES[dialId]&&DIALOGUES[dialId].lines)||[];
   dlgFallbackLines=lines;
-  const urls=lines.map((l,i)=>`/assets/interactive/${MODULE_SLUG}/${dialId}/line_${String(i+1).padStart(2,'0')}_${charSlug(l[0])}.mp3`);
+  const urls=lines.map((l,i)=>`/assets/interactive/${MODULE_SLUG}/${dialId}/line_${String(i+1).padStart(2,'0')}_${charSlug(l[0])}.mp3?v=${AUDIO_V}`);
   playAudioQueue(urls,0,btn,dialId,true);
 }
 function playAudioQueue(urls, idx, btn, dialId, allowFallback){
@@ -737,7 +740,7 @@ function speakText(btn, text){
 // sur la synthèse vocale si le fichier est absent.
 function playWord(btn, text, fileId){
   if(!fileId){ speakText(btn, text); return; }
-  const url = `/assets/interactive/${MODULE_SLUG}/sons/${fileId}.mp3`;
+  const url = `/assets/interactive/${MODULE_SLUG}/sons/${fileId}.mp3?v=${AUDIO_V}`;
   const old = btn ? btn.textContent : null;
   const reset = ()=>{ if(btn){ btn.disabled=false; btn.textContent=old; } };
   if(btn){ btn.disabled=true; btn.textContent='🔊 …'; }
