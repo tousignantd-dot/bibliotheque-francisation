@@ -19,6 +19,14 @@ except ImportError:
 
 VOICE_ID = "IPgYtHTNLjC7Bq7IPHrm"  # Narrateur — même voix pour toute la page, cohérence pédagogique
 
+# Voix de secours pour des clips précis où le narrateur prononçait mal
+# (ex. « hiver » incompréhensible avec le narrateur — signalé 2026-08-02).
+VOICE_OVERRIDES = {
+    "prPhon_savoir_0_5": "K7gx0ylJdff0yjM2uVQS",  # enseignante — hiver
+    "prPhon_savoir_1_3": "K7gx0ylJdff0yjM2uVQS",  # enseignante — hiver
+    "prPhon_phf": "K7gx0ylJdff0yjM2uVQS",         # enseignante — hiver
+}
+
 # fileId → texte à lire (doit correspondre exactement aux appels playWord()
 # dans module-travail-activite-interactive.html)
 CLIPS = {
@@ -95,7 +103,8 @@ def main():
         output_path = dir_path / f"{file_id}.mp3"
         print(f"  {file_id:22s} → ", end="", flush=True)
         total += 1
-        if generate_audio(api_key, text, VOICE_ID, output_path):
+        voice_id = VOICE_OVERRIDES.get(file_id, VOICE_ID)
+        if generate_audio(api_key, text, voice_id, output_path):
             print(f"✓ {text}")
             success += 1
         else:
