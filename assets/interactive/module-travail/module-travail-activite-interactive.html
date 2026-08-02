@@ -84,6 +84,19 @@ body{display:flex;flex-direction:column;min-height:100vh}
 .fb-no{background:#FEE2E2!important;border-color:#F87171!important;border-style:solid!important;color:#991B1B!important;animation:shk .5s ease}
 @keyframes shk{0%,100%{transform:translateX(0)}20%{transform:translateX(-6px)}60%{transform:translateX(6px)}80%{transform:translateX(-3px)}}
 
+.vf-head{display:flex;align-items:center;gap:10px;margin-bottom:6px}
+.vf-head-txt{flex:1}
+.vf-head-opt{width:72px;flex:0 0 72px;text-align:center;font-size:12px;font-weight:900;color:#64748B;text-transform:uppercase;letter-spacing:.06em}
+.vf-row{display:flex;align-items:center;gap:10px}
+.vf-opt{width:72px;flex:0 0 72px;min-height:44px;border-radius:10px;border:2.5px solid #CBD5E1;background:#F8FAFC;color:#64748B;font-weight:800;font-family:'Nunito',sans-serif;cursor:pointer;transition:background .15s,border-color .15s,color .15s}
+.vf-opt:hover{border-color:#94A3B8}
+.vf-opt.sel{background:#DBEAFE;border-color:#60A5FA;border-style:solid;color:#1E3A8A}
+.vf-opt.fb-ok{background:#D1FAE5!important;border-color:#34D399!important;border-style:solid!important;color:#065F46!important}
+.vf-opt.fb-no{background:#FEE2E2!important;border-color:#F87171!important;border-style:solid!important;color:#991B1B!important}
+.vf-summary{font-size:14px;font-weight:800}
+.vf-summary.ok{color:#065F46}
+.vf-summary.warn{color:#92400E}
+
 .blank{display:inline-block;min-width:130px;padding:4px 14px;margin:0 3px;border-radius:8px;font-weight:800;vertical-align:middle;cursor:pointer;transition:background .18s,border-color .18s,color .18s;user-select:none;border:2.5px dashed #93C5D6;background:#F0F9FF;color:#94A3B8;font-size:20px;text-align:center}
 .blank.filled{border-style:solid;border-color:#5EEAD4;background:#CCFBF1;color:#154F68}
 .blank.fb-ok{border-style:solid;border-color:#34D399;background:#D1FAE5;color:#065F46}
@@ -612,7 +625,7 @@ const FC_CARDS = [
 ];
 
 // ── ÉTAT ──────────────────────────────────────────────────────────────
-const S = {pl:{}, sel:null, fb:{}};
+const S = {pl:{}, sel:null, fb:{}, vfSel:{}};
 let curSec = 'prep';
 
 const ZONES = {};
@@ -805,6 +818,39 @@ function tileClick(iid, lbl, cat) {
   render();
 }
 
+// ── VRAI/FAUX PAR BOUTONS (colonnes + bouton Corriger) ─────────────────
+function vfSelect(zid, lbl) {
+  S.vfSel[zid] = lbl;
+  delete S.fb[zid];
+  render();
+}
+function vfCheckAll(exId) {
+  const ex = EXOS.find(e => e.id === exId);
+  if (!ex) return;
+  let answered = 0, correct = 0;
+  ex.rows.forEach(r => {
+    const sel = S.vfSel[r.id];
+    if (!sel) return;
+    answered++;
+    const ok = sel === r.ok;
+    if (ok) correct++;
+    S.fb[r.id] = ok ? 'ok' : 'no';
+    S.pl[r.id] = {iid:r.id, lbl:sel, cat:'vf'};
+    trackPlacement(r.id, ok);
+  });
+  const sumEl = document.getElementById('vfsum-'+exId);
+  if (sumEl) {
+    if (answered < ex.rows.length) {
+      sumEl.className = 'vf-summary warn';
+      sumEl.textContent = `Réponds à toutes les phrases avant de corriger (${answered}/${ex.rows.length}).`;
+    } else {
+      sumEl.className = 'vf-summary ok';
+      sumEl.textContent = `${correct} / ${ex.rows.length} bonnes réponses`;
+    }
+  }
+  render();
+}
+
 // ── DRAG & DROP ───────────────────────────────────────────────────────
 let dd = null;
 function drg(el, iid, lbl, cat, from) {
@@ -976,6 +1022,17 @@ function buildStatic(){
         h+='</td></tr>';
       });
       h+='</table></div>';
+    }
+    // ── Exercice Vrai/Faux (ou 2 catégories) — colonnes + bouton Corriger ──
+    if(ex.type==='vf'){
+      h+='<div class="c-hdr"><span class="tag" style="background:'+ex.color+'">'+esc(ex.num)+'</span><span class="ctit" style="color:'+ex.color+'">'+esc(ex.tit)+'</span><span class="csub">'+esc(ex.sub)+'</span></div>';
+      h+='<div class="vf-head"><div class="vf-head-txt"></div><div class="vf-head-opt">'+esc(ex.tiles[0])+'</div><div class="vf-head-opt">'+esc(ex.tiles[1])+'</div></div>';
+      h+='<div class="rows" id="mount-'+ex.id+'"></div>';
+      h+='<div style="margin-top:14px;display:flex;align-items:center;gap:12px;flex-wrap:wrap">';
+      h+='<button class="btn btn-pri" type="button" onclick="vfCheckAll(\''+ex.id+'\')">✓ Corriger</button>';
+      h+='<div class="vf-summary" id="vfsum-'+ex.id+'"></div>';
+      h+='</div>';
+      card.innerHTML=h; host.appendChild(card); return;
     }
     // ── Exercice à écrire (autocorrection ou correction IA) ──
     if(ex.type==='write'){
@@ -1283,13 +1340,13 @@ function render(){
   const used=usedIds();
   EXOS.forEach(ex=>{
     const mount=document.getElementById('mount-'+ex.id);
+    if(!mount) return;
     const bank=document.getElementById('bank-'+ex.id);
-    if(!mount||!bank) return;
-    mount.innerHTML=''; bank.innerHTML='';
+    mount.innerHTML=''; if(bank) bank.innerHTML='';
 
     if(ex.type==='vf'){
       ex.rows.forEach(r=>{
-        const row=document.createElement('div');row.className='rrow';
+        const row=document.createElement('div');row.className='vf-row';
         if(ex.listen){
           const sb=document.createElement('button');
           sb.type='button'; sb.className='btn btn-ghost'; sb.style.cssText='flex:0 0 auto;padding:8px 12px;font-size:16px';
@@ -1297,11 +1354,17 @@ function render(){
           row.appendChild(sb);
         }
         const txt=document.createElement('div');txt.className='stxt';txt.innerHTML=r.txt;
-        row.appendChild(txt);row.appendChild(mkZone(r.id,'zvf'));
+        row.appendChild(txt);
+        ex.tiles.forEach(lbl=>{
+          const b=document.createElement('button');
+          b.type='button'; b.className='vf-opt';
+          if(S.vfSel[r.id]===lbl) b.classList.add('sel');
+          if(S.fb[r.id] && S.vfSel[r.id]===lbl) b.classList.add(S.fb[r.id]==='ok'?'fb-ok':'fb-no');
+          b.textContent=lbl;
+          b.onclick=()=>vfSelect(r.id,lbl);
+          row.appendChild(b);
+        });
         mount.appendChild(row);
-      });
-      ex.tiles.forEach((lbl,i)=>{
-        bank.appendChild(mkTile(ex.id+'_t'+i,lbl,ex.id,lbl==='VRAI'||lbl==='MUETTE'?'tv':'tf'));
       });
     }
     if(ex.type==='match'){
@@ -1353,7 +1416,11 @@ function updateChip(){
   document.getElementById('prog-chip').textContent='⭐ '+n+' / '+TOTAL_ZONES;
 }
 
-document.getElementById('btn-reset').addEventListener('click',()=>{ S.pl={};S.sel=null;S.fb={};render(); });
+document.getElementById('btn-reset').addEventListener('click',()=>{
+  S.pl={};S.sel=null;S.fb={};S.vfSel={};
+  document.querySelectorAll('.vf-summary').forEach(el=>{el.textContent='';el.className='vf-summary';});
+  render();
+});
 
 // ── FLASHCARDS ────────────────────────────────────────────────────────
 let fcIdx=0;
