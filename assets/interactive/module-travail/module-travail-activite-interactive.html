@@ -762,6 +762,33 @@ function playWord(btn, text, fileId){
   a.onerror=()=>{ reset(); speakText(btn, text); };
   a.play().catch(()=>{ reset(); speakText(btn, text); });
 }
+// ── VÉRIFICATION DE PRONONCIATION (reconnaissance vocale native, "Je me prépare" seulement) ──
+function normPron(s){
+  return String(s).toLowerCase().normalize('NFD').replace(/[̀-ͯ]/g,'').replace(/[^a-z0-9\s]/g,'').replace(/\s+/g,' ').trim();
+}
+function pronCheck(btn, expected){
+  const SRC = window.SpeechRecognition || window.webkitSpeechRecognition;
+  if(!SRC){ btn.title='Reconnaissance vocale non supportée par ce navigateur (utilise Chrome).'; return; }
+  const old = btn.textContent;
+  btn.classList.remove('fb-ok','fb-no');
+  btn.disabled=true; btn.textContent='🎤 …';
+  const reset=()=>{ btn.disabled=false; btn.textContent=old; };
+  const target = normPron(expected);
+  let done=false;
+  const rec = new SRC();
+  rec.lang='fr-CA'; rec.interimResults=false; rec.maxAlternatives=1;
+  rec.onresult=e=>{
+    done=true;
+    const said = normPron(e.results[0][0].transcript);
+    const ok = said===target || said.includes(target) || target.includes(said);
+    reset();
+    btn.classList.add(ok?'fb-ok':'fb-no');
+    setTimeout(()=>btn.classList.remove('fb-ok','fb-no'), 2500);
+  };
+  rec.onerror=()=>{ if(!done) reset(); };
+  rec.onend=()=>{ if(!done) reset(); };
+  try{ rec.start(); }catch(e){ reset(); }
+}
 function pauseDialogue(){
   if(dlgUsingSpeech){ try{speechSynthesis.pause();}catch(e){} } else if(dlgAudio){ dlgAudio.pause(); }
   dlgState='paused'; if(dlgBtn) dlgBtn.textContent='▶ Reprendre';
@@ -1016,6 +1043,7 @@ function buildStatic(){
           r[2].forEach((w,wi)=>{
             const fid=ex.id+'_savoir_'+ri+'_'+wi;
             h+='<button class="btn btn-ghost" type="button" onclick="playWord(this,\''+jsq(w)+'\',\''+fid+'\')" style="padding:2px 8px;font-size:12px;margin:2px 4px 0 0">🔊 '+esc(w)+'</button>';
+            h+='<button class="btn btn-ghost" type="button" onclick="pronCheck(this,\''+jsq(w)+'\')" title="Répète le mot à voix haute" style="padding:2px 8px;font-size:12px;margin:2px 4px 0 0">🎤</button>';
           });
           h+='</div>';
         }
@@ -1352,6 +1380,11 @@ function render(){
           sb.type='button'; sb.className='btn btn-ghost'; sb.style.cssText='flex:0 0 auto;padding:8px 12px;font-size:16px';
           sb.textContent='🔊'; sb.onclick=()=>playWord(sb, r.txt.replace(/<[^>]+>/g,''), ex.id+'_'+r.id);
           row.appendChild(sb);
+          const mb=document.createElement('button');
+          mb.type='button'; mb.className='btn btn-ghost'; mb.style.cssText='flex:0 0 auto;padding:8px 12px;font-size:16px';
+          mb.title='Répète le mot à voix haute';
+          mb.textContent='🎤'; mb.onclick=()=>pronCheck(mb, r.txt.replace(/<[^>]+>/g,''));
+          row.appendChild(mb);
         }
         const txt=document.createElement('div');txt.className='stxt';txt.innerHTML=r.txt;
         row.appendChild(txt);
