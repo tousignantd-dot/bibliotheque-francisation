@@ -22,9 +22,9 @@ VOICE_ID = "IPgYtHTNLjC7Bq7IPHrm"  # Narrateur — même voix pour toute la page
 # Voix de secours pour des clips précis où le narrateur prononçait mal
 # (ex. « hiver » incompréhensible avec le narrateur — signalé 2026-08-02).
 VOICE_OVERRIDES = {
-    "prPhon_savoir_0_5": "K7gx0ylJdff0yjM2uVQS",  # enseignante — hiver
-    "prPhon_savoir_1_3": "K7gx0ylJdff0yjM2uVQS",  # enseignante — hiver
-    "prPhon_phf": "K7gx0ylJdff0yjM2uVQS",         # enseignante — hiver
+    "prPhon_savoir_0_5": "lpWJhr15teNWHhRqdTOQ",  # hiver
+    "prPhon_savoir_1_3": "lpWJhr15teNWHhRqdTOQ",  # hiver
+    "prPhon_phf": "lpWJhr15teNWHhRqdTOQ",         # hiver
 }
 
 # fileId → texte à lire (doit correspondre exactement aux appels playWord()
