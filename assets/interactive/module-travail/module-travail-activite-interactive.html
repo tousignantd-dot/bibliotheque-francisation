@@ -304,10 +304,10 @@ const EXOS = [
    ]},
   {sec:'prep', id:'prPhon', type:'vf', num:'Exercice 2', tit:'La graphie-phonie — [e] ou [ɛ]', color:'#1D6B8F', listen:true,
    sub:'Cliquez sur 🔊 pour écouter le mot, puis indiquez le son entendu.', tiles:['[e]','[ɛ]'],
-   savoir:{h:"› Des sons et des lettres", rows:[
-     ["[ɛ] au début ou au milieu d'un mot","è, ê, ei, ai + consonne : père, tête, treize, semaine · e + l : nouvelle · e + r : hiver"],
-     ["[e] en fin de mot","é, ai, er : dépanné, je travaillerai, dépanner (exceptions : hiver, mer)"],
-     ["[o]","o, ô : poste, dépôt, tôt, rôle"],
+   savoir:{h:"› Des sons et des lettres", speak:true, rows:[
+     ["[ɛ] au début ou au milieu d'un mot","è, ê, ei, ai + consonne : père, tête, treize, semaine · e + l : nouvelle · e + r : hiver", ["père","tête","treize","semaine","nouvelle","hiver"]],
+     ["[e] en fin de mot","é, ai, er : dépanné, je travaillerai, dépanner (exceptions : hiver, mer)", ["dépanné","je travaillerai","dépanner","hiver","mer"]],
+     ["[o]","o, ô : poste, dépôt, tôt, rôle", ["poste","dépôt","tôt","rôle"]],
    ]},
    rows:[
     {id:'pha', txt:"père", ok:'[ɛ]'},
@@ -690,13 +690,26 @@ function playSpeechQueue(lines, btn, dialId){
 function speakText(btn, text){
   try{
     speechSynthesis.cancel();
-    const u=new SpeechSynthesisUtterance(text);
-    u.lang='fr-CA'; u.rate=0.9;
-    const voices=speechSynthesis.getVoices();
-    const fr=voices.find(v=>/^fr/i.test(v.lang));
-    if(fr) u.voice=fr;
-    if(btn){ const old=btn.textContent; btn.disabled=true; btn.textContent='🔊 …'; u.onend=()=>{btn.disabled=false; btn.textContent=old;}; u.onerror=()=>{btn.disabled=false; btn.textContent=old;}; }
-    speechSynthesis.speak(u);
+    const old = btn ? btn.textContent : null;
+    const reset = ()=>{ if(btn){ btn.disabled=false; btn.textContent=old; } };
+    if(btn){ btn.disabled=true; btn.textContent='🔊 …'; }
+    const doSpeak = ()=>{
+      try{
+        const u=new SpeechSynthesisUtterance(text);
+        u.lang='fr-CA'; u.rate=0.9;
+        const voices=speechSynthesis.getVoices();
+        const fr=voices.find(v=>/^fr/i.test(v.lang));
+        if(fr) u.voice=fr;
+        u.onend=reset; u.onerror=reset;
+        speechSynthesis.speak(u);
+        // Filet de sécurité : Chrome laisse parfois speechSynthesis coincé
+        // sans jamais déclencher onend/onerror.
+        setTimeout(()=>{ if(!speechSynthesis.speaking) reset(); }, 8000);
+      }catch(e){ reset(); }
+    };
+    // Chrome ignore parfois un speak() appelé juste après cancel() dans le
+    // même tick : un court délai évite ce bug connu.
+    setTimeout(doSpeak, 60);
   }catch(e){}
 }
 function pauseDialogue(){
@@ -913,7 +926,17 @@ function buildStatic(){
     let h='';
     if(ex.savoir){
       h+='<div class="savoir"><h3>'+ex.savoir.h+'</h3><table>';
-      ex.savoir.rows.forEach(r=>{h+='<tr><td>'+r[0]+'</td><td>'+r[1]+'</td></tr>'});
+      ex.savoir.rows.forEach((r,ri)=>{
+        h+='<tr><td>'+r[0]+'</td><td>'+r[1];
+        if(ex.savoir.speak && r[2]){
+          h+='<div style="margin-top:6px">';
+          r[2].forEach(w=>{
+            h+='<button class="btn btn-ghost" type="button" onclick="speakText(this,'+JSON.stringify(w)+')" style="padding:2px 8px;font-size:12px;margin:2px 4px 0 0">🔊 '+esc(w)+'</button>';
+          });
+          h+='</div>';
+        }
+        h+='</td></tr>';
+      });
       h+='</table></div>';
     }
     // ── Exercice à écrire (autocorrection ou correction IA) ──
