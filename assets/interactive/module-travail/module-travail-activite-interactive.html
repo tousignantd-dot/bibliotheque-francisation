@@ -733,6 +733,19 @@ function speakText(btn, text){
     setTimeout(doSpeak, 60);
   }catch(e){}
 }
+// Essaie un vrai MP3 (assets/interactive/<module>/sons/<fileId>.mp3), retombe
+// sur la synthèse vocale si le fichier est absent.
+function playWord(btn, text, fileId){
+  if(!fileId){ speakText(btn, text); return; }
+  const url = `/assets/interactive/${MODULE_SLUG}/sons/${fileId}.mp3`;
+  const old = btn ? btn.textContent : null;
+  const reset = ()=>{ if(btn){ btn.disabled=false; btn.textContent=old; } };
+  if(btn){ btn.disabled=true; btn.textContent='🔊 …'; }
+  const a=new Audio(url);
+  a.onended=reset;
+  a.onerror=()=>{ reset(); speakText(btn, text); };
+  a.play().catch(()=>{ reset(); speakText(btn, text); });
+}
 function pauseDialogue(){
   if(dlgUsingSpeech){ try{speechSynthesis.pause();}catch(e){} } else if(dlgAudio){ dlgAudio.pause(); }
   dlgState='paused'; if(dlgBtn) dlgBtn.textContent='▶ Reprendre';
@@ -951,8 +964,9 @@ function buildStatic(){
         h+='<tr><td>'+r[0]+'</td><td>'+r[1];
         if(ex.savoir.speak && r[2]){
           h+='<div style="margin-top:6px">';
-          r[2].forEach(w=>{
-            h+='<button class="btn btn-ghost" type="button" onclick="speakText(this,\''+jsq(w)+'\')" style="padding:2px 8px;font-size:12px;margin:2px 4px 0 0">🔊 '+esc(w)+'</button>';
+          r[2].forEach((w,wi)=>{
+            const fid=ex.id+'_savoir_'+ri+'_'+wi;
+            h+='<button class="btn btn-ghost" type="button" onclick="playWord(this,\''+jsq(w)+'\',\''+fid+'\')" style="padding:2px 8px;font-size:12px;margin:2px 4px 0 0">🔊 '+esc(w)+'</button>';
           });
           h+='</div>';
         }
@@ -981,7 +995,8 @@ function buildStatic(){
       ex.items.forEach((it,i)=>{
         h+='<div class="witem"><div class="wq">'+(it.q||'')+'</div>';
         if(it.audio){
-          h+='<button class="btn btn-ghost wlisten" type="button" onclick="speakText(this,\''+jsq(it.audio)+'\')" style="margin-bottom:8px">🔊 Écouter</button>';
+          const fid=ex.id+'_'+i;
+          h+='<button class="btn btn-ghost wlisten" type="button" onclick="playWord(this,\''+jsq(it.audio)+'\',\''+fid+'\')" style="margin-bottom:8px">🔊 Écouter</button>';
         }
         h+='<div class="wrow"><input class="winput" id="wi_'+ex.id+'_'+i+'" placeholder="'+(it.ph||'Écris ta réponse…')+'" autocomplete="off">';
         h+='<button class="btn btn-pri wbtn" onclick="checkWrite(\''+ex.id+'\','+i+')">Vérifier</button></div>';
@@ -1275,7 +1290,7 @@ function render(){
         if(ex.listen){
           const sb=document.createElement('button');
           sb.type='button'; sb.className='btn btn-ghost'; sb.style.cssText='flex:0 0 auto;padding:8px 12px;font-size:16px';
-          sb.textContent='🔊'; sb.onclick=()=>speakText(sb, r.txt.replace(/<[^>]+>/g,''));
+          sb.textContent='🔊'; sb.onclick=()=>playWord(sb, r.txt.replace(/<[^>]+>/g,''), ex.id+'_'+r.id);
           row.appendChild(sb);
         }
         const txt=document.createElement('div');txt.className='stxt';txt.innerHTML=r.txt;
