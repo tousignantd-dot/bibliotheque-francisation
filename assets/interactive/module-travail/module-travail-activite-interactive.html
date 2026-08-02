@@ -245,13 +245,13 @@ const studentCode=getCode();
 // ── DIALOGUES ─────────────────────────────────────────────────────────
 const DIALOGUES = {
   prep: {
-    label: "Dialogue — Rendre service à un collègue",
+    label: "Dialogue — Un départ précipité",
     lines: [
-      ["KARIM","J'ai reçu un appel de monsieur Roy, mon superviseur à la garderie. Ma collègue Yasmine est malade aujourd'hui. On me demande de la remplacer, mais j'ai mon cours de francisation ce soir. Qu'est-ce que je dois faire ? Je vais travailler ou je vais à mon cours ?"],
-      ["NADIA","À mon avis, tu devrais aller à ton cours. La garderie peut sûrement trouver quelqu'un d'autre pour ce soir."],
-      ["KARIM","Non, il n'y a personne de disponible. En plus, Yasmine m'a rendu service la semaine dernière quand j'avais un empêchement. Je lui avais promis de l'aider à mon tour, une prochaine fois…"],
-      ["NADIA","Je comprends. Appelle la personne responsable des absences à ton centre de formation et explique-lui la situation. Ensuite, rappelle monsieur Roy pour lui donner ton accord, mais seulement pour ce soir. Il devra trouver quelqu'un d'autre pour demain, au besoin. Qu'est-ce que tu en penses ?"],
-      ["KARIM","Oui, bonne idée ! C'est vraiment un bon compromis."],
+      ["KARIM","Nadia, je viens de recevoir un appel de l'école. Ma fille Sarah a de la fièvre, je dois aller la chercher tout de suite. Mais c'est déjà ma deuxième absence ce mois-ci… j'ai peur que mon superviseur soit fâché."],
+      ["NADIA","Ne t'inquiète pas, la santé de ta fille passe avant tout. L'important, c'est de prévenir ton superviseur tout de suite, avant de partir, pas après."],
+      ["KARIM","Tu as raison. Mais qu'est-ce que je dis si on me demande pourquoi c'est déjà la deuxième fois ce mois-ci ?"],
+      ["NADIA","Explique la situation calmement, sans t'excuser trop longtemps, et propose de reprendre les heures manquées plus tard dans la semaine. Ça montre ta bonne volonté."],
+      ["KARIM","D'accord, je l'appelle maintenant. Merci pour le conseil, Nadia."],
     ]
   },
   t1: {
@@ -267,7 +267,7 @@ const DIALOGUES = {
 // ── SECTIONS ──────────────────────────────────────────────────────────
 const SECTIONS = [
   {id:'prep', no:'▶', title:'Je me prépare', color:'#1D6B8F',
-   intro:"📞 Karim doit remplacer une collègue malade à la garderie, mais il a un cours de francisation ce soir. Observez la bande dessinée, puis faites les exercices.",
+   intro:"📞 L'école appelle Karim : sa fille est malade et il doit partir plus tôt, mais c'est déjà sa deuxième absence ce mois-ci. Observez la bande dessinée, puis faites les exercices.",
    dialogue:'prep'},
   {id:'t1', no:'1', title:'Tâche 1 · Le message', color:'#C0573A',
    intro:"📱 Tâche 1 — Bonjour, mon message est pour… Comprendre un message téléphonique laissé dans une boîte vocale.",
@@ -288,22 +288,22 @@ const SECTIONS = [
 // type 'blanks' : segs {k:'t'/'b',id,c} + words {id,l}
 const EXOS = [
   // ── JE ME PRÉPARE ──
-  {sec:'prep', id:'pr1', type:'vf', num:'Exercice 1', tit:'Vrai ou Faux — Rendre service', color:'#1D6B8F',
+  {sec:'prep', id:'pr1', type:'vf', num:'Exercice 1', tit:'Vrai ou Faux — Un départ précipité', color:'#1D6B8F',
    sub:'Écoutez de nouveau le dialogue, puis répondez.', tiles:['VRAI','FAUX'],
    rows:[
-    {id:'pr1a', txt:"Yasmine appelle Karim pour lui demander de la remplacer.", ok:'FAUX'},
-    {id:'pr1b', txt:"Karim a un cours de francisation ce soir.", ok:'VRAI'},
-    {id:'pr1c', txt:"Yasmine a déjà rendu service à Karim.", ok:'VRAI'},
-    {id:'pr1d', txt:"Karim va dépanner la garderie seulement pour ce soir.", ok:'VRAI'},
-    {id:'pr1e', txt:"Il y a plusieurs collègues disponibles pour remplacer Yasmine.", ok:'FAUX'},
-    {id:'pr1f', txt:"Karim travaille dans une garderie.", ok:'VRAI'},
-    {id:'pr1g', txt:"Monsieur Roy est un collègue de Karim.", ok:'FAUX'},
-    {id:'pr1h', txt:"Karim a rendu service à Yasmine la semaine dernière.", ok:'FAUX'},
+    {id:'pr1a', txt:"C'est Nadia qui appelle Karim pour lui dire que sa fille est malade.", ok:'FAUX'},
+    {id:'pr1b', txt:"Karim doit aller chercher sa fille à l'école.", ok:'VRAI'},
+    {id:'pr1c', txt:"C'est la première absence de Karim ce mois-ci.", ok:'FAUX'},
+    {id:'pr1d', txt:"Nadia conseille à Karim de prévenir son superviseur avant de partir.", ok:'VRAI'},
+    {id:'pr1e', txt:"Nadia conseille à Karim d'appeler son superviseur seulement après son retour.", ok:'FAUX'},
+    {id:'pr1f', txt:"Karim et Nadia travaillent ensemble.", ok:'VRAI'},
+    {id:'pr1g', txt:"Sarah est la fille de Karim.", ok:'VRAI'},
+    {id:'pr1h', txt:"Karim propose de reprendre les heures manquées plus tard dans la semaine.", ok:'VRAI'},
     {id:'pr1i', txt:"Nadia conseille à Karim d'appeler son enseignant pour lui expliquer la situation.", ok:'FAUX'},
-    {id:'pr1j', txt:"Monsieur Roy devra trouver quelqu'un d'autre pour le lendemain, au besoin.", ok:'VRAI'},
+    {id:'pr1j', txt:"Karim doit s'excuser longuement avant d'expliquer la situation.", ok:'FAUX'},
    ]},
-  {sec:'prep', id:'prPhon', type:'vf', num:'Exercice 2', tit:'La graphie-phonie — [e] ou [ɛ]', color:'#1D6B8F',
-   sub:'Écoutez les mots, puis indiquez le son entendu.', tiles:['[e]','[ɛ]'],
+  {sec:'prep', id:'prPhon', type:'vf', num:'Exercice 2', tit:'La graphie-phonie — [e] ou [ɛ]', color:'#1D6B8F', listen:true,
+   sub:'Cliquez sur 🔊 pour écouter le mot, puis indiquez le son entendu.', tiles:['[e]','[ɛ]'],
    savoir:{h:"› Des sons et des lettres", rows:[
      ["[ɛ] au début ou au milieu d'un mot","è, ê, ei, ai + consonne : père, tête, treize, semaine · e + l : nouvelle · e + r : hiver"],
      ["[e] en fin de mot","é, ai, er : dépanné, je travaillerai, dépanner (exceptions : hiver, mer)"],
@@ -320,15 +320,16 @@ const EXOS = [
     {id:'phh', txt:"treize", ok:'[ɛ]'},
    ]},
   {sec:'prep', id:'prAccent', type:'write', num:'Exercice 3', tit:'Complète avec è, ê, ei, ai, e, é, er ou o/ô', color:'#1D6B8F',
-   sub:'Écoute et complète les mots avec le bon son.',
+   sub:"Clique sur 🔊 pour écouter la phrase, puis complète les mots avec le bon son.",
    items:[
-    {q:"J'aim___rais ___t___ pl___s pati___nt av___ mes coll___gu___s.", accept:["aimerais etre plus patient avec mes collegues","aimerais être plus patient avec mes collègues"], ph:"(essaie une lettre à la fois si tu hésites)"},
-    {q:"Le rend___-vous s___ passe demain m___tin, dans son bur___u.", accept:["rendez vous se passe demain matin dans son bureau","rendez-vous se passe demain matin dans son bureau"], ph:"…"},
-    {q:"Elle ___bs___rve la lettre av___c att___ntion.", accept:["observe la lettre avec attention"], ph:"…"},
-    {q:"Cet hiv___r, j___ dois pr___venir mon sup___rviseur ___t r___ster à la m___ison.", accept:["hiver je dois prevenir mon superviseur et rester a la maison","hiver je dois prévenir mon superviseur et rester à la maison"], ph:"…"},
+    {q:"J'aim___rais ___t___ pl___s pati___nt av___ mes coll___gu___s.", audio:"J'aimerais être plus patient avec mes collègues.", accept:["aimerais etre plus patient avec mes collegues","aimerais être plus patient avec mes collègues"], ph:"(essaie une lettre à la fois si tu hésites)"},
+    {q:"Le rend___-vous s___ passe demain m___tin, dans son bur___u.", audio:"Le rendez-vous se passe demain matin, dans son bureau.", accept:["rendez vous se passe demain matin dans son bureau","rendez-vous se passe demain matin dans son bureau"], ph:"…"},
+    {q:"Elle ___bs___rve la lettre av___c att___ntion.", audio:"Elle observe la lettre avec attention.", accept:["observe la lettre avec attention"], ph:"…"},
+    {q:"Cet hiv___r, j___ dois pr___venir mon sup___rviseur ___t r___ster à la m___ison.", audio:"Cet hiver, je dois prévenir mon superviseur et rester à la maison.", accept:["hiver je dois prevenir mon superviseur et rester a la maison","hiver je dois prévenir mon superviseur et rester à la maison"], ph:"…"},
    ]},
   {sec:'prep', id:'prDial1', type:'write', num:'Exercice 4', tit:"Dialogue 1 — Un changement d\'horaire", color:'#1D6B8F',
    sub:'Écoutez le dialogue, puis répondez aux questions.',
+   groupAudio:"La secrétaire : Bonjour, centre de formation, je vous écoute. L'étudiant : Bonjour, j'aimerais changer mon horaire de cours, est-ce possible ? La secrétaire : Oui, vous devez apporter une preuve d'emploi et remplir un formulaire signé. L'étudiant : D'accord, et la nouvelle grille s'applique à partir de quand ? La secrétaire : Dès le mois prochain.",
    items:[
     {q:"Le but de l'appel concerne un changement de...", hint:"horaire de cours.", ph:"…"},
     {q:"Nommez les documents nécessaires pour faire la demande.", hint:"Une preuve d'emploi et un formulaire signé.", ph:"…"},
@@ -336,6 +337,7 @@ const EXOS = [
    ]},
   {sec:'prep', id:'prDial2', type:'write', num:'Exercice 5', tit:'Dialogue 2 — Une confirmation de poste', color:'#1D6B8F',
    sub:'Écoutez le dialogue, puis répondez aux questions.',
+   groupAudio:"L'employeuse : Bonjour, je vous appelle pour confirmer votre entrevue pour le poste d'aide-cuisinier. Monsieur Aziz : Ah oui, parfait, merci de me rappeler. L'employeuse : Est-ce que quinze heures cet après-midi vous convient ? Monsieur Aziz : Oui, tout à fait, je serai là. L'employeuse : Très bien, à tout à l'heure.",
    items:[
     {q:"Quel est le but de l'appel ?", hint:"Confirmer à monsieur Aziz une entrevue pour un poste d'aide-cuisinier.", ph:"…"},
     {q:"Pour quel poste monsieur Aziz a-t-il postulé ?", hint:"Il a postulé pour un poste d'aide-cuisinier.", ph:"…"},
@@ -684,6 +686,19 @@ function playSpeechQueue(lines, btn, dialId){
     },400);
   }catch(e){}
 }
+// ── LECTURE AUDIO D'UN MOT OU D'UNE PHRASE ISOLÉE (synthèse vocale) ────
+function speakText(btn, text){
+  try{
+    speechSynthesis.cancel();
+    const u=new SpeechSynthesisUtterance(text);
+    u.lang='fr-CA'; u.rate=0.9;
+    const voices=speechSynthesis.getVoices();
+    const fr=voices.find(v=>/^fr/i.test(v.lang));
+    if(fr) u.voice=fr;
+    if(btn){ const old=btn.textContent; btn.disabled=true; btn.textContent='🔊 …'; u.onend=()=>{btn.disabled=false; btn.textContent=old;}; u.onerror=()=>{btn.disabled=false; btn.textContent=old;}; }
+    speechSynthesis.speak(u);
+  }catch(e){}
+}
 function pauseDialogue(){
   if(dlgUsingSpeech){ try{speechSynthesis.pause();}catch(e){} } else if(dlgAudio){ dlgAudio.pause(); }
   dlgState='paused'; if(dlgBtn) dlgBtn.textContent='▶ Reprendre';
@@ -905,9 +920,15 @@ function buildStatic(){
     if(ex.type==='write'){
       h+='<div class="c-hdr"><span class="tag" style="background:'+ex.color+'">'+esc(ex.num)+'</span><span class="ctit" style="color:'+ex.color+'">'+esc(ex.tit)+'</span><span class="csub">'+esc(ex.sub)+'</span></div>';
       const aiBadge = ex.items.some(it=>!it.accept) ? '<div style="font-size:12px;font-weight:800;color:#0D9488;margin-bottom:10px">🤖 Un assistant corrige ce que tu écris et te donne une rétroaction.</div>' : '';
+      if(ex.groupAudio){
+        h+='<button class="btn btn-ghost wlisten" type="button" onclick="speakText(this,'+JSON.stringify(ex.groupAudio)+')" style="margin-bottom:12px">🔊 Écouter le dialogue</button>';
+      }
       h+=aiBadge+'<div class="wlist">';
       ex.items.forEach((it,i)=>{
         h+='<div class="witem"><div class="wq">'+(it.q||'')+'</div>';
+        if(it.audio){
+          h+='<button class="btn btn-ghost wlisten" type="button" onclick="speakText(this,'+JSON.stringify(it.audio)+')" style="margin-bottom:8px">🔊 Écouter</button>';
+        }
         h+='<div class="wrow"><input class="winput" id="wi_'+ex.id+'_'+i+'" placeholder="'+(it.ph||'Écris ta réponse…')+'" autocomplete="off">';
         h+='<button class="btn btn-pri wbtn" onclick="checkWrite(\''+ex.id+'\','+i+')">Vérifier</button></div>';
         h+='<div class="wfb" id="wf_'+ex.id+'_'+i+'"></div></div>';
@@ -1197,6 +1218,12 @@ function render(){
     if(ex.type==='vf'){
       ex.rows.forEach(r=>{
         const row=document.createElement('div');row.className='rrow';
+        if(ex.listen){
+          const sb=document.createElement('button');
+          sb.type='button'; sb.className='btn btn-ghost'; sb.style.cssText='flex:0 0 auto;padding:8px 12px;font-size:16px';
+          sb.textContent='🔊'; sb.onclick=()=>speakText(sb, r.txt.replace(/<[^>]+>/g,''));
+          row.appendChild(sb);
+        }
         const txt=document.createElement('div');txt.className='stxt';txt.innerHTML=r.txt;
         row.appendChild(txt);row.appendChild(mkZone(r.id,'zvf'));
         mount.appendChild(row);
