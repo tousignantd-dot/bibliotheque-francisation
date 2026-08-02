@@ -797,13 +797,33 @@ function pronCheck(btn, expected){
   };
   rec.onerror=e=>{
     if(!done){
+      done=true;
       reset();
       fb.className='pron-fb warn';
       fb.textContent = e.error==='not-allowed' ? 'Micro refusé — autorise l\'accès au micro.' : 'Aucun son détecté, réessaie.';
     }
   };
-  rec.onend=()=>{ if(!done) reset(); };
-  try{ rec.start(); }catch(e){ reset(); fb.className='pron-fb warn'; fb.textContent='Impossible de démarrer le micro.'; }
+  // Filet de sécurité : certains navigateurs déclenchent onend sans jamais
+  // appeler onresult ni onerror (silence, coupure) — sans ce filet le
+  // message restait bloqué sur « Écoute en cours… ».
+  rec.onend=()=>{
+    if(!done){
+      done=true;
+      reset();
+      fb.className='pron-fb warn';
+      fb.textContent='Aucun son détecté, réessaie.';
+    }
+  };
+  setTimeout(()=>{
+    if(!done){
+      done=true;
+      try{ rec.stop(); }catch(e){}
+      reset();
+      fb.className='pron-fb warn';
+      fb.textContent='Aucun son détecté, réessaie.';
+    }
+  }, 7000);
+  try{ rec.start(); }catch(e){ done=true; reset(); fb.className='pron-fb warn'; fb.textContent='Impossible de démarrer le micro.'; }
 }
 function pauseDialogue(){
   if(dlgUsingSpeech){ try{speechSynthesis.pause();}catch(e){} } else if(dlgAudio){ dlgAudio.pause(); }
