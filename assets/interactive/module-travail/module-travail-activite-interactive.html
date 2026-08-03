@@ -770,6 +770,18 @@ function playWord(btn, text, fileId){
 function normPron(s){
   return String(s).toLowerCase().normalize('NFD').replace(/[̀-ͯ]/g,'').replace(/[^a-z0-9\s]/g,'').replace(/\s+/g,' ').trim();
 }
+// Certains mots courts sont mal transcrits par la reconnaissance vocale du
+// navigateur (nombres écrits en chiffres, homophones) même bien prononcés —
+// liste d'équivalences acceptées en plus de la comparaison normale.
+const PRON_ALIASES = {
+  'treize': ['13'],
+  'tot': ['sot','seau','saut','sceau'],
+};
+function pronMatches(said, target){
+  if(said===target || said.includes(target) || target.includes(said)) return true;
+  const alts = PRON_ALIASES[target] || [];
+  return alts.some(a=>said===a || said.includes(a) || a.includes(said));
+}
 function pronCheck(btn, expected){
   const SRC = window.SpeechRecognition || window.webkitSpeechRecognition;
   let fb = btn.nextElementSibling && btn.nextElementSibling.classList.contains('pron-fb') ? btn.nextElementSibling : null;
@@ -790,7 +802,7 @@ function pronCheck(btn, expected){
   const evaluate=(heard)=>{
     heard=heard.trim();
     const said = normPron(heard);
-    const ok = said===target || said.includes(target) || target.includes(said);
+    const ok = pronMatches(said, target);
     reset();
     btn.classList.add(ok?'fb-ok':'fb-no');
     fb.className='pron-fb '+(ok?'ok':'no');
