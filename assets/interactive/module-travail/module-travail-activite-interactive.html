@@ -987,6 +987,15 @@ function markRead(btn){
   btn.classList.add('done'); btn.textContent='✓ Lu';
   if(!dialogueRead){ dialogueRead=true; lmsTrack('dialogue_listened'); }
 }
+function toggleVocabExo(){
+  const card=document.getElementById('exo-prVocab');
+  const btn=document.getElementById('btnVocabToggle');
+  if(!card) return;
+  const opening = card.style.display==='none';
+  card.style.display = opening ? '' : 'none';
+  if(btn) btn.textContent = opening ? "Fermer l'exercice de vocabulaire" : 'Apprendre les mots de vocabulaire';
+  if(opening) card.scrollIntoView({behavior:'smooth', block:'start'});
+}
 
 // ── LOGIQUE DE PLACEMENT ──────────────────────────────────────────────
 function checkOk(zid, iid, lbl) {
@@ -1201,7 +1210,7 @@ function buildStatic(){
       h+='<div class="vocab-grid">';
       FC_CARDS.forEach(c=>{h+='<div class="vw" onclick="fcOpenWord(\''+c.word.replace(/'/g,"\\'")+'\')"><span class="dot"></span><span class="w">'+esc(c.word)+'</span></div>'});
       h+='</div>';
-      h+='<button class="btn btn-pri" type="button" style="margin-top:12px" onclick="document.getElementById(\'exo-prVocab\').scrollIntoView({behavior:\'smooth\',block:\'start\'})">Apprendre les mots de vocabulaire</button>';
+      h+='<button class="btn btn-pri" type="button" id="btnVocabToggle" style="margin-top:12px" onclick="toggleVocabExo()">Apprendre les mots de vocabulaire</button>';
       h+='</div>';
     }
     h+='<div class="exs" id="exs-'+sec.id+'"></div>';
@@ -1213,6 +1222,7 @@ function buildStatic(){
     const host=document.getElementById('exs-'+ex.sec);
     const card=document.createElement('div');
     card.className='card'; card.id='exo-'+ex.id;
+    if(ex.id==='prVocab') card.style.display='none';
     let h='';
     if(ex.savoir){
       h+='<div class="savoir"><h3>'+ex.savoir.h+'</h3><table>';
