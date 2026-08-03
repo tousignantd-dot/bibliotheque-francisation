@@ -260,9 +260,15 @@ textarea:focus{outline:none;border-color:#1D6B8F}
 #sec-prep .wfb.ok,#sec-prep .wfb b{color:var(--ws-accent)}
 #sec-prep .fb-ok{background:var(--ws-accent-bg)!important;border-color:var(--ws-accent)!important;color:var(--ws-accent)!important}
 #sec-prep .icon-svg{filter:none;opacity:.75}
-#sec-prep .btn-ghost:has(.icon-svg){
+/* Badge rond seulement pour les boutons icône SEULE (sans texte à côté) —
+   sinon un bouton comme "🔊 Écouter" se retrouve écrasé dans un rond de 34px. */
+#sec-prep .btn-ghost:has(.icon-svg):not(.wlisten){
   width:34px;height:34px;padding:0;border-radius:50%;display:inline-flex;
   align-items:center;justify-content:center;background:var(--ws-bg);border:1px solid var(--ws-line);
+}
+#sec-prep .btn-ghost.wlisten{
+  display:inline-flex;align-items:center;gap:8px;background:var(--ws-bg);
+  border:1px solid var(--ws-line);border-radius:999px;padding:9px 18px;color:var(--ws-ink);font-weight:600;
 }
 #sec-prep .pron-fb{color:var(--ws-sub);font-weight:600;font-size:13px}
 #sec-prep .pron-fb.ok{color:var(--ws-accent)}
