@@ -869,15 +869,31 @@ function pronMatches(said, target){
   const alts = PRON_ALIASES[target] || [];
   return alts.some(a=>said===a || said.includes(a) || a.includes(said));
 }
-// TEST : un mot isolé (une seule syllabe, sans contexte) est plus difficile à
-// reconnaître pour le moteur de reconnaissance vocale qu'un mot dans une
-// phrase. Ici on affiche le mot en contexte (en gras) — l'élève lit la
-// phrase, mais on vérifie seulement que le mot cible apparaît dans ce qui a
-// été entendu (pronMatches fait déjà cette vérification par inclusion).
+// RÈGLE (validée par l'utilisateur le 2026-08-03 après test) : un mot isolé
+// (surtout une seule syllabe) est toujours plus difficile à reconnaître pour
+// le moteur de reconnaissance vocale du navigateur qu'un mot dans une phrase
+// avec du contexte. CHAQUE mot demandé en lecture/prononciation isolée doit
+// donc être présenté dans une courte phrase, avec le mot cible en gras —
+// jamais le mot tout seul. L'élève lit la phrase, mais on vérifie seulement
+// que le mot cible apparaît dans ce qui a été entendu (pronMatches fait déjà
+// cette vérification par inclusion — aucun changement de logique requis).
+// ⚠️ À reproduire dans TOUS les futurs modules dès qu'un mot isolé est
+// demandé en prononciation (voir aussi memory: cours-niveau4-modules.md).
 const CARRIER_PHRASES = {
   'père': "Mon père arrive tôt le matin.",
-  'hiver': "Cet hiver, il fait très froid.",
+  'tête': "J'ai mal à la tête.",
   'treize': "Il est treize heures.",
+  'semaine': "Je travaille toute la semaine.",
+  'nouvelle': "J'ai une nouvelle adresse.",
+  'hiver': "Cet hiver, il fait très froid.",
+  'dépanné': "Le technicien m'a dépanné rapidement.",
+  'je travaillerai': "Demain, je travaillerai tard.",
+  'dépanner': "Il faut dépanner la voiture.",
+  'mer': "Nous allons à la mer.",
+  'poste': "Elle travaille à la poste.",
+  'dépôt': "J'ai fait un dépôt à la banque.",
+  'tôt': "Je me lève tôt.",
+  'rôle': "Il joue un rôle important.",
 };
 function pronCheck(btn, expected){
   const SRC = window.SpeechRecognition || window.webkitSpeechRecognition;
