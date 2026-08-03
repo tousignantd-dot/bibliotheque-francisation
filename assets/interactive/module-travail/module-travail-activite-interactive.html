@@ -25,6 +25,7 @@ body{display:flex;flex-direction:column;min-height:100vh}
 #tabs{background:#fff;display:flex;gap:6px;padding:10px 32px;position:sticky;top:76px;z-index:190;box-shadow:0 2px 12px rgba(0,0,0,.07);flex-wrap:wrap}
 .tab{border:2.5px solid transparent;border-radius:999px;padding:9px 18px;font-family:'Nunito',sans-serif;font-size:14.5px;font-weight:800;cursor:pointer;background:#EDF6F4;color:#5E8A82;transition:all .15s;display:flex;align-items:center;gap:8px}
 .tab .tno{width:24px;height:24px;border-radius:50%;background:#B7DED7;color:#fff;display:flex;align-items:center;justify-content:center;font-size:13px;font-weight:900;flex-shrink:0}
+.tab .tno-play{width:11px;height:11px;margin-left:2px}
 .tab.on{background:#1D6B8F;color:#fff}
 .tab.on .tno{background:rgba(255,255,255,.28)}
 .tab .tchk{display:none;color:#4ADE80;font-size:15px}
@@ -296,7 +297,6 @@ textarea:focus{outline:none;border-color:#1D6B8F}
 
 <div id="hdr">
   <div class="hdr-l">
-    <div class="hdr-ic">📞</div>
     <div><div class="hdr-eye">Monde du travail · Niveau 4</div><div class="hdr-h1">C'est une absence ou un retard ?</div></div>
   </div>
   <div class="hdr-r">
@@ -386,8 +386,8 @@ const DIALOGUES = {
 
 // ── SECTIONS ──────────────────────────────────────────────────────────
 const SECTIONS = [
-  {id:'prep', no:'▶', title:'Je me prépare', color:'#1D6B8F',
-   intro:"📞 L'école appelle Karim : sa fille est malade et il doit partir plus tôt, mais c'est déjà sa deuxième absence ce mois-ci.",
+  {id:'prep', no:'<img class="icon-svg tno-play" src="/assets/interactive/module-travail/icons/play.svg" alt="">', title:'Je me prépare', color:'#1D6B8F',
+   intro:"L'école appelle Karim : sa fille est malade et il doit partir plus tôt, mais c'est déjà sa deuxième absence ce mois-ci.",
    dialogue:'prep'},
   {id:'t1', no:'1', title:'Tâche 1 · Le message', color:'#C0573A',
    intro:"📱 Tâche 1 — Bonjour, mon message est pour… Comprendre un message téléphonique laissé dans une boîte vocale.",
@@ -396,7 +396,7 @@ const SECTIONS = [
    intro:"⏰ Tâche 2 — Demain, j'arriverai en retard parce que… Justifier à l'oral un retard, une absence ou un abandon."},
   {id:'t3', no:'3', title:'Tâche 3 · Le courriel', color:'#B45309',
    intro:"✉️ Tâche 3 — Bonjour, je vous écris pour… Écrire un message pour justifier un retard, une absence ou un abandon."},
-  {id:'appli', no:'▶', title:'Je mets en application', color:'#0D9488', custom:true,
+  {id:'appli', no:'<img class="icon-svg tno-play" src="/assets/interactive/module-travail/icons/play.svg" alt="">', title:'Je mets en application', color:'#0D9488', custom:true,
    intro:"🎤 Je mets en application — Écoute un message de la secrétaire, puis écris un courriel pour justifier un abandon."},
   {id:'retiens', no:'✓', title:'Je retiens des mots', color:'#166534', custom:true,
    intro:"📝 Je retiens des mots — Note le vocabulaire utile et révise avec les cartes mémoire."},
