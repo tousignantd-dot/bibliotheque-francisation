@@ -42,7 +42,7 @@ body{display:flex;flex-direction:column;min-height:100vh}
 .dial-hd{display:flex;align-items:center;justify-content:flex-start;gap:12px;flex-wrap:wrap}
 .dial-hd .d-lbl{margin-bottom:0}
 .dial-hd .btn-lu{width:auto;flex:0 0 auto;display:inline-flex;align-items:center;gap:8px;padding:5px 16px;border-radius:999px;font-size:14px;background:#DC2626!important;border-color:#DC2626!important;color:#fff!important}
-.dial-hd .btn-lu .icon-svg{filter:brightness(0) invert(1)}
+.dial-hd .btn-lu .icon-svg{filter:brightness(0) invert(1)!important;opacity:1!important}
 .dial-hd .btn-lu:hover{background:#B91C1C;border-color:#B91C1C}
 .dial-hd .btn-lu .icon-svg{width:17px;height:17px}
 .audio-pl{flex:0 0 160px;display:flex;flex-direction:column;align-items:center;justify-content:flex-start;padding-top:6px;gap:10px}
@@ -1287,7 +1287,10 @@ function buildStatic(){
     }
     // ── Exercice à écrire (autocorrection ou correction IA) ──
     if(ex.type==='write'){
-      h+='<div class="c-hdr"><span class="tag" style="background:'+ex.color+'">'+esc(ex.num)+'</span><span class="ctit" style="color:'+ex.color+'">'+esc(ex.tit)+'</span><span class="csub">'+esc(ex.sub)+'</span></div>';
+      // Si l'exercice a un dialogue, son titre est déjà affiché dans la
+      // pastille du dialogue juste en dessous — pas besoin de le répéter ici.
+      const titHtml = ex.dialogue ? '' : '<span class="ctit" style="color:'+ex.color+'">'+esc(ex.tit)+'</span>';
+      h+='<div class="c-hdr"><span class="tag" style="background:'+ex.color+'">'+esc(ex.num)+'</span>'+titHtml+'<span class="csub">'+esc(ex.sub)+'</span></div>';
       const aiBadge = ex.items.some(it=>!it.accept) ? '<div style="font-size:12px;font-weight:800;color:#0D9488;margin-bottom:10px;display:flex;align-items:center;gap:6px">'+ICON_ASSISTANT+' Un assistant corrige ce que tu écris et te donne une rétroaction.</div>' : '';
       if(ex.dialogue && DIALOGUES[ex.dialogue]){
         const dia=DIALOGUES[ex.dialogue];
