@@ -66,6 +66,9 @@ body{display:flex;flex-direction:column;min-height:100vh}
 .word-chip{display:flex;align-items:center;gap:4px;background:#FFFFFF;border:1.5px solid #CFE9E3;border-radius:20px;padding:4px 6px 4px 14px}
 .word-chip .wc-word{font-weight:800;color:#123B32;font-size:15px;margin-right:2px}
 .word-chip .btn{padding:4px 9px;font-size:14px;line-height:1;border-radius:14px}
+.icon-svg{width:1em;height:1em;vertical-align:middle;display:inline-block}
+.btn .icon-svg{width:15px;height:15px}
+.btn-ghost.wlisten .icon-svg,.btn-lu .icon-svg{width:17px;height:17px;margin-right:4px}
 .word-chip .pron-fb{flex-basis:100%;order:99;margin:4px 0 0}
 @media(max-width:640px){.savoir td:first-child{width:auto}.savoir table,.savoir tbody,.savoir tr,.savoir td{display:block;width:100%}.savoir td{border-bottom:none;padding:4px 0}.savoir tr{padding-bottom:10px;border-bottom:1px dashed #B7DED7;margin-bottom:6px}}
 
@@ -691,8 +694,8 @@ const MODULE_SLUG = 'module-travail';
 const AUDIO_V = '3';
 // Icônes des boutons son/micro de "Je me prépare" — change ces deux valeurs
 // pour remplacer les emojis par une image (ex. '<img src="/assets/interactive/module-travail/icons/speaker.svg">').
-const ICON_SPEAK = '🔊';
-const ICON_MIC = '🎤';
+const ICON_SPEAK = '<img class="icon-svg" src="/assets/interactive/module-travail/icons/speaker.svg" alt="Écouter">';
+const ICON_MIC = '<img class="icon-svg" src="/assets/interactive/module-travail/icons/mic.svg" alt="Micro">';
 let dlgAudio=null, dlgBtn=null, dlgState='idle', dlgUsingSpeech=false, dlgFallbackLines=null, dlgPollIv=null;
 
 function charSlug(name){ return name.toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g,'').replace(/'/g,'').replace(/\s+/g,'_'); }
@@ -743,9 +746,9 @@ function jsq(s){ return String(s).replace(/\\/g,'\\\\').replace(/'/g,"\\'"); }
 function speakText(btn, text){
   try{
     speechSynthesis.cancel();
-    const old = btn ? btn.textContent : null;
-    const reset = ()=>{ if(btn){ btn.disabled=false; btn.textContent=old; } };
-    if(btn){ btn.disabled=true; btn.textContent=ICON_SPEAK+' …'; }
+    const old = btn ? btn.innerHTML : null;
+    const reset = ()=>{ if(btn){ btn.disabled=false; btn.innerHTML=old; } };
+    if(btn){ btn.disabled=true; btn.innerHTML=ICON_SPEAK+' …'; }
     const doSpeak = ()=>{
       try{
         const u=new SpeechSynthesisUtterance(text);
@@ -770,9 +773,9 @@ function speakText(btn, text){
 function playWord(btn, text, fileId){
   if(!fileId){ speakText(btn, text); return; }
   const url = `/assets/interactive/${MODULE_SLUG}/sons/${fileId}.mp3?v=${AUDIO_V}`;
-  const old = btn ? btn.textContent : null;
-  const reset = ()=>{ if(btn){ btn.disabled=false; btn.textContent=old; } };
-  if(btn){ btn.disabled=true; btn.textContent=ICON_SPEAK+' …'; }
+  const old = btn ? btn.innerHTML : null;
+  const reset = ()=>{ if(btn){ btn.disabled=false; btn.innerHTML=old; } };
+  if(btn){ btn.disabled=true; btn.innerHTML=ICON_SPEAK+' …'; }
   const a=new Audio(url);
   a.onended=reset;
   a.onerror=()=>{ reset(); speakText(btn, text); };
@@ -799,11 +802,11 @@ function pronCheck(btn, expected){
   let fb = btn.nextElementSibling && btn.nextElementSibling.classList.contains('pron-fb') ? btn.nextElementSibling : null;
   if(!fb){ fb=document.createElement('span'); fb.className='pron-fb'; btn.insertAdjacentElement('afterend', fb); }
   if(!SRC){ fb.className='pron-fb warn'; fb.textContent='Reconnaissance vocale non supportée (utilise Chrome).'; return; }
-  const old = btn.textContent;
+  const old = btn.innerHTML;
   btn.classList.remove('fb-ok','fb-no');
-  btn.disabled=true; btn.textContent=ICON_MIC+' …';
+  btn.disabled=true; btn.innerHTML=ICON_MIC+' …';
   fb.className='pron-fb'; fb.textContent='Écoute en cours…';
-  const reset=()=>{ btn.disabled=false; btn.textContent=old; };
+  const reset=()=>{ btn.disabled=false; btn.innerHTML=old; };
   const target = normPron(expected);
   let done=false, lastInterim='';
   const rec = new SRC();
@@ -1451,12 +1454,12 @@ function render(){
         if(ex.listen){
           const sb=document.createElement('button');
           sb.type='button'; sb.className='btn btn-ghost'; sb.style.cssText='flex:0 0 auto;padding:8px 12px;font-size:16px';
-          sb.textContent='🔊'; sb.onclick=()=>playWord(sb, r.txt.replace(/<[^>]+>/g,''), ex.id+'_'+r.id);
+          sb.innerHTML=ICON_SPEAK; sb.onclick=()=>playWord(sb, r.txt.replace(/<[^>]+>/g,''), ex.id+'_'+r.id);
           row.appendChild(sb);
           const mb=document.createElement('button');
           mb.type='button'; mb.className='btn btn-ghost'; mb.style.cssText='flex:0 0 auto;padding:8px 12px;font-size:16px';
           mb.title='Répète le mot à voix haute';
-          mb.textContent='🎤'; mb.onclick=()=>pronCheck(mb, r.txt.replace(/<[^>]+>/g,''));
+          mb.innerHTML=ICON_MIC; mb.onclick=()=>pronCheck(mb, r.txt.replace(/<[^>]+>/g,''));
           row.appendChild(mb);
         }
         const txt=document.createElement('div');txt.className='stxt';txt.innerHTML=r.txt;
