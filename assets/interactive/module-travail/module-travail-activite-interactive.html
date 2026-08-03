@@ -100,6 +100,7 @@ body{display:flex;flex-direction:column;min-height:100vh}
 
 .vf-head{display:flex;align-items:center;gap:10px;margin-bottom:6px}
 .vf-head-txt{flex:1}
+.vf-head-opts{display:flex;gap:8px;flex:0 0 auto}
 .vf-head-opt{width:72px;flex:0 0 72px;text-align:center;font-size:12px;font-weight:900;color:#64748B;text-transform:uppercase;letter-spacing:.06em}
 .vf-row{display:flex;align-items:center;gap:10px;flex-wrap:wrap;background:#F8FDFC;border:1.5px solid #DCEEEA;border-radius:12px;padding:10px 12px}
 .vf-row .stxt{background:transparent;padding:4px 0}
@@ -1256,7 +1257,7 @@ function buildStatic(){
     // ── Exercice Vrai/Faux (ou 2 catégories) — colonnes + bouton Corriger ──
     if(ex.type==='vf'){
       h+='<div class="c-hdr"><span class="tag" style="background:'+ex.color+'">'+esc(ex.num)+'</span><span class="ctit" style="color:'+ex.color+'">'+esc(ex.tit)+'</span><span class="csub">'+esc(ex.sub)+'</span></div>';
-      h+='<div class="vf-head"><div class="vf-head-txt"></div><div class="vf-head-opt">'+esc(ex.tiles[0])+'</div><div class="vf-head-opt">'+esc(ex.tiles[1])+'</div></div>';
+      h+='<div class="vf-head"><div class="vf-head-txt"></div><div class="vf-head-opts"><div class="vf-head-opt">'+esc(ex.tiles[0])+'</div><div class="vf-head-opt">'+esc(ex.tiles[1])+'</div></div></div>';
       h+='<div class="rows" id="mount-'+ex.id+'"></div>';
       h+='<div style="margin-top:14px;display:flex;align-items:center;gap:12px;flex-wrap:wrap">';
       h+='<button class="btn btn-pri" type="button" onclick="vfCheckAll(\''+ex.id+'\')">✓ Corriger</button>';
