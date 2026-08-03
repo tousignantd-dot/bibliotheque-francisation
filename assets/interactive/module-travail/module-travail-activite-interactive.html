@@ -405,9 +405,28 @@ const SECTIONS = [
 // type 'vf'     : lignes {id,txt,ok} — tuiles fixes (labels)
 // type 'match'  : lignes {id,q,aid,a} — banque = réponses
 // type 'blanks' : segs {k:'t'/'b',id,c} + words {id,l}
+// ── FLASHCARDS ────────────────────────────────────────────────────────
+const FC_CARDS = [
+  {word:"un retard", def:"Le fait d'arriver après un moment fixé.", ex:"J'aurai un <strong>retard</strong> ce matin."},
+  {word:"une absence", def:"Le fait de ne pas se trouver à un endroit où on est attendu.", ex:"Je vous écris pour justifier mon <strong>absence</strong>."},
+  {word:"un abandon", def:"Le fait de renoncer à une chose (un cours, un travail).", ex:"Il a dû faire un <strong>abandon</strong> de son cours."},
+  {word:"une boîte vocale", def:"Le système qui enregistre un message quand personne ne répond.", ex:"J'ai laissé un message dans sa <strong>boîte vocale</strong>."},
+  {word:"remplacer", def:"Prendre la place de quelqu'un.", ex:"Je dois <strong>remplacer</strong> ma collègue malade."},
+  {word:"un dégât d'eau", def:"Un dommage causé par de l'eau dans un logement.", ex:"J'ai un <strong>dégât d'eau</strong> dans mon appartement."},
+  {word:"un billet médical", def:"Un document du médecin qui confirme une consultation.", ex:"J'ai apporté un <strong>billet médical</strong>."},
+  {word:"une superviseure", def:"La personne responsable des employés.", ex:"Ma <strong>superviseure</strong> m'a appelé ce matin."},
+  {word:"une pièce d'identité", def:"Un document officiel qui prouve qui on est.", ex:"Apportez une <strong>pièce d'identité</strong> pour l'inscription."},
+  {word:"le télétravail", def:"Travailler depuis la maison.", ex:"Je serai en <strong>télétravail</strong> aujourd'hui."},
+  {word:"une entrevue d'embauche", def:"Une rencontre pour obtenir un emploi.", ex:"Elle a une <strong>entrevue d'embauche</strong> à 13 h 30."},
+  {word:"une orthopédagogue", def:"La personne qui aide les élèves ayant des difficultés d'apprentissage.", ex:"L'<strong>orthopédagogue</strong> rencontre mon fils demain."},
+];
+
 const EXOS = [
+ {sec:'prep', id:'prVocab', type:'match', num:'Exercice 1', tit:'Associe le mot à sa définition', color:'#1D6B8F',
+  sub:'Fais glisser la bonne définition vers chaque mot.',
+  rows: FC_CARDS.map((c,i)=>({id:'pv'+i, q:c.word, aid:'pv'+i, a:c.def}))},
   // ── JE ME PRÉPARE ──
-  {sec:'prep', id:'pr1', type:'vf', num:'Exercice 1', tit:'Vrai ou Faux — Un départ précipité', color:'#1D6B8F',
+  {sec:'prep', id:'pr1', type:'vf', num:'Exercice 2', tit:'Vrai ou Faux — Un départ précipité', color:'#1D6B8F',
    sub:'Écoutez de nouveau le dialogue, puis répondez.', tiles:['VRAI','FAUX'],
    rows:[
     {id:'pr1a', txt:"C'est Nadia qui appelle Karim pour lui dire que sa fille est malade.", ok:'FAUX'},
@@ -421,7 +440,7 @@ const EXOS = [
     {id:'pr1i', txt:"Nadia conseille à Karim d'appeler son enseignant pour lui expliquer la situation.", ok:'FAUX'},
     {id:'pr1j', txt:"Karim doit s'excuser longuement avant d'expliquer la situation.", ok:'FAUX'},
    ]},
-  {sec:'prep', id:'prPhon', type:'vf', num:'Exercice 2', tit:'La graphie-phonie — [e] ou [ɛ]', color:'#1D6B8F', listen:true,
+  {sec:'prep', id:'prPhon', type:'vf', num:'Exercice 3', tit:'La graphie-phonie — [e] ou [ɛ]', color:'#1D6B8F', listen:true,
    sub:"Clique sur l'icône d'écoute pour entendre le mot, puis indique le son entendu.", tiles:['[e]','[ɛ]'],
    savoir:{h:"› Des sons et des lettres", speak:true, rows:[
      ["[ɛ] au début ou au milieu d'un mot","è, ê, ei, ai + consonne : père, tête, treize, semaine · e + l : nouvelle · e + r : hiver", ["père","tête","treize","semaine","nouvelle","hiver"]],
@@ -438,7 +457,7 @@ const EXOS = [
     {id:'phg', txt:"dépanner", ok:'[e]'},
     {id:'phh', txt:"treize", ok:'[ɛ]'},
    ]},
-  {sec:'prep', id:'prAccent', type:'write', num:'Exercice 3', tit:'Complète avec è, ê, ei, ai, e, é, er ou o/ô', color:'#1D6B8F',
+  {sec:'prep', id:'prAccent', type:'write', num:'Exercice 4', tit:'Complète avec è, ê, ei, ai, e, é, er ou o/ô', color:'#1D6B8F',
    sub:"Clique sur l'icône d'écoute pour entendre la phrase, puis complète les mots avec le bon son.",
    items:[
     {q:"J'aim___rais ___t___ pl___s pati___nt av___ mes coll___gu___s.", audio:"J'aimerais être plus patient avec mes collègues.", accept:["aimerais etre plus patient avec mes collegues","aimerais être plus patient avec mes collègues"], ph:"(essaie une lettre à la fois si tu hésites)"},
@@ -446,7 +465,7 @@ const EXOS = [
     {q:"Elle ___bs___rve la lettre av___c att___ntion.", audio:"Elle observe la lettre avec attention.", accept:["observe la lettre avec attention"], ph:"…"},
     {q:"Cet hiv___r, j___ dois pr___venir mon sup___rviseur ___t r___ster à la m___ison.", audio:"Cet hiver, je dois prévenir mon superviseur et rester à la maison.", accept:["hiver je dois prevenir mon superviseur et rester a la maison","hiver je dois prévenir mon superviseur et rester à la maison"], ph:"…"},
    ]},
-  {sec:'prep', id:'prDial1', type:'write', num:'Exercice 4', tit:"Dialogue 1 — Un changement d\'horaire", color:'#1D6B8F',
+  {sec:'prep', id:'prDial1', type:'write', num:'Exercice 5', tit:"Dialogue 1 — Un changement d\'horaire", color:'#1D6B8F',
    sub:'Écoutez le dialogue, puis répondez aux questions.',
    dialogue:'dial1',
    items:[
@@ -454,7 +473,7 @@ const EXOS = [
     {q:"Nommez les documents nécessaires pour faire la demande.", hint:"Une preuve d'emploi et un formulaire signé.", ph:"…"},
     {q:"Quand la nouvelle grille horaire entre-t-elle en vigueur ?", hint:"Le mois prochain.", ph:"…"},
    ]},
-  {sec:'prep', id:'prDial2', type:'write', num:'Exercice 5', tit:'Dialogue 2 — Une confirmation de poste', color:'#1D6B8F',
+  {sec:'prep', id:'prDial2', type:'write', num:'Exercice 6', tit:'Dialogue 2 — Une confirmation de poste', color:'#1D6B8F',
    sub:'Écoutez le dialogue, puis répondez aux questions.',
    dialogue:'dial2',
    items:[
@@ -692,22 +711,6 @@ const EXOS = [
     {q:"Apportez votre billet médical à la réception.", accept:["il faut apporter"], ph:"Il faut…"},
     {q:"Prenez le temps de bien vous reposer.", accept:["il faut prendre"], ph:"Il faut…"},
    ]},
-];
-
-// ── FLASHCARDS ────────────────────────────────────────────────────────
-const FC_CARDS = [
-  {word:"un retard", def:"Le fait d'arriver après un moment fixé.", ex:"J'aurai un <strong>retard</strong> ce matin."},
-  {word:"une absence", def:"Le fait de ne pas se trouver à un endroit où on est attendu.", ex:"Je vous écris pour justifier mon <strong>absence</strong>."},
-  {word:"un abandon", def:"Le fait de renoncer à une chose (un cours, un travail).", ex:"Il a dû faire un <strong>abandon</strong> de son cours."},
-  {word:"une boîte vocale", def:"Le système qui enregistre un message quand personne ne répond.", ex:"J'ai laissé un message dans sa <strong>boîte vocale</strong>."},
-  {word:"remplacer", def:"Prendre la place de quelqu'un.", ex:"Je dois <strong>remplacer</strong> ma collègue malade."},
-  {word:"un dégât d'eau", def:"Un dommage causé par de l'eau dans un logement.", ex:"J'ai un <strong>dégât d'eau</strong> dans mon appartement."},
-  {word:"un billet médical", def:"Un document du médecin qui confirme une consultation.", ex:"J'ai apporté un <strong>billet médical</strong>."},
-  {word:"une superviseure", def:"La personne responsable des employés.", ex:"Ma <strong>superviseure</strong> m'a appelé ce matin."},
-  {word:"une pièce d'identité", def:"Un document officiel qui prouve qui on est.", ex:"Apportez une <strong>pièce d'identité</strong> pour l'inscription."},
-  {word:"le télétravail", def:"Travailler depuis la maison.", ex:"Je serai en <strong>télétravail</strong> aujourd'hui."},
-  {word:"une entrevue d'embauche", def:"Une rencontre pour obtenir un emploi.", ex:"Elle a une <strong>entrevue d'embauche</strong> à 13 h 30."},
-  {word:"une orthopédagogue", def:"La personne qui aide les élèves ayant des difficultés d'apprentissage.", ex:"L'<strong>orthopédagogue</strong> rencontre mon fils demain."},
 ];
 
 // ── ÉTAT ──────────────────────────────────────────────────────────────
@@ -1197,7 +1200,9 @@ function buildStatic(){
       h+='<div style="font-size:15px;font-weight:700;color:#154F68;">Mots du module — <span style="font-weight:900;cursor:pointer;text-decoration:underline dotted;" onclick="fcOpen(0)">Cliquez pour les cartes mémoire 🃏</span></div></div>';
       h+='<div class="vocab-grid">';
       FC_CARDS.forEach(c=>{h+='<div class="vw" onclick="fcOpenWord(\''+c.word.replace(/'/g,"\\'")+'\')"><span class="dot"></span><span class="w">'+esc(c.word)+'</span></div>'});
-      h+='</div></div>';
+      h+='</div>';
+      h+='<button class="btn btn-pri" type="button" style="margin-top:12px" onclick="document.getElementById(\'exo-prVocab\').scrollIntoView({behavior:\'smooth\',block:\'start\'})">Apprendre les mots de vocabulaire</button>';
+      h+='</div>';
     }
     h+='<div class="exs" id="exs-'+sec.id+'"></div>';
     d.innerHTML=h;
@@ -1207,7 +1212,7 @@ function buildStatic(){
   EXOS.forEach(ex=>{
     const host=document.getElementById('exs-'+ex.sec);
     const card=document.createElement('div');
-    card.className='card';
+    card.className='card'; card.id='exo-'+ex.id;
     let h='';
     if(ex.savoir){
       h+='<div class="savoir"><h3>'+ex.savoir.h+'</h3><table>';
