@@ -26,6 +26,15 @@ VOICE_OVERRIDES = {
     "prPhon_savoir_1_3": "lpWJhr15teNWHhRqdTOQ",  # hiver
     "prPhon_phf": "lpWJhr15teNWHhRqdTOQ",         # hiver
 }
+# Orthographe phonétique envoyée à ElevenLabs pour ces fileId — le texte
+# français correct ("hiver") est mal prononcé par le modèle ; on envoie une
+# graphie homophone qui se prononce correctement, tout en gardant "hiver"
+# affiché à l'élève dans le tableau des sons.
+TEXT_OVERRIDES = {
+    "prPhon_savoir_0_5": "i-vair",
+    "prPhon_savoir_1_3": "i-vair",
+    "prPhon_phf": "i-vair",
+}
 
 # fileId → texte à lire (doit correspondre exactement aux appels playWord()
 # dans module-travail-activite-interactive.html)
@@ -104,8 +113,9 @@ def main():
         print(f"  {file_id:22s} → ", end="", flush=True)
         total += 1
         voice_id = VOICE_OVERRIDES.get(file_id, VOICE_ID)
-        if generate_audio(api_key, text, voice_id, output_path):
-            print(f"✓ {text}")
+        text_to_speak = TEXT_OVERRIDES.get(file_id, text)
+        if generate_audio(api_key, text_to_speak, voice_id, output_path):
+            print(f"✓ {text}" + (f" (envoyé: {text_to_speak})" if text_to_speak != text else ""))
             success += 1
         else:
             print(f"✗ {text}")
