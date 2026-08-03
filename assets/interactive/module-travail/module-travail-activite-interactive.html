@@ -227,10 +227,15 @@ textarea:focus{outline:none;border-color:#1D6B8F}
   background:var(--ws-bg); font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Inter,Roboto,sans-serif;
   padding:20px 16px; border-radius:24px; color:var(--ws-ink);
 }
-#sec-prep .savoir,#sec-prep .qcard,#sec-prep .stxt,#sec-prep .blanks-p,#sec-prep .word-chip{
+#sec-prep .savoir,#sec-prep .qcard,#sec-prep .blanks-p,#sec-prep .word-chip{
   background:var(--ws-card); border:1px solid var(--ws-line); border-left:1px solid var(--ws-line);
   border-radius:18px; box-shadow:0 1px 2px rgba(20,20,20,.04); color:var(--ws-ink); font-weight:500;
 }
+/* Les énoncés vivent DANS une carte déjà encadrée (.card) — pas de double cadre :
+   simple ligne de séparation entre rangées plutôt qu'une boîte par énoncé. */
+#sec-prep .stxt{background:transparent;border:none;border-radius:0;box-shadow:none;color:var(--ws-ink);font-weight:500;padding:14px 0;border-bottom:1px solid var(--ws-line)}
+#sec-prep .rows{gap:0}
+#sec-prep .rrow:last-child .stxt{border-bottom:none}
 #sec-prep .c-hdr{gap:8px}
 #sec-prep .tag{background:var(--ws-accent-bg)!important;color:var(--ws-accent)!important;font-weight:700;border-radius:8px}
 #sec-prep .ctit{color:var(--ws-ink)!important;font-weight:700}
@@ -243,6 +248,7 @@ textarea:focus{outline:none;border-color:#1D6B8F}
 #sec-prep .zone.empty{background:var(--ws-bg);border-color:var(--ws-line);border-style:solid;color:var(--ws-sub)}
 #sec-prep .zone.filled{background:var(--ws-accent-bg);border-color:var(--ws-accent);color:var(--ws-ink)}
 #sec-prep .vf-opt{border-radius:12px;border-color:var(--ws-line);background:var(--ws-card);color:var(--ws-sub);font-weight:600}
+#sec-prep .vf-opt.sel{background:var(--ws-ink)!important;border-color:var(--ws-ink)!important;color:#fff!important}
 #sec-prep .tile{border-radius:12px;box-shadow:0 1px 2px rgba(20,20,20,.06)}
 #sec-prep .btn,#sec-prep .word-chip .btn{
   font-family:inherit;border-radius:999px;font-weight:600;border:1px solid var(--ws-line);
