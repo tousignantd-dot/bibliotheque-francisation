@@ -931,11 +931,11 @@ function stopDialogue(){
   clearInterval(dlgPollIv);
   try{ speechSynthesis.cancel(); }catch(e){}
   if(dlgAudio){ try{dlgAudio.pause();}catch(e){} dlgAudio=null; }
-  if(dlgBtn){ dlgBtn.textContent='🔊 Écouter'; }
+  if(dlgBtn){ dlgBtn.innerHTML=ICON_SPEAK+' Écouter'; }
   dlgState='idle'; dlgBtn=null; dlgUsingSpeech=false;
 }
 function finishDialogue(btn,dialId){
-  dlgState='idle'; btn.textContent='🔊 Écouter'; dlgBtn=null; dlgUsingSpeech=false;
+  dlgState='idle'; btn.innerHTML=ICON_SPEAK+' Écouter'; dlgBtn=null; dlgUsingSpeech=false;
   if(!dialogueRead){ dialogueRead=true; lmsTrack('dialogue_listened'); }
 }
 function markRead(btn){
@@ -1141,7 +1141,7 @@ function buildStatic(){
       const dia=DIALOGUES[sec.dialogue];
       h+='<div class="dial-sec" style="border-bottom-color:'+sec.color+'">';
       h+='<div class="audio-pl"><div class="audio-lbl">Dialogue</div>';
-      h+='<button class="btn-lu" onclick="playDialogue(\''+sec.dialogue+'\',this)">🔊 Écouter</button>';
+      h+='<button class="btn-lu" onclick="playDialogue(\''+sec.dialogue+'\',this)">'+ICON_SPEAK+' Écouter</button>';
       h+='<button class="btn-lu" onclick="markRead(this)">📖 J\'ai lu</button></div>';
       h+='<div class="dial-txt"><div class="d-lbl">'+esc(dia.label)+'</div>';
       dia.lines.forEach((l,i)=>{
@@ -1205,7 +1205,7 @@ function buildStatic(){
       if(ex.dialogue && DIALOGUES[ex.dialogue]){
         const dia=DIALOGUES[ex.dialogue];
         h+='<div class="audio-pl" style="margin-bottom:12px"><div class="audio-lbl">Dialogue</div>';
-        h+='<button class="btn-lu" onclick="playDialogue(\''+ex.dialogue+'\',this)">🔊 Écouter</button>';
+        h+='<button class="btn-lu" onclick="playDialogue(\''+ex.dialogue+'\',this)">'+ICON_SPEAK+' Écouter</button>';
         h+='<button class="btn-lu" onclick="markRead(this)">📖 J\'ai lu</button></div>';
         h+='<details style="margin-bottom:12px"><summary style="cursor:pointer;font-size:13px;font-weight:700;color:'+ex.color+'">Afficher le texte du dialogue</summary>';
         h+='<div class="dial-txt"><div class="d-lbl">'+esc(dia.label)+'</div>';
@@ -1220,7 +1220,7 @@ function buildStatic(){
         h+='<div class="witem"><div class="wq">'+blankify(it.q||'')+'</div>';
         if(it.audio){
           const fid=ex.id+'_'+i;
-          h+='<button class="btn btn-ghost wlisten" type="button" onclick="playWord(this,\''+jsq(it.audio)+'\',\''+fid+'\')" style="margin-bottom:8px">🔊 Écouter</button>';
+          h+='<button class="btn btn-ghost wlisten" type="button" onclick="playWord(this,\''+jsq(it.audio)+'\',\''+fid+'\')" style="margin-bottom:8px">'+ICON_SPEAK+' Écouter</button>';
         }
         h+='<div class="wrow"><input class="winput" id="wi_'+ex.id+'_'+i+'" placeholder="'+(it.ph||'Écris ta réponse…')+'" autocomplete="off">';
         h+='<button class="btn btn-pri wbtn" onclick="checkWrite(\''+ex.id+'\','+i+')">Vérifier</button></div>';
