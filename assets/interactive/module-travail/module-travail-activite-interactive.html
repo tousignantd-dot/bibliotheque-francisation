@@ -781,12 +781,14 @@ function pronCheck(btn, expected){
   fb.className='pron-fb'; fb.textContent='Écoute en cours…';
   const reset=()=>{ btn.disabled=false; btn.textContent=old; };
   const target = normPron(expected);
-  let done=false;
+  let done=false, lastInterim='';
   const rec = new SRC();
-  rec.lang='fr-CA'; rec.interimResults=false; rec.maxAlternatives=1;
-  rec.onresult=e=>{
-    done=true;
-    const heard = e.results[0][0].transcript.trim();
+  // interimResults:true — les mots très courts ("tôt", "mer"...) sont parfois
+  // coupés par la détection de silence avant qu'un résultat final n'arrive ;
+  // on garde le dernier résultat provisoire comme filet de secours.
+  rec.lang='fr-CA'; rec.interimResults=true; rec.maxAlternatives=1;
+  const evaluate=(heard)=>{
+    heard=heard.trim();
     const said = normPron(heard);
     const ok = said===target || said.includes(target) || target.includes(said);
     reset();
@@ -795,20 +797,28 @@ function pronCheck(btn, expected){
     fb.textContent = ok ? '✓ Bien prononcé !' : ('✗ On a entendu : « '+heard+' »');
     setTimeout(()=>{ btn.classList.remove('fb-ok','fb-no'); }, 4000);
   };
+  rec.onresult=e=>{
+    const res=e.results[e.results.length-1];
+    if(res.isFinal){ done=true; evaluate(res[0].transcript); }
+    else{ lastInterim=res[0].transcript; }
+  };
   rec.onerror=e=>{
     if(!done){
       done=true;
+      if(lastInterim){ evaluate(lastInterim); return; }
       reset();
       fb.className='pron-fb warn';
       fb.textContent = e.error==='not-allowed' ? 'Micro refusé — autorise l\'accès au micro.' : 'Aucun son détecté, réessaie.';
     }
   };
   // Filet de sécurité : certains navigateurs déclenchent onend sans jamais
-  // appeler onresult ni onerror (silence, coupure) — sans ce filet le
-  // message restait bloqué sur « Écoute en cours… ».
+  // appeler onresult(final) ni onerror (silence, coupure) — sans ce filet le
+  // message restait bloqué sur « Écoute en cours… ». On récupère le dernier
+  // résultat provisoire s'il y en a un, plutôt que de déclarer un échec.
   rec.onend=()=>{
     if(!done){
       done=true;
+      if(lastInterim){ evaluate(lastInterim); return; }
       reset();
       fb.className='pron-fb warn';
       fb.textContent='Aucun son détecté, réessaie.';
@@ -818,6 +828,7 @@ function pronCheck(btn, expected){
     if(!done){
       done=true;
       try{ rec.stop(); }catch(e){}
+      if(lastInterim){ evaluate(lastInterim); return; }
       reset();
       fb.className='pron-fb warn';
       fb.textContent='Aucun son détecté, réessaie.';
