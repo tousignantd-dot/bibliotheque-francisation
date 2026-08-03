@@ -56,12 +56,18 @@ body{display:flex;flex-direction:column;min-height:100vh}
 .ctit{font-size:21px;font-weight:900}
 .csub{font-size:15.5px;color:#5E8A82;font-weight:600}
 
-.savoir{background:#F1FBF9;border-left:5px solid #1D6B8F;border-radius:0 14px 14px 0;padding:16px 22px;margin-bottom:4px}
+.savoir{background:#F1FBF9;border-left:5px solid #1D6B8F;border-radius:0 14px 14px 0;padding:16px 22px;margin-bottom:4px;overflow-x:auto}
 .savoir h3{font-size:15.5px;font-weight:900;color:#154F68;text-transform:uppercase;letter-spacing:.08em;margin-bottom:8px}
-.savoir table{border-collapse:collapse;width:100%}
-.savoir td{padding:6px 12px;font-size:16.5px;font-weight:600;line-height:1.5;border-bottom:1px dashed #B7DED7;vertical-align:top}
-.savoir td:first-child{font-weight:900;color:#154F68;white-space:nowrap}
+.savoir table{border-collapse:collapse;width:100%;table-layout:fixed}
+.savoir td{padding:8px 10px;font-size:16.5px;font-weight:600;line-height:1.5;border-bottom:1px dashed #B7DED7;vertical-align:top;word-break:break-word}
+.savoir td:first-child{font-weight:900;color:#154F68;width:34%}
 .savoir em{font-style:italic;color:#0D9488}
+.word-chips{display:flex;flex-wrap:wrap;gap:8px;margin-top:10px}
+.word-chip{display:flex;align-items:center;gap:4px;background:#FFFFFF;border:1.5px solid #CFE9E3;border-radius:20px;padding:4px 6px 4px 14px}
+.word-chip .wc-word{font-weight:800;color:#123B32;font-size:15px;margin-right:2px}
+.word-chip .btn{padding:4px 9px;font-size:14px;line-height:1;border-radius:14px}
+.word-chip .pron-fb{flex-basis:100%;order:99;margin:4px 0 0}
+@media(max-width:640px){.savoir td:first-child{width:auto}.savoir table,.savoir tbody,.savoir tr,.savoir td{display:block;width:100%}.savoir td{border-bottom:none;padding:4px 0}.savoir tr{padding-bottom:10px;border-bottom:1px dashed #B7DED7;margin-bottom:6px}}
 
 .rows{display:flex;flex-direction:column;gap:8px}
 .rrow{display:flex;align-items:center;gap:10px}
@@ -87,7 +93,9 @@ body{display:flex;flex-direction:column;min-height:100vh}
 .vf-head{display:flex;align-items:center;gap:10px;margin-bottom:6px}
 .vf-head-txt{flex:1}
 .vf-head-opt{width:72px;flex:0 0 72px;text-align:center;font-size:12px;font-weight:900;color:#64748B;text-transform:uppercase;letter-spacing:.06em}
-.vf-row{display:flex;align-items:center;gap:10px;flex-wrap:wrap}
+.vf-row{display:flex;align-items:center;gap:10px;flex-wrap:wrap;background:#F8FDFC;border:1.5px solid #DCEEEA;border-radius:12px;padding:10px 12px}
+.vf-row .stxt{background:transparent;padding:4px 0}
+.vf-opts{display:flex;gap:8px;flex:0 0 auto;margin-left:auto}
 .pron-fb{flex-basis:100%;font-size:13px;font-weight:800;display:inline-block;margin:2px 0 4px}
 .pron-fb.ok{color:#065F46}
 .pron-fb.no{color:#991B1B}
@@ -681,6 +689,10 @@ const MODULE_SLUG = 'module-travail';
 // Bump ce numéro chaque fois qu'un MP3 est régénéré, pour forcer le
 // navigateur à recharger le fichier au lieu de servir une version en cache.
 const AUDIO_V = '3';
+// Icônes des boutons son/micro de "Je me prépare" — change ces deux valeurs
+// pour remplacer les emojis par une image (ex. '<img src="/assets/interactive/module-travail/icons/speaker.svg">').
+const ICON_SPEAK = '🔊';
+const ICON_MIC = '🎤';
 let dlgAudio=null, dlgBtn=null, dlgState='idle', dlgUsingSpeech=false, dlgFallbackLines=null, dlgPollIv=null;
 
 function charSlug(name){ return name.toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g,'').replace(/'/g,'').replace(/\s+/g,'_'); }
@@ -733,7 +745,7 @@ function speakText(btn, text){
     speechSynthesis.cancel();
     const old = btn ? btn.textContent : null;
     const reset = ()=>{ if(btn){ btn.disabled=false; btn.textContent=old; } };
-    if(btn){ btn.disabled=true; btn.textContent='🔊 …'; }
+    if(btn){ btn.disabled=true; btn.textContent=ICON_SPEAK+' …'; }
     const doSpeak = ()=>{
       try{
         const u=new SpeechSynthesisUtterance(text);
@@ -760,7 +772,7 @@ function playWord(btn, text, fileId){
   const url = `/assets/interactive/${MODULE_SLUG}/sons/${fileId}.mp3?v=${AUDIO_V}`;
   const old = btn ? btn.textContent : null;
   const reset = ()=>{ if(btn){ btn.disabled=false; btn.textContent=old; } };
-  if(btn){ btn.disabled=true; btn.textContent='🔊 …'; }
+  if(btn){ btn.disabled=true; btn.textContent=ICON_SPEAK+' …'; }
   const a=new Audio(url);
   a.onended=reset;
   a.onerror=()=>{ reset(); speakText(btn, text); };
@@ -789,7 +801,7 @@ function pronCheck(btn, expected){
   if(!SRC){ fb.className='pron-fb warn'; fb.textContent='Reconnaissance vocale non supportée (utilise Chrome).'; return; }
   const old = btn.textContent;
   btn.classList.remove('fb-ok','fb-no');
-  btn.disabled=true; btn.textContent='🎤 …';
+  btn.disabled=true; btn.textContent=ICON_MIC+' …';
   fb.className='pron-fb'; fb.textContent='Écoute en cours…';
   const reset=()=>{ btn.disabled=false; btn.textContent=old; };
   const target = normPron(expected);
@@ -1098,11 +1110,13 @@ function buildStatic(){
       ex.savoir.rows.forEach((r,ri)=>{
         h+='<tr><td>'+r[0]+'</td><td>'+r[1];
         if(ex.savoir.speak && r[2]){
-          h+='<div style="margin-top:6px">';
+          h+='<div class="word-chips">';
           r[2].forEach((w,wi)=>{
             const fid=ex.id+'_savoir_'+ri+'_'+wi;
-            h+='<button class="btn btn-ghost" type="button" onclick="playWord(this,\''+jsq(w)+'\',\''+fid+'\')" style="padding:2px 8px;font-size:12px;margin:2px 4px 0 0">🔊 '+esc(w)+'</button>';
-            h+='<button class="btn btn-ghost" type="button" onclick="pronCheck(this,\''+jsq(w)+'\')" title="Répète le mot à voix haute" style="padding:2px 8px;font-size:12px;margin:2px 4px 0 0">🎤</button>';
+            h+='<div class="word-chip"><span class="wc-word">'+esc(w)+'</span>';
+            h+='<button class="btn btn-ghost" type="button" onclick="playWord(this,\''+jsq(w)+'\',\''+fid+'\')" title="Écouter">'+ICON_SPEAK+'</button>';
+            h+='<button class="btn btn-ghost" type="button" onclick="pronCheck(this,\''+jsq(w)+'\')" title="Répète le mot à voix haute">'+ICON_MIC+'</button>';
+            h+='</div>';
           });
           h+='</div>';
         }
@@ -1447,6 +1461,7 @@ function render(){
         }
         const txt=document.createElement('div');txt.className='stxt';txt.innerHTML=r.txt;
         row.appendChild(txt);
+        const opts=document.createElement('div');opts.className='vf-opts';
         ex.tiles.forEach(lbl=>{
           const b=document.createElement('button');
           b.type='button'; b.className='vf-opt';
@@ -1454,8 +1469,9 @@ function render(){
           if(S.fb[r.id] && S.vfSel[r.id]===lbl) b.classList.add(S.fb[r.id]==='ok'?'fb-ok':'fb-no');
           b.textContent=lbl;
           b.onclick=()=>vfSelect(r.id,lbl);
-          row.appendChild(b);
+          opts.appendChild(b);
         });
+        row.appendChild(opts);
         mount.appendChild(row);
       });
     }
