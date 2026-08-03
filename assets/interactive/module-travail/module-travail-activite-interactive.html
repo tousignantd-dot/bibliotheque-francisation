@@ -67,6 +67,8 @@ body{display:flex;flex-direction:column;min-height:100vh}
 .word-chips{display:flex;flex-wrap:wrap;gap:8px;margin-top:10px}
 .word-chip{display:flex;flex-wrap:wrap;align-items:center;gap:4px;background:#FFFFFF;border:1.5px solid #CFE9E3;border-radius:20px;padding:4px 6px 4px 14px}
 .word-chip .wc-word{font-weight:800;color:#123B32;font-size:15px;margin-right:2px;white-space:nowrap}
+.word-chip .wc-phrase{font-weight:500;white-space:normal}
+.word-chip .wc-phrase b{font-weight:800}
 .word-chip .btn{padding:4px 9px;font-size:14px;line-height:1;border-radius:14px}
 .icon-svg{width:1em;height:1em;vertical-align:middle;display:inline-block}
 .btn .icon-svg{width:15px;height:15px}
@@ -867,6 +869,16 @@ function pronMatches(said, target){
   const alts = PRON_ALIASES[target] || [];
   return alts.some(a=>said===a || said.includes(a) || a.includes(said));
 }
+// TEST : un mot isolé (une seule syllabe, sans contexte) est plus difficile à
+// reconnaître pour le moteur de reconnaissance vocale qu'un mot dans une
+// phrase. Ici on affiche le mot en contexte (en gras) — l'élève lit la
+// phrase, mais on vérifie seulement que le mot cible apparaît dans ce qui a
+// été entendu (pronMatches fait déjà cette vérification par inclusion).
+const CARRIER_PHRASES = {
+  'père': "Mon père arrive tôt le matin.",
+  'hiver': "Cet hiver, il fait très froid.",
+  'treize': "Il est treize heures.",
+};
 function pronCheck(btn, expected){
   const SRC = window.SpeechRecognition || window.webkitSpeechRecognition;
   let fb = btn.nextElementSibling && btn.nextElementSibling.classList.contains('pron-fb') ? btn.nextElementSibling : null;
@@ -1189,7 +1201,9 @@ function buildStatic(){
           h+='<div class="word-chips">';
           r[2].forEach((w,wi)=>{
             const fid=ex.id+'_savoir_'+ri+'_'+wi;
-            h+='<div class="word-chip"><span class="wc-word">'+esc(w)+'</span>';
+            const phrase=CARRIER_PHRASES[w];
+            const wcLabel = phrase ? esc(phrase).replace(new RegExp('('+esc(w)+')','i'),'<b>$1</b>') : esc(w);
+            h+='<div class="word-chip"><span class="wc-word'+(phrase?' wc-phrase':'')+'">'+wcLabel+'</span>';
             h+='<button class="btn btn-ghost" type="button" onclick="playWord(this,\''+jsq(w)+'\',\''+fid+'\')" title="Écouter">'+ICON_SPEAK+'</button>';
             h+='<button class="btn btn-ghost" type="button" onclick="pronCheck(this,\''+jsq(w)+'\')" title="Répète le mot à voix haute">'+ICON_MIC+'</button>';
             h+='</div>';
