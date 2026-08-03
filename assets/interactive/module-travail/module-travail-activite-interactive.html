@@ -237,7 +237,7 @@ textarea:focus{outline:none;border-color:#1D6B8F}
 #sec-prep .stxt{background:transparent;border:none;border-radius:0;box-shadow:none;color:var(--ws-ink);font-weight:500;padding:10px 0}
 #sec-prep .rows{gap:4px}
 #sec-prep .c-hdr{gap:8px}
-#sec-prep .tag{background:var(--ws-accent-bg)!important;color:var(--ws-accent)!important;font-weight:700;border-radius:8px}
+#sec-prep .tag{background:var(--ws-accent-bg)!important;color:var(--ws-accent)!important;font-weight:700;border-radius:8px;font-size:21px;padding:2px 14px;letter-spacing:0;text-transform:none}
 #sec-prep .ctit{color:var(--ws-ink)!important;font-weight:700}
 #sec-prep .csub{color:var(--ws-sub)!important;font-weight:500}
 #sec-prep .savoir h3{color:var(--ws-ink);font-weight:700;letter-spacing:0}
@@ -248,7 +248,7 @@ textarea:focus{outline:none;border-color:#1D6B8F}
 #sec-prep .zone.empty{background:var(--ws-bg);border-color:var(--ws-line);border-style:solid;color:var(--ws-sub)}
 #sec-prep .zone.filled{background:var(--ws-accent-bg);border-color:var(--ws-accent);color:var(--ws-ink)}
 #sec-prep .vf-opt{border-radius:12px;border-color:var(--ws-line);background:var(--ws-card);color:var(--ws-sub);font-weight:600}
-#sec-prep .vf-opt.sel{background:var(--ws-ink)!important;border-color:var(--ws-ink)!important;color:#fff!important}
+#sec-prep .vf-opt.sel{background:#1D6B8F!important;border-color:#1D6B8F!important;color:#fff!important}
 #sec-prep .tile{border-radius:12px;box-shadow:0 1px 2px rgba(20,20,20,.06)}
 #sec-prep .btn,#sec-prep .word-chip .btn{
   font-family:inherit;border-radius:999px;font-weight:600;border:1px solid var(--ws-line);
@@ -258,7 +258,8 @@ textarea:focus{outline:none;border-color:#1D6B8F}
 #sec-prep .winput{border-radius:12px;border-color:var(--ws-line);color:var(--ws-ink);font-weight:500;font-family:inherit}
 #sec-prep .winput:focus{border-color:var(--ws-accent)}
 #sec-prep .wfb.ok,#sec-prep .wfb b{color:var(--ws-accent)}
-#sec-prep .fb-ok{background:var(--ws-accent-bg)!important;border-color:var(--ws-accent)!important;color:var(--ws-accent)!important}
+#sec-prep .fb-ok{background:var(--ws-accent-bg)!important;border-color:var(--ws-accent)!important;color:var(--ws-accent)!important;animation:none!important}
+#sec-prep .fb-no{background:#FDECEC!important;border-color:#DC2626!important;color:#B91C1C!important;animation:none!important}
 #sec-prep .icon-svg{filter:none;opacity:.75}
 /* Badge rond seulement pour les boutons icône SEULE (sans texte à côté) —
    sinon un bouton comme "🔊 Écouter" se retrouve écrasé dans un rond de 34px. */
@@ -413,7 +414,7 @@ const EXOS = [
     {id:'pr1j', txt:"Karim doit s'excuser longuement avant d'expliquer la situation.", ok:'FAUX'},
    ]},
   {sec:'prep', id:'prPhon', type:'vf', num:'Exercice 2', tit:'La graphie-phonie — [e] ou [ɛ]', color:'#1D6B8F', listen:true,
-   sub:'Cliquez sur 🔊 pour écouter le mot, puis indiquez le son entendu.', tiles:['[e]','[ɛ]'],
+   sub:"Clique sur l'icône d'écoute pour entendre le mot, puis indique le son entendu.", tiles:['[e]','[ɛ]'],
    savoir:{h:"› Des sons et des lettres", speak:true, rows:[
      ["[ɛ] au début ou au milieu d'un mot","è, ê, ei, ai + consonne : père, tête, treize, semaine · e + l : nouvelle · e + r : hiver", ["père","tête","treize","semaine","nouvelle","hiver"]],
      ["[e] en fin de mot","é, ai, er : dépanné, je travaillerai, dépanner (exceptions : hiver, mer)", ["dépanné","je travaillerai","dépanner","hiver","mer"]],
@@ -430,7 +431,7 @@ const EXOS = [
     {id:'phh', txt:"treize", ok:'[ɛ]'},
    ]},
   {sec:'prep', id:'prAccent', type:'write', num:'Exercice 3', tit:'Complète avec è, ê, ei, ai, e, é, er ou o/ô', color:'#1D6B8F',
-   sub:"Clique sur 🔊 pour écouter la phrase, puis complète les mots avec le bon son.",
+   sub:"Clique sur l'icône d'écoute pour entendre la phrase, puis complète les mots avec le bon son.",
    items:[
     {q:"J'aim___rais ___t___ pl___s pati___nt av___ mes coll___gu___s.", audio:"J'aimerais être plus patient avec mes collègues.", accept:["aimerais etre plus patient avec mes collegues","aimerais être plus patient avec mes collègues"], ph:"(essaie une lettre à la fois si tu hésites)"},
     {q:"Le rend___-vous s___ passe demain m___tin, dans son bur___u.", audio:"Le rendez-vous se passe demain matin, dans son bureau.", accept:["rendez vous se passe demain matin dans son bureau","rendez-vous se passe demain matin dans son bureau"], ph:"…"},
