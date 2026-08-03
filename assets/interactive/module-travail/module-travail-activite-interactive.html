@@ -423,7 +423,7 @@ const FC_CARDS = [
 
 const EXOS = [
  {sec:'prep', id:'prVocab', type:'match', num:'Exercice 1', tit:'Associe le mot à sa définition', color:'#1D6B8F',
-  sub:'Fais glisser la bonne définition vers chaque mot.',
+  sub:'Fais glisser la bonne définition vers chaque mot.', noQLbl:true, bankLbl:'Définitions', zonePh:'glissez la définition ici',
   rows: FC_CARDS.map((c,i)=>({id:'pv'+i, q:c.word, aid:'pv'+i, a:c.def}))},
   // ── JE ME PRÉPARE ──
   {sec:'prep', id:'pr1', type:'vf', num:'Exercice 2', tit:'Vrai ou Faux — Un départ précipité', color:'#1D6B8F',
@@ -1284,7 +1284,7 @@ function buildStatic(){
     h+='</div>';
     const vert=(ex.type==='match'||ex.type==='rows'||ex.type==='imgmatch')?' vert':'';
     const bw=ex.type==='imgmatch'?'240px':((ex.type==='match'||ex.type==='rows')?'300px':'220px');
-    h+='<div class="bsec b1" style="flex:0 0 '+bw+'"><div class="blbl">Réponses</div><div class="btiles'+vert+'" id="bank-'+ex.id+'"></div></div>';
+    h+='<div class="bsec b1" style="flex:0 0 '+bw+'"><div class="blbl">'+(ex.bankLbl||'Réponses')+'</div><div class="btiles'+vert+'" id="bank-'+ex.id+'"></div></div>';
     h+='</div>';
     card.innerHTML=h;
     host.appendChild(card);
@@ -1589,8 +1589,8 @@ function render(){
       ex.rows.forEach(r=>{
         const row=document.createElement('div');row.className='rrow2';
         const qc=document.createElement('div');qc.className='qcard';
-        qc.innerHTML='<div class="qlbl">Question</div><div class="qtxt">'+esc(r.q)+'</div>';
-        row.appendChild(qc);row.appendChild(mkZone(r.id,null,'glissez la réponse ici'));
+        qc.innerHTML=(ex.noQLbl?'':'<div class="qlbl">Question</div>')+'<div class="qtxt">'+esc(r.q)+'</div>';
+        row.appendChild(qc);row.appendChild(mkZone(r.id,null,ex.zonePh||'glissez la réponse ici'));
         mount.appendChild(row);
       });
       shuffled(ex.rows,7).forEach(r=>{ if(used.has(r.aid))return; bank.appendChild(mkTile(r.aid,r.a,ex.id,'ta')); });
