@@ -66,7 +66,8 @@ body{display:flex;flex-direction:column;min-height:100vh}
 .ctit{font-size:20px;font-weight:900}
 .csub{font-size:15.5px;color:#5E8A82;font-weight:600;flex-basis:100%}
 
-.savoir{background:#F1FBF9;border-left:5px solid #1D6B8F;border-radius:0 14px 14px 0;padding:16px 22px;margin-bottom:4px;overflow-x:auto}
+.savoir{background:#F1FBF9;border-left:5px solid #1D6B8F;border-radius:0 14px 14px 0;padding:0 22px 16px;margin-bottom:4px;overflow-x:auto}
+.savoir-band{background:#1D6B8F;color:#fff;font-size:12.5px;font-weight:800;text-transform:uppercase;letter-spacing:.14em;padding:9px 22px;margin:0 -22px 16px;border-radius:0 14px 0 0}
 .savoir h3{font-size:15.5px;font-weight:900;color:#154F68;text-transform:uppercase;letter-spacing:.08em;margin-bottom:8px}
 .savoir table{border-collapse:collapse;width:100%;table-layout:fixed}
 .savoir td{padding:8px 10px;font-size:16.5px;font-weight:600;line-height:1.5;border-bottom:1px dashed #B7DED7;vertical-align:top;word-break:break-word}
@@ -255,6 +256,7 @@ textarea:focus{outline:none;border-color:#1D6B8F}
 #sec-prep .tag{background:var(--ws-accent-bg)!important;color:var(--ws-accent)!important;font-weight:700;border-radius:999px}
 #sec-prep .ctit{color:var(--ws-ink)!important;font-weight:700}
 #sec-prep .csub{color:var(--ws-sub)!important;font-weight:500}
+#sec-prep .savoir-band{background:var(--ws-ink);border-radius:18px 18px 0 0;margin:0 -22px 16px -23px}
 #sec-prep .savoir h3{color:var(--ws-ink);font-weight:700;letter-spacing:0}
 #sec-prep .savoir td{border-bottom:1px solid var(--ws-line);color:var(--ws-ink);font-weight:500}
 #sec-prep .savoir td:first-child{color:var(--ws-sub);font-weight:600}
@@ -1254,7 +1256,7 @@ function buildStatic(){
     if(ex.id==='prVocab') card.style.display='none';
     let h='';
     if(ex.savoir){
-      h+='<div class="savoir"><h3>'+ex.savoir.h+'</h3><table>';
+      h+='<div class="savoir"><div class="savoir-band">Prononciation</div><table>';
       ex.savoir.rows.forEach((r,ri)=>{
         h+='<tr><td>'+r[0]+'</td><td>'+r[1];
         if(ex.savoir.speak && r[2]){
