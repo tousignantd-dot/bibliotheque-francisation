@@ -40,6 +40,8 @@ body{display:flex;flex-direction:column;min-height:100vh}
 .audio-pl{flex:0 0 160px;display:flex;flex-direction:column;align-items:center;justify-content:flex-start;padding-top:6px;gap:10px}
 .audio-lbl{font-size:11px;font-weight:800;text-transform:uppercase;letter-spacing:.15em;opacity:.6;text-align:center}
 .btn-lu{background:rgba(255,255,255,.12);color:#E8F5F2;border:2px solid rgba(255,255,255,.35);border-radius:10px;padding:10px 14px;font-family:'Nunito',sans-serif;font-size:14px;font-weight:800;cursor:pointer;transition:all .15s;text-align:center;line-height:1.3;width:100%}
+.btn-lu.big{padding:16px 20px;font-size:18px;display:flex;align-items:center;justify-content:center;gap:10px}
+.btn-lu.big .icon-svg{width:22px;height:22px}
 .btn-lu:hover{background:rgba(255,255,255,.25)}
 .btn-lu.done{background:#166534;border-color:#4ADE80;color:#DCFCE7}
 .dial-txt{flex:1;min-width:280px;display:flex;flex-direction:column;gap:7px;font-size:19px;font-weight:600;line-height:1.7;padding-right:8px}
@@ -1149,8 +1151,7 @@ function buildStatic(){
       const dia=DIALOGUES[sec.dialogue];
       h+='<div class="dial-sec" style="border-bottom-color:'+sec.color+'">';
       h+='<div class="audio-pl"><div class="audio-lbl">Dialogue</div>';
-      h+='<button class="btn-lu" onclick="playDialogue(\''+sec.dialogue+'\',this)">'+ICON_SPEAK+' Écouter</button>';
-      h+='<button class="btn-lu" onclick="markRead(this)">📖 J\'ai lu</button></div>';
+      h+='<button class="btn-lu big" onclick="playDialogue(\''+sec.dialogue+'\',this)">'+ICON_SPEAK+' Écouter</button></div>';
       h+='<div class="dial-txt"><div class="d-lbl">'+esc(dia.label)+'</div>';
       dia.lines.forEach((l,i)=>{
         const cls=(i%2===0)?'mb':'dr';
@@ -1213,8 +1214,7 @@ function buildStatic(){
       if(ex.dialogue && DIALOGUES[ex.dialogue]){
         const dia=DIALOGUES[ex.dialogue];
         h+='<div class="audio-pl" style="margin-bottom:12px"><div class="audio-lbl">Dialogue</div>';
-        h+='<button class="btn-lu" onclick="playDialogue(\''+ex.dialogue+'\',this)">'+ICON_SPEAK+' Écouter</button>';
-        h+='<button class="btn-lu" onclick="markRead(this)">📖 J\'ai lu</button></div>';
+        h+='<button class="btn-lu big" onclick="playDialogue(\''+ex.dialogue+'\',this)">'+ICON_SPEAK+' Écouter</button></div>';
         h+='<details style="margin-bottom:12px"><summary style="cursor:pointer;font-size:13px;font-weight:700;color:'+ex.color+'">Afficher le texte du dialogue</summary>';
         h+='<div class="dial-txt"><div class="d-lbl">'+esc(dia.label)+'</div>';
         dia.lines.forEach((l,i)=>{
