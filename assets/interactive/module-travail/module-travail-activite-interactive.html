@@ -39,9 +39,10 @@ body{display:flex;flex-direction:column;min-height:100vh}
 
 .dial-sec{background:#123B32;color:#E8F5F2;padding:16px 32px;display:flex;flex-direction:column;gap:14px;border-bottom:4px solid #1D6B8F;flex-shrink:0}
 .situ{font-size:15.5px;font-weight:600;line-height:1.5;opacity:.72;padding-bottom:12px;border-bottom:1px solid rgba(255,255,255,.14)}
-.dial-hd{display:flex;align-items:center;justify-content:space-between;gap:16px;flex-wrap:wrap}
+.dial-hd{display:flex;align-items:center;justify-content:flex-start;gap:12px;flex-wrap:wrap}
 .dial-hd .d-lbl{margin-bottom:0}
 .dial-hd .btn-lu{width:auto;flex:0 0 auto;display:inline-flex;align-items:center;gap:8px;padding:5px 16px;border-radius:999px;font-size:14px;background:#DC2626!important;border-color:#DC2626!important;color:#fff!important}
+.dial-hd .btn-lu .icon-svg{filter:brightness(0) invert(1)}
 .dial-hd .btn-lu:hover{background:#B91C1C;border-color:#B91C1C}
 .dial-hd .btn-lu .icon-svg{width:17px;height:17px}
 .audio-pl{flex:0 0 160px;display:flex;flex-direction:column;align-items:center;justify-content:flex-start;padding-top:6px;gap:10px}
@@ -1290,10 +1291,10 @@ function buildStatic(){
       const aiBadge = ex.items.some(it=>!it.accept) ? '<div style="font-size:12px;font-weight:800;color:#0D9488;margin-bottom:10px;display:flex;align-items:center;gap:6px">'+ICON_ASSISTANT+' Un assistant corrige ce que tu écris et te donne une rétroaction.</div>' : '';
       if(ex.dialogue && DIALOGUES[ex.dialogue]){
         const dia=DIALOGUES[ex.dialogue];
-        h+='<div class="audio-pl" style="margin-bottom:12px"><div class="audio-lbl">Dialogue</div>';
-        h+='<button class="btn-lu big" onclick="playDialogue(\''+ex.dialogue+'\',this)">'+ICON_SPEAK+' Écouter</button></div>';
+        h+='<div class="dial-hd" style="margin-bottom:12px"><div class="d-lbl">'+esc(dia.label)+'</div>';
+        h+='<button class="btn-lu" onclick="playDialogue(\''+ex.dialogue+'\',this)">'+ICON_SPEAK+' Écouter</button></div>';
         h+='<details style="margin-bottom:12px"><summary style="cursor:pointer;font-size:13px;font-weight:700;color:'+ex.color+'">Afficher le texte du dialogue</summary>';
-        h+='<div class="dial-txt"><div class="d-lbl">'+esc(dia.label)+'</div>';
+        h+='<div class="dial-txt">';
         dia.lines.forEach((l,i)=>{
           const cls=(i%2===0)?'mb':'dr';
           h+='<div class="dl"><span class="'+cls+'">'+esc(l[0])+' :</span> '+esc(l[1])+'</div>';
