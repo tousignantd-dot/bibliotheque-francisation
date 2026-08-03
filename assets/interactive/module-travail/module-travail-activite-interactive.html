@@ -988,14 +988,21 @@ function markRead(btn){
   btn.classList.add('done'); btn.textContent='✓ Lu';
   if(!dialogueRead){ dialogueRead=true; lmsTrack('dialogue_listened'); }
 }
-function toggleVocabExo(){
+function toggleVocabExo(force){
   const card=document.getElementById('exo-prVocab');
   const btn=document.getElementById('btnVocabToggle');
   if(!card) return;
-  const opening = card.style.display==='none';
+  const opening = (typeof force==='boolean') ? force : card.style.display==='none';
   card.style.display = opening ? '' : 'none';
   if(btn) btn.textContent = opening ? "Fermer l'exercice de vocabulaire" : 'Apprendre les mots de vocabulaire';
+  // Exercice à part : tant qu'il est ouvert, on bloque l'accès aux exercices
+  // suivants — il faut le refermer (bouton "Fermer") pour continuer.
+  EXOS.filter(e=>e.sec==='prep' && e.id!=='prVocab').forEach(e=>{
+    const c=document.getElementById('exo-'+e.id);
+    if(c) c.style.display = opening ? 'none' : '';
+  });
   if(opening) card.scrollIntoView({behavior:'smooth', block:'start'});
+  else document.getElementById('btnVocabToggle').scrollIntoView({behavior:'smooth', block:'center'});
 }
 
 // ── LOGIQUE DE PLACEMENT ──────────────────────────────────────────────
@@ -1297,6 +1304,9 @@ function buildStatic(){
     const bw=ex.type==='imgmatch'?'240px':((ex.type==='match'||ex.type==='rows')?'300px':'220px');
     h+='<div class="bsec b1" style="flex:0 0 '+bw+'"><div class="blbl">'+(ex.bankLbl||'Réponses')+'</div><div class="btiles'+vert+'" id="bank-'+ex.id+'"></div></div>';
     h+='</div>';
+    if(ex.id==='prVocab'){
+      h+='<button class="btn btn-ghost" type="button" style="margin-top:14px" onclick="toggleVocabExo(false)">Fermer</button>';
+    }
     card.innerHTML=h;
     host.appendChild(card);
   });
