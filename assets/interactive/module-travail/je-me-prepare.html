@@ -1,0 +1,440 @@
+<!DOCTYPE html>
+<html lang="fr-CA">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Je me prépare — Absent ou en retard : que faire ?</title>
+<link rel="stylesheet" href="../../design-system/styles.css">
+<style>
+  /* Seules les règles propres à CETTE page. Tout le reste vient du système. */
+  .band__card { margin-top: var(--sp-6); }
+  .band__grid { display: grid; grid-template-columns: minmax(0,1fr) auto; gap: var(--sp-6); align-items: center; }
+  .band__aside { text-align: right; border-left: 1px solid var(--border-tint); padding-left: var(--sp-6); }
+  .main { max-width: var(--content-max); margin: 0 auto; padding: var(--sp-12) var(--gutter) 96px;
+          display: flex; flex-direction: column; gap: var(--sp-12); }
+  .cta { background: var(--surface-inverse); color: var(--text-inverse); border-radius: var(--r-lg);
+         padding: var(--sp-8); display: grid; grid-template-columns: minmax(0,1fr) auto; gap: var(--sp-6); align-items: center; }
+  .word-card { display: flex; flex-direction: column; gap: var(--sp-3); }
+  .word-card__top { display: flex; align-items: center; gap: var(--sp-3); }
+  .word-card__word { font-size: var(--fs-h3); font-weight: var(--fw-black); }
+  .is-hidden { display: none !important; }
+  @media (max-width: 720px) {
+    .band__grid, .cta { grid-template-columns: 1fr; }
+    .band__aside { text-align: left; border-left: none; border-top: 1px solid var(--border-tint); padding: var(--sp-4) 0 0; }
+  }
+</style>
+</head>
+<body>
+<div class="page">
+
+<header class="band">
+  <div class="container">
+    <div class="band__eyebrow">Absent ou en retard : que faire ?</div>
+    <h1>Je me prépare</h1>
+    <p class="band__lead">Écouter, repérer les sons, écrire. Cinq étapes avant de téléphoner à votre superviseur.</p>
+
+    <div class="card band__card">
+      <div class="band__grid">
+        <div>
+          <div class="field-label">La situation</div>
+          <p style="font-size:var(--fs-body);font-weight:var(--fw-semi)">L'école appelle Karim : sa fille est malade et il doit partir plus tôt, mais c'est déjà sa <span style="color:var(--text-accent)">deuxième absence ce mois-ci</span>.</p>
+          <div class="row" style="display:flex;flex-wrap:wrap;gap:var(--sp-3);margin-top:var(--sp-4)">
+            <button class="btn btn--audio" id="btn-dial">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" aria-hidden="true"><polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5" fill="currentColor" stroke="none"></polygon><path d="M15.5 8.5a5 5 0 0 1 0 7"></path><path d="M19 5a9 9 0 0 1 0 14"></path></svg>
+              Écouter le dialogue
+            </button>
+            <button class="btn btn--ghost" id="btn-script" aria-expanded="false" aria-controls="script">Lire la transcription</button>
+          </div>
+        </div>
+        <div class="band__aside">
+          <div class="field-label" style="margin-bottom:var(--sp-1)">Dialogue</div>
+          <div style="font-size:var(--fs-body-sm);font-weight:var(--fw-bold)">Un départ<br>précipité</div>
+          <div style="font-size:var(--fs-ui-sm);font-weight:var(--fw-semi);color:var(--text-muted);margin-top:var(--sp-2)">5 répliques</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="card is-hidden" id="script" style="margin-top:var(--sp-3);padding-top:var(--sp-1);padding-bottom:var(--sp-2)"></div>
+  </div>
+</header>
+
+<nav class="steps" aria-label="Étapes de la page">
+  <div class="steps__inner" id="steps"></div>
+</nav>
+
+<main class="main">
+
+  <section class="exo exo--vocab" id="etape-0">
+    <div class="exo__head">
+      <div class="exo__num">00</div>
+      <div class="exo__eyebrow">Vocabulaire · 12 paires</div>
+      <div class="exo__rule"></div>
+      <div class="exo__score" id="sc-vocab" aria-live="polite">0 / 12 associé</div>
+    </div>
+    <h2 class="exo__title">Le mot et sa définition</h2>
+    <p class="exo__sub">Choisissez un mot, puis sa définition. Les bonnes paires se verrouillent en vert.</p>
+    <div class="pair-grid">
+      <div class="stack" style="gap:var(--sp-2)" id="vocab-words"></div>
+      <div class="stack" style="gap:var(--sp-2)" id="vocab-defs"></div>
+    </div>
+  </section>
+
+  <section class="exo exo--orale" id="etape-1">
+    <div class="exo__head">
+      <div class="exo__num">01</div>
+      <div class="exo__eyebrow">Compréhension orale</div>
+      <div class="exo__rule"></div>
+      <div class="exo__score" id="sc-vf" aria-live="polite">0 / 10 répondu</div>
+    </div>
+    <h2 class="exo__title">Vrai ou faux</h2>
+    <p class="exo__sub">Écoutez de nouveau le dialogue, puis répondez aux dix énoncés.</p>
+    <div class="card card--flush card--marked">
+      <div id="vf-rows"></div>
+      <div class="card__foot">
+        <button class="btn btn--pri" data-check="vf">Corriger</button>
+        <button class="btn btn--ghost" data-reset="vf">Recommencer</button>
+      </div>
+    </div>
+  </section>
+
+  <section class="exo exo--phonie" id="etape-2">
+    <div class="exo__head">
+      <div class="exo__num">02</div>
+      <div class="exo__eyebrow">Graphie-phonie</div>
+      <div class="exo__rule"></div>
+      <div class="exo__score" id="sc-ph" aria-live="polite">0 / 8 répondu</div>
+    </div>
+    <h2 class="exo__title">Le son [e] ou [ɛ]</h2>
+    <p class="exo__sub">Écoutez le mot, puis indiquez le son que vous entendez.</p>
+
+    <div class="savoir" style="margin-bottom:var(--sp-5)">
+      <div class="card__band">Des sons et des lettres</div>
+      <div class="savoir__row"><div class="savoir__key">[ɛ] au début ou au milieu</div><div class="savoir__val">è, ê, ei, ai + consonne : père, tête, treize, semaine · e + l : nouvelle · e + r : hiver</div></div>
+      <div class="savoir__row"><div class="savoir__key">[e] en fin de mot</div><div class="savoir__val">é, ai, er : dépanné, je travaillerai, dépanner (exceptions : hiver, mer)</div></div>
+      <div class="savoir__row"><div class="savoir__key">[o]</div><div class="savoir__val">o, ô : poste, dépôt, tôt, rôle</div></div>
+    </div>
+
+    <div class="grid-auto" id="ph-cards"></div>
+    <div style="display:flex;flex-wrap:wrap;gap:var(--sp-3);margin-top:var(--sp-4)">
+      <button class="btn btn--pri" data-check="ph">Corriger</button>
+      <button class="btn btn--ghost" data-reset="ph">Recommencer</button>
+    </div>
+  </section>
+
+  <section class="exo exo--ecriture" id="etape-3">
+    <div class="exo__head">
+      <div class="exo__num">03</div>
+      <div class="exo__eyebrow">Écriture</div>
+      <div class="exo__rule"></div>
+    </div>
+    <h2 class="exo__title">Je complète avec le bon son</h2>
+    <p class="exo__sub">è, ê, ei, ai, e, é, er ou o / ô — écoutez la phrase, puis écrivez-la au complet.</p>
+    <div class="stack" id="write-list"></div>
+  </section>
+
+  <section class="exo exo--ecoute" id="etape-4">
+    <div class="exo__head">
+      <div class="exo__num">04</div>
+      <div class="exo__eyebrow">Écoute et réponds · 2 appels</div>
+      <div class="exo__rule"></div>
+    </div>
+    <h2 class="exo__title">Deux appels au centre</h2>
+    <p class="exo__sub">Un changement d'horaire, puis une confirmation de poste.</p>
+    <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(360px,1fr));gap:var(--sp-4)" id="dial-list"></div>
+  </section>
+
+  <section class="cta">
+    <div>
+      <div class="band__eyebrow" style="color:var(--green-100)">Prochaine étape</div>
+      <h2 style="margin-top:var(--sp-2)">Tâche 1 · Le message</h2>
+      <p style="font-size:var(--fs-body-sm);font-weight:var(--fw-medium);color:var(--line-100);margin-top:var(--sp-3);max-width:50ch">Comprendre un message téléphonique laissé dans une boîte vocale.</p>
+    </div>
+    <a class="btn btn--lg" href="#" style="background:var(--accent);color:var(--white);text-decoration:none">
+      Continuer
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" aria-hidden="true" style="width:19px;height:19px"><path d="M5 12h13"></path><path d="M13 6l6 6-6 6"></path></svg>
+    </a>
+  </section>
+</main>
+</div>
+
+<script>
+/* ─────────────────────────────────────────────────────────────
+   Données — reprises telles quelles du module existant.
+   ───────────────────────────────────────────────────────────── */
+const PREP_LINES = [
+  ["KARIM","Nadia, je viens de recevoir un appel de l'école. Ma fille Sarah a de la fièvre, je dois aller la chercher tout de suite. Mais c'est déjà ma deuxième absence ce mois-ci… j'ai peur que mon superviseur soit fâché."],
+  ["NADIA","Ne t'inquiète pas, la santé de ta fille passe avant tout. L'important, c'est de prévenir ton superviseur tout de suite, avant de partir, pas après."],
+  ["KARIM","Tu as raison. Mais qu'est-ce que je dis si on me demande pourquoi c'est déjà la deuxième fois ce mois-ci ?"],
+  ["NADIA","Explique la situation calmement, sans t'excuser trop longtemps, et propose de reprendre les heures manquées plus tard dans la semaine. Ça montre ta bonne volonté."],
+  ["KARIM","D'accord, je l'appelle maintenant. Merci pour le conseil, Nadia."]
+];
+const VF = [
+  ["C'est Nadia qui appelle Karim pour lui dire que sa fille est malade.","FAUX"],
+  ["Karim doit aller chercher sa fille à l'école.","VRAI"],
+  ["C'est la première absence de Karim ce mois-ci.","FAUX"],
+  ["Nadia conseille à Karim de prévenir son superviseur avant de partir.","VRAI"],
+  ["Nadia conseille à Karim d'appeler son superviseur seulement après son retour.","FAUX"],
+  ["Karim et Nadia travaillent ensemble.","VRAI"],
+  ["Sarah est la fille de Karim.","VRAI"],
+  ["Karim propose de reprendre les heures manquées plus tard dans la semaine.","VRAI"],
+  ["Nadia conseille à Karim d'appeler son enseignant pour lui expliquer la situation.","FAUX"],
+  ["Karim doit s'excuser longuement avant d'expliquer la situation.","FAUX"]
+];
+const PH = [["père","[ɛ]"],["travaillerai","[e]"],["nouvelle","[ɛ]"],["dépanné","[e]"],
+            ["semaine","[ɛ]"],["hiver","[ɛ]"],["dépanner","[e]"],["treize","[ɛ]"]];
+const WRITE = [
+  ["J'aim___rais ___t___ pl___s pati___nt av___ mes coll___gu___s.","J'aimerais être plus patient avec mes collègues."],
+  ["Le rend___-vous s___ passe demain m___tin, dans son bur___u.","Le rendez-vous se passe demain matin, dans son bureau."],
+  ["Elle ___bs___rve la lettre av___c att___ntion.","Elle observe la lettre avec attention."],
+  ["Cet hiv___r, j___ dois pr___venir mon sup___rviseur ___t r___ster à la m___ison.","Cet hiver, je dois prévenir mon superviseur et rester à la maison."]
+];
+const DIALS = [
+  {id:"d1", label:"Dialogue 1 — Un changement d'horaire",
+   lines:["Bonjour, centre de formation, je vous écoute.","Bonjour, j'aimerais savoir s'il est possible de changer mon horaire de cours.","Oui, c'est possible. Vous devez seulement apporter une preuve d'emploi et remplir un formulaire signé.","D'accord, et la nouvelle grille horaire s'applique à partir de quand ?","Dès le mois prochain."],
+   items:[["Le but de l'appel concerne un changement de…","horaire de cours."],
+          ["Nommez les documents nécessaires pour faire la demande.","Une preuve d'emploi et un formulaire signé."],
+          ["Quand la nouvelle grille horaire entre-t-elle en vigueur ?","Le mois prochain."]]},
+  {id:"d2", label:"Dialogue 2 — Une confirmation de poste",
+   lines:["Bonjour, je vous appelle pour confirmer votre entrevue pour le poste d'aide-cuisinier.","Ah oui, parfait, merci de me rappeler.","Est-ce que quinze heures cet après-midi vous convient ?","Oui, tout à fait, je serai là.","Très bien, à tout à l'heure."],
+   items:[["Quel est le but de l'appel ?","Confirmer à monsieur Aziz une entrevue pour un poste d'aide-cuisinier."],
+          ["Pour quel poste monsieur Aziz a-t-il postulé ?","Il a postulé pour un poste d'aide-cuisinier."],
+          ["À quelle heure doit-il se présenter ?","Il doit se présenter à 15 h."]]}
+];
+const VOCAB = [
+  ["un retard","Le fait d'arriver après un moment fixé."],
+  ["une absence","Le fait de ne pas se trouver à un endroit où on est attendu."],
+  ["un abandon","Le fait de renoncer à une chose (un cours, un travail)."],
+  ["une boîte vocale","Le système qui enregistre un message quand personne ne répond."],
+  ["remplacer","Prendre la place de quelqu'un."],
+  ["un dégât d'eau","Un dommage causé par de l'eau dans un logement."],
+  ["un billet médical","Un document du médecin qui confirme une consultation."],
+  ["une superviseure","La personne responsable des employés."],
+  ["une pièce d'identité","Un document officiel qui prouve qui on est."],
+  ["le télétravail","Travailler depuis la maison."],
+  ["une entrevue d'embauche","Une rencontre pour obtenir un emploi."],
+  ["une orthopédagogue","La personne qui aide les élèves ayant des difficultés d'apprentissage."]
+];
+const STEPS = [
+  ["etape-0","Vocabulaire","--green-600","--green-100"],
+  ["etape-1","Vrai ou faux","--acier-600","--acier-100"],
+  ["etape-2","Les sons","--violet-600","--violet-100"],
+  ["etape-3","J'écris","--ambre-700","--ambre-100"],
+  ["etape-4","Deux appels","--teal-700","--teal-100"]
+];
+
+const ICON_SPK = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" aria-hidden="true"><polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5" fill="currentColor" stroke="none"></polygon><path d="M15.5 8.5a5 5 0 0 1 0 7"></path><path d="M19 5a9 9 0 0 1 0 14"></path></svg>';
+const esc = s => String(s).replace(/[&<>"]/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
+
+/* ── Audio : les mp3 du module si présents, sinon synthèse vocale ── */
+const AUDIO_BASE = "/assets/interactive/module-travail/prep/";
+const slug = n => n.toLowerCase().normalize("NFD").replace(/[\u0300-\u036f]/g,"");
+let audioEl = null;
+function stopAudio(){ if(audioEl){ audioEl.pause(); audioEl = null; } if(window.speechSynthesis) speechSynthesis.cancel(); }
+function say(text){
+  stopAudio();
+  if(!window.speechSynthesis) return;
+  const u = new SpeechSynthesisUtterance(text);
+  u.lang = "fr-CA"; u.rate = .92;
+  speechSynthesis.speak(u);
+}
+function playDialogue(){
+  stopAudio();
+  let i = 0;
+  const next = () => {
+    if(i >= PREP_LINES.length) return;
+    const [who, txt] = PREP_LINES[i];
+    const url = AUDIO_BASE + "line_" + String(i+1).padStart(2,"0") + "_" + slug(who) + ".mp3";
+    audioEl = new Audio(url);
+    audioEl.onended = () => { i++; next(); };
+    audioEl.onerror = () => {              /* pas de mp3 → synthèse vocale */
+      audioEl = null;
+      if(!window.speechSynthesis) return;
+      const u = new SpeechSynthesisUtterance(txt);
+      u.lang = "fr-CA"; u.rate = .92;
+      u.onend = () => { i++; next(); };
+      speechSynthesis.speak(u);
+    };
+    audioEl.play().catch(() => { if(audioEl) audioEl.onerror(); });
+  };
+  next();
+}
+
+/* ── Transcription ── */
+const script = document.getElementById("script");
+script.innerHTML = PREP_LINES.map(([w,t]) =>
+  '<div class="dialogue__line"><div class="dialogue__who">'+esc(w)+'</div><div class="dialogue__txt">'+esc(t)+'</div></div>').join("");
+document.getElementById("btn-dial").addEventListener("click", playDialogue);
+document.getElementById("btn-script").addEventListener("click", e => {
+  const open = script.classList.toggle("is-hidden") === false;
+  e.currentTarget.textContent = open ? "Cacher la transcription" : "Lire la transcription";
+  e.currentTarget.setAttribute("aria-expanded", String(open));
+});
+
+/* ── Barre de parcours ── */
+const stepsEl = document.getElementById("steps");
+stepsEl.innerHTML = STEPS.map(([id,label,c,s]) =>
+  '<a class="step" href="#'+id+'" data-step="'+id+'" style="--sec:var('+c+');--sec-soft:var('+s+')">'
+  + '<span class="step__dot" style="background:var('+c+')"></span>'+esc(label)+'</a>').join("");
+const markStep = (id, done) => {
+  const el = stepsEl.querySelector('[data-step="'+id+'"]');
+  if(el) el.classList.toggle("is-done", !!done);
+};
+
+/* ── Quiz à choix (vrai/faux, sons) ── */
+function buildQuiz(cfg){
+  const state = {}; let checked = false;
+  const render = () => {
+    cfg.host.innerHTML = cfg.data.map((row, i) => cfg.row(row, i, state[i], checked)).join("");
+    cfg.host.querySelectorAll("[data-i]").forEach(btn => {
+      btn.addEventListener("click", () => {
+        const i = +btn.dataset.i;
+        state[i] = state[i] === btn.dataset.v ? undefined : btn.dataset.v;
+        render(); score();
+      });
+    });
+    cfg.host.querySelectorAll("[data-say]").forEach(b => b.addEventListener("click", () => say(b.dataset.say)));
+  };
+  const score = () => {
+    const answered = cfg.data.filter((r,i) => state[i]).length;
+    const good = cfg.data.filter((r,i) => state[i] === r[1]).length;
+    cfg.score.textContent = checked
+      ? good + " / " + cfg.data.length + " juste"
+      : answered + " / " + cfg.data.length + " répondu";
+    markStep(cfg.step, checked && good === cfg.data.length);
+  };
+  document.querySelector('[data-check="'+cfg.key+'"]').addEventListener("click", () => { checked = true; render(); score(); });
+  document.querySelector('[data-reset="'+cfg.key+'"]').addEventListener("click", () => {
+    checked = false; Object.keys(state).forEach(k => delete state[k]); render(); score();
+  });
+  render(); score();
+  const cls = (sel, ok, isRight) => {
+    if(checked && sel) return isRight ? "choice is-ok" : "choice is-no";
+    if(checked && isRight) return "choice is-answer";
+    return sel ? "choice is-selected" : "choice";
+  };
+  return cls;
+}
+
+let clsVF, clsPH;
+clsVF = buildQuiz({
+  key: "vf", step: "etape-1", data: VF,
+  host: document.getElementById("vf-rows"), score: document.getElementById("sc-vf"),
+  row: (row, i, sel, checked) => {
+    const fb = checked && sel
+      ? '<div class="fb ' + (sel === row[1] ? "fb--ok" : "fb--no") + '" style="margin-top:8px" aria-live="polite">'
+        + (sel === row[1] ? "Juste" : "La bonne réponse est " + row[1]) + '</div>'
+      : "";
+    const opt = v => {
+      let c = "choice";
+      if(checked && sel === v) c += (v === row[1] ? " is-ok" : " is-no");
+      else if(checked && v === row[1]) c += " is-answer";
+      else if(sel === v) c += " is-selected";
+      return '<button class="'+c+'" data-i="'+i+'" data-v="'+v+'">'+v+'</button>';
+    };
+    return '<div class="exo-row"><div><div class="exo-row__txt">'+esc(row[0])+'</div>'+fb+'</div>'
+         + '<div class="exo-row__opts">'+opt("VRAI")+opt("FAUX")+'</div></div>';
+  }
+});
+
+clsPH = buildQuiz({
+  key: "ph", step: "etape-2", data: PH,
+  host: document.getElementById("ph-cards"), score: document.getElementById("sc-ph"),
+  row: (row, i, sel, checked) => {
+    const fb = checked && sel
+      ? '<div class="fb ' + (sel === row[1] ? "fb--ok" : "fb--no") + '" aria-live="polite">'
+        + (sel === row[1] ? "Juste" : "La bonne réponse est " + row[1]) + '</div>'
+      : "";
+    const opt = v => {
+      let c = "choice";
+      if(checked && sel === v) c += (v === row[1] ? " is-ok" : " is-no");
+      else if(checked && v === row[1]) c += " is-answer";
+      else if(sel === v) c += " is-selected";
+      return '<button class="'+c+'" data-i="'+i+'" data-v="'+v+'">'+v+'</button>';
+    };
+    return '<div class="card word-card">'
+      + '<div class="word-card__top">'
+      + '<button class="btn-audio-round" data-say="'+esc(row[0])+'" aria-label="Écouter le mot">'+ICON_SPK+'</button>'
+      + '<div class="word-card__word">'+esc(row[0])+'</div></div>'
+      + '<div class="exo-row__opts">'+opt("[e]")+opt("[ɛ]")+'</div>'+fb+'</div>';
+  }
+});
+
+/* ── Écriture ── */
+document.getElementById("write-list").innerHTML = WRITE.map(([q,a], i) =>
+  '<div class="card card--marked" style="display:flex;gap:var(--sp-4);align-items:flex-start">'
+  + '<button class="btn-audio-round" data-say="'+esc(a)+'" aria-label="Écouter la phrase">'+ICON_SPK+'</button>'
+  + '<div style="flex:1;min-width:0">'
+  + '<div class="gap-sentence">'+esc(q)+'</div>'
+  + '<input class="field" type="text" style="margin-top:var(--sp-3)" placeholder="Écrivez la phrase complète">'
+  + '<div style="display:flex;flex-wrap:wrap;align-items:center;gap:var(--sp-3);margin-top:var(--sp-3)">'
+  + '<button class="btn btn--ghost btn--sm" data-reveal="w'+i+'">Voir la réponse</button>'
+  + '<span class="fb fb--ok is-hidden" id="w'+i+'" aria-live="polite">'+esc(a)+'</span></div></div></div>').join("");
+
+/* ── Deux appels ── */
+document.getElementById("dial-list").innerHTML = DIALS.map(d =>
+  '<div class="card card--flush" style="--sec:var(--teal-700)">'
+  + '<div class="card__band" style="display:flex;align-items:center;justify-content:space-between;gap:var(--sp-3)">'
+  + '<span>'+esc(d.label)+'</span>'
+  + '<button class="btn btn--audio btn--sm" data-say="'+esc(d.lines.join(" "))+'">'+ICON_SPK+' Écouter</button></div>'
+  + '<div style="padding:0 var(--sp-6) var(--sp-5)">'
+  + d.items.map(([q,a], i) =>
+      '<div class="card__row" style="padding-left:0;padding-right:0">'
+      + '<div style="display:flex;gap:var(--sp-3);align-items:baseline">'
+      + '<span style="font-weight:var(--fw-black);color:var(--sec)">'+String(i+1).padStart(2,"0")+'</span>'
+      + '<div style="font-size:var(--fs-body-sm);font-weight:var(--fw-semi)">'+esc(q)+'</div></div>'
+      + '<input class="field" type="text" style="margin-top:var(--sp-3)" placeholder="Votre réponse">'
+      + '<div style="display:flex;flex-wrap:wrap;align-items:center;gap:var(--sp-3);margin-top:var(--sp-3)">'
+      + '<button class="btn btn--ghost btn--sm" data-reveal="'+d.id+i+'">Voir la réponse</button>'
+      + '<span class="fb fb--ok is-hidden" id="'+d.id+i+'" aria-live="polite">'+esc(a)+'</span></div></div>').join("")
+  + '</div></div>').join("");
+
+/* ── Vocabulaire : association par clic (atteignable au clavier) ── */
+const wordsEl = document.getElementById("vocab-words");
+const defsEl  = document.getElementById("vocab-defs");
+const order = VOCAB.map((v,i) => i).sort(() => Math.random() - .5);
+let pick = null; const pairs = {};
+
+function renderVocab(miss){
+  wordsEl.innerHTML = VOCAB.map(([w], i) => {
+    const done = pairs[i] !== undefined;
+    const cls = "chip chip--word" + (done ? " is-paired" : (pick === i ? " is-active" : ""));
+    return '<button class="'+cls+'" data-w="'+i+'"'+(done ? ' aria-disabled="true"' : '')+'>'+esc(w)+'</button>';
+  }).join("");
+  const takenDefs = Object.values(pairs);
+  defsEl.innerHTML = order.map(idx => {
+    const done = takenDefs.includes(idx);
+    const cls = "chip" + (done ? " is-paired" : (miss === idx ? " is-miss" : ""));
+    return '<button class="'+cls+'" data-d="'+idx+'"'+(done ? ' aria-disabled="true"' : '')+'>'+esc(VOCAB[idx][1])+'</button>';
+  }).join("");
+
+  wordsEl.querySelectorAll("[data-w]").forEach(b => b.addEventListener("click", () => {
+    const i = +b.dataset.w;
+    if(pairs[i] !== undefined) return;
+    pick = (pick === i) ? null : i;
+    renderVocab(null);
+  }));
+  defsEl.querySelectorAll("[data-d]").forEach(b => b.addEventListener("click", () => {
+    const idx = +b.dataset.d;
+    if(Object.values(pairs).includes(idx) || pick === null) return;
+    if(pick === idx){ pairs[pick] = idx; pick = null; renderVocab(null); }
+    else renderVocab(idx);
+  }));
+
+  const n = Object.keys(pairs).length;
+  document.getElementById("sc-vocab").textContent = n + " / " + VOCAB.length + " associé";
+  markStep("etape-0", n === VOCAB.length);
+}
+renderVocab(null);
+
+/* ── Révélations ── */
+document.addEventListener("click", e => {
+  const b = e.target.closest("[data-reveal]");
+  if(!b) return;
+  const t = document.getElementById(b.dataset.reveal);
+  const open = t.classList.toggle("is-hidden") === false;
+  b.textContent = open ? "Cacher la réponse" : "Voir la réponse";
+});
+document.querySelectorAll("[data-say]").forEach(b => b.addEventListener("click", () => say(b.dataset.say)));
+</script>
+</body>
+</html>
