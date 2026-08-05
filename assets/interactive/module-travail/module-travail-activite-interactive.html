@@ -67,8 +67,10 @@ body{display:flex;flex-direction:column;min-height:100vh}
 .exs{flex:1;padding:22px 32px 48px;display:flex;flex-direction:column;gap:20px}
 
 .card{background:#fff;border-radius:18px;padding:22px 26px;box-shadow:0 4px 20px rgba(15,118,110,.08)}
-.c-hdr{display:flex;flex-direction:column;gap:4px;margin-bottom:20px;padding-bottom:16px;border-bottom:1px solid var(--border)}
-.tag{display:block;font-size:13px;font-weight:800;text-transform:uppercase;letter-spacing:.12em;white-space:nowrap}
+.c-hdr{display:flex;align-items:center;flex-wrap:wrap;gap:10px;margin-bottom:20px;padding-bottom:16px;border-bottom:1px solid var(--border)}
+.exo-num{flex-shrink:0;width:32px;height:32px;border-radius:10px;display:flex;align-items:center;justify-content:center;background:var(--accent-soft);color:var(--sec-color,var(--ws-accent));font-size:14px;font-weight:900}
+.tag{font-size:13px;font-weight:800;text-transform:uppercase;letter-spacing:.12em;white-space:nowrap}
+.ctit,.csub{flex-basis:100%}
 .ctit{display:block;font-size:24px;font-weight:900;line-height:1.2}
 .csub{display:block;font-size:15px;font-weight:600}
 
@@ -262,22 +264,23 @@ body{
 .card{
   padding:22px;
   border:1px solid var(--ws-line);
+  border-left:4px solid var(--sec-color,var(--ws-accent));
   border-radius:18px;
-  box-shadow:inset 0 2px 0 var(--ws-accent), 0 1px 2px rgba(20,20,20,.04);
+  box-shadow:0 1px 2px rgba(20,20,20,.04);
   overflow:hidden;
   transition:box-shadow .15s ease, transform .15s ease;
 }
 .card:hover{
   transform:translateY(-1px);
-  box-shadow:inset 0 2px 0 var(--ws-accent), 0 6px 18px rgba(20,20,20,.07);
+  box-shadow:0 6px 18px rgba(20,20,20,.07);
 }
 @media (prefers-reduced-motion:reduce){
   .card{transition:none}
   .card:hover{transform:none}
 }
 .c-hdr:first-child{
-  margin:-22px -23px 16px;
-  padding:20px 22px 14px;
+  margin:-22px -23px 16px -26px;
+  padding:20px 22px 14px 26px;
   background:#FBFBF9;
   border-bottom:1px solid var(--ws-line);
 }
@@ -1218,6 +1221,13 @@ document.addEventListener('touchend', e => {
 
 // ── HELPERS ───────────────────────────────────────────────────────────
 function esc(s){return String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;')}
+// Pastille numérotée carrée devant l'en-tête d'exercice (comme .exo__num du
+// modèle je-me-prepare.html) — extrait le chiffre de "Exercice N", sinon •.
+function exoNumBadge(numText){
+  const m = String(numText).match(/\d+/);
+  const label = m ? String(+m[0]).padStart(2,'0') : '•';
+  return '<span class="exo-num">'+label+'</span>';
+}
 // Remplace les suites de "___" par un blanc à souligner distinct du texte,
 // pour que les espaces entre les vrais mots restent lisibles (sinon tout
 // se lit comme une seule ligne confuse de tirets).
@@ -1375,7 +1385,7 @@ function buildStatic(){
     }
     // ── Exercice Vrai/Faux (ou 2 catégories) — colonnes + bouton Corriger ──
     if(ex.type==='vf'){
-      h+='<div class="c-hdr"><span class="tag">'+esc(ex.num)+'</span><span class="ctit">'+esc(ex.tit)+'</span><span class="csub">'+esc(ex.sub)+'</span></div>';
+      h+='<div class="c-hdr">'+exoNumBadge(ex.num)+'<span class="tag">'+esc(ex.num)+'</span><span class="ctit">'+esc(ex.tit)+'</span><span class="csub">'+esc(ex.sub)+'</span></div>';
       h+='<div class="vf-head"><div class="vf-head-txt"></div><div class="vf-head-opts"><div class="vf-head-opt">'+esc(ex.tiles[0])+'</div><div class="vf-head-opt">'+esc(ex.tiles[1])+'</div></div></div>';
       h+='<div class="rows" id="mount-'+ex.id+'"></div>';
       h+='<div style="margin-top:14px;display:flex;align-items:center;gap:12px;flex-wrap:wrap">';
@@ -1389,7 +1399,7 @@ function buildStatic(){
       // Si l'exercice a un dialogue, son titre est déjà affiché dans la
       // pastille du dialogue juste en dessous — pas besoin de le répéter ici.
       const titHtml = ex.dialogue ? '' : '<span class="ctit">'+esc(ex.tit)+'</span>';
-      h+='<div class="c-hdr"><span class="tag">'+esc(ex.num)+'</span>'+titHtml+'<span class="csub">'+esc(ex.sub)+'</span></div>';
+      h+='<div class="c-hdr">'+exoNumBadge(ex.num)+'<span class="tag">'+esc(ex.num)+'</span>'+titHtml+'<span class="csub">'+esc(ex.sub)+'</span></div>';
       const aiBadge = ex.items.some(it=>!it.accept) ? '<div style="font-size:12px;font-weight:800;color:#0D9488;margin-bottom:10px;display:flex;align-items:center;gap:6px">'+ICON_ASSISTANT+' Un assistant corrige ce que tu écris et te donne une rétroaction.</div>' : '';
       if(ex.dialogue && DIALOGUES[ex.dialogue]){
         const dia=DIALOGUES[ex.dialogue];
@@ -1419,7 +1429,7 @@ function buildStatic(){
     }
     h+='<div style="display:flex;gap:20px;align-items:flex-start;flex-wrap:wrap">';
     h+='<div style="flex:1;min-width:300px">';
-    h+='<div class="c-hdr"><span class="tag">'+esc(ex.num)+'</span><span class="ctit">'+esc(ex.tit)+'</span><span class="csub">'+esc(ex.sub)+'</span></div>';
+    h+='<div class="c-hdr">'+exoNumBadge(ex.num)+'<span class="tag">'+esc(ex.num)+'</span><span class="ctit">'+esc(ex.tit)+'</span><span class="csub">'+esc(ex.sub)+'</span></div>';
     if(ex.type==='blanks') h+='<p class="blanks-p" id="mount-'+ex.id+'"></p>';
     else h+='<div class="rows" id="mount-'+ex.id+'"></div>';
     h+='</div>';
