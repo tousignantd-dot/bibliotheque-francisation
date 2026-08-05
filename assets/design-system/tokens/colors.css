@@ -1,0 +1,81 @@
+/* ============================================================
+   FRANCISATION · COULEURS
+   Fond neutre chaud, cartes blanches, une seule couleur d'accent
+   (vert). Les couleurs de section servent AU REPÉRAGE, jamais à
+   décorer. Le rouge est réservé à l'audio et à l'erreur.
+   Tout ratio annoncé est mesuré sur son fond documenté.
+   ============================================================ */
+:root {
+  /* — Neutres (chauds) — */
+  --paper-50:  #FBFBFA;   /* fond de champ, pied de carte */
+  --paper-100: #F7F7F5;   /* FOND DE PAGE */
+  --paper-200: #F0F0EE;   /* filet intérieur de liste */
+  --white:     #FFFFFF;   /* cartes */
+
+  --line-100:  #EAEAE8;   /* filet neutre */
+  --line-200:  #D8E8DF;   /* filet teinté vert (bandeaux clairs) */
+  --line-300:  #D6D6D2;   /* contour de zone de dépôt vide */
+
+  --ink-900:   #17181A;   /* encre principale */
+  --ink-700:   #3A3D40;   /* texte long, transcriptions */
+  --ink-500:   #4B4F52;   /* chapeau sur fond clair */
+  --ink-400:   #6E7175;   /* texte secondaire — 4.6:1 sur blanc ✔ AA */
+
+  /* — Accent principal : vert — */
+  --green-800: #07734A;   /* texte vert sur fond clair — 5.4:1 ✔ */
+  --green-600: #0A8F5B;   /* ACCENT · filets, focus, pastilles */
+  --green-100: #E6F5EE;   /* fond d'accent, état réussi */
+  --green-050: #EDF6F1;   /* bandeau clair pleine largeur */
+
+  /* — Accents de section (repérage seulement) —
+     Un seul par section : pastille numérotée, sur-titre, filet
+     gauche de 4 px, point de la barre de parcours. Jamais en aplat
+     derrière du texte long. */
+  --acier-600:  #1D6B8F;  --acier-100:  #E7F0F6;   /* compréhension orale */
+  --violet-600: #6B4FBB;  --violet-100: #EFEAFA;   /* graphie-phonie */
+  --ambre-700:  #B45309;  --ambre-100:  #FBEEDC;   /* écriture */
+  --teal-700:   #0D7A6F;  --teal-100:   #DCF2EF;   /* écoute et réponds */
+  --foret-700:  #166534;  --foret-100:  #E3F1E7;   /* vocabulaire / bilan */
+
+  /* — Audio : le seul aplat rouge de l'interface — */
+  --audio:       #DC2626;
+  --audio-hover: #B91C1C;
+
+  /* — Rétroaction : 4 états × 3 rôles —
+     L'erreur n'a PAS d'aplat saturé : fond à peine teinté, filet et
+     texte rouges. Ainsi le seul rouge plein reste le bouton audio. */
+  --ok-bg:   #E6F5EE;  --ok-line:   #0A8F5B;  --ok-ink:   #07734A;
+  --no-bg:   #FFF6F5;  --no-line:   #DC2626;  --no-ink:   #B91C1C;
+  --warn-bg: #FEF6E7;  --warn-line: #D9880B;  --warn-ink: #8A5206;
+
+  /* — Sélection = plaque encre (jamais une teinte de plus) — */
+  --sel-bg:  #17181A;  --sel-line: #17181A;  --sel-ink: #FFFFFF;
+
+  /* — Zone de dépôt vide : neutre, pas bleue — */
+  --drop-bg: #FBFBFA;  --drop-line: #D6D6D2;
+
+  /* ==========================================================
+     ALIAS SÉMANTIQUES — c'est ce que les composants référencent
+     ========================================================== */
+  --surface-page:    var(--paper-100);
+  --surface-card:    var(--white);
+  --surface-sunken:  var(--paper-50);
+  --surface-band:    var(--green-050);   /* bandeau d'en-tête clair */
+  --surface-inverse: var(--ink-900);     /* réservé à 1 bloc par page */
+
+  --text-strong:  var(--ink-900);
+  --text-body:    var(--ink-700);
+  --text-muted:   var(--ink-400);
+  --text-inverse: var(--white);
+  --text-accent:  var(--green-800);
+
+  --border:       var(--line-100);
+  --border-tint:  var(--line-200);
+  --accent:       var(--green-600);
+  --accent-soft:  var(--green-100);
+  --accent-ink:   var(--green-800);
+
+  --focus-ring:   var(--green-600);
+  --link:         var(--green-600);
+  --link-hover:   var(--green-800);
+}

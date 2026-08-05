@@ -1,0 +1,48 @@
+/* ============================================================
+   FRANCISATION · SOCLE
+   Réinitialisation minimale + règles non négociables
+   d'accessibilité. À charger après les jetons.
+   ============================================================ */
+*, *::before, *::after { box-sizing: border-box; }
+
+html { -webkit-text-size-adjust: 100%; }
+
+body {
+  margin: 0;
+  background: var(--surface-page);
+  color: var(--text-strong);
+  font-family: var(--font-sans);
+  font-size: var(--fs-body);
+  font-weight: var(--fw-medium);
+  line-height: var(--lh-body);
+  -webkit-font-smoothing: antialiased;
+  text-wrap: pretty;
+}
+
+h1, h2, h3 { margin: 0; letter-spacing: var(--ls-title); line-height: var(--lh-title); }
+h1 { font-size: var(--fs-hero); font-weight: var(--fw-black); line-height: var(--lh-hero); letter-spacing: var(--ls-hero); }
+h2 { font-size: var(--fs-h2);   font-weight: var(--fw-black); }
+h3 { font-size: var(--fs-h3);   font-weight: var(--fw-black); }
+p  { margin: 0; }
+
+a { color: var(--link); text-decoration: underline; text-underline-offset: 3px; }
+a:hover { color: var(--link-hover); }
+
+/* Focus clavier visible PARTOUT. Ne jamais retirer sans remplacer. */
+:focus-visible {
+  outline: var(--focus-width) solid var(--focus-ring);
+  outline-offset: var(--focus-offset);
+  border-radius: var(--r-sm);
+}
+
+/* Le zoom doit rester possible : jamais user-scalable=no dans le viewport. */
+
+::placeholder { color: var(--text-muted); opacity: 1; }  /* 4.6:1 ✔ AA */
+
+::-webkit-scrollbar { width: 6px; height: 6px; }
+::-webkit-scrollbar-thumb { background: rgba(0,0,0,.15); border-radius: 3px; }
+
+.u-visually-hidden {
+  position: absolute; width: 1px; height: 1px; overflow: hidden;
+  clip: rect(0 0 0 0); white-space: nowrap;
+}

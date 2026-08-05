@@ -1,0 +1,190 @@
+<!DOCTYPE html>
+<html lang="fr-CA">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Système de design · Francisation</title>
+<link rel="stylesheet" href="styles.css">
+<style>
+  .sheet { max-width: var(--content-max); margin: 0 auto; padding: var(--sp-8) var(--gutter) 96px; }
+  .spec { margin-top: var(--sp-12); }
+  .spec > h2 { margin-bottom: var(--sp-2); }
+  .spec__note { font-size: var(--fs-body-sm); font-weight: var(--fw-medium); color: var(--text-muted); margin-bottom: var(--sp-5); }
+  .swatches { display: grid; grid-template-columns: repeat(auto-fill, minmax(150px, 1fr)); gap: var(--sp-3); }
+  .sw { border: 1px solid var(--border); border-radius: var(--r-md); overflow: hidden; background: var(--surface-card); }
+  .sw__chip { height: 56px; }
+  .sw__meta { padding: var(--sp-2) var(--sp-3); font-size: var(--fs-meta); font-weight: var(--fw-bold); }
+  .sw__meta small { display: block; font-weight: var(--fw-medium); color: var(--text-muted); font-size: 11px; }
+  .row { display: flex; flex-wrap: wrap; gap: var(--sp-3); align-items: center; }
+</style>
+</head>
+<body>
+<div class="page">
+
+  <header class="band">
+    <div class="container">
+      <div class="band__eyebrow">Système de design · Bibliothèque de francisation</div>
+      <h1>Planche de composants</h1>
+      <p class="band__lead">Tous les éléments dans leurs états réels, rendus par <code>styles.css</code>. Si une valeur bouge dans les jetons, elle bouge ici.</p>
+    </div>
+  </header>
+
+  <div class="sheet">
+
+    <section class="spec">
+      <h2>Couleurs</h2>
+      <p class="spec__note">Un seul accent. Les couleurs de section servent au repérage, jamais à décorer.</p>
+      <div class="swatches">
+        <div class="sw"><div class="sw__chip" style="background:var(--paper-100)"></div><div class="sw__meta">--paper-100<small>fond de page</small></div></div>
+        <div class="sw"><div class="sw__chip" style="background:var(--white);border-bottom:1px solid var(--border)"></div><div class="sw__meta">--white<small>cartes</small></div></div>
+        <div class="sw"><div class="sw__chip" style="background:var(--ink-900)"></div><div class="sw__meta">--ink-900<small>encre · sélection</small></div></div>
+        <div class="sw"><div class="sw__chip" style="background:var(--ink-400)"></div><div class="sw__meta">--ink-400<small>texte secondaire · 4.6:1</small></div></div>
+        <div class="sw"><div class="sw__chip" style="background:var(--green-600)"></div><div class="sw__meta">--accent<small>vert unique</small></div></div>
+        <div class="sw"><div class="sw__chip" style="background:var(--green-100)"></div><div class="sw__meta">--accent-soft<small>fond d'accent · réussi</small></div></div>
+        <div class="sw"><div class="sw__chip" style="background:var(--audio)"></div><div class="sw__meta">--audio<small>audio uniquement</small></div></div>
+        <div class="sw"><div class="sw__chip" style="background:var(--green-050)"></div><div class="sw__meta">--surface-band<small>bandeau clair</small></div></div>
+      </div>
+      <div class="swatches" style="margin-top:var(--sp-3)">
+        <div class="sw"><div class="sw__chip" style="background:var(--acier-600)"></div><div class="sw__meta">--acier-600<small>compréhension orale</small></div></div>
+        <div class="sw"><div class="sw__chip" style="background:var(--violet-600)"></div><div class="sw__meta">--violet-600<small>graphie-phonie</small></div></div>
+        <div class="sw"><div class="sw__chip" style="background:var(--ambre-700)"></div><div class="sw__meta">--ambre-700<small>écriture</small></div></div>
+        <div class="sw"><div class="sw__chip" style="background:var(--teal-700)"></div><div class="sw__meta">--teal-700<small>écoute et réponds</small></div></div>
+        <div class="sw"><div class="sw__chip" style="background:var(--foret-700)"></div><div class="sw__meta">--foret-700<small>vocabulaire · bilan</small></div></div>
+      </div>
+    </section>
+
+    <section class="spec">
+      <h2>Typographie</h2>
+      <p class="spec__note">Rien sous 17 px pour un contenu pédagogique.</p>
+      <div class="card">
+        <div style="font-size:var(--fs-label);font-weight:var(--fw-bold);letter-spacing:var(--ls-label);text-transform:uppercase;color:var(--text-accent)">Sur-titre · 13 / 800</div>
+        <h1 style="margin:var(--sp-2) 0">Titre de page · 62 / 900</h1>
+        <h2 style="margin-bottom:var(--sp-2)">Titre d'exercice · 30 / 900</h2>
+        <p style="font-size:var(--fs-lead);font-weight:var(--fw-semi)">Chapeau · 19 / 700 — Écoutez, repérez les sons, écrivez.</p>
+        <p style="font-size:var(--fs-body);font-weight:var(--fw-semi);margin-top:var(--sp-2)">Énoncé · 18 / 700 — Karim doit aller chercher sa fille à l'école.</p>
+        <p style="font-size:var(--fs-body-sm);font-weight:var(--fw-medium);color:var(--text-muted);margin-top:var(--sp-2)">Consigne · 17 / 600 gris — Écoutez le mot, puis indiquez le son que vous entendez.</p>
+      </div>
+    </section>
+
+    <section class="spec">
+      <h2>Boutons</h2>
+      <p class="spec__note">Trois rôles. Le rouge ne sert qu'à l'audio.</p>
+      <div class="row">
+        <button class="btn btn--pri">Corriger</button>
+        <button class="btn btn--ghost">Recommencer</button>
+        <button class="btn btn--audio">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" aria-hidden="true"><polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5" fill="currentColor" stroke="none"></polygon><path d="M15.5 8.5a5 5 0 0 1 0 7"></path><path d="M19 5a9 9 0 0 1 0 14"></path></svg>
+          Écouter le dialogue
+        </button>
+        <button class="btn-audio-round" aria-label="Écouter le mot">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" aria-hidden="true"><polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5" fill="currentColor" stroke="none"></polygon><path d="M15.5 8.5a5 5 0 0 1 0 7"></path><path d="M19 5a9 9 0 0 1 0 14"></path></svg>
+        </button>
+        <button class="btn btn--ghost btn--sm">Voir la réponse</button>
+        <button class="btn btn--pri" disabled>Envoyer</button>
+      </div>
+    </section>
+
+    <section class="spec">
+      <h2>Barre de parcours</h2>
+      <p class="spec__note">La pastille se teinte quand l'étape est réussie — la couleur confirme, elle n'annonce pas.</p>
+      <div class="row">
+        <a class="step is-done" href="#" style="--sec:var(--green-600);--sec-soft:var(--green-100)"><span class="step__dot"></span>Vocabulaire</a>
+        <a class="step" href="#" style="--sec:var(--acier-600)"><span class="step__dot" style="background:var(--acier-600)"></span>Vrai ou faux</a>
+        <a class="step" href="#" style="--sec:var(--violet-600)"><span class="step__dot" style="background:var(--violet-600)"></span>Les sons</a>
+        <a class="step" href="#" style="--sec:var(--ambre-700)"><span class="step__dot" style="background:var(--ambre-700)"></span>J'écris</a>
+        <a class="step" href="#" style="--sec:var(--teal-700)"><span class="step__dot" style="background:var(--teal-700)"></span>Deux appels</a>
+      </div>
+    </section>
+
+    <section class="spec exo exo--orale">
+      <div class="exo__head">
+        <div class="exo__num">01</div>
+        <div class="exo__eyebrow">Compréhension orale</div>
+        <div class="exo__rule"></div>
+        <div class="exo__score">2 / 10 juste</div>
+      </div>
+      <h2 class="exo__title">En-tête d'exercice et choix</h2>
+      <p class="exo__sub">Sélectionné = plaque encre. Après correction : vert ou rouge, toujours avec un glyphe.</p>
+      <div class="card card--flush card--marked">
+        <div class="exo-row">
+          <div><div class="exo-row__txt">Karim doit aller chercher sa fille à l'école.</div>
+            <div class="fb fb--ok" style="margin-top:8px">Juste</div></div>
+          <div class="exo-row__opts"><button class="choice is-ok">VRAI</button><button class="choice">FAUX</button></div>
+        </div>
+        <div class="exo-row">
+          <div><div class="exo-row__txt">C'est la première absence de Karim ce mois-ci.</div>
+            <div class="fb fb--no" style="margin-top:8px">La bonne réponse est FAUX</div></div>
+          <div class="exo-row__opts"><button class="choice is-no">VRAI</button><button class="choice is-answer">FAUX</button></div>
+        </div>
+        <div class="exo-row">
+          <div><div class="exo-row__txt">Karim et Nadia travaillent ensemble.</div></div>
+          <div class="exo-row__opts"><button class="choice is-selected">VRAI</button><button class="choice">FAUX</button></div>
+        </div>
+        <div class="card__foot">
+          <button class="btn btn--pri">Corriger</button>
+          <button class="btn btn--ghost">Recommencer</button>
+        </div>
+      </div>
+    </section>
+
+    <section class="spec exo exo--vocab">
+      <h2>Association mot ↔ définition</h2>
+      <p class="spec__note">Clic sur le mot, puis clic sur la définition : atteignable au clavier, contrairement au glisser-déposer.</p>
+      <div class="pair-grid">
+        <div class="stack" style="gap:var(--sp-2)">
+          <button class="chip chip--word is-paired">un retard</button>
+          <button class="chip chip--word is-active">une boîte vocale</button>
+          <button class="chip chip--word">un billet médical</button>
+        </div>
+        <div class="stack" style="gap:var(--sp-2)">
+          <button class="chip is-paired">Le fait d'arriver après un moment fixé.</button>
+          <button class="chip is-miss">Un document du médecin qui confirme une consultation.</button>
+          <button class="chip">Le système qui enregistre un message quand personne ne répond.</button>
+        </div>
+      </div>
+    </section>
+
+    <section class="spec exo exo--phonie">
+      <h2>Encadré de savoir</h2>
+      <p class="spec__note">Bandeau à la couleur de section, rangées clé / exemple.</p>
+      <div class="savoir">
+        <div class="card__band">Des sons et des lettres</div>
+        <div class="savoir__row"><div class="savoir__key">[ɛ] au début ou au milieu</div><div class="savoir__val">è, ê, ei, ai + consonne : père, tête, treize, semaine · e + l : nouvelle · e + r : hiver</div></div>
+        <div class="savoir__row"><div class="savoir__key">[e] en fin de mot</div><div class="savoir__val">é, ai, er : dépanné, je travaillerai, dépanner (exceptions : hiver, mer)</div></div>
+      </div>
+    </section>
+
+    <section class="spec exo exo--ecriture">
+      <h2>Champs et zones</h2>
+      <p class="spec__note">Zone vide : neutre, jamais bleue. Remplie : plaque encre.</p>
+      <div class="card card--marked stack">
+        <div class="gap-sentence">Elle ___bs___rve la lettre av___c att___ntion.</div>
+        <input class="field" type="text" placeholder="Écrivez la phrase complète">
+        <div class="row">
+          <button class="btn btn--ghost btn--sm">Voir la réponse</button>
+          <span class="fb fb--ok">Elle observe la lettre avec attention.</span>
+        </div>
+        <div class="row" style="margin-top:var(--sp-2)">
+          <div class="drop" style="min-width:150px">glissez ici</div>
+          <div class="drop is-filled" style="min-width:150px">le matin</div>
+          <div class="drop is-ok" style="min-width:150px">le matin</div>
+          <div class="drop is-no" style="min-width:150px">le soir</div>
+        </div>
+      </div>
+    </section>
+
+    <section class="spec">
+      <h2>Rétroaction</h2>
+      <p class="spec__note">Quatre états, un glyphe chacun. L'erreur n'a pas d'aplat saturé.</p>
+      <div class="stack">
+        <div class="banner">Un mot est choisi. Touchez la définition qui lui correspond.</div>
+        <div class="fb-box"><div class="fb-box__title">Correction</div><div class="fb-box__item">La phrase est juste.</div></div>
+        <div class="fb-box fb-box--warn"><div class="fb-box__title">À revoir</div><div class="fb-box__item">Attention à l'accent sur « prévenir ».</div></div>
+        <div class="fb-box fb-box--no"><div class="fb-box__title">Erreur</div><div class="fb-box__item">Le verbe ne s'accorde pas avec le sujet.</div></div>
+      </div>
+    </section>
+
+  </div>
+</div>
+</body>
+</html>

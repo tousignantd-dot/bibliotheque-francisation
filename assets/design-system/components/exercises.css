@@ -1,0 +1,84 @@
+/* ============================================================
+   EXERCICES · choix, jetons, zones de dépôt
+   Règle d'or : SÉLECTIONNÉ = plaque encre. Pas de bleu, pas de
+   teinte supplémentaire — la couleur reste disponible pour dire
+   « juste » ou « à revoir ».
+   ============================================================ */
+
+/* — Choix binaire (vrai/faux, [e]/[ɛ]) — */
+.choice {
+  min-width: 82px; min-height: 46px; padding: 0 var(--sp-4);
+  border: 1px solid var(--border); border-radius: var(--r-sm);
+  background: var(--surface-card); color: var(--text-body);
+  font-family: var(--font-sans); font-size: var(--fs-ui); font-weight: var(--fw-bold);
+  cursor: pointer;
+  transition: background var(--dur) var(--ease), color var(--dur) var(--ease),
+              border-color var(--dur) var(--ease);
+}
+.choice:hover { background: var(--paper-100); }
+.choice.is-selected { background: var(--sel-bg); border-color: var(--sel-line); color: var(--sel-ink); }
+.choice.is-ok       { background: var(--ok-bg); border-color: var(--ok-line); color: var(--ok-ink); }
+.choice.is-no       { background: var(--no-bg); border-color: var(--no-line); color: var(--no-ink); }
+/* bonne réponse non choisie : filet pointillé, sans aplat */
+.choice.is-answer   { background: var(--surface-card); border: 1px dashed var(--ok-line); color: var(--ok-line); }
+
+.exo-row {
+  display: grid; grid-template-columns: minmax(0, 1fr) auto;
+  gap: var(--sp-5); align-items: center;
+  padding: var(--sp-4) var(--sp-6); border-bottom: 1px solid var(--paper-200);
+}
+.exo-row:last-of-type { border-bottom: none; }
+.exo-row__txt  { font-size: var(--fs-body); font-weight: var(--fw-semi); line-height: 1.45; }
+.exo-row__opts { display: flex; gap: var(--sp-2); }
+@media (max-width: 560px) { .exo-row { grid-template-columns: 1fr; gap: var(--sp-3); } }
+
+/* — Jeton d'association (mot ↔ définition) —
+   Clic-clic plutôt que glisser : atteignable au clavier.
+   Sur chaque jeton : role="button" tabindex="0" + gestion de
+   Entrée/Espace. Les paires justes se verrouillent (aria-disabled). */
+.chip {
+  text-align: left; width: 100%;
+  min-height: var(--tap-comfort); padding: var(--sp-3) var(--sp-4);
+  border: 1px solid var(--border); border-radius: var(--r-md);
+  background: var(--surface-card); color: var(--text-strong);
+  font-family: var(--font-sans); font-size: var(--fs-body-sm); font-weight: var(--fw-medium);
+  line-height: 1.45; cursor: pointer;
+  transition: background var(--dur) var(--ease), border-color var(--dur) var(--ease), color var(--dur) var(--ease);
+}
+.chip--word   { font-size: var(--fs-body-sm); font-weight: var(--fw-bold); }
+.chip:hover   { background: var(--paper-100); }
+.chip.is-active { background: var(--sel-bg); border-color: var(--sel-line); color: var(--sel-ink); }
+.chip.is-paired { background: var(--ok-bg); border-color: var(--ok-line); color: var(--ok-ink); cursor: default; }
+.chip.is-paired::before { content: "✓ "; font-weight: var(--fw-black); }
+.chip.is-miss   { background: var(--no-bg); border-color: var(--no-line); color: var(--no-ink); }
+
+.pair-grid { display: grid; grid-template-columns: minmax(220px, 300px) minmax(0, 1fr); gap: var(--sp-4); align-items: start; }
+@media (max-width: 720px) { .pair-grid { grid-template-columns: 1fr; } }
+
+/* — Zone de dépôt / texte à trous — */
+.drop {
+  display: flex; align-items: center; justify-content: center;
+  min-height: 54px; padding: var(--sp-3) var(--sp-4);
+  border: 2px dashed var(--drop-line); border-radius: var(--r-sm);
+  background: var(--drop-bg); color: var(--text-muted);
+  font-weight: var(--fw-bold); text-align: center; cursor: pointer;
+  transition: background var(--dur) var(--ease), border-color var(--dur) var(--ease);
+}
+.drop.is-filled { border-style: solid; border-color: var(--sel-line); background: var(--sel-bg); color: var(--sel-ink); }
+.drop.is-over   { border-style: solid; border-color: var(--accent); background: var(--accent-soft); }
+.drop.is-ok     { border-style: solid; border-color: var(--ok-line); background: var(--ok-bg); color: var(--ok-ink); }
+.drop.is-no     { border-style: solid; border-color: var(--no-line); background: var(--no-bg); color: var(--no-ink); }
+
+.blank {
+  display: inline-block; min-width: 130px; margin: 0 3px; padding: 4px var(--sp-3);
+  border: 2px dashed var(--drop-line); border-radius: 8px;
+  background: var(--drop-bg); color: var(--text-muted);
+  font-size: var(--fs-lead); font-weight: var(--fw-bold); text-align: center;
+  vertical-align: middle; cursor: pointer;
+}
+.blank.is-filled { border-style: solid; border-color: var(--sel-line); background: var(--sel-bg); color: var(--sel-ink); }
+.blank.is-ok     { border-style: solid; border-color: var(--ok-line); background: var(--ok-bg); color: var(--ok-ink); }
+.blank.is-no     { border-style: solid; border-color: var(--no-line); background: var(--no-bg); color: var(--no-ink); }
+
+/* Phrase à compléter : les tirets de la consigne restent lisibles. */
+.gap-sentence { font-size: var(--fs-lead); font-weight: var(--fw-bold); line-height: var(--lh-loose); letter-spacing: .01em; }

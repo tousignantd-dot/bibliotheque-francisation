@@ -1,0 +1,52 @@
+/* ============================================================
+   CARTES ET BANDEAUX
+   Blanc, filet 1 px, rayon 18 px, ombre presque nulle.
+   Le filet gauche de 4 px est le SEUL usage décoratif autorisé de
+   la couleur de section sur une carte.
+   ============================================================ */
+.card {
+  background: var(--surface-card);
+  border: 1px solid var(--border); border-radius: var(--r-lg);
+  box-shadow: var(--sh-card);
+  padding: var(--sp-5) var(--sp-6);
+}
+.card--flush  { padding: 0; overflow: hidden; }
+.card--marked { border-left: 4px solid var(--sec, var(--accent)); }
+.card--tinted { background: var(--surface-band); border-color: var(--border-tint); }
+
+.card__band {
+  background: var(--sec, var(--accent)); color: var(--white);
+  padding: var(--sp-3) var(--sp-6);
+  font-size: var(--fs-meta); font-weight: var(--fw-black);
+  letter-spacing: .14em; text-transform: uppercase;
+}
+.card__row {
+  padding: var(--sp-4) var(--sp-6);
+  border-bottom: 1px solid var(--paper-200);
+}
+.card__row:last-child { border-bottom: none; }
+.card__foot {
+  display: flex; flex-wrap: wrap; gap: var(--sp-3);
+  padding: var(--sp-5) var(--sp-6); background: var(--surface-sunken);
+}
+
+/* Encadré de savoir (grammaire, sons) : bandeau coloré + rangées. */
+.savoir { background: var(--surface-card); border: 1px solid var(--border); border-radius: var(--r-lg); overflow: hidden; box-shadow: var(--sh-card); }
+.savoir__row {
+  display: grid; grid-template-columns: minmax(160px, 220px) minmax(0, 1fr);
+  gap: var(--sp-5); align-items: baseline;
+  padding: var(--sp-4) var(--sp-6); border-bottom: 1px solid var(--paper-200);
+}
+.savoir__row:last-child { border-bottom: none; }
+.savoir__key { font-size: var(--fs-lead); font-weight: var(--fw-black); color: var(--text-strong); }
+.savoir__val { font-size: var(--fs-body-sm); font-weight: var(--fw-medium); line-height: var(--lh-loose); color: var(--text-body); }
+@media (max-width: 640px) { .savoir__row { grid-template-columns: 1fr; gap: var(--sp-1); } }
+
+/* Réplique de dialogue / transcription. */
+.dialogue__line {
+  display: grid; grid-template-columns: 88px minmax(0, 1fr);
+  gap: var(--sp-4); align-items: baseline;
+  padding: var(--sp-4) 0; border-bottom: 1px solid var(--border);
+}
+.dialogue__who { font-size: var(--fs-label); font-weight: var(--fw-black); letter-spacing: .06em; color: var(--accent); }
+.dialogue__txt { font-size: var(--fs-body-sm); font-weight: var(--fw-medium); line-height: 1.55; color: var(--text-body); }

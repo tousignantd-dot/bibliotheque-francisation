@@ -1,0 +1,42 @@
+/* ============================================================
+   BOUTONS
+   Toujours en pilule. Trois rôles seulement :
+   .btn--pri (encre) · .btn--ghost (blanc) · .btn--audio (rouge).
+   Le rouge est RÉSERVÉ à l'audio. Hauteur plancher 44 px.
+   ============================================================ */
+.btn {
+  display: inline-flex; align-items: center; justify-content: center; gap: var(--sp-2);
+  min-height: var(--tap-comfort); padding: 0 var(--sp-5);
+  border: 1px solid transparent; border-radius: var(--r-pill);
+  font-family: var(--font-sans); font-size: var(--fs-ui); font-weight: var(--fw-bold);
+  line-height: 1; white-space: nowrap; flex-shrink: 0; cursor: pointer;
+  transition: background var(--dur) var(--ease), color var(--dur) var(--ease),
+              border-color var(--dur) var(--ease);
+}
+.btn:disabled { opacity: .5; cursor: not-allowed; }
+
+.btn--pri   { background: var(--ink-900); color: var(--white); }
+.btn--pri:hover { background: var(--accent); }
+
+.btn--ghost { background: var(--surface-card); color: var(--text-strong); border-color: var(--border); }
+.btn--ghost:hover { background: var(--paper-100); }
+
+/* Le seul aplat rouge de l'interface. */
+.btn--audio { background: var(--audio); color: var(--white); }
+.btn--audio:hover { background: var(--audio-hover); }
+
+.btn--sm { min-height: var(--tap-min); padding: 0 var(--sp-4); font-size: var(--fs-ui-sm); font-weight: var(--fw-semi); }
+.btn--lg { min-height: var(--tap-large); padding: 0 var(--sp-6); font-size: 16px; }
+
+/* Bouton d'écoute rond — icône seule, jamais sous 44 px. */
+.btn-audio-round {
+  flex-shrink: 0; width: var(--tap-min); height: var(--tap-min);
+  display: inline-flex; align-items: center; justify-content: center;
+  border: none; border-radius: 50%;
+  background: var(--audio); color: var(--white); cursor: pointer;
+  transition: background var(--dur) var(--ease);
+}
+.btn-audio-round:hover { background: var(--audio-hover); }
+.btn-audio-round svg { width: 18px; height: 18px; }
+
+.btn .icon, .btn svg { width: 17px; height: 17px; flex-shrink: 0; }

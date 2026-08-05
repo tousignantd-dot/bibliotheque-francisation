@@ -1,0 +1,41 @@
+/* ============================================================
+   RÉTROACTION
+   Jamais la couleur seule : chaque état porte un glyphe (✓ / ✕ / !).
+   Conteneurs annoncés aux lecteurs d'écran (aria-live="polite").
+   L'erreur n'a pas d'aplat saturé.
+   ============================================================ */
+.fb { font-size: var(--fs-ui-sm); font-weight: var(--fw-bold); line-height: var(--lh-body); }
+.fb--ok   { color: var(--ok-ink); }
+.fb--no   { color: var(--no-ink); }
+.fb--warn { color: var(--warn-ink); }
+.fb--ok::before   { content: "✓ "; font-weight: var(--fw-black); }
+.fb--no::before   { content: "✕ "; font-weight: var(--fw-black); }
+.fb--warn::before { content: "! "; font-weight: var(--fw-black); }
+
+/* Bloc de rétroaction détaillée (correction d'un écrit). */
+.fb-box {
+  border: 1px solid var(--ok-line); border-radius: var(--r-sm);
+  background: var(--ok-bg); color: var(--ok-ink);
+  padding: var(--sp-4); display: flex; flex-direction: column; gap: var(--sp-2);
+}
+.fb-box--no   { border-color: var(--no-line);   background: var(--no-bg);   color: var(--no-ink); }
+.fb-box--warn { border-color: var(--warn-line); background: var(--warn-bg); color: var(--warn-ink); }
+.fb-box__title { font-size: var(--fs-meta); font-weight: var(--fw-black); letter-spacing: .06em; text-transform: uppercase; }
+.fb-box__item  { font-size: var(--fs-ui-sm); font-weight: var(--fw-semi); padding-left: var(--sp-3); position: relative; }
+.fb-box__item::before { content: "•"; position: absolute; left: 2px; }
+
+/* Score / progression. */
+.score {
+  display: inline-flex; align-items: center;
+  padding: 6px var(--sp-3); border-radius: var(--r-pill);
+  background: var(--sec-soft, var(--accent-soft)); color: var(--sec, var(--accent-ink));
+  font-size: var(--fs-ui-sm); font-weight: var(--fw-bold); white-space: nowrap;
+}
+
+/* Bannière d'aide contextuelle (« un mot est choisi, placez-le »). */
+.banner {
+  display: flex; align-items: center; gap: var(--sp-3);
+  padding: var(--sp-3) var(--gutter);
+  background: var(--warn-bg); border-bottom: 2px solid var(--warn-line);
+  color: var(--warn-ink); font-size: var(--fs-body-sm); font-weight: var(--fw-bold);
+}

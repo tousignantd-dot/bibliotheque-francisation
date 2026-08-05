@@ -3,6 +3,7 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Absent ou en retard : que faire ? — Module Niveau 4</title>
+<link rel="stylesheet" href="/assets/design-system/styles.css">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@600;700;800;900&display=swap" rel="stylesheet">
@@ -121,7 +122,7 @@ body{display:flex;flex-direction:column;min-height:100vh}
 .pron-fb.warn{color:var(--warn-ink)}
 .vf-opt{width:72px;flex:0 0 72px;min-height:44px;border-radius:10px;border:2.5px solid #CBD5E1;background:#F8FAFC;color:#64748B;font-weight:800;font-family:'Nunito',sans-serif;cursor:pointer;transition:background .15s,border-color .15s,color .15s}
 .vf-opt:hover{border-color:#94A3B8}
-.vf-opt.sel{background:#DBEAFE;border-color:#60A5FA;border-style:solid;color:#1E3A8A}
+.vf-opt.sel{background:var(--sel-bg)!important;border-color:var(--sel-line)!important;border-style:solid;color:var(--sel-ink)!important}
 .vf-opt.fb-ok{background:var(--ok-bg)!important;border-color:var(--ok-line)!important;border-style:solid!important;color:var(--ok-ink)!important}
 .vf-opt.fb-no{background:var(--no-bg)!important;border-color:var(--no-line)!important;border-style:solid!important;color:var(--no-ink)!important}
 .vf-summary{font-size:13px;font-weight:800}
@@ -241,17 +242,15 @@ textarea:focus{outline:none;border-color:#1D6B8F}
 /* ── ESSAI DE STYLE : "Je me prépare" seulement (inspiré Wealthsimple) ── */
 /* Fond neutre, cartes blanches épurées, police géométrique sobre, accent unique. */
 body{
-  --ws-bg:#F7F7F5; --ws-card:#FFFFFF; --ws-ink:#17181A; --ws-sub:#6E7175;
-  --ws-line:#EAEAE8; --ws-accent:#0A8F5B; --ws-accent-bg:#E6F5EE;
+  /* Alias vers le système de design officiel (assets/design-system/) —
+     ok-bg/no-bg/warn-bg/sel-bg/drop-bg viennent directement de
+     tokens/colors.css (mêmes noms, ne pas les redéclarer ici). */
+  --ws-bg:var(--surface-page); --ws-card:var(--surface-card); --ws-ink:var(--text-strong); --ws-sub:var(--text-muted);
+  --ws-line:var(--border); --ws-accent:var(--accent); --ws-accent-bg:var(--accent-soft);
   --pad-x:32px;      /* gouttière de page — identique partout */
   --pad-card:22px;   /* padding intérieur de TOUS les cadres */
   --bleed:-23px;     /* = -(var(--pad-card) + 1px de bordure) */
   --r-sm:10px; --r-md:18px; --r-pill:999px;
-  --ok-bg:#E8F6EE;   --ok-line:#34A76B;  --ok-ink:#0A6B46;
-  --no-bg:#FFF6F5;   --no-line:#DC2626;  --no-ink:#B4231F;
-  --warn-bg:#FEF6E7; --warn-line:#D9880B;--warn-ink:#8A5206;
-  --sel-bg:#EAF1FB;  --sel-line:#2563EB; --sel-ink:#1B3F8F;
-  --drop-bg:#FAFAF8; --drop-line:#D6D6D2;
   background:var(--ws-bg);
   color:var(--ws-ink);
 }
