@@ -77,11 +77,11 @@ body{display:flex;flex-direction:column;min-height:100vh}
 .savoir td:first-child{font-weight:900;color:#154F68;width:34%}
 .savoir em{font-style:italic;color:#0A6B57}
 .word-chips{display:flex;flex-wrap:wrap;gap:8px;margin-top:10px}
-.word-chip{display:flex;flex-wrap:wrap;align-items:center;gap:4px;background:#FFFFFF;border:1.5px solid #CFE9E3;border-radius:20px;padding:4px 6px 4px 14px}
+.word-chip{display:flex;flex-wrap:wrap;align-items:center;gap:6px;background:#FFFFFF;border:1.5px solid #CFE9E3;border-radius:20px;padding:4px 6px 4px 14px}
 .word-chip .wc-word{font-weight:800;color:#123B32;font-size:15px;margin-right:2px;white-space:nowrap}
 .word-chip .wc-phrase{font-weight:500;white-space:normal}
 .word-chip .wc-phrase b{font-weight:800}
-.word-chip .btn{padding:4px 9px;font-size:14px;line-height:1;border-radius:14px}
+.word-chip .btn{padding:0!important;width:40px!important;height:40px!important;display:inline-flex;align-items:center;justify-content:center;font-size:14px;border-radius:14px}
 .icon-svg{width:1em;height:1em;vertical-align:middle;display:inline-block}
 .btn .icon-svg{width:15px;height:15px}
 .btn-ghost.wlisten .icon-svg,.btn-lu .icon-svg{width:17px;height:17px;margin-right:4px}
@@ -175,7 +175,7 @@ body{display:flex;flex-direction:column;min-height:100vh}
 #fc-ex{font-size:18px;font-weight:600;color:rgba(255,255,255,.78);line-height:1.6;text-align:center;font-style:italic}
 #fc-ex strong{font-weight:900;font-style:normal;color:#fff}
 #fc-def.hidden,#fc-ex.hidden{display:none}
-#fc-reveal-btn{background:rgba(255,255,255,.18);border:1px solid rgba(255,255,255,.4);color:#fff;border-radius:8px;padding:8px 20px;font-family:'Nunito',sans-serif;font-size:14px;font-weight:800;cursor:pointer}
+#fc-reveal-btn{background:rgba(255,255,255,.18);border:1px solid rgba(255,255,255,.4);color:#fff;border-radius:8px;padding:12px 20px;font-family:'Nunito',sans-serif;font-size:14px;font-weight:800;cursor:pointer}
 #fc-reveal-btn:hover{background:rgba(255,255,255,.38)}
 #fc-reveal-btn.hidden{display:none}
 #fc-btns{display:flex;gap:14px;margin-top:6px;flex-wrap:wrap;justify-content:center}
@@ -218,7 +218,7 @@ textarea:focus{outline:none;border-color:#1D6B8F}
 .selfrow{display:flex;align-items:center;justify-content:space-between;gap:10px;padding:11px 0;border-bottom:1px solid #DCEFEB}
 .self-txt{font-size:15px;font-weight:800;color:#123B32}
 .self-opts{display:flex;gap:6px}
-.self-opts button{width:40px;height:40px;border-radius:9px;border:2px solid #B7DED7;background:#fff;font-size:19px;cursor:pointer}
+.self-opts button{width:44px;height:44px;border-radius:9px;border:2px solid #B7DED7;background:#fff;font-size:19px;cursor:pointer}
 .self-opts button.sel{border-color:#1D6B8F;background:#DCEFEB}
 .hidden{display:none!important}
 
@@ -231,7 +231,7 @@ textarea:focus{outline:none;border-color:#1D6B8F}
 .winput{flex:1;min-width:180px;border:2.5px solid #B7DED7;border-radius:9px;padding:9px 13px;font-family:'Nunito',sans-serif;font-size:15px;font-weight:700;color:#123B32;background:#fff}
 .winput:focus{outline:none;border-color:#1D6B8F}
 .winput.good{border-color:var(--ok-line);background:var(--ok-bg)}
-.wbtn{flex:0 0 auto;padding:9px 16px}
+.wbtn{flex:0 0 auto;padding:12px 16px}
 .wfb{font-size:13px;font-weight:700;line-height:1.5;margin-top:8px;display:none}
 .wfb.ok,.wfb.no,.wfb.wait{display:block}
 .wfb.ok{color:var(--ok-ink)}.wfb.no{color:var(--warn-ink)}.wfb.wait{color:#4A6F68}
@@ -1165,6 +1165,13 @@ function vfCheckAll(exId) {
   render();
 }
 
+// Rend un élément atteignable au clavier (MIGRATION.md §5) : le clic est
+// déjà l'interaction principale (sélection puis dépôt) — Entrée/Espace
+// déclenchent le même clic.
+function kbdable(el){
+  el.setAttribute('role','button'); el.tabIndex=0;
+  el.addEventListener('keydown',e=>{ if(e.key===' '||e.key==='Enter'){ e.preventDefault(); el.click(); } });
+}
 // ── DRAG & DROP ───────────────────────────────────────────────────────
 let dd = null;
 function drg(el, iid, lbl, cat, from) {
@@ -1231,6 +1238,7 @@ function mkZone(zid, extra, placeholder){
   el.dataset.zid=zid;
   el.textContent=placed?placed.lbl:(placeholder||'déposer ici');
   el.addEventListener('click',()=>zoneClick(zid));
+  kbdable(el);
   drp(el,zid);
   if(placed&&!fb){drg(el,placed.iid,placed.lbl,placed.cat,zid);tch(el,placed.iid,placed.lbl,placed.cat,zid)}
   return el;
@@ -1244,6 +1252,7 @@ function mkBlank(zid){
   el.dataset.zid=zid;
   el.textContent=placed?placed.lbl:'…';
   el.addEventListener('click',()=>zoneClick(zid));
+  kbdable(el);
   drp(el,zid);
   if(placed&&!fb){drg(el,placed.iid,placed.lbl,placed.cat,zid);tch(el,placed.iid,placed.lbl,placed.cat,zid)}
   return el;
@@ -1253,6 +1262,7 @@ function mkTile(iid,lbl,cat,cls){
   t.className='tile '+cls+(S.sel&&S.sel.iid===iid&&!S.sel.from?' sel':'');
   t.textContent=lbl;
   t.addEventListener('click',()=>tileClick(iid,lbl,cat));
+  kbdable(t);
   drg(t,iid,lbl,cat,null); tch(t,iid,lbl,cat,null);
   return t;
 }
@@ -1261,6 +1271,7 @@ function mkImgTile(im,cat){
   t.className='imgtile'+(S.sel&&S.sel.iid===im.id&&!S.sel.from?' sel':'');
   t.innerHTML='<img src="'+im.src+'" alt="" loading="lazy">';
   t.addEventListener('click',()=>tileClick(im.id,im.id,cat));
+  kbdable(t);
   drg(t,im.id,im.id,cat,null); tch(t,im.id,im.id,cat,null);
   return t;
 }
@@ -1273,6 +1284,7 @@ function mkImgZone(zid, im){
   if(placed){ const src=(ALL_IMAGES.find(i=>i.id===placed.iid)||{}).src; el.innerHTML=src?'<img src="'+src+'" alt="">':''; }
   else{ el.innerHTML='<span class="imgzone-ph">glissez l\'image ici</span>'; }
   el.addEventListener('click',()=>zoneClick(zid));
+  kbdable(el);
   drp(el,zid);
   if(placed&&!fb){drg(el,placed.iid,placed.lbl,placed.cat,zid);tch(el,placed.iid,placed.lbl,placed.cat,zid)}
   return el;
