@@ -414,6 +414,18 @@ body{
 .btn-lu.btn-audio{background:#DC2626!important;border-color:#DC2626!important;color:#fff!important}
 .btn-lu.btn-audio:hover{background:#B91C1C!important;border-color:#B91C1C!important}
 .btn-lu.btn-audio .icon-svg{filter:brightness(0) invert(1)!important;opacity:1!important}
+/* Graphie-phonie en grille de cartes (modèle je-me-prepare.html) */
+.ph-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(240px,1fr));gap:14px}
+.ph-card{background:var(--ws-card,#fff);border:1px solid var(--ws-line,#EAEAE8);border-radius:16px;padding:16px;display:flex;flex-direction:column;gap:12px}
+.ph-top{display:flex;align-items:center;gap:12px}
+.ph-word{font-size:21px;font-weight:900;color:var(--ws-ink,#17181A)}
+.btn-audio-round{width:44px;height:44px;flex-shrink:0;border-radius:50%;border:none;background:#DC2626;color:#fff;display:inline-flex;align-items:center;justify-content:center;cursor:pointer;transition:background .15s}
+.btn-audio-round:hover{background:#B91C1C}
+.btn-audio-round .icon-svg{width:18px;height:18px;filter:brightness(0) invert(1)!important;opacity:1!important}
+.ph-mic{margin-left:auto;flex-shrink:0}
+.ph-opts{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+.ph-opts .vf-opt{width:auto;flex:1 1 auto}
+.savoir--pron .savoir-band{background:var(--sec-color,var(--ws-accent))}
 /* Focus clavier visible partout (B.4) */
 :focus-visible{outline:3px solid var(--ws-accent);outline-offset:2px;border-radius:inherit}
 textarea:focus-visible,.winput:focus-visible{outline:none;border-color:var(--ws-accent)}
@@ -579,7 +591,7 @@ const EXOS = [
     {id:'pr1i', txt:"Nadia conseille à Karim d'appeler son enseignant pour lui expliquer la situation.", ok:'FAUX'},
     {id:'pr1j', txt:"Karim doit s'excuser longuement avant d'expliquer la situation.", ok:'FAUX'},
    ]},
-  {sec:'prep', id:'prPhon', type:'vf', num:'Exercice 2', tit:'La graphie-phonie — [e] ou [ɛ]', color:'#1D6B8F', listen:true,
+  {sec:'prep', id:'prPhon', type:'vf', num:'Exercice 2', tit:'Le son [e] ou [ɛ]', color:'#6B4FBB', accent:'#6B4FBB', cards:true, listen:true,
    sub:"Clique sur l'icône d'écoute pour entendre le mot, puis indique le son entendu.", tiles:['[e]','[ɛ]'],
    savoir:{h:"› Des sons et des lettres", speak:true, rows:[
      ["[ɛ] au début ou au milieu d'un mot","è, ê, ei, ai + consonne : père, tête, treize, semaine · e + l : nouvelle · e + r : hiver", ["père","tête","treize","semaine","nouvelle","hiver"]],
@@ -1476,6 +1488,7 @@ function buildStatic(){
     const host=document.getElementById('exs-'+ex.sec);
     const card=document.createElement('div');
     card.className='card'; card.id='exo-'+ex.id;
+    if(ex.accent) card.style.setProperty('--sec-color', ex.accent);
     if(ex.id==='prVocab') card.style.display='none';
     let h='';
     if(ex.savoir){
@@ -1503,7 +1516,7 @@ function buildStatic(){
     // ── Exercice Vrai/Faux (ou 2 catégories) — colonnes + bouton Corriger ──
     if(ex.type==='vf'){
       h+='<div class="c-hdr">'+exoNumBadge(ex.num)+'<span class="tag">'+esc(ex.num)+'</span><span class="exo-score" id="score-'+ex.id+'" aria-live="polite">0 / '+ex.rows.length+' répondu</span><span class="ctit">'+esc(ex.tit)+'</span><span class="csub">'+esc(ex.sub)+'</span></div>';
-      h+='<div class="vf-head"><div class="vf-head-txt"></div><div class="vf-head-opts"><div class="vf-head-opt">'+esc(ex.tiles[0])+'</div><div class="vf-head-opt">'+esc(ex.tiles[1])+'</div></div></div>';
+      if(!ex.cards) h+='<div class="vf-head"><div class="vf-head-txt"></div><div class="vf-head-opts"><div class="vf-head-opt">'+esc(ex.tiles[0])+'</div><div class="vf-head-opt">'+esc(ex.tiles[1])+'</div></div></div>';
       h+='<div class="rows" id="mount-'+ex.id+'"></div>';
       h+='<div style="margin-top:14px;display:flex;align-items:center;gap:12px;flex-wrap:wrap">';
       h+='<button class="btn btn-pri" type="button" onclick="vfCheckAll(\''+ex.id+'\')">✓ Corriger</button>';
@@ -1844,7 +1857,39 @@ function render(){
     const bank=document.getElementById('bank-'+ex.id);
     mount.innerHTML=''; if(bank) bank.innerHTML='';
 
-    if(ex.type==='vf'){
+    if(ex.type==='vf' && ex.cards){
+      // Grille de cartes : bouton audio rond + mot, puis les choix dessous.
+      mount.className='ph-grid';
+      ex.rows.forEach(r=>{
+        const word=r.txt.replace(/<[^>]+>/g,'');
+        const card=document.createElement('div');card.className='ph-card';
+        const top=document.createElement('div');top.className='ph-top';
+        const sb=document.createElement('button');
+        sb.type='button'; sb.className='btn-audio-round'; sb.setAttribute('aria-label','Écouter le mot');
+        sb.innerHTML=ICON_SPEAK; sb.onclick=()=>playWord(sb, word, ex.id+'_'+r.id);
+        top.appendChild(sb);
+        const w=document.createElement('div');w.className='ph-word';w.textContent=word;
+        top.appendChild(w);
+        const mb=document.createElement('button');
+        mb.type='button'; mb.className='btn btn-ghost ph-mic'; mb.title='Répète le mot à voix haute';
+        mb.innerHTML=ICON_MIC; mb.onclick=()=>pronCheck(mb, word);
+        top.appendChild(mb);
+        card.appendChild(top);
+        const opts=document.createElement('div');opts.className='ph-opts';
+        ex.tiles.forEach(lbl=>{
+          const b=document.createElement('button');
+          b.type='button'; b.className='vf-opt';
+          if(S.vfSel[r.id]===lbl) b.classList.add('sel');
+          if(S.fb[r.id] && S.vfSel[r.id]===lbl) b.classList.add(S.fb[r.id]==='ok'?'fb-ok':'fb-no');
+          b.textContent=lbl;
+          b.onclick=()=>vfSelect(r.id,lbl);
+          opts.appendChild(b);
+        });
+        card.appendChild(opts);
+        mount.appendChild(card);
+      });
+    }
+    else if(ex.type==='vf'){
       ex.rows.forEach(r=>{
         const row=document.createElement('div');row.className='vf-row';
         if(ex.listen){
