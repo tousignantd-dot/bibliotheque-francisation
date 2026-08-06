@@ -65,6 +65,11 @@ body{display:flex;flex-direction:column;min-height:100vh}
 .intro{background:#DCEFEB;padding:14px 32px;font-size:17px;font-weight:700;color:#154F68;line-height:1.5;border-bottom:2px solid #B7DED7}
 
 .exs{flex:1;padding:22px 32px 48px;display:flex;flex-direction:column;gap:20px}
+.cta{background:var(--ws-ink,#17181A);color:#fff;border-radius:18px;padding:26px 32px;margin:0 32px 32px;display:flex;align-items:center;justify-content:space-between;gap:20px;flex-wrap:wrap}
+.cta-eyebrow{font-size:12px;font-weight:800;text-transform:uppercase;letter-spacing:.14em;color:#8FE2B9}
+.cta-tit{font-size:22px;font-weight:900;margin-top:6px}
+.cta-sub{font-size:14.5px;font-weight:500;color:#C7C9CC;margin-top:8px;max-width:50ch}
+.cta-btn{background:var(--ws-accent,#0A8F5B)!important;color:#fff!important;border:none!important;font-size:15px;padding:12px 22px;flex-shrink:0}
 
 .card{background:#fff;border-radius:18px;padding:22px 26px;box-shadow:0 4px 20px rgba(15,118,110,.08)}
 .c-hdr{display:flex;align-items:center;flex-wrap:wrap;gap:10px;margin-bottom:20px;padding-bottom:16px;border-bottom:1px solid var(--border)}
@@ -77,10 +82,10 @@ body{display:flex;flex-direction:column;min-height:100vh}
 .savoir{background:#F1FBF9;border-left:5px solid #1D6B8F;border-radius:0 14px 14px 0;padding:0 22px 16px;margin-bottom:4px;overflow-x:auto}
 .savoir-gap{background:#EDF6F4;height:20px;margin:0 -26px 20px;border-top:1px solid rgba(15,118,110,.1);border-bottom:1px solid rgba(15,118,110,.1)}
 .savoir-band{background:#1D6B8F;color:#fff;font-size:12.5px;font-weight:800;text-transform:uppercase;letter-spacing:.14em;padding:9px 22px;margin:0 -22px 16px;border-radius:0 14px 0 0}
-.savoir h3{font-size:17px;font-weight:900;color:#154F68;text-transform:uppercase;letter-spacing:.08em;margin-bottom:8px}
-.savoir table{border-collapse:collapse;width:100%;table-layout:fixed}
-.savoir td{padding:8px 10px;font-size:17px;font-weight:600;line-height:1.5;border-bottom:1px dashed #B7DED7;vertical-align:top;word-break:break-word}
-.savoir td:first-child{font-weight:900;color:#154F68;width:34%}
+.savoir-row{display:grid;grid-template-columns:34% 1fr;gap:10px;padding:10px 0;border-bottom:1px dashed #B7DED7}
+.savoir-row:last-child{border-bottom:none}
+.savoir-key{font-weight:900;color:#154F68;font-size:17px}
+.savoir-val{font-size:17px;font-weight:600;line-height:1.5}
 .savoir em{font-style:italic;color:#0A6B57}
 .word-chips{display:flex;flex-wrap:wrap;gap:8px;margin-top:10px}
 .word-chip{display:flex;flex-wrap:wrap;align-items:center;gap:6px;background:#FFFFFF;border:1.5px solid #CFE9E3;border-radius:20px;padding:4px 6px 4px 14px}
@@ -325,12 +330,11 @@ body{
 .savoir-band{background:var(--ws-ink);color:#fff;border-radius:18px 18px 0 0;margin:0 -23px 16px}
 .savoir--pron .savoir-band{background:var(--ws-accent)}
 .savoir-gap{background:var(--ws-bg);border-color:var(--ws-line);margin:0 -23px 20px}
-.savoir h3{color:var(--ws-ink);font-weight:700;letter-spacing:0}
-.savoir td{border-bottom:1px solid var(--ws-line);color:var(--ws-ink);font-weight:500}
-.savoir td:first-child{color:var(--ws-sub);font-weight:600}
-.savoir--pron h3{color:#0A6B46}
-.savoir--pron td{border-bottom:1px solid #E4F0EA}
-.savoir--pron td:first-child{color:#4E7C6B}
+.savoir-row{border-bottom:1px solid var(--ws-line)}
+.savoir-key{color:var(--ws-sub);font-weight:600}
+.savoir-val{color:var(--ws-ink);font-weight:500}
+.savoir--pron .savoir-row{border-bottom:1px solid #E4F0EA}
+.savoir--pron .savoir-key{color:#4E7C6B}
 .savoir--pron .word-chip{background:#fff;border:1px solid #D8ECE2}
 .qlbl{color:var(--ws-accent)}
 .qtxt,.stxt{color:var(--ws-ink);font-weight:600}
@@ -489,14 +493,16 @@ const DIALOGUES = {
 const SECTIONS = [
   {id:'prep', no:'<img class="icon-svg tno-play" src="/assets/interactive/module-travail/icons/play.svg" alt="">', title:'Je me prépare', color:'#1D6B8F',
    intro:"L'école appelle Karim : sa fille est malade et il doit partir plus tôt, mais c'est déjà sa deuxième absence ce mois-ci.",
-   dialogue:'prep'},
+   dialogue:'prep', next:{id:'t1', tit:'Tâche 1 · Le message', sub:'Comprendre un message téléphonique laissé dans une boîte vocale.'}},
   {id:'t1', no:'1', title:'Tâche 1 · Le message', color:'#C0573A',
    intro:"Tâche 1 — Bonjour, mon message est pour… Comprendre un message téléphonique laissé dans une boîte vocale.",
-   dialogue:'t1'},
+   dialogue:'t1', next:{id:'t2', tit:'Tâche 2 · Le retard', sub:"Justifier à l'oral un retard, une absence ou un abandon."}},
   {id:'t2', no:'2', title:'Tâche 2 · Le retard', color:'#6B4FBB',
-   intro:"Tâche 2 — Demain, j'arriverai en retard parce que… Justifier à l'oral un retard, une absence ou un abandon."},
+   intro:"Tâche 2 — Demain, j'arriverai en retard parce que… Justifier à l'oral un retard, une absence ou un abandon.",
+   next:{id:'t3', tit:'Tâche 3 · Le courriel', sub:'Écrire un message pour justifier un retard, une absence ou un abandon.'}},
   {id:'t3', no:'3', title:'Tâche 3 · Le courriel', color:'#B45309',
-   intro:"Tâche 3 — Bonjour, je vous écris pour… Écrire un message pour justifier un retard, une absence ou un abandon."},
+   intro:"Tâche 3 — Bonjour, je vous écris pour… Écrire un message pour justifier un retard, une absence ou un abandon.",
+   next:{id:'appli', tit:'Je mets en application', sub:'Écoute un message de la secrétaire, puis écris un courriel pour justifier un abandon.'}},
   {id:'appli', no:'<img class="icon-svg tno-play" src="/assets/interactive/module-travail/icons/play.svg" alt="">', title:'Je mets en application', color:'#0D9488', custom:true,
    intro:"Je mets en application — Écoute un message de la secrétaire, puis écris un courriel pour justifier un abandon."},
   {id:'retiens', no:'✓', title:'Je retiens des mots', color:'#166534', custom:true,
@@ -1351,6 +1357,12 @@ function buildStatic(){
       h+='<div class="intro">'+sec.intro+'</div>';
     }
     h+='<div class="exs" id="exs-'+sec.id+'"></div>';
+    if(sec.next){
+      h+='<div class="cta"><div><div class="cta-eyebrow">Prochaine étape</div>';
+      h+='<div class="cta-tit">'+esc(sec.next.tit)+'</div>';
+      h+='<div class="cta-sub">'+esc(sec.next.sub)+'</div></div>';
+      h+='<button class="btn cta-btn" type="button" onclick="document.getElementById(\'tab-'+sec.next.id+'\').click();window.scrollTo({top:0,behavior:\'smooth\'})">Continuer →</button></div>';
+    }
     d.innerHTML=h;
     wrap.appendChild(d);
   });
@@ -1363,9 +1375,9 @@ function buildStatic(){
     let h='';
     if(ex.savoir){
       h+='<div class="savoir'+(ex.savoir.speak?' savoir--pron':'')+'">'
-       + '<div class="savoir-band">'+esc(ex.savoir.h ? ex.savoir.h.replace(/^›\s*/,'') : 'Prononciation')+'</div><table>';
+       + '<div class="savoir-band">'+esc(ex.savoir.h ? ex.savoir.h.replace(/^›\s*/,'') : 'Prononciation')+'</div>';
       ex.savoir.rows.forEach((r,ri)=>{
-        h+='<tr><td>'+r[0]+'</td><td>'+r[1];
+        h+='<div class="savoir-row"><div class="savoir-key">'+r[0]+'</div><div class="savoir-val">'+r[1];
         if(ex.savoir.speak && r[2]){
           h+='<div class="word-chips">';
           r[2].forEach((w,wi)=>{
@@ -1379,9 +1391,9 @@ function buildStatic(){
           });
           h+='</div>';
         }
-        h+='</td></tr>';
+        h+='</div></div>';
       });
-      h+='</table></div><div class="savoir-gap"></div>';
+      h+='</div><div class="savoir-gap"></div>';
     }
     // ── Exercice Vrai/Faux (ou 2 catégories) — colonnes + bouton Corriger ──
     if(ex.type==='vf'){
