@@ -14,12 +14,14 @@ body{display:flex;flex-direction:column;min-height:100vh}
 ::-webkit-scrollbar{width:6px;height:6px}::-webkit-scrollbar-track{background:rgba(0,0,0,.04);border-radius:3px}::-webkit-scrollbar-thumb{background:rgba(0,0,0,.15);border-radius:3px}
 
 #chrome{position:sticky;top:0;z-index:200}
-#hdr{background:var(--surface-band);color:var(--text-strong);padding:24px 32px 28px;display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:16px;border-bottom:1px solid var(--border-tint);flex-shrink:0}
-.hdr-l{display:flex;align-items:center;gap:14px}
+#hdr{background:var(--surface-band);color:var(--text-strong);padding:32px 32px 40px;display:flex;align-items:flex-start;justify-content:space-between;flex-wrap:wrap;gap:16px;border-bottom:1px solid var(--border-tint);flex-shrink:0}
+.hdr-l{display:flex;align-items:center;gap:14px;flex:1 1 420px;min-width:0}
 .hdr-ic{width:44px;height:44px;background:rgba(255,255,255,.18);border-radius:50%;display:flex;align-items:center;justify-content:center;flex-shrink:0;font-size:22px}
 .hdr-eye{display:flex;align-items:center;gap:8px;font-size:var(--fs-label);font-weight:var(--fw-bold);text-transform:uppercase;letter-spacing:var(--ls-label);color:var(--text-accent);line-height:1}
 .hdr-eye::before{content:"";width:8px;height:8px;border-radius:50%;background:var(--accent);flex-shrink:0}
-.hdr-h1{font-size:clamp(28px,4vw,44px);font-weight:900;line-height:1.15;margin-top:8px;color:var(--text-strong)}
+.hdr-h1{font-size:clamp(38px,6vw,62px);font-weight:900;line-height:1.05;margin:10px 0 0;letter-spacing:-.02em;color:var(--text-strong)}
+.hdr-lead{max-width:56ch;margin-top:16px;font-size:19px;font-weight:500;line-height:1.5;color:var(--ws-sub,#6E7175)}
+.hdr-lead:empty{display:none}
 .hdr-r{display:flex;align-items:center;gap:14px}
 #prog-chip{background:var(--accent-soft);color:var(--accent-ink);border:1px solid transparent;border-radius:999px;padding:8px 18px;font-size:15px;font-weight:800;white-space:nowrap}
 #btn-reset{background:var(--surface-card);color:var(--text-strong);border:1px solid var(--border);border-radius:999px;padding:10px 18px;font-family:'Nunito',sans-serif;font-size:15px;font-weight:800;cursor:pointer;white-space:nowrap;transition:background .15s}
@@ -60,7 +62,7 @@ body{display:flex;flex-direction:column;min-height:100vh}
 .dial-hd .btn-lu .icon-svg{width:17px;height:17px}
 .audio-pl{flex:0 0 160px;display:flex;flex-direction:column;align-items:center;justify-content:flex-start;padding-top:6px;gap:10px}
 .audio-lbl{font-size:12px;font-weight:800;text-transform:uppercase;letter-spacing:.15em;opacity:.6;text-align:center}
-.btn-lu{background:rgba(255,255,255,.12);color:#E8F5F2;border:2px solid rgba(255,255,255,.35);border-radius:10px;padding:10px 14px;font-family:'Nunito',sans-serif;font-size:15px;font-weight:800;cursor:pointer;transition:all .15s;text-align:center;line-height:1.3;width:100%}
+.btn-lu{background:rgba(255,255,255,.12);color:#E8F5F2;border:2px solid rgba(255,255,255,.35);border-radius:999px;padding:12px 22px;font-family:'Nunito',sans-serif;font-size:15px;font-weight:800;cursor:pointer;transition:all .15s;text-align:center;line-height:1.3;display:inline-flex;align-items:center;justify-content:center;gap:8px;min-height:44px}
 .btn-lu.big{padding:16px 20px;font-size:18px;display:flex;align-items:center;justify-content:center;gap:10px}
 .btn-lu.big .icon-svg{width:22px;height:22px}
 .btn-lu:hover{background:rgba(255,255,255,.25)}
@@ -266,7 +268,7 @@ textarea:focus{outline:none;border-color:#1D6B8F}
 .wfb.ok{color:var(--ok-ink)}.wfb.no{color:var(--warn-ink)}.wfb.wait{color:#4A6F68}
 .wfb b{color:#154F68}
 
-@media(max-width:900px){.vocab-grid{grid-template-columns:1fr 1fr}.rrow2{grid-template-columns:1fr}.hdr-h1{font-size:22px}}
+@media(max-width:900px){.vocab-grid{grid-template-columns:1fr 1fr}.rrow2{grid-template-columns:1fr}}
 
 /* ── ESSAI DE STYLE : "Je me prépare" seulement (inspiré Wealthsimple) ── */
 /* Fond neutre, cartes blanches épurées, police géométrique sobre, accent unique. */
@@ -409,6 +411,9 @@ body{
 .mb{color:#2563EB}
 .dr{color:var(--ws-accent)}
 .btn-lu{background:var(--ws-bg);color:var(--ws-ink);border:1px solid var(--ws-line);border-radius:999px;font-weight:600}
+.btn-lu.btn-audio{background:#DC2626!important;border-color:#DC2626!important;color:#fff!important}
+.btn-lu.btn-audio:hover{background:#B91C1C!important;border-color:#B91C1C!important}
+.btn-lu.btn-audio .icon-svg{filter:brightness(0) invert(1)!important;opacity:1!important}
 /* Focus clavier visible partout (B.4) */
 :focus-visible{outline:3px solid var(--ws-accent);outline-offset:2px;border-radius:inherit}
 textarea:focus-visible,.winput:focus-visible{outline:none;border-color:var(--ws-accent)}
@@ -416,10 +421,11 @@ textarea:focus-visible,.winput:focus-visible{outline:none;border-color:var(--ws-
 </head>
 <body>
 
-<div id="chrome">
 <div id="hdr">
   <div class="hdr-l">
-    <div><div class="hdr-eye">Monde du travail · Niveau 4</div><div class="hdr-h1">Absent ou en retard : que faire ?</div></div>
+    <div><div class="hdr-eye">Absent ou en retard : que faire ?</div>
+    <h1 class="hdr-h1" id="hdr-title">Je me prépare</h1>
+    <p class="hdr-lead" id="hdr-lead"></p></div>
   </div>
   <div class="hdr-r">
     <div id="prog-chip" aria-live="polite">⭐ 0 / 0</div>
@@ -427,6 +433,7 @@ textarea:focus-visible,.winput:focus-visible{outline:none;border-color:var(--ws-
   </div>
 </div>
 
+<div id="chrome">
 <div id="tabs"></div>
 
 <div id="sel-banner">
@@ -510,20 +517,26 @@ const DIALOGUES = {
 // ── SECTIONS ──────────────────────────────────────────────────────────
 const SECTIONS = [
   {id:'prep', no:'<img class="icon-svg tno-play" src="/assets/interactive/module-travail/icons/play.svg" alt="">', title:'Je me prépare', color:'#1D6B8F',
+   lead:"Écouter, repérer les sons, écrire. Cinq étapes avant de téléphoner à votre superviseur.",
    intro:"L'école appelle Karim : sa fille est malade et il doit partir plus tôt, mais c'est déjà sa deuxième absence ce mois-ci.",
    dialogue:'prep', next:{id:'t1', tit:'Tâche 1 · Le message', sub:'Comprendre un message téléphonique laissé dans une boîte vocale.'}},
   {id:'t1', no:'1', title:'Tâche 1 · Le message', color:'#C0573A',
+   lead:"Comprendre un message téléphonique laissé dans une boîte vocale.",
    intro:"Tâche 1 — Bonjour, mon message est pour… Comprendre un message téléphonique laissé dans une boîte vocale.",
    dialogue:'t1', next:{id:'t2', tit:'Tâche 2 · Le retard', sub:"Justifier à l'oral un retard, une absence ou un abandon."}},
   {id:'t2', no:'2', title:'Tâche 2 · Le retard', color:'#6B4FBB',
+   lead:"Justifier à l'oral un retard, une absence ou un abandon.",
    intro:"Tâche 2 — Demain, j'arriverai en retard parce que… Justifier à l'oral un retard, une absence ou un abandon.",
    next:{id:'t3', tit:'Tâche 3 · Le courriel', sub:'Écrire un message pour justifier un retard, une absence ou un abandon.'}},
   {id:'t3', no:'3', title:'Tâche 3 · Le courriel', color:'#B45309',
+   lead:"Écrire un message pour justifier un retard, une absence ou un abandon.",
    intro:"Tâche 3 — Bonjour, je vous écris pour… Écrire un message pour justifier un retard, une absence ou un abandon.",
    next:{id:'appli', tit:'Je mets en application', sub:'Écoute un message de la secrétaire, puis écris un courriel pour justifier un abandon.'}},
   {id:'appli', no:'<img class="icon-svg tno-play" src="/assets/interactive/module-travail/icons/play.svg" alt="">', title:'Je mets en application', color:'#0D9488', custom:true,
+   lead:"Écouter un message, puis écrire un courriel pour justifier un abandon.",
    intro:"Je mets en application — Écoute un message de la secrétaire, puis écris un courriel pour justifier un abandon."},
   {id:'retiens', no:'✓', title:'Je retiens des mots', color:'#166534', custom:true,
+   lead:"Noter le vocabulaire utile et réviser avec les cartes mémoire.",
    intro:"Je retiens des mots — Note le vocabulaire utile et révise avec les cartes mémoire."},
 ];
 
@@ -1421,7 +1434,7 @@ function buildStatic(){
       h+='<div><div class="field-label">La situation</div>';
       h+='<p class="situ">'+sec.intro+'</p>';
       h+='<div class="row" style="display:flex;flex-wrap:wrap;gap:10px;margin-top:14px">';
-      h+='<button class="btn-lu" onclick="playDialogue(\''+sec.dialogue+'\',this)">'+ICON_SPEAK+' Écouter le dialogue</button>';
+      h+='<button class="btn-lu btn-audio" onclick="playDialogue(\''+sec.dialogue+'\',this)">'+ICON_SPEAK+' Écouter le dialogue</button>';
       h+='<button class="btn btn-ghost" type="button" onclick="toggleScript(this,\''+sec.id+'\')">Lire la transcription</button>';
       h+='</div></div>';
       h+='<div class="dial-aside"><div class="field-label">Dialogue</div>';
@@ -1805,6 +1818,14 @@ async function checkWrite(exId, i){
 
 // ── RENDER ────────────────────────────────────────────────────────────
 function render(){
+  // Le bandeau reprend la section courante (gros titre + phrase d'intro),
+  // comme le modèle je-me-prepare.html.
+  const cur = SECTIONS.find(s=>s.id===curSec);
+  if(cur){
+    const tEl=document.getElementById('hdr-title'), lEl=document.getElementById('hdr-lead');
+    if(tEl) tEl.textContent = cur.title;
+    if(lEl) lEl.textContent = cur.lead || '';
+  }
   SECTIONS.forEach(sec=>{
     document.getElementById('tab-'+sec.id).classList.toggle('on', curSec===sec.id);
     document.getElementById('sec-'+sec.id).classList.toggle('on', curSec===sec.id);
