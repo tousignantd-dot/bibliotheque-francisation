@@ -44,7 +44,14 @@ body{display:flex;flex-direction:column;min-height:100vh}
 .sec.on{display:flex}
 
 .dial-sec{background:#123B32;color:#E8F5F2;padding:16px 32px;display:flex;flex-direction:column;gap:14px;border-bottom:4px solid #1D6B8F;flex-shrink:0}
-.situ{font-size:17px;font-weight:600;line-height:1.5;opacity:.72;padding-bottom:12px;border-bottom:1px solid rgba(255,255,255,.14)}
+.situ{font-size:17px;font-weight:600;line-height:1.5;opacity:.72}
+.dial-grid{display:grid;grid-template-columns:minmax(0,1fr) auto;gap:24px;align-items:center}
+.field-label{font-size:12px;font-weight:800;text-transform:uppercase;letter-spacing:.14em;color:var(--ws-sub,#8A8D91);margin-bottom:6px}
+.dial-aside{text-align:right;border-left:1px solid var(--ws-line,#EAEAE8);padding-left:24px;min-width:180px}
+.dial-aside-tit{font-size:15px;font-weight:800}
+.dial-aside-n{font-size:13px;font-weight:600;color:var(--ws-sub,#8A8D91);margin-top:6px}
+.is-hidden{display:none!important}
+@media(max-width:640px){.dial-grid{grid-template-columns:1fr}.dial-aside{text-align:left;border-left:none;border-top:1px solid var(--ws-line,#EAEAE8);padding:12px 0 0}}
 .dial-hd{display:flex;align-items:center;justify-content:flex-start;gap:12px;flex-wrap:wrap}
 .dial-hd .d-lbl{margin-bottom:0}
 .dial-hd .btn-lu{width:auto;flex:0 0 auto;display:inline-flex;align-items:center;gap:8px;padding:5px 16px;border-radius:999px;font-size:14px;background:#DC2626!important;border-color:#DC2626!important;color:#fff!important}
@@ -385,7 +392,7 @@ body{
 .pron-fb.no{color:var(--no-ink)}
 .intro{background:var(--ws-card);color:var(--ws-ink);font-weight:600;border:1px solid var(--ws-line);border-radius:18px;margin:22px 32px 0;padding:18px 22px}
 .dial-sec{background:var(--ws-card);color:var(--ws-ink);border:1px solid var(--ws-line);border-bottom:1px solid var(--ws-line)!important;border-radius:18px;align-items:stretch;padding:18px 22px;margin:22px 32px 0;overflow:hidden}
-.situ{color:var(--ws-sub);opacity:1;border-bottom-color:var(--ws-line)}
+.situ{color:var(--ws-ink);opacity:1}
 .vocab-sec{
   background:var(--ws-bg); border:none;
   border-top:1px solid var(--ws-line);
@@ -1212,6 +1219,12 @@ function renderVocabPairs(){
   const scoreEl = document.getElementById('score-'+ex.id);
   if(scoreEl) scoreEl.textContent = n+' / '+ex.rows.length+' associé';
 }
+function toggleScript(btn, secId){
+  const el = document.getElementById('script-'+secId);
+  if(!el) return;
+  const open = el.classList.toggle('is-hidden') === false;
+  btn.textContent = open ? 'Cacher la transcription' : 'Lire la transcription';
+}
 function vfSelect(zid, lbl) {
   S.vfSel[zid] = lbl;
   delete S.fb[zid];
@@ -1402,11 +1415,20 @@ function buildStatic(){
     // son vocabulaire (demande de l'utilisateur, 2026-08-03).
     if(sec.dialogue){
       const dia=DIALOGUES[sec.dialogue];
-      h+='<div class="dial-sec">';
-      h+='<div class="situ">'+sec.intro+'</div>';
-      h+='<div class="dial-hd"><div class="d-lbl">'+esc(dia.label)+'</div>';
-      h+='<button class="btn-lu" onclick="playDialogue(\''+sec.dialogue+'\',this)">'+ICON_SPEAK+' Écouter</button></div>';
-      h+='<div class="dial-txt">';
+      const titleParts = dia.label.split('—');
+      const dTitle = (titleParts[1]||dia.label).trim();
+      h+='<div class="dial-sec"><div class="dial-grid">';
+      h+='<div><div class="field-label">La situation</div>';
+      h+='<p class="situ">'+sec.intro+'</p>';
+      h+='<div class="row" style="display:flex;flex-wrap:wrap;gap:10px;margin-top:14px">';
+      h+='<button class="btn-lu" onclick="playDialogue(\''+sec.dialogue+'\',this)">'+ICON_SPEAK+' Écouter le dialogue</button>';
+      h+='<button class="btn btn-ghost" type="button" onclick="toggleScript(this,\''+sec.id+'\')">Lire la transcription</button>';
+      h+='</div></div>';
+      h+='<div class="dial-aside"><div class="field-label">Dialogue</div>';
+      h+='<div class="dial-aside-tit">'+esc(dTitle)+'</div>';
+      h+='<div class="dial-aside-n">'+dia.lines.length+' répliques</div></div>';
+      h+='</div>';
+      h+='<div class="dial-txt is-hidden" id="script-'+sec.id+'">';
       dia.lines.forEach((l,i)=>{
         const cls=(i%2===0)?'mb':'dr';
         h+='<div class="dl"><span class="'+cls+'">'+esc(l[0])+' :</span> '+esc(l[1])+'</div>';
