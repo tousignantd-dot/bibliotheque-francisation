@@ -78,6 +78,17 @@ body{display:flex;flex-direction:column;min-height:100vh}
 .ctit,.csub{flex-basis:100%}
 .ctit{display:block;font-size:24px;font-weight:900;line-height:1.2}
 .csub{display:block;font-size:15px;font-weight:600}
+.exo-score{margin-left:auto;background:var(--ws-accent-bg,#E6F5EE);color:var(--sec-color,var(--ws-accent));padding:6px 12px;border-radius:999px;font-size:13px;font-weight:700;white-space:nowrap}
+.pair-grid{display:grid;grid-template-columns:1fr 1fr;gap:20px}
+@media(max-width:640px){.pair-grid{grid-template-columns:1fr}}
+.pair-grid .stack{display:flex;flex-direction:column;gap:8px}
+.chip{display:block;width:100%;text-align:left;padding:12px 16px;border-radius:12px;border:1.5px solid var(--ws-line,#EAEAE8);background:#fff;font-family:inherit;font-size:15px;font-weight:600;color:var(--ws-ink,#17181A);cursor:pointer;transition:border-color .15s,background .15s}
+.chip:hover{border-color:var(--ws-accent,#0A8F5B)}
+.chip.chip-word{font-weight:800}
+.chip.is-active{border-color:var(--ws-accent,#0A8F5B);background:var(--ws-accent-bg,#E6F5EE);box-shadow:0 0 0 2px var(--ws-accent-bg,#E6F5EE)}
+.chip.is-paired{border-color:var(--ok-line,#34A76B);background:var(--ok-bg,#E8F6EE);color:var(--ok-ink,#0A6B46);cursor:default;opacity:.85}
+.chip.is-miss{border-color:var(--no-line,#DC2626);background:var(--no-bg,#FFF6F5)}
+.chip[aria-disabled="true"]{pointer-events:none}
 
 .savoir{background:#F1FBF9;border-left:5px solid #1D6B8F;border-radius:0 14px 14px 0;padding:0 22px 16px;margin-bottom:4px;overflow-x:auto}
 .savoir-gap{background:#EDF6F4;height:20px;margin:0 -26px 20px;border-top:1px solid rgba(15,118,110,.1);border-bottom:1px solid rgba(15,118,110,.1)}
@@ -822,7 +833,7 @@ const EXOS = [
 ];
 
 // ── ÉTAT ──────────────────────────────────────────────────────────────
-const S = {pl:{}, sel:null, fb:{}, vfSel:{}};
+const S = {pl:{}, sel:null, fb:{}, vfSel:{}, vocabPick:null, vocabPairs:{}, vocabOrder:null};
 let curSec = 'prep';
 
 const ZONES = {};
@@ -1145,9 +1156,67 @@ function tileClick(iid, lbl, cat) {
 }
 
 // ── VRAI/FAUX PAR BOUTONS (colonnes + bouton Corriger) ─────────────────
+// Compteur en direct dans l'en-tête d'exercice (exo-score), comme le modèle.
+function updateVfScore(ex, checked){
+  const el = document.getElementById('score-'+ex.id);
+  if(!el) return;
+  if(!checked){
+    const answered = ex.rows.filter(r=>S.vfSel[r.id]).length;
+    el.textContent = answered+' / '+ex.rows.length+' répondu';
+  } else {
+    const correct = ex.rows.filter(r=>S.vfSel[r.id]===r.ok).length;
+    el.textContent = correct+' / '+ex.rows.length+' juste';
+  }
+}
+// ── Association mot ↔ définition par CLIC (deux colonnes), pas de
+// glisser-déposer — atteignable au clavier, comme je-me-prepare.html.
+function renderVocabPairs(){
+  const ex = EXOS.find(e=>e.id==='prVocab');
+  if(!ex) return;
+  const wordsEl = document.getElementById('vocab-words');
+  const defsEl = document.getElementById('vocab-defs');
+  if(!wordsEl || !defsEl) return;
+  if(!S.vocabOrder) S.vocabOrder = ex.rows.map((r,i)=>i).sort(()=>Math.random()-.5);
+
+  wordsEl.innerHTML = ex.rows.map((r,i)=>{
+    const done = S.vocabPairs[r.id] !== undefined;
+    const cls = 'chip chip-word'+(done?' is-paired':(S.vocabPick===r.id?' is-active':''));
+    return '<button type="button" class="'+cls+'" data-w="'+esc(r.id)+'"'+(done?' aria-disabled="true"':'')+'>'+esc(r.q)+'</button>';
+  }).join('');
+  const takenDefIds = Object.values(S.vocabPairs);
+  defsEl.innerHTML = S.vocabOrder.map(idx=>{
+    const r = ex.rows[idx];
+    const done = takenDefIds.includes(r.aid);
+    const cls = 'chip'+(done?' is-paired':(S.fb[r.aid]==='no'?' is-miss':''));
+    return '<button type="button" class="'+cls+'" data-d="'+esc(r.aid)+'"'+(done?' aria-disabled="true"':'')+'>'+esc(r.a)+'</button>';
+  }).join('');
+
+  wordsEl.querySelectorAll('[data-w]').forEach(b=>b.addEventListener('click',()=>{
+    const wid = b.dataset.w;
+    if(S.vocabPairs[wid] !== undefined) return;
+    S.vocabPick = (S.vocabPick===wid) ? null : wid;
+    S.fb = {};
+    renderVocabPairs();
+  }));
+  defsEl.querySelectorAll('[data-d]').forEach(b=>b.addEventListener('click',()=>{
+    const did = b.dataset.d;
+    if(Object.values(S.vocabPairs).includes(did) || S.vocabPick===null) return;
+    const row = ex.rows.find(r=>r.id===S.vocabPick);
+    const ok = row && row.aid===did;
+    if(ok){ S.vocabPairs[S.vocabPick] = did; S.vocabPick=null; S.fb={}; trackPlacement(row.id, true); }
+    else { S.fb[did]='no'; trackPlacement(row?row.id:did, false); }
+    renderVocabPairs();
+  }));
+
+  const n = Object.keys(S.vocabPairs).length;
+  const scoreEl = document.getElementById('score-'+ex.id);
+  if(scoreEl) scoreEl.textContent = n+' / '+ex.rows.length+' associé';
+}
 function vfSelect(zid, lbl) {
   S.vfSel[zid] = lbl;
   delete S.fb[zid];
+  const ex = EXOS.find(e=>e.type==='vf' && e.rows.some(r=>r.id===zid));
+  if(ex) updateVfScore(ex, false);
   render();
 }
 function vfCheckAll(exId) {
@@ -1174,6 +1243,7 @@ function vfCheckAll(exId) {
       sumEl.textContent = `${correct} / ${ex.rows.length} bonnes réponses`;
     }
   }
+  updateVfScore(ex, answered>=ex.rows.length);
   render();
 }
 
@@ -1397,7 +1467,7 @@ function buildStatic(){
     }
     // ── Exercice Vrai/Faux (ou 2 catégories) — colonnes + bouton Corriger ──
     if(ex.type==='vf'){
-      h+='<div class="c-hdr">'+exoNumBadge(ex.num)+'<span class="tag">'+esc(ex.num)+'</span><span class="ctit">'+esc(ex.tit)+'</span><span class="csub">'+esc(ex.sub)+'</span></div>';
+      h+='<div class="c-hdr">'+exoNumBadge(ex.num)+'<span class="tag">'+esc(ex.num)+'</span><span class="exo-score" id="score-'+ex.id+'" aria-live="polite">0 / '+ex.rows.length+' répondu</span><span class="ctit">'+esc(ex.tit)+'</span><span class="csub">'+esc(ex.sub)+'</span></div>';
       h+='<div class="vf-head"><div class="vf-head-txt"></div><div class="vf-head-opts"><div class="vf-head-opt">'+esc(ex.tiles[0])+'</div><div class="vf-head-opt">'+esc(ex.tiles[1])+'</div></div></div>';
       h+='<div class="rows" id="mount-'+ex.id+'"></div>';
       h+='<div style="margin-top:14px;display:flex;align-items:center;gap:12px;flex-wrap:wrap">';
@@ -1439,6 +1509,18 @@ function buildStatic(){
       h+='</div>';
       card.innerHTML=h; host.appendChild(card); return;
     }
+    if(ex.id==='prVocab'){
+      // Association par CLIC en deux colonnes (mots / définitions), atteignable
+      // au clavier — reprend le modèle je-me-prepare.html au lieu du
+      // glisser-déposer générique. Le pointage passe quand même par
+      // trackPlacement() pour rester compté dans l'étoile globale.
+      h+='<div class="c-hdr">'+exoNumBadge(ex.num)+'<span class="tag">'+esc(ex.num)+'</span><span class="exo-score" id="score-'+ex.id+'" aria-live="polite">0 / '+ex.rows.length+' associé</span><span class="ctit">'+esc(ex.tit)+'</span><span class="csub">'+esc(ex.sub)+'</span></div>';
+      h+='<div class="pair-grid"><div class="stack" id="vocab-words"></div><div class="stack" id="vocab-defs"></div></div>';
+      h+='<button class="btn btn-ghost" type="button" style="margin-top:14px" onclick="toggleVocabExo(false)">Fermer</button>';
+      card.innerHTML=h;
+      host.appendChild(card);
+      return;
+    }
     h+='<div style="display:flex;gap:20px;align-items:flex-start;flex-wrap:wrap">';
     h+='<div style="flex:1;min-width:300px">';
     h+='<div class="c-hdr">'+exoNumBadge(ex.num)+'<span class="tag">'+esc(ex.num)+'</span><span class="ctit">'+esc(ex.tit)+'</span><span class="csub">'+esc(ex.sub)+'</span></div>';
@@ -1449,13 +1531,11 @@ function buildStatic(){
     const bw=ex.type==='imgmatch'?'240px':((ex.type==='match'||ex.type==='rows')?'300px':'220px');
     h+='<div class="bsec b1" style="flex:0 0 '+bw+'"><div class="blbl">'+(ex.bankLbl||'Réponses')+'</div><div class="btiles'+vert+'" id="bank-'+ex.id+'"></div></div>';
     h+='</div>';
-    if(ex.id==='prVocab'){
-      h+='<button class="btn btn-ghost" type="button" style="margin-top:14px" onclick="toggleVocabExo(false)">Fermer</button>';
-    }
     card.innerHTML=h;
     host.appendChild(card);
   });
   injectCustom();
+  if(document.getElementById('vocab-words')) renderVocabPairs();
 }
 
 // ── SECTIONS PERSONNALISÉES (oral / écrit / autoéval) ─────────────────
