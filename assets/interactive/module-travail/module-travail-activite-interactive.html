@@ -383,8 +383,11 @@ body{
    sinon un bouton comme "🔊 Écouter" se retrouve écrasé dans un rond de 34px. */
 .btn-ghost:has(.icon-svg):not(.wlisten){
   width:34px;height:34px;padding:0;border-radius:50%;display:inline-flex;
-  align-items:center;justify-content:center;background:var(--ws-bg);border:1px solid var(--ws-line);
+  align-items:center;justify-content:center;background:transparent;border:none;
 }
+/* Icônes seules (haut-parleur, micro) : pas de cadre, juste l'icône. */
+.word-chip .btn,.ph-mic{background:transparent!important;border:none!important;box-shadow:none!important}
+.word-chip .btn:hover,.ph-mic:hover{background:rgba(0,0,0,.05)!important}
 .btn-ghost.wlisten{
   display:inline-flex;align-items:center;gap:8px;background:var(--ws-bg);
   border:1px solid var(--ws-line);border-radius:999px;padding:9px 18px;color:var(--ws-ink);font-weight:600;
