@@ -1078,6 +1078,7 @@ class Handler(http.server.SimpleHTTPRequestHandler):
                 "competences": a.get("competences", []),
                 "tempsVerbaux": a.get("tempsVerbaux", []),
                 "domaineDeVie": a.get("domaineDeVie", ""),
+                "nouveauDesign": bool(a.get("nouveauDesign")),
                 "files": {
                     "interactive": a.get("interactive", "") if available else "",
                     "studentDoc": a.get("studentDoc", "") if available else "",

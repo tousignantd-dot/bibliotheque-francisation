@@ -154,6 +154,15 @@
     }
     .act-card.available:hover { box-shadow: 0 4px 20px rgba(59,111,246,.12); border-color: #c7d7fd; }
     .act-card.locked { opacity: .75; }
+    /* Activités déjà passées au nouveau système de design : liseré vert + fond très légèrement teinté */
+    .act-card.neuf { border-color: #9BD9BC; background: #F6FBF8; }
+    .act-card.neuf.available:hover { border-color: #0A8F5B; box-shadow: 0 4px 20px rgba(10,143,91,.15); }
+    .act-badge-neuf {
+      display: inline-flex; align-items: center; gap: 4px; margin-left: 6px;
+      background: #E6F5EE; color: #0A6B46; border-radius: 999px;
+      padding: 2px 8px; font-size: 10px; font-weight: 800;
+      text-transform: uppercase; letter-spacing: .08em; vertical-align: middle;
+    }
 
     .act-body { padding: 14px 16px 16px; }
     .act-title { font-size: 14px; font-weight: 700; margin-bottom: 6px; line-height: 1.35; }
@@ -477,9 +486,10 @@
       tagsHtml = `<div class="act-tags">${chips}</div>`;
     }
 
-    return `<div class="act-card ${a.available ? 'available' : 'locked'}">
+    const badgeNeuf = a.nouveauDesign ? `<span class="act-badge-neuf">Nouveau</span>` : '';
+    return `<div class="act-card ${a.available ? 'available' : 'locked'}${a.nouveauDesign ? ' neuf' : ''}">
       <div class="act-body">
-        <div class="act-title">${escHtml(a.title)}</div>
+        <div class="act-title">${escHtml(a.title)}${badgeNeuf}</div>
         ${dateHtml}
         ${tagsHtml}
         ${filesHtml}
