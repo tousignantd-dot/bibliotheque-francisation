@@ -14,16 +14,16 @@ body{display:flex;flex-direction:column;min-height:100vh}
 ::-webkit-scrollbar{width:6px;height:6px}::-webkit-scrollbar-track{background:rgba(0,0,0,.04);border-radius:3px}::-webkit-scrollbar-thumb{background:rgba(0,0,0,.15);border-radius:3px}
 
 #chrome{position:sticky;top:0;z-index:200}
-#hdr{background:var(--surface-band);color:var(--text-strong);padding:32px 32px 40px;display:flex;align-items:flex-start;justify-content:space-between;flex-wrap:wrap;gap:16px;border-bottom:1px solid var(--border-tint);flex-shrink:0}
+#hdr{background:var(--hdr-accent-soft,var(--surface-band));color:var(--text-strong);padding:32px 32px 40px;display:flex;align-items:flex-start;justify-content:space-between;flex-wrap:wrap;gap:16px;border-bottom:1px solid var(--border-tint);flex-shrink:0}
 .hdr-l{display:flex;align-items:center;gap:14px;flex:1 1 420px;min-width:0}
 .hdr-ic{width:44px;height:44px;background:rgba(255,255,255,.18);border-radius:50%;display:flex;align-items:center;justify-content:center;flex-shrink:0;font-size:22px}
-.hdr-eye{display:flex;align-items:center;gap:8px;font-size:var(--fs-label);font-weight:var(--fw-bold);text-transform:uppercase;letter-spacing:var(--ls-label);color:var(--text-accent);line-height:1}
-.hdr-eye::before{content:"";width:8px;height:8px;border-radius:50%;background:var(--accent);flex-shrink:0}
+.hdr-eye{display:flex;align-items:center;gap:8px;font-size:var(--fs-label);font-weight:var(--fw-bold);text-transform:uppercase;letter-spacing:var(--ls-label);color:var(--hdr-accent,var(--text-accent));line-height:1}
+.hdr-eye::before{content:"";width:8px;height:8px;border-radius:50%;background:var(--hdr-accent,var(--accent));flex-shrink:0}
 .hdr-h1{font-size:clamp(38px,6vw,62px);font-weight:900;line-height:1.05;margin:10px 0 0;letter-spacing:-.02em;color:var(--text-strong)}
 .hdr-lead{max-width:56ch;margin-top:16px;font-size:19px;font-weight:500;line-height:1.5;color:var(--ws-sub,#6E7175)}
 .hdr-lead:empty{display:none}
 .hdr-r{display:flex;align-items:center;gap:14px}
-#prog-chip{background:var(--accent-soft);color:var(--accent-ink);border:1px solid transparent;border-radius:999px;padding:8px 18px;font-size:15px;font-weight:800;white-space:nowrap}
+#prog-chip{background:var(--hdr-accent-soft,var(--accent-soft));color:var(--hdr-accent,var(--accent-ink));border:1px solid transparent;border-radius:999px;padding:8px 18px;font-size:15px;font-weight:800;white-space:nowrap}
 #btn-reset{background:var(--surface-card);color:var(--text-strong);border:1px solid var(--border);border-radius:999px;padding:10px 18px;font-family:'Nunito',sans-serif;font-size:15px;font-weight:800;cursor:pointer;white-space:nowrap;transition:background .15s}
 #btn-reset:hover{background:var(--paper-100)}
 #btn-reset:hover{background:rgba(255,255,255,.28)}
@@ -278,6 +278,10 @@ body{
      tokens/colors.css (mêmes noms, ne pas les redéclarer ici). */
   --ws-bg:var(--surface-page); --ws-card:var(--surface-card); --ws-ink:var(--text-strong); --ws-sub:var(--text-muted);
   --ws-line:var(--border); --ws-accent:var(--accent); --ws-accent-bg:var(--accent-soft);
+  /* Teinte propre à ce module (même couleur que sa plaquette dans le portail
+     et la barre du lecteur) — seulement pour l'en-tête, le reste de
+     l'interface garde l'accent vert unique du système de design. */
+  --hdr-accent:#1D6B8F; --hdr-accent-soft:#E7F0F6;
   --pad-x:32px;      /* gouttière de page — identique partout */
   --pad-card:22px;   /* padding intérieur de TOUS les cadres */
   --bleed:-23px;     /* = -(var(--pad-card) + 1px de bordure) */
