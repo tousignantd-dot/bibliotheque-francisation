@@ -1,8 +1,9 @@
 <!DOCTYPE html>
 <html lang="fr"><head>
 <meta charset="utf-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
-<title>Comment elle va ? — Module Niveau 4</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Une urgence au travail — Module Niveau 4</title>
+<link rel="stylesheet" href="/assets/design-system/styles.css">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@600;700;800;900&display=swap" rel="stylesheet">
@@ -12,97 +13,173 @@ html,body{height:100%;background:#EDF6F4;font-family:'Nunito','Arial Rounded MT 
 body{display:flex;flex-direction:column;min-height:100vh}
 ::-webkit-scrollbar{width:6px;height:6px}::-webkit-scrollbar-track{background:rgba(0,0,0,.04);border-radius:3px}::-webkit-scrollbar-thumb{background:rgba(0,0,0,.15);border-radius:3px}
 
-#hdr{background:#C2410C;color:#fff;padding:14px 32px;display:flex;align-items:center;justify-content:space-between;position:sticky;top:0;z-index:200;box-shadow:0 3px 16px rgba(15,118,110,.3);flex-shrink:0}
-.hdr-l{display:flex;align-items:center;gap:14px}
+#chrome{position:sticky;top:0;z-index:200}
+#hdr{background:var(--surface-band);color:var(--text-strong);padding:32px 32px 40px;display:flex;align-items:flex-start;justify-content:space-between;flex-wrap:wrap;gap:16px;border-bottom:1px solid var(--border-tint);flex-shrink:0}
+.hdr-l{display:flex;align-items:center;gap:14px;flex:1 1 420px;min-width:0}
 .hdr-ic{width:44px;height:44px;background:rgba(255,255,255,.18);border-radius:50%;display:flex;align-items:center;justify-content:center;flex-shrink:0;font-size:22px}
-.hdr-eye{font-size:11px;font-weight:800;text-transform:uppercase;letter-spacing:.2em;opacity:.7;line-height:1}
-.hdr-h1{font-size:27px;font-weight:900;line-height:1.15}
+.hdr-eye{display:flex;align-items:center;gap:8px;font-size:var(--fs-label);font-weight:var(--fw-bold);text-transform:uppercase;letter-spacing:var(--ls-label);color:var(--text-accent);line-height:1}
+.hdr-eye::before{content:"";width:8px;height:8px;border-radius:50%;background:var(--accent);flex-shrink:0}
+.hdr-h1{font-size:clamp(38px,6vw,62px);font-weight:900;line-height:1.05;margin:10px 0 0;letter-spacing:-.02em;color:var(--text-strong)}
+.hdr-lead{max-width:56ch;margin-top:16px;font-size:19px;font-weight:500;line-height:1.5;color:var(--ws-sub,#6E7175)}
+.hdr-lead:empty{display:none}
 .hdr-r{display:flex;align-items:center;gap:14px}
-#prog-chip{background:rgba(255,255,255,.15);border:2px solid rgba(255,255,255,.45);border-radius:999px;padding:8px 18px;font-size:16px;font-weight:900;white-space:nowrap}
-#btn-reset{background:rgba(255,255,255,.15);color:#fff;border:2px solid rgba(255,255,255,.45);border-radius:10px;padding:10px 18px;font-family:'Nunito',sans-serif;font-size:15px;font-weight:800;cursor:pointer;white-space:nowrap;transition:background .15s}
+#prog-chip{background:var(--accent-soft);color:var(--accent-ink);border:1px solid transparent;border-radius:999px;padding:8px 18px;font-size:15px;font-weight:800;white-space:nowrap}
+#btn-reset{background:var(--surface-card);color:var(--text-strong);border:1px solid var(--border);border-radius:999px;padding:10px 18px;font-family:'Nunito',sans-serif;font-size:15px;font-weight:800;cursor:pointer;white-space:nowrap;transition:background .15s}
+#btn-reset:hover{background:var(--paper-100)}
 #btn-reset:hover{background:rgba(255,255,255,.28)}
 
-#tabs{background:#fff;display:flex;gap:6px;padding:10px 32px;position:sticky;top:76px;z-index:190;box-shadow:0 2px 12px rgba(0,0,0,.07);flex-wrap:wrap}
-.tab{border:2.5px solid transparent;border-radius:999px;padding:9px 18px;font-family:'Nunito',sans-serif;font-size:14.5px;font-weight:800;cursor:pointer;background:#EDF6F4;color:#5E8A82;transition:all .15s;display:flex;align-items:center;gap:8px}
-.tab .tno{width:24px;height:24px;border-radius:50%;background:#B7DED7;color:#fff;display:flex;align-items:center;justify-content:center;font-size:13px;font-weight:900;flex-shrink:0}
-.tab.on{background:#C2410C;color:#fff}
-.tab.on .tno{background:rgba(255,255,255,.28)}
-.tab .tchk{display:none;color:#4ADE80;font-size:15px}
+#tabs{position:sticky;top:0;z-index:5;background:rgba(247,247,245,.94);backdrop-filter:blur(8px);display:flex;gap:8px;padding:12px 32px;border-bottom:1px solid var(--border);flex-wrap:wrap}
+.tab{min-height:var(--tap-min);border:1px solid var(--border);border-radius:999px;padding:0 16px;font-family:'Nunito',sans-serif;font-size:14px;font-weight:800;cursor:pointer;background:var(--surface-card);color:var(--text-body);transition:background .15s,border-color .15s;display:inline-flex;align-items:center;gap:8px}
+.tab:hover{background:var(--paper-50)}
+.tab .tno{width:9px;height:9px;border-radius:50%;background:var(--sec-color,var(--accent));flex-shrink:0;font-size:0;overflow:hidden}
+.tab .tno-play{display:none}
+.tab.on{background:var(--sel-bg);border-color:var(--sel-line);color:var(--sel-ink)}
+.tab.on .tno{background:currentColor}
+.tab.done{background:var(--ok-bg);border-color:var(--ok-line);color:var(--ok-ink)}
+.tab .tchk{display:none;font-size:15px}
 .tab.done .tchk{display:inline}
 
-#sel-banner{background:#FEF3C7;border-bottom:3px solid #F59E0B;padding:10px 32px;display:none;align-items:center;gap:10px;font-size:19px;font-weight:800;color:#92400E;flex-shrink:0;position:sticky;top:132px;z-index:180}
+#sel-banner{background:var(--warn-bg);border-bottom:3px solid var(--warn-line);padding:10px 32px;display:none;align-items:center;gap:10px;font-size:19px;font-weight:800;color:var(--warn-ink);flex-shrink:0}
 #sel-banner.on{display:flex}
 
-.sec{display:none;flex-direction:column}
+.sec{display:none;flex-direction:column;border-top:3px solid var(--sec-color,transparent)}
 .sec.on{display:flex}
 
-.dial-sec{background:#123B32;color:#E8F5F2;padding:16px 32px;display:flex;gap:24px;border-bottom:4px solid #C2410C;flex-shrink:0;flex-wrap:wrap}
+.dial-sec{background:#123B32;color:#E8F5F2;padding:16px 32px;display:flex;flex-direction:column;gap:14px;border-bottom:4px solid #1D6B8F;flex-shrink:0}
+.situ{font-size:17px;font-weight:600;line-height:1.5;opacity:.72}
+.dial-grid{display:grid;grid-template-columns:minmax(0,1fr) auto;gap:24px;align-items:center}
+.field-label{font-size:12px;font-weight:800;text-transform:uppercase;letter-spacing:.14em;color:var(--ws-sub,#8A8D91);margin-bottom:6px}
+.dial-aside{text-align:right;border-left:1px solid var(--ws-line,#EAEAE8);padding-left:24px;min-width:180px}
+.dial-aside-tit{font-size:15px;font-weight:800}
+.dial-aside-n{font-size:13px;font-weight:600;color:var(--ws-sub,#8A8D91);margin-top:6px}
+.is-hidden{display:none!important}
+@media(max-width:640px){.dial-grid{grid-template-columns:1fr}.dial-aside{text-align:left;border-left:none;border-top:1px solid var(--ws-line,#EAEAE8);padding:12px 0 0}}
+.dial-hd{display:flex;align-items:center;justify-content:flex-start;gap:12px;flex-wrap:wrap}
+.dial-hd .d-lbl{margin-bottom:0}
+.dial-hd .btn-lu{width:auto;flex:0 0 auto;display:inline-flex;align-items:center;gap:8px;padding:5px 16px;border-radius:999px;font-size:14px;background:#DC2626!important;border-color:#DC2626!important;color:#fff!important}
+.dial-hd .btn-lu .icon-svg{filter:brightness(0) invert(1)!important;opacity:1!important}
+.dial-hd .btn-lu:hover{background:#B91C1C;border-color:#B91C1C}
+.dial-hd .btn-lu .icon-svg{width:17px;height:17px}
 .audio-pl{flex:0 0 160px;display:flex;flex-direction:column;align-items:center;justify-content:flex-start;padding-top:6px;gap:10px}
-.audio-lbl{font-size:11px;font-weight:800;text-transform:uppercase;letter-spacing:.15em;opacity:.6;text-align:center}
-.btn-lu{background:rgba(255,255,255,.12);color:#E8F5F2;border:2px solid rgba(255,255,255,.35);border-radius:10px;padding:10px 14px;font-family:'Nunito',sans-serif;font-size:14px;font-weight:800;cursor:pointer;transition:all .15s;text-align:center;line-height:1.3;width:100%}
+.audio-lbl{font-size:12px;font-weight:800;text-transform:uppercase;letter-spacing:.15em;opacity:.6;text-align:center}
+.btn-lu{background:rgba(255,255,255,.12);color:#E8F5F2;border:2px solid rgba(255,255,255,.35);border-radius:999px;padding:12px 22px;font-family:'Nunito',sans-serif;font-size:15px;font-weight:800;cursor:pointer;transition:all .15s;text-align:center;line-height:1.3;display:inline-flex;align-items:center;justify-content:center;gap:8px;min-height:44px}
+.btn-lu.big{padding:16px 20px;font-size:18px;display:flex;align-items:center;justify-content:center;gap:10px}
+.btn-lu.big .icon-svg{width:22px;height:22px}
 .btn-lu:hover{background:rgba(255,255,255,.25)}
-.btn-lu.done{background:#166534;border-color:#4ADE80;color:#DCFCE7}
-.dial-txt{flex:1;min-width:280px;display:flex;flex-direction:column;gap:7px;font-size:19px;font-weight:600;line-height:1.7;padding-right:8px}
-.d-lbl{font-size:14px;font-weight:800;text-transform:uppercase;letter-spacing:.15em;color:#7FD4C9;margin-bottom:6px;opacity:.85}
-.dl{line-height:1.7}.mb{color:#FCA5A5;font-weight:800}.dr{color:#7FD4C9;font-weight:800}
+.btn-lu.done{background:var(--ok-bg);border-color:var(--ok-line);color:var(--ok-ink)}
+.dial-txt{flex:1;min-width:280px;display:flex;flex-direction:column;gap:7px;font-size:20px;font-weight:600;line-height:1.7;padding-right:8px}
+.d-lbl{display:inline-block;background:rgba(255,255,255,.14);border-radius:999px;padding:5px 16px;font-size:15px;font-weight:800;text-transform:uppercase;letter-spacing:.1em;color:#7FD4C9;margin-bottom:6px;opacity:1}
+.dl{line-height:1.7}.mb{color:#93C5FD;font-weight:800}.dr{color:#7FD4C9;font-weight:800}
 
-.intro{background:#DCEFEB;padding:14px 32px;font-size:17px;font-weight:700;color:#9A3412;line-height:1.5;border-bottom:2px solid #B7DED7}
+.intro{background:#DCEFEB;padding:14px 32px;font-size:17px;font-weight:700;color:#154F68;line-height:1.5;border-bottom:2px solid #B7DED7}
 
 .exs{flex:1;padding:22px 32px 48px;display:flex;flex-direction:column;gap:20px}
+.cta{background:var(--ws-ink,#17181A);color:#fff;border-radius:18px;padding:26px 32px;margin:0 32px 32px;display:flex;align-items:center;justify-content:space-between;gap:20px;flex-wrap:wrap}
+.cta-eyebrow{font-size:12px;font-weight:800;text-transform:uppercase;letter-spacing:.14em;color:#8FE2B9}
+.cta-tit{font-size:22px;font-weight:900;margin-top:6px}
+.cta-sub{font-size:14.5px;font-weight:500;color:#C7C9CC;margin-top:8px;max-width:50ch}
+.cta-btn{background:var(--ws-accent,#0A8F5B)!important;color:#fff!important;border:none!important;font-size:15px;padding:12px 22px;flex-shrink:0}
 
 .card{background:#fff;border-radius:18px;padding:22px 26px;box-shadow:0 4px 20px rgba(15,118,110,.08)}
-.c-hdr{display:flex;align-items:center;gap:10px;margin-bottom:14px;flex-wrap:wrap}
-.tag{color:#fff;border-radius:999px;padding:5px 16px;font-size:13px;font-weight:800;text-transform:uppercase;letter-spacing:.1em;white-space:nowrap}
-.ctit{font-size:21px;font-weight:900}
-.csub{font-size:15.5px;color:#5E8A82;font-weight:600}
+.c-hdr{display:flex;align-items:center;flex-wrap:wrap;gap:10px;margin-bottom:20px;padding-bottom:16px;border-bottom:1px solid var(--border)}
+.exo-num{flex-shrink:0;width:32px;height:32px;border-radius:10px;display:flex;align-items:center;justify-content:center;background:var(--accent-soft);color:var(--sec-color,var(--ws-accent));font-size:14px;font-weight:900}
+.tag{font-size:13px;font-weight:800;text-transform:uppercase;letter-spacing:.12em;white-space:nowrap}
+.ctit,.csub{flex-basis:100%}
+.ctit{display:block;font-size:24px;font-weight:900;line-height:1.2}
+.csub{display:block;font-size:15px;font-weight:600}
+.exo-score{margin-left:auto;background:var(--ws-accent-bg,#E6F5EE);color:var(--sec-color,var(--ws-accent));padding:6px 12px;border-radius:999px;font-size:13px;font-weight:700;white-space:nowrap}
+.pair-grid{display:grid;grid-template-columns:1fr 1fr;gap:20px}
+@media(max-width:640px){.pair-grid{grid-template-columns:1fr}}
+.pair-grid .stack{display:flex;flex-direction:column;gap:8px}
+.chip{display:block;width:100%;text-align:left;padding:12px 16px;border-radius:12px;border:1.5px solid var(--ws-line,#EAEAE8);background:#fff;font-family:inherit;font-size:15px;font-weight:600;color:var(--ws-ink,#17181A);cursor:pointer;transition:border-color .15s,background .15s}
+.chip:hover{border-color:var(--ws-accent,#0A8F5B)}
+.chip.chip-word{font-weight:800}
+.chip.is-active{border-color:var(--ws-accent,#0A8F5B);background:var(--ws-accent-bg,#E6F5EE);box-shadow:0 0 0 2px var(--ws-accent-bg,#E6F5EE)}
+.chip.is-paired{border-color:var(--ok-line,#34A76B);background:var(--ok-bg,#E8F6EE);color:var(--ok-ink,#0A6B46);cursor:default;opacity:.85}
+.chip.is-miss{border-color:var(--no-line,#DC2626);background:var(--no-bg,#FFF6F5)}
+.chip[aria-disabled="true"]{pointer-events:none}
 
-.savoir{background:#F1FBF9;border-left:5px solid #C2410C;border-radius:0 14px 14px 0;padding:16px 22px;margin-bottom:4px}
-.savoir h3{font-size:15.5px;font-weight:900;color:#9A3412;text-transform:uppercase;letter-spacing:.08em;margin-bottom:8px}
-.savoir table{border-collapse:collapse;width:100%}
-.savoir td{padding:6px 12px;font-size:16.5px;font-weight:600;line-height:1.5;border-bottom:1px dashed #B7DED7;vertical-align:top}
-.savoir td:first-child{font-weight:900;color:#9A3412;white-space:nowrap}
-.savoir em{font-style:italic;color:#0D9488}
+.savoir{background:#F1FBF9;border-left:5px solid #1D6B8F;border-radius:0 14px 14px 0;padding:0 22px 16px;margin-bottom:4px;overflow-x:auto}
+.savoir-gap{background:#EDF6F4;height:20px;margin:0 -26px 20px;border-top:1px solid rgba(15,118,110,.1);border-bottom:1px solid rgba(15,118,110,.1)}
+.savoir-band{background:#1D6B8F;color:#fff;font-size:12.5px;font-weight:800;text-transform:uppercase;letter-spacing:.14em;padding:9px 22px;margin:0 -22px 16px;border-radius:0 14px 0 0}
+.savoir-row{display:grid;grid-template-columns:34% 1fr;gap:10px;padding:10px 0;border-bottom:1px dashed #B7DED7}
+.savoir-row:last-child{border-bottom:none}
+.savoir-key{font-weight:900;color:#154F68;font-size:17px}
+.savoir-val{font-size:17px;font-weight:600;line-height:1.5}
+.savoir em{font-style:italic;color:#0A6B57}
+.word-chips{display:flex;flex-wrap:wrap;gap:8px;margin-top:10px}
+.word-chip{display:flex;flex-wrap:wrap;align-items:center;gap:6px;background:#FFFFFF;border:1.5px solid #CFE9E3;border-radius:20px;padding:4px 6px 4px 14px}
+.word-chip .wc-word{font-weight:800;color:#123B32;font-size:15px;margin-right:2px;white-space:nowrap}
+.word-chip .wc-phrase{font-weight:500;white-space:normal}
+.word-chip .wc-phrase b{font-weight:800}
+.word-chip .btn{padding:0!important;width:40px!important;height:40px!important;display:inline-flex;align-items:center;justify-content:center;font-size:14px;border-radius:14px}
+.icon-svg{width:1em;height:1em;vertical-align:middle;display:inline-block}
+.btn .icon-svg{width:15px;height:15px}
+.btn-ghost.wlisten .icon-svg,.btn-lu .icon-svg{width:17px;height:17px;margin-right:4px}
+.word-chip .pron-fb{flex-basis:100%;order:99;margin:4px 0 0}
+@media(max-width:640px){.savoir td:first-child{width:auto}.savoir table,.savoir tbody,.savoir tr,.savoir td{display:block;width:100%}.savoir td{border-bottom:none;padding:4px 0}.savoir tr{padding-bottom:10px;border-bottom:1px dashed #B7DED7;margin-bottom:6px}}
 
 .rows{display:flex;flex-direction:column;gap:8px}
 .rrow{display:flex;align-items:center;gap:10px}
 .stxt{flex:1;background:#F1F9F7;border-radius:10px;padding:14px 18px;font-size:20px;font-weight:700;color:#123B32;line-height:1.4}
 .rrow2{display:grid;grid-template-columns:1fr 1fr;gap:8px;align-items:stretch}
-.qcard{background:#F0FAF7;border-left:4px solid #C2410C;border-radius:0 10px 10px 0;padding:12px 16px;display:flex;flex-direction:column;justify-content:center}
-.qlbl{font-size:13px;font-weight:800;color:#C2410C;text-transform:uppercase;letter-spacing:.1em;margin-bottom:4px}
-.qtxt{font-size:19px;font-weight:700;color:#123B32;line-height:1.4}
-.blanks-p{font-size:22px;line-height:2.9;font-weight:600;color:#123B32}
+.qcard{background:#F0FAF7;border-left:4px solid #1D6B8F;border-radius:0 10px 10px 0;padding:12px 16px;display:flex;flex-direction:column;justify-content:center}
+.qlbl{font-size:13px;font-weight:800;color:#1D6B8F;text-transform:uppercase;letter-spacing:.1em;margin-bottom:4px}
+.qtxt{font-size:20px;font-weight:700;color:#123B32;line-height:1.4}
+.timelbl{flex:0 0 90px;background:var(--warn-bg);border-radius:10px;padding:12px 8px;font-size:15px;font-weight:900;color:var(--warn-ink);text-align:center}
+.blanks-p{font-size:20px;line-height:2.9;font-weight:600;color:#123B32}
 
 .zone{display:flex;align-items:center;justify-content:center;min-height:54px;border-radius:10px;font-weight:800;font-family:'Nunito',sans-serif;cursor:pointer;transition:background .18s,border-color .18s,color .18s,transform .12s;user-select:none;text-align:center;padding:10px 14px;border:2.5px solid;line-height:1.35}
-.zone.empty{background:#F0F9FF;border-color:#93C5D6;border-style:dashed;color:#94A3B8;font-size:17px}
+.zone.empty{background:var(--drop-bg);border-color:var(--drop-line);border-style:dashed;color:#5A6B7D;font-size:17px}
 .zone.dov{background:#E0F2FE!important;border-color:#38BDF8!important;border-style:solid!important;transform:scale(1.02)}
-.zvf{min-width:150px;font-size:19px}
-.f-vrai{background:#DCFCE7;border-color:#4ADE80;border-style:solid;color:#166534}
-.f-faux{background:#FEE2E2;border-color:#FCA5A5;border-style:solid;color:#991B1B}
-.zone.filled{background:#DBEAFE;border-color:#60A5FA;border-style:solid;color:#1E3A8A;font-size:17px}
-.fb-ok{background:#D1FAE5!important;border-color:#34D399!important;border-style:solid!important;color:#065F46!important}
-.fb-no{background:#FEE2E2!important;border-color:#F87171!important;border-style:solid!important;color:#991B1B!important;animation:shk .5s ease}
+.zvf{min-width:150px;font-size:20px}
+.f-vrai{background:var(--ok-bg);border-color:var(--ok-line);border-style:solid;color:var(--ok-ink)}
+.f-faux{background:var(--no-bg);border-color:var(--no-line);border-style:solid;color:var(--no-ink)}
+.zone.filled{background:var(--sel-bg);border-color:var(--sel-line);border-style:solid;color:var(--sel-ink);font-size:17px}
+.fb-ok{background:var(--ok-bg)!important;border-color:var(--ok-line)!important;border-style:solid!important;color:var(--ok-ink)!important}
+.fb-no{background:var(--no-bg)!important;border-color:var(--no-line)!important;border-style:solid!important;color:var(--no-ink)!important;animation:shk .5s ease}
 @keyframes shk{0%,100%{transform:translateX(0)}20%{transform:translateX(-6px)}60%{transform:translateX(6px)}80%{transform:translateX(-3px)}}
 
+.vf-head{display:flex;align-items:center;gap:10px;margin-bottom:6px;padding:0 12px}
+.vf-head-txt{flex:1}
+.vf-head-opts{display:flex;gap:8px;flex:0 0 auto}
+.vf-head-opt{width:72px;flex:0 0 72px;text-align:center;font-size:12px;font-weight:900;color:#64748B;text-transform:uppercase;letter-spacing:.06em}
+.vf-row{display:flex;align-items:center;gap:10px;flex-wrap:wrap;background:#F8FDFC;border:1.5px solid #DCEEEA;border-radius:12px;padding:10px 12px}
+.vf-row .stxt{background:transparent;padding:4px 0}
+.vf-opts{display:flex;gap:8px;flex:0 0 auto;margin-left:auto}
+.pron-fb{flex-basis:100%;font-size:13px;font-weight:800;display:inline-block;margin:2px 0 4px}
+.pron-fb.ok{color:var(--ok-ink)}
+.pron-fb.no{color:var(--no-ink)}
+.pron-fb.warn{color:var(--warn-ink)}
+.vf-opt{width:72px;flex:0 0 72px;min-height:44px;border-radius:10px;border:2.5px solid #CBD5E1;background:#F8FAFC;color:#64748B;font-weight:800;font-family:'Nunito',sans-serif;cursor:pointer;transition:background .15s,border-color .15s,color .15s}
+.vf-opt:hover{border-color:#94A3B8}
+.vf-opt.sel{background:var(--sel-bg)!important;border-color:var(--sel-line)!important;border-style:solid;color:var(--sel-ink)!important}
+.vf-opt.fb-ok{background:var(--ok-bg)!important;border-color:var(--ok-line)!important;border-style:solid!important;color:var(--ok-ink)!important}
+.vf-opt.fb-no{background:var(--no-bg)!important;border-color:var(--no-line)!important;border-style:solid!important;color:var(--no-ink)!important}
+.vf-summary{font-size:13px;font-weight:800}
+.vf-summary.ok{color:var(--ok-ink)}
+.vf-summary.warn{color:var(--warn-ink)}
+
 .blank{display:inline-block;min-width:130px;padding:4px 14px;margin:0 3px;border-radius:8px;font-weight:800;vertical-align:middle;cursor:pointer;transition:background .18s,border-color .18s,color .18s;user-select:none;border:2.5px dashed #93C5D6;background:#F0F9FF;color:#94A3B8;font-size:20px;text-align:center}
-.blank.filled{border-style:solid;border-color:#5EEAD4;background:#CCFBF1;color:#9A3412}
-.blank.fb-ok{border-style:solid;border-color:#34D399;background:#D1FAE5;color:#065F46}
-.blank.fb-no{border-style:solid;border-color:#F87171;background:#FEE2E2;color:#991B1B;animation:shk .5s ease}
-.blank.dov{border-style:solid;border-color:#38BDF8;background:#E0F2FE}
+.blank.filled{border-style:solid;border-color:var(--sel-line);background:var(--sel-bg);color:var(--sel-ink)}
+.blank.fb-ok{border-style:solid;border-color:var(--ok-line);background:var(--ok-bg);color:var(--ok-ink)}
+.blank.fb-no{border-style:solid;border-color:var(--no-line);background:var(--no-bg);color:var(--no-ink);animation:shk .5s ease}
+.blank.dov{border-style:solid;border-color:var(--sel-line);background:var(--sel-bg)}
 
 .bsec{border-radius:12px;padding:14px 12px;flex-shrink:0}
 .bsec.b1{background:#EDF6F4;border:1.5px solid #B7DED7}
-.blbl{font-size:12px;font-weight:800;text-transform:uppercase;letter-spacing:.14em;margin-bottom:10px;color:#C2410C}
+.blbl{font-size:12px;font-weight:800;text-transform:uppercase;letter-spacing:.14em;margin-bottom:10px;color:#1D6B8F}
 .btiles{display:flex;flex-wrap:wrap;gap:8px;justify-content:center}
 .btiles.vert{flex-direction:column;flex-wrap:nowrap}
 
 .tile{border-radius:10px;font-weight:800;font-family:'Nunito',sans-serif;cursor:grab;transition:all .15s;user-select:none;border:2.5px solid;box-shadow:0 2px 7px rgba(0,0,0,.08);padding:10px 14px;display:flex;align-items:center;justify-content:center;text-align:center;line-height:1.35}
 .tile:active{cursor:grabbing;transform:scale(1.04);box-shadow:0 5px 14px rgba(0,0,0,.15)}
-.tile.sel{background:#FEF9C3!important;border-color:#FBBF24!important;color:#92400E!important;box-shadow:0 0 0 4px rgba(245,158,11,.22),0 2px 7px rgba(0,0,0,.08)!important;transform:translateY(-1px)}
-.tv{background:#DCFCE7;border-color:#4ADE80;color:#166534;font-size:19px;padding:13px 22px}
-.tf{background:#FEE2E2;border-color:#FCA5A5;color:#991B1B;font-size:19px;padding:13px 22px}
-.tn{background:#F0FDFA;border-color:#5EEAD4;color:#9A3412;font-size:16px}
-.ta{background:#FFF7ED;border-color:#FDBA74;color:#9A3412;font-size:15px}
-.bempty{font-size:13px;color:#94A3B8;font-weight:600;text-align:center;padding:8px 0;font-style:italic}
+.tile.sel{background:var(--warn-bg)!important;border-color:var(--warn-line)!important;color:var(--warn-ink)!important;box-shadow:0 0 0 4px rgba(217,136,11,.22),0 2px 7px rgba(0,0,0,.08)!important;transform:translateY(-1px)}
+.tv{background:var(--ok-bg);border-color:var(--ok-line);color:var(--ok-ink);font-size:20px;padding:13px 22px}
+.tf{background:var(--no-bg);border-color:var(--no-line);color:var(--no-ink);font-size:20px;padding:13px 22px}
+.tn{background:var(--ws-card);border-color:var(--ws-line);color:var(--ws-ink);font-size:17px}
+.ta{background:var(--warn-bg);border-color:var(--warn-line);color:var(--warn-ink);font-size:15px}
+.bempty{font-size:13px;color:#5A6B7D;font-weight:600;text-align:center;padding:8px 0;font-style:italic}
 
 .ghost{position:fixed;z-index:9999;pointer-events:none;opacity:.88;transform:scale(1.06) rotate(1.5deg);box-shadow:0 8px 24px rgba(0,0,0,.25);border-radius:10px}
 
@@ -113,15 +190,15 @@ body{display:flex;flex-direction:column;min-height:100vh}
 .imgtile.sel{border-color:#FBBF24;box-shadow:0 0 0 4px rgba(245,158,11,.22)}
 .imgzone{width:100%;min-height:110px;border-radius:10px;border:2.5px dashed #93C5D6;background:#F0F9FF;display:flex;align-items:center;justify-content:center;cursor:pointer;overflow:hidden;transition:all .15s}
 .imgzone img{width:100%;height:100%;object-fit:cover;display:block;pointer-events:none}
-.imgzone-ph{font-size:13px;color:#94A3B8;padding:10px}
-.imgzone.dov{border-color:#38BDF8;background:#E0F2FE}
-.imgzone.filled{border-style:solid;border-color:#5EEAD4}
-.imgzone.fb-ok{border-style:solid;border-color:#34D399}
-.imgzone.fb-no{border-style:solid;border-color:#F87171;animation:shk .5s ease}
+.imgzone-ph{font-size:13px;color:#5A6B7D;padding:10px}
+.imgzone.dov{border-color:var(--sel-line);background:var(--sel-bg)}
+.imgzone.filled{border-style:solid;border-color:var(--sel-line)}
+.imgzone.fb-ok{border-style:solid;border-color:var(--ok-line)}
+.imgzone.fb-no{border-style:solid;border-color:var(--no-line);animation:shk .5s ease}
 
 #fc-overlay{display:none;position:fixed;inset:0;z-index:9000;background:rgba(15,25,35,.6);backdrop-filter:blur(5px);align-items:center;justify-content:center}
 #fc-overlay.on{display:flex}
-#fc-box{background:#C2410C;border-radius:24px;padding:44px 56px;max-width:760px;width:92%;box-shadow:0 24px 64px rgba(0,0,0,.4);display:flex;flex-direction:column;align-items:center;gap:20px;animation:fcPop .3s cubic-bezier(.34,1.4,.64,1)}
+#fc-box{background:#1D6B8F;border-radius:24px;padding:44px 56px;max-width:760px;width:92%;box-shadow:0 24px 64px rgba(0,0,0,.4);display:flex;flex-direction:column;align-items:center;gap:20px;animation:fcPop .3s cubic-bezier(.34,1.4,.64,1)}
 @keyframes fcPop{from{transform:scale(.82);opacity:0}to{transform:scale(1);opacity:1}}
 #fc-counter{font-size:12px;font-weight:900;text-transform:uppercase;letter-spacing:.22em;color:rgba(255,255,255,.5)}
 #fc-word{font-size:36px;font-weight:900;color:#fff;text-align:center;line-height:1.2;border-bottom:2px solid rgba(255,255,255,.18);padding-bottom:18px;width:100%}
@@ -129,7 +206,7 @@ body{display:flex;flex-direction:column;min-height:100vh}
 #fc-ex{font-size:18px;font-weight:600;color:rgba(255,255,255,.78);line-height:1.6;text-align:center;font-style:italic}
 #fc-ex strong{font-weight:900;font-style:normal;color:#fff}
 #fc-def.hidden,#fc-ex.hidden{display:none}
-#fc-reveal-btn{background:rgba(255,255,255,.18);border:1px solid rgba(255,255,255,.4);color:#fff;border-radius:8px;padding:8px 20px;font-family:'Nunito',sans-serif;font-size:14px;font-weight:800;cursor:pointer}
+#fc-reveal-btn{background:rgba(255,255,255,.18);border:1px solid rgba(255,255,255,.4);color:#fff;border-radius:8px;padding:12px 20px;font-family:'Nunito',sans-serif;font-size:14px;font-weight:800;cursor:pointer}
 #fc-reveal-btn:hover{background:rgba(255,255,255,.38)}
 #fc-reveal-btn.hidden{display:none}
 #fc-btns{display:flex;gap:14px;margin-top:6px;flex-wrap:wrap;justify-content:center}
@@ -137,77 +214,246 @@ body{display:flex;flex-direction:column;min-height:100vh}
 .fc-btn:hover{background:rgba(255,255,255,.28)}
 
 .vocab-sec{background:#EDF6F4;border-bottom:3px solid rgba(15,118,110,.15);padding:14px 32px 18px}
-.vocab-grid{display:grid;grid-template-columns:1fr 1fr 1fr;gap:5px 20px}
+.vocab-tag{background:#1D6B8F;color:#fff;border-radius:999px;padding:5px 16px;font-size:15px;font-weight:800;text-transform:uppercase;letter-spacing:.1em}
+.vocab-grid{display:grid;grid-template-columns:1fr 1fr 1fr;gap:8px 20px}
 .vw{display:flex;align-items:baseline;gap:8px;padding:7px 10px;border-radius:8px;background:rgba(255,255,255,.6);cursor:pointer}
-.vw span.dot{display:inline-block;width:8px;height:8px;border-radius:50%;background:#C2410C;flex-shrink:0}
+.vw span.dot{display:inline-block;width:8px;height:8px;border-radius:50%;background:#1D6B8F;flex-shrink:0}
 .vw span.w{font-size:17px;font-weight:700;color:#123B32}
 
 /* Sections personnalisées (oral / écrit / autoéval) */
-.custom{max-width:660px}
-.lead{font-size:16px;font-weight:700;color:#3B6156;line-height:1.6;margin-bottom:14px}
+.custom{max-width:none}
+.custom .lead,.custom .wq,.custom .self-txt{max-width:68ch}
+.lead{font-size:15px;font-weight:700;color:#3B6156;line-height:1.6;margin-bottom:14px}
 .rec-zone{display:flex;flex-direction:column;align-items:center;gap:10px;margin:8px 0}
-#recBtn{width:78px;height:78px;border-radius:50%;border:none;background:#C2410C;color:#fff;font-size:30px;cursor:pointer;box-shadow:0 4px 16px rgba(15,118,110,.32)}
+#recBtn{width:78px;height:78px;border-radius:50%;border:none;background:#1D6B8F;color:#fff;font-size:30px;cursor:pointer;box-shadow:0 4px 16px rgba(15,118,110,.32)}
 #recBtn.recording{background:#E23D2E;animation:pulse 1.2s infinite}
 @keyframes pulse{0%{box-shadow:0 0 0 0 rgba(226,61,46,.45)}70%{box-shadow:0 0 0 16px rgba(226,61,46,0)}100%{box-shadow:0 0 0 0 rgba(226,61,46,0)}}
-.rec-lbl{font-size:13.5px;font-weight:800;color:#5E8A82}
+.rec-lbl{font-size:13px;font-weight:800;color:#4A6F68}
 textarea,input.txt{width:100%;border:2.5px solid #B7DED7;border-radius:12px;padding:11px 14px;font-family:'Nunito',sans-serif;font-size:15px;font-weight:700;color:#123B32;background:#F7FCFB;resize:vertical}
-textarea:focus{outline:none;border-color:#C2410C}
-.btn{font-family:'Nunito',sans-serif;font-size:14.5px;font-weight:800;border-radius:10px;padding:11px 18px;cursor:pointer;border:2.5px solid transparent}
-.btn-pri{background:#C2410C;color:#fff}.btn-pri:hover{background:#9A3412}.btn-pri:disabled{opacity:.5;cursor:not-allowed}
-.btn-ghost{background:#EDF6F4;color:#C2410C;border-color:#B7DED7}.btn-ghost:hover{background:#DCEFEB}
+textarea:focus{outline:none;border-color:#1D6B8F}
+.btn{font-family:'Nunito',sans-serif;font-size:15px;font-weight:800;border-radius:10px;padding:11px 18px;cursor:pointer;border:2.5px solid transparent}
+.btn-pri{background:#1D6B8F;color:#fff}.btn-pri:hover{background:#154F68}.btn-pri:disabled{opacity:.5;cursor:not-allowed}
+.btn-ghost{background:#EDF6F4;color:#1D6B8F;border-color:#B7DED7}.btn-ghost:hover{background:#DCEFEB}
 .btn-send{background:#12556B;color:#fff}.btn-send:disabled{opacity:.5}
 .fb{background:#F0FAF7;border:2px solid #B7DED7;border-radius:12px;padding:14px 16px;display:none;flex-direction:column;gap:8px;margin-top:12px}
 .fb.on{display:flex}
-.fb-t{font-size:11.5px;font-weight:900;text-transform:uppercase;letter-spacing:.06em;color:#9A3412}
-.fb-c{font-size:15px;font-weight:800;color:#9A3412;line-height:1.5}
-.fb-e{font-size:12.5px;font-weight:700;color:#B45309;line-height:1.5;padding-left:14px;position:relative}
+.fb-t{font-size:12px;font-weight:900;text-transform:uppercase;letter-spacing:.06em;color:#154F68}
+.fb-c{font-size:15px;font-weight:800;color:#154F68;line-height:1.5}
+.fb-e{font-size:13px;font-weight:700;color:var(--warn-ink);line-height:1.5;padding-left:14px;position:relative}
 .fb-e::before{content:"•";position:absolute;left:2px}
-.status{font-size:13.5px;font-weight:800;color:#5E8A82;text-align:center;display:none;margin-top:8px}
+.status{font-size:13px;font-weight:800;color:#5E8A82;text-align:center;display:none;margin-top:8px}
 .status.on{display:block}
-.err{font-size:13px;font-weight:800;color:#B91C1C;background:#FEF2F2;border:2px solid #FCA5A5;border-radius:10px;padding:10px 14px;display:none;margin-top:8px}
+.err{font-size:13px;font-weight:800;color:var(--no-ink);background:var(--no-bg);border:2px solid var(--no-line);border-radius:10px;padding:10px 14px;display:none;margin-top:8px}
 .err.on{display:block}
 .sent{font-size:13px;font-weight:800;color:#12556B}
 .selfrow{display:flex;align-items:center;justify-content:space-between;gap:10px;padding:11px 0;border-bottom:1px solid #DCEFEB}
 .self-txt{font-size:15px;font-weight:800;color:#123B32}
 .self-opts{display:flex;gap:6px}
-.self-opts button{width:40px;height:40px;border-radius:9px;border:2px solid #B7DED7;background:#fff;font-size:19px;cursor:pointer}
-.self-opts button.sel{border-color:#C2410C;background:#DCEFEB}
+.self-opts button{width:44px;height:44px;border-radius:9px;border:2px solid #B7DED7;background:#fff;font-size:19px;cursor:pointer}
+.self-opts button.sel{border-color:#1D6B8F;background:#DCEFEB}
 .hidden{display:none!important}
 
 /* Exercices à écrire */
 .wlist{display:flex;flex-direction:column;gap:14px}
 .witem{background:#F7FCFB;border:1.5px solid #B7DED7;border-radius:12px;padding:13px 16px}
-.wq{font-size:16px;font-weight:800;color:#123B32;line-height:1.45;margin-bottom:8px}
+.wq{font-size:15px;font-weight:800;color:#123B32;line-height:1.45;margin-bottom:8px}
+.acc-blank{display:inline-block;min-width:22px;height:.9em;border-bottom:2.5px solid currentColor;margin:0 3px;vertical-align:baseline;opacity:.55}
 .wrow{display:flex;gap:8px;flex-wrap:wrap}
-.winput{flex:1;min-width:180px;border:2.5px solid #B7DED7;border-radius:9px;padding:9px 13px;font-family:'Nunito',sans-serif;font-size:15.5px;font-weight:700;color:#123B32;background:#fff}
-.winput:focus{outline:none;border-color:#C2410C}
-.winput.good{border-color:#34D399;background:#ECFDF5}
-.wbtn{flex:0 0 auto;padding:9px 16px}
-.wfb{font-size:13.5px;font-weight:700;line-height:1.5;margin-top:8px;display:none}
+.winput{flex:1;min-width:180px;border:2.5px solid #B7DED7;border-radius:9px;padding:9px 13px;font-family:'Nunito',sans-serif;font-size:15px;font-weight:700;color:#123B32;background:#fff}
+.winput:focus{outline:none;border-color:#1D6B8F}
+.winput.good{border-color:var(--ok-line);background:var(--ok-bg)}
+.wbtn{flex:0 0 auto;padding:12px 16px}
+.wfb{font-size:13px;font-weight:700;line-height:1.5;margin-top:8px;display:none}
 .wfb.ok,.wfb.no,.wfb.wait{display:block}
-.wfb.ok{color:#9A3412}.wfb.no{color:#B45309}.wfb.wait{color:#5E8A82}
-.wfb b{color:#9A3412}
+.wfb.ok{color:var(--ok-ink)}.wfb.no{color:var(--warn-ink)}.wfb.wait{color:#4A6F68}
+.wfb b{color:#154F68}
 
-@media(max-width:900px){.vocab-grid{grid-template-columns:1fr 1fr}.rrow2{grid-template-columns:1fr}.hdr-h1{font-size:22px}}
+@media(max-width:900px){.vocab-grid{grid-template-columns:1fr 1fr}.rrow2{grid-template-columns:1fr}}
+
+/* ── ESSAI DE STYLE : "Je me prépare" seulement (inspiré Wealthsimple) ── */
+/* Fond neutre, cartes blanches épurées, police géométrique sobre, accent unique. */
+body{
+  /* Alias vers le système de design officiel (assets/design-system/) —
+     ok-bg/no-bg/warn-bg/sel-bg/drop-bg viennent directement de
+     tokens/colors.css (mêmes noms, ne pas les redéclarer ici). */
+  --ws-bg:var(--surface-page); --ws-card:var(--surface-card); --ws-ink:var(--text-strong); --ws-sub:var(--text-muted);
+  --ws-line:var(--border); --ws-accent:var(--accent); --ws-accent-bg:var(--accent-soft);
+  --pad-x:32px;      /* gouttière de page — identique partout */
+  --pad-card:22px;   /* padding intérieur de TOUS les cadres */
+  --bleed:-23px;     /* = -(var(--pad-card) + 1px de bordure) */
+  --r-sm:10px; --r-md:18px; --r-pill:999px;
+  background:var(--ws-bg);
+  color:var(--ws-ink);
+}
+/* Tous les cadres : même bordure, même padding, même bord gauche/droit. */
+.card{
+  padding:22px;
+  border:1px solid var(--ws-line);
+  border-left:4px solid var(--sec-color,var(--ws-accent));
+  border-radius:18px;
+  box-shadow:0 1px 2px rgba(20,20,20,.04);
+  overflow:hidden;
+  transition:box-shadow .15s ease, transform .15s ease;
+}
+.card:hover{
+  transform:translateY(-1px);
+  box-shadow:0 6px 18px rgba(20,20,20,.07);
+}
+@media (prefers-reduced-motion:reduce){
+  .card{transition:none}
+  .card:hover{transform:none}
+}
+.c-hdr:first-child{
+  margin:-22px -23px 16px -26px;
+  padding:20px 22px 14px 26px;
+  background:#FBFBF9;
+  border-bottom:1px solid var(--ws-line);
+}
+.c-hdr:not(:first-child){
+  padding-bottom:12px; margin-bottom:16px;
+  border-bottom:1px solid var(--ws-line);
+}
+.qcard,.blanks-p,.word-chip{
+  background:var(--ws-card); border:1px solid var(--ws-line); border-left:1px solid var(--ws-line);
+  border-radius:18px; box-shadow:0 1px 2px rgba(20,20,20,.04); color:var(--ws-ink); font-weight:500;
+}
+/* Prononciation = seul bloc teinté vert de la page — le distingue visuellement
+   des cartes blanches qui portent le dialogue et ses exercices. */
+.savoir{
+  background:var(--ws-card); border:1px solid var(--ws-line); border-left:1px solid var(--ws-line);
+  border-radius:18px; box-shadow:0 1px 2px rgba(20,20,20,.04); color:var(--ws-ink); font-weight:500;
+}
+/* Prononciation seulement (savoir.speak===true) — les autres encadrés de savoir
+   (ex. grammaire) restent blancs comme les autres cadres. */
+.savoir--pron{
+  background:#F6FBF8;
+  border-color:#D8ECE2;
+  box-shadow:none;
+}
+/* Les énoncés vivent DANS une carte déjà encadrée (.card) — pas de double cadre :
+   simple ligne de séparation entre rangées plutôt qu'une boîte par énoncé. */
+.vf-row{background:transparent;border:none;border-radius:0;padding:0}
+.stxt{background:transparent;border:none;border-radius:0;box-shadow:none;color:var(--ws-ink);font-weight:500;padding:10px 0}
+.rows{gap:8px}
+.vf-head{padding:0}
+/* Échelle typographique unique : une seule règle pour les étiquettes majuscules.
+   NOTE : .tag/.d-lbl/.vocab-tag restent à 15px (hors de ce groupe) — demande
+   explicite de l'utilisateur que EXERCICE/VOCABULAIRE/DIALOGUE partagent la
+   même taille entre eux, distincte des étiquettes plus discrètes ci-dessous. */
+.hdr-eye,.audio-lbl,.savoir-band,
+.vf-head-opt,.fb-t,.qlbl,.blbl{
+  font-size:12px; font-weight:800; text-transform:uppercase; letter-spacing:.14em;
+}
+.tag{background:none!important;color:var(--sec,var(--ws-accent))!important;font-weight:800!important}
+.ctit{color:var(--ws-ink)!important;font-weight:900!important}
+.csub{color:var(--ws-sub)!important;font-weight:500}
+.savoir-band{background:var(--ws-ink);color:#fff;border-radius:18px 18px 0 0;margin:0 -23px 16px}
+.savoir--pron .savoir-band{background:var(--ws-accent)}
+.savoir-gap{background:var(--ws-bg);border-color:var(--ws-line);margin:0 -23px 20px}
+.savoir-row{border-bottom:1px solid var(--ws-line)}
+.savoir-key{color:var(--ws-sub);font-weight:600}
+.savoir-val{color:var(--ws-ink);font-weight:500}
+.savoir--pron .savoir-row{border-bottom:1px solid #E4F0EA}
+.savoir--pron .savoir-key{color:#4E7C6B}
+.savoir--pron .word-chip{background:#fff;border:1px solid #D8ECE2}
+.qlbl{color:var(--ws-accent)}
+.qtxt,.stxt{color:var(--ws-ink);font-weight:600}
+.vf-opt{border-radius:12px;border-color:var(--ws-line);background:var(--ws-card);color:var(--ws-sub);font-weight:600}
+/* Après correction, le vert/rouge doit toujours l'emporter sur le bleu de
+   sélection (sinon tout reste bleu et on ne voit plus où sont les erreurs). */
+.vf-opt.sel.fb-ok{background:var(--ok-bg)!important;border-color:var(--ok-line)!important;color:var(--ok-ink)!important}
+.vf-opt.sel.fb-no{background:var(--no-bg)!important;border-color:var(--no-line)!important;color:var(--no-ink)!important}
+.tile{border-radius:12px;box-shadow:0 1px 2px rgba(20,20,20,.06)}
+.btn,.word-chip .btn{
+  font-family:inherit;border-radius:999px;font-weight:600;border:1px solid var(--ws-line);
+}
+.btn-ghost{background:var(--ws-card);color:var(--ws-ink)}
+.btn-pri,.wbtn{background:var(--ws-ink)!important;color:#fff!important;border:none!important}
+.winput{border-radius:12px;border-color:var(--ws-line);color:var(--ws-ink);font-weight:500;font-family:inherit}
+.winput:focus{border-color:var(--ws-accent)}
+.wfb b{color:var(--ok-ink)}
+.fb-ok{animation:none!important}
+.fb-no{animation:none!important}
+.fb-ok::before{content:"✓ ";font-weight:800}
+.fb-no::before{content:"✕ ";font-weight:800}
+.pron-fb.ok::before{content:"✓ "}
+.pron-fb.no::before{content:"✕ "}
+.icon-svg{filter:none;opacity:.75}
+/* Badge rond seulement pour les boutons icône SEULE (sans texte à côté) —
+   sinon un bouton comme "🔊 Écouter" se retrouve écrasé dans un rond de 34px. */
+.btn-ghost:has(.icon-svg):not(.wlisten){
+  width:34px;height:34px;padding:0;border-radius:50%;display:inline-flex;
+  align-items:center;justify-content:center;background:transparent;border:none;
+}
+/* Icônes seules (haut-parleur, micro) : pas de cadre, juste l'icône. */
+.word-chip .btn,.ph-mic{background:transparent!important;border:none!important;box-shadow:none!important}
+.word-chip .btn:hover,.ph-mic:hover{background:rgba(0,0,0,.05)!important}
+.btn-ghost.wlisten{
+  display:inline-flex;align-items:center;gap:8px;background:var(--ws-bg);
+  border:1px solid var(--ws-line);border-radius:999px;padding:9px 18px;color:var(--ws-ink);font-weight:600;
+}
+.pron-fb{color:var(--ws-sub);font-weight:600;font-size:13px}
+.pron-fb.ok{color:var(--ok-ink)}
+.pron-fb.no{color:var(--no-ink)}
+.intro{background:var(--ws-card);color:var(--ws-ink);font-weight:600;border:1px solid var(--ws-line);border-radius:18px;margin:22px 32px 0;padding:18px 22px}
+.dial-sec{background:var(--ws-card);color:var(--ws-ink);border:1px solid var(--ws-line);border-bottom:1px solid var(--ws-line)!important;border-radius:18px;align-items:stretch;padding:18px 22px;margin:22px 32px 0;overflow:hidden}
+.situ{color:var(--ws-ink);opacity:1}
+.vocab-sec{
+  background:var(--ws-bg); border:none;
+  border-top:1px solid var(--ws-line);
+  border-radius:0 0 18px 18px;
+  margin:18px -23px -19px;
+  padding:18px 22px;
+}
+.vocab-tag{background:var(--ws-accent-bg);color:var(--ws-accent)}
+.vw{background:var(--ws-card);border:1px solid var(--ws-line)}
+.vw .dot{background:var(--ws-accent)}
+.audio-pl{justify-content:center;padding-top:0}
+.audio-lbl{color:var(--ws-sub);opacity:1}
+.d-lbl{background:var(--ws-accent-bg);color:var(--ws-accent);opacity:1}
+.mb{color:#2563EB}
+.dr{color:var(--ws-accent)}
+.btn-lu{background:var(--ws-bg);color:var(--ws-ink);border:1px solid var(--ws-line);border-radius:999px;font-weight:600}
+.btn-lu.btn-audio{background:#DC2626!important;border-color:#DC2626!important;color:#fff!important}
+.btn-lu.btn-audio:hover{background:#B91C1C!important;border-color:#B91C1C!important}
+.btn-lu.btn-audio .icon-svg{filter:brightness(0) invert(1)!important;opacity:1!important}
+/* Graphie-phonie en grille de cartes (modèle je-me-prepare.html) */
+.ph-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(240px,1fr));gap:14px}
+.ph-card{background:var(--ws-card,#fff);border:1px solid var(--ws-line,#EAEAE8);border-radius:16px;padding:16px;display:flex;flex-direction:column;gap:12px}
+.ph-top{display:flex;align-items:center;gap:12px}
+.ph-word{font-size:21px;font-weight:900;color:var(--ws-ink,#17181A)}
+.btn-audio-round{width:44px;height:44px;flex-shrink:0;border-radius:50%;border:none;background:#DC2626;color:#fff;display:inline-flex;align-items:center;justify-content:center;cursor:pointer;transition:background .15s}
+.btn-audio-round:hover{background:#B91C1C}
+.btn-audio-round .icon-svg{width:18px;height:18px;filter:brightness(0) invert(1)!important;opacity:1!important}
+.ph-mic{margin-left:auto;flex-shrink:0}
+.ph-opts{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+.ph-opts .vf-opt{width:auto;flex:1 1 auto}
+.savoir--pron .savoir-band{background:var(--sec-color,var(--ws-accent))}
+/* Focus clavier visible partout (B.4) */
+:focus-visible{outline:3px solid var(--ws-accent);outline-offset:2px;border-radius:inherit}
+textarea:focus-visible,.winput:focus-visible{outline:none;border-color:var(--ws-accent)}
 </style>
 </head>
 <body>
 
 <div id="hdr">
   <div class="hdr-l">
-    <div class="hdr-ic">🚑</div>
-    <div><div class="hdr-eye">Santé et bien-être · Niveau 4</div><div class="hdr-h1">Comment elle va ?</div></div>
+    <div><div class="hdr-eye">Une urgence au travail</div>
+    <h1 class="hdr-h1" id="hdr-title">Je me prépare</h1>
+    <p class="hdr-lead" id="hdr-lead"></p></div>
   </div>
   <div class="hdr-r">
-    <div id="prog-chip">⭐ 0 / 0</div>
+    <div id="prog-chip" aria-live="polite">⭐ 0 / 0</div>
     <button id="btn-reset">↺ Réinitialiser</button>
   </div>
 </div>
 
+<div id="chrome">
 <div id="tabs"></div>
 
 <div id="sel-banner">
   ✋ Sélectionné : «&nbsp;<span id="sel-lbl">—</span>&nbsp;» — Cliquez sur une case pour le placer.
+</div>
 </div>
 
 <div id="sections"></div>
@@ -244,325 +490,378 @@ const studentCode=getCode();
 // ── DIALOGUES ─────────────────────────────────────────────────────────
 const DIALOGUES = {
   prep: {
-    label: "Dialogue — Un accident",
+    label: "Dialogue — Une brûlure en cuisine",
     lines: [
-      ["ÉRIC LALIBERTÉ","Bonjour Monsieur. Je vous appelle parce que j'ai trouvé votre numéro dans le cellulaire de Madame Leila."],
-      ["HAMID","Leila est ma femme. Qu'est-ce qui se passe ?"],
-      ["ÉRIC LALIBERTÉ","Votre femme a causé un accident en traversant la rue. Elle n'a pas vu le feu rouge. Une auto l'a heurtée et elle est tombée au sol."],
-      ["HAMID","Est-ce qu'elle va bien ?"],
-      ["ÉRIC LALIBERTÉ","J'ai appelé le 911. Une ambulance est arrivée en dix minutes. On l'a transportée à l'hôpital. Je suis avec elle."],
-      ["HAMID","Oui, bien sûr. J'arrive !"],
+      ["FATOU","Mathieu ! L'huile a éclaboussé, je me suis brûlé l'avant-bras."],
+      ["MATHIEU","Ne touche à rien. Viens à l'évier, on met ça sous l'eau froide tout de suite."],
+      ["FATOU","Ça chauffe beaucoup… et la peau devient rouge."],
+      ["MATHIEU","On laisse couler quinze minutes, c'est ce qu'il faut faire. Pendant ce temps, j'appelle Info-Santé au 811."],
+      ["FATOU","Pourquoi pas le 911 ?"],
+      ["MATHIEU","Le 911, c'est quand la vie est en danger. Là, une infirmière va nous dire quoi faire."],
+      ["L'INFIRMIÈRE","Info-Santé, bonjour. Décrivez-moi la brûlure."],
+      ["MATHIEU","Une brûlure à l'avant-bras avec de l'huile chaude. La peau est rouge et il y a de petites cloques."],
+      ["L'INFIRMIÈRE","Des cloques, c'est une brûlure du deuxième degré. Continuez l'eau froide, ne percez rien, et rendez-vous à l'urgence aujourd'hui."],
+      ["FATOU","D'accord, merci. J'y vais."],
     ]
   },
   t1: {
-    label: "Dialogue — Docteur, j'ai mal à...",
+    label: "Dialogue — À l'urgence",
     lines: [
-      ["HAMID","Docteur, ma femme entend très mal depuis l'accident. Je pense qu'elle a un problème d'audition."],
-      ["LE MÉDECIN","Depuis quand a-t-elle ce problème exactement ?"],
-      ["HAMID","Depuis l'accident, il y a deux heures. Avant, elle entendait très bien."],
-      ["LE MÉDECIN","C'est possible que le choc ait affecté son oreille interne. Est-ce qu'elle prend des médicaments ?"],
-      ["HAMID","Non, elle ne prend pas de médicament."],
-      ["LE MÉDECIN","Je vais demander à un audiologiste d'examiner Leila pour comprendre la cause."],
-      ["HAMID","Merci beaucoup, docteur."],
+      ["L'URGENTOLOGUE","Bonjour. Racontez-moi ce qui s'est passé."],
+      ["FATOU","Je travaillais en cuisine. L'huile a éclaboussé et je me suis brûlé l'avant-bras droit."],
+      ["L'URGENTOLOGUE","À quelle heure est-ce arrivé ?"],
+      ["FATOU","Vers onze heures. J'ai mis mon bras sous l'eau froide pendant quinze minutes."],
+      ["L'URGENTOLOGUE","Vous avez bien réagi. Est-ce que vous avez percé les cloques ?"],
+      ["FATOU","Non, l'infirmière d'Info-Santé m'a dit de ne pas y toucher."],
+      ["L'URGENTOLOGUE","Parfait. Je vais nettoyer la plaie et poser un pansement."],
     ]
   },
   t2: {
-    label: "Dialogue — Ce n'est pas dangereux",
+    label: "Dialogue — Les soins et le suivi",
     lines: [
-      ["L'URGENTOLOGUE","Monsieur, je viens vous parler de l'état de Leila. Elle est stable."],
-      ["HAMID","Est-ce qu'elle doit rester longtemps à l'hôpital ?"],
-      ["L'URGENTOLOGUE","Elle a subi un traumatisme, mais ce n'est pas grave. Elle devra rester en observation pour la nuit."],
-      ["HAMID","Est-ce que je peux la voir maintenant ?"],
-      ["L'URGENTOLOGUE","Elle est avec l'audiologiste en ce moment. Vous pourrez la voir dans une heure."],
-      ["HAMID","D'accord, je vais attendre. Merci docteur."],
+      ["L'URGENTOLOGUE","C'est une brûlure du deuxième degré, superficielle. Ce n'est pas dangereux."],
+      ["FATOU","Est-ce que je vais garder une cicatrice ?"],
+      ["L'URGENTOLOGUE","Probablement pas, si vous protégez la peau du soleil pendant six mois."],
+      ["FATOU","Est-ce que je peux retourner en cuisine demain ?"],
+      ["L'URGENTOLOGUE","Non. Je vous donne un congé de maladie de trois jours et une crème à appliquer deux fois par jour."],
+      ["FATOU","Et le pansement, je le change moi-même ?"],
+      ["L'URGENTOLOGUE","Vous le changez chaque matin. Si la douleur augmente ou si la plaie devient jaune, revenez nous voir."],
     ]
   },
   t3: {
     label: "Dialogue — À l'accueil de l'hôpital",
     lines: [
-      ["LA RÉCEPTIONNISTE","Bonjour, je peux vous aider ?"],
-      ["LÉO","Bonjour, je viens voir ma grand-mère. Quelles sont les heures de visite ?"],
-      ["LA RÉCEPTIONNISTE","En semaine, c'est de 10 h à 20 h. La fin de semaine, c'est de 11 h à 18 h."],
-      ["LÉO","Est-ce que mon petit frère de huit ans peut venir avec moi ?"],
-      ["LA RÉCEPTIONNISTE","Un enfant doit être accompagné d'un adulte pour visiter un patient."],
-      ["LÉO","D'accord. Combien de personnes peuvent entrer dans la chambre en même temps ?"],
-      ["LA RÉCEPTIONNISTE","Maximum deux visiteurs à la fois, s'il vous plaît."],
-      ["LÉO","Merci beaucoup !"],
+      ["AMINATA","Bonjour, je viens chercher ma sœur. Elle est à l'urgence depuis ce matin."],
+      ["LA RÉCEPTIONNISTE","Pourriez-vous me donner son nom, s'il vous plaît ?"],
+      ["AMINATA","Fatou Diarra. Est-ce que je pourrais monter la rejoindre ?"],
+      ["LA RÉCEPTIONNISTE","Un accompagnateur à la fois, et seulement quand le personnel vous appelle."],
+      ["AMINATA","Auriez-vous un endroit où attendre ?"],
+      ["LA RÉCEPTIONNISTE","La salle d'attente est au fond du corridor, à droite, après l'ascenseur."],
+      ["AMINATA","Et pour le stationnement, est-ce que c'est payant ?"],
+      ["LA RÉCEPTIONNISTE","Oui, mais gardez votre billet : à l'urgence, les quatre premières heures sont gratuites."],
     ]
   },
 };
 
 // ── SECTIONS ──────────────────────────────────────────────────────────
 const SECTIONS = [
-  {id:'prep', no:'▶', title:'Je me prépare', color:'#C2410C',
-   intro:"🚑 Leila a eu un accident. On l'a transportée à l'hôpital. Un témoin appelle Hamid, son mari, pour le prévenir.",
-   dialogue:'prep'},
-  {id:'t1', no:'1', title:"Tâche 1 · J'ai mal à...", color:'#C0573A',
-   intro:"👨‍⚕️ Tâche 1 — Hamid se rend à l'urgence. Il décrit le problème d'audition de Leila au médecin.",
-   dialogue:'t1'},
-  {id:'t2', no:'2', title:"Tâche 2 · Pas dangereux", color:'#6B4FBB',
-   intro:"🩹 Tâche 2 — L'urgentologue discute avec Hamid. L'état de Leila est stable, elle va se rétablir."},
-  {id:'t3', no:'3', title:'Tâche 3 · Comment ça va', color:'#B45309',
-   intro:"🏥 Tâche 3 — Léo se rend à l'hôpital pour visiter sa grand-mère. Il s'informe des règles de visite."},
-  {id:'appli', no:'▶', title:'Je mets en application', color:'#0D9488', custom:true,
-   intro:"🎤 Je mets en application — Décris une situation d'urgence à l'oral, puis écris un message à un ami en convalescence."},
+  {id:'prep', no:'<img class="icon-svg tno-play" src="/assets/interactive/module-urgence/icons/play.svg" alt="">', title:'Je me prépare', color:'#C2410C',
+   lead:"Réagir vite, appeler le bon service, décrire ce qui est arrivé. Cinq étapes.",
+   intro:"En pleine heure de pointe, de l'huile chaude éclabousse l'avant-bras de Fatou. Son collègue Mathieu réagit et appelle Info-Santé.",
+   dialogue:'prep', next:{id:'t1', tit:"Tâche 1 · À l'urgence", sub:'Raconter au médecin ce qui est arrivé.'}},
+  {id:'t1', no:'1', title:"Tâche 1 · À l'urgence", color:'#C0573A',
+   lead:"Raconter ce qui est arrivé, au passé composé.",
+   intro:"Tâche 1 — À l'urgence, Fatou explique l'accident et les premiers soins qu'elle a reçus.",
+   dialogue:'t1', next:{id:'t2', tit:'Tâche 2 · Les soins', sub:'Comprendre le diagnostic, les soins et le suivi.'}},
+  {id:'t2', no:'2', title:'Tâche 2 · Les soins', color:'#6B4FBB',
+   lead:"Comprendre le diagnostic, les soins et le suivi.",
+   intro:"Tâche 2 — L'urgentologue explique le degré de la brûlure, les soins à faire à la maison et quand revenir.",
+   dialogue:'t2', next:{id:'t3', tit:"Tâche 3 · À l'accueil", sub:"Poser des questions polies à l'accueil de l'hôpital."}},
+  {id:'t3', no:'3', title:"Tâche 3 · À l'accueil", color:'#B45309',
+   lead:"Poser des questions polies et se repérer dans l'hôpital.",
+   intro:"Tâche 3 — Aminata vient chercher sa sœur. Elle s'informe des règles et cherche son chemin.",
+   dialogue:'t3', next:{id:'appli', tit:'Je mets en application', sub:"Décrire une urgence à l'oral, puis écrire un message."}},
+  {id:'appli', no:'<img class="icon-svg tno-play" src="/assets/interactive/module-urgence/icons/play.svg" alt="">', title:'Je mets en application', color:'#0D9488', custom:true,
+   lead:"Décrire une urgence à l'oral, puis écrire un message de réconfort.",
+   intro:"Je mets en application — Lis la fiche-conseil, décris une urgence à l'oral, puis écris à une personne blessée."},
   {id:'retiens', no:'✓', title:'Je retiens des mots', color:'#166534', custom:true,
-   intro:"📝 Je retiens des mots — Note le vocabulaire utile et révise avec les cartes mémoire."},
+   lead:"Noter le vocabulaire utile et réviser avec les cartes mémoire.",
+   intro:"Je retiens des mots — Note le vocabulaire utile et révise avec les cartes mémoire."},
 ];
 
 // ── EXERCICES ─────────────────────────────────────────────────────────
 // type 'vf'     : lignes {id,txt,ok} — tuiles fixes (labels)
 // type 'match'  : lignes {id,q,aid,a} — banque = réponses
 // type 'blanks' : segs {k:'t'/'b',id,c} + words {id,l}
-const EXOS = [
-  // ── JE ME PRÉPARE ──
-  {sec:'prep', id:'pr1', type:'vf', num:'Exercice 1', tit:'Vrai ou Faux — Un accident', color:'#C2410C',
-   sub:'Écoutez le dialogue, puis répondez.', tiles:['VRAI','FAUX'],
-   rows:[
-    {id:'pr1a', txt:"Un témoin téléphone à Hamid pour lui parler de sa femme.", ok:'VRAI'},
-    {id:'pr1b', txt:"Leila a causé l'accident en ne respectant pas le feu rouge.", ok:'VRAI'},
-    {id:'pr1c', txt:"L'ambulance est arrivée après une heure.", ok:'FAUX'},
-    {id:'pr1d', txt:"Hamid ne peut pas se rendre à l'hôpital tout de suite.", ok:'FAUX'},
-    {id:'pr1e', txt:"Le témoin reste avec Leila jusqu'à l'hôpital.", ok:'VRAI'},
-    {id:'pr1f', txt:"Leila est dans un état très grave et dangereux.", ok:'FAUX'},
-   ]},
-  {sec:'prep', id:'pr2', type:'match', num:'Exercice 2', tit:"Qui suis-je ? Matériel médical", color:'#C2410C',
-   sub:'Associez chaque description au bon matériel médical.',
-   rows:[
-    {id:'pr2a', q:"Je transporte un patient couché, en le portant à plat.", aid:'ma1', a:"un brancard"},
-    {id:'pr2b', q:"Je sers à arrêter une hémorragie en serrant fort un membre.", aid:'ma2', a:"un garrot"},
-    {id:'pr2c', q:"J'immobilise un os cassé.", aid:'ma3', a:"un plâtre"},
-    {id:'pr2d', q:"J'écoute les battements du cœur et la respiration.", aid:'ma4', a:"un stéthoscope"},
-    {id:'pr2e', q:"J'aide à marcher quand on a une jambe blessée.", aid:'ma5', a:"des béquilles"},
-   ]},
-  {sec:'prep', id:'prImg', type:'imgmatch', num:'Exercice 3', tit:'Associer l\'image à la situation', color:'#C2410C',
-   sub:'Glisse chaque image sur le bon énoncé.',
-   images:[
-    {id:'im1', src:'images/crise-cardiaque.jpg'},
-    {id:'im2', src:'images/cheville-foulee.jpg'},
-    {id:'im3', src:'images/bebe-cuisiniere.jpg'},
-    {id:'im4', src:'images/genou-soccer.jpg'},
-   ],
-   rows:[
-    {id:'pi1', txt:"Cet homme fait une crise cardiaque.", aid:'im1'},
-    {id:'pi2', txt:"Cette coureuse s'est foulé la cheville.", aid:'im2'},
-    {id:'pi3', txt:"Ce bébé touche dangereusement la cuisinière.", aid:'im3'},
-    {id:'pi4', txt:"Ce garçon s'est blessé au genou en jouant au soccer.", aid:'im4'},
-   ]},
-  {sec:'prep', id:'prGN', type:'vf', num:'Exercice 4', tit:'Les groupes de mots', color:'#C2410C',
-   sub:'Lisez la phrase, puis indiquez si le groupe de mots en gras est un GN, un GV, un GAdj ou un GPrép.',
-   tiles:['GN','GV','GAdj','GPrép'],
-   savoir:{h:"› Les groupes de mots", rows:[
-     ["Groupe nominal (GN)","Il y a <em>un hôpital</em>. C'est <em>une grosse cicatrice</em>."],
-     ["Groupe verbal (GV)","J'<em>arrive</em> dans une minute. Il <em>soigne sa blessure</em>."],
-     ["Groupe adjectival (GAdj)","C'est <em>grave</em>. Il est <em>nécessaire de se reposer</em>."],
-     ["Groupe prépositionnel (GPrép)","Il suit un traitement <em>à l'hôpital</em>. Le médecin travaille <em>de façon efficace</em>."],
-   ]},
-   rows:[
-    {id:'gna', txt:"Le médecin consulte <b>le patient</b> à l'urgence.", ok:'GN'},
-    {id:'gnb', txt:"<b>Ce médicament</b> est excellent pour la douleur.", ok:'GN'},
-    {id:'gnc', txt:"Ce sirop est <b>bon</b> pour soigner la toux.", ok:'GAdj'},
-    {id:'gnd', txt:"Mes collègues sont allés <b>à la clinique</b>.", ok:'GPrép'},
-    {id:'gne', txt:"Les stagiaires <b>se rendent</b> à l'urgence.", ok:'GV'},
-    {id:'gnf', txt:"Je cherche <b>un sirop</b> pour calmer la toux.", ok:'GN'},
-    {id:'gng', txt:"Tu <b>viens</b> me voir en fin de semaine.", ok:'GV'},
-   ]},
-  {sec:'prep', id:'prPhon', type:'vf', num:'Exercice 5', tit:'La phonétique — des voyelles orales', color:'#C2410C',
-   sub:'Écoutez et classez chaque mot selon son son.',
-   tiles:['[ø]','[œ]','[a]','[ɑ]'],
-   savoir:{h:"› Des voyelles orales", rows:[
-     ["[ø]","bleu, deux, jeu, feu"],
-     ["[œ]","fleur, beurre, cœur, sœur"],
-     ["[a]","ami, bateau, cadeau, pantalon"],
-     ["[ɑ]","classe, bâtiment, pâtes, pâle"],
-   ]},
-   rows:[
-    {id:'pha', txt:"dangereux", ok:'[ø]'},
-    {id:'phb', txt:"il pleut", ok:'[ø]'},
-    {id:'phc', txt:"ils veulent", ok:'[œ]'},
-    {id:'phd', txt:"jeune", ok:'[œ]'},
-    {id:'phe', txt:"supermarché", ok:'[a]'},
-    {id:'phf', txt:"hôpital", ok:'[a]'},
-    {id:'phg', txt:"bâtiment", ok:'[ɑ]'},
-    {id:'phh', txt:"pâle", ok:'[ɑ]'},
-   ]},
-
-  // ── TÂCHE 1 · DOCTEUR, J'AI MAL À... ──
-  {sec:'t1', id:'t1vf', type:'vf', num:'Exercice 1', tit:"Vrai ou Faux — Le problème d'audition", color:'#C0573A',
-   sub:'Écoutez le dialogue, puis répondez.', tiles:['VRAI','FAUX'],
-   rows:[
-    {id:'t1vfa', txt:"Hamid dit que Leila entend très mal depuis l'accident.", ok:'VRAI'},
-    {id:'t1vfb', txt:"Le problème d'audition existait avant l'accident.", ok:'FAUX'},
-    {id:'t1vfc', txt:"Leila prend plusieurs médicaments.", ok:'FAUX'},
-    {id:'t1vfd', txt:"Le médecin pense que le choc peut avoir causé le problème.", ok:'VRAI'},
-    {id:'t1vfe', txt:"Un audiologiste va examiner Leila.", ok:'VRAI'},
-   ]},
-  {sec:'t1', id:'t1pc', type:'write', num:'Exercice 2', tit:'Le passé composé', color:'#C0573A',
-   sub:'Conjuguez les verbes au passé composé.',
-   savoir:{h:"› Le passé composé", rows:[
-     ["la plupart des verbes","avoir au présent + participe passé : j'<em>ai toussé</em>, elle <em>a pris</em>"],
-     ["verbes de mouvement","être au présent + participe passé (accord) : nous <em>sommes allés</em>, elles <em>sont sorties</em>"],
-   ]},
-   items:[
-    {q:"(aller) Nous … à la clinique ce matin.", accept:["sommes allés","sommes allées"], ph:"nous…"},
-    {q:"(contracter) Tu … une grippe.", accept:["as contracté"], ph:"tu…"},
-    {q:"(tousser) J' … toute la nuit.", accept:["ai toussé"], ph:"j'…"},
-    {q:"(prendre) Elle … son ordonnance.", accept:["a pris"], ph:"elle…"},
-    {q:"(sortir) Elles … de la pharmacie.", accept:["sont sorties","sont sortis"], ph:"elles…"},
-    {q:"(arriver) Je … en retard.", accept:["suis arrivé","suis arrivée"], ph:"je…"},
-   ]},
-  {sec:'t1', id:'t1pron', type:'write', num:'Exercice 3', tit:'Les verbes pronominaux au passé composé', color:'#C0573A',
-   sub:'Conjuguez les verbes pronominaux au passé composé.',
-   savoir:{h:"› Les verbes pronominaux au passé composé", rows:[
-     ["auxiliaire être","je <em>me suis coupé</em>, elle <em>s'est blessée</em>, il <em>s'est réveillé</em>"],
-   ]},
-   items:[
-    {q:"(se couper) Je … à la main en cuisinant.", accept:["me suis coupé","me suis coupée"], ph:"je…"},
-    {q:"(se blesser) Elle … au dos hier.", accept:["s'est blessée","s'est blessé"], ph:"elle…"},
-    {q:"(se réveiller) Il … tôt ce matin.", accept:["s'est réveillé"], ph:"il…"},
-    {q:"(s'absenter) Je … du travail toute la semaine.", accept:["me suis absenté","me suis absentée"], ph:"je…"},
-    {q:"(s'évanouir) Le patient … après la piqûre.", accept:["s'est évanoui"], ph:"le patient…"},
-   ]},
-  {sec:'t1', id:'t1match', type:'match', num:'Exercice 4', tit:"Décrire une situation d'urgence", color:'#C0573A',
-   sub:'Associez chaque situation à la bonne expression.',
-   rows:[
-    {id:'t1ma', q:"La personne ne bouge plus et ne répond pas.", aid:'ea1', a:"être inconscient"},
-    {id:'t1mb', q:"Le cœur bat de façon anormale et cause de la douleur.", aid:'ea2', a:"avoir un malaise cardiaque"},
-    {id:'t1mc', q:"La personne respire avec beaucoup de difficulté.", aid:'ea3', a:"être en détresse respiratoire"},
-    {id:'t1md', q:"La poitrine se serre et la respiration devient très difficile.", aid:'ea4', a:"faire une crise d'asthme"},
-    {id:'t1me', q:"Le sang coule abondamment d'une blessure.", aid:'ea5', a:"saigner beaucoup"},
-   ]},
-
-  // ── TÂCHE 2 · CE N'EST PAS DANGEREUX ──
-  {sec:'t2', id:'t2vf', type:'vf', num:'Exercice 1', tit:"Vrai ou Faux — L'état de Leila", color:'#6B4FBB',
-   sub:'Écoutez le dialogue, puis répondez.', tiles:['VRAI','FAUX'],
-   rows:[
-    {id:'t2vfa', txt:"L'urgentologue dit que Leila est stable.", ok:'VRAI'},
-    {id:'t2vfb', txt:"Leila doit rester à l'hôpital plusieurs semaines.", ok:'FAUX'},
-    {id:'t2vfc', txt:"Leila a subi un traumatisme.", ok:'VRAI'},
-    {id:'t2vfd', txt:"Hamid peut voir Leila immédiatement.", ok:'FAUX'},
-    {id:'t2vfe', txt:"Hamid devra attendre environ une heure.", ok:'VRAI'},
-   ]},
-  {sec:'t2', id:'t2exam', type:'match', num:'Exercice 2', tit:'Les examens médicaux', color:'#6B4FBB',
-   sub:'Associez chaque examen à sa définition.',
-   rows:[
-    {id:'t2ea', q:"une radiographie", aid:'xa1', a:"Une image des os avec des rayons X."},
-    {id:'t2eb', q:"une tomographie (scanner)", aid:'xa2', a:"Des images détaillées en coupes du corps."},
-    {id:'t2ec', q:"une mammographie", aid:'xa3', a:"Une radiographie des seins."},
-    {id:'t2ed', q:"un électrocardiogramme", aid:'xa4', a:"Un examen qui mesure l'activité du cœur."},
-    {id:'t2ee', q:"une échographie", aid:'xa5', a:"Des images faites avec des ultrasons."},
-   ]},
-  {sec:'t2', id:'t2pron', type:'write', num:'Exercice 3', tit:'Répondre avec un pronom complément', color:'#6B4FBB',
-   sub:'Réponds à la question en remplaçant le groupe de mots par un pronom complément.',
-   savoir:{h:"› Les pronoms compléments", rows:[
-     ["CD : le, la, les","Elle voit <em>le médecin</em>. → Elle <em>le</em> voit."],
-     ["CI : lui, leur","Il parle <em>à Hamid</em>. → Il <em>lui</em> parle."],
-   ]},
-   items:[
-    {q:"Est-ce que Hamid rencontre le médecin ? (remplace « le médecin »)", hint:"Oui, il le rencontre.", ph:"Oui,…"},
-    {q:"Est-ce que l'infirmière parle à Hamid ? (remplace « à Hamid »)", hint:"Oui, elle lui parle.", ph:"Oui,…"},
-    {q:"Est-ce que Leila voit ses amis aujourd'hui ? (remplace « ses amis »)", hint:"Non, elle ne les voit pas aujourd'hui.", ph:"Non,…"},
-    {q:"Est-ce que le médecin explique la situation aux parents ? (remplace « aux parents »)", hint:"Oui, il leur explique la situation.", ph:"Oui,…"},
-    {q:"Est-ce que Hamid attend Leila à l'hôpital ? (remplace « Leila »)", hint:"Oui, il l'attend à l'hôpital.", ph:"Oui,…"},
-   ]},
-  {sec:'t2', id:'t2poss', type:'write', num:'Exercice 4', tit:"Le lien d'appartenance", color:'#6B4FBB',
-   sub:"Complète avec le déterminant possessif (son, sa, ses, notre, leurs…) ou avec le, la, les selon la règle.",
-   savoir:{h:"› Pour exprimer un lien d'appartenance", rows:[
-     ["déterminant possessif","Il aime <em>son</em> chandail."],
-     ["le / la / les","Après un verbe pronominal suivi d'une partie du corps, s'il n'y a pas de doute sur le possesseur : Elle s'est coupé <em>les</em> cheveux (pas « ses cheveux »)."],
-   ]},
-   items:[
-    {q:"Elle se lave … cheveux tous les matins.", accept:["les"], ph:"…"},
-    {q:"Il aime … chandail bleu.", accept:["son"], ph:"…"},
-    {q:"Je me suis brûlé … main en cuisinant.", accept:["la"], ph:"…"},
-    {q:"Nous adorons … nouvelle maison.", accept:["notre"], ph:"…"},
-    {q:"Tu t'es tordu … cheville en courant.", accept:["la"], ph:"…"},
-    {q:"Elles portent … lunettes de soleil.", accept:["leurs"], ph:"…"},
-   ]},
-  {sec:'t2', id:'t2call', type:'match', num:'Exercice 5', tit:'Un appel au 911', color:'#6B4FBB',
-   sub:'Vous êtes témoin d\'un accident. Associez chaque question du répartiteur à la bonne réponse.',
-   rows:[
-    {id:'t2ca', q:"Quelle est la situation ?", aid:'da1', a:"Un accident, au coin de la rue Principale. Un homme est couché par terre. Il a perdu connaissance."},
-    {id:'t2cb', q:"Est-ce qu'il respire ? Est-ce que vous sentez son pouls ?", aid:'da2', a:"Oui, je sens son pouls. Il respire."},
-    {id:'t2cc', q:"Est-ce qu'il saigne ?", aid:'da3', a:"Non, je ne vois pas de sang."},
-    {id:'t2cd', q:"Restez calme. Est-ce qu'il y a d'autres victimes ?", aid:'da4', a:"Non, il est seul."},
-    {id:'t2ce', q:"J'ai envoyé une ambulance. Elle arrive dans cinq minutes.", aid:'da5', a:"D'accord, je reste avec lui."},
-    {id:'t2cf', q:"Très bien. Au revoir, Monsieur.", aid:'da6', a:"Merci, au revoir."},
-   ]},
-  {sec:'t2', id:'t2ped', type:'write', num:'Exercice 6', tit:'La consultation de Mayeli', color:'#6B4FBB',
-   sub:'Réponds aux questions par une phrase complète.',
-   items:[
-    {q:"D'après le pédiatre, quel est le diagnostic de Mayeli ?", hint:"Elle a une otite, une infection de l'oreille.", ph:"…"},
-    {q:"Qu'est-ce que le médecin lui prescrit ?", hint:"Il lui prescrit un antibiotique et un sirop.", ph:"…"},
-    {q:"Pendant combien de jours doit-elle prendre l'antibiotique ?", hint:"Pendant sept jours.", ph:"…"},
-    {q:"Pourquoi doit-elle consulter un ORL ?", hint:"Parce que ses otites reviennent souvent.", ph:"…"},
-   ]},
-  {sec:'t2', id:'t2derm', type:'vf', num:'Exercice 7', tit:'Vrai ou Faux — La dermatologue', color:'#6B4FBB',
-   sub:'Écoutez les explications, puis répondez.', tiles:['VRAI','FAUX'],
-   rows:[
-    {id:'t2da', txt:"La patiente souffre d'eczéma.", ok:'VRAI'},
-    {id:'t2db', txt:"L'eczéma est très rare.", ok:'FAUX'},
-    {id:'t2dc', txt:"La patiente a de l'eczéma seulement sur le cou.", ok:'FAUX'},
-    {id:'t2dd', txt:"La dermatologue prescrit une crème.", ok:'VRAI'},
-    {id:'t2de', txt:"La patiente doit éviter les produits parfumés.", ok:'VRAI'},
-   ]},
-
-  // ── TÂCHE 3 · COMMENT VOUS SENTEZ-VOUS ? ──
-  {sec:'t3', id:'t3hosp', type:'write', num:'Exercice 1', tit:'Les règles de visite', color:'#B45309',
-   sub:'Réponds aux questions par une phrase complète.',
-   items:[
-    {q:"Quelles sont les heures de visite en semaine à l'hôpital ?", hint:"Les heures de visite sont de 10 h à 20 h en semaine.", ph:"…"},
-    {q:"Quelles sont les heures de visite la fin de semaine ?", hint:"Les heures de visite sont de 11 h à 18 h la fin de semaine.", ph:"…"},
-    {q:"Combien de visiteurs sont permis dans la chambre en même temps ?", hint:"Maximum deux visiteurs à la fois.", ph:"…"},
-    {q:"Est-ce qu'un enfant peut visiter seul un patient ?", hint:"Non, un enfant doit être accompagné d'un adulte.", ph:"…"},
-   ]},
-  {sec:'t3', id:'t3polite', type:'write', num:'Exercice 2', tit:'Poser une question polie', color:'#B45309',
-   sub:"Formule une question polie pour t'orienter dans l'hôpital.",
-   savoir:{h:"› Poser une question polie", rows:[
-     ["Pourriez-vous…","<em>Pourriez-vous</em> m'indiquer où se trouve la radiologie, s'il vous plaît ?"],
-     ["Excusez-moi, où…","<em>Excusez-moi</em>, où se trouve l'ascenseur ?"],
-   ]},
-   items:[
-    {q:"Tu cherches le département de cardiologie. Pose une question polie à un employé.", hint:"Pourriez-vous m'indiquer où se trouve le département de cardiologie, s'il vous plaît ?", ph:"…"},
-    {q:"Tu cherches l'ascenseur pour monter au troisième étage. Pose une question polie.", hint:"Excusez-moi, où se trouve l'ascenseur pour monter au troisième étage ?", ph:"…"},
-    {q:"Tu tousses depuis deux semaines et tu as très mal dans le dos. Demande dans quel service te rendre.", hint:"Pourriez-vous me dire où se trouve la pneumologie, s'il vous plaît ?", ph:"…"},
-   ]},
-  {sec:'t3', id:'t3etage', type:'match', num:'Exercice 3', tit:"Le plan de l'hôpital", color:'#B45309',
-   sub:'Associez chaque département au bon étage.',
-   rows:[
-    {id:'t3ea', q:"Urgence", aid:'ea1', a:"1er étage"},
-    {id:'t3eb', q:"Radiologie", aid:'ea1b', a:"1er étage"},
-    {id:'t3ec', q:"Cardiologie", aid:'ea2', a:"2e étage"},
-    {id:'t3ed', q:"Obstétrique", aid:'ea2b', a:"2e étage"},
-    {id:'t3ee', q:"Psychiatrie", aid:'ea1c', a:"1er étage"},
-   ]},
-  {sec:'t3', id:'t3comfort', type:'write', num:'Exercice 4', tit:'Écrire une phrase de réconfort', color:'#B45309',
-   sub:'Un ami te parle de son état de santé. Écris une phrase de réconfort.',
-   items:[
-    {q:"Un ami te dit : « Je me sens très fatigué et j'ai mal partout. »", hint:"Repose-toi bien, ça va aller mieux bientôt.", ph:"…"},
-    {q:"Un ami te dit : « J'ai une forte pression dans la poitrine. »", hint:"Ne t'inquiète pas, les médecins s'occupent bien de toi.", ph:"…"},
-    {q:"Un ami te dit : « Je dois rester encore trois jours à l'hôpital. »", hint:"Prends soin de toi, je viendrai te visiter bientôt.", ph:"…"},
-   ]},
-];
-
 // ── FLASHCARDS ────────────────────────────────────────────────────────
 const FC_CARDS = [
-  {word:"un accident", def:"Un événement soudain et dangereux, non voulu.", ex:"Leila a eu un <strong>accident</strong> de la route."},
-  {word:"une ambulance", def:"Le véhicule qui transporte les patients d'urgence.", ex:"L'<strong>ambulance</strong> est arrivée en dix minutes."},
-  {word:"un brancard", def:"Une civière pour transporter un patient couché.", ex:"Les ambulanciers l'ont mise sur un <strong>brancard</strong>."},
-  {word:"un traumatisme", def:"Une blessure physique causée par un choc.", ex:"Elle a subi un <strong>traumatisme</strong> à la tête."},
-  {word:"stable", def:"Dont l'état de santé ne s'aggrave pas.", ex:"Son état est <strong>stable</strong>."},
-  {word:"la convalescence", def:"La période de repos après une maladie ou un accident.", ex:"Il est en <strong>convalescence</strong> à la maison."},
-  {word:"se rétablir", def:"Retrouver la santé après une maladie.", ex:"Elle va se <strong>rétablir</strong> rapidement."},
-  {word:"être hospitalisé", def:"Être admis à l'hôpital pour des soins.", ex:"Il a été <strong>hospitalisé</strong> hier."},
-  {word:"la priorité", def:"L'ordre d'urgence pour être soigné.", ex:"Son cas est la <strong>priorité</strong> 1."},
-  {word:"un urgentologue", def:"Le médecin spécialiste de la salle d'urgence.", ex:"L'<strong>urgentologue</strong> a examiné Leila."},
-  {word:"être inconscient", def:"Avoir perdu connaissance, ne plus réagir.", ex:"L'homme est <strong>inconscient</strong> sur le sol."},
-  {word:"saigner", def:"Perdre du sang à cause d'une blessure.", ex:"Sa blessure au bras <strong>saigne</strong> beaucoup."},
+  {word:"une brûlure", def:"Une blessure causée par la chaleur, le feu ou un liquide chaud.", ex:"Elle a une <strong>brûlure</strong> à l'avant-bras."},
+  {word:"Info-Santé", def:"Une ligne téléphonique (811) où une infirmière conseille.", ex:"Il appelle <strong>Info-Santé</strong> avant d'aller à l'urgence."},
+  {word:"l'urgence", def:"Le service de l'hôpital pour les cas qui ne peuvent pas attendre.", ex:"Rendez-vous à <strong>l'urgence</strong> aujourd'hui."},
+  {word:"une cloque", def:"Une petite poche de liquide sur la peau brûlée.", ex:"Il ne faut jamais percer une <strong>cloque</strong>."},
+  {word:"un pansement", def:"Ce qu'on pose sur une plaie pour la protéger.", ex:"Le médecin pose un <strong>pansement</strong> propre."},
+  {word:"une plaie", def:"Une blessure ouverte sur la peau.", ex:"On nettoie la <strong>plaie</strong> avant le pansement."},
+  {word:"le deuxième degré", def:"Le niveau d'une brûlure avec des cloques.", ex:"C'est une brûlure du <strong>deuxième degré</strong>."},
+  {word:"une cicatrice", def:"La marque qui reste sur la peau après une blessure.", ex:"Il ne devrait pas garder de <strong>cicatrice</strong>."},
+  {word:"un congé de maladie", def:"Des jours autorisés pour ne pas travailler quand on est blessé.", ex:"Elle reçoit un <strong>congé de maladie</strong> de trois jours."},
+  {word:"la salle d'attente", def:"L'endroit où les gens attendent leur tour.", ex:"La <strong>salle d'attente</strong> est au fond du corridor."},
+  {word:"éclabousser", def:"Projeter un liquide en gouttes.", ex:"L'huile chaude a <strong>éclaboussé</strong> son bras."},
+  {word:"désinfecter", def:"Nettoyer pour éliminer les microbes.", ex:"L'infirmière va <strong>désinfecter</strong> la plaie."},
+];
+
+const EXOS = [
+ {sec:'prep', id:'prVocab', type:'match', num:'Vocabulaire', tit:'Associe le mot ou le groupe de mots à sa définition', color:'#C2410C',
+  sub:'Choisis un mot, puis sa définition.', noQLbl:true, bankLbl:'Définitions', zonePh:'glissez la définition ici',
+  rows: FC_CARDS.map((c,i)=>({id:'uv'+i, q:c.word, aid:'uv'+i, a:c.def}))},
+
+  {sec:'prep', id:'pr1', type:'vf', num:'Exercice 1', tit:'Vrai ou Faux — Une brûlure en cuisine', color:'#C2410C',
+   sub:'Écoutez de nouveau le dialogue, puis répondez.', tiles:['VRAI','FAUX'],
+   rows:[
+    {id:'u1a', txt:"Fatou s'est brûlée avec de l'eau bouillante.", ok:'FAUX'},
+    {id:'u1b', txt:"Mathieu met tout de suite le bras sous l'eau froide.", ok:'VRAI'},
+    {id:'u1c', txt:"Il faut laisser couler l'eau froide quinze minutes.", ok:'VRAI'},
+    {id:'u1d', txt:"Mathieu appelle le 911.", ok:'FAUX'},
+    {id:'u1e', txt:"Le 911 sert quand la vie est en danger.", ok:'VRAI'},
+    {id:'u1f', txt:"C'est une infirmière qui répond à Info-Santé.", ok:'VRAI'},
+    {id:'u1g', txt:"Il y a de petites cloques sur la peau de Fatou.", ok:'VRAI'},
+    {id:'u1h', txt:"L'infirmière conseille de percer les cloques.", ok:'FAUX'},
+    {id:'u1i', txt:"Des cloques indiquent une brûlure du deuxième degré.", ok:'VRAI'},
+    {id:'u1j', txt:"Fatou doit attendre une semaine avant de consulter.", ok:'FAUX'},
+   ]},
+
+  {sec:'prep', id:'prMat', type:'match', num:'Exercice 2', tit:'Qui suis-je ? Le matériel de premiers soins', color:'#C2410C',
+   sub:"Associe chaque objet à ce qu'il sert à faire.",
+   bankLbl:'Utilités', zonePh:'glissez la réponse ici',
+   rows:[
+    {id:'m1', q:"une compresse stérile", aid:'m1', a:"couvrir une plaie sans la contaminer"},
+    {id:'m2', q:"un désinfectant", aid:'m2', a:"éliminer les microbes sur la peau"},
+    {id:'m3', q:"une pince à échardes", aid:'m3', a:"retirer un petit corps étranger"},
+    {id:'m4', q:"un bandage élastique", aid:'m4', a:"maintenir une articulation foulée"},
+    {id:'m5', q:"des gants jetables", aid:'m5', a:"protéger la personne qui soigne"},
+    {id:'m6', q:"une couverture de survie", aid:'m6', a:"garder au chaud une personne en état de choc"},
+   ]},
+
+  {sec:'prep', id:'prOu', type:'vf', num:'Exercice 3', tit:'911, Info-Santé ou clinique ?', color:'#C2410C',
+   sub:"Pour chaque situation, indique le bon service. Le 911 est réservé aux cas où la vie est en danger.", tiles:['911','811'],
+   rows:[
+    {id:'o1', txt:"Une personne ne respire plus.", ok:'911'},
+    {id:'o2', txt:"Un enfant a une petite coupure au doigt et vous hésitez sur les soins.", ok:'811'},
+    {id:'o3', txt:"Un homme a une douleur forte à la poitrine et au bras gauche.", ok:'911'},
+    {id:'o4', txt:"Vous vous demandez si une fièvre de 38 °C est inquiétante.", ok:'811'},
+    {id:'o5', txt:"Une personne a perdu connaissance et ne répond pas.", ok:'911'},
+    {id:'o6', txt:"Vous voulez savoir quoi faire pour une brûlure avec des cloques.", ok:'811'},
+   ]},
+
+  {sec:'prep', id:'prGrp', type:'write', num:'Exercice 4', tit:'Les groupes de mots', color:'#C2410C',
+   sub:"Écris le groupe du nom au complet, en accordant le déterminant et l'adjectif.",
+   savoir:{h:"› Les groupes de mots", rows:[
+     ["Le groupe du nom","déterminant + nom + adjectif : <em>une</em> brûlure <em>superficielle</em>"],
+     ["L'accord","L'adjectif s'accorde en genre et en nombre : un pansement propr<em>e</em> · des plaies propr<em>es</em>"],
+     ["La place de l'adjectif","Le plus souvent après le nom : une douleur <em>vive</em>. Quelques-uns avant : une <em>petite</em> cloque."],
+   ]},
+   items:[
+    {q:"(un) brûlure + (superficiel) → ___", accept:["une brûlure superficielle","une brulure superficielle"], ph:"trois mots"},
+    {q:"(des) cloque + (petit) → ___", accept:["des petites cloques"], ph:"…"},
+    {q:"(le) pansement + (propre) → ___", accept:["le pansement propre"], ph:"…"},
+    {q:"(des) douleur + (vif) → ___", accept:["des douleurs vives"], ph:"…"},
+   ]},
+
+  {sec:'prep', id:'prPhon', type:'vf', num:'Exercice 5', tit:'Le son [y] ou [u]', color:'#6B4FBB', accent:'#6B4FBB', cards:true, listen:true,
+   sub:"Clique sur l'icône d'écoute pour entendre le mot, puis indique le son entendu.", tiles:['[y]','[u]'],
+   savoir:{h:"› Des voyelles orales", speak:true, rows:[
+     ["[y] comme dans « brûlure »","u, û : urgence, minute, sucre", ["brûlure","urgence","minute","sucre"]],
+     ["[u] comme dans « douleur »","ou : pouce, soupe, soutien", ["douleur","pouce","soupe","soutien"]],
+     ["[i] comme dans « cuisine »","i, î, y : infirmière, plaie", ["cuisine","infirmière"]],
+   ]},
+   rows:[
+    {id:'pha', txt:"brûlure", ok:'[y]'},
+    {id:'phb', txt:"douleur", ok:'[u]'},
+    {id:'phc', txt:"urgence", ok:'[y]'},
+    {id:'phd', txt:"pouce", ok:'[u]'},
+    {id:'phe', txt:"minute", ok:'[y]'},
+    {id:'phf', txt:"soupe", ok:'[u]'},
+    {id:'phg', txt:"sucre", ok:'[y]'},
+    {id:'phh', txt:"soutien", ok:'[u]'},
+   ]},
+
+  {sec:'t1', id:'t1vf', type:'vf', num:'Exercice 1', tit:"Vrai ou Faux — À l'urgence", color:'#C0573A',
+   sub:'Écoutez de nouveau le dialogue, puis répondez.', tiles:['VRAI','FAUX'],
+   rows:[
+    {id:'a1', txt:"Fatou travaillait en cuisine au moment de l'accident.", ok:'VRAI'},
+    {id:'a2', txt:"Elle s'est brûlé l'avant-bras gauche.", ok:'FAUX'},
+    {id:'a3', txt:"L'accident est arrivé vers onze heures.", ok:'VRAI'},
+    {id:'a4', txt:"Elle a mis son bras sous l'eau froide quinze minutes.", ok:'VRAI'},
+    {id:'a5', txt:"Le médecin trouve qu'elle a mal réagi.", ok:'FAUX'},
+    {id:'a6', txt:"Fatou a percé les cloques elle-même.", ok:'FAUX'},
+    {id:'a7', txt:"Le médecin va nettoyer la plaie et poser un pansement.", ok:'VRAI'},
+   ]},
+
+  {sec:'t1', id:'t1pc', type:'write', num:'Exercice 2', tit:'Le passé composé', color:'#C0573A',
+   sub:"Écris le verbe entre parenthèses au passé composé.",
+   savoir:{h:"› Le passé composé", rows:[
+     ["Formation","avoir ou être au présent + participe passé : j'<em>ai mis</em> · elle <em>est arrivée</em>"],
+     ["La plupart des verbes : avoir","J'<em>ai appelé</em> Info-Santé. · Le médecin <em>a nettoyé</em> la plaie."],
+     ["Aller, arriver, partir, tomber… : être","Elle <em>est arrivée</em> à l'urgence. · Ils <em>sont partis</em>."],
+     ["Avec être, le participe s'accorde","Elle est arrivé<em>e</em> · Ils sont arrivé<em>s</em>"],
+   ]},
+   items:[
+    {q:"L'huile (éclabousser) ___ son avant-bras.", accept:["a éclaboussé","a eclabousse"], ph:"deux mots"},
+    {q:"Mathieu (appeler) ___ Info-Santé.", accept:["a appelé","a appele"], ph:"…"},
+    {q:"Fatou (arriver) ___ à l'urgence vers midi.", accept:["est arrivée","est arrivee"], ph:"…"},
+    {q:"Nous (mettre) ___ le bras sous l'eau froide.", accept:["avons mis"], ph:"…"},
+    {q:"Les secours (partir) ___ tout de suite.", accept:["sont partis"], ph:"…"},
+   ]},
+
+  {sec:'t1', id:'t1pron', type:'write', num:'Exercice 3', tit:'Les verbes pronominaux au passé composé', color:'#C0573A',
+   sub:"Écris le verbe pronominal au passé composé.",
+   savoir:{h:"› Les verbes pronominaux au passé composé", rows:[
+     ["Toujours avec être","Je <em>me suis</em> brûlée. · Il <em>s'est</em> coupé."],
+     ["Accord avec le sujet…","Elle s'est blessé<em>e</em>. · Ils se sont blessé<em>s</em>."],
+     ["…sauf si une partie du corps suit","Elle s'est brûlé <em>le bras</em>. (pas d'accord : le bras vient après)"],
+   ]},
+   items:[
+    {q:"Je (se brûler) ___ l'avant-bras.", accept:["me suis brûlé","me suis brule","me suis brûlée","me suis brulee"], ph:"trois mots"},
+    {q:"Elle (se couper) ___ en préparant les légumes.", accept:["s'est coupée","s est coupee","sest coupee"], ph:"…"},
+    {q:"Ils (se blesser) ___ au travail.", accept:["se sont blessés","se sont blesses"], ph:"…"},
+    {q:"Nous (se laver) ___ les mains avant les soins.", accept:["nous sommes lavé les mains","nous sommes lave les mains","nous sommes lavés les mains"], ph:"…"},
+   ]},
+
+  {sec:'t1', id:'t1desc', type:'write', num:'Exercice 4', tit:"Décrire une situation d'urgence", color:'#C0573A',
+   sub:"Réponds en une phrase complète, au passé composé.",
+   items:[
+    {q:"Racontez ce qui est arrivé à Fatou, en une phrase.", hint:"L'huile chaude a éclaboussé son avant-bras pendant qu'elle travaillait en cuisine.", ph:"…"},
+    {q:"Quels premiers soins a-t-elle reçus avant d'aller à l'urgence ?", hint:"Elle a mis son avant-bras sous l'eau froide pendant quinze minutes.", ph:"…"},
+    {q:"Décrivez un petit accident qui vous est déjà arrivé.", hint:"Réponse personnelle au passé composé, par exemple : je me suis coupé le doigt en cuisinant.", ph:"…"},
+   ]},
+
+  {sec:'t2', id:'t2vf', type:'vf', num:'Exercice 1', tit:'Vrai ou Faux — Les soins', color:'#6B4FBB',
+   sub:'Écoutez de nouveau le dialogue, puis répondez.', tiles:['VRAI','FAUX'],
+   rows:[
+    {id:'b1', txt:"La brûlure est du deuxième degré, superficielle.", ok:'VRAI'},
+    {id:'b2', txt:"Le médecin dit que c'est dangereux.", ok:'FAUX'},
+    {id:'b3', txt:"Fatou gardera sûrement une cicatrice.", ok:'FAUX'},
+    {id:'b4', txt:"Il faut protéger la peau du soleil pendant six mois.", ok:'VRAI'},
+    {id:'b5', txt:"Elle peut retourner en cuisine dès le lendemain.", ok:'FAUX'},
+    {id:'b6', txt:"Elle reçoit un congé de maladie de trois jours.", ok:'VRAI'},
+    {id:'b7', txt:"La crème s'applique deux fois par jour.", ok:'VRAI'},
+    {id:'b8', txt:"Il faut revenir si la plaie devient jaune.", ok:'VRAI'},
+   ]},
+
+  {sec:'t2', id:'t2exam', type:'match', num:'Exercice 2', tit:'Les examens et les soins', color:'#6B4FBB',
+   sub:"Associe chaque examen ou soin à sa description.",
+   bankLbl:'Descriptions', zonePh:'glissez la réponse ici',
+   rows:[
+    {id:'e1', q:"une radiographie", aid:'e1', a:"une image des os"},
+    {id:'e2', q:"une prise de sang", aid:'e2', a:"un prélèvement pour analyser le sang"},
+    {id:'e3', q:"des points de suture", aid:'e3', a:"des fils pour refermer une plaie"},
+    {id:'e4', q:"un vaccin contre le tétanos", aid:'e4', a:"une injection après une blessure salissante"},
+    {id:'e5', q:"un pansement stérile", aid:'e5', a:"une protection propre posée sur la plaie"},
+   ]},
+
+  {sec:'t2', id:'t2pcom', type:'write', num:'Exercice 3', tit:'Répondre avec un pronom complément', color:'#6B4FBB',
+   sub:"Réponds à la question en remplaçant les mots soulignés par un pronom.",
+   savoir:{h:"› Les pronoms compléments", rows:[
+     ["le, la, les (complément direct)","Je change <em>le pansement</em> → Je <em>le</em> change."],
+     ["lui, leur (complément indirect)","Je parle <em>au médecin</em> → Je <em>lui</em> parle."],
+     ["en (de quelque chose)","J'ai besoin <em>de crème</em> → J'<em>en</em> ai besoin."],
+     ["y (à un endroit)","Je vais <em>à l'urgence</em> → J'<em>y</em> vais."],
+   ]},
+   items:[
+    {q:"Est-ce que tu changes le pansement ? → Oui, je ___ change.", accept:["le"], ph:"un seul mot"},
+    {q:"Est-ce que tu parles au médecin ? → Oui, je ___ parle.", accept:["lui"], ph:"…"},
+    {q:"Est-ce que tu vas à l'urgence ? → Oui, j'___ vais.", accept:["y"], ph:"…"},
+    {q:"Est-ce que tu as besoin de crème ? → Oui, j'___ ai besoin.", accept:["en"], ph:"…"},
+   ]},
+
+  {sec:'t2', id:'t2app', type:'write', num:'Exercice 4', tit:"Le lien d'appartenance", color:'#6B4FBB',
+   sub:"Complète avec le bon déterminant ou la bonne préposition.",
+   savoir:{h:"› Pour exprimer un lien d'appartenance", rows:[
+     ["mon, ma, mes / son, sa, ses","C'est <em>mon</em> bras. · C'est <em>sa</em> sœur."],
+     ["de + nom","le pansement <em>de</em> Fatou · la sœur <em>de</em> Mathieu"],
+     ["Parties du corps : souvent l'article","Elle s'est brûlé <em>le</em> bras. (et non « son bras »)"],
+   ]},
+   items:[
+    {q:"C'est le dossier ___ Fatou.", accept:["de"], ph:"un seul mot"},
+    {q:"Aminata vient chercher ___ sœur.", accept:["sa"], ph:"…"},
+    {q:"Elle s'est brûlé ___ avant-bras.", accept:["l'","l"], ph:"…"},
+    {q:"Les infirmières ont fini ___ quart de travail.", accept:["leur"], ph:"…"},
+   ]},
+
+  {sec:'t2', id:'t2appel', type:'write', num:'Exercice 5', tit:'Un appel à Info-Santé', color:'#6B4FBB',
+   sub:"Une infirmière du 811 répond. Écris ce que tu dirais, en une phrase complète.",
+   items:[
+    {q:"L'infirmière demande : « Décrivez-moi la blessure. » Que répondez-vous ?", hint:"Description claire : l'endroit, l'aspect de la peau, depuis quand.", ph:"…"},
+    {q:"Elle demande : « Qu'avez-vous fait jusqu'ici ? » Que répondez-vous ?", hint:"Les premiers soins déjà faits, au passé composé.", ph:"…"},
+    {q:"Elle demande : « Est-ce que la douleur augmente ? » Que répondez-vous ?", hint:"Réponse claire, oui ou non, avec une précision.", ph:"…"},
+   ]},
+
+  {sec:'t2', id:'t2consult', type:'write', num:'Exercice 6', tit:'La consultation de monsieur Nguyen', color:'#6B4FBB',
+   sub:"Lis la situation, puis réponds. « Monsieur Nguyen s'est coupé la main en réparant une clôture. La plaie est profonde et sale. À l'urgence, on lui fait quatre points de suture et un rappel du vaccin contre le tétanos. Il doit revenir dans dix jours pour faire retirer les fils. »",
+   items:[
+    {q:"Comment monsieur Nguyen s'est-il blessé ?", hint:"Il s'est coupé la main en réparant une clôture.", ph:"…"},
+    {q:"Quels soins a-t-il reçus à l'urgence ?", hint:"Quatre points de suture et un rappel du vaccin contre le tétanos.", ph:"…"},
+    {q:"Pourquoi doit-il revenir dans dix jours ?", hint:"Pour faire retirer les fils des points de suture.", ph:"…"},
+   ]},
+
+  {sec:'t2', id:'t2fiche', type:'vf', num:'Exercice 7', tit:'Vrai ou Faux — La fiche-conseil', color:'#6B4FBB',
+   sub:"Lis la fiche-conseil ci-dessus, puis réponds.", tiles:['VRAI','FAUX'],
+   savoir:{h:"› Une brûlure : les bons gestes", rows:[
+     ["Tout de suite","Retirer bagues et bracelets, puis faire couler de l'eau fraîche 15 minutes."],
+     ["À ne jamais faire","Percer les cloques · mettre de la glace, du beurre ou du dentifrice."],
+     ["Couvrir","Un pansement stérile, sans serrer."],
+     ["Consulter","S'il y a des cloques, si la brûlure est grande, au visage ou aux mains."],
+     ["Après","Protéger du soleil six mois pour éviter une cicatrice foncée."],
+   ]},
+   rows:[
+    {id:'f1', txt:"Il faut retirer les bagues avant que la peau enfle.", ok:'VRAI'},
+    {id:'f2', txt:"Mettre de la glace directement sur la brûlure est recommandé.", ok:'FAUX'},
+    {id:'f3', txt:"L'eau fraîche doit couler pendant quinze minutes.", ok:'VRAI'},
+    {id:'f4', txt:"On peut percer les cloques si elles gênent.", ok:'FAUX'},
+    {id:'f5', txt:"Une brûlure au visage demande de consulter.", ok:'VRAI'},
+    {id:'f6', txt:"Il faut protéger la peau du soleil pendant six mois.", ok:'VRAI'},
+   ]},
+
+  {sec:'t3', id:'t3vf', type:'vf', num:'Exercice 1', tit:"Vrai ou Faux — À l'accueil", color:'#B45309',
+   sub:'Écoutez de nouveau le dialogue, puis répondez.', tiles:['VRAI','FAUX'],
+   rows:[
+    {id:'c1', txt:"Aminata vient chercher sa sœur.", ok:'VRAI'},
+    {id:'c2', txt:"La réceptionniste demande le nom de la patiente.", ok:'VRAI'},
+    {id:'c3', txt:"Deux accompagnateurs peuvent monter en même temps.", ok:'FAUX'},
+    {id:'c4', txt:"La salle d'attente est au fond du corridor, à droite.", ok:'VRAI'},
+    {id:'c5', txt:"Le stationnement est entièrement gratuit.", ok:'FAUX'},
+    {id:'c6', txt:"À l'urgence, les quatre premières heures de stationnement sont gratuites.", ok:'VRAI'},
+   ]},
+
+  {sec:'t3', id:'t3poli', type:'write', num:'Exercice 2', tit:'Poser une question polie', color:'#B45309',
+   sub:"Transforme la question en formule polie.",
+   savoir:{h:"› Poser une question polie", rows:[
+     ["Le conditionnel","<em>Pourriez-vous</em> me donner son nom ? · <em>Auriez-vous</em> un endroit où attendre ?"],
+     ["Est-ce que je pourrais…","<em>Est-ce que je pourrais</em> la rejoindre ?"],
+     ["Adoucir la demande","Ajouter <em>s'il vous plaît</em> à la fin."],
+   ]},
+   items:[
+    {q:"« Donnez-moi son numéro de chambre. » → plus poli : ___", accept:["pourriez-vous me donner son numéro de chambre","pourriez vous me donner son numero de chambre","pourriez-vous me donner son numéro de chambre s'il vous plaît"], ph:"…"},
+    {q:"« Je veux voir ma sœur. » → plus poli : ___", accept:["est-ce que je pourrais voir ma sœur","est-ce que je pourrais voir ma soeur","je voudrais voir ma sœur","je voudrais voir ma soeur"], ph:"…"},
+    {q:"« Où est la salle d'attente ? » → plus poli : ___", accept:["pourriez-vous me dire où est la salle d'attente","pourriez vous me dire ou est la salle d attente"], ph:"…"},
+   ]},
+
+  {sec:'t3', id:'t3plan', type:'match', num:'Exercice 3', tit:"Le plan de l'hôpital", color:'#B45309',
+   sub:"Associe chaque service à ce qu'on y fait.",
+   bankLbl:'On y va pour…', zonePh:'glissez la réponse ici',
+   rows:[
+    {id:'p1', q:"l'urgence", aid:'p1', a:"un problème grave ou soudain"},
+    {id:'p2', q:"l'accueil", aid:'p2', a:"s'inscrire et demander son chemin"},
+    {id:'p3', q:"la radiologie", aid:'p3', a:"passer une radiographie"},
+    {id:'p4', q:"le laboratoire", aid:'p4', a:"faire une prise de sang"},
+    {id:'p5', q:"la pharmacie", aid:'p5', a:"obtenir les médicaments prescrits"},
+   ]},
+
+  {sec:'t3', id:'t3reconf', type:'write', num:'Exercice 4', tit:'Écrire une phrase de réconfort', color:'#B45309',
+   sub:"Écris un court message à une personne blessée.",
+   items:[
+    {q:"Fatou est en congé de maladie. Écris-lui un message de deux phrases.", hint:"Message court et chaleureux : prendre des nouvelles, souhaiter un bon rétablissement, offrir de l'aide.", ph:"…"},
+    {q:"Un collègue s'est cassé le bras. Propose-lui ton aide en une phrase.", hint:"Offre concrète : par exemple proposer de le remplacer ou de l'accompagner.", ph:"…"},
+   ]},
+
+  {sec:'appli', id:'aFiche', type:'vf', num:'Exercice 1', tit:"Vrai ou Faux — Une coupure profonde", color:'#0D9488',
+   sub:"Lis la fiche-conseil ci-dessus, puis réponds.", tiles:['VRAI','FAUX'],
+   savoir:{h:"› Une coupure : quand consulter ?", rows:[
+     ["Les premiers gestes","Comprimer avec un linge propre · élever le membre · nettoyer à l'eau."],
+     ["Consulter rapidement","Si le saignement ne s'arrête pas après dix minutes de compression."],
+     ["Consulter aussi","Si la plaie est profonde, longue, sale, ou si elle est au visage."],
+     ["Le tétanos","Un rappel est nécessaire si le dernier date de plus de dix ans."],
+   ]},
+   rows:[
+    {id:'g1', txt:"Il faut comprimer la plaie avec un linge propre.", ok:'VRAI'},
+    {id:'g2', txt:"Élever le membre blessé aide à ralentir le saignement.", ok:'VRAI'},
+    {id:'g3', txt:"Il faut consulter si le saignement continue après dix minutes.", ok:'VRAI'},
+    {id:'g4', txt:"Une coupure au visage peut attendre plusieurs jours.", ok:'FAUX'},
+    {id:'g5', txt:"Le rappel du tétanos se fait tous les deux ans.", ok:'FAUX'},
+   ]},
 ];
 
 // ── ÉTAT ──────────────────────────────────────────────────────────────
-const S = {pl:{}, sel:null, fb:{}};
+const S = {pl:{}, sel:null, fb:{}, vfSel:{}, vocabPick:null, vocabPairs:{}, vocabOrder:null};
 let curSec = 'prep';
 
 const ZONES = {};
@@ -611,6 +910,14 @@ function trackPlacement(zid, ok) {
 // ── DIALOGUE (audio réel si disponible, sinon synthèse vocale) ────────
 let dialogueRead = false;
 const MODULE_SLUG = 'module-urgence';
+// Bump ce numéro chaque fois qu'un MP3 est régénéré, pour forcer le
+// navigateur à recharger le fichier au lieu de servir une version en cache.
+const AUDIO_V = '3';
+// Icônes des boutons son/micro de "Je me prépare" — change ces deux valeurs
+// pour remplacer les emojis par une image (ex. '<img src="/assets/interactive/module-urgence/icons/speaker.svg">').
+const ICON_SPEAK = '<img class="icon-svg" src="/assets/interactive/module-urgence/icons/speaker.svg" alt="Écouter">';
+const ICON_MIC = '<img class="icon-svg" src="/assets/interactive/module-urgence/icons/mic.svg" alt="Micro">';
+const ICON_ASSISTANT = '<img class="icon-svg" src="/assets/interactive/module-urgence/icons/assistant.svg" alt="Assistant IA">';
 let dlgAudio=null, dlgBtn=null, dlgState='idle', dlgUsingSpeech=false, dlgFallbackLines=null, dlgPollIv=null;
 
 function charSlug(name){ return name.toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g,'').replace(/'/g,'').replace(/\s+/g,'_'); }
@@ -622,7 +929,7 @@ function playDialogue(dialId, btn){
   dlgBtn=btn;
   const lines=(DIALOGUES[dialId]&&DIALOGUES[dialId].lines)||[];
   dlgFallbackLines=lines;
-  const urls=lines.map((l,i)=>`${MODULE_SLUG}/${dialId}/line_${String(i+1).padStart(2,'0')}_${charSlug(l[0])}.mp3`);
+  const urls=lines.map((l,i)=>`/assets/interactive/${MODULE_SLUG}/${dialId}/line_${String(i+1).padStart(2,'0')}_${charSlug(l[0])}.mp3?v=${AUDIO_V}`);
   playAudioQueue(urls,0,btn,dialId,true);
 }
 function playAudioQueue(urls, idx, btn, dialId, allowFallback){
@@ -656,6 +963,152 @@ function playSpeechQueue(lines, btn, dialId){
     },400);
   }catch(e){}
 }
+function jsq(s){ return String(s).replace(/\\/g,'\\\\').replace(/'/g,"\\'"); }
+// ── LECTURE AUDIO D'UN MOT OU D'UNE PHRASE ISOLÉE (synthèse vocale) ────
+function speakText(btn, text){
+  try{
+    speechSynthesis.cancel();
+    const old = btn ? btn.innerHTML : null;
+    const reset = ()=>{ if(btn){ btn.disabled=false; btn.innerHTML=old; } };
+    if(btn){ btn.disabled=true; btn.innerHTML=ICON_SPEAK+' …'; }
+    const doSpeak = ()=>{
+      try{
+        const u=new SpeechSynthesisUtterance(text);
+        u.lang='fr-CA'; u.rate=0.9;
+        const voices=speechSynthesis.getVoices();
+        const fr=voices.find(v=>/^fr/i.test(v.lang));
+        if(fr) u.voice=fr;
+        u.onend=reset; u.onerror=reset;
+        speechSynthesis.speak(u);
+        // Filet de sécurité : Chrome laisse parfois speechSynthesis coincé
+        // sans jamais déclencher onend/onerror.
+        setTimeout(()=>{ if(!speechSynthesis.speaking) reset(); }, 8000);
+      }catch(e){ reset(); }
+    };
+    // Chrome ignore parfois un speak() appelé juste après cancel() dans le
+    // même tick : un court délai évite ce bug connu.
+    setTimeout(doSpeak, 60);
+  }catch(e){}
+}
+// Essaie un vrai MP3 (assets/interactive/<module>/sons/<fileId>.mp3), retombe
+// sur la synthèse vocale si le fichier est absent.
+function playWord(btn, text, fileId){
+  if(!fileId){ speakText(btn, text); return; }
+  const url = `/assets/interactive/${MODULE_SLUG}/sons/${fileId}.mp3?v=${AUDIO_V}`;
+  const old = btn ? btn.innerHTML : null;
+  const reset = ()=>{ if(btn){ btn.disabled=false; btn.innerHTML=old; } };
+  if(btn){ btn.disabled=true; btn.innerHTML=ICON_SPEAK+' …'; }
+  const a=new Audio(url);
+  a.onended=reset;
+  a.onerror=()=>{ reset(); speakText(btn, text); };
+  a.play().catch(()=>{ reset(); speakText(btn, text); });
+}
+// ── VÉRIFICATION DE PRONONCIATION (reconnaissance vocale native, "Je me prépare" seulement) ──
+function normPron(s){
+  return String(s).toLowerCase().normalize('NFD').replace(/[̀-ͯ]/g,'').replace(/[^a-z0-9\s]/g,'').replace(/\s+/g,' ').trim();
+}
+// Certains mots courts sont mal transcrits par la reconnaissance vocale du
+// navigateur (nombres écrits en chiffres, homophones) même bien prononcés —
+// liste d'équivalences acceptées en plus de la comparaison normale.
+const PRON_ALIASES = {
+  'treize': ['13'],
+  'tot': ['sot','seau','saut','sceau'],
+};
+function pronMatches(said, target){
+  if(said===target || said.includes(target) || target.includes(said)) return true;
+  const alts = PRON_ALIASES[target] || [];
+  return alts.some(a=>said===a || said.includes(a) || a.includes(said));
+}
+// RÈGLE (validée par l'utilisateur le 2026-08-03 après test) : un mot isolé
+// (surtout une seule syllabe) est toujours plus difficile à reconnaître pour
+// le moteur de reconnaissance vocale du navigateur qu'un mot dans une phrase
+// avec du contexte. CHAQUE mot demandé en lecture/prononciation isolée doit
+// donc être présenté dans une courte phrase, avec le mot cible en gras —
+// jamais le mot tout seul. L'élève lit la phrase, mais on vérifie seulement
+// que le mot cible apparaît dans ce qui a été entendu (pronMatches fait déjà
+// cette vérification par inclusion — aucun changement de logique requis).
+// ⚠️ À reproduire dans TOUS les futurs modules dès qu'un mot isolé est
+// demandé en prononciation (voir aussi memory: cours-niveau4-modules.md).
+const CARRIER_PHRASES = {
+  'brûlure': "La brûlure est superficielle.",
+  'douleur': "La douleur augmente le soir.",
+  'urgence': "Je vais à l'urgence.",
+  'pouce': "Il s'est coupé le pouce.",
+  'minute': "Attendez une minute.",
+  'soupe': "La soupe est trop chaude.",
+  'sucre': "Le sucre est sur la table.",
+  'soutien': "Merci pour ton soutien.",
+  'cuisine': "Elle travaille en cuisine.",
+  'infirmière': "L'infirmière arrive tout de suite.",
+  'plaie': "La plaie est propre.",
+  'secours': "Les secours sont arrivés vite.",
+};
+function pronCheck(btn, expected){
+  const SRC = window.SpeechRecognition || window.webkitSpeechRecognition;
+  let fb = btn.nextElementSibling && btn.nextElementSibling.classList.contains('pron-fb') ? btn.nextElementSibling : null;
+  if(!fb){ fb=document.createElement('span'); fb.className='pron-fb'; fb.setAttribute('aria-live','polite'); btn.insertAdjacentElement('afterend', fb); }
+  if(!SRC){ fb.className='pron-fb warn'; fb.textContent='Reconnaissance vocale non supportée (utilise Chrome).'; return; }
+  const old = btn.innerHTML;
+  btn.classList.remove('fb-ok','fb-no');
+  btn.disabled=true; btn.innerHTML=ICON_MIC+' …';
+  fb.className='pron-fb'; fb.textContent='Écoute en cours…';
+  const reset=()=>{ btn.disabled=false; btn.innerHTML=old; };
+  const target = normPron(expected);
+  let done=false, lastInterim='';
+  const rec = new SRC();
+  // interimResults:true — les mots très courts ("tôt", "mer"...) sont parfois
+  // coupés par la détection de silence avant qu'un résultat final n'arrive ;
+  // on garde le dernier résultat provisoire comme filet de secours.
+  rec.lang='fr-CA'; rec.interimResults=true; rec.maxAlternatives=1;
+  const evaluate=(heard)=>{
+    heard=heard.trim();
+    const said = normPron(heard);
+    const ok = pronMatches(said, target);
+    reset();
+    btn.classList.add(ok?'fb-ok':'fb-no');
+    fb.className='pron-fb '+(ok?'ok':'no');
+    fb.textContent = ok ? '✓ Bien prononcé !' : ('✗ On a entendu : « '+heard+' »');
+    setTimeout(()=>{ btn.classList.remove('fb-ok','fb-no'); }, 4000);
+  };
+  rec.onresult=e=>{
+    const res=e.results[e.results.length-1];
+    if(res.isFinal){ done=true; evaluate(res[0].transcript); }
+    else{ lastInterim=res[0].transcript; }
+  };
+  rec.onerror=e=>{
+    if(!done){
+      done=true;
+      if(lastInterim){ evaluate(lastInterim); return; }
+      reset();
+      fb.className='pron-fb warn';
+      fb.textContent = e.error==='not-allowed' ? 'Micro refusé — autorise l\'accès au micro.' : 'Aucun son détecté, réessaie.';
+    }
+  };
+  // Filet de sécurité : certains navigateurs déclenchent onend sans jamais
+  // appeler onresult(final) ni onerror (silence, coupure) — sans ce filet le
+  // message restait bloqué sur « Écoute en cours… ». On récupère le dernier
+  // résultat provisoire s'il y en a un, plutôt que de déclarer un échec.
+  rec.onend=()=>{
+    if(!done){
+      done=true;
+      if(lastInterim){ evaluate(lastInterim); return; }
+      reset();
+      fb.className='pron-fb warn';
+      fb.textContent='Aucun son détecté, réessaie.';
+    }
+  };
+  setTimeout(()=>{
+    if(!done){
+      done=true;
+      try{ rec.stop(); }catch(e){}
+      if(lastInterim){ evaluate(lastInterim); return; }
+      reset();
+      fb.className='pron-fb warn';
+      fb.textContent='Aucun son détecté, réessaie.';
+    }
+  }, 7000);
+  try{ rec.start(); }catch(e){ done=true; reset(); fb.className='pron-fb warn'; fb.textContent='Impossible de démarrer le micro.'; }
+}
 function pauseDialogue(){
   if(dlgUsingSpeech){ try{speechSynthesis.pause();}catch(e){} } else if(dlgAudio){ dlgAudio.pause(); }
   dlgState='paused'; if(dlgBtn) dlgBtn.textContent='▶ Reprendre';
@@ -668,16 +1121,32 @@ function stopDialogue(){
   clearInterval(dlgPollIv);
   try{ speechSynthesis.cancel(); }catch(e){}
   if(dlgAudio){ try{dlgAudio.pause();}catch(e){} dlgAudio=null; }
-  if(dlgBtn){ dlgBtn.textContent='🔊 Écouter'; }
+  if(dlgBtn){ dlgBtn.innerHTML=ICON_SPEAK+' Écouter'; }
   dlgState='idle'; dlgBtn=null; dlgUsingSpeech=false;
 }
 function finishDialogue(btn,dialId){
-  dlgState='idle'; btn.textContent='🔊 Écouter'; dlgBtn=null; dlgUsingSpeech=false;
+  dlgState='idle'; btn.innerHTML=ICON_SPEAK+' Écouter'; dlgBtn=null; dlgUsingSpeech=false;
   if(!dialogueRead){ dialogueRead=true; lmsTrack('dialogue_listened'); }
 }
 function markRead(btn){
   btn.classList.add('done'); btn.textContent='✓ Lu';
   if(!dialogueRead){ dialogueRead=true; lmsTrack('dialogue_listened'); }
+}
+function toggleVocabExo(force){
+  const card=document.getElementById('exo-prVocab');
+  const btn=document.getElementById('btnVocabToggle');
+  if(!card) return;
+  const opening = (typeof force==='boolean') ? force : card.style.display==='none';
+  card.style.display = opening ? '' : 'none';
+  if(btn) btn.textContent = opening ? "Fermer l'exercice de vocabulaire" : 'Apprendre les mots de vocabulaire';
+  // Exercice à part : tant qu'il est ouvert, on bloque l'accès aux exercices
+  // suivants — il faut le refermer (bouton "Fermer") pour continuer.
+  EXOS.filter(e=>e.sec==='prep' && e.id!=='prVocab').forEach(e=>{
+    const c=document.getElementById('exo-'+e.id);
+    if(c) c.style.display = opening ? 'none' : '';
+  });
+  if(opening) card.scrollIntoView({behavior:'smooth', block:'start'});
+  else document.getElementById('btnVocabToggle').scrollIntoView({behavior:'smooth', block:'center'});
 }
 
 // ── LOGIQUE DE PLACEMENT ──────────────────────────────────────────────
@@ -712,6 +1181,111 @@ function tileClick(iid, lbl, cat) {
   render();
 }
 
+// ── VRAI/FAUX PAR BOUTONS (colonnes + bouton Corriger) ─────────────────
+// Compteur en direct dans l'en-tête d'exercice (exo-score), comme le modèle.
+function updateVfScore(ex, checked){
+  const el = document.getElementById('score-'+ex.id);
+  if(!el) return;
+  if(!checked){
+    const answered = ex.rows.filter(r=>S.vfSel[r.id]).length;
+    el.textContent = answered+' / '+ex.rows.length+' répondu';
+  } else {
+    const correct = ex.rows.filter(r=>S.vfSel[r.id]===r.ok).length;
+    el.textContent = correct+' / '+ex.rows.length+' juste';
+  }
+}
+// ── Association mot ↔ définition par CLIC (deux colonnes), pas de
+// glisser-déposer — atteignable au clavier, comme je-me-prepare.html.
+function renderVocabPairs(){
+  const ex = EXOS.find(e=>e.id==='prVocab');
+  if(!ex) return;
+  const wordsEl = document.getElementById('vocab-words');
+  const defsEl = document.getElementById('vocab-defs');
+  if(!wordsEl || !defsEl) return;
+  if(!S.vocabOrder) S.vocabOrder = ex.rows.map((r,i)=>i).sort(()=>Math.random()-.5);
+
+  wordsEl.innerHTML = ex.rows.map((r,i)=>{
+    const done = S.vocabPairs[r.id] !== undefined;
+    const cls = 'chip chip-word'+(done?' is-paired':(S.vocabPick===r.id?' is-active':''));
+    return '<button type="button" class="'+cls+'" data-w="'+esc(r.id)+'"'+(done?' aria-disabled="true"':'')+'>'+esc(r.q)+'</button>';
+  }).join('');
+  const takenDefIds = Object.values(S.vocabPairs);
+  defsEl.innerHTML = S.vocabOrder.map(idx=>{
+    const r = ex.rows[idx];
+    const done = takenDefIds.includes(r.aid);
+    const cls = 'chip'+(done?' is-paired':(S.fb[r.aid]==='no'?' is-miss':''));
+    return '<button type="button" class="'+cls+'" data-d="'+esc(r.aid)+'"'+(done?' aria-disabled="true"':'')+'>'+esc(r.a)+'</button>';
+  }).join('');
+
+  wordsEl.querySelectorAll('[data-w]').forEach(b=>b.addEventListener('click',()=>{
+    const wid = b.dataset.w;
+    if(S.vocabPairs[wid] !== undefined) return;
+    S.vocabPick = (S.vocabPick===wid) ? null : wid;
+    S.fb = {};
+    renderVocabPairs();
+  }));
+  defsEl.querySelectorAll('[data-d]').forEach(b=>b.addEventListener('click',()=>{
+    const did = b.dataset.d;
+    if(Object.values(S.vocabPairs).includes(did) || S.vocabPick===null) return;
+    const row = ex.rows.find(r=>r.id===S.vocabPick);
+    const ok = row && row.aid===did;
+    if(ok){ S.vocabPairs[S.vocabPick] = did; S.vocabPick=null; S.fb={}; trackPlacement(row.id, true); }
+    else { S.fb[did]='no'; trackPlacement(row?row.id:did, false); }
+    renderVocabPairs();
+  }));
+
+  const n = Object.keys(S.vocabPairs).length;
+  const scoreEl = document.getElementById('score-'+ex.id);
+  if(scoreEl) scoreEl.textContent = n+' / '+ex.rows.length+' associé';
+}
+function toggleScript(btn, secId){
+  const el = document.getElementById('script-'+secId);
+  if(!el) return;
+  const open = el.classList.toggle('is-hidden') === false;
+  btn.textContent = open ? 'Cacher la transcription' : 'Lire la transcription';
+}
+function vfSelect(zid, lbl) {
+  S.vfSel[zid] = lbl;
+  delete S.fb[zid];
+  const ex = EXOS.find(e=>e.type==='vf' && e.rows.some(r=>r.id===zid));
+  if(ex) updateVfScore(ex, false);
+  render();
+}
+function vfCheckAll(exId) {
+  const ex = EXOS.find(e => e.id === exId);
+  if (!ex) return;
+  let answered = 0, correct = 0;
+  ex.rows.forEach(r => {
+    const sel = S.vfSel[r.id];
+    if (!sel) return;
+    answered++;
+    const ok = sel === r.ok;
+    if (ok) correct++;
+    S.fb[r.id] = ok ? 'ok' : 'no';
+    S.pl[r.id] = {iid:r.id, lbl:sel, cat:'vf'};
+    trackPlacement(r.id, ok);
+  });
+  const sumEl = document.getElementById('vfsum-'+exId);
+  if (sumEl) {
+    if (answered < ex.rows.length) {
+      sumEl.className = 'vf-summary warn';
+      sumEl.textContent = `Réponds à toutes les phrases avant de corriger (${answered}/${ex.rows.length}).`;
+    } else {
+      sumEl.className = 'vf-summary ok';
+      sumEl.textContent = `${correct} / ${ex.rows.length} bonnes réponses`;
+    }
+  }
+  updateVfScore(ex, answered>=ex.rows.length);
+  render();
+}
+
+// Rend un élément atteignable au clavier (MIGRATION.md §5) : le clic est
+// déjà l'interaction principale (sélection puis dépôt) — Entrée/Espace
+// déclenchent le même clic.
+function kbdable(el){
+  el.setAttribute('role','button'); el.tabIndex=0;
+  el.addEventListener('keydown',e=>{ if(e.key===' '||e.key==='Enter'){ e.preventDefault(); el.click(); } });
+}
 // ── DRAG & DROP ───────────────────────────────────────────────────────
 let dd = null;
 function drg(el, iid, lbl, cat, from) {
@@ -755,6 +1329,17 @@ document.addEventListener('touchend', e => {
 
 // ── HELPERS ───────────────────────────────────────────────────────────
 function esc(s){return String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;')}
+// Pastille numérotée carrée devant l'en-tête d'exercice (comme .exo__num du
+// modèle je-me-prepare.html) — extrait le chiffre de "Exercice N", sinon •.
+function exoNumBadge(numText){
+  const m = String(numText).match(/\d+/);
+  const label = m ? String(+m[0]).padStart(2,'0') : '•';
+  return '<span class="exo-num">'+label+'</span>';
+}
+// Remplace les suites de "___" par un blanc à souligner distinct du texte,
+// pour que les espaces entre les vrais mots restent lisibles (sinon tout
+// se lit comme une seule ligne confuse de tirets).
+function blankify(q){ return esc(q).replace(/_{3,}/g, '<span class="acc-blank"></span>'); }
 function usedIds(){return new Set(Object.values(S.pl).map(p=>p.iid))}
 function shuffled(arr, seed){
   const a=arr.slice(); let s=seed||42;
@@ -774,6 +1359,7 @@ function mkZone(zid, extra, placeholder){
   el.dataset.zid=zid;
   el.textContent=placed?placed.lbl:(placeholder||'déposer ici');
   el.addEventListener('click',()=>zoneClick(zid));
+  kbdable(el);
   drp(el,zid);
   if(placed&&!fb){drg(el,placed.iid,placed.lbl,placed.cat,zid);tch(el,placed.iid,placed.lbl,placed.cat,zid)}
   return el;
@@ -787,6 +1373,7 @@ function mkBlank(zid){
   el.dataset.zid=zid;
   el.textContent=placed?placed.lbl:'…';
   el.addEventListener('click',()=>zoneClick(zid));
+  kbdable(el);
   drp(el,zid);
   if(placed&&!fb){drg(el,placed.iid,placed.lbl,placed.cat,zid);tch(el,placed.iid,placed.lbl,placed.cat,zid)}
   return el;
@@ -796,6 +1383,7 @@ function mkTile(iid,lbl,cat,cls){
   t.className='tile '+cls+(S.sel&&S.sel.iid===iid&&!S.sel.from?' sel':'');
   t.textContent=lbl;
   t.addEventListener('click',()=>tileClick(iid,lbl,cat));
+  kbdable(t);
   drg(t,iid,lbl,cat,null); tch(t,iid,lbl,cat,null);
   return t;
 }
@@ -804,6 +1392,7 @@ function mkImgTile(im,cat){
   t.className='imgtile'+(S.sel&&S.sel.iid===im.id&&!S.sel.from?' sel':'');
   t.innerHTML='<img src="'+im.src+'" alt="" loading="lazy">';
   t.addEventListener('click',()=>tileClick(im.id,im.id,cat));
+  kbdable(t);
   drg(t,im.id,im.id,cat,null); tch(t,im.id,im.id,cat,null);
   return t;
 }
@@ -816,6 +1405,7 @@ function mkImgZone(zid, im){
   if(placed){ const src=(ALL_IMAGES.find(i=>i.id===placed.iid)||{}).src; el.innerHTML=src?'<img src="'+src+'" alt="">':''; }
   else{ el.innerHTML='<span class="imgzone-ph">glissez l\'image ici</span>'; }
   el.addEventListener('click',()=>zoneClick(zid));
+  kbdable(el);
   drp(el,zid);
   if(placed&&!fb){drg(el,placed.iid,placed.lbl,placed.cat,zid);tch(el,placed.iid,placed.lbl,placed.cat,zid)}
   return el;
@@ -827,6 +1417,7 @@ function buildStatic(){
   SECTIONS.forEach(sec=>{
     const b=document.createElement('button');
     b.className='tab'; b.id='tab-'+sec.id;
+    b.style.setProperty('--sec-color', sec.color);
     b.innerHTML='<span class="tno">'+sec.no+'</span>'+esc(sec.title)+'<span class="tchk">✓</span>';
     b.addEventListener('click',()=>{curSec=sec.id;render();window.scrollTo({top:0,behavior:'smooth'})});
     tabs.appendChild(b);
@@ -835,30 +1426,54 @@ function buildStatic(){
   SECTIONS.forEach(sec=>{
     const d=document.createElement('div');
     d.className='sec'; d.id='sec-'+sec.id;
+    d.style.setProperty('--sec-color', sec.color);
+    d.style.setProperty('--sec', sec.color);
     let h='';
-    h+='<div class="intro" style="border-color:'+sec.color+'33">'+sec.intro+'</div>';
+    // Bloc unique : mise en situation (gris) → dialogue → vocabulaire associé.
+    // Tout est dans le même cadre pour qu'on voie le lien entre le dialogue et
+    // son vocabulaire (demande de l'utilisateur, 2026-08-03).
     if(sec.dialogue){
       const dia=DIALOGUES[sec.dialogue];
-      h+='<div class="dial-sec" style="border-bottom-color:'+sec.color+'">';
-      h+='<div class="audio-pl"><div class="audio-lbl">Dialogue</div>';
-      h+='<button class="btn-lu" onclick="playDialogue(\''+sec.dialogue+'\',this)">🔊 Écouter</button>';
-      h+='<button class="btn-lu" onclick="markRead(this)">📖 J\'ai lu</button></div>';
-      h+='<div class="dial-txt"><div class="d-lbl">'+esc(dia.label)+'</div>';
+      const titleParts = dia.label.split('—');
+      const dTitle = (titleParts[1]||dia.label).trim();
+      h+='<div class="dial-sec"><div class="dial-grid">';
+      h+='<div><div class="field-label">La situation</div>';
+      h+='<p class="situ">'+sec.intro+'</p>';
+      h+='<div class="row" style="display:flex;flex-wrap:wrap;gap:10px;margin-top:14px">';
+      h+='<button class="btn-lu btn-audio" onclick="playDialogue(\''+sec.dialogue+'\',this)">'+ICON_SPEAK+' Écouter le dialogue</button>';
+      h+='<button class="btn btn-ghost" type="button" onclick="toggleScript(this,\''+sec.id+'\')">Lire la transcription</button>';
+      h+='</div></div>';
+      h+='<div class="dial-aside"><div class="field-label">Dialogue</div>';
+      h+='<div class="dial-aside-tit">'+esc(dTitle)+'</div>';
+      h+='<div class="dial-aside-n">'+dia.lines.length+' répliques</div></div>';
+      h+='</div>';
+      h+='<div class="dial-txt is-hidden" id="script-'+sec.id+'">';
       dia.lines.forEach((l,i)=>{
         const cls=(i%2===0)?'mb':'dr';
         h+='<div class="dl"><span class="'+cls+'">'+esc(l[0])+' :</span> '+esc(l[1])+'</div>';
       });
-      h+='</div></div>';
-    }
-    if(sec.id==='prep'){
-      h+='<div class="vocab-sec"><div style="display:flex;align-items:center;gap:10px;margin-bottom:12px;">';
-      h+='<div style="background:#C2410C;color:#fff;border-radius:999px;padding:3px 14px;font-size:11px;font-weight:800;text-transform:uppercase;letter-spacing:.12em;">Vocabulaire</div>';
-      h+='<div style="font-size:15px;font-weight:700;color:#9A3412;">Mots du module — <span style="font-weight:900;cursor:pointer;text-decoration:underline dotted;" onclick="fcOpen(0)">Cliquez pour les cartes mémoire 🃏</span></div></div>';
-      h+='<div class="vocab-grid">';
-      FC_CARDS.forEach(c=>{h+='<div class="vw" onclick="fcOpenWord(\''+c.word.replace(/'/g,"\\'")+'\')"><span class="dot"></span><span class="w">'+esc(c.word)+'</span></div>'});
-      h+='</div></div>';
+      h+='</div>';
+      if(sec.id==='prep'){
+        h+='<div class="vocab-sec"><div style="display:flex;align-items:center;gap:10px;margin-bottom:12px;flex-wrap:wrap">';
+        h+='<div class="vocab-tag">Vocabulaire</div>';
+        h+='<div style="font-size:15px;font-weight:700;">Les mots de ce dialogue — <span style="font-weight:900;cursor:pointer;text-decoration:underline dotted;" onclick="fcOpen(0)">cartes mémoire</span></div></div>';
+        h+='<div class="vocab-grid">';
+        FC_CARDS.forEach(c=>{h+='<div class="vw" onclick="fcOpenWord(\''+c.word.replace(/'/g,"\\'")+'\')"><span class="dot"></span><span class="w">'+esc(c.word)+'</span></div>'});
+        h+='</div>';
+        h+='<button class="btn btn-pri" type="button" id="btnVocabToggle" style="margin-top:12px" onclick="toggleVocabExo()">Apprendre les mots de vocabulaire</button>';
+        h+='</div>';
+      }
+      h+='</div>';
+    } else {
+      h+='<div class="intro">'+sec.intro+'</div>';
     }
     h+='<div class="exs" id="exs-'+sec.id+'"></div>';
+    if(sec.next){
+      h+='<div class="cta"><div><div class="cta-eyebrow">Prochaine étape</div>';
+      h+='<div class="cta-tit">'+esc(sec.next.tit)+'</div>';
+      h+='<div class="cta-sub">'+esc(sec.next.sub)+'</div></div>';
+      h+='<button class="btn cta-btn" type="button" onclick="document.getElementById(\'tab-'+sec.next.id+'\').click();window.scrollTo({top:0,behavior:\'smooth\'})">Continuer →</button></div>';
+    }
     d.innerHTML=h;
     wrap.appendChild(d);
   });
@@ -866,50 +1481,112 @@ function buildStatic(){
   EXOS.forEach(ex=>{
     const host=document.getElementById('exs-'+ex.sec);
     const card=document.createElement('div');
-    card.className='card';
+    card.className='card'; card.id='exo-'+ex.id;
+    if(ex.accent) card.style.setProperty('--sec-color', ex.accent);
+    if(ex.id==='prVocab') card.style.display='none';
     let h='';
     if(ex.savoir){
-      h+='<div class="savoir"><h3>'+ex.savoir.h+'</h3><table>';
-      ex.savoir.rows.forEach(r=>{h+='<tr><td>'+r[0]+'</td><td>'+r[1]+'</td></tr>'});
-      h+='</table></div>';
+      h+='<div class="savoir'+(ex.savoir.speak?' savoir--pron':'')+'">'
+       + '<div class="savoir-band">'+esc(ex.savoir.h ? ex.savoir.h.replace(/^›\s*/,'') : 'Prononciation')+'</div>';
+      ex.savoir.rows.forEach((r,ri)=>{
+        h+='<div class="savoir-row"><div class="savoir-key">'+r[0]+'</div><div class="savoir-val">'+r[1];
+        if(ex.savoir.speak && r[2]){
+          h+='<div class="word-chips">';
+          r[2].forEach((w,wi)=>{
+            const fid=ex.id+'_savoir_'+ri+'_'+wi;
+            const phrase=CARRIER_PHRASES[w];
+            const wcLabel = phrase ? esc(phrase).replace(new RegExp('('+esc(w)+')','i'),'<b>$1</b>') : esc(w);
+            h+='<div class="word-chip"><span class="wc-word'+(phrase?' wc-phrase':'')+'">'+wcLabel+'</span>';
+            h+='<button class="btn btn-ghost" type="button" onclick="playWord(this,\''+jsq(w)+'\',\''+fid+'\')" title="Écouter">'+ICON_SPEAK+'</button>';
+            h+='<button class="btn btn-ghost" type="button" onclick="pronCheck(this,\''+jsq(w)+'\')" title="Répète le mot à voix haute">'+ICON_MIC+'</button>';
+            h+='</div>';
+          });
+          h+='</div>';
+        }
+        h+='</div></div>';
+      });
+      h+='</div><div class="savoir-gap"></div>';
+    }
+    // ── Exercice Vrai/Faux (ou 2 catégories) — colonnes + bouton Corriger ──
+    if(ex.type==='vf'){
+      h+='<div class="c-hdr">'+exoNumBadge(ex.num)+'<span class="tag">'+esc(ex.num)+'</span><span class="exo-score" id="score-'+ex.id+'" aria-live="polite">0 / '+ex.rows.length+' répondu</span><span class="ctit">'+esc(ex.tit)+'</span><span class="csub">'+esc(ex.sub)+'</span></div>';
+      if(!ex.cards) h+='<div class="vf-head"><div class="vf-head-txt"></div><div class="vf-head-opts"><div class="vf-head-opt">'+esc(ex.tiles[0])+'</div><div class="vf-head-opt">'+esc(ex.tiles[1])+'</div></div></div>';
+      h+='<div class="rows" id="mount-'+ex.id+'"></div>';
+      h+='<div style="margin-top:14px;display:flex;align-items:center;gap:12px;flex-wrap:wrap">';
+      h+='<button class="btn btn-pri" type="button" onclick="vfCheckAll(\''+ex.id+'\')">✓ Corriger</button>';
+      h+='<div class="vf-summary" id="vfsum-'+ex.id+'" aria-live="polite"></div>';
+      h+='</div>';
+      card.innerHTML=h; host.appendChild(card); return;
     }
     // ── Exercice à écrire (autocorrection ou correction IA) ──
     if(ex.type==='write'){
-      h+='<div class="c-hdr"><span class="tag" style="background:'+ex.color+'">'+esc(ex.num)+'</span><span class="ctit" style="color:'+ex.color+'">'+esc(ex.tit)+'</span><span class="csub">'+esc(ex.sub)+'</span></div>';
-      const aiBadge = ex.items.some(it=>!it.accept) ? '<div style="font-size:12px;font-weight:800;color:#0D9488;margin-bottom:10px">🤖 Un assistant corrige ce que tu écris et te donne une rétroaction.</div>' : '';
+      // Si l'exercice a un dialogue, son titre est déjà affiché dans la
+      // pastille du dialogue juste en dessous — pas besoin de le répéter ici.
+      const titHtml = ex.dialogue ? '' : '<span class="ctit">'+esc(ex.tit)+'</span>';
+      h+='<div class="c-hdr">'+exoNumBadge(ex.num)+'<span class="tag">'+esc(ex.num)+'</span>'+titHtml+'<span class="csub">'+esc(ex.sub)+'</span></div>';
+      const aiBadge = ex.items.some(it=>!it.accept) ? '<div style="font-size:12px;font-weight:800;color:#0D9488;margin-bottom:10px;display:flex;align-items:center;gap:6px">'+ICON_ASSISTANT+' Un assistant corrige ce que tu écris et te donne une rétroaction.</div>' : '';
+      if(ex.dialogue && DIALOGUES[ex.dialogue]){
+        const dia=DIALOGUES[ex.dialogue];
+        h+='<div class="dial-hd" style="margin-bottom:12px"><div class="d-lbl">'+esc(dia.label)+'</div>';
+        h+='<button class="btn-lu" onclick="playDialogue(\''+ex.dialogue+'\',this)">'+ICON_SPEAK+' Écouter</button></div>';
+        h+='<details style="margin-bottom:12px"><summary style="cursor:pointer;font-size:13px;font-weight:700;color:var(--ws-accent)">Afficher le texte du dialogue</summary>';
+        h+='<div class="dial-txt">';
+        dia.lines.forEach((l,i)=>{
+          const cls=(i%2===0)?'mb':'dr';
+          h+='<div class="dl"><span class="'+cls+'">'+esc(l[0])+' :</span> '+esc(l[1])+'</div>';
+        });
+        h+='</div></details>';
+      }
       h+=aiBadge+'<div class="wlist">';
       ex.items.forEach((it,i)=>{
-        h+='<div class="witem"><div class="wq">'+(it.q||'')+'</div>';
+        h+='<div class="witem"><div class="wq">'+blankify(it.q||'')+'</div>';
+        if(it.audio){
+          const fid=ex.id+'_'+i;
+          h+='<button class="btn btn-ghost wlisten" type="button" onclick="playWord(this,\''+jsq(it.audio)+'\',\''+fid+'\')" style="margin-bottom:8px">'+ICON_SPEAK+' Écouter</button>';
+        }
         h+='<div class="wrow"><input class="winput" id="wi_'+ex.id+'_'+i+'" placeholder="'+(it.ph||'Écris ta réponse…')+'" autocomplete="off">';
         h+='<button class="btn btn-pri wbtn" onclick="checkWrite(\''+ex.id+'\','+i+')">Vérifier</button></div>';
-        h+='<div class="wfb" id="wf_'+ex.id+'_'+i+'"></div></div>';
+        h+='<div class="wfb" id="wf_'+ex.id+'_'+i+'" aria-live="polite"></div></div>';
       });
       h+='</div>';
       card.innerHTML=h; host.appendChild(card); return;
     }
+    if(ex.id==='prVocab'){
+      // Association par CLIC en deux colonnes (mots / définitions), atteignable
+      // au clavier — reprend le modèle je-me-prepare.html au lieu du
+      // glisser-déposer générique. Le pointage passe quand même par
+      // trackPlacement() pour rester compté dans l'étoile globale.
+      h+='<div class="c-hdr">'+exoNumBadge(ex.num)+'<span class="tag">'+esc(ex.num)+'</span><span class="exo-score" id="score-'+ex.id+'" aria-live="polite">0 / '+ex.rows.length+' associé</span><span class="ctit">'+esc(ex.tit)+'</span><span class="csub">'+esc(ex.sub)+'</span></div>';
+      h+='<div class="pair-grid"><div class="stack" id="vocab-words"></div><div class="stack" id="vocab-defs"></div></div>';
+      h+='<button class="btn btn-ghost" type="button" style="margin-top:14px" onclick="toggleVocabExo(false)">Fermer</button>';
+      card.innerHTML=h;
+      host.appendChild(card);
+      return;
+    }
     h+='<div style="display:flex;gap:20px;align-items:flex-start;flex-wrap:wrap">';
     h+='<div style="flex:1;min-width:300px">';
-    h+='<div class="c-hdr"><span class="tag" style="background:'+ex.color+'">'+esc(ex.num)+'</span><span class="ctit" style="color:'+ex.color+'">'+esc(ex.tit)+'</span><span class="csub">'+esc(ex.sub)+'</span></div>';
+    h+='<div class="c-hdr">'+exoNumBadge(ex.num)+'<span class="tag">'+esc(ex.num)+'</span><span class="ctit">'+esc(ex.tit)+'</span><span class="csub">'+esc(ex.sub)+'</span></div>';
     if(ex.type==='blanks') h+='<p class="blanks-p" id="mount-'+ex.id+'"></p>';
     else h+='<div class="rows" id="mount-'+ex.id+'"></div>';
     h+='</div>';
     const vert=(ex.type==='match'||ex.type==='rows'||ex.type==='imgmatch')?' vert':'';
     const bw=ex.type==='imgmatch'?'240px':((ex.type==='match'||ex.type==='rows')?'300px':'220px');
-    h+='<div class="bsec b1" style="flex:0 0 '+bw+'"><div class="blbl">Réponses</div><div class="btiles'+vert+'" id="bank-'+ex.id+'"></div></div>';
+    h+='<div class="bsec b1" style="flex:0 0 '+bw+'"><div class="blbl">'+(ex.bankLbl||'Réponses')+'</div><div class="btiles'+vert+'" id="bank-'+ex.id+'"></div></div>';
     h+='</div>';
     card.innerHTML=h;
     host.appendChild(card);
   });
   injectCustom();
+  if(document.getElementById('vocab-words')) renderVocabPairs();
 }
 
 // ── SECTIONS PERSONNALISÉES (oral / écrit / autoéval) ─────────────────
 function injectCustom(){
   // JE METS EN APPLICATION — jeu de rôle oral + écriture corrigée par l'IA
-  document.getElementById('exs-appli').innerHTML = `
+  document.getElementById('exs-appli').innerHTML += `
    <div class="card custom">
-     <div class="c-hdr"><span class="tag" style="background:#0D9488">Production orale</span><span class="ctit" style="color:#0D9488">Décris une urgence</span></div>
-     <p class="lead">Ton enfant vient de se blesser (choisis une situation : une chute, une brûlure, un malaise…). <b>Tu es au téléphone avec l'urgentologue : décris ce qui s'est passé et l'état de ton enfant.</b> Enregistre-toi, obtiens une rétroaction, puis envoie ta prise si tu le veux.</p>
+     <div class="c-hdr"><span class="tag" style="background:#0D9488">Production orale</span><span class="ctit" style="color:#0D9488">Raconte une urgence</span></div>
+     <p class="lead">Choisis une situation d'urgence (une brûlure, une coupure, une chute) et <b>raconte ce qui est arrivé</b> : ce que la personne faisait, ce qui s'est passé, et les premiers soins donnés. Utilise le passé composé. Enregistre-toi, obtiens une rétroaction, puis envoie ta prise si tu le veux.</p>
      <div class="rec-zone"><button id="recBtn">🎤</button><div class="rec-lbl" id="recLbl">Touche pour t'enregistrer</div></div>
      <div id="poPrev" class="hidden" style="display:flex;flex-direction:column;gap:12px">
        <audio id="poAudio" controls style="width:100%"></audio>
@@ -918,7 +1595,7 @@ function injectCustom(){
          <button class="btn btn-ghost" onclick="resetRec()">↺ Recommencer</button>
          <button class="btn btn-pri" id="poFbBtn" onclick="poGetFeedback()">💬 Obtenir une rétroaction</button>
        </div>
-       <div class="fb" id="poFb"></div>
+       <div class="fb" id="poFb" aria-live="polite"></div>
        <div id="poSend" style="display:none;gap:10px;flex-wrap:wrap;align-items:center">
          <button class="btn btn-send" id="poSendBtn" onclick="poSend()">📨 Envoyer à mon enseignant</button>
        </div>
@@ -927,11 +1604,11 @@ function injectCustom(){
      <div class="err" id="poErr"></div>
    </div>
    <div class="card custom">
-     <div class="c-hdr"><span class="tag" style="background:#0E7490">Production écrite</span><span class="ctit" style="color:#0E7490">Écris à un ami en convalescence</span></div>
-     <p class="lead">Ton ami d'enfance a eu un accident il y a deux jours. Écris-lui un message pour <b>t'informer de son état de santé et le réconforter</b>. (3 à 5 phrases)</p>
-     <textarea id="peText" rows="6" placeholder="Salut ! J'ai appris que tu as eu un accident. Comment te sens-tu ?…"></textarea>
+     <div class="c-hdr"><span class="tag" style="background:#0E7490">Production écrite</span><span class="ctit" style="color:#0E7490">Écris un message de réconfort</span></div>
+     <p class="lead">Tu étudies en comptabilité à Trois-Rivières. Ta famille vient d'obtenir un logement à Gatineau et vous déménagez dans trois semaines. <b>Écris à Marlène Poitras, responsable de la formation, pour justifier ton abandon.</b> (4 à 6 phrases)</p>
+     <textarea id="peText" rows="6" placeholder="Bonjour Monsieur Dumas,&#10;Je vous écris pour vous informer que…"></textarea>
      <div style="margin-top:12px"><button class="btn btn-pri" id="peBtn" onclick="peCheck()">✍️ Vérifier mon message</button></div>
-     <div class="fb" id="peFb"></div>
+     <div class="fb" id="peFb" aria-live="polite"></div>
      <div class="status" id="peStatus">Analyse en cours…</div>
      <div class="err" id="peErr"></div>
    </div>`;
@@ -939,22 +1616,24 @@ function injectCustom(){
 
   // JE RETIENS DES MOTS — notes + cartes mémoire + autoévaluation
   const SELF=[
-    "Je peux décrire un problème de santé urgent.",
-    "Je peux m'informer sur l'état de santé d'un proche.",
-    "Je peux appeler le 911 et répondre aux questions du répartiteur.",
-    "Je comprends les consignes en cas d'urgence.",
-    "Je peux m'orienter dans un hôpital.",
+    "Je peux comprendre un message téléphonique.",
+    "Je peux justifier à l'oral un retard, une absence ou un abandon.",
+    "Je peux écrire un message pour justifier un retard, une absence ou un abandon.",
+    "Je connais les formules d'appel et de salutation appropriées.",
+    "Je peux utiliser les verbes devoir et falloir pour donner une consigne.",
   ];
   document.getElementById('exs-retiens').innerHTML = `
    <div class="card custom">
      <div class="c-hdr"><span class="tag" style="background:#166534">Je retiens des mots</span><span class="ctit" style="color:#166534">Mes mots utiles</span></div>
      <p class="lead">Note ici les mots et expressions à retenir. Tu peux aussi <span style="font-weight:900;cursor:pointer;text-decoration:underline dotted;color:#166534" onclick="fcOpen(0)">réviser les cartes mémoire 🃏</span>.</p>
-     <div style="font-weight:800;color:#166534;font-size:13px;margin:6px 0 4px">Pour décrire un problème de santé</div>
-     <textarea rows="2" placeholder="Ex. : être inconscient, saigner, avoir un malaise cardiaque…"></textarea>
-     <div style="font-weight:800;color:#166534;font-size:13px;margin:12px 0 4px">Pour s'informer sur l'état de santé d'un proche</div>
-     <textarea rows="2" placeholder="Ex. : Est-ce qu'elle va bien ? Elle est stable. Elle va se rétablir…"></textarea>
-     <div style="font-weight:800;color:#166534;font-size:13px;margin:12px 0 4px">Pour s'orienter dans un hôpital</div>
-     <textarea rows="2" placeholder="Ex. : Pourriez-vous m'indiquer où se trouve… ? les heures de visite…"></textarea>
+     <div style="font-weight:800;color:#166534;font-size:13px;margin:6px 0 4px">Pour se nommer et dire à qui le message s'adresse</div>
+     <textarea rows="2" placeholder="Ex. : Ici Karim. Bonjour Madame Girard. C'est de la part de…"></textarea>
+     <div style="font-weight:800;color:#166534;font-size:13px;margin:12px 0 4px">Pour expliquer le but du message</div>
+     <textarea rows="2" placeholder="Ex. : Je vous écris pour vous informer de… Le but de mon appel est…"></textarea>
+     <div style="font-weight:800;color:#166534;font-size:13px;margin:12px 0 4px">Pour justifier un retard, une absence ou un abandon</div>
+     <textarea rows="2" placeholder="Ex. : Je dois… Il faut que… J'ai un empêchement parce que…"></textarea>
+     <div style="font-weight:800;color:#166534;font-size:13px;margin:12px 0 4px">Des formules de politesse</div>
+     <textarea rows="2" placeholder="Ex. : Merci de votre compréhension. Sincères salutations. À bientôt."></textarea>
    </div>
    <div class="card custom">
      <div class="c-hdr"><span class="tag" style="background:#166534">Autoévaluation</span><span class="ctit" style="color:#166534">Qu'est-ce que je suis capable de faire ?</span></div>
@@ -963,13 +1642,13 @@ function injectCustom(){
         <button onclick="rate(${i},this)">😟</button><button onclick="rate(${i},this)">🙂</button><button onclick="rate(${i},this)">😃</button>
      </div></div>`).join('')}
      <div style="margin-top:16px"><button class="btn btn-pri" onclick="finishEval()">Terminer le module 🎉</button></div>
-     <div id="evalDone" class="fb"></div>
+     <div id="evalDone" class="fb" aria-live="polite"></div>
    </div>`;
 }
 function rate(i,btn){ [...btn.parentElement.children].forEach(b=>b.classList.remove('sel')); btn.classList.add('sel'); }
 function finishEval(){
   const el=document.getElementById('evalDone');
-  el.innerHTML='<div class="fb-c">🎉 Bravo, tu as terminé le module « Comment elle va ? » ! Tu peux revenir sur n\'importe quel onglet pour pratiquer encore.</div>';
+  el.innerHTML='<div class="fb-c">🎉 Bravo, tu as terminé le module « C\'est une absence ou un retard ? » ! Tu peux revenir sur n\'importe quel onglet pour pratiquer encore.</div>';
   el.classList.add('on');
   lmsTrack('exercise_completed',{finished:true});
 }
@@ -1028,7 +1707,7 @@ async function poGetFeedback(){
   document.getElementById('poStatus').classList.add('on');
   document.getElementById('poFbBtn').disabled=true;
   try{
-    const res=await fetch('/api/correct-french',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({code:studentCode,text,question:"L'élève est au téléphone avec un urgentologue et décrit une blessure ou un malaise de son enfant : ce qui s'est passé et l'état actuel."})});
+    const res=await fetch('/api/correct-french',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({code:studentCode,text,question:"L'élève décrit oralement une situation d'urgence : ce qui est arrivé, à qui, et les premiers soins donnés. Le passé composé est attendu."})});
     const data=await res.json();
     document.getElementById('poStatus').classList.remove('on');
     document.getElementById('poFbBtn').disabled=false;
@@ -1047,7 +1726,7 @@ async function poSend(){
   const ext=(audioBlob.type||'').includes('mp4')?'m4a':'webm';
   const fd=new FormData();
   fd.append('code',studentCode); fd.append('theme','Santé'); fd.append('taskId','module-urgence-po');
-  fd.append('taskLabel','Production orale — urgence'); fd.append('question','Décrire une urgence à l\'urgentologue');
+  fd.append('taskLabel','Production orale — décrire une urgence'); fd.append('question','Décrire une situation d urgence et les premiers soins donnés');
   fd.append('transcription',document.getElementById('poText').value.trim()); fd.append('feedback',poFeedback);
   fd.append('audio',audioBlob,'enregistrement.'+ext);
   try{
@@ -1066,7 +1745,7 @@ async function peCheck(){
   document.getElementById('peStatus').classList.add('on');
   document.getElementById('peBtn').disabled=true;
   try{
-    const res=await fetch('/api/correct-french',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({code:studentCode,text,question:"L'élève écrit un court message à un ami qui a eu un accident il y a deux jours, pour s'informer de son état de santé et le réconforter."})});
+    const res=await fetch('/api/correct-french',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({code:studentCode,text,question:"L'élève écrit un court message de réconfort à une personne blessée ou en convalescence, et lui propose son aide."})});
     const data=await res.json();
     document.getElementById('peStatus').classList.remove('on');
     document.getElementById('peBtn').disabled=false;
@@ -1146,6 +1825,14 @@ async function checkWrite(exId, i){
 
 // ── RENDER ────────────────────────────────────────────────────────────
 function render(){
+  // Le bandeau reprend la section courante (gros titre + phrase d'intro),
+  // comme le modèle je-me-prepare.html.
+  const cur = SECTIONS.find(s=>s.id===curSec);
+  if(cur){
+    const tEl=document.getElementById('hdr-title'), lEl=document.getElementById('hdr-lead');
+    if(tEl) tEl.textContent = cur.title;
+    if(lEl) lEl.textContent = cur.lead || '';
+  }
   SECTIONS.forEach(sec=>{
     document.getElementById('tab-'+sec.id).classList.toggle('on', curSec===sec.id);
     document.getElementById('sec-'+sec.id).classList.toggle('on', curSec===sec.id);
@@ -1160,27 +1847,78 @@ function render(){
   const used=usedIds();
   EXOS.forEach(ex=>{
     const mount=document.getElementById('mount-'+ex.id);
+    if(!mount) return;
     const bank=document.getElementById('bank-'+ex.id);
-    if(!mount||!bank) return;
-    mount.innerHTML=''; bank.innerHTML='';
+    mount.innerHTML=''; if(bank) bank.innerHTML='';
 
-    if(ex.type==='vf'){
+    if(ex.type==='vf' && ex.cards){
+      // Grille de cartes : bouton audio rond + mot, puis les choix dessous.
+      mount.className='ph-grid';
       ex.rows.forEach(r=>{
-        const row=document.createElement('div');row.className='rrow';
-        const txt=document.createElement('div');txt.className='stxt';txt.innerHTML=r.txt;
-        row.appendChild(txt);row.appendChild(mkZone(r.id,'zvf'));
-        mount.appendChild(row);
+        const word=r.txt.replace(/<[^>]+>/g,'');
+        const card=document.createElement('div');card.className='ph-card';
+        const top=document.createElement('div');top.className='ph-top';
+        const sb=document.createElement('button');
+        sb.type='button'; sb.className='btn-audio-round'; sb.setAttribute('aria-label','Écouter le mot');
+        sb.innerHTML=ICON_SPEAK; sb.onclick=()=>playWord(sb, word, ex.id+'_'+r.id);
+        top.appendChild(sb);
+        const w=document.createElement('div');w.className='ph-word';w.textContent=word;
+        top.appendChild(w);
+        const mb=document.createElement('button');
+        mb.type='button'; mb.className='btn btn-ghost ph-mic'; mb.title='Répète le mot à voix haute';
+        mb.innerHTML=ICON_MIC; mb.onclick=()=>pronCheck(mb, word);
+        top.appendChild(mb);
+        card.appendChild(top);
+        const opts=document.createElement('div');opts.className='ph-opts';
+        ex.tiles.forEach(lbl=>{
+          const b=document.createElement('button');
+          b.type='button'; b.className='vf-opt';
+          if(S.vfSel[r.id]===lbl) b.classList.add('sel');
+          if(S.fb[r.id] && S.vfSel[r.id]===lbl) b.classList.add(S.fb[r.id]==='ok'?'fb-ok':'fb-no');
+          b.textContent=lbl;
+          b.onclick=()=>vfSelect(r.id,lbl);
+          opts.appendChild(b);
+        });
+        card.appendChild(opts);
+        mount.appendChild(card);
       });
-      ex.tiles.forEach((lbl,i)=>{
-        bank.appendChild(mkTile(ex.id+'_t'+i,lbl,ex.id,lbl==='VRAI'||lbl==='MUETTE'?'tv':'tf'));
+    }
+    else if(ex.type==='vf'){
+      ex.rows.forEach(r=>{
+        const row=document.createElement('div');row.className='vf-row';
+        if(ex.listen){
+          const sb=document.createElement('button');
+          sb.type='button'; sb.className='btn btn-ghost'; sb.style.cssText='flex:0 0 auto;padding:8px 12px;font-size:16px';
+          sb.innerHTML=ICON_SPEAK; sb.onclick=()=>playWord(sb, r.txt.replace(/<[^>]+>/g,''), ex.id+'_'+r.id);
+          row.appendChild(sb);
+          const mb=document.createElement('button');
+          mb.type='button'; mb.className='btn btn-ghost'; mb.style.cssText='flex:0 0 auto;padding:8px 12px;font-size:16px';
+          mb.title='Répète le mot à voix haute';
+          mb.innerHTML=ICON_MIC; mb.onclick=()=>pronCheck(mb, r.txt.replace(/<[^>]+>/g,''));
+          row.appendChild(mb);
+        }
+        const txt=document.createElement('div');txt.className='stxt';txt.innerHTML=r.txt;
+        row.appendChild(txt);
+        const opts=document.createElement('div');opts.className='vf-opts';
+        ex.tiles.forEach(lbl=>{
+          const b=document.createElement('button');
+          b.type='button'; b.className='vf-opt';
+          if(S.vfSel[r.id]===lbl) b.classList.add('sel');
+          if(S.fb[r.id] && S.vfSel[r.id]===lbl) b.classList.add(S.fb[r.id]==='ok'?'fb-ok':'fb-no');
+          b.textContent=lbl;
+          b.onclick=()=>vfSelect(r.id,lbl);
+          opts.appendChild(b);
+        });
+        row.appendChild(opts);
+        mount.appendChild(row);
       });
     }
     if(ex.type==='match'){
       ex.rows.forEach(r=>{
         const row=document.createElement('div');row.className='rrow2';
         const qc=document.createElement('div');qc.className='qcard';
-        qc.innerHTML='<div class="qlbl">Question</div><div class="qtxt">'+esc(r.q)+'</div>';
-        row.appendChild(qc);row.appendChild(mkZone(r.id,null,'glissez la réponse ici'));
+        qc.innerHTML=(ex.noQLbl?'':'<div class="qlbl">Question</div>')+'<div class="qtxt">'+esc(r.q)+'</div>';
+        row.appendChild(qc);row.appendChild(mkZone(r.id,null,ex.zonePh||'glissez la réponse ici'));
         mount.appendChild(row);
       });
       shuffled(ex.rows,7).forEach(r=>{ if(used.has(r.aid))return; bank.appendChild(mkTile(r.aid,r.a,ex.id,'ta')); });
@@ -1204,6 +1942,18 @@ function render(){
       shuffled(ex.words,23).forEach(w=>{ if(used.has(w.id))return; bank.appendChild(mkTile(w.id,w.l,ex.id,'tn')); });
       if(!bank.children.length)bank.innerHTML='<div class="bempty">Tous les mots sont placés !</div>';
     }
+    if(ex.type==='rows'){
+      ex.rows.forEach(r=>{
+        const row=document.createElement('div');row.className='rrow';
+        const lb=document.createElement('div');lb.className='timelbl';lb.textContent=r.lbl;
+        row.appendChild(lb);
+        const z=mkZone(r.id,null,'glissez la phrase ici');z.style.flex='1';
+        row.appendChild(z);
+        mount.appendChild(row);
+      });
+      shuffled(ex.bank,13).forEach(b=>{ if(used.has(b.id))return; bank.appendChild(mkTile(b.id,b.l,ex.id,'ta')); });
+      if(!bank.children.length)bank.innerHTML='<div class="bempty">Toutes les phrases sont placées !</div>';
+    }
   });
   updateChip();
 }
@@ -1212,7 +1962,11 @@ function updateChip(){
   document.getElementById('prog-chip').textContent='⭐ '+n+' / '+TOTAL_ZONES;
 }
 
-document.getElementById('btn-reset').addEventListener('click',()=>{ S.pl={};S.sel=null;S.fb={};render(); });
+document.getElementById('btn-reset').addEventListener('click',()=>{
+  S.pl={};S.sel=null;S.fb={};S.vfSel={};
+  document.querySelectorAll('.vf-summary').forEach(el=>{el.textContent='';el.className='vf-summary';});
+  render();
+});
 
 // ── FLASHCARDS ────────────────────────────────────────────────────────
 let fcIdx=0;

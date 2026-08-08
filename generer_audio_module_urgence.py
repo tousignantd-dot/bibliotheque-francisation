@@ -1,91 +1,102 @@
 #!/usr/bin/env python3
 """
-Générateur d'audio — Module « Comment elle va ? » (SA2 — Urgence et hospitalisation)
-Exécute ce script et rentre ta clé API quand demandé.
+Générateur d'audio — Module « Une urgence au travail » (Santé)
+Lit la clé dans ELEVENLABS_API_KEY (fichier .env à la racine).
 """
 
 import os
 import sys
+import unicodedata
 from pathlib import Path
 
 try:
     import requests
 except ImportError:
-    print("❌ requests n'est pas installé. Installe-le :")
-    print("   pip install requests")
+    print("❌ requests n'est pas installé : pip install requests")
     sys.exit(1)
 
-# ── VOICES ────────────────────────────────────────────────────────────
 VOICES = {
-    "enseignante": "K7gx0ylJdff0yjM2uVQS",      # 👩 Féminine #1
-    "feminin_2": "WW0JfNPk5DgcQdM0d6X6",        # 👩 Féminine #2
-    "masculin_1": "93nuHbke4dTER9x2pDwE",       # 👨 Masculin #1
-    "narrateur": "IPgYtHTNLjC7Bq7IPHrm",        # 👨 Narrateur
+    "enseignante": "K7gx0ylJdff0yjM2uVQS",   # 👩 Féminine #1
+    "feminin_2":   "WW0JfNPk5DgcQdM0d6X6",   # 👩 Féminine #2
+    "masculin_1":  "93nuHbke4dTER9x2pDwE",   # 👨 Masculin #1
+    "narrateur":   "IPgYtHTNLjC7Bq7IPHrm",   # 👨 Narrateur
 }
 
+# Chaque personnage a une voix distincte de son interlocuteur, pour qu'on
+# reconnaisse qui parle sans jamais entendre le nom du personnage.
 VOICE_ASSOC = {
-    "ÉRIC LALIBERTÉ": "masculin_1",
-    "HAMID": "narrateur",
-    "LE MÉDECIN": "masculin_1",
-    "L'URGENTOLOGUE": "narrateur",
-    "LÉO": "masculin_1",
-    "LA RÉCEPTIONNISTE": "enseignante",
+    "FATOU":              "feminin_2",
+    "MATHIEU":             "masculin_1",
+    "L'INFIRMIÈRE":        "enseignante",
+    "L'URGENTOLOGUE":      "narrateur",
+    "AMINATA":             "enseignante",
+    "LA RÉCEPTIONNISTE":   "feminin_2",
 }
 
-# ── DIALOGUES ─────────────────────────────────────────────────────────
 DIALOGUES = {
     "module-urgence/prep": {
-        "title": "Comment elle va — Je me prépare (Un accident)",
+        "title": "Une urgence au travail — Je me prépare (Une brûlure en cuisine)",
         "lines": [
-            ("ÉRIC LALIBERTÉ", "Bonjour Monsieur. Je vous appelle parce que j'ai trouvé votre numéro dans le cellulaire de Madame Leila."),
-            ("HAMID", "Leila est ma femme. Qu'est-ce qui se passe ?"),
-            ("ÉRIC LALIBERTÉ", "Votre femme a causé un accident en traversant la rue. Elle n'a pas vu le feu rouge. Une auto l'a heurtée et elle est tombée au sol."),
-            ("HAMID", "Est-ce qu'elle va bien ?"),
-            ("ÉRIC LALIBERTÉ", "J'ai appelé le 911. Une ambulance est arrivée en dix minutes. On l'a transportée à l'hôpital. Je suis avec elle."),
-            ("HAMID", "Oui, bien sûr. J'arrive !"),
-        ]
+            ("FATOU", "Mathieu ! L'huile a éclaboussé, je me suis brûlé l'avant-bras."),
+            ("MATHIEU", "Ne touche à rien. Viens à l'évier, on met ça sous l'eau froide tout de suite."),
+            ("FATOU", "Ça chauffe beaucoup… et la peau devient rouge."),
+            ("MATHIEU", "On laisse couler quinze minutes, c'est ce qu'il faut faire. Pendant ce temps, j'appelle Info-Santé au 811."),
+            ("FATOU", "Pourquoi pas le 911 ?"),
+            ("MATHIEU", "Le 911, c'est quand la vie est en danger. Là, une infirmière va nous dire quoi faire."),
+            ("L'INFIRMIÈRE", "Info-Santé, bonjour. Décrivez-moi la brûlure."),
+            ("MATHIEU", "Une brûlure à l'avant-bras avec de l'huile chaude. La peau est rouge et il y a de petites cloques."),
+            ("L'INFIRMIÈRE", "Des cloques, c'est une brûlure du deuxième degré. Continuez l'eau froide, ne percez rien, et rendez-vous à l'urgence aujourd'hui."),
+            ("FATOU", "D'accord, merci. J'y vais."),
+        ],
     },
     "module-urgence/t1": {
-        "title": "Comment elle va — Tâche 1 (Docteur, j'ai mal à...)",
+        "title": "Une urgence au travail — Tâche 1 (À l'urgence)",
         "lines": [
-            ("HAMID", "Docteur, ma femme entend très mal depuis l'accident. Je pense qu'elle a un problème d'audition."),
-            ("LE MÉDECIN", "Depuis quand a-t-elle ce problème exactement ?"),
-            ("HAMID", "Depuis l'accident, il y a deux heures. Avant, elle entendait très bien."),
-            ("LE MÉDECIN", "C'est possible que le choc ait affecté son oreille interne. Est-ce qu'elle prend des médicaments ?"),
-            ("HAMID", "Non, elle ne prend pas de médicament."),
-            ("LE MÉDECIN", "Je vais demander à un audiologiste d'examiner Leila pour comprendre la cause."),
-            ("HAMID", "Merci beaucoup, docteur."),
-        ]
+            ("L'URGENTOLOGUE", "Bonjour. Racontez-moi ce qui s'est passé."),
+            ("FATOU", "Je travaillais en cuisine. L'huile a éclaboussé et je me suis brûlé l'avant-bras droit."),
+            ("L'URGENTOLOGUE", "À quelle heure est-ce arrivé ?"),
+            ("FATOU", "Vers onze heures. J'ai mis mon bras sous l'eau froide pendant quinze minutes."),
+            ("L'URGENTOLOGUE", "Vous avez bien réagi. Est-ce que vous avez percé les cloques ?"),
+            ("FATOU", "Non, l'infirmière d'Info-Santé m'a dit de ne pas y toucher."),
+            ("L'URGENTOLOGUE", "Parfait. Je vais nettoyer la plaie et poser un pansement."),
+        ],
     },
     "module-urgence/t2": {
-        "title": "Comment elle va — Tâche 2 (Ce n'est pas dangereux)",
+        "title": "Une urgence au travail — Tâche 2 (Les soins et le suivi)",
         "lines": [
-            ("L'URGENTOLOGUE", "Monsieur, je viens vous parler de l'état de Leila. Elle est stable."),
-            ("HAMID", "Est-ce qu'elle doit rester longtemps à l'hôpital ?"),
-            ("L'URGENTOLOGUE", "Elle a subi un traumatisme, mais ce n'est pas grave. Elle devra rester en observation pour la nuit."),
-            ("HAMID", "Est-ce que je peux la voir maintenant ?"),
-            ("L'URGENTOLOGUE", "Elle est avec l'audiologiste en ce moment. Vous pourrez la voir dans une heure."),
-            ("HAMID", "D'accord, je vais attendre. Merci docteur."),
-        ]
+            ("L'URGENTOLOGUE", "C'est une brûlure du deuxième degré, superficielle. Ce n'est pas dangereux."),
+            ("FATOU", "Est-ce que je vais garder une cicatrice ?"),
+            ("L'URGENTOLOGUE", "Probablement pas, si vous protégez la peau du soleil pendant six mois."),
+            ("FATOU", "Est-ce que je peux retourner en cuisine demain ?"),
+            ("L'URGENTOLOGUE", "Non. Je vous donne un congé de maladie de trois jours et une crème à appliquer deux fois par jour."),
+            ("FATOU", "Et le pansement, je le change moi-même ?"),
+            ("L'URGENTOLOGUE", "Vous le changez chaque matin. Si la douleur augmente ou si la plaie devient jaune, revenez nous voir."),
+        ],
     },
     "module-urgence/t3": {
-        "title": "Comment elle va — Tâche 3 (À l'accueil de l'hôpital)",
+        "title": "Une urgence au travail — Tâche 3 (À l'accueil de l'hôpital)",
         "lines": [
-            ("LA RÉCEPTIONNISTE", "Bonjour, je peux vous aider ?"),
-            ("LÉO", "Bonjour, je viens voir ma grand-mère. Quelles sont les heures de visite ?"),
-            ("LA RÉCEPTIONNISTE", "En semaine, c'est de 10 h à 20 h. La fin de semaine, c'est de 11 h à 18 h."),
-            ("LÉO", "Est-ce que mon petit frère de huit ans peut venir avec moi ?"),
-            ("LA RÉCEPTIONNISTE", "Un enfant doit être accompagné d'un adulte pour visiter un patient."),
-            ("LÉO", "D'accord. Combien de personnes peuvent entrer dans la chambre en même temps ?"),
-            ("LA RÉCEPTIONNISTE", "Maximum deux visiteurs à la fois, s'il vous plaît."),
-            ("LÉO", "Merci beaucoup !"),
-        ]
+            ("AMINATA", "Bonjour, je viens chercher ma sœur. Elle est à l'urgence depuis ce matin."),
+            ("LA RÉCEPTIONNISTE", "Pourriez-vous me donner son nom, s'il vous plaît ?"),
+            ("AMINATA", "Fatou Diarra. Est-ce que je pourrais monter la rejoindre ?"),
+            ("LA RÉCEPTIONNISTE", "Un accompagnateur à la fois, et seulement quand le personnel vous appelle."),
+            ("AMINATA", "Auriez-vous un endroit où attendre ?"),
+            ("LA RÉCEPTIONNISTE", "La salle d'attente est au fond du corridor, à droite, après l'ascenseur."),
+            ("AMINATA", "Et pour le stationnement, est-ce que c'est payant ?"),
+            ("LA RÉCEPTIONNISTE", "Oui, mais gardez votre billet : à l'urgence, les quatre premières heures sont gratuites."),
+        ],
     },
 }
+
+
+def char_slug(name):
+    """Doit correspondre exactement à charSlug() du HTML (accents retirés)."""
+    s = unicodedata.normalize("NFD", name.lower())
+    s = "".join(c for c in s if unicodedata.category(c) != "Mn")
+    return s.replace("'", "").replace(" ", "_")
 
 
 def generate_audio(api_key, text, voice_id, output_path):
-    """Génère un fichier audio avec ElevenLabs."""
     url = f"https://api.elevenlabs.io/v1/text-to-speech/{voice_id}"
     headers = {"xi-api-key": api_key, "Content-Type": "application/json"}
     payload = {
@@ -94,55 +105,43 @@ def generate_audio(api_key, text, voice_id, output_path):
         "voice_settings": {"stability": 0.5, "similarity_boost": 0.75},
     }
     try:
-        response = requests.post(url, json=payload, headers=headers, timeout=30)
-        if response.status_code != 200:
-            print(f"   ❌ Erreur {response.status_code}: {response.text[:200]}")
+        r = requests.post(url, json=payload, headers=headers, timeout=45)
+        if r.status_code != 200:
+            print(f"   ❌ {r.status_code}: {r.text[:200]}")
             return False
-        with open(output_path, "wb") as f:
-            f.write(response.content)
+        output_path.write_bytes(r.content)
         return True
     except Exception as e:
-        print(f"   ❌ Erreur : {e}")
+        print(f"   ❌ {e}")
         return False
 
 
 def main():
-    print("🎙️  Générateur d'audio — Module Comment elle va ?\n")
-
+    print("🎙️  Générateur d'audio — Une urgence au travail\n")
     api_key = os.environ.get("ELEVENLABS_API_KEY", "").strip()
     if not api_key:
-        api_key = input("Colle ta clé ElevenLabs : ").strip()
-        if not api_key:
-            print("❌ Clé API requise")
-            sys.exit(1)
+        print("❌ ELEVENLABS_API_KEY absente (source .env)")
+        sys.exit(1)
 
-    base_dir = Path("/Users/danieltousignant/Claude/bibliotheque-francisation/assets/interactive")
+    base_dir = Path(__file__).resolve().parent / "assets" / "interactive"
+    total = success = 0
 
-    total = 0
-    success = 0
-
-    for dial_id, dial_data in DIALOGUES.items():
-        print(f"\n📖 {dial_data['title']}")
+    for dial_id, data in DIALOGUES.items():
+        print(f"\n📖 {data['title']}")
         dir_path = base_dir / dial_id
         dir_path.mkdir(parents=True, exist_ok=True)
-
-        for i, (character, text) in enumerate(dial_data["lines"], 1):
-            voice_name = VOICE_ASSOC.get(character, "feminin_2")
-            voice_id = VOICES[voice_name]
-            filename = f"line_{i:02d}_{character.lower().replace(' ', '_').replace(chr(39), '')}.mp3"
-            output_path = dir_path / filename
-
-            print(f"  {i:2d}. {character[:20]:20s} → ", end="", flush=True)
+        for i, (character, text) in enumerate(data["lines"], 1):
+            voice_id = VOICES[VOICE_ASSOC.get(character, "feminin_2")]
+            filename = f"line_{i:02d}_{char_slug(character)}.mp3"
+            print(f"  {i:2d}. {character[:18]:18s} → ", end="", flush=True)
             total += 1
-
-            if generate_audio(api_key, text, voice_id, output_path):
+            if generate_audio(api_key, text, voice_id, dir_path / filename):
                 print(f"✓ {filename}")
                 success += 1
             else:
                 print(f"✗ {filename}")
 
-    print(f"\n{'='*60}")
-    print(f"✅ {success}/{total} fichiers générés")
+    print(f"\n{'='*60}\n✅ {success}/{total} fichiers générés")
 
 
 if __name__ == "__main__":
