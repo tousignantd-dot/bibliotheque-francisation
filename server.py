@@ -1079,6 +1079,8 @@ class Handler(http.server.SimpleHTTPRequestHandler):
                 "tempsVerbaux": a.get("tempsVerbaux", []),
                 "domaineDeVie": a.get("domaineDeVie", ""),
                 "nouveauDesign": bool(a.get("nouveauDesign")),
+                "nouveauDesignColor": a.get("nouveauDesignColor", ""),
+                "nouveauDesignTint": a.get("nouveauDesignTint", ""),
                 "files": {
                     "interactive": a.get("interactive", "") if available else "",
                     "studentDoc": a.get("studentDoc", "") if available else "",
