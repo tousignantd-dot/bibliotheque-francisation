@@ -511,15 +511,15 @@
       autres: `<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>`,
     };
     const fileKey = {interactive:'interactive', doc:'studentDoc', slides:'slideshow', plan:'planCours', autres:'autres'}[type];
-    const encodedPath = encodeURIComponent(JSON.stringify({activityId: activity.id, activityTitle: activity.title, file: fileKey}));
-    return `<a href="#" class="file-btn ${type}" onclick="openFile(event,'${API}/${path}',${activity.id},'${activity.title.replace(/'/g,"\\'")}','${fileKey}')">
+    const color = activity.nouveauDesign ? (activity.nouveauDesignColor || '') : '';
+    return `<a href="#" class="file-btn ${type}" onclick="openFile(event,'${API}/${path}',${activity.id},'${activity.title.replace(/'/g,"\\'")}','${fileKey}','${color}')">
       <span class="file-icon">${icons[type]}</span>
       <span class="file-label">${label}</span>
       <span class="file-arrow"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="9 18 15 12 9 6"/></svg></span>
     </a>`;
   }
 
-  async function openFile(e, url, activityId, activityTitle, fileKey) {
+  async function openFile(e, url, activityId, activityTitle, fileKey, color) {
     e.preventDefault();
     fetch(`${API}/api/student/access`, {
       method: 'POST',
@@ -535,6 +535,7 @@
         title: activityTitle,
         code: session.code,
       });
+      if (color) params.set('color', color);
       window.open(`viewer.html?${params}`, '_blank');
     } else {
       window.open(url, '_blank');
