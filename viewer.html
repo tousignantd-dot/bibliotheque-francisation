@@ -87,14 +87,37 @@
     setTimeout(() => { location.href = 'eleve.html'; }, 250);
   });
 
-  // Relayer le code élève à l'iframe (ex. pour authentifier un appel API
-  // fait depuis l'activité, comme la correction assistée par IA).
-  if (src && code) {
-    const sep = src.includes('?') ? '&' : '?';
-    document.getElementById('actFrame').src = src + sep + 'code=' + encodeURIComponent(code);
-  } else {
-    document.getElementById('actFrame').src = src;
+  // Charger l'activité dans l'iframe.
+  //
+  // Deux paramètres sont ajoutés à l'URL :
+  //   code — relaie le code élève (ex. pour authentifier un appel API fait
+  //          depuis l'activité, comme la correction assistée par IA) ;
+  //   v    — date de dernière modification du fichier, obtenue par une requête
+  //          HEAD (en-têtes seulement, sans le corps). Elle sert d'empreinte de
+  //          version : quand on met une activité à jour, l'URL change, donc le
+  //          navigateur va forcément rechercher le fichier. Sans ça, Chrome
+  //          resservait la version en cache de l'iframe — un simple
+  //          rechargement de la page ne suffit pas à rafraîchir une iframe, et
+  //          l'élève travaillait sur une ancienne version sans le savoir.
+  async function loadActivity() {
+    const frame = document.getElementById('actFrame');
+    if (!src) { frame.src = ''; return; }
+    let v = '';
+    try {
+      const head = await fetch(src, { method: 'HEAD', cache: 'no-store' });
+      const lm = head.headers.get('Last-Modified');
+      // Pas d'en-tête (assets servis depuis le volume) : on retombe sur la
+      // date du jour, ce qui rafraîchit au moins une fois par jour.
+      v = String(Date.parse(lm) || new Date().toDateString());
+    } catch (e) {
+      v = String(new Date().toDateString());
+    }
+    const params = new URLSearchParams();
+    if (code) params.set('code', code);
+    params.set('v', v);
+    frame.src = src + (src.includes('?') ? '&' : '?') + params.toString();
   }
+  loadActivity();
 
   // ── Suivi d'événements ──────────────────────────────────────────────────
 
