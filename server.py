@@ -361,6 +361,18 @@ class Handler(http.server.SimpleHTTPRequestHandler):
     def log_message(self, format, *args):
         pass  # silencieux
 
+    def end_headers(self):
+        # Les pages HTML (activités, portail élève, admin) changent à chaque
+        # déploiement. Sans Cache-Control, le navigateur applique son cache
+        # « heuristique » et peut resservir une vieille copie pendant des heures
+        # sans jamais redemander au serveur — un élève voyait alors l'activité
+        # d'avant la mise en ligne. « no-cache » n'interdit pas le cache : il
+        # force seulement une revalidation, donc un 304 léger si rien n'a changé.
+        path = urllib.parse.urlparse(self.path).path
+        if path.endswith(".html") or path.endswith("/") or path == "":
+            self.send_header("Cache-Control", "no-cache")
+        super().end_headers()
+
     def do_OPTIONS(self):
         self.send_response(204)
         self.send_header("Access-Control-Allow-Origin", "*")
