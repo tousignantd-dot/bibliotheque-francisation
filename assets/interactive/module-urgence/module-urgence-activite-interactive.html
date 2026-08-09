@@ -1037,13 +1037,13 @@ const PLUS = {
 
       {t:'ana', h:"Le son [y] : la lettre u",
        p:"Il s'écrit <b>u</b> ou <b>û</b>. On ne le trouve pas dans la plupart des autres langues — c'est pour ça qu'il demande de l'entraînement.",
-       say:'brûlure',
+       say:'une brûlure',
        mots:[["S'écrit",'u, û'],['Se dit','[y]',true],['Comme dans','br{û}lure']],
        note:"Autres mots du module : <em>urgence</em>, <em>minute</em>, <em>sucre</em>, <em>une piqûre</em>."},
 
       {t:'ana', h:"Le son [u] : les lettres ou",
        p:"Il s'écrit toujours <b>ou</b>. Ce son existe dans presque toutes les langues : c'est le plus facile des deux.",
-       say:'douleur',
+       say:'une douleur',
        mots:[["S'écrit",'ou'],['Se dit','[u]',true],['Comme dans','d{ou}leur']],
        note:"Autres mots du module : <em>le pouce</em>, <em>la soupe</em>, <em>le soutien</em>, <em>couler</em>."},
 
@@ -1500,7 +1500,7 @@ let dialogueRead = false;
 const MODULE_SLUG = 'module-urgence';
 // Bump ce numéro chaque fois qu'un MP3 est régénéré, pour forcer le
 // navigateur à recharger le fichier au lieu de servir une version en cache.
-const AUDIO_V = '3';
+const AUDIO_V = '4';
 // Icônes des boutons son/micro de "Je me prépare" — change ces deux valeurs
 // pour remplacer les emojis par une image (ex. '<img src="/assets/interactive/module-urgence/icons/speaker.svg">').
 const ICON_SPEAK = '<img class="icon-svg" src="/assets/interactive/module-urgence/icons/speaker.svg" alt="Écouter">';
@@ -2085,7 +2085,11 @@ function buildStatic(){
             const phrase=CARRIER_PHRASES[w];
             const wcLabel = phrase ? esc(phrase).replace(new RegExp('('+esc(w)+')','i'),'<b>$1</b>') : esc(w);
             h+='<div class="word-chip"><span class="wc-word'+(phrase?' wc-phrase':'')+'">'+wcLabel+'</span>';
-            h+='<button class="btn btn-ghost" type="button" onclick="playWord(this,\''+jsq(w)+'\',\''+fid+'\')" title="Écouter">'+ICON_SPEAK+'</button>';
+            // On lit la phrase porteuse, pas le mot seul : c'est ce que la
+            // pastille affiche, et surtout un mot isolé ne donne aucun indice
+            // de langue au moteur de synthèse — « urgence » et « minute »
+            // existent aussi en anglais et se faisaient lire à l'anglaise.
+            h+='<button class="btn btn-ghost" type="button" onclick="playWord(this,\''+jsq(phrase||w)+'\',\''+fid+'\')" title="Écouter">'+ICON_SPEAK+'</button>';
             h+='<button class="btn btn-ghost" type="button" onclick="pronCheck(this,\''+jsq(w)+'\')" title="Répète le mot à voix haute">'+ICON_MIC+'</button>';
             h+='</div>';
           });

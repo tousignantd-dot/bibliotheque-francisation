@@ -16,18 +16,23 @@ except ImportError:
 VOICE = "K7gx0ylJdff0yjM2uVQS"   # 👩 enseignante
 
 CLIPS = {
-    # Tableau « Des voyelles orales » (savoir de prPhon)
-    "prPhon_savoir_0_0": "brûlure",
-    "prPhon_savoir_0_1": "urgence",
-    "prPhon_savoir_0_2": "minute",
-    "prPhon_savoir_0_3": "sucre",
-    "prPhon_savoir_1_0": "douleur",
-    "prPhon_savoir_1_1": "pouce",
-    "prPhon_savoir_1_2": "soupe",
-    "prPhon_savoir_1_3": "soutien",
-    "prPhon_savoir_2_0": "cuisine",
-    "prPhon_savoir_2_1": "infirmière",
-    # Exercice 5 — mots à écouter (cartes, [y] ou [u])
+    # Tableau « Des voyelles orales » (savoir de prPhon).
+    # On lit la PHRASE PORTEUSE, pas le mot seul : c'est ce que la pastille
+    # affiche à l'élève, et un mot isolé ne donne aucun indice de langue au
+    # moteur — « urgence » et « minute » se faisaient lire à l'anglaise.
+    "prPhon_savoir_0_0": "La brûlure est superficielle.",
+    "prPhon_savoir_0_1": "Je vais à l'urgence.",
+    "prPhon_savoir_0_2": "Attendez une minute.",
+    "prPhon_savoir_0_3": "Le sucre est sur la table.",
+    "prPhon_savoir_1_0": "La douleur augmente le soir.",
+    "prPhon_savoir_1_1": "Il s'est coupé le pouce.",
+    "prPhon_savoir_1_2": "La soupe est trop chaude.",
+    "prPhon_savoir_1_3": "Merci pour ton soutien.",
+    "prPhon_savoir_2_0": "Elle travaille en cuisine.",
+    "prPhon_savoir_2_1": "L'infirmière arrive tout de suite.",
+    # Exercice 5 — mots à écouter (cartes, [y] ou [u]).
+    # Ceux-là doivent rester ISOLÉS : l'élève doit juger la voyelle sans
+    # indice de contexte. Voir TEXT_OVERRIDES pour les cas problématiques.
     "prPhon_pha": "brûlure",
     "prPhon_phb": "douleur",
     "prPhon_phc": "urgence",
@@ -38,8 +43,17 @@ CLIPS = {
     "prPhon_phh": "soutien",
 }
 
-# Orthographe phonétique quand ElevenLabs prononce mal le mot réel.
-TEXT_OVERRIDES = {}
+# Réécriture « à la française » quand ElevenLabs lit un mot isolé à l'anglaise.
+# Le modèle eleven_multilingual_v2 n'accepte ni les balises <phoneme> IPA
+# (réservées à eleven_flash_v2, anglais seulement) ni le paramètre language_code.
+# Le seul levier est donc l'orthographe : on écrit le mot d'une façon qui
+# n'existe pas en anglais, ce qui force une lecture française.
+#   urgence [yʁʒɑ̃s]  →  urjance
+#   minute  [minyt]   →  minutte
+TEXT_OVERRIDES = {
+    "prPhon_phc": "urjance",
+    "prPhon_phe": "minutte",
+}
 
 
 def generate(api_key, text, path):
@@ -65,15 +79,30 @@ def main():
     out = Path(__file__).resolve().parent / "assets/interactive/module-urgence/sons"
     out.mkdir(parents=True, exist_ok=True)
 
-    ok = 0
+    # --only pref1,pref2 : ne régénère que les identifiants correspondants,
+    # pour corriger un fichier fautif sans repayer tous les autres.
+    only = []
+    for i, a in enumerate(sys.argv):
+        if a == "--only" and i + 1 < len(sys.argv):
+            only = [x.strip() for x in sys.argv[i + 1].split(",") if x.strip()]
+
+    force = "--force" in sys.argv
+
+    ok = skip = 0
     for file_id, text in CLIPS.items():
+        if only and not any(file_id.startswith(o) for o in only):
+            continue
+        dest = out / f"{file_id}.mp3"
+        if dest.exists() and not force and not only:
+            skip += 1
+            continue
         spoken = TEXT_OVERRIDES.get(file_id, text)
         print(f"  {file_id:24s} « {spoken} » → ", end="", flush=True)
-        if generate(api_key, spoken, out / f"{file_id}.mp3"):
+        if generate(api_key, spoken, dest):
             print("✓"); ok += 1
         else:
             print("✗")
-    print(f"\n✅ {ok}/{len(CLIPS)} fichiers générés")
+    print(f"\n✅ {ok} générés · {skip} déjà présents")
 
 
 if __name__ == "__main__":

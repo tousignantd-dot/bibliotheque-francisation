@@ -38,8 +38,8 @@ CLIPS = {
     "plus_prGrp_ex4_6": "une petite coupure profonde",
     "plus_prGrp_ex4_7": "des soins urgents",
     # ── Mini-leçon « Le son [y] et le son [u] » ──
-    "plus_prPhon_ana1": "brûlure",
-    "plus_prPhon_ana2": "douleur",
+    "plus_prPhon_ana1": "une brûlure",
+    "plus_prPhon_ana2": "une douleur",
     "plus_prPhon_lab4_1": "tout, tu",
     "plus_prPhon_lab4_2": "la roue, la rue",
     "plus_prPhon_lab4_3": "vous, vu",
