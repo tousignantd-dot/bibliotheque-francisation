@@ -433,6 +433,78 @@ body{
 .ph-opts{display:grid;grid-template-columns:1fr 1fr;gap:10px}
 .ph-opts .vf-opt{width:auto;flex:1 1 auto}
 .savoir--pron .savoir-band{background:var(--sec-color,var(--ws-accent))}
+/* ── « En apprendre plus » : mini-leçon en panneau latéral ─────────────
+   Le bandeau noir d'un savoir reste un résumé. L'élève qui ne comprend pas
+   ouvre ici une leçon complète : explication, anatomie, manipulation,
+   exemples, pièges, micro-vérification. Aucun effet sur le score du module. */
+.plus-bar{margin:14px var(--bleed) -17px;border-top:1px solid var(--ws-line)}
+.savoir-row:has(+ .plus-bar){border-bottom:none}
+.plus-open{width:100%;min-height:52px;background:transparent;border:none;border-radius:0 0 17px 17px;font-family:'Nunito',sans-serif;font-size:15px;font-weight:800;color:var(--ws-accent);cursor:pointer;display:flex;align-items:center;justify-content:center;gap:9px;transition:background .15s}
+.plus-open:hover{background:var(--ws-accent-bg)}
+.plus-open svg{width:17px;height:17px;flex-shrink:0}
+
+#plus-ov{display:none;position:fixed;inset:0;z-index:9500;background:rgba(15,25,35,.5);backdrop-filter:blur(4px)}
+#plus-ov.on{display:block}
+#plus-panel{position:absolute;top:0;right:0;height:100%;width:min(700px,100%);background:var(--ws-bg);display:flex;flex-direction:column;box-shadow:-16px 0 48px rgba(0,0,0,.28);animation:plusIn .28s cubic-bezier(.22,1,.36,1)}
+@keyframes plusIn{from{transform:translateX(48px);opacity:0}to{transform:none;opacity:1}}
+@media(prefers-reduced-motion:reduce){#plus-panel{animation:none}}
+#plus-hd{background:var(--ws-ink);color:#fff;padding:22px 26px;display:flex;align-items:flex-start;gap:16px;flex-shrink:0}
+#plus-eye{font-size:12px;font-weight:800;text-transform:uppercase;letter-spacing:.14em;color:#8FE2B9}
+#plus-tit{font-size:27px;font-weight:900;line-height:1.15;margin-top:7px}
+#plus-close{margin-left:auto;width:44px;height:44px;flex-shrink:0;border-radius:50%;border:1px solid rgba(255,255,255,.32);background:rgba(255,255,255,.12);color:#fff;font-family:'Nunito',sans-serif;font-size:19px;font-weight:800;cursor:pointer}
+#plus-close:hover{background:rgba(255,255,255,.26)}
+#plus-body{flex:1;overflow-y:auto;padding:20px 26px 64px;display:flex;flex-direction:column;gap:16px}
+.pl-blk{background:var(--ws-card);border:1px solid var(--ws-line);border-radius:18px;padding:20px 22px}
+.pl-eye{font-size:12px;font-weight:800;text-transform:uppercase;letter-spacing:.14em;color:var(--ws-sub);margin-bottom:9px}
+.pl-h{font-size:20px;font-weight:900;line-height:1.25;margin-bottom:9px}
+.pl-p{font-size:17px;font-weight:500;line-height:1.6}
+.pl-p b{font-weight:900}
+.pl-p em,.pl-note em{font-style:italic;color:var(--ws-accent);font-weight:700}
+.pl-note{font-size:15px;font-weight:600;color:var(--ws-sub);line-height:1.5;margin-top:12px}
+.pl-end{color:var(--ws-accent);text-decoration:underline;text-decoration-thickness:2px;text-underline-offset:3px}
+
+.pl-ana{display:flex;flex-wrap:wrap;gap:9px;align-items:flex-end;margin:16px 0 4px}
+.pl-tok{border:1px solid var(--ws-line);border-radius:14px;padding:9px 14px;background:var(--ws-bg);text-align:center;min-width:74px}
+.pl-tok.is-key{border-color:var(--ws-accent);background:var(--ws-accent-bg)}
+.pl-tok-lbl{display:block;font-size:11px;font-weight:800;text-transform:uppercase;letter-spacing:.09em;color:var(--ws-sub);margin-bottom:5px}
+.pl-tok-w{display:block;font-size:20px;font-weight:800}
+
+.pl-axe{margin-bottom:14px}
+.pl-axe-lbl{font-size:12px;font-weight:800;text-transform:uppercase;letter-spacing:.12em;color:var(--ws-sub);margin-bottom:7px}
+.pl-opts{display:flex;gap:8px;flex-wrap:wrap}
+.pl-opt{min-height:44px;padding:10px 16px;border-radius:22px;border:1px solid var(--ws-line);background:var(--ws-card);font-family:'Nunito',sans-serif;font-size:15px;font-weight:800;line-height:1.35;text-align:left;color:var(--ws-ink);cursor:pointer;transition:background .15s,border-color .15s}
+.pl-opt:hover{border-color:var(--ws-accent)}
+.pl-opt.on{background:var(--sel-bg);border-color:var(--sel-line);color:var(--sel-ink)}
+.pl-opt.ok{background:var(--ok-bg);border-color:var(--ok-line);color:var(--ok-ink)}
+.pl-opt.no{background:var(--no-bg);border-color:var(--no-line);color:var(--no-ink)}
+.pl-out{background:var(--ws-ink);color:#fff;border-radius:16px;padding:20px;margin-top:4px;display:flex;align-items:center;justify-content:center;gap:14px;flex-wrap:wrap}
+.pl-out-w{font-size:27px;font-weight:900;text-align:center;line-height:1.3}
+.pl-out-w.is-long{font-size:21px}
+.pl-out-w .pl-end{color:#8FE2B9}
+.pl-out-n{flex-basis:100%;text-align:center;font-size:13px;font-weight:800;text-transform:uppercase;letter-spacing:.12em;color:#8FE2B9}
+.pl-out .btn-audio-round{width:44px;height:44px}
+
+.pl-ex{display:flex;align-items:center;gap:12px;padding:9px 0;border-bottom:1px solid var(--ws-line)}
+.pl-ex:last-child{border-bottom:none}
+.pl-ex-w{flex:1;min-width:0;font-size:17px;font-weight:700}
+.pl-ex-t{font-size:12.5px;font-weight:800;color:var(--ws-sub);white-space:nowrap}
+
+.pl-trap{padding:13px 0;border-bottom:1px solid var(--ws-line)}
+.pl-trap:last-child{border-bottom:none;padding-bottom:0}
+.pl-bad,.pl-good{display:flex;gap:9px;align-items:flex-start;font-size:17px;font-weight:700;line-height:1.45}
+.pl-bad{color:var(--no-ink)}
+.pl-good{color:var(--ok-ink);margin-top:5px}
+.pl-why{font-size:15px;font-weight:600;color:var(--ws-sub);line-height:1.5;margin-top:7px}
+
+.pl-q{padding:14px 0;border-bottom:1px solid var(--ws-line)}
+.pl-q:last-child{border-bottom:none;padding-bottom:0}
+.pl-qtxt{font-size:17px;font-weight:700;line-height:1.5;margin-bottom:10px}
+.pl-fb{display:none;font-size:15px;font-weight:700;line-height:1.5;margin-top:10px}
+.pl-fb.on{display:block}
+.pl-fb.ok{color:var(--ok-ink)}
+.pl-fb.no{color:var(--no-ink)}
+@media(max-width:640px){#plus-panel{width:100%}#plus-tit{font-size:23px}#plus-body{padding:16px 18px 56px}.pl-blk{padding:18px}}
+
 /* Focus clavier visible partout (B.4) */
 :focus-visible{outline:3px solid var(--ws-accent);outline-offset:2px;border-radius:inherit}
 textarea:focus-visible,.winput:focus-visible{outline:none;border-color:var(--ws-accent)}
@@ -461,6 +533,16 @@ textarea:focus-visible,.winput:focus-visible{outline:none;border-color:var(--ws-
 </div>
 
 <div id="sections"></div>
+
+<div id="plus-ov" role="dialog" aria-modal="true" aria-labelledby="plus-tit">
+  <div id="plus-panel">
+    <div id="plus-hd">
+      <div><div id="plus-eye">Mini-leçon</div><div id="plus-tit">—</div></div>
+      <button id="plus-close" type="button" aria-label="Fermer la mini-leçon">✕</button>
+    </div>
+    <div id="plus-body"></div>
+  </div>
+</div>
 
 <div id="fc-overlay">
   <div id="fc-box">
@@ -863,6 +945,503 @@ const EXOS = [
     {id:'g5', txt:"Le rappel du tétanos se fait tous les deux ans.", ok:'FAUX'},
    ]},
 ];
+
+// ── « EN APPRENDRE PLUS » : mini-leçons ───────────────────────────────
+// Une entrée par exercice qui porte un `savoir`. Le bandeau noir reste le
+// résumé ; ceci est la leçon complète, ouverte à la demande dans un panneau.
+// Blocs disponibles :
+//   {t:'texte', h, p, note}                     explication suivie
+//   {t:'ana',   h, p, mots:[[étiquette,mot]], note}   anatomie étiquetée
+//        Dans un mot, {…} souligne en vert la terminaison d'accord.
+//   {t:'labo',  h, p, axes:[{id,lbl,opts:[[val,libellé]]}], out:{clé:{w:[],n}}}
+//        clé = valeurs des axes concaténées dans l'ordre des axes.
+//   {t:'ex',    h, p, rows:[[groupe, étiquette]]}     exemples audio
+//   {t:'piege', h, rows:[[faux, juste, pourquoi]]}
+//   {t:'check', h, p, qs:[{q, opts:[], ok, fb}]}      micro-vérification
+const PLUS = {
+  prGrp: {
+    eye:'Mini-leçon', tit:'Les groupes de mots',
+    blocs:[
+      {t:'texte', h:"À quoi ça sert, à l'urgence ?",
+       p:"On vous demandera toujours de <b>préciser</b> : quelle sorte de brûlure, à quel endroit, depuis quand. Un nom tout seul ne dit pas grand-chose : <em>une brûlure</em>. Le <b>groupe du nom</b>, c'est le paquet de mots qu'on construit autour d'un nom pour le préciser : <em>une brûlure superficielle à l'avant-bras droit</em>. Plus votre groupe est précis, plus la personne qui vous soigne comprend vite.",
+       note:"Dans le dialogue, Mathieu ne dit pas « une brûlure ». Il dit : <em>une brûlure à l'avant-bras avec de l'huile chaude</em>. C'est ce qui permet à l'infirmière de répondre."},
+
+      {t:'ana', h:"Comment un groupe du nom est construit",
+       p:"Le <b>nom</b> est le noyau : c'est lui qui commande. Il a un genre (masculin ou féminin) et un nombre (singulier ou pluriel). Tous les autres mots du groupe s'alignent sur lui.",
+       mots:[['Déterminant','une'],['Nom · noyau','brûlure'],['Adjectif','superficiel{le}']],
+       note:"<b>brûlure</b> est féminin singulier → le déterminant devient <em>une</em> et l'adjectif prend la terminaison <em>-e</em>. On dit que le nom <b>donne son accord</b> au reste du groupe."},
+
+      {t:'ana', h:"Un groupe peut être plus long",
+       p:"Certains adjectifs courts se placent <b>avant</b> le nom ; les autres se placent <b>après</b>. Les deux s'accordent quand même avec le nom.",
+       mots:[['Déterminant','de'],['Adjectif avant','petit{es}'],['Nom · noyau','cloque{s}'],['Adjectif après','douloureus{es}']],
+       note:"Devant un adjectif au pluriel, <em>des</em> devient souvent <em>de</em> à l'écrit soigné : <em>de petites cloques</em>. À l'oral, <em>des petites cloques</em> est courant et accepté."},
+
+      {t:'labo', h:"Essayez : changez le nom, regardez le groupe suivre",
+       p:"Choisissez un nom et un nombre. Observez les terminaisons soulignées : elles changent toutes seules, parce que le nom a changé.",
+       axes:[
+         {id:'nb', lbl:'Combien ?', opts:[['s','Un seul'],['p','Plusieurs']]},
+         {id:'g',  lbl:'Quel nom ?', opts:[['m','le doigt · masculin'],['f','la main · féminin']]},
+       ],
+       out:{
+         sm:{w:['un','doigt','enflé'],        n:'masculin singulier'},
+         pm:{w:['des','doigt{s}','enflé{s}'],   n:'masculin pluriel'},
+         sf:{w:['une','main','enflé{e}'],      n:'féminin singulier'},
+         pf:{w:['des','main{s}','enflé{es}'],   n:'féminin pluriel'},
+       },
+       note:"La règle tient en une phrase : <b>le déterminant et l'adjectif copient le genre et le nombre du nom.</b> Le féminin ajoute <em>-e</em>, le pluriel ajoute <em>-s</em>, et le féminin pluriel ajoute les deux : <em>-es</em>."},
+
+      {t:'ex', h:"D'autres groupes du nom du module",
+       p:"Écoutez chaque groupe : à l'oral, on entend souvent la consonne finale au féminin (<em>superficielle</em>, <em>enflée</em>) alors qu'on ne l'entend pas au masculin.",
+       rows:[
+         ["une brûlure superficielle","féminin singulier"],
+         ["des cloques douloureuses","féminin pluriel"],
+         ["un pansement propre","masculin singulier"],
+         ["des gants jetables","masculin pluriel"],
+         ["une compresse stérile","féminin singulier"],
+         ["l'avant-bras droit","masculin singulier"],
+         ["une petite coupure profonde","féminin singulier"],
+         ["des soins urgents","masculin pluriel"],
+       ]},
+
+      {t:'piege', h:"Trois pièges fréquents",
+       rows:[
+         ["une brûlure superficiel","une brûlure superficielle",
+          "L'adjectif est loin du déterminant, mais il s'accorde quand même avec le nom. Repérez d'abord le nom, puis accordez."],
+         ["des cloque douloureuses","des cloques douloureuses",
+          "Au pluriel, <b>tous</b> les mots du groupe portent la marque : déterminant, nom <b>et</b> adjectif. Si un seul l'oublie, la phrase est fautive."],
+         ["un propre pansement","un pansement propre",
+          "En français, l'adjectif se met le plus souvent <b>après</b> le nom. Seuls quelques adjectifs courts passent devant : petit, grand, gros, jeune, vieux, beau, bon, nouveau."],
+       ]},
+
+      {t:'check', h:"Est-ce que c'est clair maintenant ?",
+       p:"Quatre questions rapides. Elles ne comptent pas dans votre score : servez-vous-en pour voir si c'est clair.",
+       qs:[
+         {q:"L'infirmière nettoie ___.", opts:["une plaie ouvert","une plaie ouverte"], ok:1,
+          fb:"<b>plaie</b> est féminin singulier, donc l'adjectif prend un <em>-e</em> : une plaie ouvert<em>e</em>."},
+         {q:"Fatou a ___ sur l'avant-bras.", opts:["des petite cloques","des petites cloques"], ok:1,
+          fb:"Au pluriel, l'adjectif placé avant le nom porte lui aussi le <em>-s</em> : petit<em>es</em> cloques."},
+         {q:"Le médecin pose ___.", opts:["un pansement propre","un propre pansement"], ok:0,
+          fb:"<b>propre</b> n'est pas dans la petite liste des adjectifs qui passent devant : il se place après le nom."},
+         {q:"Elle porte ___ pour cuisiner.", opts:["des gants jetable","des gants jetables"], ok:1,
+          fb:"<b>gants</b> est au pluriel, donc l'adjectif aussi : des gants jetable<em>s</em>."},
+       ]},
+    ]
+  },
+
+  prPhon: {
+    eye:'Mini-leçon', tit:'Le son [y] et le son [u]',
+    blocs:[
+      {t:'texte', h:"Deux sons qui changent le mot au complet",
+       p:"En français, [y] et [u] s'écrivent presque pareil — <b>u</b> d'un côté, <b>ou</b> de l'autre — mais ils séparent des mots entiers. <em>Tout</em> et <em>tu</em>, <em>la roue</em> et <em>la rue</em>, <em>vous</em> et <em>vu</em>. Une seule phrase peut contenir les deux : « Est-ce que <em>vous</em> avez <em>vu</em> le médecin ? »",
+       note:"À l'urgence, on donne son adresse au téléphone et on décrit une douleur. C'est exactement le moment où une voyelle mal placée fait perdre du temps."},
+
+      {t:'ana', h:"Le son [y] : la lettre u",
+       p:"Il s'écrit <b>u</b> ou <b>û</b>. On ne le trouve pas dans la plupart des autres langues — c'est pour ça qu'il demande de l'entraînement.",
+       mots:[["S'écrit",'u, û'],['Se dit','[y]',true],['Comme dans','br{û}lure']],
+       note:"Autres mots du module : <em>urgence</em>, <em>minute</em>, <em>sucre</em>, <em>une piqûre</em>."},
+
+      {t:'ana', h:"Le son [u] : les lettres ou",
+       p:"Il s'écrit toujours <b>ou</b>. Ce son existe dans presque toutes les langues : c'est le plus facile des deux.",
+       mots:[["S'écrit",'ou'],['Se dit','[u]',true],['Comme dans','d{ou}leur']],
+       note:"Autres mots du module : <em>le pouce</em>, <em>la soupe</em>, <em>le soutien</em>, <em>couler</em>."},
+
+      {t:'texte', h:"Le truc de la bouche",
+       p:"Pour les deux sons, les lèvres sont <b>arrondies</b>, comme pour siffler. Ce qui change, c'est la <b>langue</b>. Pour [u], elle recule au fond de la bouche. Pour [y], elle reste en avant, contre les dents du bas.",
+       note:"<b>La méthode qui marche :</b> dites <em>i</em> comme dans « ici ». Ne bougez plus la langue du tout. Arrondissez seulement les lèvres. Le son qui sort est [y]. Recommencez cinq fois : i → u, i → u."},
+
+      {t:'labo', h:"Écoutez la différence",
+       p:"Choisissez une paire, puis écoutez. Les deux mots ne diffèrent que par cette voyelle.",
+       axes:[{id:'p', lbl:'Une paire de mots', opts:[['1','tout / tu'],['2','la roue / la rue'],['3','vous / vu'],['4','la boule / la bulle']]}],
+       out:{
+         '1':{w:['tout','·','tu'],             say:'tout, tu',             n:'[u] contre [y]'},
+         '2':{w:['la roue','·','la rue'],      say:'la roue, la rue',      n:'[u] contre [y]'},
+         '3':{w:['vous','·','vu'],             say:'vous, vu',             n:'[u] contre [y]'},
+         '4':{w:['la boule','·','la bulle'],   say:'la boule, la bulle',   n:'[u] contre [y]'},
+       },
+       note:"Ce que chaque mot veut dire : <em>tout</em> = la totalité, <em>tu</em> = la personne à qui on parle · <em>la roue</em> = celle d'une voiture, <em>la rue</em> = celle de votre adresse · <em>vous</em> = la personne, <em>vu</em> = participe passé de voir · <em>la boule</em> = ronde et pleine, <em>la bulle</em> = pleine d'air, comme une cloque."},
+
+      {t:'ex', h:"Les mots du module, classés",
+       p:"Écoutez chacun et répétez-le à voix haute. Si vous hésitez, revenez au truc de la bouche.",
+       rows:[
+         ["une brûlure","[y] — û"],
+         ["l'urgence","[y] — u"],
+         ["quinze minutes","[y] — u"],
+         ["le sucre","[y] — u"],
+         ["la douleur","[u] — ou"],
+         ["le pouce","[u] — ou"],
+         ["de la soupe","[u] — ou"],
+         ["du soutien","[u] — ou"],
+       ]},
+
+      {t:'piege', h:"Trois confusions à éviter",
+       rows:[
+         ["« Je suis sur la roue Papineau. »","« Je suis sur la rue Papineau. »",
+          "Vous donnez votre adresse au 911. <b>rue</b> se dit [y]. C'est le genre de détail qui fait chercher l'ambulance au mauvais endroit."],
+         ["« Je suis sourd que ça va. »","« Je suis sûr que ça va. »",
+          "<b>sûr</b> = certain, avec [y]. <b>sourd</b> = qui n'entend pas, avec [u]. Au téléphone, la confusion est immédiate."],
+         ["« Je me suis broulé. »","« Je me suis brûlé. »",
+          "À l'écrit, la règle est absolue : si vous entendez [y], vous écrivez <b>u</b> ou <b>û</b> — jamais <b>ou</b>."],
+       ]},
+
+      {t:'check', h:"Est-ce que c'est clair maintenant ?",
+       p:"Quatre questions rapides. Elles ne comptent pas dans votre score.",
+       qs:[
+         {q:"Le son [y] s'écrit avec quelles lettres ?", opts:["ou","u ou û"], ok:1,
+          fb:"<b>u</b> et <b>û</b> donnent [y] : brûlure, urgence, minute. Les lettres <em>ou</em> donnent toujours l'autre son."},
+         {q:"Dans « douleur », le groupe « ou » se prononce…", opts:["[u]","[y]"], ok:0,
+          fb:"<b>ou</b> se dit toujours [u], le son de <em>pouce</em> et de <em>soupe</em>."},
+         {q:"Pour passer du son [i] au son [y], il faut…", opts:["reculer la langue","arrondir les lèvres"], ok:1,
+          fb:"La langue ne bouge pas. Seules les lèvres s'arrondissent. Si vous reculez la langue, vous obtenez [u]."},
+         {q:"Dans « Il a vu le médecin », le mot « vu » contient…", opts:["[y]","[u]"], ok:0,
+          fb:"<em>vu</em> se dit [y]. Comparez avec <em>vous</em>, qui se dit [u] : ce sont deux mots différents."},
+       ]},
+    ]
+  },
+
+  t1pc: {
+    eye:'Mini-leçon', tit:'Le passé composé',
+    blocs:[
+      {t:'texte', h:"Le temps de « racontez-moi ce qui s'est passé »",
+       p:"C'est la première phrase que le médecin dit à Fatou, et vous l'entendrez chaque fois. On y répond au <b>passé composé</b> : le temps des actions terminées. Il se fabrique toujours en deux morceaux : un petit verbe au présent — <b>avoir</b> ou <b>être</b> — suivi du <b>participe passé</b>.",
+       note:"Le petit verbe s'appelle l'<em>auxiliaire</em>. Il ne veut rien dire tout seul ici : dans « j'ai mis », le verbe n'est pas <em>avoir</em>, c'est <em>mettre</em>."},
+
+      {t:'ana', h:"Avec avoir : la grande majorité des verbes",
+       p:"Le participe passé ne change pas. On l'écrit toujours pareil, quel que soit le sujet.",
+       mots:[['Sujet',"j'"],['Auxiliaire avoir','ai'],['Participe passé','mis',true]],
+       note:"« J'<em>ai mis</em> mon bras sous l'eau froide. » — Fatou est une femme, mais on n'ajoute rien à <em>mis</em>. Avec <b>avoir</b>, le participe ne s'accorde pas avec le sujet."},
+
+      {t:'ana', h:"Avec être : une petite famille de verbes",
+       p:"Là, le participe passé se comporte comme un adjectif : il s'accorde avec le sujet.",
+       mots:[['Sujet','elle'],['Auxiliaire être','est'],['Participe passé','arrivé{e}',true]],
+       note:"« Elle <em>est arrivée</em> à l'urgence. » — sujet féminin, donc <em>-e</em>. Au pluriel : <em>ils sont arrivés</em>, <em>elles sont arrivées</em>."},
+
+      {t:'texte', h:"Comment savoir lequel choisir",
+       p:"<b>être</b> sert pour une petite liste de verbes de déplacement ou de changement d'état : aller, venir, arriver, partir, entrer, sortir, monter, descendre, tomber, rester, devenir, naître, mourir. Et pour tous les verbes pronominaux — se brûler, se couper. <b>avoir</b> sert pour tout le reste.",
+       note:"<b>Le test rapide :</b> si le verbe est suivi d'un complément direct — « j'ai mis <em>mon bras</em> », « elle a nettoyé <em>la plaie</em> » — c'est <b>avoir</b>. Si le verbe se suffit à lui-même et décrit un déplacement, pensez à <b>être</b>."},
+
+      {t:'labo', h:"Essayez : changez le sujet et le verbe",
+       p:"Regardez la fin du participe passé. Avec <em>appeler</em>, elle ne bouge jamais. Avec <em>arriver</em>, elle suit le sujet.",
+       axes:[
+         {id:'suj', lbl:'Qui ?',      opts:[['e','elle'],['i','ils'],['j','je']]},
+         {id:'v',   lbl:'Quel verbe ?', opts:[['a','appeler · avoir'],['e','arriver · être']]},
+       ],
+       out:{
+         ea:{w:['elle','a','appelé'],       n:'avoir — aucun accord'},
+         ia:{w:['ils','ont','appelé'],      n:'avoir — aucun accord'},
+         ja:{w:["j'",'ai','appelé'],        say:"j'ai appelé", n:'avoir — aucun accord'},
+         ee:{w:['elle','est','arrivé{e}'],  n:'être — accord avec le sujet'},
+         ie:{w:['ils','sont','arrivé{s}'],  n:'être — accord avec le sujet'},
+         je:{w:['je','suis','arrivé{(e)}'], say:'je suis arrivé', n:'être — le e si je suis une femme'},
+       },
+       note:"C'est toute la difficulté du passé composé en une image : <b>avec avoir, rien ne bouge ; avec être, la fin suit le sujet.</b>"},
+
+      {t:'ex', h:"Les participes passés à connaître",
+       p:"Les verbes en <em>-er</em> sont réguliers : <em>-é</em>. Les autres s'apprennent un par un — voici ceux qui reviennent dans une salle d'urgence.",
+       rows:[
+         ["appeler → j'ai appelé","régulier : -er donne -é"],
+         ["finir → j'ai fini","régulier : -ir donne -i"],
+         ["attendre → j'ai attendu","régulier : -re donne -u"],
+         ["mettre → j'ai mis","irrégulier"],
+         ["prendre → j'ai pris","irrégulier"],
+         ["faire → j'ai fait","irrégulier"],
+         ["dire → j'ai dit","irrégulier"],
+         ["voir → j'ai vu","irrégulier"],
+       ]},
+
+      {t:'piege', h:"Trois pièges fréquents",
+       rows:[
+         ["J'ai allé à l'urgence.","Je suis allé à l'urgence.",
+          "<b>aller</b> fait partie de la petite famille du verbe être. C'est l'erreur la plus courante, parce que beaucoup de langues utilisent l'équivalent de <em>avoir</em> ici."],
+         ["Elle est arrivé à midi.","Elle est arrivée à midi.",
+          "Avec <b>être</b>, le participe s'accorde avec le sujet. Sujet féminin singulier, donc <em>-e</em>."],
+         ["Elle a mise son bras sous l'eau.","Elle a mis son bras sous l'eau.",
+          "Avec <b>avoir</b>, on n'ajoute rien. Beaucoup d'élèves accordent par réflexe parce que le sujet est féminin — c'est justement ce qu'il ne faut pas faire."],
+       ]},
+
+      {t:'check', h:"Est-ce que c'est clair maintenant ?",
+       p:"Quatre questions rapides. Elles ne comptent pas dans votre score.",
+       qs:[
+         {q:"Fatou ___ à l'urgence vers midi.", opts:["a arrivé","est arrivée"], ok:1,
+          fb:"<b>arriver</b> prend être, et le participe s'accorde avec le sujet féminin : <em>arrivée</em>."},
+         {q:"Mathieu ___ Info-Santé.", opts:["a appelé","est appelé"], ok:0,
+          fb:"<b>appeler</b> prend avoir, comme la grande majorité des verbes. « Il est appelé » voudrait dire autre chose : que quelqu'un l'appelle, lui."},
+         {q:"Nous ___ le bras sous l'eau froide.", opts:["avons mis","avons mise"], ok:0,
+          fb:"Avec <b>avoir</b>, le participe ne change pas. On écrit <em>mis</em>, un point c'est tout."},
+         {q:"Les secours ___ tout de suite.", opts:["ont partis","sont partis"], ok:1,
+          fb:"<b>partir</b> est dans la famille du verbe être, et le sujet est masculin pluriel : <em>sont partis</em>."},
+       ]},
+    ]
+  },
+
+  t1pron: {
+    eye:'Mini-leçon', tit:'Les verbes pronominaux au passé composé',
+    blocs:[
+      {t:'texte', h:"Quand l'action revient sur soi",
+       p:"« Mathieu a brûlé le pain » — l'action va vers autre chose. « Fatou <b>s'est</b> brûlée » — l'action revient sur elle. Ce petit pronom devant le verbe (<em>me, te, se, nous, vous</em>) est la marque des <b>verbes pronominaux</b>. C'est la toute première chose que Fatou dit : « <em>je me suis brûlé</em> l'avant-bras ».",
+       note:"Pour parler d'une blessure, ce sont les verbes qu'on utilise presque toujours : se brûler, se couper, se blesser, se casser, se fouler, se cogner."},
+
+      {t:'ana', h:"Toujours avec être — jamais avec avoir",
+       p:"C'est la seule règle sans exception de cette leçon. Un verbe pronominal au passé composé prend <b>être</b>, cent fois sur cent.",
+       mots:[['Sujet','elle'],['Pronom',"s'"],['Auxiliaire être','est'],['Participe passé','coupé{e}',true]],
+       note:"« Elle <em>s'est coupée</em> en préparant les légumes. » Le pronom <em>s'</em> et l'auxiliaire <em>est</em> voyagent toujours ensemble."},
+
+      {t:'labo', h:"Le point délicat : accorder ou pas",
+       p:"Changez ce qui suit le verbe. C'est ça, et rien d'autre, qui décide de l'accord.",
+       axes:[
+         {id:'suj', lbl:'Qui ?',              opts:[['e','elle'],['i','ils']]},
+         {id:'c',   lbl:'Après le verbe ?',   opts:[['0','rien'],['1','une partie du corps']]},
+       ],
+       out:{
+         e0:{w:['elle',"s'est",'brûlé{e}'],                n:'rien après — accord avec le sujet'},
+         i0:{w:['ils','se sont','brûlé{s}'],               n:'rien après — accord avec le sujet'},
+         e1:{w:['elle',"s'est",'brûlé','le bras'],         n:"« le bras » suit — aucun accord"},
+         i1:{w:['ils','se sont','brûlé','les mains'],      n:'« les mains » suit — aucun accord'},
+       },
+       note:"<b>La règle en une phrase : s'il y a une partie du corps après le verbe, on n'accorde pas.</b> C'est pour ça que Fatou dit « je me suis brûl<em>é</em> l'avant-bras » sans <em>-e</em>, même si elle est une femme."},
+
+      {t:'ex', h:"Les verbes des petits accidents",
+       p:"Tous prennent être au passé composé. Écoutez et répétez la forme complète.",
+       rows:[
+         ["je me suis brûlé la main","une brûlure"],
+         ["il s'est coupé le doigt","une coupure"],
+         ["elle s'est blessée au travail","une blessure"],
+         ["il s'est cassé le bras","une fracture"],
+         ["elle s'est foulé la cheville","une entorse"],
+         ["je me suis cogné la tête","un choc"],
+         ["elle s'est évanouie dans la salle","une perte de connaissance"],
+         ["ils se sont soignés à la maison","des soins"],
+       ]},
+
+      {t:'piege', h:"Trois pièges fréquents",
+       rows:[
+         ["Je m'ai brûlé le bras.","Je me suis brûlé le bras.",
+          "Jamais <b>avoir</b> avec un verbe pronominal. Si vous voyez <em>me, te, se</em> devant le verbe, l'auxiliaire est <b>être</b>."],
+         ["Elle s'est brûlée le bras.","Elle s'est brûlé le bras.",
+          "<em>le bras</em> suit le verbe, donc pas d'accord. C'est contre-intuitif : le sujet est féminin, et pourtant on n'ajoute rien."],
+         ["Elle s'est brûlé.","Elle s'est brûlée.",
+          "Ici, rien ne suit le verbe : on accorde avec le sujet. Comparez les deux dernières lignes — un seul mot après le verbe change tout."],
+       ]},
+
+      {t:'check', h:"Est-ce que c'est clair maintenant ?",
+       p:"Quatre questions rapides. Elles ne comptent pas dans votre score.",
+       qs:[
+         {q:"Fatou dit : « Je ___ l'avant-bras. »", opts:["me suis brûlé","m'ai brûlé"], ok:0,
+          fb:"Auxiliaire <b>être</b> — jamais <em>avoir</em>. Et pas de <em>-e</em> : <em>l'avant-bras</em> suit le verbe."},
+         {q:"Elle ___ en préparant les légumes.", opts:["s'est coupé","s'est coupée"], ok:1,
+          fb:"Rien ne suit le verbe, donc on accorde avec le sujet féminin : <em>coupée</em>."},
+         {q:"Ils ___ au travail.", opts:["se sont blessés","se sont blessé"], ok:0,
+          fb:"Rien après le verbe, sujet masculin pluriel : <em>blessés</em>."},
+         {q:"Nous ___ les mains avant les soins.", opts:["nous sommes lavé","nous sommes lavés"], ok:0,
+          fb:"<em>les mains</em> suit le verbe, donc aucun accord — même si le sujet est au pluriel."},
+       ]},
+    ]
+  },
+
+  t2pcom: {
+    eye:'Mini-leçon', tit:'Les pronoms compléments',
+    blocs:[
+      {t:'texte', h:"Ne pas répéter les mêmes mots",
+       p:"« Est-ce que tu changes le pansement ? — Oui, je change le pansement. » C'est correct, mais aucun francophone ne répond comme ça : c'est lourd, et ça donne l'impression qu'on récite. On remplace le groupe déjà connu par un petit mot : « Oui, je <b>le</b> change. »",
+       note:"Ces petits mots s'appellent des <b>pronoms compléments</b>. Les maîtriser, c'est ce qui fait passer d'un français scolaire à un français naturel."},
+
+      {t:'ana', h:"Le pronom se place AVANT le verbe",
+       p:"C'est la particularité du français, et la source de la plupart des erreurs. Dans beaucoup de langues, le pronom vient après le verbe. Ici, il se glisse entre le sujet et le verbe.",
+       mots:[['Sujet','je'],['Pronom','le',true],['Verbe','change']],
+       note:"On ne dit jamais « je change le ». Le pronom colle au verbe, devant lui, et rien ne peut se mettre entre les deux."},
+
+      {t:'texte', h:"Lequel choisir ?",
+       p:"Le choix ne dépend pas du sens du mot, mais de la <b>construction du verbe</b> — c'est-à-dire de ce qui se trouve entre le verbe et le groupe qu'on remplace.<br><br>• Rien du tout → <b>le, la, les</b><br>• La préposition <b>à</b> + une personne → <b>lui, leur</b><br>• La préposition <b>de</b> → <b>en</b><br>• Un lieu → <b>y</b>",
+       note:"Le réflexe à prendre : avant de choisir le pronom, regardez le petit mot qui précède le groupe. <em>changer le pansement</em> (rien) · <em>parler <b>au</b> médecin</em> · <em>avoir besoin <b>de</b> crème</em> · <em>aller <b>à</b> l'urgence</em>."},
+
+      {t:'labo', h:"Essayez sur les quatre cas",
+       p:"Choisissez le groupe à remplacer et regardez le pronom qui apparaît, souligné en vert.",
+       axes:[{id:'c', lbl:'Le groupe à remplacer', opts:[['d','le pansement'],['i','au médecin'],['e','de crème'],['y',"à l'urgence"]]}],
+       out:{
+         d:{w:['Je','{le}','change.'],        say:'Je le change.',      n:'rien avant le groupe — le, la, les'},
+         i:{w:['Je','{lui}','parle.'],        say:'Je lui parle.',      n:'à + une personne — lui, leur'},
+         e:{w:["J'{en}",'ai besoin.'],        say:"J'en ai besoin.",    n:'de quelque chose — en'},
+         y:{w:["J'{y}",'vais.'],              say:"J'y vais.",          n:'un lieu — y'},
+       },
+       note:"Notez que le pronom reste toujours à la même place : juste devant le verbe. Seul le mot change."},
+
+      {t:'ex', h:"Huit transformations à connaître",
+       p:"Lisez la phrase de départ, puis la phrase avec le pronom. Écoutez les deux.",
+       rows:[
+         ["Je change le pansement. → Je le change.","complément direct"],
+         ["Je regarde la plaie. → Je la regarde.","complément direct"],
+         ["Je prends les médicaments. → Je les prends.","complément direct"],
+         ["Je parle au médecin. → Je lui parle.","à + une personne"],
+         ["Je réponds aux infirmières. → Je leur réponds.","à + des personnes"],
+         ["J'ai besoin de crème. → J'en ai besoin.","de quelque chose"],
+         ["Je vais à l'urgence. → J'y vais.","un lieu"],
+         ["Je pense à mon rendez-vous. → J'y pense.","à + une chose"],
+       ]},
+
+      {t:'piege', h:"Trois pièges fréquents",
+       rows:[
+         ["Je change le.","Je le change.",
+          "Le pronom passe <b>devant</b> le verbe. C'est l'erreur numéro un, parce que la plupart des langues font l'inverse."],
+         ["Je lui change. (le pansement)","Je le change.",
+          "<b>lui</b> ne remplace que des personnes. Pour un objet placé directement après le verbe, c'est <em>le, la, les</em>."],
+         ["J'y ai besoin.","J'en ai besoin.",
+          "On dit <em>avoir besoin <b>de</b></em>. C'est la préposition du verbe qui commande le pronom : <b>de</b> donne <em>en</em>, jamais <em>y</em>."],
+       ]},
+
+      {t:'check', h:"Est-ce que c'est clair maintenant ?",
+       p:"Quatre questions rapides. Elles ne comptent pas dans votre score.",
+       qs:[
+         {q:"Est-ce que tu changes le pansement ? — Oui, je ___ change.", opts:["le","lui"], ok:0,
+          fb:"<em>changer</em> le pansement : rien entre le verbe et le groupe, et ce n'est pas une personne. Donc <b>le</b>."},
+         {q:"Est-ce que tu parles au médecin ? — Oui, je ___ parle.", opts:["le","lui"], ok:1,
+          fb:"<em>parler <b>à</b> quelqu'un</em> : la préposition <em>à</em> + une personne donne <b>lui</b>."},
+         {q:"Est-ce que tu vas à l'urgence ? — Oui, j'___ vais.", opts:["y","en"], ok:0,
+          fb:"L'urgence est un lieu où l'on va : <b>y</b>. C'est le même <em>y</em> que dans « j'y vais »."},
+         {q:"Est-ce que tu as besoin de crème ? — Oui, j'___ ai besoin.", opts:["y","en"], ok:1,
+          fb:"<em>avoir besoin <b>de</b></em> : la préposition <em>de</em> donne toujours <b>en</b>."},
+       ]},
+    ]
+  },
+
+  t2app: {
+    eye:'Mini-leçon', tit:"Le lien d'appartenance",
+    blocs:[
+      {t:'texte', h:"Dire à qui appartient quoi",
+       p:"À l'accueil d'un hôpital, presque chaque phrase contient un lien d'appartenance : « <em>votre</em> carte », « le dossier <em>de</em> madame Diarra », « <em>sa</em> sœur ». Le français a trois façons de l'exprimer, et le choix dépend de ce qui vient après.",
+       note:"Aminata les utilise toutes les trois dans le dialogue : « je viens chercher <em>ma</em> sœur », « <em>son</em> nom », « le stationnement <em>de</em> l'hôpital »."},
+
+      {t:'ana', h:"Avec un nom de personne : de",
+       p:"On nomme d'abord ce qui est possédé, ensuite le possesseur, et on relie les deux par <b>de</b>.",
+       mots:[["Ce qui est possédé",'le dossier'],['Lien','de',true],['Le possesseur','Fatou']],
+       note:"L'ordre est l'inverse de l'anglais et de plusieurs autres langues : on ne dit jamais « Fatou dossier ». Devant un prénom, pas d'article : <em>de Fatou</em>, et non « de la Fatou »."},
+
+      {t:'labo', h:"Essayez : mon, ma, mes… et pourquoi",
+       p:"Changez le possesseur, puis l'objet possédé. Observez lequel des deux fait vraiment changer le mot.",
+       axes:[
+         {id:'p', lbl:'À qui ?',      opts:[['j','à moi'],['i','à lui ou à elle'],['e','à eux']]},
+         {id:'o', lbl:'Quel objet ?', opts:[['m','le dossier · masculin'],['f','la sœur · féminin'],['p','les clés · pluriel']]},
+       ],
+       out:{
+         jm:{w:['mon','dossier'],  n:'à moi · objet masculin'},
+         jf:{w:['ma','sœur'],      n:'à moi · objet féminin'},
+         jp:{w:['mes','clés'],     n:'à moi · objet pluriel'},
+         im:{w:['son','dossier'],  n:'à lui ou à elle · objet masculin'},
+         if:{w:['sa','sœur'],      n:'à lui ou à elle · objet féminin'},
+         ip:{w:['ses','clés'],     n:'à lui ou à elle · objet pluriel'},
+         em:{w:['leur','dossier'], n:'à eux · objet masculin'},
+         ef:{w:['leur','sœur'],    n:'à eux · objet féminin'},
+         ep:{w:['leurs','clés'],   n:'à eux · objet pluriel'},
+       },
+       note:"<b>Le point à retenir : le déterminant s'accorde avec l'objet possédé, pas avec le possesseur.</b> « <em>sa</em> sœur » ne dit pas si le possesseur est un homme ou une femme — seulement que <em>sœur</em> est féminin. Beaucoup de langues font exactement l'inverse, d'où les erreurs."},
+
+      {t:'texte', h:"Le cas particulier des parties du corps",
+       p:"Quand on parle d'une partie de son propre corps, le français préfère l'<b>article</b> au possessif : « Elle s'est brûlé <em>le</em> bras », et non « son bras ». Le pronom du verbe (<em>se</em>) dit déjà à qui appartient le bras — le répéter ferait lourd.",
+       note:"Autres exemples : <em>j'ai mal à <b>la</b> tête</em> · <em>il s'est cassé <b>le</b> poignet</em> · <em>levez <b>le</b> bras</em>. On garde le possessif quand la partie du corps est le sujet : « <em>mon</em> bras me fait mal. »"},
+
+      {t:'ex', h:"Les formules de l'accueil",
+       p:"Ce sont les phrases que vous entendrez ou direz au comptoir d'un hôpital.",
+       rows:[
+         ["Auriez-vous votre carte d'assurance maladie ?","à vous"],
+         ["C'est le dossier de madame Diarra.","de + nom de personne"],
+         ["Je viens chercher ma sœur.","à moi"],
+         ["Son rendez-vous est à quinze heures.","à lui ou à elle"],
+         ["Les patients attendent leur tour.","à eux, un chacun"],
+         ["Les infirmières ont fini leurs quarts de travail.","à elles, plusieurs"],
+         ["Elle s'est brûlé le bras.","partie du corps : article"],
+         ["J'ai mal à la tête depuis ce matin.","partie du corps : article"],
+       ]},
+
+      {t:'piege', h:"Trois pièges fréquents",
+       rows:[
+         ["Fatou dossier","le dossier de Fatou",
+          "En français, ce qui est possédé vient toujours en premier, relié au possesseur par <b>de</b>."],
+         ["Elle s'est brûlé son bras.","Elle s'est brûlé le bras.",
+          "Avec un verbe pronominal, la partie du corps prend l'<b>article</b>. Le <em>se</em> a déjà dit à qui elle appartient."],
+         ["Les infirmières ont fini leurs quart de travail.","Les infirmières ont fini leur quart de travail.",
+          "<b>leur</b> ou <b>leurs</b> s'accorde avec l'objet possédé, pas avec le nombre de possesseurs. Chacune a un seul quart, donc <em>leur</em> au singulier."],
+       ]},
+
+      {t:'check', h:"Est-ce que c'est clair maintenant ?",
+       p:"Quatre questions rapides. Elles ne comptent pas dans votre score.",
+       qs:[
+         {q:"C'est le dossier ___ Fatou.", opts:["de","à"], ok:0,
+          fb:"Avec un nom de personne, le lien se fait avec <b>de</b>. « à Fatou » s'entend à l'oral familier, mais ne s'écrit pas."},
+         {q:"Aminata vient chercher ___ sœur.", opts:["sa","son"], ok:0,
+          fb:"<em>sœur</em> est féminin, donc <b>sa</b> — peu importe qu'Aminata soit une femme."},
+         {q:"Elle s'est brûlé ___ avant-bras.", opts:["son","l'"], ok:1,
+          fb:"Partie du corps après un verbe pronominal : on met l'<b>article</b>. Le <em>s'</em> indique déjà que c'est le sien."},
+         {q:"Les infirmières ont fini ___ quart de travail.", opts:["leur","leurs"], ok:0,
+          fb:"Un seul quart de travail chacune : l'objet possédé est au singulier, donc <b>leur</b>."},
+       ]},
+    ]
+  },
+
+  t3poli: {
+    eye:'Mini-leçon', tit:'Poser une question polie',
+    blocs:[
+      {t:'texte', h:"Pourquoi ça compte autant à l'hôpital",
+       p:"« Donnez-moi son nom. » n'est pas une faute de français. Mais devant une réceptionniste débordée, ça sonne comme un ordre — et on obtient moins bien ce qu'on demande. La forme polie fait une chose précise : elle laisse à l'autre personne la possibilité de dire non. C'est ce qui la rend acceptable.",
+       note:"Dans le dialogue, Aminata ne pose pas une seule question directe : « <em>Pourriez-vous</em> me donner… », « <em>Est-ce que je pourrais</em>… », « <em>Auriez-vous</em>… ». Ce n'est pas de la timidité, c'est la norme dans un service public au Québec."},
+
+      {t:'ana', h:"La forme la plus utile : le conditionnel inversé",
+       p:"Un verbe au conditionnel, le sujet accroché derrière par un trait d'union, puis la demande à l'infinitif.",
+       mots:[['Verbe au conditionnel','Pour{riez}',true],['Sujet inversé','-vous'],['La demande','me donner son nom ?']],
+       note:"La terminaison du conditionnel est <em>-riez</em> avec <b>vous</b>, <em>-rais</em> avec <b>je</b>. Trois verbes suffisent pour tout l'hôpital : <b>pouvoir</b> → pourriez, pourrais · <b>avoir</b> → auriez, aurais · <b>vouloir</b> → voudriez, voudrais."},
+
+      {t:'labo', h:"Comparez : direct et poli",
+       p:"Choisissez une demande, puis basculez le ton. La différence entre les deux est votre marge de manœuvre à l'accueil.",
+       axes:[
+         {id:'d', lbl:'Que voulez-vous demander ?', opts:[['1','son nom'],['2','où attendre'],['3','la rejoindre']]},
+         {id:'t', lbl:'Sur quel ton ?',             opts:[['x','direct'],['p','poli']]},
+       ],
+       out:{
+         '1x':{w:['Donnez-moi son nom.'],                       n:'direct — sonne comme un ordre'},
+         '1p':{w:['Pour{riez}-vous me donner son nom ?'],        n:'poli — conditionnel inversé'},
+         '2x':{w:["Il y a un endroit où attendre ?"],           n:'direct — acceptable entre proches'},
+         '2p':{w:['Au{riez}-vous un endroit où attendre ?'],     n:'poli — conditionnel inversé'},
+         '3x':{w:['Je veux la rejoindre.'],                      n:'direct — sonne exigeant'},
+         '3p':{w:['Est-ce que je pour{rais} la rejoindre ?'],     n:'poli — demande de permission'},
+       },
+       note:"Les deux colonnes sont grammaticalement correctes. Ce qui change, c'est ce que l'autre personne entend — et sa disponibilité à vous aider."},
+
+      {t:'ex', h:"Huit formules à réutiliser telles quelles",
+       p:"Apprenez-les par cœur : elles couvrent presque toutes les situations d'un comptoir d'accueil.",
+       rows:[
+         ["Excusez-moi de vous déranger.","ouvrir la conversation"],
+         ["Pourriez-vous répéter, s'il vous plaît ?","faire répéter"],
+         ["Auriez-vous un formulaire à remplir ?","demander un objet"],
+         ["Est-ce que je pourrais avoir un reçu ?","demander une permission"],
+         ["Je voudrais parler à l'infirmière.","exprimer un souhait"],
+         ["Sauriez-vous où se trouve la radiologie ?","demander un renseignement"],
+         ["Est-ce qu'il serait possible d'attendre ici ?","demander une permission"],
+         ["Merci beaucoup de votre aide.","fermer la conversation"],
+       ]},
+
+      {t:'piege', h:"Trois pièges fréquents",
+       rows:[
+         ["Pourriez-vous de me donner son nom ?","Pourriez-vous me donner son nom ?",
+          "Après <em>pourriez-vous</em>, le verbe suit directement à l'infinitif. Pas de <b>de</b> entre les deux."],
+         ["Je veux voir ma sœur.","Je voudrais voir ma sœur.",
+          "<em>je veux</em> exprime une volonté et sonne brusque dans un service public. <em>je voudrais</em> est la forme attendue — c'est le même verbe, au conditionnel."],
+         ["Bonjour, je voudrais un renseignement. Donnez-moi l'adresse.","Bonjour, je voudrais un renseignement : pourriez-vous me donner l'adresse ?",
+          "Commencer poliment puis finir par un ordre annule tout l'effet. La politesse doit tenir jusqu'au bout de la phrase."],
+       ]},
+
+      {t:'check', h:"Est-ce que c'est clair maintenant ?",
+       p:"Quatre questions rapides. Elles ne comptent pas dans votre score.",
+       qs:[
+         {q:"Vous demandez le numéro de chambre à l'accueil. Quelle formule choisir ?",
+          opts:["Donnez-moi le numéro de chambre.","Pourriez-vous me donner le numéro de chambre ?"], ok:1,
+          fb:"Le conditionnel inversé est la forme neutre et attendue au comptoir. La première phrase n'est pas fautive, mais elle sonne comme un ordre."},
+         {q:"« Je ___ voir ma sœur. »", opts:["veux","voudrais"], ok:1,
+          fb:"<em>voudrais</em> est le conditionnel de <em>vouloir</em>. C'est la formule de base pour exprimer un souhait poliment."},
+         {q:"« ___-vous un endroit où attendre ? »", opts:["Auriez","Avez"], ok:0,
+          fb:"<em>Auriez</em> est le conditionnel de <em>avoir</em>. « Avez-vous » reste correct, mais plus sec."},
+         {q:"« Pourriez-vous ___ répéter, s'il vous plaît ? »", opts:["de me","me"], ok:1,
+          fb:"Après <em>pourriez-vous</em>, on passe directement au verbe : <em>me répéter</em>, sans préposition."},
+       ]},
+    ]
+  },
+};
 
 // ── ÉTAT ──────────────────────────────────────────────────────────────
 const S = {pl:{}, sel:null, fb:{}, vfSel:{}, vocabPick:null, vocabPairs:{}, vocabOrder:null};
@@ -1509,6 +2088,11 @@ function buildStatic(){
         }
         h+='</div></div>';
       });
+      if(PLUS[ex.id]){
+        h+='<div class="plus-bar"><button class="plus-open" type="button" onclick="plusOpen(\''+ex.id+'\')">'
+         + '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" aria-hidden="true"><path d="M12 5v14M5 12h14"/></svg>'
+         + 'En apprendre plus</button></div>';
+      }
       h+='</div><div class="savoir-gap"></div>';
     }
     // ── Exercice Vrai/Faux (ou 2 catégories) — colonnes + bouton Corriger ──
@@ -1970,6 +2554,154 @@ document.getElementById('btn-reset').addEventListener('click',()=>{
   S.pl={};S.sel=null;S.fb={};S.vfSel={};
   document.querySelectorAll('.vf-summary').forEach(el=>{el.textContent='';el.className='vf-summary';});
   render();
+});
+
+// ── « EN APPRENDRE PLUS » : rendu du panneau ──────────────────────────
+// Souligne en vert ce qui est noté entre accolades : « superficiel{le} »,
+// « Pour{riez}-vous… ». Les crochets restent libres pour les sons — [y], [u].
+function plMark(w){
+  return String(w).split(/(\{[^}]*\})/).map(p=>
+    (p.charAt(0)==='{' && p.charAt(p.length-1)==='}')
+      ? '<span class="pl-end">'+esc(p.slice(1,-1))+'</span>'
+      : esc(p)
+  ).join('');
+}
+const plPlain = w => String(w).replace(/[{}]/g,'');
+const plLab = {};   // état des laboratoires, par clé « exoId-index de bloc »
+
+function plBloc(b, exId, bi){
+  const eye = {texte:'Explication', ana:'Anatomie', labo:'À manipuler',
+               ex:'Exemples', piege:'Attention', check:'Vérifiez-vous'}[b.t] || 'Explication';
+  let h='<div class="pl-blk"><div class="pl-eye">'+eye+'</div>';
+  if(b.h) h+='<div class="pl-h">'+esc(b.h)+'</div>';
+  if(b.p) h+='<div class="pl-p">'+b.p+'</div>';
+
+  if(b.t==='ana'){
+    h+='<div class="pl-ana">';
+    b.mots.forEach(m=>{
+      const key = m[2]===true || /noyau/i.test(m[0]);
+      h+='<div class="pl-tok'+(key?' is-key':'')+'"><span class="pl-tok-lbl">'+esc(m[0])+'</span>'
+       + '<span class="pl-tok-w">'+plMark(m[1])+'</span></div>';
+    });
+    h+='<button class="btn-audio-round" type="button" title="Écouter le groupe"'
+     + ' onclick="speakText(null,\''+jsq(b.mots.map(m=>plPlain(m[1])).join(' '))+'\')">'+ICON_SPEAK+'</button>';
+    h+='</div>';
+  }
+
+  if(b.t==='labo'){
+    h+='<div id="lab-'+exId+'-'+bi+'" style="margin-top:16px">';
+    b.axes.forEach(a=>{
+      h+='<div class="pl-axe"><div class="pl-axe-lbl">'+esc(a.lbl)+'</div><div class="pl-opts">';
+      a.opts.forEach(o=>{
+        h+='<button class="pl-opt" type="button" data-axe="'+a.id+'" data-val="'+o[0]+'" aria-pressed="false"'
+         + ' onclick="plLabo(\''+exId+'\','+bi+',\''+a.id+'\',\''+o[0]+'\')">'+esc(o[1])+'</button>';
+      });
+      h+='</div></div>';
+    });
+    h+='<div class="pl-out"><div class="pl-out-w"></div>'
+     + '<button class="btn-audio-round" type="button" title="Écouter">'+ICON_SPEAK+'</button>'
+     + '<div class="pl-out-n"></div></div></div>';
+  }
+
+  if(b.t==='ex'){
+    h+='<div style="margin-top:14px">';
+    b.rows.forEach(r=>{
+      h+='<div class="pl-ex"><button class="btn-audio-round" type="button" title="Écouter"'
+       + ' onclick="speakText(null,\''+jsq(r[0])+'\')">'+ICON_SPEAK+'</button>'
+       + '<span class="pl-ex-w">'+esc(r[0])+'</span><span class="pl-ex-t">'+esc(r[1])+'</span></div>';
+    });
+    h+='</div>';
+  }
+
+  if(b.t==='piege'){
+    h+='<div style="margin-top:6px">';
+    b.rows.forEach(r=>{
+      h+='<div class="pl-trap"><div class="pl-bad"><span aria-hidden="true">✕</span><span>'+esc(r[0])+'</span></div>'
+       + '<div class="pl-good"><span aria-hidden="true">✓</span><span>'+esc(r[1])+'</span></div>'
+       + '<div class="pl-why">'+r[2]+'</div></div>';
+    });
+    h+='</div>';
+  }
+
+  if(b.t==='check'){
+    h+='<div style="margin-top:12px">';
+    b.qs.forEach((q,qi)=>{
+      h+='<div class="pl-q"><div class="pl-qtxt">'+esc(q.q)+'</div><div class="pl-opts">';
+      q.opts.forEach((o,oi)=>{
+        h+='<button class="pl-opt" type="button" onclick="plCheck(this,\''+exId+'\','+bi+','+qi+','+oi+')">'+esc(o)+'</button>';
+      });
+      h+='</div><div class="pl-fb" aria-live="polite"></div></div>';
+    });
+    h+='</div>';
+  }
+
+  if(b.note) h+='<div class="pl-note">'+b.note+'</div>';
+  return h+'</div>';
+}
+
+function plLabo(exId, bi, axeId, val){
+  const key=exId+'-'+bi, b=PLUS[exId].blocs[bi];
+  const st=plLab[key] || (plLab[key]={});
+  b.axes.forEach(a=>{ if(st[a.id]==null) st[a.id]=a.opts[0][0]; });
+  if(axeId) st[axeId]=val;
+  const box=document.getElementById('lab-'+key); if(!box) return;
+  box.querySelectorAll('.pl-opt[data-axe]').forEach(el=>{
+    const on = st[el.dataset.axe]===el.dataset.val;
+    el.classList.toggle('on', on);
+    el.setAttribute('aria-pressed', on?'true':'false');
+  });
+  const o = b.out[b.axes.map(a=>st[a.id]).join('')];
+  if(!o) return;
+  const out = box.querySelector('.pl-out-w');
+  out.innerHTML = o.w.map(plMark).join(' ');
+  // Une phrase longue ne tient pas au corps de 27 px : on descend d'un cran.
+  out.classList.toggle('is-long', o.w.map(plPlain).join(' ').length > 30);
+  box.querySelector('.pl-out-n').textContent = o.n;
+  // `say` sert quand le texte affiché contient de la ponctuation de mise en
+  // page (une paire « tout · tu » se lit mieux avec une virgule).
+  const phrase = o.say || o.w.map(plPlain).join(' ');
+  box.querySelector('.pl-out .btn-audio-round').onclick = function(){ speakText(null, phrase); };
+}
+
+function plCheck(btn, exId, bi, qi, oi){
+  const q=PLUS[exId].blocs[bi].qs[qi];
+  const wrap=btn.closest('.pl-q');
+  const opts=wrap.querySelectorAll('.pl-opt');
+  opts.forEach(el=>el.classList.remove('ok','no'));
+  const good = oi===q.ok;
+  btn.classList.add(good?'ok':'no');
+  if(!good) opts[q.ok].classList.add('ok');
+  const fb=wrap.querySelector('.pl-fb');
+  fb.className='pl-fb on '+(good?'ok':'no');
+  fb.innerHTML='<span aria-hidden="true">'+(good?'✓':'✕')+'</span> '+(good?'':'La bonne réponse est « '+esc(q.opts[q.ok])+' ». ')+q.fb;
+}
+
+let plLastFocus=null;
+function plusOpen(exId){
+  const P=PLUS[exId]; if(!P) return;
+  document.getElementById('plus-eye').textContent = P.eye || 'Mini-leçon';
+  document.getElementById('plus-tit').textContent = P.tit;
+  const body=document.getElementById('plus-body');
+  body.innerHTML = P.blocs.map((b,bi)=>plBloc(b,exId,bi)).join('');
+  body.scrollTop=0;
+  document.getElementById('plus-ov').classList.add('on');
+  // Le défilement appartient à <html> (body est figé à height:100%) — poser
+  // overflow:hidden sur body rognerait toute la page.
+  document.documentElement.style.overflow='hidden';
+  P.blocs.forEach((b,bi)=>{ if(b.t==='labo') plLabo(exId,bi,null,null); });
+  plLastFocus=document.activeElement;
+  document.getElementById('plus-close').focus();
+  lmsTrack('plus_open', {savoir: exId});
+}
+function plusClose(){
+  document.getElementById('plus-ov').classList.remove('on');
+  document.documentElement.style.overflow='';
+  if(plLastFocus && plLastFocus.focus) plLastFocus.focus();
+}
+document.getElementById('plus-close').addEventListener('click', plusClose);
+document.getElementById('plus-ov').addEventListener('click', e=>{ if(e.target.id==='plus-ov') plusClose(); });
+document.addEventListener('keydown', e=>{
+  if(e.key==='Escape' && document.getElementById('plus-ov').classList.contains('on')) plusClose();
 });
 
 // ── FLASHCARDS ────────────────────────────────────────────────────────
