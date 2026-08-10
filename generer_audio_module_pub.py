@@ -16,39 +16,39 @@ except ImportError:
     sys.exit(1)
 
 VOICES = {
-    "masculin_1":  "93nuHbke4dTER9x2pDwE",   # 👨 Masculin #1 — Vincent
-    "feminin_2":   "WW0JfNPk5DgcQdM0d6X6",   # 👩 Féminine #2 — Nadia
+    "masculin_1":  "93nuHbke4dTER9x2pDwE",   # 👨 Masculin #1 — Omar
+    "feminin_2":   "WW0JfNPk5DgcQdM0d6X6",   # 👩 Féminine #2 — Solange
 }
 
 DEFAULT_VOICE_SETTINGS = {"stability": 0.5, "similarity_boost": 0.75}
 VOICE_SETTINGS_OVERRIDES = {}
 
 VOICE_ASSOC = {
-    "NADIA":   "feminin_2",
-    "VINCENT": "masculin_1",
+    "SOLANGE": "feminin_2",
+    "OMAR":    "masculin_1",
 }
 
 DIALOGUES = {
     "module-pub/prep": {
-        "title": "Des publicités efficaces — Je me prépare (Des projets de vacances)",
+        "title": "Des publicités efficaces — Je me prépare (Trente secondes en ondes)",
         "lines": [
-            ("NADIA", "Quand mon père, ma sœur et mon neveu Mateo vont venir au Québec en juillet, j'aimerais leur montrer les plus beaux coins de la province. J'adore organiser des voyages !"),
-            ("VINCENT", "Parmi les endroits merveilleux à visiter, il y a les parcs nationaux, comme le parc de la Jacques-Cartier et le parc du Bic."),
-            ("NADIA", "Oui, tu as raison. Il y a aussi les chutes Montmorency, une beauté naturelle de la province, que je n'ai pas encore vues. On pourrait aussi visiter la ville de Québec, une ville plus vieille que Montréal !"),
-            ("NADIA", "Il y a tellement de beaux endroits à visiter ! Je ne suis jamais allée aux Îles-de-la-Madeleine, en Gaspésie… Connais-tu de plus beaux paysages ?"),
-            ("VINCENT", "Woh ! Calme-toi, Nadia ! Nous ne pourrons pas visiter tous ces endroits. Nous allons devoir faire des choix. N'oublie pas que leurs vacances seront moins longues que nos vacances. Il faut aussi prévoir du temps pour se reposer un peu…"),
-            ("NADIA", "C'est vrai ! Hier, je suis tombée sur de belles affiches publicitaires à l'agence de voyages du quartier. J'ai toujours rêvé de leur faire découvrir toute la province. Leur visite, c'est la parfaite occasion. Je vais retourner à l'agence pour demander conseil."),
-            ("VINCENT", "Quelle excellente idée !"),
+            ("SOLANGE", "Omar, j'ai écrit le texte pour annoncer notre atelier de réparation. Je l'ai lu à voix haute : il dure une minute quarante."),
+            ("OMAR", "Une minute quarante ! Solange, une capsule à Radio Limoilou, c'est trente secondes, pas une de plus. Il va falloir couper."),
+            ("SOLANGE", "Couper quoi ? Je parle des grille-pain, des lampes, des vélos, des vêtements déchirés, des bénévoles, du café gratuit…"),
+            ("OMAR", "Justement, tu parles de tout. À qui veux-tu parler, au juste ? Choisis les gens que tu veux rejoindre, puis garde seulement ce qui les touche."),
+            ("SOLANGE", "Aux gens du quartier qui gardent un appareil brisé dans une armoire parce qu'ils n'osent pas le jeter. C'est eux, mon récepteur."),
+            ("OMAR", "Alors garde l'objet brisé, la date et l'adresse. Termine par une phrase courte, facile à retenir. Le reste, tu l'écriras sur l'affiche."),
+            ("SOLANGE", "« Rien ne se jette, tout se répare. » Voilà, je viens de la trouver, ma phrase courte !"),
         ],
     },
     "module-pub/t1": {
-        "title": "Des publicités efficaces — Tâche 1 (Planifier les activités)",
+        "title": "Des publicités efficaces — Tâche 1 (Deux capsules déjà diffusées)",
         "lines": [
-            ("VINCENT", "Nadia, à Trois-Rivières, on pourrait visiter le Boréalis et se promener sur les berges du fleuve."),
-            ("NADIA", "Bonne idée ! Et à Val-David, il y a un parc d'aventure avec de la tyrolienne."),
-            ("VINCENT", "Mateo va adorer ça ! Et à Tadoussac, on pourrait faire une excursion pour observer les baleines."),
-            ("NADIA", "Mon père va être content, il adore la nature. Et toi, Mateo, qu'est-ce que tu préfères : la tyrolienne ou l'observation des baleines ?"),
-            ("VINCENT", "La tyrolienne, ça coûte moins cher que l'excursion aux baleines, mais je pense que Mateo va préférer les baleines !"),
+            ("OMAR", "Avant d'enregistrer, écoute les deux capsules du mois passé. Celle de la friperie dure vingt secondes ; celle de la cuisine collective, quarante."),
+            ("SOLANGE", "À la friperie, on parle plus vite que sur l'autre capsule. On comprend moins bien, je trouve."),
+            ("OMAR", "Tu as raison. La capsule de la cuisine collective est plus longue, mais elle est aussi plus claire que celle de la friperie."),
+            ("SOLANGE", "Et la musique ? Celle de la friperie est plus forte que la musique de la cuisine collective. Elle couvre la voix."),
+            ("OMAR", "Alors baisse la musique, ralentis un peu, et insiste sur un seul mot : gratuit. C'est celui-là que les gens vont retenir."),
         ],
     },
 }
