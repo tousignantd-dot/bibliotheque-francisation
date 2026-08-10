@@ -16,17 +16,20 @@ except ImportError:
 VOICE = "K7gx0ylJdff0yjM2uVQS"   # 👩 enseignante
 
 CLIPS = {
-    # Tableau « Des sons et des lettres » (savoir de prPhon)
-    "prPhon_savoir_0_0": "patient",
-    "prPhon_savoir_0_1": "jambe",
-    "prPhon_savoir_0_2": "temps",
-    "prPhon_savoir_0_3": "dent",
-    "prPhon_savoir_1_0": "tendon",
-    "prPhon_savoir_1_1": "front",
-    "prPhon_savoir_1_2": "nom",
-    "prPhon_savoir_2_0": "main",
-    "prPhon_savoir_2_1": "examen",
-    "prPhon_savoir_2_2": "médecin",
+    # Tableau « Des sons et des lettres » (savoir de prPhon). On lit la
+    # PHRASE PORTEUSE (CARRIER_PHRASES dans le HTML), pas le mot seul : un
+    # mot isolé ne donne aucun indice de langue au moteur — voir le
+    # commentaire de TEXT_OVERRIDES plus bas pour le détail du problème.
+    "prPhon_savoir_0_0": "Le patient attend son tour.",
+    "prPhon_savoir_0_1": "Ma jambe me fait mal.",
+    "prPhon_savoir_0_2": "Le temps d'attente est long.",
+    "prPhon_savoir_0_3": "J'ai une dent qui me fait souffrir.",
+    "prPhon_savoir_1_0": "Le tendon est enflammé.",
+    "prPhon_savoir_1_1": "Il a le front chaud.",
+    "prPhon_savoir_1_2": "Écrivez votre nom ici.",
+    "prPhon_savoir_2_0": "Je me suis blessé à la main.",
+    "prPhon_savoir_2_1": "L'examen dure dix minutes.",
+    "prPhon_savoir_2_2": "Le médecin arrive bientôt.",
     # Exercice 2 — mots à écouter (cartes)
     "prPhon_pha": "patient",
     "prPhon_phb": "tendon",
@@ -38,8 +41,24 @@ CLIPS = {
     "prPhon_phh": "consultation",
 }
 
-# Orthographe phonétique quand ElevenLabs prononce mal le mot réel.
-TEXT_OVERRIDES = {}
+# Un mot seul, sans contexte, ne donne au moteur aucun indice de langue —
+# « dent » ou « consultation » se sont fait lire en anglais ou en espagnol
+# (signalé 2026-08-10). Un déterminant (le/la, jamais un/une : « un » se
+# prononce lui-même comme une voyelle nasale, ce qui brouillerait justement
+# le son qu'on teste) suffit à lever l'ambiguïté sans donner d'indice sur
+# la réponse — la voyelle testée est dans le nom, pas dans l'article.
+# Plus fiable qu'une réorthographie phonétique : celle-ci ne garantit rien
+# et a déjà échoué deux fois de suite sur « hiver » dans module-travail.
+TEXT_OVERRIDES = {
+    "prPhon_pha": "le patient",
+    "prPhon_phb": "le tendon",
+    "prPhon_phc": "la jambe",
+    "prPhon_phd": "le front",
+    "prPhon_phe": "le temps",
+    "prPhon_phf": "le nom",
+    "prPhon_phg": "la dent",
+    "prPhon_phh": "la consultation",
+}
 
 
 def generate(api_key, text, path):

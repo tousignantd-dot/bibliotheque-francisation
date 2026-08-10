@@ -19,21 +19,19 @@ except ImportError:
 
 VOICE_ID = "IPgYtHTNLjC7Bq7IPHrm"  # Narrateur — même voix pour toute la page, cohérence pédagogique
 
-# Voix de secours pour des clips précis où le narrateur prononçait mal
-# (ex. « hiver » incompréhensible avec le narrateur — signalé 2026-08-02).
-VOICE_OVERRIDES = {
-    "prPhon_savoir_0_5": "lpWJhr15teNWHhRqdTOQ",  # hiver
-    "prPhon_savoir_1_3": "lpWJhr15teNWHhRqdTOQ",  # hiver
-    "prPhon_phf": "lpWJhr15teNWHhRqdTOQ",         # hiver
-}
-# Orthographe phonétique envoyée à ElevenLabs pour ces fileId — le texte
-# français correct ("hiver") est mal prononcé par le modèle ; on envoie une
-# graphie homophone qui se prononce correctement, tout en gardant "hiver"
-# affiché à l'élève dans le tableau des sons.
+# « hiver », mot isolé, se faisait mal lire — signalé 2026-08-02, deux
+# correctifs tentés (voix de secours, puis réorthographie « i-vair ») et
+# aucun des deux n'a réglé le problème, signalé de nouveau 2026-08-10.
+# Cause probable : un mot seul sans contexte ne donne au moteur aucun indice
+# de langue, et une réorthographie n'est pas garantie d'être relue comme
+# prévu. On revient à la voix normale et on donne un vrai contexte
+# grammatical français à la place — « en hiver » plutôt que « hiver » —
+# sans changer le mot affiché à l'élève. Même principe appliqué à
+# module-consultation le même jour (voir generer_audio_module_consultation_sons.py).
 TEXT_OVERRIDES = {
-    "prPhon_savoir_0_5": "i-vair",
-    "prPhon_savoir_1_3": "i-vair",
-    "prPhon_phf": "i-vair",
+    "prPhon_savoir_0_5": "en hiver",
+    "prPhon_savoir_1_3": "en hiver",
+    "prPhon_phf": "en hiver",
 }
 
 # fileId → texte à lire (doit correspondre exactement aux appels playWord()
@@ -106,13 +104,22 @@ def main():
     dir_path = Path("/Users/danieltousignant/Claude/bibliotheque-francisation/assets/interactive/module-travail/sons")
     dir_path.mkdir(parents=True, exist_ok=True)
 
+    # --only id1,id2 : ne régénère que ces fileId précis (pour corriger un
+    # clip sans repayer tout le script).
+    only = None
+    for i, a in enumerate(sys.argv):
+        if a == "--only" and i + 1 < len(sys.argv):
+            only = set(x.strip() for x in sys.argv[i + 1].split(",") if x.strip())
+
     total = 0
     success = 0
     for file_id, text in CLIPS.items():
+        if only and file_id not in only:
+            continue
         output_path = dir_path / f"{file_id}.mp3"
         print(f"  {file_id:22s} → ", end="", flush=True)
         total += 1
-        voice_id = VOICE_OVERRIDES.get(file_id, VOICE_ID)
+        voice_id = VOICE_ID
         text_to_speak = TEXT_OVERRIDES.get(file_id, text)
         if generate_audio(api_key, text_to_speak, voice_id, output_path):
             print(f"✓ {text}" + (f" (envoyé: {text_to_speak})" if text_to_speak != text else ""))
