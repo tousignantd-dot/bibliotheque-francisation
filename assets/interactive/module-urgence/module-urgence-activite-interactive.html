@@ -505,6 +505,37 @@ body{
 .pl-fb.no{color:var(--no-ink)}
 @media(max-width:640px){#plus-panel{width:100%}#plus-tit{font-size:23px}#plus-body{padding:16px 18px 56px}.pl-blk{padding:18px}}
 
+/* ── Proposition d'aide après plusieurs erreurs ────────────────────────
+   Volontairement discrète et refusable : un panneau qui s'ouvrirait tout
+   seul après un échec se lirait comme une punition. Ici l'élève choisit. */
+.aide{
+  margin-top:16px; padding:14px 16px;
+  background:var(--warn-bg); border:1px solid var(--warn-line);
+  border-left:4px solid var(--warn-line); border-radius:14px;
+  display:flex; align-items:center; gap:14px; flex-wrap:wrap;
+}
+.aide-txt{flex:1 1 260px; font-size:15.5px; font-weight:600; line-height:1.5; color:var(--warn-ink)}
+.aide-txt b{font-weight:900}
+.aide-btns{display:flex; gap:8px; flex-wrap:wrap}
+.aide .btn-oui{
+  min-height:44px; padding:0 18px; border-radius:999px; border:none;
+  background:var(--ws-ink); color:#fff;
+  font-family:'Nunito',sans-serif; font-size:14.5px; font-weight:800; cursor:pointer;
+}
+.aide .btn-oui:hover{background:#000}
+.aide .btn-non{
+  min-height:44px; padding:0 16px; border-radius:999px;
+  border:1px solid var(--border); background:transparent; color:var(--text-muted);
+  font-family:'Nunito',sans-serif; font-size:14.5px; font-weight:700; cursor:pointer;
+}
+.aide .btn-non:hover{background:rgba(0,0,0,.04)}
+/* Le bloc vers lequel on emmène l'élève s'annonce brièvement, sinon il
+   atterrit au milieu du panneau sans savoir pourquoi. */
+.pl-blk.is-cible{
+  box-shadow:0 0 0 3px var(--ws-accent);
+  transition:box-shadow .4s ease;
+}
+
 /* Focus clavier visible partout (B.4) */
 :focus-visible{outline:3px solid var(--ws-accent);outline-offset:2px;border-radius:inherit}
 textarea:focus-visible,.winput:focus-visible{outline:none;border-color:var(--ws-accent)}
@@ -1853,6 +1884,9 @@ function vfCheckAll(exId) {
     S.pl[r.id] = {iid:r.id, lbl:sel, cat:'vf'};
     trackPlacement(r.id, ok);
   });
+  // Nombre d'énoncés encore faux à cette correction — pas un cumul : corriger
+  // deux fois de suite ne doit pas gonfler artificiellement le compte.
+  if (answered >= ex.rows.length) evaluerAide(exId, answered - correct);
   const sumEl = document.getElementById('vfsum-'+exId);
   if (sumEl) {
     if (answered < ex.rows.length) {
@@ -2396,7 +2430,12 @@ async function checkWrite(exId, i){
     fb.innerHTML= ok ? '✅ Bravo, c\'est exact !'
       : '❌ Presque ! La bonne réponse est : <b>'+esc(it.accept[0])+'</b>';
     if(ok){ inp.classList.add('good'); inp.disabled=true; trackPlacement(zid,true); }
-    else { trackPlacement(zid,false); }
+    else {
+      trackPlacement(zid,false);
+      // Ici le cumul a du sens : chaque envoi raté est une tentative distincte.
+      const rates = ex.items.reduce((s,_,k)=> s + (TR.attempts['w_'+exId+'_'+k]||0), 0);
+      evaluerAide(exId, rates);
+    }
     return;
   }
 
@@ -2718,8 +2757,57 @@ function plCheck(btn, exId, bi, qi, oi){
   fb.innerHTML='<span aria-hidden="true">'+(good?'✓':'✕')+'</span> '+(good?'':'La bonne réponse est « '+esc(q.opts[q.ok])+' ». ')+q.fb;
 }
 
+// ── PROPOSITION D'AIDE APRÈS PLUSIEURS ERREURS ────────────────────────
+// Le module connaît déjà, à la correction, quels énoncés sont ratés. Au-delà
+// d'un seuil, il propose la mini-leçon correspondante — sans jamais l'imposer
+// ni toucher au score. Une seule proposition par exercice et par séance.
+const AIDE = {err:{}, etat:{}};      // etat : 'proposee' | 'ouverte' | 'refusee'
+const AIDE_SEUIL = 3;
+
+function evaluerAide(exId, nbErreurs){
+  if(!exId || !PLUS[exId]) return;                 // pas de mini-leçon pour cet exercice
+  AIDE.err[exId] = Math.max(AIDE.err[exId]||0, nbErreurs);
+  if(AIDE.err[exId] >= AIDE_SEUIL && !AIDE.etat[exId]) proposerAide(exId);
+}
+
+function proposerAide(exId){
+  const card = document.getElementById('exo-'+exId);
+  if(!card || card.querySelector('.aide')) return;
+  AIDE.etat[exId] = 'proposee';
+  const n = AIDE.err[exId];
+  const el = document.createElement('div');
+  el.className = 'aide';
+  el.innerHTML =
+      '<div class="aide-txt"><b>' + n + ' erreurs</b> dans cet exercice. '
+    + 'La mini-leçon « ' + esc(PLUS[exId].tit) + ' » explique ce point autrement, '
+    + 'avec des exemples à manipuler.</div>'
+    + '<div class="aide-btns">'
+    + '<button class="btn-oui" type="button" onclick="accepterAide(\'' + exId + '\')">Revoir l\'explication</button>'
+    + '<button class="btn-non" type="button" onclick="refuserAide(\'' + exId + '\')">Plus tard</button>'
+    + '</div>';
+  card.appendChild(el);
+  lmsTrack('aide_proposee', {exercice: exId, erreurs: n});
+}
+
+function accepterAide(exId){
+  AIDE.etat[exId] = 'ouverte';
+  const el = document.querySelector('#exo-'+exId+' .aide');
+  if(el) el.remove();
+  lmsTrack('aide_acceptee', {exercice: exId, erreurs: AIDE.err[exId]});
+  plusOpen(exId, 'labo');            // on ouvre sur le bloc à manipuler
+}
+
+function refuserAide(exId){
+  AIDE.etat[exId] = 'refusee';
+  const el = document.querySelector('#exo-'+exId+' .aide');
+  if(el) el.remove();
+  lmsTrack('aide_refusee', {exercice: exId, erreurs: AIDE.err[exId]});
+}
+
 let plLastFocus=null;
-function plusOpen(exId){
+// `cible` : type de bloc vers lequel faire défiler le panneau ('labo' pour la
+// manipulation). Sans lui, l'élève arrive en haut d'une longue leçon.
+function plusOpen(exId, cible){
   const P=PLUS[exId]; if(!P) return;
   document.getElementById('plus-eye').textContent = P.eye || 'Mini-leçon';
   document.getElementById('plus-tit').textContent = P.tit;
@@ -2733,7 +2821,20 @@ function plusOpen(exId){
   P.blocs.forEach((b,bi)=>{ if(b.t==='labo') plLabo(exId,bi,null,null); });
   plLastFocus=document.activeElement;
   document.getElementById('plus-close').focus();
-  lmsTrack('plus_open', {savoir: exId});
+  lmsTrack('plus_open', {savoir: exId, cible: cible || ''});
+  if(cible){
+    const i = P.blocs.findIndex(b => b.t === cible);
+    if(i >= 0){
+      const bloc = body.children[i];
+      if(bloc){
+        // Un défilement immédiat : le panneau vient de s'ouvrir, une animation
+        // par-dessus l'animation d'entrée donnerait un effet brouillon.
+        bloc.scrollIntoView({block:'start'});
+        bloc.classList.add('is-cible');
+        setTimeout(()=>bloc.classList.remove('is-cible'), 2500);
+      }
+    }
+  }
 }
 function plusClose(){
   document.getElementById('plus-ov').classList.remove('on');
