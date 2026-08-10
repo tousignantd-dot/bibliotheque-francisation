@@ -484,6 +484,8 @@ class Handler(http.server.SimpleHTTPRequestHandler):
             self._handle_analyze_grammar()
         elif path == "/api/check-written":
             self._handle_check_written()
+        elif path == "/api/analyser-erreurs":
+            self._handle_analyser_erreurs()
         elif path == "/api/oral/submit":
             self._handle_oral_submit()
         elif path == "/api/activities":
@@ -1223,6 +1225,82 @@ class Handler(http.server.SimpleHTTPRequestHandler):
             "correct": bool(parsed.get("correct", False)),
             "feedback": parsed.get("feedback", ""),
             "correction": parsed.get("correction", ""),
+        })
+
+    def _handle_analyser_erreurs(self):
+        """Analyse le PATRON derrière les erreurs d'un élève sur un exercice
+        complet, plutôt qu'une réponse isolée. Le module connaît déjà les bonnes
+        réponses : l'IA n'évalue rien, elle explique seulement ce qui se répète.
+        Corps attendu : {code, exercice, notion, items:[{enonce, choix, bonne}]}."""
+        length = int(self.headers.get("Content-Length", 0))
+        try:
+            body = json.loads(self.rfile.read(length)) if length else {}
+        except json.JSONDecodeError:
+            json_response(self, {"error": "Requête invalide"}, 400)
+            return
+
+        code = body.get("code", "").strip().upper()
+        if not validate_student_code(code):
+            json_response(self, {"error": "Non autorisé"}, 401)
+            return
+
+        exercice = body.get("exercice", "").strip()[:200]
+        notion = body.get("notion", "").strip()[:200]
+        items = body.get("items", [])
+        if not isinstance(items, list) or not items:
+            json_response(self, {"error": "Aucune réponse à analyser"}, 400)
+            return
+
+        # Plafond dur : un exercice du module compte au plus une douzaine de
+        # lignes. Au-delà, c'est un appel malformé, pas un élève en difficulté.
+        lignes = []
+        for it in items[:15]:
+            if not isinstance(it, dict):
+                continue
+            lignes.append("- « {} » → l'élève a répondu « {} », la bonne réponse était « {} »{}".format(
+                str(it.get("enonce", ""))[:200],
+                str(it.get("choix", ""))[:100],
+                str(it.get("bonne", ""))[:100],
+                "" if str(it.get("choix", "")) != str(it.get("bonne", "")) else "  (réussi)",
+            ))
+        if not lignes:
+            json_response(self, {"error": "Aucune réponse à analyser"}, 400)
+            return
+
+        system_prompt = (
+            "Tu es un enseignant de francisation (FLS) au Québec, niveau 4 "
+            "(débutant-intermédiaire). On te donne TOUTES les réponses d'un élève "
+            "adulte immigrant à un exercice, avec les bonnes réponses. "
+            "Les bonnes réponses sont déjà connues et déjà affichées à l'élève : "
+            "ne les répète pas et ne recorrige rien. "
+            "Ton seul travail est de trouver le POINT COMMUN entre les erreurs — "
+            "la règle mal comprise, le critère mal appliqué, la confusion de sens "
+            "ou de son — et de l'expliquer simplement.\n"
+            "Tutoie l'élève. Sois bref, concret et encourageant, jamais moralisateur. "
+            "Utilise un français simple, des phrases courtes. Aucun jargon "
+            "grammatical non expliqué. Aucun émoji.\n"
+            "Si les erreurs semblent dispersées, sans point commun, dis-le "
+            "honnêtement dans patron plutôt que d'inventer une règle.\n"
+            "Réponds UNIQUEMENT par un objet JSON strict, sans texte autour :\n"
+            '{"patron": "ce qui revient dans les erreurs, une phrase", '
+            '"explication": "deux ou trois phrases qui expliquent la règle ou le '
+            'critère en cause, avec un exemple tiré de l\'exercice", '
+            '"conseil": "une seule action concrète à faire la prochaine fois"}'
+        )
+        user_content = (
+            f"Exercice : « {exercice} »\n"
+            + (f"Notion travaillée : {notion}\n" if notion else "")
+            + "Réponses de l'élève :\n" + "\n".join(lignes)
+        )
+
+        parsed, err = self._call_anthropic_json(system_prompt, user_content, max_tokens=500)
+        if err:
+            json_response(self, {"error": err[0]}, err[1])
+            return
+        json_response(self, {
+            "patron": parsed.get("patron", ""),
+            "explication": parsed.get("explication", ""),
+            "conseil": parsed.get("conseil", ""),
         })
 
     def _handle_correct_french(self):

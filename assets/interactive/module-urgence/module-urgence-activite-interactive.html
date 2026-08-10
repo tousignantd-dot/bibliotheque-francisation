@@ -529,6 +529,21 @@ body{
   font-family:'Nunito',sans-serif; font-size:14.5px; font-weight:700; cursor:pointer;
 }
 .aide .btn-non:hover{background:rgba(0,0,0,.04)}
+.aide .btn-oui[disabled]{opacity:.45; cursor:default}
+.aide .btn-oui .icon-svg{width:16px; height:16px; margin-right:6px;
+  filter:brightness(0) invert(1)}
+/* Réponse de l'assistant : sur fond blanc, détachée du bandeau d'alerte —
+   c'est une explication, pas un message d'erreur de plus. */
+.aide-out{display:none; flex-basis:100%}
+.aide-out.on{display:block; margin-top:4px; padding:16px 18px;
+  background:var(--surface-card); border:1px solid var(--border); border-radius:14px}
+.aide-out.wait{font-size:15px; font-weight:600; color:var(--text-muted)}
+.aide-out.no{color:var(--no-ink); font-size:15px; font-weight:700}
+.ao-k{font-size:11.5px; font-weight:800; text-transform:uppercase;
+  letter-spacing:.13em; color:var(--text-muted); margin-bottom:5px}
+.ao-k:not(:first-child){margin-top:14px}
+.ao-v{font-size:16.5px; font-weight:500; line-height:1.6; color:var(--text-strong)}
+.ao-conseil{font-weight:800}
 /* Le bloc vers lequel on emmène l'élève s'annonce brièvement, sinon il
    atterrit au milieu du panneau sans savoir pourquoi. */
 .pl-blk.is-cible{
@@ -2764,8 +2779,30 @@ function plCheck(btn, exId, bi, qi, oi){
 const AIDE = {err:{}, etat:{}};      // etat : 'proposee' | 'ouverte' | 'refusee'
 const AIDE_SEUIL = 3;
 
+// Les exercices analysables : ceux dont on peut reconstituer, ligne par ligne,
+// ce que l'élève a choisi et ce qu'il fallait choisir.
+function releverReponses(exId){
+  const ex = EXOS.find(e=>e.id===exId); if(!ex) return [];
+  if(ex.type==='vf'){
+    return ex.rows.filter(r=>S.vfSel[r.id]).map(r=>({
+      enonce:r.txt, choix:S.vfSel[r.id], bonne:r.ok}));
+  }
+  if(ex.type==='write'){
+    return ex.items.map((it,i)=>{
+      const inp=document.getElementById('wi_'+exId+'_'+i);
+      const val=inp ? inp.value.trim() : '';
+      if(!val || !it.accept) return null;
+      return {enonce:it.q, choix:val, bonne:it.accept[0]};
+    }).filter(Boolean);
+  }
+  return [];
+}
+
 function evaluerAide(exId, nbErreurs){
-  if(!exId || !PLUS[exId]) return;                 // pas de mini-leçon pour cet exercice
+  if(!exId) return;
+  // L'analyse d'erreurs vaut pour tout exercice reconstituable — y compris ceux
+  // sans mini-leçon, comme « 911 ou 811 », où le patron est justement l'essentiel.
+  if(!PLUS[exId] && !releverReponses(exId).length) return;
   AIDE.err[exId] = Math.max(AIDE.err[exId]||0, nbErreurs);
   if(AIDE.err[exId] >= AIDE_SEUIL && !AIDE.etat[exId]) proposerAide(exId);
 }
@@ -2775,18 +2812,26 @@ function proposerAide(exId){
   if(!card || card.querySelector('.aide')) return;
   AIDE.etat[exId] = 'proposee';
   const n = AIDE.err[exId];
+  const analysable = releverReponses(exId).length > 0;
   const el = document.createElement('div');
   el.className = 'aide';
+  el.id = 'aide-' + exId;
   el.innerHTML =
-      '<div class="aide-txt"><b>' + n + ' erreurs</b> dans cet exercice. '
-    + 'La mini-leçon « ' + esc(PLUS[exId].tit) + ' » explique ce point autrement, '
-    + 'avec des exemples à manipuler.</div>'
+      '<div class="aide-txt"><b>' + n + ' erreurs</b> dans cet exercice.'
+    + (PLUS[exId] ? ' La mini-leçon « ' + esc(PLUS[exId].tit) + ' » explique ce point autrement.' : '')
+    + '</div>'
     + '<div class="aide-btns">'
-    + '<button class="btn-oui" type="button" onclick="accepterAide(\'' + exId + '\')">Revoir l\'explication</button>'
+    + (analysable
+        ? '<button class="btn-oui" type="button" onclick="analyserErreurs(\'' + exId + '\')">'
+          + ICON_ASSISTANT + ' Pourquoi je me trompe ?</button>' : '')
+    + (PLUS[exId]
+        ? '<button class="' + (analysable ? 'btn-non' : 'btn-oui') + '" type="button"'
+          + ' onclick="accepterAide(\'' + exId + '\')">Revoir l\'explication</button>' : '')
     + '<button class="btn-non" type="button" onclick="refuserAide(\'' + exId + '\')">Plus tard</button>'
-    + '</div>';
+    + '</div>'
+    + '<div class="aide-out" id="aideout-' + exId + '" aria-live="polite"></div>';
   card.appendChild(el);
-  lmsTrack('aide_proposee', {exercice: exId, erreurs: n});
+  lmsTrack('aide_proposee', {exercice: exId, erreurs: n, analysable: analysable});
 }
 
 function accepterAide(exId){
@@ -2795,6 +2840,53 @@ function accepterAide(exId){
   if(el) el.remove();
   lmsTrack('aide_acceptee', {exercice: exId, erreurs: AIDE.err[exId]});
   plusOpen(exId, 'labo');            // on ouvre sur le bloc à manipuler
+}
+
+// ── NIVEAU 2 : analyse du patron d'erreurs par l'IA ───────────────────
+// On envoie l'exercice COMPLET — chaque énoncé, le choix de l'élève, la bonne
+// réponse. L'IA ne juge rien : la correction est déjà faite et affichée. Elle
+// cherche seulement ce qui se répète dans les erreurs.
+async function analyserErreurs(exId){
+  const ex = EXOS.find(e=>e.id===exId); if(!ex) return;
+  const items = releverReponses(exId);
+  const out = document.getElementById('aideout-'+exId);
+  const btn = document.querySelector('#aide-'+exId+' .btn-oui');
+  if(!items.length || !out) return;
+
+  // Un seul appel par exercice et par séance : l'élève qui s'acharne ne doit
+  // pas générer une série d'appels facturés.
+  if(btn){ btn.disabled = true; }
+  out.className = 'aide-out on wait';
+  out.textContent = "L'assistant relit tes réponses…";
+
+  try{
+    const res = await fetch('/api/analyser-erreurs', {
+      method:'POST', headers:{'Content-Type':'application/json'},
+      body: JSON.stringify({
+        code: studentCode,
+        exercice: ex.tit || '',
+        notion: (ex.savoir && ex.savoir.h ? ex.savoir.h.replace(/^›\s*/,'') : ''),
+        items: items,
+      })});
+    const d = await res.json();
+    if(!res.ok){
+      out.className = 'aide-out on no';
+      out.textContent = d.error || 'Service momentanément indisponible.';
+      if(btn) btn.disabled = false;      // panne : on laisse réessayer
+      return;
+    }
+    out.className = 'aide-out on';
+    out.innerHTML =
+        (d.patron ? '<div class="ao-k">Ce qui revient</div><div class="ao-v">'+esc(d.patron)+'</div>' : '')
+      + (d.explication ? '<div class="ao-k">Pourquoi</div><div class="ao-v">'+esc(d.explication)+'</div>' : '')
+      + (d.conseil ? '<div class="ao-k">La prochaine fois</div><div class="ao-v ao-conseil">'+esc(d.conseil)+'</div>' : '');
+    AIDE.etat[exId] = 'analysee';
+    lmsTrack('aide_analysee', {exercice: exId, erreurs: AIDE.err[exId]});
+  }catch(e){
+    out.className = 'aide-out on no';
+    out.textContent = 'Impossible de contacter le serveur. Réessaie plus tard.';
+    if(btn) btn.disabled = false;
+  }
 }
 
 function refuserAide(exId){
