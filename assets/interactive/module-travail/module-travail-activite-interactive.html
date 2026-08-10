@@ -603,6 +603,45 @@ body{
   .bsec.b1{scroll-behavior:smooth}
 }
 
+/* ── Lisibilité des encadrés de savoir ────────────────────────────────
+   Deux besoins distincts, deux traitements. (1) Repérer les mots qui
+   portent la règle : le <b> passe en 900 sur la couleur d'encre, assez
+   marqué pour accrocher l'œil sans transformer la ligne en sapin de Noël.
+   (2) Distinguer un exemple d'une règle : un exemple se lit comme une
+   citation — retrait, filet coloré, italique dans la couleur de la
+   section — donc on ne le confond plus avec l'explication qui précède. */
+.savoir-val b,.savoir-val strong{font-weight:900;color:var(--ws-ink)}
+.savoir-ex{
+  display:block; margin:7px 0 1px; padding:8px 12px 8px 13px;
+  border-left:3px solid var(--sec-color,var(--ws-accent));
+  border-radius:0 10px 10px 0;
+  background:#F5F6F7;
+  font-style:italic; font-weight:700; line-height:1.45;
+  color:var(--sec-color,var(--ws-accent));
+}
+/* Le fond reprend la couleur de la section, très dilué : --ws-accent-bg est
+   vert quelle que soit la section, ce qui jurait avec un filet ambre ou
+   rouille. Repli sur le gris neutre ci-dessus si color-mix manque. */
+@supports (background:color-mix(in srgb,red 8%,transparent)){
+  .savoir-ex{background:color-mix(in srgb,var(--sec-color,#1D6B8F) 8%,transparent)}
+}
+.savoir-ex + .savoir-ex{margin-top:5px}
+/* Dans un exemple, le mot mis en avant reprend la couleur de l'exemple :
+   sinon il sortirait du bloc au lieu d'y attirer l'attention. Le <em> des
+   modules plus anciens (vert, italique) est repris ici par la même règle,
+   sans quoi il jurerait avec un filet ambre ou rouille. */
+.savoir-ex b,.savoir-ex strong,.savoir-ex em{color:inherit;font-weight:900;font-style:normal}
+/* Rangée entièrement consacrée à des exemples : l'étiquette de gauche
+   prend la même couleur, la paire se lit alors comme un seul bloc. */
+.savoir-row.is-ex .savoir-key{color:var(--sec-color,var(--ws-accent));font-weight:800}
+.savoir--pron .savoir-ex{background:#EEF7F1}
+/* Sur téléphone, la grille 34 % / 1fr ne laissait que ~130 px à l'explication :
+   les exemples s'y écrasaient sur cinq lignes. L'étiquette passe au-dessus. */
+@media(max-width:640px){
+  .savoir-row{grid-template-columns:1fr; gap:5px}
+  .savoir-key{font-size:15px}
+}
+
 /* Focus clavier visible partout (B.4) */
 :focus-visible{outline:3px solid var(--ws-accent);outline-offset:2px;border-radius:inherit}
 textarea:focus-visible,.winput:focus-visible{outline:none;border-color:var(--ws-accent)}
@@ -781,9 +820,9 @@ const EXOS = [
   {sec:'prep', id:'prPhon', type:'vf', num:'Exercice 2', tit:'Le son [e] ou [ɛ]', color:'#6B4FBB', accent:'#6B4FBB', cards:true, listen:true,
    sub:"Clique sur l'icône d'écoute pour entendre le mot, puis indique le son entendu.", tiles:['[e]','[ɛ]'],
    savoir:{h:"› Des sons et des lettres", speak:true, rows:[
-     ["[ɛ] au début ou au milieu d'un mot","è, ê, ei, ai + consonne : père, tête, treize, semaine · e + l : nouvelle · e + r : hiver", ["père","tête","treize","semaine","nouvelle","hiver"]],
-     ["[e] en fin de mot","é, ai, er : dépanné, je travaillerai, dépanner (exceptions : hiver, mer)", ["dépanné","je travaillerai","dépanner","hiver","mer"]],
-     ["[o]","o, ô : poste, dépôt, tôt, rôle", ["poste","dépôt","tôt","rôle"]],
+     ["[ɛ] au début ou au milieu d'un mot","<b>è, ê, ei, ai</b> + consonne : père, tête, treize, semaine · <b>e + l</b> : nouvelle · <b>e + r</b> : hiver", ["père","tête","treize","semaine","nouvelle","hiver"]],
+     ["[e] en fin de mot","<b>é, ai, er</b> : dépanné, je travaillerai, dépanner (exceptions : hiver, mer)", ["dépanné","je travaillerai","dépanner","hiver","mer"]],
+     ["[o]","<b>o, ô</b> : poste, dépôt, tôt, rôle", ["poste","dépôt","tôt","rôle"]],
    ]},
    rows:[
     {id:'pha', txt:"père", ok:'[ɛ]'},
@@ -845,8 +884,8 @@ const EXOS = [
   {sec:'t1', id:'t1qui', type:'write', num:'Exercice 2', tit:"La reprise de l\'information par qui", color:'#C0573A',
    sub:'Indique le groupe nominal repris par le pronom qui, souligné dans la phrase.',
    savoir:{h:"› La reprise de l'information par le pronom qui", rows:[
-     ["Le pronom qui reprend un GN","Juan suit un cours. Ce cours traite d'économie. → Juan suit un cours qui traite d'économie."],
-     ["Exemple","Elle écoute son enseignant, qui lui donne des conseils. → qui reprend son enseignant."],
+     ["Le pronom qui reprend un GN","Il évite de répéter le nom en <b>joignant les deux phrases</b> :<span class='savoir-ex'>Juan suit un cours. Ce cours traite d'économie. → Juan suit un cours <em>qui</em> traite d'économie.</span>"],
+     ["Exemple","<span class='savoir-ex'>Elle écoute son enseignant, <em>qui</em> lui donne des conseils.</span><span class='savoir-ex'><em>qui</em> reprend « son enseignant »</span>"],
    ]},
    items:[
     {q:"Voici le rapport qui doit être signé avant vendredi. Que reprend « qui » ?", accept:["le rapport"], ph:"…"},
@@ -933,9 +972,9 @@ const EXOS = [
   {sec:'t1', id:'t1situ', type:'write', num:'Exercice 10', tit:'Retard, absence ou abandon ?', color:'#C0573A',
    sub:"Pour chaque situation, explique si c\'est un retard, une absence ou un abandon, et pourquoi.",
    savoir:{h:"› Un retard, une absence, un abandon", rows:[
-     ["Un retard","On arrive après un moment fixé (à l'école, au travail, à un rendez-vous)."],
-     ["Une absence","On ne se trouve pas à un endroit où on est attendu."],
-     ["Un abandon","On renonce à une chose (un cours, un travail) parce qu'on déménage, par exemple."],
+     ["Un retard","On arrive <b>après un moment fixé</b> (à l'école, au travail, à un rendez-vous)."],
+     ["Une absence","On <b>ne se trouve pas</b> à un endroit où on est <b>attendu</b>."],
+     ["Un abandon","On <b>renonce</b> à une chose (un cours, un travail) parce qu'on déménage, par exemple."],
    ]},
    items:[
     {q:"Une personne reste à la maison toute la journée parce que son conjoint vient de subir une opération.", hint:"C'est une absence : la personne ne se présente pas à son cours pour prendre soin de son conjoint.", ph:"…"},
@@ -957,9 +996,9 @@ const EXOS = [
   {sec:'t2', id:'t2connect', type:'write', num:'Exercice 2', tit:'Les connecteurs et, ou, mais', color:'#6B4FBB',
    sub:'Complète les phrases avec et, ou ou mais.',
    savoir:{h:"› Les connecteurs et, ou et mais", rows:[
-     ["et — addition","[Il a parlé à la responsable] et [elle lui a donné les informations nécessaires]."],
-     ["ou — choix","[Tu choisis maintenant] ou [tu attends à demain]."],
-     ["mais — opposition","[J'aimerais prendre ce cours], mais [il se donne seulement à l'hiver]."],
+     ["et — addition","<span class='savoir-ex'>[Il a parlé à la responsable] <em>et</em> [elle lui a donné les informations nécessaires].</span>"],
+     ["ou — choix","<span class='savoir-ex'>[Tu choisis maintenant] <em>ou</em> [tu attends à demain].</span>"],
+     ["mais — opposition","<span class='savoir-ex'>[J'aimerais prendre ce cours], <em>mais</em> [il se donne seulement à l'hiver].</span>"],
    ]},
    items:[
     {q:"Tu préviens ton superviseur ___ tu envoies un courriel ?", accept:["ou"], ph:"…"},
@@ -972,7 +1011,7 @@ const EXOS = [
   {sec:'t2', id:'t2quel', type:'write', num:'Exercice 3', tit:'Le pronom interrogatif quel', color:'#6B4FBB',
    sub:'Complète les phrases avec quel, quelle, quels ou quelles.',
    savoir:{h:"› Le pronom interrogatif quel", rows:[
-     ["Quel / Quelle / Quels / Quelles","Prend le genre et le nombre du GN repris. Quel est ton nom ? Quelle est ton adresse ? Quels sont les critères de sélection ? Quelles sont tes principales habiletés ?"],
+     ["Quel / Quelle / Quels / Quelles","Il prend le <b>genre</b> et le <b>nombre</b> du GN repris :<span class='savoir-ex'><em>Quel</em> est ton nom ? · <em>Quelle</em> est ton adresse ?</span><span class='savoir-ex'><em>Quels</em> sont les critères de sélection ? · <em>Quelles</em> sont tes principales habiletés ?</span>"],
    ]},
    byLabel:true,
    items:[
@@ -1017,8 +1056,8 @@ const EXOS = [
   {sec:'t3', id:'t3formel', type:'write', num:'Exercice 3', tit:'Formule officielle ou familière ?', color:'#B45309',
    sub:"Indique quelle formule est appropriée (officielle ou familière) pour chaque mise en situation.",
    savoir:{h:"› Des formules d'appel et de salutation", rows:[
-     ["Officielles et polies","Madame, · Monsieur, · Bonjour Madame, · Sincères salutations, · Respectueusement,"],
-     ["Plus familières","Bonjour Karim, · Salut Nadia, · Chère Farida, / Cher Omar, · À bientôt, · Amicalement,"],
+     ["Officielles et polies","<span class='savoir-ex'>Madame, · Monsieur, · Bonjour Madame, · Sincères salutations, · Respectueusement,</span>"],
+     ["Plus familières","<span class='savoir-ex'>Bonjour Karim, · Salut Nadia, · Chère Farida, / Cher Omar, · À bientôt, · Amicalement,</span>"],
    ]},
    items:[
     {q:"Un message adressé à votre collègue de travail. Vous prenez souvent la pause ensemble.", accept:["familière","familiere"], ph:"officielle / familière"},
@@ -1031,8 +1070,8 @@ const EXOS = [
   {sec:'t3', id:'t3devoir', type:'write', num:'Exercice 4', tit:'Devoir + infinitif', color:'#B45309',
    sub:"Transforme les phrases en utilisant le verbe devoir suivi de l\'infinitif.",
    savoir:{h:"› Les verbes devoir et falloir", rows:[
-     ["devoir + infinitif","Au présent, pour exprimer une obligation : Je <em>dois</em> m'inscrire aujourd'hui."],
-     ["il faut + infinitif","Pour donner une consigne : Il <em>faut</em> remplir le formulaire jaune."],
+     ["devoir + infinitif","Au présent, pour exprimer une <b>obligation</b> :<span class='savoir-ex'>Je <em>dois</em> m'inscrire aujourd'hui.</span>"],
+     ["il faut + infinitif","Pour donner une <b>consigne</b> :<span class='savoir-ex'>Il <em>faut</em> remplir le formulaire jaune.</span>"],
    ]},
    items:[
     {q:"Je vais chez le dentiste dans vingt minutes.", accept:["je dois aller"], ph:"Je dois…"},
@@ -1685,7 +1724,10 @@ function buildStatic(){
       h+='<div class="savoir'+(ex.savoir.speak?' savoir--pron':'')+'">'
        + '<div class="savoir-band">'+esc(ex.savoir.h ? ex.savoir.h.replace(/^›\s*/,'') : 'Prononciation')+'</div>';
       ex.savoir.rows.forEach((r,ri)=>{
-        h+='<div class="savoir-row"><div class="savoir-key">'+r[0]+'</div><div class="savoir-val">'+r[1];
+        // Une rangée qui s'ouvre sur un exemple se colore en entier (étiquette
+        // comprise) : c'est ce qui la sépare visuellement d'une règle.
+        const rowEx = /^\s*<span class=['"]savoir-ex['"]/.test(r[1]);
+        h+='<div class="savoir-row'+(rowEx?' is-ex':'')+'"><div class="savoir-key">'+r[0]+'</div><div class="savoir-val">'+r[1];
         if(ex.savoir.speak && r[2]){
           h+='<div class="word-chips">';
           r[2].forEach((w,wi)=>{

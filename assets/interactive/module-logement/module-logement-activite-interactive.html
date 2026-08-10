@@ -603,6 +603,45 @@ body{
   .bsec.b1{scroll-behavior:smooth}
 }
 
+/* ── Lisibilité des encadrés de savoir ────────────────────────────────
+   Deux besoins distincts, deux traitements. (1) Repérer les mots qui
+   portent la règle : le <b> passe en 900 sur la couleur d'encre, assez
+   marqué pour accrocher l'œil sans transformer la ligne en sapin de Noël.
+   (2) Distinguer un exemple d'une règle : un exemple se lit comme une
+   citation — retrait, filet coloré, italique dans la couleur de la
+   section — donc on ne le confond plus avec l'explication qui précède. */
+.savoir-val b,.savoir-val strong{font-weight:900;color:var(--ws-ink)}
+.savoir-ex{
+  display:block; margin:7px 0 1px; padding:8px 12px 8px 13px;
+  border-left:3px solid var(--sec-color,var(--ws-accent));
+  border-radius:0 10px 10px 0;
+  background:#F5F6F7;
+  font-style:italic; font-weight:700; line-height:1.45;
+  color:var(--sec-color,var(--ws-accent));
+}
+/* Le fond reprend la couleur de la section, très dilué : --ws-accent-bg est
+   vert quelle que soit la section, ce qui jurait avec un filet ambre ou
+   rouille. Repli sur le gris neutre ci-dessus si color-mix manque. */
+@supports (background:color-mix(in srgb,red 8%,transparent)){
+  .savoir-ex{background:color-mix(in srgb,var(--sec-color,#1D6B8F) 8%,transparent)}
+}
+.savoir-ex + .savoir-ex{margin-top:5px}
+/* Dans un exemple, le mot mis en avant reprend la couleur de l'exemple :
+   sinon il sortirait du bloc au lieu d'y attirer l'attention. Le <em> des
+   modules plus anciens (vert, italique) est repris ici par la même règle,
+   sans quoi il jurerait avec un filet ambre ou rouille. */
+.savoir-ex b,.savoir-ex strong,.savoir-ex em{color:inherit;font-weight:900;font-style:normal}
+/* Rangée entièrement consacrée à des exemples : l'étiquette de gauche
+   prend la même couleur, la paire se lit alors comme un seul bloc. */
+.savoir-row.is-ex .savoir-key{color:var(--sec-color,var(--ws-accent));font-weight:800}
+.savoir--pron .savoir-ex{background:#EEF7F1}
+/* Sur téléphone, la grille 34 % / 1fr ne laissait que ~130 px à l'explication :
+   les exemples s'y écrasaient sur cinq lignes. L'étiquette passe au-dessus. */
+@media(max-width:640px){
+  .savoir-row{grid-template-columns:1fr; gap:5px}
+  .savoir-key{font-size:15px}
+}
+
 /* Focus clavier visible partout (B.4) */
 :focus-visible{outline:3px solid var(--ws-accent);outline-offset:2px;border-radius:inherit}
 textarea:focus-visible,.winput:focus-visible{outline:none;border-color:var(--ws-accent)}
@@ -751,9 +790,9 @@ const EXOS = [
   {sec:'prep', id:'pr1', type:'vf', num:'Exercice 1', tit:'Vrai ou Faux — La visite de la rue Galt', color:'#A16207',
    sub:'Écoutez de nouveau le dialogue, puis répondez.', tiles:['VRAI','FAUX'],
    savoir:{h:"› Le ½ dans les annonces de logement au Québec", rows:[
-     ["Le chiffre","Il compte les pièces fermées : les chambres, le salon, la cuisine."],
-     ["Le ½","Il désigne toujours la salle de bain, qui ne vaut qu'une demi-pièce."],
-     ["Le 4 ½ d'Ibrahim","Deux chambres, un salon, une cuisine — plus la salle de bain, le ½."],
+     ["Le chiffre","Il compte les <b>pièces fermées</b> : les chambres, le salon, la cuisine."],
+     ["Le ½","Il désigne toujours la <b>salle de bain</b>, qui ne vaut qu'<b>une demi-pièce</b>."],
+     ["Le 4 ½ d'Ibrahim","<span class='savoir-ex'>2 chambres + salon + cuisine = <b>4</b> · salle de bain = <b>½</b></span>"],
    ]},
    rows:[
     {id:'pr1a', txt:"Ibrahim pourra emménager le 1er septembre.", ok:'VRAI'},
@@ -777,8 +816,8 @@ const EXOS = [
   {sec:'t1', id:'pr3', type:'match', num:'Exercice 2', tit:'De quoi parle-t-on ?', color:'#A16207',
    sub:'Associez chaque phrase entendue en visite au sujet dont elle relève.',
    savoir:{h:"› Ce qu'il faut vérifier avant de signer un bail", rows:[
-     ["Avant la visite","Préparez vos questions : la durée du bail · le quartier · la luminosité · la peinture · le nombre de pièces · les étages · les services à proximité"],
-     ["Sur place","Vérifiez de vos yeux : l'insonorisation · les espaces de stationnement · les animaux permis · l'état des lieux · les inclusions · le type d'habitation · les coûts d'électricité et de chauffage"],
+     ["Avant la visite","<b>Préparez vos questions</b> : la durée du bail · le quartier · la luminosité · la peinture · le nombre de pièces · les étages · les services à proximité"],
+     ["Sur place","<b>Vérifiez de vos yeux</b> : l'insonorisation · les espaces de stationnement · les animaux permis · l'état des lieux · les inclusions · le type d'habitation · les coûts d'électricité et de chauffage"],
    ]},
    rows:[
     {id:'m1', q:"Je dors le matin, après mon quart de soir.", aid:'s8', a:"l'insonorisation"},
@@ -805,9 +844,9 @@ const EXOS = [
   {sec:'t1', id:'pr5', type:'write', num:'Exercice 4', tit:'La reprise d\'information par un GN', color:'#A16207',
    sub:"Écris une deuxième phrase en reprenant le GN en gras à l'aide d'un autre déterminant.",
    savoir:{h:"› La reprise d'information par un groupe nominal (GN)", rows:[
-     ["Le principe","On reprend un nom déjà nommé en changeant seulement son déterminant : un → ce, une → cette, des → ces."],
-     ["Exemple","Ibrahim a visité un 4 ½. Ce 4 ½ se trouve au-dessus d'une boulangerie."],
-     ["À surveiller","L'expansion du nom (« au-dessus d'une boulangerie ») ne se répète pas dans la reprise."],
+     ["Le principe","On reprend un nom déjà nommé en changeant seulement son <b>déterminant</b> : <b>un → ce</b>, <b>une → cette</b>, <b>des → ces</b>."],
+     ["Exemple","<span class='savoir-ex'>Ibrahim a visité <b>un</b> 4 ½. <b>Ce</b> 4 ½ se trouve au-dessus d'une boulangerie.</span>"],
+     ["À surveiller","L'<b>expansion</b> du nom (« au-dessus d'une boulangerie ») <b>ne se répète pas</b> dans la reprise."],
    ]},
    items:[
     {q:"Ibrahim a visité un 4 ½ au-dessus d'une boulangerie.", hint:"Ce 4 ½ lui plaît beaucoup.", ph:"…"},
@@ -820,9 +859,9 @@ const EXOS = [
   {sec:'t1', id:'pr6', type:'write', num:'Exercice 5', tit:'Le pronom de reprise interrogatif', color:'#A16207',
    sub:'Trouve le pronom de reprise (il, elle, ils ou elles) dans chaque question.',
    savoir:{h:"› La phrase interrogative avec un pronom de reprise", rows:[
-     ["La forme","Le GN sujet reste devant le verbe ; un pronom (il, elle, ils, elles) le reprend juste après, relié par un trait d'union."],
-     ["Exemple","Le bail commence-t-il le 1er septembre ? Les chats sont-ils acceptés ?"],
-     ["Le t euphonique","Si le verbe se termine par -e ou -a, on insère un t : La boulangerie ouvre-t-elle à cinq heures ?"],
+     ["La forme","Le <b>GN sujet</b> reste devant le verbe ; un <b>pronom</b> (il, elle, ils, elles) le reprend <b>juste après le verbe</b>, relié par un <b>trait d'union</b>."],
+     ["Exemple","<span class='savoir-ex'>Le bail commence-t-<b>il</b> le 1er septembre ?</span><span class='savoir-ex'>Les chats sont-<b>ils</b> acceptés ?</span>"],
+     ["Le t euphonique","Si le verbe se termine par <b>-e</b> ou <b>-a</b>, on insère un <b>t</b> :<span class='savoir-ex'>La boulangerie ouvre-<b>t</b>-elle à cinq heures ?</span>"],
    ]},
    items:[
     {q:"Le bail commence-t-il le 1er septembre ?", accept:["il"], ph:"…"},
@@ -845,9 +884,9 @@ const EXOS = [
   {sec:'appli', id:'aAnnonces', type:'write', num:'Exercice 1', tit:'Les petites annonces', color:'#0D9488',
    sub:'Lis les trois petites annonces, puis réponds aux questions.',
    savoir:{h:"› Trois logements à louer à Sherbrooke", rows:[
-     ["Annonce 1","3 ½ au rez-de-chaussée, quartier Jacques-Cartier. Cour clôturée, entrée pour laveuse-sécheuse. Chauffé et éclairé. Non-fumeur. Libre immédiatement. 780 $ par mois."],
-     ["Annonce 2","Grand 5 ½ dans un triplex, deux salles de bain, à cinq minutes d'une école primaire et d'un parc. Stationnement pour deux autos. Électroménagers non fournis. 1 250 $ par mois, bail d'un an."],
-     ["Annonce 3","4 ½ repeint au deuxième étage, au-dessus d'une boulangerie, rue Galt. Chauffage et eau chaude inclus. Buanderie commune au sous-sol. Chats acceptés. Libre le 1er septembre. 890 $ par mois."],
+     ["Annonce 1","<b>3 ½</b> au rez-de-chaussée, quartier Jacques-Cartier. Cour clôturée, entrée pour laveuse-sécheuse. Chauffé et éclairé. Non-fumeur. Libre immédiatement. 780 $ par mois."],
+     ["Annonce 2","Grand <b>5 ½</b> dans un triplex, deux salles de bain, à cinq minutes d'une école primaire et d'un parc. Stationnement pour deux autos. Électroménagers non fournis. 1 250 $ par mois, bail d'un an."],
+     ["Annonce 3","<b>4 ½</b> repeint au deuxième étage, au-dessus d'une boulangerie, rue Galt. Chauffage et eau chaude inclus. Buanderie commune au sous-sol. Chats acceptés. Libre le 1er septembre. 890 $ par mois."],
    ]},
    items:[
     {q:"Quel logement coûte le moins cher par mois ?", hint:"Le 3 ½ du quartier Jacques-Cartier, à 780 $.", ph:"…"},
@@ -861,8 +900,8 @@ const EXOS = [
   {sec:'t2', id:'t2vf', type:'vf', num:'Exercice 1', tit:'Vrai ou Faux — Ibrahim et Leyla', color:'#6B4FBB',
    sub:'Écoutez le dialogue entre Ibrahim et sa sœur, puis répondez.', tiles:['VRAI','FAUX'],
    savoir:{h:"› Le 1er juillet, jour de déménagement au Québec", rows:[
-     ["Une tradition","La plupart des baux se terminent le 30 juin. Le 1er juillet, des milliers de ménages déménagent le même jour et les camions de location se réservent des mois d'avance."],
-     ["D'autres dates existent","Un bail peut commencer un autre jour, comme celui d'Ibrahim, le 1er septembre — c'est fréquent dans une ville universitaire comme Sherbrooke."],
+     ["Une tradition","La plupart des baux se terminent le <b>30 juin</b>. Le <b>1er juillet</b>, des milliers de ménages déménagent le même jour et les camions de location se réservent des mois d'avance."],
+     ["D'autres dates existent","Un bail peut commencer un autre jour, comme celui d'Ibrahim, le <b>1er septembre</b> — c'est fréquent dans une ville universitaire comme Sherbrooke."],
    ]},
    rows:[
     {id:'t2va', txt:"Ce qui rassure Ibrahim, c'est que la chambre donne sur la cour.", ok:'VRAI'},
@@ -881,9 +920,9 @@ const EXOS = [
   {sec:'t2', id:'t2emph', type:'write', num:'Exercice 3', tit:'La phrase emphatique', color:'#6B4FBB',
    sub:"Écris l'élément mis en évidence dans chaque phrase.",
    savoir:{h:"› La phrase emphatique", rows:[
-     ["C'est... qui / Ce sont... qui","Met le sujet en évidence : C'est Ginette qui fournit la peinture."],
-     ["C'est... que / Ce sont... que","Met un complément en évidence : C'est le camion de farine que je crains."],
-     ["Ce que..., c'est... / Celui que..., c'est...","Ce que je changerais, c'est la couleur des murs. Celui que je préfère, c'est le 4 ½ de la rue Galt."],
+     ["C'est... qui / Ce sont... qui","Met le <b>sujet</b> en évidence :<span class='savoir-ex'><b>C'est</b> Ginette <b>qui</b> fournit la peinture.</span>"],
+     ["C'est... que / Ce sont... que","Met un <b>complément</b> en évidence :<span class='savoir-ex'><b>C'est</b> le camion de farine <b>que</b> je crains.</span>"],
+     ["Ce que..., c'est... / Celui que..., c'est...","<span class='savoir-ex'><b>Ce que</b> je changerais, <b>c'est</b> la couleur des murs.</span><span class='savoir-ex'><b>Celui que</b> je préfère, <b>c'est</b> le 4 ½ de la rue Galt.</span>"],
    ]},
    items:[
     {q:"Ce qui m'a plu, c'est la chambre sur la cour.", accept:["la chambre sur la cour"], ph:"…"},
@@ -906,8 +945,8 @@ const EXOS = [
   {sec:'t3', id:'t3cdci', type:'write', num:'Exercice 2', tit:'CD ou CI ?', color:'#B45309',
    sub:'Trouve le complément du verbe (CD ou CI) dans chaque phrase.',
    savoir:{h:"› Le complément direct (CD) et le complément indirect (CI) du verbe", rows:[
-     ["Complément direct (CD)","Il suit le verbe sans préposition. On le trouve en demandant « qui ? » ou « quoi ? » : Ibrahim visite quoi ? un logement lumineux."],
-     ["Complément indirect (CI)","Il est introduit par une préposition (à, de, avec…). On le trouve en demandant « à qui ? » ou « à quoi ? » : Leyla téléphone à qui ? à son frère."],
+     ["Complément direct (CD)","Il suit le verbe <b>sans préposition</b>. On le trouve en demandant <b>« qui ? »</b> ou <b>« quoi ? »</b> :<span class='savoir-ex'>Ibrahim visite <b>quoi</b> ? un logement lumineux.</span>"],
+     ["Complément indirect (CI)","Il est introduit par une <b>préposition</b> (à, de, avec…). On le trouve en demandant <b>« à qui ? »</b> ou <b>« à quoi ? »</b> :<span class='savoir-ex'>Leyla téléphone <b>à qui</b> ? à son frère.</span>"],
    ]},
    items:[
     {q:"Ibrahim visite un logement lumineux. (CD)", accept:["un logement lumineux"], ph:"CD :"},
@@ -1547,7 +1586,10 @@ function buildStatic(){
       h+='<div class="savoir'+(ex.savoir.speak?' savoir--pron':'')+'">'
        + '<div class="savoir-band">'+esc(ex.savoir.h ? ex.savoir.h.replace(/^›\s*/,'') : 'Prononciation')+'</div>';
       ex.savoir.rows.forEach((r,ri)=>{
-        h+='<div class="savoir-row"><div class="savoir-key">'+r[0]+'</div><div class="savoir-val">'+r[1];
+        // Une rangée qui s'ouvre sur un exemple se colore en entier (étiquette
+        // comprise) : c'est ce qui la sépare visuellement d'une règle.
+        const rowEx = /^\s*<span class=['"]savoir-ex['"]/.test(r[1]);
+        h+='<div class="savoir-row'+(rowEx?' is-ex':'')+'"><div class="savoir-key">'+r[0]+'</div><div class="savoir-val">'+r[1];
         if(ex.savoir.speak && r[2]){
           h+='<div class="word-chips">';
           r[2].forEach((w,wi)=>{

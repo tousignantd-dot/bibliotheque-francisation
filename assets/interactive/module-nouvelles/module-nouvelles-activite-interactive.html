@@ -603,6 +603,45 @@ body{
   .bsec.b1{scroll-behavior:smooth}
 }
 
+/* ── Lisibilité des encadrés de savoir ────────────────────────────────
+   Deux besoins distincts, deux traitements. (1) Repérer les mots qui
+   portent la règle : le <b> passe en 900 sur la couleur d'encre, assez
+   marqué pour accrocher l'œil sans transformer la ligne en sapin de Noël.
+   (2) Distinguer un exemple d'une règle : un exemple se lit comme une
+   citation — retrait, filet coloré, italique dans la couleur de la
+   section — donc on ne le confond plus avec l'explication qui précède. */
+.savoir-val b,.savoir-val strong{font-weight:900;color:var(--ws-ink)}
+.savoir-ex{
+  display:block; margin:7px 0 1px; padding:8px 12px 8px 13px;
+  border-left:3px solid var(--sec-color,var(--ws-accent));
+  border-radius:0 10px 10px 0;
+  background:#F5F6F7;
+  font-style:italic; font-weight:700; line-height:1.45;
+  color:var(--sec-color,var(--ws-accent));
+}
+/* Le fond reprend la couleur de la section, très dilué : --ws-accent-bg est
+   vert quelle que soit la section, ce qui jurait avec un filet ambre ou
+   rouille. Repli sur le gris neutre ci-dessus si color-mix manque. */
+@supports (background:color-mix(in srgb,red 8%,transparent)){
+  .savoir-ex{background:color-mix(in srgb,var(--sec-color,#1D6B8F) 8%,transparent)}
+}
+.savoir-ex + .savoir-ex{margin-top:5px}
+/* Dans un exemple, le mot mis en avant reprend la couleur de l'exemple :
+   sinon il sortirait du bloc au lieu d'y attirer l'attention. Le <em> des
+   modules plus anciens (vert, italique) est repris ici par la même règle,
+   sans quoi il jurerait avec un filet ambre ou rouille. */
+.savoir-ex b,.savoir-ex strong,.savoir-ex em{color:inherit;font-weight:900;font-style:normal}
+/* Rangée entièrement consacrée à des exemples : l'étiquette de gauche
+   prend la même couleur, la paire se lit alors comme un seul bloc. */
+.savoir-row.is-ex .savoir-key{color:var(--sec-color,var(--ws-accent));font-weight:800}
+.savoir--pron .savoir-ex{background:#EEF7F1}
+/* Sur téléphone, la grille 34 % / 1fr ne laissait que ~130 px à l'explication :
+   les exemples s'y écrasaient sur cinq lignes. L'étiquette passe au-dessus. */
+@media(max-width:640px){
+  .savoir-row{grid-template-columns:1fr; gap:5px}
+  .savoir-key{font-size:15px}
+}
+
 /* Focus clavier visible partout (B.4) */
 :focus-visible{outline:3px solid var(--ws-accent);outline-offset:2px;border-radius:inherit}
 textarea:focus-visible,.winput:focus-visible{outline:none;border-color:var(--ws-accent)}
@@ -754,10 +793,10 @@ const EXOS = [
    sub:"Lisez les énoncés, puis indiquez s'il s'agit d'un fait divers (FD), d'une nouvelle régionale (NR), nationale (NN) ou internationale (NI).",
    tiles:['FD','NR','NN','NI'],
    savoir:{h:"› Pour parler des nouvelles dans les médias", rows:[
-     ["Une nouvelle régionale (NR)","Une nouvelle qui touche une région de la province."],
-     ["Une nouvelle nationale (NN)","Une nouvelle qui touche la province ou le pays."],
-     ["Une nouvelle internationale (NI)","Une nouvelle qui provient de l'extérieur du pays."],
-     ["Un fait divers (FD)","Une nouvelle relative à des faits quotidiens qui attire la curiosité : un accident, un sauvetage, un événement étrange."],
+     ["Une nouvelle régionale (NR)","Une nouvelle qui touche <b>une région</b> de la province."],
+     ["Une nouvelle nationale (NN)","Une nouvelle qui touche <b>la province ou le pays</b>."],
+     ["Une nouvelle internationale (NI)","Une nouvelle qui provient de <b>l'extérieur du pays</b>."],
+     ["Un fait divers (FD)","Une nouvelle relative à des <b>faits quotidiens</b> qui attire la <b>curiosité</b> : un accident, un sauvetage, un événement étrange."],
    ]},
    rows:[
     {id:'cla', txt:"En Australie, des feux de forêt forcent l'évacuation de plusieurs villages.", ok:'NI'},
@@ -801,8 +840,8 @@ const EXOS = [
   {sec:'t1', id:'t1souligne', type:'write', num:'Exercice 3', tit:'C\'est... qui / C\'est... que', color:'#C0573A',
    sub:'Lisez les phrases, puis identifiez l\'élément mis en évidence.',
    savoir:{h:"› C'est... qui ou C'est... que", rows:[
-     ["C'est... qui / C'est... que","Pour mettre l'accent sur un élément important si cet élément est un GN au singulier."],
-     ["Ce sont... qui / Ce sont... que","Pour mettre l'accent sur un élément important si cet élément est un GN au pluriel."],
+     ["C'est... qui / C'est... que","Pour mettre l'accent sur un élément important si cet élément est un GN au <b>singulier</b>."],
+     ["Ce sont... qui / Ce sont... que","Pour mettre l'accent sur un élément important si cet élément est un GN au <b>pluriel</b>."],
    ]},
    items:[
     {q:"« C'est cette voisine qui a reconnu le chat. » Quel élément est mis en évidence ?", accept:["cette voisine"], ph:"…"},
@@ -821,9 +860,9 @@ const EXOS = [
   {sec:'t1', id:'t1passive', type:'write', num:'Exercice 5', tit:'Qui fait l\'action ?', color:'#C0573A',
    sub:"Identifiez qui fait l'action du verbe conjugué dans chaque phrase passive, quand cela est précisé.",
    savoir:{h:"› La phrase passive", rows:[
-     ["Phrase active","Le sujet fait l'action : Les élèves ont organisé la collecte."],
-     ["Phrase passive","Le sujet ne fait pas l'action, il la subit : La collecte a été organisée par les élèves."],
-     ["Note","Pour trouver qui fait l'action, posez-vous la question : Qui fait l'action du verbe ?"],
+     ["Phrase active","Le sujet <b>fait</b> l'action :<span class='savoir-ex'><em>Les élèves</em> ont organisé la collecte.</span>"],
+     ["Phrase passive","Le sujet <b>ne fait pas</b> l'action, il la <b>subit</b> :<span class='savoir-ex'><em>La collecte</em> a été organisée <em>par les élèves</em>.</span>"],
+     ["Note","Pour trouver <b>qui fait l'action</b>, posez-vous la question : <b>Qui fait l'action du verbe ?</b>"],
    ]},
    items:[
     {q:"Le chat a été retrouvé par une fillette de six ans. Qui fait l'action ?", accept:["une fillette","une fillette de six ans"], ph:"…"},
@@ -877,8 +916,8 @@ const EXOS = [
   {sec:'t2', id:'t2accord', type:'write', num:'Exercice 3', tit:'L\'accord du participe passé avec être', color:'#6B4FBB',
    sub:'Écris les verbes entre parenthèses au passé composé. Accorde correctement le participe passé avec le sujet.',
    savoir:{h:"› L'accord du participe passé avec l'auxiliaire être", rows:[
-     ["Règle","Le participe passé employé avec l'auxiliaire être s'accorde en genre et en nombre avec le sujet."],
-     ["Exemple","La fillette est sortie chercher son chat. Ils sont arrivés trop tard."],
+     ["Règle","Le participe passé employé avec l'auxiliaire <b>être</b> s'accorde en <b>genre</b> et en <b>nombre</b> avec le <b>sujet</b>."],
+     ["Exemple","<span class='savoir-ex'>La fillette est sorti<em>e</em> chercher son chat.</span><span class='savoir-ex'>Ils sont arrivé<em>s</em> trop tard.</span>"],
    ]},
    items:[
     {q:"Les élèves (arriver) ___ à l'école tôt ce matin-là.", accept:["sont arrivés"], ph:"…"},
@@ -895,9 +934,9 @@ const EXOS = [
   {sec:'t2', id:'t2auxiliaire', type:'write', num:'Exercice 4', tit:'Avoir ou être ?', color:'#6B4FBB',
    sub:"Complète les phrases en choisissant le bon auxiliaire (avoir ou être) et en accordant le participe passé s'il y a lieu.",
    savoir:{h:"› Avoir ou être ?", rows:[
-     ["La plupart des verbes","se conjuguent avec avoir : il a parlé, ils ont amassé."],
-     ["Certains verbes de mouvement ou d'état","se conjuguent avec être : arriver, partir, sortir, venir, devenir, tomber, rester, monter, descendre, naître, mourir…"],
-     ["Tous les verbes pronominaux","se conjuguent avec être : elle s'est levée, ils se sont rencontrés."],
+     ["La plupart des verbes","se conjuguent avec <b>avoir</b> :<span class='savoir-ex'>il <em>a</em> parlé · ils <em>ont</em> amassé</span>"],
+     ["Certains verbes de mouvement ou d'état","se conjuguent avec <b>être</b> : arriver, partir, sortir, venir, devenir, tomber, rester, monter, descendre, naître, mourir…"],
+     ["Tous les verbes pronominaux","se conjuguent avec <b>être</b> :<span class='savoir-ex'>elle s'<em>est</em> levée · ils se <em>sont</em> rencontrés</span>"],
    ]},
    items:[
     {q:"Les élèves ___ décidé d'organiser une collecte.", accept:["ont"], ph:"…"},
@@ -1557,7 +1596,10 @@ function buildStatic(){
       h+='<div class="savoir'+(ex.savoir.speak?' savoir--pron':'')+'">'
        + '<div class="savoir-band">'+esc(ex.savoir.h ? ex.savoir.h.replace(/^›\s*/,'') : 'Prononciation')+'</div>';
       ex.savoir.rows.forEach((r,ri)=>{
-        h+='<div class="savoir-row"><div class="savoir-key">'+r[0]+'</div><div class="savoir-val">'+r[1];
+        // Une rangée qui s'ouvre sur un exemple se colore en entier (étiquette
+        // comprise) : c'est ce qui la sépare visuellement d'une règle.
+        const rowEx = /^\s*<span class=['"]savoir-ex['"]/.test(r[1]);
+        h+='<div class="savoir-row'+(rowEx?' is-ex':'')+'"><div class="savoir-key">'+r[0]+'</div><div class="savoir-val">'+r[1];
         if(ex.savoir.speak && r[2]){
           h+='<div class="word-chips">';
           r[2].forEach((w,wi)=>{

@@ -603,6 +603,45 @@ body{
   .bsec.b1{scroll-behavior:smooth}
 }
 
+/* ── Lisibilité des encadrés de savoir ────────────────────────────────
+   Deux besoins distincts, deux traitements. (1) Repérer les mots qui
+   portent la règle : le <b> passe en 900 sur la couleur d'encre, assez
+   marqué pour accrocher l'œil sans transformer la ligne en sapin de Noël.
+   (2) Distinguer un exemple d'une règle : un exemple se lit comme une
+   citation — retrait, filet coloré, italique dans la couleur de la
+   section — donc on ne le confond plus avec l'explication qui précède. */
+.savoir-val b,.savoir-val strong{font-weight:900;color:var(--ws-ink)}
+.savoir-ex{
+  display:block; margin:7px 0 1px; padding:8px 12px 8px 13px;
+  border-left:3px solid var(--sec-color,var(--ws-accent));
+  border-radius:0 10px 10px 0;
+  background:#F5F6F7;
+  font-style:italic; font-weight:700; line-height:1.45;
+  color:var(--sec-color,var(--ws-accent));
+}
+/* Le fond reprend la couleur de la section, très dilué : --ws-accent-bg est
+   vert quelle que soit la section, ce qui jurait avec un filet ambre ou
+   rouille. Repli sur le gris neutre ci-dessus si color-mix manque. */
+@supports (background:color-mix(in srgb,red 8%,transparent)){
+  .savoir-ex{background:color-mix(in srgb,var(--sec-color,#1D6B8F) 8%,transparent)}
+}
+.savoir-ex + .savoir-ex{margin-top:5px}
+/* Dans un exemple, le mot mis en avant reprend la couleur de l'exemple :
+   sinon il sortirait du bloc au lieu d'y attirer l'attention. Le <em> des
+   modules plus anciens (vert, italique) est repris ici par la même règle,
+   sans quoi il jurerait avec un filet ambre ou rouille. */
+.savoir-ex b,.savoir-ex strong,.savoir-ex em{color:inherit;font-weight:900;font-style:normal}
+/* Rangée entièrement consacrée à des exemples : l'étiquette de gauche
+   prend la même couleur, la paire se lit alors comme un seul bloc. */
+.savoir-row.is-ex .savoir-key{color:var(--sec-color,var(--ws-accent));font-weight:800}
+.savoir--pron .savoir-ex{background:#EEF7F1}
+/* Sur téléphone, la grille 34 % / 1fr ne laissait que ~130 px à l'explication :
+   les exemples s'y écrasaient sur cinq lignes. L'étiquette passe au-dessus. */
+@media(max-width:640px){
+  .savoir-row{grid-template-columns:1fr; gap:5px}
+  .savoir-key{font-size:15px}
+}
+
 /* Focus clavier visible partout (B.4) */
 :focus-visible{outline:3px solid var(--ws-accent);outline-offset:2px;border-radius:inherit}
 textarea:focus-visible,.winput:focus-visible{outline:none;border-color:var(--ws-accent)}
@@ -769,9 +808,9 @@ const EXOS = [
   {sec:'prep', id:'prPhon', type:'vf', num:'Exercice 2', tit:'La phonétique — [ɥ], [ʒ] et [ɲ]', color:'#7C3AED', cards:true, listen:true,
    sub:'Écoutez, puis indiquez le son entendu dans chaque mot.', tiles:['[ɥ]','[ʒ]','[ɲ]'],
    savoir:{h:"› Les sons [ɥ], [ʒ] et [ɲ]", speak:true, rows:[
-     ["[ɥ]","aujourd'hui, nuit — on prononce rapidement les voyelles [y] et [i] l'une après l'autre.", ["aujourd'hui","nuit"]],
-     ["[ʒ]","juillet, orangé, joindre — le j, et le g devant e/i/y, se prononcent comme dans « jour ».", ["juillet","orangé","joindre"]],
-     ["[ɲ]","gagner, ligne, signature — les lettres g et n s'unissent pour former un seul son.", ["gagner","ligne","signature"]],
+     ["[ɥ]","aujourd'hui, nuit — on prononce <b>rapidement</b> les voyelles [y] et [i] <b>l'une après l'autre</b>.", ["aujourd'hui","nuit"]],
+     ["[ʒ]","juillet, orangé, joindre — le <b>j</b>, et le <b>g</b> devant <b>e/i/y</b>, se prononcent comme dans « jour ».", ["juillet","orangé","joindre"]],
+     ["[ɲ]","gagner, ligne, signature — les lettres <b>g</b> et <b>n</b> s'unissent pour former <b>un seul son</b>.", ["gagner","ligne","signature"]],
    ]},
    rows:[
     {id:'pha', txt:"aujourd'hui", ok:'[ɥ]'},
@@ -814,10 +853,10 @@ const EXOS = [
   {sec:'appli', id:'aEtapes', type:'write', num:'Exercice 1', tit:'Une demande de remboursement', color:'#0D9488',
    sub:"Lis les étapes pour faire une demande de remboursement, puis réponds aux questions d'un collègue.",
    savoir:{h:"› Étapes pour demander un remboursement", rows:[
-     ["1","Ouvrez l'application Ressources+ et appuyez sur Nouvelle demande."],
-     ["2","Prenez une photo claire de votre reçu original."],
-     ["3","Inscrivez le montant exact et choisissez la bonne catégorie."],
-     ["4","Attendez l'approbation de votre superviseur, puis le traitement par les finances (environ dix jours ouvrables)."],
+     ["1","<b>Ouvrez</b> l'application Ressources+ et appuyez sur <b>Nouvelle demande</b>."],
+     ["2","<b>Prenez une photo claire</b> de votre <b>reçu original</b>."],
+     ["3","<b>Inscrivez le montant exact</b> et choisissez la <b>bonne catégorie</b>."],
+     ["4","<b>Attendez l'approbation</b> de votre superviseur, puis le traitement par les finances (environ <b>dix jours ouvrables</b>)."],
    ]},
    items:[
     {q:"C'est quoi, l'application Ressources+ ?", hint:"C'est l'application où on fait les demandes de remboursement.", ph:"…"},
@@ -838,8 +877,8 @@ const EXOS = [
   {sec:'t1', id:'t1que', type:'write', num:'Exercice 2', tit:'La reprise de l\'information par le pronom que', color:'#C0573A',
    sub:'Indique le groupe nominal repris par le pronom que, en gras dans la phrase.',
    savoir:{h:"› La reprise de l'information par le pronom que", rows:[
-     ["Le pronom que reprend un GN","Il me donne des directives. J'apprécie ces directives. → Il me donne des directives que j'apprécie."],
-     ["Exemples","Voici le reçu que je dois joindre. · C'est l'application que vous devez utiliser. · Elle suit la procédure qu'on lui a montrée."],
+     ["Le pronom que reprend un GN","Il évite de répéter le nom en <b>joignant les deux phrases</b> :<span class='savoir-ex'>Il me donne des directives. J'apprécie ces directives. → Il me donne des directives <em>que</em> j'apprécie.</span>"],
+     ["Exemples","<span class='savoir-ex'>Voici le reçu <em>que</em> je dois joindre.</span><span class='savoir-ex'>C'est l'application <em>que</em> vous devez utiliser.</span><span class='savoir-ex'>Elle suit la procédure <em>qu'</em>on lui a montrée.</span>"],
    ]},
    items:[
     {q:"Voici le formulaire que vous devez remplir pour la demande. Que reprend « que » ?", accept:["le formulaire"], ph:"…"},
@@ -871,9 +910,9 @@ const EXOS = [
   {sec:'t2', id:'t2pendant', type:'write', num:'Exercice 2', tit:'Pendant que pour situer une action', color:'#6B4FBB',
    sub:"Utilise pendant que pour joindre les deux actions. Tu peux situer l'action dans le présent, le passé ou le futur.",
    savoir:{h:"› Pendant que pour situer une action", rows:[
-     ["présent","Je remplis le formulaire pendant que tu prends la photo du reçu."],
-     ["passé","Pendant que je remplissais la demande, Diane a vérifié le montant."],
-     ["futur","Nous allons soumettre la demande pendant que le superviseur sera au bureau."],
+     ["présent","<span class='savoir-ex'>Je remplis le formulaire <em>pendant que</em> tu prends la photo du reçu.</span>"],
+     ["passé","<span class='savoir-ex'><em>Pendant que</em> je remplissais la demande, Diane a vérifié le montant.</span>"],
+     ["futur","<span class='savoir-ex'>Nous allons soumettre la demande <em>pendant que</em> le superviseur sera au bureau.</span>"],
    ]},
    items:[
     {q:"expliquer la procédure / prendre des notes", hint:"La commis explique la procédure pendant que Samuel prend des notes.", ph:"…"},
@@ -883,8 +922,8 @@ const EXOS = [
   {sec:'t2', id:'t2gerond', type:'vf', num:'Exercice 3', tit:'Le gérondif — simultanéité ou manière ?', color:'#6B4FBB',
    sub:'Indique si le gérondif en gras exprime la simultanéité ou la manière.', tiles:['Simultanéité','Manière'],
    savoir:{h:"› Le participe présent employé avec en (le gérondif)", rows:[
-     ["La simultanéité","Deux actions se font en même temps : Il lit ses courriels en attendant l'ascenseur."],
-     ["La manière","Pour dire comment on fait une chose : Elle a réglé le problème en appelant les finances."],
+     ["La simultanéité","Deux actions se font <b>en même temps</b> :<span class='savoir-ex'>Il lit ses courriels <em>en attendant</em> l'ascenseur.</span>"],
+     ["La manière","Pour dire <b>comment</b> on fait une chose :<span class='savoir-ex'>Elle a réglé le problème <em>en appelant</em> les finances.</span>"],
    ]},
    rows:[
     {id:'ga', txt:"Samuel remplit le formulaire <b>en suivant les étapes</b>.", ok:'Manière'},
@@ -899,8 +938,8 @@ const EXOS = [
   {sec:'t2', id:'t2imper', type:'write', num:'Exercice 4', tit:'Signaler un bris — à l\'impératif', color:'#6B4FBB',
    sub:"Écoutez les directives pour signaler un bris d'équipement, puis écrivez-les à la 2e personne du pluriel de l'impératif présent.",
    savoir:{h:"› L'impératif présent", rows:[
-     ["2e pers. pl. (vous)","Remplissez le formulaire. · Soumettez-le. · Attendez la confirmation."],
-     ["être, avoir, aller","Soyez, ayez, allez."],
+     ["2e pers. pl. (vous)","<span class='savoir-ex'>Remplissez le formulaire. · Soumettez-le. · Attendez la confirmation.</span>"],
+     ["être, avoir, aller","Trois formes <b>irrégulières</b> à retenir :<span class='savoir-ex'>Soyez, ayez, allez.</span>"],
    ]},
    items:[
     {q:"Vous devez arrêter la machine immédiatement.", accept:["arrêtez la machine immédiatement","arretez la machine immediatement"], ph:"Arrêtez…"},
@@ -913,8 +952,8 @@ const EXOS = [
   {sec:'t2', id:'t2pronom', type:'write', num:'Exercice 5', tit:'Impératif + pronom complément', color:'#6B4FBB',
    sub:"Écris les directives à l'impératif présent en remplaçant le complément du verbe par un pronom complément.",
    savoir:{h:"› Le pronom complément à l'impératif", rows:[
-     ["Après le verbe","Vous soumettez la demande. → Soumettez-la.","Vous joignez le reçu. → Joignez-le."],
-     ["Certains pronoms changent de forme","Vous me remettez le formulaire. → Remettez-moi le formulaire."],
+     ["Après le verbe","Le pronom se place <b>après le verbe</b>, relié par un <b>trait d'union</b> :<span class='savoir-ex'>Vous soumettez la demande. → Soumettez-<em>la</em>.</span>","Vous joignez le reçu. → Joignez-le."],
+     ["Certains pronoms changent de forme","<b>me</b> devient <b>moi</b>, <b>te</b> devient <b>toi</b> :<span class='savoir-ex'>Vous <em>me</em> remettez le formulaire. → Remettez-<em>moi</em> le formulaire.</span>"],
    ]},
    items:[
     {q:"Vous avisez le superviseur de ce changement.", accept:["avisez-le de ce changement","avisez le de ce changement"], ph:"Avisez…"},
@@ -929,9 +968,9 @@ const EXOS = [
   {sec:'t3', id:'t3vehicule', type:'vf', num:'Exercice 1', tit:'Vrai ou Faux — Réserver le véhicule de service', color:'#B45309',
    sub:'Lisez les directives pour réserver le véhicule de service, puis répondez.', tiles:['VRAI','FAUX'],
    savoir:{h:"› Réserver le véhicule de service", rows:[
-     ["Pour réserver","Entrez votre nom et votre numéro d'employé, sélectionnez la date, l'heure de départ et de retour, puis indiquez la raison du déplacement."],
-     ["Ensuite","Cliquez sur Vérifier la disponibilité, puis sur Réserver. Vous recevrez une confirmation par courriel."],
-     ["En cas de conflit d'horaire","Communiquez avec le répartiteur, au poste 4."],
+     ["Pour réserver","<b>Entrez votre nom</b> et votre <b>numéro d'employé</b>, sélectionnez la <b>date</b>, l'<b>heure de départ et de retour</b>, puis indiquez la <b>raison du déplacement</b>."],
+     ["Ensuite","Cliquez sur <b>Vérifier la disponibilité</b>, puis sur <b>Réserver</b>. Vous recevrez une <b>confirmation par courriel</b>."],
+     ["En cas de conflit d'horaire","Communiquez avec le <b>répartiteur</b>, au <b>poste 4</b>."],
    ]},
    rows:[
     {id:'t3va', txt:"Pour réserver, vous devez indiquer seulement votre nom.", ok:'FAUX'},
@@ -949,7 +988,7 @@ const EXOS = [
   {sec:'t3', id:'t3bris', type:'write', num:'Exercice 3', tit:'Signaler un bris d\'équipement', color:'#B45309',
    sub:'Lis la directive pour signaler un bris, puis réponds aux questions.',
    savoir:{h:"› Signaler un bris d'équipement", rows:[
-     ["Rappel","Arrêtez immédiatement la machine, prenez une photo du bris, avisez votre superviseur, puis remplissez le formulaire de signalement dans l'application. Ne tentez jamais de réparer l'équipement vous-même."],
+     ["Rappel","<b>Arrêtez immédiatement la machine</b>, prenez une <b>photo du bris</b>, <b>avisez votre superviseur</b>, puis remplissez le <b>formulaire de signalement</b> dans l'application. <b>Ne tentez jamais de réparer</b> l'équipement vous-même."],
    ]},
    items:[
     {q:"Que faut-il faire en premier si une machine se brise ?", hint:"L'arrêter immédiatement.", ph:"…"},
@@ -1594,7 +1633,10 @@ function buildStatic(){
       h+='<div class="savoir'+(ex.savoir.speak?' savoir--pron':'')+'">'
        + '<div class="savoir-band">'+esc(ex.savoir.h ? ex.savoir.h.replace(/^›\s*/,'') : 'Prononciation')+'</div>';
       ex.savoir.rows.forEach((r,ri)=>{
-        h+='<div class="savoir-row"><div class="savoir-key">'+r[0]+'</div><div class="savoir-val">'+r[1];
+        // Une rangée qui s'ouvre sur un exemple se colore en entier (étiquette
+        // comprise) : c'est ce qui la sépare visuellement d'une règle.
+        const rowEx = /^\s*<span class=['"]savoir-ex['"]/.test(r[1]);
+        h+='<div class="savoir-row'+(rowEx?' is-ex':'')+'"><div class="savoir-key">'+r[0]+'</div><div class="savoir-val">'+r[1];
         if(ex.savoir.speak && r[2]){
           h+='<div class="word-chips">';
           r[2].forEach((w,wi)=>{

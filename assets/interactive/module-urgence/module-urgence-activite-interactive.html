@@ -602,6 +602,45 @@ body{
   .bsec.b1{scroll-behavior:smooth}
 }
 
+/* ── Lisibilité des encadrés de savoir ────────────────────────────────
+   Deux besoins distincts, deux traitements. (1) Repérer les mots qui
+   portent la règle : le <b> passe en 900 sur la couleur d'encre, assez
+   marqué pour accrocher l'œil sans transformer la ligne en sapin de Noël.
+   (2) Distinguer un exemple d'une règle : un exemple se lit comme une
+   citation — retrait, filet coloré, italique dans la couleur de la
+   section — donc on ne le confond plus avec l'explication qui précède. */
+.savoir-val b,.savoir-val strong{font-weight:900;color:var(--ws-ink)}
+.savoir-ex{
+  display:block; margin:7px 0 1px; padding:8px 12px 8px 13px;
+  border-left:3px solid var(--sec-color,var(--ws-accent));
+  border-radius:0 10px 10px 0;
+  background:#F5F6F7;
+  font-style:italic; font-weight:700; line-height:1.45;
+  color:var(--sec-color,var(--ws-accent));
+}
+/* Le fond reprend la couleur de la section, très dilué : --ws-accent-bg est
+   vert quelle que soit la section, ce qui jurait avec un filet ambre ou
+   rouille. Repli sur le gris neutre ci-dessus si color-mix manque. */
+@supports (background:color-mix(in srgb,red 8%,transparent)){
+  .savoir-ex{background:color-mix(in srgb,var(--sec-color,#1D6B8F) 8%,transparent)}
+}
+.savoir-ex + .savoir-ex{margin-top:5px}
+/* Dans un exemple, le mot mis en avant reprend la couleur de l'exemple :
+   sinon il sortirait du bloc au lieu d'y attirer l'attention. Le <em> des
+   modules plus anciens (vert, italique) est repris ici par la même règle,
+   sans quoi il jurerait avec un filet ambre ou rouille. */
+.savoir-ex b,.savoir-ex strong,.savoir-ex em{color:inherit;font-weight:900;font-style:normal}
+/* Rangée entièrement consacrée à des exemples : l'étiquette de gauche
+   prend la même couleur, la paire se lit alors comme un seul bloc. */
+.savoir-row.is-ex .savoir-key{color:var(--sec-color,var(--ws-accent));font-weight:800}
+.savoir--pron .savoir-ex{background:#EEF7F1}
+/* Sur téléphone, la grille 34 % / 1fr ne laissait que ~130 px à l'explication :
+   les exemples s'y écrasaient sur cinq lignes. L'étiquette passe au-dessus. */
+@media(max-width:640px){
+  .savoir-row{grid-template-columns:1fr; gap:5px}
+  .savoir-key{font-size:15px}
+}
+
 /* Focus clavier visible partout (B.4) */
 :focus-visible{outline:3px solid var(--ws-accent);outline-offset:2px;border-radius:inherit}
 textarea:focus-visible,.winput:focus-visible{outline:none;border-color:var(--ws-accent)}
@@ -818,9 +857,9 @@ const EXOS = [
   {sec:'prep', id:'prGrp', type:'write', num:'Exercice 4', tit:'Les groupes de mots', color:'#C2410C',
    sub:"Écris le groupe du nom au complet, en accordant le déterminant et l'adjectif.",
    savoir:{h:"› Les groupes de mots", rows:[
-     ["Le groupe du nom","déterminant + nom + adjectif : <em>une</em> brûlure <em>superficielle</em>"],
-     ["L'accord","L'adjectif s'accorde en genre et en nombre : un pansement propr<em>e</em> · des plaies propr<em>es</em>"],
-     ["La place de l'adjectif","Le plus souvent après le nom : une douleur <em>vive</em>. Quelques-uns avant : une <em>petite</em> cloque."],
+     ["Le groupe du nom","<b>déterminant + nom + adjectif</b> :<span class='savoir-ex'><em>une</em> brûlure <em>superficielle</em></span>"],
+     ["L'accord","L'adjectif s'accorde en <b>genre</b> et en <b>nombre</b> :<span class='savoir-ex'>un pansement propr<em>e</em> · des plaies propr<em>es</em></span>"],
+     ["La place de l'adjectif","Le plus souvent <b>après le nom</b>, quelques-uns <b>avant</b> :<span class='savoir-ex'>une douleur <em>vive</em></span><span class='savoir-ex'>une <em>petite</em> cloque</span>"],
    ]},
    items:[
     {q:"(un) brûlure + (superficiel) → ___", accept:["une brûlure superficielle","une brulure superficielle"], ph:"trois mots"},
@@ -832,9 +871,9 @@ const EXOS = [
   {sec:'prep', id:'prPhon', type:'vf', num:'Exercice 5', tit:'Le son [y] ou [u]', color:'#6B4FBB', accent:'#6B4FBB', cards:true, listen:true,
    sub:"Clique sur l'icône d'écoute pour entendre le mot, puis indique le son entendu.", tiles:['[y]','[u]'],
    savoir:{h:"› Des voyelles orales", speak:true, rows:[
-     ["[y] comme dans « brûlure »","u, û : urgence, minute, sucre", ["brûlure","urgence","minute","sucre"]],
-     ["[u] comme dans « douleur »","ou : pouce, soupe, soutien", ["douleur","pouce","soupe","soutien"]],
-     ["[i] comme dans « cuisine »","i, î, y : infirmière, plaie", ["cuisine","infirmière"]],
+     ["[y] comme dans « brûlure »","<b>u, û</b> : urgence, minute, sucre", ["brûlure","urgence","minute","sucre"]],
+     ["[u] comme dans « douleur »","<b>ou</b> : pouce, soupe, soutien", ["douleur","pouce","soupe","soutien"]],
+     ["[i] comme dans « cuisine »","<b>i, î, y</b> : infirmière, plaie", ["cuisine","infirmière"]],
    ]},
    rows:[
     {id:'pha', txt:"brûlure", ok:'[y]'},
@@ -862,10 +901,10 @@ const EXOS = [
   {sec:'t1', id:'t1pc', type:'write', num:'Exercice 2', tit:'Le passé composé', color:'#C0573A',
    sub:"Écris le verbe entre parenthèses au passé composé.",
    savoir:{h:"› Le passé composé", rows:[
-     ["Formation","avoir ou être au présent + participe passé : j'<em>ai mis</em> · elle <em>est arrivée</em>"],
-     ["La plupart des verbes : avoir","J'<em>ai appelé</em> Info-Santé. · Le médecin <em>a nettoyé</em> la plaie."],
-     ["Aller, arriver, partir, tomber… : être","Elle <em>est arrivée</em> à l'urgence. · Ils <em>sont partis</em>."],
-     ["Avec être, le participe s'accorde","Elle est arrivé<em>e</em> · Ils sont arrivé<em>s</em>"],
+     ["Formation","<b>avoir</b> ou <b>être</b> au présent <b>+ participe passé</b> :<span class='savoir-ex'>j'<em>ai mis</em> · elle <em>est arrivée</em></span>"],
+     ["La plupart des verbes : avoir","<span class='savoir-ex'>J'<em>ai appelé</em> Info-Santé.</span><span class='savoir-ex'>Le médecin <em>a nettoyé</em> la plaie.</span>"],
+     ["Aller, arriver, partir, tomber… : être","<span class='savoir-ex'>Elle <em>est arrivée</em> à l'urgence.</span><span class='savoir-ex'>Ils <em>sont partis</em>.</span>"],
+     ["Avec être, le participe s'accorde","<span class='savoir-ex'>Elle est arrivé<em>e</em> · Ils sont arrivé<em>s</em></span>"],
    ]},
    items:[
     {q:"L'huile (éclabousser) ___ son avant-bras.", accept:["a éclaboussé","a eclabousse"], ph:"deux mots"},
@@ -878,9 +917,9 @@ const EXOS = [
   {sec:'t1', id:'t1pron', type:'write', num:'Exercice 3', tit:'Les verbes pronominaux au passé composé', color:'#C0573A',
    sub:"Écris le verbe pronominal au passé composé.",
    savoir:{h:"› Les verbes pronominaux au passé composé", rows:[
-     ["Toujours avec être","Je <em>me suis</em> brûlée. · Il <em>s'est</em> coupé."],
-     ["Accord avec le sujet…","Elle s'est blessé<em>e</em>. · Ils se sont blessé<em>s</em>."],
-     ["…sauf si une partie du corps suit","Elle s'est brûlé <em>le bras</em>. (pas d'accord : le bras vient après)"],
+     ["Toujours avec être","<span class='savoir-ex'>Je <em>me suis</em> brûlée.</span><span class='savoir-ex'>Il <em>s'est</em> coupé.</span>"],
+     ["Accord avec le sujet…","<span class='savoir-ex'>Elle s'est blessé<em>e</em>.</span><span class='savoir-ex'>Ils se sont blessé<em>s</em>.</span>"],
+     ["…sauf si une partie du corps suit","Pas d'accord quand la partie du corps vient <b>après</b> le participe :<span class='savoir-ex'>Elle s'est brûlé <em>le bras</em>.</span>"],
    ]},
    items:[
     {q:"Je (se brûler) ___ l'avant-bras.", accept:["me suis brûlé","me suis brule","me suis brûlée","me suis brulee"], ph:"trois mots"},
@@ -924,10 +963,10 @@ const EXOS = [
   {sec:'t2', id:'t2pcom', type:'write', num:'Exercice 3', tit:'Répondre avec un pronom complément', color:'#6B4FBB',
    sub:"Réponds à la question en remplaçant les mots soulignés par un pronom.",
    savoir:{h:"› Les pronoms compléments", rows:[
-     ["le, la, les (complément direct)","Je change <em>le pansement</em> → Je <em>le</em> change."],
-     ["lui, leur (complément indirect)","Je parle <em>au médecin</em> → Je <em>lui</em> parle."],
-     ["en (de quelque chose)","J'ai besoin <em>de crème</em> → J'<em>en</em> ai besoin."],
-     ["y (à un endroit)","Je vais <em>à l'urgence</em> → J'<em>y</em> vais."],
+     ["le, la, les (complément direct)","<span class='savoir-ex'>Je change <em>le pansement</em> → Je <em>le</em> change.</span>"],
+     ["lui, leur (complément indirect)","<span class='savoir-ex'>Je parle <em>au médecin</em> → Je <em>lui</em> parle.</span>"],
+     ["en (de quelque chose)","<span class='savoir-ex'>J'ai besoin <em>de crème</em> → J'<em>en</em> ai besoin.</span>"],
+     ["y (à un endroit)","<span class='savoir-ex'>Je vais <em>à l'urgence</em> → J'<em>y</em> vais.</span>"],
    ]},
    items:[
     {q:"Est-ce que tu changes le pansement ? → Oui, je ___ change.", accept:["le"], ph:"un seul mot"},
@@ -939,9 +978,9 @@ const EXOS = [
   {sec:'t2', id:'t2app', type:'write', num:'Exercice 4', tit:"Le lien d'appartenance", color:'#6B4FBB',
    sub:"Complète avec le bon déterminant ou la bonne préposition.",
    savoir:{h:"› Pour exprimer un lien d'appartenance", rows:[
-     ["mon, ma, mes / son, sa, ses","C'est <em>mon</em> bras. · C'est <em>sa</em> sœur."],
-     ["de + nom","le pansement <em>de</em> Fatou · la sœur <em>de</em> Mathieu"],
-     ["Parties du corps : souvent l'article","Elle s'est brûlé <em>le</em> bras. (et non « son bras »)"],
+     ["mon, ma, mes / son, sa, ses","<span class='savoir-ex'>C'est <em>mon</em> bras.</span><span class='savoir-ex'>C'est <em>sa</em> sœur.</span>"],
+     ["de + nom","<span class='savoir-ex'>le pansement <em>de</em> Fatou · la sœur <em>de</em> Mathieu</span>"],
+     ["Parties du corps : souvent l'article","On dit <b>l'article</b>, pas le déterminant possessif :<span class='savoir-ex'>Elle s'est brûlé <em>le</em> bras. (et non « son bras »)</span>"],
    ]},
    items:[
     {q:"C'est le dossier ___ Fatou.", accept:["de"], ph:"un seul mot"},
@@ -969,11 +1008,11 @@ const EXOS = [
   {sec:'t2', id:'t2fiche', type:'vf', num:'Exercice 7', tit:'Vrai ou Faux — La fiche-conseil', color:'#6B4FBB',
    sub:"Lis la fiche-conseil ci-dessus, puis réponds.", tiles:['VRAI','FAUX'],
    savoir:{h:"› Une brûlure : les bons gestes", rows:[
-     ["Tout de suite","Retirer bagues et bracelets, puis faire couler de l'eau fraîche 15 minutes."],
-     ["À ne jamais faire","Percer les cloques · mettre de la glace, du beurre ou du dentifrice."],
-     ["Couvrir","Un pansement stérile, sans serrer."],
-     ["Consulter","S'il y a des cloques, si la brûlure est grande, au visage ou aux mains."],
-     ["Après","Protéger du soleil six mois pour éviter une cicatrice foncée."],
+     ["Tout de suite","<b>Retirer bagues et bracelets</b>, puis faire couler de l'<b>eau fraîche 15 minutes</b>."],
+     ["À ne jamais faire","<b>Percer les cloques</b> · mettre de la <b>glace</b>, du <b>beurre</b> ou du <b>dentifrice</b>."],
+     ["Couvrir","Un <b>pansement stérile</b>, <b>sans serrer</b>."],
+     ["Consulter","S'il y a des <b>cloques</b>, si la brûlure est <b>grande</b>, au <b>visage</b> ou aux <b>mains</b>."],
+     ["Après","<b>Protéger du soleil six mois</b> pour éviter une cicatrice foncée."],
    ]},
    rows:[
     {id:'f1', txt:"Il faut retirer les bagues avant que la peau enfle.", ok:'VRAI'},
@@ -998,9 +1037,9 @@ const EXOS = [
   {sec:'t3', id:'t3poli', type:'write', num:'Exercice 2', tit:'Poser une question polie', color:'#B45309',
    sub:"Transforme la question en formule polie.",
    savoir:{h:"› Poser une question polie", rows:[
-     ["Le conditionnel","<em>Pourriez-vous</em> me donner son nom ? · <em>Auriez-vous</em> un endroit où attendre ?"],
-     ["Est-ce que je pourrais…","<em>Est-ce que je pourrais</em> la rejoindre ?"],
-     ["Adoucir la demande","Ajouter <em>s'il vous plaît</em> à la fin."],
+     ["Le conditionnel","<span class='savoir-ex'><em>Pourriez-vous</em> me donner son nom ?</span><span class='savoir-ex'><em>Auriez-vous</em> un endroit où attendre ?</span>"],
+     ["Est-ce que je pourrais…","<span class='savoir-ex'><em>Est-ce que je pourrais</em> la rejoindre ?</span>"],
+     ["Adoucir la demande","Ajouter <b>s'il vous plaît</b> à la fin de la question."],
    ]},
    items:[
     {q:"« Donnez-moi son numéro de chambre. » → plus poli : ___", accept:["pourriez-vous me donner son numéro de chambre","pourriez vous me donner son numero de chambre","pourriez-vous me donner son numéro de chambre s'il vous plaît"], ph:"…"},
@@ -1029,10 +1068,10 @@ const EXOS = [
   {sec:'appli', id:'aFiche', type:'vf', num:'Exercice 1', tit:"Vrai ou Faux — Une coupure profonde", color:'#0D9488',
    sub:"Lis la fiche-conseil ci-dessus, puis réponds.", tiles:['VRAI','FAUX'],
    savoir:{h:"› Une coupure : quand consulter ?", rows:[
-     ["Les premiers gestes","Comprimer avec un linge propre · élever le membre · nettoyer à l'eau."],
-     ["Consulter rapidement","Si le saignement ne s'arrête pas après dix minutes de compression."],
-     ["Consulter aussi","Si la plaie est profonde, longue, sale, ou si elle est au visage."],
-     ["Le tétanos","Un rappel est nécessaire si le dernier date de plus de dix ans."],
+     ["Les premiers gestes","<b>Comprimer</b> avec un linge propre · <b>élever le membre</b> · <b>nettoyer à l'eau</b>."],
+     ["Consulter rapidement","Si le saignement <b>ne s'arrête pas après dix minutes</b> de compression."],
+     ["Consulter aussi","Si la plaie est <b>profonde</b>, <b>longue</b>, <b>sale</b>, ou si elle est <b>au visage</b>."],
+     ["Le tétanos","Un <b>rappel</b> est nécessaire si le dernier date de <b>plus de dix ans</b>."],
    ]},
    rows:[
     {id:'g1', txt:"Il faut comprimer la plaie avec un linge propre.", ok:'VRAI'},
@@ -2177,7 +2216,10 @@ function buildStatic(){
       h+='<div class="savoir'+(ex.savoir.speak?' savoir--pron':'')+'">'
        + '<div class="savoir-band">'+esc(ex.savoir.h ? ex.savoir.h.replace(/^›\s*/,'') : 'Prononciation')+'</div>';
       ex.savoir.rows.forEach((r,ri)=>{
-        h+='<div class="savoir-row"><div class="savoir-key">'+r[0]+'</div><div class="savoir-val">'+r[1];
+        // Une rangée qui s'ouvre sur un exemple se colore en entier (étiquette
+        // comprise) : c'est ce qui la sépare visuellement d'une règle.
+        const rowEx = /^\s*<span class=['"]savoir-ex['"]/.test(r[1]);
+        h+='<div class="savoir-row'+(rowEx?' is-ex':'')+'"><div class="savoir-key">'+r[0]+'</div><div class="savoir-val">'+r[1];
         if(ex.savoir.speak && r[2]){
           h+='<div class="word-chips">';
           r[2].forEach((w,wi)=>{

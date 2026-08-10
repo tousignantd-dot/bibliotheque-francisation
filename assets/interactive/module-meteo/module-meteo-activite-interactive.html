@@ -603,6 +603,45 @@ body{
   .bsec.b1{scroll-behavior:smooth}
 }
 
+/* ── Lisibilité des encadrés de savoir ────────────────────────────────
+   Deux besoins distincts, deux traitements. (1) Repérer les mots qui
+   portent la règle : le <b> passe en 900 sur la couleur d'encre, assez
+   marqué pour accrocher l'œil sans transformer la ligne en sapin de Noël.
+   (2) Distinguer un exemple d'une règle : un exemple se lit comme une
+   citation — retrait, filet coloré, italique dans la couleur de la
+   section — donc on ne le confond plus avec l'explication qui précède. */
+.savoir-val b,.savoir-val strong{font-weight:900;color:var(--ws-ink)}
+.savoir-ex{
+  display:block; margin:7px 0 1px; padding:8px 12px 8px 13px;
+  border-left:3px solid var(--sec-color,var(--ws-accent));
+  border-radius:0 10px 10px 0;
+  background:#F5F6F7;
+  font-style:italic; font-weight:700; line-height:1.45;
+  color:var(--sec-color,var(--ws-accent));
+}
+/* Le fond reprend la couleur de la section, très dilué : --ws-accent-bg est
+   vert quelle que soit la section, ce qui jurait avec un filet ambre ou
+   rouille. Repli sur le gris neutre ci-dessus si color-mix manque. */
+@supports (background:color-mix(in srgb,red 8%,transparent)){
+  .savoir-ex{background:color-mix(in srgb,var(--sec-color,#1D6B8F) 8%,transparent)}
+}
+.savoir-ex + .savoir-ex{margin-top:5px}
+/* Dans un exemple, le mot mis en avant reprend la couleur de l'exemple :
+   sinon il sortirait du bloc au lieu d'y attirer l'attention. Le <em> des
+   modules plus anciens (vert, italique) est repris ici par la même règle,
+   sans quoi il jurerait avec un filet ambre ou rouille. */
+.savoir-ex b,.savoir-ex strong,.savoir-ex em{color:inherit;font-weight:900;font-style:normal}
+/* Rangée entièrement consacrée à des exemples : l'étiquette de gauche
+   prend la même couleur, la paire se lit alors comme un seul bloc. */
+.savoir-row.is-ex .savoir-key{color:var(--sec-color,var(--ws-accent));font-weight:800}
+.savoir--pron .savoir-ex{background:#EEF7F1}
+/* Sur téléphone, la grille 34 % / 1fr ne laissait que ~130 px à l'explication :
+   les exemples s'y écrasaient sur cinq lignes. L'étiquette passe au-dessus. */
+@media(max-width:640px){
+  .savoir-row{grid-template-columns:1fr; gap:5px}
+  .savoir-key{font-size:15px}
+}
+
 /* Focus clavier visible partout (B.4) */
 :focus-visible{outline:3px solid var(--ws-accent);outline-offset:2px;border-radius:inherit}
 textarea:focus-visible,.winput:focus-visible{outline:none;border-color:var(--ws-accent)}
@@ -780,8 +819,8 @@ const EXOS = [
   {sec:'prep', id:'prPhon', type:'write', num:'Exercice 3', tit:'Les consonnes l, r et t en fin de mot', color:'#0284C7',
    sub:"Écris le mot tel qu'on l'entend à l'oral (souvent sans le l, le r ou le t final).",
    savoir:{h:"› La prononciation des consonnes l, r et t en fin de mot", rows:[
-     ["À l'écrit","possible, autre, quatre, membre, exemple"],
-     ["À l'oral","possib(le), aut(re), quat(re), memb(re), exemp(le)"],
+     ["À l'écrit","possib<b>le</b>, aut<b>re</b>, quat<b>re</b>, memb<b>re</b>, exemp<b>le</b>"],
+     ["À l'oral","La consonne finale <b>tombe</b> :<span class='savoir-ex'>possib(le), aut(re), quat(re), memb(re), exemp(le)</span>"],
    ]},
    items:[
     {q:"acceptable → à l'oral, on dit :", accept:["acceptab(le)","acceptable"], ph:"…"},
@@ -830,10 +869,10 @@ const EXOS = [
   {sec:'t1', id:'t1prep', type:'write', num:'Exercice 4', tit:'Des prépositions pour exprimer le temps', color:'#C0573A',
    sub:'Compose une phrase avec chaque préposition donnée.',
    savoir:{h:"› Des prépositions pour exprimer le temps", rows:[
-     ["pendant","Pour marquer la durée d'une action : Le soleil brillera pendant toute la fin de semaine."],
-     ["en + moment/mois/saison/année","Pour situer une action à un moment précis : Je pars en vacances en novembre."],
-     ["il y a...","Il y a eu des records de froid en 2021."],
-     ["voilà...","Farida est sortie de l'hôpital voilà cinq semaines."],
+     ["pendant","Pour marquer la <b>durée</b> d'une action :<span class='savoir-ex'>Le soleil brillera <em>pendant</em> toute la fin de semaine.</span>"],
+     ["en + moment/mois/saison/année","Pour situer une action à un <b>moment précis</b> :<span class='savoir-ex'>Je pars en vacances <em>en</em> novembre.</span>"],
+     ["il y a...","Pour compter <b>depuis aujourd'hui</b> vers le passé :<span class='savoir-ex'><em>Il y a</em> eu des records de froid en 2021.</span>"],
+     ["voilà...","Même sens que « il y a », plus <b>courant à l'oral</b> :<span class='savoir-ex'>Farida est sortie de l'hôpital <em>voilà</em> cinq semaines.</span>"],
    ]},
    items:[
     {q:"Compose une phrase avec « il y a... » pour parler du passé.", hint:"Il a neigé il y a deux jours.", ph:"…"},
@@ -899,9 +938,9 @@ const EXOS = [
   {sec:'t2', id:'t2ci', type:'write', num:'Exercice 5', tit:'Le pronom complément indirect', color:'#6B4FBB',
    sub:'Réécris la phrase en remplaçant le groupe nominal souligné par lui, elle, eux ou elles.',
    savoir:{h:"› Le remplacement d'un CI par un pronom personnel", rows:[
-     ["lui (m.s. ou f.s.), placé avant le verbe","Je parle à Sonya. → Je lui parle."],
-     ["leur (m.pl. ou f.pl.), placé avant le verbe","Tu souris aux voisins. → Tu leur souris."],
-     ["lui/elle/eux/elles, placé après le verbe + préposition","Tu comptes sur Joseph. → Tu comptes sur lui."],
+     ["lui (m.s. ou f.s.), placé avant le verbe","<span class='savoir-ex'>Je parle <em>à Sonya</em>. → Je <em>lui</em> parle.</span>"],
+     ["leur (m.pl. ou f.pl.), placé avant le verbe","<span class='savoir-ex'>Tu souris <em>aux voisins</em>. → Tu <em>leur</em> souris.</span>"],
+     ["lui/elle/eux/elles, placé après le verbe + préposition","<span class='savoir-ex'>Tu comptes <em>sur Joseph</em>. → Tu comptes <em>sur lui</em>.</span>"],
    ]},
    items:[
     {q:"Amina fait confiance à Chantal pour ses conseils.", accept:["amina fait confiance à elle pour ses conseils","amina fait confiance a elle pour ses conseils"], ph:"…"},
@@ -923,7 +962,7 @@ const EXOS = [
   {sec:'t2', id:'t2condition', type:'write', num:'Exercice 7', tit:'Exprimer une condition avec si', color:'#6B4FBB',
    sub:"Complète chaque phrase avec une condition introduite par si.",
    savoir:{h:"› Pour exprimer la condition", rows:[
-     ["si","Nous irons marcher dehors si la température le permet. Apporte un chandail s'il fait froid."],
+     ["si","La condition s'écrit avec <b>si</b>, et <b>s'</b> devant « il » :<span class='savoir-ex'>Nous irons marcher dehors <em>si</em> la température le permet.</span><span class='savoir-ex'>Apporte un chandail <em>s'il</em> fait froid.</span>"],
    ]},
    items:[
     {q:"Tu prendras une journée de congé...", hint:"si la météo est belle.", ph:"…"},
@@ -933,8 +972,8 @@ const EXOS = [
   {sec:'t2', id:'t2futcond', type:'write', num:'Exercice 8', tit:'Futur simple ou conditionnel présent ?', color:'#6B4FBB',
    sub:'Conjugue le verbe entre parenthèses au futur simple ou au conditionnel présent (1re personne du singulier).',
    savoir:{h:"› Le futur simple et le conditionnel présent avec je", rows:[
-     ["Futur simple (-erai/-rai)","L'action se passe dans le futur : je porterai un chapeau."],
-     ["Conditionnel présent (-erais/-rais)","L'action se déroulera peut-être, souvent si une condition est remplie : j'arriverais en après-midi si tu es d'accord."],
+     ["Futur simple (-erai/-rai)","L'action se passe <b>dans le futur</b> :<span class='savoir-ex'>je porter<em>ai</em> un chapeau</span>"],
+     ["Conditionnel présent (-erais/-rais)","L'action se déroulera <b>peut-être</b>, souvent <b>si une condition</b> est remplie :<span class='savoir-ex'>j'arriver<em>ais</em> en après-midi si tu es d'accord</span>"],
    ]},
    items:[
     {q:"(porter) Demain, je ___ un manteau chaud.", accept:["porterai"], ph:"…"},
@@ -1562,7 +1601,10 @@ function buildStatic(){
       h+='<div class="savoir'+(ex.savoir.speak?' savoir--pron':'')+'">'
        + '<div class="savoir-band">'+esc(ex.savoir.h ? ex.savoir.h.replace(/^›\s*/,'') : 'Prononciation')+'</div>';
       ex.savoir.rows.forEach((r,ri)=>{
-        h+='<div class="savoir-row"><div class="savoir-key">'+r[0]+'</div><div class="savoir-val">'+r[1];
+        // Une rangée qui s'ouvre sur un exemple se colore en entier (étiquette
+        // comprise) : c'est ce qui la sépare visuellement d'une règle.
+        const rowEx = /^\s*<span class=['"]savoir-ex['"]/.test(r[1]);
+        h+='<div class="savoir-row'+(rowEx?' is-ex':'')+'"><div class="savoir-key">'+r[0]+'</div><div class="savoir-val">'+r[1];
         if(ex.savoir.speak && r[2]){
           h+='<div class="word-chips">';
           r[2].forEach((w,wi)=>{

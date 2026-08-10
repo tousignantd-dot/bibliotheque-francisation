@@ -603,6 +603,45 @@ body{
   .bsec.b1{scroll-behavior:smooth}
 }
 
+/* ── Lisibilité des encadrés de savoir ────────────────────────────────
+   Deux besoins distincts, deux traitements. (1) Repérer les mots qui
+   portent la règle : le <b> passe en 900 sur la couleur d'encre, assez
+   marqué pour accrocher l'œil sans transformer la ligne en sapin de Noël.
+   (2) Distinguer un exemple d'une règle : un exemple se lit comme une
+   citation — retrait, filet coloré, italique dans la couleur de la
+   section — donc on ne le confond plus avec l'explication qui précède. */
+.savoir-val b,.savoir-val strong{font-weight:900;color:var(--ws-ink)}
+.savoir-ex{
+  display:block; margin:7px 0 1px; padding:8px 12px 8px 13px;
+  border-left:3px solid var(--sec-color,var(--ws-accent));
+  border-radius:0 10px 10px 0;
+  background:#F5F6F7;
+  font-style:italic; font-weight:700; line-height:1.45;
+  color:var(--sec-color,var(--ws-accent));
+}
+/* Le fond reprend la couleur de la section, très dilué : --ws-accent-bg est
+   vert quelle que soit la section, ce qui jurait avec un filet ambre ou
+   rouille. Repli sur le gris neutre ci-dessus si color-mix manque. */
+@supports (background:color-mix(in srgb,red 8%,transparent)){
+  .savoir-ex{background:color-mix(in srgb,var(--sec-color,#1D6B8F) 8%,transparent)}
+}
+.savoir-ex + .savoir-ex{margin-top:5px}
+/* Dans un exemple, le mot mis en avant reprend la couleur de l'exemple :
+   sinon il sortirait du bloc au lieu d'y attirer l'attention. Le <em> des
+   modules plus anciens (vert, italique) est repris ici par la même règle,
+   sans quoi il jurerait avec un filet ambre ou rouille. */
+.savoir-ex b,.savoir-ex strong,.savoir-ex em{color:inherit;font-weight:900;font-style:normal}
+/* Rangée entièrement consacrée à des exemples : l'étiquette de gauche
+   prend la même couleur, la paire se lit alors comme un seul bloc. */
+.savoir-row.is-ex .savoir-key{color:var(--sec-color,var(--ws-accent));font-weight:800}
+.savoir--pron .savoir-ex{background:#EEF7F1}
+/* Sur téléphone, la grille 34 % / 1fr ne laissait que ~130 px à l'explication :
+   les exemples s'y écrasaient sur cinq lignes. L'étiquette passe au-dessus. */
+@media(max-width:640px){
+  .savoir-row{grid-template-columns:1fr; gap:5px}
+  .savoir-key{font-size:15px}
+}
+
 /* Focus clavier visible partout (B.4) */
 :focus-visible{outline:3px solid var(--ws-accent);outline-offset:2px;border-radius:inherit}
 textarea:focus-visible,.winput:focus-visible{outline:none;border-color:var(--ws-accent)}
@@ -753,8 +792,8 @@ const EXOS = [
   {sec:'prep', id:'prAccent', type:'write', num:'Exercice 2', tit:"L'accent d'insistance", color:'#EA580C',
    sub:"Écoute la phrase, puis écris le mot sur lequel l'accent d'insistance est mis (la voyelle allongée avec une intonation montante).",
    savoir:{h:"› Pour mettre l'accent sur un mot ou une phrase", rows:[
-     ["Sur un mot","On allonge la dernière syllabe et on prend une intonation montante : Offrez <em>le</em> cadeau parfait."],
-     ["Sur une phrase exclamative","On utilise une intonation montante à la fin : Quelle idée <em>géniale</em> !"],
+     ["Sur un mot","On <b>allonge la dernière syllabe</b> et on prend une <b>intonation montante</b> :<span class='savoir-ex'>Offrez <em>le</em> cadeau parfait.</span>"],
+     ["Sur une phrase exclamative","On utilise une <b>intonation montante à la fin</b> :<span class='savoir-ex'>Quelle idée <em>géniale</em> !</span>"],
    ]},
    items:[
     {q:"Cet endroit est tout simplement le plus spectaculaire.", accept:["spectaculaire"], audio:"Cet endroit est tout simplement le plus spectaculaire.", ph:"…"},
@@ -766,9 +805,9 @@ const EXOS = [
   {sec:'prep', id:'prPub', type:'write', num:'Exercice 3', tit:'Les éléments dans une publicité', color:'#EA580C',
    sub:'Lis la publicité de la ferme Belle-Récolte, puis réponds aux questions.',
    savoir:{h:"› Les éléments dans une publicité", rows:[
-     ["Le récepteur","La personne ou le groupe de personnes à qui est destiné le message."],
-     ["Le message","Ce qu'on annonce : l'événement, le produit ou le service."],
-     ["Le canal","Le moyen utilisé pour transmettre le message (une vidéo, une annonce, une affiche, la radio, etc.)."],
+     ["Le récepteur","La personne ou le groupe <b>à qui est destiné</b> le message."],
+     ["Le message","<b>Ce qu'on annonce</b> : l'événement, le produit ou le service."],
+     ["Le canal","Le <b>moyen utilisé</b> pour transmettre le message (une vidéo, une annonce, une affiche, la radio, etc.)."],
      ["Texte","« La ferme Belle-Récolte vous invite à sa fête des récoltes annuelle. Venez cueillir vos propres citrouilles et déguster des tartes maison ! Les 21 et 22 septembre, au 450 chemin des Ormes, de 9 h à 17 h. »"],
    ]},
    items:[
@@ -782,8 +821,8 @@ const EXOS = [
   {sec:'prep', id:'prValeurs', type:'match', num:'Exercice 4', tit:'Les valeurs morales dans les publicités', color:'#EA580C',
    sub:"Associez chaque publicité à la valeur morale qu'elle véhicule.",
    savoir:{h:"› Les valeurs morales dans les publicités", rows:[
-     ["Définition","Une valeur morale, c'est ce qui est important, beau et bien, selon une personne ou la société."],
-     ["Exemples","l'altruisme, l'amitié, l'argent, l'autonomie, le bien-être, le plaisir, la coopération, le courage, l'écologie, la sécurité, la découverte, le progrès, la famille, la justice, la liberté, l'ouverture à l'autre, le partage, le travail"],
+     ["Définition","Une valeur morale, c'est ce qui est <b>important, beau et bien</b>, selon une personne ou la société."],
+     ["Exemples","<span class='savoir-ex'>l'altruisme, l'amitié, l'argent, l'autonomie, le bien-être, le plaisir, la coopération, le courage, l'écologie, la sécurité, la découverte, le progrès, la famille, la justice, la liberté, l'ouverture à l'autre, le partage, le travail</span>"],
    ]},
    rows:[
     {id:'pva', q:"Une publicité qui montre des amis réunis autour d'un feu de camp.", aid:'va1', a:"L'amitié"},
@@ -822,8 +861,8 @@ const EXOS = [
   {sec:'t1', id:'t1compare', type:'write', num:'Exercice 2', tit:'Faire des comparaisons', color:'#C0573A',
    sub:'Souligne les deux éléments comparés dans chaque phrase (indique-les séparés par une flèche).',
    savoir:{h:"› Pour faire des comparaisons", rows:[
-     ["plus/moins + adjectif + que","La ville de Québec est <em>plus vieille que</em> la ville de Montréal."],
-     ["plus/moins + adverbe + que","Les billets sont en vente <em>plus tôt que</em> l'an passé."],
+     ["plus/moins + adjectif + que","<span class='savoir-ex'>La ville de Québec est <em>plus vieille que</em> la ville de Montréal.</span>"],
+     ["plus/moins + adverbe + que","<span class='savoir-ex'>Les billets sont en vente <em>plus tôt que</em> l'an passé.</span>"],
    ]},
    items:[
     {q:"Vous voyagez plus souvent que nous. (éléments comparés)", hint:"Vous ↔ nous", ph:"…"},
@@ -837,8 +876,8 @@ const EXOS = [
   {sec:'t1', id:'t1slogan', type:'match', num:'Exercice 3', tit:'Associer les slogans au produit ou service', color:'#C0573A',
    sub:'Associez chaque slogan au bon produit ou service.',
    savoir:{h:"› Le slogan dans une publicité", rows:[
-     ["Définition","Une phrase courte utilisée dans une publicité pour bien se rappeler un produit."],
-     ["But","Le slogan met l'accent sur une idée ou une valeur sans nommer nécessairement le produit."],
+     ["Définition","Une <b>phrase courte</b> utilisée dans une publicité pour <b>bien se rappeler</b> un produit."],
+     ["But","Le slogan met l'accent sur une <b>idée</b> ou une <b>valeur</b>, <b>sans nommer</b> nécessairement le produit."],
    ]},
    rows:[
     {id:'t1sa', q:"L'hébergement à son meilleur, c'est chez nous !", aid:'sl1', a:"une auberge"},
@@ -860,14 +899,14 @@ const EXOS = [
   {sec:'t1', id:'t1prefixe', type:'write', num:'Exercice 5', tit:'Les préfixes', color:'#C0573A',
    sub:'Forme un nouveau mot en ajoutant un préfixe.',
    savoir:{h:"› Les préfixes", rows:[
-     ["anti-","contre : antidouleur, antipollution"],
-     ["dé-/dés-","le contraire de : déplacer, désaccord"],
-     ["en-/em-","dans : enfermer, emprisonner"],
-     ["in-/im-/il-/ir-","le contraire de : incertain, illogique, irresponsable"],
-     ["inter-","entre : interculturel, international"],
-     ["pré-","avant : prénatal, préhistorique"],
-     ["re-/ré-","à nouveau : rebâtir, réapparaître"],
-     ["sur-","trop : surchauffer, surconsommer"],
+     ["anti-","<b>contre</b> :<span class='savoir-ex'>antidouleur, antipollution</span>"],
+     ["dé-/dés-","<b>le contraire de</b> :<span class='savoir-ex'>déplacer, désaccord</span>"],
+     ["en-/em-","<b>dans</b> :<span class='savoir-ex'>enfermer, emprisonner</span>"],
+     ["in-/im-/il-/ir-","<b>le contraire de</b> :<span class='savoir-ex'>incertain, illogique, irresponsable</span>"],
+     ["inter-","<b>entre</b> :<span class='savoir-ex'>interculturel, international</span>"],
+     ["pré-","<b>avant</b> :<span class='savoir-ex'>prénatal, préhistorique</span>"],
+     ["re-/ré-","<b>à nouveau</b> :<span class='savoir-ex'>rebâtir, réapparaître</span>"],
+     ["sur-","<b>trop</b> :<span class='savoir-ex'>surchauffer, surconsommer</span>"],
    ]},
    items:[
     {q:"confortable", accept:["inconfortable"], ph:"…"},
@@ -880,11 +919,11 @@ const EXOS = [
   {sec:'t1', id:'t1suffixe', type:'write', num:'Exercice 6', tit:'Les suffixes', color:'#C0573A',
    sub:'Forme un nouveau mot en changeant le suffixe.',
    savoir:{h:"› Les suffixes", rows:[
-     ["-able (adjectif)","aimer → aimable"],
-     ["-al/-ale (adjectif)","génie → génial/géniale"],
-     ["-té (nom)","beau → beauté"],
-     ["-ance (nom)","élégant → élégance"],
-     ["-eur/-euse (nom)","chanter → chanteur/chanteuse"],
+     ["-able (adjectif)","<span class='savoir-ex'>aimer → aim<em>able</em></span>"],
+     ["-al/-ale (adjectif)","<span class='savoir-ex'>génie → géni<em>al</em>/géni<em>ale</em></span>"],
+     ["-té (nom)","<span class='savoir-ex'>beau → beau<em>té</em></span>"],
+     ["-ance (nom)","<span class='savoir-ex'>élégant → élég<em>ance</em></span>"],
+     ["-eur/-euse (nom)","<span class='savoir-ex'>chanter → chant<em>eur</em>/chant<em>euse</em></span>"],
    ]},
    items:[
     {q:"transporter", accept:["transportable","transporteur"], ph:"…"},
@@ -913,8 +952,8 @@ const EXOS = [
   {sec:'t2', id:'t2determinant', type:'write', num:'Exercice 2', tit:'Les déterminants le, la et les', color:'#6B4FBB',
    sub:"Indique si le déterminant souligné exprime une généralité ou désigne quelque chose de spécifique.",
    savoir:{h:"› Les déterminants le, la et les", rows:[
-     ["Une généralité","J'adore <em>la</em> musique. (en général)"],
-     ["Quelque chose de spécifique","J'adore <em>la</em> musique que j'entends. (celle-ci précisément)"],
+     ["Une généralité","<span class='savoir-ex'>J'adore <em>la</em> musique. (en général)</span>"],
+     ["Quelque chose de spécifique","<span class='savoir-ex'>J'adore <em>la</em> musique que j'entends. (celle-ci précisément)</span>"],
    ]},
    items:[
     {q:"« J'aime les fruits de mer. » Généralité ou spécifique ?", accept:["généralité","generalite"], ph:"…"},
@@ -927,7 +966,7 @@ const EXOS = [
   {sec:'t2', id:'t2negatif', type:'write', num:'Exercice 3', tit:'La phrase négative au passé composé', color:'#6B4FBB',
    sub:'Écris les phrases à la forme négative avec ne… pas.',
    savoir:{h:"› La phrase négative avec ne… pas et un verbe au passé composé", rows:[
-     ["Construction","On encadre l'auxiliaire avoir ou être par ne… pas : Je <em>n'ai pas</em> visité la Gaspésie."],
+     ["Construction","On <b>encadre l'auxiliaire</b> avoir ou être par <b>ne… pas</b> :<span class='savoir-ex'>Je <em>n'ai pas</em> visité la Gaspésie.</span>"],
    ]},
    items:[
     {q:"J'ai aimé la visite du site historique.", accept:["je n'ai pas aimé la visite du site historique","je n ai pas aime la visite du site historique"], ph:"Je…"},
@@ -1555,7 +1594,10 @@ function buildStatic(){
       h+='<div class="savoir'+(ex.savoir.speak?' savoir--pron':'')+'">'
        + '<div class="savoir-band">'+esc(ex.savoir.h ? ex.savoir.h.replace(/^›\s*/,'') : 'Prononciation')+'</div>';
       ex.savoir.rows.forEach((r,ri)=>{
-        h+='<div class="savoir-row"><div class="savoir-key">'+r[0]+'</div><div class="savoir-val">'+r[1];
+        // Une rangée qui s'ouvre sur un exemple se colore en entier (étiquette
+        // comprise) : c'est ce qui la sépare visuellement d'une règle.
+        const rowEx = /^\s*<span class=['"]savoir-ex['"]/.test(r[1]);
+        h+='<div class="savoir-row'+(rowEx?' is-ex':'')+'"><div class="savoir-key">'+r[0]+'</div><div class="savoir-val">'+r[1];
         if(ex.savoir.speak && r[2]){
           h+='<div class="word-chips">';
           r[2].forEach((w,wi)=>{

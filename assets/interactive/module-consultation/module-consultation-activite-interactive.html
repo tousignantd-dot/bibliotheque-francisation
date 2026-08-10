@@ -603,6 +603,45 @@ body{
   .bsec.b1{scroll-behavior:smooth}
 }
 
+/* ── Lisibilité des encadrés de savoir ────────────────────────────────
+   Deux besoins distincts, deux traitements. (1) Repérer les mots qui
+   portent la règle : le <b> passe en 900 sur la couleur d'encre, assez
+   marqué pour accrocher l'œil sans transformer la ligne en sapin de Noël.
+   (2) Distinguer un exemple d'une règle : un exemple se lit comme une
+   citation — retrait, filet coloré, italique dans la couleur de la
+   section — donc on ne le confond plus avec l'explication qui précède. */
+.savoir-val b,.savoir-val strong{font-weight:900;color:var(--ws-ink)}
+.savoir-ex{
+  display:block; margin:7px 0 1px; padding:8px 12px 8px 13px;
+  border-left:3px solid var(--sec-color,var(--ws-accent));
+  border-radius:0 10px 10px 0;
+  background:#F5F6F7;
+  font-style:italic; font-weight:700; line-height:1.45;
+  color:var(--sec-color,var(--ws-accent));
+}
+/* Le fond reprend la couleur de la section, très dilué : --ws-accent-bg est
+   vert quelle que soit la section, ce qui jurait avec un filet ambre ou
+   rouille. Repli sur le gris neutre ci-dessus si color-mix manque. */
+@supports (background:color-mix(in srgb,red 8%,transparent)){
+  .savoir-ex{background:color-mix(in srgb,var(--sec-color,#1D6B8F) 8%,transparent)}
+}
+.savoir-ex + .savoir-ex{margin-top:5px}
+/* Dans un exemple, le mot mis en avant reprend la couleur de l'exemple :
+   sinon il sortirait du bloc au lieu d'y attirer l'attention. Le <em> des
+   modules plus anciens (vert, italique) est repris ici par la même règle,
+   sans quoi il jurerait avec un filet ambre ou rouille. */
+.savoir-ex b,.savoir-ex strong,.savoir-ex em{color:inherit;font-weight:900;font-style:normal}
+/* Rangée entièrement consacrée à des exemples : l'étiquette de gauche
+   prend la même couleur, la paire se lit alors comme un seul bloc. */
+.savoir-row.is-ex .savoir-key{color:var(--sec-color,var(--ws-accent));font-weight:800}
+.savoir--pron .savoir-ex{background:#EEF7F1}
+/* Sur téléphone, la grille 34 % / 1fr ne laissait que ~130 px à l'explication :
+   les exemples s'y écrasaient sur cinq lignes. L'étiquette passe au-dessus. */
+@media(max-width:640px){
+  .savoir-row{grid-template-columns:1fr; gap:5px}
+  .savoir-key{font-size:15px}
+}
+
 /* Focus clavier visible partout (B.4) */
 :focus-visible{outline:3px solid var(--ws-accent);outline-offset:2px;border-radius:inherit}
 textarea:focus-visible,.winput:focus-visible{outline:none;border-color:var(--ws-accent)}
@@ -782,9 +821,9 @@ const EXOS = [
   {sec:'prep', id:'prPhon', type:'vf', num:'Exercice 2', tit:'Le son [ɑ̃] ou [ɔ̃]', color:'#6B4FBB', accent:'#6B4FBB', cards:true, listen:true,
    sub:"Clique sur l'icône d'écoute pour entendre le mot, puis indique le son entendu.", tiles:['[ɑ̃]','[ɔ̃]'],
    savoir:{h:"› Des sons et des lettres", speak:true, rows:[
-     ["[ɑ̃] comme dans « dent »","an, am, en, em : patient, jambe, tendon, temps", ["patient","jambe","temps","dent"]],
-     ["[ɔ̃] comme dans « front »","on, om : tendon, front, nom, consultation", ["tendon","front","nom"]],
-     ["[ɛ̃] comme dans « main »","in, im, ain, ein : main, examen, médecin", ["main","examen","médecin"]],
+     ["[ɑ̃] comme dans « dent »","<b>an, am, en, em</b> : patient, jambe, tendon, temps", ["patient","jambe","temps","dent"]],
+     ["[ɔ̃] comme dans « front »","<b>on, om</b> : tendon, front, nom, consultation", ["tendon","front","nom"]],
+     ["[ɛ̃] comme dans « main »","<b>in, im, ain, ein</b> : main, examen, médecin", ["main","examen","médecin"]],
    ]},
    rows:[
     {id:'pha', txt:"patient", ok:'[ɑ̃]'},
@@ -866,9 +905,9 @@ const EXOS = [
   {sec:'t1', id:'t1cause', type:'write', num:'Exercice 2', tit:'Exprimer une cause', color:'#C0573A',
    sub:"Complète avec « parce que », « à cause de » ou « car ».",
    savoir:{h:"› Pour exprimer une cause", rows:[
-     ["parce que + phrase","Je consulte <em>parce que</em> mon genou est enflé."],
-     ["à cause de + nom","Je boite <em>à cause de</em> la douleur."],
-     ["car + phrase (écrit)","Il ne travaille pas, <em>car</em> il doit se reposer."],
+     ["parce que + phrase","<span class='savoir-ex'>Je consulte <em>parce que</em> mon genou est enflé.</span>"],
+     ["à cause de + nom","<span class='savoir-ex'>Je boite <em>à cause de</em> la douleur.</span>"],
+     ["car + phrase (écrit)","<span class='savoir-ex'>Il ne travaille pas, <em>car</em> il doit se reposer.</span>"],
    ]},
    items:[
     {q:"Je vais à la clinique ___ j'ai mal au genou.", accept:["parce que"], ph:"parce que / à cause de / car"},
@@ -880,9 +919,9 @@ const EXOS = [
   {sec:'t1', id:'t1quest', type:'write', num:'Exercice 3', tit:'Écris la question', color:'#C0573A',
    sub:"Écris la question qui correspond à la réponse donnée.",
    savoir:{h:"› La phrase interrogative", rows:[
-     ["Avec est-ce que","<em>Est-ce que</em> vous avez mal ?"],
-     ["Avec un mot interrogatif","<em>Depuis quand</em> avez-vous mal ? · <em>Où</em> est la douleur ?"],
-     ["Par inversion (soutenu)","<em>Avez-vous</em> de la fièvre ?"],
+     ["Avec est-ce que","<span class='savoir-ex'><em>Est-ce que</em> vous avez mal ?</span>"],
+     ["Avec un mot interrogatif","<span class='savoir-ex'><em>Depuis quand</em> avez-vous mal ?</span><span class='savoir-ex'><em>Où</em> est la douleur ?</span>"],
+     ["Par inversion (soutenu)","<span class='savoir-ex'><em>Avez-vous</em> de la fièvre ?</span>"],
    ]},
    items:[
     {q:"Réponse : « J'ai mal depuis cette nuit. »", hint:"Depuis quand avez-vous mal ?", ph:"Écris la question…"},
@@ -923,10 +962,10 @@ const EXOS = [
   {sec:'t2', id:'t2neg', type:'write', num:'Exercice 3', tit:'La phrase négative', color:'#6B4FBB',
    sub:"Récris la phrase à la forme négative.",
    savoir:{h:"› Pour construire une phrase négative", rows:[
-     ["ne … pas","Je <em>ne</em> travaille <em>pas</em> aujourd'hui."],
-     ["ne … plus","Il <em>ne</em> court <em>plus</em> depuis sa blessure."],
-     ["ne … jamais","Elle <em>ne</em> prend <em>jamais</em> ce médicament."],
-     ["Devant une voyelle","Je <em>n'</em>ai <em>pas</em> de fièvre."],
+     ["ne … pas","<span class='savoir-ex'>Je <em>ne</em> travaille <em>pas</em> aujourd'hui.</span>"],
+     ["ne … plus","<span class='savoir-ex'>Il <em>ne</em> court <em>plus</em> depuis sa blessure.</span>"],
+     ["ne … jamais","<span class='savoir-ex'>Elle <em>ne</em> prend <em>jamais</em> ce médicament.</span>"],
+     ["Devant une voyelle","<span class='savoir-ex'>Je <em>n'</em>ai <em>pas</em> de fièvre.</span>"],
    ]},
    items:[
     {q:"Il peut plier la jambe.", accept:["il ne peut pas plier la jambe"], ph:"avec ne … pas"},
@@ -971,10 +1010,10 @@ const EXOS = [
   {sec:'t3', id:'t3plur', type:'write', num:'Exercice 2', tit:'Le pluriel des noms et des adjectifs', color:'#B45309',
    sub:"Écris le groupe de mots au pluriel.",
    savoir:{h:"› Le pluriel", rows:[
-     ["Règle générale : + s","un tendon irrité → des tendon<em>s</em> irrité<em>s</em>"],
-     ["Noms en -al → -aux","un mal général → des <em>maux</em> génér<em>aux</em>"],
-     ["Noms en -eau, -eu : + x","un nouveau bureau → des nouveau<em>x</em> bureau<em>x</em>"],
-     ["Déjà en -s, -x, -z","un bras gauche → des bras gauche<em>s</em>"],
+     ["Règle générale : + s","<span class='savoir-ex'>un tendon irrité → des tendon<em>s</em> irrité<em>s</em></span>"],
+     ["Noms en -al → -aux","<span class='savoir-ex'>un mal général → des <em>maux</em> génér<em>aux</em></span>"],
+     ["Noms en -eau, -eu : + x","<span class='savoir-ex'>un nouveau bureau → des nouveau<em>x</em> bureau<em>x</em></span>"],
+     ["Déjà en -s, -x, -z","<span class='savoir-ex'>un bras gauche → des bras gauche<em>s</em></span>"],
    ]},
    items:[
     {q:"un genou enflé → des ___", accept:["genoux enflés","genoux enfles"], ph:"deux mots"},
@@ -986,11 +1025,11 @@ const EXOS = [
   {sec:'t3', id:'t3vf', type:'vf', num:'Exercice 3', tit:'Vrai ou Faux — La fiche-conseil', color:'#B45309',
    sub:"Lis la fiche-conseil ci-dessus, puis réponds.", tiles:['VRAI','FAUX'],
    savoir:{h:"› Une tendinite : la soulager et l'éviter", rows:[
-     ["Ce que c'est","Une irritation du tendon causée par des gestes répétés ou une charge trop lourde."],
-     ["Les signes","Une douleur qui élance, de l'enflure, une raideur le matin."],
-     ["Pour soulager","De la glace 20 minutes, 3 fois par jour · du repos · éviter de forcer."],
-     ["Pour éviter","Plier les genoux pour soulever · alterner les tâches · s'échauffer avant le quart."],
-     ["Quand consulter","Si la douleur dure plus d'une semaine ou empêche de marcher."],
+     ["Ce que c'est","Une <b>irritation du tendon</b> causée par des gestes répétés ou une charge trop lourde."],
+     ["Les signes","Une <b>douleur qui élance</b>, de l'<b>enflure</b>, une <b>raideur le matin</b>."],
+     ["Pour soulager","De la <b>glace 20 minutes</b>, 3 fois par jour · du <b>repos</b> · <b>éviter de forcer</b>."],
+     ["Pour éviter","<b>Plier les genoux</b> pour soulever · <b>alterner les tâches</b> · <b>s'échauffer</b> avant le quart."],
+     ["Quand consulter","Si la douleur dure <b>plus d'une semaine</b> ou <b>empêche de marcher</b>."],
    ]},
    rows:[
     {id:'d1', txt:"Une tendinite vient souvent de gestes répétés.", ok:'VRAI'},
@@ -1012,8 +1051,8 @@ const EXOS = [
   {sec:'t3', id:'t3devoir', type:'write', num:'Exercice 5', tit:'Devoir et falloir + infinitif', color:'#B45309',
    sub:"Complète avec « doit », « dois », « devez » ou « il faut ».",
    savoir:{h:"› Exprimer une obligation", rows:[
-     ["devoir + infinitif","Il <em>doit</em> se reposer. · Vous <em>devez</em> revenir dans une semaine."],
-     ["il faut + infinitif","<em>Il faut</em> éviter de forcer."],
+     ["devoir + infinitif","<span class='savoir-ex'>Il <em>doit</em> se reposer.</span><span class='savoir-ex'>Vous <em>devez</em> revenir dans une semaine.</span>"],
+     ["il faut + infinitif","<span class='savoir-ex'><em>Il faut</em> éviter de forcer.</span>"],
    ]},
    items:[
     {q:"Yannick ___ se reposer quatre jours.", accept:["doit"], ph:"un seul mot"},
@@ -1025,10 +1064,10 @@ const EXOS = [
   {sec:'appli', id:'aFiche', type:'vf', num:'Exercice 1', tit:'Vrai ou Faux — Une entorse', color:'#0D9488',
    sub:"Lis la fiche-conseil ci-dessus, puis réponds.", tiles:['VRAI','FAUX'],
    savoir:{h:"› Une entorse à la cheville : quoi faire ?", rows:[
-     ["Ce que c'est","Les ligaments de la cheville sont étirés après un faux mouvement."],
-     ["Les premiers gestes","Repos · glace · compression avec un bandage · élever la jambe."],
-     ["À éviter","La chaleur, les massages et la marche prolongée les deux premiers jours."],
-     ["Quand consulter","Si vous ne pouvez pas mettre de poids sur le pied ou si la cheville est déformée."],
+     ["Ce que c'est","Les <b>ligaments</b> de la cheville sont <b>étirés</b> après un faux mouvement."],
+     ["Les premiers gestes","<b>Repos</b> · <b>glace</b> · <b>compression</b> avec un bandage · <b>élever la jambe</b>."],
+     ["À éviter","La <b>chaleur</b>, les <b>massages</b> et la <b>marche prolongée</b> les deux premiers jours."],
+     ["Quand consulter","Si vous ne pouvez pas <b>mettre de poids sur le pied</b> ou si la cheville est <b>déformée</b>."],
    ]},
    rows:[
     {id:'e1', txt:"Une entorse touche les ligaments.", ok:'VRAI'},
@@ -1675,7 +1714,10 @@ function buildStatic(){
       h+='<div class="savoir'+(ex.savoir.speak?' savoir--pron':'')+'">'
        + '<div class="savoir-band">'+esc(ex.savoir.h ? ex.savoir.h.replace(/^›\s*/,'') : 'Prononciation')+'</div>';
       ex.savoir.rows.forEach((r,ri)=>{
-        h+='<div class="savoir-row"><div class="savoir-key">'+r[0]+'</div><div class="savoir-val">'+r[1];
+        // Une rangée qui s'ouvre sur un exemple se colore en entier (étiquette
+        // comprise) : c'est ce qui la sépare visuellement d'une règle.
+        const rowEx = /^\s*<span class=['"]savoir-ex['"]/.test(r[1]);
+        h+='<div class="savoir-row'+(rowEx?' is-ex':'')+'"><div class="savoir-key">'+r[0]+'</div><div class="savoir-val">'+r[1];
         if(ex.savoir.speak && r[2]){
           h+='<div class="word-chips">';
           r[2].forEach((w,wi)=>{
