@@ -1,8 +1,9 @@
 <!DOCTYPE html>
 <html lang="fr"><head>
 <meta charset="utf-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Quelle est la procédure ? — Module Niveau 4</title>
+<link rel="stylesheet" href="/assets/design-system/styles.css">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@600;700;800;900&display=swap" rel="stylesheet">
@@ -12,98 +13,173 @@ html,body{height:100%;background:#EDF6F4;font-family:'Nunito','Arial Rounded MT 
 body{display:flex;flex-direction:column;min-height:100vh}
 ::-webkit-scrollbar{width:6px;height:6px}::-webkit-scrollbar-track{background:rgba(0,0,0,.04);border-radius:3px}::-webkit-scrollbar-thumb{background:rgba(0,0,0,.15);border-radius:3px}
 
-#hdr{background:#7C3AED;color:#fff;padding:14px 32px;display:flex;align-items:center;justify-content:space-between;position:sticky;top:0;z-index:200;box-shadow:0 3px 16px rgba(15,118,110,.3);flex-shrink:0}
-.hdr-l{display:flex;align-items:center;gap:14px}
+#chrome{position:sticky;top:0;z-index:200}
+#hdr{background:var(--hdr-accent-soft,var(--surface-band));color:var(--text-strong);padding:32px 32px 40px;display:flex;align-items:flex-start;justify-content:space-between;flex-wrap:wrap;gap:16px;border-bottom:1px solid var(--border-tint);flex-shrink:0}
+.hdr-l{display:flex;align-items:center;gap:14px;flex:1 1 420px;min-width:0}
 .hdr-ic{width:44px;height:44px;background:rgba(255,255,255,.18);border-radius:50%;display:flex;align-items:center;justify-content:center;flex-shrink:0;font-size:22px}
-.hdr-eye{font-size:11px;font-weight:800;text-transform:uppercase;letter-spacing:.2em;opacity:.7;line-height:1}
-.hdr-h1{font-size:27px;font-weight:900;line-height:1.15}
+.hdr-eye{display:flex;align-items:center;gap:8px;font-size:var(--fs-label);font-weight:var(--fw-bold);text-transform:uppercase;letter-spacing:var(--ls-label);color:var(--hdr-accent,var(--text-accent));line-height:1}
+.hdr-eye::before{content:"";width:8px;height:8px;border-radius:50%;background:var(--hdr-accent,var(--accent));flex-shrink:0}
+.hdr-h1{font-size:clamp(38px,6vw,62px);font-weight:900;line-height:1.05;margin:10px 0 0;letter-spacing:-.02em;color:var(--text-strong)}
+.hdr-lead{max-width:56ch;margin-top:16px;font-size:19px;font-weight:500;line-height:1.5;color:var(--ws-sub,#6E7175)}
+.hdr-lead:empty{display:none}
 .hdr-r{display:flex;align-items:center;gap:14px}
-#prog-chip{background:rgba(255,255,255,.15);border:2px solid rgba(255,255,255,.45);border-radius:999px;padding:8px 18px;font-size:16px;font-weight:900;white-space:nowrap}
-#btn-reset{background:rgba(255,255,255,.15);color:#fff;border:2px solid rgba(255,255,255,.45);border-radius:10px;padding:10px 18px;font-family:'Nunito',sans-serif;font-size:15px;font-weight:800;cursor:pointer;white-space:nowrap;transition:background .15s}
+#prog-chip{background:var(--hdr-accent-soft,var(--accent-soft));color:var(--hdr-accent,var(--accent-ink));border:1px solid transparent;border-radius:999px;padding:8px 18px;font-size:15px;font-weight:800;white-space:nowrap}
+#btn-reset{background:var(--surface-card);color:var(--text-strong);border:1px solid var(--border);border-radius:999px;padding:10px 18px;font-family:'Nunito',sans-serif;font-size:15px;font-weight:800;cursor:pointer;white-space:nowrap;transition:background .15s}
+#btn-reset:hover{background:var(--paper-100)}
 #btn-reset:hover{background:rgba(255,255,255,.28)}
 
-#tabs{background:#fff;display:flex;gap:6px;padding:10px 32px;position:sticky;top:76px;z-index:190;box-shadow:0 2px 12px rgba(0,0,0,.07);flex-wrap:wrap}
-.tab{border:2.5px solid transparent;border-radius:999px;padding:9px 18px;font-family:'Nunito',sans-serif;font-size:14.5px;font-weight:800;cursor:pointer;background:#EDF6F4;color:#5E8A82;transition:all .15s;display:flex;align-items:center;gap:8px}
-.tab .tno{width:24px;height:24px;border-radius:50%;background:#B7DED7;color:#fff;display:flex;align-items:center;justify-content:center;font-size:13px;font-weight:900;flex-shrink:0}
-.tab.on{background:#7C3AED;color:#fff}
-.tab.on .tno{background:rgba(255,255,255,.28)}
-.tab .tchk{display:none;color:#4ADE80;font-size:15px}
+#tabs{position:sticky;top:0;z-index:5;background:rgba(247,247,245,.94);backdrop-filter:blur(8px);display:flex;gap:8px;padding:12px 32px;border-bottom:1px solid var(--border);flex-wrap:wrap}
+.tab{min-height:var(--tap-min);border:1px solid var(--border);border-radius:999px;padding:0 16px;font-family:'Nunito',sans-serif;font-size:14px;font-weight:800;cursor:pointer;background:var(--surface-card);color:var(--text-body);transition:background .15s,border-color .15s;display:inline-flex;align-items:center;gap:8px}
+.tab:hover{background:var(--paper-50)}
+.tab .tno{width:9px;height:9px;border-radius:50%;background:var(--sec-color,var(--accent));flex-shrink:0;font-size:0;overflow:hidden}
+.tab .tno-play{display:none}
+.tab.on{background:var(--sel-bg);border-color:var(--sel-line);color:var(--sel-ink)}
+.tab.on .tno{background:currentColor}
+.tab.done{background:var(--ok-bg);border-color:var(--ok-line);color:var(--ok-ink)}
+.tab .tchk{display:none;font-size:15px}
 .tab.done .tchk{display:inline}
 
-#sel-banner{background:#FEF3C7;border-bottom:3px solid #F59E0B;padding:10px 32px;display:none;align-items:center;gap:10px;font-size:19px;font-weight:800;color:#92400E;flex-shrink:0;position:sticky;top:132px;z-index:180}
+#sel-banner{background:var(--warn-bg);border-bottom:3px solid var(--warn-line);padding:10px 32px;display:none;align-items:center;gap:10px;font-size:19px;font-weight:800;color:var(--warn-ink);flex-shrink:0}
 #sel-banner.on{display:flex}
 
-.sec{display:none;flex-direction:column}
+.sec{display:none;flex-direction:column;border-top:3px solid var(--sec-color,transparent)}
 .sec.on{display:flex}
 
-.dial-sec{background:#123B32;color:#E8F5F2;padding:16px 32px;display:flex;gap:24px;border-bottom:4px solid #7C3AED;flex-shrink:0;flex-wrap:wrap}
+.dial-sec{background:#123B32;color:#E8F5F2;padding:16px 32px;display:flex;flex-direction:column;gap:14px;border-bottom:4px solid #1D6B8F;flex-shrink:0}
+.situ{font-size:17px;font-weight:600;line-height:1.5;opacity:.72}
+.dial-grid{display:grid;grid-template-columns:minmax(0,1fr) auto;gap:24px;align-items:center}
+.field-label{font-size:12px;font-weight:800;text-transform:uppercase;letter-spacing:.14em;color:var(--ws-sub,#8A8D91);margin-bottom:6px}
+.dial-aside{text-align:right;border-left:1px solid var(--ws-line,#EAEAE8);padding-left:24px;min-width:180px}
+.dial-aside-tit{font-size:15px;font-weight:800}
+.dial-aside-n{font-size:13px;font-weight:600;color:var(--ws-sub,#8A8D91);margin-top:6px}
+.is-hidden{display:none!important}
+@media(max-width:640px){.dial-grid{grid-template-columns:1fr}.dial-aside{text-align:left;border-left:none;border-top:1px solid var(--ws-line,#EAEAE8);padding:12px 0 0}}
+.dial-hd{display:flex;align-items:center;justify-content:flex-start;gap:12px;flex-wrap:wrap}
+.dial-hd .d-lbl{margin-bottom:0}
+.dial-hd .btn-lu{width:auto;flex:0 0 auto;display:inline-flex;align-items:center;gap:8px;padding:5px 16px;border-radius:999px;font-size:14px;background:#DC2626!important;border-color:#DC2626!important;color:#fff!important}
+.dial-hd .btn-lu .icon-svg{filter:brightness(0) invert(1)!important;opacity:1!important}
+.dial-hd .btn-lu:hover{background:#B91C1C;border-color:#B91C1C}
+.dial-hd .btn-lu .icon-svg{width:17px;height:17px}
 .audio-pl{flex:0 0 160px;display:flex;flex-direction:column;align-items:center;justify-content:flex-start;padding-top:6px;gap:10px}
-.audio-lbl{font-size:11px;font-weight:800;text-transform:uppercase;letter-spacing:.15em;opacity:.6;text-align:center}
-.btn-lu{background:rgba(255,255,255,.12);color:#E8F5F2;border:2px solid rgba(255,255,255,.35);border-radius:10px;padding:10px 14px;font-family:'Nunito',sans-serif;font-size:14px;font-weight:800;cursor:pointer;transition:all .15s;text-align:center;line-height:1.3;width:100%}
+.audio-lbl{font-size:12px;font-weight:800;text-transform:uppercase;letter-spacing:.15em;opacity:.6;text-align:center}
+.btn-lu{background:rgba(255,255,255,.12);color:#E8F5F2;border:2px solid rgba(255,255,255,.35);border-radius:999px;padding:12px 22px;font-family:'Nunito',sans-serif;font-size:15px;font-weight:800;cursor:pointer;transition:all .15s;text-align:center;line-height:1.3;display:inline-flex;align-items:center;justify-content:center;gap:8px;min-height:44px}
+.btn-lu.big{padding:16px 20px;font-size:18px;display:flex;align-items:center;justify-content:center;gap:10px}
+.btn-lu.big .icon-svg{width:22px;height:22px}
 .btn-lu:hover{background:rgba(255,255,255,.25)}
-.btn-lu.done{background:#166534;border-color:#4ADE80;color:#DCFCE7}
-.dial-txt{flex:1;min-width:280px;display:flex;flex-direction:column;gap:7px;font-size:19px;font-weight:600;line-height:1.7;padding-right:8px}
-.d-lbl{font-size:14px;font-weight:800;text-transform:uppercase;letter-spacing:.15em;color:#7FD4C9;margin-bottom:6px;opacity:.85}
-.dl{line-height:1.7}.mb{color:#FCA5A5;font-weight:800}.dr{color:#7FD4C9;font-weight:800}
+.btn-lu.done{background:var(--ok-bg);border-color:var(--ok-line);color:var(--ok-ink)}
+.dial-txt{flex:1;min-width:280px;display:flex;flex-direction:column;gap:7px;font-size:20px;font-weight:600;line-height:1.7;padding-right:8px}
+.d-lbl{display:inline-block;background:rgba(255,255,255,.14);border-radius:999px;padding:5px 16px;font-size:15px;font-weight:800;text-transform:uppercase;letter-spacing:.1em;color:#7FD4C9;margin-bottom:6px;opacity:1}
+.dl{line-height:1.7}.mb{color:#93C5FD;font-weight:800}.dr{color:#7FD4C9;font-weight:800}
 
-.intro{background:#DCEFEB;padding:14px 32px;font-size:17px;font-weight:700;color:#5B21B6;line-height:1.5;border-bottom:2px solid #B7DED7}
+.intro{background:#DCEFEB;padding:14px 32px;font-size:17px;font-weight:700;color:#154F68;line-height:1.5;border-bottom:2px solid #B7DED7}
 
 .exs{flex:1;padding:22px 32px 48px;display:flex;flex-direction:column;gap:20px}
+.cta{background:var(--ws-ink,#17181A);color:#fff;border-radius:18px;padding:26px 32px;margin:0 32px 32px;display:flex;align-items:center;justify-content:space-between;gap:20px;flex-wrap:wrap}
+.cta-eyebrow{font-size:12px;font-weight:800;text-transform:uppercase;letter-spacing:.14em;color:#8FE2B9}
+.cta-tit{font-size:22px;font-weight:900;margin-top:6px}
+.cta-sub{font-size:14.5px;font-weight:500;color:#C7C9CC;margin-top:8px;max-width:50ch}
+.cta-btn{background:var(--ws-accent,#0A8F5B)!important;color:#fff!important;border:none!important;font-size:15px;padding:12px 22px;flex-shrink:0}
 
 .card{background:#fff;border-radius:18px;padding:22px 26px;box-shadow:0 4px 20px rgba(15,118,110,.08)}
-.c-hdr{display:flex;align-items:center;gap:10px;margin-bottom:14px;flex-wrap:wrap}
-.tag{color:#fff;border-radius:999px;padding:5px 16px;font-size:13px;font-weight:800;text-transform:uppercase;letter-spacing:.1em;white-space:nowrap}
-.ctit{font-size:21px;font-weight:900}
-.csub{font-size:15.5px;color:#5E8A82;font-weight:600}
+.c-hdr{display:flex;align-items:center;flex-wrap:wrap;gap:10px;margin-bottom:20px;padding-bottom:16px;border-bottom:1px solid var(--border)}
+.exo-num{flex-shrink:0;width:32px;height:32px;border-radius:10px;display:flex;align-items:center;justify-content:center;background:var(--accent-soft);color:var(--sec-color,var(--ws-accent));font-size:14px;font-weight:900}
+.tag{font-size:13px;font-weight:800;text-transform:uppercase;letter-spacing:.12em;white-space:nowrap}
+.ctit,.csub{flex-basis:100%}
+.ctit{display:block;font-size:24px;font-weight:900;line-height:1.2}
+.csub{display:block;font-size:15px;font-weight:600}
+.exo-score{margin-left:auto;background:var(--ws-accent-bg,#E6F5EE);color:var(--sec-color,var(--ws-accent));padding:6px 12px;border-radius:999px;font-size:13px;font-weight:700;white-space:nowrap}
+.pair-grid{display:grid;grid-template-columns:1fr 1fr;gap:20px}
+@media(max-width:640px){.pair-grid{grid-template-columns:1fr}}
+.pair-grid .stack{display:flex;flex-direction:column;gap:8px}
+.chip{display:block;width:100%;text-align:left;padding:12px 16px;border-radius:12px;border:1.5px solid var(--ws-line,#EAEAE8);background:#fff;font-family:inherit;font-size:15px;font-weight:600;color:var(--ws-ink,#17181A);cursor:pointer;transition:border-color .15s,background .15s}
+.chip:hover{border-color:var(--ws-accent,#0A8F5B)}
+.chip.chip-word{font-weight:800}
+.chip.is-active{border-color:var(--ws-accent,#0A8F5B);background:var(--ws-accent-bg,#E6F5EE);box-shadow:0 0 0 2px var(--ws-accent-bg,#E6F5EE)}
+.chip.is-paired{border-color:var(--ok-line,#34A76B);background:var(--ok-bg,#E8F6EE);color:var(--ok-ink,#0A6B46);cursor:default;opacity:.85}
+.chip.is-miss{border-color:var(--no-line,#DC2626);background:var(--no-bg,#FFF6F5)}
+.chip[aria-disabled="true"]{pointer-events:none}
 
-.savoir{background:#F1FBF9;border-left:5px solid #7C3AED;border-radius:0 14px 14px 0;padding:16px 22px;margin-bottom:4px}
-.savoir h3{font-size:15.5px;font-weight:900;color:#5B21B6;text-transform:uppercase;letter-spacing:.08em;margin-bottom:8px}
-.savoir table{border-collapse:collapse;width:100%}
-.savoir td{padding:6px 12px;font-size:16.5px;font-weight:600;line-height:1.5;border-bottom:1px dashed #B7DED7;vertical-align:top}
-.savoir td:first-child{font-weight:900;color:#5B21B6;white-space:nowrap}
-.savoir em{font-style:italic;color:#0D9488}
+.savoir{background:#F1FBF9;border-left:5px solid #1D6B8F;border-radius:0 14px 14px 0;padding:0 22px 16px;margin-bottom:4px;overflow-x:auto}
+.savoir-gap{background:#EDF6F4;height:20px;margin:0 -26px 20px;border-top:1px solid rgba(15,118,110,.1);border-bottom:1px solid rgba(15,118,110,.1)}
+.savoir-band{background:#1D6B8F;color:#fff;font-size:12.5px;font-weight:800;text-transform:uppercase;letter-spacing:.14em;padding:9px 22px;margin:0 -22px 16px;border-radius:0 14px 0 0}
+.savoir-row{display:grid;grid-template-columns:34% 1fr;gap:10px;padding:10px 0;border-bottom:1px dashed #B7DED7}
+.savoir-row:last-child{border-bottom:none}
+.savoir-key{font-weight:900;color:#154F68;font-size:17px}
+.savoir-val{font-size:17px;font-weight:600;line-height:1.5}
+.savoir em{font-style:italic;color:#0A6B57}
+.word-chips{display:flex;flex-wrap:wrap;gap:8px;margin-top:10px}
+.word-chip{display:flex;flex-wrap:wrap;align-items:center;gap:6px;background:#FFFFFF;border:1.5px solid #CFE9E3;border-radius:20px;padding:4px 6px 4px 14px}
+.word-chip .wc-word{font-weight:800;color:#123B32;font-size:15px;margin-right:2px;white-space:nowrap}
+.word-chip .wc-phrase{font-weight:500;white-space:normal}
+.word-chip .wc-phrase b{font-weight:800}
+.word-chip .btn{padding:0!important;width:40px!important;height:40px!important;display:inline-flex;align-items:center;justify-content:center;font-size:14px;border-radius:14px}
+.icon-svg{width:1em;height:1em;vertical-align:middle;display:inline-block}
+.btn .icon-svg{width:15px;height:15px}
+.btn-ghost.wlisten .icon-svg,.btn-lu .icon-svg{width:17px;height:17px;margin-right:4px}
+.word-chip .pron-fb{flex-basis:100%;order:99;margin:4px 0 0}
+@media(max-width:640px){.savoir td:first-child{width:auto}.savoir table,.savoir tbody,.savoir tr,.savoir td{display:block;width:100%}.savoir td{border-bottom:none;padding:4px 0}.savoir tr{padding-bottom:10px;border-bottom:1px dashed #B7DED7;margin-bottom:6px}}
 
 .rows{display:flex;flex-direction:column;gap:8px}
 .rrow{display:flex;align-items:center;gap:10px}
 .stxt{flex:1;background:#F1F9F7;border-radius:10px;padding:14px 18px;font-size:20px;font-weight:700;color:#123B32;line-height:1.4}
 .rrow2{display:grid;grid-template-columns:1fr 1fr;gap:8px;align-items:stretch}
-.qcard{background:#F0FAF7;border-left:4px solid #7C3AED;border-radius:0 10px 10px 0;padding:12px 16px;display:flex;flex-direction:column;justify-content:center}
-.qlbl{font-size:13px;font-weight:800;color:#7C3AED;text-transform:uppercase;letter-spacing:.1em;margin-bottom:4px}
-.qtxt{font-size:19px;font-weight:700;color:#123B32;line-height:1.4}
-.timelbl{flex:0 0 90px;background:#FEF3C7;border-radius:10px;padding:12px 8px;font-size:15px;font-weight:900;color:#92400E;text-align:center}
-.blanks-p{font-size:22px;line-height:2.9;font-weight:600;color:#123B32}
+.qcard{background:#F0FAF7;border-left:4px solid #1D6B8F;border-radius:0 10px 10px 0;padding:12px 16px;display:flex;flex-direction:column;justify-content:center}
+.qlbl{font-size:13px;font-weight:800;color:#1D6B8F;text-transform:uppercase;letter-spacing:.1em;margin-bottom:4px}
+.qtxt{font-size:20px;font-weight:700;color:#123B32;line-height:1.4}
+.timelbl{flex:0 0 90px;background:var(--warn-bg);border-radius:10px;padding:12px 8px;font-size:15px;font-weight:900;color:var(--warn-ink);text-align:center}
+.blanks-p{font-size:20px;line-height:2.9;font-weight:600;color:#123B32}
 
 .zone{display:flex;align-items:center;justify-content:center;min-height:54px;border-radius:10px;font-weight:800;font-family:'Nunito',sans-serif;cursor:pointer;transition:background .18s,border-color .18s,color .18s,transform .12s;user-select:none;text-align:center;padding:10px 14px;border:2.5px solid;line-height:1.35}
-.zone.empty{background:#F0F9FF;border-color:#93C5D6;border-style:dashed;color:#94A3B8;font-size:17px}
+.zone.empty{background:var(--drop-bg);border-color:var(--drop-line);border-style:dashed;color:#5A6B7D;font-size:17px}
 .zone.dov{background:#E0F2FE!important;border-color:#38BDF8!important;border-style:solid!important;transform:scale(1.02)}
-.zvf{min-width:150px;font-size:19px}
-.f-vrai{background:#DCFCE7;border-color:#4ADE80;border-style:solid;color:#166534}
-.f-faux{background:#FEE2E2;border-color:#FCA5A5;border-style:solid;color:#991B1B}
-.zone.filled{background:#DBEAFE;border-color:#60A5FA;border-style:solid;color:#1E3A8A;font-size:17px}
-.fb-ok{background:#D1FAE5!important;border-color:#34D399!important;border-style:solid!important;color:#065F46!important}
-.fb-no{background:#FEE2E2!important;border-color:#F87171!important;border-style:solid!important;color:#991B1B!important;animation:shk .5s ease}
+.zvf{min-width:150px;font-size:20px}
+.f-vrai{background:var(--ok-bg);border-color:var(--ok-line);border-style:solid;color:var(--ok-ink)}
+.f-faux{background:var(--no-bg);border-color:var(--no-line);border-style:solid;color:var(--no-ink)}
+.zone.filled{background:var(--sel-bg);border-color:var(--sel-line);border-style:solid;color:var(--sel-ink);font-size:17px}
+.fb-ok{background:var(--ok-bg)!important;border-color:var(--ok-line)!important;border-style:solid!important;color:var(--ok-ink)!important}
+.fb-no{background:var(--no-bg)!important;border-color:var(--no-line)!important;border-style:solid!important;color:var(--no-ink)!important;animation:shk .5s ease}
 @keyframes shk{0%,100%{transform:translateX(0)}20%{transform:translateX(-6px)}60%{transform:translateX(6px)}80%{transform:translateX(-3px)}}
 
+.vf-head{display:flex;align-items:center;gap:10px;margin-bottom:6px;padding:0 12px}
+.vf-head-txt{flex:1}
+.vf-head-opts{display:flex;gap:8px;flex:0 0 auto}
+.vf-head-opt{width:72px;flex:0 0 72px;text-align:center;font-size:12px;font-weight:900;color:#64748B;text-transform:uppercase;letter-spacing:.06em}
+.vf-row{display:flex;align-items:center;gap:10px;flex-wrap:wrap;background:#F8FDFC;border:1.5px solid #DCEEEA;border-radius:12px;padding:10px 12px}
+.vf-row .stxt{background:transparent;padding:4px 0}
+.vf-opts{display:flex;gap:8px;flex:0 0 auto;margin-left:auto}
+.pron-fb{flex-basis:100%;font-size:13px;font-weight:800;display:inline-block;margin:2px 0 4px}
+.pron-fb.ok{color:var(--ok-ink)}
+.pron-fb.no{color:var(--no-ink)}
+.pron-fb.warn{color:var(--warn-ink)}
+.vf-opt{width:72px;flex:0 0 72px;min-height:44px;border-radius:10px;border:2.5px solid #CBD5E1;background:#F8FAFC;color:#64748B;font-weight:800;font-family:'Nunito',sans-serif;cursor:pointer;transition:background .15s,border-color .15s,color .15s}
+.vf-opt:hover{border-color:#94A3B8}
+.vf-opt.sel{background:var(--sel-bg)!important;border-color:var(--sel-line)!important;border-style:solid;color:var(--sel-ink)!important}
+.vf-opt.fb-ok{background:var(--ok-bg)!important;border-color:var(--ok-line)!important;border-style:solid!important;color:var(--ok-ink)!important}
+.vf-opt.fb-no{background:var(--no-bg)!important;border-color:var(--no-line)!important;border-style:solid!important;color:var(--no-ink)!important}
+.vf-summary{font-size:13px;font-weight:800}
+.vf-summary.ok{color:var(--ok-ink)}
+.vf-summary.warn{color:var(--warn-ink)}
+
 .blank{display:inline-block;min-width:130px;padding:4px 14px;margin:0 3px;border-radius:8px;font-weight:800;vertical-align:middle;cursor:pointer;transition:background .18s,border-color .18s,color .18s;user-select:none;border:2.5px dashed #93C5D6;background:#F0F9FF;color:#94A3B8;font-size:20px;text-align:center}
-.blank.filled{border-style:solid;border-color:#5EEAD4;background:#CCFBF1;color:#5B21B6}
-.blank.fb-ok{border-style:solid;border-color:#34D399;background:#D1FAE5;color:#065F46}
-.blank.fb-no{border-style:solid;border-color:#F87171;background:#FEE2E2;color:#991B1B;animation:shk .5s ease}
-.blank.dov{border-style:solid;border-color:#38BDF8;background:#E0F2FE}
+.blank.filled{border-style:solid;border-color:var(--sel-line);background:var(--sel-bg);color:var(--sel-ink)}
+.blank.fb-ok{border-style:solid;border-color:var(--ok-line);background:var(--ok-bg);color:var(--ok-ink)}
+.blank.fb-no{border-style:solid;border-color:var(--no-line);background:var(--no-bg);color:var(--no-ink);animation:shk .5s ease}
+.blank.dov{border-style:solid;border-color:var(--sel-line);background:var(--sel-bg)}
 
 .bsec{border-radius:12px;padding:14px 12px;flex-shrink:0}
 .bsec.b1{background:#EDF6F4;border:1.5px solid #B7DED7}
-.blbl{font-size:12px;font-weight:800;text-transform:uppercase;letter-spacing:.14em;margin-bottom:10px;color:#7C3AED}
+.blbl{font-size:12px;font-weight:800;text-transform:uppercase;letter-spacing:.14em;margin-bottom:10px;color:#1D6B8F}
 .btiles{display:flex;flex-wrap:wrap;gap:8px;justify-content:center}
 .btiles.vert{flex-direction:column;flex-wrap:nowrap}
 
 .tile{border-radius:10px;font-weight:800;font-family:'Nunito',sans-serif;cursor:grab;transition:all .15s;user-select:none;border:2.5px solid;box-shadow:0 2px 7px rgba(0,0,0,.08);padding:10px 14px;display:flex;align-items:center;justify-content:center;text-align:center;line-height:1.35}
 .tile:active{cursor:grabbing;transform:scale(1.04);box-shadow:0 5px 14px rgba(0,0,0,.15)}
-.tile.sel{background:#FEF9C3!important;border-color:#FBBF24!important;color:#92400E!important;box-shadow:0 0 0 4px rgba(245,158,11,.22),0 2px 7px rgba(0,0,0,.08)!important;transform:translateY(-1px)}
-.tv{background:#DCFCE7;border-color:#4ADE80;color:#166534;font-size:19px;padding:13px 22px}
-.tf{background:#FEE2E2;border-color:#FCA5A5;color:#991B1B;font-size:19px;padding:13px 22px}
-.tn{background:#F0FDFA;border-color:#5EEAD4;color:#5B21B6;font-size:16px}
-.ta{background:#FFF7ED;border-color:#FDBA74;color:#5B21B6;font-size:15px}
-.bempty{font-size:13px;color:#94A3B8;font-weight:600;text-align:center;padding:8px 0;font-style:italic}
+.tile.sel{background:var(--warn-bg)!important;border-color:var(--warn-line)!important;color:var(--warn-ink)!important;box-shadow:0 0 0 4px rgba(217,136,11,.22),0 2px 7px rgba(0,0,0,.08)!important;transform:translateY(-1px)}
+.tv{background:var(--ok-bg);border-color:var(--ok-line);color:var(--ok-ink);font-size:20px;padding:13px 22px}
+.tf{background:var(--no-bg);border-color:var(--no-line);color:var(--no-ink);font-size:20px;padding:13px 22px}
+.tn{background:var(--ws-card);border-color:var(--ws-line);color:var(--ws-ink);font-size:17px}
+.ta{background:var(--warn-bg);border-color:var(--warn-line);color:var(--warn-ink);font-size:15px}
+.bempty{font-size:13px;color:#5A6B7D;font-weight:600;text-align:center;padding:8px 0;font-style:italic}
 
 .ghost{position:fixed;z-index:9999;pointer-events:none;opacity:.88;transform:scale(1.06) rotate(1.5deg);box-shadow:0 8px 24px rgba(0,0,0,.25);border-radius:10px}
 
@@ -114,15 +190,15 @@ body{display:flex;flex-direction:column;min-height:100vh}
 .imgtile.sel{border-color:#FBBF24;box-shadow:0 0 0 4px rgba(245,158,11,.22)}
 .imgzone{width:100%;min-height:110px;border-radius:10px;border:2.5px dashed #93C5D6;background:#F0F9FF;display:flex;align-items:center;justify-content:center;cursor:pointer;overflow:hidden;transition:all .15s}
 .imgzone img{width:100%;height:100%;object-fit:cover;display:block;pointer-events:none}
-.imgzone-ph{font-size:13px;color:#94A3B8;padding:10px}
-.imgzone.dov{border-color:#38BDF8;background:#E0F2FE}
-.imgzone.filled{border-style:solid;border-color:#5EEAD4}
-.imgzone.fb-ok{border-style:solid;border-color:#34D399}
-.imgzone.fb-no{border-style:solid;border-color:#F87171;animation:shk .5s ease}
+.imgzone-ph{font-size:13px;color:#5A6B7D;padding:10px}
+.imgzone.dov{border-color:var(--sel-line);background:var(--sel-bg)}
+.imgzone.filled{border-style:solid;border-color:var(--sel-line)}
+.imgzone.fb-ok{border-style:solid;border-color:var(--ok-line)}
+.imgzone.fb-no{border-style:solid;border-color:var(--no-line);animation:shk .5s ease}
 
 #fc-overlay{display:none;position:fixed;inset:0;z-index:9000;background:rgba(15,25,35,.6);backdrop-filter:blur(5px);align-items:center;justify-content:center}
 #fc-overlay.on{display:flex}
-#fc-box{background:#7C3AED;border-radius:24px;padding:44px 56px;max-width:760px;width:92%;box-shadow:0 24px 64px rgba(0,0,0,.4);display:flex;flex-direction:column;align-items:center;gap:20px;animation:fcPop .3s cubic-bezier(.34,1.4,.64,1)}
+#fc-box{background:#1D6B8F;border-radius:24px;padding:44px 56px;max-width:760px;width:92%;box-shadow:0 24px 64px rgba(0,0,0,.4);display:flex;flex-direction:column;align-items:center;gap:20px;animation:fcPop .3s cubic-bezier(.34,1.4,.64,1)}
 @keyframes fcPop{from{transform:scale(.82);opacity:0}to{transform:scale(1);opacity:1}}
 #fc-counter{font-size:12px;font-weight:900;text-transform:uppercase;letter-spacing:.22em;color:rgba(255,255,255,.5)}
 #fc-word{font-size:36px;font-weight:900;color:#fff;text-align:center;line-height:1.2;border-bottom:2px solid rgba(255,255,255,.18);padding-bottom:18px;width:100%}
@@ -130,7 +206,7 @@ body{display:flex;flex-direction:column;min-height:100vh}
 #fc-ex{font-size:18px;font-weight:600;color:rgba(255,255,255,.78);line-height:1.6;text-align:center;font-style:italic}
 #fc-ex strong{font-weight:900;font-style:normal;color:#fff}
 #fc-def.hidden,#fc-ex.hidden{display:none}
-#fc-reveal-btn{background:rgba(255,255,255,.18);border:1px solid rgba(255,255,255,.4);color:#fff;border-radius:8px;padding:8px 20px;font-family:'Nunito',sans-serif;font-size:14px;font-weight:800;cursor:pointer}
+#fc-reveal-btn{background:rgba(255,255,255,.18);border:1px solid rgba(255,255,255,.4);color:#fff;border-radius:8px;padding:12px 20px;font-family:'Nunito',sans-serif;font-size:14px;font-weight:800;cursor:pointer}
 #fc-reveal-btn:hover{background:rgba(255,255,255,.38)}
 #fc-reveal-btn.hidden{display:none}
 #fc-btns{display:flex;gap:14px;margin-top:6px;flex-wrap:wrap;justify-content:center}
@@ -138,80 +214,433 @@ body{display:flex;flex-direction:column;min-height:100vh}
 .fc-btn:hover{background:rgba(255,255,255,.28)}
 
 .vocab-sec{background:#EDF6F4;border-bottom:3px solid rgba(15,118,110,.15);padding:14px 32px 18px}
-.vocab-grid{display:grid;grid-template-columns:1fr 1fr 1fr;gap:5px 20px}
+.vocab-tag{background:#1D6B8F;color:#fff;border-radius:999px;padding:5px 16px;font-size:15px;font-weight:800;text-transform:uppercase;letter-spacing:.1em}
+.vocab-grid{display:grid;grid-template-columns:1fr 1fr 1fr;gap:8px 20px}
 .vw{display:flex;align-items:baseline;gap:8px;padding:7px 10px;border-radius:8px;background:rgba(255,255,255,.6);cursor:pointer}
-.vw span.dot{display:inline-block;width:8px;height:8px;border-radius:50%;background:#7C3AED;flex-shrink:0}
+.vw span.dot{display:inline-block;width:8px;height:8px;border-radius:50%;background:#1D6B8F;flex-shrink:0}
 .vw span.w{font-size:17px;font-weight:700;color:#123B32}
 
 /* Sections personnalisées (oral / écrit / autoéval) */
-.custom{max-width:660px}
-.lead{font-size:16px;font-weight:700;color:#3B6156;line-height:1.6;margin-bottom:14px}
+.custom{max-width:none}
+.custom .lead,.custom .wq,.custom .self-txt{max-width:68ch}
+.lead{font-size:15px;font-weight:700;color:#3B6156;line-height:1.6;margin-bottom:14px}
 .rec-zone{display:flex;flex-direction:column;align-items:center;gap:10px;margin:8px 0}
-#recBtn{width:78px;height:78px;border-radius:50%;border:none;background:#7C3AED;color:#fff;font-size:30px;cursor:pointer;box-shadow:0 4px 16px rgba(15,118,110,.32)}
+#recBtn{width:78px;height:78px;border-radius:50%;border:none;background:#1D6B8F;color:#fff;font-size:30px;cursor:pointer;box-shadow:0 4px 16px rgba(15,118,110,.32)}
 #recBtn.recording{background:#E23D2E;animation:pulse 1.2s infinite}
 @keyframes pulse{0%{box-shadow:0 0 0 0 rgba(226,61,46,.45)}70%{box-shadow:0 0 0 16px rgba(226,61,46,0)}100%{box-shadow:0 0 0 0 rgba(226,61,46,0)}}
-.rec-lbl{font-size:13.5px;font-weight:800;color:#5E8A82}
+.rec-lbl{font-size:13px;font-weight:800;color:#4A6F68}
 textarea,input.txt{width:100%;border:2.5px solid #B7DED7;border-radius:12px;padding:11px 14px;font-family:'Nunito',sans-serif;font-size:15px;font-weight:700;color:#123B32;background:#F7FCFB;resize:vertical}
-textarea:focus{outline:none;border-color:#7C3AED}
-.btn{font-family:'Nunito',sans-serif;font-size:14.5px;font-weight:800;border-radius:10px;padding:11px 18px;cursor:pointer;border:2.5px solid transparent}
-.btn-pri{background:#7C3AED;color:#fff}.btn-pri:hover{background:#5B21B6}.btn-pri:disabled{opacity:.5;cursor:not-allowed}
-.btn-ghost{background:#EDF6F4;color:#7C3AED;border-color:#B7DED7}.btn-ghost:hover{background:#DCEFEB}
+textarea:focus{outline:none;border-color:#1D6B8F}
+.btn{font-family:'Nunito',sans-serif;font-size:15px;font-weight:800;border-radius:10px;padding:11px 18px;cursor:pointer;border:2.5px solid transparent}
+.btn-pri{background:#1D6B8F;color:#fff}.btn-pri:hover{background:#154F68}.btn-pri:disabled{opacity:.5;cursor:not-allowed}
+.btn-ghost{background:#EDF6F4;color:#1D6B8F;border-color:#B7DED7}.btn-ghost:hover{background:#DCEFEB}
 .btn-send{background:#12556B;color:#fff}.btn-send:disabled{opacity:.5}
 .fb{background:#F0FAF7;border:2px solid #B7DED7;border-radius:12px;padding:14px 16px;display:none;flex-direction:column;gap:8px;margin-top:12px}
 .fb.on{display:flex}
-.fb-t{font-size:11.5px;font-weight:900;text-transform:uppercase;letter-spacing:.06em;color:#5B21B6}
-.fb-c{font-size:15px;font-weight:800;color:#5B21B6;line-height:1.5}
-.fb-e{font-size:12.5px;font-weight:700;color:#B45309;line-height:1.5;padding-left:14px;position:relative}
+.fb-t{font-size:12px;font-weight:900;text-transform:uppercase;letter-spacing:.06em;color:#154F68}
+.fb-c{font-size:15px;font-weight:800;color:#154F68;line-height:1.5}
+.fb-e{font-size:13px;font-weight:700;color:var(--warn-ink);line-height:1.5;padding-left:14px;position:relative}
 .fb-e::before{content:"•";position:absolute;left:2px}
-.status{font-size:13.5px;font-weight:800;color:#5E8A82;text-align:center;display:none;margin-top:8px}
+.status{font-size:13px;font-weight:800;color:#5E8A82;text-align:center;display:none;margin-top:8px}
 .status.on{display:block}
-.err{font-size:13px;font-weight:800;color:#B91C1C;background:#FEF2F2;border:2px solid #FCA5A5;border-radius:10px;padding:10px 14px;display:none;margin-top:8px}
+.err{font-size:13px;font-weight:800;color:var(--no-ink);background:var(--no-bg);border:2px solid var(--no-line);border-radius:10px;padding:10px 14px;display:none;margin-top:8px}
 .err.on{display:block}
 .sent{font-size:13px;font-weight:800;color:#12556B}
 .selfrow{display:flex;align-items:center;justify-content:space-between;gap:10px;padding:11px 0;border-bottom:1px solid #DCEFEB}
 .self-txt{font-size:15px;font-weight:800;color:#123B32}
 .self-opts{display:flex;gap:6px}
-.self-opts button{width:40px;height:40px;border-radius:9px;border:2px solid #B7DED7;background:#fff;font-size:19px;cursor:pointer}
-.self-opts button.sel{border-color:#7C3AED;background:#DCEFEB}
+.self-opts button{width:44px;height:44px;border-radius:9px;border:2px solid #B7DED7;background:#fff;font-size:19px;cursor:pointer}
+.self-opts button.sel{border-color:#1D6B8F;background:#DCEFEB}
 .hidden{display:none!important}
 
 /* Exercices à écrire */
 .wlist{display:flex;flex-direction:column;gap:14px}
 .witem{background:#F7FCFB;border:1.5px solid #B7DED7;border-radius:12px;padding:13px 16px}
-.wq{font-size:16px;font-weight:800;color:#123B32;line-height:1.45;margin-bottom:8px}
+.wq{font-size:15px;font-weight:800;color:#123B32;line-height:1.45;margin-bottom:8px}
+.acc-blank{display:inline-block;min-width:22px;height:.9em;border-bottom:2.5px solid currentColor;margin:0 3px;vertical-align:baseline;opacity:.55}
 .wrow{display:flex;gap:8px;flex-wrap:wrap}
-.winput{flex:1;min-width:180px;border:2.5px solid #B7DED7;border-radius:9px;padding:9px 13px;font-family:'Nunito',sans-serif;font-size:15.5px;font-weight:700;color:#123B32;background:#fff}
-.winput:focus{outline:none;border-color:#7C3AED}
-.winput.good{border-color:#34D399;background:#ECFDF5}
-.wbtn{flex:0 0 auto;padding:9px 16px}
-.wfb{font-size:13.5px;font-weight:700;line-height:1.5;margin-top:8px;display:none}
+.winput{flex:1;min-width:180px;border:2.5px solid #B7DED7;border-radius:9px;padding:9px 13px;font-family:'Nunito',sans-serif;font-size:15px;font-weight:700;color:#123B32;background:#fff}
+.winput:focus{outline:none;border-color:#1D6B8F}
+.winput.good{border-color:var(--ok-line);background:var(--ok-bg)}
+.wbtn{flex:0 0 auto;padding:12px 16px}
+.wfb{font-size:13px;font-weight:700;line-height:1.5;margin-top:8px;display:none}
 .wfb.ok,.wfb.no,.wfb.wait{display:block}
-.wfb.ok{color:#5B21B6}.wfb.no{color:#B45309}.wfb.wait{color:#5E8A82}
-.wfb b{color:#5B21B6}
+.wfb.ok{color:var(--ok-ink)}.wfb.no{color:var(--warn-ink)}.wfb.wait{color:#4A6F68}
+.wfb b{color:#154F68}
 
-@media(max-width:900px){.vocab-grid{grid-template-columns:1fr 1fr}.rrow2{grid-template-columns:1fr}.hdr-h1{font-size:22px}}
+@media(max-width:900px){.vocab-grid{grid-template-columns:1fr 1fr}.rrow2{grid-template-columns:1fr}}
+
+/* ── ESSAI DE STYLE : "Je me prépare" seulement (inspiré Wealthsimple) ── */
+/* Fond neutre, cartes blanches épurées, police géométrique sobre, accent unique. */
+body{
+  /* Alias vers le système de design officiel (assets/design-system/) —
+     ok-bg/no-bg/warn-bg/sel-bg/drop-bg viennent directement de
+     tokens/colors.css (mêmes noms, ne pas les redéclarer ici). */
+  --ws-bg:var(--surface-page); --ws-card:var(--surface-card); --ws-ink:var(--text-strong); --ws-sub:var(--text-muted);
+  --ws-line:var(--border); --ws-accent:var(--accent); --ws-accent-bg:var(--accent-soft);
+  /* Teinte propre à ce module (même couleur que sa plaquette dans le portail
+     et la barre du lecteur) — seulement pour l'en-tête, le reste de
+     l'interface garde l'accent vert unique du système de design. */
+  --hdr-accent:#1D6B8F; --hdr-accent-soft:#E7F0F6;
+  --pad-x:32px;      /* gouttière de page — identique partout */
+  --pad-card:22px;   /* padding intérieur de TOUS les cadres */
+  --bleed:-23px;     /* = -(var(--pad-card) + 1px de bordure) */
+  --r-sm:10px; --r-md:18px; --r-pill:999px;
+  background:var(--ws-bg);
+  color:var(--ws-ink);
+}
+/* Tous les cadres : même bordure, même padding, même bord gauche/droit. */
+.card{
+  padding:22px;
+  border:1px solid var(--ws-line);
+  border-left:4px solid var(--sec-color,var(--ws-accent));
+  border-radius:18px;
+  box-shadow:0 1px 2px rgba(20,20,20,.04);
+  /* `clip` et non `hidden` : les deux découpent l'en-tête débordant aux coins
+     arrondis, mais `hidden` fait de la carte un conteneur de défilement, ce qui
+     neutralise le `position:sticky` du banc de réponses à l'intérieur. */
+  overflow:clip;
+  transition:box-shadow .15s ease, transform .15s ease;
+}
+.card:hover{
+  transform:translateY(-1px);
+  box-shadow:0 6px 18px rgba(20,20,20,.07);
+}
+@media (prefers-reduced-motion:reduce){
+  .card{transition:none}
+  .card:hover{transform:none}
+}
+.c-hdr:first-child{
+  margin:-22px -23px 16px -26px;
+  padding:20px 22px 14px 26px;
+  background:#FBFBF9;
+  border-bottom:1px solid var(--ws-line);
+}
+.c-hdr:not(:first-child){
+  padding-bottom:12px; margin-bottom:16px;
+  border-bottom:1px solid var(--ws-line);
+}
+.qcard,.blanks-p,.word-chip{
+  background:var(--ws-card); border:1px solid var(--ws-line); border-left:1px solid var(--ws-line);
+  border-radius:18px; box-shadow:0 1px 2px rgba(20,20,20,.04); color:var(--ws-ink); font-weight:500;
+}
+/* Prononciation = seul bloc teinté vert de la page — le distingue visuellement
+   des cartes blanches qui portent le dialogue et ses exercices. */
+.savoir{
+  background:var(--ws-card); border:1px solid var(--ws-line); border-left:1px solid var(--ws-line);
+  border-radius:18px; box-shadow:0 1px 2px rgba(20,20,20,.04); color:var(--ws-ink); font-weight:500;
+}
+/* Prononciation seulement (savoir.speak===true) — les autres encadrés de savoir
+   (ex. grammaire) restent blancs comme les autres cadres. */
+.savoir--pron{
+  background:#F6FBF8;
+  border-color:#D8ECE2;
+  box-shadow:none;
+}
+/* Les énoncés vivent DANS une carte déjà encadrée (.card) — pas de double cadre :
+   simple ligne de séparation entre rangées plutôt qu'une boîte par énoncé. */
+.vf-row{background:transparent;border:none;border-radius:0;padding:0}
+.stxt{background:transparent;border:none;border-radius:0;box-shadow:none;color:var(--ws-ink);font-weight:500;padding:10px 0}
+.rows{gap:8px}
+.vf-head{padding:0}
+/* Échelle typographique unique : une seule règle pour les étiquettes majuscules.
+   NOTE : .tag/.d-lbl/.vocab-tag restent à 15px (hors de ce groupe) — demande
+   explicite de l'utilisateur que EXERCICE/VOCABULAIRE/DIALOGUE partagent la
+   même taille entre eux, distincte des étiquettes plus discrètes ci-dessous. */
+.hdr-eye,.audio-lbl,.savoir-band,
+.vf-head-opt,.fb-t,.qlbl,.blbl{
+  font-size:12px; font-weight:800; text-transform:uppercase; letter-spacing:.14em;
+}
+.tag{background:none!important;color:var(--sec,var(--ws-accent))!important;font-weight:800!important}
+.ctit{color:var(--ws-ink)!important;font-weight:900!important}
+.csub{color:var(--ws-sub)!important;font-weight:500}
+.savoir-band{background:var(--ws-ink);color:#fff;border-radius:18px 18px 0 0;margin:0 -23px 16px}
+.savoir--pron .savoir-band{background:var(--ws-accent)}
+.savoir-gap{background:var(--ws-bg);border-color:var(--ws-line);margin:0 -23px 20px}
+.savoir-row{border-bottom:1px solid var(--ws-line)}
+.savoir-key{color:var(--ws-sub);font-weight:600}
+.savoir-val{color:var(--ws-ink);font-weight:500}
+.savoir--pron .savoir-row{border-bottom:1px solid #E4F0EA}
+.savoir--pron .savoir-key{color:#4E7C6B}
+.savoir--pron .word-chip{background:#fff;border:1px solid #D8ECE2}
+.qlbl{color:var(--ws-accent)}
+.qtxt,.stxt{color:var(--ws-ink);font-weight:600}
+.vf-opt{border-radius:12px;border-color:var(--ws-line);background:var(--ws-card);color:var(--ws-sub);font-weight:600}
+/* Après correction, le vert/rouge doit toujours l'emporter sur le bleu de
+   sélection (sinon tout reste bleu et on ne voit plus où sont les erreurs). */
+.vf-opt.sel.fb-ok{background:var(--ok-bg)!important;border-color:var(--ok-line)!important;color:var(--ok-ink)!important}
+.vf-opt.sel.fb-no{background:var(--no-bg)!important;border-color:var(--no-line)!important;color:var(--no-ink)!important}
+.tile{border-radius:12px;box-shadow:0 1px 2px rgba(20,20,20,.06)}
+.btn,.word-chip .btn{
+  font-family:inherit;border-radius:999px;font-weight:600;border:1px solid var(--ws-line);
+}
+.btn-ghost{background:var(--ws-card);color:var(--ws-ink)}
+.btn-pri,.wbtn{background:var(--ws-ink)!important;color:#fff!important;border:none!important}
+.winput{border-radius:12px;border-color:var(--ws-line);color:var(--ws-ink);font-weight:500;font-family:inherit}
+.winput:focus{border-color:var(--ws-accent)}
+.wfb b{color:var(--ok-ink)}
+.fb-ok{animation:none!important}
+.fb-no{animation:none!important}
+.fb-ok::before{content:"✓ ";font-weight:800}
+.fb-no::before{content:"✕ ";font-weight:800}
+.pron-fb.ok::before{content:"✓ "}
+.pron-fb.no::before{content:"✕ "}
+.icon-svg{filter:none;opacity:.75}
+/* Badge rond seulement pour les boutons icône SEULE (sans texte à côté) —
+   sinon un bouton comme "🔊 Écouter" se retrouve écrasé dans un rond de 34px. */
+.btn-ghost:has(.icon-svg):not(.wlisten){
+  width:34px;height:34px;padding:0;border-radius:50%;display:inline-flex;
+  align-items:center;justify-content:center;background:transparent;border:none;
+}
+/* Icônes seules (haut-parleur, micro) : pas de cadre, juste l'icône. */
+.word-chip .btn,.ph-mic{background:transparent!important;border:none!important;box-shadow:none!important}
+.word-chip .btn:hover,.ph-mic:hover{background:rgba(0,0,0,.05)!important}
+.btn-ghost.wlisten{
+  display:inline-flex;align-items:center;gap:8px;background:var(--ws-bg);
+  border:1px solid var(--ws-line);border-radius:999px;padding:9px 18px;color:var(--ws-ink);font-weight:600;
+}
+.pron-fb{color:var(--ws-sub);font-weight:600;font-size:13px}
+.pron-fb.ok{color:var(--ok-ink)}
+.pron-fb.no{color:var(--no-ink)}
+.intro{background:var(--ws-card);color:var(--ws-ink);font-weight:600;border:1px solid var(--ws-line);border-radius:18px;margin:22px 32px 0;padding:18px 22px}
+.dial-sec{background:var(--ws-card);color:var(--ws-ink);border:1px solid var(--ws-line);border-bottom:1px solid var(--ws-line)!important;border-radius:18px;align-items:stretch;padding:18px 22px;margin:22px 32px 0;overflow:hidden}
+.situ{color:var(--ws-ink);opacity:1}
+.vocab-sec{
+  background:var(--ws-bg); border:none;
+  border-top:1px solid var(--ws-line);
+  border-radius:0 0 18px 18px;
+  margin:18px -23px -19px;
+  padding:18px 22px;
+}
+.vocab-tag{background:var(--ws-accent-bg);color:var(--ws-accent)}
+.vw{background:var(--ws-card);border:1px solid var(--ws-line)}
+.vw .dot{background:var(--ws-accent)}
+.audio-pl{justify-content:center;padding-top:0}
+.audio-lbl{color:var(--ws-sub);opacity:1}
+.d-lbl{background:var(--ws-accent-bg);color:var(--ws-accent);opacity:1}
+.mb{color:#2563EB}
+.dr{color:var(--ws-accent)}
+.btn-lu{background:var(--ws-bg);color:var(--ws-ink);border:1px solid var(--ws-line);border-radius:999px;font-weight:600}
+.btn-lu.btn-audio{background:#DC2626!important;border-color:#DC2626!important;color:#fff!important}
+.btn-lu.btn-audio:hover{background:#B91C1C!important;border-color:#B91C1C!important}
+.btn-lu.btn-audio .icon-svg{filter:brightness(0) invert(1)!important;opacity:1!important}
+/* Graphie-phonie en grille de cartes (modèle je-me-prepare.html) */
+.ph-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(240px,1fr));gap:14px}
+.ph-card{background:var(--ws-card,#fff);border:1px solid var(--ws-line,#EAEAE8);border-radius:16px;padding:16px;display:flex;flex-direction:column;gap:12px}
+.ph-top{display:flex;align-items:center;gap:12px}
+.ph-word{font-size:21px;font-weight:900;color:var(--ws-ink,#17181A)}
+.btn-audio-round{width:44px;height:44px;flex-shrink:0;border-radius:50%;border:none;background:#DC2626;color:#fff;display:inline-flex;align-items:center;justify-content:center;cursor:pointer;transition:background .15s}
+.btn-audio-round:hover{background:#B91C1C}
+.btn-audio-round .icon-svg{width:18px;height:18px;filter:brightness(0) invert(1)!important;opacity:1!important}
+.ph-mic{margin-left:auto;flex-shrink:0}
+.ph-opts{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+.ph-opts .vf-opt{width:auto;flex:1 1 auto}
+.savoir--pron .savoir-band{background:var(--sec-color,var(--ws-accent))}
+
+/* ── « En apprendre plus » : mini-leçon en panneau latéral ─────────────
+   Le bandeau noir d'un savoir reste un résumé. L'élève qui ne comprend pas
+   ouvre ici une leçon complète : explication, anatomie, manipulation,
+   exemples, pièges, micro-vérification. Aucun effet sur le score du module. */
+.plus-bar{margin:14px var(--bleed) -17px;border-top:1px solid var(--ws-line)}
+.savoir-row:has(+ .plus-bar){border-bottom:none}
+.plus-open{width:100%;min-height:52px;background:transparent;border:none;border-radius:0 0 17px 17px;font-family:'Nunito',sans-serif;font-size:15px;font-weight:800;color:var(--ws-accent);cursor:pointer;display:flex;align-items:center;justify-content:center;gap:9px;transition:background .15s}
+.plus-open:hover{background:var(--ws-accent-bg)}
+.plus-open svg{width:17px;height:17px;flex-shrink:0}
+
+#plus-ov{display:none;position:fixed;inset:0;z-index:9500;background:rgba(15,25,35,.5);backdrop-filter:blur(4px)}
+#plus-ov.on{display:block}
+#plus-panel{position:absolute;top:0;right:0;height:100%;width:min(700px,100%);background:var(--ws-bg);display:flex;flex-direction:column;box-shadow:-16px 0 48px rgba(0,0,0,.28);animation:plusIn .28s cubic-bezier(.22,1,.36,1)}
+@keyframes plusIn{from{transform:translateX(48px);opacity:0}to{transform:none;opacity:1}}
+@media(prefers-reduced-motion:reduce){#plus-panel{animation:none}}
+#plus-hd{background:var(--ws-ink);color:#fff;padding:22px 26px;display:flex;align-items:flex-start;gap:16px;flex-shrink:0}
+#plus-eye{font-size:12px;font-weight:800;text-transform:uppercase;letter-spacing:.14em;color:#8FE2B9}
+#plus-tit{font-size:27px;font-weight:900;line-height:1.15;margin-top:7px}
+#plus-close{margin-left:auto;width:44px;height:44px;flex-shrink:0;border-radius:50%;border:1px solid rgba(255,255,255,.32);background:rgba(255,255,255,.12);color:#fff;font-family:'Nunito',sans-serif;font-size:19px;font-weight:800;cursor:pointer}
+#plus-close:hover{background:rgba(255,255,255,.26)}
+#plus-body{flex:1;overflow-y:auto;padding:20px 26px 64px;display:flex;flex-direction:column;gap:16px}
+.pl-blk{background:var(--ws-card);border:1px solid var(--ws-line);border-radius:18px;padding:20px 22px}
+.pl-eye{font-size:12px;font-weight:800;text-transform:uppercase;letter-spacing:.14em;color:var(--ws-sub);margin-bottom:9px}
+.pl-h{font-size:20px;font-weight:900;line-height:1.25;margin-bottom:9px}
+.pl-p{font-size:17px;font-weight:500;line-height:1.6}
+.pl-p b{font-weight:900}
+.pl-p em,.pl-note em{font-style:italic;color:var(--ws-accent);font-weight:700}
+.pl-note{font-size:15px;font-weight:600;color:var(--ws-sub);line-height:1.5;margin-top:12px}
+.pl-end{color:var(--ws-accent);text-decoration:underline;text-decoration-thickness:2px;text-underline-offset:3px}
+
+.pl-ana{display:flex;flex-wrap:wrap;gap:9px;align-items:flex-end;margin:16px 0 4px}
+.pl-tok{border:1px solid var(--ws-line);border-radius:14px;padding:9px 14px;background:var(--ws-bg);text-align:center;min-width:74px}
+.pl-tok.is-key{border-color:var(--ws-accent);background:var(--ws-accent-bg)}
+.pl-tok-lbl{display:block;font-size:11px;font-weight:800;text-transform:uppercase;letter-spacing:.09em;color:var(--ws-sub);margin-bottom:5px}
+.pl-tok-w{display:block;font-size:20px;font-weight:800}
+
+.pl-axe{margin-bottom:14px}
+.pl-axe-lbl{font-size:12px;font-weight:800;text-transform:uppercase;letter-spacing:.12em;color:var(--ws-sub);margin-bottom:7px}
+.pl-opts{display:flex;gap:8px;flex-wrap:wrap}
+.pl-opt{min-height:44px;padding:10px 16px;border-radius:22px;border:1px solid var(--ws-line);background:var(--ws-card);font-family:'Nunito',sans-serif;font-size:15px;font-weight:800;line-height:1.35;text-align:left;color:var(--ws-ink);cursor:pointer;transition:background .15s,border-color .15s}
+.pl-opt:hover{border-color:var(--ws-accent)}
+.pl-opt.on{background:var(--sel-bg);border-color:var(--sel-line);color:var(--sel-ink)}
+.pl-opt.ok{background:var(--ok-bg);border-color:var(--ok-line);color:var(--ok-ink)}
+.pl-opt.no{background:var(--no-bg);border-color:var(--no-line);color:var(--no-ink)}
+.pl-out{background:var(--ws-ink);color:#fff;border-radius:16px;padding:20px;margin-top:4px;display:flex;align-items:center;justify-content:center;gap:14px;flex-wrap:wrap}
+.pl-out-w{font-size:27px;font-weight:900;text-align:center;line-height:1.3}
+.pl-out-w.is-long{font-size:21px}
+.pl-out-w .pl-end{color:#8FE2B9}
+.pl-out-n{flex-basis:100%;text-align:center;font-size:13px;font-weight:800;text-transform:uppercase;letter-spacing:.12em;color:#8FE2B9}
+.pl-out .btn-audio-round{width:44px;height:44px}
+
+.pl-ex{display:flex;align-items:center;gap:12px;padding:9px 0;border-bottom:1px solid var(--ws-line)}
+.pl-ex:last-child{border-bottom:none}
+.pl-ex-w{flex:1;min-width:0;font-size:17px;font-weight:700}
+.pl-ex-t{font-size:12.5px;font-weight:800;color:var(--ws-sub);white-space:nowrap}
+
+.pl-trap{padding:13px 0;border-bottom:1px solid var(--ws-line)}
+.pl-trap:last-child{border-bottom:none;padding-bottom:0}
+.pl-bad,.pl-good{display:flex;gap:9px;align-items:flex-start;font-size:17px;font-weight:700;line-height:1.45}
+.pl-bad{color:var(--no-ink)}
+.pl-good{color:var(--ok-ink);margin-top:5px}
+.pl-why{font-size:15px;font-weight:600;color:var(--ws-sub);line-height:1.5;margin-top:7px}
+
+.pl-q{padding:14px 0;border-bottom:1px solid var(--ws-line)}
+.pl-q:last-child{border-bottom:none;padding-bottom:0}
+.pl-qtxt{font-size:17px;font-weight:700;line-height:1.5;margin-bottom:10px}
+.pl-fb{display:none;font-size:15px;font-weight:700;line-height:1.5;margin-top:10px}
+.pl-fb.on{display:block}
+.pl-fb.ok{color:var(--ok-ink)}
+.pl-fb.no{color:var(--no-ink)}
+@media(max-width:640px){#plus-panel{width:100%}#plus-tit{font-size:23px}#plus-body{padding:16px 18px 56px}.pl-blk{padding:18px}}
+
+/* ── Proposition d'aide après plusieurs erreurs ────────────────────────
+   Volontairement discrète et refusable : un panneau qui s'ouvrirait tout
+   seul après un échec se lirait comme une punition. Ici l'élève choisit. */
+.aide{
+  margin-top:16px; padding:14px 16px;
+  background:var(--warn-bg); border:1px solid var(--warn-line);
+  border-left:4px solid var(--warn-line); border-radius:14px;
+  display:flex; align-items:center; gap:14px; flex-wrap:wrap;
+}
+.aide-txt{flex:1 1 260px; font-size:15.5px; font-weight:600; line-height:1.5; color:var(--warn-ink)}
+.aide-txt b{font-weight:900}
+.aide-btns{display:flex; gap:8px; flex-wrap:wrap}
+.aide .btn-oui{
+  min-height:44px; padding:0 18px; border-radius:999px; border:none;
+  background:var(--ws-ink); color:#fff;
+  font-family:'Nunito',sans-serif; font-size:14.5px; font-weight:800; cursor:pointer;
+}
+.aide .btn-oui:hover{background:#000}
+.aide .btn-non{
+  min-height:44px; padding:0 16px; border-radius:999px;
+  border:1px solid var(--border); background:transparent; color:var(--text-muted);
+  font-family:'Nunito',sans-serif; font-size:14.5px; font-weight:700; cursor:pointer;
+}
+.aide .btn-non:hover{background:rgba(0,0,0,.04)}
+.aide .btn-oui[disabled]{opacity:.45; cursor:default}
+.aide .btn-oui .icon-svg{width:16px; height:16px; margin-right:6px;
+  filter:brightness(0) invert(1)}
+/* Réponse de l'assistant : sur fond blanc, détachée du bandeau d'alerte —
+   c'est une explication, pas un message d'erreur de plus. */
+.aide-out{display:none; flex-basis:100%}
+.aide-out.on{display:block; margin-top:4px; padding:16px 18px;
+  background:var(--surface-card); border:1px solid var(--border); border-radius:14px}
+.aide-out.wait{font-size:15px; font-weight:600; color:var(--text-muted)}
+.aide-out.no{color:var(--no-ink); font-size:15px; font-weight:700}
+.ao-k{font-size:11.5px; font-weight:800; text-transform:uppercase;
+  letter-spacing:.13em; color:var(--text-muted); margin-bottom:5px}
+.ao-k:not(:first-child){margin-top:14px}
+.ao-v{font-size:16.5px; font-weight:500; line-height:1.6; color:var(--text-strong)}
+.ao-conseil{font-weight:800}
+/* Le bloc vers lequel on emmène l'élève s'annonce brièvement, sinon il
+   atterrit au milieu du panneau sans savoir pourquoi. */
+.pl-blk.is-cible{
+  box-shadow:0 0 0 3px var(--ws-accent);
+  transition:box-shadow .4s ease;
+}
+
+/* ── Banc de réponses collant ──────────────────────────────────────────
+   Dans un exercice long, les énoncés défilaient sous le banc de réponses :
+   arrivé en bas, l'élève n'avait plus rien à glisser. Le banc reste
+   maintenant à l'écran tant qu'on est dans l'exercice.
+   --chrome-h est mesuré en JS (la barre d'onglets change de hauteur quand
+   elle passe sur deux lignes ou que la bannière de sélection apparaît). */
+.bsec.b1{
+  position:sticky;
+  top:calc(var(--chrome-h,72px) + 12px);
+  max-height:calc(100vh - var(--chrome-h,72px) - 40px);
+  overflow-y:auto;
+  z-index:3;
+}
+/* En écran étroit, la colonne passe SOUS les énoncés : la coller en haut
+   n'aurait aucun effet. On la colle en bas, en bande horizontale. */
+@media(max-width:760px){
+  /* La colonne des énoncés imposait min-width:300px — plus large que l'espace
+     disponible sur un téléphone (375px moins les gouttières), donc les cartes
+     et les zones de dépôt étaient rognées à droite par la carte.
+     On force les deux colonnes à toute la largeur : elles s'empilent
+     franchement au lieu de se disputer une rangée trop étroite. */
+  .exo-main{min-width:0!important; flex:1 1 100%!important}
+  .bsec.b1{flex:1 1 100%!important}
+  .bsec.b1{
+    position:sticky; top:auto; bottom:0;
+    max-height:none;
+    margin:0 -22px -22px;
+    border-radius:0;
+    border-left:none; border-right:none; border-bottom:none;
+    box-shadow:0 -6px 18px rgba(20,20,20,.10);
+    padding:10px 14px calc(10px + env(safe-area-inset-bottom));
+  }
+  .bsec.b1 .blbl{margin-bottom:6px}
+  /* Les tuiles s'alignent en file et défilent horizontalement plutôt que
+     d'empiler une colonne qui mangerait tout l'écran. */
+  .bsec.b1 .btiles,.bsec.b1 .btiles.vert{
+    flex-direction:row; flex-wrap:nowrap;
+    overflow-x:auto; overflow-y:hidden;
+    justify-content:flex-start;
+    gap:8px; padding-bottom:4px;
+    -webkit-overflow-scrolling:touch;
+  }
+  .bsec.b1 .btiles > *{flex:0 0 auto}
+}
+@media(prefers-reduced-motion:no-preference){
+  .bsec.b1{scroll-behavior:smooth}
+}
+
+/* Focus clavier visible partout (B.4) */
+:focus-visible{outline:3px solid var(--ws-accent);outline-offset:2px;border-radius:inherit}
+textarea:focus-visible,.winput:focus-visible{outline:none;border-color:var(--ws-accent)}
 </style>
 </head>
 <body>
 
 <div id="hdr">
   <div class="hdr-l">
-    <div class="hdr-ic">🏭</div>
-    <div><div class="hdr-eye">Monde du travail · Niveau 4</div><div class="hdr-h1">Quelle est la procédure ?</div></div>
+    <div><div class="hdr-eye">Monde du travail · Niveau 4</div>
+    <h1 class="hdr-h1" id="hdr-title">Je me prépare</h1>
+    <p class="hdr-lead" id="hdr-lead"></p></div>
   </div>
   <div class="hdr-r">
-    <div id="prog-chip">⭐ 0 / 0</div>
+    <div id="prog-chip" aria-live="polite">⭐ 0 / 0</div>
     <button id="btn-reset">↺ Réinitialiser</button>
   </div>
 </div>
 
+<div id="chrome">
 <div id="tabs"></div>
 
 <div id="sel-banner">
   ✋ Sélectionné : «&nbsp;<span id="sel-lbl">—</span>&nbsp;» — Cliquez sur une case pour le placer.
 </div>
+</div>
 
 <div id="sections"></div>
+
+<div id="plus-ov" role="dialog" aria-modal="true" aria-labelledby="plus-tit">
+  <div id="plus-panel">
+    <div id="plus-hd">
+      <div><div id="plus-eye">Mini-leçon</div><div id="plus-tit">—</div></div>
+      <button id="plus-close" type="button" aria-label="Fermer la mini-leçon">✕</button>
+    </div>
+    <div id="plus-body"></div>
+  </div>
+</div>
 
 <div id="fc-overlay">
   <div id="fc-box">
@@ -245,168 +674,192 @@ const studentCode=getCode();
 // ── DIALOGUES ─────────────────────────────────────────────────────────
 const DIALOGUES = {
   prep: {
-    label: "Dialogue — Demander un congé",
+    label: "Dialogue — Des lunettes de sécurité",
     lines: [
-      ["MALIKA","Mes parents sont en Inde. Je ne les ai pas vus depuis longtemps, ils ont tellement hâte de me voir et moi aussi."],
-      ["CHENG","Vas-y ! Qu'est-ce que tu attends ?"],
-      ["MALIKA","Essaie de comprendre. Je ne peux pas partir n'importe quand : il y a une procédure que je dois suivre. Je vais parler à la personne responsable des congés au département des ressources humaines. À mon avis, je dois remplir un formulaire."],
-      ["CHENG","Quand tu auras l'information, écris-moi un texto, s'il te plaît. Moi aussi, j'aimerais aller voir mes parents en Chine. Mes parents me le demandent toutes les semaines !"],
-      ["MALIKA","D'accord. Je vais aussi t'envoyer le lien du site Internet d'une compagnie qui vend des billets d'avion pas trop cher. J'ai découvert ce site en naviguant sur un réseau social."],
-      ["CHENG","Ah oui ! C'est super ! C'est quoi, ce site ?"],
-      ["MALIKA","Je ne m'en souviens pas par cœur. Pendant que je vais attendre mon tour au département des ressources humaines, je vais vérifier sur mon téléphone."],
-      ["CHENG","Merci, Malika ! C'est très apprécié !"],
+      ["SAMUEL","Diane, j'ai dû acheter des lunettes de sécurité pour mon nouveau poste à l'entrepôt. Ça m'a coûté quarante dollars. Est-ce que l'entreprise rembourse ce genre de dépense ?"],
+      ["DIANE","Oui, bien sûr ! Il y a une procédure à suivre. Tu dois remplir une demande de remboursement sur l'application de l'entreprise."],
+      ["SAMUEL","Ah bon ? Je ne savais pas qu'on avait une application pour ça."],
+      ["DIANE","Oui, elle s'appelle Ressources+. Tu prends une photo de ton reçu, tu entres le montant, puis tu envoies ta demande."],
+      ["SAMUEL","D'accord. Est-ce qu'il faut l'approbation de quelqu'un avant ?"],
+      ["DIANE","Oui, ton superviseur doit approuver la demande avant que les finances la traitent."],
+      ["SAMUEL","Combien de temps ça prend, habituellement ?"],
+      ["DIANE","En général, une dizaine de jours. Garde ton reçu original, au cas où."],
     ]
   },
   t1: {
-    label: "Dialogue — Malika et la préposée aux ressources humaines",
+    label: "Dialogue — Samuel et la commis aux finances",
     lines: [
-      ["MALIKA","Bonjour, j'aimerais savoir comment faire une demande de congé."],
-      ["LA PRÉPOSÉE","Bonjour. Vous pouvez remplir le formulaire jaune en ligne, sur l'intranet de l'entreprise."],
-      ["MALIKA","D'accord. Est-ce que je peux l'envoyer par courriel une fois rempli ?"],
-      ["LA PRÉPOSÉE","Oui, tout à fait. Vous pouvez aussi numériser le formulaire et l'envoyer par courriel."],
-      ["MALIKA","Parfait. Combien de temps faut-il pour recevoir une réponse ?"],
-      ["LA PRÉPOSÉE","Vous devriez recevoir une réponse dans les 48 heures."],
+      ["SAMUEL","Bonjour, j'aimerais savoir comment faire une demande de remboursement pour du matériel de sécurité."],
+      ["LA COMMIS","Bonjour. Vous devez remplir le formulaire dans l'application Ressources+, sous l'onglet Dépenses."],
+      ["SAMUEL","D'accord. Est-ce que je dois joindre mon reçu ?"],
+      ["LA COMMIS","Oui, une photo claire du reçu est obligatoire, sinon la demande est refusée."],
+      ["SAMUEL","Combien de temps faut-il pour recevoir le remboursement ?"],
+      ["LA COMMIS","Environ dix jours ouvrables, une fois que votre superviseur a approuvé la demande."],
     ]
   },
   t2: {
-    label: "Dialogue — Cheng explique comment numériser",
+    label: "Dialogue — Diane explique comment soumettre une demande",
     lines: [
-      ["CHENG","D'abord, tu places le document sur le plateau supérieur du photocopieur."],
-      ["MALIKA","D'accord, et ensuite ?"],
-      ["CHENG","Tu sélectionnes l'opération à faire, puis tu appuies sur le bouton Démarrer."],
-      ["MALIKA","Et pour l'envoyer par courriel ?"],
-      ["CHENG","Tu saisis ton courriel sur le clavier, puis tu enregistres le document sous un autre nom."],
-      ["MALIKA","Merci, Cheng, c'est très clair !"],
+      ["DIANE","D'abord, tu ouvres l'application Ressources+ et tu appuies sur Nouvelle demande."],
+      ["SAMUEL","D'accord, et ensuite ?"],
+      ["DIANE","Tu prends une photo claire de ton reçu directement avec l'application."],
+      ["SAMUEL","Et pour le montant ?"],
+      ["DIANE","Tu inscris le montant exact, tu choisis la catégorie « équipement de sécurité », puis tu appuies sur Envoyer."],
+      ["SAMUEL","Merci, Diane, c'est très clair !"],
     ]
   },
 };
 
 // ── SECTIONS ──────────────────────────────────────────────────────────
 const SECTIONS = [
-  {id:'prep', no:'▶', title:'Je me prépare', color:'#7C3AED',
-   intro:"🏭 Malika veut prendre congé pour rendre visite à sa famille en Inde. Cheng, de son côté, veut aller en Chine. Observez la bande dessinée, puis faites les exercices.",
-   dialogue:'prep'},
-  {id:'t1', no:'1', title:'Tâche 1 · La demande de congé', color:'#C0573A',
-   intro:"📋 Tâche 1 — Comment faire une demande de congé ? Malika s'informe auprès des ressources humaines.",
-   dialogue:'t1'},
-  {id:'t2', no:'2', title:'Tâche 2 · Des directives claires', color:'#6B4FBB',
-   intro:"🖨️ Tâche 2 — Cheng explique à Malika comment numériser son formulaire.",
-   dialogue:'t2'},
-  {id:'t3', no:'3', title:'Tâche 3 · Vous avez lu les directives ?', color:'#B45309',
-   intro:"📖 Tâche 3 — Lire et comprendre des directives écrites (réservation de salle, salubrité en restauration)."},
-  {id:'appli', no:'▶', title:'Je mets en application', color:'#0D9488', custom:true,
-   intro:"🎤 Je mets en application — Donne des directives à l'oral, puis explique une procédure par écrit."},
+  {id:'prep', no:'<img class="icon-svg tno-play" src="/assets/interactive/module-procedure/icons/play.svg" alt="">', title:'Je me prépare', color:'#7C3AED',
+   lead:"Comprendre une procédure, suivre des étapes, lire une directive. Cinq exercices avant de commencer.",
+   intro:"Samuel a dû acheter des lunettes de sécurité pour son poste à l'entrepôt. Sa collègue Diane lui explique la procédure de remboursement.",
+   dialogue:'prep', next:{id:'t1', tit:'Tâche 1 · La demande de remboursement', sub:'Comprendre la procédure auprès de la commis aux finances.'}},
+  {id:'t1', no:'1', title:'Tâche 1 · La demande de remboursement', color:'#C0573A',
+   lead:"Comprendre la procédure auprès de la commis aux finances.",
+   intro:"Tâche 1 — Samuel se présente aux finances pour savoir comment obtenir un remboursement.",
+   dialogue:'t1', next:{id:'t2', tit:'Tâche 2 · Soumettre sa demande', sub:"Suivre les étapes pour soumettre une demande dans l'application."}},
+  {id:'t2', no:'2', title:'Tâche 2 · Soumettre sa demande', color:'#6B4FBB',
+   lead:"Suivre les étapes pour soumettre une demande dans l'application.",
+   intro:"Tâche 2 — Diane montre à Samuel, étape par étape, comment soumettre sa demande dans Ressources+.",
+   dialogue:'t2', next:{id:'t3', tit:'Tâche 3 · Avez-vous lu les directives ?', sub:'Lire et comprendre deux directives écrites.'}},
+  {id:'t3', no:'3', title:'Tâche 3 · Avez-vous lu les directives ?', color:'#B45309',
+   lead:"Lire et comprendre deux directives écrites.",
+   intro:"Tâche 3 — Réserver le véhicule de service et signaler un bris d'équipement : deux procédures à bien lire avant d'agir.",
+   next:{id:'appli', tit:'Je mets en application', sub:'Expliquer une procédure à voix haute, puis par écrit.'}},
+  {id:'appli', no:'<img class="icon-svg tno-play" src="/assets/interactive/module-procedure/icons/play.svg" alt="">', title:'Je mets en application', color:'#0D9488', custom:true,
+   lead:"Expliquer une procédure à voix haute, puis rédiger une demande écrite.",
+   intro:"Je mets en application — Lis la fiche-conseil, explique une procédure à l'oral, puis rédige une demande par écrit."},
   {id:'retiens', no:'✓', title:'Je retiens des mots', color:'#166534', custom:true,
-   intro:"📝 Je retiens des mots — Note le vocabulaire utile et révise avec les cartes mémoire."},
+   lead:"Noter le vocabulaire utile et réviser avec les cartes mémoire.",
+   intro:"Je retiens des mots — Note le vocabulaire utile et révise avec les cartes mémoire."},
 ];
 
 // ── EXERCICES ─────────────────────────────────────────────────────────
 // type 'vf'     : lignes {id,txt,ok} — tuiles fixes (labels)
 // type 'match'  : lignes {id,q,aid,a} — banque = réponses
 // type 'blanks' : segs {k:'t'/'b',id,c} + words {id,l}
+// ── FLASHCARDS ────────────────────────────────────────────────────────
+const FC_CARDS = [
+  {word:"une procédure", def:"La façon officielle de faire une demande ou une tâche.", ex:"Il y a une <strong>procédure</strong> à suivre pour un remboursement."},
+  {word:"un remboursement", def:"L'argent qu'on redonne à quelqu'un pour une dépense.", ex:"Il demande un <strong>remboursement</strong> pour ses lunettes de sécurité."},
+  {word:"une directive", def:"Une instruction précise à suivre.", ex:"Lisez bien les <strong>directives</strong> avant de commencer."},
+  {word:"approuver", def:"Donner son accord officiel à une demande.", ex:"Le superviseur doit <strong>approuver</strong> la demande."},
+  {word:"un reçu", def:"Le papier qui prouve un achat.", ex:"Gardez votre <strong>reçu</strong> original."},
+  {word:"joindre", def:"Ajouter un document à un envoi.", ex:"N'oubliez pas de <strong>joindre</strong> votre reçu."},
+  {word:"un onglet", def:"Une section cliquable dans une application ou un site.", ex:"Cliquez sur l'<strong>onglet</strong> Dépenses."},
+  {word:"un jour ouvrable", def:"Un jour de la semaine où l'entreprise est ouverte.", ex:"Comptez dix <strong>jours ouvrables</strong>."},
+  {word:"un bris d'équipement", def:"Un équipement qui casse ou cesse de fonctionner.", ex:"Signalez tout <strong>bris d'équipement</strong> rapidement."},
+  {word:"un véhicule de service", def:"Un véhicule appartenant à l'entreprise, utilisé pour le travail.", ex:"Réservez le <strong>véhicule de service</strong> à l'avance."},
+  {word:"un formulaire", def:"Un document à remplir avec des informations précises.", ex:"Remplissez le <strong>formulaire</strong> en ligne."},
+  {word:"un superviseur", def:"La personne responsable d'une équipe de travail.", ex:"Votre <strong>superviseur</strong> doit approuver la demande."},
+];
+
 const EXOS = [
   // ── JE ME PRÉPARE ──
-  {sec:'prep', id:'pr1', type:'write', num:'Exercice 1', tit:'La bande dessinée', color:'#7C3AED',
+  {sec:'prep', id:'pr1', type:'write', num:'Exercice 1', tit:'Le dialogue', color:'#7C3AED',
    sub:'Écoutez de nouveau le dialogue, puis répondez.',
    items:[
-    {q:"À quel service Malika doit-elle s'adresser pour demander un congé ?", hint:"Au département des ressources humaines.", ph:"…"},
-    {q:"Pourquoi Cheng veut-il aller en Chine ?", hint:"Pour rendre visite à ses parents, qu'il n'a pas vus depuis longtemps.", ph:"…"},
-    {q:"Qu'est-ce que Malika va envoyer à Cheng par texto ?", hint:"Le lien du site Internet d'une compagnie qui vend des billets d'avion pas trop chers.", ph:"…"},
-    {q:"Comment Malika a-t-elle découvert le site d'une compagnie où les billets d'avion ne sont pas trop chers ?", hint:"En naviguant sur un réseau social.", ph:"…"},
+    {q:"Pourquoi Samuel a-t-il dû acheter des lunettes de sécurité ?", hint:"Pour son nouveau poste à l'entrepôt.", ph:"…"},
+    {q:"Comment s'appelle l'application pour faire une demande de remboursement ?", hint:"Ressources+.", ph:"…"},
+    {q:"Que doit faire Samuel dans l'application, avant d'entrer le montant ?", hint:"Prendre une photo de son reçu.", ph:"…"},
+    {q:"Qui doit approuver la demande avant que les finances la traitent ?", hint:"Le superviseur.", ph:"…"},
    ]},
   {sec:'prep', id:'prPhon', type:'vf', num:'Exercice 2', tit:'La phonétique — [ɥ], [ʒ] et [ɲ]', color:'#7C3AED',
    sub:'Écoutez, puis indiquez le son entendu dans chaque mot.', tiles:['[ɥ]','[ʒ]','[ɲ]'],
    savoir:{h:"› Les sons [ɥ], [ʒ] et [ɲ]", rows:[
-     ["[ɥ]","aujourd'hui, nuit, parapluie — on prononce rapidement les voyelles [y] et [i]."],
-     ["[ʒ]","partager, girafe, gymnase, jaser, jouer, jeune — le g devant e/i/y se prononce comme j."],
-     ["[ɲ]","gagner, ligne, montagne — les consonnes g et n s'unissent pour former un seul son."],
+     ["[ɥ]","aujourd'hui, nuit — on prononce rapidement les voyelles [y] et [i] l'une après l'autre."],
+     ["[ʒ]","juillet, orangé, joindre — le j, et le g devant e/i/y, se prononcent comme dans « jour »."],
+     ["[ɲ]","gagner, ligne, signature — les lettres g et n s'unissent pour former un seul son."],
    ]},
    rows:[
     {id:'pha', txt:"aujourd'hui", ok:'[ɥ]'},
-    {id:'phb', txt:"parapluie", ok:'[ɥ]'},
-    {id:'phc', txt:"girafe", ok:'[ʒ]'},
-    {id:'phd', txt:"jouer", ok:'[ʒ]'},
-    {id:'phe', txt:"gymnase", ok:'[ʒ]'},
+    {id:'phb', txt:"nuit", ok:'[ɥ]'},
+    {id:'phc', txt:"juillet", ok:'[ʒ]'},
+    {id:'phd', txt:"orangé", ok:'[ʒ]'},
+    {id:'phe', txt:"joindre", ok:'[ʒ]'},
     {id:'phf', txt:"gagner", ok:'[ɲ]'},
-    {id:'phg', txt:"montagne", ok:'[ɲ]'},
-    {id:'phh', txt:"nuit", ok:'[ɥ]'},
+    {id:'phg', txt:"ligne", ok:'[ɲ]'},
+    {id:'phh', txt:"signature", ok:'[ɲ]'},
    ]},
   {sec:'prep', id:'prVocab', type:'write', num:'Exercice 3', tit:'Du vocabulaire de bureau', color:'#7C3AED',
-   sub:'Complète les phrases avec un mot de la rubrique (parfois plus d\'une réponse est possible).',
+   sub:"Complète les phrases avec un mot de la rubrique (parfois plus d'une réponse est possible).",
    savoir:{h:"› Du vocabulaire courant dans les milieux de travail", rows:[
-     ["Au téléphone","un clavier, un combiné, une ligne, une boîte vocale, le numéro de poste, une mise en attente"],
-     ["À l'ordinateur","un clavier d'ordinateur, une souris, un réseau, un ordinateur portable, un courriel, une boîte de réception"],
+     ["Les demandes","un formulaire, une demande, un reçu, approuver, joindre, un jour ouvrable"],
+     ["L'application","un onglet, soumettre, une catégorie, télécharger, une photo, un statut"],
    ]},
    items:[
-    {q:"Le ______ de la directrice est le 232.", accept:["numéro de poste","numero de poste"], ph:"…"},
-    {q:"J'ai trois courriels dans ma ______.", accept:["boîte de réception","boite de reception"], ph:"…"},
-    {q:"Le ______ informatique est en panne ce matin.", accept:["réseau","reseau"], ph:"…"},
-    {q:"On est dirigé directement vers la ______ .", accept:["boîte vocale","boite vocale"], ph:"…"},
-    {q:"Mon ______ est utile en télétravail.", accept:["ordinateur portable"], ph:"…"},
+    {q:"Pour être remboursé, il faut ______ une photo du reçu.", accept:["joindre"], ph:"…"},
+    {q:"Le remboursement prend environ dix ______.", accept:["jours ouvrables"], ph:"…"},
+    {q:"Cliquez sur l'______ Dépenses pour commencer.", accept:["onglet"], ph:"…"},
+    {q:"Votre superviseur doit ______ la demande avant l'envoi aux finances.", accept:["approuver"], ph:"…"},
+    {q:"Choisissez la bonne ______ dans le menu déroulant.", accept:["catégorie"], ph:"…"},
    ]},
   {sec:'prep', id:'prVerbe', type:'write', num:'Exercice 4', tit:'Le bon verbe de bureau', color:'#7C3AED',
-   sub:'Consultez la page du magazine et complétez les phrases avec le verbe approprié.',
+   sub:"Complète les phrases avec le verbe approprié.",
    items:[
-    {q:"N'oubliez pas de ______ le document à votre courriel.", accept:["joindre"], ph:"…"},
-    {q:"Désolée, je dois ______ le téléphone. La réunion commence bientôt.", accept:["raccrocher"], ph:"…"},
-    {q:"Il faut ______ ce document papier avant de l'envoyer par courriel.", accept:["numériser","scanner"], ph:"…"},
-    {q:"Allez à la réception pour récupérer le formulaire et le ______ .", accept:["remplir"], ph:"…"},
-    {q:"Je vous conseille de ______ le document, de l'enregistrer sur un support informatique, puis de le remplir de façon électronique.", accept:["imprimer"], ph:"…"},
-    {q:"N'oubliez pas d'______ le document sur une clé USB.", accept:["enregistrer"], ph:"…"},
-    {q:"Il y a un photocopieur à la réception. Vous pouvez demander à la secrétaire de ______ votre document.", accept:["photocopier"], ph:"…"},
-    {q:"Si ce client appelle, il faut ______ le téléphone sans attendre ! Il s'agit d'un appel très important.", accept:["répondre à","repondre a"], ph:"…"},
-    {q:"Pour numériser le document, il faut ______ sur la touche en haut à droite de l'écran tactile.", accept:["appuyer"], ph:"…"},
+    {q:"N'oubliez pas de ______ votre reçu à la demande.", accept:["joindre"], ph:"…"},
+    {q:"Il faut ______ le formulaire avant de l'envoyer.", accept:["remplir"], ph:"…"},
+    {q:"Une fois le formulaire prêt, vous devez le ______.", accept:["soumettre","envoyer"], ph:"…"},
+    {q:"Votre superviseur doit ______ votre demande.", accept:["approuver"], ph:"…"},
+    {q:"Si l'équipement est brisé, il faut le ______ tout de suite.", accept:["signaler"], ph:"…"},
+    {q:"Pour utiliser le camion, il faut d'abord le ______.", accept:["réserver"], ph:"…"},
+    {q:"N'______ pas votre reçu original avant d'avoir reçu le remboursement.", accept:["oubliez"], ph:"N'…"},
+    {q:"Vous pouvez ______ le statut de votre demande dans l'application.", accept:["vérifier","consulter"], ph:"…"},
+    {q:"Il faut ______ sur le bouton Envoyer pour terminer.", accept:["appuyer"], ph:"…"},
    ]},
 
-  {sec:'appli', id:'aHoraire', type:'write', num:'Exercice 1', tit:'Un horaire allégé', color:'#0D9488',
-   sub:"Lis le communiqué sur l'horaire allégé, puis réponds aux questions d'un collègue.",
-   savoir:{h:"› Étapes pour demander un horaire allégé", rows:[
-     ["1","Remplissez le formulaire de demande d'horaire allégé, disponible sur l'intranet."],
-     ["2","Remettez le formulaire à votre superviseur avant la date limite indiquée dans le communiqué."],
-     ["3","Attendez la confirmation par courriel des ressources humaines."],
-     ["4","Si la demande est acceptée, votre nouvel horaire entre en vigueur le mois suivant."],
+  // ── JE METS EN APPLICATION ──
+  {sec:'appli', id:'aEtapes', type:'write', num:'Exercice 1', tit:'Une demande de remboursement', color:'#0D9488',
+   sub:"Lis les étapes pour faire une demande de remboursement, puis réponds aux questions d'un collègue.",
+   savoir:{h:"› Étapes pour demander un remboursement", rows:[
+     ["1","Ouvrez l'application Ressources+ et appuyez sur Nouvelle demande."],
+     ["2","Prenez une photo claire de votre reçu original."],
+     ["3","Inscrivez le montant exact et choisissez la bonne catégorie."],
+     ["4","Attendez l'approbation de votre superviseur, puis le traitement par les finances (environ dix jours ouvrables)."],
    ]},
    items:[
-    {q:"C'est quoi, un horaire allégé ?", hint:"C'est un horaire de travail avec moins d'heures.", ph:"…"},
-    {q:"Quelle est la première étape pour faire ma demande ?", hint:"Remplir le formulaire de demande d'horaire allégé, disponible sur l'intranet.", ph:"…"},
-    {q:"À qui dois-je remettre le formulaire ?", hint:"À mon superviseur.", ph:"…"},
-    {q:"Est-ce que je peux remplir le formulaire en ligne ?", hint:"Oui, il est disponible sur l'intranet.", ph:"…"},
+    {q:"C'est quoi, l'application Ressources+ ?", hint:"C'est l'application où on fait les demandes de remboursement.", ph:"…"},
+    {q:"Quelle est la première étape pour faire ma demande ?", hint:"Ouvrir l'application et appuyer sur Nouvelle demande.", ph:"…"},
+    {q:"Est-ce que je peux envoyer ma demande sans photo du reçu ?", hint:"Non, la photo du reçu est obligatoire.", ph:"…"},
+    {q:"Combien de temps dois-je attendre avant d'être remboursé ?", hint:"Environ dix jours ouvrables, une fois la demande approuvée.", ph:"…"},
    ]},
 
-  // ── TÂCHE 1 · COMMENT FAIRE UNE DEMANDE DE CONGÉ ? ──
-  {sec:'t1', id:'t1vf', type:'vf', num:'Exercice 1', tit:'Vrai ou Faux — La demande de congé', color:'#C0573A',
-   sub:'Écoutez la conversation entre Malika et une préposée aux ressources humaines, puis répondez.', tiles:['VRAI','FAUX'],
+  // ── TÂCHE 1 · LA DEMANDE DE REMBOURSEMENT ──
+  {sec:'t1', id:'t1vf', type:'vf', num:'Exercice 1', tit:'Vrai ou Faux — La demande de remboursement', color:'#C0573A',
+   sub:'Écoutez la conversation entre Samuel et la commis aux finances, puis répondez.', tiles:['VRAI','FAUX'],
    rows:[
-    {id:'t1va', txt:"On peut numériser le formulaire et l'envoyer par courriel.", ok:'VRAI'},
-    {id:'t1vb', txt:"Il faut remplir le formulaire en ligne.", ok:'VRAI'},
-    {id:'t1vc', txt:"Malika va recevoir une réponse à sa demande dans les 24 heures.", ok:'FAUX'},
-    {id:'t1vd', txt:"On doit aller chercher le formulaire aux ressources humaines.", ok:'FAUX'},
+    {id:'t1va', txt:"Le formulaire se trouve dans l'application Ressources+.", ok:'VRAI'},
+    {id:'t1vb', txt:"Il n'est pas obligatoire de joindre une photo du reçu.", ok:'FAUX'},
+    {id:'t1vc', txt:"Samuel va recevoir son remboursement dans les 48 heures.", ok:'FAUX'},
+    {id:'t1vd', txt:"Le formulaire se trouve sous l'onglet Dépenses.", ok:'VRAI'},
    ]},
-  {sec:'t1', id:'t1qui', type:'write', num:'Exercice 2', tit:'La reprise de l\'information par le pronom que', color:'#C0573A',
+  {sec:'t1', id:'t1que', type:'write', num:'Exercice 2', tit:'La reprise de l\'information par le pronom que', color:'#C0573A',
    sub:'Indique le groupe nominal repris par le pronom que, en gras dans la phrase.',
    savoir:{h:"› La reprise de l'information par le pronom que", rows:[
-     ["Le pronom que reprend un GN","Il me donne des conseils. J'apprécie ses conseils. → Il me donne des conseils que j'apprécie."],
-     ["Exemples","J'occupe un emploi que j'aime. · Il suit les directives que son employeur donne. · Elle porte l'uniforme qu'elle a acheté."],
+     ["Le pronom que reprend un GN","Il me donne des directives. J'apprécie ces directives. → Il me donne des directives que j'apprécie."],
+     ["Exemples","Voici le reçu que je dois joindre. · C'est l'application que vous devez utiliser. · Elle suit la procédure qu'on lui a montrée."],
    ]},
    items:[
-    {q:"Voici le formulaire que vous devez remplir pour l'inscription. Que reprend « que » ?", accept:["le formulaire"], ph:"…"},
-    {q:"Vous devez imprimer le document que je vous ai envoyé par courriel. Que reprend « que » ?", accept:["le document"], ph:"…"},
-    {q:"Nous allons faire la rencontre dans le bureau que je vous ai montré hier. Que reprend « que » ?", accept:["le bureau"], ph:"…"},
-    {q:"Apportez tous les documents pour la visite que nous allons faire à 14 h. Que reprend « que » ?", accept:["la visite"], ph:"…"},
-    {q:"Ce matin, il faut discuter d'un sujet que je trouve important. Que reprend « que » ?", accept:["un sujet"], ph:"…"},
-    {q:"Je vais rencontrer l'employé que vous avez embauché la semaine passée. Que reprend « que » ?", accept:["l'employé","l employe"], ph:"…"},
+    {q:"Voici le formulaire que vous devez remplir pour la demande. Que reprend « que » ?", accept:["le formulaire"], ph:"…"},
+    {q:"Vous devez joindre le reçu que la commis vous a demandé. Que reprend « que » ?", accept:["le reçu"], ph:"…"},
+    {q:"Nous allons utiliser l'application que Diane m'a montrée. Que reprend « que » ?", accept:["l'application","l application"], ph:"…"},
+    {q:"Suivez bien la procédure que votre superviseur explique. Que reprend « que » ?", accept:["la procédure"], ph:"…"},
+    {q:"C'est un remboursement que j'attends depuis dix jours. Que reprend « que » ?", accept:["un remboursement","le remboursement"], ph:"…"},
+    {q:"Je vais approuver la demande que vous avez soumise ce matin. Que reprend « que » ?", accept:["la demande"], ph:"…"},
    ]},
 
-  // ── TÂCHE 2 · DES DIRECTIVES CLAIRES ──
-  {sec:'t2', id:'t2ord', type:'rows', num:'Exercice 1', tit:'Remets les directives dans l\'ordre', color:'#6B4FBB',
-   sub:"Cheng explique à Malika comment numériser son formulaire. Écoutez le dialogue, puis remettez les directives dans l'ordre (de 1 à 5).",
+  // ── TÂCHE 2 · SOUMETTRE SA DEMANDE ──
+  {sec:'t2', id:'t2ord', type:'rows', num:'Exercice 1', tit:'Remets les étapes dans l\'ordre', color:'#6B4FBB',
+   sub:"Diane explique à Samuel comment soumettre sa demande. Écoutez le dialogue, puis remettez les étapes dans l'ordre (de 1 à 5).",
    fiche:false,
    bank:[
-    {id:'ea', l:"Placer le document sur le plateau supérieur du photocopieur."},
-    {id:'eb', l:"Sélectionner l'opération à faire."},
-    {id:'ec', l:"Peser sur le bouton Démarrer."},
-    {id:'ed', l:"Saisir son courriel sur le clavier."},
-    {id:'ee', l:"Enregistrer le document sous un autre nom."},
+    {id:'ea', l:"Ouvrir l'application Ressources+."},
+    {id:'eb', l:"Appuyer sur Nouvelle demande."},
+    {id:'ec', l:"Prendre une photo claire du reçu."},
+    {id:'ed', l:"Inscrire le montant exact."},
+    {id:'ee', l:"Choisir la catégorie et appuyer sur Envoyer."},
    ],
    rows:[
     {id:'er1', lbl:'1er', cv:'ea'},
@@ -416,117 +869,101 @@ const EXOS = [
     {id:'er5', lbl:'5e', cv:'ee'},
    ]},
   {sec:'t2', id:'t2pendant', type:'write', num:'Exercice 2', tit:'Pendant que pour situer une action', color:'#6B4FBB',
-   sub:'Utilise pendant que pour joindre les deux actions. Tu peux situer l\'action dans le présent, le passé ou le futur.',
+   sub:"Utilise pendant que pour joindre les deux actions. Tu peux situer l'action dans le présent, le passé ou le futur.",
    savoir:{h:"› Pendant que pour situer une action", rows:[
-     ["présent","Elle accueille les clients pendant que je réponds au téléphone."],
-     ["passé","Pendant que je passais le balai, elle a nettoyé les tables."],
-     ["futur","Nous allons préparer les commandes pendant qu'il va à l'épicerie."],
+     ["présent","Je remplis le formulaire pendant que tu prends la photo du reçu."],
+     ["passé","Pendant que je remplissais la demande, Diane a vérifié le montant."],
+     ["futur","Nous allons soumettre la demande pendant que le superviseur sera au bureau."],
    ]},
    items:[
-    {q:"donner des directives / prendre des notes", hint:"La superviseure donne des directives pendant que les employés prennent des notes.", ph:"…"},
-    {q:"faire l'épicerie / cuisiner un bon repas", hint:"Je fais l'épicerie pendant que tu cuisines un bon repas.", ph:"…"},
-    {q:"travailler dans une garderie / être à l'école", hint:"Elle travaille dans une garderie pendant que ses enfants sont à l'école.", ph:"…"},
+    {q:"expliquer la procédure / prendre des notes", hint:"La commis explique la procédure pendant que Samuel prend des notes.", ph:"…"},
+    {q:"remplir le formulaire / chercher le reçu", hint:"Je remplis le formulaire pendant que tu cherches le reçu.", ph:"…"},
+    {q:"attendre l'approbation / continuer le travail", hint:"Il attend l'approbation pendant qu'il continue son travail.", ph:"…"},
    ]},
   {sec:'t2', id:'t2gerond', type:'vf', num:'Exercice 3', tit:'Le gérondif — simultanéité ou manière ?', color:'#6B4FBB',
    sub:'Indique si le gérondif en gras exprime la simultanéité ou la manière.', tiles:['Simultanéité','Manière'],
    savoir:{h:"› Le participe présent employé avec en (le gérondif)", rows:[
-     ["La simultanéité","Deux actions se font en même temps : Je lis en marchant lentement."],
-     ["La manière","Pour dire comment on fait une chose : J'attrape l'autobus en courant."],
+     ["La simultanéité","Deux actions se font en même temps : Il lit ses courriels en attendant l'ascenseur."],
+     ["La manière","Pour dire comment on fait une chose : Elle a réglé le problème en appelant les finances."],
    ]},
    rows:[
-    {id:'ga', txt:"Mia lit les directives <b>en se concentrant</b>.", ok:'Manière'},
-    {id:'gb', txt:"Il consulte le document <b>en tournant les pages rapidement</b>.", ok:'Manière'},
-    {id:'gc', txt:"Il parle de sa fin de semaine <b>en numérisant le document</b>.", ok:'Simultanéité'},
-    {id:'gd', txt:"Elle travaille <b>en écoutant de la musique</b>.", ok:'Simultanéité'},
-    {id:'ge', txt:"J'aime discuter avec mes collègues <b>en mangeant au dîner</b>.", ok:'Simultanéité'},
-    {id:'gf', txt:"Le concierge s'est blessé <b>en réparant la vitre</b>.", ok:'Simultanéité'},
-    {id:'gg', txt:"Julien fait des photocopies <b>en chantant</b>.", ok:'Simultanéité'},
-    {id:'gh', txt:"Myriam remplit le formulaire <b>en suivant les consignes</b>.", ok:'Manière'},
+    {id:'ga', txt:"Samuel remplit le formulaire <b>en suivant les étapes</b>.", ok:'Manière'},
+    {id:'gb', txt:"Diane a trouvé la réponse <b>en lisant la directive</b>.", ok:'Manière'},
+    {id:'gc', txt:"Il parle à son collègue <b>en attendant son tour</b>.", ok:'Simultanéité'},
+    {id:'gd', txt:"Elle travaille <b>en écoutant une baladodiffusion</b>.", ok:'Simultanéité'},
+    {id:'ge', txt:"J'aime discuter avec Diane <b>en marchant vers le bureau</b>.", ok:'Simultanéité'},
+    {id:'gf', txt:"Le technicien a réglé le problème <b>en vérifiant chaque pièce</b>.", ok:'Manière'},
+    {id:'gg', txt:"Samuel prend une pause <b>en attendant l'approbation</b>.", ok:'Simultanéité'},
+    {id:'gh', txt:"La commis a corrigé l'erreur <b>en relisant le formulaire</b>.", ok:'Manière'},
    ]},
-  {sec:'t2', id:'t2lavage', type:'write', num:'Exercice 4', tit:'Se laver les mains — à l\'impératif', color:'#6B4FBB',
-   sub:"Écoutez les directives pour se laver les mains, puis écrivez-les à la 2e personne du pluriel de l'impératif présent.",
+  {sec:'t2', id:'t2imper', type:'write', num:'Exercice 4', tit:'Signaler un bris — à l\'impératif', color:'#6B4FBB',
+   sub:"Écoutez les directives pour signaler un bris d'équipement, puis écrivez-les à la 2e personne du pluriel de l'impératif présent.",
    savoir:{h:"› L'impératif présent", rows:[
-     ["2e pers. pl. (vous)","Remplissez le formulaire. · Entendez-vous ! · Reposez-vous."],
+     ["2e pers. pl. (vous)","Remplissez le formulaire. · Soumettez-le. · Attendez la confirmation."],
      ["être, avoir, aller","Soyez, ayez, allez."],
    ]},
    items:[
-    {q:"Vous devez mouiller vos mains à l'eau tiède.", accept:["mouillez vos mains à l'eau tiède","mouillez vos mains a l'eau tiede"], ph:"Mouillez…"},
-    {q:"Vous devez appliquer du savon sur vos mains.", accept:["appliquez du savon sur vos mains"], ph:"Appliquez…"},
-    {q:"Vous devez frotter vos mains pendant vingt secondes.", accept:["frottez vos mains pendant vingt secondes"], ph:"Frottez…"},
-    {q:"Vous devez nettoyer aussi le dessous de vos ongles.", accept:["nettoyez aussi le dessous de vos ongles"], ph:"Nettoyez…"},
-    {q:"Vous devez rincer vos mains à l'eau claire.", accept:["rincez vos mains à l'eau claire","rincez vos mains a l'eau claire"], ph:"Rincez…"},
-    {q:"Vous devez sécher vos mains avec une serviette propre.", accept:["séchez vos mains avec une serviette propre","sechez vos mains avec une serviette propre"], ph:"Séchez…"},
-    {q:"Vous ne devez pas oublier de fermer le robinet avec la serviette.", accept:["n'oubliez pas de fermer le robinet avec la serviette","n oubliez pas de fermer le robinet avec la serviette"], ph:"N'oubliez pas…"},
+    {q:"Vous devez arrêter la machine immédiatement.", accept:["arrêtez la machine immédiatement","arretez la machine immediatement"], ph:"Arrêtez…"},
+    {q:"Vous devez prendre une photo du bris.", accept:["prenez une photo du bris"], ph:"Prenez…"},
+    {q:"Vous devez remplir le formulaire de signalement.", accept:["remplissez le formulaire de signalement"], ph:"Remplissez…"},
+    {q:"Vous devez avertir votre superviseur.", accept:["avertissez votre superviseur"], ph:"Avertissez…"},
+    {q:"Vous devez attendre les instructions avant de continuer.", accept:["attendez les instructions avant de continuer"], ph:"Attendez…"},
+    {q:"Vous ne devez pas réparer la machine vous-même.", accept:["ne réparez pas la machine vous-même","ne reparez pas la machine vous meme"], ph:"Ne réparez pas…"},
    ]},
   {sec:'t2', id:'t2pronom', type:'write', num:'Exercice 5', tit:'Impératif + pronom complément', color:'#6B4FBB',
-   sub:'Écris les directives à l\'impératif présent en remplaçant le complément du verbe par un pronom complément.',
+   sub:"Écris les directives à l'impératif présent en remplaçant le complément du verbe par un pronom complément.",
    savoir:{h:"› Le pronom complément à l'impératif", rows:[
-     ["Après le verbe","Vous retirez vos bijoux. → Retirez-les."],
-     ["Certains pronoms changent de forme","Vous me remettez le dossier. → Remettez-moi le dossier."],
+     ["Après le verbe","Vous soumettez la demande. → Soumettez-la.","Vous joignez le reçu. → Joignez-le."],
+     ["Certains pronoms changent de forme","Vous me remettez le formulaire. → Remettez-moi le formulaire."],
    ]},
    items:[
-    {q:"Vous avisez la secrétaire de ce changement.", accept:["avisez-la de ce changement","avisez la de ce changement"], ph:"Avisez…"},
-    {q:"Tu transfères le fichier à ton collègue.", accept:["transfère-le-lui","transfere le lui"], ph:"Transfère…"},
-    {q:"Vous demandez le formulaire à la secrétaire.", accept:["demandez-le-lui","demandez le lui"], ph:"Demandez…"},
-    {q:"Vous préparez les documents pour la réunion.", accept:["préparez-les","preparez les"], ph:"Préparez…"},
-    {q:"Tu m'appelles demain matin.", accept:["appelle-moi demain matin","appelle moi demain matin"], ph:"Appelle…"},
-    {q:"Vous me contactez bientôt.", accept:["contactez-moi bientôt","contactez moi bientot"], ph:"Contactez…"},
+    {q:"Vous avisez le superviseur de ce changement.", accept:["avisez-le de ce changement","avisez le de ce changement"], ph:"Avisez…"},
+    {q:"Tu transfères le dossier à ta collègue.", accept:["transfère-le-lui","transfere le lui"], ph:"Transfère…"},
+    {q:"Vous demandez le formulaire à la commis.", accept:["demandez-le-lui","demandez le lui"], ph:"Demandez…"},
+    {q:"Vous préparez les documents pour la demande.", accept:["préparez-les","preparez les"], ph:"Préparez…"},
+    {q:"Tu m'appelles dès que la demande est approuvée.", accept:["appelle-moi dès que la demande est approuvée","appelle moi des que la demande est approuvee"], ph:"Appelle…"},
+    {q:"Vous me contactez si vous avez des questions.", accept:["contactez-moi si vous avez des questions","contactez moi si vous avez des questions"], ph:"Contactez…"},
    ]},
 
-  // ── TÂCHE 3 · VOUS AVEZ LU LES DIRECTIVES ? ──
-  {sec:'t3', id:'t3salle', type:'vf', num:'Exercice 1', tit:'Vrai ou Faux — Réservation de salles', color:'#B45309',
-   sub:'Lisez les directives pour réserver une salle, puis répondez.', tiles:['VRAI','FAUX'],
-   savoir:{h:"› Réservation de salles", rows:[
-     ["Pour réserver","Entrez votre nom et votre numéro d'employé, sélectionnez la date, l'heure de début et de fin, le nombre de personnes, puis cochez vos besoins spécifiques."],
-     ["Ensuite","Cliquez sur Rechercher, sélectionnez la salle souhaitée, puis appuyez sur Réserver. Vous recevrez un accusé de réception."],
-     ["En cas de difficulté","Communiquez avec la secrétaire, au poste 1."],
+  // ── TÂCHE 3 · AVEZ-VOUS LU LES DIRECTIVES ? ──
+  {sec:'t3', id:'t3vehicule', type:'vf', num:'Exercice 1', tit:'Vrai ou Faux — Réserver le véhicule de service', color:'#B45309',
+   sub:'Lisez les directives pour réserver le véhicule de service, puis répondez.', tiles:['VRAI','FAUX'],
+   savoir:{h:"› Réserver le véhicule de service", rows:[
+     ["Pour réserver","Entrez votre nom et votre numéro d'employé, sélectionnez la date, l'heure de départ et de retour, puis indiquez la raison du déplacement."],
+     ["Ensuite","Cliquez sur Vérifier la disponibilité, puis sur Réserver. Vous recevrez une confirmation par courriel."],
+     ["En cas de conflit d'horaire","Communiquez avec le répartiteur, au poste 4."],
    ]},
    rows:[
-    {id:'t3sa', txt:"Pour réserver une salle, vous devez indiquer seulement votre nom.", ok:'FAUX'},
-    {id:'t3sb', txt:"Vous devez indiquer la date, l'heure du début et de la fin de la rencontre.", ok:'VRAI'},
-    {id:'t3sc', txt:"Si vous avez des besoins spécifiques, vous les demandez à la secrétaire.", ok:'FAUX'},
-    {id:'t3sd', txt:"Vous recevrez un accusé de réception quand la réservation sera faite.", ok:'VRAI'},
-    {id:'t3se', txt:"Si vous éprouvez des difficultés, vous pouvez appeler le secrétariat.", ok:'VRAI'},
+    {id:'t3va', txt:"Pour réserver, vous devez indiquer seulement votre nom.", ok:'FAUX'},
+    {id:'t3vb', txt:"Vous devez indiquer l'heure de départ et de retour.", ok:'VRAI'},
+    {id:'t3vc', txt:"Vous n'avez pas besoin d'indiquer la raison du déplacement.", ok:'FAUX'},
+    {id:'t3vd', txt:"Vous recevrez une confirmation par courriel.", ok:'VRAI'},
+    {id:'t3ve', txt:"En cas de conflit d'horaire, vous pouvez appeler le répartiteur.", ok:'VRAI'},
    ]},
-  {sec:'t3', id:'t3salleC', type:'write', num:'Exercice 2', tit:'Corrige les énoncés faux', color:'#B45309',
-   sub:'Corrige les deux énoncés faux de l\'exercice précédent.',
+  {sec:'t3', id:'t3correct', type:'write', num:'Exercice 2', tit:'Corrige les énoncés faux', color:'#B45309',
+   sub:"Corrige les deux énoncés faux de l'exercice précédent.",
    items:[
-    {q:"Corrige : « Pour réserver une salle, vous devez indiquer seulement votre nom. »", hint:"Vous devez indiquer votre nom et votre numéro d'employé.", ph:"…"},
-    {q:"Corrige : « Si vous avez des besoins spécifiques, vous les demandez à la secrétaire. »", hint:"Vous cochez vos besoins spécifiques directement dans le système de réservation.", ph:"…"},
+    {q:"Corrige : « Pour réserver, vous devez indiquer seulement votre nom. »", hint:"Vous devez indiquer votre nom et votre numéro d'employé.", ph:"…"},
+    {q:"Corrige : « Vous n'avez pas besoin d'indiquer la raison du déplacement. »", hint:"Vous devez indiquer la raison du déplacement.", ph:"…"},
    ]},
-  {sec:'t3', id:'t3salubrite', type:'write', num:'Exercice 3', tit:'La salubrité dans le milieu de la restauration', color:'#B45309',
-   sub:'Lis le rappel sur la salubrité, puis réponds aux questions.',
-   savoir:{h:"› La salubrité dans le milieu de la restauration", rows:[
-     ["Rappel","Porter la tenue et la coiffe réglementaires, garder les ongles courts, non vernis et propres, se laver les mains avant de manipuler les équipements et les aliments, couvrir toute brûlure ou blessure aux mains avec un gant adapté au contact alimentaire."],
+  {sec:'t3', id:'t3bris', type:'write', num:'Exercice 3', tit:'Signaler un bris d\'équipement', color:'#B45309',
+   sub:'Lis la directive pour signaler un bris, puis réponds aux questions.',
+   savoir:{h:"› Signaler un bris d'équipement", rows:[
+     ["Rappel","Arrêtez immédiatement la machine, prenez une photo du bris, avisez votre superviseur, puis remplissez le formulaire de signalement dans l'application. Ne tentez jamais de réparer l'équipement vous-même."],
    ]},
    items:[
-    {q:"Comment les ongles doivent-ils être ?", hint:"Courts, non vernis et propres.", ph:"…"},
-    {q:"Qu'est-ce qu'il faut faire si on a une blessure ou une brûlure à la main ?", hint:"La couvrir entièrement avec un gant adapté au contact alimentaire.", ph:"…"},
-    {q:"Comment doivent être les vêtements de travail ?", hint:"Propres et réglementaires.", ph:"…"},
-    {q:"Expliquez dans vos mots ce que signifie le mot réglementaire.", hint:"Qui respecte le règlement, les normes établies par l'employeur.", ph:"…"},
-    {q:"Qu'est-ce qu'il faut faire avant de manipuler les équipements et les aliments ?", hint:"Se laver les mains.", ph:"…"},
-    {q:"Écrivez deux synonymes du mot salubrité.", hint:"Propreté, hygiène.", ph:"…"},
+    {q:"Que faut-il faire en premier si une machine se brise ?", hint:"L'arrêter immédiatement.", ph:"…"},
+    {q:"Qu'est-ce qu'il faut faire avant d'avertir le superviseur ?", hint:"Prendre une photo du bris.", ph:"…"},
+    {q:"Est-ce qu'on peut réparer l'équipement soi-même ?", hint:"Non, il ne faut jamais tenter de le réparer soi-même.", ph:"…"},
+    {q:"Où doit-on remplir le formulaire de signalement ?", hint:"Dans l'application.", ph:"…"},
+    {q:"Expliquez dans vos mots ce que signifie le mot « signaler ».", hint:"Faire savoir, informer quelqu'un d'un problème.", ph:"…"},
+    {q:"Écrivez un synonyme du mot « bris ».", hint:"Panne, dommage.", ph:"…"},
    ]},
 ];
 
-// ── FLASHCARDS ────────────────────────────────────────────────────────
-const FC_CARDS = [
-  {word:"une procédure", def:"La façon officielle de faire une demande ou une tâche.", ex:"Il y a une <strong>procédure</strong> à suivre pour un congé."},
-  {word:"numériser", def:"Transformer un document papier en fichier numérique.", ex:"Il faut <strong>numériser</strong> ce document."},
-  {word:"une directive", def:"Une instruction précise à suivre.", ex:"Lisez bien les <strong>directives</strong>."},
-  {word:"les ressources humaines", def:"Le service qui s'occupe des employés (congés, embauche…).", ex:"Adressez-vous aux <strong>ressources humaines</strong>."},
-  {word:"un accusé de réception", def:"Une confirmation qu'une demande a été reçue.", ex:"Vous recevrez un <strong>accusé de réception</strong>."},
-  {word:"réglementaire", def:"Qui respecte le règlement établi.", ex:"Portez la tenue <strong>réglementaire</strong>."},
-  {word:"la salubrité", def:"La propreté et l'hygiène dans un milieu de travail.", ex:"La <strong>salubrité</strong> est essentielle en restauration."},
-  {word:"une boîte vocale", def:"Le système qui enregistre un message téléphonique.", ex:"J'ai laissé un message dans sa <strong>boîte vocale</strong>."},
-  {word:"un intranet", def:"Le réseau informatique interne d'une entreprise.", ex:"Le formulaire est sur l'<strong>intranet</strong>."},
-  {word:"un horaire allégé", def:"Un horaire de travail avec moins d'heures.", ex:"Elle a demandé un <strong>horaire allégé</strong>."},
-  {word:"consulter", def:"Regarder un document pour trouver une information.", ex:"<strong>Consultez</strong> le magazine à la page 25."},
-  {word:"le numéro de poste", def:"Le numéro qui permet de joindre une personne dans une entreprise.", ex:"Le <strong>numéro de poste</strong> de la directrice est le 232."},
-];
 
 // ── ÉTAT ──────────────────────────────────────────────────────────────
-const S = {pl:{}, sel:null, fb:{}};
+const S = {pl:{}, sel:null, fb:{}, vfSel:{}, vocabPick:null, vocabPairs:{}, vocabOrder:null};
 let curSec = 'prep';
 
 const ZONES = {};
@@ -575,6 +1012,14 @@ function trackPlacement(zid, ok) {
 // ── DIALOGUE (audio réel si disponible, sinon synthèse vocale) ────────
 let dialogueRead = false;
 const MODULE_SLUG = 'module-procedure';
+// Bump ce numéro chaque fois qu'un MP3 est régénéré, pour forcer le
+// navigateur à recharger le fichier au lieu de servir une version en cache.
+const AUDIO_V = '5';
+// Icônes des boutons son/micro de "Je me prépare" — change ces deux valeurs
+// pour remplacer les emojis par une image (ex. '<img src="/assets/interactive/module-procedure/icons/speaker.svg">').
+const ICON_SPEAK = '<img class="icon-svg" src="/assets/interactive/module-procedure/icons/speaker.svg" alt="Écouter">';
+const ICON_MIC = '<img class="icon-svg" src="/assets/interactive/module-procedure/icons/mic.svg" alt="Micro">';
+const ICON_ASSISTANT = '<img class="icon-svg" src="/assets/interactive/module-procedure/icons/assistant.svg" alt="Assistant IA">';
 let dlgAudio=null, dlgBtn=null, dlgState='idle', dlgUsingSpeech=false, dlgFallbackLines=null, dlgPollIv=null;
 
 function charSlug(name){ return name.toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g,'').replace(/'/g,'').replace(/\s+/g,'_'); }
@@ -586,7 +1031,7 @@ function playDialogue(dialId, btn){
   dlgBtn=btn;
   const lines=(DIALOGUES[dialId]&&DIALOGUES[dialId].lines)||[];
   dlgFallbackLines=lines;
-  const urls=lines.map((l,i)=>`${MODULE_SLUG}/${dialId}/line_${String(i+1).padStart(2,'0')}_${charSlug(l[0])}.mp3`);
+  const urls=lines.map((l,i)=>`/assets/interactive/${MODULE_SLUG}/${dialId}/line_${String(i+1).padStart(2,'0')}_${charSlug(l[0])}.mp3?v=${AUDIO_V}`);
   playAudioQueue(urls,0,btn,dialId,true);
 }
 function playAudioQueue(urls, idx, btn, dialId, allowFallback){
@@ -620,6 +1065,152 @@ function playSpeechQueue(lines, btn, dialId){
     },400);
   }catch(e){}
 }
+function jsq(s){ return String(s).replace(/\\/g,'\\\\').replace(/'/g,"\\'"); }
+// ── LECTURE AUDIO D'UN MOT OU D'UNE PHRASE ISOLÉE (synthèse vocale) ────
+function speakText(btn, text){
+  try{
+    speechSynthesis.cancel();
+    const old = btn ? btn.innerHTML : null;
+    const reset = ()=>{ if(btn){ btn.disabled=false; btn.innerHTML=old; } };
+    if(btn){ btn.disabled=true; btn.innerHTML=ICON_SPEAK+' …'; }
+    const doSpeak = ()=>{
+      try{
+        const u=new SpeechSynthesisUtterance(text);
+        u.lang='fr-CA'; u.rate=0.9;
+        const voices=speechSynthesis.getVoices();
+        const fr=voices.find(v=>/^fr/i.test(v.lang));
+        if(fr) u.voice=fr;
+        u.onend=reset; u.onerror=reset;
+        speechSynthesis.speak(u);
+        // Filet de sécurité : Chrome laisse parfois speechSynthesis coincé
+        // sans jamais déclencher onend/onerror.
+        setTimeout(()=>{ if(!speechSynthesis.speaking) reset(); }, 8000);
+      }catch(e){ reset(); }
+    };
+    // Chrome ignore parfois un speak() appelé juste après cancel() dans le
+    // même tick : un court délai évite ce bug connu.
+    setTimeout(doSpeak, 60);
+  }catch(e){}
+}
+// Essaie un vrai MP3 (assets/interactive/<module>/sons/<fileId>.mp3), retombe
+// sur la synthèse vocale si le fichier est absent.
+function playWord(btn, text, fileId){
+  if(!fileId){ speakText(btn, text); return; }
+  const url = `/assets/interactive/${MODULE_SLUG}/sons/${fileId}.mp3?v=${AUDIO_V}`;
+  const old = btn ? btn.innerHTML : null;
+  const reset = ()=>{ if(btn){ btn.disabled=false; btn.innerHTML=old; } };
+  if(btn){ btn.disabled=true; btn.innerHTML=ICON_SPEAK+' …'; }
+  const a=new Audio(url);
+  a.onended=reset;
+  a.onerror=()=>{ reset(); speakText(btn, text); };
+  a.play().catch(()=>{ reset(); speakText(btn, text); });
+}
+// ── VÉRIFICATION DE PRONONCIATION (reconnaissance vocale native, "Je me prépare" seulement) ──
+function normPron(s){
+  return String(s).toLowerCase().normalize('NFD').replace(/[̀-ͯ]/g,'').replace(/[^a-z0-9\s]/g,'').replace(/\s+/g,' ').trim();
+}
+// Certains mots courts sont mal transcrits par la reconnaissance vocale du
+// navigateur (nombres écrits en chiffres, homophones) même bien prononcés —
+// liste d'équivalences acceptées en plus de la comparaison normale.
+const PRON_ALIASES = {
+  'treize': ['13'],
+  'tot': ['sot','seau','saut','sceau'],
+};
+function pronMatches(said, target){
+  if(said===target || said.includes(target) || target.includes(said)) return true;
+  const alts = PRON_ALIASES[target] || [];
+  return alts.some(a=>said===a || said.includes(a) || a.includes(said));
+}
+// RÈGLE (validée par l'utilisateur le 2026-08-03 après test) : un mot isolé
+// (surtout une seule syllabe) est toujours plus difficile à reconnaître pour
+// le moteur de reconnaissance vocale du navigateur qu'un mot dans une phrase
+// avec du contexte. CHAQUE mot demandé en lecture/prononciation isolée doit
+// donc être présenté dans une courte phrase, avec le mot cible en gras —
+// jamais le mot tout seul. L'élève lit la phrase, mais on vérifie seulement
+// que le mot cible apparaît dans ce qui a été entendu (pronMatches fait déjà
+// cette vérification par inclusion — aucun changement de logique requis).
+// ⚠️ À reproduire dans TOUS les futurs modules dès qu'un mot isolé est
+// demandé en prononciation (voir aussi memory: cours-niveau4-modules.md).
+const CARRIER_PHRASES = {
+  'aujourd\'hui': "Il faut soumettre la demande aujourd'hui.",
+  'nuit': "Le bris s'est produit pendant la nuit.",
+  'pluie': "Le camion est resté sous la pluie.",
+  'juillet': "La formation a lieu en juillet.",
+  'orangé': "Le voyant orangé signale un bris.",
+  'joindre': "N'oubliez pas de joindre votre reçu.",
+  'jour': "Comptez dix jours ouvrables.",
+  'gagner': "Elle fait ça pour gagner du temps.",
+  'ligne': "Remplissez chaque ligne du formulaire.",
+  'signature': "La demande attend votre signature.",
+  'compagnie': "La compagnie rembourse le matériel.",
+  'montagne': "L'entrepôt est au pied de la montagne.",
+};
+function pronCheck(btn, expected){
+  const SRC = window.SpeechRecognition || window.webkitSpeechRecognition;
+  let fb = btn.nextElementSibling && btn.nextElementSibling.classList.contains('pron-fb') ? btn.nextElementSibling : null;
+  if(!fb){ fb=document.createElement('span'); fb.className='pron-fb'; fb.setAttribute('aria-live','polite'); btn.insertAdjacentElement('afterend', fb); }
+  if(!SRC){ fb.className='pron-fb warn'; fb.textContent='Reconnaissance vocale non supportée (utilise Chrome).'; return; }
+  const old = btn.innerHTML;
+  btn.classList.remove('fb-ok','fb-no');
+  btn.disabled=true; btn.innerHTML=ICON_MIC+' …';
+  fb.className='pron-fb'; fb.textContent='Écoute en cours…';
+  const reset=()=>{ btn.disabled=false; btn.innerHTML=old; };
+  const target = normPron(expected);
+  let done=false, lastInterim='';
+  const rec = new SRC();
+  // interimResults:true — les mots très courts ("tôt", "mer"...) sont parfois
+  // coupés par la détection de silence avant qu'un résultat final n'arrive ;
+  // on garde le dernier résultat provisoire comme filet de secours.
+  rec.lang='fr-CA'; rec.interimResults=true; rec.maxAlternatives=1;
+  const evaluate=(heard)=>{
+    heard=heard.trim();
+    const said = normPron(heard);
+    const ok = pronMatches(said, target);
+    reset();
+    btn.classList.add(ok?'fb-ok':'fb-no');
+    fb.className='pron-fb '+(ok?'ok':'no');
+    fb.textContent = ok ? '✓ Bien prononcé !' : ('✗ On a entendu : « '+heard+' »');
+    setTimeout(()=>{ btn.classList.remove('fb-ok','fb-no'); }, 4000);
+  };
+  rec.onresult=e=>{
+    const res=e.results[e.results.length-1];
+    if(res.isFinal){ done=true; evaluate(res[0].transcript); }
+    else{ lastInterim=res[0].transcript; }
+  };
+  rec.onerror=e=>{
+    if(!done){
+      done=true;
+      if(lastInterim){ evaluate(lastInterim); return; }
+      reset();
+      fb.className='pron-fb warn';
+      fb.textContent = e.error==='not-allowed' ? 'Micro refusé — autorise l\'accès au micro.' : 'Aucun son détecté, réessaie.';
+    }
+  };
+  // Filet de sécurité : certains navigateurs déclenchent onend sans jamais
+  // appeler onresult(final) ni onerror (silence, coupure) — sans ce filet le
+  // message restait bloqué sur « Écoute en cours… ». On récupère le dernier
+  // résultat provisoire s'il y en a un, plutôt que de déclarer un échec.
+  rec.onend=()=>{
+    if(!done){
+      done=true;
+      if(lastInterim){ evaluate(lastInterim); return; }
+      reset();
+      fb.className='pron-fb warn';
+      fb.textContent='Aucun son détecté, réessaie.';
+    }
+  };
+  setTimeout(()=>{
+    if(!done){
+      done=true;
+      try{ rec.stop(); }catch(e){}
+      if(lastInterim){ evaluate(lastInterim); return; }
+      reset();
+      fb.className='pron-fb warn';
+      fb.textContent='Aucun son détecté, réessaie.';
+    }
+  }, 7000);
+  try{ rec.start(); }catch(e){ done=true; reset(); fb.className='pron-fb warn'; fb.textContent='Impossible de démarrer le micro.'; }
+}
 function pauseDialogue(){
   if(dlgUsingSpeech){ try{speechSynthesis.pause();}catch(e){} } else if(dlgAudio){ dlgAudio.pause(); }
   dlgState='paused'; if(dlgBtn) dlgBtn.textContent='▶ Reprendre';
@@ -632,16 +1223,32 @@ function stopDialogue(){
   clearInterval(dlgPollIv);
   try{ speechSynthesis.cancel(); }catch(e){}
   if(dlgAudio){ try{dlgAudio.pause();}catch(e){} dlgAudio=null; }
-  if(dlgBtn){ dlgBtn.textContent='🔊 Écouter'; }
+  if(dlgBtn){ dlgBtn.innerHTML=ICON_SPEAK+' Écouter'; }
   dlgState='idle'; dlgBtn=null; dlgUsingSpeech=false;
 }
 function finishDialogue(btn,dialId){
-  dlgState='idle'; btn.textContent='🔊 Écouter'; dlgBtn=null; dlgUsingSpeech=false;
+  dlgState='idle'; btn.innerHTML=ICON_SPEAK+' Écouter'; dlgBtn=null; dlgUsingSpeech=false;
   if(!dialogueRead){ dialogueRead=true; lmsTrack('dialogue_listened'); }
 }
 function markRead(btn){
   btn.classList.add('done'); btn.textContent='✓ Lu';
   if(!dialogueRead){ dialogueRead=true; lmsTrack('dialogue_listened'); }
+}
+function toggleVocabExo(force){
+  const card=document.getElementById('exo-prVocab');
+  const btn=document.getElementById('btnVocabToggle');
+  if(!card) return;
+  const opening = (typeof force==='boolean') ? force : card.style.display==='none';
+  card.style.display = opening ? '' : 'none';
+  if(btn) btn.textContent = opening ? "Fermer l'exercice de vocabulaire" : 'Apprendre les mots de vocabulaire';
+  // Exercice à part : tant qu'il est ouvert, on bloque l'accès aux exercices
+  // suivants — il faut le refermer (bouton "Fermer") pour continuer.
+  EXOS.filter(e=>e.sec==='prep' && e.id!=='prVocab').forEach(e=>{
+    const c=document.getElementById('exo-'+e.id);
+    if(c) c.style.display = opening ? 'none' : '';
+  });
+  if(opening) card.scrollIntoView({behavior:'smooth', block:'start'});
+  else document.getElementById('btnVocabToggle').scrollIntoView({behavior:'smooth', block:'center'});
 }
 
 // ── LOGIQUE DE PLACEMENT ──────────────────────────────────────────────
@@ -676,6 +1283,114 @@ function tileClick(iid, lbl, cat) {
   render();
 }
 
+// ── VRAI/FAUX PAR BOUTONS (colonnes + bouton Corriger) ─────────────────
+// Compteur en direct dans l'en-tête d'exercice (exo-score), comme le modèle.
+function updateVfScore(ex, checked){
+  const el = document.getElementById('score-'+ex.id);
+  if(!el) return;
+  if(!checked){
+    const answered = ex.rows.filter(r=>S.vfSel[r.id]).length;
+    el.textContent = answered+' / '+ex.rows.length+' répondu';
+  } else {
+    const correct = ex.rows.filter(r=>S.vfSel[r.id]===r.ok).length;
+    el.textContent = correct+' / '+ex.rows.length+' juste';
+  }
+}
+// ── Association mot ↔ définition par CLIC (deux colonnes), pas de
+// glisser-déposer — atteignable au clavier, comme je-me-prepare.html.
+function renderVocabPairs(){
+  const ex = EXOS.find(e=>e.id==='prVocab');
+  if(!ex) return;
+  const wordsEl = document.getElementById('vocab-words');
+  const defsEl = document.getElementById('vocab-defs');
+  if(!wordsEl || !defsEl) return;
+  if(!S.vocabOrder) S.vocabOrder = ex.rows.map((r,i)=>i).sort(()=>Math.random()-.5);
+
+  wordsEl.innerHTML = ex.rows.map((r,i)=>{
+    const done = S.vocabPairs[r.id] !== undefined;
+    const cls = 'chip chip-word'+(done?' is-paired':(S.vocabPick===r.id?' is-active':''));
+    return '<button type="button" class="'+cls+'" data-w="'+esc(r.id)+'"'+(done?' aria-disabled="true"':'')+'>'+esc(r.q)+'</button>';
+  }).join('');
+  const takenDefIds = Object.values(S.vocabPairs);
+  defsEl.innerHTML = S.vocabOrder.map(idx=>{
+    const r = ex.rows[idx];
+    const done = takenDefIds.includes(r.aid);
+    const cls = 'chip'+(done?' is-paired':(S.fb[r.aid]==='no'?' is-miss':''));
+    return '<button type="button" class="'+cls+'" data-d="'+esc(r.aid)+'"'+(done?' aria-disabled="true"':'')+'>'+esc(r.a)+'</button>';
+  }).join('');
+
+  wordsEl.querySelectorAll('[data-w]').forEach(b=>b.addEventListener('click',()=>{
+    const wid = b.dataset.w;
+    if(S.vocabPairs[wid] !== undefined) return;
+    S.vocabPick = (S.vocabPick===wid) ? null : wid;
+    S.fb = {};
+    renderVocabPairs();
+  }));
+  defsEl.querySelectorAll('[data-d]').forEach(b=>b.addEventListener('click',()=>{
+    const did = b.dataset.d;
+    if(Object.values(S.vocabPairs).includes(did) || S.vocabPick===null) return;
+    const row = ex.rows.find(r=>r.id===S.vocabPick);
+    const ok = row && row.aid===did;
+    if(ok){ S.vocabPairs[S.vocabPick] = did; S.vocabPick=null; S.fb={}; trackPlacement(row.id, true); }
+    else { S.fb[did]='no'; trackPlacement(row?row.id:did, false); }
+    renderVocabPairs();
+  }));
+
+  const n = Object.keys(S.vocabPairs).length;
+  const scoreEl = document.getElementById('score-'+ex.id);
+  if(scoreEl) scoreEl.textContent = n+' / '+ex.rows.length+' associé';
+}
+function toggleScript(btn, secId){
+  const el = document.getElementById('script-'+secId);
+  if(!el) return;
+  const open = el.classList.toggle('is-hidden') === false;
+  btn.textContent = open ? 'Cacher la transcription' : 'Lire la transcription';
+}
+function vfSelect(zid, lbl) {
+  S.vfSel[zid] = lbl;
+  delete S.fb[zid];
+  const ex = EXOS.find(e=>e.type==='vf' && e.rows.some(r=>r.id===zid));
+  if(ex) updateVfScore(ex, false);
+  render();
+}
+function vfCheckAll(exId) {
+  const ex = EXOS.find(e => e.id === exId);
+  if (!ex) return;
+  let answered = 0, correct = 0;
+  ex.rows.forEach(r => {
+    const sel = S.vfSel[r.id];
+    if (!sel) return;
+    answered++;
+    const ok = sel === r.ok;
+    if (ok) correct++;
+    S.fb[r.id] = ok ? 'ok' : 'no';
+    S.pl[r.id] = {iid:r.id, lbl:sel, cat:'vf'};
+    trackPlacement(r.id, ok);
+  });
+  // Nombre d'énoncés encore faux à cette correction — pas un cumul : corriger
+  // deux fois de suite ne doit pas gonfler artificiellement le compte.
+  if (answered >= ex.rows.length) evaluerAide(exId, answered - correct);
+  const sumEl = document.getElementById('vfsum-'+exId);
+  if (sumEl) {
+    if (answered < ex.rows.length) {
+      sumEl.className = 'vf-summary warn';
+      sumEl.textContent = `Réponds à toutes les phrases avant de corriger (${answered}/${ex.rows.length}).`;
+    } else {
+      sumEl.className = 'vf-summary ok';
+      sumEl.textContent = `${correct} / ${ex.rows.length} bonnes réponses`;
+    }
+  }
+  updateVfScore(ex, answered>=ex.rows.length);
+  render();
+}
+
+// Rend un élément atteignable au clavier (MIGRATION.md §5) : le clic est
+// déjà l'interaction principale (sélection puis dépôt) — Entrée/Espace
+// déclenchent le même clic.
+function kbdable(el){
+  el.setAttribute('role','button'); el.tabIndex=0;
+  el.addEventListener('keydown',e=>{ if(e.key===' '||e.key==='Enter'){ e.preventDefault(); el.click(); } });
+}
 // ── DRAG & DROP ───────────────────────────────────────────────────────
 let dd = null;
 function drg(el, iid, lbl, cat, from) {
@@ -719,6 +1434,17 @@ document.addEventListener('touchend', e => {
 
 // ── HELPERS ───────────────────────────────────────────────────────────
 function esc(s){return String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;')}
+// Pastille numérotée carrée devant l'en-tête d'exercice (comme .exo__num du
+// modèle je-me-prepare.html) — extrait le chiffre de "Exercice N", sinon •.
+function exoNumBadge(numText){
+  const m = String(numText).match(/\d+/);
+  const label = m ? String(+m[0]).padStart(2,'0') : '•';
+  return '<span class="exo-num">'+label+'</span>';
+}
+// Remplace les suites de "___" par un blanc à souligner distinct du texte,
+// pour que les espaces entre les vrais mots restent lisibles (sinon tout
+// se lit comme une seule ligne confuse de tirets).
+function blankify(q){ return esc(q).replace(/_{3,}/g, '<span class="acc-blank"></span>'); }
 function usedIds(){return new Set(Object.values(S.pl).map(p=>p.iid))}
 function shuffled(arr, seed){
   const a=arr.slice(); let s=seed||42;
@@ -738,6 +1464,7 @@ function mkZone(zid, extra, placeholder){
   el.dataset.zid=zid;
   el.textContent=placed?placed.lbl:(placeholder||'déposer ici');
   el.addEventListener('click',()=>zoneClick(zid));
+  kbdable(el);
   drp(el,zid);
   if(placed&&!fb){drg(el,placed.iid,placed.lbl,placed.cat,zid);tch(el,placed.iid,placed.lbl,placed.cat,zid)}
   return el;
@@ -751,6 +1478,7 @@ function mkBlank(zid){
   el.dataset.zid=zid;
   el.textContent=placed?placed.lbl:'…';
   el.addEventListener('click',()=>zoneClick(zid));
+  kbdable(el);
   drp(el,zid);
   if(placed&&!fb){drg(el,placed.iid,placed.lbl,placed.cat,zid);tch(el,placed.iid,placed.lbl,placed.cat,zid)}
   return el;
@@ -760,6 +1488,7 @@ function mkTile(iid,lbl,cat,cls){
   t.className='tile '+cls+(S.sel&&S.sel.iid===iid&&!S.sel.from?' sel':'');
   t.textContent=lbl;
   t.addEventListener('click',()=>tileClick(iid,lbl,cat));
+  kbdable(t);
   drg(t,iid,lbl,cat,null); tch(t,iid,lbl,cat,null);
   return t;
 }
@@ -768,6 +1497,7 @@ function mkImgTile(im,cat){
   t.className='imgtile'+(S.sel&&S.sel.iid===im.id&&!S.sel.from?' sel':'');
   t.innerHTML='<img src="'+im.src+'" alt="" loading="lazy">';
   t.addEventListener('click',()=>tileClick(im.id,im.id,cat));
+  kbdable(t);
   drg(t,im.id,im.id,cat,null); tch(t,im.id,im.id,cat,null);
   return t;
 }
@@ -780,6 +1510,7 @@ function mkImgZone(zid, im){
   if(placed){ const src=(ALL_IMAGES.find(i=>i.id===placed.iid)||{}).src; el.innerHTML=src?'<img src="'+src+'" alt="">':''; }
   else{ el.innerHTML='<span class="imgzone-ph">glissez l\'image ici</span>'; }
   el.addEventListener('click',()=>zoneClick(zid));
+  kbdable(el);
   drp(el,zid);
   if(placed&&!fb){drg(el,placed.iid,placed.lbl,placed.cat,zid);tch(el,placed.iid,placed.lbl,placed.cat,zid)}
   return el;
@@ -791,6 +1522,7 @@ function buildStatic(){
   SECTIONS.forEach(sec=>{
     const b=document.createElement('button');
     b.className='tab'; b.id='tab-'+sec.id;
+    b.style.setProperty('--sec-color', sec.color);
     b.innerHTML='<span class="tno">'+sec.no+'</span>'+esc(sec.title)+'<span class="tchk">✓</span>';
     b.addEventListener('click',()=>{curSec=sec.id;render();window.scrollTo({top:0,behavior:'smooth'})});
     tabs.appendChild(b);
@@ -799,30 +1531,54 @@ function buildStatic(){
   SECTIONS.forEach(sec=>{
     const d=document.createElement('div');
     d.className='sec'; d.id='sec-'+sec.id;
+    d.style.setProperty('--sec-color', sec.color);
+    d.style.setProperty('--sec', sec.color);
     let h='';
-    h+='<div class="intro" style="border-color:'+sec.color+'33">'+sec.intro+'</div>';
+    // Bloc unique : mise en situation (gris) → dialogue → vocabulaire associé.
+    // Tout est dans le même cadre pour qu'on voie le lien entre le dialogue et
+    // son vocabulaire (demande de l'utilisateur, 2026-08-03).
     if(sec.dialogue){
       const dia=DIALOGUES[sec.dialogue];
-      h+='<div class="dial-sec" style="border-bottom-color:'+sec.color+'">';
-      h+='<div class="audio-pl"><div class="audio-lbl">Dialogue</div>';
-      h+='<button class="btn-lu" onclick="playDialogue(\''+sec.dialogue+'\',this)">🔊 Écouter</button>';
-      h+='<button class="btn-lu" onclick="markRead(this)">📖 J\'ai lu</button></div>';
-      h+='<div class="dial-txt"><div class="d-lbl">'+esc(dia.label)+'</div>';
+      const titleParts = dia.label.split('—');
+      const dTitle = (titleParts[1]||dia.label).trim();
+      h+='<div class="dial-sec"><div class="dial-grid">';
+      h+='<div><div class="field-label">La situation</div>';
+      h+='<p class="situ">'+sec.intro+'</p>';
+      h+='<div class="row" style="display:flex;flex-wrap:wrap;gap:10px;margin-top:14px">';
+      h+='<button class="btn-lu btn-audio" onclick="playDialogue(\''+sec.dialogue+'\',this)">'+ICON_SPEAK+' Écouter le dialogue</button>';
+      h+='<button class="btn btn-ghost" type="button" onclick="toggleScript(this,\''+sec.id+'\')">Lire la transcription</button>';
+      h+='</div></div>';
+      h+='<div class="dial-aside"><div class="field-label">Dialogue</div>';
+      h+='<div class="dial-aside-tit">'+esc(dTitle)+'</div>';
+      h+='<div class="dial-aside-n">'+dia.lines.length+' répliques</div></div>';
+      h+='</div>';
+      h+='<div class="dial-txt is-hidden" id="script-'+sec.id+'">';
       dia.lines.forEach((l,i)=>{
         const cls=(i%2===0)?'mb':'dr';
         h+='<div class="dl"><span class="'+cls+'">'+esc(l[0])+' :</span> '+esc(l[1])+'</div>';
       });
-      h+='</div></div>';
-    }
-    if(sec.id==='prep'){
-      h+='<div class="vocab-sec"><div style="display:flex;align-items:center;gap:10px;margin-bottom:12px;">';
-      h+='<div style="background:#7C3AED;color:#fff;border-radius:999px;padding:3px 14px;font-size:11px;font-weight:800;text-transform:uppercase;letter-spacing:.12em;">Vocabulaire</div>';
-      h+='<div style="font-size:15px;font-weight:700;color:#5B21B6;">Mots du module — <span style="font-weight:900;cursor:pointer;text-decoration:underline dotted;" onclick="fcOpen(0)">Cliquez pour les cartes mémoire 🃏</span></div></div>';
-      h+='<div class="vocab-grid">';
-      FC_CARDS.forEach(c=>{h+='<div class="vw" onclick="fcOpenWord(\''+c.word.replace(/'/g,"\\'")+'\')"><span class="dot"></span><span class="w">'+esc(c.word)+'</span></div>'});
-      h+='</div></div>';
+      h+='</div>';
+      if(sec.id==='prep'){
+        h+='<div class="vocab-sec"><div style="display:flex;align-items:center;gap:10px;margin-bottom:12px;flex-wrap:wrap">';
+        h+='<div class="vocab-tag">Vocabulaire</div>';
+        h+='<div style="font-size:15px;font-weight:700;">Les mots de ce dialogue — <span style="font-weight:900;cursor:pointer;text-decoration:underline dotted;" onclick="fcOpen(0)">cartes mémoire</span></div></div>';
+        h+='<div class="vocab-grid">';
+        FC_CARDS.forEach(c=>{h+='<div class="vw" onclick="fcOpenWord(\''+c.word.replace(/'/g,"\\'")+'\')"><span class="dot"></span><span class="w">'+esc(c.word)+'</span></div>'});
+        h+='</div>';
+        h+='<button class="btn btn-pri" type="button" id="btnVocabToggle" style="margin-top:12px" onclick="toggleVocabExo()">Apprendre les mots de vocabulaire</button>';
+        h+='</div>';
+      }
+      h+='</div>';
+    } else {
+      h+='<div class="intro">'+sec.intro+'</div>';
     }
     h+='<div class="exs" id="exs-'+sec.id+'"></div>';
+    if(sec.next){
+      h+='<div class="cta"><div><div class="cta-eyebrow">Prochaine étape</div>';
+      h+='<div class="cta-tit">'+esc(sec.next.tit)+'</div>';
+      h+='<div class="cta-sub">'+esc(sec.next.sub)+'</div></div>';
+      h+='<button class="btn cta-btn" type="button" onclick="document.getElementById(\'tab-'+sec.next.id+'\').click();window.scrollTo({top:0,behavior:\'smooth\'})">Continuer →</button></div>';
+    }
     d.innerHTML=h;
     wrap.appendChild(d);
   });
@@ -830,41 +1586,112 @@ function buildStatic(){
   EXOS.forEach(ex=>{
     const host=document.getElementById('exs-'+ex.sec);
     const card=document.createElement('div');
-    card.className='card';
+    card.className='card'; card.id='exo-'+ex.id;
+    if(ex.accent) card.style.setProperty('--sec-color', ex.accent);
+    if(ex.id==='prVocab') card.style.display='none';
     let h='';
     if(ex.savoir){
-      h+='<div class="savoir"><h3>'+ex.savoir.h+'</h3><table>';
-      ex.savoir.rows.forEach(r=>{h+='<tr><td>'+r[0]+'</td><td>'+r[1]+'</td></tr>'});
-      h+='</table></div>';
+      h+='<div class="savoir'+(ex.savoir.speak?' savoir--pron':'')+'">'
+       + '<div class="savoir-band">'+esc(ex.savoir.h ? ex.savoir.h.replace(/^›\s*/,'') : 'Prononciation')+'</div>';
+      ex.savoir.rows.forEach((r,ri)=>{
+        h+='<div class="savoir-row"><div class="savoir-key">'+r[0]+'</div><div class="savoir-val">'+r[1];
+        if(ex.savoir.speak && r[2]){
+          h+='<div class="word-chips">';
+          r[2].forEach((w,wi)=>{
+            const fid=ex.id+'_savoir_'+ri+'_'+wi;
+            const phrase=CARRIER_PHRASES[w];
+            const wcLabel = phrase ? esc(phrase).replace(new RegExp('('+esc(w)+')','i'),'<b>$1</b>') : esc(w);
+            h+='<div class="word-chip"><span class="wc-word'+(phrase?' wc-phrase':'')+'">'+wcLabel+'</span>';
+            // On lit la phrase porteuse, pas le mot seul : c'est ce que la
+            // pastille affiche, et surtout un mot isolé ne donne aucun indice
+            // de langue au moteur de synthèse — un mot français bref peut se
+            // faire lire à l'anglaise sans le contexte d'une phrase.
+            h+='<button class="btn btn-ghost" type="button" onclick="playWord(this,\''+jsq(phrase||w)+'\',\''+fid+'\')" title="Écouter">'+ICON_SPEAK+'</button>';
+            h+='<button class="btn btn-ghost" type="button" onclick="pronCheck(this,\''+jsq(w)+'\')" title="Répète le mot à voix haute">'+ICON_MIC+'</button>';
+            h+='</div>';
+          });
+          h+='</div>';
+        }
+        h+='</div></div>';
+      });
+      if(PLUS[ex.id]){
+        h+='<div class="plus-bar"><button class="plus-open" type="button" onclick="plusOpen(\''+ex.id+'\')">'
+         + '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" aria-hidden="true"><path d="M12 5v14M5 12h14"/></svg>'
+         + 'En apprendre plus</button></div>';
+      }
+      h+='</div><div class="savoir-gap"></div>';
+    }
+    // ── Exercice Vrai/Faux (ou 2 catégories) — colonnes + bouton Corriger ──
+    if(ex.type==='vf'){
+      h+='<div class="c-hdr">'+exoNumBadge(ex.num)+'<span class="tag">'+esc(ex.num)+'</span><span class="exo-score" id="score-'+ex.id+'" aria-live="polite">0 / '+ex.rows.length+' répondu</span><span class="ctit">'+esc(ex.tit)+'</span><span class="csub">'+esc(ex.sub)+'</span></div>';
+      if(!ex.cards) h+='<div class="vf-head"><div class="vf-head-txt"></div><div class="vf-head-opts"><div class="vf-head-opt">'+esc(ex.tiles[0])+'</div><div class="vf-head-opt">'+esc(ex.tiles[1])+'</div></div></div>';
+      h+='<div class="rows" id="mount-'+ex.id+'"></div>';
+      h+='<div style="margin-top:14px;display:flex;align-items:center;gap:12px;flex-wrap:wrap">';
+      h+='<button class="btn btn-pri" type="button" onclick="vfCheckAll(\''+ex.id+'\')">✓ Corriger</button>';
+      h+='<div class="vf-summary" id="vfsum-'+ex.id+'" aria-live="polite"></div>';
+      h+='</div>';
+      card.innerHTML=h; host.appendChild(card); return;
     }
     // ── Exercice à écrire (autocorrection ou correction IA) ──
     if(ex.type==='write'){
-      h+='<div class="c-hdr"><span class="tag" style="background:'+ex.color+'">'+esc(ex.num)+'</span><span class="ctit" style="color:'+ex.color+'">'+esc(ex.tit)+'</span><span class="csub">'+esc(ex.sub)+'</span></div>';
-      const aiBadge = ex.items.some(it=>!it.accept) ? '<div style="font-size:12px;font-weight:800;color:#0D9488;margin-bottom:10px">🤖 Un assistant corrige ce que tu écris et te donne une rétroaction.</div>' : '';
+      // Si l'exercice a un dialogue, son titre est déjà affiché dans la
+      // pastille du dialogue juste en dessous — pas besoin de le répéter ici.
+      const titHtml = ex.dialogue ? '' : '<span class="ctit">'+esc(ex.tit)+'</span>';
+      h+='<div class="c-hdr">'+exoNumBadge(ex.num)+'<span class="tag">'+esc(ex.num)+'</span>'+titHtml+'<span class="csub">'+esc(ex.sub)+'</span></div>';
+      const aiBadge = ex.items.some(it=>!it.accept) ? '<div style="font-size:12px;font-weight:800;color:#0D9488;margin-bottom:10px;display:flex;align-items:center;gap:6px">'+ICON_ASSISTANT+' Un assistant corrige ce que tu écris et te donne une rétroaction.</div>' : '';
+      if(ex.dialogue && DIALOGUES[ex.dialogue]){
+        const dia=DIALOGUES[ex.dialogue];
+        h+='<div class="dial-hd" style="margin-bottom:12px"><div class="d-lbl">'+esc(dia.label)+'</div>';
+        h+='<button class="btn-lu" onclick="playDialogue(\''+ex.dialogue+'\',this)">'+ICON_SPEAK+' Écouter</button></div>';
+        h+='<details style="margin-bottom:12px"><summary style="cursor:pointer;font-size:13px;font-weight:700;color:var(--ws-accent)">Afficher le texte du dialogue</summary>';
+        h+='<div class="dial-txt">';
+        dia.lines.forEach((l,i)=>{
+          const cls=(i%2===0)?'mb':'dr';
+          h+='<div class="dl"><span class="'+cls+'">'+esc(l[0])+' :</span> '+esc(l[1])+'</div>';
+        });
+        h+='</div></details>';
+      }
       h+=aiBadge+'<div class="wlist">';
       ex.items.forEach((it,i)=>{
-        h+='<div class="witem"><div class="wq">'+(it.q||'')+'</div>';
+        h+='<div class="witem"><div class="wq">'+blankify(it.q||'')+'</div>';
+        if(it.audio){
+          const fid=ex.id+'_'+i;
+          h+='<button class="btn btn-ghost wlisten" type="button" onclick="playWord(this,\''+jsq(it.audio)+'\',\''+fid+'\')" style="margin-bottom:8px">'+ICON_SPEAK+' Écouter</button>';
+        }
         h+='<div class="wrow"><input class="winput" id="wi_'+ex.id+'_'+i+'" placeholder="'+(it.ph||'Écris ta réponse…')+'" autocomplete="off">';
         h+='<button class="btn btn-pri wbtn" onclick="checkWrite(\''+ex.id+'\','+i+')">Vérifier</button></div>';
-        h+='<div class="wfb" id="wf_'+ex.id+'_'+i+'"></div></div>';
+        h+='<div class="wfb" id="wf_'+ex.id+'_'+i+'" aria-live="polite"></div></div>';
       });
       h+='</div>';
       card.innerHTML=h; host.appendChild(card); return;
     }
+    if(ex.id==='prVocab'){
+      // Association par CLIC en deux colonnes (mots / définitions), atteignable
+      // au clavier — reprend le modèle je-me-prepare.html au lieu du
+      // glisser-déposer générique. Le pointage passe quand même par
+      // trackPlacement() pour rester compté dans l'étoile globale.
+      h+='<div class="c-hdr">'+exoNumBadge(ex.num)+'<span class="tag">'+esc(ex.num)+'</span><span class="exo-score" id="score-'+ex.id+'" aria-live="polite">0 / '+ex.rows.length+' associé</span><span class="ctit">'+esc(ex.tit)+'</span><span class="csub">'+esc(ex.sub)+'</span></div>';
+      h+='<div class="pair-grid"><div class="stack" id="vocab-words"></div><div class="stack" id="vocab-defs"></div></div>';
+      h+='<button class="btn btn-ghost" type="button" style="margin-top:14px" onclick="toggleVocabExo(false)">Fermer</button>';
+      card.innerHTML=h;
+      host.appendChild(card);
+      return;
+    }
     h+='<div style="display:flex;gap:20px;align-items:flex-start;flex-wrap:wrap">';
-    h+='<div style="flex:1;min-width:300px">';
-    h+='<div class="c-hdr"><span class="tag" style="background:'+ex.color+'">'+esc(ex.num)+'</span><span class="ctit" style="color:'+ex.color+'">'+esc(ex.tit)+'</span><span class="csub">'+esc(ex.sub)+'</span></div>';
+    h+='<div class="exo-main" style="flex:1;min-width:300px">';
+    h+='<div class="c-hdr">'+exoNumBadge(ex.num)+'<span class="tag">'+esc(ex.num)+'</span><span class="ctit">'+esc(ex.tit)+'</span><span class="csub">'+esc(ex.sub)+'</span></div>';
     if(ex.type==='blanks') h+='<p class="blanks-p" id="mount-'+ex.id+'"></p>';
     else h+='<div class="rows" id="mount-'+ex.id+'"></div>';
     h+='</div>';
     const vert=(ex.type==='match'||ex.type==='rows'||ex.type==='imgmatch')?' vert':'';
     const bw=ex.type==='imgmatch'?'240px':((ex.type==='match'||ex.type==='rows')?'300px':'220px');
-    h+='<div class="bsec b1" style="flex:0 0 '+bw+'"><div class="blbl">Réponses</div><div class="btiles'+vert+'" id="bank-'+ex.id+'"></div></div>';
+    h+='<div class="bsec b1" style="flex:0 0 '+bw+'"><div class="blbl">'+(ex.bankLbl||'Réponses')+'</div><div class="btiles'+vert+'" id="bank-'+ex.id+'"></div></div>';
     h+='</div>';
     card.innerHTML=h;
     host.appendChild(card);
   });
   injectCustom();
+  if(document.getElementById('vocab-words')) renderVocabPairs();
 }
 
 // ── SECTIONS PERSONNALISÉES (oral / écrit / autoéval) ─────────────────
@@ -872,8 +1699,8 @@ function injectCustom(){
   // JE METS EN APPLICATION — jeu de rôle oral + écriture corrigée par l'IA
   document.getElementById('exs-appli').innerHTML += `
    <div class="card custom">
-     <div class="c-hdr"><span class="tag" style="background:#0D9488">Production orale</span><span class="ctit" style="color:#0D9488">Donne des directives</span></div>
-     <p class="lead">Tu es superviseur sur un chantier de construction. <b>Donne des directives à voix haute</b> sur le code vestimentaire à respecter (casque, bottes à cap d'acier, gants, dossard, etc.) en utilisant l'impératif. Enregistre-toi, obtiens une rétroaction, puis envoie ta prise si tu le veux.</p>
+     <div class="c-hdr"><span class="tag" style="background:#0D9488">Production orale</span><span class="ctit" style="color:#0D9488">Explique une procédure</span></div>
+     <p class="lead">Choisis une procédure de ton milieu de travail (demander un remboursement, réserver un véhicule, signaler un bris…) et <b>explique-la comme si tu parlais à un nouveau collègue</b> : les étapes, dans l'ordre, avec des mots clairs. Enregistre-toi, obtiens une rétroaction, puis envoie ta prise si tu le veux.</p>
      <div class="rec-zone"><button id="recBtn">🎤</button><div class="rec-lbl" id="recLbl">Touche pour t'enregistrer</div></div>
      <div id="poPrev" class="hidden" style="display:flex;flex-direction:column;gap:12px">
        <audio id="poAudio" controls style="width:100%"></audio>
@@ -882,7 +1709,7 @@ function injectCustom(){
          <button class="btn btn-ghost" onclick="resetRec()">↺ Recommencer</button>
          <button class="btn btn-pri" id="poFbBtn" onclick="poGetFeedback()">💬 Obtenir une rétroaction</button>
        </div>
-       <div class="fb" id="poFb"></div>
+       <div class="fb" id="poFb" aria-live="polite"></div>
        <div id="poSend" style="display:none;gap:10px;flex-wrap:wrap;align-items:center">
          <button class="btn btn-send" id="poSendBtn" onclick="poSend()">📨 Envoyer à mon enseignant</button>
        </div>
@@ -891,11 +1718,11 @@ function injectCustom(){
      <div class="err" id="poErr"></div>
    </div>
    <div class="card custom">
-     <div class="c-hdr"><span class="tag" style="background:#0E7490">Production écrite</span><span class="ctit" style="color:#0E7490">Explique une procédure</span></div>
-     <p class="lead">Un nouveau collègue te demande comment faire une demande de congé dans votre entreprise. <b>Explique-lui la procédure par écrit</b>, étape par étape. (4 à 6 phrases)</p>
-     <textarea id="peText" rows="6" placeholder="Bonjour,&#10;Pour faire une demande de congé, tu dois d'abord…"></textarea>
+     <div class="c-hdr"><span class="tag" style="background:#0E7490">Production écrite</span><span class="ctit" style="color:#0E7490">Signale un problème par écrit</span></div>
+     <p class="lead">Tu remarques qu'une machine de ton département ne fonctionne plus depuis ce matin. <b>Écris un message à ton superviseur pour signaler le bris et demander la marche à suivre.</b> (4 à 6 phrases)</p>
+     <textarea id="peText" rows="6" placeholder="Bonjour Madame Tremblay,&#10;Je vous écris pour vous informer que…"></textarea>
      <div style="margin-top:12px"><button class="btn btn-pri" id="peBtn" onclick="peCheck()">✍️ Vérifier mon message</button></div>
-     <div class="fb" id="peFb"></div>
+     <div class="fb" id="peFb" aria-live="polite"></div>
      <div class="status" id="peStatus">Analyse en cours…</div>
      <div class="err" id="peErr"></div>
    </div>`;
@@ -903,22 +1730,24 @@ function injectCustom(){
 
   // JE RETIENS DES MOTS — notes + cartes mémoire + autoévaluation
   const SELF=[
-    "Je peux comprendre une demande de renseignements sur une procédure.",
-    "Je peux comprendre et donner des directives.",
-    "Je peux lire et vérifier des directives écrites.",
-    "Je connais le vocabulaire courant des milieux de travail.",
-    "Je peux utiliser l'impératif présent pour donner une consigne.",
+    "Je peux comprendre les étapes d'une procédure écrite ou orale.",
+    "Je peux expliquer une procédure à voix haute, dans le bon ordre.",
+    "Je peux écrire un message pour signaler un problème au travail.",
+    "Je peux donner une consigne à l'impératif, avec un pronom complément.",
+    "Je peux utiliser pendant que et le gérondif pour situer une action.",
   ];
   document.getElementById('exs-retiens').innerHTML = `
    <div class="card custom">
      <div class="c-hdr"><span class="tag" style="background:#166534">Je retiens des mots</span><span class="ctit" style="color:#166534">Mes mots utiles</span></div>
      <p class="lead">Note ici les mots et expressions à retenir. Tu peux aussi <span style="font-weight:900;cursor:pointer;text-decoration:underline dotted;color:#166534" onclick="fcOpen(0)">réviser les cartes mémoire 🃏</span>.</p>
-     <div style="font-weight:800;color:#166534;font-size:13px;margin:6px 0 4px">Pour demander des renseignements</div>
-     <textarea rows="2" placeholder="Ex. : Comment faire pour… ? Quelle est la procédure pour… ?"></textarea>
-     <div style="font-weight:800;color:#166534;font-size:13px;margin:12px 0 4px">Pour expliquer des étapes</div>
-     <textarea rows="2" placeholder="Ex. : D'abord… Ensuite… Puis… Pour terminer…"></textarea>
-     <div style="font-weight:800;color:#166534;font-size:13px;margin:12px 0 4px">Pour donner des directives</div>
-     <textarea rows="2" placeholder="Ex. : Remplissez… N'oubliez pas de… Il faut…"></textarea>
+     <div style="font-weight:800;color:#166534;font-size:13px;margin:6px 0 4px">Pour se nommer et dire à qui le message s'adresse</div>
+     <textarea rows="2" placeholder="Ex. : Ici Karim. Bonjour Madame Girard. C'est de la part de…"></textarea>
+     <div style="font-weight:800;color:#166534;font-size:13px;margin:12px 0 4px">Pour expliquer le but du message</div>
+     <textarea rows="2" placeholder="Ex. : Je vous écris pour vous informer de… Le but de mon appel est…"></textarea>
+     <div style="font-weight:800;color:#166534;font-size:13px;margin:12px 0 4px">Pour justifier un retard, une absence ou un abandon</div>
+     <textarea rows="2" placeholder="Ex. : Je dois… Il faut que… J'ai un empêchement parce que…"></textarea>
+     <div style="font-weight:800;color:#166534;font-size:13px;margin:12px 0 4px">Des formules de politesse</div>
+     <textarea rows="2" placeholder="Ex. : Merci de votre compréhension. Sincères salutations. À bientôt."></textarea>
    </div>
    <div class="card custom">
      <div class="c-hdr"><span class="tag" style="background:#166534">Autoévaluation</span><span class="ctit" style="color:#166534">Qu'est-ce que je suis capable de faire ?</span></div>
@@ -927,13 +1756,13 @@ function injectCustom(){
         <button onclick="rate(${i},this)">😟</button><button onclick="rate(${i},this)">🙂</button><button onclick="rate(${i},this)">😃</button>
      </div></div>`).join('')}
      <div style="margin-top:16px"><button class="btn btn-pri" onclick="finishEval()">Terminer le module 🎉</button></div>
-     <div id="evalDone" class="fb"></div>
+     <div id="evalDone" class="fb" aria-live="polite"></div>
    </div>`;
 }
 function rate(i,btn){ [...btn.parentElement.children].forEach(b=>b.classList.remove('sel')); btn.classList.add('sel'); }
 function finishEval(){
   const el=document.getElementById('evalDone');
-  el.innerHTML='<div class="fb-c">🎉 Bravo, tu as terminé le module « Quelle est la procédure ? » ! Tu peux revenir sur n\'importe quel onglet pour pratiquer encore.</div>';
+  el.innerHTML='<div class="fb-c">🎉 Bravo, tu as terminé le module « C\'est une absence ou un retard ? » ! Tu peux revenir sur n\'importe quel onglet pour pratiquer encore.</div>';
   el.classList.add('on');
   lmsTrack('exercise_completed',{finished:true});
 }
@@ -992,7 +1821,7 @@ async function poGetFeedback(){
   document.getElementById('poStatus').classList.add('on');
   document.getElementById('poFbBtn').disabled=true;
   try{
-    const res=await fetch('/api/correct-french',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({code:studentCode,text,question:"L'élève, superviseur sur un chantier, donne des directives à l'impératif sur le code vestimentaire à respecter."})});
+    const res=await fetch('/api/correct-french',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({code:studentCode,text,question:"L'élève explique oralement une procédure de travail à un nouveau collègue, en donnant les étapes dans le bon ordre."})});
     const data=await res.json();
     document.getElementById('poStatus').classList.remove('on');
     document.getElementById('poFbBtn').disabled=false;
@@ -1011,7 +1840,7 @@ async function poSend(){
   const ext=(audioBlob.type||'').includes('mp4')?'m4a':'webm';
   const fd=new FormData();
   fd.append('code',studentCode); fd.append('theme','Monde du travail'); fd.append('taskId','module-procedure-po');
-  fd.append('taskLabel','Production orale — directives'); fd.append('question','Donner des directives sur le code vestimentaire d\'un chantier');
+  fd.append('taskLabel','Production orale — expliquer une procédure'); fd.append('question','Expliquer une procédure de travail à un nouveau collègue');
   fd.append('transcription',document.getElementById('poText').value.trim()); fd.append('feedback',poFeedback);
   fd.append('audio',audioBlob,'enregistrement.'+ext);
   try{
@@ -1030,7 +1859,7 @@ async function peCheck(){
   document.getElementById('peStatus').classList.add('on');
   document.getElementById('peBtn').disabled=true;
   try{
-    const res=await fetch('/api/correct-french',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({code:studentCode,text,question:"L'élève explique par écrit à un nouveau collègue la procédure à suivre pour faire une demande de congé."})});
+    const res=await fetch('/api/correct-french',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({code:studentCode,text,question:"L'élève écrit un message à son superviseur pour signaler un bris d'équipement et demander la marche à suivre."})});
     const data=await res.json();
     document.getElementById('peStatus').classList.remove('on');
     document.getElementById('peBtn').disabled=false;
@@ -1084,7 +1913,12 @@ async function checkWrite(exId, i){
     fb.innerHTML= ok ? '✅ Bravo, c\'est exact !'
       : '❌ Presque ! La bonne réponse est : <b>'+esc(it.accept[0])+'</b>';
     if(ok){ inp.classList.add('good'); inp.disabled=true; trackPlacement(zid,true); }
-    else { trackPlacement(zid,false); }
+    else {
+      trackPlacement(zid,false);
+      // Ici le cumul a du sens : chaque envoi raté est une tentative distincte.
+      const rates = ex.items.reduce((s,_,k)=> s + (TR.attempts['w_'+exId+'_'+k]||0), 0);
+      evaluerAide(exId, rates);
+    }
     return;
   }
 
@@ -1108,8 +1942,344 @@ async function checkWrite(exId, i){
   }
 }
 
+// ── MINI-LEÇONS « EN APPRENDRE PLUS » ──────────────────────────────────
+// Une entrée par exercice qui porte un `savoir`. Le bandeau noir reste le
+// résumé ; ceci est la leçon complète, ouverte à la demande dans un panneau.
+// Blocs disponibles : texte, ana (anatomie étiquetée), labo (manipulation
+// à axes), ex (exemples audio), piege, check (micro-vérification, hors score).
+// Dans un mot, {…} souligne en vert la terminaison d'accord.
+const PLUS = {
+  // Mini-leçons à écrire en phase 2b — voir le skill module-parite.
+};
+
+// ── « EN APPRENDRE PLUS » : rendu du panneau ──────────────────────────
+// Souligne en vert ce qui est noté entre accolades : « superficiel{le} »,
+// « Pour{riez}-vous… ». Les crochets restent libres pour les sons — [y], [u].
+function plMark(w){
+  return String(w).split(/(\{[^}]*\})/).map(p=>
+    (p.charAt(0)==='{' && p.charAt(p.length-1)==='}')
+      ? '<span class="pl-end">'+esc(p.slice(1,-1))+'</span>'
+      : esc(p)
+  ).join('');
+}
+const plPlain = w => String(w).replace(/[{}]/g,'');
+
+// Nom du MP3 d'un bouton d'écoute de mini-leçon : sons/<id>.mp3. Si le fichier
+// n'existe pas, playWord retombe sur la synthèse vocale — donc on peut brancher
+// les boutons avant d'avoir généré les sons.
+const plAudioId = (exId, kind, bi, sub) =>
+  'plus_' + exId + '_' + kind + bi + (sub===undefined ? '' : '_' + sub);
+
+// Liste { identifiant → texte à lire } de tous les boutons d'écoute des
+// mini-leçons. C'est la source de vérité du script de génération audio :
+// ouvrir le module dans le navigateur et lancer plAudioManifest() pour la
+// relire après toute modification de PLUS.
+function plAudioManifest(){
+  const m = {};
+  Object.keys(PLUS).forEach(exId=>{
+    PLUS[exId].blocs.forEach((b,bi)=>{
+      if(b.t==='ana')
+        m[plAudioId(exId,'ana',bi)] = b.say || b.mots.map(x=>plPlain(x[1])).join(' ');
+      if(b.t==='ex')
+        b.rows.forEach((r,ri)=>{ m[plAudioId(exId,'ex',bi,ri)] = r[2] || r[0]; });
+      if(b.t==='labo')
+        Object.keys(b.out).forEach(k=>{
+          const o=b.out[k];
+          m[plAudioId(exId,'lab',bi,k)] = o.say || o.w.map(plPlain).join(' ');
+        });
+    });
+  });
+  return m;
+}
+const plLab = {};   // état des laboratoires, par clé « exoId-index de bloc »
+
+function plBloc(b, exId, bi){
+  const eye = {texte:'Explication', ana:'Anatomie', labo:'À manipuler',
+               ex:'Exemples', piege:'Attention', check:'Vérifiez-vous'}[b.t] || 'Explication';
+  let h='<div class="pl-blk"><div class="pl-eye">'+eye+'</div>';
+  if(b.h) h+='<div class="pl-h">'+esc(b.h)+'</div>';
+  if(b.p) h+='<div class="pl-p">'+b.p+'</div>';
+
+  if(b.t==='ana'){
+    h+='<div class="pl-ana">';
+    b.mots.forEach(m=>{
+      const key = m[2]===true || /noyau/i.test(m[0]);
+      h+='<div class="pl-tok'+(key?' is-key':'')+'"><span class="pl-tok-lbl">'+esc(m[0])+'</span>'
+       + '<span class="pl-tok-w">'+plMark(m[1])+'</span></div>';
+    });
+    // Les étiquettes d'anatomie mises bout à bout ne se lisent pas toujours
+    // bien (élisions, traits d'union, symboles phonétiques) : `say` donne le
+    // texte à prononcer quand la simple concaténation ne suffit pas.
+    const anaTxt = b.say || b.mots.map(m=>plPlain(m[1])).join(' ');
+    h+='<button class="btn-audio-round" type="button" title="Écouter le groupe"'
+     + ' onclick="playWord(this,\''+jsq(anaTxt)+'\',\''+plAudioId(exId,'ana',bi)+'\')">'+ICON_SPEAK+'</button>';
+    h+='</div>';
+  }
+
+  if(b.t==='labo'){
+    h+='<div id="lab-'+exId+'-'+bi+'" style="margin-top:16px">';
+    b.axes.forEach(a=>{
+      h+='<div class="pl-axe"><div class="pl-axe-lbl">'+esc(a.lbl)+'</div><div class="pl-opts">';
+      a.opts.forEach(o=>{
+        h+='<button class="pl-opt" type="button" data-axe="'+a.id+'" data-val="'+o[0]+'" aria-pressed="false"'
+         + ' onclick="plLabo(\''+exId+'\','+bi+',\''+a.id+'\',\''+o[0]+'\')">'+esc(o[1])+'</button>';
+      });
+      h+='</div></div>';
+    });
+    h+='<div class="pl-out"><div class="pl-out-w"></div>'
+     + '<button class="btn-audio-round" type="button" title="Écouter">'+ICON_SPEAK+'</button>'
+     + '<div class="pl-out-n"></div></div></div>';
+  }
+
+  if(b.t==='ex'){
+    h+='<div style="margin-top:14px">';
+    b.rows.forEach((r,ri)=>{
+      h+='<div class="pl-ex"><button class="btn-audio-round" type="button" title="Écouter"'
+       + ' onclick="playWord(this,\''+jsq(r[2]||r[0])+'\',\''+plAudioId(exId,'ex',bi,ri)+'\')">'+ICON_SPEAK+'</button>'
+       + '<span class="pl-ex-w">'+esc(r[0])+'</span><span class="pl-ex-t">'+esc(r[1])+'</span></div>';
+    });
+    h+='</div>';
+  }
+
+  if(b.t==='piege'){
+    h+='<div style="margin-top:6px">';
+    b.rows.forEach(r=>{
+      h+='<div class="pl-trap"><div class="pl-bad"><span aria-hidden="true">✕</span><span>'+esc(r[0])+'</span></div>'
+       + '<div class="pl-good"><span aria-hidden="true">✓</span><span>'+esc(r[1])+'</span></div>'
+       + '<div class="pl-why">'+r[2]+'</div></div>';
+    });
+    h+='</div>';
+  }
+
+  if(b.t==='check'){
+    h+='<div style="margin-top:12px">';
+    b.qs.forEach((q,qi)=>{
+      h+='<div class="pl-q"><div class="pl-qtxt">'+esc(q.q)+'</div><div class="pl-opts">';
+      q.opts.forEach((o,oi)=>{
+        h+='<button class="pl-opt" type="button" onclick="plCheck(this,\''+exId+'\','+bi+','+qi+','+oi+')">'+esc(o)+'</button>';
+      });
+      h+='</div><div class="pl-fb" aria-live="polite"></div></div>';
+    });
+    h+='</div>';
+  }
+
+  if(b.note) h+='<div class="pl-note">'+b.note+'</div>';
+  return h+'</div>';
+}
+
+function plLabo(exId, bi, axeId, val){
+  const key=exId+'-'+bi, b=PLUS[exId].blocs[bi];
+  const st=plLab[key] || (plLab[key]={});
+  b.axes.forEach(a=>{ if(st[a.id]==null) st[a.id]=a.opts[0][0]; });
+  if(axeId) st[axeId]=val;
+  const box=document.getElementById('lab-'+key); if(!box) return;
+  box.querySelectorAll('.pl-opt[data-axe]').forEach(el=>{
+    const on = st[el.dataset.axe]===el.dataset.val;
+    el.classList.toggle('on', on);
+    el.setAttribute('aria-pressed', on?'true':'false');
+  });
+  const o = b.out[b.axes.map(a=>st[a.id]).join('')];
+  if(!o) return;
+  const out = box.querySelector('.pl-out-w');
+  out.innerHTML = o.w.map(plMark).join(' ');
+  // Une phrase longue ne tient pas au corps de 27 px : on descend d'un cran.
+  out.classList.toggle('is-long', o.w.map(plPlain).join(' ').length > 30);
+  box.querySelector('.pl-out-n').textContent = o.n;
+  // `say` sert quand le texte affiché contient de la ponctuation de mise en
+  // page (une paire « tout · tu » se lit mieux avec une virgule).
+  const phrase = o.say || o.w.map(plPlain).join(' ');
+  const fid = plAudioId(exId, 'lab', bi, b.axes.map(a=>st[a.id]).join(''));
+  box.querySelector('.pl-out .btn-audio-round').onclick = function(){ playWord(this, phrase, fid); };
+}
+
+function plCheck(btn, exId, bi, qi, oi){
+  const q=PLUS[exId].blocs[bi].qs[qi];
+  const wrap=btn.closest('.pl-q');
+  const opts=wrap.querySelectorAll('.pl-opt');
+  opts.forEach(el=>el.classList.remove('ok','no'));
+  const good = oi===q.ok;
+  btn.classList.add(good?'ok':'no');
+  if(!good) opts[q.ok].classList.add('ok');
+  const fb=wrap.querySelector('.pl-fb');
+  fb.className='pl-fb on '+(good?'ok':'no');
+  fb.innerHTML='<span aria-hidden="true">'+(good?'✓':'✕')+'</span> '+(good?'':'La bonne réponse est « '+esc(q.opts[q.ok])+' ». ')+q.fb;
+}
+
+// ── PROPOSITION D'AIDE APRÈS PLUSIEURS ERREURS ────────────────────────
+// Le module connaît déjà, à la correction, quels énoncés sont ratés. Au-delà
+// d'un seuil, il propose une aide — sans jamais l'imposer ni toucher au score.
+// Une seule proposition par exercice et par séance.
+const AIDE = {err:{}, etat:{}};      // etat : 'proposee' | 'ouverte' | 'refusee' | 'analysee'
+const AIDE_SEUIL = 3;
+
+// Les exercices analysables : ceux dont on peut reconstituer, ligne par ligne,
+// ce que l'élève a choisi et ce qu'il fallait choisir.
+function releverReponses(exId){
+  const ex = EXOS.find(e=>e.id===exId); if(!ex) return [];
+  if(ex.type==='vf'){
+    return ex.rows.filter(r=>S.vfSel[r.id]).map(r=>({
+      enonce:r.txt, choix:S.vfSel[r.id], bonne:r.ok}));
+  }
+  if(ex.type==='write'){
+    return ex.items.map((it,i)=>{
+      const inp=document.getElementById('wi_'+exId+'_'+i);
+      const val=inp ? inp.value.trim() : '';
+      if(!val || !it.accept) return null;
+      return {enonce:it.q, choix:val, bonne:it.accept[0]};
+    }).filter(Boolean);
+  }
+  return [];
+}
+
+function evaluerAide(exId, nbErreurs){
+  if(!exId) return;
+  // L'analyse d'erreurs vaut pour tout exercice reconstituable, avec ou sans
+  // mini-leçon.
+  if(!PLUS[exId] && !releverReponses(exId).length) return;
+  AIDE.err[exId] = Math.max(AIDE.err[exId]||0, nbErreurs);
+  if(AIDE.err[exId] >= AIDE_SEUIL && !AIDE.etat[exId]) proposerAide(exId);
+}
+
+function proposerAide(exId){
+  const card = document.getElementById('exo-'+exId);
+  if(!card || card.querySelector('.aide')) return;
+  AIDE.etat[exId] = 'proposee';
+  const n = AIDE.err[exId];
+  const analysable = releverReponses(exId).length > 0;
+  const el = document.createElement('div');
+  el.className = 'aide';
+  el.id = 'aide-' + exId;
+  el.innerHTML =
+      '<div class="aide-txt"><b>' + n + ' erreurs</b> dans cet exercice.'
+    + (PLUS[exId] ? ' La mini-leçon « ' + esc(PLUS[exId].tit) + ' » explique ce point autrement.' : '')
+    + '</div>'
+    + '<div class="aide-btns">'
+    + (analysable
+        ? '<button class="btn-oui" type="button" onclick="analyserErreurs(\'' + exId + '\')">'
+          + ICON_ASSISTANT + ' Pourquoi je me trompe ?</button>' : '')
+    + (PLUS[exId]
+        ? '<button class="' + (analysable ? 'btn-non' : 'btn-oui') + '" type="button"'
+          + ' onclick="accepterAide(\'' + exId + '\')">Revoir l\'explication</button>' : '')
+    + '<button class="btn-non" type="button" onclick="refuserAide(\'' + exId + '\')">Plus tard</button>'
+    + '</div>'
+    + '<div class="aide-out" id="aideout-' + exId + '" aria-live="polite"></div>';
+  card.appendChild(el);
+  lmsTrack('aide_proposee', {exercice: exId, erreurs: n, analysable: analysable});
+}
+
+function accepterAide(exId){
+  AIDE.etat[exId] = 'ouverte';
+  const el = document.querySelector('#exo-'+exId+' .aide');
+  if(el) el.remove();
+  lmsTrack('aide_acceptee', {exercice: exId, erreurs: AIDE.err[exId]});
+  plusOpen(exId, 'labo');
+}
+
+// ── NIVEAU 2 : analyse du patron d'erreurs par l'IA ───────────────────
+// On envoie l'exercice COMPLET — chaque énoncé, le choix de l'élève, la bonne
+// réponse. L'IA ne juge rien : la correction est déjà faite et affichée. Elle
+// cherche seulement ce qui se répète dans les erreurs.
+async function analyserErreurs(exId){
+  const ex = EXOS.find(e=>e.id===exId); if(!ex) return;
+  const items = releverReponses(exId);
+  const out = document.getElementById('aideout-'+exId);
+  const btn = document.querySelector('#aide-'+exId+' .btn-oui');
+  if(!items.length || !out) return;
+
+  // Un seul appel par exercice et par séance : l'élève qui s'acharne ne doit
+  // pas générer une série d'appels facturés.
+  if(btn){ btn.disabled = true; }
+  out.className = 'aide-out on wait';
+  out.textContent = "L'assistant relit tes réponses…";
+
+  try{
+    const res = await fetch('/api/analyser-erreurs', {
+      method:'POST', headers:{'Content-Type':'application/json'},
+      body: JSON.stringify({
+        code: studentCode,
+        exercice: ex.tit || '',
+        notion: (ex.savoir && ex.savoir.h ? ex.savoir.h.replace(/^›\s*/,'') : ''),
+        items: items,
+      })});
+    const d = await res.json();
+    if(!res.ok){
+      out.className = 'aide-out on no';
+      out.textContent = d.error || 'Service momentanément indisponible.';
+      if(btn) btn.disabled = false;      // panne : on laisse réessayer
+      return;
+    }
+    out.className = 'aide-out on';
+    out.innerHTML =
+        (d.patron ? '<div class="ao-k">Ce qui revient</div><div class="ao-v">'+esc(d.patron)+'</div>' : '')
+      + (d.explication ? '<div class="ao-k">Pourquoi</div><div class="ao-v">'+esc(d.explication)+'</div>' : '')
+      + (d.conseil ? '<div class="ao-k">La prochaine fois</div><div class="ao-v ao-conseil">'+esc(d.conseil)+'</div>' : '');
+    AIDE.etat[exId] = 'analysee';
+    lmsTrack('aide_analysee', {exercice: exId, erreurs: AIDE.err[exId]});
+  }catch(e){
+    out.className = 'aide-out on no';
+    out.textContent = 'Impossible de contacter le serveur. Réessaie plus tard.';
+    if(btn) btn.disabled = false;
+  }
+}
+
+function refuserAide(exId){
+  AIDE.etat[exId] = 'refusee';
+  const el = document.querySelector('#exo-'+exId+' .aide');
+  if(el) el.remove();
+  lmsTrack('aide_refusee', {exercice: exId, erreurs: AIDE.err[exId]});
+}
+
+let plLastFocus=null;
+// `cible` : type de bloc vers lequel faire défiler le panneau ('labo' pour la
+// manipulation). Sans lui, l'élève arrive en haut d'une longue leçon.
+function plusOpen(exId, cible){
+  const P=PLUS[exId]; if(!P) return;
+  document.getElementById('plus-eye').textContent = P.eye || 'Mini-leçon';
+  document.getElementById('plus-tit').textContent = P.tit;
+  const body=document.getElementById('plus-body');
+  body.innerHTML = P.blocs.map((b,bi)=>plBloc(b,exId,bi)).join('');
+  body.scrollTop=0;
+  document.getElementById('plus-ov').classList.add('on');
+  // Le défilement appartient à <html> (body est figé à height:100%) — poser
+  // overflow:hidden sur body rognerait toute la page.
+  document.documentElement.style.overflow='hidden';
+  P.blocs.forEach((b,bi)=>{ if(b.t==='labo') plLabo(exId,bi,null,null); });
+  plLastFocus=document.activeElement;
+  document.getElementById('plus-close').focus();
+  lmsTrack('plus_open', {savoir: exId, cible: cible || ''});
+  if(cible){
+    const i = P.blocs.findIndex(b => b.t === cible);
+    if(i >= 0){
+      const bloc = body.children[i];
+      if(bloc){
+        bloc.scrollIntoView({block:'start'});
+        bloc.classList.add('is-cible');
+        setTimeout(()=>bloc.classList.remove('is-cible'), 2500);
+      }
+    }
+  }
+}
+function plusClose(){
+  document.getElementById('plus-ov').classList.remove('on');
+  document.documentElement.style.overflow='';
+  if(plLastFocus && plLastFocus.focus) plLastFocus.focus();
+}
+document.getElementById('plus-close').addEventListener('click', plusClose);
+document.getElementById('plus-ov').addEventListener('click', e=>{ if(e.target.id==='plus-ov') plusClose(); });
+document.addEventListener('keydown', e=>{
+  if(e.key==='Escape' && document.getElementById('plus-ov').classList.contains('on')) plusClose();
+});
+
 // ── RENDER ────────────────────────────────────────────────────────────
 function render(){
+  // Le bandeau reprend la section courante (gros titre + phrase d'intro),
+  // comme le modèle je-me-prepare.html.
+  const cur = SECTIONS.find(s=>s.id===curSec);
+  if(cur){
+    const tEl=document.getElementById('hdr-title'), lEl=document.getElementById('hdr-lead');
+    if(tEl) tEl.textContent = cur.title;
+    if(lEl) lEl.textContent = cur.lead || '';
+  }
   SECTIONS.forEach(sec=>{
     document.getElementById('tab-'+sec.id).classList.toggle('on', curSec===sec.id);
     document.getElementById('sec-'+sec.id).classList.toggle('on', curSec===sec.id);
@@ -1120,31 +2290,83 @@ function render(){
   const ban=document.getElementById('sel-banner');
   if(S.sel){ban.classList.add('on');document.getElementById('sel-lbl').textContent=S.sel.lbl}
   else ban.classList.remove('on');
+  measureChrome();   // la bannière change la hauteur de l'en-tête collant
 
   const used=usedIds();
   EXOS.forEach(ex=>{
     const mount=document.getElementById('mount-'+ex.id);
+    if(!mount) return;
     const bank=document.getElementById('bank-'+ex.id);
-    if(!mount||!bank) return;
-    mount.innerHTML=''; bank.innerHTML='';
+    mount.innerHTML=''; if(bank) bank.innerHTML='';
 
-    if(ex.type==='vf'){
+    if(ex.type==='vf' && ex.cards){
+      // Grille de cartes : bouton audio rond + mot, puis les choix dessous.
+      mount.className='ph-grid';
       ex.rows.forEach(r=>{
-        const row=document.createElement('div');row.className='rrow';
-        const txt=document.createElement('div');txt.className='stxt';txt.innerHTML=r.txt;
-        row.appendChild(txt);row.appendChild(mkZone(r.id,'zvf'));
-        mount.appendChild(row);
+        const word=r.txt.replace(/<[^>]+>/g,'');
+        const card=document.createElement('div');card.className='ph-card';
+        const top=document.createElement('div');top.className='ph-top';
+        const sb=document.createElement('button');
+        sb.type='button'; sb.className='btn-audio-round'; sb.setAttribute('aria-label','Écouter le mot');
+        sb.innerHTML=ICON_SPEAK; sb.onclick=()=>playWord(sb, word, ex.id+'_'+r.id);
+        top.appendChild(sb);
+        const w=document.createElement('div');w.className='ph-word';w.textContent=word;
+        top.appendChild(w);
+        const mb=document.createElement('button');
+        mb.type='button'; mb.className='btn btn-ghost ph-mic'; mb.title='Répète le mot à voix haute';
+        mb.innerHTML=ICON_MIC; mb.onclick=()=>pronCheck(mb, word);
+        top.appendChild(mb);
+        card.appendChild(top);
+        const opts=document.createElement('div');opts.className='ph-opts';
+        ex.tiles.forEach(lbl=>{
+          const b=document.createElement('button');
+          b.type='button'; b.className='vf-opt';
+          if(S.vfSel[r.id]===lbl) b.classList.add('sel');
+          if(S.fb[r.id] && S.vfSel[r.id]===lbl) b.classList.add(S.fb[r.id]==='ok'?'fb-ok':'fb-no');
+          b.textContent=lbl;
+          b.onclick=()=>vfSelect(r.id,lbl);
+          opts.appendChild(b);
+        });
+        card.appendChild(opts);
+        mount.appendChild(card);
       });
-      ex.tiles.forEach((lbl,i)=>{
-        bank.appendChild(mkTile(ex.id+'_t'+i,lbl,ex.id,lbl==='VRAI'||lbl==='MUETTE'?'tv':'tf'));
+    }
+    else if(ex.type==='vf'){
+      ex.rows.forEach(r=>{
+        const row=document.createElement('div');row.className='vf-row';
+        if(ex.listen){
+          const sb=document.createElement('button');
+          sb.type='button'; sb.className='btn btn-ghost'; sb.style.cssText='flex:0 0 auto;padding:8px 12px;font-size:16px';
+          sb.innerHTML=ICON_SPEAK; sb.onclick=()=>playWord(sb, r.txt.replace(/<[^>]+>/g,''), ex.id+'_'+r.id);
+          row.appendChild(sb);
+          const mb=document.createElement('button');
+          mb.type='button'; mb.className='btn btn-ghost'; mb.style.cssText='flex:0 0 auto;padding:8px 12px;font-size:16px';
+          mb.title='Répète le mot à voix haute';
+          mb.innerHTML=ICON_MIC; mb.onclick=()=>pronCheck(mb, r.txt.replace(/<[^>]+>/g,''));
+          row.appendChild(mb);
+        }
+        const txt=document.createElement('div');txt.className='stxt';txt.innerHTML=r.txt;
+        row.appendChild(txt);
+        const opts=document.createElement('div');opts.className='vf-opts';
+        ex.tiles.forEach(lbl=>{
+          const b=document.createElement('button');
+          b.type='button'; b.className='vf-opt';
+          if(S.vfSel[r.id]===lbl) b.classList.add('sel');
+          if(S.fb[r.id] && S.vfSel[r.id]===lbl) b.classList.add(S.fb[r.id]==='ok'?'fb-ok':'fb-no');
+          b.textContent=lbl;
+          b.onclick=()=>vfSelect(r.id,lbl);
+          opts.appendChild(b);
+        });
+        row.appendChild(opts);
+        mount.appendChild(row);
       });
     }
     if(ex.type==='match'){
       ex.rows.forEach(r=>{
         const row=document.createElement('div');row.className='rrow2';
         const qc=document.createElement('div');qc.className='qcard';
-        qc.innerHTML='<div class="qlbl">Question</div><div class="qtxt">'+esc(r.q)+'</div>';
-        row.appendChild(qc);row.appendChild(mkZone(r.id,null,'glissez la réponse ici'));
+        qc.innerHTML=(ex.noQLbl?'':'<div class="qlbl">Question</div>')+'<div class="qtxt">'+esc(r.q)+'</div>';
+        row.appendChild(qc);row.appendChild(mkZone(r.id,null,ex.zonePh||'glissez la réponse ici'));
         mount.appendChild(row);
       });
       shuffled(ex.rows,7).forEach(r=>{ if(used.has(r.aid))return; bank.appendChild(mkTile(r.aid,r.a,ex.id,'ta')); });
@@ -1188,7 +2410,11 @@ function updateChip(){
   document.getElementById('prog-chip').textContent='⭐ '+n+' / '+TOTAL_ZONES;
 }
 
-document.getElementById('btn-reset').addEventListener('click',()=>{ S.pl={};S.sel=null;S.fb={};render(); });
+document.getElementById('btn-reset').addEventListener('click',()=>{
+  S.pl={};S.sel=null;S.fb={};S.vfSel={};
+  document.querySelectorAll('.vf-summary').forEach(el=>{el.textContent='';el.className='vf-summary';});
+  render();
+});
 
 // ── FLASHCARDS ────────────────────────────────────────────────────────
 let fcIdx=0;
@@ -1214,9 +2440,28 @@ document.getElementById('fc-next').addEventListener('click',()=>{fcIdx=(fcIdx+1)
 document.getElementById('fc-close').addEventListener('click',()=>document.getElementById('fc-overlay').classList.remove('on'));
 document.getElementById('fc-overlay').addEventListener('click',e=>{if(e.target.id==='fc-overlay')document.getElementById('fc-overlay').classList.remove('on')});
 
+// ── HAUTEUR DE L'EN-TÊTE COLLANT ──────────────────────────────────────
+// Le banc de réponses se colle juste sous la barre d'onglets. Cette barre
+// n'a pas de hauteur fixe : elle passe sur deux lignes en écran étroit et
+// grandit encore quand la bannière « Sélectionné : … » s'affiche. On la
+// mesure donc plutôt que de coder une valeur en dur.
+function measureChrome(){
+  const c=document.getElementById('chrome');
+  if(!c) return;
+  document.documentElement.style.setProperty('--chrome-h', c.offsetHeight+'px');
+}
+addEventListener('resize', measureChrome);
+addEventListener('orientationchange', measureChrome);
+if(window.ResizeObserver){
+  const ro=new ResizeObserver(measureChrome);
+  const c=document.getElementById('chrome');
+  if(c) ro.observe(c);
+}
+
 // ── GO ────────────────────────────────────────────────────────────────
 buildStatic();
 render();
+measureChrome();
 lmsTrack('file_opened');
 </script>
 </body></html>
