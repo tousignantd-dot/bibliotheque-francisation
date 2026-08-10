@@ -296,7 +296,10 @@ body{
   border-left:4px solid var(--sec-color,var(--ws-accent));
   border-radius:18px;
   box-shadow:0 1px 2px rgba(20,20,20,.04);
-  overflow:hidden;
+  /* `clip` et non `hidden` : les deux découpent l'en-tête débordant aux coins
+     arrondis, mais `hidden` fait de la carte un conteneur de défilement, ce qui
+     neutralise le `position:sticky` du banc de réponses à l'intérieur. */
+  overflow:clip;
   transition:box-shadow .15s ease, transform .15s ease;
 }
 .card:hover{
@@ -549,6 +552,54 @@ body{
 .pl-blk.is-cible{
   box-shadow:0 0 0 3px var(--ws-accent);
   transition:box-shadow .4s ease;
+}
+
+/* ── Banc de réponses collant ──────────────────────────────────────────
+   Dans un exercice long, les énoncés défilaient sous le banc de réponses :
+   arrivé en bas, l'élève n'avait plus rien à glisser. Le banc reste
+   maintenant à l'écran tant qu'on est dans l'exercice.
+   --chrome-h est mesuré en JS (la barre d'onglets change de hauteur quand
+   elle passe sur deux lignes ou que la bannière de sélection apparaît). */
+.bsec.b1{
+  position:sticky;
+  top:calc(var(--chrome-h,72px) + 12px);
+  max-height:calc(100vh - var(--chrome-h,72px) - 40px);
+  overflow-y:auto;
+  z-index:3;
+}
+/* En écran étroit, la colonne passe SOUS les énoncés : la coller en haut
+   n'aurait aucun effet. On la colle en bas, en bande horizontale. */
+@media(max-width:760px){
+  /* La colonne des énoncés imposait min-width:300px — plus large que l'espace
+     disponible sur un téléphone (375px moins les gouttières), donc les cartes
+     et les zones de dépôt étaient rognées à droite par la carte.
+     On force les deux colonnes à toute la largeur : elles s'empilent
+     franchement au lieu de se disputer une rangée trop étroite. */
+  .exo-main{min-width:0!important; flex:1 1 100%!important}
+  .bsec.b1{flex:1 1 100%!important}
+  .bsec.b1{
+    position:sticky; top:auto; bottom:0;
+    max-height:none;
+    margin:0 -22px -22px;
+    border-radius:0;
+    border-left:none; border-right:none; border-bottom:none;
+    box-shadow:0 -6px 18px rgba(20,20,20,.10);
+    padding:10px 14px calc(10px + env(safe-area-inset-bottom));
+  }
+  .bsec.b1 .blbl{margin-bottom:6px}
+  /* Les tuiles s'alignent en file et défilent horizontalement plutôt que
+     d'empiler une colonne qui mangerait tout l'écran. */
+  .bsec.b1 .btiles,.bsec.b1 .btiles.vert{
+    flex-direction:row; flex-wrap:nowrap;
+    overflow-x:auto; overflow-y:hidden;
+    justify-content:flex-start;
+    gap:8px; padding-bottom:4px;
+    -webkit-overflow-scrolling:touch;
+  }
+  .bsec.b1 .btiles > *{flex:0 0 auto}
+}
+@media(prefers-reduced-motion:no-preference){
+  .bsec.b1{scroll-behavior:smooth}
 }
 
 /* Focus clavier visible partout (B.4) */
@@ -2210,7 +2261,7 @@ function buildStatic(){
       return;
     }
     h+='<div style="display:flex;gap:20px;align-items:flex-start;flex-wrap:wrap">';
-    h+='<div style="flex:1;min-width:300px">';
+    h+='<div class="exo-main" style="flex:1;min-width:300px">';
     h+='<div class="c-hdr">'+exoNumBadge(ex.num)+'<span class="tag">'+esc(ex.num)+'</span><span class="ctit">'+esc(ex.tit)+'</span><span class="csub">'+esc(ex.sub)+'</span></div>';
     if(ex.type==='blanks') h+='<p class="blanks-p" id="mount-'+ex.id+'"></p>';
     else h+='<div class="rows" id="mount-'+ex.id+'"></div>';
@@ -2494,6 +2545,7 @@ function render(){
   const ban=document.getElementById('sel-banner');
   if(S.sel){ban.classList.add('on');document.getElementById('sel-lbl').textContent=S.sel.lbl}
   else ban.classList.remove('on');
+  measureChrome();   // la bannière change la hauteur de l'en-tête collant
 
   const used=usedIds();
   EXOS.forEach(ex=>{
@@ -2963,9 +3015,28 @@ document.getElementById('fc-next').addEventListener('click',()=>{fcIdx=(fcIdx+1)
 document.getElementById('fc-close').addEventListener('click',()=>document.getElementById('fc-overlay').classList.remove('on'));
 document.getElementById('fc-overlay').addEventListener('click',e=>{if(e.target.id==='fc-overlay')document.getElementById('fc-overlay').classList.remove('on')});
 
+// ── HAUTEUR DE L'EN-TÊTE COLLANT ──────────────────────────────────────
+// Le banc de réponses se colle juste sous la barre d'onglets. Cette barre
+// n'a pas de hauteur fixe : elle passe sur deux lignes en écran étroit et
+// grandit encore quand la bannière « Sélectionné : … » s'affiche. On la
+// mesure donc plutôt que de coder une valeur en dur.
+function measureChrome(){
+  const c=document.getElementById('chrome');
+  if(!c) return;
+  document.documentElement.style.setProperty('--chrome-h', c.offsetHeight+'px');
+}
+addEventListener('resize', measureChrome);
+addEventListener('orientationchange', measureChrome);
+if(window.ResizeObserver){
+  const ro=new ResizeObserver(measureChrome);
+  const c=document.getElementById('chrome');
+  if(c) ro.observe(c);
+}
+
 // ── GO ────────────────────────────────────────────────────────────────
 buildStatic();
 render();
+measureChrome();
 lmsTrack('file_opened');
 </script>
 </body></html>

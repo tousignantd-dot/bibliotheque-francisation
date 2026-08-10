@@ -296,7 +296,10 @@ body{
   border-left:4px solid var(--sec-color,var(--ws-accent));
   border-radius:18px;
   box-shadow:0 1px 2px rgba(20,20,20,.04);
-  overflow:hidden;
+  /* `clip` et non `hidden` : les deux découpent l'en-tête débordant aux coins
+     arrondis, mais `hidden` fait de la carte un conteneur de défilement, ce qui
+     neutralise le `position:sticky` du banc de réponses à l'intérieur. */
+  overflow:clip;
   transition:box-shadow .15s ease, transform .15s ease;
 }
 .card:hover{
@@ -433,6 +436,95 @@ body{
 .ph-opts{display:grid;grid-template-columns:1fr 1fr;gap:10px}
 .ph-opts .vf-opt{width:auto;flex:1 1 auto}
 .savoir--pron .savoir-band{background:var(--sec-color,var(--ws-accent))}
+
+/* ── Proposition d'aide après plusieurs erreurs ────────────────────────
+   Volontairement discrète et refusable : un panneau qui s'ouvrirait tout
+   seul après un échec se lirait comme une punition. Ici l'élève choisit. */
+.aide{
+  margin-top:16px; padding:14px 16px;
+  background:var(--warn-bg); border:1px solid var(--warn-line);
+  border-left:4px solid var(--warn-line); border-radius:14px;
+  display:flex; align-items:center; gap:14px; flex-wrap:wrap;
+}
+.aide-txt{flex:1 1 260px; font-size:15.5px; font-weight:600; line-height:1.5; color:var(--warn-ink)}
+.aide-txt b{font-weight:900}
+.aide-btns{display:flex; gap:8px; flex-wrap:wrap}
+.aide .btn-oui{
+  min-height:44px; padding:0 18px; border-radius:999px; border:none;
+  background:var(--ws-ink); color:#fff;
+  font-family:'Nunito',sans-serif; font-size:14.5px; font-weight:800; cursor:pointer;
+}
+.aide .btn-oui:hover{background:#000}
+.aide .btn-non{
+  min-height:44px; padding:0 16px; border-radius:999px;
+  border:1px solid var(--border); background:transparent; color:var(--text-muted);
+  font-family:'Nunito',sans-serif; font-size:14.5px; font-weight:700; cursor:pointer;
+}
+.aide .btn-non:hover{background:rgba(0,0,0,.04)}
+.aide .btn-oui[disabled]{opacity:.45; cursor:default}
+.aide .btn-oui .icon-svg{width:16px; height:16px; margin-right:6px;
+  filter:brightness(0) invert(1)}
+/* Réponse de l'assistant : sur fond blanc, détachée du bandeau d'alerte —
+   c'est une explication, pas un message d'erreur de plus. */
+.aide-out{display:none; flex-basis:100%}
+.aide-out.on{display:block; margin-top:4px; padding:16px 18px;
+  background:var(--surface-card); border:1px solid var(--border); border-radius:14px}
+.aide-out.wait{font-size:15px; font-weight:600; color:var(--text-muted)}
+.aide-out.no{color:var(--no-ink); font-size:15px; font-weight:700}
+.ao-k{font-size:11.5px; font-weight:800; text-transform:uppercase;
+  letter-spacing:.13em; color:var(--text-muted); margin-bottom:5px}
+.ao-k:not(:first-child){margin-top:14px}
+.ao-v{font-size:16.5px; font-weight:500; line-height:1.6; color:var(--text-strong)}
+.ao-conseil{font-weight:800}
+
+/* ── Banc de réponses collant ──────────────────────────────────────────
+   Dans un exercice long, les énoncés défilaient sous le banc de réponses :
+   arrivé en bas, l'élève n'avait plus rien à glisser. Le banc reste
+   maintenant à l'écran tant qu'on est dans l'exercice.
+   --chrome-h est mesuré en JS (la barre d'onglets change de hauteur quand
+   elle passe sur deux lignes ou que la bannière de sélection apparaît). */
+.bsec.b1{
+  position:sticky;
+  top:calc(var(--chrome-h,72px) + 12px);
+  max-height:calc(100vh - var(--chrome-h,72px) - 40px);
+  overflow-y:auto;
+  z-index:3;
+}
+/* En écran étroit, la colonne passe SOUS les énoncés : la coller en haut
+   n'aurait aucun effet. On la colle en bas, en bande horizontale. */
+@media(max-width:760px){
+  /* La colonne des énoncés imposait min-width:300px — plus large que l'espace
+     disponible sur un téléphone (375px moins les gouttières), donc les cartes
+     et les zones de dépôt étaient rognées à droite par la carte.
+     On force les deux colonnes à toute la largeur : elles s'empilent
+     franchement au lieu de se disputer une rangée trop étroite. */
+  .exo-main{min-width:0!important; flex:1 1 100%!important}
+  .bsec.b1{flex:1 1 100%!important}
+  .bsec.b1{
+    position:sticky; top:auto; bottom:0;
+    max-height:none;
+    margin:0 -22px -22px;
+    border-radius:0;
+    border-left:none; border-right:none; border-bottom:none;
+    box-shadow:0 -6px 18px rgba(20,20,20,.10);
+    padding:10px 14px calc(10px + env(safe-area-inset-bottom));
+  }
+  .bsec.b1 .blbl{margin-bottom:6px}
+  /* Les tuiles s'alignent en file et défilent horizontalement plutôt que
+     d'empiler une colonne qui mangerait tout l'écran. */
+  .bsec.b1 .btiles,.bsec.b1 .btiles.vert{
+    flex-direction:row; flex-wrap:nowrap;
+    overflow-x:auto; overflow-y:hidden;
+    justify-content:flex-start;
+    gap:8px; padding-bottom:4px;
+    -webkit-overflow-scrolling:touch;
+  }
+  .bsec.b1 .btiles > *{flex:0 0 auto}
+}
+@media(prefers-reduced-motion:no-preference){
+  .bsec.b1{scroll-behavior:smooth}
+}
+
 /* Focus clavier visible partout (B.4) */
 :focus-visible{outline:3px solid var(--ws-accent);outline-offset:2px;border-radius:inherit}
 textarea:focus-visible,.winput:focus-visible{outline:none;border-color:var(--ws-accent)}
@@ -1278,6 +1370,9 @@ function vfCheckAll(exId) {
     S.pl[r.id] = {iid:r.id, lbl:sel, cat:'vf'};
     trackPlacement(r.id, ok);
   });
+  // Nombre d'énoncés encore faux à cette correction — pas un cumul : corriger
+  // deux fois de suite ne doit pas gonfler artificiellement le compte.
+  if (answered >= ex.rows.length) evaluerAide(exId, answered - correct);
   const sumEl = document.getElementById('vfsum-'+exId);
   if (sumEl) {
     if (answered < ex.rows.length) {
@@ -1577,7 +1672,7 @@ function buildStatic(){
       return;
     }
     h+='<div style="display:flex;gap:20px;align-items:flex-start;flex-wrap:wrap">';
-    h+='<div style="flex:1;min-width:300px">';
+    h+='<div class="exo-main" style="flex:1;min-width:300px">';
     h+='<div class="c-hdr">'+exoNumBadge(ex.num)+'<span class="tag">'+esc(ex.num)+'</span><span class="ctit">'+esc(ex.tit)+'</span><span class="csub">'+esc(ex.sub)+'</span></div>';
     if(ex.type==='blanks') h+='<p class="blanks-p" id="mount-'+ex.id+'"></p>';
     else h+='<div class="rows" id="mount-'+ex.id+'"></div>';
@@ -1812,7 +1907,12 @@ async function checkWrite(exId, i){
     fb.innerHTML= ok ? '✅ Bravo, c\'est exact !'
       : '❌ Presque ! La bonne réponse est : <b>'+esc(it.accept[0])+'</b>';
     if(ok){ inp.classList.add('good'); inp.disabled=true; trackPlacement(zid,true); }
-    else { trackPlacement(zid,false); }
+    else {
+      trackPlacement(zid,false);
+      // Ici le cumul a du sens : chaque envoi raté est une tentative distincte.
+      const rates = ex.items.reduce((s,_,k)=> s + (TR.attempts['w_'+exId+'_'+k]||0), 0);
+      evaluerAide(exId, rates);
+    }
     return;
   }
 
@@ -1836,6 +1936,136 @@ async function checkWrite(exId, i){
   }
 }
 
+// Ce module n'a pas encore de mini-leçons « En apprendre plus » (voir
+// module-urgence pour le modèle) : objet vide, pour que PLUS[exId] et
+// plusOpen() restent des vérifications sûres plutôt que des erreurs.
+const PLUS = {};
+function plusOpen(exId, cible){ /* aucune mini-leçon dans ce module */ }
+
+// ── PROPOSITION D'AIDE APRÈS PLUSIEURS ERREURS ────────────────────────
+// Le module connaît déjà, à la correction, quels énoncés sont ratés. Au-delà
+// d'un seuil, il propose une aide — sans jamais l'imposer ni toucher au score.
+// Une seule proposition par exercice et par séance.
+const AIDE = {err:{}, etat:{}};      // etat : 'proposee' | 'ouverte' | 'refusee' | 'analysee'
+const AIDE_SEUIL = 3;
+
+// Les exercices analysables : ceux dont on peut reconstituer, ligne par ligne,
+// ce que l'élève a choisi et ce qu'il fallait choisir.
+function releverReponses(exId){
+  const ex = EXOS.find(e=>e.id===exId); if(!ex) return [];
+  if(ex.type==='vf'){
+    return ex.rows.filter(r=>S.vfSel[r.id]).map(r=>({
+      enonce:r.txt, choix:S.vfSel[r.id], bonne:r.ok}));
+  }
+  if(ex.type==='write'){
+    return ex.items.map((it,i)=>{
+      const inp=document.getElementById('wi_'+exId+'_'+i);
+      const val=inp ? inp.value.trim() : '';
+      if(!val || !it.accept) return null;
+      return {enonce:it.q, choix:val, bonne:it.accept[0]};
+    }).filter(Boolean);
+  }
+  return [];
+}
+
+function evaluerAide(exId, nbErreurs){
+  if(!exId) return;
+  // L'analyse d'erreurs vaut pour tout exercice reconstituable, avec ou sans
+  // mini-leçon.
+  if(!PLUS[exId] && !releverReponses(exId).length) return;
+  AIDE.err[exId] = Math.max(AIDE.err[exId]||0, nbErreurs);
+  if(AIDE.err[exId] >= AIDE_SEUIL && !AIDE.etat[exId]) proposerAide(exId);
+}
+
+function proposerAide(exId){
+  const card = document.getElementById('exo-'+exId);
+  if(!card || card.querySelector('.aide')) return;
+  AIDE.etat[exId] = 'proposee';
+  const n = AIDE.err[exId];
+  const analysable = releverReponses(exId).length > 0;
+  const el = document.createElement('div');
+  el.className = 'aide';
+  el.id = 'aide-' + exId;
+  el.innerHTML =
+      '<div class="aide-txt"><b>' + n + ' erreurs</b> dans cet exercice.'
+    + (PLUS[exId] ? ' La mini-leçon « ' + esc(PLUS[exId].tit) + ' » explique ce point autrement.' : '')
+    + '</div>'
+    + '<div class="aide-btns">'
+    + (analysable
+        ? '<button class="btn-oui" type="button" onclick="analyserErreurs(\'' + exId + '\')">'
+          + ICON_ASSISTANT + ' Pourquoi je me trompe ?</button>' : '')
+    + (PLUS[exId]
+        ? '<button class="' + (analysable ? 'btn-non' : 'btn-oui') + '" type="button"'
+          + ' onclick="accepterAide(\'' + exId + '\')">Revoir l\'explication</button>' : '')
+    + '<button class="btn-non" type="button" onclick="refuserAide(\'' + exId + '\')">Plus tard</button>'
+    + '</div>'
+    + '<div class="aide-out" id="aideout-' + exId + '" aria-live="polite"></div>';
+  card.appendChild(el);
+  lmsTrack('aide_proposee', {exercice: exId, erreurs: n, analysable: analysable});
+}
+
+function accepterAide(exId){
+  AIDE.etat[exId] = 'ouverte';
+  const el = document.querySelector('#exo-'+exId+' .aide');
+  if(el) el.remove();
+  lmsTrack('aide_acceptee', {exercice: exId, erreurs: AIDE.err[exId]});
+  plusOpen(exId, 'labo');
+}
+
+// ── NIVEAU 2 : analyse du patron d'erreurs par l'IA ───────────────────
+// On envoie l'exercice COMPLET — chaque énoncé, le choix de l'élève, la bonne
+// réponse. L'IA ne juge rien : la correction est déjà faite et affichée. Elle
+// cherche seulement ce qui se répète dans les erreurs.
+async function analyserErreurs(exId){
+  const ex = EXOS.find(e=>e.id===exId); if(!ex) return;
+  const items = releverReponses(exId);
+  const out = document.getElementById('aideout-'+exId);
+  const btn = document.querySelector('#aide-'+exId+' .btn-oui');
+  if(!items.length || !out) return;
+
+  // Un seul appel par exercice et par séance : l'élève qui s'acharne ne doit
+  // pas générer une série d'appels facturés.
+  if(btn){ btn.disabled = true; }
+  out.className = 'aide-out on wait';
+  out.textContent = "L'assistant relit tes réponses…";
+
+  try{
+    const res = await fetch('/api/analyser-erreurs', {
+      method:'POST', headers:{'Content-Type':'application/json'},
+      body: JSON.stringify({
+        code: studentCode,
+        exercice: ex.tit || '',
+        notion: (ex.savoir && ex.savoir.h ? ex.savoir.h.replace(/^›\s*/,'') : ''),
+        items: items,
+      })});
+    const d = await res.json();
+    if(!res.ok){
+      out.className = 'aide-out on no';
+      out.textContent = d.error || 'Service momentanément indisponible.';
+      if(btn) btn.disabled = false;      // panne : on laisse réessayer
+      return;
+    }
+    out.className = 'aide-out on';
+    out.innerHTML =
+        (d.patron ? '<div class="ao-k">Ce qui revient</div><div class="ao-v">'+esc(d.patron)+'</div>' : '')
+      + (d.explication ? '<div class="ao-k">Pourquoi</div><div class="ao-v">'+esc(d.explication)+'</div>' : '')
+      + (d.conseil ? '<div class="ao-k">La prochaine fois</div><div class="ao-v ao-conseil">'+esc(d.conseil)+'</div>' : '');
+    AIDE.etat[exId] = 'analysee';
+    lmsTrack('aide_analysee', {exercice: exId, erreurs: AIDE.err[exId]});
+  }catch(e){
+    out.className = 'aide-out on no';
+    out.textContent = 'Impossible de contacter le serveur. Réessaie plus tard.';
+    if(btn) btn.disabled = false;
+  }
+}
+
+function refuserAide(exId){
+  AIDE.etat[exId] = 'refusee';
+  const el = document.querySelector('#exo-'+exId+' .aide');
+  if(el) el.remove();
+  lmsTrack('aide_refusee', {exercice: exId, erreurs: AIDE.err[exId]});
+}
+
 // ── RENDER ────────────────────────────────────────────────────────────
 function render(){
   // Le bandeau reprend la section courante (gros titre + phrase d'intro),
@@ -1856,6 +2086,7 @@ function render(){
   const ban=document.getElementById('sel-banner');
   if(S.sel){ban.classList.add('on');document.getElementById('sel-lbl').textContent=S.sel.lbl}
   else ban.classList.remove('on');
+  measureChrome();   // la bannière change la hauteur de l'en-tête collant
 
   const used=usedIds();
   EXOS.forEach(ex=>{
@@ -2005,9 +2236,28 @@ document.getElementById('fc-next').addEventListener('click',()=>{fcIdx=(fcIdx+1)
 document.getElementById('fc-close').addEventListener('click',()=>document.getElementById('fc-overlay').classList.remove('on'));
 document.getElementById('fc-overlay').addEventListener('click',e=>{if(e.target.id==='fc-overlay')document.getElementById('fc-overlay').classList.remove('on')});
 
+// ── HAUTEUR DE L'EN-TÊTE COLLANT ──────────────────────────────────────
+// Le banc de réponses se colle juste sous la barre d'onglets. Cette barre
+// n'a pas de hauteur fixe : elle passe sur deux lignes en écran étroit et
+// grandit encore quand la bannière « Sélectionné : … » s'affiche. On la
+// mesure donc plutôt que de coder une valeur en dur.
+function measureChrome(){
+  const c=document.getElementById('chrome');
+  if(!c) return;
+  document.documentElement.style.setProperty('--chrome-h', c.offsetHeight+'px');
+}
+addEventListener('resize', measureChrome);
+addEventListener('orientationchange', measureChrome);
+if(window.ResizeObserver){
+  const ro=new ResizeObserver(measureChrome);
+  const c=document.getElementById('chrome');
+  if(c) ro.observe(c);
+}
+
 // ── GO ────────────────────────────────────────────────────────────────
 buildStatic();
 render();
+measureChrome();
 lmsTrack('file_opened');
 </script>
 </body></html>
