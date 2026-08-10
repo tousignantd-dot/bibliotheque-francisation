@@ -16,45 +16,44 @@ except ImportError:
     sys.exit(1)
 
 VOICES = {
-    "masculin_1":  "93nuHbke4dTER9x2pDwE",   # 👨 Masculin #1 — Benoît / Simon
-    "feminin_2":   "WW0JfNPk5DgcQdM0d6X6",   # 👩 Féminine #2 — Carole
-    "feminin_3":   "rCmVtv8cYU60uhlsOo1M",   # 👩 Féminine #3 — Maria
+    "masculin_1":  "93nuHbke4dTER9x2pDwE",   # 👨 Masculin #1 — Ibrahim
+    "feminin_2":   "WW0JfNPk5DgcQdM0d6X6",   # 👩 Féminine #2 — Ginette (propriétaire)
+    "feminin_3":   "rCmVtv8cYU60uhlsOo1M",   # 👩 Féminine #3 — Leyla (la sœur)
 }
 
 DEFAULT_VOICE_SETTINGS = {"stability": 0.5, "similarity_boost": 0.75}
 VOICE_SETTINGS_OVERRIDES = {}
 
 VOICE_ASSOC = {
-    "CAROLE":  "feminin_2",
-    "BENOÎT":  "masculin_1",
-    "SIMON":   "masculin_1",
-    "MARIA":   "feminin_3",
+    "IBRAHIM": "masculin_1",
+    "GINETTE": "feminin_2",
+    "LEYLA":   "feminin_3",
 }
 
 DIALOGUES = {
     "module-logement/prep": {
-        "title": "Comment est le logement ? — Je me prépare (La visite du logement)",
+        "title": "Comment est le logement ? — Je me prépare (La visite du 4 ½ de la rue Galt)",
         "lines": [
-            ("CAROLE", "On a enfin terminé les rénovations dans notre duplex ! L'appartement du deuxième étage est superbe maintenant. Ces travaux étaient vraiment nécessaires."),
-            ("BENOÎT", "Oui, tu as raison. Ce que je préfère, c'est le nouveau plancher de bois franc. J'espère que ça va plaire au couple qui vient visiter demain. À ton avis, l'appartement est-il prêt pour la location ?"),
-            ("CAROLE", "Oui, absolument ! Les conditions de location restent-elles les mêmes que l'an dernier ?"),
-            ("BENOÎT", "Oui. Le loyer sera encore de 1100 $ par mois. C'est un bel appartement, il est assez grand pour un couple avec un ou deux enfants. L'électricité et le chauffage seront aux frais des locataires. On fournit la cuisinière et le réfrigérateur. Les animaux sont interdits."),
-            ("CAROLE", "Si les locataires veulent repeindre l'appartement, ils devront payer la peinture, car on vient tout juste de tout rénover."),
-            ("BENOÎT", "Quand débutera le bail ?"),
-            ("CAROLE", "Le 1er juillet. Il sera valide pour un an. Si tout se passe bien, on offrira aux locataires un renouvellement à long terme."),
-            ("BENOÎT", "D'accord. C'est parfait !"),
+            ("IBRAHIM", "Bonjour madame Ginette. J'ai répondu à votre annonce pour le 4 et demi au-dessus de la boulangerie. Je commence un poste de préposé au centre hospitalier le mois prochain, alors je cherche assez vite."),
+            ("GINETTE", "Entrez, entrez. Le logement est au deuxième étage. Il se libère le 1er septembre et le bail dure douze mois."),
+            ("IBRAHIM", "Et le loyer, il est de combien exactement ?"),
+            ("GINETTE", "Huit cent quatre-vingt-dix dollars par mois. Le chauffage et l'eau chaude sont inclus ; l'électricité est à votre charge. La buanderie est au sous-sol et vous avez une place de stationnement dans la ruelle."),
+            ("IBRAHIM", "Je travaille de soir et je dors le matin. Est-ce qu'on entend beaucoup la boulangerie d'en bas ?"),
+            ("GINETTE", "Je ne vous cacherai rien : le camion de farine arrive vers cinq heures, trois matins par semaine. Par contre, la chambre donne sur la cour, jamais sur la rue."),
+            ("IBRAHIM", "D'accord. Et si je voulais repeindre le salon ?"),
+            ("GINETTE", "Aucun problème, je fournis la peinture. Les chats sont acceptés, mais pas les chiens. Prenez le temps de réfléchir et rappelez-moi avant vendredi."),
         ],
     },
     "module-logement/t2": {
-        "title": "Comment est le logement ? — Tâche 2 (Simon et Maria visitent l'appartement)",
+        "title": "Comment est le logement ? — Tâche 2 (Ibrahim en parle à sa sœur Leyla)",
         "lines": [
-            ("SIMON", "J'ai vraiment hâte de voir cet appartement ! J'espère qu'il y a l'air climatisé, je crains d'avoir chaud l'été sans ça."),
-            ("MARIA", "Je reviens justement de la visite, j'y suis allée avant toi. Il est très lumineux et douillet !"),
-            ("SIMON", "Est-ce qu'il y a de la place pour un chat ? On pourrait peut-être en adopter un."),
-            ("MARIA", "Je n'ai pas posé la question, mais l'appartement est assez grand. Pour la cuisine, j'aimerais des couleurs claires et chaleureuses."),
-            ("SIMON", "Et pour le salon, j'aimerais une ambiance calme et cocooning."),
-            ("MARIA", "Moi aussi ! On pourrait demander à ajouter une clause dans le bail pour les animaux, au cas où."),
-            ("SIMON", "Bonne idée. Je pense qu'on devrait signer le bail rapidement, cet appartement est parfait pour nous."),
+            ("LEYLA", "Alors, ce logement au-dessus de la boulangerie ? Tu as l'air content, toi."),
+            ("IBRAHIM", "Ce qui m'a plu, c'est la chambre : elle donne sur la cour, loin de la rue. Je vais pouvoir dormir le matin après mes quarts."),
+            ("LEYLA", "Et l'odeur du pain chaud à cinq heures, ça ne va pas te déranger ?"),
+            ("IBRAHIM", "Ça, c'est un cadeau ! Celui que je crains, c'est plutôt le camion de farine qui recule dans la ruelle."),
+            ("LEYLA", "Mets des rideaux épais et un ventilateur, le bruit passe au deuxième plan. Et la cuisine, elle est comment ?"),
+            ("IBRAHIM", "Petite, mais claire. Ce que je changerais, c'est la couleur des murs : un vert olive un peu triste."),
+            ("LEYLA", "Ginette fournit la peinture, non ? Rappelle-la avant vendredi : les logements tranquilles partent vite à Sherbrooke."),
         ],
     },
 }
