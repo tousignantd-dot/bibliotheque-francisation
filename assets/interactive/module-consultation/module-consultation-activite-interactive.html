@@ -437,6 +437,78 @@ body{
 .ph-opts .vf-opt{width:auto;flex:1 1 auto}
 .savoir--pron .savoir-band{background:var(--sec-color,var(--ws-accent))}
 
+/* ── « En apprendre plus » : mini-leçon en panneau latéral ─────────────
+   Le bandeau noir d'un savoir reste un résumé. L'élève qui ne comprend pas
+   ouvre ici une leçon complète : explication, anatomie, manipulation,
+   exemples, pièges, micro-vérification. Aucun effet sur le score du module. */
+.plus-bar{margin:14px var(--bleed) -17px;border-top:1px solid var(--ws-line)}
+.savoir-row:has(+ .plus-bar){border-bottom:none}
+.plus-open{width:100%;min-height:52px;background:transparent;border:none;border-radius:0 0 17px 17px;font-family:'Nunito',sans-serif;font-size:15px;font-weight:800;color:var(--ws-accent);cursor:pointer;display:flex;align-items:center;justify-content:center;gap:9px;transition:background .15s}
+.plus-open:hover{background:var(--ws-accent-bg)}
+.plus-open svg{width:17px;height:17px;flex-shrink:0}
+
+#plus-ov{display:none;position:fixed;inset:0;z-index:9500;background:rgba(15,25,35,.5);backdrop-filter:blur(4px)}
+#plus-ov.on{display:block}
+#plus-panel{position:absolute;top:0;right:0;height:100%;width:min(700px,100%);background:var(--ws-bg);display:flex;flex-direction:column;box-shadow:-16px 0 48px rgba(0,0,0,.28);animation:plusIn .28s cubic-bezier(.22,1,.36,1)}
+@keyframes plusIn{from{transform:translateX(48px);opacity:0}to{transform:none;opacity:1}}
+@media(prefers-reduced-motion:reduce){#plus-panel{animation:none}}
+#plus-hd{background:var(--ws-ink);color:#fff;padding:22px 26px;display:flex;align-items:flex-start;gap:16px;flex-shrink:0}
+#plus-eye{font-size:12px;font-weight:800;text-transform:uppercase;letter-spacing:.14em;color:#8FE2B9}
+#plus-tit{font-size:27px;font-weight:900;line-height:1.15;margin-top:7px}
+#plus-close{margin-left:auto;width:44px;height:44px;flex-shrink:0;border-radius:50%;border:1px solid rgba(255,255,255,.32);background:rgba(255,255,255,.12);color:#fff;font-family:'Nunito',sans-serif;font-size:19px;font-weight:800;cursor:pointer}
+#plus-close:hover{background:rgba(255,255,255,.26)}
+#plus-body{flex:1;overflow-y:auto;padding:20px 26px 64px;display:flex;flex-direction:column;gap:16px}
+.pl-blk{background:var(--ws-card);border:1px solid var(--ws-line);border-radius:18px;padding:20px 22px}
+.pl-eye{font-size:12px;font-weight:800;text-transform:uppercase;letter-spacing:.14em;color:var(--ws-sub);margin-bottom:9px}
+.pl-h{font-size:20px;font-weight:900;line-height:1.25;margin-bottom:9px}
+.pl-p{font-size:17px;font-weight:500;line-height:1.6}
+.pl-p b{font-weight:900}
+.pl-p em,.pl-note em{font-style:italic;color:var(--ws-accent);font-weight:700}
+.pl-note{font-size:15px;font-weight:600;color:var(--ws-sub);line-height:1.5;margin-top:12px}
+.pl-end{color:var(--ws-accent);text-decoration:underline;text-decoration-thickness:2px;text-underline-offset:3px}
+
+.pl-ana{display:flex;flex-wrap:wrap;gap:9px;align-items:flex-end;margin:16px 0 4px}
+.pl-tok{border:1px solid var(--ws-line);border-radius:14px;padding:9px 14px;background:var(--ws-bg);text-align:center;min-width:74px}
+.pl-tok.is-key{border-color:var(--ws-accent);background:var(--ws-accent-bg)}
+.pl-tok-lbl{display:block;font-size:11px;font-weight:800;text-transform:uppercase;letter-spacing:.09em;color:var(--ws-sub);margin-bottom:5px}
+.pl-tok-w{display:block;font-size:20px;font-weight:800}
+
+.pl-axe{margin-bottom:14px}
+.pl-axe-lbl{font-size:12px;font-weight:800;text-transform:uppercase;letter-spacing:.12em;color:var(--ws-sub);margin-bottom:7px}
+.pl-opts{display:flex;gap:8px;flex-wrap:wrap}
+.pl-opt{min-height:44px;padding:10px 16px;border-radius:22px;border:1px solid var(--ws-line);background:var(--ws-card);font-family:'Nunito',sans-serif;font-size:15px;font-weight:800;line-height:1.35;text-align:left;color:var(--ws-ink);cursor:pointer;transition:background .15s,border-color .15s}
+.pl-opt:hover{border-color:var(--ws-accent)}
+.pl-opt.on{background:var(--sel-bg);border-color:var(--sel-line);color:var(--sel-ink)}
+.pl-opt.ok{background:var(--ok-bg);border-color:var(--ok-line);color:var(--ok-ink)}
+.pl-opt.no{background:var(--no-bg);border-color:var(--no-line);color:var(--no-ink)}
+.pl-out{background:var(--ws-ink);color:#fff;border-radius:16px;padding:20px;margin-top:4px;display:flex;align-items:center;justify-content:center;gap:14px;flex-wrap:wrap}
+.pl-out-w{font-size:27px;font-weight:900;text-align:center;line-height:1.3}
+.pl-out-w.is-long{font-size:21px}
+.pl-out-w .pl-end{color:#8FE2B9}
+.pl-out-n{flex-basis:100%;text-align:center;font-size:13px;font-weight:800;text-transform:uppercase;letter-spacing:.12em;color:#8FE2B9}
+.pl-out .btn-audio-round{width:44px;height:44px}
+
+.pl-ex{display:flex;align-items:center;gap:12px;padding:9px 0;border-bottom:1px solid var(--ws-line)}
+.pl-ex:last-child{border-bottom:none}
+.pl-ex-w{flex:1;min-width:0;font-size:17px;font-weight:700}
+.pl-ex-t{font-size:12.5px;font-weight:800;color:var(--ws-sub);white-space:nowrap}
+
+.pl-trap{padding:13px 0;border-bottom:1px solid var(--ws-line)}
+.pl-trap:last-child{border-bottom:none;padding-bottom:0}
+.pl-bad,.pl-good{display:flex;gap:9px;align-items:flex-start;font-size:17px;font-weight:700;line-height:1.45}
+.pl-bad{color:var(--no-ink)}
+.pl-good{color:var(--ok-ink);margin-top:5px}
+.pl-why{font-size:15px;font-weight:600;color:var(--ws-sub);line-height:1.5;margin-top:7px}
+
+.pl-q{padding:14px 0;border-bottom:1px solid var(--ws-line)}
+.pl-q:last-child{border-bottom:none;padding-bottom:0}
+.pl-qtxt{font-size:17px;font-weight:700;line-height:1.5;margin-bottom:10px}
+.pl-fb{display:none;font-size:15px;font-weight:700;line-height:1.5;margin-top:10px}
+.pl-fb.on{display:block}
+.pl-fb.ok{color:var(--ok-ink)}
+.pl-fb.no{color:var(--no-ink)}
+@media(max-width:640px){#plus-panel{width:100%}#plus-tit{font-size:23px}#plus-body{padding:16px 18px 56px}.pl-blk{padding:18px}}
+
 /* ── Proposition d'aide après plusieurs erreurs ────────────────────────
    Volontairement discrète et refusable : un panneau qui s'ouvrirait tout
    seul après un échec se lirait comme une punition. Ici l'élève choisit. */
@@ -476,6 +548,12 @@ body{
 .ao-k:not(:first-child){margin-top:14px}
 .ao-v{font-size:16.5px; font-weight:500; line-height:1.6; color:var(--text-strong)}
 .ao-conseil{font-weight:800}
+/* Le bloc vers lequel on emmène l'élève s'annonce brièvement, sinon il
+   atterrit au milieu du panneau sans savoir pourquoi. */
+.pl-blk.is-cible{
+  box-shadow:0 0 0 3px var(--ws-accent);
+  transition:box-shadow .4s ease;
+}
 
 /* ── Banc de réponses collant ──────────────────────────────────────────
    Dans un exercice long, les énoncés défilaient sous le banc de réponses :
@@ -553,6 +631,16 @@ textarea:focus-visible,.winput:focus-visible{outline:none;border-color:var(--ws-
 </div>
 
 <div id="sections"></div>
+
+<div id="plus-ov" role="dialog" aria-modal="true" aria-labelledby="plus-tit">
+  <div id="plus-panel">
+    <div id="plus-hd">
+      <div><div id="plus-eye">Mini-leçon</div><div id="plus-tit">—</div></div>
+      <button id="plus-close" type="button" aria-label="Fermer la mini-leçon">✕</button>
+    </div>
+    <div id="plus-body"></div>
+  </div>
+</div>
 
 <div id="fc-overlay">
   <div id="fc-box">
@@ -1595,7 +1683,11 @@ function buildStatic(){
             const phrase=CARRIER_PHRASES[w];
             const wcLabel = phrase ? esc(phrase).replace(new RegExp('('+esc(w)+')','i'),'<b>$1</b>') : esc(w);
             h+='<div class="word-chip"><span class="wc-word'+(phrase?' wc-phrase':'')+'">'+wcLabel+'</span>';
-            h+='<button class="btn btn-ghost" type="button" onclick="playWord(this,\''+jsq(w)+'\',\''+fid+'\')" title="Écouter">'+ICON_SPEAK+'</button>';
+            // On lit la phrase porteuse, pas le mot seul : c'est ce que la
+            // pastille affiche, et surtout un mot isolé ne donne aucun indice
+            // de langue au moteur de synthèse — un mot français bref peut se
+            // faire lire à l'anglaise sans le contexte d'une phrase.
+            h+='<button class="btn btn-ghost" type="button" onclick="playWord(this,\''+jsq(phrase||w)+'\',\''+fid+'\')" title="Écouter">'+ICON_SPEAK+'</button>';
             h+='<button class="btn btn-ghost" type="button" onclick="pronCheck(this,\''+jsq(w)+'\')" title="Répète le mot à voix haute">'+ICON_MIC+'</button>';
             h+='</div>';
           });
@@ -1603,6 +1695,11 @@ function buildStatic(){
         }
         h+='</div></div>';
       });
+      if(PLUS[ex.id]){
+        h+='<div class="plus-bar"><button class="plus-open" type="button" onclick="plusOpen(\''+ex.id+'\')">'
+         + '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" aria-hidden="true"><path d="M12 5v14M5 12h14"/></svg>'
+         + 'En apprendre plus</button></div>';
+      }
       h+='</div><div class="savoir-gap"></div>';
     }
     // ── Exercice Vrai/Faux (ou 2 catégories) — colonnes + bouton Corriger ──
@@ -1926,11 +2023,614 @@ async function checkWrite(exId, i){
   }
 }
 
-// Ce module n'a pas encore de mini-leçons « En apprendre plus » (voir
-// module-urgence pour le modèle) : objet vide, pour que PLUS[exId] et
-// plusOpen() restent des vérifications sûres plutôt que des erreurs.
-const PLUS = {};
-function plusOpen(exId, cible){ /* aucune mini-leçon dans ce module */ }
+// ── MINI-LEÇONS « EN APPRENDRE PLUS » ──────────────────────────────────
+// Une entrée par exercice qui porte un `savoir`. Le bandeau noir reste le
+// résumé ; ceci est la leçon complète, ouverte à la demande dans un panneau.
+// Blocs disponibles : texte, ana (anatomie étiquetée), labo (manipulation
+// à axes), ex (exemples audio), piege, check (micro-vérification, hors score).
+// Dans un mot, {…} souligne en vert la terminaison d'accord.
+const PLUS = {
+  prPhon: {
+    eye:'Mini-leçon', tit:'Le son [ɑ̃], [ɔ̃] et [ɛ̃]',
+    blocs:[
+      {t:'texte', h:"Trois sons qui se ressemblent, trois orthographes",
+       p:"En français, une voyelle suivie de <b>n</b> ou <b>m</b> se prononce souvent dans le nez : c'est une voyelle nasale. Il y en a trois principales, et les confondre change le sens d'un mot — <em>patient</em> et <em>patiente</em> ne se disent pas pareil, mais surtout <em>on</em> et <em>an</em> sont deux sons différents qu'il faut apprendre à distinguer à l'oreille.",
+       note:"Dans la salle d'attente, vous entendrez les trois dans une seule phrase : « Le <em>patient</em> attend son <em>tour</em> pour son <em>examen</em>. »"},
+
+      {t:'ana', h:"[ɑ̃] comme dans « dent »",
+       p:"Il s'écrit <b>an, am, en</b> ou <b>em</b>. La bouche s'ouvre grand, le son part du fond.",
+       mots:[["S'écrit",'an, am, en, em'],['Se dit','[ɑ̃]',true],['Comme dans','p{a}ti{e}nt']],
+       say:'patient',
+       note:"Autres mots du module : <em>jambe</em>, <em>tendon</em> (première syllabe), <em>temps</em>, <em>dent</em>."},
+
+      {t:'ana', h:"[ɔ̃] comme dans « front »",
+       p:"Il s'écrit toujours <b>on</b> ou <b>om</b>. Les lèvres s'arrondissent, comme pour dire « oh ».",
+       mots:[["S'écrit",'on, om'],['Se dit','[ɔ̃]',true],['Comme dans','fr{on}t']],
+       say:'front',
+       note:"Autres mots du module : <em>tendon</em> (deuxième syllabe), <em>nom</em>, <em>consultation</em>."},
+
+      {t:'texte', h:"Et le troisième : [ɛ̃] comme dans « main »",
+       p:"Il s'écrit <b>in, im, ain</b> ou <b>ein</b>. C'est le plus aigu des trois, la bouche presque fermée.",
+       note:"Mots du module : <em>main</em>, <em>examen</em>, <em>médecin</em>. Attention : dans <em>médecin</em>, seule la dernière syllabe est nasale — <em>mé-de-cin</em>, pas <em>min-de-cin</em>."},
+
+      {t:'labo', h:"Comparez les trois sons",
+       p:"Choisissez un mot du module, écoutez sa voyelle nasale.",
+       axes:[{id:'m', lbl:'Quel mot ?', opts:[['a','patient'],['b','front'],['c','main'],['d','tendon']]}],
+       out:{
+         a:{w:['p{a}ti{e}nt'], say:'patient', n:'[ɑ̃] — an, en'},
+         b:{w:['fr{on}t'],     say:'front',   n:'[ɔ̃] — on'},
+         c:{w:['m{ain}'],      say:'main',    n:'[ɛ̃] — ain'},
+         d:{w:['t{en}d{on}'],  say:'tendon',  n:'les deux premiers sons dans un seul mot'},
+       },
+       note:"« Tendon » est un bon test : la première syllabe est [ɑ̃] (en), la deuxième est [ɔ̃] (don). Si vous entendez la différence dans ce mot, vous les entendrez partout."},
+
+      {t:'ex', h:"Les mots du module, classés",
+       p:"Écoutez chacun et répétez-le à voix haute.",
+       rows:[
+         ["patient","[ɑ̃] — an"],
+         ["jambe","[ɑ̃] — am"],
+         ["temps","[ɑ̃] — em"],
+         ["dent","[ɑ̃] — en"],
+         ["tendon","[ɑ̃] puis [ɔ̃]"],
+         ["front","[ɔ̃] — on"],
+         ["nom","[ɔ̃] — om"],
+         ["consultation","[ɔ̃] — on"],
+         ["main","[ɛ̃] — ain"],
+         ["examen","[ɛ̃] — en final"],
+         ["médecin","[ɛ̃] — in final"],
+       ]},
+
+      {t:'piege', h:"Deux pièges fréquents",
+       rows:[
+         ["« examen » lu comme « exa-min »","« examen » se dit [ɛgzamɛ̃]",
+          "La lettre finale « en » se prononce [ɛ̃], comme dans « main » — pas « min ». C'est le même son, mais l'orthographe change selon le mot."],
+         ["confondre « on » et « an » (front / franc)","« front » = [ɔ̃] · « franc » = [ɑ̃]",
+          "Les deux voyelles se ressemblent à l'oreille d'un débutant. Le truc : pour [ɔ̃], les lèvres s'arrondissent en cercle ; pour [ɑ̃], la bouche reste ouverte sans s'arrondir."],
+       ]},
+
+      {t:'check', h:"Est-ce que c'est clair maintenant ?",
+       p:"Quatre questions rapides. Elles ne comptent pas dans votre score.",
+       qs:[
+         {q:"Dans « patient », le son « an » se dit…", opts:["[ɔ̃]","[ɑ̃]"], ok:1,
+          fb:"« an » se dit toujours [ɑ̃], la bouche ouverte sans arrondir les lèvres."},
+         {q:"Dans « front », le son « on » se dit…", opts:["[ɔ̃]","[ɛ̃]"], ok:0,
+          fb:"« on » se dit toujours [ɔ̃], avec les lèvres arrondies."},
+         {q:"Le mot « médecin » se termine par le son…", opts:["[ɑ̃]","[ɛ̃]"], ok:1,
+          fb:"La finale « -cin » se dit [ɛ̃], comme dans « main » — la bouche presque fermée."},
+         {q:"Le mot « tendon » contient…", opts:["deux voyelles nasales différentes","la même voyelle nasale deux fois"], ok:0,
+          fb:"« ten » est [ɑ̃], « don » est [ɔ̃] : deux sons différents dans un seul mot."},
+       ]},
+    ]
+  },
+
+  t1cause: {
+    eye:'Mini-leçon', tit:'Pour exprimer une cause',
+    blocs:[
+      {t:'texte', h:"Dire pourquoi",
+       p:"Quand l'infirmière ou le médecin vous demande « qu'est-ce qui vous amène ? », vous répondez avec une <b>cause</b> : la raison pour laquelle vous consultez. Le français a trois outils courants pour ça, et le choix dépend de ce qui suit : une phrase complète ou un simple nom.",
+       note:"Yannick pourrait dire : « Je viens <em>parce que</em> mon genou est enflé » ou « Je boite <em>à cause de</em> la douleur » — même idée, deux constructions."},
+
+      {t:'ana', h:"parce que + une phrase complète",
+       p:"« Parce que » introduit toujours un sujet et un verbe conjugué — une phrase entière qui explique la cause.",
+       mots:[['Résultat','Je consulte'],['Cause','parce que',true],['Phrase complète','mon genou est enflé']],
+       say:'je consulte parce que mon genou est enflé',
+       note:"« Parce que » répond directement à la question « pourquoi ? ». C'est le mot le plus utilisé à l'oral."},
+
+      {t:'ana', h:"à cause de + un nom",
+       p:"« À cause de » n'est jamais suivi d'un verbe conjugué — seulement d'un nom ou d'un groupe du nom.",
+       mots:[['Résultat','Je boite'],['Cause','à cause de',true],['Un nom, pas une phrase','la douleur']],
+       say:'je boite à cause de la douleur',
+       note:"Piège fréquent : « à cause de » + « je suis malade » ne fonctionne pas, parce que « je suis malade » est une phrase. Il faudrait dire « à cause de ma maladie »."},
+
+      {t:'labo', h:"Essayez : changez la cause",
+       p:"Choisissez ce qui vient après. Observez que « parce que » accepte une phrase, et « à cause de » seulement un nom.",
+       axes:[{id:'c', lbl:'Quelle cause ?', opts:[['1','mon genou est enflé (une phrase)'],['2','la douleur (un nom)'],['3','il doit se reposer (une phrase)']]}],
+       out:{
+         '1':{w:['Je consulte','parce que','mon genou est enflé.'], say:'Je consulte parce que mon genou est enflé.', n:'parce que + phrase'},
+         '2':{w:['Je boite','à cause de','la douleur.'],           say:'Je boite à cause de la douleur.',           n:'à cause de + nom'},
+         '3':{w:['Il ne travaille pas,','car','il doit se reposer.'], say:'Il ne travaille pas, car il doit se reposer.', n:'car + phrase (surtout à l\'écrit)'},
+       },
+       note:"« Car » fonctionne comme « parce que » — une phrase complète le suit — mais il s'utilise surtout à l'écrit, jamais au tout début d'une réponse orale."},
+
+      {t:'ex', h:"Six phrases à réutiliser",
+       p:"Remarquez : après « parce que » et « car », il y a toujours un sujet et un verbe. Après « à cause de », jamais.",
+       rows:[
+         ["Je consulte parce que j'ai mal au genou.","parce que + phrase"],
+         ["Je ne peux pas courir à cause de mon inflammation.","à cause de + nom"],
+         ["La salle est pleine parce que beaucoup de gens sont malades.","parce que + phrase"],
+         ["Elle porte une attelle à cause de sa blessure.","à cause de + nom"],
+         ["Il ne travaille pas, car il doit se reposer.","car + phrase (écrit)"],
+         ["Je boite à cause de la douleur au genou.","à cause de + nom"],
+       ]},
+
+      {t:'piege', h:"Deux pièges fréquents",
+       rows:[
+         ["Je boite à cause de j'ai mal.","Je boite parce que j'ai mal.",
+          "« j'ai mal » est une phrase (sujet + verbe), donc « à cause de » ne peut pas l'introduire. Il faut « parce que »."],
+         ["Je consulte à cause de mon genou est enflé.","Je consulte parce que mon genou est enflé. / Je consulte à cause de mon genou enflé.",
+          "Même piège dans l'autre sens : « mon genou est enflé » est une phrase complète, elle a besoin de « parce que »."],
+       ]},
+
+      {t:'check', h:"Est-ce que c'est clair maintenant ?",
+       p:"Quatre questions rapides. Elles ne comptent pas dans votre score.",
+       qs:[
+         {q:"Je vais à la clinique ___ j'ai mal au genou.", opts:["parce que","à cause de"], ok:0,
+          fb:"« j'ai mal au genou » est une phrase complète : il faut « parce que »."},
+         {q:"Il ne peut pas courir ___ son inflammation.", opts:["parce que","à cause de"], ok:1,
+          fb:"« son inflammation » est un nom seul : « à cause de » convient."},
+         {q:"Elle porte une attelle ___ sa blessure au poignet.", opts:["à cause de","parce que"], ok:0,
+          fb:"« sa blessure » est un nom : « à cause de »."},
+         {q:"La salle est pleine ___ beaucoup de gens sont malades.", opts:["à cause de","parce que"], ok:1,
+          fb:"« beaucoup de gens sont malades » est une phrase complète : « parce que »."},
+       ]},
+    ]
+  },
+
+  t1quest: {
+    eye:'Mini-leçon', tit:'La phrase interrogative',
+    blocs:[
+      {t:'texte', h:"Trois façons de poser une question",
+       p:"Le personnel de santé vous posera beaucoup de questions, et vous devrez en poser aussi. Le français a trois constructions courantes, du plus simple à l'oral au plus soutenu à l'écrit.",
+       note:"L'infirmière au triage utilise les trois avec Yannick : « <em>Est-ce que</em> vous avez mal ? », « <em>Depuis quand</em> avez-vous mal ? », « <em>Avez-vous</em> de la fièvre ? »"},
+
+      {t:'ana', h:"Avec est-ce que",
+       p:"On place « est-ce que » devant une phrase affirmative, sans rien changer d'autre. C'est la façon la plus simple à construire.",
+       mots:[['Formule','Est-ce que',true],['Sujet','vous'],['Reste de la phrase','avez mal ?']],
+       say:'Est-ce que vous avez mal ?',
+       note:"Cette construction fonctionne toujours, dans toutes les situations — c'est le choix le plus sûr à l'oral."},
+
+      {t:'ana', h:"Avec un mot interrogatif",
+       p:"Quand on cherche une information précise — un moment, un lieu, une quantité — un mot interrogatif remplace « est-ce que » et se place en premier.",
+       mots:[['Mot interrogatif','Depuis quand',true],['Verbe et sujet inversés','avez-vous'],['Reste de la phrase','mal ?']],
+       say:'Depuis quand avez-vous mal ?',
+       note:"D'autres mots interrogatifs utiles : <em>où</em> (un lieu), <em>combien</em> (une quantité), <em>comment</em> (une manière)."},
+
+      {t:'texte', h:"Par inversion (registre soutenu)",
+       p:"On inverse simplement le sujet et le verbe, reliés par un trait d'union : « <em>Avez-vous</em> de la fièvre ? » C'est la forme la plus polie, souvent utilisée par les professionnels de la santé — vous n'êtes pas obligé de l'utiliser vous-même, mais il faut la comprendre.",
+       note:"À l'oral familier, on pose souvent la question sans rien changer, juste avec le ton qui monte à la fin : « Vous avez mal ? » C'est correct entre proches, mais évitez-le avec un professionnel."},
+
+      {t:'labo', h:"Trois façons de poser la même question",
+       p:"Choisissez le registre : la même question, construite différemment.",
+       axes:[{id:'r', lbl:'Quelle construction ?', opts:[['e','est-ce que'],['m','mot interrogatif'],['i','inversion (soutenu)']]}],
+       out:{
+         e:{w:['Est-ce que','vous avez de la fièvre','?'], say:'Est-ce que vous avez de la fièvre ?', n:'la plus simple à construire'},
+         m:{w:['Où','est la douleur','?'],                say:'Où est la douleur ?',                n:'cherche une information précise'},
+         i:{w:['Avez-vous','de la fièvre','?'],           say:'Avez-vous de la fièvre ?',           n:'la plus soutenue, la plus polie'},
+       },
+       note:"Les trois questions sont correctes. Le choix dépend du contexte : « est-ce que » à l'oral courant, l'inversion devant un professionnel, un mot interrogatif dès qu'on cherche un détail précis."},
+
+      {t:'ex', h:"Questions à connaître pour une consultation",
+       p:"Écoutez chacune et remarquez la construction utilisée.",
+       rows:[
+         ["Est-ce que vous avez mal ?","est-ce que"],
+         ["Depuis quand avez-vous mal ?","mot interrogatif + inversion"],
+         ["Où est la douleur ?","mot interrogatif"],
+         ["Avez-vous de la fièvre ?","inversion"],
+         ["Sur une échelle de un à dix, où se situe votre douleur ?","mot interrogatif"],
+         ["Est-ce que vous prenez des médicaments ?","est-ce que"],
+       ]},
+
+      {t:'piege', h:"Deux pièges fréquents",
+       rows:[
+         ["Vous avez mal où ?","Où avez-vous mal ? / Vous avez mal où ?",
+          "Les deux se disent à l'oral très familier, mais devant un professionnel de la santé, placez le mot interrogatif au début : « Où avez-vous mal ? »"],
+         ["Est-ce que avez-vous mal ?","Est-ce que vous avez mal ? OU Avez-vous mal ?",
+          "Ne jamais combiner les deux constructions. « Est-ce que » exige l'ordre normal (sujet puis verbe) ; l'inversion se fait seule, sans « est-ce que »."],
+       ]},
+
+      {t:'check', h:"Est-ce que c'est clair maintenant ?",
+       p:"Quatre questions rapides. Elles ne comptent pas dans votre score.",
+       qs:[
+         {q:"Réponse : « J'ai mal depuis cette nuit. » Quelle est la question ?", opts:["Depuis quand avez-vous mal ?","Est-ce que vous avez mal ?"], ok:0,
+          fb:"La réponse donne un moment précis (« depuis cette nuit ») : il faut un mot interrogatif, « depuis quand »."},
+         {q:"Réponse : « Non, je n'ai pas de fièvre. » Quelle est la question ?", opts:["Où est la fièvre ?","Est-ce que vous avez de la fièvre ?"], ok:1,
+          fb:"La réponse est oui/non : « est-ce que » est la bonne construction."},
+         {q:"« Avez-vous de la fièvre ? » est un exemple de…", opts:["inversion","mot interrogatif"], ok:0,
+          fb:"Le sujet « vous » et le verbe « avez » sont inversés et reliés par un trait d'union : c'est l'inversion."},
+         {q:"Réponse : « La douleur est au genou droit. » Quelle est la question ?", opts:["Où est la douleur ?","Avez-vous mal au genou ?"], ok:0,
+          fb:"La réponse précise un lieu : « où » est le mot interrogatif attendu."},
+       ]},
+    ]
+  },
+
+  t2present: {
+    eye:'Mini-leçon', tit:"Le présent de l'indicatif",
+    blocs:[
+      {t:'texte', h:"Le temps de « maintenant »",
+       p:"Le présent sert à décrire ce qui est vrai en ce moment : un symptôme, un état, une habitude. C'est le premier temps qu'on utilise en consultation : « J'<b>ai</b> mal », « Je <b>suis</b> fatigué », « Je <b>peux</b> plier la jambe ». Le français a des terminaisons régulières pour la grande majorité des verbes, et quelques verbes très fréquents qui se conjuguent à part.",
+       note:"Yannick l'utilise tout au long de sa consultation : « J'<em>ai</em> mal », « Je <em>ne peux pas</em> plier », « Nous <em>sommes</em> dans la salle d'attente »."},
+
+      {t:'ana', h:"Les verbes réguliers en -er",
+       p:"C'est le groupe le plus grand : on enlève « -er » et on ajoute la terminaison selon la personne.",
+       mots:[['Sujet','il'],['Radical','soulèv'],['Terminaison','e',true]],
+       say:'il soulève',
+       note:"Les six terminaisons : je -e, tu -es, il/elle -e, nous -ons, vous -ez, ils/elles -ent. Les quatre premières se prononcent presque toutes pareil ; c'est à l'écrit qu'elles se distinguent."},
+
+      {t:'labo', h:"Conjuguez « soulever » selon le sujet",
+       p:"Choisissez un sujet et observez la terminaison.",
+       axes:[{id:'s', lbl:'Qui ?', opts:[['j','je'],['n','nous'],['i','ils']]}],
+       out:{
+         j:{w:['je','soulèv{e}'],  say:'je soulève',  n:'terminaison -e'},
+         n:{w:['nous','soulev{ons}'], say:'nous soulevons', n:'terminaison -ons'},
+         i:{w:['ils','soulèv{ent}'], say:'ils soulèvent', n:'terminaison -ent, mais se prononce comme -e'},
+       },
+       note:"« ils soulèvent » et « il soulève » se prononcent presque pareil à l'oral — c'est à l'écrit que le -ent apparaît. Ne l'oubliez pas dans vos réponses écrites."},
+
+      {t:'ex', h:"Quatre verbes très fréquents, irréguliers",
+       p:"Ces verbes ne suivent pas le modèle en -er. Ils reviennent constamment : à mémoriser par cœur.",
+       rows:[
+         ["j'ai · tu as · il a","avoir, singulier","j'ai, tu as, il a"],
+         ["nous avons · vous avez · ils ont","avoir, pluriel","nous avons, vous avez, ils ont"],
+         ["je suis · tu es · il est","être, singulier","je suis, tu es, il est"],
+         ["nous sommes · vous êtes · ils sont","être, pluriel","nous sommes, vous êtes, ils sont"],
+         ["je peux · tu peux · il peut","pouvoir, singulier","je peux, tu peux, il peut"],
+         ["nous pouvons · vous pouvez · ils peuvent","pouvoir, pluriel","nous pouvons, vous pouvez, ils peuvent"],
+       ]},
+
+      {t:'piege', h:"Deux pièges fréquents",
+       rows:[
+         ["Nous soulève des boîtes.","Nous soulevons des boîtes.",
+          "Le sujet « nous » demande toujours la terminaison « -ons » — jamais la forme du « il »."],
+         ["Je peut vous aider.","Je peux vous aider.",
+          "« pouvoir » au « je » et au « tu » prend un -x, pas un -t : je peux, tu peux, mais il peut."],
+       ]},
+
+      {t:'check', h:"Est-ce que c'est clair maintenant ?",
+       p:"Quatre questions rapides. Elles ne comptent pas dans votre score.",
+       qs:[
+         {q:"Yannick (avoir) ___ mal au genou.", opts:["a","as"], ok:0,
+          fb:"Avec « il » (Yannick), le verbe avoir donne « a »."},
+         {q:"Nous (être) ___ dans la salle d'attente.", opts:["sommes","êtes"], ok:0,
+          fb:"« nous » donne « sommes » avec le verbe être."},
+         {q:"Vous (pouvoir) ___ vous asseoir ici.", opts:["pouvez","peuvent"], ok:0,
+          fb:"« vous » donne « pouvez » avec le verbe pouvoir."},
+         {q:"Les employés (soulever) ___ des boîtes.", opts:["soulève","soulèvent"], ok:1,
+          fb:"Sujet pluriel « les employés » : terminaison -ent, écrite mais peu entendue."},
+       ]},
+    ]
+  },
+
+  t2neg: {
+    eye:'Mini-leçon', tit:'La phrase négative',
+    blocs:[
+      {t:'texte', h:"Dire non, à trois façons",
+       p:"En français, la négation se construit presque toujours en <b>deux parties</b> qui encadrent le verbe. Le premier mot est presque toujours « ne » (ou « n' »), et le second change selon ce qu'on veut dire : une simple négation, un arrêt, ou du jamais.",
+       note:"Yannick pourrait dire au médecin : « Je <em>ne</em> peux <em>pas</em> plier la jambe » ou « Je <em>n'</em>ai <em>pas</em> de fièvre »."},
+
+      {t:'ana', h:"ne … pas : la négation de base",
+       p:"« Ne » se place juste avant le verbe, « pas » juste après.",
+       mots:[['Sujet','je'],['Ne',"ne",true],['Verbe','travaille'],['Pas','pas',true]],
+       say:'je ne travaille pas',
+       note:"C'est la forme la plus courante, utilisable dans presque toutes les situations."},
+
+      {t:'ana', h:"Devant une voyelle : n'",
+       p:"« Ne » perd son « e » et devient « n' » devant un verbe qui commence par une voyelle — pour que les deux sons ne se heurtent pas.",
+       mots:[['Sujet',"je"],["Ne devient",'n\'',true],['Verbe (voyelle)','ai'],['Pas','pas',true]],
+       say:"je n'ai pas de fièvre",
+       note:"C'est une règle automatique, pas un choix : devant a, ai, ha, tout verbe qui commence par une voyelle prend « n' »."},
+
+      {t:'labo', h:"Trois négations, trois nuances",
+       p:"Le second mot change le sens. Observez la différence.",
+       axes:[{id:'n', lbl:'Quelle négation ?', opts:[['p','ne … pas — simple'],['l','ne … plus — un arrêt'],['j','ne … jamais — aucune fois']]}],
+       out:{
+         p:{w:['Je','ne','travaille','pas','aujourd\'hui.'], say:"Je ne travaille pas aujourd'hui.", n:'ne … pas — une négation simple, ponctuelle'},
+         l:{w:['Il','ne','court','plus','depuis sa blessure.'], say:'Il ne court plus depuis sa blessure.', n:'ne … plus — une chose qui a cessé'},
+         j:{w:['Elle','ne','prend','jamais','ce médicament.'], say:'Elle ne prend jamais ce médicament.', n:'ne … jamais — à aucun moment'},
+       },
+       note:"« ne … pas » = non, une fois. « ne … plus » = c'était vrai avant, ça ne l'est plus. « ne … jamais » = à aucun moment, ni avant ni maintenant."},
+
+      {t:'ex', h:"Quatre phrases à reconnaître",
+       p:"Écoutez chacune et notez la nuance : simple, arrêt, ou jamais.",
+       rows:[
+         ["Il ne peut pas plier la jambe.","ne … pas"],
+         ["Je n'ai pas de fièvre.","ne … pas, devant voyelle"],
+         ["Elle ne travaille pas cette semaine.","ne … pas"],
+         ["Yannick ne soulève plus de charges.","ne … plus"],
+       ]},
+
+      {t:'piege', h:"Deux pièges fréquents",
+       rows:[
+         ["Je pas ai de fièvre.","Je n'ai pas de fièvre.",
+          "« ne » (ici « n' ») ne peut jamais disparaître : la négation a toujours deux parties, l'une avant le verbe, l'autre après."],
+         ["Je ne ai pas de fièvre.","Je n'ai pas de fièvre.",
+          "Devant une voyelle, « ne » devient obligatoirement « n' » — jamais « ne » suivi d'un espace devant un verbe qui commence par une voyelle."],
+       ]},
+
+      {t:'check', h:"Est-ce que c'est clair maintenant ?",
+       p:"Quatre questions rapides. Elles ne comptent pas dans votre score.",
+       qs:[
+         {q:"« Il peut plier la jambe. » à la forme négative :", opts:["Il ne peut pas plier la jambe.","Il pas peut plier la jambe."], ok:0,
+          fb:"« ne » se place avant le verbe, « pas » juste après : « ne peut pas »."},
+         {q:"« J'ai de la fièvre. » à la forme négative :", opts:["Je ne ai pas de fièvre.","Je n'ai pas de fièvre."], ok:1,
+          fb:"« ai » commence par une voyelle : « ne » devient « n' »."},
+         {q:"Pour dire qu'une chose a cessé, on utilise…", opts:["ne … jamais","ne … plus"], ok:1,
+          fb:"« ne … plus » indique un arrêt : c'était vrai avant, ça ne l'est plus."},
+         {q:"« Elle ne prend jamais ce médicament » veut dire…", opts:["elle ne le prend à aucun moment","elle a arrêté de le prendre"], ok:0,
+          fb:"« ne … jamais » = à aucun moment, ni avant ni maintenant — différent de « ne … plus »."},
+       ]},
+    ]
+  },
+
+  t3plur: {
+    eye:'Mini-leçon', tit:'Le pluriel',
+    blocs:[
+      {t:'texte', h:"Plus d'un, plus de lettres",
+       p:"Sur un formulaire de santé, vous écrirez souvent des mots au pluriel : « des médicaments », « des allergies », « des symptômes ». La règle générale est simple — ajouter un -s — mais quelques familles de mots suivent une autre logique.",
+       note:"Le formulaire de Yannick le rappelle : « Allergies connues : aucune », « Médicaments pris actuellement : un anti-inflammatoire »."},
+
+      {t:'ana', h:"La règle générale : + s",
+       p:"La grande majorité des noms et adjectifs prennent simplement un -s au pluriel, sur le nom et sur l'adjectif qui l'accompagne.",
+       mots:[['Déterminant','des'],['Nom','tendon{s}',true],['Adjectif','irrité{s}']],
+       say:'des tendons irrités',
+       note:"Le -s final ne change presque rien à la prononciation à l'oral — c'est une marque surtout écrite."},
+
+      {t:'ana', h:"Les noms en -al deviennent -aux",
+       p:"Une famille de noms se termine en -al au singulier et change complètement de finale au pluriel : -aux.",
+       mots:[['Déterminant','des'],['Nom en -al → -aux','m{aux}',true],['Adjectif en -al → -aux','génér{aux}']],
+       say:'des maux généraux',
+       note:"« un mal » devient « des maux » — c'est irrégulier à l'oreille, mais très fréquent : cheval/chevaux, journal/journaux suivent la même règle."},
+
+      {t:'labo', h:"Essayez : mettez au pluriel",
+       p:"Choisissez un nom et observez comment il change.",
+       axes:[{id:'n', lbl:'Quel nom ?', opts:[['g','un genou enflé'],['m','un mal général'],['b','un nouveau bureau'],['r','un bras droit']]}],
+       out:{
+         g:{w:['des','genou{x}','enflé{s}'],  say:'des genoux enflés',  n:'-ou → -oux (comme -eau, -eu)'},
+         m:{w:['des','m{aux}','génér{aux}'],  say:'des maux généraux',  n:'-al → -aux'},
+         b:{w:['des','nouveau{x}','bureau{x}'], say:'des nouveaux bureaux', n:'-eau → -eaux : +x, pas +s'},
+         r:{w:['des','bras','droit{s}'],      say:'des bras droits',    n:'déjà en -s : ne change pas'},
+       },
+       note:"Quatre familles, quatre logiques : la majorité des mots ajoutent -s ; -al devient -aux ; -eau/-eu ajoutent -x ; un mot déjà en -s, -x ou -z ne change pas du tout."},
+
+      {t:'ex', h:"Le pluriel dans le vocabulaire de la santé",
+       p:"Écoutez chaque groupe et remarquez la terminaison.",
+       rows:[
+         ["des tendons irrités","règle générale : +s"],
+         ["des maux de tête","-al → -aux (mal → maux)"],
+         ["des genoux enflés","-ou → -oux"],
+         ["des nouveaux patients","-eau → -eaux"],
+         ["des bras droits","déjà en -s : ne change pas"],
+         ["des médicaments prescrits","règle générale : +s"],
+       ]},
+
+      {t:'piege', h:"Deux pièges fréquents",
+       rows:[
+         ["des mals généraux","des maux généraux",
+          "« mal » ne prend jamais de -s au pluriel : il devient « maux », un mot presque différent."],
+         ["des nouveaus patients","des nouveaux patients",
+          "Les mots en -eau prennent -x, jamais -s. C'est vrai aussi pour -eu : un jeu → des jeux."],
+       ]},
+
+      {t:'check', h:"Est-ce que c'est clair maintenant ?",
+       p:"Quatre questions rapides. Elles ne comptent pas dans votre score.",
+       qs:[
+         {q:"« un genou enflé » au pluriel :", opts:["des genous enflés","des genoux enflés"], ok:1,
+          fb:"« genou » suit la famille -ou → -oux : des genoux."},
+         {q:"« un mal général » au pluriel :", opts:["des maux généraux","des mals générals"], ok:0,
+          fb:"« mal » devient « maux », et « général » suit la même règle -al → -aux."},
+         {q:"« un bras gauche » au pluriel :", opts:["des bras gauches","des brass gauches"], ok:0,
+          fb:"« bras » est déjà en -s : il ne change pas. Seul l'adjectif prend le -s."},
+         {q:"« un nouveau patient » au pluriel :", opts:["des nouveaux patients","des nouveaus patients"], ok:0,
+          fb:"« nouveau » suit la règle -eau → -eaux : des nouveaux."},
+       ]},
+    ]
+  },
+
+  t3devoir: {
+    eye:'Mini-leçon', tit:'Exprimer une obligation',
+    blocs:[
+      {t:'texte', h:"Ce qu'il faut faire",
+       p:"Après une consultation, le médecin vous dira ce que vous <b>devez</b> faire : vous reposer, revenir, appliquer un traitement. Le français a deux constructions courantes pour exprimer cette obligation, et les deux sont suivies d'un verbe à l'infinitif — jamais conjugué.",
+       note:"La docteure le dit à Yannick : « Vous <em>devez</em> revenir dans une semaine » et « Il <em>faut</em> éviter de forcer »."},
+
+      {t:'ana', h:"devoir + infinitif",
+       p:"« Devoir » se conjugue selon la personne, et le deuxième verbe reste toujours à l'infinitif.",
+       mots:[['Sujet','il'],['Devoir, conjugué','doit',true],['Infinitif','se reposer']],
+       say:'il doit se reposer',
+       note:"« devoir » se conjugue : je dois, tu dois, il doit, nous devons, vous devez, ils doivent."},
+
+      {t:'ana', h:"il faut + infinitif",
+       p:"« Il faut » ne change jamais de forme, peu importe à qui l'obligation s'adresse — c'est ce qui le rend plus simple à utiliser que « devoir ».",
+       mots:[['Formule fixe','Il faut',true],['Infinitif','éviter de forcer']],
+       say:'il faut éviter de forcer',
+       note:"« Il faut » est impersonnel : il ne dit pas qui doit agir, seulement que l'action est nécessaire. Utile pour donner une consigne générale."},
+
+      {t:'labo', h:"Comparez devoir et il faut",
+       p:"Choisissez un sujet. Remarquez que « il faut » ne change jamais, contrairement à « devoir ».",
+       axes:[{id:'s', lbl:'Qui doit agir ?', opts:[['j','je (avec devoir)'],['v','vous (avec devoir)'],['x','personne en particulier (avec il faut)']]}],
+       out:{
+         j:{w:['Je','dois','me reposer.'], say:'Je dois me reposer.', n:'devoir conjugué au « je »'},
+         v:{w:['Vous','devez','revenir dans une semaine.'], say:'Vous devez revenir dans une semaine.', n:'devoir conjugué au « vous »'},
+         x:{w:['Il','faut','éviter de forcer.'], say:'Il faut éviter de forcer.', n:'il faut — ne change jamais de forme'},
+       },
+       note:"« devoir » s'adresse à une personne précise et se conjugue pour elle. « il faut » donne une règle générale, sans préciser qui — pratique dans une fiche-conseil."},
+
+      {t:'ex', h:"Six phrases à reconnaître",
+       p:"Écoutez chacune : notez si c'est « devoir » conjugué ou « il faut ».",
+       rows:[
+         ["Yannick doit se reposer quatre jours.","devoir, conjugué"],
+         ["Vous devez appliquer de la glace trois fois par jour.","devoir, conjugué"],
+         ["Il faut plier les genoux pour soulever une boîte.","il faut, impersonnel"],
+         ["Je dois prendre un rendez-vous en physiothérapie.","devoir, conjugué"],
+         ["Il faut consulter si la douleur dure plus d'une semaine.","il faut, impersonnel"],
+         ["Nous devons revenir la semaine prochaine.","devoir, conjugué"],
+       ]},
+
+      {t:'piege', h:"Deux pièges fréquents",
+       rows:[
+         ["Il faut vous reposez.","Il faut vous reposer. / Vous devez vous reposer.",
+          "Après « il faut », le verbe reste à l'infinitif, jamais conjugué — même si une personne est visée."],
+         ["Je dois me reposez quatre jours.","Je dois me reposer quatre jours.",
+          "Après « devoir » conjugué, le deuxième verbe reste toujours à l'infinitif : « dois me reposer », pas « dois me reposez »."],
+       ]},
+
+      {t:'check', h:"Est-ce que c'est clair maintenant ?",
+       p:"Quatre questions rapides. Elles ne comptent pas dans votre score.",
+       qs:[
+         {q:"Yannick ___ se reposer quatre jours.", opts:["doit","devez"], ok:0,
+          fb:"Sujet « Yannick » = il : « doit »."},
+         {q:"Vous ___ appliquer de la glace trois fois par jour.", opts:["devez","doit"], ok:0,
+          fb:"Sujet « vous » : « devez »."},
+         {q:"___ plier les genoux pour soulever une boîte.", opts:["Il faut","Il fait"], ok:0,
+          fb:"La formule fixe est « il faut », pas « il fait »."},
+         {q:"Après « il faut », le verbe qui suit est…", opts:["conjugué","à l'infinitif"], ok:1,
+          fb:"« il faut » est toujours suivi d'un infinitif : il faut éviter, il faut consulter, il faut se reposer."},
+       ]},
+    ]
+  },
+};
+
+// ── « EN APPRENDRE PLUS » : rendu du panneau ──────────────────────────
+// Souligne en vert ce qui est noté entre accolades : « superficiel{le} »,
+// « Pour{riez}-vous… ». Les crochets restent libres pour les sons — [y], [u].
+function plMark(w){
+  return String(w).split(/(\{[^}]*\})/).map(p=>
+    (p.charAt(0)==='{' && p.charAt(p.length-1)==='}')
+      ? '<span class="pl-end">'+esc(p.slice(1,-1))+'</span>'
+      : esc(p)
+  ).join('');
+}
+const plPlain = w => String(w).replace(/[{}]/g,'');
+
+// Nom du MP3 d'un bouton d'écoute de mini-leçon : sons/<id>.mp3. Si le fichier
+// n'existe pas, playWord retombe sur la synthèse vocale — donc on peut brancher
+// les boutons avant d'avoir généré les sons.
+const plAudioId = (exId, kind, bi, sub) =>
+  'plus_' + exId + '_' + kind + bi + (sub===undefined ? '' : '_' + sub);
+
+// Liste { identifiant → texte à lire } de tous les boutons d'écoute des
+// mini-leçons. C'est la source de vérité du script de génération audio :
+// ouvrir le module dans le navigateur et lancer plAudioManifest() pour la
+// relire après toute modification de PLUS.
+function plAudioManifest(){
+  const m = {};
+  Object.keys(PLUS).forEach(exId=>{
+    PLUS[exId].blocs.forEach((b,bi)=>{
+      if(b.t==='ana')
+        m[plAudioId(exId,'ana',bi)] = b.say || b.mots.map(x=>plPlain(x[1])).join(' ');
+      if(b.t==='ex')
+        b.rows.forEach((r,ri)=>{ m[plAudioId(exId,'ex',bi,ri)] = r[2] || r[0]; });
+      if(b.t==='labo')
+        Object.keys(b.out).forEach(k=>{
+          const o=b.out[k];
+          m[plAudioId(exId,'lab',bi,k)] = o.say || o.w.map(plPlain).join(' ');
+        });
+    });
+  });
+  return m;
+}
+const plLab = {};   // état des laboratoires, par clé « exoId-index de bloc »
+
+function plBloc(b, exId, bi){
+  const eye = {texte:'Explication', ana:'Anatomie', labo:'À manipuler',
+               ex:'Exemples', piege:'Attention', check:'Vérifiez-vous'}[b.t] || 'Explication';
+  let h='<div class="pl-blk"><div class="pl-eye">'+eye+'</div>';
+  if(b.h) h+='<div class="pl-h">'+esc(b.h)+'</div>';
+  if(b.p) h+='<div class="pl-p">'+b.p+'</div>';
+
+  if(b.t==='ana'){
+    h+='<div class="pl-ana">';
+    b.mots.forEach(m=>{
+      const key = m[2]===true || /noyau/i.test(m[0]);
+      h+='<div class="pl-tok'+(key?' is-key':'')+'"><span class="pl-tok-lbl">'+esc(m[0])+'</span>'
+       + '<span class="pl-tok-w">'+plMark(m[1])+'</span></div>';
+    });
+    // Les étiquettes d'anatomie mises bout à bout ne se lisent pas toujours
+    // bien (élisions, traits d'union, symboles phonétiques) : `say` donne le
+    // texte à prononcer quand la simple concaténation ne suffit pas.
+    const anaTxt = b.say || b.mots.map(m=>plPlain(m[1])).join(' ');
+    h+='<button class="btn-audio-round" type="button" title="Écouter le groupe"'
+     + ' onclick="playWord(this,\''+jsq(anaTxt)+'\',\''+plAudioId(exId,'ana',bi)+'\')">'+ICON_SPEAK+'</button>';
+    h+='</div>';
+  }
+
+  if(b.t==='labo'){
+    h+='<div id="lab-'+exId+'-'+bi+'" style="margin-top:16px">';
+    b.axes.forEach(a=>{
+      h+='<div class="pl-axe"><div class="pl-axe-lbl">'+esc(a.lbl)+'</div><div class="pl-opts">';
+      a.opts.forEach(o=>{
+        h+='<button class="pl-opt" type="button" data-axe="'+a.id+'" data-val="'+o[0]+'" aria-pressed="false"'
+         + ' onclick="plLabo(\''+exId+'\','+bi+',\''+a.id+'\',\''+o[0]+'\')">'+esc(o[1])+'</button>';
+      });
+      h+='</div></div>';
+    });
+    h+='<div class="pl-out"><div class="pl-out-w"></div>'
+     + '<button class="btn-audio-round" type="button" title="Écouter">'+ICON_SPEAK+'</button>'
+     + '<div class="pl-out-n"></div></div></div>';
+  }
+
+  if(b.t==='ex'){
+    h+='<div style="margin-top:14px">';
+    b.rows.forEach((r,ri)=>{
+      h+='<div class="pl-ex"><button class="btn-audio-round" type="button" title="Écouter"'
+       + ' onclick="playWord(this,\''+jsq(r[2]||r[0])+'\',\''+plAudioId(exId,'ex',bi,ri)+'\')">'+ICON_SPEAK+'</button>'
+       + '<span class="pl-ex-w">'+esc(r[0])+'</span><span class="pl-ex-t">'+esc(r[1])+'</span></div>';
+    });
+    h+='</div>';
+  }
+
+  if(b.t==='piege'){
+    h+='<div style="margin-top:6px">';
+    b.rows.forEach(r=>{
+      h+='<div class="pl-trap"><div class="pl-bad"><span aria-hidden="true">✕</span><span>'+esc(r[0])+'</span></div>'
+       + '<div class="pl-good"><span aria-hidden="true">✓</span><span>'+esc(r[1])+'</span></div>'
+       + '<div class="pl-why">'+r[2]+'</div></div>';
+    });
+    h+='</div>';
+  }
+
+  if(b.t==='check'){
+    h+='<div style="margin-top:12px">';
+    b.qs.forEach((q,qi)=>{
+      h+='<div class="pl-q"><div class="pl-qtxt">'+esc(q.q)+'</div><div class="pl-opts">';
+      q.opts.forEach((o,oi)=>{
+        h+='<button class="pl-opt" type="button" onclick="plCheck(this,\''+exId+'\','+bi+','+qi+','+oi+')">'+esc(o)+'</button>';
+      });
+      h+='</div><div class="pl-fb" aria-live="polite"></div></div>';
+    });
+    h+='</div>';
+  }
+
+  if(b.note) h+='<div class="pl-note">'+b.note+'</div>';
+  return h+'</div>';
+}
+
+function plLabo(exId, bi, axeId, val){
+  const key=exId+'-'+bi, b=PLUS[exId].blocs[bi];
+  const st=plLab[key] || (plLab[key]={});
+  b.axes.forEach(a=>{ if(st[a.id]==null) st[a.id]=a.opts[0][0]; });
+  if(axeId) st[axeId]=val;
+  const box=document.getElementById('lab-'+key); if(!box) return;
+  box.querySelectorAll('.pl-opt[data-axe]').forEach(el=>{
+    const on = st[el.dataset.axe]===el.dataset.val;
+    el.classList.toggle('on', on);
+    el.setAttribute('aria-pressed', on?'true':'false');
+  });
+  const o = b.out[b.axes.map(a=>st[a.id]).join('')];
+  if(!o) return;
+  const out = box.querySelector('.pl-out-w');
+  out.innerHTML = o.w.map(plMark).join(' ');
+  // Une phrase longue ne tient pas au corps de 27 px : on descend d'un cran.
+  out.classList.toggle('is-long', o.w.map(plPlain).join(' ').length > 30);
+  box.querySelector('.pl-out-n').textContent = o.n;
+  // `say` sert quand le texte affiché contient de la ponctuation de mise en
+  // page (une paire « tout · tu » se lit mieux avec une virgule).
+  const phrase = o.say || o.w.map(plPlain).join(' ');
+  const fid = plAudioId(exId, 'lab', bi, b.axes.map(a=>st[a.id]).join(''));
+  box.querySelector('.pl-out .btn-audio-round').onclick = function(){ playWord(this, phrase, fid); };
+}
+
+function plCheck(btn, exId, bi, qi, oi){
+  const q=PLUS[exId].blocs[bi].qs[qi];
+  const wrap=btn.closest('.pl-q');
+  const opts=wrap.querySelectorAll('.pl-opt');
+  opts.forEach(el=>el.classList.remove('ok','no'));
+  const good = oi===q.ok;
+  btn.classList.add(good?'ok':'no');
+  if(!good) opts[q.ok].classList.add('ok');
+  const fb=wrap.querySelector('.pl-fb');
+  fb.className='pl-fb on '+(good?'ok':'no');
+  fb.innerHTML='<span aria-hidden="true">'+(good?'✓':'✕')+'</span> '+(good?'':'La bonne réponse est « '+esc(q.opts[q.ok])+' ». ')+q.fb;
+}
 
 // ── PROPOSITION D'AIDE APRÈS PLUSIEURS ERREURS ────────────────────────
 // Le module connaît déjà, à la correction, quels énoncés sont ratés. Au-delà
@@ -2055,6 +2755,47 @@ function refuserAide(exId){
   if(el) el.remove();
   lmsTrack('aide_refusee', {exercice: exId, erreurs: AIDE.err[exId]});
 }
+
+let plLastFocus=null;
+// `cible` : type de bloc vers lequel faire défiler le panneau ('labo' pour la
+// manipulation). Sans lui, l'élève arrive en haut d'une longue leçon.
+function plusOpen(exId, cible){
+  const P=PLUS[exId]; if(!P) return;
+  document.getElementById('plus-eye').textContent = P.eye || 'Mini-leçon';
+  document.getElementById('plus-tit').textContent = P.tit;
+  const body=document.getElementById('plus-body');
+  body.innerHTML = P.blocs.map((b,bi)=>plBloc(b,exId,bi)).join('');
+  body.scrollTop=0;
+  document.getElementById('plus-ov').classList.add('on');
+  // Le défilement appartient à <html> (body est figé à height:100%) — poser
+  // overflow:hidden sur body rognerait toute la page.
+  document.documentElement.style.overflow='hidden';
+  P.blocs.forEach((b,bi)=>{ if(b.t==='labo') plLabo(exId,bi,null,null); });
+  plLastFocus=document.activeElement;
+  document.getElementById('plus-close').focus();
+  lmsTrack('plus_open', {savoir: exId, cible: cible || ''});
+  if(cible){
+    const i = P.blocs.findIndex(b => b.t === cible);
+    if(i >= 0){
+      const bloc = body.children[i];
+      if(bloc){
+        bloc.scrollIntoView({block:'start'});
+        bloc.classList.add('is-cible');
+        setTimeout(()=>bloc.classList.remove('is-cible'), 2500);
+      }
+    }
+  }
+}
+function plusClose(){
+  document.getElementById('plus-ov').classList.remove('on');
+  document.documentElement.style.overflow='';
+  if(plLastFocus && plLastFocus.focus) plLastFocus.focus();
+}
+document.getElementById('plus-close').addEventListener('click', plusClose);
+document.getElementById('plus-ov').addEventListener('click', e=>{ if(e.target.id==='plus-ov') plusClose(); });
+document.addEventListener('keydown', e=>{
+  if(e.key==='Escape' && document.getElementById('plus-ov').classList.contains('on')) plusClose();
+});
 
 // ── RENDER ────────────────────────────────────────────────────────────
 function render(){

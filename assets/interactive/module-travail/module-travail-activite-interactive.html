@@ -437,6 +437,78 @@ body{
 .ph-opts .vf-opt{width:auto;flex:1 1 auto}
 .savoir--pron .savoir-band{background:var(--sec-color,var(--ws-accent))}
 
+/* ── « En apprendre plus » : mini-leçon en panneau latéral ─────────────
+   Le bandeau noir d'un savoir reste un résumé. L'élève qui ne comprend pas
+   ouvre ici une leçon complète : explication, anatomie, manipulation,
+   exemples, pièges, micro-vérification. Aucun effet sur le score du module. */
+.plus-bar{margin:14px var(--bleed) -17px;border-top:1px solid var(--ws-line)}
+.savoir-row:has(+ .plus-bar){border-bottom:none}
+.plus-open{width:100%;min-height:52px;background:transparent;border:none;border-radius:0 0 17px 17px;font-family:'Nunito',sans-serif;font-size:15px;font-weight:800;color:var(--ws-accent);cursor:pointer;display:flex;align-items:center;justify-content:center;gap:9px;transition:background .15s}
+.plus-open:hover{background:var(--ws-accent-bg)}
+.plus-open svg{width:17px;height:17px;flex-shrink:0}
+
+#plus-ov{display:none;position:fixed;inset:0;z-index:9500;background:rgba(15,25,35,.5);backdrop-filter:blur(4px)}
+#plus-ov.on{display:block}
+#plus-panel{position:absolute;top:0;right:0;height:100%;width:min(700px,100%);background:var(--ws-bg);display:flex;flex-direction:column;box-shadow:-16px 0 48px rgba(0,0,0,.28);animation:plusIn .28s cubic-bezier(.22,1,.36,1)}
+@keyframes plusIn{from{transform:translateX(48px);opacity:0}to{transform:none;opacity:1}}
+@media(prefers-reduced-motion:reduce){#plus-panel{animation:none}}
+#plus-hd{background:var(--ws-ink);color:#fff;padding:22px 26px;display:flex;align-items:flex-start;gap:16px;flex-shrink:0}
+#plus-eye{font-size:12px;font-weight:800;text-transform:uppercase;letter-spacing:.14em;color:#8FE2B9}
+#plus-tit{font-size:27px;font-weight:900;line-height:1.15;margin-top:7px}
+#plus-close{margin-left:auto;width:44px;height:44px;flex-shrink:0;border-radius:50%;border:1px solid rgba(255,255,255,.32);background:rgba(255,255,255,.12);color:#fff;font-family:'Nunito',sans-serif;font-size:19px;font-weight:800;cursor:pointer}
+#plus-close:hover{background:rgba(255,255,255,.26)}
+#plus-body{flex:1;overflow-y:auto;padding:20px 26px 64px;display:flex;flex-direction:column;gap:16px}
+.pl-blk{background:var(--ws-card);border:1px solid var(--ws-line);border-radius:18px;padding:20px 22px}
+.pl-eye{font-size:12px;font-weight:800;text-transform:uppercase;letter-spacing:.14em;color:var(--ws-sub);margin-bottom:9px}
+.pl-h{font-size:20px;font-weight:900;line-height:1.25;margin-bottom:9px}
+.pl-p{font-size:17px;font-weight:500;line-height:1.6}
+.pl-p b{font-weight:900}
+.pl-p em,.pl-note em{font-style:italic;color:var(--ws-accent);font-weight:700}
+.pl-note{font-size:15px;font-weight:600;color:var(--ws-sub);line-height:1.5;margin-top:12px}
+.pl-end{color:var(--ws-accent);text-decoration:underline;text-decoration-thickness:2px;text-underline-offset:3px}
+
+.pl-ana{display:flex;flex-wrap:wrap;gap:9px;align-items:flex-end;margin:16px 0 4px}
+.pl-tok{border:1px solid var(--ws-line);border-radius:14px;padding:9px 14px;background:var(--ws-bg);text-align:center;min-width:74px}
+.pl-tok.is-key{border-color:var(--ws-accent);background:var(--ws-accent-bg)}
+.pl-tok-lbl{display:block;font-size:11px;font-weight:800;text-transform:uppercase;letter-spacing:.09em;color:var(--ws-sub);margin-bottom:5px}
+.pl-tok-w{display:block;font-size:20px;font-weight:800}
+
+.pl-axe{margin-bottom:14px}
+.pl-axe-lbl{font-size:12px;font-weight:800;text-transform:uppercase;letter-spacing:.12em;color:var(--ws-sub);margin-bottom:7px}
+.pl-opts{display:flex;gap:8px;flex-wrap:wrap}
+.pl-opt{min-height:44px;padding:10px 16px;border-radius:22px;border:1px solid var(--ws-line);background:var(--ws-card);font-family:'Nunito',sans-serif;font-size:15px;font-weight:800;line-height:1.35;text-align:left;color:var(--ws-ink);cursor:pointer;transition:background .15s,border-color .15s}
+.pl-opt:hover{border-color:var(--ws-accent)}
+.pl-opt.on{background:var(--sel-bg);border-color:var(--sel-line);color:var(--sel-ink)}
+.pl-opt.ok{background:var(--ok-bg);border-color:var(--ok-line);color:var(--ok-ink)}
+.pl-opt.no{background:var(--no-bg);border-color:var(--no-line);color:var(--no-ink)}
+.pl-out{background:var(--ws-ink);color:#fff;border-radius:16px;padding:20px;margin-top:4px;display:flex;align-items:center;justify-content:center;gap:14px;flex-wrap:wrap}
+.pl-out-w{font-size:27px;font-weight:900;text-align:center;line-height:1.3}
+.pl-out-w.is-long{font-size:21px}
+.pl-out-w .pl-end{color:#8FE2B9}
+.pl-out-n{flex-basis:100%;text-align:center;font-size:13px;font-weight:800;text-transform:uppercase;letter-spacing:.12em;color:#8FE2B9}
+.pl-out .btn-audio-round{width:44px;height:44px}
+
+.pl-ex{display:flex;align-items:center;gap:12px;padding:9px 0;border-bottom:1px solid var(--ws-line)}
+.pl-ex:last-child{border-bottom:none}
+.pl-ex-w{flex:1;min-width:0;font-size:17px;font-weight:700}
+.pl-ex-t{font-size:12.5px;font-weight:800;color:var(--ws-sub);white-space:nowrap}
+
+.pl-trap{padding:13px 0;border-bottom:1px solid var(--ws-line)}
+.pl-trap:last-child{border-bottom:none;padding-bottom:0}
+.pl-bad,.pl-good{display:flex;gap:9px;align-items:flex-start;font-size:17px;font-weight:700;line-height:1.45}
+.pl-bad{color:var(--no-ink)}
+.pl-good{color:var(--ok-ink);margin-top:5px}
+.pl-why{font-size:15px;font-weight:600;color:var(--ws-sub);line-height:1.5;margin-top:7px}
+
+.pl-q{padding:14px 0;border-bottom:1px solid var(--ws-line)}
+.pl-q:last-child{border-bottom:none;padding-bottom:0}
+.pl-qtxt{font-size:17px;font-weight:700;line-height:1.5;margin-bottom:10px}
+.pl-fb{display:none;font-size:15px;font-weight:700;line-height:1.5;margin-top:10px}
+.pl-fb.on{display:block}
+.pl-fb.ok{color:var(--ok-ink)}
+.pl-fb.no{color:var(--no-ink)}
+@media(max-width:640px){#plus-panel{width:100%}#plus-tit{font-size:23px}#plus-body{padding:16px 18px 56px}.pl-blk{padding:18px}}
+
 /* ── Proposition d'aide après plusieurs erreurs ────────────────────────
    Volontairement discrète et refusable : un panneau qui s'ouvrirait tout
    seul après un échec se lirait comme une punition. Ici l'élève choisit. */
@@ -476,6 +548,12 @@ body{
 .ao-k:not(:first-child){margin-top:14px}
 .ao-v{font-size:16.5px; font-weight:500; line-height:1.6; color:var(--text-strong)}
 .ao-conseil{font-weight:800}
+/* Le bloc vers lequel on emmène l'élève s'annonce brièvement, sinon il
+   atterrit au milieu du panneau sans savoir pourquoi. */
+.pl-blk.is-cible{
+  box-shadow:0 0 0 3px var(--ws-accent);
+  transition:box-shadow .4s ease;
+}
 
 /* ── Banc de réponses collant ──────────────────────────────────────────
    Dans un exercice long, les énoncés défilaient sous le banc de réponses :
@@ -553,6 +631,16 @@ textarea:focus-visible,.winput:focus-visible{outline:none;border-color:var(--ws-
 </div>
 
 <div id="sections"></div>
+
+<div id="plus-ov" role="dialog" aria-modal="true" aria-labelledby="plus-tit">
+  <div id="plus-panel">
+    <div id="plus-hd">
+      <div><div id="plus-eye">Mini-leçon</div><div id="plus-tit">—</div></div>
+      <button id="plus-close" type="button" aria-label="Fermer la mini-leçon">✕</button>
+    </div>
+    <div id="plus-body"></div>
+  </div>
+</div>
 
 <div id="fc-overlay">
   <div id="fc-box">
@@ -1605,7 +1693,11 @@ function buildStatic(){
             const phrase=CARRIER_PHRASES[w];
             const wcLabel = phrase ? esc(phrase).replace(new RegExp('('+esc(w)+')','i'),'<b>$1</b>') : esc(w);
             h+='<div class="word-chip"><span class="wc-word'+(phrase?' wc-phrase':'')+'">'+wcLabel+'</span>';
-            h+='<button class="btn btn-ghost" type="button" onclick="playWord(this,\''+jsq(w)+'\',\''+fid+'\')" title="Écouter">'+ICON_SPEAK+'</button>';
+            // On lit la phrase porteuse, pas le mot seul : c'est ce que la
+            // pastille affiche, et surtout un mot isolé ne donne aucun indice
+            // de langue au moteur de synthèse — un mot français bref peut se
+            // faire lire à l'anglaise sans le contexte d'une phrase.
+            h+='<button class="btn btn-ghost" type="button" onclick="playWord(this,\''+jsq(phrase||w)+'\',\''+fid+'\')" title="Écouter">'+ICON_SPEAK+'</button>';
             h+='<button class="btn btn-ghost" type="button" onclick="pronCheck(this,\''+jsq(w)+'\')" title="Répète le mot à voix haute">'+ICON_MIC+'</button>';
             h+='</div>';
           });
@@ -1613,6 +1705,11 @@ function buildStatic(){
         }
         h+='</div></div>';
       });
+      if(PLUS[ex.id]){
+        h+='<div class="plus-bar"><button class="plus-open" type="button" onclick="plusOpen(\''+ex.id+'\')">'
+         + '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" aria-hidden="true"><path d="M12 5v14M5 12h14"/></svg>'
+         + 'En apprendre plus</button></div>';
+      }
       h+='</div><div class="savoir-gap"></div>';
     }
     // ── Exercice Vrai/Faux (ou 2 catégories) — colonnes + bouton Corriger ──
@@ -1936,11 +2033,597 @@ async function checkWrite(exId, i){
   }
 }
 
-// Ce module n'a pas encore de mini-leçons « En apprendre plus » (voir
-// module-urgence pour le modèle) : objet vide, pour que PLUS[exId] et
-// plusOpen() restent des vérifications sûres plutôt que des erreurs.
-const PLUS = {};
-function plusOpen(exId, cible){ /* aucune mini-leçon dans ce module */ }
+// ── MINI-LEÇONS « EN APPRENDRE PLUS » ──────────────────────────────────
+// Une entrée par exercice qui porte un `savoir`. Le bandeau noir reste le
+// résumé ; ceci est la leçon complète, ouverte à la demande dans un panneau.
+// Blocs disponibles : texte, ana (anatomie étiquetée), labo (manipulation
+// à axes), ex (exemples audio), piege, check (micro-vérification, hors score).
+// Dans un mot, {…} souligne en vert la terminaison d'accord.
+const PLUS = {
+  prPhon: {
+    eye:'Mini-leçon', tit:'Le son [e] et le son [ɛ]',
+    blocs:[
+      {t:'texte', h:"Deux « é » qui se ressemblent au téléphone",
+       p:"Au téléphone, quand vous laissez un message ou en écoutez un, vous entendrez beaucoup de mots avec un son proche de « é ». Il y en a en fait deux : [e], plus fermé, et [ɛ], plus ouvert. Les distinguer aide à bien comprendre — et à bien écrire — des mots comme <em>dépanné</em> et <em>dépanner</em>, qui ne se disent pas pareil.",
+       note:"Nadia le dit à Karim : « Vous pourriez rappeler la sem<em>ai</em>ne prochaine » — un [ɛ] — et Karim répond qu'il doit prévenir son sup<em>e</em>rviseur — un [e]."},
+
+      {t:'ana', h:"[ɛ] au début ou au milieu d'un mot",
+       p:"Il s'écrit <b>è, ê, ei, ai</b> suivi d'une consonne, ou encore <b>e</b> devant deux consonnes comme <b>-l</b> ou <b>-r</b>. La bouche s'ouvre davantage que pour [e].",
+       mots:[["S'écrit",'è, ê, ei, ai + consonne'],['Se dit','[ɛ]',true],['Comme dans','p{è}re']],
+       say:'père',
+       note:"Autres mots du module : <em>tête</em>, <em>treize</em>, <em>semaine</em>, <em>nouvelle</em> (e + l), <em>hiver</em> (e + r)."},
+
+      {t:'ana', h:"[e] en fin de mot",
+       p:"Il s'écrit <b>é, ai</b> ou <b>er</b> à la toute fin d'un mot. La bouche reste plus fermée, plus tendue que pour [ɛ].",
+       mots:[["S'écrit",'é, ai, er (fin de mot)'],['Se dit','[e]',true],['Comme dans','dépann{é}']],
+       say:'dépanné',
+       note:"Piège : « hiver » et « mer » se terminent en -er mais se disent [ɛ], pas [e] — deux exceptions à retenir par cœur."},
+
+      {t:'labo', h:"Comparez les deux sons",
+       p:"Choisissez un mot et écoutez sa voyelle.",
+       axes:[{id:'m', lbl:'Quel mot ?', opts:[['a','père'],['b','dépanné'],['c','hiver'],['d','travaillerai']]}],
+       out:{
+         a:{w:['p{è}re'],          say:'père',          n:'[ɛ] — è + consonne'},
+         b:{w:['dépann{é}'],       say:'dépanné',        n:'[e] — é en fin de mot'},
+         c:{w:['{hiver}'],         say:'hiver',          n:'[ɛ] — exception au -er final'},
+         d:{w:['je travailler{ai}'], say:'je travaillerai', n:'[e] — ai en fin de mot'},
+       },
+       note:"« hiver » est le piège classique : la finale « -er » se dit habituellement [e] (dépanner), mais dans « hiver » et « mer », elle se dit [ɛ]."},
+
+      {t:'ex', h:"Les mots du module, classés",
+       p:"Écoutez chacun et répétez-le à voix haute.",
+       rows:[
+         ["père","[ɛ] — è + consonne"],
+         ["tête","[ɛ] — ê + consonne"],
+         ["treize","[ɛ] — ei + consonne"],
+         ["semaine","[ɛ] — ai + consonne"],
+         ["nouvelle","[ɛ] — e + ll"],
+         ["hiver","[ɛ] — exception"],
+         ["dépanné","[e] — é final"],
+         ["je travaillerai","[e] — ai final"],
+         ["dépanner","[e] — er final"],
+         ["mer","[ɛ] — exception"],
+       ]},
+
+      {t:'piege', h:"Deux pièges fréquents",
+       rows:[
+         ["« dépanné » et « dépanner » se disent pareil","« dépanné » = [e] fermé · « dépanner » = [e] aussi, mais l'un est participe, l'autre infinitif",
+          "À l'oral les deux se ressemblent beaucoup ; c'est le contexte de la phrase qui distingue « j'ai dépanné » (passé) de « je vais dépanner » (futur proche)."],
+         ["« hiver » lu comme « dépanner » (son [e])","« hiver » se dit avec un [ɛ] ouvert, comme « père »",
+          "Les mots en -er se disent presque toujours [e], mais hiver et mer sont deux exceptions fréquentes à mémoriser."],
+       ]},
+
+      {t:'check', h:"Est-ce que c'est clair maintenant ?",
+       p:"Quatre questions rapides. Elles ne comptent pas dans votre score.",
+       qs:[
+         {q:"Dans « semaine », le son « ai » se dit…", opts:["[ɛ]","[e]"], ok:0,
+          fb:"« ai » suivi d'une consonne (ici « n ») se dit [ɛ], la bouche plus ouverte."},
+         {q:"Dans « dépanné », la finale « é » se dit…", opts:["[ɛ]","[e]"], ok:1,
+          fb:"Un « é » final se dit toujours [e], la bouche plus fermée."},
+         {q:"Le mot « hiver » se termine par le son…", opts:["[ɛ]","[e]"], ok:0,
+          fb:"« hiver » est une exception : sa finale -er se dit [ɛ], pas [e] comme dans « dépanner »."},
+         {q:"« nouvelle » contient le son…", opts:["[ɛ]","[e]"], ok:0,
+          fb:"« e » devant deux consonnes (« -ll ») se dit [ɛ], comme dans « nouvelle »."},
+       ]},
+    ]
+  },
+
+  t1qui: {
+    eye:'Mini-leçon', tit:'La reprise de l\'information par le pronom qui',
+    blocs:[
+      {t:'texte', h:"Ne pas répéter le même nom deux fois",
+       p:"« Voici le rapport. Ce rapport doit être signé. » C'est correct, mais lourd : on répète « le rapport ». Le pronom <b>qui</b> permet de fusionner les deux phrases en une seule, plus naturelle : « Voici le rapport <b>qui</b> doit être signé. »",
+       note:"Dans un message professionnel, cette construction revient souvent : « C'est l'infirmière <em>qui</em> nous a appelés », « L'entreprise <em>qui</em> embauche… »"},
+
+      {t:'ana', h:"Comment qui reprend un groupe nominal",
+       p:"« Qui » remplace le groupe du nom qui vient juste avant lui, et il reprend le rôle de sujet dans la deuxième partie de la phrase.",
+       mots:[['Groupe repris','le rapport'],['Pronom','qui',true],['Nouvelle information','doit être signé']],
+       say:'le rapport qui doit être signé',
+       note:"Truc pour vérifier : posez la question « qui doit être signé ? ». La réponse — « le rapport » — est justement ce que « qui » reprend."},
+
+      {t:'labo', h:"Essayez : qui reprend des groupes différents",
+       p:"Choisissez une phrase et repérez ce que « qui » reprend.",
+       axes:[{id:'p', lbl:'Quelle phrase ?', opts:[['c','le collègue'],['s','la salle'],['e',"l'entreprise"]]}],
+       out:{
+         c:{w:['Le collègue','qui','remplace Karim s\'appelle Omar.'], say:'Le collègue qui remplace Karim s\'appelle Omar.', n:'qui reprend « le collègue »'},
+         s:{w:['J\'ai trouvé la salle','qui','convient pour la réunion.'], say:'J\'ai trouvé la salle qui convient pour la réunion.', n:'qui reprend « la salle »'},
+         e:{w:["L'entreprise",'qui','embauche est au centre-ville.'], say:'L\'entreprise qui embauche est au centre-ville.', n:'qui reprend « l\'entreprise »'},
+       },
+       note:"Dans les trois cas, « qui » se colle directement après le nom qu'il reprend — jamais plus loin dans la phrase."},
+
+      {t:'ex', h:"Six phrases à reconnaître",
+       p:"Écoutez chaque phrase et identifiez ce que « qui » reprend.",
+       rows:[
+         ["Voici le rapport qui doit être signé.","qui = le rapport"],
+         ["Le collègue qui remplace Karim s'appelle Omar.","qui = le collègue"],
+         ["J'ai trouvé la salle qui convient.","qui = la salle"],
+         ["C'est l'infirmière qui nous a appelés.","qui = l'infirmière"],
+         ["L'entreprise qui embauche est au centre-ville.","qui = l'entreprise"],
+         ["La direction a averti les employés qui étaient en retard.","qui = les employés"],
+       ]},
+
+      {t:'piege', h:"Un piège fréquent",
+       rows:[
+         ["Voici le rapport que doit être signé.","Voici le rapport qui doit être signé.",
+          "« que » et « qui » se confondent souvent. Truc : si le mot repris est le SUJET du verbe qui suit (c'est le rapport QUI EST signé, pas quelqu'un qui signe le rapport), on utilise « qui »."],
+       ]},
+
+      {t:'check', h:"Est-ce que c'est clair maintenant ?",
+       p:"Quatre questions rapides. Elles ne comptent pas dans votre score.",
+       qs:[
+         {q:"« Voici le rapport qui doit être signé avant vendredi. » Que reprend « qui » ?", opts:["le rapport","vendredi"], ok:0,
+          fb:"« qui » reprend le groupe juste avant lui : « le rapport »."},
+         {q:"« C'est l'infirmière qui nous a appelés ce matin. » Que reprend « qui » ?", opts:["ce matin","l'infirmière"], ok:1,
+          fb:"« qui » reprend « l'infirmière », qui devient le sujet de « a appelés »."},
+         {q:"« La direction a averti les employés qui étaient en retard. » Que reprend « qui » ?", opts:["les employés","la direction"], ok:0,
+          fb:"« qui » se colle au nom juste avant lui : « les employés »."},
+         {q:"Le pronom « qui » reprend toujours…", opts:["le groupe nominal juste avant lui","le premier nom de la phrase"], ok:0,
+          fb:"« qui » reprend systématiquement ce qui le précède immédiatement, pas nécessairement le premier mot de la phrase."},
+       ]},
+    ]
+  },
+
+  t1situ: {
+    eye:'Mini-leçon', tit:'Un retard, une absence, un abandon',
+    blocs:[
+      {t:'texte', h:"Trois mots, trois situations différentes",
+       p:"Karim, Sofian, Nour : chacun explique une situation différente à son centre de formation, et le mot juste change tout. Utiliser le bon mot, c'est mieux se faire comprendre — et éviter de faire croire qu'on abandonne un cours alors qu'on est simplement en retard.",
+       note:"La nuance est fine mais importante : un <em>retard</em> se règle en minutes, une <em>absence</em> en heures ou en jours, un <em>abandon</em> est définitif."},
+
+      {t:'ana', h:"Un retard",
+       p:"On arrive après le moment prévu, mais on arrive quand même — au cours, au travail, à un rendez-vous.",
+       mots:[['La personne','Sofian'],['Situation','en retard',true],['Cause','rendez-vous chez le dentiste']],
+       say:'Sofian est en retard à cause d\'un rendez-vous chez le dentiste',
+       note:"Le retard implique toujours une arrivée, même tardive. Après un retard, la personne est présente."},
+
+      {t:'ana', h:"Une absence",
+       p:"On ne se présente pas du tout, pour une journée ou une période — mais on a l'intention de revenir.",
+       mots:[['La personne','Karim'],['Situation','absent',true],['Cause','sa fille est malade']],
+       say:'Karim est absent parce que sa fille est malade',
+       note:"L'absence peut durer un jour ou plusieurs semaines (un voyage, par exemple) ; ce qui la distingue de l'abandon, c'est l'intention de revenir."},
+
+      {t:'labo', h:"Trois situations, trois mots",
+       p:"Choisissez une situation et observez le mot juste.",
+       axes:[{id:'s', lbl:'Quelle situation ?', opts:[['r','arrive après l\'heure'],['a','ne vient pas aujourd\'hui'],['b','renonce définitivement au cours']]}],
+       out:{
+         r:{w:['un','retard'], say:'un retard', n:'on arrive quand même, plus tard'},
+         a:{w:['une','absence'], say:'une absence', n:'on ne vient pas, mais on revient plus tard'},
+         b:{w:['un','abandon'], say:'un abandon', n:'on renonce, on ne revient pas'},
+       },
+       note:"Le test le plus simple : est-ce que la personne va revenir ? Oui, plus tard aujourd'hui → retard. Oui, un autre jour → absence. Non, jamais → abandon."},
+
+      {t:'ex', h:"Trois situations réelles du module",
+       p:"Écoutez chaque situation et le mot qui la décrit.",
+       rows:[
+         ["Sofian arrive en retard à cause d'un rendez-vous chez le dentiste.","un retard"],
+         ["Karim reste à la maison parce que sa fille est malade.","une absence"],
+         ["Une famille déménage loin du centre de formation.","un abandon"],
+         ["Une personne part trois semaines voir sa famille à l'étranger.","une absence"],
+         ["Une personne a manqué son autobus et attend le suivant.","un retard"],
+       ]},
+
+      {t:'piege', h:"Un piège fréquent",
+       rows:[
+         ["Une famille qui déménage est « en retard ».","Une famille qui déménage « abandonne » le cours.",
+          "Le déménagement empêche un retour : ce n'est pas un simple délai, c'est une fin. Le mot juste est « abandon », pas « retard » ni « absence »."],
+       ]},
+
+      {t:'check', h:"Est-ce que c'est clair maintenant ?",
+       p:"Quatre questions rapides. Elles ne comptent pas dans votre score.",
+       qs:[
+         {q:"Une personne arrive au cours vingt minutes après le début. C'est…", opts:["un retard","une absence"], ok:0,
+          fb:"Elle arrive quand même, plus tard : c'est un retard."},
+         {q:"Une personne reste chez elle toute la journée pour soigner son conjoint. C'est…", opts:["un abandon","une absence"], ok:1,
+          fb:"Elle ne vient pas aujourd'hui, mais elle reviendra : c'est une absence."},
+         {q:"Une famille déménage loin et ne reviendra jamais au centre. C'est…", opts:["un abandon","un retard"], ok:0,
+          fb:"Pas de retour prévu : c'est un abandon."},
+         {q:"Ce qui distingue une absence d'un abandon, c'est…", opts:["l'intention de revenir","la durée en heures"], ok:0,
+          fb:"L'absence garde l'intention de revenir ; l'abandon y renonce définitivement."},
+       ]},
+    ]
+  },
+
+  t2connect: {
+    eye:'Mini-leçon', tit:'Les connecteurs et, ou et mais',
+    blocs:[
+      {t:'texte', h:"Trois petits mots, trois relations différentes",
+       p:"« Et », « ou » et « mais » relient deux idées, mais chacun le fait d'une façon différente : addition, choix, ou opposition. Ce sont de tout petits mots, faciles à mal utiliser sous le stress d'un appel téléphonique — pourtant le sens change complètement selon celui qu'on choisit.",
+       note:"Une phrase comme « J'aimerais suivre ce cours, ___ l'horaire ne me convient pas » n'a de sens qu'avec « mais » : les deux idées s'opposent."},
+
+      {t:'ana', h:"et — additionner deux idées",
+       p:"« Et » ajoute une deuxième information à la première, sans contradiction ni choix.",
+       mots:[['Idée 1','il a parlé à la responsable'],['Connecteur','et',true],['Idée 2','elle lui a donné les informations']],
+       say:'il a parlé à la responsable et elle lui a donné les informations',
+       note:"Les deux idées vont dans le même sens, l'une après l'autre."},
+
+      {t:'ana', h:"mais — opposer deux idées",
+       p:"« Mais » annonce une contradiction : la deuxième idée limite ou contredit la première.",
+       mots:[['Idée 1',"j'aimerais prendre ce cours"],['Connecteur','mais',true],['Idée 2, opposée','il se donne seulement à l\'hiver']],
+       say:'j\'aimerais prendre ce cours, mais il se donne seulement à l\'hiver',
+       note:"Après « mais », il y a presque toujours un obstacle ou une déception par rapport à ce qui précède."},
+
+      {t:'labo', h:"Choisissez le bon connecteur",
+       p:"Selon la relation entre les deux idées, le connecteur change.",
+       axes:[{id:'c', lbl:'Quelle relation ?', opts:[['e','addition (et)'],['o','choix (ou)'],['m','opposition (mais)']]}],
+       out:{
+         e:{w:['J\'ai révisé mes verbes,','et','demain je réviserai le vocabulaire.'], say:'J\'ai révisé mes verbes, et demain je réviserai le vocabulaire.', n:'et — addition'},
+         o:{w:['Tu choisis maintenant','ou','tu attends à demain.'], say:'Tu choisis maintenant ou tu attends à demain.', n:'ou — choix entre deux options'},
+         m:{w:["J'aimerais t'accompagner,",'mais',"je dois travailler."], say:"J'aimerais t'accompagner, mais je dois travailler.", n:'mais — opposition'},
+       },
+       note:"« ou » propose toujours exactement deux options, dont on doit choisir une seule."},
+
+      {t:'ex', h:"Six phrases à reconnaître",
+       p:"Écoutez chaque phrase et identifiez la relation entre les deux idées.",
+       rows:[
+         ["Tu préviens ton superviseur ou tu envoies un courriel ?","choix"],
+         ["J'aimerais t'accompagner, mais je dois travailler.","opposition"],
+         ["Elle fait du bénévolat, mais elle préfère le plein air.","opposition"],
+         ["À midi, tu manges à la cafétéria ou tu apportes ton repas ?","choix"],
+         ["J'aimerais suivre ce cours, mais l'horaire ne convient pas.","opposition"],
+         ["Hier, j'ai révisé mes verbes, et demain je réviserai le vocabulaire.","addition"],
+       ]},
+
+      {t:'piege', h:"Un piège fréquent",
+       rows:[
+         ["J'aimerais prendre ce cours, et il se donne seulement à l'hiver.","J'aimerais prendre ce cours, mais il se donne seulement à l'hiver.",
+          "La deuxième idée contredit la première (on aimerait, mais ce n'est pas possible maintenant) : il faut « mais », pas « et »."],
+       ]},
+
+      {t:'check', h:"Est-ce que c'est clair maintenant ?",
+       p:"Quatre questions rapides. Elles ne comptent pas dans votre score.",
+       qs:[
+         {q:"Tu préviens ton superviseur ___ tu envoies un courriel ?", opts:["ou","mais"], ok:0,
+          fb:"Deux options possibles, il faut choisir : « ou »."},
+         {q:"J'aimerais t'accompagner, ___ je dois travailler.", opts:["et","mais"], ok:1,
+          fb:"Les deux idées s'opposent (envie vs obligation) : « mais »."},
+         {q:"Elle fait du bénévolat, ___ elle préfère les activités en plein air.", opts:["mais","ou"], ok:0,
+          fb:"Contraste entre ce qu'elle fait et ce qu'elle préfère : « mais »."},
+         {q:"« et » sert à…", opts:["additionner deux idées","opposer deux idées"], ok:0,
+          fb:"« et » ajoute une information à une autre, sans contradiction."},
+       ]},
+    ]
+  },
+
+  t2quel: {
+    eye:'Mini-leçon', tit:'Le pronom interrogatif quel',
+    blocs:[
+      {t:'texte', h:"Un mot qui s'accorde avec ce qu'il questionne",
+       p:"« Quel » sert à demander une précision — sur un nom, une raison, une chose. Contrairement à beaucoup de mots interrogatifs, il <b>change de forme</b> selon le genre et le nombre du mot qu'il questionne : quel, quelle, quels, quelles. Choisir la bonne forme demande de connaître le genre du nom qui suit.",
+       note:"Nour l'utilise dans son message : « <em>Quelle</em> est la raison de votre appel ? » aurait pu être une des questions posées à Karim."},
+
+      {t:'ana', h:"Accord avec un nom féminin singulier",
+       p:"Devant un nom féminin singulier, « quel » devient « quelle ».",
+       mots:[['Quel, accordé','Quelle',true],['Verbe','est'],['Nom féminin singulier','la raison']],
+       say:'Quelle est la raison de ton retard ?',
+       note:"« raison » est féminin singulier, donc « quel » prend un -le : quelle."},
+
+      {t:'ana', h:"Accord avec un nom masculin pluriel",
+       p:"Devant un nom masculin pluriel, « quel » devient « quels ».",
+       mots:[['Quel, accordé','Quels',true],['Verbe','sont'],['Nom masculin pluriel','les avantages']],
+       say:'Quels sont les avantages de ton nouvel horaire ?',
+       note:"« avantages » est masculin pluriel, donc « quel » prend un -s : quels."},
+
+      {t:'labo', h:"Essayez : accordez quel selon le nom",
+       p:"Choisissez le genre et le nombre du nom questionné.",
+       axes:[
+         {id:'g', lbl:'Genre ?', opts:[['m','masculin'],['f','féminin']]},
+         {id:'n', lbl:'Nombre ?', opts:[['s','singulier'],['p','pluriel']]},
+       ],
+       out:{
+         ms:{w:['Quel','est ton objectif ?'], say:'Quel est ton objectif ?', n:'masculin singulier'},
+         mp:{w:['Quels','sont les critères ?'], say:'Quels sont les critères ?', n:'masculin pluriel'},
+         fs:{w:['Quelle','est ton adresse ?'], say:'Quelle est ton adresse ?', n:'féminin singulier'},
+         fp:{w:['Quelles','sont tes habiletés ?'], say:'Quelles sont tes habiletés ?', n:'féminin pluriel'},
+       },
+       note:"Quatre formes pour un seul mot de sens : c'est uniquement le nom qui suit qui décide de la forme à utiliser."},
+
+      {t:'ex', h:"Huit questions à reconnaître",
+       p:"Écoutez chaque question et notez le genre et le nombre du nom.",
+       rows:[
+         ["Quelle est la raison de ton retard ?","féminin singulier"],
+         ["Quels sont les avantages de ton horaire ?","masculin pluriel"],
+         ["Quelles sont tes habitudes le matin ?","féminin pluriel"],
+         ["Quel est ton objectif principal ?","masculin singulier"],
+         ["Quels sont les inconvénients de ce trajet ?","masculin pluriel"],
+         ["Quelles sont les matières que tu préfères ?","féminin pluriel"],
+         ["Quel est le but de ta demande ?","masculin singulier"],
+         ["Quelle est ton opinion sur ce règlement ?","féminin singulier"],
+       ]},
+
+      {t:'piege', h:"Un piège fréquent",
+       rows:[
+         ["Quel sont les avantages ?","Quels sont les avantages ?",
+          "Le nom « avantages » est au pluriel, donc « quel » doit prendre un -s. On accorde toujours avec le nom qui suit, jamais avec une forme par défaut."],
+       ]},
+
+      {t:'check', h:"Est-ce que c'est clair maintenant ?",
+       p:"Quatre questions rapides. Elles ne comptent pas dans votre score.",
+       qs:[
+         {q:"___ est la raison de ton retard de ce matin ?", opts:["Quel","Quelle"], ok:1,
+          fb:"« raison » est féminin singulier : quelle."},
+         {q:"___ sont les avantages de ton nouvel horaire ?", opts:["Quels","Quel"], ok:0,
+          fb:"« avantages » est masculin pluriel : quels."},
+         {q:"___ sont tes habitudes le matin ?", opts:["Quelles","Quels"], ok:0,
+          fb:"« habitudes » est féminin pluriel : quelles."},
+         {q:"___ est ton objectif principal ce trimestre ?", opts:["Quel","Quelle"], ok:0,
+          fb:"« objectif » est masculin singulier : quel."},
+       ]},
+    ]
+  },
+
+  t3formel: {
+    eye:'Mini-leçon', tit:"Des formules d'appel et de salutation",
+    blocs:[
+      {t:'texte', h:"Choisir le bon ton",
+       p:"Un message à un collègue qu'on connaît bien ne s'ouvre pas comme un message à une directrice qu'on a rencontrée une fois. Le français a des formules <b>officielles</b>, réservées aux relations distantes ou hiérarchiques, et des formules <b>familières</b>, réservées aux proches. Se tromper de registre peut sembler impoli — dans un sens comme dans l'autre.",
+       note:"Nour ouvre son courriel par « Bonjour Monsieur Simard, » — poli mais pas trop distant, adapté à un enseignant qu'elle connaît depuis des mois."},
+
+      {t:'ana', h:"Les formules officielles",
+       p:"On les utilise pour une personne qu'on connaît peu, ou dans un contexte hiérarchique — une directrice, un professionnel de la santé, un employeur récent.",
+       mots:[['Ouverture','Madame,',true],['ou','Bonjour Madame,'],['Fermeture','Sincères salutations,']],
+       say:'Bonjour Madame, Sincères salutations',
+       note:"D'autres formules officielles : <em>Monsieur,</em> · <em>Respectueusement,</em>"},
+
+      {t:'ana', h:"Les formules familières",
+       p:"On les réserve à des personnes proches : un collègue avec qui on prend souvent une pause, un voisin qu'on connaît bien.",
+       mots:[['Ouverture','Bonjour Karim,',true],['ou','Salut Nadia,'],['Fermeture','À bientôt,']],
+       say:'Bonjour Karim, à bientôt',
+       note:"D'autres formules familières : <em>Cher Omar,</em> · <em>Amicalement,</em>"},
+
+      {t:'labo', h:"Essayez : choisissez le bon registre",
+       p:"Selon la relation avec le destinataire, la formule change.",
+       axes:[{id:'r', lbl:'À qui écrit-on ?', opts:[['o','une directrice rencontrée une fois'],['f','un collègue proche']]}],
+       out:{
+         o:{w:['Bonjour Madame,','…','Sincères salutations,'], say:'Bonjour Madame, Sincères salutations', n:'formules officielles'},
+         f:{w:['Salut Nadia,','…','À bientôt,'],              say:'Salut Nadia, à bientôt',              n:'formules familières'},
+       },
+       note:"Le doute doit toujours pencher vers le plus formel : il vaut mieux être un peu trop poli qu'insuffisamment respectueux."},
+
+      {t:'ex', h:"Six mises en situation",
+       p:"Pour chacune, notez si la formule attendue est officielle ou familière.",
+       rows:[
+         ["Message à un collègue avec qui on prend souvent la pause.","familière"],
+         ["Message à l'infirmière de l'école, rencontrée une seule fois.","officielle"],
+         ["Message à un voisin qui garde parfois notre chat.","familière"],
+         ["Message à une superviseure depuis deux semaines.","officielle"],
+         ["Message à la directrice du centre de formation.","officielle"],
+         ["Message à un enseignant avec qui on a fait du bénévolat.","familière"],
+       ]},
+
+      {t:'piege', h:"Un piège fréquent",
+       rows:[
+         ["« Salut ! » à une directrice rencontrée une seule fois.","« Bonjour Madame, » ou « Madame, »",
+          "Une relation hiérarchique récente demande toujours une formule officielle, même si le ton du reste du message est amical."],
+       ]},
+
+      {t:'check', h:"Est-ce que c'est clair maintenant ?",
+       p:"Quatre questions rapides. Elles ne comptent pas dans votre score.",
+       qs:[
+         {q:"Message pour votre collègue de travail, avec qui vous prenez souvent la pause.", opts:["officielle","familière"], ok:1,
+          fb:"Relation proche et habituelle : une formule familière convient."},
+         {q:"Message pour l'infirmière de l'école, à qui vous avez parlé une seule fois.", opts:["officielle","familière"], ok:0,
+          fb:"Relation distante et peu fréquente : une formule officielle est attendue."},
+         {q:"Message pour votre superviseure, depuis deux semaines seulement.", opts:["officielle","familière"], ok:0,
+          fb:"Relation hiérarchique récente : formule officielle."},
+         {q:"En cas de doute sur le registre à utiliser, il vaut mieux…", opts:["pencher vers le plus formel","pencher vers le plus familier"], ok:0,
+          fb:"Un excès de politesse dérange rarement ; un excès de familiarité peut sembler irrespectueux."},
+       ]},
+    ]
+  },
+
+  t3devoir: {
+    eye:'Mini-leçon', tit:'Les verbes devoir et falloir',
+    blocs:[
+      {t:'texte', h:"Exprimer une obligation, deux façons",
+       p:"Pour dire qu'une action est nécessaire, le français utilise surtout deux constructions : <b>devoir</b>, qui se conjugue selon la personne, et <b>il faut</b>, une formule fixe qui ne change jamais. Les deux sont suivies d'un verbe à l'infinitif.",
+       note:"Nour l'utilise dans son message professionnel : « Je <em>dois</em> aller chercher ma mère » aurait pu remplacer une explication plus longue."},
+
+      {t:'ana', h:"devoir + infinitif",
+       p:"« Devoir » se conjugue selon qui a l'obligation, et le deuxième verbe reste toujours à l'infinitif.",
+       mots:[['Sujet','je'],['Devoir, conjugué','dois',true],['Infinitif',"m'inscrire aujourd'hui"]],
+       say:"je dois m'inscrire aujourd'hui",
+       note:"« devoir » se conjugue : je dois, tu dois, il/elle doit, nous devons, vous devez, ils doivent."},
+
+      {t:'ana', h:"il faut + infinitif",
+       p:"« Il faut » ne change jamais de forme — pratique pour donner une consigne générale, sans préciser à qui elle s'adresse.",
+       mots:[['Formule fixe','Il faut',true],['Infinitif','remplir le formulaire jaune']],
+       say:'il faut remplir le formulaire jaune',
+       note:"« Il faut » convient bien à l'écrit d'une consigne officielle : neutre, il ne vise personne en particulier."},
+
+      {t:'labo', h:"Comparez devoir et il faut",
+       p:"Choisissez un sujet et observez la différence.",
+       axes:[{id:'s', lbl:'Qui a l\'obligation ?', opts:[['j','je (avec devoir)'],['n','Nour (avec devoir)'],['x','personne en particulier (avec il faut)']]}],
+       out:{
+         j:{w:['Je','dois','arriver à l\'heure.'], say:'Je dois arriver à l\'heure.', n:'devoir conjugué au « je »'},
+         n:{w:['Nour','doit','demander une explication.'], say:'Nour doit demander une explication.', n:'devoir conjugué au « elle »'},
+         x:{w:['Il','faut','justifier son retard par écrit.'], say:'Il faut justifier son retard par écrit.', n:'il faut — ne change jamais de forme'},
+       },
+       note:"« devoir » précise qui doit agir et se conjugue pour cette personne ; « il faut » donne une règle sans préciser qui, pratique pour une consigne générale."},
+
+      {t:'ex', h:"Cinq phrases à reconnaître",
+       p:"Écoutez chacune : notez si c'est « devoir » conjugué ou « il faut ».",
+       rows:[
+         ["Je dois aller chez le dentiste dans vingt minutes.","devoir, conjugué"],
+         ["Nour doit demander une explication à sa collègue.","devoir, conjugué"],
+         ["Il faut expliquer la procédure aux nouveaux employés.","il faut, impersonnel"],
+         ["Il faut justifier votre retard par écrit avant midi.","il faut, impersonnel"],
+         ["J'écris un courriel à mon enseignante : je dois le faire aujourd'hui.","devoir, conjugué"],
+       ]},
+
+      {t:'piege', h:"Un piège fréquent",
+       rows:[
+         ["Il faut vous justifiez votre retard.","Il faut justifier votre retard. / Vous devez justifier votre retard.",
+          "Après « il faut », le deuxième verbe reste toujours à l'infinitif — jamais conjugué, même si une personne précise est visée."],
+       ]},
+
+      {t:'check', h:"Est-ce que c'est clair maintenant ?",
+       p:"Quatre questions rapides. Elles ne comptent pas dans votre score.",
+       qs:[
+         {q:"Je vais chez le dentiste dans vingt minutes. → Je ___ y aller.", opts:["dois","faut"], ok:0,
+          fb:"Avec le sujet « je », c'est « devoir » qui se conjugue : je dois."},
+         {q:"Nour demande une explication à sa collègue. → Nour ___ demander une explication.", opts:["doit","faut"], ok:0,
+          fb:"Sujet « Nour » = elle : elle doit."},
+         {q:"Consigne générale, sans sujet précis : « ___ remplir le formulaire jaune. »", opts:["Il faut","Il doit"], ok:0,
+          fb:"Pour une consigne impersonnelle, on utilise la formule fixe « il faut »."},
+         {q:"Après « il faut », le verbe qui suit est toujours…", opts:["à l'infinitif","conjugué selon la personne"], ok:0,
+          fb:"« il faut » est suivi d'un infinitif, quelle que soit la personne visée par l'obligation."},
+       ]},
+    ]
+  },
+};
+
+// ── « EN APPRENDRE PLUS » : rendu du panneau ──────────────────────────
+// Souligne en vert ce qui est noté entre accolades : « superficiel{le} »,
+// « Pour{riez}-vous… ». Les crochets restent libres pour les sons — [y], [u].
+function plMark(w){
+  return String(w).split(/(\{[^}]*\})/).map(p=>
+    (p.charAt(0)==='{' && p.charAt(p.length-1)==='}')
+      ? '<span class="pl-end">'+esc(p.slice(1,-1))+'</span>'
+      : esc(p)
+  ).join('');
+}
+const plPlain = w => String(w).replace(/[{}]/g,'');
+
+// Nom du MP3 d'un bouton d'écoute de mini-leçon : sons/<id>.mp3. Si le fichier
+// n'existe pas, playWord retombe sur la synthèse vocale — donc on peut brancher
+// les boutons avant d'avoir généré les sons.
+const plAudioId = (exId, kind, bi, sub) =>
+  'plus_' + exId + '_' + kind + bi + (sub===undefined ? '' : '_' + sub);
+
+// Liste { identifiant → texte à lire } de tous les boutons d'écoute des
+// mini-leçons. C'est la source de vérité du script de génération audio :
+// ouvrir le module dans le navigateur et lancer plAudioManifest() pour la
+// relire après toute modification de PLUS.
+function plAudioManifest(){
+  const m = {};
+  Object.keys(PLUS).forEach(exId=>{
+    PLUS[exId].blocs.forEach((b,bi)=>{
+      if(b.t==='ana')
+        m[plAudioId(exId,'ana',bi)] = b.say || b.mots.map(x=>plPlain(x[1])).join(' ');
+      if(b.t==='ex')
+        b.rows.forEach((r,ri)=>{ m[plAudioId(exId,'ex',bi,ri)] = r[2] || r[0]; });
+      if(b.t==='labo')
+        Object.keys(b.out).forEach(k=>{
+          const o=b.out[k];
+          m[plAudioId(exId,'lab',bi,k)] = o.say || o.w.map(plPlain).join(' ');
+        });
+    });
+  });
+  return m;
+}
+const plLab = {};   // état des laboratoires, par clé « exoId-index de bloc »
+
+function plBloc(b, exId, bi){
+  const eye = {texte:'Explication', ana:'Anatomie', labo:'À manipuler',
+               ex:'Exemples', piege:'Attention', check:'Vérifiez-vous'}[b.t] || 'Explication';
+  let h='<div class="pl-blk"><div class="pl-eye">'+eye+'</div>';
+  if(b.h) h+='<div class="pl-h">'+esc(b.h)+'</div>';
+  if(b.p) h+='<div class="pl-p">'+b.p+'</div>';
+
+  if(b.t==='ana'){
+    h+='<div class="pl-ana">';
+    b.mots.forEach(m=>{
+      const key = m[2]===true || /noyau/i.test(m[0]);
+      h+='<div class="pl-tok'+(key?' is-key':'')+'"><span class="pl-tok-lbl">'+esc(m[0])+'</span>'
+       + '<span class="pl-tok-w">'+plMark(m[1])+'</span></div>';
+    });
+    // Les étiquettes d'anatomie mises bout à bout ne se lisent pas toujours
+    // bien (élisions, traits d'union, symboles phonétiques) : `say` donne le
+    // texte à prononcer quand la simple concaténation ne suffit pas.
+    const anaTxt = b.say || b.mots.map(m=>plPlain(m[1])).join(' ');
+    h+='<button class="btn-audio-round" type="button" title="Écouter le groupe"'
+     + ' onclick="playWord(this,\''+jsq(anaTxt)+'\',\''+plAudioId(exId,'ana',bi)+'\')">'+ICON_SPEAK+'</button>';
+    h+='</div>';
+  }
+
+  if(b.t==='labo'){
+    h+='<div id="lab-'+exId+'-'+bi+'" style="margin-top:16px">';
+    b.axes.forEach(a=>{
+      h+='<div class="pl-axe"><div class="pl-axe-lbl">'+esc(a.lbl)+'</div><div class="pl-opts">';
+      a.opts.forEach(o=>{
+        h+='<button class="pl-opt" type="button" data-axe="'+a.id+'" data-val="'+o[0]+'" aria-pressed="false"'
+         + ' onclick="plLabo(\''+exId+'\','+bi+',\''+a.id+'\',\''+o[0]+'\')">'+esc(o[1])+'</button>';
+      });
+      h+='</div></div>';
+    });
+    h+='<div class="pl-out"><div class="pl-out-w"></div>'
+     + '<button class="btn-audio-round" type="button" title="Écouter">'+ICON_SPEAK+'</button>'
+     + '<div class="pl-out-n"></div></div></div>';
+  }
+
+  if(b.t==='ex'){
+    h+='<div style="margin-top:14px">';
+    b.rows.forEach((r,ri)=>{
+      h+='<div class="pl-ex"><button class="btn-audio-round" type="button" title="Écouter"'
+       + ' onclick="playWord(this,\''+jsq(r[2]||r[0])+'\',\''+plAudioId(exId,'ex',bi,ri)+'\')">'+ICON_SPEAK+'</button>'
+       + '<span class="pl-ex-w">'+esc(r[0])+'</span><span class="pl-ex-t">'+esc(r[1])+'</span></div>';
+    });
+    h+='</div>';
+  }
+
+  if(b.t==='piege'){
+    h+='<div style="margin-top:6px">';
+    b.rows.forEach(r=>{
+      h+='<div class="pl-trap"><div class="pl-bad"><span aria-hidden="true">✕</span><span>'+esc(r[0])+'</span></div>'
+       + '<div class="pl-good"><span aria-hidden="true">✓</span><span>'+esc(r[1])+'</span></div>'
+       + '<div class="pl-why">'+r[2]+'</div></div>';
+    });
+    h+='</div>';
+  }
+
+  if(b.t==='check'){
+    h+='<div style="margin-top:12px">';
+    b.qs.forEach((q,qi)=>{
+      h+='<div class="pl-q"><div class="pl-qtxt">'+esc(q.q)+'</div><div class="pl-opts">';
+      q.opts.forEach((o,oi)=>{
+        h+='<button class="pl-opt" type="button" onclick="plCheck(this,\''+exId+'\','+bi+','+qi+','+oi+')">'+esc(o)+'</button>';
+      });
+      h+='</div><div class="pl-fb" aria-live="polite"></div></div>';
+    });
+    h+='</div>';
+  }
+
+  if(b.note) h+='<div class="pl-note">'+b.note+'</div>';
+  return h+'</div>';
+}
+
+function plLabo(exId, bi, axeId, val){
+  const key=exId+'-'+bi, b=PLUS[exId].blocs[bi];
+  const st=plLab[key] || (plLab[key]={});
+  b.axes.forEach(a=>{ if(st[a.id]==null) st[a.id]=a.opts[0][0]; });
+  if(axeId) st[axeId]=val;
+  const box=document.getElementById('lab-'+key); if(!box) return;
+  box.querySelectorAll('.pl-opt[data-axe]').forEach(el=>{
+    const on = st[el.dataset.axe]===el.dataset.val;
+    el.classList.toggle('on', on);
+    el.setAttribute('aria-pressed', on?'true':'false');
+  });
+  const o = b.out[b.axes.map(a=>st[a.id]).join('')];
+  if(!o) return;
+  const out = box.querySelector('.pl-out-w');
+  out.innerHTML = o.w.map(plMark).join(' ');
+  // Une phrase longue ne tient pas au corps de 27 px : on descend d'un cran.
+  out.classList.toggle('is-long', o.w.map(plPlain).join(' ').length > 30);
+  box.querySelector('.pl-out-n').textContent = o.n;
+  // `say` sert quand le texte affiché contient de la ponctuation de mise en
+  // page (une paire « tout · tu » se lit mieux avec une virgule).
+  const phrase = o.say || o.w.map(plPlain).join(' ');
+  const fid = plAudioId(exId, 'lab', bi, b.axes.map(a=>st[a.id]).join(''));
+  box.querySelector('.pl-out .btn-audio-round').onclick = function(){ playWord(this, phrase, fid); };
+}
+
+function plCheck(btn, exId, bi, qi, oi){
+  const q=PLUS[exId].blocs[bi].qs[qi];
+  const wrap=btn.closest('.pl-q');
+  const opts=wrap.querySelectorAll('.pl-opt');
+  opts.forEach(el=>el.classList.remove('ok','no'));
+  const good = oi===q.ok;
+  btn.classList.add(good?'ok':'no');
+  if(!good) opts[q.ok].classList.add('ok');
+  const fb=wrap.querySelector('.pl-fb');
+  fb.className='pl-fb on '+(good?'ok':'no');
+  fb.innerHTML='<span aria-hidden="true">'+(good?'✓':'✕')+'</span> '+(good?'':'La bonne réponse est « '+esc(q.opts[q.ok])+' ». ')+q.fb;
+}
 
 // ── PROPOSITION D'AIDE APRÈS PLUSIEURS ERREURS ────────────────────────
 // Le module connaît déjà, à la correction, quels énoncés sont ratés. Au-delà
@@ -2065,6 +2748,47 @@ function refuserAide(exId){
   if(el) el.remove();
   lmsTrack('aide_refusee', {exercice: exId, erreurs: AIDE.err[exId]});
 }
+
+let plLastFocus=null;
+// `cible` : type de bloc vers lequel faire défiler le panneau ('labo' pour la
+// manipulation). Sans lui, l'élève arrive en haut d'une longue leçon.
+function plusOpen(exId, cible){
+  const P=PLUS[exId]; if(!P) return;
+  document.getElementById('plus-eye').textContent = P.eye || 'Mini-leçon';
+  document.getElementById('plus-tit').textContent = P.tit;
+  const body=document.getElementById('plus-body');
+  body.innerHTML = P.blocs.map((b,bi)=>plBloc(b,exId,bi)).join('');
+  body.scrollTop=0;
+  document.getElementById('plus-ov').classList.add('on');
+  // Le défilement appartient à <html> (body est figé à height:100%) — poser
+  // overflow:hidden sur body rognerait toute la page.
+  document.documentElement.style.overflow='hidden';
+  P.blocs.forEach((b,bi)=>{ if(b.t==='labo') plLabo(exId,bi,null,null); });
+  plLastFocus=document.activeElement;
+  document.getElementById('plus-close').focus();
+  lmsTrack('plus_open', {savoir: exId, cible: cible || ''});
+  if(cible){
+    const i = P.blocs.findIndex(b => b.t === cible);
+    if(i >= 0){
+      const bloc = body.children[i];
+      if(bloc){
+        bloc.scrollIntoView({block:'start'});
+        bloc.classList.add('is-cible');
+        setTimeout(()=>bloc.classList.remove('is-cible'), 2500);
+      }
+    }
+  }
+}
+function plusClose(){
+  document.getElementById('plus-ov').classList.remove('on');
+  document.documentElement.style.overflow='';
+  if(plLastFocus && plLastFocus.focus) plLastFocus.focus();
+}
+document.getElementById('plus-close').addEventListener('click', plusClose);
+document.getElementById('plus-ov').addEventListener('click', e=>{ if(e.target.id==='plus-ov') plusClose(); });
+document.addEventListener('keydown', e=>{
+  if(e.key==='Escape' && document.getElementById('plus-ov').classList.contains('on')) plusClose();
+});
 
 // ── RENDER ────────────────────────────────────────────────────────────
 function render(){
