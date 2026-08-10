@@ -16,60 +16,60 @@ except ImportError:
     sys.exit(1)
 
 VOICES = {
-    "narrateur":   "IPgYtHTNLjC7Bq7IPHrm",   # 👨 Narrateur — Le présentateur
-    "masculin_1":  "93nuHbke4dTER9x2pDwE",   # 👨 Masculin #1 — Karim
-    "feminin_2":   "WW0JfNPk5DgcQdM0d6X6",   # 👩 Féminine #2 — Farida
-    "feminin_3":   "rCmVtv8cYU60uhlsOo1M",   # 👩 Féminine #3 — Amina
-    "enseignante": "K7gx0ylJdff0yjM2uVQS",   # 👩 Féminine #1 — Chantal
+    "narrateur":   "IPgYtHTNLjC7Bq7IPHrm",   # 👨 Narrateur — Le météorologue
+    "masculin_1":  "93nuHbke4dTER9x2pDwE",   # 👨 Masculin #1 — Diego
+    "feminin_2":   "WW0JfNPk5DgcQdM0d6X6",   # 👩 Féminine #2 — Josée
+    "feminin_3":   "rCmVtv8cYU60uhlsOo1M",   # 👩 Féminine #3 — Prisca
+    "enseignante": "K7gx0ylJdff0yjM2uVQS",   # 👩 Féminine #1 — Mado
 }
 
 DEFAULT_VOICE_SETTINGS = {"stability": 0.5, "similarity_boost": 0.75}
 VOICE_SETTINGS_OVERRIDES = {}
 
 VOICE_ASSOC = {
-    "LE PRÉSENTATEUR": "narrateur",
-    "KARIM":           "masculin_1",
-    "FARIDA":          "feminin_2",
-    "AMINA":           "feminin_3",
-    "CHANTAL":         "enseignante",
+    "LE MÉTÉOROLOGUE": "narrateur",
+    "DIEGO":           "masculin_1",
+    "JOSÉE":           "feminin_2",
+    "PRISCA":          "feminin_3",
+    "MADO":            "enseignante",
 }
 
 DIALOGUES = {
     "module-meteo/prep": {
-        "title": "Quelles sont les prévisions ? — Je me prépare (Une promenade malgré le froid)",
+        "title": "Quelles sont les prévisions ? — Je me prépare (Monte-t-on sur le toit demain ?)",
         "lines": [
-            ("FARIDA", "Karim, si on allait marcher un peu après le souper ? Le médecin dit que je dois bouger davantage pour bien récupérer."),
-            ("KARIM", "Tu es sérieuse ? Il fait -18 aujourd'hui !"),
-            ("FARIDA", "On va s'habiller chaudement : un gros manteau, une tuque, des mitaines et de bonnes bottes."),
-            ("KARIM", "Bon, si tu te sens capable, une petite marche, d'accord."),
-            ("KARIM", "Je ne veux surtout pas que tu te blesses de nouveau. Ça fait seulement cinq semaines que tu es sortie de l'hôpital."),
-            ("FARIDA", "Je me sens vraiment bien, je te le promets."),
-            ("KARIM", "Je sais, mais la physiothérapeute a été claire : il faut y aller doucement."),
-            ("FARIDA", "Je suis restée assise pendant plus d'un mois, ça suffit ! En plus, on annonce du soleil tout l'après-midi. Il fera plus chaud que maintenant."),
-            ("KARIM", "D'accord, d'accord... allons-y, mais pas trop longtemps !"),
+            ("JOSÉE", "Diego, j'annule la journée de demain sur le toit de l'école. On annonce du verglas avant six heures."),
+            ("DIEGO", "Du verglas ? Mais on a déjà trois jours de retard sur le chantier..."),
+            ("JOSÉE", "Notre règle est claire : personne ne monte si les rafales dépassent quarante kilomètres à l'heure ou si la membrane est glacée."),
+            ("DIEGO", "J'ai des crampons dans mon coffre. Je pourrais essayer, au moins sur la pente sud."),
+            ("JOSÉE", "Non. Voilà deux ans, un couvreur de l'équipe s'est fracturé le poignet sur une pente gelée. Je ne recommencerai pas ça."),
+            ("DIEGO", "D'accord. Qu'est-ce qu'on fait, alors ?"),
+            ("JOSÉE", "On rentre à l'atelier : il y a du bardeau à préparer pendant toute la matinée. Si la pluie verglaçante cesse en après-midi, on remonte."),
+            ("DIEGO", "Je préviens Prisca ? Elle part de Longueuil vers cinq heures, d'habitude."),
+            ("JOSÉE", "Oui, téléphone-lui tout de suite. Elle te remerciera."),
         ],
     },
     "module-meteo/t1": {
-        "title": "Quelles sont les prévisions ? — Tâche 1 (Bulletin météo de la semaine)",
+        "title": "Quelles sont les prévisions ? — Tâche 1 (Le bulletin de six heures)",
         "lines": [
-            ("LE PRÉSENTATEUR", "Bonjour à tous, voici les prévisions pour le reste de la semaine. Aujourd'hui, mercredi, le mercure affiche moins dix degrés sous un ciel dégagé."),
-            ("LE PRÉSENTATEUR", "Ce soir, le ciel restera dégagé, sans précipitation prévue."),
-            ("LE PRÉSENTATEUR", "Demain jeudi, une accumulation de neige de cinq centimètres est attendue en matinée."),
-            ("LE PRÉSENTATEUR", "Le mercure chutera à moins vingt-deux degrés jeudi, avec des vents forts qui rendront l'air encore plus froid : habillez-vous chaudement !"),
-            ("LE PRÉSENTATEUR", "Vendredi, le temps se radoucira un peu, autour de moins huit degrés."),
-            ("LE PRÉSENTATEUR", "En fin de semaine, le ciel se dégagera progressivement et les températures remonteront : une excellente occasion de sortir profiter du plein air !"),
+            ("LE MÉTÉOROLOGUE", "Il est six heures. Voici le bulletin spécial pour la Montérégie : une pluie verglaçante recouvre déjà les routes de la Rive-Sud."),
+            ("LE MÉTÉOROLOGUE", "Le mercure se maintiendra autour de zéro degré jusqu'au milieu de l'avant-midi, ce qui gardera la chaussée glissante."),
+            ("LE MÉTÉOROLOGUE", "Des rafales de soixante kilomètres à l'heure balaieront la région dès neuf heures, et la poudrerie réduira la visibilité par moments."),
+            ("LE MÉTÉOROLOGUE", "En après-midi, le vent tombera et le mercure descendra à moins six degrés : la pluie verglaçante se changera alors en neige."),
+            ("LE MÉTÉOROLOGUE", "Deux à quatre centimètres d'accumulation sont attendus avant la fin de la soirée."),
+            ("LE MÉTÉOROLOGUE", "Demain samedi, le ciel se dégagera et le vent sera faible : une journée idéale pour les travaux en hauteur."),
         ],
     },
     "module-meteo/t2": {
-        "title": "Quelles sont les prévisions ? — Tâche 2 (Amina et Chantal parlent de l'hiver)",
+        "title": "Quelles sont les prévisions ? — Tâche 2 (Prisca et Mado avant le départ)",
         "lines": [
-            ("AMINA", "C'est mon premier hiver ici, à Québec. J'ai du mal à m'habituer !"),
-            ("CHANTAL", "Je comprends, ça prend du temps de s'acclimater à notre climat."),
-            ("AMINA", "Je ne sais jamais comment m'habiller. Un jour il fait doux, le lendemain il gèle !"),
-            ("CHANTAL", "C'est vrai que la météo change vite ici. Le mieux, c'est d'écouter les prévisions chaque matin."),
-            ("AMINA", "Je viens de Tunis, alors je ne suis vraiment pas habituée à ça !"),
-            ("CHANTAL", "Pour ne pas être prise par surprise, habille-toi comme un oignon : plusieurs couches que tu peux enlever si tu as chaud."),
-            ("AMINA", "Ah, bonne idée, merci !"),
+            ("PRISCA", "Mado, je pars pour le chantier de Granby. Est-ce que l'autoroute 10 est praticable ?"),
+            ("MADO", "Attends, je regarde le site du ministère des Transports... Il y a un avertissement de poudrerie entre Sainte-Julie et Marieville."),
+            ("PRISCA", "Est-ce qu'on ferme la route ?"),
+            ("MADO", "Non, elle reste ouverte, mais la visibilité tombe à moins de deux cents mètres par moments."),
+            ("PRISCA", "Je devrais peut-être attendre que le vent faiblisse."),
+            ("MADO", "C'est ce que je conseille à tout le monde ce matin. Je leur envoie un message dès que l'avertissement sera levé."),
+            ("PRISCA", "Parfait. Je vais préparer les feuilles de temps pendant ce temps-là."),
         ],
     },
 }
