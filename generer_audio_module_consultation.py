@@ -18,15 +18,29 @@ except ImportError:
 VOICES = {
     "enseignante": "K7gx0ylJdff0yjM2uVQS",   # 👩 Féminine #1
     "feminin_2":   "WW0JfNPk5DgcQdM0d6X6",   # 👩 Féminine #2
+    "feminin_3":   "rCmVtv8cYU60uhlsOo1M",   # 👩 Féminine #3 — Rosalie (2e essai de voix ; la 1re, u5l0VNCfzO5oqrKTuA1e, corrigeait bien « est-ce que » mais son réglage d'émotion n'a pas convenu)
     "masculin_1":  "93nuHbke4dTER9x2pDwE",   # 👨 Masculin #1
     "narrateur":   "IPgYtHTNLjC7Bq7IPHrm",   # 👨 Narrateur
+}
+
+# Réglages par défaut : stability haute → débit régulier mais plat.
+# stability basse et style > 0 augmentent l'expressivité (ElevenLabs : « lower
+# stability introduces broader emotional range », « style amplifies the
+# original speaker's style »). Réglage par voix, pas global : on ne veut pas
+# changer le ton des personnages déjà approuvés en touchant à un seul.
+DEFAULT_VOICE_SETTINGS = {"stability": 0.5, "similarity_boost": 0.75}
+VOICE_SETTINGS_OVERRIDES = {
+    # Nouvelle voix pour Rosalie (rCmVtv8cYU60uhlsOo1M) : on repart des
+    # réglages par défaut plutôt que de garder l'ajustement d'émotion trouvé
+    # pour l'ancienne voix — un dosage stability/style qui convenait à une
+    # voix ne se transpose pas forcément à une autre.
 }
 
 # Chaque personnage a une voix distincte de son interlocuteur, pour qu'on
 # reconnaisse qui parle sans jamais entendre le nom du personnage.
 VOICE_ASSOC = {
     "YANNICK":       "masculin_1",
-    "ROSALIE":       "feminin_2",
+    "ROSALIE":       "feminin_3",
     "L'INFIRMIÈRE":  "enseignante",
     "LA DOCTEURE":   "feminin_2",
 }
@@ -80,13 +94,13 @@ def char_slug(name):
     return s.replace("'", "").replace(" ", "_")
 
 
-def generate_audio(api_key, text, voice_id, output_path):
+def generate_audio(api_key, text, voice_id, output_path, voice_settings):
     url = f"https://api.elevenlabs.io/v1/text-to-speech/{voice_id}"
     headers = {"xi-api-key": api_key, "Content-Type": "application/json"}
     payload = {
         "text": text,
         "model_id": "eleven_multilingual_v2",
-        "voice_settings": {"stability": 0.5, "similarity_boost": 0.75},
+        "voice_settings": voice_settings,
     }
     try:
         r = requests.post(url, json=payload, headers=headers, timeout=45)
@@ -110,16 +124,33 @@ def main():
     base_dir = Path(__file__).resolve().parent / "assets" / "interactive"
     total = success = 0
 
+    # --character NOM : ne régénère que les répliques de ce personnage
+    # (utile pour tester une nouvelle voix sans repayer tout le dialogue).
+    # --dialogue id : limite à un seul dialogue (ex. module-consultation/prep).
+    only_character = None
+    only_dialogue = None
+    for i, a in enumerate(sys.argv):
+        if a == "--character" and i + 1 < len(sys.argv):
+            only_character = sys.argv[i + 1].upper()
+        if a == "--dialogue" and i + 1 < len(sys.argv):
+            only_dialogue = sys.argv[i + 1]
+
     for dial_id, data in DIALOGUES.items():
+        if only_dialogue and dial_id != only_dialogue:
+            continue
         print(f"\n📖 {data['title']}")
         dir_path = base_dir / dial_id
         dir_path.mkdir(parents=True, exist_ok=True)
         for i, (character, text) in enumerate(data["lines"], 1):
-            voice_id = VOICES[VOICE_ASSOC.get(character, "feminin_2")]
+            if only_character and character.upper() != only_character:
+                continue
+            voice_key = VOICE_ASSOC.get(character, "feminin_2")
+            voice_id = VOICES[voice_key]
+            settings = VOICE_SETTINGS_OVERRIDES.get(voice_key, DEFAULT_VOICE_SETTINGS)
             filename = f"line_{i:02d}_{char_slug(character)}.mp3"
             print(f"  {i:2d}. {character[:16]:16s} → ", end="", flush=True)
             total += 1
-            if generate_audio(api_key, text, voice_id, dir_path / filename):
+            if generate_audio(api_key, text, voice_id, dir_path / filename, settings):
                 print(f"✓ {filename}")
                 success += 1
             else:
