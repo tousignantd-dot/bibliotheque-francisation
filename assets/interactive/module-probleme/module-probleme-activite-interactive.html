@@ -224,11 +224,71 @@ body{display:flex;flex-direction:column;min-height:100vh}
 .custom{max-width:none}
 .custom .lead,.custom .wq,.custom .self-txt{max-width:68ch}
 .lead{font-size:15px;font-weight:700;color:#3B6156;line-height:1.6;margin-bottom:14px}
-.rec-zone{display:flex;flex-direction:column;align-items:center;gap:10px;margin:8px 0}
-#recBtn{width:78px;height:78px;border-radius:50%;border:none;background:#1D6B8F;color:#fff;font-size:30px;cursor:pointer;box-shadow:0 4px 16px rgba(15,118,110,.32)}
-#recBtn.recording{background:#E23D2E;animation:pulse 1.2s infinite}
-@keyframes pulse{0%{box-shadow:0 0 0 0 rgba(226,61,46,.45)}70%{box-shadow:0 0 0 16px rgba(226,61,46,0)}100%{box-shadow:0 0 0 0 rgba(226,61,46,0)}}
-.rec-lbl{font-size:13px;font-weight:800;color:#4A6F68}
+/* Blocs de production (oral / écrit) — refonte */
+.prod-eyebrow{display:flex;align-items:center;gap:10px;margin-bottom:6px}
+.prod-num{flex:none;width:26px;height:26px;border-radius:8px;background:#E6F5EE;color:#0A8F5B;font-size:13px;font-weight:900;display:flex;align-items:center;justify-content:center}
+.prod-kind{font-size:12px;font-weight:800;letter-spacing:.14em;text-transform:uppercase;color:#0A8F5B}
+.prod-tit{font-size:26px;font-weight:900;line-height:1.2;color:#17181A;margin:0 0 8px}
+.prod-lead{margin:0 0 20px;font-size:16px;font-weight:600;line-height:1.6;color:#6E7175;max-width:62ch;text-wrap:pretty}
+.plan{display:grid;grid-template-columns:repeat(3,1fr);gap:12px;margin-bottom:24px}
+.plan-step{border:1px solid #EAEAE8;border-left:4px solid #0A8F5B;border-radius:12px;padding:14px 16px;background:#FCFCFB}
+.plan-no{font-size:11px;font-weight:900;letter-spacing:.12em;color:#0A8F5B;margin-bottom:6px}
+.plan-t{font-size:17px;font-weight:800;color:#17181A;margin-bottom:6px}
+.plan-ex{font-size:14px;font-weight:600;font-style:italic;line-height:1.5;color:#6E7175}
+.rec-panel{border:1px solid #EAEAE8;border-radius:16px;background:#F7F7F5;overflow:hidden;margin-bottom:12px}
+.rec-steps{display:flex;background:#fff;border-bottom:1px solid #EAEAE8}
+.rec-step{flex:1;display:flex;align-items:center;gap:10px;padding:12px 16px;border-bottom:3px solid transparent}
+.rec-step .n{flex:none;width:24px;height:24px;border-radius:999px;background:#EAEAE8;color:#6E7175;font-size:12px;font-weight:900;display:flex;align-items:center;justify-content:center}
+.rec-step .l{font-size:14px;font-weight:800;color:#6E7175}
+.rec-step.on{border-bottom-color:#0A8F5B}
+.rec-step.on .n{background:#0A8F5B;color:#fff}
+.rec-step.on .l{color:#17181A}
+.rec-body{display:flex;align-items:center;gap:22px;padding:24px 26px}
+#recBtn{flex:none;width:88px;height:88px;border-radius:999px;border:none;background:#DC2626;box-shadow:0 4px 16px rgba(220,38,38,.28);cursor:pointer;display:flex;align-items:center;justify-content:center;padding:0}
+#recBtn .dot{display:block;width:26px;height:26px;border-radius:999px;background:#fff;transition:border-radius .15s ease}
+#recBtn.recording{animation:pulse 1.2s infinite}
+#recBtn.recording .dot{border-radius:5px;width:24px;height:24px}
+@keyframes pulse{0%{box-shadow:0 0 0 0 rgba(220,38,38,.45)}70%{box-shadow:0 0 0 16px rgba(220,38,38,0)}100%{box-shadow:0 0 0 0 rgba(220,38,38,0)}}
+.rec-lbl{font-size:19px;font-weight:800;color:#17181A;margin-bottom:4px}
+.rec-hint{font-size:15px;font-weight:600;color:#6E7175}
+.req{border:1px solid #EAEAE8;border-radius:14px;overflow:hidden;margin-bottom:20px}
+.req-hd{background:#F7F7F5;border-bottom:1px solid #EAEAE8;padding:10px 16px;font-size:13px;font-weight:800;letter-spacing:.1em;text-transform:uppercase;color:#6E7175}
+.req-grid{display:grid;grid-template-columns:1fr 1fr}
+.req-it{display:flex;align-items:center;gap:12px;min-height:52px;padding:8px 16px;cursor:pointer;border-bottom:1px solid #EAEAE8;font-size:16px;font-weight:700;color:#17181A}
+.req-it:nth-child(odd){border-right:1px solid #EAEAE8}
+.req-it:nth-last-child(-n+2){border-bottom:none}
+.req-it input{position:absolute;opacity:0;width:0;height:0}
+.req-box{flex:none;width:24px;height:24px;border-radius:7px;border:2px solid #D6D6D2;background:#fff;display:flex;align-items:center;justify-content:center;color:#fff;font-size:14px;font-weight:900}
+.req-it input:checked + .req-box{background:#0A8F5B;border-color:#0A8F5B}
+.req-it input:checked + .req-box::after{content:"✓"}
+.req-it input:focus-visible + .req-box{outline:3px solid #0A8F5B;outline-offset:2px}
+.req-note{border-top:1px solid #EAEAE8;background:#E6F5EE;padding:10px 16px;font-size:14px;font-weight:700;color:#0A6B46}
+.mail{border:2px solid #EAEAE8;border-radius:14px;overflow:hidden}
+.mail-row{display:flex;gap:8px;align-items:baseline;padding:12px 16px;border-bottom:1px solid #EAEAE8;background:#FCFCFB}
+.mail-k{flex:none;width:56px;font-size:13px;font-weight:800;color:#6E7175}
+.mail-v{font-size:15px;font-weight:700;color:#17181A}
+.mail textarea{width:100%;box-sizing:border-box;display:block;border:none;border-radius:0;background:#fff;padding:16px;min-height:150px;font-size:16px;font-weight:600;line-height:1.7;color:#17181A}
+.mail textarea::placeholder{color:#6E7175}
+.mail textarea:focus{outline:3px solid #0A8F5B;outline-offset:-3px;border-color:transparent}
+.mail-foot{display:flex;align-items:center;justify-content:space-between;gap:16px;flex-wrap:wrap;padding:12px 16px;border-top:1px solid #EAEAE8;background:#FCFCFB}
+.mail-count{font-size:14px;font-weight:700;color:#6E7175}
+.btn-prod{min-height:44px;padding:11px 22px;border:none;border-radius:10px;background:#0A8F5B;color:#fff;font-family:'Nunito',sans-serif;font-size:16px;font-weight:800;cursor:pointer}
+.btn-prod:hover{background:#087A4D}
+.prod-tools{display:flex;flex-direction:column;gap:12px}
+.prod-tools .btn-pri{background:#0A8F5B;border-color:transparent}
+.prod-tools .btn-pri:hover{background:#087A4D}
+.prod-tools .btn-ghost{background:#F7F7F5;color:#17181A;border-color:#EAEAE8}
+.prod-tools .btn-ghost:hover{background:#EFEFEC}
+.prod-tools .btn-send{background:#0A6B46}
+@media(max-width:720px){
+  .plan{grid-template-columns:1fr}
+  .rec-steps{flex-direction:column}
+  .rec-step{border-bottom:1px solid #EAEAE8;border-left:3px solid transparent}
+  .rec-step.on{border-left-color:#0A8F5B;border-bottom-color:#EAEAE8}
+  .req-grid{grid-template-columns:1fr}
+  .req-it,.req-it:nth-child(odd){border-right:none;border-bottom:1px solid #EAEAE8}
+  .rec-body{flex-direction:column;text-align:center}
+}
 textarea,input.txt{width:100%;border:2.5px solid #B7DED7;border-radius:12px;padding:11px 14px;font-family:'Nunito',sans-serif;font-size:15px;font-weight:700;color:#123B32;background:#F7FCFB;resize:vertical}
 textarea:focus{outline:none;border-color:#1D6B8F}
 .btn{font-family:'Nunito',sans-serif;font-size:15px;font-weight:800;border-radius:10px;padding:11px 18px;cursor:pointer;border:2.5px solid transparent}
@@ -2125,19 +2185,38 @@ function injectCustom(){
    </div>
 
    <div class="card custom">
-     <div class="c-hdr"><span class="tag" style="background:#0D9488">Production orale</span><span class="ctit" style="color:#0D9488">Décris ton problème en trois temps</span></div>
-     <p class="lead">Choisis un problème de logement — le tien ou un problème inventé — et <b>décris-le comme si tu parlais à ta propriétaire</b>. Suis les trois temps : <b>le fait</b>, <b>depuis quand et l'effet sur toi</b>, <b>ta demande</b>. Enregistre-toi, obtiens une rétroaction, puis envoie ta prise si tu le veux.</p>
-     <div class="rec-zone"><button id="recBtn">🎤</button><div class="rec-lbl" id="recLbl">Touche pour t'enregistrer</div></div>
-     <div id="poPrev" class="hidden" style="display:flex;flex-direction:column;gap:12px">
+     <div class="prod-eyebrow"><span class="prod-num">1</span><span class="prod-kind">Production orale</span></div>
+     <h3 class="prod-tit">Décris ton problème en trois temps</h3>
+     <p class="prod-lead">Choisis un problème de logement — le tien ou un problème inventé — et décris-le comme si tu parlais à ta propriétaire.</p>
+     <div class="plan">
+       <div class="plan-step"><div class="plan-no">TEMPS 1</div><div class="plan-t">Le fait</div><div class="plan-ex">« Il y a une fuite sous l'évier de la cuisine. »</div></div>
+       <div class="plan-step"><div class="plan-no">TEMPS 2</div><div class="plan-t">Depuis quand, et l'effet sur toi</div><div class="plan-ex">« Ça fait deux semaines. Je ne peux plus utiliser ma cuisine. »</div></div>
+       <div class="plan-step"><div class="plan-no">TEMPS 3</div><div class="plan-t">Ta demande</div><div class="plan-ex">« Pourriez-vous faire venir un plombier cette semaine ? »</div></div>
+     </div>
+     <div class="rec-panel">
+       <div class="rec-steps">
+         <div class="rec-step on" id="recStep1"><span class="n">1</span><span class="l">Je m'enregistre</span></div>
+         <div class="rec-step" id="recStep2"><span class="n">2</span><span class="l">Je m'écoute et je corrige</span></div>
+         <div class="rec-step" id="recStep3"><span class="n">3</span><span class="l">J'envoie à mon enseignant</span></div>
+       </div>
+       <div class="rec-body">
+         <button id="recBtn" type="button" aria-label="Démarrer l'enregistrement"><span class="dot"></span></button>
+         <div>
+           <div class="rec-lbl" id="recLbl">Touche pour t'enregistrer</div>
+           <div class="rec-hint">Parle environ 30 secondes. Tu pourras recommencer autant de fois que tu veux.</div>
+         </div>
+       </div>
+     </div>
+     <div id="poPrev" class="hidden prod-tools" style="display:flex;flex-direction:column;gap:12px">
        <audio id="poAudio" controls style="width:100%"></audio>
        <textarea id="poText" rows="2" placeholder="Transcription automatique (tu peux la corriger)…"></textarea>
        <div style="display:flex;gap:10px;flex-wrap:wrap">
-         <button class="btn btn-ghost" onclick="resetRec()">↺ Recommencer</button>
-         <button class="btn btn-pri" id="poFbBtn" onclick="poGetFeedback()">💬 Obtenir une rétroaction</button>
+         <button class="btn btn-ghost" onclick="resetRec()">Recommencer</button>
+         <button class="btn btn-pri" id="poFbBtn" onclick="poGetFeedback()">Obtenir une rétroaction</button>
        </div>
        <div class="fb" id="poFb" aria-live="polite"></div>
        <div id="poSend" style="display:none;gap:10px;flex-wrap:wrap;align-items:center">
-         <button class="btn btn-send" id="poSendBtn" onclick="poSend()">📨 Envoyer à mon enseignant</button>
+         <button class="btn btn-send" id="poSendBtn" onclick="poSend()">Envoyer à mon enseignant</button>
        </div>
      </div>
      <div class="status" id="poStatus">Analyse en cours…</div>
@@ -2145,10 +2224,28 @@ function injectCustom(){
    </div>
 
    <div class="card custom">
-     <div class="c-hdr"><span class="tag" style="background:#0E7490">Production écrite</span><span class="ctit" style="color:#0E7490">Le courriel qui laisse une trace</span></div>
-     <p class="lead">Tu as téléphoné à ta propriétaire, madame Rioux, mais rien n'a bougé depuis. <b>Écris-lui un courriel</b> pour garder une trace de ta demande. Ton message doit contenir : <b>le problème</b>, <b>depuis quand</b> il dure, <b>la conséquence</b> sur ta vie, et une <b>demande claire</b>. Emploie au moins une fois <em>faire</em> + infinitif. (5 à 8 phrases)</p>
-     <textarea id="peText" rows="7" placeholder="Bonjour Madame Rioux,&#10;Je vous écris pour faire suite à notre conversation téléphonique du…"></textarea>
-     <div style="margin-top:12px"><button class="btn btn-pri" id="peBtn" onclick="peCheck()">✍️ Vérifier mon message</button></div>
+     <div class="prod-eyebrow"><span class="prod-num">2</span><span class="prod-kind">Production écrite</span></div>
+     <h3 class="prod-tit">Le courriel qui laisse une trace</h3>
+     <p class="prod-lead">Tu as téléphoné à madame Rioux, mais rien n'a bougé. Écris-lui un courriel de 5 à 8 phrases pour garder une trace de ta demande.</p>
+     <div class="req">
+       <div class="req-hd">Ton courriel doit contenir</div>
+       <div class="req-grid">
+         <label class="req-it"><input type="checkbox"><span class="req-box"></span><span>Le problème</span></label>
+         <label class="req-it"><input type="checkbox"><span class="req-box"></span><span>Depuis quand il dure</span></label>
+         <label class="req-it"><input type="checkbox"><span class="req-box"></span><span>La conséquence sur ta vie</span></label>
+         <label class="req-it"><input type="checkbox"><span class="req-box"></span><span>Une demande claire</span></label>
+       </div>
+       <div class="req-note">Emploie au moins une fois <em>faire</em> + un verbe à l'infinitif.</div>
+     </div>
+     <div class="mail">
+       <div class="mail-row"><span class="mail-k">À</span><span class="mail-v">madame.rioux@courriel.ca</span></div>
+       <div class="mail-row"><span class="mail-k">Objet</span><span class="mail-v">Le problème dans mon logement — suite à notre appel</span></div>
+       <textarea id="peText" rows="7" aria-label="Ton courriel" oninput="peCount()" placeholder="Bonjour Madame Rioux,&#10;Je vous écris pour faire suite à notre conversation téléphonique du…"></textarea>
+       <div class="mail-foot">
+         <span class="mail-count" id="peCountLbl">0 phrase sur 5 à 8</span>
+         <button class="btn-prod" id="peBtn" type="button" onclick="peCheck()">Vérifier mon message</button>
+       </div>
+     </div>
      <div class="fb" id="peFb" aria-live="polite"></div>
      <div class="status" id="peStatus">Analyse en cours…</div>
      <div class="err" id="peErr"></div>
@@ -2215,6 +2312,7 @@ async function toggleRec(){
     audioUrl=URL.createObjectURL(audioBlob);
     const a=document.getElementById('poAudio'); if(a)a.src=audioUrl;
     document.getElementById('poPrev').classList.remove('hidden');
+    recStep(2);
   };
   mediaRecorder.start();
   if(SR){
@@ -2224,17 +2322,28 @@ async function toggleRec(){
     try{ recognition.start(); }catch(e){}
   }
   isRec=true;
-  const btn=document.getElementById('recBtn'); btn.classList.add('recording'); btn.textContent='⏹';
+  const btn=document.getElementById('recBtn'); btn.classList.add('recording');
+  btn.setAttribute('aria-label',"Arrêter l'enregistrement");
   document.getElementById('recLbl').textContent="Enregistrement… touche pour arrêter";
 }
 function stopRec(){
   isRec=false;
   if(mediaRecorder&&mediaRecorder.state!=='inactive')mediaRecorder.stop();
   if(recognition){ try{recognition.stop();}catch(e){} }
-  const btn=document.getElementById('recBtn'); if(btn){ btn.classList.remove('recording'); btn.textContent='🎤'; }
+  const btn=document.getElementById('recBtn'); if(btn){ btn.classList.remove('recording'); btn.setAttribute('aria-label',"Démarrer l'enregistrement"); }
   const l=document.getElementById('recLbl'); if(l)l.textContent="Touche pour réenregistrer";
 }
+function recStep(n){
+  for(let i=1;i<=3;i++){ const s=document.getElementById('recStep'+i); if(s) s.classList.toggle('on', i===n); }
+}
+function peCount(){
+  const el=document.getElementById('peText'), lbl=document.getElementById('peCountLbl');
+  if(!el||!lbl) return;
+  const n=(el.value.match(/[.!?…]+(\s|$)/g)||[]).length;
+  lbl.textContent = n+(n>1?' phrases':' phrase')+' sur 5 à 8';
+}
 function resetRec(){
+  recStep(1);
   audioBlob=null; if(audioUrl){URL.revokeObjectURL(audioUrl);audioUrl=null;}
   document.getElementById('poPrev').classList.add('hidden');
   document.getElementById('poText').value='';
@@ -2255,7 +2364,7 @@ async function poGetFeedback(){
     document.getElementById('poFbBtn').disabled=false;
     if(!res.ok){ showErr('poErr',data.error||'Une erreur est survenue.'); return; }
     renderCorr('poFb',data,text); poFeedback=corrSummary(data,text);
-    document.getElementById('poSend').style.display='flex';
+    document.getElementById('poSend').style.display='flex'; recStep(3);
   }catch(e){
     document.getElementById('poStatus').classList.remove('on');
     document.getElementById('poFbBtn').disabled=false;
@@ -2274,9 +2383,9 @@ async function poSend(){
   try{
     const res=await fetch('/api/oral/submit',{method:'POST',body:fd});
     const data=await res.json();
-    if(!res.ok){ showErr('poErr',data.error||"L'envoi a échoué."); btn.disabled=false; btn.textContent='📨 Envoyer à mon enseignant'; return; }
+    if(!res.ok){ showErr('poErr',data.error||"L'envoi a échoué."); btn.disabled=false; btn.textContent='Envoyer à mon enseignant'; return; }
     document.getElementById('poSend').innerHTML='<span class="sent">✅ Envoyé à ton enseignant !</span>';
-  }catch(e){ showErr('poErr',"Impossible d'envoyer."); btn.disabled=false; btn.textContent='📨 Envoyer à mon enseignant'; }
+  }catch(e){ showErr('poErr',"Impossible d'envoyer."); btn.disabled=false; btn.textContent='Envoyer à mon enseignant'; }
 }
 
 // ── CORRECTION ÉCRITE ─────────────────────────────────────────────────
