@@ -1088,7 +1088,7 @@ class Handler(http.server.SimpleHTTPRequestHandler):
         body = json.loads(self.rfile.read(length))
         field = body.get("field", "")
 
-        allowed = ("thumbnail", "interactive", "studentDoc", "slideshow", "planCours", "autres")
+        allowed = ("thumbnail", "interactive", "studentDoc", "slideshow", "planCours", "autres", "parcours")
         if field not in allowed:
             json_response(self, {"error": "Champ invalide"}, 400)
             return
@@ -1131,7 +1131,7 @@ class Handler(http.server.SimpleHTTPRequestHandler):
             json_response(self, {"error": "Activité introuvable"}, 404)
             return
 
-        for key in ("thumbnail", "interactive", "studentDoc", "slideshow", "planCours", "autres"):
+        for key in ("thumbnail", "interactive", "studentDoc", "slideshow", "planCours", "autres", "parcours"):
             self._delete_file(target.get(key, ""), key)
 
         activities = [a for a in activities if a["id"] != activity_id]
@@ -1424,6 +1424,10 @@ class Handler(http.server.SimpleHTTPRequestHandler):
                 "nouveauDesignColor": a.get("nouveauDesignColor", ""),
                 "nouveauDesignTint": a.get("nouveauDesignTint", ""),
                 "files": {
+                    # « parcours » : variante diapositive par diapositive d'une
+                    # activité interactive. Pas de téléversement depuis l'admin —
+                    # le chemin est écrit dans data/activities.json.
+                    "parcours": a.get("parcours", "") if available else "",
                     "interactive": a.get("interactive", "") if available else "",
                     "studentDoc": a.get("studentDoc", "") if available else "",
                     "slideshow": a.get("slideshow", "") if available else "",

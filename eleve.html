@@ -202,6 +202,7 @@
     .file-btn.slides .file-icon { background: #fce7f3; color: #be185d; }
     .file-btn.plan .file-icon { background: #dcfce7; color: #15803d; }
     .file-btn.autres .file-icon { background: #ffedd5; color: #c2410c; }
+    .file-btn.parcours .file-icon { background: #ede9fe; color: #6b4fbb; }
     .file-btn .file-label { flex: 1; }
     .file-btn .file-arrow { color: var(--text-3); flex-shrink: 0; }
     .file-btn:hover .file-arrow { color: var(--accent); }
@@ -465,6 +466,10 @@
     if (a.available) {
       const files = a.files;
       const btns = [];
+      // Le parcours guidé passe en premier : c'est la porte d'entrée la
+      // plus simple, une diapositive à la fois. Le module en une page
+      // reste offert juste en dessous.
+      if (files.parcours) btns.push(fileBtn('parcours', 'Parcours guidé, pas à pas', files.parcours, a));
       if (files.interactive) btns.push(fileBtn('interactive', 'Activité interactive', files.interactive, a));
       if (files.studentDoc) btns.push(fileBtn('doc', 'Document élève', files.studentDoc, a));
       if (btns.length === 0) {
@@ -509,8 +514,9 @@
       slides: `<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><rect x="2" y="3" width="20" height="14" rx="2"/><line x1="8" y1="21" x2="16" y2="21"/><line x1="12" y1="17" x2="12" y2="21"/></svg>`,
       plan: `<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M9 11l3 3L22 4"/><path d="M21 12v7a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11"/></svg>`,
       autres: `<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>`,
+      parcours: `<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><rect x="3" y="5" width="13" height="14" rx="2"/><path d="M19 8v8"/><path d="M9 10l3 2-3 2"/></svg>`,
     };
-    const fileKey = {interactive:'interactive', doc:'studentDoc', slides:'slideshow', plan:'planCours', autres:'autres'}[type];
+    const fileKey = {interactive:'interactive', doc:'studentDoc', slides:'slideshow', plan:'planCours', autres:'autres', parcours:'parcours'}[type];
     const color = activity.nouveauDesign ? (activity.nouveauDesignColor || '') : '';
     return `<a href="#" class="file-btn ${type}" onclick="openFile(event,'${API}/${path}',${activity.id},'${activity.title.replace(/'/g,"\\'")}','${fileKey}','${color}')">
       <span class="file-icon">${icons[type]}</span>

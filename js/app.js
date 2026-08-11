@@ -159,13 +159,33 @@ function buildCard(activity) {
           </div>` : ''}
         </div>` : ''}
         <div class="card-actions">
-          <a href="${escHtml(encodePath(activity.interactive))}"
-             class="btn btn-primary"
-             target="_blank" rel="noopener"
-             onclick="trackOpen('interactive', '${escHtml(activity.title)}')">
-            <span class="btn-icon">${iconPlay()}</span>
-            Activité interactive
-          </a>
+          ${activity.parcours
+            ? `<div class="btn-duo">
+                 <a href="${escHtml(encodePath(activity.interactive))}"
+                    class="btn btn-primary"
+                    target="_blank" rel="noopener"
+                    title="Le module complet, en une seule page"
+                    onclick="trackOpen('interactive', '${escHtml(activity.title)}')">
+                   <span class="btn-icon">${iconPlay()}</span>
+                   Module
+                 </a>
+                 <a href="${escHtml(encodePath(activity.parcours))}"
+                    class="btn btn-parcours"
+                    target="_blank" rel="noopener"
+                    title="Le même contenu, une diapositive à la fois"
+                    onclick="trackOpen('parcours', '${escHtml(activity.title)}')">
+                   <span class="btn-icon">${iconParcours()}</span>
+                   Parcours
+                 </a>
+               </div>`
+            : `<a href="${escHtml(encodePath(activity.interactive))}"
+                  class="btn btn-primary"
+                  target="_blank" rel="noopener"
+                  onclick="trackOpen('interactive', '${escHtml(activity.title)}')">
+                 <span class="btn-icon">${iconPlay()}</span>
+                 Activité interactive
+               </a>`
+          }
           <a href="${escHtml(encodePath(activity.studentDoc))}"
              class="btn btn-secondary"
              target="_blank" rel="noopener"
@@ -395,6 +415,13 @@ function iconSlideshow() {
     <rect x="2" y="3" width="20" height="14" rx="2"></rect>
     <line x1="8" y1="21" x2="16" y2="21"></line>
     <line x1="12" y1="17" x2="12" y2="21"></line></svg>`;
+}
+// Parcours guidé : une diapositive au premier plan, les suivantes derrière.
+function iconParcours() {
+  return `<svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+    <rect x="3" y="5" width="13" height="14" rx="2"></rect>
+    <path d="M19 8v8"></path>
+    <path d="M9 10l3 2-3 2"></path></svg>`;
 }
 function iconImage() {
   return `<svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">

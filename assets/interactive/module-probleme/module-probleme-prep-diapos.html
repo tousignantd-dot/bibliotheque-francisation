@@ -1,0 +1,1156 @@
+<!DOCTYPE html>
+<html lang="fr"><head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Module 9 · Je me prépare — cours diapositive par diapositive</title>
+<link rel="stylesheet" href="/assets/design-system/styles.css">
+<style>
+/* ═══════════════════════════════════════════════════════════════════════
+   LECTEUR « DIAPOSITIVE PAR DIAPOSITIVE » · essai de format
+   ───────────────────────────────────────────────────────────────────────
+   Même contenu que la section « Je me prépare » du module 9, présenté
+   comme un cours en ligne traditionnel : une scène à la fois, un
+   contrôle de progression en bas, un sommaire à gauche, et une couche
+   de rétroaction qui recouvre la scène après validation.
+
+   Tout vient du système de design (assets/design-system/). Ce bloc
+   n'ajoute que le châssis du lecteur — rien n'est redéfini.
+
+   Deux contraintes du système gouvernent les écarts avec un lecteur
+   commercial :
+   · l'association se fait par CLIC-CLIC, jamais par glisser-déposer,
+     pour rester utilisable au clavier ;
+   · sous 900 px la scène cesse d'être un cadre 16:9 et devient une
+     colonne qui défile — le format lettre-boîte est illisible sur un
+     téléphone, et beaucoup d'apprenants n'ont que ça.
+   ═══════════════════════════════════════════════════════════════════════ */
+
+:root{
+  --sec: var(--teal-700);        /* couleur de la section « Je me prépare » */
+  --sec-soft: var(--teal-100);
+  --chrome: #14181A;             /* châssis du lecteur : encre, pas noir pur */
+  --chrome-2: #1F2528;
+  --chrome-line: #313A3E;
+  --chrome-ink: #E8EDEE;
+  --chrome-mute: #9BA8AC;
+  --top-h: 60px;
+  --bot-h: 76px;
+  --menu-w: 268px;
+}
+html,body{height:100%}
+body{background:var(--chrome);overflow:hidden}
+
+/* ── Châssis ──────────────────────────────────────────────────────── */
+.player{position:fixed;inset:0;display:grid;
+        grid-template-rows:var(--top-h) 1fr var(--bot-h);
+        grid-template-columns:var(--menu-w) 1fr;
+        grid-template-areas:"top top" "menu stage" "bot bot"}
+
+/* ── Barre du haut ────────────────────────────────────────────────── */
+.top{grid-area:top;background:var(--chrome);border-bottom:1px solid var(--chrome-line);
+     display:flex;align-items:center;gap:var(--sp-4);padding:0 var(--sp-5);min-width:0}
+.top__burger{display:none}
+.top__id{min-width:0;flex:1}
+.top__eyebrow{font-size:var(--fs-meta);font-weight:var(--fw-bold);
+              letter-spacing:var(--ls-label);text-transform:uppercase;color:var(--chrome-mute)}
+.top__titre{font-size:var(--fs-ui);font-weight:var(--fw-black);color:var(--chrome-ink);
+            white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.top__compte{font-size:var(--fs-ui-sm);font-weight:var(--fw-bold);color:var(--chrome-mute);
+             white-space:nowrap}
+.top__sortie{font-size:var(--fs-ui-sm);font-weight:var(--fw-bold);color:var(--chrome-mute);
+             text-decoration:none;white-space:nowrap}
+.top__sortie:hover{color:var(--chrome-ink)}
+
+/* Barre de progression : elle traverse toute la largeur, sous la barre du haut. */
+.prog{position:absolute;left:0;right:0;top:calc(var(--top-h) - 3px);height:3px;
+      background:var(--chrome-line);z-index:4}
+.prog__fill{height:100%;background:var(--green-600);width:0;
+            transition:width .35s cubic-bezier(.4,0,.2,1)}
+
+/* ── Sommaire ─────────────────────────────────────────────────────── */
+.menu{grid-area:menu;background:var(--chrome-2);border-right:1px solid var(--chrome-line);
+      overflow-y:auto;padding:var(--sp-4) 0 var(--sp-8)}
+.menu__grp{font-size:var(--fs-meta);font-weight:var(--fw-black);letter-spacing:var(--ls-label);
+           text-transform:uppercase;color:var(--chrome-mute);
+           padding:var(--sp-5) var(--sp-5) var(--sp-2)}
+.menu__grp:first-child{padding-top:var(--sp-2)}
+.menu__item{display:flex;align-items:center;gap:var(--sp-3);width:100%;
+            min-height:var(--tap-min);padding:var(--sp-2) var(--sp-5);
+            background:none;border:0;border-left:3px solid transparent;
+            font:inherit;font-size:var(--fs-ui-sm);font-weight:var(--fw-semi);
+            color:var(--chrome-mute);text-align:left;cursor:pointer}
+.menu__item:hover{background:rgba(255,255,255,.05);color:var(--chrome-ink)}
+.menu__item.is-cur{background:rgba(255,255,255,.08);color:#fff;
+                   border-left-color:var(--green-600);font-weight:var(--fw-black)}
+.menu__item[disabled]{opacity:.42;cursor:not-allowed}
+.menu__item[disabled]:hover{background:none;color:var(--chrome-mute)}
+.menu__pastille{flex:0 0 auto;width:22px;height:22px;border-radius:50%;
+                border:1.5px solid currentColor;display:flex;align-items:center;
+                justify-content:center;font-size:11px;font-weight:var(--fw-black)}
+.menu__item.is-fait .menu__pastille{background:var(--green-600);border-color:var(--green-600);color:#fff}
+.menu__lbl{min-width:0;flex:1}
+
+/* ── Scène ────────────────────────────────────────────────────────── */
+.stagewrap{grid-area:stage;position:relative;overflow:auto;
+           display:flex;align-items:center;justify-content:center;padding:var(--sp-6)}
+.stage{position:relative;width:100%;max-width:980px;aspect-ratio:16/9;
+       background:var(--surface-page);color:var(--text-strong);
+       border-radius:var(--r-lg);box-shadow:0 18px 48px rgba(0,0,0,.42);
+       overflow:hidden;display:flex;flex-direction:column}
+.scene{flex:1;min-height:0;overflow-y:auto;padding:var(--sp-8) var(--sp-8) var(--sp-6)}
+.scene--plein{padding:0}
+
+/* En-tête de diapositive */
+.dhead{display:flex;align-items:baseline;gap:var(--sp-3);margin-bottom:var(--sp-1)}
+.dhead__eyebrow{font-size:var(--fs-label);font-weight:var(--fw-black);
+                letter-spacing:var(--ls-label);text-transform:uppercase;color:var(--sec)}
+.dhead__rule{flex:1;height:1px;background:var(--border)}
+.dtitre{font-size:var(--fs-h2);font-weight:var(--fw-black);margin:0 0 var(--sp-1)}
+.dsub{font-size:var(--fs-body-sm);font-weight:var(--fw-medium);color:var(--text-muted);
+      margin:0 0 var(--sp-5)}
+
+/* ── Couverture ───────────────────────────────────────────────────── */
+.cover{height:100%;display:flex;flex-direction:column;justify-content:center;
+       padding:var(--sp-12) var(--sp-8);background:var(--surface-band)}
+.cover__eyebrow{font-size:var(--fs-label);font-weight:var(--fw-black);
+                letter-spacing:var(--ls-label);text-transform:uppercase;color:var(--text-accent);
+                display:flex;align-items:center;gap:var(--sp-2)}
+.cover__eyebrow::before{content:"";width:8px;height:8px;border-radius:50%;background:var(--accent)}
+.cover h1{margin:var(--sp-3) 0 var(--sp-4)}
+.cover__lead{font-size:var(--fs-lead);font-weight:var(--fw-medium);color:var(--ink-500);max-width:52ch}
+.cover__meta{display:flex;flex-wrap:wrap;gap:var(--sp-5);margin-top:var(--sp-6);
+             font-size:var(--fs-meta);font-weight:var(--fw-bold);
+             letter-spacing:var(--ls-label);text-transform:uppercase;color:var(--text-muted)}
+
+/* ── Listes d'objectifs ───────────────────────────────────────────── */
+.obj{list-style:none;margin:0;padding:0;display:flex;flex-direction:column;gap:var(--sp-3)}
+.obj li{display:flex;gap:var(--sp-4);align-items:flex-start;
+        font-size:var(--fs-body);font-weight:var(--fw-semi)}
+.obj li::before{content:counter(o);counter-increment:o;flex:0 0 auto;
+                width:32px;height:32px;border-radius:50%;background:var(--sec-soft);
+                color:var(--sec);display:flex;align-items:center;justify-content:center;
+                font-size:15px;font-weight:var(--fw-black)}
+.obj{counter-reset:o}
+
+/* ── Mise en situation ────────────────────────────────────────────── */
+.situ{display:grid;grid-template-columns:minmax(0,1fr) 300px;gap:var(--sp-6);align-items:start}
+.situ__img{width:100%;aspect-ratio:4/3;object-fit:cover;border-radius:var(--r-lg);
+           border:1px solid var(--border)}
+.situ p{font-size:var(--fs-lead);font-weight:var(--fw-medium);color:var(--text-body);
+        line-height:var(--lh-loose)}
+.situ p + p{margin-top:var(--sp-4)}
+@media (max-width:860px){.situ{grid-template-columns:1fr}}
+
+/* ── Dialogue ─────────────────────────────────────────────────────── */
+.dlg{display:flex;flex-direction:column;gap:0}
+.dlg__ligne{display:grid;grid-template-columns:104px minmax(0,1fr);gap:var(--sp-4);
+            align-items:baseline;padding:var(--sp-3) var(--sp-3);
+            border-bottom:1px solid var(--border);border-radius:var(--r-sm);
+            transition:background .2s}
+.dlg__ligne.is-cur{background:var(--sec-soft)}
+.dlg__qui{font-size:var(--fs-label);font-weight:var(--fw-black);letter-spacing:.06em;
+          color:var(--sec)}
+.dlg__txt{font-size:var(--fs-body-sm);font-weight:var(--fw-medium);line-height:1.55;
+          color:var(--text-body)}
+.dlg__barre{display:flex;flex-wrap:wrap;gap:var(--sp-3);align-items:center;
+            margin-bottom:var(--sp-4)}
+
+/* ── Encadré de savoir ────────────────────────────────────────────── */
+.sav{border:1px solid var(--border);border-radius:var(--r-lg);overflow:hidden;
+     background:var(--surface-card)}
+.sav__band{background:var(--sec);color:#fff;padding:var(--sp-3) var(--sp-5);
+           font-size:var(--fs-meta);font-weight:var(--fw-black);
+           letter-spacing:.14em;text-transform:uppercase}
+.sav__row{display:grid;grid-template-columns:minmax(150px,210px) minmax(0,1fr);
+          gap:var(--sp-5);align-items:baseline;padding:var(--sp-4) var(--sp-5);
+          border-bottom:1px solid var(--paper-200)}
+.sav__row:last-child{border-bottom:0}
+.sav__k{font-size:var(--fs-body-sm);font-weight:var(--fw-black);color:var(--text-strong)}
+.sav__v{font-size:var(--fs-body-sm);font-weight:var(--fw-medium);line-height:var(--lh-loose);
+        color:var(--text-body)}
+.sav__mots{display:flex;flex-wrap:wrap;gap:var(--sp-2);margin-top:var(--sp-3)}
+@media (max-width:760px){.sav__row{grid-template-columns:1fr;gap:var(--sp-1)}}
+
+/* ── Exercices ────────────────────────────────────────────────────── */
+.qrows{display:flex;flex-direction:column;gap:var(--sp-3)}
+
+/* Choix (VRAI/FAUX, [ø]/[œ]) */
+.qrow{display:flex;flex-wrap:wrap;align-items:center;gap:var(--sp-3);
+      padding:var(--sp-3) var(--sp-4);border:1px solid var(--border);
+      border-radius:var(--r-lg);background:var(--surface-card)}
+.qrow__txt{flex:1;min-width:180px;font-size:var(--fs-body-sm);font-weight:var(--fw-semi)}
+.qrow__opts{display:flex;gap:var(--sp-2);flex-shrink:0}
+.opt{min-height:var(--tap-min);min-width:74px;padding:0 var(--sp-4);
+     border:1.5px solid var(--border);border-radius:var(--r-pill);
+     background:var(--surface-card);color:var(--text-body);
+     font:inherit;font-size:var(--fs-ui-sm);font-weight:var(--fw-bold);cursor:pointer}
+.opt:hover{border-color:var(--ink-400)}
+.opt.is-sel{background:var(--sel-bg);border-color:var(--sel-line);color:var(--sel-ink)}
+.qrow.fb-ok{background:var(--ok-bg);border-color:var(--ok-line)}
+.qrow.fb-no{background:var(--no-bg);border-color:var(--no-line)}
+.qrow__verdict{flex:0 0 auto;font-size:var(--fs-ui-sm);font-weight:var(--fw-black)}
+.qrow.fb-ok .qrow__verdict{color:var(--ok-ink)}
+.qrow.fb-no .qrow__verdict{color:var(--no-ink)}
+
+/* Association : rangée = énoncé + emplacement à remplir */
+.qassoc{display:flex;flex-direction:column;gap:var(--sp-3)}
+.arow{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr) auto;gap:var(--sp-3);
+      align-items:center;padding:var(--sp-3) var(--sp-4);border:1px solid var(--border);
+      border-radius:var(--r-lg);background:var(--surface-card)}
+.arow__q{font-size:var(--fs-body-sm);font-weight:var(--fw-black);color:var(--text-strong)}
+.arow.is-cible{border-color:var(--accent);box-shadow:0 0 0 3px var(--accent-soft)}
+.arow.fb-ok{background:var(--ok-bg);border-color:var(--ok-line)}
+.arow.fb-no{background:var(--no-bg);border-color:var(--no-line)}
+.slot{min-height:var(--tap-min);width:100%;padding:var(--sp-2) var(--sp-4);
+      border:1.5px dashed var(--drop-line);border-radius:var(--r-sm);
+      background:var(--drop-bg);color:var(--text-muted);
+      font:inherit;font-size:var(--fs-body-sm);font-weight:var(--fw-medium);
+      text-align:left;cursor:pointer}
+.slot.is-rempli{border-style:solid;border-color:var(--sel-line);background:var(--sel-bg);
+                color:var(--sel-ink);font-weight:var(--fw-semi)}
+.arow__verdict{font-size:var(--fs-ui-sm);font-weight:var(--fw-black);white-space:nowrap}
+.arow.fb-ok .arow__verdict{color:var(--ok-ink)}
+.arow.fb-no .arow__verdict{color:var(--no-ink)}
+.arow__bonne{grid-column:1/-1;font-size:var(--fs-body-sm);font-weight:var(--fw-semi);
+             color:var(--no-ink)}
+@media (max-width:760px){.arow{grid-template-columns:1fr;gap:var(--sp-2)}}
+
+/* Banque de réponses — dans un plateau fixe au bas de la scène, hors du
+   flux qui défile. Quatre énoncés et leur banque ne tiennent pas dans un
+   cadre 16:9 ; plutôt que de faire disparaître la banque sous le pli, on
+   la sort du défilement. */
+.tray{flex:0 0 auto;display:none;border-top:1px solid var(--border);
+      background:var(--surface-sunken);padding:var(--sp-4) var(--sp-8);
+      max-height:40%;overflow-y:auto}
+.tray.is-on{display:block}
+.banque{padding:0;border:0;background:none}
+.banque__lbl{font-size:var(--fs-label);font-weight:var(--fw-black);
+             letter-spacing:var(--ls-label);text-transform:uppercase;
+             color:var(--text-muted);margin-bottom:var(--sp-3)}
+.banque__items{display:flex;flex-wrap:wrap;gap:var(--sp-2)}
+.jeton{min-height:var(--tap-min);padding:var(--sp-2) var(--sp-4);
+       border:1.5px solid var(--border);border-radius:var(--r-pill);
+       background:var(--surface-card);color:var(--text-body);
+       font:inherit;font-size:var(--fs-ui-sm);font-weight:var(--fw-semi);
+       cursor:pointer;text-align:left}
+.jeton:hover{border-color:var(--ink-400)}
+.jeton.is-pris{opacity:.32;pointer-events:none}
+
+/* Association avec photos */
+.banque__items--img{gap:var(--sp-3)}
+.vignette{width:104px;padding:0;border:2px solid var(--border);border-radius:var(--r-sm);
+          background:var(--surface-card);cursor:pointer;overflow:hidden;line-height:0}
+.vignette img{width:100%;aspect-ratio:1/1;object-fit:cover;display:block}
+.vignette.is-sel{border-color:var(--sel-line);box-shadow:0 0 0 3px var(--paper-200)}
+.vignette.is-pris{opacity:.28;pointer-events:none}
+.slot--img{display:flex;align-items:center;gap:var(--sp-3);min-height:64px}
+.slot--img img{width:52px;height:52px;object-fit:cover;border-radius:var(--r-sm);flex:0 0 auto}
+
+/* ── Barre du bas ─────────────────────────────────────────────────── */
+.bot{grid-area:bot;background:var(--chrome);border-top:1px solid var(--chrome-line);
+     display:flex;align-items:center;gap:var(--sp-3);padding:0 var(--sp-5)}
+.bot__spacer{flex:1}
+.nav{min-height:var(--tap-comfort);padding:0 var(--sp-6);border-radius:var(--r-pill);
+     border:1.5px solid var(--chrome-line);background:transparent;color:var(--chrome-ink);
+     font:inherit;font-size:var(--fs-ui);font-weight:var(--fw-bold);cursor:pointer;
+     display:inline-flex;align-items:center;gap:var(--sp-2)}
+.nav:hover:not([disabled]){background:rgba(255,255,255,.07)}
+.nav[disabled]{opacity:.35;cursor:not-allowed}
+.nav--pri{background:var(--green-600);border-color:var(--green-600);color:#fff}
+.nav--pri:hover:not([disabled]){background:var(--green-800);border-color:var(--green-800)}
+.bot__aide{font-size:var(--fs-ui-sm);font-weight:var(--fw-semi);color:var(--chrome-mute)}
+
+/* ── Couche de rétroaction ────────────────────────────────────────── */
+.layer{position:absolute;inset:0;z-index:6;display:none;
+       align-items:flex-end;justify-content:center;
+       background:rgba(20,24,26,.44)}
+.layer.is-on{display:flex}
+.layer__panneau{width:100%;background:var(--surface-card);
+                border-top:4px solid var(--sec);
+                border-radius:var(--r-lg) var(--r-lg) 0 0;
+                padding:var(--sp-6) var(--sp-8);
+                box-shadow:0 -12px 32px rgba(0,0,0,.2);
+                animation:monte .28s cubic-bezier(.2,.8,.3,1)}
+@keyframes monte{from{transform:translateY(100%)}to{transform:translateY(0)}}
+.layer--ok .layer__panneau{border-top-color:var(--ok-line)}
+.layer--no .layer__panneau{border-top-color:var(--no-line)}
+.layer__k{font-size:var(--fs-label);font-weight:var(--fw-black);
+          letter-spacing:var(--ls-label);text-transform:uppercase;margin-bottom:var(--sp-1)}
+.layer--ok .layer__k{color:var(--ok-ink)}
+.layer--no .layer__k{color:var(--no-ink)}
+.layer__t{font-size:var(--fs-h3);font-weight:var(--fw-black);margin-bottom:var(--sp-2)}
+.layer__p{font-size:var(--fs-body-sm);font-weight:var(--fw-medium);color:var(--text-body);
+          max-width:64ch}
+.layer__actions{display:flex;flex-wrap:wrap;gap:var(--sp-3);margin-top:var(--sp-5)}
+.lbtn{min-height:var(--tap-comfort);padding:0 var(--sp-6);border-radius:var(--r-pill);
+      border:1.5px solid var(--border);background:var(--surface-card);color:var(--text-strong);
+      font:inherit;font-size:var(--fs-ui);font-weight:var(--fw-bold);cursor:pointer}
+.lbtn--pri{background:var(--sel-bg);border-color:var(--sel-line);color:var(--sel-ink)}
+
+/* ── Boutons d'écoute ─────────────────────────────────────────────── */
+.son{min-height:var(--tap-min);padding:0 var(--sp-4);border-radius:var(--r-pill);
+     border:1.5px solid var(--border);background:var(--surface-card);color:var(--text-body);
+     font:inherit;font-size:var(--fs-ui-sm);font-weight:var(--fw-bold);cursor:pointer;
+     display:inline-flex;align-items:center;gap:var(--sp-2)}
+.son:hover{border-color:var(--audio);color:var(--audio)}
+.son.is-on{background:var(--audio);border-color:var(--audio);color:#fff}
+.son--rond{min-width:var(--tap-min);padding:0;justify-content:center}
+.son__pt{width:9px;height:9px;border-radius:50%;background:var(--audio);flex:0 0 auto}
+.son.is-on .son__pt{background:#fff}
+
+/* ── Bilan ────────────────────────────────────────────────────────── */
+.bilan__score{font-size:clamp(48px,9vw,86px);font-weight:var(--fw-black);
+              line-height:1;color:var(--sec);letter-spacing:-.03em}
+.bilan__sur{font-size:var(--fs-lead);font-weight:var(--fw-bold);color:var(--text-muted)}
+.bilan__liste{margin-top:var(--sp-6);border-top:1px solid var(--border)}
+.bilan__l{display:flex;align-items:center;gap:var(--sp-4);padding:var(--sp-3) 0;
+          border-bottom:1px solid var(--border);font-size:var(--fs-body-sm);
+          font-weight:var(--fw-semi)}
+.bilan__l span:first-child{flex:1}
+.bilan__n{font-weight:var(--fw-black);color:var(--text-strong);white-space:nowrap}
+
+/* ── Sous 900 px : la scène devient une colonne qui défile ────────── */
+@media (max-width:900px){
+  :root{--top-h:56px;--bot-h:70px}
+  .player{grid-template-columns:1fr;grid-template-areas:"top" "stage" "bot"}
+  .menu{position:fixed;top:var(--top-h);bottom:var(--bot-h);left:0;width:min(84vw,300px);
+        z-index:8;transform:translateX(-102%);transition:transform .25s ease;
+        box-shadow:14px 0 32px rgba(0,0,0,.4)}
+  .menu.is-on{transform:none}
+  .top__burger{display:inline-flex;align-items:center;justify-content:center;
+               width:var(--tap-min);height:var(--tap-min);flex:0 0 auto;
+               border:1.5px solid var(--chrome-line);border-radius:var(--r-sm);
+               background:none;color:var(--chrome-ink);font-size:19px;cursor:pointer}
+  .top__sortie{display:none}
+  /* Le sur-titre passait sur deux lignes et repoussait le titre de la
+     diapositive hors du bandeau. */
+  .top__eyebrow{display:none}
+  .top__titre{font-size:var(--fs-ui-sm)}
+  .stagewrap{padding:0;align-items:stretch}
+  .stage{max-width:none;aspect-ratio:auto;height:100%;border-radius:0;box-shadow:none}
+  .scene{padding:var(--sp-5) var(--sp-4) var(--sp-6)}
+  .cover{padding:var(--sp-8) var(--sp-4)}
+  .layer__panneau{padding:var(--sp-5) var(--sp-4)}
+  .nav{padding:0 var(--sp-4);font-size:var(--fs-ui-sm)}
+  .dlg__ligne{grid-template-columns:1fr;gap:var(--sp-1)}
+}
+@media (prefers-reduced-motion:reduce){
+  .layer__panneau{animation:none}
+  .prog__fill{transition:none}
+}
+</style></head>
+<body>
+
+<div class="player">
+
+  <header class="top">
+    <button class="top__burger" id="burger" type="button" aria-label="Sommaire">☰</button>
+    <div class="top__id">
+      <div class="top__eyebrow">Module 9 · Français niveau 4</div>
+      <div class="top__titre" id="topTitre">Je me prépare</div>
+    </div>
+    <div class="top__compte" id="compte">1 / 20</div>
+    <a class="top__sortie" href="/assets/interactive/module-probleme/module-probleme-activite-interactive.html">Quitter</a>
+  </header>
+  <div class="prog"><div class="prog__fill" id="progFill"></div></div>
+
+  <nav class="menu" id="menu" aria-label="Sommaire du cours"></nav>
+
+  <div class="stagewrap">
+    <div class="stage">
+      <div class="scene" id="scene"></div>
+      <div class="tray" id="tray"></div>
+      <div class="layer" id="layer" role="dialog" aria-live="polite" aria-modal="true">
+        <div class="layer__panneau">
+          <div class="layer__k" id="layerK"></div>
+          <div class="layer__t" id="layerT"></div>
+          <div class="layer__p" id="layerP"></div>
+          <div class="layer__actions" id="layerA"></div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <footer class="bot">
+    <button class="nav" id="btnPrec" type="button">‹ Précédent</button>
+    <span class="bot__aide" id="aide"></span>
+    <span class="bot__spacer"></span>
+    <button class="nav nav--pri" id="btnSuiv" type="button">Suivant ›</button>
+  </footer>
+
+</div>
+
+<script>
+'use strict';
+
+/* ═══════════════════════════════════════════════════════════════════════
+   1 · CONTENU — repris tel quel de la section « Je me prépare »
+   ═══════════════════════════════════════════════════════════════════════ */
+
+const MODULE = 'module-probleme';
+const AUDIO_V = '5';
+const IMG = p => `/assets/interactive/${MODULE}/images/${p}`;
+
+const DIALOGUE = [
+  ["OKSANA","Bertrand, il fait quatorze degrés chez moi. Le calorifère du salon est resté froid toute la nuit."],
+  ["BERTRAND","Quatorze ? En novembre, c'est beaucoup trop bas. Est-ce que les autres pièces chauffent ?"],
+  ["OKSANA","La cuisine et la chambre, oui. C'est seulement celui du salon qui ne réagit plus, même quand je monte le thermostat à vingt-deux."],
+  ["BERTRAND","Avant d'appeler ta propriétaire, descends au panneau électrique. Cherche un disjoncteur qui n'est pas dans le même sens que les autres."],
+  ["OKSANA","Attends, je regarde… Oui, il y en a un qui est arrêté au milieu."],
+  ["BERTRAND","Pousse-le à fond vers « arrêt », puis ramène-le vers « marche ». S'il retombe tout de suite, ne le touche plus."],
+  ["OKSANA","Il vient de retomber. Deux fois."],
+  ["BERTRAND","Alors ce n'est pas le thermostat, c'est le circuit. Tu appelles madame Rioux aujourd'hui, pas la semaine prochaine."],
+  ["OKSANA","Je n'aime pas déranger les gens pour ça."],
+  ["BERTRAND","Tu ne déranges personne : le chauffage fait partie du logement que tu paies. Prends une photo de ton thermomètre avec la date, et note l'heure de ton appel."],
+  ["OKSANA","Pourquoi noter tout ça ?"],
+  ["BERTRAND","Parce que si elle tarde, tes notes deviennent ta preuve. Et ne t'en fais pas : dans neuf cas sur dix, ça se règle en un coup de fil."],
+];
+
+const MOTS = [
+  ["un calorifère","L'appareil fixé au mur qui chauffe une pièce."],
+  ["un disjoncteur","L'interrupteur du panneau électrique qui coupe le courant en cas de danger."],
+  ["un chauffage d'appoint","Un petit appareil de chauffage qu'on ajoute temporairement."],
+  ["une infiltration","De l'eau qui entre par le toit ou par un mur."],
+  ["la moisissure","Des taches noires ou vertes causées par l'humidité."],
+  ["l'ampleur","La grandeur, l'importance d'un problème."],
+  ["une partie commune","Un espace de l'immeuble partagé par tous les locataires."],
+  ["encombrer","Occuper une place et gêner le passage."],
+  ["une sortie de secours","Le chemin à garder libre pour évacuer en cas d'incendie."],
+  ["se plaindre","Dire qu'on n'accepte plus une situation et demander qu'elle change."],
+  ["l'insalubrité","L'état d'un logement malpropre ou dangereux pour la santé."],
+  ["un avis écrit","Une lettre ou un courriel qui garde une trace d'une demande."],
+  ["un recours","Le moyen légal de faire régler un problème qui traîne."],
+  ["le bail","Le contrat signé entre le locataire et le propriétaire."],
+  ["un couvreur","La personne qui répare les toitures."],
+  ["un dégraissant","Un produit fort qui enlève l'huile et la graisse."],
+];
+
+const VF = [
+  ["Toutes les pièces du logement sont froides.","FAUX"],
+  ["Oksana a monté son thermostat jusqu'à vingt-deux degrés.","VRAI"],
+  ["Bertrand lui conseille d'appeler la propriétaire avant de vérifier quoi que ce soit.","FAUX"],
+  ["Le disjoncteur est retombé deux fois.","VRAI"],
+  ["Bertrand pense que le problème vient du thermostat.","FAUX"],
+  ["Il lui conseille de photographier son thermomètre avec la date.","VRAI"],
+  ["Oksana hésite à déranger sa propriétaire.","VRAI"],
+  ["Le chauffage est aux frais de la locataire.","FAUX"],
+  ["Bertrand lui dit d'attendre la semaine prochaine pour téléphoner.","FAUX"],
+  ["Selon Bertrand, ce genre de problème se règle souvent par un simple appel.","VRAI"],
+];
+
+const SONS = [
+  ["deux","[ø]"],["odeur","[œ]"],["dangereux","[ø]"],["chaleur","[œ]"],["immeuble","[œ]"],
+  ["milieu","[ø]"],["ascenseur","[œ]"],["coûteux","[ø]"],["couvreur","[œ]"],["peu","[ø]"],
+];
+
+const SAVOIR_SON = [
+  ["La règle en une phrase","Les lettres <b>eu</b> se disent de deux façons : bouche presque fermée <b>[ø]</b>, ou bouche ouverte <b>[œ]</b>. C'est la fin du mot qui décide.",["deux","peur"]],
+  ["[ø] — bouche fermée","À la <b>fin du mot</b>, ou devant un <b>e</b> muet : deux, peu, dangereu<b>x</b>, coûteu<b>x</b>, milieu.",["deux","peu","dangereux","milieu"]],
+  ["[œ] — bouche ouverte","Devant une <b>consonne prononcée</b>, surtout <b>-eur</b> : odeur, chaleur, ascenseur, immeuble, jeune.",["odeur","chaleur","ascenseur","immeuble"]],
+  ["Le truc qui marche","Si le mot finit par <b>-eux</b> ou <b>-eu</b> → [ø]. S'il finit par <b>-eur</b>, <b>-eul</b>, <b>-euf</b> → [œ].",["coûteux","couvreur"]],
+  ["Pourquoi ça compte ici","Beaucoup de mots du logement finissent en <b>-eur</b> (le métier, l'appareil) ou en <b>-eux</b> (l'adjectif) : un couvr<b>eur</b> dangereu<b>x</b>.",["couvreur","dangereux"]],
+];
+
+const SAVOIR_PRO = [
+  ["La plomberie","<b>le plombier / la plombière</b> — tuyaux, robinets, toilettes, drains bouchés, dégâts d'eau."],
+  ["L'électricité","<b>l'électricien / l'électricienne</b> — panneau électrique, disjoncteurs, prises, calorifères, luminaires."],
+  ["Le bois","<b>le menuisier / la menuisière</b> — portes qui ferment mal, armoires, planchers, cadres de fenêtres."],
+  ["La peinture","<b>le peintre / la peintre</b> — murs et plafonds à repeindre après une réparation."],
+  ["Les serrures","<b>le serrurier / la serrurière</b> — clé perdue, serrure forcée, cylindre à changer."],
+  ["Les animaux nuisibles","<b>l'exterminateur / l'exterminatrice</b> — souris, fourmis, coquerelles, punaises de lit."],
+  ["La pose d'appareils","<b>l'installateur / l'installatrice</b> — électroménagers, climatiseur, ventilateur de salle de bain."],
+  ["L'immeuble au quotidien","<b>le concierge / la concierge</b> — parties communes, petites réparations, premier contact sur place."],
+  ["Le toit","<b>le couvreur / la couvreuse</b> — toiture qui coule, infiltration par le plafond du dernier étage."],
+  ["Attention","On appelle rarement le professionnel soi-même : dans un logement loué, on <b>prévient d'abord la propriétaire ou le concierge</b>, et c'est elle ou lui qui décide et qui paie."],
+];
+
+const PROBLEMES = [
+  ["moisissure.jpg","De la moisissure noire s'est formée dans le coin du mur."],
+  ["robinet.jpg","Le robinet de la cuisine coule goutte à goutte."],
+  ["serrure.jpg","La serrure de la porte d'entrée a été forcée."],
+  ["plancher.jpg","Les lattes du plancher de bois ont gondolé."],
+  ["prise.jpg","La prise de courant est noircie autour des trous."],
+  ["souris.jpg","Un rongeur est entré par un trou dans le mur."],
+  ["plafond.jpg","Une tache brune s'agrandit au plafond de la chambre."],
+  ["ordures.jpg","Des sacs d'ordures traînent à côté des bacs."],
+];
+
+const METIERS = [
+  ["plombiere.jpg","Le drain de la douche est complètement bouché."],
+  ["electricien.jpg","Le disjoncteur du salon retombe chaque fois qu'on le remonte."],
+  ["menuisiere.jpg","La porte de la chambre a gonflé et ne ferme plus."],
+  ["serrurier.jpg","La clé tourne dans le vide depuis que la porte a été forcée."],
+  ["exterminatrice.jpg","Il y a des souris derrière la cuisinière."],
+  ["couvreur.jpg","L'eau de pluie traverse le toit et tache le plafond."],
+  ["peintre.jpg","Le mur réparé doit être remis de la bonne couleur."],
+  ["installatrice.jpg","Il faut poser un ventilateur dans la salle de bain."],
+];
+
+const TYPES = [
+  ["Le robinet goutte jour et nuit.","une fuite"],
+  ["Des fourmis sortent de la plinthe de la cuisine.","une invasion d'insectes"],
+  ["La vitre de la fenêtre est cassée.","un bris"],
+  ["Le miroir de la salle de bain reste embué une heure.","un excès d'humidité"],
+  ["Des déchets s'accumulent devant le local à ordures.","de l'insalubrité"],
+  ["Le calorifère ne chauffe plus même à vingt-deux degrés.","une défectuosité"],
+  ["L'eau de pluie entre par le toit.","une infiltration"],
+  ["La musique du voisin s'entend jusqu'à deux heures du matin.","un trouble de voisinage"],
+];
+
+/* ═══════════════════════════════════════════════════════════════════════
+   2 · LE SCÉNARIO — 19 diapositives
+   Un exercice long du module devient deux diapositives : au-delà de
+   cinq réponses, la scène cesse de tenir dans le cadre et il faut
+   défiler, ce qui casse la logique « une chose à la fois ».
+   ═══════════════════════════════════════════════════════════════════════ */
+
+const part = (arr, a, b) => arr.slice(a, b);
+
+const SLIDES = [
+  {grp:'Introduction', menu:'Couverture', type:'cover'},
+  {grp:'Introduction', menu:'Ce que je vais savoir faire', type:'objectifs',
+   eyebrow:'Je me prépare', titre:'Ce que je vais savoir faire',
+   items:[
+     "Nommer un problème de mon logement avec le mot précis, pas avec « il y a un problème ».",
+     "Dire depuis quand le problème dure.",
+     "Savoir ce que je dois vérifier moi-même avant de téléphoner.",
+     "Savoir qui appeler — et pourquoi ce n'est jamais le professionnel en premier.",
+   ]},
+  {grp:'Introduction', menu:'La situation', type:'situation',
+   eyebrow:'Mise en situation', titre:'Il fait quatorze degrés au 4B',
+   img:'plafond.jpg',
+   paras:[
+     "Oksana loue le 4B, au dernier étage d'un immeuble de six logements. Il fait quatorze degrés dans son salon et le calorifère reste froid, même la nuit.",
+     "Avant d'appeler sa propriétaire, elle parle à Bertrand, son voisin. Écoutez ce qu'il lui conseille de faire — et de noter.",
+   ]},
+
+  {grp:'Le dialogue', menu:'Écouter le dialogue', type:'dialogue',
+   eyebrow:'Écoute', titre:'Il fait quatorze degrés au 4B',
+   sub:"Écoutez le dialogue en entier, puis relisez les répliques à votre rythme."},
+  {grp:'Le dialogue', menu:'Vrai ou faux · 1', type:'q', kind:'choix',
+   eyebrow:'Exercice 1 · première partie', titre:'Vrai ou faux',
+   sub:"Cinq énoncés sur le dialogue. Choisissez pour chacun.",
+   tiles:['VRAI','FAUX'], rows:part(VF,0,5).map(([t,ok],i)=>({id:'vf'+i, txt:t, ok}))},
+  {grp:'Le dialogue', menu:'Vrai ou faux · 2', type:'q', kind:'choix',
+   eyebrow:'Exercice 1 · deuxième partie', titre:'Vrai ou faux',
+   sub:"Cinq derniers énoncés sur le dialogue.",
+   tiles:['VRAI','FAUX'], rows:part(VF,5,10).map(([t,ok],i)=>({id:'vg'+i, txt:t, ok}))},
+
+  ...[0,1,2,3].map(k=>({
+    grp:'Le vocabulaire', menu:'Les mots · ' + (k+1), type:'q', kind:'assoc',
+    eyebrow:'Vocabulaire · ' + ['première','deuxième','troisième','quatrième'][k] + ' partie',
+    titre:'Le mot et sa définition',
+    sub:"Cliquez un emplacement, puis la définition qui lui convient.",
+    bankLbl:'Définitions', ph:'choisissez une définition',
+    rows:part(MOTS, k*4, k*4+4).map(([q,a],i)=>({id:'m'+k+i, q, a}))
+  })),
+
+  {grp:'Les sons', menu:'La règle · [ø] et [œ]', type:'savoir', sec:'violet',
+   eyebrow:'Des sons et des lettres', titre:'Les deux façons de dire « eu »',
+   sub:"Écoutez les exemples : la différence s'entend mieux qu'elle ne s'explique.",
+   band:'La règle', rows:SAVOIR_SON, audio:'prPhon_savoir'},
+  {grp:'Les sons', menu:'[ø] ou [œ] · 1', type:'q', kind:'choix', sec:'violet',
+   eyebrow:'Exercice 2 · première partie', titre:'Le son [ø] ou le son [œ] ?',
+   sub:"Écoutez le mot, puis indiquez le son que vous entendez.",
+   listen:true, tiles:['[ø]','[œ]'], rows:part(SONS,0,5).map(([t,ok],i)=>({id:'s'+i, txt:t, ok}))},
+  {grp:'Les sons', menu:'[ø] ou [œ] · 2', type:'q', kind:'choix', sec:'violet',
+   eyebrow:'Exercice 2 · deuxième partie', titre:'Le son [ø] ou le son [œ] ?',
+   sub:"Écoutez le mot, puis indiquez le son que vous entendez.",
+   listen:true, tiles:['[ø]','[œ]'], rows:part(SONS,5,10).map(([t,ok],i)=>({id:'u'+i, txt:t, ok}))},
+
+  {grp:'Reconnaître', menu:'Le problème · 1', type:'q', kind:'imgassoc',
+   eyebrow:'Exercice 3 · première partie', titre:'Reconnaître un problème',
+   sub:"Cliquez un emplacement, puis la photo qui correspond à l'énoncé.",
+   bankLbl:'Photos', ph:'choisissez une photo',
+   rows:part(PROBLEMES,0,4).map(([src,txt],i)=>({id:'i'+i, q:txt, a:src}))},
+  {grp:'Reconnaître', menu:'Le problème · 2', type:'q', kind:'imgassoc',
+   eyebrow:'Exercice 3 · deuxième partie', titre:'Reconnaître un problème',
+   sub:"Cliquez un emplacement, puis la photo qui correspond à l'énoncé.",
+   bankLbl:'Photos', ph:'choisissez une photo',
+   rows:part(PROBLEMES,4,8).map(([src,txt],i)=>({id:'j'+i, q:txt, a:src}))},
+  {grp:'Reconnaître', menu:'Nommer le problème · 1', type:'q', kind:'assoc',
+   eyebrow:'Exercice 5 · première partie', titre:'Nommer le type de problème',
+   sub:"Associez chaque situation au mot qui la nomme.",
+   bankLbl:'Types de problème', ph:'choisissez le mot',
+   rows:part(TYPES,0,4).map(([q,a],i)=>({id:'y'+i, q, a}))},
+  {grp:'Reconnaître', menu:'Nommer le problème · 2', type:'q', kind:'assoc',
+   eyebrow:'Exercice 5 · deuxième partie', titre:'Nommer le type de problème',
+   sub:"Associez chaque situation au mot qui la nomme.",
+   bankLbl:'Types de problème', ph:'choisissez le mot',
+   rows:part(TYPES,4,8).map(([q,a],i)=>({id:'z'+i, q, a}))},
+
+  {grp:'Qui appeler', menu:'Les professionnels', type:'savoir',
+   eyebrow:'Des professionnels de la rénovation', titre:'Neuf métiers, un seul premier appel',
+   sub:"Lisez la liste : le dernier point est le plus important des dix.",
+   band:'Le savoir', rows:SAVOIR_PRO},
+  {grp:'Qui appeler', menu:'Qui appeler ? · 1', type:'q', kind:'imgassoc',
+   eyebrow:'Exercice 4 · première partie', titre:'Qui faut-il appeler ?',
+   sub:"Cliquez un emplacement, puis la photo du métier qui peut régler le problème.",
+   bankLbl:'Professionnels', ph:'choisissez un professionnel',
+   rows:part(METIERS,0,4).map(([src,txt],i)=>({id:'p'+i, q:txt, a:src}))},
+  {grp:'Qui appeler', menu:'Qui appeler ? · 2', type:'q', kind:'imgassoc',
+   eyebrow:'Exercice 4 · deuxième partie', titre:'Qui faut-il appeler ?',
+   sub:"Cliquez un emplacement, puis la photo du métier qui peut régler le problème.",
+   bankLbl:'Professionnels', ph:'choisissez un professionnel',
+   rows:part(METIERS,4,8).map(([src,txt],i)=>({id:'q'+i, q:txt, a:src}))},
+
+  {grp:'Bilan', menu:'Mon résultat', type:'bilan'},
+];
+
+/* ═══════════════════════════════════════════════════════════════════════
+   3 · ÉTAT
+   ═══════════════════════════════════════════════════════════════════════ */
+
+const E = {
+  i: 0,                 // diapositive courante
+  vu: new Set([0]),     // diapositives atteintes
+  fini: new Set(),      // diapositives dont l'exercice est validé
+  rep: {},              // réponses par identifiant de rangée
+  essais: {},           // nombre de validations par diapositive
+  score: {},            // {idx: {bon, total}} — au premier essai
+  cible: null,          // rangée en attente d'une réponse (association)
+  audio: null,
+};
+
+const $  = s => document.querySelector(s);
+const el = (t,c,h)=>{const n=document.createElement(t); if(c)n.className=c; if(h!=null)n.innerHTML=h; return n;};
+const esc = s => String(s).replace(/[&<>"]/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
+const melange = a => {const b=a.slice(); for(let i=b.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1)); [b[i],b[j]]=[b[j],b[i]];} return b;};
+
+const estQ = s => s.type === 'q';
+
+/* ═══════════════════════════════════════════════════════════════════════
+   4 · AUDIO — un MP3 quand il existe, la synthèse vocale sinon
+   ═══════════════════════════════════════════════════════════════════════ */
+
+function stopAudio(){
+  if(E.audio){ E.audio.pause(); E.audio = null; }
+  if(window.speechSynthesis) speechSynthesis.cancel();
+  document.querySelectorAll('.son.is-on').forEach(b=>b.classList.remove('is-on'));
+}
+
+function parle(texte){
+  if(!window.speechSynthesis) return;
+  const u = new SpeechSynthesisUtterance(texte);
+  u.lang = 'fr-CA'; u.rate = .92;
+  const v = speechSynthesis.getVoices().find(x=>/^fr/i.test(x.lang));
+  if(v) u.voice = v;
+  speechSynthesis.speak(u);
+}
+
+// Joue le fichier s'il existe ; retombe sur la synthèse vocale sinon.
+function joue(btn, fichier, texteReplis){
+  stopAudio();
+  if(btn) btn.classList.add('is-on');
+  const fini = ()=>{ if(btn) btn.classList.remove('is-on'); };
+  if(!fichier){ if(texteReplis) parle(texteReplis); setTimeout(fini, 900); return; }
+  const a = new Audio(`/assets/interactive/${MODULE}/sons/${fichier}.mp3?v=${AUDIO_V}`);
+  E.audio = a;
+  a.onended = fini;
+  a.onerror = ()=>{ fini(); if(texteReplis) parle(texteReplis); };
+  a.play().catch(()=>{ fini(); if(texteReplis) parle(texteReplis); });
+}
+
+// Lecture suivie du dialogue : une réplique après l'autre.
+let dlgIdx = -1, dlgEnCours = false;
+function joueDialogue(btn){
+  if(dlgEnCours){ stopDialogue(btn); return; }
+  dlgEnCours = true; dlgIdx = -1;
+  btn.classList.add('is-on');
+  btn.querySelector('.son__lbl').textContent = 'Arrêter';
+  suivanteReplique(btn);
+}
+function stopDialogue(btn){
+  dlgEnCours = false; stopAudio();
+  document.querySelectorAll('.dlg__ligne').forEach(l=>l.classList.remove('is-cur'));
+  if(btn){ btn.classList.remove('is-on'); btn.querySelector('.son__lbl').textContent = 'Écouter le dialogue'; }
+}
+function suivanteReplique(btn){
+  if(!dlgEnCours) return;
+  dlgIdx++;
+  if(dlgIdx >= DIALOGUE.length){ stopDialogue(btn); return; }
+  document.querySelectorAll('.dlg__ligne').forEach((l,k)=>l.classList.toggle('is-cur', k===dlgIdx));
+  const ligne = document.querySelectorAll('.dlg__ligne')[dlgIdx];
+  if(ligne) ligne.scrollIntoView({block:'nearest', behavior:'smooth'});
+  const [qui, txt] = DIALOGUE[dlgIdx];
+  const slug = qui.toLowerCase().normalize('NFD').replace(/[̀-ͯ]/g,'').replace(/[^a-z]/g,'');
+  const url = `/assets/interactive/${MODULE}/prep/line_${String(dlgIdx+1).padStart(2,'0')}_${slug}.mp3?v=${AUDIO_V}`;
+  const a = new Audio(url); E.audio = a;
+  a.onended = ()=>suivanteReplique(btn);
+  a.onerror = ()=>{ parle(txt); setTimeout(()=>suivanteReplique(btn), Math.min(9000, 60*txt.length)); };
+  a.play().catch(()=>{ parle(txt); setTimeout(()=>suivanteReplique(btn), Math.min(9000, 60*txt.length)); });
+}
+
+/* ═══════════════════════════════════════════════════════════════════════
+   5 · RENDU DES DIAPOSITIVES
+   ═══════════════════════════════════════════════════════════════════════ */
+
+function enTete(s){
+  const h = el('div');
+  const t = el('div','dhead');
+  t.appendChild(el('span','dhead__eyebrow', esc(s.eyebrow||'')));
+  t.appendChild(el('span','dhead__rule'));
+  h.appendChild(t);
+  h.appendChild(el('h2','dtitre', esc(s.titre||'')));
+  if(s.sub) h.appendChild(el('p','dsub', esc(s.sub)));
+  return h;
+}
+
+function boutonSon(label, onclick, rond){
+  const b = el('button', 'son' + (rond?' son--rond':''));
+  b.type = 'button';
+  b.innerHTML = '<span class="son__pt"></span>' + (rond ? '' : '<span class="son__lbl">'+esc(label)+'</span>');
+  if(rond) b.setAttribute('aria-label', label);
+  b.onclick = () => onclick(b);
+  return b;
+}
+
+const RENDU = {
+
+  cover(){
+    const w = el('div','cover');
+    w.innerHTML =
+      '<div class="cover__eyebrow">Module 9 · Pouvez-vous régler le problème ?</div>' +
+      '<h1>Je me prépare</h1>' +
+      '<p class="cover__lead">Nommer un problème de logement, dire depuis quand il dure, ' +
+      'savoir qui appeler. Avancez d\'une diapositive à l\'autre avec le bouton « Suivant ».</p>' +
+      `<div class="cover__meta"><span>${SLIDES.length} diapositives</span>` +
+      `<span>Environ 60 minutes</span>` +
+      `<span>${SLIDES.filter(estQ).length} exercices</span></div>`;
+    return w;
+  },
+
+  objectifs(s){
+    const w = el('div'); w.appendChild(enTete(s));
+    w.appendChild(el('p','dsub','À la fin de cette partie, je serai capable de…'));
+    const ol = el('ol','obj');
+    s.items.forEach(t => ol.appendChild(el('li', null, esc(t))));
+    w.appendChild(ol);
+    return w;
+  },
+
+  situation(s){
+    const w = el('div'); w.appendChild(enTete(s));
+    const g = el('div','situ');
+    const c = el('div');
+    s.paras.forEach(p => c.appendChild(el('p', null, esc(p))));
+    g.appendChild(c);
+    const im = el('img','situ__img'); im.src = IMG(s.img); im.alt = '';
+    g.appendChild(im);
+    w.appendChild(g);
+    return w;
+  },
+
+  dialogue(s){
+    const w = el('div'); w.appendChild(enTete(s));
+    const barre = el('div','dlg__barre');
+    barre.appendChild(boutonSon('Écouter le dialogue', b => joueDialogue(b)));
+    barre.appendChild(el('span','dsub','12 répliques · environ 2 minutes'));
+    w.appendChild(barre);
+    const d = el('div','dlg');
+    DIALOGUE.forEach(([qui,txt])=>{
+      const l = el('div','dlg__ligne');
+      l.appendChild(el('div','dlg__qui', esc(qui)));
+      l.appendChild(el('div','dlg__txt', esc(txt)));
+      d.appendChild(l);
+    });
+    w.appendChild(d);
+    return w;
+  },
+
+  savoir(s){
+    const w = el('div'); w.appendChild(enTete(s));
+    const box = el('div','sav');
+    box.appendChild(el('div','sav__band', esc(s.band||'Le savoir')));
+    s.rows.forEach(([k,v,mots], i)=>{
+      const r = el('div','sav__row');
+      r.appendChild(el('div','sav__k', esc(k)));
+      const val = el('div','sav__v', v);   // contient du balisage volontaire (<b>)
+      if(mots && mots.length){
+        const m = el('div','sav__mots');
+        mots.forEach((mot,j)=>{
+          const b = boutonSon(mot, bb => joue(bb, s.audio ? `${s.audio}_${i}_${j}` : null, mot));
+          b.querySelector('.son__lbl').textContent = mot;
+          m.appendChild(b);
+        });
+        val.appendChild(m);
+      }
+      r.appendChild(val);
+      box.appendChild(r);
+    });
+    w.appendChild(box);
+    return w;
+  },
+
+  q(s){
+    const w = el('div'); w.appendChild(enTete(s));
+    if(s.kind === 'choix'){ w.appendChild(rendChoix(s)); }
+    else {
+      const corps = rendAssoc(s);
+      w.appendChild(corps);
+      w._banque = corps._banque;
+    }
+    return w;
+  },
+
+  bilan(){
+    const w = el('div');
+    w.appendChild(enTete({eyebrow:'Bilan', titre:'Mon résultat'}));
+    let bon = 0, tot = 0;
+    const lignes = [];
+    SLIDES.forEach((s,idx)=>{
+      if(!estQ(s)) return;
+      const sc = E.score[idx];
+      tot += s.rows.length;
+      bon += sc ? sc.bon : 0;
+      lignes.push([s.titre + ' — ' + s.eyebrow.replace(/^Exercice \d+ · /,'').replace(/^Vocabulaire · /,''),
+                   sc ? `${sc.bon} / ${s.rows.length}` : 'non fait']);
+    });
+    const pct = tot ? Math.round(bon/tot*100) : 0;
+    const tete = el('div');
+    tete.innerHTML = `<div class="bilan__score">${pct}<span style="font-size:.4em">%</span></div>` +
+                     `<div class="bilan__sur">${bon} bonnes réponses sur ${tot}, au premier essai.</div>`;
+    w.appendChild(tete);
+    const li = el('div','bilan__liste');
+    lignes.forEach(([t,n])=>{
+      const r = el('div','bilan__l');
+      r.appendChild(el('span', null, esc(t)));
+      r.appendChild(el('span','bilan__n', esc(n)));
+      li.appendChild(r);
+    });
+    w.appendChild(li);
+    const act = el('div','layer__actions');
+    const rec = el('button','lbtn'); rec.type='button'; rec.textContent='Tout recommencer';
+    rec.onclick = ()=>{ E.rep={}; E.fini.clear(); E.essais={}; E.score={}; E.vu=new Set([0]); aller(0); };
+    act.appendChild(rec);
+    const ret = el('a','lbtn lbtn--pri');
+    ret.href = `/assets/interactive/${MODULE}/module-probleme-activite-interactive.html`;
+    ret.textContent = 'Retour au module complet';
+    ret.style.cssText = 'display:inline-flex;align-items:center;text-decoration:none';
+    act.appendChild(ret);
+    w.appendChild(act);
+    return w;
+  },
+};
+
+/* ── Exercice à choix ─────────────────────────────────────────────── */
+function rendChoix(s){
+  const fini = E.fini.has(E.i);
+  const box = el('div','qrows');
+  s.rows.forEach(r=>{
+    const row = el('div','qrow');
+    row.dataset.rid = r.id;
+    if(s.listen){
+      row.appendChild(boutonSon('Écouter ' + r.txt, b => joue(b, 'prPhon_' + r.id, r.txt), true));
+    }
+    row.appendChild(el('div','qrow__txt', esc(r.txt)));
+    const opts = el('div','qrow__opts');
+    s.tiles.forEach(t=>{
+      const b = el('button','opt'); b.type='button'; b.textContent = t;
+      if(E.rep[r.id] === t) b.classList.add('is-sel');
+      if(fini) b.disabled = true;
+      b.onclick = ()=>{ E.rep[r.id] = t; peindre(); majBas(); };
+      opts.appendChild(b);
+    });
+    row.appendChild(opts);
+    row.appendChild(el('div','qrow__verdict'));
+    box.appendChild(row);
+  });
+  return box;
+}
+
+/* ── Exercice d'association (texte ou photos) ─────────────────────── */
+function rendAssoc(s){
+  const img = s.kind === 'imgassoc';
+  const fini = E.fini.has(E.i);
+  const w = el('div');
+
+  const box = el('div','qassoc');
+  s.rows.forEach(r=>{
+    const row = el('div','arow'); row.dataset.rid = r.id;
+    row.appendChild(el('div','arow__q', esc(r.q)));
+    const slot = el('button', 'slot' + (img ? ' slot--img' : ''));
+    slot.type = 'button'; slot.dataset.slot = r.id;
+    const val = E.rep[r.id];
+    if(val){
+      slot.classList.add('is-rempli');
+      slot.innerHTML = img ? `<img src="${IMG(val)}" alt=""><span>Photo choisie</span>` : esc(val);
+    } else {
+      slot.textContent = s.ph;
+    }
+    if(fini) slot.disabled = true;
+    // Un emplacement rempli se vide et redevient la cible ; un emplacement
+    // vide devient la cible. Jamais de bascule : recliquer la rangée déjà
+    // visée l'annulait, et le clic suivant dans la banque ne faisait rien.
+    slot.onclick = ()=>{
+      if(E.rep[r.id]) delete E.rep[r.id];
+      E.cible = r.id;
+      peindre(); majBas();
+    };
+    row.appendChild(slot);
+    row.appendChild(el('div','arow__verdict'));
+    box.appendChild(row);
+  });
+  w.appendChild(box);
+  w._banque = banque(s, img, fini);   // posée dans le plateau par dessine()
+  return w;
+}
+
+// La banque de réponses vit dans le plateau, pas dans la scène.
+function banque(s, img, fini){
+  // Mélangée une seule fois par diapositive, puis mémorisée.
+  if(!s._ordre) s._ordre = melange(s.rows.map(r=>r.a));
+  const bq = el('div','banque');
+  bq.appendChild(el('div','banque__lbl', esc(s.bankLbl)));
+  const items = el('div','banque__items' + (img ? ' banque__items--img' : ''));
+  s._ordre.forEach(a=>{
+    const pris = Object.values(E.rep).includes(a);
+    let b;
+    if(img){
+      b = el('button','vignette');
+      b.innerHTML = `<img src="${IMG(a)}" alt="">`;
+      b.setAttribute('aria-label','Photo');
+    } else {
+      b = el('button','jeton'); b.textContent = a;
+    }
+    b.type = 'button';
+    if(pris) b.classList.add('is-pris');
+    if(fini) b.disabled = true;
+    b.onclick = ()=>{
+      if(!E.cible){ signale("Choisissez d'abord un emplacement à gauche."); return; }
+      E.rep[E.cible] = a;
+      const suite = s.rows.find(r => !E.rep[r.id]);
+      E.cible = suite ? suite.id : null;
+      peindre(); majBas();
+    };
+    items.appendChild(b);
+  });
+  bq.appendChild(items);
+  return bq;
+}
+
+// Repeint la diapositive courante sans perdre la position de défilement.
+function peindre(){
+  const sc = $('#scene'), y = sc.scrollTop;
+  dessine();
+  sc.scrollTop = y;
+}
+
+function signale(txt){
+  const a = $('#aide'); a.textContent = txt;
+  setTimeout(()=>{ if(a.textContent === txt) majBas(); }, 2600);
+}
+
+/* ═══════════════════════════════════════════════════════════════════════
+   6 · VALIDATION
+   ═══════════════════════════════════════════════════════════════════════ */
+
+function toutRepondu(s){
+  return s.rows.every(r => E.rep[r.id] != null);
+}
+
+function corrige(s){
+  return s.rows.map(r => ({
+    r,
+    bon: s.kind === 'choix' ? E.rep[r.id] === r.ok : E.rep[r.id] === r.a,
+  }));
+}
+
+function valider(){
+  const s = SLIDES[E.i];
+  if(!toutRepondu(s)){ signale('Il reste des réponses à donner.'); return; }
+
+  const res = corrige(s);
+  const bon = res.filter(x=>x.bon).length;
+  const n = res.length;
+  E.essais[E.i] = (E.essais[E.i]||0) + 1;
+  if(E.essais[E.i] === 1) E.score[E.i] = {bon, total:n};
+
+  marquer(res, false);
+
+  if(bon === n){
+    E.fini.add(E.i);
+    couche('ok', 'Juste', 'Tout est bon.',
+      `${n} réponses sur ${n}. Vous pouvez passer à la suite.`,
+      [['Continuer', 'pri', ()=>{ fermeCouche(); suivant(); }]]);
+  } else if(E.essais[E.i] === 1){
+    couche('no', 'Pas tout à fait', `${bon} réponses justes sur ${n}.`,
+      "Les réponses fausses ont été effacées ; les bonnes sont conservées. Essayez encore une fois.",
+      [['Réessayer', 'pri', ()=>{ fermeCouche(); effaceFausses(res); }],
+       ['Voir la correction', '', ()=>{ fermeCouche(); reveler(s, res); }]]);
+  } else {
+    reveler(s, res);
+  }
+}
+
+function effaceFausses(res){
+  res.forEach(x => { if(!x.bon) delete E.rep[x.r.id]; });
+  E.cible = null;
+  document.querySelectorAll('.qrow, .arow').forEach(n => n.classList.remove('fb-ok','fb-no'));
+  peindre(); majBas();
+}
+
+function reveler(s, res){
+  E.fini.add(E.i);
+  marquer(res, true);
+  const bon = res.filter(x=>x.bon).length;
+  couche('no', 'La correction', `${bon} réponses justes sur ${res.length}.`,
+    "Les bonnes réponses sont affichées. Lisez-les, puis continuez.",
+    [['Continuer', 'pri', ()=>{ fermeCouche(); suivant(); }]]);
+  majBas();
+}
+
+// Peint le verdict sur chaque rangée. Avec `montrer`, ajoute la bonne réponse.
+function marquer(res, montrer){
+  const s = SLIDES[E.i];
+  res.forEach(x=>{
+    const n = document.querySelector(`[data-rid="${x.r.id}"]`);
+    if(!n) return;
+    n.classList.add(x.bon ? 'fb-ok' : 'fb-no');
+    const v = n.querySelector('.qrow__verdict, .arow__verdict');
+    if(v) v.textContent = x.bon ? 'Juste' : 'À revoir';
+    if(montrer && !x.bon){
+      if(s.kind === 'choix'){
+        if(v) v.textContent = 'La réponse est ' + x.r.ok;
+      } else {
+        if(!n.querySelector('.arow__bonne')){
+          const b = el('div','arow__bonne');
+          b.innerHTML = s.kind === 'imgassoc'
+            ? 'La bonne photo : <b>' + esc(x.r.a.replace(/\.jpg$/,'').replace(/-/g,' ')) + '</b>'
+            : 'La bonne réponse : <b>' + esc(x.r.a) + '</b>';
+          n.appendChild(b);
+        }
+      }
+    }
+  });
+}
+
+/* ── Couche de rétroaction ────────────────────────────────────────── */
+function couche(kind, k, t, p, actions){
+  const L = $('#layer');
+  L.className = 'layer is-on layer--' + kind;
+  $('#layerK').textContent = k;
+  $('#layerT').textContent = t;
+  $('#layerP').textContent = p;
+  const a = $('#layerA'); a.innerHTML = '';
+  actions.forEach(([lbl, cls, fn])=>{
+    const b = el('button','lbtn' + (cls ? ' lbtn--'+cls : ''));
+    b.type='button'; b.textContent = lbl; b.onclick = fn;
+    a.appendChild(b);
+  });
+  const prem = a.querySelector('.lbtn--pri') || a.querySelector('.lbtn');
+  if(prem) prem.focus();
+}
+function fermeCouche(){ $('#layer').className = 'layer'; }
+
+/* ═══════════════════════════════════════════════════════════════════════
+   7 · NAVIGATION ET CHÂSSIS
+   ═══════════════════════════════════════════════════════════════════════ */
+
+function dessine(){
+  const s = SLIDES[E.i];
+  const sc = $('#scene');
+  sc.className = 'scene' + (s.type === 'cover' ? ' scene--plein' : '');
+  sc.innerHTML = '';
+  document.documentElement.style.setProperty('--sec',
+    s.sec === 'violet' ? 'var(--violet-600)' : 'var(--teal-700)');
+  document.documentElement.style.setProperty('--sec-soft',
+    s.sec === 'violet' ? 'var(--violet-100)' : 'var(--teal-100)');
+  const corps = RENDU[s.type](s);
+  sc.appendChild(corps);
+
+  const tray = $('#tray');
+  tray.innerHTML = '';
+  tray.classList.toggle('is-on', !!corps._banque);
+  if(corps._banque) tray.appendChild(corps._banque);
+
+  // L'emplacement en attente se signale après le rendu.
+  if(E.cible){
+    const n = document.querySelector(`[data-rid="${E.cible}"]`);
+    if(n) n.classList.add('is-cible');
+  }
+}
+
+function aller(i){
+  if(i < 0 || i >= SLIDES.length) return;
+  stopAudio(); stopDialogue(document.querySelector('.dlg__barre .son'));
+  fermeCouche();
+  E.i = i; E.vu.add(i); E.cible = null;
+  dessine(); majMenu(); majBas();
+  $('#scene').scrollTop = 0;
+  $('#menu').classList.remove('is-on');
+}
+
+function suivant(){
+  const s = SLIDES[E.i];
+  if(estQ(s) && !E.fini.has(E.i)){ valider(); return; }
+  aller(E.i + 1);
+}
+
+function majBas(){
+  const s = SLIDES[E.i];
+  const q = estQ(s), fini = E.fini.has(E.i);
+  $('#btnPrec').disabled = E.i === 0;
+  const suiv = $('#btnSuiv');
+  const dernier = E.i === SLIDES.length - 1;
+  suiv.disabled = dernier;
+  suiv.textContent = dernier ? 'Fin' : (q && !fini ? 'Valider' : 'Suivant ›');
+
+  let aide = '';
+  if(q && !fini){
+    const rep = s.rows.filter(r => E.rep[r.id] != null).length;
+    aide = `${rep} réponse${rep>1?'s':''} sur ${s.rows.length}`;
+    if(E.cible) aide += ' · choisissez maintenant dans la banque';
+  } else if(q && fini){
+    const sc = E.score[E.i];
+    aide = sc ? `${sc.bon} / ${sc.total} au premier essai` : '';
+  }
+  $('#aide').textContent = aide;
+
+  $('#compte').textContent = `${E.i+1} / ${SLIDES.length}`;
+  $('#topTitre').textContent = s.menu === 'Couverture' ? 'Je me prépare' : s.menu;
+  $('#progFill').style.width = (E.i / (SLIDES.length - 1) * 100) + '%';
+}
+
+function majMenu(){
+  const m = $('#menu');
+  m.innerHTML = '';
+  let grp = null;
+  SLIDES.forEach((s,i)=>{
+    if(s.grp !== grp){ grp = s.grp; m.appendChild(el('div','menu__grp', esc(grp))); }
+    const b = el('button','menu__item');
+    b.type = 'button';
+    const fait = estQ(s) ? E.fini.has(i) : E.vu.has(i);
+    if(i === E.i) b.classList.add('is-cur');
+    if(fait) b.classList.add('is-fait');
+    // On n'ouvre que ce qui a déjà été atteint : le parcours reste linéaire.
+    const ouvert = E.vu.has(i);
+    if(!ouvert) b.disabled = true;
+    b.innerHTML = `<span class="menu__pastille">${fait ? '✓' : (i+1)}</span>` +
+                  `<span class="menu__lbl">${esc(s.menu)}</span>`;
+    b.onclick = ()=>aller(i);
+    m.appendChild(b);
+  });
+  const cur = m.querySelector('.is-cur');
+  if(cur) cur.scrollIntoView({block:'nearest'});
+}
+
+/* ── Branchements ─────────────────────────────────────────────────── */
+$('#btnPrec').onclick = ()=>aller(E.i - 1);
+$('#btnSuiv').onclick = suivant;
+$('#burger').onclick = ()=>$('#menu').classList.toggle('is-on');
+
+document.addEventListener('keydown', e=>{
+  if($('#layer').classList.contains('is-on')){
+    if(e.key === 'Escape') fermeCouche();
+    return;
+  }
+  if(e.target.matches('input, textarea')) return;
+  if(e.key === 'ArrowRight'){ e.preventDefault(); suivant(); }
+  if(e.key === 'ArrowLeft'){ e.preventDefault(); aller(E.i - 1); }
+});
+
+if(window.speechSynthesis) speechSynthesis.getVoices();
+aller(0);
+</script>
+</body></html>
