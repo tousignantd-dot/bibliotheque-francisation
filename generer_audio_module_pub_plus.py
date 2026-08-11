@@ -62,6 +62,14 @@ CLIPS = {
     "plus_t2negatif_lab2_v": "Vous n'êtes pas venus à la clinique",
     "plus_t2negatif_ex3_0": "Nous n'avons pas annoncé l'atelier dans l'infolettre.",
     "plus_t2negatif_ex3_1": "Les bénévoles ne sont pas arrivés avant neuf heures.",
+    # Items de l'exercice « L'accent d'insistance » (Je me prépare) —
+    # playWord() les cherche sous sons/<idExo>_<index>.mp3.
+    "prAccent_0": "Cet atelier est complètement gratuit.",
+    "prAccent_1": "Nos bénévoles réparent absolument tout.",
+    "prAccent_2": "C'est la dernière occasion avant l'été.",
+    "prAccent_3": "Vous repartirez avec un grille-pain qui fonctionne.",
+    "prAccent_4": "Quelle belle idée de quartier !",
+
 }
 
 # Un mot seul, envoyé sans contexte, ne donne au moteur aucun indice de
@@ -81,6 +89,15 @@ TEXT_OVERRIDES = {
     "plus_t1suffixe_lab2_c": "la confiance",
     "plus_t1suffixe_ex3_0": "c'est jetable",
     "plus_t1suffixe_ex3_1": "l'animatrice",
+    # Accent d'insistance : le mot à accentuer est écrit en majuscules dans
+    # le texte envoyé au moteur (il l'allonge au lieu de l'épeler, vérifié).
+    # Sans ça, la phrase est lue à plat et l'exercice n'a plus de réponse.
+    "prAccent_0": "Cet atelier est complètement GRATUIT.",
+    "prAccent_1": "Nos bénévoles réparent ABSOLUMENT tout.",
+    "prAccent_2": "C'est la DERNIÈRE occasion avant l'été.",
+    "prAccent_3": "Vous repartirez avec un grille-pain qui FONCTIONNE.",
+    "prAccent_4": "Quelle BELLE idée de quartier !",
+
 }
 
 
