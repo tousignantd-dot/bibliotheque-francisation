@@ -351,6 +351,186 @@ def json_response(handler, data, status=200):
     handler.wfile.write(body)
 
 
+# ── Jeu de rôle « louer un logement » (module 8) ─────────────────────────────
+# Les fiches vivent ici, jamais dans le HTML du module : ce que chaque rôle
+# ignore est tout l'intérêt de l'exercice, et un « afficher le code source »
+# suffirait à le lire si c'était côté client. Les mêmes contenus existent en
+# version papier dans assets/documents/module-logement-jeu-de-role.html.
+
+JEU_DE_ROLE_SUJETS = [
+    "ce qui est inclus dans le loyer",
+    "le chauffage et l'électricité",
+    "les électroménagers et la buanderie",
+    "le stationnement",
+    "les animaux",
+    "le bruit et le voisinage",
+    "la date et la durée du bail",
+]
+
+JEU_DE_ROLE_LOGEMENTS = {
+    "A": {
+        "lieu": "centre-ville",
+        "annonce": (
+            "2 ½ meublé au troisième étage, rue Wellington Nord, en plein centre-ville. "
+            "Fenêtres neuves. Arrêt d'autobus devant la porte. Épicerie et pharmacie à "
+            "deux minutes de marche. Libre le 1er octobre. 690 $ par mois."
+        ),
+        "proprietaire": [
+            "Le chauffage et l'électricité sont inclus. Internet n'est pas inclus.",
+            "Meublé : un lit, une table, deux chaises, une commode. Pas de vaisselle.",
+            "Aucune buanderie dans l'immeuble ; il y a une laverie à trois rues.",
+            "Pas de stationnement : dans la rue seulement, avec une vignette de la Ville.",
+            "Aucun animal accepté, parce que la voisine du deuxième est allergique.",
+            "Bail de 12 mois, du 1er octobre au 30 septembre.",
+            "Il y a un bar au rez-de-chaussée : on entend la musique jusqu'à minuit les vendredis et samedis.",
+            "Le logement n'a pas de balcon.",
+        ],
+        "locataire": [
+            "Tu es étudiante, tu arrives à Sherbrooke en septembre et tu vis seule.",
+            "Ton budget est de 750 $ par mois tout compris, donc tu dois savoir ce qui s'ajoute au loyer.",
+            "Tu travailles les fins de semaine et tu étudies le soir : le calme compte beaucoup.",
+            "Tu n'as aucun meuble et pas les moyens d'en acheter.",
+            "Tu n'as pas d'auto, tu prends l'autobus.",
+            "Tu veux savoir où laver ton linge.",
+        ],
+    },
+    "B": {
+        "lieu": "Fleurimont",
+        "annonce": (
+            "Grand 5 ½ dans un quartier familial de Fleurimont, à dix minutes du CHUS. "
+            "Trois chambres, sous-sol fini, grande cour arrière. Deux stationnements. "
+            "Libre le 1er juillet. 1 390 $ par mois."
+        ),
+        "proprietaire": [
+            "Le chauffage est électrique et aux frais du locataire : environ 150 $ par mois en hiver.",
+            "Aucun électroménager n'est fourni, mais les entrées pour la laveuse et la sécheuse sont prêtes au sous-sol.",
+            "Les petits chiens sont acceptés. Pas de chat : tu es allergique et tu habites au rez-de-chaussée.",
+            "École primaire à cinq minutes à pied, garderie au coin de la rue.",
+            "Bail de 12 mois, renouvelable.",
+            "Le déneigement de l'entrée est à la charge du locataire.",
+            "Il n'y a pas de climatiseur, mais les fenêtres donnent au nord et le logement reste frais l'été.",
+            "Le sous-sol fini peut servir de quatrième chambre ou de bureau.",
+        ],
+        "locataire": [
+            "Vous êtes quatre : deux adultes et deux enfants de 7 et 10 ans.",
+            "Ton conjoint travaille de nuit au CHUS et dort le jour.",
+            "Vous avez un petit chien très tranquille.",
+            "Vous possédez déjà une laveuse et une sécheuse, mais aucun autre électroménager.",
+            "Votre budget est de 1 500 $ par mois chauffage compris, donc tu dois savoir ce que coûte le chauffage l'hiver.",
+            "Tu veux savoir où est l'école la plus proche.",
+        ],
+    },
+    "C": {
+        "lieu": "Vieux-Nord",
+        "annonce": (
+            "4 ½ au rez-de-chaussée d'une maison centenaire, quartier du Vieux-Nord. "
+            "Planchers de bois, grandes fenêtres, balcon avant. Près du lac des Nations "
+            "et de la piste cyclable. Non-fumeur. Libre le 1er août. 1 050 $ par mois."
+        ),
+        "proprietaire": [
+            "Le chauffage et l'eau chaude sont inclus. L'électricité est aux frais du locataire.",
+            "Le réfrigérateur et la cuisinière sont fournis. Il y a une laveuse et une sécheuse dans le logement.",
+            "Une place de stationnement dans la cour, en arrière.",
+            "Un chat accepté, pas de chien.",
+            "La maison a cent ans : les planchers craquent, les fenêtres sont simples et il fait un peu froid en janvier près des fenêtres.",
+            "Bail du 1er août au 31 juillet.",
+            "Tu habites à l'étage, au-dessus du logement.",
+            "Le locataire peut repeindre, mais doit remettre les couleurs d'origine à la fin du bail.",
+        ],
+        "locataire": [
+            "Vous êtes un couple à la retraite et vous avez un chat.",
+            "Vous vous déplacez à pied et à vélo : la piste cyclable compte beaucoup.",
+            "Vous avez une auto et il vous faut une place pour la stationner.",
+            "Votre budget est de 1 200 $ par mois tout compris.",
+            "Vous êtes frileux : vous voulez savoir si le logement est chaud en janvier.",
+            "Vous aimeriez repeindre le salon en bleu.",
+        ],
+    },
+}
+
+
+def jeu_de_role_system(logement_id, role_eleve):
+    """Consigne système du personnage joué par l'assistant.
+
+    `role_eleve` est le rôle de l'ÉLÈVE ; l'assistant joue l'autre. Le texte
+    est volontairement stable d'un tour à l'autre — c'est lui qu'on met en
+    cache, donc la moindre variation (heure, prénom) coûterait le bénéfice.
+    """
+    log = JEU_DE_ROLE_LOGEMENTS[logement_id]
+    ia_role = "proprietaire" if role_eleve == "locataire" else "locataire"
+    faits = "\n".join("- " + f for f in log[ia_role])
+
+    if ia_role == "proprietaire":
+        qui = ("Tu es le ou la propriétaire du logement et tu le fais visiter. "
+               "L'élève est la personne qui vient le visiter.")
+        conduite = (
+            "Réponds honnêtement aux questions, mais ne donne jamais un renseignement "
+            "avant qu'on te le demande — c'est à l'élève d'aller le chercher. "
+            "Si l'élève ne pose pas de question, accueille-le et invite-le à en poser une."
+        )
+    else:
+        qui = ("Tu es la personne qui vient visiter le logement. "
+               "L'élève est le ou la propriétaire et fait visiter.")
+        conduite = (
+            "Pose tes questions une à la fois, en commençant par ce qui compte le plus "
+            "pour ta situation. Réagis brièvement à chaque réponse avant de passer à la suite."
+        )
+
+    return (
+        "Tu joues un rôle dans un exercice oral de francisation au Québec, niveau 4 "
+        "(débutant-intermédiaire). Ton interlocuteur est un adulte immigrant qui apprend "
+        "le français.\n\n"
+        f"{qui}\n\n"
+        f"L'annonce que vous avez tous les deux sous les yeux :\n{log['annonce']}\n\n"
+        f"Ce que tu sais et que l'élève ignore :\n{faits}\n\n"
+        "Comment tu parles :\n"
+        "- Deux ou trois phrases maximum par réplique. Jamais de paragraphe.\n"
+        "- Français québécois courant et simple, phrases courtes, vocabulaire de tous les jours.\n"
+        "- Vouvoie l'élève, comme dans une vraie visite de logement.\n"
+        "- Reste dans ton personnage quoi qu'il arrive. Si l'élève sort du jeu, ramène-le "
+        "dans la conversation avec naturel.\n"
+        "- Ne corrige jamais le français de l'élève et ne commente jamais ses fautes : "
+        "la correction vient à la fin, ailleurs. Si une phrase est incompréhensible, "
+        "demande simplement de répéter autrement.\n"
+        "- N'écris jamais de balise XML interne ou système dans ta réponse.\n\n"
+        f"{conduite}\n\n"
+        "Les sept sujets que la conversation doit couvrir : "
+        + " · ".join(JEU_DE_ROLE_SUJETS) + ".\n"
+        "Quand les sept sont couverts, dis-le simplement et termine poliment la visite."
+    )
+
+
+def jeu_de_role_messages(historique, role_eleve):
+    """Normalise l'historique reçu du navigateur en messages pour l'API.
+
+    L'historique vient du client : on ne lui fait confiance ni sur la longueur,
+    ni sur les rôles, ni sur la taille des contenus. On garde les 24 derniers
+    tours, et l'API exige que la conversation commence par un tour utilisateur.
+    """
+    messages = []
+    for m in (historique or [])[-24:]:
+        if not isinstance(m, dict):
+            continue
+        r = "assistant" if m.get("role") == "assistant" else "user"
+        contenu = str(m.get("contenu", "")).strip()[:600]
+        if contenu:
+            messages.append({"role": r, "content": contenu})
+
+    while messages and messages[0]["role"] == "assistant":
+        messages.pop(0)
+
+    if not messages:
+        # Premier tour : l'API veut un tour utilisateur pour démarrer, donc on
+        # écrit la salutation d'ouverture à la place de l'élève. Elle doit
+        # correspondre au rôle qu'il joue — le locataire arrive, le
+        # propriétaire accueille — et le handler la renvoie au client pour
+        # qu'il l'affiche et la garde dans son historique.
+        messages = [{"role": "user", "content": (
+            "Bonjour, entrez, je vous en prie." if role_eleve == "proprietaire"
+            else "Bonjour, je viens pour l'annonce.")}]
+    return messages
+
+
 # ── Gestionnaire HTTP ────────────────────────────────────────────────────────
 
 class Handler(http.server.SimpleHTTPRequestHandler):
@@ -484,6 +664,8 @@ class Handler(http.server.SimpleHTTPRequestHandler):
             self._handle_analyze_grammar()
         elif path == "/api/check-written":
             self._handle_check_written()
+        elif path == "/api/jeu-de-role":
+            self._handle_jeu_de_role()
         elif path == "/api/analyser-erreurs":
             self._handle_analyser_erreurs()
         elif path == "/api/oral/submit":
@@ -1125,6 +1307,121 @@ class Handler(http.server.SimpleHTTPRequestHandler):
         log.append(entry)
         save_access_log(log)
         json_response(self, {"success": True})
+
+    def _call_anthropic_dialogue(self, system_prompt, messages, max_tokens=300):
+        """Appelle l'API Anthropic pour une conversation à plusieurs tours et
+        renvoie (texte, None) ou (None, (message d'erreur, code)).
+
+        Diffère de _call_anthropic_json sur trois points : l'historique complet
+        est envoyé (et non un seul message), la réponse est du texte libre, et
+        la consigne système est marquée pour la mise en cache — elle ne change
+        pas d'un tour à l'autre, donc à partir du deuxième échange elle est
+        facturée au dixième au lieu du plein tarif.
+        """
+        api_key = os.environ.get("ANTHROPIC_API_KEY", "")
+        if not api_key:
+            return None, ("Clé API non configurée sur le serveur", 503)
+
+        payload = json.dumps({
+            "model": "claude-opus-5",
+            "max_tokens": max_tokens,
+            # Une réplique de deux phrases n'a rien à gagner d'une longue
+            # réflexion, et la classe attend la réponse : effort au minimum.
+            # On garde la réflexion adaptative plutôt que de la désactiver —
+            # désactivée, ce modèle laisse parfois échapper des balises
+            # internes dans le texte visible.
+            "thinking": {"type": "adaptive"},
+            "output_config": {"effort": "low"},
+            "system": [{
+                "type": "text",
+                "text": system_prompt,
+                "cache_control": {"type": "ephemeral"},
+            }],
+            "messages": messages,
+        }).encode("utf-8")
+
+        req = urllib.request.Request(
+            "https://api.anthropic.com/v1/messages",
+            data=payload,
+            headers={
+                "x-api-key": api_key,
+                "anthropic-version": "2023-06-01",
+                "content-type": "application/json",
+            },
+            method="POST",
+        )
+
+        try:
+            with urllib.request.urlopen(req, timeout=40) as resp:
+                result = json.loads(resp.read().decode("utf-8"))
+        except urllib.error.HTTPError as e:
+            detail = e.read().decode("utf-8", errors="replace")
+            print(f"[WARN] Anthropic API HTTPError {e.code}: {detail[:300]}", flush=True)
+            return None, ("L'assistant est momentanément indisponible", 502)
+        except (urllib.error.URLError, TimeoutError) as e:
+            print(f"[WARN] Anthropic API injoignable : {e}", flush=True)
+            return None, ("L'assistant est momentanément indisponible", 502)
+
+        # Le refus est un 200 avec un contenu vide : à vérifier avant de lire
+        # les blocs, sinon on plante sur une liste vide.
+        if result.get("stop_reason") == "refusal":
+            return None, ("L'assistant ne peut pas répondre à ce message", 400)
+
+        texte = " ".join(
+            b.get("text", "") for b in result.get("content", [])
+            if b.get("type") == "text"
+        ).strip()
+        if not texte:
+            return None, ("Réponse vide de l'assistant", 502)
+
+        usage = result.get("usage", {})
+        print("[jeu-de-role] entrée %s · cache lu %s · sortie %s" % (
+            usage.get("input_tokens"), usage.get("cache_read_input_tokens"),
+            usage.get("output_tokens")), flush=True)
+        return texte, None
+
+    def _handle_jeu_de_role(self):
+        """Un tour de conversation du jeu de rôle « louer un logement ».
+
+        Corps attendu : {code, logement: 'A'|'B'|'C', role: 'locataire'|
+        'proprietaire', historique: [{role:'user'|'assistant', contenu}]}.
+        `role` est celui que joue l'ÉLÈVE ; l'assistant prend l'autre.
+        """
+        length = int(self.headers.get("Content-Length", 0))
+        try:
+            body = json.loads(self.rfile.read(length)) if length else {}
+        except json.JSONDecodeError:
+            json_response(self, {"error": "Requête invalide"}, 400)
+            return
+
+        code = body.get("code", "").strip().upper()
+        if not validate_student_code(code):
+            json_response(self, {"error": "Non autorisé"}, 401)
+            return
+
+        logement = body.get("logement", "")
+        role = body.get("role", "")
+        if logement not in JEU_DE_ROLE_LOGEMENTS or role not in ("locataire", "proprietaire"):
+            json_response(self, {"error": "Logement ou rôle inconnu"}, 400)
+            return
+
+        recu = body.get("historique")
+        messages = jeu_de_role_messages(recu, role)
+        premier_tour = not recu
+
+        texte, err = self._call_anthropic_dialogue(
+            jeu_de_role_system(logement, role), messages)
+        if err:
+            json_response(self, {"error": err[0]}, err[1])
+            return
+
+        out = {"reponse": texte}
+        if premier_tour:
+            # La salutation qu'on a écrite pour l'élève : le client l'affiche
+            # et la range dans son historique, sinon elle serait perdue au
+            # tour suivant et l'assistant se présenterait deux fois.
+            out["ouverture"] = messages[0]["content"]
+        json_response(self, out)
 
     def _call_anthropic_json(self, system_prompt, user_content, max_tokens=400):
         """Appelle l'API Anthropic et retourne (parsed_dict, None) en cas de

@@ -661,6 +661,24 @@ body{
 .jr-print-n{font-size:14px;font-weight:500;color:var(--ws-sub);line-height:1.45}
 @media(max-width:640px){.jr-sujets{grid-template-columns:1fr}}
 
+/* Conversation avec l'assistant */
+.jr-sep{height:1px;background:var(--ws-line);margin:24px var(--bleed) 20px}
+.jr-choix-l{font-size:14px;font-weight:700;color:var(--ws-sub);margin:12px 0 7px}
+.jr-opts{display:flex;gap:8px;flex-wrap:wrap}
+.jr-opt{min-height:44px;padding:10px 16px;border-radius:22px;border:1px solid var(--ws-line);background:var(--ws-card);font-family:'Nunito',sans-serif;font-size:15px;font-weight:800;color:var(--ws-ink);cursor:pointer;transition:background .15s,border-color .15s}
+.jr-opt:hover{border-color:var(--sec-color,var(--ws-accent))}
+.jr-opt.on{background:var(--sel-bg);border-color:var(--sel-line);color:var(--sel-ink)}
+.jr-fil{margin:18px 0 12px;display:flex;flex-direction:column;gap:10px;max-height:420px;overflow-y:auto}
+.jr-b{padding:11px 15px;border-radius:16px;font-size:16px;font-weight:500;line-height:1.55;max-width:82%}
+.jr-b-q{display:block;font-size:11px;font-weight:800;text-transform:uppercase;letter-spacing:.12em;opacity:.72;margin-bottom:4px}
+.jr-b-ia{background:var(--ws-bg);border:1px solid var(--ws-line);align-self:flex-start;border-bottom-left-radius:5px}
+.jr-b-moi{background:var(--sel-bg);color:var(--sel-ink);align-self:flex-end;border-bottom-right-radius:5px}
+.jr-saisie{display:flex;gap:9px;align-items:center}
+.jr-saisie input{flex:1;min-height:46px;padding:10px 15px;border-radius:23px;border:1px solid var(--ws-line);background:var(--ws-card);font-family:'Nunito',sans-serif;font-size:16px;font-weight:500;color:var(--ws-ink)}
+.jr-saisie input:focus{outline:none;border-color:var(--sec-color,var(--ws-accent))}
+.jr-fin{display:flex;gap:10px;flex-wrap:wrap;margin-top:14px}
+@media(max-width:640px){.jr-b{max-width:92%}}
+
 /* Focus clavier visible partout (B.4) */
 :focus-visible{outline:3px solid var(--ws-accent);outline-offset:2px;border-radius:inherit}
 textarea:focus-visible,.winput:focus-visible{outline:none;border-color:var(--ws-accent)}
@@ -1751,6 +1769,38 @@ function injectCustom(){
        <a class="btn btn-pri" href="/assets/documents/module-logement-jeu-de-role.html" target="_blank" rel="noopener">Ouvrir les fiches à imprimer</a>
        <span class="jr-print-n">Six cartes à découper : un locataire et un propriétaire par logement.</span>
      </div>
+
+     <div class="jr-sep"></div>
+     <div class="jr-sub">Ou entraîne-toi seul, avec l'assistant</div>
+     <p class="lead" style="margin-bottom:14px">Il joue l'autre rôle. Il connaît des choses que tu ignores — à toi d'aller les chercher.</p>
+     <div class="jr-choix">
+       <div class="jr-choix-l">Quel logement ?</div>
+       <div class="jr-opts" id="jrLogs">
+         ${ROLE_LOGEMENTS.map((l,i)=>`<button class="jr-opt${i===0?' on':''}" type="button" data-log="${l.id}" onclick="jrChoisir('log','${l.id}')">${l.id} · ${esc(l.lieu)}</button>`).join('')}
+       </div>
+       <div class="jr-choix-l">Tu joues qui ?</div>
+       <div class="jr-opts" id="jrRoles">
+         <button class="jr-opt on" type="button" data-role="locataire" onclick="jrChoisir('role','locataire')">Le locataire — je visite</button>
+         <button class="jr-opt" type="button" data-role="proprietaire" onclick="jrChoisir('role','proprietaire')">Le propriétaire — je fais visiter</button>
+       </div>
+       <button class="btn btn-pri" id="jrStart" type="button" onclick="jrDemarrer()" style="margin-top:14px">Commencer la conversation</button>
+     </div>
+
+     <div id="jrChat" class="hidden">
+       <div class="jr-fil" id="jrFil" aria-live="polite"></div>
+       <div class="jr-saisie">
+         <input id="jrInput" type="text" placeholder="Écris ta question…" autocomplete="off"
+                onkeydown="if(event.key==='Enter'){event.preventDefault();jrEnvoyer();}">
+         <button class="btn btn-pri" id="jrSend" type="button" onclick="jrEnvoyer()">Envoyer</button>
+       </div>
+       <div class="status" id="jrStatus">L'assistant réfléchit…</div>
+       <div class="err" id="jrErr"></div>
+       <div class="jr-fin">
+         <button class="btn btn-ghost" type="button" onclick="jrRecommencer()">↺ Recommencer</button>
+         <button class="btn btn-send" type="button" onclick="jrFini()">J'ai fini — corrige mes phrases</button>
+       </div>
+       <div class="fb" id="jrFb" aria-live="polite"></div>
+     </div>
    </div>`;
 
   // JE METS EN APPLICATION — jeu de rôle oral + écriture corrigée par l'IA
@@ -1948,6 +1998,101 @@ function corrSummary(data,orig){
 }
 function showErr(id,msg){ const e=document.getElementById(id); if(e){e.textContent=msg; e.classList.add('on');} }
 function hideErr(id){ const e=document.getElementById(id); if(e)e.classList.remove('on'); }
+
+// ── JEU DE RÔLE AVEC L'ASSISTANT ──────────────────────────────────────
+// Le client ne connaît que la partie publique des annonces. Ce que sait le
+// personnage joué par l'assistant vit dans server.py — sinon un coup d'œil au
+// code source de la page suffirait à vider l'exercice de son sens.
+const JR = {log:'A', role:'locataire', hist:[], occupe:false};
+
+function jrChoisir(quoi, val){
+  JR[quoi] = val;
+  const box = document.getElementById(quoi==='log' ? 'jrLogs' : 'jrRoles');
+  box.querySelectorAll('.jr-opt').forEach(b=>{
+    const v = quoi==='log' ? b.dataset.log : b.dataset.role;
+    b.classList.toggle('on', v===val);
+  });
+}
+
+function jrBulle(qui, texte){
+  const fil=document.getElementById('jrFil');
+  const d=document.createElement('div');
+  d.className='jr-b jr-b-'+qui;
+  d.innerHTML='<span class="jr-b-q">'+(qui==='moi'?'Moi':'Assistant')+'</span>'+esc(texte);
+  fil.appendChild(d);
+  d.scrollIntoView({block:'nearest'});
+}
+
+function jrDemarrer(){
+  document.getElementById('jrChat').classList.remove('hidden');
+  document.getElementById('jrStart').textContent='Recommencer avec ces choix';
+  jrRecommencer();
+}
+
+function jrRecommencer(){
+  JR.hist=[];
+  document.getElementById('jrFil').innerHTML='';
+  document.getElementById('jrFb').classList.remove('on');
+  hideErr('jrErr');
+  jrTour();
+}
+
+async function jrTour(){
+  if(JR.occupe) return;
+  JR.occupe=true;
+  document.getElementById('jrStatus').classList.add('on');
+  document.getElementById('jrSend').disabled=true;
+  hideErr('jrErr');
+  try{
+    const res=await fetch('/api/jeu-de-role',{method:'POST',headers:{'Content-Type':'application/json'},
+      body:JSON.stringify({code:studentCode, logement:JR.log, role:JR.role, historique:JR.hist})});
+    const d=await res.json();
+    if(!res.ok){ showErr('jrErr', d.error||"L'assistant n'a pas pu répondre."); return; }
+    // Au premier tour, le serveur écrit la salutation à notre place : on
+    // l'affiche et on la garde, sinon elle manquerait au tour suivant.
+    if(d.ouverture){ JR.hist.push({role:'user', contenu:d.ouverture}); jrBulle('moi', d.ouverture); }
+    JR.hist.push({role:'assistant', contenu:d.reponse});
+    jrBulle('ia', d.reponse);
+  }catch(e){
+    showErr('jrErr','Impossible de contacter le serveur. Réessaie.');
+  }finally{
+    JR.occupe=false;
+    document.getElementById('jrStatus').classList.remove('on');
+    document.getElementById('jrSend').disabled=false;
+  }
+}
+
+function jrEnvoyer(){
+  const inp=document.getElementById('jrInput');
+  const txt=inp.value.trim();
+  if(!txt || JR.occupe) return;
+  inp.value='';
+  JR.hist.push({role:'user', contenu:txt});
+  jrBulle('moi', txt);
+  jrTour();
+}
+
+async function jrFini(){
+  const mes=JR.hist.filter(m=>m.role==='user').map(m=>m.contenu);
+  // La salutation d'ouverture vient du serveur, pas de l'élève : on ne la
+  // lui fait pas corriger.
+  if(mes.length>1) mes.shift();
+  if(!mes.length){ showErr('jrErr',"Pose au moins une question avant de demander la correction."); return; }
+  hideErr('jrErr');
+  document.getElementById('jrStatus').classList.add('on');
+  try{
+    const res=await fetch('/api/correct-french',{method:'POST',headers:{'Content-Type':'application/json'},
+      body:JSON.stringify({code:studentCode, text:mes.join(' '),
+        question:"L'élève joue un rôle : il pose ou répond à des questions pour louer un logement, avec le pronom de reprise (Le chauffage est-il inclus ?)."})});
+    const d=await res.json();
+    if(!res.ok){ showErr('jrErr', d.error||'Une erreur est survenue.'); return; }
+    renderCorr('jrFb', d, mes.join(' '));
+  }catch(e){
+    showErr('jrErr','Impossible de contacter le serveur.');
+  }finally{
+    document.getElementById('jrStatus').classList.remove('on');
+  }
+}
 
 // ── EXERCICES À ÉCRIRE ────────────────────────────────────────────────
 function normWrite(s){
