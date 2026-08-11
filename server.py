@@ -457,58 +457,195 @@ JEU_DE_ROLE_LOGEMENTS = {
 }
 
 
-def jeu_de_role_system(logement_id, role_eleve):
+JEU_DE_ROLE_PROBLEMES = {
+    "chauffage": {
+        "contexte": (
+            "Le calorifère du salon d'un logement au dernier étage ne chauffe plus. "
+            "Il fait 14 °C. Le disjoncteur du circuit retombe chaque fois qu'on le remonte. "
+            "On est au début du mois de novembre."
+        ),
+        "proprietaire": [
+            "Tu possèdes l'immeuble de six logements et tu t'occupes toi-même de la gestion.",
+            "Tu ignorais complètement le problème : personne ne t'a appelée avant aujourd'hui.",
+            "Ton électricien passe déjà dans l'immeuble jeudi matin ; tu peux lui demander de monter.",
+            "Tu gardes deux chauffages d'appoint au sous-sol et tu peux en prêter un le soir même.",
+            "Le chauffage et les réparations sont à ta charge, pas à celle du locataire.",
+            "Tu veux savoir depuis quand le problème dure et s'il y a du danger immédiat.",
+            "Si le locataire te parle d'un disjoncteur qui retombe, tu demandes qu'on n'y touche plus.",
+            "Tu refuses d'envoyer quelqu'un avant jeudi, sauf si on te démontre qu'il y a un danger.",
+        ],
+        "locataire": [
+            "Tu habites le logement du dernier étage depuis huit mois et tu travailles de soir.",
+            "Il fait 14 °C chez toi depuis avant-hier et ta fille de six ans tousse.",
+            "Tu as vérifié le panneau électrique : le disjoncteur retombe chaque fois.",
+            "Tu as pris une photo de ton thermomètre avec la date.",
+            "Tu veux une date précise de réparation, pas une réponse vague.",
+            "Tu aimerais un chauffage d'appoint en attendant.",
+        ],
+    },
+    "moisissure": {
+        "contexte": (
+            "De la moisissure noire revient dans le coin de la salle de bain, malgré les nettoyages. "
+            "Le miroir reste embué très longtemps après la douche. Il n'y a pas de ventilateur "
+            "dans la pièce et la fenêtre est petite."
+        ),
+        "proprietaire": [
+            "Tu es propriétaire de l'immeuble depuis quatre ans.",
+            "Tu crois d'abord que le locataire aère mal la pièce et tu le dis poliment.",
+            "Tu sais qu'il n'y a jamais eu de ventilateur dans cette salle de bain.",
+            "Faire installer un ventilateur te coûterait environ 400 $ et tu hésites.",
+            "Tu acceptes de venir constater toi-même si le locataire insiste avec des faits précis.",
+            "Tu connais un installateur qui pourrait passer dans les deux semaines.",
+            "Tu demandes des photos avant de te déplacer.",
+        ],
+        "locataire": [
+            "Ça fait trois mois que la moisissure revient, même après un grand ménage.",
+            "Tu laves le mur au vinaigre chaque semaine et elle réapparaît en quatre ou cinq jours.",
+            "Tu ouvres la fenêtre après chaque douche, sauf en hiver.",
+            "Un de tes enfants fait de l'asthme et tu t'inquiètes pour sa santé.",
+            "Tu as lu qu'un ventilateur de salle de bain règle souvent ce genre de problème.",
+            "Tu veux une réponse claire : qui fait installer quoi, et quand.",
+        ],
+    },
+    "bruit": {
+        "contexte": (
+            "Les voisins du logement du dessous reçoivent des amis presque tous les vendredis. "
+            "La musique et les conversations sur le balcon durent jusqu'à deux heures du matin. "
+            "La situation dure depuis cinq semaines."
+        ),
+        "proprietaire": [
+            "Tu es propriétaire de l'immeuble et tu n'habites pas sur place.",
+            "C'est la première plainte que tu reçois au sujet de ces voisins-là.",
+            "Tu es mal à l'aise d'intervenir : ce sont de bons payeurs depuis six ans.",
+            "Tu proposes d'abord au locataire d'aller en parler lui-même aux voisins.",
+            "Si on insiste avec des dates précises, tu acceptes d'envoyer un avis écrit.",
+            "Tu rappelles que le bail interdit le bruit excessif après 23 h.",
+            "Tu veux savoir quels soirs exactement et depuis combien de temps.",
+        ],
+        "locataire": [
+            "Tu commences à travailler à sept heures du matin et tu ne dors plus le vendredi.",
+            "Ça dure depuis cinq semaines, tous les vendredis, parfois le samedi.",
+            "Tu as noté les dates des six derniers épisodes dans ton téléphone.",
+            "Tu es déjà allé cogner une fois : on t'a répondu poliment, mais rien n'a changé.",
+            "Tu ne veux pas te fâcher avec tes voisins, mais tu ne peux plus tolérer la situation.",
+            "Tu veux que la propriétaire envoie un avis écrit.",
+        ],
+    },
+}
+
+# Un scénario décrit tout ce qui change d'un jeu de rôle à l'autre : les cas
+# jouables, les sujets à couvrir, et la façon dont chaque rôle se comporte.
+# Ajouter un module = ajouter une entrée ici, sans toucher au reste du serveur.
+JEU_DE_ROLE_SCENARIOS = {
+    "louer": {
+        "cadre": "une visite de logement",
+        "contexte_label": "L'annonce que vous avez tous les deux sous les yeux",
+        "cas": JEU_DE_ROLE_LOGEMENTS,
+        "sujets": JEU_DE_ROLE_SUJETS,
+        "cloture": "Quand les sujets sont couverts, dis-le simplement et termine poliment la visite.",
+        # Première réplique, dite par l'élève selon le rôle qu'il joue.
+        "ouverture": {
+            "proprietaire": "Bonjour, entrez, je vous en prie.",
+            "locataire": "Bonjour, je viens pour l'annonce.",
+        },
+        "roles": {
+            "proprietaire": {
+                "qui": ("Tu es le ou la propriétaire du logement et tu le fais visiter. "
+                        "L'élève est la personne qui vient le visiter."),
+                "conduite": ("Réponds honnêtement aux questions, mais ne donne jamais un renseignement "
+                             "avant qu'on te le demande — c'est à l'élève d'aller le chercher. "
+                             "Si l'élève ne pose pas de question, accueille-le et invite-le à en poser une."),
+            },
+            "locataire": {
+                "qui": ("Tu es la personne qui vient visiter le logement. "
+                        "L'élève est le ou la propriétaire et fait visiter."),
+                "conduite": ("Pose tes questions une à la fois, en commençant par ce qui compte le plus "
+                             "pour ta situation. Réagis brièvement à chaque réponse avant de passer à la suite."),
+            },
+        },
+    },
+    "probleme": {
+        "cadre": "un appel téléphonique au sujet d'un problème dans un logement loué",
+        "contexte_label": "La situation que vous connaissez tous les deux",
+        "cas": JEU_DE_ROLE_PROBLEMES,
+        "sujets": [
+            "la nature exacte du problème",
+            "depuis quand il dure (depuis, depuis que, ça fait… que)",
+            "la conséquence concrète sur la vie du locataire",
+            "ce qui a déjà été tenté",
+            "qui va faire faire la réparation et par quel professionnel",
+            "la date de l'intervention",
+            "ce qui se passe en attendant",
+        ],
+        "cloture": ("Quand les sujets sont couverts et qu'une entente est prise, "
+                    "récapitule l'entente en une phrase et termine poliment l'appel."),
+        "ouverture": {
+            "locataire": "Bonjour, je vous appelle au sujet d'un problème dans mon logement.",
+            "proprietaire": "Bonjour, oui, j'écoute ?",
+        },
+        "roles": {
+            "proprietaire": {
+                "qui": ("Tu es le ou la propriétaire de l'immeuble. L'élève est ton locataire "
+                        "et t'appelle pour te signaler un problème dans son logement."),
+                "conduite": ("Ne propose pas la solution tout de suite : commence par poser des questions "
+                             "sur le problème, depuis quand il dure et ce qui a déjà été essayé. "
+                             "Sois de bonne foi mais pas trop facile — c'est à l'élève de bien expliquer "
+                             "et de formuler une demande claire avant que tu acceptes. Si l'élève reste "
+                             "vague, demande des précisions plutôt que de deviner à sa place."),
+            },
+            "locataire": {
+                "qui": ("Tu es le ou la locataire et tu appelles pour signaler un problème dans ton "
+                        "logement. L'élève joue la personne propriétaire et te répond."),
+                "conduite": ("Expose ton problème en une ou deux phrases, puis laisse l'élève poser "
+                             "ses questions. Donne tes renseignements au fur et à mesure qu'on te les "
+                             "demande. Insiste poliment si aucune date ne t'est proposée."),
+            },
+        },
+    },
+}
+
+
+def jeu_de_role_system(scenario_id, cas_id, role_eleve):
     """Consigne système du personnage joué par l'assistant.
 
     `role_eleve` est le rôle de l'ÉLÈVE ; l'assistant joue l'autre. Le texte
     est volontairement stable d'un tour à l'autre — c'est lui qu'on met en
     cache, donc la moindre variation (heure, prénom) coûterait le bénéfice.
     """
-    log = JEU_DE_ROLE_LOGEMENTS[logement_id]
+    scenario = JEU_DE_ROLE_SCENARIOS[scenario_id]
+    cas = scenario["cas"][cas_id]
     ia_role = "proprietaire" if role_eleve == "locataire" else "locataire"
-    faits = "\n".join("- " + f for f in log[ia_role])
-
-    if ia_role == "proprietaire":
-        qui = ("Tu es le ou la propriétaire du logement et tu le fais visiter. "
-               "L'élève est la personne qui vient le visiter.")
-        conduite = (
-            "Réponds honnêtement aux questions, mais ne donne jamais un renseignement "
-            "avant qu'on te le demande — c'est à l'élève d'aller le chercher. "
-            "Si l'élève ne pose pas de question, accueille-le et invite-le à en poser une."
-        )
-    else:
-        qui = ("Tu es la personne qui vient visiter le logement. "
-               "L'élève est le ou la propriétaire et fait visiter.")
-        conduite = (
-            "Pose tes questions une à la fois, en commençant par ce qui compte le plus "
-            "pour ta situation. Réagis brièvement à chaque réponse avant de passer à la suite."
-        )
+    faits = "\n".join("- " + f for f in cas[ia_role])
+    # Les cas de « louer » nomment leur contexte « annonce » depuis l'origine ;
+    # les scénarios plus récents utilisent « contexte ».
+    contexte = cas.get("contexte") or cas["annonce"]
+    role_def = scenario["roles"][ia_role]
 
     return (
         "Tu joues un rôle dans un exercice oral de francisation au Québec, niveau 4 "
         "(débutant-intermédiaire). Ton interlocuteur est un adulte immigrant qui apprend "
-        "le français.\n\n"
-        f"{qui}\n\n"
-        f"L'annonce que vous avez tous les deux sous les yeux :\n{log['annonce']}\n\n"
+        f"le français. La situation est {scenario['cadre']}.\n\n"
+        f"{role_def['qui']}\n\n"
+        f"{scenario['contexte_label']} :\n{contexte}\n\n"
         f"Ce que tu sais et que l'élève ignore :\n{faits}\n\n"
         "Comment tu parles :\n"
         "- Deux ou trois phrases maximum par réplique. Jamais de paragraphe.\n"
         "- Français québécois courant et simple, phrases courtes, vocabulaire de tous les jours.\n"
-        "- Vouvoie l'élève, comme dans une vraie visite de logement.\n"
+        "- Vouvoie l'élève.\n"
         "- Reste dans ton personnage quoi qu'il arrive. Si l'élève sort du jeu, ramène-le "
         "dans la conversation avec naturel.\n"
         "- Ne corrige jamais le français de l'élève et ne commente jamais ses fautes : "
         "la correction vient à la fin, ailleurs. Si une phrase est incompréhensible, "
         "demande simplement de répéter autrement.\n"
         "- N'écris jamais de balise XML interne ou système dans ta réponse.\n\n"
-        f"{conduite}\n\n"
-        "Les sept sujets que la conversation doit couvrir : "
-        + " · ".join(JEU_DE_ROLE_SUJETS) + ".\n"
-        "Quand les sept sont couverts, dis-le simplement et termine poliment la visite."
+        f"{role_def['conduite']}\n\n"
+        "Les sujets que la conversation doit couvrir : "
+        + " · ".join(scenario["sujets"]) + ".\n"
+        + scenario["cloture"]
     )
 
 
-def jeu_de_role_messages(historique, role_eleve):
+def jeu_de_role_messages(historique, role_eleve, scenario_id="louer"):
     """Normalise l'historique reçu du navigateur en messages pour l'API.
 
     L'historique vient du client : on ne lui fait confiance ni sur la longueur,
@@ -533,9 +670,8 @@ def jeu_de_role_messages(historique, role_eleve):
         # correspondre au rôle qu'il joue — le locataire arrive, le
         # propriétaire accueille — et le handler la renvoie au client pour
         # qu'il l'affiche et la garde dans son historique.
-        messages = [{"role": "user", "content": (
-            "Bonjour, entrez, je vous en prie." if role_eleve == "proprietaire"
-            else "Bonjour, je viens pour l'annonce.")}]
+        ouvertures = JEU_DE_ROLE_SCENARIOS[scenario_id]["ouverture"]
+        messages = [{"role": "user", "content": ouvertures[role_eleve]}]
     return messages
 
 
@@ -1393,9 +1529,13 @@ class Handler(http.server.SimpleHTTPRequestHandler):
     def _handle_jeu_de_role(self):
         """Un tour de conversation du jeu de rôle « louer un logement ».
 
-        Corps attendu : {code, logement: 'A'|'B'|'C', role: 'locataire'|
-        'proprietaire', historique: [{role:'user'|'assistant', contenu}]}.
+        Corps attendu : {code, scenario, cas, role: 'locataire'|'proprietaire',
+        historique: [{role:'user'|'assistant', contenu}]}.
         `role` est celui que joue l'ÉLÈVE ; l'assistant prend l'autre.
+
+        `scenario` vaut 'louer' par défaut et `cas` accepte l'ancien nom
+        `logement` : les modules déjà en ligne continuent de fonctionner sans
+        être modifiés.
         """
         length = int(self.headers.get("Content-Length", 0))
         try:
@@ -1409,18 +1549,22 @@ class Handler(http.server.SimpleHTTPRequestHandler):
             json_response(self, {"error": "Non autorisé"}, 401)
             return
 
-        logement = body.get("logement", "")
+        scenario = body.get("scenario") or "louer"
+        cas = body.get("cas") or body.get("logement", "")
         role = body.get("role", "")
-        if logement not in JEU_DE_ROLE_LOGEMENTS or role not in ("locataire", "proprietaire"):
-            json_response(self, {"error": "Logement ou rôle inconnu"}, 400)
+        if scenario not in JEU_DE_ROLE_SCENARIOS:
+            json_response(self, {"error": "Scénario inconnu"}, 400)
+            return
+        if cas not in JEU_DE_ROLE_SCENARIOS[scenario]["cas"] or role not in ("locataire", "proprietaire"):
+            json_response(self, {"error": "Cas ou rôle inconnu"}, 400)
             return
 
         recu = body.get("historique")
-        messages = jeu_de_role_messages(recu, role)
+        messages = jeu_de_role_messages(recu, role, scenario)
         premier_tour = not recu
 
         texte, err = self._call_anthropic_dialogue(
-            jeu_de_role_system(logement, role), messages)
+            jeu_de_role_system(scenario, cas, role), messages)
         if err:
             json_response(self, {"error": err[0]}, err[1])
             return
