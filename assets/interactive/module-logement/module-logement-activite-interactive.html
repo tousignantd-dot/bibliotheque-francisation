@@ -677,6 +677,22 @@ body{
 .jr-saisie input{flex:1;min-height:46px;padding:10px 15px;border-radius:23px;border:1px solid var(--ws-line);background:var(--ws-card);font-family:'Nunito',sans-serif;font-size:16px;font-weight:500;color:var(--ws-ink)}
 .jr-saisie input:focus{outline:none;border-color:var(--sec-color,var(--ws-accent))}
 .jr-fin{display:flex;gap:10px;flex-wrap:wrap;margin-top:14px}
+/* Le bouton de réécoute est posé dans la bulle, pas à côté : il doit rester
+   attaché à sa réplique quand le fil défile. */
+.jr-b-ia{position:relative;padding-right:46px}
+.jr-redire{position:absolute;top:9px;right:9px;width:30px;height:30px;border-radius:50%;border:1px solid var(--ws-line);background:var(--ws-card);cursor:pointer;display:flex;align-items:center;justify-content:center;padding:0}
+.jr-redire:hover{border-color:var(--sec-color,var(--ws-accent))}
+.jr-redire .icon-svg{width:15px;height:15px}
+.jr-mic{display:flex;align-items:center;gap:13px;margin:0 0 13px}
+/* Au repos, le micro suit les autres boutons d'action du module (encre) ;
+   l'enregistrement passe au rouge. La couleur de section est rouille dans
+   cette tâche — l'utiliser au repos rendait les deux états indistincts. */
+#jrMic{width:56px;height:56px;border-radius:50%;border:none;background:var(--ws-ink);color:#fff;font-size:23px;cursor:pointer;flex-shrink:0;transition:transform .12s,background .15s}
+#jrMic:hover{transform:scale(1.05)}
+#jrMic.rec{background:#C4362F;animation:jrPulse 1.3s ease-in-out infinite}
+@keyframes jrPulse{0%,100%{box-shadow:0 0 0 0 rgba(180,52,47,.45)}50%{box-shadow:0 0 0 11px rgba(180,52,47,0)}}
+@media(prefers-reduced-motion:reduce){#jrMic.rec{animation:none}}
+.jr-mic-l{font-size:15px;font-weight:600;color:var(--ws-sub)}
 @media(max-width:640px){.jr-b{max-width:92%}}
 
 /* Focus clavier visible partout (B.4) */
@@ -1787,7 +1803,15 @@ function injectCustom(){
      </div>
 
      <div id="jrChat" class="hidden">
+       <div class="jr-opts" id="jrModes" style="margin-bottom:4px">
+         <button class="jr-opt on" type="button" data-mode="texte" onclick="jrModeVoix(false)">✍️ Écrire</button>
+         <button class="jr-opt" type="button" data-mode="voix" onclick="jrModeVoix(true)">🎤 Parler</button>
+       </div>
        <div class="jr-fil" id="jrFil" aria-live="polite"></div>
+       <div class="jr-mic hidden" id="jrMicZone">
+         <button id="jrMic" type="button" onclick="jrParler()" aria-label="Parler">🎤</button>
+         <span class="jr-mic-l" id="jrMicLbl">Touche pour parler</span>
+       </div>
        <div class="jr-saisie">
          <input id="jrInput" type="text" placeholder="Écris ta question…" autocomplete="off"
                 onkeydown="if(event.key==='Enter'){event.preventDefault();jrEnvoyer();}">
@@ -1834,6 +1858,12 @@ function injectCustom(){
      <div class="err" id="peErr"></div>
    </div>`;
   const rb=document.getElementById('recBtn'); if(rb) rb.addEventListener('click',toggleRec);
+  // Firefox n'a pas la reconnaissance vocale : plutôt que d'offrir un mode
+  // qui échouera, on ne montre pas le choix du tout.
+  if(!jrSRC()){
+    const m=document.querySelector('#jrModes .jr-opt[data-mode="voix"]');
+    if(m) m.style.display='none';
+  }
 
   // JE RETIENS DES MOTS — notes + cartes mémoire + autoévaluation
   const SELF=[
@@ -2003,7 +2033,86 @@ function hideErr(id){ const e=document.getElementById(id); if(e)e.classList.remo
 // Le client ne connaît que la partie publique des annonces. Ce que sait le
 // personnage joué par l'assistant vit dans server.py — sinon un coup d'œil au
 // code source de la page suffirait à vider l'exercice de son sens.
-const JR = {log:'A', role:'locataire', hist:[], occupe:false};
+const JR = {log:'A', role:'locataire', hist:[], occupe:false, voix:false, rec:null};
+
+const jrSRC = () => window.SpeechRecognition || window.webkitSpeechRecognition;
+
+// Le mode voix ne change que l'entrée et la sortie : même conversation, même
+// endpoint. Le texte reste affiché — au niveau 4, du pur audio décroche
+// l'élève dès la première réplique mal saisie.
+function jrModeVoix(on){
+  if(on && !jrSRC()){
+    showErr('jrErr',"Ce navigateur ne fait pas la reconnaissance vocale. Essaie avec Chrome, Edge ou Safari.");
+    return;
+  }
+  JR.voix=on;
+  document.querySelectorAll('#jrModes .jr-opt').forEach(b=>
+    b.classList.toggle('on', (b.dataset.mode==='voix')===on));
+  document.getElementById('jrMicZone').classList.toggle('hidden', !on);
+  document.getElementById('jrInput').placeholder =
+    on ? 'Ce que le micro a entendu — corrige avant d\'envoyer…' : 'Écris ta question…';
+  if(!on){ jrTaire(); }
+}
+
+function jrTaire(){ try{ speechSynthesis.cancel(); }catch(e){} }
+
+function jrVoixFr(){
+  const v=speechSynthesis.getVoices().filter(x=>/^fr/i.test(x.lang));
+  return v.find(x=>/fr[-_]CA/i.test(x.lang)) || v[0] || null;
+}
+
+function jrDire(texte){
+  try{
+    speechSynthesis.cancel();
+    const u=new SpeechSynthesisUtterance(texte);
+    u.lang='fr-CA'; u.rate=0.95;
+    const v=jrVoixFr(); if(v) u.voice=v;
+    speechSynthesis.speak(u);
+  }catch(e){}
+}
+
+// La transcription atterrit dans le champ de saisie, modifiable : la
+// reconnaissance se trompe forcément sur un accent d'apprenant, et voir ce
+// qui a été entendu vaut mieux que de laisser partir une phrase fausse.
+function jrParler(){
+  const SRC=jrSRC();
+  if(!SRC){ showErr('jrErr',"Ce navigateur ne fait pas la reconnaissance vocale."); return; }
+  if(JR.rec){ try{ JR.rec.stop(); }catch(e){} return; }   // deuxième touche = arrêter
+  jrTaire();                    // sinon le micro réentend la voix de l'assistant
+  hideErr('jrErr');
+  const inp=document.getElementById('jrInput');
+  const btn=document.getElementById('jrMic');
+  const lbl=document.getElementById('jrMicLbl');
+  inp.value='';
+  const rec=new SRC(); JR.rec=rec;
+  rec.lang='fr-CA'; rec.interimResults=true; rec.continuous=true; rec.maxAlternatives=1;
+  let acquis='', provisoire='';
+  btn.classList.add('rec'); btn.textContent='⏹';
+  lbl.textContent='Je t\'écoute… touche pour arrêter';
+  rec.onresult=e=>{
+    let inter='';
+    for(let i=e.resultIndex;i<e.results.length;i++){
+      const r=e.results[i];
+      if(r.isFinal) acquis+=r[0].transcript+' '; else inter=r[0].transcript;
+    }
+    provisoire=inter;
+    inp.value=(acquis+inter).trim();
+  };
+  rec.onerror=e=>{
+    if(e.error==='not-allowed') showErr('jrErr',"Micro refusé — autorise l'accès au micro.");
+    else if(e.error!=='aborted' && !inp.value) showErr('jrErr','Aucun son détecté, réessaie.');
+  };
+  rec.onend=()=>{
+    JR.rec=null;
+    btn.classList.remove('rec'); btn.textContent='🎤';
+    lbl.textContent='Touche pour parler';
+    // Une phrase courte est parfois coupée par la détection de silence avant
+    // qu'un résultat final n'arrive : on garde le dernier provisoire.
+    if(!inp.value && provisoire) inp.value=provisoire.trim();
+    inp.focus();
+  };
+  try{ rec.start(); }catch(e){ JR.rec=null; }
+}
 
 function jrChoisir(quoi, val){
   JR[quoi] = val;
@@ -2018,7 +2127,16 @@ function jrBulle(qui, texte){
   const fil=document.getElementById('jrFil');
   const d=document.createElement('div');
   d.className='jr-b jr-b-'+qui;
-  d.innerHTML='<span class="jr-b-q">'+(qui==='moi'?'Moi':'Assistant')+'</span>'+esc(texte);
+  let h='<span class="jr-b-q">'+(qui==='moi'?'Moi':'Assistant')+'</span>'+esc(texte);
+  if(qui==='ia') h+='<button class="jr-redire" type="button" title="Réécouter">'+ICON_SPEAK+'</button>';
+  d.innerHTML=h;
+  if(qui==='ia'){
+    // Le texte passe par dataset plutôt que par l'attribut onclick : pas
+    // d'échappement d'apostrophes à gérer dans une réplique française.
+    const b=d.querySelector('.jr-redire');
+    b.dataset.t=texte;
+    b.addEventListener('click',()=>jrDire(b.dataset.t));
+  }
   fil.appendChild(d);
   d.scrollIntoView({block:'nearest'});
 }
@@ -2030,6 +2148,8 @@ function jrDemarrer(){
 }
 
 function jrRecommencer(){
+  jrTaire();
+  if(JR.rec){ try{ JR.rec.stop(); }catch(e){} }
   JR.hist=[];
   document.getElementById('jrFil').innerHTML='';
   document.getElementById('jrFb').classList.remove('on');
@@ -2053,6 +2173,7 @@ async function jrTour(){
     if(d.ouverture){ JR.hist.push({role:'user', contenu:d.ouverture}); jrBulle('moi', d.ouverture); }
     JR.hist.push({role:'assistant', contenu:d.reponse});
     jrBulle('ia', d.reponse);
+    if(JR.voix) jrDire(d.reponse);
   }catch(e){
     showErr('jrErr','Impossible de contacter le serveur. Réessaie.');
   }finally{
