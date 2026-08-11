@@ -2,7 +2,7 @@
 <html lang="fr"><head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Module 9 · Je me prépare — cours diapositive par diapositive</title>
+<title>Module 9 · Le parcours guidé, diapositive par diapositive</title>
 <link rel="stylesheet" href="/assets/design-system/styles.css">
 <style>
 /* ═══════════════════════════════════════════════════════════════════════
@@ -74,6 +74,13 @@ body{background:var(--chrome);overflow:hidden}
            text-transform:uppercase;color:var(--chrome-mute);
            padding:var(--sp-5) var(--sp-5) var(--sp-2)}
 .menu__grp:first-child{padding-top:var(--sp-2)}
+/* Titre de partie : plus fort que le groupe, avec un filet au-dessus. */
+.menu__partie{margin-top:var(--sp-5);padding:var(--sp-4) var(--sp-5) 0;
+              border-top:1px solid var(--chrome-line);
+              font-size:var(--fs-ui-sm);font-weight:var(--fw-black);
+              color:#fff;letter-spacing:-.01em}
+.menu__partie:first-child{margin-top:0;border-top:0;padding-top:var(--sp-2)}
+.menu__partie + .menu__grp{padding-top:var(--sp-3)}
 .menu__item{display:flex;align-items:center;gap:var(--sp-3);width:100%;
             min-height:var(--tap-min);padding:var(--sp-2) var(--sp-5);
             background:none;border:0;border-left:3px solid transparent;
@@ -169,6 +176,12 @@ body{background:var(--chrome);overflow:hidden}
 .sav__v{font-size:var(--fs-body-sm);font-weight:var(--fw-medium);line-height:var(--lh-loose);
         color:var(--text-body)}
 .sav__mots{display:flex;flex-wrap:wrap;gap:var(--sp-2);margin-top:var(--sp-3)}
+/* Exemple à l'intérieur d'un savoir : filet gauche à la couleur de section. */
+.savoir-ex{display:block;margin:var(--sp-2) 0 1px;padding:var(--sp-2) var(--sp-3);
+           border-left:3px solid var(--sec);border-radius:0 var(--r-sm) var(--r-sm) 0;
+           background:var(--surface-sunken);font-style:italic;font-weight:var(--fw-semi);
+           line-height:1.45;color:var(--sec)}
+.savoir-ex + .savoir-ex{margin-top:var(--sp-1)}
 @media (max-width:760px){.sav__row{grid-template-columns:1fr;gap:var(--sp-1)}}
 
 /* ── Exercices ────────────────────────────────────────────────────── */
@@ -191,6 +204,29 @@ body{background:var(--chrome);overflow:hidden}
 .qrow__verdict{flex:0 0 auto;font-size:var(--fs-ui-sm);font-weight:var(--fw-black)}
 .qrow.fb-ok .qrow__verdict{color:var(--ok-ink)}
 .qrow.fb-no .qrow__verdict{color:var(--no-ink)}
+
+/* Saisie au clavier : l'énoncé porte un trou, le champ est dans le trou. */
+.qsais{display:flex;flex-direction:column;gap:var(--sp-3)}
+.qsais--duo{display:grid;grid-template-columns:1fr 1fr;gap:var(--sp-3)}
+.srow{padding:var(--sp-3) var(--sp-4);border:1px solid var(--border);
+      border-radius:var(--r-lg);background:var(--surface-card)}
+.srow__q{font-size:var(--fs-body-sm);font-weight:var(--fw-semi);color:var(--text-strong);
+         line-height:var(--lh-loose)}
+/* Le trou de l'énoncé doit se voir : un trait, pas un blanc. */
+.trou{display:inline-block;width:5.5ch;height:0;vertical-align:baseline;
+      border-bottom:2px solid var(--sec);margin:0 2px}
+.srow input{min-height:var(--tap-min);width:100%;margin-top:var(--sp-2);
+            padding:0 var(--sp-4);border:1.5px solid var(--border);border-radius:var(--r-sm);
+            background:var(--surface-sunken);color:var(--text-strong);
+            font:inherit;font-size:var(--fs-body-sm);font-weight:var(--fw-semi)}
+.srow input:focus{border-color:var(--accent);background:var(--white)}
+.srow.fb-ok{background:var(--ok-bg);border-color:var(--ok-line)}
+.srow.fb-no{background:var(--no-bg);border-color:var(--no-line)}
+.srow.fb-ok input,.srow.fb-no input{background:var(--white)}
+.srow__verdict{margin-top:var(--sp-2);font-size:var(--fs-ui-sm);font-weight:var(--fw-black)}
+.srow.fb-ok .srow__verdict{color:var(--ok-ink)}
+.srow.fb-no .srow__verdict{color:var(--no-ink)}
+@media (max-width:760px){.qsais--duo{grid-template-columns:1fr}}
 
 /* Association : rangée = énoncé + emplacement à remplir */
 .qassoc{display:flex;flex-direction:column;gap:var(--sp-3)}
@@ -308,6 +344,9 @@ body{background:var(--chrome);overflow:hidden}
           font-weight:var(--fw-semi)}
 .bilan__l span:first-child{flex:1}
 .bilan__n{font-weight:var(--fw-black);color:var(--text-strong);white-space:nowrap}
+.bilan__part{padding:var(--sp-5) 0 var(--sp-1);font-size:var(--fs-label);
+             font-weight:var(--fw-black);letter-spacing:var(--ls-label);
+             text-transform:uppercase;color:var(--sec)}
 
 /* ── Sous 900 px : la scène devient une colonne qui défile ────────── */
 @media (max-width:900px){
@@ -346,8 +385,8 @@ body{background:var(--chrome);overflow:hidden}
   <header class="top">
     <button class="top__burger" id="burger" type="button" aria-label="Sommaire">☰</button>
     <div class="top__id">
-      <div class="top__eyebrow">Module 9 · Français niveau 4</div>
-      <div class="top__titre" id="topTitre">Je me prépare</div>
+      <div class="top__eyebrow" id="topPartie">Module 9 · Je me prépare</div>
+      <div class="top__titre" id="topTitre">Le parcours guidé</div>
     </div>
     <div class="top__compte" id="compte">1 / 20</div>
     <a class="top__sortie" href="/assets/interactive/module-probleme/module-probleme-activite-interactive.html">Quitter</a>
@@ -391,7 +430,7 @@ const MODULE = 'module-probleme';
 const AUDIO_V = '5';
 const IMG = p => `/assets/interactive/${MODULE}/images/${p}`;
 
-const DIALOGUE = [
+const DIALOGUE_PREP = [
   ["OKSANA","Bertrand, il fait quatorze degrés chez moi. Le calorifère du salon est resté froid toute la nuit."],
   ["BERTRAND","Quatorze ? En novembre, c'est beaucoup trop bas. Est-ce que les autres pièces chauffent ?"],
   ["OKSANA","La cuisine et la chambre, oui. C'est seulement celui du salon qui ne réagit plus, même quand je monte le thermostat à vingt-deux."],
@@ -404,6 +443,21 @@ const DIALOGUE = [
   ["BERTRAND","Tu ne déranges personne : le chauffage fait partie du logement que tu paies. Prends une photo de ton thermomètre avec la date, et note l'heure de ton appel."],
   ["OKSANA","Pourquoi noter tout ça ?"],
   ["BERTRAND","Parce que si elle tarde, tes notes deviennent ta preuve. Et ne t'en fais pas : dans neuf cas sur dix, ça se règle en un coup de fil."],
+];
+
+const DIALOGUE_T1 = [
+  ["OKSANA","Bonjour madame Rioux, c'est Oksana Kravets, au 4B. Je vous appelle parce que le calorifère du salon ne chauffe plus depuis avant-hier."],
+  ["MME RIOUX","Depuis avant-hier ? Il fallait me prévenir tout de suite, voyons. Il fait combien chez vous ce matin ?"],
+  ["OKSANA","Quatorze degrés. J'ai vérifié le panneau électrique : le disjoncteur retombe chaque fois que je le remonte."],
+  ["MME RIOUX","Ne le remontez plus, c'est dangereux. Je vais faire venir mon électricien. Il passe déjà chez les locataires du deuxième jeudi matin ; je vais lui demander de monter chez vous après avoir terminé leur installation."],
+  ["OKSANA","Jeudi, c'est dans trois jours. Est-ce que je peux avoir un chauffage d'appoint en attendant ?"],
+  ["MME RIOUX","Bien sûr. J'en garde deux au sous-sol, dans le local d'entretien. Passez en chercher un ce soir, le concierge vous ouvrira."],
+  ["OKSANA","Merci beaucoup. Il y a autre chose, aussi. Il y a une tache brune au plafond de la chambre, et elle grossit."],
+  ["MME RIOUX","Une tache brune ? Ça fait combien de temps qu'elle est là ?"],
+  ["OKSANA","Ça fait deux semaines. Au début, elle était grande comme une pièce de deux dollars ; maintenant, elle fait la taille d'une assiette."],
+  ["MME RIOUX","Vous êtes au dernier étage… ça vient probablement de la toiture. Envoyez-moi une photo par courriel : ça me permettra de constater l'ampleur du dégât avant de faire venir le couvreur."],
+  ["OKSANA","Je vous l'envoie ce midi. Est-ce que ces réparations-là sont à ma charge ?"],
+  ["MME RIOUX","Pas du tout. Vous payez le loyer ; l'entretien de l'immeuble, c'est ma part du contrat. Vous, tenez-moi seulement au courant si la tache change encore."],
 ];
 
 const MOTS = [
@@ -497,6 +551,95 @@ const TYPES = [
   ["La musique du voisin s'entend jusqu'à deux heures du matin.","un trouble de voisinage"],
 ];
 
+/* ── Tâche 1 · Un problème dans le logement ─────────────────────────── */
+
+const T1_VF = [
+  ["Madame Rioux trouve qu'Oksana a attendu trop longtemps avant de l'appeler.","VRAI"],
+  ["La propriétaire conseille de remonter le disjoncteur encore une fois.","FAUX"],
+  ["L'électricien doit passer chez d'autres locataires le même jour.","VRAI"],
+  ["Oksana devra attendre une semaine avant la visite de l'électricien.","FAUX"],
+  ["La propriétaire prête un chauffage d'appoint.","VRAI"],
+  ["La tache du plafond est apparue hier.","FAUX"],
+  ["La propriétaire demande une photo avant de faire venir le couvreur.","VRAI"],
+  ["Oksana devra payer les réparations.","FAUX"],
+];
+
+const T1_SENS = [
+  ["constater l'ampleur du dégât","voir de ses yeux jusqu'où va le problème"],
+  ["me prévenir","m'avertir à l'avance"],
+  ["tenir au courant","donner des nouvelles au fur et à mesure"],
+  ["à ma charge","payé par moi"],
+  ["un chauffage d'appoint","un appareil ajouté pour dépanner"],
+];
+
+const SAVOIR_TAL = [
+  ["Ce que c'est","Le <b>Tribunal administratif du logement</b> (le TAL) est l'organisme public du Québec qui tranche les désaccords entre les personnes locataires et les personnes propriétaires. C'est le nouveau nom de la <b>Régie du logement</b>, créée en 1980."],
+  ["Ce qu'il fait","Il <b>informe</b> les deux parties sur leurs droits et leurs obligations, et il <b>décide</b> quand elles n'arrivent pas à s'entendre : loyer, réparations, bail, reprise de logement, expulsion."],
+  ["Ce qu'on peut y trouver","Un service téléphonique, des rencontres individuelles, de la documentation gratuite, et des <b>formulaires officiels</b> à télécharger — dont le modèle de bail obligatoire au Québec."],
+  ["Avant d'y aller","Le TAL n'est pas le premier réflexe : on <b>parle d'abord</b> à la personne propriétaire, puis on envoie un <b>avis écrit</b>. Le tribunal, c'est le recours quand rien ne bouge."],
+  ["Pourquoi l'écrit compte","Devant le tribunal, ce qui a été dit au téléphone est difficile à prouver. Un <b>courriel daté</b> ou une <b>lettre</b> vaut beaucoup plus qu'un souvenir d'appel."],
+  ["Bon à savoir","Déposer une demande coûte quelques dizaines de dollars, et il n'est <b>pas obligatoire d'être représenté</b> par un avocat : on peut se présenter seul et expliquer sa situation."],
+];
+
+const T1_TRIB = [
+  ["Le Tribunal administratif du logement s'appelait avant la Régie du logement.","VRAI"],
+  ["Il s'occupe seulement des personnes propriétaires.","FAUX"],
+  ["On peut y obtenir de la documentation gratuite et des formulaires.","VRAI"],
+  ["Il faut s'adresser au tribunal avant de parler à sa propriétaire.","FAUX"],
+  ["Un courriel daté est une meilleure preuve qu'un appel téléphonique.","VRAI"],
+  ["Il est obligatoire d'être représenté par un avocat.","FAUX"],
+];
+
+const SAVOIR_LEUR = [
+  ["La règle en une phrase","<b>leur</b> et <b>leurs</b> disent que la chose appartient à <b>plusieurs personnes</b> (ils / elles). On écrit <b>leur</b> devant un nom singulier et <b>leurs</b> devant un nom pluriel."],
+  ["Ce qui décide, c'est le nom qui suit","Ce n'est <u>pas</u> le nombre de propriétaires qui change l'orthographe — ils sont toujours plusieurs. C'est le <b>nom placé juste après</b>.<span class='savoir-ex'>Les voisins nettoient leur balcon. (un seul balcon)</span><span class='savoir-ex'>Les voisins nettoient leurs balcons. (plusieurs balcons)</span>"],
+  ["Comment choisir, en deux secondes","Remplacez mentalement par <b>son / sa</b> ou par <b>ses</b>. Si <i>son</i> ou <i>sa</i> fonctionne → <b>leur</b>. Si <i>ses</i> fonctionne → <b>leurs</b>.<span class='savoir-ex'>Ils rangent leur vélo. → « Il range son vélo. » juste</span><span class='savoir-ex'>Ils rangent leurs vélos. → « Il range ses vélos. » juste</span>"],
+  ["Le genre ne change rien","<b>leur</b> s'écrit pareil au masculin et au féminin : <i>leur</i> logement, <i>leur</i> porte. Il n'existe pas de forme « leure »."],
+  ["À l'oral : la liaison","Devant une <b>voyelle</b> ou un <b>h muet</b>, le <b>s</b> de <i>leurs</i> se prononce [z] : leurs_enfants, leurs_histoires, leurs_appareils. C'est souvent le seul indice qu'on entend pour distinguer leur de leurs."],
+  ["Le piège à éviter","Ne pas confondre avec le <b>pronom</b> <i>leur</i>, qui ne prend jamais de s et qui remplace « à eux / à elles ».<span class='savoir-ex'>Je leur ai téléphoné. (pronom — jamais de s)</span><span class='savoir-ex'>J'ai téléphoné à leurs parents. (déterminant + nom pluriel)</span>"],
+];
+
+const T1_LEUR = [
+  ["Les locataires du deuxième ont fait refaire ___ installation électrique.", ["leur"]],
+  ["Les voisins du 3B se plaignent parce que ___ enfants marchent dans la graisse.", ["leurs"]],
+  ["Mes voisins laissent ___ vélos dans le corridor.", ["leurs"]],
+  ["Camille et Samir ont signé ___ bail au mois de juillet.", ["leur"]],
+  ["Les propriétaires doivent respecter ___ obligations.", ["leurs"]],
+  ["Ces deux familles trouvent ___ logement trop humide.", ["leur"]],
+];
+
+const T1_LEUR_GN = [
+  ["leur concierge","SINGULIER"],["leurs clés","PLURIEL"],
+  ["leur nouvelle adresse","SINGULIER"],["leurs anciens locataires","PLURIEL"],
+  ["leur porte d'entrée","SINGULIER"],["leurs plaintes","PLURIEL"],
+];
+
+const SAVOIR_DEPUIS = [
+  ["Ce qu'ils ont en commun","Les trois marquent une action <b>commencée dans le passé</b> et <b>qui dure encore maintenant</b>. Le verbe reste au <b>présent</b> en français : <i>Le robinet coule depuis deux jours</i> — et il coule toujours."],
+  ["depuis + un moment ou une durée","Suivi d'un <b>nom</b> ou d'une <b>expression de temps</b>, jamais d'un verbe conjugué.<span class='savoir-ex'>Le calorifère est froid depuis avant-hier. (un moment précis)</span><span class='savoir-ex'>Ils se plaignent depuis un mois. (une durée)</span>"],
+  ["depuis que + une phrase complète","Suivi d'un <b>sujet + verbe conjugué</b>. Il relie deux actions : la deuxième dure depuis que la première a eu lieu.<span class='savoir-ex'>Depuis que vous avez ajouté le troisième vélo, la porte n'ouvre plus.</span><span class='savoir-ex'>Tout va bien depuis que le concierge a changé la serrure.</span>"],
+  ["ça fait… que + une phrase complète","Même sens que <i>depuis</i>, mais la <b>durée passe en début de phrase</b>, ce qui la met en valeur. C'est la forme la plus courante à l'oral au Québec.<span class='savoir-ex'>Ça fait deux semaines que la tache est là.</span><span class='savoir-ex'>Ça fait trois heures qu'on attend le plombier.</span>"],
+  ["Comment choisir, en deux secondes","Regardez ce qui vient <b>après</b>. Un <b>nom</b> ou une durée seule (deux jours, hier, ce matin) : <b>depuis</b>. Un <b>verbe conjugué</b> : <b>depuis que</b>. Vous voulez commencer la phrase par la durée : <b>ça fait… que</b>."],
+  ["Les deux pièges les plus fréquents","<b>1.</b> Ne pas mettre le verbe au passé : on dit <i>j'habite ici depuis deux ans</i>, pas « j'ai habité ». <b>2.</b> Ne pas oublier le <b>que</b> : « ça fait deux semaines la tache est là » est incorrect — il faut <i>ça fait deux semaines <b>que</b> la tache est là</i>."],
+];
+
+const T1_DEPUIS = [
+  ["Le calorifère ne chauffe plus ___ avant-hier.", ["depuis"]],
+  ["___ deux semaines que cette tache est au plafond.", ["ça fait","ca fait"]],
+  ["La porte n'ouvre plus au complet ___ Jean-Philippe a ajouté un vélo.", ["depuis que","depuis qu'"]],
+  ["Les voisins se plaignent ___ un mois.", ["depuis"]],
+  ["___ trois jours qu'Oksana attend l'électricien.", ["ça fait","ca fait"]],
+  ["L'escalier reste propre ___ le concierge a posé un tapis.", ["depuis que","depuis qu'"]],
+];
+
+const T1_DUREE = [
+  ["Ça fait deux semaines que la tache est au plafond.", ["deux semaines","2 semaines"]],
+  ["La serrure est brisée depuis samedi passé.", ["samedi passé","samedi passe","depuis samedi passé"]],
+  ["Le robinet de la cuisine coule depuis deux jours.", ["deux jours","2 jours"]],
+  ["Ça fait un mois que les voisins se plaignent.", ["un mois","1 mois"]],
+  ["Ça fait trois heures que nous attendons le plombier.", ["trois heures","3 heures"]],
+];
+
 /* ═══════════════════════════════════════════════════════════════════════
    2 · LE SCÉNARIO — 19 diapositives
    Un exercice long du module devient deux diapositives : au-delà de
@@ -506,7 +649,11 @@ const TYPES = [
 
 const part = (arr, a, b) => arr.slice(a, b);
 
-const SLIDES = [
+// Le cours est découpé en parties. Chaque partie garde ses propres groupes
+// de diapositives dans le sommaire ; la partie courante s'affiche en
+// sur-titre dans le bandeau du haut.
+const PARTIES = [{ nom:'Je me prépare', slides:[
+
   {grp:'Introduction', menu:'Couverture', type:'cover'},
   {grp:'Introduction', menu:'Ce que je vais savoir faire', type:'objectifs',
    eyebrow:'Je me prépare', titre:'Ce que je vais savoir faire',
@@ -526,7 +673,8 @@ const SLIDES = [
 
   {grp:'Le dialogue', menu:'Écouter le dialogue', type:'dialogue',
    eyebrow:'Écoute', titre:'Il fait quatorze degrés au 4B',
-   sub:"Écoutez le dialogue en entier, puis relisez les répliques à votre rythme."},
+   sub:"Écoutez le dialogue en entier, puis relisez les répliques à votre rythme.",
+   lignes:DIALOGUE_PREP, dossier:'prep', duree:'environ 2 minutes'},
   {grp:'Le dialogue', menu:'Vrai ou faux · 1', type:'q', kind:'choix',
    eyebrow:'Exercice 1 · première partie', titre:'Vrai ou faux',
    sub:"Cinq énoncés sur le dialogue. Choisissez pour chacun.",
@@ -594,7 +742,82 @@ const SLIDES = [
    bankLbl:'Professionnels', ph:'choisissez un professionnel',
    rows:part(METIERS,4,8).map(([src,txt],i)=>({id:'q'+i, q:txt, a:src}))},
 
-  {grp:'Bilan', menu:'Mon résultat', type:'bilan'},
+]}, { nom:'Tâche 1 · Un problème dans le logement', slides:[
+
+  {grp:'Introduction', menu:'Ce que je vais savoir faire', type:'objectifs',
+   eyebrow:'Tâche 1', titre:'Expliquer un problème à sa propriétaire',
+   items:[
+     "Comprendre un appel téléphonique entre une locataire et sa propriétaire.",
+     "Reconnaître les cinq moments d'un appel réussi, et demander une solution temporaire.",
+     "Écrire leur ou leurs sans hésiter, en regardant le nom qui suit.",
+     "Dire depuis quand un problème dure, de trois façons différentes.",
+   ]},
+  {grp:'Le dialogue', menu:'Écouter l’appel', type:'dialogue',
+   eyebrow:'Écoute', titre:'Oksana appelle madame Rioux',
+   sub:"Deux problèmes dans le même appel : le chauffage, puis la tache au plafond.",
+   lignes:DIALOGUE_T1, dossier:'t1', duree:'environ 2 minutes'},
+  {grp:'Le dialogue', menu:'Vrai ou faux · 1', type:'q', kind:'choix',
+   eyebrow:'Exercice 1 · première partie', titre:'Vrai ou faux',
+   sub:"Quatre énoncés sur l'appel. Choisissez pour chacun.",
+   tiles:['VRAI','FAUX'], rows:part(T1_VF,0,4).map(([t,ok],i)=>({id:'ta'+i, txt:t, ok}))},
+  {grp:'Le dialogue', menu:'Vrai ou faux · 2', type:'q', kind:'choix',
+   eyebrow:'Exercice 1 · deuxième partie', titre:'Vrai ou faux',
+   sub:"Quatre derniers énoncés sur l'appel.",
+   tiles:['VRAI','FAUX'], rows:part(T1_VF,4,8).map(([t,ok],i)=>({id:'tb'+i, txt:t, ok}))},
+  {grp:'Le dialogue', menu:'Le sens des mots', type:'q', kind:'assoc',
+   eyebrow:'Exercice 2', titre:'Le sens des mots du dialogue',
+   sub:"Cliquez un emplacement, puis le sens qui lui convient.",
+   bankLbl:'Sens', ph:'choisissez un sens',
+   rows:T1_SENS.map(([q,a],i)=>({id:'ts'+i, q, a}))},
+
+  {grp:'Mes droits', menu:'Le Tribunal du logement', type:'savoir', sec:'acier',
+   eyebrow:'Le point culture', titre:'Le Tribunal administratif du logement',
+   sub:"Lisez l'encadré : la question qui suit porte dessus.",
+   band:'Le savoir', rows:SAVOIR_TAL},
+  {grp:'Mes droits', menu:'Vrai ou faux · le TAL', type:'q', kind:'choix', sec:'acier',
+   eyebrow:'Exercice 3', titre:'Vrai ou faux — le Tribunal du logement',
+   sub:"Six énoncés. Revenez à l'encadré si vous hésitez.",
+   tiles:['VRAI','FAUX'], rows:T1_TRIB.map(([t,ok],i)=>({id:'tt'+i, txt:t, ok}))},
+
+  {grp:'Leur ou leurs', menu:'La règle · leur / leurs', type:'savoir', sec:'ambre',
+   eyebrow:'Le déterminant possessif', titre:'Leur ou leurs',
+   sub:"Ce n'est pas le nombre de propriétaires qui décide, c'est le nom qui suit.",
+   band:'La règle', rows:SAVOIR_LEUR},
+  {grp:'Leur ou leurs', menu:'Leur ou leurs · 1', type:'q', kind:'saisie', sec:'ambre',
+   eyebrow:'Exercice 4 · première partie', titre:'Leur ou leurs',
+   sub:"Écrivez « leur » ou « leurs » dans chaque phrase.",
+   ph:'leur / leurs', rows:part(T1_LEUR,0,3).map(([q,ok],i)=>({id:'tl'+i, q, ok}))},
+  {grp:'Leur ou leurs', menu:'Leur ou leurs · 2', type:'q', kind:'saisie', sec:'ambre',
+   eyebrow:'Exercice 4 · deuxième partie', titre:'Leur ou leurs',
+   sub:"Écrivez « leur » ou « leurs » dans chaque phrase.",
+   ph:'leur / leurs', rows:part(T1_LEUR,3,6).map(([q,ok],i)=>({id:'tm'+i, q, ok}))},
+  {grp:'Leur ou leurs', menu:'Singulier ou pluriel ?', type:'q', kind:'choix', sec:'ambre',
+   eyebrow:'Exercice 5', titre:'Singulier ou pluriel ?',
+   sub:"Pour chaque groupe de mots, indiquez le nombre du nom qui suit leur ou leurs.",
+   tiles:['SINGULIER','PLURIEL'], rows:T1_LEUR_GN.map(([t,ok],i)=>({id:'tg'+i, txt:t, ok}))},
+
+  {grp:'Depuis quand', menu:'La règle · depuis', type:'savoir',
+   eyebrow:'Les marqueurs de temps', titre:'Depuis, depuis que, ça fait… que',
+   sub:"Les trois disent la même chose. C'est ce qui suit qui décide lequel employer.",
+   band:'La règle', rows:SAVOIR_DEPUIS},
+  {grp:'Depuis quand', menu:'Depuis · 1', type:'q', kind:'saisie',
+   eyebrow:'Exercice 6 · première partie', titre:'Depuis, depuis que, ça fait… que',
+   sub:"Complétez avec « depuis », « depuis que » ou « ça fait ».",
+   ph:'depuis / depuis que / ça fait', rows:part(T1_DEPUIS,0,3).map(([q,ok],i)=>({id:'td'+i, q, ok}))},
+  {grp:'Depuis quand', menu:'Depuis · 2', type:'q', kind:'saisie',
+   eyebrow:'Exercice 6 · deuxième partie', titre:'Depuis, depuis que, ça fait… que',
+   sub:"Complétez avec « depuis », « depuis que » ou « ça fait ».",
+   ph:'depuis / depuis que / ça fait', rows:part(T1_DEPUIS,3,6).map(([q,ok],i)=>({id:'te'+i, q, ok}))},
+  {grp:'Depuis quand', menu:'Quelle est la durée ?', type:'q', kind:'saisie', duo:true,
+   eyebrow:'Exercice 7', titre:'Quelle est la durée ?',
+   sub:"Lisez la phrase, puis écrivez seulement la durée ou le moment de départ.",
+   ph:'ex. : trois jours', rows:T1_DUREE.map(([q,ok],i)=>({id:'tu'+i, q, ok, plein:true}))},
+
+]}];
+
+const SLIDES = [
+  ...PARTIES.flatMap(p => p.slides.map(s => ({partie:p.nom, ...s}))),
+  {partie:'Bilan', grp:'Bilan', menu:'Mon résultat', type:'bilan'},
 ];
 
 /* ═══════════════════════════════════════════════════════════════════════
@@ -651,10 +874,13 @@ function joue(btn, fichier, texteReplis){
   a.play().catch(()=>{ fini(); if(texteReplis) parle(texteReplis); });
 }
 
-// Lecture suivie du dialogue : une réplique après l'autre.
-let dlgIdx = -1, dlgEnCours = false;
+// Lecture suivie du dialogue : une réplique après l'autre. Les répliques et
+// le dossier des MP3 viennent de la diapositive courante.
+let dlgIdx = -1, dlgEnCours = false, dlgLignes = [], dlgDossier = '';
 function joueDialogue(btn){
   if(dlgEnCours){ stopDialogue(btn); return; }
+  const s = SLIDES[E.i];
+  dlgLignes = s.lignes || []; dlgDossier = s.dossier || '';
   dlgEnCours = true; dlgIdx = -1;
   btn.classList.add('is-on');
   btn.querySelector('.son__lbl').textContent = 'Arrêter';
@@ -665,16 +891,22 @@ function stopDialogue(btn){
   document.querySelectorAll('.dlg__ligne').forEach(l=>l.classList.remove('is-cur'));
   if(btn){ btn.classList.remove('is-on'); btn.querySelector('.son__lbl').textContent = 'Écouter le dialogue'; }
 }
+// « MME RIOUX » donne « mme_rioux » : les espaces deviennent des traits
+// soulignés, c'est la convention des fichiers du module.
+function slugPersonne(qui){
+  return qui.toLowerCase().normalize('NFD').replace(/\p{M}/gu,'')
+            .replace(/[^a-z0-9]+/g,'_').replace(/^_|_$/g,'');
+}
+
 function suivanteReplique(btn){
   if(!dlgEnCours) return;
   dlgIdx++;
-  if(dlgIdx >= DIALOGUE.length){ stopDialogue(btn); return; }
+  if(dlgIdx >= dlgLignes.length){ stopDialogue(btn); return; }
   document.querySelectorAll('.dlg__ligne').forEach((l,k)=>l.classList.toggle('is-cur', k===dlgIdx));
   const ligne = document.querySelectorAll('.dlg__ligne')[dlgIdx];
   if(ligne) ligne.scrollIntoView({block:'nearest', behavior:'smooth'});
-  const [qui, txt] = DIALOGUE[dlgIdx];
-  const slug = qui.toLowerCase().normalize('NFD').replace(/[̀-ͯ]/g,'').replace(/[^a-z]/g,'');
-  const url = `/assets/interactive/${MODULE}/prep/line_${String(dlgIdx+1).padStart(2,'0')}_${slug}.mp3?v=${AUDIO_V}`;
+  const [qui, txt] = dlgLignes[dlgIdx];
+  const url = `/assets/interactive/${MODULE}/${dlgDossier}/line_${String(dlgIdx+1).padStart(2,'0')}_${slugPersonne(qui)}.mp3?v=${AUDIO_V}`;
   const a = new Audio(url); E.audio = a;
   a.onended = ()=>suivanteReplique(btn);
   a.onerror = ()=>{ parle(txt); setTimeout(()=>suivanteReplique(btn), Math.min(9000, 60*txt.length)); };
@@ -711,11 +943,11 @@ const RENDU = {
     const w = el('div','cover');
     w.innerHTML =
       '<div class="cover__eyebrow">Module 9 · Pouvez-vous régler le problème ?</div>' +
-      '<h1>Je me prépare</h1>' +
-      '<p class="cover__lead">Nommer un problème de logement, dire depuis quand il dure, ' +
-      'savoir qui appeler. Avancez d\'une diapositive à l\'autre avec le bouton « Suivant ».</p>' +
+      '<h1>Le parcours guidé</h1>' +
+      '<p class="cover__lead">Deux parties : <b>Je me prépare</b>, puis <b>Tâche 1 — un problème ' +
+      'dans le logement</b>. Avancez d\'une diapositive à l\'autre avec le bouton « Suivant ».</p>' +
       `<div class="cover__meta"><span>${SLIDES.length} diapositives</span>` +
-      `<span>Environ 60 minutes</span>` +
+      `<span>Environ 2 heures</span>` +
       `<span>${SLIDES.filter(estQ).length} exercices</span></div>`;
     return w;
   },
@@ -745,10 +977,10 @@ const RENDU = {
     const w = el('div'); w.appendChild(enTete(s));
     const barre = el('div','dlg__barre');
     barre.appendChild(boutonSon('Écouter le dialogue', b => joueDialogue(b)));
-    barre.appendChild(el('span','dsub','12 répliques · environ 2 minutes'));
+    barre.appendChild(el('span','dsub', `${s.lignes.length} répliques · ${s.duree}`));
     w.appendChild(barre);
     const d = el('div','dlg');
-    DIALOGUE.forEach(([qui,txt])=>{
+    s.lignes.forEach(([qui,txt])=>{
       const l = el('div','dlg__ligne');
       l.appendChild(el('div','dlg__qui', esc(qui)));
       l.appendChild(el('div','dlg__txt', esc(txt)));
@@ -785,6 +1017,7 @@ const RENDU = {
   q(s){
     const w = el('div'); w.appendChild(enTete(s));
     if(s.kind === 'choix'){ w.appendChild(rendChoix(s)); }
+    else if(s.kind === 'saisie'){ w.appendChild(rendSaisie(s)); }
     else {
       const corps = rendAssoc(s);
       w.appendChild(corps);
@@ -798,12 +1031,16 @@ const RENDU = {
     w.appendChild(enTete({eyebrow:'Bilan', titre:'Mon résultat'}));
     let bon = 0, tot = 0;
     const lignes = [];
+    let partieVue = null;
     SLIDES.forEach((s,idx)=>{
       if(!estQ(s)) return;
+      if(s.partie !== partieVue){ partieVue = s.partie; lignes.push([partieVue, null]); }
       const sc = E.score[idx];
       tot += s.rows.length;
       bon += sc ? sc.bon : 0;
-      lignes.push([s.titre + ' — ' + s.eyebrow.replace(/^Exercice \d+ · /,'').replace(/^Vocabulaire · /,''),
+      const precision = s.eyebrow.replace(/^Exercice \d+ · /,'').replace(/^Vocabulaire · /,'')
+                                 .replace(/^Exercice \d+$/,'');
+      lignes.push([s.titre + (precision ? ' — ' + precision : ''),
                    sc ? `${sc.bon} / ${s.rows.length}` : 'non fait']);
     });
     const pct = tot ? Math.round(bon/tot*100) : 0;
@@ -813,6 +1050,7 @@ const RENDU = {
     w.appendChild(tete);
     const li = el('div','bilan__liste');
     lignes.forEach(([t,n])=>{
+      if(n === null){ li.appendChild(el('div','bilan__part', esc(t))); return; }
       const r = el('div','bilan__l');
       r.appendChild(el('span', null, esc(t)));
       r.appendChild(el('span','bilan__n', esc(n)));
@@ -857,6 +1095,48 @@ function rendChoix(s){
     box.appendChild(row);
   });
   return box;
+}
+
+/* ── Exercice de saisie ───────────────────────────────────────────────
+   Le trou de l'énoncé est marqué par ___ dans le contenu ; on le remplace
+   par une puce pour que l'œil voie où la réponse ira. Les diapositives
+   qui demandent d'écrire la phrase entière (`plein`) gardent l'énoncé tel
+   quel et posent le champ dessous. */
+function rendSaisie(s){
+  const fini = E.fini.has(E.i);
+  const box = el('div', 'qsais' + (s.duo ? ' qsais--duo' : ''));
+  s.rows.forEach(r=>{
+    const row = el('div','srow'); row.dataset.rid = r.id;
+    row.appendChild(el('div','srow__q',
+      r.plein ? esc(r.q) : esc(r.q).replace('___', '<span class="trou"></span>')));
+    const inp = document.createElement('input');
+    inp.type = 'text'; inp.placeholder = s.ph; inp.autocomplete = 'off';
+    inp.spellcheck = false; inp.value = E.rep[r.id] || '';
+    inp.setAttribute('aria-label', r.q.replace('___', 'à compléter'));
+    if(fini) inp.disabled = true;
+    inp.oninput = ()=>{ E.rep[r.id] = inp.value.trim() || undefined; majBas(); };
+    // Entrée passe au champ suivant, puis valide sur le dernier.
+    inp.onkeydown = e=>{
+      if(e.key !== 'Enter') return;
+      e.preventDefault();
+      const champs = [...document.querySelectorAll('.srow input')];
+      const suite = champs[champs.indexOf(inp) + 1];
+      if(suite) suite.focus(); else document.getElementById('btnSuiv').click();
+    };
+    row.appendChild(inp);
+    row.appendChild(el('div','srow__verdict'));
+    box.appendChild(row);
+  });
+  return box;
+}
+
+// Comparaison indulgente : la casse, les accents, l'apostrophe courbe, les
+// espaces en trop et le point final ne doivent pas faire échouer une
+// réponse juste.
+function normalise(t){
+  return String(t).toLowerCase().normalize('NFD').replace(/\p{M}/gu,'')
+    .replace(/[’‘]/g, "'").replace(/\s+/g,' ')
+    .replace(/[.!?;,]+$/,'').trim();
 }
 
 /* ── Exercice d'association (texte ou photos) ─────────────────────── */
@@ -952,7 +1232,9 @@ function toutRepondu(s){
 function corrige(s){
   return s.rows.map(r => ({
     r,
-    bon: s.kind === 'choix' ? E.rep[r.id] === r.ok : E.rep[r.id] === r.a,
+    bon: s.kind === 'choix' ? E.rep[r.id] === r.ok
+       : s.kind === 'saisie' ? r.ok.some(a => normalise(a) === normalise(E.rep[r.id] || ''))
+       : E.rep[r.id] === r.a,
   }));
 }
 
@@ -969,7 +1251,7 @@ function valider(){
   marquer(res, false);
 
   if(bon === n){
-    E.fini.add(E.i);
+    E.fini.add(E.i); verrouille();
     couche('ok', 'Juste', 'Tout est bon.',
       `${n} réponses sur ${n}. Vous pouvez passer à la suite.`,
       [['Continuer', 'pri', ()=>{ fermeCouche(); suivant(); }]]);
@@ -986,12 +1268,20 @@ function valider(){
 function effaceFausses(res){
   res.forEach(x => { if(!x.bon) delete E.rep[x.r.id]; });
   E.cible = null;
-  document.querySelectorAll('.qrow, .arow').forEach(n => n.classList.remove('fb-ok','fb-no'));
+  document.querySelectorAll('.qrow, .arow, .srow').forEach(n => n.classList.remove('fb-ok','fb-no'));
   peindre(); majBas();
 }
 
+// Une fois l'exercice clos, plus rien n'est modifiable : sans ça, on peut
+// corriger sa copie après avoir lu la correction, et le verdict affiché ne
+// correspond plus à ce qu'on voit à l'écran.
+function verrouille(){
+  document.querySelectorAll('.opt, .slot, .jeton, .vignette, .srow input')
+          .forEach(n => { n.disabled = true; });
+}
+
 function reveler(s, res){
-  E.fini.add(E.i);
+  E.fini.add(E.i); verrouille();
   marquer(res, true);
   const bon = res.filter(x=>x.bon).length;
   couche('no', 'La correction', `${bon} réponses justes sur ${res.length}.`,
@@ -1007,11 +1297,13 @@ function marquer(res, montrer){
     const n = document.querySelector(`[data-rid="${x.r.id}"]`);
     if(!n) return;
     n.classList.add(x.bon ? 'fb-ok' : 'fb-no');
-    const v = n.querySelector('.qrow__verdict, .arow__verdict');
+    const v = n.querySelector('.qrow__verdict, .arow__verdict, .srow__verdict');
     if(v) v.textContent = x.bon ? 'Juste' : 'À revoir';
     if(montrer && !x.bon){
       if(s.kind === 'choix'){
         if(v) v.textContent = 'La réponse est ' + x.r.ok;
+      } else if(s.kind === 'saisie'){
+        if(v) v.textContent = 'La réponse : ' + x.r.ok[0];
       } else {
         if(!n.querySelector('.arow__bonne')){
           const b = el('div','arow__bonne');
@@ -1052,10 +1344,15 @@ function dessine(){
   const sc = $('#scene');
   sc.className = 'scene' + (s.type === 'cover' ? ' scene--plein' : '');
   sc.innerHTML = '';
-  document.documentElement.style.setProperty('--sec',
-    s.sec === 'violet' ? 'var(--violet-600)' : 'var(--teal-700)');
-  document.documentElement.style.setProperty('--sec-soft',
-    s.sec === 'violet' ? 'var(--violet-100)' : 'var(--teal-100)');
+  // Couleur de section : repérage seulement, jamais porteuse d'information.
+  const SEC = {
+    violet: ['--violet-600','--violet-100'],   // graphie-phonie
+    acier:  ['--acier-600','--acier-100'],     // point culture
+    ambre:  ['--ambre-700','--ambre-100'],     // écriture
+  };
+  const [ton, fond] = SEC[s.sec] || ['--teal-700','--teal-100'];
+  document.documentElement.style.setProperty('--sec', `var(${ton})`);
+  document.documentElement.style.setProperty('--sec-soft', `var(${fond})`);
   const corps = RENDU[s.type](s);
   sc.appendChild(corps);
 
@@ -1108,15 +1405,17 @@ function majBas(){
   $('#aide').textContent = aide;
 
   $('#compte').textContent = `${E.i+1} / ${SLIDES.length}`;
-  $('#topTitre').textContent = s.menu === 'Couverture' ? 'Je me prépare' : s.menu;
+  $('#topPartie').textContent = 'Module 9 · ' + s.partie;
+  $('#topTitre').textContent = s.menu === 'Couverture' ? 'Le parcours guidé' : s.menu;
   $('#progFill').style.width = (E.i / (SLIDES.length - 1) * 100) + '%';
 }
 
 function majMenu(){
   const m = $('#menu');
   m.innerHTML = '';
-  let grp = null;
+  let grp = null, partie = null;
   SLIDES.forEach((s,i)=>{
+    if(s.partie !== partie){ partie = s.partie; m.appendChild(el('div','menu__partie', esc(partie))); }
     if(s.grp !== grp){ grp = s.grp; m.appendChild(el('div','menu__grp', esc(grp))); }
     const b = el('button','menu__item');
     b.type = 'button';
