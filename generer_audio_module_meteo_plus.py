@@ -60,12 +60,30 @@ CLIPS = {
     "plus_t2futcond_ex3_2": "Je prendrais l'autoroute 10 si la visibilité s'améliorait.",
 }
 
-# Les mots isolés du bloc « ana » de prPhon (table, chapitre, théâtre…)
-# illustrent la prononciation relâchée elle-même : lus seuls, sans article,
-# c'est justement le point pédagogique (montrer le mot tel qu'on l'entend).
-# Pas de TEXT_OVERRIDES ici : contrairement aux mots-tests de discrimination
-# de son, l'absence de contexte ne nuit pas au sens de la leçon.
-TEXT_OVERRIDES = {}
+# Un mot seul ne donne au moteur aucun indice de langue — voir
+# phase2-audio.md du skill module-parite. Ces mots-là (« table », « autre »,
+# « membre »…) se faisaient lire en anglais ou en espagnol : signalé par
+# l'utilisateur le 2026-08-10, après qu'un commentaire de ce script eut
+# affirmé à tort qu'ils n'en avaient pas besoin.
+#
+# Déterminant le/la/l', jamais un/une (nasal). Le mot testé reste TOUJOURS
+# en fin de phrase : c'est là que la consonne finale s'efface, et c'est tout
+# le point de la leçon. Pour les adjectifs et les nombres, « c'est… » ou
+# « il y en a… » jouent le rôle du déterminant.
+#
+# Le mot affiché à l'élève ne change pas — seul le texte envoyé à l'API.
+TEXT_OVERRIDES = {
+    "plus_prPhon_ana1": "la table",
+    "plus_prPhon_lab2_t": "la table",
+    "plus_prPhon_lab2_c": "le chapitre",
+    "plus_prPhon_lab2_a": "c'est acceptable",
+    "plus_prPhon_lab2_h": "le théâtre",
+    "plus_prPhon_ex3_0": "c'est possible",
+    "plus_prPhon_ex3_1": "l'autre",
+    "plus_prPhon_ex3_2": "il y en a quatre",
+    "plus_prPhon_ex3_3": "le membre",
+    "plus_prPhon_ex3_4": "l'exemple",
+}
 
 
 def generate(api_key, text, path):
