@@ -642,6 +642,25 @@ body{
   .savoir-key{font-size:15px}
 }
 
+/* ── Jeu de rôle de la tâche 1 ─────────────────────────────────────────
+   Les trois annonces sont publiques ; tout ce qui fonde l'écart
+   d'information reste sur les fiches papier, jamais à l'écran. */
+.jr-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(190px,1fr));gap:12px;margin:16px 0 4px}
+.jr-log{border:1px solid var(--ws-line);border-radius:14px;overflow:hidden;background:var(--ws-card)}
+.jr-log-h{background:var(--sec-color,var(--ws-accent));color:#fff;padding:7px 13px;font-size:12px;font-weight:800;text-transform:uppercase;letter-spacing:.1em}
+.jr-log-a{padding:11px 13px;font-size:15px;font-weight:500;line-height:1.5}
+.jr-log-a b{font-weight:900}
+.jr-sub{margin:20px 0 9px;font-size:12px;font-weight:800;text-transform:uppercase;letter-spacing:.14em;color:var(--ws-sub)}
+.jr-sujets{display:grid;grid-template-columns:repeat(auto-fit,minmax(210px,1fr));gap:7px 18px}
+.jr-sujet{display:flex;align-items:center;gap:9px;font-size:15px;font-weight:600}
+.jr-box{width:13px;height:13px;border:2px solid var(--sec-color,var(--ws-accent));border-radius:3px;flex-shrink:0}
+.jr-gram{margin-top:18px;padding:13px 16px;border-radius:14px;background:var(--ws-bg);font-size:15px;font-weight:500;line-height:1.55}
+.jr-gram-t{font-size:12px;font-weight:800;text-transform:uppercase;letter-spacing:.14em;color:var(--ws-sub);margin-bottom:6px}
+.jr-print{margin-top:18px;display:flex;align-items:center;gap:14px;flex-wrap:wrap}
+.jr-print .btn{text-decoration:none}
+.jr-print-n{font-size:14px;font-weight:500;color:var(--ws-sub);line-height:1.45}
+@media(max-width:640px){.jr-sujets{grid-template-columns:1fr}}
+
 /* Focus clavier visible partout (B.4) */
 :focus-visible{outline:3px solid var(--ws-accent);outline-offset:2px;border-radius:inherit}
 textarea:focus-visible,.winput:focus-visible{outline:none;border-color:var(--ws-accent)}
@@ -1693,7 +1712,47 @@ function buildStatic(){
 }
 
 // ── SECTIONS PERSONNALISÉES (oral / écrit / autoéval) ─────────────────
+// Les trois logements du jeu de rôle. Seule l'annonce est publique : ce que
+// chaque rôle sait en plus vit uniquement sur les fiches imprimées, sinon
+// l'écart d'information disparaît et il n'y a plus rien à se demander.
+const ROLE_LOGEMENTS = [
+  {id:'A', lieu:'Centre-ville', ann:"<b>2 ½ meublé</b> au troisième étage, rue Wellington Nord, en plein centre-ville. Fenêtres neuves. Arrêt d'autobus devant la porte. Épicerie et pharmacie à deux minutes de marche. Libre le 1<sup>er</sup> octobre. <b>690 $ par mois.</b>"},
+  {id:'B', lieu:'Fleurimont', ann:"Grand <b>5 ½</b> dans un quartier familial de Fleurimont, à dix minutes du CHUS. Trois chambres, sous-sol fini, grande cour arrière. Deux stationnements. Libre le 1<sup>er</sup> juillet. <b>1 390 $ par mois.</b>"},
+  {id:'C', lieu:'Vieux-Nord', ann:"<b>4 ½</b> au rez-de-chaussée d'une maison centenaire, quartier du Vieux-Nord. Planchers de bois, grandes fenêtres, balcon avant. Près du lac des Nations et de la piste cyclable. Non-fumeur. Libre le 1<sup>er</sup> août. <b>1 050 $ par mois.</b>"},
+];
+const ROLE_SUJETS = ["Ce qui est inclus dans le loyer","Le chauffage et l'électricité",
+  "Les électroménagers et la buanderie","Le stationnement","Les animaux",
+  "Le bruit et le voisinage","La date et la durée du bail"];
+
 function injectCustom(){
+  // TÂCHE 1 — jeu de rôle à deux, sur fiches imprimées
+  document.getElementById('exs-t1').innerHTML += `
+   <div class="card custom" id="jeu-de-role">
+     <div class="c-hdr"><span class="tag" style="background:#C0573A">Jeu de rôle</span><span class="ctit" style="color:#C0573A">Louer un logement, à deux</span></div>
+     <p class="lead">Un de vous <b>visite</b>, l'autre <b>fait visiter</b>. Vous lisez la même annonce, mais chacun connaît des choses que l'autre ignore — c'est pour ça qu'il faut se poser de vraies questions.</p>
+     <div class="jr-grid">
+       ${ROLE_LOGEMENTS.map(l=>`
+       <div class="jr-log">
+         <div class="jr-log-h">Logement ${l.id} · ${esc(l.lieu)}</div>
+         <div class="jr-log-a">${l.ann}</div>
+       </div>`).join('')}
+     </div>
+     <div class="jr-sub">Les sept sujets à couvrir</div>
+     <div class="jr-sujets">
+       ${ROLE_SUJETS.map(s=>`<div class="jr-sujet"><span class="jr-box"></span>${esc(s)}</div>`).join('')}
+     </div>
+     <div class="jr-gram">
+       <div class="jr-gram-t">Comme à l'exercice 5</div>
+       Pose tes questions avec le pronom de reprise :
+       <span class='savoir-ex'>Le chauffage est-<b>il</b> inclus ?</span>
+       <span class='savoir-ex'>Les animaux sont-<b>ils</b> acceptés ?</span>
+     </div>
+     <div class="jr-print">
+       <a class="btn btn-pri" href="/assets/documents/module-logement-jeu-de-role.html" target="_blank" rel="noopener">Ouvrir les fiches à imprimer</a>
+       <span class="jr-print-n">Six cartes à découper : un locataire et un propriétaire par logement.</span>
+     </div>
+   </div>`;
+
   // JE METS EN APPLICATION — jeu de rôle oral + écriture corrigée par l'IA
   document.getElementById('exs-appli').innerHTML += `
    <div class="card custom">

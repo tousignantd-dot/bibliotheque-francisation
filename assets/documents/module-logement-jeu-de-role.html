@@ -1,0 +1,252 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="utf-8">
+<title>Module 8 — Jeu de rôle : louer un logement</title>
+<link href="https://fonts.googleapis.com/css2?family=Nunito:wght@600;700;800;900&display=swap" rel="stylesheet">
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+html{background:#bbb}
+body{
+  font-family:'Nunito','Arial Rounded MT Bold',sans-serif;
+  background:#fff;color:#000;width:215.9mm;margin:0 auto;font-size:10.5pt;
+}
+.page{width:215.9mm;min-height:279.4mm;padding:11mm 13mm 8mm;background:#fff;position:relative}
+.page+.page{border-top:3px dashed #aaa}
+
+/* ── EN-TÊTE ── */
+.hdr{border-top:4px solid #1D6B8F;border-bottom:2.5px solid #000;padding:7px 0;display:flex;align-items:center;gap:12px;margin-bottom:11px}
+.hdr-ic{width:36px;height:36px;border-radius:50%;border:2.5px solid #1D6B8F;display:flex;align-items:center;justify-content:center;flex-shrink:0;font-size:17px}
+.hdr-eye{font-size:7.5pt;font-weight:800;text-transform:uppercase;letter-spacing:.18em;color:#555;line-height:1;margin-bottom:2px}
+.hdr-h1{font-size:19pt;font-weight:900;line-height:1.1;letter-spacing:-.01em;color:#1A2E35}
+.intro{font-size:9.5pt;font-style:italic;color:#555;margin-bottom:12px;line-height:1.5}
+
+/* ── GUIDE DE L'ENSEIGNANT ── */
+.sec-t{font-size:12pt;font-weight:900;color:#1D6B8F;margin:14px 0 6px;padding-bottom:3px;border-bottom:2px solid #E7F0F6}
+.sec-t:first-of-type{margin-top:4px}
+ol.steps{margin:0 0 4px 17px;font-size:10pt;line-height:1.65}
+ol.steps li{margin-bottom:5px}
+ul.plain{margin:0 0 4px 17px;font-size:10pt;line-height:1.6}
+.note{background:#E7F0F6;border-left:4px solid #1D6B8F;padding:8px 11px;font-size:9.5pt;line-height:1.55;margin:9px 0}
+.note b{font-weight:900}
+
+/* Les 7 sujets */
+.sujets{display:grid;grid-template-columns:1fr 1fr;gap:5px 16px;margin:8px 0 4px}
+.sujet{display:flex;align-items:flex-start;gap:7px;font-size:10pt;line-height:1.45}
+.box{width:12px;height:12px;border:2px solid #1D6B8F;flex-shrink:0;margin-top:2px}
+
+/* Rappel de grammaire */
+.gram{border:2px solid #1D6B8F;border-radius:7px;padding:9px 12px;margin:9px 0 0}
+.gram-t{font-size:8pt;font-weight:800;text-transform:uppercase;letter-spacing:.13em;color:#1D6B8F;margin-bottom:5px}
+.gram p{font-size:10pt;line-height:1.6;margin-bottom:3px}
+.gram i{font-style:italic;color:#1D6B8F;font-weight:700}
+
+/* ── CARTES À DÉCOUPER ── */
+.cut{border-top:2px dashed #999;margin:7mm 0 6mm;position:relative;height:0}
+.cut::before{content:"✂";position:absolute;left:0;top:-9px;background:#fff;padding-right:6px;font-size:11pt;color:#999}
+.card{border:2.5px solid #1D6B8F;border-radius:9px;padding:0;overflow:hidden}
+.card-role{background:#1D6B8F;color:#fff;padding:6px 12px;font-size:9pt;font-weight:900;text-transform:uppercase;letter-spacing:.13em;display:flex;justify-content:space-between;align-items:center}
+.card-role span{font-size:8pt;letter-spacing:.08em;font-weight:700;opacity:.85}
+.card-b{padding:10px 13px 12px}
+
+.ann-t{font-size:8pt;font-weight:800;text-transform:uppercase;letter-spacing:.13em;color:#555;margin-bottom:4px}
+.ann{background:#F5F7F8;border-left:4px solid #B7C9D3;padding:8px 11px;font-size:10pt;line-height:1.6;margin-bottom:10px}
+.ann b{font-weight:900}
+
+.priv-t{font-size:8pt;font-weight:800;text-transform:uppercase;letter-spacing:.13em;color:#1D6B8F;margin-bottom:5px}
+ul.priv{margin:0 0 0 16px;font-size:10pt;line-height:1.62}
+ul.priv li{margin-bottom:2px}
+ul.priv b{font-weight:900}
+.mission{font-size:9.5pt;line-height:1.55;margin-top:9px;padding-top:8px;border-top:1.5px solid #DDE5EA;font-style:italic;color:#444}
+
+@media print{
+  html{background:#fff}
+  .page{page-break-after:always;min-height:0}
+  .page:last-child{page-break-after:auto}
+  .page+.page{border-top:none}
+}
+</style>
+</head>
+<body>
+
+<!-- ═══════════ PAGE 1 · GUIDE ═══════════ -->
+<div class="page">
+  <div class="hdr">
+    <div class="hdr-ic">🔑</div>
+    <div>
+      <div class="hdr-eye">Module 8 · Comment est le logement ?</div>
+      <div class="hdr-h1">Jeu de rôle — louer un logement</div>
+    </div>
+  </div>
+  <p class="intro">Trois logements à louer à Sherbrooke. Les élèves travaillent deux par deux : l'un visite, l'autre fait visiter.</p>
+
+  <div class="sec-t">Comment ça marche</div>
+  <ol class="steps">
+    <li>Imprimez les pages 2, 3 et 4, puis découpez chaque page en deux le long du pointillé. Vous obtenez six cartes : un locataire et un propriétaire pour chacun des trois logements.</li>
+    <li>Formez les paires. Donnez la carte <b>locataire</b> à l'un, la carte <b>propriétaire</b> à l'autre. <b>Chacun ne montre pas sa carte à l'autre.</b></li>
+    <li>Laissez deux minutes de préparation : le locataire écrit ses questions, le propriétaire relit ses réponses.</li>
+    <li>La conversation dure de cinq à huit minutes. Le locataire commence : il vient visiter le logement.</li>
+    <li>On échange les rôles avec un autre logement, puis on change de partenaire.</li>
+  </ol>
+
+  <div class="note">
+    <b>La clé de l'exercice :</b> les deux cartes portent la même annonce, mais chacune contient des renseignements que l'autre n'a pas. Le locataire ne peut pas deviner si le chauffage est inclus ; le propriétaire ne sait pas que son visiteur a un chat. C'est ce qui force la conversation — il n'y a pas moyen de finir l'exercice sans se poser de vraies questions.
+  </div>
+
+  <div class="sec-t">Les sept sujets à couvrir</div>
+  <p style="font-size:9.5pt;color:#555;line-height:1.5;margin-bottom:2px">Cochez au fur et à mesure. La conversation se termine quand les sept sont couverts.</p>
+  <div class="sujets">
+    <div class="sujet"><div class="box"></div><div>Ce qui est inclus dans le loyer</div></div>
+    <div class="sujet"><div class="box"></div><div>Le chauffage et l'électricité</div></div>
+    <div class="sujet"><div class="box"></div><div>Les électroménagers et la buanderie</div></div>
+    <div class="sujet"><div class="box"></div><div>Le stationnement</div></div>
+    <div class="sujet"><div class="box"></div><div>Les animaux</div></div>
+    <div class="sujet"><div class="box"></div><div>Le bruit et le voisinage</div></div>
+    <div class="sujet"><div class="box"></div><div>La date et la durée du bail</div></div>
+  </div>
+
+  <div class="gram">
+    <div class="gram-t">Ce qu'on réutilise de la tâche 1</div>
+    <p>Posez vos questions avec le <b>pronom de reprise</b> : <i>Le chauffage est-il inclus ?</i> · <i>Les animaux sont-ils acceptés ?</i> · <i>La buanderie se trouve-t-elle au sous-sol ?</i></p>
+    <p>N'oubliez pas le <b>t euphonique</b> quand le verbe se termine par -e ou -a : <i>Le loyer augmente-t-il chaque année ?</i> · <i>Le propriétaire habite-t-il dans l'immeuble ?</i></p>
+  </div>
+
+  <div class="sec-t">Pour aller plus loin</div>
+  <ul class="plain">
+    <li>Faites recommencer la même paire avec un deuxième logement : les questions sont les mêmes, les réponses changent.</li>
+    <li>Demandez au locataire de dire à la fin s'il prend le logement <b>et pourquoi</b> — c'est l'occasion d'utiliser la phrase emphatique : <i>Ce qui me dérange, c'est le bruit.</i></li>
+    <li>Un élève seul peut faire l'exercice dans le module, avec l'assistant.</li>
+  </ul>
+</div>
+
+<!-- ═══════════ PAGE 2 · LOGEMENT A ═══════════ -->
+<div class="page">
+  <div class="card">
+    <div class="card-role">Locataire <span>Logement A · centre-ville</span></div>
+    <div class="card-b">
+      <div class="ann-t">L'annonce</div>
+      <div class="ann"><b>2 ½ meublé</b> au troisième étage, rue Wellington Nord, en plein centre-ville. Fenêtres neuves. Arrêt d'autobus devant la porte. Épicerie et pharmacie à deux minutes de marche. Libre le 1<sup>er</sup> octobre. <b>690 $ par mois.</b></div>
+      <div class="priv-t">Ta situation — ne la montre pas au propriétaire</div>
+      <ul class="priv">
+        <li>Tu es <b>étudiante</b>, tu arrives à Sherbrooke en septembre. Tu vis seule.</li>
+        <li>Ton budget est de <b>750 $ par mois, tout compris</b>. Tu dois donc savoir exactement ce qui s'ajoute au loyer.</li>
+        <li>Tu travailles les fins de semaine et tu <b>étudies le soir</b> : le calme compte beaucoup pour toi.</li>
+        <li>Tu n'as <b>aucun meuble</b> et tu n'as pas les moyens d'en acheter.</li>
+        <li>Tu n'as pas d'auto. Tu prends l'autobus.</li>
+        <li>Tu veux savoir <b>où laver ton linge</b>.</li>
+      </ul>
+      <div class="mission">Tu viens visiter. Pose tes questions, puis dis à la fin si tu prends le logement et pourquoi.</div>
+    </div>
+  </div>
+
+  <div class="cut"></div>
+
+  <div class="card">
+    <div class="card-role">Propriétaire <span>Logement A · centre-ville</span></div>
+    <div class="card-b">
+      <div class="ann-t">Ton annonce</div>
+      <div class="ann"><b>2 ½ meublé</b> au troisième étage, rue Wellington Nord, en plein centre-ville. Fenêtres neuves. Arrêt d'autobus devant la porte. Épicerie et pharmacie à deux minutes de marche. Libre le 1<sup>er</sup> octobre. <b>690 $ par mois.</b></div>
+      <div class="priv-t">Ce que l'annonce ne dit pas — ne le montre pas au locataire</div>
+      <ul class="priv">
+        <li><b>Chauffage et électricité inclus.</b> Internet n'est pas inclus.</li>
+        <li>Meublé : un lit, une table, deux chaises, une commode. <b>Pas de vaisselle.</b></li>
+        <li><b>Aucune buanderie dans l'immeuble.</b> Il y a une laverie à trois rues.</li>
+        <li><b>Pas de stationnement.</b> Dans la rue seulement, avec une vignette de la Ville.</li>
+        <li><b>Aucun animal</b> : la voisine du deuxième est allergique.</li>
+        <li>Bail de 12 mois, du 1<sup>er</sup> octobre au 30 septembre.</li>
+        <li>Il y a un <b>bar au rez-de-chaussée</b>. On entend la musique jusqu'à minuit les vendredis et samedis.</li>
+        <li>Le logement n'a <b>pas de balcon</b>.</li>
+      </ul>
+      <div class="mission">Réponds honnêtement, mais ne donne pas un renseignement avant qu'on te le demande.</div>
+    </div>
+  </div>
+</div>
+
+<!-- ═══════════ PAGE 3 · LOGEMENT B ═══════════ -->
+<div class="page">
+  <div class="card">
+    <div class="card-role">Locataire <span>Logement B · Fleurimont</span></div>
+    <div class="card-b">
+      <div class="ann-t">L'annonce</div>
+      <div class="ann">Grand <b>5 ½</b> dans un quartier familial de Fleurimont, à dix minutes du CHUS. Trois chambres, sous-sol fini, grande cour arrière. Deux stationnements. Libre le 1<sup>er</sup> juillet. <b>1 390 $ par mois.</b></div>
+      <div class="priv-t">Ta situation — ne la montre pas au propriétaire</div>
+      <ul class="priv">
+        <li>Vous êtes <b>quatre</b> : deux adultes et deux enfants de 7 et 10 ans.</li>
+        <li>Ton conjoint <b>travaille de nuit</b> au CHUS et dort le jour.</li>
+        <li>Vous avez un <b>petit chien</b> très tranquille.</li>
+        <li>Vous possédez déjà une <b>laveuse et une sécheuse</b>, mais aucun autre électroménager.</li>
+        <li>Votre budget est de <b>1 500 $ par mois, chauffage compris</b>. Tu dois donc savoir combien coûte le chauffage l'hiver.</li>
+        <li>Tu veux savoir <b>où est l'école</b> la plus proche.</li>
+      </ul>
+      <div class="mission">Tu viens visiter. Pose tes questions, puis dis à la fin si tu prends le logement et pourquoi.</div>
+    </div>
+  </div>
+
+  <div class="cut"></div>
+
+  <div class="card">
+    <div class="card-role">Propriétaire <span>Logement B · Fleurimont</span></div>
+    <div class="card-b">
+      <div class="ann-t">Ton annonce</div>
+      <div class="ann">Grand <b>5 ½</b> dans un quartier familial de Fleurimont, à dix minutes du CHUS. Trois chambres, sous-sol fini, grande cour arrière. Deux stationnements. Libre le 1<sup>er</sup> juillet. <b>1 390 $ par mois.</b></div>
+      <div class="priv-t">Ce que l'annonce ne dit pas — ne le montre pas au locataire</div>
+      <ul class="priv">
+        <li>Le chauffage est <b>électrique et aux frais du locataire</b> : environ <b>150 $ par mois</b> en hiver.</li>
+        <li><b>Aucun électroménager n'est fourni</b>, mais les entrées pour la laveuse et la sécheuse sont prêtes au sous-sol.</li>
+        <li>Les <b>petits chiens sont acceptés</b>. Pas de chat : tu es allergique et tu habites au rez-de-chaussée.</li>
+        <li>École primaire à cinq minutes à pied, garderie au coin de la rue.</li>
+        <li>Bail de 12 mois, renouvelable.</li>
+        <li>Le <b>déneigement de l'entrée</b> est à la charge du locataire.</li>
+        <li>Il n'y a pas de climatiseur, mais les fenêtres donnent au nord et le logement reste frais l'été.</li>
+        <li>Le sous-sol fini peut servir de quatrième chambre ou de bureau.</li>
+      </ul>
+      <div class="mission">Réponds honnêtement, mais ne donne pas un renseignement avant qu'on te le demande.</div>
+    </div>
+  </div>
+</div>
+
+<!-- ═══════════ PAGE 4 · LOGEMENT C ═══════════ -->
+<div class="page">
+  <div class="card">
+    <div class="card-role">Locataire <span>Logement C · Vieux-Nord</span></div>
+    <div class="card-b">
+      <div class="ann-t">L'annonce</div>
+      <div class="ann"><b>4 ½</b> au rez-de-chaussée d'une maison centenaire, quartier du Vieux-Nord. Planchers de bois, grandes fenêtres, balcon avant. Près du lac des Nations et de la piste cyclable. Non-fumeur. Libre le 1<sup>er</sup> août. <b>1 050 $ par mois.</b></div>
+      <div class="priv-t">Ta situation — ne la montre pas au propriétaire</div>
+      <ul class="priv">
+        <li>Vous êtes un <b>couple à la retraite</b>. Vous avez <b>un chat</b>.</li>
+        <li>Vous vous déplacez à pied et à vélo : la piste cyclable compte beaucoup pour vous.</li>
+        <li>Vous avez <b>une auto</b> et il vous faut une place pour la stationner.</li>
+        <li>Votre budget est de <b>1 200 $ par mois, tout compris</b>.</li>
+        <li>Vous êtes <b>frileux</b> : vous voulez savoir si le logement est chaud en janvier.</li>
+        <li>Vous aimeriez <b>repeindre le salon</b> en bleu.</li>
+      </ul>
+      <div class="mission">Tu viens visiter. Pose tes questions, puis dis à la fin si tu prends le logement et pourquoi.</div>
+    </div>
+  </div>
+
+  <div class="cut"></div>
+
+  <div class="card">
+    <div class="card-role">Propriétaire <span>Logement C · Vieux-Nord</span></div>
+    <div class="card-b">
+      <div class="ann-t">Ton annonce</div>
+      <div class="ann"><b>4 ½</b> au rez-de-chaussée d'une maison centenaire, quartier du Vieux-Nord. Planchers de bois, grandes fenêtres, balcon avant. Près du lac des Nations et de la piste cyclable. Non-fumeur. Libre le 1<sup>er</sup> août. <b>1 050 $ par mois.</b></div>
+      <div class="priv-t">Ce que l'annonce ne dit pas — ne le montre pas au locataire</div>
+      <ul class="priv">
+        <li><b>Chauffage et eau chaude inclus.</b> L'électricité est aux frais du locataire.</li>
+        <li>Le <b>réfrigérateur et la cuisinière</b> sont fournis. Il y a une <b>laveuse et une sécheuse dans le logement</b>.</li>
+        <li><b>Une place de stationnement</b> dans la cour, en arrière.</li>
+        <li><b>Un chat accepté</b>, pas de chien.</li>
+        <li>La maison a cent ans : les planchers craquent et les fenêtres sont simples. Il fait <b>un peu froid en janvier</b> près des fenêtres.</li>
+        <li>Bail du 1<sup>er</sup> août au 31 juillet.</li>
+        <li>Tu <b>habites à l'étage</b>, au-dessus du logement.</li>
+        <li>Le locataire peut repeindre, mais doit <b>remettre les couleurs d'origine</b> à la fin du bail.</li>
+      </ul>
+      <div class="mission">Réponds honnêtement, mais ne donne pas un renseignement avant qu'on te le demande.</div>
+    </div>
+  </div>
+</div>
+
+</body>
+</html>
