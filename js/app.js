@@ -127,6 +127,13 @@ function buildCard(activity) {
       ${iconImage()}
     </div>`;
 
+  // Le champ « slideshow » porte soit un .pptx de photos (activités 4 à 15),
+  // soit une page HTML qui regroupe plusieurs présentations (module 9).
+  // Le libellé du bouton suit ce qu'il y a au bout du lien.
+  const slideshowLabel = /\.html?$/i.test(activity.slideshow || '')
+    ? 'Présentations'
+    : 'Diaporama photos';
+
   return `
     <article class="card" data-id="${activity.id}" style="--card-color:${palette.card}">
       <div class="card-thumbnail">
@@ -172,11 +179,11 @@ function buildCard(activity) {
                  target="_blank" rel="noopener"
                  onclick="trackOpen('slideshow', '${escHtml(activity.title)}')">
                 <span class="btn-icon">${iconSlideshow()}</span>
-                Diaporama photos
+                ${slideshowLabel}
                </a>`
             : `<button class="btn btn-slideshow btn-disabled" disabled title="Aucun diaporama disponible">
                 <span class="btn-icon">${iconSlideshow()}</span>
-                Diaporama photos
+                ${slideshowLabel}
                </button>`
           }
           ${activity.planCours

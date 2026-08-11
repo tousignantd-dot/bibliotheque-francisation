@@ -1,0 +1,426 @@
+<!DOCTYPE html>
+<html lang="fr"><head><meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Module 9 · Les seize présentations</title>
+<link rel="stylesheet" href="/assets/design-system/styles.css">
+<style>
+/* ═══════════════════════════════════════════════════════════════
+   SOMMAIRE DES PRÉSENTATIONS · page enseignant
+   ───────────────────────────────────────────────────────────────
+   Tout vient du système de design (assets/design-system/). Rien
+   n'est redéfini ici : ce bloc ne fait qu'assembler les jetons
+   existants pour une liste de séances.
+
+   Une seule couleur d'accent, comme le veut le système. Les cinq
+   blocs se distinguent par leur INTITULÉ, jamais par une teinte.
+   ═══════════════════════════════════════════════════════════════ */
+.som          { padding: var(--sp-8) 0 var(--sp-12); }
+.som__bloc    { margin-top: var(--sp-12); }
+.som__bloc:first-child { margin-top: 0; }
+.som__head    { display: flex; flex-wrap: wrap; align-items: center; gap: var(--sp-4);
+                margin-bottom: var(--sp-5); }
+.som__lettre  { flex-shrink: 0; width: 44px; height: 44px; border-radius: var(--r-md);
+                display: flex; align-items: center; justify-content: center;
+                background: var(--accent-soft); color: var(--accent-ink);
+                font-size: 19px; font-weight: var(--fw-black); }
+.som__titre   { font-size: var(--fs-h3); font-weight: var(--fw-black); margin: 0; }
+.som__rule    { flex: 1; height: 1px; background: var(--border); }
+.som__compte  { background: var(--accent-soft); color: var(--accent-ink);
+                padding: 6px var(--sp-3); border-radius: var(--r-pill);
+                font-size: var(--fs-ui-sm); font-weight: var(--fw-bold);
+                white-space: nowrap; }
+
+.seance       { display: grid; grid-template-columns: 56px minmax(0, 1fr) auto;
+                gap: var(--sp-4); align-items: start; }
+.seance__code { grid-row: 1 / -1; width: 56px; height: 56px; border-radius: var(--r-md);
+                display: flex; align-items: center; justify-content: center;
+                border: 1px solid var(--border); background: var(--surface-sunken);
+                color: var(--text-strong);
+                font-size: var(--fs-lead); font-weight: var(--fw-black);
+                letter-spacing: .02em; }
+.seance__nom  { font-size: var(--fs-lead); font-weight: var(--fw-black);
+                color: var(--text-strong); margin: 0 0 2px; line-height: var(--lh-title); }
+.seance__quoi { font-size: var(--fs-body-sm); font-weight: var(--fw-medium);
+                color: var(--text-body); line-height: var(--lh-body); margin: 0; }
+.seance__meta { display: flex; flex-wrap: wrap; gap: var(--sp-3);
+                margin-top: var(--sp-2);
+                font-size: var(--fs-meta); font-weight: var(--fw-bold);
+                letter-spacing: var(--ls-label); text-transform: uppercase;
+                color: var(--text-muted); }
+.seance__liens{ grid-column: 3; grid-row: 1 / -1;
+                display: flex; flex-direction: column; gap: var(--sp-2);
+                align-items: stretch; }
+.seance__liens .btn { justify-content: center; white-space: nowrap; }
+
+/* Sous 720 px : le code passe au-dessus, les liens en pleine largeur. */
+@media (max-width: 720px) {
+  .seance        { grid-template-columns: 56px minmax(0, 1fr); }
+  .seance__liens { grid-column: 1 / -1; grid-row: auto; flex-direction: row;
+                   flex-wrap: wrap; margin-top: var(--sp-4); }
+  .seance__liens .btn { flex: 1 1 200px; }
+}
+
+.repere { margin-top: var(--sp-12); }
+.repere dl { margin: 0; }
+.repere dt { font-size: var(--fs-label); font-weight: var(--fw-black);
+             letter-spacing: var(--ls-label); text-transform: uppercase;
+             color: var(--text-accent); margin-top: var(--sp-5); }
+.repere dt:first-child { margin-top: 0; }
+.repere dd { margin: var(--sp-1) 0 0; font-size: var(--fs-body-sm);
+             font-weight: var(--fw-medium); color: var(--text-body);
+             line-height: var(--lh-loose); }
+</style></head>
+<body class="page">
+
+<header class="band">
+  <div class="container">
+    <p class="band__eyebrow">Module 9 · Français niveau 4 · Matériel de l'enseignant</p>
+    <h1 style="font-size:var(--fs-hero);font-weight:var(--fw-black);line-height:var(--lh-hero);letter-spacing:var(--ls-hero);margin:var(--sp-3) 0 0">Pouvez-vous régler le problème ?</h1>
+    <p class="band__lead">Seize présentations à projeter, une par séance. Chaque séance
+    a sa fiche élève correspondante, en noir et blanc, prête à photocopier.</p>
+    <p class="seance__meta" style="margin-top:var(--sp-5)">
+      <span>16 séances</span><span>248 diapositives</span><span>Environ 18 heures de classe</span>
+    </p>
+  </div>
+</header>
+
+<main class="container som">
+
+  <!-- ── Bloc A ────────────────────────────────────────────── -->
+  <section class="som__bloc">
+    <div class="som__head">
+      <span class="som__lettre">A</span>
+      <h2 class="som__titre">Je me prépare</h2>
+      <span class="som__rule"></span>
+      <span class="som__compte">4 séances · 245 min</span>
+    </div>
+    <div class="stack">
+
+      <article class="card seance">
+        <span class="seance__code">A1</span>
+        <div>
+          <h3 class="seance__nom">Un problème dans mon logement</h3>
+          <p class="seance__quoi">Nommer un problème avec le mot précis plutôt qu'avec
+          « il y a un problème », dire depuis quand il dure, et savoir quoi vérifier
+          soi-même avant de téléphoner.</p>
+          <p class="seance__meta"><span>75 minutes</span><span>18 diapositives</span></p>
+        </div>
+        <div class="seance__liens">
+          <a class="btn btn--pri" href="/assets/powerpoints/A1-un-probleme-dans-mon-logement.pptx">Présentation</a>
+          <a class="btn btn--ghost" href="/assets/documents/module-probleme-a1-un-probleme-dans-mon-logement.html" target="_blank" rel="noopener">Fiche élève</a>
+        </div>
+      </article>
+
+      <article class="card seance">
+        <span class="seance__code">A2</span>
+        <div>
+          <h3 class="seance__nom">Les deux façons de dire « eu »</h3>
+          <p class="seance__quoi">Entendre la différence entre le [ø] de « deux » et le
+          [œ] de « peur », puis choisir le bon son en regardant seulement la fin du mot
+          écrit.</p>
+          <p class="seance__meta"><span>60 minutes</span><span>15 diapositives</span></p>
+        </div>
+        <div class="seance__liens">
+          <a class="btn btn--pri" href="/assets/powerpoints/A2-les-deux-facons-de-dire-eu.pptx">Présentation</a>
+          <a class="btn btn--ghost" href="/assets/documents/module-probleme-a2-les-deux-facons-de-dire-eu.html" target="_blank" rel="noopener">Fiche élève</a>
+        </div>
+      </article>
+
+      <article class="card seance">
+        <span class="seance__code">A3</span>
+        <div>
+          <h3 class="seance__nom">Qui faut-il appeler ?</h3>
+          <p class="seance__quoi">Les neuf professionnels du logement, au masculin et au
+          féminin, et le métier qui règle chaque problème — sachant qu'on ne les appelle
+          jamais en premier.</p>
+          <p class="seance__meta"><span>60 minutes</span><span>14 diapositives</span></p>
+        </div>
+        <div class="seance__liens">
+          <a class="btn btn--pri" href="/assets/powerpoints/A3-qui-faut-il-appeler.pptx">Présentation</a>
+          <a class="btn btn--ghost" href="/assets/documents/module-probleme-a3-qui-faut-il-appeler.html" target="_blank" rel="noopener">Fiche élève</a>
+        </div>
+      </article>
+
+      <article class="card seance">
+        <span class="seance__code">A4</span>
+        <div>
+          <h3 class="seance__nom">Nommer et classer un problème</h3>
+          <p class="seance__quoi">Décrire un problème vu sur une photo, puis le classer :
+          urgent ou non, dans mon logement ou dans l'immeuble.</p>
+          <p class="seance__meta"><span>50 minutes</span><span>15 diapositives</span></p>
+        </div>
+        <div class="seance__liens">
+          <a class="btn btn--pri" href="/assets/powerpoints/A4-nommer-et-classer-un-probleme.pptx">Présentation</a>
+          <a class="btn btn--ghost" href="/assets/documents/module-probleme-a4-nommer-et-classer-un-probleme.html" target="_blank" rel="noopener">Fiche élève</a>
+        </div>
+      </article>
+
+    </div>
+  </section>
+
+  <!-- ── Bloc B ────────────────────────────────────────────── -->
+  <section class="som__bloc">
+    <div class="som__head">
+      <span class="som__lettre">B</span>
+      <h2 class="som__titre">Tâche 1 · Un problème dans le logement</h2>
+      <span class="som__rule"></span>
+      <span class="som__compte">4 séances · 300 min</span>
+    </div>
+    <div class="stack">
+
+      <article class="card seance">
+        <span class="seance__code">B1</span>
+        <div>
+          <h3 class="seance__nom">Oksana appelle madame Rioux</h3>
+          <p class="seance__quoi">Le dialogue de la tâche 1 : les cinq moments d'un appel
+          réussi, et comment demander une solution temporaire en attendant la réparation.</p>
+          <p class="seance__meta"><span>75 minutes</span><span>16 diapositives</span></p>
+        </div>
+        <div class="seance__liens">
+          <a class="btn btn--pri" href="/assets/powerpoints/B1-oksana-appelle-madame-rioux.pptx">Présentation</a>
+          <a class="btn btn--ghost" href="/assets/documents/module-probleme-b1-oksana-appelle-madame-rioux.html" target="_blank" rel="noopener">Fiche élève</a>
+        </div>
+      </article>
+
+      <article class="card seance">
+        <span class="seance__code">B2</span>
+        <div>
+          <h3 class="seance__nom">Leur ou leurs</h3>
+          <p class="seance__quoi">Ce qui décide entre les deux — et ce n'est pas ce qu'on
+          croit. Le test « son / ses » pour trancher, et le pronom leur qui ne prend
+          jamais de s.</p>
+          <p class="seance__meta"><span>75 minutes</span><span>16 diapositives</span></p>
+        </div>
+        <div class="seance__liens">
+          <a class="btn btn--pri" href="/assets/powerpoints/B2-leur-ou-leurs.pptx">Présentation</a>
+          <a class="btn btn--ghost" href="/assets/documents/module-probleme-b2-leur-ou-leurs.html" target="_blank" rel="noopener">Fiche élève</a>
+        </div>
+      </article>
+
+      <article class="card seance">
+        <span class="seance__code">B3</span>
+        <div>
+          <h3 class="seance__nom">Dire depuis quand un problème dure</h3>
+          <p class="seance__quoi">Trois façons de répondre à « depuis quand ? » : depuis,
+          depuis que, ça fait… que. Le choix se fait en regardant ce qui suit ; le verbe
+          reste au présent.</p>
+          <p class="seance__meta"><span>90 minutes</span><span>17 diapositives</span></p>
+        </div>
+        <div class="seance__liens">
+          <a class="btn btn--pri" href="/assets/powerpoints/B3-dire-depuis-quand-un-probleme-dure.pptx">Présentation</a>
+          <a class="btn btn--ghost" href="/assets/documents/module-probleme-b3-dire-depuis-quand-un-probleme-dure.html" target="_blank" rel="noopener">Fiche élève</a>
+        </div>
+      </article>
+
+      <article class="card seance">
+        <span class="seance__code">B4</span>
+        <div>
+          <h3 class="seance__nom">Mes droits comme locataire</h3>
+          <p class="seance__quoi">Les trois marches d'un problème de logement, dans
+          l'ordre. Écrire un avis complet, savoir ce qu'est le Tribunal administratif du
+          logement, et ce qu'il ne faut jamais faire.</p>
+          <p class="seance__meta"><span>60 minutes</span><span>14 diapositives</span></p>
+        </div>
+        <div class="seance__liens">
+          <a class="btn btn--pri" href="/assets/powerpoints/B4-mes-droits-comme-locataire.pptx">Présentation</a>
+          <a class="btn btn--ghost" href="/assets/documents/module-probleme-b4-mes-droits-comme-locataire.html" target="_blank" rel="noopener">Fiche élève</a>
+        </div>
+      </article>
+
+    </div>
+  </section>
+
+  <!-- ── Bloc C ────────────────────────────────────────────── -->
+  <section class="som__bloc">
+    <div class="som__head">
+      <span class="som__lettre">C</span>
+      <h2 class="som__titre">Tâche 2 · Des problèmes dans l'immeuble</h2>
+      <span class="som__rule"></span>
+      <span class="som__compte">4 séances · 265 min</span>
+    </div>
+    <div class="stack">
+
+      <article class="card seance">
+        <span class="seance__code">C1</span>
+        <div>
+          <h3 class="seance__nom">Samir monte au troisième</h3>
+          <p class="seance__quoi">Le dialogue de la tâche 2 : ce qu'est une partie
+          commune, ce qu'on n'a pas le droit d'y faire, et à quoi ressemble une
+          négociation où chacun obtient quelque chose.</p>
+          <p class="seance__meta"><span>60 minutes</span><span>15 diapositives</span></p>
+        </div>
+        <div class="seance__liens">
+          <a class="btn btn--pri" href="/assets/powerpoints/C1-samir-monte-au-troisieme.pptx">Présentation</a>
+          <a class="btn btn--ghost" href="/assets/documents/module-probleme-c1-samir-monte-au-troisieme.html" target="_blank" rel="noopener">Fiche élève</a>
+        </div>
+      </article>
+
+      <article class="card seance">
+        <span class="seance__code">C2</span>
+        <div>
+          <h3 class="seance__nom">Avant de, après avoir</h3>
+          <p class="seance__quoi">Placer deux actions dans l'ordre à l'intérieur d'une
+          seule phrase : avant de suivi de l'infinitif présent, après suivi de l'infinitif
+          passé — avec l'accord quand le verbe se construit avec être.</p>
+          <p class="seance__meta"><span>75 minutes</span><span>16 diapositives</span></p>
+        </div>
+        <div class="seance__liens">
+          <a class="btn btn--pri" href="/assets/powerpoints/C2-avant-de-apres-avoir.pptx">Présentation</a>
+          <a class="btn btn--ghost" href="/assets/documents/module-probleme-c2-avant-de-apres-avoir.html" target="_blank" rel="noopener">Fiche élève</a>
+        </div>
+      </article>
+
+      <article class="card seance">
+        <span class="seance__code">C3</span>
+        <div>
+          <h3 class="seance__nom">Faire réparer</h3>
+          <p class="seance__quoi">Le faire causatif : dire qu'on fait faire l'action
+          plutôt que de la faire soi-même, et nommer avec par la personne qui l'exécute.</p>
+          <p class="seance__meta"><span>75 minutes</span><span>17 diapositives</span></p>
+        </div>
+        <div class="seance__liens">
+          <a class="btn btn--pri" href="/assets/powerpoints/C3-faire-reparer.pptx">Présentation</a>
+          <a class="btn btn--ghost" href="/assets/documents/module-probleme-c3-faire-reparer.html" target="_blank" rel="noopener">Fiche élève</a>
+        </div>
+      </article>
+
+      <article class="card seance">
+        <span class="seance__code">C4</span>
+        <div>
+          <h3 class="seance__nom">Trois façons d'habiter au Québec</h3>
+          <p class="seance__quoi">Le locatif privé, la coopérative d'habitation et le HLM :
+          qui décide, qui paie, à qui s'adresser quand un problème survient.</p>
+          <p class="seance__meta"><span>55 minutes</span><span>15 diapositives</span></p>
+        </div>
+        <div class="seance__liens">
+          <a class="btn btn--pri" href="/assets/powerpoints/C4-trois-facons-d-habiter-au-quebec.pptx">Présentation</a>
+          <a class="btn btn--ghost" href="/assets/documents/module-probleme-c4-trois-facons-d-habiter-au-quebec.html" target="_blank" rel="noopener">Fiche élève</a>
+        </div>
+      </article>
+
+    </div>
+  </section>
+
+  <!-- ── Bloc D ────────────────────────────────────────────── -->
+  <section class="som__bloc">
+    <div class="som__head">
+      <span class="som__lettre">D</span>
+      <h2 class="som__titre">Tâche 3 · Une situation inacceptable</h2>
+      <span class="som__rule"></span>
+      <span class="som__compte">2 séances · 130 min</span>
+    </div>
+    <div class="stack">
+
+      <article class="card seance">
+        <span class="seance__code">D1</span>
+        <div>
+          <h3 class="seance__nom">Quatre situations inacceptables</h3>
+          <p class="seance__quoi">Quatre témoignages de voisinage. Y repérer le fait,
+          l'effet sur la personne et la demande — et constater qu'une description n'est
+          pas encore une plainte.</p>
+          <p class="seance__meta"><span>55 minutes</span><span>15 diapositives</span></p>
+        </div>
+        <div class="seance__liens">
+          <a class="btn btn--pri" href="/assets/powerpoints/D1-quatre-situations-inacceptables.pptx">Présentation</a>
+          <a class="btn btn--ghost" href="/assets/documents/module-probleme-d1-quatre-situations-inacceptables.html" target="_blank" rel="noopener">Fiche élève</a>
+        </div>
+      </article>
+
+      <article class="card seance">
+        <span class="seance__code">D2</span>
+        <div>
+          <h3 class="seance__nom">Se plaindre efficacement, sans se fâcher</h3>
+          <p class="seance__quoi">La plainte en trois temps — le fait, l'effet sur moi, la
+          demande — avec des mots dont l'intensité correspond au moment. Rester ferme sans
+          attaquer la personne.</p>
+          <p class="seance__meta"><span>75 minutes</span><span>18 diapositives</span></p>
+        </div>
+        <div class="seance__liens">
+          <a class="btn btn--pri" href="/assets/powerpoints/D2-se-plaindre-efficacement-sans-se-facher.pptx">Présentation</a>
+          <a class="btn btn--ghost" href="/assets/documents/module-probleme-d2-se-plaindre-efficacement-sans-se-facher.html" target="_blank" rel="noopener">Fiche élève</a>
+        </div>
+      </article>
+
+    </div>
+  </section>
+
+  <!-- ── Bloc E ────────────────────────────────────────────── -->
+  <section class="som__bloc">
+    <div class="som__head">
+      <span class="som__lettre">E</span>
+      <h2 class="som__titre">Je mets en application</h2>
+      <span class="som__rule"></span>
+      <span class="som__compte">2 séances · 150 min</span>
+    </div>
+    <div class="stack">
+
+      <article class="card seance">
+        <span class="seance__code">E1</span>
+        <div>
+          <h3 class="seance__nom">À toi : le téléphone et le courriel</h3>
+          <p class="seance__quoi">La tâche finale. Mener la conversation complète avec la
+          propriétaire, poser les questions qui font avancer la réparation, puis écrire le
+          courriel de suivi qui garde une trace.</p>
+          <p class="seance__meta"><span>90 minutes</span><span>16 diapositives</span></p>
+        </div>
+        <div class="seance__liens">
+          <a class="btn btn--pri" href="/assets/powerpoints/E1-a-toi-le-telephone-et-le-courriel.pptx">Présentation</a>
+          <a class="btn btn--ghost" href="/assets/documents/module-probleme-e1-a-toi-le-telephone-et-le-courriel.html" target="_blank" rel="noopener">Fiche élève</a>
+        </div>
+      </article>
+
+      <article class="card seance">
+        <span class="seance__code">E2</span>
+        <div>
+          <h3 class="seance__nom">Je retiens des mots</h3>
+          <p class="seance__quoi">Les seize mots essentiels et les neuf savoirs du module,
+          revus en cartes mémoire. L'élève évalue ce qu'il est maintenant capable de faire
+          et repère où retourner chercher le reste.</p>
+          <p class="seance__meta"><span>60 minutes</span><span>11 diapositives</span></p>
+        </div>
+        <div class="seance__liens">
+          <a class="btn btn--pri" href="/assets/powerpoints/E2-je-retiens-des-mots.pptx">Présentation</a>
+          <a class="btn btn--ghost" href="/assets/documents/module-probleme-e2-je-retiens-des-mots.html" target="_blank" rel="noopener">Fiche élève</a>
+        </div>
+      </article>
+
+    </div>
+  </section>
+
+  <!-- ── Repères d'usage ───────────────────────────────────── -->
+  <section class="som__bloc repere">
+    <div class="som__head">
+      <span class="som__rule"></span>
+      <h2 class="som__titre">Avant de projeter</h2>
+      <span class="som__rule"></span>
+    </div>
+    <div class="card card--tinted">
+      <dl>
+        <dt>Les séances s'enchaînent</dt>
+        <dd>Chacune reprend ce que la précédente a installé. Suivre l'ordre A1 → E2.</dd>
+
+        <dt>Chaque diapositive porte une note d'enseignant</dt>
+        <dd>Sous la diapositive, en mode Présentateur : ce qu'on dit, ce qu'on demande, et
+        le corrigé quand il y en a un. Les réponses ne sont jamais sur la fiche élève.</dd>
+
+        <dt>Les fiches s'impriment en noir et blanc</dt>
+        <dd>Format lettre, sans aucune couleur : la hiérarchie passe par la graisse et les
+        filets. Elles restent lisibles sur une photocopieuse ordinaire.
+        <a href="/assets/documents/module-probleme-fiches-eleves.html" target="_blank" rel="noopener">Voir le sommaire des seize fiches</a>.</dd>
+
+        <dt>La police est Verdana</dt>
+        <dd>PowerPoint n'embarque pas les polices sur macOS. Verdana remplace Nunito dans
+        les présentations pour qu'elles s'affichent à l'identique sur n'importe quel poste.
+        Les fiches élèves, elles, gardent Nunito.</dd>
+      </dl>
+    </div>
+  </section>
+
+</main>
+
+<footer class="container" style="padding-top:var(--sp-8);padding-bottom:var(--sp-12);border-top:1px solid var(--border);margin-top:var(--sp-12);font-size:var(--fs-meta);font-weight:var(--fw-bold);color:var(--text-muted);display:flex;flex-wrap:wrap;gap:var(--sp-4);justify-content:space-between">
+  <span>Module 9 · Pouvez-vous régler le problème ?</span>
+  <span>16 présentations · 248 diapositives</span>
+</footer>
+
+</body></html>
