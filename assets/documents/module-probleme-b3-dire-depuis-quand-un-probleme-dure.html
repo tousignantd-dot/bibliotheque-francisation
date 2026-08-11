@@ -1,0 +1,172 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>B3 · Dire depuis quand un problème dure — Fiche élève</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800;900&display=swap" rel="stylesheet">
+<style>
+/* ═══════════════════════════════════════════════════════════════
+   FICHE ÉLÈVE · IMPRESSION LETTRE, NOIR ET BLANC
+   ───────────────────────────────────────────────────────────────
+   Aucune couleur : ces fiches sont photocopiées en noir et blanc.
+   Toute la hiérarchie passe par la GRAISSE, les FILETS et les MOTS.
+   C'est d'ailleurs la règle du système de design poussée à son
+   terme : « jamais d'information portée par la couleur seule ».
+
+   Les gris viennent des neutres du système (ink-900 à ink-400),
+   qui sont déjà quasi neutres. Les filets sont volontairement plus
+   sombres qu'à l'écran : une photocopieuse efface tout ce qui est
+   plus clair que 15 % de noir.
+   ═══════════════════════════════════════════════════════════════ */
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+:root{
+  --paper:#FFFFFF;
+  --tint:#F0F0EE;          /* aplat le plus clair encore visible en photocopie */
+  --line:#C9C9C6;          /* filet fin */
+  --rule:#17181A;          /* filet structurant */
+  --ink:#17181A;           /* titres */
+  --body:#2B2E30;          /* texte courant, un cran plus sombre qu'à l'écran */
+  --soft:#4B4F52;          /* texte secondaire */
+  --muted:#5E6165;         /* sur-titres, méta */
+}
+html{background:#BBBBBB}
+body{
+  font-family:'Nunito','Trebuchet MS',sans-serif;
+  font-size:11.5pt; line-height:1.5; color:var(--body);
+  background:var(--paper);
+  width:215.9mm;                    /* 8,5 po — format lettre */
+  margin:0 auto; padding:14mm 15mm 16mm;
+  -webkit-print-color-adjust:exact; print-color-adjust:exact;
+}
+h1,h2,h3{color:var(--ink); line-height:1.2; letter-spacing:-0.01em}
+
+/* ── En-tête ── */
+.hdr{border-bottom:2.5px solid var(--rule); padding-bottom:8px; margin-bottom:14px;
+     display:flex; align-items:flex-end; gap:14px}
+.hdr-l{flex:1}
+.eyebrow{font-size:9.5pt; font-weight:800; text-transform:uppercase;
+         letter-spacing:.12em; color:var(--muted)}
+.hdr h1{font-size:22pt; font-weight:900; margin-top:3px}
+.hdr-r{flex-shrink:0; display:flex; gap:10px; align-items:flex-end;
+       font-size:9.5pt; font-weight:800; text-transform:uppercase;
+       letter-spacing:.08em; color:var(--muted); padding-bottom:2px}
+.nomline{display:inline-block; border-bottom:1.5px solid var(--rule);
+         height:6mm; vertical-align:bottom; margin-left:5px}
+.nomline--nom{width:48mm} .nomline--date{width:26mm}
+.chapeau{font-size:12pt; font-weight:600; color:var(--soft); margin-bottom:16px}
+
+/* ── Blocs ── */
+.bloc{break-inside:avoid; page-break-inside:avoid; margin-bottom:13px}
+.card{border:1px solid var(--line); border-radius:12px; padding:11px 14px 12px;
+      background:var(--paper)}
+.lbl{font-size:9.5pt; font-weight:800; text-transform:uppercase;
+     letter-spacing:.12em; color:var(--muted); margin-bottom:5px}
+h2.t{font-size:15pt; font-weight:900; margin-bottom:7px}
+.consigne{font-size:11pt; font-weight:600; color:var(--soft); margin-bottom:8px}
+
+/* ── Objectifs et exercices : pastille en cerne, jamais en aplat ── */
+ol.obj,ol.ex{list-style:none}
+ol.obj{counter-reset:o} ol.ex{counter-reset:e}
+ol.obj li,ol.ex li{position:relative; padding-left:9mm; font-weight:600}
+ol.obj li{counter-increment:o; margin-bottom:6px}
+ol.ex li{counter-increment:e; margin-bottom:9px; break-inside:avoid}
+ol.obj li::before,ol.ex li::before{
+  position:absolute; left:0; top:0; width:6mm; height:6mm; border-radius:50%;
+  border:1.5px solid var(--rule); color:var(--ink);
+  font-size:9.5pt; font-weight:800;
+  display:flex; align-items:center; justify-content:center}
+ol.obj li::before{content:counter(o)}
+ol.ex li::before{content:counter(e)}
+
+/* ── Dialogue ── */
+.rep{display:flex; gap:10px; padding:4px 0; border-top:1px solid var(--line)}
+.rep:first-of-type{border-top:0}
+.rep--key{background:var(--tint); border-radius:8px; padding:5px 8px;
+          border-top:0; margin:2px 0}
+.qui{flex:0 0 30mm; font-weight:800; color:var(--ink); font-size:10.5pt}
+
+/* ── Règle : encadrée au filet épais, c'est elle qu'on repère de loin ── */
+.regle{border:2.5px solid var(--rule); border-radius:12px; padding:12px 14px}
+.regle .lbl{color:var(--ink)}
+.regle p.r{font-size:14pt; font-weight:900; color:var(--ink); line-height:1.3}
+.regle p.pr{margin-top:7px; font-weight:600; color:var(--soft)}
+
+/* ── Tableau ── */
+table{width:100%; border-collapse:collapse}
+th{font-size:9.5pt; font-weight:800; text-transform:uppercase; letter-spacing:.1em;
+   color:var(--muted); text-align:left; padding:0 8px 5px 0;
+   border-bottom:1.5px solid var(--rule)}
+td{padding:6px 8px 6px 0; border-top:1px solid var(--line); vertical-align:top;
+   font-weight:600}
+td.cle{font-weight:900; color:var(--ink)}   /* la colonne clé : en gras, pas en couleur */
+.note{margin-top:8px; font-size:10.5pt; font-weight:600; color:var(--soft);
+      background:var(--tint); border-radius:9px; padding:8px 11px}
+
+/* ── Cartes ── */
+.grid{display:grid; grid-template-columns:1fr 1fr; gap:9px}
+.grid .card h3{font-size:11.5pt; font-weight:900; color:var(--ink); margin-bottom:3px}
+.grid .card p{font-size:11pt}
+
+/* ── Piège : le filet distingue les deux colonnes, pas la couleur ──
+   À gauche, un filet TIRETÉ — ce qui ne tient pas.
+   À droite, un filet PLEIN et épais — ce qu'il faut retenir.
+   Les deux intitulés disent la même chose en mots.                */
+.duo{display:grid; grid-template-columns:1fr 1fr; gap:10px}
+.duo>div{border-radius:12px; padding:10px 13px}
+.duo .no{border:1.5px dashed var(--muted)}
+.duo .ok{border:2.5px solid var(--rule); background:var(--tint)}
+.duo .k{font-size:9.5pt; font-weight:800; text-transform:uppercase;
+        letter-spacing:.1em; margin-bottom:4px; color:var(--muted)}
+.duo .ok .k{color:var(--ink)}
+.duo p.ph{font-size:12pt; font-weight:800; color:var(--ink); line-height:1.3}
+.duo .no p.ph{font-weight:600; font-style:italic; color:var(--soft)}
+
+/* ── Vocabulaire ── */
+.voc{width:100%; border-collapse:collapse}
+.voc td{border-top:1px solid var(--line); padding:6px 8px 6px 0}
+.voc td.mot{width:38%; font-weight:900; color:var(--ink)}
+.voc td.def{color:var(--soft)}
+
+/* ── Zones de réponse ── */
+.ligne{display:block; border-bottom:1px dotted #8E8E8A; height:8mm; margin-top:2px}
+.ligne--court{width:55%}
+
+/* ── Billet de sortie ── */
+.billet{border:2.5px solid var(--rule); border-radius:12px; padding:13px 15px}
+.billet .k{font-size:9.5pt; font-weight:800; text-transform:uppercase;
+           letter-spacing:.12em; color:var(--ink); margin-bottom:4px}
+.billet p.c{font-size:14pt; font-weight:900; color:var(--ink); line-height:1.3}
+.billet ul{list-style:none; margin-top:7px}
+.billet li{font-weight:600; color:var(--soft); margin-bottom:3px}
+
+/* ── Pied ── */
+footer{margin-top:16px; padding-top:7px; border-top:1px solid var(--line);
+       font-size:9.5pt; font-weight:700; color:var(--muted);
+       display:flex; justify-content:space-between}
+
+/* ── Impression ── */
+@page{size:8.5in 11in; margin:14mm 15mm}
+@media print{
+  html{background:#FFFFFF}
+  body{width:auto; padding:0}
+  .bloc{break-inside:avoid; page-break-inside:avoid}
+  h2.t,.lbl{break-after:avoid; page-break-after:avoid}
+}
+</style>
+</head>
+<body>
+<header class="hdr">
+  <div class="hdr-l">
+    <div class="eyebrow">Séance B3 · Module 9 · 90 minutes</div>
+    <h1>Dire depuis quand un problème dure</h1>
+  </div>
+  <div class="hdr-r"><span>Nom<span class="nomline nomline--nom"></span></span><span>Date<span class="nomline nomline--date"></span></span></div>
+</header>
+<p class="chapeau">Dès que vous signalez un problème, la personne propriétaire va demander « depuis quand ? ». Cette réponse décide souvent de l'urgence de l'intervention. Le français offre trois façons de la donner.</p>
+<section class="bloc card"><div class="lbl">Objectifs</div><h2 class="t">À la fin, je serai capable de…</h2><ol class="obj"><li>répondre à la question « depuis quand ? » de trois façons différentes ;</li><li>choisir entre depuis, depuis que et ça fait… que en regardant ce qui suit ;</li><li>garder le verbe au présent quand la situation dure encore ;</li><li>mettre la durée en valeur quand je trouve que ça traîne.</li></ol></section><section class="bloc regle"><div class="lbl">Le point commun</div><p class="r">Dans les trois cas, le verbe reste au présent, parce que la situation dure encore.</p><p class="pr">« Le robinet coule depuis deux jours » — et il coule toujours en ce moment. C'est la différence la plus importante avec beaucoup d'autres langues, où on emploierait un temps du passé.</p></section><section class="bloc card"><div class="lbl">Analyse · 1 de 3</div><h2 class="t">depuis + un nom ou une durée</h2><table><thead><tr><th>Élément</th><th>Exemple</th><th>Remarque</th></tr></thead><tbody><tr><td>La situation</td><td class="cle">Le calorifère est froid</td><td>au présent</td></tr><tr><td>Le marqueur</td><td class="cle">depuis</td><td>jamais de verbe après</td></tr><tr><td>Un nom ou une durée</td><td class="cle">avant-hier</td><td>ou : deux jours, lundi</td></tr></tbody></table><div class="note">Deux emplois dans un seul mot : depuis lundi donne le point de départ, depuis deux jours donne la durée. La phrase complète : « Le calorifère est froid depuis avant-hier. »</div></section><section class="bloc card"><div class="lbl">Analyse · 2 de 3</div><h2 class="t">depuis que + une phrase complète</h2><table><thead><tr><th>Élément</th><th>Exemple</th><th>Remarque</th></tr></thead><tbody><tr><td>La situation</td><td class="cle">La porte n'ouvre plus</td><td>au présent</td></tr><tr><td>Le marqueur</td><td class="cle">depuis que</td><td>le que change tout</td></tr><tr><td>Sujet + verbe conjugué</td><td class="cle">vous avez ajouté un vélo</td><td>une phrase entière</td></tr></tbody></table><div class="note">Depuis que relie deux actions : la deuxième dure depuis que la première a eu lieu. C'est le marqueur qui explique une cause dans le temps.</div></section><section class="bloc card"><div class="lbl">Analyse · 3 de 3</div><h2 class="t">ça fait… que + une phrase complète</h2><table><thead><tr><th>Élément</th><th>Exemple</th><th>Remarque</th></tr></thead><tbody><tr><td>L'ouverture</td><td class="cle">Ça fait</td><td>la durée passe en premier</td></tr><tr><td>La durée</td><td class="cle">deux semaines</td><td>c'est elle qu'on met en valeur</td></tr><tr><td>que + phrase</td><td class="cle">que la tache est là</td><td>le que est obligatoire</td></tr></tbody></table><div class="note">C'est la forme la plus fréquente à l'oral au Québec. Elle sert souvent à faire sentir que c'est long — donc à insister sans hausser le ton.</div></section><section class="bloc"><div class="lbl">Comparer</div><h2 class="t">La même idée, trois formulations</h2><div class="grid"><div class="card"><h3>depuis + durée</h3><p>« La tache est là depuis deux semaines. » Neutre. On informe, on ne commente pas.</p></div><div class="card"><h3>ça fait… que</h3><p>« Ça fait deux semaines que la tache est là. » Le contenu est identique, mais la durée ouvre la phrase : on insiste sur la longueur.</p></div><div class="card"><h3>depuis que + phrase</h3><p>« La tache grossit depuis qu'il a plu dimanche. » Ce n'est plus une durée, c'est une cause : on relie le problème à un événement.</p></div><div class="card"><h3>Laquelle choisir ?</h3><p>Depuis pour informer. Ça fait… que quand on commence à trouver le temps long. Depuis que quand on sait d'où vient le problème.</p></div></div></section><section class="bloc regle"><div class="lbl">Comment choisir en deux secondes</div><p class="r">Regardez ce qui vient après.</p><p class="pr">Un nom ou une durée seule — deux jours, hier, ce matin : depuis. Un verbe conjugué : depuis que. Vous voulez commencer la phrase par la durée : ça fait… que.</p></section><section class="bloc card"><div class="lbl">Pratique</div><h2 class="t">Complétez</h2><p class="consigne">Avec depuis, depuis que ou ça fait.</p><ol class="ex"><li><span class="q">Le calorifère ne chauffe plus ___ avant-hier.</span><span class="ligne ligne--court"></span></li><li><span class="q">___ deux semaines que cette tache est au plafond.</span><span class="ligne ligne--court"></span></li><li><span class="q">La porte n'ouvre plus au complet ___ Jean-Philippe a ajouté un vélo.</span><span class="ligne ligne--court"></span></li><li><span class="q">Les voisins se plaignent ___ un mois.</span><span class="ligne ligne--court"></span></li><li><span class="q">___ trois jours qu'Oksana attend l'électricien.</span><span class="ligne ligne--court"></span></li><li><span class="q">L'escalier reste propre ___ le concierge a posé un tapis.</span><span class="ligne ligne--court"></span></li></ol></section><section class="bloc"><div class="lbl">Attention</div><h2 class="t">Le temps du verbe</h2><div class="duo"><div class="no"><div class="k">On entend souvent</div><p class="ph">J'ai habité ici depuis deux ans.</p></div><div class="ok"><div class="k">Il faut dire plutôt</div><p class="ph">J'habite ici depuis deux ans.</p></div></div><div class="note">En français, une action qui dure encore reste au présent avec depuis. Le passé composé voudrait dire que vous n'y habitez plus. C'est une des différences les plus visibles avec l'anglais et avec plusieurs autres langues, où le temps du passé est obligatoire dans cette phrase.</div></section><section class="bloc"><div class="lbl">Attention</div><h2 class="t">Le que oublié</h2><div class="duo"><div class="no"><div class="k">On entend souvent</div><p class="ph">Ça fait deux semaines la tache est là.</p></div><div class="ok"><div class="k">Il faut dire plutôt</div><p class="ph">Ça fait deux semaines que la tache est là.</p></div></div><div class="note">Le que est obligatoire : c'est lui qui relie la durée à la phrase qui suit. C'est l'oubli le plus fréquent des trois. Attention aussi à l'inverse : « depuis que hier » est incorrect, parce que hier n'est pas une phrase — on dit simplement « depuis hier ».</div></section><section class="bloc card"><div class="lbl">Pratique</div><h2 class="t">Quelle est la durée ?</h2><p class="consigne">Lisez la phrase et écrivez seulement la durée ou le moment de départ.</p><ol class="ex"><li><span class="q">Ça fait deux semaines que la tache est au plafond.</span><span class="ligne ligne--court"></span></li><li><span class="q">La serrure est brisée depuis samedi passé.</span><span class="ligne ligne--court"></span></li><li><span class="q">Le robinet de la cuisine coule depuis deux jours.</span><span class="ligne ligne--court"></span></li><li><span class="q">Ça fait un mois que les voisins se plaignent.</span><span class="ligne ligne--court"></span></li><li><span class="q">Ça fait trois heures que nous attendons le plombier.</span><span class="ligne ligne--court"></span></li></ol></section><section class="bloc card"><div class="lbl">Vérification</div><h2 class="t">Cinq questions rapides</h2><p class="consigne">Répondez sans regarder vos notes.</p><ol class="ex"><li><span class="q">Le calorifère est froid ___ trois jours.</span><span class="ligne"></span></li><li><span class="q">Tout va mieux ___ le concierge est arrivé.</span><span class="ligne"></span></li><li><span class="q">___ un mois que j'attends la réparation.</span><span class="ligne ligne--court"></span></li><li><span class="q">Quel temps de verbe emploie-t-on avec depuis ?</span><span class="ligne ligne--court"></span></li><li><span class="q">Ça fait deux jours ___ il pleut.</span><span class="ligne"></span></li></ol></section><section class="bloc billet"><div class="k">Billet de sortie</div><p class="c">Dites depuis quand dure un problème de votre logement — de deux façons différentes.</p><ul><li>Une phrase avec depuis, une phrase avec ça fait… que.</li><li>Exemple : « Mon robinet coule depuis trois jours. » / « Ça fait trois jours que mon robinet coule. »</li></ul><span class="ligne"></span><span class="ligne"></span><span class="ligne"></span></section>
+<footer><span>B3 · Pouvez-vous régler le problème ?</span><span>Fiche élève</span></footer>
+</body>
+</html>
