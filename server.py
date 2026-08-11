@@ -357,6 +357,14 @@ def json_response(handler, data, status=200):
 # suffirait à le lire si c'était côté client. Les mêmes contenus existent en
 # version papier dans assets/documents/module-logement-jeu-de-role.html.
 
+# Voix ElevenLabs du personnage joué par l'assistant. Mêmes identifiants que
+# les scripts de génération audio du module, pour que la visite sonne comme
+# les dialogues déjà enregistrés.
+VOIX_JEU_DE_ROLE = {
+    "proprietaire": "WW0JfNPk5DgcQdM0d6X6",   # féminine #2 — la propriétaire
+    "locataire":    "93nuHbke4dTER9x2pDwE",   # masculine #1 — le visiteur
+}
+
 JEU_DE_ROLE_SUJETS = [
     "ce qui est inclus dans le loyer",
     "le chauffage et l'électricité",
@@ -666,6 +674,8 @@ class Handler(http.server.SimpleHTTPRequestHandler):
             self._handle_check_written()
         elif path == "/api/jeu-de-role":
             self._handle_jeu_de_role()
+        elif path == "/api/voix":
+            self._handle_voix()
         elif path == "/api/analyser-erreurs":
             self._handle_analyser_erreurs()
         elif path == "/api/oral/submit":
@@ -1422,6 +1432,74 @@ class Handler(http.server.SimpleHTTPRequestHandler):
             # tour suivant et l'assistant se présenterait deux fois.
             out["ouverture"] = messages[0]["content"]
         json_response(self, out)
+
+    def _handle_voix(self):
+        """Lit une réplique du jeu de rôle avec une voix ElevenLabs.
+
+        Corps attendu : {code, texte, role}. `role` est celui de l'ÉLÈVE ; la
+        voix rendue est donc celle du personnage joué par l'assistant. Renvoie
+        du MP3 brut ; le client retombe sur la voix du navigateur en cas
+        d'échec, donc une panne ici dégrade le son sans casser l'exercice.
+        """
+        length = int(self.headers.get("Content-Length", 0))
+        try:
+            body = json.loads(self.rfile.read(length)) if length else {}
+        except json.JSONDecodeError:
+            json_response(self, {"error": "Requête invalide"}, 400)
+            return
+
+        if not validate_student_code(body.get("code", "").strip().upper()):
+            json_response(self, {"error": "Non autorisé"}, 401)
+            return
+
+        api_key = os.environ.get("ELEVENLABS_API_KEY", "").strip()
+        if not api_key:
+            json_response(self, {"error": "Voix non configurée sur le serveur"}, 503)
+            return
+
+        # Borne de coût : ElevenLabs facture au caractère, et une réplique du
+        # jeu de rôle tient largement sous cette limite.
+        texte = str(body.get("texte", "")).strip()[:400]
+        if not texte:
+            json_response(self, {"error": "Texte vide"}, 400)
+            return
+
+        # L'assistant joue l'autre rôle : propriétaire si l'élève est locataire.
+        voix = (VOIX_JEU_DE_ROLE["proprietaire"]
+                if body.get("role") == "locataire"
+                else VOIX_JEU_DE_ROLE["locataire"])
+
+        payload = json.dumps({
+            "text": texte,
+            "model_id": "eleven_multilingual_v2",
+            "voice_settings": {"stability": 0.5, "similarity_boost": 0.75},
+        }).encode("utf-8")
+        req = urllib.request.Request(
+            f"https://api.elevenlabs.io/v1/text-to-speech/{voix}",
+            data=payload,
+            headers={"xi-api-key": api_key, "Content-Type": "application/json"},
+            method="POST",
+        )
+        try:
+            with urllib.request.urlopen(req, timeout=25) as resp:
+                audio = resp.read()
+        except urllib.error.HTTPError as e:
+            detail = e.read().decode("utf-8", errors="replace")
+            print(f"[WARN] ElevenLabs HTTPError {e.code}: {detail[:200]}", flush=True)
+            json_response(self, {"error": "La voix est momentanément indisponible"}, 502)
+            return
+        except (urllib.error.URLError, TimeoutError) as e:
+            print(f"[WARN] ElevenLabs injoignable : {e}", flush=True)
+            json_response(self, {"error": "La voix est momentanément indisponible"}, 502)
+            return
+
+        print(f"[voix] {len(texte)} caractères → {len(audio)} octets", flush=True)
+        self.send_response(200)
+        self.send_header("Content-Type", "audio/mpeg")
+        self.send_header("Content-Length", str(len(audio)))
+        self.send_header("Cache-Control", "no-store")
+        self.end_headers()
+        self.wfile.write(audio)
 
     def _call_anthropic_json(self, system_prompt, user_content, max_tokens=400):
         """Appelle l'API Anthropic et retourne (parsed_dict, None) en cas de

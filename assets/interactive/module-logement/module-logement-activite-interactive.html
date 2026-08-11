@@ -668,6 +668,12 @@ body{
 .jr-opt{min-height:44px;padding:10px 16px;border-radius:22px;border:1px solid var(--ws-line);background:var(--ws-card);font-family:'Nunito',sans-serif;font-size:15px;font-weight:800;color:var(--ws-ink);cursor:pointer;transition:background .15s,border-color .15s}
 .jr-opt:hover{border-color:var(--sec-color,var(--ws-accent))}
 .jr-opt.on{background:var(--sel-bg);border-color:var(--sel-line);color:var(--sel-ink)}
+/* Le bouton qui lance la conversation prend la couleur de la tâche au lieu de
+   l'encre commune : c'est l'action à repérer dans un bloc qui contient déjà
+   trois autres boutons noirs. `!important` parce que .btn-pri impose l'encre
+   avec la même arme un peu plus haut. */
+#jrStart{background:var(--sec-color,#C0573A)!important}
+#jrStart:hover{filter:brightness(1.08)}
 .jr-fil{margin:18px 0 12px;display:flex;flex-direction:column;gap:10px;max-height:420px;overflow-y:auto}
 .jr-b{padding:11px 15px;border-radius:16px;font-size:16px;font-weight:500;line-height:1.55;max-width:82%}
 .jr-b-q{display:block;font-size:11px;font-weight:800;text-transform:uppercase;letter-spacing:.12em;opacity:.72;margin-bottom:4px}
@@ -2055,14 +2061,22 @@ function jrModeVoix(on){
   if(!on){ jrTaire(); }
 }
 
-function jrTaire(){ try{ speechSynthesis.cancel(); }catch(e){} }
+let jrAudio=null;
+
+function jrTaire(){
+  try{ speechSynthesis.cancel(); }catch(e){}
+  if(jrAudio){ try{ jrAudio.pause(); }catch(e){} jrAudio=null; }
+}
 
 function jrVoixFr(){
   const v=speechSynthesis.getVoices().filter(x=>/^fr/i.test(x.lang));
   return v.find(x=>/fr[-_]CA/i.test(x.lang)) || v[0] || null;
 }
 
-function jrDire(texte){
+// Voix du navigateur : moins belle, mais immédiate et gratuite. Sert de repli
+// dès que la voix du serveur échoue, pour qu'une panne de synthèse dégrade le
+// son sans interrompre la conversation.
+function jrDireNavigateur(texte){
   try{
     speechSynthesis.cancel();
     const u=new SpeechSynthesisUtterance(texte);
@@ -2070,6 +2084,21 @@ function jrDire(texte){
     const v=jrVoixFr(); if(v) u.voice=v;
     speechSynthesis.speak(u);
   }catch(e){}
+}
+
+async function jrDire(texte){
+  jrTaire();
+  try{
+    const res=await fetch('/api/voix',{method:'POST',headers:{'Content-Type':'application/json'},
+      body:JSON.stringify({code:studentCode, texte:texte, role:JR.role})});
+    if(!res.ok) throw new Error('voix serveur indisponible');
+    const url=URL.createObjectURL(await res.blob());
+    const a=new Audio(url); jrAudio=a;
+    a.onended=()=>{ URL.revokeObjectURL(url); if(jrAudio===a) jrAudio=null; };
+    await a.play();
+  }catch(e){
+    jrDireNavigateur(texte);
+  }
 }
 
 // La transcription atterrit dans le champ de saisie, modifiable : la
