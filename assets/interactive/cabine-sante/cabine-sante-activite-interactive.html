@@ -219,7 +219,7 @@ function renderTask() {
       <div id="feedback"></div>
       <div class="send-row" id="sendRow" style="display:none">
         <button class="btn btn-send" id="sendBtn">📨 Envoyer à mon enseignant</button>
-        <button class="btn btn-ghost" id="nextBtn">Tâche suivante →</button>
+        <button class="btn btn-ghost" id="nextBtn">Défi suivant →</button>
       </div>
     </div>`;
 
@@ -427,7 +427,7 @@ async function sendToTeacher() {
     if (!res.ok) { showError(data.error || "L'envoi a échoué. Réessaie."); sendBtn.disabled = false; sendBtn.textContent = '📨 Envoyer à mon enseignant'; return; }
     const row = document.getElementById('sendRow');
     row.innerHTML = '<span class="sent-note">✅ Envoyé à ton enseignant !</span>' +
-      '<button class="btn btn-ghost" id="nextBtn2">Tâche suivante →</button>';
+      '<button class="btn btn-ghost" id="nextBtn2">Défi suivant →</button>';
     document.getElementById('nextBtn2').addEventListener('click', nextTask);
     lmsTrack('exercise_completed', { taskId: t.id, score: null });
   } catch (err) {

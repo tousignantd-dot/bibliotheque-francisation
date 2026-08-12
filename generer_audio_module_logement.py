@@ -32,7 +32,7 @@ VOICE_ASSOC = {
 
 DIALOGUES = {
     "module-logement/prep": {
-        "title": "Comment est le logement ? — Je me prépare (La visite du 4 ½ de la rue Galt)",
+        "title": "Comment est le logement ? — Je découvre (La visite du 4 ½ de la rue Galt)",
         "lines": [
             ("IBRAHIM", "Bonjour madame Ginette. J'ai répondu à votre annonce pour le 4 et demi au-dessus de la boulangerie. Je commence un poste de préposé au centre hospitalier le mois prochain, alors je cherche assez vite."),
             ("GINETTE", "Entrez, entrez. Le logement est au deuxième étage. Il se libère le 1er septembre et le bail dure douze mois."),
@@ -45,7 +45,7 @@ DIALOGUES = {
         ],
     },
     "module-logement/t2": {
-        "title": "Comment est le logement ? — Tâche 2 (Ibrahim en parle à sa sœur Leyla)",
+        "title": "Comment est le logement ? — Défi 2 (Ibrahim en parle à sa sœur Leyla)",
         "lines": [
             ("LEYLA", "Alors, ce logement au-dessus de la boulangerie ? Tu as l'air content, toi."),
             ("IBRAHIM", "Ce qui m'a plu, c'est la chambre : elle donne sur la cour, loin de la rue. Je vais pouvoir dormir le matin après mes quarts."),

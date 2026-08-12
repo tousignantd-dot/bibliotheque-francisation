@@ -36,7 +36,7 @@ VOICE_ASSOC = {
 
 DIALOGUES = {
     "module-meteo/prep": {
-        "title": "Quelles sont les prévisions ? — Je me prépare (Monte-t-on sur le toit demain ?)",
+        "title": "Quelles sont les prévisions ? — Je découvre (Monte-t-on sur le toit demain ?)",
         "lines": [
             ("JOSÉE", "Diego, j'annule la journée de demain sur le toit de l'école. On annonce du verglas avant six heures."),
             ("DIEGO", "Du verglas ? Mais on a déjà trois jours de retard sur le chantier..."),
@@ -50,7 +50,7 @@ DIALOGUES = {
         ],
     },
     "module-meteo/t1": {
-        "title": "Quelles sont les prévisions ? — Tâche 1 (Le bulletin de six heures)",
+        "title": "Quelles sont les prévisions ? — Défi 1 (Le bulletin de six heures)",
         "lines": [
             ("LE MÉTÉOROLOGUE", "Il est six heures. Voici le bulletin spécial pour la Montérégie : une pluie verglaçante recouvre déjà les routes de la Rive-Sud."),
             ("LE MÉTÉOROLOGUE", "Le mercure se maintiendra autour de zéro degré jusqu'au milieu de l'avant-midi, ce qui gardera la chaussée glissante."),
@@ -61,7 +61,7 @@ DIALOGUES = {
         ],
     },
     "module-meteo/t2": {
-        "title": "Quelles sont les prévisions ? — Tâche 2 (Prisca et Mado avant le départ)",
+        "title": "Quelles sont les prévisions ? — Défi 2 (Prisca et Mado avant le départ)",
         "lines": [
             ("PRISCA", "Mado, je pars pour le chantier de Granby. Est-ce que l'autoroute 10 est praticable ?"),
             ("MADO", "Attends, je regarde le site du ministère des Transports... Il y a un avertissement de poudrerie entre Sainte-Julie et Marieville."),

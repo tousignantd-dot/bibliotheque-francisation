@@ -31,8 +31,8 @@ PORTRAIT = ("Photographie réaliste, format carré, portrait en buste d'une pers
             "faible profondeur de champ, arrière-plan flou. Expression calme et "
             "professionnelle. Aucun texte, aucune écriture, aucun logo, aucun filigrane.")
 
-PAGE_PB  = "Je me prépare · Exercice 3 — Reconnaître un problème"
-PAGE_PRO = "Je me prépare · Exercice 4 — Qui faut-il appeler ?"
+PAGE_PB  = "Je découvre · Exercice 3 — Reconnaître un problème"
+PAGE_PRO = "Je découvre · Exercice 4 — Qui faut-il appeler ?"
 
 IMAGES = [
  # ── Les huit problèmes ────────────────────────────────────────────────

@@ -64,19 +64,19 @@ et les déclencheurs, et **transforme** chaque exercice en énoncé suivi d'une 
 
 | Bloc | Code | Titre | Durée | Section du module |
 |---|---|---|---|---|
-| **A** Je me prépare | A1 | Un problème dans mon logement | 75 min | dialogue `prep`, `prVocab`, `pr1` |
+| **A** Je découvre | A1 | Un problème dans mon logement | 75 min | dialogue `prep`, `prVocab`, `pr1` |
 | | A2 | Les deux façons de dire « eu » | 60 min | `prPhon` |
 | | A3 | Qui faut-il appeler ? | 60 min | `prPro` |
 | | A4 | Nommer et classer un problème | 50 min | `prImg`, `prType` |
-| **B** Tâche 1 | B1 | Oksana appelle madame Rioux | 75 min | dialogue `t1`, `t1vf`, `t1sens` |
+| **B** Défi 1 | B1 | Oksana appelle madame Rioux | 75 min | dialogue `t1`, `t1vf`, `t1sens` |
 | | B2 | Leur ou leurs | 75 min | `t1leur`, `t1leurGN` |
 | | B3 | Dire depuis quand un problème dure | 90 min | `t1depuis`, `t1duree` |
 | | B4 | Mes droits comme locataire | 60 min | `t1trib` |
-| **C** Tâche 2 | C1 | Samir monte au troisième | 60 min | dialogue `t2`, `t2vf` |
+| **C** Défi 2 | C1 | Samir monte au troisième | 60 min | dialogue `t2`, `t2vf` |
 | | C2 | Avant de, après avoir | 75 min | `t2avant`, `t2ordre` |
 | | C3 | Faire réparer | 75 min | `t2faire`, `t2par`, `t2qui` |
 | | C4 | Trois façons d'habiter au Québec | 55 min | `t2coop` |
-| **D** Tâche 3 | D1 | Quatre situations inacceptables | 55 min | dialogues `t3`/`t3b`, `t3q`, `t3assoc` |
+| **D** Défi 3 | D1 | Quatre situations inacceptables | 55 min | dialogues `t3`/`t3b`, `t3q`, `t3assoc` |
 | | D2 | Se plaindre efficacement | 75 min | `t3plainte`, `t3form` |
 | **E** Application | E1 | À toi : le téléphone et le courriel | 90 min | dialogue `appli`, `aQui`, `aComp` |
 | | E2 | Je retiens des mots | 60 min | cartes mémoire, bilan |

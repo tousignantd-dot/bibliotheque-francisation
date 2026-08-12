@@ -35,7 +35,7 @@ def build(dossier):
                       "Que faut-il dire tout de suite : le problème, ou depuis quand ?",
                       "Écoutez, et vérifiez vos réponses.",
                   ],
-                  notes="Faire écouter l'audio du module (Tâche 1) sans afficher le texte. "
+                  notes="Faire écouter l'audio du module (Défi 1) sans afficher le texte. "
                         "Poser les quatre questions AVANT l'écoute et y revenir après.")
 
     d.dialogue('Dialogue · 1 de 4', "Se présenter et nommer le problème", [

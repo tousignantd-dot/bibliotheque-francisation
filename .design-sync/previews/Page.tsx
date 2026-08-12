@@ -5,7 +5,7 @@ export function FondDePage() {
     <Page style={{ padding: '24px 0' }}>
       <Conteneur>
         <Carte>
-          <h2 style={{ marginBottom: 8 }}>Je me prépare</h2>
+          <h2 style={{ marginBottom: 8 }}>Je découvre</h2>
           <p style={{ fontSize: 'var(--fs-body-sm)', color: 'var(--text-muted)' }}>
             La carte blanche se détache du fond neutre chaud de la page : c'est tout le contraste
             dont le système a besoin.

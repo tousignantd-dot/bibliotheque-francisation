@@ -32,7 +32,7 @@ VOICE_ASSOC = {
 
 DIALOGUES = {
     "module-procedure/prep": {
-        "title": "Quelle est la procédure ? — Je me prépare (Des lunettes de sécurité)",
+        "title": "Quelle est la procédure ? — Je découvre (Des lunettes de sécurité)",
         "lines": [
             ("SAMUEL", "Diane, j'ai dû acheter des lunettes de sécurité pour mon nouveau poste à l'entrepôt. Ça m'a coûté quarante dollars. Est-ce que l'entreprise rembourse ce genre de dépense ?"),
             ("DIANE", "Oui, bien sûr ! Il y a une procédure à suivre. Tu dois remplir une demande de remboursement sur l'application de l'entreprise."),
@@ -45,7 +45,7 @@ DIALOGUES = {
         ],
     },
     "module-procedure/t1": {
-        "title": "Quelle est la procédure ? — Tâche 1 (Samuel et la commis aux finances)",
+        "title": "Quelle est la procédure ? — Défi 1 (Samuel et la commis aux finances)",
         "lines": [
             ("SAMUEL", "Bonjour, j'aimerais savoir comment faire une demande de remboursement pour du matériel de sécurité."),
             ("LA COMMIS", "Bonjour. Vous devez remplir le formulaire dans l'application Ressources+, sous l'onglet Dépenses."),
@@ -56,7 +56,7 @@ DIALOGUES = {
         ],
     },
     "module-procedure/t2": {
-        "title": "Quelle est la procédure ? — Tâche 2 (Diane explique comment soumettre une demande)",
+        "title": "Quelle est la procédure ? — Défi 2 (Diane explique comment soumettre une demande)",
         "lines": [
             ("DIANE", "D'abord, tu ouvres l'application Ressources+ et tu appuies sur Nouvelle demande."),
             ("SAMUEL", "D'accord, et ensuite ?"),

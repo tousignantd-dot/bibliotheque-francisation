@@ -39,7 +39,7 @@ VOICE_ASSOC = {
 # ── DIALOGUES ─────────────────────────────────────────────────────────
 DIALOGUES = {
     "module-travail/prep": {
-        "title": "C'est une absence ou un retard — Je me prépare (Un départ précipité)",
+        "title": "C'est une absence ou un retard — Je découvre (Un départ précipité)",
         "lines": [
             ("KARIM", "Nadia, je viens de recevoir un appel de l'école. Ma fille Sarah a de la fièvre, je dois aller la chercher tout de suite. Mais c'est déjà ma deuxième absence ce mois-ci… j'ai peur que mon superviseur soit fâché."),
             ("NADIA", "Ne t'inquiète pas, la santé de ta fille passe avant tout. L'important, c'est de prévenir ton superviseur tout de suite, avant de partir, pas après."),
@@ -49,7 +49,7 @@ DIALOGUES = {
         ]
     },
     "module-travail/t1": {
-        "title": "C'est une absence ou un retard — Tâche 1 (Boîte vocale de Farida)",
+        "title": "C'est une absence ou un retard — Défi 1 (Boîte vocale de Farida)",
         "lines": [
             ("FARIDA", "Bonjour, c'est Farida. Je vous appelle parce que j'ai un rendez-vous à l'hôpital avec le spécialiste de ma fille, le docteur Bernard, orthopédiste."),
             ("FARIDA", "Le rendez-vous est à 9 h 30 demain matin. Ma fille s'est blessée au bras la semaine dernière, et je dois apporter une preuve pour justifier mon absence au cours de francisation."),

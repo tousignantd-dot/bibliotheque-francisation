@@ -138,6 +138,6 @@ def build(dossier):
             "Exemple : « une fuite · peut attendre · dans mon logement ».",
         ],
         notes="Rendre les billets de A1 en début de séance pour que chacun retrouve sa phrase. "
-              "Fin du bloc A : le groupe est prêt pour la tâche 1.")
+              "Fin du bloc A : le groupe est prêt pour le défi 1.")
 
     return d.save(dossier)

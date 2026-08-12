@@ -34,10 +34,10 @@ from build import SEANCES  # noqa: E402  (l'ordre d'enseignement, une seule fois
 SORTIE = os.path.abspath(os.path.join(ICI, '..', '..', 'assets', 'documents'))
 
 
-BLOCS_LABEL = {'A': 'Je me prépare', 'B': 'Tâche 1 · Un problème dans le logement',
-               'C': "Tâche 2 · Des problèmes dans l'immeuble",
-               'D': 'Tâche 3 · Une situation inacceptable',
-               'E': 'Je mets en application'}
+BLOCS_LABEL = {'A': 'Je découvre', 'B': 'Défi 1 · Un problème dans le logement',
+               'C': "Défi 2 · Des problèmes dans l'immeuble",
+               'D': 'Défi 3 · Une situation inacceptable',
+               'E': 'Je me lance'}
 
 
 def sommaire(faits):

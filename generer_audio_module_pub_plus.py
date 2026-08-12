@@ -62,7 +62,7 @@ CLIPS = {
     "plus_t2negatif_lab2_v": "Vous n'êtes pas venus à la clinique",
     "plus_t2negatif_ex3_0": "Nous n'avons pas annoncé l'atelier dans l'infolettre.",
     "plus_t2negatif_ex3_1": "Les bénévoles ne sont pas arrivés avant neuf heures.",
-    # Items de l'exercice « L'accent d'insistance » (Je me prépare) —
+    # Items de l'exercice « L'accent d'insistance » (Je découvre) —
     # playWord() les cherche sous sons/<idExo>_<index>.mp3.
     "prAccent_0": "Cet atelier est complètement gratuit.",
     "prAccent_1": "Nos bénévoles réparent absolument tout.",

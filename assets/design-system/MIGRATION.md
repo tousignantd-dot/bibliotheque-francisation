@@ -80,7 +80,7 @@ l'état sélectionné).
 ## 6 · Bug de contenu à corriger au passage
 
 Ligne 1261, le bandeau de l'encadré de savoir est écrit en dur — l'encadré de grammaire de la
-Tâche 1 affiche « PRONONCIATION », et `ex.savoir.h` n'est jamais rendu :
+Défi 1 affiche « PRONONCIATION », et `ex.savoir.h` n'est jamais rendu :
 
 ```js
 h += '<div class="savoir' + (ex.savoir.speak ? ' savoir--pron' : '') + '">'

@@ -7,7 +7,7 @@ l'expression visuelle, toujours.
 **Sources.** Extrait de `assets/interactive/module-travail/module-travail-activite-interactive.html`
 (module « Absent ou en retard : que faire ? »), du bloc `#sec-prep` qui servait d'essai de style,
 des documents d'audit `RETOUCHES.md` et `RETOUCHES-2.md`, et de la refonte de la page
-« Je me prépare » (`Je me prepare - couleur.dc.html`). Aucune charte externe n'est utilisée.
+« Je découvre » (`Je me prepare - couleur.dc.html`). Aucune charte externe n'est utilisée.
 
 > **Interdit explicite du client :** ne jamais appliquer le système « SLB » (jaune-noir industriel,
 > soudure) à ce projet, même s'il est proposé par défaut par un outil.
@@ -42,7 +42,7 @@ doit se faire au clavier — d'où l'association par clic-clic plutôt que par g
   (`VOCABULAIRE · 12 PAIRES`). Jamais de Titre En Capitales Partout.
 - **Titres d'exercice :** un groupe nominal ou une phrase à la première personne, dans la voix de
   l'apprenant — « Je complète avec le bon son », « Le mot et sa définition », « Vrai ou faux ».
-  C'est la logique des sections du module : *Je me prépare*, *Je mets en application*,
+  C'est la logique des sections du module : *Je découvre*, *Je me lance*,
   *Je retiens des mots*.
 - **Consigne = une phrase, sous le titre**, en gris secondaire : ce qu'on écoute, puis ce qu'on
   fait. « Écoutez le mot, puis indiquez le son que vous entendez. »

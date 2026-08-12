@@ -24,7 +24,7 @@ puis coller le résultat dans sons_module_probleme.json, à côté de ce script.
 La deuxième boucle n'est pas un doublon : dans les exercices à cartes
 (cards/listen), le bouton d'écoute reçoit son gestionnaire en JS
 (sb.onclick = …) et non par un attribut onclick — le premier sélecteur ne
-le voit donc pas. C'est ce qui avait laissé « Je me prépare, exercice 2 »
+le voit donc pas. C'est ce qui avait laissé « Je découvre, exercice 2 »
 (prPhon_pha … prPhon_phj) sans MP3.
 
 Usage :  python3 generer_audio_module_probleme.py [--force] [--only prefixe,...]

@@ -30,7 +30,7 @@ VOICE_ASSOC = {
 
 DIALOGUES = {
     "module-pub/prep": {
-        "title": "Des publicités efficaces — Je me prépare (Trente secondes en ondes)",
+        "title": "Des publicités efficaces — Je découvre (Trente secondes en ondes)",
         "lines": [
             ("SOLANGE", "Omar, j'ai écrit le texte pour annoncer notre atelier de réparation. Je l'ai lu à voix haute : il dure une minute quarante."),
             ("OMAR", "Une minute quarante ! Solange, une capsule à Radio Limoilou, c'est trente secondes, pas une de plus. Il va falloir couper."),
@@ -42,7 +42,7 @@ DIALOGUES = {
         ],
     },
     "module-pub/t1": {
-        "title": "Des publicités efficaces — Tâche 1 (Deux capsules déjà diffusées)",
+        "title": "Des publicités efficaces — Défi 1 (Deux capsules déjà diffusées)",
         "lines": [
             ("OMAR", "Avant d'enregistrer, écoute les deux capsules du mois passé. Celle de la friperie dure vingt secondes ; celle de la cuisine collective, quarante."),
             ("SOLANGE", "À la friperie, on parle plus vite que sur l'autre capsule. On comprend moins bien, je trouve."),

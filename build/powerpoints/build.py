@@ -27,13 +27,13 @@ SORTIE = os.path.abspath(os.path.join(
 
 # L'ordre d'enseignement. Les blocs suivent les sections du module.
 SEANCES = [
-    # Bloc A · Je me prépare
+    # Bloc A · Je découvre
     'a1', 'a2', 'a3', 'a4',
-    # Bloc B · Tâche 1 — parler à sa propriétaire
+    # Bloc B · Défi 1 — parler à sa propriétaire
     'b1', 'b2', 'b3', 'b4',
-    # Bloc C · Tâche 2 — les parties communes
+    # Bloc C · Défi 2 — les parties communes
     'c1', 'c2', 'c3', 'c4',
-    # Bloc D · Tâche 3 — se plaindre
+    # Bloc D · Défi 3 — se plaindre
     'd1', 'd2',
     # Bloc E · Application et bilan
     'e1', 'e2',

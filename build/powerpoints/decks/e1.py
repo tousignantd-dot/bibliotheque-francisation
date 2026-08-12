@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 """E1 · À toi : le téléphone et le courriel.
-Bloc E · couleur teal (je mets en application) · 90 min.
+Bloc E · couleur teal (je me lance) · 90 min.
 Source : dialogue `appli`, exercices `aQui` et `aComp`, jeu de rôle IA du module.
 """
 from theme import Deck

@@ -231,7 +231,7 @@ textarea:focus{outline:none;border-color:#B45309}
 <script>
 // ═══════════════════════════════════════════════════════════════════════
 //  LA VISITE CHEZ LE MÉDECIN — Module interactif Niveau 4 (FLS)
-//  Sections : Je me prépare · Chez le médecin · La langue · Je parle ·
+//  Sections : Je découvre · Chez le médecin · La langue · Je parle ·
 //             J'écris · Je m'évalue — suivi LMS intégré
 // ═══════════════════════════════════════════════════════════════════════
 
@@ -293,19 +293,19 @@ const DIALOGUES = {
 
 // ── SECTIONS ──────────────────────────────────────────────────────────
 const SECTIONS = [
-  {id:'prep', no:'▶', title:'Je me prépare', color:'#166534',
+  {id:'prep', no:'▶', title:'Je découvre', color:'#166534',
    intro:"💧 Sofia est un peu paniquée : il y a un dégât d'eau dans son appartement. Elle appelle Émilie pour avoir des conseils.",
    dialogue:'prep'},
-  {id:'t1', no:'1', title:'Tâche 1 · Un problème dans le logement', color:'#C0573A',
-   intro:"🔧 Tâche 1 — Sofia raconte son dégât d'eau à son propriétaire. Écoutez le dialogue, puis faites les exercices.",
+  {id:'t1', no:'1', title:'Défi 1 · Un problème dans le logement', color:'#C0573A',
+   intro:"🔧 Défi 1 — Sofia raconte son dégât d'eau à son propriétaire. Écoutez le dialogue, puis faites les exercices.",
    dialogue:'prep'},
-  {id:'t2', no:'2', title:'Tâche 2 · Des problèmes dans l\'immeuble', color:'#6B4FBB',
-   intro:"🎷 Tâche 2 — Le concierge rencontre Miguel parce que des locataires de l'immeuble se plaignent de ses pratiques au saxophone.",
+  {id:'t2', no:'2', title:'Défi 2 · Des problèmes dans l\'immeuble', color:'#6B4FBB',
+   intro:"🎷 Défi 2 — Le concierge rencontre Miguel parce que des locataires de l'immeuble se plaignent de ses pratiques au saxophone.",
    dialogue:'t2'},
-  {id:'t3', no:'3', title:'Tâche 3 · Une situation inacceptable', color:'#B45309',
-   intro:"😤 Tâche 3 — Différentes situations inacceptables à signaler à un propriétaire ou un concierge."},
-  {id:'appli', no:'▶', title:'Je mets en application', color:'#0D9488', custom:true,
-   intro:"🎤 Je mets en application — Explique un problème à voix haute, puis rétablis l'ordre d'un dialogue pour régler un problème de moisissure."},
+  {id:'t3', no:'3', title:'Défi 3 · Une situation inacceptable', color:'#B45309',
+   intro:"😤 Défi 3 — Différentes situations inacceptables à signaler à un propriétaire ou un concierge."},
+  {id:'appli', no:'▶', title:'Je me lance', color:'#0D9488', custom:true,
+   intro:"🎤 Je me lance — Explique un problème à voix haute, puis rétablis l'ordre d'un dialogue pour régler un problème de moisissure."},
   {id:'retiens', no:'✓', title:'Je retiens des mots', color:'#166534', custom:true,
    intro:"📝 Je retiens des mots — Note le vocabulaire utile et révise avec les cartes mémoire."},
 ];
@@ -315,7 +315,7 @@ const SECTIONS = [
 // type 'match'  : lignes {id,q,aid,a} — banque = réponses
 // type 'blanks' : segs {k:'t'/'b',id,c} + words {id,l}
 const EXOS = [
-  // ── JE ME PRÉPARE ──
+  // ── JE DÉCOUVRE ──
   {sec:'prep', id:'pr1', type:'vf', num:'Exercice 1', tit:"Vrai ou Faux — Le dégât d'eau", color:'#166534',
    sub:'Écoutez de nouveau le dialogue, puis répondez.', tiles:['VRAI','FAUX'],
    rows:[
@@ -376,7 +376,7 @@ const EXOS = [
     {id:'mr10', lbl:'10e', cv:'mj'},
    ]},
 
-  // ── TÂCHE 1 · UN PROBLÈME DANS LE LOGEMENT ──
+  // ── DÉFI 1 · UN PROBLÈME DANS LE LOGEMENT ──
   {sec:'t1', id:'t1vocab', type:'write', num:'Exercice 1', tit:'Le sens des mots', color:'#C0573A',
    sub:"Que signifient les mots en gras dans les phrases ? Réponds dans tes mots.",
    items:[
@@ -427,7 +427,7 @@ const EXOS = [
     {q:"J'apprécie mon logement depuis qu'il a été rénové.", hint:"J'apprécie mon logement.", ph:"…"},
    ]},
 
-  // ── TÂCHE 2 · DES PROBLÈMES DANS L'IMMEUBLE ──
+  // ── DÉFI 2 · DES PROBLÈMES DANS L'IMMEUBLE ──
   {sec:'t2', id:'t2vocab', type:'match', num:'Exercice 1', tit:'Le vocabulaire du dialogue', color:'#6B4FBB',
    sub:'Associez chaque mot à sa définition.',
    rows:[
@@ -468,7 +468,7 @@ const EXOS = [
     {q:"(faire peinturer / un professionnel) L'appartement...", hint:"Nous faisons peinturer l'appartement par un professionnel.", ph:"…"},
    ]},
 
-  // ── TÂCHE 3 · UNE SITUATION INACCEPTABLE ──
+  // ── DÉFI 3 · UNE SITUATION INACCEPTABLE ──
   {sec:'t3', id:'t3situations', type:'match', num:'Exercice 1', tit:'À quelle situation est-ce que ça correspond ?', color:'#B45309',
    sub:"Associez chaque énoncé à la situation qu'il décrit.",
    rows:[
@@ -851,7 +851,7 @@ function buildStatic(){
 
 // ── SECTIONS PERSONNALISÉES (oral / écrit / autoéval) ─────────────────
 function injectCustom(){
-  // JE METS EN APPLICATION — jeu de rôle oral + écriture corrigée par l'IA
+  // JE ME LANCE — jeu de rôle oral + écriture corrigée par l'IA
   document.getElementById('exs-appli').innerHTML += `
    <div class="card custom">
      <div class="c-hdr"><span class="tag" style="background:#0D9488">Production orale</span><span class="ctit" style="color:#0D9488">Explique un problème</span></div>

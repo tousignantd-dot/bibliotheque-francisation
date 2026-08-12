@@ -34,7 +34,7 @@ VOICE_ASSOC = {
 
 DIALOGUES = {
     "module-nouvelles/prep": {
-        "title": "C'est l'heure des nouvelles ? — Je me prépare (Le bulletin de nouvelles)",
+        "title": "C'est l'heure des nouvelles ? — Je découvre (Le bulletin de nouvelles)",
         "lines": [
             ("MARC", "Chut, écoutez ! Ils parlent de la collecte de mitaines organisée par la classe de Sophie !"),
             ("LE JOURNALISTE", "Hier, dans une école de Longueuil, des élèves de 3e secondaire ont amassé plus de deux cents paires de mitaines et de tuques pour les enfants du quartier. L'activité a été organisée avec l'aide de l'organisme Les Cœurs d'hiver."),
@@ -48,7 +48,7 @@ DIALOGUES = {
         ],
     },
     "module-nouvelles/t1": {
-        "title": "C'est l'heure des nouvelles ? — Tâche 1 (Une fillette retrouve son chat)",
+        "title": "C'est l'heure des nouvelles ? — Défi 1 (Une fillette retrouve son chat)",
         "lines": [
             ("LE JOURNALISTE", "À Gatineau, une fillette de six ans a retrouvé son chat disparu grâce à une affiche fabriquée dans le cadre d'un projet scolaire."),
             ("LE JOURNALISTE", "Le chat, prénommé Mistigri, s'était sauvé par une fenêtre entrouverte il y a trois jours."),

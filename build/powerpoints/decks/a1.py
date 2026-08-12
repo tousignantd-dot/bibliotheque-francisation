@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 """A1 · Un problème dans mon logement — mise en situation.
-Bloc A « Je me prépare » · couleur teal · 75 min.
+Bloc A « Je découvre » · couleur teal · 75 min.
 Source du module : dialogue `prep`, exercices `prVocab` et `pr1`, cartes mémoire.
 """
 from theme import Deck
@@ -65,7 +65,7 @@ def build(dossier):
         ("OKSANA", "La cuisine et la chambre, oui. C'est seulement celui du salon qui ne réagit plus, même quand je monte le thermostat à vingt-deux.", True),
         ("BERTRAND", "Avant d'appeler ta propriétaire, descends au panneau électrique. Cherche un disjoncteur qui n'est pas dans le même sens que les autres.", True),
     ], consigne="Écoutez d'abord l'enregistrement, diapo masquée. Lisez ensuite.",
-       notes="Passer l'audio du module (section « Je me prépare ») avant d'afficher le texte. "
+       notes="Passer l'audio du module (section « Je découvre ») avant d'afficher le texte. "
              "Les deux répliques teintées portent l'essentiel : elle décrit précisément, "
              "il fait vérifier avant d'appeler.")
 

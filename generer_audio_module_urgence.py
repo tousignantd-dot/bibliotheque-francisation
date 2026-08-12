@@ -35,7 +35,7 @@ VOICE_ASSOC = {
 
 DIALOGUES = {
     "module-urgence/prep": {
-        "title": "Une urgence au travail — Je me prépare (Une brûlure en cuisine)",
+        "title": "Une urgence au travail — Je découvre (Une brûlure en cuisine)",
         "lines": [
             ("FATOU", "Mathieu ! L'huile a éclaboussé, je me suis brûlé l'avant-bras."),
             ("MATHIEU", "Ne touche à rien. Viens à l'évier, on met ça sous l'eau froide tout de suite."),
@@ -50,7 +50,7 @@ DIALOGUES = {
         ],
     },
     "module-urgence/t1": {
-        "title": "Une urgence au travail — Tâche 1 (À l'urgence)",
+        "title": "Une urgence au travail — Défi 1 (À l'urgence)",
         "lines": [
             ("L'URGENTOLOGUE", "Bonjour. Racontez-moi ce qui s'est passé."),
             ("FATOU", "Je travaillais en cuisine. L'huile a éclaboussé et je me suis brûlé l'avant-bras droit."),
@@ -62,7 +62,7 @@ DIALOGUES = {
         ],
     },
     "module-urgence/t2": {
-        "title": "Une urgence au travail — Tâche 2 (Les soins et le suivi)",
+        "title": "Une urgence au travail — Défi 2 (Les soins et le suivi)",
         "lines": [
             ("L'URGENTOLOGUE", "C'est une brûlure du deuxième degré, superficielle. Ce n'est pas dangereux."),
             ("FATOU", "Est-ce que je vais garder une cicatrice ?"),
@@ -74,7 +74,7 @@ DIALOGUES = {
         ],
     },
     "module-urgence/t3": {
-        "title": "Une urgence au travail — Tâche 3 (À l'accueil de l'hôpital)",
+        "title": "Une urgence au travail — Défi 3 (À l'accueil de l'hôpital)",
         "lines": [
             ("AMINATA", "Bonjour, je viens chercher ma sœur. Elle est à l'urgence depuis ce matin."),
             ("LA RÉCEPTIONNISTE", "Pourriez-vous me donner son nom, s'il vous plaît ?"),

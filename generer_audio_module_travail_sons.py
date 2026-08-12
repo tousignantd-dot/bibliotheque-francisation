@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 """
 Générateur d'audio — Module « C'est une absence ou un retard ? »
-Section « Je me prépare » : mots isolés (tableau des sons + exercice 2)
+Section « Je découvre » : mots isolés (tableau des sons + exercice 2)
 et phrases (exercice 3). Une seule voix narratrice (pas un dialogue).
 Sortie : assets/interactive/module-travail/sons/<fileId>.mp3
 """
@@ -92,7 +92,7 @@ def generate_audio(api_key, text, voice_id, output_path):
 
 
 def main():
-    print("🎙️  Générateur d'audio — Je me prépare (mots et phrases isolés)\n")
+    print("🎙️  Générateur d'audio — Je découvre (mots et phrases isolés)\n")
 
     api_key = os.environ.get("ELEVENLABS_API_KEY", "").strip()
     if not api_key:

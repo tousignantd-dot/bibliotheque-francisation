@@ -47,7 +47,7 @@ VOICE_ASSOC = {
 
 DIALOGUES = {
     "module-consultation/prep": {
-        "title": "Consulter au bon endroit — Je me prépare (Le genou de Yannick)",
+        "title": "Consulter au bon endroit — Je découvre (Le genou de Yannick)",
         "lines": [
             ("YANNICK", "Rosalie, je me suis réveillé ce matin avec le genou tout enflé. J'ai fini mon quart à l'entrepôt à minuit et je n'avais rien senti sur le coup."),
             ("ROSALIE", "Est-ce que tu peux marcher dessus ?"),
@@ -61,7 +61,7 @@ DIALOGUES = {
         ],
     },
     "module-consultation/t1": {
-        "title": "Consulter au bon endroit — Tâche 1 (Au triage de la clinique)",
+        "title": "Consulter au bon endroit — Défi 1 (Au triage de la clinique)",
         "lines": [
             ("L'INFIRMIÈRE", "Bonjour, asseyez-vous. Qu'est-ce qui vous amène ce matin ?"),
             ("YANNICK", "J'ai le genou droit enflé depuis cette nuit. Je travaille dans un entrepôt et je soulève des boîtes toute la soirée."),
@@ -73,7 +73,7 @@ DIALOGUES = {
         ],
     },
     "module-consultation/t2": {
-        "title": "Consulter au bon endroit — Tâche 2 (L'examen de la docteure)",
+        "title": "Consulter au bon endroit — Défi 2 (L'examen de la docteure)",
         "lines": [
             ("LA DOCTEURE", "Étendez la jambe, s'il vous plaît. Est-ce que ça fait mal quand j'appuie ici ?"),
             ("YANNICK", "Oui, juste là, sur le côté."),

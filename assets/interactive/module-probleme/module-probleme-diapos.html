@@ -8,7 +8,7 @@
 /* ═══════════════════════════════════════════════════════════════════════
    LECTEUR « DIAPOSITIVE PAR DIAPOSITIVE » · essai de format
    ───────────────────────────────────────────────────────────────────────
-   Même contenu que la section « Je me prépare » du module 9, présenté
+   Même contenu que la section « Je découvre » du module 9, présenté
    comme un cours en ligne traditionnel : une scène à la fois, un
    contrôle de progression en bas, un sommaire à gauche, et une couche
    de rétroaction qui recouvre la scène après validation.
@@ -26,7 +26,7 @@
    ═══════════════════════════════════════════════════════════════════════ */
 
 :root{
-  --sec: var(--teal-700);        /* couleur de la section « Je me prépare » */
+  --sec: var(--teal-700);        /* couleur de la section « Je découvre » */
   --sec-soft: var(--teal-100);
   --chrome: #14181A;             /* châssis du lecteur : encre, pas noir pur */
   --chrome-2: #1F2528;
@@ -385,7 +385,7 @@ body{background:var(--chrome);overflow:hidden}
   <header class="top">
     <button class="top__burger" id="burger" type="button" aria-label="Sommaire">☰</button>
     <div class="top__id">
-      <div class="top__eyebrow" id="topPartie">Module 9 · Je me prépare</div>
+      <div class="top__eyebrow" id="topPartie">Module 9 · Je découvre</div>
       <div class="top__titre" id="topTitre">Le parcours guidé</div>
     </div>
     <div class="top__compte" id="compte">1 / 20</div>
@@ -423,7 +423,7 @@ body{background:var(--chrome);overflow:hidden}
 'use strict';
 
 /* ═══════════════════════════════════════════════════════════════════════
-   1 · CONTENU — repris tel quel de la section « Je me prépare »
+   1 · CONTENU — repris tel quel de la section « Je découvre »
    ═══════════════════════════════════════════════════════════════════════ */
 
 const MODULE = 'module-probleme';
@@ -551,7 +551,7 @@ const TYPES = [
   ["La musique du voisin s'entend jusqu'à deux heures du matin.","un trouble de voisinage"],
 ];
 
-/* ── Tâche 1 · Un problème dans le logement ─────────────────────────── */
+/* ── Défi 1 · Un problème dans le logement ─────────────────────────── */
 
 const T1_VF = [
   ["Madame Rioux trouve qu'Oksana a attendu trop longtemps avant de l'appeler.","VRAI"],
@@ -652,11 +652,11 @@ const part = (arr, a, b) => arr.slice(a, b);
 // Le cours est découpé en parties. Chaque partie garde ses propres groupes
 // de diapositives dans le sommaire ; la partie courante s'affiche en
 // sur-titre dans le bandeau du haut.
-const PARTIES = [{ nom:'Je me prépare', slides:[
+const PARTIES = [{ nom:'Je découvre', slides:[
 
   {grp:'Introduction', menu:'Couverture', type:'cover'},
   {grp:'Introduction', menu:'Ce que je vais savoir faire', type:'objectifs',
-   eyebrow:'Je me prépare', titre:'Ce que je vais savoir faire',
+   eyebrow:'Je découvre', titre:'Ce que je vais savoir faire',
    items:[
      "Nommer un problème de mon logement avec le mot précis, pas avec « il y a un problème ».",
      "Dire depuis quand le problème dure.",
@@ -742,10 +742,10 @@ const PARTIES = [{ nom:'Je me prépare', slides:[
    bankLbl:'Professionnels', ph:'choisissez un professionnel',
    rows:part(METIERS,4,8).map(([src,txt],i)=>({id:'q'+i, q:txt, a:src}))},
 
-]}, { nom:'Tâche 1 · Un problème dans le logement', slides:[
+]}, { nom:'Défi 1 · Un problème dans le logement', slides:[
 
   {grp:'Introduction', menu:'Ce que je vais savoir faire', type:'objectifs',
-   eyebrow:'Tâche 1', titre:'Expliquer un problème à sa propriétaire',
+   eyebrow:'Défi 1', titre:'Expliquer un problème à sa propriétaire',
    items:[
      "Comprendre un appel téléphonique entre une locataire et sa propriétaire.",
      "Reconnaître les cinq moments d'un appel réussi, et demander une solution temporaire.",
@@ -944,7 +944,7 @@ const RENDU = {
     w.innerHTML =
       '<div class="cover__eyebrow">Module 9 · Pouvez-vous régler le problème ?</div>' +
       '<h1>Le parcours guidé</h1>' +
-      '<p class="cover__lead">Deux parties : <b>Je me prépare</b>, puis <b>Tâche 1 — un problème ' +
+      '<p class="cover__lead">Deux parties : <b>Je découvre</b>, puis <b>Défi 1 — un problème ' +
       'dans le logement</b>. Avancez d\'une diapositive à l\'autre avec le bouton « Suivant ».</p>' +
       `<div class="cover__meta"><span>${SLIDES.length} diapositives</span>` +
       `<span>Environ 2 heures</span>` +
