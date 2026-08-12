@@ -1,0 +1,33 @@
+{
+  "name": "francisation-design",
+  "version": "1.0.0",
+  "private": true,
+  "description": "Couche React du système de design de la bibliothèque de francisation (FLS niveau 4, FR-QC). Les composants n'appliquent que les classes du CSS existant d'assets/design-system.",
+  "type": "module",
+  "main": "./dist/index.js",
+  "module": "./dist/index.js",
+  "types": "./dist/index.d.ts",
+  "exports": {
+    ".": {
+      "types": "./dist/index.d.ts",
+      "import": "./dist/index.js"
+    },
+    "./styles.css": "./dist/francisation.css"
+  },
+  "files": [
+    "dist"
+  ],
+  "scripts": {
+    "build": "node build-css.mjs && tsc -p tsconfig.json"
+  },
+  "peerDependencies": {
+    "react": ">=18"
+  },
+  "devDependencies": {
+    "@types/react": "^18.3.31",
+    "@types/react-dom": "^18.3.7",
+    "react": "^18.3.1",
+    "react-dom": "^18.3.1",
+    "typescript": "^5.9.3"
+  }
+}
