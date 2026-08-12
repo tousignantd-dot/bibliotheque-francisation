@@ -134,7 +134,7 @@
      <div class="mail">
        <div class="mail-row"><span class="mail-k">À</span><span class="mail-v">madame.rioux@courriel.ca</span></div>
        <div class="mail-row"><span class="mail-k">Objet</span><span class="mail-v">Le problème dans mon logement — suite à notre appel</span></div>
-       <textarea id="peText" rows="7" aria-label="Ton courriel" oninput="peCount()" placeholder="Bonjour Madame Rioux,&#10;Je vous écris pour faire suite à notre conversation téléphonique du…"></textarea>
+       <textarea id="peText" rows="7" aria-label="Ton courriel" data-min="5" data-max="8" oninput="peCount()" placeholder="Bonjour Madame Rioux,&#10;Je vous écris pour faire suite à notre conversation téléphonique du…"></textarea>
        <div class="mail-foot">
          <span class="mail-count" id="peCountLbl">0 phrase sur 5 à 8</span>
          <button class="btn-prod" id="peBtn" type="button" onclick="peCheck()">Vérifier mon message</button>

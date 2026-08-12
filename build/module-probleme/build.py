@@ -163,6 +163,21 @@ html = html.replace('// ── EXERCICES À ÉCRIRE',
 # Cette refonte a déjà été perdue une fois (commit 4b64a3b, écrite à la main
 # dans le HTML généré, effacée par la reconstruction suivante). Elle est donc
 # ancrée ici, avec des repères qui arrêtent le build s'ils ne collent plus.
+#
+# Depuis que le gabarit lui-même a reçu la refonte, ces substitutions n'ont
+# plus rien à faire — d'où `upgrade`, qui accepte les deux états du gabarit et
+# ne s'arrête que si l'on ne reconnaît ni l'ancien ni le nouveau.
+# On teste la forme NEUVE en premier : plusieurs substitutions ajoutent du
+# texte autour du repère, si bien que l'ancienne forme reste un fragment de la
+# nouvelle. Dans l'autre ordre, le build appliquerait une deuxième fois une
+# retouche déjà faite et dupliquerait des définitions de fonctions.
+def upgrade(text, old, new, label):
+    if new in text:
+        return text                      # le gabarit est déjà à jour
+    if text.count(old) == 1:
+        return text.replace(old, new, 1)
+    sys.exit('!! %s : ni l\'ancienne ni la nouvelle forme dans le gabarit' % label)
+
 OLD_REC_CSS = (
     '.rec-zone{display:flex;flex-direction:column;align-items:center;gap:10px;margin:8px 0}\n'
     '#recBtn{width:78px;height:78px;border-radius:50%;border:none;background:#1D6B8F;'
@@ -172,9 +187,7 @@ OLD_REC_CSS = (
     '70%{box-shadow:0 0 0 16px rgba(226,61,46,0)}100%{box-shadow:0 0 0 0 rgba(226,61,46,0)}}\n'
     '.rec-lbl{font-size:13px;font-weight:800;color:#4A6F68}\n'
 )
-if html.count(OLD_REC_CSS) != 1:
-    sys.exit('!! CSS du bloc micro introuvable ou ambigu dans le gabarit')
-html = html.replace(OLD_REC_CSS, read('production.css'))
+html = upgrade(html, OLD_REC_CSS, read('production.css'), 'CSS du bloc micro')
 
 # Le bouton devient un disque qui se change en carré : plus d'émoji dans le
 # texte du bouton, et un aria-label qui suit l'état.
@@ -199,8 +212,9 @@ REC_PATCHES = [
      "function peCount(){\n"
      "  const el=document.getElementById('peText'), lbl=document.getElementById('peCountLbl');\n"
      "  if(!el||!lbl) return;\n"
+     "  const mn=el.dataset.min||'5', mx=el.dataset.max||'8';\n"
      "  const n=(el.value.match(/[.!?…]+(\\s|$)/g)||[]).length;\n"
-     "  lbl.textContent = n+(n>1?' phrases':' phrase')+' sur 5 à 8';\n"
+     "  lbl.textContent = n+(n>1?' phrases':' phrase')+' sur '+mn+' à '+mx;\n"
      "}\n"
      "function resetRec(){\n  recStep(1);\n"),
     ("    document.getElementById('poSend').style.display='flex';",
@@ -211,9 +225,7 @@ REC_PATCHES = [
      "btn.textContent='Envoyer à mon enseignant'; }"),
 ]
 for old, new in REC_PATCHES:
-    if html.count(old) != 1:
-        sys.exit('!! repère du moteur d\'enregistrement introuvable ou ambigu :\n   %r' % old[:70])
-    html = html.replace(old, new, 1)
+    html = upgrade(html, old, new, 'moteur d\'enregistrement (%r)' % old[:60])
 
 # ── 6. Sections personnalisées : oral, jeu de rôle IA, écrit, bilan ──
 old_start = html.find("  // JE ME LANCE")
