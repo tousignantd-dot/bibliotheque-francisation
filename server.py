@@ -4,10 +4,12 @@ Gère les fichiers statiques + les opérations d'administration (ajout, modifica
 """
 
 import http.server
+import hashlib
 import json
 import mimetypes
 import os
 import shutil
+import threading
 import cgi
 import urllib.parse
 import urllib.request
@@ -38,6 +40,13 @@ STUDENTS_FILE   = STORAGE_DIR / "data" / "students.json"
 ACCESS_LOG_FILE = STORAGE_DIR / "data" / "access_log.json"
 PROGRESS_FILE   = STORAGE_DIR / "data" / "progress.json"
 VOCAB_PROGRESS_FILE = STORAGE_DIR / "data" / "vocab_progress.json"
+# Cache serveur des traductions : une paire mot/définition n'est traduite
+# qu'une fois pour toute la classe. Le cache navigateur évite l'aller-retour ;
+# celui-ci évite de payer deux fois le même appel quand l'élève change d'appareil.
+VOCAB_TRANSLATIONS_FILE = STORAGE_DIR / "data" / "traductions.json"
+# Journal des traductions signalées comme douteuses. Pas d'écran d'administration :
+# le fichier se lit à la main quand on voudra constituer une liste révisée.
+VOCAB_REPORTS_FILE = STORAGE_DIR / "data" / "traductions_douteuses.json"
 ORAL_SUBMISSIONS_FILE = STORAGE_DIR / "data" / "oral_submissions.json"
 ORAL_AUDIO_DIR = STORAGE_DIR / "assets" / "oral-submissions"
 
@@ -234,6 +243,53 @@ def save_vocab_progress(data):
         json.dump(data, f, ensure_ascii=False, indent=2)
 
 
+# Le serveur est multi-thread : deux élèves peuvent demander une traduction en
+# même temps. Sans verrou, la deuxième écriture écraserait la première.
+_VOCAB_TR_LOCK = threading.Lock()
+
+
+def translation_key(langue, mot, definition):
+    """Clé de cache. La définition entre dans la clé (par son empreinte) parce
+    que deux modules peuvent définir le même mot différemment : sans elle, la
+    traduction du module 9 s'afficherait sous la définition du module 6."""
+    empreinte = hashlib.sha1(definition.strip().encode("utf-8")).hexdigest()[:10]
+    return "%s|%s|%s" % (langue.strip().lower(), mot.strip().lower(), empreinte)
+
+
+def load_translations():
+    if VOCAB_TRANSLATIONS_FILE.exists():
+        try:
+            with open(VOCAB_TRANSLATIONS_FILE, "r", encoding="utf-8") as f:
+                return json.load(f)
+        except (json.JSONDecodeError, OSError):
+            return {}
+    return {}
+
+
+def save_translation(key, value):
+    with _VOCAB_TR_LOCK:
+        cache = load_translations()
+        cache[key] = value
+        VOCAB_TRANSLATIONS_FILE.parent.mkdir(parents=True, exist_ok=True)
+        with open(VOCAB_TRANSLATIONS_FILE, "w", encoding="utf-8") as f:
+            json.dump(cache, f, ensure_ascii=False, indent=2)
+
+
+def log_translation_report(entry):
+    with _VOCAB_TR_LOCK:
+        journal = []
+        if VOCAB_REPORTS_FILE.exists():
+            try:
+                with open(VOCAB_REPORTS_FILE, "r", encoding="utf-8") as f:
+                    journal = json.load(f)
+            except (json.JSONDecodeError, OSError):
+                journal = []
+        journal.append(entry)
+        VOCAB_REPORTS_FILE.parent.mkdir(parents=True, exist_ok=True)
+        with open(VOCAB_REPORTS_FILE, "w", encoding="utf-8") as f:
+            json.dump(journal, f, ensure_ascii=False, indent=2)
+
+
 def load_oral_submissions():
     if ORAL_SUBMISSIONS_FILE.exists():
         with open(ORAL_SUBMISSIONS_FILE, "r", encoding="utf-8") as f:
@@ -339,6 +395,14 @@ def safe_filename(filename):
     name = re.sub(r'[/\\:*?"<>|]', '_', name)
     name = name.lstrip('.')
     return name or "fichier"
+
+
+def strip_tags(value):
+    """Retire les balises HTML d'un texte venu du navigateur. Les phrases
+    d'exemple des modules contiennent <strong> autour du mot vedette."""
+    if not isinstance(value, str):
+        return ""
+    return re.sub(r"\s+", " ", re.sub(r"<[^>]*>", "", value)).strip()
 
 
 def json_response(handler, data, status=200):
@@ -802,6 +866,8 @@ class Handler(http.server.SimpleHTTPRequestHandler):
             self._handle_vocab_answer()
         elif path == "/api/vocab/translate":
             self._handle_vocab_translate()
+        elif path == "/api/vocab/signaler":
+            self._handle_vocab_report()
         elif path == "/api/vocab/check-answer":
             self._handle_vocab_check_answer()
         elif path == "/api/analyze-grammar":
@@ -1284,6 +1350,16 @@ class Handler(http.server.SimpleHTTPRequestHandler):
         json_response(self, {"correct": bool(parsed.get("correct", False))})
 
     def _handle_vocab_translate(self):
+        """Traduit un mot, sa définition et — si elle est fournie — sa phrase
+        d'exemple.
+
+        Deux façons de désigner le mot :
+        - `wordId` : un mot de VOCAB_BANK (vocabulaire-flash, historique) ;
+        - `mot` + `definition` (+ `exemple`) : n'importe quel mot d'un module,
+          ce qui permet au gabarit de vocabulaire de servir tous les modules
+          sans que leur liste ait à être recopiée côté serveur.
+        Le résultat est mis en cache sur disque, partagé par toute la classe.
+        """
         length = int(self.headers.get("Content-Length", 0))
         body = json.loads(self.rfile.read(length))
         code = body.get("code", "").strip().upper()
@@ -1291,14 +1367,32 @@ class Handler(http.server.SimpleHTTPRequestHandler):
             json_response(self, {"error": "Non autorisé"}, 401)
             return
 
-        word_id = body.get("wordId", "")
-        language = body.get("language", "").strip()[:60]
-        word = next((w for w in VOCAB_BANK if w["id"] == word_id), None)
-        if word is None:
-            json_response(self, {"error": "Mot inconnu"}, 400)
-            return
+        language = (body.get("language") or body.get("langue") or "").strip()[:60]
         if not language:
             json_response(self, {"error": "Langue non précisée"}, 400)
+            return
+
+        word_id = body.get("wordId", "")
+        if word_id:
+            word = next((w for w in VOCAB_BANK if w["id"] == word_id), None)
+            if word is None:
+                json_response(self, {"error": "Mot inconnu"}, 400)
+                return
+            mot, definition, exemple = word["mot"], word["definition"], word["exemple"]
+        else:
+            # Les modules stockent la phrase d'exemple en HTML (<strong>) : on la
+            # nettoie avant de l'envoyer, sinon le modèle traduit les balises.
+            mot = strip_tags(body.get("mot", ""))[:120]
+            definition = strip_tags(body.get("definition", ""))[:400]
+            exemple = strip_tags(body.get("exemple", ""))[:400]
+            if not mot or not definition:
+                json_response(self, {"error": "Mot ou définition manquant"}, 400)
+                return
+
+        cache_key = translation_key(language, mot, definition)
+        cached = load_translations().get(cache_key)
+        if cached:
+            json_response(self, dict(cached, cache=True))
             return
 
         system_prompt = (
@@ -1311,21 +1405,46 @@ class Handler(http.server.SimpleHTTPRequestHandler):
             '"traduction" est la traduction du mot seul (garde un article si '
             'naturel dans la langue cible). "definitionTraduite" est la '
             'traduction de la définition. "exempleTraduit" est la traduction '
-            "de la phrase d'exemple complète. Utilise une traduction "
-            "naturelle et courante, pas littérale."
+            "de la phrase d'exemple complète, ou une chaîne vide s'il n'y a pas "
+            "d'exemple. Utilise une traduction naturelle et courante, pas littérale."
         )
-        user_content = f"Mot : {word['mot']}\nDéfinition : {word['definition']}\nExemple : {word['exemple']}"
+        user_content = "Mot : %s\nDéfinition : %s" % (mot, definition)
+        if exemple:
+            user_content += "\nExemple : %s" % exemple
 
         parsed, err = self._call_anthropic_json(system_prompt, user_content, max_tokens=300)
         if err:
             json_response(self, {"error": err[0]}, err[1])
             return
 
-        json_response(self, {
+        traduction = {
             "traduction": parsed.get("traduction", ""),
             "definitionTraduite": parsed.get("definitionTraduite", ""),
-            "exempleTraduit": parsed.get("exempleTraduit", ""),
+            "exempleTraduit": parsed.get("exempleTraduit", "") if exemple else "",
+        }
+        if traduction["traduction"] or traduction["definitionTraduite"]:
+            save_translation(cache_key, traduction)
+        json_response(self, traduction)
+
+    def _handle_vocab_report(self):
+        """Journalise une traduction jugée douteuse par un élève. Pas d'écran :
+        le fichier sert plus tard à constituer une liste révisée à la main."""
+        length = int(self.headers.get("Content-Length", 0))
+        body = json.loads(self.rfile.read(length))
+        code = body.get("code", "").strip().upper()
+        student = validate_student_code(code)
+        if not student:
+            json_response(self, {"error": "Non autorisé"}, 401)
+            return
+
+        log_translation_report({
+            "date": datetime.now().isoformat(timespec="seconds"),
+            "module": strip_tags(body.get("module", ""))[:80],
+            "mot": strip_tags(body.get("mot", ""))[:120],
+            "langue": strip_tags(body.get("langue", ""))[:60],
+            "traduction": strip_tags(body.get("traduction", ""))[:400],
         })
+        json_response(self, {"success": True})
 
     def _handle_student_dashboard(self, params):
         code = params.get("code", [""])[0].strip().upper()

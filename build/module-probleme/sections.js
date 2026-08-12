@@ -20,5 +20,5 @@ const SECTIONS = [
    intro:"Je me lance — Un dernier dialogue à analyser, puis c'est à toi : tu expliques ton problème à l'oral, et tu écris le courriel qui garde une trace de ta demande."},
   {id:'retiens', no:'✓', title:'Je retiens des mots', color:'#166534', custom:true,
    lead:"Rassembler le vocabulaire du logement et faire le point sur ce qu'on sait faire.",
-   intro:"Je retiens des mots — Note tes mots utiles, révise avec les cartes mémoire, puis évalue ce que tu es maintenant capable de faire."},
+   intro:"Je retiens des mots — Notez vos mots utiles, révisez avec les cartes mémoire, puis évaluez ce que vous êtes maintenant capable de faire."},
 ];

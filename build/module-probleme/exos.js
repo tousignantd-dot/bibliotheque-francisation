@@ -1,6 +1,6 @@
 const EXOS = [
- {sec:'prep', id:'prVocab', type:'match', num:'Vocabulaire', tit:'Associe le mot ou le groupe de mots à sa définition', color:'#0D7A6F',
-  sub:'Choisis un mot, puis sa définition.', noQLbl:true, bankLbl:'Définitions', zonePh:'glissez la définition ici',
+ {sec:'prep', id:'prVocab', type:'match', num:'Vocabulaire · 1', tit:'Le mot et sa définition', color:'#0D7A6F',
+  sub:'Choisissez un mot, puis sa définition. Six mots à la fois.', noQLbl:true, bankLbl:'Définitions', zonePh:'glissez la définition ici',
   rows: FC_CARDS.map((c,i)=>({id:'pv'+i, q:c.word, aid:'pv'+i, a:c.def}))},
 
   {sec:'prep', id:'pr1', type:'vf', num:'Exercice 1', tit:'Vrai ou Faux — Il fait quatorze degrés au 4B', color:'#0D7A6F',

@@ -770,6 +770,91 @@ body{
 .jr-mic-l{font-size:15px;font-weight:600;color:var(--ws-sub)}
 @media(max-width:640px){.jr-b{max-width:92%}}
 
+/* ── SECTION VOCABULAIRE ───────────────────────────────────────────────
+   Trois exercices sur la même liste de mots + la traduction en langue
+   maternelle. Aucune couleur en dur : tout passe par les jetons du système
+   de design (assets/design-system/tokens/), déjà aliasés en --ws-* par le
+   gabarit. Rien sous 17 px, cibles ≥ 44 px, la couleur jamais seule. */
+
+/* Le gabarit fige .chip et .csub à 15 px. La charte est explicite : « jamais
+   15 px pour un énoncé », consigne et définition valent --fs-body-sm (17 px) ;
+   seuls les libellés d'interface (bouton 15 px, sur-titre 13 px) descendent
+   plus bas. On remonte donc les deux, mais dans la seule section vocabulaire :
+   le reste du module garde ses tailles tant qu'on ne l'a pas repris. */
+#exo-prVocab .chip,#exo-vcRappel .chip,#exo-vcImage .chip{font-size:17px;line-height:1.5}
+#exo-prVocab .csub,#exo-vcRappel .csub,#exo-vcImage .csub{font-size:17px}
+
+/* En-tête de la section : le choix de la langue, mémorisé pour tous les modules. */
+.voc-head{display:flex;align-items:center;gap:12px;flex-wrap:wrap;
+  background:var(--ws-card);border:1px solid var(--ws-line);border-radius:var(--r-md);
+  padding:16px var(--pad-card);margin-bottom:16px}
+.voc-head-t{font-size:17px;font-weight:800;color:var(--ws-ink)}
+.voc-head-s{font-size:17px;font-weight:500;color:var(--ws-sub);flex-basis:100%}
+.voc-lang{font-family:inherit;font-size:17px;font-weight:700;color:var(--ws-ink);
+  background:var(--ws-card);border:2px solid var(--ws-line);border-radius:var(--r-sm);
+  padding:10px 14px;min-height:44px;cursor:pointer}
+.voc-lang:hover{border-color:var(--ws-accent)}
+
+/* Le bloc de traduction — masqué tant que l'élève ne le demande pas : une
+   traduction visible d'emblée et le français n'est plus traité. */
+.voc-tr{margin-top:14px;padding:14px 16px;border-radius:var(--r-sm);
+  background:var(--ws-accent-bg);border:1px solid var(--ws-line)}
+.voc-tr[hidden]{display:none}
+.voc-tr-mot{font-size:19px;font-weight:900;color:var(--ws-ink);line-height:1.4}
+.voc-tr-def{font-size:17px;font-weight:500;color:var(--ws-ink);line-height:1.6;margin-top:6px}
+.voc-tr-ex{font-size:17px;font-weight:500;color:var(--ws-sub);line-height:1.6;margin-top:6px}
+.voc-tr[dir="rtl"]{text-align:right}
+.voc-tr-att{font-size:17px;font-weight:600;color:var(--ws-sub)}
+/* Signalement : discret, mais atteignable au clavier et assez grand au doigt. */
+.voc-flag{display:inline-block;margin-top:10px;padding:6px 0;min-height:44px;
+  background:none;border:none;font-family:inherit;font-size:17px;font-weight:600;
+  color:var(--ws-sub);text-decoration:underline dotted;cursor:pointer}
+.voc-flag:hover{color:var(--ws-ink)}
+.voc-flag[disabled]{cursor:default;text-decoration:none;opacity:.8}
+
+/* ── Exercice 2 · Je me souviens du mot ─────────────────────────────── */
+.vc-carte{text-align:center;padding:8px 0 4px}
+.vc-mot{font-size:30px;font-weight:900;color:var(--ws-ink);line-height:1.25;
+  margin-bottom:8px;word-break:break-word}
+.vc-q{font-size:17px;font-weight:600;color:var(--ws-sub);margin-bottom:18px}
+.vc-rep{text-align:left;border-top:1px solid var(--ws-line);margin-top:18px;padding-top:16px}
+.vc-def{font-size:19px;font-weight:700;color:var(--ws-ink);line-height:1.55}
+.vc-ex{font-size:17px;font-weight:500;color:var(--ws-sub);line-height:1.6;margin-top:8px}
+.vc-ex strong{color:var(--ws-ink);font-weight:800}
+.vc-actions{display:flex;gap:10px;flex-wrap:wrap;margin-top:18px}
+.vc-actions .btn{min-height:44px}
+/* Notation : chaque bouton porte un glyphe, jamais la couleur seule. */
+.vc-note{flex:1 1 200px;min-height:44px;font-family:inherit;font-size:17px;font-weight:800;
+  border-radius:var(--r-sm);border:2px solid var(--ws-line);background:var(--ws-card);
+  color:var(--ws-ink);cursor:pointer;padding:11px 16px}
+.vc-note--su:hover{border-color:var(--ok-line);background:var(--ok-bg);color:var(--ok-ink)}
+.vc-note--revoir:hover{border-color:var(--warn-line);background:var(--warn-bg);color:var(--warn-ink)}
+.vc-bilan{font-size:19px;font-weight:800;color:var(--ws-ink);line-height:1.5;
+  text-align:center;padding:10px 0 4px}
+.vc-bilan-s{font-size:17px;font-weight:500;color:var(--ws-sub);margin-top:8px}
+
+/* ── Exercice 3 · Le mot et son image ───────────────────────────────── */
+.vc-photo{display:block;width:100%;max-width:380px;margin:0 auto 18px;
+  aspect-ratio:1/1;object-fit:cover;border-radius:var(--r-md);
+  border:1px solid var(--ws-line);background:var(--ws-bg)}
+.vc-choix{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:10px}
+.choice{min-height:44px;font-family:inherit;font-size:17px;font-weight:800;
+  border-radius:var(--r-sm);border:2px solid var(--ws-line);background:var(--ws-card);
+  color:var(--ws-ink);cursor:pointer;padding:12px 16px;text-align:center;
+  transition:border-color .15s,background .15s}
+.choice:hover{border-color:var(--ws-accent)}
+.choice[aria-disabled="true"]{pointer-events:none}
+/* Les trois états portent un glyphe ajouté en JS (✓ ✗ ←) : la couleur ne
+   porte jamais l'information à elle seule. */
+.choice.is-ok{border-color:var(--ok-line);background:var(--ok-bg);color:var(--ok-ink)}
+.choice.is-no{border-color:var(--no-line);background:var(--no-bg);color:var(--no-ink)}
+.choice.is-answer{border-style:dashed;border-color:var(--ok-line);color:var(--ok-ink)}
+
+/* Focus clavier visible sur tout ce que la section ajoute. */
+.voc-lang:focus-visible,.voc-flag:focus-visible,.vc-note:focus-visible,
+.choice:focus-visible{outline:3px solid var(--ws-accent);outline-offset:2px}
+
+
 /* Focus clavier visible partout (B.4) */
 :focus-visible{outline:3px solid var(--ws-accent);outline-offset:2px;border-radius:inherit}
 textarea:focus-visible,.winput:focus-visible{outline:none;border-color:var(--ws-accent)}
@@ -950,7 +1035,7 @@ const SECTIONS = [
    intro:"Je me lance — Un dernier dialogue à analyser, puis c'est à toi : tu expliques ton problème à l'oral, et tu écris le courriel qui garde une trace de ta demande."},
   {id:'retiens', no:'✓', title:'Je retiens des mots', color:'#166534', custom:true,
    lead:"Rassembler le vocabulaire du logement et faire le point sur ce qu'on sait faire.",
-   intro:"Je retiens des mots — Note tes mots utiles, révise avec les cartes mémoire, puis évalue ce que tu es maintenant capable de faire."},
+   intro:"Je retiens des mots — Notez vos mots utiles, révisez avec les cartes mémoire, puis évaluez ce que vous êtes maintenant capable de faire."},
 ];
 
 // ── EXERCICES ─────────────────────────────────────────────────────────
@@ -959,27 +1044,27 @@ const SECTIONS = [
 // type 'blanks' : segs {k:'t'/'b',id,c} + words {id,l}
 // ── FLASHCARDS ────────────────────────────────────────────────────────
 const FC_CARDS = [
-  {word:"un calorifère", def:"L'appareil fixé au mur qui chauffe une pièce.", ex:"Le <strong>calorifère</strong> du salon est resté froid toute la nuit."},
-  {word:"un disjoncteur", def:"L'interrupteur du panneau électrique qui coupe le courant en cas de danger.", ex:"Le <strong>disjoncteur</strong> retombe chaque fois qu'elle le remonte."},
-  {word:"un chauffage d'appoint", def:"Un petit appareil de chauffage qu'on ajoute temporairement.", ex:"Elle emprunte un <strong>chauffage d'appoint</strong> en attendant l'électricien."},
-  {word:"une infiltration", def:"De l'eau qui entre par le toit ou par un mur.", ex:"La tache au plafond vient d'une <strong>infiltration</strong>."},
-  {word:"la moisissure", def:"Des taches noires ou vertes causées par l'humidité.", ex:"Sans ventilation, la <strong>moisissure</strong> revient toujours."},
-  {word:"l'ampleur", def:"La grandeur, l'importance d'un problème.", ex:"La photo permet de constater l'<strong>ampleur</strong> du dégât."},
-  {word:"une partie commune", def:"Un espace de l'immeuble partagé par tous les locataires.", ex:"Le corridor est une <strong>partie commune</strong>, pas un rangement."},
-  {word:"encombrer", def:"Occuper une place et gêner le passage.", ex:"Trois vélos <strong>encombrent</strong> le corridor du troisième."},
-  {word:"une sortie de secours", def:"Le chemin à garder libre pour évacuer en cas d'incendie.", ex:"Une <strong>sortie de secours</strong> doit toujours rester dégagée."},
-  {word:"se plaindre", def:"Dire qu'on n'accepte plus une situation et demander qu'elle change.", ex:"Les voisins <strong>se plaignent</strong> depuis un mois."},
-  {word:"l'insalubrité", def:"L'état d'un logement malpropre ou dangereux pour la santé.", ex:"Des déchets laissés dehors peuvent mener à l'<strong>insalubrité</strong>."},
-  {word:"un avis écrit", def:"Une lettre ou un courriel qui garde une trace d'une demande.", ex:"Un <strong>avis écrit</strong> est plus solide qu'un appel téléphonique."},
-  {word:"un recours", def:"Le moyen légal de faire régler un problème qui traîne.", ex:"Le dernier <strong>recours</strong>, c'est le Tribunal administratif du logement."},
-  {word:"le bail", def:"Le contrat signé entre le locataire et le propriétaire.", ex:"La durée du loyer est écrite dans le <strong>bail</strong>."},
-  {word:"un couvreur", def:"La personne qui répare les toitures.", ex:"La propriétaire fait venir un <strong>couvreur</strong> pour le toit."},
-  {word:"un dégraissant", def:"Un produit fort qui enlève l'huile et la graisse.", ex:"L'odeur du <strong>dégraissant</strong> monte par la cage d'escalier."},
+  {word:"un calorifère", def:"L'appareil fixé au mur qui chauffe une pièce.", ex:"Le <strong>calorifère</strong> du salon est resté froid toute la nuit.", img:"/assets/interactive/module-probleme/vocab/calorifere.jpg", tache:"prep"},
+  {word:"un disjoncteur", def:"L'interrupteur du panneau électrique qui coupe le courant en cas de danger.", ex:"Le <strong>disjoncteur</strong> retombe chaque fois qu'elle le remonte.", img:"/assets/interactive/module-probleme/vocab/disjoncteur.jpg", tache:"prep"},
+  {word:"un chauffage d'appoint", def:"Un petit appareil de chauffage qu'on ajoute temporairement.", ex:"Elle emprunte un <strong>chauffage d'appoint</strong> en attendant l'électricien.", img:"/assets/interactive/module-probleme/vocab/chauffage-appoint.jpg", tache:"prep"},
+  {word:"une infiltration", def:"De l'eau qui entre par le toit ou par un mur.", ex:"La tache au plafond vient d'une <strong>infiltration</strong>.", img:"/assets/interactive/module-probleme/vocab/infiltration.jpg", tache:"t1"},
+  {word:"la moisissure", def:"Des taches noires ou vertes causées par l'humidité.", ex:"Sans ventilation, la <strong>moisissure</strong> revient toujours.", img:"/assets/interactive/module-probleme/vocab/moisissure.jpg", tache:"t1"},
+  {word:"l'ampleur", def:"La grandeur, l'importance d'un problème.", ex:"La photo permet de constater l'<strong>ampleur</strong> du dégât.", tache:"t1"},
+  {word:"une partie commune", def:"Un espace de l'immeuble partagé par tous les locataires.", ex:"Le corridor est une <strong>partie commune</strong>, pas un rangement.", tache:"t2"},
+  {word:"encombrer", def:"Occuper une place et gêner le passage.", ex:"Trois vélos <strong>encombrent</strong> le corridor du troisième.", img:"/assets/interactive/module-probleme/vocab/encombrer.jpg", tache:"t2"},
+  {word:"une sortie de secours", def:"Le chemin à garder libre pour évacuer en cas d'incendie.", ex:"Une <strong>sortie de secours</strong> doit toujours rester dégagée.", img:"/assets/interactive/module-probleme/vocab/sortie-de-secours.jpg", tache:"t2"},
+  {word:"se plaindre", def:"Dire qu'on n'accepte plus une situation et demander qu'elle change.", ex:"Les voisins <strong>se plaignent</strong> depuis un mois.", tache:"t3"},
+  {word:"l'insalubrité", def:"L'état d'un logement malpropre ou dangereux pour la santé.", ex:"Des déchets laissés dehors peuvent mener à l'<strong>insalubrité</strong>.", tache:"t3"},
+  {word:"un avis écrit", def:"Une lettre ou un courriel qui garde une trace d'une demande.", ex:"Un <strong>avis écrit</strong> est plus solide qu'un appel téléphonique.", tache:"t3"},
+  {word:"un recours", def:"Le moyen légal de faire régler un problème qui traîne.", ex:"Le dernier <strong>recours</strong>, c'est le Tribunal administratif du logement.", tache:"t3"},
+  {word:"le bail", def:"Le contrat signé entre le locataire et le propriétaire.", ex:"La durée du loyer est écrite dans le <strong>bail</strong>.", img:"/assets/interactive/module-probleme/vocab/bail.jpg", tache:"t3"},
+  {word:"un couvreur", def:"La personne qui répare les toitures.", ex:"La propriétaire fait venir un <strong>couvreur</strong> pour le toit.", img:"/assets/interactive/module-probleme/vocab/couvreur.jpg", tache:"t1"},
+  {word:"un dégraissant", def:"Un produit fort qui enlève l'huile et la graisse.", ex:"L'odeur du <strong>dégraissant</strong> monte par la cage d'escalier.", img:"/assets/interactive/module-probleme/vocab/degraissant.jpg", tache:"t2"},
 ];
 
 const EXOS = [
- {sec:'prep', id:'prVocab', type:'match', num:'Vocabulaire', tit:'Associe le mot ou le groupe de mots à sa définition', color:'#0D7A6F',
-  sub:'Choisis un mot, puis sa définition.', noQLbl:true, bankLbl:'Définitions', zonePh:'glissez la définition ici',
+ {sec:'prep', id:'prVocab', type:'match', num:'Vocabulaire · 1', tit:'Le mot et sa définition', color:'#0D7A6F',
+  sub:'Choisissez un mot, puis sa définition. Six mots à la fois.', noQLbl:true, bankLbl:'Définitions', zonePh:'glissez la définition ici',
   rows: FC_CARDS.map((c,i)=>({id:'pv'+i, q:c.word, aid:'pv'+i, a:c.def}))},
 
   {sec:'prep', id:'pr1', type:'vf', num:'Exercice 1', tit:'Vrai ou Faux — Il fait quatorze degrés au 4B', color:'#0D7A6F',
@@ -1644,22 +1729,7 @@ function markRead(btn){
   btn.classList.add('done'); btn.textContent='✓ Lu';
   if(!dialogueRead){ dialogueRead=true; lmsTrack('dialogue_listened'); }
 }
-function toggleVocabExo(force){
-  const card=document.getElementById('exo-prVocab');
-  const btn=document.getElementById('btnVocabToggle');
-  if(!card) return;
-  const opening = (typeof force==='boolean') ? force : card.style.display==='none';
-  card.style.display = opening ? '' : 'none';
-  if(btn) btn.textContent = opening ? "Fermer l'exercice de vocabulaire" : 'Apprendre les mots de vocabulaire';
-  // Exercice à part : tant qu'il est ouvert, on bloque l'accès aux exercices
-  // suivants — il faut le refermer (bouton "Fermer") pour continuer.
-  EXOS.filter(e=>e.sec==='prep' && e.id!=='prVocab').forEach(e=>{
-    const c=document.getElementById('exo-'+e.id);
-    if(c) c.style.display = opening ? 'none' : '';
-  });
-  if(opening) card.scrollIntoView({behavior:'smooth', block:'start'});
-  else document.getElementById('btnVocabToggle').scrollIntoView({behavior:'smooth', block:'center'});
-}
+
 
 // ── LOGIQUE DE PLACEMENT ──────────────────────────────────────────────
 function checkOk(zid, iid, lbl) {
@@ -1706,17 +1776,206 @@ function updateVfScore(ex, checked){
     el.textContent = correct+' / '+ex.rows.length+' juste';
   }
 }
-// ── Association mot ↔ définition par CLIC (deux colonnes), pas de
-// glisser-déposer — atteignable au clavier, comme je-me-prepare.html.
+// ── SECTION VOCABULAIRE ───────────────────────────────────────────────
+// Trois exercices sur la même liste de mots (FC_CARDS), plus la traduction
+// en langue maternelle. La seule entrée est la liste de mots : ce bloc est
+// le même pour tous les modules, seul fccards.js change.
+//
+//   1. Le mot et sa définition   — association par clic, six mots à la fois
+//   2. Je me souviens du mot     — rappel actif, notation, reprise des ratés
+//   3. Le mot et son image       — trois choix mélangés, sauté s'il n'y a
+//                                  aucune photo dans la liste
+//
+// Le pointage global (l'étoile en haut) ne compte que l'exercice 1 : c'est
+// le seul dont les zones sont déclarées dans ZONES. Les exercices 2 et 3
+// tiennent leur propre compteur et n'appellent jamais trackPlacement(), qui
+// gonflerait le total de l'étoile avec des identifiants inconnus.
+
+const VOC_LANGUES = [
+  {c:'ar', n:'arabe',      loc:'العربية',    rtl:true},
+  {c:'es', n:'espagnol',   loc:'Español'},
+  {c:'uk', n:'ukrainien',  loc:'Українська'},
+  {c:'fa', n:'persan',     loc:'فارسی',      rtl:true},
+  {c:'zh', n:'chinois (mandarin)', loc:'中文'},
+  {c:'pt', n:'portugais',  loc:'Português'},
+  {c:'en', n:'anglais',    loc:'English'},
+  {c:'ro', n:'roumain',    loc:'Română'},
+  {c:'ur', n:'ourdou',     loc:'اردو',       rtl:true},
+  {c:'ru', n:'russe',      loc:'Русский'},
+  {c:'ti', n:'tigrigna',   loc:'ትግርኛ'},
+];
+// La langue est choisie une fois et vaut pour tous les modules ; les
+// traductions déjà payées sont partagées par tous les élèves de l'appareil.
+const VOC_LS_LANGUE = 'francisation-langue';
+const VOC_LS_TRAD   = 'francisation-traductions';
+const VOC_LS_RAPPEL = 'francisation-rappel-' + MODULE_SLUG;
+const VOC_TAILLE_GROUPE = 6;   // exercice 1 : mots montrés à la fois
+const VOC_TAILLE_PAQUET = 8;   // exercice 2 : mots par paquet
+
+// Le mode privé de Safari fait lever localStorage : on ne perd que la
+// mémoire, jamais l'exercice.
+function vocLire(cle, defaut){
+  try{ const v = localStorage.getItem(cle); return v===null ? defaut : JSON.parse(v); }
+  catch(e){ return defaut; }
+}
+function vocEcrire(cle, valeur){
+  try{ localStorage.setItem(cle, JSON.stringify(valeur)); }catch(e){}
+}
+
+function vocLangue(){
+  const c = vocLire(VOC_LS_LANGUE, '');
+  return VOC_LANGUES.find(l=>l.c===c) || null;
+}
+
+// ── LA TRADUCTION ─────────────────────────────────────────────────────
+// Masquée par défaut : une traduction visible d'emblée et le français n'est
+// plus traité. L'appel part vers le serveur, jamais vers l'API directement —
+// la clé Anthropic ne descend pas dans le navigateur.
+function vocEmpreinte(texte){
+  let h = 5381;
+  for(let i=0;i<texte.length;i++) h = ((h*33) ^ texte.charCodeAt(i)) >>> 0;
+  return h.toString(36);
+}
+// La définition entre dans la clé : deux modules peuvent définir le même mot
+// autrement, et la traduction de l'un ne doit pas s'afficher chez l'autre.
+function vocCle(langue, mot, def){
+  return langue + '|' + mot + '|' + vocEmpreinte(def||'');
+}
+async function vocTraduire(mot, def, exemple){
+  const L = vocLangue();
+  if(!L) throw new Error('langue');
+  const cle = vocCle(L.c, mot, def);
+  const cache = vocLire(VOC_LS_TRAD, {});
+  if(cache[cle]) return cache[cle];
+  const res = await fetch('/api/vocab/translate', {
+    method:'POST', headers:{'Content-Type':'application/json'},
+    body: JSON.stringify({code:studentCode, langue:L.n, mot:mot, definition:def, exemple:exemple||''})
+  });
+  const data = await res.json();
+  if(!res.ok) throw new Error(data.error||'indisponible');
+  cache[cle] = data;
+  vocEcrire(VOC_LS_TRAD, cache);
+  return data;
+}
+
+let vocTradNo = 0;
+// Renvoie le balisage du bouton + du bloc masqué ; vocTradBrancher() pose
+// ensuite les écouteurs, une fois le balisage dans la page.
+function vocTradBalisage(){
+  const id = 'voctr' + (++vocTradNo);
+  return {id,
+    html:'<div class="vc-actions"><button type="button" class="btn btn-ghost" id="'+id+'-btn">Voir dans ma langue</button></div>'
+       + '<div class="voc-tr" id="'+id+'" hidden aria-live="polite"></div>'};
+}
+function vocTradBrancher(id, mot, def, exemple){
+  const btn = document.getElementById(id+'-btn');
+  const box = document.getElementById(id);
+  if(!btn || !box) return;
+  btn.addEventListener('click', async ()=>{
+    if(!box.hidden){
+      box.hidden = true; btn.textContent = 'Voir dans ma langue'; return;
+    }
+    const L = vocLangue();
+    box.hidden = false; box.removeAttribute('dir');
+    if(!L){
+      box.innerHTML = '<div class="voc-tr-att">Choisissez d\'abord votre langue, en haut de la section.</div>';
+      return;
+    }
+    box.innerHTML = '<div class="voc-tr-att">Traduction en cours…</div>';
+    btn.disabled = true;
+    try{
+      const t = await vocTraduire(mot, def, exemple);
+      if(L.rtl) box.setAttribute('dir','rtl');
+      let h = '<div class="voc-tr-mot">'+esc(t.traduction||'')+'</div>';
+      if(t.definitionTraduite) h += '<div class="voc-tr-def">'+esc(t.definitionTraduite)+'</div>';
+      if(t.exempleTraduit)     h += '<div class="voc-tr-ex">'+esc(t.exempleTraduit)+'</div>';
+      h += '<button type="button" class="voc-flag">Signaler une traduction douteuse</button>';
+      box.innerHTML = h;
+      box.querySelector('.voc-flag').addEventListener('click', function(){ vocSignaler(this, mot, t); });
+      btn.textContent = 'Cacher la traduction';
+    }catch(e){
+      // Message neutre en français : jamais l'erreur brute, hors ligne comprise.
+      box.innerHTML = '<div class="voc-tr-att">La traduction n\'est pas disponible pour le moment. Vous pouvez continuer l\'exercice en français.</div>';
+    }
+    btn.disabled = false;
+  });
+}
+// Les traductions ne sont pas révisées par un humain. Le signalement est
+// journalisé côté serveur ; c'est ce qui permettra plus tard une liste revue.
+async function vocSignaler(btn, mot, t){
+  const L = vocLangue();
+  btn.disabled = true;
+  btn.textContent = 'Envoi…';
+  try{
+    const res = await fetch('/api/vocab/signaler', {
+      method:'POST', headers:{'Content-Type':'application/json'},
+      body: JSON.stringify({code:studentCode, module:MODULE_SLUG, mot:mot,
+        langue: L ? L.n : '',
+        traduction: [t.traduction, t.definitionTraduite].filter(Boolean).join(' — ')})
+    });
+    btn.textContent = res.ok ? '✓ Merci, c\'est noté.' : 'Le signalement n\'est pas parti.';
+  }catch(e){
+    btn.textContent = 'Le signalement n\'est pas parti.';
+  }
+}
+
+// ── EN-TÊTE DE SECTION : le choix de la langue ────────────────────────
+function vocEnteteHtml(){
+  return '<div class="voc-head" id="voc-head">'
+    + '<span class="voc-head-t"><label for="voc-lang">Ma langue maternelle</label></span>'
+    + '<select class="voc-lang" id="voc-lang">'
+    + '<option value="">— Choisissez votre langue —</option>'
+    + VOC_LANGUES.map(l=>'<option value="'+l.c+'">'+esc(l.loc)+' · '+esc(l.n)+'</option>').join('')
+    + '</select>'
+    + '<span class="voc-head-s">Les mots restent en français. La traduction s\'affiche seulement quand vous la demandez.</span>'
+    + '</div>';
+}
+function vocEnteteBrancher(){
+  const sel = document.getElementById('voc-lang');
+  if(!sel) return;
+  sel.value = vocLire(VOC_LS_LANGUE, '');
+  sel.addEventListener('change', ()=>{
+    vocEcrire(VOC_LS_LANGUE, sel.value);
+    // Les blocs déjà ouverts montrent l'ancienne langue : on les referme.
+    document.querySelectorAll('.voc-tr').forEach(b=>{ b.hidden = true; });
+    document.querySelectorAll('[id$="-btn"].btn-ghost').forEach(b=>{
+      if(b.textContent.indexOf('traduction')>=0) b.textContent = 'Voir dans ma langue';
+    });
+  });
+}
+
+// ── EXERCICE 1 · Le mot et sa définition ──────────────────────────────
+// Association par clic en deux colonnes, atteignable au clavier. Six mots à
+// la fois : seize définitions d'un coup, personne ne lit jusqu'en bas.
+function vocNbGroupes(ex){
+  return Math.max(1, Math.ceil(ex.rows.length / VOC_TAILLE_GROUPE));
+}
+function vocGroupeCourant(ex){
+  if(!S.vocabFile){
+    S.vocabFile = ex.rows.map((r,i)=>i).sort(()=>Math.random()-.5);
+    S.vocabGroupNo = 0;
+    S.vocabOrderNo = -1;
+  }
+  return S.vocabFile.slice(S.vocabGroupNo*VOC_TAILLE_GROUPE,
+                          (S.vocabGroupNo+1)*VOC_TAILLE_GROUPE);
+}
 function renderVocabPairs(){
   const ex = EXOS.find(e=>e.id==='prVocab');
   if(!ex) return;
   const wordsEl = document.getElementById('vocab-words');
-  const defsEl = document.getElementById('vocab-defs');
+  const defsEl  = document.getElementById('vocab-defs');
   if(!wordsEl || !defsEl) return;
-  if(!S.vocabOrder) S.vocabOrder = ex.rows.map((r,i)=>i).sort(()=>Math.random()-.5);
 
-  wordsEl.innerHTML = ex.rows.map((r,i)=>{
+  const groupe = vocGroupeCourant(ex);
+  // L'ordre des définitions est retiré au sort à chaque groupe : sinon la
+  // deuxième reprise se joue de mémoire, par position.
+  if(S.vocabOrderNo !== S.vocabGroupNo){
+    S.vocabOrder = groupe.slice().sort(()=>Math.random()-.5);
+    S.vocabOrderNo = S.vocabGroupNo;
+  }
+
+  wordsEl.innerHTML = groupe.map(idx=>{
+    const r = ex.rows[idx];
     const done = S.vocabPairs[r.id] !== undefined;
     const cls = 'chip chip-word'+(done?' is-paired':(S.vocabPick===r.id?' is-active':''));
     return '<button type="button" class="'+cls+'" data-w="'+esc(r.id)+'"'+(done?' aria-disabled="true"':'')+'>'+esc(r.q)+'</button>';
@@ -1746,10 +2005,244 @@ function renderVocabPairs(){
     renderVocabPairs();
   }));
 
-  const n = Object.keys(S.vocabPairs).length;
+  const faits = groupe.filter(idx=>S.vocabPairs[ex.rows[idx].id]!==undefined).length;
   const scoreEl = document.getElementById('score-'+ex.id);
-  if(scoreEl) scoreEl.textContent = n+' / '+ex.rows.length+' associé';
+  if(scoreEl) scoreEl.textContent = faits+' / '+groupe.length+' associé · groupe '
+    + (S.vocabGroupNo+1) + ' sur ' + vocNbGroupes(ex);
 }
+function vocabAutreGroupe(){
+  const ex = EXOS.find(e=>e.id==='prVocab');
+  if(!ex) return;
+  vocGroupeCourant(ex);
+  S.vocabGroupNo = (S.vocabGroupNo + 1) % vocNbGroupes(ex);
+  S.vocabOrderNo = -1;
+  S.vocabPick = null;
+  S.fb = {};
+  renderVocabPairs();
+  const c = document.getElementById('exo-prVocab');
+  if(c) c.scrollIntoView({behavior:'smooth', block:'start'});
+}
+
+// ── EXERCICE 2 · Je me souviens du mot ────────────────────────────────
+// Rappel actif : le mot seul, puis la réponse, puis l'élève dit s'il savait.
+// C'est la seule des trois activités qui fasse vraiment travailler la mémoire.
+let VR = {paquet:[], i:0, su:0, revoir:[], revele:false};
+
+// Résultats gardés d'un cours à l'autre : les mots « à revoir » repassent
+// devant au prochain tirage.
+function vocRappelHisto(){ return vocLire(VOC_LS_RAPPEL, {}); }
+function vocRappelNoter(mot, su){
+  const h = vocRappelHisto();
+  const e = h[mot] || {su:0, revoir:0};
+  if(su) e.su++; else e.revoir++;
+  e.etat = su ? 'su' : 'revoir';
+  e.dernier = new Date().toISOString().slice(0,10);
+  h[mot] = e;
+  vocEcrire(VOC_LS_RAPPEL, h);
+}
+function vocRappelTirage(){
+  const h = vocRappelHisto();
+  const rang = i=>{
+    const e = h[FC_CARDS[i].word];
+    if(!e) return 1;                    // jamais vu
+    return e.etat==='revoir' ? 0 : 2;   // à revoir d'abord, su en dernier
+  };
+  return FC_CARDS.map((c,i)=>i)
+    .sort((a,b)=> (rang(a)-rang(b)) || (Math.random()-.5))
+    .slice(0, Math.min(VOC_TAILLE_PAQUET, FC_CARDS.length));
+}
+function vocRappelDemarrer(indices){
+  VR = {paquet: indices && indices.length ? indices : vocRappelTirage(),
+        i:0, su:0, revoir:[], revele:false};
+  vocRappelRender();
+}
+function vocRappelRender(){
+  const host = document.getElementById('vcRappelBody');
+  const scoreEl = document.getElementById('score-vcRappel');
+  if(!host) return;
+
+  if(VR.i >= VR.paquet.length){
+    const n = VR.revoir.length;
+    if(scoreEl) scoreEl.textContent = VR.su+' / '+VR.paquet.length+' su';
+    let h = '<div class="vc-bilan">'+(n===0
+      ? '✓ Vous avez su les '+VR.paquet.length+' mots du paquet.'
+      : (n===1 ? '1 mot reste à revoir.' : n+' mots restent à revoir.'))+'</div>';
+    if(n) h += '<div class="vc-bilan-s">'+VR.revoir.map(i=>esc(FC_CARDS[i].word)).join(' · ')+'</div>';
+    h += '<div class="vc-actions">';
+    if(n) h += '<button type="button" class="btn btn-pri" id="vcReprise">Reprendre les mots à revoir</button>';
+    h += '<button type="button" class="btn btn-ghost" id="vcNeuf">Un autre paquet de mots</button></div>';
+    host.innerHTML = h;
+    const rep = document.getElementById('vcReprise');
+    if(rep) rep.addEventListener('click', ()=>vocRappelDemarrer(VR.revoir.slice()));
+    document.getElementById('vcNeuf').addEventListener('click', ()=>vocRappelDemarrer(null));
+    return;
+  }
+
+  const c = FC_CARDS[VR.paquet[VR.i]];
+  if(scoreEl) scoreEl.textContent = VR.su+' / '+VR.paquet.length+' su';
+
+  let h = '<div class="vc-carte"><div class="vc-mot">'+esc(c.word)+'</div>';
+  if(!VR.revele){
+    h += '<div class="vc-q">Que veut dire ce mot ?</div>'
+       + '<div class="vc-actions"><button type="button" class="btn btn-pri" id="vcVoir">Voir la réponse</button></div></div>';
+    host.innerHTML = h;
+    document.getElementById('vcVoir').addEventListener('click', ()=>{ VR.revele = true; vocRappelRender(); });
+    return;
+  }
+
+  const trad = vocTradBalisage();
+  h += '</div><div class="vc-rep">'
+     + '<div class="vc-def">'+esc(c.def)+'</div>'
+     + '<div class="vc-ex">'+c.ex+'</div>'
+     + trad.html
+     + '<div class="vc-actions">'
+     + '<button type="button" class="vc-note vc-note--su" id="vcSu">✓ Je le savais</button>'
+     + '<button type="button" class="vc-note vc-note--revoir" id="vcRevoir">↺ À revoir</button>'
+     + '</div></div>';
+  host.innerHTML = h;
+  vocTradBrancher(trad.id, c.word, c.def, c.ex);
+  document.getElementById('vcSu').addEventListener('click', ()=>vocRappelSuivant(true));
+  document.getElementById('vcRevoir').addEventListener('click', ()=>vocRappelSuivant(false));
+}
+function vocRappelSuivant(su){
+  const idx = VR.paquet[VR.i];
+  vocRappelNoter(FC_CARDS[idx].word, su);
+  if(su) VR.su++; else VR.revoir.push(idx);
+  VR.i++;
+  VR.revele = false;
+  vocRappelRender();
+}
+
+// ── EXERCICE 3 · Le mot et son image ──────────────────────────────────
+// Une photo, trois mots, un seul juste. L'ordre des trois boutons est tiré
+// au sort à chaque image : autrement la bonne réponse finit toujours au même
+// endroit et l'élève répond à la position, pas au mot.
+let VI = {ordre:[], i:0, juste:0, choix:[], repondu:false};
+
+function vocImageMots(){ return FC_CARDS.map((c,i)=>i).filter(i=>FC_CARDS[i].img); }
+function vocImageDemarrer(){
+  VI = {ordre: vocImageMots().sort(()=>Math.random()-.5), i:0, juste:0, choix:[], repondu:false};
+  vocImagePrepare();
+}
+function vocImagePrepare(){
+  VI.repondu = false;
+  const bon = VI.ordre[VI.i];
+  if(bon === undefined){ VI.choix = []; vocImageRender(); return; }
+  const leurres = FC_CARDS.map((c,i)=>i).filter(i=>i!==bon)
+    .sort(()=>Math.random()-.5).slice(0,2);
+  VI.choix = [bon].concat(leurres).sort(()=>Math.random()-.5);
+  vocImageRender();
+}
+function vocImageRender(){
+  const host = document.getElementById('vcImageBody');
+  const scoreEl = document.getElementById('score-vcImage');
+  if(!host) return;
+  if(scoreEl) scoreEl.textContent = VI.juste+' / '+VI.ordre.length+' juste';
+
+  if(VI.i >= VI.ordre.length){
+    host.innerHTML = '<div class="vc-bilan">✓ Vous avez fait les '+VI.ordre.length+' images. '
+      + VI.juste+' bonne'+(VI.juste>1?'s':'')+' réponse'+(VI.juste>1?'s':'')+'.</div>'
+      + '<div class="vc-actions"><button type="button" class="btn btn-ghost" id="vcImgNeuf">Recommencer</button></div>';
+    document.getElementById('vcImgNeuf').addEventListener('click', vocImageDemarrer);
+    return;
+  }
+
+  const bon = VI.ordre[VI.i];
+  let h = '<img class="vc-photo" src="'+esc(FC_CARDS[bon].img)+'" alt="Photo à associer à un mot de la liste">'
+        + '<div class="vc-choix">'
+        + VI.choix.map(i=>'<button type="button" class="choice" data-i="'+i+'">'+esc(FC_CARDS[i].word)+'</button>').join('')
+        + '</div><div id="vcImgApres"></div>';
+  host.innerHTML = h;
+  host.querySelectorAll('.choice').forEach(b=>b.addEventListener('click', ()=>vocImageRepondre(parseInt(b.dataset.i,10))));
+}
+function vocImageRepondre(choisi){
+  if(VI.repondu) return;
+  VI.repondu = true;
+  const bon = VI.ordre[VI.i];
+  const ok = choisi === bon;
+  if(ok) VI.juste++;
+  // Le glyphe accompagne toujours la couleur — la couleur ne dit rien seule.
+  document.querySelectorAll('#vcImageBody .choice').forEach(b=>{
+    const i = parseInt(b.dataset.i,10);
+    b.setAttribute('aria-disabled','true');
+    if(i===bon){ b.classList.add(ok?'is-ok':'is-answer'); b.textContent = (ok?'✓ ':'← ')+FC_CARDS[i].word; }
+    else if(i===choisi){ b.classList.add('is-no'); b.textContent = '✗ '+FC_CARDS[i].word; }
+  });
+  const scoreEl = document.getElementById('score-vcImage');
+  if(scoreEl) scoreEl.textContent = VI.juste+' / '+VI.ordre.length+' juste';
+
+  const apres = document.getElementById('vcImgApres');
+  const c = FC_CARDS[bon];
+  const trad = vocTradBalisage();
+  apres.innerHTML = '<div class="vc-rep"><div class="vc-def">'+esc(c.def)+'</div>'
+    + '<div class="vc-ex">'+c.ex+'</div>' + trad.html
+    + '<div class="vc-actions"><button type="button" class="btn btn-pri" id="vcImgSuite">Une autre image</button></div></div>';
+  vocTradBrancher(trad.id, c.word, c.def, c.ex);
+  document.getElementById('vcImgSuite').addEventListener('click', ()=>{ VI.i++; vocImagePrepare(); });
+}
+
+// ── MONTAGE DE LA SECTION ─────────────────────────────────────────────
+// Les identifiants des trois cartes, dans l'ordre d'affichage. toggleVocabExo
+// s'en sert pour n'ouvrir que celles-là.
+const VOC_CARTES = ['exo-prVocab', 'exo-vcRappel', 'exo-vcImage'];
+
+function vocCarteHtml(id, num, titre, sous, score){
+  return '<div class="card" id="'+id+'" style="display:none">'
+    + '<div class="c-hdr"><span class="tag">'+esc(num)+'</span>'
+    + '<span class="exo-score" id="score-'+id.replace('exo-','')+'" aria-live="polite">'+esc(score)+'</span>'
+    + '<span class="ctit">'+esc(titre)+'</span><span class="csub">'+esc(sous)+'</span></div>'
+    + '<div id="'+id.replace('exo-','')+'Body"></div></div>';
+}
+function vocabBuild(){
+  const host = document.getElementById('exs-prep');
+  const carteUn = document.getElementById('exo-prVocab');
+  if(!host || !carteUn) return;
+
+  // L'en-tête (choix de la langue) passe devant l'exercice 1.
+  carteUn.insertAdjacentHTML('beforebegin', vocEnteteHtml());
+  const tete = document.getElementById('voc-head');
+  if(tete) tete.style.display = 'none';
+  vocEnteteBrancher();
+
+  // Exercice 2, puis exercice 3 — sauté si aucun mot n'a de photo.
+  let h = vocCarteHtml('exo-vcRappel', 'Vocabulaire · 2', 'Je me souviens du mot',
+    'Lisez le mot, cherchez son sens dans votre tête, puis vérifiez.', '0 / 0 su');
+  if(vocImageMots().length >= 3){
+    h += vocCarteHtml('exo-vcImage', 'Vocabulaire · 3', 'Le mot et son image',
+      'Regardez la photo, puis choisissez le mot qui lui va.', '0 / 0 juste');
+  }
+  carteUn.insertAdjacentHTML('afterend', h);
+
+  renderVocabPairs();
+  vocRappelDemarrer(null);
+  if(document.getElementById('exo-vcImage')) vocImageDemarrer();
+}
+
+// Ouverture / fermeture du bloc vocabulaire. Tant qu'il est ouvert, les
+// autres exercices de « Je découvre » sont mis de côté : une chose à la fois.
+function toggleVocabExo(force){
+  const carteUn = document.getElementById('exo-prVocab');
+  const btn = document.getElementById('btnVocabToggle');
+  if(!carteUn) return;
+  const opening = (typeof force==='boolean') ? force : carteUn.style.display==='none';
+
+  const tete = document.getElementById('voc-head');
+  if(tete) tete.style.display = opening ? '' : 'none';
+  VOC_CARTES.forEach(id=>{
+    const c = document.getElementById(id);
+    if(c) c.style.display = opening ? '' : 'none';
+  });
+  if(btn) btn.textContent = opening ? "Fermer l'exercice de vocabulaire" : 'Apprendre les mots de vocabulaire';
+
+  EXOS.filter(e=>e.sec==='prep' && e.id!=='prVocab').forEach(e=>{
+    const c = document.getElementById('exo-'+e.id);
+    if(c) c.style.display = opening ? 'none' : '';
+  });
+
+  if(opening) carteUn.scrollIntoView({behavior:'smooth', block:'start'});
+  else if(btn) btn.scrollIntoView({behavior:'smooth', block:'center'});
+}
+
 function toggleScript(btn, secId){
   const el = document.getElementById('script-'+secId);
   if(!el) return;
@@ -2087,7 +2580,10 @@ function buildStatic(){
       // trackPlacement() pour rester compté dans l'étoile globale.
       h+='<div class="c-hdr">'+exoNumBadge(ex.num)+'<span class="tag">'+esc(ex.num)+'</span><span class="exo-score" id="score-'+ex.id+'" aria-live="polite">0 / '+ex.rows.length+' associé</span><span class="ctit">'+esc(ex.tit)+'</span><span class="csub">'+esc(ex.sub)+'</span></div>';
       h+='<div class="pair-grid"><div class="stack" id="vocab-words"></div><div class="stack" id="vocab-defs"></div></div>';
-      h+='<button class="btn btn-ghost" type="button" style="margin-top:14px" onclick="toggleVocabExo(false)">Fermer</button>';
+      h+='<div class="vc-actions" style="margin-top:14px">';
+      h+='<button class="btn btn-pri" type="button" id="vocab-suite" onclick="vocabAutreGroupe()">Un autre groupe de mots</button>';
+      h+='<button class="btn btn-ghost" type="button" onclick="toggleVocabExo(false)">Fermer</button>';
+      h+='</div>';
       card.innerHTML=h;
       host.appendChild(card);
       return;
@@ -2106,7 +2602,7 @@ function buildStatic(){
     host.appendChild(card);
   });
   injectCustom();
-  if(document.getElementById('vocab-words')) renderVocabPairs();
+  if(document.getElementById('vocab-words')) vocabBuild();
 }
 
 // ── SECTIONS PERSONNALISÉES (oral / écrit / autoéval) ─────────────────
@@ -2271,7 +2767,7 @@ function injectCustom(){
   document.getElementById('exs-retiens').innerHTML = `
    <div class="card custom">
      <div class="c-hdr"><span class="tag" style="background:#166534">Je retiens des mots</span><span class="ctit" style="color:#166534">Mes mots utiles</span></div>
-     <p class="lead">Note ici les mots et expressions à retenir. Tu peux aussi <span style="font-weight:900;cursor:pointer;text-decoration:underline dotted;color:#166534" onclick="fcOpen(0)">réviser les cartes mémoire 🃏</span>.</p>
+     <p class="lead">Notez ici les mots et les expressions à retenir. Vous pouvez aussi <span style="font-weight:900;cursor:pointer;text-decoration:underline dotted;color:#166534" onclick="fcOpen(0)">réviser les cartes mémoire 🃏</span>.</p>
      <div style="font-weight:800;color:#166534;font-size:13px;margin:6px 0 4px">Différents problèmes dans un logement ou un immeuble</div>
      <textarea rows="2" placeholder="Ex. : une fuite, un dégât d'eau, une infiltration, un bris, une invasion de fourmis…"></textarea>
      <div style="font-weight:800;color:#166534;font-size:13px;margin:12px 0 4px">Des adjectifs pour décrire un problème</div>
@@ -2283,7 +2779,7 @@ function injectCustom(){
    </div>
    <div class="card custom">
      <div class="c-hdr"><span class="tag" style="background:#166534">Autoévaluation</span><span class="ctit" style="color:#166534">Qu'est-ce que je suis capable de faire ?</span></div>
-     <p class="lead">Pour chaque énoncé, choisis : pas encore 😟, un peu 🙂, ou oui 😃.</p>
+     <p class="lead">Pour chaque énoncé, choisissez : pas encore 😟, un peu 🙂, ou oui 😃.</p>
      ${SELF.map((s,i)=>`<div class="selfrow"><div class="self-txt">${s}</div><div class="self-opts">
         <button onclick="rate(${i},this)">😟</button><button onclick="rate(${i},this)">🙂</button><button onclick="rate(${i},this)">😃</button>
      </div></div>`).join('')}
@@ -2294,7 +2790,7 @@ function injectCustom(){
 function rate(i,btn){ [...btn.parentElement.children].forEach(b=>b.classList.remove('sel')); btn.classList.add('sel'); }
 function finishEval(){
   const el=document.getElementById('evalDone');
-  el.innerHTML='<div class="fb-c">🎉 Bravo, tu as terminé le module « Pouvez-vous régler le problème ? » ! Tu peux revenir sur n\'importe quel onglet pour pratiquer encore.</div>';
+  el.innerHTML='<div class="fb-c">🎉 Bravo, vous avez terminé le module « Pouvez-vous régler le problème ? » ! Vous pouvez revenir sur n\'importe quel onglet pour pratiquer encore.</div>';
   el.classList.add('on');
   lmsTrack('exercise_completed',{finished:true});
 }

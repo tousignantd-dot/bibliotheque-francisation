@@ -158,7 +158,7 @@
   document.getElementById('exs-retiens').innerHTML = `
    <div class="card custom">
      <div class="c-hdr"><span class="tag" style="background:#166534">Je retiens des mots</span><span class="ctit" style="color:#166534">Mes mots utiles</span></div>
-     <p class="lead">Note ici les mots et expressions à retenir. Tu peux aussi <span style="font-weight:900;cursor:pointer;text-decoration:underline dotted;color:#166534" onclick="fcOpen(0)">réviser les cartes mémoire 🃏</span>.</p>
+     <p class="lead">Notez ici les mots et les expressions à retenir. Vous pouvez aussi <span style="font-weight:900;cursor:pointer;text-decoration:underline dotted;color:#166534" onclick="fcOpen(0)">réviser les cartes mémoire 🃏</span>.</p>
      <div style="font-weight:800;color:#166534;font-size:13px;margin:6px 0 4px">Différents problèmes dans un logement ou un immeuble</div>
      <textarea rows="2" placeholder="Ex. : une fuite, un dégât d'eau, une infiltration, un bris, une invasion de fourmis…"></textarea>
      <div style="font-weight:800;color:#166534;font-size:13px;margin:12px 0 4px">Des adjectifs pour décrire un problème</div>
@@ -170,7 +170,7 @@
    </div>
    <div class="card custom">
      <div class="c-hdr"><span class="tag" style="background:#166534">Autoévaluation</span><span class="ctit" style="color:#166534">Qu'est-ce que je suis capable de faire ?</span></div>
-     <p class="lead">Pour chaque énoncé, choisis : pas encore 😟, un peu 🙂, ou oui 😃.</p>
+     <p class="lead">Pour chaque énoncé, choisissez : pas encore 😟, un peu 🙂, ou oui 😃.</p>
      ${SELF.map((s,i)=>`<div class="selfrow"><div class="self-txt">${s}</div><div class="self-opts">
         <button onclick="rate(${i},this)">😟</button><button onclick="rate(${i},this)">🙂</button><button onclick="rate(${i},this)">😃</button>
      </div></div>`).join('')}

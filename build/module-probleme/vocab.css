@@ -1,0 +1,83 @@
+/* ── SECTION VOCABULAIRE ───────────────────────────────────────────────
+   Trois exercices sur la même liste de mots + la traduction en langue
+   maternelle. Aucune couleur en dur : tout passe par les jetons du système
+   de design (assets/design-system/tokens/), déjà aliasés en --ws-* par le
+   gabarit. Rien sous 17 px, cibles ≥ 44 px, la couleur jamais seule. */
+
+/* Le gabarit fige .chip et .csub à 15 px. La charte est explicite : « jamais
+   15 px pour un énoncé », consigne et définition valent --fs-body-sm (17 px) ;
+   seuls les libellés d'interface (bouton 15 px, sur-titre 13 px) descendent
+   plus bas. On remonte donc les deux, mais dans la seule section vocabulaire :
+   le reste du module garde ses tailles tant qu'on ne l'a pas repris. */
+#exo-prVocab .chip,#exo-vcRappel .chip,#exo-vcImage .chip{font-size:17px;line-height:1.5}
+#exo-prVocab .csub,#exo-vcRappel .csub,#exo-vcImage .csub{font-size:17px}
+
+/* En-tête de la section : le choix de la langue, mémorisé pour tous les modules. */
+.voc-head{display:flex;align-items:center;gap:12px;flex-wrap:wrap;
+  background:var(--ws-card);border:1px solid var(--ws-line);border-radius:var(--r-md);
+  padding:16px var(--pad-card);margin-bottom:16px}
+.voc-head-t{font-size:17px;font-weight:800;color:var(--ws-ink)}
+.voc-head-s{font-size:17px;font-weight:500;color:var(--ws-sub);flex-basis:100%}
+.voc-lang{font-family:inherit;font-size:17px;font-weight:700;color:var(--ws-ink);
+  background:var(--ws-card);border:2px solid var(--ws-line);border-radius:var(--r-sm);
+  padding:10px 14px;min-height:44px;cursor:pointer}
+.voc-lang:hover{border-color:var(--ws-accent)}
+
+/* Le bloc de traduction — masqué tant que l'élève ne le demande pas : une
+   traduction visible d'emblée et le français n'est plus traité. */
+.voc-tr{margin-top:14px;padding:14px 16px;border-radius:var(--r-sm);
+  background:var(--ws-accent-bg);border:1px solid var(--ws-line)}
+.voc-tr[hidden]{display:none}
+.voc-tr-mot{font-size:19px;font-weight:900;color:var(--ws-ink);line-height:1.4}
+.voc-tr-def{font-size:17px;font-weight:500;color:var(--ws-ink);line-height:1.6;margin-top:6px}
+.voc-tr-ex{font-size:17px;font-weight:500;color:var(--ws-sub);line-height:1.6;margin-top:6px}
+.voc-tr[dir="rtl"]{text-align:right}
+.voc-tr-att{font-size:17px;font-weight:600;color:var(--ws-sub)}
+/* Signalement : discret, mais atteignable au clavier et assez grand au doigt. */
+.voc-flag{display:inline-block;margin-top:10px;padding:6px 0;min-height:44px;
+  background:none;border:none;font-family:inherit;font-size:17px;font-weight:600;
+  color:var(--ws-sub);text-decoration:underline dotted;cursor:pointer}
+.voc-flag:hover{color:var(--ws-ink)}
+.voc-flag[disabled]{cursor:default;text-decoration:none;opacity:.8}
+
+/* ── Exercice 2 · Je me souviens du mot ─────────────────────────────── */
+.vc-carte{text-align:center;padding:8px 0 4px}
+.vc-mot{font-size:30px;font-weight:900;color:var(--ws-ink);line-height:1.25;
+  margin-bottom:8px;word-break:break-word}
+.vc-q{font-size:17px;font-weight:600;color:var(--ws-sub);margin-bottom:18px}
+.vc-rep{text-align:left;border-top:1px solid var(--ws-line);margin-top:18px;padding-top:16px}
+.vc-def{font-size:19px;font-weight:700;color:var(--ws-ink);line-height:1.55}
+.vc-ex{font-size:17px;font-weight:500;color:var(--ws-sub);line-height:1.6;margin-top:8px}
+.vc-ex strong{color:var(--ws-ink);font-weight:800}
+.vc-actions{display:flex;gap:10px;flex-wrap:wrap;margin-top:18px}
+.vc-actions .btn{min-height:44px}
+/* Notation : chaque bouton porte un glyphe, jamais la couleur seule. */
+.vc-note{flex:1 1 200px;min-height:44px;font-family:inherit;font-size:17px;font-weight:800;
+  border-radius:var(--r-sm);border:2px solid var(--ws-line);background:var(--ws-card);
+  color:var(--ws-ink);cursor:pointer;padding:11px 16px}
+.vc-note--su:hover{border-color:var(--ok-line);background:var(--ok-bg);color:var(--ok-ink)}
+.vc-note--revoir:hover{border-color:var(--warn-line);background:var(--warn-bg);color:var(--warn-ink)}
+.vc-bilan{font-size:19px;font-weight:800;color:var(--ws-ink);line-height:1.5;
+  text-align:center;padding:10px 0 4px}
+.vc-bilan-s{font-size:17px;font-weight:500;color:var(--ws-sub);margin-top:8px}
+
+/* ── Exercice 3 · Le mot et son image ───────────────────────────────── */
+.vc-photo{display:block;width:100%;max-width:380px;margin:0 auto 18px;
+  aspect-ratio:1/1;object-fit:cover;border-radius:var(--r-md);
+  border:1px solid var(--ws-line);background:var(--ws-bg)}
+.vc-choix{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:10px}
+.choice{min-height:44px;font-family:inherit;font-size:17px;font-weight:800;
+  border-radius:var(--r-sm);border:2px solid var(--ws-line);background:var(--ws-card);
+  color:var(--ws-ink);cursor:pointer;padding:12px 16px;text-align:center;
+  transition:border-color .15s,background .15s}
+.choice:hover{border-color:var(--ws-accent)}
+.choice[aria-disabled="true"]{pointer-events:none}
+/* Les trois états portent un glyphe ajouté en JS (✓ ✗ ←) : la couleur ne
+   porte jamais l'information à elle seule. */
+.choice.is-ok{border-color:var(--ok-line);background:var(--ok-bg);color:var(--ok-ink)}
+.choice.is-no{border-color:var(--no-line);background:var(--no-bg);color:var(--no-ink)}
+.choice.is-answer{border-style:dashed;border-color:var(--ok-line);color:var(--ok-ink)}
+
+/* Focus clavier visible sur tout ce que la section ajoute. */
+.voc-lang:focus-visible,.voc-flag:focus-visible,.vc-note:focus-visible,
+.choice:focus-visible{outline:3px solid var(--ws-accent);outline-offset:2px}

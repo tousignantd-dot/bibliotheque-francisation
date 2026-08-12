@@ -227,6 +227,60 @@ REC_PATCHES = [
 for old, new in REC_PATCHES:
     html = upgrade(html, old, new, 'moteur d\'enregistrement (%r)' % old[:60])
 
+# ── 5d. Section vocabulaire (trois exercices + traduction) ───────────
+# Le gabarit n'a qu'un exercice de vocabulaire (association mot/définition,
+# toute la liste d'un coup). On le remplace par le bloc complet : six mots à
+# la fois, rappel actif, mot/image, et la traduction en langue maternelle
+# masquée par défaut. Le bloc ne lit que FC_CARDS : il vaut pour tout module.
+def remplacer_entre(text, debut, fin, nouveau, label):
+    """Remplace la région [debut, fin) par `nouveau`. `fin` reste dans le
+    texte : c'est le repère du bloc suivant, pas la fin de la région."""
+    a = text.find(debut)
+    if a < 0:
+        sys.exit('!! %s : début introuvable (%r)' % (label, debut[:50]))
+    b = text.find(fin, a)
+    if b < 0:
+        sys.exit('!! %s : fin introuvable (%r)' % (label, fin[:50]))
+    return text[:a] + nouveau.strip() + '\n\n' + text[b:]
+
+# Le moteur : renderVocabPairs et toggleVocabExo du gabarit sont remplacés
+# par ceux de vocab.js, qui vivent dans la même région.
+html = remplacer_entre(html,
+    '// ── Association mot ↔ définition par CLIC',
+    'function toggleScript(btn, secId){',
+    read('vocab.js'), 'moteur du vocabulaire')
+html = remplacer_entre(html,
+    'function toggleVocabExo(force){',
+    '// ── LOGIQUE DE PLACEMENT',
+    '', 'ancien toggleVocabExo')
+
+html = html.replace('/* Focus clavier visible partout (B.4) */',
+                    read('vocab.css') + '\n\n/* Focus clavier visible partout (B.4) */', 1)
+
+# Le montage des deux nouvelles cartes remplace l'appel direct au rendu.
+OLD_MOUNT = "  if(document.getElementById('vocab-words')) renderVocabPairs();"
+if html.count(OLD_MOUNT) != 1:
+    sys.exit('!! ancre de montage du vocabulaire introuvable ou ambiguë')
+html = html.replace(OLD_MOUNT, "  if(document.getElementById('vocab-words')) vocabBuild();")
+
+# Le pied de l'exercice 1 gagne le bouton « Un autre groupe de mots ».
+OLD_PIED = ('      h+=\'<button class="btn btn-ghost" type="button" style="margin-top:14px" '
+            'onclick="toggleVocabExo(false)">Fermer</button>\';')
+NEW_PIED = ('      h+=\'<div class="vc-actions" style="margin-top:14px">\';\n'
+            '      h+=\'<button class="btn btn-pri" type="button" id="vocab-suite" '
+            'onclick="vocabAutreGroupe()">Un autre groupe de mots</button>\';\n'
+            '      h+=\'<button class="btn btn-ghost" type="button" '
+            'onclick="toggleVocabExo(false)">Fermer</button>\';\n'
+            '      h+=\'</div>\';')
+if html.count(OLD_PIED) != 1:
+    sys.exit('!! pied de l\'exercice de vocabulaire introuvable ou ambigu')
+html = html.replace(OLD_PIED, NEW_PIED)
+
+for repere in ['function vocabBuild()', 'function vocRappelRender()',
+               'function vocImageRender()', 'function toggleVocabExo(force)']:
+    if html.count(repere) != 1:
+        sys.exit('!! %s : absent ou en double après la greffe du vocabulaire' % repere)
+
 # ── 6. Sections personnalisées : oral, jeu de rôle IA, écrit, bilan ──
 old_start = html.find("  // JE ME LANCE")
 old_end   = html.find("function rate(i,btn)")
@@ -236,7 +290,10 @@ html = html[:old_start] + read('custom.js').strip() + '\n' + html[old_end:]
 
 html = html.replace(
     "🎉 Bravo, tu as terminé le module « Consulter au bon endroit » !",
-    "🎉 Bravo, tu as terminé le module « Pouvez-vous régler le problème ? » !")
+    "🎉 Bravo, vous avez terminé le module « Pouvez-vous régler le problème ? » !")
+html = html.replace(
+    "Tu peux revenir sur n\\'importe quel onglet pour pratiquer encore.",
+    "Vous pouvez revenir sur n\\'importe quel onglet pour pratiquer encore.")
 
 # ── 7. Filet de sécurité ─────────────────────────────────────────────
 leftovers = []
