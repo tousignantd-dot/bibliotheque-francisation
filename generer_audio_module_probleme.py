@@ -15,9 +15,17 @@ module dans le navigateur et lancer dans la console :
        const mm=el.getAttribute('onclick').match(
          /playWord\\(this,\\s*'((?:[^'\\\\]|\\\\.)*)'\\s*,\\s*'((?:[^'\\\\]|\\\\.)*)'\\)/);
        if(mm) m[mm[2].replace(/\\\\'/g,"'")]=mm[1].replace(/\\\\'/g,"'");});
+     EXOS.filter(e=>e.type==='vf' && (e.cards||e.listen)).forEach(e=>
+       e.rows.forEach(r=>{m[e.id+'_'+r.id]=r.txt.replace(/<[^>]+>/g,'')}));
      Object.assign(m, plAudioManifest()); return JSON.stringify(m);})()
 
 puis coller le résultat dans sons_module_probleme.json, à côté de ce script.
+
+La deuxième boucle n'est pas un doublon : dans les exercices à cartes
+(cards/listen), le bouton d'écoute reçoit son gestionnaire en JS
+(sb.onclick = …) et non par un attribut onclick — le premier sélecteur ne
+le voit donc pas. C'est ce qui avait laissé « Je me prépare, exercice 2 »
+(prPhon_pha … prPhon_phj) sans MP3.
 
 Usage :  python3 generer_audio_module_probleme.py [--force] [--only prefixe,...]
 """

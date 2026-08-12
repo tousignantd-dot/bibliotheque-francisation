@@ -82,6 +82,36 @@ html = html.replace(
     "h+=aiBadge+'<div class=\"wlist\">';",
     "h+=aiBadge+'<div class=\"wlist'+(ex.cols===2?' wcols2':'')+'\">';")
 
+# ── 5c. Tuiles Vrai/Faux : largeur adaptée à l'étiquette ─────────────
+# Le gabarit fige les tuiles à 72 px : parfait pour VRAI/FAUX, mais
+# « LOCATAIRE / PROPRIÉTAIRE » (Je mets en application, exercice 1) débordait
+# de la carte et l'en-tête se lisait « LOCATAIREPROPRIÉTAIRE ». On passe la
+# largeur en variable CSS, calculée une fois par exercice d'après l'étiquette
+# la plus longue ; l'en-tête et les boutons restent alignés puisqu'ils lisent
+# la même variable.
+html = html.replace(
+    '.vf-head-opt{width:72px;flex:0 0 72px;',
+    '.vf-head-opt{width:var(--vfw,72px);flex:0 0 var(--vfw,72px);')
+html = html.replace(
+    ".vf-opt{width:72px;flex:0 0 72px;",
+    ".vf-opt{width:var(--vfw,72px);flex:0 0 var(--vfw,72px);padding:0 6px;")
+# Sous 620 px, les tuiles passent sous l'énoncé plutôt que de le comprimer.
+html = html.replace(
+    '.vf-summary{font-size:13px;font-weight:800}',
+    '@media(max-width:620px){\n'
+    '  .vf-head{display:none}\n'
+    '  .vf-opts{margin-left:0;width:100%}\n'
+    '  .vf-opt{flex:1 1 0;width:auto}\n'
+    '}\n'
+    '.vf-summary{font-size:13px;font-weight:800}')
+VF_W = ("      const _vfw=Math.max(72, Math.max.apply(null,"
+        "ex.tiles.map(function(t){return t.length}))*8.5+28);\n"
+        "      card.style.setProperty('--vfw', _vfw+'px');\n")
+old_vf = "    if(ex.type==='vf'){\n"
+if html.count(old_vf) != 1:
+    sys.exit('!! ancre du rendu vf introuvable ou ambiguë')
+html = html.replace(old_vf, old_vf + VF_W)
+
 # ── 5b. Greffe du jeu de rôle depuis module-logement ─────────────────
 # Le moteur de conversation (CSS + JS) est identique d'un module à l'autre ;
 # seul le scénario change, et il vit dans server.py. On le recopie plutôt que
