@@ -1,4 +1,4 @@
-  // ── JE METS EN APPLICATION ──────────────────────────────────────────
+  // ── JE ME LANCE ──────────────────────────────────────────
   // Trois productions : un jeu de rôle avec l'assistant, une prise orale
   // corrigée, un courriel corrigé. Le jeu de rôle vient en premier parce
   // qu'il sert de répétition avant les deux autres.
@@ -79,19 +79,38 @@
    </div>
 
    <div class="card custom">
-     <div class="c-hdr"><span class="tag" style="background:#0D9488">Production orale</span><span class="ctit" style="color:#0D9488">Décris ton problème en trois temps</span></div>
-     <p class="lead">Choisis un problème de logement — le tien ou un problème inventé — et <b>décris-le comme si tu parlais à ta propriétaire</b>. Suis les trois temps : <b>le fait</b>, <b>depuis quand et l'effet sur toi</b>, <b>ta demande</b>. Enregistre-toi, obtiens une rétroaction, puis envoie ta prise si tu le veux.</p>
-     <div class="rec-zone"><button id="recBtn">🎤</button><div class="rec-lbl" id="recLbl">Touche pour t'enregistrer</div></div>
-     <div id="poPrev" class="hidden" style="display:flex;flex-direction:column;gap:12px">
+     <div class="prod-eyebrow"><span class="prod-num">1</span><span class="prod-kind">Production orale</span></div>
+     <h3 class="prod-tit">Décris ton problème en trois temps</h3>
+     <p class="prod-lead">Choisis un problème de logement — le tien ou un problème inventé — et décris-le comme si tu parlais à ta propriétaire.</p>
+     <div class="plan">
+       <div class="plan-step"><div class="plan-no">TEMPS 1</div><div class="plan-t">Le fait</div><div class="plan-ex">« Il y a une fuite sous l'évier de la cuisine. »</div></div>
+       <div class="plan-step"><div class="plan-no">TEMPS 2</div><div class="plan-t">Depuis quand, et l'effet sur toi</div><div class="plan-ex">« Ça fait deux semaines. Je ne peux plus utiliser ma cuisine. »</div></div>
+       <div class="plan-step"><div class="plan-no">TEMPS 3</div><div class="plan-t">Ta demande</div><div class="plan-ex">« Pourriez-vous faire venir un plombier cette semaine ? »</div></div>
+     </div>
+     <div class="rec-panel">
+       <div class="rec-steps">
+         <div class="rec-step on" id="recStep1"><span class="n">1</span><span class="l">Je m'enregistre</span></div>
+         <div class="rec-step" id="recStep2"><span class="n">2</span><span class="l">Je m'écoute et je corrige</span></div>
+         <div class="rec-step" id="recStep3"><span class="n">3</span><span class="l">J'envoie à mon enseignant</span></div>
+       </div>
+       <div class="rec-body">
+         <button id="recBtn" type="button" aria-label="Démarrer l'enregistrement"><span class="dot"></span></button>
+         <div>
+           <div class="rec-lbl" id="recLbl">Touche pour t'enregistrer</div>
+           <div class="rec-hint">Parle environ 30 secondes. Tu pourras recommencer autant de fois que tu veux.</div>
+         </div>
+       </div>
+     </div>
+     <div id="poPrev" class="hidden prod-tools" style="display:flex;flex-direction:column;gap:12px">
        <audio id="poAudio" controls style="width:100%"></audio>
        <textarea id="poText" rows="2" placeholder="Transcription automatique (tu peux la corriger)…"></textarea>
        <div style="display:flex;gap:10px;flex-wrap:wrap">
-         <button class="btn btn-ghost" onclick="resetRec()">↺ Recommencer</button>
-         <button class="btn btn-pri" id="poFbBtn" onclick="poGetFeedback()">💬 Obtenir une rétroaction</button>
+         <button class="btn btn-ghost" onclick="resetRec()">Recommencer</button>
+         <button class="btn btn-pri" id="poFbBtn" onclick="poGetFeedback()">Obtenir une rétroaction</button>
        </div>
        <div class="fb" id="poFb" aria-live="polite"></div>
        <div id="poSend" style="display:none;gap:10px;flex-wrap:wrap;align-items:center">
-         <button class="btn btn-send" id="poSendBtn" onclick="poSend()">📨 Envoyer à mon enseignant</button>
+         <button class="btn btn-send" id="poSendBtn" onclick="poSend()">Envoyer à mon enseignant</button>
        </div>
      </div>
      <div class="status" id="poStatus">Analyse en cours…</div>
@@ -99,10 +118,28 @@
    </div>
 
    <div class="card custom">
-     <div class="c-hdr"><span class="tag" style="background:#0E7490">Production écrite</span><span class="ctit" style="color:#0E7490">Le courriel qui laisse une trace</span></div>
-     <p class="lead">Tu as téléphoné à ta propriétaire, madame Rioux, mais rien n'a bougé depuis. <b>Écris-lui un courriel</b> pour garder une trace de ta demande. Ton message doit contenir : <b>le problème</b>, <b>depuis quand</b> il dure, <b>la conséquence</b> sur ta vie, et une <b>demande claire</b>. Emploie au moins une fois <em>faire</em> + infinitif. (5 à 8 phrases)</p>
-     <textarea id="peText" rows="7" placeholder="Bonjour Madame Rioux,&#10;Je vous écris pour faire suite à notre conversation téléphonique du…"></textarea>
-     <div style="margin-top:12px"><button class="btn btn-pri" id="peBtn" onclick="peCheck()">✍️ Vérifier mon message</button></div>
+     <div class="prod-eyebrow"><span class="prod-num">2</span><span class="prod-kind">Production écrite</span></div>
+     <h3 class="prod-tit">Le courriel qui laisse une trace</h3>
+     <p class="prod-lead">Tu as téléphoné à madame Rioux, mais rien n'a bougé. Écris-lui un courriel de 5 à 8 phrases pour garder une trace de ta demande.</p>
+     <div class="req">
+       <div class="req-hd">Ton courriel doit contenir</div>
+       <div class="req-grid">
+         <label class="req-it"><input type="checkbox"><span class="req-box"></span><span>Le problème</span></label>
+         <label class="req-it"><input type="checkbox"><span class="req-box"></span><span>Depuis quand il dure</span></label>
+         <label class="req-it"><input type="checkbox"><span class="req-box"></span><span>La conséquence sur ta vie</span></label>
+         <label class="req-it"><input type="checkbox"><span class="req-box"></span><span>Une demande claire</span></label>
+       </div>
+       <div class="req-note">Emploie au moins une fois <em>faire</em> + un verbe à l'infinitif.</div>
+     </div>
+     <div class="mail">
+       <div class="mail-row"><span class="mail-k">À</span><span class="mail-v">madame.rioux@courriel.ca</span></div>
+       <div class="mail-row"><span class="mail-k">Objet</span><span class="mail-v">Le problème dans mon logement — suite à notre appel</span></div>
+       <textarea id="peText" rows="7" aria-label="Ton courriel" oninput="peCount()" placeholder="Bonjour Madame Rioux,&#10;Je vous écris pour faire suite à notre conversation téléphonique du…"></textarea>
+       <div class="mail-foot">
+         <span class="mail-count" id="peCountLbl">0 phrase sur 5 à 8</span>
+         <button class="btn-prod" id="peBtn" type="button" onclick="peCheck()">Vérifier mon message</button>
+       </div>
+     </div>
      <div class="fb" id="peFb" aria-live="polite"></div>
      <div class="status" id="peStatus">Analyse en cours…</div>
      <div class="err" id="peErr"></div>

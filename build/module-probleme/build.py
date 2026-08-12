@@ -84,7 +84,7 @@ html = html.replace(
 
 # ── 5c. Tuiles Vrai/Faux : largeur adaptée à l'étiquette ─────────────
 # Le gabarit fige les tuiles à 72 px : parfait pour VRAI/FAUX, mais
-# « LOCATAIRE / PROPRIÉTAIRE » (Je mets en application, exercice 1) débordait
+# « LOCATAIRE / PROPRIÉTAIRE » (Je me lance, exercice 1) débordait
 # de la carte et l'en-tête se lisait « LOCATAIREPROPRIÉTAIRE ». On passe la
 # largeur en variable CSS, calculée une fois par exercice d'après l'étiquette
 # la plus longue ; l'en-tête et les boutons restent alignés puisqu'ils lisent
@@ -129,15 +129,15 @@ def slice_between(text, start_marker, end_marker, label):
     return text[a:b + len(end_marker)]
 
 jr_css = slice_between(log_html,
-    '/* ── Jeu de rôle de la tâche 1',
+    '/* ── Jeu de rôle du défi 1',
     '@media(max-width:640px){.jr-b{max-width:92%}}', 'CSS jeu de rôle')
 jr_js = slice_between(log_html,
     "// ── JEU DE RÔLE AVEC L'ASSISTANT",
     '// ── EXERCICES À ÉCRIRE', 'JS jeu de rôle')
 jr_js = jr_js[:jr_js.rfind('// ── EXERCICES À ÉCRIRE')].rstrip()
 
-jr_css = jr_css.replace('Jeu de rôle de la tâche 1',
-                        'Jeu de rôle de « Je mets en application »')
+jr_css = jr_css.replace('Jeu de rôle du défi 1',
+                        'Jeu de rôle de « Je me lance »')
 # Le cas de départ et le scénario envoyé au serveur.
 jr_js = jr_js.replace("const JR = {log:'A',", "const JR = {log:'chauffage',")
 jr_js = jr_js.replace("logement:JR.log, role:JR.role",
@@ -153,8 +153,70 @@ html = html.replace('/* Focus clavier visible partout (B.4) */',
 html = html.replace('// ── EXERCICES À ÉCRIRE',
                     jr_js + '\n\n// ── EXERCICES À ÉCRIRE', 1)
 
+# ── 5c. Refonte des deux blocs de production (Claude Design) ─────────
+# Le gabarit de consultation présente le micro en gros bouton à émoji et la
+# consigne en un seul paragraphe. Module 9 déplie la consigne en cartes, met
+# le micro dans un panneau à trois étapes et donne au courriel la forme d'un
+# courriel. Le balisage vit dans custom.js ; le CSS et les retouches du
+# moteur d'enregistrement vivent ici, parce qu'ils viennent du gabarit.
+#
+# Cette refonte a déjà été perdue une fois (commit 4b64a3b, écrite à la main
+# dans le HTML généré, effacée par la reconstruction suivante). Elle est donc
+# ancrée ici, avec des repères qui arrêtent le build s'ils ne collent plus.
+OLD_REC_CSS = (
+    '.rec-zone{display:flex;flex-direction:column;align-items:center;gap:10px;margin:8px 0}\n'
+    '#recBtn{width:78px;height:78px;border-radius:50%;border:none;background:#1D6B8F;'
+    'color:#fff;font-size:30px;cursor:pointer;box-shadow:0 4px 16px rgba(15,118,110,.32)}\n'
+    '#recBtn.recording{background:#E23D2E;animation:pulse 1.2s infinite}\n'
+    '@keyframes pulse{0%{box-shadow:0 0 0 0 rgba(226,61,46,.45)}'
+    '70%{box-shadow:0 0 0 16px rgba(226,61,46,0)}100%{box-shadow:0 0 0 0 rgba(226,61,46,0)}}\n'
+    '.rec-lbl{font-size:13px;font-weight:800;color:#4A6F68}\n'
+)
+if html.count(OLD_REC_CSS) != 1:
+    sys.exit('!! CSS du bloc micro introuvable ou ambigu dans le gabarit')
+html = html.replace(OLD_REC_CSS, read('production.css'))
+
+# Le bouton devient un disque qui se change en carré : plus d'émoji dans le
+# texte du bouton, et un aria-label qui suit l'état.
+REC_PATCHES = [
+    # le fil des trois étapes suit l'avancement
+    ("    document.getElementById('poPrev').classList.remove('hidden');\n  };",
+     "    document.getElementById('poPrev').classList.remove('hidden');\n    recStep(2);\n  };"),
+    ("  const btn=document.getElementById('recBtn'); btn.classList.add('recording'); "
+     "btn.textContent='⏹';",
+     "  const btn=document.getElementById('recBtn'); btn.classList.add('recording');\n"
+     "  btn.setAttribute('aria-label',\"Arrêter l'enregistrement\");"),
+    ("  const btn=document.getElementById('recBtn'); if(btn){ btn.classList.remove('recording'); "
+     "btn.textContent='🎤'; }",
+     "  const btn=document.getElementById('recBtn'); if(btn){ btn.classList.remove('recording'); "
+     "btn.setAttribute('aria-label',\"Démarrer l'enregistrement\"); }"),
+    # les deux fonctions nouvelles s'installent devant resetRec
+    ("function resetRec(){\n",
+     "function recStep(n){\n"
+     "  for(let i=1;i<=3;i++){ const s=document.getElementById('recStep'+i); "
+     "if(s) s.classList.toggle('on', i===n); }\n"
+     "}\n"
+     "function peCount(){\n"
+     "  const el=document.getElementById('peText'), lbl=document.getElementById('peCountLbl');\n"
+     "  if(!el||!lbl) return;\n"
+     "  const n=(el.value.match(/[.!?…]+(\\s|$)/g)||[]).length;\n"
+     "  lbl.textContent = n+(n>1?' phrases':' phrase')+' sur 5 à 8';\n"
+     "}\n"
+     "function resetRec(){\n  recStep(1);\n"),
+    ("    document.getElementById('poSend').style.display='flex';",
+     "    document.getElementById('poSend').style.display='flex'; recStep(3);"),
+    ("btn.textContent='📨 Envoyer à mon enseignant'; return; }",
+     "btn.textContent='Envoyer à mon enseignant'; return; }"),
+    ("btn.textContent='📨 Envoyer à mon enseignant'; }",
+     "btn.textContent='Envoyer à mon enseignant'; }"),
+]
+for old, new in REC_PATCHES:
+    if html.count(old) != 1:
+        sys.exit('!! repère du moteur d\'enregistrement introuvable ou ambigu :\n   %r' % old[:70])
+    html = html.replace(old, new, 1)
+
 # ── 6. Sections personnalisées : oral, jeu de rôle IA, écrit, bilan ──
-old_start = html.find("  // JE METS EN APPLICATION")
+old_start = html.find("  // JE ME LANCE")
 old_end   = html.find("function rate(i,btn)")
 if old_start < 0 or old_end < 0:
     sys.exit('!! bloc injectCustom introuvable')
