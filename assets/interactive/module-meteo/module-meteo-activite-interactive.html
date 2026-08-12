@@ -270,7 +270,7 @@ textarea:focus{outline:none;border-color:#1D6B8F}
 
 @media(max-width:900px){.vocab-grid{grid-template-columns:1fr 1fr}.rrow2{grid-template-columns:1fr}}
 
-/* ── ESSAI DE STYLE : "Je me prépare" seulement (inspiré Wealthsimple) ── */
+/* ── ESSAI DE STYLE : "Je découvre" seulement (inspiré Wealthsimple) ── */
 /* Fond neutre, cartes blanches épurées, police géométrique sobre, accent unique. */
 body{
   /* Alias vers le système de design officiel (assets/design-system/) —
@@ -652,7 +652,7 @@ textarea:focus-visible,.winput:focus-visible{outline:none;border-color:var(--ws-
 <div id="hdr">
   <div class="hdr-l">
     <div><div class="hdr-eye">Vie quotidienne · Niveau 4</div>
-    <h1 class="hdr-h1" id="hdr-title">Je me prépare</h1>
+    <h1 class="hdr-h1" id="hdr-title">Je découvre</h1>
     <p class="hdr-lead" id="hdr-lead"></p></div>
   </div>
   <div class="hdr-r">
@@ -699,7 +699,7 @@ textarea:focus-visible,.winput:focus-visible{outline:none;border-color:var(--ws-
 <script>
 // ═══════════════════════════════════════════════════════════════════════
 //  LA VISITE CHEZ LE MÉDECIN — Module interactif Niveau 4 (FLS)
-//  Sections : Je me prépare · Chez le médecin · La langue · Je parle ·
+//  Sections : Je découvre · Chez le médecin · La langue · Je parle ·
 //             J'écris · Je m'évalue — suivi LMS intégré
 // ═══════════════════════════════════════════════════════════════════════
 
@@ -753,21 +753,21 @@ const DIALOGUES = {
 
 // ── SECTIONS ──────────────────────────────────────────────────────────
 const SECTIONS = [
-  {id:'prep', no:'<img class="icon-svg tno-play" src="/assets/interactive/module-meteo/icons/play.svg" alt="">', title:'Je me prépare', color:'#0284C7',
-   lead:"Comprendre une conversation où la météo décide de la journée de travail. Trois exercices avant de commencer.",
+  {id:'prep', no:'<img class="icon-svg tno-play" src="/assets/interactive/module-meteo/icons/play.svg" alt="">', title:'Je découvre', color:'#0284C7',
+   lead:"Comprendre une conversation où la météo décide de la journée de travail. Quatre exercices avant de commencer.",
    intro:"Josée, contremaîtresse d'une équipe de couvreurs, annule la journée sur le toit à cause du verglas annoncé. Diego, son apprenti, voudrait quand même monter.",
-   dialogue:'prep', next:{id:'t1', tit:'Tâche 1 · Le bulletin de six heures', sub:'Comprendre un bulletin météo spécial à la radio.'}},
-  {id:'t1', no:'1', title:'Tâche 1 · Le bulletin de six heures', color:'#C0573A',
+   dialogue:'prep', next:{id:'t1', tit:'Défi 1 · Le bulletin de six heures', sub:'Comprendre un bulletin météo spécial à la radio.'}},
+  {id:'t1', no:'1', title:'Défi 1 · Le bulletin de six heures', color:'#C0573A',
    lead:"Écouter et comprendre un bulletin météo spécial diffusé tôt le matin.",
-   intro:"Tâche 1 — Le météorologue annonce du verglas, des rafales et de la poudrerie pour la journée.",
-   dialogue:'t1', next:{id:'t2', tit:'Tâche 2 · Lire une alerte avant de partir', sub:'Décider de prendre la route ou d\'attendre.'}},
-  {id:'t2', no:'2', title:'Tâche 2 · Lire une alerte avant de partir', color:'#6B4FBB',
+   intro:"Défi 1 — Le météorologue annonce du verglas, des rafales et de la poudrerie pour la journée.",
+   dialogue:'t1', next:{id:'t2', tit:'Défi 2 · Lire une alerte avant de partir', sub:'Décider de prendre la route ou d\'attendre.'}},
+  {id:'t2', no:'2', title:'Défi 2 · Lire une alerte avant de partir', color:'#6B4FBB',
    lead:"Prisca demande à Mado, la répartitrice, si la route est praticable.",
-   intro:"Tâche 2 — Mado consulte les avertissements routiers et informe toute l'équipe.",
-   dialogue:'t2', next:{id:'appli', tit:'Je mets en application', sub:'Planifier une journée de travail, puis écrire un bulletin.'}},
-  {id:'appli', no:'<img class="icon-svg tno-play" src="/assets/interactive/module-meteo/icons/play.svg" alt="">', title:'Je mets en application', color:'#0D9488', custom:true,
+   intro:"Défi 2 — Mado consulte les avertissements routiers et informe toute l'équipe.",
+   dialogue:'t2', next:{id:'appli', tit:'Je me lance', sub:'Planifier une journée de travail, puis écrire un bulletin.'}},
+  {id:'appli', no:'<img class="icon-svg tno-play" src="/assets/interactive/module-meteo/icons/play.svg" alt="">', title:'Je me lance', color:'#0D9488', custom:true,
    lead:"Planifier une journée selon les prévisions, puis écrire un bulletin météo.",
-   intro:"Je mets en application — Explique tes décisions à un collègue, puis rédige un court bulletin météo."},
+   intro:"Je me lance — Explique tes décisions à un collègue, puis rédige un court bulletin météo."},
   {id:'retiens', no:'✓', title:'Je retiens des mots', color:'#166534', custom:true,
    lead:"Noter le vocabulaire utile et réviser avec les cartes mémoire.",
    intro:"Je retiens des mots — Note le vocabulaire utile et révise avec les cartes mémoire."},
@@ -794,7 +794,7 @@ const FC_CARDS = [
 ];
 
 const EXOS = [
-  // ── JE ME PRÉPARE ──
+  // ── JE DÉCOUVRE ──
   {sec:'prep', id:'prVocab', type:'match', num:'Vocabulaire', tit:'Associe le mot ou le groupe de mots à sa définition', color:'#B45309',
    sub:'Choisis un mot, puis sa définition.', noQLbl:true, bankLbl:'Définitions', zonePh:'glissez la définition ici',
    rows: FC_CARDS.map((c,i)=>({id:'pv'+i, q:c.word, aid:'pv'+i, a:c.def}))},
@@ -833,6 +833,21 @@ const EXOS = [
     {q:"théâtre → à l'oral, on dit :", accept:["théât(re)","theat(re)","théâtre"], ph:"…"},
    ]},
 
+  {sec:'prep', id:'prImg', type:'imgmatch', num:'Exercice 4', tit:'Reconnaître le temps qu\'il fait', color:'#0284C7',
+   sub:"Glissez chaque photo sur la description qui lui correspond.",
+   images:[
+    {id:'mt1', src:'/assets/interactive/module-meteo/images/poudrerie.jpg'},
+    {id:'mt2', src:'/assets/interactive/module-meteo/images/pluie-verglacante.jpg'},
+    {id:'mt3', src:'/assets/interactive/module-meteo/images/redoux.jpg'},
+    {id:'mt4', src:'/assets/interactive/module-meteo/images/eclaircie.jpg'},
+   ],
+   rows:[
+    {id:'mi1', txt:"Le vent soulève la neige déjà tombée et efface les lignes de la route : c'est de la poudrerie.", aid:'mt1'},
+    {id:'mi2', txt:"La pluie a gelé en touchant les branches et l'escalier, qui sont couverts de glace : c'est de la pluie verglaçante.", aid:'mt2'},
+    {id:'mi3', txt:"La neige fond et l'eau coule dans le stationnement : c'est un redoux.", aid:'mt3'},
+    {id:'mi4', txt:"Le ciel s'ouvre entre les nuages et le soleil revient sur les toits : c'est une éclaircie.", aid:'mt4'},
+   ]},
+
   {sec:'appli', id:'aMeteo', type:'write', num:'Exercice 1', tit:'Planifie ta journée selon la météo', color:'#0D9488',
    sub:"Réponds à ces questions comme si tu planifiais une journée de travail extérieur avec un collègue.",
    items:[
@@ -844,7 +859,7 @@ const EXOS = [
     {q:"À quel moment de l'année la météo dérange-t-elle le plus ton travail ou tes déplacements ?", hint:"En janvier et en février, à cause des tempêtes.", ph:"…"},
    ]},
 
-  // ── TÂCHE 1 · LE BULLETIN DE SIX HEURES ──
+  // ── DÉFI 1 · LE BULLETIN DE SIX HEURES ──
   {sec:'t1', id:'t1bulletin', type:'write', num:'Exercice 1', tit:'Le bulletin de six heures', color:'#C0573A',
    sub:'Écoutez le bulletin météo, puis répondez.',
    items:[
@@ -893,7 +908,7 @@ const EXOS = [
     {q:"Diego est arrivé au Québec... (il y a deux hivers / pendant deux hivers)", accept:["il y a deux hivers"], ph:"…"},
    ]},
 
-  // ── TÂCHE 2 · LIRE UNE ALERTE AVANT DE PARTIR ──
+  // ── DÉFI 2 · LIRE UNE ALERTE AVANT DE PARTIR ──
   {sec:'t2', id:'t2vf', type:'vf', num:'Exercice 1', tit:'Vrai ou Faux — Prisca et Mado', color:'#6B4FBB',
    sub:'Écoutez le dialogue, puis répondez.', tiles:['VRAI','FAUX'],
    rows:[
@@ -1038,7 +1053,7 @@ const MODULE_SLUG = 'module-meteo';
 // Bump ce numéro chaque fois qu'un MP3 est régénéré, pour forcer le
 // navigateur à recharger le fichier au lieu de servir une version en cache.
 const AUDIO_V = '7';
-// Icônes des boutons son/micro de "Je me prépare" — change ces deux valeurs
+// Icônes des boutons son/micro de "Je découvre" — change ces deux valeurs
 // pour remplacer les emojis par une image (ex. '<img src="/assets/interactive/module-meteo/icons/speaker.svg">').
 const ICON_SPEAK = '<img class="icon-svg" src="/assets/interactive/module-meteo/icons/speaker.svg" alt="Écouter">';
 const ICON_MIC = '<img class="icon-svg" src="/assets/interactive/module-meteo/icons/mic.svg" alt="Micro">';
@@ -1128,7 +1143,7 @@ function playWord(btn, text, fileId){
   a.onerror=()=>{ reset(); speakText(btn, text); };
   a.play().catch(()=>{ reset(); speakText(btn, text); });
 }
-// ── VÉRIFICATION DE PRONONCIATION (reconnaissance vocale native, "Je me prépare" seulement) ──
+// ── VÉRIFICATION DE PRONONCIATION (reconnaissance vocale native, "Je découvre" seulement) ──
 function normPron(s){
   return String(s).toLowerCase().normalize('NFD').replace(/[̀-ͯ]/g,'').replace(/[^a-z0-9\s]/g,'').replace(/\s+/g,' ').trim();
 }
@@ -1709,7 +1724,7 @@ function buildStatic(){
 
 // ── SECTIONS PERSONNALISÉES (oral / écrit / autoéval) ─────────────────
 function injectCustom(){
-  // JE METS EN APPLICATION — jeu de rôle oral + écriture corrigée par l'IA
+  // JE ME LANCE — jeu de rôle oral + écriture corrigée par l'IA
   document.getElementById('exs-appli').innerHTML += `
    <div class="card custom">
      <div class="c-hdr"><span class="tag" style="background:#0D9488">Production orale</span><span class="ctit" style="color:#0D9488">Explique ta décision à un collègue</span></div>

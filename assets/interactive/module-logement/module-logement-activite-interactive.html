@@ -270,7 +270,7 @@ textarea:focus{outline:none;border-color:#1D6B8F}
 
 @media(max-width:900px){.vocab-grid{grid-template-columns:1fr 1fr}.rrow2{grid-template-columns:1fr}}
 
-/* ── ESSAI DE STYLE : "Je me prépare" seulement (inspiré Wealthsimple) ── */
+/* ── ESSAI DE STYLE : "Je découvre" seulement (inspiré Wealthsimple) ── */
 /* Fond neutre, cartes blanches épurées, police géométrique sobre, accent unique. */
 body{
   /* Alias vers le système de design officiel (assets/design-system/) —
@@ -642,7 +642,7 @@ body{
   .savoir-key{font-size:15px}
 }
 
-/* ── Jeu de rôle de la tâche 1 ─────────────────────────────────────────
+/* ── Jeu de rôle du défi 1 ─────────────────────────────────────────
    Les trois annonces sont publiques ; tout ce qui fonde l'écart
    d'information reste sur les fiches papier, jamais à l'écran. */
 .jr-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(190px,1fr));gap:12px;margin:16px 0 4px}
@@ -711,7 +711,7 @@ textarea:focus-visible,.winput:focus-visible{outline:none;border-color:var(--ws-
 <div id="hdr">
   <div class="hdr-l">
     <div><div class="hdr-eye">Logement · Niveau 4</div>
-    <h1 class="hdr-h1" id="hdr-title">Je me prépare</h1>
+    <h1 class="hdr-h1" id="hdr-title">Je découvre</h1>
     <p class="hdr-lead" id="hdr-lead"></p></div>
   </div>
   <div class="hdr-r">
@@ -758,7 +758,7 @@ textarea:focus-visible,.winput:focus-visible{outline:none;border-color:var(--ws-
 <script>
 // ═══════════════════════════════════════════════════════════════════════
 //  LA VISITE CHEZ LE MÉDECIN — Module interactif Niveau 4 (FLS)
-//  Sections : Je me prépare · Chez le médecin · La langue · Je parle ·
+//  Sections : Je découvre · Chez le médecin · La langue · Je parle ·
 //             J'écris · Je m'évalue — suivi LMS intégré
 // ═══════════════════════════════════════════════════════════════════════
 
@@ -800,25 +800,25 @@ const DIALOGUES = {
 
 // ── SECTIONS ──────────────────────────────────────────────────────────
 const SECTIONS = [
-  {id:'prep', no:'<img class="icon-svg tno-play" src="/assets/interactive/module-logement/icons/play.svg" alt="">', title:'Je me prépare', color:'#A16207',
+  {id:'prep', no:'<img class="icon-svg tno-play" src="/assets/interactive/module-logement/icons/play.svg" alt="">', title:'Je découvre', color:'#A16207',
    lead:"Comprendre une visite de logement et les conditions de location. Trois exercices avant de commencer.",
    intro:"Ibrahim déménage à Sherbrooke pour un nouveau poste. Il visite un 4 ½ au-dessus d'une boulangerie ; la propriétaire, Ginette, lui explique les conditions.",
-   dialogue:'prep', next:{id:'t1', tit:'Tâche 1 · Poser les bonnes questions', sub:'Comprendre les conditions de location.'}},
-  {id:'t1', no:'1', title:'Tâche 1 · Poser les bonnes questions', color:'#C0573A',
+   dialogue:'prep', next:{id:'t1', tit:'Défi 1 · Poser les bonnes questions', sub:'Comprendre les conditions de location.'}},
+  {id:'t1', no:'1', title:'Défi 1 · Poser les bonnes questions', color:'#C0573A',
    lead:"Quelles questions poser avant de signer ? Comprendre les conditions de location.",
-   intro:"Tâche 1 — Ce qu'Ibrahim apprend pendant la visite, et ce qu'il aurait pu demander de plus.",
-   dialogue:'prep', next:{id:'t2', tit:'Tâche 2 · Ce qui compte pour moi', sub:'Dire ce qu\'on aime et ce qu\'on craint dans un logement.'}},
-  {id:'t2', no:'2', title:'Tâche 2 · Ce qui compte pour moi', color:'#6B4FBB',
+   intro:"Défi 1 — Ce qu'Ibrahim apprend pendant la visite, et ce qu'il aurait pu demander de plus.",
+   dialogue:'prep', next:{id:'t2', tit:'Défi 2 · Ce qui compte pour moi', sub:'Dire ce qu\'on aime et ce qu\'on craint dans un logement.'}},
+  {id:'t2', no:'2', title:'Défi 2 · Ce qui compte pour moi', color:'#6B4FBB',
    lead:"Ibrahim explique à sa sœur ce qui lui plaît et ce qui l'inquiète.",
-   intro:"Tâche 2 — Après la visite, Ibrahim raconte tout à Leyla.",
-   dialogue:'t2', next:{id:'t3', tit:'Tâche 3 · Un logement pour chaque besoin', sub:'Trouver le bon logement selon la situation de chacun.'}},
-  {id:'t3', no:'3', title:'Tâche 3 · Un logement pour chaque besoin', color:'#B45309',
+   intro:"Défi 2 — Après la visite, Ibrahim raconte tout à Leyla.",
+   dialogue:'t2', next:{id:'t3', tit:'Défi 3 · Un logement pour chaque besoin', sub:'Trouver le bon logement selon la situation de chacun.'}},
+  {id:'t3', no:'3', title:'Défi 3 · Un logement pour chaque besoin', color:'#B45309',
    lead:"Chaque personne cherche autre chose : de l'espace, du calme, un bon prix.",
-   intro:"Tâche 3 — Quatre personnes cherchent un logement. Lequel leur conviendrait ?",
-   next:{id:'appli', tit:'Je mets en application', sub:'Comparer deux logements, puis choisir une petite annonce.'}},
-  {id:'appli', no:'<img class="icon-svg tno-play" src="/assets/interactive/module-logement/icons/play.svg" alt="">', title:'Je mets en application', color:'#0D9488', custom:true,
+   intro:"Défi 3 — Quatre personnes cherchent un logement. Lequel leur conviendrait ?",
+   next:{id:'appli', tit:'Je me lance', sub:'Comparer deux logements, puis choisir une petite annonce.'}},
+  {id:'appli', no:'<img class="icon-svg tno-play" src="/assets/interactive/module-logement/icons/play.svg" alt="">', title:'Je me lance', color:'#0D9488', custom:true,
    lead:"Compare deux logements à l'oral, puis choisis une petite annonce et écris pourquoi elle te convient.",
-   intro:"Je mets en application — Compare deux logements à l'oral, puis choisis une petite annonce et explique ton choix par écrit."},
+   intro:"Je me lance — Compare deux logements à l'oral, puis choisis une petite annonce et explique ton choix par écrit."},
   {id:'retiens', no:'✓', title:'Je retiens des mots', color:'#166534', custom:true,
    lead:"Noter le vocabulaire utile et réviser avec les cartes mémoire.",
    intro:"Je retiens des mots — Note le vocabulaire utile et révise avec les cartes mémoire."},
@@ -845,7 +845,7 @@ const FC_CARDS = [
 ];
 
 const EXOS = [
-  // ── JE ME PRÉPARE ──
+  // ── JE DÉCOUVRE ──
   {sec:'prep', id:'prVocab', type:'match', num:'Vocabulaire', tit:'Associe le mot ou le groupe de mots à sa définition', color:'#1D6B8F',
    sub:'Choisis un mot, puis sa définition.', noQLbl:true, bankLbl:'Définitions', zonePh:'glissez la définition ici',
    rows: FC_CARDS.map((c,i)=>({id:'pv'+i, q:c.word, aid:'pv'+i, a:c.def}))},
@@ -958,7 +958,7 @@ const EXOS = [
     {q:"Quelle annonce choisirais-tu et pourquoi ?", hint:"Réponse personnelle, avec une justification.", ph:"…"},
    ]},
 
-  // ── TÂCHE 2 · CE QUI COMPTE POUR MOI ──
+  // ── DÉFI 2 · CE QUI COMPTE POUR MOI ──
   {sec:'t2', id:'t2vf', type:'vf', num:'Exercice 1', tit:'Vrai ou Faux — Ibrahim et Leyla', color:'#6B4FBB',
    sub:'Écoutez le dialogue entre Ibrahim et sa sœur, puis répondez.', tiles:['VRAI','FAUX'],
    savoir:{h:"› Le 1er juillet, jour de déménagement au Québec", rows:[
@@ -995,8 +995,23 @@ const EXOS = [
     {q:"Ce qui presse le plus, c'est la signature du bail.", accept:["la signature du bail"], ph:"…"},
    ]},
 
-  // ── TÂCHE 3 · UN LOGEMENT POUR CHAQUE BESOIN ──
-  {sec:'t3', id:'t3besoins', type:'write', num:'Exercice 1', tit:'Quels sont leurs besoins ?', color:'#B45309',
+  // ── DÉFI 3 · UN LOGEMENT POUR CHAQUE BESOIN ──
+  {sec:'t3', id:'t3img', type:'imgmatch', num:'Exercice 1', tit:'À qui convient ce logement ?', color:'#B45309',
+   sub:"Glissez chaque photo sur la personne à qui ce logement conviendrait.",
+   images:[
+    {id:'lg1', src:'/assets/interactive/module-logement/images/studio-etudiante.jpg'},
+    {id:'lg2', src:'/assets/interactive/module-logement/images/rez-de-chaussee-famille.jpg'},
+    {id:'lg3', src:'/assets/interactive/module-logement/images/logement-calme.jpg'},
+    {id:'lg4', src:'/assets/interactive/module-logement/images/4-et-demi-cuisine.jpg'},
+   ],
+   rows:[
+    {id:'li1', txt:"Un petit studio meublé, avec une cuisinette dans la même pièce : parfait pour une étudiante seule qui cherche un petit loyer.", aid:'lg1'},
+    {id:'li2', txt:"Une entrée de plain-pied, sans aucune marche : on peut entrer la poussette sans monter d'escalier.", aid:'lg2'},
+    {id:'li3', txt:"Une chambre tranquille avec de gros rideaux qui bloquent la lumière du jour, et un chien accepté.", aid:'lg3'},
+    {id:'li4', txt:"Une grande cuisine avec une longue table : on peut cuisiner et recevoir des amis.", aid:'lg4'},
+   ]},
+
+  {sec:'t3', id:'t3besoins', type:'write', num:'Exercice 2', tit:'Quels sont leurs besoins ?', color:'#B45309',
    sub:'Lis chaque description, puis explique quel type de logement conviendrait à ces personnes.',
    items:[
     {q:"« Je suis étudiante au cégep et je n'ai pas d'auto. Je veux quelque chose de petit et de pas cher, près de l'autobus. »", hint:"Un 2 ½ ou un 3 ½ abordable, près d'un arrêt d'autobus et du cégep.", ph:"…"},
@@ -1004,7 +1019,7 @@ const EXOS = [
     {q:"« Je travaille de nuit à l'usine et je dors le jour. J'ai un vieux chien tranquille. »", hint:"Un logement calme et bien insonorisé, où les chiens sont acceptés.", ph:"…"},
     {q:"« Nous sommes deux colocataires. On cuisine beaucoup et on reçoit des amis presque chaque fin de semaine. »", hint:"Un 4 ½ avec deux chambres fermées et une grande cuisine.", ph:"…"},
    ]},
-  {sec:'t3', id:'t3cdci', type:'write', num:'Exercice 2', tit:'CD ou CI ?', color:'#B45309',
+  {sec:'t3', id:'t3cdci', type:'write', num:'Exercice 3', tit:'CD ou CI ?', color:'#B45309',
    sub:'Trouve le complément du verbe (CD ou CI) dans chaque phrase.',
    savoir:{h:"› Le complément direct (CD) et le complément indirect (CI) du verbe", rows:[
      ["Complément direct (CD)","Il suit le verbe <b>sans préposition</b>. On le trouve en demandant <b>« qui ? »</b> ou <b>« quoi ? »</b> :<span class='savoir-ex'>Ibrahim visite <b>quoi</b> ? un logement lumineux.</span>"],
@@ -1017,7 +1032,7 @@ const EXOS = [
     {q:"Ibrahim pense à son déménagement. (CI)", accept:["à son déménagement","a son demenagement"], ph:"CI :"},
     {q:"Le boulanger reçoit une livraison de farine. (CD)", accept:["une livraison de farine"], ph:"CD :"},
    ]},
-  {sec:'t3', id:'t3cdci2', type:'write', num:'Exercice 3', tit:'Trouve le CD et le CI', color:'#B45309',
+  {sec:'t3', id:'t3cdci2', type:'write', num:'Exercice 4', tit:'Trouve le CD et le CI', color:'#B45309',
    sub:'Trouve les deux compléments du verbe dans chaque phrase.',
    items:[
     {q:"Ginette montre le sous-sol aux nouveaux locataires. (CD)", accept:["le sous-sol","le sous sol"], ph:"CD :"},
@@ -1082,7 +1097,7 @@ const MODULE_SLUG = 'module-logement';
 // Bump ce numéro chaque fois qu'un MP3 est régénéré, pour forcer le
 // navigateur à recharger le fichier au lieu de servir une version en cache.
 const AUDIO_V = '6';
-// Icônes des boutons son/micro de "Je me prépare" — change ces deux valeurs
+// Icônes des boutons son/micro de "Je découvre" — change ces deux valeurs
 // pour remplacer les emojis par une image (ex. '<img src="/assets/interactive/module-logement/icons/speaker.svg">').
 const ICON_SPEAK = '<img class="icon-svg" src="/assets/interactive/module-logement/icons/speaker.svg" alt="Écouter">';
 const ICON_MIC = '<img class="icon-svg" src="/assets/interactive/module-logement/icons/mic.svg" alt="Micro">';
@@ -1172,7 +1187,7 @@ function playWord(btn, text, fileId){
   a.onerror=()=>{ reset(); speakText(btn, text); };
   a.play().catch(()=>{ reset(); speakText(btn, text); });
 }
-// ── VÉRIFICATION DE PRONONCIATION (reconnaissance vocale native, "Je me prépare" seulement) ──
+// ── VÉRIFICATION DE PRONONCIATION (reconnaissance vocale native, "Je découvre" seulement) ──
 function normPron(s){
   return String(s).toLowerCase().normalize('NFD').replace(/[̀-ͯ]/g,'').replace(/[^a-z0-9\s]/g,'').replace(/\s+/g,' ').trim();
 }
@@ -1765,7 +1780,7 @@ const ROLE_SUJETS = ["Ce qui est inclus dans le loyer","Le chauffage et l'élect
   "Le bruit et le voisinage","La date et la durée du bail"];
 
 function injectCustom(){
-  // TÂCHE 1 — jeu de rôle à deux, sur fiches imprimées
+  // DÉFI 1 — jeu de rôle à deux, sur fiches imprimées
   document.getElementById('exs-t1').innerHTML += `
    <div class="card custom" id="jeu-de-role">
      <div class="c-hdr"><span class="tag" style="background:#C0573A">Jeu de rôle</span><span class="ctit" style="color:#C0573A">Louer un logement, à deux</span></div>
@@ -1834,7 +1849,7 @@ function injectCustom(){
      </div>
    </div>`;
 
-  // JE METS EN APPLICATION — jeu de rôle oral + écriture corrigée par l'IA
+  // JE ME LANCE — jeu de rôle oral + écriture corrigée par l'IA
   document.getElementById('exs-appli').innerHTML += `
    <div class="card custom">
      <div class="c-hdr"><span class="tag" style="background:#0D9488">Production orale</span><span class="ctit" style="color:#0D9488">Compare deux logements</span></div>
