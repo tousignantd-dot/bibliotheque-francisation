@@ -2302,6 +2302,53 @@ class Handler(http.server.SimpleHTTPRequestHandler):
             streak += 1
             cursor = cursor - timedelta(days=1)
 
+        # ── Progression activité par activité (tuiles du portail élève) ──
+        # « exercise_completed » porte les compteurs cumulés zones/zonesDone :
+        # c'est la seule source d'un pourcentage par activité.
+        par_activite = {}
+        for p in progress:
+            fiche = par_activite.setdefault(str(p.get("activityId")), {
+                "pct": 0, "faite": False, "zones": 0, "zonesDone": 0, "date": "",
+            })
+            ts = p.get("timestamp", "")
+            if ts > fiche["date"]:
+                fiche["date"] = ts
+            if p.get("event") != "exercise_completed":
+                continue
+            zones = p.get("zones") or 0
+            faites = p.get("zonesDone") or 0
+            fiche["zones"] = zones
+            fiche["zonesDone"] = faites
+            if zones:
+                fiche["pct"] = min(100, round(faites / zones * 100))
+                fiche["faite"] = faites >= zones
+            else:
+                # Activité sans découpage en zones : l'événement vaut « terminée ».
+                fiche["pct"] = 100
+                fiche["faite"] = True
+
+        # ── Régularité des sept derniers jours ───────────────────────────
+        debut = date.today() - timedelta(days=6)
+        traces = [p.get("timestamp", "") for p in progress]
+        traces += [e.get("timestamp", "") for e in load_access_log()
+                   if e.get("studentId") == student["id"]]
+        moments = []
+        for ts in traces:
+            try:
+                moment = datetime.fromisoformat(ts)
+            except ValueError:
+                continue
+            if moment.date() >= debut:
+                moments.append(moment)
+        moments.sort()
+        # Minutes estimées : on additionne les écarts de moins de trente
+        # minutes entre deux traces, et on compte trois minutes par trace
+        # isolée. Rien ne mesure le temps réel passé dans une activité.
+        minutes = 3.0 if moments else 0.0
+        for avant, apres in zip(moments, moments[1:]):
+            ecart = (apres - avant).total_seconds() / 60
+            minutes += ecart if ecart <= 30 else 3
+
         # ── Maîtrise du vocabulaire (mots des activités déjà au dossier) ──
         pool_ids = {w["id"] for w in get_student_vocab_pool(group_id)}
         vocab_progress = [
@@ -2320,6 +2367,12 @@ class Handler(http.server.SimpleHTTPRequestHandler):
             "activitiesCompleted": len(completed_ids & {a["id"] for a in available_activities}),
             "nextActivity": next_activity,
             "streak": streak,
+            "parActivite": par_activite,
+            "semaine": {
+                "jours": len({m.date() for m in moments}),
+                "sur": 7,
+                "minutes": round(minutes),
+            },
             "vocab": {
                 "total": total_words,
                 "mastered": mastered_words,

@@ -84,6 +84,27 @@ choix de l'enseignant survit aux redéploiements.
 - `prof.html` — connexion enseignante, groupes et comptes
 - `admin.html` / `eleve.html` — interfaces enseignant / élève
 
+## Portail élève (`eleve.html`)
+
+- Refait selon la remise de design « portail élève, variante 2a » : bande acier
+  (`--surface-band: var(--acier-100)`), bilan en trois chiffres, un seul bloc
+  encre (« Votre prochaine étape »), modules en tuiles à filet de couleur,
+  ateliers et exercices libres en rangées d'une carte `card--flush`.
+- La page lie `assets/design-system/styles.css` — **jamais `ds-bundle/`, qui est
+  dans `.gitignore`** et n'existe donc pas en production — et n'utilise que les classes du système
+  (`.band`, `.card`, `.btn--pri`, `.grid-auto`, `.exo--*`). **Aucune couleur en
+  dur** : les deux seules pièces écrites à la main sont la barre de progression
+  (`.om-bar`) et l'étiquette d'état (`.om-etat`), qui n'existent pas dans le
+  système. L'état porte toujours un glyphe **et** un mot (`✓ → · `) — la
+  couleur ne dit jamais l'information seule.
+- Répartition : `categorie: "cours"` → tuiles de modules ; les autres ateliers
+  → « Activités thématiques », sauf les domaines transversaux (vocabulaire,
+  grammaire, pratique orale libre) → « Pour vous exercer seul », sans état.
+- `/api/student/dashboard` renvoie `parActivite` (pct, faite, zones/zonesDone
+  tirés des enregistrements `exercise_completed`) et `semaine`
+  (jours de pratique sur sept, minutes **estimées** à partir des traces du
+  journal — rien ne mesure le temps réel passé dans une activité).
+
 ## Barre d'outils élève (rail « Mes outils »)
 
 - Six outils permanents dans chaque module : traduire · lire · simplifier ·
