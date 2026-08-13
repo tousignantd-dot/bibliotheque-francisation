@@ -139,16 +139,14 @@ const CARD_PALETTE = [
 
 function buildCard(activity) {
   const palette = CARD_PALETTE[(activity.id - 1) % CARD_PALETTE.length];
-  const thumb = activity.thumbnail
-    ? `<img src="${escHtml(activity.thumbnail)}" alt="${escHtml(activity.title)}"
-            loading="lazy" onerror="this.style.display='none';this.nextElementSibling.style.display='flex'">`
+  // Sans image, pas de vignette : un dégradé vide de 120 px n'apprend rien et
+  // allonge la carte d'autant. Le liseré coloré du haut suffit au repérage.
+  const vignette = activity.thumbnail
+    ? `<div class="card-thumbnail">
+         <img src="${escHtml(activity.thumbnail)}" alt="${escHtml(activity.title)}"
+              loading="lazy" onerror="this.parentElement.remove()">
+       </div>`
     : '';
-
-  const placeholder = `
-    <div class="card-thumbnail-placeholder"
-         style="${activity.thumbnail ? 'display:none;' : ''}background:${palette.thumb};color:${palette.icon}">
-      ${iconImage()}
-    </div>`;
 
   // Le champ « slideshow » porte soit un .pptx de photos (activités 4 à 15),
   // soit une page HTML qui regroupe plusieurs présentations (module 9).
@@ -159,10 +157,7 @@ function buildCard(activity) {
 
   return `
     <article class="card" data-id="${activity.id}" style="--card-color:${palette.card}">
-      <div class="card-thumbnail">
-        ${thumb}
-        ${placeholder}
-      </div>
+      ${vignette}
       <div class="card-body">
         <div class="card-meta">
           <h2 class="card-title">${escHtml(activity.title)}</h2>
@@ -209,13 +204,18 @@ function buildCard(activity) {
                  Activité interactive
                </a>`
           }
-          <a href="${escHtml(encodePath(activity.studentDoc))}"
-             class="btn btn-secondary"
-             target="_blank" rel="noopener"
-             onclick="trackOpen('document', '${escHtml(activity.title)}')">
-            <span class="btn-icon">${iconDoc()}</span>
-            Document élève
-          </a>
+          ${activity.studentDoc
+            ? `<a href="${escHtml(encodePath(activity.studentDoc))}"
+                 class="btn btn-secondary"
+                 target="_blank" rel="noopener"
+                 onclick="trackOpen('document', '${escHtml(activity.title)}')">
+                <span class="btn-icon">${iconDoc()}</span>
+                Document élève
+               </a>`
+            : ''
+          }
+          ${/* Un fichier absent ne laisse plus de bouton mort : c'est admin.html
+                qui sert à voir ce qui manque, pas la bibliothèque. */ ''}
           ${activity.slideshow
             ? `<a href="${escHtml(encodePath(activity.slideshow))}"
                  class="btn btn-slideshow"
@@ -224,10 +224,7 @@ function buildCard(activity) {
                 <span class="btn-icon">${iconSlideshow()}</span>
                 ${slideshowLabel}
                </a>`
-            : `<button class="btn btn-slideshow btn-disabled" disabled title="Aucun diaporama disponible">
-                <span class="btn-icon">${iconSlideshow()}</span>
-                ${slideshowLabel}
-               </button>`
+            : ''
           }
           ${activity.planCours
             ? `<a href="${escHtml(encodePath(activity.planCours))}"
@@ -237,10 +234,7 @@ function buildCard(activity) {
                 <span class="btn-icon">${iconPlan()}</span>
                 Plan de cours
                </a>`
-            : `<button class="btn btn-plancours btn-disabled" disabled title="Aucun plan de cours disponible">
-                <span class="btn-icon">${iconPlan()}</span>
-                Plan de cours
-               </button>`
+            : ''
           }
           ${activity.autres
             ? `<a href="${escHtml(encodePath(activity.autres))}"
@@ -250,10 +244,7 @@ function buildCard(activity) {
                 <span class="btn-icon">${iconDoc()}</span>
                 Autres
                </a>`
-            : `<button class="btn btn-autres btn-disabled" disabled title="Aucun document disponible">
-                <span class="btn-icon">${iconDoc()}</span>
-                Autres
-               </button>`
+            : ''
           }
         </div>
       </div>
@@ -293,9 +284,6 @@ function attachDateEvents() {
 function showSkeletons() {
   DOM.grid.innerHTML = '<div class="grid">' + Array.from({ length: CONFIG.SKELETON_COUNT }, () => `
     <div class="card card-skeleton">
-      <div class="card-thumbnail">
-        <div class="skeleton skel-thumb"></div>
-      </div>
       <div class="skeleton skel-title"></div>
       <div class="skeleton skel-title-2"></div>
       <div class="skeleton skel-btn"></div>
