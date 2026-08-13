@@ -1,0 +1,216 @@
+<!doctype html>
+<html lang="fr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Essai — barre d'outils élève (module 9, Défi 1)</title>
+<link rel="stylesheet" href="/assets/design-system/tokens/fonts.css">
+<link rel="stylesheet" href="/assets/design-system/tokens/colors.css">
+<link rel="stylesheet" href="/assets/design-system/tokens/spacing.css">
+<link rel="stylesheet" href="/assets/design-system/tokens/typography.css">
+<link rel="stylesheet" href="/assets/design-system/tokens/effects.css">
+<link rel="stylesheet" href="/assets/design-system/tokens/base.css">
+<link rel="stylesheet" href="/assets/design-system/outils-eleve.css">
+<style>
+  body{background:var(--surface-page);color:var(--text-strong);font-family:var(--font-sans)}
+  .page{padding:var(--sp-8) var(--sp-8) var(--sp-12)}
+  .in{max-width:760px;margin:0 auto}
+
+  .avis{
+    background:var(--warn-bg);border:1px solid #F0DCB4;border-left:4px solid var(--warn-line);
+    border-radius:var(--r-sm);padding:var(--sp-4) var(--sp-5);font-size:14.5px;
+    color:var(--warn-ink);margin-bottom:var(--sp-8);line-height:1.6;
+  }
+  .avis b{font-weight:900}
+  .avis code{background:rgba(0,0,0,.06);border-radius:4px;padding:1px 5px;font-size:13.5px}
+
+  .sec-head{display:flex;align-items:center;gap:var(--sp-3);margin-bottom:var(--sp-5)}
+  .sec-pill{width:34px;height:34px;border-radius:var(--r-md);display:grid;place-items:center;
+    background:var(--acier-600);color:#fff;font-weight:900;font-size:16px;flex:none}
+  .sec-over{font-size:12.5px;font-weight:800;letter-spacing:.09em;text-transform:uppercase;color:var(--acier-600)}
+  .sec-head h2{font-size:25px;font-weight:900}
+
+  .card{background:var(--surface-card);border:1px solid var(--border);border-radius:var(--r-lg);
+    padding:var(--sp-6);margin-bottom:var(--sp-6)}
+  .band{background:var(--surface-inverse);color:var(--text-inverse);border-radius:var(--r-lg);
+    padding:var(--sp-6);margin-bottom:var(--sp-6)}
+  .band h3{font-size:13px;letter-spacing:.09em;text-transform:uppercase;color:#8FD9B7;
+    font-weight:800;margin-bottom:var(--sp-3)}
+  .band p{color:#E7E8E9;margin-bottom:var(--sp-3)}
+  .band p:last-child{margin-bottom:0}
+  .band .oe-trad p{color:var(--ink-700)}
+
+  .dlg{display:grid;grid-template-columns:120px 1fr;gap:var(--sp-3) var(--sp-4);align-items:start;margin:0}
+  .dlg dt{font-size:13px;font-weight:800;letter-spacing:.05em;text-transform:uppercase;
+    color:var(--acier-600);padding-top:3px}
+  .dlg dd{margin:0}
+  .hint{font-size:14.5px;color:var(--text-muted);margin-top:var(--sp-4)}
+
+  .ex-t{font-size:12.5px;font-weight:800;letter-spacing:.09em;text-transform:uppercase;
+    color:var(--acier-600);margin-bottom:var(--sp-4)}
+  .q{padding:var(--sp-4) 0;border-top:1px solid var(--paper-200)}
+  .q:first-of-type{border-top:0;padding-top:0}
+  .q p{margin-bottom:var(--sp-3)}
+  .vf{display:flex;gap:var(--sp-2)}
+  .vf button{border:1px solid var(--line-300);background:var(--surface-sunken);color:var(--text-body);
+    border-radius:var(--r-pill);height:var(--tap-min);padding:0 var(--sp-5);font-weight:800;font-size:15px;
+    font-family:inherit;cursor:pointer}
+  .vf button[aria-pressed="true"]{background:var(--ink-900);color:#fff;border-color:var(--ink-900)}
+  .q.bon .vf button[aria-pressed="true"]{background:var(--ok-line);border-color:var(--ok-line)}
+  .q.mauvais .vf button[aria-pressed="true"]{background:var(--no-line);border-color:var(--no-line)}
+  .retour{margin-top:var(--sp-3);font-size:14.5px;font-weight:700;display:none}
+  .q.bon .retour,.q.mauvais .retour{display:block}
+  .q.bon .retour{color:var(--ok-ink)}
+  .q.mauvais .retour{color:var(--no-ink)}
+
+  @media (max-width:900px){
+    .page{padding:var(--sp-5) var(--sp-4) var(--sp-8)}
+    .dlg{grid-template-columns:1fr;gap:2px 0}
+    .dlg dt{padding-top:var(--sp-3)}
+  }
+</style>
+</head>
+<body>
+
+<main class="page">
+  <div class="in">
+
+    <div class="avis">
+      <b>Page d'essai.</b> Tranche réelle du module 9 (Défi 1), branchée sur le vrai serveur.
+      Les six outils de la colonne de droite appellent l'API : traduction, reformulation et
+      assistant passent par Claude ; la lecture passe par ElevenLabs ; la prononciation utilise
+      la reconnaissance vocale du navigateur (<b>Chrome ou Edge</b> — ailleurs l'outil se replie
+      sur l'écoute seule). Ajoutez votre code élève à l'URL : <code>?code=XXXXXX</code>.
+    </div>
+
+    <div class="sec-head">
+      <span class="sec-pill">1</span>
+      <div>
+        <div class="sec-over">Défi 1 · compréhension orale</div>
+        <h2>Oksana appelle sa propriétaire</h2>
+      </div>
+    </div>
+
+    <div class="band" data-oe>
+      <h3>Ce que je dois savoir</h3>
+      <p>Quand un problème touche le <b>logement lui-même</b> — le chauffage, la toiture, la
+      plomberie, l'électricité —, les réparations sont à la charge du propriétaire. Le locataire
+      paie son loyer ; l'entretien de l'immeuble fait partie du contrat.</p>
+      <p>Mais le locataire a une obligation, lui aussi : <b>signaler le problème sans attendre</b>.
+      Plus il attend, plus il devient difficile de prouver depuis quand le dommage existe — et
+      un dégât qui s'aggrave peut alors lui être reproché.</p>
+      <p>Pour dire depuis quand : <b>depuis</b> avant-hier · <b>ça fait</b> deux semaines <b>que</b>
+      la tache grossit · le calorifère ne chauffe plus <b>depuis que</b> le disjoncteur est tombé.</p>
+    </div>
+
+    <div class="card" data-oe>
+      <dl class="dlg">
+        <dt>Oksana</dt>
+        <dd>Bonjour madame Rioux, c'est Oksana Kravets, au 4B. Je vous appelle parce que le
+            calorifère du salon ne chauffe plus depuis avant-hier.</dd>
+        <dt>Mme Rioux</dt>
+        <dd>Depuis avant-hier ? Il fallait me prévenir tout de suite, voyons. Il fait combien
+            chez vous ce matin ?</dd>
+        <dt>Oksana</dt>
+        <dd>Quatorze degrés. J'ai vérifié le panneau électrique : le disjoncteur retombe chaque
+            fois que je le remonte.</dd>
+        <dt>Mme Rioux</dt>
+        <dd>Ne le remontez plus, c'est dangereux. Je vais faire venir mon électricien. Il passe
+            déjà chez les locataires du deuxième jeudi matin ; je vais lui demander de monter
+            chez vous après avoir terminé leur installation.</dd>
+        <dt>Oksana</dt>
+        <dd>Jeudi, c'est dans trois jours. Est-ce que je peux avoir un chauffage d'appoint en
+            attendant ?</dd>
+        <dt>Mme Rioux</dt>
+        <dd>Bien sûr. J'en garde deux au sous-sol, dans le local d'entretien. Passez en chercher
+            un ce soir, le concierge vous ouvrira.</dd>
+        <dt>Oksana</dt>
+        <dd>Merci beaucoup. Il y a autre chose, aussi. Il y a une tache brune au plafond de la
+            chambre, et elle grossit.</dd>
+        <dt>Mme Rioux</dt>
+        <dd>Une tache brune ? Ça fait combien de temps qu'elle est là ?</dd>
+        <dt>Oksana</dt>
+        <dd>Ça fait deux semaines. Au début, elle était grande comme une pièce de deux dollars ;
+            maintenant, elle fait la taille d'une assiette.</dd>
+        <dt>Mme Rioux</dt>
+        <dd>Vous êtes au dernier étage… ça vient probablement de la toiture. Envoyez-moi une
+            photo par courriel : ça me permettra de constater l'ampleur du dégât avant de faire
+            venir le couvreur.</dd>
+        <dt>Oksana</dt>
+        <dd>Je vous l'envoie ce midi. Est-ce que ces réparations-là sont à ma charge ?</dd>
+        <dt>Mme Rioux</dt>
+        <dd>Pas du tout. Vous payez le loyer ; l'entretien de l'immeuble, c'est ma part du
+            contrat. Vous, tenez-moi seulement au courant si la tache change encore.</dd>
+      </dl>
+      <p class="hint">Écoutez le dialogue deux fois avant de répondre aux questions.</p>
+    </div>
+
+    <div class="card" data-oe>
+      <div class="ex-t">Exercice 1 · vrai ou faux</div>
+
+      <div class="q" data-ok="VRAI">
+        <p><b>a)</b> Madame Rioux trouve qu'Oksana a attendu trop longtemps avant de l'appeler.</p>
+        <div class="vf">
+          <button type="button" data-r="VRAI" aria-pressed="false">Vrai</button>
+          <button type="button" data-r="FAUX" aria-pressed="false">Faux</button>
+        </div>
+        <div class="retour"></div>
+      </div>
+
+      <div class="q" data-ok="FAUX">
+        <p><b>b)</b> Oksana devra attendre une semaine avant la visite de l'électricien.</p>
+        <div class="vf">
+          <button type="button" data-r="VRAI" aria-pressed="false">Vrai</button>
+          <button type="button" data-r="FAUX" aria-pressed="false">Faux</button>
+        </div>
+        <div class="retour"></div>
+      </div>
+
+      <div class="q" data-ok="FAUX">
+        <p><b>c)</b> Oksana devra payer les réparations.</p>
+        <div class="vf">
+          <button type="button" data-r="VRAI" aria-pressed="false">Vrai</button>
+          <button type="button" data-r="FAUX" aria-pressed="false">Faux</button>
+        </div>
+        <div class="retour"></div>
+      </div>
+    </div>
+
+  </div>
+</main>
+
+<script src="/assets/design-system/outils-eleve.js"></script>
+<script>
+// Le code élève voyage dans l'URL, comme dans les modules (viewer.html le relaie).
+function getCode(){
+  var own = new URLSearchParams(location.search).get('code');
+  if(own) return own;
+  try{ return new URLSearchParams(window.parent.location.search).get('code') || ''; }catch(e){ return ''; }
+}
+
+Outils.init({
+  code: getCode(),
+  module: 'module-probleme',
+  section: 'Défi 1 — Oksana appelle sa propriétaire (compréhension orale)'
+});
+
+// Correction locale du vrai ou faux : la barre d'outils n'y touche pas,
+// c'est justement ce qu'on vérifie — l'assistant doit refuser de donner
+// ces réponses-là.
+document.querySelectorAll('.q').forEach(function(q){
+  q.querySelectorAll('.vf button').forEach(function(b){
+    b.onclick = function(){
+      q.querySelectorAll('.vf button').forEach(function(x){ x.setAttribute('aria-pressed','false'); });
+      b.setAttribute('aria-pressed','true');
+      var bon = b.dataset.r === q.dataset.ok;
+      q.classList.toggle('bon', bon);
+      q.classList.toggle('mauvais', !bon);
+      q.querySelector('.retour').textContent = bon
+        ? '✓ C\'est ça.'
+        : '✗ Pas tout à fait. Relisez le dialogue — ou demandez un indice à l\'assistant.';
+    };
+  });
+});
+</script>
+</body>
+</html>

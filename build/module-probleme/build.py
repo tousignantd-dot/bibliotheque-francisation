@@ -295,6 +295,22 @@ html = html.replace(
     "Tu peux revenir sur n\\'importe quel onglet pour pratiquer encore.",
     "Vous pouvez revenir sur n\\'importe quel onglet pour pratiquer encore.")
 
+# ── 6 bis. Barre d'outils élève ──────────────────────────────────────
+# Le rail « Mes outils » vient du système de design, pas du gabarit. La greffe
+# est celle de build/greffe_outils.py, partagée par les onze modules : une
+# seule source, sinon le module 9 dérive des dix autres.
+#
+# greffe() commence par retirer toute greffe existante : le gabarit
+# module-consultation porte la sienne, avec SON slug. Sans ce nettoyage, le
+# module 9 hériterait du carnet de la consultation.
+sys.path.insert(0, str(BUILD.parent))
+from greffe_outils import greffe as greffe_outils   # noqa: E402
+
+try:
+    html = greffe_outils(html, 'module-probleme')
+except ValueError as e:
+    sys.exit('!! greffe de la barre d\'outils impossible : %s' % e)
+
 # ── 7. Filet de sécurité ─────────────────────────────────────────────
 leftovers = []
 for bad in ['module-consultation', 'Yannick', 'Rosalie', 'Beaulieu', 'tendinite',

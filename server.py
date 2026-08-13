@@ -27,6 +27,30 @@ from datetime import date, datetime, timedelta
 
 BASE_DIR = Path(__file__).parent.resolve()
 
+
+def _charge_env_local():
+    """En production, les clés viennent des variables Railway. En local, elles
+    sont dans .env (non versionné). Lecture volontairement minimale : lignes
+    CLE=valeur, rien d'autre. Une variable déjà définie dans l'environnement
+    gagne toujours — sinon un .env oublié écraserait la vraie configuration."""
+    fichier = BASE_DIR / ".env"
+    if not fichier.exists():
+        return
+    try:
+        for ligne in fichier.read_text(encoding="utf-8").splitlines():
+            ligne = ligne.strip()
+            if not ligne or ligne.startswith("#") or "=" not in ligne:
+                continue
+            cle, _, valeur = ligne.partition("=")
+            cle = cle.strip()
+            if cle and cle not in os.environ:
+                os.environ[cle] = valeur.strip().strip('"').strip("'")
+    except OSError as e:
+        print(f"[WARN] .env illisible : {e}", flush=True)
+
+
+_charge_env_local()
+
 # STORAGE_DIR : répertoire persistant (volume Railway en production, BASE_DIR en local)
 _storage_raw = os.environ.get('STORAGE_DIR', str(BASE_DIR))
 # Valider que STORAGE_DIR est un chemin absolu simple (pas de '=' parasite)
@@ -48,6 +72,10 @@ VOCAB_TRANSLATIONS_FILE = STORAGE_DIR / "data" / "traductions.json"
 # Journal des traductions signalées comme douteuses. Pas d'écran d'administration :
 # le fichier se lit à la main quand on voudra constituer une liste révisée.
 VOCAB_REPORTS_FILE = STORAGE_DIR / "data" / "traductions_douteuses.json"
+# Cache de la barre d'outils élève (traduction d'un passage, reformulation).
+# Séparé de traductions.json : celui-là est indexé par mot de vocabulaire,
+# celui-ci par empreinte d'un passage quelconque du module.
+OUTILS_CACHE_FILE = STORAGE_DIR / "data" / "outils_cache.json"
 ORAL_SUBMISSIONS_FILE = STORAGE_DIR / "data" / "oral_submissions.json"
 ORAL_AUDIO_DIR = STORAGE_DIR / "assets" / "oral-submissions"
 # Multi-enseignants : chaque enseignant possède un ou plusieurs groupes.
@@ -594,6 +622,35 @@ def save_translation(key, value):
             json.dump(cache, f, ensure_ascii=False, indent=2)
 
 
+_OUTILS_LOCK = threading.Lock()
+
+
+def outils_key(genre, langue, texte):
+    """Clé de cache d'un passage. Le genre entre dans la clé : la traduction et
+    la reformulation d'une même phrase sont deux résultats différents."""
+    empreinte = hashlib.sha1(" ".join(texte.split()).encode("utf-8")).hexdigest()[:16]
+    return "%s|%s|%s" % (genre, (langue or "").strip().lower(), empreinte)
+
+
+def load_outils_cache():
+    if OUTILS_CACHE_FILE.exists():
+        try:
+            with open(OUTILS_CACHE_FILE, "r", encoding="utf-8") as f:
+                return json.load(f)
+        except (json.JSONDecodeError, OSError):
+            return {}
+    return {}
+
+
+def save_outils_entry(key, value):
+    with _OUTILS_LOCK:
+        cache = load_outils_cache()
+        cache[key] = value
+        OUTILS_CACHE_FILE.parent.mkdir(parents=True, exist_ok=True)
+        with open(OUTILS_CACHE_FILE, "w", encoding="utf-8") as f:
+            json.dump(cache, f, ensure_ascii=False, indent=2)
+
+
 def log_translation_report(entry):
     with _VOCAB_TR_LOCK:
         journal = []
@@ -747,6 +804,10 @@ VOIX_JEU_DE_ROLE = {
     "proprietaire": "WW0JfNPk5DgcQdM0d6X6",   # féminine #2 — la propriétaire
     "locataire":    "93nuHbke4dTER9x2pDwE",   # masculine #1 — le visiteur
 }
+
+# Voix de lecture de la barre d'outils élève (« Lire à voix haute »,
+# « Écouter le modèle »). Fixe, sans rapport avec les personnages.
+VOIX_LECTURE = "WW0JfNPk5DgcQdM0d6X6"
 
 JEU_DE_ROLE_SUJETS = [
     "ce qui est inclus dans le loyer",
@@ -1245,6 +1306,12 @@ class Handler(http.server.SimpleHTTPRequestHandler):
             self._handle_jeu_de_role()
         elif path == "/api/voix":
             self._handle_voix()
+        elif path == "/api/outils/traduire":
+            self._handle_outil_traduire()
+        elif path == "/api/outils/simplifier":
+            self._handle_outil_simplifier()
+        elif path == "/api/outils/assistant":
+            self._handle_outil_assistant()
         elif path == "/api/analyser-erreurs":
             self._handle_analyser_erreurs()
         elif path == "/api/oral/submit":
@@ -2486,10 +2553,15 @@ class Handler(http.server.SimpleHTTPRequestHandler):
             json_response(self, {"error": "Texte vide"}, 400)
             return
 
-        # L'assistant joue l'autre rôle : propriétaire si l'élève est locataire.
-        voix = (VOIX_JEU_DE_ROLE["proprietaire"]
-                if body.get("role") == "locataire"
-                else VOIX_JEU_DE_ROLE["locataire"])
+        if body.get("voix") == "lecture":
+            # La barre d'outils lit un passage du module : aucun rôle en jeu,
+            # une voix fixe pour que la lecture ne change pas de timbre.
+            voix = VOIX_LECTURE
+        else:
+            # L'assistant joue l'autre rôle : propriétaire si l'élève est locataire.
+            voix = (VOIX_JEU_DE_ROLE["proprietaire"]
+                    if body.get("role") == "locataire"
+                    else VOIX_JEU_DE_ROLE["locataire"])
 
         payload = json.dumps({
             "text": texte,
@@ -2522,6 +2594,211 @@ class Handler(http.server.SimpleHTTPRequestHandler):
         self.send_header("Cache-Control", "no-store")
         self.end_headers()
         self.wfile.write(audio)
+
+    # ══ BARRE D'OUTILS ÉLÈVE ══════════════════════════════════════════════
+    # Trois routes qui servent les outils permanents d'un module : traduire un
+    # passage quelconque, le reformuler en français plus simple, et répondre
+    # aux questions de l'élève. Les deux premières sont mises en cache sur
+    # disque : trente élèves surlignent les mêmes consignes, on paie une fois.
+
+    def _outil_corps(self, cle_texte="texte", maxi=900):
+        """Lecture et contrôle communs aux trois routes. Renvoie
+        (body, texte) ou (None, None) après avoir déjà répondu en erreur."""
+        length = int(self.headers.get("Content-Length", 0))
+        try:
+            body = json.loads(self.rfile.read(length)) if length else {}
+        except json.JSONDecodeError:
+            json_response(self, {"error": "Requête invalide"}, 400)
+            return None, None
+        if not validate_student_code(body.get("code", "").strip().upper()):
+            json_response(self, {"error": "Non autorisé"}, 401)
+            return None, None
+        texte = strip_tags(str(body.get(cle_texte, ""))).strip()[:maxi]
+        if not texte:
+            json_response(self, {"error": "Texte vide"}, 400)
+            return None, None
+        return body, texte
+
+    def _handle_outil_traduire(self):
+        """Traduit un passage du module vers la langue maternelle de l'élève.
+        Corps : {code, langue, texte, contexte?}. Le français n'est jamais
+        remplacé côté client : la traduction s'ajoute sous le passage."""
+        body, texte = self._outil_corps()
+        if body is None:
+            return
+
+        langue = strip_tags(str(body.get("langue", ""))).strip()[:60]
+        if not langue:
+            json_response(self, {"error": "Langue non précisée"}, 400)
+            return
+
+        cle = outils_key("trad", langue, texte)
+        cached = load_outils_cache().get(cle)
+        if cached:
+            json_response(self, {"traduction": cached, "cache": True})
+            return
+
+        system_prompt = (
+            "Tu traduis pour des élèves adultes en francisation au Québec "
+            f"(niveau débutant-intermédiaire). Langue cible : {langue}. "
+            "Traduis le passage français qu'on te donne, fidèlement mais dans "
+            "une langue courante et naturelle — pas de calque mot à mot. "
+            "Garde les noms propres tels quels. Si le passage est une consigne "
+            "d'exercice, traduis-la comme une consigne. Réponds UNIQUEMENT "
+            'avec un objet JSON valide : {"traduction": "..."} — rien avant, '
+            "rien après, aucun commentaire."
+        )
+        contexte = strip_tags(str(body.get("contexte", ""))).strip()[:200]
+        user_content = texte if not contexte else (
+            "Contexte (ne pas traduire) : %s\n\nPassage à traduire :\n%s" % (contexte, texte))
+
+        parsed, err = self._call_anthropic_json(system_prompt, user_content, max_tokens=900)
+        if err:
+            json_response(self, {"error": err[0]}, err[1])
+            return
+
+        traduction = str(parsed.get("traduction", "")).strip()
+        if not traduction:
+            json_response(self, {"error": "Traduction vide"}, 502)
+            return
+        save_outils_entry(cle, traduction)
+        json_response(self, {"traduction": traduction})
+
+    def _handle_outil_simplifier(self):
+        """Reformule un passage en français plus simple — SANS traduire. C'est
+        la moitié du travail de la traduction, mais l'élève reste dans la
+        langue cible. Corps : {code, texte}."""
+        body, texte = self._outil_corps()
+        if body is None:
+            return
+
+        cle = outils_key("simp", "", texte)
+        cached = load_outils_cache().get(cle)
+        if cached:
+            json_response(self, dict(cached, cache=True))
+            return
+
+        system_prompt = (
+            "Tu es enseignant de francisation (FLS) au Québec, niveau 4. Tu "
+            "réécris un passage en français PLUS SIMPLE, pour un adulte qui "
+            "apprend la langue. Règles : phrases courtes (une idée par "
+            "phrase), vocabulaire courant, présent de l'indicatif quand c'est "
+            "possible, pas de tournure passive, pas de subordonnée longue. Tu "
+            "gardes TOUT le sens — tu ne résumes pas, tu ne commentes pas, tu "
+            "ne traduis pas. Tu restes en français. Repère aussi le mot le "
+            "plus difficile du passage et explique-le en une courte phrase "
+            "simple. Réponds UNIQUEMENT avec un objet JSON valide : "
+            '{"simple": "...", "mot": "...", "explication": "..."} — '
+            '"mot" et "explication" peuvent être des chaînes vides s\'il n\'y '
+            "a pas de mot difficile."
+        )
+
+        parsed, err = self._call_anthropic_json(system_prompt, texte, max_tokens=700)
+        if err:
+            json_response(self, {"error": err[0]}, err[1])
+            return
+
+        out = {
+            "simple": str(parsed.get("simple", "")).strip(),
+            "mot": str(parsed.get("mot", "")).strip(),
+            "explication": str(parsed.get("explication", "")).strip(),
+        }
+        if not out["simple"]:
+            json_response(self, {"error": "Reformulation vide"}, 502)
+            return
+        save_outils_entry(cle, out)
+        json_response(self, out)
+
+    def _handle_outil_assistant(self):
+        """Répond aux questions de l'élève sur le module en cours.
+
+        Corps : {code, langue?, module?, section?, contexte?, historique}.
+        `historique` est la liste complète des tours ({role, content}) : la
+        conversation n'est pas stockée côté serveur, c'est le client qui la
+        porte, comme pour le jeu de rôle.
+
+        La consigne système tient en trois interdits — répondre simple, ne
+        jamais donner la réponse d'un exercice, rester sur le module. Sans le
+        deuxième, l'outil devient un distributeur de corrigés.
+        """
+        length = int(self.headers.get("Content-Length", 0))
+        try:
+            body = json.loads(self.rfile.read(length)) if length else {}
+        except json.JSONDecodeError:
+            json_response(self, {"error": "Requête invalide"}, 400)
+            return
+        if not validate_student_code(body.get("code", "").strip().upper()):
+            json_response(self, {"error": "Non autorisé"}, 401)
+            return
+
+        recu = body.get("historique")
+        if not isinstance(recu, list) or not recu:
+            json_response(self, {"error": "Question manquante"}, 400)
+            return
+        # On ne garde que les douze derniers tours : au-delà, la conversation
+        # coûte cher et n'aide plus. Le contenu est borné, un élève ne peut pas
+        # faire passer un long texte pour de l'historique.
+        messages = []
+        for tour in recu[-12:]:
+            if not isinstance(tour, dict):
+                continue
+            role = "assistant" if tour.get("role") == "assistant" else "user"
+            contenu = strip_tags(str(tour.get("content", ""))).strip()[:600]
+            if contenu:
+                messages.append({"role": role, "content": contenu})
+        if not messages or messages[-1]["role"] != "user":
+            json_response(self, {"error": "Question manquante"}, 400)
+            return
+
+        langue = strip_tags(str(body.get("langue", ""))).strip()[:60]
+        titre = strip_tags(str(body.get("section", ""))).strip()[:120]
+        contexte = strip_tags(str(body.get("contexte", ""))).strip()[:6000]
+
+        system_prompt = (
+            "Tu es un assistant d'apprentissage intégré à un module de "
+            "francisation (FLS) au Québec, niveau 4 — des adultes immigrants "
+            "débutants-intermédiaires. Tu aides UN élève pendant qu'il "
+            "travaille.\n\n"
+            "TROIS RÈGLES ABSOLUES :\n"
+            "1. Tu écris en français SIMPLE : phrases courtes, vocabulaire "
+            "courant, présent quand c'est possible. Deux ou trois phrases par "
+            "réponse, pas davantage. Tu peux mettre un mot important en gras "
+            "avec **deux astérisques**.\n"
+            "2. Tu ne donnes JAMAIS la réponse d'un exercice. Si l'élève la "
+            "demande, tu refuses gentiment et tu donnes un indice : tu "
+            "reformules la question, tu renvoies à la phrase du dialogue où se "
+            "trouve l'information, ou tu poses une question plus facile. "
+            "Expliquer un mot, une règle ou une consigne, ça, tu le fais "
+            "volontiers.\n"
+            "3. Tu restes sur le module. Si on te parle d'autre chose, tu "
+            "réponds une phrase et tu ramènes vers la tâche.\n\n"
+            "Tu tutoies l'élève avec « vous » (usage québécois en classe "
+            "d'adultes). Tu es chaleureux, jamais condescendant. Tu ne "
+            "corriges pas les fautes de la question de l'élève : il écrit pour "
+            "se faire comprendre, pas pour être évalué."
+        )
+        if langue:
+            system_prompt += (
+                f"\n\nLa langue maternelle de l'élève est : {langue}. Tu "
+                "réponds TOUJOURS en français d'abord. Tu ajoutes une "
+                "traduction dans sa langue seulement s'il la demande, ou si "
+                "un mot est vraiment intraduisible autrement — dans ce cas, "
+                "mets la traduction sur une dernière ligne, précédée de « 🌐 »."
+            )
+        if titre:
+            system_prompt += f"\n\nL'élève travaille en ce moment sur : {titre}."
+        if contexte:
+            system_prompt += (
+                "\n\nVoici le texte du module que l'élève a sous les yeux. "
+                "Appuie-toi dessus, c'est ta seule source sur le contenu :\n\n"
+                f"{contexte}"
+            )
+
+        texte, err = self._call_anthropic_dialogue(system_prompt, messages, max_tokens=400)
+        if err:
+            json_response(self, {"error": err[0]}, err[1])
+            return
+        json_response(self, {"reponse": texte})
 
     def _call_anthropic_json(self, system_prompt, user_content, max_tokens=400):
         """Appelle l'API Anthropic et retourne (parsed_dict, None) en cas de

@@ -706,6 +706,9 @@ body{
 :focus-visible{outline:3px solid var(--ws-accent);outline-offset:2px;border-radius:inherit}
 textarea:focus-visible,.winput:focus-visible{outline:none;border-color:var(--ws-accent)}
 </style>
+<!-- OUTILS-ELEVE-CSS:début -->
+<link rel="stylesheet" href="/assets/design-system/outils-eleve.css">
+<!-- OUTILS-ELEVE-CSS:fin -->
 </head>
 <body>
 
@@ -2878,4 +2881,34 @@ render();
 measureChrome();
 lmsTrack('file_opened');
 </script>
+<!-- OUTILS-ELEVE:début — greffé par build/greffe_outils.py -->
+<script src="/assets/design-system/outils-eleve.js"></script>
+<script>
+(function () {
+  function sectionCourante() {
+    if (typeof SECTIONS === 'undefined' || typeof curSec === 'undefined') return null;
+    return SECTIONS.filter(function (s) { return s.id === curSec; })[0] || null;
+  }
+  var depart = sectionCourante();
+  Outils.init({
+    code: typeof studentCode !== 'undefined' ? studentCode : '',
+    module: 'module-pub',
+    section: depart ? depart.title : '',
+    blocs: '.card, .savoir'
+  });
+  // Le titre de section suit les onglets : l'assistant doit savoir où en est
+  // l'élève. render() est une fonction globale du module ; on l'enveloppe
+  // plutôt que d'ajouter un écouteur sur chaque onglet.
+  if (typeof render === 'function') {
+    var rendreOrig = render;
+    render = function () {
+      var r = rendreOrig.apply(this, arguments);
+      var s = sectionCourante();
+      if (s) Outils.setSection(s.title);
+      return r;
+    };
+  }
+})();
+</script>
+<!-- OUTILS-ELEVE:fin -->
 </body></html>

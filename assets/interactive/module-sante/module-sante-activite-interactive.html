@@ -163,6 +163,9 @@ textarea:focus{outline:none;border-color:#12996B}
 
 @media(max-width:900px){.vocab-grid{grid-template-columns:1fr 1fr}.rrow2{grid-template-columns:1fr}.hdr-h1{font-size:22px}}
 </style>
+<!-- OUTILS-ELEVE-CSS:début -->
+<link rel="stylesheet" href="/assets/design-system/outils-eleve.css">
+<!-- OUTILS-ELEVE-CSS:fin -->
 </head>
 <body>
 
@@ -916,4 +919,34 @@ buildStatic();
 render();
 lmsTrack('file_opened');
 </script>
+<!-- OUTILS-ELEVE:début — greffé par build/greffe_outils.py -->
+<script src="/assets/design-system/outils-eleve.js"></script>
+<script>
+(function () {
+  function sectionCourante() {
+    if (typeof SECTIONS === 'undefined' || typeof curSec === 'undefined') return null;
+    return SECTIONS.filter(function (s) { return s.id === curSec; })[0] || null;
+  }
+  var depart = sectionCourante();
+  Outils.init({
+    code: typeof studentCode !== 'undefined' ? studentCode : '',
+    module: 'module-sante',
+    section: depart ? depart.title : '',
+    blocs: '.card, .savoir'
+  });
+  // Le titre de section suit les onglets : l'assistant doit savoir où en est
+  // l'élève. render() est une fonction globale du module ; on l'enveloppe
+  // plutôt que d'ajouter un écouteur sur chaque onglet.
+  if (typeof render === 'function') {
+    var rendreOrig = render;
+    render = function () {
+      var r = rendreOrig.apply(this, arguments);
+      var s = sectionCourante();
+      if (s) Outils.setSection(s.title);
+      return r;
+    };
+  }
+})();
+</script>
+<!-- OUTILS-ELEVE:fin -->
 </body></html>

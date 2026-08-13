@@ -1,0 +1,249 @@
+/* ============================================================
+   FRANCISATION · BARRE D'OUTILS ÉLÈVE
+   Colonne d'outils permanente + panneau + barre de sélection.
+   Partagée par tous les modules : ne rien écrire ici qui dépende
+   d'un module précis.
+
+   Les modules interactifs sont des fichiers autonomes qui ne
+   chargent pas forcément les jetons du système de design : chaque
+   var() porte donc sa valeur de repli.
+   ============================================================ */
+
+/* Les jetons vivent sur :root et non sur .oe-root : le marqueur 🌐 et le
+   calque de traduction sont injectés DANS la page hôte, hors de la racine
+   des outils. Portés par .oe-root, ils héritaient d'un fond transparent —
+   texte sombre sur bandeau noir, illisible. */
+:root{
+  --oe-dock:132px;
+  --oe-panel:400px;
+  --oe-card:var(--surface-card,#FFFFFF);
+  --oe-page:var(--surface-page,#F7F7F5);
+  --oe-sunken:var(--surface-sunken,#FBFBFA);
+  --oe-ink:var(--text-strong,#17181A);
+  --oe-body:var(--text-body,#3A3D40);
+  --oe-muted:var(--text-muted,#6E7175);
+  --oe-line:var(--border,#EAEAE8);
+  --oe-paper-200:var(--paper-200,#F0F0EE);
+  --oe-line-2:var(--line-300,#D6D6D2);
+  --oe-accent:var(--accent,#0A8F5B);
+  --oe-accent-soft:var(--accent-soft,#E6F5EE);
+  --oe-accent-ink:var(--accent-ink,#07734A);
+  --oe-acier:var(--acier-600,#1D6B8F);
+  --oe-acier-soft:var(--acier-100,#E7F0F6);
+  --oe-audio:var(--audio,#DC2626);
+  --oe-no-bg:var(--no-bg,#FFF6F5);
+  --oe-no-line:var(--no-line,#DC2626);
+  --oe-no-ink:var(--no-ink,#B91C1C);
+  --oe-ok-bg:var(--ok-bg,#E6F5EE);
+  --oe-ok-line:var(--ok-line,#0A8F5B);
+  --oe-ok-ink:var(--ok-ink,#07734A);
+  --oe-warn-bg:var(--warn-bg,#FEF6E7);
+  --oe-warn-line:var(--warn-line,#D9880B);
+  --oe-warn-ink:var(--warn-ink,#8A5206);
+  --oe-r-sm:10px; --oe-r-md:14px; --oe-r-lg:18px; --oe-r-pill:999px;
+  --oe-tap:48px;
+}
+.oe-root{font-family:var(--font-sans,"Nunito",system-ui,sans-serif)}
+.oe-root *,.oe-root *::before,.oe-root *::after{box-sizing:border-box}
+.oe-root button{font:inherit;cursor:pointer}
+
+/* ── Bandeau de langue ──────────────────────────────────────── */
+.oe-lang{background:var(--oe-ink);color:#fff;padding:20px 32px}
+.oe-lang-in{max-width:1000px;margin:0 auto;display:flex;gap:20px;align-items:center;flex-wrap:wrap}
+.oe-lang h2{margin:0;font-size:19px;font-weight:900;line-height:1.25}
+.oe-lang p{margin:2px 0 0;font-size:14.5px;color:#C9CBCD;line-height:1.5}
+.oe-lang select{
+  font:inherit;font-weight:700;font-size:16px;padding:0 16px;height:var(--oe-tap);
+  border-radius:var(--oe-r-sm);border:2px solid #3A3D40;background:#232529;color:#fff;min-width:250px;
+}
+.oe-lang .oe-ok{height:var(--oe-tap);padding:0 24px;border:0;border-radius:var(--oe-r-pill);
+  background:var(--oe-accent);color:#fff;font-weight:800;font-size:16px}
+.oe-langbar{background:var(--oe-accent-soft);border-bottom:1px solid var(--oe-line);
+  padding:8px 32px;font-size:14px;color:var(--oe-accent-ink);font-weight:700}
+.oe-langbar-in{max-width:1000px;margin:0 auto;display:flex;align-items:center;gap:12px;flex-wrap:wrap}
+.oe-langbar button{background:none;border:0;color:var(--oe-accent-ink);
+  text-decoration:underline;font-weight:700;font-size:14px;padding:4px 8px}
+
+/* ── Rail « Mes outils » ────────────────────────────────────── */
+/* z-index sous les surcouches modales des modules (#fc-overlay 9000,
+   #plus-ov 9500) : quand l'élève ouvre les cartes de vocabulaire, la
+   surcouche doit couvrir le rail, pas l'inverse. */
+.oe-dock{
+  position:fixed;top:0;right:0;width:var(--oe-dock);height:100vh;
+  background:var(--oe-page);border-left:1px solid var(--oe-paper-200);
+  display:flex;flex-direction:column;align-items:center;gap:12px;
+  padding:24px 12px;z-index:8000;overflow-y:auto;
+}
+.oe-dock-t{font-size:13px;font-weight:800;letter-spacing:.1em;text-transform:uppercase;
+  color:var(--oe-muted);text-align:center;margin-bottom:8px;line-height:1.4}
+.oe-tool{
+  width:100%;border:0;background:transparent;border-radius:var(--oe-r-md);
+  padding:8px;display:flex;flex-direction:column;align-items:center;justify-content:center;
+  gap:4px;color:var(--oe-ink);min-height:76px;
+}
+.oe-tool .oe-ic{display:block;line-height:0}
+.oe-tool .oe-lb{font-size:15px;font-weight:700;line-height:1.2;text-align:center}
+/* Le rouge est réservé à l'audio : « Lire » est le seul outil qui le porte. */
+.oe-tool.oe-audio{color:var(--oe-audio)}
+.oe-tool:hover{background:var(--oe-sunken)}
+.oe-tool.oe-audio:hover{background:var(--oe-no-bg)}
+/* Sélectionné = plaque encre, jamais une teinte de plus — « Lire » compris,
+   qui perd son rouge au profit du blanc sur encre. Posé après les règles de
+   survol pour gagner sans !important. */
+.oe-dock .oe-tool[aria-pressed="true"],
+.oe-dock .oe-tool[aria-pressed="true"]:hover{background:var(--oe-ink);color:#fff}
+.oe-dock-sep{width:56px;height:1px;background:var(--oe-paper-200);margin:8px 0;flex:none}
+
+/* ── Panneau ────────────────────────────────────────────────── */
+.oe-panel{
+  position:fixed;top:0;right:var(--oe-dock);width:var(--oe-panel);height:100vh;
+  background:var(--oe-card);border-left:1px solid var(--oe-line);
+  box-shadow:-14px 0 40px rgba(0,0,0,.07);
+  display:flex;flex-direction:column;z-index:7999;
+  transform:translateX(calc(100% + var(--oe-dock)));transition:transform .22s ease;
+}
+.oe-open .oe-panel{transform:none}
+.oe-h{padding:20px 20px 16px;border-bottom:1px solid var(--oe-line);display:flex;align-items:flex-start;gap:12px}
+.oe-h .oe-ttl{flex:1;min-width:0}
+.oe-h h3{margin:0;font-size:19px;font-weight:900;line-height:1.25;color:var(--oe-ink)}
+.oe-h .oe-sub{font-size:13.5px;color:var(--oe-muted);margin-top:2px;line-height:1.4}
+.oe-x{width:36px;height:36px;border-radius:var(--oe-r-pill);border:1px solid var(--oe-line);
+  background:var(--oe-card);font-size:17px;color:var(--oe-muted);flex:none}
+.oe-x:hover{background:var(--oe-page);color:var(--oe-ink)}
+.oe-b{flex:1;overflow-y:auto;padding:20px;color:var(--oe-body);font-size:16px;line-height:1.6}
+.oe-pane{display:none}
+.oe-pane.oe-on{display:block}
+
+/* ── Pièces communes ────────────────────────────────────────── */
+.oe-tip{background:var(--oe-sunken);border:1px dashed var(--oe-line-2);border-radius:var(--oe-r-sm);
+  padding:16px;font-size:14.5px;color:var(--oe-muted);line-height:1.55}
+.oe-lbl{font-size:11.5px;font-weight:800;letter-spacing:.08em;text-transform:uppercase;
+  color:var(--oe-muted);margin-bottom:8px}
+.oe-quote{background:var(--oe-sunken);border-left:3px solid var(--oe-ink);border-radius:0 var(--oe-r-sm) var(--oe-r-sm) 0;
+  padding:12px 16px;font-size:16px;margin-bottom:16px;color:var(--oe-ink);line-height:1.55}
+.oe-res{border-left:3px solid var(--oe-acier);background:var(--oe-acier-soft);
+  border-radius:0 var(--oe-r-sm) var(--oe-r-sm) 0;padding:16px;font-size:16.5px;line-height:1.6;color:var(--oe-body)}
+.oe-res.oe-vert{border-left-color:var(--oe-ok-line);background:var(--oe-ok-bg)}
+.oe-err{background:var(--oe-no-bg);border-left:3px solid var(--oe-no-line);color:var(--oe-no-ink);
+  border-radius:0 var(--oe-r-sm) var(--oe-r-sm) 0;padding:12px 16px;font-size:15px;line-height:1.5}
+.oe-btn{border:0;border-radius:var(--oe-r-pill);height:var(--oe-tap);padding:0 20px;font-weight:800;font-size:15px}
+.oe-btn[disabled]{opacity:.5;cursor:not-allowed}
+.oe-full{width:100%;margin-bottom:12px;display:block}
+.oe-red{background:var(--oe-audio);color:#fff}
+.oe-dark{background:var(--oe-ink);color:#fff}
+.oe-soft{background:var(--oe-accent-soft);color:var(--oe-accent-ink);border:1px solid var(--oe-line)}
+.oe-ghost{background:var(--oe-card);border:1px solid var(--oe-line);color:var(--oe-body)}
+.oe-row{display:flex;gap:8px;margin-bottom:12px}
+.oe-row .oe-btn{flex:1;padding:0 12px;font-size:14px}
+.oe-btn svg{vertical-align:-4px;margin-right:6px}
+.oe-sel button svg{vertical-align:-4px;margin-right:5px}
+.oe-langbar-t{display:inline-flex;align-items:center;gap:6px}
+.oe-langbar-t svg{flex:none}
+.oe-saisie .oe-mic{display:grid;place-items:center}
+
+/* attente */
+.oe-wait{display:flex;align-items:center;gap:10px;color:var(--oe-muted);font-size:15px;font-weight:700;padding:8px 0}
+.oe-wait i{width:14px;height:14px;border-radius:50%;border:2px solid var(--oe-line-2);
+  border-top-color:var(--oe-accent);animation:oe-spin .7s linear infinite;display:block}
+@keyframes oe-spin{to{transform:rotate(360deg)}}
+
+/* ── Marqueur 🌐 en marge d'un bloc ─────────────────────────── */
+.oe-zone{position:relative}
+/* Le marqueur se pose DANS le bloc, en haut à droite : en marge extérieure il
+   se faisait rogner par les cartes des modules, qui portent overflow-x:auto. */
+.oe-tag{
+  position:absolute;right:8px;top:8px;width:30px;height:30px;border-radius:var(--oe-r-pill);
+  border:1px solid var(--oe-line);background:var(--oe-card);color:var(--oe-muted);
+  display:grid;place-items:center;opacity:0;transition:opacity .15s;padding:0;z-index:5;
+}
+.oe-zone:hover .oe-tag,.oe-tag:focus-visible,.oe-tag.oe-actif{opacity:1}
+.oe-tag:hover{border-color:var(--oe-accent);color:var(--oe-accent-ink);background:var(--oe-accent-soft)}
+/* Sans survol possible, le marqueur doit être visible d'emblée. */
+@media (hover:none){.oe-tag{opacity:1}}
+
+/* le calque de traduction, SOUS le français — jamais à la place */
+.oe-trad{margin-top:16px;border-left:3px solid var(--oe-acier);background:var(--oe-acier-soft);
+  border-radius:0 var(--oe-r-sm) var(--oe-r-sm) 0;padding:14px 18px}
+.oe-trad .oe-lbl{color:var(--oe-acier);margin-bottom:6px}
+.oe-trad p{margin:0;font-size:16.5px;line-height:1.6;color:#3A3D40}
+
+/* ── Prononciation ─────────────────────────────────────────── */
+.oe-mots{display:flex;flex-wrap:wrap;gap:8px;margin:16px 0}
+.oe-mot{padding:8px 12px;border-radius:var(--oe-r-sm);font-weight:700;font-size:16px;border:1px solid}
+.oe-mot.oe-o{background:var(--oe-ok-bg);border-color:var(--oe-ok-line);color:var(--oe-ok-ink)}
+.oe-mot.oe-n{background:var(--oe-no-bg);border-color:var(--oe-no-line);color:var(--oe-no-ink)}
+.oe-jauge{height:10px;border-radius:var(--oe-r-pill);background:var(--oe-page);overflow:hidden;margin:8px 0 16px}
+.oe-jauge i{display:block;height:100%;background:var(--oe-accent);border-radius:var(--oe-r-pill);transition:width .4s}
+.oe-entendu{font-size:14px;color:var(--oe-warn-ink);background:var(--oe-warn-bg);
+  border-left:3px solid var(--oe-warn-line);border-radius:0 var(--oe-r-sm) var(--oe-r-sm) 0;
+  padding:12px 14px;margin-bottom:16px;line-height:1.5}
+
+/* ── Assistant ─────────────────────────────────────────────── */
+.oe-chat{display:flex;flex-direction:column;gap:12px;margin-bottom:16px}
+.oe-bul{max-width:88%;padding:12px 16px;border-radius:var(--oe-r-lg);font-size:15.5px;line-height:1.55}
+.oe-bul.oe-moi{align-self:flex-end;background:var(--oe-ink);color:#fff;border-bottom-right-radius:4px}
+.oe-bul.oe-ia{align-self:flex-start;background:var(--oe-sunken);border:1px solid var(--oe-line);
+  border-bottom-left-radius:4px;color:var(--oe-body)}
+.oe-sugg{display:flex;flex-wrap:wrap;gap:8px;margin-bottom:16px}
+.oe-sugg button{background:var(--oe-acier-soft);border:1px solid #CFE0EB;color:var(--oe-acier);
+  border-radius:var(--oe-r-pill);padding:8px 12px;font-size:13.5px;font-weight:700;text-align:left}
+.oe-saisie{display:flex;gap:8px;border-top:1px solid var(--oe-line);padding-top:16px}
+.oe-saisie input{flex:1;min-width:0;font:inherit;font-size:15px;height:var(--oe-tap);padding:0 16px;
+  border:1px solid var(--oe-line-2);border-radius:var(--oe-r-pill);background:var(--oe-sunken);color:var(--oe-ink)}
+.oe-saisie .oe-go{width:var(--oe-tap);height:var(--oe-tap);border-radius:var(--oe-r-pill);
+  border:0;background:var(--oe-accent);color:#fff;font-size:17px;flex:none}
+.oe-saisie .oe-mic{width:var(--oe-tap);height:var(--oe-tap);border-radius:var(--oe-r-pill);
+  border:1px solid var(--oe-line);background:var(--oe-card);font-size:17px;flex:none}
+.oe-saisie .oe-mic.oe-actif{background:var(--oe-audio);border-color:var(--oe-audio);color:#fff}
+
+/* ── Carnet ────────────────────────────────────────────────── */
+.oe-mot-l{display:flex;align-items:center;gap:12px;padding:12px 0;border-bottom:1px solid var(--oe-page)}
+.oe-mot-l b{font-size:16.5px;color:var(--oe-ink)}
+.oe-mot-l span{font-size:14px;color:var(--oe-muted);flex:1;min-width:0}
+.oe-mot-l .oe-del{border:0;background:none;color:var(--oe-muted);font-size:16px;padding:4px 8px}
+.oe-vide{color:var(--oe-muted);font-size:15px;line-height:1.55}
+
+/* ── Barre flottante de sélection ──────────────────────────── */
+.oe-sel{
+  position:absolute;z-index:8100;display:none;gap:2px;padding:4px;
+  background:var(--oe-ink);border-radius:var(--oe-r-pill);box-shadow:0 8px 24px rgba(0,0,0,.24);
+}
+.oe-sel.oe-on{display:flex}
+.oe-sel button{border:0;background:none;color:#fff;font-size:13.5px;font-weight:700;
+  padding:8px 12px;border-radius:var(--oe-r-pill);white-space:nowrap}
+.oe-sel button:hover{background:#33363A}
+.oe-sel .oe-sep{width:1px;background:#43464A;margin:6px 1px}
+
+/* ── Place réservée dans la page hôte ──────────────────────── */
+body.oe-host{padding-right:var(--oe-dock)}
+body.oe-host.oe-open{padding-right:calc(var(--oe-dock) + var(--oe-panel))}
+body.oe-host{transition:padding-right .22s ease}
+
+/* ── Téléphone : barre en bas, panneau en feuille ──────────── */
+@media (max-width:900px){
+  body.oe-host,body.oe-host.oe-open{padding-right:0;padding-bottom:96px}
+  .oe-dock{
+    top:auto;bottom:0;left:0;right:0;width:100%;height:auto;
+    flex-direction:row;justify-content:space-around;gap:0;overflow:visible;
+    border-left:0;border-top:1px solid var(--oe-line);
+    padding:8px 4px calc(8px + env(safe-area-inset-bottom));
+    box-shadow:0 -6px 22px rgba(0,0,0,.07);
+  }
+  .oe-dock-t,.oe-dock-sep{display:none}
+  /* Six libellés côte à côte sur 375 px : le mot reste obligatoire, c'est le
+     corps qui cède, pas le glyphe. Cible tactile toujours ≥ 44 px. */
+  .oe-tool{width:auto;flex:1;padding:6px 2px;min-height:56px;gap:2px}
+  .oe-tool .oe-lb{font-size:11.5px;font-weight:700}
+  .oe-tool .oe-ic svg{width:22px;height:22px}
+  .oe-panel{
+    right:0;left:0;width:100%;top:auto;bottom:0;height:80vh;
+    border-left:0;border-top:1px solid var(--oe-line);
+    border-radius:var(--oe-r-lg) var(--oe-r-lg) 0 0;transform:translateY(100%);
+  }
+  .oe-lang,.oe-langbar{padding-left:16px;padding-right:16px}
+}
+
+@media (prefers-reduced-motion:reduce){
+  .oe-panel,body.oe-host{transition:none}
+  .oe-wait i{animation:none}
+}

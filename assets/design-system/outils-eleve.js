@@ -1,0 +1,792 @@
+/* ============================================================
+   FRANCISATION · BARRE D'OUTILS ÉLÈVE
+   Six outils permanents, disponibles partout dans un module :
+   traduire · lire · simplifier · prononcer · demander · carnet.
+
+   Usage dans un module :
+     Outils.init({ code: studentCode, module: 'module-probleme',
+                   section: 'Défi 1 — …' });
+   Les blocs traduisibles se marquent avec l'attribut data-oe dans
+   le HTML ; la barre y greffe un marqueur de traduction en marge.
+
+   Le fichier ne connaît aucun module en particulier : tout ce qui
+   change d'un module à l'autre passe par init().
+   ============================================================ */
+(function (global) {
+  'use strict';
+
+  // Même clé et même liste que la section vocabulaire : l'élève qui a
+  // déjà choisi sa langue là-bas ne la rechoisit pas ici.
+  var LS_LANGUE = 'francisation-langue';
+  var LANGUES = [
+    { c: 'ar', n: 'arabe', loc: 'العربية', rtl: true },
+    { c: 'es', n: 'espagnol', loc: 'Español' },
+    { c: 'uk', n: 'ukrainien', loc: 'Українська' },
+    { c: 'fa', n: 'persan', loc: 'فارسی', rtl: true },
+    { c: 'zh', n: 'chinois (mandarin)', loc: '中文' },
+    { c: 'pt', n: 'portugais', loc: 'Português' },
+    { c: 'en', n: 'anglais', loc: 'English' },
+    { c: 'ro', n: 'roumain', loc: 'Română' },
+    { c: 'ur', n: 'ourdou', loc: 'اردو', rtl: true },
+    { c: 'ru', n: 'russe', loc: 'Русский' },
+    { c: 'ti', n: 'tigrigna', loc: 'ትግርኛ' }
+  ];
+
+  // Les six tracés du système de design (grille 24, trait 2,2, bouts ronds).
+  // Aucun émoji, aucun jeu d'icônes tierce partie : le poids de trait et les
+  // proportions diffèrent, et le mélange se voit immédiatement.
+  var TRACES = {
+    trad: ['M3.5 6.5h8', 'M7.5 6.5c0 5-1.8 8-4.5 10', 'M5 11.5c1.6 3 3.9 5 6.5 6',
+      'M12.5 20.5 16.5 11l4 9.5', 'M14 17.2h5'],
+    lire: ['M11 5 6 9H2v6h4l5 4V5Z', 'M15.5 8.5a5 5 0 0 1 0 7', 'M18.5 5.5a9 9 0 0 1 0 13'],
+    simp: ['M4 5.5h16', 'M4 10.3h12', 'M4 15.1h8', 'M4 19.9h4'],
+    pron: ['M12 3.5a2.8 2.8 0 0 0-2.8 2.8v4.9a2.8 2.8 0 0 0 5.6 0V6.3A2.8 2.8 0 0 0 12 3.5Z',
+      'M5.8 11.2a6.2 6.2 0 0 0 12.4 0', 'M12 17.4v3.1'],
+    chat: ['M4.5 5h15v10.5h-8.6L6.5 19.5v-4H4.5Z', 'M9 10.2h.01', 'M12 10.2h.01', 'M15 10.2h.01'],
+    carn: ['M8 3.5h11.5v17H8Z', 'M4.5 7.2h3.5', 'M4.5 12h3.5', 'M4.5 16.8h3.5', 'M12 8.5h4']
+  };
+
+  // Les attributs de peinture sont portés par le <svg> lui-même : passés par
+  // <defs>/<use>, ils ne survivent pas à une capture ou à un export, qui
+  // repeignent des silhouettes noires pleines.
+  function icone(id, taille) {
+    var t = TRACES[id];
+    if (!t) return '';
+    return '<svg viewBox="0 0 24 24" width="' + (taille || 26) + '" height="' + (taille || 26)
+      + '" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"'
+      + ' stroke-linejoin="round" aria-hidden="true" focusable="false">'
+      + t.map(function (d) { return '<path d="' + d + '"/>'; }).join('') + '</svg>';
+  }
+
+  var OUTILS = [
+    { id: 'trad', lb: 'Traduire', t: 'Traduire', s: 'Le français reste toujours visible' },
+    { id: 'lire', lb: 'Lire', t: 'Lire à voix haute', s: 'Écouter le texte du module', audio: true },
+    { id: 'simp', lb: 'Simplifier', t: 'Simplifier', s: 'Plus court, toujours en français' },
+    { sep: true },
+    { id: 'pron', lb: 'Prononcer', t: 'Prononcer', s: 'Écouter, s’enregistrer, comparer' },
+    { id: 'chat', lb: 'Demander', t: 'Demander à l’assistant', s: '' },
+    { id: 'carn', lb: 'Mon carnet', t: 'Mon carnet', s: 'Les mots que je garde' }
+  ];
+
+  var cfg = null;      // configuration passée à init()
+  var el = {};         // références DOM
+  var courant = null;  // outil ouvert, ou null
+  var selection = '';  // dernier passage surligné
+  var chat = [];       // historique de l'assistant
+  var audioEnCours = null;
+
+  // ══ Petits utilitaires ════════════════════════════════════════
+  function esc(s) {
+    return String(s == null ? '' : s).replace(/[&<>"']/g, function (c) {
+      return { '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c];
+    });
+  }
+  // Le gras **ainsi** est la seule mise en forme que l'assistant produit.
+  function gras(s) {
+    return esc(s).replace(/\*\*([^*]+)\*\*/g, '<b>$1</b>').replace(/\n/g, '<br>');
+  }
+  function lire(cle, defaut) {
+    try { var v = localStorage.getItem(cle); return v === null ? defaut : JSON.parse(v); }
+    catch (e) { return defaut; }   // Safari privé fait lever localStorage
+  }
+  function ecrire(cle, valeur) {
+    try { localStorage.setItem(cle, JSON.stringify(valeur)); } catch (e) { }
+  }
+  function langue() {
+    var c = lire(LS_LANGUE, '');
+    for (var i = 0; i < LANGUES.length; i++) if (LANGUES[i].c === c) return LANGUES[i];
+    return null;
+  }
+  function propre(t) { return String(t || '').replace(/\s+/g, ' ').trim(); }
+
+  function poste(url, corps) {
+    return fetch(url, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(Object.assign({ code: cfg.code }, corps))
+    }).then(function (r) {
+      return r.json().catch(function () { return {}; }).then(function (d) {
+        if (!r.ok) throw new Error(d.error || 'Le service est indisponible (' + r.status + ')');
+        return d;
+      });
+    });
+  }
+
+  function attente(zone, texte) {
+    zone.innerHTML = '<div class="oe-wait"><i></i>' + esc(texte) + '</div>';
+  }
+  function erreur(zone, e) {
+    zone.innerHTML = '<div class="oe-err">' + esc(e && e.message ? e.message : String(e)) + '</div>';
+  }
+
+  // ══ Construction de l'interface ═══════════════════════════════
+  function bati() {
+    var racine = document.createElement('div');
+    racine.className = 'oe-root';
+
+    var dock = '<nav class="oe-dock" aria-label="Mes outils"><div class="oe-dock-t">Mes<br>outils</div>';
+    OUTILS.forEach(function (o) {
+      if (o.sep) { dock += '<div class="oe-dock-sep"></div>'; return; }
+      dock += '<button type="button" class="oe-tool' + (o.audio ? ' oe-audio' : '')
+        + '" data-oe-outil="' + o.id + '" aria-pressed="false">'
+        + '<span class="oe-ic">' + icone(o.id) + '</span>'
+        + '<span class="oe-lb">' + esc(o.lb) + '</span></button>';
+    });
+    dock += '</nav>';
+
+    var panneau = '<aside class="oe-panel" role="dialog" aria-label="Panneau d\'outil" aria-modal="false">'
+      + '<div class="oe-h"><div class="oe-ttl"><h3 id="oe-ttl">Outils</h3>'
+      + '<div class="oe-sub" id="oe-sub"></div></div>'
+      + '<button type="button" class="oe-x" id="oe-x" aria-label="Fermer">✕</button></div>'
+      + '<div class="oe-b">'
+      + '<section class="oe-pane" id="oe-pane-trad"></section>'
+      + '<section class="oe-pane" id="oe-pane-lire"></section>'
+      + '<section class="oe-pane" id="oe-pane-simp"></section>'
+      + '<section class="oe-pane" id="oe-pane-pron"></section>'
+      + '<section class="oe-pane" id="oe-pane-chat"></section>'
+      + '<section class="oe-pane" id="oe-pane-carn"></section>'
+      + '</div></aside>';
+
+    var actions = [['trad', 'Traduire'], ['lire', 'Écouter'], ['simp', 'Simplifier'],
+      ['pron', 'Prononcer'], ['carn', 'Garder']];
+    var sel = '<div class="oe-sel" id="oe-sel">' + actions.map(function (a, i) {
+      return (i ? '<span class="oe-sep"></span>' : '')
+        + '<button type="button" data-oe-sel="' + a[0] + '">'
+        + icone(a[0], 18) + esc(a[1]) + '</button>';
+    }).join('') + '</div>';
+
+    racine.innerHTML = dock + panneau + sel;
+    document.body.appendChild(racine);
+    document.body.classList.add('oe-host');
+
+    // Le choix de la langue est la première chose que l'élève doit voir :
+    // il vit en tête de page, dans son propre conteneur, et non dans la
+    // racine des outils qui est ajoutée en fin de body.
+    var tete = document.createElement('div');
+    tete.className = 'oe-root oe-tete';
+    tete.innerHTML = bandeauLangue();
+    document.body.insertBefore(tete, document.body.firstChild);
+
+    el.tete = tete;
+    el.racine = racine;
+    el.panel = racine.querySelector('.oe-panel');
+    el.ttl = racine.querySelector('#oe-ttl');
+    el.sub = racine.querySelector('#oe-sub');
+    el.sel = racine.querySelector('#oe-sel');
+    OUTILS.forEach(function (o) {
+      if (!o.sep) el[o.id] = racine.querySelector('#oe-pane-' + o.id);
+    });
+
+    racine.querySelector('#oe-x').onclick = fermer;
+    racine.querySelectorAll('[data-oe-outil]').forEach(function (b) {
+      b.onclick = function () { ouvrir(b.getAttribute('data-oe-outil')); };
+    });
+    racine.querySelectorAll('[data-oe-sel]').forEach(function (b) {
+      b.onclick = function () {
+        var s = propre(String(window.getSelection()));
+        if (s) selection = s;
+        cacheSel();
+        ouvrir(b.getAttribute('data-oe-sel'), true);
+      };
+    });
+  }
+
+  function bandeauLangue() {
+    var L = langue();
+    if (L) {
+      return '<div class="oe-langbar"><div class="oe-langbar-in">'
+        + '<span class="oe-langbar-t">' + icone('trad', 18) + 'Ma langue : '
+          + esc(L.loc) + ' · ' + esc(L.n) + '</span>'
+        + '<button type="button" id="oe-chg">changer</button></div></div>';
+    }
+    return '<div class="oe-lang"><div class="oe-lang-in">'
+      + '<div style="flex:1;min-width:260px"><h2>Avant de commencer : ma langue maternelle</h2>'
+      + '<p>Elle sert aux outils de traduction. Vous pourrez la changer plus tard.</p></div>'
+      + '<select id="oe-lsel" aria-label="Ma langue maternelle">'
+      + '<option value="">— Choisissez votre langue —</option>'
+      + LANGUES.map(function (l) {
+        return '<option value="' + l.c + '">' + esc(l.loc) + ' · ' + esc(l.n) + '</option>';
+      }).join('')
+      + '</select><button type="button" class="oe-ok" id="oe-lok">C\'est noté</button>'
+      + '</div></div>';
+  }
+
+  function brancheLangue() {
+    var chg = el.tete.querySelector('#oe-chg');
+    if (chg) { chg.onclick = function () { ecrire(LS_LANGUE, ''); refaitLangue(); }; return; }
+    var sel = el.tete.querySelector('#oe-lsel');
+    var ok = el.tete.querySelector('#oe-lok');
+    if (!sel || !ok) return;
+    ok.onclick = function () {
+      if (!sel.value) { sel.focus(); return; }
+      ecrire(LS_LANGUE, sel.value);
+      refaitLangue();
+      // Les panneaux déjà remplis montrent l'ancienne langue.
+      if (courant) ouvrir(courant, true);
+    };
+  }
+
+  function refaitLangue() {
+    el.tete.innerHTML = bandeauLangue();
+    brancheLangue();
+  }
+
+  // ══ Marqueurs de traduction en marge des blocs ══════════════
+  // Un module généré ne peut pas porter d'attributs data-oe écrits à la main :
+  // son HTML est reconstruit, et l'essentiel de son contenu est produit par
+  // render() à chaque changement de section. Le module donne donc un sélecteur
+  // et un observateur remarque les blocs à mesure qu'ils apparaissent.
+  function selecteurBlocs() {
+    return cfg.blocs ? '[data-oe],' + cfg.blocs : '[data-oe]';
+  }
+
+  function marqueBlocs() {
+    document.querySelectorAll(selecteurBlocs()).forEach(function (bloc) {
+      if (el.racine && (el.racine.contains(bloc) || el.tete.contains(bloc))) return;
+      if (bloc.querySelector(':scope > .oe-tag')) return;
+      bloc.classList.add('oe-zone');
+      var b = document.createElement('button');
+      b.type = 'button';
+      b.className = 'oe-tag';
+      b.innerHTML = icone('trad', 16);
+      b.title = 'Voir dans ma langue';
+      b.setAttribute('aria-label', 'Traduire ce bloc dans ma langue');
+      b.onclick = function (ev) {
+        ev.stopPropagation();
+        traduitBloc(bloc, b);
+      };
+      bloc.insertBefore(b, bloc.firstChild);
+    });
+  }
+
+  function texteBloc(bloc) {
+    var copie = bloc.cloneNode(true);
+    // [aria-live] écarte les compteurs de score des exercices (« 0 / 8
+    // répondu ») : c'est de l'état d'interface, pas du texte à traduire, et
+    // il polluait aussi bien la traduction que le contexte de l'assistant.
+    copie.querySelectorAll('.oe-tag, .oe-trad, [aria-live], script, style')
+      .forEach(function (n) { n.remove(); });
+    return propre(copie.textContent);
+  }
+
+  function traduitBloc(bloc, bouton) {
+    var deja = bloc.querySelector(':scope > .oe-trad');
+    if (deja) { deja.remove(); bouton.classList.remove('oe-actif'); return; }
+
+    var L = langue();
+    if (!L) { refaitLangue(); alerteLangue(); return; }
+
+    var boite = document.createElement('div');
+    boite.className = 'oe-trad';
+    boite.innerHTML = '<div class="oe-wait"><i></i>Je traduis…</div>';
+    bloc.appendChild(boite);
+    bouton.classList.add('oe-actif');
+
+    poste('/api/outils/traduire', { langue: L.n, texte: texteBloc(bloc), contexte: cfg.section })
+      .then(function (d) {
+        boite.innerHTML = '<div class="oe-lbl">' + esc(L.loc) + '</div><p'
+          + (L.rtl ? ' dir="rtl"' : '') + '>' + esc(d.traduction).replace(/\n/g, '<br>') + '</p>';
+      })
+      .catch(function (e) {
+        boite.innerHTML = '<div class="oe-err">' + esc(e.message) + '</div>';
+      });
+  }
+
+  function alerteLangue() {
+    // Le bandeau noir est déjà revenu en haut de la page : on y amène l'élève.
+    var b = el.tete.querySelector('.oe-lang');
+    if (b) { b.scrollIntoView({ behavior: 'smooth', block: 'center' }); }
+  }
+
+  // ══ Ouverture / fermeture ═════════════════════════════════════
+  function ouvrir(id, force) {
+    if (courant === id && !force) return fermer();
+    courant = id;
+    document.body.classList.add('oe-open');
+    var meta = OUTILS.filter(function (o) { return o.id === id; })[0] || {};
+    el.ttl.textContent = meta.t || '';
+    el.sub.textContent = (id === 'chat' || id === 'lire') ? (cfg.section || '') : (meta.s || '');
+    el.racine.querySelectorAll('.oe-pane').forEach(function (p) {
+      p.classList.toggle('oe-on', p.id === 'oe-pane-' + id);
+    });
+    el.racine.querySelectorAll('[data-oe-outil]').forEach(function (b) {
+      b.setAttribute('aria-pressed', String(b.getAttribute('data-oe-outil') === id));
+    });
+    ({ trad: paneTrad, lire: paneLire, simp: paneSimp, pron: panePron, chat: paneChat, carn: paneCarn }[id])();
+  }
+
+  function fermer() {
+    courant = null;
+    document.body.classList.remove('oe-open');
+    el.racine.querySelectorAll('[data-oe-outil]').forEach(function (b) {
+      b.setAttribute('aria-pressed', 'false');
+    });
+    stopAudio();
+  }
+
+  // ══ Audio (ElevenLabs, repli sur la voix du navigateur) ═══════
+  function stopAudio() {
+    if (audioEnCours) { audioEnCours.pause(); audioEnCours = null; }
+    if (global.speechSynthesis) global.speechSynthesis.cancel();
+  }
+
+  // Un même passage est réécouté plusieurs fois, et à deux vitesses : on
+  // garde le MP3 en mémoire pour ne pas refacturer les mêmes caractères.
+  var cacheSons = {};
+
+  function dis(texte, vitesse) {
+    stopAudio();
+    var t = propre(texte).slice(0, 400);
+    if (!t) return Promise.resolve();
+
+    // Le ralenti garde la voix d'ElevenLabs et joue sur playbackRate plutôt
+    // que de basculer sur la voix du navigateur : même timbre à l'écoute
+    // normale et à l'écoute lente, et surtout ça marche — speechSynthesis
+    // avale l'énoncé quand cancel() vient de passer (stopAudio ci-dessus).
+    // preservesPitch évite la voix de dessin animé au ralentissement.
+    var joue = function (blob) {
+      var a = new Audio(URL.createObjectURL(blob));
+      a.playbackRate = vitesse || 1;
+      a.preservesPitch = true;
+      a.mozPreservesPitch = true;
+      a.webkitPreservesPitch = true;
+      audioEnCours = a;
+      return a.play();
+    };
+
+    if (cacheSons[t]) return joue(cacheSons[t]);
+
+    return fetch('/api/voix', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ code: cfg.code, texte: t, voix: 'lecture' })
+    }).then(function (r) {
+      if (!r.ok) throw new Error('voix');
+      return r.blob();
+    }).then(function (blob) {
+      cacheSons[t] = blob;
+      return joue(blob);
+    }).catch(function () { return navigateurDit(t, vitesse || 1); });
+  }
+
+  // Repli quand ElevenLabs ne répond pas. Le délai n'est pas décoratif :
+  // enchaîner cancel() et speak() dans le même tour de boucle laisse Chrome
+  // ignorer l'énoncé.
+  function navigateurDit(t, vitesse) {
+    return new Promise(function (res) {
+      if (!global.speechSynthesis) return res();
+      global.speechSynthesis.cancel();
+      setTimeout(function () {
+        var u = new SpeechSynthesisUtterance(t);
+        u.lang = 'fr-CA';
+        u.rate = vitesse || 1;
+        u.onend = res; u.onerror = res;
+        global.speechSynthesis.speak(u);
+      }, 120);
+    });
+  }
+
+  // ══ Panneau : TRADUIRE ════════════════════════════════════════
+  function paneTrad() {
+    var L = langue();
+    var z = el.trad;
+    if (!L) {
+      z.innerHTML = '<div class="oe-tip">Choisissez d\'abord votre langue maternelle, '
+        + 'dans le bandeau noir en haut de la page.</div>';
+      return;
+    }
+    if (!selection) {
+      z.innerHTML = '<div class="oe-tip"><b>Comment faire :</b> surlignez une phrase avec la souris '
+        + '(ou avec le doigt), puis touchez « Traduire ». Vous pouvez aussi toucher le marqueur '
+        + 'en marge d\'un bloc pour traduire le bloc entier.</div>';
+      return;
+    }
+    z.innerHTML = '<div class="oe-quote">' + esc(selection) + '</div>'
+      + '<div class="oe-lbl">' + esc(L.loc) + '</div><div id="oe-trad-r"></div>'
+      + '<div class="oe-row" style="margin-top:20px">'
+      + '<button type="button" class="oe-btn oe-ghost" id="oe-trad-son">' + icone('lire', 18) + 'Écouter</button>'
+      + '<button type="button" class="oe-btn oe-ghost" id="oe-trad-gard">' + icone('carn', 18) + 'Garder</button></div>';
+
+    var r = z.querySelector('#oe-trad-r');
+    var passage = selection;
+    attente(r, 'Je traduis…');
+    poste('/api/outils/traduire', { langue: L.n, texte: passage, contexte: cfg.section })
+      .then(function (d) {
+        r.innerHTML = '<div class="oe-res"' + (L.rtl ? ' dir="rtl"' : '') + '>'
+          + esc(d.traduction).replace(/\n/g, '<br>') + '</div>';
+        z.querySelector('#oe-trad-gard').onclick = function () {
+          ajouteCarnet(passage, d.traduction);
+        };
+      })
+      .catch(function (e) { erreur(r, e); });
+
+    z.querySelector('#oe-trad-son').onclick = function () { dis(passage); };
+  }
+
+  // ══ Panneau : LIRE ════════════════════════════════════════════
+  function paneLire() {
+    var t = selection || texteParDefaut();
+    el.lire.innerHTML = (t
+      ? '<div class="oe-lbl">Texte à lire</div><div class="oe-quote">' + esc(t.slice(0, 400))
+        + (t.length > 400 ? ' …' : '') + '</div>'
+        + '<button type="button" class="oe-btn oe-dark oe-full" id="oe-l1">' + icone('lire', 18) + 'Écouter</button>'
+        + '<button type="button" class="oe-btn oe-ghost oe-full" id="oe-l2">' + icone('lire', 18) + 'Écouter lentement</button>'
+        + '<button type="button" class="oe-btn oe-ghost oe-full" id="oe-l3">Arrêter</button>'
+      : '')
+      + '<div class="oe-tip">Surlignez un passage pour le faire lire. Sans sélection, '
+      + 'la lecture prend le premier bloc de la page.</div>';
+    if (!t) return;
+    el.lire.querySelector('#oe-l1').onclick = function () { dis(t); };
+    el.lire.querySelector('#oe-l2').onclick = function () { dis(t, 0.7); };
+    el.lire.querySelector('#oe-l3').onclick = stopAudio;
+  }
+
+  function texteParDefaut() {
+    var b = document.querySelector('[data-oe]');
+    return b ? texteBloc(b).slice(0, 400) : '';
+  }
+
+  // ══ Panneau : SIMPLIFIER ══════════════════════════════════════
+  function paneSimp() {
+    var z = el.simp;
+    if (!selection) {
+      z.innerHTML = '<div class="oe-tip"><b>Une phrase trop longue ?</b> Surlignez-la, puis touchez '
+        + '« Simplifier ». Je la réécris en phrases plus courtes — <b>en français</b>. '
+        + 'Souvent, ça suffit : pas besoin de traduire.</div>';
+      return;
+    }
+    z.innerHTML = '<div class="oe-lbl">Phrase du module</div>'
+      + '<div class="oe-quote">' + esc(selection) + '</div>'
+      + '<div class="oe-lbl">Plus simplement</div><div id="oe-simp-r"></div>';
+
+    var r = z.querySelector('#oe-simp-r');
+    var passage = selection;
+    attente(r, 'Je reformule…');
+    poste('/api/outils/simplifier', { texte: passage })
+      .then(function (d) {
+        var h = '<div class="oe-res oe-vert">' + esc(d.simple).replace(/\n/g, '<br>') + '</div>';
+        if (d.mot) {
+          h += '<div class="oe-lbl" style="margin-top:20px">Le mot difficile</div>'
+            + '<div class="oe-quote"><b>' + esc(d.mot) + '</b> — ' + esc(d.explication) + '</div>'
+            + '<button type="button" class="oe-btn oe-soft oe-full" id="oe-simp-g">'
+            + icone('carn', 18) + 'Garder « ' + esc(d.mot) + ' »</button>';
+        }
+        h += '<div class="oe-row" style="margin-top:12px">'
+          + '<button type="button" class="oe-btn oe-ghost" id="oe-simp-s">' + icone('lire', 18) + 'Écouter</button>'
+          + '<button type="button" class="oe-btn oe-ghost" id="oe-simp-t">' + icone('trad', 18) + 'Traduire</button></div>';
+        r.innerHTML = h;
+        r.querySelector('#oe-simp-s').onclick = function () { dis(d.simple); };
+        r.querySelector('#oe-simp-t').onclick = function () { selection = passage; ouvrir('trad', true); };
+        var g = r.querySelector('#oe-simp-g');
+        if (g) g.onclick = function () { ajouteCarnet(d.mot, d.explication); };
+      })
+      .catch(function (e) { erreur(r, e); });
+  }
+
+  // ══ Panneau : PRONONCER ═══════════════════════════════════════
+  var SR = global.SpeechRecognition || global.webkitSpeechRecognition;
+
+  function panePron() {
+    var z = el.pron;
+    if (!selection) {
+      z.innerHTML = '<div class="oe-tip"><b>Comment faire :</b> surlignez un mot ou une phrase, '
+        + 'puis touchez « Prononcer ». Vous écoutez le modèle, vous vous enregistrez, '
+        + 'et vous comparez. Aucune note, aucun compte : recommencez autant de fois '
+        + 'que vous voulez.</div>';
+      return;
+    }
+    var cible = selection.slice(0, 200);
+    z.innerHTML = '<div class="oe-lbl">À prononcer</div>'
+      + '<div class="oe-quote">' + esc(cible) + '</div>'
+      + '<button type="button" class="oe-btn oe-dark oe-full" id="oe-p1">' + icone('lire', 18) + 'Écouter le modèle</button>'
+      + '<button type="button" class="oe-btn oe-ghost oe-full" id="oe-p2">' + icone('lire', 18) + 'Écouter lentement</button>'
+      + (SR
+        ? '<button type="button" class="oe-btn oe-red oe-full" id="oe-p3">' + icone('pron', 18) + 'Enregistrer ma voix</button>'
+        : '<div class="oe-tip" style="margin-top:12px">Votre navigateur ne sait pas comparer '
+          + 'automatiquement. <b>Ouvrez le module dans Chrome</b> pour cet outil-là. '
+          + 'En attendant, écoutez le modèle et répétez à voix haute.</div>')
+      + '<div id="oe-pron-r" style="margin-top:20px"></div>';
+
+    z.querySelector('#oe-p1').onclick = function () { dis(cible); };
+    z.querySelector('#oe-p2').onclick = function () { dis(cible, 0.65); };
+    if (SR) z.querySelector('#oe-p3').onclick = function () { ecoute(cible, this); };
+  }
+
+  function normalise(m) {
+    return m.toLowerCase()
+      .normalize('NFD').replace(/[\u0300-\u036f]/g, '')   // accents
+      .replace(/[^a-z0-9']/g, '');                        // ponctuation
+  }
+
+  function ecoute(cible, bouton) {
+    var r = el.pron.querySelector('#oe-pron-r');
+    stopAudio();
+    var reco = new SR();
+    reco.lang = 'fr-CA';
+    reco.interimResults = false;
+    reco.maxAlternatives = 1;
+
+    bouton.innerHTML = icone('pron', 18) + 'J\'écoute… parlez';
+    bouton.disabled = true;
+    r.innerHTML = '';
+
+    reco.onresult = function (ev) { compare(cible, ev.results[0][0].transcript, r); };
+    reco.onerror = function (ev) {
+      r.innerHTML = '<div class="oe-err">' + (ev.error === 'not-allowed'
+        ? 'Le micro est bloqué. Autorisez le micro dans la barre d\'adresse, puis réessayez.'
+        : 'Je n\'ai rien entendu. Réessayez en parlant plus fort.') + '</div>';
+    };
+    reco.onend = function () {
+      bouton.innerHTML = icone('pron', 18) + 'Enregistrer ma voix';
+      bouton.disabled = false;
+    };
+    try { reco.start(); } catch (e) { reco.onend(); }
+  }
+
+  function compare(cible, entendu, zone) {
+    var attendus = cible.split(/\s+/).filter(Boolean);
+    var dits = entendu.split(/\s+/).map(normalise).filter(Boolean);
+    var reste = dits.slice();
+    var bons = 0;
+
+    var html = '<div class="oe-lbl">Résultat</div>';
+    var mots = attendus.map(function (m) {
+      var n = normalise(m);
+      if (!n) return '<span class="oe-mot oe-o">' + esc(m) + '</span>';
+      var i = reste.indexOf(n);
+      if (i >= 0) { reste.splice(i, 1); bons++; return '<span class="oe-mot oe-o">' + esc(m) + '</span>'; }
+      return '<span class="oe-mot oe-n">' + esc(m) + '</span>';
+    }).join('');
+
+    var pct = attendus.length ? Math.round(bons / attendus.length * 100) : 0;
+    html += '<div class="oe-jauge"><i style="width:' + pct + '%"></i></div>'
+      + '<div class="oe-mots">' + mots + '</div>'
+      + '<div class="oe-entendu">J\'ai entendu : « ' + esc(entendu) + ' »</div>'
+      + '<div class="oe-res' + (pct >= 80 ? ' oe-vert' : '') + '">'
+      + (pct === 100 ? 'Parfait — tous les mots y sont.'
+        : pct >= 80 ? 'C\'est très bien. Reprenez seulement les mots en rouge.'
+          : pct >= 50 ? 'Bon début. Réécoutez le modèle lentement, puis recommencez.'
+            : 'Réécoutez le modèle deux fois avant de reprendre. Parlez lentement.')
+      + '</div>'
+      + '<button type="button" class="oe-btn oe-soft oe-full" style="margin-top:16px" id="oe-pr">Recommencer</button>';
+    zone.innerHTML = html;
+    zone.querySelector('#oe-pr').onclick = function () { panePron(); };
+  }
+
+  // ══ Panneau : ASSISTANT ═══════════════════════════════════════
+  var SUGGESTIONS = [
+    'Je ne comprends pas la consigne.',
+    'Qu\'est-ce que ça veut dire ?',
+    'Donnez-moi un exemple.'
+  ];
+
+  function paneChat() {
+    if (el.chat.dataset.pret) { fondChat(); return; }
+    el.chat.dataset.pret = '1';
+    el.chat.innerHTML = '<div class="oe-chat" id="oe-chat-l"></div>'
+      + '<div class="oe-sugg" id="oe-chat-s">'
+      + SUGGESTIONS.map(function (s) {
+        return '<button type="button">' + esc(s) + '</button>';
+      }).join('') + '</div>'
+      + '<div class="oe-saisie">'
+      + '<input id="oe-chat-i" placeholder="Écrivez votre question…" aria-label="Votre question">'
+      + (SR ? '<button type="button" class="oe-mic" id="oe-chat-m" aria-label="Dicter">' + icone('pron', 20) + '</button>' : '')
+      + '<button type="button" class="oe-go" id="oe-chat-g" aria-label="Envoyer">➤</button></div>';
+
+    bulle('ia', 'Bonjour ! Je suis là pendant que vous travaillez. Posez-moi une question '
+      + 'sur un mot, une phrase ou une consigne.\n\nJe ne donne pas les réponses des '
+      + 'exercices — mais je donne des indices.');
+
+    el.chat.querySelectorAll('#oe-chat-s button').forEach(function (b) {
+      b.onclick = function () { envoie(b.textContent); };
+    });
+    el.chat.querySelector('#oe-chat-g').onclick = function () {
+      var i = el.chat.querySelector('#oe-chat-i');
+      envoie(i.value); i.value = '';
+    };
+    el.chat.querySelector('#oe-chat-i').onkeydown = function (e) {
+      if (e.key === 'Enter') { envoie(this.value); this.value = ''; }
+    };
+    var mic = el.chat.querySelector('#oe-chat-m');
+    if (mic) mic.onclick = function () { dicte(mic); };
+  }
+
+  function bulle(qui, texte) {
+    var l = el.chat.querySelector('#oe-chat-l');
+    var d = document.createElement('div');
+    d.className = 'oe-bul oe-' + (qui === 'moi' ? 'moi' : 'ia');
+    d.innerHTML = gras(texte);
+    l.appendChild(d);
+    fondChat();
+    return d;
+  }
+  function fondChat() {
+    var b = el.panel.querySelector('.oe-b');
+    if (b) b.scrollTop = b.scrollHeight;
+  }
+
+  function envoie(texte) {
+    var q = propre(texte);
+    if (!q) return;
+    bulle('moi', q);
+    chat.push({ role: 'user', content: q });
+
+    var att = bulle('ia', '…');
+    att.innerHTML = '<div class="oe-wait"><i></i>Je réfléchis…</div>';
+    var L = langue();
+
+    poste('/api/outils/assistant', {
+      langue: L ? L.n : '',
+      module: cfg.module,
+      section: cfg.section,
+      contexte: contexte(),
+      historique: chat
+    }).then(function (d) {
+      att.innerHTML = gras(d.reponse);
+      chat.push({ role: 'assistant', content: d.reponse });
+      fondChat();
+    }).catch(function (e) {
+      att.outerHTML = '<div class="oe-err">' + esc(e.message) + '</div>';
+      chat.pop();   // la question n'a pas eu de réponse : on la retire de l'historique
+      fondChat();
+    });
+  }
+
+  function dicte(bouton) {
+    if (!SR) return;
+    var reco = new SR();
+    reco.lang = 'fr-CA';
+    reco.interimResults = false;
+    bouton.classList.add('oe-actif');
+    reco.onresult = function (ev) {
+      el.chat.querySelector('#oe-chat-i').value = ev.results[0][0].transcript;
+    };
+    reco.onend = function () { bouton.classList.remove('oe-actif'); };
+    reco.onerror = reco.onend;
+    try { reco.start(); } catch (e) { reco.onend(); }
+  }
+
+  // Le texte que l'élève a sous les yeux : c'est la seule source de
+  // l'assistant sur le contenu du module. Borné, sinon chaque question
+  // renverrait la page entière — mais assez large pour qu'une section
+  // complète y tienne, exercices compris. À 2000, le dialogue du Défi 1
+  // mangeait tout le budget et l'assistant ne voyait pas les questions.
+  var MAX_CONTEXTE = 6000;
+  function contexte() {
+    if (typeof cfg.contexte === 'function') return String(cfg.contexte()).slice(0, MAX_CONTEXTE);
+    var morceaux = [];
+    document.querySelectorAll(selecteurBlocs()).forEach(function (b) {
+      // Un bloc caché appartient à une autre section : l'assistant doit voir
+      // ce que l'élève a sous les yeux, pas tout le module.
+      if (b.offsetParent === null) return;
+      morceaux.push(texteBloc(b));
+    });
+    return morceaux.join('\n\n').slice(0, MAX_CONTEXTE);
+  }
+
+  // ══ Panneau : CARNET ══════════════════════════════════════════
+  function cleCarnet() { return 'francisation-carnet-' + (cfg.module || 'module'); }
+
+  function ajouteCarnet(mot, trad) {
+    var m = propre(mot).slice(0, 120);
+    if (!m) return;
+    var liste = lire(cleCarnet(), []);
+    if (!liste.some(function (x) { return x.mot.toLowerCase() === m.toLowerCase(); })) {
+      liste.push({ mot: m, trad: propre(trad).slice(0, 200) });
+      ecrire(cleCarnet(), liste);
+    }
+    ouvrir('carn', true);
+  }
+
+  function paneCarn() {
+    var liste = lire(cleCarnet(), []);
+    if (!liste.length) {
+      el.carn.innerHTML = '<div class="oe-tip"><b>Votre carnet est vide.</b> Surlignez un mot '
+        + 'n\'importe où dans le module, puis touchez « Garder ». Le mot revient ici avec '
+        + 'sa traduction.</div>';
+      return;
+    }
+    el.carn.innerHTML = '<div class="oe-lbl">Mots gardés — ' + liste.length + '</div>'
+      + liste.map(function (x, i) {
+        return '<div class="oe-mot-l"><b>' + esc(x.mot) + '</b><span>' + esc(x.trad || '—')
+          + '</span><button type="button" class="oe-del" data-i="' + i
+          + '" aria-label="Retirer">✕</button></div>';
+      }).join('')
+      + '<button type="button" class="oe-btn oe-soft oe-full" style="margin-top:20px" id="oe-carn-l">'
+      + icone('lire', 18) + 'Écouter tous les mots</button>';
+
+    el.carn.querySelectorAll('.oe-del').forEach(function (b) {
+      b.onclick = function () {
+        var l = lire(cleCarnet(), []);
+        l.splice(parseInt(b.dataset.i, 10), 1);
+        ecrire(cleCarnet(), l);
+        paneCarn();
+      };
+    });
+    el.carn.querySelector('#oe-carn-l').onclick = function () {
+      dis(liste.map(function (x) { return x.mot; }).join(', '));
+    };
+  }
+
+  // ══ Barre flottante de sélection ══════════════════════════════
+  function cacheSel() { el.sel.classList.remove('oe-on'); }
+
+  function montreSel() {
+    var s = global.getSelection();
+    if (!s || s.isCollapsed) return cacheSel();
+    var t = propre(String(s));
+    if (!t || t.length > 600) return cacheSel();
+    // Une sélection faite DANS le panneau ne doit pas rouvrir la barre.
+    var noeud = s.anchorNode;
+    var hote = noeud && (noeud.nodeType === 1 ? noeud : noeud.parentElement);
+    if (!hote || el.racine.contains(hote) || el.tete.contains(hote)) return cacheSel();
+
+    selection = t;
+    var r = s.getRangeAt(0).getBoundingClientRect();
+    el.sel.classList.add('oe-on');
+    var l = r.left + global.scrollX + r.width / 2 - el.sel.offsetWidth / 2;
+    l = Math.max(8, Math.min(l, global.innerWidth - el.sel.offsetWidth - 8));
+    el.sel.style.left = l + 'px';
+    el.sel.style.top = Math.max(8, r.top + global.scrollY - el.sel.offsetHeight - 10) + 'px';
+  }
+
+  // ══ Entrée publique ═══════════════════════════════════════════
+  function init(options) {
+    if (cfg) return;                       // une seule barre par page
+    cfg = Object.assign({ code: '', module: 'module', section: '', contexte: null, blocs: '' },
+      options || {});
+    bati();
+    brancheLangue();
+    marqueBlocs();
+
+    // Le module réécrit ses sections : on remarque les blocs neufs. Le délai
+    // regroupe la rafale de mutations d'un render() en un seul passage.
+    if (cfg.blocs && global.MutationObserver) {
+      var minuteur = null;
+      new MutationObserver(function () {
+        clearTimeout(minuteur);
+        minuteur = setTimeout(marqueBlocs, 80);
+      }).observe(document.body, { childList: true, subtree: true });
+    }
+
+    document.addEventListener('mouseup', function () { setTimeout(montreSel, 10); });
+    document.addEventListener('touchend', function () { setTimeout(montreSel, 40); });
+    document.addEventListener('mousedown', function (e) {
+      if (!el.sel.contains(e.target)) cacheSel();
+    });
+    document.addEventListener('keydown', function (e) {
+      if (e.key === 'Escape') { cacheSel(); fermer(); }
+    });
+  }
+
+  global.Outils = {
+    init: init,
+    // Le module appelle ceci quand l'élève change de section : l'assistant
+    // et le sous-titre du panneau suivent.
+    setSection: function (titre) {
+      if (cfg) { cfg.section = titre; if (courant) el.sub.textContent = titre; }
+    },
+    ouvrir: function (id) { if (cfg) ouvrir(id, true); },
+    rafraichirBlocs: marqueBlocs
+  };
+})(window);

@@ -84,6 +84,39 @@ choix de l'enseignant survit aux redéploiements.
 - `prof.html` — connexion enseignante, groupes et comptes
 - `admin.html` / `eleve.html` — interfaces enseignant / élève
 
+## Barre d'outils élève (rail « Mes outils »)
+
+- Six outils permanents dans chaque module : traduire · lire · simplifier ·
+  prononcer · demander à l'assistant · mon carnet. Code partagé dans
+  `assets/design-system/outils-eleve.{js,css}` — ne rien y écrire qui dépende
+  d'un module précis.
+- **La greffe dans les modules passe par `build/greffe_outils.py`**, jamais à
+  la main : marqueurs `OUTILS-ELEVE:début/fin`, dégreffe avant regreffe, donc
+  relançable après toute modification d'un gabarit.
+  `python3 build/greffe_outils.py` traite les onze modules ; il saute
+  `module-probleme`, **généré**, dont le `build.py` appelle la même fonction
+  `greffe()`. Ce dégreffage préalable est nécessaire : `module-consultation`
+  est le gabarit du module 9 et porte sa propre greffe, avec SON slug.
+- Aucun `data-oe` dans le balisage des modules : chaque module passe le
+  sélecteur `.card, .savoir` à `Outils.init()`, et un MutationObserver marque
+  les blocs que `render()` recrée.
+- Routes serveur : `/api/outils/traduire`, `/api/outils/simplifier`,
+  `/api/outils/assistant`, plus `voix: "lecture"` sur `/api/voix`. Les deux
+  premières sont mises en cache sur disque (`data/outils_cache.json`, non
+  versionné) : trente élèves surlignent la même consigne, on paie une fois.
+- Trois partis pris à ne pas défaire : la traduction s'ajoute **sous** le
+  français et ne le remplace jamais (pas de « traduire toute la page ») ;
+  « simplifier » reformule **en français** ; l'assistant **ne donne jamais la
+  réponse d'un exercice**, il cite la phrase du dialogue et repose une
+  question plus facile.
+- Icônes : les six tracés SVG du système de design (grille 24, trait 2,2,
+  bouts ronds). **Aucun émoji, aucun jeu d'icônes tierce partie.** Rouge
+  réservé à « Lire » ; sélectionné = plaque encre `#17181A`.
+- `server.py` lit `.env` au démarrage (les variables déjà définies gagnent) :
+  sans ça, rien n'est testable en local. En production les clés viennent des
+  Variables Railway — **et un changement de variable n'atteint le serveur
+  qu'au redéploiement**, sinon l'ancienne valeur reste en mémoire.
+
 ## Langue
 
 Répondre en français à l'utilisateur.
