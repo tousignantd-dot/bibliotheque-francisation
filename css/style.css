@@ -294,11 +294,12 @@ body {
   border-color: var(--color-border-hover);
 }
 
-/* Thumbnail */
+/* Thumbnail — une bande de repérage, pas une illustration : en 16/9 l'image
+   mangeait le tiers de la carte pour une information qu'on lit dans le titre. */
 .card-thumbnail {
   position: relative;
   width: 100%;
-  aspect-ratio: 16 / 9;
+  aspect-ratio: 4 / 1;
   background: var(--color-bg);
   overflow: hidden;
 }
@@ -312,16 +313,6 @@ body {
 }
 
 .card:hover .card-thumbnail img { transform: scale(1.04); }
-
-.card-thumbnail-placeholder {
-  width: 100%;
-  height: 100%;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  background: var(--thumb-gradient, linear-gradient(135deg, #dbeafe 0%, #ede9fe 100%));
-  color: rgba(255,255,255,0.85);
-}
 
 /* Body */
 .card-body {
@@ -690,11 +681,6 @@ body {
 }
 
 .card-skeleton .card-thumbnail { background: none; }
-.card-skeleton .skel-thumb {
-  width: 100%;
-  aspect-ratio: 16/9;
-  border-radius: 0;
-}
 .card-skeleton .skel-title { height: 13px; width: 85%; margin: 14px 14px 6px; }
 .card-skeleton .skel-title-2 { height: 13px; width: 60%; margin: 0 14px 12px; }
 .card-skeleton .skel-btn { height: 32px; margin: 0 14px 6px; border-radius: var(--radius-btn); }

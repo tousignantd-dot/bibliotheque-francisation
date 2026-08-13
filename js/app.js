@@ -436,12 +436,6 @@ function iconParcours() {
     <path d="M19 8v8"></path>
     <path d="M9 10l3 2-3 2"></path></svg>`;
 }
-function iconImage() {
-  return `<svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
-    <rect x="3" y="3" width="18" height="18" rx="2" ry="2"></rect>
-    <circle cx="8.5" cy="8.5" r="1.5"></circle>
-    <polyline points="21 15 16 10 5 21"></polyline></svg>`;
-}
 function iconSearch() {
   return `<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
     <circle cx="11" cy="11" r="8"></circle><line x1="21" y1="21" x2="16.65" y2="16.65"></line></svg>`;
