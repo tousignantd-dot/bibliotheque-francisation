@@ -1,0 +1,555 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Espace enseignant — Francisation</title>
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet" />
+<style>
+  :root {
+    --bg: #f6f7f9; --surface: #fff; --border: #e5e7eb;
+    --text: #111827; --text-2: #6b7280; --text-3: #9ca3af;
+    --accent: #3b6ff6; --accent-hover: #2b5ce0;
+    --danger: #ef4444; --danger-hover: #dc2626;
+    --radius: 12px;
+    --shadow: 0 1px 3px rgba(0,0,0,.06), 0 1px 2px rgba(0,0,0,.04);
+    --shadow-lg: 0 20px 40px rgba(0,0,0,.14);
+  }
+  * { box-sizing: border-box; }
+  body {
+    margin: 0; font-family: 'Inter', system-ui, sans-serif;
+    background: var(--bg); color: var(--text); font-size: 14px;
+    -webkit-font-smoothing: antialiased;
+  }
+  h1, h2 { margin: 0; letter-spacing: -.4px; }
+  button { font-family: inherit; cursor: pointer; }
+
+  /* ---------- Écran de connexion ---------- */
+  .auth-wrap {
+    min-height: 100vh; display: none; align-items: center;
+    justify-content: center; padding: 20px;
+  }
+  .auth-wrap.open { display: flex; }
+  .auth-card {
+    background: var(--surface); border-radius: 16px; box-shadow: var(--shadow-lg);
+    padding: 40px 36px; width: 420px; max-width: 100%;
+  }
+  .auth-logo {
+    width: 46px; height: 46px; border-radius: 12px; background: var(--accent);
+    display: flex; align-items: center; justify-content: center;
+    color: #fff; margin-bottom: 20px;
+  }
+  .auth-title { font-size: 21px; font-weight: 700; margin-bottom: 6px; }
+  .auth-sub { font-size: 14px; color: var(--text-2); margin-bottom: 28px; line-height: 1.5; }
+
+  label {
+    display: block; font-size: 12px; font-weight: 600; color: var(--text-2);
+    margin-bottom: 6px; letter-spacing: .2px;
+  }
+  input[type=text], input[type=email], input[type=password], select {
+    width: 100%; height: 42px; padding: 0 13px; border: 1.5px solid var(--border);
+    border-radius: 9px; font-family: inherit; font-size: 14px; color: var(--text);
+    background: var(--bg); transition: border-color .15s, box-shadow .15s;
+  }
+  input:focus, select:focus {
+    outline: none; border-color: var(--accent); background: #fff;
+    box-shadow: 0 0 0 4px rgba(59,111,246,.12);
+  }
+  .field { margin-bottom: 16px; }
+
+  .btn {
+    height: 42px; padding: 0 18px; border: 1.5px solid transparent;
+    border-radius: 9px; font-size: 14px; font-weight: 600;
+    display: inline-flex; align-items: center; justify-content: center; gap: 7px;
+    transition: background .15s, box-shadow .15s, transform .1s;
+  }
+  .btn:active { transform: scale(.985); }
+  .btn-primary { background: var(--accent); color: #fff; width: 100%; }
+  .btn-primary:hover { background: var(--accent-hover); }
+  .btn-primary:disabled { opacity: .55; cursor: not-allowed; }
+  .btn-ghost {
+    background: var(--surface); border-color: var(--border);
+    color: var(--text-2); height: 36px; font-size: 13px; padding: 0 14px;
+  }
+  .btn-ghost:hover { background: var(--bg); color: var(--text); }
+  .btn-danger {
+    background: none; border: none; color: var(--danger); font-size: 12px;
+    font-weight: 600; padding: 4px 6px; border-radius: 6px;
+  }
+  .btn-danger:hover { background: #fee2e2; }
+
+  .msg {
+    display: none; font-size: 13px; border-radius: 8px;
+    padding: 10px 12px; margin-bottom: 16px; line-height: 1.45;
+  }
+  .msg.show { display: block; }
+  .msg.error { background: #fef2f2; color: #991b1b; border: 1px solid #fecaca; }
+  .msg.ok { background: #f0fdf4; color: #166534; border: 1px solid #bbf7d0; }
+
+  /* ---------- Tableau de bord ---------- */
+  .app { display: none; }
+  .app.open { display: block; }
+  .header {
+    background: var(--surface); border-bottom: 1px solid var(--border);
+    position: sticky; top: 0; z-index: 20;
+  }
+  .header-inner {
+    max-width: 980px; margin: 0 auto; padding: 16px 24px;
+    display: flex; align-items: center; justify-content: space-between; gap: 16px; flex-wrap: wrap;
+  }
+  .header-title { font-size: 16px; font-weight: 700; }
+  .header-sub { font-size: 12px; color: var(--text-3); margin-top: 2px; }
+  .header-nav { display: flex; gap: 16px; align-items: center; font-size: 13px; }
+  .header-nav a { color: var(--text-2); text-decoration: none; }
+  .header-nav a:hover { color: var(--text); text-decoration: underline; }
+
+  .page { max-width: 980px; margin: 0 auto; padding: 28px 24px 64px; display: grid; gap: 22px; }
+  .panel {
+    background: var(--surface); border: 1px solid var(--border);
+    border-radius: var(--radius); box-shadow: var(--shadow); overflow: hidden;
+  }
+  .panel-header {
+    padding: 16px 20px; border-bottom: 1px solid var(--border);
+    display: flex; align-items: center; justify-content: space-between; gap: 12px; flex-wrap: wrap;
+  }
+  .panel-title { font-size: 15px; font-weight: 700; }
+  .panel-hint { font-size: 12px; color: var(--text-3); margin-top: 3px; line-height: 1.5; }
+  .panel-body { padding: 18px 20px; }
+
+  .row {
+    display: flex; align-items: center; gap: 14px; padding: 13px 20px;
+    border-bottom: 1px solid var(--border);
+  }
+  .row:last-child { border-bottom: none; }
+  .row-main { flex: 1; min-width: 0; }
+  .row-name { font-weight: 600; font-size: 14px; }
+  .row-meta { font-size: 12px; color: var(--text-3); margin-top: 3px; }
+  .empty { padding: 26px 20px; text-align: center; color: var(--text-3); font-size: 13px; }
+
+  .inline-form { display: flex; gap: 10px; flex-wrap: wrap; align-items: flex-end; }
+  .inline-form .field { margin-bottom: 0; flex: 1; min-width: 170px; }
+  .tag {
+    display: inline-block; font-size: 10px; font-weight: 700; letter-spacing: .5px;
+    text-transform: uppercase; padding: 2px 7px; border-radius: 5px;
+    background: rgba(59,111,246,.12); color: var(--accent); margin-left: 7px;
+  }
+  .toast {
+    position: fixed; bottom: 22px; left: 50%; transform: translateX(-50%) translateY(80px);
+    background: #111827; color: #fff; padding: 11px 18px; border-radius: 9px;
+    font-size: 13px; box-shadow: var(--shadow-lg); opacity: 0;
+    transition: transform .25s, opacity .25s; z-index: 300; pointer-events: none;
+  }
+  .toast.show { transform: translateX(-50%) translateY(0); opacity: 1; }
+  .toast.error { background: var(--danger); }
+</style>
+</head>
+<body>
+
+<!-- ══════════ CONNEXION / INSTALLATION ══════════ -->
+<div class="auth-wrap" id="authWrap">
+  <div class="auth-card">
+    <div class="auth-logo">
+      <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"/><path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"/></svg>
+    </div>
+    <div class="auth-title" id="authTitle">Espace enseignant</div>
+    <div class="auth-sub" id="authSub">Connectez-vous pour gérer vos groupes et vos activités.</div>
+
+    <div class="msg error" id="authError"></div>
+
+    <form id="authForm" novalidate>
+      <div class="field" id="nomField" style="display:none">
+        <label for="authNom">Votre nom</label>
+        <input type="text" id="authNom" autocomplete="name" placeholder="Ex : Daniel Tousignant" />
+      </div>
+      <div class="field">
+        <label for="authEmail">Courriel</label>
+        <input type="email" id="authEmail" autocomplete="username" placeholder="vous@exemple.com" required />
+      </div>
+      <div class="field">
+        <label for="authPass">Mot de passe</label>
+        <input type="password" id="authPass" autocomplete="current-password" required />
+        <div class="panel-hint" id="passHint" style="display:none">Au moins 8 caractères.</div>
+      </div>
+      <button type="submit" class="btn btn-primary" id="authBtn">Se connecter</button>
+    </form>
+  </div>
+</div>
+
+<!-- ══════════ GESTION ══════════ -->
+<div class="app" id="app">
+  <header class="header">
+    <div class="header-inner">
+      <div>
+        <div class="header-title">Espace enseignant</div>
+        <div class="header-sub" id="whoami"></div>
+      </div>
+      <nav class="header-nav">
+        <a href="index.html">Bibliothèque</a>
+        <a href="admin.html">Administration</a>
+        <a href="lms.html">Gestion élèves</a>
+        <a href="#" id="logoutLink">Déconnexion</a>
+      </nav>
+    </div>
+  </header>
+
+  <div class="page">
+
+    <!-- Groupes -->
+    <section class="panel">
+      <div class="panel-header">
+        <div>
+          <div class="panel-title">Mes groupes</div>
+          <div class="panel-hint">Chaque groupe a ses propres élèves, ses propres dates de disponibilité et sa propre progression. Le catalogue d'activités, lui, est commun à tous les enseignants.</div>
+        </div>
+      </div>
+      <div id="groupList"></div>
+      <div class="panel-body" style="border-top:1px solid var(--border);background:var(--bg)">
+        <form class="inline-form" id="groupForm">
+          <div class="field">
+            <label for="groupNom">Nouveau groupe</label>
+            <input type="text" id="groupNom" placeholder="Ex : Niveau 4 — avant-midi" maxlength="80" />
+          </div>
+          <div class="field" id="groupOwnerField" style="display:none;flex:0 0 220px">
+            <label for="groupOwner">Enseignant titulaire</label>
+            <select id="groupOwner"></select>
+          </div>
+          <button type="submit" class="btn btn-ghost" style="height:42px">Créer le groupe</button>
+        </form>
+      </div>
+    </section>
+
+    <!-- Enseignants (administrateur seulement) -->
+    <section class="panel" id="teacherPanel" style="display:none">
+      <div class="panel-header">
+        <div>
+          <div class="panel-title">Enseignants</div>
+          <div class="panel-hint">Les comptes « administrateur » peuvent créer d'autres enseignants et voir tous les groupes.</div>
+        </div>
+      </div>
+      <div id="teacherList"></div>
+      <div class="panel-body" style="border-top:1px solid var(--border);background:var(--bg)">
+        <form class="inline-form" id="teacherForm">
+          <div class="field">
+            <label for="tNom">Nom</label>
+            <input type="text" id="tNom" placeholder="Prénom Nom" />
+          </div>
+          <div class="field">
+            <label for="tEmail">Courriel</label>
+            <input type="email" id="tEmail" placeholder="collegue@exemple.com" />
+          </div>
+          <div class="field">
+            <label for="tPass">Mot de passe provisoire</label>
+            <input type="password" id="tPass" autocomplete="new-password" />
+          </div>
+          <div class="field" style="flex:0 0 140px">
+            <label for="tRole">Rôle</label>
+            <select id="tRole">
+              <option value="prof">Enseignant</option>
+              <option value="admin">Administrateur</option>
+            </select>
+          </div>
+          <button type="submit" class="btn btn-ghost" style="height:42px">Ajouter</button>
+        </form>
+      </div>
+    </section>
+
+    <!-- Mot de passe -->
+    <section class="panel">
+      <div class="panel-header">
+        <div>
+          <div class="panel-title">Mon mot de passe</div>
+        </div>
+      </div>
+      <div class="panel-body">
+        <form class="inline-form" id="passForm">
+          <div class="field">
+            <label for="pOld">Mot de passe actuel</label>
+            <input type="password" id="pOld" autocomplete="current-password" />
+          </div>
+          <div class="field">
+            <label for="pNew">Nouveau mot de passe</label>
+            <input type="password" id="pNew" autocomplete="new-password" />
+          </div>
+          <button type="submit" class="btn btn-ghost" style="height:42px">Changer</button>
+        </form>
+      </div>
+    </section>
+
+  </div>
+</div>
+
+<div class="toast" id="toast"></div>
+
+<script src="js/prof.js"></script>
+<script>
+const params = new URLSearchParams(location.search);
+const RETOUR = params.get('retour') || '';
+
+let mode = 'login';           // 'login' | 'setup'
+let enseignants = [];
+
+function toast(msg, type = '') {
+  const el = document.getElementById('toast');
+  el.textContent = msg;
+  el.className = 'toast show' + (type ? ' ' + type : '');
+  setTimeout(() => { el.className = 'toast'; }, 3200);
+}
+function esc(s) {
+  return String(s ?? '').replace(/[&<>"']/g, c => (
+    { '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]));
+}
+function authError(msg) {
+  const el = document.getElementById('authError');
+  el.textContent = msg;
+  el.classList.toggle('show', !!msg);
+}
+
+/* ══════════ Démarrage ══════════ */
+(async function boot() {
+  let data;
+  try {
+    const res = await Prof.fetch('/api/prof/me');
+    data = await res.json();
+  } catch {
+    authError("Le serveur est injoignable. Vérifiez qu'il est démarré.");
+    document.getElementById('authWrap').classList.add('open');
+    return;
+  }
+
+  if (data.connecte) {
+    Prof.state.enseignant = data.enseignant;
+    Prof.setGroupes(data.groupes);
+    ouvrirGestion();
+    return;
+  }
+
+  mode = data.installationRequise ? 'setup' : 'login';
+  if (mode === 'setup') {
+    document.getElementById('authTitle').textContent = 'Premier démarrage';
+    document.getElementById('authSub').textContent =
+      "Aucun compte n'existe encore. Créez le compte administrateur : il pourra ensuite ajouter les autres enseignants.";
+    document.getElementById('nomField').style.display = '';
+    document.getElementById('passHint').style.display = '';
+    document.getElementById('authPass').setAttribute('autocomplete', 'new-password');
+    document.getElementById('authBtn').textContent = 'Créer le compte';
+  }
+  document.getElementById('authWrap').classList.add('open');
+  document.getElementById('authEmail').focus();
+})();
+
+/* ══════════ Connexion / installation ══════════ */
+document.getElementById('authForm').addEventListener('submit', async e => {
+  e.preventDefault();
+  authError('');
+  const btn = document.getElementById('authBtn');
+  const payload = {
+    courriel: document.getElementById('authEmail').value.trim(),
+    motDePasse: document.getElementById('authPass').value,
+  };
+  if (mode === 'setup') payload.nom = document.getElementById('authNom').value.trim();
+
+  btn.disabled = true;
+  try {
+    const res = await fetch(mode === 'setup' ? '/api/prof/setup' : '/api/prof/login', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(payload),
+    });
+    const data = await res.json();
+    if (!res.ok) throw new Error(data.error || 'Connexion impossible');
+
+    Prof.setToken(data.token);
+    Prof.state.enseignant = data.enseignant;
+    Prof.setGroupes(data.groupes);
+
+    // Retour à la page d'où venait l'enseignant, s'il avait un groupe
+    if (RETOUR && Prof.groupeId) { location.href = RETOUR; return; }
+    document.getElementById('authWrap').classList.remove('open');
+    ouvrirGestion();
+  } catch (err) {
+    authError(err.message);
+  } finally {
+    btn.disabled = false;
+  }
+});
+
+/* ══════════ Gestion ══════════ */
+function ouvrirGestion() {
+  document.getElementById('authWrap').classList.remove('open');
+  document.getElementById('app').classList.add('open');
+  const e = Prof.state.enseignant;
+  document.getElementById('whoami').textContent =
+    `${e.nom} — ${e.courriel}${e.role === 'admin' ? ' (administrateur)' : ''}`;
+  if (e.role === 'admin') {
+    document.getElementById('teacherPanel').style.display = '';
+    document.getElementById('groupOwnerField').style.display = '';
+    chargerEnseignants();
+  }
+  chargerGroupes();
+  if (params.get('nouveauGroupe')) {
+    document.getElementById('groupNom').focus();
+    toast('Créez d’abord un groupe pour commencer.');
+  }
+}
+
+document.getElementById('logoutLink').addEventListener('click', e => {
+  e.preventDefault();
+  Prof.logout();
+});
+
+async function chargerGroupes() {
+  const res = await Prof.fetch('/api/prof/groupes');
+  const groupes = await res.json();
+  Prof.setGroupes(groupes);
+  const el = document.getElementById('groupList');
+  if (!groupes.length) {
+    el.innerHTML = '<div class="empty">Aucun groupe pour l’instant. Créez-en un ci-dessous.</div>';
+    return;
+  }
+  const admin = Prof.state.enseignant.role === 'admin';
+  el.innerHTML = groupes.map(g => `
+    <div class="row">
+      <div class="row-main">
+        <div class="row-name">${esc(g.nom)}</div>
+        <div class="row-meta">
+          ${g.nbEleves} élève${g.nbEleves > 1 ? 's' : ''}
+          ${admin && g.titulaire ? ' · ' + esc(g.titulaire) : ''}
+        </div>
+      </div>
+      <button class="btn btn-ghost" data-rename="${g.id}" data-nom="${esc(g.nom)}">Renommer</button>
+      <button class="btn btn-danger" data-del-group="${g.id}">Supprimer</button>
+    </div>`).join('');
+}
+
+document.getElementById('groupList').addEventListener('click', async e => {
+  const renameBtn = e.target.closest('[data-rename]');
+  if (renameBtn) {
+    const nom = prompt('Nouveau nom du groupe :', renameBtn.dataset.nom);
+    if (!nom || !nom.trim()) return;
+    const res = await Prof.fetch(`/api/prof/groupes/${renameBtn.dataset.rename}`, {
+      method: 'PATCH',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ nom: nom.trim() }),
+    });
+    const data = await res.json();
+    if (!res.ok) return toast(data.error, 'error');
+    toast('Groupe renommé.');
+    chargerGroupes();
+    return;
+  }
+  const delBtn = e.target.closest('[data-del-group]');
+  if (delBtn) {
+    if (!confirm('Supprimer ce groupe ? Sa planification sera perdue.')) return;
+    const res = await Prof.fetch(`/api/prof/groupes/${delBtn.dataset.delGroup}`, { method: 'DELETE' });
+    const data = await res.json();
+    if (!res.ok) return toast(data.error, 'error');
+    toast('Groupe supprimé.');
+    chargerGroupes();
+  }
+});
+
+document.getElementById('groupForm').addEventListener('submit', async e => {
+  e.preventDefault();
+  const nom = document.getElementById('groupNom').value.trim();
+  if (!nom) return toast('Donnez un nom au groupe.', 'error');
+  const payload = { nom };
+  const owner = document.getElementById('groupOwner');
+  if (Prof.state.enseignant.role === 'admin' && owner.value) payload.teacherId = parseInt(owner.value, 10);
+  const res = await Prof.fetch('/api/prof/groupes', {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify(payload),
+  });
+  const data = await res.json();
+  if (!res.ok) return toast(data.error, 'error');
+  document.getElementById('groupNom').value = '';
+  toast('Groupe créé.');
+  chargerGroupes();
+});
+
+/* ── Enseignants (administrateur) ── */
+async function chargerEnseignants() {
+  const res = await Prof.fetch('/api/prof/enseignants');
+  if (!res.ok) return;
+  enseignants = await res.json();
+  document.getElementById('teacherList').innerHTML = enseignants.map(t => `
+    <div class="row">
+      <div class="row-main">
+        <div class="row-name">${esc(t.nom)}${t.role === 'admin' ? '<span class="tag">Admin</span>' : ''}</div>
+        <div class="row-meta">${esc(t.courriel)} · ${t.nbGroupes} groupe${t.nbGroupes > 1 ? 's' : ''}</div>
+      </div>
+      <button class="btn btn-ghost" data-reset="${t.id}">Réinitialiser le mot de passe</button>
+      ${t.id === Prof.state.enseignant.id ? '' : `<button class="btn btn-danger" data-del-teacher="${t.id}">Supprimer</button>`}
+    </div>`).join('');
+  document.getElementById('groupOwner').innerHTML = enseignants
+    .map(t => `<option value="${t.id}"${t.id === Prof.state.enseignant.id ? ' selected' : ''}>${esc(t.nom)}</option>`)
+    .join('');
+}
+
+document.getElementById('teacherList').addEventListener('click', async e => {
+  const reset = e.target.closest('[data-reset]');
+  if (reset) {
+    const pw = prompt('Nouveau mot de passe (8 caractères minimum) :');
+    if (!pw) return;
+    const res = await Prof.fetch(`/api/prof/enseignants/${reset.dataset.reset}`, {
+      method: 'PATCH',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ motDePasse: pw }),
+    });
+    const data = await res.json();
+    if (!res.ok) return toast(data.error, 'error');
+    toast('Mot de passe réinitialisé.');
+    return;
+  }
+  const del = e.target.closest('[data-del-teacher]');
+  if (del) {
+    if (!confirm('Supprimer cet enseignant ?')) return;
+    const res = await Prof.fetch(`/api/prof/enseignants/${del.dataset.delTeacher}`, { method: 'DELETE' });
+    const data = await res.json();
+    if (!res.ok) return toast(data.error, 'error');
+    toast('Enseignant supprimé.');
+    chargerEnseignants();
+  }
+});
+
+document.getElementById('teacherForm').addEventListener('submit', async e => {
+  e.preventDefault();
+  const payload = {
+    nom: document.getElementById('tNom').value.trim(),
+    courriel: document.getElementById('tEmail').value.trim(),
+    motDePasse: document.getElementById('tPass').value,
+    role: document.getElementById('tRole').value,
+  };
+  const res = await Prof.fetch('/api/prof/enseignants', {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify(payload),
+  });
+  const data = await res.json();
+  if (!res.ok) return toast(data.error, 'error');
+  e.target.reset();
+  toast('Enseignant ajouté.');
+  chargerEnseignants();
+});
+
+/* ── Mot de passe personnel ── */
+document.getElementById('passForm').addEventListener('submit', async e => {
+  e.preventDefault();
+  const res = await Prof.fetch('/api/prof/motdepasse', {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({
+      ancien: document.getElementById('pOld').value,
+      nouveau: document.getElementById('pNew').value,
+    }),
+  });
+  const data = await res.json();
+  if (!res.ok) return toast(data.error, 'error');
+  e.target.reset();
+  toast('Mot de passe modifié.');
+});
+</script>
+</body>
+</html>

@@ -6,7 +6,9 @@
 const CONFIG = {
   ITEMS_PER_PAGE: 60,   // 6 colonnes × 10 rangées
   SKELETON_COUNT: 12,   // cartes fantômes au chargement
-  DATA_PATH: 'data/activities.json',
+  // Les dates viennent de la planification du groupe actif, pas du fichier
+  // statique : c'est l'API qui les superpose au catalogue commun.
+  DATA_PATH: '/api/activities',
 };
 
 /* ---- État de l'application ---- */
@@ -42,7 +44,7 @@ async function loadActivities() {
   showSkeletons();
 
   try {
-    const response = await fetch(CONFIG.DATA_PATH);
+    const response = await Prof.fetch(Prof.withGroup(CONFIG.DATA_PATH));
     if (!response.ok) throw new Error(`HTTP ${response.status}`);
     state.activities = await response.json();
   } catch (err) {
@@ -83,6 +85,11 @@ function sortActivities(list) {
 /* =========================================
    RENDU PRINCIPAL
    ========================================= */
+const SECTIONS = [
+  { cle: 'cours',   titre: 'Cours',    sousTitre: '4 h — le matin' },
+  { cle: 'atelier', titre: 'Ateliers', sousTitre: '2 h — l’après-midi' },
+];
+
 function render() {
   const start = (state.currentPage - 1) * CONFIG.ITEMS_PER_PAGE;
   const pageItems = state.filtered.slice(start, start + CONFIG.ITEMS_PER_PAGE);
@@ -96,7 +103,23 @@ function render() {
   }
 
   DOM.emptyState.classList.remove('visible');
-  DOM.grid.innerHTML = pageItems.map(buildCard).join('');
+
+  // Deux blocs distincts : les cours (modules de 4 h, le matin) puis les
+  // ateliers (activités de 2 h, l'après-midi).
+  DOM.grid.innerHTML = SECTIONS.map(section => {
+    const lot = pageItems.filter(a => (a.categorie || 'atelier') === section.cle);
+    if (!lot.length) return '';
+    return `
+      <div class="section-block">
+        <h2 class="section-title">
+          ${section.titre}
+          <span class="section-sub">${section.sousTitre}</span>
+          <span class="section-count">${lot.length}</span>
+        </h2>
+        <div class="grid">${lot.map(buildCard).join('')}</div>
+      </div>`;
+  }).join('');
+
   renderPagination();
 }
 
@@ -250,10 +273,12 @@ function attachDateEvents() {
       input.closest('.card-date-field').classList.toggle('filled', !!value);
 
       try {
-        await fetch(`/api/activities/${id}/dates`, {
+        // La date est enregistrée pour le groupe actif seulement : un autre
+        // enseignant peut placer la même activité à une autre date.
+        await Prof.fetch(`/api/activities/${id}/dates`, {
           method: 'POST',
           headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({ [field]: value }),
+          body: Prof.body({ [field]: value }),
         });
       } catch {
         // En mode statique (Netlify), la sauvegarde n'est pas disponible
@@ -266,7 +291,7 @@ function attachDateEvents() {
    SQUELETTES DE CHARGEMENT
    ========================================= */
 function showSkeletons() {
-  DOM.grid.innerHTML = Array.from({ length: CONFIG.SKELETON_COUNT }, () => `
+  DOM.grid.innerHTML = '<div class="grid">' + Array.from({ length: CONFIG.SKELETON_COUNT }, () => `
     <div class="card card-skeleton">
       <div class="card-thumbnail">
         <div class="skeleton skel-thumb"></div>
@@ -275,7 +300,7 @@ function showSkeletons() {
       <div class="skeleton skel-title-2"></div>
       <div class="skeleton skel-btn"></div>
       <div class="skeleton skel-btn-2"></div>
-    </div>`).join('');
+    </div>`).join('') + '</div>';
 }
 
 /* =========================================
@@ -538,4 +563,9 @@ function init() {
   loadActivities();
 }
 
-document.addEventListener('DOMContentLoaded', init);
+document.addEventListener('DOMContentLoaded', async () => {
+  // Sans session enseignante, Prof.init() redirige vers prof.html.
+  if (!await Prof.init()) return;
+  Prof.renderBar(document.getElementById('profBar'), loadActivities);
+  init();
+});

@@ -5,6 +5,7 @@ Gère les fichiers statiques + les opérations d'administration (ajout, modifica
 
 import http.server
 import hashlib
+import hmac
 import json
 import mimetypes
 import os
@@ -49,6 +50,15 @@ VOCAB_TRANSLATIONS_FILE = STORAGE_DIR / "data" / "traductions.json"
 VOCAB_REPORTS_FILE = STORAGE_DIR / "data" / "traductions_douteuses.json"
 ORAL_SUBMISSIONS_FILE = STORAGE_DIR / "data" / "oral_submissions.json"
 ORAL_AUDIO_DIR = STORAGE_DIR / "assets" / "oral-submissions"
+# Multi-enseignants : chaque enseignant possède un ou plusieurs groupes.
+# Le catalogue d'activités reste commun ; ce qui appartient au groupe, c'est la
+# planification (dates), les élèves, la progression et les productions orales.
+TEACHERS_FILE  = STORAGE_DIR / "data" / "teachers.json"
+GROUPS_FILE    = STORAGE_DIR / "data" / "groups.json"
+SCHEDULE_FILE  = STORAGE_DIR / "data" / "schedule.json"
+SESSIONS_FILE  = STORAGE_DIR / "data" / "prof_sessions.json"
+
+SESSION_DAYS = 30
 
 PORT = int(os.environ.get('PORT', 5173))
 
@@ -100,7 +110,7 @@ def init_storage():
     src_acts = BASE_DIR / "data" / "activities.json"
     dst_acts = STORAGE_DIR / "data" / "activities.json"
     # Champs dont le volume (choix de l'utilisateur) fait autorité
-    USER_FIELDS = ("dateVue", "datePrevue", "dateFin")
+    USER_FIELDS = ("dateVue", "datePrevue", "dateFin", "categorie")
     if src_acts.exists() and dst_acts.exists():
         try:
             with open(src_acts, encoding="utf-8") as f:
@@ -156,10 +166,25 @@ def init_storage():
 
 # ── Helpers données ─────────────────────────────────────────────────────────
 
+CATEGORIES = ("cours", "atelier")
+
+
+def normalize_categorie(value, interactive_path=""):
+    """« cours » = les modules de 4 h du matin ; « atelier » = les activités
+    de 2 h de l'après-midi. Les activités antérieures à ce champ sont classées
+    d'après leur dossier : les modules vivent dans assets/interactive/module-*."""
+    if value in CATEGORIES:
+        return value
+    return "cours" if "module-" in (interactive_path or "") else "atelier"
+
+
 def load_activities():
     if DATA_FILE.exists():
         with open(DATA_FILE, "r", encoding="utf-8") as f:
-            return json.load(f)
+            activities = json.load(f)
+        for a in activities:
+            a["categorie"] = normalize_categorie(a.get("categorie"), a.get("interactive", ""))
+        return activities
     return []
 
 
@@ -208,26 +233,320 @@ def save_progress(data):
         json.dump(data, f, ensure_ascii=False, indent=2)
 
 
-def get_available_activity_ids():
-    today_str = date.today().isoformat()
-    ids = set()
+# ── Enseignants, groupes, planification ─────────────────────────────────────
+
+def _load_json_list(path):
+    if path.exists():
+        try:
+            with open(path, "r", encoding="utf-8") as f:
+                return json.load(f)
+        except json.JSONDecodeError:
+            print(f"[WARN] {path.name} illisible, repli sur une liste vide", flush=True)
+    return []
+
+
+def _save_json(path, data):
+    path.parent.mkdir(parents=True, exist_ok=True)
+    with open(path, "w", encoding="utf-8") as f:
+        json.dump(data, f, ensure_ascii=False, indent=2)
+
+
+def load_teachers():
+    return _load_json_list(TEACHERS_FILE)
+
+
+def save_teachers(teachers):
+    _save_json(TEACHERS_FILE, teachers)
+
+
+def load_groups():
+    return _load_json_list(GROUPS_FILE)
+
+
+def save_groups(groups):
+    _save_json(GROUPS_FILE, groups)
+
+
+def load_schedule():
+    """[{groupId, activityId, dateVue, datePrevue, dateFin}] — dates par groupe."""
+    return _load_json_list(SCHEDULE_FILE)
+
+
+def save_schedule(entries):
+    _save_json(SCHEDULE_FILE, entries)
+
+
+def schedule_for_group(group_id):
+    """{activityId: {dateVue, datePrevue, dateFin}} pour un groupe donné."""
+    return {
+        e["activityId"]: {
+            "dateVue": e.get("dateVue", ""),
+            "datePrevue": e.get("datePrevue", ""),
+            "dateFin": e.get("dateFin", ""),
+        }
+        for e in load_schedule()
+        if e.get("groupId") == group_id
+    }
+
+
+def set_schedule_dates(group_id, activity_id, fields):
+    """Écrit les dates d'une activité pour un groupe. `fields` peut ne contenir
+    qu'une partie de dateVue/datePrevue/dateFin."""
+    entries = load_schedule()
+    target = next(
+        (e for e in entries
+         if e.get("groupId") == group_id and e.get("activityId") == activity_id),
+        None,
+    )
+    if target is None:
+        target = {"groupId": group_id, "activityId": activity_id,
+                  "dateVue": "", "datePrevue": "", "dateFin": ""}
+        entries.append(target)
+    for key in ("dateVue", "datePrevue", "dateFin"):
+        if key in fields:
+            target[key] = fields[key] or ""
+    save_schedule(entries)
+    return target
+
+
+def activities_for_group(group_id):
+    """Le catalogue commun, avec les dates du groupe superposées."""
+    sched = schedule_for_group(group_id)
+    result = []
     for a in load_activities():
-        dp = a.get("datePrevue", "")
-        df = a.get("dateFin", "")
-        if df and df < today_str:
-            continue
-        if not dp or dp <= today_str:
-            ids.add(a["id"])
-    return ids
+        entry = dict(a)
+        dates = sched.get(a["id"], {})
+        entry["dateVue"] = dates.get("dateVue", "")
+        entry["datePrevue"] = dates.get("datePrevue", "")
+        entry["dateFin"] = dates.get("dateFin", "")
+        result.append(entry)
+    return result
 
 
-def get_student_vocab_pool():
+def is_offered(dates, today_str):
+    """Une activité n'est offerte à un groupe que si l'enseignant lui a donné
+    une date de disponibilité pour ce groupe. Un groupe neuf part donc vide :
+    le catalogue est commun, mais rien n'est ouvert tant qu'on n'a pas planifié.
+    """
+    dp = dates.get("datePrevue", "")
+    df = dates.get("dateFin", "")
+    if not dp:
+        return False
+    if df and df < today_str:
+        return False
+    return dp <= today_str
+
+
+def get_available_activity_ids(group_id):
+    """Activités accessibles aujourd'hui aux élèves d'un groupe."""
+    today_str = date.today().isoformat()
+    sched = schedule_for_group(group_id)
+    return {
+        a["id"] for a in load_activities()
+        if is_offered(sched.get(a["id"], {}), today_str)
+    }
+
+
+def get_student_vocab_pool(group_id):
     """Ne garde que les mots liés aux activités déjà accessibles à l'élève."""
-    available_ids = get_available_activity_ids()
+    available_ids = get_available_activity_ids(group_id)
     return [
         w for w in VOCAB_BANK
         if not w.get("activityIds") or available_ids & set(w["activityIds"])
     ]
+
+
+def find_group(group_id):
+    return next((g for g in load_groups() if g["id"] == group_id), None)
+
+
+def groups_of_teacher(teacher):
+    """Un administrateur voit tous les groupes ; un enseignant, les siens."""
+    groups = load_groups()
+    if teacher.get("role") == "admin":
+        return groups
+    return [g for g in groups if g.get("teacherId") == teacher["id"]]
+
+
+def teacher_can_access_group(teacher, group_id):
+    if teacher.get("role") == "admin":
+        return find_group(group_id) is not None
+    g = find_group(group_id)
+    return g is not None and g.get("teacherId") == teacher["id"]
+
+
+# ── Mots de passe et sessions enseignants ───────────────────────────────────
+
+def hash_password(password, salt=None, iterations=200_000):
+    salt = salt or uuid.uuid4().hex
+    dk = hashlib.pbkdf2_hmac("sha256", password.encode("utf-8"), salt.encode("utf-8"), iterations)
+    return f"pbkdf2_sha256${iterations}${salt}${dk.hex()}"
+
+
+def verify_password(password, stored):
+    try:
+        algo, iterations, salt, digest = stored.split("$")
+    except (ValueError, AttributeError):
+        return False
+    if algo != "pbkdf2_sha256":
+        return False
+    dk = hashlib.pbkdf2_hmac("sha256", password.encode("utf-8"), salt.encode("utf-8"), int(iterations))
+    return hmac.compare_digest(dk.hex(), digest)
+
+
+def load_sessions():
+    if SESSIONS_FILE.exists():
+        try:
+            with open(SESSIONS_FILE, "r", encoding="utf-8") as f:
+                return json.load(f)
+        except json.JSONDecodeError:
+            pass
+    return {}
+
+
+def save_sessions(sessions):
+    _save_json(SESSIONS_FILE, sessions)
+
+
+def create_session(teacher_id):
+    sessions = load_sessions()
+    now = datetime.now()
+    # Purge des jetons expirés à chaque connexion : pas de tâche de fond à gérer.
+    sessions = {
+        t: s for t, s in sessions.items()
+        if s.get("expiresAt", "") > now.isoformat(timespec="seconds")
+    }
+    token = uuid.uuid4().hex + uuid.uuid4().hex
+    sessions[token] = {
+        "teacherId": teacher_id,
+        "createdAt": now.isoformat(timespec="seconds"),
+        "expiresAt": (now + timedelta(days=SESSION_DAYS)).isoformat(timespec="seconds"),
+    }
+    save_sessions(sessions)
+    return token
+
+
+def destroy_session(token):
+    sessions = load_sessions()
+    if token in sessions:
+        del sessions[token]
+        save_sessions(sessions)
+
+
+def teacher_from_token(token):
+    if not token:
+        return None
+    session = load_sessions().get(token)
+    if not session:
+        return None
+    if session.get("expiresAt", "") <= datetime.now().isoformat(timespec="seconds"):
+        destroy_session(token)
+        return None
+    return next((t for t in load_teachers() if t["id"] == session["teacherId"]), None)
+
+
+def public_teacher(teacher):
+    """Vue d'un enseignant sans son empreinte de mot de passe."""
+    return {
+        "id": teacher["id"],
+        "nom": teacher.get("nom", ""),
+        "courriel": teacher.get("courriel", ""),
+        "role": teacher.get("role", "prof"),
+        "createdAt": teacher.get("createdAt", ""),
+    }
+
+
+def normalize_email(value):
+    return (value or "").strip().lower()
+
+
+# ── Migration vers le multi-groupes ─────────────────────────────────────────
+
+def migrate_multi_groupes():
+    """Fait passer une installation mono-groupe au modèle enseignants/groupes.
+
+    Idempotent : ne fait rien si les fichiers existent déjà. Les dates
+    actuellement portées par les activités deviennent la planification du
+    groupe historique, et les élèves existants y sont rattachés.
+    """
+    groups = load_groups()
+    if not groups:
+        groups = [{
+            "id": 1,
+            "nom": "Niveau 4",
+            "teacherId": None,
+            "createdAt": date.today().isoformat(),
+        }]
+        save_groups(groups)
+        print("[migration] Groupe historique « Niveau 4 » créé", flush=True)
+
+    default_group_id = groups[0]["id"]
+
+    # Dates portées par les activités → planification du groupe historique.
+    #
+    # Avant le multi-groupes, une activité sans date était visible de tous les
+    # élèves ; désormais il faut une date de disponibilité (un groupe neuf part
+    # vide). Pour ne rien retirer à la classe en cours, on ouvre explicitement
+    # au groupe historique tout ce qui lui était déjà visible : sa date prévue
+    # si elle existe, sinon la date où l'activité a été vue, sinon aujourd'hui.
+    if not SCHEDULE_FILE.exists():
+        today_str = date.today().isoformat()
+        entries = []
+        for a in load_activities():
+            date_fin = a.get("dateFin", "")
+            date_vue = a.get("dateVue", "")
+            entries.append({
+                "groupId": default_group_id,
+                "activityId": a["id"],
+                "dateVue": date_vue,
+                "datePrevue": a.get("datePrevue", "") or date_vue or today_str,
+                "dateFin": date_fin,
+            })
+        save_schedule(entries)
+        print(f"[migration] {len(entries)} activités ouvertes au groupe {default_group_id} "
+              "(état d'avant le multi-groupes conservé)", flush=True)
+
+    # Élèves sans groupe → groupe historique
+    students = load_students()
+    orphans = [s for s in students if not s.get("groupId")]
+    if orphans:
+        for s in orphans:
+            s["groupId"] = default_group_id
+        save_students(students)
+        print(f"[migration] {len(orphans)} élèves rattachés au groupe {default_group_id}", flush=True)
+
+    # Premier administrateur : semé par variables d'environnement si fournies,
+    # sinon créé par l'écran d'installation au premier lancement.
+    teachers = load_teachers()
+    if not teachers:
+        email = normalize_email(os.environ.get("PROF_COURRIEL", ""))
+        password = os.environ.get("PROF_MOTDEPASSE", "")
+        if email and password:
+            teachers = [{
+                "id": 1,
+                "nom": os.environ.get("PROF_NOM", "Enseignant"),
+                "courriel": email,
+                "motDePasse": hash_password(password),
+                "role": "admin",
+                "createdAt": date.today().isoformat(),
+            }]
+            save_teachers(teachers)
+            print(f"[migration] Compte administrateur créé pour {email}", flush=True)
+        else:
+            print("[migration] Aucun enseignant — l'écran d'installation "
+                  "(/prof.html) créera le premier compte", flush=True)
+
+    # Le groupe historique appartient au premier enseignant connu
+    teachers = load_teachers()
+    if teachers:
+        groups = load_groups()
+        changed = False
+        for g in groups:
+            if not g.get("teacherId"):
+                g["teacherId"] = teachers[0]["id"]
+                changed = True
+        if changed:
+            save_groups(groups)
 
 
 def load_vocab_progress():
@@ -756,16 +1075,19 @@ class Handler(http.server.SimpleHTTPRequestHandler):
         # sans jamais redemander au serveur — un élève voyait alors l'activité
         # d'avant la mise en ligne. « no-cache » n'interdit pas le cache : il
         # force seulement une revalidation, donc un 304 léger si rien n'a changé.
+        # Les feuilles de style et les scripts suivent la même règle : depuis
+        # le multi-groupes, un app.js périmé appellerait les anciennes routes
+        # et casserait la page au lieu de simplement mal l'habiller.
         path = urllib.parse.urlparse(self.path).path
-        if path.endswith(".html") or path.endswith("/") or path == "":
+        if path.endswith((".html", ".css", ".js")) or path.endswith("/") or path == "":
             self.send_header("Cache-Control", "no-cache")
         super().end_headers()
 
     def do_OPTIONS(self):
         self.send_response(204)
         self.send_header("Access-Control-Allow-Origin", "*")
-        self.send_header("Access-Control-Allow-Methods", "GET, POST, DELETE, OPTIONS")
-        self.send_header("Access-Control-Allow-Headers", "Content-Type")
+        self.send_header("Access-Control-Allow-Methods", "GET, POST, PATCH, DELETE, OPTIONS")
+        self.send_header("Access-Control-Allow-Headers", "Content-Type, X-Prof-Token")
         self.end_headers()
 
     def do_GET(self):
@@ -773,7 +1095,23 @@ class Handler(http.server.SimpleHTTPRequestHandler):
         path = parsed.path
         params = urllib.parse.parse_qs(parsed.query)
 
+        # Sonde de santé Railway : doit rester publique et sans effet de bord.
+        if path == "/api/health":
+            json_response(self, {"ok": True})
+            return
+        if path == "/api/prof/me":
+            self._handle_prof_me()
+            return
+        if path == "/api/prof/groupes":
+            self._handle_groups_list()
+            return
+        if path == "/api/prof/enseignants":
+            self._handle_teachers_list()
+            return
+
         if path == "/api/debug":
+            if not self._require_teacher():
+                return
             import os as _os
             interactive_dir = BASE_DIR / "assets" / "interactive"
             files = []
@@ -789,7 +1127,14 @@ class Handler(http.server.SimpleHTTPRequestHandler):
             })
             return
         if path == "/api/activities":
-            json_response(self, load_activities())
+            # Catalogue commun, mais les dates sont celles du groupe demandé.
+            teacher = self._require_teacher()
+            if not teacher:
+                return
+            group_id = self._group_from_params(teacher, params)
+            if group_id is None:
+                return
+            json_response(self, activities_for_group(group_id))
             return
         if path == "/api/student/activities":
             self._handle_student_activities(params)
@@ -800,17 +1145,28 @@ class Handler(http.server.SimpleHTTPRequestHandler):
         if path == "/api/vocab/session":
             self._handle_vocab_session(params)
             return
-        if path == "/api/admin/students":
-            json_response(self, load_students())
-            return
-        if path == "/api/admin/access-log":
-            json_response(self, load_access_log())
-            return
-        if path == "/api/admin/progress":
-            json_response(self, load_progress())
+        if path in ("/api/admin/students", "/api/admin/access-log", "/api/admin/progress"):
+            teacher = self._require_teacher()
+            if not teacher:
+                return
+            group_id = self._group_from_params(teacher, params)
+            if group_id is None:
+                return
+            if path == "/api/admin/students":
+                json_response(self, [s for s in load_students()
+                                     if s.get("groupId") == group_id])
+                return
+            # Journal et progression : filtrés par les élèves du groupe, avec
+            # repli sur le groupId inscrit dans l'entrée pour les élèves partis.
+            student_ids = {s["id"] for s in load_students() if s.get("groupId") == group_id}
+            source = load_access_log() if path == "/api/admin/access-log" else load_progress()
+            json_response(self, [
+                e for e in source
+                if e.get("studentId") in student_ids or e.get("groupId") == group_id
+            ])
             return
         if path == "/api/admin/oral-submissions":
-            self._handle_oral_submissions_list()
+            self._handle_oral_submissions_list(params)
             return
 
         # Fichiers interactifs intégrés au code : servir directement depuis BASE_DIR
@@ -849,13 +1205,24 @@ class Handler(http.server.SimpleHTTPRequestHandler):
 
         if path == "/api/auth":
             self._handle_auth()
+        elif path == "/api/prof/setup":
+            self._handle_prof_setup()
+        elif path == "/api/prof/login":
+            self._handle_prof_login()
+        elif path == "/api/prof/logout":
+            self._handle_prof_logout()
+        elif path == "/api/prof/motdepasse":
+            self._handle_prof_password()
+        elif path == "/api/prof/groupes":
+            self._handle_group_add()
+        elif path == "/api/prof/enseignants":
+            self._handle_teacher_add()
         elif path == "/api/student/access":
             self._handle_log_access()
         elif path == "/api/admin/students":
             self._handle_add_student()
         elif path == "/api/admin/clear-log":
-            save_access_log([])
-            json_response(self, {"success": True})
+            self._handle_clear_log()
         elif path == "/api/student/progress":
             self._handle_student_progress()
         elif path == "/api/correct-french":
@@ -903,19 +1270,37 @@ class Handler(http.server.SimpleHTTPRequestHandler):
         parsed = urllib.parse.urlparse(self.path)
         path = parsed.path
         if re.match(r"^/api/admin/students/\d+$", path):
+            teacher = self._require_teacher()
+            if not teacher:
+                return
             try:
                 student_id = int(path.split("/")[4])
-                length = int(self.headers.get("Content-Length", 0))
-                body = json.loads(self.rfile.read(length)) if length else {}
-                students = load_students()
-                for s in students:
-                    if s["id"] == student_id:
-                        if "prenom" in body:
-                            s["prenom"] = body["prenom"]
-                        break
-                save_students(students)
-                json_response(self, {"success": True})
             except (ValueError, IndexError):
+                self.send_error(400, "ID invalide")
+                return
+            body = self._read_json_body()
+            students = load_students()
+            target = next((s for s in students if s["id"] == student_id), None)
+            if target is None:
+                json_response(self, {"error": "Élève introuvable"}, 404)
+                return
+            if self._require_group(teacher, target.get("groupId")) is None:
+                return
+            if "prenom" in body:
+                target["prenom"] = body["prenom"]
+            if "groupId" in body:
+                # Déplacer un élève : le groupe d'arrivée doit aussi être à soi
+                if self._require_group(teacher, body["groupId"]) is None:
+                    return
+                target["groupId"] = int(body["groupId"])
+            save_students(students)
+            json_response(self, {"success": True})
+        elif re.match(r"^/api/prof/groupes/\d+$", path):
+            self._handle_group_update(path.rsplit("/", 1)[1])
+        elif re.match(r"^/api/prof/enseignants/\d+$", path):
+            try:
+                self._handle_teacher_update(int(path.rsplit("/", 1)[1]))
+            except ValueError:
                 self.send_error(400, "ID invalide")
         else:
             self.send_error(404)
@@ -938,6 +1323,13 @@ class Handler(http.server.SimpleHTTPRequestHandler):
                 self.send_error(400, "ID invalide")
         elif re.match(r"^/api/admin/oral-submissions/[\w-]+$", path):
             self._handle_oral_submission_delete(path.rsplit("/", 1)[1])
+        elif re.match(r"^/api/prof/groupes/\d+$", path):
+            self._handle_group_delete(path.rsplit("/", 1)[1])
+        elif re.match(r"^/api/prof/enseignants/\d+$", path):
+            try:
+                self._handle_teacher_delete(int(path.rsplit("/", 1)[1]))
+            except ValueError:
+                self.send_error(400, "ID invalide")
         else:
             self.send_error(404)
 
@@ -1047,6 +1439,8 @@ class Handler(http.server.SimpleHTTPRequestHandler):
     # ── Handlers activités ────────────────────────────────────────────────
 
     def _handle_add(self):
+        if not self._require_teacher():
+            return
         form = self._parse_multipart()
         if form is None:
             json_response(self, {"error": "multipart requis"}, 400)
@@ -1065,6 +1459,7 @@ class Handler(http.server.SimpleHTTPRequestHandler):
             "id": new_id,
             "title": title,
             "level": "Niveau 4",
+            "categorie": normalize_categorie(form.getvalue("categorie", "")),
             "thumbnail": self._upload_thumbnail(form, slug),
             "interactive": self._upload_interactive(form, slug),
             "studentDoc": self._upload_doc(form, slug),
@@ -1079,6 +1474,8 @@ class Handler(http.server.SimpleHTTPRequestHandler):
         json_response(self, {"success": True, "activity": activity}, 201)
 
     def _handle_update(self, activity_id):
+        if not self._require_teacher():
+            return
         form = self._parse_multipart()
         if form is None:
             json_response(self, {"error": "multipart requis"}, 400)
@@ -1126,32 +1523,50 @@ class Handler(http.server.SimpleHTTPRequestHandler):
             self._delete_file(target.get("autres"))
             target["autres"] = new_autres
 
+        categorie = form.getvalue("categorie", "")
+        if categorie in CATEGORIES:
+            target["categorie"] = categorie
+
         save_activities(activities)
         json_response(self, {"success": True, "activity": target})
 
     def _handle_dates(self, activity_id):
-        length = int(self.headers.get("Content-Length", 0))
-        body = json.loads(self.rfile.read(length))
+        """Les dates n'appartiennent plus à l'activité mais au groupe : deux
+        enseignants planifient la même activité à des moments différents."""
+        teacher = self._require_teacher()
+        if not teacher:
+            return
+        body = self._read_json_body()
+        group_id = self._require_group(teacher, body.get("groupId"))
+        if group_id is None:
+            return
 
-        activities = load_activities()
-        target = next((a for a in activities if a["id"] == activity_id), None)
-        if not target:
+        if not any(a["id"] == activity_id for a in load_activities()):
             json_response(self, {"error": "Activité introuvable"}, 404)
             return
 
-        if "dateVue" in body:
-            target["dateVue"] = body["dateVue"]
-        if "datePrevue" in body:
-            target["datePrevue"] = body["datePrevue"]
-        if "dateFin" in body:
-            target["dateFin"] = body["dateFin"]
+        entry = set_schedule_dates(group_id, activity_id, body)
+        json_response(self, {"success": True, "dates": entry})
 
-        save_activities(activities)
+    def _handle_clear_log(self):
+        """Ne vide que le journal du groupe demandé."""
+        teacher = self._require_teacher()
+        if not teacher:
+            return
+        group_id = self._require_group(teacher, self._read_json_body().get("groupId"))
+        if group_id is None:
+            return
+        student_ids = {s["id"] for s in load_students() if s.get("groupId") == group_id}
+        save_access_log([
+            e for e in load_access_log()
+            if not (e.get("studentId") in student_ids or e.get("groupId") == group_id)
+        ])
         json_response(self, {"success": True})
 
     def _handle_clear_file(self, activity_id):
-        length = int(self.headers.get("Content-Length", 0))
-        body = json.loads(self.rfile.read(length))
+        if not self._require_teacher():
+            return
+        body = self._read_json_body()
         field = body.get("field", "")
 
         allowed = ("thumbnail", "interactive", "studentDoc", "slideshow", "planCours", "autres", "parcours")
@@ -1171,8 +1586,9 @@ class Handler(http.server.SimpleHTTPRequestHandler):
         json_response(self, {"success": True})
 
     def _handle_rename(self, activity_id):
-        length = int(self.headers.get("Content-Length", 0))
-        body = json.loads(self.rfile.read(length))
+        if not self._require_teacher():
+            return
+        body = self._read_json_body()
         new_title = body.get("title", "").strip()
 
         if not new_title:
@@ -1190,6 +1606,8 @@ class Handler(http.server.SimpleHTTPRequestHandler):
         json_response(self, {"error": "Activité introuvable"}, 404)
 
     def _handle_delete(self, activity_id):
+        if not self._require_teacher():
+            return
         activities = load_activities()
         target = next((a for a in activities if a["id"] == activity_id), None)
 
@@ -1202,6 +1620,331 @@ class Handler(http.server.SimpleHTTPRequestHandler):
 
         activities = [a for a in activities if a["id"] != activity_id]
         save_activities(activities)
+        # La planification de tous les groupes suit la suppression
+        save_schedule([e for e in load_schedule() if e.get("activityId") != activity_id])
+        json_response(self, {"success": True})
+
+    # ── Comptes enseignants ───────────────────────────────────────────────
+
+    def _read_json_body(self):
+        length = int(self.headers.get("Content-Length", 0))
+        if not length:
+            return {}
+        try:
+            return json.loads(self.rfile.read(length))
+        except json.JSONDecodeError:
+            return {}
+
+    def _current_teacher(self):
+        token = self.headers.get("X-Prof-Token", "")
+        return teacher_from_token(token)
+
+    def _require_teacher(self, admin=False):
+        """Renvoie l'enseignant connecté, ou None après avoir répondu 401/403."""
+        teacher = self._current_teacher()
+        if not teacher:
+            json_response(self, {"error": "Connexion enseignante requise"}, 401)
+            return None
+        if admin and teacher.get("role") != "admin":
+            json_response(self, {"error": "Réservé à l'administrateur"}, 403)
+            return None
+        return teacher
+
+    def _require_group(self, teacher, group_id):
+        """Valide que le groupe demandé existe et appartient à l'enseignant."""
+        try:
+            group_id = int(group_id)
+        except (TypeError, ValueError):
+            json_response(self, {"error": "Groupe manquant"}, 400)
+            return None
+        if not teacher_can_access_group(teacher, group_id):
+            json_response(self, {"error": "Ce groupe ne vous appartient pas"}, 403)
+            return None
+        return group_id
+
+    def _group_from_params(self, teacher, params):
+        return self._require_group(teacher, params.get("groupId", [None])[0])
+
+    def _handle_prof_setup(self):
+        """Création du tout premier compte. Refusée dès qu'un compte existe."""
+        if load_teachers():
+            json_response(self, {"error": "L'installation est déjà faite"}, 409)
+            return
+        body = self._read_json_body()
+        email = normalize_email(body.get("courriel"))
+        password = body.get("motDePasse", "")
+        nom = (body.get("nom", "") or "").strip()
+        if not email or "@" not in email:
+            json_response(self, {"error": "Courriel invalide"}, 400)
+            return
+        if len(password) < 8:
+            json_response(self, {"error": "Le mot de passe doit faire au moins 8 caractères"}, 400)
+            return
+        teacher = {
+            "id": 1,
+            "nom": nom or email.split("@")[0],
+            "courriel": email,
+            "motDePasse": hash_password(password),
+            "role": "admin",
+            "createdAt": date.today().isoformat(),
+        }
+        save_teachers([teacher])
+        # Le groupe historique créé par la migration n'avait pas de titulaire
+        groups = load_groups()
+        for g in groups:
+            if not g.get("teacherId"):
+                g["teacherId"] = teacher["id"]
+        save_groups(groups)
+        token = create_session(teacher["id"])
+        json_response(self, {
+            "success": True,
+            "token": token,
+            "enseignant": public_teacher(teacher),
+            "groupes": groups_of_teacher(teacher),
+        }, 201)
+
+    def _handle_prof_login(self):
+        body = self._read_json_body()
+        email = normalize_email(body.get("courriel"))
+        password = body.get("motDePasse", "")
+        teacher = next((t for t in load_teachers()
+                        if normalize_email(t.get("courriel")) == email), None)
+        if not teacher or not verify_password(password, teacher.get("motDePasse", "")):
+            json_response(self, {"error": "Courriel ou mot de passe invalide"}, 401)
+            return
+        token = create_session(teacher["id"])
+        json_response(self, {
+            "success": True,
+            "token": token,
+            "enseignant": public_teacher(teacher),
+            "groupes": groups_of_teacher(teacher),
+        })
+
+    def _handle_prof_logout(self):
+        destroy_session(self.headers.get("X-Prof-Token", ""))
+        json_response(self, {"success": True})
+
+    def _handle_prof_me(self):
+        teacher = self._current_teacher()
+        if not teacher:
+            # Pas une erreur : la page de connexion s'en sert pour savoir s'il
+            # faut afficher l'écran d'installation ou celui de connexion.
+            json_response(self, {
+                "connecte": False,
+                "installationRequise": not load_teachers(),
+            })
+            return
+        json_response(self, {
+            "connecte": True,
+            "installationRequise": False,
+            "enseignant": public_teacher(teacher),
+            "groupes": groups_of_teacher(teacher),
+        })
+
+    def _handle_prof_password(self):
+        teacher = self._require_teacher()
+        if not teacher:
+            return
+        body = self._read_json_body()
+        if not verify_password(body.get("ancien", ""), teacher.get("motDePasse", "")):
+            json_response(self, {"error": "Mot de passe actuel invalide"}, 403)
+            return
+        nouveau = body.get("nouveau", "")
+        if len(nouveau) < 8:
+            json_response(self, {"error": "Le nouveau mot de passe doit faire au moins 8 caractères"}, 400)
+            return
+        teachers = load_teachers()
+        for t in teachers:
+            if t["id"] == teacher["id"]:
+                t["motDePasse"] = hash_password(nouveau)
+        save_teachers(teachers)
+        json_response(self, {"success": True})
+
+    # ── Groupes ───────────────────────────────────────────────────────────
+
+    def _handle_groups_list(self):
+        teacher = self._require_teacher()
+        if not teacher:
+            return
+        groups = groups_of_teacher(teacher)
+        students = load_students()
+        teachers_by_id = {t["id"]: t for t in load_teachers()}
+        enriched = []
+        for g in groups:
+            titulaire = teachers_by_id.get(g.get("teacherId"))
+            enriched.append({
+                **g,
+                "nbEleves": sum(1 for s in students if s.get("groupId") == g["id"]),
+                "titulaire": titulaire.get("nom", "") if titulaire else "",
+            })
+        json_response(self, enriched)
+
+    def _handle_group_add(self):
+        teacher = self._require_teacher()
+        if not teacher:
+            return
+        body = self._read_json_body()
+        nom = (body.get("nom", "") or "").strip()
+        if not nom:
+            json_response(self, {"error": "Le nom du groupe est requis"}, 400)
+            return
+        # Un administrateur peut créer un groupe pour un autre enseignant
+        titulaire_id = teacher["id"]
+        if teacher.get("role") == "admin" and body.get("teacherId"):
+            try:
+                candidat = int(body["teacherId"])
+            except (TypeError, ValueError):
+                json_response(self, {"error": "Enseignant invalide"}, 400)
+                return
+            if not any(t["id"] == candidat for t in load_teachers()):
+                json_response(self, {"error": "Enseignant introuvable"}, 404)
+                return
+            titulaire_id = candidat
+        groups = load_groups()
+        group = {
+            "id": max((g["id"] for g in groups), default=0) + 1,
+            "nom": nom[:80],
+            "teacherId": titulaire_id,
+            "createdAt": date.today().isoformat(),
+        }
+        groups.append(group)
+        save_groups(groups)
+        json_response(self, {"success": True, "groupe": group}, 201)
+
+    def _handle_group_update(self, group_id):
+        teacher = self._require_teacher()
+        if not teacher:
+            return
+        group_id = self._require_group(teacher, group_id)
+        if group_id is None:
+            return
+        body = self._read_json_body()
+        groups = load_groups()
+        for g in groups:
+            if g["id"] == group_id:
+                if "nom" in body:
+                    nom = (body["nom"] or "").strip()
+                    if not nom:
+                        json_response(self, {"error": "Le nom du groupe est requis"}, 400)
+                        return
+                    g["nom"] = nom[:80]
+                # Seul un administrateur peut réaffecter un groupe
+                if "teacherId" in body and teacher.get("role") == "admin":
+                    g["teacherId"] = body["teacherId"]
+        save_groups(groups)
+        json_response(self, {"success": True})
+
+    def _handle_group_delete(self, group_id):
+        teacher = self._require_teacher()
+        if not teacher:
+            return
+        group_id = self._require_group(teacher, group_id)
+        if group_id is None:
+            return
+        students = load_students()
+        if any(s.get("groupId") == group_id for s in students):
+            json_response(self, {
+                "error": "Ce groupe contient encore des élèves. "
+                         "Supprimez-les ou déplacez-les d'abord."
+            }, 409)
+            return
+        save_groups([g for g in load_groups() if g["id"] != group_id])
+        save_schedule([e for e in load_schedule() if e.get("groupId") != group_id])
+        json_response(self, {"success": True})
+
+    # ── Gestion des enseignants (administrateur) ──────────────────────────
+
+    def _handle_teachers_list(self):
+        teacher = self._require_teacher(admin=True)
+        if not teacher:
+            return
+        groups = load_groups()
+        json_response(self, [
+            {**public_teacher(t),
+             "nbGroupes": sum(1 for g in groups if g.get("teacherId") == t["id"])}
+            for t in load_teachers()
+        ])
+
+    def _handle_teacher_add(self):
+        admin = self._require_teacher(admin=True)
+        if not admin:
+            return
+        body = self._read_json_body()
+        email = normalize_email(body.get("courriel"))
+        password = body.get("motDePasse", "")
+        nom = (body.get("nom", "") or "").strip()
+        if not email or "@" not in email:
+            json_response(self, {"error": "Courriel invalide"}, 400)
+            return
+        teachers = load_teachers()
+        if any(normalize_email(t.get("courriel")) == email for t in teachers):
+            json_response(self, {"error": "Ce courriel est déjà utilisé"}, 409)
+            return
+        if len(password) < 8:
+            json_response(self, {"error": "Le mot de passe doit faire au moins 8 caractères"}, 400)
+            return
+        teacher = {
+            "id": max((t["id"] for t in teachers), default=0) + 1,
+            "nom": nom or email.split("@")[0],
+            "courriel": email,
+            "motDePasse": hash_password(password),
+            "role": "admin" if body.get("role") == "admin" else "prof",
+            "createdAt": date.today().isoformat(),
+        }
+        teachers.append(teacher)
+        save_teachers(teachers)
+        json_response(self, {"success": True, "enseignant": public_teacher(teacher)}, 201)
+
+    def _handle_teacher_update(self, teacher_id):
+        admin = self._require_teacher(admin=True)
+        if not admin:
+            return
+        body = self._read_json_body()
+        teachers = load_teachers()
+        target = next((t for t in teachers if t["id"] == teacher_id), None)
+        if target is None:
+            json_response(self, {"error": "Enseignant introuvable"}, 404)
+            return
+        if "nom" in body:
+            target["nom"] = (body["nom"] or "").strip() or target["nom"]
+        if "role" in body:
+            # Ne jamais laisser l'installation sans administrateur
+            if body["role"] != "admin" and target.get("role") == "admin" \
+                    and sum(1 for t in teachers if t.get("role") == "admin") <= 1:
+                json_response(self, {"error": "Il doit rester au moins un administrateur"}, 409)
+                return
+            target["role"] = "admin" if body["role"] == "admin" else "prof"
+        if body.get("motDePasse"):
+            if len(body["motDePasse"]) < 8:
+                json_response(self, {"error": "Le mot de passe doit faire au moins 8 caractères"}, 400)
+                return
+            target["motDePasse"] = hash_password(body["motDePasse"])
+        save_teachers(teachers)
+        json_response(self, {"success": True, "enseignant": public_teacher(target)})
+
+    def _handle_teacher_delete(self, teacher_id):
+        admin = self._require_teacher(admin=True)
+        if not admin:
+            return
+        if teacher_id == admin["id"]:
+            json_response(self, {"error": "Vous ne pouvez pas supprimer votre propre compte"}, 409)
+            return
+        teachers = load_teachers()
+        target = next((t for t in teachers if t["id"] == teacher_id), None)
+        if target is None:
+            json_response(self, {"error": "Enseignant introuvable"}, 404)
+            return
+        if any(g.get("teacherId") == teacher_id for g in load_groups()):
+            json_response(self, {
+                "error": "Cet enseignant a encore des groupes. "
+                         "Réaffectez-les ou supprimez-les d'abord."
+            }, 409)
+            return
+        save_teachers([t for t in teachers if t["id"] != teacher_id])
+        # Déconnexion immédiate du compte supprimé
+        sessions = {tok: s for tok, s in load_sessions().items()
+                    if s.get("teacherId") != teacher_id}
+        save_sessions(sessions)
         json_response(self, {"success": True})
 
     # ── Handlers élèves / LMS ─────────────────────────────────────────────
@@ -1214,11 +1957,14 @@ class Handler(http.server.SimpleHTTPRequestHandler):
         if not student:
             json_response(self, {"error": "Code invalide"}, 401)
             return
+        group = find_group(student.get("groupId"))
         json_response(self, {
             "success": True,
             "studentId": student["id"],
             "label": student.get("label", ""),
             "prenom": student.get("prenom", ""),
+            "groupId": student.get("groupId"),
+            "groupe": group.get("nom", "") if group else "",
         })
 
     def _handle_vocab_session(self, params):
@@ -1234,7 +1980,7 @@ class Handler(http.server.SimpleHTTPRequestHandler):
         except ValueError:
             n = 10
 
-        available_pool = get_student_vocab_pool()
+        available_pool = get_student_vocab_pool(student.get("groupId"))
         pool = [w for w in available_pool if not domain or w["domaine"] == domain]
         progress = load_vocab_progress()
         by_word = {
@@ -1453,7 +2199,8 @@ class Handler(http.server.SimpleHTTPRequestHandler):
             json_response(self, {"error": "Non autorisé"}, 401)
             return
 
-        available_ids = get_available_activity_ids()
+        group_id = student.get("groupId")
+        available_ids = get_available_activity_ids(group_id)
         available_activities = [a for a in load_activities() if a["id"] in available_ids]
 
         progress = [p for p in load_progress() if p["studentId"] == student["id"]]
@@ -1489,7 +2236,7 @@ class Handler(http.server.SimpleHTTPRequestHandler):
             cursor = cursor - timedelta(days=1)
 
         # ── Maîtrise du vocabulaire (mots des activités déjà au dossier) ──
-        pool_ids = {w["id"] for w in get_student_vocab_pool()}
+        pool_ids = {w["id"] for w in get_student_vocab_pool(group_id)}
         vocab_progress = [
             p for p in load_vocab_progress()
             if p["studentId"] == student["id"] and p["wordId"] in pool_ids
@@ -1516,19 +2263,25 @@ class Handler(http.server.SimpleHTTPRequestHandler):
 
     def _handle_student_activities(self, params):
         code = params.get("code", [""])[0].strip().upper()
-        if not validate_student_code(code):
+        student = validate_student_code(code)
+        if not student:
             json_response(self, {"error": "Non autorisé"}, 401)
             return
         today = date.today().isoformat()
-        activities = load_activities()
+        # Le catalogue est commun, mais les dates viennent du groupe de l'élève.
+        activities = activities_for_group(student.get("groupId"))
         result = []
         for a in activities:
             dp = a.get("datePrevue", "")
             df = a.get("dateFin", "")
+            # Sans date de disponibilité, l'activité n'est pas offerte à ce
+            # groupe : l'élève ne la voit pas du tout, même pas « à venir ».
+            if not dp:
+                continue
             # Masquer les activités dont la période est terminée
             if df and df < today:
                 continue
-            available = (not dp or dp <= today)
+            available = dp <= today
             result.append({
                 "id": a["id"],
                 "title": a["title"],
@@ -1539,6 +2292,7 @@ class Handler(http.server.SimpleHTTPRequestHandler):
                 "competences": a.get("competences", []),
                 "tempsVerbaux": a.get("tempsVerbaux", []),
                 "domaineDeVie": a.get("domaineDeVie", ""),
+                "categorie": a.get("categorie", "atelier"),
                 "nouveauDesign": bool(a.get("nouveauDesign")),
                 "nouveauDesignColor": a.get("nouveauDesignColor", ""),
                 "nouveauDesignTint": a.get("nouveauDesignTint", ""),
@@ -1568,6 +2322,7 @@ class Handler(http.server.SimpleHTTPRequestHandler):
         entry = {
             "studentId": student["id"],
             "studentLabel": student.get("label", ""),
+            "groupId": student.get("groupId"),
             "activityId": body.get("activityId"),
             "activityTitle": body.get("activityTitle", ""),
             "file": body.get("file", ""),
@@ -2153,6 +2908,7 @@ class Handler(http.server.SimpleHTTPRequestHandler):
             "id": sub_id,
             "studentId": student["id"],
             "studentCode": code,
+            "groupId": student.get("groupId"),
             "prenom": student.get("prenom", ""),
             "theme": field("theme"),
             "taskId": field("taskId"),
@@ -2169,12 +2925,23 @@ class Handler(http.server.SimpleHTTPRequestHandler):
 
         json_response(self, {"success": True, "id": sub_id})
 
-    def _handle_oral_submissions_list(self):
-        subs = sorted(load_oral_submissions(),
-                      key=lambda s: s.get("createdAt", ""), reverse=True)
+    def _handle_oral_submissions_list(self, params):
+        teacher = self._require_teacher()
+        if not teacher:
+            return
+        group_id = self._group_from_params(teacher, params)
+        if group_id is None:
+            return
+        student_ids = {s["id"] for s in load_students() if s.get("groupId") == group_id}
+        subs = sorted(
+            (s for s in load_oral_submissions()
+             if s.get("groupId") == group_id or s.get("studentId") in student_ids),
+            key=lambda s: s.get("createdAt", ""), reverse=True)
         json_response(self, subs)
 
     def _handle_oral_submission_delete(self, sub_id):
+        if not self._require_teacher():
+            return
         subs = load_oral_submissions()
         target = next((s for s in subs if s["id"] == sub_id), None)
         if target is None:
@@ -2193,8 +2960,13 @@ class Handler(http.server.SimpleHTTPRequestHandler):
         json_response(self, {"success": True})
 
     def _handle_add_student(self):
-        length = int(self.headers.get("Content-Length", 0))
-        body = json.loads(self.rfile.read(length))
+        teacher = self._require_teacher()
+        if not teacher:
+            return
+        body = self._read_json_body()
+        group_id = self._require_group(teacher, body.get("groupId"))
+        if group_id is None:
+            return
         students = load_students()
         existing_codes = {s["code"] for s in students}
         count = max(1, int(body.get("count", 1)))
@@ -2206,6 +2978,7 @@ class Handler(http.server.SimpleHTTPRequestHandler):
                 "id": new_id,
                 "code": generate_code(existing_codes),
                 "label": label or f"Élève {new_id}",
+                "groupId": group_id,
                 "createdAt": date.today().isoformat(),
             }
             existing_codes.add(student["code"])
@@ -2242,6 +3015,7 @@ class Handler(http.server.SimpleHTTPRequestHandler):
             entry = {
                 "studentId": student["id"],
                 "studentLabel": student.get("label", ""),
+                "groupId": student.get("groupId"),
                 "activityId": body.get("activityId"),
                 "activityTitle": body.get("activityTitle", ""),
                 "event": event,
@@ -2265,9 +3039,17 @@ class Handler(http.server.SimpleHTTPRequestHandler):
         json_response(self, {"success": True})
 
     def _handle_delete_student(self, student_id):
+        teacher = self._require_teacher()
+        if not teacher:
+            return
         students = load_students()
-        students = [s for s in students if s["id"] != student_id]
-        save_students(students)
+        target = next((s for s in students if s["id"] == student_id), None)
+        if target is None:
+            json_response(self, {"error": "Élève introuvable"}, 404)
+            return
+        if self._require_group(teacher, target.get("groupId")) is None:
+            return
+        save_students([s for s in students if s["id"] != student_id])
         json_response(self, {"success": True})
 
 
@@ -2287,6 +3069,12 @@ if __name__ == "__main__":
             print("[init] Stockage initialisé", flush=True)
         except Exception as e:
             print(f"[WARN] init_storage a échoué : {e}", flush=True)
+        # Doit suivre init_storage() : la migration lit les activités et les
+        # élèves déjà présents dans le volume.
+        try:
+            migrate_multi_groupes()
+        except Exception as e:
+            print(f"[WARN] migrate_multi_groupes a échoué : {e}", flush=True)
 
     threading.Thread(target=_init_storage_safe, daemon=True).start()
 

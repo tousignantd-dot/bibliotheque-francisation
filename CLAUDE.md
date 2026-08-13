@@ -29,12 +29,59 @@ Bibliothèque d'activités pédagogiques FLS (Niveau 4) pour enseignant en franc
 - `viewer.html` relaie le `code` élève à l'iframe via `?code=...` sur l'URL de l'activité — nécessaire pour que l'activité authentifie ses appels à `/api/correct-french`.
 - Ne jamais coder la clé API en dur dans le code ou la partager dans le chat.
 
+## Multi-enseignants et multi-groupes
+
+- Hiérarchie : **enseignant → groupes → élèves**. Le catalogue d'activités est
+  **commun** à tous les enseignants ; ce qui appartient au groupe, c'est la
+  planification (dates), les élèves, la progression, le journal et les
+  productions orales.
+- **Les dates ne sont plus portées par l'activité** mais par `data/schedule.json`
+  (`{groupId, activityId, dateVue, datePrevue, dateFin}`). Deux enseignants
+  peuvent donc placer la même activité à deux moments différents. Les champs
+  `dateVue`/`datePrevue`/`dateFin` restants dans `activities.json` ne servent
+  plus qu'à amorcer la migration ; ne rien y écrire.
+- **Un groupe neuf part vide.** Une activité n'est offerte à un groupe que si
+  elle a une `datePrevue` pour ce groupe (`is_offered()`). Sans date, l'élève
+  ne la voit pas du tout — pas même en « à venir ». L'admin affiche alors
+  « Non offerte à ce groupe ». La migration ouvre explicitement au groupe
+  historique tout ce qui lui était déjà visible, pour ne rien retirer à la
+  classe en cours.
+
+## Cours et ateliers
+
+Chaque activité porte une `categorie` : `cours` (modules de 4 h, le matin) ou
+`atelier` (activités de 2 h, l'après-midi). Les listes enseignantes
+(`admin.html`, `index.html`) sont rendues en deux sections dans cet ordre.
+Le champ se choisit à la création et dans le modal de modification ; pour une
+activité qui ne l'aurait pas, `normalize_categorie()` le déduit du chemin
+(`assets/interactive/module-*` → `cours`). Il figure dans `USER_FIELDS`, donc le
+choix de l'enseignant survit aux redéploiements.
+- Authentification enseignante : courriel + mot de passe (PBKDF2-SHA256), jeton
+  de session envoyé dans l'en-tête `X-Prof-Token`. `prof.html` porte la
+  connexion, l'installation initiale, la gestion des groupes et des comptes.
+  `js/prof.js` fournit `Prof.fetch` / `Prof.withGroup` / `Prof.body` aux trois
+  pages enseignantes (`admin.html`, `index.html`, `lms.html`) — toute requête
+  d'administration doit passer par là, sinon elle répond 401.
+- Rôles : `admin` (crée les autres enseignants, voit tous les groupes) et `prof`.
+- **Premier démarrage** : s'il n'existe aucun compte, `/prof.html` affiche
+  l'écran d'installation qui crée le premier administrateur. On peut aussi
+  semer ce compte par les variables `PROF_COURRIEL` / `PROF_MOTDEPASSE` /
+  `PROF_NOM`. Dès qu'un compte existe, `/api/prof/setup` répond 409.
+- `migrate_multi_groupes()` tourne au démarrage après `init_storage()` : elle
+  crée le groupe historique, y reprend les dates des activités et y rattache
+  les élèves existants. Idempotente.
+- Healthcheck Railway : `/api/health` (et non plus `/api/activities`, désormais
+  protégé par le jeton enseignant).
+
 ## Structure
 
 - `data/activities.json` — métadonnées des activités (source de vérité côté code)
+- `data/teachers.json` / `data/groups.json` / `data/schedule.json` — comptes,
+  groupes, planification. Les deux premiers ne sont pas versionnés.
 - `assets/documents/` — fiches élèves (HTML imprimables)
 - `assets/interactive/<slug>/` — activités interactives (HTML autonomes)
 - `assets/plans/` — plans de cours
+- `prof.html` — connexion enseignante, groupes et comptes
 - `admin.html` / `eleve.html` — interfaces enseignant / élève
 
 ## Langue

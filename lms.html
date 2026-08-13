@@ -175,7 +175,8 @@
       <span class="header-title">LMS — Gestion des élèves</span>
       <span class="header-sub">Bibliothèque — Francisation Niveau 4</span>
     </div>
-    <nav class="header-nav">
+    <nav class="header-nav" style="align-items:center;gap:14px">
+      <div id="profBar"></div>
       <a href="admin.html" class="nav-link">
         <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M2 3h6a4 4 0 0 1 4 4v14a3 3 0 0 0-3-3H2z"/><path d="M22 3h-6a4 4 0 0 0-4 4v14a3 3 0 0 1 3-3h7z"/></svg>
         Administration
@@ -306,6 +307,7 @@
 <!-- ZONE IMPRESSION (cachée à l'écran) -->
 <div class="print-area" id="printArea"></div>
 
+<script src="js/prof.js"></script>
 <script>
   const API = '';
   let allStudents = [];
@@ -322,9 +324,17 @@
     }
   }
 
+  // Tout ce que montre cette page appartient à un groupe : élèves, journal,
+  // progression, enregistrements. Changer de groupe recharge donc tout.
+  async function boot() {
+    if (!await Prof.init()) return;   // redirige vers prof.html
+    Prof.renderBar(document.getElementById('profBar'), init);
+    await init();
+  }
+
   // ---- ENREGISTREMENTS ORAUX ----
   async function loadOral() {
-    const res = await fetch(`${API}/api/admin/oral-submissions`);
+    const res = await Prof.fetch(Prof.withGroup(`${API}/api/admin/oral-submissions`));
     allOral = await res.json();
     filterOral();
   }
@@ -363,25 +373,25 @@
 
   async function deleteOral(id) {
     if (!confirm('Supprimer cet enregistrement définitivement ?')) return;
-    await fetch(`${API}/api/admin/oral-submissions/${id}`, { method: 'DELETE' }).catch(() => {});
+    await Prof.fetch(`${API}/api/admin/oral-submissions/${id}`, { method: 'DELETE' }).catch(() => {});
     allOral = allOral.filter(s => s.id !== id);
     filterOral();
   }
 
   async function loadStudents() {
-    const res = await fetch(`${API}/api/admin/students`);
+    const res = await Prof.fetch(Prof.withGroup(`${API}/api/admin/students`));
     allStudents = await res.json();
     renderStudents();
   }
 
   async function loadLog() {
-    const res = await fetch(`${API}/api/admin/access-log`);
+    const res = await Prof.fetch(Prof.withGroup(`${API}/api/admin/access-log`));
     allLog = await res.json();
     filterLog();
   }
 
   async function loadProgress() {
-    const res = await fetch(`${API}/api/admin/progress`);
+    const res = await Prof.fetch(Prof.withGroup(`${API}/api/admin/progress`));
     allProgress = await res.json();
     filterProgress();
   }
@@ -615,7 +625,7 @@
     if (!student || student.prenom === prenom) return;
     student.prenom = prenom;
     try {
-      await fetch(`${API}/api/admin/students/${id}`, {
+      await Prof.fetch(`${API}/api/admin/students/${id}`, {
         method: 'PATCH',
         headers: {'Content-Type': 'application/json'},
         body: JSON.stringify({prenom}),
@@ -630,12 +640,13 @@
     const btn = document.getElementById('addStudentBtn');
     btn.disabled = true;
     try {
-      const res = await fetch(`${API}/api/admin/students`, {
+      const res = await Prof.fetch(`${API}/api/admin/students`, {
         method: 'POST',
         headers: {'Content-Type': 'application/json'},
-        body: JSON.stringify({label, count}),
+        body: Prof.body({label, count}),
       });
       const data = await res.json();
+      if (!res.ok) throw new Error(data.error || 'Erreur serveur');
       allStudents.push(...data.students);
       renderStudents();
       document.getElementById('newLabel').value = '';
@@ -647,7 +658,7 @@
   // ---- DELETE STUDENT ----
   async function deleteStudent(id) {
     if (!confirm('Supprimer ce code d\'accès ?')) return;
-    await fetch(`${API}/api/admin/students/${id}`, {method: 'DELETE'});
+    await Prof.fetch(`${API}/api/admin/students/${id}`, {method: 'DELETE'});
     allStudents = allStudents.filter(s => s.id !== id);
     renderStudents();
   }
@@ -707,10 +718,9 @@
   }
 
   async function clearLog() {
-    if (!confirm('Vider tout le journal d\'accès ? Cette action est irréversible.')) return;
-    // On écrit un log vide via un endpoint direct (simple : POST /api/admin/clear-log)
-    // Pour l'instant, on utilise fetch sur le fichier — en attendant un endpoint dédié :
-    await fetch(`${API}/api/admin/clear-log`, {method: 'POST', headers: {'Content-Type': 'application/json'}, body: '{}'}).catch(() => {});
+    if (!confirm('Vider le journal d\'accès de ce groupe ? Cette action est irréversible.')) return;
+    // Ne vide que le journal du groupe actif.
+    await Prof.fetch(`${API}/api/admin/clear-log`, {method: 'POST', headers: {'Content-Type': 'application/json'}, body: Prof.body()}).catch(() => {});
     allLog = [];
     filterLog();
   }
@@ -724,7 +734,7 @@
         <div class="print-code-card">
           <div class="print-code-label">${escHtml(s.label || `Élève ${s.id}`)}</div>
           <div class="print-code-value">${s.code}</div>
-          <div class="print-code-site">Francisation Niveau 4</div>
+          <div class="print-code-site">${escHtml(Prof.groupeActif()?.nom || 'Francisation')}</div>
         </div>`).join('')}
     </div>`;
     window.print();
@@ -746,7 +756,7 @@
     return String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');
   }
 
-  init();
+  boot();
 </script>
 </body>
 </html>

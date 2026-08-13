@@ -297,6 +297,37 @@
     }
     .current-file-delete:hover { background: #fee2e2; }
 
+    /* Activité sans date de disponibilité pour le groupe actif : les élèves
+       ne la voient pas. */
+    /* En-tête de section dans la liste : cours (matin) / ateliers (après-midi) */
+    .section-head {
+      display: flex; align-items: baseline; gap: 9px;
+      padding: 16px 18px 8px; list-style: none;
+      border-bottom: 1px solid var(--border); background: var(--bg);
+    }
+    .section-head:not(:first-child) { margin-top: 6px; border-top: 1px solid var(--border); }
+    .section-head-title { font-size: 13px; font-weight: 700; letter-spacing: -.2px; }
+    .section-head-sub { font-size: 11.5px; color: var(--text-3); }
+    .section-head-count {
+      margin-left: auto; font-size: 11px; font-weight: 600; color: var(--text-3);
+      background: var(--surface); border: 1px solid var(--border);
+      border-radius: 999px; padding: 1px 8px;
+    }
+
+    .select-categorie {
+      width: 100%; height: 40px; padding: 0 12px;
+      border: 1.5px solid var(--border); border-radius: 8px;
+      font-family: inherit; font-size: 14px;
+      background: var(--bg); color: var(--text);
+    }
+    .select-categorie:focus { outline: none; border-color: var(--accent); background: #fff; }
+
+    .pill-fermee {
+      display: inline-block; font-size: 10.5px; font-weight: 600;
+      background: #f3f4f6; color: #6b7280; border: 1px solid #e5e7eb;
+      border-radius: 8px; padding: 1px 7px;
+    }
+
     /* ---- PROGRESS BAR ---- */
     .progress-bar-wrap { display: none; height: 4px; background: var(--border); border-radius: 4px; overflow: hidden; margin-top: 14px; }
     .progress-bar-wrap.visible { display: block; }
@@ -322,6 +353,7 @@
       <span class="header-sub">Bibliothèque — Francisation Niveau 4</span>
     </div>
     <nav class="header-nav">
+      <div id="profBar"></div>
       <a href="https://bibliotheque-francisation-production.up.railway.app/lms.html" target="_blank" rel="noopener" class="nav-link">
         <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>
         Gestion élèves
@@ -363,6 +395,14 @@
         <div class="form-group">
           <label class="required" for="titleInput">Titre de l'activité</label>
           <input type="text" id="titleInput" placeholder="Ex : Le Vieux-Port de Montréal" maxlength="120" required />
+        </div>
+
+        <div class="form-group">
+          <label for="categorieInput">Type de contenu</label>
+          <select id="categorieInput" class="select-categorie">
+            <option value="atelier">Atelier — 2 h, l'après-midi</option>
+            <option value="cours">Cours — 4 h, le matin</option>
+          </select>
         </div>
 
         <!-- Thumbnail -->
@@ -539,6 +579,14 @@
       </div>
 
       <div class="form-group">
+        <label for="editCategorie">Type de contenu</label>
+        <select id="editCategorie" class="select-categorie">
+            <option value="atelier">Atelier — 2 h, l'après-midi</option>
+            <option value="cours">Cours — 4 h, le matin</option>
+        </select>
+      </div>
+
+      <div class="form-group">
         <label>Image miniature</label>
         <div id="editThumbCurrent" class="current-file" style="display:none">
           <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="8.5" cy="8.5" r="1.5"/><polyline points="21 15 16 10 5 21"/></svg>
@@ -706,6 +754,7 @@
 <!-- TOASTS -->
 <div class="toast-wrap" id="toastWrap"></div>
 
+<script src="js/prof.js"></script>
 <script>
 /* ======================================================
    Utilitaires
@@ -819,6 +868,7 @@ document.getElementById('addForm').addEventListener('submit', async e => {
 
   const fd = new FormData();
   fd.append('title', title);
+  fd.append('categorie', document.getElementById('categorieInput').value);
 
   const thumb = document.getElementById('thumbFile').files[0];
   const interactive = document.getElementById('interactiveFile').files[0];
@@ -842,7 +892,7 @@ document.getElementById('addForm').addEventListener('submit', async e => {
   }, 200);
 
   try {
-    const res = await fetch('/api/activities', { method: 'POST', body: fd });
+    const res = await Prof.fetch('/api/activities', { method: 'POST', body: fd });
     const data = await res.json();
 
     clearInterval(tick);
@@ -880,7 +930,7 @@ let deleteTargetId = null;
 
 async function loadList() {
   try {
-    const res = await fetch('/api/activities');
+    const res = await Prof.fetch(Prof.withGroup('/api/activities'));
     if (!res.ok) throw new Error();
     allActivities = await res.json();
     populateFilterOptions();
@@ -930,6 +980,13 @@ function applyFilters() {
   renderList(filtered);
 }
 
+// Les contenus se lisent en deux blocs : les cours (modules de 4 h, le matin)
+// et les ateliers (activités de 2 h, l'après-midi).
+const SECTIONS = [
+  { cle: 'cours',   titre: 'Cours',    sousTitre: '4 h — le matin' },
+  { cle: 'atelier', titre: 'Ateliers', sousTitre: '2 h — l’après-midi' },
+];
+
 function renderList(items) {
   const list = document.getElementById('activityList');
   const empty = document.getElementById('emptyList');
@@ -944,7 +1001,23 @@ function renderList(items) {
   }
 
   empty.classList.remove('visible');
-  list.innerHTML = items.map(a => `
+  list.innerHTML = SECTIONS.map(section => {
+    const lot = items.filter(a => (a.categorie || 'atelier') === section.cle);
+    if (!lot.length) return '';
+    return `
+      <li class="section-head">
+        <span class="section-head-title">${section.titre}</span>
+        <span class="section-head-sub">${section.sousTitre}</span>
+        <span class="section-head-count">${lot.length}</span>
+      </li>
+      ${renderItems(lot)}`;
+  }).join('');
+
+  attachListEvents();
+}
+
+function renderItems(items) {
+  return items.map(a => `
     <li class="activity-item" data-id="${a.id}">
       ${a.thumbnail
         ? `<img class="activity-thumb" src="${escHtml(a.thumbnail)}" alt="" onerror="this.style.display='none';this.nextElementSibling.style.display='flex'">`
@@ -962,12 +1035,14 @@ function renderList(items) {
           ${a.planCours   ? '<span style="color:#22c55e">✓ Plan</span>'      : '<span>— Plan</span>'}
           ${a.autres      ? '<span style="color:#22c55e">✓ Autres</span>'    : '<span>— Autres</span>'}
         </div>
-        ${(a.datePrevue || a.dateFin) ? `<div style="font-size:11px;margin-top:3px;display:flex;align-items:center;gap:4px">
+        <div style="font-size:11px;margin-top:3px;display:flex;align-items:center;gap:4px">
+          ${a.datePrevue ? `
           <svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="#3b6ff6" stroke-width="2.5"><rect x="3" y="4" width="18" height="18" rx="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg>
-          <span style="color:#3b6ff6;font-weight:600">${a.datePrevue ? fmtD(a.datePrevue) : '…'}</span>
+          <span style="color:#3b6ff6;font-weight:600">${fmtD(a.datePrevue)}</span>
           <span style="color:#9aa0aa">→</span>
-          <span style="color:#ef4444;font-weight:600">${a.dateFin ? fmtD(a.dateFin) : '…'}</span>
-        </div>` : ''}
+          <span style="color:#ef4444;font-weight:600">${a.dateFin ? fmtD(a.dateFin) : '…'}</span>`
+          : `<span class="pill-fermee" title="Donnez une date de disponibilité pour l'ouvrir à ce groupe">Non offerte à ce groupe</span>`}
+        </div>
         ${(a.competences?.length || a.tempsVerbaux?.length || a.domaineDeVie) ? `<div style="font-size:10.5px;margin-top:3px;display:flex;gap:5px;flex-wrap:wrap">
           ${(a.competences || []).map(c => `<span style="background:#eef2ff;color:#4338ca;border-radius:8px;padding:1px 6px">${escHtml(c)}</span>`).join('')}
           ${(a.tempsVerbaux || []).map(t => `<span style="background:#fef3c7;color:#92400e;border-radius:8px;padding:1px 6px">${escHtml(t)}</span>`).join('')}
@@ -985,8 +1060,6 @@ function renderList(items) {
       </div>
       <span class="activity-id">#${a.id}</span>
     </li>`).join('');
-
-  attachListEvents();
 }
 
 function attachListEvents() {
@@ -1025,6 +1098,7 @@ function openEditModal(activity) {
   setCurrentFile('editSlideshowCurrent', 'editSlideshowName', activity.slideshow);
 
   document.getElementById('editDateVue').value = activity.dateVue || '';
+  document.getElementById('editCategorie').value = activity.categorie || 'atelier';
   document.getElementById('editDatePrevue').value = activity.datePrevue || '';
   document.getElementById('editDateFin').value = activity.dateFin || '';
 
@@ -1070,7 +1144,7 @@ document.getElementById('editModal').addEventListener('click', async e => {
   if (!confirm('Supprimer ce fichier ?')) return;
 
   try {
-    const res = await fetch(`/api/activities/${editTargetId}/clear-file`, {
+    const res = await Prof.fetch(`/api/activities/${editTargetId}/clear-file`, {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({ field }),
@@ -1143,6 +1217,7 @@ document.getElementById('editSaveBtn').addEventListener('click', async () => {
 
   const fd = new FormData();
   fd.append('title', title);
+  fd.append('categorie', document.getElementById('editCategorie').value);
 
   const thumb = document.getElementById('editThumbFile').files[0];
   const interactive = document.getElementById('editInteractiveFile').files[0];
@@ -1159,17 +1234,17 @@ document.getElementById('editSaveBtn').addEventListener('click', async () => {
   if (autres) fd.append('autres', autres);
 
   try {
-    const res = await fetch(`/api/activities/${editTargetId}/update`, { method: 'POST', body: fd });
+    const res = await Prof.fetch(`/api/activities/${editTargetId}/update`, { method: 'POST', body: fd });
     const data = await res.json();
     if (!res.ok) throw new Error(data.error || 'Erreur serveur');
 
     const dateVue = document.getElementById('editDateVue').value;
     const datePrevue = document.getElementById('editDatePrevue').value;
     const dateFin = document.getElementById('editDateFin').value;
-    await fetch(`/api/activities/${editTargetId}/dates`, {
+    await Prof.fetch(`/api/activities/${editTargetId}/dates`, {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ dateVue, datePrevue, dateFin }),
+      body: Prof.body({ dateVue, datePrevue, dateFin }),
     });
 
     toast('Activité mise à jour !');
@@ -1206,7 +1281,7 @@ document.getElementById('deleteConfirmBtn').addEventListener('click', async () =
   document.getElementById('deleteModal').classList.remove('open');
 
   try {
-    const res = await fetch(`/api/activities/${deleteTargetId}`, { method: 'DELETE' });
+    const res = await Prof.fetch(`/api/activities/${deleteTargetId}`, { method: 'DELETE' });
     const data = await res.json();
     if (!res.ok) throw new Error(data.error);
     toast('Activité supprimée.');
@@ -1226,10 +1301,15 @@ document.getElementById('filterTemps').addEventListener('change', applyFilters);
 document.getElementById('filterDomaine').addEventListener('change', applyFilters);
 
 /* ======================================================
-   Init
+   Init — la session enseignante conditionne tout le reste :
+   sans elle, les appels d'administration répondent 401.
    ====================================================== */
 
-loadList();
+(async () => {
+  if (!await Prof.init()) return;   // redirige vers prof.html
+  Prof.renderBar(document.getElementById('profBar'), loadList);
+  await loadList();
+})();
 </script>
 </body>
 </html>
