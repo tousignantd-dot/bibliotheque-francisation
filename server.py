@@ -85,6 +85,11 @@ TEACHERS_FILE  = STORAGE_DIR / "data" / "teachers.json"
 GROUPS_FILE    = STORAGE_DIR / "data" / "groups.json"
 SCHEDULE_FILE  = STORAGE_DIR / "data" / "schedule.json"
 SESSIONS_FILE  = STORAGE_DIR / "data" / "prof_sessions.json"
+# Fichiers partagés par l'enseignant à un groupe (notes de cours, grilles,
+# corrigés). Ils ne sont pas des activités : ils ont leur propre période de
+# parution et l'élève ne les voit que pendant celle-ci.
+DOCUMENTS_FILE = STORAGE_DIR / "data" / "documents.json"
+GROUP_DOCS_DIR = STORAGE_DIR / "assets" / "documents-groupe"
 
 SESSION_DAYS = 30
 
@@ -304,14 +309,13 @@ def save_schedule(entries):
     _save_json(SCHEDULE_FILE, entries)
 
 
+SCHEDULE_FIELDS = ("dateVue", "datePrevue", "dateFin", "lien")
+
+
 def schedule_for_group(group_id):
-    """{activityId: {dateVue, datePrevue, dateFin}} pour un groupe donné."""
+    """{activityId: {dateVue, datePrevue, dateFin, lien}} pour un groupe."""
     return {
-        e["activityId"]: {
-            "dateVue": e.get("dateVue", ""),
-            "datePrevue": e.get("datePrevue", ""),
-            "dateFin": e.get("dateFin", ""),
-        }
+        e["activityId"]: {key: e.get(key, "") for key in SCHEDULE_FIELDS}
         for e in load_schedule()
         if e.get("groupId") == group_id
     }
@@ -319,7 +323,7 @@ def schedule_for_group(group_id):
 
 def set_schedule_dates(group_id, activity_id, fields):
     """Écrit les dates d'une activité pour un groupe. `fields` peut ne contenir
-    qu'une partie de dateVue/datePrevue/dateFin."""
+    qu'une partie de dateVue/datePrevue/dateFin/lien."""
     entries = load_schedule()
     target = next(
         (e for e in entries
@@ -327,14 +331,76 @@ def set_schedule_dates(group_id, activity_id, fields):
         None,
     )
     if target is None:
-        target = {"groupId": group_id, "activityId": activity_id,
-                  "dateVue": "", "datePrevue": "", "dateFin": ""}
+        target = {"groupId": group_id, "activityId": activity_id}
+        target.update({key: "" for key in SCHEDULE_FIELDS})
         entries.append(target)
-    for key in ("dateVue", "datePrevue", "dateFin"):
+    for key in SCHEDULE_FIELDS:
         if key in fields:
             target[key] = fields[key] or ""
     save_schedule(entries)
     return target
+
+
+def copy_schedule(source_group_id, target_group_id, decalage=0):
+    """Reprend la planification d'un groupe pour un autre, décalée de N jours.
+
+    Les dates déjà posées sur le groupe cible sont remplacées : l'enseignant
+    part de la planification du groupe modèle, puis ajuste. La date « vue en
+    classe » n'est pas copiée — c'est la trace de cours du groupe source.
+    """
+    def decale(valeur):
+        if not valeur:
+            return ""
+        try:
+            return (date.fromisoformat(valeur) + timedelta(days=decalage)).isoformat()
+        except ValueError:
+            return ""
+
+    source = schedule_for_group(source_group_id)
+    entries = [e for e in load_schedule() if e.get("groupId") != target_group_id]
+    copiees = 0
+    for activity_id, dates in source.items():
+        if not dates.get("datePrevue"):
+            continue
+        entries.append({
+            "groupId": target_group_id,
+            "activityId": activity_id,
+            "dateVue": "",
+            "datePrevue": decale(dates.get("datePrevue")),
+            "dateFin": decale(dates.get("dateFin")),
+            "lien": dates.get("lien", ""),
+        })
+        copiees += 1
+    save_schedule(entries)
+    return copiees
+
+
+# ── Fichiers partagés au groupe ─────────────────────────────────────────────
+
+def load_documents():
+    """[{id, groupId, nom, fichier, taille, ouverture, fermeture}]."""
+    return _load_json_list(DOCUMENTS_FILE)
+
+
+def save_documents(documents):
+    _save_json(DOCUMENTS_FILE, documents)
+
+
+def documents_for_group(group_id):
+    return [d for d in load_documents() if d.get("groupId") == group_id]
+
+
+def is_published(doc, today_str):
+    """Même règle que pour les activités : sans date d'ouverture, rien ne paraît."""
+    return is_offered(
+        {"datePrevue": doc.get("ouverture", ""), "dateFin": doc.get("fermeture", "")},
+        today_str,
+    )
+
+
+def published_documents(group_id):
+    today_str = date.today().isoformat()
+    return [d for d in documents_for_group(group_id) if is_published(d, today_str)]
 
 
 def activities_for_group(group_id):
@@ -344,9 +410,8 @@ def activities_for_group(group_id):
     for a in load_activities():
         entry = dict(a)
         dates = sched.get(a["id"], {})
-        entry["dateVue"] = dates.get("dateVue", "")
-        entry["datePrevue"] = dates.get("datePrevue", "")
-        entry["dateFin"] = dates.get("dateFin", "")
+        for key in SCHEDULE_FIELDS:
+            entry[key] = dates.get(key, "")
         result.append(entry)
     return result
 
@@ -486,6 +551,15 @@ def public_teacher(teacher):
 
 def normalize_email(value):
     return (value or "").strip().lower()
+
+
+def normalize_lien(value):
+    """Un lien de rencontre est une URL http(s) ou rien. Refuser le reste évite
+    qu'un « javascript: » se retrouve dans le portail des élèves."""
+    lien = (value or "").strip()
+    if not lien:
+        return ""
+    return lien[:500] if lien.lower().startswith(("http://", "https://")) else ""
 
 
 # ── Migration vers le multi-groupes ─────────────────────────────────────────
@@ -1169,6 +1243,9 @@ class Handler(http.server.SimpleHTTPRequestHandler):
         if path == "/api/prof/enseignants":
             self._handle_teachers_list()
             return
+        if path == "/api/prof/documents":
+            self._handle_documents_list(params)
+            return
 
         if path == "/api/debug":
             if not self._require_teacher():
@@ -1286,6 +1363,10 @@ class Handler(http.server.SimpleHTTPRequestHandler):
             self._handle_group_add()
         elif path == "/api/prof/enseignants":
             self._handle_teacher_add()
+        elif path == "/api/prof/documents":
+            self._handle_document_add()
+        elif path == "/api/prof/planification/copier":
+            self._handle_schedule_copy()
         elif path == "/api/student/access":
             self._handle_log_access()
         elif path == "/api/admin/students":
@@ -1372,6 +1453,8 @@ class Handler(http.server.SimpleHTTPRequestHandler):
             json_response(self, {"success": True})
         elif re.match(r"^/api/prof/groupes/\d+$", path):
             self._handle_group_update(path.rsplit("/", 1)[1])
+        elif re.match(r"^/api/prof/documents/\d+$", path):
+            self._handle_document_update(int(path.rsplit("/", 1)[1]))
         elif re.match(r"^/api/prof/enseignants/\d+$", path):
             try:
                 self._handle_teacher_update(int(path.rsplit("/", 1)[1]))
@@ -1400,6 +1483,8 @@ class Handler(http.server.SimpleHTTPRequestHandler):
             self._handle_oral_submission_delete(path.rsplit("/", 1)[1])
         elif re.match(r"^/api/prof/groupes/\d+$", path):
             self._handle_group_delete(path.rsplit("/", 1)[1])
+        elif re.match(r"^/api/prof/documents/\d+$", path):
+            self._handle_document_delete(int(path.rsplit("/", 1)[1]))
         elif re.match(r"^/api/prof/enseignants/\d+$", path):
             try:
                 self._handle_teacher_delete(int(path.rsplit("/", 1)[1]))
@@ -1620,6 +1705,8 @@ class Handler(http.server.SimpleHTTPRequestHandler):
             json_response(self, {"error": "Activité introuvable"}, 404)
             return
 
+        if "lien" in body:
+            body["lien"] = normalize_lien(body["lien"])
         entry = set_schedule_dates(group_id, activity_id, body)
         json_response(self, {"success": True, "dates": entry})
 
@@ -1880,6 +1967,7 @@ class Handler(http.server.SimpleHTTPRequestHandler):
             "id": max((g["id"] for g in groups), default=0) + 1,
             "nom": nom[:80],
             "teacherId": titulaire_id,
+            "teams": normalize_lien(body.get("teams")),
             "createdAt": date.today().isoformat(),
         }
         groups.append(group)
@@ -1903,6 +1991,8 @@ class Handler(http.server.SimpleHTTPRequestHandler):
                         json_response(self, {"error": "Le nom du groupe est requis"}, 400)
                         return
                     g["nom"] = nom[:80]
+                if "teams" in body:
+                    g["teams"] = normalize_lien(body["teams"])
                 # Seul un administrateur peut réaffecter un groupe
                 if "teacherId" in body and teacher.get("role") == "admin":
                     g["teacherId"] = body["teacherId"]
@@ -1925,6 +2015,130 @@ class Handler(http.server.SimpleHTTPRequestHandler):
             return
         save_groups([g for g in load_groups() if g["id"] != group_id])
         save_schedule([e for e in load_schedule() if e.get("groupId") != group_id])
+        for doc in documents_for_group(group_id):
+            self._delete_group_doc_file(doc)
+        save_documents([d for d in load_documents() if d.get("groupId") != group_id])
+        json_response(self, {"success": True})
+
+    def _handle_schedule_copy(self):
+        """Reprend la planification d'un autre groupe de l'enseignant."""
+        teacher = self._require_teacher()
+        if not teacher:
+            return
+        body = self._read_json_body()
+        group_id = self._require_group(teacher, body.get("groupId"))
+        if group_id is None:
+            return
+        source_id = self._require_group(teacher, body.get("sourceGroupId"))
+        if source_id is None:
+            return
+        if source_id == group_id:
+            json_response(self, {"error": "Choisissez un autre groupe"}, 400)
+            return
+        try:
+            decalage = int(body.get("decalage") or 0)
+        except (TypeError, ValueError):
+            json_response(self, {"error": "Décalage invalide"}, 400)
+            return
+        copiees = copy_schedule(source_id, group_id, decalage)
+        json_response(self, {"success": True, "copiees": copiees})
+
+    # ── Fichiers partagés au groupe ───────────────────────────────────────
+
+    def _delete_group_doc_file(self, doc):
+        chemin = doc.get("fichier", "")
+        if not chemin:
+            return
+        cible = STORAGE_DIR / chemin
+        try:
+            cible.relative_to(GROUP_DOCS_DIR)
+        except ValueError:
+            return
+        if cible.exists():
+            cible.unlink()
+
+    def _handle_documents_list(self, params):
+        teacher = self._require_teacher()
+        if not teacher:
+            return
+        group_id = self._group_from_params(teacher, params)
+        if group_id is None:
+            return
+        json_response(self, documents_for_group(group_id))
+
+    def _handle_document_add(self):
+        """Dépôt d'un fichier : il paraît dès aujourd'hui, sans date de retrait.
+        L'enseignant ajuste la période ensuite, dans la rangée du fichier."""
+        teacher = self._require_teacher()
+        if not teacher:
+            return
+        form = self._parse_multipart()
+        if form is None:
+            json_response(self, {"error": "Aucun fichier reçu"}, 400)
+            return
+        group_id = self._require_group(teacher, form.getvalue("groupId", ""))
+        if group_id is None:
+            return
+        champ = form["fichier"] if "fichier" in form else None
+        if champ is None or not getattr(champ, "filename", ""):
+            json_response(self, {"error": "Aucun fichier reçu"}, 400)
+            return
+
+        documents = load_documents()
+        doc_id = max((d.get("id", 0) for d in documents), default=0) + 1
+        nom = safe_filename(champ.filename)
+        dossier = GROUP_DOCS_DIR / str(group_id)
+        dossier.mkdir(parents=True, exist_ok=True)
+        # Préfixe par l'identifiant : deux fichiers du même nom cohabitent.
+        stocke = f"{doc_id}-{slugify(Path(nom).stem) or 'fichier'}{Path(nom).suffix.lower()}"
+        contenu = champ.file.read()
+        (dossier / stocke).write_bytes(contenu)
+
+        doc = {
+            "id": doc_id,
+            "groupId": group_id,
+            "nom": nom,
+            "fichier": f"assets/documents-groupe/{group_id}/{stocke}",
+            "taille": len(contenu),
+            "ouverture": date.today().isoformat(),
+            "fermeture": "",
+            "createdAt": date.today().isoformat(),
+        }
+        documents.append(doc)
+        save_documents(documents)
+        json_response(self, {"success": True, "document": doc}, 201)
+
+    def _handle_document_update(self, doc_id):
+        teacher = self._require_teacher()
+        if not teacher:
+            return
+        body = self._read_json_body()
+        documents = load_documents()
+        target = next((d for d in documents if d.get("id") == doc_id), None)
+        if target is None:
+            json_response(self, {"error": "Fichier introuvable"}, 404)
+            return
+        if self._require_group(teacher, target.get("groupId")) is None:
+            return
+        for key in ("ouverture", "fermeture"):
+            if key in body:
+                target[key] = (body[key] or "").strip()
+        save_documents(documents)
+        json_response(self, {"success": True, "document": target})
+
+    def _handle_document_delete(self, doc_id):
+        teacher = self._require_teacher()
+        if not teacher:
+            return
+        documents = load_documents()
+        target = next((d for d in documents if d.get("id") == doc_id), None)
+        if target is None:
+            json_response(self, {"error": "Fichier introuvable"}, 404)
+            return
+        if self._require_group(teacher, target.get("groupId")) is None:
+            return
+        self._delete_group_doc_file(target)
+        save_documents([d for d in documents if d.get("id") != doc_id])
         json_response(self, {"success": True})
 
     # ── Gestion des enseignants (administrateur) ──────────────────────────
@@ -2387,6 +2601,14 @@ class Handler(http.server.SimpleHTTPRequestHandler):
                 "learning": learning_words,
                 "new": new_words,
             },
+            # Le lien de rencontre et les fichiers appartiennent au groupe, pas
+            # à l'élève : ils apparaissent et disparaissent avec leur période.
+            "teams": (find_group(group_id) or {}).get("teams", ""),
+            "documents": [
+                {"nom": d.get("nom", ""), "fichier": d.get("fichier", ""),
+                 "taille": d.get("taille", 0)}
+                for d in published_documents(group_id)
+            ],
         })
 
     def _handle_student_activities(self, params):

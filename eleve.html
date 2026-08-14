@@ -31,6 +31,16 @@
     .om-etat--cours { color: var(--ink-900); }
     .om-etat--afaire { color: var(--text-muted); }
 
+    /* Documents partagés par l'enseignant. */
+    .om-doc { display: flex; align-items: center; gap: var(--sp-4); flex-wrap: wrap; }
+    .om-doc-ext {
+      flex: none; min-width: 52px; text-align: center; padding: 6px 8px;
+      border-radius: var(--r-sm); background: var(--surface-sunken); border: 1px solid var(--border);
+      font-size: var(--fs-label); font-weight: var(--fw-bold); color: var(--ink-500);
+    }
+    .om-doc-nom { flex: 1; min-width: 180px; font-size: var(--fs-body-sm); font-weight: var(--fw-bold); color: var(--text-strong); }
+    .om-doc-poids { font-size: var(--fs-ui); font-weight: var(--fw-semi); color: var(--text-muted); }
+
     /* Écran 1 — connexion */
     .om-connexion { max-width: 560px; }
     .om-connexion-rangee { display: flex; gap: var(--sp-4); align-items: flex-end; flex-wrap: wrap; }
@@ -123,7 +133,7 @@
         </div>
         <!-- La racine mène ici : l'enseignant a besoin d'un chemin visible
              vers son propre espace, sans que ce soit une invitation. -->
-        <p class="om-prof"><a href="prof.html">Espace enseignant</a></p>
+        <p class="om-prof"><a href="enseignant.html">Espace enseignant</a></p>
       </div>
     </div>
   </header>
@@ -141,6 +151,10 @@
         <button class="btn btn--ghost btn--sm" id="logoutBtn">Se déconnecter</button>
       </div>
       <p class="band__lead">Voici votre bilan et la suite de votre parcours.</p>
+      <!-- Lien de rencontre du groupe : posé par l'enseignant, absent sinon. -->
+      <p id="bandTeams" hidden style="margin:var(--sp-4) 0 0">
+        <a class="btn btn--pri btn--sm" id="lienTeams" target="_blank" rel="noopener">Rejoindre le cours sur Teams</a>
+      </p>
     </div>
   </header>
 
@@ -354,8 +368,36 @@
     blocs.push(blocModules(modules, bilan));
     blocs.push(blocRangees('Activités thématiques', thematiques, bilan, true));
     if (libres.length) blocs.push(blocRangees('Pour vous exercer seul', libres, bilan, false));
+    const docs = blocDocuments(bilan.documents || []);
+    if (docs) blocs.push(docs);
 
     document.getElementById('contenu').innerHTML = blocs.join('');
+
+    // Le lien de rencontre appartient au groupe : rien à afficher sans lui.
+    const teams = bilan.teams || '';
+    document.getElementById('bandTeams').hidden = !teams;
+    if (teams) document.getElementById('lienTeams').href = teams;
+  }
+
+  /* Fichiers partagés par l'enseignant, visibles seulement pendant leur
+     période de parution — le serveur ne renvoie que ceux-là. */
+  function blocDocuments(documents) {
+    if (!documents.length) return '';
+    const rangees = documents.map(d => {
+      const bouts = String(d.nom).split('.');
+      const ext = bouts.length > 1 ? bouts.pop().toUpperCase() : 'FICHIER';
+      const ko = Math.max(1, Math.round((d.taille || 0) / 1000));
+      return `<div class="card__row om-doc">
+        <span class="om-doc-ext">${escHtml(ext)}</span>
+        <span class="om-doc-nom">${escHtml(d.nom)}</span>
+        <span class="om-doc-poids">${ko} ko</span>
+        <a class="btn btn--ghost btn--sm" href="${escHtml(d.fichier)}" target="_blank" rel="noopener">Ouvrir</a>
+      </div>`;
+    }).join('');
+    return `<div>
+      <div class="om-sec"><span>Documents à consulter</span><i></i></div>
+      <div class="card card--flush">${rangees}</div>
+    </div>`;
   }
 
   function blocBilan(modules, bilan) {

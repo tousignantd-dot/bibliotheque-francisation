@@ -81,8 +81,59 @@ choix de l'enseignant survit aux redéploiements.
 - `assets/documents/` — fiches élèves (HTML imprimables)
 - `assets/interactive/<slug>/` — activités interactives (HTML autonomes)
 - `assets/plans/` — plans de cours
-- `prof.html` — connexion enseignante, groupes et comptes
-- `admin.html` / `eleve.html` — interfaces enseignant / élève
+- `data/documents.json` — fichiers partagés à un groupe (non versionné),
+  déposés dans `assets/documents-groupe/<groupId>/`
+- `enseignant.html` + `js/enseignant.js` — portail enseignant (Planifier ·
+  Élèves · Groupes et comptes)
+- `prof.html` — installation du premier compte, groupes et comptes (ancienne page)
+- `admin.html` / `eleve.html` — catalogue (téléversement) / interface élève
+
+## Portail enseignant (`enseignant.html`)
+
+- Refait selon la remise `~/Downloads/design_handoff_portail_enseignant`, qui
+  est la **source de vérité visuelle** de cette page. Trois onglets dans une
+  seule page : Planifier · Élèves · Groupes et comptes, plus son propre écran
+  de connexion. Il **remplace l'usage courant** de `lms.html` et de la partie
+  « groupes » de `prof.html` ; `admin.html` reste la page du catalogue
+  (téléversement et modification d'activités), que la remise ne couvre pas.
+- La page ne passe **pas** par `js/prof.js` : celui-ci renvoie vers
+  `prof.html` sur un 401, alors que le portail porte sa propre connexion. Elle
+  partage la session par les deux mêmes clés de `localStorage`
+  (`prof_token`, `prof_groupe_actif`), donc basculer entre les pages ne
+  redemande jamais le mot de passe.
+- **Aucune couleur en dur** : uniquement des jetons du système de design. La
+  pastille d'état porte toujours couleur **et** glyphe **et** mot (`— ✕ ✓ →`).
+  Un seul bloc foncé par page, et jamais l'en-tête : ici, la barre de titre de
+  l'aperçu élève.
+- Les détails d'un module (savoirs, actes de parole, compétences CO/PO/CE/PE,
+  vocabulaire) ne sont pas dans `activities.json` — ils décrivent le contenu
+  pédagogique, pas le fichier. Ils vivent dans la constante `DETAILS` de
+  `js/enseignant.js`, une entrée par module de cours.
+- **Les sous-sections de la remise (Vocabulaire · Compréhension orale ·
+  Graphie-phonie · Écriture · Écoute et réponds) ne sont pas implémentées** :
+  les modules n'ont aucun découpage de ce genre aujourd'hui, et une ouverture
+  par partie n'aurait aucun effet côté élève. La liste est donc plate ; le
+  chevron déplie les détails du module, pas des sous-sections.
+
+## Fichiers du groupe et lien de rencontre
+
+- Un fichier partagé (`data/documents.json`) a une **période de parution**
+  (`ouverture` / `fermeture`) et suit exactement la règle des activités
+  (`is_offered()`) : sans date d'ouverture, l'élève ne le voit pas. Un dépôt
+  paraît dès le jour même, sans date de retrait.
+- Endpoints : `GET/POST /api/prof/documents`, `PATCH/DELETE
+  /api/prof/documents/<id>`. Le fichier est stocké sous
+  `assets/documents-groupe/<groupId>/<id>-<nom>` — préfixé par l'identifiant
+  pour que deux fichiers du même nom cohabitent.
+- Le groupe porte un champ `teams` (lien de rencontre), et une entrée de
+  `schedule.json` un champ `lien` (rencontre propre à une activité).
+  `normalize_lien()` n'accepte que `http(s)` : rien d'autre n'atteint le
+  portail des élèves.
+- `POST /api/prof/planification/copier` reprend la planification d'un autre
+  groupe de l'enseignant, décalée de N jours. **Elle remplace** les dates du
+  groupe cible ; la date « vue en classe » n'est pas copiée.
+- Côté élève, `/api/student/dashboard` renvoie `teams` et `documents`
+  (uniquement ceux en parution aujourd'hui) ; `eleve.html` les affiche.
 
 ## Portail élève (`eleve.html`)
 

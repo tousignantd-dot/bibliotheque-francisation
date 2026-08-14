@@ -1,0 +1,591 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Espace enseignant — Francisation Niveau 4</title>
+  <!-- Le système de design versionné, pas ds-bundle/ (ignoré par git). -->
+  <link rel="stylesheet" href="assets/design-system/styles.css" />
+  <style>
+    /* Portail enseignant — remise de design « Portail enseignant ».
+       Aucune couleur en dur : uniquement des jetons du système. Les pièces
+       écrites ici sont celles qui n'existent pas dans le système : la barre
+       supérieure à deux bandes, la pastille d'état, la zone de dépôt et la
+       barre d'action collante. */
+    body { margin: 0; }
+    .pe { min-height: 100vh; }
+
+    /* — Barre supérieure : les deux bandes sont collantes ENSEMBLE.
+         Rendre chaque bande collante avec un `top` codé en dur casse la mise
+         en page dès que la première se replie sur deux lignes. — */
+    .pe-haut { position: sticky; top: 0; z-index: 30; }
+    .pe-bande1 { background: var(--surface-card); border-bottom: 1px solid var(--border); }
+    .pe-bande2 { background: var(--surface-band); border-bottom: 1px solid var(--border-tint); }
+    .pe-bande1 > .container, .pe-bande2 > .container {
+      display: flex; align-items: center; gap: var(--sp-4); row-gap: var(--sp-2);
+      padding-top: var(--sp-3); padding-bottom: var(--sp-3); flex-wrap: wrap;
+    }
+    .pe-marque { display: flex; align-items: baseline; gap: var(--sp-3); }
+    .pe-marque b { font-size: var(--fs-body); font-weight: var(--fw-black); color: var(--text-strong); }
+    .pe-marque span { font-size: var(--fs-ui-sm); font-weight: var(--fw-bold); color: var(--text-muted); }
+    .pe-nav {
+      display: flex; align-items: center; gap: var(--sp-5); flex-wrap: wrap;
+      margin-left: auto; font-size: var(--fs-ui); font-weight: var(--fw-bold);
+    }
+    .pe-onglet {
+      background: none; border: none; padding: 6px 0; font: inherit; cursor: pointer;
+      border-bottom: 2px solid transparent; color: var(--text-muted);
+    }
+    .pe-onglet[aria-current="page"] { border-bottom-color: var(--accent); color: var(--text-strong); }
+    .pe-qui {
+      display: flex; align-items: center; gap: var(--sp-2);
+      padding-left: var(--sp-4); border-left: 1px solid var(--border);
+    }
+    .pe-initiales {
+      display: inline-flex; align-items: center; justify-content: center;
+      width: 34px; height: 34px; border-radius: 50%;
+      background: var(--accent-soft); color: var(--accent-ink);
+      font-size: var(--fs-ui-sm); font-weight: var(--fw-black);
+    }
+    .pe-nom { white-space: nowrap; font-size: var(--fs-ui); font-weight: var(--fw-black); color: var(--text-strong); }
+    .pe-lien {
+      background: none; border: none; padding: 4px 0; font: inherit;
+      font-size: var(--fs-ui); font-weight: var(--fw-bold);
+      color: var(--text-muted); cursor: pointer; text-decoration: underline;
+    }
+    .pe-lien:hover { color: var(--text-accent); }
+
+    .pe-surtitre {
+      font-size: var(--fs-label); font-weight: var(--fw-bold);
+      letter-spacing: .12em; text-transform: uppercase; color: var(--text-accent);
+    }
+    .pe-eyebrow {
+      font-size: var(--fs-label); font-weight: var(--fw-bold);
+      letter-spacing: .12em; text-transform: uppercase; color: var(--text-muted);
+    }
+    /* `.field` est en `width: 100 %` : sans cette reprise, le sélecteur mange
+       toute la rangée et rejette le reste de la bande à la ligne suivante. */
+    .pe-groupe-select {
+      width: auto; min-width: 280px; max-width: 100%;
+      background: var(--surface-card); font-weight: var(--fw-bold);
+    }
+    .pe-resume { font-size: var(--fs-ui); font-weight: var(--fw-bold); color: var(--ink-500); }
+    .pe-actions-groupe { display: flex; gap: var(--sp-2); flex-wrap: wrap; margin-left: auto; }
+
+    /* — Bloc « Aujourd'hui / Programme du jour » — */
+    .pe-pile { padding: var(--sp-8) 0 200px; }
+    .pe-jour {
+      display: grid; grid-template-columns: minmax(220px, 320px) 1fr; gap: var(--sp-8);
+      background: var(--surface-band); border-radius: var(--r-lg);
+      padding: var(--sp-6) var(--sp-6) var(--sp-8);
+    }
+    @media (max-width: 720px) { .pe-jour { grid-template-columns: 1fr; gap: var(--sp-6); } }
+    .pe-date { margin-top: var(--sp-2); font-size: var(--fs-hero); font-weight: var(--fw-black); line-height: 1.05; color: var(--text-strong); text-wrap: pretty; }
+    .pe-annee { margin-top: var(--sp-1); font-size: var(--fs-lead); font-weight: var(--fw-bold); color: var(--text-muted); }
+    .pe-jour-resume { margin-top: var(--sp-4); font-size: var(--fs-ui); font-weight: var(--fw-bold); color: var(--ink-500); }
+    .pe-programme { display: grid; gap: var(--sp-2); }
+    .pe-evt {
+      display: flex; align-items: baseline; gap: var(--sp-3);
+      background: var(--surface-card); border: 1px solid var(--border);
+      border-left: 4px solid var(--sec, var(--accent));
+      border-radius: var(--r-sm); padding: var(--sp-3) var(--sp-4);
+    }
+    .pe-evt > i { flex: none; font-style: normal; font-size: var(--fs-ui); font-weight: var(--fw-black); color: var(--sec, var(--accent)); }
+    .pe-evt b { display: block; font-size: var(--fs-body-sm); font-weight: var(--fw-black); color: var(--text-strong); }
+    .pe-evt span { display: block; margin-top: 2px; font-size: var(--fs-ui-sm); font-weight: var(--fw-bold); color: var(--text-muted); }
+    .pe-vide {
+      background: var(--surface-card); border: 1px solid var(--border); border-radius: var(--r-sm);
+      padding: var(--sp-5); font-size: var(--fs-body-sm); font-weight: var(--fw-bold); color: var(--text-muted);
+    }
+
+    .pe-filtres { display: flex; align-items: center; gap: var(--sp-3); flex-wrap: wrap; }
+    .pe-entete-section {
+      display: flex; align-items: center; justify-content: space-between;
+      gap: var(--sp-4); margin-bottom: var(--sp-3); flex-wrap: wrap;
+    }
+    .pe-titre-section { font-size: var(--fs-h3); font-weight: var(--fw-black); color: var(--text-strong); }
+
+    /* — Rangées d'activité — */
+    .pe-rangee { display: flex; align-items: center; gap: var(--sp-4); flex-wrap: wrap; }
+    .pe-rangee.is-checked { background: var(--accent-soft); }
+    .pe-chevron {
+      width: 44px; height: 44px; flex: none; display: flex; align-items: center; justify-content: center;
+      background: none; border: 1px solid var(--border); border-radius: var(--r-sm);
+      font-size: 15px; font-weight: var(--fw-black); color: var(--ink-500); cursor: pointer;
+    }
+    .pe-case { width: 22px; height: 22px; accent-color: var(--accent); flex: none; cursor: pointer; }
+    .pe-rangee-txt { flex: 1; min-width: 240px; }
+    .pe-rangee-titre { font-size: var(--fs-body); font-weight: var(--fw-black); color: var(--text-strong); }
+    .pe-rangee-meta { margin-top: 2px; font-size: var(--fs-ui-sm); font-weight: var(--fw-semi); color: var(--text-muted); }
+
+    /* Pastille d'état : couleur + glyphe + mot, jamais la couleur seule. */
+    .pe-pastille {
+      display: inline-flex; align-items: center; gap: 7px; white-space: nowrap;
+      padding: 7px 13px; border-radius: var(--r-pill);
+      font-size: var(--fs-ui-sm); font-weight: var(--fw-black);
+    }
+    .pe-pastille--vide    { background: var(--paper-200); color: var(--ink-500); }
+    .pe-pastille--fermee  { background: var(--warn-bg); color: var(--warn-ink); }
+    .pe-pastille--offerte { background: var(--ok-bg); color: var(--ok-ink); }
+    .pe-pastille--avenir  { background: var(--acier-100); color: var(--acier-600); }
+
+    /* — Détails d'un module — */
+    .pe-infos { background: var(--surface-sunken); padding: var(--sp-5) var(--sp-6) var(--sp-6) 60px; }
+    .pe-infos-grille { display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: var(--sp-6); }
+    .pe-infos h4 {
+      margin: 0 0 var(--sp-2); font-size: var(--fs-label); font-weight: var(--fw-bold);
+      letter-spacing: .08em; text-transform: uppercase; color: var(--text-muted);
+    }
+    .pe-infos h4 + * + h4 { margin-top: var(--sp-4); }
+    .pe-infos ul { margin: 0; padding-left: 18px; display: grid; gap: 4px; font-size: var(--fs-ui); font-weight: var(--fw-semi); color: var(--ink-500); }
+    .pe-infos p { margin: 0; font-size: var(--fs-ui); font-weight: var(--fw-semi); color: var(--ink-500); }
+    .pe-pilules { display: flex; flex-wrap: wrap; gap: var(--sp-2); }
+    .pe-pilule {
+      flex: none; white-space: nowrap; padding: 5px 11px; border-radius: var(--r-pill);
+      background: var(--surface-card); border: 1px solid var(--border);
+      font-size: var(--fs-ui-sm); font-weight: var(--fw-bold); color: var(--text-strong);
+    }
+    .pe-comp { display: grid; gap: var(--sp-2); }
+    .pe-comp > div { display: flex; gap: var(--sp-3); align-items: baseline; }
+    .pe-code {
+      flex: none; min-width: 34px; text-align: center; padding: 3px 6px;
+      border-radius: var(--r-sm); background: var(--sel-bg); color: var(--sel-ink);
+      font-size: var(--fs-label); font-weight: var(--fw-black);
+    }
+    .pe-comp span + span { font-size: var(--fs-ui); font-weight: var(--fw-semi); color: var(--ink-500); }
+
+    /* — Fichiers du groupe — */
+    .pe-doc { display: flex; align-items: center; gap: var(--sp-4); flex-wrap: wrap; }
+    .pe-ext {
+      flex: none; min-width: 52px; text-align: center; padding: 6px 8px;
+      border-radius: var(--r-sm); background: var(--surface-sunken); border: 1px solid var(--border);
+      font-size: var(--fs-label); font-weight: var(--fw-black); color: var(--ink-500);
+    }
+    .pe-doc-txt { flex: 1; min-width: 180px; }
+    .pe-doc-nom { font-size: var(--fs-body-sm); font-weight: var(--fw-black); color: var(--text-strong); }
+    .pe-doc-meta { margin-top: 2px; font-size: var(--fs-ui-sm); font-weight: var(--fw-semi); color: var(--text-muted); }
+    .pe-doc-dates { margin-left: auto; display: flex; align-items: flex-end; gap: var(--sp-4); flex-wrap: wrap; }
+    .pe-doc-champ { min-width: 190px; }
+    .pe-doc-etat { display: flex; align-items: center; gap: var(--sp-3); min-height: var(--tap-comfort); }
+    .pe-depot {
+      display: flex; align-items: center; justify-content: center; gap: var(--sp-3);
+      min-height: 88px; padding: var(--sp-4); text-align: center; flex-wrap: wrap; cursor: pointer;
+      border: 2px dashed var(--line-300); border-radius: var(--r-md); background: var(--surface-sunken);
+    }
+    .pe-depot.is-glisse { border-color: var(--accent); background: var(--accent-soft); }
+    .pe-depot input[type="file"] { position: absolute; width: 1px; height: 1px; opacity: 0; }
+    .pe-depot b { font-size: var(--fs-body-sm); font-weight: var(--fw-black); color: var(--text-strong); }
+    .pe-depot span { font-size: var(--fs-ui); font-weight: var(--fw-semi); color: var(--text-muted); }
+
+    /* — Barre d'action collante — */
+    .pe-barre {
+      position: sticky; bottom: 0; z-index: 26;
+      background: var(--surface-card); border-top: 1px solid var(--border);
+      box-shadow: 0 -8px 24px rgba(23, 24, 26, .07);
+    }
+    .pe-barre > .container {
+      padding-top: var(--sp-5); padding-bottom: var(--sp-5);
+      display: grid; grid-template-columns: minmax(320px, 1.15fr) minmax(260px, .85fr);
+      gap: var(--sp-8); align-items: start;
+    }
+    @media (max-width: 860px) { .pe-barre > .container { grid-template-columns: 1fr; gap: var(--sp-5); } }
+    .pe-barre-champs { display: flex; gap: var(--sp-4); flex-wrap: wrap; }
+    .pe-barre-champs > div { flex: 1; min-width: 190px; }
+    .pe-apercu-plan {
+      background: var(--surface-sunken); border: 1px solid var(--border);
+      border-radius: var(--r-md); padding: var(--sp-5);
+    }
+    .pe-apercu-liste { margin-top: var(--sp-3); display: grid; gap: 10px; }
+    .pe-apercu-liste > div { display: flex; justify-content: space-between; gap: var(--sp-4); font-size: var(--fs-body-sm); font-weight: var(--fw-bold); color: var(--text-body); }
+    .pe-apercu-liste em { flex: 1; min-width: 0; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; font-style: normal; }
+    .pe-apercu-liste b { flex: none; color: var(--text-accent); }
+    .pe-coche-ligne { display: flex; align-items: center; gap: var(--sp-3); min-height: var(--tap-min); font-size: var(--fs-body-sm); font-weight: var(--fw-bold); color: var(--ink-500); cursor: pointer; }
+
+    /* — Modales — */
+    .pe-modale {
+      position: fixed; inset: 0; z-index: 60; background: rgba(23, 24, 26, .42);
+      display: flex; align-items: flex-start; justify-content: center;
+      padding: var(--sp-6); overflow: auto;
+    }
+    .pe-modale > div { width: 100%; max-width: 560px; margin: auto; }
+    .pe-modale--apercu { z-index: 65; background: rgba(23, 24, 26, .5); }
+    .pe-modale--apercu > div { max-width: 720px; }
+    .pe-apercu-carte {
+      background: var(--surface-page); border-radius: var(--r-lg); overflow: hidden;
+      box-shadow: 0 20px 60px rgba(23, 24, 26, .28);
+    }
+    /* Seul bloc foncé de la page, et jamais l'en-tête : la barre de l'aperçu. */
+    .pe-apercu-titre {
+      display: flex; align-items: center; gap: var(--sp-4); flex-wrap: wrap;
+      padding: var(--sp-4) var(--sp-6); background: var(--ink-900);
+    }
+    .pe-apercu-titre > div { flex: 1; min-width: 220px; }
+    .pe-apercu-titre .pe-eyebrow { color: var(--paper-200); }
+    .pe-apercu-titre b { font-size: var(--fs-body-sm); font-weight: var(--fw-black); color: var(--white); }
+    .pe-apercu-corps { padding: var(--sp-6); display: grid; gap: var(--sp-6); }
+    .pe-apercu-accueil { background: var(--surface-band); border-radius: var(--r-md); padding: var(--sp-5); }
+    .pe-apercu-act {
+      background: var(--surface-card); border: 1px solid var(--border);
+      border-radius: var(--r-md); padding: var(--sp-5);
+    }
+    .pe-apercu-doc {
+      display: flex; align-items: center; gap: var(--sp-3);
+      background: var(--surface-card); border: 1px solid var(--border);
+      border-radius: var(--r-sm); padding: var(--sp-3) var(--sp-4);
+    }
+    .pe-radio {
+      display: flex; align-items: center; gap: var(--sp-3); min-height: var(--tap-comfort);
+      padding: 0 var(--sp-4); border: 1px solid var(--border); border-radius: var(--r-sm);
+      background: var(--surface-card); font-size: var(--fs-body-sm); font-weight: var(--fw-bold); cursor: pointer;
+    }
+    .pe-radio.is-choisi { background: var(--accent-soft); }
+    .pe-radio input { width: 20px; height: 20px; accent-color: var(--accent); }
+    .pe-radio > span:first-of-type { flex: 1; }
+    .pe-radio > span + span { font-size: var(--fs-ui-sm); font-weight: var(--fw-bold); color: var(--text-muted); }
+
+    /* — Message d'état — */
+    .pe-message {
+      position: fixed; left: 50%; bottom: 28px; transform: translateX(-50%); z-index: 70;
+      background: var(--ink-900); color: var(--white); padding: 14px 22px;
+      border-radius: var(--r-pill); font-size: var(--fs-body-sm); font-weight: var(--fw-bold);
+      box-shadow: 0 12px 30px rgba(23, 24, 26, .28);
+    }
+
+    .pe-connexion { padding: var(--sp-12) 0; display: flex; justify-content: center; }
+    .pe-connexion > div { width: 100%; max-width: 480px; }
+    .pe-note { margin: 0; font-size: var(--fs-ui); font-weight: var(--fw-semi); color: var(--text-muted); }
+    [hidden] { display: none !important; }
+  </style>
+</head>
+<body>
+
+<!-- ══════════ Écran de connexion ══════════ -->
+<div class="page pe" id="ecranConnexion" hidden>
+  <header class="band">
+    <div class="container">
+      <div class="band__eyebrow">Francisation · Niveau 4</div>
+      <h1 style="margin:var(--sp-3) 0 0;font-size:var(--fs-h2);font-weight:var(--fw-black)">Espace enseignant</h1>
+      <p class="band__lead">Vos groupes, vos dates, votre catalogue. Le portail des élèves n'ouvre une activité qu'une fois que vous lui avez donné une date.</p>
+    </div>
+  </header>
+  <div class="container">
+    <div class="pe-connexion">
+      <div>
+        <form class="card" id="formConnexion">
+          <div class="stack">
+            <div class="pe-titre-section">Connexion</div>
+            <div>
+              <label class="field-label" for="courriel">Courriel</label>
+              <input id="courriel" class="field" type="email" autocomplete="username" placeholder="vous@centre.qc.ca" required />
+            </div>
+            <div>
+              <label class="field-label" for="motDePasse">Mot de passe</label>
+              <input id="motDePasse" class="field" type="password" autocomplete="current-password" required />
+            </div>
+            <div class="fb fb--no" id="erreurConnexion" hidden></div>
+            <button type="submit" class="btn btn--pri" style="width:100%" id="boutonConnexion">Se connecter</button>
+            <p class="pe-note">Votre session reste ouverte 30 jours sur cet appareil. Mot de passe oublié : demandez à un compte administrateur de le réinitialiser.</p>
+            <p class="pe-note" id="noteInstallation" hidden>Aucun compte n'existe encore. <a href="prof.html">Créez le compte administrateur</a>.</p>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ══════════ Portail ══════════ -->
+<div class="page pe" id="portail" hidden>
+  <div class="pe-haut">
+    <div class="pe-bande1">
+      <div class="container">
+        <div class="pe-marque"><b>Espace enseignant</b><span>Francisation · Niveau 4</span></div>
+        <nav class="pe-nav">
+          <button type="button" class="pe-onglet" data-ecran="planif">Planifier</button>
+          <button type="button" class="pe-onglet" data-ecran="eleves">Élèves</button>
+          <button type="button" class="pe-onglet" data-ecran="groupes">Groupes et comptes</button>
+          <span class="pe-qui">
+            <span class="pe-initiales" id="initiales" aria-hidden="true"></span>
+            <span class="pe-nom" id="nomEnseignant"></span>
+          </span>
+          <button type="button" class="pe-lien" id="boutonDeconnexion">Déconnexion</button>
+        </nav>
+      </div>
+    </div>
+    <div class="pe-bande2">
+      <div class="container">
+        <span class="pe-surtitre">Groupe</span>
+        <select class="field pe-groupe-select" id="selectGroupe" aria-label="Groupe actif"></select>
+        <button type="button" class="pe-lien" id="lienEleves"></button>
+        <span class="pe-resume" id="resumeGroupe"></span>
+        <span class="pe-actions-groupe">
+          <a class="btn btn--ghost btn--sm" id="lienTeams" target="_blank" rel="noopener" hidden>Rejoindre la rencontre Teams</a>
+          <button type="button" class="btn btn--ghost btn--sm" id="boutonTeams">Ajouter le lien Teams</button>
+          <button type="button" class="btn btn--ghost btn--sm" id="boutonCopie">Copier une planification</button>
+          <a class="btn btn--ghost btn--sm" href="admin.html">Catalogue</a>
+        </span>
+      </div>
+    </div>
+  </div>
+
+  <!-- ── Planifier ── -->
+  <main id="vuePlanif">
+    <div class="container">
+      <div class="stack-l pe-pile">
+        <section class="pe-jour">
+          <div>
+            <div class="pe-eyebrow">Aujourd'hui</div>
+            <div class="pe-date" id="dateJour"></div>
+            <div class="pe-annee" id="anneeJour"></div>
+            <div class="pe-jour-resume" id="resumeJour"></div>
+          </div>
+          <div>
+            <div class="pe-eyebrow" style="margin-bottom:var(--sp-3)">Programme du jour</div>
+            <div class="pe-programme" id="programme"></div>
+          </div>
+        </section>
+
+        <div class="banner" id="banniereNeuf" hidden>
+          <span>Ce groupe ne voit encore rien : aucune activité n'a de date. Copiez la planification d'un autre groupe, ou cochez les premières activités ci-dessous.</span>
+          <button type="button" class="btn btn--pri btn--sm" style="margin-left:auto" id="boutonCopie2">Copier une planification</button>
+        </div>
+
+        <div class="pe-filtres">
+          <input class="field" type="search" id="recherche" style="flex:1;min-width:280px"
+                 placeholder="Chercher une activité, un domaine, un temps de verbe" />
+          <div style="display:flex;gap:var(--sp-2)" id="filtres">
+            <button type="button" class="choice" data-filtre="tous">Tout</button>
+            <button type="button" class="choice" data-filtre="cours">Cours</button>
+            <button type="button" class="choice" data-filtre="atelier">Ateliers</button>
+          </div>
+        </div>
+
+        <section>
+          <div class="pe-entete-section">
+            <div class="pe-titre-section" id="titreListe"></div>
+            <div style="display:flex;gap:var(--sp-2);flex-wrap:wrap">
+              <button type="button" class="btn btn--pri btn--sm" id="boutonApercu">Ce que l'élève voit</button>
+              <button type="button" class="btn btn--ghost btn--sm" id="boutonDeploiTout"></button>
+              <button type="button" class="btn btn--ghost btn--sm" id="boutonToutCocher"></button>
+            </div>
+          </div>
+          <div class="card card--flush" id="listeActivites"></div>
+        </section>
+
+        <section>
+          <div class="pe-entete-section" style="align-items:baseline">
+            <div class="pe-titre-section">Fichiers du groupe</div>
+            <div class="pe-resume" id="resumeDocs"></div>
+          </div>
+          <div class="card card--flush" id="listeDocs"></div>
+        </section>
+      </div>
+    </div>
+
+    <div class="pe-barre" id="barreAction" hidden>
+      <div class="container">
+        <div class="stack">
+          <div style="display:flex;align-items:center;gap:var(--sp-3);flex-wrap:wrap">
+            <span style="font-size:var(--fs-lead);font-weight:var(--fw-black);color:var(--text-strong)" id="libelleSelection"></span>
+            <button type="button" class="pe-lien" id="boutonDecocher">Tout décocher</button>
+          </div>
+          <div class="pe-barre-champs">
+            <div>
+              <label class="field-label" for="dateDebut">Ouvrir à partir du</label>
+              <input id="dateDebut" class="field" type="date" />
+            </div>
+            <div>
+              <label class="field-label" for="dateFin">Fermer le (facultatif)</label>
+              <input id="dateFin" class="field" type="date" />
+            </div>
+          </div>
+          <div>
+            <span class="field-label">Rythme</span>
+            <div style="display:flex;gap:var(--sp-2);flex-wrap:wrap" id="rythmes">
+              <button type="button" class="choice" data-rythme="meme">Toutes à cette date</button>
+              <button type="button" class="choice" data-rythme="semaine">Une par semaine</button>
+              <button type="button" class="choice" data-rythme="quinzaine">Une aux 2 semaines</button>
+              <button type="button" class="choice" data-rythme="jour">Une par jour</button>
+            </div>
+          </div>
+          <label class="pe-coche-ligne">
+            <input type="checkbox" class="pe-case" id="eviterFinDeSemaine" checked />
+            Éviter les samedis et dimanches
+          </label>
+        </div>
+        <div class="pe-apercu-plan">
+          <div class="pe-eyebrow">Aperçu</div>
+          <div class="pe-apercu-liste" id="apercuPlan"></div>
+          <div style="margin-top:var(--sp-5);display:flex;gap:var(--sp-3);flex-wrap:wrap">
+            <button type="button" class="btn btn--pri" id="boutonPlanifier">Poser les dates</button>
+            <button type="button" class="btn btn--ghost" id="boutonRetirerDates">Retirer les dates</button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </main>
+
+  <!-- ── Élèves ── -->
+  <main id="vueEleves" hidden>
+    <header class="band">
+      <div class="container">
+        <div class="band__eyebrow" id="bandeEleveGroupe"></div>
+        <h1 style="margin:var(--sp-3) 0 0;font-size:var(--fs-h2);font-weight:var(--fw-black)">Les élèves du groupe</h1>
+        <p class="band__lead">Ce que chaque personne a ouvert, remis et réussi. La progression ne compte que les activités déjà offertes à ce groupe.</p>
+      </div>
+    </header>
+    <div class="container">
+      <div class="stack-l" style="padding:var(--sp-8) 0 var(--sp-12)">
+        <div style="display:flex;align-items:center;gap:var(--sp-4);flex-wrap:wrap">
+          <span class="pe-titre-section" id="titreEleves"></span>
+          <button type="button" class="btn btn--ghost btn--sm" style="margin-left:auto" data-ecran="planif">Planifier ce groupe</button>
+        </div>
+        <div class="card card--flush" id="listeEleves"></div>
+      </div>
+    </div>
+  </main>
+
+  <!-- ── Groupes et comptes ── -->
+  <main id="vueGroupes" hidden>
+    <header class="band">
+      <div class="container">
+        <div class="band__eyebrow">Comptes et groupes</div>
+        <h1 style="margin:var(--sp-3) 0 0;font-size:var(--fs-h2);font-weight:var(--fw-black)">Vos groupes</h1>
+        <p class="band__lead">Chaque groupe a ses élèves, ses dates et sa progression. Le catalogue d'activités, lui, est commun à tous les enseignants.</p>
+      </div>
+    </header>
+    <div class="container">
+      <div class="stack-l" style="padding:var(--sp-8) 0 var(--sp-12)">
+        <div class="card card--flush">
+          <div class="card__band">Mes groupes</div>
+          <div id="listeGroupes"></div>
+          <form class="card__row" id="formGroupe" style="background:var(--surface-sunken);display:flex;gap:var(--sp-3);align-items:flex-end;flex-wrap:wrap">
+            <div style="flex:1;min-width:240px">
+              <label class="field-label" for="nouveauGroupe">Nouveau groupe</label>
+              <input id="nouveauGroupe" class="field" type="text" placeholder="Niveau 4 — avant-midi" required />
+            </div>
+            <button type="submit" class="btn btn--pri">Créer le groupe</button>
+          </form>
+        </div>
+
+        <div class="card card--flush" id="carteEnseignants" hidden>
+          <div class="card__band">Enseignants</div>
+          <div id="listeEnseignants"></div>
+        </div>
+      </div>
+    </div>
+  </main>
+</div>
+
+<!-- ══════════ Modales ══════════ -->
+<div class="pe-modale" id="modaleDates" hidden>
+  <div>
+    <form class="card" id="formDates">
+      <div class="stack">
+        <div class="pe-surtitre" id="detailPortee"></div>
+        <div class="pe-titre-section" id="detailTitre"></div>
+        <div>
+          <label class="field-label" for="dOuverture">Ouverte à l'élève à partir du</label>
+          <input id="dOuverture" class="field" type="date" />
+          <div class="field-hint">Sans cette date, l'activité n'apparaît pas du tout dans le portail de l'élève.</div>
+        </div>
+        <div>
+          <label class="field-label" for="dFermeture">Fermée le</label>
+          <input id="dFermeture" class="field" type="date" />
+          <div class="field-hint">Après cette date, l'élève voit l'activité, mais ne peut plus y répondre.</div>
+        </div>
+        <div>
+          <label class="field-label" for="dVue">Vue en classe le</label>
+          <input id="dVue" class="field" type="date" />
+          <div class="field-hint">Votre trace de cours. L'élève ne la voit jamais.</div>
+        </div>
+        <div>
+          <label class="field-label" for="dLien">Lien de la rencontre pour cette activité</label>
+          <input id="dLien" class="field" type="url" placeholder="https://teams.microsoft.com/l/meetup-join/..." />
+          <div class="field-hint">Facultatif. Remplace le lien du groupe pour cette activité — utile pour une rencontre ponctuelle.</div>
+        </div>
+        <div style="display:flex;gap:var(--sp-3);flex-wrap:wrap">
+          <button type="submit" class="btn btn--pri">Enregistrer</button>
+          <button type="button" class="btn btn--ghost" data-fermer="modaleDates">Annuler</button>
+        </div>
+      </div>
+    </form>
+  </div>
+</div>
+
+<div class="pe-modale" id="modaleTeams" hidden>
+  <div>
+    <form class="card" id="formTeams">
+      <div class="stack">
+        <div class="pe-surtitre" id="teamsGroupe"></div>
+        <div class="pe-titre-section">Rencontre Teams du groupe</div>
+        <div>
+          <label class="field-label" for="champTeams">Lien de la rencontre</label>
+          <input id="champTeams" class="field" type="url" placeholder="https://teams.microsoft.com/l/meetup-join/..." />
+          <div class="field-hint">Le lien apparaît en haut du portail des élèves de ce groupe, avec le bouton « Rejoindre la rencontre ». Un seul lien par groupe : mettez-le à jour si la rencontre change.</div>
+        </div>
+        <div style="display:flex;gap:var(--sp-3);flex-wrap:wrap">
+          <button type="submit" class="btn btn--pri">Enregistrer le lien</button>
+          <button type="button" class="btn btn--ghost" id="boutonRetirerTeams">Retirer le lien</button>
+          <button type="button" class="btn btn--ghost" data-fermer="modaleTeams">Annuler</button>
+        </div>
+      </div>
+    </form>
+  </div>
+</div>
+
+<div class="pe-modale" id="modaleCopie" hidden>
+  <div>
+    <form class="card" id="formCopie">
+      <div class="stack">
+        <div class="pe-titre-section">Copier une planification</div>
+        <p style="margin:0;font-size:var(--fs-body-sm);font-weight:var(--fw-semi);color:var(--ink-500)" id="copieTexte"></p>
+        <div style="display:grid;gap:var(--sp-2)" id="listeSources"></div>
+        <div>
+          <label class="field-label" for="decalage">Décaler toutes les dates de</label>
+          <div style="display:flex;align-items:center;gap:var(--sp-3)">
+            <input id="decalage" class="field" type="number" value="0" style="width:120px" />
+            <span style="font-size:var(--fs-body-sm);font-weight:var(--fw-bold);color:var(--ink-500)">jours</span>
+          </div>
+        </div>
+        <div style="display:flex;gap:var(--sp-3);flex-wrap:wrap">
+          <button type="submit" class="btn btn--pri">Copier les dates</button>
+          <button type="button" class="btn btn--ghost" data-fermer="modaleCopie">Annuler</button>
+        </div>
+      </div>
+    </form>
+  </div>
+</div>
+
+<div class="pe-modale pe-modale--apercu" id="modaleApercu" hidden>
+  <div>
+    <div class="pe-apercu-carte">
+      <div class="pe-apercu-titre">
+        <div>
+          <div class="pe-eyebrow">Aperçu — vue de l'élève</div>
+          <b id="apercuTitre"></b>
+        </div>
+        <button type="button" class="btn btn--ghost btn--sm" data-fermer="modaleApercu">Fermer l'aperçu</button>
+      </div>
+      <div class="pe-apercu-corps">
+        <div class="pe-apercu-accueil">
+          <div class="pe-titre-section">Bonjour, voici votre travail</div>
+          <div style="margin-top:4px;font-size:var(--fs-body-sm);font-weight:var(--fw-semi);color:var(--ink-500)" id="apercuResume"></div>
+          <div style="margin-top:var(--sp-4)" id="apercuTeams" hidden>
+            <span class="btn btn--pri btn--sm" style="pointer-events:none">Rejoindre le cours sur Teams</span>
+          </div>
+        </div>
+        <div style="display:grid;gap:var(--sp-3)" id="apercuActivites"></div>
+        <div>
+          <div class="pe-eyebrow" style="margin-bottom:var(--sp-3)">Documents à consulter</div>
+          <div style="display:grid;gap:var(--sp-2)" id="apercuDocs"></div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="pe-message" id="message" role="status" hidden></div>
+
+<script src="js/enseignant.js"></script>
+</body>
+</html>
