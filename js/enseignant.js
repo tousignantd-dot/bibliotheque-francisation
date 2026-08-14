@@ -216,6 +216,7 @@
     eleves: [],
     progression: [],
     journal: [],
+    corrigeMoi: [],
     enseignants: [],
     deplies: new Set(),
     selection: new Set(),
@@ -309,24 +310,26 @@
   async function chargerGroupe() {
     if (!etat.groupeId) {
       etat.activites = []; etat.documents = []; etat.eleves = [];
-      etat.progression = []; etat.journal = [];
+      etat.progression = []; etat.journal = []; etat.corrigeMoi = [];
       rendreTout();
       return;
     }
     const g = `groupId=${encodeURIComponent(etat.groupeId)}`;
     try {
-      const [activites, documents, eleves, progression, journal] = await Promise.all([
+      const [activites, documents, eleves, progression, journal, corrigeMoi] = await Promise.all([
         json(`/api/activities?${g}`),
         json(`/api/prof/documents?${g}`),
         json(`/api/admin/students?${g}`),
         json(`/api/admin/progress?${g}`),
         json(`/api/admin/access-log?${g}`),
+        json(`/api/admin/corrige-moi?${g}`),
       ]);
       etat.activites = activites;
       etat.documents = documents;
       etat.eleves = eleves;
       etat.progression = progression;
       etat.journal = journal;
+      etat.corrigeMoi = corrigeMoi;
     } catch (e) {
       if (!expiree) dire(`Chargement impossible : ${e.message}`);
       return;
@@ -675,6 +678,50 @@
           <span class="score">${faites} / ${offertes.length} offertes</span>
         </div>`;
     }).join('');
+
+    rendreCorrigeMoi();
+  }
+
+  /** « Corrige-moi ! » : une rangée par élève qui a déjà pratiqué, cumulée
+      sur tous les thèmes. L'atelier est libre : il n'y a rien à corriger ni
+      à noter, seulement une trace de pratique. */
+  function rendreCorrigeMoi() {
+    const parEleve = new Map();
+    etat.corrigeMoi.forEach((e) => {
+      const fiche = parEleve.get(e.studentId) || {
+        nom: e.studentLabel || '', themes: [], reponses: 0, justes: 0, derniere: '',
+      };
+      if (e.studentLabel) fiche.nom = e.studentLabel;
+      if (e.themeLabel && !fiche.themes.includes(e.themeLabel)) fiche.themes.push(e.themeLabel);
+      fiche.reponses += e.answers || 0;
+      fiche.justes += e.firstTryOk || 0;
+      if (String(e.lastSeen || '') > fiche.derniere) fiche.derniere = e.lastSeen || '';
+      parEleve.set(e.studentId, fiche);
+    });
+
+    const rangees = etat.eleves
+      .filter((el) => parEleve.has(el.id))
+      .map((el) => {
+        const f = parEleve.get(el.id);
+        const nom = el.label || f.nom || 'Élève';
+        return { nom, ...f };
+      })
+      .sort((a, b) => String(b.derniere).localeCompare(String(a.derniere)));
+
+    if (!rangees.length) {
+      $('listeCorrigeMoi').innerHTML =
+        '<div class="card__row" style="font-size:var(--fs-body-sm);font-weight:var(--fw-bold);color:var(--text-muted)">Personne n’a encore pratiqué dans cet atelier.</div>';
+      return;
+    }
+
+    $('listeCorrigeMoi').innerHTML = rangees.map((f) => `
+      <div class="card__row pe-rangee">
+        <div class="pe-rangee-txt">
+          <div class="pe-rangee-titre" style="font-size:var(--fs-body-sm)">${esc(f.nom)}</div>
+          <div class="pe-rangee-meta">${esc(f.themes.join(' · ') || 'aucun thème')} · ${esc(depuis(f.derniere))}</div>
+        </div>
+        <span class="score">${f.reponses} corrigée${f.reponses > 1 ? 's' : ''} · ${f.justes} juste${f.justes > 1 ? 's' : ''} du premier coup</span>
+      </div>`).join('');
   }
 
   /** « vu aujourd'hui » / « vu hier » / « vu il y a N jours ». */

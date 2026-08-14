@@ -1,162 +1,176 @@
 <!DOCTYPE html>
 <html lang="fr"><head>
 <meta charset="utf-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Corrige-moi !</title>
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Nunito:wght@600;700;800;900&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="/assets/design-system/styles.css">
 <style>
-*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
-html,body{height:100%;background:#EAF6F4;font-family:'Nunito','Arial Rounded MT Bold',sans-serif;color:#123B36}
-body{display:flex;flex-direction:column;min-height:100vh}
+/* ============================================================
+   CORRIGE-MOI ! — pratique orale libre
+   Tout vient du système de design (assets/design-system/).
+   Ce bloc ne fait que composer les pièces propres à cet écran :
+   barre de thèmes, en-tête de conversation, fil de messagerie.
+   Aucune valeur en dur : uniquement des var(--*).
+   ============================================================ */
 
-#hdr{background:#1F8A8F;color:#fff;padding:14px 32px;display:flex;align-items:center;justify-content:space-between;flex-shrink:0;box-shadow:0 3px 16px rgba(31,138,143,.3)}
-.hdr-l{display:flex;align-items:center;gap:14px}
-.hdr-ic{width:44px;height:44px;background:rgba(255,255,255,.18);border-radius:50%;display:flex;align-items:center;justify-content:center;flex-shrink:0;font-size:22px}
-.hdr-eye{font-size:11px;font-weight:800;text-transform:uppercase;letter-spacing:.2em;opacity:.7;line-height:1}
-.hdr-h1{font-size:24px;font-weight:900;line-height:1.15}
-.hdr-r{display:flex;align-items:center;gap:12px}
-#counter-chip{background:rgba(255,255,255,.15);border:2px solid rgba(255,255,255,.45);border-radius:999px;padding:8px 18px;font-size:14px;font-weight:900;white-space:nowrap}
-#changeThemeBtn{display:none;background:rgba(255,255,255,.15);color:#fff;border:2px solid rgba(255,255,255,.45);border-radius:10px;padding:8px 16px;font-family:'Nunito',sans-serif;font-size:13px;font-weight:800;cursor:pointer;white-space:nowrap}
-#changeThemeBtn:hover{background:rgba(255,255,255,.28)}
-#changeThemeBtn.on{display:block}
+/* — Barre de thèmes — */
+.themes { display: flex; gap: var(--sp-2); flex-wrap: wrap; }
+.theme-pill {
+  display: inline-flex; align-items: center; gap: var(--sp-2);
+  min-height: var(--tap-min); padding: 0 var(--sp-4);
+  border: 1px solid var(--border); border-radius: var(--r-pill);
+  background: var(--surface-card); color: var(--text-strong);
+  font-family: var(--font-sans); font-size: var(--fs-ui); font-weight: var(--fw-bold);
+  line-height: 1; white-space: nowrap; cursor: pointer;
+  transition: background var(--dur) var(--ease), border-color var(--dur) var(--ease);
+}
+.theme-pill:hover { background: var(--paper-100); }
+.theme-pill__dot { width: 10px; height: 10px; flex: none; border-radius: 50%; background: var(--th); }
+.theme-pill__note { font-weight: var(--fw-semi); color: var(--text-muted); }
+/* Choisi = plaque encre, jamais une teinte de plus. */
+.theme-pill[aria-pressed="true"] {
+  background: var(--sel-bg); border-color: var(--sel-line); color: var(--sel-ink);
+}
+.theme-pill[aria-pressed="true"]:hover { background: var(--sel-bg); }
 
-#main{flex:1;display:flex;justify-content:center;padding:32px 20px;overflow-y:auto}
-#card{width:100%;max-width:640px;display:flex;flex-direction:column;gap:18px}
+/* — En-tête de conversation — */
+.conv__head {
+  display: flex; align-items: center; gap: var(--sp-3); flex-wrap: wrap;
+  background: var(--surface-sunken); border-left: 4px solid var(--th);
+}
+.conv__num {
+  display: inline-flex; align-items: center; justify-content: center;
+  width: 34px; height: 34px; flex: none; border-radius: 50%;
+  background: var(--th); color: var(--white);
+  font-size: var(--fs-ui-sm); font-weight: var(--fw-black);
+}
+.conv__titre { font-size: var(--fs-body-sm); font-weight: var(--fw-bold); color: var(--th); }
+.conv__intro { font-size: var(--fs-ui); font-weight: var(--fw-semi); color: var(--text-muted); }
+.conv__score { margin-left: auto; }
+/* Sans thème : encre lisible (jamais un filet en guise de texte). */
+.conv__head.is-empty { --th: var(--ink-500); }
+.conv__head.is-empty .conv__intro { color: var(--ink-500); }
 
-/* Sélection de thème */
-.picker-title{font-size:15px;font-weight:800;color:#1F8A8F;margin-bottom:4px}
-.theme-card{background:#fff;border:2.5px solid #DDE2EA;border-radius:14px;padding:18px 22px;cursor:pointer;transition:all .15s;margin-bottom:12px;display:flex;align-items:center;gap:16px}
-.theme-card:hover{border-color:#1F8A8F;box-shadow:0 2px 14px rgba(31,138,143,.1)}
-.theme-ic{font-size:32px;flex-shrink:0}
-.theme-card-tag{font-size:11px;font-weight:900;text-transform:uppercase;letter-spacing:.08em;color:#1F8A8F;margin-bottom:3px}
-.theme-card-txt{font-size:15px;font-weight:700;color:#123B36}
-.theme-card-sub{font-size:12.5px;color:#7A9885;font-weight:700;margin-top:2px}
+/* — Fil de messagerie — */
+.thread {
+  display: flex; flex-direction: column; gap: var(--sp-4);
+  min-height: 220px; background: var(--surface-page);
+}
+.msg { display: flex; flex-direction: column; gap: var(--sp-1); max-width: 100%; }
+.msg--q { align-items: flex-start; }
+.msg--r { align-items: flex-end; }
+.msg__who {
+  font-size: var(--fs-label); font-weight: var(--fw-bold);
+  letter-spacing: .06em; text-transform: uppercase; color: var(--th);
+}
+.msg__bulle {
+  max-width: 78%; padding: var(--sp-3) var(--sp-4); border-radius: var(--r-lg);
+  border: 1px solid var(--border); border-left: 4px solid var(--th);
+  background: var(--surface-card); color: var(--text-strong);
+  font-size: var(--fs-body-sm); font-weight: var(--fw-semi); line-height: var(--lh-body);
+}
+.msg--r { --th: var(--accent); }
+.msg--r .msg__who { color: var(--text-accent); }
+.msg--r .msg__bulle {
+  background: var(--accent-soft); border-color: var(--accent); color: var(--accent-ink);
+}
+.msg__dit {
+  max-width: 78%; text-align: right;
+  font-size: var(--fs-ui); font-weight: var(--fw-medium); font-style: italic; color: var(--text-muted);
+}
+.msg__juste { font-size: var(--fs-ui); font-weight: var(--fw-bold); color: var(--ok-ink); }
+.msg__bloc { max-width: 78%; width: 100%; }
+.thread__vide {
+  margin: auto; max-width: 420px; text-align: center;
+  font-size: var(--fs-body-sm); font-weight: var(--fw-semi); color: var(--text-muted);
+}
 
-#composeView.hidden{display:none}
-#themePicker.hidden{display:none}
+/* — Zone de réponse — */
+.repondre { display: flex; flex-direction: column; gap: var(--sp-3); }
+.repondre__mic { display: flex; align-items: center; gap: var(--sp-4); flex-wrap: wrap; }
+.repondre__aide { font-size: var(--fs-ui); font-weight: var(--fw-semi); color: var(--text-muted); }
+.repondre__saisie { display: flex; align-items: flex-end; gap: var(--sp-3); flex-wrap: wrap; }
+.repondre__champ { flex: 1; min-width: 260px; }
+.repondre__champ .field--area { min-height: 84px; }
+.repondre__actions { display: flex; gap: var(--sp-2); flex-wrap: wrap; }
 
-.intro{background:#D7EFEA;border-radius:14px;padding:14px 18px;font-size:14px;line-height:1.6;color:#0F5851;font-weight:700}
+/* — Bilan — */
+.bilan { display: flex; flex-direction: column; gap: var(--sp-3); }
+.bilan__titre { font-size: var(--fs-lead); font-weight: var(--fw-black); color: var(--text-strong); }
+.bilan__texte { font-size: var(--fs-body-sm); font-weight: var(--fw-medium); color: var(--ink-500); }
+.bilan__actions { display: flex; gap: var(--sp-3); flex-wrap: wrap; }
 
-/* Transcript de dialogue */
-#transcriptLog{display:flex;flex-direction:column;gap:10px}
-.bubble{max-width:82%;padding:12px 16px;border-radius:14px;font-size:15px;line-height:1.55;font-weight:700}
-.bubble-npc{align-self:flex-start;background:#fff;border:2px solid #DDE2EA;color:#123B36;border-bottom-left-radius:4px}
-.bubble-npc .who{font-size:11px;font-weight:900;text-transform:uppercase;letter-spacing:.06em;color:#1F8A8F;margin-bottom:4px}
-.bubble-student{align-self:flex-end;background:#ECFDF5;border:2px solid #86EFAC;color:#0F5851;border-bottom-right-radius:4px}
-.bubble-student .who{font-size:11px;font-weight:900;text-transform:uppercase;letter-spacing:.06em;color:#166534;margin-bottom:4px}
-.bubble-orig{font-size:12.5px;font-style:italic;color:#7A9885;font-weight:600;margin-top:6px}
-.bubble-err{font-size:12.5px;color:#92400E;font-weight:700;margin-top:4px}
-
-/* Réponse (mic + saisie) */
-.mic-zone{background:#fff;border-radius:18px;padding:28px 30px;box-shadow:0 2px 14px rgba(0,0,0,.06);display:flex;flex-direction:column;align-items:center;gap:14px}
-#micBtn{width:88px;height:88px;border-radius:50%;border:none;background:#1F8A8F;color:#fff;font-size:34px;cursor:pointer;display:flex;align-items:center;justify-content:center;transition:transform .15s,background .15s;box-shadow:0 4px 18px rgba(31,138,143,.35)}
-#micBtn:hover{background:#186F73}
-#micBtn.listening{background:#D8492E;animation:pulse 1.2s infinite}
-#micBtn:disabled{opacity:.5;cursor:not-allowed}
-@keyframes pulse{0%{box-shadow:0 0 0 0 rgba(216,73,46,.45)}70%{box-shadow:0 0 0 20px rgba(216,73,46,0)}100%{box-shadow:0 0 0 0 rgba(216,73,46,0)}}
-#micLabel{font-size:14px;font-weight:800;color:#5A7A76}
-
-#transcriptWrap{width:100%;display:none}
-#transcriptWrap.on{display:block}
-#transcriptLabel{font-size:12px;font-weight:800;text-transform:uppercase;letter-spacing:.08em;color:#5A7A76;margin-bottom:6px}
-#transcriptBox{width:100%;min-height:60px;border:2.5px solid #C3E4DE;border-radius:12px;padding:12px 16px;font-family:'Nunito',sans-serif;font-size:16px;font-weight:700;color:#123B36;background:#F7FCFB;resize:vertical}
-#transcriptBox:focus{outline:none;border-color:#1F8A8F}
-
-.textFallback{display:none;width:100%;gap:10px;flex-direction:column}
-.textFallback.on{display:flex}
-
-.actions{display:flex;gap:10px;margin-top:6px;width:100%}
-.btn{font-family:'Nunito',sans-serif;font-size:15px;font-weight:800;border-radius:10px;padding:12px 22px;cursor:pointer;border:2.5px solid transparent;transition:all .15s}
-.btn-primary{background:#1F8A8F;color:#fff;flex:1}
-.btn-primary:hover{background:#186F73}
-.btn-primary:disabled{opacity:.5;cursor:not-allowed}
-.btn-ghost{background:#EAF6F4;color:#1F8A8F;border-color:#C3E4DE}
-.btn-ghost:hover{background:#D7EFEA}
-
-#statusMsg{font-size:14px;font-weight:800;color:#8A8A80;text-align:center;display:none}
-#statusMsg.on{display:block}
-#errorMsg{font-size:14px;font-weight:800;color:#B91C1C;background:#FEF2F2;border:2px solid #FCA5A5;border-radius:10px;padding:12px 16px;display:none;width:100%}
-#errorMsg.on{display:block}
-
-#endView{display:none;background:#fff;border-radius:18px;padding:36px 30px;text-align:center;box-shadow:0 2px 14px rgba(0,0,0,.06)}
-#endView.on{display:block}
-#endView .emoji{font-size:52px;margin-bottom:10px}
-#endView h2{font-size:24px;font-weight:900;margin-bottom:6px}
-#endView p{font-size:15px;color:#5A8A6D;margin-bottom:20px}
-
-.spin{display:inline-block;width:14px;height:14px;border:2.5px solid #C3E4DE;border-top-color:#1F8A8F;border-radius:50%;animation:spin .7s linear infinite;margin-right:8px;vertical-align:-2px}
-@keyframes spin{to{transform:rotate(360deg)}}
-.hidden{display:none}
+.is-hidden { display: none !important; }
 </style>
 </head>
-<body>
+<body class="page">
 
-<div id="hdr">
-  <div class="hdr-l">
-    <div class="hdr-ic">🎙️</div>
+<header class="band">
+  <div class="container">
+    <div class="band__eyebrow">Francisation · Niveau 4 · Pratique orale libre</div>
+    <h1>Corrige-moi !</h1>
+    <p class="band__lead">Vous répondez à voix haute. Chaque réponse est corrigée avant la question suivante.</p>
+  </div>
+</header>
+
+<div class="container">
+  <div class="stack" style="padding: var(--sp-6) 0 var(--sp-12)">
+
     <div>
-      <div class="hdr-eye">Francisation · Niveau 4</div>
-      <div class="hdr-h1">Corrige-moi !</div>
-    </div>
-  </div>
-  <div class="hdr-r">
-    <button id="changeThemeBtn">↺ Changer de thème</button>
-    <span id="counter-chip"></span>
-  </div>
-</div>
-
-<div id="main">
-  <div id="card">
-
-    <div id="themePicker">
-      <div class="picker-title">Choisis un thème de conversation :</div>
-      <div id="themeList"></div>
+      <span class="field-label" style="display:block">Thème de conversation</span>
+      <div class="themes" id="themes"></div>
     </div>
 
-    <div id="composeView" class="hidden">
-      <div class="intro" id="themeIntro"></div>
+    <div class="card card--flush">
 
-      <div id="transcriptLog"></div>
+      <div class="card__row conv__head is-empty" id="convHead">
+        <span class="conv__num" id="convNum" aria-hidden="true">—</span>
+        <span class="conv__titre" id="convTitre">Aucun thème choisi</span>
+        <span class="conv__intro" id="convIntro">Cinq thèmes, six questions chacun.</span>
+        <span class="conv__score"><span class="score" id="convScore">—</span></span>
+      </div>
 
-      <div class="mic-zone">
-        <button id="micBtn" aria-label="Parler"><span id="micIcon">🎤</span></button>
-        <div id="micLabel">Appuie et parle</div>
+      <div class="card__row thread" id="thread" aria-live="polite"></div>
 
-        <div class="textFallback" id="textFallback">
-          <textarea id="fallbackInput" placeholder="Écris ta réponse ici…" style="min-height:60px;border:2.5px solid #C3E4DE;border-radius:12px;padding:10px 14px;font-family:'Nunito',sans-serif;font-size:16px;font-weight:700;color:#123B36"></textarea>
+      <div class="card__row repondre is-hidden" id="repondre">
+        <div class="repondre__mic" id="micRow">
+          <button type="button" class="btn btn--pri" id="micBtn">Parler</button>
+          <span class="repondre__aide" id="micAide">Appuyez, puis répondez à la question.</span>
         </div>
 
-        <div id="transcriptWrap">
-          <div id="transcriptLabel">Ta réponse (tu peux la corriger avant d'envoyer)</div>
-          <textarea id="transcriptBox"></textarea>
-          <div class="actions">
-            <button class="btn btn-ghost" id="retryBtn">↺ Recommencer</button>
-            <button class="btn btn-primary" id="correctBtn">Envoyer ma réponse</button>
+        <div class="repondre__saisie is-hidden" id="saisie">
+          <div class="repondre__champ">
+            <label class="field-label" for="reponse">Votre réponse — corrigez-la avant de l'envoyer</label>
+            <textarea id="reponse" class="field field--area" rows="2"></textarea>
+          </div>
+          <div class="repondre__actions">
+            <button type="button" class="btn btn--pri" id="envoyerBtn">Envoyer</button>
+            <button type="button" class="btn btn--ghost" id="effacerBtn">Effacer</button>
           </div>
         </div>
 
-        <div id="statusMsg"><span class="spin"></span>Correction en cours…</div>
-        <div id="errorMsg"></div>
+        <p class="fb fb--warn is-hidden" id="erreur" aria-live="polite"></p>
       </div>
-    </div>
 
-    <div id="endView">
-      <div class="emoji">🎉</div>
-      <h2>Dialogue terminé !</h2>
-      <p id="endSummary"></p>
-      <button class="btn btn-primary" id="restartBtn" style="max-width:240px;margin:0 auto">Choisir un autre thème</button>
+      <div class="card__row bilan is-hidden" id="bilan">
+        <div class="bilan__titre">Dialogue terminé</div>
+        <div class="bilan__texte" id="bilanTexte"></div>
+        <div class="bilan__actions">
+          <button type="button" class="btn btn--pri" id="refaireBtn">Refaire ce thème</button>
+          <button type="button" class="btn btn--ghost" id="changerBtn">Choisir un autre thème</button>
+        </div>
+      </div>
+
     </div>
 
   </div>
 </div>
 
 <script>
+/* ── Contenu : cinq thèmes, six questions chacun ─────────────────── */
 const THEMES = [
-  {
-    id: 'medecin', tag: 'Chez le médecin', icon: '🩺', interlocuteur: 'Le médecin',
-    intro: '🎯 Tu es chez le médecin. Réponds à ses questions au micro (ou par écrit). Chaque réponse est corrigée avant de continuer.',
+  { id: 'medecin', couleur: 'var(--acier-600)', tag: 'Chez le médecin', qui: 'Le médecin',
+    intro: "Vous êtes chez le médecin. Répondez à ses questions à voix haute.",
     questions: [
       "Bonjour ! Qu'est-ce qui ne va pas aujourd'hui ?",
       "Depuis quand avez-vous ces symptômes ?",
@@ -164,11 +178,9 @@ const THEMES = [
       "Est-ce que vous prenez des médicaments en ce moment ?",
       "Avez-vous des allergies ?",
       "Pouvez-vous me décrire la douleur exactement ?",
-    ],
-  },
-  {
-    id: 'entrevue', tag: "Entrevue d'embauche", icon: '💼', interlocuteur: 'Le recruteur',
-    intro: "🎯 Tu passes une entrevue d'embauche. Réponds aux questions du recruteur au micro (ou par écrit).",
+    ] },
+  { id: 'entrevue', couleur: 'var(--violet-600)', tag: "Entrevue d'embauche", qui: 'Le recruteur',
+    intro: "Vous passez une entrevue d'embauche. Répondez aux questions du recruteur.",
     questions: [
       "Bonjour, merci d'être venu. Pouvez-vous vous présenter ?",
       "Quelle expérience de travail avez-vous ?",
@@ -176,11 +188,9 @@ const THEMES = [
       "Quelles sont vos disponibilités ?",
       "Quel est votre plus grand défi au travail ?",
       "Avez-vous des questions pour moi ?",
-    ],
-  },
-  {
-    id: 'restaurant', tag: 'Au restaurant', icon: '🍽️', interlocuteur: 'Le serveur',
-    intro: '🎯 Tu es au restaurant. Réponds aux questions du serveur au micro (ou par écrit).',
+    ] },
+  { id: 'restaurant', couleur: 'var(--ambre-700)', tag: 'Au restaurant', qui: 'Le serveur',
+    intro: "Vous êtes au restaurant. Répondez aux questions du serveur.",
     questions: [
       "Bonjour ! Une table pour combien de personnes ?",
       "Qu'est-ce que je vous sers à boire ?",
@@ -188,11 +198,9 @@ const THEMES = [
       "Avez-vous des allergies alimentaires ?",
       "Voulez-vous voir le menu des desserts ?",
       "Est-ce que tout était à votre goût ?",
-    ],
-  },
-  {
-    id: 'logement', tag: 'Louer un logement', icon: '🏠', interlocuteur: 'Le propriétaire',
-    intro: "🎯 Tu appelles pour un appartement à louer. Réponds aux questions du propriétaire au micro (ou par écrit).",
+    ] },
+  { id: 'logement', couleur: 'var(--teal-700)', tag: 'Louer un logement', qui: 'Le propriétaire',
+    intro: "Vous appelez pour un appartement à louer. Répondez au propriétaire.",
     questions: [
       "Bonjour, vous appelez pour l'appartement à louer ?",
       "Combien de personnes vont habiter dans l'appartement ?",
@@ -200,11 +208,9 @@ const THEMES = [
       "Quand voulez-vous emménager ?",
       "Avez-vous des questions sur le bail ?",
       "Voulez-vous visiter l'appartement cette semaine ?",
-    ],
-  },
-  {
-    id: 'classe', tag: 'Premier jour de classe', icon: '📚', interlocuteur: "L'enseignant·e",
-    intro: "🎯 C'est ton premier jour de cours de francisation. Réponds aux questions de l'enseignant·e au micro (ou par écrit).",
+    ] },
+  { id: 'classe', couleur: 'var(--green-600)', tag: 'Premier jour de classe', qui: "L'enseignante",
+    intro: "C'est votre premier jour de cours. Répondez aux questions de l'enseignante.",
     questions: [
       "Bonjour ! Comment vous appelez-vous ?",
       "D'où venez-vous ?",
@@ -212,251 +218,305 @@ const THEMES = [
       "Pourquoi apprenez-vous le français ?",
       "Qu'est-ce que vous aimez faire pendant votre temps libre ?",
       "Avez-vous des questions sur le cours ?",
-    ],
-  },
+    ] },
 ];
 
-const params = new URLSearchParams(location.search);
-const studentCode = params.get('code') || '';
-let currentTheme = null;
-let qIdx = 0;
-let correctedCount = 0;
-let perfectCount = 0;
+const studentCode = new URLSearchParams(location.search).get('code') || '';
 
-const themePicker = document.getElementById('themePicker');
-const composeView = document.getElementById('composeView');
-const changeThemeBtn = document.getElementById('changeThemeBtn');
-const transcriptLog = document.getElementById('transcriptLog');
-const micBtn = document.getElementById('micBtn');
-const micLabel = document.getElementById('micLabel');
-const transcriptWrap = document.getElementById('transcriptWrap');
-const transcriptBox = document.getElementById('transcriptBox');
-const textFallback = document.getElementById('textFallback');
-const fallbackInput = document.getElementById('fallbackInput');
-const statusMsg = document.getElementById('statusMsg');
-const errorMsg = document.getElementById('errorMsg');
-const endView = document.getElementById('endView');
+/* ── État ────────────────────────────────────────────────────────── */
+const state = {
+  ecran: 'choix',        // 'choix' | 'dialogue' | 'fin'
+  theme: null,
+  index: 0,
+  tours: [],             // { qui, question, original, corrige, memePhrase, erreurs }
+  brouillon: '',
+  reponseVisible: false,
+  ecoute: false,
+  micDisponible: true,
+  envoiEnCours: false,
+  erreur: '',
+};
 
-function renderThemePicker(){
-  const list = document.getElementById('themeList');
-  list.innerHTML = '';
-  THEMES.forEach(th => {
-    const card = document.createElement('div');
-    card.className = 'theme-card';
-    card.innerHTML =
-      '<div class="theme-ic">' + th.icon + '</div><div>' +
-      '<div class="theme-card-tag">' + escHtml(th.tag) + '</div>' +
-      '<div class="theme-card-txt">Dialogue avec ' + escHtml(th.interlocuteur) + '</div>' +
-      '<div class="theme-card-sub">' + th.questions.length + ' questions</div></div>';
-    card.addEventListener('click', () => selectTheme(th));
-    list.appendChild(card);
+const $ = (id) => document.getElementById(id);
+const esc = (s) => (s || '').replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;');
+
+/* ── Barre de thèmes ─────────────────────────────────────────────── */
+function renderThemes() {
+  const zone = $('themes');
+  zone.innerHTML = '';
+  THEMES.forEach((t) => {
+    const actif = !!state.theme && state.theme.id === t.id;
+    const b = document.createElement('button');
+    b.type = 'button';
+    b.className = 'theme-pill';
+    b.style.setProperty('--th', t.couleur);
+    b.setAttribute('aria-pressed', actif ? 'true' : 'false');
+    b.innerHTML = '<span class="theme-pill__dot" aria-hidden="true"></span>' + esc(t.tag) +
+      (actif ? '' : '<span class="theme-pill__note">' + t.questions.length + ' questions</span>');
+    b.addEventListener('click', () => demarrer(t));
+    zone.appendChild(b);
   });
 }
 
-function selectTheme(th){
-  currentTheme = th;
-  qIdx = 0;
-  correctedCount = 0;
-  perfectCount = 0;
-  document.getElementById('themeIntro').textContent = th.intro;
-  transcriptLog.innerHTML = '';
-  themePicker.classList.add('hidden');
-  composeView.classList.remove('hidden');
-  changeThemeBtn.classList.add('on');
-  endView.classList.remove('on');
-  updateCounter();
-  askNextQuestion();
+/* ── En-tête de conversation ─────────────────────────────────────── */
+function renderEntete() {
+  const th = state.theme;
+  const head = $('convHead');
+  head.classList.toggle('is-empty', !th);
+  head.style.setProperty('--th', th ? th.couleur : 'var(--ink-500)');
+  const total = th ? th.questions.length : 6;
+  $('convNum').textContent = th ? String(THEMES.indexOf(th) + 1).padStart(2, '0') : '—';
+  $('convTitre').textContent = th ? th.tag : 'Aucun thème choisi';
+  $('convIntro').textContent = th ? th.intro : 'Cinq thèmes, six questions chacun.';
+  $('convScore').textContent = !th ? '—'
+    : state.ecran === 'fin' ? total + ' / ' + total + ' répondues'
+    : 'Question ' + Math.min(state.index + 1, total) + ' / ' + total;
 }
 
-changeThemeBtn.addEventListener('click', () => {
-  composeView.classList.add('hidden');
-  themePicker.classList.remove('hidden');
-  changeThemeBtn.classList.remove('on');
-  document.getElementById('counter-chip').textContent = '';
-});
-
-function updateCounter(){
-  document.getElementById('counter-chip').textContent = 'Question ' + Math.min(qIdx + 1, currentTheme.questions.length) + ' / ' + currentTheme.questions.length;
+/* ── Fil de messagerie ───────────────────────────────────────────── */
+function bulleQuestion(qui, texte) {
+  const d = document.createElement('div');
+  d.className = 'msg msg--q';
+  d.style.setProperty('--th', state.theme.couleur);
+  d.innerHTML = '<div class="msg__who">' + esc(qui) + '</div>' +
+                '<div class="msg__bulle">' + esc(texte) + '</div>';
+  return d;
 }
 
-function addBubble(who, label, text, extra){
-  const div = document.createElement('div');
-  div.className = 'bubble ' + (who === 'npc' ? 'bubble-npc' : 'bubble-student');
-  let html = '<div class="who">' + escHtml(label) + '</div>' + escHtml(text);
-  if (extra && extra.original) {
-    html += '<div class="bubble-orig">Dit : « ' + escHtml(extra.original) + ' »</div>';
+function bulleReponse(tour) {
+  const d = document.createElement('div');
+  d.className = 'msg msg--r';
+  let html = '<div class="msg__who">Vous</div>' +
+             '<div class="msg__bulle">' + esc(tour.corrige) + '</div>';
+  if (tour.memePhrase) {
+    html += '<span class="msg__juste">✓ Juste — rien à corriger.</span>';
+  } else {
+    html += '<div class="msg__dit">Vous avez dit : « ' + esc(tour.original) + ' »</div>';
+    const remarques = (tour.erreurs || []).filter((e) => e && e.explication);
+    if (remarques.length) {
+      html += '<div class="msg__bloc"><div class="fb-box fb-box--no" aria-live="polite">' +
+        '<div class="fb-box__title">Ce qui est à revoir</div>' +
+        remarques.map((e) => '<div class="fb-box__item">' + esc(e.explication) + '</div>').join('') +
+        '</div></div>';
+    }
   }
-  if (extra && extra.erreurs && extra.erreurs.length) {
-    extra.erreurs.forEach(e => { html += '<div class="bubble-err">💡 ' + escHtml(e.explication) + '</div>'; });
-  }
-  div.innerHTML = html;
-  transcriptLog.appendChild(div);
-  div.scrollIntoView({behavior:'smooth', block:'end'});
+  d.innerHTML = html;
+  return d;
 }
 
-function askNextQuestion(){
-  if (qIdx >= currentTheme.questions.length) {
-    endDialogue();
+function renderFil() {
+  const fil = $('thread');
+  fil.innerHTML = '';
+  const th = state.theme;
+  if (!th) {
+    fil.innerHTML = '<div class="thread__vide">Choisissez un thème ci-dessus : votre interlocuteur ' +
+      'posera la première question ici.</div>';
     return;
   }
-  const q = currentTheme.questions[qIdx];
-  addBubble('npc', currentTheme.interlocuteur, q);
-  updateCounter();
-  resetAnswerZone();
+  state.tours.forEach((t) => {
+    fil.appendChild(bulleQuestion(t.qui, t.question));
+    fil.appendChild(bulleReponse(t));
+  });
+  if (state.ecran === 'dialogue' && state.index < th.questions.length) {
+    fil.appendChild(bulleQuestion(th.qui, th.questions[state.index]));
+  }
+  const dernier = fil.lastElementChild;
+  if (dernier && state.tours.length) dernier.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
 }
 
-function resetAnswerZone(){
-  hideError();
-  transcriptWrap.classList.remove('on');
-  transcriptBox.value = '';
-  fallbackInput.value = '';
-  micLabel.textContent = 'Appuie et parle';
-  micBtn.classList.remove('listening');
-}
+/* ── Zone de réponse et bilan ────────────────────────────────────── */
+function renderZone() {
+  const dialogue = state.ecran === 'dialogue';
+  const fin = state.ecran === 'fin';
+  $('repondre').classList.toggle('is-hidden', !dialogue);
+  $('bilan').classList.toggle('is-hidden', !fin);
 
-/* ── Reconnaissance vocale ─────────────────────────────────────────── */
-const SpeechRecognitionCtor = window.SpeechRecognition || window.webkitSpeechRecognition;
-let recognition = null;
-let listening = false;
+  $('micRow').classList.toggle('is-hidden', !state.micDisponible);
+  const mic = $('micBtn');
+  mic.className = 'btn ' + (state.ecoute ? 'btn--audio' : 'btn--pri');
+  mic.textContent = state.ecoute ? "J'ai fini de parler" : 'Parler';
+  mic.disabled = state.envoiEnCours;
+  $('micAide').textContent = state.ecoute
+    ? "J'écoute… parlez maintenant."
+    : 'Appuyez, puis répondez à la question.';
 
-function showError(msg){ errorMsg.textContent = msg; errorMsg.classList.add('on'); }
-function hideError(){ errorMsg.classList.remove('on'); }
+  const visible = state.reponseVisible || !state.micDisponible;
+  $('saisie').classList.toggle('is-hidden', !visible);
+  const champ = $('reponse');
+  if (champ.value !== state.brouillon) champ.value = state.brouillon;
+  const envoyer = $('envoyerBtn');
+  envoyer.textContent = state.envoiEnCours ? 'Correction en cours…' : 'Envoyer';
+  envoyer.disabled = state.envoiEnCours || !state.brouillon.trim();
 
-if (SpeechRecognitionCtor) {
-  recognition = new SpeechRecognitionCtor();
-  recognition.lang = 'fr-CA';
-  recognition.interimResults = false;
-  recognition.maxAlternatives = 1;
+  const err = $('erreur');
+  err.textContent = state.erreur;
+  err.classList.toggle('is-hidden', !state.erreur);
 
-  recognition.addEventListener('start', () => {
-    listening = true;
-    micBtn.classList.add('listening');
-    micLabel.textContent = 'J\'écoute… parle maintenant';
-    hideError();
-  });
-
-  recognition.addEventListener('result', (e) => {
-    const text = e.results[0][0].transcript;
-    transcriptBox.value = text;
-    transcriptWrap.classList.add('on');
-    transcriptBox.focus();
-  });
-
-  recognition.addEventListener('error', (e) => {
-    listening = false;
-    micBtn.classList.remove('listening');
-    micLabel.textContent = 'Appuie et parle';
-    if (e.error === 'not-allowed' || e.error === 'service-not-allowed') {
-      showError('Le micro est bloqué. Autorise le micro dans ton navigateur, ou écris ta réponse ci-dessous.');
-      switchToFallback();
-    } else if (e.error === 'no-speech') {
-      showError('Je n\'ai rien entendu. Réessaie !');
-    } else {
-      showError('Problème avec le micro. Tu peux écrire ta réponse à la place.');
-      switchToFallback();
-    }
-  });
-
-  recognition.addEventListener('end', () => {
-    listening = false;
-    micBtn.classList.remove('listening');
-    micLabel.textContent = 'Appuie et parle';
-  });
-
-  micBtn.addEventListener('click', () => {
-    if (listening) { recognition.stop(); return; }
-    hideError();
-    try { recognition.start(); } catch(err) { /* déjà démarré */ }
-  });
-} else {
-  switchToFallback();
-}
-
-function switchToFallback(){
-  micBtn.style.display = 'none';
-  micLabel.style.display = 'none';
-  textFallback.classList.add('on');
-  if (!document.getElementById('useTextBtn')) {
-    const sendBtn = document.createElement('button');
-    sendBtn.id = 'useTextBtn';
-    sendBtn.className = 'btn btn-primary';
-    sendBtn.textContent = 'Utiliser cette réponse';
-    sendBtn.style.marginTop = '10px';
-    sendBtn.addEventListener('click', () => {
-      if (!fallbackInput.value.trim()) return;
-      transcriptBox.value = fallbackInput.value.trim();
-      transcriptWrap.classList.add('on');
-    });
-    textFallback.appendChild(sendBtn);
+  if (fin) {
+    const n = state.tours.length;
+    const parfaits = state.tours.filter((t) => t.memePhrase).length;
+    $('bilanTexte').textContent = n + ' réponse' + (n > 1 ? 's' : '') + ' donnée' + (n > 1 ? 's' : '') +
+      ', dont ' + parfaits + ' déjà juste' + (parfaits > 1 ? 's' : '') + ' du premier coup.';
   }
 }
 
-document.getElementById('retryBtn').addEventListener('click', resetAnswerZone);
+function render() {
+  renderThemes();
+  renderEntete();
+  renderFil();
+  renderZone();
+}
 
-document.getElementById('correctBtn').addEventListener('click', async () => {
-  const text = transcriptBox.value.trim();
-  if (!text) return;
-  const question = currentTheme.questions[qIdx];
-  hideError();
-  statusMsg.classList.add('on');
-  document.getElementById('correctBtn').disabled = true;
+/* ── Parcours ────────────────────────────────────────────────────── */
+function demarrer(t) {
+  state.ecran = 'dialogue';
+  state.theme = t;
+  state.index = 0;
+  state.tours = [];
+  state.brouillon = '';
+  state.reponseVisible = !state.micDisponible;
+  state.erreur = '';
+  render();
+}
 
+function changerTheme() {
+  state.ecran = 'choix';
+  state.theme = null;
+  state.index = 0;
+  state.tours = [];
+  state.brouillon = '';
+  state.erreur = '';
+  render();
+}
+
+/* ── Reconnaissance vocale ───────────────────────────────────────── */
+let reco = null;
+const Ctor = window.SpeechRecognition || window.webkitSpeechRecognition;
+if (Ctor) {
+  reco = new Ctor();
+  reco.lang = 'fr-CA';
+  reco.interimResults = false;
+  reco.maxAlternatives = 1;
+  reco.addEventListener('start', () => { state.ecoute = true; state.erreur = ''; renderZone(); });
+  reco.addEventListener('end', () => { state.ecoute = false; renderZone(); });
+  reco.addEventListener('result', (e) => {
+    state.brouillon = e.results[0][0].transcript;
+    state.reponseVisible = true;
+    renderZone();
+    $('reponse').focus();
+  });
+  reco.addEventListener('error', (e) => {
+    const bloque = e.error === 'not-allowed' || e.error === 'service-not-allowed';
+    state.ecoute = false;
+    if (bloque) { state.micDisponible = false; state.reponseVisible = true; }
+    state.erreur = bloque
+      ? 'Le micro est bloqué. Autorisez le micro dans votre navigateur, ou écrivez votre réponse.'
+      : e.error === 'no-speech' ? "Je n'ai rien entendu. Reprenez."
+      : 'Problème de micro. Vous pouvez écrire votre réponse.';
+    renderZone();
+  });
+} else {
+  state.micDisponible = false;
+  state.reponseVisible = true;
+}
+
+$('micBtn').addEventListener('click', () => {
+  if (!reco) return;
+  if (state.ecoute) { reco.stop(); return; }
+  state.erreur = '';
+  try { reco.start(); } catch (e) { /* déjà démarré */ }
+  renderZone();
+});
+
+/* ── Saisie et envoi ─────────────────────────────────────────────── */
+$('reponse').addEventListener('input', (e) => {
+  state.brouillon = e.target.value;
+  $('envoyerBtn').disabled = state.envoiEnCours || !state.brouillon.trim();
+});
+
+$('effacerBtn').addEventListener('click', () => {
+  state.brouillon = '';
+  state.reponseVisible = !state.micDisponible;
+  state.erreur = '';
+  renderZone();
+});
+
+$('envoyerBtn').addEventListener('click', async () => {
+  const th = state.theme;
+  if (!th) return;
+  const texte = state.brouillon.trim();
+  if (!texte) return;
+  const total = th.questions.length;
+  const question = th.questions[Math.min(state.index, total - 1)];
+
+  state.envoiEnCours = true;
+  state.erreur = '';
+  renderZone();
+
+  let data;
   try {
     const res = await fetch('/api/correct-french', {
       method: 'POST',
-      headers: {'Content-Type': 'application/json'},
-      body: JSON.stringify({ code: studentCode, text, question }),
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ code: studentCode, text: texte, question: question }),
     });
-    const data = await res.json();
-    statusMsg.classList.remove('on');
-    document.getElementById('correctBtn').disabled = false;
-
+    data = await res.json();
     if (!res.ok) {
-      showError(data.error || 'Une erreur est survenue. Réessaie.');
+      state.envoiEnCours = false;
+      state.erreur = data.error || 'Une erreur est survenue. Reprenez.';
+      renderZone();
       return;
     }
-
-    if (data.memePhrase) {
-      perfectCount++;
-      addBubble('student', 'Toi', data.original);
-    } else {
-      addBubble('student', 'Toi', data.corrige, { original: data.original, erreurs: data.erreurs });
-    }
-    correctedCount++;
-    qIdx++;
-    transcriptWrap.classList.remove('on');
-    lmsTrack('exercise_completed', { zonesDone: correctedCount, score: null });
-    askNextQuestion();
-  } catch (err) {
-    statusMsg.classList.remove('on');
-    document.getElementById('correctBtn').disabled = false;
-    showError('Impossible de joindre le service de correction. Vérifie ta connexion.');
+  } catch (e) {
+    state.envoiEnCours = false;
+    state.erreur = 'Impossible de joindre le service de correction. Vérifiez votre connexion.';
+    renderZone();
+    return;
   }
+
+  state.tours.push({
+    qui: th.qui, question: question,
+    original: data.original || texte,
+    corrige: data.corrige || texte,
+    memePhrase: !!data.memePhrase,
+    erreurs: data.erreurs || [],
+  });
+  state.index += 1;
+  state.brouillon = '';
+  state.reponseVisible = !state.micDisponible;
+  state.envoiEnCours = false;
+  state.ecran = state.index >= total ? 'fin' : 'dialogue';
+  suivre('exercise_completed', { zonesDone: state.tours.length, score: null });
+  noterSeance(th, !!data.memePhrase);
+  render();
 });
 
-function endDialogue(){
-  composeView.classList.add('hidden');
-  endView.classList.add('on');
-  document.getElementById('endSummary').textContent =
-    correctedCount + ' réponses données, dont ' + perfectCount + ' déjà parfaites. Beau travail !';
-  document.getElementById('counter-chip').textContent = '';
+$('refaireBtn').addEventListener('click', () => { if (state.theme) demarrer(state.theme); });
+$('changerBtn').addEventListener('click', changerTheme);
+
+/* ── Suivi enseignant ────────────────────────────────────────────── */
+/* Un cumul par (élève, thème) : réponses corrigées, réponses justes du
+   premier coup, date de la dernière séance. Sans code élève, rien à noter.
+   L'appel ne doit jamais bloquer le dialogue : une panne de suivi se tait. */
+function noterSeance(theme, memePhrase) {
+  if (!studentCode) return;
+  fetch('/api/corrige-moi/seance', {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({
+      code: studentCode, themeId: theme.id, themeLabel: theme.tag, memePhrase: memePhrase,
+    }),
+  }).catch(() => {});
 }
 
-document.getElementById('restartBtn').addEventListener('click', () => {
-  endView.classList.remove('on');
-  themePicker.classList.remove('hidden');
-  changeThemeBtn.classList.remove('on');
-});
-
-function escHtml(s){
-  return (s || '').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');
+/* ── Suivi LMS ───────────────────────────────────────────────────── */
+function suivre(evenement, donnees) {
+  try {
+    window.parent.postMessage(Object.assign({ lms: true, event: evenement }, donnees || {}), '*');
+  } catch (e) {}
 }
 
-function lmsTrack(event, data) {
-  try { window.parent.postMessage(Object.assign({lms: true, event: event}, data||{}), '*'); } catch(e) {}
-}
-
-renderThemePicker();
+render();
 </script>
 </body>
 </html>

@@ -28,6 +28,14 @@ Bibliothèque d'activités pédagogiques FLS (Niveau 4) pour enseignant en franc
 - Le serveur tourne en **multi-thread** (`ThreadingMixIn`) depuis l'ajout de cet appel réseau, pour ne pas bloquer les autres élèves pendant un appel API.
 - `viewer.html` relaie le `code` élève à l'iframe via `?code=...` sur l'URL de l'activité — nécessaire pour que l'activité authentifie ses appels à `/api/correct-french`.
 - Ne jamais coder la clé API en dur dans le code ou la partager dans le chat.
+- Suivi enseignant de l'atelier : `POST /api/corrige-moi/seance`
+  (`{code, themeId, themeLabel, memePhrase}`) après chaque réponse corrigée, et
+  `GET /api/admin/corrige-moi?groupId=` (jeton enseignant) pour l'écran Élèves.
+  Le cumul vit dans `data/corrige_moi.json` : **un seul
+  enregistrement par (élève, thème)** — `answers`, `firstTryOk`, `lastSeen`.
+  Distinct de `data/oral_submissions.json`, qui garde les productions orales
+  déposées avec leur fichier audio. L'atelier est une pratique libre : le
+  suivi ne bloque jamais le dialogue (l'appel échoue en silence).
 
 ## Multi-enseignants et multi-groupes
 

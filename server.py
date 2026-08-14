@@ -78,6 +78,11 @@ VOCAB_REPORTS_FILE = STORAGE_DIR / "data" / "traductions_douteuses.json"
 OUTILS_CACHE_FILE = STORAGE_DIR / "data" / "outils_cache.json"
 ORAL_SUBMISSIONS_FILE = STORAGE_DIR / "data" / "oral_submissions.json"
 ORAL_AUDIO_DIR = STORAGE_DIR / "assets" / "oral-submissions"
+# « Corrige-moi ! » : pratique orale libre, sans enregistrement audio ni date
+# d'échéance. Un cumul par (élève, thème) — combien de réponses, combien de
+# justes du premier coup, quand pour la dernière fois. Fichier distinct de
+# oral_submissions.json, qui garde les productions déposées avec leur audio.
+CORRIGE_MOI_FILE = STORAGE_DIR / "data" / "corrige_moi.json"
 # Multi-enseignants : chaque enseignant possède un ou plusieurs groupes.
 # Le catalogue d'activités reste commun ; ce qui appartient au groupe, c'est la
 # planification (dates), les élèves, la progression et les productions orales.
@@ -886,6 +891,19 @@ def save_oral_submissions(data):
         json.dump(data, f, ensure_ascii=False, indent=2)
 
 
+def load_corrige_moi():
+    if CORRIGE_MOI_FILE.exists():
+        with open(CORRIGE_MOI_FILE, "r", encoding="utf-8") as f:
+            return json.load(f)
+    return []
+
+
+def save_corrige_moi(data):
+    CORRIGE_MOI_FILE.parent.mkdir(parents=True, exist_ok=True)
+    with open(CORRIGE_MOI_FILE, "w", encoding="utf-8") as f:
+        json.dump(data, f, ensure_ascii=False, indent=2)
+
+
 # Boîtes de répétition espacée (système Leitner) : plus la boîte est haute,
 # plus l'intervalle avant la prochaine révision est grand.
 VOCAB_INTERVALS_DAYS = [0, 1, 3, 7, 14, 30, 60]
@@ -1445,6 +1463,9 @@ class Handler(http.server.SimpleHTTPRequestHandler):
         if path == "/api/admin/oral-submissions":
             self._handle_oral_submissions_list(params)
             return
+        if path == "/api/admin/corrige-moi":
+            self._handle_corrige_moi_list(params)
+            return
 
         # Fichiers interactifs intégrés au code : servir directement depuis BASE_DIR
         if path.startswith("/assets/interactive/"):
@@ -1520,6 +1541,8 @@ class Handler(http.server.SimpleHTTPRequestHandler):
             self._handle_student_progress()
         elif path == "/api/correct-french":
             self._handle_correct_french()
+        elif path == "/api/corrige-moi/seance":
+            self._handle_corrige_moi_seance()
         elif path == "/api/correct-email":
             self._handle_correct_email()
         elif path == "/api/vocab/answer":
@@ -3819,6 +3842,70 @@ class Handler(http.server.SimpleHTTPRequestHandler):
         subs = [s for s in subs if s["id"] != sub_id]
         save_oral_submissions(subs)
         json_response(self, {"success": True})
+
+    def _handle_corrige_moi_seance(self):
+        """Une réponse corrigée dans « Corrige-moi ! ».
+
+        L'atelier est une pratique libre : ce qui intéresse l'enseignant, ce
+        n'est pas chaque réplique mais le cumul par thème. On tient donc un
+        seul enregistrement par (élève, thème), mis à jour à chaque réponse.
+        """
+        body = self._read_json_body()
+        code = body.get("code", "").strip().upper()
+        student = validate_student_code(code)
+        if not student:
+            json_response(self, {"error": "Non autorisé"}, 401)
+            return
+
+        theme_id = str(body.get("themeId", "")).strip()[:40]
+        if not theme_id:
+            json_response(self, {"error": "Thème manquant"}, 400)
+            return
+        theme_label = str(body.get("themeLabel", "")).strip()[:80]
+
+        entries = load_corrige_moi()
+        entry = next(
+            (e for e in entries
+             if e.get("studentId") == student["id"] and e.get("themeId") == theme_id),
+            None,
+        )
+        if entry is None:
+            entry = {
+                "studentId": student["id"],
+                "studentLabel": student.get("label", ""),
+                "groupId": student.get("groupId"),
+                "themeId": theme_id,
+                "themeLabel": theme_label,
+                "answers": 0,
+                "firstTryOk": 0,
+            }
+            entries.append(entry)
+        if theme_label:
+            entry["themeLabel"] = theme_label
+        # Le groupe peut avoir changé depuis la dernière séance.
+        entry["studentLabel"] = student.get("label", entry.get("studentLabel", ""))
+        entry["groupId"] = student.get("groupId")
+        entry["answers"] = entry.get("answers", 0) + 1
+        if body.get("memePhrase"):
+            entry["firstTryOk"] = entry.get("firstTryOk", 0) + 1
+        entry["lastSeen"] = datetime.now().isoformat(timespec="seconds")
+        save_corrige_moi(entries)
+
+        json_response(self, {"success": True})
+
+    def _handle_corrige_moi_list(self, params):
+        teacher = self._require_teacher()
+        if not teacher:
+            return
+        group_id = self._group_from_params(teacher, params)
+        if group_id is None:
+            return
+        student_ids = {s["id"] for s in load_students() if s.get("groupId") == group_id}
+        entries = sorted(
+            (e for e in load_corrige_moi()
+             if e.get("groupId") == group_id or e.get("studentId") in student_ids),
+            key=lambda e: e.get("lastSeen", ""), reverse=True)
+        json_response(self, entries)
 
     def _handle_add_student(self):
         teacher = self._require_teacher()
