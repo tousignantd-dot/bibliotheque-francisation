@@ -170,11 +170,37 @@
     .list-search input:focus { border-color: var(--accent); box-shadow: 0 0 0 3px rgba(59,111,246,.12); background: var(--surface); }
 
     .activity-list { list-style: none; }
+    /* ---- Planification en lot ---- */
+    .plan-bar {
+      display: none; align-items: flex-end; gap: 14px; flex-wrap: wrap;
+      padding: 14px 22px; border-bottom: 1px solid var(--border);
+      background: #f0f4ff;
+    }
+    .plan-bar.visible { display: flex; }
+    .plan-bar label {
+      display: block; font-size: 11px; font-weight: 600;
+      color: var(--text-2); margin-bottom: 4px;
+    }
+    .plan-bar input[type="date"], .plan-bar select {
+      height: 34px; padding: 0 8px; border: 1.5px solid var(--border);
+      border-radius: var(--radius-sm); font-family: var(--font); font-size: 13px;
+      background: #fff; color: var(--text);
+    }
+    .plan-count {
+      font-size: 13px; font-weight: 700; color: var(--accent);
+      white-space: nowrap; padding-bottom: 8px;
+    }
+    .plan-hint {
+      flex-basis: 100%; font-size: 11.5px; color: var(--text-2); margin: 0;
+    }
+    .activity-check { width: 16px; height: 16px; flex-shrink: 0; cursor: pointer; accent-color: #3b6ff6; }
+
     .activity-item {
       display: flex; align-items: center; gap: 12px;
       padding: 12px 22px; border-bottom: 1px solid var(--border);
       transition: background .12s;
     }
+    .activity-item.is-checked { background: #f8faff; }
     .activity-item:last-child { border-bottom: none; }
     .activity-item:hover { background: var(--bg); }
 
@@ -542,6 +568,31 @@
       <select id="filterDomaine" style="margin-left:8px;font-size:12px;padding:4px 6px;border-radius:6px;border:1px solid var(--border,#ddd);background:var(--bg,#fff);color:inherit">
         <option value="">Tous les domaines</option>
       </select>
+    </div>
+
+    <!-- Planification en lot : n'apparaît qu'une fois des activités cochées. -->
+    <div class="plan-bar" id="planBar">
+      <span class="plan-count" id="planCount"></span>
+      <div>
+        <label for="planDebut">Disponible à partir du</label>
+        <input type="date" id="planDebut" />
+      </div>
+      <div>
+        <label for="planCadence">Rythme</label>
+        <select id="planCadence">
+          <option value="0">Toutes à cette date</option>
+          <option value="7">Une par semaine</option>
+          <option value="14">Une aux deux semaines</option>
+          <option value="1">Une par jour</option>
+        </select>
+      </div>
+      <div>
+        <label for="planFin">Jusqu'au (optionnel)</label>
+        <input type="date" id="planFin" />
+      </div>
+      <button class="btn btn-save" id="planApply" style="height:34px">Planifier</button>
+      <button class="btn btn-danger" id="planClear" style="height:34px" title="Retirer les dates : l'activité disparaît du portail des élèves">Retirer les dates</button>
+      <p class="plan-hint" id="planHint"></p>
     </div>
 
     <ul class="activity-list" id="activityList"></ul>
@@ -1006,19 +1057,25 @@ function renderList(items) {
     if (!lot.length) return '';
     return `
       <li class="section-head">
+        <input type="checkbox" class="activity-check section-check"
+               data-section="${section.cle}"
+               title="Cocher toutes les activités de ce bloc" />
         <span class="section-head-title">${section.titre}</span>
         <span class="section-head-sub">${section.sousTitre}</span>
         <span class="section-head-count">${lot.length}</span>
       </li>
-      ${renderItems(lot)}`;
+      ${renderItems(lot, section.cle)}`;
   }).join('');
 
   attachListEvents();
 }
 
-function renderItems(items) {
+function renderItems(items, sectionCle) {
   return items.map(a => `
-    <li class="activity-item" data-id="${a.id}">
+    <li class="activity-item${selection.has(a.id) ? ' is-checked' : ''}" data-id="${a.id}" data-section="${sectionCle}">
+      <input type="checkbox" class="activity-check item-check" data-id="${a.id}"
+             ${selection.has(a.id) ? 'checked' : ''}
+             title="Choisir cette activité pour la planifier" />
       ${a.thumbnail
         ? `<img class="activity-thumb" src="${escHtml(a.thumbnail)}" alt="" onerror="this.style.display='none';this.nextElementSibling.style.display='flex'">`
         : ''}
@@ -1062,7 +1119,138 @@ function renderItems(items) {
     </li>`).join('');
 }
 
+/* ======================================================
+   PLANIFICATION EN LOT
+   Fixer les dates une par une, pour quarante-deux activités et plusieurs
+   groupes, prend une soirée. Ici : on coche, on donne une date de départ et
+   un rythme, et chaque activité reçoit la sienne, décalée d'autant.
+   ====================================================== */
+const selection = new Set();
+
+function itemsAffiches() {
+  // L'ordre de la liste fait foi : c'est celui que l'enseignant a sous les
+  // yeux quand il choisit un rythme (module 1 la première semaine, etc.).
+  return [...document.querySelectorAll('.activity-item')]
+    .map(li => Number(li.dataset.id));
+}
+
+function majPlanBar() {
+  const barre = document.getElementById('planBar');
+  const n = selection.size;
+  barre.classList.toggle('visible', n > 0);
+  document.getElementById('planCount').textContent =
+    n > 1 ? `${n} activités choisies` : `${n} activité choisie`;
+  document.querySelectorAll('.activity-item').forEach(li => {
+    li.classList.toggle('is-checked', selection.has(Number(li.dataset.id)));
+  });
+  document.querySelectorAll('.section-check').forEach(c => {
+    const ids = [...document.querySelectorAll(`.activity-item`)]
+      .filter(li => li.dataset.section === c.dataset.section)
+      .map(li => Number(li.dataset.id));
+    c.checked = ids.length > 0 && ids.every(id => selection.has(id));
+  });
+  majApercu();
+}
+
+function datesPlanifiees() {
+  const debut = document.getElementById('planDebut').value;
+  const pas = Number(document.getElementById('planCadence').value);
+  if (!debut) return [];
+  const ids = itemsAffiches().filter(id => selection.has(id));
+  return ids.map((id, i) => {
+    const d = new Date(debut + 'T12:00:00');
+    d.setDate(d.getDate() + pas * i);
+    return { id, date: d.toISOString().slice(0, 10) };
+  });
+}
+
+function majApercu() {
+  const hint = document.getElementById('planHint');
+  const plan = datesPlanifiees();
+  if (!plan.length) {
+    hint.textContent = 'Choisissez une date de départ. Avec un rythme, chaque activité suivante est décalée d\'autant.';
+    return;
+  }
+  const titre = id => (allActivities.find(a => a.id === id) || {}).title || `#${id}`;
+  const premier = plan[0], dernier = plan[plan.length - 1];
+  hint.textContent = plan.length === 1
+    ? `${titre(premier.id)} → ${fmtD(premier.date)}`
+    : `${titre(premier.id)} → ${fmtD(premier.date)} … ${titre(dernier.id)} → ${fmtD(dernier.date)}`;
+}
+
+async function appliquerPlan(effacer) {
+  const fin = document.getElementById('planFin').value;
+  const plan = effacer
+    ? itemsAffiches().filter(id => selection.has(id)).map(id => ({ id, date: '' }))
+    : datesPlanifiees();
+
+  if (!plan.length) {
+    toast('Choisissez une date de départ.', 'error');
+    return;
+  }
+  if (effacer && !confirm(
+      `Retirer les dates de ${plan.length} activité(s) ? Elles disparaîtront du portail des élèves de ce groupe.`)) {
+    return;
+  }
+
+  const boutons = [document.getElementById('planApply'), document.getElementById('planClear')];
+  boutons.forEach(b => b.disabled = true);
+  let faites = 0;
+  try {
+    // Une requête à la fois : le serveur relit et réécrit schedule.json à
+    // chaque appel, des écritures en parallèle se perdraient.
+    for (const { id, date } of plan) {
+      const res = await Prof.fetch(`/api/activities/${id}/dates`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: Prof.body({ datePrevue: date, dateFin: effacer ? '' : fin }),
+      });
+      if (!res.ok) throw new Error(`HTTP ${res.status}`);
+      faites++;
+    }
+    toast(effacer
+      ? `${faites} activité(s) retirée(s) du portail.`
+      : `${faites} activité(s) planifiée(s).`);
+    selection.clear();
+    await loadList();
+  } catch (e) {
+    toast(`Interrompu après ${faites} activité(s) : ${e.message}`, 'error');
+    await loadList();
+  } finally {
+    boutons.forEach(b => b.disabled = false);
+  }
+}
+
+document.getElementById('planApply').addEventListener('click', () => appliquerPlan(false));
+document.getElementById('planClear').addEventListener('click', () => appliquerPlan(true));
+['planDebut', 'planCadence'].forEach(id =>
+  document.getElementById(id).addEventListener('change', majApercu));
+
 function attachListEvents() {
+  document.querySelectorAll('.item-check').forEach(c => {
+    c.addEventListener('change', () => {
+      const id = Number(c.dataset.id);
+      if (c.checked) selection.add(id); else selection.delete(id);
+      majPlanBar();
+    });
+  });
+
+  document.querySelectorAll('.section-check').forEach(c => {
+    c.addEventListener('change', () => {
+      document.querySelectorAll('.activity-item').forEach(li => {
+        if (li.dataset.section !== c.dataset.section) return;
+        const id = Number(li.dataset.id);
+        if (c.checked) selection.add(id); else selection.delete(id);
+      });
+      document.querySelectorAll('.item-check').forEach(box => {
+        box.checked = selection.has(Number(box.dataset.id));
+      });
+      majPlanBar();
+    });
+  });
+
+  majPlanBar();
+
   document.querySelectorAll('.edit-btn').forEach(btn => {
     btn.addEventListener('click', () => {
       const activity = allActivities.find(a => a.id === Number(btn.dataset.id));
