@@ -221,6 +221,16 @@
     .pe-apercu-liste b { flex: none; color: var(--text-accent); }
     .pe-coche-ligne { display: flex; align-items: center; gap: var(--sp-3); min-height: var(--tap-min); font-size: var(--fs-body-sm); font-weight: var(--fw-bold); color: var(--ink-500); cursor: pointer; }
 
+    /* — Élèves : le code d'accès et ses gestes — */
+    .pe-acces {
+      flex: none; padding: 4px 10px; border-radius: var(--r-sm);
+      background: var(--acier-100); color: var(--acier-600);
+      font-family: ui-monospace, "SFMono-Regular", "Menlo", monospace;
+      font-size: var(--fs-ui); font-weight: var(--fw-black); letter-spacing: .12em;
+    }
+    .pe-eleve-gestes { display: flex; gap: var(--sp-2); flex-wrap: wrap; }
+    .pe-neuf { background: var(--ok-bg); }
+
     /* — Modales — */
     .pe-modale {
       position: fixed; inset: 0; z-index: 60; background: rgba(23, 24, 26, .42);
@@ -610,9 +620,27 @@
       <div class="stack-l" style="padding:var(--sp-8) 0 var(--sp-12)">
         <div style="display:flex;align-items:center;gap:var(--sp-4);flex-wrap:wrap">
           <span class="pe-titre-section" id="titreEleves"></span>
-          <button type="button" class="btn btn--ghost btn--sm" style="margin-left:auto" data-ecran="planif">Planifier ce groupe</button>
+          <div class="pe-eleve-gestes" style="margin-left:auto">
+            <button type="button" class="btn btn--ghost btn--sm" id="boutonImprimerCodes">Imprimer les codes</button>
+            <button type="button" class="btn btn--ghost btn--sm" data-ecran="planif">Planifier ce groupe</button>
+          </div>
         </div>
-        <div class="card card--flush" id="listeEleves"></div>
+        <div class="card card--flush">
+          <div class="card__band">Élèves et codes d'accès</div>
+          <div id="listeEleves"></div>
+          <form class="card__row" id="formEleve" style="background:var(--surface-sunken);display:flex;gap:var(--sp-4);align-items:flex-end;flex-wrap:wrap">
+            <div style="flex:1;min-width:240px">
+              <label class="field-label" for="nouvelEleve">Ajouter au groupe</label>
+              <input id="nouvelEleve" class="field" type="text" placeholder="Prénom et nom" autocomplete="off" />
+              <div class="field-hint">Le code d'accès est généré ici : l'élève ne s'inscrit pas lui-même. Laissez le nom vide pour préparer des codes d'avance et les nommer à l'arrivée.</div>
+            </div>
+            <div style="width:120px">
+              <label class="field-label" for="nombreEleves">Combien</label>
+              <input id="nombreEleves" class="field" type="number" min="1" max="30" value="1" />
+            </div>
+            <button type="submit" class="btn btn--pri">Générer le code</button>
+          </form>
+        </div>
 
         <div class="card card--flush">
           <div class="card__band">Corrige-moi ! — assistant oral</div>

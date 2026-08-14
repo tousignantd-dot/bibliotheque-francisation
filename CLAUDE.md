@@ -166,6 +166,22 @@ choix de l'enseignant survit aux redéploiements.
   sections). « Cocher les N lignes » ne coche que les modules — cocher d'un
   coup les sections de vingt activités poserait une planification que personne
   n'a demandée.
+- **L'écran « Élèves » inscrit et génère les codes.** Un élève ne s'inscrit
+  jamais lui-même : l'enseignante l'ajoute au groupe actif et le serveur
+  fabrique son code à six caractères (`POST /api/admin/students`, qui renvoie
+  les élèves créés avec leur code). Sans nom, le code est anonyme (« Élève
+  N ») — on en prépare d'avance et on les nomme à l'arrivée
+  (`PATCH /api/admin/students/<id>` avec `label`). C'est ce que portait
+  l'ancienne page `lms.html` ; le portail le reprend, avec « Copier le
+  code », « Renommer », « Retirer » et l'impression des billets.
+- **Un nom ne vaut que pour un élève** : le formulaire refuse « nom + N
+  codes », sinon le serveur donnerait le même nom aux N créés. Le nombre est
+  plafonné à 30 des deux côtés.
+- **Retirer un élève retire son code** — la confirmation le dit en toutes
+  lettres, parce que la personne perd l'accès à son portail.
+- Les billets de codes s'impriment dans le cadre isolé `#matImpression`, le
+  même que les fiches du dépôt, en **noir et blanc** : un billet par élève,
+  avec le groupe, le nom, le code et l'adresse du portail.
 - **Planifier des sections d'un module sans date ouvre le module** à la
   première d'entre elles (`modulesAOuvrir()`). Sans cela, la classe ne verrait
   rien : un module fermé cache toutes ses sections, datées ou non.

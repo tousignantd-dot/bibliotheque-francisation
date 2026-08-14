@@ -1825,6 +1825,13 @@ class Handler(http.server.SimpleHTTPRequestHandler):
                 return
             if "prenom" in body:
                 target["prenom"] = body["prenom"]
+            # `label` est le nom affiché partout (portail enseignant, journal,
+            # progression) ; `prenom` n'est qu'une annotation de l'ancien
+            # écran `lms.html`. Renommer sans toucher au code d'accès.
+            if "label" in body:
+                nouveau = str(body["label"]).strip()
+                if nouveau:
+                    target["label"] = nouveau
             if "groupId" in body:
                 # Déplacer un élève : le groupe d'arrivée doit aussi être à soi
                 if self._require_group(teacher, body["groupId"]) is None:
@@ -4242,7 +4249,12 @@ class Handler(http.server.SimpleHTTPRequestHandler):
             return
         students = load_students()
         existing_codes = {s["code"] for s in students}
-        count = max(1, int(body.get("count", 1)))
+        # Plafonné : un groupe se remplit une classe à la fois, et un client
+        # qui demanderait mille codes en fabriquerait mille pour de bon.
+        try:
+            count = min(30, max(1, int(body.get("count", 1))))
+        except (TypeError, ValueError):
+            count = 1
         added = []
         for _ in range(count):
             label = body.get("label", "").strip()

@@ -248,6 +248,9 @@
     activites: [],
     documents: [],
     eleves: [],
+    // Les élèves créés depuis le dernier chargement, surlignés le temps que
+    // l'enseignante note ou imprime leurs codes.
+    elevesNeufs: new Set(),
     progression: [],
     journal: [],
     corrigeMoi: [],
@@ -348,6 +351,7 @@
 
   /** Recharge tout ce qui appartient au groupe actif. */
   async function chargerGroupe() {
+    etat.elevesNeufs = new Set();
     if (!etat.groupeId) {
       etat.activites = []; etat.documents = []; etat.eleves = [];
       etat.progression = []; etat.journal = []; etat.corrigeMoi = [];
@@ -795,16 +799,104 @@
         .map((j) => j.timestamp).sort();
       const derniereVisite = visites.length ? visites[visites.length - 1] : '';
       return `
-        <div class="card__row pe-rangee">
+        <div class="card__row pe-rangee${etat.elevesNeufs.has(el.id) ? ' pe-neuf' : ''}">
           <div class="pe-rangee-txt">
             <div class="pe-rangee-titre" style="font-size:var(--fs-body-sm)">${esc(el.label || 'Élève')}</div>
-            <div class="pe-rangee-meta">code ${esc(el.code)} · ${esc(depuis(derniereVisite))} · dernière étape : ${esc(derniere ? derniere.activityTitle || '—' : '—')}</div>
+            <div class="pe-rangee-meta">${esc(depuis(derniereVisite))} · dernière étape : ${esc(derniere ? derniere.activityTitle || '—' : '—')}</div>
           </div>
+          <span class="pe-acces">${esc(el.code)}</span>
           <span class="score">${faites} / ${offertes.length} offertes</span>
+          <div class="pe-eleve-gestes">
+            <button type="button" class="btn btn--ghost btn--sm" data-copier="${el.id}">Copier le code</button>
+            <button type="button" class="btn btn--ghost btn--sm" data-renommer="${el.id}">Renommer</button>
+            <button type="button" class="btn btn--ghost btn--sm" data-retirer="${el.id}">Retirer</button>
+          </div>
         </div>`;
     }).join('');
 
     rendreCorrigeMoi();
+  }
+
+  /** Ajouter des élèves, c'est générer leurs codes : le serveur en fabrique un
+      par élève et le renvoie. Un élève créé sans nom porte « Élève N » — on
+      prépare ainsi des codes d'avance, qu'on nomme à l'arrivée. */
+  async function ajouterEleves(label, nombre) {
+    const res = await envoyer('/api/admin/students',
+      { groupId: etat.groupeId, label, count: nombre });
+    const neufs = res.students || [];
+    etat.eleves = etat.eleves.concat(neufs);
+    etat.elevesNeufs = new Set(neufs.map((e) => e.id));
+    majNombreEleves();
+    rendreEleves();
+    return neufs;
+  }
+
+  /** Le compte d'élèves paraît à trois endroits (bande, résumé, liste des
+      groupes) et ne vient pas du même appel : on le remet d'accord ici plutôt
+      que de recharger tout le groupe pour un seul code. */
+  function majNombreEleves() {
+    const groupe = groupeActif();
+    if (groupe) groupe.nbEleves = etat.eleves.length;
+    rendreBandeGroupe();
+    rendreGroupes();
+  }
+
+  /** Le presse-papiers n'existe pas partout (page servie en http simple) :
+      on retombe alors sur une sélection de texte, qui marche toujours. */
+  async function copier(texte) {
+    try {
+      await navigator.clipboard.writeText(texte);
+      return true;
+    } catch {
+      const zone = document.createElement('textarea');
+      zone.value = texte;
+      zone.style.cssText = 'position:fixed;top:-1000px';
+      document.body.appendChild(zone);
+      zone.select();
+      let ok = false;
+      try { ok = document.execCommand('copy'); } catch { ok = false; }
+      zone.remove();
+      return ok;
+    }
+  }
+
+  /** Les codes s'impriment dans le cadre isolé du dépôt de matériel, en noir
+      et blanc : un billet par élève, à découper et à remettre en main propre.
+      Rien de l'interface ne peut s'y glisser. */
+  function imprimerCodes() {
+    if (!etat.eleves.length) { dire('Aucun code à imprimer pour ce groupe.'); return; }
+    const groupe = groupeActif();
+    const billets = etat.eleves.map((el) => `
+      <div class="billet">
+        <div class="groupe">${esc(groupe ? groupe.nom : '')}</div>
+        <div class="nom">${esc(el.label || 'Élève')}</div>
+        <div class="etiquette">Votre code d’accès</div>
+        <div class="code">${esc(el.code)}</div>
+        <div class="adresse">${esc(location.origin)}/eleve.html</div>
+      </div>`).join('');
+    const cadre = $('matImpression');
+    const d = cadre.contentDocument;
+    d.open();
+    d.write(`<!DOCTYPE html><html lang="fr"><head><meta charset="utf-8">
+      <title>Codes d’accès</title><style>
+      @page { size: letter; margin: 14mm; }
+      body { margin: 0; font-family: Arial, Helvetica, sans-serif; color: #000; }
+      .grille { display: grid; grid-template-columns: 1fr 1fr; gap: 6mm; }
+      .billet { border: 1.5pt solid #000; padding: 6mm; break-inside: avoid; }
+      .groupe { font-size: 9pt; text-transform: uppercase; letter-spacing: .08em; }
+      .nom { margin-top: 2mm; font-size: 15pt; font-weight: 800; }
+      .etiquette { margin-top: 5mm; font-size: 9pt; }
+      .code { margin-top: 1mm; font-family: "Courier New", monospace;
+              font-size: 26pt; font-weight: 700; letter-spacing: .18em; }
+      .adresse { margin-top: 4mm; font-size: 9pt; }
+      </style></head><body><div class="grille">${billets}</div></body></html>`);
+    d.close();
+    // Laisser les styles s'appliquer avant d'ouvrir le dialogue d'impression.
+    setTimeout(() => {
+      cadre.contentWindow.focus();
+      cadre.contentWindow.print();
+      dire(`${pluriel(etat.eleves.length, 'code')} envoyé${etat.eleves.length > 1 ? 's' : ''} à l’impression.`);
+    }, 300);
   }
 
   /** « Corrige-moi ! » : une rangée par élève qui a déjà pratiqué, cumulée
@@ -1279,6 +1371,81 @@
   });
 
   // — Groupes et comptes —
+  // — Élèves —
+  $('formEleve').addEventListener('submit', async (e) => {
+    e.preventDefault();
+    if (!etat.groupeId) { dire('Créez d’abord un groupe.'); return; }
+    const label = $('nouvelEleve').value.trim();
+    const nombre = Math.min(30, Math.max(1, parseInt($('nombreEleves').value, 10) || 1));
+    // Un nom ne vaut que pour une personne : le serveur le donnerait tel quel
+    // aux N élèves créés, et la liste porterait trois fois le même nom.
+    if (label && nombre > 1) {
+      dire('Un nom ne vaut que pour un élève. Videz le nom pour générer plusieurs codes d’un coup.');
+      return;
+    }
+    const bouton = e.target.querySelector('button[type=submit]');
+    bouton.disabled = true;
+    try {
+      const neufs = await ajouterEleves(label, nombre);
+      $('nouvelEleve').value = '';
+      $('nombreEleves').value = '1';
+      $('nouvelEleve').focus();
+      dire(neufs.length === 1
+        ? `Code ${neufs[0].code} créé pour ${neufs[0].label}.`
+        : `${neufs.length} codes créés : ${neufs.map((n) => n.code).join(', ')}.`);
+    } catch (err) {
+      dire(`Ajout impossible : ${err.message}`);
+    }
+    bouton.disabled = false;
+  });
+
+  $('boutonImprimerCodes').addEventListener('click', imprimerCodes);
+
+  $('listeEleves').addEventListener('click', async (e) => {
+    const bouton = e.target.closest('[data-copier], [data-renommer], [data-retirer]');
+    if (!bouton) return;
+    const id = parseInt(bouton.dataset.copier || bouton.dataset.renommer || bouton.dataset.retirer, 10);
+    const eleve = etat.eleves.find((el) => el.id === id);
+    if (!eleve) return;
+
+    if (bouton.dataset.copier) {
+      dire(await copier(eleve.code)
+        ? `Code ${eleve.code} copié.`
+        : `Copie impossible — le code est ${eleve.code}.`);
+      return;
+    }
+
+    if (bouton.dataset.renommer) {
+      const nom = prompt('Nom de l’élève', eleve.label || '');
+      if (nom === null) return;
+      const propre = nom.trim();
+      if (!propre || propre === eleve.label) return;
+      try {
+        await envoyer(`/api/admin/students/${id}`, { label: propre }, 'PATCH');
+        eleve.label = propre;
+        rendreEleves();
+        dire('Nom enregistré. Le code d’accès, lui, ne change pas.');
+      } catch (err) {
+        dire(`Modification impossible : ${err.message}`);
+      }
+      return;
+    }
+
+    // Retirer un élève retire son code : c'est ce que la confirmation doit dire.
+    if (!confirm(`Retirer ${eleve.label || 'cet élève'} du groupe ? `
+      + `Le code ${eleve.code} cessera de fonctionner et la personne ne pourra plus ouvrir son portail.`)) return;
+    try {
+      await api(`/api/admin/students/${id}`, { method: 'DELETE' });
+      etat.eleves = etat.eleves.filter((el) => el.id !== id);
+      etat.elevesNeufs.delete(id);
+      majNombreEleves();
+      rendreEleves();
+      dire('Élève retiré du groupe.');
+    } catch (err) {
+      dire(`Retrait impossible : ${err.message}`);
+    }
+  });
+
   $('formGroupe').addEventListener('submit', async (e) => {
     e.preventDefault();
     const nom = $('nouveauGroupe').value.trim();
