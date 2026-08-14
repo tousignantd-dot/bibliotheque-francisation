@@ -91,6 +91,17 @@ SESSIONS_FILE  = STORAGE_DIR / "data" / "prof_sessions.json"
 DOCUMENTS_FILE = STORAGE_DIR / "data" / "documents.json"
 GROUP_DOCS_DIR = STORAGE_DIR / "assets" / "documents-groupe"
 
+# Dépôt de matériel. L'inventaire est **produit par le build**
+# (`python3 build/materiel.py`) : il décrit ce que le code livre, donc il se
+# lit depuis BASE_DIR et jamais depuis le volume, que la prochaine génération
+# écraserait de toute façon.
+MATERIEL_FILE = BASE_DIR / "data" / "materiel.json"
+# Les fichiers téléversés par les enseignants, eux, sont mutables : ils vivent
+# dans le volume, à part de l'inventaire. Les mêler reviendrait à effacer le
+# dépôt d'une collègue à chaque build.
+DEPOTS_FILE = STORAGE_DIR / "data" / "depots.json"
+DEPOTS_DIR = STORAGE_DIR / "assets" / "depots"
+
 SESSION_DAYS = 30
 
 PORT = int(os.environ.get('PORT', 5173))
@@ -401,6 +412,128 @@ def is_published(doc, today_str):
 def published_documents(group_id):
     today_str = date.today().isoformat()
     return [d for d in documents_for_group(group_id) if is_published(d, today_str)]
+
+
+# ── Dépôt de matériel ───────────────────────────────────────────────────────
+# L'inventaire est en lecture seule (produit par `build/materiel.py`) ; les
+# dépôts des enseignants sont en écriture. Les deux ne se touchent jamais.
+
+def load_materiel():
+    """L'inventaire produit par le build. Absent tant que le build n'a pas
+    tourné : on répond alors un dépôt vide plutôt qu'une erreur, pour que
+    l'écran affiche « rien encore » au lieu de casser."""
+    try:
+        with open(MATERIEL_FILE, encoding="utf-8") as f:
+            return json.load(f)
+    except (FileNotFoundError, json.JSONDecodeError):
+        return {"genereLe": "", "blocs": {}, "resume": {}, "porteurs": []}
+
+
+def load_depots():
+    """[{id, activiteId, seanceCode, type, chemin, format, octets, auteur,
+    note, deposeLe, origine}]."""
+    return _load_json_list(DEPOTS_FILE)
+
+
+def save_depots(depots):
+    _save_json(DEPOTS_FILE, depots)
+
+
+def fichier_du_materiel(file_id):
+    """Retrouve un fichier de l'inventaire par son identifiant, avec le
+    porteur et la séance auxquels il appartient. Sert de garde : seuls les
+    chemins **inscrits à l'inventaire** peuvent être mis dans une archive,
+    donc aucun paramètre d'URL ne peut désigner un fichier arbitraire."""
+    for porteur in load_materiel().get("porteurs", []):
+        for seance in porteur.get("seances", []):
+            for f in seance.get("fichiers", []):
+                if f.get("id") == file_id:
+                    return porteur, seance, f
+    return None, None, None
+
+
+def chemin_reel(rel_path):
+    """Le fichier sur le disque, volume d'abord puis code — même règle que
+    `_serve_from_storage`. Renvoie None si le chemin sort des assets ou
+    n'existe pas."""
+    rel_path = (rel_path or "").lstrip("/")
+    if not rel_path.startswith("assets/") or ".." in rel_path:
+        return None
+    for racine in (STORAGE_DIR, BASE_DIR):
+        p = racine / rel_path
+        if p.exists() and p.is_file():
+            return p
+    return None
+
+
+def fichiers_pour_archive(portee, porteur, codes=None, type_voulu=None):
+    """Les fichiers à mettre dans une archive, dans l'ordre d'enseignement.
+
+    `portee` : `module` (tout), `presentations`, `fiches`, `seances`.
+    `codes` restreint aux séances demandées."""
+    voulus = []
+    for seance in porteur.get("seances", []):
+        if codes and (seance.get("code") or "") not in codes:
+            continue
+        for f in seance.get("fichiers", []):
+            if type_voulu and f.get("type") != type_voulu:
+                continue
+            reel = chemin_reel(f.get("chemin", ""))
+            if reel:
+                voulus.append((seance.get("code"), f, reel))
+    if portee == "module" and porteur.get("plan"):
+        reel = chemin_reel(porteur["plan"].get("chemin", ""))
+        if reel:
+            voulus.append((None, porteur["plan"], reel))
+    return voulus
+
+
+def nom_archive(porteur, activite, portee, codes):
+    """Un nom d'archive doit rester lisible par un humain : pas d'identifiant
+    technique, pas d'UUID. C'est le nom que l'enseignant retrouvera dans son
+    dossier de téléchargements dans trois semaines."""
+    base = porteur.get("slug") or slugify(activite.get("title", "")) or "materiel"
+    if codes:
+        liste = sorted(codes)
+        tete = "-".join(liste[:4])
+        suffixe = f"-et-{len(liste) - 4}-autres" if len(liste) > 4 else ""
+        # La portée entre dans le nom quand elle restreint le contenu : sans
+        # elle, « les présentations de B3-C1 » et « les fiches de B3-C1 »
+        # arriveraient sous le même nom dans le dossier de téléchargements.
+        genre = f"_{portee}" if portee in ("presentations", "fiches") else ""
+        return f"{base}_{tete}{suffixe}{genre}.zip"
+    return f"{base}_{portee}.zip"
+
+
+DOSSIERS_ARCHIVE = {"presentation": "presentations", "fiche": "fiches",
+                    "plan": "plan-de-cours", "annexe": "annexes"}
+
+
+def construire_archive(fichiers, slug=None):
+    """Fabrique le zip en mémoire. Rien n'est écrit sur disque : une archive
+    pré-construite serait périmée au prochain build, et les 16 présentations
+    d'un module se compressent en une fraction de seconde.
+
+    Deux soins pour que l'archive s'ouvre bien dans le Finder : le nom du
+    module est retiré de chaque fichier (il est déjà dans le nom de
+    l'archive), et les types sont rangés en dossiers dès qu'il y en a
+    plusieurs — sans quoi seize présentations et seize fiches arrivent en
+    vrac dans la même liste alphabétique."""
+    types = {f.get("type") for _, f, _ in fichiers}
+    ranger = len(types) > 1
+
+    tampon = io.BytesIO()
+    with zipfile.ZipFile(tampon, "w", zipfile.ZIP_DEFLATED) as z:
+        for code, f, reel in fichiers:
+            interne = reel.name
+            if slug and interne.lower().startswith(slug.lower() + "-"):
+                interne = interne[len(slug) + 1:]
+            if code and not interne.upper().startswith(code.upper()):
+                interne = f"{code}-{interne}"
+            if ranger:
+                interne = f"{DOSSIERS_ARCHIVE.get(f.get('type'), 'autres')}/{interne}"
+            z.write(reel, interne)
+    return tampon.getvalue()
 
 
 def activities_for_group(group_id):
@@ -1246,6 +1379,12 @@ class Handler(http.server.SimpleHTTPRequestHandler):
         if path == "/api/prof/documents":
             self._handle_documents_list(params)
             return
+        if path == "/api/materiel":
+            self._handle_materiel(params)
+            return
+        if path == "/api/materiel/archive":
+            self._handle_materiel_archive(params)
+            return
 
         if path == "/api/debug":
             if not self._require_teacher():
@@ -1365,6 +1504,10 @@ class Handler(http.server.SimpleHTTPRequestHandler):
             self._handle_teacher_add()
         elif path == "/api/prof/documents":
             self._handle_document_add()
+        elif path == "/api/materiel/depot":
+            self._handle_materiel_depot_add()
+        elif path == "/api/materiel/visite":
+            self._handle_materiel_visite()
         elif path == "/api/prof/planification/copier":
             self._handle_schedule_copy()
         elif path == "/api/student/access":
@@ -1485,6 +1628,8 @@ class Handler(http.server.SimpleHTTPRequestHandler):
             self._handle_group_delete(path.rsplit("/", 1)[1])
         elif re.match(r"^/api/prof/documents/\d+$", path):
             self._handle_document_delete(int(path.rsplit("/", 1)[1]))
+        elif re.match(r"^/api/materiel/depot/[\w-]+$", path):
+            self._handle_materiel_depot_delete(path.rsplit("/", 1)[1])
         elif re.match(r"^/api/prof/enseignants/\d+$", path):
             try:
                 self._handle_teacher_delete(int(path.rsplit("/", 1)[1]))
@@ -2056,6 +2201,162 @@ class Handler(http.server.SimpleHTTPRequestHandler):
             return
         if cible.exists():
             cible.unlink()
+
+    # ── Dépôt de matériel ───────────────────────────────────────────────
+
+    def _handle_materiel(self, params):
+        """L'inventaire, les dépôts de l'équipe et la date de dernière visite.
+
+        La date sert au repère « nouveau » : elle est renvoyée telle qu'elle
+        était, et **n'est pas remise à jour ici**. Si elle l'était, un simple
+        rafraîchissement effacerait les repères avant que l'enseignant ait pu
+        les lire. C'est `POST /api/materiel/visite` qui l'avance, quand
+        l'écran a fini de les afficher."""
+        teacher = self._require_teacher()
+        if not teacher:
+            return
+        json_response(self, {
+            "materiel": load_materiel(),
+            "depots": load_depots(),
+            "derniereVisite": teacher.get("derniereVisiteMateriel", ""),
+            "role": teacher.get("role", "prof"),
+        })
+
+    def _handle_materiel_visite(self):
+        """Avance la date de dernière visite du dépôt. Conservée sur le
+        compte, pas dans le `localStorage` : l'enseignant qui passe de son
+        poste de classe à son portable doit retrouver les mêmes repères."""
+        teacher = self._require_teacher()
+        if not teacher:
+            return
+        maintenant = datetime.now().isoformat(timespec="seconds")
+        teachers = load_teachers()
+        for t in teachers:
+            if t["id"] == teacher["id"]:
+                t["derniereVisiteMateriel"] = maintenant
+        save_teachers(teachers)
+        json_response(self, {"success": True, "derniereVisite": maintenant})
+
+    def _handle_materiel_archive(self, params):
+        """Fabrique et renvoie une archive. Les fichiers viennent tous de
+        l'inventaire : le paramètre d'URL choisit *parmi* eux, il ne désigne
+        jamais un chemin."""
+        teacher = self._require_teacher()
+        if not teacher:
+            return
+
+        try:
+            activite_id = int(params.get("activiteId", [""])[0])
+        except (TypeError, ValueError):
+            json_response(self, {"error": "Activité manquante"}, 400)
+            return
+
+        portee = params.get("portee", ["module"])[0]
+        if portee not in ("module", "presentations", "fiches", "seances"):
+            json_response(self, {"error": "Portée inconnue"}, 400)
+            return
+
+        codes = [c.strip().upper()
+                 for c in (params.get("codes", [""])[0] or "").split(",")
+                 if c.strip()]
+        if portee == "seances" and not codes:
+            json_response(self, {"error": "Aucune séance choisie"}, 400)
+            return
+
+        porteur = next((p for p in load_materiel().get("porteurs", [])
+                        if p.get("activiteId") == activite_id), None)
+        activite = next((a for a in load_activities()
+                         if a.get("id") == activite_id), None)
+        if not porteur or not activite:
+            json_response(self, {"error": "Activité introuvable"}, 404)
+            return
+
+        type_voulu = {"presentations": "presentation",
+                      "fiches": "fiche"}.get(portee)
+        fichiers = fichiers_pour_archive(portee, porteur, codes, type_voulu)
+        if not fichiers:
+            json_response(self, {"error": "Aucun fichier à mettre dans l'archive"}, 404)
+            return
+
+        donnees = construire_archive(fichiers, porteur.get("slug"))
+        nom = nom_archive(porteur, activite, portee, codes)
+        self.send_response(200)
+        self.send_header("Content-Type", "application/zip")
+        self.send_header("Content-Length", str(len(donnees)))
+        self.send_header("Content-Disposition", f'attachment; filename="{nom}"')
+        self.end_headers()
+        self.wfile.write(donnees)
+
+    def _handle_materiel_depot_add(self):
+        """Le fichier retravaillé d'un enseignant. Il se place **à côté** du
+        fichier officiel, jamais à sa place : c'est une entrée de plus dans
+        `depots.json`, et l'inventaire n'est pas touché."""
+        teacher = self._require_teacher()
+        if not teacher:
+            return
+        form = self._parse_multipart()
+        if form is None:
+            json_response(self, {"error": "Aucun fichier reçu"}, 400)
+            return
+        champ = form["fichier"] if "fichier" in form else None
+        if champ is None or not getattr(champ, "filename", ""):
+            json_response(self, {"error": "Aucun fichier reçu"}, 400)
+            return
+
+        try:
+            activite_id = int(form.getvalue("activiteId", ""))
+        except (TypeError, ValueError):
+            json_response(self, {"error": "Activité manquante"}, 400)
+            return
+        if not any(a.get("id") == activite_id for a in load_activities()):
+            json_response(self, {"error": "Activité introuvable"}, 404)
+            return
+
+        depots = load_depots()
+        numero = max((int(str(d.get("id", "0")).rsplit("-", 1)[-1] or 0)
+                      for d in depots), default=0) + 1
+        dep_id = f"dep-{numero:04d}"
+
+        nom = safe_filename(champ.filename)
+        suffixe = Path(nom).suffix.lower()
+        contenu = champ.file.read()
+        DEPOTS_DIR.mkdir(parents=True, exist_ok=True)
+        (DEPOTS_DIR / f"{dep_id}{suffixe}").write_bytes(contenu)
+
+        depot = {
+            "id": dep_id,
+            "activiteId": activite_id,
+            "seanceCode": (form.getvalue("seanceCode", "") or "").upper() or None,
+            "type": form.getvalue("type", "presentation"),
+            "nom": nom,
+            "chemin": f"assets/depots/{dep_id}{suffixe}",
+            "format": suffixe.lstrip("."),
+            "octets": len(contenu),
+            "auteur": {"id": teacher["id"], "nom": teacher.get("nom", "")},
+            "note": (form.getvalue("note", "") or "").strip(),
+            "deposeLe": datetime.now().isoformat(timespec="seconds"),
+            "origine": "depot",
+        }
+        depots.append(depot)
+        save_depots(depots)
+        json_response(self, {"success": True, "depot": depot}, 201)
+
+    def _handle_materiel_depot_delete(self, dep_id):
+        """Retrait d'un dépôt. Réservé à l'administration, et le rôle est
+        revalidé ici : l'absence du bouton à l'écran n'est pas une garde."""
+        teacher = self._require_teacher(admin=True)
+        if not teacher:
+            return
+        depots = load_depots()
+        cible = next((d for d in depots if d.get("id") == dep_id), None)
+        if not cible:
+            json_response(self, {"error": "Dépôt introuvable"}, 404)
+            return
+        fichier = STORAGE_DIR / cible.get("chemin", "")
+        if fichier.exists() and fichier.is_file():
+            fichier.unlink()
+        save_depots([d for d in depots if d.get("id") != dep_id])
+        json_response(self, {"success": True})
 
     def _handle_documents_list(self, params):
         teacher = self._require_teacher()
