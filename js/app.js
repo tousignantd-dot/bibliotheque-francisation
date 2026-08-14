@@ -52,6 +52,12 @@ async function loadActivities() {
     state.activities = getDemoActivities();
   }
 
+  // Le badge de niveau ne se justifie que si le catalogue en mêle plusieurs :
+  // répété à l'identique sur chaque carte, il ne fait que voler de la largeur
+  // au titre, que l'en-tête de page annonce déjà.
+  state.plusieursNiveaux =
+    new Set(state.activities.map(a => a.level || 'Niveau 4')).size > 1;
+
   state.filtered = sortActivities([...state.activities]);
   updateCounter();
   render();
@@ -161,7 +167,10 @@ function buildCard(activity) {
       <div class="card-body">
         <div class="card-meta">
           <h2 class="card-title">${escHtml(activity.title)}</h2>
-          <span class="card-badge">${escHtml(activity.level || 'Niveau 4')}</span>
+          ${state.plusieursNiveaux
+            ? `<span class="card-badge">${escHtml(activity.level || 'Niveau 4')}</span>`
+            : ''
+          }
         </div>
         ${(activity.dateVue || activity.datePrevue) ? `
         <div class="card-dates">
