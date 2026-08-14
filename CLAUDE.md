@@ -115,6 +115,71 @@ choix de l'enseignant survit aux redéploiements.
   par partie n'aurait aucun effet côté élève. La liste est donc plate ; le
   chevron déplie les détails du module, pas des sous-sections.
 
+## Dépôt de matériel (PowerPoints et fiches à imprimer)
+
+Suit la remise `~/Downloads/design_handoff_depot_materiel`, source de vérité
+visuelle. Quatrième onglet de `enseignant.html`, rendu par `js/materiel.js`.
+
+- `js/materiel.js` **ne connaît ni la session ni les groupes** : `enseignant.js`
+  lui passe `{ json, api, activites, groupe }` dans `Materiel.init()`, appelé
+  depuis `ouvrirPortail()`. Le module ne touche jamais au `localStorage` ni à
+  `fetch` — le jeton reste l'affaire de la page hôte, qui porte sa connexion.
+  `init()` est protégé contre le double branchement (reconnexion).
+- Le dépôt se charge **à la première ouverture de l'onglet**, pas au démarrage.
+- **« Ma semaine » ne peut pas dire « mardi, séance B3 »** : `schedule.json`
+  porte des dates par *activité*, sans `sectionId`. La rangée du jour affiche
+  l'activité et offre ses seize séances en pastilles cliquables. Le jour où les
+  modules porteront un découpage, voir la note de `portail-enseignant-handoff`.
+- **L'impression passe par un cadre isolé** (`#matImpression`), pas par une
+  zone de la page : les fiches sont déjà des documents imprimables noir et
+  blanc, on les charge avec leurs propres styles et on imprime le cadre. Rien
+  de l'interface ne peut s'y glisser, et une série sort en un seul dialogue
+  (`page-break-after` entre les fiches). Ne pas remplacer par une injection
+  dans la page : les classes des fiches (`.card`, `.bloc`) entreraient en
+  collision avec celles du système de design.
+- Le filtre « Niveau » ne paraît que s'il y a plus d'un niveau au catalogue.
+
+- **Les présentations sont rangées par module** : `assets/powerpoints/<slug>/`.
+  Le slug est celui de `assets/interactive/<slug>/` — c'est la clé qui relie un
+  fichier à son activité. À plat, le `A1` du prochain module écraserait celui du
+  module 9. La constante `MODULE` de `build/powerpoints/build.py` fixe le
+  dossier de sortie.
+- **`data/materiel.json` est produit, jamais écrit à la main**
+  (`python3 build/materiel.py`). C'est le relevé de ce qui existe sur le
+  disque : une entrée non vérifiée serait un lien mort. `--verifier` compare
+  sans écrire. Il ne recopie **aucun** titre d'activité : il ne connaît que des
+  `activiteId` — les **entiers** de `activities.json`, pas des slugs.
+- La grille des séances a une source unique : `SEANCES` de
+  `build/powerpoints/build.py`. Un module sans dossier de production est mesuré
+  contre la grille standard à seize (4-4-4-2-2), ce qui permet d'afficher
+  « 0 séance sur 16 » au lieu de le taire.
+- **Vignettes** : `python3 build/vignettes.py` → `assets/vignettes/<slug>/<CODE>.png`.
+  Le poste n'a pas LibreOffice ; on réutilise `build/powerpoints/apercu.py`, qui
+  relit le `.pptx` livré et le repeint avec Pillow (paramètre `limite=1`).
+  Ne rend que ce qui a changé.
+- **Deux fichiers, deux natures, jamais mêlés** : `data/materiel.json` est
+  produit par le build et versionné (lu depuis `BASE_DIR`) ; `data/depots.json`
+  et `assets/depots/` portent les fichiers téléversés par les enseignants, donc
+  du volume et non versionnés. Les mêler effacerait le dépôt d'une collègue à
+  chaque build.
+- Routes : `GET /api/materiel` (inventaire + dépôts + `derniereVisite` + rôle),
+  `GET /api/materiel/archive?activiteId=&portee=&codes=`,
+  `POST /api/materiel/depot` (multipart), `POST /api/materiel/visite`,
+  `DELETE /api/materiel/depot/<id>` (admin, rôle revalidé côté serveur).
+- **Les archives se fabriquent à la demande, en mémoire** — jamais de `.zip` sur
+  disque, qui serait périmé au prochain build. Portées : `module`,
+  `presentations`, `fiches`, `seances`. Le nom reste lisible par un humain
+  (`module-probleme_B3-C1-C2.zip`, suffixe `-et-N-autres` au-delà de quatre).
+  Seuls les chemins **inscrits à l'inventaire** entrent dans une archive : le
+  paramètre d'URL choisit parmi eux, il ne désigne jamais un chemin.
+- `GET /api/materiel` **n'avance pas** `derniereVisite` : sinon un simple
+  rafraîchissement effacerait les repères « nouveau » avant lecture. C'est
+  `POST /api/materiel/visite` qui l'avance, une fois l'écran rendu. La date
+  vit sur le compte (`derniereVisiteMateriel`), pas dans le `localStorage`.
+- Le nombre de **pages** d'une fiche n'est pas mesurable (il dépend de
+  l'imprimante) : l'inventaire compte des **blocs**, écrits dans la fiche.
+  N'affichez pas « 2 pages » quelque part sans l'avoir mesuré.
+
 ## Fichiers du groupe et lien de rencontre
 
 - Un fichier partagé (`data/documents.json`) a une **période de parution**

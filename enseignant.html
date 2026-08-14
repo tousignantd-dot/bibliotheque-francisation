@@ -251,6 +251,158 @@
       box-shadow: 0 12px 30px rgba(23, 24, 26, .28);
     }
 
+    /* ══ Dépôt de matériel ══
+       Remise « Dépôt de matériel ». Deux vues d'un même écran : Ma semaine et
+       Le catalogue, avec le même panneau de détail à droite. */
+    .mat-vues { background: var(--surface-card); border-bottom: 1px solid var(--border); }
+    .mat-vues > .container {
+      display: flex; align-items: center; gap: var(--sp-4); flex-wrap: wrap;
+      padding-top: var(--sp-3); padding-bottom: var(--sp-3);
+    }
+    .mat-grille {
+      display: grid; grid-template-columns: minmax(0, 1fr) 372px;
+      gap: var(--sp-8); align-items: start; padding: var(--sp-8) 0 96px;
+    }
+    /* Le panneau colle sous les deux bandes de la page ET la barre de vues :
+       un `top` plus petit le ferait passer dessous au défilement. */
+    .mat-aside { position: sticky; top: 168px; display: grid; gap: var(--sp-5); }
+
+    .mat-confirme {
+      display: flex; align-items: center; gap: var(--sp-3);
+      margin-top: var(--sp-6); padding: var(--sp-4) var(--sp-5);
+      background: var(--ok-bg); border: 1px solid var(--ok-line); border-radius: var(--r-sm);
+      font-size: var(--fs-body-sm); font-weight: var(--fw-medium); color: var(--ok-ink);
+    }
+
+    .mat-entete { display: flex; align-items: flex-end; gap: var(--sp-4); flex-wrap: wrap; }
+    .mat-entete h2 { margin: var(--sp-1) 0 0; font-size: var(--fs-h3); font-weight: var(--fw-black); color: var(--text-strong); }
+
+    /* — Ma semaine — */
+    .mat-jour-entete {
+      display: flex; align-items: center; gap: var(--sp-3); flex-wrap: wrap;
+      background: var(--surface-sunken); padding: var(--sp-4) var(--sp-6);
+      border-bottom: 1px solid var(--paper-200);
+      font-size: var(--fs-body); font-weight: var(--fw-black); color: var(--text-strong);
+    }
+    .mat-jour--auj { border-left: 4px solid var(--sel-bg); }
+    .mat-jour--demain { border-left: 4px solid var(--accent); }
+    .mat-jour--autre { border-left: 4px solid var(--border-tint); }
+    .mat-quand {
+      padding: 4px 10px; border-radius: var(--r-pill);
+      font-size: var(--fs-label); font-weight: var(--fw-black);
+      letter-spacing: .06em; text-transform: uppercase;
+    }
+    .mat-quand--auj { background: var(--sel-bg); color: var(--sel-ink); }
+    .mat-quand--demain { background: var(--accent-soft); color: var(--accent-ink); }
+    .mat-plage {
+      display: flex; flex-wrap: wrap; gap: var(--sp-4) var(--sp-5);
+      padding: var(--sp-5) var(--sp-6); border-bottom: 1px solid var(--paper-200);
+    }
+    .mat-plage:last-child { border-bottom: 0; }
+    .mat-heures { width: 132px; flex: none; }
+    /* L'heure ne se coupe jamais : « 13 h 00 – 15 h 00 » sur deux lignes se
+       lit comme deux plages différentes. */
+    .mat-heures b { display: block; white-space: nowrap; font-size: var(--fs-body-sm); font-weight: var(--fw-bold); color: var(--text-strong); }
+    .mat-heures span { display: block; margin-top: 2px; font-size: var(--fs-meta); font-weight: var(--fw-semi); letter-spacing: .06em; text-transform: uppercase; color: var(--text-muted); }
+    @media (max-width: 760px) { .mat-heures { width: 100%; } }
+    .mat-plage-txt { flex: 1 1 240px; min-width: 0; }
+    .mat-plage-actions { margin-left: auto; display: flex; gap: var(--sp-2); flex-wrap: wrap; align-items: flex-start; }
+
+    /* Les pastilles de séance : le raccourci de 8 h 15 quand la planification
+       ne dit pas laquelle des seize est au programme aujourd'hui. */
+    .mat-pastilles { display: flex; flex-wrap: wrap; gap: 6px; margin-top: var(--sp-3); }
+    .mat-pastille-seance {
+      min-width: 44px; min-height: 32px; padding: 4px 10px;
+      background: var(--surface-card); border: 1px solid var(--border); border-radius: var(--r-sm);
+      font: inherit; font-size: var(--fs-ui-sm); font-weight: var(--fw-black);
+      color: var(--text-strong); cursor: pointer;
+    }
+    .mat-pastille-seance:hover { background: var(--paper-100); }
+    .mat-pastille-seance.is-ouverte { background: var(--sel-bg); color: var(--sel-ink); border-color: var(--sel-bg); }
+    .mat-pastille-seance[disabled] { color: var(--text-muted); cursor: default; }
+
+    /* — Catalogue — */
+    .mat-filtres-grille {
+      display: grid; grid-template-columns: repeat(auto-fit, minmax(206px, 1fr));
+      gap: var(--sp-3);
+    }
+    .mat-module-entete { display: flex; align-items: flex-start; gap: var(--sp-4); flex-wrap: wrap; padding: var(--sp-5) var(--sp-6); }
+    .mat-module-txt { flex: 1; min-width: 240px; }
+    .mat-module-txt h3 { margin: 2px 0 0; font-size: var(--fs-h3); font-weight: var(--fw-black); color: var(--text-strong); }
+    .mat-module-etat { margin-top: var(--sp-3); display: flex; align-items: center; gap: var(--sp-3); flex-wrap: wrap; }
+    .mat-module-actions { display: grid; gap: var(--sp-2); }
+
+    .mat-seance {
+      display: flex; align-items: center; gap: var(--sp-3); flex-wrap: wrap;
+      padding: var(--sp-3) var(--sp-6); border-top: 1px solid var(--paper-200);
+    }
+    .mat-seance.is-choisie { background: var(--accent-soft); }
+    .mat-seance-code { flex: none; width: 46px; font-size: var(--fs-body-sm); font-weight: var(--fw-black); color: var(--text-strong); }
+    .mat-seance-bloc { flex: none; width: 104px; font-size: var(--fs-meta); font-weight: var(--fw-semi); letter-spacing: .06em; text-transform: uppercase; color: var(--text-muted); }
+    .mat-seance-titre {
+      flex: 1; min-width: 180px; text-align: left; background: none; border: none; padding: 0;
+      font: inherit; font-size: var(--fs-body-sm); font-weight: var(--fw-semi);
+      color: var(--text-strong); cursor: pointer; text-decoration: underline;
+      text-decoration-color: var(--border); text-underline-offset: 3px;
+    }
+    .mat-seance-titre:hover { text-decoration-color: var(--accent); }
+    .mat-seance-fic { flex: none; font-size: var(--fs-ui-sm); font-weight: var(--fw-semi); color: var(--text-muted); }
+    .mat-seance-fic--rien { color: var(--warn-ink); }
+
+    /* — Panneau de détail — */
+    .mat-fichier { padding: var(--sp-5) var(--sp-6); border-top: 1px solid var(--paper-200); }
+    .mat-fichier:first-child { border-top: 0; }
+    .mat-genre { font-size: var(--fs-meta); font-weight: var(--fw-black); letter-spacing: .08em; text-transform: uppercase; color: var(--text-accent); }
+    .mat-fichier-titre { margin-top: var(--sp-2); font-size: var(--fs-body-sm); font-weight: var(--fw-bold); color: var(--text-strong); }
+    .mat-resume { margin-top: 4px; font-size: var(--fs-ui-sm); font-weight: var(--fw-medium); color: var(--ink-500); }
+    .mat-apercu {
+      margin-top: var(--sp-3); padding: var(--sp-3);
+      background: var(--surface-sunken); border: 1px solid var(--border); border-radius: var(--r-sm);
+    }
+    .mat-apercu img, .mat-apercu .mat-substitut {
+      display: block; width: 100%; aspect-ratio: 16 / 9; object-fit: cover;
+      background: var(--surface-card); border: 1px solid var(--border-tint); border-radius: 6px;
+    }
+    .mat-substitut {
+      display: flex !important; align-items: center; justify-content: center; padding: var(--sp-4);
+      text-align: center; font-size: var(--fs-ui-sm); font-weight: var(--fw-bold); color: var(--text-muted);
+    }
+    .mat-legende { margin-top: var(--sp-2); font-size: var(--fs-meta); font-weight: var(--fw-semi); color: var(--text-muted); }
+    .mat-meta { margin-top: var(--sp-3); font-size: var(--fs-meta); font-weight: var(--fw-semi); color: var(--text-muted); }
+    .mat-actions { margin-top: var(--sp-3); display: flex; gap: var(--sp-2); flex-wrap: wrap; }
+    .mat-manque {
+      margin-top: var(--sp-3); padding: var(--sp-4);
+      background: var(--warn-bg); border: 1px solid var(--warn-line); border-radius: var(--r-sm);
+    }
+    .mat-manque b { display: block; font-size: var(--fs-body-sm); font-weight: var(--fw-bold); color: var(--warn-ink); }
+    .mat-manque span { display: block; margin-top: 4px; font-size: var(--fs-ui-sm); font-weight: var(--fw-medium); color: var(--warn-ink); }
+
+    /* Plaque encre de la sélection : un seul bloc foncé à la fois dans la
+       colonne, et il ne paraît que si des séances sont cochées. */
+    .mat-selection { background: var(--sel-bg); color: var(--sel-ink); border-radius: var(--r-md); padding: var(--sp-5); }
+    .mat-selection b { font-size: var(--fs-body); font-weight: var(--fw-black); }
+    .mat-selection code {
+      display: block; margin-top: var(--sp-3); word-break: break-all;
+      font-size: var(--fs-meta); font-weight: var(--fw-semi); color: var(--paper-200);
+    }
+    .mat-selection .btn { width: 100%; }
+    .mat-selection-actions { margin-top: var(--sp-4); display: grid; gap: var(--sp-2); }
+
+    .mat-neuf {
+      flex: none; padding: 3px 9px; border-radius: var(--r-pill);
+      background: var(--sel-bg); color: var(--sel-ink);
+      font-size: var(--fs-meta); font-weight: var(--fw-black); letter-spacing: .06em; text-transform: uppercase;
+    }
+    .mat-barre { height: 8px; border-radius: var(--r-pill); background: var(--paper-200); overflow: hidden; }
+    .mat-barre > i { display: block; height: 100%; background: var(--accent); transition: width .2s; }
+
+    #matImpression { position: absolute; width: 0; height: 0; border: 0; visibility: hidden; }
+
+    @media (max-width: 1100px) {
+      .mat-grille { grid-template-columns: 1fr; }
+      .mat-aside { position: static; }
+    }
+
     .pe-connexion { padding: var(--sp-12) 0; display: flex; justify-content: center; }
     .pe-connexion > div { width: 100%; max-width: 480px; }
     .pe-note { margin: 0; font-size: var(--fs-ui); font-weight: var(--fw-semi); color: var(--text-muted); }
@@ -303,6 +455,7 @@
           <button type="button" class="pe-onglet" data-ecran="planif">Planifier</button>
           <button type="button" class="pe-onglet" data-ecran="eleves">Élèves</button>
           <button type="button" class="pe-onglet" data-ecran="groupes">Groupes et comptes</button>
+          <button type="button" class="pe-onglet" data-ecran="materiel">Matériel</button>
           <span class="pe-qui">
             <span class="pe-initiales" id="initiales" aria-hidden="true"></span>
             <span class="pe-nom" id="nomEnseignant"></span>
@@ -474,7 +627,41 @@
       </div>
     </div>
   </main>
+
+  <!-- ── Matériel ── -->
+  <main id="vueMateriel" hidden>
+    <header class="band">
+      <div class="container">
+        <div class="band__eyebrow">Espace enseignant · Francisation</div>
+        <h1 style="margin:var(--sp-3) 0 0;font-size:var(--fs-h2);font-weight:var(--fw-black)">Dépôt de matériel</h1>
+        <p class="band__lead">Les présentations de séance et les fiches élèves de l'équipe, accrochées à la planification.</p>
+      </div>
+    </header>
+
+    <div class="mat-vues">
+      <div class="container">
+        <span class="pe-eyebrow">Voir</span>
+        <div style="display:flex;gap:var(--sp-2);flex-wrap:wrap" id="matVues">
+          <button type="button" class="btn btn--sm" data-vue="semaine">Ma semaine</button>
+          <button type="button" class="btn btn--sm" data-vue="catalogue">Le catalogue</button>
+        </div>
+      </div>
+    </div>
+
+    <div class="container">
+      <div class="mat-confirme" id="matConfirme" hidden></div>
+      <div class="mat-grille">
+        <div class="stack-l" id="matColonne"></div>
+        <aside class="mat-aside" id="matAside"></aside>
+      </div>
+    </div>
+  </main>
 </div>
+
+<!-- Zone d'impression : les fiches sont chargées dans ce cadre isolé, qui
+     porte leurs propres styles. Imprimer le cadre n'imprime que lui — aucun
+     en-tête d'interface ne peut s'y glisser. -->
+<iframe id="matImpression" title="Impression des fiches" aria-hidden="true"></iframe>
 
 <!-- ══════════ Modales ══════════ -->
 <div class="pe-modale" id="modaleDates" hidden>
@@ -586,6 +773,7 @@
 
 <div class="pe-message" id="message" role="status" hidden></div>
 
+<script src="js/materiel.js"></script>
 <script src="js/enseignant.js"></script>
 </body>
 </html>

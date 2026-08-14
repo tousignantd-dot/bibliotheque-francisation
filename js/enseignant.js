@@ -285,6 +285,15 @@
     expiree = false;
     $('ecranConnexion').hidden = true;
     $('portail').hidden = false;
+    // Le dépôt de matériel ne connaît ni la session ni les groupes : il reçoit
+    // ici les quatre choses dont il a besoin. Le jeton reste l'affaire de
+    // cette page, qui porte son propre écran de connexion.
+    Materiel.init({
+      json,
+      api,
+      activites: () => etat.activites,
+      groupe: groupeActif,
+    });
     $('nomEnseignant').textContent = etat.enseignant.nom;
     $('initiales').textContent = etat.enseignant.nom.split(' ').map((m) => m[0]).join('').slice(0, 2).toUpperCase();
     $('carteEnseignants').hidden = etat.enseignant.role !== 'admin';
@@ -323,6 +332,7 @@
       return;
     }
     etat.selection.clear();
+    Materiel.changerGroupe();
     rendreTout();
   }
 
@@ -754,11 +764,15 @@
     $('vuePlanif').hidden = nom !== 'planif';
     $('vueEleves').hidden = nom !== 'eleves';
     $('vueGroupes').hidden = nom !== 'groupes';
+    $('vueMateriel').hidden = nom !== 'materiel';
     document.querySelectorAll('.pe-onglet').forEach((b) => {
       if (b.dataset.ecran === nom) b.setAttribute('aria-current', 'page');
       else b.removeAttribute('aria-current');
     });
     if (nom === 'groupes') chargerEnseignants();
+    // Le dépôt se charge à la première ouverture de l'onglet, pas au
+    // démarrage : la plupart des visites au portail ne le touchent pas.
+    if (nom === 'materiel') Materiel.afficher();
     window.scrollTo({ top: 0 });
   }
 
