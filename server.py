@@ -101,6 +101,11 @@ GROUP_DOCS_DIR = STORAGE_DIR / "assets" / "documents-groupe"
 # lit depuis BASE_DIR et jamais depuis le volume, que la prochaine génération
 # écraserait de toute façon.
 MATERIEL_FILE = BASE_DIR / "data" / "materiel.json"
+# Le découpage des modules en sections (« Je découvre · Défi 1 · … »). Produit
+# lui aussi par le build (`python3 build/sections.py`), qui le déduit de la
+# constante `SECTIONS` de chaque module : même raison que l'inventaire, il
+# décrit ce que le code livre et se lit donc depuis BASE_DIR.
+SECTIONS_FILE = BASE_DIR / "data" / "sections.json"
 # Les fichiers téléversés par les enseignants, eux, sont mutables : ils vivent
 # dans le volume, à part de l'inventaire. Les mêler reviendrait à effacer le
 # dépôt d'une collègue à chaque build.
@@ -331,31 +336,69 @@ def save_schedule(entries):
 SCHEDULE_FIELDS = ("dateVue", "datePrevue", "dateFin", "lien")
 
 
+def _section_id(entry):
+    """La section visée par une entrée de planification, '' pour le module.
+
+    Les entrées écrites avant le découpage n'ont pas de clé `sectionId` : elles
+    valent pour le module entier, et c'est la chaîne vide qui les désigne."""
+    return (entry.get("sectionId") or "").strip()
+
+
 def schedule_for_group(group_id):
-    """{activityId: {dateVue, datePrevue, dateFin, lien}} pour un groupe."""
+    """{activityId: {dateVue, datePrevue, dateFin, lien}} pour un groupe.
+
+    Les dates du module entier, uniquement — les entrées de section sont
+    laissées à `sections_schedule_for_group()`. Tout le portail existant lit
+    cette table : y mêler les sections avancerait ou reculerait la date d'une
+    activité selon celle de son dernier défi."""
     return {
         e["activityId"]: {key: e.get(key, "") for key in SCHEDULE_FIELDS}
         for e in load_schedule()
-        if e.get("groupId") == group_id
+        if e.get("groupId") == group_id and not _section_id(e)
     }
 
 
-def set_schedule_dates(group_id, activity_id, fields):
+def sections_schedule_for_group(group_id):
+    """{activityId: {sectionId: {dateVue, datePrevue, dateFin, lien}}}."""
+    out = {}
+    for e in load_schedule():
+        sid = _section_id(e)
+        if e.get("groupId") != group_id or not sid:
+            continue
+        out.setdefault(e["activityId"], {})[sid] = {
+            key: e.get(key, "") for key in SCHEDULE_FIELDS
+        }
+    return out
+
+
+def set_schedule_dates(group_id, activity_id, fields, section_id=""):
     """Écrit les dates d'une activité pour un groupe. `fields` peut ne contenir
-    qu'une partie de dateVue/datePrevue/dateFin/lien."""
+    qu'une partie de dateVue/datePrevue/dateFin/lien.
+
+    Avec un `section_id`, ce sont les dates d'une section du module (« Défi 2 »)
+    qui sont posées, sans toucher à celles du module."""
+    section_id = (section_id or "").strip()
     entries = load_schedule()
     target = next(
         (e for e in entries
-         if e.get("groupId") == group_id and e.get("activityId") == activity_id),
+         if e.get("groupId") == group_id and e.get("activityId") == activity_id
+         and _section_id(e) == section_id),
         None,
     )
     if target is None:
         target = {"groupId": group_id, "activityId": activity_id}
+        if section_id:
+            target["sectionId"] = section_id
         target.update({key: "" for key in SCHEDULE_FIELDS})
         entries.append(target)
     for key in SCHEDULE_FIELDS:
         if key in fields:
             target[key] = fields[key] or ""
+    # Une section sans aucune date ne vaut plus rien : la garder ferait grossir
+    # le fichier d'entrées vides, et « retirer les dates » doit vraiment
+    # ramener la section au régime de son module.
+    if section_id and not any(target.get(key) for key in SCHEDULE_FIELDS):
+        entries = [e for e in entries if e is not target]
     save_schedule(entries)
     return target
 
@@ -376,6 +419,7 @@ def copy_schedule(source_group_id, target_group_id, decalage=0):
             return ""
 
     source = schedule_for_group(source_group_id)
+    sections_source = sections_schedule_for_group(source_group_id)
     entries = [e for e in load_schedule() if e.get("groupId") != target_group_id]
     copiees = 0
     for activity_id, dates in source.items():
@@ -390,6 +434,21 @@ def copy_schedule(source_group_id, target_group_id, decalage=0):
             "lien": dates.get("lien", ""),
         })
         copiees += 1
+        # Le découpage suit son module : reprendre la planification d'un groupe
+        # sans ses sections rouvrirait d'un coup des défis que le groupe modèle
+        # ouvre un par un.
+        for section_id, sdates in sections_source.get(activity_id, {}).items():
+            if not sdates.get("datePrevue"):
+                continue
+            entries.append({
+                "groupId": target_group_id,
+                "activityId": activity_id,
+                "sectionId": section_id,
+                "dateVue": "",
+                "datePrevue": decale(sdates.get("datePrevue")),
+                "dateFin": decale(sdates.get("dateFin")),
+                "lien": sdates.get("lien", ""),
+            })
     save_schedule(entries)
     return copiees
 
@@ -654,6 +713,66 @@ def is_offered(dates, today_str):
     if df and df < today_str:
         return False
     return dp <= today_str
+
+
+def load_sections_catalogue():
+    """{activiteId (int): [{id, titre, chapeau}]} — le découpage des modules.
+
+    Produit par `build/sections.py`. Absent tant que le build n'a pas tourné :
+    on répond alors un découpage vide, et tout se comporte comme avant, c'est-
+    à-dire un module planifié d'un seul bloc."""
+    try:
+        with open(SECTIONS_FILE, encoding="utf-8") as f:
+            brut = json.load(f)
+    except (FileNotFoundError, json.JSONDecodeError):
+        return {}
+    return {int(k): v for k, v in brut.items()}
+
+
+def sections_of_activity(activity_id):
+    return load_sections_catalogue().get(activity_id, [])
+
+
+def is_section_offered(module_dates, section_dates, today_str):
+    """Une section n'est ouverte que si son module l'est.
+
+    Sans date propre, la section suit son module — c'est ce qui laisse les
+    modules déjà planifiés s'ouvrir en entier comme avant. Avec une date, elle
+    s'ouvre à son tour : le module devient une coquille qui se remplit."""
+    if not is_offered(module_dates, today_str):
+        return False
+    dp = section_dates.get("datePrevue", "")
+    df = section_dates.get("dateFin", "")
+    if not dp:
+        return True
+    if df and df < today_str:
+        return False
+    return dp <= today_str
+
+
+def sections_state_for_student(group_id, activity_id, today_str=None):
+    """[{id, titre, chapeau, datePrevue, dateFin, ouverte}] pour un élève.
+
+    Liste vide si le module n'a pas de découpage : le module ouvre alors tout,
+    ce qui est exactement son comportement d'avant."""
+    today_str = today_str or date.today().isoformat()
+    sections = sections_of_activity(activity_id)
+    if not sections:
+        return []
+    module_dates = schedule_for_group(group_id).get(activity_id, {})
+    planif = sections_schedule_for_group(group_id).get(activity_id, {})
+    out = []
+    for s in sections:
+        dates = planif.get(s["id"], {})
+        out.append({
+            "id": s["id"],
+            "titre": s.get("titre", ""),
+            "chapeau": s.get("chapeau", ""),
+            "datePrevue": dates.get("datePrevue", ""),
+            "dateFin": dates.get("dateFin", ""),
+            "ouverte": is_section_offered(module_dates, dates, today_str),
+        })
+    return out
 
 
 def get_available_activity_ids(group_id):
@@ -1519,6 +1638,12 @@ class Handler(http.server.SimpleHTTPRequestHandler):
                 return
             json_response(self, activities_for_group(group_id))
             return
+        if path == "/api/sections":
+            self._handle_sections(params)
+            return
+        if path == "/api/student/sections":
+            self._handle_student_sections(params)
+            return
         if path == "/api/student/activities":
             self._handle_student_activities(params)
             return
@@ -1968,8 +2093,56 @@ class Handler(http.server.SimpleHTTPRequestHandler):
 
         if "lien" in body:
             body["lien"] = normalize_lien(body["lien"])
-        entry = set_schedule_dates(group_id, activity_id, body)
+
+        # Une date peut viser une section du module (« Défi 2 ») plutôt que le
+        # module entier. On refuse une section inconnue : une faute de frappe
+        # créerait une entrée que plus rien ne lit ni n'efface.
+        section_id = (body.get("sectionId") or "").strip()
+        if section_id:
+            connues = {s["id"] for s in sections_of_activity(activity_id)}
+            if section_id not in connues:
+                json_response(self, {"error": "Section introuvable"}, 404)
+                return
+
+        entry = set_schedule_dates(group_id, activity_id, body, section_id)
         json_response(self, {"success": True, "dates": entry})
+
+    def _handle_sections(self, params):
+        """Le découpage des modules, avec les dates de section du groupe.
+
+        `{"35": {"sections": [{id, titre, chapeau}], "dates": {sectionId: {…}}}}`
+        — le catalogue est commun, les dates appartiennent au groupe."""
+        teacher = self._require_teacher()
+        if not teacher:
+            return
+        group_id = self._group_from_params(teacher, params)
+        if group_id is None:
+            return
+        planif = sections_schedule_for_group(group_id)
+        json_response(self, {
+            str(aid): {"sections": secs, "dates": planif.get(aid, {})}
+            for aid, secs in load_sections_catalogue().items()
+        })
+
+    def _handle_student_sections(self, params):
+        """Ce qui est ouvert, pour le module lui-même : c'est lui qui verrouille
+        ses onglets, l'élève ouvrant le fichier directement."""
+        code = params.get("code", [""])[0].strip().upper()
+        student = validate_student_code(code)
+        if not student:
+            json_response(self, {"error": "Non autorisé"}, 401)
+            return
+        try:
+            activity_id = int(params.get("activityId", [""])[0])
+        except (ValueError, IndexError):
+            json_response(self, {"error": "activityId manquant"}, 400)
+            return
+        sections = sections_state_for_student(student.get("groupId"), activity_id)
+        json_response(self, {
+            "activityId": activity_id,
+            "decoupe": bool(sections),
+            "sections": sections,
+        })
 
     def _handle_clear_log(self):
         """Ne vide que le journal du groupe demandé."""

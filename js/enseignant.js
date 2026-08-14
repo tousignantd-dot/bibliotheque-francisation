@@ -163,6 +163,40 @@
 
   const libelleCocher = (n) => (n === 1 ? 'Cocher la ligne' : `Cocher les ${n} lignes`);
 
+  /* — Sections d'un module —
+     Une ligne de planification est soit un module (« 35 »), soit une de ses
+     sections (« 35:t1 »). La clé sert de jeton de sélection et de rangée dans
+     l'aperçu des dates : une seule liste ordonnée, donc un seul rythme. */
+
+  const cle = (activiteId, sectionId) =>
+    (sectionId ? `${activiteId}:${sectionId}` : String(activiteId));
+
+  /** [{id, titre, chapeau, dates}] pour une activité, [] si elle n'est pas
+      découpée — un atelier d'une seule page se planifie d'un bloc. */
+  function sectionsDe(activiteId) {
+    const entree = etat.sections[String(activiteId)];
+    if (!entree) return [];
+    return (entree.sections || []).map((s) => ({
+      ...s, dates: (entree.dates || {})[s.id] || {},
+    }));
+  }
+
+  /** Une rangée se déplie si elle a des sections à planifier ou des détails
+      pédagogiques à montrer — le chevron ne promet jamais du vide. */
+  const deployable = (a) => Boolean(DETAILS[a.id] || sectionsDe(a.id).length);
+
+  /** L'état d'une section : sans date propre, elle suit son module. C'est ce
+      qui laisse les modules déjà planifiés s'ouvrir en entier comme avant. */
+  function statutSection(activite, section) {
+    if (!section.dates.datePrevue) {
+      const st = statut(activite);
+      return st.cle === 'vide'
+        ? st
+        : { cle: st.cle, glyphe: st.glyphe, texte: `Suit le module · ${st.texte.toLowerCase()}` };
+    }
+    return statut(section.dates);
+  }
+
   const pastille = (st, texte) =>
     `<span class="pe-pastille pe-pastille--${st.cle}"><span aria-hidden="true">${st.glyphe}</span>${esc(texte || st.texte)}</span>`;
 
@@ -218,12 +252,18 @@
     journal: [],
     corrigeMoi: [],
     enseignants: [],
+    // Le découpage des modules et les dates de section du groupe, tel que
+    // `/api/sections` le renvoie : {activiteId: {sections, dates}}.
+    sections: {},
     deplies: new Set(),
+    // Les lignes cochées, module et sections mêlés. Une clé de section s'écrit
+    // « 35:t1 » — une seule liste, donc un seul rythme de dates à appliquer.
     selection: new Set(),
     recherche: '',
     filtre: 'tous',
     rythme: 'semaine',
     detail: null,
+    detailSection: '',
     sourceCopie: null,
     glisse: false,
   };
@@ -316,13 +356,17 @@
     }
     const g = `groupId=${encodeURIComponent(etat.groupeId)}`;
     try {
-      const [activites, documents, eleves, progression, journal, corrigeMoi] = await Promise.all([
+      const [activites, documents, eleves, progression, journal, corrigeMoi, sections] = await Promise.all([
         json(`/api/activities?${g}`),
         json(`/api/prof/documents?${g}`),
         json(`/api/admin/students?${g}`),
         json(`/api/admin/progress?${g}`),
         json(`/api/admin/access-log?${g}`),
         json(`/api/admin/corrige-moi?${g}`),
+        // Le découpage vient avec les dates du groupe. Un serveur qui n'a pas
+        // encore le relevé (`build/sections.py`) répond vide : la liste
+        // redevient plate, sans casser la page.
+        json(`/api/sections?${g}`).catch(() => ({})),
       ]);
       etat.activites = activites;
       etat.documents = documents;
@@ -330,6 +374,7 @@
       etat.progression = progression;
       etat.journal = journal;
       etat.corrigeMoi = corrigeMoi;
+      etat.sections = sections || {};
     } catch (e) {
       if (!expiree) dire(`Chargement impossible : ${e.message}`);
       return;
@@ -424,12 +469,12 @@
     const liste = visibles();
     $('titreListe').textContent = `${liste.length} activité${liste.length > 1 ? 's' : ''} du catalogue`;
 
-    const cours = liste.filter((a) => a.categorie === 'cours' && DETAILS[a.id]);
+    const cours = liste.filter(deployable);
     const toutDeplie = cours.length > 0 && cours.every((a) => etat.deplies.has(a.id));
     $('boutonDeploiTout').textContent = toutDeplie ? 'Replier les détails' : 'Déplier les détails';
     $('boutonDeploiTout').hidden = cours.length === 0;
 
-    const toutesCochees = liste.length > 0 && liste.every((a) => etat.selection.has(a.id));
+    const toutesCochees = liste.length > 0 && liste.every((a) => etat.selection.has(cle(a.id)));
     $('boutonToutCocher').textContent = toutesCochees ? 'Tout décocher' : libelleCocher(liste.length);
     $('boutonToutCocher').hidden = liste.length === 0;
 
@@ -443,31 +488,62 @@
       const st = statut(a);
       const estCours = a.categorie === 'cours';
       const infos = estCours ? DETAILS[a.id] : null;
+      const secs = sectionsDe(a.id);
       const deplie = etat.deplies.has(a.id);
       const temps = (a.tempsVerbaux && a.tempsVerbaux.length ? a.tempsVerbaux : (infos ? infos.temps : []));
       const meta = estCours
         ? `Cours · ${esc(a.domaineDeVie || 'domaine à préciser')}`
         : `Atelier · ${esc(a.domaineDeVie || 'domaine à préciser')} · ${esc(temps.join(', ') || '—')}`;
 
+      const coche = etat.selection.has(cle(a.id));
+      const metaSec = secs.length
+        ? `${meta} · ${secs.length} sections`
+        : meta;
       const rangee = `
-        <div class="card__row pe-rangee${etat.selection.has(a.id) ? ' is-checked' : ''}" data-id="${a.id}">
-          ${infos
+        <div class="card__row pe-rangee${coche ? ' is-checked' : ''}" data-id="${a.id}">
+          ${deployable(a)
             ? `<button type="button" class="pe-chevron" data-deploi="${a.id}" aria-expanded="${deplie}"
                        aria-label="Détails de ${esc(a.title)}">${deplie ? '▾' : '▸'}</button>`
             : '<span style="width:44px;flex:none" aria-hidden="true"></span>'}
           <input type="checkbox" class="pe-case" data-coche="${a.id}"
-                 ${etat.selection.has(a.id) ? 'checked' : ''} aria-label="${esc(a.title)}" />
+                 ${coche ? 'checked' : ''} aria-label="${esc(a.title)}" />
           <div class="pe-rangee-txt">
             <div class="pe-rangee-titre">${esc(a.title)}</div>
-            <div class="pe-rangee-meta">${meta}</div>
+            <div class="pe-rangee-meta">${metaSec}</div>
           </div>
           ${pastille(st)}
           <button type="button" class="btn btn--ghost btn--sm" data-dates="${a.id}">Dates</button>
         </div>`;
 
-      if (!infos || !deplie) return rangee;
+      if (!deplie) return rangee;
 
-      return rangee + `
+      // Les sections d'abord : c'est ce qu'on vient chercher en dépliant une
+      // rangée pour planifier. Les détails pédagogiques suivent.
+      const bloc = !secs.length ? '' : `
+        <div class="card__row pe-sections">
+          <h4 class="pe-sections-titre">Sections du module</h4>
+          ${secs.map((s) => {
+            const k = cle(a.id, s.id);
+            const cocheSec = etat.selection.has(k);
+            const sst = statutSection(a, s);
+            return `
+            <div class="pe-sec${cocheSec ? ' is-checked' : ''}">
+              <input type="checkbox" class="pe-case" data-coche="${a.id}" data-section="${esc(s.id)}"
+                     ${cocheSec ? 'checked' : ''} aria-label="${esc(a.title)} — ${esc(s.titre)}" />
+              <div class="pe-sec-txt">
+                <div class="pe-sec-titre">${esc(s.titre)}</div>
+                ${s.chapeau ? `<div class="pe-sec-meta">${esc(s.chapeau)}</div>` : ''}
+              </div>
+              ${pastille(sst)}
+              <button type="button" class="btn btn--ghost btn--sm"
+                      data-dates="${a.id}" data-section="${esc(s.id)}">Dates</button>
+            </div>`;
+          }).join('')}
+        </div>`;
+
+      if (!infos) return rangee + bloc;
+
+      return rangee + bloc + `
         <div class="card__row pe-infos">
           <div class="pe-infos-grille">
             <div>
@@ -495,20 +571,37 @@
 
   /* — Barre d'action collante — */
 
+  /** Les lignes cochées dans l'ordre de la liste : un module, puis ses
+      sections dépliées. C'est cet ordre que le rythme suit. */
+  function lignesChoisies() {
+    const out = [];
+    visibles().forEach((a) => {
+      if (etat.selection.has(cle(a.id))) {
+        out.push({ id: a.id, section: '', titre: a.title });
+      }
+      sectionsDe(a.id).forEach((s) => {
+        if (etat.selection.has(cle(a.id, s.id))) {
+          out.push({ id: a.id, section: s.id, titre: `${a.title} · ${s.titre}` });
+        }
+      });
+    });
+    return out;
+  }
+
   function datesCalculees() {
-    const choisies = visibles().filter((a) => etat.selection.has(a.id));
+    const choisies = lignesChoisies();
     const pas = PAS[etat.rythme] ?? 7;
     const debut = $('dateDebut').value;
     if (!debut) return [];
     const base = lire(debut);
     const eviter = $('eviterFinDeSemaine').checked;
-    return choisies.map((a, i) => {
+    return choisies.map((ligne, i) => {
       const d = new Date(base.getTime() + pas * i * JOUR);
       if (eviter && pas > 0) {
         if (d.getDay() === 6) d.setDate(d.getDate() + 2);
         else if (d.getDay() === 0) d.setDate(d.getDate() + 1);
       }
-      return { id: a.id, titre: a.title, date: iso(d) };
+      return { ...ligne, date: iso(d) };
     });
   }
 
@@ -516,7 +609,12 @@
     const n = etat.selection.size;
     $('barreAction').hidden = n === 0;
     if (!n) return;
-    $('libelleSelection').textContent = n > 1 ? `${n} activités cochées` : '1 activité cochée';
+    // « Ligne » plutôt qu'« activité » : la sélection mêle des modules et des
+    // sections, et un module coché avec ses trois défis fait quatre dates.
+    const sections = [...etat.selection].filter((k) => k.includes(':')).length;
+    $('libelleSelection').textContent = sections
+      ? `${n} ligne${n > 1 ? 's cochées' : ' cochée'}, dont ${sections} section${sections > 1 ? 's' : ''}`
+      : (n > 1 ? `${n} activités cochées` : '1 activité cochée');
     const plan = datesCalculees();
     const cinq = plan.slice(0, 5);
     $('apercuPlan').innerHTML = cinq.length
@@ -534,10 +632,25 @@
     for (const p of plan) {
       await envoyer(`/api/activities/${p.id}/dates`, {
         groupId: etat.groupeId, datePrevue: p.date, dateFin: fermeture,
+        sectionId: p.section || '',
       });
       faites += 1;
     }
     return faites;
+  }
+
+  /** Un module sans date ne s'ouvre pas, et ses sections restent invisibles
+      quoi qu'on leur donne. Planifier des sections seules ouvre donc le module
+      à la première d'entre elles — sinon la classe ne verrait rien. */
+  function modulesAOuvrir(plan) {
+    const premieres = new Map();
+    plan.filter((p) => p.section).forEach((p) => {
+      const a = etat.activites.find((x) => x.id === p.id);
+      if (!a || a.datePrevue) return;                 // le module a déjà sa date
+      const deja = premieres.get(p.id);
+      if (!deja || p.date < deja) premieres.set(p.id, p.date);
+    });
+    return [...premieres].map(([id, date]) => ({ id, section: '', date }));
   }
 
   async function planifier() {
@@ -546,8 +659,14 @@
     const boutons = [$('boutonPlanifier'), $('boutonRetirerDates')];
     boutons.forEach((b) => { b.disabled = true; });
     try {
-      const faites = await poserDates(plan, $('dateFin').value || '');
-      dire(`${faites} activité${faites > 1 ? 's planifiées' : ' planifiée'}.`);
+      const fermeture = $('dateFin').value || '';
+      const faites = await poserDates(plan, fermeture);
+      const ouverts = modulesAOuvrir(plan);
+      if (ouverts.length) await poserDates(ouverts, fermeture);
+      const sections = plan.filter((p) => p.section).length;
+      dire(sections
+        ? `${faites} ligne${faites > 1 ? 's planifiées' : ' planifiée'}, dont ${sections} section${sections > 1 ? 's' : ''}.`
+        : `${faites} activité${faites > 1 ? 's planifiées' : ' planifiée'}.`);
     } catch (e) {
       dire(`Interrompu : ${e.message}`);
     } finally {
@@ -557,14 +676,20 @@
   }
 
   async function retirerDates() {
-    const ids = visibles().filter((a) => etat.selection.has(a.id)).map((a) => a.id);
-    if (!ids.length) return;
-    if (!confirm(`Retirer les dates de ${ids.length} activité(s) ? Elles disparaîtront du portail des élèves de ce groupe.`)) return;
+    const lignes = lignesChoisies();
+    if (!lignes.length) return;
+    const sections = lignes.filter((l) => l.section).length;
+    const quoi = sections === lignes.length
+      ? `${sections} section(s) ? Elles reviendront au régime de leur module.`
+      : `${lignes.length} ligne(s) ? Ce qui est retiré disparaît du portail des élèves de ce groupe.`;
+    if (!confirm(`Retirer les dates de ${quoi}`)) return;
     const boutons = [$('boutonPlanifier'), $('boutonRetirerDates')];
     boutons.forEach((b) => { b.disabled = true; });
     try {
-      await poserDates(ids.map((id) => ({ id, date: '' })), '');
-      dire('Dates retirées : ces activités disparaissent du portail des élèves.');
+      await poserDates(lignes.map((l) => ({ ...l, date: '' })), '');
+      dire(sections === lignes.length
+        ? 'Dates retirées : ces sections suivent de nouveau leur module.'
+        : 'Dates retirées : ces activités disparaissent du portail des élèves.');
     } catch (e) {
       dire(`Interrompu : ${e.message}`);
     } finally {
@@ -925,11 +1050,11 @@
   $('listeActivites').addEventListener('change', (e) => {
     const case_ = e.target.closest('[data-coche]');
     if (!case_) return;
-    const id = Number(case_.dataset.coche);
-    if (case_.checked) etat.selection.add(id); else etat.selection.delete(id);
-    case_.closest('.pe-rangee').classList.toggle('is-checked', case_.checked);
+    const k = cle(Number(case_.dataset.coche), case_.dataset.section || '');
+    if (case_.checked) etat.selection.add(k); else etat.selection.delete(k);
+    case_.closest('.pe-rangee, .pe-sec').classList.toggle('is-checked', case_.checked);
     const liste = visibles();
-    const toutes = liste.length > 0 && liste.every((a) => etat.selection.has(a.id));
+    const toutes = liste.length > 0 && liste.every((a) => etat.selection.has(cle(a.id)));
     $('boutonToutCocher').textContent = toutes ? 'Tout décocher' : libelleCocher(liste.length);
     rendreBarre();
   });
@@ -943,11 +1068,11 @@
       return;
     }
     const dates = e.target.closest('[data-dates]');
-    if (dates) ouvrirDates(Number(dates.dataset.dates));
+    if (dates) ouvrirDates(Number(dates.dataset.dates), dates.dataset.section || '');
   });
 
   $('boutonDeploiTout').addEventListener('click', () => {
-    const cours = visibles().filter((a) => a.categorie === 'cours' && DETAILS[a.id]);
+    const cours = visibles().filter(deployable);
     const toutDeplie = cours.length > 0 && cours.every((a) => etat.deplies.has(a.id));
     if (toutDeplie) cours.forEach((a) => etat.deplies.delete(a.id));
     else cours.forEach((a) => etat.deplies.add(a.id));
@@ -956,9 +1081,12 @@
 
   $('boutonToutCocher').addEventListener('click', () => {
     const liste = visibles();
-    const toutes = liste.length > 0 && liste.every((a) => etat.selection.has(a.id));
-    if (toutes) liste.forEach((a) => etat.selection.delete(a.id));
-    else liste.forEach((a) => etat.selection.add(a.id));
+    // Ce bouton ne coche que les modules : cocher d'un coup toutes les
+    // sections de vingt activités ferait une planification que personne n'a
+    // demandée. Les sections se cochent dans la rangée dépliée.
+    const toutes = liste.length > 0 && liste.every((a) => etat.selection.has(cle(a.id)));
+    if (toutes) liste.forEach((a) => etat.selection.delete(cle(a.id)));
+    else liste.forEach((a) => etat.selection.add(cle(a.id)));
     rendreListe();
     rendreBarre();
   });
@@ -976,16 +1104,24 @@
   $('boutonRetirerDates').addEventListener('click', retirerDates);
 
   // — Modale « Dates » —
-  function ouvrirDates(id) {
+  function ouvrirDates(id, sectionId) {
     const a = etat.activites.find((x) => x.id === id);
     if (!a) return;
+    const sec = sectionId ? sectionsDe(id).find((s) => s.id === sectionId) : null;
+    if (sectionId && !sec) return;
     etat.detail = id;
-    $('detailPortee').textContent = `${groupeActif() ? groupeActif().nom : ''} · ${a.categorie === 'cours' ? 'Module' : 'Atelier'}`;
-    $('detailTitre').textContent = a.title;
-    $('dOuverture').value = a.datePrevue || '';
-    $('dFermeture').value = a.dateFin || '';
-    $('dVue').value = a.dateVue || '';
-    $('dLien').value = a.lien || '';
+    etat.detailSection = sec ? sec.id : '';
+    const groupe = groupeActif() ? groupeActif().nom : '';
+    const nature = a.categorie === 'cours' ? 'Module' : 'Atelier';
+    $('detailPortee').textContent = sec
+      ? `${groupe} · Section de ${esc(a.title)}`
+      : `${groupe} · ${nature}`;
+    $('detailTitre').textContent = sec ? sec.titre : a.title;
+    const source = sec ? sec.dates : a;
+    $('dOuverture').value = source.datePrevue || '';
+    $('dFermeture').value = source.dateFin || '';
+    $('dVue').value = source.dateVue || '';
+    $('dLien').value = source.lien || '';
     ouvrirModale('modaleDates');
   }
 
@@ -998,6 +1134,7 @@
         dateFin: $('dFermeture').value,
         dateVue: $('dVue').value,
         lien: $('dLien').value,
+        sectionId: etat.detailSection || '',
       });
       fermerModale('modaleDates');
       dire('Dates enregistrées.');

@@ -3189,4 +3189,107 @@ lmsTrack('file_opened');
 })();
 </script>
 <!-- OUTILS-ELEVE:fin -->
+<!-- SECTIONS-DATEES:début — greffé par build/greffe_sections.py -->
+<style>
+  .tab.verrouillee { opacity: .55; cursor: not-allowed; }
+  .tab.verrouillee .tchk { visibility: visible; opacity: 1; }
+  #verrou-avis {
+    margin: 10px 0 0; padding: 10px 14px; border-radius: 10px;
+    background: #FDF3E3; color: #7A4A12; border: 1px solid #E8CDA0;
+    font-size: 15px; font-weight: 700;
+  }
+</style>
+<script>
+(function () {
+  var ACTIVITE = 44;
+
+  function joli(iso) {
+    if (!iso) return '';
+    var p = iso.split('-');
+    var mois = ['janvier','février','mars','avril','mai','juin','juillet',
+                'août','septembre','octobre','novembre','décembre'];
+    return Number(p[2]) + ' ' + mois[Number(p[1]) - 1];
+  }
+
+  function avis(texte) {
+    var el = document.getElementById('verrou-avis');
+    if (!el) {
+      var tabs = document.getElementById('tabs');
+      if (!tabs || !tabs.parentNode) return;
+      el = document.createElement('p');
+      el.id = 'verrou-avis';
+      tabs.parentNode.insertBefore(el, tabs.nextSibling);
+    }
+    el.textContent = texte;
+    el.hidden = !texte;
+  }
+
+  function appliquer(sections) {
+    var parId = {};
+    sections.forEach(function (s) { parId[s.id] = s; });
+
+    SECTIONS.forEach(function (sec) {
+      var etat = parId[sec.id];
+      var bouton = document.getElementById('tab-' + sec.id);
+      if (!bouton || !etat) return;
+      var fermee = !etat.ouverte;
+      bouton.classList.toggle('verrouillee', fermee);
+      bouton.setAttribute('aria-disabled', fermee ? 'true' : 'false');
+      var chk = bouton.querySelector('.tchk');
+      if (chk && fermee) chk.textContent = '🔒';
+      bouton.title = fermee
+        ? (etat.datePrevue ? 'Cette partie s’ouvre le ' + joli(etat.datePrevue)
+                           : 'Cette partie n’est pas encore ouverte.')
+        : '';
+    });
+
+    // Capture : l'écouteur du module est posé sur le bouton lui-même, il faut
+    // donc arrêter le clic avant lui plutôt qu'après.
+    var tabs = document.getElementById('tabs');
+    if (tabs && !tabs.dataset.verrou) {
+      tabs.dataset.verrou = '1';
+      tabs.addEventListener('click', function (e) {
+        var b = e.target.closest ? e.target.closest('.tab') : null;
+        if (!b || !b.classList.contains('verrouillee')) return;
+        e.stopPropagation();
+        e.preventDefault();
+        avis(b.title || 'Cette partie n’est pas encore ouverte.');
+      }, true);
+    }
+
+    var ouvertes = sections.filter(function (s) { return s.ouverte; });
+    if (!ouvertes.length) {
+      avis('Aucune partie de ce module n’est ouverte pour l’instant. '
+           + 'Ton enseignante les ouvrira une à une.');
+      return;
+    }
+    var courante = parId[curSec];
+    if (courante && !courante.ouverte) {
+      curSec = ouvertes[0].id;
+      avis('Cette partie n’est pas encore ouverte : voici celle que tu peux faire.');
+    }
+    if (typeof render === 'function') render();
+  }
+
+  function demarrer() {
+    if (typeof SECTIONS === 'undefined' || typeof curSec === 'undefined') return;
+    var code = (typeof studentCode !== 'undefined' && studentCode) || '';
+    if (!code) return;   // hors session : le module s'ouvre en entier
+    fetch('/api/student/sections?code=' + encodeURIComponent(code)
+          + '&activityId=' + ACTIVITE)
+      .then(function (r) { return r.ok ? r.json() : null; })
+      .then(function (d) {
+        if (d && d.decoupe && d.sections && d.sections.length) appliquer(d.sections);
+      })
+      .catch(function () { /* serveur muet : on n'enlève rien à l'élève */ });
+  }
+
+  if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', demarrer);
+  } else {
+    demarrer();
+  }
+})();
+</script>
+<!-- SECTIONS-DATEES:fin -->
 </body></html>

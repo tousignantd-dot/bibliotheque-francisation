@@ -311,6 +311,22 @@ try:
 except ValueError as e:
     sys.exit('!! greffe de la barre d\'outils impossible : %s' % e)
 
+# ── 6 ter. Verrou des sections datées ────────────────────────────────
+# Même raison : la greffe de build/greffe_sections.py est celle des dix autres
+# modules, et elle commence elle aussi par retirer celle du gabarit — qui porte
+# le numéro d'activité de la consultation, pas celui du module 9.
+from greffe_sections import (greffe as greffe_sections,      # noqa: E402
+                             activites_par_slug)
+
+_ids = activites_par_slug()
+if 'module-probleme' not in _ids:
+    sys.exit('!! module-probleme est absent de data/activities.json : '
+             'le verrou des sections ne saurait pas quoi demander au serveur')
+try:
+    html = greffe_sections(html, _ids['module-probleme'])
+except ValueError as e:
+    sys.exit('!! greffe du verrou des sections impossible : %s' % e)
+
 # ── 7. Filet de sécurité ─────────────────────────────────────────────
 leftovers = []
 for bad in ['module-consultation', 'Yannick', 'Rosalie', 'Beaulieu', 'tendinite',

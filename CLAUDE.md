@@ -44,7 +44,8 @@ Bibliothèque d'activités pédagogiques FLS (Niveau 4) pour enseignant en franc
   planification (dates), les élèves, la progression, le journal et les
   productions orales.
 - **Les dates ne sont plus portées par l'activité** mais par `data/schedule.json`
-  (`{groupId, activityId, dateVue, datePrevue, dateFin}`). Deux enseignants
+  (`{groupId, activityId, dateVue, datePrevue, dateFin}`, plus un `sectionId`
+  facultatif — voir « Sections datées »). Deux enseignants
   peuvent donc placer la même activité à deux moments différents. Les champs
   `dateVue`/`datePrevue`/`dateFin` restants dans `activities.json` ne servent
   plus qu'à amorcer la migration ; ne rien y écrire.
@@ -54,6 +55,40 @@ Bibliothèque d'activités pédagogiques FLS (Niveau 4) pour enseignant en franc
   « Non offerte à ce groupe ». La migration ouvre explicitement au groupe
   historique tout ce qui lui était déjà visible, pour ne rien retirer à la
   classe en cours.
+
+## Sections datées (« sous-modules »)
+
+Un module s'ouvre **par sections** : l'enseignante donne une date à « Défi 2 »
+comme elle en donne une au module. Trois pièces, et une règle.
+
+- **Le découpage est produit, jamais écrit à la main** :
+  `python3 build/sections.py` écrit `data/sections.json` en lisant la constante
+  `SECTIONS` de chaque module (`--verifier` compare sans écrire). Recopier ces
+  listes les ferait diverger à la première réécriture d'un module. Le fichier
+  se lit depuis BASE_DIR, comme `data/materiel.json` : il décrit le code livré.
+- **Les dates vivent dans `data/schedule.json`**, dans des entrées portant un
+  `sectionId`. Une entrée sans `sectionId` reste celle du module entier, et
+  `schedule_for_group()` ne renvoie **que** celles-là — y mêler les sections
+  avancerait ou reculerait la date d'une activité selon celle de son dernier
+  défi. Les sections passent par `sections_schedule_for_group()`.
+- **La règle : une section sans date propre suit son module**
+  (`is_section_offered()`), et une section n'est jamais ouverte si son module
+  ne l'est pas. C'est ce qui laisse les modules déjà planifiés s'ouvrir en
+  entier comme avant : le découpage n'a retiré aucune activité à personne.
+- **Retirer les dates d'une section supprime son entrée** plutôt que d'y
+  laisser des champs vides — la section revient au régime de son module.
+
+Côté élève, l'élève ouvre le fichier du module directement : c'est donc **le
+module qui verrouille ses propres onglets**. `python3 build/greffe_sections.py`
+greffe le nécessaire dans les onze modules (idempotent, `--retirer` dégreffe) :
+il appelle `GET /api/student/sections?code=&activityId=`, grise les onglets
+fermés avec leur date d'ouverture et repose l'élève sur la première section
+ouverte si la sienne vient de se fermer. Le numéro d'activité est injecté par
+la greffe depuis `activities.json` — un module ne connaît pas son propre id.
+**Le silence ouvre tout** : sans code élève, sans serveur ou sans découpage, on
+ne verrouille rien. Un verrou qui se trompe fermerait la classe.
+`module-probleme` est **généré** : sa greffe est posée par
+`build/module-probleme/build.py`, jamais à la main.
 
 ## Cours et ateliers
 
@@ -86,6 +121,8 @@ choix de l'enseignant survit aux redéploiements.
 - `data/activities.json` — métadonnées des activités (source de vérité côté code)
 - `data/teachers.json` / `data/groups.json` / `data/schedule.json` — comptes,
   groupes, planification. Les deux premiers ne sont pas versionnés.
+- `data/sections.json` — le découpage des modules en sections, **produit**
+  par `python3 build/sections.py`. Versionné : il décrit le code livré.
 - `assets/documents/` — fiches élèves (HTML imprimables)
 - `assets/interactive/<slug>/` — activités interactives (HTML autonomes)
 - `assets/plans/` — plans de cours
@@ -117,11 +154,21 @@ choix de l'enseignant survit aux redéploiements.
   vocabulaire) ne sont pas dans `activities.json` — ils décrivent le contenu
   pédagogique, pas le fichier. Ils vivent dans la constante `DETAILS` de
   `js/enseignant.js`, une entrée par module de cours.
-- **Les sous-sections de la remise (Vocabulaire · Compréhension orale ·
-  Graphie-phonie · Écriture · Écoute et réponds) ne sont pas implémentées** :
-  les modules n'ont aucun découpage de ce genre aujourd'hui, et une ouverture
-  par partie n'aurait aucun effet côté élève. La liste est donc plate ; le
-  chevron déplie les détails du module, pas des sous-sections.
+- **Le chevron déplie les sections du module**, cochables et datables une à
+  une (« Je découvre · Défi 1 · … · Je retiens des mots »). Les sous-sections
+  nommées dans la remise (Vocabulaire · Compréhension orale · Graphie-phonie ·
+  Écriture · Écoute et réponds) restent, elles, sans équivalent dans les
+  modules : ce sont les vraies sections du module qui sont offertes, celles
+  que `data/sections.json` relève.
+- Une ligne de planification est donc soit un module (`35`), soit une de ses
+  sections (`35:t1`) : `etat.selection` porte des **clés de chaîne**, et le
+  rythme de dates court sur la liste ainsi ordonnée (le module, puis ses
+  sections). « Cocher les N lignes » ne coche que les modules — cocher d'un
+  coup les sections de vingt activités poserait une planification que personne
+  n'a demandée.
+- **Planifier des sections d'un module sans date ouvre le module** à la
+  première d'entre elles (`modulesAOuvrir()`). Sans cela, la classe ne verrait
+  rien : un module fermé cache toutes ses sections, datées ou non.
 
 ## Dépôt de matériel (PowerPoints et fiches à imprimer)
 
@@ -134,10 +181,13 @@ visuelle. Quatrième onglet de `enseignant.html`, rendu par `js/materiel.js`.
   `fetch` — le jeton reste l'affaire de la page hôte, qui porte sa connexion.
   `init()` est protégé contre le double branchement (reconnexion).
 - Le dépôt se charge **à la première ouverture de l'onglet**, pas au démarrage.
-- **« Ma semaine » ne peut pas dire « mardi, séance B3 »** : `schedule.json`
-  porte des dates par *activité*, sans `sectionId`. La rangée du jour affiche
-  l'activité et offre ses seize séances en pastilles cliquables. Le jour où les
-  modules porteront un découpage, voir la note de `portail-enseignant-handoff`.
+- **« Ma semaine » ne peut toujours pas dire « mardi, séance B3 »** : les dates
+  de section de `schedule.json` suivent le découpage du *module* (six sections),
+  pas la grille des **seize séances** du dépôt (`a1…e2`). Deux grilles
+  distinctes : la première dit ce que l'élève peut ouvrir, la seconde ce que
+  l'enseignante projette en classe. La rangée du jour affiche donc l'activité
+  et offre ses seize séances en pastilles cliquables. Les relier demanderait
+  une correspondance séance → section, qui n'existe pas encore.
 - **L'impression passe par un cadre isolé** (`#matImpression`), pas par une
   zone de la page : les fiches sont déjà des documents imprimables noir et
   blanc, on les charge avec leurs propres styles et on imprime le cadre. Rien
