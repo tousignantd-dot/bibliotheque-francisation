@@ -22,8 +22,15 @@ import sys
 ICI = os.path.dirname(os.path.abspath(__file__))
 sys.path[:0] = [ICI, os.path.join(ICI, 'decks')]
 
+# Le module produit par ce dossier. Les présentations sortent dans un
+# sous-dossier à son nom : `A1-….pptx` n'est unique qu'à l'intérieur d'un
+# module, et le jour où un deuxième module est produit, son A1 écraserait
+# celui-ci. Le slug est celui de `assets/interactive/<slug>/`, ce qui permet
+# au dépôt de matériel de rattacher un fichier à son activité.
+MODULE = 'module-probleme'
+
 SORTIE = os.path.abspath(os.path.join(
-    ICI, '..', '..', 'assets', 'powerpoints'))
+    ICI, '..', '..', 'assets', 'powerpoints', MODULE))
 
 # L'ordre d'enseignement. Les blocs suivent les sections du module.
 SEANCES = [

@@ -5,8 +5,12 @@ Seize séances qui couvrent tout le contenu du module « Pouvez-vous régler le 
 
 | Sortie | Où | Pour qui |
 |---|---|---|
-| PowerPoint 16:9 | `assets/powerpoints/` | l'enseignant, à projeter |
+| PowerPoint 16:9 | `assets/powerpoints/module-probleme/` | l'enseignant, à projeter |
 | Fiche imprimable | `assets/documents/` | l'élève, en noir et blanc |
+
+Les présentations sortent dans un **sous-dossier au nom du module** (constante
+`MODULE` de `build.py`) : `A1-….pptx` n'est unique qu'à l'intérieur d'un module,
+et le `A1` du prochain module écraserait celui-ci s'ils partageaient un dossier.
 
 **Les deux sont produites à partir des mêmes fichiers `decks/*.py`.** Le contenu est écrit
 une seule fois : corriger une coquille dans `decks/b2.py` corrige à la fois la présentation
@@ -21,6 +25,14 @@ python3 build.py                # les 16 présentations
 python3 build.py b2 c3          # deux séances seulement
 python3 build.py --apercu b2    # + les épreuves PNG et le contrôle de débordement
 python3 build_fiches.py         # les 16 fiches élèves + le sommaire
+```
+
+Puis, depuis la racine du projet, les deux étapes qui alimentent le **dépôt de
+matériel** de l'espace enseignant — à relancer après toute production :
+
+```bash
+python3 build/vignettes.py      # la vignette de 1re diapositive de chaque séance
+python3 build/materiel.py       # l'inventaire, data/materiel.json
 ```
 
 **Dépendances :** `python-pptx` et `Pillow`. `fontTools` est optionnel mais recommandé — il

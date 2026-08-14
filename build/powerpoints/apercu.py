@@ -66,13 +66,18 @@ def wrap(dr, txt, font, maxpx, bold=False, pt=18):
     return out
 
 
-def render(path, outdir):
+def render(path, outdir, limite=None):
+    """Rend les diapositives en PNG. `limite=1` ne rend que la première —
+    c'est ce dont le dépôt de matériel a besoin pour sa vignette, et rendre
+    les quatorze pour en garder une coûterait quatorze fois le temps."""
     prs = Presentation(path)
     W = int(po(prs.slide_width) * PPP)
     H = int(po(prs.slide_height) * PPP)
     os.makedirs(outdir, exist_ok=True)
     faits = []
     for i, slide in enumerate(prs.slides, 1):
+        if limite is not None and i > limite:
+            break
         im = Image.new('RGB', (W, H), 'white')
         dr = ImageDraw.Draw(im)
         for sh in slide.shapes:
