@@ -1,0 +1,562 @@
+<!doctype html>
+<html lang="fr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Maquette — barre d'outils élève (module 9)</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Nunito:ital,wght@0,400;0,600;0,700;0,800;0,900;1,600&display=swap" rel="stylesheet">
+<style>
+/* ============================================================
+   Jetons repris de assets/design-system/tokens/
+   ============================================================ */
+:root{
+  --paper-50:#FBFBFA; --paper-100:#F7F7F5; --paper-200:#F0F0EE; --white:#FFFFFF;
+  --line-100:#EAEAE8; --line-200:#D8E8DF; --line-300:#D6D6D2;
+  --ink-900:#17181A; --ink-700:#3A3D40; --ink-500:#4B4F52; --ink-400:#6E7175;
+  --green-800:#07734A; --green-600:#0A8F5B; --green-100:#E6F5EE; --green-050:#EDF6F1;
+  --acier-600:#1D6B8F; --acier-100:#E7F0F6;
+  --violet-600:#6B4FBB; --violet-100:#EFEAFA;
+  --ambre-700:#B45309; --ambre-100:#FBEEDC;
+  --teal-700:#0D7A6F;  --teal-100:#DCF2EF;
+  --foret-700:#166534; --foret-100:#E3F1E7;
+  --audio:#DC2626; --audio-hover:#B91C1C;
+  --ok-bg:#E6F5EE; --ok-line:#0A8F5B; --ok-ink:#07734A;
+  --no-bg:#FFF6F5; --no-line:#DC2626; --no-ink:#B91C1C;
+  --warn-bg:#FEF6E7; --warn-line:#D9880B; --warn-ink:#8A5206;
+
+  --surface-page:var(--paper-100); --surface-card:var(--white);
+  --surface-sunken:var(--paper-50); --surface-band:var(--green-050);
+  --surface-inverse:var(--ink-900);
+  --text-strong:var(--ink-900); --text-body:var(--ink-700);
+  --text-muted:var(--ink-400); --text-inverse:var(--white);
+  --border:var(--line-100); --border-tint:var(--line-200);
+  --accent:var(--green-600); --accent-soft:var(--green-100); --accent-ink:var(--green-800);
+  --focus-ring:var(--green-600);
+
+  --sp-1:4px; --sp-2:8px; --sp-3:12px; --sp-4:16px; --sp-5:20px; --sp-6:24px; --sp-8:32px; --sp-12:48px;
+  --r-sm:10px; --r-md:14px; --r-lg:18px; --r-pill:999px;
+  --tap-min:44px; --tap-comfort:48px; --tap-large:52px;
+  --font-sans:"Nunito",system-ui,-apple-system,sans-serif;
+
+  --dock-w:84px;      /* largeur de la colonne d'icônes */
+  --panel-w:400px;    /* largeur du panneau ouvert */
+}
+
+*,*::before,*::after{box-sizing:border-box}
+body{
+  margin:0; background:var(--surface-page); color:var(--text-strong);
+  font-family:var(--font-sans); font-size:17px; font-weight:500; line-height:1.65;
+  -webkit-font-smoothing:antialiased;
+}
+h1,h2,h3{margin:0;line-height:1.25;letter-spacing:-.01em}
+p{margin:0}
+:focus-visible{outline:3px solid var(--focus-ring);outline-offset:2px;border-radius:var(--r-sm)}
+button{font:inherit;cursor:pointer}
+
+/* ============================================================
+   1. BANDEAU DE LANGUE  (première visite, puis replié)
+   ============================================================ */
+.lang-setup{
+  background:var(--surface-inverse); color:var(--text-inverse);
+  padding:var(--sp-5) var(--sp-8);
+}
+.lang-setup-in{max-width:1000px;margin:0 auto;display:flex;gap:var(--sp-5);align-items:center;flex-wrap:wrap}
+.lang-setup h2{font-size:19px;font-weight:900}
+.lang-setup p{font-size:14.5px;color:#C9CBCD;margin-top:2px}
+.lang-setup select{
+  font:inherit;font-weight:700;font-size:16px;padding:0 var(--sp-4);height:var(--tap-comfort);
+  border-radius:var(--r-sm);border:2px solid #3A3D40;background:#232529;color:#fff;min-width:250px;
+}
+.lang-setup .btn-ok{
+  height:var(--tap-comfort);padding:0 var(--sp-6);border:0;border-radius:var(--r-pill);
+  background:var(--accent);color:#fff;font-weight:800;font-size:16px;
+}
+.lang-bar{
+  display:none;background:var(--surface-band);border-bottom:1px solid var(--border-tint);
+  padding:var(--sp-2) var(--sp-8);font-size:14px;color:var(--accent-ink);font-weight:700;
+}
+.lang-bar-in{max-width:1000px;margin:0 auto;display:flex;align-items:center;gap:var(--sp-3)}
+.lang-bar button{background:none;border:0;color:var(--accent-ink);text-decoration:underline;font-weight:700;font-size:14px;padding:var(--sp-1) var(--sp-2)}
+body.lang-ok .lang-setup{display:none}
+body.lang-ok .lang-bar{display:block}
+
+/* ============================================================
+   2. MISE EN PAGE : contenu + dock
+   ============================================================ */
+.shell{display:flex;align-items:flex-start}
+.page{
+  flex:1;min-width:0;padding:var(--sp-8) var(--sp-8) 120px;
+  transition:padding-right .22s ease;
+}
+.page-in{max-width:820px;margin:0 auto}
+
+/* ── carte de section (repris du module) ── */
+.sec-head{display:flex;align-items:center;gap:var(--sp-3);margin-bottom:var(--sp-5)}
+.sec-pill{
+  width:34px;height:34px;border-radius:var(--r-md);display:grid;place-items:center;
+  background:var(--acier-600);color:#fff;font-weight:900;font-size:16px;flex:none;
+}
+.sec-over{font-size:12.5px;font-weight:800;letter-spacing:.09em;text-transform:uppercase;color:var(--acier-600)}
+.sec-head h2{font-size:25px;font-weight:900}
+.card{
+  background:var(--surface-card);border:1px solid var(--border);border-radius:var(--r-lg);
+  padding:var(--sp-6);margin-bottom:var(--sp-6);
+}
+.band-dark{
+  background:var(--surface-inverse);color:var(--text-inverse);border-radius:var(--r-lg);
+  padding:var(--sp-6);margin-bottom:var(--sp-6);
+}
+.band-dark h3{font-size:13px;letter-spacing:.09em;text-transform:uppercase;color:#8FD9B7;font-weight:800;margin-bottom:var(--sp-3)}
+.band-dark p{color:#E7E8E9}
+.dlg{display:grid;grid-template-columns:118px 1fr;gap:var(--sp-3) var(--sp-4);align-items:start}
+.dlg dt{font-size:13px;font-weight:800;letter-spacing:.05em;text-transform:uppercase;color:var(--acier-600);padding-top:3px}
+.dlg dd{margin:0}
+.hint{font-size:14.5px;color:var(--text-muted);margin-top:var(--sp-4)}
+
+/* ── l'icône 🌐 en marge de chaque bloc traduisible ── */
+.trad-zone{position:relative}
+.trad-tag{
+  position:absolute;left:-38px;top:2px;width:28px;height:28px;border-radius:var(--r-pill);
+  border:1px solid var(--border);background:var(--surface-card);color:var(--text-muted);
+  display:grid;place-items:center;font-size:14px;opacity:0;transition:opacity .15s;padding:0;
+}
+.trad-zone:hover .trad-tag,.trad-tag:focus-visible{opacity:1}
+.trad-tag:hover{border-color:var(--accent);color:var(--accent-ink);background:var(--accent-soft)}
+.band-dark .trad-tag{background:#232529;border-color:#3A3D40;color:#9A9DA1}
+@media (max-width:900px){.trad-tag{left:auto;right:0;top:-34px;opacity:1}}
+
+/* le calque de traduction, SOUS le français, jamais à la place */
+.trad-out{
+  display:none;margin-top:var(--sp-4);border-left:3px solid var(--acier-600);
+  background:var(--acier-100);border-radius:0 var(--r-sm) var(--r-sm) 0;padding:var(--sp-4) var(--sp-5);
+}
+.trad-out.on{display:block}
+.trad-out .lbl{font-size:12px;font-weight:800;letter-spacing:.08em;text-transform:uppercase;color:var(--acier-600);margin-bottom:var(--sp-2)}
+.trad-out p{font-size:16.5px;color:var(--ink-700);direction:ltr}
+
+/* ============================================================
+   3. LE DOCK
+   ============================================================ */
+.dock{
+  position:sticky;top:0;width:var(--dock-w);flex:none;height:100vh;
+  background:var(--surface-card);border-left:1px solid var(--border);
+  display:flex;flex-direction:column;align-items:center;gap:var(--sp-1);
+  padding:var(--sp-4) var(--sp-2);z-index:40;
+}
+.dock-t{font-size:10.5px;font-weight:800;letter-spacing:.08em;text-transform:uppercase;color:var(--text-muted);text-align:center;margin-bottom:var(--sp-2)}
+.tool{
+  width:100%;border:0;background:none;border-radius:var(--r-md);
+  padding:var(--sp-2) 2px;display:grid;justify-items:center;gap:3px;color:var(--text-body);
+  min-height:var(--tap-comfort);
+}
+.tool .ic{font-size:22px;line-height:1}
+.tool .lb{font-size:11px;font-weight:800;letter-spacing:.01em;line-height:1.2;text-align:center}
+.tool:hover{background:var(--paper-200)}
+.tool[aria-pressed="true"]{background:var(--accent-soft);color:var(--accent-ink)}
+.tool[disabled]{opacity:.32;cursor:not-allowed}
+.dock-sep{width:38px;height:1px;background:var(--border);margin:var(--sp-2) 0}
+
+/* ============================================================
+   4. LE PANNEAU
+   ============================================================ */
+.panel{
+  position:fixed;top:0;right:var(--dock-w);width:var(--panel-w);height:100vh;
+  background:var(--surface-card);border-left:1px solid var(--border);
+  box-shadow:-14px 0 40px rgba(0,0,0,.07);
+  display:flex;flex-direction:column;z-index:39;
+  transform:translateX(calc(100% + var(--dock-w)));transition:transform .22s ease;
+}
+body.panel-on .panel{transform:none}
+body.panel-on .page{padding-right:calc(var(--panel-w) + var(--sp-8))}
+
+.panel-h{
+  padding:var(--sp-5) var(--sp-5) var(--sp-4);border-bottom:1px solid var(--border);
+  display:flex;align-items:flex-start;gap:var(--sp-3);
+}
+.panel-h .ttl{flex:1}
+.panel-h h3{font-size:19px;font-weight:900}
+.panel-h .sub{font-size:13.5px;color:var(--text-muted);margin-top:2px}
+.panel-x{width:36px;height:36px;border-radius:var(--r-pill);border:1px solid var(--border);background:var(--surface-card);font-size:17px;color:var(--text-muted);flex:none}
+.panel-x:hover{background:var(--paper-200);color:var(--text-strong)}
+.panel-b{flex:1;overflow-y:auto;padding:var(--sp-5)}
+.pane{display:none}.pane.on{display:block}
+
+.tip{background:var(--surface-sunken);border:1px dashed var(--line-300);border-radius:var(--r-sm);padding:var(--sp-4);font-size:14.5px;color:var(--text-muted)}
+.lbl-mini{font-size:11.5px;font-weight:800;letter-spacing:.08em;text-transform:uppercase;color:var(--text-muted);margin-bottom:var(--sp-2)}
+.quote{background:var(--surface-sunken);border-left:3px solid var(--ink-900);border-radius:0 var(--r-sm) var(--r-sm) 0;padding:var(--sp-3) var(--sp-4);font-size:16px;margin-bottom:var(--sp-4)}
+
+.btn{border:0;border-radius:var(--r-pill);height:var(--tap-comfort);padding:0 var(--sp-5);font-weight:800;font-size:15px}
+.btn-full{width:100%;margin-bottom:var(--sp-3)}
+.btn-red{background:var(--audio);color:#fff}.btn-red:hover{background:var(--audio-hover)}
+.btn-dark{background:var(--ink-900);color:#fff}
+.btn-soft{background:var(--accent-soft);color:var(--accent-ink);border:1px solid var(--line-200)}
+.btn-ghost{background:var(--surface-card);border:1px solid var(--border);color:var(--text-body)}
+.row{display:flex;gap:var(--sp-2);margin-bottom:var(--sp-3)}
+.row .btn{flex:1;padding:0 var(--sp-3);font-size:14px}
+
+/* prononciation */
+.mots{display:flex;flex-wrap:wrap;gap:var(--sp-2);margin:var(--sp-4) 0}
+.mot{padding:var(--sp-2) var(--sp-3);border-radius:var(--r-sm);font-weight:700;font-size:16px;border:1px solid}
+.mot.ok{background:var(--ok-bg);border-color:var(--ok-line);color:var(--ok-ink)}
+.mot.no{background:var(--no-bg);border-color:var(--no-line);color:var(--no-ink)}
+.entendu{font-size:13.5px;color:var(--no-ink);background:var(--no-bg);border-radius:var(--r-sm);padding:var(--sp-3);margin-bottom:var(--sp-4)}
+.jauge{height:10px;border-radius:var(--r-pill);background:var(--paper-200);overflow:hidden;margin:var(--sp-2) 0 var(--sp-4)}
+.jauge i{display:block;height:100%;width:71%;background:var(--accent);border-radius:var(--r-pill)}
+
+/* assistant */
+.chat{display:flex;flex-direction:column;gap:var(--sp-3);margin-bottom:var(--sp-4)}
+.bul{max-width:88%;padding:var(--sp-3) var(--sp-4);border-radius:var(--r-lg);font-size:15.5px;line-height:1.55}
+.bul.moi{align-self:flex-end;background:var(--ink-900);color:#fff;border-bottom-right-radius:var(--sp-1)}
+.bul.ia{align-self:flex-start;background:var(--surface-sunken);border:1px solid var(--border);border-bottom-left-radius:var(--sp-1)}
+.bul.ia .tr{margin-top:var(--sp-2);padding-top:var(--sp-2);border-top:1px dashed var(--line-300);font-size:14px;color:var(--text-muted)}
+.sugg{display:flex;flex-wrap:wrap;gap:var(--sp-2);margin-bottom:var(--sp-4)}
+.sugg button{background:var(--acier-100);border:1px solid #CFE0EB;color:var(--acier-600);border-radius:var(--r-pill);padding:var(--sp-2) var(--sp-3);font-size:13.5px;font-weight:700}
+.saisie{display:flex;gap:var(--sp-2);border-top:1px solid var(--border);padding-top:var(--sp-4)}
+.saisie input{flex:1;font:inherit;font-size:15px;height:var(--tap-comfort);padding:0 var(--sp-4);border:1px solid var(--line-300);border-radius:var(--r-pill);background:var(--surface-sunken)}
+.saisie .go{width:var(--tap-comfort);height:var(--tap-comfort);border-radius:var(--r-pill);border:0;background:var(--accent);color:#fff;font-size:17px;flex:none}
+.saisie .mic{width:var(--tap-comfort);height:var(--tap-comfort);border-radius:var(--r-pill);border:1px solid var(--border);background:var(--surface-card);font-size:17px;flex:none}
+
+/* carnet */
+.mot-l{display:flex;align-items:center;gap:var(--sp-3);padding:var(--sp-3) 0;border-bottom:1px solid var(--paper-200)}
+.mot-l b{font-size:16.5px}.mot-l span{font-size:14px;color:var(--text-muted);flex:1}
+.mot-l .x{border:0;background:none;color:var(--text-muted);font-size:16px;padding:var(--sp-1) var(--sp-2)}
+
+/* simplifier */
+.simp{background:var(--ok-bg);border-left:3px solid var(--ok-line);border-radius:0 var(--r-sm) var(--r-sm) 0;padding:var(--sp-4);font-size:17px;line-height:1.6}
+
+/* lire */
+.lire-l{font-size:17px;line-height:1.75}
+.lire-l mark{background:var(--warn-bg);box-shadow:0 2px 0 var(--warn-line);border-radius:3px;padding:0 2px}
+.vit{display:flex;gap:var(--sp-2);align-items:center;margin-top:var(--sp-4);font-size:14px;color:var(--text-muted);font-weight:700}
+.vit button{border:1px solid var(--border);background:var(--surface-card);border-radius:var(--r-pill);padding:var(--sp-2) var(--sp-4);font-size:14px;font-weight:700}
+.vit button[aria-pressed="true"]{background:var(--ink-900);color:#fff;border-color:var(--ink-900)}
+
+/* ============================================================
+   5. BARRE FLOTTANTE DE SÉLECTION
+   ============================================================ */
+.sel-bar{
+  position:absolute;z-index:60;display:none;gap:2px;padding:4px;
+  background:var(--ink-900);border-radius:var(--r-pill);box-shadow:0 8px 24px rgba(0,0,0,.24);
+}
+.sel-bar.on{display:flex}
+.sel-bar button{border:0;background:none;color:#fff;font-size:13.5px;font-weight:700;padding:var(--sp-2) var(--sp-3);border-radius:var(--r-pill);white-space:nowrap}
+.sel-bar button:hover{background:#33363A}
+.sel-bar .sep{width:1px;background:#43464A;margin:6px 1px}
+
+/* ============================================================
+   6. TÉLÉPHONE : dock en bas, panneau en feuille
+   ============================================================ */
+@media (max-width:820px){
+  .page{padding:var(--sp-5) var(--sp-4) 140px}
+  body.panel-on .page{padding-right:var(--sp-4)}
+  .dock{
+    position:fixed;bottom:0;left:0;right:0;top:auto;width:100%;height:auto;
+    flex-direction:row;justify-content:space-around;gap:0;
+    border-left:0;border-top:1px solid var(--border);padding:var(--sp-2) var(--sp-1) calc(var(--sp-2) + env(safe-area-inset-bottom));
+    box-shadow:0 -6px 22px rgba(0,0,0,.07);
+  }
+  .dock-t,.dock-sep{display:none}
+  .tool{width:auto;flex:1;padding:var(--sp-2) 0}
+  .tool .lb{font-size:10.5px}
+  .panel{
+    right:0;left:0;width:100%;top:auto;bottom:0;height:78vh;
+    border-left:0;border-top:1px solid var(--border);border-radius:var(--r-lg) var(--r-lg) 0 0;
+    transform:translateY(100%);
+  }
+  .dlg{grid-template-columns:1fr;gap:var(--sp-1) 0}
+  .dlg dt{padding-top:var(--sp-2)}
+  .lang-setup,.lang-bar{padding-left:var(--sp-4);padding-right:var(--sp-4)}
+}
+
+/* note de maquette */
+.note{max-width:820px;margin:0 auto var(--sp-6);background:var(--warn-bg);border:1px solid #F0DCB4;border-left:4px solid var(--warn-line);border-radius:var(--r-sm);padding:var(--sp-4) var(--sp-5);font-size:14.5px;color:var(--warn-ink)}
+.note b{font-weight:900}
+</style>
+</head>
+<body>
+
+<!-- ══ 1. Choix de la langue, à la première visite ══ -->
+<div class="lang-setup" id="langSetup">
+  <div class="lang-setup-in">
+    <div style="flex:1;min-width:260px">
+      <h2>Avant de commencer : ma langue maternelle</h2>
+      <p>Elle sert aux outils de traduction. Vous pouvez la changer plus tard.</p>
+    </div>
+    <select id="langSel" aria-label="Ma langue maternelle">
+      <option value="">— Choisissez votre langue —</option>
+      <option value="ar">العربية · arabe</option>
+      <option value="es">Español · espagnol</option>
+      <option value="uk" selected>Українська · ukrainien</option>
+      <option value="fa">فارسی · persan</option>
+      <option value="zh">中文 · chinois</option>
+      <option value="pt">Português · portugais</option>
+    </select>
+    <button class="btn-ok" onclick="document.body.classList.add('lang-ok')">C'est noté</button>
+  </div>
+</div>
+
+<div class="lang-bar">
+  <div class="lang-bar-in">
+    <span>🌐 Ma langue : Українська · ukrainien</span>
+    <button onclick="document.body.classList.remove('lang-ok')">changer</button>
+  </div>
+</div>
+
+<div class="shell">
+
+  <!-- ══ 2. Le contenu du module ══ -->
+  <main class="page">
+    <div class="note">
+      <b>Maquette.</b> Rien n'est branché sur le serveur : les réponses sont figées, pour juger de
+      l'encombrement à l'écran. Surlignez du texte avec la souris pour voir la barre flottante.
+      Rétrécissez la fenêtre sous 820 px pour voir la version téléphone.
+    </div>
+
+    <div class="page-in">
+      <div class="sec-head">
+        <span class="sec-pill">1</span>
+        <div>
+          <div class="sec-over">Défi 1 · compréhension orale</div>
+          <h2>Oksana appelle sa propriétaire</h2>
+        </div>
+      </div>
+
+      <div class="band-dark trad-zone">
+        <button class="trad-tag" title="Voir dans ma langue" onclick="tradBloc(this)">🌐</button>
+        <h3>Ce que je dois savoir</h3>
+        <p>Quand un problème touche le <b>logement lui-même</b> — chauffage, toiture, plomberie —
+        les réparations sont à la charge du propriétaire. Le locataire, lui, a une obligation :
+        <b>signaler le problème sans attendre</b>. Plus il attend, plus il devient difficile de
+        prouver depuis quand le dommage existe.</p>
+        <div class="trad-out"><div class="lbl">Українська</div><p>Коли проблема стосується самого житла — опалення, дах, сантехніка — ремонт оплачує власник. Наймач зобов'язаний повідомити про проблему без зволікання.</p></div>
+      </div>
+
+      <div class="card trad-zone">
+        <button class="trad-tag" title="Voir dans ma langue" onclick="tradBloc(this)">🌐</button>
+        <dl class="dlg">
+          <dt>Oksana</dt>
+          <dd>Bonjour madame Rioux, c'est Oksana Kravets, au 4B. Je vous appelle parce que
+              le calorifère du salon ne chauffe plus depuis avant-hier.</dd>
+          <dt>Mme Rioux</dt>
+          <dd>Depuis avant-hier ? Il fallait me prévenir tout de suite, voyons. Il fait combien
+              chez vous ce matin ?</dd>
+          <dt>Oksana</dt>
+          <dd>Quatorze degrés. J'ai vérifié le panneau électrique : le disjoncteur retombe
+              chaque fois que je le remonte.</dd>
+          <dt>Mme Rioux</dt>
+          <dd>Ne le remontez plus, c'est dangereux. Je vais faire venir mon électricien.
+              Il passe déjà chez les locataires du deuxième jeudi matin ; je vais lui demander
+              de monter chez vous après avoir terminé leur installation.</dd>
+        </dl>
+        <div class="trad-out"><div class="lbl">Українська</div><p>Оксана: Добрий день, пані Ріу, це Оксана Кравець із 4B. Телефоную, бо радіатор у вітальні не гріє з позавчора…</p></div>
+        <p class="hint">Écoutez deux fois avant de répondre aux questions.</p>
+      </div>
+
+      <div class="card trad-zone">
+        <button class="trad-tag" title="Voir dans ma langue" onclick="tradBloc(this)">🌐</button>
+        <div class="sec-over" style="color:var(--acier-600);margin-bottom:var(--sp-3)">Exercice 1 · vrai ou faux</div>
+        <p style="margin-bottom:var(--sp-3)"><b>a)</b> Madame Rioux trouve qu'Oksana a attendu trop longtemps avant de l'appeler.</p>
+        <p style="margin-bottom:var(--sp-3)"><b>b)</b> Oksana devra attendre une semaine avant la visite de l'électricien.</p>
+        <p><b>c)</b> Oksana devra payer les réparations.</p>
+        <div class="trad-out"><div class="lbl">Українська</div><p>Вправа 1 · правда чи неправда…</p></div>
+      </div>
+    </div>
+  </main>
+
+  <!-- ══ 3. Le dock ══ -->
+  <nav class="dock" aria-label="Mes outils">
+    <div class="dock-t">Mes<br>outils</div>
+    <button class="tool" data-p="trad"  aria-pressed="false"><span class="ic">🌐</span><span class="lb">Traduire</span></button>
+    <button class="tool" data-p="lire"  aria-pressed="false"><span class="ic">🔊</span><span class="lb">Lire</span></button>
+    <button class="tool" data-p="simp"  aria-pressed="false"><span class="ic">✂️</span><span class="lb">Simplifier</span></button>
+    <div class="dock-sep"></div>
+    <button class="tool" data-p="pron"  aria-pressed="false"><span class="ic">🎙️</span><span class="lb">Prononcer</span></button>
+    <button class="tool" data-p="chat"  aria-pressed="false"><span class="ic">💬</span><span class="lb">Demander</span></button>
+    <button class="tool" data-p="carn"  aria-pressed="false"><span class="ic">📓</span><span class="lb">Mon carnet</span></button>
+  </nav>
+
+  <!-- ══ 4. Le panneau ══ -->
+  <aside class="panel" role="dialog" aria-label="Panneau d'outil">
+    <div class="panel-h">
+      <div class="ttl"><h3 id="pTtl">Traduire</h3><div class="sub" id="pSub">Défi 1 · Oksana appelle sa propriétaire</div></div>
+      <button class="panel-x" onclick="fermer()" aria-label="Fermer">✕</button>
+    </div>
+    <div class="panel-b">
+
+      <!-- Traduire -->
+      <section class="pane" id="pane-trad">
+        <div class="quote" id="tradSrc">Il fallait me prévenir tout de suite, voyons.</div>
+        <div class="lbl-mini">Українська</div>
+        <div class="trad-out on" style="margin-top:0"><p>Треба було попередити мене одразу.</p></div>
+        <div class="row" style="margin-top:var(--sp-5)">
+          <button class="btn btn-ghost">🔊 Écouter</button>
+          <button class="btn btn-ghost">📓 Garder</button>
+        </div>
+        <div class="tip">Surlignez n'importe quel passage de la page : la traduction s'affiche ici,
+          et le français reste toujours visible à côté.</div>
+      </section>
+
+      <!-- Lire -->
+      <section class="pane" id="pane-lire">
+        <div class="lbl-mini">Lecture en cours</div>
+        <p class="lire-l">Quand un problème touche le logement lui-même — chauffage, toiture,
+          plomberie — <mark>les réparations</mark> sont à la charge du propriétaire.</p>
+        <div class="vit">
+          <span>Vitesse</span>
+          <button aria-pressed="true">Lente</button>
+          <button aria-pressed="false">Normale</button>
+        </div>
+        <div class="row" style="margin-top:var(--sp-5)">
+          <button class="btn btn-dark">⏸ Pause</button>
+          <button class="btn btn-ghost">↺ Reprendre</button>
+        </div>
+        <div class="tip">Le mot lu est surligné. Utile pour suivre à l'oreille et à l'œil en même temps.</div>
+      </section>
+
+      <!-- Simplifier -->
+      <section class="pane" id="pane-simp">
+        <div class="lbl-mini">Phrase du module</div>
+        <div class="quote">Je vais lui demander de monter chez vous après avoir terminé leur installation.</div>
+        <div class="lbl-mini">Plus simplement</div>
+        <div class="simp">Il va finir chez les voisins. Après, il va monter chez vous.</div>
+        <div class="row" style="margin-top:var(--sp-5)">
+          <button class="btn btn-ghost">🔊 Écouter</button>
+          <button class="btn btn-ghost">🌐 Traduire</button>
+        </div>
+        <div class="tip">Cet outil reste <b>en français</b>. Souvent, une phrase plus courte suffit —
+          pas besoin de passer par la traduction.</div>
+      </section>
+
+      <!-- Prononcer -->
+      <section class="pane" id="pane-pron">
+        <div class="lbl-mini">À prononcer</div>
+        <div class="quote">Le disjoncteur retombe chaque fois.</div>
+        <button class="btn btn-dark btn-full">🔊 Écouter le modèle</button>
+        <button class="btn btn-red btn-full">🎙️ Enregistrer ma voix</button>
+        <div class="lbl-mini" style="margin-top:var(--sp-6)">Résultat</div>
+        <div class="jauge"><i></i></div>
+        <div class="mots">
+          <span class="mot ok">Le</span><span class="mot ok">disjoncteur</span>
+          <span class="mot no">retombe</span><span class="mot ok">chaque</span><span class="mot ok">fois</span>
+        </div>
+        <div class="entendu"><b>« retombe »</b> — j'ai entendu <i>« retomb »</i>.
+          Le <b>e</b> final ne se prononce pas, mais le <b>b</b> s'entend : re‑tomb.</div>
+        <button class="btn btn-soft btn-full">↺ Recommencer</button>
+        <div class="tip">Aucune note, aucun compte. L'élève recommence autant de fois qu'il veut.</div>
+      </section>
+
+      <!-- Assistant -->
+      <section class="pane" id="pane-chat">
+        <div class="chat">
+          <div class="bul ia">Bonjour Oksana ! Je vois que vous êtes au <b>Défi 1</b>.
+            Posez-moi une question sur le dialogue.</div>
+          <div class="bul moi">c'est quoi un calorifère ?</div>
+          <div class="bul ia">Un calorifère, c'est l'appareil qui chauffe une pièce.
+            Au Québec, on dit aussi <b>un radiateur</b>. Il est souvent sous la fenêtre.
+            <div class="tr">🌐 Калорифер — це прилад, який обігріває кімнату.</div>
+          </div>
+          <div class="bul moi">la réponse du b) c'est vrai ou faux ?</div>
+          <div class="bul ia">Ça, c'est à vous de le trouver ! 🙂 Relisez ce que dit madame Rioux :
+            elle parle de <b>jeudi matin</b>. Et Oksana répond : « Jeudi, c'est dans… ? »
+            Combien de jours, alors ?</div>
+        </div>
+        <div class="sugg">
+          <button>Explique-moi « avant-hier »</button>
+          <button>Pourquoi « au concierge » ?</button>
+          <button>Je ne comprends pas la consigne</button>
+        </div>
+        <div class="saisie">
+          <input placeholder="Écrivez votre question…" aria-label="Votre question">
+          <button class="mic" aria-label="Dicter">🎙️</button>
+          <button class="go" aria-label="Envoyer">➤</button>
+        </div>
+      </section>
+
+      <!-- Carnet -->
+      <section class="pane" id="pane-carn">
+        <div class="lbl-mini">Mots gardés dans ce module — 4</div>
+        <div class="mot-l"><b>un calorifère</b><span>калорифер</span><button class="x" aria-label="Retirer">✕</button></div>
+        <div class="mot-l"><b>un disjoncteur</b><span>автоматичний вимикач</span><button class="x" aria-label="Retirer">✕</button></div>
+        <div class="mot-l"><b>une tache brune</b><span>коричнева пляма</span><button class="x" aria-label="Retirer">✕</button></div>
+        <div class="mot-l"><b>prévenir</b><span>попередити</span><button class="x" aria-label="Retirer">✕</button></div>
+        <button class="btn btn-soft btn-full" style="margin-top:var(--sp-5)">🃏 Réviser avec les cartes</button>
+        <div class="tip">Ces mots rejoignent la section <b>« Je retiens des mots »</b> à la fin du module.</div>
+      </section>
+
+    </div>
+  </aside>
+</div>
+
+<!-- ══ 5. Barre flottante de sélection ══ -->
+<div class="sel-bar" id="selBar">
+  <button onclick="ouvrir('trad',1)">🌐 Traduire</button><span class="sep"></span>
+  <button onclick="ouvrir('lire',1)">🔊 Écouter</button><span class="sep"></span>
+  <button onclick="ouvrir('simp',1)">✂️ Simplifier</button><span class="sep"></span>
+  <button onclick="ouvrir('pron',1)">🎙️ Prononcer</button><span class="sep"></span>
+  <button onclick="ouvrir('carn',1)">📓 Garder</button>
+</div>
+
+<script>
+const TITRES = {
+  trad:['Traduire','Le français reste toujours visible'],
+  lire:['Lire à voix haute','Défi 1 · Oksana appelle sa propriétaire'],
+  simp:['Simplifier','Une phrase plus courte, toujours en français'],
+  pron:['Prononcer','Écouter, s’enregistrer, comparer'],
+  chat:['Demander à l’assistant','Défi 1 · Oksana appelle sa propriétaire'],
+  carn:['Mon carnet','Les mots que je garde']
+};
+let courant = null;
+
+function ouvrir(p, depuisSelection){
+  if(courant === p && !depuisSelection){ return fermer(); }
+  courant = p;
+  document.body.classList.add('panel-on');
+  document.querySelectorAll('.pane').forEach(s => s.classList.toggle('on', s.id === 'pane-' + p));
+  document.querySelectorAll('.tool').forEach(b => b.setAttribute('aria-pressed', String(b.dataset.p === p)));
+  pTtl.textContent = TITRES[p][0];
+  pSub.textContent = TITRES[p][1];
+  if(depuisSelection){
+    const t = String(window.getSelection()).trim();
+    if(t && p === 'trad') tradSrc.textContent = t;
+    cacherBarre();
+  }
+}
+function fermer(){
+  courant = null;
+  document.body.classList.remove('panel-on');
+  document.querySelectorAll('.tool').forEach(b => b.setAttribute('aria-pressed','false'));
+}
+document.querySelectorAll('.tool').forEach(b => b.onclick = () => ouvrir(b.dataset.p));
+document.addEventListener('keydown', e => { if(e.key === 'Escape') fermer(); });
+
+// le calque de traduction sous un bloc
+function tradBloc(btn){
+  const out = btn.closest('.trad-zone').querySelector('.trad-out');
+  out.classList.toggle('on');
+}
+
+// barre flottante de sélection
+const selBar = document.getElementById('selBar');
+function cacherBarre(){ selBar.classList.remove('on'); }
+document.addEventListener('mouseup', () => {
+  setTimeout(() => {
+    const s = window.getSelection();
+    if(!s || s.isCollapsed || !String(s).trim() || !s.anchorNode ||
+       !document.querySelector('.page').contains(s.anchorNode.parentElement)){
+      return cacherBarre();
+    }
+    const r = s.getRangeAt(0).getBoundingClientRect();
+    selBar.classList.add('on');
+    const w = selBar.offsetWidth;
+    let x = r.left + scrollX + r.width / 2 - w / 2;
+    x = Math.max(8, Math.min(x, innerWidth - w - 8));
+    selBar.style.left = x + 'px';
+    selBar.style.top  = (r.top + scrollY - selBar.offsetHeight - 10) + 'px';
+  }, 10);
+});
+document.addEventListener('mousedown', e => { if(!selBar.contains(e.target)) cacherBarre(); });
+</script>
+</body>
+</html>

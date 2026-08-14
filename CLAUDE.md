@@ -147,6 +147,28 @@ visuelle. Quatrième onglet de `enseignant.html`, rendu par `js/materiel.js`.
   collision avec celles du système de design.
 - Le filtre « Niveau » ne paraît que s'il y a plus d'un niveau au catalogue.
 
+### Promotion d'un dépôt (« Remplacer l'officiel », admin)
+
+- **Une promotion n'écrase jamais le fichier officiel.** Elle est enregistrée
+  dans `data/promotions.json` (volume, non versionné) et la substitution se
+  fait **à la lecture**, dans `materiel_promu()`. Écraser le `.pptx` serait
+  défait au prochain `build.py`, qui le régénère depuis `decks/` : la classe
+  retrouverait l'ancienne version sans que personne l'ait demandé.
+- `materiel_promu()` sert **l'écran et les archives** : promouvoir n'aurait
+  aucun sens si « Tout prendre » continuait de descendre l'officiel.
+- Le fichier promu **est remesuré** (diapositives, blocs) et perd la vignette
+  de l'officiel : hériter de ses mesures ferait annoncer « 17 diapositives »
+  devant une version qui en a douze. `cheminOfficiel` reste dans la réponse,
+  et l'officiel demeure téléchargeable dans le panneau.
+- Une promotion **antérieure** à la dernière production de l'officiel est
+  marquée `perimee` : l'écran avertit qu'elle cache une production plus
+  récente, au lieu de la laisser agir en silence.
+- Retirer un dépôt promu **défait sa promotion** — sinon l'inventaire
+  pointerait vers un fichier disparu.
+- Routes : `POST /api/materiel/promotion` (`{fichierId, depotId}`),
+  `DELETE /api/materiel/promotion/<fichierId>`. Les deux exigent le rôle
+  `admin`, revalidé côté serveur.
+
 - **Les présentations sont rangées par module** : `assets/powerpoints/<slug>/`.
   Le slug est celui de `assets/interactive/<slug>/` — c'est la clé qui relie un
   fichier à son activité. À plat, le `A1` du prochain module écraserait celui du

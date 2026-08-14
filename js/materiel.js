@@ -35,14 +35,17 @@ window.Materiel = (() => {
     'août', 'septembre', 'octobre', 'novembre', 'décembre'];
   const JOURS = ['dimanche', 'lundi', 'mardi', 'mercredi', 'jeudi', 'vendredi', 'samedi'];
 
+  /** Le premier du mois s'écrit « 1er », les autres en chiffres nus. */
+  const quantieme = (d) => (d.getDate() === 1 ? '1er' : String(d.getDate()));
+
   const jourDate = (iso) => {
     const d = new Date(`${iso}T12:00:00`);
-    return `${JOURS[d.getDay()]} ${d.getDate()} ${MOIS[d.getMonth()]}`;
+    return `${JOURS[d.getDay()]} ${quantieme(d)} ${MOIS[d.getMonth()]}`;
   };
   const longDate = (iso) => {
     if (!iso) return '';
     const d = new Date(`${String(iso).slice(0, 10)}T12:00:00`);
-    return `${d.getDate()} ${MOIS[d.getMonth()]} ${d.getFullYear()}`;
+    return `${quantieme(d)} ${MOIS[d.getMonth()]} ${d.getFullYear()}`;
   };
   const iso = (d) => new Date(d.getTime() - d.getTimezoneOffset() * 60000)
     .toISOString().slice(0, 10);
@@ -65,6 +68,7 @@ window.Materiel = (() => {
     vue: 'semaine',
     inventaire: null,
     depots: [],
+    promotions: [],
     derniereVisite: '',
     role: 'prof',
     charge: false,
@@ -94,6 +98,19 @@ window.Materiel = (() => {
 
   const depotsDe = (id) => etat.depots.filter((d) => d.activiteId === id);
 
+  /** Le fichier officiel qu'un dépôt peut remplacer : même activité, même
+      séance, même type. Sans lui, « Remplacer l'officiel » n'a pas de cible
+      et le bouton ne paraît pas. */
+  function officielPour(depot) {
+    const p = porteur(depot.activiteId);
+    if (!p) return null;
+    const s = p.seances.find((x) => (x.code || null) === (depot.seanceCode || null));
+    if (!s) return null;
+    return s.fichiers.find((f) => f.type === depot.type) || null;
+  }
+
+  const promotionDe = (depotId) => etat.promotions.find((p) => p.depotId === depotId);
+
   /** Les fichiers d'une séance, dans l'ordre présentation → fiche → plan. */
   const ORDRE = { presentation: 0, fiche: 1, plan: 2, annexe: 3 };
   const fichiersTries = (s) => [...(s.fichiers || [])]
@@ -115,6 +132,7 @@ window.Materiel = (() => {
     const d = await ctx.json('/api/materiel');
     etat.inventaire = d.materiel;
     etat.depots = d.depots || [];
+    etat.promotions = d.promotions || [];
     etat.derniereVisite = d.derniereVisite || '';
     etat.role = d.role || 'prof';
     etat.charge = true;
@@ -416,6 +434,24 @@ window.Materiel = (() => {
 
   /* ══════════ Dépôts de l'équipe ══════════ */
 
+  /** Les gestes réservés à l'administration sur une rangée de dépôt.
+      L'absence du bouton n'est pas une garde : le serveur revalide le rôle
+      à chaque requête. */
+  function boutonsAdmin(d) {
+    if (etat.role !== 'admin') return '';
+    const promue = promotionDe(d.id);
+    if (promue) {
+      return `<button type="button" class="btn btn--ghost btn--sm"
+        data-action="rendre-officiel" data-fichier="${esc(promue.fichierId)}">Rendre l'officiel</button>
+        <button type="button" class="btn btn--ghost btn--sm" data-action="retirer-depot" data-dep="${esc(d.id)}">Retirer</button>`;
+    }
+    const cible = officielPour(d);
+    return `${cible ? `<button type="button" class="btn btn--ghost btn--sm"
+        data-action="promouvoir" data-dep="${esc(d.id)}" data-fichier="${esc(cible.id)}"
+        title="Ce dépôt sera servi à la place du fichier officiel de la séance ${esc(d.seanceCode || '')}">Remplacer l'officiel</button>` : ''}
+      <button type="button" class="btn btn--ghost btn--sm" data-action="retirer-depot" data-dep="${esc(d.id)}">Retirer</button>`;
+  }
+
   function rendreDepots() {
     const cible = etat.detail ? etat.detail.activiteId : null;
     const liste = cible ? depotsDe(cible) : etat.depots;
@@ -445,7 +481,7 @@ window.Materiel = (() => {
           </div>
           <div style="margin-left:auto;display:flex;gap:var(--sp-2);flex-wrap:wrap">
             <a class="btn btn--ghost btn--sm" href="${esc(d.chemin)}" download>Télécharger</a>
-            ${etat.role === 'admin' ? `<button type="button" class="btn btn--ghost btn--sm" data-action="retirer-depot" data-dep="${esc(d.id)}">Retirer</button>` : ''}
+            ${boutonsAdmin(d)}
           </div>
         </div>
       </div>` ;
@@ -565,7 +601,9 @@ window.Materiel = (() => {
           : `<div class="mat-substitut">${esc(titre)}</div>`}
         <div class="mat-legende">${f.vignette
           ? `Aperçu de la diapositive 1${f.diapositives ? ` sur ${f.diapositives}` : ''}`
-          : 'Vignette non produite — relancez build/vignettes.py'}</div>
+          : (f.promotion
+            ? 'Pas de vignette : les vignettes sont produites par le build, un fichier déposé n\'en a pas.'
+            : 'Vignette non produite — relancez build/vignettes.py')}</div>
       </div>`;
     } else if (estFiche) {
       apercu = `<div class="mat-apercu">
@@ -584,11 +622,29 @@ window.Materiel = (() => {
       f.majLe ? `mise à jour le ${longDate(f.majLe)}` : '',
     ].filter(Boolean).join(' · ');
 
+    // Un fichier promu n'est jamais servi en silence : la rangée dit de qui
+    // il vient, et l'officiel reste téléchargeable à côté.
+    const promo = f.promotion;
+    const marque = promo ? `
+      <div class="mat-manque" style="background:var(--accent-soft);border-color:var(--accent)">
+        <b style="color:var(--accent-ink)">Version de ${esc(promo.auteur ? promo.auteur.nom : 'l\'équipe')}, mise à la place de l'officiel</b>
+        <span style="color:var(--accent-ink)">${esc(promo.note || 'Sans note.')} Remplacée le ${esc(longDate(promo.leQuand))} par ${esc(promo.parNom || 'l\'administration')}.</span>
+        ${promo.perimee ? `<span style="color:var(--warn-ink);font-weight:var(--fw-bold)">
+          Attention : le fichier officiel a été reproduit depuis. Cette version cache une production plus récente.</span>` : ''}
+        <div class="mat-actions">
+          <a class="btn btn--ghost btn--sm" href="${esc(f.cheminOfficiel || '')}" download>Télécharger l'officiel</a>
+          ${etat.role === 'admin' ? `<button type="button" class="btn btn--ghost btn--sm"
+            data-action="rendre-officiel" data-fichier="${esc(f.id)}">Rendre l'officiel</button>` : ''}
+        </div>
+      </div>` : '';
+
     return `<div class="mat-fichier">
       <div style="display:flex;gap:var(--sp-3);align-items:center;flex-wrap:wrap">
         <span class="mat-genre">${esc(GENRES[f.type] || f.type)}</span>
         ${neuf ? '<span class="mat-neuf">Nouveau</span>' : ''}
+        ${promo ? '<span class="mat-neuf" style="background:var(--accent);color:var(--white)">Remplacé</span>' : ''}
       </div>
+      ${marque}
       <div class="mat-fichier-titre">${esc(titre)}</div>
       ${f.resume ? `<div class="mat-resume">${esc(f.resume)}</div>` : ''}
       ${apercu}
@@ -748,12 +804,49 @@ window.Materiel = (() => {
     }
   }
 
+  /** Recharge l'inventaire : la substitution se fait côté serveur, donc
+      l'écran doit relire plutôt que deviner ce qui a changé. */
+  async function relire() {
+    const d = await ctx.json('/api/materiel');
+    etat.inventaire = d.materiel;
+    etat.depots = d.depots || [];
+    etat.promotions = d.promotions || [];
+    rendre();
+  }
+
+  async function promouvoir(depotId, fichierId) {
+    try {
+      await ctx.json('/api/materiel/promotion', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ depotId, fichierId }),
+      });
+      await relire();
+      confirmer('Ce dépôt est maintenant servi à la place du fichier officiel. '
+        + "L'officiel n'est pas effacé : il reste téléchargeable, et le geste se défait.");
+    } catch (e) {
+      confirmer(`Remplacement impossible : ${e.message}`);
+    }
+  }
+
+  async function rendreOfficiel(fichierId) {
+    try {
+      await ctx.json(`/api/materiel/promotion/${encodeURIComponent(fichierId)}`,
+        { method: 'DELETE' });
+      await relire();
+      confirmer('Retour au fichier officiel.');
+    } catch (e) {
+      confirmer(`Retour impossible : ${e.message}`);
+    }
+  }
+
   async function retirerDepot(id) {
     try {
       await ctx.json(`/api/materiel/depot/${encodeURIComponent(id)}`, { method: 'DELETE' });
-      etat.depots = etat.depots.filter((d) => d.id !== id);
+      // Relire plutôt que retirer la rangée : si le dépôt était promu, le
+      // serveur a aussi défait la promotion, et l'inventaire a changé.
+      await relire();
       confirmer('Dépôt retiré.');
-      rendre();
     } catch (e) {
       confirmer(`Retrait impossible : ${e.message}`);
     }
@@ -811,6 +904,10 @@ window.Materiel = (() => {
           rendre(); break;
         case 'retirer-depot':
           retirerDepot(b.dataset.dep); break;
+        case 'promouvoir':
+          promouvoir(b.dataset.dep, b.dataset.fichier); break;
+        case 'rendre-officiel':
+          rendreOfficiel(b.dataset.fichier); break;
         default: break;
       }
     });

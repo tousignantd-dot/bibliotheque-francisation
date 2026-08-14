@@ -106,6 +106,9 @@ MATERIEL_FILE = BASE_DIR / "data" / "materiel.json"
 # dépôt d'une collègue à chaque build.
 DEPOTS_FILE = STORAGE_DIR / "data" / "depots.json"
 DEPOTS_DIR = STORAGE_DIR / "assets" / "depots"
+# Promotions : quel dépôt tient lieu de fichier officiel. Une décision
+# d'administration, pas un fichier — voir `load_promotions()`.
+PROMOTIONS_FILE = STORAGE_DIR / "data" / "promotions.json"
 
 SESSION_DAYS = 30
 
@@ -444,6 +447,91 @@ def save_depots(depots):
     _save_json(DEPOTS_FILE, depots)
 
 
+def load_promotions():
+    """[{fichierId, depotId, parId, parNom, leQuand}].
+
+    Une promotion **ne remplace pas le fichier sur le disque** : elle note
+    qu'un dépôt tient lieu d'officiel, et la substitution se fait à la
+    lecture. Écraser le `.pptx` officiel serait défait au prochain
+    `build.py`, qui le régénère depuis `decks/` — la classe se retrouverait
+    devant l'ancienne version sans que personne l'ait demandé. Enregistrée,
+    la promotion survit aux builds, se défait d'un clic, et le système peut
+    dire quand le fichier officiel a changé sous elle."""
+    return _load_json_list(PROMOTIONS_FILE)
+
+
+def save_promotions(promotions):
+    _save_json(PROMOTIONS_FILE, promotions)
+
+
+def mesurer_fichier(chemin_rel, type_):
+    """Le nombre de diapositives ou de blocs du fichier réellement servi.
+
+    Sans ça, un fichier promu hériterait des mesures de l'officiel : le
+    panneau annoncerait « 17 diapositives » devant une version qui en a
+    douze. Même méthode que `build/materiel.py` — un `.pptx` est un zip."""
+    reel = chemin_reel(chemin_rel)
+    if not reel:
+        return {}
+    try:
+        if type_ == "presentation" and reel.suffix.lower() == ".pptx":
+            with zipfile.ZipFile(reel) as z:
+                n = sum(1 for x in z.namelist()
+                        if re.fullmatch(r"ppt/slides/slide\d+\.xml", x))
+            return {"diapositives": n} if n else {}
+        if type_ == "fiche" and reel.suffix.lower() in (".html", ".htm"):
+            n = reel.read_text(encoding="utf-8").count('class="bloc card"')
+            return {"blocs": n} if n else {}
+    except Exception:
+        return {}
+    return {}
+
+
+def materiel_promu():
+    """L'inventaire, avec les fichiers promus substitués.
+
+    Sert autant l'écran que les archives : promouvoir n'aurait aucun sens si
+    « Tout prendre » continuait de descendre la version officielle."""
+    inv = load_materiel()
+    promos = {p["fichierId"]: p for p in load_promotions()}
+    if not promos:
+        return inv
+
+    depots = {d["id"]: d for d in load_depots()}
+    for porteur in inv.get("porteurs", []):
+        for seance in porteur.get("seances", []):
+            for f in seance.get("fichiers", []):
+                promo = promos.get(f.get("id"))
+                depot = depots.get(promo["depotId"]) if promo else None
+                if not depot:
+                    continue
+                # Le fichier officiel a-t-il changé depuis la promotion ? Si
+                # oui, la substitution cache une production plus récente : on
+                # le dit au lieu de la laisser agir en silence.
+                perimee = str(f.get("majLe", "")) > str(promo["leQuand"])[:10]
+                f["cheminOfficiel"] = f.get("chemin")
+                f["chemin"] = depot["chemin"]
+                f["octets"] = depot["octets"]
+                f["format"] = depot.get("format", f.get("format"))
+                # Le dépôt est stocké sous `dep-0001.pptx` pour que deux
+                # fichiers du même nom cohabitent, mais c'est son nom d'origine
+                # qui doit entrer dans une archive : personne ne veut trouver
+                # un identifiant technique dans son dossier de téléchargements.
+                f["nomOriginal"] = depot.get("nom") or ""
+                f["majLe"] = str(depot.get("deposeLe", ""))[:10] or f.get("majLe")
+                f["origine"] = "depot-promu"
+                # Les mesures et la vignette décrivaient l'officiel : elles ne
+                # valent plus rien pour ce fichier-ci. On remesure ce qu'on
+                # peut, et on retire ce qu'on ne peut pas produire.
+                for cle in ("diapositives", "blocs", "vignette"):
+                    f.pop(cle, None)
+                f.update(mesurer_fichier(f["chemin"], f.get("type")))
+                f["promotion"] = {**promo, "auteur": depot.get("auteur"),
+                                  "note": depot.get("note", ""),
+                                  "perimee": perimee}
+    return inv
+
+
 def fichier_du_materiel(file_id):
     """Retrouve un fichier de l'inventaire par son identifiant, avec le
     porteur et la séance auxquels il appartient. Sert de garde : seuls les
@@ -530,7 +618,7 @@ def construire_archive(fichiers, slug=None):
     tampon = io.BytesIO()
     with zipfile.ZipFile(tampon, "w", zipfile.ZIP_DEFLATED) as z:
         for code, f, reel in fichiers:
-            interne = reel.name
+            interne = f.get("nomOriginal") or reel.name
             if slug and interne.lower().startswith(slug.lower() + "-"):
                 interne = interne[len(slug) + 1:]
             if code and not interne.upper().startswith(code.upper()):
@@ -1529,6 +1617,8 @@ class Handler(http.server.SimpleHTTPRequestHandler):
             self._handle_materiel_depot_add()
         elif path == "/api/materiel/visite":
             self._handle_materiel_visite()
+        elif path == "/api/materiel/promotion":
+            self._handle_materiel_promotion()
         elif path == "/api/prof/planification/copier":
             self._handle_schedule_copy()
         elif path == "/api/student/access":
@@ -1653,6 +1743,9 @@ class Handler(http.server.SimpleHTTPRequestHandler):
             self._handle_document_delete(int(path.rsplit("/", 1)[1]))
         elif re.match(r"^/api/materiel/depot/[\w-]+$", path):
             self._handle_materiel_depot_delete(path.rsplit("/", 1)[1])
+        elif re.match(r"^/api/materiel/promotion/[\w:-]+$", path):
+            self._handle_materiel_promotion_delete(
+                urllib.parse.unquote(path.rsplit("/", 1)[1]))
         elif re.match(r"^/api/prof/enseignants/\d+$", path):
             try:
                 self._handle_teacher_delete(int(path.rsplit("/", 1)[1]))
@@ -2239,8 +2332,9 @@ class Handler(http.server.SimpleHTTPRequestHandler):
         if not teacher:
             return
         json_response(self, {
-            "materiel": load_materiel(),
+            "materiel": materiel_promu(),
             "depots": load_depots(),
+            "promotions": load_promotions(),
             "derniereVisite": teacher.get("derniereVisiteMateriel", ""),
             "role": teacher.get("role", "prof"),
         })
@@ -2286,7 +2380,10 @@ class Handler(http.server.SimpleHTTPRequestHandler):
             json_response(self, {"error": "Aucune séance choisie"}, 400)
             return
 
-        porteur = next((p for p in load_materiel().get("porteurs", [])
+        # Inventaire promu : une archive doit descendre ce que l'enseignant
+        # voit à l'écran, sinon « Tout prendre » ramènerait l'officiel que
+        # l'administration a justement remplacé.
+        porteur = next((p for p in materiel_promu().get("porteurs", [])
                         if p.get("activiteId") == activite_id), None)
         activite = next((a for a in load_activities()
                          if a.get("id") == activite_id), None)
@@ -2364,6 +2461,55 @@ class Handler(http.server.SimpleHTTPRequestHandler):
         save_depots(depots)
         json_response(self, {"success": True, "depot": depot}, 201)
 
+    def _handle_materiel_promotion(self):
+        """Un dépôt tient désormais lieu de fichier officiel.
+
+        Rien n'est écrasé : la substitution est enregistrée et se fait à la
+        lecture. Le fichier officiel reste sur le disque, et `build.py`
+        continue de le régénérer sans que personne ait à s'en soucier."""
+        teacher = self._require_teacher(admin=True)
+        if not teacher:
+            return
+        body = self._read_json_body() or {}
+        fichier_id = body.get("fichierId", "")
+        depot_id = body.get("depotId", "")
+
+        porteur, seance, fichier = fichier_du_materiel(fichier_id)
+        if not fichier:
+            json_response(self, {"error": "Fichier officiel introuvable"}, 404)
+            return
+        depot = next((d for d in load_depots() if d.get("id") == depot_id), None)
+        if not depot:
+            json_response(self, {"error": "Dépôt introuvable"}, 404)
+            return
+        if depot.get("activiteId") != porteur.get("activiteId"):
+            json_response(self, {"error": "Ce dépôt n'appartient pas à cette activité"}, 400)
+            return
+
+        promotions = [p for p in load_promotions() if p.get("fichierId") != fichier_id]
+        promotions.append({
+            "fichierId": fichier_id,
+            "depotId": depot_id,
+            "parId": teacher["id"],
+            "parNom": teacher.get("nom", ""),
+            "leQuand": datetime.now().isoformat(timespec="seconds"),
+        })
+        save_promotions(promotions)
+        json_response(self, {"success": True, "promotions": promotions}, 201)
+
+    def _handle_materiel_promotion_delete(self, fichier_id):
+        """Retour au fichier officiel. Rien à restaurer : il n'a jamais
+        bougé."""
+        teacher = self._require_teacher(admin=True)
+        if not teacher:
+            return
+        promotions = load_promotions()
+        if not any(p.get("fichierId") == fichier_id for p in promotions):
+            json_response(self, {"error": "Aucune promotion sur ce fichier"}, 404)
+            return
+        save_promotions([p for p in promotions if p.get("fichierId") != fichier_id])
+        json_response(self, {"success": True})
+
     def _handle_materiel_depot_delete(self, dep_id):
         """Retrait d'un dépôt. Réservé à l'administration, et le rôle est
         revalidé ici : l'absence du bouton à l'écran n'est pas une garde."""
@@ -2379,6 +2525,12 @@ class Handler(http.server.SimpleHTTPRequestHandler):
         if fichier.exists() and fichier.is_file():
             fichier.unlink()
         save_depots([d for d in depots if d.get("id") != dep_id])
+        # Retirer un dépôt promu défait sa promotion : sans ça, l'inventaire
+        # pointerait vers un fichier qui n'existe plus.
+        promotions = load_promotions()
+        restantes = [p for p in promotions if p.get("depotId") != dep_id]
+        if len(restantes) != len(promotions):
+            save_promotions(restantes)
         json_response(self, {"success": True})
 
     def _handle_documents_list(self, params):
