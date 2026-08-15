@@ -1,0 +1,172 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>A4 · Trois petites annonces — Fiche élève</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800;900&display=swap" rel="stylesheet">
+<style>
+/* ═══════════════════════════════════════════════════════════════
+   FICHE ÉLÈVE · IMPRESSION LETTRE, NOIR ET BLANC
+   ───────────────────────────────────────────────────────────────
+   Aucune couleur : ces fiches sont photocopiées en noir et blanc.
+   Toute la hiérarchie passe par la GRAISSE, les FILETS et les MOTS.
+   C'est d'ailleurs la règle du système de design poussée à son
+   terme : « jamais d'information portée par la couleur seule ».
+
+   Les gris viennent des neutres du système (ink-900 à ink-400),
+   qui sont déjà quasi neutres. Les filets sont volontairement plus
+   sombres qu'à l'écran : une photocopieuse efface tout ce qui est
+   plus clair que 15 % de noir.
+   ═══════════════════════════════════════════════════════════════ */
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+:root{
+  --paper:#FFFFFF;
+  --tint:#F0F0EE;          /* aplat le plus clair encore visible en photocopie */
+  --line:#C9C9C6;          /* filet fin */
+  --rule:#17181A;          /* filet structurant */
+  --ink:#17181A;           /* titres */
+  --body:#2B2E30;          /* texte courant, un cran plus sombre qu'à l'écran */
+  --soft:#4B4F52;          /* texte secondaire */
+  --muted:#5E6165;         /* sur-titres, méta */
+}
+html{background:#BBBBBB}
+body{
+  font-family:'Nunito','Trebuchet MS',sans-serif;
+  font-size:11.5pt; line-height:1.5; color:var(--body);
+  background:var(--paper);
+  width:215.9mm;                    /* 8,5 po — format lettre */
+  margin:0 auto; padding:14mm 15mm 16mm;
+  -webkit-print-color-adjust:exact; print-color-adjust:exact;
+}
+h1,h2,h3{color:var(--ink); line-height:1.2; letter-spacing:-0.01em}
+
+/* ── En-tête ── */
+.hdr{border-bottom:2.5px solid var(--rule); padding-bottom:8px; margin-bottom:14px;
+     display:flex; align-items:flex-end; gap:14px}
+.hdr-l{flex:1}
+.eyebrow{font-size:9.5pt; font-weight:800; text-transform:uppercase;
+         letter-spacing:.12em; color:var(--muted)}
+.hdr h1{font-size:22pt; font-weight:900; margin-top:3px}
+.hdr-r{flex-shrink:0; display:flex; gap:10px; align-items:flex-end;
+       font-size:9.5pt; font-weight:800; text-transform:uppercase;
+       letter-spacing:.08em; color:var(--muted); padding-bottom:2px}
+.nomline{display:inline-block; border-bottom:1.5px solid var(--rule);
+         height:6mm; vertical-align:bottom; margin-left:5px}
+.nomline--nom{width:48mm} .nomline--date{width:26mm}
+.chapeau{font-size:12pt; font-weight:600; color:var(--soft); margin-bottom:16px}
+
+/* ── Blocs ── */
+.bloc{break-inside:avoid; page-break-inside:avoid; margin-bottom:13px}
+.card{border:1px solid var(--line); border-radius:12px; padding:11px 14px 12px;
+      background:var(--paper)}
+.lbl{font-size:9.5pt; font-weight:800; text-transform:uppercase;
+     letter-spacing:.12em; color:var(--muted); margin-bottom:5px}
+h2.t{font-size:15pt; font-weight:900; margin-bottom:7px}
+.consigne{font-size:11pt; font-weight:600; color:var(--soft); margin-bottom:8px}
+
+/* ── Objectifs et exercices : pastille en cerne, jamais en aplat ── */
+ol.obj,ol.ex{list-style:none}
+ol.obj{counter-reset:o} ol.ex{counter-reset:e}
+ol.obj li,ol.ex li{position:relative; padding-left:9mm; font-weight:600}
+ol.obj li{counter-increment:o; margin-bottom:6px}
+ol.ex li{counter-increment:e; margin-bottom:9px; break-inside:avoid}
+ol.obj li::before,ol.ex li::before{
+  position:absolute; left:0; top:0; width:6mm; height:6mm; border-radius:50%;
+  border:1.5px solid var(--rule); color:var(--ink);
+  font-size:9.5pt; font-weight:800;
+  display:flex; align-items:center; justify-content:center}
+ol.obj li::before{content:counter(o)}
+ol.ex li::before{content:counter(e)}
+
+/* ── Dialogue ── */
+.rep{display:flex; gap:10px; padding:4px 0; border-top:1px solid var(--line)}
+.rep:first-of-type{border-top:0}
+.rep--key{background:var(--tint); border-radius:8px; padding:5px 8px;
+          border-top:0; margin:2px 0}
+.qui{flex:0 0 30mm; font-weight:800; color:var(--ink); font-size:10.5pt}
+
+/* ── Règle : encadrée au filet épais, c'est elle qu'on repère de loin ── */
+.regle{border:2.5px solid var(--rule); border-radius:12px; padding:12px 14px}
+.regle .lbl{color:var(--ink)}
+.regle p.r{font-size:14pt; font-weight:900; color:var(--ink); line-height:1.3}
+.regle p.pr{margin-top:7px; font-weight:600; color:var(--soft)}
+
+/* ── Tableau ── */
+table{width:100%; border-collapse:collapse}
+th{font-size:9.5pt; font-weight:800; text-transform:uppercase; letter-spacing:.1em;
+   color:var(--muted); text-align:left; padding:0 8px 5px 0;
+   border-bottom:1.5px solid var(--rule)}
+td{padding:6px 8px 6px 0; border-top:1px solid var(--line); vertical-align:top;
+   font-weight:600}
+td.cle{font-weight:900; color:var(--ink)}   /* la colonne clé : en gras, pas en couleur */
+.note{margin-top:8px; font-size:10.5pt; font-weight:600; color:var(--soft);
+      background:var(--tint); border-radius:9px; padding:8px 11px}
+
+/* ── Cartes ── */
+.grid{display:grid; grid-template-columns:1fr 1fr; gap:9px}
+.grid .card h3{font-size:11.5pt; font-weight:900; color:var(--ink); margin-bottom:3px}
+.grid .card p{font-size:11pt}
+
+/* ── Piège : le filet distingue les deux colonnes, pas la couleur ──
+   À gauche, un filet TIRETÉ — ce qui ne tient pas.
+   À droite, un filet PLEIN et épais — ce qu'il faut retenir.
+   Les deux intitulés disent la même chose en mots.                */
+.duo{display:grid; grid-template-columns:1fr 1fr; gap:10px}
+.duo>div{border-radius:12px; padding:10px 13px}
+.duo .no{border:1.5px dashed var(--muted)}
+.duo .ok{border:2.5px solid var(--rule); background:var(--tint)}
+.duo .k{font-size:9.5pt; font-weight:800; text-transform:uppercase;
+        letter-spacing:.1em; margin-bottom:4px; color:var(--muted)}
+.duo .ok .k{color:var(--ink)}
+.duo p.ph{font-size:12pt; font-weight:800; color:var(--ink); line-height:1.3}
+.duo .no p.ph{font-weight:600; font-style:italic; color:var(--soft)}
+
+/* ── Vocabulaire ── */
+.voc{width:100%; border-collapse:collapse}
+.voc td{border-top:1px solid var(--line); padding:6px 8px 6px 0}
+.voc td.mot{width:38%; font-weight:900; color:var(--ink)}
+.voc td.def{color:var(--soft)}
+
+/* ── Zones de réponse ── */
+.ligne{display:block; border-bottom:1px dotted #8E8E8A; height:8mm; margin-top:2px}
+.ligne--court{width:55%}
+
+/* ── Billet de sortie ── */
+.billet{border:2.5px solid var(--rule); border-radius:12px; padding:13px 15px}
+.billet .k{font-size:9.5pt; font-weight:800; text-transform:uppercase;
+           letter-spacing:.12em; color:var(--ink); margin-bottom:4px}
+.billet p.c{font-size:14pt; font-weight:900; color:var(--ink); line-height:1.3}
+.billet ul{list-style:none; margin-top:7px}
+.billet li{font-weight:600; color:var(--soft); margin-bottom:3px}
+
+/* ── Pied ── */
+footer{margin-top:16px; padding-top:7px; border-top:1px solid var(--line);
+       font-size:9.5pt; font-weight:700; color:var(--muted);
+       display:flex; justify-content:space-between}
+
+/* ── Impression ── */
+@page{size:8.5in 11in; margin:14mm 15mm}
+@media print{
+  html{background:#FFFFFF}
+  body{width:auto; padding:0}
+  .bloc{break-inside:avoid; page-break-inside:avoid}
+  h2.t,.lbl{break-after:avoid; page-break-after:avoid}
+}
+</style>
+</head>
+<body>
+<header class="hdr">
+  <div class="hdr-l">
+    <div class="eyebrow">Séance A4 · Module 8 · 60 minutes</div>
+    <h1>Trois petites annonces</h1>
+  </div>
+  <div class="hdr-r"><span>Nom<span class="nomline nomline--nom"></span></span><span>Date<span class="nomline nomline--date"></span></span></div>
+</header>
+<p class="chapeau">Trois logements, trois prix, trois vies possibles. Aucun n'est meilleur que les autres : tout dépend de qui cherche.</p>
+<section class="bloc card"><div class="lbl">Objectifs</div><h2 class="t">À la fin, je serai capable de…</h2><ol class="obj"><li>lire trois annonces et en tirer les informations essentielles ;</li><li>comparer trois logements sur plusieurs critères ;</li><li>choisir un logement selon une situation donnée ;</li><li>justifier son choix.</li></ol></section><section class="bloc"><div class="lbl">Les trois annonces</div><h2 class="t">À louer à Sherbrooke</h2><div class="grid"><div class="card"><h3>Annonce 1 · un 3 ½ à 780 $</h3><p>Rez-de-chaussée, quartier Jacques-Cartier. Cour clôturée, entrée pour laveuse-sécheuse. Chauffé et éclairé. Non-fumeur. Libre immédiatement.</p></div><div class="card"><h3>Annonce 2 · un 5 ½ à 1 250 $</h3><p>Grand logement dans un triplex, deux salles de bain, à cinq minutes d'une école primaire et d'un parc. Stationnement pour deux autos. Électroménagers non fournis. Bail d'un an.</p></div><div class="card"><h3>Annonce 3 · un 4 ½ à 890 $</h3><p>Repeint, au deuxième étage, au-dessus d'une boulangerie, rue Galt. Chauffage et eau chaude inclus. Buanderie commune au sous-sol. Chats acceptés. Libre le 1er septembre.</p></div></div></section><section class="bloc card"><div class="lbl">Analyse</div><h2 class="t">Les trois annonces, comparées</h2><table><thead><tr><th>Le critère</th><th>3 ½</th><th>5 ½</th><th>4 ½</th></tr></thead><tbody><tr><td class="cle">le loyer</td><td>780 $</td><td>1 250 $</td><td>890 $</td></tr><tr><td class="cle">les chambres</td><td>une</td><td>trois</td><td>deux</td></tr><tr><td class="cle">le chauffage</td><td>inclus</td><td>non</td><td>inclus</td></tr><tr><td class="cle">les électros</td><td>non précisé</td><td>non fournis</td><td>non précisé</td></tr><tr><td class="cle">libre</td><td>immédiatement</td><td>non précisé</td><td>1er septembre</td></tr></tbody></table></section><section class="bloc card"><div class="lbl">Pratique · 1 de 4</div><h2 class="t">Cinq questions sur les annonces</h2><p class="consigne">Répondez d'après les textes.</p><ol class="ex"><li><span class="q">Quel logement coûte le moins cher par mois ?</span><span class="ligne ligne--court"></span></li><li><span class="q">Dans quelle annonce faut-il apporter ses électroménagers ?</span><span class="ligne"></span></li><li><span class="q">Quelle annonce conviendrait à une famille de quatre ?</span><span class="ligne"></span></li><li><span class="q">Quel logement accepte les animaux, et lesquels ?</span><span class="ligne"></span></li><li><span class="q">Lequel est libre tout de suite ?</span><span class="ligne"></span></li></ol></section><section class="bloc regle"><div class="lbl">La règle du choix</div><p class="r">Le meilleur logement dépend de qui cherche.</p><p class="pr">Le 3 ½ est le moins cher, le 5 ½ le plus grand, le 4 ½ le plus tranquille. Aucun n'est meilleur en soi. Une personne seule, une famille et un travailleur de nuit ne choisiront pas le même.</p></section><section class="bloc card"><div class="lbl">Pratique · 2 de 4</div><h2 class="t">Quel logement pour qui ?</h2><p class="consigne">Et pourquoi celui-là ?</p><ol class="ex"><li><span class="q">Une personne seule avec un petit budget.</span><span class="ligne"></span></li><li><span class="q">Une famille de quatre avec deux enfants d'âge scolaire.</span><span class="ligne"></span></li><li><span class="q">Un travailleur de soir qui dort le matin.</span><span class="ligne"></span></li><li><span class="q">Quelqu'un qui a un chat.</span><span class="ligne"></span></li></ol></section><section class="bloc"><div class="lbl">Attention</div><h2 class="t">Le piège du plus grand</h2><div class="duo"><div class="no"><div class="k">On entend souvent</div><p class="ph">Le 5 ½ est le meilleur, il est plus grand.</p></div><div class="ok"><div class="k">Il faut dire plutôt</div><p class="ph">Il coûte 1 250 $, sans chauffage, et sans électroménagers.</p></div></div><div class="note">Plus grand veut dire plus cher à louer, à chauffer et à meubler. Pour une personne seule, un 5 ½ est une mauvaise affaire, même s'il est plus beau. Le bon logement est celui qui correspond au nombre de personnes.</div></section><section class="bloc"><div class="lbl">Attention</div><h2 class="t">Le piège de « non précisé »</h2><div class="duo"><div class="no"><div class="k">On entend souvent</div><p class="ph">L'annonce ne parle pas des électroménagers, donc ils sont fournis.</p></div><div class="ok"><div class="k">Il faut dire plutôt</div><p class="ph">Ce qui n'est pas écrit doit être demandé.</p></div></div><div class="note">Une annonce ne dit jamais tout. « Non précisé » ne veut dire ni oui ni non : cela veut dire qu'il faut poser la question avant de visiter. C'est un appel de deux minutes qui évite un déplacement inutile.</div></section><section class="bloc card"><div class="lbl">Pratique · 3 de 4</div><h2 class="t">Qu'est-ce qui manque dans chaque annonce ?</h2><p class="consigne">Une information non précisée par annonce.</p><ol class="ex"><li><span class="q">Annonce 1 — le 3 ½</span><span class="ligne"></span></li><li><span class="q">Annonce 2 — le 5 ½</span><span class="ligne"></span></li><li><span class="q">Annonce 3 — le 4 ½</span><span class="ligne"></span></li></ol></section><section class="bloc card"><div class="lbl">Pratique · 4 de 4</div><h2 class="t">Choisissez et justifiez</h2><p class="consigne">Lequel prendriez-vous, et pourquoi ?</p><ol class="ex"><li><span class="q">Votre choix</span><span class="ligne ligne--court"></span></li><li><span class="q">Votre raison principale</span><span class="ligne"></span></li><li><span class="q">Ce qui vous manque pour décider</span><span class="ligne"></span></li><li><span class="q">Ce que vous accepteriez de perdre</span><span class="ligne"></span></li></ol></section><section class="bloc billet"><div class="k">Billet de sortie</div><p class="c">Choisissez une des trois annonces et justifiez votre choix en trois phrases.</p><ul><li>Votre situation, votre raison, votre compromis.</li><li>Employez « parce que » au moins une fois.</li></ul><span class="ligne"></span><span class="ligne"></span><span class="ligne"></span></section>
+<footer><span>A4 · Comment est le logement ?</span><span>Fiche élève</span></footer>
+</body>
+</html>

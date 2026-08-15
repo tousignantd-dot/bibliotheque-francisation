@@ -62,27 +62,26 @@ GRILLE_STANDARD = ['A1', 'A2', 'A3', 'A4', 'B1', 'B2', 'B3', 'B4',
 # ── Lecture des sources ──────────────────────────────────────────────────
 
 def grille_du_build():
-    """L'ordre d'enseignement tel que le build des présentations le connaît.
+    """L'ordre d'enseignement tel que le build des présentations le connaît,
+    pour chaque module : `{slug: ['A1', 'A2', …]}`.
 
-    On importe `build/powerpoints/build.py` pour ses constantes : dupliquer
-    la liste ici la ferait diverger au premier ajout de séance. L'import est
-    sans effet de bord (le `main()` est sous garde) et n'exige pas
-    python-pptx, que ce script n'a pas à charger."""
+    On importe `build/powerpoints/modules.py`, le registre : dupliquer les
+    grilles ici les ferait diverger au premier ajout de séance. L'import
+    n'exige pas python-pptx, que ce script n'a pas à charger — le registre ne
+    contient que des données."""
     import importlib.util
-    chemin = os.path.join(ICI, 'powerpoints', 'build.py')
+    chemin = os.path.join(ICI, 'powerpoints', 'modules.py')
     if not os.path.exists(chemin):
         return {}
-    spec = importlib.util.spec_from_file_location('_build_pptx', chemin)
+    spec = importlib.util.spec_from_file_location('_modules_pptx', chemin)
     mod = importlib.util.module_from_spec(spec)
-    sys.path.insert(0, os.path.join(ICI, 'powerpoints'))
     try:
         spec.loader.exec_module(mod)
     except Exception as e:                       # pragma: no cover
-        print(f'  (grille du build illisible : {e})')
+        print(f'  (registre des modules illisible : {e})')
         return {}
-    finally:
-        sys.path.pop(0)
-    return {mod.MODULE: [c.upper() for c in mod.SEANCES]}
+    return {slug: [c.upper() for c in m['seances']]
+            for slug, m in mod.MODULES.items()}
 
 
 _DECK_CACHE = {}
@@ -97,7 +96,7 @@ def meta_du_deck(slug, code):
     cle = (slug, code)
     if cle in _DECK_CACHE:
         return _DECK_CACHE[cle]
-    chemin = os.path.join(ICI, 'powerpoints', 'decks', code.lower() + '.py')
+    chemin = os.path.join(ICI, 'powerpoints', 'decks', slug, code.lower() + '.py')
     meta = {}
     if os.path.exists(chemin):
         src = open(chemin, encoding='utf-8').read()

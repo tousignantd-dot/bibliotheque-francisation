@@ -1,0 +1,172 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>C2 · L'imparfait du verbe être — Fiche élève</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800;900&display=swap" rel="stylesheet">
+<style>
+/* ═══════════════════════════════════════════════════════════════
+   FICHE ÉLÈVE · IMPRESSION LETTRE, NOIR ET BLANC
+   ───────────────────────────────────────────────────────────────
+   Aucune couleur : ces fiches sont photocopiées en noir et blanc.
+   Toute la hiérarchie passe par la GRAISSE, les FILETS et les MOTS.
+   C'est d'ailleurs la règle du système de design poussée à son
+   terme : « jamais d'information portée par la couleur seule ».
+
+   Les gris viennent des neutres du système (ink-900 à ink-400),
+   qui sont déjà quasi neutres. Les filets sont volontairement plus
+   sombres qu'à l'écran : une photocopieuse efface tout ce qui est
+   plus clair que 15 % de noir.
+   ═══════════════════════════════════════════════════════════════ */
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+:root{
+  --paper:#FFFFFF;
+  --tint:#F0F0EE;          /* aplat le plus clair encore visible en photocopie */
+  --line:#C9C9C6;          /* filet fin */
+  --rule:#17181A;          /* filet structurant */
+  --ink:#17181A;           /* titres */
+  --body:#2B2E30;          /* texte courant, un cran plus sombre qu'à l'écran */
+  --soft:#4B4F52;          /* texte secondaire */
+  --muted:#5E6165;         /* sur-titres, méta */
+}
+html{background:#BBBBBB}
+body{
+  font-family:'Nunito','Trebuchet MS',sans-serif;
+  font-size:11.5pt; line-height:1.5; color:var(--body);
+  background:var(--paper);
+  width:215.9mm;                    /* 8,5 po — format lettre */
+  margin:0 auto; padding:14mm 15mm 16mm;
+  -webkit-print-color-adjust:exact; print-color-adjust:exact;
+}
+h1,h2,h3{color:var(--ink); line-height:1.2; letter-spacing:-0.01em}
+
+/* ── En-tête ── */
+.hdr{border-bottom:2.5px solid var(--rule); padding-bottom:8px; margin-bottom:14px;
+     display:flex; align-items:flex-end; gap:14px}
+.hdr-l{flex:1}
+.eyebrow{font-size:9.5pt; font-weight:800; text-transform:uppercase;
+         letter-spacing:.12em; color:var(--muted)}
+.hdr h1{font-size:22pt; font-weight:900; margin-top:3px}
+.hdr-r{flex-shrink:0; display:flex; gap:10px; align-items:flex-end;
+       font-size:9.5pt; font-weight:800; text-transform:uppercase;
+       letter-spacing:.08em; color:var(--muted); padding-bottom:2px}
+.nomline{display:inline-block; border-bottom:1.5px solid var(--rule);
+         height:6mm; vertical-align:bottom; margin-left:5px}
+.nomline--nom{width:48mm} .nomline--date{width:26mm}
+.chapeau{font-size:12pt; font-weight:600; color:var(--soft); margin-bottom:16px}
+
+/* ── Blocs ── */
+.bloc{break-inside:avoid; page-break-inside:avoid; margin-bottom:13px}
+.card{border:1px solid var(--line); border-radius:12px; padding:11px 14px 12px;
+      background:var(--paper)}
+.lbl{font-size:9.5pt; font-weight:800; text-transform:uppercase;
+     letter-spacing:.12em; color:var(--muted); margin-bottom:5px}
+h2.t{font-size:15pt; font-weight:900; margin-bottom:7px}
+.consigne{font-size:11pt; font-weight:600; color:var(--soft); margin-bottom:8px}
+
+/* ── Objectifs et exercices : pastille en cerne, jamais en aplat ── */
+ol.obj,ol.ex{list-style:none}
+ol.obj{counter-reset:o} ol.ex{counter-reset:e}
+ol.obj li,ol.ex li{position:relative; padding-left:9mm; font-weight:600}
+ol.obj li{counter-increment:o; margin-bottom:6px}
+ol.ex li{counter-increment:e; margin-bottom:9px; break-inside:avoid}
+ol.obj li::before,ol.ex li::before{
+  position:absolute; left:0; top:0; width:6mm; height:6mm; border-radius:50%;
+  border:1.5px solid var(--rule); color:var(--ink);
+  font-size:9.5pt; font-weight:800;
+  display:flex; align-items:center; justify-content:center}
+ol.obj li::before{content:counter(o)}
+ol.ex li::before{content:counter(e)}
+
+/* ── Dialogue ── */
+.rep{display:flex; gap:10px; padding:4px 0; border-top:1px solid var(--line)}
+.rep:first-of-type{border-top:0}
+.rep--key{background:var(--tint); border-radius:8px; padding:5px 8px;
+          border-top:0; margin:2px 0}
+.qui{flex:0 0 30mm; font-weight:800; color:var(--ink); font-size:10.5pt}
+
+/* ── Règle : encadrée au filet épais, c'est elle qu'on repère de loin ── */
+.regle{border:2.5px solid var(--rule); border-radius:12px; padding:12px 14px}
+.regle .lbl{color:var(--ink)}
+.regle p.r{font-size:14pt; font-weight:900; color:var(--ink); line-height:1.3}
+.regle p.pr{margin-top:7px; font-weight:600; color:var(--soft)}
+
+/* ── Tableau ── */
+table{width:100%; border-collapse:collapse}
+th{font-size:9.5pt; font-weight:800; text-transform:uppercase; letter-spacing:.1em;
+   color:var(--muted); text-align:left; padding:0 8px 5px 0;
+   border-bottom:1.5px solid var(--rule)}
+td{padding:6px 8px 6px 0; border-top:1px solid var(--line); vertical-align:top;
+   font-weight:600}
+td.cle{font-weight:900; color:var(--ink)}   /* la colonne clé : en gras, pas en couleur */
+.note{margin-top:8px; font-size:10.5pt; font-weight:600; color:var(--soft);
+      background:var(--tint); border-radius:9px; padding:8px 11px}
+
+/* ── Cartes ── */
+.grid{display:grid; grid-template-columns:1fr 1fr; gap:9px}
+.grid .card h3{font-size:11.5pt; font-weight:900; color:var(--ink); margin-bottom:3px}
+.grid .card p{font-size:11pt}
+
+/* ── Piège : le filet distingue les deux colonnes, pas la couleur ──
+   À gauche, un filet TIRETÉ — ce qui ne tient pas.
+   À droite, un filet PLEIN et épais — ce qu'il faut retenir.
+   Les deux intitulés disent la même chose en mots.                */
+.duo{display:grid; grid-template-columns:1fr 1fr; gap:10px}
+.duo>div{border-radius:12px; padding:10px 13px}
+.duo .no{border:1.5px dashed var(--muted)}
+.duo .ok{border:2.5px solid var(--rule); background:var(--tint)}
+.duo .k{font-size:9.5pt; font-weight:800; text-transform:uppercase;
+        letter-spacing:.1em; margin-bottom:4px; color:var(--muted)}
+.duo .ok .k{color:var(--ink)}
+.duo p.ph{font-size:12pt; font-weight:800; color:var(--ink); line-height:1.3}
+.duo .no p.ph{font-weight:600; font-style:italic; color:var(--soft)}
+
+/* ── Vocabulaire ── */
+.voc{width:100%; border-collapse:collapse}
+.voc td{border-top:1px solid var(--line); padding:6px 8px 6px 0}
+.voc td.mot{width:38%; font-weight:900; color:var(--ink)}
+.voc td.def{color:var(--soft)}
+
+/* ── Zones de réponse ── */
+.ligne{display:block; border-bottom:1px dotted #8E8E8A; height:8mm; margin-top:2px}
+.ligne--court{width:55%}
+
+/* ── Billet de sortie ── */
+.billet{border:2.5px solid var(--rule); border-radius:12px; padding:13px 15px}
+.billet .k{font-size:9.5pt; font-weight:800; text-transform:uppercase;
+           letter-spacing:.12em; color:var(--ink); margin-bottom:4px}
+.billet p.c{font-size:14pt; font-weight:900; color:var(--ink); line-height:1.3}
+.billet ul{list-style:none; margin-top:7px}
+.billet li{font-weight:600; color:var(--soft); margin-bottom:3px}
+
+/* ── Pied ── */
+footer{margin-top:16px; padding-top:7px; border-top:1px solid var(--line);
+       font-size:9.5pt; font-weight:700; color:var(--muted);
+       display:flex; justify-content:space-between}
+
+/* ── Impression ── */
+@page{size:8.5in 11in; margin:14mm 15mm}
+@media print{
+  html{background:#FFFFFF}
+  body{width:auto; padding:0}
+  .bloc{break-inside:avoid; page-break-inside:avoid}
+  h2.t,.lbl{break-after:avoid; page-break-after:avoid}
+}
+</style>
+</head>
+<body>
+<header class="hdr">
+  <div class="hdr-l">
+    <div class="eyebrow">Séance C2 · Module 5 · 60 minutes</div>
+    <h1>L'imparfait du verbe être</h1>
+  </div>
+  <div class="hdr-r"><span>Nom<span class="nomline nomline--nom"></span></span><span>Date<span class="nomline nomline--date"></span></span></div>
+</header>
+<p class="chapeau">« Il était 8 h quand les pompiers sont arrivés. » Deux temps du passé dans une phrase : l'un plante le décor, l'autre raconte l'événement.</p>
+<section class="bloc card"><div class="lbl">Objectifs</div><h2 class="t">À la fin, je serai capable de…</h2><ol class="obj"><li>conjuguer le verbe être à l'imparfait, aux six personnes ;</li><li>employer l'imparfait pour décrire une situation passée ;</li><li>distinguer l'imparfait du passé composé ;</li><li>écrire le décor d'un fait divers.</li></ol></section><section class="bloc regle"><div class="lbl">La formation</div><p class="r">Le radical ét- et les terminaisons de l'imparfait.</p><p class="pr">J'étais, tu étais, il était, nous étions, vous étiez, ils étaient. Le radical ne change jamais ; seules les terminaisons bougent, et ce sont celles de tous les verbes à l'imparfait.</p></section><section class="bloc card"><div class="lbl">Analyse</div><h2 class="t">Être à l'imparfait</h2><table><thead><tr><th>La personne</th><th>La forme</th><th>Un exemple</th></tr></thead><tbody><tr><td>je</td><td class="cle">j'étais</td><td>J'étais curieux de voir la sculpture.</td></tr><tr><td>tu</td><td class="cle">tu étais</td><td>Tu étais au concours samedi ?</td></tr><tr><td>il, elle, on</td><td class="cle">il était</td><td>Il était 8 h quand ils sont arrivés.</td></tr><tr><td>nous</td><td class="cle">nous étions</td><td>Nous étions au chalet ce jour-là.</td></tr><tr><td>vous</td><td class="cle">vous étiez</td><td>Vous étiez nombreux à la remise des prix.</td></tr><tr><td>ils, elles</td><td class="cle">ils étaient</td><td>Les organisateurs étaient débordés.</td></tr></tbody></table></section><section class="bloc regle"><div class="lbl">À quoi sert l'imparfait</div><p class="r">Il décrit une situation, un décor, un état — pas un événement.</p><p class="pr">« Il était 8 h » : le décor. « Les pompiers sont arrivés » : l'événement. Dans un fait divers, l'imparfait plante la scène et le passé composé raconte ce qui s'est passé.</p></section><section class="bloc"><div class="lbl">En apprendre plus</div><h2 class="t">Quatre emplois de l'imparfait</h2><div class="grid"><div class="card"><h3>L'heure et la date</h3><p>« Il était 8 h. » « C'était un samedi. » Toujours à l'imparfait, jamais au passé composé.</p></div><div class="card"><h3>Le temps qu'il faisait</h3><p>« Il faisait froid. » « La neige était collante. » Le décor météo d'un fait divers est toujours à l'imparfait.</p></div><div class="card"><h3>L'état des personnes</h3><p>« Le jury était impressionné. » « Les organisateurs étaient débordés. » Un état dure ; il n'est pas un événement.</p></div><div class="card"><h3>Ce qui se passait déjà</h3><p>« Deux passants qui marchaient à proximité… » L'action était en cours quand l'événement est arrivé.</p></div></div></section><section class="bloc card"><div class="lbl">Pratique · 1 de 4</div><h2 class="t">Conjuguez être à l'imparfait</h2><p class="consigne">Regardez le sujet.</p><ol class="ex"><li><span class="q">Le jury ___ impressionné par les détails de la sculpture.</span><span class="ligne ligne--court"></span></li><li><span class="q">L'incendie s'est déclaré quand nous ___ au chalet.</span><span class="ligne ligne--court"></span></li><li><span class="q">Il ___ 8 h quand les pompiers sont arrivés.</span><span class="ligne ligne--court"></span></li><li><span class="q">J'___ curieux de voir la sculpture gagnante.</span><span class="ligne ligne--court"></span></li><li><span class="q">La semaine dernière, les organisateurs ___ débordés de travail.</span><span class="ligne ligne--court"></span></li><li><span class="q">Vous ___ au concours samedi ?</span><span class="ligne ligne--court"></span></li></ol></section><section class="bloc card"><div class="lbl">Pratique · 2 de 4</div><h2 class="t">Décor ou événement ?</h2><p class="consigne">L'imparfait décrit, le passé composé raconte.</p><ol class="ex"><li><span class="q">Il était 8 h du matin.</span><span class="ligne ligne--court"></span></li><li><span class="q">Les pompiers sont arrivés.</span><span class="ligne"></span></li><li><span class="q">Il faisait très froid ce jour-là.</span><span class="ligne ligne--court"></span></li><li><span class="q">Le jury a remis le premier prix.</span><span class="ligne"></span></li><li><span class="q">Les organisateurs étaient débordés.</span><span class="ligne ligne--court"></span></li></ol></section><section class="bloc"><div class="lbl">Attention</div><h2 class="t">Le piège de l'heure</h2><div class="duo"><div class="no"><div class="k">On entend souvent</div><p class="ph">Il a été 8 h quand les pompiers sont arrivés.</p></div><div class="ok"><div class="k">Il faut dire plutôt</div><p class="ph">Il était 8 h quand les pompiers sont arrivés.</p></div></div><div class="note">L'heure, la date et le temps qu'il faisait sont toujours à l'imparfait : ce ne sont pas des événements, ce sont des états. « Il a été 8 h » voudrait dire que 8 h est arrivé puis reparti.</div></section><section class="bloc"><div class="lbl">Attention</div><h2 class="t">Le piège des trois formes semblables</h2><div class="duo"><div class="no"><div class="k">On entend souvent</div><p class="ph">Les organisateurs était débordés.</p></div><div class="ok"><div class="k">Il faut dire plutôt</div><p class="ph">Les organisateurs étaient débordés.</p></div></div><div class="note">« Étais », « était » et « étaient » se prononcent exactement pareil. À l'oral, personne ne peut vous corriger ; à l'écrit, l'erreur est très visible. Regardez le sujet, n'écoutez pas le verbe.</div></section><section class="bloc card"><div class="lbl">Pratique · 3 de 4</div><h2 class="t">Complétez le fait divers</h2><p class="consigne">Imparfait pour le décor, passé composé pour l'événement.</p><ol class="ex"><li><span class="q">Il ___ (être) 22 h et il ___ (faire) très froid.</span><span class="ligne ligne--court"></span></li><li><span class="q">Un feu ___ (se déclarer) dans un garage.</span><span class="ligne ligne--court"></span></li><li><span class="q">Le propriétaire ___ (dormir) à l'étage.</span><span class="ligne ligne--court"></span></li><li><span class="q">Les pompiers ___ (arriver) dix minutes plus tard.</span><span class="ligne ligne--court"></span></li><li><span class="q">Personne ___ (ne être) blessé.</span><span class="ligne ligne--court"></span></li></ol></section><section class="bloc card"><div class="lbl">Pratique · 4 de 4</div><h2 class="t">Écrivez le décor</h2><p class="consigne">Trois phrases à l'imparfait avant l'événement.</p><ol class="ex"><li><span class="q">L'heure et le jour</span><span class="ligne"></span></li><li><span class="q">Le temps qu'il faisait</span><span class="ligne"></span></li><li><span class="q">Les gens présents</span><span class="ligne"></span></li></ol></section><section class="bloc billet"><div class="k">Billet de sortie</div><p class="c">Écrivez le début d'un fait divers : trois phrases de décor, une d'événement.</p><ul><li>Les trois premières à l'imparfait, la dernière au passé composé.</li><li>L'heure, le temps qu'il faisait, les gens présents, puis ce qui est arrivé.</li></ul><span class="ligne"></span><span class="ligne"></span><span class="ligne"></span></section>
+<footer><span>C2 · C'est l'heure des nouvelles</span><span>Fiche élève</span></footer>
+</body>
+</html>

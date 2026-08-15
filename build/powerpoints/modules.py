@@ -1,0 +1,150 @@
+# -*- coding: utf-8 -*-
+"""
+Le registre des modules produits par ce dossier
+================================================
+
+Un seul endroit dit, pour chaque module : son numéro, le titre affiché en pied
+de page, l'ordre d'enseignement de ses séances et le nom de ses blocs. Tout le
+reste — `build.py`, `build_fiches.py`, `theme.py`, `fiche.py`,
+`build/materiel.py` — s'y rapporte au lieu de porter une constante à soi.
+
+Le **slug** est la clé : c'est celui de `assets/interactive/<slug>/`, donc
+celui de `assets/powerpoints/<slug>/` et le préfixe des fiches. C'est lui qui
+relie un fichier produit à son activité dans le dépôt de matériel.
+
+**Le nombre de séances suit le nombre de défis du module**, pas une grille
+imposée : les modules à trois défis se répartissent 4-4-4-2-2, ceux à deux
+défis 4-5-5-2. Seize séances dans les deux cas, mais un module qui n'a pas de
+« Défi 3 » n'a pas de bloc D — inventer une séance sans contenu serait pire
+que de n'en pas avoir.
+
+Le module actif est posé par le script d'entrée (`choisir()`), avant que les
+decks ne soient importés : ceux-ci font `from theme import Deck`, et `Deck`
+lit ici son numéro et son titre.
+"""
+
+GRILLE_3_DEFIS = ['a1', 'a2', 'a3', 'a4', 'b1', 'b2', 'b3', 'b4',
+                  'c1', 'c2', 'c3', 'c4', 'd1', 'd2', 'e1', 'e2']
+GRILLE_2_DEFIS = ['a1', 'a2', 'a3', 'a4', 'b1', 'b2', 'b3', 'b4', 'b5',
+                  'c1', 'c2', 'c3', 'c4', 'c5', 'e1', 'e2']
+
+
+def _blocs(defi1, defi2, defi3=None):
+    b = {'A': 'Je découvre', 'B': f'Défi 1 · {defi1}', 'C': f'Défi 2 · {defi2}',
+         'E': 'Je me lance'}
+    if defi3:
+        b['D'] = f'Défi 3 · {defi3}'
+    return b
+
+
+MODULES = {
+    'module-consultation': {
+        'numero': 1, 'activite': 35,
+        'titre': 'Consulter au bon endroit',
+        'chapeau': "Décrire une douleur, choisir le bon service, comprendre "
+                   "les conseils.",
+        'seances': GRILLE_3_DEFIS,
+        'blocs': _blocs('Le triage', "L'examen", 'Le formulaire'),
+    },
+    'module-urgence': {
+        'numero': 2, 'activite': 36,
+        'titre': 'Une urgence au travail',
+        'chapeau': "Réagir vite, appeler le bon service, raconter ce qui est "
+                   "arrivé.",
+        'seances': GRILLE_3_DEFIS,
+        'blocs': _blocs("À l'urgence", 'Les soins', "À l'accueil"),
+    },
+    'module-travail': {
+        'numero': 3, 'activite': 39,
+        'titre': 'Absent ou en retard : que faire ?',
+        'chapeau': "Prévenir son superviseur, justifier un retard, écrire un "
+                   "courriel.",
+        'seances': GRILLE_3_DEFIS,
+        'blocs': _blocs('Le message', 'Le retard', 'Le courriel'),
+    },
+    'module-procedure': {
+        'numero': 4, 'activite': 40,
+        'titre': 'Quelle est la procédure ?',
+        'chapeau': "Comprendre une procédure, suivre des étapes, lire une "
+                   "directive.",
+        'seances': GRILLE_3_DEFIS,
+        'blocs': _blocs('La demande de remboursement', 'Soumettre sa demande',
+                        'Avez-vous lu les directives ?'),
+    },
+    'module-nouvelles': {
+        'numero': 5, 'activite': 41,
+        'titre': "C'est l'heure des nouvelles",
+        'chapeau': "Comprendre un fait divers à l'oral et à l'écrit, puis en "
+                   "raconter un.",
+        'seances': GRILLE_2_DEFIS,
+        'blocs': _blocs('As-tu écouté les nouvelles ?',
+                        "Qu'est-ce que tu lis ?"),
+    },
+    'module-meteo': {
+        'numero': 6, 'activite': 42,
+        'titre': 'Quelles sont les prévisions ?',
+        'chapeau': "Comprendre un bulletin, lire une alerte, décider d'une "
+                   "journée de travail.",
+        'seances': GRILLE_2_DEFIS,
+        'blocs': _blocs('Le bulletin de six heures',
+                        'Lire une alerte avant de partir'),
+    },
+    'module-pub': {
+        'numero': 7, 'activite': 43,
+        'titre': 'Des publicités efficaces',
+        'chapeau': "Reconnaître les éléments et les valeurs d'une publicité, "
+                   "puis en écrire une.",
+        'seances': GRILLE_2_DEFIS,
+        'blocs': _blocs('Trente secondes en ondes',
+                        'Deux affiches sur le babillard'),
+    },
+    'module-logement': {
+        'numero': 8, 'activite': 44,
+        'titre': 'Comment est le logement ?',
+        'chapeau': "Visiter, poser les bonnes questions, comparer deux "
+                   "logements.",
+        'seances': GRILLE_3_DEFIS,
+        'blocs': _blocs('Poser les bonnes questions', 'Ce qui compte pour moi',
+                        'Un logement pour chaque besoin'),
+    },
+    'module-probleme': {
+        'numero': 9, 'activite': 45,
+        'titre': 'Pouvez-vous régler le problème ?',
+        'chapeau': "Signaler un problème, faire respecter ses droits, se "
+                   "plaindre efficacement.",
+        'seances': GRILLE_3_DEFIS,
+        'blocs': _blocs('Un problème dans le logement',
+                        "Des problèmes dans l'immeuble",
+                        'Une situation inacceptable'),
+    },
+}
+
+# L'ordre d'affichage : celui des numéros de module.
+ORDRE = sorted(MODULES, key=lambda s: MODULES[s]['numero'])
+
+_ACTIF = None
+
+
+def choisir(slug):
+    """Pose le module actif. À appeler **avant** d'importer un deck : les
+    decks construisent leur `Deck` à l'import de leur fonction `build`, et
+    `Deck` lit ici le numéro et le titre à mettre en pied de page."""
+    global _ACTIF
+    if slug not in MODULES:
+        raise SystemExit(
+            f"Module inconnu : {slug}\nModules connus : "
+            + ', '.join(ORDRE))
+    _ACTIF = slug
+    return MODULES[slug]
+
+
+def slug_actif():
+    if _ACTIF is None:
+        raise RuntimeError(
+            "Aucun module actif : appelez modules.choisir('<slug>') avant "
+            "d'importer un deck.")
+    return _ACTIF
+
+
+def actif():
+    return MODULES[slug_actif()]

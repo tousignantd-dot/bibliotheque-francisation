@@ -1,0 +1,172 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>A2 · Le vocabulaire du logement — Fiche élève</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800;900&display=swap" rel="stylesheet">
+<style>
+/* ═══════════════════════════════════════════════════════════════
+   FICHE ÉLÈVE · IMPRESSION LETTRE, NOIR ET BLANC
+   ───────────────────────────────────────────────────────────────
+   Aucune couleur : ces fiches sont photocopiées en noir et blanc.
+   Toute la hiérarchie passe par la GRAISSE, les FILETS et les MOTS.
+   C'est d'ailleurs la règle du système de design poussée à son
+   terme : « jamais d'information portée par la couleur seule ».
+
+   Les gris viennent des neutres du système (ink-900 à ink-400),
+   qui sont déjà quasi neutres. Les filets sont volontairement plus
+   sombres qu'à l'écran : une photocopieuse efface tout ce qui est
+   plus clair que 15 % de noir.
+   ═══════════════════════════════════════════════════════════════ */
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+:root{
+  --paper:#FFFFFF;
+  --tint:#F0F0EE;          /* aplat le plus clair encore visible en photocopie */
+  --line:#C9C9C6;          /* filet fin */
+  --rule:#17181A;          /* filet structurant */
+  --ink:#17181A;           /* titres */
+  --body:#2B2E30;          /* texte courant, un cran plus sombre qu'à l'écran */
+  --soft:#4B4F52;          /* texte secondaire */
+  --muted:#5E6165;         /* sur-titres, méta */
+}
+html{background:#BBBBBB}
+body{
+  font-family:'Nunito','Trebuchet MS',sans-serif;
+  font-size:11.5pt; line-height:1.5; color:var(--body);
+  background:var(--paper);
+  width:215.9mm;                    /* 8,5 po — format lettre */
+  margin:0 auto; padding:14mm 15mm 16mm;
+  -webkit-print-color-adjust:exact; print-color-adjust:exact;
+}
+h1,h2,h3{color:var(--ink); line-height:1.2; letter-spacing:-0.01em}
+
+/* ── En-tête ── */
+.hdr{border-bottom:2.5px solid var(--rule); padding-bottom:8px; margin-bottom:14px;
+     display:flex; align-items:flex-end; gap:14px}
+.hdr-l{flex:1}
+.eyebrow{font-size:9.5pt; font-weight:800; text-transform:uppercase;
+         letter-spacing:.12em; color:var(--muted)}
+.hdr h1{font-size:22pt; font-weight:900; margin-top:3px}
+.hdr-r{flex-shrink:0; display:flex; gap:10px; align-items:flex-end;
+       font-size:9.5pt; font-weight:800; text-transform:uppercase;
+       letter-spacing:.08em; color:var(--muted); padding-bottom:2px}
+.nomline{display:inline-block; border-bottom:1.5px solid var(--rule);
+         height:6mm; vertical-align:bottom; margin-left:5px}
+.nomline--nom{width:48mm} .nomline--date{width:26mm}
+.chapeau{font-size:12pt; font-weight:600; color:var(--soft); margin-bottom:16px}
+
+/* ── Blocs ── */
+.bloc{break-inside:avoid; page-break-inside:avoid; margin-bottom:13px}
+.card{border:1px solid var(--line); border-radius:12px; padding:11px 14px 12px;
+      background:var(--paper)}
+.lbl{font-size:9.5pt; font-weight:800; text-transform:uppercase;
+     letter-spacing:.12em; color:var(--muted); margin-bottom:5px}
+h2.t{font-size:15pt; font-weight:900; margin-bottom:7px}
+.consigne{font-size:11pt; font-weight:600; color:var(--soft); margin-bottom:8px}
+
+/* ── Objectifs et exercices : pastille en cerne, jamais en aplat ── */
+ol.obj,ol.ex{list-style:none}
+ol.obj{counter-reset:o} ol.ex{counter-reset:e}
+ol.obj li,ol.ex li{position:relative; padding-left:9mm; font-weight:600}
+ol.obj li{counter-increment:o; margin-bottom:6px}
+ol.ex li{counter-increment:e; margin-bottom:9px; break-inside:avoid}
+ol.obj li::before,ol.ex li::before{
+  position:absolute; left:0; top:0; width:6mm; height:6mm; border-radius:50%;
+  border:1.5px solid var(--rule); color:var(--ink);
+  font-size:9.5pt; font-weight:800;
+  display:flex; align-items:center; justify-content:center}
+ol.obj li::before{content:counter(o)}
+ol.ex li::before{content:counter(e)}
+
+/* ── Dialogue ── */
+.rep{display:flex; gap:10px; padding:4px 0; border-top:1px solid var(--line)}
+.rep:first-of-type{border-top:0}
+.rep--key{background:var(--tint); border-radius:8px; padding:5px 8px;
+          border-top:0; margin:2px 0}
+.qui{flex:0 0 30mm; font-weight:800; color:var(--ink); font-size:10.5pt}
+
+/* ── Règle : encadrée au filet épais, c'est elle qu'on repère de loin ── */
+.regle{border:2.5px solid var(--rule); border-radius:12px; padding:12px 14px}
+.regle .lbl{color:var(--ink)}
+.regle p.r{font-size:14pt; font-weight:900; color:var(--ink); line-height:1.3}
+.regle p.pr{margin-top:7px; font-weight:600; color:var(--soft)}
+
+/* ── Tableau ── */
+table{width:100%; border-collapse:collapse}
+th{font-size:9.5pt; font-weight:800; text-transform:uppercase; letter-spacing:.1em;
+   color:var(--muted); text-align:left; padding:0 8px 5px 0;
+   border-bottom:1.5px solid var(--rule)}
+td{padding:6px 8px 6px 0; border-top:1px solid var(--line); vertical-align:top;
+   font-weight:600}
+td.cle{font-weight:900; color:var(--ink)}   /* la colonne clé : en gras, pas en couleur */
+.note{margin-top:8px; font-size:10.5pt; font-weight:600; color:var(--soft);
+      background:var(--tint); border-radius:9px; padding:8px 11px}
+
+/* ── Cartes ── */
+.grid{display:grid; grid-template-columns:1fr 1fr; gap:9px}
+.grid .card h3{font-size:11.5pt; font-weight:900; color:var(--ink); margin-bottom:3px}
+.grid .card p{font-size:11pt}
+
+/* ── Piège : le filet distingue les deux colonnes, pas la couleur ──
+   À gauche, un filet TIRETÉ — ce qui ne tient pas.
+   À droite, un filet PLEIN et épais — ce qu'il faut retenir.
+   Les deux intitulés disent la même chose en mots.                */
+.duo{display:grid; grid-template-columns:1fr 1fr; gap:10px}
+.duo>div{border-radius:12px; padding:10px 13px}
+.duo .no{border:1.5px dashed var(--muted)}
+.duo .ok{border:2.5px solid var(--rule); background:var(--tint)}
+.duo .k{font-size:9.5pt; font-weight:800; text-transform:uppercase;
+        letter-spacing:.1em; margin-bottom:4px; color:var(--muted)}
+.duo .ok .k{color:var(--ink)}
+.duo p.ph{font-size:12pt; font-weight:800; color:var(--ink); line-height:1.3}
+.duo .no p.ph{font-weight:600; font-style:italic; color:var(--soft)}
+
+/* ── Vocabulaire ── */
+.voc{width:100%; border-collapse:collapse}
+.voc td{border-top:1px solid var(--line); padding:6px 8px 6px 0}
+.voc td.mot{width:38%; font-weight:900; color:var(--ink)}
+.voc td.def{color:var(--soft)}
+
+/* ── Zones de réponse ── */
+.ligne{display:block; border-bottom:1px dotted #8E8E8A; height:8mm; margin-top:2px}
+.ligne--court{width:55%}
+
+/* ── Billet de sortie ── */
+.billet{border:2.5px solid var(--rule); border-radius:12px; padding:13px 15px}
+.billet .k{font-size:9.5pt; font-weight:800; text-transform:uppercase;
+           letter-spacing:.12em; color:var(--ink); margin-bottom:4px}
+.billet p.c{font-size:14pt; font-weight:900; color:var(--ink); line-height:1.3}
+.billet ul{list-style:none; margin-top:7px}
+.billet li{font-weight:600; color:var(--soft); margin-bottom:3px}
+
+/* ── Pied ── */
+footer{margin-top:16px; padding-top:7px; border-top:1px solid var(--line);
+       font-size:9.5pt; font-weight:700; color:var(--muted);
+       display:flex; justify-content:space-between}
+
+/* ── Impression ── */
+@page{size:8.5in 11in; margin:14mm 15mm}
+@media print{
+  html{background:#FFFFFF}
+  body{width:auto; padding:0}
+  .bloc{break-inside:avoid; page-break-inside:avoid}
+  h2.t,.lbl{break-after:avoid; page-break-after:avoid}
+}
+</style>
+</head>
+<body>
+<header class="hdr">
+  <div class="hdr-l">
+    <div class="eyebrow">Séance A2 · Module 8 · 60 minutes</div>
+    <h1>Le vocabulaire du logement</h1>
+  </div>
+  <div class="hdr-r"><span>Nom<span class="nomline nomline--nom"></span></span><span>Date<span class="nomline nomline--date"></span></span></div>
+</header>
+<p class="chapeau">« 4 ½ chauffé et éclairé, non-fumeur, libre le 1er juillet. » Une annonce de logement au Québec est écrite en abrégé — et chaque mot y coûte de l'argent.</p>
+<section class="bloc card"><div class="lbl">Objectifs</div><h2 class="t">À la fin, je serai capable de…</h2><ol class="obj"><li>comprendre la notation des pièces : 2 ½, 3 ½, 4 ½, 5 ½ ;</li><li>décoder les abréviations courantes des annonces ;</li><li>nommer les pièces et les services d'un logement ;</li><li>calculer le vrai coût d'un loyer.</li></ol></section><section class="bloc card"><div class="lbl">Analyse</div><h2 class="t">Combien de pièces ?</h2><table><thead><tr><th>La notation</th><th>Ce que ça veut dire</th></tr></thead><tbody><tr><td class="cle">1 ½</td><td>une seule pièce, plus la salle de bain — un studio</td></tr><tr><td class="cle">2 ½</td><td>une chambre et une cuisine, plus la salle de bain</td></tr><tr><td class="cle">3 ½</td><td>une chambre, un salon, une cuisine</td></tr><tr><td class="cle">4 ½</td><td>deux chambres, un salon, une cuisine</td></tr><tr><td class="cle">5 ½</td><td>trois chambres, un salon, une cuisine</td></tr></tbody></table></section><section class="bloc regle"><div class="lbl">La règle du demi</div><p class="r">Le demi, c'est toujours la salle de bain.</p><p class="pr">Elle ne compte que pour une demi-pièce parce qu'on n'y vit pas. Un logement avec deux salles de bain reste un « 5 ½ », pas un « 6 » : l'annonce précise alors « deux salles de bain ».</p></section><section class="bloc card"><div class="lbl">Vocabulaire · 1 de 2</div><h2 class="t">Les pièces et les espaces</h2><table class="voc"><tbody><tr><td class="mot">une pièce fermée</td><td class="def">Une pièce avec une porte ou des murs entiers.</td></tr><tr><td class="mot">une cuisinette</td><td class="def">Une petite cuisine ouverte sur une autre pièce.</td></tr><tr><td class="mot">la buanderie</td><td class="def">Le local où se trouvent la laveuse et la sécheuse.</td></tr><tr><td class="mot">un balcon</td><td class="def">Une plateforme extérieure devant une fenêtre ou une porte.</td></tr><tr><td class="mot">le rez-de-chaussée</td><td class="def">L'étage au niveau de la rue, sans escalier à monter.</td></tr><tr><td class="mot">un triplex</td><td class="def">Un immeuble de trois logements superposés.</td></tr></tbody></table></section><section class="bloc card"><div class="lbl">Analyse</div><h2 class="t">Les abréviations des annonces</h2><table><thead><tr><th>Ce qui est écrit</th><th>Ce que ça veut dire</th></tr></thead><tbody><tr><td class="cle">chauffé et éclairé</td><td>chauffage et électricité compris</td></tr><tr><td class="cle">libre immédiatement</td><td>on peut emménager tout de suite</td></tr><tr><td class="cle">non-fumeur</td><td>il est interdit de fumer dans le logement</td></tr><tr><td class="cle">électros non fournis</td><td>il faut apporter son réfrigérateur et sa cuisinière</td></tr><tr><td class="cle">stat. inclus</td><td>une place de stationnement est comprise</td></tr></tbody></table></section><section class="bloc regle"><div class="lbl">Le vrai coût du loyer</div><p class="r">Le prix affiché n'est pas ce que vous paierez chaque mois.</p><p class="pr">Un 3 ½ à 780 $ chauffé et éclairé coûte moins qu'un 3 ½ à 720 $ sans chauffage : l'électricité d'un logement mal isolé peut dépasser cent dollars par mois en hiver. Additionnez toujours avant de comparer.</p></section><section class="bloc"><div class="lbl">En apprendre plus</div><h2 class="t">Quatre coûts qu'on oublie</h2><div class="grid"><div class="card"><h3>L'électricité</h3><p>Si le logement n'est pas « éclairé », comptez de quarante à cent cinquante dollars par mois selon la saison et l'isolation.</p></div><div class="card"><h3>L'assurance habitation</h3><p>Souvent exigée par le bail. Une vingtaine de dollars par mois, et elle protège vos biens en cas de dégât d'eau ou d'incendie.</p></div><div class="card"><h3>La laveuse à pièces</h3><p>Une buanderie commune coûte quelques dollars par brassée. Sur un an, c'est une somme.</p></div><div class="card"><h3>Le déménagement lui-même</h3><p>Camion, boîtes, aide. Le 1er juillet, tout coûte plus cher : les camions se réservent des mois d'avance.</p></div></div></section><section class="bloc card"><div class="lbl">Pratique · 1 de 4</div><h2 class="t">Combien de chambres ?</h2><p class="consigne">Le chiffre compte les pièces fermées.</p><ol class="ex"><li><span class="q">un 3 ½</span><span class="ligne ligne--court"></span></li><li><span class="q">un 4 ½</span><span class="ligne ligne--court"></span></li><li><span class="q">un 5 ½</span><span class="ligne ligne--court"></span></li><li><span class="q">un 1 ½</span><span class="ligne"></span></li><li><span class="q">un 6 ½</span><span class="ligne ligne--court"></span></li></ol></section><section class="bloc card"><div class="lbl">Pratique · 2 de 4</div><h2 class="t">Que veut dire l'annonce ?</h2><p class="consigne">Traduisez l'abréviation.</p><ol class="ex"><li><span class="q">chauffé et éclairé</span><span class="ligne"></span></li><li><span class="q">électros non fournis</span><span class="ligne"></span></li><li><span class="q">libre immédiatement</span><span class="ligne"></span></li><li><span class="q">non-fumeur</span><span class="ligne"></span></li><li><span class="q">stat. inclus</span><span class="ligne"></span></li></ol></section><section class="bloc"><div class="lbl">Attention</div><h2 class="t">Le piège du loyer le moins cher</h2><div class="duo"><div class="no"><div class="k">On entend souvent</div><p class="ph">Ce 3 ½ à 720 $ est le moins cher des trois.</p></div><div class="ok"><div class="k">Il faut dire plutôt</div><p class="ph">Il n'est pas chauffé : additionnez l'électricité avant de comparer.</p></div></div><div class="note">Un loyer sans chauffage peut coûter cent dollars de plus par mois en hiver. Le loyer affiché n'est comparable qu'entre logements qui incluent les mêmes choses. Faites toujours le total.</div></section><section class="bloc"><div class="lbl">Attention</div><h2 class="t">Le piège des électroménagers</h2><div class="duo"><div class="no"><div class="k">On entend souvent</div><p class="ph">Je prends ce 5 ½, il est plus grand pour le même prix.</p></div><div class="ok"><div class="k">Il faut dire plutôt</div><p class="ph">Les électroménagers ne sont pas fournis : il faut les acheter.</p></div></div><div class="note">Un réfrigérateur et une cuisinière d'occasion coûtent plusieurs centaines de dollars, à payer d'un coup au moment du déménagement. C'est une dépense qui arrive au pire moment.</div></section><section class="bloc card"><div class="lbl">Pratique · 3 de 4</div><h2 class="t">Calculez le vrai coût</h2><p class="consigne">Additionnez ce qui n'est pas inclus.</p><ol class="ex"><li><span class="q">3 ½ à 780 $, chauffé et éclairé.</span><span class="ligne"></span></li><li><span class="q">3 ½ à 720 $, non chauffé. Électricité : environ 90 $ par mois.</span><span class="ligne ligne--court"></span></li><li><span class="q">4 ½ à 890 $, chauffage et eau chaude inclus, électricité à part : 45 $.</span><span class="ligne ligne--court"></span></li><li><span class="q">5 ½ à 1 250 $, électros non fournis (achat de 800 $ une fois).</span><span class="ligne"></span></li></ol></section><section class="bloc card"><div class="lbl">Pratique · 4 de 4</div><h2 class="t">Décodez une vraie annonce</h2><p class="consigne">Une annonce apportée en classe.</p><ol class="ex"><li><span class="q">Combien de chambres ?</span><span class="ligne ligne--court"></span></li><li><span class="q">Qu'est-ce qui est inclus ?</span><span class="ligne"></span></li><li><span class="q">Qu'est-ce qu'il faut apporter ?</span><span class="ligne"></span></li><li><span class="q">Quel est le vrai coût mensuel ?</span><span class="ligne"></span></li></ol></section><section class="bloc billet"><div class="k">Billet de sortie</div><p class="c">Décodez une annonce de logement en quatre lignes.</p><ul><li>Le nombre de chambres, ce qui est inclus, ce qu'il faut apporter, le vrai coût.</li><li>Une vraie annonce, trouvée où vous voulez.</li></ul><span class="ligne"></span><span class="ligne"></span><span class="ligne"></span></section>
+<footer><span>A2 · Comment est le logement ?</span><span>Fiche élève</span></footer>
+</body>
+</html>

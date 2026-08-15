@@ -286,9 +286,11 @@ class Deck:
     n'apparaît qu'aux quatre endroits permis par le système : la pastille,
     le sur-titre, un filet gauche de 4 px, le point de parcours."""
 
-    MODULE = 'Pouvez-vous régler le problème ?'
-
     def __init__(self, code, section, titre, chapeau, duree):
+        import modules
+        m = modules.actif()
+        self.MODULE, self.numero = m['titre'], m['numero']
+        self.slug = modules.slug_actif()
         self.code, self.titre_deck = code, titre
         self.chapeau, self.duree = chapeau, duree
         self.sec, self.sec_soft = (C[a] for a in SECTIONS[section])
@@ -330,7 +332,8 @@ class Deck:
     def titre(self, notes=''):
         """Bandeau clair pleine largeur — jamais noir, le système l'interdit."""
         sl = self._new(fond='green_050', pied=False)
-        sl.text(f"SÉANCE {self.code}  ·  MODULE 9", MARGIN, 1.35, CONTENT_W, 0.3,
+        sl.text(f"SÉANCE {self.code}  ·  MODULE {self.numero}",
+                MARGIN, 1.35, CONTENT_W, 0.3,
                 size=FS['label'], color=self.sec_key, bold=True,
                 spc=0.12, autofit=False)
         size = fit(self.titre_deck, CONTENT_W - 1.2, 2.0, FS['hero'], True, 1.05)

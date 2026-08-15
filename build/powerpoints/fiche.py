@@ -217,9 +217,11 @@ footer{margin-top:16px; padding-top:7px; border-top:1px solid var(--line);
 class Deck:
     """Même interface que `theme.Deck`, sortie HTML imprimable."""
 
-    MODULE = 'Pouvez-vous régler le problème ?'
-
     def __init__(self, code, section, titre, chapeau, duree):
+        import modules
+        m = modules.actif()
+        self.MODULE, self.numero = m['titre'], m['numero']
+        self.slug = modules.slug_actif()
         self.code, self.titre_deck = code, titre
         self.chapeau, self.duree = chapeau, duree
         sec, sec_soft = SECTIONS[section]
@@ -359,7 +361,7 @@ class Deck:
 <body>
 <header class="hdr">
   <div class="hdr-l">
-    <div class="eyebrow">Séance {esc(self.code)} · Module 9 · {esc(self.duree)}</div>
+    <div class="eyebrow">Séance {esc(self.code)} · Module {self.numero} · {esc(self.duree)}</div>
     <h1>{esc(self.titre_deck)}</h1>
   </div>
   <div class="hdr-r"><span>Nom<span class="nomline nomline--nom"></span></span><span>Date<span class="nomline nomline--date"></span></span></div>
@@ -370,7 +372,7 @@ class Deck:
 </body>
 </html>
 """
-        nom = f'module-probleme-{self.code.lower()}-{_slug(self.titre_deck)}.html'
+        nom = f'{self.slug}-{self.code.lower()}-{_slug(self.titre_deck)}.html'
         chemin = os.path.join(dossier, nom)
         with open(chemin, 'w', encoding='utf-8') as f:
             f.write(html)

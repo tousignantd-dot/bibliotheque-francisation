@@ -1,30 +1,62 @@
-# Module 9 · présentations et fiches élèves
+# Les neuf modules · présentations et fiches élèves
 
-Seize séances qui couvrent tout le contenu du module « Pouvez-vous régler le problème ? »
-(`assets/interactive/module-probleme/`). Chaque séance existe en **deux sorties** :
+Seize séances par module, qui couvrent tout le contenu de l'activité interactive
+correspondante (`assets/interactive/<slug>/`). Chaque séance existe en **deux sorties** :
 
 | Sortie | Où | Pour qui |
 |---|---|---|
-| PowerPoint 16:9 | `assets/powerpoints/module-probleme/` | l'enseignant, à projeter |
-| Fiche imprimable | `assets/documents/` | l'élève, en noir et blanc |
+| PowerPoint 16:9 | `assets/powerpoints/<slug>/` | l'enseignant, à projeter |
+| Fiche imprimable | `assets/documents/<slug>-<code>-….html` | l'élève, en noir et blanc |
 
-Les présentations sortent dans un **sous-dossier au nom du module** (constante
-`MODULE` de `build.py`) : `A1-….pptx` n'est unique qu'à l'intérieur d'un module,
-et le `A1` du prochain module écraserait celui-ci s'ils partageaient un dossier.
+Les présentations sortent dans un **sous-dossier au nom du module** : `A1-….pptx` n'est
+unique qu'à l'intérieur d'un module, et à plat le `A1` du module 8 écraserait celui du
+module 9. Le slug est celui de `assets/interactive/<slug>/` — c'est la clé qui relie un
+fichier produit à son activité dans le dépôt de matériel.
 
-**Les deux sont produites à partir des mêmes fichiers `decks/*.py`.** Le contenu est écrit
-une seule fois : corriger une coquille dans `decks/b2.py` corrige à la fois la présentation
-et la fiche. Ne modifiez jamais un `.pptx` ni un `.html` à la main, ils seraient écrasés.
+**Les deux sorties viennent des mêmes fichiers `decks/<slug>/*.py`.** Le contenu est écrit
+une seule fois : corriger une coquille dans `decks/module-probleme/b2.py` corrige à la fois
+la présentation et la fiche. Ne modifiez jamais un `.pptx` ni un `.html` à la main, ils
+seraient écrasés au prochain build.
+
+## Le registre des modules
+
+`modules.py` est la **source unique** : pour chaque slug, le numéro, le titre affiché en
+pied de page, le nom des blocs et l'ordre d'enseignement des séances. `build.py`,
+`build_fiches.py`, `theme.py`, `fiche.py` et `build/materiel.py` s'y rapportent — aucun
+d'eux ne porte de constante à soi.
+
+**Le nombre de séances suit le nombre de défis du module**, pas une grille imposée : les
+modules à trois défis se répartissent 4-4-4-2-2 (blocs A à E), ceux à deux défis 4-5-5-2
+(blocs A, B, C et E). Seize séances dans les deux cas, mais un module sans « Défi 3 » n'a
+pas de bloc D — inventer une séance sans contenu serait pire que de n'en pas avoir.
+
+| Module | Slug | Défis | Grille |
+|---|---|---|---|
+| 1 · Consulter au bon endroit | `module-consultation` | 3 | 4-4-4-2-2 |
+| 2 · Une urgence au travail | `module-urgence` | 3 | 4-4-4-2-2 |
+| 3 · Absent ou en retard | `module-travail` | 3 | 4-4-4-2-2 |
+| 4 · Quelle est la procédure ? | `module-procedure` | 3 | 4-4-4-2-2 |
+| 5 · C'est l'heure des nouvelles | `module-nouvelles` | 2 | 4-5-5-2 |
+| 6 · Quelles sont les prévisions ? | `module-meteo` | 2 | 4-5-5-2 |
+| 7 · Des publicités efficaces | `module-pub` | 2 | 4-5-5-2 |
+| 8 · Comment est le logement ? | `module-logement` | 3 | 4-4-4-2-2 |
+| 9 · Pouvez-vous régler le problème ? | `module-probleme` | 3 | 4-4-4-2-2 |
+
+Neuf modules, 144 séances, environ 2 250 diapositives et 1 650 blocs de fiches.
 
 ---
 
 ## Régénérer
 
+Le **premier argument est toujours le slug du module**.
+
 ```bash
-python3 build.py                # les 16 présentations
-python3 build.py b2 c3          # deux séances seulement
-python3 build.py --apercu b2    # + les épreuves PNG et le contrôle de débordement
-python3 build_fiches.py         # les 16 fiches élèves + le sommaire
+python3 build.py module-probleme             # les 16 présentations du module
+python3 build.py module-probleme b2 c3       # deux séances seulement
+python3 build.py module-probleme --apercu    # + les épreuves PNG et le contrôle
+python3 build.py --tous                      # les neuf modules
+python3 build_fiches.py module-probleme      # les 16 fiches + le sommaire
+python3 build_fiches.py --tous               # les neuf modules
 ```
 
 Puis, depuis la racine du projet, les deux étapes qui alimentent le **dépôt de
@@ -35,8 +67,9 @@ python3 build/vignettes.py      # la vignette de 1re diapositive de chaque séan
 python3 build/materiel.py       # l'inventaire, data/materiel.json
 ```
 
-**Dépendances :** `python-pptx` et `Pillow`. `fontTools` est optionnel mais recommandé — il
-active le contrôle des glyphes. Le poste n'a ni Node, ni LibreOffice : installez ces trois
+**Dépendances :** `python-pptx`, `Pillow` et `fontTools`. Ce dernier n'est pas optionnel :
+sans lui, le contrôle des glyphes se tait et un caractère absent de Verdana passe jusqu'au
+fichier livré. Le poste n'a ni Node, ni LibreOffice : installez ces trois
 paquets dans un environnement virtuel.
 
 ```bash
@@ -50,7 +83,8 @@ python3 -m venv venv && ./venv/bin/pip install python-pptx Pillow fonttools
 
 | Fichier | Rôle |
 |---|---|
-| `decks/<code>.py` | le contenu d'une séance — **c'est ici qu'on écrit** |
+| `modules.py` | le registre : numéro, titre, blocs et grille de chaque module |
+| `decks/<slug>/<code>.py` | le contenu d'une séance — **c'est ici qu'on écrit** |
 | `theme.py` | moteur PowerPoint : jetons du système de design, échelle projetée, onze gabarits |
 | `fiche.py` | moteur fiche élève : même interface, sortie HTML imprimable |
 | `build.py` | construit les présentations ; lance le contrôle si `--apercu` |
@@ -59,12 +93,12 @@ python3 -m venv venv && ./venv/bin/pip install python-pptx Pillow fonttools
 | `controle.py` | relit les PNG et signale tout texte sorti de sa boîte |
 
 **Pour changer un contenu**, modifiez `decks/`. **Pour changer un visuel**, modifiez `theme.py`
-ou `fiche.py`. Jamais l'inverse : c'est cette séparation qui garde les seize séances cohérentes.
+ou `fiche.py`. Jamais l'inverse : c'est cette séparation qui garde les 144 séances cohérentes.
 
 ### Comment un même deck produit deux sorties
 
 `decks/b2.py` fait `from theme import Deck` et appelle `d.regle(...)`, `d.pratique(...)`, etc.
-`build_fiches.py` remplace `theme` par `fiche` dans la table des modules avant d'importer les
+`build_fiches.py` remplace `theme` par `fiche` dans `sys.modules` avant d'importer les
 decks : ceux-ci reçoivent alors le moteur HTML sans qu'une seule ligne de contenu change.
 
 Les deux moteurs ne rendent pas tout : la fiche **retire** les notes d'enseignant, les corrigés
@@ -73,6 +107,10 @@ et les déclencheurs, et **transforme** chaque exercice en énoncé suivi d'une 
 ---
 
 ## Les seize séances
+
+Exemple, pour le module 9. Chaque module a sa propre grille : `python3 -c "import modules;
+print(modules.MODULES['module-meteo']['seances'])"` la donne, et l'en-tête de chaque
+`decks/<slug>/<code>.py` nomme les exercices dont la séance est tirée.
 
 | Bloc | Code | Titre | Durée | Section du module |
 |---|---|---|---|---|
@@ -93,7 +131,8 @@ et les déclencheurs, et **transforme** chaque exercice en énoncé suivi d'une 
 | **E** Application | E1 | À toi : le téléphone et le courriel | 90 min | dialogue `appli`, `aQui`, `aComp` |
 | | E2 | Je retiens des mots | 60 min | cartes mémoire, bilan |
 
-248 diapositives · environ 18 heures de classe.
+248 diapositives · environ 18 heures de classe. Les neuf modules totalisent 144 séances,
+environ 2 250 diapositives et 160 heures de classe.
 
 Chaque diapositive porte une **note de l'enseignant** (volet Commentaires de PowerPoint) :
 quoi faire écouter, quoi laisser deviner, où le groupe se trompe habituellement.
@@ -158,8 +197,9 @@ couleur seule », poussée à son terme.
 Aucun bloc ne dépasse une page, donc rien ne se coupe entre deux feuilles. Comptez de **4 à 5
 pages par séance**, soit environ **70 pages** pour le module complet.
 
-`module-probleme-fiches-eleves.html` est le sommaire des seize fiches : c'est lui qu'on donne
-au premier cours, et c'est lui qui peut servir de `studentDoc` pour l'activité 45.
+`<slug>-fiches-eleves.html` est le sommaire des seize fiches d'un module : c'est lui qu'on
+donne au premier cours, et c'est lui qui sert de `studentDoc` à l'activité — le champ est
+renseigné pour les neuf modules dans `data/activities.json`.
 
 ---
 

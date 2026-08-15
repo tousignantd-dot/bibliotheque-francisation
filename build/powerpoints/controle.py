@@ -17,9 +17,13 @@ MAGENTA = (255, 0, 255)
 
 
 def controler(dossier):
+    """Les épreuves sont rangées `_apercu/<module>/<code>/NN.png` ; on accepte
+    aussi un dossier de séance ou de module passé directement."""
     fautifs = []
-    for f in sorted(glob.glob(os.path.join(dossier, '*', '*.png'))
-                    or glob.glob(os.path.join(dossier, '*.png'))):
+    trouves = (glob.glob(os.path.join(dossier, '*', '*', '*.png'))
+               or glob.glob(os.path.join(dossier, '*', '*.png'))
+               or glob.glob(os.path.join(dossier, '*.png')))
+    for f in sorted(trouves):
         im = Image.open(f).convert('RGB')
         n = sum(c for c, p in im.getcolors(maxcolors=1 << 24) if p == MAGENTA)
         if n:

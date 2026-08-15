@@ -1,0 +1,172 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>B4 · Le futur du bulletin — Fiche élève</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800;900&display=swap" rel="stylesheet">
+<style>
+/* ═══════════════════════════════════════════════════════════════
+   FICHE ÉLÈVE · IMPRESSION LETTRE, NOIR ET BLANC
+   ───────────────────────────────────────────────────────────────
+   Aucune couleur : ces fiches sont photocopiées en noir et blanc.
+   Toute la hiérarchie passe par la GRAISSE, les FILETS et les MOTS.
+   C'est d'ailleurs la règle du système de design poussée à son
+   terme : « jamais d'information portée par la couleur seule ».
+
+   Les gris viennent des neutres du système (ink-900 à ink-400),
+   qui sont déjà quasi neutres. Les filets sont volontairement plus
+   sombres qu'à l'écran : une photocopieuse efface tout ce qui est
+   plus clair que 15 % de noir.
+   ═══════════════════════════════════════════════════════════════ */
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+:root{
+  --paper:#FFFFFF;
+  --tint:#F0F0EE;          /* aplat le plus clair encore visible en photocopie */
+  --line:#C9C9C6;          /* filet fin */
+  --rule:#17181A;          /* filet structurant */
+  --ink:#17181A;           /* titres */
+  --body:#2B2E30;          /* texte courant, un cran plus sombre qu'à l'écran */
+  --soft:#4B4F52;          /* texte secondaire */
+  --muted:#5E6165;         /* sur-titres, méta */
+}
+html{background:#BBBBBB}
+body{
+  font-family:'Nunito','Trebuchet MS',sans-serif;
+  font-size:11.5pt; line-height:1.5; color:var(--body);
+  background:var(--paper);
+  width:215.9mm;                    /* 8,5 po — format lettre */
+  margin:0 auto; padding:14mm 15mm 16mm;
+  -webkit-print-color-adjust:exact; print-color-adjust:exact;
+}
+h1,h2,h3{color:var(--ink); line-height:1.2; letter-spacing:-0.01em}
+
+/* ── En-tête ── */
+.hdr{border-bottom:2.5px solid var(--rule); padding-bottom:8px; margin-bottom:14px;
+     display:flex; align-items:flex-end; gap:14px}
+.hdr-l{flex:1}
+.eyebrow{font-size:9.5pt; font-weight:800; text-transform:uppercase;
+         letter-spacing:.12em; color:var(--muted)}
+.hdr h1{font-size:22pt; font-weight:900; margin-top:3px}
+.hdr-r{flex-shrink:0; display:flex; gap:10px; align-items:flex-end;
+       font-size:9.5pt; font-weight:800; text-transform:uppercase;
+       letter-spacing:.08em; color:var(--muted); padding-bottom:2px}
+.nomline{display:inline-block; border-bottom:1.5px solid var(--rule);
+         height:6mm; vertical-align:bottom; margin-left:5px}
+.nomline--nom{width:48mm} .nomline--date{width:26mm}
+.chapeau{font-size:12pt; font-weight:600; color:var(--soft); margin-bottom:16px}
+
+/* ── Blocs ── */
+.bloc{break-inside:avoid; page-break-inside:avoid; margin-bottom:13px}
+.card{border:1px solid var(--line); border-radius:12px; padding:11px 14px 12px;
+      background:var(--paper)}
+.lbl{font-size:9.5pt; font-weight:800; text-transform:uppercase;
+     letter-spacing:.12em; color:var(--muted); margin-bottom:5px}
+h2.t{font-size:15pt; font-weight:900; margin-bottom:7px}
+.consigne{font-size:11pt; font-weight:600; color:var(--soft); margin-bottom:8px}
+
+/* ── Objectifs et exercices : pastille en cerne, jamais en aplat ── */
+ol.obj,ol.ex{list-style:none}
+ol.obj{counter-reset:o} ol.ex{counter-reset:e}
+ol.obj li,ol.ex li{position:relative; padding-left:9mm; font-weight:600}
+ol.obj li{counter-increment:o; margin-bottom:6px}
+ol.ex li{counter-increment:e; margin-bottom:9px; break-inside:avoid}
+ol.obj li::before,ol.ex li::before{
+  position:absolute; left:0; top:0; width:6mm; height:6mm; border-radius:50%;
+  border:1.5px solid var(--rule); color:var(--ink);
+  font-size:9.5pt; font-weight:800;
+  display:flex; align-items:center; justify-content:center}
+ol.obj li::before{content:counter(o)}
+ol.ex li::before{content:counter(e)}
+
+/* ── Dialogue ── */
+.rep{display:flex; gap:10px; padding:4px 0; border-top:1px solid var(--line)}
+.rep:first-of-type{border-top:0}
+.rep--key{background:var(--tint); border-radius:8px; padding:5px 8px;
+          border-top:0; margin:2px 0}
+.qui{flex:0 0 30mm; font-weight:800; color:var(--ink); font-size:10.5pt}
+
+/* ── Règle : encadrée au filet épais, c'est elle qu'on repère de loin ── */
+.regle{border:2.5px solid var(--rule); border-radius:12px; padding:12px 14px}
+.regle .lbl{color:var(--ink)}
+.regle p.r{font-size:14pt; font-weight:900; color:var(--ink); line-height:1.3}
+.regle p.pr{margin-top:7px; font-weight:600; color:var(--soft)}
+
+/* ── Tableau ── */
+table{width:100%; border-collapse:collapse}
+th{font-size:9.5pt; font-weight:800; text-transform:uppercase; letter-spacing:.1em;
+   color:var(--muted); text-align:left; padding:0 8px 5px 0;
+   border-bottom:1.5px solid var(--rule)}
+td{padding:6px 8px 6px 0; border-top:1px solid var(--line); vertical-align:top;
+   font-weight:600}
+td.cle{font-weight:900; color:var(--ink)}   /* la colonne clé : en gras, pas en couleur */
+.note{margin-top:8px; font-size:10.5pt; font-weight:600; color:var(--soft);
+      background:var(--tint); border-radius:9px; padding:8px 11px}
+
+/* ── Cartes ── */
+.grid{display:grid; grid-template-columns:1fr 1fr; gap:9px}
+.grid .card h3{font-size:11.5pt; font-weight:900; color:var(--ink); margin-bottom:3px}
+.grid .card p{font-size:11pt}
+
+/* ── Piège : le filet distingue les deux colonnes, pas la couleur ──
+   À gauche, un filet TIRETÉ — ce qui ne tient pas.
+   À droite, un filet PLEIN et épais — ce qu'il faut retenir.
+   Les deux intitulés disent la même chose en mots.                */
+.duo{display:grid; grid-template-columns:1fr 1fr; gap:10px}
+.duo>div{border-radius:12px; padding:10px 13px}
+.duo .no{border:1.5px dashed var(--muted)}
+.duo .ok{border:2.5px solid var(--rule); background:var(--tint)}
+.duo .k{font-size:9.5pt; font-weight:800; text-transform:uppercase;
+        letter-spacing:.1em; margin-bottom:4px; color:var(--muted)}
+.duo .ok .k{color:var(--ink)}
+.duo p.ph{font-size:12pt; font-weight:800; color:var(--ink); line-height:1.3}
+.duo .no p.ph{font-weight:600; font-style:italic; color:var(--soft)}
+
+/* ── Vocabulaire ── */
+.voc{width:100%; border-collapse:collapse}
+.voc td{border-top:1px solid var(--line); padding:6px 8px 6px 0}
+.voc td.mot{width:38%; font-weight:900; color:var(--ink)}
+.voc td.def{color:var(--soft)}
+
+/* ── Zones de réponse ── */
+.ligne{display:block; border-bottom:1px dotted #8E8E8A; height:8mm; margin-top:2px}
+.ligne--court{width:55%}
+
+/* ── Billet de sortie ── */
+.billet{border:2.5px solid var(--rule); border-radius:12px; padding:13px 15px}
+.billet .k{font-size:9.5pt; font-weight:800; text-transform:uppercase;
+           letter-spacing:.12em; color:var(--ink); margin-bottom:4px}
+.billet p.c{font-size:14pt; font-weight:900; color:var(--ink); line-height:1.3}
+.billet ul{list-style:none; margin-top:7px}
+.billet li{font-weight:600; color:var(--soft); margin-bottom:3px}
+
+/* ── Pied ── */
+footer{margin-top:16px; padding-top:7px; border-top:1px solid var(--line);
+       font-size:9.5pt; font-weight:700; color:var(--muted);
+       display:flex; justify-content:space-between}
+
+/* ── Impression ── */
+@page{size:8.5in 11in; margin:14mm 15mm}
+@media print{
+  html{background:#FFFFFF}
+  body{width:auto; padding:0}
+  .bloc{break-inside:avoid; page-break-inside:avoid}
+  h2.t,.lbl{break-after:avoid; page-break-after:avoid}
+}
+</style>
+</head>
+<body>
+<header class="hdr">
+  <div class="hdr-l">
+    <div class="eyebrow">Séance B4 · Module 6 · 75 minutes</div>
+    <h1>Le futur du bulletin</h1>
+  </div>
+  <div class="hdr-r"><span>Nom<span class="nomline nomline--nom"></span></span><span>Date<span class="nomline nomline--date"></span></span></div>
+</header>
+<p class="chapeau">« Le mercure se maintiendra », « les rafales balaieront », « le vent tombera ». Un bulletin météo est écrit presque entièrement au futur simple — c'est le temps de la prévision.</p>
+<section class="bloc card"><div class="lbl">Objectifs</div><h2 class="t">À la fin, je serai capable de…</h2><ol class="obj"><li>former le futur simple d'un verbe régulier ;</li><li>connaître les futurs irréguliers les plus fréquents ;</li><li>reconnaître le futur simple à l'écoute ;</li><li>écrire une prévision au futur simple.</li></ol></section><section class="bloc regle"><div class="lbl">La formation</div><p class="r">L'infinitif, puis les terminaisons -ai, -as, -a, -ons, -ez, -ont.</p><p class="pr">Tomber donne il tombera. Descendre perd son e : il descendra. Les terminaisons sont celles du verbe avoir au présent, et elles ne changent jamais, quel que soit le verbe.</p></section><section class="bloc card"><div class="lbl">Analyse</div><h2 class="t">Le futur simple de tomber</h2><table><thead><tr><th>La personne</th><th>La forme</th></tr></thead><tbody><tr><td>je</td><td class="cle">je tomberai</td></tr><tr><td>tu</td><td class="cle">tu tomberas</td></tr><tr><td>il, elle</td><td class="cle">le vent tombera</td></tr><tr><td>nous</td><td class="cle">nous tomberons</td></tr><tr><td>vous</td><td class="cle">vous tomberez</td></tr><tr><td>ils, elles</td><td class="cle">les rafales tomberont</td></tr></tbody></table></section><section class="bloc card"><div class="lbl">Analyse</div><h2 class="t">Six futurs irréguliers du bulletin</h2><table><thead><tr><th>Le verbe</th><th>Au futur</th></tr></thead><tbody><tr><td>être</td><td class="cle">il sera</td></tr><tr><td>avoir</td><td class="cle">il y aura</td></tr><tr><td>faire</td><td class="cle">il fera</td></tr><tr><td>venir</td><td class="cle">le vent viendra</td></tr><tr><td>se maintenir</td><td class="cle">le mercure se maintiendra</td></tr><tr><td>pouvoir</td><td class="cle">on pourra</td></tr></tbody></table></section><section class="bloc"><div class="lbl">En apprendre plus</div><h2 class="t">Quatre choses à savoir en plus</h2><div class="grid"><div class="card"><h3>Le r est toujours là</h3><p>Tomber-a, descendr-a, ser-a, fer-a. Le son r avant la terminaison est la marque du futur : c'est ce qu'on entend.</p></div><div class="card"><h3>Les verbes en -re perdent leur e</h3><p>Descendre donne descendra, prendre donne prendra, mettre donne mettra. Un seul changement, toujours le même.</p></div><div class="card"><h3>Le futur proche existe aussi</h3><p>« Il va neiger » et « il neigera » disent la même chose. Le bulletin écrit emploie le futur simple ; à l'oral, on entend souvent « va ».</p></div><div class="card"><h3>Le futur pour une consigne</h3><p>« Vous descendrez avant midi » est un ordre poli. C'est fréquent sur un chantier, et ce n'est pas une prévision.</p></div></div></section><section class="bloc card"><div class="lbl">Pratique · 1 de 4</div><h2 class="t">Mettez au futur simple</h2><p class="consigne">Troisième personne, comme dans un bulletin.</p><ol class="ex"><li><span class="q">le vent (tomber)</span><span class="ligne ligne--court"></span></li><li><span class="q">le mercure (descendre)</span><span class="ligne ligne--court"></span></li><li><span class="q">les rafales (balayer)</span><span class="ligne ligne--court"></span></li><li><span class="q">le ciel (se dégager)</span><span class="ligne ligne--court"></span></li><li><span class="q">la neige (s'accumuler)</span><span class="ligne ligne--court"></span></li><li><span class="q">la visibilité (diminuer)</span><span class="ligne"></span></li></ol></section><section class="bloc card"><div class="lbl">Pratique · 2 de 4</div><h2 class="t">Les irréguliers</h2><p class="consigne">Six verbes à connaître par cœur.</p><ol class="ex"><li><span class="q">il (être) beau demain</span><span class="ligne ligne--court"></span></li><li><span class="q">il y (avoir) des éclaircies</span><span class="ligne"></span></li><li><span class="q">il (faire) moins six</span><span class="ligne ligne--court"></span></li><li><span class="q">le vent (venir) du nord-est</span><span class="ligne"></span></li><li><span class="q">on (pouvoir) monter samedi</span><span class="ligne"></span></li></ol></section><section class="bloc"><div class="lbl">Attention</div><h2 class="t">Le piège du présent entendu pour du futur</h2><div class="duo"><div class="no"><div class="k">On entend souvent</div><p class="ph">« Le vent tombe » et « le vent tombera » se ressemblent.</p></div><div class="ok"><div class="k">Il faut dire plutôt</div><p class="ph">Cherchez le son r : c'est la marque du futur.</p></div></div><div class="note">« Il tombe » et « il tombera » ne diffèrent que par une syllabe. Dans un bulletin, la différence est décisive : l'un dit ce qui se passe maintenant, l'autre ce qui est prévu. Le son r avant la terminaison est le repère.</div></section><section class="bloc"><div class="lbl">Attention</div><h2 class="t">Le piège des verbes en -re</h2><div class="duo"><div class="no"><div class="k">On entend souvent</div><p class="ph">le mercure descendera</p></div><div class="ok"><div class="k">Il faut dire plutôt</div><p class="ph">le mercure descendra</p></div></div><div class="note">Les verbes en -re perdent leur e final avant les terminaisons du futur : descendre donne descendra, prendre donne prendra, mettre donne mettra. C'est le seul changement, et il vaut pour tous les verbes de ce groupe.</div></section><section class="bloc card"><div class="lbl">Pratique · 3 de 4</div><h2 class="t">Présent ou futur ?</h2><p class="consigne">Cherchez le son r.</p><ol class="ex"><li><span class="q">La pluie verglaçante recouvre les routes.</span><span class="ligne"></span></li><li><span class="q">La pluie verglaçante se changera en neige.</span><span class="ligne ligne--court"></span></li><li><span class="q">Le mercure se maintient autour de zéro.</span><span class="ligne ligne--court"></span></li><li><span class="q">Le mercure descendra à moins six.</span><span class="ligne ligne--court"></span></li><li><span class="q">Les chasse-neige circulent depuis minuit.</span><span class="ligne ligne--court"></span></li></ol></section><section class="bloc card"><div class="lbl">Pratique · 4 de 4</div><h2 class="t">Écrivez la prévision</h2><p class="consigne">Quatre phrases au futur simple, comme un bulletin.</p><ol class="ex"><li><span class="q">Le ciel</span><span class="ligne"></span></li><li><span class="q">Le vent</span><span class="ligne"></span></li><li><span class="q">La température</span><span class="ligne"></span></li><li><span class="q">Les précipitations</span><span class="ligne"></span></li></ol></section><section class="bloc billet"><div class="k">Billet de sortie</div><p class="c">Écrivez la prévision de demain en quatre phrases, au futur simple.</p><ul><li>Le ciel, le vent, la température, les précipitations.</li><li>Soulignez le r de chaque verbe au futur.</li></ul><span class="ligne"></span><span class="ligne"></span><span class="ligne"></span></section>
+<footer><span>B4 · Quelles sont les prévisions ?</span><span>Fiche élève</span></footer>
+</body>
+</html>

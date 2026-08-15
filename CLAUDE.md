@@ -237,18 +237,39 @@ visuelle. Quatrième onglet de `enseignant.html`, rendu par `js/materiel.js`.
 
 - **Les présentations sont rangées par module** : `assets/powerpoints/<slug>/`.
   Le slug est celui de `assets/interactive/<slug>/` — c'est la clé qui relie un
-  fichier à son activité. À plat, le `A1` du prochain module écraserait celui du
-  module 9. La constante `MODULE` de `build/powerpoints/build.py` fixe le
-  dossier de sortie.
+  fichier à son activité. À plat, le `A1` du module 8 écraserait celui du
+  module 9.
+- **Les neuf modules de cours sont produits**, seize séances chacune :
+  `python3 build/powerpoints/build.py <slug>` et
+  `python3 build/powerpoints/build_fiches.py <slug>`, ou `--tous` pour les neuf.
+  Le **registre `build/powerpoints/modules.py`** est la source unique : numéro,
+  titre affiché en pied de page, nom des blocs et ordre d'enseignement. Aucun
+  autre fichier ne porte de constante de module — pas `build.py`, pas `theme.py`,
+  pas `fiche.py`.
+- **Le nombre de séances suit le nombre de défis**, pas une grille imposée :
+  trois défis donnent 4-4-4-2-2 (blocs A à E), deux défis donnent 4-5-5-2
+  (blocs A, B, C, E). Seize séances dans les deux cas, mais un module sans
+  « Défi 3 » n'a pas de bloc D.
+- **Le contenu d'un deck est original**, écrit à partir des constantes du module
+  interactif (`DIALOGUES`, `SECTIONS`, `EXOS`, `PLUS`, `FC_CARDS`) — jamais
+  recopié d'un manuel. Un deck se relit à l'en-tête : il nomme les exercices
+  dont la séance est tirée.
+- **Rien qui sorte de Verdana** : ni alphabet phonétique, ni flèche, ni ✓ ni ✕.
+  Les sons se nomment par leurs lettres et un mot repère (« le son *an*, comme
+  dans *dent* »). `fontTools` doit être installé, sinon le garde-fou se tait et
+  un carré vide part chez l'enseignant.
 - **`data/materiel.json` est produit, jamais écrit à la main**
   (`python3 build/materiel.py`). C'est le relevé de ce qui existe sur le
   disque : une entrée non vérifiée serait un lien mort. `--verifier` compare
   sans écrire. Il ne recopie **aucun** titre d'activité : il ne connaît que des
   `activiteId` — les **entiers** de `activities.json`, pas des slugs.
-- La grille des séances a une source unique : `SEANCES` de
-  `build/powerpoints/build.py`. Un module sans dossier de production est mesuré
-  contre la grille standard à seize (4-4-4-2-2), ce qui permet d'afficher
-  « 0 séance sur 16 » au lieu de le taire.
+- La grille des séances a une source unique : `MODULES` de
+  `build/powerpoints/modules.py`, que `build/materiel.py` importe. Un module sans
+  dossier de production est mesuré contre la grille standard à seize (4-4-4-2-2),
+  ce qui permet d'afficher « 0 séance sur 16 » au lieu de le taire.
+- **Le `studentDoc` d'un module de cours est son sommaire de fiches**,
+  `assets/documents/<slug>-fiches-eleves.html`, produit par `build_fiches.py`.
+  Les neuf sont renseignés dans `data/activities.json`.
 - **Vignettes** : `python3 build/vignettes.py` → `assets/vignettes/<slug>/<CODE>.png`.
   Le poste n'a pas LibreOffice ; on réutilise `build/powerpoints/apercu.py`, qui
   relit le `.pptx` livré et le repeint avec Pillow (paramètre `limite=1`).

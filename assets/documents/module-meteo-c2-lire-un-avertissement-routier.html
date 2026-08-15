@@ -1,0 +1,172 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>C2 · Lire un avertissement routier — Fiche élève</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800;900&display=swap" rel="stylesheet">
+<style>
+/* ═══════════════════════════════════════════════════════════════
+   FICHE ÉLÈVE · IMPRESSION LETTRE, NOIR ET BLANC
+   ───────────────────────────────────────────────────────────────
+   Aucune couleur : ces fiches sont photocopiées en noir et blanc.
+   Toute la hiérarchie passe par la GRAISSE, les FILETS et les MOTS.
+   C'est d'ailleurs la règle du système de design poussée à son
+   terme : « jamais d'information portée par la couleur seule ».
+
+   Les gris viennent des neutres du système (ink-900 à ink-400),
+   qui sont déjà quasi neutres. Les filets sont volontairement plus
+   sombres qu'à l'écran : une photocopieuse efface tout ce qui est
+   plus clair que 15 % de noir.
+   ═══════════════════════════════════════════════════════════════ */
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+:root{
+  --paper:#FFFFFF;
+  --tint:#F0F0EE;          /* aplat le plus clair encore visible en photocopie */
+  --line:#C9C9C6;          /* filet fin */
+  --rule:#17181A;          /* filet structurant */
+  --ink:#17181A;           /* titres */
+  --body:#2B2E30;          /* texte courant, un cran plus sombre qu'à l'écran */
+  --soft:#4B4F52;          /* texte secondaire */
+  --muted:#5E6165;         /* sur-titres, méta */
+}
+html{background:#BBBBBB}
+body{
+  font-family:'Nunito','Trebuchet MS',sans-serif;
+  font-size:11.5pt; line-height:1.5; color:var(--body);
+  background:var(--paper);
+  width:215.9mm;                    /* 8,5 po — format lettre */
+  margin:0 auto; padding:14mm 15mm 16mm;
+  -webkit-print-color-adjust:exact; print-color-adjust:exact;
+}
+h1,h2,h3{color:var(--ink); line-height:1.2; letter-spacing:-0.01em}
+
+/* ── En-tête ── */
+.hdr{border-bottom:2.5px solid var(--rule); padding-bottom:8px; margin-bottom:14px;
+     display:flex; align-items:flex-end; gap:14px}
+.hdr-l{flex:1}
+.eyebrow{font-size:9.5pt; font-weight:800; text-transform:uppercase;
+         letter-spacing:.12em; color:var(--muted)}
+.hdr h1{font-size:22pt; font-weight:900; margin-top:3px}
+.hdr-r{flex-shrink:0; display:flex; gap:10px; align-items:flex-end;
+       font-size:9.5pt; font-weight:800; text-transform:uppercase;
+       letter-spacing:.08em; color:var(--muted); padding-bottom:2px}
+.nomline{display:inline-block; border-bottom:1.5px solid var(--rule);
+         height:6mm; vertical-align:bottom; margin-left:5px}
+.nomline--nom{width:48mm} .nomline--date{width:26mm}
+.chapeau{font-size:12pt; font-weight:600; color:var(--soft); margin-bottom:16px}
+
+/* ── Blocs ── */
+.bloc{break-inside:avoid; page-break-inside:avoid; margin-bottom:13px}
+.card{border:1px solid var(--line); border-radius:12px; padding:11px 14px 12px;
+      background:var(--paper)}
+.lbl{font-size:9.5pt; font-weight:800; text-transform:uppercase;
+     letter-spacing:.12em; color:var(--muted); margin-bottom:5px}
+h2.t{font-size:15pt; font-weight:900; margin-bottom:7px}
+.consigne{font-size:11pt; font-weight:600; color:var(--soft); margin-bottom:8px}
+
+/* ── Objectifs et exercices : pastille en cerne, jamais en aplat ── */
+ol.obj,ol.ex{list-style:none}
+ol.obj{counter-reset:o} ol.ex{counter-reset:e}
+ol.obj li,ol.ex li{position:relative; padding-left:9mm; font-weight:600}
+ol.obj li{counter-increment:o; margin-bottom:6px}
+ol.ex li{counter-increment:e; margin-bottom:9px; break-inside:avoid}
+ol.obj li::before,ol.ex li::before{
+  position:absolute; left:0; top:0; width:6mm; height:6mm; border-radius:50%;
+  border:1.5px solid var(--rule); color:var(--ink);
+  font-size:9.5pt; font-weight:800;
+  display:flex; align-items:center; justify-content:center}
+ol.obj li::before{content:counter(o)}
+ol.ex li::before{content:counter(e)}
+
+/* ── Dialogue ── */
+.rep{display:flex; gap:10px; padding:4px 0; border-top:1px solid var(--line)}
+.rep:first-of-type{border-top:0}
+.rep--key{background:var(--tint); border-radius:8px; padding:5px 8px;
+          border-top:0; margin:2px 0}
+.qui{flex:0 0 30mm; font-weight:800; color:var(--ink); font-size:10.5pt}
+
+/* ── Règle : encadrée au filet épais, c'est elle qu'on repère de loin ── */
+.regle{border:2.5px solid var(--rule); border-radius:12px; padding:12px 14px}
+.regle .lbl{color:var(--ink)}
+.regle p.r{font-size:14pt; font-weight:900; color:var(--ink); line-height:1.3}
+.regle p.pr{margin-top:7px; font-weight:600; color:var(--soft)}
+
+/* ── Tableau ── */
+table{width:100%; border-collapse:collapse}
+th{font-size:9.5pt; font-weight:800; text-transform:uppercase; letter-spacing:.1em;
+   color:var(--muted); text-align:left; padding:0 8px 5px 0;
+   border-bottom:1.5px solid var(--rule)}
+td{padding:6px 8px 6px 0; border-top:1px solid var(--line); vertical-align:top;
+   font-weight:600}
+td.cle{font-weight:900; color:var(--ink)}   /* la colonne clé : en gras, pas en couleur */
+.note{margin-top:8px; font-size:10.5pt; font-weight:600; color:var(--soft);
+      background:var(--tint); border-radius:9px; padding:8px 11px}
+
+/* ── Cartes ── */
+.grid{display:grid; grid-template-columns:1fr 1fr; gap:9px}
+.grid .card h3{font-size:11.5pt; font-weight:900; color:var(--ink); margin-bottom:3px}
+.grid .card p{font-size:11pt}
+
+/* ── Piège : le filet distingue les deux colonnes, pas la couleur ──
+   À gauche, un filet TIRETÉ — ce qui ne tient pas.
+   À droite, un filet PLEIN et épais — ce qu'il faut retenir.
+   Les deux intitulés disent la même chose en mots.                */
+.duo{display:grid; grid-template-columns:1fr 1fr; gap:10px}
+.duo>div{border-radius:12px; padding:10px 13px}
+.duo .no{border:1.5px dashed var(--muted)}
+.duo .ok{border:2.5px solid var(--rule); background:var(--tint)}
+.duo .k{font-size:9.5pt; font-weight:800; text-transform:uppercase;
+        letter-spacing:.1em; margin-bottom:4px; color:var(--muted)}
+.duo .ok .k{color:var(--ink)}
+.duo p.ph{font-size:12pt; font-weight:800; color:var(--ink); line-height:1.3}
+.duo .no p.ph{font-weight:600; font-style:italic; color:var(--soft)}
+
+/* ── Vocabulaire ── */
+.voc{width:100%; border-collapse:collapse}
+.voc td{border-top:1px solid var(--line); padding:6px 8px 6px 0}
+.voc td.mot{width:38%; font-weight:900; color:var(--ink)}
+.voc td.def{color:var(--soft)}
+
+/* ── Zones de réponse ── */
+.ligne{display:block; border-bottom:1px dotted #8E8E8A; height:8mm; margin-top:2px}
+.ligne--court{width:55%}
+
+/* ── Billet de sortie ── */
+.billet{border:2.5px solid var(--rule); border-radius:12px; padding:13px 15px}
+.billet .k{font-size:9.5pt; font-weight:800; text-transform:uppercase;
+           letter-spacing:.12em; color:var(--ink); margin-bottom:4px}
+.billet p.c{font-size:14pt; font-weight:900; color:var(--ink); line-height:1.3}
+.billet ul{list-style:none; margin-top:7px}
+.billet li{font-weight:600; color:var(--soft); margin-bottom:3px}
+
+/* ── Pied ── */
+footer{margin-top:16px; padding-top:7px; border-top:1px solid var(--line);
+       font-size:9.5pt; font-weight:700; color:var(--muted);
+       display:flex; justify-content:space-between}
+
+/* ── Impression ── */
+@page{size:8.5in 11in; margin:14mm 15mm}
+@media print{
+  html{background:#FFFFFF}
+  body{width:auto; padding:0}
+  .bloc{break-inside:avoid; page-break-inside:avoid}
+  h2.t,.lbl{break-after:avoid; page-break-after:avoid}
+}
+</style>
+</head>
+<body>
+<header class="hdr">
+  <div class="hdr-l">
+    <div class="eyebrow">Séance C2 · Module 6 · 60 minutes</div>
+    <h1>Lire un avertissement routier</h1>
+  </div>
+  <div class="hdr-r"><span>Nom<span class="nomline nomline--nom"></span></span><span>Date<span class="nomline nomline--date"></span></span></div>
+</header>
+<p class="chapeau">Un texte officiel de six lignes, lu sur un téléphone à six heures du matin. Il dit où, quoi, jusqu'à quand, et ce qu'on doit faire.</p>
+<section class="bloc card"><div class="lbl">Objectifs</div><h2 class="t">À la fin, je serai capable de…</h2><ol class="obj"><li>lire un avertissement routier et en tirer les quatre informations ;</li><li>repérer le tronçon de route concerné ;</li><li>distinguer une interdiction d'une recommandation ;</li><li>lire des prévisions présentées par moments de la journée.</li></ol></section><section class="bloc"><div class="lbl">Le texte</div><h2 class="t">Avertissement de poudrerie</h2><div class="grid"><div class="card"><h3>Où</h3><p>Le ministère des Transports diffuse un avertissement de poudrerie pour l'autoroute 10, entre Sainte-Julie et Marieville.</p></div><div class="card"><h3>Quoi et jusqu'à quand</h3><p>Des rafales du nord-est réduiront la visibilité par moments jusqu'à demain matin.</p></div><div class="card"><h3>Ce qu'on doit faire</h3><p>La route demeure ouverte, mais les camions et les véhicules légers sont invités à ralentir.</p></div><div class="card"><h3>Les services</h3><p>Les chasse-neige circulent en continu et un poste de secours est ouvert à la halte routière du kilomètre 37.</p></div></div></section><section class="bloc regle"><div class="lbl">La règle de lecture</div><p class="r">Cherchez d'abord le tronçon : entre quoi et quoi ?</p><p class="pr">Un avertissement ne vise jamais tout le réseau. « Entre Sainte-Julie et Marieville » : si votre trajet ne passe pas là, l'avertissement ne vous concerne pas. C'est la première information à chercher.</p></section><section class="bloc card"><div class="lbl">Analyse</div><h2 class="t">Interdiction ou recommandation ?</h2><table><thead><tr><th>La formulation</th><th>Le degré</th></tr></thead><tbody><tr><td class="cle">la route est fermée</td><td>interdiction — on ne passe pas</td></tr><tr><td class="cle">sont invités à ralentir</td><td>recommandation forte</td></tr><tr><td class="cle">il est conseillé de reporter</td><td>recommandation</td></tr><tr><td class="cle">la circulation est interdite aux camions</td><td>interdiction, pour certains</td></tr></tbody></table><div class="note">« Invités à » est une formule polie qui cache une recommandation forte : c'est le langage officiel.</div></section><section class="bloc card"><div class="lbl">Pratique · 1 de 4</div><h2 class="t">Vrai ou faux</h2><p class="consigne">D'après l'avertissement.</p><ol class="ex"><li><span class="q">L'avertissement vise tout le réseau routier du Québec.</span><span class="ligne"></span></li><li><span class="q">Les rafales viennent du nord-est.</span><span class="ligne ligne--court"></span></li><li><span class="q">La circulation est interdite sur l'autoroute 10.</span><span class="ligne"></span></li><li><span class="q">Les chasse-neige sont déjà à l'œuvre.</span><span class="ligne ligne--court"></span></li><li><span class="q">Un poste de secours est ouvert au kilomètre 37.</span><span class="ligne ligne--court"></span></li></ol></section><section class="bloc card"><div class="lbl">Pratique · 2 de 4</div><h2 class="t">Les quatre informations</h2><p class="consigne">Où, quoi, jusqu'à quand, quelle consigne ?</p><ol class="ex"><li><span class="q">Où ?</span><span class="ligne"></span></li><li><span class="q">Quoi ?</span><span class="ligne"></span></li><li><span class="q">Jusqu'à quand ?</span><span class="ligne ligne--court"></span></li><li><span class="q">Quelle consigne ?</span><span class="ligne"></span></li><li><span class="q">Quels services ?</span><span class="ligne"></span></li></ol></section><section class="bloc regle"><div class="lbl">Lire des prévisions par moments</div><p class="r">Matinée · midi · fin de journée. Chaque moment a ses conditions.</p><p class="pr">« Ciel couvert en matinée, vent qui se lève vers midi, ciel qui s'éclaircit en fin de journée. » Une prévision n'est jamais valable pour toute la journée : il faut chercher le moment qui nous concerne.</p></section><section class="bloc card"><div class="lbl">Pratique · 3 de 4</div><h2 class="t">Est-ce annoncé ?</h2><p class="consigne">D'après les prévisions de demain, lues à voix haute.</p><ol class="ex"><li><span class="q">De la neige en matinée</span><span class="ligne ligne--court"></span></li><li><span class="q">De la pluie verglaçante</span><span class="ligne ligne--court"></span></li><li><span class="q">Des vents forts à partir de midi</span><span class="ligne ligne--court"></span></li><li><span class="q">Un ciel dégagé toute la matinée</span><span class="ligne"></span></li><li><span class="q">Des éclaircies en fin de journée</span><span class="ligne ligne--court"></span></li><li><span class="q">Une soirée douce</span><span class="ligne ligne--court"></span></li></ol></section><section class="bloc"><div class="lbl">Attention</div><h2 class="t">Le piège du tronçon ignoré</h2><div class="duo"><div class="no"><div class="k">On entend souvent</div><p class="ph">Il y a un avertissement sur la 10, je ne pars pas.</p></div><div class="ok"><div class="k">Il faut dire plutôt</div><p class="ph">L'avertissement vise le tronçon Sainte-Julie–Marieville.</p></div></div><div class="note">Un avertissement sur une autoroute ne vise presque jamais toute sa longueur. Si votre trajet ne passe pas par le tronçon nommé, il ne vous concerne pas — et vous perdriez une journée pour rien.</div></section><section class="bloc"><div class="lbl">Attention</div><h2 class="t">Le piège du « par moments »</h2><div class="duo"><div class="no"><div class="k">On entend souvent</div><p class="ph">La visibilité sera mauvaise tout le trajet.</p></div><div class="ok"><div class="k">Il faut dire plutôt</div><p class="ph">« Par moments » veut dire : à certains endroits, à certaines heures.</p></div></div><div class="note">« Par moments » est une expression clé des avertissements. Elle veut dire que la visibilité tombera brusquement puis reviendra. C'est plus dangereux qu'une mauvaise visibilité constante : on ne s'y attend pas.</div></section><section class="bloc card"><div class="lbl">Pratique · 4 de 4</div><h2 class="t">Écrivez l'avertissement</h2><p class="consigne">Quatre lignes : où, quoi, jusqu'à quand, quelle consigne.</p><ol class="ex"><li><span class="q">La situation</span><span class="ligne"></span></li><li><span class="q">La consigne</span><span class="ligne"></span></li><li><span class="q">Les services</span><span class="ligne"></span></li></ol></section><section class="bloc billet"><div class="k">Billet de sortie</div><p class="c">Consultez un avertissement routier réel et notez ses quatre informations.</p><ul><li>Où, quoi, jusqu'à quand, quelle consigne.</li><li>S'il n'y en a aucun aujourd'hui, notez l'état d'une route de votre trajet.</li></ul><span class="ligne"></span><span class="ligne"></span><span class="ligne"></span></section>
+<footer><span>C2 · Quelles sont les prévisions ?</span><span>Fiche élève</span></footer>
+</body>
+</html>
