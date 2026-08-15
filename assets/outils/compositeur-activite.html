@@ -1095,7 +1095,12 @@ function construirePrompt(){
   const exig = [];
   if(S.supports.length) exig.push("Supports : " + SUPPORTS.filter(s => S.supports.includes(s.id)).map(s => s.nom).join(", "));
   if(S.correctionAuto) exig.push("Correction automatisée");
-  if(S.retroactionIA) exig.push("Rétroaction IA après erreur");
+  // Cochée seule, la case ne disait pas quoi produire : sur un imprimable, le
+  // modèle la laissait tomber. On décrit le livrable attendu dans les deux cas.
+  if(S.retroactionIA) exig.push("Rétroaction IA après erreur : pour chaque exercice fermé, prévois "
+    + "les erreurs probables et, pour chacune, un message court qui rappelle la règle sans donner "
+    + "la réponse. Sur un support interactif, la rétroaction s’affiche à l’élève ; sur un "
+    + "imprimable, regroupe-la dans le guide de l’enseignant");
   const diff = DIFFICULTES.find(x => x.id === S.difficulte);
   if(S.nbExercices || diff){
     exig.push([S.nbExercices ? S.nbExercices + (S.nbExercices === 1 ? " exercice" : " exercices") : null,
@@ -1141,7 +1146,47 @@ function construirePrompt(){
     L.push("", "CONSIGNES PARTICULIÈRES DE L’ENSEIGNANT");
     S.consignes.trim().split(/\n+/).forEach(l => L.push(plier("- " + l.trim(), 92, "  ")));
   }
+
+  // Placé en dernier : c'est la relecture, et le modèle doit l'avoir en tête
+  // au moment de rédiger. Chaque règle vient d'un défaut observé en production.
+  L.push("", "RELECTURE OBLIGATOIRE AVANT DE RÉPONDRE");
+  reglesDeFabrication({ avecDocs: docs.length > 0, avecSavoirs: savoirs.length > 0, duree: d })
+    .forEach(r => L.push(plier("- " + r, 92, "  ")));
+
   return L.join("\n");
+}
+
+// Garde-fous de fabrication. Le compositeur décrit la commande ; sans ces règles,
+// rien n'oblige le modèle à vérifier que ce qu'il produit se tient.
+function reglesDeFabrication({ avecDocs, avecSavoirs, duree }){
+  const R = [];
+  R.push("Le corrigé doit correspondre à l’énoncé, question par question. Relis chaque "
+       + "question avec sa réponse : la réponse doit être trouvable dans ce que l’élève a "
+       + "sous les yeux, et nulle part ailleurs.");
+  R.push("Aucun exercice ne doit contredire ce qu’il enseigne. Si tu enseignes un ordre, une "
+       + "suite ou une règle, le corrigé de l’exercice doit la suivre. Un élève qui applique "
+       + "correctement la règle enseignée doit obtenir la bonne réponse.");
+  R.push("Dans un exercice à trous avec banque de mots, chaque trou n’accepte qu’une seule "
+       + "réponse. Si deux mots de la banque conviennent au même trou, reformule la phrase.");
+  if(avecSavoirs){
+    R.push("Chaque savoir listé plus haut doit être réellement travaillé : au moins un exercice "
+         + "où l’élève le produit ou l’interprète, et une entrée correspondante dans le corrigé. "
+         + "Le mentionner dans une consigne ne suffit pas.");
+    R.push("N’emploie et n’exige aucune notion absente des savoirs listés : ni temps de verbe, "
+         + "ni structure, ni tournure hors du niveau. En cas de doute, reste en deçà.");
+  }
+  if(avecDocs){
+    R.push("Tout fait, lieu, nom propre, horaire, prix, distance et direction vient de la "
+         + "documentation fournie. Si un exercice a besoin d’un détail qui ne s’y trouve pas, "
+         + "change l’exercice — n’invente pas le détail.");
+  }
+  if(duree){
+    R.push("Si tu indiques un minutage par section, la somme doit donner exactement la durée "
+         + "annoncée (" + duree.nom + ").");
+  }
+  R.push("Termine par une courte liste « Ce que je n’ai pas pu faire » : tout point de la "
+       + "commande que tu n’as pas livré, et pourquoi. Écris « rien à signaler » si tout y est.");
+  return R;
 }
 
 let promptCourant = null;
