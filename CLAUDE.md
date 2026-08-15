@@ -186,6 +186,27 @@ choix de l'enseignant survit aux redéploiements.
   première d'entre elles (`modulesAOuvrir()`). Sans cela, la classe ne verrait
   rien : un module fermé cache toutes ses sections, datées ou non.
 
+### Compositeur d'activité
+
+Le bouton « Composer une activité » de la barre de groupe ouvre
+`assets/outils/compositeur-activite.html` dans un nouvel onglet — la
+planification en cours n'est pas perdue. La page est autonome : ni session, ni
+groupe, ni appel au serveur ; elle assemble un prompt à partir du programme.
+
+- **Le fichier du dépôt est une copie**, pas la source. La source vit hors du
+  dépôt (`~/Claude/compositeur-activite.html`) et la greffe du programme
+  produit `~/Claude/compositeur-activite-complet.html`. Après toute
+  modification, regreffer **puis** recopier :
+
+  ```
+  python3 ~/Claude/programme/outils/greffe_programme.py ~/Claude/compositeur-activite.html
+  cp ~/Claude/compositeur-activite-complet.html assets/outils/compositeur-activite.html
+  ```
+
+  Modifier la copie du dépôt ne sert à rien : la prochaine greffe l'écrase.
+- Elle est servie comme les autres assets : `/assets/` cherche d'abord le
+  volume, puis retombe sur `BASE_DIR`. Rien à ajouter à `init_storage()`.
+
 ## Dépôt de matériel (PowerPoints et fiches à imprimer)
 
 Suit la remise `~/Downloads/design_handoff_depot_materiel`, source de vérité
