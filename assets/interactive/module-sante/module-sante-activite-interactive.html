@@ -1,8 +1,9 @@
 <!DOCTYPE html>
 <html lang="fr"><head>
 <meta charset="utf-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
-<title>La santé — Module Niveau 4</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Prendre rendez-vous et aller à la pharmacie — Atelier Niveau 4</title>
+<link rel="stylesheet" href="/assets/design-system/styles.css">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@600;700;800;900&display=swap" rel="stylesheet">
@@ -12,103 +13,194 @@ html,body{height:100%;background:#EDF6F4;font-family:'Nunito','Arial Rounded MT 
 body{display:flex;flex-direction:column;min-height:100vh}
 ::-webkit-scrollbar{width:6px;height:6px}::-webkit-scrollbar-track{background:rgba(0,0,0,.04);border-radius:3px}::-webkit-scrollbar-thumb{background:rgba(0,0,0,.15);border-radius:3px}
 
-#hdr{background:#12996B;color:#fff;padding:14px 32px;display:flex;align-items:center;justify-content:space-between;position:sticky;top:0;z-index:200;box-shadow:0 3px 16px rgba(15,118,110,.3);flex-shrink:0}
-.hdr-l{display:flex;align-items:center;gap:14px}
+#chrome{position:sticky;top:0;z-index:200}
+#hdr{background:var(--hdr-accent-soft,var(--surface-band));color:var(--text-strong);padding:32px 32px 40px;display:flex;align-items:flex-start;justify-content:space-between;flex-wrap:wrap;gap:16px;border-bottom:1px solid var(--border-tint);flex-shrink:0}
+.hdr-l{display:flex;align-items:center;gap:14px;flex:1 1 420px;min-width:0}
 .hdr-ic{width:44px;height:44px;background:rgba(255,255,255,.18);border-radius:50%;display:flex;align-items:center;justify-content:center;flex-shrink:0;font-size:22px}
-.hdr-eye{font-size:11px;font-weight:800;text-transform:uppercase;letter-spacing:.2em;opacity:.7;line-height:1}
-.hdr-h1{font-size:27px;font-weight:900;line-height:1.15}
+.hdr-eye{display:flex;align-items:center;gap:8px;font-size:var(--fs-label);font-weight:var(--fw-bold);text-transform:uppercase;letter-spacing:var(--ls-label);color:var(--hdr-accent,var(--text-accent));line-height:1}
+.hdr-eye::before{content:"";width:8px;height:8px;border-radius:50%;background:var(--hdr-accent,var(--accent));flex-shrink:0}
+.hdr-h1{font-size:clamp(38px,6vw,62px);font-weight:900;line-height:1.05;margin:10px 0 0;letter-spacing:-.02em;color:var(--text-strong)}
+.hdr-lead{max-width:56ch;margin-top:16px;font-size:19px;font-weight:500;line-height:1.5;color:var(--ws-sub,#6E7175)}
+.hdr-lead:empty{display:none}
 .hdr-r{display:flex;align-items:center;gap:14px}
-#prog-chip{background:rgba(255,255,255,.15);border:2px solid rgba(255,255,255,.45);border-radius:999px;padding:8px 18px;font-size:16px;font-weight:900;white-space:nowrap}
-#btn-reset{background:rgba(255,255,255,.15);color:#fff;border:2px solid rgba(255,255,255,.45);border-radius:10px;padding:10px 18px;font-family:'Nunito',sans-serif;font-size:15px;font-weight:800;cursor:pointer;white-space:nowrap;transition:background .15s}
+#prog-chip{background:var(--hdr-accent-soft,var(--accent-soft));color:var(--hdr-accent,var(--accent-ink));border:1px solid transparent;border-radius:999px;padding:8px 18px;font-size:15px;font-weight:800;white-space:nowrap}
+#btn-reset{background:var(--surface-card);color:var(--text-strong);border:1px solid var(--border);border-radius:999px;padding:10px 18px;font-family:'Nunito',sans-serif;font-size:15px;font-weight:800;cursor:pointer;white-space:nowrap;transition:background .15s}
+#btn-reset:hover{background:var(--paper-100)}
 #btn-reset:hover{background:rgba(255,255,255,.28)}
 
-#tabs{background:#fff;display:flex;gap:6px;padding:10px 32px;position:sticky;top:76px;z-index:190;box-shadow:0 2px 12px rgba(0,0,0,.07);flex-wrap:wrap}
-.tab{border:2.5px solid transparent;border-radius:999px;padding:9px 18px;font-family:'Nunito',sans-serif;font-size:14.5px;font-weight:800;cursor:pointer;background:#EDF6F4;color:#5E8A82;transition:all .15s;display:flex;align-items:center;gap:8px}
-.tab .tno{width:24px;height:24px;border-radius:50%;background:#B7DED7;color:#fff;display:flex;align-items:center;justify-content:center;font-size:13px;font-weight:900;flex-shrink:0}
-.tab.on{background:#12996B;color:#fff}
-.tab.on .tno{background:rgba(255,255,255,.28)}
-.tab .tchk{display:none;color:#4ADE80;font-size:15px}
+#tabs{position:sticky;top:0;z-index:5;background:rgba(247,247,245,.94);backdrop-filter:blur(8px);display:flex;gap:8px;padding:12px 32px;border-bottom:1px solid var(--border);flex-wrap:wrap}
+.tab{min-height:var(--tap-min);border:1px solid var(--border);border-radius:999px;padding:0 16px;font-family:'Nunito',sans-serif;font-size:14px;font-weight:800;cursor:pointer;background:var(--surface-card);color:var(--text-body);transition:background .15s,border-color .15s;display:inline-flex;align-items:center;gap:8px}
+.tab:hover{background:var(--paper-50)}
+.tab .tno{width:9px;height:9px;border-radius:50%;background:var(--sec-color,var(--accent));flex-shrink:0;font-size:0;overflow:hidden}
+.tab .tno-play{display:none}
+.tab.on{background:var(--sel-bg);border-color:var(--sel-line);color:var(--sel-ink)}
+.tab.on .tno{background:currentColor}
+.tab.done{background:var(--ok-bg);border-color:var(--ok-line);color:var(--ok-ink)}
+.tab .tchk{display:none;font-size:15px}
 .tab.done .tchk{display:inline}
 
-#sel-banner{background:#FEF3C7;border-bottom:3px solid #F59E0B;padding:10px 32px;display:none;align-items:center;gap:10px;font-size:19px;font-weight:800;color:#92400E;flex-shrink:0;position:sticky;top:132px;z-index:180}
+#sel-banner{background:var(--warn-bg);border-bottom:3px solid var(--warn-line);padding:10px 32px;display:none;align-items:center;gap:10px;font-size:19px;font-weight:800;color:var(--warn-ink);flex-shrink:0}
 #sel-banner.on{display:flex}
 
-.sec{display:none;flex-direction:column}
+.sec{display:none;flex-direction:column;border-top:3px solid var(--sec-color,transparent)}
 .sec.on{display:flex}
 
-.dial-sec{background:#123B32;color:#E8F5F2;padding:16px 32px;display:flex;gap:24px;border-bottom:4px solid #12996B;flex-shrink:0;flex-wrap:wrap}
+.dial-sec{background:#123B32;color:#E8F5F2;padding:16px 32px;display:flex;flex-direction:column;gap:14px;border-bottom:4px solid #1D6B8F;flex-shrink:0}
+.situ{font-size:17px;font-weight:600;line-height:1.5;opacity:.72}
+.dial-grid{display:grid;grid-template-columns:minmax(0,1fr) auto;gap:24px;align-items:center}
+.field-label{font-size:12px;font-weight:800;text-transform:uppercase;letter-spacing:.14em;color:var(--ws-sub,#8A8D91);margin-bottom:6px}
+.dial-aside{text-align:right;border-left:1px solid var(--ws-line,#EAEAE8);padding-left:24px;min-width:180px}
+.dial-aside-tit{font-size:15px;font-weight:800}
+.dial-aside-n{font-size:13px;font-weight:600;color:var(--ws-sub,#8A8D91);margin-top:6px}
+.is-hidden{display:none!important}
+@media(max-width:640px){.dial-grid{grid-template-columns:1fr}.dial-aside{text-align:left;border-left:none;border-top:1px solid var(--ws-line,#EAEAE8);padding:12px 0 0}}
+.dial-hd{display:flex;align-items:center;justify-content:flex-start;gap:12px;flex-wrap:wrap}
+.dial-hd .d-lbl{margin-bottom:0}
+.dial-hd .btn-lu{width:auto;flex:0 0 auto;display:inline-flex;align-items:center;gap:8px;padding:5px 16px;border-radius:999px;font-size:14px;background:#DC2626!important;border-color:#DC2626!important;color:#fff!important}
+.dial-hd .btn-lu .icon-svg{filter:brightness(0) invert(1)!important;opacity:1!important}
+.dial-hd .btn-lu:hover{background:#B91C1C;border-color:#B91C1C}
+.dial-hd .btn-lu .icon-svg{width:17px;height:17px}
 .audio-pl{flex:0 0 160px;display:flex;flex-direction:column;align-items:center;justify-content:flex-start;padding-top:6px;gap:10px}
-.audio-lbl{font-size:11px;font-weight:800;text-transform:uppercase;letter-spacing:.15em;opacity:.6;text-align:center}
-.btn-lu{background:rgba(255,255,255,.12);color:#E8F5F2;border:2px solid rgba(255,255,255,.35);border-radius:10px;padding:10px 14px;font-family:'Nunito',sans-serif;font-size:14px;font-weight:800;cursor:pointer;transition:all .15s;text-align:center;line-height:1.3;width:100%}
+.audio-lbl{font-size:12px;font-weight:800;text-transform:uppercase;letter-spacing:.15em;opacity:.6;text-align:center}
+.btn-lu{background:rgba(255,255,255,.12);color:#E8F5F2;border:2px solid rgba(255,255,255,.35);border-radius:999px;padding:12px 22px;font-family:'Nunito',sans-serif;font-size:15px;font-weight:800;cursor:pointer;transition:all .15s;text-align:center;line-height:1.3;display:inline-flex;align-items:center;justify-content:center;gap:8px;min-height:44px}
+.btn-lu.big{padding:16px 20px;font-size:18px;display:flex;align-items:center;justify-content:center;gap:10px}
+.btn-lu.big .icon-svg{width:22px;height:22px}
 .btn-lu:hover{background:rgba(255,255,255,.25)}
-.btn-lu.done{background:#166534;border-color:#4ADE80;color:#DCFCE7}
-.dial-txt{flex:1;min-width:280px;display:flex;flex-direction:column;gap:7px;font-size:19px;font-weight:600;line-height:1.7;padding-right:8px}
-.d-lbl{font-size:14px;font-weight:800;text-transform:uppercase;letter-spacing:.15em;color:#7FD4C9;margin-bottom:6px;opacity:.85}
-.dl{line-height:1.7}.mb{color:#FCA5A5;font-weight:800}.dr{color:#7FD4C9;font-weight:800}
+.btn-lu.done{background:var(--ok-bg);border-color:var(--ok-line);color:var(--ok-ink)}
+.dial-txt{flex:1;min-width:280px;display:flex;flex-direction:column;gap:7px;font-size:20px;font-weight:600;line-height:1.7;padding-right:8px}
+.d-lbl{display:inline-block;background:rgba(255,255,255,.14);border-radius:999px;padding:5px 16px;font-size:15px;font-weight:800;text-transform:uppercase;letter-spacing:.1em;color:#7FD4C9;margin-bottom:6px;opacity:1}
+.dl{line-height:1.7}.mb{color:#93C5FD;font-weight:800}.dr{color:#7FD4C9;font-weight:800}
 
-.intro{background:#DCEFEB;padding:14px 32px;font-size:17px;font-weight:700;color:#0C7A53;line-height:1.5;border-bottom:2px solid #B7DED7}
+.intro{background:#DCEFEB;padding:14px 32px;font-size:17px;font-weight:700;color:#154F68;line-height:1.5;border-bottom:2px solid #B7DED7}
 
 .exs{flex:1;padding:22px 32px 48px;display:flex;flex-direction:column;gap:20px}
+.cta{background:var(--ws-ink,#17181A);color:#fff;border-radius:18px;padding:26px 32px;margin:0 32px 32px;display:flex;align-items:center;justify-content:space-between;gap:20px;flex-wrap:wrap}
+.cta-eyebrow{font-size:12px;font-weight:800;text-transform:uppercase;letter-spacing:.14em;color:#8FE2B9}
+.cta-tit{font-size:22px;font-weight:900;margin-top:6px}
+.cta-sub{font-size:14.5px;font-weight:500;color:#C7C9CC;margin-top:8px;max-width:50ch}
+.cta-btn{background:var(--ws-accent,#0A8F5B)!important;color:#fff!important;border:none!important;font-size:15px;padding:12px 22px;flex-shrink:0}
 
 .card{background:#fff;border-radius:18px;padding:22px 26px;box-shadow:0 4px 20px rgba(15,118,110,.08)}
-.c-hdr{display:flex;align-items:center;gap:10px;margin-bottom:14px;flex-wrap:wrap}
-.tag{color:#fff;border-radius:999px;padding:5px 16px;font-size:13px;font-weight:800;text-transform:uppercase;letter-spacing:.1em;white-space:nowrap}
-.ctit{font-size:21px;font-weight:900}
-.csub{font-size:15.5px;color:#5E8A82;font-weight:600}
+.c-hdr{display:flex;align-items:center;flex-wrap:wrap;gap:10px;margin-bottom:20px;padding-bottom:16px;border-bottom:1px solid var(--border)}
+.exo-num{flex-shrink:0;width:32px;height:32px;border-radius:10px;display:flex;align-items:center;justify-content:center;background:var(--accent-soft);color:var(--sec-color,var(--ws-accent));font-size:14px;font-weight:900}
+.tag{font-size:13px;font-weight:800;text-transform:uppercase;letter-spacing:.12em;white-space:nowrap}
+.ctit,.csub{flex-basis:100%}
+.ctit{display:block;font-size:24px;font-weight:900;line-height:1.2}
+.csub{display:block;font-size:15px;font-weight:600}
+.exo-score{margin-left:auto;background:var(--ws-accent-bg,#E6F5EE);color:var(--sec-color,var(--ws-accent));padding:6px 12px;border-radius:999px;font-size:13px;font-weight:700;white-space:nowrap}
+.pair-grid{display:grid;grid-template-columns:1fr 1fr;gap:20px}
+@media(max-width:640px){.pair-grid{grid-template-columns:1fr}}
+.pair-grid .stack{display:flex;flex-direction:column;gap:8px}
+.chip{display:block;width:100%;text-align:left;padding:12px 16px;border-radius:12px;border:1.5px solid var(--ws-line,#EAEAE8);background:#fff;font-family:inherit;font-size:15px;font-weight:600;color:var(--ws-ink,#17181A);cursor:pointer;transition:border-color .15s,background .15s}
+.chip:hover{border-color:var(--ws-accent,#0A8F5B)}
+.chip.chip-word{font-weight:800}
+.chip.is-active{border-color:var(--ws-accent,#0A8F5B);background:var(--ws-accent-bg,#E6F5EE);box-shadow:0 0 0 2px var(--ws-accent-bg,#E6F5EE)}
+.chip.is-paired{border-color:var(--ok-line,#34A76B);background:var(--ok-bg,#E8F6EE);color:var(--ok-ink,#0A6B46);cursor:default;opacity:.85}
+.chip.is-miss{border-color:var(--no-line,#DC2626);background:var(--no-bg,#FFF6F5)}
+.chip[aria-disabled="true"]{pointer-events:none}
 
-.savoir{background:#F1FBF9;border-left:5px solid #12996B;border-radius:0 14px 14px 0;padding:16px 22px;margin-bottom:4px}
-.savoir h3{font-size:15.5px;font-weight:900;color:#0C7A53;text-transform:uppercase;letter-spacing:.08em;margin-bottom:8px}
-.savoir table{border-collapse:collapse;width:100%}
-.savoir td{padding:6px 12px;font-size:16.5px;font-weight:600;line-height:1.5;border-bottom:1px dashed #B7DED7;vertical-align:top}
-.savoir td:first-child{font-weight:900;color:#0C7A53;white-space:nowrap}
-.savoir em{font-style:italic;color:#0D9488}
+.savoir{background:#F1FBF9;border-left:5px solid #1D6B8F;border-radius:0 14px 14px 0;padding:0 22px 16px;margin-bottom:4px;overflow-x:auto}
+.savoir-gap{background:#EDF6F4;height:20px;margin:0 -26px 20px;border-top:1px solid rgba(15,118,110,.1);border-bottom:1px solid rgba(15,118,110,.1)}
+.savoir-band{background:#1D6B8F;color:#fff;font-size:12.5px;font-weight:800;text-transform:uppercase;letter-spacing:.14em;padding:9px 22px;margin:0 -22px 16px;border-radius:0 14px 0 0}
+.savoir-row{display:grid;grid-template-columns:34% 1fr;gap:10px;padding:10px 0;border-bottom:1px dashed #B7DED7}
+.savoir-row:last-child{border-bottom:none}
+.savoir-key{font-weight:900;color:#154F68;font-size:17px}
+.savoir-val{font-size:17px;font-weight:600;line-height:1.5}
+.savoir em{font-style:italic;color:#0A6B57}
+.word-chips{display:flex;flex-wrap:wrap;gap:8px;margin-top:10px}
+.word-chip{display:flex;flex-wrap:wrap;align-items:center;gap:6px;background:#FFFFFF;border:1.5px solid #CFE9E3;border-radius:20px;padding:4px 6px 4px 14px}
+.word-chip .wc-word{font-weight:800;color:#123B32;font-size:15px;margin-right:2px;white-space:nowrap}
+.word-chip .wc-phrase{font-weight:500;white-space:normal}
+.word-chip .wc-phrase b{font-weight:800}
+.word-chip .btn{padding:0!important;width:40px!important;height:40px!important;display:inline-flex;align-items:center;justify-content:center;font-size:14px;border-radius:14px}
+.icon-svg{width:1em;height:1em;vertical-align:middle;display:inline-block}
+.btn .icon-svg{width:15px;height:15px}
+.btn-ghost.wlisten .icon-svg,.btn-lu .icon-svg{width:17px;height:17px;margin-right:4px}
+.word-chip .pron-fb{flex-basis:100%;order:99;margin:4px 0 0}
+@media(max-width:640px){.savoir td:first-child{width:auto}.savoir table,.savoir tbody,.savoir tr,.savoir td{display:block;width:100%}.savoir td{border-bottom:none;padding:4px 0}.savoir tr{padding-bottom:10px;border-bottom:1px dashed #B7DED7;margin-bottom:6px}}
 
 .rows{display:flex;flex-direction:column;gap:8px}
 .rrow{display:flex;align-items:center;gap:10px}
 .stxt{flex:1;background:#F1F9F7;border-radius:10px;padding:14px 18px;font-size:20px;font-weight:700;color:#123B32;line-height:1.4}
 .rrow2{display:grid;grid-template-columns:1fr 1fr;gap:8px;align-items:stretch}
-.qcard{background:#F0FAF7;border-left:4px solid #12996B;border-radius:0 10px 10px 0;padding:12px 16px;display:flex;flex-direction:column;justify-content:center}
-.qlbl{font-size:13px;font-weight:800;color:#12996B;text-transform:uppercase;letter-spacing:.1em;margin-bottom:4px}
-.qtxt{font-size:19px;font-weight:700;color:#123B32;line-height:1.4}
-.blanks-p{font-size:22px;line-height:2.9;font-weight:600;color:#123B32}
+.qcard{background:#F0FAF7;border-left:4px solid #1D6B8F;border-radius:0 10px 10px 0;padding:12px 16px;display:flex;flex-direction:column;justify-content:center}
+.qlbl{font-size:13px;font-weight:800;color:#1D6B8F;text-transform:uppercase;letter-spacing:.1em;margin-bottom:4px}
+.qtxt{font-size:20px;font-weight:700;color:#123B32;line-height:1.4}
+.timelbl{flex:0 0 90px;background:var(--warn-bg);border-radius:10px;padding:12px 8px;font-size:15px;font-weight:900;color:var(--warn-ink);text-align:center}
+.blanks-p{font-size:20px;line-height:2.9;font-weight:600;color:#123B32}
 
 .zone{display:flex;align-items:center;justify-content:center;min-height:54px;border-radius:10px;font-weight:800;font-family:'Nunito',sans-serif;cursor:pointer;transition:background .18s,border-color .18s,color .18s,transform .12s;user-select:none;text-align:center;padding:10px 14px;border:2.5px solid;line-height:1.35}
-.zone.empty{background:#F0F9FF;border-color:#93C5D6;border-style:dashed;color:#94A3B8;font-size:17px}
+.zone.empty{background:var(--drop-bg);border-color:var(--drop-line);border-style:dashed;color:#5A6B7D;font-size:17px}
 .zone.dov{background:#E0F2FE!important;border-color:#38BDF8!important;border-style:solid!important;transform:scale(1.02)}
-.zvf{min-width:150px;font-size:19px}
-.f-vrai{background:#DCFCE7;border-color:#4ADE80;border-style:solid;color:#166534}
-.f-faux{background:#FEE2E2;border-color:#FCA5A5;border-style:solid;color:#991B1B}
-.zone.filled{background:#DBEAFE;border-color:#60A5FA;border-style:solid;color:#1E3A8A;font-size:17px}
-.fb-ok{background:#D1FAE5!important;border-color:#34D399!important;border-style:solid!important;color:#065F46!important}
-.fb-no{background:#FEE2E2!important;border-color:#F87171!important;border-style:solid!important;color:#991B1B!important;animation:shk .5s ease}
+.zvf{min-width:150px;font-size:20px}
+.f-vrai{background:var(--ok-bg);border-color:var(--ok-line);border-style:solid;color:var(--ok-ink)}
+.f-faux{background:var(--no-bg);border-color:var(--no-line);border-style:solid;color:var(--no-ink)}
+.zone.filled{background:var(--sel-bg);border-color:var(--sel-line);border-style:solid;color:var(--sel-ink);font-size:17px}
+.fb-ok{background:var(--ok-bg)!important;border-color:var(--ok-line)!important;border-style:solid!important;color:var(--ok-ink)!important}
+.fb-no{background:var(--no-bg)!important;border-color:var(--no-line)!important;border-style:solid!important;color:var(--no-ink)!important;animation:shk .5s ease}
 @keyframes shk{0%,100%{transform:translateX(0)}20%{transform:translateX(-6px)}60%{transform:translateX(6px)}80%{transform:translateX(-3px)}}
 
+.vf-head{display:flex;align-items:center;gap:10px;margin-bottom:6px;padding:0 12px}
+.vf-head-txt{flex:1}
+.vf-head-opts{display:flex;gap:8px;flex:0 0 auto}
+.vf-head-opt{width:72px;flex:0 0 72px;text-align:center;font-size:12px;font-weight:900;color:#64748B;text-transform:uppercase;letter-spacing:.06em}
+.vf-row{display:flex;align-items:center;gap:10px;flex-wrap:wrap;background:#F8FDFC;border:1.5px solid #DCEEEA;border-radius:12px;padding:10px 12px}
+.vf-row .stxt{background:transparent;padding:4px 0}
+.vf-opts{display:flex;gap:8px;flex:0 0 auto;margin-left:auto}
+.pron-fb{flex-basis:100%;font-size:13px;font-weight:800;display:inline-block;margin:2px 0 4px}
+.pron-fb.ok{color:var(--ok-ink)}
+.pron-fb.no{color:var(--no-ink)}
+.pron-fb.warn{color:var(--warn-ink)}
+.vf-opt{width:72px;flex:0 0 72px;min-height:44px;border-radius:10px;border:2.5px solid #CBD5E1;background:#F8FAFC;color:#64748B;font-weight:800;font-family:'Nunito',sans-serif;cursor:pointer;transition:background .15s,border-color .15s,color .15s}
+.vf-opt:hover{border-color:#94A3B8}
+.vf-opt.sel{background:var(--sel-bg)!important;border-color:var(--sel-line)!important;border-style:solid;color:var(--sel-ink)!important}
+.vf-opt.fb-ok{background:var(--ok-bg)!important;border-color:var(--ok-line)!important;border-style:solid!important;color:var(--ok-ink)!important}
+.vf-opt.fb-no{background:var(--no-bg)!important;border-color:var(--no-line)!important;border-style:solid!important;color:var(--no-ink)!important}
+.vf-summary{font-size:13px;font-weight:800}
+.vf-summary.ok{color:var(--ok-ink)}
+.vf-summary.warn{color:var(--warn-ink)}
+
 .blank{display:inline-block;min-width:130px;padding:4px 14px;margin:0 3px;border-radius:8px;font-weight:800;vertical-align:middle;cursor:pointer;transition:background .18s,border-color .18s,color .18s;user-select:none;border:2.5px dashed #93C5D6;background:#F0F9FF;color:#94A3B8;font-size:20px;text-align:center}
-.blank.filled{border-style:solid;border-color:#5EEAD4;background:#CCFBF1;color:#0C7A53}
-.blank.fb-ok{border-style:solid;border-color:#34D399;background:#D1FAE5;color:#065F46}
-.blank.fb-no{border-style:solid;border-color:#F87171;background:#FEE2E2;color:#991B1B;animation:shk .5s ease}
-.blank.dov{border-style:solid;border-color:#38BDF8;background:#E0F2FE}
+.blank.filled{border-style:solid;border-color:var(--sel-line);background:var(--sel-bg);color:var(--sel-ink)}
+.blank.fb-ok{border-style:solid;border-color:var(--ok-line);background:var(--ok-bg);color:var(--ok-ink)}
+.blank.fb-no{border-style:solid;border-color:var(--no-line);background:var(--no-bg);color:var(--no-ink);animation:shk .5s ease}
+.blank.dov{border-style:solid;border-color:var(--sel-line);background:var(--sel-bg)}
 
 .bsec{border-radius:12px;padding:14px 12px;flex-shrink:0}
-.bsec.b1{background:#EDF6F4;border:1.5px solid #B7DED7}
-.blbl{font-size:12px;font-weight:800;text-transform:uppercase;letter-spacing:.14em;margin-bottom:10px;color:#12996B}
+/* Filet d'encre à gauche : le banc de réponses est le bloc où l'élève vient
+   se servir, il se repère du coin de l'œil au milieu des énoncés. */
+.bsec.b1{background:#EDF6F4;border:1.5px solid #B7DED7;border-left:3px solid #17181A}
+.blbl{font-size:12px;font-weight:800;text-transform:uppercase;letter-spacing:.14em;margin-bottom:10px;color:#1D6B8F}
 .btiles{display:flex;flex-wrap:wrap;gap:8px;justify-content:center}
 .btiles.vert{flex-direction:column;flex-wrap:nowrap}
 
 .tile{border-radius:10px;font-weight:800;font-family:'Nunito',sans-serif;cursor:grab;transition:all .15s;user-select:none;border:2.5px solid;box-shadow:0 2px 7px rgba(0,0,0,.08);padding:10px 14px;display:flex;align-items:center;justify-content:center;text-align:center;line-height:1.35}
 .tile:active{cursor:grabbing;transform:scale(1.04);box-shadow:0 5px 14px rgba(0,0,0,.15)}
-.tile.sel{background:#FEF9C3!important;border-color:#FBBF24!important;color:#92400E!important;box-shadow:0 0 0 4px rgba(245,158,11,.22),0 2px 7px rgba(0,0,0,.08)!important;transform:translateY(-1px)}
-.tv{background:#DCFCE7;border-color:#4ADE80;color:#166534;font-size:19px;padding:13px 22px}
-.tf{background:#FEE2E2;border-color:#FCA5A5;color:#991B1B;font-size:19px;padding:13px 22px}
-.tn{background:#F0FDFA;border-color:#5EEAD4;color:#0C7A53;font-size:16px}
-.ta{background:#FFF7ED;border-color:#FDBA74;color:#9A3412;font-size:15px}
-.bempty{font-size:13px;color:#94A3B8;font-weight:600;text-align:center;padding:8px 0;font-style:italic}
+.tile.sel{background:var(--warn-bg)!important;border-color:var(--warn-line)!important;color:var(--warn-ink)!important;box-shadow:0 0 0 4px rgba(217,136,11,.22),0 2px 7px rgba(0,0,0,.08)!important;transform:translateY(-1px)}
+.tv{background:var(--ok-bg);border-color:var(--ok-line);color:var(--ok-ink);font-size:20px;padding:13px 22px}
+.tf{background:var(--no-bg);border-color:var(--no-line);color:var(--no-ink);font-size:20px;padding:13px 22px}
+.tn{background:var(--ws-card);border-color:var(--ws-line);color:var(--ws-ink);font-size:17px}
+.ta{background:var(--warn-bg);border-color:var(--warn-line);color:var(--warn-ink);font-size:15px}
+.bempty{font-size:13px;color:#5A6B7D;font-weight:600;text-align:center;padding:8px 0;font-style:italic}
 
 .ghost{position:fixed;z-index:9999;pointer-events:none;opacity:.88;transform:scale(1.06) rotate(1.5deg);box-shadow:0 8px 24px rgba(0,0,0,.25);border-radius:10px}
 
+/* Association image */
+.imgtile{width:100px;height:100px;border-radius:10px;overflow:hidden;cursor:grab;border:2.5px solid #5EEAD4;box-shadow:0 2px 7px rgba(0,0,0,.08);transition:all .15s;flex:none}
+.imgtile img{width:100%;height:100%;object-fit:cover;display:block;pointer-events:none}
+.imgtile:active{cursor:grabbing;transform:scale(1.04)}
+.imgtile.sel{border-color:#FBBF24;box-shadow:0 0 0 4px rgba(245,158,11,.22)}
+.imgzone{width:100%;min-height:110px;border-radius:10px;border:2.5px dashed #93C5D6;background:#F0F9FF;display:flex;align-items:center;justify-content:center;cursor:pointer;overflow:hidden;transition:all .15s}
+.imgzone img{width:100%;height:100%;object-fit:cover;display:block;pointer-events:none}
+.imgzone-ph{font-size:13px;color:#5A6B7D;padding:10px}
+.imgzone.dov{border-color:var(--sel-line);background:var(--sel-bg)}
+.imgzone.filled{border-style:solid;border-color:var(--sel-line)}
+.imgzone.fb-ok{border-style:solid;border-color:var(--ok-line)}
+.imgzone.fb-no{border-style:solid;border-color:var(--no-line);animation:shk .5s ease}
+
 #fc-overlay{display:none;position:fixed;inset:0;z-index:9000;background:rgba(15,25,35,.6);backdrop-filter:blur(5px);align-items:center;justify-content:center}
 #fc-overlay.on{display:flex}
-#fc-box{background:#12996B;border-radius:24px;padding:44px 56px;max-width:760px;width:92%;box-shadow:0 24px 64px rgba(0,0,0,.4);display:flex;flex-direction:column;align-items:center;gap:20px;animation:fcPop .3s cubic-bezier(.34,1.4,.64,1)}
+#fc-box{background:#1D6B8F;border-radius:24px;padding:44px 56px;max-width:760px;width:92%;box-shadow:0 24px 64px rgba(0,0,0,.4);display:flex;flex-direction:column;align-items:center;gap:20px;animation:fcPop .3s cubic-bezier(.34,1.4,.64,1)}
 @keyframes fcPop{from{transform:scale(.82);opacity:0}to{transform:scale(1);opacity:1}}
 #fc-counter{font-size:12px;font-weight:900;text-transform:uppercase;letter-spacing:.22em;color:rgba(255,255,255,.5)}
 #fc-word{font-size:36px;font-weight:900;color:#fff;text-align:center;line-height:1.2;border-bottom:2px solid rgba(255,255,255,.18);padding-bottom:18px;width:100%}
@@ -116,52 +208,515 @@ body{display:flex;flex-direction:column;min-height:100vh}
 #fc-ex{font-size:18px;font-weight:600;color:rgba(255,255,255,.78);line-height:1.6;text-align:center;font-style:italic}
 #fc-ex strong{font-weight:900;font-style:normal;color:#fff}
 #fc-def.hidden,#fc-ex.hidden{display:none}
-#fc-reveal-btn{background:rgba(255,255,255,.18);border:1px solid rgba(255,255,255,.4);color:#fff;border-radius:8px;padding:8px 20px;font-family:'Nunito',sans-serif;font-size:14px;font-weight:800;cursor:pointer}
+#fc-reveal-btn{background:rgba(255,255,255,.18);border:1px solid rgba(255,255,255,.4);color:#fff;border-radius:8px;padding:12px 20px;font-family:'Nunito',sans-serif;font-size:14px;font-weight:800;cursor:pointer}
 #fc-reveal-btn:hover{background:rgba(255,255,255,.38)}
 #fc-reveal-btn.hidden{display:none}
 #fc-btns{display:flex;gap:14px;margin-top:6px;flex-wrap:wrap;justify-content:center}
-.fc-btn{background:rgba(255,255,255,.15);border:2px solid rgba(255,255,255,.38);color:#fff;border-radius:10px;padding:10px 22px;font-family:'Nunito',sans-serif;font-size:15px;font-weight:800;cursor:pointer}
+.fc-btn{background:rgba(255,255,255,.15);border:1px solid rgba(255,255,255,.38);color:#fff;border-radius:8px;padding:6px 14px;font-family:'Nunito',sans-serif;font-size:13px;font-weight:800;cursor:pointer}
+/* ── Traduction dans la langue de l'élève ───────────────────────────
+   Le français ne bouge pas : la traduction s'ajoute sous un filet,
+   comme le fait le rail « Mes outils ». */
+#fc-sep{width:100%;height:1px;background:rgba(255,255,255,.20);margin:2px 0}
+#fc-trad-btn{background:transparent;border:1px solid rgba(255,255,255,.45);color:#fff;border-radius:8px;padding:6px 14px;font-family:'Nunito',sans-serif;font-size:13px;font-weight:800;cursor:pointer}
+#fc-trad-btn:hover{background:rgba(255,255,255,.18)}
+#fc-trad-btn[disabled]{opacity:.5;cursor:default}
+#fc-trad-btn.hidden,#fc-trad.hidden{display:none}
+#fc-trad{width:100%;background:rgba(255,255,255,.12);border-radius:10px;padding:12px 16px;font-size:19px;font-weight:700;color:#fff;line-height:1.55;text-align:center}
+#fc-trad.att{font-size:14px;font-weight:600;color:rgba(255,255,255,.75);background:transparent;padding:4px}
 .fc-btn:hover{background:rgba(255,255,255,.28)}
 
 .vocab-sec{background:#EDF6F4;border-bottom:3px solid rgba(15,118,110,.15);padding:14px 32px 18px}
-.vocab-grid{display:grid;grid-template-columns:1fr 1fr 1fr;gap:5px 20px}
+.vocab-tag{background:#1D6B8F;color:#fff;border-radius:999px;padding:5px 16px;font-size:15px;font-weight:800;text-transform:uppercase;letter-spacing:.1em}
+.vocab-grid{display:grid;grid-template-columns:1fr 1fr 1fr;gap:8px 20px}
 .vw{display:flex;align-items:baseline;gap:8px;padding:7px 10px;border-radius:8px;background:rgba(255,255,255,.6);cursor:pointer}
-.vw span.dot{display:inline-block;width:8px;height:8px;border-radius:50%;background:#12996B;flex-shrink:0}
+.vw span.dot{display:inline-block;width:8px;height:8px;border-radius:50%;background:#1D6B8F;flex-shrink:0}
 .vw span.w{font-size:17px;font-weight:700;color:#123B32}
 
 /* Sections personnalisées (oral / écrit / autoéval) */
-.custom{max-width:660px}
-.lead{font-size:16px;font-weight:700;color:#3B6156;line-height:1.6;margin-bottom:14px}
-.rec-zone{display:flex;flex-direction:column;align-items:center;gap:10px;margin:8px 0}
-#recBtn{width:78px;height:78px;border-radius:50%;border:none;background:#12996B;color:#fff;font-size:30px;cursor:pointer;box-shadow:0 4px 16px rgba(15,118,110,.32)}
-#recBtn.recording{background:#E23D2E;animation:pulse 1.2s infinite}
-@keyframes pulse{0%{box-shadow:0 0 0 0 rgba(226,61,46,.45)}70%{box-shadow:0 0 0 16px rgba(226,61,46,0)}100%{box-shadow:0 0 0 0 rgba(226,61,46,0)}}
-.rec-lbl{font-size:13.5px;font-weight:800;color:#5E8A82}
+.custom{max-width:none}
+.custom .lead,.custom .wq,.custom .self-txt{max-width:68ch}
+.lead{font-size:15px;font-weight:700;color:#3B6156;line-height:1.6;margin-bottom:14px}
+/* Blocs de production (oral / écrit) — refonte */
+.prod-eyebrow{display:flex;align-items:center;gap:10px;margin-bottom:6px}
+.prod-num{flex:none;width:26px;height:26px;border-radius:8px;background:#E6F5EE;color:#0A8F5B;font-size:13px;font-weight:900;display:flex;align-items:center;justify-content:center}
+.prod-kind{font-size:12px;font-weight:800;letter-spacing:.14em;text-transform:uppercase;color:#0A8F5B}
+.prod-tit{font-size:26px;font-weight:900;line-height:1.2;color:#17181A;margin:0 0 8px}
+.prod-lead{margin:0 0 20px;font-size:16px;font-weight:600;line-height:1.6;color:#6E7175;max-width:62ch;text-wrap:pretty}
+.plan{display:grid;grid-template-columns:repeat(3,1fr);gap:12px;margin-bottom:24px}
+.plan-step{border:1px solid #EAEAE8;border-left:4px solid #0A8F5B;border-radius:12px;padding:14px 16px;background:#FCFCFB}
+.plan-no{font-size:11px;font-weight:900;letter-spacing:.12em;color:#0A8F5B;margin-bottom:6px}
+.plan-t{font-size:17px;font-weight:800;color:#17181A;margin-bottom:6px}
+.plan-ex{font-size:14px;font-weight:600;font-style:italic;line-height:1.5;color:#6E7175}
+.rec-panel{border:1px solid #EAEAE8;border-radius:16px;background:#F7F7F5;overflow:hidden;margin-bottom:12px}
+.rec-steps{display:flex;background:#fff;border-bottom:1px solid #EAEAE8}
+.rec-step{flex:1;display:flex;align-items:center;gap:10px;padding:12px 16px;border-bottom:3px solid transparent}
+.rec-step .n{flex:none;width:24px;height:24px;border-radius:999px;background:#EAEAE8;color:#6E7175;font-size:12px;font-weight:900;display:flex;align-items:center;justify-content:center}
+.rec-step .l{font-size:14px;font-weight:800;color:#6E7175}
+.rec-step.on{border-bottom-color:#0A8F5B}
+.rec-step.on .n{background:#0A8F5B;color:#fff}
+.rec-step.on .l{color:#17181A}
+.rec-body{display:flex;align-items:center;gap:22px;padding:24px 26px}
+#recBtn{flex:none;width:88px;height:88px;border-radius:999px;border:none;background:#DC2626;box-shadow:0 4px 16px rgba(220,38,38,.28);cursor:pointer;display:flex;align-items:center;justify-content:center;padding:0}
+#recBtn .dot{display:block;width:26px;height:26px;border-radius:999px;background:#fff;transition:border-radius .15s ease}
+#recBtn.recording{animation:pulse 1.2s infinite}
+#recBtn.recording .dot{border-radius:5px;width:24px;height:24px}
+@keyframes pulse{0%{box-shadow:0 0 0 0 rgba(220,38,38,.45)}70%{box-shadow:0 0 0 16px rgba(220,38,38,0)}100%{box-shadow:0 0 0 0 rgba(220,38,38,0)}}
+.rec-lbl{font-size:19px;font-weight:800;color:#17181A;margin-bottom:4px}
+.rec-hint{font-size:15px;font-weight:600;color:#6E7175}
+.req{border:1px solid #EAEAE8;border-radius:14px;overflow:hidden;margin-bottom:20px}
+.req-hd{background:#F7F7F5;border-bottom:1px solid #EAEAE8;padding:10px 16px;font-size:13px;font-weight:800;letter-spacing:.1em;text-transform:uppercase;color:#6E7175}
+.req-grid{display:grid;grid-template-columns:1fr 1fr}
+.req-it{display:flex;align-items:center;gap:12px;min-height:52px;padding:8px 16px;cursor:pointer;border-bottom:1px solid #EAEAE8;font-size:16px;font-weight:700;color:#17181A}
+.req-it:nth-child(odd){border-right:1px solid #EAEAE8}
+.req-it:nth-last-child(-n+2){border-bottom:none}
+.req-it input{position:absolute;opacity:0;width:0;height:0}
+.req-box{flex:none;width:24px;height:24px;border-radius:7px;border:2px solid #D6D6D2;background:#fff;display:flex;align-items:center;justify-content:center;color:#fff;font-size:14px;font-weight:900}
+.req-it input:checked + .req-box{background:#0A8F5B;border-color:#0A8F5B}
+.req-it input:checked + .req-box::after{content:"✓"}
+.req-it input:focus-visible + .req-box{outline:3px solid #0A8F5B;outline-offset:2px}
+.req-note{border-top:1px solid #EAEAE8;background:#E6F5EE;padding:10px 16px;font-size:14px;font-weight:700;color:#0A6B46}
+.mail{border:2px solid #EAEAE8;border-radius:14px;overflow:hidden}
+.mail-row{display:flex;gap:8px;align-items:baseline;padding:12px 16px;border-bottom:1px solid #EAEAE8;background:#FCFCFB}
+.mail-k{flex:none;width:56px;font-size:13px;font-weight:800;color:#6E7175}
+.mail-v{font-size:15px;font-weight:700;color:#17181A}
+.mail textarea{width:100%;box-sizing:border-box;display:block;border:none;border-radius:0;background:#fff;padding:16px;min-height:150px;font-size:16px;font-weight:600;line-height:1.7;color:#17181A}
+.mail textarea::placeholder{color:#6E7175}
+.mail textarea:focus{outline:3px solid #0A8F5B;outline-offset:-3px;border-color:transparent}
+.mail-foot{display:flex;align-items:center;justify-content:space-between;gap:16px;flex-wrap:wrap;padding:12px 16px;border-top:1px solid #EAEAE8;background:#FCFCFB}
+.mail-count{font-size:14px;font-weight:700;color:#6E7175}
+.btn-prod{min-height:44px;padding:11px 22px;border:none;border-radius:10px;background:#0A8F5B;color:#fff;font-family:'Nunito',sans-serif;font-size:16px;font-weight:800;cursor:pointer}
+.btn-prod:hover{background:#087A4D}
+.prod-tools{display:flex;flex-direction:column;gap:12px}
+.prod-tools .btn-pri{background:#0A8F5B;border-color:transparent}
+.prod-tools .btn-pri:hover{background:#087A4D}
+.prod-tools .btn-ghost{background:#F7F7F5;color:#17181A;border-color:#EAEAE8}
+.prod-tools .btn-ghost:hover{background:#EFEFEC}
+.prod-tools .btn-send{background:#0A6B46}
+@media(max-width:720px){
+  .plan{grid-template-columns:1fr}
+  .rec-steps{flex-direction:column}
+  .rec-step{border-bottom:1px solid #EAEAE8;border-left:3px solid transparent}
+  .rec-step.on{border-left-color:#0A8F5B;border-bottom-color:#EAEAE8}
+  .req-grid{grid-template-columns:1fr}
+  .req-it,.req-it:nth-child(odd){border-right:none;border-bottom:1px solid #EAEAE8}
+  .rec-body{flex-direction:column;text-align:center}
+}
 textarea,input.txt{width:100%;border:2.5px solid #B7DED7;border-radius:12px;padding:11px 14px;font-family:'Nunito',sans-serif;font-size:15px;font-weight:700;color:#123B32;background:#F7FCFB;resize:vertical}
-textarea:focus{outline:none;border-color:#12996B}
-.btn{font-family:'Nunito',sans-serif;font-size:14.5px;font-weight:800;border-radius:10px;padding:11px 18px;cursor:pointer;border:2.5px solid transparent}
-.btn-pri{background:#12996B;color:#fff}.btn-pri:hover{background:#0C7A53}.btn-pri:disabled{opacity:.5;cursor:not-allowed}
-.btn-ghost{background:#EDF6F4;color:#12996B;border-color:#B7DED7}.btn-ghost:hover{background:#DCEFEB}
+textarea:focus{outline:none;border-color:#1D6B8F}
+.btn{font-family:'Nunito',sans-serif;font-size:15px;font-weight:800;border-radius:10px;padding:11px 18px;cursor:pointer;border:2.5px solid transparent}
+.btn-pri{background:#1D6B8F;color:#fff}.btn-pri:hover{background:#154F68}.btn-pri:disabled{opacity:.5;cursor:not-allowed}
+.btn-ghost{background:#EDF6F4;color:#1D6B8F;border-color:#B7DED7}.btn-ghost:hover{background:#DCEFEB}
 .btn-send{background:#12556B;color:#fff}.btn-send:disabled{opacity:.5}
 .fb{background:#F0FAF7;border:2px solid #B7DED7;border-radius:12px;padding:14px 16px;display:none;flex-direction:column;gap:8px;margin-top:12px}
 .fb.on{display:flex}
-.fb-t{font-size:11.5px;font-weight:900;text-transform:uppercase;letter-spacing:.06em;color:#0C7A53}
-.fb-c{font-size:15px;font-weight:800;color:#0C7A53;line-height:1.5}
-.fb-e{font-size:12.5px;font-weight:700;color:#B45309;line-height:1.5;padding-left:14px;position:relative}
+.fb-t{font-size:12px;font-weight:900;text-transform:uppercase;letter-spacing:.06em;color:#154F68}
+.fb-c{font-size:15px;font-weight:800;color:#154F68;line-height:1.5}
+.fb-e{font-size:13px;font-weight:700;color:var(--warn-ink);line-height:1.5;padding-left:14px;position:relative}
 .fb-e::before{content:"•";position:absolute;left:2px}
-.status{font-size:13.5px;font-weight:800;color:#5E8A82;text-align:center;display:none;margin-top:8px}
+.status{font-size:13px;font-weight:800;color:#5E8A82;text-align:center;display:none;margin-top:8px}
 .status.on{display:block}
-.err{font-size:13px;font-weight:800;color:#B91C1C;background:#FEF2F2;border:2px solid #FCA5A5;border-radius:10px;padding:10px 14px;display:none;margin-top:8px}
+.err{font-size:13px;font-weight:800;color:var(--no-ink);background:var(--no-bg);border:2px solid var(--no-line);border-radius:10px;padding:10px 14px;display:none;margin-top:8px}
 .err.on{display:block}
 .sent{font-size:13px;font-weight:800;color:#12556B}
 .selfrow{display:flex;align-items:center;justify-content:space-between;gap:10px;padding:11px 0;border-bottom:1px solid #DCEFEB}
 .self-txt{font-size:15px;font-weight:800;color:#123B32}
 .self-opts{display:flex;gap:6px}
-.self-opts button{width:40px;height:40px;border-radius:9px;border:2px solid #B7DED7;background:#fff;font-size:19px;cursor:pointer}
-.self-opts button.sel{border-color:#12996B;background:#DCEFEB}
+.self-opts button{width:44px;height:44px;border-radius:9px;border:2px solid #B7DED7;background:#fff;font-size:19px;cursor:pointer}
+.self-opts button.sel{border-color:#1D6B8F;background:#DCEFEB}
 .hidden{display:none!important}
 
-@media(max-width:900px){.vocab-grid{grid-template-columns:1fr 1fr}.rrow2{grid-template-columns:1fr}.hdr-h1{font-size:22px}}
+/* Exercices à écrire */
+.wlist{display:flex;flex-direction:column;gap:14px}
+.witem{background:#F7FCFB;border:1.5px solid #B7DED7;border-radius:12px;padding:13px 16px}
+.wq{font-size:15px;font-weight:800;color:#123B32;line-height:1.45;margin-bottom:8px}
+.acc-blank{display:inline-block;min-width:22px;height:.9em;border-bottom:2.5px solid currentColor;margin:0 3px;vertical-align:baseline;opacity:.55}
+.wrow{display:flex;gap:8px;flex-wrap:wrap}
+.winput{flex:1;min-width:180px;border:2.5px solid #B7DED7;border-radius:9px;padding:9px 13px;font-family:'Nunito',sans-serif;font-size:15px;font-weight:700;color:#123B32;background:#fff}
+.winput:focus{outline:none;border-color:#1D6B8F}
+.winput.good{border-color:var(--ok-line);background:var(--ok-bg)}
+.wbtn{flex:0 0 auto;padding:12px 16px}
+.wfb{font-size:13px;font-weight:700;line-height:1.5;margin-top:8px;display:none}
+.wfb.ok,.wfb.no,.wfb.wait{display:block}
+.wfb.ok{color:var(--ok-ink)}.wfb.no{color:var(--warn-ink)}.wfb.wait{color:#4A6F68}
+.wfb b{color:#154F68}
+
+@media(max-width:900px){.vocab-grid{grid-template-columns:1fr 1fr}.rrow2{grid-template-columns:1fr}}
+
+/* ── ESSAI DE STYLE : "Je découvre" seulement (inspiré Wealthsimple) ── */
+/* Fond neutre, cartes blanches épurées, police géométrique sobre, accent unique. */
+body{
+  /* Alias vers le système de design officiel (assets/design-system/) —
+     ok-bg/no-bg/warn-bg/sel-bg/drop-bg viennent directement de
+     tokens/colors.css (mêmes noms, ne pas les redéclarer ici). */
+  --ws-bg:var(--surface-page); --ws-card:var(--surface-card); --ws-ink:var(--text-strong); --ws-sub:var(--text-muted);
+  --ws-line:var(--border); --ws-accent:var(--accent); --ws-accent-bg:var(--accent-soft);
+  /* Teinte propre à ce module (même couleur que sa plaquette dans le portail
+     et la barre du lecteur) — seulement pour l'en-tête, le reste de
+     l'interface garde l'accent vert unique du système de design. */
+  --hdr-accent:#6B4FBB; --hdr-accent-soft:#EFEAFA;
+  --pad-x:32px;      /* gouttière de page — identique partout */
+  --pad-card:22px;   /* padding intérieur de TOUS les cadres */
+  --bleed:-23px;     /* = -(var(--pad-card) + 1px de bordure) */
+  --r-sm:10px; --r-md:18px; --r-pill:999px;
+  background:var(--ws-bg);
+  color:var(--ws-ink);
+}
+/* Tous les cadres : même bordure, même padding, même bord gauche/droit. */
+.card{
+  padding:22px;
+  border:1px solid var(--ws-line);
+  border-left:4px solid var(--sec-color,var(--ws-accent));
+  border-radius:18px;
+  box-shadow:0 1px 2px rgba(20,20,20,.04);
+  /* `clip` et non `hidden` : les deux découpent l'en-tête débordant aux coins
+     arrondis, mais `hidden` fait de la carte un conteneur de défilement, ce qui
+     neutralise le `position:sticky` du banc de réponses à l'intérieur. */
+  overflow:clip;
+  transition:box-shadow .15s ease, transform .15s ease;
+}
+.card:hover{
+  transform:translateY(-1px);
+  box-shadow:0 6px 18px rgba(20,20,20,.07);
+}
+@media (prefers-reduced-motion:reduce){
+  .card{transition:none}
+  .card:hover{transform:none}
+}
+.c-hdr:first-child{
+  margin:-22px -23px 16px -26px;
+  padding:20px 22px 14px 26px;
+  background:#FBFBF9;
+  border-bottom:1px solid var(--ws-line);
+}
+.c-hdr:not(:first-child){
+  padding-bottom:12px; margin-bottom:16px;
+  border-bottom:1px solid var(--ws-line);
+}
+.qcard,.blanks-p,.word-chip{
+  background:var(--ws-card); border:1px solid var(--ws-line); border-left:1px solid var(--ws-line);
+  border-radius:18px; box-shadow:0 1px 2px rgba(20,20,20,.04); color:var(--ws-ink); font-weight:500;
+}
+/* Prononciation = seul bloc teinté vert de la page — le distingue visuellement
+   des cartes blanches qui portent le dialogue et ses exercices. */
+.savoir{
+  background:var(--ws-card); border:1px solid var(--ws-line); border-left:1px solid var(--ws-line);
+  border-radius:18px; box-shadow:0 1px 2px rgba(20,20,20,.04); color:var(--ws-ink); font-weight:500;
+}
+/* Prononciation seulement (savoir.speak===true) — les autres encadrés de savoir
+   (ex. grammaire) restent blancs comme les autres cadres. */
+.savoir--pron{
+  background:#F6FBF8;
+  border-color:#D8ECE2;
+  box-shadow:none;
+}
+/* Les énoncés vivent DANS une carte déjà encadrée (.card) — pas de double cadre :
+   simple ligne de séparation entre rangées plutôt qu'une boîte par énoncé. */
+.vf-row{background:transparent;border:none;border-radius:0;padding:0}
+.stxt{background:transparent;border:none;border-radius:0;box-shadow:none;color:var(--ws-ink);font-weight:500;padding:10px 0}
+.rows{gap:8px}
+.vf-head{padding:0}
+/* Échelle typographique unique : une seule règle pour les étiquettes majuscules.
+   NOTE : .tag/.d-lbl/.vocab-tag restent à 15px (hors de ce groupe) — demande
+   explicite de l'utilisateur que EXERCICE/VOCABULAIRE/DIALOGUE partagent la
+   même taille entre eux, distincte des étiquettes plus discrètes ci-dessous. */
+.hdr-eye,.audio-lbl,.savoir-band,
+.vf-head-opt,.fb-t,.qlbl,.blbl{
+  font-size:12px; font-weight:800; text-transform:uppercase; letter-spacing:.14em;
+}
+.tag{background:none!important;color:var(--sec,var(--ws-accent))!important;font-weight:800!important}
+.ctit{color:var(--ws-ink)!important;font-weight:900!important}
+.csub{color:var(--ws-sub)!important;font-weight:500}
+.savoir-band{background:var(--ws-ink);color:#fff;border-radius:18px 18px 0 0;margin:0 -23px 16px}
+.savoir--pron .savoir-band{background:var(--ws-accent)}
+.savoir-gap{background:var(--ws-bg);border-color:var(--ws-line);margin:0 -23px 20px}
+.savoir-row{border-bottom:1px solid var(--ws-line)}
+.savoir-key{color:var(--ws-sub);font-weight:600}
+.savoir-val{color:var(--ws-ink);font-weight:500}
+.savoir--pron .savoir-row{border-bottom:1px solid #E4F0EA}
+.savoir--pron .savoir-key{color:#4E7C6B}
+.savoir--pron .word-chip{background:#fff;border:1px solid #D8ECE2}
+.qlbl{color:var(--ws-accent)}
+.qtxt,.stxt{color:var(--ws-ink);font-weight:600}
+.vf-opt{border-radius:12px;border-color:var(--ws-line);background:var(--ws-card);color:var(--ws-sub);font-weight:600}
+/* Après correction, le vert/rouge doit toujours l'emporter sur le bleu de
+   sélection (sinon tout reste bleu et on ne voit plus où sont les erreurs). */
+.vf-opt.sel.fb-ok{background:var(--ok-bg)!important;border-color:var(--ok-line)!important;color:var(--ok-ink)!important}
+.vf-opt.sel.fb-no{background:var(--no-bg)!important;border-color:var(--no-line)!important;color:var(--no-ink)!important}
+.tile{border-radius:12px;box-shadow:0 1px 2px rgba(20,20,20,.06)}
+.btn,.word-chip .btn{
+  font-family:inherit;border-radius:999px;font-weight:600;border:1px solid var(--ws-line);
+}
+.btn-ghost{background:var(--ws-card);color:var(--ws-ink)}
+.btn-pri,.wbtn{background:var(--ws-ink)!important;color:#fff!important;border:none!important}
+.winput{border-radius:12px;border-color:var(--ws-line);color:var(--ws-ink);font-weight:500;font-family:inherit}
+.winput:focus{border-color:var(--ws-accent)}
+.wfb b{color:var(--ok-ink)}
+.fb-ok{animation:none!important}
+.fb-no{animation:none!important}
+.fb-ok::before{content:"✓ ";font-weight:800}
+.fb-no::before{content:"✕ ";font-weight:800}
+.pron-fb.ok::before{content:"✓ "}
+.pron-fb.no::before{content:"✕ "}
+.icon-svg{filter:none;opacity:.75}
+/* Badge rond seulement pour les boutons icône SEULE (sans texte à côté) —
+   sinon un bouton comme "🔊 Écouter" se retrouve écrasé dans un rond de 34px. */
+.btn-ghost:has(.icon-svg):not(.wlisten){
+  width:34px;height:34px;padding:0;border-radius:50%;display:inline-flex;
+  align-items:center;justify-content:center;background:transparent;border:none;
+}
+/* Icônes seules (haut-parleur, micro) : pas de cadre, juste l'icône. */
+.word-chip .btn,.ph-mic{background:transparent!important;border:none!important;box-shadow:none!important}
+.word-chip .btn:hover,.ph-mic:hover{background:rgba(0,0,0,.05)!important}
+.btn-ghost.wlisten{
+  display:inline-flex;align-items:center;gap:8px;background:var(--ws-bg);
+  border:1px solid var(--ws-line);border-radius:999px;padding:9px 18px;color:var(--ws-ink);font-weight:600;
+}
+.pron-fb{color:var(--ws-sub);font-weight:600;font-size:13px}
+.pron-fb.ok{color:var(--ok-ink)}
+.pron-fb.no{color:var(--no-ink)}
+.intro{background:var(--ws-card);color:var(--ws-ink);font-weight:600;border:1px solid var(--ws-line);border-radius:18px;margin:22px 32px 0;padding:18px 22px}
+.dial-sec{background:var(--ws-card);color:var(--ws-ink);border:1px solid var(--ws-line);border-bottom:1px solid var(--ws-line)!important;border-radius:18px;align-items:stretch;padding:18px 22px;margin:22px 32px 0;overflow:hidden}
+.situ{color:var(--ws-ink);opacity:1}
+.vocab-sec{
+  background:var(--ws-bg); border:none;
+  border-top:1px solid var(--ws-line);
+  border-radius:0 0 18px 18px;
+  margin:18px -23px -19px;
+  padding:18px 22px;
+}
+.vocab-tag{background:var(--ws-accent-bg);color:var(--ws-accent)}
+.vw{background:var(--ws-card);border:1px solid var(--ws-line)}
+.vw .dot{background:var(--ws-accent)}
+.audio-pl{justify-content:center;padding-top:0}
+.audio-lbl{color:var(--ws-sub);opacity:1}
+.d-lbl{background:var(--ws-accent-bg);color:var(--ws-accent);opacity:1}
+.mb{color:#2563EB}
+.dr{color:var(--ws-accent)}
+.btn-lu{background:var(--ws-bg);color:var(--ws-ink);border:1px solid var(--ws-line);border-radius:999px;font-weight:600}
+.btn-lu.btn-audio{background:#DC2626!important;border-color:#DC2626!important;color:#fff!important}
+.btn-lu.btn-audio:hover{background:#B91C1C!important;border-color:#B91C1C!important}
+.btn-lu.btn-audio .icon-svg{filter:brightness(0) invert(1)!important;opacity:1!important}
+/* Graphie-phonie en grille de cartes (modèle je-me-prepare.html) */
+.ph-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(240px,1fr));gap:14px}
+.ph-card{background:var(--ws-card,#fff);border:1px solid var(--ws-line,#EAEAE8);border-radius:16px;padding:16px;display:flex;flex-direction:column;gap:12px}
+.ph-top{display:flex;align-items:center;gap:12px}
+.ph-word{font-size:21px;font-weight:900;color:var(--ws-ink,#17181A)}
+.btn-audio-round{width:44px;height:44px;flex-shrink:0;border-radius:50%;border:none;background:#DC2626;color:#fff;display:inline-flex;align-items:center;justify-content:center;cursor:pointer;transition:background .15s}
+.btn-audio-round:hover{background:#B91C1C}
+.btn-audio-round .icon-svg{width:18px;height:18px;filter:brightness(0) invert(1)!important;opacity:1!important}
+.ph-mic{margin-left:auto;flex-shrink:0}
+.ph-opts{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+.ph-opts .vf-opt{width:auto;flex:1 1 auto}
+.savoir--pron .savoir-band{background:var(--sec-color,var(--ws-accent))}
+
+/* ── « En apprendre plus » : mini-leçon en panneau latéral ─────────────
+   Le bandeau noir d'un savoir reste un résumé. L'élève qui ne comprend pas
+   ouvre ici une leçon complète : explication, anatomie, manipulation,
+   exemples, pièges, micro-vérification. Aucun effet sur le score du module. */
+.plus-bar{margin:14px var(--bleed) -17px;border-top:1px solid var(--ws-line)}
+.savoir-row:has(+ .plus-bar){border-bottom:none}
+.plus-open{width:100%;min-height:52px;background:transparent;border:none;border-radius:0 0 17px 17px;font-family:'Nunito',sans-serif;font-size:15px;font-weight:800;color:var(--ws-accent);cursor:pointer;display:flex;align-items:center;justify-content:center;gap:9px;transition:background .15s}
+.plus-open:hover{background:var(--ws-accent-bg)}
+.plus-open svg{width:17px;height:17px;flex-shrink:0}
+
+#plus-ov{display:none;position:fixed;inset:0;z-index:9500;background:rgba(15,25,35,.5);backdrop-filter:blur(4px)}
+#plus-ov.on{display:block}
+#plus-panel{position:absolute;top:0;right:0;height:100%;width:min(700px,100%);background:var(--ws-bg);display:flex;flex-direction:column;box-shadow:-16px 0 48px rgba(0,0,0,.28);animation:plusIn .28s cubic-bezier(.22,1,.36,1)}
+@keyframes plusIn{from{transform:translateX(48px);opacity:0}to{transform:none;opacity:1}}
+@media(prefers-reduced-motion:reduce){#plus-panel{animation:none}}
+#plus-hd{background:var(--ws-ink);color:#fff;padding:22px 26px;display:flex;align-items:flex-start;gap:16px;flex-shrink:0}
+#plus-eye{font-size:12px;font-weight:800;text-transform:uppercase;letter-spacing:.14em;color:#8FE2B9}
+#plus-tit{font-size:27px;font-weight:900;line-height:1.15;margin-top:7px}
+#plus-close{margin-left:auto;width:44px;height:44px;flex-shrink:0;border-radius:50%;border:1px solid rgba(255,255,255,.32);background:rgba(255,255,255,.12);color:#fff;font-family:'Nunito',sans-serif;font-size:19px;font-weight:800;cursor:pointer}
+#plus-close:hover{background:rgba(255,255,255,.26)}
+#plus-body{flex:1;overflow-y:auto;padding:20px 26px 64px;display:flex;flex-direction:column;gap:16px}
+.pl-blk{background:var(--ws-card);border:1px solid var(--ws-line);border-radius:18px;padding:20px 22px}
+.pl-eye{font-size:12px;font-weight:800;text-transform:uppercase;letter-spacing:.14em;color:var(--ws-sub);margin-bottom:9px}
+.pl-h{font-size:20px;font-weight:900;line-height:1.25;margin-bottom:9px}
+.pl-p{font-size:17px;font-weight:500;line-height:1.6}
+.pl-p b{font-weight:900}
+.pl-p em,.pl-note em{font-style:italic;color:var(--ws-accent);font-weight:700}
+.pl-note{font-size:15px;font-weight:600;color:var(--ws-sub);line-height:1.5;margin-top:12px}
+.pl-end{color:var(--ws-accent);text-decoration:underline;text-decoration-thickness:2px;text-underline-offset:3px}
+
+.pl-ana{display:flex;flex-wrap:wrap;gap:9px;align-items:flex-end;margin:16px 0 4px}
+.pl-tok{border:1px solid var(--ws-line);border-radius:14px;padding:9px 14px;background:var(--ws-bg);text-align:center;min-width:74px}
+.pl-tok.is-key{border-color:var(--ws-accent);background:var(--ws-accent-bg)}
+.pl-tok-lbl{display:block;font-size:11px;font-weight:800;text-transform:uppercase;letter-spacing:.09em;color:var(--ws-sub);margin-bottom:5px}
+.pl-tok-w{display:block;font-size:20px;font-weight:800}
+
+.pl-axe{margin-bottom:14px}
+.pl-axe-lbl{font-size:12px;font-weight:800;text-transform:uppercase;letter-spacing:.12em;color:var(--ws-sub);margin-bottom:7px}
+.pl-opts{display:flex;gap:8px;flex-wrap:wrap}
+.pl-opt{min-height:44px;padding:10px 16px;border-radius:22px;border:1px solid var(--ws-line);background:var(--ws-card);font-family:'Nunito',sans-serif;font-size:15px;font-weight:800;line-height:1.35;text-align:left;color:var(--ws-ink);cursor:pointer;transition:background .15s,border-color .15s}
+.pl-opt:hover{border-color:var(--ws-accent)}
+.pl-opt.on{background:var(--sel-bg);border-color:var(--sel-line);color:var(--sel-ink)}
+.pl-opt.ok{background:var(--ok-bg);border-color:var(--ok-line);color:var(--ok-ink)}
+.pl-opt.no{background:var(--no-bg);border-color:var(--no-line);color:var(--no-ink)}
+.pl-out{background:var(--ws-ink);color:#fff;border-radius:16px;padding:20px;margin-top:4px;display:flex;align-items:center;justify-content:center;gap:14px;flex-wrap:wrap}
+.pl-out-w{font-size:27px;font-weight:900;text-align:center;line-height:1.3}
+.pl-out-w.is-long{font-size:21px}
+.pl-out-w .pl-end{color:#8FE2B9}
+.pl-out-n{flex-basis:100%;text-align:center;font-size:13px;font-weight:800;text-transform:uppercase;letter-spacing:.12em;color:#8FE2B9}
+.pl-out .btn-audio-round{width:44px;height:44px}
+
+.pl-ex{display:flex;align-items:center;gap:12px;padding:9px 0;border-bottom:1px solid var(--ws-line)}
+.pl-ex:last-child{border-bottom:none}
+.pl-ex-w{flex:1;min-width:0;font-size:17px;font-weight:700}
+.pl-ex-t{font-size:12.5px;font-weight:800;color:var(--ws-sub);white-space:nowrap}
+
+.pl-trap{padding:13px 0;border-bottom:1px solid var(--ws-line)}
+.pl-trap:last-child{border-bottom:none;padding-bottom:0}
+.pl-bad,.pl-good{display:flex;gap:9px;align-items:flex-start;font-size:17px;font-weight:700;line-height:1.45}
+.pl-bad{color:var(--no-ink)}
+.pl-good{color:var(--ok-ink);margin-top:5px}
+.pl-why{font-size:15px;font-weight:600;color:var(--ws-sub);line-height:1.5;margin-top:7px}
+
+.pl-q{padding:14px 0;border-bottom:1px solid var(--ws-line)}
+.pl-q:last-child{border-bottom:none;padding-bottom:0}
+.pl-qtxt{font-size:17px;font-weight:700;line-height:1.5;margin-bottom:10px}
+.pl-fb{display:none;font-size:15px;font-weight:700;line-height:1.5;margin-top:10px}
+.pl-fb.on{display:block}
+.pl-fb.ok{color:var(--ok-ink)}
+.pl-fb.no{color:var(--no-ink)}
+@media(max-width:640px){#plus-panel{width:100%}#plus-tit{font-size:23px}#plus-body{padding:16px 18px 56px}.pl-blk{padding:18px}}
+
+/* ── Proposition d'aide après plusieurs erreurs ────────────────────────
+   Volontairement discrète et refusable : un panneau qui s'ouvrirait tout
+   seul après un échec se lirait comme une punition. Ici l'élève choisit. */
+.aide{
+  margin-top:16px; padding:14px 16px;
+  background:var(--warn-bg); border:1px solid var(--warn-line);
+  border-left:4px solid var(--warn-line); border-radius:14px;
+  display:flex; align-items:center; gap:14px; flex-wrap:wrap;
+}
+.aide-txt{flex:1 1 260px; font-size:15.5px; font-weight:600; line-height:1.5; color:var(--warn-ink)}
+.aide-txt b{font-weight:900}
+.aide-btns{display:flex; gap:8px; flex-wrap:wrap}
+.aide .btn-oui{
+  min-height:44px; padding:0 18px; border-radius:999px; border:none;
+  background:var(--ws-ink); color:#fff;
+  font-family:'Nunito',sans-serif; font-size:14.5px; font-weight:800; cursor:pointer;
+}
+.aide .btn-oui:hover{background:#000}
+.aide .btn-non{
+  min-height:44px; padding:0 16px; border-radius:999px;
+  border:1px solid var(--border); background:transparent; color:var(--text-muted);
+  font-family:'Nunito',sans-serif; font-size:14.5px; font-weight:700; cursor:pointer;
+}
+.aide .btn-non:hover{background:rgba(0,0,0,.04)}
+.aide .btn-oui[disabled]{opacity:.45; cursor:default}
+.aide .btn-oui .icon-svg{width:16px; height:16px; margin-right:6px;
+  filter:brightness(0) invert(1)}
+/* Réponse de l'assistant : sur fond blanc, détachée du bandeau d'alerte —
+   c'est une explication, pas un message d'erreur de plus. */
+.aide-out{display:none; flex-basis:100%}
+.aide-out.on{display:block; margin-top:4px; padding:16px 18px;
+  background:var(--surface-card); border:1px solid var(--border); border-radius:14px}
+.aide-out.wait{font-size:15px; font-weight:600; color:var(--text-muted)}
+.aide-out.no{color:var(--no-ink); font-size:15px; font-weight:700}
+.ao-k{font-size:11.5px; font-weight:800; text-transform:uppercase;
+  letter-spacing:.13em; color:var(--text-muted); margin-bottom:5px}
+.ao-k:not(:first-child){margin-top:14px}
+.ao-v{font-size:16.5px; font-weight:500; line-height:1.6; color:var(--text-strong)}
+.ao-conseil{font-weight:800}
+/* Le bloc vers lequel on emmène l'élève s'annonce brièvement, sinon il
+   atterrit au milieu du panneau sans savoir pourquoi. */
+.pl-blk.is-cible{
+  box-shadow:0 0 0 3px var(--ws-accent);
+  transition:box-shadow .4s ease;
+}
+
+/* ── Banc de réponses collant ──────────────────────────────────────────
+   Dans un exercice long, les énoncés défilaient sous le banc de réponses :
+   arrivé en bas, l'élève n'avait plus rien à glisser. Le banc reste
+   maintenant à l'écran tant qu'on est dans l'exercice.
+   --chrome-h est mesuré en JS (la barre d'onglets change de hauteur quand
+   elle passe sur deux lignes ou que la bannière de sélection apparaît). */
+.bsec.b1{
+  position:sticky;
+  top:calc(var(--chrome-h,72px) + 12px);
+  max-height:calc(100vh - var(--chrome-h,72px) - 40px);
+  overflow-y:auto;
+  z-index:3;
+}
+/* En écran étroit, la colonne passe SOUS les énoncés : la coller en haut
+   n'aurait aucun effet. On la colle en bas, en bande horizontale. */
+@media(max-width:760px){
+  /* La colonne des énoncés imposait min-width:300px — plus large que l'espace
+     disponible sur un téléphone (375px moins les gouttières), donc les cartes
+     et les zones de dépôt étaient rognées à droite par la carte.
+     On force les deux colonnes à toute la largeur : elles s'empilent
+     franchement au lieu de se disputer une rangée trop étroite. */
+  .exo-main{min-width:0!important; flex:1 1 100%!important}
+  .bsec.b1{flex:1 1 100%!important}
+  .bsec.b1{
+    position:sticky; top:auto; bottom:0;
+    max-height:none;
+    margin:0 -22px -22px;
+    border-radius:0;
+    border-left:none; border-right:none; border-bottom:none;
+    box-shadow:0 -6px 18px rgba(20,20,20,.10);
+    padding:10px 14px calc(10px + env(safe-area-inset-bottom));
+  }
+  .bsec.b1 .blbl{margin-bottom:6px}
+  /* Les tuiles s'alignent en file et défilent horizontalement plutôt que
+     d'empiler une colonne qui mangerait tout l'écran. */
+  .bsec.b1 .btiles,.bsec.b1 .btiles.vert{
+    flex-direction:row; flex-wrap:nowrap;
+    overflow-x:auto; overflow-y:hidden;
+    justify-content:flex-start;
+    gap:8px; padding-bottom:4px;
+    -webkit-overflow-scrolling:touch;
+  }
+  .bsec.b1 .btiles > *{flex:0 0 auto}
+}
+@media(prefers-reduced-motion:no-preference){
+  .bsec.b1{scroll-behavior:smooth}
+}
+
+/* ── Lisibilité des encadrés de savoir ────────────────────────────────
+   Deux besoins distincts, deux traitements. (1) Repérer les mots qui
+   portent la règle : le <b> passe en 900 sur la couleur d'encre, assez
+   marqué pour accrocher l'œil sans transformer la ligne en sapin de Noël.
+   (2) Distinguer un exemple d'une règle : un exemple se lit comme une
+   citation — retrait, filet coloré, italique dans la couleur de la
+   section — donc on ne le confond plus avec l'explication qui précède. */
+.savoir-val b,.savoir-val strong{font-weight:900;color:var(--ws-ink)}
+.savoir-ex{
+  display:block; margin:7px 0 1px; padding:8px 12px 8px 13px;
+  border-left:3px solid var(--sec-color,var(--ws-accent));
+  border-radius:0 10px 10px 0;
+  background:#F5F6F7;
+  font-style:italic; font-weight:700; line-height:1.45;
+  color:var(--sec-color,var(--ws-accent));
+}
+/* Le fond reprend la couleur de la section, très dilué : --ws-accent-bg est
+   vert quelle que soit la section, ce qui jurait avec un filet ambre ou
+   rouille. Repli sur le gris neutre ci-dessus si color-mix manque. */
+@supports (background:color-mix(in srgb,red 8%,transparent)){
+  .savoir-ex{background:color-mix(in srgb,var(--sec-color,#1D6B8F) 8%,transparent)}
+}
+.savoir-ex + .savoir-ex{margin-top:5px}
+/* Dans un exemple, le mot mis en avant reprend la couleur de l'exemple :
+   sinon il sortirait du bloc au lieu d'y attirer l'attention. Le <em> des
+   modules plus anciens (vert, italique) est repris ici par la même règle,
+   sans quoi il jurerait avec un filet ambre ou rouille. */
+.savoir-ex b,.savoir-ex strong,.savoir-ex em{color:inherit;font-weight:900;font-style:normal}
+/* Rangée entièrement consacrée à des exemples : l'étiquette de gauche
+   prend la même couleur, la paire se lit alors comme un seul bloc. */
+.savoir-row.is-ex .savoir-key{color:var(--sec-color,var(--ws-accent));font-weight:800}
+.savoir--pron .savoir-ex{background:#EEF7F1}
+/* Sur téléphone, la grille 34 % / 1fr ne laissait que ~130 px à l'explication :
+   les exemples s'y écrasaient sur cinq lignes. L'étiquette passe au-dessus. */
+@media(max-width:640px){
+  .savoir-row{grid-template-columns:1fr; gap:5px}
+  .savoir-key{font-size:15px}
+}
+
+/* Focus clavier visible partout (B.4) */
+:focus-visible{outline:3px solid var(--ws-accent);outline-offset:2px;border-radius:inherit}
+textarea:focus-visible,.winput:focus-visible{outline:none;border-color:var(--ws-accent)}
 </style>
 <!-- OUTILS-ELEVE-CSS:début -->
 <link rel="stylesheet" href="/assets/design-system/outils-eleve.css">
@@ -171,22 +726,35 @@ textarea:focus{outline:none;border-color:#12996B}
 
 <div id="hdr">
   <div class="hdr-l">
-    <div class="hdr-ic">🩺</div>
-    <div><div class="hdr-eye">Francisation · Niveau 4 · Module complet</div><div class="hdr-h1">La santé — prendre rendez-vous</div></div>
+    <div><div class="hdr-eye">Atelier · Santé · Niveau 4</div>
+    <h1 class="hdr-h1" id="hdr-title">Je découvre</h1>
+    <p class="hdr-lead" id="hdr-lead"></p></div>
   </div>
   <div class="hdr-r">
-    <div id="prog-chip">⭐ 0 / 0</div>
+    <div id="prog-chip" aria-live="polite">⭐ 0 / 0</div>
     <button id="btn-reset">↺ Réinitialiser</button>
   </div>
 </div>
 
+<div id="chrome">
 <div id="tabs"></div>
 
 <div id="sel-banner">
   ✋ Sélectionné : «&nbsp;<span id="sel-lbl">—</span>&nbsp;» — Cliquez sur une case pour le placer.
 </div>
+</div>
 
 <div id="sections"></div>
+
+<div id="plus-ov" role="dialog" aria-modal="true" aria-labelledby="plus-tit">
+  <div id="plus-panel">
+    <div id="plus-hd">
+      <div><div id="plus-eye">Mini-leçon</div><div id="plus-tit">—</div></div>
+      <button id="plus-close" type="button" aria-label="Fermer la mini-leçon">✕</button>
+    </div>
+    <div id="plus-body"></div>
+  </div>
+</div>
 
 <div id="fc-overlay">
   <div id="fc-box">
@@ -195,6 +763,9 @@ textarea:focus{outline:none;border-color:#12996B}
     <button id="fc-reveal-btn">Voir la définition</button>
     <div id="fc-def" class="hidden">—</div>
     <div id="fc-ex" class="hidden">—</div>
+    <div id="fc-sep"></div>
+    <button class="fc-btn" id="fc-trad-btn">Traduire</button>
+    <div id="fc-trad" class="hidden"></div>
     <div id="fc-btns">
       <button class="fc-btn" id="fc-prev">← Précédente</button>
       <button class="fc-btn" id="fc-next">Suivante →</button>
@@ -205,9 +776,9 @@ textarea:focus{outline:none;border-color:#12996B}
 
 <script>
 // ═══════════════════════════════════════════════════════════════════════
-//  LA VISITE CHEZ LE MÉDECIN — Module interactif Niveau 4 (FLS)
-//  Sections : Je découvre · Chez le médecin · La langue · Je parle ·
-//             J'écris · Je m'évalue — suivi LMS intégré
+//  PRENDRE RENDEZ-VOUS ET ALLER À LA PHARMACIE — Atelier Niveau 4 (FLS)
+//  Sections : Je découvre · À la pharmacie · La langue · Je me lance ·
+//             Je retiens des mots — suivi LMS intégré
 // ═══════════════════════════════════════════════════════════════════════
 
 function getCode(){
@@ -223,159 +794,59 @@ const DIALOGUES = {
     label: "Dialogue — Appeler la clinique",
     lines: [
       ["LA RÉCEPTIONNISTE","Clinique Notre-Dame, bonjour."],
-      ["MARIA","Bonjour, je voudrais prendre un rendez-vous avec un médecin, s'il vous plaît."],
+      ["LINA","Bonjour, je voudrais prendre un rendez-vous avec un médecin, s'il vous plaît."],
       ["LA RÉCEPTIONNISTE","Bien sûr. Est-ce que vous êtes déjà venue à notre clinique ?"],
-      ["MARIA","Oui, l'année dernière. Je m'appelle Maria Silva."],
+      ["LINA","Oui, l'année dernière. Je m'appelle Lina Ferreira."],
       ["LA RÉCEPTIONNISTE","Parfait. Quelle est la raison de votre visite ?"],
-      ["MARIA","Je me sens fatiguée depuis deux semaines et j'ai souvent mal à la tête."],
+      ["LINA","Je me sens fatiguée depuis deux semaines et j'ai souvent mal à la tête."],
       ["LA RÉCEPTIONNISTE","Je comprends. Le docteur Tremblay est libre jeudi à onze heures. Est-ce que ça vous convient ?"],
-      ["MARIA","Oui, c'est parfait. Merci beaucoup !"],
+      ["LINA","Oui, c'est parfait. Merci beaucoup !"],
       ["LA RÉCEPTIONNISTE","N'oubliez pas votre carte d'assurance maladie. À jeudi !"],
     ]
   },
-  co: {
+  t1: {
     label: "Dialogue — À la pharmacie",
     lines: [
       ["LE PHARMACIEN","Bonjour, est-ce que je peux vous aider ?"],
-      ["MARIA","Oui, j'ai une ordonnance du médecin pour des antibiotiques."],
+      ["LINA","Oui, j'ai une ordonnance du médecin pour des antibiotiques."],
       ["LE PHARMACIEN","D'accord. Est-ce que vous avez déjà pris ce médicament avant ?"],
-      ["MARIA","Non, c'est la première fois. Comment est-ce que je dois le prendre ?"],
+      ["LINA","Non, c'est la première fois. Comment est-ce que je dois le prendre ?"],
       ["LE PHARMACIEN","Prenez un comprimé deux fois par jour, matin et soir, pendant sept jours."],
-      ["MARIA","Est-ce que je peux le prendre avec de la nourriture ?"],
+      ["LINA","Est-ce que je peux le prendre avec de la nourriture ?"],
       ["LE PHARMACIEN","Oui, c'est même recommandé. Ne buvez pas d'alcool pendant le traitement."],
-      ["MARIA","Merci beaucoup pour vos conseils !"],
+      ["LINA","Merci beaucoup pour vos conseils !"],
     ]
   },
 };
 
 // ── SECTIONS ──────────────────────────────────────────────────────────
+// Atelier de 2 h, pas un module de 4 h : cinq sections, pas six, et pas de
+// numérotation « Défi N » — celle-ci appartient aux modules de cours.
 const SECTIONS = [
-  {id:'prep', no:'▶', title:'Je découvre', color:'#12996B',
-   intro:"🩺 Maria ne se sent pas bien. Elle veut voir un médecin. D'abord, elle apprend où s'adresser et comment prendre un rendez-vous.",
-   dialogue:'prep'},
-  {id:'co', no:'1', title:'À la pharmacie', color:'#C0573A',
-   intro:"💊 Maria a vu le médecin. Maintenant, elle va chercher ses médicaments à la pharmacie. Écoutez le dialogue, puis faites les exercices.",
-   dialogue:'co'},
-  {id:'langue', no:'2', title:'La langue', color:'#6B4FBB',
-   intro:"✍️ Travaillons la grammaire utile pour parler de sa santé : le futur proche, les verbes pronominaux, « avoir besoin de » et les adverbes d'intensité."},
-  {id:'parle', no:'3', title:'Je parle', color:'#0D9488', custom:true,
-   intro:"🎤 À ton tour ! Tu appelles la clinique pour prendre un rendez-vous. Enregistre-toi en privé, obtiens une rétroaction, puis envoie ta prise si tu le veux."},
-  {id:'ecris', no:'4', title:"J'écris", color:'#0E7490', custom:true,
-   intro:"📝 Écris un courriel à la clinique pour demander un rendez-vous. L'assistant corrige ton texte en privé."},
-  {id:'eval', no:'✓', title:'Je m\'évalue', color:'#166534', custom:true,
-   intro:"🌟 Fais le point : qu'est-ce que tu es maintenant capable de faire ?"},
+  {id:'prep', no:'<img class="icon-svg tno-play" src="/assets/interactive/module-sante/icons/play.svg" alt="">', title:'Je découvre', color:'#0F766E',
+   lead:"Savoir où s'adresser, puis prendre un rendez-vous au téléphone.",
+   intro:"Lina ne se sent pas bien depuis deux semaines. Elle veut voir un médecin : où s'adresser, et comment obtenir un rendez-vous ?",
+   dialogue:'prep', next:{id:'t1', tit:'À la pharmacie', sub:"Comprendre les consignes du pharmacien."}},
+  {id:'t1', no:'1', title:'À la pharmacie', color:'#C0573A',
+   lead:"Comprendre les consignes du pharmacien.",
+   intro:"Lina a vu le médecin. Elle apporte maintenant son ordonnance à la pharmacie, où le pharmacien lui explique comment prendre son médicament.",
+   dialogue:'t1', next:{id:'t2', tit:'La langue', sub:'Le futur proche, les verbes pronominaux, avoir besoin de, les adverbes d\'intensité.'}},
+  {id:'t2', no:'2', title:'La langue', color:'#6B4FBB',
+   lead:"Quatre points de langue pour parler de sa santé.",
+   intro:"La langue — Le futur proche, les verbes pronominaux, « avoir besoin de » et les adverbes d'intensité.",
+   next:{id:'appli', tit:'Je me lance', sub:'Appeler la clinique à voix haute, puis écrire à la pharmacie.'}},
+  {id:'appli', no:'<img class="icon-svg tno-play" src="/assets/interactive/module-sante/icons/play.svg" alt="">', title:'Je me lance', color:'#0D9488', custom:true,
+   lead:"Appeler la clinique à voix haute, puis écrire pour faire renouveler une ordonnance.",
+   intro:"Je me lance — Prends rendez-vous à l'oral, puis écris à ta pharmacie."},
+  {id:'retiens', no:'✓', title:'Je retiens des mots', color:'#166534', custom:true,
+   lead:"Noter le vocabulaire utile et réviser avec les cartes mémoire.",
+   intro:"Je retiens des mots — Note le vocabulaire utile et révise avec les cartes mémoire."},
 ];
 
 // ── EXERCICES ─────────────────────────────────────────────────────────
 // type 'vf'     : lignes {id,txt,ok} — tuiles fixes (labels)
 // type 'match'  : lignes {id,q,aid,a} — banque = réponses
 // type 'blanks' : segs {k:'t'/'b',id,c} + words {id,l}
-const EXOS = [
-  // ── JE DÉCOUVRE ──
-  {sec:'prep', id:'pr1', type:'match', num:'Exercice 1', tit:'Où s\'adresser ?', color:'#12996B',
-   sub:'Associez chaque situation à la bonne ressource de santé.',
-   rows:[
-    {id:'pr1a', q:"Une urgence grave (un accident).", aid:'pa1', a:"le 911"},
-    {id:'pr1b', q:"Une question de santé, jour et nuit.", aid:'pa2', a:"Info-Santé (811)"},
-    {id:'pr1c', q:"Acheter un médicament.", aid:'pa3', a:"la pharmacie"},
-    {id:'pr1d', q:"Un rendez-vous avec son médecin.", aid:'pa4', a:"la clinique"},
-    {id:'pr1e', q:"Voir un médecin vite, sans rendez-vous.", aid:'pa5', a:"la clinique sans rendez-vous"},
-   ]},
-
-  // ── À LA PHARMACIE (compréhension) ──
-  {sec:'co', id:'co1', type:'vf', num:'Exercice 1', tit:'Vrai ou Faux — À la pharmacie', color:'#C0573A',
-   sub:'Écoutez le dialogue, puis répondez.', tiles:['VRAI','FAUX'],
-   rows:[
-    {id:'co1a', txt:"Maria a une ordonnance du médecin.", ok:'VRAI'},
-    {id:'co1b', txt:"Maria a déjà pris ce médicament avant.", ok:'FAUX'},
-    {id:'co1c', txt:"Elle doit prendre un comprimé deux fois par jour.", ok:'VRAI'},
-    {id:'co1d', txt:"Elle doit prendre le médicament pendant sept jours.", ok:'VRAI'},
-    {id:'co1e', txt:"Elle peut boire de l'alcool pendant le traitement.", ok:'FAUX'},
-    {id:'co1f', txt:"Elle peut prendre le médicament avec de la nourriture.", ok:'VRAI'},
-   ]},
-  {sec:'co', id:'co2', type:'match', num:'Exercice 2', tit:'L\'heure du rendez-vous', color:'#C0573A',
-   sub:'Associez l\'heure écrite en lettres à sa forme en chiffres.',
-   rows:[
-    {id:'co2a', q:"onze heures", aid:'ca1', a:"11 h"},
-    {id:'co2b', q:"quatorze heures", aid:'ca2', a:"14 h"},
-    {id:'co2c', q:"neuf heures et demie", aid:'ca3', a:"9 h 30"},
-    {id:'co2d', q:"seize heures quinze", aid:'ca4', a:"16 h 15"},
-    {id:'co2e', q:"dix heures moins le quart", aid:'ca5', a:"9 h 45"},
-   ]},
-  {sec:'co', id:'co3', type:'match', num:'Exercice 3', tit:'Les consignes du pharmacien', color:'#0D9488',
-   sub:'Associez chaque consigne à son explication.',
-   rows:[
-    {id:'co3a', q:"Deux fois par jour.", aid:'cb1', a:"Le matin et le soir."},
-    {id:'co3b', q:"Avec de la nourriture.", aid:'cb2', a:"Pendant le repas."},
-    {id:'co3c', q:"Pendant sept jours.", aid:'cb3', a:"Toute la semaine."},
-    {id:'co3d', q:"Pas d'alcool.", aid:'cb4', a:"Ne buvez pas de vin ni de bière."},
-   ]},
-
-  // ── LA LANGUE ──
-  {sec:'langue', id:'l1', type:'blanks', num:'Exercice 1', tit:'Le futur proche', color:'#6B4FBB',
-   sub:'Glissez le verbe au futur proche (aller + infinitif) dans la bonne phrase.',
-   savoir:{h:"› Le futur proche (aller + infinitif)", rows:[
-     ["je vais + inf.","Je <em>vais prendre</em> un rendez-vous demain."],
-     ["nous allons + inf.","Nous <em>allons attendre</em> dans la salle d'attente."],
-     ["ils / elles vont + inf.","Les patients <em>vont arriver</em> à neuf heures."],
-   ]},
-   words:[{id:'f1',l:'vais prendre'},{id:'f2',l:'vas appeler'},{id:'f3',l:'va voir'},{id:'f4',l:'allons attendre'},{id:'f5',l:'allez recevoir'},{id:'f6',l:'vont arriver'}],
-   segs:[
-    {k:'t',t:"a)  Demain, je "},{k:'b',id:'fb1',c:'f1'},{k:'t',t:" un rendez-vous.    "},
-    {k:'t',t:"b)  Tu "},{k:'b',id:'fb2',c:'f2'},{k:'t',t:" la clinique.    "},
-    {k:'t',t:"c)  Elle "},{k:'b',id:'fb3',c:'f3'},{k:'t',t:" le médecin jeudi.    "},
-    {k:'t',t:"d)  Nous "},{k:'b',id:'fb4',c:'f4'},{k:'t',t:" notre tour.    "},
-    {k:'t',t:"e)  Vous "},{k:'b',id:'fb5',c:'f5'},{k:'t',t:" vos résultats bientôt.    "},
-    {k:'t',t:"f)  Les patients "},{k:'b',id:'fb6',c:'f6'},{k:'t',t:" à neuf heures."},
-   ]},
-  {sec:'langue', id:'l2', type:'blanks', num:'Exercice 2', tit:'Les verbes pronominaux', color:'#6B4FBB',
-   sub:'Complétez avec la bonne forme du verbe pronominal au présent.',
-   savoir:{h:"› Les verbes pronominaux (présent)", rows:[
-     ["se sentir","je <em>me sens</em>, tu <em>te sens</em>, il <em>se sent</em>."],
-     ["se reposer","nous <em>nous reposons</em>, vous <em>vous reposez</em>."],
-     ["se réveiller","il <em>se réveille</em>, ils <em>se réveillent</em>."],
-   ]},
-   words:[{id:'p1',l:'me sens'},{id:'p2',l:'te reposes'},{id:'p3',l:'se réveille'},{id:'p4',l:'nous reposons'},{id:'p5',l:'se sentent'}],
-   segs:[
-    {k:'t',t:"a)  Je "},{k:'b',id:'pb1',c:'p1'},{k:'t',t:" très fatiguée.    "},
-    {k:'t',t:"b)  Tu "},{k:'b',id:'pb2',c:'p2'},{k:'t',t:" à la maison.    "},
-    {k:'t',t:"c)  Il "},{k:'b',id:'pb3',c:'p3'},{k:'t',t:" souvent la nuit.    "},
-    {k:'t',t:"d)  Nous "},{k:'b',id:'pb4',c:'p4'},{k:'t',t:" le week-end.    "},
-    {k:'t',t:"e)  Les enfants "},{k:'b',id:'pb5',c:'p5'},{k:'t',t:" mieux aujourd'hui."},
-   ]},
-  {sec:'langue', id:'l3', type:'blanks', num:'Exercice 3', tit:'Avoir besoin de', color:'#6B4FBB',
-   sub:'Complétez avec « de + nom » ou « de + infinitif ».',
-   savoir:{h:"› Avoir besoin de", rows:[
-     ["de + nom","J'ai besoin <em>d'un rendez-vous</em>, <em>de médicaments</em>."],
-     ["de + infinitif","J'ai besoin <em>de me reposer</em>, <em>de dormir</em>."],
-   ]},
-   words:[{id:'b1',l:"d'un rendez-vous"},{id:'b2',l:'de me reposer'},{id:'b3',l:'de médicaments'},{id:'b4',l:'de dormir'},{id:'b5',l:"d'aide"}],
-   segs:[
-    {k:'t',t:"a)  J'ai besoin "},{k:'b',id:'bb1',c:'b1'},{k:'t',t:" avec le médecin.    "},
-    {k:'t',t:"b)  J'ai besoin "},{k:'b',id:'bb2',c:'b2'},{k:'t',t:" quelques jours.    "},
-    {k:'t',t:"c)  J'ai besoin "},{k:'b',id:'bb3',c:'b3'},{k:'t',t:" pour la toux.    "},
-    {k:'t',t:"d)  J'ai besoin "},{k:'b',id:'bb4',c:'b4'},{k:'t',t:" au moins huit heures.    "},
-    {k:'t',t:"e)  J'ai besoin "},{k:'b',id:'bb5',c:'b5'},{k:'t',t:" pour remplir le formulaire."},
-   ]},
-  {sec:'langue', id:'l4', type:'blanks', num:'Exercice 4', tit:"Les adverbes d'intensité", color:'#6B4FBB',
-   sub:'Complétez avec un peu, assez, très ou trop selon l\'indice.',
-   savoir:{h:"› Un peu / assez / très / trop", rows:[
-     ["un peu (+)","J'ai <em>un peu</em> mal à la tête."],
-     ["assez (bien)","Ce médicament est <em>assez</em> efficace."],
-     ["très (++)","Je suis <em>très</em> fatiguée."],
-     ["trop (excès)","J'ai <em>trop</em> de travail, je suis épuisée."],
-   ]},
-   byLabel:true,
-   words:[{id:'a1',l:'très'},{id:'a2',l:'un peu'},{id:'a3',l:'trop'},{id:'a4',l:'assez'},{id:'a5',l:'très'}],
-   segs:[
-    {k:'t',t:"a)  Je suis "},{k:'b',id:'ab1',c:'très'},{k:'t',t:" fatiguée. (++)    "},
-    {k:'t',t:"b)  J'ai "},{k:'b',id:'ab2',c:'un peu'},{k:'t',t:" mal à la tête. (+)    "},
-    {k:'t',t:"c)  J'ai "},{k:'b',id:'ab3',c:'trop'},{k:'t',t:" de travail, je suis épuisée. (excès)    "},
-    {k:'t',t:"d)  Ce médicament est "},{k:'b',id:'ab4',c:'assez'},{k:'t',t:" efficace. (bien)    "},
-    {k:'t',t:"e)  Le médecin est "},{k:'b',id:'ab5',c:'très'},{k:'t',t:" gentil. (++)"},
-   ]},
-];
-
 // ── FLASHCARDS ────────────────────────────────────────────────────────
 const FC_CARDS = [
   {word:"prendre un rendez-vous", def:"Fixer un moment pour voir un médecin.", ex:"Je voudrais <strong>prendre un rendez-vous</strong>."},
@@ -392,19 +863,149 @@ const FC_CARDS = [
   {word:"une urgence", def:"Une situation grave qui demande des soins immédiats.", ex:"En cas d'<strong>urgence</strong>, appelez le 911."},
 ];
 
+const EXOS = [
+ {sec:'prep', id:'prVocab', type:'match', num:'Vocabulaire', tit:'Associe le mot ou le groupe de mots à sa définition', color:'#0F766E',
+  sub:'Choisis un mot, puis sa définition.', noQLbl:true, bankLbl:'Définitions', zonePh:'glissez la définition ici',
+  rows: FC_CARDS.map((c,i)=>({id:'pv'+i, q:c.word, aid:'pv'+i, a:c.def}))},
+
+  {sec:'prep', id:'pr1', type:'match', num:'Exercice 1', tit:'Où s\'adresser ?', color:'#0F766E',
+   sub:'Associez chaque situation à la bonne ressource de santé.',
+   bankLbl:'Ressources', zonePh:'glissez la réponse ici',
+   rows:[
+    {id:'pr1a', q:"Une urgence grave (un accident).", aid:'pa1', a:"le 911"},
+    {id:'pr1b', q:"Une question de santé, jour et nuit.", aid:'pa2', a:"Info-Santé (811)"},
+    {id:'pr1c', q:"Acheter un médicament.", aid:'pa3', a:"la pharmacie"},
+    {id:'pr1d', q:"Un rendez-vous avec son médecin.", aid:'pa4', a:"la clinique"},
+    {id:'pr1e', q:"Voir un médecin vite, sans rendez-vous.", aid:'pa5', a:"la clinique sans rendez-vous"},
+   ]},
+
+  {sec:'prep', id:'pr2', type:'vf', num:'Exercice 2', tit:'Vrai ou Faux — Appeler la clinique', color:'#0F766E',
+   sub:'Écoutez de nouveau le dialogue, puis répondez.', tiles:['VRAI','FAUX'],
+   rows:[
+    {id:'pr2a', txt:"Lina appelle pour prendre un rendez-vous.", ok:'VRAI'},
+    {id:'pr2b', txt:"C'est la première fois qu'elle vient à cette clinique.", ok:'FAUX'},
+    {id:'pr2c', txt:"Elle se sent fatiguée depuis deux semaines.", ok:'VRAI'},
+    {id:'pr2d', txt:"Elle a souvent mal au dos.", ok:'FAUX'},
+    {id:'pr2e', txt:"Le rendez-vous est jeudi à onze heures.", ok:'VRAI'},
+    {id:'pr2f', txt:"La réceptionniste lui rappelle d'apporter sa carte d'assurance maladie.", ok:'VRAI'},
+   ]},
+
+  {sec:'t1', id:'co1', type:'vf', num:'Exercice 1', tit:'Vrai ou Faux — À la pharmacie', color:'#C0573A',
+   sub:'Écoutez de nouveau le dialogue, puis répondez.', tiles:['VRAI','FAUX'],
+   rows:[
+    {id:'co1a', txt:"Lina a une ordonnance du médecin.", ok:'VRAI'},
+    {id:'co1b', txt:"Lina a déjà pris ce médicament avant.", ok:'FAUX'},
+    {id:'co1c', txt:"Elle doit prendre un comprimé deux fois par jour.", ok:'VRAI'},
+    {id:'co1d', txt:"Elle doit prendre le médicament pendant sept jours.", ok:'VRAI'},
+    {id:'co1e', txt:"Elle peut boire de l'alcool pendant le traitement.", ok:'FAUX'},
+    {id:'co1f', txt:"Elle peut prendre le médicament avec de la nourriture.", ok:'VRAI'},
+   ]},
+
+  {sec:'t1', id:'co2', type:'match', num:'Exercice 2', tit:'L\'heure du rendez-vous', color:'#C0573A',
+   sub:'Associez l\'heure écrite en lettres à sa forme en chiffres.',
+   bankLbl:'En chiffres', zonePh:'glissez la réponse ici',
+   rows:[
+    {id:'co2a', q:"onze heures", aid:'ca1', a:"11 h"},
+    {id:'co2b', q:"quatorze heures", aid:'ca2', a:"14 h"},
+    {id:'co2c', q:"neuf heures et demie", aid:'ca3', a:"9 h 30"},
+    {id:'co2d', q:"seize heures quinze", aid:'ca4', a:"16 h 15"},
+    {id:'co2e', q:"dix heures moins le quart", aid:'ca5', a:"9 h 45"},
+   ]},
+
+  {sec:'t1', id:'co3', type:'match', num:'Exercice 3', tit:'Les consignes du pharmacien', color:'#C0573A',
+   sub:'Associez chaque consigne à son explication.',
+   bankLbl:'Explications', zonePh:'glissez la réponse ici',
+   rows:[
+    {id:'co3a', q:"Deux fois par jour.", aid:'cb1', a:"Le matin et le soir."},
+    {id:'co3b', q:"Avec de la nourriture.", aid:'cb2', a:"Pendant le repas."},
+    {id:'co3c', q:"Pendant sept jours.", aid:'cb3', a:"Toute la semaine."},
+    {id:'co3d', q:"Pas d'alcool.", aid:'cb4', a:"Ne buvez pas de vin ni de bière."},
+   ]},
+
+  {sec:'t2', id:'l1', type:'blanks', num:'Exercice 1', tit:'Le futur proche', color:'#6B4FBB',
+   sub:'Glissez le verbe au futur proche (aller + infinitif) dans la bonne phrase.',
+   savoir:{h:"› Le futur proche (aller + infinitif)", rows:[
+     ["je vais + infinitif","<span class='savoir-ex'>Je <em>vais prendre</em> un rendez-vous demain.</span>"],
+     ["nous allons + infinitif","<span class='savoir-ex'>Nous <em>allons attendre</em> dans la salle d'attente.</span>"],
+     ["ils / elles vont + infinitif","<span class='savoir-ex'>Les patients <em>vont arriver</em> à neuf heures.</span>"],
+   ]},
+   words:[{id:'f1',l:'vais prendre'},{id:'f2',l:'vas appeler'},{id:'f3',l:'va voir'},{id:'f4',l:'allons attendre'},{id:'f5',l:'allez recevoir'},{id:'f6',l:'vont arriver'}],
+   segs:[
+    {k:'t',t:"a)  Demain, je "},{k:'b',id:'fb1',c:'f1'},{k:'t',t:" un rendez-vous.    "},
+    {k:'t',t:"b)  Tu "},{k:'b',id:'fb2',c:'f2'},{k:'t',t:" la clinique.    "},
+    {k:'t',t:"c)  Elle "},{k:'b',id:'fb3',c:'f3'},{k:'t',t:" le médecin jeudi.    "},
+    {k:'t',t:"d)  Nous "},{k:'b',id:'fb4',c:'f4'},{k:'t',t:" notre tour.    "},
+    {k:'t',t:"e)  Vous "},{k:'b',id:'fb5',c:'f5'},{k:'t',t:" vos résultats bientôt.    "},
+    {k:'t',t:"f)  Les patients "},{k:'b',id:'fb6',c:'f6'},{k:'t',t:" à neuf heures."},
+   ]},
+
+  {sec:'t2', id:'l2', type:'blanks', num:'Exercice 2', tit:'Les verbes pronominaux', color:'#6B4FBB',
+   sub:'Complétez avec la bonne forme du verbe pronominal au présent.',
+   savoir:{h:"› Les verbes pronominaux (présent)", rows:[
+     ["se sentir","<span class='savoir-ex'>je <em>me sens</em> · tu <em>te sens</em> · il <em>se sent</em></span>"],
+     ["se reposer","<span class='savoir-ex'>nous <em>nous reposons</em> · vous <em>vous reposez</em></span>"],
+     ["se réveiller","<span class='savoir-ex'>il <em>se réveille</em> · ils <em>se réveillent</em></span>"],
+   ]},
+   words:[{id:'p1',l:'me sens'},{id:'p2',l:'te reposes'},{id:'p3',l:'se réveille'},{id:'p4',l:'nous reposons'},{id:'p5',l:'se sentent'}],
+   segs:[
+    {k:'t',t:"a)  Je "},{k:'b',id:'pb1',c:'p1'},{k:'t',t:" très fatiguée.    "},
+    {k:'t',t:"b)  Tu "},{k:'b',id:'pb2',c:'p2'},{k:'t',t:" à la maison.    "},
+    {k:'t',t:"c)  Il "},{k:'b',id:'pb3',c:'p3'},{k:'t',t:" souvent la nuit.    "},
+    {k:'t',t:"d)  Nous "},{k:'b',id:'pb4',c:'p4'},{k:'t',t:" le week-end.    "},
+    {k:'t',t:"e)  Les enfants "},{k:'b',id:'pb5',c:'p5'},{k:'t',t:" mieux aujourd'hui."},
+   ]},
+
+  {sec:'t2', id:'l3', type:'blanks', num:'Exercice 3', tit:'Avoir besoin de', color:'#6B4FBB',
+   sub:'Complétez avec « de + nom » ou « de + infinitif ».',
+   savoir:{h:"› Avoir besoin de", rows:[
+     ["de + nom","<span class='savoir-ex'>J'ai besoin <em>d'un rendez-vous</em>, <em>de médicaments</em>.</span>"],
+     ["de + infinitif","<span class='savoir-ex'>J'ai besoin <em>de me reposer</em>, <em>de dormir</em>.</span>"],
+   ]},
+   words:[{id:'b1',l:"d'un rendez-vous"},{id:'b2',l:'de me reposer'},{id:'b3',l:'de médicaments'},{id:'b4',l:'de dormir'},{id:'b5',l:"d'aide"}],
+   segs:[
+    {k:'t',t:"a)  J'ai besoin "},{k:'b',id:'bb1',c:'b1'},{k:'t',t:" avec le médecin.    "},
+    {k:'t',t:"b)  J'ai besoin "},{k:'b',id:'bb2',c:'b2'},{k:'t',t:" quelques jours.    "},
+    {k:'t',t:"c)  J'ai besoin "},{k:'b',id:'bb3',c:'b3'},{k:'t',t:" pour la toux.    "},
+    {k:'t',t:"d)  J'ai besoin "},{k:'b',id:'bb4',c:'b4'},{k:'t',t:" au moins huit heures.    "},
+    {k:'t',t:"e)  J'ai besoin "},{k:'b',id:'bb5',c:'b5'},{k:'t',t:" pour remplir le formulaire."},
+   ]},
+
+  {sec:'t2', id:'l4', type:'blanks', num:'Exercice 4', tit:"Les adverbes d'intensité", color:'#6B4FBB',
+   sub:'Complétez avec un peu, assez, très ou trop selon l\'indice.',
+   savoir:{h:"› Un peu / assez / très / trop", rows:[
+     ["un peu (+)","<span class='savoir-ex'>J'ai <em>un peu</em> mal à la tête.</span>"],
+     ["assez (bien)","<span class='savoir-ex'>Ce médicament est <em>assez</em> efficace.</span>"],
+     ["très (++)","<span class='savoir-ex'>Je suis <em>très</em> fatiguée.</span>"],
+     ["trop (excès)","<span class='savoir-ex'>J'ai <em>trop</em> de travail, je suis épuisée.</span>"],
+   ]},
+   byLabel:true,
+   words:[{id:'a1',l:'très'},{id:'a2',l:'un peu'},{id:'a3',l:'trop'},{id:'a4',l:'assez'},{id:'a5',l:'très'}],
+   segs:[
+    {k:'t',t:"a)  Je suis "},{k:'b',id:'ab1',c:'très'},{k:'t',t:" fatiguée. (++)    "},
+    {k:'t',t:"b)  J'ai "},{k:'b',id:'ab2',c:'un peu'},{k:'t',t:" mal à la tête. (+)    "},
+    {k:'t',t:"c)  J'ai "},{k:'b',id:'ab3',c:'trop'},{k:'t',t:" de travail, je suis épuisée. (excès)    "},
+    {k:'t',t:"d)  Ce médicament est "},{k:'b',id:'ab4',c:'assez'},{k:'t',t:" efficace. (bien)    "},
+    {k:'t',t:"e)  Le médecin est "},{k:'b',id:'ab5',c:'très'},{k:'t',t:" gentil. (++)"},
+   ]},
+];
+
 // ── ÉTAT ──────────────────────────────────────────────────────────────
-const S = {pl:{}, sel:null, fb:{}};
+const S = {pl:{}, sel:null, fb:{}, vfSel:{}, vocabPick:null, vocabPairs:{}, vocabOrder:null};
 let curSec = 'prep';
 
 const ZONES = {};
 EXOS.forEach(ex => {
   if (ex.type === 'vf')     ex.rows.forEach(r => ZONES[r.id] = {cv:r.ok, zcat:'vf', exo:ex.id});
   if (ex.type === 'match')  ex.rows.forEach(r => ZONES[r.id] = {cv:r.aid, zcat:'id', exo:ex.id});
+  if (ex.type === 'imgmatch') ex.rows.forEach(r => ZONES[r.id] = {cv:r.aid, zcat:'id', exo:ex.id});
   if (ex.type === 'rows')   ex.rows.forEach(r => ZONES[r.id] = {cv:r.cv, zcat:'id', exo:ex.id});
   if (ex.type === 'blanks') ex.segs.filter(s=>s.k==='b').forEach(s =>
     ZONES[s.id] = {cv:s.c, zcat: ex.byLabel ? 'lbl' : 'id', exo:ex.id});
+  if (ex.type === 'write')  ex.items.forEach((it,i) =>
+    ZONES['w_'+ex.id+'_'+i] = {zcat:'write', exo:ex.id});
 });
 const TOTAL_ZONES = Object.keys(ZONES).length;
+const ALL_IMAGES = EXOS.filter(e=>e.type==='imgmatch').flatMap(e=>e.images);
 
 // ── LMS TRACKING ──────────────────────────────────────────────────────
 function lmsTrack(event, data) {
@@ -435,25 +1036,232 @@ function trackPlacement(zid, ok) {
   updateChip();
 }
 
-// ── DIALOGUE (synthèse vocale) ────────────────────────────────────────
+// ── DIALOGUE (audio réel si disponible, sinon synthèse vocale) ────────
 let dialogueRead = false;
+const MODULE_SLUG = 'module-sante';
+// Bump ce numéro chaque fois qu'un MP3 est régénéré, pour forcer le
+// navigateur à recharger le fichier au lieu de servir une version en cache.
+const AUDIO_V = '5';
+// Icônes des boutons son/micro de "Je découvre" — change ces deux valeurs
+// pour remplacer les emojis par une image (ex. '<img src="/assets/interactive/module-sante/icons/speaker.svg">').
+const ICON_SPEAK = '<img class="icon-svg" src="/assets/interactive/module-sante/icons/speaker.svg" alt="Écouter">';
+const ICON_MIC = '<img class="icon-svg" src="/assets/interactive/module-sante/icons/mic.svg" alt="Micro">';
+const ICON_ASSISTANT = '<img class="icon-svg" src="/assets/interactive/module-sante/icons/assistant.svg" alt="Assistant IA">';
+let dlgAudio=null, dlgBtn=null, dlgState='idle', dlgUsingSpeech=false, dlgFallbackLines=null, dlgPollIv=null;
+
+function charSlug(name){ return name.toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g,'').replace(/'/g,'').replace(/\s+/g,'_'); }
+
 function playDialogue(dialId, btn){
+  if(dlgBtn===btn && dlgState==='playing'){ pauseDialogue(); return; }
+  if(dlgBtn===btn && dlgState==='paused'){ resumeDialogue(); return; }
+  stopDialogue();
+  dlgBtn=btn;
+  const lines=(DIALOGUES[dialId]&&DIALOGUES[dialId].lines)||[];
+  dlgFallbackLines=lines;
+  const urls=lines.map((l,i)=>`/assets/interactive/${MODULE_SLUG}/${dialId}/line_${String(i+1).padStart(2,'0')}_${charSlug(l[0])}.mp3?v=${AUDIO_V}`);
+  playAudioQueue(urls,0,btn,dialId,true);
+}
+function playAudioQueue(urls, idx, btn, dialId, allowFallback){
+  if(idx>=urls.length){ finishDialogue(btn,dialId); return; }
+  dlgAudio=new Audio(urls[idx]);
+  dlgUsingSpeech=false;
+  dlgState='playing'; btn.textContent='⏸ Pause';
+  dlgAudio.onended=()=>playAudioQueue(urls, idx+1, btn, dialId, false);
+  dlgAudio.onerror=()=>{
+    if(allowFallback && idx===0){ playSpeechQueue(dlgFallbackLines, btn, dialId); }
+    else{ playAudioQueue(urls, idx+1, btn, dialId, false); }
+  };
+  dlgAudio.play().catch(()=>{ if(allowFallback && idx===0){ playSpeechQueue(dlgFallbackLines, btn, dialId); } });
+}
+function playSpeechQueue(lines, btn, dialId){
   try{
     speechSynthesis.cancel();
+    dlgUsingSpeech=true;
     const voices = speechSynthesis.getVoices();
     const fr = voices.filter(v=>/^fr/i.test(v.lang));
-    (DIALOGUES[dialId].lines||[]).forEach((l,i)=>{
+    lines.forEach((l,i)=>{
       const u=new SpeechSynthesisUtterance(l[1]);
       u.lang='fr-CA'; u.rate=0.95; u.pitch=(i%2===0)?1.12:0.9;
       if(fr.length) u.voice=(i%2===0)?fr[0]:(fr[1]||fr[0]);
       speechSynthesis.speak(u);
     });
-    if(!dialogueRead){ dialogueRead=true; lmsTrack('dialogue_listened'); }
+    dlgState='playing'; btn.textContent='⏸ Pause';
+    clearInterval(dlgPollIv);
+    dlgPollIv=setInterval(()=>{
+      if(!speechSynthesis.speaking){ clearInterval(dlgPollIv); finishDialogue(btn,dialId); }
+    },400);
   }catch(e){}
+}
+function jsq(s){ return String(s).replace(/\\/g,'\\\\').replace(/'/g,"\\'"); }
+// ── LECTURE AUDIO D'UN MOT OU D'UNE PHRASE ISOLÉE (synthèse vocale) ────
+function speakText(btn, text){
+  try{
+    speechSynthesis.cancel();
+    const old = btn ? btn.innerHTML : null;
+    const reset = ()=>{ if(btn){ btn.disabled=false; btn.innerHTML=old; } };
+    if(btn){ btn.disabled=true; btn.innerHTML=ICON_SPEAK+' …'; }
+    const doSpeak = ()=>{
+      try{
+        const u=new SpeechSynthesisUtterance(text);
+        u.lang='fr-CA'; u.rate=0.9;
+        const voices=speechSynthesis.getVoices();
+        const fr=voices.find(v=>/^fr/i.test(v.lang));
+        if(fr) u.voice=fr;
+        u.onend=reset; u.onerror=reset;
+        speechSynthesis.speak(u);
+        // Filet de sécurité : Chrome laisse parfois speechSynthesis coincé
+        // sans jamais déclencher onend/onerror.
+        setTimeout(()=>{ if(!speechSynthesis.speaking) reset(); }, 8000);
+      }catch(e){ reset(); }
+    };
+    // Chrome ignore parfois un speak() appelé juste après cancel() dans le
+    // même tick : un court délai évite ce bug connu.
+    setTimeout(doSpeak, 60);
+  }catch(e){}
+}
+// Essaie un vrai MP3 (assets/interactive/<module>/sons/<fileId>.mp3), retombe
+// sur la synthèse vocale si le fichier est absent.
+function playWord(btn, text, fileId){
+  if(!fileId){ speakText(btn, text); return; }
+  const url = `/assets/interactive/${MODULE_SLUG}/sons/${fileId}.mp3?v=${AUDIO_V}`;
+  const old = btn ? btn.innerHTML : null;
+  const reset = ()=>{ if(btn){ btn.disabled=false; btn.innerHTML=old; } };
+  if(btn){ btn.disabled=true; btn.innerHTML=ICON_SPEAK+' …'; }
+  const a=new Audio(url);
+  a.onended=reset;
+  a.onerror=()=>{ reset(); speakText(btn, text); };
+  a.play().catch(()=>{ reset(); speakText(btn, text); });
+}
+// ── VÉRIFICATION DE PRONONCIATION (reconnaissance vocale native, "Je découvre" seulement) ──
+function normPron(s){
+  return String(s).toLowerCase().normalize('NFD').replace(/[̀-ͯ]/g,'').replace(/[^a-z0-9\s]/g,'').replace(/\s+/g,' ').trim();
+}
+// Certains mots courts sont mal transcrits par la reconnaissance vocale du
+// navigateur (nombres écrits en chiffres, homophones) même bien prononcés —
+// liste d'équivalences acceptées en plus de la comparaison normale.
+const PRON_ALIASES = {};
+function pronMatches(said, target){
+  if(said===target || said.includes(target) || target.includes(said)) return true;
+  const alts = PRON_ALIASES[target] || [];
+  return alts.some(a=>said===a || said.includes(a) || a.includes(said));
+}
+// RÈGLE (validée par l'utilisateur le 2026-08-03 après test) : un mot isolé
+// (surtout une seule syllabe) est toujours plus difficile à reconnaître pour
+// le moteur de reconnaissance vocale du navigateur qu'un mot dans une phrase
+// avec du contexte. CHAQUE mot demandé en lecture/prononciation isolée doit
+// donc être présenté dans une courte phrase, avec le mot cible en gras —
+// jamais le mot tout seul. L'élève lit la phrase, mais on vérifie seulement
+// que le mot cible apparaît dans ce qui a été entendu (pronMatches fait déjà
+// cette vérification par inclusion — aucun changement de logique requis).
+// ⚠️ À reproduire dans TOUS les futurs modules dès qu'un mot isolé est
+// demandé en prononciation (voir aussi memory: cours-niveau4-modules.md).
+// Aucun savoir de prononciation dans cet atelier : pas de mot isolé à lire,
+// donc pas de phrase porteuse à définir. La table reste pour le moteur.
+const CARRIER_PHRASES = {};
+function pronCheck(btn, expected){
+  const SRC = window.SpeechRecognition || window.webkitSpeechRecognition;
+  let fb = btn.nextElementSibling && btn.nextElementSibling.classList.contains('pron-fb') ? btn.nextElementSibling : null;
+  if(!fb){ fb=document.createElement('span'); fb.className='pron-fb'; fb.setAttribute('aria-live','polite'); btn.insertAdjacentElement('afterend', fb); }
+  if(!SRC){ fb.className='pron-fb warn'; fb.textContent='Reconnaissance vocale non supportée (utilise Chrome).'; return; }
+  const old = btn.innerHTML;
+  btn.classList.remove('fb-ok','fb-no');
+  btn.disabled=true; btn.innerHTML=ICON_MIC+' …';
+  fb.className='pron-fb'; fb.textContent='Écoute en cours…';
+  const reset=()=>{ btn.disabled=false; btn.innerHTML=old; };
+  const target = normPron(expected);
+  let done=false, lastInterim='';
+  const rec = new SRC();
+  // interimResults:true — les mots très courts ("tôt", "mer"...) sont parfois
+  // coupés par la détection de silence avant qu'un résultat final n'arrive ;
+  // on garde le dernier résultat provisoire comme filet de secours.
+  rec.lang='fr-CA'; rec.interimResults=true; rec.maxAlternatives=1;
+  const evaluate=(heard)=>{
+    heard=heard.trim();
+    const said = normPron(heard);
+    const ok = pronMatches(said, target);
+    reset();
+    btn.classList.add(ok?'fb-ok':'fb-no');
+    fb.className='pron-fb '+(ok?'ok':'no');
+    fb.textContent = ok ? '✓ Bien prononcé !' : ('✗ On a entendu : « '+heard+' »');
+    setTimeout(()=>{ btn.classList.remove('fb-ok','fb-no'); }, 4000);
+  };
+  rec.onresult=e=>{
+    const res=e.results[e.results.length-1];
+    if(res.isFinal){ done=true; evaluate(res[0].transcript); }
+    else{ lastInterim=res[0].transcript; }
+  };
+  rec.onerror=e=>{
+    if(!done){
+      done=true;
+      if(lastInterim){ evaluate(lastInterim); return; }
+      reset();
+      fb.className='pron-fb warn';
+      fb.textContent = e.error==='not-allowed' ? 'Micro refusé — autorise l\'accès au micro.' : 'Aucun son détecté, réessaie.';
+    }
+  };
+  // Filet de sécurité : certains navigateurs déclenchent onend sans jamais
+  // appeler onresult(final) ni onerror (silence, coupure) — sans ce filet le
+  // message restait bloqué sur « Écoute en cours… ». On récupère le dernier
+  // résultat provisoire s'il y en a un, plutôt que de déclarer un échec.
+  rec.onend=()=>{
+    if(!done){
+      done=true;
+      if(lastInterim){ evaluate(lastInterim); return; }
+      reset();
+      fb.className='pron-fb warn';
+      fb.textContent='Aucun son détecté, réessaie.';
+    }
+  };
+  setTimeout(()=>{
+    if(!done){
+      done=true;
+      try{ rec.stop(); }catch(e){}
+      if(lastInterim){ evaluate(lastInterim); return; }
+      reset();
+      fb.className='pron-fb warn';
+      fb.textContent='Aucun son détecté, réessaie.';
+    }
+  }, 7000);
+  try{ rec.start(); }catch(e){ done=true; reset(); fb.className='pron-fb warn'; fb.textContent='Impossible de démarrer le micro.'; }
+}
+function pauseDialogue(){
+  if(dlgUsingSpeech){ try{speechSynthesis.pause();}catch(e){} } else if(dlgAudio){ dlgAudio.pause(); }
+  dlgState='paused'; if(dlgBtn) dlgBtn.textContent='▶ Reprendre';
+}
+function resumeDialogue(){
+  if(dlgUsingSpeech){ try{speechSynthesis.resume();}catch(e){} } else if(dlgAudio){ dlgAudio.play().catch(()=>{}); }
+  dlgState='playing'; if(dlgBtn) dlgBtn.textContent='⏸ Pause';
+}
+function stopDialogue(){
+  clearInterval(dlgPollIv);
+  try{ speechSynthesis.cancel(); }catch(e){}
+  if(dlgAudio){ try{dlgAudio.pause();}catch(e){} dlgAudio=null; }
+  if(dlgBtn){ dlgBtn.innerHTML=ICON_SPEAK+' Écouter'; }
+  dlgState='idle'; dlgBtn=null; dlgUsingSpeech=false;
+}
+function finishDialogue(btn,dialId){
+  dlgState='idle'; btn.innerHTML=ICON_SPEAK+' Écouter'; dlgBtn=null; dlgUsingSpeech=false;
+  if(!dialogueRead){ dialogueRead=true; lmsTrack('dialogue_listened'); }
 }
 function markRead(btn){
   btn.classList.add('done'); btn.textContent='✓ Lu';
   if(!dialogueRead){ dialogueRead=true; lmsTrack('dialogue_listened'); }
+}
+function toggleVocabExo(force){
+  const card=document.getElementById('exo-prVocab');
+  const btn=document.getElementById('btnVocabToggle');
+  if(!card) return;
+  const opening = (typeof force==='boolean') ? force : card.style.display==='none';
+  card.style.display = opening ? '' : 'none';
+  if(btn) btn.textContent = opening ? "Fermer l'exercice de vocabulaire" : 'Apprendre les mots de vocabulaire';
+  // Exercice à part : tant qu'il est ouvert, on bloque l'accès aux exercices
+  // suivants — il faut le refermer (bouton "Fermer") pour continuer.
+  EXOS.filter(e=>e.sec==='prep' && e.id!=='prVocab').forEach(e=>{
+    const c=document.getElementById('exo-'+e.id);
+    if(c) c.style.display = opening ? 'none' : '';
+  });
+  if(opening) card.scrollIntoView({behavior:'smooth', block:'start'});
+  else document.getElementById('btnVocabToggle').scrollIntoView({behavior:'smooth', block:'center'});
 }
 
 // ── LOGIQUE DE PLACEMENT ──────────────────────────────────────────────
@@ -488,6 +1296,114 @@ function tileClick(iid, lbl, cat) {
   render();
 }
 
+// ── VRAI/FAUX PAR BOUTONS (colonnes + bouton Corriger) ─────────────────
+// Compteur en direct dans l'en-tête d'exercice (exo-score), comme le modèle.
+function updateVfScore(ex, checked){
+  const el = document.getElementById('score-'+ex.id);
+  if(!el) return;
+  if(!checked){
+    const answered = ex.rows.filter(r=>S.vfSel[r.id]).length;
+    el.textContent = answered+' / '+ex.rows.length+' répondu';
+  } else {
+    const correct = ex.rows.filter(r=>S.vfSel[r.id]===r.ok).length;
+    el.textContent = correct+' / '+ex.rows.length+' juste';
+  }
+}
+// ── Association mot ↔ définition par CLIC (deux colonnes), pas de
+// glisser-déposer — atteignable au clavier, comme je-me-prepare.html.
+function renderVocabPairs(){
+  const ex = EXOS.find(e=>e.id==='prVocab');
+  if(!ex) return;
+  const wordsEl = document.getElementById('vocab-words');
+  const defsEl = document.getElementById('vocab-defs');
+  if(!wordsEl || !defsEl) return;
+  if(!S.vocabOrder) S.vocabOrder = ex.rows.map((r,i)=>i).sort(()=>Math.random()-.5);
+
+  wordsEl.innerHTML = ex.rows.map((r,i)=>{
+    const done = S.vocabPairs[r.id] !== undefined;
+    const cls = 'chip chip-word'+(done?' is-paired':(S.vocabPick===r.id?' is-active':''));
+    return '<button type="button" class="'+cls+'" data-w="'+esc(r.id)+'"'+(done?' aria-disabled="true"':'')+'>'+esc(r.q)+'</button>';
+  }).join('');
+  const takenDefIds = Object.values(S.vocabPairs);
+  defsEl.innerHTML = S.vocabOrder.map(idx=>{
+    const r = ex.rows[idx];
+    const done = takenDefIds.includes(r.aid);
+    const cls = 'chip'+(done?' is-paired':(S.fb[r.aid]==='no'?' is-miss':''));
+    return '<button type="button" class="'+cls+'" data-d="'+esc(r.aid)+'"'+(done?' aria-disabled="true"':'')+'>'+esc(r.a)+'</button>';
+  }).join('');
+
+  wordsEl.querySelectorAll('[data-w]').forEach(b=>b.addEventListener('click',()=>{
+    const wid = b.dataset.w;
+    if(S.vocabPairs[wid] !== undefined) return;
+    S.vocabPick = (S.vocabPick===wid) ? null : wid;
+    S.fb = {};
+    renderVocabPairs();
+  }));
+  defsEl.querySelectorAll('[data-d]').forEach(b=>b.addEventListener('click',()=>{
+    const did = b.dataset.d;
+    if(Object.values(S.vocabPairs).includes(did) || S.vocabPick===null) return;
+    const row = ex.rows.find(r=>r.id===S.vocabPick);
+    const ok = row && row.aid===did;
+    if(ok){ S.vocabPairs[S.vocabPick] = did; S.vocabPick=null; S.fb={}; trackPlacement(row.id, true); }
+    else { S.fb[did]='no'; trackPlacement(row?row.id:did, false); }
+    renderVocabPairs();
+  }));
+
+  const n = Object.keys(S.vocabPairs).length;
+  const scoreEl = document.getElementById('score-'+ex.id);
+  if(scoreEl) scoreEl.textContent = n+' / '+ex.rows.length+' associé';
+}
+function toggleScript(btn, secId){
+  const el = document.getElementById('script-'+secId);
+  if(!el) return;
+  const open = el.classList.toggle('is-hidden') === false;
+  btn.textContent = open ? 'Cacher la transcription' : 'Lire la transcription';
+}
+function vfSelect(zid, lbl) {
+  S.vfSel[zid] = lbl;
+  delete S.fb[zid];
+  const ex = EXOS.find(e=>e.type==='vf' && e.rows.some(r=>r.id===zid));
+  if(ex) updateVfScore(ex, false);
+  render();
+}
+function vfCheckAll(exId) {
+  const ex = EXOS.find(e => e.id === exId);
+  if (!ex) return;
+  let answered = 0, correct = 0;
+  ex.rows.forEach(r => {
+    const sel = S.vfSel[r.id];
+    if (!sel) return;
+    answered++;
+    const ok = sel === r.ok;
+    if (ok) correct++;
+    S.fb[r.id] = ok ? 'ok' : 'no';
+    S.pl[r.id] = {iid:r.id, lbl:sel, cat:'vf'};
+    trackPlacement(r.id, ok);
+  });
+  // Nombre d'énoncés encore faux à cette correction — pas un cumul : corriger
+  // deux fois de suite ne doit pas gonfler artificiellement le compte.
+  if (answered >= ex.rows.length) evaluerAide(exId, answered - correct);
+  const sumEl = document.getElementById('vfsum-'+exId);
+  if (sumEl) {
+    if (answered < ex.rows.length) {
+      sumEl.className = 'vf-summary warn';
+      sumEl.textContent = `Réponds à toutes les phrases avant de corriger (${answered}/${ex.rows.length}).`;
+    } else {
+      sumEl.className = 'vf-summary ok';
+      sumEl.textContent = `${correct} / ${ex.rows.length} bonnes réponses`;
+    }
+  }
+  updateVfScore(ex, answered>=ex.rows.length);
+  render();
+}
+
+// Rend un élément atteignable au clavier (MIGRATION.md §5) : le clic est
+// déjà l'interaction principale (sélection puis dépôt) — Entrée/Espace
+// déclenchent le même clic.
+function kbdable(el){
+  el.setAttribute('role','button'); el.tabIndex=0;
+  el.addEventListener('keydown',e=>{ if(e.key===' '||e.key==='Enter'){ e.preventDefault(); el.click(); } });
+}
 // ── DRAG & DROP ───────────────────────────────────────────────────────
 let dd = null;
 function drg(el, iid, lbl, cat, from) {
@@ -531,6 +1447,17 @@ document.addEventListener('touchend', e => {
 
 // ── HELPERS ───────────────────────────────────────────────────────────
 function esc(s){return String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;')}
+// Pastille numérotée carrée devant l'en-tête d'exercice (comme .exo__num du
+// modèle je-me-prepare.html) — extrait le chiffre de "Exercice N", sinon •.
+function exoNumBadge(numText){
+  const m = String(numText).match(/\d+/);
+  const label = m ? String(+m[0]).padStart(2,'0') : '•';
+  return '<span class="exo-num">'+label+'</span>';
+}
+// Remplace les suites de "___" par un blanc à souligner distinct du texte,
+// pour que les espaces entre les vrais mots restent lisibles (sinon tout
+// se lit comme une seule ligne confuse de tirets).
+function blankify(q){ return esc(q).replace(/_{3,}/g, '<span class="acc-blank"></span>'); }
 function usedIds(){return new Set(Object.values(S.pl).map(p=>p.iid))}
 function shuffled(arr, seed){
   const a=arr.slice(); let s=seed||42;
@@ -550,6 +1477,7 @@ function mkZone(zid, extra, placeholder){
   el.dataset.zid=zid;
   el.textContent=placed?placed.lbl:(placeholder||'déposer ici');
   el.addEventListener('click',()=>zoneClick(zid));
+  kbdable(el);
   drp(el,zid);
   if(placed&&!fb){drg(el,placed.iid,placed.lbl,placed.cat,zid);tch(el,placed.iid,placed.lbl,placed.cat,zid)}
   return el;
@@ -563,6 +1491,7 @@ function mkBlank(zid){
   el.dataset.zid=zid;
   el.textContent=placed?placed.lbl:'…';
   el.addEventListener('click',()=>zoneClick(zid));
+  kbdable(el);
   drp(el,zid);
   if(placed&&!fb){drg(el,placed.iid,placed.lbl,placed.cat,zid);tch(el,placed.iid,placed.lbl,placed.cat,zid)}
   return el;
@@ -572,8 +1501,32 @@ function mkTile(iid,lbl,cat,cls){
   t.className='tile '+cls+(S.sel&&S.sel.iid===iid&&!S.sel.from?' sel':'');
   t.textContent=lbl;
   t.addEventListener('click',()=>tileClick(iid,lbl,cat));
+  kbdable(t);
   drg(t,iid,lbl,cat,null); tch(t,iid,lbl,cat,null);
   return t;
+}
+function mkImgTile(im,cat){
+  const t=document.createElement('div');
+  t.className='imgtile'+(S.sel&&S.sel.iid===im.id&&!S.sel.from?' sel':'');
+  t.innerHTML='<img src="'+im.src+'" alt="" loading="lazy">';
+  t.addEventListener('click',()=>tileClick(im.id,im.id,cat));
+  kbdable(t);
+  drg(t,im.id,im.id,cat,null); tch(t,im.id,im.id,cat,null);
+  return t;
+}
+function mkImgZone(zid, im){
+  const el=document.createElement('div');
+  const placed=S.pl[zid], fb=S.fb[zid];
+  let cls=['imgzone']; if(fb)cls.push('fb-'+fb); else if(placed)cls.push('filled'); else cls.push('empty');
+  el.className=cls.join(' ');
+  el.dataset.zid=zid;
+  if(placed){ const src=(ALL_IMAGES.find(i=>i.id===placed.iid)||{}).src; el.innerHTML=src?'<img src="'+src+'" alt="">':''; }
+  else{ el.innerHTML='<span class="imgzone-ph">glissez l\'image ici</span>'; }
+  el.addEventListener('click',()=>zoneClick(zid));
+  kbdable(el);
+  drp(el,zid);
+  if(placed&&!fb){drg(el,placed.iid,placed.lbl,placed.cat,zid);tch(el,placed.iid,placed.lbl,placed.cat,zid)}
+  return el;
 }
 
 // ── CONSTRUCTION DU DOM ───────────────────────────────────────────────
@@ -582,6 +1535,7 @@ function buildStatic(){
   SECTIONS.forEach(sec=>{
     const b=document.createElement('button');
     b.className='tab'; b.id='tab-'+sec.id;
+    b.style.setProperty('--sec-color', sec.color);
     b.innerHTML='<span class="tno">'+sec.no+'</span>'+esc(sec.title)+'<span class="tchk">✓</span>';
     b.addEventListener('click',()=>{curSec=sec.id;render();window.scrollTo({top:0,behavior:'smooth'})});
     tabs.appendChild(b);
@@ -590,30 +1544,54 @@ function buildStatic(){
   SECTIONS.forEach(sec=>{
     const d=document.createElement('div');
     d.className='sec'; d.id='sec-'+sec.id;
+    d.style.setProperty('--sec-color', sec.color);
+    d.style.setProperty('--sec', sec.color);
     let h='';
-    h+='<div class="intro" style="border-color:'+sec.color+'33">'+sec.intro+'</div>';
+    // Bloc unique : mise en situation (gris) → dialogue → vocabulaire associé.
+    // Tout est dans le même cadre pour qu'on voie le lien entre le dialogue et
+    // son vocabulaire (demande de l'utilisateur, 2026-08-03).
     if(sec.dialogue){
       const dia=DIALOGUES[sec.dialogue];
-      h+='<div class="dial-sec" style="border-bottom-color:'+sec.color+'">';
-      h+='<div class="audio-pl"><div class="audio-lbl">Dialogue</div>';
-      h+='<button class="btn-lu" onclick="playDialogue(\''+sec.dialogue+'\',this)">🔊 Écouter</button>';
-      h+='<button class="btn-lu" onclick="markRead(this)">📖 J\'ai lu</button></div>';
-      h+='<div class="dial-txt"><div class="d-lbl">'+esc(dia.label)+'</div>';
+      const titleParts = dia.label.split('—');
+      const dTitle = (titleParts[1]||dia.label).trim();
+      h+='<div class="dial-sec"><div class="dial-grid">';
+      h+='<div><div class="field-label">La situation</div>';
+      h+='<p class="situ">'+sec.intro+'</p>';
+      h+='<div class="row" style="display:flex;flex-wrap:wrap;gap:10px;margin-top:14px">';
+      h+='<button class="btn-lu btn-audio" onclick="playDialogue(\''+sec.dialogue+'\',this)">'+ICON_SPEAK+' Écouter le dialogue</button>';
+      h+='<button class="btn btn-ghost" type="button" onclick="toggleScript(this,\''+sec.id+'\')">Lire la transcription</button>';
+      h+='</div></div>';
+      h+='<div class="dial-aside"><div class="field-label">Dialogue</div>';
+      h+='<div class="dial-aside-tit">'+esc(dTitle)+'</div>';
+      h+='<div class="dial-aside-n">'+dia.lines.length+' répliques</div></div>';
+      h+='</div>';
+      h+='<div class="dial-txt is-hidden" id="script-'+sec.id+'">';
       dia.lines.forEach((l,i)=>{
         const cls=(i%2===0)?'mb':'dr';
         h+='<div class="dl"><span class="'+cls+'">'+esc(l[0])+' :</span> '+esc(l[1])+'</div>';
       });
-      h+='</div></div>';
-    }
-    if(sec.id==='prep'){
-      h+='<div class="vocab-sec"><div style="display:flex;align-items:center;gap:10px;margin-bottom:12px;">';
-      h+='<div style="background:#12996B;color:#fff;border-radius:999px;padding:3px 14px;font-size:11px;font-weight:800;text-transform:uppercase;letter-spacing:.12em;">Vocabulaire</div>';
-      h+='<div style="font-size:15px;font-weight:700;color:#0C7A53;">Mots du module — <span style="font-weight:900;cursor:pointer;text-decoration:underline dotted;" onclick="fcOpen(0)">Cliquez pour les cartes mémoire 🃏</span></div></div>';
-      h+='<div class="vocab-grid">';
-      FC_CARDS.forEach(c=>{h+='<div class="vw" onclick="fcOpenWord(\''+c.word.replace(/'/g,"\\'")+'\')"><span class="dot"></span><span class="w">'+esc(c.word)+'</span></div>'});
-      h+='</div></div>';
+      h+='</div>';
+      if(sec.id==='prep'){
+        h+='<div class="vocab-sec"><div style="display:flex;align-items:center;gap:10px;margin-bottom:12px;flex-wrap:wrap">';
+        h+='<div class="vocab-tag">Vocabulaire</div>';
+        h+='<div style="font-size:15px;font-weight:700;">Les mots de ce dialogue — <span style="font-weight:900;cursor:pointer;text-decoration:underline dotted;" onclick="fcOpen(0)">cartes mémoire</span></div></div>';
+        h+='<div class="vocab-grid">';
+        FC_CARDS.forEach(c=>{h+='<div class="vw" onclick="fcOpenWord(\''+c.word.replace(/'/g,"\\'")+'\')"><span class="dot"></span><span class="w">'+esc(c.word)+'</span></div>'});
+        h+='</div>';
+        h+='<button class="btn btn-pri" type="button" id="btnVocabToggle" style="margin-top:12px" onclick="toggleVocabExo()">Apprendre les mots de vocabulaire</button>';
+        h+='</div>';
+      }
+      h+='</div>';
+    } else {
+      h+='<div class="intro">'+sec.intro+'</div>';
     }
     h+='<div class="exs" id="exs-'+sec.id+'"></div>';
+    if(sec.next){
+      h+='<div class="cta"><div><div class="cta-eyebrow">Prochaine étape</div>';
+      h+='<div class="cta-tit">'+esc(sec.next.tit)+'</div>';
+      h+='<div class="cta-sub">'+esc(sec.next.sub)+'</div></div>';
+      h+='<button class="btn cta-btn" type="button" onclick="document.getElementById(\'tab-'+sec.next.id+'\').click();window.scrollTo({top:0,behavior:\'smooth\'})">Continuer →</button></div>';
+    }
     d.innerHTML=h;
     wrap.appendChild(d);
   });
@@ -621,67 +1599,189 @@ function buildStatic(){
   EXOS.forEach(ex=>{
     const host=document.getElementById('exs-'+ex.sec);
     const card=document.createElement('div');
-    card.className='card';
+    card.className='card'; card.id='exo-'+ex.id;
+    if(ex.accent) card.style.setProperty('--sec-color', ex.accent);
+    if(ex.id==='prVocab') card.style.display='none';
     let h='';
     if(ex.savoir){
-      h+='<div class="savoir"><h3>'+ex.savoir.h+'</h3><table>';
-      ex.savoir.rows.forEach(r=>{h+='<tr><td>'+r[0]+'</td><td>'+r[1]+'</td></tr>'});
-      h+='</table></div>';
+      h+='<div class="savoir'+(ex.savoir.speak?' savoir--pron':'')+'">'
+       + '<div class="savoir-band">'+esc(ex.savoir.h ? ex.savoir.h.replace(/^›\s*/,'') : 'Prononciation')+'</div>';
+      ex.savoir.rows.forEach((r,ri)=>{
+        // Une rangée qui s'ouvre sur un exemple se colore en entier (étiquette
+        // comprise) : c'est ce qui la sépare visuellement d'une règle.
+        const rowEx = /^\s*<span class=['"]savoir-ex['"]/.test(r[1]);
+        h+='<div class="savoir-row'+(rowEx?' is-ex':'')+'"><div class="savoir-key">'+r[0]+'</div><div class="savoir-val">'+r[1];
+        if(ex.savoir.speak && r[2]){
+          h+='<div class="word-chips">';
+          r[2].forEach((w,wi)=>{
+            const fid=ex.id+'_savoir_'+ri+'_'+wi;
+            const phrase=CARRIER_PHRASES[w];
+            const wcLabel = phrase ? esc(phrase).replace(new RegExp('('+esc(w)+')','i'),'<b>$1</b>') : esc(w);
+            h+='<div class="word-chip"><span class="wc-word'+(phrase?' wc-phrase':'')+'">'+wcLabel+'</span>';
+            // On lit la phrase porteuse, pas le mot seul : c'est ce que la
+            // pastille affiche, et surtout un mot isolé ne donne aucun indice
+            // de langue au moteur de synthèse — un mot français bref peut se
+            // faire lire à l'anglaise sans le contexte d'une phrase.
+            h+='<button class="btn btn-ghost" type="button" onclick="playWord(this,\''+jsq(phrase||w)+'\',\''+fid+'\')" title="Écouter">'+ICON_SPEAK+'</button>';
+            h+='<button class="btn btn-ghost" type="button" onclick="pronCheck(this,\''+jsq(w)+'\')" title="Répète le mot à voix haute">'+ICON_MIC+'</button>';
+            h+='</div>';
+          });
+          h+='</div>';
+        }
+        h+='</div></div>';
+      });
+      if(PLUS[ex.id]){
+        h+='<div class="plus-bar"><button class="plus-open" type="button" onclick="plusOpen(\''+ex.id+'\')">'
+         + '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" aria-hidden="true"><path d="M12 5v14M5 12h14"/></svg>'
+         + 'En apprendre plus</button></div>';
+      }
+      h+='</div><div class="savoir-gap"></div>';
+    }
+    // ── Exercice Vrai/Faux (ou 2 catégories) — colonnes + bouton Corriger ──
+    if(ex.type==='vf'){
+      h+='<div class="c-hdr">'+exoNumBadge(ex.num)+'<span class="tag">'+esc(ex.num)+'</span><span class="exo-score" id="score-'+ex.id+'" aria-live="polite">0 / '+ex.rows.length+' répondu</span><span class="ctit">'+esc(ex.tit)+'</span><span class="csub">'+esc(ex.sub)+'</span></div>';
+      if(!ex.cards) h+='<div class="vf-head"><div class="vf-head-txt"></div><div class="vf-head-opts"><div class="vf-head-opt">'+esc(ex.tiles[0])+'</div><div class="vf-head-opt">'+esc(ex.tiles[1])+'</div></div></div>';
+      h+='<div class="rows" id="mount-'+ex.id+'"></div>';
+      h+='<div style="margin-top:14px;display:flex;align-items:center;gap:12px;flex-wrap:wrap">';
+      h+='<button class="btn btn-pri" type="button" onclick="vfCheckAll(\''+ex.id+'\')">✓ Corriger</button>';
+      h+='<div class="vf-summary" id="vfsum-'+ex.id+'" aria-live="polite"></div>';
+      h+='</div>';
+      card.innerHTML=h; host.appendChild(card); return;
+    }
+    // ── Exercice à écrire (autocorrection ou correction IA) ──
+    if(ex.type==='write'){
+      // Si l'exercice a un dialogue, son titre est déjà affiché dans la
+      // pastille du dialogue juste en dessous — pas besoin de le répéter ici.
+      const titHtml = ex.dialogue ? '' : '<span class="ctit">'+esc(ex.tit)+'</span>';
+      h+='<div class="c-hdr">'+exoNumBadge(ex.num)+'<span class="tag">'+esc(ex.num)+'</span>'+titHtml+'<span class="csub">'+esc(ex.sub)+'</span></div>';
+      const aiBadge = ex.items.some(it=>!it.accept) ? '<div style="font-size:12px;font-weight:800;color:#0D9488;margin-bottom:10px;display:flex;align-items:center;gap:6px">'+ICON_ASSISTANT+' Un assistant corrige ce que tu écris et te donne une rétroaction.</div>' : '';
+      if(ex.dialogue && DIALOGUES[ex.dialogue]){
+        const dia=DIALOGUES[ex.dialogue];
+        h+='<div class="dial-hd" style="margin-bottom:12px"><div class="d-lbl">'+esc(dia.label)+'</div>';
+        h+='<button class="btn-lu" onclick="playDialogue(\''+ex.dialogue+'\',this)">'+ICON_SPEAK+' Écouter</button></div>';
+        h+='<details style="margin-bottom:12px"><summary style="cursor:pointer;font-size:13px;font-weight:700;color:var(--ws-accent)">Afficher le texte du dialogue</summary>';
+        h+='<div class="dial-txt">';
+        dia.lines.forEach((l,i)=>{
+          const cls=(i%2===0)?'mb':'dr';
+          h+='<div class="dl"><span class="'+cls+'">'+esc(l[0])+' :</span> '+esc(l[1])+'</div>';
+        });
+        h+='</div></details>';
+      }
+      h+=aiBadge+'<div class="wlist">';
+      ex.items.forEach((it,i)=>{
+        h+='<div class="witem"><div class="wq">'+blankify(it.q||'')+'</div>';
+        if(it.audio){
+          const fid=ex.id+'_'+i;
+          h+='<button class="btn btn-ghost wlisten" type="button" onclick="playWord(this,\''+jsq(it.audio)+'\',\''+fid+'\')" style="margin-bottom:8px">'+ICON_SPEAK+' Écouter</button>';
+        }
+        h+='<div class="wrow"><input class="winput" id="wi_'+ex.id+'_'+i+'" placeholder="'+(it.ph||'Écris ta réponse…')+'" autocomplete="off">';
+        h+='<button class="btn btn-pri wbtn" onclick="checkWrite(\''+ex.id+'\','+i+')">Vérifier</button></div>';
+        h+='<div class="wfb" id="wf_'+ex.id+'_'+i+'" aria-live="polite"></div></div>';
+      });
+      h+='</div>';
+      card.innerHTML=h; host.appendChild(card); return;
+    }
+    if(ex.id==='prVocab'){
+      // Association par CLIC en deux colonnes (mots / définitions), atteignable
+      // au clavier — reprend le modèle je-me-prepare.html au lieu du
+      // glisser-déposer générique. Le pointage passe quand même par
+      // trackPlacement() pour rester compté dans l'étoile globale.
+      h+='<div class="c-hdr">'+exoNumBadge(ex.num)+'<span class="tag">'+esc(ex.num)+'</span><span class="exo-score" id="score-'+ex.id+'" aria-live="polite">0 / '+ex.rows.length+' associé</span><span class="ctit">'+esc(ex.tit)+'</span><span class="csub">'+esc(ex.sub)+'</span></div>';
+      h+='<div class="pair-grid"><div class="stack" id="vocab-words"></div><div class="stack" id="vocab-defs"></div></div>';
+      h+='<button class="btn btn-ghost" type="button" style="margin-top:14px" onclick="toggleVocabExo(false)">Fermer</button>';
+      card.innerHTML=h;
+      host.appendChild(card);
+      return;
     }
     h+='<div style="display:flex;gap:20px;align-items:flex-start;flex-wrap:wrap">';
-    h+='<div style="flex:1;min-width:300px">';
-    h+='<div class="c-hdr"><span class="tag" style="background:'+ex.color+'">'+esc(ex.num)+'</span><span class="ctit" style="color:'+ex.color+'">'+esc(ex.tit)+'</span><span class="csub">'+esc(ex.sub)+'</span></div>';
+    h+='<div class="exo-main" style="flex:1;min-width:300px">';
+    h+='<div class="c-hdr">'+exoNumBadge(ex.num)+'<span class="tag">'+esc(ex.num)+'</span><span class="ctit">'+esc(ex.tit)+'</span><span class="csub">'+esc(ex.sub)+'</span></div>';
     if(ex.type==='blanks') h+='<p class="blanks-p" id="mount-'+ex.id+'"></p>';
     else h+='<div class="rows" id="mount-'+ex.id+'"></div>';
     h+='</div>';
-    const vert=(ex.type==='match'||ex.type==='rows')?' vert':'';
-    const bw=(ex.type==='match'||ex.type==='rows')?'300px':'220px';
-    h+='<div class="bsec b1" style="flex:0 0 '+bw+'"><div class="blbl">Réponses</div><div class="btiles'+vert+'" id="bank-'+ex.id+'"></div></div>';
+    const vert=(ex.type==='match'||ex.type==='rows'||ex.type==='imgmatch')?' vert':'';
+    const bw=ex.type==='imgmatch'?'240px':((ex.type==='match'||ex.type==='rows')?'300px':'220px');
+    h+='<div class="bsec b1" style="flex:0 0 '+bw+'"><div class="blbl">'+(ex.bankLbl||'Réponses')+'</div><div class="btiles'+vert+'" id="bank-'+ex.id+'"></div></div>';
     h+='</div>';
     card.innerHTML=h;
     host.appendChild(card);
   });
   injectCustom();
+  if(document.getElementById('vocab-words')) renderVocabPairs();
 }
 
 // ── SECTIONS PERSONNALISÉES (oral / écrit / autoéval) ─────────────────
 function injectCustom(){
-  // JE PARLE
-  document.getElementById('exs-parle').innerHTML = `
+  // JE ME LANCE — jeu de rôle oral + écriture corrigée par l'IA
+  document.getElementById('exs-appli').innerHTML += `
    <div class="card custom">
-     <div class="c-hdr"><span class="tag" style="background:#0D9488">Production orale</span><span class="ctit" style="color:#0D9488">Prends un rendez-vous</span></div>
-     <p class="lead">Tu appelles la clinique. <b>Explique pourquoi tu veux voir un médecin et demande un rendez-vous.</b></p>
-     <div class="rec-zone"><button id="recBtn">🎤</button><div class="rec-lbl" id="recLbl">Touche pour t'enregistrer</div></div>
-     <div id="poPrev" class="hidden" style="display:flex;flex-direction:column;gap:12px">
+     <div class="prod-eyebrow"><span class="prod-num">1</span><span class="prod-kind">Production orale</span></div>
+     <h3 class="prod-tit">Appelle la clinique</h3>
+     <p class="prod-lead">Tu téléphones à la clinique pour obtenir un rendez-vous. Dis qui tu es, pourquoi tu appelles, et demande un moment.</p>
+     <div class="plan">
+       <div class="plan-step"><div class="plan-no">TEMPS 1</div><div class="plan-t">Qui tu es</div><div class="plan-ex">« Bonjour, je m'appelle… Je suis déjà venu chez vous l'an dernier. »</div></div>
+       <div class="plan-step"><div class="plan-no">TEMPS 2</div><div class="plan-t">Pourquoi tu appelles</div><div class="plan-ex">« Je me sens fatigué depuis deux semaines et j'ai souvent mal à la tête. »</div></div>
+       <div class="plan-step"><div class="plan-no">TEMPS 3</div><div class="plan-t">Ce que tu demandes</div><div class="plan-ex">« Est-ce que le docteur a une place cette semaine ? »</div></div>
+     </div>
+     <div class="rec-panel">
+       <div class="rec-steps">
+         <div class="rec-step on" id="recStep1"><span class="n">1</span><span class="l">Je m'enregistre</span></div>
+         <div class="rec-step" id="recStep2"><span class="n">2</span><span class="l">Je m'écoute et je corrige</span></div>
+         <div class="rec-step" id="recStep3"><span class="n">3</span><span class="l">J'envoie à mon enseignant</span></div>
+       </div>
+       <div class="rec-body">
+         <button id="recBtn" type="button" aria-label="Démarrer l'enregistrement"><span class="dot"></span></button>
+         <div>
+           <div class="rec-lbl" id="recLbl">Touche pour t'enregistrer</div>
+           <div class="rec-hint">Parle environ 30 secondes. Tu pourras recommencer autant de fois que tu veux.</div>
+         </div>
+       </div>
+     </div>
+     <div id="poPrev" class="hidden prod-tools" style="display:flex;flex-direction:column;gap:12px">
        <audio id="poAudio" controls style="width:100%"></audio>
        <textarea id="poText" rows="2" placeholder="Transcription automatique (tu peux la corriger)…"></textarea>
        <div style="display:flex;gap:10px;flex-wrap:wrap">
-         <button class="btn btn-ghost" onclick="resetRec()">↺ Recommencer</button>
-         <button class="btn btn-pri" id="poFbBtn" onclick="poGetFeedback()">💬 Obtenir une rétroaction</button>
+         <button class="btn btn-ghost" onclick="resetRec()">Recommencer</button>
+         <button class="btn btn-pri" id="poFbBtn" onclick="poGetFeedback()">Obtenir une rétroaction</button>
        </div>
-       <div class="fb" id="poFb"></div>
+       <div class="fb" id="poFb" aria-live="polite"></div>
        <div id="poSend" style="display:none;gap:10px;flex-wrap:wrap;align-items:center">
-         <button class="btn btn-send" id="poSendBtn" onclick="poSend()">📨 Envoyer à mon enseignant</button>
+         <button class="btn btn-send" id="poSendBtn" onclick="poSend()">Envoyer à mon enseignant</button>
        </div>
      </div>
      <div class="status" id="poStatus">Analyse en cours…</div>
      <div class="err" id="poErr"></div>
-   </div>`;
-  const rb=document.getElementById('recBtn'); if(rb) rb.addEventListener('click',toggleRec);
-
-  // J'ÉCRIS
-  document.getElementById('exs-ecris').innerHTML = `
+   </div>
    <div class="card custom">
-     <div class="c-hdr"><span class="tag" style="background:#0E7490">Production écrite</span><span class="ctit" style="color:#0E7490">Écris à la clinique</span></div>
-     <p class="lead">Écris un court courriel à la clinique pour <b>demander un rendez-vous</b> : dis qui tu es, pourquoi tu veux voir un médecin et quand tu es disponible. (3 à 5 phrases)</p>
-     <textarea id="peText" rows="6" placeholder="Bonjour,&#10;Je m'appelle… J'aimerais prendre un rendez-vous parce que…"></textarea>
-     <div style="margin-top:12px"><button class="btn btn-pri" id="peBtn" onclick="peCheck()">✍️ Vérifier mon texte</button></div>
-     <div class="fb" id="peFb"></div>
+     <div class="prod-eyebrow"><span class="prod-num">2</span><span class="prod-kind">Production écrite</span></div>
+     <h3 class="prod-tit">Écris pour faire renouveler une ordonnance</h3>
+     <p class="prod-lead">Il te reste deux comprimés et ton ordonnance est terminée. Écris à ta pharmacie pour demander un renouvellement.</p>
+     <div class="req">
+       <div class="req-hd">Ton courriel doit contenir</div>
+       <div class="req-grid">
+         <label class="req-it"><input type="checkbox"><span class="req-box"></span><span>Ton nom</span></label>
+         <label class="req-it"><input type="checkbox"><span class="req-box"></span><span>Le nom du médicament</span></label>
+         <label class="req-it"><input type="checkbox"><span class="req-box"></span><span>Combien il t'en reste</span></label>
+         <label class="req-it"><input type="checkbox"><span class="req-box"></span><span>Une demande claire</span></label>
+       </div>
+       <div class="req-note">Emploie au moins une fois <em>avoir besoin de</em> ou le <em>futur proche</em>.</div>
+     </div>
+     <div class="mail">
+       <div class="mail-row"><span class="mail-k">À</span><span class="mail-v">ordonnances@pharmacienotredame.ca</span></div>
+       <div class="mail-row"><span class="mail-k">Objet</span><span class="mail-v">Demande de renouvellement d'ordonnance</span></div>
+       <textarea id="peText" rows="7" aria-label="Ton texte" data-min="4" data-max="6" oninput="peCount()" placeholder="Bonjour,&#10;Je vous écris pour faire renouveler mon ordonnance…"></textarea>
+       <div class="mail-foot">
+         <span class="mail-count" id="peCountLbl">0 phrase sur 4 à 6</span>
+         <button class="btn-prod" id="peBtn" type="button" onclick="peCheck()">Vérifier mon message</button>
+       </div>
+     </div>
+     <div class="fb" id="peFb" aria-live="polite"></div>
      <div class="status" id="peStatus">Analyse en cours…</div>
      <div class="err" id="peErr"></div>
    </div>`;
+  const rb=document.getElementById('recBtn'); if(rb) rb.addEventListener('click',toggleRec);
 
-  // JE M'ÉVALUE
+  // JE RETIENS DES MOTS — notes + cartes mémoire + autoévaluation
   const SELF=[
     "Je sais où m'adresser selon mon problème de santé.",
     "Je peux prendre un rendez-vous au téléphone.",
@@ -689,7 +1789,19 @@ function injectCustom(){
     "Je peux parler de mon état (fatigue, douleur).",
     "Je connais le vocabulaire de la santé.",
   ];
-  document.getElementById('exs-eval').innerHTML = `
+  document.getElementById('exs-retiens').innerHTML = `
+   <div class="card custom">
+     <div class="c-hdr"><span class="tag" style="background:#166534">Je retiens des mots</span><span class="ctit" style="color:#166534">Mes mots utiles</span></div>
+     <p class="lead">Note ici les mots et expressions à retenir. Tu peux aussi <span style="font-weight:900;cursor:pointer;text-decoration:underline dotted;color:#166534" onclick="fcOpen(0)">réviser les cartes mémoire 🃏</span>.</p>
+     <div style="font-weight:800;color:#166534;font-size:13px;margin:6px 0 4px">Pour se présenter au téléphone</div>
+     <textarea rows="2" placeholder="Ex. : Bonjour, je m'appelle… Je suis déjà venu chez vous."></textarea>
+     <div style="font-weight:800;color:#166534;font-size:13px;margin:12px 0 4px">Pour décrire comment on se sent</div>
+     <textarea rows="2" placeholder="Ex. : Je me sens fatigué. J'ai mal à… depuis…"></textarea>
+     <div style="font-weight:800;color:#166534;font-size:13px;margin:12px 0 4px">Pour demander un rendez-vous</div>
+     <textarea rows="2" placeholder="Ex. : Je voudrais un rendez-vous. Est-ce que vous avez une place…?"></textarea>
+     <div style="font-weight:800;color:#166534;font-size:13px;margin:12px 0 4px">Pour comprendre le pharmacien</div>
+     <textarea rows="2" placeholder="Ex. : deux fois par jour, avec de la nourriture, pendant sept jours"></textarea>
+   </div>
    <div class="card custom">
      <div class="c-hdr"><span class="tag" style="background:#166534">Autoévaluation</span><span class="ctit" style="color:#166534">Qu'est-ce que je suis capable de faire ?</span></div>
      <p class="lead">Pour chaque énoncé, choisis : pas encore 😟, un peu 🙂, ou oui 😃.</p>
@@ -697,13 +1809,13 @@ function injectCustom(){
         <button onclick="rate(${i},this)">😟</button><button onclick="rate(${i},this)">🙂</button><button onclick="rate(${i},this)">😃</button>
      </div></div>`).join('')}
      <div style="margin-top:16px"><button class="btn btn-pri" onclick="finishEval()">Terminer le module 🎉</button></div>
-     <div id="evalDone" class="fb"></div>
+     <div id="evalDone" class="fb" aria-live="polite"></div>
    </div>`;
 }
 function rate(i,btn){ [...btn.parentElement.children].forEach(b=>b.classList.remove('sel')); btn.classList.add('sel'); }
 function finishEval(){
   const el=document.getElementById('evalDone');
-  el.innerHTML='<div class="fb-c">🎉 Bravo, tu as terminé le module « La santé » ! Tu peux revenir sur n\'importe quel onglet pour pratiquer encore.</div>';
+  el.innerHTML='<div class="fb-c">🎉 Bravo, tu as terminé l\'atelier « Prendre rendez-vous et aller à la pharmacie » ! Tu peux revenir sur n\'importe quel onglet pour pratiquer encore.</div>';
   el.classList.add('on');
   lmsTrack('exercise_completed',{finished:true});
 }
@@ -728,6 +1840,7 @@ async function toggleRec(){
     audioUrl=URL.createObjectURL(audioBlob);
     const a=document.getElementById('poAudio'); if(a)a.src=audioUrl;
     document.getElementById('poPrev').classList.remove('hidden');
+    recStep(2);
   };
   mediaRecorder.start();
   if(SR){
@@ -737,17 +1850,29 @@ async function toggleRec(){
     try{ recognition.start(); }catch(e){}
   }
   isRec=true;
-  const btn=document.getElementById('recBtn'); btn.classList.add('recording'); btn.textContent='⏹';
+  const btn=document.getElementById('recBtn'); btn.classList.add('recording');
+  btn.setAttribute('aria-label',"Arrêter l'enregistrement");
   document.getElementById('recLbl').textContent="Enregistrement… touche pour arrêter";
 }
 function stopRec(){
   isRec=false;
   if(mediaRecorder&&mediaRecorder.state!=='inactive')mediaRecorder.stop();
   if(recognition){ try{recognition.stop();}catch(e){} }
-  const btn=document.getElementById('recBtn'); if(btn){ btn.classList.remove('recording'); btn.textContent='🎤'; }
+  const btn=document.getElementById('recBtn'); if(btn){ btn.classList.remove('recording'); btn.setAttribute('aria-label',"Démarrer l'enregistrement"); }
   const l=document.getElementById('recLbl'); if(l)l.textContent="Touche pour réenregistrer";
 }
+function recStep(n){
+  for(let i=1;i<=3;i++){ const s=document.getElementById('recStep'+i); if(s) s.classList.toggle('on', i===n); }
+}
+function peCount(){
+  const el=document.getElementById('peText'), lbl=document.getElementById('peCountLbl');
+  if(!el||!lbl) return;
+  const mn=el.dataset.min||'5', mx=el.dataset.max||'8';
+  const n=(el.value.match(/[.!?…]+(\s|$)/g)||[]).length;
+  lbl.textContent = n+(n>1?' phrases':' phrase')+' sur '+mn+' à '+mx;
+}
 function resetRec(){
+  recStep(1);
   audioBlob=null; if(audioUrl){URL.revokeObjectURL(audioUrl);audioUrl=null;}
   document.getElementById('poPrev').classList.add('hidden');
   document.getElementById('poText').value='';
@@ -762,13 +1887,13 @@ async function poGetFeedback(){
   document.getElementById('poStatus').classList.add('on');
   document.getElementById('poFbBtn').disabled=true;
   try{
-    const res=await fetch('/api/correct-french',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({code:studentCode,text,question:"L'élève appelle la clinique pour prendre un rendez-vous : il explique pourquoi il veut voir un médecin et demande un moment."})});
+    const res=await fetch('/api/correct-french',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({code:studentCode,text,question:"L'élève téléphone à une clinique pour obtenir un rendez-vous : il se présente, explique comment il se sent et depuis quand, et demande un moment."})});
     const data=await res.json();
     document.getElementById('poStatus').classList.remove('on');
     document.getElementById('poFbBtn').disabled=false;
     if(!res.ok){ showErr('poErr',data.error||'Une erreur est survenue.'); return; }
     renderCorr('poFb',data,text); poFeedback=corrSummary(data,text);
-    document.getElementById('poSend').style.display='flex';
+    document.getElementById('poSend').style.display='flex'; recStep(3);
   }catch(e){
     document.getElementById('poStatus').classList.remove('on');
     document.getElementById('poFbBtn').disabled=false;
@@ -781,15 +1906,15 @@ async function poSend(){
   const ext=(audioBlob.type||'').includes('mp4')?'m4a':'webm';
   const fd=new FormData();
   fd.append('code',studentCode); fd.append('theme','Santé'); fd.append('taskId','module-sante-po');
-  fd.append('taskLabel','Production orale — rendez-vous'); fd.append('question','Appeler la clinique pour prendre un rendez-vous');
+  fd.append('taskLabel','Production orale — prendre un rendez-vous'); fd.append('question','Appeler une clinique pour obtenir un rendez-vous');
   fd.append('transcription',document.getElementById('poText').value.trim()); fd.append('feedback',poFeedback);
   fd.append('audio',audioBlob,'enregistrement.'+ext);
   try{
     const res=await fetch('/api/oral/submit',{method:'POST',body:fd});
     const data=await res.json();
-    if(!res.ok){ showErr('poErr',data.error||"L'envoi a échoué."); btn.disabled=false; btn.textContent='📨 Envoyer à mon enseignant'; return; }
+    if(!res.ok){ showErr('poErr',data.error||"L'envoi a échoué."); btn.disabled=false; btn.textContent='Envoyer à mon enseignant'; return; }
     document.getElementById('poSend').innerHTML='<span class="sent">✅ Envoyé à ton enseignant !</span>';
-  }catch(e){ showErr('poErr',"Impossible d'envoyer."); btn.disabled=false; btn.textContent='📨 Envoyer à mon enseignant'; }
+  }catch(e){ showErr('poErr',"Impossible d'envoyer."); btn.disabled=false; btn.textContent='Envoyer à mon enseignant'; }
 }
 
 // ── CORRECTION ÉCRITE ─────────────────────────────────────────────────
@@ -800,7 +1925,7 @@ async function peCheck(){
   document.getElementById('peStatus').classList.add('on');
   document.getElementById('peBtn').disabled=true;
   try{
-    const res=await fetch('/api/correct-email',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({code:studentCode,text})});
+    const res=await fetch('/api/correct-french',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({code:studentCode,text,question:"L'élève écrit un courriel à sa pharmacie pour faire renouveler une ordonnance, en donnant son nom, le médicament et ce qu'il lui en reste."})});
     const data=await res.json();
     document.getElementById('peStatus').classList.remove('on');
     document.getElementById('peBtn').disabled=false;
@@ -833,8 +1958,392 @@ function corrSummary(data,orig){
 function showErr(id,msg){ const e=document.getElementById(id); if(e){e.textContent=msg; e.classList.add('on');} }
 function hideErr(id){ const e=document.getElementById(id); if(e)e.classList.remove('on'); }
 
+// ── EXERCICES À ÉCRIRE ────────────────────────────────────────────────
+function normWrite(s){
+  return (s||'').toLowerCase().trim().normalize('NFD').replace(/[̀-ͯ]/g,'')
+    .replace(/\s+/g,' ').replace(/[.!?;:]+$/,'').replace(/^["«»']+|["«»']+$/g,'').trim();
+}
+async function checkWrite(exId, i){
+  const ex=EXOS.find(e=>e.id===exId); if(!ex) return;
+  const it=ex.items[i];
+  const inp=document.getElementById('wi_'+exId+'_'+i);
+  const fb=document.getElementById('wf_'+exId+'_'+i);
+  const val=inp.value.trim();
+  const zid='w_'+exId+'_'+i;
+  if(!val){ fb.className='wfb no'; fb.textContent="✏️ Écris ta réponse d'abord."; return; }
+
+  // Mode autocorrection (réponse connue)
+  if(it.accept){
+    const ok=it.accept.map(normWrite).includes(normWrite(val));
+    fb.className='wfb '+(ok?'ok':'no');
+    fb.innerHTML= ok ? '✅ Bravo, c\'est exact !'
+      : '❌ Presque ! La bonne réponse est : <b>'+esc(it.accept[0])+'</b>';
+    if(ok){ inp.classList.add('good'); inp.disabled=true; trackPlacement(zid,true); }
+    else {
+      trackPlacement(zid,false);
+      // Ici le cumul a du sens : chaque envoi raté est une tentative distincte.
+      const rates = ex.items.reduce((s,_,k)=> s + (TR.attempts['w_'+exId+'_'+k]||0), 0);
+      evaluerAide(exId, rates);
+    }
+    return;
+  }
+
+  // Mode IA (réponse ouverte)
+  fb.className='wfb wait'; fb.textContent='⏳ L\'assistant corrige ta réponse…';
+  const btn=inp.parentElement.querySelector('.wbtn'); if(btn) btn.disabled=true;
+  try{
+    const res=await fetch('/api/check-written',{method:'POST',headers:{'Content-Type':'application/json'},
+      body:JSON.stringify({code:studentCode, consigne:(ex.sub||'')+' '+(it.q||''), reponse:val, attendu:it.hint||''})});
+    const d=await res.json();
+    if(btn) btn.disabled=false;
+    if(!res.ok){ fb.className='wfb no'; fb.textContent=d.error||'Service momentanément indisponible.'; return; }
+    fb.className='wfb '+(d.correct?'ok':'no');
+    let html=(d.correct?'✅ ':'💡 ')+esc(d.feedback||'');
+    if(!d.correct && d.correction){ html+='<br><b>Suggestion :</b> '+esc(d.correction); }
+    fb.innerHTML=html;
+    if(d.correct){ inp.classList.add('good'); trackPlacement(zid,true); }
+  }catch(e){
+    if(btn) btn.disabled=false;
+    fb.className='wfb no'; fb.textContent='Impossible de contacter le serveur. Réessaie.';
+  }
+}
+
+// ── MINI-LEÇONS « EN APPRENDRE PLUS » ──────────────────────────────────
+// Une entrée par exercice qui porte un `savoir`. Le bandeau noir reste le
+// résumé ; ceci est la leçon complète, ouverte à la demande dans un panneau.
+// Blocs disponibles : texte, ana (anatomie étiquetée), labo (manipulation
+// à axes), ex (exemples audio), piege, check (micro-vérification, hors score).
+// Dans un mot, {…} souligne en vert la terminaison d'accord.
+const PLUS = {};
+
+// ── « EN APPRENDRE PLUS » : rendu du panneau ──────────────────────────
+// Souligne en vert ce qui est noté entre accolades : « superficiel{le} »,
+// « Pour{riez}-vous… ». Les crochets restent libres pour les sons — [y], [u].
+function plMark(w){
+  return String(w).split(/(\{[^}]*\})/).map(p=>
+    (p.charAt(0)==='{' && p.charAt(p.length-1)==='}')
+      ? '<span class="pl-end">'+esc(p.slice(1,-1))+'</span>'
+      : esc(p)
+  ).join('');
+}
+const plPlain = w => String(w).replace(/[{}]/g,'');
+
+// Nom du MP3 d'un bouton d'écoute de mini-leçon : sons/<id>.mp3. Si le fichier
+// n'existe pas, playWord retombe sur la synthèse vocale — donc on peut brancher
+// les boutons avant d'avoir généré les sons.
+const plAudioId = (exId, kind, bi, sub) =>
+  'plus_' + exId + '_' + kind + bi + (sub===undefined ? '' : '_' + sub);
+
+// Liste { identifiant → texte à lire } de tous les boutons d'écoute des
+// mini-leçons. C'est la source de vérité du script de génération audio :
+// ouvrir le module dans le navigateur et lancer plAudioManifest() pour la
+// relire après toute modification de PLUS.
+function plAudioManifest(){
+  const m = {};
+  Object.keys(PLUS).forEach(exId=>{
+    PLUS[exId].blocs.forEach((b,bi)=>{
+      if(b.t==='ana')
+        m[plAudioId(exId,'ana',bi)] = b.say || b.mots.map(x=>plPlain(x[1])).join(' ');
+      if(b.t==='ex')
+        b.rows.forEach((r,ri)=>{ m[plAudioId(exId,'ex',bi,ri)] = r[2] || r[0]; });
+      if(b.t==='labo')
+        Object.keys(b.out).forEach(k=>{
+          const o=b.out[k];
+          m[plAudioId(exId,'lab',bi,k)] = o.say || o.w.map(plPlain).join(' ');
+        });
+    });
+  });
+  return m;
+}
+const plLab = {};   // état des laboratoires, par clé « exoId-index de bloc »
+
+function plBloc(b, exId, bi){
+  const eye = {texte:'Explication', ana:'Anatomie', labo:'À manipuler',
+               ex:'Exemples', piege:'Attention', check:'Vérifiez-vous'}[b.t] || 'Explication';
+  let h='<div class="pl-blk"><div class="pl-eye">'+eye+'</div>';
+  if(b.h) h+='<div class="pl-h">'+esc(b.h)+'</div>';
+  if(b.p) h+='<div class="pl-p">'+b.p+'</div>';
+
+  if(b.t==='ana'){
+    h+='<div class="pl-ana">';
+    b.mots.forEach(m=>{
+      const key = m[2]===true || /noyau/i.test(m[0]);
+      h+='<div class="pl-tok'+(key?' is-key':'')+'"><span class="pl-tok-lbl">'+esc(m[0])+'</span>'
+       + '<span class="pl-tok-w">'+plMark(m[1])+'</span></div>';
+    });
+    // Les étiquettes d'anatomie mises bout à bout ne se lisent pas toujours
+    // bien (élisions, traits d'union, symboles phonétiques) : `say` donne le
+    // texte à prononcer quand la simple concaténation ne suffit pas.
+    const anaTxt = b.say || b.mots.map(m=>plPlain(m[1])).join(' ');
+    h+='<button class="btn-audio-round" type="button" title="Écouter le groupe"'
+     + ' onclick="playWord(this,\''+jsq(anaTxt)+'\',\''+plAudioId(exId,'ana',bi)+'\')">'+ICON_SPEAK+'</button>';
+    h+='</div>';
+  }
+
+  if(b.t==='labo'){
+    h+='<div id="lab-'+exId+'-'+bi+'" style="margin-top:16px">';
+    b.axes.forEach(a=>{
+      h+='<div class="pl-axe"><div class="pl-axe-lbl">'+esc(a.lbl)+'</div><div class="pl-opts">';
+      a.opts.forEach(o=>{
+        h+='<button class="pl-opt" type="button" data-axe="'+a.id+'" data-val="'+o[0]+'" aria-pressed="false"'
+         + ' onclick="plLabo(\''+exId+'\','+bi+',\''+a.id+'\',\''+o[0]+'\')">'+esc(o[1])+'</button>';
+      });
+      h+='</div></div>';
+    });
+    h+='<div class="pl-out"><div class="pl-out-w"></div>'
+     + '<button class="btn-audio-round" type="button" title="Écouter">'+ICON_SPEAK+'</button>'
+     + '<div class="pl-out-n"></div></div></div>';
+  }
+
+  if(b.t==='ex'){
+    h+='<div style="margin-top:14px">';
+    b.rows.forEach((r,ri)=>{
+      h+='<div class="pl-ex"><button class="btn-audio-round" type="button" title="Écouter"'
+       + ' onclick="playWord(this,\''+jsq(r[2]||r[0])+'\',\''+plAudioId(exId,'ex',bi,ri)+'\')">'+ICON_SPEAK+'</button>'
+       + '<span class="pl-ex-w">'+esc(r[0])+'</span><span class="pl-ex-t">'+esc(r[1])+'</span></div>';
+    });
+    h+='</div>';
+  }
+
+  if(b.t==='piege'){
+    h+='<div style="margin-top:6px">';
+    b.rows.forEach(r=>{
+      h+='<div class="pl-trap"><div class="pl-bad"><span aria-hidden="true">✕</span><span>'+esc(r[0])+'</span></div>'
+       + '<div class="pl-good"><span aria-hidden="true">✓</span><span>'+esc(r[1])+'</span></div>'
+       + '<div class="pl-why">'+r[2]+'</div></div>';
+    });
+    h+='</div>';
+  }
+
+  if(b.t==='check'){
+    h+='<div style="margin-top:12px">';
+    b.qs.forEach((q,qi)=>{
+      h+='<div class="pl-q"><div class="pl-qtxt">'+esc(q.q)+'</div><div class="pl-opts">';
+      q.opts.forEach((o,oi)=>{
+        h+='<button class="pl-opt" type="button" onclick="plCheck(this,\''+exId+'\','+bi+','+qi+','+oi+')">'+esc(o)+'</button>';
+      });
+      h+='</div><div class="pl-fb" aria-live="polite"></div></div>';
+    });
+    h+='</div>';
+  }
+
+  if(b.note) h+='<div class="pl-note">'+b.note+'</div>';
+  return h+'</div>';
+}
+
+function plLabo(exId, bi, axeId, val){
+  const key=exId+'-'+bi, b=PLUS[exId].blocs[bi];
+  const st=plLab[key] || (plLab[key]={});
+  b.axes.forEach(a=>{ if(st[a.id]==null) st[a.id]=a.opts[0][0]; });
+  if(axeId) st[axeId]=val;
+  const box=document.getElementById('lab-'+key); if(!box) return;
+  box.querySelectorAll('.pl-opt[data-axe]').forEach(el=>{
+    const on = st[el.dataset.axe]===el.dataset.val;
+    el.classList.toggle('on', on);
+    el.setAttribute('aria-pressed', on?'true':'false');
+  });
+  const o = b.out[b.axes.map(a=>st[a.id]).join('')];
+  if(!o) return;
+  const out = box.querySelector('.pl-out-w');
+  out.innerHTML = o.w.map(plMark).join(' ');
+  // Une phrase longue ne tient pas au corps de 27 px : on descend d'un cran.
+  out.classList.toggle('is-long', o.w.map(plPlain).join(' ').length > 30);
+  box.querySelector('.pl-out-n').textContent = o.n;
+  // `say` sert quand le texte affiché contient de la ponctuation de mise en
+  // page (une paire « tout · tu » se lit mieux avec une virgule).
+  const phrase = o.say || o.w.map(plPlain).join(' ');
+  const fid = plAudioId(exId, 'lab', bi, b.axes.map(a=>st[a.id]).join(''));
+  box.querySelector('.pl-out .btn-audio-round').onclick = function(){ playWord(this, phrase, fid); };
+}
+
+function plCheck(btn, exId, bi, qi, oi){
+  const q=PLUS[exId].blocs[bi].qs[qi];
+  const wrap=btn.closest('.pl-q');
+  const opts=wrap.querySelectorAll('.pl-opt');
+  opts.forEach(el=>el.classList.remove('ok','no'));
+  const good = oi===q.ok;
+  btn.classList.add(good?'ok':'no');
+  if(!good) opts[q.ok].classList.add('ok');
+  const fb=wrap.querySelector('.pl-fb');
+  fb.className='pl-fb on '+(good?'ok':'no');
+  fb.innerHTML='<span aria-hidden="true">'+(good?'✓':'✕')+'</span> '+(good?'':'La bonne réponse est « '+esc(q.opts[q.ok])+' ». ')+q.fb;
+}
+
+// ── PROPOSITION D'AIDE APRÈS PLUSIEURS ERREURS ────────────────────────
+// Le module connaît déjà, à la correction, quels énoncés sont ratés. Au-delà
+// d'un seuil, il propose une aide — sans jamais l'imposer ni toucher au score.
+// Une seule proposition par exercice et par séance.
+const AIDE = {err:{}, etat:{}};      // etat : 'proposee' | 'ouverte' | 'refusee' | 'analysee'
+const AIDE_SEUIL = 3;
+
+// Les exercices analysables : ceux dont on peut reconstituer, ligne par ligne,
+// ce que l'élève a choisi et ce qu'il fallait choisir.
+function releverReponses(exId){
+  const ex = EXOS.find(e=>e.id===exId); if(!ex) return [];
+  if(ex.type==='vf'){
+    return ex.rows.filter(r=>S.vfSel[r.id]).map(r=>({
+      enonce:r.txt, choix:S.vfSel[r.id], bonne:r.ok}));
+  }
+  if(ex.type==='write'){
+    return ex.items.map((it,i)=>{
+      const inp=document.getElementById('wi_'+exId+'_'+i);
+      const val=inp ? inp.value.trim() : '';
+      if(!val || !it.accept) return null;
+      return {enonce:it.q, choix:val, bonne:it.accept[0]};
+    }).filter(Boolean);
+  }
+  return [];
+}
+
+function evaluerAide(exId, nbErreurs){
+  if(!exId) return;
+  // L'analyse d'erreurs vaut pour tout exercice reconstituable, avec ou sans
+  // mini-leçon.
+  if(!PLUS[exId] && !releverReponses(exId).length) return;
+  AIDE.err[exId] = Math.max(AIDE.err[exId]||0, nbErreurs);
+  if(AIDE.err[exId] >= AIDE_SEUIL && !AIDE.etat[exId]) proposerAide(exId);
+}
+
+function proposerAide(exId){
+  const card = document.getElementById('exo-'+exId);
+  if(!card || card.querySelector('.aide')) return;
+  AIDE.etat[exId] = 'proposee';
+  const n = AIDE.err[exId];
+  const analysable = releverReponses(exId).length > 0;
+  const el = document.createElement('div');
+  el.className = 'aide';
+  el.id = 'aide-' + exId;
+  el.innerHTML =
+      '<div class="aide-txt"><b>' + n + ' erreurs</b> dans cet exercice.'
+    + (PLUS[exId] ? ' La mini-leçon « ' + esc(PLUS[exId].tit) + ' » explique ce point autrement.' : '')
+    + '</div>'
+    + '<div class="aide-btns">'
+    + (analysable
+        ? '<button class="btn-oui" type="button" onclick="analyserErreurs(\'' + exId + '\')">'
+          + ICON_ASSISTANT + ' Pourquoi je me trompe ?</button>' : '')
+    + (PLUS[exId]
+        ? '<button class="' + (analysable ? 'btn-non' : 'btn-oui') + '" type="button"'
+          + ' onclick="accepterAide(\'' + exId + '\')">Revoir l\'explication</button>' : '')
+    + '<button class="btn-non" type="button" onclick="refuserAide(\'' + exId + '\')">Plus tard</button>'
+    + '</div>'
+    + '<div class="aide-out" id="aideout-' + exId + '" aria-live="polite"></div>';
+  card.appendChild(el);
+  lmsTrack('aide_proposee', {exercice: exId, erreurs: n, analysable: analysable});
+}
+
+function accepterAide(exId){
+  AIDE.etat[exId] = 'ouverte';
+  const el = document.querySelector('#exo-'+exId+' .aide');
+  if(el) el.remove();
+  lmsTrack('aide_acceptee', {exercice: exId, erreurs: AIDE.err[exId]});
+  plusOpen(exId, 'labo');
+}
+
+// ── NIVEAU 2 : analyse du patron d'erreurs par l'IA ───────────────────
+// On envoie l'exercice COMPLET — chaque énoncé, le choix de l'élève, la bonne
+// réponse. L'IA ne juge rien : la correction est déjà faite et affichée. Elle
+// cherche seulement ce qui se répète dans les erreurs.
+async function analyserErreurs(exId){
+  const ex = EXOS.find(e=>e.id===exId); if(!ex) return;
+  const items = releverReponses(exId);
+  const out = document.getElementById('aideout-'+exId);
+  const btn = document.querySelector('#aide-'+exId+' .btn-oui');
+  if(!items.length || !out) return;
+
+  // Un seul appel par exercice et par séance : l'élève qui s'acharne ne doit
+  // pas générer une série d'appels facturés.
+  if(btn){ btn.disabled = true; }
+  out.className = 'aide-out on wait';
+  out.textContent = "L'assistant relit tes réponses…";
+
+  try{
+    const res = await fetch('/api/analyser-erreurs', {
+      method:'POST', headers:{'Content-Type':'application/json'},
+      body: JSON.stringify({
+        code: studentCode,
+        exercice: ex.tit || '',
+        notion: (ex.savoir && ex.savoir.h ? ex.savoir.h.replace(/^›\s*/,'') : ''),
+        items: items,
+      })});
+    const d = await res.json();
+    if(!res.ok){
+      out.className = 'aide-out on no';
+      out.textContent = d.error || 'Service momentanément indisponible.';
+      if(btn) btn.disabled = false;      // panne : on laisse réessayer
+      return;
+    }
+    out.className = 'aide-out on';
+    out.innerHTML =
+        (d.patron ? '<div class="ao-k">Ce qui revient</div><div class="ao-v">'+esc(d.patron)+'</div>' : '')
+      + (d.explication ? '<div class="ao-k">Pourquoi</div><div class="ao-v">'+esc(d.explication)+'</div>' : '')
+      + (d.conseil ? '<div class="ao-k">La prochaine fois</div><div class="ao-v ao-conseil">'+esc(d.conseil)+'</div>' : '');
+    AIDE.etat[exId] = 'analysee';
+    lmsTrack('aide_analysee', {exercice: exId, erreurs: AIDE.err[exId]});
+  }catch(e){
+    out.className = 'aide-out on no';
+    out.textContent = 'Impossible de contacter le serveur. Réessaie plus tard.';
+    if(btn) btn.disabled = false;
+  }
+}
+
+function refuserAide(exId){
+  AIDE.etat[exId] = 'refusee';
+  const el = document.querySelector('#exo-'+exId+' .aide');
+  if(el) el.remove();
+  lmsTrack('aide_refusee', {exercice: exId, erreurs: AIDE.err[exId]});
+}
+
+let plLastFocus=null;
+// `cible` : type de bloc vers lequel faire défiler le panneau ('labo' pour la
+// manipulation). Sans lui, l'élève arrive en haut d'une longue leçon.
+function plusOpen(exId, cible){
+  const P=PLUS[exId]; if(!P) return;
+  document.getElementById('plus-eye').textContent = P.eye || 'Mini-leçon';
+  document.getElementById('plus-tit').textContent = P.tit;
+  const body=document.getElementById('plus-body');
+  body.innerHTML = P.blocs.map((b,bi)=>plBloc(b,exId,bi)).join('');
+  body.scrollTop=0;
+  document.getElementById('plus-ov').classList.add('on');
+  // Le défilement appartient à <html> (body est figé à height:100%) — poser
+  // overflow:hidden sur body rognerait toute la page.
+  document.documentElement.style.overflow='hidden';
+  P.blocs.forEach((b,bi)=>{ if(b.t==='labo') plLabo(exId,bi,null,null); });
+  plLastFocus=document.activeElement;
+  document.getElementById('plus-close').focus();
+  lmsTrack('plus_open', {savoir: exId, cible: cible || ''});
+  if(cible){
+    const i = P.blocs.findIndex(b => b.t === cible);
+    if(i >= 0){
+      const bloc = body.children[i];
+      if(bloc){
+        bloc.scrollIntoView({block:'start'});
+        bloc.classList.add('is-cible');
+        setTimeout(()=>bloc.classList.remove('is-cible'), 2500);
+      }
+    }
+  }
+}
+function plusClose(){
+  document.getElementById('plus-ov').classList.remove('on');
+  document.documentElement.style.overflow='';
+  if(plLastFocus && plLastFocus.focus) plLastFocus.focus();
+}
+document.getElementById('plus-close').addEventListener('click', plusClose);
+document.getElementById('plus-ov').addEventListener('click', e=>{ if(e.target.id==='plus-ov') plusClose(); });
+document.addEventListener('keydown', e=>{
+  if(e.key==='Escape' && document.getElementById('plus-ov').classList.contains('on')) plusClose();
+});
+
 // ── RENDER ────────────────────────────────────────────────────────────
 function render(){
+  // Le bandeau reprend la section courante (gros titre + phrase d'intro),
+  // comme le modèle je-me-prepare.html.
+  const cur = SECTIONS.find(s=>s.id===curSec);
+  if(cur){
+    const tEl=document.getElementById('hdr-title'), lEl=document.getElementById('hdr-lead');
+    if(tEl) tEl.textContent = cur.title;
+    if(lEl) lEl.textContent = cur.lead || '';
+  }
   SECTIONS.forEach(sec=>{
     document.getElementById('tab-'+sec.id).classList.toggle('on', curSec===sec.id);
     document.getElementById('sec-'+sec.id).classList.toggle('on', curSec===sec.id);
@@ -845,40 +2354,117 @@ function render(){
   const ban=document.getElementById('sel-banner');
   if(S.sel){ban.classList.add('on');document.getElementById('sel-lbl').textContent=S.sel.lbl}
   else ban.classList.remove('on');
+  measureChrome();   // la bannière change la hauteur de l'en-tête collant
 
   const used=usedIds();
   EXOS.forEach(ex=>{
     const mount=document.getElementById('mount-'+ex.id);
+    if(!mount) return;
     const bank=document.getElementById('bank-'+ex.id);
-    if(!mount||!bank) return;
-    mount.innerHTML=''; bank.innerHTML='';
+    mount.innerHTML=''; if(bank) bank.innerHTML='';
 
-    if(ex.type==='vf'){
+    if(ex.type==='vf' && ex.cards){
+      // Grille de cartes : bouton audio rond + mot, puis les choix dessous.
+      mount.className='ph-grid';
       ex.rows.forEach(r=>{
-        const row=document.createElement('div');row.className='rrow';
-        const txt=document.createElement('div');txt.className='stxt';txt.innerHTML=r.txt;
-        row.appendChild(txt);row.appendChild(mkZone(r.id,'zvf'));
-        mount.appendChild(row);
+        const word=r.txt.replace(/<[^>]+>/g,'');
+        const card=document.createElement('div');card.className='ph-card';
+        const top=document.createElement('div');top.className='ph-top';
+        const sb=document.createElement('button');
+        sb.type='button'; sb.className='btn-audio-round'; sb.setAttribute('aria-label','Écouter le mot');
+        sb.innerHTML=ICON_SPEAK; sb.onclick=()=>playWord(sb, word, ex.id+'_'+r.id);
+        top.appendChild(sb);
+        const w=document.createElement('div');w.className='ph-word';w.textContent=word;
+        top.appendChild(w);
+        const mb=document.createElement('button');
+        mb.type='button'; mb.className='btn btn-ghost ph-mic'; mb.title='Répète le mot à voix haute';
+        mb.innerHTML=ICON_MIC; mb.onclick=()=>pronCheck(mb, word);
+        top.appendChild(mb);
+        card.appendChild(top);
+        const opts=document.createElement('div');opts.className='ph-opts';
+        ex.tiles.forEach(lbl=>{
+          const b=document.createElement('button');
+          b.type='button'; b.className='vf-opt';
+          if(S.vfSel[r.id]===lbl) b.classList.add('sel');
+          if(S.fb[r.id] && S.vfSel[r.id]===lbl) b.classList.add(S.fb[r.id]==='ok'?'fb-ok':'fb-no');
+          b.textContent=lbl;
+          b.onclick=()=>vfSelect(r.id,lbl);
+          opts.appendChild(b);
+        });
+        card.appendChild(opts);
+        mount.appendChild(card);
       });
-      ex.tiles.forEach((lbl,i)=>{
-        bank.appendChild(mkTile(ex.id+'_t'+i,lbl,ex.id,lbl==='VRAI'||lbl==='MUETTE'?'tv':'tf'));
+    }
+    else if(ex.type==='vf'){
+      ex.rows.forEach(r=>{
+        const row=document.createElement('div');row.className='vf-row';
+        if(ex.listen){
+          const sb=document.createElement('button');
+          sb.type='button'; sb.className='btn btn-ghost'; sb.style.cssText='flex:0 0 auto;padding:8px 12px;font-size:16px';
+          sb.innerHTML=ICON_SPEAK; sb.onclick=()=>playWord(sb, r.txt.replace(/<[^>]+>/g,''), ex.id+'_'+r.id);
+          row.appendChild(sb);
+          const mb=document.createElement('button');
+          mb.type='button'; mb.className='btn btn-ghost'; mb.style.cssText='flex:0 0 auto;padding:8px 12px;font-size:16px';
+          mb.title='Répète le mot à voix haute';
+          mb.innerHTML=ICON_MIC; mb.onclick=()=>pronCheck(mb, r.txt.replace(/<[^>]+>/g,''));
+          row.appendChild(mb);
+        }
+        const txt=document.createElement('div');txt.className='stxt';txt.innerHTML=r.txt;
+        row.appendChild(txt);
+        const opts=document.createElement('div');opts.className='vf-opts';
+        ex.tiles.forEach(lbl=>{
+          const b=document.createElement('button');
+          b.type='button'; b.className='vf-opt';
+          if(S.vfSel[r.id]===lbl) b.classList.add('sel');
+          if(S.fb[r.id] && S.vfSel[r.id]===lbl) b.classList.add(S.fb[r.id]==='ok'?'fb-ok':'fb-no');
+          b.textContent=lbl;
+          b.onclick=()=>vfSelect(r.id,lbl);
+          opts.appendChild(b);
+        });
+        row.appendChild(opts);
+        mount.appendChild(row);
       });
     }
     if(ex.type==='match'){
       ex.rows.forEach(r=>{
         const row=document.createElement('div');row.className='rrow2';
         const qc=document.createElement('div');qc.className='qcard';
-        qc.innerHTML='<div class="qlbl">Question</div><div class="qtxt">'+esc(r.q)+'</div>';
-        row.appendChild(qc);row.appendChild(mkZone(r.id,null,'glissez la réponse ici'));
+        qc.innerHTML=(ex.noQLbl?'':'<div class="qlbl">Question</div>')+'<div class="qtxt">'+esc(r.q)+'</div>';
+        row.appendChild(qc);row.appendChild(mkZone(r.id,null,ex.zonePh||'glissez la réponse ici'));
         mount.appendChild(row);
       });
       shuffled(ex.rows,7).forEach(r=>{ if(used.has(r.aid))return; bank.appendChild(mkTile(r.aid,r.a,ex.id,'ta')); });
       if(!bank.children.length)bank.innerHTML='<div class="bempty">Toutes les réponses sont placées !</div>';
     }
+    if(ex.type==='imgmatch'){
+      ex.rows.forEach(r=>{
+        const row=document.createElement('div');row.className='rrow2';
+        const qc=document.createElement('div');qc.className='qcard';
+        qc.innerHTML='<div class="qlbl">Énoncé</div><div class="qtxt">'+esc(r.txt)+'</div>';
+        row.appendChild(qc);
+        const z=mkImgZone(r.id, ex.images.find(im=>im.id===r.aid));
+        row.appendChild(z);
+        mount.appendChild(row);
+      });
+      shuffled(ex.images,11).forEach(im=>{ if(used.has(im.id))return; bank.appendChild(mkImgTile(im,ex.id)); });
+      if(!bank.children.length)bank.innerHTML='<div class="bempty">Toutes les images sont placées !</div>';
+    }
     if(ex.type==='blanks'){
       ex.segs.forEach(sg=>{ if(sg.k==='t'){mount.appendChild(document.createTextNode(sg.t))} else{mount.appendChild(mkBlank(sg.id))} });
       shuffled(ex.words,23).forEach(w=>{ if(used.has(w.id))return; bank.appendChild(mkTile(w.id,w.l,ex.id,'tn')); });
       if(!bank.children.length)bank.innerHTML='<div class="bempty">Tous les mots sont placés !</div>';
+    }
+    if(ex.type==='rows'){
+      ex.rows.forEach(r=>{
+        const row=document.createElement('div');row.className='rrow';
+        const lb=document.createElement('div');lb.className='timelbl';lb.textContent=r.lbl;
+        row.appendChild(lb);
+        const z=mkZone(r.id,null,'glissez la phrase ici');z.style.flex='1';
+        row.appendChild(z);
+        mount.appendChild(row);
+      });
+      shuffled(ex.bank,13).forEach(b=>{ if(used.has(b.id))return; bank.appendChild(mkTile(b.id,b.l,ex.id,'ta')); });
+      if(!bank.children.length)bank.innerHTML='<div class="bempty">Toutes les phrases sont placées !</div>';
     }
   });
   updateChip();
@@ -888,7 +2474,11 @@ function updateChip(){
   document.getElementById('prog-chip').textContent='⭐ '+n+' / '+TOTAL_ZONES;
 }
 
-document.getElementById('btn-reset').addEventListener('click',()=>{ S.pl={};S.sel=null;S.fb={};render(); });
+document.getElementById('btn-reset').addEventListener('click',()=>{
+  S.pl={};S.sel=null;S.fb={};S.vfSel={};
+  document.querySelectorAll('.vf-summary').forEach(el=>{el.textContent='';el.className='vf-summary';});
+  render();
+});
 
 // ── FLASHCARDS ────────────────────────────────────────────────────────
 let fcIdx=0;
@@ -901,7 +2491,31 @@ function fcShow(){
   document.getElementById('fc-def').classList.add('hidden');
   document.getElementById('fc-ex').classList.add('hidden');
   document.getElementById('fc-reveal-btn').classList.remove('hidden');
+  fcTradRaz();
 }
+// Chaque carte repart sans traduction : celle de la carte précédente,
+// laissée à l'écran, se lirait comme la traduction du nouveau mot.
+function fcTradRaz(){
+  const b=document.getElementById('fc-trad-btn'), z=document.getElementById('fc-trad');
+  if(!b||!z) return;
+  z.className='hidden'; z.textContent=''; z.removeAttribute('dir');
+  b.classList.remove('hidden'); b.disabled=false;
+  const L=(window.Outils&&Outils.langue)?Outils.langue():null;
+  b.textContent=L?('Traduire en '+L.n):'Traduire';
+}
+document.getElementById('fc-trad-btn').addEventListener('click',()=>{
+  const c=FC_CARDS[fcIdx], b=document.getElementById('fc-trad-btn'), z=document.getElementById('fc-trad');
+  if(!window.Outils||!Outils.traduire){
+    z.className='att'; z.textContent="La traduction n'est pas disponible hors ligne."; return;
+  }
+  b.disabled=true; z.className='att'; z.textContent='Je traduis…';
+  // La définition part en contexte, pas en texte à traduire : elle guide le
+  // sens du mot sans dévoiler la réponse à l'élève qui n'a pas encore révélé.
+  Outils.traduire(c.word, c.def).then(r=>{
+    z.className=''; if(r.langue.rtl) z.setAttribute('dir','rtl');
+    z.textContent=r.texte; b.classList.add('hidden');
+  }).catch(e=>{ z.className='att'; z.textContent=e.message; b.disabled=false; });
+});
 function fcOpen(i){fcIdx=i||0;fcShow();document.getElementById('fc-overlay').classList.add('on')}
 function fcOpenWord(w){const i=FC_CARDS.findIndex(c=>c.word===w);fcOpen(i>=0?i:0)}
 document.getElementById('fc-reveal-btn').addEventListener('click',()=>{
@@ -914,9 +2528,28 @@ document.getElementById('fc-next').addEventListener('click',()=>{fcIdx=(fcIdx+1)
 document.getElementById('fc-close').addEventListener('click',()=>document.getElementById('fc-overlay').classList.remove('on'));
 document.getElementById('fc-overlay').addEventListener('click',e=>{if(e.target.id==='fc-overlay')document.getElementById('fc-overlay').classList.remove('on')});
 
+// ── HAUTEUR DE L'EN-TÊTE COLLANT ──────────────────────────────────────
+// Le banc de réponses se colle juste sous la barre d'onglets. Cette barre
+// n'a pas de hauteur fixe : elle passe sur deux lignes en écran étroit et
+// grandit encore quand la bannière « Sélectionné : … » s'affiche. On la
+// mesure donc plutôt que de coder une valeur en dur.
+function measureChrome(){
+  const c=document.getElementById('chrome');
+  if(!c) return;
+  document.documentElement.style.setProperty('--chrome-h', c.offsetHeight+'px');
+}
+addEventListener('resize', measureChrome);
+addEventListener('orientationchange', measureChrome);
+if(window.ResizeObserver){
+  const ro=new ResizeObserver(measureChrome);
+  const c=document.getElementById('chrome');
+  if(c) ro.observe(c);
+}
+
 // ── GO ────────────────────────────────────────────────────────────────
 buildStatic();
 render();
+measureChrome();
 lmsTrack('file_opened');
 </script>
 <!-- OUTILS-ELEVE:début — greffé par build/greffe_outils.py -->
