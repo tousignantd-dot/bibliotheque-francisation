@@ -2014,7 +2014,265 @@ async function checkWrite(exId, i){
 // Blocs disponibles : texte, ana (anatomie étiquetée), labo (manipulation
 // à axes), ex (exemples audio), piege, check (micro-vérification, hors score).
 // Dans un mot, {…} souligne en vert la terminaison d'accord.
-const PLUS = {};
+// Une entrée par savoir de langue de la section « La langue ». Les exemples
+// sortent tous de la clinique et de la pharmacie de Lina : une phrase de
+// grammaire tombée de nulle part ne dit rien à un élève de niveau 4.
+const PLUS = {
+
+  l1: {
+    eye:'Mini-leçon', tit:'Le futur proche : ce qui arrive bientôt',
+    blocs:[
+      {t:'texte', h:"Deux verbes qui travaillent ensemble",
+       p:"La réceptionniste propose jeudi à onze heures. Lina raccroche et annonce à son mari : « Je <b>vais voir</b> le médecin jeudi. » Le futur proche sert à dire ce qui arrive <b>bientôt</b> ou ce qui est <b>déjà décidé</b>. On prend le verbe <b>aller</b> au présent, et on lui colle un deuxième verbe à l'<b>infinitif</b>.",
+       note:"C'est le futur qu'on entend le plus souvent au téléphone, au comptoir et à la pharmacie. Le futur simple (« je verrai ») s'écrit surtout."},
+
+      {t:'ana', h:"Les deux morceaux",
+       p:"Le premier morceau change avec la personne. Le deuxième ne change jamais.",
+       mots:[['Sujet','je'],['Aller · au présent','v{ais}',true],['Verbe · infinitif','voir']],
+       say:"je vais voir",
+       note:"Seul « aller » se conjugue : <b>vais, vas, va, allons, allez, vont</b>. Le deuxième verbe reste tel quel — voir, prendre, attendre, appeler."},
+
+      {t:'labo', h:"Essayez : changez la personne",
+       p:"Choisissez qui parle, puis ce qu'on va faire. Regardez ce qui bouge, et ce qui ne bouge pas.",
+       axes:[
+         {id:'qui', lbl:'Qui parle ?', opts:[['je','je'],['nous','nous'],['elles','elles']]},
+         {id:'quoi', lbl:'On va faire quoi ?', opts:[['rdv','prendre un rendez-vous'],['attendre','attendre'],['appeler','appeler la clinique']]},
+       ],
+       out:{
+         jerdv:        {w:["je","v{ais}","prendre un rendez-vous"], n:'je · aller au présent'},
+         jeattendre:   {w:["je","v{ais}","attendre"],               n:'je · aller au présent'},
+         jeappeler:    {w:["je","v{ais}","appeler la clinique"],    n:'je · aller au présent'},
+         nousrdv:      {w:["nous","all{ons}","prendre un rendez-vous"], n:'nous · aller au présent'},
+         nousattendre: {w:["nous","all{ons}","attendre"],              n:'nous · aller au présent'},
+         nousappeler:  {w:["nous","all{ons}","appeler la clinique"],   n:'nous · aller au présent'},
+         ellesrdv:     {w:["elles","v{ont}","prendre un rendez-vous"], n:'elles · aller au présent'},
+         ellesattendre:{w:["elles","v{ont}","attendre"],               n:'elles · aller au présent'},
+         ellesappeler: {w:["elles","v{ont}","appeler la clinique"],    n:'elles · aller au présent'},
+       },
+       note:"Le deuxième verbe n'a jamais bougé, quelle que soit la personne : c'est toujours l'infinitif."},
+
+      {t:'ex', h:"Six phrases de la clinique", p:"Écoutez, puis répétez à voix basse.",
+       rows:[
+         ["Je vais prendre un rendez-vous demain.","je"],
+         ["Tu vas appeler Info-Santé 811.","tu"],
+         ["Le docteur Tremblay va voir Lina jeudi.","il"],
+         ["Nous allons attendre dans la salle d'attente.","nous"],
+         ["Vous allez recevoir votre ordonnance.","vous"],
+         ["Les patients vont arriver à neuf heures.","ils"],
+       ]},
+
+      {t:'piege', h:"Pièges fréquents",
+       rows:[
+         ["Je vais prends un rendez-vous.","Je vais prendre un rendez-vous.",
+          "Après « aller », le deuxième verbe ne se conjugue <b>jamais</b> : il reste à l'infinitif."],
+         ["Je vais à prendre un rendez-vous.","Je vais prendre un rendez-vous.",
+          "Pas de « à » entre les deux verbes. Ils se suivent directement : <b>vais prendre</b>."],
+         ["Je vais pas attendre.","Je ne vais pas attendre.",
+          "La négation entoure <b>aller</b>, pas l'infinitif : <em>ne vais pas</em> attendre. À l'oral rapide, le « ne » tombe souvent ; à l'écrit, il reste."],
+       ]},
+
+      {t:'check', h:"Est-ce que c'est clair maintenant ?",
+       p:"Trois questions rapides. Elles ne comptent pas dans votre score.",
+       qs:[
+         {q:"Nous ___ attendre dans la salle d'attente.", opts:["allons","allons à"], ok:0,
+          fb:"Rien entre « allons » et l'infinitif."},
+         {q:"Les patients vont ___ à neuf heures.", opts:["arrivent","arriver"], ok:1,
+          fb:"Le deuxième verbe reste à l'infinitif, même quand le sujet est au pluriel."},
+         {q:"Lina parle de jeudi prochain. Elle dit :", opts:["Je vais voir le médecin.","Je voyais le médecin."], ok:0,
+          fb:"Le futur proche annonce ce qui vient ; « je voyais » raconte le passé."},
+       ]},
+    ],
+  },
+
+  l2: {
+    eye:'Mini-leçon', tit:'Les verbes pronominaux : le petit mot en plus',
+    blocs:[
+      {t:'texte', h:"Un pronom collé au verbe",
+       p:"Quand la réceptionniste demande la raison de sa visite, Lina répond : « Je <b>me sens</b> fatiguée depuis deux semaines. » Pas « je sens » : <b>je me sens</b>. Certains verbes traînent toujours avec eux un petit mot — <em>me, te, se, nous, vous</em> — qui revient sur la personne qui parle.",
+       note:"Ce sont des verbes très fréquents pour parler de sa santé : se sentir, se reposer, se réveiller, se soigner, s'inquiéter."},
+
+      {t:'ana', h:"Trois morceaux, pas deux",
+       p:"Le pronom se glisse entre le sujet et le verbe. Il change avec la personne, exactement comme le sujet.",
+       mots:[['Sujet','je'],['Pronom · change','me',true],['Verbe','sens']],
+       say:"je me sens",
+       note:"Devant une voyelle, <b>me</b> devient <b>m'</b> : je <em>m'inquiète</em>, elle <em>s'endort</em>."},
+
+      {t:'labo', h:"Essayez : le pronom suit la personne",
+       p:"Choisissez la personne, puis le verbe. Le pronom souligné change tout seul.",
+       axes:[
+         {id:'qui', lbl:'Qui ?', opts:[['je','je'],['nous','nous'],['ils','ils']]},
+         {id:'verbe', lbl:'Quel verbe ?', opts:[['sentir','se sentir'],['reposer','se reposer'],['reveiller','se réveiller']]},
+       ],
+       out:{
+         jesentir:      {w:["je","{me}","sens"],           n:'se sentir · je'},
+         jereposer:     {w:["je","{me}","repose"],         n:'se reposer · je'},
+         jereveiller:   {w:["je","{me}","réveille"],       n:'se réveiller · je'},
+         noussentir:    {w:["nous","{nous}","sentons"],    n:'se sentir · nous'},
+         nousreposer:   {w:["nous","{nous}","reposons"],   n:'se reposer · nous'},
+         nousreveiller: {w:["nous","{nous}","réveillons"], n:'se réveiller · nous'},
+         ilssentir:     {w:["ils","{se}","sentent"],       n:'se sentir · ils'},
+         ilsreposer:    {w:["ils","{se}","reposent"],      n:'se reposer · ils'},
+         ilsreveiller:  {w:["ils","{se}","réveillent"],    n:'se réveiller · ils'},
+       },
+       note:"Le pronom n'est jamais facultatif : sans lui, la phrase change de sens ou ne veut plus rien dire."},
+
+      {t:'ex', h:"Six phrases de patients", p:"Écoutez le pronom : il est toujours là, juste avant le verbe.",
+       rows:[
+         ["Je me sens fatiguée depuis deux semaines.","je · se sentir"],
+         ["Tu te reposes après le travail.","tu · se reposer"],
+         ["Lina se réveille avec mal à la tête.","elle · se réveiller"],
+         ["Nous nous reposons le week-end.","nous · se reposer"],
+         ["Vous vous sentez mieux aujourd'hui ?","vous · se sentir"],
+         ["Les patients se sentent nerveux avant l'examen.","ils · se sentir"],
+       ]},
+
+      {t:'piege', h:"Pièges fréquents",
+       rows:[
+         ["Je sens fatiguée.","Je me sens fatiguée.",
+          "Sans le pronom, « sentir » veut dire percevoir une odeur. Le pronom fait toute la différence."],
+         ["Je me sens mal à la tête.","J'ai mal à la tête.",
+          "On <b>a</b> mal quelque part ; on <b>se sent</b> suivi d'un adjectif : je me sens fatiguée, je me sens mieux."],
+         ["Nous se reposons.","Nous nous reposons.",
+          "Le pronom prend la même personne que le sujet : nous → <em>nous</em>, vous → <em>vous</em>, ils → <em>se</em>."],
+       ]},
+
+      {t:'check', h:"Est-ce que c'est clair maintenant ?",
+       p:"Trois questions rapides. Elles ne comptent pas dans votre score.",
+       qs:[
+         {q:"Au téléphone, Lina explique son état. Elle dit :", opts:["Je sens fatiguée.","Je me sens fatiguée."], ok:1,
+          fb:"Avec un adjectif, on utilise « se sentir » et son pronom."},
+         {q:"Nous ___ reposons après le rendez-vous.", opts:["nous","se"], ok:0,
+          fb:"Le pronom suit le sujet : nous → nous."},
+         {q:"Elle ___ réveille à six heures.", opts:["se","me"], ok:0,
+          fb:"À la troisième personne, le pronom est « se », au singulier comme au pluriel."},
+       ]},
+    ],
+  },
+
+  l3: {
+    eye:'Mini-leçon', tit:'Avoir besoin de : dire ce qu\'il vous faut',
+    blocs:[
+      {t:'texte', h:"Le « de » ne tombe jamais",
+       p:"Pour obtenir quelque chose — un rendez-vous, un médicament, du repos — on dit ce dont on a besoin. La formule est toujours la même : <b>avoir besoin</b> + <b>de</b>. Ce « de » ne disparaît pas, même quand la suite est un verbe.",
+       note:"C'est la phrase la plus utile du module : à l'accueil, au comptoir, au téléphone, elle ouvre presque toutes les demandes."},
+
+      {t:'ana', h:"Trois morceaux",
+       p:"Après « de », on met soit un nom, soit un verbe à l'infinitif.",
+       mots:[['Verbe','ai besoin'],['Toujours','d\'',true],['Nom','un rendez-vous']],
+       say:"j'ai besoin d'un rendez-vous",
+       note:"Devant une voyelle, <b>de</b> devient <b>d'</b> : besoin <em>d'un</em> rendez-vous, besoin <em>d'aide</em>."},
+
+      {t:'labo', h:"Essayez : nom ou infinitif",
+       p:"Choisissez ce dont Lina a besoin. Le « de » reste, mais il change parfois de forme.",
+       axes:[
+         {id:'quoi', lbl:'Besoin de quoi ?', opts:[['rdv','un rendez-vous'],['medicaments','des médicaments'],['reposer','se reposer'],['aide','de l\'aide']]},
+       ],
+       out:{
+         rdv:         {w:["J'ai besoin","{d'un} rendez-vous"],  n:'de + nom · élision devant voyelle'},
+         medicaments: {w:["J'ai besoin","{de} médicaments"],    n:'de + nom'},
+         reposer:     {w:["J'ai besoin","{de} me reposer"],     n:'de + infinitif'},
+         aide:        {w:["J'ai besoin","{d'}aide"],            n:'de + nom · élision devant voyelle'},
+       },
+       note:"Devant un verbe, c'est toujours <b>de</b> — jamais « d' », puisque l'infinitif ne commence pas par une voyelle ici."},
+
+      {t:'ex', h:"Six demandes", p:"Écoutez comment la phrase s'ouvre, puis ce qui suit le « de ».",
+       rows:[
+         ["J'ai besoin d'un rendez-vous cette semaine.","de + nom"],
+         ["J'ai besoin de médicaments pour la fièvre.","de + nom"],
+         ["J'ai besoin de me reposer deux jours.","de + infinitif"],
+         ["J'ai besoin de dormir plus longtemps.","de + infinitif"],
+         ["Nous avons besoin d'aide pour remplir le formulaire.","de + nom"],
+         ["Vous avez besoin de votre carte d'assurance maladie.","de + nom"],
+       ]},
+
+      {t:'piege', h:"Pièges fréquents",
+       rows:[
+         ["J'ai besoin un rendez-vous.","J'ai besoin d'un rendez-vous.",
+          "Le « de » n'est pas facultatif : c'est lui qui relie « besoin » à la suite."],
+         ["J'ai besoin de me reposer un peu de repos.","J'ai besoin de repos.",
+          "On choisit : un <b>nom</b> (de repos) ou un <b>infinitif</b> (de me reposer), pas les deux."],
+         ["Je besoin d'un médicament.","J'ai besoin d'un médicament.",
+          "« Besoin » n'est pas un verbe : il lui faut <b>avoir</b> devant — j'ai, tu as, il a, nous avons."],
+       ]},
+
+      {t:'check', h:"Est-ce que c'est clair maintenant ?",
+       p:"Trois questions rapides. Elles ne comptent pas dans votre score.",
+       qs:[
+         {q:"Au comptoir, vous demandez un médicament. Vous dites :", opts:["J'ai besoin un sirop.","J'ai besoin d'un sirop."], ok:1,
+          fb:"Après « besoin », toujours « de » — ici « d' » devant la voyelle."},
+         {q:"J'ai besoin ___ dormir.", opts:["de","d'"], ok:0,
+          fb:"« Dormir » commence par une consonne : pas d'élision."},
+         {q:"Nous ___ besoin d'aide.", opts:["avons","sommes"], ok:0,
+          fb:"On dit <b>avoir</b> besoin, jamais « être besoin »."},
+       ]},
+    ],
+  },
+
+  l4: {
+    eye:'Mini-leçon', tit:'Un peu, assez, très, trop : doser ce qu\'on ressent',
+    blocs:[
+      {t:'texte', h:"Quatre crans sur la même échelle",
+       p:"Le pharmacien et le médecin posent tous la même question : <em>à quel point ?</em> Quatre petits mots suffisent à répondre. <b>Un peu</b> est le cran le plus bas, <b>assez</b> vient ensuite, <b>très</b> est fort — et <b>trop</b> sort de l'échelle : il dit qu'il y en a <b>plus qu'il ne faut</b>.",
+       note:"« Trop » n'est pas un « très » plus fort : c'est un signal de problème. À la pharmacie, « j'ai trop mal » demande une intervention."},
+
+      {t:'ana', h:"Où se place l'adverbe",
+       p:"L'adverbe d'intensité se glisse juste devant le mot qu'il dose.",
+       mots:[['Sujet','je'],['Verbe','suis'],['Adverbe · intensité','très',true],['Adjectif','fatiguée']],
+       say:"je suis très fatiguée",
+       note:"Devant un adjectif (très fatiguée) ou devant un mot comme « mal » (un peu mal). Jamais après."},
+
+      {t:'labo', h:"Essayez : montez et descendez l'échelle",
+       p:"Choisissez le cran, puis ce que Lina décrit. Écoutez comme le sens change.",
+       axes:[
+         {id:'cran', lbl:'Quel cran ?', opts:[['peu','un peu'],['assez','assez'],['tres','très'],['trop','trop']]},
+         {id:'quoi', lbl:'Elle parle de quoi ?', opts:[['fatigue','sa fatigue'],['tete','son mal de tête']]},
+       ],
+       out:{
+         peufatigue:   {w:["Je suis","{un peu}","fatiguée"],  n:'cran 1 · ça va'},
+         peutete:      {w:["J'ai","{un peu}","mal à la tête"], n:'cran 1 · ça va'},
+         assezfatigue: {w:["Je suis","{assez}","fatiguée"],    n:'cran 2 · c\'est réel'},
+         asseztete:    {w:["J'ai","{assez}","mal à la tête"],  n:'cran 2 · c\'est réel'},
+         tresfatigue:  {w:["Je suis","{très}","fatiguée"],     n:'cran 3 · c\'est fort'},
+         trestete:     {w:["J'ai","{très}","mal à la tête"],   n:'cran 3 · c\'est fort'},
+         tropfatigue:  {w:["Je suis","{trop}","fatiguée"],     n:'hors échelle · trop, c\'est un problème'},
+         troptete:     {w:["J'ai","{trop}","mal à la tête"],   n:'hors échelle · trop, c\'est un problème'},
+       },
+       note:"Les trois premiers décrivent. Le quatrième alerte : « je suis trop fatiguée » sous-entend que ça ne peut pas continuer comme ça."},
+
+      {t:'ex', h:"Six phrases dosées", p:"Écoutez le cran choisi à chaque fois.",
+       rows:[
+         ["J'ai un peu mal à la tête depuis ce matin.","cran 1"],
+         ["Ce médicament est assez efficace.","cran 2"],
+         ["Je suis très fatiguée depuis deux semaines.","cran 3"],
+         ["J'ai trop de travail, je suis épuisée.","hors échelle"],
+         ["La salle d'attente est un peu bruyante.","cran 1"],
+         ["Le comprimé est trop gros, je n'arrive pas à l'avaler.","hors échelle"],
+       ]},
+
+      {t:'piege', h:"Pièges fréquents",
+       rows:[
+         ["Je suis un peu très fatiguée.","Je suis très fatiguée.",
+          "Un seul cran à la fois : on choisit son niveau, on ne les additionne pas."],
+         ["Ce médicament est efficace assez.","Ce médicament est assez efficace.",
+          "L'adverbe se place <b>devant</b> le mot qu'il dose, jamais après."],
+         ["J'ai trop mal, mais ça va, merci.","J'ai un peu mal, ça va.",
+          "« Trop » annonce un excès. Le dire au pharmacien pendant qu'on sourit envoie deux messages contraires."],
+       ]},
+
+      {t:'check', h:"Est-ce que c'est clair maintenant ?",
+       p:"Trois questions rapides. Elles ne comptent pas dans votre score.",
+       qs:[
+         {q:"La douleur est légère. Vous dites :", opts:["J'ai un peu mal.","J'ai trop mal."], ok:0,
+          fb:"« Un peu » est le cran le plus bas de l'échelle."},
+         {q:"Où se place l'adverbe ?", opts:["Je suis fatiguée très.","Je suis très fatiguée."], ok:1,
+          fb:"Toujours devant le mot qu'il dose."},
+         {q:"Vous ne pouvez plus travailler tellement vous êtes épuisée. Vous dites :", opts:["Je suis assez fatiguée.","Je suis trop fatiguée."], ok:1,
+          fb:"« Trop » signale que ça dépasse ce qui est supportable — c'est l'information utile pour le médecin."},
+       ]},
+    ],
+  },
+
+};
 
 // ── « EN APPRENDRE PLUS » : rendu du panneau ──────────────────────────
 // Souligne en vert ce qui est noté entre accolades : « superficiel{le} »,
