@@ -1,0 +1,1105 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Guide de l'espace enseignant — Francisation Niveau 4</title>
+<!-- Le système de design versionné, pas ds-bundle/ (ignoré par git). -->
+<link rel="stylesheet" href="../design-system/styles.css" />
+<style>
+/* ═══════════════════════════════════════════════════════════════
+   GUIDE ANIMÉ DE L'ESPACE ENSEIGNANT
+   Une diapositive par outil. Aucune couleur en dur : uniquement des
+   jetons du système de design. Le mouvement est sobre — apparition
+   en fondu et montée de 14 px, décalée d'une pièce à l'autre — et
+   il se coupe entièrement sous `prefers-reduced-motion`.
+   ═══════════════════════════════════════════════════════════════ */
+
+body { margin: 0; overflow: hidden; background: var(--surface-page); }
+
+/* — La scène — */
+.gd { position: fixed; inset: 0; display: flex; flex-direction: column; }
+.gd-scene { position: relative; flex: 1; min-height: 0; }
+
+.gd-dia {
+  position: absolute; inset: 0; overflow-y: auto;
+  padding: clamp(var(--sp-6), 4vh, var(--sp-12)) var(--sp-6) var(--sp-8);
+  opacity: 0; visibility: hidden; pointer-events: none;
+}
+.gd-dia.is-active { opacity: 1; visibility: visible; pointer-events: auto; }
+.gd-dia > .gd-bloc { max-width: var(--content-max); margin: 0 auto; }
+
+/* Le titre d'une diapositive respire moins que le titre d'une page :
+   62 px mangeraient l'écran d'un portable de 13 pouces. */
+.gd-h { font-size: clamp(28px, 4.2vw, 46px); font-weight: var(--fw-black); line-height: 1.08; letter-spacing: var(--ls-hero); color: var(--text-strong); }
+.gd-h--hero { font-size: clamp(34px, 6vw, 62px); }
+.gd-sur { font-size: var(--fs-label); font-weight: var(--fw-bold); letter-spacing: var(--ls-label); text-transform: uppercase; color: var(--text-accent); }
+.gd-sur--muet { color: var(--text-muted); }
+.gd-lead { margin-top: var(--sp-4); font-size: var(--fs-lead); font-weight: var(--fw-semi); color: var(--ink-500); max-width: 72ch; }
+.gd-p { font-size: var(--fs-body-sm); font-weight: var(--fw-medium); color: var(--ink-500); }
+.gd-p + .gd-p { margin-top: var(--sp-3); }
+.gd-pile { display: grid; gap: var(--sp-6); }
+.gd-pile--serree { gap: var(--sp-4); }
+
+/* — Cartes et grilles — */
+.gd-grille { display: grid; gap: var(--sp-4); grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); }
+.gd-grille--2 { grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); }
+.gd-carte {
+  background: var(--surface-card); border: 1px solid var(--border);
+  border-radius: var(--r-lg); padding: var(--sp-5); box-shadow: var(--sh-card);
+}
+.gd-carte h3 { font-size: var(--fs-body); font-weight: var(--fw-black); color: var(--text-strong); }
+.gd-carte p { margin-top: var(--sp-2); font-size: var(--fs-body-sm); font-weight: var(--fw-medium); color: var(--ink-500); }
+.gd-carte--accent { border-left: 4px solid var(--accent); }
+
+/* Pastille numérotée : le seul repère de couleur des cartes d'étape. */
+.gd-num {
+  display: inline-flex; align-items: center; justify-content: center;
+  width: 34px; height: 34px; margin-bottom: var(--sp-3);
+  border-radius: var(--r-md); background: var(--accent-soft); color: var(--accent-ink);
+  font-size: var(--fs-ui); font-weight: var(--fw-black);
+}
+
+/* Un seul bloc encre par diapositive : la règle à retenir. */
+.gd-encre {
+  background: var(--surface-inverse); color: var(--text-inverse);
+  border-radius: var(--r-lg); padding: var(--sp-6);
+}
+.gd-encre .gd-sur { color: var(--paper-200); }
+.gd-encre b { display: block; margin-top: var(--sp-2); font-size: clamp(20px, 2.6vw, 28px); font-weight: var(--fw-black); line-height: var(--lh-title); }
+.gd-encre p { margin-top: var(--sp-3); font-size: var(--fs-body-sm); font-weight: var(--fw-medium); color: var(--paper-200); }
+
+.gd-avert {
+  background: var(--warn-bg); border: 1px solid var(--warn-line); border-radius: var(--r-md);
+  padding: var(--sp-4) var(--sp-5); font-size: var(--fs-body-sm); font-weight: var(--fw-medium); color: var(--warn-ink);
+}
+.gd-avert b { font-weight: var(--fw-black); }
+
+.gd-liste { display: grid; gap: var(--sp-3); margin: 0; padding: 0; list-style: none; }
+.gd-liste li {
+  display: flex; gap: var(--sp-3); align-items: baseline;
+  font-size: var(--fs-body-sm); font-weight: var(--fw-medium); color: var(--ink-500);
+}
+.gd-liste li > i {
+  flex: none; width: 22px; font-style: normal; text-align: center;
+  font-size: var(--fs-ui); font-weight: var(--fw-black); color: var(--accent);
+}
+.gd-liste b { color: var(--text-strong); font-weight: var(--fw-bold); }
+
+/* — Maquettes : des morceaux d'interface redessinés, pas des captures.
+     Une capture serait périmée à la première retouche du portail. — */
+.gd-mock {
+  background: var(--surface-card); border: 1px solid var(--border);
+  border-radius: var(--r-lg); overflow: hidden; box-shadow: var(--sh-raise);
+}
+.gd-mock-bande1 {
+  display: flex; align-items: center; gap: var(--sp-4); flex-wrap: wrap;
+  padding: var(--sp-3) var(--sp-5); border-bottom: 1px solid var(--border);
+}
+.gd-mock-bande2 {
+  display: flex; align-items: center; gap: var(--sp-3); flex-wrap: wrap;
+  padding: var(--sp-3) var(--sp-5); background: var(--surface-band); border-bottom: 1px solid var(--border-tint);
+}
+.gd-mock-marque { font-size: var(--fs-ui); font-weight: var(--fw-black); color: var(--text-strong); }
+.gd-mock-nav { display: flex; gap: var(--sp-4); flex-wrap: wrap; margin-left: auto; }
+.gd-mock-onglet {
+  padding: 4px 0; border-bottom: 2px solid transparent;
+  font-size: var(--fs-ui); font-weight: var(--fw-bold); color: var(--text-muted);
+}
+.gd-mock-onglet.is-actif { border-bottom-color: var(--accent); color: var(--text-strong); }
+.gd-mock-corps { padding: var(--sp-5); display: grid; gap: var(--sp-3); }
+.gd-mock-champ {
+  display: inline-flex; align-items: center; min-height: 38px; padding: 0 var(--sp-4);
+  background: var(--surface-card); border: 1px solid var(--border); border-radius: var(--r-sm);
+  font-size: var(--fs-ui); font-weight: var(--fw-bold); color: var(--text-strong);
+}
+.gd-mock-btn {
+  display: inline-flex; align-items: center; min-height: 34px; padding: 0 var(--sp-4);
+  border-radius: var(--r-pill); border: 1px solid var(--border); background: var(--surface-card);
+  font-size: var(--fs-ui-sm); font-weight: var(--fw-bold); color: var(--text-strong);
+}
+.gd-mock-btn--pri { background: var(--accent); border-color: var(--accent); color: var(--text-inverse); }
+.gd-mock-rangee {
+  display: flex; align-items: center; gap: var(--sp-3); flex-wrap: wrap;
+  padding: var(--sp-3) var(--sp-4); border: 1px solid var(--border); border-radius: var(--r-sm);
+  background: var(--surface-card);
+}
+.gd-mock-rangee.is-choisie { background: var(--accent-soft); }
+.gd-mock-case {
+  flex: none; width: 20px; height: 20px; border-radius: 5px;
+  border: 2px solid var(--line-300); background: var(--surface-card);
+}
+.gd-mock-case.is-cochee { border-color: var(--accent); background: var(--accent); }
+.gd-mock-chevron {
+  flex: none; width: 34px; height: 34px; display: flex; align-items: center; justify-content: center;
+  border: 1px solid var(--border); border-radius: var(--r-sm);
+  font-size: 13px; font-weight: var(--fw-black); color: var(--ink-500);
+}
+.gd-mock-txt { flex: 1; min-width: 160px; }
+.gd-mock-titre { font-size: var(--fs-body-sm); font-weight: var(--fw-black); color: var(--text-strong); }
+.gd-mock-meta { margin-top: 2px; font-size: var(--fs-ui-sm); font-weight: var(--fw-semi); color: var(--text-muted); }
+.gd-mock-sous {
+  margin: var(--sp-2) 0 0 46px; display: grid; gap: var(--sp-2);
+  padding: var(--sp-3) var(--sp-4); background: var(--surface-sunken);
+  border: 1px solid var(--border); border-radius: var(--r-sm);
+}
+.gd-mock-sous > div { display: flex; align-items: center; gap: var(--sp-3); font-size: var(--fs-ui); font-weight: var(--fw-bold); color: var(--text-strong); }
+
+/* Pastille d'état : couleur + glyphe + mot, jamais la couleur seule. */
+.gd-past {
+  display: inline-flex; align-items: center; gap: 7px; white-space: nowrap;
+  padding: 6px 12px; border-radius: var(--r-pill);
+  font-size: var(--fs-ui-sm); font-weight: var(--fw-black);
+}
+.gd-past--vide    { background: var(--paper-200); color: var(--ink-500); }
+.gd-past--fermee  { background: var(--warn-bg); color: var(--warn-ink); }
+.gd-past--offerte { background: var(--ok-bg); color: var(--ok-ink); }
+.gd-past--avenir  { background: var(--acier-100); color: var(--acier-600); }
+
+.gd-code {
+  display: inline-block; padding: 4px 10px; border-radius: var(--r-sm);
+  background: var(--acier-100); color: var(--acier-600);
+  font-family: ui-monospace, "SFMono-Regular", "Menlo", monospace;
+  font-size: var(--fs-ui); font-weight: var(--fw-black); letter-spacing: .12em;
+}
+.gd-pilules { display: flex; flex-wrap: wrap; gap: var(--sp-2); }
+.gd-pilule {
+  padding: 6px 13px; border-radius: var(--r-pill);
+  background: var(--surface-card); border: 1px solid var(--border);
+  font-size: var(--fs-ui-sm); font-weight: var(--fw-bold); color: var(--text-strong);
+}
+.gd-pilule.is-choisie { background: var(--sel-bg); border-color: var(--sel-bg); color: var(--sel-ink); }
+
+.gd-deux { display: grid; grid-template-columns: 1fr 1fr; gap: var(--sp-6); align-items: start; }
+@media (max-width: 860px) { .gd-deux { grid-template-columns: 1fr; } }
+
+/* — Barre de commande — */
+.gd-barre {
+  flex: none; display: flex; align-items: center; gap: var(--sp-4); flex-wrap: wrap;
+  padding: var(--sp-3) var(--sp-5);
+  background: var(--surface-card); border-top: 1px solid var(--border);
+}
+.gd-progres { position: absolute; left: 0; right: 0; top: 0; height: 3px; background: var(--paper-200); }
+.gd-progres > i { display: block; height: 100%; background: var(--accent); transition: width var(--dur) var(--ease); }
+.gd-barre-gauche { display: flex; align-items: center; gap: var(--sp-3); }
+.gd-compteur { font-size: var(--fs-ui-sm); font-weight: var(--fw-black); color: var(--text-muted); white-space: nowrap; }
+.gd-titre-courant { font-size: var(--fs-ui); font-weight: var(--fw-bold); color: var(--text-strong); }
+.gd-nav-btns { display: flex; gap: var(--sp-2); margin-left: auto; }
+.gd-btn {
+  min-height: var(--tap-min); min-width: var(--tap-min); padding: 0 var(--sp-4);
+  display: inline-flex; align-items: center; justify-content: center; gap: var(--sp-2);
+  background: var(--surface-card); border: 1px solid var(--border); border-radius: var(--r-pill);
+  font: inherit; font-size: var(--fs-ui); font-weight: var(--fw-bold); color: var(--text-strong);
+  cursor: pointer;
+}
+.gd-btn:hover { background: var(--paper-100); }
+.gd-btn--pri { background: var(--accent); border-color: var(--accent); color: var(--text-inverse); }
+.gd-btn--pri:hover { background: var(--green-800); }
+.gd-btn[disabled] { color: var(--text-muted); cursor: default; }
+
+/* Le sommaire : douze diapositives se retrouvent mal à la flèche. */
+.gd-sommaire {
+  position: fixed; inset: 0; z-index: 40; background: rgba(23, 24, 26, .5);
+  display: flex; align-items: center; justify-content: center; padding: var(--sp-6); overflow: auto;
+}
+.gd-sommaire > div {
+  width: 100%; max-width: 720px; margin: auto; padding: var(--sp-6);
+  background: var(--surface-page); border-radius: var(--r-lg); box-shadow: var(--sh-modal);
+}
+.gd-sommaire-liste { margin-top: var(--sp-4); display: grid; gap: 6px; max-height: 60vh; overflow: auto; }
+.gd-sommaire-liste button {
+  display: flex; align-items: center; gap: var(--sp-3); width: 100%; min-height: var(--tap-min);
+  padding: var(--sp-2) var(--sp-3); text-align: left;
+  background: var(--surface-card); border: 1px solid var(--border); border-radius: var(--r-sm);
+  font: inherit; font-size: var(--fs-ui); font-weight: var(--fw-bold); color: var(--text-strong); cursor: pointer;
+}
+.gd-sommaire-liste button:hover { background: var(--accent-soft); }
+.gd-sommaire-liste button.is-courante { background: var(--sel-bg); border-color: var(--sel-bg); color: var(--sel-ink); }
+.gd-sommaire-liste span { flex: none; width: 26px; font-size: var(--fs-ui-sm); font-weight: var(--fw-black); color: var(--text-muted); }
+.gd-sommaire-liste button.is-courante span { color: var(--paper-200); }
+
+.gd-aide { font-size: var(--fs-ui-sm); font-weight: var(--fw-semi); color: var(--text-muted); }
+[hidden] { display: none !important; }
+
+/* — Le mouvement — */
+@keyframes gd-monte { from { opacity: 0; transform: translateY(14px); } to { opacity: 1; transform: none; } }
+.gd-dia.is-active [data-r] {
+  animation: gd-monte 420ms var(--ease) both;
+  animation-delay: calc(var(--i, 0) * 70ms);
+}
+.gd-dia { transition: opacity 260ms var(--ease), visibility 260ms; }
+
+@media (prefers-reduced-motion: reduce) {
+  .gd-dia { transition: none; }
+  .gd-dia.is-active [data-r] { animation: none; }
+  .gd-progres > i { transition: none; }
+}
+
+@media print {
+  body { overflow: visible; }
+  .gd { position: static; }
+  .gd-scene { position: static; }
+  .gd-dia { position: static; opacity: 1; visibility: visible; page-break-after: always; }
+  .gd-dia.is-active [data-r] { animation: none; }
+  .gd-barre, .gd-sommaire { display: none !important; }
+}
+</style>
+</head>
+<body>
+
+<div class="gd">
+  <div class="gd-scene" id="scene">
+    <div class="gd-progres"><i id="progres" style="width:0"></i></div>
+
+    <!-- ══════ 1 · Titre ══════ -->
+    <section class="gd-dia" data-titre="Ouverture">
+      <div class="gd-bloc gd-pile">
+        <div data-r>
+          <div class="gd-sur">Francisation · Niveau 4</div>
+          <h1 class="gd-h gd-h--hero" style="margin-top:var(--sp-3)">L'espace enseignant,<br />outil par outil</h1>
+          <p class="gd-lead">Vingt écrans pour faire le tour du portail : poser les dates, suivre les élèves, gérer les groupes et sortir le matériel de la semaine.</p>
+        </div>
+        <div class="gd-grille" data-r>
+          <div class="gd-carte gd-carte--accent">
+            <h3>Planifier</h3>
+            <p>Donner une date aux activités. Sans date, l'élève ne voit rien.</p>
+          </div>
+          <div class="gd-carte gd-carte--accent">
+            <h3>Élèves</h3>
+            <p>Créer les codes d'accès et suivre la progression du groupe.</p>
+          </div>
+          <div class="gd-carte gd-carte--accent">
+            <h3>Groupes et comptes</h3>
+            <p>Un groupe par classe, avec ses dates et ses élèves.</p>
+          </div>
+          <div class="gd-carte gd-carte--accent">
+            <h3>Matériel</h3>
+            <p>Les présentations de séance et les fiches à imprimer.</p>
+          </div>
+        </div>
+        <p class="gd-aide" data-r>Avancez avec la flèche droite, la barre d'espace ou le bouton « Suivant ». La touche <b>S</b> ouvre le sommaire.</p>
+      </div>
+    </section>
+
+    <!-- ══════ 2 · La règle d'or ══════ -->
+    <section class="gd-dia" data-titre="La règle d'or">
+      <div class="gd-bloc gd-pile">
+        <div data-r>
+          <div class="gd-sur">Avant tout le reste</div>
+          <h2 class="gd-h" style="margin-top:var(--sp-3)">Une activité sans date n'existe pas pour l'élève</h2>
+        </div>
+        <div class="gd-encre" data-r>
+          <div class="gd-sur">La règle</div>
+          <b>Un groupe neuf part vide.</b>
+          <p>Une activité n'est offerte à un groupe que si vous lui avez donné une date d'ouverture <em>pour ce groupe</em>. Tant qu'elle n'en a pas, elle n'apparaît pas du tout dans le portail de l'élève — pas même en « à venir ».</p>
+        </div>
+        <div class="gd-grille" data-r>
+          <div class="gd-carte">
+            <div class="gd-num">1</div>
+            <h3>Le catalogue est commun</h3>
+            <p>Toutes les enseignantes et tous les enseignants voient les mêmes activités. Personne ne recrée le contenu.</p>
+          </div>
+          <div class="gd-carte">
+            <div class="gd-num">2</div>
+            <h3>La planification appartient au groupe</h3>
+            <p>Les dates, les élèves, la progression et les productions orales sont propres à chaque groupe.</p>
+          </div>
+          <div class="gd-carte">
+            <div class="gd-num">3</div>
+            <h3>Deux classes, deux calendriers</h3>
+            <p>La même activité peut être ouverte lundi pour un groupe et trois semaines plus tard pour un autre.</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ══════ 3 · Le tour du portail ══════ -->
+    <section class="gd-dia" data-titre="Le tour du portail">
+      <div class="gd-bloc gd-pile">
+        <div data-r>
+          <div class="gd-sur">S'orienter</div>
+          <h2 class="gd-h" style="margin-top:var(--sp-3)">Deux bandes en haut, toujours visibles</h2>
+          <p class="gd-lead">La première dit <b>où</b> vous êtes. La seconde dit <b>pour qui</b> vous travaillez. Elles restent collées en haut quand vous défilez.</p>
+        </div>
+        <div class="gd-mock" data-r>
+          <div class="gd-mock-bande1">
+            <span class="gd-mock-marque">Espace enseignant</span>
+            <nav class="gd-mock-nav">
+              <span class="gd-mock-onglet is-actif">Planifier</span>
+              <span class="gd-mock-onglet">Élèves</span>
+              <span class="gd-mock-onglet">Groupes et comptes</span>
+              <span class="gd-mock-onglet">Matériel</span>
+            </nav>
+          </div>
+          <div class="gd-mock-bande2">
+            <span class="gd-sur gd-sur--muet">Groupe</span>
+            <span class="gd-mock-champ">Niveau 4 — avant-midi</span>
+            <span class="gd-mock-btn">Ajouter le lien Teams</span>
+            <span class="gd-mock-btn">Copier une planification</span>
+            <span class="gd-mock-btn">Catalogue</span>
+            <span class="gd-mock-btn">Composer une activité</span>
+          </div>
+        </div>
+        <ul class="gd-liste gd-deux" data-r>
+          <li><i>1</i><span><b>Bande du haut</b> — les quatre onglets, votre nom, la déconnexion. Votre session reste ouverte 30 jours sur l'appareil.</span></li>
+          <li><i>2</i><span><b>Bande du groupe</b> — le groupe actif et tout ce qui s'applique à lui. Changer de groupe change ce que montrent les quatre onglets.</span></li>
+        </ul>
+      </div>
+    </section>
+
+    <!-- ══════ 4 · La barre du groupe ══════ -->
+    <section class="gd-dia" data-titre="La barre du groupe">
+      <div class="gd-bloc gd-pile">
+        <div data-r>
+          <div class="gd-sur">Bande du groupe</div>
+          <h2 class="gd-h" style="margin-top:var(--sp-3)">Cinq gestes à portée de main</h2>
+        </div>
+        <div class="gd-grille gd-grille--2" data-r>
+          <div class="gd-carte">
+            <h3>Le sélecteur de groupe</h3>
+            <p>Le groupe actif suit d'un onglet à l'autre. Il est retenu d'une visite à l'autre : vous retrouvez votre classe en ouvrant le portail.</p>
+          </div>
+          <div class="gd-carte">
+            <h3>Le lien Teams du groupe</h3>
+            <p>Collez l'adresse de votre rencontre : le bouton « Rejoindre le cours sur Teams » apparaît en haut du portail de vos élèves. Un seul lien par groupe.</p>
+          </div>
+          <div class="gd-carte">
+            <h3>Copier une planification</h3>
+            <p>Reprenez le calendrier d'un de vos autres groupes, décalé du nombre de jours voulu. C'est le geste qui démarre un groupe neuf en une minute.</p>
+          </div>
+          <div class="gd-carte">
+            <h3>Catalogue</h3>
+            <p>La page de gestion des activités : téléverser un fichier, modifier une fiche, changer une activité de catégorie.</p>
+          </div>
+          <div class="gd-carte">
+            <h3>Composer une activité</h3>
+            <p>S'ouvre dans un nouvel onglet — votre planification en cours n'est jamais perdue.</p>
+          </div>
+        </div>
+        <div class="gd-avert" data-r><b>Attention :</b> « Copier une planification » <b>remplace</b> les dates du groupe où vous êtes. La date « vue en classe », elle, n'est pas copiée : elle reste votre trace personnelle.</div>
+      </div>
+    </section>
+
+    <!-- ══════ 5 · Planifier — Aujourd'hui ══════ -->
+    <section class="gd-dia" data-titre="Planifier · Aujourd'hui">
+      <div class="gd-bloc gd-pile">
+        <div data-r>
+          <div class="gd-sur">Onglet Planifier</div>
+          <h2 class="gd-h" style="margin-top:var(--sp-3)">Le programme du jour vous accueille</h2>
+          <p class="gd-lead">En haut de l'onglet : la date, et ce que le groupe actif a d'ouvert aujourd'hui. C'est le coup d'œil du matin, avant d'entrer en classe.</p>
+        </div>
+        <div class="gd-mock" data-r>
+          <div class="gd-mock-corps" style="background:var(--surface-band)">
+            <div class="gd-sur gd-sur--muet">Aujourd'hui</div>
+            <div style="font-size:clamp(26px,3.4vw,38px);font-weight:var(--fw-black);line-height:1.05">mardi 18 août</div>
+            <div style="font-size:var(--fs-ui);font-weight:var(--fw-bold);color:var(--text-muted)">3 activités ouvertes · 1 ferme demain</div>
+          </div>
+          <div class="gd-mock-corps">
+            <div class="gd-mock-rangee" style="border-left:4px solid var(--acier-600)">
+              <div class="gd-mock-txt">
+                <div class="gd-mock-titre">Chercher un logement</div>
+                <div class="gd-mock-meta">Cours · ouverte depuis le 12 août</div>
+              </div>
+              <span class="gd-past gd-past--offerte"><span aria-hidden="true">✓</span>Ouverte 12 août</span>
+            </div>
+            <div class="gd-mock-rangee" style="border-left:4px solid var(--violet-600)">
+              <div class="gd-mock-txt">
+                <div class="gd-mock-titre">Corrige-moi ! — pratique orale</div>
+                <div class="gd-mock-meta">Atelier · ouverte depuis le 5 août</div>
+              </div>
+              <span class="gd-past gd-past--offerte"><span aria-hidden="true">✓</span>Ouverte 5 août</span>
+            </div>
+          </div>
+        </div>
+        <p class="gd-p" data-r>Si le groupe ne voit encore rien, un bandeau vous le dit franchement et vous propose de copier la planification d'un autre groupe.</p>
+      </div>
+    </section>
+
+    <!-- ══════ 6 · Planifier — trouver ══════ -->
+    <section class="gd-dia" data-titre="Planifier · Trouver">
+      <div class="gd-bloc gd-pile">
+        <div data-r>
+          <div class="gd-sur">Onglet Planifier</div>
+          <h2 class="gd-h" style="margin-top:var(--sp-3)">Trouver l'activité</h2>
+        </div>
+        <div class="gd-deux" data-r>
+          <div class="gd-pile gd-pile--serree">
+            <div class="gd-carte">
+              <h3>La recherche</h3>
+              <p>Un champ, et il cherche large : le titre, le domaine, même un temps de verbe. Tapez « imparfait » ou « logement » plutôt que de faire défiler.</p>
+            </div>
+            <div class="gd-carte">
+              <h3>Les trois filtres</h3>
+              <p><b>Tout</b> · <b>Cours</b> · <b>Ateliers</b>. Les cours sont les modules de 4 h du matin ; les ateliers, les activités de 2 h de l'après-midi.</p>
+            </div>
+          </div>
+          <div class="gd-mock">
+            <div class="gd-mock-corps">
+              <span class="gd-mock-champ" style="width:100%">Chercher une activité, un domaine, un temps de verbe</span>
+              <div class="gd-pilules">
+                <span class="gd-pilule is-choisie">Tout</span>
+                <span class="gd-pilule">Cours</span>
+                <span class="gd-pilule">Ateliers</span>
+              </div>
+              <div style="height:1px;background:var(--border);margin:var(--sp-2) 0"></div>
+              <div class="gd-mock-rangee">
+                <span class="gd-mock-chevron">▸</span>
+                <span class="gd-mock-case"></span>
+                <div class="gd-mock-txt"><div class="gd-mock-titre">Un problème à régler</div><div class="gd-mock-meta">Cours · 6 sections</div></div>
+                <span class="gd-past gd-past--vide"><span aria-hidden="true">—</span>Sans date</span>
+              </div>
+              <div class="gd-mock-rangee">
+                <span class="gd-mock-chevron">▸</span>
+                <span class="gd-mock-case"></span>
+                <div class="gd-mock-txt"><div class="gd-mock-titre">La météo et les saisons</div><div class="gd-mock-meta">Cours · 6 sections</div></div>
+                <span class="gd-past gd-past--avenir"><span aria-hidden="true">→</span>À venir 25 août</span>
+              </div>
+            </div>
+          </div>
+        </div>
+        <p class="gd-p" data-r>Les boutons du haut de la liste — « Tout déplier », « Cocher les N lignes » — agissent sur ce que le filtre montre, pas sur le catalogue entier.</p>
+      </div>
+    </section>
+
+    <!-- ══════ 7 · Les pastilles ══════ -->
+    <section class="gd-dia" data-titre="Les quatre états">
+      <div class="gd-bloc gd-pile">
+        <div data-r>
+          <div class="gd-sur">Lire une rangée</div>
+          <h2 class="gd-h" style="margin-top:var(--sp-3)">Quatre états, quatre pastilles</h2>
+          <p class="gd-lead">Chaque pastille porte une couleur, un glyphe <b>et</b> un mot. Vous n'avez jamais à deviner d'après la couleur seule.</p>
+        </div>
+        <div class="gd-grille" data-r>
+          <div class="gd-carte">
+            <span class="gd-past gd-past--vide"><span aria-hidden="true">—</span>Sans date</span>
+            <p>L'élève ne la voit pas. C'est l'état de départ de toute activité dans un groupe neuf.</p>
+          </div>
+          <div class="gd-carte">
+            <span class="gd-past gd-past--avenir"><span aria-hidden="true">→</span>À venir 25 août</span>
+            <p>La date est posée, mais elle n'est pas arrivée. L'activité s'ouvrira toute seule le jour dit.</p>
+          </div>
+          <div class="gd-carte">
+            <span class="gd-past gd-past--offerte"><span aria-hidden="true">✓</span>Ouverte 12 août</span>
+            <p>L'élève la voit et peut y répondre. C'est le seul état qui compte dans sa progression.</p>
+          </div>
+          <div class="gd-carte">
+            <span class="gd-past gd-past--fermee"><span aria-hidden="true">✕</span>Fermée 20 août</span>
+            <p>L'élève la voit encore, pour relire, mais ne peut plus y répondre.</p>
+          </div>
+        </div>
+        <div class="gd-encre" data-r>
+          <div class="gd-sur">À retenir</div>
+          <b>La date de fermeture est facultative.</b>
+          <p>Sans elle, l'activité reste ouverte indéfiniment. Ne fermez que ce que vous voulez réellement figer — un devoir remis, une évaluation passée.</p>
+        </div>
+      </div>
+    </section>
+
+    <!-- ══════ 8 · Le chevron ══════ -->
+    <section class="gd-dia" data-titre="Le chevron : sections et détails">
+      <div class="gd-bloc gd-pile">
+        <div data-r>
+          <div class="gd-sur">Onglet Planifier</div>
+          <h2 class="gd-h" style="margin-top:var(--sp-3)">Le chevron ouvre le module</h2>
+          <p class="gd-lead">Un module ne s'ouvre pas forcément d'un bloc : le chevron déplie ses sections, et sa fiche pédagogique.</p>
+        </div>
+        <div class="gd-deux" data-r>
+          <div class="gd-mock">
+            <div class="gd-mock-corps">
+              <div class="gd-mock-rangee is-choisie">
+                <span class="gd-mock-chevron">▾</span>
+                <span class="gd-mock-case is-cochee"></span>
+                <div class="gd-mock-txt"><div class="gd-mock-titre">Un problème à régler</div><div class="gd-mock-meta">Cours · 6 sections</div></div>
+              </div>
+              <div class="gd-mock-sous">
+                <div><span class="gd-mock-case is-cochee"></span> Je découvre</div>
+                <div><span class="gd-mock-case is-cochee"></span> Défi 1</div>
+                <div><span class="gd-mock-case"></span> Défi 2</div>
+                <div><span class="gd-mock-case"></span> Défi 3</div>
+                <div><span class="gd-mock-case"></span> Je me lance</div>
+                <div><span class="gd-mock-case"></span> Je retiens des mots</div>
+              </div>
+            </div>
+          </div>
+          <div class="gd-pile gd-pile--serree">
+            <div class="gd-carte">
+              <h3>Ouvrir au rythme de la classe</h3>
+              <p>Donnez une date à « Défi 2 » comme vous en donnez une au module. Ce qui n'est pas encore ouvert reste grisé chez l'élève, avec sa date d'ouverture affichée.</p>
+            </div>
+            <div class="gd-carte">
+              <h3>Une section sans date suit son module</h3>
+              <p>Vous n'êtes jamais obligé de dater les six. Datez seulement ce que vous voulez retenir ; le reste s'ouvre avec le module.</p>
+            </div>
+          </div>
+        </div>
+        <div class="gd-carte gd-carte--accent" data-r>
+          <h3>Et sous les sections, la fiche pédagogique</h3>
+          <p>Savoirs, actes de parole, compétences visées et vocabulaire du module : de quoi préparer sans ouvrir l'activité. <b>Bon à savoir :</b> un module fermé cache toutes ses sections — si vous ne datez que des sections, le portail ouvre le module à la première d'entre elles.</p>
+        </div>
+      </div>
+    </section>
+
+    <!-- ══════ 9 · Poser les dates ══════ -->
+    <section class="gd-dia" data-titre="Poser les dates">
+      <div class="gd-bloc gd-pile">
+        <div data-r>
+          <div class="gd-sur">Onglet Planifier</div>
+          <h2 class="gd-h" style="margin-top:var(--sp-3)">Cochez, puis posez les dates</h2>
+          <p class="gd-lead">Dès que vous cochez une première ligne, une barre apparaît en bas de l'écran et vous suit. C'est là que tout se décide.</p>
+        </div>
+        <div class="gd-mock" data-r>
+          <div class="gd-mock-corps">
+            <div style="font-size:var(--fs-lead);font-weight:var(--fw-black)">4 lignes choisies</div>
+            <div style="display:flex;gap:var(--sp-4);flex-wrap:wrap">
+              <div><div class="gd-sur gd-sur--muet">Ouvrir à partir du</div><span class="gd-mock-champ" style="margin-top:6px">2026-08-24</span></div>
+              <div><div class="gd-sur gd-sur--muet">Fermer le (facultatif)</div><span class="gd-mock-champ" style="margin-top:6px">jj / mm / aaaa</span></div>
+            </div>
+            <div class="gd-sur gd-sur--muet" style="margin-top:var(--sp-2)">Rythme</div>
+            <div class="gd-pilules">
+              <span class="gd-pilule">Toutes à cette date</span>
+              <span class="gd-pilule is-choisie">Une par semaine</span>
+              <span class="gd-pilule">Une aux 2 semaines</span>
+              <span class="gd-pilule">Une par jour</span>
+            </div>
+            <div style="display:flex;gap:var(--sp-3);margin-top:var(--sp-3)">
+              <span class="gd-mock-btn gd-mock-btn--pri">Poser les dates</span>
+              <span class="gd-mock-btn">Retirer les dates</span>
+            </div>
+          </div>
+        </div>
+        <ul class="gd-liste gd-deux" data-r>
+          <li><i>✓</i><span><b>L'aperçu</b> montre, avant de valider, quelle ligne tombe quel jour. Rien n'est enregistré tant que vous n'avez pas cliqué.</span></li>
+          <li><i>✓</i><span><b>« Éviter les samedis et dimanches »</b> est coché par défaut : le rythme saute la fin de semaine.</span></li>
+          <li><i>✓</i><span><b>« Retirer les dates »</b> remet les lignes à « Sans date » — elles disparaissent du portail de l'élève.</span></li>
+          <li><i>✓</i><span><b>Un clic sur le titre</b> d'une rangée ouvre le détail : ouverture, fermeture, vue en classe, lien de rencontre.</span></li>
+        </ul>
+      </div>
+    </section>
+
+    <!-- ══════ 10 · Les quatre dates ══════ -->
+    <section class="gd-dia" data-titre="Les quatre dates d'une activité">
+      <div class="gd-bloc gd-pile">
+        <div data-r>
+          <div class="gd-sur">Le détail d'une ligne</div>
+          <h2 class="gd-h" style="margin-top:var(--sp-3)">Quatre champs, quatre rôles</h2>
+        </div>
+        <div class="gd-grille" data-r>
+          <div class="gd-carte gd-carte--accent">
+            <div class="gd-num">1</div>
+            <h3>Ouverte à partir du</h3>
+            <p>Le seul champ obligatoire. Sans lui, l'activité n'apparaît pas du tout chez l'élève.</p>
+          </div>
+          <div class="gd-carte gd-carte--accent">
+            <div class="gd-num">2</div>
+            <h3>Fermée le</h3>
+            <p>Après cette date, l'élève voit l'activité mais ne peut plus y répondre.</p>
+          </div>
+          <div class="gd-carte gd-carte--accent">
+            <div class="gd-num">3</div>
+            <h3>Vue en classe le</h3>
+            <p>Votre trace de cours, pour vous seul. L'élève ne la voit jamais.</p>
+          </div>
+          <div class="gd-carte gd-carte--accent">
+            <div class="gd-num">4</div>
+            <h3>Lien de la rencontre</h3>
+            <p>Facultatif. Remplace le lien Teams du groupe pour cette activité — utile pour une rencontre ponctuelle.</p>
+          </div>
+        </div>
+        <div class="gd-encre" data-r>
+          <div class="gd-sur">Vérifier avant d'ouvrir</div>
+          <b>« Ce que l'élève voit »</b>
+          <p>Le bouton en haut de la liste ouvre l'aperçu du portail élève tel qu'il est <em>aujourd'hui</em> pour ce groupe : l'accueil, les activités offertes, les documents en parution. C'est le contrôle à faire avant de quitter la page.</p>
+        </div>
+      </div>
+    </section>
+
+    <!-- ══════ 11 · Fichiers du groupe ══════ -->
+    <section class="gd-dia" data-titre="Fichiers du groupe">
+      <div class="gd-bloc gd-pile">
+        <div data-r>
+          <div class="gd-sur">Bas de l'onglet Planifier</div>
+          <h2 class="gd-h" style="margin-top:var(--sp-3)">Partager un document au groupe</h2>
+          <p class="gd-lead">Un corrigé, un horaire, une feuille de route : glissez le fichier dans la zone de dépôt, il devient visible dans le portail des élèves de ce groupe.</p>
+        </div>
+        <div class="gd-deux" data-r>
+          <div class="gd-mock">
+            <div class="gd-mock-corps">
+              <div class="gd-mock-rangee">
+                <span class="gd-mock-champ" style="min-width:56px;justify-content:center">PDF</span>
+                <div class="gd-mock-txt"><div class="gd-mock-titre">horaire-semaine-3.pdf</div><div class="gd-mock-meta">184 ko · déposé le 14 août</div></div>
+                <span class="gd-past gd-past--offerte"><span aria-hidden="true">✓</span>Ouverte 14 août</span>
+              </div>
+              <div style="display:flex;align-items:center;justify-content:center;min-height:88px;border:2px dashed var(--line-300);border-radius:var(--r-md);background:var(--surface-sunken);text-align:center;padding:var(--sp-4)">
+                <div>
+                  <div style="font-size:var(--fs-body-sm);font-weight:var(--fw-black)">Glissez un fichier ici</div>
+                  <div style="font-size:var(--fs-ui);font-weight:var(--fw-semi);color:var(--text-muted)">ou cliquez pour le choisir</div>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="gd-pile gd-pile--serree">
+            <div class="gd-carte">
+              <h3>Même règle que les activités</h3>
+              <p>Un fichier a une période de parution. Sans date d'ouverture, il n'est pas visible ; un dépôt paraît dès le jour même, sans date de retrait.</p>
+            </div>
+            <div class="gd-carte">
+              <h3>Propre au groupe</h3>
+              <p>Le fichier ne suit pas l'activité : il appartient au groupe où vous l'avez déposé. Un autre groupe ne le verra pas.</p>
+            </div>
+            <div class="gd-carte">
+              <h3>Nommez proprement</h3>
+              <p>Ni espaces ni parenthèses dans le nom du fichier — <b>horaire-semaine-3.pdf</b>, pas <b>Horaire (3).pdf</b>.</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ══════ 12 · Élèves — les codes ══════ -->
+    <section class="gd-dia" data-titre="Élèves · Les codes d'accès">
+      <div class="gd-bloc gd-pile">
+        <div data-r>
+          <div class="gd-sur">Onglet Élèves</div>
+          <h2 class="gd-h" style="margin-top:var(--sp-3)">L'élève ne s'inscrit jamais lui-même</h2>
+          <p class="gd-lead">Vous l'ajoutez au groupe, le portail fabrique son code à six caractères. Ce code est sa seule clé d'entrée : pas de courriel, pas de mot de passe à retenir.</p>
+        </div>
+        <div class="gd-deux" data-r>
+          <div class="gd-mock">
+            <div class="gd-mock-corps">
+              <div class="gd-mock-rangee">
+                <span class="gd-code">K4M9TZ</span>
+                <div class="gd-mock-txt"><div class="gd-mock-titre">Oksana P.</div><div class="gd-mock-meta">7 activités sur 9 · dernière visite hier</div></div>
+              </div>
+              <div class="gd-mock-rangee">
+                <span class="gd-code">B7QX2A</span>
+                <div class="gd-mock-txt"><div class="gd-mock-titre">Élève 12</div><div class="gd-mock-meta">Code préparé d'avance · jamais ouvert</div></div>
+              </div>
+              <div style="display:flex;gap:var(--sp-3);flex-wrap:wrap;margin-top:var(--sp-2)">
+                <span class="gd-mock-btn">Copier le code</span>
+                <span class="gd-mock-btn">Renommer</span>
+                <span class="gd-mock-btn">Retirer</span>
+                <span class="gd-mock-btn gd-mock-btn--pri">Imprimer les codes</span>
+              </div>
+            </div>
+          </div>
+          <ul class="gd-liste">
+            <li><i>✓</i><span><b>Préparer d'avance :</b> laissez le nom vide et demandez plusieurs codes. Ils s'appellent « Élève 1, 2, 3… » et vous les nommez à l'arrivée des personnes.</span></li>
+            <li><i>✓</i><span><b>Un nom = un code.</b> Le formulaire refuse « un nom + 10 codes » : les dix porteraient le même nom.</span></li>
+            <li><i>✓</i><span><b>Imprimer les codes</b> sort un billet par élève, en noir et blanc : le groupe, le nom, le code et l'adresse du portail. À découper et à distribuer.</span></li>
+            <li><i>✕</i><span><b>Retirer un élève retire son code.</b> La personne perd l'accès à son portail. La confirmation le dit en toutes lettres.</span></li>
+          </ul>
+        </div>
+      </div>
+    </section>
+
+    <!-- ══════ 13 · Élèves — le suivi ══════ -->
+    <section class="gd-dia" data-titre="Élèves · Le suivi">
+      <div class="gd-bloc gd-pile">
+        <div data-r>
+          <div class="gd-sur">Onglet Élèves</div>
+          <h2 class="gd-h" style="margin-top:var(--sp-3)">Ce que chacun a ouvert, remis et réussi</h2>
+        </div>
+        <div class="gd-grille gd-grille--2" data-r>
+          <div class="gd-carte">
+            <h3>La progression ne ment pas</h3>
+            <p>Elle ne compte que les activités <b>déjà offertes à ce groupe</b>. Une personne n'est jamais « en retard » sur quelque chose que vous n'avez pas ouvert.</p>
+          </div>
+          <div class="gd-carte">
+            <h3>« Corrige-moi ! » — l'assistant oral</h3>
+            <p>Une carte à part récapitule l'atelier de pratique orale : par élève et par thème, le nombre de réponses et celles réussies du premier coup.</p>
+          </div>
+          <div class="gd-carte">
+            <h3>Une pratique libre, pas une note</h3>
+            <p>L'atelier ne bloque jamais l'élève et ne l'évalue pas. Le relevé est là pour repérer qui s'exerce et sur quoi, pas pour corriger un devoir.</p>
+          </div>
+          <div class="gd-carte">
+            <h3>Passer à l'action</h3>
+            <p>Le bouton « Planifier ce groupe » vous ramène directement à la liste des activités du groupe que vous êtes en train de regarder.</p>
+          </div>
+        </div>
+        <p class="gd-p" data-r>Les productions orales déposées par les élèves, avec leur fichier audio, sont conservées séparément du relevé de l'atelier : elles ne se mélangent pas.</p>
+      </div>
+    </section>
+
+    <!-- ══════ 14 · Groupes et comptes ══════ -->
+    <section class="gd-dia" data-titre="Groupes et comptes">
+      <div class="gd-bloc gd-pile">
+        <div data-r>
+          <div class="gd-sur">Onglet Groupes et comptes</div>
+          <h2 class="gd-h" style="margin-top:var(--sp-3)">Un groupe par classe</h2>
+          <p class="gd-lead">Chaque groupe a ses élèves, ses dates et sa progression. Créez-en un par cohorte — « Niveau 4 — avant-midi », « Niveau 4 — soir ».</p>
+        </div>
+        <div class="gd-grille" data-r>
+          <div class="gd-carte">
+            <div class="gd-num">1</div>
+            <h3>Créer un groupe</h3>
+            <p>Un nom, et c'est fait. Il part vide : aucune activité n'y est offerte tant que vous n'avez pas posé de dates.</p>
+          </div>
+          <div class="gd-carte">
+            <div class="gd-num">2</div>
+            <h3>Le démarrer en une minute</h3>
+            <p>Retournez dans « Planifier » et utilisez « Copier une planification » depuis un groupe existant, décalée du nombre de jours voulu.</p>
+          </div>
+          <div class="gd-carte">
+            <div class="gd-num">3</div>
+            <h3>Les comptes enseignants</h3>
+            <p>Visible seulement pour un compte <b>administrateur</b> : c'est lui qui crée les autres comptes et voit tous les groupes.</p>
+          </div>
+        </div>
+        <div class="gd-avert" data-r><b>Mot de passe oublié ?</b> Il n'y a pas de réinitialisation par courriel. Demandez à un compte administrateur de le remettre à zéro.</div>
+      </div>
+    </section>
+
+    <!-- ══════ 15 · Matériel — Ma semaine ══════ -->
+    <section class="gd-dia" data-titre="Matériel · Ma semaine">
+      <div class="gd-bloc gd-pile">
+        <div data-r>
+          <div class="gd-sur">Onglet Matériel</div>
+          <h2 class="gd-h" style="margin-top:var(--sp-3)">Ma semaine : ce que vous projetez</h2>
+          <p class="gd-lead">Le dépôt de matériel range les présentations de séance et les fiches à imprimer de l'équipe. Deux vues d'un même écran : <b>Ma semaine</b> et <b>Le catalogue</b>.</p>
+        </div>
+        <div class="gd-mock" data-r>
+          <div class="gd-mock-bande2" style="background:var(--surface-sunken)">
+            <span style="font-size:var(--fs-body);font-weight:var(--fw-black)">Mardi 18 août</span>
+            <span class="gd-past gd-past--offerte" style="background:var(--sel-bg);color:var(--sel-ink)">Aujourd'hui</span>
+          </div>
+          <div class="gd-mock-corps">
+            <div style="display:flex;gap:var(--sp-5);flex-wrap:wrap;align-items:flex-start">
+              <div style="width:132px"><div style="font-size:var(--fs-body-sm);font-weight:var(--fw-bold);white-space:nowrap">8 h 15 – 12 h 15</div><div class="gd-sur gd-sur--muet">Avant-midi</div></div>
+              <div style="flex:1;min-width:220px">
+                <div class="gd-mock-titre">Chercher un logement</div>
+                <div class="gd-mock-meta">Cours · 16 séances produites</div>
+                <div style="display:flex;flex-wrap:wrap;gap:6px;margin-top:var(--sp-3)">
+                  <span class="gd-mock-btn" style="min-height:32px;border-radius:var(--r-sm)">A1</span>
+                  <span class="gd-mock-btn" style="min-height:32px;border-radius:var(--r-sm)">A2</span>
+                  <span class="gd-mock-btn" style="min-height:32px;border-radius:var(--r-sm);background:var(--sel-bg);border-color:var(--sel-bg);color:var(--sel-ink)">B3</span>
+                  <span class="gd-mock-btn" style="min-height:32px;border-radius:var(--r-sm)">B4</span>
+                  <span class="gd-mock-btn" style="min-height:32px;border-radius:var(--r-sm)">C1</span>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="gd-avert" data-r><b>Pourquoi des pastilles et non « la séance du jour » ?</b> Vos dates de planification suivent le découpage du module en six sections. Les présentations, elles, suivent une grille de seize séances. Les deux grilles ne se correspondent pas : le portail vous offre donc les seize et vous choisissez.</div>
+      </div>
+    </section>
+
+    <!-- ══════ 16 · Matériel — le catalogue ══════ -->
+    <section class="gd-dia" data-titre="Matériel · Le catalogue">
+      <div class="gd-bloc gd-pile">
+        <div data-r>
+          <div class="gd-sur">Onglet Matériel</div>
+          <h2 class="gd-h" style="margin-top:var(--sp-3)">Le catalogue : seize séances par module</h2>
+        </div>
+        <div class="gd-deux" data-r>
+          <div class="gd-mock">
+            <div class="gd-mock-corps">
+              <div class="gd-mock-titre" style="font-size:var(--fs-h3)">Un problème à régler</div>
+              <div class="gd-mock-meta">16 séances sur 16 · fiches élèves complètes</div>
+              <div style="height:8px;border-radius:var(--r-pill);background:var(--paper-200);overflow:hidden;margin-top:var(--sp-2)"><i style="display:block;height:100%;width:100%;background:var(--accent)"></i></div>
+              <div style="display:flex;gap:var(--sp-3);align-items:center;padding-top:var(--sp-3);border-top:1px solid var(--border);margin-top:var(--sp-2)">
+                <span style="width:40px;font-weight:var(--fw-black)">B3</span>
+                <span class="gd-sur gd-sur--muet" style="width:96px">Défi 1</span>
+                <span style="flex:1;min-width:120px;font-size:var(--fs-body-sm);font-weight:var(--fw-semi);text-decoration:underline;text-underline-offset:3px">Demander une réparation</span>
+                <span class="gd-mock-meta">2 fichiers</span>
+              </div>
+              <div style="display:flex;gap:var(--sp-3);align-items:center;padding-top:var(--sp-3);border-top:1px solid var(--border)">
+                <span style="width:40px;font-weight:var(--fw-black)">B4</span>
+                <span class="gd-sur gd-sur--muet" style="width:96px">Défi 1</span>
+                <span style="flex:1;min-width:120px;font-size:var(--fs-body-sm);font-weight:var(--fw-semi);text-decoration:underline;text-underline-offset:3px">Le passé composé au téléphone</span>
+                <span class="gd-mock-meta">2 fichiers</span>
+              </div>
+            </div>
+          </div>
+          <div class="gd-pile gd-pile--serree">
+            <div class="gd-carte">
+              <h3>Les blocs A à E</h3>
+              <p>Le code de séance dit son bloc d'enseignement. Un module à trois défis compte cinq blocs ; un module à deux défis n'a pas de bloc D. Seize séances dans les deux cas.</p>
+            </div>
+            <div class="gd-carte">
+              <h3>Le panneau de droite</h3>
+              <p>Cliquez sur le titre d'une séance : le panneau montre la présentation, sa vignette, le nombre de diapositives, et la fiche élève qui l'accompagne.</p>
+            </div>
+            <div class="gd-carte">
+              <h3>Les filtres</h3>
+              <p>Par module, par type de fichier, par bloc. Le filtre « Niveau » n'apparaît que si le catalogue contient plus d'un niveau.</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ══════ 17 · Matériel — prendre et imprimer ══════ -->
+    <section class="gd-dia" data-titre="Matériel · Prendre et imprimer">
+      <div class="gd-bloc gd-pile">
+        <div data-r>
+          <div class="gd-sur">Onglet Matériel</div>
+          <h2 class="gd-h" style="margin-top:var(--sp-3)">Sortir le matériel de la semaine</h2>
+        </div>
+        <div class="gd-grille" data-r>
+          <div class="gd-carte">
+            <div class="gd-num">1</div>
+            <h3>Cochez des séances</h3>
+            <p>La sélection s'affiche en bas du panneau de droite : « Télécharger les présentations », « Télécharger les fiches », « Imprimer les fiches choisies ».</p>
+          </div>
+          <div class="gd-carte">
+            <div class="gd-num">2</div>
+            <h3>Ou prenez tout</h3>
+            <p>« Tout prendre » descend le module entier en une archive. « Les fiches » ne descend que les documents imprimables.</p>
+          </div>
+          <div class="gd-carte">
+            <div class="gd-num">3</div>
+            <h3>Imprimez en un seul dialogue</h3>
+            <p>Les fiches sont déjà des documents noir et blanc. Une série sort d'un coup, une fiche par page.</p>
+          </div>
+        </div>
+        <div class="gd-deux" data-r>
+          <div class="gd-carte gd-carte--accent">
+            <h3>Déposer votre propre version</h3>
+            <p>Vous avez retravaillé une présentation ? Déposez-la sur la séance : elle rejoint le matériel de l'équipe, à côté de l'officielle, sans rien écraser. La pastille « nouveau » signale aux collègues ce qui est arrivé depuis leur dernière visite.</p>
+          </div>
+          <div class="gd-carte gd-carte--accent">
+            <h3>« Remplacer l'officiel » — administrateurs</h3>
+            <p>Un compte administrateur peut faire servir un dépôt à la place du fichier officiel de la séance. L'officiel n'est jamais effacé : il reste téléchargeable, et la substitution se défait d'un clic.</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ══════ 18 · Composer une activité ══════ -->
+    <section class="gd-dia" data-titre="Composer une activité">
+      <div class="gd-bloc gd-pile">
+        <div data-r>
+          <div class="gd-sur">Bande du groupe · nouvel onglet</div>
+          <h2 class="gd-h" style="margin-top:var(--sp-3)">Composer une activité</h2>
+          <p class="gd-lead">Un outil à part, sans session ni groupe : il assemble une commande d'activité à partir des critères du programme de francisation.</p>
+        </div>
+        <div class="gd-grille" data-r>
+          <div class="gd-carte">
+            <div class="gd-num">1</div>
+            <h3>Choisissez dans le programme</h3>
+            <p>Niveau, compétence, actes de parole, savoirs : la page porte le référentiel, vous n'avez rien à retaper.</p>
+          </div>
+          <div class="gd-carte">
+            <div class="gd-num">2</div>
+            <h3>Collez votre documentation</h3>
+            <p>Vos notes, un texte de départ, une situation vécue en classe : tout ce qui doit nourrir l'activité.</p>
+          </div>
+          <div class="gd-carte">
+            <div class="gd-num">3</div>
+            <h3>Récupérez la commande</h3>
+            <p>La page produit un texte complet et cohérent avec le programme, prêt à être utilisé pour faire produire l'activité.</p>
+          </div>
+        </div>
+        <div class="gd-encre" data-r>
+          <div class="gd-sur">Pourquoi un nouvel onglet</div>
+          <b>Votre planification n'est jamais perdue.</b>
+          <p>Le compositeur s'ouvre à côté du portail, pas à sa place. Vous pouvez composer une activité en gardant vos cases cochées et vos dates en attente.</p>
+        </div>
+      </div>
+    </section>
+
+    <!-- ══════ 19 · Une semaine type ══════ -->
+    <section class="gd-dia" data-titre="Une semaine type">
+      <div class="gd-bloc gd-pile">
+        <div data-r>
+          <div class="gd-sur">Mettre le tout ensemble</div>
+          <h2 class="gd-h" style="margin-top:var(--sp-3)">Une semaine type</h2>
+        </div>
+        <div class="gd-grille gd-grille--2" data-r>
+          <div class="gd-carte gd-carte--accent">
+            <div class="gd-num">L</div>
+            <h3>Vendredi soir ou lundi matin — planifier</h3>
+            <p>Onglet <b>Planifier</b>. Cochez les activités de la semaine, réglez le rythme « une par jour », vérifiez l'aperçu, posez les dates. Puis « Ce que l'élève voit » pour valider.</p>
+          </div>
+          <div class="gd-carte gd-carte--accent">
+            <div class="gd-num">M</div>
+            <h3>La veille du cours — sortir le matériel</h3>
+            <p>Onglet <b>Matériel</b>, vue « Ma semaine ». Cochez les séances du lendemain, téléchargez les présentations, imprimez les fiches.</p>
+          </div>
+          <div class="gd-carte gd-carte--accent">
+            <div class="gd-num">M</div>
+            <h3>Le matin — le programme du jour</h3>
+            <p>Onglet <b>Planifier</b>, en haut. Vous voyez d'un coup d'œil ce que le groupe a d'ouvert et ce qui ferme bientôt.</p>
+          </div>
+          <div class="gd-carte gd-carte--accent">
+            <div class="gd-num">J</div>
+            <h3>En cours de semaine — suivre</h3>
+            <p>Onglet <b>Élèves</b>. Qui a ouvert quoi, qui s'exerce à l'oral. Un nouvel arrivant ? Générez son code et imprimez son billet.</p>
+          </div>
+        </div>
+        <div class="gd-avert" data-r><b>Le seul réflexe à garder :</b> une activité qu'on n'a pas datée n'existe pas pour la classe. Devant une question d'élève — « je ne vois pas l'exercice » — la réponse est presque toujours dans la pastille d'état.</div>
+      </div>
+    </section>
+
+    <!-- ══════ 20 · Aide-mémoire ══════ -->
+    <section class="gd-dia" data-titre="Aide-mémoire">
+      <div class="gd-bloc gd-pile">
+        <div data-r>
+          <div class="gd-sur">Pour finir</div>
+          <h2 class="gd-h" style="margin-top:var(--sp-3)">Aide-mémoire</h2>
+        </div>
+        <div class="gd-deux" data-r>
+          <ul class="gd-liste">
+            <li><i>—</i><span><b>Sans date</b> · l'élève ne voit rien</span></li>
+            <li><i>→</i><span><b>À venir</b> · la date est posée, elle arrive</span></li>
+            <li><i>✓</i><span><b>Ouverte</b> · l'élève peut y répondre</span></li>
+            <li><i>✕</i><span><b>Fermée</b> · il peut relire, plus répondre</span></li>
+          </ul>
+          <ul class="gd-liste">
+            <li><i>◇</i><span><b>Le catalogue</b> est commun à toute l'équipe</span></li>
+            <li><i>◇</i><span><b>Les dates</b> appartiennent à votre groupe</span></li>
+            <li><i>◇</i><span><b>Le chevron</b> ouvre les sections d'un module</span></li>
+            <li><i>◇</i><span><b>Les codes élèves</b> se créent dans l'onglet Élèves</span></li>
+            <li><i>◇</i><span><b>Les présentations</b> vivent dans l'onglet Matériel</span></li>
+          </ul>
+        </div>
+        <div class="gd-encre" data-r>
+          <div class="gd-sur">Une dernière chose</div>
+          <b>Rien de ce que vous faites ici n'est irréversible, sauf retirer un élève.</b>
+          <p>Une date se retire, une planification se recopie, un dépôt se supprime, une promotion se défait. Essayez : le portail vous montre l'aperçu avant d'enregistrer.</p>
+        </div>
+        <p class="gd-aide" data-r>Fin du guide. Revenez à la première diapositive avec la touche <b>Début</b>, ou ouvrez le sommaire avec <b>S</b>.</p>
+      </div>
+    </section>
+  </div>
+
+  <div class="gd-barre">
+    <div class="gd-barre-gauche">
+      <span class="gd-compteur" id="compteur">1 / 20</span>
+      <span class="gd-titre-courant" id="titreCourant"></span>
+    </div>
+    <div class="gd-nav-btns">
+      <button type="button" class="gd-btn" id="btnSommaire" aria-haspopup="dialog">Sommaire</button>
+      <button type="button" class="gd-btn" id="btnPrec" aria-label="Diapositive précédente">← Précédent</button>
+      <button type="button" class="gd-btn gd-btn--pri" id="btnSuiv" aria-label="Diapositive suivante">Suivant →</button>
+    </div>
+  </div>
+</div>
+
+<div class="gd-sommaire" id="sommaire" role="dialog" aria-modal="true" aria-label="Sommaire des diapositives" hidden>
+  <div>
+    <div class="gd-sur">Guide de l'espace enseignant</div>
+    <h2 style="margin-top:var(--sp-2);font-size:var(--fs-h3)">Sommaire</h2>
+    <div class="gd-sommaire-liste" id="sommaireListe"></div>
+    <button type="button" class="gd-btn" style="margin-top:var(--sp-4)" id="btnFermerSommaire">Fermer</button>
+  </div>
+</div>
+
+<script>
+(function () {
+  'use strict';
+
+  const dias = Array.from(document.querySelectorAll('.gd-dia'));
+  const compteur = document.getElementById('compteur');
+  const titreCourant = document.getElementById('titreCourant');
+  const progres = document.getElementById('progres');
+  const btnPrec = document.getElementById('btnPrec');
+  const btnSuiv = document.getElementById('btnSuiv');
+  const sommaire = document.getElementById('sommaire');
+  const sommaireListe = document.getElementById('sommaireListe');
+
+  /* L'index d'apparition est posé une fois : la règle CSS le multiplie par
+     70 ms. Le faire en CSS avec nth-child plafonnerait au nombre de règles
+     écrites — une diapositive plus longue perdrait son décalage. */
+  dias.forEach((d) => {
+    Array.from(d.querySelectorAll('[data-r]')).forEach((el, i) => {
+      el.style.setProperty('--i', String(i));
+    });
+  });
+
+  let courante = 0;
+
+  function afficher(n, remonter) {
+    courante = Math.max(0, Math.min(dias.length - 1, n));
+    dias.forEach((d, i) => {
+      const active = i === courante;
+      d.classList.toggle('is-active', active);
+      /* `inert` retire du parcours clavier tout ce qui n'est pas à l'écran ;
+         sans lui, la tabulation part dans les diapositives invisibles. */
+      if (active) d.removeAttribute('inert'); else d.setAttribute('inert', '');
+    });
+    if (remonter !== false) dias[courante].scrollTop = 0;
+    compteur.textContent = (courante + 1) + ' / ' + dias.length;
+    titreCourant.textContent = dias[courante].dataset.titre || '';
+    progres.style.width = ((courante + 1) / dias.length * 100) + '%';
+    btnPrec.disabled = courante === 0;
+    btnSuiv.disabled = courante === dias.length - 1;
+    Array.from(sommaireListe.children).forEach((b, i) => {
+      b.classList.toggle('is-courante', i === courante);
+    });
+    try { history.replaceState(null, '', '#' + (courante + 1)); } catch (e) { /* fichier local */ }
+  }
+
+  const suivant = () => afficher(courante + 1);
+  const precedent = () => afficher(courante - 1);
+
+  btnSuiv.addEventListener('click', suivant);
+  btnPrec.addEventListener('click', precedent);
+
+  /* — Sommaire — */
+  dias.forEach((d, i) => {
+    const b = document.createElement('button');
+    b.type = 'button';
+    b.innerHTML = '<span>' + (i + 1) + '</span>';
+    b.appendChild(document.createTextNode(d.dataset.titre || ('Diapositive ' + (i + 1))));
+    b.addEventListener('click', () => { fermerSommaire(); afficher(i); });
+    sommaireListe.appendChild(b);
+  });
+
+  function ouvrirSommaire() {
+    sommaire.hidden = false;
+    const courant = sommaireListe.querySelector('.is-courante') || sommaireListe.firstElementChild;
+    if (courant) courant.focus();
+  }
+  function fermerSommaire() {
+    sommaire.hidden = true;
+    document.getElementById('btnSommaire').focus();
+  }
+  document.getElementById('btnSommaire').addEventListener('click', ouvrirSommaire);
+  document.getElementById('btnFermerSommaire').addEventListener('click', fermerSommaire);
+  sommaire.addEventListener('click', (e) => { if (e.target === sommaire) fermerSommaire(); });
+
+  /* — Clavier — */
+  document.addEventListener('keydown', (e) => {
+    if (e.metaKey || e.ctrlKey || e.altKey) return;
+    if (!sommaire.hidden) {
+      if (e.key === 'Escape') { e.preventDefault(); fermerSommaire(); }
+      return;
+    }
+    /* Une diapositive plus haute que l'écran doit rester défilable : on ne
+       détourne pas les flèches verticales. */
+    switch (e.key) {
+      case 'ArrowRight': case 'PageDown': e.preventDefault(); suivant(); break;
+      case 'ArrowLeft': case 'PageUp': e.preventDefault(); precedent(); break;
+      case ' ': e.preventDefault(); suivant(); break;
+      case 'Home': e.preventDefault(); afficher(0); break;
+      case 'End': e.preventDefault(); afficher(dias.length - 1); break;
+      case 's': case 'S': e.preventDefault(); ouvrirSommaire(); break;
+      default: break;
+    }
+  });
+
+  /* — Balayage tactile : le guide se lit aussi sur tablette. — */
+  let x0 = null, y0 = null;
+  document.addEventListener('touchstart', (e) => {
+    if (e.touches.length !== 1) { x0 = null; return; }
+    x0 = e.touches[0].clientX; y0 = e.touches[0].clientY;
+  }, { passive: true });
+  document.addEventListener('touchend', (e) => {
+    if (x0 === null) return;
+    const t = e.changedTouches[0];
+    const dx = t.clientX - x0, dy = t.clientY - y0;
+    x0 = null;
+    /* Un balayage plus vertical qu'horizontal est un défilement, pas un
+       changement de diapositive. */
+    if (Math.abs(dx) < 60 || Math.abs(dx) < Math.abs(dy)) return;
+    if (dx < 0) suivant(); else precedent();
+  }, { passive: true });
+
+  const depart = parseInt((location.hash || '').replace('#', ''), 10);
+  afficher(Number.isFinite(depart) && depart > 0 ? depart - 1 : 0);
+})();
+</script>
+</body>
+</html>

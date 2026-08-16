@@ -419,6 +419,30 @@ visuelle. Quatrième onglet de `enseignant.html`, rendu par `js/materiel.js`.
   Variables Railway — **et un changement de variable n'atteint le serveur
   qu'au redéploiement**, sinon l'ancienne valeur reste en mémoire.
 
+## Tutoriels de l'espace enseignant
+
+Deux formes du même contenu, à garder d'accord entre elles. Le bouton
+« Tutoriels » de la barre de groupe ouvre la page vidéo, qui renvoie elle-même
+vers les diapositives.
+
+- `assets/outils/tutoriels-enseignant.html` — **produite** par
+  `build/tutoriels/livrer.py`, jamais écrite à la main : sa transcription est
+  le texte même de la narration. Les six capsules vivent dans
+  `assets/tutoriels/` (~16 Mo, versionnés avec leurs affiches `.jpg`).
+- `assets/outils/guide-espace-enseignant.html` — le même parcours en vingt
+  diapositives animées, navigables au clavier et imprimables. Écrit à la main.
+- **La chaîne de production est dans `build/tutoriels/`** — voir son
+  `LISEZMOI.md`. `manifeste.json` y est la source unique : gestes à capturer,
+  élément à surligner et texte dit par la voix, dans la même entrée.
+- **Les capsules sont filmées dans une instance jetable** (`lancer_demo.sh`,
+  `STORAGE_DIR` hors du dépôt) peuplée de groupes et d'élèves **inventés**.
+  `init_storage()` recopiant le catalogue dans le bac à sable, purger
+  `teachers/groups/students/schedule.json` avant de recommencer — sinon on
+  filme de vraies personnes.
+- Voix « narrateur » d'ElevenLabs, distincte des voix de personnages des
+  dialogues. `narrer.py` ne repaie pas un plan déjà narré (facturation au
+  caractère) : effacer un MP3 précis pour le refaire.
+
 ## Langue
 
 Répondre en français à l'utilisateur.
