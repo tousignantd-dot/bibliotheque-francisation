@@ -260,9 +260,13 @@ visuelle. Quatrième onglet de `enseignant.html`, rendu par `js/materiel.js`.
   Le slug est celui de `assets/interactive/<slug>/` — c'est la clé qui relie un
   fichier à son activité. À plat, le `A1` du module 8 écraserait celui du
   module 9.
-- **Les neuf modules de cours sont produits**, seize séances chacune :
+- **Les dix modules du registre sont produits**, seize séances chacune :
   `python3 build/powerpoints/build.py <slug>` et
-  `python3 build/powerpoints/build_fiches.py <slug>`, ou `--tous` pour les neuf.
+  `python3 build/powerpoints/build_fiches.py <slug>`, ou `--tous` pour les dix.
+  **`module-sante` est produit mais catalogué `atelier`** : le dépôt de matériel
+  ne montre ses seize séances que pour une activité `cours` (`porteur_cours`),
+  et `categorie` fait partie des `USER_FIELDS` — c'est le volume qui tranche,
+  pas le code. Le basculement se fait dans le modal de modification d'admin.
   Le **registre `build/powerpoints/modules.py`** est la source unique : numéro,
   titre affiché en pied de page, nom des blocs et ordre d'enseignement. Aucun
   autre fichier ne porte de constante de module — pas `build.py`, pas `theme.py`,

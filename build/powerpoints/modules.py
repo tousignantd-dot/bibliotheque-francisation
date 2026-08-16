@@ -54,6 +54,14 @@ MODULES = {
         'seances': GRILLE_3_DEFIS,
         'blocs': _blocs("À l'urgence", 'Les soins', "À l'accueil"),
     },
+    'module-sante': {
+        'numero': 3, 'activite': 34,
+        'titre': 'Prendre rendez-vous et aller à la pharmacie',
+        'chapeau': "Appeler une clinique, dire comment on se sent, comprendre "
+                   "les consignes du pharmacien.",
+        'seances': GRILLE_2_DEFIS,
+        'blocs': _blocs('À la pharmacie', 'La langue'),
+    },
     'module-travail': {
         'numero': 4, 'activite': 39,
         'titre': 'Absent ou en retard : que faire ?',

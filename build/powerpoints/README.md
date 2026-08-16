@@ -1,4 +1,4 @@
-# Les neuf modules · présentations et fiches élèves
+# Les dix modules · présentations et fiches élèves
 
 Seize séances par module, qui couvrent tout le contenu de l'activité interactive
 correspondante (`assets/interactive/<slug>/`). Chaque séance existe en **deux sorties** :
@@ -34,15 +34,16 @@ pas de bloc D — inventer une séance sans contenu serait pire que de n'en pas 
 |---|---|---|---|
 | 1 · Consulter au bon endroit | `module-consultation` | 3 | 4-4-4-2-2 |
 | 2 · Une urgence au travail | `module-urgence` | 3 | 4-4-4-2-2 |
-| 3 · Absent ou en retard | `module-travail` | 3 | 4-4-4-2-2 |
-| 4 · Quelle est la procédure ? | `module-procedure` | 3 | 4-4-4-2-2 |
-| 5 · C'est l'heure des nouvelles | `module-nouvelles` | 2 | 4-5-5-2 |
-| 6 · Quelles sont les prévisions ? | `module-meteo` | 2 | 4-5-5-2 |
-| 7 · Des publicités efficaces | `module-pub` | 2 | 4-5-5-2 |
-| 8 · Comment est le logement ? | `module-logement` | 3 | 4-4-4-2-2 |
-| 9 · Pouvez-vous régler le problème ? | `module-probleme` | 3 | 4-4-4-2-2 |
+| 3 · Prendre rendez-vous et aller à la pharmacie | `module-sante` | 2 | 4-5-5-2 |
+| 4 · Absent ou en retard | `module-travail` | 3 | 4-4-4-2-2 |
+| 5 · Quelle est la procédure ? | `module-procedure` | 3 | 4-4-4-2-2 |
+| 6 · C'est l'heure des nouvelles | `module-nouvelles` | 2 | 4-5-5-2 |
+| 7 · Quelles sont les prévisions ? | `module-meteo` | 2 | 4-5-5-2 |
+| 8 · Des publicités efficaces | `module-pub` | 2 | 4-5-5-2 |
+| 9 · Comment est le logement ? | `module-logement` | 3 | 4-4-4-2-2 |
+| 10 · Pouvez-vous régler le problème ? | `module-probleme` | 3 | 4-4-4-2-2 |
 
-Neuf modules, 144 séances, environ 2 250 diapositives et 1 650 blocs de fiches.
+Dix modules, 160 séances, environ 2 450 diapositives et 1 800 blocs de fiches.
 
 ---
 
@@ -54,9 +55,9 @@ Le **premier argument est toujours le slug du module**.
 python3 build.py module-probleme             # les 16 présentations du module
 python3 build.py module-probleme b2 c3       # deux séances seulement
 python3 build.py module-probleme --apercu    # + les épreuves PNG et le contrôle
-python3 build.py --tous                      # les neuf modules
+python3 build.py --tous                      # les dix modules
 python3 build_fiches.py module-probleme      # les 16 fiches + le sommaire
-python3 build_fiches.py --tous               # les neuf modules
+python3 build_fiches.py --tous               # les dix modules
 ```
 
 Puis, depuis la racine du projet, les deux étapes qui alimentent le **dépôt de
@@ -93,7 +94,7 @@ python3 -m venv venv && ./venv/bin/pip install python-pptx Pillow fonttools
 | `controle.py` | relit les PNG et signale tout texte sorti de sa boîte |
 
 **Pour changer un contenu**, modifiez `decks/`. **Pour changer un visuel**, modifiez `theme.py`
-ou `fiche.py`. Jamais l'inverse : c'est cette séparation qui garde les 144 séances cohérentes.
+ou `fiche.py`. Jamais l'inverse : c'est cette séparation qui garde les 160 séances cohérentes.
 
 ### Comment un même deck produit deux sorties
 
@@ -131,8 +132,8 @@ print(modules.MODULES['module-meteo']['seances'])"` la donne, et l'en-tête de c
 | **E** Application | E1 | À toi : le téléphone et le courriel | 90 min | dialogue `appli`, `aQui`, `aComp` |
 | | E2 | Je retiens des mots | 60 min | cartes mémoire, bilan |
 
-248 diapositives · environ 18 heures de classe. Les neuf modules totalisent 144 séances,
-environ 2 250 diapositives et 160 heures de classe.
+248 diapositives · environ 18 heures de classe. Les dix modules totalisent 160 séances,
+environ 2 450 diapositives et 178 heures de classe.
 
 Chaque diapositive porte une **note de l'enseignant** (volet Commentaires de PowerPoint) :
 quoi faire écouter, quoi laisser deviner, où le groupe se trompe habituellement.
@@ -199,7 +200,7 @@ pages par séance**, soit environ **70 pages** pour le module complet.
 
 `<slug>-fiches-eleves.html` est le sommaire des seize fiches d'un module : c'est lui qu'on
 donne au premier cours, et c'est lui qui sert de `studentDoc` à l'activité — le champ est
-renseigné pour les neuf modules dans `data/activities.json`.
+renseigné pour les dix modules dans `data/activities.json`.
 
 ---
 
