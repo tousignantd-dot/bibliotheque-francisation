@@ -55,7 +55,7 @@ MODULES = {
         'blocs': _blocs("À l'urgence", 'Les soins', "À l'accueil"),
     },
     'module-travail': {
-        'numero': 3, 'activite': 39,
+        'numero': 4, 'activite': 39,
         'titre': 'Absent ou en retard : que faire ?',
         'chapeau': "Prévenir son superviseur, justifier un retard, écrire un "
                    "courriel.",
@@ -63,7 +63,7 @@ MODULES = {
         'blocs': _blocs('Le message', 'Le retard', 'Le courriel'),
     },
     'module-procedure': {
-        'numero': 4, 'activite': 40,
+        'numero': 5, 'activite': 40,
         'titre': 'Quelle est la procédure ?',
         'chapeau': "Comprendre une procédure, suivre des étapes, lire une "
                    "directive.",
@@ -72,7 +72,7 @@ MODULES = {
                         'Avez-vous lu les directives ?'),
     },
     'module-nouvelles': {
-        'numero': 5, 'activite': 41,
+        'numero': 6, 'activite': 41,
         'titre': "C'est l'heure des nouvelles",
         'chapeau': "Comprendre un fait divers à l'oral et à l'écrit, puis en "
                    "raconter un.",
@@ -81,7 +81,7 @@ MODULES = {
                         "Qu'est-ce que tu lis ?"),
     },
     'module-meteo': {
-        'numero': 6, 'activite': 42,
+        'numero': 7, 'activite': 42,
         'titre': 'Quelles sont les prévisions ?',
         'chapeau': "Comprendre un bulletin, lire une alerte, décider d'une "
                    "journée de travail.",
@@ -90,7 +90,7 @@ MODULES = {
                         'Lire une alerte avant de partir'),
     },
     'module-pub': {
-        'numero': 7, 'activite': 43,
+        'numero': 8, 'activite': 43,
         'titre': 'Des publicités efficaces',
         'chapeau': "Reconnaître les éléments et les valeurs d'une publicité, "
                    "puis en écrire une.",
@@ -99,7 +99,7 @@ MODULES = {
                         'Deux affiches sur le babillard'),
     },
     'module-logement': {
-        'numero': 8, 'activite': 44,
+        'numero': 9, 'activite': 44,
         'titre': 'Comment est le logement ?',
         'chapeau': "Visiter, poser les bonnes questions, comparer deux "
                    "logements.",
@@ -108,7 +108,7 @@ MODULES = {
                         'Un logement pour chaque besoin'),
     },
     'module-probleme': {
-        'numero': 9, 'activite': 45,
+        'numero': 10, 'activite': 45,
         'titre': 'Pouvez-vous régler le problème ?',
         'chapeau': "Signaler un problème, faire respecter ses droits, se "
                    "plaindre efficacement.",
