@@ -58,6 +58,15 @@
       + t.map(function (d) { return '<path d="' + d + '"/>'; }).join('') + '</svg>';
   }
 
+  // Chevron du bouton masquer / afficher : pas un outil, donc hors de TRACES.
+  function chevron(sens) {
+    var d = sens === 'gauche' ? 'M15 5l-7 7 7 7' : 'M9 5l7 7-7 7';
+    return '<svg viewBox="0 0 24 24" width="18" height="18" fill="none"'
+      + ' stroke="currentColor" stroke-width="2.4" stroke-linecap="round"'
+      + ' stroke-linejoin="round" aria-hidden="true" focusable="false">'
+      + '<path d="' + d + '"/></svg>';
+  }
+
   var OUTILS = [
     { id: 'trad', lb: 'Traduire', t: 'Traduire', s: 'Le français reste toujours visible' },
     { id: 'lire', lb: 'Lire', t: 'Lire à voix haute', s: 'Écouter le texte du module', audio: true },
@@ -132,7 +141,16 @@
         + '<span class="oe-ic">' + icone(o.id) + '</span>'
         + '<span class="oe-lb">' + esc(o.lb) + '</span></button>';
     });
+    // Masquer le rail libère toute la largeur pour le module. L'état ne se
+    // retient pas : à chaque ouverture du module, les outils sont là.
+    dock += '<button type="button" class="oe-dock-cacher" id="oe-cacher"'
+      + ' aria-label="Masquer les outils">' + chevron('droite')
+      + '<span class="oe-dock-cacher-t">Masquer</span></button>';
     dock += '</nav>';
+
+    var montrer = '<button type="button" class="oe-montrer" id="oe-montrer"'
+      + ' aria-label="Afficher mes outils">' + chevron('gauche')
+      + '<span class="oe-montrer-t">Mes outils</span></button>';
 
     var panneau = '<aside class="oe-panel" role="dialog" aria-label="Panneau d\'outil" aria-modal="false">'
       + '<div class="oe-h"><div class="oe-ttl"><h3 id="oe-ttl">Outils</h3>'
@@ -155,7 +173,7 @@
         + icone(a[0], 18) + esc(a[1]) + '</button>';
     }).join('') + '</div>';
 
-    racine.innerHTML = dock + panneau + sel;
+    racine.innerHTML = dock + montrer + panneau + sel;
     document.body.appendChild(racine);
     document.body.classList.add('oe-host');
 
@@ -178,6 +196,8 @@
     });
 
     racine.querySelector('#oe-x').onclick = fermer;
+    racine.querySelector('#oe-cacher').onclick = function () { montreRail(false); };
+    racine.querySelector('#oe-montrer').onclick = function () { montreRail(true); };
     racine.querySelectorAll('[data-oe-outil]').forEach(function (b) {
       b.onclick = function () { ouvrir(b.getAttribute('data-oe-outil')); };
     });
@@ -296,6 +316,17 @@
     // Le bandeau noir est déjà revenu en haut de la page : on y amène l'élève.
     var b = el.tete.querySelector('.oe-lang');
     if (b) { b.scrollIntoView({ behavior: 'smooth', block: 'center' }); }
+  }
+
+  // ══ Rail visible ou masqué ════════════════════════════════════
+  // Volontairement sans mémoire : le rail revient à chaque ouverture du
+  // module. Un élève qui l'a masqué hier ne doit pas se retrouver sans
+  // outils aujourd'hui sans savoir pourquoi.
+  function montreRail(oui) {
+    if (!oui) fermer();
+    document.body.classList.toggle('oe-cache', !oui);
+    var b = el.racine.querySelector(oui ? '#oe-cacher' : '#oe-montrer');
+    if (b) b.focus();
   }
 
   // ══ Ouverture / fermeture ═════════════════════════════════════
@@ -787,6 +818,20 @@
       if (cfg) { cfg.section = titre; if (courant) el.sub.textContent = titre; }
     },
     ouvrir: function (id) { if (cfg) ouvrir(id, true); },
-    rafraichirBlocs: marqueBlocs
+    rafraichirBlocs: marqueBlocs,
+
+    // Un module qui a sa propre surcouche — les cartes mémoire du vocabulaire —
+    // traduit par ici plutôt que de refaire la lecture de la langue choisie et
+    // l'appel réseau. `langue()` rend null tant que l'élève n'a rien choisi :
+    // c'est à l'appelant d'inviter au bandeau noir, en français.
+    langue: langue,
+    traduire: function (texte, contexte) {
+      var L = langue();
+      if (!cfg) return Promise.reject(new Error('Les outils ne sont pas encore prêts.'));
+      if (!L) return Promise.reject(new Error('Choisissez d’abord votre langue maternelle, dans le bandeau noir en haut de la page.'));
+      return poste('/api/outils/traduire', {
+        langue: L.n, texte: propre(texte), contexte: contexte || cfg.section
+      }).then(function (d) { return { texte: d.traduction, langue: L }; });
+    }
   };
 })(window);

@@ -387,6 +387,18 @@ visuelle. Quatrième onglet de `enseignant.html`, rendu par `js/materiel.js`.
 - Icônes : les six tracés SVG du système de design (grille 24, trait 2,2,
   bouts ronds). **Aucun émoji, aucun jeu d'icônes tierce partie.** Rouge
   réservé à « Lire » ; sélectionné = plaque encre `#17181A`.
+- **Le rail se masque** (bouton « Masquer », onglet « Mes outils » pour le
+  rappeler) mais **sans mémoire** : il est là à chaque ouverture du module. Un
+  élève qui l'a masqué hier ne doit pas se retrouver sans outils aujourd'hui.
+  Attention en y ajoutant du texte : `.oe-root button{font:inherit}` l'emporte
+  sur un `font-size` posé sur le bouton — la taille va sur le libellé enfant.
+- **Les cartes mémoire traduisent par `Outils.traduire(texte, contexte)`**, qui
+  rend une promesse `{texte, langue}` et porte déjà la langue choisie, le code
+  élève et le cache serveur. Ne pas rappeler `/api/outils/traduire` à la main
+  depuis un module. La greffe dans les onze modules passe par
+  `python3 build/cartes_memoire.py` (`--verifier` pour un état des lieux) :
+  substitutions exactes, refusées si le module a divergé. `module-probleme`
+  étant généré, on relance ensuite `build/module-probleme/build.py`.
 - `server.py` lit `.env` au démarrage (les variables déjà définies gagnent) :
   sans ça, rien n'est testable en local. En production les clés viennent des
   Variables Railway — **et un changement de variable n'atteint le serveur

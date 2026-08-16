@@ -14,7 +14,7 @@
    des outils. Portés par .oe-root, ils héritaient d'un fond transparent —
    texte sombre sur bandeau noir, illisible. */
 :root{
-  --oe-dock:132px;
+  --oe-dock:106px;
   --oe-panel:400px;
   --oe-card:var(--surface-card,#FFFFFF);
   --oe-page:var(--surface-page,#F7F7F5);
@@ -72,7 +72,8 @@
   position:fixed;top:0;right:0;width:var(--oe-dock);height:100vh;
   background:var(--oe-page);border-left:1px solid var(--oe-paper-200);
   display:flex;flex-direction:column;align-items:center;gap:12px;
-  padding:24px 12px;z-index:8000;overflow-y:auto;
+  padding:20px 9px;z-index:8000;overflow-y:auto;
+  transition:transform .22s ease;
 }
 .oe-dock-t{font-size:13px;font-weight:800;letter-spacing:.1em;text-transform:uppercase;
   color:var(--oe-muted);text-align:center;margin-bottom:8px;line-height:1.4}
@@ -93,6 +94,42 @@
 .oe-dock .oe-tool[aria-pressed="true"],
 .oe-dock .oe-tool[aria-pressed="true"]:hover{background:var(--oe-ink);color:#fff}
 .oe-dock-sep{width:56px;height:1px;background:var(--oe-paper-200);margin:8px 0;flex:none}
+
+/* ── Masquer / rappeler le rail ─────────────────────────────────
+   Le rail est toujours présent à l'ouverture du module : l'état masqué
+   ne se retient pas d'une page à l'autre, il vaut pour la séance en cours.
+   Le bouton de rappel reste visible, sinon l'outil serait perdu. */
+/* Le rail ne fait que 106 px : le libellé doit tenir dans la pastille sans
+   la faire déborder du rail (un bouton flex ne rétrécit pas sous son
+   contenu tant qu'on ne l'y autorise pas). */
+.oe-dock-cacher{
+  margin-top:auto;flex:none;width:100%;max-width:100%;min-width:0;
+  border:1px solid var(--oe-line-2);
+  background:transparent;border-radius:var(--oe-r-pill);
+  padding:7px 2px;display:flex;align-items:center;justify-content:center;gap:3px;
+  color:var(--oe-muted);overflow:hidden;
+}
+.oe-dock-cacher svg{width:14px;height:14px}
+/* La taille vit sur le libellé, pas sur le bouton : `.oe-root button{font:inherit}`
+   l'emporterait et le mot repartirait à 18 px, donc tronqué dans le rail. */
+.oe-dock-cacher .oe-dock-cacher-t{font-size:12px;font-weight:800;line-height:1.2;white-space:nowrap}
+.oe-dock-cacher:hover{background:var(--oe-sunken);color:var(--oe-ink)}
+.oe-dock-cacher svg{flex:none}
+.oe-montrer{
+  display:none;position:fixed;top:50%;right:0;transform:translateY(-50%);
+  z-index:8000;border:2px solid var(--oe-ink);border-right:0;
+  background:var(--oe-ink);color:#fff;
+  border-radius:var(--oe-r-md) 0 0 var(--oe-r-md);
+  padding:14px 7px;flex-direction:column;align-items:center;gap:8px;
+  box-shadow:0 6px 20px rgba(0,0,0,.16);
+}
+.oe-montrer .oe-montrer-t{
+  writing-mode:vertical-rl;text-orientation:mixed;
+  font-size:13px;font-weight:800;letter-spacing:.06em;line-height:1;
+}
+body.oe-host.oe-cache{padding-right:0}
+body.oe-cache .oe-dock{transform:translateX(100%)}
+body.oe-cache .oe-montrer{display:flex}
 
 /* ── Panneau ────────────────────────────────────────────────── */
 .oe-panel{
@@ -230,6 +267,15 @@ body.oe-host{transition:padding-right .22s ease}
     box-shadow:0 -6px 22px rgba(0,0,0,.07);
   }
   .oe-dock-t,.oe-dock-sep{display:none}
+  /* En bande horizontale, le bouton « Masquer » se réduit au chevron et
+     le rail s'efface vers le bas. */
+  .oe-dock-cacher{margin-top:0;width:auto;flex:0 0 auto;padding:6px 8px;align-self:center}
+  .oe-dock-cacher .oe-dock-cacher-t{display:none}
+  .oe-dock-cacher svg{transform:rotate(90deg)}
+  .oe-montrer svg{transform:rotate(-90deg)}
+  body.oe-host.oe-cache{padding-bottom:0}
+  body.oe-cache .oe-dock{transform:translateY(100%)}
+  .oe-montrer{top:auto;bottom:12px;transform:none}
   /* Six libellés côte à côte sur 375 px : le mot reste obligatoire, c'est le
      corps qui cède, pas le glyphe. Cible tactile toujours ≥ 44 px. */
   .oe-tool{width:auto;flex:1;padding:6px 2px;min-height:56px;gap:2px}

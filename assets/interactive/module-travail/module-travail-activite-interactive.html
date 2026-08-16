@@ -167,7 +167,9 @@ body{display:flex;flex-direction:column;min-height:100vh}
 .blank.dov{border-style:solid;border-color:var(--sel-line);background:var(--sel-bg)}
 
 .bsec{border-radius:12px;padding:14px 12px;flex-shrink:0}
-.bsec.b1{background:#EDF6F4;border:1.5px solid #B7DED7}
+/* Filet d'encre à gauche : le banc de réponses est le bloc où l'élève vient
+   se servir, il se repère du coin de l'œil au milieu des énoncés. */
+.bsec.b1{background:#EDF6F4;border:1.5px solid #B7DED7;border-left:3px solid #17181A}
 .blbl{font-size:12px;font-weight:800;text-transform:uppercase;letter-spacing:.14em;margin-bottom:10px;color:#1D6B8F}
 .btiles{display:flex;flex-wrap:wrap;gap:8px;justify-content:center}
 .btiles.vert{flex-direction:column;flex-wrap:nowrap}
@@ -210,7 +212,17 @@ body{display:flex;flex-direction:column;min-height:100vh}
 #fc-reveal-btn:hover{background:rgba(255,255,255,.38)}
 #fc-reveal-btn.hidden{display:none}
 #fc-btns{display:flex;gap:14px;margin-top:6px;flex-wrap:wrap;justify-content:center}
-.fc-btn{background:rgba(255,255,255,.15);border:2px solid rgba(255,255,255,.38);color:#fff;border-radius:10px;padding:10px 22px;font-family:'Nunito',sans-serif;font-size:15px;font-weight:800;cursor:pointer}
+.fc-btn{background:rgba(255,255,255,.15);border:1px solid rgba(255,255,255,.38);color:#fff;border-radius:8px;padding:6px 14px;font-family:'Nunito',sans-serif;font-size:13px;font-weight:800;cursor:pointer}
+/* ── Traduction dans la langue de l'élève ───────────────────────────
+   Le français ne bouge pas : la traduction s'ajoute sous un filet,
+   comme le fait le rail « Mes outils ». */
+#fc-sep{width:100%;height:1px;background:rgba(255,255,255,.20);margin:2px 0}
+#fc-trad-btn{background:transparent;border:1px solid rgba(255,255,255,.45);color:#fff;border-radius:8px;padding:6px 14px;font-family:'Nunito',sans-serif;font-size:13px;font-weight:800;cursor:pointer}
+#fc-trad-btn:hover{background:rgba(255,255,255,.18)}
+#fc-trad-btn[disabled]{opacity:.5;cursor:default}
+#fc-trad-btn.hidden,#fc-trad.hidden{display:none}
+#fc-trad{width:100%;background:rgba(255,255,255,.12);border-radius:10px;padding:12px 16px;font-size:19px;font-weight:700;color:#fff;line-height:1.55;text-align:center}
+#fc-trad.att{font-size:14px;font-weight:600;color:rgba(255,255,255,.75);background:transparent;padding:4px}
 .fc-btn:hover{background:rgba(255,255,255,.28)}
 
 .vocab-sec{background:#EDF6F4;border-bottom:3px solid rgba(15,118,110,.15);padding:14px 32px 18px}
@@ -751,6 +763,9 @@ textarea:focus-visible,.winput:focus-visible{outline:none;border-color:var(--ws-
     <button id="fc-reveal-btn">Voir la définition</button>
     <div id="fc-def" class="hidden">—</div>
     <div id="fc-ex" class="hidden">—</div>
+    <div id="fc-sep"></div>
+    <button class="fc-btn" id="fc-trad-btn">Traduire</button>
+    <div id="fc-trad" class="hidden"></div>
     <div id="fc-btns">
       <button class="fc-btn" id="fc-prev">← Précédente</button>
       <button class="fc-btn" id="fc-next">Suivante →</button>
@@ -3117,7 +3132,31 @@ function fcShow(){
   document.getElementById('fc-def').classList.add('hidden');
   document.getElementById('fc-ex').classList.add('hidden');
   document.getElementById('fc-reveal-btn').classList.remove('hidden');
+  fcTradRaz();
 }
+// Chaque carte repart sans traduction : celle de la carte précédente,
+// laissée à l'écran, se lirait comme la traduction du nouveau mot.
+function fcTradRaz(){
+  const b=document.getElementById('fc-trad-btn'), z=document.getElementById('fc-trad');
+  if(!b||!z) return;
+  z.className='hidden'; z.textContent=''; z.removeAttribute('dir');
+  b.classList.remove('hidden'); b.disabled=false;
+  const L=(window.Outils&&Outils.langue)?Outils.langue():null;
+  b.textContent=L?('Traduire en '+L.n):'Traduire';
+}
+document.getElementById('fc-trad-btn').addEventListener('click',()=>{
+  const c=FC_CARDS[fcIdx], b=document.getElementById('fc-trad-btn'), z=document.getElementById('fc-trad');
+  if(!window.Outils||!Outils.traduire){
+    z.className='att'; z.textContent="La traduction n'est pas disponible hors ligne."; return;
+  }
+  b.disabled=true; z.className='att'; z.textContent='Je traduis…';
+  // La définition part en contexte, pas en texte à traduire : elle guide le
+  // sens du mot sans dévoiler la réponse à l'élève qui n'a pas encore révélé.
+  Outils.traduire(c.word, c.def).then(r=>{
+    z.className=''; if(r.langue.rtl) z.setAttribute('dir','rtl');
+    z.textContent=r.texte; b.classList.add('hidden');
+  }).catch(e=>{ z.className='att'; z.textContent=e.message; b.disabled=false; });
+});
 function fcOpen(i){fcIdx=i||0;fcShow();document.getElementById('fc-overlay').classList.add('on')}
 function fcOpenWord(w){const i=FC_CARDS.findIndex(c=>c.word===w);fcOpen(i>=0?i:0)}
 document.getElementById('fc-reveal-btn').addEventListener('click',()=>{
