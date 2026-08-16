@@ -80,7 +80,8 @@
   var cfg = null;      // configuration passée à init()
   var el = {};         // références DOM
   var courant = null;  // outil ouvert, ou null
-  var selection = '';  // dernier passage surligné
+  var selection = '';  // dernier passage surligné, au caractère près
+  var selectionBloc = '';  // le bloc entier qui le contient (voir blocDe)
   var chat = [];       // historique de l'assistant
   var audioEnCours = null;
 
@@ -203,8 +204,7 @@
     });
     racine.querySelectorAll('[data-oe-sel]').forEach(function (b) {
       b.onclick = function () {
-        var s = propre(String(window.getSelection()));
-        if (s) selection = s;
+        retientSelection(window.getSelection());
         cacheSel();
         ouvrir(b.getAttribute('data-oe-sel'), true);
       };
@@ -279,14 +279,79 @@
     });
   }
 
-  function texteBloc(bloc) {
+  function texteBloc(bloc, separe) {
     var copie = bloc.cloneNode(true);
     // [aria-live] écarte les compteurs de score des exercices (« 0 / 8
     // répondu ») : c'est de l'état d'interface, pas du texte à traduire, et
     // il polluait aussi bien la traduction que le contexte de l'assistant.
     copie.querySelectorAll('.oe-tag, .oe-trad, [aria-live], script, style')
       .forEach(function (n) { n.remove(); });
+    // textContent recolle les éléments voisins sans espace : un titre suivi
+    // d'un paragraphe donne « au QuébecLe chiffre ». Illisible à voix haute.
+    // Seule la lecture demande la séparation : la traduction garde l'ancien
+    // texte, sinon toutes les traductions déjà payées changeraient de clé.
+    if (separe) {
+      copie.querySelectorAll(COUPURES).forEach(function (n) {
+        n.appendChild(document.createTextNode(' '));
+      });
+    }
     return propre(copie.textContent);
+  }
+
+  // Le paragraphe entier qui contient la sélection, ou '' si elle tombe hors
+  // du contenu du module. C'est ce texte-là qu'on fait lire, et non la
+  // sélection au caractère près : le cache de voix du serveur est indexé sur
+  // le texte exact, donc trente élèves qui surlignent le même paragraphe à un
+  // mot près font trente lectures facturées. Le même paragraphe n'en fait
+  // qu'une. La traduction, le carnet et la prononciation gardent la sélection
+  // exacte : on y surligne un mot pour avoir ce mot-là, pas ce qui l'entoure.
+  //
+  // On vise le paragraphe et non le bloc marqué : les blocs des modules sont
+  // des cartes entières, de trois cents à mille sept cents caractères, et
+  // faire écouter la carte pour une phrase surlignée noierait l'élève sous les
+  // consignes d'exercice qui l'accompagnent. Le bloc ne sert que de garde-fou
+  // — hors d'un bloc, on ne touche à rien — et de repli.
+  var PARAGRAPHES = 'p,li,dt,dd,td,th,h1,h2,h3,h4,h5,h6,blockquote,figcaption,summary';
+  var COUPURES = 'p,div,li,dt,dd,td,tr,section,article,header,footer,br,'
+    + 'h1,h2,h3,h4,h5,h6,blockquote,figcaption,summary';
+  var PARA_MIN = 40;   // en deçà, on tient l'élément pour un fragment
+
+  // Les modules générés n'ont ni <p> ni <li> : leur contenu est en <div class=
+  // "stxt">, <div class="vf-row">. Une liste de balises n'y mord sur rien et
+  // tout retomberait sur la carte. À défaut de balise parlante, on remonte
+  // donc jusqu'au premier ancêtre qui porte un texte d'un seul tenant — la
+  // taille plancher écarte les étiquettes (« VRAI », un mot de vocabulaire)
+  // sans jamais dépasser le bloc.
+  function paragrapheDe(e, bloc) {
+    var para = e.closest(PARAGRAPHES);
+    if (para && bloc.contains(para) && texteBloc(para, true).length >= PARA_MIN) return para;
+    var n = e;
+    while (n && n !== bloc) {
+      if (texteBloc(n, true).length >= PARA_MIN) return n;
+      n = n.parentElement;
+    }
+    return bloc;
+  }
+
+  function blocDe(noeud) {
+    var e = noeud && (noeud.nodeType === 1 ? noeud : noeud.parentElement);
+    if (!e || !e.closest) return '';
+    var bloc;
+    try { bloc = e.closest(selecteurBlocs()); }
+    catch (err) { return ''; }   // sélecteur de module mal formé : on s'efface
+    if (!bloc || el.racine.contains(bloc) || el.tete.contains(bloc)) return '';
+    return texteBloc(paragrapheDe(e, bloc), true).slice(0, 400);
+  }
+
+  // Retient une sélection du document sous ses deux formes. Rend false quand il
+  // n'y a rien à retenir — l'ancienne sélection reste alors en place, ce qui
+  // laisse rouvrir un outil après avoir cliqué ailleurs.
+  function retientSelection(s) {
+    var t = propre(String(s || ''));
+    if (!t) return false;
+    selection = t;
+    selectionBloc = blocDe(s && s.anchorNode);
+    return true;
   }
 
   function traduitBloc(bloc, bouton) {
@@ -456,7 +521,7 @@
 
   // ══ Panneau : LIRE ════════════════════════════════════════════
   function paneLire() {
-    var t = selection || texteParDefaut();
+    var t = selectionBloc || selection || texteParDefaut();
     el.lire.innerHTML = (t
       ? '<div class="oe-lbl">Texte à lire</div><div class="oe-quote">' + esc(t.slice(0, 400))
         + (t.length > 400 ? ' …' : '') + '</div>'
@@ -464,8 +529,9 @@
         + '<button type="button" class="oe-btn oe-ghost oe-full" id="oe-l2">' + icone('lire', 18) + 'Écouter lentement</button>'
         + '<button type="button" class="oe-btn oe-ghost oe-full" id="oe-l3">Arrêter</button>'
       : '')
-      + '<div class="oe-tip">Surlignez un passage pour le faire lire. Sans sélection, '
-      + 'la lecture prend le premier bloc de la page.</div>';
+      + '<div class="oe-tip">Surlignez un passage pour le faire lire. La lecture '
+      + 'prend le paragraphe au complet. Sans sélection, elle prend le premier '
+      + 'bloc de la page.</div>';
     if (!t) return;
     el.lire.querySelector('#oe-l1').onclick = function () { dis(t); };
     el.lire.querySelector('#oe-l2').onclick = function () { dis(t, 0.7); };
@@ -473,8 +539,12 @@
   }
 
   function texteParDefaut() {
-    var b = document.querySelector('[data-oe]');
-    return b ? texteBloc(b).slice(0, 400) : '';
+    // selecteurBlocs() et non [data-oe] seul : un module généré n'a que le
+    // sélecteur passé à init(), donc la lecture sans sélection n'y trouvait
+    // jamais rien et le panneau restait vide.
+    var b;
+    try { b = document.querySelector(selecteurBlocs()); } catch (e) { return ''; }
+    return b ? texteBloc(b, true).slice(0, 400) : '';
   }
 
   // ══ Panneau : SIMPLIFIER ══════════════════════════════════════
@@ -507,7 +577,12 @@
           + '<button type="button" class="oe-btn oe-ghost" id="oe-simp-t">' + icone('trad', 18) + 'Traduire</button></div>';
         r.innerHTML = h;
         r.querySelector('#oe-simp-s').onclick = function () { dis(d.simple); };
-        r.querySelector('#oe-simp-t').onclick = function () { selection = passage; ouvrir('trad', true); };
+        r.querySelector('#oe-simp-t').onclick = function () {
+          // Le bloc d'origine ne vaut plus pour ce passage-ci : on le lâche,
+          // sans quoi « Lire » ferait entendre le paragraphe d'avant.
+          selection = passage; selectionBloc = '';
+          ouvrir('trad', true);
+        };
         var g = r.querySelector('#oe-simp-g');
         if (g) g.onclick = function () { ajouteCarnet(d.mot, d.explication); };
       })
@@ -773,6 +848,7 @@
     if (!hote || el.racine.contains(hote) || el.tete.contains(hote)) return cacheSel();
 
     selection = t;
+    selectionBloc = blocDe(noeud);
     var r = s.getRangeAt(0).getBoundingClientRect();
     el.sel.classList.add('oe-on');
     var l = r.left + global.scrollX + r.width / 2 - el.sel.offsetWidth / 2;
