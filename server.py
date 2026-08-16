@@ -76,6 +76,17 @@ VOCAB_REPORTS_FILE = STORAGE_DIR / "data" / "traductions_douteuses.json"
 # Séparé de traductions.json : celui-là est indexé par mot de vocabulaire,
 # celui-ci par empreinte d'un passage quelconque du module.
 OUTILS_CACHE_FILE = STORAGE_DIR / "data" / "outils_cache.json"
+# Cache des voix ElevenLabs, facturées au caractère : trente élèves font lire
+# la même consigne, on paie une fois. Les MP3 vont sur le disque et non dans un
+# JSON comme outils_cache.json — ce fichier-là est réécrit en entier à chaque
+# entrée, ce qui est sans conséquence pour du texte et ruineux pour de l'audio.
+# Sous data/ et non assets/ : le second est servi tel quel par le serveur de
+# fichiers, ce qui rendrait les MP3 téléchargeables sans code élève.
+VOIX_CACHE_DIR = STORAGE_DIR / "data" / "voix-cache"
+# Plafond du cache : les répliques du jeu de rôle sont uniques, donc écrites
+# une fois et jamais relues. Sans borne, elles rempliraient le volume. Au-delà,
+# on élague les fichiers les moins récemment servis jusqu'aux 80 % du plafond.
+VOIX_CACHE_MAX_OCTETS = int(os.environ.get("VOIX_CACHE_MAX_MO", "300")) * 1024 * 1024
 ORAL_SUBMISSIONS_FILE = STORAGE_DIR / "data" / "oral_submissions.json"
 ORAL_AUDIO_DIR = STORAGE_DIR / "assets" / "oral-submissions"
 # « Corrige-moi ! » : pratique orale libre, sans enregistrement audio ni date
@@ -1083,6 +1094,9 @@ def save_translation(key, value):
 
 
 _OUTILS_LOCK = threading.Lock()
+# Sérialise le seul moment où deux requêtes se marcheraient dessus : l'élagage.
+# Lire et écrire un MP3 ne se verrouille pas — chaque fichier a son propre nom.
+_VOIX_CACHE_LOCK = threading.Lock()
 
 
 def outils_key(genre, langue, texte):
@@ -1109,6 +1123,69 @@ def save_outils_entry(key, value):
         OUTILS_CACHE_FILE.parent.mkdir(parents=True, exist_ok=True)
         with open(OUTILS_CACHE_FILE, "w", encoding="utf-8") as f:
             json.dump(cache, f, ensure_ascii=False, indent=2)
+
+
+def voix_cache_chemin(voix, texte):
+    """Fichier où dort le MP3 d'un texte dit par une voix. La voix entre dans
+    la clé : la même réplique lue par la propriétaire et par le visiteur sont
+    deux enregistrements. Espaces normalisés, comme pour outils_key()."""
+    empreinte = hashlib.sha1(" ".join(texte.split()).encode("utf-8")).hexdigest()[:20]
+    return VOIX_CACHE_DIR / ("%s-%s.mp3" % (voix, empreinte))
+
+
+def voix_cache_lire(chemin):
+    """Rend les octets du MP3, ou None. Touche le fichier au passage : c'est la
+    date de dernier service qui décide de ce que l'élagage garde."""
+    try:
+        audio = chemin.read_bytes()
+    except OSError:
+        return None
+    if not audio:
+        return None
+    try:
+        os.utime(chemin, None)
+    except OSError:
+        pass          # cache en lecture seule : on sert quand même
+    return audio
+
+
+def voix_cache_ecrire(chemin, audio):
+    """Range un MP3. Écriture par fichier temporaire puis renommage : un élève
+    qui recharge pendant l'écriture ne doit jamais lire un MP3 tronqué."""
+    try:
+        VOIX_CACHE_DIR.mkdir(parents=True, exist_ok=True)
+        provisoire = chemin.with_suffix(".mp3.part-%s" % uuid.uuid4().hex[:8])
+        provisoire.write_bytes(audio)
+        provisoire.replace(chemin)
+    except OSError as e:
+        print(f"[WARN] cache voix non écrit : {e}", flush=True)
+        return
+    _voix_cache_elaguer()
+
+
+def _voix_cache_elaguer():
+    """Ramène le cache sous son plafond en retirant les fichiers les moins
+    récemment servis. Le cache n'est jamais une source de vérité : tout ce
+    qu'on jette sera régénéré au prochain appel."""
+    with _VOIX_CACHE_LOCK:
+        try:
+            fichiers = [(f.stat().st_mtime, f.stat().st_size, f)
+                        for f in VOIX_CACHE_DIR.glob("*.mp3")]
+        except OSError:
+            return
+        total = sum(taille for _, taille, _ in fichiers)
+        if total <= VOIX_CACHE_MAX_OCTETS:
+            return
+        cible = int(VOIX_CACHE_MAX_OCTETS * 0.8)
+        for _, taille, f in sorted(fichiers):
+            if total <= cible:
+                break
+            try:
+                f.unlink()
+                total -= taille
+            except OSError:
+                pass
+        print(f"[voix] cache élagué à {total / (1024 * 1024):.1f} Mo", flush=True)
 
 
 def log_translation_report(entry):
@@ -3521,11 +3598,6 @@ class Handler(http.server.SimpleHTTPRequestHandler):
             json_response(self, {"error": "Non autorisé"}, 401)
             return
 
-        api_key = os.environ.get("ELEVENLABS_API_KEY", "").strip()
-        if not api_key:
-            json_response(self, {"error": "Voix non configurée sur le serveur"}, 503)
-            return
-
         # Borne de coût : ElevenLabs facture au caractère, et une réplique du
         # jeu de rôle tient largement sous cette limite.
         texte = str(body.get("texte", "")).strip()[:400]
@@ -3542,6 +3614,20 @@ class Handler(http.server.SimpleHTTPRequestHandler):
             voix = (VOIX_JEU_DE_ROLE["proprietaire"]
                     if body.get("role") == "locataire"
                     else VOIX_JEU_DE_ROLE["locataire"])
+
+        # Le cache passe avant la clé d'API : une classe garde la voix des
+        # passages déjà lus même si la clé vient à manquer.
+        chemin = voix_cache_chemin(voix, texte)
+        audio = voix_cache_lire(chemin)
+        if audio is not None:
+            print(f"[voix] cache : {len(texte)} caractères", flush=True)
+            self._envoyer_mp3(audio)
+            return
+
+        api_key = os.environ.get("ELEVENLABS_API_KEY", "").strip()
+        if not api_key:
+            json_response(self, {"error": "Voix non configurée sur le serveur"}, 503)
+            return
 
         payload = json.dumps({
             "text": texte,
@@ -3568,6 +3654,12 @@ class Handler(http.server.SimpleHTTPRequestHandler):
             return
 
         print(f"[voix] {len(texte)} caractères → {len(audio)} octets", flush=True)
+        voix_cache_ecrire(chemin, audio)
+        self._envoyer_mp3(audio)
+
+    def _envoyer_mp3(self, audio):
+        """Rend du MP3 brut. `no-store` reste : le cache est celui du serveur,
+        partagé par la classe, pas celui du navigateur d'un élève."""
         self.send_response(200)
         self.send_header("Content-Type", "audio/mpeg")
         self.send_header("Content-Length", str(len(audio)))

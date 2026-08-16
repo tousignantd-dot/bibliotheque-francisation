@@ -383,6 +383,17 @@ visuelle. Quatrième onglet de `enseignant.html`, rendu par `js/materiel.js`.
   `/api/outils/assistant`, plus `voix: "lecture"` sur `/api/voix`. Les deux
   premières sont mises en cache sur disque (`data/outils_cache.json`, non
   versionné) : trente élèves surlignent la même consigne, on paie une fois.
+- **`/api/voix` est aussi en cache disque**, mais en fichiers et non en JSON :
+  `data/voix-cache/<voix>-<empreinte>.mp3`. ElevenLabs facture au caractère et
+  c'est le plus gros poste de la facture d'API — la lecture d'une consigne par
+  toute une classe doit être payée une fois. Trois partis pris : le cache est
+  consulté **avant** la clé d'API (une classe garde la voix des passages déjà
+  lus si la clé vient à manquer) ; il vit sous `data/` et non `assets/`, sinon
+  le serveur de fichiers rendrait les MP3 téléchargeables sans code élève ; et
+  il est **plafonné** (`VOIX_CACHE_MAX_MO`, 300 Mo par défaut, élagage des
+  moins récemment servis) parce que les répliques du jeu de rôle sont uniques
+  et rempliraient le volume. Rien n'y est une source de vérité : tout ce qu'on
+  jette est régénéré au prochain appel.
 - Trois partis pris à ne pas défaire : la traduction s'ajoute **sous** le
   français et ne le remplace jamais (pas de « traduire toute la page ») ;
   « simplifier » reformule **en français** ; l'assistant **ne donne jamais la
