@@ -122,6 +122,24 @@ PORT = int(os.environ.get('PORT', 5173))
 
 # ── Initialisation du stockage ──────────────────────────────────────────────
 
+def _meme_contenu(a, b, morceau=1 << 16):
+    """Deux fichiers ont-ils le même contenu ? Compare la taille d'abord —
+    elle suffit à écarter la quasi-totalité des cas — puis les octets, par
+    morceaux : certaines présentations pèsent plusieurs mégaoctets."""
+    try:
+        if a.stat().st_size != b.stat().st_size:
+            return False
+        with open(a, "rb") as fa, open(b, "rb") as fb:
+            while True:
+                ma, mb = fa.read(morceau), fb.read(morceau)
+                if ma != mb:
+                    return False
+                if not ma:
+                    return True
+    except OSError:
+        return False
+
+
 def init_storage():
     """Crée les répertoires nécessaires et migre les données initiales si besoin."""
     if STORAGE_DIR == BASE_DIR:
@@ -210,15 +228,38 @@ def init_storage():
     # production. Sans ceci, un fichier ajouté par git dans ces dossiers reste
     # invisible tant que le volume Railway existe déjà (le copytree initial
     # à la ligne ~60 ne s'exécute qu'à la toute première création du volume).
+    #
+    # Un fichier AJOUTÉ n'est pas le seul cas : un fichier MODIFIÉ doit
+    # repartir aussi. La renumérotation des modules (2026-08-16) a régénéré
+    # 120 fiches sous le même nom ; ne copier que les absents a laissé la
+    # production imprimer « Module 3 » sur des séances devenues le module 4.
+    # On compare donc le contenu, et le code gagne quand il diffère.
+    #
+    # Ça n'écrase pas les téléversements de l'admin : un fichier téléversé
+    # n'existe que dans le volume, jamais dans BASE_DIR, donc il n'entre
+    # jamais dans cette boucle. Et remplacer un officiel par un dépôt passe
+    # par `promotions.json` (voir materiel_promu), pas par le disque.
     for subdir in ("thumbnails", "documents", "slideshows", "plans", "autres"):
         src_dir = BASE_DIR / "assets" / subdir
         dst_dir = STORAGE_DIR / "assets" / subdir
         if not src_dir.exists():
             continue
         dst_dir.mkdir(parents=True, exist_ok=True)
+        rafraichis = 0
         for f in src_dir.iterdir():
-            if f.is_file() and not (dst_dir / f.name).exists():
-                shutil.copy2(str(f), str(dst_dir / f.name))
+            if not f.is_file():
+                continue
+            cible = dst_dir / f.name
+            try:
+                if cible.exists() and _meme_contenu(f, cible):
+                    continue
+                if cible.exists():
+                    rafraichis += 1
+                shutil.copy2(str(f), str(cible))
+            except OSError as e:
+                print(f"[WARN] copie {subdir}/{f.name} échouée : {e}", flush=True)
+        if rafraichis:
+            print(f"[init] {subdir} : {rafraichis} fichier(s) rafraîchi(s) depuis le code", flush=True)
 
 
 # ── Helpers données ─────────────────────────────────────────────────────────
