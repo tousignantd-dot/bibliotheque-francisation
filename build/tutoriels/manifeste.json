@@ -7,36 +7,74 @@
       "plans": [
         {
           "id": "a",
-          "gestes": [],
+          "gestes": [
+            {
+              "do": "survol",
+              "bas": 460
+            }
+          ],
           "texte": "Bienvenue dans l'espace enseignant de la bibliothèque de francisation. En quelques capsules, nous allons faire le tour de vos outils : donner des dates à vos activités, gérer vos élèves et leurs codes, et sortir le matériel de la semaine."
         },
         {
           "id": "b",
-          "gestes": [],
+          "gestes": [
+            {
+              "do": "parcourir",
+              "cibles": [
+                ".pe-onglet[data-ecran=\"planif\"]",
+                ".pe-onglet[data-ecran=\"eleves\"]",
+                ".pe-onglet[data-ecran=\"groupes\"]",
+                ".pe-onglet[data-ecran=\"materiel\"]",
+                ".pe-qui"
+              ],
+              "pause": 700
+            }
+          ],
           "surligne": ".pe-bande1 .pe-nav",
           "texte": "Tout tient dans une seule page. En haut, quatre onglets : Planifier, Élèves, Groupes et comptes, et Matériel. Votre nom est à droite, et votre session reste ouverte trente jours sur cet appareil."
         },
         {
           "id": "c",
-          "gestes": [],
+          "gestes": [
+            {
+              "do": "pointer",
+              "sel": "#selectGroupe"
+            }
+          ],
           "surligne": ".pe-bande2",
           "texte": "Juste en dessous, la bande verte : c'est votre groupe actif. Tout ce que montrent les quatre onglets dépend du groupe choisi ici. Changez de groupe, et vous changez de classe."
         },
         {
           "id": "d",
-          "gestes": [],
-          "surligne": "#resumeGroupe",
-          "cadre": [
-            140,
-            60,
-            1160,
-            120
+          "gestes": [
+            {
+              "do": "parcourir",
+              "cibles": [
+                "#lienEleves",
+                "#resumeGroupe"
+              ],
+              "pause": 900
+            }
           ],
+          "surligne": "#resumeGroupe",
           "texte": "À côté du sélecteur, un résumé vous dit tout de suite où vous en êtes : combien d'élèves dans ce groupe, et combien d'activités vous leur avez déjà planifiées sur l'ensemble du catalogue."
         },
         {
           "id": "e",
-          "gestes": [],
+          "gestes": [
+            {
+              "do": "defiler",
+              "sel": ".pe-jour"
+            },
+            {
+              "do": "parcourir",
+              "cibles": [
+                "#dateJour",
+                "#programme"
+              ],
+              "pause": 800
+            }
+          ],
           "surligne": ".pe-jour",
           "texte": "Et dès l'ouverture, le programme du jour. La date, ce qui est ouvert, ce qui ferme bientôt. C'est le coup d'œil du matin, avant d'entrer en classe."
         }
@@ -82,12 +120,6 @@
               "sel": "#listeActivites"
             }
           ],
-          "cadre": [
-            700,
-            0,
-            900,
-            560
-          ],
           "texte": "Quatre états, et c'est tout. Tiret, sans date : l'élève ne la voit pas. Flèche, à venir : la date est posée, elle arrive. Crochet, ouverte : l'élève peut y répondre. Croix, fermée : il peut relire, mais plus répondre."
         },
         {
@@ -114,12 +146,6 @@
             }
           ],
           "surligne": "#rythmes",
-          "cadre": [
-            0,
-            400,
-            1600,
-            500
-          ],
           "texte": "Vous donnez une date d'ouverture, une date de fermeture si vous en voulez une, puis vous choisissez un rythme. Toutes à la même date, une par semaine, une aux deux semaines, ou une par jour. Et par défaut, le portail saute les samedis et les dimanches."
         },
         {
@@ -131,12 +157,6 @@
             }
           ],
           "surligne": "#apercuPlan",
-          "cadre": [
-            800,
-            400,
-            800,
-            500
-          ],
           "texte": "À droite, l'aperçu vous montre, avant de valider, quelle activité tombe quel jour. Rien n'est enregistré tant que vous n'avez pas cliqué sur « Poser les dates ». Et si vous vous trompez, « Retirer les dates » ramène tout à zéro."
         },
         {
@@ -234,7 +254,9 @@
           "surligne": ".pe-infos",
           "texte": "Sous les sections, le même chevron vous donne la fiche pédagogique du module : les savoirs, les actes de parole, les compétences visées et le vocabulaire. De quoi préparer votre cours sans même ouvrir l'activité."
         }
-      ]
+      ],
+      "crf": 30,
+      "commentaire_crf": "Cette capsule défile presque sans arrêt : chaque image change en entier, ce qui coûte cher. À CRF 30 elle passe de 13,8 à 6,8 Mo et le texte de 15 px reste net (vérifié à l'image)."
     },
     {
       "id": "04-eleves",
@@ -262,12 +284,6 @@
               "do": "defiler",
               "sel": "#listeEleves"
             }
-          ],
-          "cadre": [
-            0,
-            100,
-            900,
-            620
           ],
           "texte": "Ce code de six caractères est sa seule clé d'entrée. Pas de courriel, pas de mot de passe à retenir, pas de compte à créer. Il l'entre dans le portail élève, et il retrouve son travail."
         },
@@ -300,12 +316,6 @@
               "do": "defiler",
               "sel": "#listeEleves"
             }
-          ],
-          "cadre": [
-            0,
-            100,
-            1600,
-            620
           ],
           "texte": "Chaque rangée vous dit aussi ce que la personne a ouvert et réussi. Attention : cette progression ne compte que les activités déjà offertes à ce groupe. Personne n'est jamais en retard sur quelque chose que vous n'avez pas ouvert."
         },
@@ -447,12 +457,6 @@
               "sel": ".mat-seance"
             }
           ],
-          "cadre": [
-            0,
-            100,
-            1050,
-            700
-          ],
           "texte": "Un mot sur les seize séances, parce que ça surprend. Vos dates de planification suivent le découpage du module en six sections. Les présentations, elles, suivent une grille de seize séances de cours. Les deux grilles ne se correspondent pas : le portail vous les offre toutes, et c'est vous qui choisissez."
         },
         {
@@ -489,9 +493,7 @@
               "sel": "#matColonne section:last-of-type"
             }
           ],
-          "texte": "C'est ça, déposer sa propre version. Votre fichier se range à côté de l'officiel, jamais à sa place : l'original reste téléchargeable, et la prochaine production automatique ne l'écrasera pas. Un compte administrateur peut aller plus loin et faire servir un dépôt à la place de l'officiel — là encore sans rien effacer, et ça se défait d'un clic.",
-          "cadreSel": "#matColonne section:last-of-type",
-          "marge": 20
+          "texte": "C'est ça, déposer sa propre version. Votre fichier se range à côté de l'officiel, jamais à sa place : l'original reste téléchargeable, et la prochaine production automatique ne l'écrasera pas. Un compte administrateur peut aller plus loin et faire servir un dépôt à la place de l'officiel — là encore sans rien effacer, et ça se défait d'un clic."
         },
         {
           "id": "h",

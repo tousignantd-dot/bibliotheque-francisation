@@ -426,9 +426,16 @@ Deux formes du même contenu, à garder d'accord entre elles. Le bouton
 vers les diapositives.
 
 - `assets/outils/tutoriels-enseignant.html` — **produite** par
-  `build/tutoriels/livrer.py`, jamais écrite à la main : sa transcription est
-  le texte même de la narration. Les six capsules vivent dans
-  `assets/tutoriels/` (~16 Mo, versionnés avec leurs affiches `.jpg`).
+  `build/tutoriels/livrer.py`, jamais écrite à la main : sa transcription et
+  ses sous-titres sont le texte même de la narration. Les six capsules vivent
+  dans `assets/tutoriels/`, versionnées avec leurs sous-titres `.vtt` et leurs
+  affiches `.jpg`.
+- **Les capsules sont un vrai enregistrement d'écran**, pas des captures
+  fixes : `Page.startScreencast` filme pendant qu'un script se sert du
+  portail, avec un pointeur animé injecté dans la page (`scene.js`). Un écran
+  immobile n'émet aucune image — le montage donne donc à chaque image la durée
+  relevée au tournage, jamais une cadence fixe. Le tournage se fait à vitesse
+  réelle : environ une minute par minute de capsule.
 - `assets/outils/guide-espace-enseignant.html` — le même parcours en vingt
   diapositives animées, navigables au clavier et imprimables. Écrit à la main.
 - **La chaîne de production est dans `build/tutoriels/`** — voir son

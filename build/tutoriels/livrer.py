@@ -36,10 +36,17 @@ for i, capsule in enumerate(manifeste["capsules"], 1):
     source = ICI / "capsules" / f"{capsule['id']}.mp4"
     shutil.copy2(source, VIDEOS / source.name)
 
-    # Vignette d'affiche : la première image du film, pour que la page ne
-    # présente pas six rectangles noirs.
+    # Les sous-titres accompagnent le film : public en apprentissage du
+    # français, lire pendant qu'on écoute change tout. Fichier à part plutôt
+    # qu'incrusté — on peut les couper, et les corriger sans réencoder.
+    sous_titres = ICI / "capsules" / f"{capsule['id']}.vtt"
+    if sous_titres.exists():
+        shutil.copy2(sous_titres, VIDEOS / sous_titres.name)
+
+    # Vignette d'affiche : prise après le carton de titre, sinon les six
+    # cartes de la page montreraient six cartons presque identiques.
     affiche = VIDEOS / f"{capsule['id']}.jpg"
-    subprocess.run(["ffmpeg", "-y", "-loglevel", "error", "-ss", "0.6",
+    subprocess.run(["ffmpeg", "-y", "-loglevel", "error", "-ss", "4.5",
                     "-i", str(source), "-frames:v", "1", "-vf", "scale=640:-2",
                     "-q:v", "4", str(affiche)], check=True)
 
@@ -53,9 +60,11 @@ for i, capsule in enumerate(manifeste["capsules"], 1):
     <section class="tu-capsule" id="c{i}">
       <div class="tu-num">Capsule {i} sur {len(manifeste['capsules'])} · {d}</div>
       <h2>{titre}</h2>
-      <video controls preload="none" playsinline
+      <video controls preload="none" playsinline crossorigin="anonymous"
              poster="../tutoriels/{capsule['id']}.jpg">
         <source src="../tutoriels/{capsule['id']}.mp4" type="video/mp4" />
+        <track kind="subtitles" srclang="fr" label="Français" default
+               src="../tutoriels/{capsule['id']}.vtt" />
         Votre navigateur ne peut pas lire cette vidéo.
         <a href="../tutoriels/{capsule['id']}.mp4">Téléchargez-la</a>.
       </video>
@@ -123,8 +132,9 @@ PAGE.write_text(f"""<!DOCTYPE html>
     <div class="container">
       <div class="band__eyebrow">Espace enseignant · Francisation Niveau 4</div>
       <h1 style="margin:var(--sp-3) 0 0;font-size:var(--fs-h2);font-weight:var(--fw-black)">Tutoriels en vidéo</h1>
-      <p class="band__lead">Six capsules courtes, filmées dans le portail, avec narration.
-         Regardez celle dont vous avez besoin — elles ne se suivent pas obligatoirement.</p>
+      <p class="band__lead">Six capsules courtes, filmées dans le portail, avec narration
+         et sous-titres. Regardez celle dont vous avez besoin — elles ne se suivent
+         pas obligatoirement.</p>
     </div>
   </header>
   <div class="container">

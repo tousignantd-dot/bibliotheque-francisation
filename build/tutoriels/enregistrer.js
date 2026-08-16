@@ -1,0 +1,243 @@
+/* Enregistre les capsules : un vrai film de l'écran, pas des captures fixes.
+
+   Trois pièces.
+
+   1. **`Page.startScreencast`** du protocole DevTools rend une image chaque
+      fois que la page change, avec son horodatage. On les écrit sur le
+      disque et on garde les horodatages : c'est eux, et non une cadence
+      supposée, qui donneront la vraie durée de chaque image au montage.
+      Un écran immobile n'émet aucune image — d'où le besoin des durées.
+
+   2. **`scene.js`**, injecté dans la page : le pointeur, ses déplacements,
+      le défilement doux et le surlignage en fondu. Animer depuis Node, un
+      pas par appel, donnerait des saccades ; dans la page, c'est fluide.
+
+   3. **Le plan dure au moins sa narration.** On mesure le MP3 avant de
+      filmer et on tient l'écran jusqu'à ce que le temps soit couvert, plus
+      une respiration. Sans ça, l'image changerait au milieu d'une phrase.
+
+   `node enregistrer.js <port> [idCapsule]` */
+const fs = require('fs');
+const os = require('os');
+const path = require('path');
+const { execFileSync } = require('child_process');
+const puppeteer = require('puppeteer-core');
+const SCENE = require('./scene.js');
+
+const CHROME = '/Applications/Google Chrome.app/Contents/MacOS/Google Chrome';
+const PORT = process.argv[2];
+const SEULE = process.argv[3] || null;
+const ICI = __dirname;
+const SORTIE = path.join(ICI, 'films');
+const VOIX = path.join(ICI, 'voix');
+const manifeste = JSON.parse(fs.readFileSync(path.join(ICI, 'manifeste.json'), 'utf8'));
+
+/* 1600 × 900 au facteur 2 : le film sort en 1080p, et le texte de 15 px du
+   portail reste lisible après compression. */
+const LARGEUR = 1600, HAUTEUR = 900, ECHELLE = 2;
+const RESPIRATION = 0.7;      // secondes tenues après la fin de la phrase
+
+const dodo = (ms) => new Promise((r) => setTimeout(r, ms));
+
+function identifiants() {
+  const bac = process.env.STORAGE_DIR
+    || path.join(os.tmpdir(), 'francisation-demo-tutoriels');
+  const fichier = path.join(bac, 'identifiants-demo.json');
+  if (fs.existsSync(fichier)) return JSON.parse(fs.readFileSync(fichier, 'utf8'));
+  if (process.env.PROF_COURRIEL && process.env.PROF_MOTDEPASSE) {
+    return { courriel: process.env.PROF_COURRIEL, motDePasse: process.env.PROF_MOTDEPASSE };
+  }
+  throw new Error(`Identifiants introuvables (${fichier}). `
+    + "Lancez d'abord ./build/tutoriels/lancer_demo.sh");
+}
+
+const dureeSon = (f) => parseFloat(execFileSync('ffprobe',
+  ['-v', 'error', '-show_entries', 'format=duration', '-of', 'default=nw=1:nk=1', f],
+  { encoding: 'utf8' }).trim());
+
+/* — Les gestes, joués *dans* la page pour qu'ils se voient — */
+async function jouer(page, geste) {
+  const scene = (corps, arg) => page.evaluate(corps, arg);
+  switch (geste.do) {
+    case 'attendre':
+      await dodo(geste.ms);
+      break;
+    case 'defiler':
+      await scene((s) => window.__scene.defiler(s), geste.sel);
+      break;
+    case 'pointer':
+      await scene((s) => window.__scene.versElement(s), geste.sel);
+      break;
+    case 'parcourir':
+      await scene((g) => window.__scene.parcourir(g.cibles, g.pause), geste);
+      break;
+    case 'survol':
+      await scene((b) => window.__scene.survol(b), geste.bas || null);
+      break;
+    case 'clic':
+      await scene((s) => window.__scene.clic(s), geste.sel);
+      break;
+    case 'onglet':
+      await scene((v) => window.__scene.clic(`.pe-onglet[data-ecran="${v}"]`), geste.valeur);
+      break;
+    /* Cocher se voit case par case : trois cases qui s'allument d'un coup
+       ne raconteraient pas le geste dont parle la voix. */
+    case 'cocher':
+      await scene(async (n) => {
+        const cases = Array.from(document.querySelectorAll('[data-coche]')).slice(0, n);
+        for (const c of cases) {
+          if (!c.checked) await window.__scene.clic(`[data-coche="${c.dataset.coche}"]`);
+          await window.__scene.dodo(220);
+        }
+      }, geste.n);
+      break;
+    case 'js':
+      await page.evaluate(geste.code);
+      await dodo(250);
+      break;
+    case 'deplier-module':
+      await scene(() => document.querySelector('.choice[data-filtre="cours"]')?.click());
+      await dodo(700);
+      await scene(async () => {
+        const chevrons = Array.from(document.querySelectorAll('.pe-chevron[data-deploi]'));
+        for (const c of chevrons) {
+          await window.__scene.clic(`.pe-chevron[data-deploi="${c.dataset.deploi}"]`);
+          const rangee = c.closest('.pe-rangee');
+          if (rangee?.parentElement?.querySelector('.pe-sections')) return;
+          c.click();                        // repli discret, ce n'était pas le bon
+        }
+      });
+      await dodo(500);
+      await scene(() => window.__scene.defiler('.pe-sections'));
+      break;
+    case 'ouvrir-module':
+    case 'ouvrir-seance': {
+      const present = (code) => page.evaluate((c) => (c
+        ? Array.from(document.querySelectorAll('.mat-seance-code'))
+            .some((n) => n.textContent.trim() === c)
+        : document.querySelectorAll('.mat-seance').length > 0), code || null);
+      let trouve = await present(geste.code);
+      const ids = await page.$$eval('#matColonne [data-action="deplier"]',
+        (n) => n.map((b) => b.dataset.id));
+      for (const id of (trouve ? [] : ids)) {
+        await scene((i) => window.__scene.clic(
+          `#matColonne [data-action="deplier"][data-id="${i}"]`), id);
+        await dodo(600);
+        trouve = await present(geste.code);
+        if (trouve) break;
+      }
+      if (!trouve) throw new Error(`séance ${geste.code || '(toutes)'} introuvable`);
+      if (geste.do === 'ouvrir-seance') {
+        await scene(async (code) => {
+          const cell = Array.from(document.querySelectorAll('.mat-seance-code'))
+            .find((n) => n.textContent.trim() === code);
+          const rangee = cell.closest('.mat-seance');
+          await window.__scene.defiler(rangee);
+          const titre = rangee.querySelector('.mat-seance-titre');
+          const r = titre.getBoundingClientRect();
+          await window.__scene.versPoint(r.left + 40, r.top + r.height / 2);
+          titre.click();
+        }, geste.code);
+        await dodo(700);
+      }
+      break;
+    }
+    default:
+      throw new Error('geste inconnu : ' + geste.do);
+  }
+}
+
+(async () => {
+  fs.mkdirSync(SORTIE, { recursive: true });
+  const navigateur = await puppeteer.launch({
+    executablePath: CHROME,
+    headless: 'new',
+    args: ['--force-device-scale-factor=1', '--hide-scrollbars',
+           '--disable-features=CalculateNativeWinOcclusion'],
+  });
+  const page = await navigateur.newPage();
+  await page.setViewport({ width: LARGEUR, height: HAUTEUR, deviceScaleFactor: ECHELLE });
+
+  const compte = identifiants();
+  await page.goto(`http://localhost:${PORT}/enseignant.html`, { waitUntil: 'networkidle2' });
+  await page.evaluate((c) => {
+    const poser = (el, v) => {
+      const set = Object.getOwnPropertyDescriptor(HTMLInputElement.prototype, 'value').set;
+      set.call(el, v);
+      el.dispatchEvent(new Event('input', { bubbles: true }));
+    };
+    poser(document.getElementById('courriel'), c.courriel);
+    poser(document.getElementById('motDePasse'), c.motDePasse);
+    document.getElementById('formConnexion').requestSubmit();
+  }, compte);
+  await page.waitForSelector('#portail:not([hidden])', { timeout: 15000 });
+  await dodo(1200);
+  /* Le portail est une page unique : aucune navigation ne recharge le
+     document, donc la scène s'injecte une seule fois. */
+  await page.evaluate(SCENE);
+  console.log('session ouverte, scène injectée');
+
+  const cdp = await page.createCDPSession();
+
+  for (const capsule of manifeste.capsules) {
+    const garder = !SEULE || capsule.id === SEULE;
+    const dossier = path.join(SORTIE, capsule.id);
+    if (garder) {
+      fs.rmSync(dossier, { recursive: true, force: true });
+      fs.mkdirSync(dossier, { recursive: true });
+    }
+
+    const images = [];
+    let numero = 0;
+    const surImage = (trame) => {
+      if (garder) {
+        const nom = String(numero++).padStart(5, '0') + '.jpg';
+        fs.writeFileSync(path.join(dossier, nom), Buffer.from(trame.data, 'base64'));
+        images.push({ nom, t: trame.metadata.timestamp });
+      }
+      cdp.send('Page.screencastFrameAck', { sessionId: trame.sessionId }).catch(() => {});
+    };
+
+    if (garder) {
+      cdp.on('Page.screencastFrame', surImage);
+      await cdp.send('Page.startScreencast', {
+        format: 'jpeg', quality: 92, everyNthFrame: 1,
+        maxWidth: LARGEUR * ECHELLE, maxHeight: HAUTEUR * ECHELLE,
+      });
+      await dodo(300);
+    }
+
+    const reperes = [];
+    for (const plan of capsule.plans) {
+      const debut = Date.now();
+      await page.evaluate(() => window.__scene?.effacer());
+      for (const geste of (plan.gestes || [])) await jouer(page, geste);
+      if (!garder) continue;
+
+      if (plan.surligne) {
+        await page.evaluate((s) => window.__scene.surligner(s), plan.surligne);
+        await dodo(550);
+      }
+      /* Le plan tient jusqu'à couvrir sa narration : l'image ne doit jamais
+         changer au milieu d'une phrase. */
+      const son = path.join(VOIX, `${capsule.id}_${plan.id}.mp3`);
+      if (!fs.existsSync(son)) throw new Error(`narration absente : ${path.basename(son)}`);
+      const voulu = (dureeSon(son) + RESPIRATION) * 1000;
+      const reste = voulu - (Date.now() - debut);
+      if (reste > 0) await dodo(reste);
+      reperes.push({ plan: plan.id, debut, fin: Date.now() });
+      console.log(`  ${capsule.id}_${plan.id}  ${((Date.now() - debut) / 1000).toFixed(1)} s`);
+    }
+
+    if (garder) {
+      await dodo(400);
+      await cdp.send('Page.stopScreencast');
+      cdp.off('Page.screencastFrame', surImage);
+      fs.writeFileSync(path.join(dossier, 'images.json'),
+        JSON.stringify({ images, reperes }, null, 1));
+      console.log(`✓ ${capsule.id} — ${images.length} images`);
+    }
+  }
+
+  await navigateur.close();
+})().catch((e) => { console.error('ÉCHEC :', e.message); process.exit(1); });
