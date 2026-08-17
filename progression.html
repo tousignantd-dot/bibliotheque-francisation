@@ -100,6 +100,20 @@
                background: var(--accent-soft); color: var(--accent-ink);
                border-radius: 6px; padding: 2px 8px; font-size: var(--fs-ui-sm); }
 
+    /* — Chevron d'une rangée : les envois de l'élève, dépliés sur place — */
+    .pg-qui { display: flex; align-items: center; gap: var(--sp-3); }
+    .pg-chevron { width: 44px; height: 44px; flex: none; display: flex;
+                  align-items: center; justify-content: center;
+                  background: none; border: 1px solid var(--border); border-radius: var(--r-sm);
+                  font-size: 15px; font-weight: var(--fw-black); color: var(--ink-500); cursor: pointer; }
+    .pg-chevron:hover { border-color: var(--accent); color: var(--text-accent); }
+    /* Sans envoi, pas de chevron — mais la colonne garde son alignement. */
+    .pg-chevron-vide { width: 44px; flex: none; }
+    .pg-detail > td { background: var(--surface-sunken); padding: var(--sp-5) var(--sp-4); }
+    .pg-detail-tete { font-size: var(--fs-label); font-weight: var(--fw-bold); letter-spacing: .1em;
+                      text-transform: uppercase; color: var(--text-accent); margin-bottom: var(--sp-4); }
+    .pg-detail .pg-envoi:last-child { margin-bottom: 0; }
+
     /* — Pastilles d'état : couleur + glyphe + mot — */
     .pg-etat { display: inline-flex; align-items: center; gap: 6px; border-radius: 999px;
                padding: 3px 10px; font-size: var(--fs-ui-sm); font-weight: var(--fw-bold); white-space: nowrap; }
@@ -220,6 +234,7 @@
   let ELEVES = [], ACTIVITES = [], MODULES = [], PROGRES = [], ORAUX = [], ECRITS = [];
   let MODULE = '';           // '' = tous les modules, sinon l'id de l'activité
   let PERIODE = 'jour';      // 'jour' | 'module' | 'tout'
+  const DEPLIES = new Set(); // les élèves dont on a ouvert les envois
 
   /* ---------- Démarrage ---------- */
   (async function () {
@@ -240,6 +255,15 @@
       PERIODE = b.dataset.periode;
       rendre();
     });
+    // Le chevron d'une rangée ouvre les envois de cet élève, sur place.
+    document.addEventListener('click', e => {
+      const b = e.target.closest('[data-plier]');
+      if (!b) return;
+      const id = Number(b.dataset.plier);
+      if (DEPLIES.has(id)) DEPLIES.delete(id); else DEPLIES.add(id);
+      rendre();
+    });
+
     // « Regarder », depuis la liste des modules : on bascule la vue entière,
     // et la journée seule n'a pas de sens pour un module qu'on vient d'ouvrir.
     document.addEventListener('click', e => {
@@ -344,6 +368,11 @@
 
   const nomEleve = el => el.prenom || el.label || el.code;
 
+  /** « de Wei », mais « d'Ahmed » : l'élision se voit tout de suite. */
+  function deNom(nom) {
+    return /^[aàâeéèêiîoôuùûyhAÀÂEÉÈÊIÎOÔUÙÛYH]/.test(String(nom || '')) ? `d’${nom}` : `de ${nom}`;
+  }
+
   /* ---------- Rendu ---------- */
 
   function rendre() {
@@ -440,6 +469,7 @@
     const parEleve = new Map(ELEVES.map(el => [el.id, {
       el, zones: 0, faites: 0, premier: 0, erreurs: 0, avecStats: false,
       modulesFinis: 0, modulesOuverts: new Set(), oraux: 0, ecrits: 0, quand: '',
+      envois: [],
     }]));
 
     progres.forEach(p => {
@@ -460,6 +490,7 @@
       if (!f) return;
       if ((e.createdAt || '') > f.quand) f.quand = e.createdAt || '';
       if (e.genre === 'oral') f.oraux += 1; else f.ecrits += 1;
+      f.envois.push(e);
     });
 
     const lignes = [...parEleve.values()]
@@ -502,10 +533,31 @@
           ? `<b class="${cls}">${n}</b>`
           : '<span class="pg-vide">—</span>';
 
+        // Le chevron ne promet jamais du vide : il n'apparaît que si cet
+        // élève a envoyé quelque chose dans la période regardée.
+        const deplie = DEPLIES.has(f.el.id);
+        const chevron = f.envois.length
+          ? `<button type="button" class="pg-chevron" data-plier="${f.el.id}" aria-expanded="${deplie}"
+                     aria-label="Voir les envois de ${esc(nomEleve(f.el))}">${deplie ? '▾' : '▸'}</button>`
+          : '<span class="pg-chevron-vide" aria-hidden="true"></span>';
+
+        const detail = deplie ? `<tr class="pg-detail"><td colspan="8">
+            <div class="pg-detail-tete">${pluriel(f.envois.length, 'envoi')} ${esc(deNom(nomEleve(f.el)))}${
+              MODULE ? ' pour ce module' : ''}</div>
+            ${f.envois
+              .sort((a, b) => String(b.createdAt || '').localeCompare(String(a.createdAt || '')))
+              .map(e => carteEnvoi(e, { avecNom: false })).join('')}
+          </td></tr>` : '';
+
         return `<tr>
           <td>
-            <b>${esc(nomEleve(f.el))}</b>
-            <div style="margin-top:4px"><span class="pg-code">${esc(f.el.code)}</span></div>
+            <div class="pg-qui">
+              ${chevron}
+              <div>
+                <b>${esc(nomEleve(f.el))}</b>
+                <div style="margin-top:4px"><span class="pg-code">${esc(f.el.code)}</span></div>
+              </div>
+            </div>
           </td>
           <td>${avance}</td>
           <td>${etat}</td>
@@ -514,12 +566,13 @@
           <td class="pg-num">${compte(f.ecrits, 'pg-ok')}</td>
           <td class="pg-vide">${esc(dateHeure(f.quand)) || '—'}</td>
           <td><a class="btn btn--ghost btn--sm" href="fiche-eleve.html?code=${encodeURIComponent(f.el.code)}">Dossier</a></td>
-        </tr>`;
+        </tr>${detail}`;
       }).join('');
 
     return section('Où en est chaque élève',
-      MODULE ? 'Une rangée par élève, pour le module regardé.'
-             : 'Une rangée par élève, tous modules confondus.',
+      (MODULE ? 'Une rangée par élève, pour le module regardé.'
+              : 'Une rangée par élève, tous modules confondus.')
+      + ' Le chevron ouvre ses textes et ses enregistrements.',
       `<div class="pg-scroll"><table class="pg-table">
         <thead><tr>
           <th>Élève</th><th>Avancement</th><th>État</th>
@@ -532,6 +585,35 @@
       </table></div>`);
   }
 
+  /** Un envoi, tel qu'il est arrivé : la production, puis la rétroaction que
+      l'élève a reçue. La même carte sert à la liste de la période et au
+      dépliement d'une rangée — où le nom est déjà donné par la rangée. */
+  function carteEnvoi(e, { avecNom = true } = {}) {
+    // « Phrase correcte : … » signale une production sans correction.
+    const juste = /^Phrase correcte/.test(e.feedback || '');
+    const eleve = ELEVES.find(el => el.id === e.studentId);
+    const titre = e.activite ? titreCourt(e.activite.title) : (e.theme || '');
+    return `<div class="pg-envoi">
+      <div class="pg-envoi-tete">
+        ${avecNom ? `<span class="pg-envoi-qui">${esc(eleve ? nomEleve(eleve) : e.prenom || e.studentCode || 'Élève')}</span>` : ''}
+        <span class="pg-etat ${e.genre === 'oral' ? 'pg-etat--cours' : 'pg-etat--fait'}">${e.genre === 'oral' ? '♪ Enregistrement' : '✎ Texte'}</span>
+        <span class="pg-envoi-quoi">${esc(titre)}${e.taskLabel ? ' · ' + esc(e.taskLabel) : ''}</span>
+        <span class="pg-envoi-quand">${esc(dateHeure(e.createdAt))}</span>
+      </div>
+      ${e.question ? `<p class="pg-note" style="margin:0 0 var(--sp-3)">Consigne : ${esc(e.question)}</p>` : ''}
+      ${e.genre === 'oral'
+        ? `<audio controls preload="none" src="${esc(e.audioUrl)}"></audio>
+           <div class="pg-bloc"><span class="pg-bloc-cle">Ce que l’élève a écrit</span>
+             <p>${esc(e.transcription || '(vide)')}</p></div>`
+        : `<div class="pg-bloc"><span class="pg-bloc-cle">Le texte de l’élève</span>
+             <p style="white-space:pre-wrap">${esc(e.texte || '(vide)')}</p></div>`}
+      <div class="pg-bloc ${juste ? 'pg-bloc--ok' : 'pg-bloc--corr'}">
+        <span class="pg-bloc-cle">Rétroaction reçue</span>
+        <p>${esc(e.feedback || '(aucune)')}</p>
+      </div>
+    </div>`;
+  }
+
   function blocEnvois(envois) {
     const quand = PERIODE === 'jour' ? 'aujourd’hui'
       : PERIODE === 'module' ? 'depuis l’ouverture du module' : 'depuis le début';
@@ -540,31 +622,7 @@
         `<p class="pg-note">Les enregistrements et les textes déposés depuis « Je me lance » paraîtront ici. Rien ne part sans un geste de l’élève : la correction reste privée tant qu’il n’envoie pas.</p>`);
     }
 
-    const corps = envois.map(e => {
-      // « Phrase correcte : … » signale une production sans correction.
-      const juste = /^Phrase correcte/.test(e.feedback || '');
-      const eleve = ELEVES.find(el => el.id === e.studentId);
-      const titre = e.activite ? titreCourt(e.activite.title) : (e.theme || '');
-      return `<div class="pg-envoi">
-        <div class="pg-envoi-tete">
-          <span class="pg-envoi-qui">${esc(eleve ? nomEleve(eleve) : e.prenom || e.studentCode || 'Élève')}</span>
-          <span class="pg-etat ${e.genre === 'oral' ? 'pg-etat--cours' : 'pg-etat--fait'}">${e.genre === 'oral' ? '♪ Enregistrement' : '✎ Texte'}</span>
-          <span class="pg-envoi-quoi">${esc(titre)}${e.taskLabel ? ' · ' + esc(e.taskLabel) : ''}</span>
-          <span class="pg-envoi-quand">${esc(dateHeure(e.createdAt))}</span>
-        </div>
-        ${e.question ? `<p class="pg-note" style="margin:0 0 var(--sp-3)">Consigne : ${esc(e.question)}</p>` : ''}
-        ${e.genre === 'oral'
-          ? `<audio controls preload="none" src="${esc(e.audioUrl)}"></audio>
-             <div class="pg-bloc"><span class="pg-bloc-cle">Ce que l’élève a écrit</span>
-               <p>${esc(e.transcription || '(vide)')}</p></div>`
-          : `<div class="pg-bloc"><span class="pg-bloc-cle">Le texte de l’élève</span>
-               <p style="white-space:pre-wrap">${esc(e.texte || '(vide)')}</p></div>`}
-        <div class="pg-bloc ${juste ? 'pg-bloc--ok' : 'pg-bloc--corr'}">
-          <span class="pg-bloc-cle">Rétroaction reçue</span>
-          <p>${esc(e.feedback || '(aucune)')}</p>
-        </div>
-      </div>`;
-    }).join('');
+    const corps = envois.map(e => carteEnvoi(e)).join('');
 
     const oraux = envois.filter(e => e.genre === 'oral').length;
     return section('Ce que les élèves ont envoyé',

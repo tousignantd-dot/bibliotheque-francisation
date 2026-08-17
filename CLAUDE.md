@@ -93,6 +93,9 @@ reste dans l'adresse, donc une vue se partage par son lien.
   premier coup, enregistrements, textes, dernière trace, lien vers le dossier),
   les envois de la période lisibles et écoutables sur place, puis la liste des
   modules du groupe.
+- **Le chevron d'une rangée déplie les envois de cet élève**, la même carte que
+  la liste de la période mais sans répéter son nom. Comme dans le portail, il
+  ne promet jamais du vide : sans envoi dans la période, pas de chevron.
 - **Un envoi se rattache à son module par `taskId`** (`module-travail-po`,
   `module-travail-pe`) : le préfixe est le dossier du module, qu'on retrouve
   dans le chemin `interactive` de l'activité. Aucune table à tenir à jour ;
