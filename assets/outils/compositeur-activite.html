@@ -247,6 +247,25 @@ textarea#edition:focus-visible{box-shadow:inset 0 0 0 3px var(--green-100)}
 .propos__m{display:block; margin-top:var(--sp-1); font-size:14px; font-weight:600; color:var(--ink-600)}
 .propos__b{display:flex; flex-wrap:wrap; gap:var(--sp-2); margin-top:var(--sp-3)}
 
+/* ---------- Forge ----------
+   Le suivi du travail en cours. Il n'apparaît que si le serveur local répond :
+   la page reste utilisable telle quelle, en copier-coller, partout ailleurs. */
+.forge{padding:var(--sp-4) var(--sp-5); border-top:1px solid var(--line-100)}
+.forge[hidden]{display:none}
+.forge__t{font-size:13px; font-weight:900; letter-spacing:.1em; text-transform:uppercase; color:var(--ink-400); margin:0 0 var(--sp-3)}
+.forge__etat{margin:0; font-size:15px; font-weight:700; color:var(--ink-600)}
+.forge__etat b{font-weight:900; color:var(--ink-900)}
+/* Le journal défile tout seul : c'est la preuve visible que ça travaille. */
+.forge__journal{margin:var(--sp-3) 0 0; max-height:180px; overflow:auto; background:var(--paper-50);
+  border:1px solid var(--line-100); border-radius:8px; padding:var(--sp-3);
+  font:600 13px/1.55 ui-monospace,SFMono-Regular,Menlo,monospace; color:var(--ink-600); white-space:pre-wrap}
+.forge__fichiers{list-style:none; margin:var(--sp-3) 0 0; padding:0; display:flex; flex-wrap:wrap; gap:var(--sp-2)}
+.forge__fichiers a{display:inline-block; padding:6px 12px; background:var(--green-100); color:var(--green-800);
+  border-radius:999px; font-size:14px; font-weight:800; text-decoration:none}
+.forge__fichiers a:hover{text-decoration:underline}
+.forge__err{margin:var(--sp-3) 0 0; font-size:14px; font-weight:700; color:var(--red-700)}
+.forge__b{display:flex; flex-wrap:wrap; gap:var(--sp-2); margin-top:var(--sp-3)}
+
 /* ---------- Catalogue ---------- */
 .cat-tete{display:flex; flex-wrap:wrap; align-items:end; justify-content:space-between; gap:var(--sp-4); margin-bottom:var(--sp-4)}
 .cat-tete>div{min-width:200px}
@@ -458,7 +477,16 @@ textarea#edition:focus-visible{box-shadow:inset 0 0 0 3px var(--green-100)}
         <div class="barre" id="barre" role="img" aria-labelledby="note-jetons"><i style="width:0%"></i></div>
         <p class="cout__note" id="note-jetons"></p>
       </div>
+      <section class="forge" id="forge" aria-live="polite" hidden>
+        <p class="forge__t">Génération sur ce poste</p>
+        <p class="forge__etat" id="forge-etat"></p>
+        <pre class="forge__journal" id="forge-journal" hidden></pre>
+        <p class="forge__err" id="forge-err" hidden></p>
+        <ul class="forge__fichiers" id="forge-fichiers"></ul>
+        <div class="forge__b" id="forge-b"></div>
+      </section>
       <div class="apercu__pied">
+        <button class="btn btn--pri" id="b-generer" type="button" hidden>Générer l’activité</button>
         <button class="btn btn--pri" id="b-copier" type="button">Copier le prompt</button>
         <button class="btn" id="b-editer" type="button">Modifier le prompt</button>
         <button class="btn" id="b-md" type="button">Télécharger en .md</button>
@@ -1215,6 +1243,9 @@ function majPrompt(){
   $("jauge").textContent = f ? f.split("\n").length + " lignes · " + f.length + " caractères" : "";
   $("b-copier").disabled = f == null;
   $("b-md").disabled = f == null;
+  // Jamais réactivé pendant un travail en cours : une deuxième commande
+  // partirait dans un autre dossier et l’enseignante perdrait le suivi.
+  $("b-generer").disabled = f == null || FORGE.enMarche;
   majCout();
   majProposition();
 }
@@ -1435,6 +1466,152 @@ function majProposition(){
   bs.append(bCop, bRep, bIgn); z.append(bs);
 }
 
+/* ============================================================
+   Forge — faire exécuter la commande au lieu de la copier
+
+   Le compositeur reste une page autonome : sans serveur local, rien de ce qui
+   suit ne s'affiche et le copier-coller demeure le seul chemin. Quand le
+   serveur répond et que Claude Code est installé sur le poste, le bouton
+   « Générer » apparaît et la commande part au travail dans un dossier à elle.
+   ============================================================ */
+const FORGE = { active:false, enMarche:false, id:null, minuteur:null };
+
+const jetonProf = () => localStorage.getItem("prof_token") || "";
+
+async function apiForge(url, options){
+  const opts = { ...(options || {}), headers:{ ...((options || {}).headers || {}) } };
+  const j = jetonProf();
+  if(j) opts.headers["X-Prof-Token"] = j;
+  if(opts.body) opts.headers["Content-Type"] = "application/json";
+  const res = await fetch(url, opts);
+  if(!res.ok){
+    let msg = "HTTP " + res.status;
+    try{ msg = (await res.json()).error || msg; }catch(e){ /* réponse non JSON */ }
+    const err = new Error(msg); err.statut = res.status; throw err;
+  }
+  return res.json();
+}
+
+/* Sondage au chargement. Tout échec est silencieux : page ouverte en fichier
+   local, serveur éteint, session enseignante expirée — dans les trois cas la
+   bonne réponse est la même, on n'affiche simplement pas la forge. */
+async function sonderForge(){
+  try{
+    const etat = await apiForge("/api/forge/etat");
+    if(!etat.disponible){
+      // Le serveur est là mais pas le CLI : ça, ça se dit, sinon l'enseignante
+      // cherchera un bouton qui n'existe pas.
+      $("forge").hidden = false;
+      $("forge-etat").innerHTML = "<b>Génération indisponible.</b> " + esc(etat.raison);
+      return;
+    }
+    FORGE.active = true;
+    $("b-generer").hidden = false;
+    $("b-generer").disabled = promptFinal() == null;
+  }catch(e){ /* pas de serveur local : la page reste en copier-coller */ }
+}
+
+const esc = s => String(s == null ? "" : s).replace(/[&<>"]/g, c =>
+  ({ "&":"&amp;", "<":"&lt;", ">":"&gt;", '"':"&quot;" }[c]));
+
+function titreCommande(){
+  const nc = niveauCourant();
+  return [nc ? "Niveau " + nc.niveau.niveau : null, S.situation, S.domaine]
+    .filter(Boolean).join(" · ") || "Activité";
+}
+
+async function lancerForge(){
+  const f = promptFinal();
+  if(!f || !FORGE.active) return;
+  FORGE.enMarche = true;
+  $("b-generer").disabled = true;
+  $("forge").hidden = false;
+  $("forge-err").hidden = true;
+  $("forge-etat").innerHTML = "<b>Envoi de la commande…</b>";
+  try{
+    const fiche = await apiForge("/api/forge/commande", {
+      method:"POST",
+      body: JSON.stringify({ prompt:f, titre:titreCommande(), criteres:{
+        niveau: S.niveau, situation: S.situation, domaine: S.domaine,
+        competences: S.competences, nbIntentions: S.intentions.length,
+        nbSavoirs: savoirsChoisis().length
+      }})
+    });
+    FORGE.id = fiche.id;
+    inscrire("generation");
+    suivreForge();
+  }catch(e){
+    FORGE.enMarche = false;
+    $("b-generer").disabled = promptFinal() == null;
+    $("forge-etat").textContent = "";
+    $("forge-err").hidden = false;
+    $("forge-err").textContent = e.message;
+  }
+}
+
+function suivreForge(){
+  clearTimeout(FORGE.minuteur);
+  if(!FORGE.id) return;
+  apiForge("/api/forge/commande?id=" + encodeURIComponent(FORGE.id))
+    .then(fiche => {
+      rendreForge(fiche);
+      // Deux secondes et demie : assez lent pour ne rien coûter, assez vif pour
+      // que le journal donne l'impression d'un travail qui avance.
+      if(fiche.etat === "en_cours"){ FORGE.minuteur = setTimeout(suivreForge, 2500); }
+      else { FORGE.enMarche = false; $("b-generer").disabled = promptFinal() == null; }
+    })
+    .catch(e => {
+      $("forge-err").hidden = false;
+      $("forge-err").textContent = "Suivi interrompu : " + e.message;
+      FORGE.enMarche = false;
+      $("b-generer").disabled = promptFinal() == null;
+    });
+}
+
+function rendreForge(fiche){
+  const depuis = fiche.debut ? Math.round((Date.now() - new Date(fiche.debut)) / 1000) : 0;
+  const duree = depuis < 90 ? depuis + " s" : Math.floor(depuis / 60) + " min " + (depuis % 60) + " s";
+  const titres = {
+    en_cours: "<b>Génération en cours…</b> " + esc(fiche.titre) + " · " + duree,
+    fait:     "<b>Activité générée ✓</b> " + esc(fiche.titre) + " · " + duree,
+    echec:    "<b>Génération interrompue.</b> " + esc(fiche.titre),
+    annulee:  "<b>Génération annulée.</b> " + esc(fiche.titre)
+  };
+  $("forge-etat").innerHTML = titres[fiche.etat] || esc(fiche.etat);
+
+  const j = $("forge-journal");
+  j.hidden = !(fiche.journal || []).length;
+  if(!j.hidden){
+    const enBas = j.scrollTop + j.clientHeight >= j.scrollHeight - 24;
+    j.textContent = fiche.journal.join("\n");
+    if(enBas) j.scrollTop = j.scrollHeight;   // suivre le fil sans voler le défilement
+  }
+
+  $("forge-err").hidden = !fiche.erreur;
+  if(fiche.erreur) $("forge-err").textContent = fiche.erreur;
+
+  const ul = $("forge-fichiers");
+  ul.textContent = "";
+  (fiche.fichiers || []).forEach(f => {
+    const li = document.createElement("li");
+    const a = document.createElement("a");
+    a.href = f.url; a.target = "_blank"; a.rel = "noopener";
+    a.textContent = f.nom + " (" + Math.max(1, Math.round(f.octets / 1024)) + " ko)";
+    li.append(a); ul.append(li);
+  });
+
+  const b = $("forge-b");
+  b.textContent = "";
+  if(fiche.etat === "en_cours"){
+    const stop = el("button","btn btn--sm","Annuler"); stop.type = "button";
+    stop.addEventListener("click", () => {
+      apiForge("/api/forge/annuler", { method:"POST", body:JSON.stringify({ id:FORGE.id }) })
+        .catch(() => {});
+    });
+    b.append(stop);
+  }
+}
+
 async function copierTexte(txt, dire){
   try{ await navigator.clipboard.writeText(txt); dire("Copié ✓"); return true; }
   catch(e){
@@ -1553,6 +1730,8 @@ function init(){
   $("q-savoirs").addEventListener("input", () => { clearTimeout(ts); ts = setTimeout(() => { rendreSavoirs(); rendreLexique(); }, 140); });
 
   const dire = msg => { $("dit").textContent = msg; setTimeout(() => { $("dit").textContent = ""; }, 2400); };
+  $("b-generer").addEventListener("click", lancerForge);
+  sonderForge();
   $("b-copier").addEventListener("click", async () => {
     const f = promptFinal();
     if(!f) return;
