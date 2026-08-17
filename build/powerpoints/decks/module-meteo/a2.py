@@ -22,7 +22,8 @@ def build(dossier):
         "reconnaître un mot dont la consonne finale n'est pas prononcée ;",
         "savoir quelles consonnes tombent le plus souvent ;",
         "comprendre un débit rapide sur un chantier ;",
-        "écrire correctement un mot qu'on entend sans sa consonne finale.",
+        "écrire correctement un mot qu'on entend sans sa consonne finale ;",
+        "distinguer le son « é » du son « è » dans le vocabulaire du bulletin.",
     ])
 
     d.regle('La règle',
@@ -63,7 +64,7 @@ def build(dossier):
     ], notes="La deuxième carte est la clé : c'est ce qui suit qui décide. Le faire "
              "vérifier sur quatre exemples au tableau.")
 
-    d.pratique('Pratique · 1 de 4', "Écrivez le mot entier",
+    d.pratique('Pratique · 1 de 6', "Écrivez le mot entier",
                "Vous entendez la forme courte. Comment l'écrit-on ?", [
         ("« acceptab' »", "acceptable"),
         ("« chapit' »", "chapitre"),
@@ -75,7 +76,7 @@ def build(dossier):
        notes="C'est l'exercice le plus utile du module pour la compréhension orale : "
              "reconstruire le mot écrit à partir de ce qu'on entend.")
 
-    d.pratique('Pratique · 2 de 4', "La consonne tombe-t-elle ?",
+    d.pratique('Pratique · 2 de 6', "La consonne tombe-t-elle ?",
                "Regardez ce qui suit le mot.", [
         ("quatre couvreurs", "elle tombe — consonne après"),
         ("quatre échelles", "elle reste — voyelle après"),
@@ -104,7 +105,7 @@ def build(dossier):
             notes="Faire écrire les six mots de l'exercice 1 dans le cahier, en entier. "
                   "C'est la forme écrite qu'on retient.")
 
-    d.pratique('Pratique · 3 de 4', "Écoutez et écrivez la phrase",
+    d.pratique('Pratique · 3 de 6', "Écoutez et écrivez la phrase",
                "Écrivez tous les mots en entier.", [
         ("« C'est pas possib' de monter aujourd'hui. »",
          "Ce n'est pas possible de monter aujourd'hui."),
@@ -115,7 +116,7 @@ def build(dossier):
        notes="Faire remarquer la première phrase : « c'est pas » au lieu de « ce n'est "
              "pas ». Le « ne » tombe aussi à l'oral — c'est le module 1, séance C3.")
 
-    d.pratique('Pratique · 4 de 4', "Lisez à voix haute, vite",
+    d.pratique('Pratique · 4 de 6', "Lisez à voix haute, vite",
                "Le groupe dit si la consonne finale tombe ou non.", [
         ("Quatre couvreurs montent sur le toit.", "quat' couvreurs"),
         ("Quatre échelles sont appuyées au mur.", "quatr' échelles"),
@@ -124,6 +125,58 @@ def build(dossier):
     ], corrige=True,
        notes="Faire lire debout et vite. Lentement, la consonne revient toujours : c'est "
              "la vitesse qui la fait tomber.")
+
+
+    d.regle("L'autre difficulté du bulletin : é ou è",
+            "L'accent change le son : « é » ferme la bouche, « è » l'ouvre.",
+            precision="« Météo » et « mètres » se suivent dans le même bulletin. Le "
+                      "premier a deux fois le son « é », le second le son « è ». "
+                      "L'écart est petit à l'oreille et net à l'écrit.",
+            notes="Enchaîner « météo, mètres, météo, mètres » lentement. La mâchoire "
+                  "descend sur « è », elle reste haute sur « é ».")
+
+    d.tableau('Analyse', "Les deux sons dans les mots de la météo",
+              ['Le son', "Il s'écrit", 'Mots du module'],
+              [["le son « é »", "é, et les finales -er, -ez, -ée", "météo, degrés, préparer, journée"],
+               ["le son « è »", "è, ê, ai, ei, e suivi de deux consonnes", "mètres, neige, après, verglas"]],
+              cle=0,
+              note="Un verbe qui finit par -er se dit toujours avec le son « é » : "
+                   "préparer, annuler, tomber. La règle n'a pas d'exception.",
+              notes="La finale -er des verbes est le cas le plus rentable de la "
+                    "séance : elle vaut pour des centaines de verbes.")
+
+    d.piege('Le piège de « verglas »',
+            "vé-glas, avec le son « é »",
+            "ver-glas — le son « è », parce que le e est suivi de deux consonnes",
+            "Sans accent écrit, on croit lire un « é ». Mais un e suivi de deux "
+            "consonnes se dit « è » : verglas, personne, averse. C'est une règle qui "
+            "se voit à l'œil, sans avoir à connaître le mot.",
+            notes="Faire souligner les deux consonnes qui suivent le e dans verglas, "
+                  "personne et averse. La règle devient visuelle.")
+
+    d.pratique('Pratique · 5 de 6', 'Quel son entendez-vous ?',
+               "Écoutez le mot, écrivez « é » ou « è ».", [
+        ("météo", "le son « é »"),
+        ("mètres", "le son « è »"),
+        ("degrés", "le son « é »"),
+        ("neige", "le son « è »"),
+        ("préparer", "le son « é »"),
+        ("verglas", "le son « è »"),
+        ("journée", "le son « é »"),
+        ("après", "le son « è »"),
+    ], corrige=True, cols=2,
+       notes="Les huit mots de l'exercice de sons du module en ligne, dans le même "
+             "ordre. Ne pas montrer l'orthographe avant la correction : l'accent "
+             "écrit donnerait la réponse.")
+
+    d.pratique('Pratique · 6 de 6', 'Trois phrases de bulletin à lire à voix haute',
+               "Chacun lit une phrase. Le groupe ne corrige que les é et les è.", [
+        ("La météo annonce dix degrés sous zéro.", "é · é · é"),
+        ("La neige tombe et la visibilité est de cent mètres.", "è · è"),
+        ("Il faut préparer les crampons après le dîner.", "é · è"),
+    ], corrige=True,
+       notes="Faire lire lentement : à vitesse normale, la différence s'efface et "
+             "l'exercice perd son intérêt.")
 
     d.billet(
         "Écrivez quatre mots dont la consonne finale tombe souvent à l'oral.",

@@ -22,7 +22,8 @@ def build(dossier):
         "reconnaître le mot sur lequel on insiste dans une phrase ;",
         "produire un accent d'insistance : syllabe allongée, ton qui monte ;",
         "choisir le mot à mettre en avant dans une annonce ;",
-        "employer l'intonation d'une phrase exclamative.",
+        "employer l'intonation d'une phrase exclamative ;",
+        "distinguer le son « ch » du son « j » dans le vocabulaire de la publicité.",
     ])
 
     d.regle('La règle',
@@ -60,7 +61,7 @@ def build(dossier):
     ], notes="La quatrième carte est la règle pratique. C'est ce qu'Omar conseille en "
              "B1 : « insiste sur un seul mot ».")
 
-    d.pratique('Pratique · 1 de 4', "Sur quel mot insiste-t-on ?",
+    d.pratique('Pratique · 1 de 6', "Sur quel mot insiste-t-on ?",
                "Écoutez la phrase, écrivez le mot allongé.", [
         ("Cet atelier est complètement gratuit.", "gratuit"),
         ("Nos bénévoles réparent absolument tout.", "absolument"),
@@ -79,7 +80,7 @@ def build(dossier):
             notes="Faire dire la même phrase deux fois : une fois avec l'accent sur "
                   "« belle », une fois en exclamative. La différence s'entend.")
 
-    d.pratique('Pratique · 2 de 4', "Insistance ou exclamation ?",
+    d.pratique('Pratique · 2 de 6', "Insistance ou exclamation ?",
                "Un mot allongé, ou tout le ton qui monte ?", [
         ("C'est complètement gratuit.", "insistance sur « gratuit »"),
         ("Quelle belle idée !", "exclamation — le ton monte à la fin"),
@@ -108,7 +109,7 @@ def build(dossier):
             notes="Faire essayer les deux : crier, puis allonger. La deuxième version "
                   "est plus efficace et plus agréable.")
 
-    d.pratique('Pratique · 3 de 4', "Choisissez le mot à mettre en avant",
+    d.pratique('Pratique · 3 de 6', "Choisissez le mot à mettre en avant",
                "Un seul mot par annonce. Lequel, et pourquoi ?", [
         ("Atelier de réparation, samedi, gratuit, au centre Sainte-Odile.",
          "gratuit — c'est l'argument le plus fort"),
@@ -122,7 +123,7 @@ def build(dossier):
        notes="Faire justifier chaque choix. Plusieurs réponses se défendent : c'est la "
              "justification qu'on évalue.")
 
-    d.pratique('Pratique · 4 de 4', "Dites l'annonce",
+    d.pratique('Pratique · 4 de 6', "Dites l'annonce",
                "À voix haute, avec un seul accent d'insistance.", [
         ("Annonce 1", "L'atelier de réparation, c'est samedi, et c'est GRATUIT."),
         ("Annonce 2", "C'est la DERNIÈRE soirée de couture avant l'été."),
@@ -130,6 +131,57 @@ def build(dossier):
     ], corrige=True,
        notes="Faire dire chaque annonce par trois élèves. Le groupe devine sur quel mot "
              "l'accent a été mis : si personne ne devine, c'est raté.")
+
+
+    d.regle("Deux sons proches de la capsule",
+            "Le son « ch » souffle sans voix ; le son « j » fait vibrer la gorge.",
+            precision="« Affiche » et « message » sont les deux supports du module. "
+                      "Leurs deux sons se font au même endroit de la bouche : seule "
+                      "la vibration les sépare.",
+            notes="Faire poser la main sur la gorge. « ch » ne vibre pas, « j » vibre. "
+                  "C'est le seul critère fiable, et il se sent au doigt.")
+
+    d.tableau('Analyse', "Les deux sons dans les mots de la publicité",
+              ['Le son', "Il s'écrit", 'Mots du module'],
+              [["le son « ch »", "ch", "affiche, choisis, chaîne, déchirés"],
+               ["le son « j »", "j, ou g devant e, i, y", "gens, justement, message, rejoindre"]],
+              cle=0,
+              note="Devant a, o et u, le g ne fait pas le son « j » mais le son « g » : "
+                   "gratuit, garde, légume.",
+              notes="Faire classer trois mots supplémentaires trouvés par le groupe "
+                    "avant de montrer la note du bas.")
+
+    d.piege('Le piège du g de « gratuit »',
+            "jratuit, avec le son « j »",
+            "gratuit — le son « g », parce que le g précède un r",
+            "Le g ne se ramollit qu'avant e, i ou y : gens, agence, budget. Partout "
+            "ailleurs il reste dur : gratuit, garde, légume. Dans une publicité, "
+            "« gratuit » est le mot qu'on répète le plus : il vaut la peine d'être juste.",
+            notes="Faire lire à voix haute « les gens profitent d'un atelier gratuit » : "
+                  "les deux valeurs du g sont dans la même phrase.")
+
+    d.pratique('Pratique · 5 de 6', 'Quel son entendez-vous ?',
+               "Écoutez le mot, écrivez « ch » ou « j ».", [
+        ("affiche", "le son « ch »"),
+        ("message", "le son « j »"),
+        ("choisis", "le son « ch »"),
+        ("gens", "le son « j »"),
+        ("chaîne", "le son « ch »"),
+        ("justement", "le son « j »"),
+        ("déchirés", "le son « ch »"),
+        ("rejoindre", "le son « j »"),
+    ], corrige=True, cols=2,
+       notes="Les huit mots de l'exercice de sons du module en ligne, dans le même "
+             "ordre. Faire garder la main sur la gorge pendant l'écoute.")
+
+    d.pratique('Pratique · 6 de 6', 'Trois phrases de capsule à lire à voix haute',
+               "Chacun lit une phrase. Le groupe ne corrige que les « ch » et les « j ».", [
+        ("Choisis une seule idée par capsule.", "ch"),
+        ("Le message doit rejoindre les gens du quartier.", "j · j · j"),
+        ("L'affiche annonce un atelier gratuit.", "ch · g dur"),
+    ], corrige=True,
+       notes="La troisième phrase est la plus utile : elle oppose le son « ch », le "
+             "son « j » et le g dur en une seule ligne.")
 
     d.billet(
         "Écrivez une annonce de deux phrases et soulignez le mot sur lequel vous insisterez.",

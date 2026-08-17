@@ -23,7 +23,8 @@ def build(dossier):
         "distinguer une nouvelle régionale, nationale et internationale ;",
         "reconnaître un fait divers ;",
         "classer une nouvelle d'après sa portée, pas son importance ;",
-        "nommer la catégorie d'une nouvelle qu'on entend.",
+        "nommer la catégorie d'une nouvelle qu'on entend ;",
+        "distinguer le son « s » du son « z » dans le vocabulaire du bulletin.",
     ])
 
     d.tableau('Analyse', "Quatre catégories",
@@ -63,7 +64,7 @@ def build(dossier):
     ], notes="La troisième carte est le critère le plus fiable. Faire l'appliquer à "
              "chaque énoncé de l'exercice.")
 
-    d.pratique('Pratique · 1 de 4', "Classez la nouvelle",
+    d.pratique('Pratique · 1 de 6', "Classez la nouvelle",
                "Fait divers, régionale, nationale ou internationale ?", [
         ("En Australie, des feux de forêt forcent l'évacuation de plusieurs villages.",
          "internationale — hors du pays"),
@@ -78,7 +79,7 @@ def build(dossier):
        notes="Faire justifier chaque réponse par le territoire ou par le sujet. Ne jamais "
              "accepter « parce que c'est important ».")
 
-    d.pratique('Pratique · 2 de 4', "Régionale ou fait divers ?",
+    d.pratique('Pratique · 2 de 6', "Régionale ou fait divers ?",
                "Le plus difficile : les deux se passent près de chez nous.", [
         ("Une école de Longueuil amasse deux cents paires de mitaines.",
          "fait divers ou régionale — les deux se défendent"),
@@ -110,7 +111,7 @@ def build(dossier):
             notes="Nuance fine mais utile. Donner trois exemples de feux à Montréal, de "
                   "portées différentes.")
 
-    d.pratique('Pratique · 3 de 4', "Trouvez la catégorie",
+    d.pratique('Pratique · 3 de 6', "Trouvez la catégorie",
                "D'après le début de la nouvelle.", [
         ("« Le gouvernement du Québec annonce un investissement en santé… »", "nationale"),
         ("« Deux passants ont secouru un cycliste blessé à Trois-Pistoles… »", "fait divers"),
@@ -122,7 +123,7 @@ def build(dossier):
        notes="Faire remarquer que la première phrase suffit presque toujours à classer. "
              "C'est un réflexe d'écoute utile.")
 
-    d.pratique('Pratique · 4 de 4', "Classez vos propres nouvelles",
+    d.pratique('Pratique · 4 de 6', "Classez vos propres nouvelles",
                "Reprenez le billet de la séance A1.", [
         ("Votre nouvelle", "de quelle catégorie ?"),
         ("La justification", "quel territoire, ou quel type de sujet ?"),
@@ -131,6 +132,58 @@ def build(dossier):
        notes="Dix minutes. Faire classer les nouvelles apportées par le groupe au "
              "tableau, en quatre colonnes. Le tableau collectif vaut mieux que l'exercice "
              "individuel.")
+
+
+    d.regle("La lettre s ne dit pas toujours le même son",
+            "Entre deux voyelles, un seul s se dit « z ».",
+            precision="« Voisine » et « succès » sont deux mots de la même nouvelle. "
+                      "Le premier a le son « z », le second le son « s ». La règle se "
+                      "voit à l'écrit : il suffit de regarder ce qui entoure le s.",
+            notes="Écrire « voisine » et « poisson » au tableau et faire entourer ce "
+                  "qui suit et précède le s. La règle se déduit sans être dite.")
+
+    d.tableau('Analyse', "Les deux sons dans les mots du bulletin",
+              ['Le son', "Il s'écrit", 'Mots du module'],
+              [["le son « z »", "un seul s entre deux voyelles", "voisine, organisée, organisme, visite"],
+               ["le son « s »", "ss, ou s après une consonne ou en début de mot", "succès, amassé, cents, personne"]],
+              cle=0,
+              note="C'est pour cette raison qu'on double le s dans « amassé » : sans "
+                   "le second s, on lirait « amazé ».",
+              notes="Le doublement du s est une conséquence de la règle, pas une "
+                    "exception : le dire dans ce sens-là évite une liste à mémoriser.")
+
+    d.piege('Le piège de « poisson » et « poison »',
+            "poison, quand on veut dire poisson",
+            "poisson — deux s, donc le son « s »",
+            "Un seul s change le mot du tout au tout : un poisson se mange, un poison "
+            "tue. La paire est célèbre parce qu'elle montre que la règle n'est pas "
+            "une politesse d'orthographe — elle porte le sens.",
+            notes="C'est la paire à retenir de la séance. La faire écrire dans le "
+                  "cahier avec un dessin à côté de chaque mot.")
+
+    d.pratique('Pratique · 5 de 6', 'Quel son entendez-vous ?',
+               "Écoutez le mot, écrivez « s » ou « z ».", [
+        ("voisine", "le son « z »"),
+        ("succès", "le son « s »"),
+        ("organisée", "le son « z »"),
+        ("amassé", "le son « s »"),
+        ("organisme", "le son « z »"),
+        ("cents", "le son « s »"),
+        ("visite", "le son « z »"),
+        ("personne", "le son « s »"),
+    ], corrige=True, cols=2,
+       notes="Les huit mots de l'exercice de sons du module en ligne, dans le même "
+             "ordre. Après la correction, faire justifier chaque réponse par la "
+             "position du s.")
+
+    d.pratique('Pratique · 6 de 6', 'Trois phrases de nouvelle à lire à voix haute',
+               "Chacun lit une phrase. Le groupe ne corrige que les s et les z.", [
+        ("La voisine a retrouvé le chat de la fillette.", "z"),
+        ("Les élèves ont amassé deux cents paires de mitaines.", "s · s"),
+        ("La collecte organisée par la classe a eu un franc succès.", "z · s"),
+    ], corrige=True,
+       notes="La troisième phrase contient les deux sons : la faire relire deux fois, "
+             "une fois lentement, une fois au rythme d'un bulletin.")
 
     d.billet(
         "Écrivez quatre titres de nouvelles, un par catégorie.",

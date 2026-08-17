@@ -22,7 +22,8 @@ def build(dossier):
         "comprendre les douze mots du rendez-vous et de la pharmacie ;",
         "distinguer une ordonnance, une posologie et un traitement ;",
         "employer l'article juste : un comprimé, une ordonnance ;",
-        "reconnaître ces mots à l'oral, dites vite.",
+        "reconnaître ces mots à l'oral, dites vite ;",
+        "distinguer le son « an » du son « in » dans les mots du rendez-vous.",
     ])
 
     d.vocabulaire('Vocabulaire · 1 de 2', "Prendre rendez-vous", [
@@ -56,7 +57,7 @@ def build(dossier):
               notes="Exemple à donner : « Voici votre ordonnance ; la posologie est "
                     "d'un comprimé deux fois par jour ; le traitement dure sept jours. »")
 
-    d.pratique('Pratique · 1 de 3', "Le mot et sa définition",
+    d.pratique('Pratique · 1 de 5', "Le mot et sa définition",
                "Associez.", [
         ("Fixer un moment pour voir un médecin.", "prendre un rendez-vous"),
         ("L'endroit où on attend avant de voir le médecin.", "la salle d'attente"),
@@ -68,7 +69,7 @@ def build(dossier):
        notes="C'est l'exercice de vocabulaire du module, dans l'autre sens : ici on part "
              "de la définition. Plus difficile, et plus proche de la vraie compréhension.")
 
-    d.pratique('Pratique · 2 de 3', "Un ou une ?",
+    d.pratique('Pratique · 2 de 5', "Un ou une ?",
                "L'article fait partie du mot.", [
         ("___ ordonnance", "une ordonnance"),
         ("___ comprimé", "un comprimé"),
@@ -80,7 +81,7 @@ def build(dossier):
        notes="Faire remarquer que les mots en -tion, -ance et -ence sont presque tous "
              "féminins. Une régularité utile, sans en faire une règle absolue.")
 
-    d.pratique('Pratique · 3 de 3', "La phrase du jour",
+    d.pratique('Pratique · 3 de 5', "La phrase du jour",
                "Employez le mot dans une phrase vraie, sur vous.", [
         ("se sentir", "Je me sens fatigué depuis lundi."),
         ("une ordonnance", "J'ai une ordonnance pour mes allergies."),
@@ -89,6 +90,61 @@ def build(dossier):
     ], corrige=False,
        notes="Quinze minutes à deux. Exiger une phrase VRAIE : le mot se retient par la "
              "situation, pas par la répétition.")
+
+
+    d.regle('Deux sons nasaux du rendez-vous',
+            "Le son « an » ouvre la bouche ; le son « in » la garde presque fermée.",
+            precision="« Attente » et « matin » n'ont pas la même voyelle nasale. "
+                      "Au téléphone avec la clinique, c'est cette différence qui "
+                      "distingue « pendant » de « pendrin » — et le nom du "
+                      "professionnel qu'on demande.",
+            notes="Dire « attente » puis « matin » en série, sans les écrire. Faire "
+                  "poser un doigt sous le menton : la mâchoire descend sur « an », "
+                  "elle bouge à peine sur « in ».")
+
+    d.tableau('Analyse', "Les deux sons dans les mots du module",
+              ['Le son', "Il s'écrit", 'Mots du module'],
+              [["le son « an »", "an, am, en, em", "attente, pendant, ordonnance, traitement"],
+               ["le son « in »", "in, im, ain, ein, ien", "médecin, pharmacien, matin, bien"]],
+              cle=0,
+              note="Deux mots repères d'une syllabe : « dent » pour le son « an », "
+                   "« main » pour le son « in ». On y revient chaque fois qu'on hésite.",
+              notes="Écrire les deux mots repères au tableau et les y laisser. Faire "
+                    "lire la colonne des lettres avant celle des mots.")
+
+    d.piege('Le piège de la finale « -ien »',
+            "pharmaci-an, traitement de la finale comme dans patient",
+            "pharmaci-en — la finale se dit comme « bien »",
+            "Les finales « -ien » et « -ent » ne se prononcent pas pareil : "
+            "pharmacien et bien font le son « in », alors que "
+            "patient et pendant font le son « an ». L'orthographe ne "
+            "prévient pas : il faut retenir le mot entier.",
+            notes="Faire entendre la paire dans une seule phrase : « le patient parle "
+                  "au pharmacien ». Les deux sons y sont, à trois mots d'intervalle.")
+
+    d.pratique('Pratique · 4 de 5', 'Quel son entendez-vous ?',
+               "Écoutez le mot, écrivez « an » ou « in ».", [
+        ("attente", "le son « an »"),
+        ("pharmacien", "le son « in »"),
+        ("ordonnance", "le son « an »"),
+        ("médecin", "le son « in »"),
+        ("traitement", "le son « an »"),
+        ("matin", "le son « in »"),
+        ("pendant", "le son « an »"),
+        ("bien", "le son « in »"),
+    ], corrige=True, cols=2,
+       notes="Dire chaque mot deux fois sans le montrer : c'est un exercice d'oreille. "
+             "Ce sont les huit mots de l'exercice de sons du module en ligne, dans le "
+             "même ordre — l'élève les retrouvera tels quels.")
+
+    d.pratique('Pratique · 5 de 5', 'Trois phrases à lire à voix haute',
+               "Chacun lit une phrase. Le groupe ne corrige que les sons nasaux.", [
+        ("Le pharmacien explique le traitement.", "in · an"),
+        ("Un comprimé le matin, pendant sept jours.", "in · an"),
+        ("La salle d'attente est pleine, mais je me sens bien.", "an · in"),
+    ], corrige=True,
+       notes="Faire lire debout et lentement. Interdire au groupe de corriger autre "
+             "chose que les voyelles nasales, sinon la lecture s'arrête à chaque mot.")
 
     d.billet(
         "Choisissez les trois mots les plus utiles pour vous, et écrivez pourquoi.",

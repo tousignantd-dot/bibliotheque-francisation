@@ -22,7 +22,8 @@ def build(dossier):
         "comprendre la notation des pièces : 2 ½, 3 ½, 4 ½, 5 ½ ;",
         "décoder les abréviations courantes des annonces ;",
         "nommer les pièces et les services d'un logement ;",
-        "calculer le vrai coût d'un loyer.",
+        "calculer le vrai coût d'un loyer ;",
+        "distinguer le son « an » du son « on » dans le vocabulaire du logement.",
     ])
 
     d.tableau('Analyse', "Combien de pièces ?",
@@ -90,7 +91,7 @@ def build(dossier):
     ], notes="Ces quatre coûts sont invisibles dans une annonce et bien réels dans un "
              "budget. Les donner comme un savoir pratique.")
 
-    d.pratique('Pratique · 1 de 4', "Combien de chambres ?",
+    d.pratique('Pratique · 1 de 6', "Combien de chambres ?",
                "Le chiffre compte les pièces fermées.", [
         ("un 3 ½", "une chambre"),
         ("un 4 ½", "deux chambres"),
@@ -101,7 +102,7 @@ def build(dossier):
        notes="Exercice mécanique et rapide. Faire dire la règle à voix haute : le "
              "chiffre moins deux, pour le salon et la cuisine.")
 
-    d.pratique('Pratique · 2 de 4', "Que veut dire l'annonce ?",
+    d.pratique('Pratique · 2 de 6', "Que veut dire l'annonce ?",
                "Traduisez l'abréviation.", [
         ("chauffé et éclairé", "chauffage et électricité compris dans le loyer"),
         ("électros non fournis", "il faut apporter ses gros appareils"),
@@ -129,7 +130,7 @@ def build(dossier):
             notes="Point pratique important pour des personnes nouvellement arrivées, qui "
                   "n'ont souvent aucun appareil.")
 
-    d.pratique('Pratique · 3 de 4', "Calculez le vrai coût",
+    d.pratique('Pratique · 3 de 6', "Calculez le vrai coût",
                "Additionnez ce qui n'est pas inclus.", [
         ("3 ½ à 780 $, chauffé et éclairé.", "780 $ — tout est inclus"),
         ("3 ½ à 720 $, non chauffé. Électricité : environ 90 $ par mois.", "environ 810 $"),
@@ -141,7 +142,7 @@ def build(dossier):
        notes="Le deuxième item renverse le classement : le moins cher devient le plus "
              "cher. C'est la leçon de la séance.")
 
-    d.pratique('Pratique · 4 de 4', "Décodez une vraie annonce",
+    d.pratique('Pratique · 4 de 6', "Décodez une vraie annonce",
                "Une annonce apportée en classe.", [
         ("Combien de chambres ?", "d'après le chiffre"),
         ("Qu'est-ce qui est inclus ?", "chauffage, électricité, stationnement"),
@@ -150,6 +151,57 @@ def build(dossier):
     ], corrige=False,
        notes="Quinze minutes, en équipes de deux. Chaque équipe présente son annonce "
              "décodée au groupe.")
+
+
+    d.regle('Deux sons nasaux de la visite',
+            "Le son « an » garde les lèvres plates ; le son « on » les arrondit.",
+            precision="« Chambre » et « salon » sont deux pièces, deux sons. Pendant "
+                      "une visite, se tromper de voyelle nasale change la pièce dont "
+                      "on parle — et parfois le montant du loyer.",
+            notes="Faire dire les deux mots devant la caméra du téléphone. Les lèvres "
+                  "se voient : rondes pour « on », plates pour « an ».")
+
+    d.tableau('Analyse', "Les deux sons dans le vocabulaire du logement",
+              ['Le son', "Il s'écrit", 'Mots du module'],
+              [["le son « an »", "an, am, en, em", "logement, chambre, buanderie, septembre"],
+               ["le son « on »", "on, om", "salon, camion, maison, répondu"]],
+              cle=0,
+              note="Devant un b ou un p, « on » s'écrit « om » : nombre, compte, pompe. "
+                   "Le son ne change pas, seulement la lettre.",
+              notes="Faire chercher au groupe un autre mot du module pour chaque case "
+                    "avant de montrer la colonne de droite.")
+
+    d.piege('Le piège de « chambre » et « nombre »',
+            "nombre, quand on veut dire chambre",
+            "chambre — les lèvres restent plates",
+            "Les deux mots ne diffèrent que par la voyelle nasale ; tout le reste est "
+            "identique. C'est la paire à faire entendre en premier, parce qu'elle isole "
+            "exactement la difficulté : si on l'entend ici, on l'entend partout.",
+            notes="Dire les deux mots en alternance, cinq allers-retours. Puis demander "
+                  "au groupe de les dire à son tour pendant que l'enseignant devine.")
+
+    d.pratique('Pratique · 5 de 6', 'Quel son entendez-vous ?',
+               "Écoutez le mot, écrivez « an » ou « on ».", [
+        ("logement", "le son « an »"),
+        ("salon", "le son « on »"),
+        ("chambre", "le son « an »"),
+        ("camion", "le son « on »"),
+        ("buanderie", "le son « an »"),
+        ("maison", "le son « on »"),
+        ("septembre", "le son « an »"),
+        ("répondu", "le son « on »"),
+    ], corrige=True, cols=2,
+       notes="Les huit mots de l'exercice de sons du module en ligne, dans le même "
+             "ordre. Dire chaque mot deux fois, sans montrer l'orthographe.")
+
+    d.pratique('Pratique · 6 de 6', 'Trois phrases de visite à lire à voix haute',
+               "Chacun lit une phrase. Le groupe ne corrige que les sons nasaux.", [
+        ("Le logement a une chambre et un grand salon.", "an · an · on"),
+        ("La buanderie est au sous-sol de la maison.", "an · on"),
+        ("Le bail commence au mois de septembre.", "on · an"),
+    ], corrige=True,
+       notes="Ces phrases reprennent le vocabulaire de la visite de la rue Galt : "
+             "on révise le sens en même temps que le son.")
 
     d.billet(
         "Décodez une annonce de logement en quatre lignes.",
