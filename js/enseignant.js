@@ -807,6 +807,7 @@
           <span class="pe-acces">${esc(el.code)}</span>
           <span class="score">${faites} / ${offertes.length} offertes</span>
           <div class="pe-eleve-gestes">
+            <a class="btn btn--ghost btn--sm" href="fiche-eleve.html?code=${encodeURIComponent(el.code)}">Dossier</a>
             <button type="button" class="btn btn--ghost btn--sm" data-copier="${el.id}">Copier le code</button>
             <button type="button" class="btn btn--ghost btn--sm" data-renommer="${el.id}">Renommer</button>
             <button type="button" class="btn btn--ghost btn--sm" data-retirer="${el.id}">Retirer</button>

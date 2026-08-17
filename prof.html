@@ -419,12 +419,21 @@ async function chargerGroupes() {
           ${admin && g.titulaire ? ' · ' + esc(g.titulaire) : ''}
         </div>
       </div>
+      <button class="btn btn-ghost" data-eleves="${g.id}">Élèves</button>
       <button class="btn btn-ghost" data-rename="${g.id}" data-nom="${esc(g.nom)}">Renommer</button>
       <button class="btn btn-danger" data-del-group="${g.id}">Supprimer</button>
     </div>`).join('');
 }
 
 document.getElementById('groupList').addEventListener('click', async e => {
+  // « Élèves » ouvre la gestion sur CE groupe : on le rend actif avant de
+  // partir, puisque lms.html lit le groupe mémorisé, pas l'URL.
+  const elevesBtn = e.target.closest('[data-eleves]');
+  if (elevesBtn) {
+    Prof.setGroupeActif(elevesBtn.dataset.eleves);
+    location.href = 'lms.html';
+    return;
+  }
   const renameBtn = e.target.closest('[data-rename]');
   if (renameBtn) {
     const nom = prompt('Nouveau nom du groupe :', renameBtn.dataset.nom);
