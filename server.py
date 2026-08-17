@@ -4302,13 +4302,23 @@ class Handler(http.server.SimpleHTTPRequestHandler):
             "respectée. \"commentairePertinence\" est une phrase courte "
             "(adaptée Niveau 4) qui explique pourquoi, ou qui nomme "
             "précisément ce qui manque si pertinent est false. "
+            # Elle est lue par l'élève, pas par l'enseignante : sans cette
+            # consigne le modèle écrit « L'élève a oublié de… ».
+            "Elle s'adresse directement à l'élève et le tutoie "
+            "(« Tu n'as pas dit… »), jamais à la troisième personne. "
             "\"objetCorrige\" et \"corpsCorrige\" sont l'objet et le "
             "corps du texte corrigés en français correct et naturel "
             "(français québécois standard accepté), " + registre +
             "\"erreurs\" contient au maximum 5 explications courtes (une "
             "phrase chacune) des principales erreurs de grammaire, "
             f"{conjugaison} ou syntaxe, en français "
-            "simple adapté à un élève de Niveau 4."
+            "simple adapté à un élève de Niveau 4. "
+            # Sans cette phrase, un texte sans faute revient avec des
+            # felicitations dans "erreurs" — que l'écran affiche en encre
+            # d'avertissement, devant un élève qui n'a rien à corriger.
+            "N'y mets QUE des erreurs à corriger : si le texte n'en contient "
+            "aucune, \"erreurs\" est un tableau vide. Jamais de remarque "
+            "positive ni de félicitations dans \"erreurs\"."
         )
 
         # Un bulletin ou une affiche n'a pas d'objet : la ligne vide ferait
