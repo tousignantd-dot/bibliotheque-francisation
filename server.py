@@ -25,7 +25,39 @@ import uuid
 from pathlib import Path
 from datetime import date, datetime, timedelta
 
-import forge
+try:
+    import forge
+except ImportError:
+    # La forge est un module optionnel du poste de travail. Un import raté ne
+    # doit jamais emporter le serveur avec lui : sans ce filet, un fichier
+    # oublié dans un commit tue le conteneur à la deuxième ligne et le
+    # healthcheck attend cinq minutes dans le vide. Le repli répond ce que
+    # `disponible()` répondrait de toute façon en ligne — la forge est absente.
+    class _ForgeAbsente:
+        COMMANDES = Path(__file__).resolve().parent / "_forge-absente"
+
+        @staticmethod
+        def disponible():
+            return False, "La forge n'est pas installée sur ce serveur."
+
+        @staticmethod
+        def lister():
+            return []
+
+        @staticmethod
+        def creer(*args, **kwargs):
+            raise RuntimeError("La forge n'est pas installée sur ce serveur.")
+
+        @staticmethod
+        def lire(*args, **kwargs):
+            return None
+
+        @staticmethod
+        def annuler(*args, **kwargs):
+            return False
+
+    forge = _ForgeAbsente()
+    print("[WARN] forge.py absent : la forge d'activités est désactivée", flush=True)
 
 BASE_DIR = Path(__file__).parent.resolve()
 
