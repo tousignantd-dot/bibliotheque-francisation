@@ -74,6 +74,20 @@
     .fe-no   { color: var(--no-ink); }
     .fe-vide { color: var(--text-muted); }
 
+    /* — Chevron d'une rangée : ce que l'élève a remis pour cette activité — */
+    .fe-qui { display: flex; align-items: flex-start; gap: var(--sp-3); }
+    .fe-chevron { width: 44px; height: 44px; flex: none; display: flex;
+                  align-items: center; justify-content: center;
+                  background: none; border: 1px solid var(--border); border-radius: var(--r-sm);
+                  font-size: 15px; font-weight: var(--fw-black); color: var(--ink-500); cursor: pointer; }
+    .fe-chevron:hover { border-color: var(--accent); color: var(--text-accent); }
+    /* Sans production remise, pas de chevron — la colonne garde son alignement. */
+    .fe-chevron-vide { width: 44px; flex: none; }
+    .fe-detail > td { background: var(--surface-sunken); padding: var(--sp-5) var(--sp-4); }
+    .fe-detail-tete { font-size: var(--fs-label); font-weight: var(--fw-bold); letter-spacing: .1em;
+                      text-transform: uppercase; color: var(--text-accent); margin-bottom: var(--sp-4); }
+    .fe-detail .fe-oral:last-child { margin-bottom: 0; }
+
     /* — Pastille d'état — */
     .fe-etat { display: inline-flex; align-items: center; gap: 6px; border-radius: 999px;
                padding: 3px 10px; font-size: var(--fs-ui-sm); font-weight: var(--fw-bold); white-space: nowrap; }
@@ -161,6 +175,9 @@
   }
   /** Le titre « Module 3 — Prendre rendez-vous » se lit mieux sans son numéro
       quand le numéro est déjà affiché à côté. */
+  /** Le plus récent d'abord — l'ordre dans lequel on relit une remise. */
+  const parQuand = (a, b) => String(b.createdAt || '').localeCompare(String(a.createdAt || ''));
+
   function titreCourt(t) { return String(t || '').replace(/^Module\s+\d+\s*[—–-]\s*/, ''); }
   function numeroDe(t) { const m = /^Module\s+(\d+)/.exec(t || ''); return m ? m[1].padStart(2, '0') : ''; }
 
@@ -173,6 +190,20 @@
     if (!etat) return;                     // prof.js redirige vers la connexion
 
     Prof.onGroupeChange(() => charger());
+
+    // Le chevron d'une rangée ouvre les productions remises pour cette
+    // activité. On plie le détail déjà en place plutôt que de refaire le
+    // dossier : sept appels pour un chevron, ce serait beaucoup.
+    document.addEventListener('click', e => {
+      const b = e.target.closest('[data-plier]');
+      if (!b) return;
+      const detail = document.querySelector(`[data-detail="${b.dataset.plier}"]`);
+      if (!detail) return;
+      const ouvert = detail.hidden;
+      detail.hidden = !ouvert;
+      b.setAttribute('aria-expanded', String(ouvert));
+      b.textContent = ouvert ? '▾' : '▸';
+    });
     document.getElementById('feEleve').addEventListener('change', e => {
       const st = ELEVES.find(s => String(s.id) === e.target.value);
       if (st) { ELEVE = st; history.replaceState(null, '', `?code=${st.code}`); rendre(); }
@@ -221,7 +252,8 @@
 
     const mien = liste => liste.filter(e => e.studentId === ELEVE.id);
     const mesProgres = mien(progres);
-    const mesOraux = mien(oraux);
+    const mesOraux = mien(oraux).map(o => ({ ...o, genre: 'oral' }));
+    const mesEcrits = mien(ecrits).map(e => ({ ...e, genre: 'ecrit' }));
     const mesCorrige = mien(corrige);
     const monJournal = mien(journal).sort((a, b) => (b.timestamp || '').localeCompare(a.timestamp || ''));
 
@@ -233,9 +265,9 @@
 
     document.getElementById('feContenu').innerHTML = [
       blocBilan(bilan, activites),
-      blocActivites(mesProgres, activites),
+      blocActivites(mesProgres, activites, [...mesOraux, ...mesEcrits]),
       blocOraux(mesOraux),
-      blocEcrits(mien(ecrits)),
+      blocEcrits(mesEcrits),
       blocCorrige(mesCorrige, bilan),
       blocJournal(monJournal),
       '<div class="fe-pied"></div>',
@@ -273,10 +305,21 @@
     </div>`);
   }
 
-  function blocActivites(progres, activites) {
+  function blocActivites(progres, activites, envois) {
     // Un enregistrement par (activité, événement) : on replie sur l'activité.
     const catalogue = {};
     (Array.isArray(activites) ? activites : []).forEach(a => { catalogue[a.id] = a; });
+
+    // Les productions remises sous la rangée de leur activité : un envoi porte
+    // son `taskId` (« module-travail-po »), dont le préfixe est le dossier du
+    // module, qu'on retrouve dans son chemin `interactive`.
+    const parModule = {};
+    (envois || []).forEach(e => {
+      const slug = String(e.taskId || '').replace(/-(po|pe)$/, '');
+      const cible = slug && Object.values(catalogue)
+        .find(a => String(a.files?.interactive || '').includes(`/${slug}/`));
+      if (cible) (parModule[cible.id] ||= []).push(e);
+    });
 
     const parActivite = {};
     progres.forEach(p => {
@@ -325,21 +368,43 @@
       const erreurs = l.erreurs == null ? '<span class="fe-vide">—</span>'
         : `<b class="${l.erreurs === 0 ? 'fe-ok' : l.erreurs > 60 ? 'fe-no' : 'fe-warn'}">${l.erreurs}</b>`;
 
+      // Le chevron ne promet jamais du vide : il n'apparaît que si l'élève a
+      // remis quelque chose pour cette activité.
+      const remis = (parModule[l.id] || []).slice().sort(parQuand);
+      const chevron = remis.length
+        ? `<button type="button" class="fe-chevron" data-plier="${l.id}" aria-expanded="false"
+                   aria-label="Voir ce qui a été remis pour ${esc(titreCourt(l.titre))}">▸</button>`
+        : '<span class="fe-chevron-vide" aria-hidden="true"></span>';
+
+      const oraux = remis.filter(e => e.genre === 'oral').length;
+      const detail = remis.length ? `<tr class="fe-detail" data-detail="${l.id}" hidden><td colspan="6">
+          <div class="fe-detail-tete">${oraux} enregistrement${oraux > 1 ? 's' : ''} et ${
+            remis.length - oraux} texte${remis.length - oraux > 1 ? 's' : ''} pour cette activité</div>
+          ${remis.map(carteEnvoi).join('')}
+        </td></tr>` : '';
+
       return `<tr>
         <td>
-          <b>${num ? num + ' · ' : ''}${esc(titreCourt(l.titre))}</b>
-          ${l.zones ? `<div class="fe-bar"><b style="width:${pct}%"></b></div>
-            <span class="fe-vide" style="font-size:var(--fs-body-sm)">${l.faites} exercices sur ${l.zones}</span>` : ''}
+          <div class="fe-qui">
+            ${chevron}
+            <div>
+              <b>${num ? num + ' · ' : ''}${esc(titreCourt(l.titre))}</b>
+              ${l.zones ? `<div class="fe-bar"><b style="width:${pct}%"></b></div>
+                <span class="fe-vide" style="font-size:var(--fs-body-sm)">${l.faites} exercices sur ${l.zones}</span>` : ''}
+            </div>
+          </div>
         </td>
         <td>${etat}</td>
         <td class="fe-num">${l.dialogue ? '<span class="fe-ok">✓</span>' : '<span class="fe-vide">—</span>'}</td>
         <td class="fe-num">${premier}</td>
         <td class="fe-num">${erreurs}</td>
         <td class="fe-vide">${esc(dateHeure(l.quand))}</td>
-      </tr>`;
+      </tr>${detail}`;
     }).join('');
 
-    return section('Ce que l’élève a fait', `${lignes.length} activité${lignes.length > 1 ? 's' : ''} ouverte${lignes.length > 1 ? 's' : ''}.`,
+    return section('Ce que l’élève a fait',
+      `${lignes.length} activité${lignes.length > 1 ? 's' : ''} ouverte${lignes.length > 1 ? 's' : ''}.`
+      + ' Le chevron ouvre ce qu’il a remis.',
       `<table class="fe-table">
         <thead><tr>
           <th>Activité</th><th>État</th><th style="text-align:center">Dialogues</th>
@@ -350,36 +415,45 @@
       </table>`);
   }
 
+  /** Une production remise, orale ou écrite : ce que l'élève a produit, puis
+      la rétroaction qu'il a reçue. La même carte sert aux deux sections et au
+      dépliement d'une rangée d'activité. */
+  function carteEnvoi(e) {
+    // « Phrase correcte : … » signale une production sans correction.
+    const juste = /^Phrase correcte/.test(e.feedback || '');
+    const oral = e.genre === 'oral';
+    return `<div class="fe-oral">
+      <div class="fe-oral-tete">
+        <span class="fe-oral-tache">${esc(e.taskLabel || (oral ? 'Production orale' : 'Production écrite'))}</span>
+        <span class="fe-etat ${juste ? 'fe-etat--fait' : 'fe-etat--cours'}">${juste ? '✓ Sans erreur' : 'Corrigée'}</span>
+        <span class="fe-oral-quand">${esc(dateHeure(e.createdAt))}</span>
+      </div>
+      ${e.question ? `<p class="fe-note" style="margin:0 0 var(--sp-3)">Consigne : ${esc(e.question)}</p>` : ''}
+      ${oral
+        ? `<audio controls preload="none" src="${esc(e.audioUrl)}"></audio>
+           <div class="fe-bloc">
+             <span class="fe-bloc-cle">Ce que l’élève a écrit</span>
+             <p>${esc(e.transcription || '(vide)')}</p>
+           </div>`
+        : `<div class="fe-bloc">
+             <span class="fe-bloc-cle">Le texte de l’élève</span>
+             <p style="white-space:pre-wrap">${esc(e.texte || '(vide)')}</p>
+           </div>`}
+      <div class="fe-bloc ${juste ? 'fe-bloc--ok' : 'fe-bloc--corr'}">
+        <span class="fe-bloc-cle">Rétroaction reçue</span>
+        <p>${esc(e.feedback || '(aucune)')}</p>
+      </div>
+    </div>`;
+  }
+
   function blocOraux(oraux) {
     if (!oraux.length) {
       return section('Ce que l’élève a dit', 'Aucune production orale déposée.',
         '<p class="fe-note">Les enregistrements déposés dans « Je me lance » apparaîtront ici.</p>');
     }
-    const corps = oraux
-      .sort((a, b) => (b.createdAt || '').localeCompare(a.createdAt || ''))
-      .map(o => {
-        // « Phrase correcte : … » signale une production sans correction.
-        const juste = /^Phrase correcte/.test(o.feedback || '');
-        return `<div class="fe-oral">
-          <div class="fe-oral-tete">
-            <span class="fe-oral-tache">${esc(o.taskLabel || 'Production orale')}</span>
-            <span class="fe-etat ${juste ? 'fe-etat--fait' : 'fe-etat--cours'}">${juste ? '✓ Sans erreur' : 'Corrigée'}</span>
-            <span class="fe-oral-quand">${esc(dateHeure(o.createdAt))}</span>
-          </div>
-          ${o.question ? `<p class="fe-note" style="margin:0 0 var(--sp-3)">Consigne : ${esc(o.question)}</p>` : ''}
-          <audio controls preload="none" src="${esc(o.audioUrl)}"></audio>
-          <div class="fe-bloc">
-            <span class="fe-bloc-cle">Ce que l’élève a écrit</span>
-            <p>${esc(o.transcription || '(vide)')}</p>
-          </div>
-          <div class="fe-bloc ${juste ? 'fe-bloc--ok' : 'fe-bloc--corr'}">
-            <span class="fe-bloc-cle">Rétroaction reçue</span>
-            <p>${esc(o.feedback || '(aucune)')}</p>
-          </div>
-        </div>`;
-      }).join('');
     return section('Ce que l’élève a dit',
-      `${oraux.length} enregistrement${oraux.length > 1 ? 's' : ''} déposé${oraux.length > 1 ? 's' : ''}.`, corps);
+      `${oraux.length} enregistrement${oraux.length > 1 ? 's' : ''} déposé${oraux.length > 1 ? 's' : ''}.`,
+      oraux.slice().sort(parQuand).map(carteEnvoi).join(''));
   }
 
   function blocEcrits(ecrits) {
@@ -387,29 +461,9 @@
       return section('Ce que l’élève a écrit', 'Aucune production écrite déposée.',
         '<p class="fe-note">Les textes envoyés depuis « Je me lance » apparaîtront ici.</p>');
     }
-    const corps = ecrits
-      .sort((a, b) => (b.createdAt || '').localeCompare(a.createdAt || ''))
-      .map(e => {
-        const juste = /^Phrase correcte/.test(e.feedback || '');
-        return `<div class="fe-oral">
-          <div class="fe-oral-tete">
-            <span class="fe-oral-tache">${esc(e.taskLabel || 'Production écrite')}</span>
-            <span class="fe-etat ${juste ? 'fe-etat--fait' : 'fe-etat--cours'}">${juste ? '✓ Sans erreur' : 'Corrigée'}</span>
-            <span class="fe-oral-quand">${esc(dateHeure(e.createdAt))}</span>
-          </div>
-          ${e.question ? `<p class="fe-note" style="margin:0 0 var(--sp-3)">Consigne : ${esc(e.question)}</p>` : ''}
-          <div class="fe-bloc">
-            <span class="fe-bloc-cle">Le texte de l’élève</span>
-            <p style="white-space:pre-wrap">${esc(e.texte || '(vide)')}</p>
-          </div>
-          <div class="fe-bloc ${juste ? 'fe-bloc--ok' : 'fe-bloc--corr'}">
-            <span class="fe-bloc-cle">Rétroaction reçue</span>
-            <p>${esc(e.feedback || '(aucune)')}</p>
-          </div>
-        </div>`;
-      }).join('');
     return section('Ce que l’élève a écrit',
-      `${ecrits.length} texte${ecrits.length > 1 ? 's' : ''} déposé${ecrits.length > 1 ? 's' : ''}.`, corps);
+      `${ecrits.length} texte${ecrits.length > 1 ? 's' : ''} déposé${ecrits.length > 1 ? 's' : ''}.`,
+      ecrits.slice().sort(parQuand).map(carteEnvoi).join(''));
   }
 
   function blocCorrige(entrees, bilan) {

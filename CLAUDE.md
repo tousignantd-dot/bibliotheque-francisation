@@ -76,6 +76,10 @@ choisit l'élève, donc une fiche se partage par son lien.
   la chaîne serait lue en temps universel et affichée la veille au Québec.
 - La tuile « Modules » compte les activités `categorie === 'cours'`, pas
   `activitiesTotal`, qui recense tout le catalogue, ateliers compris.
+- **Le chevron d'une rangée d'activité ouvre ce que l'élève y a remis** —
+  enregistrements et textes, rattachés par le préfixe du `taskId` comme dans
+  `progression.html`. Le détail est déjà dans la page, seulement `hidden` : le
+  déplier ne refait pas les sept appels du dossier. Sans remise, pas de chevron.
 
 ## Progression des élèves (`progression.html`)
 
