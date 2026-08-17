@@ -913,6 +913,24 @@ const EXOS = [
     {id:'pve', q:"Une publicité qui montre une grand-mère qui enseigne la couture à des adolescents.", aid:'va5', a:"Le partage"},
    ]},
 
+  {sec:'prep', id:'prSons', type:'vf', num:'Exercice 5', tit:"Le son [ʃ] ou [ʒ]", color:'#EA580C', accent:'#EA580C', cards:true, listen:true,
+   sub:"Clique sur l'icône d'écoute pour entendre le mot, puis indique le son entendu.", tiles:['[ʃ]','[ʒ]'],
+   savoir:{h:"› Des sons et des lettres", speak:true, rows:[
+     ["[ʃ] comme dans « affiche »","On l'écrit <b>ch</b> : affiche, choisis, chaîne, déchirés", ["affiche","choisis","chaîne"]],
+     ["[ʒ] comme dans « gens »","On l'écrit <b>j</b>, ou <b>g</b> devant <b>e, i, y</b> : gens, justement, message, rejoindre", ["gens","message","rejoindre"]],
+     ["Le piège du g","Devant <b>a, o, u</b>, le <b>g</b> se dit [g] et non [ʒ] : gratuit, garde, légume.", ["gratuit"]],
+   ]},
+   rows:[
+    {id:'psa', txt:"affiche", ok:'[ʃ]'},
+    {id:'psb', txt:"message", ok:'[ʒ]'},
+    {id:'psc', txt:"choisis", ok:'[ʃ]'},
+    {id:'psd', txt:"gens", ok:'[ʒ]'},
+    {id:'pse', txt:"chaîne", ok:'[ʃ]'},
+    {id:'psf', txt:"justement", ok:'[ʒ]'},
+    {id:'psg', txt:"déchirés", ok:'[ʃ]'},
+    {id:'psh', txt:"rejoindre", ok:'[ʒ]'},
+   ]},
+
   {sec:'appli', id:'aSalon', type:'write', num:'Exercice 1', tit:'« Le Rendez-vous des mains habiles »', color:'#0D9488',
    sub:"Lis la publicité du salon des métiers manuels, puis réponds aux questions.",
    savoir:{h:"› Le Rendez-vous des mains habiles", rows:[
@@ -1225,7 +1243,15 @@ function pronMatches(said, target){
 // cette vérification par inclusion — aucun changement de logique requis).
 // ⚠️ À reproduire dans TOUS les futurs modules dès qu'un mot isolé est
 // demandé en prononciation (voir aussi memory: cours-niveau4-modules.md).
-const CARRIER_PHRASES = {};
+const CARRIER_PHRASES = {
+  'affiche': "L'affiche annonce un atelier gratuit.",
+  'choisis': "Choisis une seule idée par capsule.",
+  'chaîne': "La capsule passe sur la chaîne de radio.",
+  'message': "Le message doit tenir en trente secondes.",
+  'gens': "Les gens du quartier écoutent la radio.",
+  'rejoindre': "Ce slogan va rejoindre beaucoup de monde.",
+  'gratuit': "L'atelier de réparation est gratuit.",
+};
 function pronCheck(btn, expected){
   const SRC = window.SpeechRecognition || window.webkitSpeechRecognition;
   let fb = btn.nextElementSibling && btn.nextElementSibling.classList.contains('pron-fb') ? btn.nextElementSibling : null;

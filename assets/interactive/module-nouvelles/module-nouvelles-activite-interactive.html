@@ -901,6 +901,24 @@ const EXOS = [
     {q:"Les résidants pourront réintégrer leur maison ___.", hint:"dans quelques jours / bientôt", ph:"…"},
    ]},
 
+  {sec:'prep', id:'prSons', type:'vf', num:'Exercice 4', tit:"Le son [s] ou [z]", color:'#7C3AED', accent:'#7C3AED', cards:true, listen:true,
+   sub:"Clique sur l'icône d'écoute pour entendre le mot, puis indique le son entendu.", tiles:['[s]','[z]'],
+   savoir:{h:"› Des sons et des lettres", speak:true, rows:[
+     ["[z] comme dans « voisine »","Un seul <b>s</b> entre deux voyelles : voisine, organisée, organisme, visite", ["voisine","organisée","visite"]],
+     ["[s] comme dans « succès »","<b>ss</b>, ou <b>s</b> en début de mot ou après une consonne : succès, amassé, cents, personne", ["succès","amassé","personne"]],
+     ["Un seul s change le sens","« un poi<b>ss</b>on » se dit [s], « du poi<b>s</b>on » se dit [z] : ce n'est pas la même chose."],
+   ]},
+   rows:[
+    {id:'psa', txt:"voisine", ok:'[z]'},
+    {id:'psb', txt:"succès", ok:'[s]'},
+    {id:'psc', txt:"organisée", ok:'[z]'},
+    {id:'psd', txt:"amassé", ok:'[s]'},
+    {id:'pse', txt:"organisme", ok:'[z]'},
+    {id:'psf', txt:"cents", ok:'[s]'},
+    {id:'psg', txt:"visite", ok:'[z]'},
+    {id:'psh', txt:"personne", ok:'[s]'},
+   ]},
+
   // ── DÉFI 1 · AS-TU ÉCOUTÉ LES NOUVELLES ? ──
   {sec:'t1', id:'t1chat', type:'write', num:'Exercice 1', tit:'Le chat retrouvé', color:'#C0573A',
    sub:'Écoutez de nouveau la nouvelle, puis répondez aux questions avec des phrases complètes.',
@@ -1244,7 +1262,14 @@ function pronMatches(said, target){
 // cette vérification par inclusion — aucun changement de logique requis).
 // ⚠️ À reproduire dans TOUS les futurs modules dès qu'un mot isolé est
 // demandé en prononciation (voir aussi memory: cours-niveau4-modules.md).
-const CARRIER_PHRASES = {};
+const CARRIER_PHRASES = {
+  'voisine': "La voisine a retrouvé le chat.",
+  'organisée': "La collecte est organisée par la classe.",
+  'visite': "La journaliste rend visite à l'école.",
+  'succès': "Le concours a eu un franc succès.",
+  'amassé': "Les élèves ont amassé deux cents paires.",
+  'personne': "Personne n'avait prévu un tel résultat.",
+};
 function pronCheck(btn, expected){
   const SRC = window.SpeechRecognition || window.webkitSpeechRecognition;
   let fb = btn.nextElementSibling && btn.nextElementSibling.classList.contains('pron-fb') ? btn.nextElementSibling : null;

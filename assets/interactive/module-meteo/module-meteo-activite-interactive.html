@@ -926,6 +926,24 @@ const EXOS = [
     {id:'mi4', txt:"Le ciel s'ouvre entre les nuages et le soleil revient sur les toits : c'est une éclaircie.", aid:'mt4'},
    ]},
 
+  {sec:'prep', id:'prSons', type:'vf', num:'Exercice 5', tit:"Le son [e] ou [ɛ]", color:'#0284C7', accent:'#0284C7', cards:true, listen:true,
+   sub:"Clique sur l'icône d'écoute pour entendre le mot, puis indique le son entendu.", tiles:['[e]','[ɛ]'],
+   savoir:{h:"› Des sons et des lettres", speak:true, rows:[
+     ["[e] comme dans « météo »","<b>é</b>, et les finales <b>-er, -ez, -ée</b> : météo, degrés, préparer, journée", ["météo","degrés","journée"]],
+     ["[ɛ] comme dans « neige »","<b>è, ê, ai, ei</b>, et <b>e</b> suivi de deux consonnes : mètres, neige, après, verglas", ["neige","mètres","après"]],
+     ["La finale des verbes","Un verbe qui finit par <b>-er</b> se dit [e] : préparer, annuler, tomber.", ["préparer"]],
+   ]},
+   rows:[
+    {id:'psa', txt:"météo", ok:'[e]'},
+    {id:'psb', txt:"mètres", ok:'[ɛ]'},
+    {id:'psc', txt:"degrés", ok:'[e]'},
+    {id:'psd', txt:"neige", ok:'[ɛ]'},
+    {id:'pse', txt:"préparer", ok:'[e]'},
+    {id:'psf', txt:"verglas", ok:'[ɛ]'},
+    {id:'psg', txt:"journée", ok:'[e]'},
+    {id:'psh', txt:"après", ok:'[ɛ]'},
+   ]},
+
   {sec:'appli', id:'aMeteo', type:'write', num:'Exercice 1', tit:'Planifie ta journée selon la météo', color:'#0D9488',
    sub:"Réponds à ces questions comme si tu planifiais une journée de travail extérieur avec un collègue.",
    items:[
@@ -1247,7 +1265,15 @@ function pronMatches(said, target){
 // cette vérification par inclusion — aucun changement de logique requis).
 // ⚠️ À reproduire dans TOUS les futurs modules dès qu'un mot isolé est
 // demandé en prononciation (voir aussi memory: cours-niveau4-modules.md).
-const CARRIER_PHRASES = {};
+const CARRIER_PHRASES = {
+  'météo': "La météo annonce du verglas demain.",
+  'degrés': "Le mercure descendra à moins dix degrés.",
+  'journée': "La journée sera glissante partout.",
+  'neige': "La neige tombe depuis deux heures.",
+  'mètres': "La visibilité est de cent mètres.",
+  'après': "On monte sur le toit après le dîner.",
+  'préparer': "Il faut préparer les crampons ce soir.",
+};
 function pronCheck(btn, expected){
   const SRC = window.SpeechRecognition || window.webkitSpeechRecognition;
   let fb = btn.nextElementSibling && btn.nextElementSibling.classList.contains('pron-fb') ? btn.nextElementSibling : null;

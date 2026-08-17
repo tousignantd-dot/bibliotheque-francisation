@@ -890,6 +890,24 @@ const EXOS = [
     {id:'pr2f', txt:"La réceptionniste lui rappelle d'apporter sa carte d'assurance maladie.", ok:'VRAI'},
    ]},
 
+  {sec:'prep', id:'prSons', type:'vf', num:'Exercice 3', tit:"Le son [ɑ̃] ou [ɛ̃]", color:'#0F766E', accent:'#0F766E', cards:true, listen:true,
+   sub:"Clique sur l'icône d'écoute pour entendre le mot, puis indique le son entendu.", tiles:['[ɑ̃]','[ɛ̃]'],
+   savoir:{h:"› Des sons et des lettres", speak:true, rows:[
+     ["[ɑ̃] comme dans « attente »","<b>an, am, en, em</b> : attente, pendant, ordonnance, traitement", ["attente","pendant","ordonnance"]],
+     ["[ɛ̃] comme dans « médecin »","<b>in, im, ain, ein, ien</b> : médecin, pharmacien, matin, bien", ["médecin","pharmacien","matin"]],
+     ["Le piège de « -ien »","Dans pharmac<b>ien</b>, b<b>ien</b>, comb<b>ien</b>, on entend [jɛ̃] — jamais [jɑ̃].", ["bien"]],
+   ]},
+   rows:[
+    {id:'psa', txt:"attente", ok:'[ɑ̃]'},
+    {id:'psb', txt:"pharmacien", ok:'[ɛ̃]'},
+    {id:'psc', txt:"ordonnance", ok:'[ɑ̃]'},
+    {id:'psd', txt:"médecin", ok:'[ɛ̃]'},
+    {id:'pse', txt:"traitement", ok:'[ɑ̃]'},
+    {id:'psf', txt:"matin", ok:'[ɛ̃]'},
+    {id:'psg', txt:"pendant", ok:'[ɑ̃]'},
+    {id:'psh', txt:"bien", ok:'[ɛ̃]'},
+   ]},
+
   {sec:'t1', id:'co1', type:'vf', num:'Exercice 1', tit:'Vrai ou Faux — À la pharmacie', color:'#C0573A',
    sub:'Écoutez de nouveau le dialogue, puis répondez.', tiles:['VRAI','FAUX'],
    rows:[
@@ -1157,7 +1175,15 @@ function pronMatches(said, target){
 // demandé en prononciation (voir aussi memory: cours-niveau4-modules.md).
 // Aucun savoir de prononciation dans cet atelier : pas de mot isolé à lire,
 // donc pas de phrase porteuse à définir. La table reste pour le moteur.
-const CARRIER_PHRASES = {};
+const CARRIER_PHRASES = {
+  'attente': "La salle d'attente est pleine ce matin.",
+  'pendant': "Prenez le comprimé pendant sept jours.",
+  'ordonnance': "Le médecin me donne une ordonnance.",
+  'médecin': "Le médecin vous recevra à onze heures.",
+  'pharmacien': "Le pharmacien explique la posologie.",
+  'matin': "Un comprimé le matin, avant le repas.",
+  'bien': "Je me sens bien mieux depuis hier.",
+};
 function pronCheck(btn, expected){
   const SRC = window.SpeechRecognition || window.webkitSpeechRecognition;
   let fb = btn.nextElementSibling && btn.nextElementSibling.classList.contains('pron-fb') ? btn.nextElementSibling : null;

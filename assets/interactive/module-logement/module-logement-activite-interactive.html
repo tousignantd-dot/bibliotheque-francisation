@@ -943,6 +943,24 @@ const EXOS = [
     {id:'pr1f', txt:"Le logement se trouve au premier étage de l'immeuble.", ok:'FAUX'},
     {id:'pr1g', txt:"Ibrahim pourrait adopter un chien dans ce logement.", ok:'FAUX'},
    ]},
+
+  {sec:'prep', id:'prSons', type:'vf', num:'Exercice 2', tit:"Le son [ɑ̃] ou [ɔ̃]", color:'#1D6B8F', accent:'#1D6B8F', cards:true, listen:true,
+   sub:"Clique sur l'icône d'écoute pour entendre le mot, puis indique le son entendu.", tiles:['[ɑ̃]','[ɔ̃]'],
+   savoir:{h:"› Des sons et des lettres", speak:true, rows:[
+     ["[ɑ̃] comme dans « chambre »","<b>an, am, en, em</b> : logement, chambre, buanderie, septembre", ["logement","chambre","septembre"]],
+     ["[ɔ̃] comme dans « salon »","<b>on, om</b> : salon, camion, maison, répondu", ["salon","camion","maison"]],
+     ["Deux écritures, un seul son","<b>on</b> devient <b>om</b> devant un <b>b</b> ou un <b>p</b> : nombre, compte, pompe."],
+   ]},
+   rows:[
+    {id:'psa', txt:"logement", ok:'[ɑ̃]'},
+    {id:'psb', txt:"salon", ok:'[ɔ̃]'},
+    {id:'psc', txt:"chambre", ok:'[ɑ̃]'},
+    {id:'psd', txt:"camion", ok:'[ɔ̃]'},
+    {id:'pse', txt:"buanderie", ok:'[ɑ̃]'},
+    {id:'psf', txt:"maison", ok:'[ɔ̃]'},
+    {id:'psg', txt:"septembre", ok:'[ɑ̃]'},
+    {id:'psh', txt:"répondu", ok:'[ɔ̃]'},
+   ]},
   {sec:'t1', id:'pr2', type:'write', num:'Exercice 1', tit:'Questions sur la visite', color:'#A16207',
    sub:'Réponds aux questions à partir du dialogue.',
    items:[
@@ -1291,7 +1309,14 @@ function pronMatches(said, target){
 // cette vérification par inclusion — aucun changement de logique requis).
 // ⚠️ À reproduire dans TOUS les futurs modules dès qu'un mot isolé est
 // demandé en prononciation (voir aussi memory: cours-niveau4-modules.md).
-const CARRIER_PHRASES = {};
+const CARRIER_PHRASES = {
+  'logement': "Le logement est chauffé et éclairé.",
+  'chambre': "La chambre donne sur la cour.",
+  'septembre': "Le bail commence le premier septembre.",
+  'salon': "Le salon est petit mais lumineux.",
+  'camion': "Le camion de farine arrive très tôt.",
+  'maison': "La maison a une buanderie au sous-sol.",
+};
 function pronCheck(btn, expected){
   const SRC = window.SpeechRecognition || window.webkitSpeechRecognition;
   let fb = btn.nextElementSibling && btn.nextElementSibling.classList.contains('pron-fb') ? btn.nextElementSibling : null;
