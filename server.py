@@ -4265,32 +4265,55 @@ class Handler(http.server.SimpleHTTPRequestHandler):
         if len(text) > 3000:
             text = text[:3000]
 
+        # Le type de texte est facultatif et vaut « courriel » par défaut : sans
+        # lui, la consigne pousserait un bulletin météo ou une affiche vers les
+        # formules de politesse d'un courriel. Les modules le tirent du titre
+        # de leur liste de critères (« Ton bulletin doit contenir »).
+        type_texte = body.get("typeTexte", "").strip()[:40] or "courriel"
+        courriel = type_texte == "courriel"
+
+        if courriel:
+            amorce = ("L'élève rédige un courriel en réponse à une mise en "
+                      "situation, généralement au passé composé pour raconter "
+                      "les faits. ")
+            registre = ("avec un registre professionnel adapté à un courriel "
+                        "(formules de politesse). ")
+            conjugaison = "conjugaison (surtout passé composé)"
+        else:
+            amorce = (f"L'élève rédige un texte du type « {type_texte} » en "
+                      "réponse à une mise en situation. ")
+            registre = "dans un registre adapté à ce type de texte. "
+            conjugaison = "conjugaison"
+
         system_prompt = (
             "Tu es un tuteur de francisation pour des élèves adultes de Niveau 4 "
-            "au Québec (niveau intermédiaire). L'élève rédige un courriel en "
-            "réponse à une mise en situation, généralement au passé composé "
-            "pour raconter les faits. Voici la mise en situation : "
+            "au Québec (niveau intermédiaire). " + amorce +
+            "Voici la mise en situation : "
             f'"{scenario}"\n\n'
-            "Analyse le courriel de l'élève (objet et corps fournis par "
+            "Analyse le texte de l'élève (objet et corps fournis par "
             "l'utilisateur) et réponds UNIQUEMENT avec un objet JSON valide, "
             "sans texte avant ni après, exactement dans ce format : "
             '{"pertinent": true, "commentairePertinence": "...", '
             '"objetCorrige": "...", "corpsCorrige": "...", '
             '"erreurs": [{"explication": "..."}]} — '
             '"pertinent" indique si le contenu répond bien à la situation '
-            "donnée. \"commentairePertinence\" est une phrase courte (adaptée "
-            "Niveau 4) qui explique pourquoi, ou ce qui manque si pertinent "
-            "est false. \"objetCorrige\" et \"corpsCorrige\" sont l'objet et le "
-            "corps du courriel corrigés en français correct et naturel "
-            "(français québécois standard accepté), avec un registre "
-            "professionnel adapté à un courriel (formules de politesse). "
+            "donnée : il est false dès qu'un des éléments exigés par la mise "
+            "en situation manque, ou que la contrainte de langue n'est pas "
+            "respectée. \"commentairePertinence\" est une phrase courte "
+            "(adaptée Niveau 4) qui explique pourquoi, ou qui nomme "
+            "précisément ce qui manque si pertinent est false. "
+            "\"objetCorrige\" et \"corpsCorrige\" sont l'objet et le "
+            "corps du texte corrigés en français correct et naturel "
+            "(français québécois standard accepté), " + registre +
             "\"erreurs\" contient au maximum 5 explications courtes (une "
             "phrase chacune) des principales erreurs de grammaire, "
-            "conjugaison (surtout passé composé) ou syntaxe, en français "
+            f"{conjugaison} ou syntaxe, en français "
             "simple adapté à un élève de Niveau 4."
         )
 
-        user_content = f"Objet : {subject}\n\n{text}"
+        # Un bulletin ou une affiche n'a pas d'objet : la ligne vide ferait
+        # inventer un objet à corriger.
+        user_content = f"Objet : {subject}\n\n{text}" if subject else text
         parsed, err = self._call_anthropic_json(system_prompt, user_content, max_tokens=900)
         if err:
             json_response(self, {"error": err[0]}, err[1])

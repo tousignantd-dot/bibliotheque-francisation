@@ -266,14 +266,11 @@ body{display:flex;flex-direction:column;min-height:100vh}
 .req{border:1px solid #EAEAE8;border-radius:14px;overflow:hidden;margin-bottom:20px}
 .req-hd{background:#F7F7F5;border-bottom:1px solid #EAEAE8;padding:10px 16px;font-size:13px;font-weight:800;letter-spacing:.1em;text-transform:uppercase;color:#6E7175}
 .req-grid{display:grid;grid-template-columns:1fr 1fr}
-.req-it{display:flex;align-items:center;gap:12px;min-height:52px;padding:8px 16px;cursor:pointer;border-bottom:1px solid #EAEAE8;font-size:16px;font-weight:700;color:#17181A}
+.req-it{display:flex;align-items:center;gap:12px;min-height:52px;padding:8px 16px;border-bottom:1px solid #EAEAE8;font-size:16px;font-weight:700;color:#17181A}
 .req-it:nth-child(odd){border-right:1px solid #EAEAE8}
 .req-it:nth-last-child(-n+2){border-bottom:none}
-.req-it input{position:absolute;opacity:0;width:0;height:0}
-.req-box{flex:none;width:24px;height:24px;border-radius:7px;border:2px solid #D6D6D2;background:#fff;display:flex;align-items:center;justify-content:center;color:#A9A9A3;font-size:14px;font-weight:900}
+.req-box{flex:none;width:24px;height:24px;border-radius:7px;border:2px solid #0A8F5B;background:#0A8F5B;display:flex;align-items:center;justify-content:center;color:#fff;font-size:14px;font-weight:900}
 .req-box::after{content:"✓"}
-.req-it input:checked + .req-box{background:#0A8F5B;border-color:#0A8F5B;color:#fff}
-.req-it input:focus-visible + .req-box{outline:3px solid #0A8F5B;outline-offset:2px}
 .req-note{border-top:1px solid #EAEAE8;background:#E6F5EE;padding:10px 16px;font-size:14px;font-weight:700;color:#0A6B46}
 .mail{border:2px solid #EAEAE8;border-radius:14px;overflow:hidden}
 .mail-row{display:flex;gap:8px;align-items:baseline;padding:12px 16px;border-bottom:1px solid #EAEAE8;background:#FCFCFB}
@@ -1866,10 +1863,10 @@ function injectCustom(){
      <div class="req">
        <div class="req-hd">Ton courriel doit contenir</div>
        <div class="req-grid">
-         <label class="req-it"><input type="checkbox"><span class="req-box"></span><span>La machine et le lieu</span></label>
-         <label class="req-it"><input type="checkbox"><span class="req-box"></span><span>Depuis quand elle est brisée</span></label>
-         <label class="req-it"><input type="checkbox"><span class="req-box"></span><span>La conséquence sur le travail</span></label>
-         <label class="req-it"><input type="checkbox"><span class="req-box"></span><span>La marche à suivre demandée</span></label>
+         <div class="req-it"><span class="req-box" aria-hidden="true"></span><span>La machine et le lieu</span></div>
+         <div class="req-it"><span class="req-box" aria-hidden="true"></span><span>Depuis quand elle est brisée</span></div>
+         <div class="req-it"><span class="req-box" aria-hidden="true"></span><span>La conséquence sur le travail</span></div>
+         <div class="req-it"><span class="req-box" aria-hidden="true"></span><span>La marche à suivre demandée</span></div>
        </div>
        <div class="req-note">Emploie au moins une fois <em>il faut</em> + un verbe à l'infinitif.</div>
      </div>
@@ -2030,6 +2027,40 @@ async function poSend(){
 }
 
 // ── CORRECTION ÉCRITE ─────────────────────────────────────────────────
+// Le scénario envoyé à la correction est reconstruit à partir du bloc
+// « Ton courriel doit contenir » affiché à l'élève : les critères visibles et
+// les critères corrigés ne peuvent donc pas diverger.
+function peScenario(){
+  const root=document.getElementById('peText').closest('.card')||document;
+  const lead=root.querySelector('.prod-lead');
+  const items=[...root.querySelectorAll('.req-it')].map(e=>e.textContent.trim()).filter(Boolean);
+  const hd=root.querySelector('.req-hd');
+  const note=root.querySelector('.req-note');
+  let s=lead?lead.textContent.trim():'';
+  if(items.length){
+    s+="\n\n"+(hd?hd.textContent.trim().replace(/doit contenir$/i,"doit obligatoirement contenir"):"Ce texte doit obligatoirement contenir")+" les éléments suivants :\n"
+      +items.map((t,i)=>(i+1)+') '+t).join('\n');
+  }
+  if(note) s+="\n\nContrainte de langue : "+note.textContent.trim();
+  s+="\n\nPour « pertinent », vérifie que CHACUN de ces éléments est présent et que la"
+   +" contrainte de langue est respectée. Si un élément manque, nomme-le précisément dans"
+   +" « commentairePertinence ».";
+  return s;
+}
+// « Ton bulletin doit contenir » → « bulletin ». Sans ça, la correction
+// pousserait une affiche ou un fait divers vers les formules d'un courriel.
+function peTypeTexte(){
+  const root=document.getElementById('peText').closest('.card')||document;
+  const hd=root.querySelector('.req-hd');
+  if(!hd) return '';
+  const m=hd.textContent.trim().match(/^Ton\s+(.+?)\s+doit contenir$/i);
+  return m?m[1].toLowerCase():'';
+}
+function peSubject(){
+  const root=document.getElementById('peText').closest('.card')||document;
+  const row=[...root.querySelectorAll('.mail-row')].find(r=>/objet/i.test((r.querySelector('.mail-k')||{}).textContent||''));
+  return row?((row.querySelector('.mail-v')||{}).textContent||'').trim():'';
+}
 async function peCheck(){
   const text=document.getElementById('peText').value.trim();
   if(!text){ showErr('peErr',"Écris ton message d'abord."); return; }
@@ -2037,7 +2068,7 @@ async function peCheck(){
   document.getElementById('peStatus').classList.add('on');
   document.getElementById('peBtn').disabled=true;
   try{
-    const res=await fetch('/api/correct-french',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({code:studentCode,text,question:"L'élève écrit un message à son superviseur pour signaler un bris d'équipement et demander la marche à suivre."})});
+    const res=await fetch('/api/correct-email',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({code:studentCode,text,scenario:peScenario(),subject:peSubject(),typeTexte:peTypeTexte()})});
     const data=await res.json();
     document.getElementById('peStatus').classList.remove('on');
     document.getElementById('peBtn').disabled=false;
@@ -2054,6 +2085,14 @@ function renderCorr(elId,data,orig){
   const corr=data.corrige||data.corrected||'';
   const errs=data.erreurs||data.errors||[];
   let html='<div class="fb-t">Rétroaction privée</div>';
+  if(data.corpsCorrige!==undefined){   // réponse de /api/correct-email
+    const cmt=(data.commentairePertinence||'').trim();
+    if(cmt) html+='<div class="fb-c">'+(data.pertinent?'✅ ':'⚠️ ')+esc(cmt)+'</div>';
+    else if(data.pertinent) html+='<div class="fb-c">✅ Ton courriel contient tout ce qui était demandé.</div>';
+    html+='<div class="fb-c">✍️ '+esc(data.corpsCorrige)+'</div>';
+    (data.erreurs||[]).forEach(e=>{ html+='<div class="fb-e">'+esc(e.explication||e.explanation||e)+'</div>'; });
+    fb.innerHTML=html; fb.classList.add('on'); return;
+  }
   if(data.memePhrase){ html+='<div class="fb-c">✅ Ton texte est déjà correct. Bravo !</div>'; }
   else{
     if(corr) html+='<div class="fb-c">✍️ '+esc(corr)+'</div>';
@@ -2062,6 +2101,11 @@ function renderCorr(elId,data,orig){
   fb.innerHTML=html; fb.classList.add('on');
 }
 function corrSummary(data,orig){
+  if(data.corpsCorrige!==undefined){   // réponse de /api/correct-email
+    const es=(data.erreurs||[]).map(e=>e.explication||e.explanation||e);
+    return (data.pertinent?'Contenu conforme. ':'Contenu incomplet : '+(data.commentairePertinence||'')+' ')
+      +'Correction : '+data.corpsCorrige+(es.length?' | '+es.join(' '):'');
+  }
   const corr=data.corrige||data.corrected||'';
   const errs=data.erreurs||data.errors||[];
   if(data.memePhrase) return "Phrase correcte : "+(corr||orig);

@@ -124,10 +124,10 @@
      <div class="req">
        <div class="req-hd">Ton courriel doit contenir</div>
        <div class="req-grid">
-         <label class="req-it"><input type="checkbox"><span class="req-box"></span><span>Le problème</span></label>
-         <label class="req-it"><input type="checkbox"><span class="req-box"></span><span>Depuis quand il dure</span></label>
-         <label class="req-it"><input type="checkbox"><span class="req-box"></span><span>La conséquence sur ta vie</span></label>
-         <label class="req-it"><input type="checkbox"><span class="req-box"></span><span>Une demande claire</span></label>
+         <div class="req-it"><span class="req-box" aria-hidden="true"></span><span>Le problème</span></div>
+         <div class="req-it"><span class="req-box" aria-hidden="true"></span><span>Depuis quand il dure</span></div>
+         <div class="req-it"><span class="req-box" aria-hidden="true"></span><span>La conséquence sur ta vie</span></div>
+         <div class="req-it"><span class="req-box" aria-hidden="true"></span><span>Une demande claire</span></div>
        </div>
        <div class="req-note">Emploie au moins une fois <em>faire</em> + un verbe à l'infinitif.</div>
      </div>
