@@ -37,6 +37,46 @@ Bibliothèque d'activités pédagogiques FLS (Niveau 4) pour enseignant en franc
   déposées avec leur fichier audio. L'atelier est une pratique libre : le
   suivi ne bloque jamais le dialogue (l'appel échoue en silence).
 
+## Dépôt des productions (oral et écrit)
+
+**Rien ne part sans un geste de l'élève.** `/api/correct-french` et
+`/api/check-written` répondent à l'écran et n'écrivent rien : la correction
+reste privée. Ce qui atteint l'enseignant, c'est ce que l'élève envoie.
+
+- **Oral** : `POST /api/oral/submit` (multipart), audio dans
+  `assets/oral-submissions/`, fiche dans `data/oral_submissions.json`.
+- **Écrit** : `POST /api/ecrit/submit` (JSON — pas de fichier joint, le texte
+  tient dans l'enregistrement), fiche dans `data/written_submissions.json`.
+- Lecture enseignante : `GET /api/admin/{oral,written}-submissions?groupId=`,
+  suppression `DELETE .../<id>`. Filtrées au groupe, jeton obligatoire.
+- **La greffe du bouton écrit passe par `build/greffe_depot_ecrit.py`**, jamais
+  à la main : marqueurs `DEPOT-ECRIT:début/fin`, dégreffe avant regreffe,
+  `--retirer` pour dégreffer. Elle **enveloppe `renderCorr()`** au lieu de
+  modifier `peCheck()` — le module garde son code, et le bouton n'apparaît
+  qu'une fois la correction demandée : on ne dépose pas un texte non relu. Le
+  libellé de la tâche et la consigne se lisent dans la carte (`.prod-tit`,
+  `.prod-lead`), donc aucune table à tenir module par module.
+  `module-probleme` est **généré** : sa greffe est posée par son `build.py`.
+- Côté enseignant, les dépôts paraissent dans le panneau « Productions écrites
+  des élèves » de `lms.html` et dans la fiche individuelle.
+
+## Fiche de l'élève (`fiche-eleve.html`)
+
+Un seul élève à la fois, tout ce qu'il a fait : bilan, activité par activité
+(zones, taux du premier coup, erreurs), productions orales et écrites avec leur
+rétroaction, vocabulaire, « Corrige-moi ! », fichiers ouverts. Les tableaux de
+`lms.html` répondent à « où en est le groupe ? » ; cette page répond à
+« qu'est-ce que cet élève a fait ? ». On y arrive par l'icône de fiche à côté
+de chaque code, ou par `fiche-eleve.html?code=XXXXXX` — le code de l'URL
+choisit l'élève, donc une fiche se partage par son lien.
+
+- Elle passe par `js/prof.js` (jeton + groupe) et lit le tableau de bord de
+  l'élève avec son code. Aucune donnée écrite en dur.
+- **Les dates se découpent à la chaîne**, jamais `new Date('2026-08-16')` :
+  la chaîne serait lue en temps universel et affichée la veille au Québec.
+- La tuile « Modules » compte les activités `categorie === 'cours'`, pas
+  `activitiesTotal`, qui recense tout le catalogue, ateliers compris.
+
 ## Multi-enseignants et multi-groupes
 
 - Hiérarchie : **enseignant → groupes → élèves**. Le catalogue d'activités est
@@ -297,10 +337,15 @@ visuelle. Quatrième onglet de `enseignant.html`, rendu par `js/materiel.js`.
 - **Les dix modules du registre sont produits**, seize séances chacune :
   `python3 build/powerpoints/build.py <slug>` et
   `python3 build/powerpoints/build_fiches.py <slug>`, ou `--tous` pour les dix.
-  **`module-sante` est produit mais catalogué `atelier`** : le dépôt de matériel
-  ne montre ses seize séances que pour une activité `cours` (`porteur_cours`),
-  et `categorie` fait partie des `USER_FIELDS` — c'est le volume qui tranche,
-  pas le code. Le basculement se fait dans le modal de modification d'admin.
+  **`module-sante` était catalogué `atelier` par erreur** (reste de l'époque où
+  le contenu santé n'était pas encore un module) : il disparaissait de la liste
+  des modules du portail élève, et le dépôt ne montrait qu'une séance au lieu
+  de seize — `porteur_cours` n'est appelé que pour une activité `cours`. Corrigé
+  dans `data/activities.json` (activité 34 → `cours`), suivi de
+  `python3 build/materiel.py`. **Attention** : `categorie` fait partie des
+  `USER_FIELDS`, donc c'est le volume qui tranche, pas le code — la correction
+  doit être refaite en ligne par le modal de modification d'admin, un
+  redéploiement ne la porte pas.
   Le **registre `build/powerpoints/modules.py`** est la source unique : numéro,
   titre affiché en pied de page, nom des blocs et ordre d'enseignement. Aucun
   autre fichier ne porte de constante de module — pas `build.py`, pas `theme.py`,

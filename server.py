@@ -25,6 +25,8 @@ import uuid
 from pathlib import Path
 from datetime import date, datetime, timedelta
 
+import forge
+
 BASE_DIR = Path(__file__).parent.resolve()
 
 
@@ -94,6 +96,12 @@ ORAL_AUDIO_DIR = STORAGE_DIR / "assets" / "oral-submissions"
 # justes du premier coup, quand pour la dernière fois. Fichier distinct de
 # oral_submissions.json, qui garde les productions déposées avec leur audio.
 CORRIGE_MOI_FILE = STORAGE_DIR / "data" / "corrige_moi.json"
+# Productions écrites déposées. Symétrique de oral_submissions.json, sans le
+# fichier joint : le texte de l'élève tient dans l'enregistrement. La
+# correction, elle, ne passe pas par ici — /api/correct-french répond à l'écran
+# de l'élève et n'écrit rien. Ce qui arrive à l'enseignant, c'est ce que
+# l'élève lui envoie.
+WRITTEN_SUBMISSIONS_FILE = STORAGE_DIR / "data" / "written_submissions.json"
 # Multi-enseignants : chaque enseignant possède un ou plusieurs groupes.
 # Le catalogue d'activités reste commun ; ce qui appartient au groupe, c'est la
 # planification (dates), les élèves, la progression et les productions orales.
@@ -1229,6 +1237,19 @@ def save_corrige_moi(data):
         json.dump(data, f, ensure_ascii=False, indent=2)
 
 
+def load_written_submissions():
+    if WRITTEN_SUBMISSIONS_FILE.exists():
+        with open(WRITTEN_SUBMISSIONS_FILE, "r", encoding="utf-8") as f:
+            return json.load(f)
+    return []
+
+
+def save_written_submissions(data):
+    WRITTEN_SUBMISSIONS_FILE.parent.mkdir(parents=True, exist_ok=True)
+    with open(WRITTEN_SUBMISSIONS_FILE, "w", encoding="utf-8") as f:
+        json.dump(data, f, ensure_ascii=False, indent=2)
+
+
 # Boîtes de répétition espacée (système Leitner) : plus la boîte est haute,
 # plus l'intervalle avant la prochaine révision est grand.
 VOCAB_INTERVALS_DAYS = [0, 1, 3, 7, 14, 30, 60]
@@ -1728,6 +1749,15 @@ class Handler(http.server.SimpleHTTPRequestHandler):
         if path == "/api/materiel/archive":
             self._handle_materiel_archive(params)
             return
+        if path == "/api/forge/etat":
+            self._handle_forge_etat()
+            return
+        if path == "/api/forge/commande":
+            self._handle_forge_lire(params)
+            return
+        if path == "/api/forge/fichier":
+            self._handle_forge_fichier(params)
+            return
 
         if path == "/api/debug":
             if not self._require_teacher():
@@ -1794,6 +1824,9 @@ class Handler(http.server.SimpleHTTPRequestHandler):
         if path == "/api/admin/oral-submissions":
             self._handle_oral_submissions_list(params)
             return
+        if path == "/api/admin/written-submissions":
+            self._handle_written_submissions_list(params)
+            return
         if path == "/api/admin/corrige-moi":
             self._handle_corrige_moi_list(params)
             return
@@ -1856,6 +1889,10 @@ class Handler(http.server.SimpleHTTPRequestHandler):
             self._handle_teacher_add()
         elif path == "/api/prof/documents":
             self._handle_document_add()
+        elif path == "/api/forge/commande":
+            self._handle_forge_creer()
+        elif path == "/api/forge/annuler":
+            self._handle_forge_annuler()
         elif path == "/api/materiel/depot":
             self._handle_materiel_depot_add()
         elif path == "/api/materiel/visite":
@@ -1904,6 +1941,8 @@ class Handler(http.server.SimpleHTTPRequestHandler):
             self._handle_analyser_erreurs()
         elif path == "/api/oral/submit":
             self._handle_oral_submit()
+        elif path == "/api/ecrit/submit":
+            self._handle_written_submit()
         elif path == "/api/activities":
             self._handle_add()
         elif re.match(r"^/api/activities/\d+/update$", path):
@@ -1987,6 +2026,8 @@ class Handler(http.server.SimpleHTTPRequestHandler):
                 self.send_error(400, "ID invalide")
         elif re.match(r"^/api/admin/oral-submissions/[\w-]+$", path):
             self._handle_oral_submission_delete(path.rsplit("/", 1)[1])
+        elif re.match(r"^/api/admin/written-submissions/[\w-]+$", path):
+            self._handle_written_submission_delete(path.rsplit("/", 1)[1])
         elif re.match(r"^/api/prof/groupes/\d+$", path):
             self._handle_group_delete(path.rsplit("/", 1)[1])
         elif re.match(r"^/api/prof/documents/\d+$", path):
@@ -2385,6 +2426,78 @@ class Handler(http.server.SimpleHTTPRequestHandler):
 
     def _group_from_params(self, teacher, params):
         return self._require_group(teacher, params.get("groupId", [None])[0])
+
+    # ── Forge d'activités ────────────────────────────────────────────────────
+    # Le compositeur assemble un prompt ; la forge le fait exécuter par le CLI
+    # Claude Code du poste. Voir forge.py. Deux verrous : la session enseignante
+    # comme partout ailleurs, et la boucle locale — la forge lance un processus,
+    # elle ne doit répondre qu'à quelqu'un assis devant la machine.
+
+    def _forge_locale(self):
+        """Refuse toute requête qui ne vient pas de la machine elle-même."""
+        hote = self.client_address[0]
+        if hote not in ("127.0.0.1", "::1", "localhost"):
+            json_response(self, {"error": "La forge ne répond qu'en local"}, 403)
+            return False
+        return True
+
+    def _handle_forge_etat(self):
+        if not self._forge_locale() or not self._require_teacher():
+            return
+        oui, raison = forge.disponible()
+        json_response(self, {"disponible": oui, "raison": raison,
+                             "commandes": forge.lister() if oui else []})
+
+    def _handle_forge_creer(self):
+        if not self._forge_locale() or not self._require_teacher():
+            return
+        body = self._read_json_body()
+        try:
+            fiche = forge.creer(body.get("prompt", ""), body.get("titre", ""),
+                                body.get("criteres"))
+        except ValueError as e:
+            json_response(self, {"error": str(e)}, 400)
+            return
+        except RuntimeError as e:
+            json_response(self, {"error": str(e)}, 503)
+            return
+        json_response(self, fiche, 201)
+
+    def _handle_forge_lire(self, params):
+        if not self._forge_locale() or not self._require_teacher():
+            return
+        fiche = forge.lire(params.get("id", [""])[0])
+        if not fiche:
+            json_response(self, {"error": "Commande introuvable"}, 404)
+            return
+        json_response(self, fiche)
+
+    def _handle_forge_annuler(self):
+        if not self._forge_locale() or not self._require_teacher():
+            return
+        arrete = forge.annuler(self._read_json_body().get("id", ""))
+        json_response(self, {"arrete": arrete})
+
+    def _handle_forge_fichier(self, params):
+        """Sert un fichier produit. Le chemin est validé contre la liste des
+        fichiers réellement produits : rien d'autre n'est servable."""
+        if not self._forge_locale() or not self._require_teacher():
+            return
+        cid = params.get("id", [""])[0]
+        nom = params.get("nom", [""])[0]
+        fiche = forge.lire(cid)
+        if not fiche or nom not in {f["nom"] for f in fiche["fichiers"]}:
+            self.send_error(404)
+            return
+        chemin = forge.COMMANDES / cid / nom
+        data = chemin.read_bytes()
+        mime = mimetypes.guess_type(str(chemin))[0] or "text/plain; charset=utf-8"
+        self.send_response(200)
+        self.send_header("Content-Type", mime)
+        self.send_header("Content-Length", str(len(data)))
+        self.send_header("Access-Control-Allow-Origin", "*")
+        self.end_headers()
+        self.wfile.write(data)
 
     def _handle_prof_setup(self):
         """Création du tout premier compte. Refusée dès qu'un compte existe."""
@@ -4306,6 +4419,71 @@ class Handler(http.server.SimpleHTTPRequestHandler):
                 pass
         subs = [s for s in subs if s["id"] != sub_id]
         save_oral_submissions(subs)
+        json_response(self, {"success": True})
+
+    def _handle_written_submit(self):
+        """Une production écrite déposée par l'élève.
+
+        Le pendant de _handle_oral_submit, en plus simple : pas de fichier
+        joint, donc du JSON et non du multipart. Comme pour l'oral, rien ne
+        part sans le geste de l'élève — la correction seule reste privée.
+        """
+        body = self._read_json_body()
+        code = body.get("code", "").strip().upper()
+        student = validate_student_code(code)
+        if not student:
+            json_response(self, {"error": "Non autorisé"}, 401)
+            return
+
+        texte = str(body.get("texte", "")).strip()
+        if not texte:
+            json_response(self, {"error": "Aucun texte fourni"}, 400)
+            return
+
+        record = {
+            "id": uuid.uuid4().hex,
+            "studentId": student["id"],
+            "studentCode": code,
+            "groupId": student.get("groupId"),
+            "prenom": student.get("prenom", ""),
+            "theme": str(body.get("theme", ""))[:80],
+            "taskId": str(body.get("taskId", ""))[:60],
+            "taskLabel": str(body.get("taskLabel", ""))[:120],
+            "question": str(body.get("question", ""))[:400],
+            # Plafond large : un courriel de niveau 4 fait quelques lignes, mais
+            # on ne veut pas tronquer le texte d'un élève qui s'applique.
+            "texte": texte[:4000],
+            "feedback": str(body.get("feedback", ""))[:2000],
+            "createdAt": datetime.now().isoformat(timespec="seconds"),
+        }
+        subs = load_written_submissions()
+        subs.append(record)
+        save_written_submissions(subs)
+
+        json_response(self, {"success": True, "id": record["id"]})
+
+    def _handle_written_submissions_list(self, params):
+        teacher = self._require_teacher()
+        if not teacher:
+            return
+        group_id = self._group_from_params(teacher, params)
+        if group_id is None:
+            return
+        student_ids = {s["id"] for s in load_students() if s.get("groupId") == group_id}
+        subs = sorted(
+            (s for s in load_written_submissions()
+             if s.get("groupId") == group_id or s.get("studentId") in student_ids),
+            key=lambda s: s.get("createdAt", ""), reverse=True)
+        json_response(self, subs)
+
+    def _handle_written_submission_delete(self, sub_id):
+        if not self._require_teacher():
+            return
+        subs = load_written_submissions()
+        if not any(s["id"] == sub_id for s in subs):
+            json_response(self, {"error": "Introuvable"}, 404)
+            return
+        save_written_submissions([s for s in subs if s["id"] != sub_id])
         json_response(self, {"success": True})
 
     def _handle_corrige_moi_seance(self):

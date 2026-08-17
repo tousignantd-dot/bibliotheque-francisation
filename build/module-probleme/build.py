@@ -311,6 +311,17 @@ try:
 except ValueError as e:
     sys.exit('!! greffe de la barre d\'outils impossible : %s' % e)
 
+# ── 6 bis bis. Dépôt de la production écrite ─────────────────────────
+# Même règle que la barre d'outils : la greffe est celle des dix autres
+# modules, et son dégreffage préalable retire celle du gabarit — qui porte le
+# slug de la consultation dans son taskId.
+from greffe_depot_ecrit import greffe as greffe_depot_ecrit   # noqa: E402
+
+try:
+    html = greffe_depot_ecrit(html, 'module-probleme')
+except ValueError as e:
+    sys.exit('!! greffe du dépôt de l\'écrit impossible : %s' % e)
+
 # ── 6 ter. Verrou des sections datées ────────────────────────────────
 # Même raison : la greffe de build/greffe_sections.py est celle des dix autres
 # modules, et elle commence elle aussi par retirer celle du gabarit — qui porte

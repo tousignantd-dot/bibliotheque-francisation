@@ -499,7 +499,10 @@ body{
 /* Graphie-phonie en grille de cartes (modèle je-me-prepare.html) */
 .ph-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(240px,1fr));gap:14px}
 .ph-card{background:var(--ws-card,#fff);border:1px solid var(--ws-line,#EAEAE8);border-radius:16px;padding:16px;display:flex;flex-direction:column;gap:12px}
-.ph-top{display:flex;align-items:center;gap:12px}
+.ph-top{display:flex;align-items:center;gap:12px;flex-wrap:wrap}
+/* Le retour de prononciation est inséré après le micro, DANS .ph-top :
+   sans ces règles il se tasse dans une colonne de quelques pixels. */
+.ph-card .pron-fb{flex:1 0 100%;order:99;margin:0;line-height:1.35;overflow-wrap:anywhere}
 .ph-word{font-size:21px;font-weight:900;color:var(--ws-ink,#17181A)}
 .btn-audio-round{width:44px;height:44px;flex-shrink:0;border-radius:50%;border:none;background:#DC2626;color:#fff;display:inline-flex;align-items:center;justify-content:center;cursor:pointer;transition:background .15s}
 .btn-audio-round:hover{background:#B91C1C}
@@ -1367,7 +1370,7 @@ function pronCheck(btn, expected){
     reset();
     btn.classList.add(ok?'fb-ok':'fb-no');
     fb.className='pron-fb '+(ok?'ok':'no');
-    fb.textContent = ok ? '✓ Bien prononcé !' : ('✗ On a entendu : « '+heard+' »');
+    fb.textContent = ok ? 'Bien prononcé !' : ('On a entendu : « '+heard+' »');  // ✓/✕ ajoutés par .pron-fb::before
     setTimeout(()=>{ btn.classList.remove('fb-ok','fb-no'); }, 4000);
   };
   rec.onresult=e=>{
@@ -1961,6 +1964,11 @@ function injectCustom(){
        </div>
      </div>
      <div class="fb" id="peFb" aria-live="polite"></div>
+       <!-- DEPOT-ECRIT:début — greffé par build/greffe_depot_ecrit.py -->
+       <div id="peSend" style="display:none;gap:10px;flex-wrap:wrap;align-items:center">
+         <button class="btn btn-send" id="peSendBtn" onclick="peSend()">Envoyer à mon enseignant</button>
+       </div>
+       <!-- DEPOT-ECRIT:fin -->
      <div class="status" id="peStatus">Analyse en cours…</div>
      <div class="err" id="peErr"></div>
    </div>`;
@@ -3318,4 +3326,71 @@ lmsTrack('file_opened');
 })();
 </script>
 <!-- SECTIONS-DATEES:fin -->
+<!-- DEPOT-ECRIT-JS:début — greffé par build/greffe_depot_ecrit.py -->
+<script>
+(function () {
+  var texteDepose = '', retroDeposee = '';
+
+  function carteEcrite() {
+    var t = document.getElementById('peText');
+    return t ? t.closest('.card') : null;
+  }
+  function libelle() {
+    var c = carteEcrite(), h = c && c.querySelector('.prod-tit');
+    return h ? h.textContent.trim() : 'Production écrite';
+  }
+  function consigne() {
+    var c = carteEcrite(), p = c && c.querySelector('.prod-lead');
+    return p ? p.textContent.trim() : '';
+  }
+
+  // renderCorr est globale au module et sert aussi à l'oral : on n'ouvre le
+  // dépôt que pour la zone écrite.
+  if (typeof renderCorr === 'function') {
+    var rendreOrig = renderCorr;
+    renderCorr = function (elId, data, orig) {
+      var r = rendreOrig.apply(this, arguments);
+      if (elId === 'peFb') {
+        texteDepose = orig || '';
+        retroDeposee = (typeof corrSummary === 'function') ? corrSummary(data, orig) : '';
+        var zone = document.getElementById('peSend');
+        if (zone) zone.style.display = 'flex';
+      }
+      return r;
+    };
+  }
+
+  window.peSend = async function () {
+    var btn = document.getElementById('peSendBtn');
+    var texte = (document.getElementById('peText') || {}).value || texteDepose;
+    texte = (texte || '').trim();
+    if (!texte) { showErr('peErr', "Écris ton message d'abord."); return; }
+    hideErr('peErr');
+    btn.disabled = true; btn.textContent = 'Envoi…';
+    try {
+      var res = await fetch('/api/ecrit/submit', {
+        method: 'POST', headers: {'Content-Type': 'application/json'},
+        body: JSON.stringify({
+          code: typeof studentCode !== 'undefined' ? studentCode : '',
+          theme: 'Santé', taskId: 'module-consultation-pe',
+          taskLabel: libelle(), question: consigne(),
+          texte: texte, feedback: retroDeposee,
+        }),
+      });
+      var data = await res.json();
+      if (!res.ok) {
+        showErr('peErr', data.error || "L'envoi a échoué.");
+        btn.disabled = false; btn.textContent = 'Envoyer à mon enseignant';
+        return;
+      }
+      document.getElementById('peSend').innerHTML =
+        '<span class="sent">✅ Envoyé à ton enseignant !</span>';
+    } catch (e) {
+      showErr('peErr', "Impossible d'envoyer.");
+      btn.disabled = false; btn.textContent = 'Envoyer à mon enseignant';
+    }
+  };
+})();
+</script>
+<!-- DEPOT-ECRIT-JS:fin -->
 </body></html>

@@ -1,0 +1,467 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Fiche de l'élève — Francisation</title>
+  <link rel="stylesheet" href="assets/design-system/styles.css" />
+  <style>
+    /* Fiche de l'élève — un seul élève à la fois, tout ce qu'il a fait.
+       Les tableaux de lms.html répondent à « où en est le groupe ? ». Cette
+       page-ci répond à « qu'est-ce que cet élève a fait ? », qu'on regarde
+       avec l'élève devant soi ou qu'on imprime pour une rencontre.
+       Aucune couleur en dur : uniquement des jetons du système de design. */
+    body { margin: 0; background: var(--surface-page); }
+
+    .fe-haut { position: sticky; top: 0; z-index: 30; background: var(--surface-card);
+               border-bottom: 1px solid var(--border); }
+    .fe-haut > .container { display: flex; align-items: center; gap: var(--sp-4);
+                            flex-wrap: wrap; padding-top: var(--sp-3); padding-bottom: var(--sp-3); }
+    .fe-marque { display: flex; align-items: baseline; gap: var(--sp-3); }
+    .fe-marque b { font-size: var(--fs-body); font-weight: var(--fw-black); color: var(--text-strong); }
+    .fe-marque span { font-size: var(--fs-ui-sm); font-weight: var(--fw-bold); color: var(--text-muted); }
+    .fe-outils { display: flex; align-items: center; gap: var(--sp-3); margin-left: auto; flex-wrap: wrap; }
+    .fe-lien { font-size: var(--fs-ui); font-weight: var(--fw-bold); color: var(--text-muted); text-decoration: underline; }
+    .fe-lien:hover { color: var(--text-accent); }
+
+    /* — Identité de l'élève — */
+    .fe-tete { background: var(--surface-band); border-bottom: 1px solid var(--border-tint);
+               padding: var(--sp-8) 0; }
+    .fe-nom { font-size: var(--fs-hero); font-weight: var(--fw-black); color: var(--text-strong);
+              margin: var(--sp-2) 0 var(--sp-3); line-height: 1.05; }
+    .fe-sous { font-size: var(--fs-lead); color: var(--text-body); margin: 0; }
+    .fe-code { font-family: ui-monospace, SFMono-Regular, Menlo, monospace;
+               font-weight: var(--fw-black); letter-spacing: .08em;
+               background: var(--accent-soft); color: var(--accent-ink);
+               border-radius: 6px; padding: 2px 8px; }
+
+    /* — Sections — */
+    .fe-sec { padding: var(--sp-8) 0 0; }
+    .fe-sec-tete { display: flex; align-items: baseline; gap: var(--sp-3); margin-bottom: var(--sp-4); }
+    .fe-sec-tete h2 { font-size: var(--fs-h3); font-weight: var(--fw-black);
+                      color: var(--text-strong); margin: 0; }
+    .fe-sec-tete p { font-size: var(--fs-body-sm); color: var(--text-muted); margin: 0; }
+
+    /* — Trois tuiles de bilan — */
+    .fe-tuiles { display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: var(--sp-4); }
+    .fe-tuile { background: var(--surface-card); border: 1px solid var(--border);
+                border-left: 4px solid var(--accent); border-radius: 10px;
+                padding: var(--sp-5); box-shadow: var(--sh-card); }
+    .fe-tuile-cle { font-size: var(--fs-label); font-weight: var(--fw-bold); letter-spacing: .12em;
+                    text-transform: uppercase; color: var(--text-accent); }
+    .fe-tuile-val { font-size: var(--fs-h2); font-weight: var(--fw-black); color: var(--text-strong);
+                    margin: var(--sp-2) 0; line-height: 1; }
+    .fe-tuile-pied { font-size: var(--fs-body-sm); color: var(--text-muted); }
+
+    /* — Barre de progression — */
+    .fe-bar { height: 6px; border-radius: 3px; background: var(--paper-200); overflow: hidden; margin: var(--sp-2) 0; }
+    .fe-bar b { display: block; height: 100%; background: var(--accent); }
+
+    /* — Tableau d'activités — */
+    .fe-table { width: 100%; border-collapse: collapse; background: var(--surface-card);
+                border: 1px solid var(--border); border-radius: 10px; overflow: hidden; }
+    .fe-table th { text-align: left; font-size: var(--fs-label); font-weight: var(--fw-bold);
+                   letter-spacing: .08em; text-transform: uppercase; color: var(--text-muted);
+                   padding: var(--sp-3) var(--sp-4); border-bottom: 1px solid var(--border);
+                   background: var(--surface-sunken); white-space: nowrap; }
+    .fe-table td { padding: var(--sp-3) var(--sp-4); border-bottom: 1px solid var(--paper-200);
+                   font-size: var(--fs-ui); color: var(--text-body); vertical-align: middle; }
+    .fe-table tr:last-child td { border-bottom: none; }
+    .fe-table td b { color: var(--text-strong); font-weight: var(--fw-bold); }
+    .fe-num { text-align: center; font-weight: var(--fw-black); white-space: nowrap; }
+    .fe-ok   { color: var(--ok-ink); }
+    .fe-warn { color: var(--warn-ink); }
+    .fe-no   { color: var(--no-ink); }
+    .fe-vide { color: var(--text-muted); }
+
+    /* — Pastille d'état — */
+    .fe-etat { display: inline-flex; align-items: center; gap: 6px; border-radius: 999px;
+               padding: 3px 10px; font-size: var(--fs-ui-sm); font-weight: var(--fw-bold); white-space: nowrap; }
+    .fe-etat--fait { background: var(--ok-bg); color: var(--ok-ink); }
+    .fe-etat--cours { background: var(--warn-bg); color: var(--warn-ink); }
+    .fe-etat--rien { background: var(--surface-sunken); color: var(--text-muted); }
+
+    /* — Production orale — */
+    .fe-oral { background: var(--surface-card); border: 1px solid var(--border);
+               border-radius: 10px; padding: var(--sp-5); margin-bottom: var(--sp-4); }
+    .fe-oral-tete { display: flex; align-items: baseline; gap: var(--sp-3);
+                    flex-wrap: wrap; margin-bottom: var(--sp-3); }
+    .fe-oral-tache { font-size: var(--fs-ui); font-weight: var(--fw-black); color: var(--text-strong); }
+    .fe-oral-quand { font-size: var(--fs-body-sm); color: var(--text-muted); margin-left: auto; }
+    .fe-oral audio { width: 100%; margin-bottom: var(--sp-3); }
+    .fe-bloc { border-left: 3px solid var(--border-tint); padding-left: var(--sp-4); margin-top: var(--sp-3); }
+    .fe-bloc-cle { font-size: var(--fs-label); font-weight: var(--fw-bold); letter-spacing: .1em;
+                   text-transform: uppercase; color: var(--text-muted); display: block; margin-bottom: 4px; }
+    .fe-bloc p { margin: 0; font-size: var(--fs-body); color: var(--text-body); }
+    .fe-bloc--ok   { border-left-color: var(--ok-line); }
+    .fe-bloc--corr { border-left-color: var(--warn-line); }
+
+    .fe-note { font-size: var(--fs-body-sm); color: var(--text-muted); margin: var(--sp-3) 0 0; }
+    .fe-pied { padding: var(--sp-8) 0 var(--sp-12); }
+
+    @media print {
+      .fe-haut, .fe-outils, .fe-pied { display: none !important; }
+      body { background: var(--white); }
+      .fe-tete { background: var(--white); }
+      .fe-sec { break-inside: avoid; }
+    }
+  </style>
+</head>
+<body>
+
+<header class="fe-haut">
+  <div class="container">
+    <div class="fe-marque">
+      <b>Fiche de l'élève</b>
+      <span>Francisation · Niveau 4</span>
+    </div>
+    <div class="fe-outils">
+      <span style="display:flex;align-items:center;gap:var(--sp-2);white-space:nowrap">
+        <label class="fe-lien" for="feEleve" style="text-decoration:none">Élève</label>
+        <select id="feEleve" class="field" style="min-width:180px"></select>
+      </span>
+      <button class="btn btn--ghost btn--sm" onclick="window.print()">Imprimer</button>
+      <a class="fe-lien" href="enseignant.html">Espace enseignant</a>
+    </div>
+  </div>
+</header>
+
+<main id="feCorps">
+  <section class="fe-tete">
+    <div class="container">
+      <p class="band__eyebrow">Espace enseignant · Dossier</p>
+      <h1 class="fe-nom" id="feNom">Chargement…</h1>
+      <p class="fe-sous" id="feSous"></p>
+    </div>
+  </section>
+  <div class="container" id="feContenu"></div>
+</main>
+
+<script src="js/prof.js"></script>
+<script>
+  /* ---------- Outils ---------- */
+  const esc = s => String(s ?? '').replace(/[&<>"]/g, c =>
+    ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
+
+  const MOIS = ['janvier','février','mars','avril','mai','juin','juillet','août',
+                'septembre','octobre','novembre','décembre'];
+
+  /** On découpe la chaîne au lieu de la donner à `new Date` : « 2026-08-16 »
+      y serait lu en temps universel, donc affiché la veille au Québec. */
+  function dateLongue(iso) {
+    const m = /^(\d{4})-(\d{2})-(\d{2})/.exec(iso || '');
+    if (!m) return iso || '';
+    return `${parseInt(m[3], 10)} ${MOIS[parseInt(m[2], 10) - 1]}`;
+  }
+  function dateHeure(iso) {
+    if (!iso) return '';
+    const [j, h] = iso.split('T');
+    return `${dateLongue(j)}${h ? ' · ' + h.slice(0, 5) : ''}`;
+  }
+  /** Le titre « Module 3 — Prendre rendez-vous » se lit mieux sans son numéro
+      quand le numéro est déjà affiché à côté. */
+  function titreCourt(t) { return String(t || '').replace(/^Module\s+\d+\s*[—–-]\s*/, ''); }
+  function numeroDe(t) { const m = /^Module\s+(\d+)/.exec(t || ''); return m ? m[1].padStart(2, '0') : ''; }
+
+  /* ---------- État ---------- */
+  let ELEVES = [], ELEVE = null;
+
+  /* ---------- Démarrage ---------- */
+  (async function () {
+    const etat = await Prof.init();
+    if (!etat) return;                     // prof.js redirige vers la connexion
+
+    Prof.onGroupeChange(() => charger());
+    document.getElementById('feEleve').addEventListener('change', e => {
+      const st = ELEVES.find(s => String(s.id) === e.target.value);
+      if (st) { ELEVE = st; history.replaceState(null, '', `?code=${st.code}`); rendre(); }
+    });
+    charger();
+  })();
+
+  async function charger() {
+    const res = await Prof.fetch(Prof.withGroup('/api/admin/students'));
+    ELEVES = await res.json();
+    if (!ELEVES.length) {
+      document.getElementById('feNom').textContent = 'Aucun élève dans ce groupe';
+      return;
+    }
+    // Le code de l'URL choisit l'élève : une fiche se partage par son lien.
+    const voulu = new URLSearchParams(location.search).get('code');
+    ELEVE = ELEVES.find(s => s.code === (voulu || '').toUpperCase()) || ELEVES[0];
+
+    const sel = document.getElementById('feEleve');
+    sel.innerHTML = ELEVES.map(s =>
+      `<option value="${s.id}">${esc(s.prenom || s.label || s.code)}</option>`).join('');
+    sel.value = String(ELEVE.id);
+
+    rendre();
+  }
+
+  /* ---------- Rendu ---------- */
+  async function rendre() {
+    const code = ELEVE.code;
+    document.getElementById('feNom').textContent = ELEVE.prenom || ELEVE.label || code;
+    document.getElementById('feContenu').innerHTML =
+      '<p class="fe-note" style="padding:var(--sp-8) 0">Chargement du dossier…</p>';
+
+    // Le tableau de bord se lit avec le code de l'élève ; le reste, avec la
+    // session enseignante. Les quatre journaux couvrent le groupe entier : on
+    // ne garde que les lignes de l'élève regardé.
+    const [bilan, activites, progres, oraux, ecrits, corrige, journal] = await Promise.all([
+      fetch(`/api/student/dashboard?code=${encodeURIComponent(code)}`).then(r => r.json()),
+      fetch(`/api/student/activities?code=${encodeURIComponent(code)}`).then(r => r.json()),
+      Prof.fetch(Prof.withGroup('/api/admin/progress')).then(r => r.json()),
+      Prof.fetch(Prof.withGroup('/api/admin/oral-submissions')).then(r => r.json()),
+      Prof.fetch(Prof.withGroup('/api/admin/written-submissions')).then(r => r.json()),
+      Prof.fetch(Prof.withGroup('/api/admin/corrige-moi')).then(r => r.json()),
+      Prof.fetch(Prof.withGroup('/api/admin/access-log')).then(r => r.json()),
+    ]);
+
+    const mien = liste => liste.filter(e => e.studentId === ELEVE.id);
+    const mesProgres = mien(progres);
+    const mesOraux = mien(oraux);
+    const mesCorrige = mien(corrige);
+    const monJournal = mien(journal).sort((a, b) => (b.timestamp || '').localeCompare(a.timestamp || ''));
+
+    const derniere = [...mesProgres, ...monJournal]
+      .map(e => e.timestamp || '').sort().pop();
+    document.getElementById('feSous').innerHTML =
+      `Code <span class="fe-code">${esc(code)}</span> · groupe ${esc(bilan.groupe || Prof.groupeActif()?.nom || '')}`
+      + (derniere ? ` · dernière trace le ${dateHeure(derniere)}` : ' · aucune trace pour l’instant');
+
+    document.getElementById('feContenu').innerHTML = [
+      blocBilan(bilan, activites),
+      blocActivites(mesProgres, activites),
+      blocOraux(mesOraux),
+      blocEcrits(mien(ecrits)),
+      blocCorrige(mesCorrige, bilan),
+      blocJournal(monJournal),
+      '<div class="fe-pied"></div>',
+    ].join('');
+  }
+
+  function section(titre, chapeau, corps) {
+    return `<section class="fe-sec">
+      <div class="fe-sec-tete"><h2>${esc(titre)}</h2><p>${esc(chapeau)}</p></div>
+      ${corps}
+    </section>`;
+  }
+
+  function blocBilan(b, activites) {
+    const sem = b.semaine || {};
+    const voc = b.vocab || {};
+    // `activitiesTotal` compte tout le catalogue, ateliers compris. La tuile
+    // « Modules » doit dire la même chose que le portail de l'élève : les
+    // modules de cours seulement.
+    const modules = (Array.isArray(activites) ? activites : [])
+      .filter(a => a.categorie === 'cours');
+    const finis = modules.filter(m => (b.parActivite || {})[String(m.id)]?.faite).length;
+    const tuile = (cle, val, pied) => `<div class="fe-tuile">
+      <div class="fe-tuile-cle">${esc(cle)}</div>
+      <div class="fe-tuile-val">${esc(val)}</div>
+      <div class="fe-tuile-pied">${esc(pied)}</div>
+    </div>`;
+    return section('Le bilan', 'Ce que l’élève voit sur son propre portail.', `<div class="fe-tuiles">
+      ${tuile('Modules', `${finis} / ${modules.length}`,
+              `terminés · série de ${b.streak ?? 0} jour${(b.streak ?? 0) > 1 ? 's' : ''}`)}
+      ${tuile('Vocabulaire', `${voc.mastered ?? 0} / ${voc.total ?? 0}`,
+              `mots maîtrisés · ${voc.learning ?? 0} à revoir`)}
+      ${tuile('Cette semaine', `${sem.jours ?? 0} jour${(sem.jours ?? 0) > 1 ? 's' : ''}`,
+              `de pratique sur ${sem.sur ?? 7} · ${sem.minutes ?? 0} min estimées`)}
+    </div>`);
+  }
+
+  function blocActivites(progres, activites) {
+    // Un enregistrement par (activité, événement) : on replie sur l'activité.
+    const catalogue = {};
+    (Array.isArray(activites) ? activites : []).forEach(a => { catalogue[a.id] = a; });
+
+    const parActivite = {};
+    progres.forEach(p => {
+      const f = parActivite[p.activityId] ||= {
+        id: p.activityId, titre: p.activityTitle, quand: '',
+        ouvert: false, dialogue: false, zones: null, faites: null,
+        premier: null, erreurs: null,
+      };
+      if ((p.timestamp || '') > f.quand) f.quand = p.timestamp || '';
+      if (p.event === 'file_opened') f.ouvert = true;
+      if (p.event === 'dialogue_listened') f.dialogue = true;
+      if (p.event === 'exercise_completed') {
+        f.zones = p.zones; f.faites = p.zonesDone;
+        f.premier = p.firstTry; f.erreurs = p.totalErrors;
+      }
+    });
+
+    const lignes = Object.values(parActivite).sort((a, b) => {
+      const ca = catalogue[a.id]?.categorie === 'cours' ? 0 : 1;
+      const cb = catalogue[b.id]?.categorie === 'cours' ? 0 : 1;
+      return ca - cb || (a.titre || '').localeCompare(b.titre || '');
+    });
+
+    if (!lignes.length) {
+      return section('Ce que l’élève a fait', 'Aucune activité ouverte pour l’instant.',
+        '<p class="fe-note">Rien à afficher : cet élève ne s’est pas encore connecté à une activité.</p>');
+    }
+
+    const corps = lignes.map(l => {
+      const num = numeroDe(l.titre);
+      const pct = l.zones ? Math.round(l.faites / l.zones * 100) : 0;
+      const fait = l.zones && l.faites >= l.zones;
+
+      const etat = l.zones
+        ? `<span class="fe-etat ${fait ? 'fe-etat--fait' : 'fe-etat--cours'}">${fait ? '✓ Terminé' : pct + ' %'}</span>`
+        : `<span class="fe-etat fe-etat--rien">Ouvert seulement</span>`;
+
+      // Le taux du premier coup dit ce que la note ne dit pas : réussir 123
+      // zones en 19 erreurs et en 97 erreurs, ce n'est pas le même élève.
+      let premier = '<span class="fe-vide">—</span>';
+      if (l.premier != null && l.faites) {
+        const taux = Math.round(l.premier / l.faites * 100);
+        const cls = taux >= 85 ? 'fe-ok' : taux >= 60 ? 'fe-warn' : 'fe-no';
+        premier = `<b class="${cls}">${l.premier}/${l.faites}</b> <span class="fe-vide">(${taux} %)</span>`;
+      }
+      const erreurs = l.erreurs == null ? '<span class="fe-vide">—</span>'
+        : `<b class="${l.erreurs === 0 ? 'fe-ok' : l.erreurs > 60 ? 'fe-no' : 'fe-warn'}">${l.erreurs}</b>`;
+
+      return `<tr>
+        <td>
+          <b>${num ? num + ' · ' : ''}${esc(titreCourt(l.titre))}</b>
+          ${l.zones ? `<div class="fe-bar"><b style="width:${pct}%"></b></div>
+            <span class="fe-vide" style="font-size:var(--fs-body-sm)">${l.faites} exercices sur ${l.zones}</span>` : ''}
+        </td>
+        <td>${etat}</td>
+        <td class="fe-num">${l.dialogue ? '<span class="fe-ok">✓</span>' : '<span class="fe-vide">—</span>'}</td>
+        <td class="fe-num">${premier}</td>
+        <td class="fe-num">${erreurs}</td>
+        <td class="fe-vide">${esc(dateHeure(l.quand))}</td>
+      </tr>`;
+    }).join('');
+
+    return section('Ce que l’élève a fait', `${lignes.length} activité${lignes.length > 1 ? 's' : ''} ouverte${lignes.length > 1 ? 's' : ''}.`,
+      `<table class="fe-table">
+        <thead><tr>
+          <th>Activité</th><th>État</th><th style="text-align:center">Dialogues</th>
+          <th style="text-align:center">Réussi du 1er coup</th>
+          <th style="text-align:center">Erreurs</th><th>Dernière trace</th>
+        </tr></thead>
+        <tbody>${corps}</tbody>
+      </table>`);
+  }
+
+  function blocOraux(oraux) {
+    if (!oraux.length) {
+      return section('Ce que l’élève a dit', 'Aucune production orale déposée.',
+        '<p class="fe-note">Les enregistrements déposés dans « Je me lance » apparaîtront ici.</p>');
+    }
+    const corps = oraux
+      .sort((a, b) => (b.createdAt || '').localeCompare(a.createdAt || ''))
+      .map(o => {
+        // « Phrase correcte : … » signale une production sans correction.
+        const juste = /^Phrase correcte/.test(o.feedback || '');
+        return `<div class="fe-oral">
+          <div class="fe-oral-tete">
+            <span class="fe-oral-tache">${esc(o.taskLabel || 'Production orale')}</span>
+            <span class="fe-etat ${juste ? 'fe-etat--fait' : 'fe-etat--cours'}">${juste ? '✓ Sans erreur' : 'Corrigée'}</span>
+            <span class="fe-oral-quand">${esc(dateHeure(o.createdAt))}</span>
+          </div>
+          ${o.question ? `<p class="fe-note" style="margin:0 0 var(--sp-3)">Consigne : ${esc(o.question)}</p>` : ''}
+          <audio controls preload="none" src="${esc(o.audioUrl)}"></audio>
+          <div class="fe-bloc">
+            <span class="fe-bloc-cle">Ce que l’élève a écrit</span>
+            <p>${esc(o.transcription || '(vide)')}</p>
+          </div>
+          <div class="fe-bloc ${juste ? 'fe-bloc--ok' : 'fe-bloc--corr'}">
+            <span class="fe-bloc-cle">Rétroaction reçue</span>
+            <p>${esc(o.feedback || '(aucune)')}</p>
+          </div>
+        </div>`;
+      }).join('');
+    return section('Ce que l’élève a dit',
+      `${oraux.length} enregistrement${oraux.length > 1 ? 's' : ''} déposé${oraux.length > 1 ? 's' : ''}.`, corps);
+  }
+
+  function blocEcrits(ecrits) {
+    if (!ecrits.length) {
+      return section('Ce que l’élève a écrit', 'Aucune production écrite déposée.',
+        '<p class="fe-note">Les textes envoyés depuis « Je me lance » apparaîtront ici.</p>');
+    }
+    const corps = ecrits
+      .sort((a, b) => (b.createdAt || '').localeCompare(a.createdAt || ''))
+      .map(e => {
+        const juste = /^Phrase correcte/.test(e.feedback || '');
+        return `<div class="fe-oral">
+          <div class="fe-oral-tete">
+            <span class="fe-oral-tache">${esc(e.taskLabel || 'Production écrite')}</span>
+            <span class="fe-etat ${juste ? 'fe-etat--fait' : 'fe-etat--cours'}">${juste ? '✓ Sans erreur' : 'Corrigée'}</span>
+            <span class="fe-oral-quand">${esc(dateHeure(e.createdAt))}</span>
+          </div>
+          ${e.question ? `<p class="fe-note" style="margin:0 0 var(--sp-3)">Consigne : ${esc(e.question)}</p>` : ''}
+          <div class="fe-bloc">
+            <span class="fe-bloc-cle">Le texte de l’élève</span>
+            <p style="white-space:pre-wrap">${esc(e.texte || '(vide)')}</p>
+          </div>
+          <div class="fe-bloc ${juste ? 'fe-bloc--ok' : 'fe-bloc--corr'}">
+            <span class="fe-bloc-cle">Rétroaction reçue</span>
+            <p>${esc(e.feedback || '(aucune)')}</p>
+          </div>
+        </div>`;
+      }).join('');
+    return section('Ce que l’élève a écrit',
+      `${ecrits.length} texte${ecrits.length > 1 ? 's' : ''} déposé${ecrits.length > 1 ? 's' : ''}.`, corps);
+  }
+
+  function blocCorrige(entrees, bilan) {
+    const voc = bilan.vocab || {};
+    const vocCorps = `<div class="fe-tuiles">
+      <div class="fe-tuile"><div class="fe-tuile-cle">Mots sus</div>
+        <div class="fe-tuile-val">${voc.mastered ?? 0}</div>
+        <div class="fe-tuile-pied">boîte 4 ou 5 des cartes mémoire</div></div>
+      <div class="fe-tuile"><div class="fe-tuile-cle">Mots à revoir</div>
+        <div class="fe-tuile-val">${voc.learning ?? 0}</div>
+        <div class="fe-tuile-pied">déjà vus, pas encore acquis</div></div>
+      <div class="fe-tuile"><div class="fe-tuile-cle">Jamais vus</div>
+        <div class="fe-tuile-val">${voc.new ?? 0}</div>
+        <div class="fe-tuile-pied">sur ${voc.total ?? 0} mots au dossier</div></div>
+    </div>`;
+
+    if (!entrees.length) return section('Vocabulaire et pratique libre',
+      'Cartes mémoire ; aucune séance de « Corrige-moi ! ».', vocCorps);
+
+    const lignes = entrees.map(e => {
+      const taux = e.answers ? Math.round(e.firstTryOk / e.answers * 100) : 0;
+      const cls = taux >= 70 ? 'fe-ok' : taux >= 45 ? 'fe-warn' : 'fe-no';
+      return `<tr>
+        <td><b>${esc(e.themeLabel || e.themeId)}</b></td>
+        <td class="fe-num">${e.answers}</td>
+        <td class="fe-num"><b class="${cls}">${e.firstTryOk}</b> <span class="fe-vide">(${taux} %)</span></td>
+        <td class="fe-vide">${esc(dateHeure(e.lastSeen))}</td>
+      </tr>`;
+    }).join('');
+
+    return section('Vocabulaire et pratique libre',
+      'Cartes mémoire et séances de « Corrige-moi ! ».',
+      vocCorps + `<table class="fe-table" style="margin-top:var(--sp-4)">
+        <thead><tr><th>Thème</th><th style="text-align:center">Réponses</th>
+          <th style="text-align:center">Justes du 1er coup</th><th>Dernière séance</th></tr></thead>
+        <tbody>${lignes}</tbody></table>`);
+  }
+
+  function blocJournal(journal) {
+    if (!journal.length) {
+      return section('Les fichiers ouverts', 'Aucun document consulté.',
+        '<p class="fe-note">Les fiches et présentations ouvertes depuis le portail élève apparaîtront ici.</p>');
+    }
+    const lignes = journal.slice(0, 20).map(e => `<tr>
+      <td><b>${esc(e.file.split('/').pop())}</b>
+        <div class="fe-vide" style="font-size:var(--fs-body-sm)">${esc(e.activityTitle || '')}</div></td>
+      <td class="fe-vide">${esc(dateHeure(e.timestamp))}</td>
+    </tr>`).join('');
+    return section('Les fichiers ouverts',
+      `${journal.length} ouverture${journal.length > 1 ? 's' : ''} enregistrée${journal.length > 1 ? 's' : ''}.`,
+      `<table class="fe-table"><thead><tr><th>Fichier</th><th>Quand</th></tr></thead>
+        <tbody>${lignes}</tbody></table>`);
+  }
+</script>
+</body>
+</html>
