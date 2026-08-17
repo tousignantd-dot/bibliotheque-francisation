@@ -6,87 +6,273 @@
   <title>Bibliothèque d'activités — Francisation Niveau 4</title>
   <meta name="description" content="Bibliothèque d'activités pédagogiques de francisation pour les élèves de niveau 4." />
 
-  <!-- Google Fonts — Inter -->
-  <link rel="preconnect" href="https://fonts.googleapis.com" />
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet" />
+  <!-- Point d'entrée unique du système de design (il importe Nunito et les
+       jetons). Jamais `ds-bundle/`, qui est dans .gitignore. -->
+  <link rel="stylesheet" href="assets/design-system/styles.css" />
 
-  <link rel="stylesheet" href="css/style.css" />
+  <style>
+    /* ══════════════════════════════════════════════════════════════════
+       Bibliothèque · pièces propres à cette page
+
+       Tout ce qui existe déjà dans le système de design est utilisé tel
+       quel (`.card`, `.btn`, `.field`, `.band`, `.grid-auto`, `.exo__*`).
+       Ne sont écrites ici que les pièces qu'il ne porte pas : la barre
+       supérieure, la pagination, les squelettes de chargement et le
+       gazouillis. Aucune couleur en dur — uniquement des jetons.
+
+       Les conventions de mise en page suivent `enseignant.html` : deux
+       bandes collantes ensemble, même `container`, mêmes graisses. Les
+       deux pages enseignantes doivent se lire comme une seule.
+       ══════════════════════════════════════════════════════════════════ */
+    body { margin: 0; }
+    .bib { min-height: 100vh; }
+
+    /* Un lien qui porte `.btn` ne doit pas garder le soulignement du socle. */
+    .btn { text-decoration: none; }
+
+    /* — Barre supérieure : les deux bandes sont collantes ENSEMBLE.
+         Un `top` codé en dur sur chacune casserait la mise en page dès que
+         la première se replie sur deux lignes. — */
+    .bib-haut { position: sticky; top: 0; z-index: 30; }
+    .bib-bande1 { background: var(--surface-card); border-bottom: 1px solid var(--border); }
+    .bib-bande2 { background: var(--surface-band); border-bottom: 1px solid var(--border-tint); }
+    .bib-bande1 > .container, .bib-bande2 > .container {
+      display: flex; align-items: center; gap: var(--sp-4); row-gap: var(--sp-2);
+      padding-top: var(--sp-3); padding-bottom: var(--sp-3); flex-wrap: wrap;
+    }
+
+    .bib-marque { display: flex; align-items: baseline; gap: var(--sp-3); }
+    .bib-marque b { font-size: var(--fs-body); font-weight: var(--fw-black); color: var(--text-strong); }
+    .bib-marque span { font-size: var(--fs-ui-sm); font-weight: var(--fw-bold); color: var(--text-muted); }
+
+    .bib-nav {
+      display: flex; align-items: center; gap: var(--sp-5); flex-wrap: wrap;
+      margin-left: auto; font-size: var(--fs-ui); font-weight: var(--fw-bold);
+    }
+    .bib-nav a {
+      padding: 6px 0; color: var(--text-muted); text-decoration: none;
+      border-bottom: 2px solid transparent;
+    }
+    .bib-nav a:hover { color: var(--text-strong); }
+    .bib-nav a[aria-current="page"] { border-bottom-color: var(--accent); color: var(--text-strong); }
+
+    .bib-qui {
+      display: flex; align-items: center; gap: var(--sp-2);
+      padding-left: var(--sp-4); border-left: 1px solid var(--border);
+    }
+    .bib-initiales {
+      display: inline-flex; align-items: center; justify-content: center;
+      width: 34px; height: 34px; border-radius: 50%;
+      background: var(--accent-soft); color: var(--accent-ink);
+      font-size: var(--fs-ui-sm); font-weight: var(--fw-black);
+    }
+    .bib-nom { white-space: nowrap; font-size: var(--fs-ui); font-weight: var(--fw-black); color: var(--text-strong); }
+    .bib-lien {
+      background: none; border: none; padding: 4px 0; font: inherit;
+      font-size: var(--fs-ui); font-weight: var(--fw-bold);
+      color: var(--text-muted); cursor: pointer; text-decoration: underline;
+    }
+    .bib-lien:hover { color: var(--text-accent); }
+
+    .bib-surtitre {
+      font-size: var(--fs-label); font-weight: var(--fw-bold);
+      letter-spacing: var(--ls-label); text-transform: uppercase; color: var(--text-accent);
+    }
+    .bib-groupe-select { width: auto; min-width: 190px; max-width: 280px; }
+
+    /* — Recherche —
+         Le champ est celui du système ; seule la loupe et la croix sont
+         posées ici, en retrait intérieur. */
+    .bib-recherche { position: relative; flex: 1; min-width: 240px; margin-left: auto; }
+    .bib-recherche .field { padding-left: 44px; padding-right: 44px; background: var(--surface-card); }
+    .bib-loupe, .bib-effacer {
+      position: absolute; top: 50%; transform: translateY(-50%);
+      display: flex; align-items: center; justify-content: center; color: var(--text-muted);
+    }
+    .bib-loupe { left: var(--sp-4); pointer-events: none; }
+    .bib-effacer {
+      right: 6px; width: 36px; height: 36px; border: none; border-radius: 50%;
+      background: none; cursor: pointer; opacity: 0; visibility: hidden;
+    }
+    .bib-effacer.is-visible { opacity: 1; visibility: visible; }
+    .bib-effacer:hover { background: var(--paper-200); color: var(--text-strong); }
+
+    .bib-compteur {
+      white-space: nowrap; font-size: var(--fs-ui-sm); font-weight: var(--fw-bold);
+      color: var(--text-accent);
+    }
+
+    /* — Corps de page — */
+    .bib-corps { padding: var(--sp-8) 0 var(--sp-12); }
+    .bib-section + .bib-section { margin-top: var(--sp-12); }
+
+    /* — Carte d'activité —
+         `.card--marked` porte le filet gauche de 4 px, seul usage décoratif
+         autorisé de la couleur de section. La teinte vient de `--sec`, posé
+         sur la section. */
+    .bib-carte { display: flex; flex-direction: column; gap: var(--sp-4); }
+    .bib-carte-haut { display: flex; align-items: flex-start; gap: var(--sp-3); }
+    .bib-carte-titre {
+      flex: 1; font-size: var(--fs-lead); font-weight: var(--fw-black);
+      line-height: var(--lh-title); color: var(--text-strong);
+    }
+    .bib-badge {
+      flex: none; padding: 5px var(--sp-3); border-radius: var(--r-pill);
+      background: var(--sec-soft, var(--accent-soft)); color: var(--sec, var(--accent-ink));
+      font-size: var(--fs-meta); font-weight: var(--fw-black); white-space: nowrap;
+    }
+    .bib-vignette {
+      margin: calc(-1 * var(--sp-5)) calc(-1 * var(--sp-6)) 0;
+      border-bottom: 1px solid var(--border);
+    }
+    .bib-vignette img { display: block; width: 100%; height: 132px; object-fit: cover; }
+
+    /* Date : couleur + mot, jamais la couleur seule. */
+    .bib-dates { display: flex; flex-wrap: wrap; gap: var(--sp-2); }
+    .bib-date {
+      display: inline-flex; align-items: center; gap: 7px;
+      padding: 5px var(--sp-3); border-radius: var(--r-pill);
+      font-size: var(--fs-ui-sm); font-weight: var(--fw-bold);
+    }
+    .bib-date--vue    { background: var(--ok-bg); color: var(--ok-ink); }
+    .bib-date--prevue { background: var(--acier-100); color: var(--acier-600); }
+    .bib-date b { font-weight: var(--fw-black); }
+
+    .bib-actions { display: flex; flex-wrap: wrap; gap: var(--sp-2); margin-top: auto; }
+
+    /* — Squelettes de chargement — */
+    .bib-squelette { display: flex; flex-direction: column; gap: var(--sp-3); }
+    .bib-os { height: 14px; border-radius: var(--r-sm); background: var(--paper-200); animation: bib-pouls 1.4s ease-in-out infinite; }
+    .bib-os--titre { height: 20px; width: 78%; }
+    .bib-os--ligne { width: 52%; }
+    .bib-os--btn   { height: var(--tap-min); border-radius: var(--r-pill); width: 60%; }
+    @keyframes bib-pouls { 0%, 100% { opacity: 1; } 50% { opacity: .45; } }
+    @media (prefers-reduced-motion: reduce) { .bib-os { animation: none; } }
+
+    /* — État vide — */
+    .bib-vide { text-align: center; padding: var(--sp-12) var(--sp-6); }
+    .bib-vide[hidden] { display: none; }
+    .bib-vide-icone { color: var(--text-muted); }
+    .bib-vide-titre { margin-top: var(--sp-4); font-size: var(--fs-h3); font-weight: var(--fw-black); }
+    .bib-vide-note  { margin-top: var(--sp-2); font-size: var(--fs-body-sm); font-weight: var(--fw-medium); color: var(--text-muted); }
+
+    /* — Pagination — */
+    .bib-pages { display: flex; justify-content: center; align-items: center; gap: var(--sp-2); flex-wrap: wrap; margin-top: var(--sp-12); }
+    .bib-pages[hidden] { display: none; }
+    .bib-points { padding: 0 var(--sp-2); font-weight: var(--fw-black); color: var(--text-muted); }
+
+    /* — Gazouillis —
+         Carte blanche et non plaque foncée : le seul bloc foncé de la page
+         reste le bouton principal. */
+    .bib-gazouillis {
+      position: fixed; right: var(--sp-6); bottom: var(--sp-6); z-index: 60;
+      display: flex; flex-direction: column; gap: var(--sp-2);
+    }
+    .bib-gazouillis-item {
+      display: flex; align-items: center; gap: var(--sp-3);
+      padding: var(--sp-3) var(--sp-5);
+      background: var(--surface-card); border: 1px solid var(--border);
+      border-radius: var(--r-pill); box-shadow: var(--sh-raise);
+      font-size: var(--fs-ui-sm); font-weight: var(--fw-bold); color: var(--text-strong);
+      opacity: 0; transform: translateY(8px);
+      transition: opacity var(--dur) var(--ease), transform var(--dur) var(--ease);
+    }
+    .bib-gazouillis-item.is-visible { opacity: 1; transform: none; }
+    .bib-gazouillis-item svg { color: var(--accent); flex: none; }
+
+    @media (max-width: 640px) {
+      .bib-recherche { margin-left: 0; }
+      .bib-qui { padding-left: 0; border-left: none; }
+    }
+  </style>
 </head>
 <body>
 
-  <!-- ====== HEADER ====== -->
-  <header class="header" role="banner">
-    <div class="header-inner">
+<div class="page bib">
 
-      <div class="header-brand">
-        <h1 class="header-title">Bibliothèque d'activités pédagogiques</h1>
-        <p class="header-subtitle">Francisation — Niveau 4</p>
+  <!-- ══════════ Barre supérieure ══════════ -->
+  <div class="bib-haut">
+
+    <div class="bib-bande1">
+      <div class="container">
+        <div class="bib-marque"><b>Bibliothèque</b><span>Francisation · Niveau 4</span></div>
+        <nav class="bib-nav" aria-label="Pages enseignantes">
+          <a href="enseignant.html">Espace enseignant</a>
+          <a href="index.html" aria-current="page">Bibliothèque</a>
+          <a href="admin.html">Administration</a>
+          <span class="bib-qui">
+            <span class="bib-initiales" id="initiales" aria-hidden="true"></span>
+            <span class="bib-nom" id="nomEnseignant"></span>
+          </span>
+          <button type="button" class="bib-lien" id="boutonDeconnexion">Déconnexion</button>
+        </nav>
       </div>
+    </div>
 
-      <div class="header-controls">
-        <!-- Barre de recherche -->
-        <div class="search-wrapper" role="search">
-          <span class="search-icon" aria-hidden="true"></span>
+    <div class="bib-bande2">
+      <div class="container">
+        <span class="bib-surtitre">Groupe</span>
+        <select class="field bib-groupe-select" id="selectGroupe" aria-label="Groupe actif"></select>
+
+        <div class="bib-recherche" role="search">
+          <span class="bib-loupe" id="iconeLoupe" aria-hidden="true"></span>
           <input
             type="search"
             id="searchInput"
-            class="search-input"
-            placeholder="Rechercher une activité…"
+            class="field"
+            placeholder="Chercher une activité, un mot-clé…"
             autocomplete="off"
             spellcheck="false"
-            aria-label="Rechercher une activité"
+            aria-label="Chercher une activité"
           />
-          <button
-            id="searchClear"
-            class="search-clear"
-            type="button"
-            aria-label="Effacer la recherche"
-          ></button>
+          <button type="button" class="bib-effacer" id="searchClear" aria-label="Effacer la recherche"></button>
         </div>
 
-        <!-- Session enseignante : groupe actif -->
-        <div id="profBar"></div>
+        <span class="bib-compteur" id="counter" aria-live="polite" aria-atomic="true">
+          <span id="counterTotal">—</span> activités
+        </span>
+      </div>
+    </div>
 
-        <!-- Compteur -->
-        <div class="activity-counter" aria-live="polite" aria-atomic="true">
-          <span id="counter"><span id="counterTotal">—</span> activités</span>
-        </div>
+  </div>
+
+  <!-- ══════════ Bandeau d'en-tête ══════════ -->
+  <div class="band">
+    <div class="container">
+      <div class="band__eyebrow">Bibliothèque · Francisation</div>
+      <h1 style="margin:var(--sp-3) 0 0;font-size:var(--fs-h2);font-weight:var(--fw-black)">Activités du groupe</h1>
+      <p class="band__lead">
+        Le catalogue est commun à tous les enseignants. Les dates, elles,
+        appartiennent au groupe choisi ci-dessus.
+      </p>
+    </div>
+  </div>
+
+  <!-- ══════════ Contenu ══════════ -->
+  <main class="bib-corps" id="main">
+    <div class="container">
+
+      <!-- Aucun résultat -->
+      <div class="card bib-vide" id="emptyState" role="status" aria-live="polite" hidden>
+        <div class="bib-vide-icone" id="iconeVide" aria-hidden="true"></div>
+        <p class="bib-vide-titre">Aucune activité trouvée</p>
+        <p class="bib-vide-note">Essayez un autre mot du titre, ou retirez la recherche.</p>
       </div>
 
+      <!-- Activités, en deux sections : cours puis ateliers -->
+      <div id="grid"></div>
+
+      <!-- Pagination -->
+      <nav class="bib-pages" id="pagination" aria-label="Navigation entre les pages" hidden></nav>
+
     </div>
-  </header>
-
-  <!-- ====== CONTENU PRINCIPAL ====== -->
-  <main class="main" id="main" role="main">
-
-    <!-- État vide / aucun résultat -->
-    <div class="empty-state" id="emptyState" role="status" aria-live="polite">
-      <div class="empty-state-icon" aria-hidden="true"></div>
-      <p class="empty-state-title">Aucune activité trouvée</p>
-      <p class="empty-state-desc">Essayez un autre terme de recherche.</p>
-    </div>
-
-    <!-- Activités, regroupées par type de contenu (cours / ateliers) -->
-    <section
-      class="sections"
-      id="grid"
-      aria-label="Activités pédagogiques"
-    ></section>
-
-    <!-- Pagination -->
-    <nav
-      class="pagination hidden"
-      id="pagination"
-      aria-label="Navigation entre les pages"
-    ></nav>
-
   </main>
 
-  <!-- ====== TOASTS ====== -->
-  <div class="toast-container" id="toastContainer" aria-live="polite" aria-atomic="false"></div>
+</div>
 
-  <script src="js/prof.js"></script>
-  <script src="js/app.js"></script>
+<div class="bib-gazouillis" id="toastContainer" aria-live="polite" aria-atomic="false"></div>
+
+<script src="js/prof.js"></script>
+<script src="js/app.js"></script>
 </body>
 </html>

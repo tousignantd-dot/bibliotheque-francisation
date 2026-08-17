@@ -91,9 +91,18 @@ function sortActivities(list) {
 /* =========================================
    RENDU PRINCIPAL
    ========================================= */
+// La couleur de section sert AU REPÉRAGE, jamais à décorer : une teinte par
+// bloc, portée par `--sec` / `--sec-soft` et reprise par le filet gauche des
+// cartes (`.card--marked`), la pastille de niveau et le compte.
 const SECTIONS = [
-  { cle: 'cours',   titre: 'Cours',    sousTitre: '4 h — le matin' },
-  { cle: 'atelier', titre: 'Ateliers', sousTitre: '2 h — l’après-midi' },
+  {
+    cle: 'cours', titre: 'Cours', sousTitre: '4 h — le matin',
+    sec: 'var(--green-600)', secSoft: 'var(--green-100)',
+  },
+  {
+    cle: 'atelier', titre: 'Ateliers', sousTitre: '2 h — l’après-midi',
+    sec: 'var(--acier-600)', secSoft: 'var(--acier-100)',
+  },
 ];
 
 function render() {
@@ -103,12 +112,12 @@ function render() {
   // État vide
   if (state.filtered.length === 0) {
     DOM.grid.innerHTML = '';
-    DOM.emptyState.classList.add('visible');
-    DOM.pagination.classList.add('hidden');
+    DOM.emptyState.hidden = false;
+    DOM.pagination.hidden = true;
     return;
   }
 
-  DOM.emptyState.classList.remove('visible');
+  DOM.emptyState.hidden = true;
 
   // Deux blocs distincts : les cours (modules de 4 h, le matin) puis les
   // ateliers (activités de 2 h, l'après-midi).
@@ -116,14 +125,15 @@ function render() {
     const lot = pageItems.filter(a => (a.categorie || 'atelier') === section.cle);
     if (!lot.length) return '';
     return `
-      <div class="section-block">
-        <h2 class="section-title">
-          ${section.titre}
-          <span class="section-sub">${section.sousTitre}</span>
-          <span class="section-count">${lot.length}</span>
-        </h2>
-        <div class="grid">${lot.map(buildCard).join('')}</div>
-      </div>`;
+      <section class="bib-section" style="--sec:${section.sec};--sec-soft:${section.secSoft}">
+        <div class="exo__head">
+          <span class="exo__eyebrow">${section.titre}</span>
+          <span class="exo__rule"></span>
+          <span class="exo__score">${lot.length}</span>
+        </div>
+        <p class="exo__sub">${section.sousTitre}</p>
+        <div class="grid-auto">${lot.map(buildCard).join('')}</div>
+      </section>`;
   }).join('');
 
   renderPagination();
@@ -132,24 +142,12 @@ function render() {
 /* =========================================
    CONSTRUCTION D'UNE CARTE
    ========================================= */
-const CARD_PALETTE = [
-  { card: 'linear-gradient(90deg,#3b6ff6,#7c3aed)', thumb: 'linear-gradient(135deg,#dbeafe 0%,#ede9fe 100%)', icon: '#6d85f0' },
-  { card: 'linear-gradient(90deg,#0ea5e9,#06b6d4)', thumb: 'linear-gradient(135deg,#e0f2fe 0%,#cffafe 100%)', icon: '#22b8d4' },
-  { card: 'linear-gradient(90deg,#10b981,#059669)', thumb: 'linear-gradient(135deg,#d1fae5 0%,#a7f3d0 100%)', icon: '#10b981' },
-  { card: 'linear-gradient(90deg,#f59e0b,#ef4444)', thumb: 'linear-gradient(135deg,#fef3c7 0%,#fee2e2 100%)', icon: '#f59e0b' },
-  { card: 'linear-gradient(90deg,#ec4899,#a855f7)', thumb: 'linear-gradient(135deg,#fce7f3 0%,#f3e8ff 100%)', icon: '#e879b4' },
-  { card: 'linear-gradient(90deg,#f97316,#eab308)', thumb: 'linear-gradient(135deg,#ffedd5 0%,#fef9c3 100%)', icon: '#f97316' },
-  { card: 'linear-gradient(90deg,#6366f1,#0ea5e9)', thumb: 'linear-gradient(135deg,#e0e7ff 0%,#e0f2fe 100%)', icon: '#6366f1' },
-  { card: 'linear-gradient(90deg,#14b8a6,#3b82f6)', thumb: 'linear-gradient(135deg,#ccfbf1 0%,#dbeafe 100%)', icon: '#14b8a6' },
-];
-
 function buildCard(activity) {
-  const palette = CARD_PALETTE[(activity.id - 1) % CARD_PALETTE.length];
-  // Sans image, pas de vignette : un dégradé vide de 120 px n'apprend rien et
-  // allonge la carte d'autant. Le liseré coloré du haut suffit au repérage.
+  // Sans image, pas de vignette : un cadre vide de 132 px n'apprend rien et
+  // allonge la carte d'autant. Le filet gauche de la carte suffit au repérage.
   const vignette = activity.thumbnail
-    ? `<div class="card-thumbnail">
-         <img src="${escHtml(activity.thumbnail)}" alt="${escHtml(activity.title)}"
+    ? `<div class="bib-vignette">
+         <img src="${escHtml(activity.thumbnail)}" alt=""
               loading="lazy" onerror="this.parentElement.remove()">
        </div>`
     : '';
@@ -161,142 +159,72 @@ function buildCard(activity) {
     ? 'Présentations'
     : 'Diaporama photos';
 
+  // Un lien secondaire n'est écrit que si le fichier existe : un bouton mort
+  // n'apprend rien. C'est admin.html qui sert à voir ce qui manque.
+  const lien = (chemin, libelle, icone, type) => chemin
+    ? `<a href="${escHtml(encodePath(chemin))}"
+          class="btn btn--sm btn--ghost"
+          target="_blank" rel="noopener"
+          onclick="trackOpen('${type}', '${escHtml(activity.title)}')">
+         ${icone}${libelle}
+       </a>`
+    : '';
+
   return `
-    <article class="card" data-id="${activity.id}" style="--card-color:${palette.card}">
+    <article class="card card--marked bib-carte" data-id="${activity.id}">
       ${vignette}
-      <div class="card-body">
-        <div class="card-meta">
-          <h2 class="card-title">${escHtml(activity.title)}</h2>
-          ${state.plusieursNiveaux
-            ? `<span class="card-badge">${escHtml(activity.level || 'Niveau 4')}</span>`
-            : ''
-          }
-        </div>
-        ${(activity.dateVue || activity.datePrevue) ? `
-        <div class="card-dates">
-          ${activity.dateVue ? `
-          <div class="card-date-field vue filled">
-            <span class="card-date-label vue">Vue</span>
-            <span class="card-date-text">${escHtml(formatDate(activity.dateVue))}</span>
-          </div>` : ''}
-          ${activity.datePrevue ? `
-          <div class="card-date-field prevue filled">
-            <span class="card-date-label prevue">Prévue</span>
-            <span class="card-date-text">${escHtml(formatDate(activity.datePrevue))}</span>
-          </div>` : ''}
-        </div>` : ''}
-        <div class="card-actions">
-          ${activity.parcours
-            ? `<div class="btn-duo">
-                 <a href="${escHtml(encodePath(activity.interactive))}"
-                    class="btn btn-primary"
-                    target="_blank" rel="noopener"
-                    title="Le module complet, en une seule page"
-                    onclick="trackOpen('interactive', '${escHtml(activity.title)}')">
-                   <span class="btn-icon">${iconPlay()}</span>
-                   Module
-                 </a>
-                 <a href="${escHtml(encodePath(activity.parcours))}"
-                    class="btn btn-parcours"
-                    target="_blank" rel="noopener"
-                    title="Le même contenu, une diapositive à la fois"
-                    onclick="trackOpen('parcours', '${escHtml(activity.title)}')">
-                   <span class="btn-icon">${iconParcours()}</span>
-                   Parcours
-                 </a>
-               </div>`
-            : `<a href="${escHtml(encodePath(activity.interactive))}"
-                  class="btn btn-primary"
-                  target="_blank" rel="noopener"
-                  onclick="trackOpen('interactive', '${escHtml(activity.title)}')">
-                 <span class="btn-icon">${iconPlay()}</span>
-                 Activité interactive
-               </a>`
-          }
-          ${activity.studentDoc
-            ? `<a href="${escHtml(encodePath(activity.studentDoc))}"
-                 class="btn btn-secondary"
-                 target="_blank" rel="noopener"
-                 onclick="trackOpen('document', '${escHtml(activity.title)}')">
-                <span class="btn-icon">${iconDoc()}</span>
-                Document élève
-               </a>`
-            : ''
-          }
-          ${/* Un fichier absent ne laisse plus de bouton mort : c'est admin.html
-                qui sert à voir ce qui manque, pas la bibliothèque. */ ''}
-          ${activity.slideshow
-            ? `<a href="${escHtml(encodePath(activity.slideshow))}"
-                 class="btn btn-slideshow"
-                 target="_blank" rel="noopener"
-                 onclick="trackOpen('slideshow', '${escHtml(activity.title)}')">
-                <span class="btn-icon">${iconSlideshow()}</span>
-                ${slideshowLabel}
-               </a>`
-            : ''
-          }
-          ${activity.planCours
-            ? `<a href="${escHtml(encodePath(activity.planCours))}"
-                 class="btn btn-plancours"
-                 target="_blank" rel="noopener"
-                 onclick="trackOpen('planCours', '${escHtml(activity.title)}')">
-                <span class="btn-icon">${iconPlan()}</span>
-                Plan de cours
-               </a>`
-            : ''
-          }
-          ${activity.autres
-            ? `<a href="${escHtml(encodePath(activity.autres))}"
-                 class="btn btn-autres"
-                 target="_blank" rel="noopener"
-                 onclick="trackOpen('autres', '${escHtml(activity.title)}')">
-                <span class="btn-icon">${iconDoc()}</span>
-                Autres
-               </a>`
-            : ''
-          }
-        </div>
+      <div class="bib-carte-haut">
+        <h3 class="bib-carte-titre">${escHtml(activity.title)}</h3>
+        ${state.plusieursNiveaux
+          ? `<span class="bib-badge">${escHtml(activity.level || 'Niveau 4')}</span>`
+          : ''
+        }
+      </div>
+      ${(activity.dateVue || activity.datePrevue) ? `
+      <div class="bib-dates">
+        ${activity.dateVue
+          ? `<span class="bib-date bib-date--vue">✓ Vue <b>${escHtml(formatDate(activity.dateVue))}</b></span>`
+          : ''}
+        ${activity.datePrevue
+          ? `<span class="bib-date bib-date--prevue">→ Prévue <b>${escHtml(formatDate(activity.datePrevue))}</b></span>`
+          : ''}
+      </div>` : ''}
+      <div class="bib-actions">
+        <a href="${escHtml(encodePath(activity.interactive))}"
+           class="btn btn--sm btn--pri"
+           target="_blank" rel="noopener"
+           ${activity.parcours ? 'title="Le module complet, en une seule page"' : ''}
+           onclick="trackOpen('interactive', '${escHtml(activity.title)}')">
+          ${iconPlay()}${activity.parcours ? 'Module' : 'Activité interactive'}
+        </a>
+        ${activity.parcours
+          ? `<a href="${escHtml(encodePath(activity.parcours))}"
+               class="btn btn--sm btn--ghost"
+               target="_blank" rel="noopener"
+               title="Le même contenu, une diapositive à la fois"
+               onclick="trackOpen('parcours', '${escHtml(activity.title)}')">
+              ${iconParcours()}Parcours
+             </a>`
+          : ''}
+        ${lien(activity.studentDoc, 'Document élève', iconDoc(), 'document')}
+        ${lien(activity.slideshow, slideshowLabel, iconSlideshow(), 'slideshow')}
+        ${lien(activity.planCours, 'Plan de cours', iconPlan(), 'planCours')}
+        ${lien(activity.autres, 'Autres', iconDoc(), 'autres')}
       </div>
     </article>`;
-}
-
-/* =========================================
-   SAUVEGARDE DES DATES
-   ========================================= */
-function attachDateEvents() {
-  document.querySelectorAll('.card-date-input').forEach(input => {
-    input.addEventListener('change', async () => {
-      const id = input.dataset.id;
-      const field = input.dataset.field;
-      const value = input.value;
-
-      input.closest('.card-date-field').classList.toggle('filled', !!value);
-
-      try {
-        // La date est enregistrée pour le groupe actif seulement : un autre
-        // enseignant peut placer la même activité à une autre date.
-        await Prof.fetch(`/api/activities/${id}/dates`, {
-          method: 'POST',
-          headers: { 'Content-Type': 'application/json' },
-          body: Prof.body({ [field]: value }),
-        });
-      } catch {
-        // En mode statique (Netlify), la sauvegarde n'est pas disponible
-      }
-    });
-  });
 }
 
 /* =========================================
    SQUELETTES DE CHARGEMENT
    ========================================= */
 function showSkeletons() {
-  DOM.grid.innerHTML = '<div class="grid">' + Array.from({ length: CONFIG.SKELETON_COUNT }, () => `
-    <div class="card card-skeleton">
-      <div class="skeleton skel-title"></div>
-      <div class="skeleton skel-title-2"></div>
-      <div class="skeleton skel-btn"></div>
-      <div class="skeleton skel-btn-2"></div>
+  DOM.emptyState.hidden = true;
+  DOM.pagination.hidden = true;
+  DOM.grid.innerHTML = '<div class="grid-auto">' + Array.from({ length: CONFIG.SKELETON_COUNT }, () => `
+    <div class="card bib-squelette" aria-hidden="true">
+      <div class="bib-os bib-os--titre"></div>
+      <div class="bib-os bib-os--ligne"></div>
+      <div class="bib-os bib-os--btn"></div>
     </div>`).join('') + '</div>';
 }
 
@@ -307,11 +235,11 @@ function renderPagination() {
   const totalPages = Math.ceil(state.filtered.length / CONFIG.ITEMS_PER_PAGE);
 
   if (totalPages <= 1) {
-    DOM.pagination.classList.add('hidden');
+    DOM.pagination.hidden = true;
     return;
   }
 
-  DOM.pagination.classList.remove('hidden');
+  DOM.pagination.hidden = false;
   const p = state.currentPage;
 
   let pages = [];
@@ -327,16 +255,18 @@ function renderPagination() {
   }
 
   DOM.pagination.innerHTML = `
-    <button class="page-btn" id="prevBtn" ${p === 1 ? 'disabled' : ''} aria-label="Page précédente">
+    <button type="button" class="btn btn--sm btn--ghost" id="prevBtn"
+            ${p === 1 ? 'disabled' : ''} aria-label="Page précédente">
       ${iconChevronLeft()} Préc.
     </button>
     ${pages.map(pg =>
       pg === '…'
-        ? `<span class="page-ellipsis">…</span>`
-        : `<button class="page-btn ${pg === p ? 'active' : ''}"
+        ? `<span class="bib-points">…</span>`
+        : `<button type="button" class="btn btn--sm ${pg === p ? 'btn--pri' : 'btn--ghost'}"
                    data-page="${pg}" aria-label="Page ${pg}" ${pg === p ? 'aria-current="page"' : ''}>${pg}</button>`
     ).join('')}
-    <button class="page-btn" id="nextBtn" ${p === totalPages ? 'disabled' : ''} aria-label="Page suivante">
+    <button type="button" class="btn btn--sm btn--ghost" id="nextBtn"
+            ${p === totalPages ? 'disabled' : ''} aria-label="Page suivante">
       Suiv. ${iconChevronRight()}
     </button>`;
 
@@ -393,16 +323,16 @@ function updateCounter() {
    ========================================= */
 function showToast(message, icon = iconCheck()) {
   const toast = document.createElement('div');
-  toast.className = 'toast';
-  toast.innerHTML = `<span class="toast-icon">${icon}</span>${escHtml(message)}`;
+  toast.className = 'bib-gazouillis-item';
+  toast.innerHTML = `${icon}${escHtml(message)}`;
   DOM.toastContainer.appendChild(toast);
 
   requestAnimationFrame(() => {
-    requestAnimationFrame(() => toast.classList.add('show'));
+    requestAnimationFrame(() => toast.classList.add('is-visible'));
   });
 
   setTimeout(() => {
-    toast.classList.remove('show');
+    toast.classList.remove('is-visible');
     setTimeout(() => toast.remove(), 250);
   }, 2800);
 }
@@ -524,20 +454,20 @@ function getDemoActivities() {
    ========================================= */
 function init() {
   // Injecter icônes statiques
-  document.querySelector('.search-icon').innerHTML = iconSearch();
-  document.querySelector('.search-clear').innerHTML = iconX();
-  document.querySelector('.empty-state-icon').innerHTML = iconEmpty();
+  document.getElementById('iconeLoupe').innerHTML = iconSearch();
+  document.getElementById('searchClear').innerHTML = iconX();
+  document.getElementById('iconeVide').innerHTML = iconEmpty();
 
   // Événements recherche
   DOM.searchInput.addEventListener('input', e => {
     const q = e.target.value;
-    DOM.searchClear.classList.toggle('visible', q.length > 0);
+    DOM.searchClear.classList.toggle('is-visible', q.length > 0);
     applySearch(q);
   });
 
   DOM.searchClear.addEventListener('click', () => {
     DOM.searchInput.value = '';
-    DOM.searchClear.classList.remove('visible');
+    DOM.searchClear.classList.remove('is-visible');
     applySearch('');
     DOM.searchInput.focus();
   });
@@ -545,7 +475,7 @@ function init() {
   DOM.searchInput.addEventListener('keydown', e => {
     if (e.key === 'Escape') {
       DOM.searchInput.value = '';
-      DOM.searchClear.classList.remove('visible');
+      DOM.searchClear.classList.remove('is-visible');
       applySearch('');
     }
   });
@@ -554,9 +484,34 @@ function init() {
   loadActivities();
 }
 
+/* =========================================
+   BARRE DE GROUPE
+
+   La page rend elle-même le sélecteur plutôt que d'appeler `Prof.renderBar` :
+   celle-ci injecte sa propre feuille de style, avec des bleus codés en dur qui
+   n'appartiennent pas au système de design. `admin.html` et `lms.html`
+   continuent de l'utiliser telle quelle — rien n'y change.
+   ========================================= */
+function renderBandeGroupe() {
+  const select = document.getElementById('selectGroupe');
+  select.innerHTML = Prof.state.groupes
+    .map(g => `<option value="${g.id}"${g.id === Prof.groupeId ? ' selected' : ''}>${escHtml(g.nom)}</option>`)
+    .join('');
+  select.addEventListener('change', e => {
+    Prof.setGroupeActif(e.target.value);
+    loadActivities();
+  });
+
+  const nom = Prof.state.enseignant?.nom || '';
+  document.getElementById('nomEnseignant').textContent = nom;
+  document.getElementById('initiales').textContent =
+    nom.split(' ').map(m => m[0]).join('').slice(0, 2).toUpperCase();
+  document.getElementById('boutonDeconnexion').addEventListener('click', Prof.logout);
+}
+
 document.addEventListener('DOMContentLoaded', async () => {
   // Sans session enseignante, Prof.init() redirige vers prof.html.
   if (!await Prof.init()) return;
-  Prof.renderBar(document.getElementById('profBar'), loadActivities);
+  renderBandeGroupe();
   init();
 });
