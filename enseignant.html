@@ -215,8 +215,11 @@
       background: var(--surface-sunken); border: 1px solid var(--border);
       border-radius: var(--r-md); padding: var(--sp-5);
     }
-    .pe-apercu-liste { margin-top: var(--sp-3); display: grid; gap: 10px; }
-    .pe-apercu-liste > div { display: flex; justify-content: space-between; gap: var(--sp-4); font-size: var(--fs-body-sm); font-weight: var(--fw-bold); color: var(--text-body); }
+    /* `minmax(0, 1fr)` et le `min-width: 0` de la ligne : sans eux, la colonne
+       de grille se dimensionne sur le max-content du titre en nowrap, et la
+       date part hors du cadre gris au lieu d'être poussée par l'ellipse. */
+    .pe-apercu-liste { margin-top: var(--sp-3); display: grid; grid-template-columns: minmax(0, 1fr); gap: 10px; }
+    .pe-apercu-liste > div { min-width: 0; display: flex; justify-content: space-between; gap: var(--sp-4); font-size: var(--fs-body-sm); font-weight: var(--fw-bold); color: var(--text-body); }
     .pe-apercu-liste em { flex: 1; min-width: 0; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; font-style: normal; }
     .pe-apercu-liste b { flex: none; color: var(--text-accent); }
     .pe-coche-ligne { display: flex; align-items: center; gap: var(--sp-3); min-height: var(--tap-min); font-size: var(--fs-body-sm); font-weight: var(--fw-bold); color: var(--ink-500); cursor: pointer; }
@@ -594,7 +597,7 @@
           <div>
             <span class="field-label">Rythme</span>
             <div style="display:flex;gap:var(--sp-2);flex-wrap:wrap" id="rythmes">
-              <button type="button" class="choice" data-rythme="meme">Toutes à cette date</button>
+              <button type="button" class="choice" data-rythme="meme">Aucun</button>
               <button type="button" class="choice" data-rythme="semaine">Une par semaine</button>
               <button type="button" class="choice" data-rythme="quinzaine">Une aux 2 semaines</button>
               <button type="button" class="choice" data-rythme="jour">Une par jour</button>
@@ -609,7 +612,7 @@
           <div class="pe-eyebrow">Aperçu</div>
           <div class="pe-apercu-liste" id="apercuPlan"></div>
           <div style="margin-top:var(--sp-5);display:flex;gap:var(--sp-3);flex-wrap:wrap">
-            <button type="button" class="btn btn--pri" id="boutonPlanifier">Poser les dates</button>
+            <button type="button" class="btn btn--pri" id="boutonPlanifier">Enregistrer</button>
             <button type="button" class="btn btn--ghost" id="boutonRetirerDates">Retirer les dates</button>
           </div>
         </div>
