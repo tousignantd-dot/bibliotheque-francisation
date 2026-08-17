@@ -77,6 +77,36 @@ choisit l'élève, donc une fiche se partage par son lien.
 - La tuile « Modules » compte les activités `categorie === 'cours'`, pas
   `activitiesTotal`, qui recense tout le catalogue, ateliers compris.
 
+## Progression des élèves (`progression.html`)
+
+Le tableau de bord du **groupe**, module par module : `enseignant.html` sert à
+planifier, `fiche-eleve.html` répond à « qu'a fait cette personne ? », et cette
+page-ci à « où en est la classe dans ce module, et qu'est-ce qui m'est arrivé ce
+soir ? ». On y entre par le bouton « Progression des élèves » de l'écran
+« Élèves » du portail, ou par `progression.html?module=<id>` — le module choisi
+reste dans l'adresse, donc une vue se partage par son lien.
+
+- **Deux filtres, et tout en découle** : le module regardé (ou tous) et la
+  période — *aujourd'hui* (la soirée même), *depuis l'ouverture du module*
+  (la `datePrevue` du module **pour ce groupe**), *depuis toujours*.
+- Quatre blocs : le bilan en tuiles, une rangée par élève (avancement, taux du
+  premier coup, enregistrements, textes, dernière trace, lien vers le dossier),
+  les envois de la période lisibles et écoutables sur place, puis la liste des
+  modules du groupe.
+- **Un envoi se rattache à son module par `taskId`** (`module-travail-po`,
+  `module-travail-pe`) : le préfixe est le dossier du module, qu'on retrouve
+  dans le chemin `interactive` de l'activité. Aucune table à tenir à jour ;
+  le `theme` ne sert que de repli.
+- **« Fait » se compte sur les élèves entrés**, jamais sur l'effectif : un
+  groupe garde des codes d'avance et des absents. Un module est fait quand il
+  est fermé ou que la moitié des élèves entrés l'a terminé — et un module fermé
+  où personne n'est entré n'est pas fait.
+- La progression est **un enregistrement par (élève, activité, événement)**,
+  son `timestamp` étant celui de la dernière mise à jour : « aujourd'hui » se
+  lit donc « travaillé aujourd'hui », pas « tout ce qui a été fait aujourd'hui ».
+- Mêmes règles que la fiche : jeton par `js/prof.js`, dates découpées à la
+  chaîne, aucune couleur en dur, chaque état porte glyphe **et** mot.
+
 ## Multi-enseignants et multi-groupes
 
 - Hiérarchie : **enseignant → groupes → élèves**. Le catalogue d'activités est
@@ -170,6 +200,8 @@ choix de l'enseignant survit aux redéploiements.
   déposés dans `assets/documents-groupe/<groupId>/`
 - `enseignant.html` + `js/enseignant.js` — portail enseignant (Planifier ·
   Élèves · Groupes et comptes)
+- `progression.html` — tableau de bord du groupe, module par module
+- `fiche-eleve.html` — le dossier d'un seul élève
 - `prof.html` — installation du premier compte, groupes et comptes (ancienne page)
 - `admin.html` / `eleve.html` — catalogue (téléversement) / interface élève
 

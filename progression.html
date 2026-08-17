@@ -1,0 +1,653 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Progression des élèves — Francisation</title>
+  <link rel="stylesheet" href="assets/design-system/styles.css" />
+  <style>
+    /* Progression des élèves — le tableau de bord du groupe, module par module.
+       Trois pages, trois questions : `enseignant.html` demande « qu'est-ce que
+       je planifie ? », `fiche-eleve.html` demande « qu'a fait cette
+       personne ? », et celle-ci demande « où en est la classe dans ce
+       module, et qu'est-ce qui m'est arrivé ce soir ? ».
+       Aucune couleur en dur : uniquement des jetons du système de design. */
+    body { margin: 0; background: var(--surface-page); }
+
+    /* — Barre du haut — */
+    .pg-haut { position: sticky; top: 0; z-index: 30; background: var(--surface-card);
+               border-bottom: 1px solid var(--border); }
+    .pg-haut > .container { display: flex; align-items: center; gap: var(--sp-4);
+                            flex-wrap: wrap; padding-top: var(--sp-3); padding-bottom: var(--sp-3); }
+    .pg-marque { display: flex; align-items: baseline; gap: var(--sp-3); }
+    .pg-marque b { font-size: var(--fs-body); font-weight: var(--fw-black); color: var(--text-strong); }
+    .pg-marque span { font-size: var(--fs-ui-sm); font-weight: var(--fw-bold); color: var(--text-muted); }
+    .pg-outils { display: flex; align-items: center; gap: var(--sp-3); margin-left: auto; flex-wrap: wrap; }
+    .pg-lien { font-size: var(--fs-ui); font-weight: var(--fw-bold); color: var(--text-muted);
+               text-decoration: underline; background: none; border: none; cursor: pointer; }
+    .pg-lien:hover { color: var(--text-accent); }
+    .pg-champ { display: flex; align-items: center; gap: var(--sp-2); white-space: nowrap; }
+
+    /* — Bandeau d'identité — */
+    .pg-tete { background: var(--surface-band); border-bottom: 1px solid var(--border-tint);
+               padding: var(--sp-8) 0; }
+    .pg-titre { font-size: var(--fs-hero); font-weight: var(--fw-black); color: var(--text-strong);
+                margin: var(--sp-2) 0 var(--sp-3); line-height: 1.05; }
+    .pg-sous { font-size: var(--fs-lead); color: var(--text-body); margin: 0; }
+
+    /* — Filtres : le module, puis la période — */
+    .pg-filtres { background: var(--surface-card); border: 1px solid var(--border);
+                  border-radius: 10px; box-shadow: var(--sh-card);
+                  padding: var(--sp-5); display: flex; gap: var(--sp-6);
+                  flex-wrap: wrap; align-items: flex-end; }
+    .pg-filtre-cle { display: block; font-size: var(--fs-label); font-weight: var(--fw-bold);
+                     letter-spacing: .12em; text-transform: uppercase; color: var(--text-accent);
+                     margin-bottom: var(--sp-2); }
+    /* Les trois périodes sont un choix unique : des boutons collés, l'actif
+       marqué par le fond ET le mot, jamais par la seule couleur. */
+    .pg-choix { display: flex; flex-wrap: wrap; gap: var(--sp-2); }
+    .pg-choix button { min-height: var(--tap-min); }
+    .pg-note { font-size: var(--fs-body-sm); color: var(--text-muted); margin: 0; }
+
+    /* — Sections — */
+    .pg-sec { padding: var(--sp-8) 0 0; }
+    .pg-sec-tete { display: flex; align-items: baseline; gap: var(--sp-3);
+                   flex-wrap: wrap; margin-bottom: var(--sp-4); }
+    .pg-sec-tete h2 { font-size: var(--fs-h3); font-weight: var(--fw-black);
+                      color: var(--text-strong); margin: 0; }
+    .pg-sec-tete p { font-size: var(--fs-body-sm); color: var(--text-muted); margin: 0; }
+
+    /* — Tuiles de bilan — */
+    .pg-tuiles { display: grid; grid-template-columns: repeat(auto-fit, minmax(210px, 1fr)); gap: var(--sp-4); }
+    .pg-tuile { background: var(--surface-card); border: 1px solid var(--border);
+                border-left: 4px solid var(--accent); border-radius: 10px;
+                padding: var(--sp-5); box-shadow: var(--sh-card); }
+    .pg-tuile-cle { font-size: var(--fs-label); font-weight: var(--fw-bold); letter-spacing: .12em;
+                    text-transform: uppercase; color: var(--text-accent); }
+    .pg-tuile-val { font-size: var(--fs-h2); font-weight: var(--fw-black); color: var(--text-strong);
+                    margin: var(--sp-2) 0; line-height: 1; }
+    .pg-tuile-pied { font-size: var(--fs-body-sm); color: var(--text-muted); }
+
+    /* — Barre de progression — */
+    .pg-bar { height: 6px; border-radius: 3px; background: var(--paper-200);
+              overflow: hidden; margin: var(--sp-2) 0; max-width: 260px; }
+    .pg-bar b { display: block; height: 100%; background: var(--accent); }
+
+    /* — Tableaux — */
+    /* Un tableau large ne pousse jamais la page : il défile dans son cadre. */
+    .pg-scroll { overflow-x: auto; }
+    .pg-table { width: 100%; min-width: 720px; border-collapse: collapse; background: var(--surface-card);
+                border: 1px solid var(--border); border-radius: 10px; overflow: hidden; }
+    .pg-table th { text-align: left; font-size: var(--fs-label); font-weight: var(--fw-bold);
+                   letter-spacing: .08em; text-transform: uppercase; color: var(--text-muted);
+                   padding: var(--sp-3) var(--sp-4); border-bottom: 1px solid var(--border);
+                   background: var(--surface-sunken); white-space: nowrap; }
+    .pg-table td { padding: var(--sp-3) var(--sp-4); border-bottom: 1px solid var(--paper-200);
+                   font-size: var(--fs-ui); color: var(--text-body); vertical-align: middle; }
+    .pg-table tr:last-child td { border-bottom: none; }
+    .pg-table td b { color: var(--text-strong); font-weight: var(--fw-bold); }
+    .pg-num { text-align: center; font-weight: var(--fw-black); white-space: nowrap; }
+    /* Le nom et l'avancement se lisent d'un coup d'œil : on leur laisse de la
+       place plutôt que de les casser sur trois lignes. */
+    .pg-table td:first-child { min-width: 170px; }
+    .pg-table td:nth-child(2) { min-width: 190px; }
+    .pg-ok   { color: var(--ok-ink); }
+    .pg-warn { color: var(--warn-ink); }
+    .pg-no   { color: var(--no-ink); }
+    .pg-vide { color: var(--text-muted); }
+    .pg-code { font-family: ui-monospace, SFMono-Regular, Menlo, monospace;
+               font-weight: var(--fw-black); letter-spacing: .08em;
+               background: var(--accent-soft); color: var(--accent-ink);
+               border-radius: 6px; padding: 2px 8px; font-size: var(--fs-ui-sm); }
+
+    /* — Pastilles d'état : couleur + glyphe + mot — */
+    .pg-etat { display: inline-flex; align-items: center; gap: 6px; border-radius: 999px;
+               padding: 3px 10px; font-size: var(--fs-ui-sm); font-weight: var(--fw-bold); white-space: nowrap; }
+    .pg-etat--fait  { background: var(--ok-bg); color: var(--ok-ink); }
+    .pg-etat--cours { background: var(--warn-bg); color: var(--warn-ink); }
+    .pg-etat--rien  { background: var(--surface-sunken); color: var(--text-muted); }
+
+    /* — Envois (enregistrements et textes) — */
+    .pg-envoi { background: var(--surface-card); border: 1px solid var(--border);
+                border-radius: 10px; padding: var(--sp-5); margin-bottom: var(--sp-4); }
+    .pg-envoi-tete { display: flex; align-items: baseline; gap: var(--sp-3);
+                     flex-wrap: wrap; margin-bottom: var(--sp-3); }
+    .pg-envoi-qui { font-size: var(--fs-ui); font-weight: var(--fw-black); color: var(--text-strong); }
+    .pg-envoi-quoi { font-size: var(--fs-body-sm); color: var(--text-muted); }
+    .pg-envoi-quand { font-size: var(--fs-body-sm); color: var(--text-muted); margin-left: auto; }
+    .pg-envoi audio { width: 100%; margin-bottom: var(--sp-3); }
+    .pg-bloc { border-left: 3px solid var(--border-tint); padding-left: var(--sp-4); margin-top: var(--sp-3); }
+    .pg-bloc-cle { font-size: var(--fs-label); font-weight: var(--fw-bold); letter-spacing: .1em;
+                   text-transform: uppercase; color: var(--text-muted); display: block; margin-bottom: 4px; }
+    .pg-bloc p { margin: 0; font-size: var(--fs-body); color: var(--text-body); }
+    .pg-bloc--ok   { border-left-color: var(--ok-line); }
+    .pg-bloc--corr { border-left-color: var(--warn-line); }
+
+    .pg-pied { padding: var(--sp-8) 0 var(--sp-12); }
+
+    @media print {
+      .pg-haut, .pg-filtres, .pg-envoi audio, .pg-pied { display: none !important; }
+      body { background: var(--white); }
+      .pg-tete { background: var(--white); }
+      .pg-sec { break-inside: avoid; }
+    }
+  </style>
+</head>
+<body>
+
+<header class="pg-haut">
+  <div class="container">
+    <div class="pg-marque">
+      <b>Progression des élèves</b>
+      <span>Francisation · Niveau 4</span>
+    </div>
+    <div class="pg-outils">
+      <span class="pg-champ">
+        <label class="pg-lien" for="pgGroupe" style="text-decoration:none">Groupe</label>
+        <select id="pgGroupe" class="field" style="min-width:200px"></select>
+      </span>
+      <button class="btn btn--ghost btn--sm" onclick="window.print()">Imprimer</button>
+      <a class="pg-lien" href="enseignant.html">Espace enseignant</a>
+    </div>
+  </div>
+</header>
+
+<main>
+  <section class="pg-tete">
+    <div class="container">
+      <p class="band__eyebrow" id="pgBande">Espace enseignant</p>
+      <h1 class="pg-titre">Où en est la classe</h1>
+      <p class="pg-sous" id="pgSous">Chargement…</p>
+    </div>
+  </section>
+
+  <div class="container">
+    <div style="padding:var(--sp-8) 0 0">
+      <div class="pg-filtres">
+        <div style="min-width:280px;flex:1">
+          <label class="pg-filtre-cle" for="pgModule">Module regardé</label>
+          <select id="pgModule" class="field" style="width:100%"></select>
+        </div>
+        <div>
+          <span class="pg-filtre-cle">Période</span>
+          <div class="pg-choix" id="pgPeriode">
+            <button type="button" class="btn btn--ghost btn--sm" data-periode="jour">Aujourd’hui</button>
+            <button type="button" class="btn btn--ghost btn--sm" data-periode="module">Depuis l’ouverture du module</button>
+            <button type="button" class="btn btn--ghost btn--sm" data-periode="tout">Depuis toujours</button>
+          </div>
+        </div>
+        <p class="pg-note" id="pgPortee" style="flex-basis:100%"></p>
+      </div>
+    </div>
+    <div id="pgContenu"></div>
+  </div>
+</main>
+
+<script src="js/prof.js"></script>
+<script>
+  /* ---------- Outils ---------- */
+  const esc = s => String(s ?? '').replace(/[&<>"]/g, c =>
+    ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
+
+  const MOIS = ['janvier','février','mars','avril','mai','juin','juillet','août',
+                'septembre','octobre','novembre','décembre'];
+
+  /** On découpe la chaîne au lieu de la donner à `new Date` : « 2026-08-16 »
+      y serait lu en temps universel, donc affiché la veille au Québec. */
+  function dateLongue(iso) {
+    const m = /^(\d{4})-(\d{2})-(\d{2})/.exec(iso || '');
+    if (!m) return iso || '';
+    return `${parseInt(m[3], 10)} ${MOIS[parseInt(m[2], 10) - 1]}`;
+  }
+  function dateHeure(iso) {
+    if (!iso) return '';
+    const [j, h] = String(iso).split('T');
+    return `${dateLongue(j)}${h ? ' · ' + h.slice(0, 5) : ''}`;
+  }
+  /** Même précaution à l'envers : la date du jour se lit sur l'horloge locale. */
+  function aujourdhui() {
+    const d = new Date();
+    return `${d.getFullYear()}-${String(d.getMonth() + 1).padStart(2, '0')}-${String(d.getDate()).padStart(2, '0')}`;
+  }
+  const jourDe = ts => String(ts || '').slice(0, 10);
+
+  function titreCourt(t) { return String(t || '').replace(/^Module\s+\d+\s*[—–-]\s*/, ''); }
+  function numeroDe(t) { const m = /^Module\s+(\d+)/.exec(t || ''); return m ? m[1].padStart(2, '0') : ''; }
+  const pluriel = (n, mot, suffixe = 's') => `${n} ${mot}${n > 1 ? suffixe : ''}`;
+
+  /* ---------- État ---------- */
+  const AUJ = aujourdhui();
+  let ELEVES = [], ACTIVITES = [], MODULES = [], PROGRES = [], ORAUX = [], ECRITS = [];
+  let MODULE = '';           // '' = tous les modules, sinon l'id de l'activité
+  let PERIODE = 'jour';      // 'jour' | 'module' | 'tout'
+
+  /* ---------- Démarrage ---------- */
+  (async function () {
+    const etat = await Prof.init();
+    if (!etat) return;                     // prof.js redirige vers la connexion
+
+    const selGroupe = document.getElementById('pgGroupe');
+    selGroupe.innerHTML = Prof.state.groupes
+      .map(g => `<option value="${g.id}">${esc(g.nom)}</option>`).join('');
+    selGroupe.value = String(Prof.groupeId ?? '');
+    selGroupe.addEventListener('change', e => Prof.setGroupeActif(e.target.value));
+    Prof.onGroupeChange(() => charger());
+
+    document.getElementById('pgModule').addEventListener('change', e => choisirModule(e.target.value));
+    document.getElementById('pgPeriode').addEventListener('click', e => {
+      const b = e.target.closest('[data-periode]');
+      if (!b) return;
+      PERIODE = b.dataset.periode;
+      rendre();
+    });
+    // « Regarder », depuis la liste des modules : on bascule la vue entière,
+    // et la journée seule n'a pas de sens pour un module qu'on vient d'ouvrir.
+    document.addEventListener('click', e => {
+      const b = e.target.closest('[data-voir]');
+      if (!b) return;
+      if (PERIODE === 'jour') PERIODE = 'module';
+      choisirModule(b.dataset.voir);
+      document.getElementById('pgContenu').scrollIntoView({ behavior: 'smooth', block: 'start' });
+    });
+
+    MODULE = new URLSearchParams(location.search).get('module') || '';
+    charger();
+  })();
+
+  /** Le module choisi se garde dans l'adresse : la vue se partage par son
+      lien, qu'on l'ait pris dans la liste déroulante ou par « Regarder ». */
+  function choisirModule(id) {
+    MODULE = id || '';
+    document.getElementById('pgModule').value = MODULE;
+    const url = new URL(location.href);
+    MODULE ? url.searchParams.set('module', MODULE) : url.searchParams.delete('module');
+    history.replaceState(null, '', url);
+    rendre();
+  }
+
+  async function charger() {
+    document.getElementById('pgContenu').innerHTML =
+      '<p class="pg-note" style="padding:var(--sp-8) 0">Chargement du groupe…</p>';
+
+    const [activites, eleves, progres, oraux, ecrits] = await Promise.all([
+      Prof.fetch(Prof.withGroup('/api/activities')).then(r => r.json()),
+      Prof.fetch(Prof.withGroup('/api/admin/students')).then(r => r.json()),
+      Prof.fetch(Prof.withGroup('/api/admin/progress')).then(r => r.json()),
+      Prof.fetch(Prof.withGroup('/api/admin/oral-submissions')).then(r => r.json()),
+      Prof.fetch(Prof.withGroup('/api/admin/written-submissions')).then(r => r.json()),
+    ]);
+
+    ACTIVITES = Array.isArray(activites) ? activites : [];
+    ELEVES = Array.isArray(eleves) ? eleves : [];
+    PROGRES = Array.isArray(progres) ? progres : [];
+    ORAUX = Array.isArray(oraux) ? oraux : [];
+    ECRITS = Array.isArray(ecrits) ? ecrits : [];
+
+    // Les ateliers de l'après-midi ne sont pas des modules : le tableau de bord
+    // suit les cours, c'est-à-dire ce que la planification ouvre par sections.
+    // Ordre des numéros de module, pas des dates : c'est ainsi que
+    // l'enseignante les nomme, et une liste « 05, 01, 02 » se lit comme une
+    // erreur même quand elle suit fidèlement la planification.
+    MODULES = ACTIVITES.filter(a => a.categorie === 'cours')
+      .sort((a, b) => (numeroDe(a.title) || '99').localeCompare(numeroDe(b.title) || '99')
+                   || String(a.title || '').localeCompare(String(b.title || '')));
+
+    const sel = document.getElementById('pgModule');
+    sel.innerHTML = ['<option value="">Tous les modules</option>'].concat(
+      MODULES.map(m => {
+        const num = numeroDe(m.title);
+        return `<option value="${m.id}">${num ? num + ' · ' : ''}${esc(titreCourt(m.title))}</option>`;
+      })).join('');
+    if (!MODULES.some(m => String(m.id) === String(MODULE))) MODULE = '';
+    sel.value = MODULE;
+
+    document.getElementById('pgBande').textContent =
+      `Espace enseignant · ${Prof.groupeActif()?.nom || ''}`;
+    rendre();
+  }
+
+  /* ---------- Portée : le module et la période ---------- */
+
+  const moduleDe = id => MODULES.find(m => String(m.id) === String(id)) || null;
+
+  /** Le module regardé, ou tous ceux du groupe. */
+  function modulesEnJeu() {
+    const m = moduleDe(MODULE);
+    return m ? [m] : MODULES;
+  }
+
+  /** Une trace compte-t-elle ? « Aujourd'hui » ne garde que la journée en
+      cours ; « depuis l'ouverture » compare à la date d'ouverture du module
+      pour CE groupe (chaque module a la sienne quand on les regarde tous). */
+  function dansPeriode(ts, activiteId) {
+    const jour = jourDe(ts);
+    if (!jour) return PERIODE === 'tout';
+    if (PERIODE === 'jour') return jour === AUJ;
+    if (PERIODE === 'tout') return true;
+    const ouverture = moduleDe(activiteId)?.datePrevue || '';
+    return !ouverture || jour >= ouverture;
+  }
+
+  /** Un envoi porte `taskId` : « module-travail-po » ou « module-travail-pe ».
+      Le préfixe est le dossier du module, ce qui suffit à le rattacher au
+      catalogue sans tenir de table à part. */
+  function activiteDEnvoi(envoi) {
+    const slug = String(envoi.taskId || '').replace(/-(po|pe)$/, '');
+    if (slug) {
+      const trouve = ACTIVITES.find(a => String(a.interactive || '').includes(`/${slug}/`));
+      if (trouve) return trouve;
+    }
+    // Repli : le thème est le titre affiché dans le module.
+    const theme = String(envoi.theme || '').toLowerCase();
+    return ACTIVITES.find(a => theme && String(a.title || '').toLowerCase().includes(theme)) || null;
+  }
+
+  const nomEleve = el => el.prenom || el.label || el.code;
+
+  /* ---------- Rendu ---------- */
+
+  function rendre() {
+    if (!ELEVES.length) {
+      document.getElementById('pgSous').textContent = 'Aucun élève inscrit à ce groupe.';
+      document.getElementById('pgContenu').innerHTML =
+        '<p class="pg-note" style="padding:var(--sp-8) 0">Inscrivez d’abord des élèves dans l’écran « Élèves » du portail enseignant.</p>';
+      majBoutons();
+      return;
+    }
+
+    const mods = modulesEnJeu();
+    const idsMods = new Set(mods.map(m => String(m.id)));
+
+    // Les traces retenues : celles des modules en jeu, dans la période.
+    const progres = PROGRES.filter(p => idsMods.has(String(p.activityId))
+                                     && dansPeriode(p.timestamp, p.activityId));
+    const envois = [
+      ...ORAUX.map(o => ({ ...o, genre: 'oral' })),
+      ...ECRITS.map(e => ({ ...e, genre: 'ecrit' })),
+    ].map(e => ({ ...e, activite: activiteDEnvoi(e) }))
+     // Sans module choisi, tout ce que le groupe a envoyé compte — même un
+     // envoi qu'on n'a pas su rattacher au catalogue, qu'on ne veut pas perdre.
+     .filter(e => (!MODULE || String(e.activite?.id) === String(MODULE))
+               && dansPeriode(e.createdAt, e.activite?.id))
+     .sort((a, b) => String(b.createdAt || '').localeCompare(String(a.createdAt || '')));
+
+    majBoutons();
+    document.getElementById('pgPortee').textContent = phrasePortee(mods, progres, envois);
+    document.getElementById('pgSous').textContent =
+      `${pluriel(ELEVES.length, 'élève')} · ${pluriel(MODULES.length, 'module')} au programme du groupe`
+      + (MODULE ? ` · module ouvert le ${dateLongue(moduleDe(MODULE)?.datePrevue) || '—'}` : '');
+
+    document.getElementById('pgContenu').innerHTML = [
+      blocTuiles(mods, progres, envois),
+      blocEleves(mods, progres, envois),
+      blocEnvois(envois),
+      blocModules(),
+      '<div class="pg-pied"></div>',
+    ].join('');
+  }
+
+  function majBoutons() {
+    document.querySelectorAll('#pgPeriode [data-periode]').forEach(b => {
+      const actif = b.dataset.periode === PERIODE;
+      b.className = `btn btn--sm ${actif ? 'btn--pri' : 'btn--ghost'}`;
+      b.setAttribute('aria-pressed', actif ? 'true' : 'false');
+    });
+  }
+
+  function phrasePortee(mods, progres, envois) {
+    const quoi = MODULE
+      ? `Module « ${titreCourt(moduleDe(MODULE)?.title || '')} »`
+      : `Les ${mods.length} modules du groupe`;
+    const quand = PERIODE === 'jour' ? `aujourd’hui, le ${dateLongue(AUJ)}`
+      : PERIODE === 'module' ? 'depuis l’ouverture du module'
+      : 'depuis le début de la session';
+    return `${quoi} · ${quand} · ${pluriel(progres.length, 'trace')} et ${pluriel(envois.length, 'envoi')}.`;
+  }
+
+  function section(titre, chapeau, corps) {
+    return `<section class="pg-sec">
+      <div class="pg-sec-tete"><h2>${esc(titre)}</h2><p>${esc(chapeau)}</p></div>
+      ${corps}
+    </section>`;
+  }
+
+  const tuile = (cle, val, pied) => `<div class="pg-tuile">
+    <div class="pg-tuile-cle">${esc(cle)}</div>
+    <div class="pg-tuile-val">${esc(val)}</div>
+    <div class="pg-tuile-pied">${esc(pied)}</div>
+  </div>`;
+
+  function blocTuiles(mods, progres, envois) {
+    const actifs = new Set([...progres.map(p => p.studentId), ...envois.map(e => e.studentId)]);
+    const finis = progres.filter(p => p.event === 'exercise_completed'
+      && p.zones && p.zonesDone >= p.zones).length;
+    const oraux = envois.filter(e => e.genre === 'oral').length;
+    const ecrits = envois.filter(e => e.genre === 'ecrit').length;
+    const quand = PERIODE === 'jour' ? 'aujourd’hui'
+      : PERIODE === 'module' ? 'depuis l’ouverture' : 'depuis le début';
+
+    return section('Le bilan', 'Ce que la période retenue a laissé comme traces.',
+      `<div class="pg-tuiles">
+        ${tuile('Élèves actifs', `${actifs.size} / ${ELEVES.length}`, `ont travaillé ${quand}`)}
+        ${tuile(MODULE ? 'Élèves au bout' : 'Modules terminés', String(finis),
+                MODULE ? 'ont fini ce module' : 'couples élève-module achevés')}
+        ${tuile('Enregistrements', String(oraux), `déposés ${quand}`)}
+        ${tuile('Textes envoyés', String(ecrits), `reçus ${quand}`)}
+      </div>`);
+  }
+
+  function blocEleves(mods, progres, envois) {
+    const parEleve = new Map(ELEVES.map(el => [el.id, {
+      el, zones: 0, faites: 0, premier: 0, erreurs: 0, avecStats: false,
+      modulesFinis: 0, modulesOuverts: new Set(), oraux: 0, ecrits: 0, quand: '',
+    }]));
+
+    progres.forEach(p => {
+      const f = parEleve.get(p.studentId);
+      if (!f) return;
+      if ((p.timestamp || '') > f.quand) f.quand = p.timestamp || '';
+      f.modulesOuverts.add(String(p.activityId));
+      if (p.event !== 'exercise_completed') return;
+      f.avecStats = true;
+      f.zones += p.zones || 0;
+      f.faites += p.zonesDone || 0;
+      f.premier += p.firstTry || 0;
+      f.erreurs += p.totalErrors || 0;
+      if (p.zones && p.zonesDone >= p.zones) f.modulesFinis += 1;
+    });
+    envois.forEach(e => {
+      const f = parEleve.get(e.studentId);
+      if (!f) return;
+      if ((e.createdAt || '') > f.quand) f.quand = e.createdAt || '';
+      if (e.genre === 'oral') f.oraux += 1; else f.ecrits += 1;
+    });
+
+    const lignes = [...parEleve.values()]
+      .sort((a, b) => nomEleve(a.el).localeCompare(nomEleve(b.el)))
+      .map(f => {
+        const pct = f.zones ? Math.round(f.faites / f.zones * 100) : 0;
+        const fini = f.zones && f.faites >= f.zones;
+
+        let etat, avance;
+        if (MODULE) {
+          etat = f.avecStats
+            ? `<span class="pg-etat ${fini ? 'pg-etat--fait' : 'pg-etat--cours'}">${fini ? '✓ Terminé' : pct + ' %'}</span>`
+            : f.modulesOuverts.size
+              ? '<span class="pg-etat pg-etat--cours">Ouvert seulement</span>'
+              : '<span class="pg-etat pg-etat--rien">— Rien</span>';
+          avance = f.avecStats
+            ? `<div class="pg-bar"><b style="width:${pct}%"></b></div>
+               <span class="pg-vide" style="font-size:var(--fs-body-sm)">${f.faites} exercices sur ${f.zones}</span>`
+            : '<span class="pg-vide" style="font-size:var(--fs-body-sm)">Aucun exercice terminé</span>';
+        } else {
+          const sur = mods.length || 1;
+          const part = Math.round(f.modulesFinis / sur * 100);
+          etat = f.modulesOuverts.size
+            ? `<span class="pg-etat ${f.modulesFinis ? 'pg-etat--fait' : 'pg-etat--cours'}">${f.modulesFinis} terminé${f.modulesFinis > 1 ? 's' : ''}</span>`
+            : '<span class="pg-etat pg-etat--rien">— Rien</span>';
+          avance = `<div class="pg-bar"><b style="width:${part}%"></b></div>
+            <span class="pg-vide" style="font-size:var(--fs-body-sm)">${f.modulesOuverts.size} module${f.modulesOuverts.size > 1 ? 's' : ''} ouvert${f.modulesOuverts.size > 1 ? 's' : ''} sur ${mods.length}</span>`;
+        }
+
+        // Le taux du premier coup dit ce que le pourcentage ne dit pas :
+        // finir en 19 erreurs et finir en 97, ce n'est pas le même élève.
+        let premier = '<span class="pg-vide">—</span>';
+        if (f.avecStats && f.faites) {
+          const taux = Math.round(f.premier / f.faites * 100);
+          const cls = taux >= 85 ? 'pg-ok' : taux >= 60 ? 'pg-warn' : 'pg-no';
+          premier = `<b class="${cls}">${taux} %</b> <span class="pg-vide">(${f.premier}/${f.faites})</span>`;
+        }
+
+        const compte = (n, cls) => n
+          ? `<b class="${cls}">${n}</b>`
+          : '<span class="pg-vide">—</span>';
+
+        return `<tr>
+          <td>
+            <b>${esc(nomEleve(f.el))}</b>
+            <div style="margin-top:4px"><span class="pg-code">${esc(f.el.code)}</span></div>
+          </td>
+          <td>${avance}</td>
+          <td>${etat}</td>
+          <td class="pg-num">${premier}</td>
+          <td class="pg-num">${compte(f.oraux, 'pg-ok')}</td>
+          <td class="pg-num">${compte(f.ecrits, 'pg-ok')}</td>
+          <td class="pg-vide">${esc(dateHeure(f.quand)) || '—'}</td>
+          <td><a class="btn btn--ghost btn--sm" href="fiche-eleve.html?code=${encodeURIComponent(f.el.code)}">Dossier</a></td>
+        </tr>`;
+      }).join('');
+
+    return section('Où en est chaque élève',
+      MODULE ? 'Une rangée par élève, pour le module regardé.'
+             : 'Une rangée par élève, tous modules confondus.',
+      `<div class="pg-scroll"><table class="pg-table">
+        <thead><tr>
+          <th>Élève</th><th>Avancement</th><th>État</th>
+          <th style="text-align:center">Réussi du 1er coup</th>
+          <th style="text-align:center">Enregistrements</th>
+          <th style="text-align:center">Textes</th>
+          <th>Dernière trace</th><th></th>
+        </tr></thead>
+        <tbody>${lignes}</tbody>
+      </table></div>`);
+  }
+
+  function blocEnvois(envois) {
+    const quand = PERIODE === 'jour' ? 'aujourd’hui'
+      : PERIODE === 'module' ? 'depuis l’ouverture du module' : 'depuis le début';
+    if (!envois.length) {
+      return section('Ce que les élèves ont envoyé', `Aucun envoi ${quand}.`,
+        `<p class="pg-note">Les enregistrements et les textes déposés depuis « Je me lance » paraîtront ici. Rien ne part sans un geste de l’élève : la correction reste privée tant qu’il n’envoie pas.</p>`);
+    }
+
+    const corps = envois.map(e => {
+      // « Phrase correcte : … » signale une production sans correction.
+      const juste = /^Phrase correcte/.test(e.feedback || '');
+      const eleve = ELEVES.find(el => el.id === e.studentId);
+      const titre = e.activite ? titreCourt(e.activite.title) : (e.theme || '');
+      return `<div class="pg-envoi">
+        <div class="pg-envoi-tete">
+          <span class="pg-envoi-qui">${esc(eleve ? nomEleve(eleve) : e.prenom || e.studentCode || 'Élève')}</span>
+          <span class="pg-etat ${e.genre === 'oral' ? 'pg-etat--cours' : 'pg-etat--fait'}">${e.genre === 'oral' ? '♪ Enregistrement' : '✎ Texte'}</span>
+          <span class="pg-envoi-quoi">${esc(titre)}${e.taskLabel ? ' · ' + esc(e.taskLabel) : ''}</span>
+          <span class="pg-envoi-quand">${esc(dateHeure(e.createdAt))}</span>
+        </div>
+        ${e.question ? `<p class="pg-note" style="margin:0 0 var(--sp-3)">Consigne : ${esc(e.question)}</p>` : ''}
+        ${e.genre === 'oral'
+          ? `<audio controls preload="none" src="${esc(e.audioUrl)}"></audio>
+             <div class="pg-bloc"><span class="pg-bloc-cle">Ce que l’élève a écrit</span>
+               <p>${esc(e.transcription || '(vide)')}</p></div>`
+          : `<div class="pg-bloc"><span class="pg-bloc-cle">Le texte de l’élève</span>
+               <p style="white-space:pre-wrap">${esc(e.texte || '(vide)')}</p></div>`}
+        <div class="pg-bloc ${juste ? 'pg-bloc--ok' : 'pg-bloc--corr'}">
+          <span class="pg-bloc-cle">Rétroaction reçue</span>
+          <p>${esc(e.feedback || '(aucune)')}</p>
+        </div>
+      </div>`;
+    }).join('');
+
+    const oraux = envois.filter(e => e.genre === 'oral').length;
+    return section('Ce que les élèves ont envoyé',
+      `${pluriel(envois.length, 'envoi')} ${quand} · ${oraux} à l’oral, ${envois.length - oraux} à l’écrit.`,
+      corps);
+  }
+
+  /** La liste des modules faits : ce que le groupe a déjà traversé, et
+      combien d'élèves sont allés au bout de chacun. On la lit sur toutes les
+      traces, jamais sur la période : « fait » ne se défait pas le lendemain. */
+  function blocModules() {
+    if (!MODULES.length) {
+      return section('Les modules du groupe', 'Aucun module planifié pour ce groupe.',
+        '<p class="pg-note">Ouvrez d’abord des modules dans l’écran « Planifier » du portail enseignant.</p>');
+    }
+
+    let faits = 0;
+    const lignes = MODULES.map(m => {
+      const traces = PROGRES.filter(p => String(p.activityId) === String(m.id));
+      const ouvreurs = new Set(traces.map(p => p.studentId));
+      const finisseurs = new Set(traces
+        .filter(p => p.event === 'exercise_completed' && p.zones && p.zonesDone >= p.zones)
+        .map(p => p.studentId));
+      const envois = [...ORAUX, ...ECRITS]
+        .filter(e => String(activiteDEnvoi(e)?.id) === String(m.id)).length;
+
+      const ouverture = m.datePrevue || '';
+      const ferme = !!(m.dateFin && m.dateFin < AUJ);
+      const ouvert = !!ouverture && ouverture <= AUJ;
+      const etat = !ouverture
+        ? '<span class="pg-etat pg-etat--rien">— Sans date</span>'
+        : !ouvert
+          ? `<span class="pg-etat pg-etat--rien">→ À venir ${esc(dateLongue(ouverture))}</span>`
+          : ferme
+            ? `<span class="pg-etat pg-etat--rien">✕ Fermé ${esc(dateLongue(m.dateFin))}</span>`
+            : `<span class="pg-etat pg-etat--fait">✓ Ouvert ${esc(dateLongue(ouverture))}</span>`;
+
+      // « Fait » se compte sur les élèves entrés dans le module, jamais sur
+      // l'effectif : un groupe garde des codes d'avance et des absents, et la
+      // moitié de douze n'est pas la moitié de la classe présente. Un module
+      // fermé sans que personne y soit entré n'est pas fait pour autant.
+      const acheve = ouvert && ouvreurs.size > 0
+        && (ferme || finisseurs.size >= Math.ceil(ouvreurs.size / 2));
+      if (acheve) faits += 1;
+
+      const bilan = acheve
+        ? '<span class="pg-etat pg-etat--fait">✓ Fait</span>'
+        : !ouvert
+          ? '<span class="pg-etat pg-etat--rien">— Pas commencé</span>'
+          : ouvreurs.size
+            ? '<span class="pg-etat pg-etat--cours">◐ En cours</span>'
+            : '<span class="pg-etat pg-etat--rien">— Personne encore</span>';
+
+      const part = ouvreurs.size ? Math.round(finisseurs.size / ouvreurs.size * 100) : 0;
+      const num = numeroDe(m.title);
+
+      return `<tr>
+        <td>
+          <b>${num ? num + ' · ' : ''}${esc(titreCourt(m.title))}</b>
+          <div class="pg-bar"><b style="width:${part}%"></b></div>
+          <span class="pg-vide" style="font-size:var(--fs-body-sm)">${ouvreurs.size
+            ? `${finisseurs.size} élève${finisseurs.size > 1 ? 's' : ''} au bout sur ${ouvreurs.size} entré${ouvreurs.size > 1 ? 's' : ''}`
+            : 'Aucun élève n’y est entré'}</span>
+        </td>
+        <td>${etat}</td>
+        <td>${bilan}</td>
+        <td class="pg-num">${ouvreurs.size || '<span class="pg-vide">—</span>'}</td>
+        <td class="pg-num">${envois || '<span class="pg-vide">—</span>'}</td>
+        <td><button type="button" class="btn btn--ghost btn--sm" data-voir="${m.id}">Regarder</button></td>
+      </tr>`;
+    }).join('');
+
+    return section('Les modules du groupe',
+      `${faits} module${faits > 1 ? 's' : ''} fait${faits > 1 ? 's' : ''} sur ${MODULES.length} · un module est « fait » quand il est fermé ou que la moitié des élèves entrés l’a terminé.`,
+      `<div class="pg-scroll"><table class="pg-table">
+        <thead><tr>
+          <th>Module</th><th>Ouverture</th><th>Bilan</th>
+          <th style="text-align:center">Élèves entrés</th>
+          <th style="text-align:center">Envois</th><th></th>
+        </tr></thead>
+        <tbody>${lignes}</tbody>
+      </table></div>`);
+  }
+</script>
+</body>
+</html>
