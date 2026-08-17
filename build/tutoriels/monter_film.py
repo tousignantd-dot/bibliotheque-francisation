@@ -99,18 +99,29 @@ def monter(capsule, decalage_titre):
         raise SystemExit(f"{capsule['id']} : aucune image filmée")
 
     t0 = images[0]["t"]
-    fin = reperes[-1]["fin"] / 1000.0
 
-    # Chaque image tient jusqu'à la suivante ; la dernière tient jusqu'à la
-    # fin du dernier plan. C'est le relevé du tournage qui commande.
+    # Chrome n'émet une image que lorsque la page change, mais il l'émet par
+    # rafales : dix images peuvent porter presque le même horodatage. Leur
+    # imposer un plancher d'une image de sortie chacune allongeait la rafale
+    # et le film prenait du retard sur la voix — jusqu'à 46 s en fin de
+    # capsule 7, mesuré. Une rafale plus serrée que 1/30 s ne peut de toute
+    # façon pas être montrée : on garde une image sur la rafale, et la durée
+    # totale reste celle du tournage.
+    gardees = [images[0]]
+    for im in images[1:]:
+        if im["t"] - gardees[-1]["t"] >= 1.0 / IPS:
+            gardees.append(im)
+
+    total = reperes[-1]["fin"] / 1000.0 - t0 + RESPIRATION
     lignes = []
-    for i, im in enumerate(images):
-        depart = im["t"] - t0
-        suivant = (images[i + 1]["t"] - t0) if i + 1 < len(images) else (
-            fin - (reperes[0]["debut"] / 1000.0 - t0) + RESPIRATION)
-        d = max(1.0 / IPS, suivant - depart)
-        lignes.append(f"file '{im['nom']}'\nduration {d:.4f}\n")
-    lignes.append(f"file '{images[-1]['nom']}'\n")
+    for i, im in enumerate(gardees):
+        suivant = (gardees[i + 1]["t"] if i + 1 < len(gardees)
+                   else t0 + total)
+        lignes.append(f"file '{im['nom']}'\nduration {suivant - im['t']:.4f}\n")
+    # La dernière image doit être répétée, sinon `concat` ignore sa tenue ;
+    # mais la répétition rejoue cette tenue une seconde fois. D'où `-t` plus
+    # bas : c'est lui qui arrête le film à la durée réelle du tournage.
+    lignes.append(f"file '{gardees[-1]['nom']}'\n")
     liste = dossier / "montage.txt"
     liste.write_text("".join(lignes))
 
@@ -123,6 +134,7 @@ def monter(capsule, decalage_titre):
     subprocess.run([
         "ffmpeg", "-y", "-loglevel", "error",
         "-f", "concat", "-safe", "0", "-i", "montage.txt",
+        "-t", f"{total:.3f}",
         "-vf", f"scale={L}:{H}:flags=lanczos,fps={IPS},format=yuv420p",
         "-c:v", "libx264", "-preset", "slow", "-crf", crf,
         # Surtout PAS `-tune stillimage` : réglé pour des images figées, il
@@ -136,7 +148,10 @@ def monter(capsule, decalage_titre):
     for i, repere in enumerate(reperes):
         son = VOIX / f"{capsule['id']}_{repere['plan']}.mp3"
         entrees += ["-i", str(son)]
-        ms = int(repere["debut"] - reperes[0]["debut"])
+        # L'origine est la première image filmée, pas le premier plan : le
+        # tournage capte l'écran un instant avant que la voix commence, et
+        # prendre le plan comme origine avançait toute la bande de 0,3 s.
+        ms = int(repere["debut"] - t0 * 1000)
         filtres.append(f"[{i + 1}:a]adelay={ms}|{ms}[a{i}]")
     melange = "".join(f"[a{i}]" for i in range(len(reperes)))
     filtres.append(f"{melange}amix=inputs={len(reperes)}:normalize=0[voix]")
@@ -172,8 +187,8 @@ def monter(capsule, decalage_titre):
     # Public en apprentissage du français — lire pendant qu'on écoute aide.
     vtt = ["WEBVTT", ""]
     for repere, plan in zip(reperes, capsule["plans"]):
-        d = (repere["debut"] - reperes[0]["debut"]) / 1000.0 + TITRE_S
-        f = (repere["fin"] - reperes[0]["debut"]) / 1000.0 + TITRE_S
+        d = repere["debut"] / 1000.0 - t0 + TITRE_S
+        f = repere["fin"] / 1000.0 - t0 + TITRE_S
         vtt += [f"{horodatage(d)} --> {horodatage(f)}", plan["texte"], ""]
     (SORTIE / f"{capsule['id']}.vtt").write_text("\n".join(vtt))
 

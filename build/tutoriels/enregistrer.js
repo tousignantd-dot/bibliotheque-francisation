@@ -55,6 +55,40 @@ const dureeSon = (f) => parseFloat(execFileSync('ffprobe',
   ['-v', 'error', '-show_entries', 'format=duration', '-of', 'default=nw=1:nk=1', f],
   { encoding: 'utf8' }).trim());
 
+/* — Le repérage : à quelle seconde la voix prononce tel bout de phrase —
+
+   C'est ce qui met l'image d'accord avec la narration. Un geste porte
+   `apres: "production orale"` : il se déclenche quand la voix arrive sur ces
+   mots, pas quand le plan commence. `aligner.py` a relevé la position de
+   chaque mot dans le MP3.
+
+   Le pointeur doit *arriver* sur le mot, pas partir à ce moment-là : on
+   avance donc le départ d'une demi-seconde par défaut. */
+const AVANCE = 550;
+
+function chercheRepere(mots, fragment) {
+  const net = (s) => s.toLowerCase().normalize('NFD').replace(/[̀-ͯ]/g, '')
+    .replace(/[^a-z0-9 ]/g, ' ').replace(/\s+/g, ' ').trim();
+  const cible = net(fragment);
+  if (!cible) return null;
+  // On reconstruit la phrase mot à mot en gardant, pour chaque position de
+  // caractère, le mot d'où elle vient : le fragment cherché peut couvrir
+  // plusieurs mots, et c'est le début du premier qui nous intéresse.
+  let phrase = '';
+  const depuis = [];
+  for (const m of mots) {
+    const t = net(m.mot);
+    if (!t) continue;
+    if (phrase) { phrase += ' '; depuis.push(null); }
+    for (let i = 0; i < t.length; i += 1) depuis.push(m.debut);
+    phrase += t;
+  }
+  const i = phrase.indexOf(cible);
+  if (i < 0) return null;
+  for (let k = i; k < depuis.length; k += 1) if (depuis[k] != null) return depuis[k];
+  return null;
+}
+
 /* — Les gestes, joués *dans* la page pour qu'ils se voient — */
 async function jouer(page, geste) {
   const scene = (corps, arg) => page.evaluate(corps, arg);
@@ -70,6 +104,30 @@ async function jouer(page, geste) {
       break;
     case 'parcourir':
       await scene((g) => window.__scene.parcourir(g.cibles, g.pause), geste);
+      break;
+    case 'taper':
+      await scene((g) => window.__scene.taper(g.sel, g.texte, g.cadence), geste);
+      break;
+    case 'choisir':
+      await scene((g) => window.__scene.choisir(g.sel, g.texte), geste);
+      break;
+    /* Une capsule peut sortir du portail : le compositeur est une page
+       autonome. La scène vit dans le document, donc elle est perdue au
+       changement de page et doit être réinjectée. */
+    case 'naviguer':
+      await page.goto(`http://localhost:${PORT}${geste.vers}`,
+                      { waitUntil: 'networkidle2' });
+      await dodo(600);
+      await page.evaluate(SCENE);
+      await dodo(200);
+      break;
+    case 'clic-index':
+      await scene((g) => {
+        const el = document.querySelectorAll(g.sel)[g.n];
+        if (!el) throw new Error('cible absente : ' + g.sel + '[' + g.n + ']');
+        el.id = el.id || ('cap-' + Math.random().toString(36).slice(2, 8));
+        return window.__scene.clic('#' + el.id);
+      }, geste);
       break;
     case 'survol':
       await scene((b) => window.__scene.survol(b), geste.bas || null);
@@ -209,24 +267,55 @@ async function jouer(page, geste) {
 
     const reperes = [];
     for (const plan of capsule.plans) {
-      const debut = Date.now();
+      const base = `${capsule.id}_${plan.id}`;
+      const son = path.join(VOIX, `${base}.mp3`);
+      if (!fs.existsSync(son)) throw new Error(`narration absente : ${base}.mp3`);
+      const fichierMots = path.join(VOIX, `${base}.json`);
+      const mots = fs.existsSync(fichierMots)
+        ? JSON.parse(fs.readFileSync(fichierMots, 'utf8')).mots : [];
+
+      const debut = Date.now();     // la voix commence ici
       await page.evaluate(() => window.__scene?.effacer());
-      for (const geste of (plan.gestes || [])) await jouer(page, geste);
+
+      for (const geste of (plan.gestes || [])) {
+        if (geste.apres) {
+          const t = chercheRepere(mots, geste.apres);
+          if (t == null) {
+            throw new Error(`${base} : « ${geste.apres} » ne se trouve pas dans la `
+              + 'narration — un repère doit citer les mots dits.');
+          }
+          const vise = t * 1000 - (geste.avance ?? AVANCE);
+          const attente = vise - (Date.now() - debut);
+          if (attente > 0) {
+            await dodo(attente);
+          } else if (attente < -600 && garder) {
+            /* Le geste précédent a mordu sur ce repère. On le signale : c'est
+               réparable en raccourcissant un geste ou en déplaçant le repère,
+               et invisible autrement jusqu'au visionnement. */
+            console.log(`    ⚠ ${base} : « ${geste.apres} » manqué de `
+              + `${(-attente / 1000).toFixed(1)} s`);
+          }
+        }
+        await jouer(page, geste);
+      }
       if (!garder) continue;
 
       if (plan.surligne) {
+        if (plan.surligneApres) {
+          const t = chercheRepere(mots, plan.surligneApres);
+          const attente = (t ?? 0) * 1000 - (Date.now() - debut);
+          if (attente > 0) await dodo(attente);
+        }
         await page.evaluate((s) => window.__scene.surligner(s), plan.surligne);
-        await dodo(550);
+        await dodo(450);
       }
       /* Le plan tient jusqu'à couvrir sa narration : l'image ne doit jamais
          changer au milieu d'une phrase. */
-      const son = path.join(VOIX, `${capsule.id}_${plan.id}.mp3`);
-      if (!fs.existsSync(son)) throw new Error(`narration absente : ${path.basename(son)}`);
       const voulu = (dureeSon(son) + RESPIRATION) * 1000;
       const reste = voulu - (Date.now() - debut);
       if (reste > 0) await dodo(reste);
       reperes.push({ plan: plan.id, debut, fin: Date.now() });
-      console.log(`  ${capsule.id}_${plan.id}  ${((Date.now() - debut) / 1000).toFixed(1)} s`);
+      console.log(`  ${base}  ${((Date.now() - debut) / 1000).toFixed(1)} s`);
     }
 
     if (garder) {

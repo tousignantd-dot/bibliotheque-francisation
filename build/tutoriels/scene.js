@@ -180,7 +180,47 @@ module.exports = String.raw`
     await anime(1400, (t) => scrollTo(0, cible * (1 - t)));
   }
 
+  /* Taper se voit lettre par lettre : poser la valeur d'un coup, c'est
+     l'écran qui change tout seul, et le spectateur ne comprend pas qu'il
+     s'agit d'une saisie. Chaque frappe déclenche un événement « input »,
+     donc les filtres de la page se resserrent sous les yeux.
+     (Pas d'accent grave dans ce fichier : tout le corps est un gabarit de
+     chaîne, un seul le refermerait.) */
+  async function taper(sel, texte, cadence) {
+    const el = await versElement(sel);
+    onde(px, py);
+    await dodo(180);
+    el.focus();
+    const poser = Object.getOwnPropertyDescriptor(
+      el instanceof HTMLTextAreaElement ? HTMLTextAreaElement.prototype
+                                        : HTMLInputElement.prototype, 'value').set;
+    poser.call(el, '');
+    el.dispatchEvent(new Event('input', { bubbles: true }));
+    for (const lettre of texte) {
+      poser.call(el, el.value + lettre);
+      el.dispatchEvent(new Event('input', { bubbles: true }));
+      await dodo(cadence ?? 65);
+    }
+    el.dispatchEvent(new Event('change', { bubbles: true }));
+    await dodo(320);
+  }
+
+  /* Une liste déroulante ne s'ouvre pas dans un navigateur sans affichage :
+     le menu natif est dessiné par le système, pas par la page. On amène donc
+     le pointeur dessus, on marque le clic, puis on pose la valeur — ce qui se
+     lit exactement comme un choix. */
+  async function choisir(sel, texte) {
+    const el = await versElement(sel);
+    onde(px, py);
+    await dodo(240);
+    const option = Array.from(el.options).find((o) => o.text.includes(texte));
+    if (!option) throw new Error('option absente : ' + texte);
+    el.value = option.value;
+    el.dispatchEvent(new Event('change', { bubbles: true }));
+    await dodo(420);
+  }
+
   window.__scene = { versPoint, versElement, defiler, clic, surligner, effacer, dodo,
-                     parcourir, survol, pointeur: POINTEUR };
+                     parcourir, survol, taper, choisir, pointeur: POINTEUR };
 })();
 `;

@@ -1,6 +1,6 @@
 # Tutoriels vidéo de l'espace enseignant
 
-Six capsules narrées et sous-titrées, **filmées dans le vrai portail** pendant
+Sept capsules narrées et sous-titrées, **filmées dans le vrai portail** pendant
 qu'un script s'en sert. Elles se refabriquent entièrement : quand un écran
 change, on relance la chaîne plutôt que de retoucher une vidéo.
 
@@ -24,6 +24,7 @@ npm install puppeteer-core                     # une fois, dans ce dossier
 ./lancer_demo.sh                               # portail de démonstration
 python3 peupler_demo.py <port>                 # groupes, élèves, dates inventés
 python3 narrer.py                              # → voix/*.mp3   (ElevenLabs)
+python3 aligner.py                             # → voix/*.json  (mot à mot)
 node    enregistrer.js <port>                  # → films/<capsule>/*.jpg
 python3 monter_film.py                         # → capsules/*.mp4 + *.vtt
 python3 livrer.py                              # → assets/tutoriels/ + la page
@@ -58,6 +59,50 @@ une case cochée). Repartir du portail neuf donnerait d'autres images.
 - **Un plan dure au moins sa narration**, mesurée à l'`ffprobe` avant le
   tournage, plus une respiration. Sans ça, l'image changerait au milieu d'une
   phrase.
+
+## La voix et l'image sont d'accord au mot près
+
+Caler un plan sur son début ne suffit pas : la voix dit « une barre apparaît »
+pendant que le pointeur est encore en route, et l'écart grandit jusqu'à la fin
+du plan. Deux pièces règlent ça, et il faut les deux.
+
+- **`aligner.py` relève quand chaque mot est prononcé.** Il passe les MP3 déjà
+  produits à l'**alignement forcé** d'ElevenLabs, qui rend la position de
+  chaque mot, et écrit `voix/<plan>.json`. La synthèse « with-timestamps »
+  ferait la même chose, mais en refabriquant l'audio : on repaierait toutes
+  les narrations et le son changerait sans raison. Comme `narrer.py`, il garde
+  le texte à côté du relevé — un plan réécrit est réaligné, sinon on calerait
+  des gestes sur d'anciens mots.
+- **Un geste porte un repère : `"apres": "une barre apparait"`.** Le tournage
+  cherche ce fragment dans la narration (accents et ponctuation ignorés),
+  attend l'instant du mot **moins une avance** (`AVANCE`, 550 ms — le temps
+  que le pointeur parte) et joue alors le geste. Un fragment introuvable
+  **arrête le tournage** : mieux vaut une erreur qu'un repère silencieusement
+  ignoré. Un repère raté de plus de 0,6 s s'affiche en avertissement — c'est
+  qu'un geste précédent mord dessus ; raccourcissez-le ou découpez le plan.
+- **Écrivez les gestes dans l'ordre de la phrase.** Le plan qui disait « dès la
+  première case, une barre apparaît » cochait trois cases avant de montrer la
+  barre : le repère arrivait forcément trop tard. Une case, la barre, puis les
+  deux autres pendant « et vous suit ».
+
+## Deux pièges de montage qui décalaient tout
+
+Ils étaient la vraie cause du décalage voix/image, bien avant les repères.
+
+- **Ne jamais imposer de durée plancher à une image.** Chrome n'émet une image
+  que lorsque la page change, mais il les émet **par rafales** : dix images
+  peuvent porter presque le même horodatage. Leur donner à chacune au moins
+  1/30 s allongeait la rafale, et le film prenait du retard sur la voix —
+  **jusqu'à 46 s** en fin de capsule 7, mesuré. Une rafale plus serrée que
+  1/30 s ne peut de toute façon pas être montrée : on écarte les images
+  surnuméraires, et la durée totale reste celle du tournage.
+- **`concat` rejoue la tenue de la dernière image.** Elle doit être répétée en
+  fin de liste, sinon sa durée est ignorée ; mais la répétition la rejoue une
+  seconde fois — 17 s de rab sur une capsule. D'où le `-t` posé sur
+  l'encodage du corps : c'est lui qui arrête le film à la durée réelle.
+- **Contrôle** : la durée d'une capsule doit valoir la fin du dernier plan,
+  plus la respiration et les deux cartons. Un écart de plus d'une seconde
+  signale que l'un de ces deux pièges est revenu.
 
 ## Ce qu'il ne faut pas défaire
 
@@ -128,6 +173,7 @@ une case cochée). Repartir du portail neuf donnerait d'autres images.
 | `scene.js` | le pointeur et les gestes, injectés dans la page |
 | `enregistrer.js` | pilote Chrome et filme par le protocole DevTools |
 | `narrer.py` | la voix off (ElevenLabs) |
+| `aligner.py` | à quel instant chaque mot est dit (alignement forcé) |
 | `monter_film.py` | cartons, montage, mixage, sous-titres (ffmpeg) |
 | `livrer.py` | copie dans `assets/` et produit la page de visionnement |
 

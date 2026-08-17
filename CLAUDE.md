@@ -207,6 +207,40 @@ groupe, ni appel au serveur ; elle assemble un prompt à partir du programme.
 - Elle est servie comme les autres assets : `/assets/` cherche d'abord le
   volume, puis retombe sur `BASE_DIR`. Rien à ajouter à `init_storage()`.
 
+#### Forge (génération réelle, poste local seulement)
+
+Le bouton « Générer l'activité » fait exécuter la commande au lieu de la
+copier : `forge.py` passe le prompt au **CLI Claude Code** installé sur le
+poste, qui travaille dans `~/Claude/activites/commandes/<id>/` et y dépose
+l'activité. Le CLI est authentifié par l'abonnement Claude — pas de clé
+d'API, pas de facturation au jeton, et surtout des **outils** : il lit le
+système de design et écrit de vrais fichiers, là où un appel d'API ne rendrait
+que du texte.
+
+- **Trois verrous, tous nécessaires** : session enseignante (`X-Prof-Token`),
+  boucle locale (`_forge_locale()` refuse toute adresse autre que 127.0.0.1) et
+  `forge.disponible()`, qui se tait dès que `RAILWAY_ENVIRONMENT` est présent
+  ou que le CLI manque. La forge lance un processus : elle n'a rien à faire en
+  ligne, et le serveur Railway n'a pas le CLI de toute façon.
+- **La page reste autonome.** `sonderForge()` échoue en silence — fichier
+  ouvert en local, serveur éteint, session expirée : dans les trois cas le
+  bouton n'apparaît pas et le copier-coller demeure. Ne pas transformer cet
+  échec en message d'erreur.
+- **Le préambule est dans `forge.py`, pas dans le compositeur.** Le prompt du
+  compositeur décrit le *contenu* ; il a été écrit pour être collé dans une
+  conversation, où la réponse est du texte. Le préambule ajoute le *livrable* :
+  quel fichier, à quel endroit, avec quel système de design.
+- Le travail tourne en `--permission-mode bypassPermissions`, `cwd` fixé au
+  dossier de la commande et `--add-dir` sur la bibliothèque : il faut qu'il
+  puisse écrire et lancer les scripts audio sans personne pour approuver.
+  C'est le prix de la génération sans surveillance — d'où la boucle locale.
+- Le prompt part par **l'entrée standard** : avec de la documentation jointe il
+  dépasse ce qui passe confortablement en argument de ligne de commande.
+- `/api/forge/fichier` ne sert que les chemins **réellement produits**, relevés
+  par `fichiers_produits()` : le paramètre d'URL choisit parmi eux, il ne
+  désigne jamais un chemin. Même règle que les archives du dépôt de matériel.
+- Plafond de 30 minutes (`DUREE_MAX_S`), puis le processus est coupé.
+
 ## Dépôt de matériel (PowerPoints et fiches à imprimer)
 
 Suit la remise `~/Downloads/design_handoff_depot_materiel`, source de vérité
@@ -427,15 +461,23 @@ vers les diapositives.
 
 - `assets/outils/tutoriels-enseignant.html` — **produite** par
   `build/tutoriels/livrer.py`, jamais écrite à la main : sa transcription et
-  ses sous-titres sont le texte même de la narration. Les six capsules vivent
+  ses sous-titres sont le texte même de la narration. Les sept capsules vivent
   dans `assets/tutoriels/`, versionnées avec leurs sous-titres `.vtt` et leurs
   affiches `.jpg`.
 - **Les capsules sont un vrai enregistrement d'écran**, pas des captures
   fixes : `Page.startScreencast` filme pendant qu'un script se sert du
   portail, avec un pointeur animé injecté dans la page (`scene.js`). Un écran
   immobile n'émet aucune image — le montage donne donc à chaque image la durée
-  relevée au tournage, jamais une cadence fixe. Le tournage se fait à vitesse
-  réelle : environ une minute par minute de capsule.
+  relevée au tournage, jamais une cadence fixe, et **jamais de durée plancher**
+  (Chrome émet par rafales ; un plancher les allonge et le film prend du retard
+  sur la voix). Le tournage se fait à vitesse réelle : environ une minute par
+  minute de capsule.
+- **La voix et l'image sont calées au mot près.** `aligner.py` relève par
+  **alignement forcé** l'instant de chaque mot des MP3 déjà produits, et un
+  geste du manifeste porte un repère (`"apres": "une barre apparait"`) : le
+  tournage attend ce mot pour le jouer. Sans ça, un plan n'est calé qu'à son
+  début et l'écart grandit jusqu'à sa fin. Un repère introuvable arrête le
+  tournage ; un repère raté s'affiche en avertissement.
 - `assets/outils/guide-espace-enseignant.html` — le même parcours en vingt
   diapositives animées, navigables au clavier et imprimables. Écrit à la main.
 - **La chaîne de production est dans `build/tutoriels/`** — voir son
