@@ -1286,10 +1286,15 @@ def save_written_submissions(data):
 # plus l'intervalle avant la prochaine révision est grand.
 VOCAB_INTERVALS_DAYS = [0, 1, 3, 7, 14, 30, 60]
 
+# Un mot est « maîtrisé » à partir de la boîte 4, soit un intervalle de quinze
+# jours : quatre rappels réussis sans rechute. Le seuil est ici et nulle part
+# ailleurs — la fiche de l'élève et l'écran des listes doivent compter pareil.
+VOCAB_BOITE_MAITRISE = 4
+
 VOCAB_BANK = [
     {"id": "w1", "activityIds": [4, 8, 17],  "mot": "un rendez-vous", "domaine": "Santé", "definition": "Un moment fixé à l'avance pour voir quelqu'un.", "exemple": "J'ai un rendez-vous à dix heures avec le docteur."},
-    {"id": "w2", "activityIds": [4, 8, 17],  "mot": "la salle d'attente", "domaine": "Santé", "definition": "L'endroit où on attend avant de voir le médecin.", "exemple": "Prenez un siège dans la salle d'attente."},
-    {"id": "w3", "activityIds": [4, 8, 17],  "mot": "la carte d'assurance maladie", "domaine": "Santé", "definition": "Le document qui donne accès aux soins de santé gratuits au Québec.", "exemple": "Avez-vous votre carte d'assurance maladie avec vous ?"},
+    {"id": "w2", "activityIds": [4, 8, 17, 34, 36],  "mot": "la salle d'attente", "domaine": "Santé", "definition": "L'endroit où on attend avant de voir le médecin.", "exemple": "Prenez un siège dans la salle d'attente."},
+    {"id": "w3", "activityIds": [4, 8, 17, 34, 35],  "mot": "la carte d'assurance maladie", "domaine": "Santé", "definition": "Le document qui donne accès aux soins de santé gratuits au Québec.", "exemple": "Avez-vous votre carte d'assurance maladie avec vous ?"},
     {"id": "w4", "activityIds": [4, 8, 17],  "mot": "tousser", "domaine": "Santé", "definition": "Faire un bruit sec avec la gorge à cause d'une irritation.", "exemple": "Est-ce que vous toussez beaucoup ?"},
     {"id": "w5", "activityIds": [4, 8, 17],  "mot": "un sirop", "domaine": "Santé", "definition": "Un médicament liquide et sucré.", "exemple": "Je vais vous prescrire un sirop pour la gorge."},
     {"id": "w6", "activityIds": [4, 8, 17],  "mot": "un antibiotique", "domaine": "Santé", "definition": "Un médicament qui combat une infection.", "exemple": "Le docteur m'a mis sous antibiotique."},
@@ -1305,15 +1310,15 @@ VOCAB_BANK = [
     {"id": "w16", "activityIds": [7], "mot": "le réfrigérateur", "domaine": "Consommation", "definition": "L'appareil qui garde les aliments au froid.", "exemple": "Gardez-les au réfrigérateur."},
     {"id": "w17", "activityIds": [6], "mot": "le fromage en grains", "domaine": "Consommation", "definition": "Un fromage frais utilisé dans la poutine.", "exemple": "La poutine, c'est des frites, du fromage en grains et de la sauce."},
     {"id": "w18", "activityIds": [5], "mot": "un kiosque", "domaine": "Consommation", "definition": "Un petit comptoir de vente au marché.", "exemple": "On peut parler avec les gens aux kiosques du marché."},
-    {"id": "w19", "activityIds": [11, 16], "mot": "le loyer", "domaine": "Logement", "definition": "Le montant payé chaque mois pour habiter un logement.", "exemple": "Le loyer est de 950 $ par mois."},
+    {"id": "w19", "activityIds": [11, 16, 44], "mot": "le loyer", "domaine": "Logement", "definition": "Le montant payé chaque mois pour habiter un logement.", "exemple": "Le loyer est de 950 $ par mois."},
     {"id": "w20", "activityIds": [11, 16], "mot": "un quatre et demi", "domaine": "Logement", "definition": "Un appartement avec quatre pièces plus la salle de bain.", "exemple": "C'est un beau quatre et demi."},
-    {"id": "w21", "activityIds": [11, 16], "mot": "le bail", "domaine": "Logement", "definition": "Le contrat de location d'un logement.", "exemple": "J'ai signé le bail hier."},
+    {"id": "w21", "activityIds": [11, 16, 44, 45], "mot": "le bail", "domaine": "Logement", "definition": "Le contrat de location d'un logement.", "exemple": "J'ai signé le bail hier."},
     {"id": "w22", "activityIds": [11, 16], "mot": "le chauffage", "domaine": "Logement", "definition": "Le système qui réchauffe un logement.", "exemple": "Le chauffage ne fonctionne plus."},
     {"id": "w23", "activityIds": [11, 16], "mot": "un dépôt", "domaine": "Logement", "definition": "Une somme d'argent versée en garantie.", "exemple": "Le propriétaire demande un dépôt."},
     {"id": "w24", "activityIds": [11, 16], "mot": "déménager", "domaine": "Logement", "definition": "Changer de logement.", "exemple": "Je déménage la semaine prochaine."},
     {"id": "w25", "activityIds": [11, 16], "mot": "les meubles", "domaine": "Logement", "definition": "Les objets comme une table, un lit, une chaise.", "exemple": "On a acheté de nouveaux meubles."},
     {"id": "w26", "activityIds": [12], "mot": "une tâche", "domaine": "Monde du travail", "definition": "Un travail précis à faire.", "exemple": "Voici tes tâches pour aujourd'hui."},
-    {"id": "w27", "activityIds": [12], "mot": "un superviseur", "domaine": "Monde du travail", "definition": "La personne qui dirige les employés.", "exemple": "Mon superviseur m'a expliqué mon horaire."},
+    {"id": "w27", "activityIds": [12, 40], "mot": "un superviseur", "domaine": "Monde du travail", "definition": "La personne qui dirige les employés.", "exemple": "Mon superviseur m'a expliqué mon horaire."},
     {"id": "w28", "activityIds": [12], "mot": "un horaire", "domaine": "Monde du travail", "definition": "La liste des heures de travail.", "exemple": "Est-ce qu'il y a une pause dans mon horaire ?"},
     {"id": "w29", "activityIds": [12], "mot": "accueillir", "domaine": "Monde du travail", "definition": "Recevoir quelqu'un avec politesse.", "exemple": "Tu accueilles les clients à la porte."},
     {"id": "w30", "activityIds": [12], "mot": "une pause", "domaine": "Monde du travail", "definition": "Un moment de repos pendant le travail.", "exemple": "Il y a une pause à dix heures."},
@@ -1337,6 +1342,155 @@ VOCAB_BANK = [
     {"id": "w48", "activityIds": [18], "mot": "pavée", "domaine": "Culture / histoire", "definition": "Couverte de pierres, en parlant d'une rue.", "exemple": "Les rues du Vieux-Montréal sont pavées."},
     {"id": "w49", "activityIds": [15], "mot": "un attrait", "domaine": "Culture / loisirs", "definition": "Un lieu ou une chose qui attire les visiteurs.", "exemple": "Le Vieux-Port est un attrait touristique."},
     {"id": "w50", "activityIds": [18], "mot": "fonder", "domaine": "Culture / histoire", "definition": "Créer une ville ou une organisation pour la première fois.", "exemple": "Montréal a été fondée en 1642."},
+
+    # Les cartes « Je retiens des mots » des modules. L'identifiant reprend le
+    # nom du module plutôt qu'un numéro : la renumérotation des modules ne doit
+    # pas casser la progression déjà enregistrée dans vocab_progress.json.
+    # ── module-banque (activité 46) ──
+    {"id": "banque-01", "activityIds": [46], "mot": "un compte chèque", "domaine": "Consommation", "definition": "Le compte qui sert aux opérations de tous les jours.", "exemple": "Sa paie entre dans son compte chèque."},
+    {"id": "banque-02", "activityIds": [46], "mot": "un compte épargne", "domaine": "Consommation", "definition": "Le compte où on laisse de l'argent de côté.", "exemple": "Elle met cent dollars par mois dans son compte épargne."},
+    {"id": "banque-03", "activityIds": [46], "mot": "le dépôt direct", "domaine": "Consommation", "definition": "Le versement de la paie directement dans le compte.", "exemple": "Son employeur exige le dépôt direct."},
+    {"id": "banque-04", "activityIds": [46], "mot": "un spécimen de chèque", "domaine": "Consommation", "definition": "Un chèque annulé qui montre les numéros du compte.", "exemple": "Elle apporte un spécimen de chèque au bureau."},
+    {"id": "banque-05", "activityIds": [46], "mot": "un virement", "domaine": "Consommation", "definition": "De l'argent envoyé d'un compte à un autre.", "exemple": "Elle fait un virement à sa sœur."},
+    {"id": "banque-06", "activityIds": [46], "mot": "un retrait", "domaine": "Consommation", "definition": "L'argent qu'on sort de son compte.", "exemple": "Le retrait au guichet est de quarante dollars."},
+    {"id": "banque-07", "activityIds": [46], "mot": "le solde", "domaine": "Consommation", "definition": "L'argent qui reste dans le compte.", "exemple": "Vérifie ton solde avant un gros achat."},
+    {"id": "banque-08", "activityIds": [46], "mot": "un NIP", "domaine": "Consommation", "definition": "Le code secret de quatre chiffres de la carte.", "exemple": "On ne note jamais son NIP sur un papier."},
+    {"id": "banque-09", "activityIds": [46], "mot": "un prélèvement automatique", "domaine": "Consommation", "definition": "Un paiement qui sort du compte à date fixe.", "exemple": "Le loyer part par prélèvement automatique."},
+    {"id": "banque-10", "activityIds": [46], "mot": "être à découvert", "domaine": "Consommation", "definition": "Avoir retiré plus d'argent qu'on en avait.", "exemple": "Elle est à découvert depuis vendredi."},
+    {"id": "banque-11", "activityIds": [46], "mot": "des frais mensuels", "domaine": "Consommation", "definition": "Le montant payé chaque mois pour le forfait.", "exemple": "Le forfait de base coûte quatre dollars de frais mensuels."},
+    {"id": "banque-12", "activityIds": [46], "mot": "un relevé de compte", "domaine": "Consommation", "definition": "La liste des opérations du mois.", "exemple": "Son relevé de compte arrive le premier du mois."},
+
+    # ── module-consultation (activité 35) ──
+    {"id": "consultation-01", "activityIds": [35], "mot": "une clinique sans rendez-vous", "domaine": "Santé", "definition": "Une clinique où on peut consulter sans avoir réservé.", "exemple": "Il va à la clinique sans rendez-vous du quartier."},
+    {"id": "consultation-02", "activityIds": [35], "mot": "le triage", "domaine": "Santé", "definition": "L'étape où une infirmière évalue la gravité des cas.", "exemple": "L'infirmière du triage pose des questions."},
+    {"id": "consultation-03", "activityIds": [35], "mot": "enflé", "domaine": "Santé", "definition": "Qui a augmenté de volume à cause d'une blessure.", "exemple": "Son genou est enflé depuis la nuit."},
+    {"id": "consultation-04", "activityIds": [35], "mot": "une inflammation", "domaine": "Santé", "definition": "Une réaction du corps qui cause douleur et enflure.", "exemple": "Il a une inflammation du tendon."},
+    {"id": "consultation-05", "activityIds": [35], "mot": "un tendon", "domaine": "Santé", "definition": "La partie qui attache un muscle à un os.", "exemple": "Le tendon du genou est irrité."},
+    {"id": "consultation-06", "activityIds": [35], "mot": "soulever une charge", "domaine": "Santé", "definition": "Lever un objet lourd.", "exemple": "Il doit éviter de soulever une charge."},
+    {"id": "consultation-07", "activityIds": [35], "mot": "la physiothérapie", "domaine": "Santé", "definition": "Des soins avec des exercices pour retrouver ses mouvements.", "exemple": "La docteure le réfère en physiothérapie."},
+    {"id": "consultation-08", "activityIds": [35], "mot": "un billet de repos", "domaine": "Santé", "definition": "Un papier du médecin qui autorise à ne pas travailler.", "exemple": "Elle lui donne un billet de repos de quatre jours."},
+    {"id": "consultation-09", "activityIds": [34, 35], "mot": "une ordonnance", "domaine": "Santé", "definition": "Le papier du médecin pour obtenir un médicament.", "exemple": "Le pharmacien demande votre ordonnance."},
+    {"id": "consultation-10", "activityIds": [35], "mot": "élancer", "domaine": "Santé", "definition": "Faire une douleur vive et répétée.", "exemple": "Ça élance quand il plie la jambe."},
+    {"id": "consultation-11", "activityIds": [35], "mot": "un quart de travail", "domaine": "Santé", "definition": "La période de travail d'un employé.", "exemple": "Son quart de travail finit à minuit."},
+
+    # ── module-logement (activité 44) ──
+    {"id": "logement-01", "activityIds": [44], "mot": "un locataire", "domaine": "Logement", "definition": "La personne qui loue un logement et qui y habite.", "exemple": "Le locataire paie lui-même l'électricité."},
+    {"id": "logement-02", "activityIds": [44], "mot": "un propriétaire", "domaine": "Logement", "definition": "La personne à qui appartient le logement loué.", "exemple": "La propriétaire fournit la peinture."},
+    {"id": "logement-03", "activityIds": [44], "mot": "chauffé et éclairé", "domaine": "Logement", "definition": "Se dit d'un logement dont le chauffage et l'électricité sont compris dans le loyer.", "exemple": "Le 3 ½ du rez-de-chaussée est chauffé et éclairé."},
+    {"id": "logement-04", "activityIds": [44], "mot": "insonorisé", "domaine": "Logement", "definition": "Protégé contre le bruit de la rue ou des voisins.", "exemple": "La chambre est bien insonorisée : elle donne sur la cour."},
+    {"id": "logement-05", "activityIds": [44], "mot": "lumineux", "domaine": "Logement", "definition": "Qui reçoit beaucoup de lumière du jour.", "exemple": "La cuisine est petite, mais très lumineuse."},
+    {"id": "logement-06", "activityIds": [44], "mot": "la buanderie", "domaine": "Logement", "definition": "Le local où se trouvent la laveuse et la sécheuse.", "exemple": "La buanderie est au sous-sol de l'immeuble."},
+    {"id": "logement-07", "activityIds": [44], "mot": "les électroménagers", "domaine": "Logement", "definition": "Les gros appareils de la maison : réfrigérateur, cuisinière, laveuse…", "exemple": "Dans cette annonce, les électroménagers ne sont pas fournis."},
+    {"id": "logement-08", "activityIds": [44], "mot": "emménager", "domaine": "Logement", "definition": "S'installer dans un nouveau logement.", "exemple": "Ibrahim va emménager le 1er septembre."},
+    {"id": "logement-09", "activityIds": [44], "mot": "un quartier", "domaine": "Logement", "definition": "Une partie d'une ville, avec ses commerces et ses services.", "exemple": "Le quartier est tranquille après vingt heures."},
+    {"id": "logement-10", "activityIds": [44], "mot": "l'état des lieux", "domaine": "Logement", "definition": "La description du logement (neuf, rénové, à réparer) au début du bail.", "exemple": "On fait l'état des lieux avant de signer."},
+
+    # ── module-meteo (activité 42) ──
+    {"id": "meteo-01", "activityIds": [42], "mot": "la poudrerie", "domaine": "Vie quotidienne", "definition": "De la neige déjà tombée que le vent soulève.", "exemple": "La poudrerie efface les lignes de la route."},
+    {"id": "meteo-02", "activityIds": [42], "mot": "la pluie verglaçante", "domaine": "Vie quotidienne", "definition": "Une pluie qui gèle dès qu'elle touche une surface.", "exemple": "La pluie verglaçante a couvert les échelles de glace."},
+    {"id": "meteo-03", "activityIds": [42], "mot": "le grésil", "domaine": "Vie quotidienne", "definition": "De petits grains de glace qui tombent du ciel.", "exemple": "Du grésil frappait les fenêtres de l'atelier."},
+    {"id": "meteo-04", "activityIds": [42], "mot": "une rafale", "domaine": "Vie quotidienne", "definition": "Une hausse brusque du vent, qui dure quelques secondes.", "exemple": "Les rafales nous ont fait descendre du toit."},
+    {"id": "meteo-05", "activityIds": [42], "mot": "le facteur éolien", "domaine": "Vie quotidienne", "definition": "L'effet du vent, qui fait ressentir un froid plus intense.", "exemple": "Avec le facteur éolien, on ressent moins vingt-huit."},
+    {"id": "meteo-06", "activityIds": [42], "mot": "un redoux", "domaine": "Vie quotidienne", "definition": "Un réchauffement court au milieu de l'hiver.", "exemple": "Le redoux de jeudi fera fondre la glace du stationnement."},
+    {"id": "meteo-07", "activityIds": [42], "mot": "la chaussée", "domaine": "Vie quotidienne", "definition": "La partie de la route où roulent les véhicules.", "exemple": "La chaussée reste glissante malgré le sel."},
+    {"id": "meteo-08", "activityIds": [42], "mot": "la visibilité", "domaine": "Vie quotidienne", "definition": "La distance à laquelle on distingue encore ce qui nous entoure.", "exemple": "La visibilité tombe à deux cents mètres."},
+    {"id": "meteo-09", "activityIds": [42], "mot": "un avertissement", "domaine": "Vie quotidienne", "definition": "Un message officiel qui signale un danger à venir.", "exemple": "Un avertissement de poudrerie vise l'autoroute 10."},
+    {"id": "meteo-10", "activityIds": [42], "mot": "le mercure", "domaine": "Vie quotidienne", "definition": "Une autre façon de nommer la température.", "exemple": "Le mercure descendra à moins six degrés."},
+    {"id": "meteo-11", "activityIds": [42], "mot": "une éclaircie", "domaine": "Vie quotidienne", "definition": "Un moment où les nuages s'ouvrent et laissent passer le soleil.", "exemple": "Une éclaircie est prévue en fin de journée."},
+    {"id": "meteo-12", "activityIds": [42], "mot": "un chasse-neige", "domaine": "Vie quotidienne", "definition": "Un camion qui pousse la neige hors de la route.", "exemple": "Les chasse-neige circulent en continu depuis minuit."},
+
+    # ── module-nouvelles (activité 41) ──
+    {"id": "nouvelles-01", "activityIds": [41], "mot": "un fait divers", "domaine": "Culture / médias", "definition": "Une nouvelle relative à des faits quotidiens qui attire la curiosité.", "exemple": "Ce fait divers parle d'une fillette qui a retrouvé son chat."},
+    {"id": "nouvelles-02", "activityIds": [41], "mot": "une nouvelle régionale", "domaine": "Culture / médias", "definition": "Une nouvelle qui touche une région de la province.", "exemple": "La collecte de mitaines à Longueuil, c'est une nouvelle régionale."},
+    {"id": "nouvelles-03", "activityIds": [41], "mot": "une nouvelle nationale", "domaine": "Culture / médias", "definition": "Une nouvelle qui touche la province ou le pays.", "exemple": "Voici une nouvelle nationale importante."},
+    {"id": "nouvelles-04", "activityIds": [41], "mot": "une nouvelle internationale", "domaine": "Culture / médias", "definition": "Une nouvelle qui provient de l'extérieur du pays.", "exemple": "C'est une nouvelle internationale."},
+    {"id": "nouvelles-05", "activityIds": [41], "mot": "un témoin", "domaine": "Culture / médias", "definition": "Une personne qui a vu un événement.", "exemple": "La voisine a été témoin du retour du chat."},
+    {"id": "nouvelles-06", "activityIds": [41], "mot": "un reportage", "domaine": "Culture / médias", "definition": "Un texte ou une émission qui présente une nouvelle en détail.", "exemple": "Le reportage montrait la classe de Noah."},
+    {"id": "nouvelles-07", "activityIds": [41], "mot": "un organisme", "domaine": "Culture / médias", "definition": "Un groupe organisé qui offre un service ou mène une cause.", "exemple": "L'organisme Les Cœurs d'hiver a aidé la classe."},
+    {"id": "nouvelles-08", "activityIds": [41], "mot": "amasser", "domaine": "Culture / médias", "definition": "Réunir, accumuler peu à peu.", "exemple": "Les élèves ont amassé des mitaines."},
+    {"id": "nouvelles-09", "activityIds": [41], "mot": "un franc succès", "domaine": "Culture / médias", "definition": "Une vraie réussite, un grand succès.", "exemple": "Le concours a été un franc succès."},
+    {"id": "nouvelles-10", "activityIds": [41], "mot": "un concours", "domaine": "Culture / médias", "definition": "Une compétition organisée pour désigner un gagnant.", "exemple": "Elle a gagné le concours de sculptures sur neige."},
+    {"id": "nouvelles-11", "activityIds": [41], "mot": "avertir", "domaine": "Culture / médias", "definition": "Informer quelqu'un d'un danger ou d'une nouvelle importante.", "exemple": "La voisine a averti la famille tout de suite."},
+    {"id": "nouvelles-12", "activityIds": [41], "mot": "à ce jour", "domaine": "Culture / médias", "definition": "Jusqu'à maintenant, jusqu'à aujourd'hui.", "exemple": "À ce jour, personne n'a battu ce record."},
+
+    # ── module-probleme (activité 45) ──
+    {"id": "probleme-01", "activityIds": [45], "mot": "un calorifère", "domaine": "Logement", "definition": "L'appareil fixé au mur qui chauffe une pièce.", "exemple": "Le calorifère du salon est resté froid toute la nuit."},
+    {"id": "probleme-02", "activityIds": [45], "mot": "un disjoncteur", "domaine": "Logement", "definition": "L'interrupteur du panneau électrique qui coupe le courant en cas de danger.", "exemple": "Le disjoncteur retombe chaque fois qu'elle le remonte."},
+    {"id": "probleme-03", "activityIds": [45], "mot": "un chauffage d'appoint", "domaine": "Logement", "definition": "Un petit appareil de chauffage qu'on ajoute temporairement.", "exemple": "Elle emprunte un chauffage d'appoint en attendant l'électricien."},
+    {"id": "probleme-04", "activityIds": [45], "mot": "une infiltration", "domaine": "Logement", "definition": "De l'eau qui entre par le toit ou par un mur.", "exemple": "La tache au plafond vient d'une infiltration."},
+    {"id": "probleme-05", "activityIds": [45], "mot": "la moisissure", "domaine": "Logement", "definition": "Des taches noires ou vertes causées par l'humidité.", "exemple": "Sans ventilation, la moisissure revient toujours."},
+    {"id": "probleme-06", "activityIds": [45], "mot": "l'ampleur", "domaine": "Logement", "definition": "La grandeur, l'importance d'un problème.", "exemple": "La photo permet de constater l'ampleur du dégât."},
+    {"id": "probleme-07", "activityIds": [45], "mot": "une partie commune", "domaine": "Logement", "definition": "Un espace de l'immeuble partagé par tous les locataires.", "exemple": "Le corridor est une partie commune, pas un rangement."},
+    {"id": "probleme-08", "activityIds": [45], "mot": "encombrer", "domaine": "Logement", "definition": "Occuper une place et gêner le passage.", "exemple": "Trois vélos encombrent le corridor du troisième."},
+    {"id": "probleme-09", "activityIds": [45], "mot": "une sortie de secours", "domaine": "Logement", "definition": "Le chemin à garder libre pour évacuer en cas d'incendie.", "exemple": "Une sortie de secours doit toujours rester dégagée."},
+    {"id": "probleme-10", "activityIds": [45], "mot": "se plaindre", "domaine": "Logement", "definition": "Dire qu'on n'accepte plus une situation et demander qu'elle change.", "exemple": "Les voisins se plaignent depuis un mois."},
+    {"id": "probleme-11", "activityIds": [45], "mot": "l'insalubrité", "domaine": "Logement", "definition": "L'état d'un logement malpropre ou dangereux pour la santé.", "exemple": "Des déchets laissés dehors peuvent mener à l'insalubrité."},
+    {"id": "probleme-12", "activityIds": [45], "mot": "un avis écrit", "domaine": "Logement", "definition": "Une lettre ou un courriel qui garde une trace d'une demande.", "exemple": "Un avis écrit est plus solide qu'un appel téléphonique."},
+    {"id": "probleme-13", "activityIds": [45], "mot": "un recours", "domaine": "Logement", "definition": "Le moyen légal de faire régler un problème qui traîne.", "exemple": "Le dernier recours, c'est le Tribunal administratif du logement."},
+    {"id": "probleme-14", "activityIds": [45], "mot": "un couvreur", "domaine": "Logement", "definition": "La personne qui répare les toitures.", "exemple": "La propriétaire fait venir un couvreur pour le toit."},
+    {"id": "probleme-15", "activityIds": [45], "mot": "un dégraissant", "domaine": "Logement", "definition": "Un produit fort qui enlève l'huile et la graisse.", "exemple": "L'odeur du dégraissant monte par la cage d'escalier."},
+
+    # ── module-procedure (activité 40) ──
+    {"id": "procedure-01", "activityIds": [40], "mot": "une procédure", "domaine": "Monde du travail", "definition": "La façon officielle de faire une demande ou une tâche.", "exemple": "Il y a une procédure à suivre pour un remboursement."},
+    {"id": "procedure-02", "activityIds": [40], "mot": "un remboursement", "domaine": "Monde du travail", "definition": "L'argent qu'on redonne à quelqu'un pour une dépense.", "exemple": "Il demande un remboursement pour ses lunettes de sécurité."},
+    {"id": "procedure-03", "activityIds": [40], "mot": "une directive", "domaine": "Monde du travail", "definition": "Une instruction précise à suivre.", "exemple": "Lisez bien les directives avant de commencer."},
+    {"id": "procedure-04", "activityIds": [40], "mot": "approuver", "domaine": "Monde du travail", "definition": "Donner son accord officiel à une demande.", "exemple": "Le superviseur doit approuver la demande."},
+    {"id": "procedure-05", "activityIds": [40], "mot": "un reçu", "domaine": "Monde du travail", "definition": "Le papier qui prouve un achat.", "exemple": "Gardez votre reçu original."},
+    {"id": "procedure-06", "activityIds": [40], "mot": "joindre", "domaine": "Monde du travail", "definition": "Ajouter un document à un envoi.", "exemple": "N'oubliez pas de joindre votre reçu."},
+    {"id": "procedure-07", "activityIds": [40], "mot": "un onglet", "domaine": "Monde du travail", "definition": "Une section cliquable dans une application ou un site.", "exemple": "Cliquez sur l'onglet Dépenses."},
+    {"id": "procedure-08", "activityIds": [40], "mot": "un jour ouvrable", "domaine": "Monde du travail", "definition": "Un jour de la semaine où l'entreprise est ouverte.", "exemple": "Comptez dix jours ouvrables."},
+    {"id": "procedure-09", "activityIds": [40], "mot": "un bris d'équipement", "domaine": "Monde du travail", "definition": "Un équipement qui casse ou cesse de fonctionner.", "exemple": "Signalez tout bris d'équipement rapidement."},
+    {"id": "procedure-10", "activityIds": [40], "mot": "un véhicule de service", "domaine": "Monde du travail", "definition": "Un véhicule appartenant à l'entreprise, utilisé pour le travail.", "exemple": "Réservez le véhicule de service à l'avance."},
+    {"id": "procedure-11", "activityIds": [40], "mot": "un formulaire", "domaine": "Monde du travail", "definition": "Un document à remplir avec des informations précises.", "exemple": "Remplissez le formulaire en ligne."},
+
+    # ── module-pub (activité 43) ──
+    {"id": "pub-01", "activityIds": [43], "mot": "un slogan", "domaine": "Culture / médias", "definition": "Une phrase courte et facile à retenir, placée le plus souvent à la fin d'une publicité.", "exemple": "Son slogan tient en cinq mots."},
+    {"id": "pub-02", "activityIds": [43], "mot": "l'émetteur", "domaine": "Culture / médias", "definition": "La personne ou l'organisme qui envoie le message publicitaire.", "exemple": "L'émetteur de la capsule est un organisme du quartier."},
+    {"id": "pub-03", "activityIds": [43], "mot": "le récepteur", "domaine": "Culture / médias", "definition": "Les gens à qui le message publicitaire est destiné.", "exemple": "Le récepteur visé, ce sont les voisins qui réparent eux-mêmes."},
+    {"id": "pub-04", "activityIds": [43], "mot": "le canal", "domaine": "Culture / médias", "definition": "Le moyen choisi pour diffuser le message.", "exemple": "La radio communautaire est le canal de cette annonce."},
+    {"id": "pub-05", "activityIds": [43], "mot": "une valeur morale", "domaine": "Culture / médias", "definition": "Ce qu'une personne ou une société considère comme important et bien.", "exemple": "Le partage est la valeur mise en avant."},
+    {"id": "pub-06", "activityIds": [43], "mot": "un préfixe", "domaine": "Culture / médias", "definition": "Un élément placé devant un mot pour en changer le sens.", "exemple": "Avec le préfixe « ré- », on obtient « réutiliser »."},
+    {"id": "pub-07", "activityIds": [43], "mot": "un suffixe", "domaine": "Culture / médias", "definition": "Un élément placé à la fin d'un mot pour former un nouveau mot.", "exemple": "Le suffixe « -able » donne « réparable »."},
+    {"id": "pub-08", "activityIds": [43], "mot": "une capsule", "domaine": "Culture / médias", "definition": "Une très courte annonce diffusée à la radio.", "exemple": "Sa capsule dure trente secondes."},
+    {"id": "pub-09", "activityIds": [43], "mot": "une infolettre", "domaine": "Culture / médias", "definition": "Un courriel envoyé régulièrement aux personnes inscrites.", "exemple": "L'atelier est aussi annoncé dans l'infolettre du quartier."},
+    {"id": "pub-10", "activityIds": [43], "mot": "un bénévole", "domaine": "Culture / médias", "definition": "Une personne qui donne son temps sans être payée.", "exemple": "Dix bénévoles répareront les objets samedi."},
+
+    # ── module-sante (activité 34) ──
+    {"id": "sante-01", "activityIds": [34], "mot": "prendre un rendez-vous", "domaine": "Santé", "definition": "Fixer un moment pour voir un médecin.", "exemple": "Je voudrais prendre un rendez-vous."},
+    {"id": "sante-02", "activityIds": [34], "mot": "une clinique", "domaine": "Santé", "definition": "Un endroit où on consulte des médecins.", "exemple": "La clinique ouvre à huit heures."},
+    {"id": "sante-03", "activityIds": [34, 36], "mot": "Info-Santé (811)", "domaine": "Santé", "definition": "Un service téléphonique de conseils de santé, jour et nuit.", "exemple": "J'ai appelé Info-Santé pour un conseil."},
+    {"id": "sante-04", "activityIds": [34], "mot": "la posologie", "domaine": "Santé", "definition": "La façon de prendre un médicament (combien et quand).", "exemple": "Suivez bien la posologie."},
+    {"id": "sante-05", "activityIds": [34], "mot": "un comprimé", "domaine": "Santé", "definition": "Un petit médicament solide à avaler.", "exemple": "Prenez un comprimé le matin."},
+    {"id": "sante-06", "activityIds": [34], "mot": "le traitement", "domaine": "Santé", "definition": "L'ensemble des soins pour guérir.", "exemple": "Le traitement dure sept jours."},
+    {"id": "sante-07", "activityIds": [34], "mot": "se sentir", "domaine": "Santé", "definition": "Percevoir son état physique ou moral.", "exemple": "Je me sens mieux aujourd'hui."},
+    {"id": "sante-08", "activityIds": [34], "mot": "un pharmacien", "domaine": "Santé", "definition": "La personne qui prépare et vend les médicaments.", "exemple": "Le pharmacien explique la posologie."},
+    {"id": "sante-09", "activityIds": [34], "mot": "une urgence", "domaine": "Santé", "definition": "Une situation grave qui demande des soins immédiats.", "exemple": "En cas d'urgence, appelez le 911."},
+
+    # ── module-travail (activité 39) ──
+    {"id": "travail-01", "activityIds": [39], "mot": "un retard", "domaine": "Monde du travail", "definition": "Le fait d'arriver après un moment fixé.", "exemple": "J'aurai un retard ce matin."},
+    {"id": "travail-02", "activityIds": [39], "mot": "une absence", "domaine": "Monde du travail", "definition": "Le fait de ne pas se trouver à un endroit où on est attendu.", "exemple": "Je vous écris pour justifier mon absence."},
+    {"id": "travail-03", "activityIds": [39], "mot": "un abandon", "domaine": "Monde du travail", "definition": "Le fait de renoncer à une chose (un cours, un travail).", "exemple": "Il a dû faire un abandon de son cours."},
+    {"id": "travail-04", "activityIds": [39], "mot": "une boîte vocale", "domaine": "Monde du travail", "definition": "Le système qui enregistre un message quand personne ne répond.", "exemple": "J'ai laissé un message dans sa boîte vocale."},
+    {"id": "travail-05", "activityIds": [39], "mot": "remplacer", "domaine": "Monde du travail", "definition": "Prendre la place de quelqu'un.", "exemple": "Je dois remplacer ma collègue malade."},
+    {"id": "travail-06", "activityIds": [39], "mot": "un dégât d'eau", "domaine": "Monde du travail", "definition": "Un dommage causé par de l'eau dans un logement.", "exemple": "J'ai un dégât d'eau dans mon appartement."},
+    {"id": "travail-07", "activityIds": [39], "mot": "un billet médical", "domaine": "Monde du travail", "definition": "Un document du médecin qui confirme une consultation.", "exemple": "J'ai apporté un billet médical."},
+    {"id": "travail-08", "activityIds": [39], "mot": "une superviseure", "domaine": "Monde du travail", "definition": "La personne responsable des employés.", "exemple": "Ma superviseure m'a appelé ce matin."},
+    {"id": "travail-09", "activityIds": [39], "mot": "une pièce d'identité", "domaine": "Monde du travail", "definition": "Un document officiel qui prouve qui on est.", "exemple": "Apportez une pièce d'identité pour l'inscription."},
+    {"id": "travail-10", "activityIds": [39], "mot": "le télétravail", "domaine": "Monde du travail", "definition": "Travailler depuis la maison.", "exemple": "Je serai en télétravail aujourd'hui."},
+    {"id": "travail-11", "activityIds": [39], "mot": "une entrevue d'embauche", "domaine": "Monde du travail", "definition": "Une rencontre pour obtenir un emploi.", "exemple": "Elle a une entrevue d'embauche à 13 h 30."},
+    {"id": "travail-12", "activityIds": [39], "mot": "une orthopédagogue", "domaine": "Monde du travail", "definition": "La personne qui aide les élèves ayant des difficultés d'apprentissage.", "exemple": "L'orthopédagogue rencontre mon fils demain."},
+
+    # ── module-urgence (activité 36) ──
+    {"id": "urgence-01", "activityIds": [36], "mot": "une brûlure", "domaine": "Santé", "definition": "Une blessure causée par la chaleur, le feu ou un liquide chaud.", "exemple": "Elle a une brûlure à l'avant-bras."},
+    {"id": "urgence-02", "activityIds": [36], "mot": "l'urgence", "domaine": "Santé", "definition": "Le service de l'hôpital pour les cas qui ne peuvent pas attendre.", "exemple": "Rendez-vous à l'urgence aujourd'hui."},
+    {"id": "urgence-03", "activityIds": [36], "mot": "une cloque", "domaine": "Santé", "definition": "Une petite poche de liquide sur la peau brûlée.", "exemple": "Il ne faut jamais percer une cloque."},
+    {"id": "urgence-04", "activityIds": [36], "mot": "un pansement", "domaine": "Santé", "definition": "Ce qu'on pose sur une plaie pour la protéger.", "exemple": "Le médecin pose un pansement propre."},
+    {"id": "urgence-05", "activityIds": [36], "mot": "une plaie", "domaine": "Santé", "definition": "Une blessure ouverte sur la peau.", "exemple": "On nettoie la plaie avant le pansement."},
+    {"id": "urgence-06", "activityIds": [36], "mot": "le deuxième degré", "domaine": "Santé", "definition": "Le niveau d'une brûlure avec des cloques.", "exemple": "C'est une brûlure du deuxième degré."},
+    {"id": "urgence-07", "activityIds": [36], "mot": "une cicatrice", "domaine": "Santé", "definition": "La marque qui reste sur la peau après une blessure.", "exemple": "Il ne devrait pas garder de cicatrice."},
+    {"id": "urgence-08", "activityIds": [36], "mot": "un congé de maladie", "domaine": "Santé", "definition": "Des jours autorisés pour ne pas travailler quand on est blessé.", "exemple": "Elle reçoit un congé de maladie de trois jours."},
+    {"id": "urgence-09", "activityIds": [36], "mot": "éclabousser", "domaine": "Santé", "definition": "Projeter un liquide en gouttes.", "exemple": "L'huile chaude a éclaboussé son bras."},
+    {"id": "urgence-10", "activityIds": [36], "mot": "désinfecter", "domaine": "Santé", "definition": "Nettoyer pour éliminer les microbes.", "exemple": "L'infirmière va désinfecter la plaie."},
 ]
 
 
@@ -1832,6 +1986,9 @@ class Handler(http.server.SimpleHTTPRequestHandler):
             return
         if path == "/api/vocab/session":
             self._handle_vocab_session(params)
+            return
+        if path == "/api/vocab/listes":
+            self._handle_vocab_listes(params)
             return
         if path in ("/api/admin/students", "/api/admin/access-log", "/api/admin/progress"):
             teacher = self._require_teacher()
@@ -3189,7 +3346,18 @@ class Handler(http.server.SimpleHTTPRequestHandler):
             n = 10
 
         available_pool = get_student_vocab_pool(student.get("groupId"))
-        pool = [w for w in available_pool if not domain or w["domaine"] == domain]
+        # `activityId` choisit la liste d'un module ; `domain` reste pour la
+        # session « tout ce qui est dû », qui traverse les modules.
+        try:
+            activity_id = int(params.get("activityId", [""])[0])
+        except ValueError:
+            activity_id = 0
+
+        pool = [
+            w for w in available_pool
+            if (not domain or w["domaine"] == domain)
+            and (not activity_id or activity_id in (w.get("activityIds") or []))
+        ]
         progress = load_vocab_progress()
         by_word = {
             p["wordId"]: p for p in progress if p["studentId"] == student["id"]
@@ -3216,6 +3384,74 @@ class Handler(http.server.SimpleHTTPRequestHandler):
             "domaines": sorted(set(w["domaine"] for w in available_pool)),
             "dueCount": len(due),
             "newCount": len(new),
+        })
+
+    def _handle_vocab_listes(self, params):
+        """L'état de chaque liste de mots offerte à l'élève.
+
+        Une liste, c'est le vocabulaire d'une activité : les mots portent déjà
+        leurs `activityIds`, il n'y a donc rien à tenir à jour quand un module
+        est réécrit. Un mot enseigné par deux modules compte dans les deux
+        listes — c'est le même mot, la même boîte, vu de deux endroits.
+        """
+        code = params.get("code", [""])[0].strip().upper()
+        student = validate_student_code(code)
+        if not student:
+            json_response(self, {"error": "Non autorisé"}, 401)
+            return
+
+        pool = get_student_vocab_pool(student.get("groupId"))
+        offertes = get_available_activity_ids(student.get("groupId"))
+        by_word = {
+            p["wordId"]: p for p in load_vocab_progress()
+            if p["studentId"] == student["id"]
+        }
+        today = date.today().isoformat()
+
+        def etat(word):
+            p = by_word.get(word["id"])
+            if p is None:
+                return "new"
+            return "mastered" if p["box"] >= VOCAB_BOITE_MAITRISE else "learning"
+
+        listes = {}
+        for w in pool:
+            for aid in w.get("activityIds") or []:
+                if aid not in offertes:
+                    continue
+                liste = listes.setdefault(
+                    aid, {"activityId": aid, "total": 0, "mastered": 0,
+                          "learning": 0, "new": 0, "due": 0})
+                liste["total"] += 1
+                liste[etat(w)] += 1
+                p = by_word.get(w["id"])
+                if p is not None and p["dueDate"] <= today:
+                    liste["due"] += 1
+
+        # Le titre et la catégorie viennent du catalogue : le banc de mots ne
+        # recopie aucun libellé d'activité, qui changerait sans lui.
+        activites = {a["id"]: a for a in load_activities()}
+        for aid, liste in listes.items():
+            a = activites.get(aid, {})
+            liste["titre"] = a.get("title") or f"Activité {aid}"
+            liste["categorie"] = a.get("categorie") or "atelier"
+
+        # « Module 10 » suit « Module 9 » : un tri alphabétique le placerait
+        # entre le 1 et le 2.
+        ordre = {"cours": 0, "atelier": 1}
+
+        def rang(liste):
+            m = re.match(r"Module (\d+)", liste["titre"])
+            return (ordre.get(liste["categorie"], 9),
+                    int(m.group(1)) if m else 999, liste["titre"])
+
+        json_response(self, {
+            "listes": sorted(listes.values(), key=rang),
+            "dueTotal": sum(
+                1 for w in pool
+                if (p := by_word.get(w["id"])) is not None and p["dueDate"] <= today
+            ),
+            "newTotal": sum(1 for w in pool if w["id"] not in by_word),
         })
 
     def _handle_vocab_answer(self):
@@ -3498,7 +3734,8 @@ class Handler(http.server.SimpleHTTPRequestHandler):
         ]
         total_words = len(pool_ids)
         reviewed_words = len(vocab_progress)
-        mastered_words = sum(1 for p in vocab_progress if p["box"] >= 4)
+        mastered_words = sum(
+            1 for p in vocab_progress if p["box"] >= VOCAB_BOITE_MAITRISE)
         learning_words = reviewed_words - mastered_words
         new_words = total_words - reviewed_words
 

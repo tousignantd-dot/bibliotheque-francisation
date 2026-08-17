@@ -11,7 +11,8 @@
 html,body{height:100%;background:#EEF7F0;font-family:'Nunito','Arial Rounded MT Bold',sans-serif;color:#123321}
 body{display:flex;flex-direction:column;min-height:100vh}
 
-#hdr{background:#2E7D4F;color:#fff;padding:14px 32px;display:flex;align-items:center;justify-content:space-between;flex-shrink:0;box-shadow:0 3px 16px rgba(46,125,79,.3)}
+/* flex-wrap : sur un téléphone, le choix de langue sortait de l'écran. */
+#hdr{background:#2E7D4F;color:#fff;padding:14px 32px;display:flex;align-items:center;justify-content:space-between;gap:12px;flex-wrap:wrap;flex-shrink:0;box-shadow:0 3px 16px rgba(46,125,79,.3)}
 .hdr-l{display:flex;align-items:center;gap:14px}
 .hdr-ic{width:44px;height:44px;background:rgba(255,255,255,.18);border-radius:50%;display:flex;align-items:center;justify-content:center;flex-shrink:0;font-size:22px}
 .hdr-eye{font-size:11px;font-weight:800;text-transform:uppercase;letter-spacing:.2em;opacity:.7;line-height:1}
@@ -27,14 +28,26 @@ body{display:flex;flex-direction:column;min-height:100vh}
 #card{width:100%;max-width:560px;display:flex;flex-direction:column;gap:18px}
 
 /* Écran de démarrage */
-#startView .field{margin-bottom:16px}
-#startView label{display:block;font-size:13px;font-weight:800;color:#2E7D4F;margin-bottom:6px}
-#startView select{width:100%;height:44px;border:2.5px solid #B8DEC4;border-radius:10px;padding:0 14px;font-family:'Nunito',sans-serif;font-size:15px;font-weight:700;color:#123321;background:#fff}
 .start-card{background:#fff;border-radius:18px;padding:28px 30px;box-shadow:0 2px 14px rgba(0,0,0,.06)}
 .start-stats{display:flex;gap:10px;margin-bottom:18px}
 .stat-box{flex:1;background:#F0FAF3;border-radius:10px;padding:10px 14px;text-align:center}
 .stat-box .n{font-size:22px;font-weight:900;color:#2E7D4F}
 .stat-box .l{font-size:11px;font-weight:800;color:#5A8A6D;text-transform:uppercase;letter-spacing:.06em}
+
+/* Mes listes */
+.lst-grp{font-size:12px;font-weight:900;color:#5A8A6D;text-transform:uppercase;letter-spacing:.1em;margin:22px 0 10px}
+.lst-grp:first-of-type{margin-top:4px}
+.lst{background:#fff;border-radius:14px;padding:16px 18px;box-shadow:0 2px 10px rgba(0,0,0,.05);margin-bottom:10px;display:flex;align-items:center;gap:16px}
+.lst-txt{flex:1;min-width:0}
+.lst-tit{font-size:16px;font-weight:900;line-height:1.3;margin-bottom:7px}
+.lst-bar{height:7px;border-radius:4px;background:#E3F1E8;overflow:hidden;margin-bottom:7px}
+.lst-bar span{display:block;height:100%;background:#2E7D4F;border-radius:4px;transition:width .4s}
+.lst-sub{font-size:12.5px;font-weight:700;color:#5A8A6D}
+.lst-du{color:#B45309;font-weight:900}
+.lst-fini{color:#166534;font-weight:900}
+.lst .btn{flex:0 0 auto;padding:11px 18px;font-size:14px}
+.lst.done{background:#F3FBF5}
+.lst-vide{background:#fff;border-radius:14px;padding:24px;text-align:center;font-size:15px;font-weight:700;color:#5A8A6D;line-height:1.6}
 
 #progbar{display:flex;gap:4px}
 .pseg{height:5px;flex:1;border-radius:3px;background:#D0EBD9}
@@ -129,15 +142,10 @@ body{display:flex;flex-direction:column;min-height:100vh}
 
     <div id="startView">
       <div class="start-card">
-        <div class="field">
-          <label>Domaine à réviser</label>
-          <select id="domainSelect">
-            <option value="">Tous les domaines</option>
-          </select>
-        </div>
         <div class="start-stats" id="startStats"></div>
-        <button class="btn btn-primary" id="startBtn" style="width:100%">Commencer la session</button>
+        <button class="btn btn-primary" id="startBtn" style="width:100%">Réviser ce qui est dû</button>
       </div>
+      <div id="listes"></div>
     </div>
 
     <div id="sessionView" class="hidden">
@@ -192,6 +200,7 @@ let counts = { encore: 0, difficile: 0, facile: 0 };
 let streak = 0;
 let bestStreak = 0;
 let cachedTranslation = null; // {wordId, traduction, definitionTraduite, exempleTraduit}
+let listeEnCours = '';        // titre de la liste révisée, '' = tout ce qui est dû
 
 /* ── Langue maternelle ─────────────────────────────────────────────── */
 const langSelect = document.getElementById('langSelect');
@@ -226,32 +235,79 @@ langSelect.addEventListener('change', () => {
   }
 });
 
-async function loadDomains(){
+/* ── Mes listes ────────────────────────────────────────────────────────
+   Une liste par activité offerte à l'élève. L'écran ne décide de rien : il
+   affiche ce que le serveur compte, pour que la fiche de l'enseignante et le
+   portail de l'élève ne se contredisent jamais. */
+async function chargerListes(){
+  const stats = document.getElementById('startStats');
+  const zone = document.getElementById('listes');
   try {
-    const res = await fetch('/api/vocab/session?code=' + encodeURIComponent(studentCode) + '&n=1');
+    const res = await fetch('/api/vocab/listes?code=' + encodeURIComponent(studentCode));
     const data = await res.json();
-    if (!res.ok) return;
-    const sel = document.getElementById('domainSelect');
-    (data.domaines || []).forEach(d => {
-      const opt = document.createElement('option');
-      opt.value = d; opt.textContent = d;
-      sel.appendChild(opt);
+    if (!res.ok) throw new Error(data.error || '');
+
+    stats.innerHTML =
+      '<div class="stat-box"><div class="n">' + data.dueTotal + '</div><div class="l">à revoir aujourd\'hui</div></div>' +
+      '<div class="stat-box"><div class="n">' + data.newTotal + '</div><div class="l">mots jamais vus</div></div>';
+    document.getElementById('startBtn').disabled = (data.dueTotal + data.newTotal) === 0;
+
+    const listes = data.listes || [];
+    if (!listes.length) {
+      zone.innerHTML = '<div class="lst-vide">Aucune liste de mots pour le moment.<br>Elles arrivent avec les modules de ton cours.</div>';
+      return;
+    }
+    let h = '';
+    ['cours', 'atelier'].forEach(cat => {
+      const groupe = listes.filter(l => l.categorie === cat);
+      if (!groupe.length) return;
+      h += '<div class="lst-grp">' + (cat === 'cours' ? 'Les mots de mes modules' : 'Les mots de mes ateliers') + '</div>';
+      groupe.forEach(l => { h += carteListe(l); });
     });
-    document.getElementById('startStats').innerHTML =
-      '<div class="stat-box"><div class="n">' + data.dueCount + '</div><div class="l">à réviser</div></div>' +
-      '<div class="stat-box"><div class="n">' + data.newCount + '</div><div class="l">nouveaux mots</div></div>';
-  } catch (e) { /* silencieux */ }
+    zone.innerHTML = h;
+    zone.querySelectorAll('button[data-liste]').forEach(b => {
+      b.addEventListener('click', () => startSession(b.dataset.liste, b.dataset.titre));
+    });
+  } catch (e) {
+    // Fichier ouvert hors du portail, serveur éteint : l'écran le dit au lieu
+    // de rester vide, mais rien ne bloque.
+    stats.innerHTML = '';
+    zone.innerHTML = '<div class="lst-vide">Impossible de charger tes listes.<br>Vérifie ta connexion, puis rouvre la page.</div>';
+  }
 }
 
-document.getElementById('startBtn').addEventListener('click', startSession);
+function carteListe(l){
+  const pct = l.total ? Math.round((l.mastered / l.total) * 100) : 0;
+  const fini = l.total > 0 && l.mastered === l.total;
+  // L'état porte toujours un mot, jamais la seule couleur.
+  let sous = '<strong>' + l.mastered + ' / ' + l.total + '</strong> mots maîtrisés';
+  if (fini) sous = '<span class="lst-fini">✓ Liste maîtrisée</span> — ' + l.total + ' mots';
+  else if (l.due) sous += ' · <span class="lst-du">' + l.due + ' à revoir aujourd\'hui</span>';
+  else if (l.new) sous += ' · ' + l.new + ' à découvrir';
+  return '<div class="lst' + (fini ? ' done' : '') + '">' +
+    '<div class="lst-txt">' +
+      '<div class="lst-tit">' + escHtml(l.titre) + '</div>' +
+      '<div class="lst-bar"><span style="width:' + pct + '%"></span></div>' +
+      '<div class="lst-sub">' + sous + '</div>' +
+    '</div>' +
+    '<button class="btn ' + (fini ? 'btn-secondary' : 'btn-primary') + '" data-liste="' + l.activityId + '" data-titre="' + escHtml(l.titre) + '">' +
+      (fini ? 'Revoir' : 'Réviser') + '</button>' +
+  '</div>';
+}
 
-async function startSession(){
-  const domain = document.getElementById('domainSelect').value;
+document.getElementById('startBtn').addEventListener('click', () => startSession('', ''));
+
+async function startSession(activityId, titre){
+  listeEnCours = titre || '';
   try {
-    const res = await fetch('/api/vocab/session?code=' + encodeURIComponent(studentCode) + '&n=10' + (domain ? '&domain=' + encodeURIComponent(domain) : ''));
+    const res = await fetch('/api/vocab/session?code=' + encodeURIComponent(studentCode) + '&n=10' + (activityId ? '&activityId=' + encodeURIComponent(activityId) : ''));
     const data = await res.json();
     if (!res.ok || !data.cards || data.cards.length === 0) {
-      alert('Aucune carte disponible pour le moment.');
+      // Une liste terminée n'a plus rien à servir avant la prochaine échéance :
+      // c'est une bonne nouvelle, pas une erreur.
+      alert(listeEnCours
+        ? 'Rien à réviser dans cette liste aujourd\'hui. Reviens demain !'
+        : 'Rien à réviser aujourd\'hui. Reviens demain !');
       return;
     }
     cards = data.cards;
@@ -506,6 +562,7 @@ function endSession(){
   document.getElementById('sessionView').classList.add('hidden');
   document.getElementById('endView').classList.add('on');
   document.getElementById('endSummary').textContent =
+    (listeEnCours ? listeEnCours + ' — ' : '') +
     cards.length + ' mots revus — ' + counts.facile + ' faciles, ' + counts.difficile + ' difficiles, ' + counts.encore + ' à revoir. Meilleure série : 🔥 ' + bestStreak + '.';
   document.getElementById('prog-chip').textContent = '';
   document.getElementById('streak-chip').textContent = '';
@@ -515,14 +572,16 @@ function endSession(){
 document.getElementById('restartBtn').addEventListener('click', () => {
   document.getElementById('endView').classList.remove('on');
   document.getElementById('startView').classList.remove('hidden');
-  loadDomains();
+  // On recharge : la session vient de faire monter des mots de boîte, les
+  // barres doivent le montrer tout de suite.
+  chargerListes();
 });
 
 function lmsTrack(event, data) {
   try { window.parent.postMessage(Object.assign({lms: true, event: event}, data||{}), '*'); } catch(e) {}
 }
 
-loadDomains();
+chargerListes();
 </script>
 </body>
 </html>

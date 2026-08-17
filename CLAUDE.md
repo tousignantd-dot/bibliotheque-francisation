@@ -537,6 +537,42 @@ visuelle. Quatrième onglet de `enseignant.html`, rendu par `js/materiel.js`.
   Variables Railway — **et un changement de variable n'atteint le serveur
   qu'au redéploiement**, sinon l'ancienne valeur reste en mémoire.
 
+## Vocabulaire : le banc, les listes et la maîtrise
+
+L'application de mémorisation est `assets/interactive/vocabulaire-flash/`
+(activité 31). Répétition espacée à sept boîtes ; l'élève **écrit** le mot à
+partir de sa définition, l'IA corrige, et trois boutons rangent la carte.
+
+- **Le banc de mots est dans `server.py` (`VOCAB_BANK`), et lui seul.** Chaque
+  mot porte les `activityIds` des activités qui l'enseignent. C'est cette
+  liste-là qui relie un mot à un module — rien d'autre à tenir à jour.
+- **Les cartes des modules y sont rattachées** : les 134 cartes `FC_CARDS` des
+  onze modules donnent 129 mots (un mot enseigné par deux modules reste **une**
+  entrée à deux `activityIds`, même boîte, comptée dans les deux listes).
+  Leur identifiant reprend le **slug du module** (`probleme-16`), jamais un
+  numéro : `wordId` est la clé de la progression enregistrée, et la
+  renumérotation des modules ne doit pas la casser.
+- **`VOCAB_BOITE_MAITRISE` (boîte 4) est le seuil de « maîtrisé », défini une
+  seule fois.** La fiche de l'élève et l'écran des listes doivent compter
+  pareil ; ne pas réécrire `>= 4` à la main.
+- **Une liste, c'est le vocabulaire d'une activité offerte au groupe**
+  (`GET /api/vocab/listes`) : total, maîtrisés, en cours, jamais vus, dus
+  aujourd'hui. Les modules d'abord, dans l'ordre de leur numéro (« Module 10 »
+  après « Module 9 »), puis les ateliers. Le titre vient du catalogue — le banc
+  ne recopie aucun libellé.
+- `GET /api/vocab/session` accepte `activityId` (une liste) ou `domain` (la
+  session « tout ce qui est dû », qui traverse les modules).
+- **Les mots ne servent que ce qui est ouvert au groupe** : `get_student_vocab_pool()`
+  filtre sur `get_available_activity_ids()`. Un groupe neuf voit donc 0 mot,
+  et le dénominateur de la fiche grandit à mesure que la planification avance.
+- **La section « Je retiens des mots » d'un module n'écrit rien** : elle ne
+  touche qu'à `/api/vocab/translate` et `/api/vocab/signaler`, le reste vit dans
+  le `localStorage`. Seule l'activité 31 fait monter une boîte. C'est voulu —
+  une seule porte d'entrée dans la progression.
+- **Aucun mot n'a d'audio, et seul `module-probleme` a des images** (10 sur 16,
+  dans `assets/interactive/module-probleme/vocab/`). La carte flash n'affiche ni
+  l'un ni l'autre ; le banc ne porte donc pas ces champs.
+
 ## Tutoriels de l'espace enseignant
 
 Deux formes du même contenu, à garder d'accord entre elles. Le bouton
