@@ -3431,10 +3431,25 @@ class Handler(http.server.SimpleHTTPRequestHandler):
         # Le titre et la catégorie viennent du catalogue : le banc de mots ne
         # recopie aucun libellé d'activité, qui changerait sans lui.
         activites = {a["id"]: a for a in load_activities()}
+
+        # Le rail « Mes outils » d'un module demande sa propre liste en donnant
+        # son slug : un module ne connaît pas son numéro d'activité, et c'est
+        # le chemin `interactive` du catalogue qui fait la correspondance.
+        slug = params.get("module", [""])[0].strip()
+        id_courant = 0
+        if slug:
+            id_courant = next(
+                (a["id"] for a in activites.values()
+                 if (a.get("interactive") or "").startswith(
+                     f"assets/interactive/{slug}/")),
+                0,
+            )
+
         for aid, liste in listes.items():
             a = activites.get(aid, {})
             liste["titre"] = a.get("title") or f"Activité {aid}"
             liste["categorie"] = a.get("categorie") or "atelier"
+            liste["courante"] = aid == id_courant
 
         # « Module 10 » suit « Module 9 » : un tri alphabétique le placerait
         # entre le 1 et le 2.

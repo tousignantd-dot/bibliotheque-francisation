@@ -483,10 +483,25 @@ visuelle. Quatrième onglet de `enseignant.html`, rendu par `js/materiel.js`.
 
 ## Barre d'outils élève (rail « Mes outils »)
 
-- Six outils permanents dans chaque module : traduire · lire · simplifier ·
-  prononcer · demander à l'assistant · mon carnet. Code partagé dans
+- Sept outils permanents dans chaque module : traduire · lire · simplifier ·
+  prononcer · demander à l'assistant · mon carnet · réviser. Code partagé dans
   `assets/design-system/outils-eleve.{js,css}` — ne rien y écrire qui dépende
   d'un module précis.
+- **Ajouter un outil ne demande aucune regreffe** : la liste `OUTILS`, les
+  tracés d'icônes et les panneaux vivent tous dans le fichier partagé. Les onze
+  modules — `module-probleme` compris, pourtant généré — l'ont dès le
+  rechargement. Ne pas relancer `greffe_outils.py` pour ça.
+- **« Mon carnet » et « Réviser » ne se recouvrent pas** : le premier garde les
+  mots que l'élève surligne (`localStorage`), le second travaille les listes que
+  le cours lui donne. Le panneau « Réviser » **ne révise pas** — il montre l'état
+  des listes (`GET /api/vocab/listes?code=&module=`) et ouvre l'application de
+  cartes mémoire sur la bonne liste (`?code=&liste=<activityId>`). Deux moteurs
+  de répétition espacée, ce serait deux progressions qui divergent.
+- **Le module ne connaît pas son numéro d'activité** : il passe son slug, et
+  c'est le serveur qui retrouve la liste courante par le chemin `interactive`
+  du catalogue. Même règle que partout ailleurs — aucun id écrit dans un module.
+- Les classes du panneau sont préfixées `.oe-liste` : `.oe-mots` appartient
+  déjà à l'outil de prononciation.
 - **La greffe dans les modules passe par `build/greffe_outils.py`**, jamais à
   la main : marqueurs `OUTILS-ELEVE:début/fin`, dégreffe avant regreffe, donc
   relançable après toute modification d'un gabarit.
@@ -562,6 +577,9 @@ partir de sa définition, l'IA corrige, et trois boutons rangent la carte.
   ne recopie aucun libellé.
 - `GET /api/vocab/session` accepte `activityId` (une liste) ou `domain` (la
   session « tout ce qui est dû », qui traverse les modules).
+- **L'élève entre par le rail « Mes outils » de son module** (outil « Réviser »),
+  qui ouvre l'application sur la liste du module. L'atelier 31 reste
+  planifiable, mais la révision ne dépend plus du calendrier.
 - **Les mots ne servent que ce qui est ouvert au groupe** : `get_student_vocab_pool()`
   filtre sur `get_available_activity_ids()`. Un groupe neuf voit donc 0 mot,
   et le dénominateur de la fiche grandit à mesure que la planification avance.

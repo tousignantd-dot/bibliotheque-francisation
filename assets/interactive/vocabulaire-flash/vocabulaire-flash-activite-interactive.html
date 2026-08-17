@@ -192,6 +192,7 @@ body{display:flex;flex-direction:column;min-height:100vh}
 <script>
 const params = new URLSearchParams(location.search);
 const studentCode = params.get('code') || '';
+let listeDemandee = params.get('liste') || '';   // liste à ouvrir d'emblée
 
 let cards = [];
 let idx = 0;
@@ -268,6 +269,15 @@ async function chargerListes(){
     zone.querySelectorAll('button[data-liste]').forEach(b => {
       b.addEventListener('click', () => startSession(b.dataset.liste, b.dataset.titre));
     });
+
+    // Le rail « Mes outils » d'un module ouvre directement sa propre liste :
+    // l'élève a déjà choisi en cliquant là-bas, on ne le refait pas choisir.
+    // Une seule fois, sinon revenir à l'écran des listes la relancerait.
+    if (listeDemandee) {
+      const voulue = listes.find(l => String(l.activityId) === listeDemandee);
+      listeDemandee = '';
+      if (voulue) startSession(voulue.activityId, voulue.titre);
+    }
   } catch (e) {
     // Fichier ouvert hors du portail, serveur éteint : l'écran le dit au lieu
     // de rester vide, mais rien ne bloque.

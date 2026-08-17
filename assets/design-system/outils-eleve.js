@@ -1,7 +1,7 @@
 /* ============================================================
    FRANCISATION · BARRE D'OUTILS ÉLÈVE
-   Six outils permanents, disponibles partout dans un module :
-   traduire · lire · simplifier · prononcer · demander · carnet.
+   Sept outils permanents, disponibles partout dans un module :
+   traduire · lire · simplifier · prononcer · demander · carnet · réviser.
 
    Usage dans un module :
      Outils.init({ code: studentCode, module: 'module-probleme',
@@ -32,7 +32,7 @@
     { c: 'ti', n: 'tigrigna', loc: 'ትግርኛ' }
   ];
 
-  // Les six tracés du système de design (grille 24, trait 2,2, bouts ronds).
+  // Les tracés du système de design (grille 24, trait 2,2, bouts ronds).
   // Aucun émoji, aucun jeu d'icônes tierce partie : le poids de trait et les
   // proportions diffèrent, et le mélange se voit immédiatement.
   var TRACES = {
@@ -43,7 +43,9 @@
     pron: ['M12 3.5a2.8 2.8 0 0 0-2.8 2.8v4.9a2.8 2.8 0 0 0 5.6 0V6.3A2.8 2.8 0 0 0 12 3.5Z',
       'M5.8 11.2a6.2 6.2 0 0 0 12.4 0', 'M12 17.4v3.1'],
     chat: ['M4.5 5h15v10.5h-8.6L6.5 19.5v-4H4.5Z', 'M9 10.2h.01', 'M12 10.2h.01', 'M15 10.2h.01'],
-    carn: ['M8 3.5h11.5v17H8Z', 'M4.5 7.2h3.5', 'M4.5 12h3.5', 'M4.5 16.8h3.5', 'M12 8.5h4']
+    carn: ['M8 3.5h11.5v17H8Z', 'M4.5 7.2h3.5', 'M4.5 12h3.5', 'M4.5 16.8h3.5', 'M12 8.5h4'],
+    // Deux cartes empilées : celle du dessus porte sa ligne de texte.
+    revi: ['M9 3.5h11.5V15H9Z', 'M15 20.5H3.5V9', 'M12.2 9.5h5.1']
   };
 
   // Les attributs de peinture sont portés par le <svg> lui-même : passés par
@@ -74,7 +76,11 @@
     { sep: true },
     { id: 'pron', lb: 'Prononcer', t: 'Prononcer', s: 'Écouter, s’enregistrer, comparer' },
     { id: 'chat', lb: 'Demander', t: 'Demander à l’assistant', s: '' },
-    { id: 'carn', lb: 'Mon carnet', t: 'Mon carnet', s: 'Les mots que je garde' }
+    { id: 'carn', lb: 'Mon carnet', t: 'Mon carnet', s: 'Les mots que je garde' },
+    // « Mon carnet » garde les mots que l'élève choisit ; « Réviser » travaille
+    // les listes que le cours lui donne. Deux choses différentes, d'où deux
+    // outils — l'un se nomme par son objet, l'autre par son action.
+    { id: 'revi', lb: 'Réviser', t: 'Réviser mes mots', s: 'Les listes de mes modules' }
   ];
 
   var cfg = null;      // configuration passée à init()
@@ -164,6 +170,7 @@
       + '<section class="oe-pane" id="oe-pane-pron"></section>'
       + '<section class="oe-pane" id="oe-pane-chat"></section>'
       + '<section class="oe-pane" id="oe-pane-carn"></section>'
+      + '<section class="oe-pane" id="oe-pane-revi"></section>'
       + '</div></aside>';
 
     var actions = [['trad', 'Traduire'], ['lire', 'Écouter'], ['simp', 'Simplifier'],
@@ -408,7 +415,8 @@
     el.racine.querySelectorAll('[data-oe-outil]').forEach(function (b) {
       b.setAttribute('aria-pressed', String(b.getAttribute('data-oe-outil') === id));
     });
-    ({ trad: paneTrad, lire: paneLire, simp: paneSimp, pron: panePron, chat: paneChat, carn: paneCarn }[id])();
+    ({ trad: paneTrad, lire: paneLire, simp: paneSimp, pron: panePron, chat: paneChat,
+      carn: paneCarn, revi: paneRevi }[id])();
   }
 
   function fermer() {
@@ -832,6 +840,81 @@
     el.carn.querySelector('#oe-carn-l').onclick = function () {
       dis(liste.map(function (x) { return x.mot; }).join(', '));
     };
+  }
+
+  // ══ Réviser mes mots ══════════════════════════════════════════
+  // Le panneau ne révise pas : il montre où en est l'élève et ouvre
+  // l'application de cartes mémoire, qui porte la répétition espacée. Deux
+  // moteurs de mémorisation, ce serait deux progressions qui divergent.
+  var APP_MOTS = '/assets/interactive/vocabulaire-flash/vocabulaire-flash-activite-interactive.html';
+
+  function ouvreAppMots(activityId) {
+    var u = APP_MOTS + '?code=' + encodeURIComponent(cfg.code)
+      + (activityId ? '&liste=' + encodeURIComponent(activityId) : '');
+    // Le module tourne dans le cadre du portail : une nouvelle fenêtre évite
+    // de faire perdre à l'élève la section où il en était.
+    global.open(u, '_blank', 'noopener');
+  }
+
+  function ligneListe(l, vedette) {
+    var pct = l.total ? Math.round((l.mastered / l.total) * 100) : 0;
+    var fini = l.total > 0 && l.mastered === l.total;
+    var etat = fini ? '<b class="oe-liste-ok">✓ Liste maîtrisée</b>'
+      : '<b>' + l.mastered + ' / ' + l.total + '</b> mots maîtrisés'
+        + (l.due ? ' · <b class="oe-liste-du">' + l.due + ' à revoir</b>' : '');
+    return '<div class="oe-liste' + (vedette ? ' oe-liste-v' : '') + '">'
+      + (vedette ? '<div class="oe-lbl">Les mots de ce module</div>' : '')
+      + '<div class="oe-liste-t">' + esc(l.titre) + '</div>'
+      + '<div class="oe-liste-b"><span style="width:' + pct + '%"></span></div>'
+      + '<div class="oe-liste-s">' + etat + '</div>'
+      + '<button type="button" class="oe-btn ' + (vedette ? 'oe-dark' : 'oe-ghost')
+      + ' oe-full" style="margin-top:12px" data-oe-liste="' + l.activityId + '">'
+      + icone('revi', 18) + (fini ? 'Revoir ces mots' : 'Réviser ces mots') + '</button>'
+      + '</div>';
+  }
+
+  function paneRevi() {
+    var zone = el.revi;
+    if (!cfg.code) {
+      zone.innerHTML = '<div class="oe-tip"><b>Ouvrez le module depuis votre portail</b> '
+        + 'pour retrouver vos listes de mots.</div>';
+      return;
+    }
+    attente(zone, 'Je regarde vos listes…');
+    fetch('/api/vocab/listes?code=' + encodeURIComponent(cfg.code)
+      + '&module=' + encodeURIComponent(cfg.module))
+      .then(function (r) {
+        return r.json().catch(function () { return {}; }).then(function (d) {
+          if (!r.ok) throw new Error(d.error || 'Les listes sont indisponibles.');
+          return d;
+        });
+      })
+      .then(function (d) {
+        var listes = d.listes || [];
+        if (!listes.length) {
+          zone.innerHTML = '<div class="oe-tip"><b>Aucune liste pour le moment.</b> '
+            + 'Les mots arrivent avec les modules de votre cours.</div>';
+          return;
+        }
+        var courante = listes.filter(function (l) { return l.courante; })[0];
+        var autres = listes.filter(function (l) { return !l.courante; });
+
+        var h = courante ? ligneListe(courante, true) : '';
+        h += '<button type="button" class="oe-btn oe-soft oe-full" id="oe-liste-du">'
+          + icone('revi', 18) + (d.dueTotal
+            ? 'Réviser mes ' + d.dueTotal + ' mots du jour'
+            : 'Découvrir de nouveaux mots') + '</button>';
+        if (autres.length) {
+          h += '<div class="oe-lbl" style="margin-top:22px">Mes autres listes</div>'
+            + autres.map(function (l) { return ligneListe(l, false); }).join('');
+        }
+        zone.innerHTML = h;
+        zone.querySelectorAll('[data-oe-liste]').forEach(function (b) {
+          b.onclick = function () { ouvreAppMots(b.getAttribute('data-oe-liste')); };
+        });
+        zone.querySelector('#oe-liste-du').onclick = function () { ouvreAppMots(''); };
+      })
+      .catch(function (e) { erreur(zone, e); });
   }
 
   // ══ Barre flottante de sélection ══════════════════════════════
