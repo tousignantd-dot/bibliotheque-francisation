@@ -432,10 +432,21 @@
       return foin.includes(q);
     });
     // Les modules (cours de 4 h) ouvrent la liste ; les ateliers suivent.
-    // Le tri est stable : à l'intérieur de chaque groupe, l'ordre du catalogue
-    // est conservé.
+    // Entre modules, on suit le numéro du titre — « Module 3 » vient après
+    // « Module 2 », quel que soit son rang dans activities.json, où l'ordre
+    // des enregistrements reflète la date d'ajout, pas la progression.
+    // Les ateliers gardent l'ordre du catalogue : le tri est stable.
     const rang = (a) => (a.categorie === 'cours' ? 0 : 1);
-    return liste.sort((a, b) => rang(a) - rang(b));
+    const numero = (a) => {
+      const m = /^Module\s+(\d+)/.exec(a.title || '');
+      return m ? parseInt(m[1], 10) : Number.MAX_SAFE_INTEGER;
+    };
+    return liste.sort((a, b) => {
+      const dr = rang(a) - rang(b);
+      if (dr) return dr;
+      if (rang(a) === 1) return 0;
+      return numero(a) - numero(b);
+    });
   }
 
   function rendreJour() {
