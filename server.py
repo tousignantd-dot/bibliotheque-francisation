@@ -136,6 +136,27 @@ CORRIGE_MOI_FILE = STORAGE_DIR / "data" / "corrige_moi.json"
 # de l'élève et n'écrit rien. Ce qui arrive à l'enseignant, c'est ce que
 # l'élève lui envoie.
 WRITTEN_SUBMISSIONS_FILE = STORAGE_DIR / "data" / "written_submissions.json"
+# Ce que l'assistant a répondu quand l'élève a demandé « pourquoi je me suis
+# trompé ». L'analyse était calculée puis jetée avec la page ; elle est
+# maintenant gardée, parce qu'un patron d'erreur qui revient chez six élèves
+# est précisément ce qu'un enseignant ne peut pas voir autrement. Ne contient
+# que du travail de module — jamais une correction privée d'oral ou d'écrit,
+# qui reste la propriété de l'élève.
+ANALYSES_ERREURS_FILE = STORAGE_DIR / "data" / "analyses_erreurs.json"
+# Plafond du journal des analyses : le fichier est réécrit en entier à chaque
+# ajout. Au-delà, on jette les plus anciennes.
+ANALYSES_ERREURS_MAX = 3000
+# Le parcours de l'aide après erreurs : proposée, acceptée, analysée, refusée,
+# et l'ouverture d'une mini-leçon « En apprendre plus ». Les modules émettaient
+# déjà ces cinq signaux ; le serveur les refusait et l'erreur était avalée par
+# le .catch() de lmsTrack. Un cumul par (élève, activité, exercice), comme
+# corrige_moi.json : ce qui compte est la fréquence, pas l'horodatage.
+SIGNAUX_AIDE_FILE = STORAGE_DIR / "data" / "signaux_aide.json"
+# Les événements que /api/student/progress accepte. Les trois premiers font
+# l'avancement dans progress.json ; les cinq suivants font le journal de l'aide.
+ALLOWED_EVENTS = {"dialogue_listened", "exercise_completed", "file_opened"}
+SIGNAUX_AIDE = {"aide_proposee", "aide_acceptee", "aide_analysee",
+                "aide_refusee", "plus_open"}
 # Multi-enseignants : chaque enseignant possède un ou plusieurs groupes.
 # Le catalogue d'activités reste commun ; ce qui appartient au groupe, c'est la
 # planification (dates), les élèves, la progression et les productions orales.
@@ -1328,6 +1349,32 @@ def save_written_submissions(data):
         json.dump(data, f, ensure_ascii=False, indent=2)
 
 
+def load_analyses_erreurs():
+    if ANALYSES_ERREURS_FILE.exists():
+        with open(ANALYSES_ERREURS_FILE, "r", encoding="utf-8") as f:
+            return json.load(f)
+    return []
+
+
+def save_analyses_erreurs(data):
+    ANALYSES_ERREURS_FILE.parent.mkdir(parents=True, exist_ok=True)
+    with open(ANALYSES_ERREURS_FILE, "w", encoding="utf-8") as f:
+        json.dump(data, f, ensure_ascii=False, indent=2)
+
+
+def load_signaux_aide():
+    if SIGNAUX_AIDE_FILE.exists():
+        with open(SIGNAUX_AIDE_FILE, "r", encoding="utf-8") as f:
+            return json.load(f)
+    return []
+
+
+def save_signaux_aide(data):
+    SIGNAUX_AIDE_FILE.parent.mkdir(parents=True, exist_ok=True)
+    with open(SIGNAUX_AIDE_FILE, "w", encoding="utf-8") as f:
+        json.dump(data, f, ensure_ascii=False, indent=2)
+
+
 # Boîtes de répétition espacée (système Leitner) : plus la boîte est haute,
 # plus l'intervalle avant la prochaine révision est grand.
 VOCAB_INTERVALS_DAYS = [0, 1, 3, 7, 14, 30, 60]
@@ -2072,6 +2119,9 @@ class Handler(http.server.SimpleHTTPRequestHandler):
             return
         if path == "/api/admin/corrige-moi":
             self._handle_corrige_moi_list(params)
+            return
+        if path in ("/api/admin/analyses-erreurs", "/api/admin/signaux-aide"):
+            self._handle_journal_list(path, params)
             return
 
         # Fichiers interactifs intégrés au code : servir directement depuis BASE_DIR
@@ -4566,7 +4616,8 @@ class Handler(http.server.SimpleHTTPRequestHandler):
             return
 
         code = body.get("code", "").strip().upper()
-        if not validate_student_code(code):
+        student = validate_student_code(code)
+        if not student:
             json_response(self, {"error": "Non autorisé"}, 401)
             return
 
@@ -4580,9 +4631,12 @@ class Handler(http.server.SimpleHTTPRequestHandler):
         # Plafond dur : un exercice du module compte au plus une douzaine de
         # lignes. Au-delà, c'est un appel malformé, pas un élève en difficulté.
         lignes = []
+        nb_erreurs = 0
         for it in items[:15]:
             if not isinstance(it, dict):
                 continue
+            if str(it.get("choix", "")) != str(it.get("bonne", "")):
+                nb_erreurs += 1
             lignes.append("- « {} » → l'élève a répondu « {} », la bonne réponse était « {} »{}".format(
                 str(it.get("enonce", ""))[:200],
                 str(it.get("choix", ""))[:100],
@@ -4623,11 +4677,36 @@ class Handler(http.server.SimpleHTTPRequestHandler):
         if err:
             json_response(self, {"error": err[0]}, err[1])
             return
-        json_response(self, {
+        analyse = {
             "patron": parsed.get("patron", ""),
             "explication": parsed.get("explication", ""),
             "conseil": parsed.get("conseil", ""),
-        })
+        }
+
+        # L'analyse a coûté un appel et dit quelque chose de vrai sur la classe :
+        # on la garde. Sans les réponses de l'élève — le patron suffit, et le
+        # détail des fautes ne regarde que lui.
+        try:
+            entrees = load_analyses_erreurs()
+            entrees.append(dict(analyse, **{
+                "studentId": student["id"],
+                "studentLabel": student.get("label", ""),
+                "groupId": student.get("groupId"),
+                "exercice": exercice,
+                "notion": notion,
+                "items": len(lignes),
+                "erreurs": nb_erreurs,
+                "timestamp": datetime.now().isoformat(timespec="seconds"),
+            }))
+            if len(entrees) > ANALYSES_ERREURS_MAX:
+                entrees = entrees[-ANALYSES_ERREURS_MAX:]
+            save_analyses_erreurs(entrees)
+        except (OSError, ValueError):
+            # Un journal qui ne s'écrit pas ne doit pas priver l'élève de son
+            # explication : elle est déjà calculée, elle part quand même.
+            pass
+
+        json_response(self, analyse)
 
     def _handle_correct_french(self):
         length = int(self.headers.get("Content-Length", 0))
@@ -5036,6 +5115,27 @@ class Handler(http.server.SimpleHTTPRequestHandler):
 
         json_response(self, {"success": True})
 
+    def _handle_journal_list(self, path, params):
+        """Les analyses d'erreurs et les signaux de l'aide, pour un groupe.
+
+        Deux journaux, une seule lecture : même filtre, même tri, et l'un
+        comme l'autre ne portent que du travail de module.
+        """
+        teacher = self._require_teacher()
+        if not teacher:
+            return
+        group_id = self._group_from_params(teacher, params)
+        if group_id is None:
+            return
+        student_ids = {s["id"] for s in load_students() if s.get("groupId") == group_id}
+        source = (load_analyses_erreurs() if path == "/api/admin/analyses-erreurs"
+                  else load_signaux_aide())
+        cle = "timestamp" if path == "/api/admin/analyses-erreurs" else "lastSeen"
+        json_response(self, sorted(
+            (e for e in source
+             if e.get("groupId") == group_id or e.get("studentId") in student_ids),
+            key=lambda e: e.get(cle, ""), reverse=True))
+
     def _handle_corrige_moi_list(self, params):
         teacher = self._require_teacher()
         if not teacher:
@@ -5083,6 +5183,49 @@ class Handler(http.server.SimpleHTTPRequestHandler):
         save_students(students)
         json_response(self, {"success": True, "students": added}, 201)
 
+    def _enregistrer_signal_aide(self, student, event, body):
+        """Un cumul par (élève, activité, exercice) plutôt qu'une ligne par clic.
+
+        Ce qu'on veut savoir d'un exercice, c'est combien de fois l'aide a été
+        proposée et combien de fois elle a été prise — pas à quelle seconde.
+        """
+        try:
+            activity_id = int(body.get("activityId"))
+        except (TypeError, ValueError):
+            activity_id = None
+        # « plus_open » nomme son bloc `savoir`, les quatre autres `exercice` :
+        # c'est le même identifiant d'exercice des deux côtés.
+        exercice = str(body.get("exercice") or body.get("savoir") or "")[:80]
+
+        entrees = load_signaux_aide()
+        entree = next(
+            (e for e in entrees
+             if e.get("studentId") == student["id"]
+             and e.get("activityId") == activity_id
+             and e.get("exercice") == exercice),
+            None,
+        )
+        if entree is None:
+            entree = {
+                "studentId": student["id"],
+                "studentLabel": student.get("label", ""),
+                "groupId": student.get("groupId"),
+                "activityId": activity_id,
+                "activityTitle": str(body.get("activityTitle", ""))[:120],
+                "exercice": exercice,
+            }
+            entrees.append(entree)
+        # Le groupe et le nom peuvent avoir changé depuis le dernier passage.
+        entree["studentLabel"] = student.get("label", entree.get("studentLabel", ""))
+        entree["groupId"] = student.get("groupId")
+        entree[event] = entree.get(event, 0) + 1
+        try:
+            entree["erreurs"] = int(body.get("erreurs"))
+        except (TypeError, ValueError):
+            pass
+        entree["lastSeen"] = datetime.now().isoformat(timespec="seconds")
+        save_signaux_aide(entrees)
+
     def _handle_student_progress(self):
         length = int(self.headers.get("Content-Length", 0))
         body = json.loads(self.rfile.read(length))
@@ -5091,10 +5234,16 @@ class Handler(http.server.SimpleHTTPRequestHandler):
         if not student:
             json_response(self, {"error": "Non autorisé"}, 401)
             return
-        allowed_events = {"dialogue_listened", "exercise_completed", "file_opened"}
         event = body.get("event", "")
-        if event not in allowed_events:
+        if event not in ALLOWED_EVENTS and event not in SIGNAUX_AIDE:
             json_response(self, {"error": "Événement invalide"}, 400)
+            return
+        # Les cinq signaux de l'aide vont dans leur propre journal : progress.json
+        # porte l'avancement dans le module, et les écrans de progression
+        # compteraient ces lignes-là comme des activités faites.
+        if event in SIGNAUX_AIDE:
+            self._enregistrer_signal_aide(student, event, body)
+            json_response(self, {"success": True})
             return
         progress = load_progress()
         # Un seul enregistrement par (élève, activité, événement).
