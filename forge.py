@@ -138,12 +138,17 @@ PREAMBULE = """Tu produis une activité de francisation pour un enseignant du Qu
 Tu travailles dans le dossier courant, qui t'est réservé : dépose-y le résultat.
 
 LIVRABLE
-- Si la commande demande un support interactif (page web, exercices autocorrigés,
-  audio), écris `activite.html` : une page autonome, ouvrable par double-clic.
-- Sinon, écris `activite.md` : un imprimable en format lettre, noir et blanc,
-  la hiérarchie portée par la graisse et les filets, aucune couleur.
-- Dans les deux cas, écris aussi `corrige.md` si l'activité comporte des
-  exercices fermés, et `notes-enseignant.md` s'il y a des consignes de passation.
+La section « LIVRABLE ATTENDU » de la commande dit ce que l'enseignant a demandé.
+Elle prime sur tout le reste. Les noms de fichiers, eux, ne se négocient pas —
+c'est à eux que le portail reconnaît ce qu'il publie :
+- activité interactive       → `activite.html`, page autonome ouvrable par double-clic
+- fichiers MP3               → à côté de `activite.html`, en liens relatifs depuis la page
+- fiche élève imprimable     → `activite.md`, format lettre, noir et blanc, aucune couleur,
+                               la hiérarchie portée par la graisse et les filets
+- corrigé                    → `corrige.md`
+- consignes de passation     → `notes-enseignant.md`
+Si la commande ne dit rien du livrable, écris `activite.md` et, s'il y a des
+exercices fermés, `corrige.md`.
 
 SYSTÈME DE DESIGN
 Pour une page interactive, lis d'abord {biblio}/assets/design-system/ et suis-le :
@@ -321,6 +326,66 @@ def _travailler(cid, prompt):
                   tours=tours, cout=cout)
     else:
         _terminer(cid, "fait", None, tours=tours, cout=cout)
+
+
+# ── Publication ──────────────────────────────────────────────────────────────
+# Une activité qui reste dans `activites/commandes/<id>/` n'existe pour
+# personne : ni le catalogue de l'élève, ni le dépôt de matériel ne regardent
+# là. Publier, c'est recopier le dossier de travail dans les assets de la
+# bibliothèque ; l'inscription au catalogue, elle, revient au serveur, qui est
+# seul à écrire `activities.json`.
+
+# Les fichiers de travail que le CLI dépose et qui n'ont rien à faire dans une
+# activité publiée. `rapport.md` est utile à l'enseignante, mais comme note de
+# production — le serveur en fait un dépôt, pas un fichier de l'activité.
+ROLES = {
+    "activite.html": "interactive",
+    "activite.md": "fiche",
+    "corrige.md": "corrige",
+    "notes-enseignant.md": "notes",
+    "rapport.md": "rapport",
+}
+
+
+def copier_vers(cid, destination):
+    """Recopie les fichiers produits dans `destination`, arborescence comprise.
+
+    L'arborescence est conservée telle quelle : une page qui joue `audio/x.mp3`
+    doit continuer de le trouver après publication. Renvoie {role: chemin
+    relatif} pour les fichiers connus, plus la liste de tout ce qui a été copié.
+    """
+    produits = fichiers_produits(cid)
+    if not produits:
+        raise ValueError("Cette commande n'a produit aucun fichier")
+    source = _dossier(cid)
+    destination = Path(destination)
+    destination.mkdir(parents=True, exist_ok=True)
+
+    roles, copies = {}, []
+    for f in produits:
+        rel = f["nom"]
+        cible = destination / rel
+        cible.parent.mkdir(parents=True, exist_ok=True)
+        shutil.copy2(source / rel, cible)
+        copies.append(rel)
+        role = ROLES.get(rel)
+        if role and role not in roles:
+            roles[role] = rel
+    return roles, copies
+
+
+def marquer_publiee(cid, activite_id):
+    """Note sur la fiche qu'une activité en est sortie.
+
+    C'est ce qui empêche de publier deux fois la même commande — sans quoi le
+    catalogue accumulerait des jumelles que personne n'a demandées.
+    """
+    fiche = json.loads(_fiche(cid).read_text(encoding="utf-8"))
+    fiche["publieeEn"] = activite_id
+    fiche["publieeLe"] = datetime.now().isoformat(timespec="seconds")
+    _ecrire_fiche(cid, fiche)
+    _noter(cid, f"Publiée au catalogue — activité {activite_id}")
+    return fiche
 
 
 def _terminer(cid, etat, erreur, tours=0, cout=None):

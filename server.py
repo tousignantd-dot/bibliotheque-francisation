@@ -5,6 +5,8 @@ Gère les fichiers statiques + les opérations d'administration (ajout, modifica
 
 import http.server
 import hashlib
+import importlib
+import sys
 import hmac
 import json
 import mimetypes
@@ -586,6 +588,26 @@ def load_materiel():
             return json.load(f)
     except (FileNotFoundError, json.JSONDecodeError):
         return {"genereLe": "", "blocs": {}, "resume": {}, "porteurs": []}
+
+
+def regenerer_materiel():
+    """Réécrit `data/materiel.json` après une publication.
+
+    L'inventaire se déduit du disque et du catalogue (`build/materiel.py`) ;
+    publier une activité sans le refaire la laisserait au catalogue et absente
+    du dépôt. En ligne, le dossier du code est en lecture seule et la forge
+    n'existe pas : l'échec est sans conséquence et se dit dans la réponse.
+    """
+    try:
+        sys.path.insert(0, str(BASE_DIR / "build"))
+        import materiel as _materiel
+        importlib.reload(_materiel)
+        inv = _materiel.inventaire()
+        MATERIEL_FILE.write_text(
+            json.dumps(inv, ensure_ascii=False, indent=2), encoding="utf-8")
+        return {"refait": True, "porteurs": len(inv.get("porteurs", []))}
+    except Exception as e:  # noqa: BLE001 — la publication, elle, a réussi
+        return {"refait": False, "raison": str(e)}
 
 
 def load_depots():
@@ -2082,6 +2104,8 @@ class Handler(http.server.SimpleHTTPRequestHandler):
             self._handle_forge_creer()
         elif path == "/api/forge/annuler":
             self._handle_forge_annuler()
+        elif path == "/api/forge/publier":
+            self._handle_forge_publier()
         elif path == "/api/materiel/depot":
             self._handle_materiel_depot_add()
         elif path == "/api/materiel/visite":
@@ -2666,6 +2690,117 @@ class Handler(http.server.SimpleHTTPRequestHandler):
             return
         arrete = forge.annuler(self._read_json_body().get("id", ""))
         json_response(self, {"arrete": arrete})
+
+    def _handle_forge_publier(self):
+        """Fait entrer une activité générée dans le catalogue et dans le dépôt.
+
+        Le catalogue (`activities.json`) et le dépôt de matériel ne sont pas la
+        même chose : le premier dit qu'une activité existe, le second relève les
+        fichiers qui la servent. Le second se déduit du premier — d'où la
+        régénération de l'inventaire à la fin, sans quoi l'activité serait au
+        catalogue mais invisible au dépôt.
+
+        Publiée en atelier, jamais en cours : un cours se découpe en seize
+        séances outillées, et une commande n'en produit pas.
+        """
+        if not self._forge_locale() or not self._require_teacher():
+            return
+        teacher = self._current_teacher()
+        body = self._read_json_body()
+        cid = body.get("id", "")
+        fiche = forge.lire(cid)
+        if not fiche:
+            json_response(self, {"error": "Commande introuvable"}, 404)
+            return
+        if fiche.get("etat") != "fait":
+            json_response(self, {"error": "Cette commande n'est pas terminée"}, 409)
+            return
+        if fiche.get("publieeEn"):
+            json_response(self, {"error": "Cette commande est déjà publiée"}, 409)
+            return
+
+        activities = load_activities()
+        titre = (body.get("titre") or fiche.get("titre") or "").strip() or "Activité générée"
+        slug = slugify(titre) or f"activite-{cid}"
+        # Deux commandes sur la même situation donneraient le même slug, donc le
+        # même dossier : la seconde écraserait la première.
+        pris = {slugify(a.get("title", "")) for a in activities}
+        if slug in pris or (STORAGE_DIR / "assets" / "interactive" / slug).exists():
+            slug = f"{slug}-{cid[:6]}"
+
+        dossier = STORAGE_DIR / "assets" / "interactive" / slug
+        try:
+            roles, copies = forge.copier_vers(cid, dossier)
+        except ValueError as e:
+            json_response(self, {"error": str(e)}, 409)
+            return
+
+        base = f"assets/interactive/{slug}"
+        criteres = fiche.get("criteres") or {}
+        niveau = criteres.get("niveau")
+        activity = {
+            "id": next_id(activities),
+            "title": titre,
+            "level": f"Niveau {niveau}" if niveau else "Niveau 4",
+            "categorie": "atelier",
+            "thumbnail": "",
+            "interactive": f"{base}/{roles['interactive']}" if "interactive" in roles else "",
+            "studentDoc": f"{base}/{roles['fiche']}" if "fiche" in roles else "",
+            "slideshow": "",
+            "planCours": "",
+            "autres": "",
+            "keywords": [],
+            "domaineDeVie": criteres.get("domaine") or "",
+            "datePrevue": "",
+            "origine": {"forge": cid, "publieLe": datetime.now().isoformat(timespec="seconds")},
+        }
+        activities.append(activity)
+        save_activities(activities)
+
+        # Le corrigé, les notes et le rapport ne sont pas l'activité : ils se
+        # rangent à côté d'elle, comme n'importe quel fichier déposé par une
+        # enseignante. C'est aussi ce qui les tient hors de la vue de l'élève.
+        depots = load_depots()
+        numero = max((int(str(d.get("id", "0")).rsplit("-", 1)[-1] or 0)
+                      for d in depots), default=0)
+        # La page interactive y figure aussi : l'inventaire du dépôt ne relève
+        # que `slideshow`, `studentDoc` et `planCours` (voir
+        # `build/materiel.py`), donc une activité générée qui n'a qu'une page
+        # web paraîtrait au dépôt comme « rien encore ».
+        etiquettes = {"interactive": "Activité interactive (page web)",
+                      "corrige": "Corrigé", "notes": "Notes pour l'enseignant",
+                      "rapport": "Rapport de génération"}
+        ajoutes = []
+        for role, etiquette in etiquettes.items():
+            rel = roles.get(role)
+            if not rel:
+                continue
+            numero += 1
+            chemin = dossier / rel
+            depot = {
+                "id": f"dep-{numero:04d}",
+                "activiteId": activity["id"],
+                "seanceCode": None,
+                "type": "fiche",
+                "nom": Path(rel).name,
+                "chemin": f"{base}/{rel}",
+                "format": Path(rel).suffix.lstrip("."),
+                "octets": chemin.stat().st_size,
+                "auteur": {"id": teacher["id"], "nom": teacher.get("nom", "")},
+                "note": etiquette + " — produit par la forge",
+                "deposeLe": datetime.now().isoformat(timespec="seconds"),
+                "origine": "depot",
+            }
+            depots.append(depot)
+            ajoutes.append(depot)
+        if ajoutes:
+            save_depots(depots)
+
+        inventaire = regenerer_materiel()
+        forge.marquer_publiee(cid, activity["id"])
+        json_response(self, {"success": True, "activite": activity,
+                             "fichiers": copies, "depots": len(ajoutes),
+                             "inventaire": inventaire}, 201)
 
     def _handle_forge_fichier(self, params):
         """Sert un fichier produit. Le chemin est validé contre la liste des

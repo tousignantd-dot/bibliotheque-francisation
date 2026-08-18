@@ -310,6 +310,12 @@ textarea#edition:focus-visible{box-shadow:inset 0 0 0 3px var(--green-100)}
         <p class="etape__consigne">Le niveau détermine tout le reste : domaines, situations, intentions et savoirs.</p>
 
         <fieldset class="bloc">
+          <legend class="legende">Ce qu'on veut recevoir</legend>
+          <div class="rangee" id="zone-livrables"></div>
+          <p class="aide" id="aide-livrables"></p>
+        </fieldset>
+
+        <fieldset class="bloc">
           <legend class="legende">Niveau du cours</legend>
           <div class="niveaux" id="zone-niveaux"></div>
         </fieldset>
@@ -509,6 +515,33 @@ const PROGRAMME = {"source":{"programme":"Programme d’études Francisation, mi
 /* ============================================================
    Réglages d'enseignant (hors programme)
    ============================================================ */
+/* Le livrable — ce que la commande doit rendre, par opposition à ce qu'elle
+   doit contenir. C'est la première question de l'enseignante et la seule dont
+   la forge ait besoin pour choisir entre une page web et un imprimable, d'où
+   sa place en tête de l'étape 1. « mp3 » ne veut rien dire sans « interactif » :
+   l'interface le désactive, et le prompt ne le mentionne jamais seul. */
+/* Ce que chaque case veut dire pour le modèle. La case porte deux mots dans
+   l'interface ; le prompt, lui, doit être explicite — « avec MP3 » ne dit pas
+   quels fichiers, ni où, ni comment la page les joue. */
+const TEXTE_LIVRABLE = {
+  interactif: "Une activité interactive : une page web autonome (un seul fichier "
+    + "HTML, ouvrable par double-clic), avec des exercices que l'élève corrige "
+    + "lui-même à l'écran et une rétroaction immédiate.",
+  mp3: "Avec les fichiers MP3 : enregistre en audio les dialogues et les textes "
+    + "à écouter, dépose-les à côté de la page, et fais-les jouer depuis la page. "
+    + "Sans voix enregistrée disponible, dis-le dans le rapport plutôt que de "
+    + "livrer des boutons muets.",
+  fiche: "Une fiche élève imprimable : format lettre, noir et blanc, aucune "
+    + "couleur, la hiérarchie portée par la graisse et les filets.",
+  corrige: "Un corrigé, dans un fichier distinct de ce que reçoit l'élève, "
+    + "question par question et dans le même ordre que l'énoncé."
+};
+const LIVRABLES = [
+  { id:"interactif", nom:"activité interactive" },
+  { id:"mp3",        nom:"avec fichiers MP3", depend:"interactif" },
+  { id:"fiche",      nom:"fiche élève imprimable" },
+  { id:"corrige",    nom:"corrigé" }
+];
 const DUREES = [
   { id:"30min", nom:"30 min", suffixe:null },
   { id:"1h",    nom:"1 h",    suffixe:null },
@@ -619,6 +652,7 @@ const vide = () => ({
   niveau:null, competences:[], duree:null, modalite:null,
   domaine:null, situation:null, precision:"", documents:[],
   intentions:[], points:[], lexique:[], sansFiltre:false, texteManuel:null,
+  livrables:["interactif","mp3","corrige"],
   production:[], supports:[], correctionAuto:false, retroactionIA:false,
   nbExercices:null, difficulte:null, consignes:"",
   joindreAttentes:false, joindreCriteres:false,
@@ -630,7 +664,7 @@ const vide = () => ({
    est un critère du programme : c'est justement ce qu'on vient changer.
    Les compétences suivent la forme : les quatre existent à tous les niveaux,
    et « activité orale » est une décision de forme, pas de thème. */
-const CHAMPS_FORME = ["competences", "duree", "modalite", "production", "supports",
+const CHAMPS_FORME = ["livrables", "competences", "duree", "modalite", "production", "supports",
                       "correctionAuto", "retroactionIA", "nbExercices", "difficulte",
                       "consignes", "joindreAttentes", "joindreCriteres"];
 // `documents` en est volontairement absent : la documentation porte le sujet,
@@ -794,6 +828,36 @@ function rendreRadios(zoneId, liste, champ, apres){
     lab.append(inp, el("span","coche", o.nom + (o.suffixe ? " — " + o.suffixe : ""))); z.append(lab);
   });
 }
+/* Les livrables ne passent pas par `rendreCases` : une case en dépend d'une
+   autre (« avec MP3 » n'existe que si l'activité est interactive), et décocher
+   « interactive » doit décocher « MP3 » plutôt que laisser une commande qui se
+   contredit. */
+function rendreLivrables(){
+  const z = $("zone-livrables"); z.textContent = "";
+  LIVRABLES.forEach(o => {
+    const bloque = o.depend && !S.livrables.includes(o.depend);
+    const lab = el("label","opt");
+    const inp = el("input"); inp.type = "checkbox";
+    inp.checked = S.livrables.includes(o.id) && !bloque;
+    inp.disabled = bloque;
+    inp.addEventListener("change", () => {
+      bascule(S.livrables, o.id);
+      if(!S.livrables.includes(o.id)){
+        // Ce qui dépendait de cette case tombe avec elle.
+        LIVRABLES.filter(x => x.depend === o.id)
+                 .forEach(x => { S.livrables = S.livrables.filter(v => v !== x.id); });
+      }
+      rendreLivrables(); majPrompt(); enregistrer();
+    });
+    lab.append(inp, el("span","coche", o.nom));
+    if(bloque) lab.style.opacity = ".45";
+    z.append(lab);
+  });
+  $("aide-livrables").textContent = S.livrables.length
+    ? ""
+    : "Rien de coché : le prompt demandera une activité sans dire sous quelle forme la rendre.";
+}
+
 function rendreCases(zoneId, liste, tableau){
   const z = $(zoneId); z.textContent = "";
   liste.forEach(o => {
@@ -1069,6 +1133,17 @@ function construirePrompt(){
     if(d) bouts.push("Durée : " + d.nom + (d.suffixe ? " (" + d.suffixe + ")" : ""));
     if(m) bouts.push("Modalité : " + m.nom);
     L.push("- " + bouts.join(" · "));
+  }
+
+  // Le livrable avant la thématique : c'est ce qui décide de la forme du
+  // fichier produit, et la forge s'en sert pour choisir entre `activite.html`
+  // et `activite.md`. Seules les cases cochées sont écrites — une liste de ce
+  // qu'on ne veut pas embrouille plus qu'elle n'aide.
+  const livrables = LIVRABLES.filter(o => S.livrables.includes(o.id)
+    && !(o.depend && !S.livrables.includes(o.depend)));
+  if(livrables.length){
+    L.push("", "LIVRABLE ATTENDU");
+    livrables.forEach(o => L.push(plier("- " + TEXTE_LIVRABLE[o.id], 92, "  ")));
   }
 
   L.push("", "THÉMATIQUE");
@@ -1492,23 +1567,43 @@ async function apiForge(url, options){
   return res.json();
 }
 
-/* Sondage au chargement. Tout échec est silencieux : page ouverte en fichier
-   local, serveur éteint, session enseignante expirée — dans les trois cas la
-   bonne réponse est la même, on n'affiche simplement pas la forge. */
+/* Sondage au chargement. Aucun échec n'est silencieux : un bouton « Générer »
+   absent sans un mot d'explication se lit comme un bogue — l'enseignante le
+   cherche, puis conclut qu'il n'a jamais été livré. Chaque cause dit donc ce
+   qu'il faut faire pour l'écarter. */
 async function sonderForge(){
+  const dire = (titre, suite) => {
+    $("forge").hidden = false;
+    $("forge-etat").innerHTML = "<b>" + esc(titre) + "</b> " + esc(suite);
+  };
   try{
     const etat = await apiForge("/api/forge/etat");
     if(!etat.disponible){
-      // Le serveur est là mais pas le CLI : ça, ça se dit, sinon l'enseignante
-      // cherchera un bouton qui n'existe pas.
-      $("forge").hidden = false;
-      $("forge-etat").innerHTML = "<b>Génération indisponible.</b> " + esc(etat.raison);
+      dire("Génération indisponible.", etat.raison);
       return;
     }
     FORGE.active = true;
     $("b-generer").hidden = false;
     $("b-generer").disabled = promptFinal() == null;
-  }catch(e){ /* pas de serveur local : la page reste en copier-coller */ }
+  }catch(e){
+    if(e.statut === 401){
+      dire("Génération en attente de connexion.",
+           "Ouvrez l'espace enseignant, connectez-vous, puis rechargez cette page : "
+           + "le bouton « Générer l'activité » apparaîtra ici.");
+    }else if(e.statut === 403){
+      dire("Génération réservée au poste de travail.",
+           "Cette page est servie en ligne. La forge n'existe que sur l'ordinateur "
+           + "où tourne le serveur local ; ici, le prompt se copie à la main.");
+    }else if(location.protocol === "file:"){
+      /* Le seul cas qui reste muet, et c'est voulu : la page doit rester
+         autonome ouverte par double-clic. Il n'y a alors pas de serveur à
+         joindre, donc rien à réparer — parler ne ferait qu'inquiéter. */
+    }else{
+      dire("Génération injoignable.",
+           "Le serveur local n'a pas répondu (" + e.message + "). Démarrez-le, "
+           + "puis rechargez cette page.");
+    }
+  }
 }
 
 const esc = s => String(s == null ? "" : s).replace(/[&<>"]/g, c =>
@@ -1610,6 +1705,43 @@ function rendreForge(fiche){
     });
     b.append(stop);
   }
+  /* Une activité générée qui reste dans son dossier de commande n'existe pour
+     personne. Publier l'inscrit au catalogue et au dépôt — d'où un geste
+     explicite : c'est l'enseignante qui décide que le résultat est bon. */
+  if(fiche.etat === "fait" && !fiche.publieeEn){
+    const pub = el("button","btn btn--pri btn--sm","Publier au catalogue");
+    pub.type = "button";
+    pub.addEventListener("click", () => publierForge(pub, fiche));
+    b.append(pub);
+  }
+  if(fiche.publieeEn){
+    b.append(el("span","forge__etat", "Publiée au catalogue (activité "
+      + fiche.publieeEn + ")."));
+  }
+}
+
+async function publierForge(bouton, fiche){
+  bouton.disabled = true;
+  bouton.textContent = "Publication…";
+  $("forge-err").hidden = true;
+  try{
+    const r = await apiForge("/api/forge/publier", {
+      method:"POST", body: JSON.stringify({ id:FORGE.id, titre:fiche.titre })
+    });
+    const inv = r.inventaire || {};
+    $("forge-etat").innerHTML = "<b>Publiée ✓</b> « " + esc(r.activite.title)
+      + " » est au catalogue"
+      + (inv.refait ? " et au dépôt de matériel." : ". Dépôt non rafraîchi : "
+         + esc(inv.raison || "inventaire inchangé") + " — relancez "
+         + "`python3 build/materiel.py`.");
+    bouton.remove();
+    suivreForge();
+  }catch(e){
+    bouton.disabled = false;
+    bouton.textContent = "Publier au catalogue";
+    $("forge-err").hidden = false;
+    $("forge-err").textContent = e.message;
+  }
 }
 
 async function copierTexte(txt, dire){
@@ -1675,6 +1807,7 @@ function rendreModele(){
 const nomDe = (tab, id) => { const o = (tab||[]).find(x => x.id === id); return o ? o.nom : id; };
 
 function rendreTout(){
+  rendreLivrables();
   rendreNiveaux(); rendreCompetences();
   rendreRadios("zone-duree", DUREES, "duree");
   rendreRadios("zone-modalite", MODALITES, "modalite");

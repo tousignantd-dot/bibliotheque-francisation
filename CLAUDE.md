@@ -301,10 +301,34 @@ que du texte.
   `forge.disponible()`, qui se tait dès que `RAILWAY_ENVIRONMENT` est présent
   ou que le CLI manque. La forge lance un processus : elle n'a rien à faire en
   ligne, et le serveur Railway n'a pas le CLI de toute façon.
-- **La page reste autonome.** `sonderForge()` échoue en silence — fichier
-  ouvert en local, serveur éteint, session expirée : dans les trois cas le
-  bouton n'apparaît pas et le copier-coller demeure. Ne pas transformer cet
-  échec en message d'erreur.
+- **La page reste autonome, mais elle ne se tait plus qu'ouverte en `file:`.**
+  `sonderForge()` disait autrefois la même chose des trois cas (fichier local,
+  serveur éteint, session expirée) : rien. Le bouton absent sans un mot se lit
+  comme une livraison manquée — c'est la conclusion qu'en a tirée
+  l'utilisateur. Chaque cause dit donc maintenant quoi faire (se connecter,
+  démarrer le serveur, poste local seulement) ; seul le fichier ouvert par
+  double-clic reste muet, puisqu'il n'y a alors rien à réparer.
+- **Le livrable se coche à l'étape 1**, au-dessus du niveau : activité
+  interactive · avec fichiers MP3 (dépend de la précédente) · fiche élève
+  imprimable · corrigé. `S.livrables` est un champ de forme (`CHAMPS_FORME`),
+  il se reprend donc d'un modèle. La section « LIVRABLE ATTENDU » du prompt en
+  découle, et le préambule de `forge.py` s'y rapporte pour nommer les fichiers
+  (`activite.html`, `activite.md`, `corrige.md`, `notes-enseignant.md`) : ce
+  sont ces noms-là que la publication reconnaît.
+- **`POST /api/forge/publier` fait entrer l'activité générée dans le
+  catalogue et dans le dépôt.** Ce ne sont pas la même chose : `activities.json`
+  dit qu'une activité existe, `materiel.json` relève les fichiers qui la
+  servent — et le second se déduit du premier, d'où la régénération de
+  l'inventaire (`regenerer_materiel()`) à la fin. Le dossier de commande est
+  recopié tel quel dans `assets/interactive/<slug>/`, arborescence comprise :
+  une page qui joue `audio/x.mp3` doit continuer de le trouver. Trois partis
+  pris : publication **en atelier**, jamais en cours (un cours se découpe en
+  seize séances outillées, qu'une commande ne produit pas) ; corrigé, notes,
+  rapport **et la page interactive** deviennent des entrées de `depots.json`
+  (l'inventaire ne relève que `slideshow`, `studentDoc` et `planCours` — sans
+  cela l'activité paraîtrait au dépôt comme « rien encore ») ; et une commande
+  déjà publiée est refusée (`publieeEn` sur sa fiche), sinon le catalogue
+  accumulerait des jumelles.
 - **Le préambule est dans `forge.py`, pas dans le compositeur.** Le prompt du
   compositeur décrit le *contenu* ; il a été écrit pour être collé dans une
   conversation, où la réponse est du texte. Le préambule ajoute le *livrable* :
