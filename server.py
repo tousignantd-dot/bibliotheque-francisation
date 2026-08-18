@@ -239,6 +239,13 @@ def init_storage():
     dst_acts = STORAGE_DIR / "data" / "activities.json"
     # Champs dont le volume (choix de l'utilisateur) fait autorité
     USER_FIELDS = ("dateVue", "datePrevue", "dateFin", "categorie")
+    # Matériel téléversé depuis le catalogue. Le code garde l'autorité quand il
+    # porte lui-même un fichier — une fiche régénérée par git doit repartir —,
+    # mais un emplacement vide dans le code laisse la place au dépôt du volume.
+    # Sans cette nuance, un corrigé ajouté en ligne disparaissait au premier
+    # redéploiement, et le catalogue ne servirait plus à rien.
+    FICHIER_FIELDS = ("thumbnail", "interactive", "studentDoc", "slideshow",
+                      "planCours", "corrige", "autres")
     if src_acts.exists() and dst_acts.exists():
         try:
             with open(src_acts, encoding="utf-8") as f:
@@ -260,6 +267,9 @@ def init_storage():
                     entry = dict(a)
                     for field in USER_FIELDS:
                         if vol.get(field):
+                            entry[field] = vol[field]
+                    for field in FICHIER_FIELDS:
+                        if vol.get(field) and not entry.get(field):
                             entry[field] = vol[field]
                     if entry != vol:
                         changed = True
@@ -292,7 +302,7 @@ def init_storage():
     # n'existe que dans le volume, jamais dans BASE_DIR, donc il n'entre
     # jamais dans cette boucle. Et remplacer un officiel par un dépôt passe
     # par `promotions.json` (voir materiel_promu), pas par le disque.
-    for subdir in ("thumbnails", "documents", "slideshows", "plans", "autres"):
+    for subdir in ("thumbnails", "documents", "slideshows", "plans", "corriges", "autres"):
         src_dir = BASE_DIR / "assets" / subdir
         dst_dir = STORAGE_DIR / "assets" / subdir
         if not src_dir.exists():
@@ -1986,8 +1996,16 @@ class Handler(http.server.SimpleHTTPRequestHandler):
             return
         if path == "/api/activities":
             # Catalogue commun, mais les dates sont celles du groupe demandé.
+            # `?catalogue=1` rend le fonds tel quel, sans aucune date : c'est
+            # ce que demande catalogue.html, qui montre tout ce qui existe,
+            # tous niveaux confondus, et ne planifie rien. Le drapeau est
+            # explicite pour que rien ne change ailleurs — un groupId vide
+            # reste une erreur, comme avant.
             teacher = self._require_teacher()
             if not teacher:
+                return
+            if params.get("catalogue", [""])[0]:
+                json_response(self, load_activities())
                 return
             group_id = self._group_from_params(teacher, params)
             if group_id is None:
@@ -2324,6 +2342,16 @@ class Handler(http.server.SimpleHTTPRequestHandler):
         dest.write_bytes(f.file.read())
         return f"assets/slideshows/{slug}{ext}"
 
+    def _upload_corrige(self, form, slug):
+        if "corrige" not in form or not form["corrige"].filename:
+            return ""
+        f = form["corrige"]
+        ext = Path(f.filename).suffix.lower()
+        dest = STORAGE_DIR / "assets" / "corriges" / f"{slug}{ext}"
+        dest.parent.mkdir(parents=True, exist_ok=True)
+        dest.write_bytes(f.file.read())
+        return f"assets/corriges/{slug}{ext}"
+
     def _upload_plan_cours(self, form, slug):
         if "planCours" not in form or not form["planCours"].filename:
             return ""
@@ -2390,6 +2418,7 @@ class Handler(http.server.SimpleHTTPRequestHandler):
             "studentDoc": self._upload_doc(form, slug),
             "slideshow": self._upload_slideshow(form, slug),
             "planCours": self._upload_plan_cours(form, slug),
+            "corrige": self._upload_corrige(form, slug),
             "autres": self._upload_autres(form, slug),
             "keywords": [],
         }
@@ -2442,6 +2471,11 @@ class Handler(http.server.SimpleHTTPRequestHandler):
         if new_plan:
             self._delete_file(target.get("planCours"))
             target["planCours"] = new_plan
+
+        new_corrige = self._upload_corrige(form, slug)
+        if new_corrige:
+            self._delete_file(target.get("corrige"))
+            target["corrige"] = new_corrige
 
         new_autres = self._upload_autres(form, slug)
         if new_autres:

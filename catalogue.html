@@ -34,25 +34,6 @@
     .header-nav { display: flex; align-items: center; gap: var(--sp-2); flex-wrap: wrap; }
     .header-nav .btn svg { width: 15px; height: 15px; }
 
-    /* La barre de groupe vient de js/prof.js, qui injecte sa propre feuille
-       avec des bleus en dur. On la rhabille ici — par l'identifiant, pour
-       passer devant la feuille injectée, et sans toucher prof.js qui sert
-       aussi à index.html et lms.html. */
-    #profBar .prof-bar { font-size: var(--fs-ui-sm); font-weight: var(--fw-semi); gap: var(--sp-3); }
-    #profBar .prof-bar-group {
-      background: var(--surface-card); border: 1px solid var(--border);
-      border-radius: var(--r-pill); padding: 5px var(--sp-3);
-    }
-    #profBar .prof-bar-label {
-      font-size: var(--fs-meta); font-weight: var(--fw-bold);
-      letter-spacing: var(--ls-label); color: var(--text-accent);
-    }
-    #profBar .prof-bar select { font-weight: var(--fw-bold); color: var(--text-strong); }
-    #profBar .prof-bar-nom { color: var(--text-muted); opacity: 1; }
-    #profBar .prof-bar a,
-    #profBar .prof-bar button.prof-bar-link { color: var(--text-muted); opacity: 1; }
-    #profBar .prof-bar a:hover,
-    #profBar .prof-bar button.prof-bar-link:hover { color: var(--text-strong); }
 
     /* ---- BANNIÈRES ---- */
     .banner--no {
@@ -148,10 +129,6 @@
     .btn-primary { background: var(--ink-900); color: var(--text-inverse); width: 100%; }
     .btn-primary:hover { background: var(--accent); }
     .btn-primary:disabled { opacity: .5; cursor: not-allowed; }
-    .btn-save { background: var(--surface-card); color: var(--text-strong); border-color: var(--border); }
-    .btn-save:hover { background: var(--paper-100); }
-    .btn-danger { background: var(--no-bg); color: var(--no-ink); border-color: var(--no-line); }
-    .btn-danger:hover { background: var(--surface-card); }
     .spinner {
       display: none; width: 18px; height: 18px; border-radius: 50%;
       border: 2px solid rgba(255,255,255,.4); border-top-color: var(--white);
@@ -187,22 +164,8 @@
     .activity-list { list-style: none; margin: 0; padding: 0; }
 
     /* ---- Planification en lot ---- */
-    .plan-bar {
-      display: none; align-items: flex-end; gap: var(--sp-4); flex-wrap: wrap;
-      padding: var(--sp-4) var(--sp-5);
-      background: var(--surface-band); border-bottom: 1px solid var(--border-tint);
-    }
-    .plan-bar.visible { display: flex; }
-    .plan-bar label { margin-bottom: var(--sp-1); }
-    .plan-bar input[type="date"], .plan-bar select { width: auto; background: var(--surface-card); }
-    .plan-count {
-      padding-bottom: var(--sp-2); white-space: nowrap;
-      font-size: var(--fs-ui); font-weight: var(--fw-black); color: var(--text-accent);
-    }
-    .plan-hint { flex-basis: 100%; margin: 0; font-size: var(--fs-ui-sm); font-weight: var(--fw-medium); color: var(--text-body); }
 
     /* ---- Une ligne d'activité ---- */
-    .activity-check { flex-shrink: 0; width: 18px; height: 18px; cursor: pointer; accent-color: var(--accent); }
     .activity-item {
       display: flex; align-items: center; gap: var(--sp-3);
       padding: var(--sp-3) var(--sp-5); border-bottom: 1px solid var(--paper-200);
@@ -211,7 +174,6 @@
     .activity-item:last-child { border-bottom: none; }
     .activity-item:hover { background: var(--paper-50); }
     /* Sélection = plaque claire teintée, jamais une couleur de plus. */
-    .activity-item.is-checked { background: var(--accent-soft); }
 
     .activity-thumb, .activity-thumb-placeholder {
       flex-shrink: 0; width: 56px; height: 36px;
@@ -236,15 +198,22 @@
       font-size: var(--fs-meta); font-weight: var(--fw-bold); color: var(--text-muted);
     }
     .act-meta .is-on { color: var(--text-accent); }
-
-    .act-dates {
-      display: flex; align-items: center; gap: var(--sp-1); margin-top: 3px;
-      font-size: var(--fs-meta); font-weight: var(--fw-bold);
+    /* Le materiel present est un lien : le catalogue sert d'abord a le
+       retrouver. Ce qui manque reste ecrit, en gris, pour qu'on voie le trou. */
+    .act-meta a {
+      color: var(--text-accent); text-decoration: none;
+      border-bottom: 1px solid var(--border-tint);
     }
-    .act-dates svg { color: var(--text-accent); }
-    .act-date { color: var(--text-accent); }
-    .act-date--fin { color: var(--no-ink); }
-    .act-sep { color: var(--text-muted); }
+    .act-meta a:hover { color: var(--accent); border-bottom-color: var(--accent); }
+    .act-meta .est-vide { color: var(--text-muted); }
+
+    /* Fenetre d'ajout de materiel : un emplacement rempli est montre, jamais
+       repris — on ajoute, on ne remplace pas. */
+    .mat-bloc { margin-bottom: var(--sp-5); }
+    .mat-bloc:last-child { margin-bottom: 0; }
+    .current-file a { color: var(--ok-ink); }
+    .mat-vide { font-size: var(--fs-ui-sm); font-weight: var(--fw-medium); color: var(--text-muted); }
+
 
     .act-tags { display: flex; gap: var(--sp-1); flex-wrap: wrap; margin-top: 3px; }
     .act-tag {
@@ -256,12 +225,6 @@
     .act-tag--temps  { --sec: var(--ambre-700); --sec-soft: var(--ambre-100); }
     .act-tag--dom    { --sec: var(--foret-700); --sec-soft: var(--foret-100); }
 
-    .pill-fermee {
-      display: inline-block; border-radius: var(--r-pill); padding: 1px var(--sp-2);
-      background: var(--paper-200); color: var(--text-muted);
-      border: 1px solid var(--border);
-      font-size: var(--fs-meta); font-weight: var(--fw-bold);
-    }
 
     .activity-actions { display: flex; gap: var(--sp-2); flex-shrink: 0; }
     .activity-id { flex-shrink: 0; width: 34px; text-align: right; font-size: var(--fs-meta); font-weight: var(--fw-bold); color: var(--text-muted); }
@@ -307,24 +270,15 @@
     .toast.error .t-dot { color: var(--no-bg); }
 
     /* ---- FENÊTRES MODALES ---- */
+
+
+    /* ---- FENÊTRE MODALE ---- */
     .modal-overlay {
       display: none; position: fixed; inset: 0; z-index: 200;
       background: rgba(23, 24, 26, .45);
       align-items: center; justify-content: center; padding: var(--sp-4);
     }
     .modal-overlay.open { display: flex; }
-
-    .modal {
-      width: 420px; max-width: 92vw; padding: var(--sp-6);
-      background: var(--surface-card); border-radius: var(--r-lg); box-shadow: var(--sh-modal);
-    }
-    .modal-title { font-size: var(--fs-h3); font-weight: var(--fw-black); margin-bottom: var(--sp-3); }
-    .modal-desc { font-size: var(--fs-body-sm); font-weight: var(--fw-medium); color: var(--text-body); margin-bottom: var(--sp-6); }
-    .modal-actions { display: flex; gap: var(--sp-3); justify-content: flex-end; }
-    .btn-modal-cancel { background: var(--surface-card); color: var(--text-strong); border-color: var(--border); }
-    .btn-modal-cancel:hover { background: var(--paper-100); }
-    .btn-modal-confirm { background: var(--no-bg); color: var(--no-ink); border-color: var(--no-line); }
-    .btn-modal-confirm:hover { background: var(--surface-card); }
 
     .edit-modal {
       display: flex; flex-direction: column; overflow: hidden;
@@ -362,20 +316,8 @@
     .current-file svg { flex-shrink: 0; color: var(--ok-line); }
     .current-file-name { flex: 1; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
     .current-file-label { flex-shrink: 0; font-size: var(--fs-meta); font-weight: var(--fw-bold); }
-    .current-file-delete {
-      flex-shrink: 0; display: flex; align-items: center; gap: 3px;
-      border: none; border-radius: var(--r-sm); padding: var(--sp-1) var(--sp-2);
-      background: none; color: var(--no-ink); cursor: pointer;
-      font-family: var(--font-sans); font-size: var(--fs-meta); font-weight: var(--fw-bold);
-    }
-    .current-file-delete:hover { background: var(--no-bg); }
 
     /* Disponibilité : du (vert) → au (rouge), vue en classe. */
-    .plage { display: flex; gap: var(--sp-2); align-items: flex-end; }
-    .plage > div { flex: 1; }
-    .plage-sep { flex-shrink: 0; padding-bottom: var(--sp-2); color: var(--text-muted); }
-    .label-du  { color: var(--text-accent); }
-    .label-au  { color: var(--no-ink); }
     .form-hint { margin-top: var(--sp-2); font-size: var(--fs-ui-sm); font-weight: var(--fw-medium); color: var(--text-muted); }
 
     /* ---- BARRE DE PROGRESSION ---- */
@@ -396,30 +338,18 @@
       .list-search { width: 100%; }
     }
   </style>
-</head>
 <body>
 
-<!-- HEADER -->
+<!-- EN-TÊTE — rien d'autre que le retour vers l'espace enseignant : c'est de
+     là qu'on vient, et c'est la seule sortie. -->
 <header class="header">
   <div class="header-inner">
     <div class="header-brand">
       <span class="header-title">Catalogue</span>
-      <span class="header-sub">Bibliothèque — Francisation Niveau 4</span>
+      <span class="header-sub">Toutes les activités, tous niveaux confondus</span>
     </div>
     <nav class="header-nav">
-      <!-- Le retour vers le portail, en face de son bouton « Catalogue ».
-           Même onglet : le catalogue fait partie du travail courant, il
-           n'est pas une page de référence ouverte à côté. -->
       <a href="enseignant.html" class="btn btn--ghost btn--sm"><span aria-hidden="true">←</span> Espace enseignant</a>
-      <div id="profBar"></div>
-      <a href="https://bibliotheque-francisation-production.up.railway.app/lms.html" target="_blank" rel="noopener" class="btn btn--ghost btn--sm">
-        <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>
-        Gestion élèves
-      </a>
-      <a href="index.html" class="btn btn--ghost btn--sm">
-        <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="9 18 15 12 9 6"></polyline></svg>
-        Voir la bibliothèque
-      </a>
     </nav>
   </div>
 </header>
@@ -431,19 +361,13 @@
   puis rafraîchissez la page.
 </div>
 
-<!-- Bannière mode local uniquement -->
-<div id="localBanner" class="banner" style="display:none">
-  ⚠️ L'administration fonctionne uniquement en local. Pour mettre à jour le site en ligne, redéposez le dossier sur Netlify après vos modifications.
-</div>
-
-<!-- PAGE -->
 <div class="page">
 
-  <!-- ======== PANNEAU AJOUT ======== -->
+  <!-- ======== AJOUTER UNE ACTIVITÉ ======== -->
   <div class="panel">
     <div class="panel-header">
-      <div class="panel-icon">
-        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><line x1="12" y1="5" x2="12" y2="19"></line><line x1="5" y1="12" x2="19" y2="12"></line></svg>
+      <div class="panel-icon" aria-hidden="true">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
       </div>
       <span class="panel-title">Ajouter une activité</span>
     </div>
@@ -463,109 +387,10 @@
           </select>
         </div>
 
-        <!-- Thumbnail -->
-        <div class="form-group">
-          <label>Image miniature</label>
-          <div class="drop-zone" id="thumbZone">
-            <input type="file" id="thumbFile" accept="image/*" />
-            <div class="drop-zone-icon">
-              <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="8.5" cy="8.5" r="1.5"/><polyline points="21 15 16 10 5 21"/></svg>
-            </div>
-            <div class="drop-zone-text">Cliquer ou glisser une image</div>
-            <div class="drop-zone-hint">JPG, PNG, WEBP — recommandé 16:9</div>
-          </div>
-          <img id="thumbPreview" class="thumb-preview" alt="Miniature" />
-        </div>
-
-        <!-- Interactive -->
-        <div class="form-group">
-          <label>Activité interactive</label>
-          <div class="drop-zone" id="interactiveZone">
-            <input type="file" id="interactiveFile" accept=".html,.htm,.zip" />
-            <div class="drop-zone-icon">
-              <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><polygon points="5 3 19 12 5 21 5 3"/></svg>
-            </div>
-            <div class="drop-zone-text">Cliquer ou glisser le fichier</div>
-            <div class="drop-zone-hint">Fichier HTML ou ZIP (dossier compressé)</div>
-          </div>
-          <div class="drop-zone-preview" id="interactivePreview">
-            <span class="drop-zone-preview-icon"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polygon points="5 3 19 12 5 21"/></svg></span>
-            <span class="drop-zone-preview-name" id="interactiveName"></span>
-            <span class="drop-zone-preview-size" id="interactiveSize"></span>
-          </div>
-        </div>
-
-        <!-- Document élève -->
-        <div class="form-group">
-          <label>Document élève</label>
-          <div class="drop-zone" id="docZone">
-            <input type="file" id="docFile" accept=".html,.htm,.pdf" />
-            <div class="drop-zone-icon">
-              <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/></svg>
-            </div>
-            <div class="drop-zone-text">Cliquer ou glisser le document</div>
-            <div class="drop-zone-hint">HTML, PDF</div>
-          </div>
-          <div class="drop-zone-preview" id="docPreview">
-            <span class="drop-zone-preview-icon"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/></svg></span>
-            <span class="drop-zone-preview-name" id="docName"></span>
-            <span class="drop-zone-preview-size" id="docSize"></span>
-          </div>
-        </div>
-
-        <!-- Diaporama PPT -->
-        <div class="form-group">
-          <label>Diaporama photos (PPT)</label>
-          <div class="drop-zone" id="slideshowZone">
-            <input type="file" id="slideshowFile" accept=".ppt,.pptx" />
-            <div class="drop-zone-icon">
-              <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="3" width="20" height="14" rx="2"/><line x1="8" y1="21" x2="16" y2="21"/><line x1="12" y1="17" x2="12" y2="21"/></svg>
-            </div>
-            <div class="drop-zone-text">Cliquer ou glisser le diaporama</div>
-            <div class="drop-zone-hint">Fichier PPT ou PPTX</div>
-          </div>
-          <div class="drop-zone-preview" id="slideshowPreview">
-            <span class="drop-zone-preview-icon"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><rect x="2" y="3" width="20" height="14" rx="2"/><line x1="12" y1="17" x2="12" y2="21"/></svg></span>
-            <span class="drop-zone-preview-name" id="slideshowName"></span>
-            <span class="drop-zone-preview-size" id="slideshowSize"></span>
-          </div>
-        </div>
-
-        <!-- Plan de cours -->
-        <div class="form-group">
-          <label>Plan de cours</label>
-          <div class="drop-zone" id="planCoursZone">
-            <input type="file" id="planCoursFile" accept=".docx" />
-            <div class="drop-zone-icon">
-              <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M2 3h6a4 4 0 0 1 4 4v14a3 3 0 0 0-3-3H2z"/><path d="M22 3h-6a4 4 0 0 0-4 4v14a3 3 0 0 1 3-3h7z"/></svg>
-            </div>
-            <div class="drop-zone-text">Cliquer ou glisser le plan de cours</div>
-            <div class="drop-zone-hint">DOCX</div>
-          </div>
-          <div class="drop-zone-preview" id="planCoursPreview">
-            <span class="drop-zone-preview-icon"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M2 3h6a4 4 0 0 1 4 4v14a3 3 0 0 0-3-3H2z"/><path d="M22 3h-6a4 4 0 0 0-4 4v14a3 3 0 0 1 3-3h7z"/></svg></span>
-            <span class="drop-zone-preview-name" id="planCoursName"></span>
-            <span class="drop-zone-preview-size" id="planCoursSize"></span>
-          </div>
-        </div>
-
-        <!-- Autres -->
-        <div class="form-group">
-          <label>Autres</label>
-          <div class="drop-zone" id="autresZone">
-            <input type="file" id="autresFile" accept=".pdf,.docx,.ppt,.pptx,.html,.htm" />
-            <div class="drop-zone-icon">
-              <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/></svg>
-            </div>
-            <div class="drop-zone-text">Cliquer ou glisser un document</div>
-            <div class="drop-zone-hint">PDF, DOCX, PPT, HTML</div>
-          </div>
-          <div class="drop-zone-preview" id="autresPreview">
-            <span class="drop-zone-preview-icon"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/></svg></span>
-            <span class="drop-zone-preview-name" id="autresName"></span>
-            <span class="drop-zone-preview-size" id="autresSize"></span>
-          </div>
-        </div>
+        <!-- Les emplacements de matériel sont rendus par le script, à partir
+             de la même liste que la fenêtre d'ajout : un seul endroit décide
+             de ce qu'une activité peut porter. -->
+        <div id="ajoutMateriel"></div>
 
         <div class="progress-bar-wrap" id="progressWrap">
           <div class="progress-bar" id="progressBar"></div>
@@ -581,50 +406,25 @@
     </div>
   </div>
 
-  <!-- ======== PANNEAU LISTE ======== -->
+  <!-- ======== TOUTES LES ACTIVITÉS ======== -->
   <div class="panel">
     <div class="list-header">
       <div class="panel-header" style="padding:0;border:none;flex:1">
-        <div class="panel-icon">
+        <div class="panel-icon" aria-hidden="true">
           <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><line x1="8" y1="6" x2="21" y2="6"/><line x1="8" y1="12" x2="21" y2="12"/><line x1="8" y1="18" x2="21" y2="18"/><line x1="3" y1="6" x2="3.01" y2="6"/><line x1="3" y1="12" x2="3.01" y2="12"/><line x1="3" y1="18" x2="3.01" y2="18"/></svg>
         </div>
         <span class="panel-title">Activités <span class="panel-count" id="listCount"></span></span>
       </div>
       <div class="list-search">
-        <span class="list-search-icon"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg></span>
-        <input type="text" id="listSearch" placeholder="Filtrer…" />
+        <span class="list-search-icon" aria-hidden="true"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg></span>
+        <input type="text" id="listSearch" placeholder="Filtrer…" aria-label="Filtrer les activités par titre" />
       </div>
-      <select id="filterTemps" class="list-filtre">
+      <select id="filterTemps" class="list-filtre" aria-label="Filtrer par temps de verbe">
         <option value="">Tous les temps de verbe</option>
       </select>
-      <select id="filterDomaine" class="list-filtre">
+      <select id="filterDomaine" class="list-filtre" aria-label="Filtrer par domaine">
         <option value="">Tous les domaines</option>
       </select>
-    </div>
-
-    <!-- Planification en lot : n'apparaît qu'une fois des activités cochées. -->
-    <div class="plan-bar" id="planBar">
-      <span class="plan-count" id="planCount"></span>
-      <div>
-        <label for="planDebut">Disponible à partir du</label>
-        <input type="date" id="planDebut" />
-      </div>
-      <div>
-        <label for="planCadence">Rythme</label>
-        <select id="planCadence">
-          <option value="0">Toutes à cette date</option>
-          <option value="7">Une par semaine</option>
-          <option value="14">Une aux deux semaines</option>
-          <option value="1">Une par jour</option>
-        </select>
-      </div>
-      <div>
-        <label for="planFin">Jusqu'au (optionnel)</label>
-        <input type="date" id="planFin" />
-      </div>
-      <button class="btn btn-save" id="planApply">Planifier</button>
-      <button class="btn btn-danger" id="planClear" title="Retirer les dates : l'activité disparaît du portail des élèves">Retirer les dates</button>
-      <p class="plan-hint" id="planHint"></p>
     </div>
 
     <ul class="activity-list" id="activityList"></ul>
@@ -633,201 +433,20 @@
 
 </div>
 
-<!-- MODAL SUPPRESSION -->
-<div class="modal-overlay" id="deleteModal">
-  <div class="modal">
-    <div class="modal-title">Supprimer l'activité ?</div>
-    <div class="modal-desc" id="deleteModalDesc">Cette action est irréversible. Les fichiers associés (miniature, activité interactive, document) seront également supprimés.</div>
-    <div class="modal-actions">
-      <button class="btn btn-modal-cancel" id="deleteCancelBtn">Annuler</button>
-      <button class="btn btn-modal-confirm" id="deleteConfirmBtn">Supprimer</button>
-    </div>
-  </div>
-</div>
-
-<!-- MODAL ÉDITION COMPLÈTE -->
+<!-- FENÊTRE D'AJOUT DE MATÉRIEL -->
 <div class="modal-overlay" id="editModal">
-  <div class="edit-modal">
+  <div class="edit-modal" role="dialog" aria-modal="true" aria-labelledby="editModalTitle">
     <div class="edit-modal-header">
-      <span class="edit-modal-title">Modifier l'activité</span>
-      <button class="edit-modal-close" id="editModalClose">
+      <span class="edit-modal-title" id="editModalTitle">Ajouter du matériel</span>
+      <button class="edit-modal-close" id="editModalClose" aria-label="Fermer">
         <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
       </button>
     </div>
-    <div class="edit-modal-body">
-
-      <div class="form-group">
-        <label class="required" for="editTitle">Titre</label>
-        <input type="text" id="editTitle" maxlength="120" />
-      </div>
-
-      <div class="form-group">
-        <label for="editCategorie">Type de contenu</label>
-        <select id="editCategorie" class="select-categorie">
-            <option value="atelier">Atelier — 2 h, l'après-midi</option>
-            <option value="cours">Cours — 4 h, le matin</option>
-        </select>
-      </div>
-
-      <div class="form-group">
-        <label>Image miniature</label>
-        <div id="editThumbCurrent" class="current-file" style="display:none">
-          <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="8.5" cy="8.5" r="1.5"/><polyline points="21 15 16 10 5 21"/></svg>
-          <span class="current-file-name" id="editThumbName"></span>
-          <span class="current-file-label">Actuel</span>
-          <button class="current-file-delete" data-field="thumbnail" title="Supprimer ce fichier">
-            <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="3 6 5 6 21 6"/><path d="M19 6l-1 14H6L5 6"/><path d="M10 11v6M14 11v6"/><path d="M9 6V4h6v2"/></svg> Supprimer
-          </button>
-        </div>
-        <div class="drop-zone" id="editThumbZone" style="margin-top:8px">
-          <input type="file" id="editThumbFile" accept="image/*" />
-          <div class="drop-zone-icon"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="8.5" cy="8.5" r="1.5"/><polyline points="21 15 16 10 5 21"/></svg></div>
-          <div class="drop-zone-text">Remplacer l'image</div>
-          <div class="drop-zone-hint">JPG, PNG, WEBP</div>
-        </div>
-        <img id="editThumbPreview" class="thumb-preview" alt="" />
-      </div>
-
-      <div class="form-group">
-        <label>Activité interactive</label>
-        <div id="editInteractiveCurrent" class="current-file" style="display:none">
-          <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polygon points="5 3 19 12 5 21 5 3"/></svg>
-          <span class="current-file-name" id="editInteractiveName"></span>
-          <span class="current-file-label">Actuel</span>
-          <button class="current-file-delete" data-field="interactive" title="Supprimer ce fichier">
-            <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="3 6 5 6 21 6"/><path d="M19 6l-1 14H6L5 6"/><path d="M10 11v6M14 11v6"/><path d="M9 6V4h6v2"/></svg> Supprimer
-          </button>
-        </div>
-        <div class="drop-zone" id="editInteractiveZone" style="margin-top:8px">
-          <input type="file" id="editInteractiveFile" accept=".html,.htm,.zip" />
-          <div class="drop-zone-icon"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><polygon points="5 3 19 12 5 21 5 3"/></svg></div>
-          <div class="drop-zone-text">Remplacer le fichier</div>
-          <div class="drop-zone-hint">HTML ou ZIP</div>
-        </div>
-        <div class="drop-zone-preview" id="editInteractivePreview">
-          <span class="drop-zone-preview-icon"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polygon points="5 3 19 12 5 21"/></svg></span>
-          <span class="drop-zone-preview-name" id="editInteractiveFileName"></span>
-          <span class="drop-zone-preview-size" id="editInteractiveFileSize"></span>
-        </div>
-      </div>
-
-      <div class="form-group">
-        <label>Document élève</label>
-        <div id="editDocCurrent" class="current-file" style="display:none">
-          <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/></svg>
-          <span class="current-file-name" id="editDocName"></span>
-          <span class="current-file-label">Actuel</span>
-          <button class="current-file-delete" data-field="studentDoc" title="Supprimer ce fichier">
-            <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="3 6 5 6 21 6"/><path d="M19 6l-1 14H6L5 6"/><path d="M10 11v6M14 11v6"/><path d="M9 6V4h6v2"/></svg> Supprimer
-          </button>
-        </div>
-        <div class="drop-zone" id="editDocZone" style="margin-top:8px">
-          <input type="file" id="editDocFile" accept=".html,.htm,.pdf" />
-          <div class="drop-zone-icon"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/></svg></div>
-          <div class="drop-zone-text">Remplacer le document</div>
-          <div class="drop-zone-hint">HTML, PDF</div>
-        </div>
-        <div class="drop-zone-preview" id="editDocPreview">
-          <span class="drop-zone-preview-icon"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/></svg></span>
-          <span class="drop-zone-preview-name" id="editDocFileName"></span>
-          <span class="drop-zone-preview-size" id="editDocFileSize"></span>
-        </div>
-      </div>
-
-      <div class="form-group">
-        <label>Diaporama photos (PPT)</label>
-        <div id="editSlideshowCurrent" class="current-file" style="display:none">
-          <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><rect x="2" y="3" width="20" height="14" rx="2"/><line x1="12" y1="17" x2="12" y2="21"/></svg>
-          <span class="current-file-name" id="editSlideshowName"></span>
-          <span class="current-file-label">Actuel</span>
-          <button class="current-file-delete" data-field="slideshow" title="Supprimer ce fichier">
-            <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="3 6 5 6 21 6"/><path d="M19 6l-1 14H6L5 6"/><path d="M10 11v6M14 11v6"/><path d="M9 6V4h6v2"/></svg> Supprimer
-          </button>
-        </div>
-        <div class="drop-zone" id="editSlideshowZone" style="margin-top:8px">
-          <input type="file" id="editSlideshowFile" accept=".ppt,.pptx" />
-          <div class="drop-zone-icon"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="2" y="3" width="20" height="14" rx="2"/><line x1="12" y1="17" x2="12" y2="21"/></svg></div>
-          <div class="drop-zone-text">Remplacer le diaporama</div>
-          <div class="drop-zone-hint">PPT, PPTX</div>
-        </div>
-        <div class="drop-zone-preview" id="editSlideshowPreview">
-          <span class="drop-zone-preview-icon"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><rect x="2" y="3" width="20" height="14" rx="2"/><line x1="12" y1="17" x2="12" y2="21"/></svg></span>
-          <span class="drop-zone-preview-name" id="editSlideshowFileName"></span>
-          <span class="drop-zone-preview-size" id="editSlideshowFileSize"></span>
-        </div>
-      </div>
-
-      <div class="form-group">
-        <label>Plan de cours</label>
-        <div id="editPlanCoursCurrent" class="current-file" style="display:none">
-          <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M2 3h6a4 4 0 0 1 4 4v14a3 3 0 0 0-3-3H2z"/><path d="M22 3h-6a4 4 0 0 0-4 4v14a3 3 0 0 1 3-3h7z"/></svg>
-          <span class="current-file-name" id="editPlanCoursName"></span>
-          <span class="current-file-label">Actuel</span>
-          <button class="current-file-delete" data-field="planCours" title="Supprimer ce fichier">
-            <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="3 6 5 6 21 6"/><path d="M19 6l-1 14H6L5 6"/><path d="M10 11v6M14 11v6"/><path d="M9 6V4h6v2"/></svg> Supprimer
-          </button>
-        </div>
-        <div class="drop-zone" id="editPlanCoursZone" style="margin-top:8px">
-          <input type="file" id="editPlanCoursFile" accept=".docx" />
-          <div class="drop-zone-icon"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M2 3h6a4 4 0 0 1 4 4v14a3 3 0 0 0-3-3H2z"/><path d="M22 3h-6a4 4 0 0 0-4 4v14a3 3 0 0 1 3-3h7z"/></svg></div>
-          <div class="drop-zone-text">Déposer le plan de cours</div>
-          <div class="drop-zone-hint">DOCX</div>
-        </div>
-        <div class="drop-zone-preview" id="editPlanCoursPreview">
-          <span class="drop-zone-preview-icon"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M2 3h6a4 4 0 0 1 4 4v14a3 3 0 0 0-3-3H2z"/><path d="M22 3h-6a4 4 0 0 0-4 4v14a3 3 0 0 1 3-3h7z"/></svg></span>
-          <span class="drop-zone-preview-name" id="editPlanCoursFileName"></span>
-          <span class="drop-zone-preview-size" id="editPlanCoursFileSize"></span>
-        </div>
-      </div>
-
-      <div class="form-group">
-        <label>Autres</label>
-        <div id="editAutresCurrent" class="current-file" style="display:none">
-          <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/></svg>
-          <span class="current-file-name" id="editAutresName"></span>
-          <span class="current-file-label">Actuel</span>
-          <button class="current-file-delete" data-field="autres" title="Supprimer ce fichier">
-            <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="3 6 5 6 21 6"/><path d="M19 6l-1 14H6L5 6"/><path d="M10 11v6M14 11v6"/><path d="M9 6V4h6v2"/></svg> Supprimer
-          </button>
-        </div>
-        <div class="drop-zone" id="editAutresZone" style="margin-top:8px">
-          <input type="file" id="editAutresFile" accept=".pdf,.docx,.ppt,.pptx,.html,.htm" />
-          <div class="drop-zone-icon"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/></svg></div>
-          <div class="drop-zone-text">Déposer un document</div>
-          <div class="drop-zone-hint">PDF, DOCX, PPT, HTML</div>
-        </div>
-        <div class="drop-zone-preview" id="editAutresPreview">
-          <span class="drop-zone-preview-icon"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/></svg></span>
-          <span class="drop-zone-preview-name" id="editAutresFileName"></span>
-          <span class="drop-zone-preview-size" id="editAutresFileSize"></span>
-        </div>
-      </div>
-
-      <div class="form-group">
-        <label>Disponibilité pour les élèves</label>
-        <div class="plage">
-          <div>
-            <label class="label-du" for="editDatePrevue">Du</label>
-            <input type="date" id="editDatePrevue" />
-          </div>
-          <span class="plage-sep" aria-hidden="true">→</span>
-          <div>
-            <label class="label-au" for="editDateFin">Au</label>
-            <input type="date" id="editDateFin" />
-          </div>
-        </div>
-        <p class="form-hint">Laisser vide = toujours disponible / jamais disponible</p>
-      </div>
-      <div class="form-group">
-        <label for="editDateVue">Vue en classe</label>
-        <input type="date" id="editDateVue" />
-      </div>
-
-    </div>
+    <div class="edit-modal-body" id="editModalBody"></div>
     <div class="edit-modal-footer">
-      <button class="btn btn-modal-cancel" id="editCancelBtn">Annuler</button>
+      <button class="btn btn--ghost" id="editCancelBtn">Annuler</button>
       <button class="btn btn-edit-save" id="editSaveBtn">
-        <span class="btn-text">Enregistrer les modifications</span>
+        <span class="btn-text">Ajouter le matériel</span>
         <span class="spinner"></span>
       </button>
     </div>
@@ -836,9 +455,25 @@
 
 <!-- TOASTS -->
 <div class="toast-wrap" id="toastWrap"></div>
-
 <script src="js/prof.js"></script>
 <script>
+/* ======================================================
+   Le matériel d'une activité — une seule liste, lue à trois
+   endroits : le formulaire d'ajout, la ligne du catalogue et la
+   fenêtre d'ajout de matériel. La `cle` sert des deux côtés : c'est
+   le nom du champ attendu par le serveur autant que celui de
+   l'activité dans le JSON.
+   ====================================================== */
+const MATERIEL = [
+  { cle: 'slideshow',   nom: 'Présentation',        accept: '.ppt,.pptx',                    astuce: 'PPT, PPTX' },
+  { cle: 'studentDoc',  nom: 'Fiche élève',         accept: '.html,.htm,.pdf',               astuce: 'HTML, PDF' },
+  { cle: 'corrige',     nom: 'Corrigé',             accept: '.pdf,.docx,.html,.htm',         astuce: 'PDF, DOCX, HTML' },
+  { cle: 'planCours',   nom: 'Plan de cours',       accept: '.docx',                         astuce: 'DOCX' },
+  { cle: 'interactive', nom: 'Activité interactive',accept: '.html,.htm,.zip',               astuce: 'HTML ou ZIP (dossier compressé)' },
+  { cle: 'autres',      nom: 'Autres',              accept: '.pdf,.docx,.ppt,.pptx,.html,.htm', astuce: 'PDF, DOCX, PPT, HTML' },
+  { cle: 'thumbnail',   nom: 'Image miniature',     accept: 'image/*',                       astuce: 'JPG, PNG, WEBP — recommandé 16:9' },
+];
+
 /* ======================================================
    Utilitaires
    ====================================================== */
@@ -853,14 +488,10 @@ function toast(msg, type = 'success') {
   setTimeout(() => { t.classList.remove('show'); setTimeout(() => t.remove(), 250); }, 3200);
 }
 
-function fmtD(iso) {
-  if (!iso) return '';
-  const [y, m, d] = iso.split('-');
-  return `${d}/${m}/${y}`;
-}
-
 function escHtml(s) {
-  return String(s ?? '').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');
+  return String(s).replace(/[&<>"']/g, c => (
+    { '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]
+  ));
 }
 
 function fmtSize(bytes) {
@@ -869,71 +500,57 @@ function fmtSize(bytes) {
   return (bytes / 1048576).toFixed(1) + ' Mo';
 }
 
-/* ======================================================
-   Drop zones
-   ====================================================== */
+/* Une zone de dépôt : clic ou glisser. `onFile` reçoit le fichier retenu. */
 function setupDropZone(zoneId, inputId, onFile) {
   const zone = document.getElementById(zoneId);
   const input = document.getElementById(inputId);
+  if (!zone || !input) return;
 
   zone.addEventListener('dragover', e => { e.preventDefault(); e.stopPropagation(); zone.classList.add('drag-over'); });
   zone.addEventListener('dragleave', () => zone.classList.remove('drag-over'));
   zone.addEventListener('drop', e => {
     e.preventDefault(); e.stopPropagation(); zone.classList.remove('drag-over');
     const file = e.dataTransfer.files[0];
-    if (file) {
-      const dt = new DataTransfer();
-      dt.items.add(file);
-      input.files = dt.files;
-      onFile(file);
-    }
+    if (!file) return;
+    const dt = new DataTransfer();
+    dt.items.add(file);
+    input.files = dt.files;
+    onFile(file);
   });
   input.addEventListener('change', () => { if (input.files[0]) onFile(input.files[0]); });
 }
 
-setupDropZone('thumbZone', 'thumbFile', file => {
-  const preview = document.getElementById('thumbPreview');
-  const reader = new FileReader();
-  reader.onload = e => { preview.src = e.target.result; preview.classList.add('visible'); };
-  reader.readAsDataURL(file);
-});
+/* Le gabarit d'un emplacement vide, partagé par le formulaire et la fenêtre. */
+function blocDepot(prefixe, m) {
+  return `
+    <div class="form-group mat-bloc">
+      <label for="${prefixe}${m.cle}Input">${escHtml(m.nom)}</label>
+      <div class="drop-zone" id="${prefixe}${m.cle}Zone">
+        <input type="file" id="${prefixe}${m.cle}Input" accept="${m.accept}" />
+        <div class="drop-zone-text">Cliquer ou glisser un fichier</div>
+        <div class="drop-zone-hint">${escHtml(m.astuce)}</div>
+      </div>
+      <div class="drop-zone-preview" id="${prefixe}${m.cle}Preview">
+        <span class="drop-zone-preview-name" id="${prefixe}${m.cle}Name"></span>
+        <span class="drop-zone-preview-size" id="${prefixe}${m.cle}Size"></span>
+      </div>
+    </div>`;
+}
 
-setupDropZone('interactiveZone', 'interactiveFile', file => {
-  const p = document.getElementById('interactivePreview');
-  document.getElementById('interactiveName').textContent = file.name;
-  document.getElementById('interactiveSize').textContent = fmtSize(file.size);
-  p.classList.add('visible');
-});
-
-setupDropZone('docZone', 'docFile', file => {
-  const p = document.getElementById('docPreview');
-  document.getElementById('docName').textContent = file.name;
-  document.getElementById('docSize').textContent = fmtSize(file.size);
-  p.classList.add('visible');
-});
-
-setupDropZone('slideshowZone', 'slideshowFile', file => {
-  const p = document.getElementById('slideshowPreview');
-  document.getElementById('slideshowName').textContent = file.name;
-  document.getElementById('slideshowSize').textContent = fmtSize(file.size);
-  p.classList.add('visible');
-});
-setupDropZone('planCoursZone', 'planCoursFile', file => {
-  const p = document.getElementById('planCoursPreview');
-  document.getElementById('planCoursName').textContent = file.name;
-  document.getElementById('planCoursSize').textContent = fmtSize(file.size);
-  p.classList.add('visible');
-});
-setupDropZone('autresZone', 'autresFile', file => {
-  const p = document.getElementById('autresPreview');
-  document.getElementById('autresName').textContent = file.name;
-  document.getElementById('autresSize').textContent = fmtSize(file.size);
-  p.classList.add('visible');
-});
+function brancherDepot(prefixe, m) {
+  setupDropZone(`${prefixe}${m.cle}Zone`, `${prefixe}${m.cle}Input`, file => {
+    document.getElementById(`${prefixe}${m.cle}Name`).textContent = file.name;
+    document.getElementById(`${prefixe}${m.cle}Size`).textContent = fmtSize(file.size);
+    document.getElementById(`${prefixe}${m.cle}Preview`).classList.add('visible');
+  });
+}
 
 /* ======================================================
-   Soumission du formulaire
+   Formulaire d'ajout d'une activité
    ====================================================== */
+document.getElementById('ajoutMateriel').innerHTML = MATERIEL.map(m => blocDepot('add', m)).join('');
+MATERIEL.forEach(m => brancherDepot('add', m));
+
 document.getElementById('addForm').addEventListener('submit', async e => {
   e.preventDefault();
 
@@ -952,22 +569,12 @@ document.getElementById('addForm').addEventListener('submit', async e => {
   const fd = new FormData();
   fd.append('title', title);
   fd.append('categorie', document.getElementById('categorieInput').value);
+  for (const m of MATERIEL) {
+    const f = document.getElementById(`add${m.cle}Input`).files[0];
+    if (f) fd.append(m.cle, f);
+  }
 
-  const thumb = document.getElementById('thumbFile').files[0];
-  const interactive = document.getElementById('interactiveFile').files[0];
-  const doc = document.getElementById('docFile').files[0];
-  const slideshow = document.getElementById('slideshowFile').files[0];
-  const planCours = document.getElementById('planCoursFile').files[0];
-  const autres = document.getElementById('autresFile').files[0];
-
-  if (thumb) fd.append('thumbnail', thumb);
-  if (interactive) fd.append('interactive', interactive);
-  if (doc) fd.append('studentDoc', doc);
-  if (slideshow) fd.append('slideshow', slideshow);
-  if (planCours) fd.append('planCours', planCours);
-  if (autres) fd.append('autres', autres);
-
-  // Simulation de progression
+  // Progression simulée : le téléversement ne renvoie pas d'avancement.
   let pct = 10;
   const tick = setInterval(() => {
     pct = Math.min(pct + 12, 80);
@@ -977,20 +584,15 @@ document.getElementById('addForm').addEventListener('submit', async e => {
   try {
     const res = await Prof.fetch('/api/activities', { method: 'POST', body: fd });
     const data = await res.json();
-
     clearInterval(tick);
     progressBar.style.width = '100%';
-
     if (!res.ok) throw new Error(data.error || 'Erreur serveur');
 
-    toast(`"${title}" ajoutée avec succès !`);
+    toast(`« ${title} » ajoutée au catalogue.`);
     document.getElementById('addForm').reset();
-    document.getElementById('thumbPreview').classList.remove('visible');
-    document.getElementById('interactivePreview').classList.remove('visible');
-    document.getElementById('docPreview').classList.remove('visible');
-    document.getElementById('slideshowPreview').classList.remove('visible');
+    document.querySelectorAll('#ajoutMateriel .drop-zone-preview')
+      .forEach(p => p.classList.remove('visible'));
     await loadList();
-
   } catch (err) {
     clearInterval(tick);
     const msg = err.message?.includes('fetch')
@@ -1006,14 +608,15 @@ document.getElementById('addForm').addEventListener('submit', async e => {
 });
 
 /* ======================================================
-   Liste des activités
+   La liste — toutes les activités, sans filtre de groupe :
+   le catalogue montre le fonds, pas la planification d'une classe.
    ====================================================== */
 let allActivities = [];
-let deleteTargetId = null;
 
 async function loadList() {
   try {
-    const res = await Prof.fetch(Prof.withGroup('/api/activities'));
+    // `catalogue=1` : le fonds entier, sans les dates d'un groupe.
+    const res = await Prof.fetch('/api/activities?catalogue=1');
     if (!res.ok) throw new Error();
     allActivities = await res.json();
     populateFilterOptions();
@@ -1053,14 +656,12 @@ function applyFilters() {
   const temps = document.getElementById('filterTemps').value;
   const domaine = document.getElementById('filterDomaine').value;
 
-  const filtered = allActivities.filter(a => {
+  renderList(allActivities.filter(a => {
     if (q && !a.title.toLowerCase().includes(q)) return false;
     if (temps && !(a.tempsVerbaux || []).includes(temps)) return false;
     if (domaine && a.domaineDeVie !== domaine) return false;
     return true;
-  });
-
-  renderList(filtered);
+  }));
 }
 
 // Les contenus se lisent en deux blocs : les cours (modules de 4 h, le matin)
@@ -1073,64 +674,45 @@ const SECTIONS = [
 function renderList(items) {
   const list = document.getElementById('activityList');
   const empty = document.getElementById('emptyList');
-  const count = document.getElementById('listCount');
-
-  count.textContent = `(${items.length})`;
+  document.getElementById('listCount').textContent = `(${items.length})`;
 
   if (items.length === 0) {
     list.innerHTML = '';
     empty.classList.add('visible');
     return;
   }
-
   empty.classList.remove('visible');
+
   list.innerHTML = SECTIONS.map(section => {
     const lot = items.filter(a => (a.categorie || 'atelier') === section.cle);
     if (!lot.length) return '';
     return `
       <li class="section-head">
-        <input type="checkbox" class="activity-check section-check"
-               data-section="${section.cle}"
-               title="Cocher toutes les activités de ce bloc" />
         <span class="section-head-title">${section.titre}</span>
         <span class="section-head-sub">${section.sousTitre}</span>
         <span class="section-head-count">${lot.length}</span>
       </li>
-      ${renderItems(lot, section.cle)}`;
+      ${renderItems(lot)}`;
   }).join('');
 
   attachListEvents();
 }
 
-function renderItems(items, sectionCle) {
+function renderItems(items) {
   return items.map(a => `
-    <li class="activity-item${selection.has(a.id) ? ' is-checked' : ''}" data-id="${a.id}" data-section="${sectionCle}">
-      <input type="checkbox" class="activity-check item-check" data-id="${a.id}"
-             ${selection.has(a.id) ? 'checked' : ''}
-             title="Choisir cette activité pour la planifier" />
+    <li class="activity-item" data-id="${a.id}">
       ${a.thumbnail
         ? `<img class="activity-thumb" src="${escHtml(a.thumbnail)}" alt="" onerror="this.style.display='none';this.nextElementSibling.style.display='flex'">`
         : ''}
-      <div class="activity-thumb-placeholder" ${a.thumbnail ? 'style="display:none"' : ''}>
+      <div class="activity-thumb-placeholder" ${a.thumbnail ? 'style="display:none"' : ''} aria-hidden="true">
         <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="8.5" cy="8.5" r="1.5"/><polyline points="21 15 16 10 5 21"/></svg>
       </div>
       <div class="activity-info">
         <div class="activity-name-display">${escHtml(a.title)}</div>
         <div class="act-meta">
-          ${a.interactive ? '<span class="is-on">✓ Interactif</span>' : '<span>— Interactif</span>'}
-          ${a.studentDoc  ? '<span class="is-on">✓ Doc</span>'        : '<span>— Doc</span>'}
-          ${a.slideshow   ? '<span class="is-on">✓ PPT</span>'        : '<span>— PPT</span>'}
-          ${a.thumbnail   ? '<span class="is-on">✓ Image</span>'      : '<span>— Image</span>'}
-          ${a.planCours   ? '<span class="is-on">✓ Plan</span>'       : '<span>— Plan</span>'}
-          ${a.autres      ? '<span class="is-on">✓ Autres</span>'     : '<span>— Autres</span>'}
-        </div>
-        <div class="act-dates">
-          ${a.datePrevue ? `
-          <svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><rect x="3" y="4" width="18" height="18" rx="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg>
-          <span class="act-date">${fmtD(a.datePrevue)}</span>
-          <span class="act-sep" aria-hidden="true">→</span>
-          <span class="act-date--fin">${a.dateFin ? fmtD(a.dateFin) : '…'}</span>`
-          : `<span class="pill-fermee" title="Donnez une date de disponibilité pour l'ouvrir à ce groupe">Non offerte à ce groupe</span>`}
+          ${MATERIEL.map(m => a[m.cle]
+            ? `<a href="${escHtml(a[m.cle])}" target="_blank" rel="noopener">✓ ${escHtml(m.nom)}</a>`
+            : `<span class="est-vide">— ${escHtml(m.nom)}</span>`).join('')}
         </div>
         ${(a.competences?.length || a.tempsVerbaux?.length || a.domaineDeVie) ? `<div class="act-tags">
           ${(a.competences || []).map(c => `<span class="act-tag act-tag--comp">${escHtml(c)}</span>`).join('')}
@@ -1139,341 +721,89 @@ function renderItems(items, sectionCle) {
         </div>` : ''}
       </div>
       <div class="activity-actions">
-        <button class="btn btn-save edit-btn" data-id="${a.id}" title="Modifier">
-          <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"/><path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"/></svg>
-          Modifier
-        </button>
-        <button class="btn btn-danger delete-btn" data-id="${a.id}" data-title="${escHtml(a.title)}" title="Supprimer">
-          <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="3 6 5 6 21 6"/><path d="M19 6l-1 14H6L5 6"/><path d="M10 11v6M14 11v6"/><path d="M9 6V4h6v2"/></svg>
-        </button>
+        <button class="btn btn--ghost btn--sm ajout-btn" data-id="${a.id}">Ajouter du matériel</button>
       </div>
       <span class="activity-id">#${a.id}</span>
     </li>`).join('');
 }
 
-/* ======================================================
-   PLANIFICATION EN LOT
-   Fixer les dates une par une, pour quarante-deux activités et plusieurs
-   groupes, prend une soirée. Ici : on coche, on donne une date de départ et
-   un rythme, et chaque activité reçoit la sienne, décalée d'autant.
-   ====================================================== */
-const selection = new Set();
-
-function itemsAffiches() {
-  // L'ordre de la liste fait foi : c'est celui que l'enseignant a sous les
-  // yeux quand il choisit un rythme (module 1 la première semaine, etc.).
-  return [...document.querySelectorAll('.activity-item')]
-    .map(li => Number(li.dataset.id));
-}
-
-function majPlanBar() {
-  const barre = document.getElementById('planBar');
-  const n = selection.size;
-  barre.classList.toggle('visible', n > 0);
-  document.getElementById('planCount').textContent =
-    n > 1 ? `${n} activités choisies` : `${n} activité choisie`;
-  document.querySelectorAll('.activity-item').forEach(li => {
-    li.classList.toggle('is-checked', selection.has(Number(li.dataset.id)));
-  });
-  document.querySelectorAll('.section-check').forEach(c => {
-    const ids = [...document.querySelectorAll(`.activity-item`)]
-      .filter(li => li.dataset.section === c.dataset.section)
-      .map(li => Number(li.dataset.id));
-    c.checked = ids.length > 0 && ids.every(id => selection.has(id));
-  });
-  majApercu();
-}
-
-function datesPlanifiees() {
-  const debut = document.getElementById('planDebut').value;
-  const pas = Number(document.getElementById('planCadence').value);
-  if (!debut) return [];
-  const ids = itemsAffiches().filter(id => selection.has(id));
-  return ids.map((id, i) => {
-    const d = new Date(debut + 'T12:00:00');
-    d.setDate(d.getDate() + pas * i);
-    return { id, date: d.toISOString().slice(0, 10) };
-  });
-}
-
-function majApercu() {
-  const hint = document.getElementById('planHint');
-  const plan = datesPlanifiees();
-  if (!plan.length) {
-    hint.textContent = 'Choisissez une date de départ. Avec un rythme, chaque activité suivante est décalée d\'autant.';
-    return;
-  }
-  const titre = id => (allActivities.find(a => a.id === id) || {}).title || `#${id}`;
-  const premier = plan[0], dernier = plan[plan.length - 1];
-  hint.textContent = plan.length === 1
-    ? `${titre(premier.id)} → ${fmtD(premier.date)}`
-    : `${titre(premier.id)} → ${fmtD(premier.date)} … ${titre(dernier.id)} → ${fmtD(dernier.date)}`;
-}
-
-async function appliquerPlan(effacer) {
-  const fin = document.getElementById('planFin').value;
-  const plan = effacer
-    ? itemsAffiches().filter(id => selection.has(id)).map(id => ({ id, date: '' }))
-    : datesPlanifiees();
-
-  if (!plan.length) {
-    toast('Choisissez une date de départ.', 'error');
-    return;
-  }
-  if (effacer && !confirm(
-      `Retirer les dates de ${plan.length} activité(s) ? Elles disparaîtront du portail des élèves de ce groupe.`)) {
-    return;
-  }
-
-  const boutons = [document.getElementById('planApply'), document.getElementById('planClear')];
-  boutons.forEach(b => b.disabled = true);
-  let faites = 0;
-  try {
-    // Une requête à la fois : le serveur relit et réécrit schedule.json à
-    // chaque appel, des écritures en parallèle se perdraient.
-    for (const { id, date } of plan) {
-      const res = await Prof.fetch(`/api/activities/${id}/dates`, {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: Prof.body({ datePrevue: date, dateFin: effacer ? '' : fin }),
-      });
-      if (!res.ok) throw new Error(`HTTP ${res.status}`);
-      faites++;
-    }
-    toast(effacer
-      ? `${faites} activité(s) retirée(s) du portail.`
-      : `${faites} activité(s) planifiée(s).`);
-    selection.clear();
-    await loadList();
-  } catch (e) {
-    toast(`Interrompu après ${faites} activité(s) : ${e.message}`, 'error');
-    await loadList();
-  } finally {
-    boutons.forEach(b => b.disabled = false);
-  }
-}
-
-document.getElementById('planApply').addEventListener('click', () => appliquerPlan(false));
-document.getElementById('planClear').addEventListener('click', () => appliquerPlan(true));
-['planDebut', 'planCadence'].forEach(id =>
-  document.getElementById(id).addEventListener('change', majApercu));
-
 function attachListEvents() {
-  document.querySelectorAll('.item-check').forEach(c => {
-    c.addEventListener('change', () => {
-      const id = Number(c.dataset.id);
-      if (c.checked) selection.add(id); else selection.delete(id);
-      majPlanBar();
-    });
-  });
-
-  document.querySelectorAll('.section-check').forEach(c => {
-    c.addEventListener('change', () => {
-      document.querySelectorAll('.activity-item').forEach(li => {
-        if (li.dataset.section !== c.dataset.section) return;
-        const id = Number(li.dataset.id);
-        if (c.checked) selection.add(id); else selection.delete(id);
-      });
-      document.querySelectorAll('.item-check').forEach(box => {
-        box.checked = selection.has(Number(box.dataset.id));
-      });
-      majPlanBar();
-    });
-  });
-
-  majPlanBar();
-
-  document.querySelectorAll('.edit-btn').forEach(btn => {
+  document.querySelectorAll('.ajout-btn').forEach(btn => {
     btn.addEventListener('click', () => {
       const activity = allActivities.find(a => a.id === Number(btn.dataset.id));
-      if (activity) openEditModal(activity);
-    });
-  });
-
-  document.querySelectorAll('.delete-btn').forEach(btn => {
-    btn.addEventListener('click', () => {
-      deleteTargetId = Number(btn.dataset.id);
-      document.getElementById('deleteModalDesc').textContent =
-        `Vous allez supprimer "${btn.dataset.title}". Cette action est irréversible. Les fichiers associés seront également supprimés.`;
-      document.getElementById('deleteModal').classList.add('open');
+      if (activity) ouvrirAjout(activity);
     });
   });
 }
 
 /* ======================================================
-   Modal d'édition complète
+   Ajouter du matériel à une activité existante.
+   Rien ne se remplace : un emplacement déjà rempli est montré, avec
+   son fichier en lien, et n'offre pas de zone de dépôt.
    ====================================================== */
-let editTargetId = null;
+let cibleId = null;
 
-function openEditModal(activity) {
-  editTargetId = activity.id;
+function ouvrirAjout(activity) {
+  cibleId = activity.id;
+  document.getElementById('editModalTitle').textContent = activity.title;
 
-  // Titre
-  document.getElementById('editTitle').value = activity.title;
+  const corps = document.getElementById('editModalBody');
+  corps.innerHTML = MATERIEL.map(m => a_deja(activity[m.cle])
+    ? `<div class="form-group mat-bloc">
+         <label>${escHtml(m.nom)}</label>
+         <div class="current-file">
+           <a href="${escHtml(activity[m.cle])}" target="_blank" rel="noopener" class="current-file-name">${escHtml(activity[m.cle].split('/').pop())}</a>
+           <span class="current-file-label">Déjà déposé</span>
+         </div>
+       </div>`
+    : blocDepot('mod', m)).join('');
 
-  // Fichiers existants
-  setCurrentFile('editThumbCurrent', 'editThumbName', activity.thumbnail);
-  setCurrentFile('editInteractiveCurrent', 'editInteractiveName', activity.interactive);
-  setCurrentFile('editDocCurrent', 'editDocName', activity.studentDoc);
-  setCurrentFile('editSlideshowCurrent', 'editSlideshowName', activity.slideshow);
-
-  document.getElementById('editDateVue').value = activity.dateVue || '';
-  document.getElementById('editCategorie').value = activity.categorie || 'atelier';
-  document.getElementById('editDatePrevue').value = activity.datePrevue || '';
-  document.getElementById('editDateFin').value = activity.dateFin || '';
-
-  setCurrentFile('editPlanCoursCurrent', 'editPlanCoursName', activity.planCours);
-  setCurrentFile('editAutresCurrent', 'editAutresName', activity.autres);
-
-  // Réinitialiser les zones de dépôt
-  ['editThumbFile','editInteractiveFile','editDocFile','editSlideshowFile','editPlanCoursFile','editAutresFile'].forEach(id => {
-    document.getElementById(id).value = '';
-  });
-  document.getElementById('editThumbPreview').classList.remove('visible');
-  document.getElementById('editInteractivePreview').classList.remove('visible');
-  document.getElementById('editDocPreview').classList.remove('visible');
-  document.getElementById('editSlideshowPreview').classList.remove('visible');
-  document.getElementById('editPlanCoursPreview').classList.remove('visible');
-  document.getElementById('editAutresPreview').classList.remove('visible');
-
+  MATERIEL.forEach(m => { if (!a_deja(activity[m.cle])) brancherDepot('mod', m); });
   document.getElementById('editModal').classList.add('open');
-  setTimeout(() => document.getElementById('editTitle').focus(), 100);
 }
 
-function setCurrentFile(divId, nameId, path) {
-  const div = document.getElementById(divId);
-  const nameEl = document.getElementById(nameId);
-  if (path) {
-    nameEl.textContent = path.split('/').pop();
-    div.style.display = 'flex';
-  } else {
-    div.style.display = 'none';
-  }
-}
+const a_deja = v => Boolean(v);
 
-function closeEditModal() {
+function fermerAjout() {
   document.getElementById('editModal').classList.remove('open');
-  editTargetId = null;
+  document.getElementById('editModalBody').innerHTML = '';
+  cibleId = null;
 }
 
-// Suppression d'un fichier individuel (délégation pour couvrir tous les boutons du modal)
-document.getElementById('editModal').addEventListener('click', async e => {
-  const btn = e.target.closest('.current-file-delete');
-  if (!btn || !editTargetId) return;
-  const field = btn.dataset.field;
-  if (!confirm('Supprimer ce fichier ?')) return;
-
-  try {
-    const res = await Prof.fetch(`/api/activities/${editTargetId}/clear-file`, {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ field }),
-    });
-    const data = await res.json();
-    if (!res.ok) throw new Error(data.error);
-
-    btn.closest('.current-file').style.display = 'none';
-    toast('Fichier supprimé.');
-    await loadList();
-  } catch (err) {
-    toast(err.message || 'Erreur lors de la suppression.', 'error');
-  }
-});
-
-document.getElementById('editModalClose').addEventListener('click', closeEditModal);
-document.getElementById('editCancelBtn').addEventListener('click', closeEditModal);
+document.getElementById('editModalClose').addEventListener('click', fermerAjout);
+document.getElementById('editCancelBtn').addEventListener('click', fermerAjout);
 document.getElementById('editModal').addEventListener('click', e => {
-  if (e.target === e.currentTarget) closeEditModal();
+  if (e.target === e.currentTarget) fermerAjout();
 });
 
-// Drop zones du modal d'édition
-setupDropZone('editThumbZone', 'editThumbFile', file => {
-  const preview = document.getElementById('editThumbPreview');
-  const reader = new FileReader();
-  reader.onload = e => { preview.src = e.target.result; preview.classList.add('visible'); };
-  reader.readAsDataURL(file);
-});
-setupDropZone('editInteractiveZone', 'editInteractiveFile', file => {
-  const p = document.getElementById('editInteractivePreview');
-  document.getElementById('editInteractiveFileName').textContent = file.name;
-  document.getElementById('editInteractiveFileSize').textContent = fmtSize(file.size);
-  p.classList.add('visible');
-});
-setupDropZone('editDocZone', 'editDocFile', file => {
-  const p = document.getElementById('editDocPreview');
-  document.getElementById('editDocFileName').textContent = file.name;
-  document.getElementById('editDocFileSize').textContent = fmtSize(file.size);
-  p.classList.add('visible');
-});
-setupDropZone('editSlideshowZone', 'editSlideshowFile', file => {
-  const p = document.getElementById('editSlideshowPreview');
-  document.getElementById('editSlideshowFileName').textContent = file.name;
-  document.getElementById('editSlideshowFileSize').textContent = fmtSize(file.size);
-  p.classList.add('visible');
-});
-setupDropZone('editPlanCoursZone', 'editPlanCoursFile', file => {
-  const p = document.getElementById('editPlanCoursPreview');
-  document.getElementById('editPlanCoursFileName').textContent = file.name;
-  document.getElementById('editPlanCoursFileSize').textContent = fmtSize(file.size);
-  p.classList.add('visible');
-});
-setupDropZone('editAutresZone', 'editAutresFile', file => {
-  const p = document.getElementById('editAutresPreview');
-  document.getElementById('editAutresFileName').textContent = file.name;
-  document.getElementById('editAutresFileSize').textContent = fmtSize(file.size);
-  p.classList.add('visible');
-});
-
-// Enregistrer les modifications
 document.getElementById('editSaveBtn').addEventListener('click', async () => {
-  if (!editTargetId) return;
+  if (!cibleId) return;
 
-  const title = document.getElementById('editTitle').value.trim();
-  if (!title) { toast('Le titre est requis.', 'error'); return; }
+  const fd = new FormData();
+  let nb = 0;
+  for (const m of MATERIEL) {
+    const input = document.getElementById(`mod${m.cle}Input`);
+    const f = input && input.files[0];
+    if (f) { fd.append(m.cle, f); nb++; }
+  }
+  if (!nb) { toast('Choisissez au moins un fichier.', 'error'); return; }
 
   const btn = document.getElementById('editSaveBtn');
   btn.classList.add('loading');
   btn.disabled = true;
-
-  const fd = new FormData();
-  fd.append('title', title);
-  fd.append('categorie', document.getElementById('editCategorie').value);
-
-  const thumb = document.getElementById('editThumbFile').files[0];
-  const interactive = document.getElementById('editInteractiveFile').files[0];
-  const doc = document.getElementById('editDocFile').files[0];
-  const slideshow = document.getElementById('editSlideshowFile').files[0];
-  const planCours = document.getElementById('editPlanCoursFile').files[0];
-  const autres = document.getElementById('editAutresFile').files[0];
-
-  if (thumb) fd.append('thumbnail', thumb);
-  if (interactive) fd.append('interactive', interactive);
-  if (doc) fd.append('studentDoc', doc);
-  if (slideshow) fd.append('slideshow', slideshow);
-  if (planCours) fd.append('planCours', planCours);
-  if (autres) fd.append('autres', autres);
-
   try {
-    const res = await Prof.fetch(`/api/activities/${editTargetId}/update`, { method: 'POST', body: fd });
+    // Ni titre ni catégorie dans l'envoi : le serveur ne touche à un champ
+    // que s'il le reçoit rempli. On n'ajoute que des fichiers.
+    const res = await Prof.fetch(`/api/activities/${cibleId}/update`, { method: 'POST', body: fd });
     const data = await res.json();
     if (!res.ok) throw new Error(data.error || 'Erreur serveur');
-
-    const dateVue = document.getElementById('editDateVue').value;
-    const datePrevue = document.getElementById('editDatePrevue').value;
-    const dateFin = document.getElementById('editDateFin').value;
-    await Prof.fetch(`/api/activities/${editTargetId}/dates`, {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: Prof.body({ dateVue, datePrevue, dateFin }),
-    });
-
-    toast('Activité mise à jour !');
-    closeEditModal();
+    toast(nb === 1 ? 'Fichier ajouté.' : `${nb} fichiers ajoutés.`);
+    fermerAjout();
     await loadList();
   } catch (err) {
     const msg = err.message?.includes('fetch')
       ? 'Serveur non démarré.'
-      : (err.message || 'Erreur lors de la mise à jour.');
+      : (err.message || 'Erreur lors de l\'ajout.');
     toast(msg, 'error');
   } finally {
     btn.classList.remove('loading');
@@ -1482,52 +812,18 @@ document.getElementById('editSaveBtn').addEventListener('click', async () => {
 });
 
 /* ======================================================
-   Suppression — modal
-   ====================================================== */
-document.getElementById('deleteCancelBtn').addEventListener('click', () => {
-  document.getElementById('deleteModal').classList.remove('open');
-  deleteTargetId = null;
-});
-
-document.getElementById('deleteModal').addEventListener('click', e => {
-  if (e.target === e.currentTarget) {
-    e.currentTarget.classList.remove('open');
-    deleteTargetId = null;
-  }
-});
-
-document.getElementById('deleteConfirmBtn').addEventListener('click', async () => {
-  if (!deleteTargetId) return;
-  document.getElementById('deleteModal').classList.remove('open');
-
-  try {
-    const res = await Prof.fetch(`/api/activities/${deleteTargetId}`, { method: 'DELETE' });
-    const data = await res.json();
-    if (!res.ok) throw new Error(data.error);
-    toast('Activité supprimée.');
-    await loadList();
-  } catch (err) {
-    toast(err.message || 'Erreur lors de la suppression.', 'error');
-  }
-
-  deleteTargetId = null;
-});
-
-/* ======================================================
-   Filtre de la liste
+   Filtres
    ====================================================== */
 document.getElementById('listSearch').addEventListener('input', applyFilters);
 document.getElementById('filterTemps').addEventListener('change', applyFilters);
 document.getElementById('filterDomaine').addEventListener('change', applyFilters);
 
 /* ======================================================
-   Init — la session enseignante conditionne tout le reste :
-   sans elle, les appels d'administration répondent 401.
+   Amorçage — la session enseignante conditionne tout le reste :
+   sans elle, les appels au catalogue répondent 401.
    ====================================================== */
-
 (async () => {
   if (!await Prof.init()) return;   // redirige vers prof.html
-  Prof.renderBar(document.getElementById('profBar'), loadList);
   await loadList();
 })();
 </script>

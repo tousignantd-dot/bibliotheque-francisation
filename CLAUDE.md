@@ -213,6 +213,42 @@ choix de l'enseignant survit aux redéploiements.
 - `catalogue.html` / `eleve.html` — catalogue (téléversement) / interface élève
   (l'ancien nom `admin.html` ne sert plus que de redirection vers
   `catalogue.html`, pour les signets pris avant le renommage)
+
+## Catalogue (`catalogue.html`)
+
+Le fonds, pas la planification : **toutes les activités, tous niveaux
+confondus**, et le matériel qui va avec. On y fait deux choses, pas une de
+plus — ajouter une activité, ajouter du matériel à une activité.
+
+- **Aucune date.** Planifier appartient au portail enseignant, qui travaille
+  par groupe. Le catalogue appelle donc `GET /api/activities?catalogue=1`,
+  qui rend le fonds sans superposer les dates d'un groupe. Sans ce drapeau,
+  la route se comporte exactement comme avant (`?groupId=` obligatoire) :
+  rien ne change pour `index.html`, `lms.html` ni le portail élève.
+- **Rien ne disparaît, rien ne se remplace.** Pas de suppression d'activité,
+  pas de suppression de fichier, pas de renommage, pas de changement de type.
+  Un emplacement déjà rempli s'affiche avec son fichier en lien et n'offre
+  pas de zone de dépôt ; seuls les emplacements vides en ont une. Les routes
+  `DELETE /api/activities/<id>`, `/clear-file` et `/rename` existent toujours
+  côté serveur, mais plus aucune page ne les appelle.
+- **Sept emplacements, une seule liste** : la constante `MATERIEL` de la page
+  décide à la fois du formulaire d'ajout, de la ligne du catalogue et de la
+  fenêtre d'ajout. Sa `cle` est le nom du champ côté serveur *et* la clé dans
+  `activities.json` — présentation (`slideshow`), fiche élève (`studentDoc`),
+  **corrigé (`corrige`)**, plan de cours, activité interactive, autres,
+  miniature. Le corrigé est rangé dans `assets/corriges/<slug><ext>`.
+- **Le matériel présent est un lien** : le catalogue sert d'abord à
+  retrouver un fichier. Ce qui manque reste écrit en gris, pour qu'on voie
+  le trou.
+- **Un dépôt fait en ligne survit au redéploiement.** La fusion du volume
+  (`init_storage`) laisse désormais le volume gagner sur les champs de
+  fichier **quand le code n'en porte aucun** (`FICHIER_FIELDS`). Le code
+  garde l'autorité s'il a lui-même un fichier — une fiche régénérée par git
+  doit repartir. Sans cette nuance, un corrigé ajouté en production
+  disparaissait au déploiement suivant.
+- **Le bandeau ne porte que le retour vers l'espace enseignant** : c'est de
+  là qu'on vient, et c'est la seule sortie. Pas de sélecteur de groupe (la
+  page n'en dépend plus), donc plus de `Prof.renderBar` ici.
   - La page du catalogue s'intitule **« Catalogue »** et suit le système de
     design (aucune couleur en dur). Son en-tête ramène à l'espace enseignant,
     en face du bouton « Catalogue » du portail. La barre de groupe vient
