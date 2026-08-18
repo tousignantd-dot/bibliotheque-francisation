@@ -198,10 +198,15 @@
     .pe-depot span { font-size: var(--fs-ui); font-weight: var(--fw-semi); color: var(--text-muted); }
 
     /* — Barre d'action collante — */
+    /* Comme le panneau du dépôt de matériel, elle est bornée à une part de la
+       fenêtre : sur un portable, une sélection nombreuse la faisait dépasser
+       l'écran et « Enregistrer » n'était atteignable qu'en défilant la page
+       jusqu'en bas. Le trop-plein défile maintenant dans la barre. */
     .pe-barre {
       position: sticky; bottom: 0; z-index: 26;
       background: var(--surface-card); border-top: 1px solid var(--border);
       box-shadow: 0 -8px 24px rgba(23, 24, 26, .07);
+      max-height: 72vh; overflow-y: auto; overscroll-behavior: contain;
     }
     .pe-barre > .container {
       padding-top: var(--sp-5); padding-bottom: var(--sp-5);
@@ -218,7 +223,12 @@
     /* `minmax(0, 1fr)` et le `min-width: 0` de la ligne : sans eux, la colonne
        de grille se dimensionne sur le max-content du titre en nowrap, et la
        date part hors du cadre gris au lieu d'être poussée par l'ellipse. */
-    .pe-apercu-liste { margin-top: var(--sp-3); display: grid; grid-template-columns: minmax(0, 1fr); gap: 10px; }
+    /* L'aperçu ne montre que cinq lignes plus un résumé ; la borne ci-dessous
+       n'est qu'un garde-fou pour les écrans courts. */
+    .pe-apercu-liste {
+      margin-top: var(--sp-3); display: grid; grid-template-columns: minmax(0, 1fr); gap: 10px;
+      max-height: 34vh; overflow-y: auto; overscroll-behavior: contain;
+    }
     .pe-apercu-liste > div { min-width: 0; display: flex; justify-content: space-between; gap: var(--sp-4); font-size: var(--fs-body-sm); font-weight: var(--fw-bold); color: var(--text-body); }
     .pe-apercu-liste em { flex: 1; min-width: 0; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; font-style: normal; }
     .pe-apercu-liste b { flex: none; color: var(--text-accent); }
@@ -297,8 +307,18 @@
       gap: var(--sp-8); align-items: start; padding: var(--sp-8) 0 96px;
     }
     /* Le panneau colle sous les deux bandes de la page ET la barre de vues :
-       un `top` plus petit le ferait passer dessous au défilement. */
-    .mat-aside { position: sticky; top: 168px; display: grid; gap: var(--sp-5); }
+       un `top` plus petit le ferait passer dessous au défilement. Sa hauteur
+       est bornée à ce qui reste de la fenêtre : sans cette borne, un panneau
+       plus haut que l'écran garde sa fin hors de vue jusqu'au bas de la page.
+       Le trop-plein défile dans le panneau lui-même. */
+    .mat-aside {
+      position: sticky; top: 168px; display: grid; gap: var(--sp-5);
+      align-content: start;
+      max-height: calc(100vh - 168px - var(--sp-6));
+      overflow-y: auto; overscroll-behavior: contain;
+      /* Les cartes portent une ombre : un peu d'air évite qu'elle soit rognée. */
+      padding: 2px; margin: -2px;
+    }
 
     .mat-confirme {
       display: flex; align-items: center; gap: var(--sp-3);
@@ -433,7 +453,7 @@
 
     @media (max-width: 1100px) {
       .mat-grille { grid-template-columns: 1fr; }
-      .mat-aside { position: static; }
+      .mat-aside { position: static; max-height: none; overflow-y: visible; }
     }
 
     .pe-connexion { padding: var(--sp-12) 0; display: flex; justify-content: center; }
