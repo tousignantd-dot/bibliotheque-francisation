@@ -124,12 +124,16 @@ PAGE.write_text(f"""<!DOCTYPE html>
     font-size: var(--fs-body-sm); font-weight: var(--fw-medium); color: var(--ink-500);
   }}
   .tu-autre b {{ color: var(--text-strong); }}
+  /* Retour vers l'espace enseignant : la pilule fantôme du système, juste
+     décollée du surtitre. */
+  .tu-retour {{ margin: 0 0 var(--sp-4); }}
 </style>
 </head>
 <body>
 <div class="page">
   <header class="band">
     <div class="container">
+      <a class="btn btn--ghost btn--sm tu-retour" href="../../enseignant.html"><span aria-hidden="true">←</span> Retour à l’espace enseignant</a>
       <div class="band__eyebrow">Espace enseignant · Francisation Niveau 4</div>
       <h1 style="margin:var(--sp-3) 0 0;font-size:var(--fs-h2);font-weight:var(--fw-black)">Tutoriels en vidéo</h1>
       <p class="band__lead">Six capsules courtes, filmées dans le portail, avec narration
@@ -148,6 +152,30 @@ PAGE.write_text(f"""<!DOCTYPE html>
     </div>
   </div>
 </div>
+<script>
+/* Retour à l'espace enseignant. Le portail ouvre cette page dans un onglet à
+   part, avec ?de=enseignant : revenir veut alors dire fermer cet onglet, celui
+   d'origine étant resté ouvert avec la planification en cours. Si le
+   navigateur refuse la fermeture (page ouverte à la main, signet), on retombe
+   sur la navigation normale du lien. */
+(() => {{
+  const lien = document.querySelector(".tu-retour");
+  if (!lien) return;
+  if (new URLSearchParams(location.search).get("de") !== "enseignant") return;
+  // Le guide est l'autre forme du même contenu : on lui reporte le paramètre
+  // pour que son propre bouton retour ferme l'onglet lui aussi.
+  const guide = document.querySelector('a[href="guide-espace-enseignant.html"]');
+  if (guide) guide.href = "guide-espace-enseignant.html?de=enseignant";
+  lien.innerHTML = '<span aria-hidden="true">\u2190</span> Fermer et revenir \u00e0 l\u2019espace enseignant';
+  lien.addEventListener("click", (e) => {{
+    e.preventDefault();
+    const cible = lien.href;
+    window.close();
+    // window.close() est silencieux quand il est refusé : on vérifie après coup.
+    setTimeout(() => {{ if (!window.closed) location.href = cible; }}, 200);
+  }});
+}})();
+</script>
 </body>
 </html>
 """)

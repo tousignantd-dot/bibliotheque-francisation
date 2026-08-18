@@ -196,6 +196,9 @@ body { margin: 0; overflow: hidden; background: var(--surface-page); }
 .gd-btn--pri { background: var(--accent); border-color: var(--accent); color: var(--text-inverse); }
 .gd-btn--pri:hover { background: var(--green-800); }
 .gd-btn[disabled] { color: var(--text-muted); cursor: default; }
+/* Le retour vers le portail porte la même pilule que la navigation, mais
+   c'est un lien : il ne doit pas se souligner ni virer au bleu. */
+a.gd-btn, a.gd-btn:hover, a.gd-btn:visited { text-decoration: none; }
 
 /* Le sommaire : douze diapositives se retrouvent mal à la flèche. */
 .gd-sommaire {
@@ -966,6 +969,7 @@ body { margin: 0; overflow: hidden; background: var(--surface-page); }
 
   <div class="gd-barre">
     <div class="gd-barre-gauche">
+      <a class="gd-btn" id="lienRetour" href="../../enseignant.html"><span aria-hidden="true">←</span> Retour à l’espace enseignant</a>
       <span class="gd-compteur" id="compteur">1 / 20</span>
       <span class="gd-titre-courant" id="titreCourant"></span>
     </div>
@@ -1099,6 +1103,28 @@ body { margin: 0; overflow: hidden; background: var(--surface-page); }
 
   const depart = parseInt((location.hash || '').replace('#', ''), 10);
   afficher(Number.isFinite(depart) && depart > 0 ? depart - 1 : 0);
+})();
+
+/* — Retour à l'espace enseignant —
+   Le portail ouvre les tutoriels dans un onglet à part, avec ?de=enseignant,
+   et la page des tutoriels reporte le paramètre sur le lien qui mène ici :
+   revenir veut alors dire fermer cet onglet, celui d'origine étant resté
+   ouvert avec la planification en cours. Si le navigateur refuse la
+   fermeture (page ouverte à la main, signet), on retombe sur la navigation
+   normale du lien. */
+(function () {
+  'use strict';
+  const lien = document.getElementById('lienRetour');
+  if (!lien) return;
+  if (new URLSearchParams(location.search).get('de') !== 'enseignant') return;
+  lien.innerHTML = '<span aria-hidden="true">\u2190</span> Fermer et revenir \u00e0 l\u2019espace enseignant';
+  lien.addEventListener('click', (e) => {
+    e.preventDefault();
+    const cible = lien.href;
+    window.close();
+    // window.close() est silencieux quand il est refusé : on vérifie après coup.
+    setTimeout(() => { if (!window.closed) location.href = cible; }, 200);
+  });
 })();
 </script>
 </body>

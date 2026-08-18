@@ -531,12 +531,14 @@
           <!-- Le compositeur est une page autonome, sans session ni groupe : il
                assemble un prompt à partir du programme. Nouvel onglet, pour ne
                pas faire perdre à l'enseignante la planification en cours. -->
-          <a class="btn btn--ghost btn--sm" href="assets/outils/compositeur-activite.html"
+          <a class="btn btn--ghost btn--sm" id="lienCompositeur"
+             href="assets/outils/compositeur-activite.html?de=enseignant"
              target="_blank" rel="noopener">Composer une activité</a>
           <!-- Les tutoriels : autonomes comme le compositeur, donc nouvel
                onglet eux aussi. La page vidéo est la porte d'entrée ; elle
                renvoie elle-même vers la version en diapositives. -->
-          <a class="btn btn--ghost btn--sm" href="assets/outils/tutoriels-enseignant.html"
+          <a class="btn btn--ghost btn--sm" id="lienTutoriels"
+             href="assets/outils/tutoriels-enseignant.html?de=enseignant"
              target="_blank" rel="noopener">Tutoriels</a>
         </span>
       </div>
@@ -862,5 +864,23 @@
 
 <script src="js/materiel.js"></script>
 <script src="js/enseignant.js"></script>
+<script>
+/* Le compositeur et les tutoriels portent un bouton « Fermer et revenir à
+   l'espace enseignant », qui appelle window.close(). Les navigateurs ne
+   laissent fermer qu'un onglet ouvert par script : on ouvre donc nous-mêmes
+   plutôt que de laisser le lien faire son travail. Le href reste en place comme filet (clic milieu, JS
+   désactivé, ouverture dans un nouvel onglet à la main). */
+(() => {
+  for (const id of ['lienCompositeur', 'lienTutoriels']) {
+    const lien = document.getElementById(id);
+    if (!lien) continue;
+    lien.addEventListener('click', (e) => {
+      if (e.defaultPrevented || e.button !== 0 || e.metaKey || e.ctrlKey || e.shiftKey || e.altKey) return;
+      const onglet = window.open(lien.href, '_blank');
+      if (onglet) e.preventDefault();   // sinon, on laisse le lien s'ouvrir seul
+    });
+  }
+})();
+</script>
 </body>
 </html>

@@ -78,6 +78,17 @@ h1,h2,h3{margin:0; line-height:1.2}
 .bande h1{font-size:30px; font-weight:900; letter-spacing:-.01em}
 .bande p{margin:var(--sp-2) 0 0; font-size:17px; font-weight:600; color:var(--ink-600); max-width:70ch}
 
+/* Retour vers l'espace enseignant. Le compositeur s'ouvre dans un nouvel
+   onglet depuis enseignant.html ; ce lien sert à l'enseignante qui arrive
+   ici par un signet ou qui a fermé l'onglet d'origine. */
+.retour{display:inline-flex; align-items:center; gap:var(--sp-2); margin:0 0 var(--sp-3);
+  font-size:14px; font-weight:800; color:var(--green-800); text-decoration:none;
+  border:1px solid var(--line-200); border-radius:999px; background:#fff;
+  padding:6px var(--sp-3)}
+.retour:hover{background:var(--green-050); border-color:var(--green-800)}
+.retour:focus-visible{outline:3px solid var(--green-800); outline-offset:2px}
+.retour span[aria-hidden]{font-size:16px; line-height:1}
+
 /* ---------- Grille principale ---------- */
 .shell{max-width:1400px; margin:0 auto; padding:var(--sp-8); display:grid; grid-template-columns:minmax(0,1fr) minmax(360px,40%); gap:var(--sp-8); align-items:start}
 .colonne{display:flex; flex-direction:column; gap:var(--sp-6); min-width:0}
@@ -314,6 +325,7 @@ textarea#edition:focus-visible{box-shadow:inset 0 0 0 3px var(--green-100)}
 
 <header class="bande">
   <div class="bande__in">
+    <a class="retour" href="../../enseignant.html"><span aria-hidden="true">←</span> Retour à l’espace enseignant</a>
     <p class="surtitre">Programme d’études Francisation · Québec</p>
     <h1>Composer une activité</h1>
     <p>Choisissez vos critères dans le programme officiel. L’aperçu de droite assemble le prompt à coller dans Claude.</p>
@@ -1991,6 +2003,28 @@ function demanderAjustement(){
 addEventListener("visibilitychange", () => { if(!document.hidden) ajusterApercu(); });
 addEventListener("scroll", demanderAjustement, { passive:true });
 addEventListener("resize", demanderAjustement);
+
+/* ---------- Retour à l'espace enseignant ----------
+   L'espace enseignant ouvre le compositeur dans un onglet à part, avec
+   ?de=enseignant. Dans ce cas, revenir en arrière veut dire fermer cet
+   onglet : l'onglet d'origine est encore là, avec la planification intacte.
+   Si le navigateur refuse la fermeture (page ouverte à la main, signet),
+   on retombe sur la navigation normale du lien. */
+(() => {
+  const lien = document.querySelector(".retour");
+  if(!lien) return;
+  const venuDuPortail = new URLSearchParams(location.search).get("de") === "enseignant";
+  if(!venuDuPortail) return;
+  lien.textContent = "";
+  lien.insertAdjacentHTML("afterbegin", '<span aria-hidden="true">\u2190</span> Fermer et revenir \u00e0 l\u2019espace enseignant');
+  lien.addEventListener("click", (e) => {
+    e.preventDefault();
+    const cible = lien.href;
+    window.close();
+    // window.close() est silencieux quand il est refusé : on vérifie après coup.
+    setTimeout(() => { if(!window.closed) location.href = cible; }, 200);
+  });
+})();
 </script>
 </body>
 </html>
