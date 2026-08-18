@@ -14,7 +14,8 @@
    des outils. Portés par .oe-root, ils héritaient d'un fond transparent —
    texte sombre sur bandeau noir, illisible. */
 :root{
-  --oe-dock:106px;
+  --oe-dock:86px;
+  --oe-dock-fil:#9DB2A6;
   --oe-panel:400px;
   --oe-card:var(--surface-card,#FFFFFF);
   --oe-page:var(--surface-page,#F7F7F5);
@@ -71,19 +72,29 @@
 .oe-dock{
   position:fixed;top:0;right:0;width:var(--oe-dock);height:100vh;
   background:var(--oe-page);border-left:1px solid var(--oe-paper-200);
-  display:flex;flex-direction:column;align-items:center;gap:12px;
-  padding:20px 9px;z-index:8000;overflow-y:auto;
+  display:flex;flex-direction:column;align-items:center;gap:8px;
+  padding:14px 6px;z-index:8000;overflow-y:auto;
   transition:transform .22s ease;
 }
-.oe-dock-t{font-size:13px;font-weight:800;letter-spacing:.1em;text-transform:uppercase;
-  color:var(--oe-muted);text-align:center;margin-bottom:8px;line-height:1.4}
+/* Un fil vert-gris posé sur le bord gauche du rail : il marque la limite
+   entre la page et les outils sans ajouter une bordure de plus. Le trait
+   s'arrête avant le haut et le bas — d'où la « petite » ligne. */
+.oe-dock::before{
+  content:"";position:absolute;left:0;top:18%;bottom:18%;width:3px;
+  background:var(--oe-dock-fil);border-radius:0 var(--oe-r-pill) var(--oe-r-pill) 0;
+}
+.oe-dock-t{font-size:11px;font-weight:800;letter-spacing:.08em;text-transform:uppercase;
+  color:var(--oe-muted);text-align:center;margin-bottom:4px;line-height:1.35}
 .oe-tool{
   width:100%;border:0;background:transparent;border-radius:var(--oe-r-md);
-  padding:8px;display:flex;flex-direction:column;align-items:center;justify-content:center;
-  gap:4px;color:var(--oe-ink);min-height:76px;
+  padding:6px 2px;display:flex;flex-direction:column;align-items:center;justify-content:center;
+  gap:3px;color:var(--oe-ink);min-height:60px;
 }
+/* Les glyphes sont posés à 26 px par le script : le rail rétréci les reprend
+   à 22 px, ce qui garde la cible tactile au-dessus de 44 px avec le libellé. */
+.oe-dock .oe-tool .oe-ic svg{width:22px;height:22px}
 .oe-tool .oe-ic{display:block;line-height:0}
-.oe-tool .oe-lb{font-size:15px;font-weight:700;line-height:1.2;text-align:center}
+.oe-tool .oe-lb{font-size:12.5px;font-weight:700;line-height:1.2;text-align:center}
 /* Le rouge est réservé à l'audio : « Lire » est le seul outil qui le porte. */
 .oe-tool.oe-audio{color:var(--oe-audio)}
 .oe-tool:hover{background:var(--oe-sunken)}
@@ -93,26 +104,26 @@
    survol pour gagner sans !important. */
 .oe-dock .oe-tool[aria-pressed="true"],
 .oe-dock .oe-tool[aria-pressed="true"]:hover{background:var(--oe-ink);color:#fff}
-.oe-dock-sep{width:56px;height:1px;background:var(--oe-paper-200);margin:8px 0;flex:none}
+.oe-dock-sep{width:44px;height:1px;background:var(--oe-paper-200);margin:5px 0;flex:none}
 
 /* ── Masquer / rappeler le rail ─────────────────────────────────
    Le rail est toujours présent à l'ouverture du module : l'état masqué
    ne se retient pas d'une page à l'autre, il vaut pour la séance en cours.
    Le bouton de rappel reste visible, sinon l'outil serait perdu. */
-/* Le rail ne fait que 106 px : le libellé doit tenir dans la pastille sans
+/* Le rail ne fait que 86 px : le libellé doit tenir dans la pastille sans
    la faire déborder du rail (un bouton flex ne rétrécit pas sous son
    contenu tant qu'on ne l'y autorise pas). */
 .oe-dock-cacher{
   margin-top:auto;flex:none;width:100%;max-width:100%;min-width:0;
   border:1px solid var(--oe-line-2);
   background:transparent;border-radius:var(--oe-r-pill);
-  padding:7px 2px;display:flex;align-items:center;justify-content:center;gap:3px;
+  padding:6px 2px;display:flex;align-items:center;justify-content:center;gap:3px;
   color:var(--oe-muted);overflow:hidden;
 }
-.oe-dock-cacher svg{width:14px;height:14px}
+.oe-dock-cacher svg{width:13px;height:13px}
 /* La taille vit sur le libellé, pas sur le bouton : `.oe-root button{font:inherit}`
    l'emporterait et le mot repartirait à 18 px, donc tronqué dans le rail. */
-.oe-dock-cacher .oe-dock-cacher-t{font-size:12px;font-weight:800;line-height:1.2;white-space:nowrap}
+.oe-dock-cacher .oe-dock-cacher-t{font-size:11px;font-weight:800;line-height:1.2;white-space:nowrap}
 .oe-dock-cacher:hover{background:var(--oe-sunken);color:var(--oe-ink)}
 .oe-dock-cacher svg{flex:none}
 .oe-montrer{
@@ -282,6 +293,9 @@ body.oe-host{transition:padding-right .22s ease}
     box-shadow:0 -6px 22px rgba(0,0,0,.07);
   }
   .oe-dock-t,.oe-dock-sep{display:none}
+  /* En bande horizontale, le fil se couche sur le bord supérieur. */
+  .oe-dock::before{left:18%;right:18%;top:0;bottom:auto;width:auto;height:3px;
+    border-radius:0 0 var(--oe-r-pill) var(--oe-r-pill)}
   /* En bande horizontale, le bouton « Masquer » se réduit au chevron et
      le rail s'efface vers le bas. */
   .oe-dock-cacher{margin-top:0;width:auto;flex:0 0 auto;padding:6px 8px;align-self:center}
@@ -293,15 +307,29 @@ body.oe-host{transition:padding-right .22s ease}
   .oe-montrer{top:auto;bottom:12px;transform:none}
   /* Six libellés côte à côte sur 375 px : le mot reste obligatoire, c'est le
      corps qui cède, pas le glyphe. Cible tactile toujours ≥ 44 px. */
-  .oe-tool{width:auto;flex:1;padding:6px 2px;min-height:56px;gap:2px}
+  /* Bande horizontale : les boutons s'étirent sur toute la hauteur et le
+     libellé part du haut, sinon « Mon carnet », seul à passer sur deux
+     lignes, décale son glyphe et casse l'alignement de la rangée. */
+  .oe-dock{align-items:stretch}
+  .oe-tool{width:auto;flex:1;min-width:0;padding:6px 1px;min-height:56px;gap:2px;
+    justify-content:flex-start}
   .oe-tool .oe-lb{font-size:11.5px;font-weight:700}
-  .oe-tool .oe-ic svg{width:22px;height:22px}
+  .oe-dock .oe-tool .oe-ic svg{width:22px;height:22px}
   .oe-panel{
     right:0;left:0;width:100%;top:auto;bottom:0;height:80vh;
     border-left:0;border-top:1px solid var(--oe-line);
     border-radius:var(--oe-r-lg) var(--oe-r-lg) 0 0;transform:translateY(100%);
   }
   .oe-lang,.oe-langbar{padding-left:16px;padding-right:16px}
+}
+
+/* Sept outils côte à côte sur 375 px : à cette largeur les mots se touchent,
+   c'est encore le corps qui cède — le glyphe et le mot restent. */
+@media (max-width:420px){
+  .oe-dock{padding-left:2px;padding-right:2px}
+  .oe-dock-cacher{padding:6px 4px}
+  .oe-tool .oe-lb{font-size:10px;letter-spacing:-.01em}
+  .oe-dock .oe-tool .oe-ic svg{width:20px;height:20px}
 }
 
 @media (prefers-reduced-motion:reduce){
