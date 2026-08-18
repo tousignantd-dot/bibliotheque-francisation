@@ -1,0 +1,704 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Un miroir, pas un juge — La reconnaissance vocale en classe de langue</title>
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Nunito:ital,wght@0,400;0,600;0,700;0,800;0,900;1,700&display=swap" />
+
+<style>
+/* ═══════════════════════════════════════════════════════════════
+   LA RECONNAISSANCE VOCALE EN CLASSE DE LANGUE
+   Diaporama de perfectionnement. Reprend les jetons du système de
+   design de la bibliothèque (Nunito, neutres chauds, accent vert,
+   rouge réservé à l'audio) — ici le rouge sert de motif, puisque
+   toute la présentation porte sur la voix. Deux thèmes : la page
+   est lue dans celui du lecteur.
+   ═══════════════════════════════════════════════════════════════ */
+
+:root {
+  /* — Neutres chauds — */
+  --paper-50:#FBFBFA; --paper-100:#F7F7F5; --paper-200:#F0F0EE; --white:#FFFFFF;
+  --line-100:#EAEAE8; --line-300:#D6D6D2;
+  --ink-900:#17181A; --ink-700:#3A3D40; --ink-500:#4B4F52; --ink-400:#6E7175;
+
+  /* — Accent — */
+  --green-800:#07734A; --green-600:#0A8F5B; --green-100:#E6F5EE;
+  /* — Repérage — */
+  --acier-600:#1D6B8F; --acier-100:#E7F0F6;
+  --violet-600:#6B4FBB; --violet-100:#EFEAFA;
+  --ambre-700:#B45309; --ambre-100:#FBEEDC;
+  --audio:#DC2626;     --audio-100:#FFF1F0;
+
+  /* — Alias — */
+  --surface-page:var(--paper-100);
+  --surface-card:var(--white);
+  --surface-sunken:var(--paper-50);
+  --surface-inverse:var(--ink-900);
+  --text-strong:var(--ink-900);
+  --text-body:var(--ink-700);
+  --text-soft:var(--ink-500);
+  --text-muted:var(--ink-400);
+  --text-inverse:#FFFFFF;
+  --text-accent:var(--green-800);
+  --border:var(--line-100);
+  --border-firm:var(--line-300);
+  --accent:var(--green-600);
+  --accent-soft:var(--green-100);
+  --accent-ink:var(--green-800);
+  --focus-ring:var(--green-600);
+  --sh-card:0 1px 2px rgba(20,20,20,.05);
+  --sh-raise:0 4px 20px rgba(20,20,20,.07);
+  --sh-modal:0 24px 64px rgba(20,20,20,.28);
+  --scrim:rgba(23,24,26,.42);
+
+  /* — Échelle — */
+  --sp-1:4px; --sp-2:8px; --sp-3:12px; --sp-4:16px; --sp-5:20px;
+  --sp-6:24px; --sp-8:32px; --sp-12:48px;
+  --r-sm:10px; --r-md:14px; --r-lg:18px; --r-pill:999px;
+  --content-max:1020px;
+
+  --fs-lead:19px; --fs-body:18px; --fs-body-sm:17px;
+  --fs-ui:15px; --fs-ui-sm:14px; --fs-label:13px; --fs-meta:12px;
+  --ls-label:.12em;
+  --fw-medium:600; --fw-semi:700; --fw-bold:800; --fw-black:900;
+
+  --dur:160ms; --ease:cubic-bezier(.2,.7,.3,1);
+  --font-sans:"Nunito", system-ui, -apple-system, "Segoe UI", sans-serif;
+}
+
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) {
+    --paper-50:#1B1C1A; --paper-100:#141513; --paper-200:#222320; --white:#1C1D1B;
+    --line-100:#2E2F2C; --line-300:#3C3D39;
+    --ink-900:#F3F3F0; --ink-700:#DCDCD7; --ink-500:#B8BAB4; --ink-400:#94968F;
+
+    --green-800:#6FD3A4; --green-600:#3FBE85; --green-100:#12301F;
+    --acier-600:#79BEDE; --acier-100:#132831;
+    --violet-600:#B29CF3; --violet-100:#221C36;
+    --ambre-700:#E8A85C; --ambre-100:#33240F;
+    --audio:#F58585;     --audio-100:#331A1A;
+
+    --surface-inverse:#000000;
+    --text-inverse:#F7F7F5;
+    --sh-card:0 1px 2px rgba(0,0,0,.4);
+    --sh-raise:0 4px 20px rgba(0,0,0,.45);
+    --sh-modal:0 24px 64px rgba(0,0,0,.6);
+    --scrim:rgba(0,0,0,.6);
+  }
+}
+:root[data-theme="dark"] {
+  --paper-50:#1B1C1A; --paper-100:#141513; --paper-200:#222320; --white:#1C1D1B;
+  --line-100:#2E2F2C; --line-300:#3C3D39;
+  --ink-900:#F3F3F0; --ink-700:#DCDCD7; --ink-500:#B8BAB4; --ink-400:#94968F;
+
+  --green-800:#6FD3A4; --green-600:#3FBE85; --green-100:#12301F;
+  --acier-600:#79BEDE; --acier-100:#132831;
+  --violet-600:#B29CF3; --violet-100:#221C36;
+  --ambre-700:#E8A85C; --ambre-100:#33240F;
+  --audio:#F58585;     --audio-100:#331A1A;
+
+  --surface-inverse:#000000;
+  --text-inverse:#F7F7F5;
+  --sh-card:0 1px 2px rgba(0,0,0,.4);
+  --sh-raise:0 4px 20px rgba(0,0,0,.45);
+  --sh-modal:0 24px 64px rgba(0,0,0,.6);
+  --scrim:rgba(0,0,0,.6);
+}
+
+*, *::before, *::after { box-sizing: border-box; }
+html, body { height: 100%; }
+body {
+  margin: 0; overflow: hidden;
+  background: var(--surface-page);
+  color: var(--text-body);
+  font-family: var(--font-sans);
+  font-size: var(--fs-body-sm);
+  font-weight: var(--fw-medium);
+  line-height: 1.5;
+  -webkit-font-smoothing: antialiased;
+}
+:focus-visible { outline: 3px solid var(--focus-ring); outline-offset: 2px; border-radius: 4px; }
+
+/* ── La scène ─────────────────────────────────────────────── */
+.gd { position: fixed; inset: 0; display: flex; flex-direction: column; }
+.gd-scene { position: relative; flex: 1; min-height: 0; }
+
+.gd-progres { position: absolute; top: 0; left: 0; right: 0; height: 3px; background: var(--border); z-index: 3; }
+.gd-progres > i { display: block; height: 100%; width: 0; background: var(--accent); transition: width var(--dur) var(--ease); }
+
+.gd-dia {
+  position: absolute; inset: 0; overflow-y: auto;
+  padding: clamp(28px, 5vh, 56px) var(--sp-6) var(--sp-8);
+  opacity: 0; visibility: hidden; pointer-events: none;
+  transition: opacity var(--dur) var(--ease);
+}
+.gd-dia.is-active { opacity: 1; visibility: visible; pointer-events: auto; }
+.gd-bloc { max-width: var(--content-max); margin: 0 auto; display: grid; gap: var(--sp-6); }
+.gd-bloc--serre { gap: var(--sp-4); }
+
+/* Apparition sobre, décalée d'une pièce à l'autre. */
+.gd-dia.is-active [data-r] { animation: monte 380ms var(--ease) both; }
+.gd-dia.is-active [data-r]:nth-child(2) { animation-delay: 70ms; }
+.gd-dia.is-active [data-r]:nth-child(3) { animation-delay: 140ms; }
+.gd-dia.is-active [data-r]:nth-child(4) { animation-delay: 210ms; }
+.gd-dia.is-active [data-r]:nth-child(5) { animation-delay: 280ms; }
+@keyframes monte { from { opacity: 0; transform: translateY(14px); } to { opacity: 1; transform: none; } }
+
+/* ── Typographie ──────────────────────────────────────────── */
+.gd-sur {
+  font-size: var(--fs-label); font-weight: var(--fw-bold);
+  letter-spacing: var(--ls-label); text-transform: uppercase; color: var(--text-accent);
+}
+.gd-sur--audio { color: var(--audio); }
+.gd-sur--muet  { color: var(--text-muted); }
+
+.gd-h {
+  margin: var(--sp-3) 0 0;
+  font-size: clamp(27px, 4vw, 43px); font-weight: var(--fw-black);
+  line-height: 1.08; letter-spacing: -.018em; color: var(--text-strong);
+  text-wrap: balance;
+}
+.gd-h--hero { font-size: clamp(33px, 5.6vw, 60px); line-height: 1.02; }
+.gd-lead { margin: var(--sp-4) 0 0; font-size: var(--fs-lead); font-weight: var(--fw-semi); color: var(--text-soft); max-width: 66ch; }
+.gd-p { margin: 0; color: var(--text-soft); max-width: 68ch; }
+.gd-p + .gd-p { margin-top: var(--sp-3); }
+.gd-fort { color: var(--text-strong); font-weight: var(--fw-bold); }
+
+/* ── Cartes et grilles ────────────────────────────────────── */
+.gd-grille { display: grid; gap: var(--sp-4); grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); }
+.gd-grille--2 { grid-template-columns: repeat(auto-fit, minmax(310px, 1fr)); }
+
+.gd-carte {
+  background: var(--surface-card); border: 1px solid var(--border);
+  border-radius: var(--r-lg); padding: var(--sp-5); box-shadow: var(--sh-card);
+}
+.gd-carte h3 { margin: 0; font-size: var(--fs-body); font-weight: var(--fw-black); color: var(--text-strong); }
+.gd-carte p { margin: var(--sp-2) 0 0; color: var(--text-soft); }
+.gd-carte p + p { margin-top: var(--sp-3); }
+
+/* Le filet gauche est le seul repère de couleur d'une carte. */
+.gd-carte--vert   { border-left: 4px solid var(--accent); }
+.gd-carte--acier  { border-left: 4px solid var(--acier-600); }
+.gd-carte--violet { border-left: 4px solid var(--violet-600); }
+.gd-carte--ambre  { border-left: 4px solid var(--ambre-700); }
+.gd-carte--audio  { border-left: 4px solid var(--audio); }
+
+.gd-eti {
+  display: inline-block; margin-bottom: var(--sp-3);
+  padding: 4px 11px; border-radius: var(--r-pill);
+  font-size: var(--fs-meta); font-weight: var(--fw-bold);
+  letter-spacing: .06em; text-transform: uppercase;
+}
+.gd-eti--vert   { background: var(--accent-soft);  color: var(--accent-ink); }
+.gd-eti--acier  { background: var(--acier-100);    color: var(--acier-600); }
+.gd-eti--violet { background: var(--violet-100);   color: var(--violet-600); }
+.gd-eti--ambre  { background: var(--ambre-100);    color: var(--ambre-700); }
+.gd-eti--audio  { background: var(--audio-100);    color: var(--audio); }
+
+/* Pastille numérotée : la présentation est une suite de règles numérotées,
+   le chiffre y dit l'ordre d'application, pas la décoration. */
+.gd-num {
+  display: inline-flex; align-items: center; justify-content: center;
+  width: 34px; height: 34px; flex: none;
+  border-radius: var(--r-md); background: var(--accent-soft); color: var(--accent-ink);
+  font-size: var(--fs-ui); font-weight: var(--fw-black);
+}
+
+/* Liste à glyphe : chaque état porte un signe ET un mot. */
+.gd-liste { list-style: none; margin: 0; padding: 0; display: grid; gap: var(--sp-3); }
+.gd-liste li { display: flex; gap: var(--sp-3); align-items: flex-start; color: var(--text-soft); }
+.gd-liste b { color: var(--text-strong); font-weight: var(--fw-bold); }
+.gd-gly { flex: none; width: 22px; font-weight: var(--fw-black); font-size: var(--fs-body); line-height: 1.4; }
+.gd-gly--oui { color: var(--accent-ink); }
+.gd-gly--non { color: var(--audio); }
+.gd-gly--att { color: var(--ambre-700); }
+
+/* Le seul bloc foncé de la présentation. */
+.gd-encre {
+  background: var(--surface-inverse); color: var(--text-inverse);
+  border-radius: var(--r-lg); padding: clamp(24px, 4vw, 44px);
+}
+.gd-encre .gd-sur { color: #9BE3C0; }
+.gd-encre h2 { margin: var(--sp-3) 0 0; font-size: clamp(24px, 3.4vw, 36px); font-weight: var(--fw-black); line-height: 1.14; letter-spacing: -.015em; text-wrap: balance; }
+.gd-encre p { margin: var(--sp-4) 0 0; color: #D5D6D2; font-size: var(--fs-lead); font-weight: var(--fw-medium); max-width: 62ch; }
+
+/* Encadré de mise en garde. */
+.gd-note {
+  border: 1px solid var(--border); border-left: 4px solid var(--ambre-700);
+  background: var(--surface-sunken); border-radius: var(--r-lg);
+  padding: var(--sp-5); color: var(--text-soft);
+}
+.gd-note b { color: var(--text-strong); }
+
+/* Exemple d'oral : ce que l'élève dit, ce que la machine écrit. */
+.gd-ex { display: grid; gap: var(--sp-3); grid-template-columns: repeat(auto-fit, minmax(230px, 1fr)); margin-top: var(--sp-4); }
+.gd-ex div { background: var(--surface-sunken); border: 1px solid var(--border); border-radius: var(--r-md); padding: var(--sp-4); }
+.gd-ex span { display: block; font-size: var(--fs-meta); font-weight: var(--fw-bold); letter-spacing: .06em; text-transform: uppercase; color: var(--text-muted); }
+.gd-ex q { display: block; margin-top: var(--sp-2); font-size: var(--fs-body); font-weight: var(--fw-bold); color: var(--text-strong); font-style: italic; }
+.gd-ex q::before, .gd-ex q::after { content: ""; }
+
+/* ── Barre de commande ────────────────────────────────────── */
+.gd-barre {
+  display: flex; align-items: center; gap: var(--sp-3);
+  padding: var(--sp-3) var(--sp-5);
+  border-top: 1px solid var(--border); background: var(--surface-card);
+  flex-wrap: wrap;
+}
+.gd-cpt { font-size: var(--fs-ui-sm); font-weight: var(--fw-bold); color: var(--text-muted); font-variant-numeric: tabular-nums; }
+.gd-titre-cour { font-size: var(--fs-ui-sm); font-weight: var(--fw-bold); color: var(--text-strong); margin-right: auto; }
+.gd-btn {
+  appearance: none; font: inherit; font-size: var(--fs-ui-sm); font-weight: var(--fw-bold);
+  min-height: 44px; padding: 0 var(--sp-5); border-radius: var(--r-pill);
+  border: 1px solid var(--border-firm); background: var(--surface-card); color: var(--text-strong);
+  cursor: pointer; transition: background var(--dur) var(--ease), border-color var(--dur) var(--ease);
+}
+.gd-btn:hover { background: var(--paper-200); }
+.gd-btn[disabled] { opacity: .4; cursor: default; }
+.gd-btn--pri { background: var(--accent); border-color: var(--accent); color: #FFFFFF; }
+.gd-btn--pri:hover { background: var(--accent-ink); border-color: var(--accent-ink); }
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) .gd-btn--pri { color: #0B1A12; }
+}
+:root[data-theme="dark"] .gd-btn--pri { color: #0B1A12; }
+
+/* ── Sommaire ─────────────────────────────────────────────── */
+.gd-sommaire { position: fixed; inset: 0; z-index: 20; display: flex; align-items: center; justify-content: center; padding: var(--sp-5); background: var(--scrim); }
+.gd-sommaire[hidden] { display: none; }
+.gd-sommaire-in { width: min(520px, 100%); max-height: 80vh; overflow-y: auto; background: var(--surface-card); border-radius: var(--r-lg); box-shadow: var(--sh-modal); padding: var(--sp-5); }
+.gd-sommaire h2 { margin: 0 0 var(--sp-4); font-size: var(--fs-body); font-weight: var(--fw-black); color: var(--text-strong); }
+.gd-som-l { display: grid; gap: var(--sp-1); }
+.gd-som-b {
+  appearance: none; font: inherit; font-size: var(--fs-ui); font-weight: var(--fw-semi);
+  display: flex; gap: var(--sp-3); align-items: center; width: 100%;
+  min-height: 44px; padding: 0 var(--sp-3); border: 0; border-radius: var(--r-sm);
+  background: transparent; color: var(--text-soft); cursor: pointer; text-align: left;
+}
+.gd-som-b:hover { background: var(--paper-200); }
+.gd-som-b[aria-current="true"] { background: var(--accent-soft); color: var(--accent-ink); font-weight: var(--fw-bold); }
+.gd-som-n { flex: none; width: 22px; font-weight: var(--fw-black); color: var(--text-muted); font-variant-numeric: tabular-nums; }
+
+@media (max-width: 620px) {
+  .gd-titre-cour { display: none; }
+  .gd-cpt { margin-right: auto; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .gd-dia, .gd-progres > i, .gd-btn { transition: none; }
+  .gd-dia.is-active [data-r] { animation: none; }
+}
+
+@media print {
+  body { overflow: visible; background: #FFFFFF; }
+  .gd, .gd-scene { position: static; }
+  .gd-dia { position: static; opacity: 1; visibility: visible; page-break-after: always; padding: 0 0 24px; }
+  .gd-dia.is-active [data-r] { animation: none; }
+  .gd-barre, .gd-sommaire, .gd-progres { display: none !important; }
+}
+</style>
+</head>
+<body>
+
+<div class="gd">
+  <div class="gd-scene" id="scene">
+    <div class="gd-progres"><i id="progres"></i></div>
+
+    <!-- ══ 1 · Ouverture ══ -->
+    <section class="gd-dia" data-titre="Ouverture">
+      <div class="gd-bloc">
+        <div data-r>
+          <p class="gd-sur gd-sur--audio">Francisation · Perfectionnement</p>
+          <h1 class="gd-h gd-h--hero">La reconnaissance vocale<br />en classe de langue</h1>
+          <p class="gd-lead">Jusqu'où ces outils sont-ils efficaces ? Ce qu'ils mesurent vraiment, ce qu'ils ne mesurent pas, et comment s'en servir avec un groupe d'adultes.</p>
+        </div>
+        <div class="gd-grille" data-r>
+          <div class="gd-carte gd-carte--vert">
+            <h3>Ce qui tient</h3>
+            <p>Un temps de parole illimité, sans témoin. Un effet réel, mais modeste, sur les sons.</p>
+          </div>
+          <div class="gd-carte gd-carte--ambre">
+            <h3>Ce qui est fragile</h3>
+            <p>Le diagnostic son par son, le rythme, l'intonation — et l'égalité entre les élèves.</p>
+          </div>
+          <div class="gd-carte gd-carte--audio">
+            <h3>Ce qu'on en fait</h3>
+            <p>Un miroir pour l'élève. Jamais un juge, jamais une note.</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ══ 2 · Deux technologies ══ -->
+    <section class="gd-dia" data-titre="Deux technologies qu'on confond">
+      <div class="gd-bloc">
+        <div data-r>
+          <p class="gd-sur">Le malentendu de départ</p>
+          <h2 class="gd-h">Deux technologies très différentes,<br />qu'on prend l'une pour l'autre</h2>
+        </div>
+        <div class="gd-grille gd-grille--2" data-r>
+          <div class="gd-carte gd-carte--acier">
+            <span class="gd-eti gd-eti--acier">La dictée automatique</span>
+            <h3>« Est-ce qu'on me comprend ? »</h3>
+            <p>C'est ce que fait le navigateur, comme votre téléphone. Elle est entraînée à comprendre <b class="gd-fort">malgré</b> l'accent : elle devine, elle recolle, elle répare.</p>
+            <p>Gratuite, immédiate, disponible partout.</p>
+          </div>
+          <div class="gd-carte gd-carte--violet">
+            <span class="gd-eti gd-eti--violet">L'évaluation de prononciation</span>
+            <h3>« Comment je prononce ? »</h3>
+            <p>Un autre métier : elle compare le son produit à un modèle phonétique et rend une note <b class="gd-fort">son par son</b>, avec le rythme et l'accentuation.</p>
+            <p>Services spécialisés, facturés à la minute.</p>
+          </div>
+        </div>
+        <div class="gd-note" data-r>
+          <b>Presque toutes les déceptions viennent de là</b> : on utilise un outil de la première famille en attendant les réponses de la seconde.
+        </div>
+      </div>
+    </section>
+
+    <!-- ══ 3 · Ce que dit la recherche ══ -->
+    <section class="gd-dia" data-titre="Ce que dit la recherche">
+      <div class="gd-bloc">
+        <div data-r>
+          <p class="gd-sur">L'état des connaissances</p>
+          <h2 class="gd-h">Efficace sur les sons, aveugle sur la musique de la langue</h2>
+        </div>
+        <div class="gd-grille gd-grille--2" data-r>
+          <div class="gd-carte gd-carte--vert">
+            <span class="gd-eti gd-eti--vert">Ce qui tient</span>
+            <ul class="gd-liste">
+              <li><span class="gd-gly gd-gly--oui" aria-hidden="true">✓</span><span><b>Un effet réel mais modeste</b> sur la prononciation des sons isolés — à condition que la rétroaction dise quoi refaire.</span></li>
+              <li><span class="gd-gly gd-gly--oui" aria-hidden="true">✓</span><span><b>S'enregistrer et se réécouter</b> fait déjà une bonne part du travail. Ce gain-là ne vient pas de la machine.</span></li>
+              <li><span class="gd-gly gd-gly--oui" aria-hidden="true">✓</span><span><b>Le jugement d'ensemble</b> sur une production entière est à peu près juste.</span></li>
+            </ul>
+          </div>
+          <div class="gd-carte gd-carte--ambre">
+            <span class="gd-eti gd-eti--ambre">Ce qui tient moins</span>
+            <ul class="gd-liste">
+              <li><span class="gd-gly gd-gly--att" aria-hidden="true">!</span><span><b>Le rythme, l'intonation, le débit</b> : le point aveugle — alors que c'est ce qui pèse le plus lourd sur l'intelligibilité réelle.</span></li>
+              <li><span class="gd-gly gd-gly--att" aria-hidden="true">!</span><span><b>Le diagnostic son par son</b> n'est pas fiable. « Votre <i>u</i> est fautif » n'est pas une information sûre.</span></li>
+              <li><span class="gd-gly gd-gly--att" aria-hidden="true">!</span><span><b>Le transfert vers la parole spontanée</b> est peu documenté : bien répéter n'est pas bien parler.</span></li>
+            </ul>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ══ 4 · Ce qui fausse tout ══ -->
+    <section class="gd-dia" data-titre="Deux choses qui faussent tout">
+      <div class="gd-bloc">
+        <div data-r>
+          <p class="gd-sur gd-sur--audio">À savoir avant d'afficher un score</p>
+          <h2 class="gd-h">Deux choses faussent le résultat<br />avant même que l'élève parle</h2>
+        </div>
+        <div class="gd-grille gd-grille--2" data-r>
+          <div class="gd-carte gd-carte--audio">
+            <div style="display:flex;gap:var(--sp-3);align-items:center">
+              <span class="gd-num" aria-hidden="true">1</span>
+              <h3>Le biais selon la langue d'origine</h3>
+            </div>
+            <p>Les erreurs de transcription augmentent pour les voix non natives, et <b class="gd-fort">inégalement selon la langue première</b>. À niveau égal, un élève sinophone ou arabophone récolte plus de rouge qu'un élève hispanophone.</p>
+            <p><b class="gd-fort">Afficher un pourcentage, c'est afficher ce biais</b> — et le présenter à l'élève comme une mesure de sa bouche.</p>
+          </div>
+          <div class="gd-carte gd-carte--ambre">
+            <div style="display:flex;gap:var(--sp-3);align-items:center">
+              <span class="gd-num" aria-hidden="true">2</span>
+              <h3>Le micro et la salle</h3>
+            </div>
+            <p>Micro d'ordinateur portable, salle bruyante, voisin qui parle en même temps : la première cause d'un mauvais score, c'est <b class="gd-fort">presque toujours le matériel</b>.</p>
+            <p>Avant de corriger la bouche, vérifier le micro.</p>
+          </div>
+        </div>
+        <div class="gd-note" data-r>
+          <b>Et le français d'ici.</b> Ces modèles ont surtout entendu du français de France. Régler l'outil sur « français du Canada » aide, mais ne règle pas tout — d'autant que nos élèves parlent, eux, un français d'apprenant.
+        </div>
+      </div>
+    </section>
+
+    <!-- ══ 5 · Le vrai gain ══ -->
+    <section class="gd-dia" data-titre="Le vrai gain">
+      <div class="gd-bloc">
+        <div class="gd-encre" data-r>
+          <p class="gd-sur">Le vrai gain</p>
+          <h2>Du temps de parole illimité,<br />sans témoin et sans jugement.</h2>
+          <p>L'anxiété langagière tombe devant une machine. L'élève répète vingt fois ce qu'il ne répéterait pas deux fois devant la classe.</p>
+        </div>
+        <div data-r>
+          <p class="gd-p">C'est l'apport principal de ces outils, et c'est celui qui est le mieux établi. <b class="gd-fort">Pas la précision du diagnostic.</b> Une classe de vingt personnes donne à chacune quelques minutes de parole par soir ; le module, lui, en donne autant qu'on veut.</p>
+        </div>
+      </div>
+    </section>
+
+    <!-- ══ 6 · Notre outil ══ -->
+    <section class="gd-dia" data-titre="Notre outil « Prononcer »">
+      <div class="gd-bloc">
+        <div data-r>
+          <p class="gd-sur">Dans nos modules</p>
+          <h2 class="gd-h">Ce que fait l'outil « Prononcer »<br />du rail « Mes outils »</h2>
+          <p class="gd-lead">L'élève surligne un mot ou une phrase dans son module, puis ouvre l'outil.</p>
+        </div>
+        <div class="gd-grille" data-r>
+          <div class="gd-carte gd-carte--vert">
+            <span class="gd-eti gd-eti--vert">Étape 1</span>
+            <h3>Écouter le modèle</h3>
+            <p>À vitesse normale, puis lentement s'il le faut.</p>
+          </div>
+          <div class="gd-carte gd-carte--audio">
+            <span class="gd-eti gd-eti--audio">Étape 2</span>
+            <h3>Enregistrer sa voix</h3>
+            <p>L'élève dit la phrase ; la machine écrit ce qu'elle a entendu.</p>
+          </div>
+          <div class="gd-carte gd-carte--acier">
+            <span class="gd-eti gd-eti--acier">Étape 3</span>
+            <h3>Comparer</h3>
+            <p>Les mots retrouvés restent noirs, les autres passent en rouge.</p>
+          </div>
+        </div>
+        <div class="gd-note" data-r style="border-left-color:var(--accent)">
+          <b>Aucune note, aucun compte, autant d'essais qu'on veut.</b> C'est écrit dans le panneau, et c'est le bon parti pris : rien de ce qui se passe dans cet outil ne remonte à l'enseignante. (Chrome seulement, pour l'instant.)
+        </div>
+      </div>
+    </section>
+
+    <!-- ══ 7 · Les réserves ══ -->
+    <section class="gd-dia" data-titre="Quatre réserves à connaître">
+      <div class="gd-bloc gd-bloc--serre">
+        <div data-r>
+          <p class="gd-sur gd-sur--muet">Ce que le pourcentage ne dit pas</p>
+          <h2 class="gd-h">Quatre réserves à connaître<br />avant d'y envoyer un groupe</h2>
+        </div>
+        <div class="gd-grille gd-grille--2" data-r>
+          <div class="gd-carte gd-carte--audio">
+            <h3>1 · Ce n'est pas la prononciation</h3>
+            <p>Le pourcentage mesure ce que la machine a réussi à comprendre. Un fort accent qu'elle rattrape toute seule donne 100 %.</p>
+            <div class="gd-ex">
+              <div><span>L'élève dit</span><q>je vé a la banc</q></div>
+              <div><span>La machine écrit</span><q>je vais à la banque</q></div>
+            </div>
+          </div>
+          <div class="gd-carte gd-carte--ambre">
+            <h3>2 · Les accents sont ignorés</h3>
+            <p>Dans la comparaison, <i>pêche</i> et <i>pèche</i>, <i>ou</i> et <i>où</i>, <i>a</i> et <i>à</i> comptent pour le même mot. Ce sont justement les oppositions qu'on travaille en classe.</p>
+          </div>
+          <div class="gd-carte gd-carte--ambre">
+            <h3>3 · L'ordre n'est pas vérifié</h3>
+            <p>L'outil compte les mots présents, pas leur place. « la banque je vais à » donne 100 %.</p>
+          </div>
+          <div class="gd-carte gd-carte--acier">
+            <h3>4 · L'audio sort de l'école</h3>
+            <p>La transcription est faite par un service externe : la voix de l'élève quitte l'appareil. Avec des personnes nouvellement arrivées, ça se dit.</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ══ 8 · Oral et écrit ══ -->
+    <section class="gd-dia" data-titre="Et à l'écrit ?">
+      <div class="gd-bloc gd-bloc--serre">
+        <div data-r>
+          <p class="gd-sur">L'autre moitié</p>
+          <h2 class="gd-h">À l'écrit, le diagnostic est bien meilleur —<br />mais il rate autre chose</h2>
+          <p class="gd-lead">Une couche d'incertitude en moins : le texte <b class="gd-fort">est</b> la donnée. Il n'y a plus rien à deviner sur le signal, seulement à juger la langue.</p>
+        </div>
+        <div class="gd-grille gd-grille--2" data-r>
+          <div class="gd-carte gd-carte--audio">
+            <span class="gd-eti gd-eti--audio">À l'oral</span>
+            <h3>Trop indulgente</h3>
+            <p>Deux questions empilées : <i>qu'est-ce qui a été dit ?</i>, puis <i>est-ce correct ?</i> La machine répare l'accent, et la faute disparaît avec.</p>
+            <p><b class="gd-fort">Elle rate des erreurs.</b></p>
+          </div>
+          <div class="gd-carte gd-carte--ambre">
+            <span class="gd-eti gd-eti--ambre">À l'écrit</span>
+            <h3>Trop zélée</h3>
+            <p>Une seule question, et elle y répond bien. Mais elle corrige au-delà de l'erreur : la phrase ressort plus longue, plus littéraire, plus juste que l'élève.</p>
+            <p><b class="gd-fort">Elle rend un texte qui n'est plus le sien.</b></p>
+          </div>
+        </div>
+        <div class="gd-carte gd-carte--vert" data-r>
+          <h3>Trois couches, une seule réglée</h3>
+          <ul class="gd-liste" style="margin-top:var(--sp-4)">
+            <li><span class="gd-gly gd-gly--oui" aria-hidden="true">✓</span><span><b>La correction de surface</b> — accords, conjugaison, orthographe : la machine y vaut un correcteur humain attentif, et bat un humain fatigué au vingt-cinquième texte.</span></li>
+            <li><span class="gd-gly gd-gly--att" aria-hidden="true">!</span><span><b>Le naturel et le registre</b> : elle en fait trop. Elle « améliore » ce qui était déjà correct, dans un français que l'élève ne saurait pas produire.</span></li>
+            <li><span class="gd-gly gd-gly--non" aria-hidden="true">✕</span><span><b>Le diagnostic d'interlangue</b> — pourquoi <i>cette</i> personne fait <i>cette</i> erreur : la machine n'y a pas accès. Elle ignore la langue première, la faute d'il y a trois semaines, et ce qui a été enseigné lundi.</span></li>
+          </ul>
+        </div>
+        <div class="gd-note" data-r style="border-left-color:var(--accent)">
+          <b>Ce que ça change pour la surveillance.</b> L'outil oral sous-déclare : on peut le laisser à l'élève sans crainte. Le correcteur écrit, lui, a besoin d'une laisse — lui demander de corriger ce qui est faux, rien d'autre, et au niveau de la personne.
+        </div>
+      </div>
+    </section>
+
+    <!-- ══ 9 · En classe ══ -->
+    <section class="gd-dia" data-titre="Cinq règles pour la classe">
+      <div class="gd-bloc">
+        <div data-r>
+          <p class="gd-sur">Ce qu'on en fait</p>
+          <h2 class="gd-h">Cinq règles pour s'en servir sans nuire</h2>
+        </div>
+        <div class="gd-bloc gd-bloc--serre" data-r style="gap:var(--sp-3)">
+          <div class="gd-carte" style="display:flex;gap:var(--sp-4);align-items:flex-start">
+            <span class="gd-num" aria-hidden="true">1</span>
+            <div><h3>Jamais une note</h3><p>L'outil ne va pas au bulletin, ne sert pas à classer, ne se compare pas d'un élève à l'autre.</p></div>
+          </div>
+          <div class="gd-carte" style="display:flex;gap:var(--sp-4);align-items:flex-start">
+            <span class="gd-num" aria-hidden="true">2</span>
+            <div><h3>Dire ce qu'il mesure</h3><p>« Est-ce qu'on me comprend ? », pas « comment je prononce ? ». L'élève doit savoir qui le juge : une machine, et pas très bien.</p></div>
+          </div>
+          <div class="gd-carte" style="display:flex;gap:var(--sp-4);align-items:flex-start">
+            <span class="gd-num" aria-hidden="true">3</span>
+            <div><h3>Un casque et un coin tranquille</h3><p>Un mauvais score commence presque toujours par un mauvais micro. C'est la première chose à vérifier.</p></div>
+          </div>
+          <div class="gd-carte" style="display:flex;gap:var(--sp-4);align-items:flex-start">
+            <span class="gd-num" aria-hidden="true">4</span>
+            <div><h3>Des mots et de courtes phrases</h3><p>Sur deux mots, la machine distingue. Sur une longue phrase, elle répare et le résultat ne veut plus rien dire.</p></div>
+          </div>
+          <div class="gd-carte" style="display:flex;gap:var(--sp-4);align-items:flex-start">
+            <span class="gd-num" aria-hidden="true">5</span>
+            <div><h3>Écouter, dire, comparer, recommencer</h3><p>C'est la boucle qui fait progresser, pas le score. Le troisième essai vaut mieux que le premier — et c'est ça qu'on nomme à voix haute.</p></div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ══ 10 · La suite ══ -->
+    <section class="gd-dia" data-titre="Ce qu'on pourrait changer">
+      <div class="gd-bloc">
+        <div data-r>
+          <p class="gd-sur">La suite</p>
+          <h2 class="gd-h">Ce qu'on pourrait changer dans nos modules</h2>
+        </div>
+        <div class="gd-grille gd-grille--2" data-r>
+          <div class="gd-carte gd-carte--vert">
+            <span class="gd-eti gd-eti--vert">Tout de suite · oral</span>
+            <h3>Retirer le pourcentage</h3>
+            <p>Garder « J'ai entendu : … » et les mots manquants. L'outil devient honnête sur ce qu'il mesure, et reste tout aussi utile.</p>
+          </div>
+          <div class="gd-carte gd-carte--vert">
+            <span class="gd-eti gd-eti--vert">Tout de suite · oral</span>
+            <h3>Ajouter des paires minimales</h3>
+            <p><i>tu / tout</i>, <i>dessus / dessous</i>, <i>poisson / poison</i>. Sur deux mots, la machine cesse de deviner.</p>
+          </div>
+          <div class="gd-carte gd-carte--vert">
+            <span class="gd-eti gd-eti--vert">Tout de suite · écrit</span>
+            <h3>Accepter le français d'ici</h3>
+            <p>Le correcteur des réponses écrites ne dit pas encore, comme celui de l'oral, que le <b class="gd-fort">français québécois standard est accepté</b>. Une ligne de consigne, et <i>dîner</i>, <i>magasiner</i> ou <i>cellulaire</i> cessent d'être des fautes.</p>
+          </div>
+          <div class="gd-carte gd-carte--vert">
+            <span class="gd-eti gd-eti--vert">Tout de suite · écrit</span>
+            <h3>Corriger sans réécrire</h3>
+            <p>Lui demander de <b class="gd-fort">garder les mots de l'élève partout où ils sont corrects</b>. C'est le seul rempart contre la phrase qui revient plus longue et plus littéraire que ce que l'élève sait produire.</p>
+          </div>
+          <div class="gd-carte gd-carte--violet">
+            <span class="gd-eti gd-eti--violet">Plus tard</span>
+            <h3>Un vrai score par son</h3>
+            <p>Par un service spécialisé, branché sur notre serveur : tous les navigateurs, l'audio sous notre contrôle. Facturé à la minute.</p>
+          </div>
+          <div class="gd-carte gd-carte--acier">
+            <span class="gd-eti gd-eti--acier">Plus tard</span>
+            <h3>Transcrire les dépôts oraux</h3>
+            <p>Pour aider l'enseignante à relire trente productions — jamais pour juger la prononciation à sa place.</p>
+          </div>
+        </div>
+        <div class="gd-note" data-r style="border-left-color:var(--audio)">
+          <b>À retenir :</b> à l'oral, un miroir — jamais un juge. À l'écrit, une première passe — le diagnostic reste le vôtre.
+        </div>
+      </div>
+    </section>
+  </div>
+
+  <div class="gd-barre">
+    <span class="gd-cpt" id="cpt">1 / 10</span>
+    <span class="gd-titre-cour" id="titreCour">Ouverture</span>
+    <button type="button" class="gd-btn" id="btnSommaire" aria-haspopup="dialog">Sommaire</button>
+    <button type="button" class="gd-btn" id="btnPrec" aria-label="Diapositive précédente">← Précédent</button>
+    <button type="button" class="gd-btn gd-btn--pri" id="btnSuiv" aria-label="Diapositive suivante">Suivant →</button>
+  </div>
+</div>
+
+<div class="gd-sommaire" id="sommaire" role="dialog" aria-modal="true" aria-label="Sommaire des diapositives" hidden>
+  <div class="gd-sommaire-in">
+    <h2>Sommaire</h2>
+    <div class="gd-som-l" id="somListe"></div>
+  </div>
+</div>
+
+<script>
+(function () {
+  var dias    = Array.prototype.slice.call(document.querySelectorAll('.gd-dia'));
+  var scene   = document.getElementById('scene');
+  var progres = document.getElementById('progres');
+  var cpt     = document.getElementById('cpt');
+  var titre   = document.getElementById('titreCour');
+  var btnPrec = document.getElementById('btnPrec');
+  var btnSuiv = document.getElementById('btnSuiv');
+  var btnSom  = document.getElementById('btnSommaire');
+  var sommaire= document.getElementById('sommaire');
+  var somListe= document.getElementById('somListe');
+  var i = 0;
+
+  dias.forEach(function (d, n) {
+    var b = document.createElement('button');
+    b.type = 'button';
+    b.className = 'gd-som-b';
+    b.innerHTML = '<span class="gd-som-n">' + (n + 1) + '</span><span></span>';
+    b.lastChild.textContent = d.dataset.titre;
+    b.onclick = function () { fermerSommaire(); aller(n); };
+    somListe.appendChild(b);
+  });
+  var somBtns = Array.prototype.slice.call(somListe.children);
+
+  function aller(n) {
+    i = Math.max(0, Math.min(dias.length - 1, n));
+    dias.forEach(function (d, k) {
+      d.classList.toggle('is-active', k === i);
+      d.setAttribute('aria-hidden', k === i ? 'false' : 'true');
+    });
+    somBtns.forEach(function (b, k) { b.setAttribute('aria-current', k === i ? 'true' : 'false'); });
+    progres.style.width = ((i + 1) / dias.length * 100) + '%';
+    cpt.textContent = (i + 1) + ' / ' + dias.length;
+    titre.textContent = dias[i].dataset.titre;
+    btnPrec.disabled = (i === 0);
+    btnSuiv.disabled = (i === dias.length - 1);
+    dias[i].scrollTop = 0;
+  }
+
+  function ouvrirSommaire() { sommaire.hidden = false; somBtns[i].focus(); }
+  function fermerSommaire() { sommaire.hidden = true; btnSom.focus(); }
+
+  btnPrec.onclick = function () { aller(i - 1); };
+  btnSuiv.onclick = function () { aller(i + 1); };
+  btnSom.onclick  = function () { sommaire.hidden ? ouvrirSommaire() : fermerSommaire(); };
+  sommaire.onclick = function (e) { if (e.target === sommaire) fermerSommaire(); };
+
+  document.addEventListener('keydown', function (e) {
+    if (e.metaKey || e.ctrlKey || e.altKey) return;
+    if (!sommaire.hidden) {
+      if (e.key === 'Escape') { e.preventDefault(); fermerSommaire(); }
+      return;
+    }
+    switch (e.key) {
+      case 'ArrowRight': case 'PageDown': case ' ': e.preventDefault(); aller(i + 1); break;
+      case 'ArrowLeft':  case 'PageUp':            e.preventDefault(); aller(i - 1); break;
+      case 'Home': e.preventDefault(); aller(0); break;
+      case 'End':  e.preventDefault(); aller(dias.length - 1); break;
+      case 's': case 'S': e.preventDefault(); ouvrirSommaire(); break;
+    }
+  });
+
+  // Glissement au doigt, pour une présentation menée depuis une tablette.
+  var x0 = null;
+  scene.addEventListener('touchstart', function (e) { x0 = e.changedTouches[0].clientX; }, { passive: true });
+  scene.addEventListener('touchend', function (e) {
+    if (x0 === null) return;
+    var dx = e.changedTouches[0].clientX - x0;
+    if (Math.abs(dx) > 60) aller(i + (dx < 0 ? 1 : -1));
+    x0 = null;
+  }, { passive: true });
+
+  aller(0);
+})();
+</script>
+
+</body>
+</html>
