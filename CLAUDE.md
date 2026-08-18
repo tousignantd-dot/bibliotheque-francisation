@@ -705,6 +705,36 @@ vers les diapositives.
   dialogues. `narrer.py` ne repaie pas un plan déjà narré (facturation au
   caractère) : effacer un MP3 précis pour le refaire.
 
+## Voix des modules (ElevenLabs)
+
+Les MP3 des modules sont produits par les scripts `generer_audio_*.py` à la
+racine : `<module>.py` pour les dialogues (une voix par personnage),
+`<module>_sons.py` pour les mots isolés, `<module>_plus.py` pour les
+mini-leçons. Les identifiants de voix sont volontairement les mêmes d'un
+module à l'autre, pour qu'un personnage sonne pareil partout.
+
+- **La voix « enseignante » (`K7gx0ylJdff0yjM2uVQS`) est ralentie à 0,85.**
+  C'est la voix que l'élève entend le plus — elle narre les mini-leçons et
+  les mots isolés de presque tous les modules, en plus de rôles de dialogue
+  (la commis du module 5, madame Rioux du module 10, la conseillère…) — et
+  elle débitait 18,6 caractères par seconde, trop vite pour du niveau 4.
+- **Le paramètre `speed` d'ElevenLabs ne sert à rien ici** : avec
+  `eleven_multilingual_v2`, l'API renvoie le *même fichier octet pour octet*
+  avec ou sans `"speed": 0.85`. Vérifié, pas supposé. Le ralentissement se
+  fait donc après coup, avec `atempo` de ffmpeg, qui étire la durée sans
+  toucher à la hauteur : même timbre, débit posé.
+- **`voix_lente.py` tient cette règle.** Chaque générateur appelle
+  `ralentir_si_enseignante(chemin, voix)` juste après avoir écrit son MP3 :
+  les autres voix passent intactes. Changer le débit se fait à un seul
+  endroit — `FACTEUR` — puis en repassant les fichiers déjà produits.
+- **Les MP3 modifiés à la main ne survivent pas à une régénération.** Si un
+  fichier doit sonner autrement, c'est le script qui change, jamais le MP3.
+- **Toucher aux MP3 oblige à incrémenter `AUDIO_V`** dans le HTML du module :
+  les fichiers audio sont servis sans `Cache-Control`, et sans ce numéro le
+  navigateur d'un élève resservirait l'ancienne voix. Pour `module-probleme`,
+  le HTML est généré : le numéro se change dans le gabarit
+  (`module-consultation`), puis `python3 build/module-probleme/build.py`.
+
 ## Langue
 
 Répondre en français à l'utilisateur.

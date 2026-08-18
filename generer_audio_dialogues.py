@@ -17,6 +17,8 @@ except ImportError:
     sys.exit(1)
 
 # ── VOICES ────────────────────────────────────────────────────────────
+from voix_lente import ralentir_si_enseignante
+
 VOICES = {
     "enseignante": "K7gx0ylJdff0yjM2uVQS",      # 👩 Féminine #1
     "feminin_2": "WW0JfNPk5DgcQdM0d6X6",        # 👩 Féminine #2
@@ -161,6 +163,7 @@ def generate_audio(api_key, text, voice_id, output_path):
 
         with open(output_path, "wb") as f:
             f.write(response.content)
+            ralentir_si_enseignante(output_path, voice_id)
         return True
     except Exception as e:
         print(f"   ❌ Erreur : {e}")

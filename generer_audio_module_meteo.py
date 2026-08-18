@@ -15,6 +15,8 @@ except ImportError:
     print("❌ requests n'est pas installé : pip install requests")
     sys.exit(1)
 
+from voix_lente import ralentir_si_enseignante
+
 VOICES = {
     "narrateur":   "IPgYtHTNLjC7Bq7IPHrm",   # 👨 Narrateur — Le météorologue
     "masculin_1":  "93nuHbke4dTER9x2pDwE",   # 👨 Masculin #1 — Diego
@@ -96,6 +98,7 @@ def generate_audio(api_key, text, voice_id, output_path, voice_settings):
             print(f"   ❌ {r.status_code}: {r.text[:200]}")
             return False
         output_path.write_bytes(r.content)
+        ralentir_si_enseignante(output_path, voice_id)
         return True
     except Exception as e:
         print(f"   ❌ {e}")

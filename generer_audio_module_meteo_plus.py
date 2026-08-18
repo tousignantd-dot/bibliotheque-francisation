@@ -18,6 +18,8 @@ try:
 except ImportError:
     print("❌ pip install requests"); sys.exit(1)
 
+from voix_lente import ralentir_si_enseignante
+
 VOICE = "K7gx0ylJdff0yjM2uVQS"
 
 CLIPS = {
@@ -97,6 +99,7 @@ def generate(api_key, text, path):
         print(f"   ❌ {r.status_code}: {r.text[:150]}")
         return False
     path.write_bytes(r.content)
+    ralentir_si_enseignante(path, VOICE)
     return True
 
 

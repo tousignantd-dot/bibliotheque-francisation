@@ -41,6 +41,8 @@ try:
 except ImportError:
     print("❌ pip install requests"); sys.exit(1)
 
+from voix_lente import ralentir_si_enseignante
+
 RACINE = Path(__file__).resolve().parent
 SORTIE = RACINE / "assets/interactive/module-probleme"
 MANIFESTE = RACINE / "sons_module_probleme.json"
@@ -159,6 +161,7 @@ def parle(cle, texte, voix, chemin):
         return False
     chemin.parent.mkdir(parents=True, exist_ok=True)
     chemin.write_bytes(r.content)
+    ralentir_si_enseignante(chemin, voix)
     return True
 
 
