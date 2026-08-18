@@ -339,7 +339,6 @@
       groupe: groupeActif,
     });
     $('nomEnseignant').textContent = etat.enseignant.nom;
-    $('initiales').textContent = etat.enseignant.nom.split(' ').map((m) => m[0]).join('').slice(0, 2).toUpperCase();
     $('carteEnseignants').hidden = etat.enseignant.role !== 'admin';
     // `/api/prof/me` renvoie les groupes bruts ; la liste dédiée y ajoute le
     // nombre d'élèves et le titulaire, affichés dans « Groupes et comptes ».
@@ -442,7 +441,6 @@
   function rendreJour() {
     const dj = new Date();
     $('dateJour').textContent = dj.toLocaleDateString('fr-CA', { weekday: 'long', day: 'numeric', month: 'long' });
-    $('anneeJour').textContent = String(dj.getFullYear());
 
     const compte = { offerte: 0, avenir: 0, fermee: 0, vide: 0 };
     etat.activites.forEach((a) => { compte[statut(a).cle] += 1; });
@@ -1036,7 +1034,9 @@
     $('vueGroupes').hidden = nom !== 'groupes';
     $('vueMateriel').hidden = nom !== 'materiel';
     document.querySelectorAll('.pe-onglet').forEach((b) => {
-      if (b.dataset.ecran === nom) b.setAttribute('aria-current', 'page');
+      const courant = b.dataset.ecran === nom;
+      b.classList.toggle('is-done', courant);
+      if (courant) b.setAttribute('aria-current', 'page');
       else b.removeAttribute('aria-current');
     });
     if (nom === 'groupes') chargerEnseignants();
@@ -1127,8 +1127,11 @@
     const bouton = e.target.closest('[data-filtre]');
     if (!bouton) return;
     etat.filtre = bouton.dataset.filtre;
-    document.querySelectorAll('#filtres .choice').forEach((b) => {
-      b.classList.toggle('is-selected', b.dataset.filtre === etat.filtre);
+    document.querySelectorAll('#filtres .pe-filtre').forEach((b) => {
+      const actif = b.dataset.filtre === etat.filtre;
+      b.classList.toggle('btn--pri', actif);
+      b.classList.toggle('btn--ghost', !actif);
+      b.setAttribute('aria-pressed', actif ? 'true' : 'false');
     });
     rendreListe();
     rendreBarre();
@@ -1515,7 +1518,6 @@
   /* ══════════ Amorçage ══════════ */
 
   $('dateDebut').value = aujourdhui();
-  document.querySelector('#filtres [data-filtre="tous"]').classList.add('is-selected');
   document.querySelector('#rythmes [data-rythme="semaine"]').classList.add('is-selected');
   demarrer();
 })();

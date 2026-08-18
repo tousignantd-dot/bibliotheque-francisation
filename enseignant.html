@@ -15,45 +15,58 @@
     body { margin: 0; }
     .pe { min-height: 100vh; }
 
-    /* — Barre supérieure : les deux bandes sont collantes ENSEMBLE.
-         Rendre chaque bande collante avec un `top` codé en dur casse la mise
-         en page dès que la première se replie sur deux lignes. — */
-    .pe-haut { position: sticky; top: 0; z-index: 30; }
-    .pe-bande1 { background: var(--surface-card); border-bottom: 1px solid var(--border); }
-    .pe-bande2 { background: var(--surface-band); border-bottom: 1px solid var(--border-tint); }
-    .pe-bande1 > .container, .pe-bande2 > .container {
-      display: flex; align-items: center; gap: var(--sp-4); row-gap: var(--sp-2);
-      padding-top: var(--sp-3); padding-bottom: var(--sp-3); flex-wrap: wrap;
+    /* — En-tête (remise « haut de page — Espace enseignant ») : bandeau,
+         navigation de sections, contexte de groupe. Rien n'est collant : la
+         hiérarchie descend bandeau → navigation → contexte → contenu. — */
+    .pe-entete { padding: var(--sp-6) 0; }
+    .pe-entete > .container {
+      display: flex; flex-wrap: wrap; align-items: flex-end;
+      justify-content: space-between; gap: var(--sp-5);
     }
-    .pe-marque { display: flex; align-items: baseline; gap: var(--sp-3); }
-    .pe-marque b { font-size: var(--fs-body); font-weight: var(--fw-black); color: var(--text-strong); }
-    .pe-marque span { font-size: var(--fs-ui-sm); font-weight: var(--fw-bold); color: var(--text-muted); }
-    .pe-nav {
-      display: flex; align-items: center; gap: var(--sp-5); flex-wrap: wrap;
-      margin-left: auto; font-size: var(--fs-ui); font-weight: var(--fw-bold);
+    .pe-identite { display: flex; flex-direction: column; gap: var(--sp-2); }
+    /* 38 px et non --fs-hero : l'en-tête connecté reste compact au-dessus de
+       la navigation de sections. */
+    .pe-identite h1 {
+      margin: 0; font-size: 38px; font-weight: var(--fw-black);
+      line-height: var(--lh-title); letter-spacing: var(--ls-title); color: var(--text-strong);
     }
-    .pe-onglet {
-      background: none; border: none; padding: 6px 0; font: inherit; cursor: pointer;
-      border-bottom: 2px solid transparent; color: var(--text-muted);
+    .pe-session { display: flex; align-items: center; gap: var(--sp-3); }
+    .pe-session > div { text-align: right; }
+    .pe-nom { white-space: nowrap; font-size: var(--fs-body-sm); font-weight: var(--fw-semi); color: var(--text-strong); }
+    .pe-session-etat { font-size: var(--fs-ui); font-weight: var(--fw-medium); color: var(--text-muted); }
+
+    /* La barre de parcours garde le comportement collant du système : sur une
+       longue liste d'activités, les quatre sections restent atteignables. */
+    .pe-parcours { z-index: 30; }
+    .pe-parcours .step { font: inherit; font-size: var(--fs-ui-sm); font-weight: var(--fw-bold); cursor: pointer; }
+    .pe-parcours .step[aria-current="page"] { --sec: var(--green-600); --sec-soft: var(--green-100); }
+
+    /* — Contexte de groupe — */
+    .pe-contexte { padding: var(--sp-8) 0 var(--sp-6); }
+    .pe-contexte-ligne { display: flex; flex-wrap: wrap; align-items: flex-end; gap: var(--sp-5); }
+    .pe-liens {
+      display: flex; flex-wrap: wrap; align-items: center; gap: var(--sp-4);
+      margin-top: var(--sp-5); padding-top: var(--sp-4);
+      border-top: 1px solid var(--border-tint);
+      font-size: var(--fs-body-sm); font-weight: var(--fw-semi);
     }
-    .pe-onglet[aria-current="page"] { border-bottom-color: var(--accent); color: var(--text-strong); }
-    .pe-qui {
-      display: flex; align-items: center; gap: var(--sp-2);
-      padding-left: var(--sp-4); border-left: 1px solid var(--border);
+    .pe-liens a, .pe-liens .pe-lien-plat { color: var(--accent-ink); }
+    .pe-liens a:hover, .pe-liens .pe-lien-plat:hover { color: var(--accent); }
+    .pe-lien-plat {
+      background: none; border: none; padding: 0; font: inherit; cursor: pointer;
+      text-decoration: underline;
     }
-    .pe-initiales {
-      display: inline-flex; align-items: center; justify-content: center;
-      width: 34px; height: 34px; border-radius: 50%;
-      background: var(--accent-soft); color: var(--accent-ink);
-      font-size: var(--fs-ui-sm); font-weight: var(--fw-black);
+
+    /* — Amorce « Programme du jour » — */
+    .pe-amorce {
+      display: flex; flex-wrap: wrap; align-items: flex-end;
+      justify-content: space-between; gap: var(--sp-4);
     }
-    .pe-nom { white-space: nowrap; font-size: var(--fs-ui); font-weight: var(--fw-black); color: var(--text-strong); }
-    .pe-lien {
-      background: none; border: none; padding: 4px 0; font: inherit;
-      font-size: var(--fs-ui); font-weight: var(--fw-bold);
-      color: var(--text-muted); cursor: pointer; text-decoration: underline;
-    }
-    .pe-lien:hover { color: var(--text-accent); }
+    .pe-amorce h2 { margin: 0; font-size: var(--fs-h2); font-weight: var(--fw-black); color: var(--text-strong); }
+    .pe-amorce-txt { display: flex; flex-direction: column; gap: var(--sp-2); }
+    .pe-consigne { margin: 0; font-size: var(--fs-body-sm); font-weight: var(--fw-medium); color: var(--text-muted); }
+    .pe-sep { width: 1px; height: 28px; background: var(--border-tint); }
+    .pe-filtres-jour { display: flex; flex-wrap: wrap; align-items: center; gap: var(--sp-2); }
 
     .pe-surtitre {
       font-size: var(--fs-label); font-weight: var(--fw-bold);
@@ -72,17 +85,8 @@
     .pe-resume { font-size: var(--fs-ui); font-weight: var(--fw-bold); color: var(--ink-500); }
     .pe-actions-groupe { display: flex; gap: var(--sp-2); flex-wrap: wrap; margin-left: auto; }
 
-    /* — Bloc « Aujourd'hui / Programme du jour » — */
-    .pe-pile { padding: var(--sp-8) 0 200px; }
-    .pe-jour {
-      display: grid; grid-template-columns: minmax(220px, 320px) 1fr; gap: var(--sp-8);
-      background: var(--surface-band); border-radius: var(--r-lg);
-      padding: var(--sp-6) var(--sp-6) var(--sp-8);
-    }
-    @media (max-width: 720px) { .pe-jour { grid-template-columns: 1fr; gap: var(--sp-6); } }
-    .pe-date { margin-top: var(--sp-2); font-size: var(--fs-hero); font-weight: var(--fw-black); line-height: 1.05; color: var(--text-strong); text-wrap: pretty; }
-    .pe-annee { margin-top: var(--sp-1); font-size: var(--fs-lead); font-weight: var(--fw-bold); color: var(--text-muted); }
-    .pe-jour-resume { margin-top: var(--sp-4); font-size: var(--fs-ui); font-weight: var(--fw-bold); color: var(--ink-500); }
+    /* — Programme du jour — */
+    .pe-pile { padding: 0 0 200px; }
     .pe-programme { display: grid; gap: var(--sp-2); }
     .pe-evt {
       display: flex; align-items: baseline; gap: var(--sp-3);
@@ -456,8 +460,12 @@
       .mat-aside { position: static; max-height: none; overflow-y: visible; }
     }
 
-    .pe-connexion { padding: var(--sp-12) 0; display: flex; justify-content: center; }
-    .pe-connexion > div { width: 100%; max-width: 480px; }
+    /* — Écran de connexion : la carte vit dans le bandeau, alignée à gauche
+         de la colonne, sur un fond de carte cerné de deux filets. — */
+    .pe-avant { background: var(--surface-card); border-top: 1px solid var(--border-tint); border-bottom: 1px solid var(--border-tint); }
+    .pe-avant .band { padding: var(--sp-8) 0 var(--sp-12); }
+    .pe-avant h1 { margin: var(--sp-3) 0 0; font-size: var(--fs-hero); font-weight: var(--fw-black); line-height: var(--lh-hero); letter-spacing: var(--ls-hero); color: var(--text-strong); }
+    .pe-connexion { margin-top: var(--sp-8); max-width: 440px; }
     .pe-note { margin: 0; font-size: var(--fs-ui); font-weight: var(--fw-semi); color: var(--text-muted); }
     [hidden] { display: none !important; }
   </style>
@@ -466,81 +474,95 @@
 
 <!-- ══════════ Écran de connexion ══════════ -->
 <div class="page pe" id="ecranConnexion" hidden>
-  <header class="band">
-    <div class="container">
-      <div class="band__eyebrow">Francisation · Niveau 4</div>
-      <h1 style="margin:var(--sp-3) 0 0;font-size:var(--fs-h2);font-weight:var(--fw-black)">Espace enseignant</h1>
-      <p class="band__lead">Vos groupes, vos dates, votre catalogue. Le portail des élèves n'ouvre une activité qu'une fois que vous lui avez donné une date.</p>
-    </div>
-  </header>
-  <div class="container">
-    <div class="pe-connexion">
-      <div>
-        <form class="card" id="formConnexion">
-          <div class="stack">
-            <div class="pe-titre-section">Connexion</div>
-            <div>
-              <label class="field-label" for="courriel">Courriel</label>
-              <input id="courriel" class="field" type="email" autocomplete="username" placeholder="vous@centre.qc.ca" required />
+  <div class="pe-avant">
+    <header class="band">
+      <div class="container">
+        <div class="band__eyebrow">Francisation · Personnel enseignant</div>
+        <h1>Espace enseignant</h1>
+        <p class="band__lead">Vos groupes, vos dates, votre catalogue. Le portail des élèves n'ouvre une activité qu'une fois que vous lui avez donné une date.</p>
+
+        <div class="pe-connexion">
+          <form class="card" id="formConnexion">
+            <div class="stack">
+              <div>
+                <div class="pe-titre-section">Connexion</div>
+                <p class="pe-note" style="margin-top:var(--sp-1)">Utilisez le courriel fourni par le centre.</p>
+              </div>
+              <div>
+                <label class="field-label" for="courriel">Courriel</label>
+                <input id="courriel" class="field" type="email" autocomplete="username" placeholder="prenom.nom@centre.qc.ca" required />
+              </div>
+              <div>
+                <label class="field-label" for="motDePasse">Mot de passe</label>
+                <input id="motDePasse" class="field" type="password" autocomplete="current-password" required />
+              </div>
+              <div class="fb fb--no" id="erreurConnexion" hidden></div>
+              <button type="submit" class="btn btn--pri btn--lg" style="width:100%" id="boutonConnexion">Se connecter</button>
+              <p class="pe-note">Votre session reste ouverte 30 jours sur cet appareil. Mot de passe oublié : demandez à un compte administrateur de le réinitialiser.</p>
+              <p class="pe-note" id="noteInstallation" hidden>Aucun compte n'existe encore. <a href="prof.html">Créez le compte administrateur</a>.</p>
             </div>
-            <div>
-              <label class="field-label" for="motDePasse">Mot de passe</label>
-              <input id="motDePasse" class="field" type="password" autocomplete="current-password" required />
-            </div>
-            <div class="fb fb--no" id="erreurConnexion" hidden></div>
-            <button type="submit" class="btn btn--pri" style="width:100%" id="boutonConnexion">Se connecter</button>
-            <p class="pe-note">Votre session reste ouverte 30 jours sur cet appareil. Mot de passe oublié : demandez à un compte administrateur de le réinitialiser.</p>
-            <p class="pe-note" id="noteInstallation" hidden>Aucun compte n'existe encore. <a href="prof.html">Créez le compte administrateur</a>.</p>
-          </div>
-        </form>
+          </form>
+        </div>
       </div>
-    </div>
+    </header>
   </div>
 </div>
 
 <!-- ══════════ Portail ══════════ -->
 <div class="page pe" id="portail" hidden>
-  <div class="pe-haut">
-    <div class="pe-bande1">
-      <div class="container">
-        <div class="pe-marque"><b>Espace enseignant</b><span>Francisation · Niveau 4</span></div>
-        <nav class="pe-nav">
-          <button type="button" class="pe-onglet" data-ecran="planif">Planifier</button>
-          <button type="button" class="pe-onglet" data-ecran="eleves">Élèves</button>
-          <button type="button" class="pe-onglet" data-ecran="groupes">Groupes et comptes</button>
-          <button type="button" class="pe-onglet" data-ecran="materiel">Matériel</button>
-          <span class="pe-qui">
-            <span class="pe-initiales" id="initiales" aria-hidden="true"></span>
-            <span class="pe-nom" id="nomEnseignant"></span>
-          </span>
-          <button type="button" class="pe-lien" id="boutonDeconnexion">Déconnexion</button>
-        </nav>
+  <header class="band pe-entete">
+    <div class="container">
+      <div class="pe-identite">
+        <span class="band__eyebrow">Francisation · Personnel enseignant</span>
+        <h1>Espace enseignant</h1>
+      </div>
+      <div class="pe-session">
+        <div>
+          <div class="pe-nom" id="nomEnseignant"></div>
+          <div class="pe-session-etat">Session ouverte</div>
+        </div>
+        <button type="button" class="btn btn--ghost btn--sm" id="boutonDeconnexion">Déconnexion</button>
       </div>
     </div>
-    <div class="pe-bande2">
-      <div class="container">
-        <span class="pe-surtitre">Groupe</span>
-        <select class="field pe-groupe-select" id="selectGroupe" aria-label="Groupe actif"></select>
-        <button type="button" class="pe-lien" id="lienEleves"></button>
-        <span class="pe-resume" id="resumeGroupe"></span>
+  </header>
+
+  <nav class="steps pe-parcours" aria-label="Sections de l'espace enseignant">
+    <div class="steps__inner">
+      <button type="button" class="step pe-onglet" data-ecran="planif"><span class="step__dot"></span>Planifier</button>
+      <button type="button" class="step pe-onglet" data-ecran="eleves"><span class="step__dot"></span>Élèves</button>
+      <button type="button" class="step pe-onglet" data-ecran="groupes"><span class="step__dot"></span>Groupes et comptes</button>
+      <button type="button" class="step pe-onglet" data-ecran="materiel"><span class="step__dot"></span>Matériel</button>
+    </div>
+  </nav>
+
+  <!-- Le contexte de groupe reste hors des quatre vues : il vaut pour toutes. -->
+  <div class="container pe-contexte">
+    <div class="card card--tinted">
+      <div class="pe-contexte-ligne">
+        <div>
+          <label class="field-label" for="selectGroupe">Groupe</label>
+          <select class="field pe-groupe-select" id="selectGroupe" aria-label="Groupe actif"></select>
+        </div>
         <span class="pe-actions-groupe">
           <a class="btn btn--ghost btn--sm" id="lienTeams" target="_blank" rel="noopener" hidden>Rejoindre la rencontre Teams</a>
           <button type="button" class="btn btn--ghost btn--sm" id="boutonTeams">Ajouter le lien Teams</button>
           <button type="button" class="btn btn--ghost btn--sm" id="boutonCopie">Copier une planification</button>
-          <a class="btn btn--ghost btn--sm" href="catalogue.html">Catalogue</a>
-          <!-- Le compositeur est une page autonome, sans session ni groupe : il
-               assemble un prompt à partir du programme. Nouvel onglet, pour ne
-               pas faire perdre à l'enseignante la planification en cours. -->
-          <a class="btn btn--ghost btn--sm" id="lienCompositeur"
-             href="assets/outils/compositeur-activite.html?de=enseignant"
-             target="_blank" rel="noopener">Composer une activité</a>
-          <!-- Les tutoriels : autonomes comme le compositeur, donc nouvel
-               onglet eux aussi. La page vidéo est la porte d'entrée ; elle
-               renvoie elle-même vers la version en diapositives. -->
-          <a class="btn btn--ghost btn--sm" id="lienTutoriels"
-             href="assets/outils/tutoriels-enseignant.html?de=enseignant"
-             target="_blank" rel="noopener">Tutoriels</a>
         </span>
+      </div>
+      <div class="pe-liens">
+        <a href="catalogue.html">Catalogue</a>
+        <!-- Le compositeur est une page autonome, sans session ni groupe : il
+             assemble un prompt à partir du programme. Nouvel onglet, pour ne
+             pas faire perdre à l'enseignante la planification en cours. -->
+        <a id="lienCompositeur" href="assets/outils/compositeur-activite.html?de=enseignant"
+           target="_blank" rel="noopener">Composer une activité</a>
+        <!-- Les tutoriels : autonomes comme le compositeur, donc nouvel onglet
+             eux aussi. La page vidéo est la porte d'entrée ; elle renvoie
+             elle-même vers la version en diapositives. -->
+        <a id="lienTutoriels" href="assets/outils/tutoriels-enseignant.html?de=enseignant"
+           target="_blank" rel="noopener">Tutoriels</a>
+        <button type="button" class="pe-lien-plat" id="lienEleves"></button>
+        <span class="pe-resume" id="resumeGroupe" style="margin-left:auto"></span>
       </div>
     </div>
   </div>
@@ -549,18 +571,24 @@
   <main id="vuePlanif">
     <div class="container">
       <div class="stack-l pe-pile">
-        <section class="pe-jour">
-          <div>
-            <div class="pe-eyebrow">Aujourd'hui</div>
-            <div class="pe-date" id="dateJour"></div>
-            <div class="pe-annee" id="anneeJour"></div>
-            <div class="pe-jour-resume" id="resumeJour"></div>
+        <div class="pe-amorce">
+          <div class="pe-amorce-txt">
+            <span class="pe-eyebrow">Aujourd'hui · <span id="dateJour"></span></span>
+            <h2>Programme du jour</h2>
+            <p class="pe-consigne">Les activités datées d'aujourd'hui, telles que l'élève les voit.</p>
+            <p class="pe-consigne" id="resumeJour"></p>
           </div>
-          <div>
-            <div class="pe-eyebrow" style="margin-bottom:var(--sp-3)">Programme du jour</div>
-            <div class="pe-programme" id="programme"></div>
+          <div class="pe-filtres-jour" id="filtres">
+            <button type="button" class="btn btn--pri btn--sm pe-filtre" data-filtre="tous" aria-pressed="true">Tout</button>
+            <button type="button" class="btn btn--ghost btn--sm pe-filtre" data-filtre="cours" aria-pressed="false">Cours</button>
+            <button type="button" class="btn btn--ghost btn--sm pe-filtre" data-filtre="atelier" aria-pressed="false">Ateliers</button>
+            <span class="pe-sep" aria-hidden="true"></span>
+            <button type="button" class="btn btn--ghost btn--sm" id="boutonApercu">Ce que l'élève voit</button>
+            <a class="btn btn--ghost btn--sm" href="#sectionDocs">Fichiers du groupe</a>
           </div>
-        </section>
+        </div>
+
+        <div class="pe-programme" id="programme"></div>
 
         <div class="banner" id="banniereNeuf" hidden>
           <span>Ce groupe ne voit encore rien : aucune activité n'a de date. Copiez la planification d'un autre groupe, ou cochez les premières activités ci-dessous.</span>
@@ -570,18 +598,12 @@
         <div class="pe-filtres">
           <input class="field" type="search" id="recherche" style="flex:1;min-width:280px"
                  placeholder="Chercher une activité, un domaine, un temps de verbe" />
-          <div style="display:flex;gap:var(--sp-2)" id="filtres">
-            <button type="button" class="choice" data-filtre="tous">Tout</button>
-            <button type="button" class="choice" data-filtre="cours">Cours</button>
-            <button type="button" class="choice" data-filtre="atelier">Ateliers</button>
-          </div>
         </div>
 
         <section>
           <div class="pe-entete-section">
             <div class="pe-titre-section" id="titreListe"></div>
             <div style="display:flex;gap:var(--sp-2);flex-wrap:wrap">
-              <button type="button" class="btn btn--pri btn--sm" id="boutonApercu">Ce que l'élève voit</button>
               <button type="button" class="btn btn--ghost btn--sm" id="boutonDeploiTout"></button>
               <button type="button" class="btn btn--ghost btn--sm" id="boutonToutCocher"></button>
             </div>
@@ -589,7 +611,7 @@
           <div class="card card--flush" id="listeActivites"></div>
         </section>
 
-        <section>
+        <section id="sectionDocs">
           <div class="pe-entete-section" style="align-items:baseline">
             <div class="pe-titre-section">Fichiers du groupe</div>
             <div class="pe-resume" id="resumeDocs"></div>
