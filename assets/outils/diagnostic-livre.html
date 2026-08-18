@@ -1,0 +1,620 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Le diagnostic est branché</title>
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Nunito:ital,wght@0,400;0,600;0,700;0,800;0,900;1,700&display=swap" />
+
+<style>
+/* ═══════════════════════════════════════════════════════════════
+   LE DIAGNOSTIC EST BRANCHÉ
+   Ce qui a été livré des sept propositions : les deux journaux du
+   serveur, les deux sections de la progression, « Ce qui revient »
+   dans le dossier de l'élève, et la greffe des onze modules.
+   Même gabarit que les deux diaporamas voisins de ce dossier.
+   ═══════════════════════════════════════════════════════════════ */
+
+:root {
+  /* — Neutres chauds — */
+  --paper-50:#FBFBFA; --paper-100:#F7F7F5; --paper-200:#F0F0EE; --white:#FFFFFF;
+  --line-100:#EAEAE8; --line-300:#D6D6D2;
+  --ink-900:#17181A; --ink-700:#3A3D40; --ink-500:#4B4F52; --ink-400:#6E7175;
+
+  /* — Accent — */
+  --green-800:#07734A; --green-600:#0A8F5B; --green-100:#E6F5EE;
+  /* — Repérage — */
+  --acier-600:#1D6B8F; --acier-100:#E7F0F6;
+  --violet-600:#6B4FBB; --violet-100:#EFEAFA;
+  --ambre-700:#B45309; --ambre-100:#FBEEDC;
+  --audio:#DC2626;     --audio-100:#FFF1F0;
+
+  /* — Alias — */
+  --surface-page:var(--paper-100);
+  --surface-card:var(--white);
+  --surface-sunken:var(--paper-50);
+  --surface-inverse:var(--ink-900);
+  --text-strong:var(--ink-900);
+  --text-body:var(--ink-700);
+  --text-soft:var(--ink-500);
+  --text-muted:var(--ink-400);
+  --text-inverse:#FFFFFF;
+  --text-accent:var(--green-800);
+  --border:var(--line-100);
+  --border-firm:var(--line-300);
+  --accent:var(--green-600);
+  --accent-soft:var(--green-100);
+  --accent-ink:var(--green-800);
+  --focus-ring:var(--green-600);
+  --sh-card:0 1px 2px rgba(20,20,20,.05);
+  --sh-raise:0 4px 20px rgba(20,20,20,.07);
+  --sh-modal:0 24px 64px rgba(20,20,20,.28);
+  --scrim:rgba(23,24,26,.42);
+
+  /* — Échelle — */
+  --sp-1:4px; --sp-2:8px; --sp-3:12px; --sp-4:16px; --sp-5:20px;
+  --sp-6:24px; --sp-8:32px; --sp-12:48px;
+  --r-sm:10px; --r-md:14px; --r-lg:18px; --r-pill:999px;
+  --content-max:1020px;
+
+  --fs-lead:19px; --fs-body:18px; --fs-body-sm:17px;
+  --fs-ui:15px; --fs-ui-sm:14px; --fs-label:13px; --fs-meta:12px;
+  --ls-label:.12em;
+  --fw-medium:600; --fw-semi:700; --fw-bold:800; --fw-black:900;
+
+  --dur:160ms; --ease:cubic-bezier(.2,.7,.3,1);
+  --font-sans:"Nunito", system-ui, -apple-system, "Segoe UI", sans-serif;
+}
+
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) {
+    --paper-50:#1B1C1A; --paper-100:#141513; --paper-200:#222320; --white:#1C1D1B;
+    --line-100:#2E2F2C; --line-300:#3C3D39;
+    --ink-900:#F3F3F0; --ink-700:#DCDCD7; --ink-500:#B8BAB4; --ink-400:#94968F;
+
+    --green-800:#6FD3A4; --green-600:#3FBE85; --green-100:#12301F;
+    --acier-600:#79BEDE; --acier-100:#132831;
+    --violet-600:#B29CF3; --violet-100:#221C36;
+    --ambre-700:#E8A85C; --ambre-100:#33240F;
+    --audio:#F58585;     --audio-100:#331A1A;
+
+    --surface-inverse:#000000;
+    --text-inverse:#F7F7F5;
+    --sh-card:0 1px 2px rgba(0,0,0,.4);
+    --sh-raise:0 4px 20px rgba(0,0,0,.45);
+    --sh-modal:0 24px 64px rgba(0,0,0,.6);
+    --scrim:rgba(0,0,0,.6);
+  }
+}
+:root[data-theme="dark"] {
+  --paper-50:#1B1C1A; --paper-100:#141513; --paper-200:#222320; --white:#1C1D1B;
+  --line-100:#2E2F2C; --line-300:#3C3D39;
+  --ink-900:#F3F3F0; --ink-700:#DCDCD7; --ink-500:#B8BAB4; --ink-400:#94968F;
+
+  --green-800:#6FD3A4; --green-600:#3FBE85; --green-100:#12301F;
+  --acier-600:#79BEDE; --acier-100:#132831;
+  --violet-600:#B29CF3; --violet-100:#221C36;
+  --ambre-700:#E8A85C; --ambre-100:#33240F;
+  --audio:#F58585;     --audio-100:#331A1A;
+
+  --surface-inverse:#000000;
+  --text-inverse:#F7F7F5;
+  --sh-card:0 1px 2px rgba(0,0,0,.4);
+  --sh-raise:0 4px 20px rgba(0,0,0,.45);
+  --sh-modal:0 24px 64px rgba(0,0,0,.6);
+  --scrim:rgba(0,0,0,.6);
+}
+
+*, *::before, *::after { box-sizing: border-box; }
+html, body { height: 100%; }
+body {
+  margin: 0; overflow: hidden;
+  background: var(--surface-page);
+  color: var(--text-body);
+  font-family: var(--font-sans);
+  font-size: var(--fs-body-sm);
+  font-weight: var(--fw-medium);
+  line-height: 1.5;
+  -webkit-font-smoothing: antialiased;
+}
+:focus-visible { outline: 3px solid var(--focus-ring); outline-offset: 2px; border-radius: 4px; }
+
+/* ── La scène ─────────────────────────────────────────────── */
+.gd { position: fixed; inset: 0; display: flex; flex-direction: column; }
+.gd-scene { position: relative; flex: 1; min-height: 0; }
+
+.gd-progres { position: absolute; top: 0; left: 0; right: 0; height: 3px; background: var(--border); z-index: 3; }
+.gd-progres > i { display: block; height: 100%; width: 0; background: var(--accent); transition: width var(--dur) var(--ease); }
+
+.gd-dia {
+  position: absolute; inset: 0; overflow-y: auto;
+  padding: clamp(28px, 5vh, 56px) var(--sp-6) var(--sp-8);
+  opacity: 0; visibility: hidden; pointer-events: none;
+  transition: opacity var(--dur) var(--ease);
+}
+.gd-dia.is-active { opacity: 1; visibility: visible; pointer-events: auto; }
+.gd-bloc { max-width: var(--content-max); margin: 0 auto; display: grid; gap: var(--sp-6); }
+.gd-bloc--serre { gap: var(--sp-4); }
+
+/* Apparition sobre, décalée d'une pièce à l'autre. */
+.gd-dia.is-active [data-r] { animation: monte 380ms var(--ease) both; }
+.gd-dia.is-active [data-r]:nth-child(2) { animation-delay: 70ms; }
+.gd-dia.is-active [data-r]:nth-child(3) { animation-delay: 140ms; }
+.gd-dia.is-active [data-r]:nth-child(4) { animation-delay: 210ms; }
+.gd-dia.is-active [data-r]:nth-child(5) { animation-delay: 280ms; }
+@keyframes monte { from { opacity: 0; transform: translateY(14px); } to { opacity: 1; transform: none; } }
+
+/* ── Typographie ──────────────────────────────────────────── */
+.gd-sur {
+  font-size: var(--fs-label); font-weight: var(--fw-bold);
+  letter-spacing: var(--ls-label); text-transform: uppercase; color: var(--text-accent);
+}
+.gd-sur--audio { color: var(--audio); }
+.gd-sur--muet  { color: var(--text-muted); }
+
+.gd-h {
+  margin: var(--sp-3) 0 0;
+  font-size: clamp(27px, 4vw, 43px); font-weight: var(--fw-black);
+  line-height: 1.08; letter-spacing: -.018em; color: var(--text-strong);
+  text-wrap: balance;
+}
+.gd-h--hero { font-size: clamp(33px, 5.6vw, 60px); line-height: 1.02; }
+.gd-lead { margin: var(--sp-4) 0 0; font-size: var(--fs-lead); font-weight: var(--fw-semi); color: var(--text-soft); max-width: 66ch; }
+.gd-p { margin: 0; color: var(--text-soft); max-width: 68ch; }
+.gd-p + .gd-p { margin-top: var(--sp-3); }
+.gd-fort { color: var(--text-strong); font-weight: var(--fw-bold); }
+
+/* ── Cartes et grilles ────────────────────────────────────── */
+.gd-grille { display: grid; gap: var(--sp-4); grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); }
+.gd-grille--2 { grid-template-columns: repeat(auto-fit, minmax(310px, 1fr)); }
+
+.gd-carte {
+  background: var(--surface-card); border: 1px solid var(--border);
+  border-radius: var(--r-lg); padding: var(--sp-5); box-shadow: var(--sh-card);
+}
+.gd-carte h3 { margin: 0; font-size: var(--fs-body); font-weight: var(--fw-black); color: var(--text-strong); }
+.gd-carte p { margin: var(--sp-2) 0 0; color: var(--text-soft); }
+.gd-carte p + p { margin-top: var(--sp-3); }
+
+/* Le filet gauche est le seul repère de couleur d'une carte. */
+.gd-carte--vert   { border-left: 4px solid var(--accent); }
+.gd-carte--acier  { border-left: 4px solid var(--acier-600); }
+.gd-carte--violet { border-left: 4px solid var(--violet-600); }
+.gd-carte--ambre  { border-left: 4px solid var(--ambre-700); }
+.gd-carte--audio  { border-left: 4px solid var(--audio); }
+
+.gd-eti {
+  display: inline-block; margin-bottom: var(--sp-3);
+  padding: 4px 11px; border-radius: var(--r-pill);
+  font-size: var(--fs-meta); font-weight: var(--fw-bold);
+  letter-spacing: .06em; text-transform: uppercase;
+}
+.gd-eti--vert   { background: var(--accent-soft);  color: var(--accent-ink); }
+.gd-eti--acier  { background: var(--acier-100);    color: var(--acier-600); }
+.gd-eti--violet { background: var(--violet-100);   color: var(--violet-600); }
+.gd-eti--ambre  { background: var(--ambre-100);    color: var(--ambre-700); }
+.gd-eti--audio  { background: var(--audio-100);    color: var(--audio); }
+
+/* Pastille numérotée : la présentation est une suite de règles numérotées,
+   le chiffre y dit l'ordre d'application, pas la décoration. */
+.gd-num {
+  display: inline-flex; align-items: center; justify-content: center;
+  width: 34px; height: 34px; flex: none;
+  border-radius: var(--r-md); background: var(--accent-soft); color: var(--accent-ink);
+  font-size: var(--fs-ui); font-weight: var(--fw-black);
+}
+
+/* Liste à glyphe : chaque état porte un signe ET un mot. */
+.gd-liste { list-style: none; margin: 0; padding: 0; display: grid; gap: var(--sp-3); }
+.gd-liste li { display: flex; gap: var(--sp-3); align-items: flex-start; color: var(--text-soft); }
+.gd-liste b { color: var(--text-strong); font-weight: var(--fw-bold); }
+.gd-gly { flex: none; width: 22px; font-weight: var(--fw-black); font-size: var(--fs-body); line-height: 1.4; }
+.gd-gly--oui { color: var(--accent-ink); }
+.gd-gly--non { color: var(--audio); }
+.gd-gly--att { color: var(--ambre-700); }
+
+/* Le seul bloc foncé de la présentation. */
+.gd-encre {
+  background: var(--surface-inverse); color: var(--text-inverse);
+  border-radius: var(--r-lg); padding: clamp(24px, 4vw, 44px);
+}
+.gd-encre .gd-sur { color: #9BE3C0; }
+.gd-encre h2 { margin: var(--sp-3) 0 0; font-size: clamp(24px, 3.4vw, 36px); font-weight: var(--fw-black); line-height: 1.14; letter-spacing: -.015em; text-wrap: balance; }
+.gd-encre p { margin: var(--sp-4) 0 0; color: #D5D6D2; font-size: var(--fs-lead); font-weight: var(--fw-medium); max-width: 62ch; }
+
+/* Encadré de mise en garde. */
+.gd-note {
+  border: 1px solid var(--border); border-left: 4px solid var(--ambre-700);
+  background: var(--surface-sunken); border-radius: var(--r-lg);
+  padding: var(--sp-5); color: var(--text-soft);
+}
+.gd-note b { color: var(--text-strong); }
+
+/* Exemple d'oral : ce que l'élève dit, ce que la machine écrit. */
+.gd-ex { display: grid; gap: var(--sp-3); grid-template-columns: repeat(auto-fit, minmax(230px, 1fr)); margin-top: var(--sp-4); }
+.gd-ex div { background: var(--surface-sunken); border: 1px solid var(--border); border-radius: var(--r-md); padding: var(--sp-4); }
+.gd-ex span { display: block; font-size: var(--fs-meta); font-weight: var(--fw-bold); letter-spacing: .06em; text-transform: uppercase; color: var(--text-muted); }
+.gd-ex q { display: block; margin-top: var(--sp-2); font-size: var(--fs-body); font-weight: var(--fw-bold); color: var(--text-strong); font-style: italic; }
+.gd-ex q::before, .gd-ex q::after { content: ""; }
+
+/* ── Barre de commande ────────────────────────────────────── */
+.gd-barre {
+  display: flex; align-items: center; gap: var(--sp-3);
+  padding: var(--sp-3) var(--sp-5);
+  border-top: 1px solid var(--border); background: var(--surface-card);
+  flex-wrap: wrap;
+}
+.gd-cpt { font-size: var(--fs-ui-sm); font-weight: var(--fw-bold); color: var(--text-muted); font-variant-numeric: tabular-nums; }
+.gd-titre-cour { font-size: var(--fs-ui-sm); font-weight: var(--fw-bold); color: var(--text-strong); margin-right: auto; }
+.gd-btn {
+  appearance: none; font: inherit; font-size: var(--fs-ui-sm); font-weight: var(--fw-bold);
+  min-height: 44px; padding: 0 var(--sp-5); border-radius: var(--r-pill);
+  border: 1px solid var(--border-firm); background: var(--surface-card); color: var(--text-strong);
+  cursor: pointer; transition: background var(--dur) var(--ease), border-color var(--dur) var(--ease);
+}
+.gd-btn:hover { background: var(--paper-200); }
+.gd-btn[disabled] { opacity: .4; cursor: default; }
+.gd-btn--pri { background: var(--accent); border-color: var(--accent); color: #FFFFFF; }
+.gd-btn--pri:hover { background: var(--accent-ink); border-color: var(--accent-ink); }
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) .gd-btn--pri { color: #0B1A12; }
+}
+:root[data-theme="dark"] .gd-btn--pri { color: #0B1A12; }
+
+/* ── Sommaire ─────────────────────────────────────────────── */
+.gd-sommaire { position: fixed; inset: 0; z-index: 20; display: flex; align-items: center; justify-content: center; padding: var(--sp-5); background: var(--scrim); }
+.gd-sommaire[hidden] { display: none; }
+.gd-sommaire-in { width: min(520px, 100%); max-height: 80vh; overflow-y: auto; background: var(--surface-card); border-radius: var(--r-lg); box-shadow: var(--sh-modal); padding: var(--sp-5); }
+.gd-sommaire h2 { margin: 0 0 var(--sp-4); font-size: var(--fs-body); font-weight: var(--fw-black); color: var(--text-strong); }
+.gd-som-l { display: grid; gap: var(--sp-1); }
+.gd-som-b {
+  appearance: none; font: inherit; font-size: var(--fs-ui); font-weight: var(--fw-semi);
+  display: flex; gap: var(--sp-3); align-items: center; width: 100%;
+  min-height: 44px; padding: 0 var(--sp-3); border: 0; border-radius: var(--r-sm);
+  background: transparent; color: var(--text-soft); cursor: pointer; text-align: left;
+}
+.gd-som-b:hover { background: var(--paper-200); }
+.gd-som-b[aria-current="true"] { background: var(--accent-soft); color: var(--accent-ink); font-weight: var(--fw-bold); }
+.gd-som-n { flex: none; width: 22px; font-weight: var(--fw-black); color: var(--text-muted); font-variant-numeric: tabular-nums; }
+
+@media (max-width: 620px) {
+  .gd-titre-cour { display: none; }
+  .gd-cpt { margin-right: auto; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .gd-dia, .gd-progres > i, .gd-btn { transition: none; }
+  .gd-dia.is-active [data-r] { animation: none; }
+}
+
+@media print {
+  body { overflow: visible; background: #FFFFFF; }
+  .gd, .gd-scene { position: static; }
+  .gd-dia { position: static; opacity: 1; visibility: visible; page-break-after: always; padding: 0 0 24px; }
+  .gd-dia.is-active [data-r] { animation: none; }
+  .gd-barre, .gd-sommaire, .gd-progres { display: none !important; }
+}
+</style>
+</head>
+<body>
+</head>
+<body>
+
+<div class="gd">
+  <div class="gd-scene" id="scene">
+    <div class="gd-progres"><i id="progres"></i></div>
+
+    <!-- ══ 1 · Ouverture ══ -->
+    <section class="gd-dia" data-titre="Ouverture">
+      <div class="gd-bloc">
+        <div data-r>
+          <p class="gd-sur">Francisation · Nos modules</p>
+          <h1 class="gd-h gd-h--hero">Le diagnostic<br />est branché</h1>
+          <p class="gd-lead">Ce qui a été fait des sept propositions : les deux premières sont livrées, et les modules savent maintenant d'où viennent leurs analyses.</p>
+        </div>
+        <div class="gd-grille" data-r>
+          <div class="gd-carte gd-carte--vert">
+            <h3>Le serveur garde</h3>
+            <p>Deux journaux là où il n'y avait rien : les analyses d'erreurs et le parcours de l'aide.</p>
+          </div>
+          <div class="gd-carte gd-carte--vert">
+            <h3>Deux pages montrent</h3>
+            <p>« Ce qui bloque » dans la progression du groupe, « Ce qui revient » dans le dossier de l'élève.</p>
+          </div>
+          <div class="gd-carte gd-carte--acier">
+            <h3>Onze modules greffés</h3>
+            <p>Chaque analyse porte désormais son module, et se filtre comme le reste.</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ══ 2 · Ce qui se perdait ══ -->
+    <section class="gd-dia" data-titre="Ce qui se perdait">
+      <div class="gd-bloc">
+        <div data-r>
+          <p class="gd-sur gd-sur--muet">Le point de départ</p>
+          <h2 class="gd-h">Rien de tout cela n'a été inventé :<br />ça existait et ça se perdait</h2>
+        </div>
+        <div class="gd-grille gd-grille--2" data-r>
+          <div class="gd-carte gd-carte--audio">
+            <h3>L'analyse était jetée</h3>
+            <p>L'assistant relisait l'exercice entier, trouvait le point commun entre les fautes, l'expliquait à l'élève — puis la page se fermait et tout partait avec elle.</p>
+          </div>
+          <div class="gd-carte gd-carte--audio">
+            <h3>Cinq signaux étaient refusés</h3>
+            <p>Les modules annonçaient déjà l'aide proposée, acceptée, analysée, refusée, et les mini-leçons rouvertes. Le serveur refusait ces messages, et l'erreur était avalée en silence.</p>
+          </div>
+        </div>
+        <div class="gd-note" data-r style="border-left-color:var(--accent)">
+          <b>Aucun contenu nouveau n'a été écrit.</b> Les deux journaux se nourrissent des onze modules tels qu'ils sont.
+        </div>
+      </div>
+    </section>
+
+    <!-- ══ 3 · Ce que le serveur garde ══ -->
+    <section class="gd-dia" data-titre="Ce que le serveur garde">
+      <div class="gd-bloc gd-bloc--serre">
+        <div data-r>
+          <p class="gd-sur">Côté serveur</p>
+          <h2 class="gd-h">Deux journaux, et deux lectures<br />réservées à l'enseignante</h2>
+        </div>
+        <div class="gd-grille gd-grille--2" data-r>
+          <div class="gd-carte gd-carte--vert">
+            <span class="gd-eti gd-eti--vert">Journal 1</span>
+            <h3>Les analyses d'erreurs</h3>
+            <p>Ce que l'assistant a répondu : ce qui revient, pourquoi, et le conseil donné — avec la notion, l'exercice, le module et le nombre d'erreurs.</p>
+            <p><b class="gd-fort">Sans les réponses de l'élève</b> : le patron suffit, le détail des fautes ne regarde que lui.</p>
+          </div>
+          <div class="gd-carte gd-carte--vert">
+            <span class="gd-eti gd-eti--vert">Journal 2</span>
+            <h3>Les signaux de l'aide</h3>
+            <p>Un cumul par élève, module et exercice : aide offerte, acceptée, analysée, refusée, mini-leçons rouvertes.</p>
+            <p>À part de l'avancement, <b class="gd-fort">pour que les écrans de progression ne comptent pas ces lignes comme des exercices faits</b>.</p>
+          </div>
+        </div>
+        <div class="gd-note" data-r>
+          <b>Une panne d'écriture ne prive jamais l'élève de son explication.</b> Elle est déjà calculée quand le journal s'écrit ; si le journal échoue, la réponse part quand même.
+        </div>
+      </div>
+    </section>
+
+    <!-- ══ 4 · Dans la progression ══ -->
+    <section class="gd-dia" data-titre="Dans la progression du groupe">
+      <div class="gd-bloc gd-bloc--serre">
+        <div data-r>
+          <p class="gd-sur">Page « Où en est la classe »</p>
+          <h2 class="gd-h">Deux sections de plus, entre le tableau<br />des élèves et leurs envois</h2>
+        </div>
+        <div class="gd-grille gd-grille--2" data-r>
+          <div class="gd-carte gd-carte--ambre">
+            <h3>Ce qui bloque</h3>
+            <p>Les analyses regroupées <b class="gd-fort">par notion</b> : combien d'élèves, combien de demandes, combien d'erreurs, depuis quand.</p>
+            <p>Trois élèves ou plus sur la même notion se marquent <b class="gd-fort">« À reprendre en groupe »</b>. Sous le tableau, les six dernières analyses en toutes lettres : le tableau dit combien, les cartes disent quoi.</p>
+          </div>
+          <div class="gd-carte gd-carte--audio">
+            <h3>L'aide et les mini-leçons</h3>
+            <p>Par exercice : l'aide offerte, acceptée, refusée, et les mini-leçons rouvertes. <b class="gd-fort">Les refus en tête de liste.</b></p>
+            <p>Un refus après plusieurs erreurs — assez de fautes pour que le module propose de l'aide, et l'élève dit non — est le signe de décrochage le plus précoce que nous sachions produire.</p>
+          </div>
+        </div>
+        <div class="gd-ex" data-r>
+          <div><span>Ce que la page disait</span><q>Amina : 62 zones, 19 erreurs</q></div>
+          <div><span>Ce qu'elle dit maintenant</span><q>Les verbes devoir et falloir · 3 élèves · à reprendre en groupe</q></div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ══ 5 · Dans le dossier de l'élève ══ -->
+    <section class="gd-dia" data-titre="Dans le dossier de l'élève">
+      <div class="gd-bloc">
+        <div data-r>
+          <p class="gd-sur">Page « Fiche de l'élève »</p>
+          <h2 class="gd-h">« Ce qui revient » — et vous lisez<br />exactement ce que l'élève a lu</h2>
+        </div>
+        <div class="gd-grille" data-r>
+          <div class="gd-carte gd-carte--vert">
+            <span class="gd-eti gd-eti--vert">En haut</span>
+            <h3>Les notions qui reviennent</h3>
+            <p>Une ligne pour celles demandées plus d'une fois. Deux demandes sur la même notion en disent plus qu'une liste par date.</p>
+          </div>
+          <div class="gd-carte gd-carte--vert">
+            <span class="gd-eti gd-eti--vert">Au milieu</span>
+            <h3>Chaque analyse, en entier</h3>
+            <p>Ce qui revient, pourquoi, et le conseil qu'il a reçu — avec son exercice, sa notion et son module.</p>
+          </div>
+          <div class="gd-carte gd-carte--acier">
+            <span class="gd-eti gd-eti--acier">En bas</span>
+            <h3>Ce qu'il fait de l'aide</h3>
+            <p>Exercice par exercice : offerte, acceptée, refusée, mini-leçons rouvertes.</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ══ 6 · La greffe ══ -->
+    <section class="gd-dia" data-titre="La greffe des onze modules">
+      <div class="gd-bloc">
+        <div data-r>
+          <p class="gd-sur">Côté modules</p>
+          <h2 class="gd-h">Chaque analyse sait maintenant<br />de quel module elle vient</h2>
+          <p class="gd-lead">Le module vit dans une page intégrée et ne connaît pas son propre numéro : il le lit dans l'adresse, exactement comme le suivi le fait déjà pour les exercices terminés.</p>
+        </div>
+        <div class="gd-grille gd-grille--2" data-r>
+          <div class="gd-carte gd-carte--vert">
+            <h3>Une greffe, onze modules</h3>
+            <p>Un seul script, relançable sans dommage : il saute les modules déjà greffés. C'est la même mécanique que le rail « Mes outils ».</p>
+            <p>Le module généré suit son gabarit : la greffe survit à une reconstruction.</p>
+          </div>
+          <div class="gd-carte gd-carte--ambre">
+            <h3>Les anciennes analyses</h3>
+            <p>Celles d'avant la greffe n'ont pas de module. Sans module choisi elles comptent ; avec un module choisi elles sortent, et <b class="gd-fort">le chapeau le dit</b> au lieu de les faire disparaître en silence.</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ══ 7 · La limite ══ -->
+    <section class="gd-dia" data-titre="La limite et les angles morts">
+      <div class="gd-bloc">
+        <div class="gd-encre" data-r>
+          <p class="gd-sur">La limite tenue</p>
+          <h2>Rien n'a été pris du côté<br />des corrections privées.</h2>
+          <p>Ni « Corrige-moi ! », ni la correction d'un texte à l'écran. C'est cette règle qui fait que les élèves osent se tromper devant ces outils.</p>
+        </div>
+        <div class="gd-carte" data-r>
+          <ul class="gd-liste">
+            <li><span class="gd-gly gd-gly--att" aria-hidden="true">!</span><span><b>Les journaux partent vides.</b> Ils se remplissent au premier soir de classe où un élève demande de l'aide — d'ici là, les deux sections affichent leur état vide.</span></li>
+            <li><span class="gd-gly gd-gly--non" aria-hidden="true">✕</span><span><b>L'évitement reste invisible.</b> L'élève qui contourne une structure rend un exercice sans faute. Zéro erreur ne veut pas dire maîtrise.</span></li>
+            <li><span class="gd-gly gd-gly--non" aria-hidden="true">✕</span><span><b>Une analyse est une demande d'aide, pas une surveillance.</b> Rien n'arrive dans ces pages sans que l'élève ait cliqué.</span></li>
+          </ul>
+        </div>
+      </div>
+    </section>
+
+    <!-- ══ 8 · Ce qui reste ══ -->
+    <section class="gd-dia" data-titre="Ce qui reste">
+      <div class="gd-bloc gd-bloc--serre">
+        <div data-r>
+          <p class="gd-sur">La suite</p>
+          <h2 class="gd-h">Ce qui reste des sept propositions</h2>
+          <p class="gd-lead">Deux sont livrées. Les cinq autres demandent une greffe dans les modules, ou quelques jours.</p>
+        </div>
+        <div data-r style="display:grid;gap:var(--sp-3)">
+          <div class="gd-carte gd-carte--ambre" style="display:flex;gap:var(--sp-4);align-items:flex-start">
+            <span class="gd-num" aria-hidden="true">2</span>
+            <div>
+              <h3>Enregistrer la notion, pas le nombre</h3>
+              <p>Un relevé par exercice portant le savoir travaillé, au lieu d'un total de module. C'est le changement de fond, et tout le reste s'y appuie.</p>
+            </div>
+          </div>
+          <div class="gd-carte gd-carte--ambre" style="display:flex;gap:var(--sp-4);align-items:flex-start">
+            <span class="gd-num" aria-hidden="true">4</span>
+            <div>
+              <h3>Un tableau des notions du groupe</h3>
+              <p>Les savoirs du module en cours classés par taux d'échec — plus large que « ce qui bloque », qui ne voit que les élèves ayant demandé de l'aide.</p>
+            </div>
+          </div>
+          <div class="gd-carte gd-carte--acier" style="display:flex;gap:var(--sp-4);align-items:flex-start">
+            <span class="gd-num" aria-hidden="true">5</span>
+            <div>
+              <h3>Faire revenir les erreurs dans la révision</h3>
+              <p>Le moteur à sept boîtes ne sert qu'au vocabulaire. Une erreur d'exercice est corrigée une fois et jamais revue. C'est celle qui change le plus l'apprentissage.</p>
+            </div>
+          </div>
+          <div class="gd-carte" style="display:flex;gap:var(--sp-4);align-items:flex-start">
+            <span class="gd-num" aria-hidden="true">6</span>
+            <div>
+              <h3>Rendre le conseil à la séance suivante</h3>
+              <p>Le conseil est maintenant gardé : il ne reste qu'à le remontrer à l'élève au début de la séance d'après.</p>
+            </div>
+          </div>
+          <div class="gd-carte" style="display:flex;gap:var(--sp-4);align-items:flex-start">
+            <span class="gd-num" aria-hidden="true">7</span>
+            <div>
+              <h3>Dire au correcteur ce qu'on travaille</h3>
+              <p>Une centaine d'exercices d'écriture font corriger la réponse sans jamais nommer la notion en jeu.</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+  </div>
+
+  <div class="gd-barre">
+    <span class="gd-cpt" id="cpt">1 / 8</span>
+    <span class="gd-titre-cour" id="titreCour">Ouverture</span>
+    <button type="button" class="gd-btn" id="btnSommaire" aria-haspopup="dialog">Sommaire</button>
+    <button type="button" class="gd-btn" id="btnPrec" aria-label="Diapositive précédente">← Précédent</button>
+    <button type="button" class="gd-btn gd-btn--pri" id="btnSuiv" aria-label="Diapositive suivante">Suivant →</button>
+  </div>
+</div>
+
+<div class="gd-sommaire" id="sommaire" role="dialog" aria-modal="true" aria-label="Sommaire des diapositives" hidden>
+  <div class="gd-sommaire-in">
+    <h2>Sommaire</h2>
+    <div class="gd-som-l" id="somListe"></div>
+  </div>
+</div>
+
+<script>
+(function () {
+  var dias    = Array.prototype.slice.call(document.querySelectorAll('.gd-dia'));
+  var scene   = document.getElementById('scene');
+  var progres = document.getElementById('progres');
+  var cpt     = document.getElementById('cpt');
+  var titre   = document.getElementById('titreCour');
+  var btnPrec = document.getElementById('btnPrec');
+  var btnSuiv = document.getElementById('btnSuiv');
+  var btnSom  = document.getElementById('btnSommaire');
+  var sommaire= document.getElementById('sommaire');
+  var somListe= document.getElementById('somListe');
+  var i = 0;
+
+  dias.forEach(function (d, n) {
+    var b = document.createElement('button');
+    b.type = 'button';
+    b.className = 'gd-som-b';
+    b.innerHTML = '<span class="gd-som-n">' + (n + 1) + '</span><span></span>';
+    b.lastChild.textContent = d.dataset.titre;
+    b.onclick = function () { fermerSommaire(); aller(n); };
+    somListe.appendChild(b);
+  });
+  var somBtns = Array.prototype.slice.call(somListe.children);
+
+  function aller(n) {
+    i = Math.max(0, Math.min(dias.length - 1, n));
+    dias.forEach(function (d, k) {
+      d.classList.toggle('is-active', k === i);
+      d.setAttribute('aria-hidden', k === i ? 'false' : 'true');
+    });
+    somBtns.forEach(function (b, k) { b.setAttribute('aria-current', k === i ? 'true' : 'false'); });
+    progres.style.width = ((i + 1) / dias.length * 100) + '%';
+    cpt.textContent = (i + 1) + ' / ' + dias.length;
+    titre.textContent = dias[i].dataset.titre;
+    btnPrec.disabled = (i === 0);
+    btnSuiv.disabled = (i === dias.length - 1);
+    dias[i].scrollTop = 0;
+  }
+
+  function ouvrirSommaire() { sommaire.hidden = false; somBtns[i].focus(); }
+  function fermerSommaire() { sommaire.hidden = true; btnSom.focus(); }
+
+  btnPrec.onclick = function () { aller(i - 1); };
+  btnSuiv.onclick = function () { aller(i + 1); };
+  btnSom.onclick  = function () { sommaire.hidden ? ouvrirSommaire() : fermerSommaire(); };
+  sommaire.onclick = function (e) { if (e.target === sommaire) fermerSommaire(); };
+
+  document.addEventListener('keydown', function (e) {
+    if (e.metaKey || e.ctrlKey || e.altKey) return;
+    if (!sommaire.hidden) {
+      if (e.key === 'Escape') { e.preventDefault(); fermerSommaire(); }
+      return;
+    }
+    switch (e.key) {
+      case 'ArrowRight': case 'PageDown': case ' ': e.preventDefault(); aller(i + 1); break;
+      case 'ArrowLeft':  case 'PageUp':            e.preventDefault(); aller(i - 1); break;
+      case 'Home': e.preventDefault(); aller(0); break;
+      case 'End':  e.preventDefault(); aller(dias.length - 1); break;
+      case 's': case 'S': e.preventDefault(); ouvrirSommaire(); break;
+    }
+  });
+
+  // Glissement au doigt, pour une présentation menée depuis une tablette.
+  var x0 = null;
+  scene.addEventListener('touchstart', function (e) { x0 = e.changedTouches[0].clientX; }, { passive: true });
+  scene.addEventListener('touchend', function (e) {
+    if (x0 === null) return;
+    var dx = e.changedTouches[0].clientX - x0;
+    if (Math.abs(dx) > 60) aller(i + (dx < 0 ? 1 : -1));
+    x0 = null;
+  }, { passive: true });
+
+  aller(0);
+})();
+</script>
+
+</body>
+</html>
