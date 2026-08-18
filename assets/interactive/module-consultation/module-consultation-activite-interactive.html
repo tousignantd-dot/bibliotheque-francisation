@@ -2941,11 +2941,23 @@ async function analyserErreurs(exId){
   out.className = 'aide-out on wait';
   out.textContent = "L'assistant relit tes réponses…";
 
+  // L'activité se lit dans l'adresse du parent, comme le fait lmsTrack : le
+  // module est dans une iframe et ne connaît pas son propre numéro. Sans elle,
+  // l'analyse que le serveur garde ne se rattache à aucun module.
+  let actId = null, actTitre = '';
+  try{
+    const up = new URLSearchParams(window.parent.location.search);
+    actId = parseInt(up.get('activityId')) || null;
+    actTitre = up.get('title') || '';
+  }catch(e){}
+
   try{
     const res = await fetch('/api/analyser-erreurs', {
       method:'POST', headers:{'Content-Type':'application/json'},
       body: JSON.stringify({
         code: studentCode,
+        activityId: actId,
+        activityTitle: actTitre,
         exercice: ex.tit || '',
         notion: (ex.savoir && ex.savoir.h ? ex.savoir.h.replace(/^›\s*/,'') : ''),
         items: items,

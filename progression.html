@@ -594,15 +594,19 @@
 
   /* ---------- Diagnostic ---------- */
 
-  /** Les analyses demandées par les élèves, dans la période.
+  /** Les analyses demandées par les élèves, dans la période et le module.
 
-      Elles ne portent pas d'identifiant de module : le module appelle
-      /api/analyser-erreurs avec le titre de l'exercice et la notion, pas avec
-      l'activité. Le choix de module en haut de page ne les filtre donc pas —
-      c'est écrit dans le chapeau plutôt que deviné. */
+      Les analyses enregistrées avant la greffe de l'activité n'ont pas de
+      module : sans module choisi elles comptent, avec un module choisi elles
+      sortent, faute de savoir où les mettre. Le chapeau les nomme plutôt que
+      de les faire disparaître en silence. */
   function analysesEnJeu() {
-    return ANALYSES.filter(a => dansPeriode(a.timestamp, null));
+    return ANALYSES.filter(a => (!MODULE || String(a.activityId) === String(MODULE))
+                             && dansPeriode(a.timestamp, a.activityId));
   }
+
+  const analysesSansModule = () =>
+    ANALYSES.filter(a => !a.activityId && dansPeriode(a.timestamp, null)).length;
 
   /** Les signaux de l'aide, eux, savent d'où ils viennent : ils suivent le
       module regardé comme le reste de la page. */
@@ -620,7 +624,8 @@
       : PERIODE === 'module' ? 'depuis l’ouverture du module' : 'depuis le début';
 
     if (!analyses.length) {
-      return section('Ce qui bloque', `Aucune analyse demandée ${quand}.`,
+      return section('Ce qui bloque',
+        `Aucune analyse demandée ${quand}${MODULE ? ' pour ce module' : ''}.`,
         `<p class="pg-note">Quand un élève accumule des erreurs dans un exercice, le module lui propose de relire ses réponses avec l’assistant. Ce que l’assistant trouve — la règle en cause, le point commun entre les fautes — s’inscrit ici. Rien n’y arrive sans que l’élève ait cliqué : c’est une demande d’aide, pas une surveillance.</p>`);
     }
 
@@ -682,9 +687,12 @@
       }).join('');
 
     const eleves = new Set(analyses.map(a => a.studentId)).size;
+    const orphelines = analysesSansModule();
     return section('Ce qui bloque',
       `${pluriel(analyses.length, 'analyse')} demandée${analyses.length > 1 ? 's' : ''} par ${pluriel(eleves, 'élève')} ${quand}, sur ${pluriel(parNotion.size, 'notion')}.`
-      + ' Ces analyses ne portent pas de module : elles couvrent tout le groupe, quel que soit le module choisi plus haut.',
+      + (MODULE && orphelines
+          ? ` ${pluriel(orphelines, 'analyse')} plus ancienne${orphelines > 1 ? 's' : ''} ne porte${orphelines > 1 ? 'nt' : ''} pas de module et ${orphelines > 1 ? 'n’apparaissent' : 'n’apparaît'} qu’en « tous les modules ».`
+          : ''),
       `<div class="pg-scroll"><table class="pg-table">
         <thead><tr>
           <th>Notion</th>

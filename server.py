@@ -4623,6 +4623,15 @@ class Handler(http.server.SimpleHTTPRequestHandler):
 
         exercice = body.get("exercice", "").strip()[:200]
         notion = body.get("notion", "").strip()[:200]
+        # Le module lit son activité dans l'adresse du parent et la joint
+        # depuis la greffe de build/greffe_activite_analyse.py. Les analyses
+        # d'avant cette greffe n'en ont pas : le tableau de bord les traite
+        # comme non rattachées plutôt que de les perdre.
+        try:
+            activity_id = int(body.get("activityId"))
+        except (TypeError, ValueError):
+            activity_id = None
+        activity_title = str(body.get("activityTitle", ""))[:120]
         items = body.get("items", [])
         if not isinstance(items, list) or not items:
             json_response(self, {"error": "Aucune réponse à analyser"}, 400)
@@ -4692,6 +4701,8 @@ class Handler(http.server.SimpleHTTPRequestHandler):
                 "studentId": student["id"],
                 "studentLabel": student.get("label", ""),
                 "groupId": student.get("groupId"),
+                "activityId": activity_id,
+                "activityTitle": activity_title,
                 "exercice": exercice,
                 "notion": notion,
                 "items": len(lignes),
