@@ -1,5 +1,5 @@
 /* =========================================================================
-   Session enseignante — partagée par admin.html, index.html et lms.html.
+   Session enseignante — partagée par catalogue.html, index.html et lms.html.
 
    Le portail est passé d'un enseignant unique à plusieurs enseignants ayant
    chacun un ou plusieurs groupes. Le catalogue d'activités reste commun ;

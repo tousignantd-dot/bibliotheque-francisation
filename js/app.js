@@ -160,7 +160,7 @@ function buildCard(activity) {
     : 'Diaporama photos';
 
   // Un lien secondaire n'est écrit que si le fichier existe : un bouton mort
-  // n'apprend rien. C'est admin.html qui sert à voir ce qui manque.
+  // n'apprend rien. C'est catalogue.html qui sert à voir ce qui manque.
   const lien = (chemin, libelle, icone, type) => chemin
     ? `<a href="${escHtml(encodePath(chemin))}"
           class="btn btn--sm btn--ghost"
@@ -489,8 +489,9 @@ function init() {
 
    La page rend elle-même le sélecteur plutôt que d'appeler `Prof.renderBar` :
    celle-ci injecte sa propre feuille de style, avec des bleus codés en dur qui
-   n'appartiennent pas au système de design. `admin.html` et `lms.html`
-   continuent de l'utiliser telle quelle — rien n'y change.
+   n'appartiennent pas au système de design. `lms.html` continue de l'utiliser
+   telle quelle ; `catalogue.html` l'appelle mais la rhabille chez elle, par
+   `#profBar …`, pour passer devant la feuille injectée.
    ========================================= */
 function renderBandeGroupe() {
   const select = document.getElementById('selectGroupe');

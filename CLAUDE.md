@@ -12,7 +12,7 @@ Bibliothèque d'activités pédagogiques FLS (Niveau 4) pour enseignant en franc
 
 ## Flux de travail important
 
-- Quand l'utilisateur ajoute des fichiers via **admin.html en local**, ils arrivent dans le working tree mais ne sont PAS en ligne tant qu'on n'a pas fait `git add + commit + push`. « Mettre en ligne » = pousser sur main.
+- Quand l'utilisateur ajoute des fichiers via **catalogue.html en local**, ils arrivent dans le working tree mais ne sont PAS en ligne tant qu'on n'a pas fait `git add + commit + push`. « Mettre en ligne » = pousser sur main.
 - Le serveur Railway utilise un **volume persistant** (`STORAGE_DIR`). Les fichiers `assets/interactive/` sont servis depuis le code (BASE_DIR) ; les autres assets uploadés depuis le volume. Au démarrage, `init_storage()` resynchronise les chemins des activités intégrées au code dans le volume (les dates saisies par l'utilisateur sont préservées).
 
 ## Règles sur les fichiers
@@ -171,7 +171,7 @@ ne verrouille rien. Un verrou qui se trompe fermerait la classe.
 
 Chaque activité porte une `categorie` : `cours` (modules de 4 h, le matin) ou
 `atelier` (activités de 2 h, l'après-midi). Les listes enseignantes
-(`admin.html`, `index.html`) sont rendues en deux sections dans cet ordre.
+(`catalogue.html`, `index.html`) sont rendues en deux sections dans cet ordre.
 Le champ se choisit à la création et dans le modal de modification ; pour une
 activité qui ne l'aurait pas, `normalize_categorie()` le déduit du chemin
 (`assets/interactive/module-*` → `cours`). Il figure dans `USER_FIELDS`, donc le
@@ -180,7 +180,7 @@ choix de l'enseignant survit aux redéploiements.
   de session envoyé dans l'en-tête `X-Prof-Token`. `prof.html` porte la
   connexion, l'installation initiale, la gestion des groupes et des comptes.
   `js/prof.js` fournit `Prof.fetch` / `Prof.withGroup` / `Prof.body` aux trois
-  pages enseignantes (`admin.html`, `index.html`, `lms.html`) — toute requête
+  pages enseignantes (`catalogue.html`, `index.html`, `lms.html`) — toute requête
   d'administration doit passer par là, sinon elle répond 401.
 - Rôles : `admin` (crée les autres enseignants, voit tous les groupes) et `prof`.
 - **Premier démarrage** : s'il n'existe aucun compte, `/prof.html` affiche
@@ -210,7 +210,14 @@ choix de l'enseignant survit aux redéploiements.
 - `progression.html` — tableau de bord du groupe, module par module
 - `fiche-eleve.html` — le dossier d'un seul élève
 - `prof.html` — installation du premier compte, groupes et comptes (ancienne page)
-- `admin.html` / `eleve.html` — catalogue (téléversement) / interface élève
+- `catalogue.html` / `eleve.html` — catalogue (téléversement) / interface élève
+  (l'ancien nom `admin.html` n'existe plus : les signets vers cette adresse cassent)
+  - La page du catalogue s'intitule **« Catalogue »** et suit le système de
+    design (aucune couleur en dur). Son en-tête ramène à l'espace enseignant,
+    en face du bouton « Catalogue » du portail. La barre de groupe vient
+    encore de `js/prof.js`, qui injecte ses bleus : elle est rhabillée sur
+    place par `#profBar …`, sans toucher `prof.js` que partagent `index.html`
+    et `lms.html`.
 
 ## Portail enseignant (`enseignant.html`)
 
@@ -218,7 +225,7 @@ choix de l'enseignant survit aux redéploiements.
   est la **source de vérité visuelle** de cette page. Trois onglets dans une
   seule page : Planifier · Élèves · Groupes et comptes, plus son propre écran
   de connexion. Il **remplace l'usage courant** de `lms.html` et de la partie
-  « groupes » de `prof.html` ; `admin.html` reste la page du catalogue
+  « groupes » de `prof.html` ; `catalogue.html` reste la page du catalogue
   (téléversement et modification d'activités), que la remise ne couvre pas.
 - La page ne passe **pas** par `js/prof.js` : celui-ci renvoie vers
   `prof.html` sur un 401, alors que le portail porte sa propre connexion. Elle
