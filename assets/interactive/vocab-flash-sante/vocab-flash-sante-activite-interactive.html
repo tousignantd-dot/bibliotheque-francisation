@@ -3,587 +3,742 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Francisation Flash V2 — Santé et clinique</title>
+<title>Flash vocabulaire — Santé et clinique</title>
+<link rel="stylesheet" href="/assets/design-system/styles.css">
 <style>
-:root{
-  --navy:#17364d;--navy2:#0f293a;--blue:#2f7192;--green:#2e8a61;
-  --orange:#e28a38;--bg:#eef4f5;--card:#ffffff;--ink:#17252e;
-  --muted:#6b7b84;--line:#dbe4e7;--shadow:0 16px 45px rgba(23,54,77,.13);
-}
-*{box-sizing:border-box}
-html,body{margin:0;min-height:100%;font-family:Inter,system-ui,-apple-system,"Segoe UI",Arial,sans-serif;background:linear-gradient(145deg,#e8f2f4,#f8faf9);color:var(--ink)}
-button{font:inherit}
-.app{max-width:1500px;margin:auto;padding:14px}
-.topbar{display:flex;align-items:center;gap:14px;background:#fff;border-radius:18px;padding:12px 16px;box-shadow:var(--shadow);position:sticky;top:8px;z-index:20}
-.logo{width:48px;height:48px;border-radius:15px;background:var(--navy);display:grid;place-items:center;font-size:26px}
-.brand{flex:1} .brand h1{margin:0;font-size:1.18rem} .brand p{margin:3px 0 0;color:var(--muted);font-size:.88rem}
-.top-actions{display:flex;gap:8px;flex-wrap:wrap;justify-content:flex-end}
-.top-btn{border:0;border-radius:12px;padding:10px 13px;background:#e8eff1;color:var(--navy);font-weight:850;cursor:pointer}
-.top-btn.active{background:var(--green);color:#fff}
-.layout{display:grid;grid-template-columns:270px 1fr;gap:14px;margin-top:14px}
-.sidebar{background:#fff;border-radius:20px;box-shadow:var(--shadow);padding:14px;min-height:720px}
-.side-head{display:flex;align-items:center;justify-content:space-between;margin-bottom:12px}
-.side-head h2{font-size:1rem;margin:0;color:var(--navy)}
-.word-list{display:grid;gap:7px}
-.word-btn{border:1px solid var(--line);background:#f8fafb;border-radius:12px;padding:10px 11px;text-align:left;cursor:pointer;font-weight:750;color:#35515f;display:flex;gap:8px;align-items:center}
-.word-btn.active{background:var(--navy);color:white;border-color:var(--navy)}
-.word-btn .state{width:18px;text-align:center}
-.stage{background:#fff;border-radius:22px;box-shadow:var(--shadow);overflow:hidden;min-height:720px;display:flex;flex-direction:column}
-.progress-wrap{padding:12px 16px;border-bottom:1px solid var(--line);display:flex;align-items:center;gap:12px}
-.progress-track{height:9px;background:#e0e9eb;border-radius:99px;overflow:hidden;flex:1}
-.progress-bar{height:100%;background:var(--green);width:0;transition:.25s}
-.progress-count{font-weight:850;color:var(--muted);font-size:.9rem}
-.card-grid{display:grid;grid-template-columns:minmax(430px,56%) 1fr;flex:1;min-height:640px}
-.image-zone{background:#dfe7ea;display:flex;align-items:center;justify-content:center;overflow:hidden;position:relative}
-.image-zone img{width:100%;height:100%;object-fit:contain;display:block;background:#dfe7ea}
-.image-label{position:absolute;left:16px;top:16px;background:rgba(15,41,58,.82);color:white;border-radius:99px;padding:8px 12px;font-weight:900;font-size:.82rem}
-.info-zone{padding:26px 30px;display:flex;flex-direction:column;gap:16px}
-.term{font-size:clamp(3rem,4.3vw,5rem);line-height:1.02;color:var(--navy);font-weight:950}
-.grammar{font-size:1.08rem;color:var(--muted);font-weight:850}
-.section{border-top:1px solid var(--line);padding-top:15px}
-.label{font-size:.82rem;letter-spacing:.12em;text-transform:uppercase;color:var(--blue);font-weight:950;margin-bottom:8px}
-.definition{font-size:1.48rem;line-height:1.48}
-.example{font-size:1.35rem;line-height:1.48;background:#fff7eb;border-left:6px solid var(--orange);padding:14px 16px;border-radius:10px;font-style:italic}
-.chips{display:flex;gap:8px;flex-wrap:wrap}
-.chip{background:#edf3f5;border-radius:99px;padding:8px 12px;font-weight:800}
-.audio-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:9px;margin-top:auto}
-.audio-btn{border:0;border-radius:13px;padding:14px 12px;background:var(--orange);color:#fff;font-weight:900;cursor:pointer;position:relative;overflow:hidden}
-.audio-btn.playing{background:var(--green)}
-.audio-btn.playing::after{content:"";position:absolute;left:0;bottom:0;height:5px;background:rgba(255,255,255,.78);animation:bar 2.3s linear infinite}
-@keyframes bar{from{width:0}to{width:100%}}
-.navrow{display:flex;justify-content:space-between;gap:10px;margin-top:2px}
-.navbtn{border:0;border-radius:12px;padding:12px 16px;background:#e7eef0;color:var(--navy);font-weight:900;cursor:pointer}
-.navbtn.primary{background:var(--navy);color:#fff}
-.hidden-content{filter:blur(8px);user-select:none;cursor:pointer;transition:.18s}
-.hidden-content:hover{filter:blur(5px)}
-.hidden-content.revealed{filter:none}
-.teacher-panel{display:none;border-top:1px solid var(--line);padding:12px 16px;background:#f7fafb}
-.teacher-panel.open{display:flex;gap:12px;flex-wrap:wrap}
-.teacher-panel label{display:flex;align-items:center;gap:6px;font-weight:800}
-.shortcut{margin-left:auto;color:var(--muted);font-size:.84rem}
-.presentation .sidebar,.presentation .topbar,.presentation .teacher-panel,.presentation .progress-wrap{display:none!important}
-.presentation .layout{grid-template-columns:1fr;margin-top:0}
-.presentation .stage{min-height:100vh;border-radius:0}
-.presentation .card-grid{min-height:100vh}
-.presentation .term{font-size:clamp(4rem,6vw,7rem)}
-.presentation .definition{font-size:2rem}
-.presentation .example{font-size:1.8rem}
-@media(max-width:1050px){
-  .layout{grid-template-columns:1fr} .sidebar{min-height:0} .word-list{grid-template-columns:repeat(2,1fr)}
-  .card-grid{grid-template-columns:1fr} .image-zone{min-height:390px} .image-zone img{height:390px}
-}
-@media(max-width:680px){
-  .app{padding:8px} .topbar{position:static} .top-actions{display:grid;grid-template-columns:1fr 1fr}
-  .word-list{grid-template-columns:1fr} .info-zone{padding:22px 18px} .audio-grid{grid-template-columns:1fr}
-}
+/* ══════════════════════════════════════════════════════════════════════
+   Flash vocabulaire · surcouche du système de design
+   FICHIER GÉNÉRÉ — build/vocab_flash.py. Ne modifiez pas ce HTML.
+   Ce qui suit ne couvre que les objets propres à l'activité : la planche
+   image-mot, les quatre onglets, la table de maîtrise. Aucune couleur en
+   dur : uniquement des jetons de assets/design-system/tokens/.
+   ══════════════════════════════════════════════════════════════════════ */
+body { --sec: var(--green-600); --sec-soft: var(--green-100); }
 
-.main-tabs{display:grid;grid-template-columns:repeat(4,1fr);gap:9px;margin:14px 0}
-.main-tab{border:0;border-radius:14px;padding:13px;background:#dfeaec;color:#2a5263;font-weight:900;cursor:pointer}
-.main-tab.active{background:var(--navy);color:#fff}
-.view{display:none}.view.active{display:block}
-.game-card{background:#fff;border-radius:22px;box-shadow:var(--shadow);padding:28px;min-height:650px}
-.game-head{display:flex;align-items:flex-start;justify-content:space-between;gap:18px;border-bottom:1px solid var(--line);padding-bottom:18px}
-.game-head h2{margin:4px 0 6px;font-size:2rem;color:var(--navy)}
-.game-head p{margin:0;color:var(--muted);font-size:1.05rem}
-.game-kicker{font-size:.78rem;letter-spacing:.12em;font-weight:950;color:var(--blue)}
-.score-pill,.level-badge{background:var(--navy);color:#fff;border-radius:99px;padding:10px 16px;font-weight:950;white-space:nowrap}
-.question-box{margin:28px auto 20px;max-width:900px;text-align:center;font-size:1.55rem;line-height:1.45}
-.question-box img{width:min(760px,100%);max-height:360px;object-fit:contain;border-radius:18px;background:#e4ecee;display:block;margin:0 auto 18px}
-.answer-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:14px;max-width:1000px;margin:0 auto}
-.answer-btn{border:3px solid transparent;background:#f8fafb;border-radius:16px;padding:17px;text-align:left;font-weight:850;cursor:pointer;box-shadow:0 7px 22px rgba(23,54,77,.07)}
-.answer-btn.correct{border-color:#3aa66d;background:#edf9f2}
-.answer-btn.wrong{border-color:#d65b5b;background:#fff0f0}
-.game-feedback{min-height:38px;text-align:center;font-weight:950;font-size:1.1rem;margin:16px}
-.game-actions{display:flex;justify-content:center;gap:10px;flex-wrap:wrap}
-.review-progress{height:12px;background:#e3ebed;border-radius:99px;overflow:hidden;margin:20px 0}
-.review-progress>div{height:100%;width:0;background:var(--green);transition:.25s}
-.mastery-summary{display:grid;grid-template-columns:repeat(4,1fr);gap:12px;margin:22px 0}
-.summary-card{background:#f4f8f9;border:1px solid var(--line);border-radius:16px;padding:18px;text-align:center}
-.summary-card strong{display:block;font-size:2rem;color:var(--navy)}
-.summary-card span{color:var(--muted);font-weight:800;font-size:.9rem}
-.badge-row{display:flex;gap:10px;flex-wrap:wrap;margin-bottom:18px}
-.badge{padding:9px 12px;border-radius:99px;background:#e7ecee;color:#7b878d;font-weight:900}
-.badge.unlocked{background:#fff1c9;color:#8a6500}
-.mastery-list{display:grid;gap:10px}
-.mastery-item{display:grid;grid-template-columns:minmax(180px,1fr) 2fr auto;gap:14px;align-items:center;border:1px solid var(--line);border-radius:15px;padding:13px 15px;background:#fbfcfc}
-.mastery-word{font-weight:900;color:var(--navy)}
-.mastery-track{height:11px;background:#e2e9eb;border-radius:99px;overflow:hidden}
-.mastery-fill{height:100%;background:linear-gradient(90deg,var(--blue),var(--green));transition:.3s}
-.mastery-stars{font-size:1.2rem;color:#e4a62c;letter-spacing:2px}
-@media(max-width:800px){
-  .main-tabs{grid-template-columns:repeat(2,1fr)}
-  .answer-grid{grid-template-columns:1fr}
-  .mastery-summary{grid-template-columns:repeat(2,1fr)}
-  .mastery-item{grid-template-columns:1fr}
+/* ── Bandeau clair (jamais foncé, jamais coloré en aplat) ───────────── */
+.vf-band { padding: var(--sp-5) 0; }
+.vf-band__in { max-width: var(--content-max); margin: 0 auto; padding: 0 var(--gutter);
+  display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: var(--sp-4); }
+.vf-band__t { font-size: var(--fs-h2); font-weight: var(--fw-black);
+  letter-spacing: var(--ls-title); line-height: var(--lh-title); margin-top: var(--sp-2); }
+.vf-band__a { display: flex; flex-wrap: wrap; gap: var(--sp-2); }
+
+/* ── Barre de parcours : les quatre étapes de l'activité ────────────── */
+.vf-steps__in { max-width: var(--content-max); margin: 0 auto;
+  padding: var(--sp-3) var(--gutter); display: flex; flex-wrap: wrap; gap: var(--sp-2); align-items: center; }
+.step { font-family: var(--font-sans); cursor: pointer; }
+.step[aria-selected="true"] { background: var(--sel-bg); border-color: var(--sel-line); color: var(--sel-ink); }
+
+.vf-wrap { max-width: var(--content-max); margin: 0 auto; padding: var(--sp-8) var(--gutter) var(--sp-12); }
+.view { display: none; }
+.view.is-on { display: block; }
+
+/* ── Onglet « Découvrir » ───────────────────────────────────────────── */
+.vf-layout { display: grid; grid-template-columns: 260px minmax(0, 1fr); gap: var(--sp-5); align-items: start; }
+.vf-mots { display: flex; flex-direction: column; gap: var(--sp-2); }
+.vf-mot-btn { display: flex; align-items: center; gap: var(--sp-3); width: 100%; text-align: left;
+  min-height: var(--tap-min); padding: var(--sp-2) var(--sp-4);
+  border: 1px solid var(--border); border-radius: var(--r-md); background: var(--surface-card);
+  color: var(--text-strong); font-family: var(--font-sans); font-size: var(--fs-body-sm);
+  font-weight: var(--fw-semi); line-height: 1.35; cursor: pointer;
+  transition: background var(--dur) var(--ease), border-color var(--dur) var(--ease), color var(--dur) var(--ease); }
+.vf-mot-btn:hover { background: var(--paper-100); }
+.vf-mot-btn[aria-current="true"] { background: var(--sel-bg); border-color: var(--sel-line); color: var(--sel-ink); }
+/* Le mot déjà vu porte un glyphe, jamais la seule couleur. */
+.vf-mot-btn__e { flex-shrink: 0; width: 16px; font-weight: var(--fw-black); }
+
+.vf-piste { display: flex; align-items: center; gap: var(--sp-4);
+  padding: var(--sp-3) var(--sp-6); border-bottom: 1px solid var(--border); }
+.vf-track { flex: 1; height: 6px; border-radius: 3px; background: var(--paper-200); overflow: hidden; }
+.vf-track span { display: block; height: 100%; background: var(--accent); transition: width var(--dur) var(--ease); }
+.vf-piste__n { font-size: var(--fs-ui-sm); font-weight: var(--fw-bold); color: var(--text-muted); white-space: nowrap; }
+
+.vf-planche { display: grid; grid-template-columns: minmax(0, 38%) minmax(0, 1fr); }
+.vf-image { background: var(--surface-sunken); border-right: 1px solid var(--border);
+  display: flex; flex-direction: column; }
+.vf-image__l { padding: var(--sp-3) var(--sp-5); font-size: var(--fs-label); font-weight: var(--fw-black);
+  letter-spacing: var(--ls-label); text-transform: uppercase; color: var(--sec);
+  border-bottom: 1px solid var(--border); }
+.vf-image img { width: 100%; flex: 1; min-height: 0; height: 260px; object-fit: contain; display: block; padding: var(--sp-4); }
+
+.vf-fiche { padding: var(--sp-6); display: flex; flex-direction: column; gap: var(--sp-4); }
+.vf-terme { font-size: clamp(32px, 4vw, 44px); font-weight: var(--fw-black);
+  letter-spacing: var(--ls-title); line-height: 1.05; }
+.vf-gram { font-size: var(--fs-body-sm); font-weight: var(--fw-bold); color: var(--text-muted); }
+.vf-bloc { border-top: 1px solid var(--border); padding-top: var(--sp-4); }
+.vf-lbl { font-size: var(--fs-label); font-weight: var(--fw-black); letter-spacing: var(--ls-label);
+  text-transform: uppercase; color: var(--text-muted); margin-bottom: var(--sp-2); }
+.vf-def { font-size: var(--fs-lead); font-weight: var(--fw-semi); line-height: var(--lh-loose); }
+/* L'exemple garde son filet gauche de 4 px — le seul usage décoratif
+   autorisé de la couleur de section. */
+.vf-ex { font-size: var(--fs-body); font-weight: var(--fw-medium); font-style: italic;
+  line-height: var(--lh-loose); color: var(--text-body);
+  border-left: 4px solid var(--sec); padding-left: var(--sp-4); }
+.vf-chips { display: flex; flex-wrap: wrap; gap: var(--sp-2); }
+.vf-tag { padding: 6px var(--sp-3); border-radius: var(--r-pill);
+  background: var(--surface-sunken); border: 1px solid var(--border);
+  font-size: var(--fs-ui-sm); font-weight: var(--fw-semi); color: var(--text-body); }
+
+/* Trois boutons dans une colonne étroite : ils se replient plutôt que de
+   déborder, et leur libellé peut passer à la ligne. Un seul est en aplat
+   rouge — celui du mot. Trois pavés rouges dans une carte feraient de la
+   couleur d'alerte un décor ; les deux autres portent la même icône, en
+   couleur de texte, comme le prévoit le système. */
+.vf-audios { display: grid; grid-template-columns: repeat(auto-fit, minmax(132px, 1fr));
+  gap: var(--sp-2); margin-top: auto; padding-top: var(--sp-4); }
+.vf-audios .btn { min-width: 0; padding: 0 var(--sp-3); white-space: normal; line-height: 1.2; }
+.vf-nav { display: flex; justify-content: space-between; gap: var(--sp-3); }
+
+/* Masquage pédagogique. Le flou est remplacé par une plaque nommée : elle
+   se dit aux lecteurs d'écran, et le texte masqué ne reste pas sélectionnable
+   sous un simple filtre. */
+.vf-masque { position: relative; }
+.vf-masque > * { visibility: hidden; }
+.vf-masque::after { content: "Masqué — cliquez pour afficher"; visibility: visible;
+  position: absolute; inset: 0; display: flex; align-items: center; justify-content: center;
+  border: 1px dashed var(--drop-line); border-radius: var(--r-sm); background: var(--drop-bg);
+  font-size: var(--fs-ui-sm); font-weight: var(--fw-bold); color: var(--text-muted);
+  cursor: pointer; text-align: center; padding: var(--sp-2); }
+.vf-masque.is-shown > * { visibility: visible; }
+.vf-masque.is-shown::after { display: none; }
+
+.vf-prof { display: none; flex-wrap: wrap; gap: var(--sp-4); align-items: center;
+  padding: var(--sp-4) var(--sp-6); background: var(--surface-sunken); border-top: 1px solid var(--border); }
+.vf-prof.is-on { display: flex; }
+.vf-prof label { display: flex; align-items: center; gap: var(--sp-2);
+  font-size: var(--fs-ui-sm); font-weight: var(--fw-bold); cursor: pointer; }
+.vf-prof input { width: 20px; height: 20px; accent-color: var(--accent); }
+.vf-prof__k { margin-left: auto; font-size: var(--fs-ui-sm); font-weight: var(--fw-medium); color: var(--text-muted); }
+
+/* ── Onglets de jeu ─────────────────────────────────────────────────── */
+.vf-jeu__t { display: flex; flex-wrap: wrap; align-items: flex-start; justify-content: space-between;
+  gap: var(--sp-4); border-bottom: 1px solid var(--border); padding-bottom: var(--sp-5); margin-bottom: var(--sp-6); }
+.vf-jeu__t h2 { margin: var(--sp-1) 0 var(--sp-1); }
+.vf-jeu__t p { font-size: var(--fs-body-sm); font-weight: var(--fw-medium); color: var(--text-muted); }
+.vf-question { max-width: 760px; margin: 0 auto var(--sp-6); text-align: center;
+  font-size: var(--fs-lead); font-weight: var(--fw-semi); line-height: var(--lh-loose); }
+.vf-question img { width: min(560px, 100%); max-height: 300px; object-fit: contain;
+  border-radius: var(--r-sm); background: var(--surface-sunken); display: block; margin: 0 auto var(--sp-4); }
+.vf-question__c { font-size: var(--fs-body-sm); font-weight: var(--fw-medium); color: var(--text-muted); margin-top: var(--sp-2); }
+.vf-trou { font-weight: var(--fw-black); letter-spacing: .06em; }
+
+.vf-reponses { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: var(--sp-3); max-width: 760px; margin: 0 auto; }
+.vf-rep { min-height: var(--tap-comfort); padding: var(--sp-3) var(--sp-4); text-align: left;
+  border: 1px solid var(--border); border-radius: var(--r-md); background: var(--surface-card);
+  color: var(--text-strong); font-family: var(--font-sans); font-size: var(--fs-body-sm);
+  font-weight: var(--fw-semi); cursor: pointer;
+  transition: background var(--dur) var(--ease), border-color var(--dur) var(--ease), color var(--dur) var(--ease); }
+.vf-rep:hover:enabled { background: var(--paper-100); }
+.vf-rep.is-ok { background: var(--ok-bg); border-color: var(--ok-line); color: var(--ok-ink); }
+.vf-rep.is-ok::before { content: "✓ "; font-weight: var(--fw-black); }
+.vf-rep.is-no { background: var(--no-bg); border-color: var(--no-line); color: var(--no-ink); }
+.vf-rep.is-no::before { content: "✕ "; font-weight: var(--fw-black); }
+/* Bonne réponse non choisie : filet pointillé, sans aplat — la forme du
+   filet, et pas la seule couleur, dit où était le mot juste. */
+.vf-rep.is-answer { background: var(--surface-card); border: 1px dashed var(--ok-line); color: var(--ok-line); }
+.vf-rep:disabled { cursor: default; }
+
+.vf-retour { min-height: 26px; text-align: center; margin: var(--sp-5) 0; }
+.vf-jeu__a { display: flex; justify-content: center; flex-wrap: wrap; gap: var(--sp-3); }
+
+/* ── Onglet « Maîtrise » ────────────────────────────────────────────── */
+.vf-bilan { display: grid; grid-template-columns: repeat(4, 1fr); gap: var(--sp-3); margin-bottom: var(--sp-6); }
+.vf-tuile { background: var(--surface-sunken); border: 1px solid var(--border);
+  border-radius: var(--r-sm); padding: var(--sp-4); text-align: center; }
+.vf-tuile strong { display: block; font-size: var(--fs-h3); font-weight: var(--fw-black); }
+.vf-tuile span { font-size: var(--fs-meta); font-weight: var(--fw-bold);
+  letter-spacing: .06em; text-transform: uppercase; color: var(--text-muted); }
+
+.vf-jalons { display: flex; flex-wrap: wrap; gap: var(--sp-2); margin-bottom: var(--sp-6); }
+.vf-jalon { padding: var(--sp-2) var(--sp-4); border-radius: var(--r-pill);
+  border: 1px solid var(--border); background: var(--surface-card);
+  font-size: var(--fs-ui-sm); font-weight: var(--fw-bold); color: var(--text-muted); }
+.vf-jalon.is-ok { background: var(--ok-bg); border-color: var(--ok-line); color: var(--ok-ink); }
+.vf-jalon.is-ok::before { content: "✓ "; font-weight: var(--fw-black); }
+
+.vf-table { display: flex; flex-direction: column; }
+.vf-ligne { display: grid; grid-template-columns: minmax(160px, 1fr) minmax(0, 2fr) auto;
+  gap: var(--sp-5); align-items: center; padding: var(--sp-4) 0; border-bottom: 1px solid var(--paper-200); }
+.vf-ligne:last-child { border-bottom: none; }
+.vf-ligne__m { font-size: var(--fs-body-sm); font-weight: var(--fw-black); }
+/* La barre ne dit rien seule : l'état s'écrit à côté, en toutes lettres. */
+.vf-ligne__e { font-size: var(--fs-ui-sm); font-weight: var(--fw-bold); color: var(--text-muted); white-space: nowrap; }
+.vf-ligne__e.is-ok { color: var(--ok-ink); }
+
+/* ── Modale des raccourcis ──────────────────────────────────────────── */
+.vf-modale { display: none; position: fixed; inset: 0; z-index: 100;
+  background: rgba(23, 24, 26, .55); align-items: center; justify-content: center; padding: var(--sp-5); }
+.vf-modale.is-on { display: flex; }
+.vf-modale__c { width: min(620px, 100%); background: var(--surface-card);
+  border-radius: var(--r-lg); box-shadow: var(--sh-modal); padding: var(--sp-6); position: relative;
+  max-height: 86vh; overflow-y: auto; }
+.vf-modale__x { position: absolute; right: var(--sp-4); top: var(--sp-4); }
+.vf-touches { display: grid; grid-template-columns: 130px minmax(0, 1fr);
+  gap: var(--sp-3) var(--sp-4); align-items: center; margin-top: var(--sp-5); }
+.vf-touches kbd { display: block; text-align: center; padding: var(--sp-2) var(--sp-3);
+  border: 1px solid var(--border); border-radius: var(--r-sm); background: var(--surface-sunken);
+  font-family: var(--font-sans); font-size: var(--fs-ui-sm); font-weight: var(--fw-black); color: var(--text-strong); }
+.vf-touches b { font-size: var(--fs-ui-sm); font-weight: var(--fw-semi); color: var(--text-body); }
+
+.vf-aide { position: fixed; right: var(--sp-5); bottom: var(--sp-5); z-index: 90;
+  width: var(--tap-min); height: var(--tap-min); border-radius: 50%;
+  border: 1px solid var(--border); background: var(--surface-card); color: var(--text-strong);
+  font-family: var(--font-sans); font-size: 19px; font-weight: var(--fw-black);
+  cursor: pointer; box-shadow: var(--sh-raise); }
+
+/* ── Mode présentation (projection en classe) ───────────────────────── */
+.is-presentation .vf-band, .is-presentation .vf-steps, .is-presentation .vf-cote,
+.is-presentation .vf-prof, .is-presentation .vf-piste, .is-presentation .vf-aide { display: none !important; }
+.is-presentation .vf-wrap { padding: 0; max-width: none; }
+.is-presentation .vf-layout { grid-template-columns: 1fr; gap: 0; }
+.is-presentation .card { border: none; border-radius: 0; box-shadow: none; }
+.is-presentation .vf-planche { min-height: 100vh; }
+.is-presentation .vf-terme { font-size: clamp(48px, 6vw, 84px); }
+.is-presentation .vf-def { font-size: 28px; }
+.is-presentation .vf-ex { font-size: 24px; }
+/* En bas à gauche : en haut à droite, le bouton passait par-dessus le mot
+   projeté, qui est le seul objet de cet écran. */
+.vf-sortie { display: none; position: fixed; bottom: var(--sp-5); left: var(--sp-5); z-index: 99; }
+.is-presentation .vf-sortie { display: inline-flex; }
+
+@media (max-width: 1040px) {
+  /* En colonne, la liste des mots passe SOUS la carte : sinon l'élève
+     déroule onze boutons avant d'atteindre le mot qu'il vient d'ouvrir. */
+  .vf-layout { grid-template-columns: 1fr; }
+  .vf-layout > .card { order: 1; }
+  .vf-cote { order: 2; }
+  .vf-mots { display: grid; grid-template-columns: repeat(2, 1fr); }
+  .vf-planche { grid-template-columns: 1fr; }
+  .vf-image { border-right: none; border-bottom: 1px solid var(--border); }
 }
-
-
-.exit-presentation{display:none;position:fixed;top:18px;right:18px;z-index:9999;border:0;border-radius:999px;padding:12px 16px;background:rgba(15,41,58,.92);color:#fff;font-weight:900;cursor:pointer;box-shadow:0 10px 30px rgba(0,0,0,.22)}
-.presentation .exit-presentation{display:block}
-.help-button{position:fixed;right:18px;bottom:18px;z-index:9998;width:46px;height:46px;border-radius:50%;border:0;background:var(--navy);color:#fff;font-size:1.35rem;font-weight:950;cursor:pointer;box-shadow:0 10px 28px rgba(23,54,77,.25)}
-.help-modal{display:none;position:fixed;inset:0;z-index:10000;background:rgba(8,24,34,.58);align-items:center;justify-content:center;padding:20px}
-.help-modal.open{display:flex}
-.help-card{width:min(620px,100%);background:#fff;border-radius:22px;padding:26px;box-shadow:0 24px 70px rgba(0,0,0,.28);position:relative}
-.help-card h2{margin:0 0 18px;color:var(--navy)}
-.help-close{position:absolute;right:14px;top:14px;border:0;background:#e9eff1;width:38px;height:38px;border-radius:50%;font-weight:900;cursor:pointer}
-.shortcut-grid{display:grid;grid-template-columns:120px 1fr;gap:10px 16px;align-items:center}
-.shortcut-grid span{background:#eef4f6;border-radius:10px;padding:8px 10px;font-weight:950;text-align:center}
-.shortcut-grid strong{color:#405866}
-@media(max-width:620px){.exit-presentation{top:10px;right:10px;padding:10px 13px;font-size:.9rem}.shortcut-grid{grid-template-columns:90px 1fr}}
-
+@media (max-width: 640px) {
+  .vf-band__in, .vf-steps__in, .vf-wrap { padding-left: var(--sp-5); padding-right: var(--sp-5); }
+  .vf-mots { grid-template-columns: 1fr; }
+  .vf-audios, .vf-reponses, .vf-bilan { grid-template-columns: 1fr; }
+  .vf-bilan { grid-template-columns: repeat(2, 1fr); }
+  .vf-ligne { grid-template-columns: 1fr; gap: var(--sp-2); }
+  .vf-fiche { padding: var(--sp-5); }
+}
 </style>
 </head>
-<body>
-<div class="app" id="app">
-<button id="exitPresentation" class="exit-presentation" aria-label="Quitter le mode présentation">✕ Quitter la présentation</button>
-<button id="helpButton" class="help-button" aria-label="Afficher les raccourcis">?</button>
-<div id="helpModal" class="help-modal" aria-hidden="true">
-  <div class="help-card">
-    <button id="closeHelp" class="help-close" aria-label="Fermer">✕</button>
-    <h2>Raccourcis clavier</h2>
-    <div class="shortcut-grid">
-      <span>← / →</span><strong>Mot précédent / suivant</strong>
-      <span>1</span><strong>Écouter le mot</strong>
-      <span>2</span><strong>Écouter la définition</strong>
-      <span>3</span><strong>Écouter l’exemple</strong>
-      <span>Espace</span><strong>Rejouer le dernier audio</strong>
-      <span>P</span><strong>Activer ou quitter la présentation</strong>
-      <span>Échap</span><strong>Quitter la présentation</strong>
-      <span>F</span><strong>Activer ou quitter le plein écran</strong>
-      <span>E</span><strong>Mode enseignant</strong>
+<body class="page">
+
+<header class="band vf-band">
+  <div class="vf-band__in">
+    <div>
+      <p class="band__eyebrow">Francisation · Niveau 4 · Santé et clinique</p>
+      <h1 class="vf-band__t">Flash vocabulaire</h1>
+    </div>
+    <div class="vf-band__a">
+      <button type="button" class="btn btn--ghost btn--sm" id="profToggle" aria-pressed="false">Mode enseignant</button>
+      <button type="button" class="btn btn--ghost btn--sm" id="presToggle" aria-pressed="false">Présentation</button>
+      <button type="button" class="btn btn--ghost btn--sm" id="resetVus">Réinitialiser</button>
     </div>
   </div>
-</div>
-  <header class="topbar">
-    <div class="logo">🩺</div>
-    <div class="brand"><h1>Francisation Flash V2</h1><p>Santé et clinique · Niveau 4</p></div>
-    <div class="top-actions">
-      <button class="top-btn" id="teacherToggle">👩‍🏫 Mode enseignant</button>
-      <button class="top-btn" id="presentationToggle">🖥 Présentation</button>
-      <button class="top-btn" id="resetProgress">↺ Réinitialiser</button>
-    </div>
-  </header>
+</header>
 
-  <nav class="main-tabs">
-    <button class="main-tab active" data-view="discoverView">📖 Découvrir</button>
-    <button class="main-tab" data-view="practiceView">✍️ Pratiquer</button>
-    <button class="main-tab" data-view="reviewView">🎮 Réviser</button>
-    <button class="main-tab" data-view="masteryView">🏆 Maîtrise</button>
-  </nav>
-
-  <div class="view active" id="discoverView">
-  <div class="layout">
-    <aside class="sidebar">
-      <div class="side-head"><h2>Mots du thème</h2><span id="seenCount">0/11</span></div>
-      <div class="word-list" id="wordList"></div>
-    </aside>
-
-    <section class="stage">
-      <div class="progress-wrap">
-        <div class="progress-track"><div class="progress-bar" id="progressBar"></div></div>
-        <div class="progress-count" id="progressCount">0 / 11</div>
-      </div>
-
-      <div class="card-grid">
-        <div class="image-zone">
-          <img id="photo" alt="">
-          <div class="image-label">SANTÉ ET CLINIQUE</div>
-        </div>
-        <div class="info-zone">
-          <div>
-            <div class="term revealable" id="term"></div>
-            <div class="grammar revealable" id="grammar"></div>
-          </div>
-
-          <div class="section">
-            <div class="label">Définition</div>
-            <div class="definition revealable" id="definition"></div>
-          </div>
-
-          <div class="section">
-            <div class="label">Exemple</div>
-            <div class="example revealable" id="example"></div>
-          </div>
-
-          <div class="section">
-            <div class="label">Expressions utiles</div>
-            <div class="chips revealable" id="expressions"></div>
-          </div>
-
-          <div class="audio-grid">
-            <button class="audio-btn" data-audio="mot">🔊 Mot</button>
-            <button class="audio-btn" data-audio="definition">🔊 Définition</button>
-            <button class="audio-btn" data-audio="exemple">🔊 Exemple</button>
-          </div>
-
-          <div class="navrow">
-            <button class="navbtn" id="prev">← Précédent</button>
-            <button class="navbtn primary" id="next">Suivant →</button>
-          </div>
-        </div>
-      </div>
-
-      <div class="teacher-panel" id="teacherPanel">
-        <label><input type="checkbox" data-hide="term"> Masquer le mot</label>
-        <label><input type="checkbox" data-hide="definition"> Masquer la définition</label>
-        <label><input type="checkbox" data-hide="example"> Masquer l'exemple</label>
-        <label><input type="checkbox" data-hide="expressions"> Masquer les expressions</label>
-        <span class="shortcut">Clavier : ← → · 1 mot · 2 définition · 3 exemple · espace rejoue</span>
-      </div>
-    </section>
+<nav class="steps vf-steps" aria-label="Étapes de l'activité">
+  <div class="steps__inner vf-steps__in" role="tablist">
+    <button type="button" class="step" role="tab" aria-selected="true"  data-vue="vueDecouvrir"><span class="step__dot"></span>Je découvre les mots</button>
+    <button type="button" class="step" role="tab" aria-selected="false" data-vue="vuePratiquer"><span class="step__dot"></span>Je m'entraîne</button>
+    <button type="button" class="step" role="tab" aria-selected="false" data-vue="vueReviser"><span class="step__dot"></span>Défi de 10 questions</button>
+    <button type="button" class="step" role="tab" aria-selected="false" data-vue="vueMaitrise"><span class="step__dot"></span>Où j'en suis</button>
   </div>
-  </div>
+</nav>
 
-  <section class="view" id="practiceView">
-    <div class="game-card">
-      <div class="game-head">
-        <div>
-          <span class="game-kicker">ENTRAÎNEMENT</span>
-          <h2>Pratiquer les mots</h2>
-          <p>Répondez correctement pour gagner des points de maîtrise.</p>
+<button type="button" class="btn btn--pri btn--sm vf-sortie" id="sortiePres">Quitter la présentation</button>
+
+<main class="vf-wrap" id="app">
+
+  <!-- ── Je découvre les mots ─────────────────────────────────────── -->
+  <section class="view is-on" id="vueDecouvrir">
+    <div class="vf-layout">
+      <aside class="vf-cote">
+        <p class="vf-lbl">Les mots du thème <span id="vus"></span></p>
+        <div class="vf-mots" id="listeMots"></div>
+      </aside>
+
+      <div class="card card--flush">
+        <div class="vf-piste">
+          <div class="vf-track"><span id="barreVus"></span></div>
+          <div class="vf-piste__n" id="compteVus"></div>
         </div>
-        <div class="score-pill"><span id="practicePoints">0</span> points</div>
-      </div>
-      <div class="question-box" id="practiceQuestion"></div>
-      <div class="answer-grid" id="practiceAnswers"></div>
-      <div class="game-feedback" id="practiceFeedback"></div>
-      <div class="game-actions">
-        <button class="navbtn" id="practiceListen">🔊 Écouter</button>
-        <button class="navbtn primary" id="nextPractice">Question suivante</button>
+
+        <div class="vf-planche">
+          <div class="vf-image">
+            <div class="vf-image__l">Santé et clinique</div>
+            <img id="photo" alt="">
+          </div>
+          <div class="vf-fiche">
+            <div>
+              <div class="vf-terme" id="terme"></div>
+              <div class="vf-gram" id="grammaire"></div>
+            </div>
+
+            <div class="vf-bloc">
+              <p class="vf-lbl">Définition</p>
+              <p class="vf-def" id="definition"></p>
+            </div>
+
+            <div class="vf-bloc">
+              <p class="vf-lbl">Exemple</p>
+              <p class="vf-ex" id="exemple"></p>
+            </div>
+
+            <div class="vf-bloc">
+              <p class="vf-lbl">Expressions utiles</p>
+              <div class="vf-chips" id="expressions"></div>
+            </div>
+
+            <div class="vf-audios">
+              <button type="button" class="btn btn--audio" data-audio="mot"><svg viewBox="0 0 50 50" fill="currentColor" aria-hidden="true"><path d="M27 6.5c0-1.2-1.4-1.9-2.4-1.1L13.8 14H6c-1.1 0-2 .9-2 2v18c0 1.1.9 2 2 2h7.8l10.8 8.6c1 .8 2.4.1 2.4-1.1V6.5z"/><path d="M33.4 17.6c-.7-.6-1.8-.5-2.4.2-.6.7-.5 1.8.2 2.4 1.6 1.4 2.6 3.4 2.6 5.7s-1 4.3-2.6 5.7c-.7.6-.8 1.7-.2 2.4.6.7 1.7.8 2.4.2 2.3-2 3.7-5 3.7-8.3s-1.4-6.3-3.7-8.3z"/><path d="M38.5 11.2c-.7-.5-1.8-.4-2.3.4-.5.7-.4 1.8.4 2.3 3.6 2.6 5.9 6.9 5.9 11.6s-2.3 9-5.9 11.6c-.8.5-.9 1.6-.4 2.3.5.8 1.6.9 2.3.4C43 36.7 46 31.1 46 25s-3-11.7-7.5-13.8z"/></svg>Le mot</button>
+              <button type="button" class="btn btn--ghost" data-audio="definition"><svg viewBox="0 0 50 50" fill="currentColor" aria-hidden="true"><path d="M27 6.5c0-1.2-1.4-1.9-2.4-1.1L13.8 14H6c-1.1 0-2 .9-2 2v18c0 1.1.9 2 2 2h7.8l10.8 8.6c1 .8 2.4.1 2.4-1.1V6.5z"/><path d="M33.4 17.6c-.7-.6-1.8-.5-2.4.2-.6.7-.5 1.8.2 2.4 1.6 1.4 2.6 3.4 2.6 5.7s-1 4.3-2.6 5.7c-.7.6-.8 1.7-.2 2.4.6.7 1.7.8 2.4.2 2.3-2 3.7-5 3.7-8.3s-1.4-6.3-3.7-8.3z"/><path d="M38.5 11.2c-.7-.5-1.8-.4-2.3.4-.5.7-.4 1.8.4 2.3 3.6 2.6 5.9 6.9 5.9 11.6s-2.3 9-5.9 11.6c-.8.5-.9 1.6-.4 2.3.5.8 1.6.9 2.3.4C43 36.7 46 31.1 46 25s-3-11.7-7.5-13.8z"/></svg>La définition</button>
+              <button type="button" class="btn btn--ghost" data-audio="exemple"><svg viewBox="0 0 50 50" fill="currentColor" aria-hidden="true"><path d="M27 6.5c0-1.2-1.4-1.9-2.4-1.1L13.8 14H6c-1.1 0-2 .9-2 2v18c0 1.1.9 2 2 2h7.8l10.8 8.6c1 .8 2.4.1 2.4-1.1V6.5z"/><path d="M33.4 17.6c-.7-.6-1.8-.5-2.4.2-.6.7-.5 1.8.2 2.4 1.6 1.4 2.6 3.4 2.6 5.7s-1 4.3-2.6 5.7c-.7.6-.8 1.7-.2 2.4.6.7 1.7.8 2.4.2 2.3-2 3.7-5 3.7-8.3s-1.4-6.3-3.7-8.3z"/><path d="M38.5 11.2c-.7-.5-1.8-.4-2.3.4-.5.7-.4 1.8.4 2.3 3.6 2.6 5.9 6.9 5.9 11.6s-2.3 9-5.9 11.6c-.8.5-.9 1.6-.4 2.3.5.8 1.6.9 2.3.4C43 36.7 46 31.1 46 25s-3-11.7-7.5-13.8z"/></svg>L'exemple</button>
+            </div>
+
+            <div class="vf-nav">
+              <button type="button" class="btn btn--ghost" id="precedent">Précédent</button>
+              <button type="button" class="btn btn--pri" id="suivant">Suivant</button>
+            </div>
+          </div>
+        </div>
+
+        <div class="vf-prof" id="panneauProf">
+          <label><input type="checkbox" data-cache="terme"> Masquer le mot</label>
+          <label><input type="checkbox" data-cache="definition"> Masquer la définition</label>
+          <label><input type="checkbox" data-cache="exemple"> Masquer l'exemple</label>
+          <label><input type="checkbox" data-cache="expressions"> Masquer les expressions</label>
+          <span class="vf-prof__k">Clavier : flèches · 1 le mot · 2 la définition · 3 l'exemple</span>
+        </div>
       </div>
     </div>
   </section>
 
-  <section class="view" id="reviewView">
-    <div class="game-card">
-      <div class="game-head">
+  <!-- ── Je m'entraîne ────────────────────────────────────────────── -->
+  <section class="view" id="vuePratiquer">
+    <div class="card">
+      <div class="vf-jeu__t">
         <div>
-          <span class="game-kicker">DÉFI</span>
-          <h2>Révision éclair</h2>
-          <p>Une série de 10 questions pour tester votre vocabulaire.</p>
+          <p class="exo__eyebrow">Entraînement</p>
+          <h2>Je m'entraîne</h2>
+          <p>Choisissez le bon mot. Chaque bonne réponse fait monter votre maîtrise.</p>
         </div>
-        <div class="score-pill"><span id="reviewScore">0</span> / 10</div>
+        <span class="score"><span id="pointsPratique">0</span>&nbsp;points</span>
       </div>
-      <div class="review-progress"><div id="reviewProgressBar"></div></div>
-      <div class="question-box" id="reviewQuestion"></div>
-      <div class="answer-grid" id="reviewAnswers"></div>
-      <div class="game-feedback" id="reviewFeedback"></div>
-      <div class="game-actions">
-        <button class="navbtn primary" id="startReview">Commencer le défi</button>
+      <div class="vf-question" id="questionPratique"></div>
+      <div class="vf-reponses" id="reponsesPratique"></div>
+      <p class="vf-retour" id="retourPratique" aria-live="polite"></p>
+      <div class="vf-jeu__a">
+        <button type="button" class="btn btn--audio" id="ecouterPratique"><svg viewBox="0 0 50 50" fill="currentColor" aria-hidden="true"><path d="M27 6.5c0-1.2-1.4-1.9-2.4-1.1L13.8 14H6c-1.1 0-2 .9-2 2v18c0 1.1.9 2 2 2h7.8l10.8 8.6c1 .8 2.4.1 2.4-1.1V6.5z"/><path d="M33.4 17.6c-.7-.6-1.8-.5-2.4.2-.6.7-.5 1.8.2 2.4 1.6 1.4 2.6 3.4 2.6 5.7s-1 4.3-2.6 5.7c-.7.6-.8 1.7-.2 2.4.6.7 1.7.8 2.4.2 2.3-2 3.7-5 3.7-8.3s-1.4-6.3-3.7-8.3z"/><path d="M38.5 11.2c-.7-.5-1.8-.4-2.3.4-.5.7-.4 1.8.4 2.3 3.6 2.6 5.9 6.9 5.9 11.6s-2.3 9-5.9 11.6c-.8.5-.9 1.6-.4 2.3.5.8 1.6.9 2.3.4C43 36.7 46 31.1 46 25s-3-11.7-7.5-13.8z"/></svg>Écouter</button>
+        <button type="button" class="btn btn--pri" id="suivantPratique">Question suivante</button>
       </div>
     </div>
   </section>
 
-  <section class="view" id="masteryView">
-    <div class="game-card">
-      <div class="game-head">
+  <!-- ── Défi de 10 questions ─────────────────────────────────────── -->
+  <section class="view" id="vueReviser">
+    <div class="card">
+      <div class="vf-jeu__t">
         <div>
-          <span class="game-kicker">PROGRESSION</span>
-          <h2>Ma maîtrise du vocabulaire</h2>
-          <p>Chaque mot progresse selon vos bonnes réponses.</p>
+          <p class="exo__eyebrow">Défi</p>
+          <h2>Dix questions</h2>
+          <p>Une série de dix questions pour vérifier ce qui est acquis.</p>
         </div>
-        <div class="level-badge" id="levelBadge">Niveau 1</div>
+        <span class="score"><span id="scoreDefi">0</span>&nbsp;/ 10</span>
       </div>
-
-      <div class="mastery-summary">
-        <div class="summary-card"><strong id="totalXP">0</strong><span>XP</span></div>
-        <div class="summary-card"><strong id="masteredCount">0</strong><span>mots maîtrisés</span></div>
-        <div class="summary-card"><strong id="averageMastery">0%</strong><span>maîtrise moyenne</span></div>
-        <div class="summary-card"><strong id="streakCount">0</strong><span>série actuelle</span></div>
-      </div>
-
-      <div class="badge-row" id="badgeRow"></div>
-      <div class="mastery-list" id="masteryList"></div>
-      <div class="game-actions">
-        <button class="navbtn" id="resetMastery">Réinitialiser la progression</button>
+      <div class="vf-track" style="margin-bottom:var(--sp-6)"><span id="barreDefi"></span></div>
+      <div class="vf-question" id="questionDefi"></div>
+      <div class="vf-reponses" id="reponsesDefi"></div>
+      <p class="vf-retour" id="retourDefi" aria-live="polite"></p>
+      <div class="vf-jeu__a">
+        <button type="button" class="btn btn--pri" id="lancerDefi">Commencer le défi</button>
       </div>
     </div>
   </section>
+
+  <!-- ── Où j'en suis ─────────────────────────────────────────────── -->
+  <section class="view" id="vueMaitrise">
+    <div class="card">
+      <div class="vf-jeu__t">
+        <div>
+          <p class="exo__eyebrow">Progression</p>
+          <h2>Où j'en suis</h2>
+          <p>Chaque mot avance selon vos bonnes réponses.</p>
+        </div>
+        <span class="score" id="niveau">Niveau 1</span>
+      </div>
+
+      <div class="vf-bilan">
+        <div class="vf-tuile"><strong id="totalPoints">0</strong><span>points</span></div>
+        <div class="vf-tuile"><strong id="nbMaitrises">0</strong><span>mots maîtrisés</span></div>
+        <div class="vf-tuile"><strong id="moyenne">0 %</strong><span>maîtrise moyenne</span></div>
+        <div class="vf-tuile"><strong id="serie">0</strong><span>série actuelle</span></div>
+      </div>
+
+      <div class="vf-jalons" id="jalons"></div>
+      <div class="vf-table" id="tableMaitrise"></div>
+      <div class="vf-jeu__a" style="margin-top:var(--sp-6)">
+        <button type="button" class="btn btn--ghost" id="resetMaitrise">Réinitialiser ma progression</button>
+      </div>
+    </div>
+  </section>
+</main>
+
+<button type="button" class="vf-aide" id="boutonAide" aria-label="Afficher les raccourcis clavier">?</button>
+
+<div class="vf-modale" id="modaleAide" role="dialog" aria-modal="true" aria-labelledby="titreAide" aria-hidden="true">
+  <div class="vf-modale__c">
+    <button type="button" class="btn btn--ghost btn--sm vf-modale__x" id="fermerAide">Fermer</button>
+    <h2 id="titreAide">Raccourcis clavier</h2>
+    <div class="vf-touches">
+      <kbd>← / →</kbd><b>Mot précédent ou suivant</b>
+      <kbd>1</kbd><b>Écouter le mot</b>
+      <kbd>2</kbd><b>Écouter la définition</b>
+      <kbd>3</kbd><b>Écouter l'exemple</b>
+      <kbd>Espace</kbd><b>Rejouer le dernier son</b>
+      <kbd>P</kbd><b>Entrer ou quitter la présentation</b>
+      <kbd>Échap</kbd><b>Quitter la présentation</b>
+      <kbd>F</kbd><b>Plein écran</b>
+      <kbd>E</kbd><b>Mode enseignant</b>
+    </div>
+  </div>
 </div>
 
 <script>
-const items=[{"term": "un rendez-vous", "definition": "Un moment fixé à l'avance pour voir quelqu'un.", "example": "J'ai un rendez-vous à dix heures avec le docteur.", "grammar": "Nom masculin", "expressions": ["prendre un rendez-vous", "annuler un rendez-vous", "avoir un rendez-vous"], "slug": "un_rendez_vous", "image": "images/un_rendez_vous.jpg", "audio": {"mot": "audio/un_rendez_vous-mot.mp3", "definition": "audio/un_rendez_vous-definition.mp3", "exemple": "audio/un_rendez_vous-exemple.mp3"}}, {"term": "la salle d'attente", "definition": "L'endroit où on attend avant de voir le médecin.", "example": "Prenez un siège dans la salle d'attente.", "grammar": "Nom féminin", "expressions": ["attendre dans la salle d'attente", "prendre un siège", "patienter quelques minutes"], "slug": "la_salle_d_attente", "image": "images/la_salle_d_attente.jpg", "audio": {"mot": "audio/la_salle_d_attente-mot.mp3", "definition": "audio/la_salle_d_attente-definition.mp3", "exemple": "audio/la_salle_d_attente-exemple.mp3"}}, {"term": "la carte d'assurance maladie", "definition": "Le document qui donne accès aux soins de santé gratuits au Québec.", "example": "Avez-vous votre carte d'assurance maladie avec vous ?", "grammar": "Nom féminin", "expressions": ["présenter sa carte", "avoir sa carte avec soi", "renouveler sa carte"], "slug": "la_carte_d_assurance_maladie", "image": "images/la_carte_d_assurance_maladie.jpg", "audio": {"mot": "audio/la_carte_d_assurance_maladie-mot.mp3", "definition": "audio/la_carte_d_assurance_maladie-definition.mp3", "exemple": "audio/la_carte_d_assurance_maladie-exemple.mp3"}}, {"term": "tousser", "definition": "Faire un bruit sec avec la gorge à cause d'une irritation.", "example": "Est-ce que vous toussez beaucoup ?", "grammar": "Verbe", "expressions": ["tousser beaucoup", "tousser dans son coude", "avoir une toux sèche"], "slug": "tousser", "image": "images/tousser.jpg", "audio": {"mot": "audio/tousser-mot.mp3", "definition": "audio/tousser-definition.mp3", "exemple": "audio/tousser-exemple.mp3"}}, {"term": "un sirop", "definition": "Un médicament liquide et sucré.", "example": "Je vais vous prescrire un sirop pour la gorge.", "grammar": "Nom masculin", "expressions": ["prendre du sirop", "un sirop pour la toux", "une cuillère de sirop"], "slug": "un_sirop", "image": "images/un_sirop.jpg", "audio": {"mot": "audio/un_sirop-mot.mp3", "definition": "audio/un_sirop-definition.mp3", "exemple": "audio/un_sirop-exemple.mp3"}}, {"term": "un antibiotique", "definition": "Un médicament qui combat une infection.", "example": "Le docteur m'a mis sous antibiotique.", "grammar": "Nom masculin", "expressions": ["prendre un antibiotique", "être sous antibiotique", "terminer le traitement"], "slug": "un_antibiotique", "image": "images/un_antibiotique.jpg", "audio": {"mot": "audio/un_antibiotique-mot.mp3", "definition": "audio/un_antibiotique-definition.mp3", "exemple": "audio/un_antibiotique-exemple.mp3"}}, {"term": "la fièvre", "definition": "Une température du corps plus élevée que la normale.", "example": "Vous n'avez pas de fièvre.", "grammar": "Nom féminin", "expressions": ["avoir de la fièvre", "faire de la fièvre", "prendre sa température"], "slug": "la_fievre", "image": "images/la_fievre.jpg", "audio": {"mot": "audio/la_fievre-mot.mp3", "definition": "audio/la_fievre-definition.mp3", "exemple": "audio/la_fievre-exemple.mp3"}}, {"term": "empirer", "definition": "Devenir pire.", "example": "J'ai peur que ma toux empire.", "grammar": "Verbe", "expressions": ["la situation empire", "les symptômes empirent", "ne pas laisser empirer"], "slug": "empirer", "image": "images/empirer.jpg", "audio": {"mot": "audio/empirer-mot.mp3", "definition": "audio/empirer-definition.mp3", "exemple": "audio/empirer-exemple.mp3"}}, {"term": "un symptôme", "definition": "Un signe qui indique une maladie.", "example": "Quels sont vos symptômes ?", "grammar": "Nom masculin", "expressions": ["avoir des symptômes", "décrire ses symptômes", "un symptôme léger"], "slug": "un_symptome", "image": "images/un_symptome.jpg", "audio": {"mot": "audio/un_symptome-mot.mp3", "definition": "audio/un_symptome-definition.mp3", "exemple": "audio/un_symptome-exemple.mp3"}}, {"term": "un spécialiste", "definition": "Un médecin expert dans un domaine précis.", "example": "Le médecin m'a référé à un spécialiste.", "grammar": "Nom masculin ou féminin", "expressions": ["consulter un spécialiste", "être référé à un spécialiste", "un médecin spécialiste"], "slug": "un_specialiste", "image": "images/un_specialiste.jpg", "audio": {"mot": "audio/un_specialiste-mot.mp3", "definition": "audio/un_specialiste-definition.mp3", "exemple": "audio/un_specialiste-exemple.mp3"}}, {"term": "la prévention", "definition": "Les actions pour éviter une maladie.", "example": "La prévention est importante pour rester en santé.", "grammar": "Nom féminin", "expressions": ["faire de la prévention", "mesures de prévention", "prévenir une maladie"], "slug": "la_prevention", "image": "images/la_prevention.jpg", "audio": {"mot": "audio/la_prevention-mot.mp3", "definition": "audio/la_prevention-definition.mp3", "exemple": "audio/la_prevention-exemple.mp3"}}];
+const items = [{"term": "un rendez-vous", "definition": "Un moment fixé à l'avance pour voir quelqu'un.", "example": "J'ai un rendez-vous à dix heures avec le docteur.", "grammar": "Nom masculin", "expressions": ["prendre un rendez-vous", "annuler un rendez-vous", "avoir un rendez-vous"], "slug": "un_rendez_vous", "image": "images/un_rendez_vous.jpg", "audio": {"mot": "audio/un_rendez_vous-mot.mp3", "definition": "audio/un_rendez_vous-definition.mp3", "exemple": "audio/un_rendez_vous-exemple.mp3"}}, {"term": "la salle d'attente", "definition": "L'endroit où on attend avant de voir le médecin.", "example": "Prenez un siège dans la salle d'attente.", "grammar": "Nom féminin", "expressions": ["attendre dans la salle d'attente", "prendre un siège", "patienter quelques minutes"], "slug": "la_salle_d_attente", "image": "images/la_salle_d_attente.jpg", "audio": {"mot": "audio/la_salle_d_attente-mot.mp3", "definition": "audio/la_salle_d_attente-definition.mp3", "exemple": "audio/la_salle_d_attente-exemple.mp3"}}, {"term": "la carte d'assurance maladie", "definition": "Le document qui donne accès aux soins de santé gratuits au Québec.", "example": "Avez-vous votre carte d'assurance maladie avec vous ?", "grammar": "Nom féminin", "expressions": ["présenter sa carte", "avoir sa carte avec soi", "renouveler sa carte"], "slug": "la_carte_d_assurance_maladie", "image": "images/la_carte_d_assurance_maladie.jpg", "audio": {"mot": "audio/la_carte_d_assurance_maladie-mot.mp3", "definition": "audio/la_carte_d_assurance_maladie-definition.mp3", "exemple": "audio/la_carte_d_assurance_maladie-exemple.mp3"}}, {"term": "tousser", "definition": "Faire un bruit sec avec la gorge à cause d'une irritation.", "example": "Est-ce que vous toussez beaucoup ?", "grammar": "Verbe", "expressions": ["tousser beaucoup", "tousser dans son coude", "avoir une toux sèche"], "slug": "tousser", "image": "images/tousser.jpg", "audio": {"mot": "audio/tousser-mot.mp3", "definition": "audio/tousser-definition.mp3", "exemple": "audio/tousser-exemple.mp3"}}, {"term": "un sirop", "definition": "Un médicament liquide et sucré.", "example": "Je vais vous prescrire un sirop pour la gorge.", "grammar": "Nom masculin", "expressions": ["prendre du sirop", "un sirop pour la toux", "une cuillère de sirop"], "slug": "un_sirop", "image": "images/un_sirop.jpg", "audio": {"mot": "audio/un_sirop-mot.mp3", "definition": "audio/un_sirop-definition.mp3", "exemple": "audio/un_sirop-exemple.mp3"}}, {"term": "un antibiotique", "definition": "Un médicament qui combat une infection.", "example": "Le docteur m'a mis sous antibiotique.", "grammar": "Nom masculin", "expressions": ["prendre un antibiotique", "être sous antibiotique", "terminer le traitement"], "slug": "un_antibiotique", "image": "images/un_antibiotique.jpg", "audio": {"mot": "audio/un_antibiotique-mot.mp3", "definition": "audio/un_antibiotique-definition.mp3", "exemple": "audio/un_antibiotique-exemple.mp3"}}, {"term": "la fièvre", "definition": "Une température du corps plus élevée que la normale.", "example": "Vous n'avez pas de fièvre.", "grammar": "Nom féminin", "expressions": ["avoir de la fièvre", "faire de la fièvre", "prendre sa température"], "slug": "la_fievre", "image": "images/la_fievre.jpg", "audio": {"mot": "audio/la_fievre-mot.mp3", "definition": "audio/la_fievre-definition.mp3", "exemple": "audio/la_fievre-exemple.mp3"}}, {"term": "empirer", "definition": "Devenir pire.", "example": "J'ai peur que ma toux empire.", "grammar": "Verbe", "expressions": ["la situation empire", "les symptômes empirent", "ne pas laisser empirer"], "slug": "empirer", "image": "images/empirer.jpg", "audio": {"mot": "audio/empirer-mot.mp3", "definition": "audio/empirer-definition.mp3", "exemple": "audio/empirer-exemple.mp3"}}, {"term": "un symptôme", "definition": "Un signe qui indique une maladie.", "example": "Quels sont vos symptômes ?", "grammar": "Nom masculin", "expressions": ["avoir des symptômes", "décrire ses symptômes", "un symptôme léger"], "slug": "un_symptome", "image": "images/un_symptome.jpg", "audio": {"mot": "audio/un_symptome-mot.mp3", "definition": "audio/un_symptome-definition.mp3", "exemple": "audio/un_symptome-exemple.mp3"}}, {"term": "un spécialiste", "definition": "Un médecin expert dans un domaine précis.", "example": "Le médecin m'a référé à un spécialiste.", "grammar": "Nom masculin ou féminin", "expressions": ["consulter un spécialiste", "être référé à un spécialiste", "un médecin spécialiste"], "slug": "un_specialiste", "image": "images/un_specialiste.jpg", "audio": {"mot": "audio/un_specialiste-mot.mp3", "definition": "audio/un_specialiste-definition.mp3", "exemple": "audio/un_specialiste-exemple.mp3"}}, {"term": "la prévention", "definition": "Les actions pour éviter une maladie.", "example": "La prévention est importante pour rester en santé.", "grammar": "Nom féminin", "expressions": ["faire de la prévention", "mesures de prévention", "prévenir une maladie"], "slug": "la_prevention", "image": "images/la_prevention.jpg", "audio": {"mot": "audio/la_prevention-mot.mp3", "definition": "audio/la_prevention-definition.mp3", "exemple": "audio/la_prevention-exemple.mp3"}}];
 
-const $=s=>document.querySelector(s), $$=s=>[...document.querySelectorAll(s)];
-let index=0, seen=new Set(), currentAudio=null, currentButton=null, lastAudio=null;
-const hidden={term:false,definition:false,example:false,expressions:false};
+const $ = s => document.querySelector(s), $$ = s => [...document.querySelectorAll(s)];
+let index = 0, vus = new Set(), sonCourant = null, boutonCourant = null, dernierSon = null;
+const caches = { terme: false, definition: false, exemple: false, expressions: false };
 
-function play(src,button){
-  if(currentAudio){currentAudio.pause();currentAudio.currentTime=0}
-  if(currentButton)currentButton.classList.remove("playing");
-  currentAudio=new Audio(src);currentButton=button;lastAudio={src,button};
-  button.classList.add("playing");
-  currentAudio.onended=()=>button.classList.remove("playing");
-  currentAudio.onerror=()=>button.classList.remove("playing");
-  currentAudio.play().catch(()=>button.classList.remove("playing"));
+function jouer(src, bouton){
+  if (sonCourant) { sonCourant.pause(); sonCourant.currentTime = 0; }
+  if (boutonCourant) boutonCourant.removeAttribute('aria-busy');
+  sonCourant = new Audio(src); boutonCourant = bouton; dernierSon = { src, bouton };
+  bouton.setAttribute('aria-busy', 'true');
+  const fini = () => bouton.removeAttribute('aria-busy');
+  sonCourant.onended = fini; sonCourant.onerror = fini;
+  sonCourant.play().catch(fini);
 }
 
-function renderList(){
-  const list=$("#wordList"); list.innerHTML="";
-  items.forEach((item,i)=>{
-    const b=document.createElement("button");
-    b.className="word-btn"+(i===index?" active":"");
-    b.innerHTML=`<span class="state">${seen.has(i)?"✓":"○"}</span><span>${item.term}</span>`;
-    b.onclick=()=>{index=i;render()};
-    list.appendChild(b);
+function rendreListe(){
+  const liste = $('#listeMots'); liste.innerHTML = '';
+  items.forEach((item, i) => {
+    const b = document.createElement('button');
+    b.type = 'button';
+    b.className = 'vf-mot-btn';
+    if (i === index) b.setAttribute('aria-current', 'true');
+    // Le glyphe dit « vu », la couleur ne le dit jamais toute seule.
+    b.innerHTML = '<span class="vf-mot-btn__e" aria-hidden="true">' + (vus.has(i) ? '✓' : '·') + '</span>'
+      + '<span>' + esc(item.term) + '</span>';
+    b.onclick = () => { index = i; rendre(); };
+    liste.appendChild(b);
   });
 }
 
-function applyHidden(){
-  const mapping={term:["#term","#grammar"],definition:["#definition"],example:["#example"],expressions:["#expressions"]};
-  Object.entries(mapping).forEach(([key,selectors])=>selectors.forEach(sel=>{
-    const el=$(sel); el.classList.toggle("hidden-content",hidden[key]); el.classList.remove("revealed");
-    el.onclick=()=>{if(hidden[key])el.classList.toggle("revealed")};
+/* Masquage pédagogique : le bloc est couvert d'une plaque nommée, que
+   l'élève ou l'enseignante découvre d'un clic. */
+function appliquerCaches(){
+  const carte = { terme: ['#terme', '#grammaire'], definition: ['#definition'],
+                  exemple: ['#exemple'], expressions: ['#expressions'] };
+  Object.entries(carte).forEach(([cle, sels]) => sels.forEach(sel => {
+    const el = $(sel);
+    el.classList.toggle('vf-masque', caches[cle]);
+    el.classList.remove('is-shown');
+    el.onclick = () => { if (caches[cle]) el.classList.toggle('is-shown'); };
   }));
 }
 
-function render(){
-  const x=items[index];
-  $("#photo").src=x.image;$("#photo").alt=x.term;
-  $("#term").textContent=x.term;$("#grammar").textContent=x.grammar;
-  $("#definition").textContent=x.definition;$("#example").textContent=x.example;
-  $("#expressions").innerHTML=x.expressions.map(e=>`<span class="chip">${e}</span>`).join("");
-  seen.add(index);
-  $("#progressBar").style.width=(seen.size/items.length*100)+"%";
-  $("#progressCount").textContent=`${seen.size} / ${items.length}`;
-  $("#seenCount").textContent=`${seen.size}/${items.length}`;
-  $("#prev").disabled=index===0;
-  $("#next").textContent=index===items.length-1?"Recommencer":"Suivant →";
-  renderList();applyHidden();
+function rendre(){
+  const x = items[index];
+  $('#photo').src = x.image; $('#photo').alt = x.term;
+  $('#terme').textContent = x.term;
+  $('#grammaire').textContent = x.grammar;
+  $('#definition').textContent = x.definition;
+  $('#exemple').textContent = x.example;
+  $('#expressions').innerHTML = x.expressions.map(e => '<span class="vf-tag">' + esc(e) + '</span>').join('');
+  vus.add(index);
+  $('#barreVus').style.width = (vus.size / items.length * 100) + '%';
+  $('#compteVus').textContent = vus.size + ' / ' + items.length + ' mots vus';
+  $('#vus').textContent = '(' + vus.size + ' / ' + items.length + ')';
+  $('#precedent').disabled = index === 0;
+  $('#suivant').textContent = index === items.length - 1 ? 'Recommencer' : 'Suivant';
+  rendreListe(); appliquerCaches();
 }
 
-$$(".audio-btn").forEach(b=>b.onclick=()=>play(items[index].audio[b.dataset.audio],b));
-$("#prev").onclick=()=>{index=Math.max(0,index-1);render()};
-$("#next").onclick=()=>{index=index===items.length-1?0:index+1;render()};
+$$('.vf-audios .btn').forEach(b => b.onclick = () => jouer(items[index].audio[b.dataset.audio], b));
+$('#precedent').onclick = () => { index = Math.max(0, index - 1); rendre(); };
+$('#suivant').onclick = () => { index = index === items.length - 1 ? 0 : index + 1; rendre(); };
 
-$("#teacherToggle").onclick=()=>{
-  $("#teacherPanel").classList.toggle("open");
-  $("#teacherToggle").classList.toggle("active");
+$('#profToggle').onclick = () => {
+  const on = $('#panneauProf').classList.toggle('is-on');
+  $('#profToggle').setAttribute('aria-pressed', String(on));
 };
-function setPresentation(active){
-  $("#app").classList.toggle("presentation",active);
-  $("#presentationToggle").classList.toggle("active",active);
+function presentation(actif){
+  document.body.classList.toggle('is-presentation', actif);
+  $('#presToggle').setAttribute('aria-pressed', String(actif));
 }
-$("#presentationToggle").onclick=()=>setPresentation(!$("#app").classList.contains("presentation"));
-$("#exitPresentation").onclick=()=>setPresentation(false);
-$("#resetProgress").onclick=()=>{seen.clear();render()};
+$('#presToggle').onclick = () => presentation(!document.body.classList.contains('is-presentation'));
+$('#sortiePres').onclick = () => presentation(false);
+$('#resetVus').onclick = () => { vus.clear(); rendre(); };
 
-$$('#teacherPanel input[type="checkbox"]').forEach(cb=>cb.onchange=()=>{
-  hidden[cb.dataset.hide]=cb.checked;applyHidden();
+$$('#panneauProf input[type="checkbox"]').forEach(cb => cb.onchange = () => {
+  caches[cb.dataset.cache] = cb.checked; appliquerCaches();
 });
 
-
-function toggleHelp(force){
-  const modal=$("#helpModal");
-  const open=typeof force==="boolean"?force:!modal.classList.contains("open");
-  modal.classList.toggle("open",open);
-  modal.setAttribute("aria-hidden",String(!open));
+/* ── Raccourcis et aide ─────────────────────────────────────────────── */
+function aide(force){
+  const m = $('#modaleAide');
+  const on = typeof force === 'boolean' ? force : !m.classList.contains('is-on');
+  m.classList.toggle('is-on', on);
+  m.setAttribute('aria-hidden', String(!on));
 }
-$("#helpButton").onclick=()=>toggleHelp();
-$("#closeHelp").onclick=()=>toggleHelp(false);
-$("#helpModal").onclick=e=>{if(e.target===$("#helpModal"))toggleHelp(false)};
+$('#boutonAide').onclick = () => aide();
+$('#fermerAide').onclick = () => aide(false);
+$('#modaleAide').onclick = e => { if (e.target === $('#modaleAide')) aide(false); };
 
-async function toggleFullscreen(){
-  try{
-    if(!document.fullscreenElement) await document.documentElement.requestFullscreen();
+async function pleinEcran(){
+  try {
+    if (!document.fullscreenElement) await document.documentElement.requestFullscreen();
     else await document.exitFullscreen();
-  }catch(err){console.warn("Plein écran non disponible",err)}
+  } catch (err) { console.warn('Plein écran non disponible', err); }
 }
 
-document.addEventListener("keydown",e=>{
-  if(e.key==="Escape"){
-    if($("#helpModal").classList.contains("open")) toggleHelp(false);
-    if($("#app").classList.contains("presentation")) setPresentation(false);
+document.addEventListener('keydown', e => {
+  if (e.key === 'Escape') {
+    if ($('#modaleAide').classList.contains('is-on')) aide(false);
+    if (document.body.classList.contains('is-presentation')) presentation(false);
     return;
   }
-  if(["INPUT","TEXTAREA"].includes(document.activeElement.tagName))return;
-  if(e.key==="ArrowRight"){index=index===items.length-1?0:index+1;render()}
-  else if(e.key==="ArrowLeft"){index=Math.max(0,index-1);render()}
-  else if(e.key==="1")$$(".audio-btn")[0].click();
-  else if(e.key==="2")$$(".audio-btn")[1].click();
-  else if(e.key==="3")$$(".audio-btn")[2].click();
-  else if(e.code==="Space"&&lastAudio){e.preventDefault();play(lastAudio.src,lastAudio.button)}
-  else if(e.key.toLowerCase()==="p")setPresentation(!$("#app").classList.contains("presentation"));
-  else if(e.key.toLowerCase()==="f")toggleFullscreen();
-  else if(e.key.toLowerCase()==="e")$("#teacherToggle").click();
-  else if(e.key==="?")toggleHelp();
+  if (['INPUT', 'TEXTAREA'].includes(document.activeElement.tagName)) return;
+  if (e.key === 'ArrowRight') { index = index === items.length - 1 ? 0 : index + 1; rendre(); }
+  else if (e.key === 'ArrowLeft') { index = Math.max(0, index - 1); rendre(); }
+  else if (e.key === '1') $$('.vf-audios .btn')[0].click();
+  else if (e.key === '2') $$('.vf-audios .btn')[1].click();
+  else if (e.key === '3') $$('.vf-audios .btn')[2].click();
+  else if (e.code === 'Space' && dernierSon) { e.preventDefault(); jouer(dernierSon.src, dernierSon.bouton); }
+  else if (e.key.toLowerCase() === 'p') presentation(!document.body.classList.contains('is-presentation'));
+  else if (e.key.toLowerCase() === 'f') pleinEcran();
+  else if (e.key.toLowerCase() === 'e') $('#profToggle').click();
+  else if (e.key === '?') aide();
 });
 
+/* ── Maîtrise ───────────────────────────────────────────────────────── */
+const CLE = 'francisationFlashSanteMasteryV1';
+let maitrise = JSON.parse(localStorage.getItem(CLE) || 'null')
+  || { xp: 0, serie: 0, meilleure: 0, mots: Array(items.length).fill(0) };
+function sauver(){ localStorage.setItem(CLE, JSON.stringify(maitrise)); }
+function melanger(a){ return [...a].sort(() => Math.random() - .5); }
+function esc(s){ return (s || '').replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;'); }
 
-const STORAGE_KEY="francisationFlashSanteMasteryV1";
-let masteryData=JSON.parse(localStorage.getItem(STORAGE_KEY)||"null")||{
-  xp:0,streak:0,bestStreak:0,mastery:Array(items.length).fill(0)
-};
-function saveMastery(){localStorage.setItem(STORAGE_KEY,JSON.stringify(masteryData))}
-function shuffle(a){return [...a].sort(()=>Math.random()-.5)}
-function normalizeText(s){return s.toLowerCase().normalize("NFD").replace(/[\u0300-\u036f]/g,"").trim()}
-function addMastery(itemIndex,amount){
-  masteryData.mastery[itemIndex]=Math.max(0,Math.min(100,masteryData.mastery[itemIndex]+amount));
-  masteryData.xp+=Math.max(0,amount);
-  if(amount>0){
-    masteryData.streak++;
-    masteryData.bestStreak=Math.max(masteryData.bestStreak,masteryData.streak);
-  }else{
-    masteryData.streak=0;
-  }
-  saveMastery();renderMastery();
+function ajouter(i, montant){
+  maitrise.mots[i] = Math.max(0, Math.min(100, maitrise.mots[i] + montant));
+  maitrise.xp += Math.max(0, montant);
+  if (montant > 0) { maitrise.serie++; maitrise.meilleure = Math.max(maitrise.meilleure, maitrise.serie); }
+  else maitrise.serie = 0;
+  sauver(); rendreMaitrise();
 }
-function starsFor(value){
-  const n=value>=100?3:value>=70?2:value>=35?1:0;
-  return "★".repeat(n)+"☆".repeat(3-n);
+
+// L'état s'écrit en toutes lettres à côté de la barre : la longueur seule
+// ne dit rien à qui ne la voit pas.
+function etatDe(v){
+  if (v >= 100) return { t: 'Maîtrisé', ok: true };
+  if (v >= 70)  return { t: 'Presque acquis', ok: false };
+  if (v >= 35)  return { t: 'En cours', ok: false };
+  if (v > 0)    return { t: 'À travailler', ok: false };
+  return { t: 'Pas encore vu', ok: false };
 }
-function renderMastery(){
-  const avg=Math.round(masteryData.mastery.reduce((a,b)=>a+b,0)/items.length);
-  const mastered=masteryData.mastery.filter(v=>v>=100).length;
-  const level=Math.floor(masteryData.xp/100)+1;
-  $("#totalXP").textContent=masteryData.xp;
-  $("#masteredCount").textContent=mastered;
-  $("#averageMastery").textContent=avg+"%";
-  $("#streakCount").textContent=masteryData.streak;
-  $("#levelBadge").textContent="Niveau "+level;
-  const badges=[
-    {label:"🌱 Premiers pas",ok:masteryData.xp>=20},
-    {label:"🔥 Série de 5",ok:masteryData.bestStreak>=5},
-    {label:"⭐ 3 mots maîtrisés",ok:mastered>=3},
-    {label:"🏆 Thème maîtrisé",ok:mastered===items.length}
+
+function rendreMaitrise(){
+  const moy = Math.round(maitrise.mots.reduce((a, b) => a + b, 0) / items.length);
+  const acquis = maitrise.mots.filter(v => v >= 100).length;
+  const niveau = Math.floor(maitrise.xp / 100) + 1;
+  $('#totalPoints').textContent = maitrise.xp;
+  $('#nbMaitrises').textContent = acquis;
+  $('#moyenne').textContent = moy + ' %';
+  $('#serie').textContent = maitrise.serie;
+  $('#niveau').textContent = 'Niveau ' + niveau;
+
+  const jalons = [
+    { t: 'Premiers pas', ok: maitrise.xp >= 20 },
+    { t: 'Série de 5', ok: maitrise.meilleure >= 5 },
+    { t: 'Trois mots maîtrisés', ok: acquis >= 3 },
+    { t: 'Thème maîtrisé', ok: acquis === items.length }
   ];
-  $("#badgeRow").innerHTML=badges.map(b=>`<span class="badge ${b.ok?"unlocked":""}">${b.label}</span>`).join("");
-  $("#masteryList").innerHTML=items.map((item,i)=>{
-    const val=masteryData.mastery[i];
-    return `<div class="mastery-item">
-      <div class="mastery-word">${item.term}</div>
-      <div class="mastery-track"><div class="mastery-fill" style="width:${val}%"></div></div>
-      <div class="mastery-stars">${starsFor(val)}</div>
-    </div>`;
-  }).join("");
+  $('#jalons').innerHTML = jalons.map(j =>
+    '<span class="vf-jalon' + (j.ok ? ' is-ok' : '') + '">' + j.t + '</span>').join('');
+
+  $('#tableMaitrise').innerHTML = items.map((item, i) => {
+    const v = maitrise.mots[i], e = etatDe(v);
+    return '<div class="vf-ligne">'
+      + '<div class="vf-ligne__m">' + esc(item.term) + '</div>'
+      + '<div class="vf-track"><span style="width:' + v + '%"></span></div>'
+      + '<div class="vf-ligne__e' + (e.ok ? ' is-ok' : '') + '">' + e.t + ' · ' + v + ' %</div>'
+      + '</div>';
+  }).join('');
 }
 
-$$(".main-tab").forEach(b=>b.onclick=()=>{
-  $$(".main-tab").forEach(x=>x.classList.toggle("active",x===b));
-  $$(".view").forEach(v=>v.classList.toggle("active",v.id===b.dataset.view));
-  if(b.dataset.view==="masteryView")renderMastery();
+/* ── Onglets ────────────────────────────────────────────────────────── */
+$$('.step').forEach(b => b.onclick = () => {
+  $$('.step').forEach(x => x.setAttribute('aria-selected', String(x === b)));
+  $$('.view').forEach(v => v.classList.toggle('is-on', v.id === b.dataset.vue));
+  if (b.dataset.vue === 'vueMaitrise') rendreMaitrise();
 });
 
-let practiceTarget=null,practiceType="definition",practiceAnswered=false;
-function buildPractice(){
-  practiceAnswered=false;
-  $("#practiceFeedback").textContent="";
-  practiceTarget=items[Math.floor(Math.random()*items.length)];
-  const targetIndex=items.indexOf(practiceTarget);
-  practiceType=["image","definition","audio"][Math.floor(Math.random()*3)];
-  let prompt="";
-  if(practiceType==="image"){
-    prompt=`<img src="${practiceTarget.image}" alt=""><div>Quel mot correspond à cette image ?</div>`;
-  }else if(practiceType==="definition"){
-    prompt=`<div>${practiceTarget.definition}</div><div style="margin-top:8px;color:var(--muted)">Quel est le mot ?</div>`;
-  }else{
-    prompt=`<div style="font-size:3rem">🔊</div><div>Écoutez, puis choisissez le mot entendu.</div>`;
-  }
-  $("#practiceQuestion").innerHTML=prompt;
-  const options=shuffle([practiceTarget,...shuffle(items.filter(x=>x!==practiceTarget)).slice(0,3)]);
-  $("#practiceAnswers").innerHTML="";
-  options.forEach(opt=>{
-    const btn=document.createElement("button");
-    btn.className="answer-btn";btn.textContent=opt.term;
-    btn.onclick=()=>{
-      if(practiceAnswered)return;
-      practiceAnswered=true;
-      $$("#practiceAnswers .answer-btn").forEach(x=>x.disabled=true);
-      if(opt===practiceTarget){
-        btn.classList.add("correct");
-        $("#practiceFeedback").textContent="+10 XP — Bonne réponse !";
-        addMastery(targetIndex,10);
-        play(practiceTarget.audio.mot,btn);
-      }else{
-        btn.classList.add("wrong");
-        $("#practiceFeedback").textContent=`Réponse : ${practiceTarget.term}`;
-        addMastery(targetIndex,-3);
-      }
-      $("#practicePoints").textContent=masteryData.xp;
-    };
-    $("#practiceAnswers").appendChild(btn);
-  });
-  if(practiceType==="audio")setTimeout(()=>play(practiceTarget.audio.mot,$("#practiceListen")),250);
+/* Après une erreur, l'élève doit voir OÙ était le bon mot, pas seulement
+   le lire dans la ligne de rétroaction. */
+function marquerBonne(zone, terme){
+  $$(zone + ' .vf-rep').forEach(x => { if (x.textContent === terme) x.classList.add('is-answer'); });
 }
-$("#practiceListen").onclick=()=>practiceTarget&&play(practiceTarget.audio.mot,$("#practiceListen"));
-$("#nextPractice").onclick=buildPractice;
 
-let reviewActive=false,reviewQ=0,reviewCorrect=0,reviewTarget=null;
-function startReview(){
-  reviewActive=true;reviewQ=0;reviewCorrect=0;
-  $("#reviewScore").textContent="0";
-  $("#startReview").textContent="Recommencer";
-  buildReviewQuestion();
+/* ── Je m'entraîne ──────────────────────────────────────────────────── */
+let ciblePratique = null, repondu = false;
+function batirPratique(){
+  repondu = false;
+  const retour = $('#retourPratique');
+  retour.textContent = ''; retour.className = 'vf-retour';
+  ciblePratique = items[Math.floor(Math.random() * items.length)];
+  const iCible = items.indexOf(ciblePratique);
+  const type = ['image', 'definition', 'audio'][Math.floor(Math.random() * 3)];
+  let enonce = '';
+  if (type === 'image') {
+    enonce = '<img src="' + ciblePratique.image + '" alt="">'
+      + '<div>Quel mot correspond à cette image ?</div>';
+  } else if (type === 'definition') {
+    enonce = '<div>' + esc(ciblePratique.definition) + '</div>'
+      + '<p class="vf-question__c">Quel est le mot ?</p>';
+  } else {
+    enonce = '<p class="vf-question__c">Écoutez, puis choisissez le mot entendu.</p>';
+  }
+  $('#questionPratique').innerHTML = enonce;
+
+  const choix = melanger([ciblePratique, ...melanger(items.filter(x => x !== ciblePratique)).slice(0, 3)]);
+  const zone = $('#reponsesPratique');
+  zone.innerHTML = '';
+  choix.forEach(opt => {
+    const b = document.createElement('button');
+    b.type = 'button'; b.className = 'vf-rep'; b.textContent = opt.term;
+    b.onclick = () => {
+      if (repondu) return;
+      repondu = true;
+      $$('#reponsesPratique .vf-rep').forEach(x => x.disabled = true);
+      if (opt === ciblePratique) {
+        b.classList.add('is-ok');
+        retour.className = 'vf-retour fb fb--ok';
+        retour.textContent = 'Juste. 10 points.';
+        ajouter(iCible, 10);
+        jouer(ciblePratique.audio.mot, $('#ecouterPratique'));
+      } else {
+        b.classList.add('is-no');
+        marquerBonne('#reponsesPratique', ciblePratique.term);
+        retour.className = 'vf-retour fb fb--no';
+        retour.textContent = 'La bonne réponse est : ' + ciblePratique.term;
+        ajouter(iCible, -3);
+      }
+      $('#pointsPratique').textContent = maitrise.xp;
+    };
+    zone.appendChild(b);
+  });
+  if (type === 'audio') setTimeout(() => jouer(ciblePratique.audio.mot, $('#ecouterPratique')), 250);
 }
-function buildReviewQuestion(){
-  if(reviewQ>=10){
-    reviewActive=false;
-    lmsTrack('exercise_completed', {score: reviewCorrect, total: 10});
-    $("#reviewQuestion").innerHTML=`<div style="font-size:4rem">${reviewCorrect>=8?"🏆":reviewCorrect>=5?"👏":"🌱"}</div><h3>Résultat : ${reviewCorrect} / 10</h3>`;
-    $("#reviewAnswers").innerHTML="";
-    $("#reviewFeedback").textContent=reviewCorrect>=8?"Très bonne maîtrise.":reviewCorrect>=5?"Bon travail. Continuez à pratiquer.":"Retournez à l'onglet Pratiquer.";
-    $("#reviewProgressBar").style.width="100%";
+$('#ecouterPratique').onclick = () => ciblePratique && jouer(ciblePratique.audio.mot, $('#ecouterPratique'));
+$('#suivantPratique').onclick = batirPratique;
+
+/* ── Défi de 10 questions ───────────────────────────────────────────── */
+let qDefi = 0, bonnesDefi = 0, cibleDefi = null;
+function lancerDefi(){
+  qDefi = 0; bonnesDefi = 0;
+  $('#scoreDefi').textContent = '0';
+  $('#lancerDefi').textContent = 'Recommencer';
+  batirDefi();
+}
+function batirDefi(){
+  const retour = $('#retourDefi');
+  if (qDefi >= 10) {
+    lmsTrack('exercise_completed', { score: bonnesDefi, total: 10 });
+    $('#questionDefi').innerHTML = '<h3>Résultat : ' + bonnesDefi + ' / 10</h3>';
+    $('#reponsesDefi').innerHTML = '';
+    retour.className = 'vf-retour fb ' + (bonnesDefi >= 8 ? 'fb--ok' : bonnesDefi >= 5 ? 'fb--ok' : 'fb--warn');
+    retour.textContent = bonnesDefi >= 8 ? 'Ces mots sont acquis.'
+      : bonnesDefi >= 5 ? 'Bon travail. Continuez à vous entraîner.'
+      : 'Retournez à « Je m\'entraîne » avant de refaire le défi.';
+    $('#barreDefi').style.width = '100%';
     return;
   }
-  $("#reviewFeedback").textContent="";
-  reviewTarget=items[Math.floor(Math.random()*items.length)];
-  const targetIndex=items.indexOf(reviewTarget);
-  const type=Math.floor(Math.random()*3);
-  let prompt="";
-  if(type===0)prompt=`<img src="${reviewTarget.image}" alt=""><div>Choisissez le bon mot.</div>`;
-  else if(type===1)prompt=`<div>${reviewTarget.definition}</div><div style="margin-top:8px;color:var(--muted)">Choisissez le bon mot.</div>`;
-  else prompt=`<div>${reviewTarget.example.replace(new RegExp(reviewTarget.term.replace(/^(un|une|le|la|les)\s+/i,""),"i"),"__________")}</div>`;
-  $("#reviewQuestion").innerHTML=prompt;
-  $("#reviewProgressBar").style.width=(reviewQ/10*100)+"%";
-  const options=shuffle([reviewTarget,...shuffle(items.filter(x=>x!==reviewTarget)).slice(0,3)]);
-  $("#reviewAnswers").innerHTML="";
-  options.forEach(opt=>{
-    const btn=document.createElement("button");
-    btn.className="answer-btn";btn.textContent=opt.term;
-    btn.onclick=()=>{
-      $$("#reviewAnswers .answer-btn").forEach(x=>x.disabled=true);
-      if(opt===reviewTarget){
-        reviewCorrect++;
-        btn.classList.add("correct");
-        $("#reviewFeedback").textContent="+15 XP";
-        addMastery(targetIndex,15);
-      }else{
-        btn.classList.add("wrong");
-        $("#reviewFeedback").textContent=`Réponse : ${reviewTarget.term}`;
-        addMastery(targetIndex,-5);
+  retour.textContent = ''; retour.className = 'vf-retour';
+  cibleDefi = items[Math.floor(Math.random() * items.length)];
+  const iCible = items.indexOf(cibleDefi);
+  const type = Math.floor(Math.random() * 3);
+  let enonce = '';
+  if (type === 0) {
+    enonce = '<img src="' + cibleDefi.image + '" alt="">'
+      + '<p class="vf-question__c">Choisissez le bon mot.</p>';
+  } else if (type === 1) {
+    enonce = '<div>' + esc(cibleDefi.definition) + '</div>'
+      + '<p class="vf-question__c">Choisissez le bon mot.</p>';
+  } else {
+    const nu = cibleDefi.term.replace(/^(un|une|le|la|les)\s+/i, '');
+    enonce = '<div>' + esc(cibleDefi.example).replace(new RegExp(nu, 'i'),
+      '<span class="vf-trou">__________</span>') + '</div>'
+      + '<p class="vf-question__c">Choisissez le mot qui manque.</p>';
+  }
+  $('#questionDefi').innerHTML = enonce;
+  $('#barreDefi').style.width = (qDefi / 10 * 100) + '%';
+
+  const choix = melanger([cibleDefi, ...melanger(items.filter(x => x !== cibleDefi)).slice(0, 3)]);
+  const zone = $('#reponsesDefi');
+  zone.innerHTML = '';
+  choix.forEach(opt => {
+    const b = document.createElement('button');
+    b.type = 'button'; b.className = 'vf-rep'; b.textContent = opt.term;
+    b.onclick = () => {
+      $$('#reponsesDefi .vf-rep').forEach(x => x.disabled = true);
+      if (opt === cibleDefi) {
+        bonnesDefi++;
+        b.classList.add('is-ok');
+        retour.className = 'vf-retour fb fb--ok';
+        retour.textContent = 'Juste.';
+        ajouter(iCible, 15);
+      } else {
+        b.classList.add('is-no');
+        marquerBonne('#reponsesDefi', cibleDefi.term);
+        retour.className = 'vf-retour fb fb--no';
+        retour.textContent = 'La bonne réponse est : ' + cibleDefi.term;
+        ajouter(iCible, -5);
       }
-      reviewQ++;
-      $("#reviewScore").textContent=reviewCorrect;
-      setTimeout(buildReviewQuestion,850);
+      qDefi++;
+      $('#scoreDefi').textContent = bonnesDefi;
+      setTimeout(batirDefi, 850);
     };
-    $("#reviewAnswers").appendChild(btn);
+    zone.appendChild(b);
   });
 }
-$("#startReview").onclick=startReview;
-$("#resetMastery").onclick=()=>{
-  if(confirm("Réinitialiser toute la progression ?")){
-    masteryData={xp:0,streak:0,bestStreak:0,mastery:Array(items.length).fill(0)};
-    saveMastery();renderMastery();$("#practicePoints").textContent="0";
+$('#lancerDefi').onclick = lancerDefi;
+$('#resetMaitrise').onclick = () => {
+  if (confirm('Réinitialiser toute la progression ?')) {
+    maitrise = { xp: 0, serie: 0, meilleure: 0, mots: Array(items.length).fill(0) };
+    sauver(); rendreMaitrise(); $('#pointsPratique').textContent = '0';
   }
 };
-buildPractice();
-renderMastery();
-
-render();
 
 function lmsTrack(event, data) {
-  try { window.parent.postMessage(Object.assign({lms:true, event:event}, data||{}), '*'); } catch(e) {}
+  try { window.parent.postMessage(Object.assign({ lms: true, event: event }, data || {}), '*'); } catch (e) {}
   try {
     const up = new URLSearchParams(window.parent.location.search);
-    const code = up.get('code'), actId = parseInt(up.get('activityId'))||null, title = up.get('title')||'';
+    const code = up.get('code'), actId = parseInt(up.get('activityId')) || null, title = up.get('title') || '';
     if (code && actId) {
       fetch('/api/student/progress', {
-        method:'POST', headers:{'Content-Type':'application/json'},
-        body: JSON.stringify(Object.assign({code, activityId:actId, activityTitle:title, event}, data||{})),
-      }).catch(()=>{});
+        method: 'POST', headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(Object.assign({ code, activityId: actId, activityTitle: title, event }, data || {})),
+      }).catch(() => {});
     }
-  } catch(e2) {}
+  } catch (e2) {}
 }
+
+batirPratique();
+rendreMaitrise();
+rendre();
 lmsTrack('file_opened');
 </script>
 </body>

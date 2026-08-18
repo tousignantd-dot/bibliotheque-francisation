@@ -1,9 +1,49 @@
-<!DOCTYPE html>
+#!/usr/bin/env python3
+"""Flash vocabulaire par thème : deux activités, un seul gabarit.
+
+`vocab-flash-sante` et `vocab-flash-conso` ne différaient que par sept lignes
+— le titre, le thème, la liste de mots, la clé de stockage. Les deux fichiers
+ont donc divergé au premier correctif appliqué à un seul. On les génère
+maintenant depuis ce script, à partir du gabarit ci-dessous et de la liste de
+mots posée dans `assets/interactive/<slug>/mots.json`.
+
+  python3 build/vocab_flash.py             → réécrit les deux activités
+  python3 build/vocab_flash.py --verifier   → dit qui est à jour, n'écrit rien
+
+N'ÉDITEZ PAS LE HTML PRODUIT : le prochain passage l'écraserait. Le contenu
+pédagogique (mots, définitions, exemples, expressions) vit dans mots.json ;
+tout le reste vit ici.
+"""
+import io
+import json
+import pathlib
+import sys
+
+ROOT = pathlib.Path(__file__).resolve().parent.parent
+INTER = ROOT / 'assets/interactive'
+
+# Le thème sert au repérage et au titre. La clé de stockage garde la
+# progression de l'élève séparée d'un thème à l'autre : deux thèmes, deux
+# barres de maîtrise.
+THEMES = [
+    {'slug': 'vocab-flash-sante', 'theme': 'Santé et clinique', 'cle': 'francisationFlashSanteMasteryV1'},
+    {'slug': 'vocab-flash-conso', 'theme': 'Consommation',      'cle': 'francisationFlashConsoMasteryV1'},
+]
+
+# Le haut-parleur du système de design (assets/interactive/module-travail/
+# icons/speaker.svg), recopié tel quel — on ne le redessine pas.
+SPEAKER = ('<svg viewBox="0 0 50 50" fill="currentColor" aria-hidden="true">'
+           '<path d="M27 6.5c0-1.2-1.4-1.9-2.4-1.1L13.8 14H6c-1.1 0-2 .9-2 2v18c0 1.1.9 2 2 2h7.8l10.8 8.6c1 .8 2.4.1 2.4-1.1V6.5z"/>'
+           '<path d="M33.4 17.6c-.7-.6-1.8-.5-2.4.2-.6.7-.5 1.8.2 2.4 1.6 1.4 2.6 3.4 2.6 5.7s-1 4.3-2.6 5.7c-.7.6-.8 1.7-.2 2.4.6.7 1.7.8 2.4.2 2.3-2 3.7-5 3.7-8.3s-1.4-6.3-3.7-8.3z"/>'
+           '<path d="M38.5 11.2c-.7-.5-1.8-.4-2.3.4-.5.7-.4 1.8.4 2.3 3.6 2.6 5.9 6.9 5.9 11.6s-2.3 9-5.9 11.6c-.8.5-.9 1.6-.4 2.3.5.8 1.6.9 2.3.4C43 36.7 46 31.1 46 25s-3-11.7-7.5-13.8z"/>'
+           '</svg>')
+
+GABARIT = r'''<!DOCTYPE html>
 <html lang="fr">
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Flash vocabulaire — Consommation</title>
+<title>Flash vocabulaire — @@THEME@@</title>
 <link rel="stylesheet" href="/assets/design-system/styles.css">
 <style>
 /* ══════════════════════════════════════════════════════════════════════
@@ -227,7 +267,7 @@ body { --sec: var(--green-600); --sec-soft: var(--green-100); }
 <header class="band vf-band">
   <div class="vf-band__in">
     <div>
-      <p class="band__eyebrow">Francisation · Niveau 4 · Consommation</p>
+      <p class="band__eyebrow">Francisation · Niveau 4 · @@THEME@@</p>
       <h1 class="vf-band__t">Flash vocabulaire</h1>
     </div>
     <div class="vf-band__a">
@@ -267,7 +307,7 @@ body { --sec: var(--green-600); --sec-soft: var(--green-100); }
 
         <div class="vf-planche">
           <div class="vf-image">
-            <div class="vf-image__l">Consommation</div>
+            <div class="vf-image__l">@@THEME@@</div>
             <img id="photo" alt="">
           </div>
           <div class="vf-fiche">
@@ -292,9 +332,9 @@ body { --sec: var(--green-600); --sec-soft: var(--green-100); }
             </div>
 
             <div class="vf-audios">
-              <button type="button" class="btn btn--audio" data-audio="mot"><svg viewBox="0 0 50 50" fill="currentColor" aria-hidden="true"><path d="M27 6.5c0-1.2-1.4-1.9-2.4-1.1L13.8 14H6c-1.1 0-2 .9-2 2v18c0 1.1.9 2 2 2h7.8l10.8 8.6c1 .8 2.4.1 2.4-1.1V6.5z"/><path d="M33.4 17.6c-.7-.6-1.8-.5-2.4.2-.6.7-.5 1.8.2 2.4 1.6 1.4 2.6 3.4 2.6 5.7s-1 4.3-2.6 5.7c-.7.6-.8 1.7-.2 2.4.6.7 1.7.8 2.4.2 2.3-2 3.7-5 3.7-8.3s-1.4-6.3-3.7-8.3z"/><path d="M38.5 11.2c-.7-.5-1.8-.4-2.3.4-.5.7-.4 1.8.4 2.3 3.6 2.6 5.9 6.9 5.9 11.6s-2.3 9-5.9 11.6c-.8.5-.9 1.6-.4 2.3.5.8 1.6.9 2.3.4C43 36.7 46 31.1 46 25s-3-11.7-7.5-13.8z"/></svg>Le mot</button>
-              <button type="button" class="btn btn--ghost" data-audio="definition"><svg viewBox="0 0 50 50" fill="currentColor" aria-hidden="true"><path d="M27 6.5c0-1.2-1.4-1.9-2.4-1.1L13.8 14H6c-1.1 0-2 .9-2 2v18c0 1.1.9 2 2 2h7.8l10.8 8.6c1 .8 2.4.1 2.4-1.1V6.5z"/><path d="M33.4 17.6c-.7-.6-1.8-.5-2.4.2-.6.7-.5 1.8.2 2.4 1.6 1.4 2.6 3.4 2.6 5.7s-1 4.3-2.6 5.7c-.7.6-.8 1.7-.2 2.4.6.7 1.7.8 2.4.2 2.3-2 3.7-5 3.7-8.3s-1.4-6.3-3.7-8.3z"/><path d="M38.5 11.2c-.7-.5-1.8-.4-2.3.4-.5.7-.4 1.8.4 2.3 3.6 2.6 5.9 6.9 5.9 11.6s-2.3 9-5.9 11.6c-.8.5-.9 1.6-.4 2.3.5.8 1.6.9 2.3.4C43 36.7 46 31.1 46 25s-3-11.7-7.5-13.8z"/></svg>La définition</button>
-              <button type="button" class="btn btn--ghost" data-audio="exemple"><svg viewBox="0 0 50 50" fill="currentColor" aria-hidden="true"><path d="M27 6.5c0-1.2-1.4-1.9-2.4-1.1L13.8 14H6c-1.1 0-2 .9-2 2v18c0 1.1.9 2 2 2h7.8l10.8 8.6c1 .8 2.4.1 2.4-1.1V6.5z"/><path d="M33.4 17.6c-.7-.6-1.8-.5-2.4.2-.6.7-.5 1.8.2 2.4 1.6 1.4 2.6 3.4 2.6 5.7s-1 4.3-2.6 5.7c-.7.6-.8 1.7-.2 2.4.6.7 1.7.8 2.4.2 2.3-2 3.7-5 3.7-8.3s-1.4-6.3-3.7-8.3z"/><path d="M38.5 11.2c-.7-.5-1.8-.4-2.3.4-.5.7-.4 1.8.4 2.3 3.6 2.6 5.9 6.9 5.9 11.6s-2.3 9-5.9 11.6c-.8.5-.9 1.6-.4 2.3.5.8 1.6.9 2.3.4C43 36.7 46 31.1 46 25s-3-11.7-7.5-13.8z"/></svg>L'exemple</button>
+              <button type="button" class="btn btn--audio" data-audio="mot">@@SPEAKER@@Le mot</button>
+              <button type="button" class="btn btn--ghost" data-audio="definition">@@SPEAKER@@La définition</button>
+              <button type="button" class="btn btn--ghost" data-audio="exemple">@@SPEAKER@@L'exemple</button>
             </div>
 
             <div class="vf-nav">
@@ -330,7 +370,7 @@ body { --sec: var(--green-600); --sec-soft: var(--green-100); }
       <div class="vf-reponses" id="reponsesPratique"></div>
       <p class="vf-retour" id="retourPratique" aria-live="polite"></p>
       <div class="vf-jeu__a">
-        <button type="button" class="btn btn--audio" id="ecouterPratique"><svg viewBox="0 0 50 50" fill="currentColor" aria-hidden="true"><path d="M27 6.5c0-1.2-1.4-1.9-2.4-1.1L13.8 14H6c-1.1 0-2 .9-2 2v18c0 1.1.9 2 2 2h7.8l10.8 8.6c1 .8 2.4.1 2.4-1.1V6.5z"/><path d="M33.4 17.6c-.7-.6-1.8-.5-2.4.2-.6.7-.5 1.8.2 2.4 1.6 1.4 2.6 3.4 2.6 5.7s-1 4.3-2.6 5.7c-.7.6-.8 1.7-.2 2.4.6.7 1.7.8 2.4.2 2.3-2 3.7-5 3.7-8.3s-1.4-6.3-3.7-8.3z"/><path d="M38.5 11.2c-.7-.5-1.8-.4-2.3.4-.5.7-.4 1.8.4 2.3 3.6 2.6 5.9 6.9 5.9 11.6s-2.3 9-5.9 11.6c-.8.5-.9 1.6-.4 2.3.5.8 1.6.9 2.3.4C43 36.7 46 31.1 46 25s-3-11.7-7.5-13.8z"/></svg>Écouter</button>
+        <button type="button" class="btn btn--audio" id="ecouterPratique">@@SPEAKER@@Écouter</button>
         <button type="button" class="btn btn--pri" id="suivantPratique">Question suivante</button>
       </div>
     </div>
@@ -406,7 +446,7 @@ body { --sec: var(--green-600); --sec-soft: var(--green-100); }
 </div>
 
 <script>
-const items = [{"term": "fraîches", "definition": "Récemment récoltées ou préparées, pas vieilles.", "example": "Les fraises sont très fraîches.", "grammar": "Adjectif", "expressions": ["des légumes frais", "de l'air frais", "rester frais"], "slug": "fraiches", "image": "images/fraiches.jpg", "audio": {"mot": "audio/fraiches-mot.mp3", "definition": "audio/fraiches-definition.mp3", "exemple": "audio/fraiches-exemple.mp3"}}, {"term": "un rabais", "definition": "Une réduction de prix.", "example": "Les fraises sont en rabais cette semaine.", "grammar": "Nom masculin", "expressions": ["profiter d'un rabais", "offrir un rabais", "un gros rabais"], "slug": "un_rabais", "image": "images/un_rabais.jpg", "audio": {"mot": "audio/un_rabais-mot.mp3", "definition": "audio/un_rabais-definition.mp3", "exemple": "audio/un_rabais-exemple.mp3"}}, {"term": "un produit local", "definition": "Un aliment cultivé ou fabriqué dans la région.", "example": "Ce sont des produits locaux du Québec.", "grammar": "Nom masculin", "expressions": ["acheter local", "les produits locaux", "favoriser les produits locaux"], "slug": "un_produit_local", "image": "images/un_produit_local.jpg", "audio": {"mot": "audio/un_produit_local-mot.mp3", "definition": "audio/un_produit_local-definition.mp3", "exemple": "audio/un_produit_local-exemple.mp3"}}, {"term": "un kilo", "definition": "Une unité de poids (1000 grammes).", "example": "Je prends un kilo de pommes.", "grammar": "Nom masculin", "expressions": ["un demi-kilo", "peser en kilos", "un kilo de..."], "slug": "un_kilo", "image": "images/un_kilo.jpg", "audio": {"mot": "audio/un_kilo-mot.mp3", "definition": "audio/un_kilo-definition.mp3", "exemple": "audio/un_kilo-exemple.mp3"}}, {"term": "le réfrigérateur", "definition": "L'appareil qui garde les aliments au froid.", "example": "Gardez-les au réfrigérateur.", "grammar": "Nom masculin", "expressions": ["mettre au réfrigérateur", "ouvrir le réfrigérateur", "un réfrigérateur plein"], "slug": "le_refrigerateur", "image": "images/le_refrigerateur.jpg", "audio": {"mot": "audio/le_refrigerateur-mot.mp3", "definition": "audio/le_refrigerateur-definition.mp3", "exemple": "audio/le_refrigerateur-exemple.mp3"}}, {"term": "le fromage en grains", "definition": "Un fromage frais utilisé dans la poutine.", "example": "La poutine, c'est des frites, du fromage en grains et de la sauce.", "grammar": "Nom masculin", "expressions": ["du fromage en grains frais", "acheter du fromage en grains"], "slug": "le_fromage_en_grains", "image": "images/le_fromage_en_grains.jpg", "audio": {"mot": "audio/le_fromage_en_grains-mot.mp3", "definition": "audio/le_fromage_en_grains-definition.mp3", "exemple": "audio/le_fromage_en_grains-exemple.mp3"}}, {"term": "un kiosque", "definition": "Un petit comptoir de vente au marché.", "example": "On peut parler avec les gens aux kiosques du marché.", "grammar": "Nom masculin", "expressions": ["un kiosque de fruits", "tenir un kiosque", "visiter les kiosques"], "slug": "un_kiosque", "image": "images/un_kiosque.jpg", "audio": {"mot": "audio/un_kiosque-mot.mp3", "definition": "audio/un_kiosque-definition.mp3", "exemple": ""}}];
+const items = @@ITEMS@@;
 
 const $ = s => document.querySelector(s), $$ = s => [...document.querySelectorAll(s)];
 let index = 0, vus = new Set(), sonCourant = null, boutonCourant = null, dernierSon = null;
@@ -525,7 +565,7 @@ document.addEventListener('keydown', e => {
 });
 
 /* ── Maîtrise ───────────────────────────────────────────────────────── */
-const CLE = 'francisationFlashConsoMasteryV1';
+const CLE = '@@CLE@@';
 let maitrise = JSON.parse(localStorage.getItem(CLE) || 'null')
   || { xp: 0, serie: 0, meilleure: 0, mots: Array(items.length).fill(0) };
 function sauver(){ localStorage.setItem(CLE, JSON.stringify(maitrise)); }
@@ -743,3 +783,34 @@ lmsTrack('file_opened');
 </script>
 </body>
 </html>
+'''
+
+
+def rendre(theme):
+    dossier = INTER / theme['slug']
+    mots = json.loads(io.open(dossier / 'mots.json', encoding='utf-8').read())
+    return (GABARIT
+            .replace('@@THEME@@', theme['theme'])
+            .replace('@@CLE@@', theme['cle'])
+            .replace('@@SPEAKER@@', SPEAKER)
+            .replace('@@ITEMS@@', json.dumps(mots, ensure_ascii=False)))
+
+
+def main(argv):
+    verifier = '--verifier' in argv
+    for theme in THEMES:
+        cible = INTER / theme['slug'] / f"{theme['slug']}-activite-interactive.html"
+        neuf = rendre(theme)
+        actuel = io.open(cible, encoding='utf-8').read() if cible.exists() else ''
+        if actuel == neuf:
+            print(f"  = {theme['slug']} : à jour")
+        elif verifier:
+            print(f"  ≠ {theme['slug']} : à regénérer")
+        else:
+            io.open(cible, 'w', encoding='utf-8').write(neuf)
+            print(f"  → {theme['slug']} : écrit ({len(neuf):,} octets)".replace(',', ' '))
+    return 0
+
+
+if __name__ == '__main__':
+    sys.exit(main(sys.argv[1:]))
