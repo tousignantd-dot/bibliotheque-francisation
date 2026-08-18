@@ -211,7 +211,8 @@ choix de l'enseignant survit aux redéploiements.
 - `fiche-eleve.html` — le dossier d'un seul élève
 - `prof.html` — installation du premier compte, groupes et comptes (ancienne page)
 - `catalogue.html` / `eleve.html` — catalogue (téléversement) / interface élève
-  (l'ancien nom `admin.html` n'existe plus : les signets vers cette adresse cassent)
+  (l'ancien nom `admin.html` ne sert plus que de redirection vers
+  `catalogue.html`, pour les signets pris avant le renommage)
   - La page du catalogue s'intitule **« Catalogue »** et suit le système de
     design (aucune couleur en dur). Son en-tête ramène à l'espace enseignant,
     en face du bouton « Catalogue » du portail. La barre de groupe vient
