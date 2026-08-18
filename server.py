@@ -353,11 +353,20 @@ CATEGORIES = ("cours", "atelier")
 
 def normalize_categorie(value, interactive_path=""):
     """« cours » = les modules de 4 h du matin ; « atelier » = les activités
-    de 2 h de l'après-midi. Les activités antérieures à ce champ sont classées
-    d'après leur dossier : les modules vivent dans assets/interactive/module-*."""
+    de 2 h de l'après-midi.
+
+    Le dossier prime sur la valeur enregistrée : une activité qui vit dans
+    assets/interactive/module-* est un module, point. Sans cette priorité, un
+    « atelier » écrit dans le volume — d'avant l'existence du champ, ou d'un
+    faux clic dans le catalogue — survit à tous les déploiements, puisque
+    `categorie` fait partie des USER_FIELDS de init_storage() : le module
+    tombait alors au bas de la liste de planification, parmi les ateliers.
+    Ailleurs, la valeur choisie dans le catalogue fait foi comme avant."""
+    if "module-" in (interactive_path or ""):
+        return "cours"
     if value in CATEGORIES:
         return value
-    return "cours" if "module-" in (interactive_path or "") else "atelier"
+    return "atelier"
 
 
 # Les huit niveaux du programme de francisation. Le libellé « Niveau N » est
