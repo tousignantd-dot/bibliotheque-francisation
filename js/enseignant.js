@@ -426,12 +426,17 @@
 
   function visibles() {
     const q = etat.recherche.trim().toLowerCase();
-    return etat.activites.filter((a) => {
+    const liste = etat.activites.filter((a) => {
       if (etat.filtre !== 'tous' && (a.categorie || 'atelier') !== etat.filtre) return false;
       if (!q) return true;
       const foin = [a.title, a.domaineDeVie, (a.tempsVerbaux || []).join(' ')].join(' ').toLowerCase();
       return foin.includes(q);
     });
+    // Les modules (cours de 4 h) ouvrent la liste ; les ateliers suivent.
+    // Le tri est stable : à l'intérieur de chaque groupe, l'ordre du catalogue
+    // est conservé.
+    const rang = (a) => (a.categorie === 'cours' ? 0 : 1);
+    return liste.sort((a, b) => rang(a) - rang(b));
   }
 
   function rendreJour() {
