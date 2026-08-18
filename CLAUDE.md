@@ -237,6 +237,13 @@ plus — ajouter une activité, ajouter du matériel à une activité.
   `activities.json` — présentation (`slideshow`), fiche élève (`studentDoc`),
   **corrigé (`corrige`)**, plan de cours, activité interactive, autres,
   miniature. Le corrigé est rangé dans `assets/corriges/<slug><ext>`.
+- **Le niveau se choisit au dépôt** et se lit sur chaque ligne, avec son
+  propre filtre. Le champ est `level`, dans la forme « Niveau N » déjà
+  écrite partout ailleurs (`js/app.js`, `js/materiel.js`) — on ne change
+  pas de forme en chemin. `normalize_level()` accepte les huit niveaux du
+  programme et retombe sur *Niveau 4* pour toute autre valeur, y compris
+  l'absence : les 43 activités écrites avant ce champ sont de ce cours-là.
+  Le niveau ne se modifie pas après coup, comme le reste : on ajoute.
 - **Le matériel présent est un lien** : le catalogue sert d'abord à
   retrouver un fichier. Ce qui manque reste écrit en gris, pour qu'on voie
   le trou.

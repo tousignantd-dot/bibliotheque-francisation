@@ -339,6 +339,20 @@ def normalize_categorie(value, interactive_path=""):
     return "cours" if "module-" in (interactive_path or "") else "atelier"
 
 
+# Les huit niveaux du programme de francisation. Le libellé « Niveau N » est
+# la forme déjà écrite dans activities.json et lue partout ailleurs
+# (js/app.js, js/materiel.js) : on ne change pas de forme en chemin.
+NIVEAUX = tuple(f"Niveau {n}" for n in range(1, 9))
+NIVEAU_DEFAUT = "Niveau 4"
+
+
+def normalize_level(value):
+    """Le catalogue accueillera des activités de tous les niveaux. Une valeur
+    inconnue retombe sur le niveau 4, le cours pour lequel tout a été écrit."""
+    value = (value or "").strip()
+    return value if value in NIVEAUX else NIVEAU_DEFAUT
+
+
 def load_activities():
     if DATA_FILE.exists():
         with open(DATA_FILE, "r", encoding="utf-8") as f:
@@ -2411,7 +2425,7 @@ class Handler(http.server.SimpleHTTPRequestHandler):
         activity = {
             "id": new_id,
             "title": title,
-            "level": "Niveau 4",
+            "level": normalize_level(form.getvalue("level", "")),
             "categorie": normalize_categorie(form.getvalue("categorie", "")),
             "thumbnail": self._upload_thumbnail(form, slug),
             "interactive": self._upload_interactive(form, slug),

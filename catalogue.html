@@ -190,6 +190,15 @@
       font-size: var(--fs-ui); font-weight: var(--fw-bold); color: var(--text-strong);
       white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
     }
+    /* Le niveau est une donnée de structure, pas un accent de repérage : il
+       reste en encre sur creux, pour ne pas rivaliser avec les compétences. */
+    .act-niveau {
+      display: inline-block; margin-right: var(--sp-2);
+      border: 1px solid var(--border); border-radius: var(--r-pill);
+      padding: 0 var(--sp-2);
+      background: var(--surface-sunken); color: var(--text-body);
+      font-size: var(--fs-meta); font-weight: var(--fw-bold);
+    }
 
     /* Ce que l'activité contient déjà : présent en vert, manquant en gris.
        Le glyphe porte l'information autant que la couleur. */
@@ -380,6 +389,20 @@
         </div>
 
         <div class="form-group">
+          <label for="niveauInput">Niveau</label>
+          <select id="niveauInput" class="select-categorie">
+            <option>Niveau 1</option>
+            <option>Niveau 2</option>
+            <option>Niveau 3</option>
+            <option selected>Niveau 4</option>
+            <option>Niveau 5</option>
+            <option>Niveau 6</option>
+            <option>Niveau 7</option>
+            <option>Niveau 8</option>
+          </select>
+        </div>
+
+        <div class="form-group">
           <label for="categorieInput">Type de contenu</label>
           <select id="categorieInput" class="select-categorie">
             <option value="atelier">Atelier — 2 h, l'après-midi</option>
@@ -419,6 +442,9 @@
         <span class="list-search-icon" aria-hidden="true"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg></span>
         <input type="text" id="listSearch" placeholder="Filtrer…" aria-label="Filtrer les activités par titre" />
       </div>
+      <select id="filterNiveau" class="list-filtre" aria-label="Filtrer par niveau">
+        <option value="">Tous les niveaux</option>
+      </select>
       <select id="filterTemps" class="list-filtre" aria-label="Filtrer par temps de verbe">
         <option value="">Tous les temps de verbe</option>
       </select>
@@ -487,6 +513,10 @@ function toast(msg, type = 'success') {
   requestAnimationFrame(() => requestAnimationFrame(() => t.classList.add('show')));
   setTimeout(() => { t.classList.remove('show'); setTimeout(() => t.remove(), 250); }, 3200);
 }
+
+// `level` est le nom du champ depuis toujours, et sa forme est « Niveau N ».
+// Les activités déposées avant ce champ sont du niveau 4, le cours d'origine.
+const niveauDe = a => a.level || 'Niveau 4';
 
 function escHtml(s) {
   return String(s).replace(/[&<>"']/g, c => (
@@ -568,6 +598,7 @@ document.getElementById('addForm').addEventListener('submit', async e => {
 
   const fd = new FormData();
   fd.append('title', title);
+  fd.append('level', document.getElementById('niveauInput').value);
   fd.append('categorie', document.getElementById('categorieInput').value);
   for (const m of MATERIEL) {
     const f = document.getElementById(`add${m.cle}Input`).files[0];
@@ -631,33 +662,46 @@ async function loadList() {
 function populateFilterOptions() {
   const temps = new Set();
   const domaines = new Set();
+  const niveaux = new Set();
   allActivities.forEach(a => {
     (a.tempsVerbaux || []).forEach(t => temps.add(t));
     if (a.domaineDeVie) domaines.add(a.domaineDeVie);
+    niveaux.add(niveauDe(a));
   });
 
   const fillSelect = (select, values) => {
     const current = select.value;
+    // Un tableau arrive déjà trié (les niveaux) ; un Set est trié ici.
+    const liste = Array.isArray(values) ? values : [...values].sort();
     select.innerHTML = `<option value="">${select.dataset.allLabel}</option>` +
-      [...values].sort().map(v => `<option value="${escHtml(v)}">${escHtml(v)}</option>`).join('');
-    if ([...values].includes(current)) select.value = current;
+      liste.map(v => `<option value="${escHtml(v)}">${escHtml(v)}</option>`).join('');
+    if (liste.includes(current)) select.value = current;
   };
 
+  const selNiveau = document.getElementById('filterNiveau');
   const selTemps = document.getElementById('filterTemps');
   const selDomaine = document.getElementById('filterDomaine');
+  selNiveau.dataset.allLabel = 'Tous les niveaux';
   selTemps.dataset.allLabel = 'Tous les temps de verbe';
   selDomaine.dataset.allLabel = 'Tous les domaines';
+  // « Niveau 10 » viendrait avant « Niveau 2 » dans un tri de texte : on trie
+  // sur le nombre, en gardant l'ordre du texte pour ce qui n'en a pas.
+  fillSelect(selNiveau, [...niveaux].sort((a, b) =>
+    (parseInt(a.replace(/\D/g, ''), 10) || 99) - (parseInt(b.replace(/\D/g, ''), 10) || 99)
+    || a.localeCompare(b, 'fr')));
   fillSelect(selTemps, temps);
   fillSelect(selDomaine, domaines);
 }
 
 function applyFilters() {
   const q = document.getElementById('listSearch').value.trim().toLowerCase();
+  const niveau = document.getElementById('filterNiveau').value;
   const temps = document.getElementById('filterTemps').value;
   const domaine = document.getElementById('filterDomaine').value;
 
   renderList(allActivities.filter(a => {
     if (q && !a.title.toLowerCase().includes(q)) return false;
+    if (niveau && niveauDe(a) !== niveau) return false;
     if (temps && !(a.tempsVerbaux || []).includes(temps)) return false;
     if (domaine && a.domaineDeVie !== domaine) return false;
     return true;
@@ -708,7 +752,9 @@ function renderItems(items) {
         <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="8.5" cy="8.5" r="1.5"/><polyline points="21 15 16 10 5 21"/></svg>
       </div>
       <div class="activity-info">
-        <div class="activity-name-display">${escHtml(a.title)}</div>
+        <div class="activity-name-display">
+          <span class="act-niveau">${escHtml(niveauDe(a))}</span>${escHtml(a.title)}
+        </div>
         <div class="act-meta">
           ${MATERIEL.map(m => a[m.cle]
             ? `<a href="${escHtml(a[m.cle])}" target="_blank" rel="noopener">✓ ${escHtml(m.nom)}</a>`
@@ -815,6 +861,7 @@ document.getElementById('editSaveBtn').addEventListener('click', async () => {
    Filtres
    ====================================================== */
 document.getElementById('listSearch').addEventListener('input', applyFilters);
+document.getElementById('filterNiveau').addEventListener('change', applyFilters);
 document.getElementById('filterTemps').addEventListener('change', applyFilters);
 document.getElementById('filterDomaine').addEventListener('change', applyFilters);
 
