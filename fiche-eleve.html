@@ -240,7 +240,8 @@
     // Le tableau de bord se lit avec le code de l'élève ; le reste, avec la
     // session enseignante. Les quatre journaux couvrent le groupe entier : on
     // ne garde que les lignes de l'élève regardé.
-    const [bilan, activites, progres, oraux, ecrits, corrige, journal] = await Promise.all([
+    const [bilan, activites, progres, oraux, ecrits, corrige, journal,
+           analyses, signaux] = await Promise.all([
       fetch(`/api/student/dashboard?code=${encodeURIComponent(code)}`).then(r => r.json()),
       fetch(`/api/student/activities?code=${encodeURIComponent(code)}`).then(r => r.json()),
       Prof.fetch(Prof.withGroup('/api/admin/progress')).then(r => r.json()),
@@ -248,6 +249,8 @@
       Prof.fetch(Prof.withGroup('/api/admin/written-submissions')).then(r => r.json()),
       Prof.fetch(Prof.withGroup('/api/admin/corrige-moi')).then(r => r.json()),
       Prof.fetch(Prof.withGroup('/api/admin/access-log')).then(r => r.json()),
+      Prof.fetch(Prof.withGroup('/api/admin/analyses-erreurs')).then(r => r.json()),
+      Prof.fetch(Prof.withGroup('/api/admin/signaux-aide')).then(r => r.json()),
     ]);
 
     const mien = liste => liste.filter(e => e.studentId === ELEVE.id);
@@ -256,6 +259,9 @@
     const mesEcrits = mien(ecrits).map(e => ({ ...e, genre: 'ecrit' }));
     const mesCorrige = mien(corrige);
     const monJournal = mien(journal).sort((a, b) => (b.timestamp || '').localeCompare(a.timestamp || ''));
+    const mesAnalyses = mien(Array.isArray(analyses) ? analyses : [])
+      .sort((a, b) => String(b.timestamp || '').localeCompare(String(a.timestamp || '')));
+    const mesSignaux = mien(Array.isArray(signaux) ? signaux : []);
 
     const derniere = [...mesProgres, ...monJournal]
       .map(e => e.timestamp || '').sort().pop();
@@ -266,6 +272,7 @@
     document.getElementById('feContenu').innerHTML = [
       blocBilan(bilan, activites),
       blocActivites(mesProgres, activites, [...mesOraux, ...mesEcrits]),
+      blocDiagnostic(mesAnalyses, mesSignaux),
       blocOraux(mesOraux),
       blocEcrits(mesEcrits),
       blocCorrige(mesCorrige, bilan),
@@ -444,6 +451,97 @@
         <p>${esc(e.feedback || '(aucune)')}</p>
       </div>
     </div>`;
+  }
+
+  /** Ce qui revient chez cet élève.
+
+      Deux choses qui existaient déjà et ne se voyaient nulle part : l'analyse
+      que l'assistant lui a rendue quand il a demandé « pourquoi je me
+      trompe ? », et ce qu'il fait de l'aide qu'on lui propose. Rien ici ne
+      vient d'une correction privée — ni « Corrige-moi ! », ni un texte
+      corrigé à l'écran : ces deux-là ne remontent jamais. */
+  function blocDiagnostic(analyses, signaux) {
+    const parExo = new Map();
+    signaux.forEach(s => {
+      const cle = `${s.activityId}·${s.exercice}`;
+      if (!parExo.has(cle)) parExo.set(cle, {
+        titre: s.activityTitle || '', exercice: s.exercice || '',
+        proposee: 0, acceptee: 0, refusee: 0, lecons: 0, quand: '',
+      });
+      const e = parExo.get(cle);
+      e.proposee += s.aide_proposee || 0;
+      e.acceptee += (s.aide_acceptee || 0);
+      e.refusee  += s.aide_refusee  || 0;
+      e.lecons   += s.plus_open     || 0;
+      if ((s.lastSeen || '') > e.quand) e.quand = s.lastSeen || '';
+    });
+
+    if (!analyses.length && !parExo.size) {
+      return section('Ce qui revient', 'Aucune analyse demandée, aucune aide proposée.',
+        `<p class="fe-note">Quand cet élève accumule des erreurs dans un exercice, le module lui propose de relire ses réponses avec l’assistant. Ce que l’assistant trouve — la règle en cause, le conseil donné — s’inscrira ici. Il faut que l’élève ait cliqué : c’est une demande d’aide, pas une surveillance.</p>`);
+    }
+
+    // Les notions qui reviennent : deux demandes sur la même notion valent
+    // mieux qu'une liste chronologique pour savoir quoi retravailler.
+    const parNotion = new Map();
+    analyses.forEach(a => {
+      const cle = (a.notion || a.exercice || 'Sans notion déclarée').trim();
+      parNotion.set(cle, (parNotion.get(cle) || 0) + 1);
+    });
+    const revient = [...parNotion.entries()]
+      .filter(([, n]) => n > 1)
+      .sort((a, b) => b[1] - a[1])
+      .map(([cle, n]) => `<span class="fe-etat fe-etat--cours">${esc(cle)} · ${n} fois</span>`)
+      .join(' ');
+
+    const cartes = analyses.map(a => `<div class="fe-oral">
+      <div class="fe-oral-tete">
+        <span class="fe-oral-tache">${esc(a.exercice || 'Exercice')}</span>
+        ${a.notion ? `<span class="fe-etat fe-etat--cours">${esc(a.notion)}</span>` : ''}
+        <span class="fe-oral-quand">${a.erreurs
+          ? `${a.erreurs} erreur${a.erreurs > 1 ? 's' : ''} sur ${a.items} · ` : ''}${esc(dateHeure(a.timestamp))}</span>
+      </div>
+      ${a.patron ? `<div class="fe-bloc fe-bloc--corr"><span class="fe-bloc-cle">Ce qui revient</span>
+        <p>${esc(a.patron)}</p></div>` : ''}
+      ${a.explication ? `<div class="fe-bloc"><span class="fe-bloc-cle">Pourquoi</span>
+        <p>${esc(a.explication)}</p></div>` : ''}
+      ${a.conseil ? `<div class="fe-bloc fe-bloc--ok"><span class="fe-bloc-cle">Le conseil donné à l’élève</span>
+        <p>${esc(a.conseil)}</p></div>` : ''}
+    </div>`).join('');
+
+    const compte = (n, cls) => n ? `<b class="${cls}">${n}</b>` : '<span class="fe-vide">—</span>';
+    const tableau = parExo.size ? `<table class="fe-table" style="margin-top:var(--sp-4)">
+      <thead><tr>
+        <th>Exercice</th>
+        <th style="text-align:center">Aide offerte</th>
+        <th style="text-align:center">Acceptée</th>
+        <th style="text-align:center">Refusée</th>
+        <th style="text-align:center">Mini-leçons</th>
+        <th>Dernière fois</th>
+      </tr></thead>
+      <tbody>${[...parExo.values()]
+        .sort((a, b) => String(b.quand || '').localeCompare(String(a.quand || '')))
+        .map(e => `<tr>
+          <td><b>${esc(e.exercice || '(exercice sans nom)')}</b>${e.titre
+            ? `<div class="fe-vide" style="font-size:var(--fs-body-sm);margin-top:4px">${esc(titreCourt(e.titre))}</div>` : ''}</td>
+          <td class="fe-num">${compte(e.proposee, 'fe-warn')}</td>
+          <td class="fe-num">${compte(e.acceptee, 'fe-ok')}</td>
+          <td class="fe-num">${compte(e.refusee, 'fe-no')}</td>
+          <td class="fe-num">${compte(e.lecons, 'fe-ok')}</td>
+          <td class="fe-vide">${esc(dateHeure(e.quand))}</td>
+        </tr>`).join('')}</tbody>
+    </table>` : '';
+
+    const refus = [...parExo.values()].reduce((n, e) => n + e.refusee, 0);
+    const chapeau = analyses.length
+      ? `${analyses.length} analyse${analyses.length > 1 ? 's' : ''} demandée${analyses.length > 1 ? 's' : ''} par l’élève`
+        + (refus ? ` · ${refus} aide${refus > 1 ? 's' : ''} refusée${refus > 1 ? 's' : ''}` : '')
+        + '.'
+      : `Aucune analyse demandée · ${refus} aide${refus > 1 ? 's' : ''} refusée${refus > 1 ? 's' : ''}.`;
+
+    return section('Ce qui revient', chapeau,
+      (revient ? `<p class="fe-note" style="margin-bottom:var(--sp-4)">Revient plus d’une fois : ${revient}</p>` : '')
+      + cartes + tableau);
   }
 
   function blocOraux(oraux) {

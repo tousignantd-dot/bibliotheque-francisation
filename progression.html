@@ -232,6 +232,7 @@
   /* ---------- État ---------- */
   const AUJ = aujourdhui();
   let ELEVES = [], ACTIVITES = [], MODULES = [], PROGRES = [], ORAUX = [], ECRITS = [];
+  let ANALYSES = [], SIGNAUX = [];
   let MODULE = '';           // '' = tous les modules, sinon l'id de l'activité
   let PERIODE = 'jour';      // 'jour' | 'module' | 'tout'
   const DEPLIES = new Set(); // les élèves dont on a ouvert les envois
@@ -293,12 +294,14 @@
     document.getElementById('pgContenu').innerHTML =
       '<p class="pg-note" style="padding:var(--sp-8) 0">Chargement du groupe…</p>';
 
-    const [activites, eleves, progres, oraux, ecrits] = await Promise.all([
+    const [activites, eleves, progres, oraux, ecrits, analyses, signaux] = await Promise.all([
       Prof.fetch(Prof.withGroup('/api/activities')).then(r => r.json()),
       Prof.fetch(Prof.withGroup('/api/admin/students')).then(r => r.json()),
       Prof.fetch(Prof.withGroup('/api/admin/progress')).then(r => r.json()),
       Prof.fetch(Prof.withGroup('/api/admin/oral-submissions')).then(r => r.json()),
       Prof.fetch(Prof.withGroup('/api/admin/written-submissions')).then(r => r.json()),
+      Prof.fetch(Prof.withGroup('/api/admin/analyses-erreurs')).then(r => r.json()),
+      Prof.fetch(Prof.withGroup('/api/admin/signaux-aide')).then(r => r.json()),
     ]);
 
     ACTIVITES = Array.isArray(activites) ? activites : [];
@@ -306,6 +309,8 @@
     PROGRES = Array.isArray(progres) ? progres : [];
     ORAUX = Array.isArray(oraux) ? oraux : [];
     ECRITS = Array.isArray(ecrits) ? ecrits : [];
+    ANALYSES = Array.isArray(analyses) ? analyses : [];
+    SIGNAUX = Array.isArray(signaux) ? signaux : [];
 
     // Les ateliers de l'après-midi ne sont pas des modules : le tableau de bord
     // suit les cours, c'est-à-dire ce que la planification ouvre par sections.
@@ -409,6 +414,8 @@
     document.getElementById('pgContenu').innerHTML = [
       blocTuiles(mods, progres, envois),
       blocEleves(mods, progres, envois),
+      blocNotions(),
+      blocAide(),
       blocEnvois(envois),
       blocModules(),
       '<div class="pg-pied"></div>',
@@ -580,6 +587,180 @@
           <th style="text-align:center">Enregistrements</th>
           <th style="text-align:center">Textes</th>
           <th>Dernière trace</th><th></th>
+        </tr></thead>
+        <tbody>${lignes}</tbody>
+      </table></div>`);
+  }
+
+  /* ---------- Diagnostic ---------- */
+
+  /** Les analyses demandées par les élèves, dans la période.
+
+      Elles ne portent pas d'identifiant de module : le module appelle
+      /api/analyser-erreurs avec le titre de l'exercice et la notion, pas avec
+      l'activité. Le choix de module en haut de page ne les filtre donc pas —
+      c'est écrit dans le chapeau plutôt que deviné. */
+  function analysesEnJeu() {
+    return ANALYSES.filter(a => dansPeriode(a.timestamp, null));
+  }
+
+  /** Les signaux de l'aide, eux, savent d'où ils viennent : ils suivent le
+      module regardé comme le reste de la page. */
+  function signauxEnJeu() {
+    return SIGNAUX.filter(s => (!MODULE || String(s.activityId) === String(MODULE))
+                            && dansPeriode(s.lastSeen, s.activityId));
+  }
+
+  /** Ce que l'assistant a répondu quand un élève a demandé « pourquoi je me
+      trompe ? ». Regroupé par notion : c'est la question « qu'est-ce que je
+      reprends demain matin ? », pas « qui a eu combien ». */
+  function blocNotions() {
+    const analyses = analysesEnJeu();
+    const quand = PERIODE === 'jour' ? 'aujourd’hui'
+      : PERIODE === 'module' ? 'depuis l’ouverture du module' : 'depuis le début';
+
+    if (!analyses.length) {
+      return section('Ce qui bloque', `Aucune analyse demandée ${quand}.`,
+        `<p class="pg-note">Quand un élève accumule des erreurs dans un exercice, le module lui propose de relire ses réponses avec l’assistant. Ce que l’assistant trouve — la règle en cause, le point commun entre les fautes — s’inscrit ici. Rien n’y arrive sans que l’élève ait cliqué : c’est une demande d’aide, pas une surveillance.</p>`);
+    }
+
+    // Une notion peut manquer (tous les exercices n'en déclarent pas) : on
+    // retombe alors sur le titre de l'exercice, qui la nomme presque toujours.
+    const parNotion = new Map();
+    analyses.forEach(a => {
+      const cle = (a.notion || a.exercice || 'Sans notion déclarée').trim();
+      if (!parNotion.has(cle)) parNotion.set(cle, { cle, eleves: new Set(), demandes: 0, erreurs: 0, quand: '', exercices: new Set() });
+      const n = parNotion.get(cle);
+      n.eleves.add(a.studentId);
+      n.demandes += 1;
+      n.erreurs += a.erreurs || 0;
+      if (a.exercice) n.exercices.add(a.exercice);
+      if ((a.timestamp || '') > n.quand) n.quand = a.timestamp || '';
+    });
+
+    const lignes = [...parNotion.values()]
+      .sort((a, b) => b.eleves.size - a.eleves.size || b.demandes - a.demandes)
+      .map(n => {
+        // Une notion que plusieurs élèves demandent n'est plus une difficulté
+        // individuelle : c'est une reprise à faire au tableau.
+        const cls = n.eleves.size >= 3 ? 'pg-no' : n.eleves.size >= 2 ? 'pg-warn' : 'pg-ok';
+        const marque = n.eleves.size >= 3
+          ? '<span class="pg-etat pg-etat--rien">À reprendre en groupe</span>'
+          : n.eleves.size >= 2 ? '<span class="pg-etat pg-etat--cours">Deux élèves</span>' : '';
+        return `<tr>
+          <td><b>${esc(n.cle)}</b>${n.exercices.size
+            ? `<div class="pg-vide" style="font-size:var(--fs-body-sm);margin-top:4px">${esc([...n.exercices].join(' · '))}</div>`
+            : ''}</td>
+          <td class="pg-num"><b class="${cls}">${n.eleves.size}</b></td>
+          <td class="pg-num">${n.demandes}</td>
+          <td class="pg-num">${n.erreurs || '<span class="pg-vide">—</span>'}</td>
+          <td>${marque}</td>
+          <td class="pg-vide">${esc(dateHeure(n.quand))}</td>
+        </tr>`;
+      }).join('');
+
+    // Les dernières analyses en toutes lettres : le tableau dit combien, ces
+    // cartes disent quoi. Six suffisent à voir la couleur de la journée.
+    const cartes = analyses
+      .slice().sort((a, b) => String(b.timestamp || '').localeCompare(String(a.timestamp || '')))
+      .slice(0, 6)
+      .map(a => {
+        const eleve = ELEVES.find(el => el.id === a.studentId);
+        return `<div class="pg-envoi">
+          <div class="pg-envoi-tete">
+            <span class="pg-envoi-qui">${esc(eleve ? nomEleve(eleve) : a.studentLabel || 'Élève')}</span>
+            <span class="pg-etat pg-etat--cours">${esc(a.notion || 'Sans notion')}</span>
+            <span class="pg-envoi-quoi">${esc(a.exercice || '')}${a.erreurs
+              ? ` · ${pluriel(a.erreurs, 'erreur')} sur ${a.items}` : ''}</span>
+            <span class="pg-envoi-quand">${esc(dateHeure(a.timestamp))}</span>
+          </div>
+          ${a.patron ? `<div class="pg-bloc pg-bloc--corr"><span class="pg-bloc-cle">Ce qui revient</span>
+            <p>${esc(a.patron)}</p></div>` : ''}
+          ${a.explication ? `<div class="pg-bloc"><span class="pg-bloc-cle">Pourquoi</span>
+            <p>${esc(a.explication)}</p></div>` : ''}
+        </div>`;
+      }).join('');
+
+    const eleves = new Set(analyses.map(a => a.studentId)).size;
+    return section('Ce qui bloque',
+      `${pluriel(analyses.length, 'analyse')} demandée${analyses.length > 1 ? 's' : ''} par ${pluriel(eleves, 'élève')} ${quand}, sur ${pluriel(parNotion.size, 'notion')}.`
+      + ' Ces analyses ne portent pas de module : elles couvrent tout le groupe, quel que soit le module choisi plus haut.',
+      `<div class="pg-scroll"><table class="pg-table">
+        <thead><tr>
+          <th>Notion</th>
+          <th style="text-align:center">Élèves</th>
+          <th style="text-align:center">Demandes</th>
+          <th style="text-align:center">Erreurs</th>
+          <th></th><th>Dernière fois</th>
+        </tr></thead>
+        <tbody>${lignes}</tbody>
+      </table></div>
+      <div style="margin-top:var(--sp-5)">${cartes}</div>`);
+  }
+
+  /** L'aide proposée, prise ou refusée, et les mini-leçons rouvertes.
+      Le refus est le signal le plus tôt qu'on ait : assez d'erreurs pour que
+      le module propose de l'aide, et l'élève dit non. */
+  function blocAide() {
+    const signaux = signauxEnJeu();
+    const quand = PERIODE === 'jour' ? 'aujourd’hui'
+      : PERIODE === 'module' ? 'depuis l’ouverture du module' : 'depuis le début';
+
+    if (!signaux.length) {
+      return section('L’aide et les mini-leçons', `Aucun signal ${quand}.`,
+        `<p class="pg-note">Cette section suit ce que les élèves font de l’aide que le module leur propose après une série d’erreurs — et les mini-leçons « En apprendre plus » qu’ils rouvrent d’eux-mêmes.</p>`);
+    }
+
+    const parExo = new Map();
+    signaux.forEach(s => {
+      const cle = `${s.activityId}·${s.exercice}`;
+      if (!parExo.has(cle)) parExo.set(cle, {
+        titre: s.activityTitle || '', exercice: s.exercice || '',
+        eleves: new Set(), proposee: 0, acceptee: 0, analysee: 0, refusee: 0, lecons: 0, quand: '',
+      });
+      const e = parExo.get(cle);
+      e.eleves.add(s.studentId);
+      e.proposee += s.aide_proposee || 0;
+      e.acceptee += s.aide_acceptee || 0;
+      e.analysee += s.aide_analysee || 0;
+      e.refusee  += s.aide_refusee  || 0;
+      e.lecons   += s.plus_open     || 0;
+      if ((s.lastSeen || '') > e.quand) e.quand = s.lastSeen || '';
+    });
+
+    const compte = (n, cls) => n ? `<b class="${cls}">${n}</b>` : '<span class="pg-vide">—</span>';
+
+    const lignes = [...parExo.values()]
+      .sort((a, b) => b.refusee - a.refusee || b.proposee - a.proposee)
+      .map(e => `<tr>
+        <td>
+          <b>${esc(e.exercice || '(exercice sans nom)')}</b>
+          ${!MODULE && e.titre ? `<div class="pg-vide" style="font-size:var(--fs-body-sm);margin-top:4px">${esc(titreCourt(e.titre))}</div>` : ''}
+        </td>
+        <td class="pg-num">${e.eleves.size}</td>
+        <td class="pg-num">${compte(e.proposee, 'pg-warn')}</td>
+        <td class="pg-num">${compte(e.acceptee, 'pg-ok')}</td>
+        <td class="pg-num">${compte(e.refusee, 'pg-no')}</td>
+        <td class="pg-num">${compte(e.lecons, 'pg-ok')}</td>
+        <td class="pg-vide">${esc(dateHeure(e.quand))}</td>
+      </tr>`).join('');
+
+    const refus = signaux.reduce((n, s) => n + (s.aide_refusee || 0), 0);
+    const offres = signaux.reduce((n, s) => n + (s.aide_proposee || 0), 0);
+    const lecons = signaux.reduce((n, s) => n + (s.plus_open || 0), 0);
+
+    return section('L’aide et les mini-leçons',
+      `${pluriel(offres, 'aide')} proposée${offres > 1 ? 's' : ''} ${quand}, ${refus} refusée${refus > 1 ? 's' : ''} · ${pluriel(lecons, 'mini-leçon')} rouverte${lecons > 1 ? 's' : ''}.`
+      + ' Un refus après plusieurs erreurs est le signe de décrochage le plus précoce que le module sache donner.',
+      `<div class="pg-scroll"><table class="pg-table">
+        <thead><tr>
+          <th>Exercice</th>
+          <th style="text-align:center">Élèves</th>
+          <th style="text-align:center">Aide offerte</th>
+          <th style="text-align:center">Acceptée</th>
+          <th style="text-align:center">Refusée</th>
+          <th style="text-align:center">Mini-leçons</th>
+          <th>Dernière fois</th>
         </tr></thead>
         <tbody>${lignes}</tbody>
       </table></div>`);
