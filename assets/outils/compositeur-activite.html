@@ -81,7 +81,12 @@ h1,h2,h3{margin:0; line-height:1.2}
 /* ---------- Grille principale ---------- */
 .shell{max-width:1400px; margin:0 auto; padding:var(--sp-8); display:grid; grid-template-columns:minmax(0,1fr) minmax(360px,40%); gap:var(--sp-8); align-items:start}
 .colonne{display:flex; flex-direction:column; gap:var(--sp-6); min-width:0}
-.colonne--apercu{position:sticky; top:var(--sp-5); align-self:start; max-height:calc(100vh - 2*var(--sp-5)); overflow:auto}
+/* La colonne colle et ne depasse jamais la fenetre. Elle ne coupe plus son
+   contenu elle-meme : c'est la carte qui se distribue la hauteur disponible
+   (voir .apercu), sans quoi la rangee de boutons du pied se retrouvait tranchee
+   en deux au bas de l'ecran, sans rien qui indique qu'il restait a defiler. */
+.colonne--apercu{position:sticky; top:var(--sp-5); align-self:start; display:flex;
+  max-height:calc(100vh - 2*var(--sp-5))}
 
 /* ---------- Cartes / étapes ---------- */
 .carte{background:var(--white); border:1px solid var(--line-100); border-radius:var(--r-lg); box-shadow:var(--sh); padding:var(--sp-5) var(--sp-6); border-left:4px solid var(--sec,var(--green-600))}
@@ -192,17 +197,27 @@ details.cat>div{padding:0 var(--sp-4) var(--sp-4)}
 .btn[disabled]{opacity:.5; cursor:not-allowed}
 
 /* ---------- Aperçu ---------- */
+/* Carte en colonne : la tete, le cout, la forge et le pied gardent leur
+   hauteur, le prompt prend ce qui reste et defile tout seul. Les boutons
+   restent donc visibles quelle que soit la hauteur de la fenetre. */
 .apercu{background:var(--white); border:1px solid var(--line-100);
-  border-radius:var(--r-lg); box-shadow:var(--sh); overflow:hidden}
+  border-radius:var(--r-lg); box-shadow:var(--sh); overflow:hidden;
+  display:flex; flex-direction:column; flex:1; min-height:0}
+.apercu > *{flex:none}
+/* Tout ce qui est entre la tete et le pied defile d'un bloc. Laisser chaque
+   morceau se debrouiller (le prompt, le cout, la forge) finissait par pousser
+   les boutons hors de la carte sur une fenetre basse ou une page zoomee — et
+   `overflow:hidden` les coupait net, sans rien qui indique qu'ils sont la. */
+.apercu__corps{flex:1 1 auto; min-height:0; overflow:auto; display:flex; flex-direction:column}
 .apercu__tete{display:flex; align-items:center; justify-content:space-between; gap:var(--sp-3);
   padding:var(--sp-4) var(--sp-5); border-bottom:1px solid var(--line-100)}
 .apercu__tete h2{font-size:19px; font-weight:900}
 .apercu__jauge{font-size:14px; font-weight:700; color:var(--ink-400)}
-pre#sortie{margin:0; padding:var(--sp-5); max-height:min(44vh,520px); overflow:auto;
+pre#sortie{margin:0; padding:var(--sp-5); flex:1 1 auto; min-height:64px; overflow:auto;
   background:var(--paper-50); font-family:ui-monospace,SFMono-Regular,Menlo,Consolas,monospace;
   font-size:14px; font-weight:400; line-height:1.6; white-space:pre-wrap; word-break:break-word; color:var(--ink-900)}
 pre#sortie.est-vide{color:var(--ink-400); font-family:var(--font); font-size:17px; font-weight:600; line-height:1.55}
-textarea#edition{width:100%; min-height:min(44vh,520px); max-height:min(44vh,520px); padding:var(--sp-5);
+textarea#edition{width:100%; flex:1 1 auto; min-height:64px; padding:var(--sp-5);
   border:0; border-top:0; border-radius:0; background:var(--white); resize:vertical;
   font-family:ui-monospace,SFMono-Regular,Menlo,Consolas,monospace; font-size:14px; font-weight:400; line-height:1.6}
 textarea#edition:focus-visible{box-shadow:inset 0 0 0 3px var(--green-100)}
@@ -279,7 +294,11 @@ textarea#edition:focus-visible{box-shadow:inset 0 0 0 3px var(--green-100)}
 @media (max-width:1250px){
   .shell{grid-template-columns:1fr; padding:var(--sp-4); gap:var(--sp-4)}
   .bande__in{padding:var(--sp-5) var(--sp-4)}
-  .colonne--apercu{order:-1; position:static; max-height:none; overflow:visible}
+  .colonne--apercu{order:-1; position:static; max-height:none; overflow:visible; display:block}
+  .apercu{display:block}
+  .apercu__corps{display:block; overflow:visible}
+  pre#sortie, textarea#edition{max-height:min(44vh,520px)}
+  textarea#edition{min-height:min(44vh,520px)}
   .apercu{position:static}
   pre#sortie{max-height:42vh}
   .carte{padding:var(--sp-4)}
@@ -468,6 +487,7 @@ textarea#edition:focus-visible{box-shadow:inset 0 0 0 3px var(--green-100)}
         <h2 id="t-apercu">Le prompt</h2>
         <span class="apercu__jauge" id="jauge"></span>
       </div>
+      <div class="apercu__corps">
       <div class="propos" id="proposition" role="region" aria-live="polite" hidden></div>
       <p class="avert" id="avert" hidden>Prompt retouché à la main : vos changements de critères ne s’y écrivent plus.</p>
       <pre id="sortie" tabindex="0" aria-live="polite"></pre>
@@ -491,6 +511,7 @@ textarea#edition:focus-visible{box-shadow:inset 0 0 0 3px var(--green-100)}
         <ul class="forge__fichiers" id="forge-fichiers"></ul>
         <div class="forge__b" id="forge-b"></div>
       </section>
+      </div><!-- /.apercu__corps -->
       <div class="apercu__pied">
         <button class="btn btn--pri" id="b-generer" type="button" hidden>Générer l’activité</button>
         <button class="btn btn--pri" id="b-copier" type="button">Copier le prompt</button>
