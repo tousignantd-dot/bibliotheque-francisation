@@ -12,6 +12,12 @@
        écrites ici sont celles qui n'existent pas dans le système : la barre
        supérieure à deux bandes, la pastille d'état, la zone de dépôt et la
        barre d'action collante. */
+
+    /* Les écrans de l'enseignante alignent des colonnes, pas du texte suivi :
+       la largeur de lecture du portail les étranglait au point d'imposer une
+       barre de défilement. Même réglage que « Progression des élèves ». */
+    body { --content-max: 1180px; }
+
     body { margin: 0; }
     .pe { min-height: 100vh; }
 
@@ -40,6 +46,13 @@
     .pe-parcours { z-index: 30; }
     .pe-parcours .step { font: inherit; font-size: var(--fs-ui-sm); font-weight: var(--fw-bold); cursor: pointer; }
     .pe-parcours .step[aria-current="page"] { --sec: var(--green-600); --sec-soft: var(--green-100); }
+    /* Le correcteur n'est pas une section de la page : il ouvre une autre
+       application. Teinte ambre du système — celle de l'écriture — pour qu'on
+       le distingue des quatre onglets sans sortir des jetons. */
+    .pe-parcours .pe-externe {
+      background: var(--ambre-100); border-color: var(--ambre-700); color: var(--ambre-700);
+    }
+    .pe-parcours .pe-externe:hover { background: var(--ambre-100); box-shadow: inset 0 0 0 1px var(--ambre-700); }
 
     /* — Contexte de groupe — */
     .pe-contexte { padding: var(--sp-8) 0 var(--sp-6); }
@@ -532,6 +545,12 @@
       <button type="button" class="step pe-onglet" data-ecran="eleves"><span class="step__dot"></span>Élèves</button>
       <button type="button" class="step pe-onglet" data-ecran="groupes"><span class="step__dot"></span>Groupes et comptes</button>
       <button type="button" class="step pe-onglet" data-ecran="materiel"><span class="step__dot"></span>Matériel</button>
+      <!-- Le correcteur collaboratif est une application distincte, déployée
+           ailleurs. Il tient la place d'un onglet, mais la teinte ambre du
+           système (celle de l'écriture) dit qu'il mène hors de la page. -->
+      <a class="step pe-externe" id="lienCorrecteur"
+         href="https://correcteur-collaboratif-production.up.railway.app/"
+         target="_blank" rel="noopener"><span class="step__dot"></span>Correcteur collaboratif</a>
     </div>
   </nav>
 
@@ -561,12 +580,6 @@
              elle-même vers la version en diapositives. -->
         <a id="lienTutoriels" href="assets/outils/tutoriels-enseignant.html?de=enseignant"
            target="_blank" rel="noopener">Tutoriels</a>
-        <!-- Le correcteur collaboratif est une application distincte, déployée
-             ailleurs : bouton plutôt que lien plat, et nouvel onglet comme les
-             deux outils autonomes ci-dessus. -->
-        <a class="btn btn--ghost btn--sm" id="lienCorrecteur"
-           href="https://correcteur-collaboratif-production.up.railway.app/"
-           target="_blank" rel="noopener">Correcteur collaboratif</a>
         <button type="button" class="pe-lien-plat" id="lienEleves"></button>
         <span class="pe-resume" id="resumeGroupe" style="margin-left:auto"></span>
       </div>
@@ -695,8 +708,8 @@
           <form class="card__row" id="formEleve" style="background:var(--surface-sunken);display:flex;gap:var(--sp-4);align-items:flex-end;flex-wrap:wrap">
             <div style="flex:1;min-width:240px">
               <label class="field-label" for="nouvelEleve">Ajouter au groupe</label>
-              <input id="nouvelEleve" class="field" type="text" placeholder="Prénom et nom" autocomplete="off" />
-              <div class="field-hint">Le code d'accès est généré ici : l'élève ne s'inscrit pas lui-même. Laissez le nom vide pour préparer des codes d'avance et les nommer à l'arrivée.</div>
+              <input id="nouvelEleve" class="field" type="text" placeholder="Pseudo (ex. Colibri)" autocomplete="off" />
+              <div class="field-hint">Donnez un pseudo, pas le vrai nom : c'est ce qui s'affiche dans le portail. Le code d'accès est généré ici, l'élève ne s'inscrit pas lui-même. Laissez le champ vide pour préparer des codes d'avance et leur donner un pseudo à l'arrivée.</div>
             </div>
             <div style="width:120px">
               <label class="field-label" for="nombreEleves">Combien</label>
