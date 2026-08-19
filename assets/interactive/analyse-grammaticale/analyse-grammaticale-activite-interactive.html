@@ -1,279 +1,357 @@
 <!DOCTYPE html>
 <html lang="fr"><head>
 <meta charset="utf-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Analyse grammaticale</title>
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Nunito:wght@600;700;800;900&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="/assets/design-system/styles.css">
 <style>
-*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
-html,body{height:100%;background:#EEF0FB;font-family:'Nunito','Arial Rounded MT Bold',sans-serif;color:#2B2350}
-body{display:flex;flex-direction:column;min-height:100vh}
+/* ============================================================
+   ANALYSE GRAMMATICALE — outil d'analyse de phrases
+   Tout vient du système de design (assets/design-system/).
+   Ce bloc ne compose que les pièces propres à cet écran :
+   sélecteur de mode, banque de phrases, phrase annotée, tableau.
+   Aucune valeur en dur : uniquement des var(--*).
+   ============================================================ */
 
-#hdr{background:#4C51BF;color:#fff;padding:14px 32px;display:flex;align-items:center;justify-content:space-between;flex-shrink:0;box-shadow:0 3px 16px rgba(76,81,191,.3)}
-.hdr-l{display:flex;align-items:center;gap:14px}
-.hdr-ic{width:44px;height:44px;background:rgba(255,255,255,.18);border-radius:50%;display:flex;align-items:center;justify-content:center;flex-shrink:0;font-size:22px}
-.hdr-eye{font-size:11px;font-weight:800;text-transform:uppercase;letter-spacing:.2em;opacity:.7;line-height:1}
-.hdr-h1{font-size:24px;font-weight:900;line-height:1.15}
+/* — Sélecteur de mode (deux onglets) — */
+.modes { display: flex; gap: var(--sp-2); flex-wrap: wrap; }
+.mode {
+  display: inline-flex; align-items: center;
+  min-height: var(--tap-min); padding: 0 var(--sp-5);
+  border: 1px solid var(--border); border-radius: var(--r-pill);
+  background: var(--surface-card); color: var(--text-strong);
+  font-family: var(--font-sans); font-size: var(--fs-ui); font-weight: var(--fw-bold);
+  line-height: 1; white-space: nowrap; cursor: pointer;
+  transition: background var(--dur) var(--ease), border-color var(--dur) var(--ease);
+}
+.mode:hover { background: var(--paper-100); }
+/* Choisi = plaque encre, jamais une teinte de plus. */
+.mode[aria-pressed="true"] { background: var(--sel-bg); border-color: var(--sel-line); color: var(--sel-ink); }
+.mode[aria-pressed="true"]:hover { background: var(--sel-bg); }
 
-#main{flex:1;display:flex;justify-content:center;padding:32px 20px;overflow-y:auto}
-#card{width:100%;max-width:760px;display:flex;flex-direction:column;gap:18px}
+/* — Banque de phrases : des rangées séparées par un filet — */
+.banque__item {
+  display: block; width: 100%; text-align: left;
+  padding: var(--sp-4) var(--sp-5); border: none; border-bottom: 1px solid var(--border);
+  background: var(--surface-card); border-left: 4px solid var(--sec, var(--accent));
+  font-family: var(--font-sans); cursor: pointer;
+  transition: background var(--dur) var(--ease);
+}
+.banque__item:last-child { border-bottom: none; }
+.banque__item:hover { background: var(--paper-100); }
+.banque__tag {
+  display: block; margin-bottom: var(--sp-1);
+  font-size: var(--fs-label); font-weight: var(--fw-bold);
+  letter-spacing: var(--ls-label); text-transform: uppercase; color: var(--sec, var(--accent-ink));
+}
+.banque__txt { font-size: var(--fs-body); font-weight: var(--fw-semi); color: var(--text-strong); line-height: 1.45; }
 
-.intro{background:#E0E2F7;border-radius:14px;padding:14px 18px;font-size:14px;line-height:1.6;color:#332B6B;font-weight:700}
+/* — Zone d'écriture libre — */
+.libre { display: flex; flex-direction: column; gap: var(--sp-3); }
+.libre__actions { display: flex; gap: var(--sp-2); flex-wrap: wrap; }
 
-/* Sélecteur de mode */
-.mode-tabs{display:flex;gap:8px;background:#fff;padding:6px;border-radius:14px;box-shadow:0 2px 10px rgba(0,0,0,.05)}
-.mode-tab{flex:1;text-align:center;padding:10px 14px;border-radius:10px;font-size:14px;font-weight:800;color:#6B6693;cursor:pointer;transition:all .15s}
-.mode-tab.active{background:#4C51BF;color:#fff}
+/* — Phrase annotée : chaque groupe porte sa couleur ET son mot — */
+.annotee {
+  display: flex; flex-wrap: wrap; align-items: flex-end; gap: var(--sp-3) var(--sp-2);
+  padding-bottom: var(--sp-2);
+}
+.grp { display: flex; flex-direction: column; gap: var(--sp-1); }
+.grp__mots {
+  padding-bottom: var(--sp-1);
+  border-bottom: 3px solid var(--sec, var(--ink-400));
+  font-size: var(--fs-lead); font-weight: var(--fw-bold); color: var(--text-strong);
+}
+.grp__fn {
+  font-size: var(--fs-meta); font-weight: var(--fw-bold);
+  letter-spacing: .06em; text-transform: uppercase; color: var(--sec, var(--text-muted));
+}
 
-#bankView.hidden{display:none}
-#freeView.hidden{display:none}
+/* — Tableau d'analyse — */
+.tab { width: 100%; border-collapse: collapse; }
+.tab th {
+  padding: var(--sp-2) var(--sp-3); text-align: left;
+  border-bottom: 1px solid var(--border);
+  font-size: var(--fs-label); font-weight: var(--fw-bold);
+  letter-spacing: var(--ls-label); text-transform: uppercase; color: var(--text-muted);
+}
+.tab td {
+  padding: var(--sp-3); border-bottom: 1px solid var(--border);
+  font-size: var(--fs-body-sm); font-weight: var(--fw-semi); color: var(--text-body);
+  vertical-align: top;
+}
+.tab tr:last-child td { border-bottom: none; }
+.tab td:first-child { color: var(--text-strong); font-weight: var(--fw-bold); }
+/* Sur téléphone, le tableau se lit en blocs : chaque groupe de mots
+   devient une rangée, avec son étiquette au-dessus de la valeur. */
+@media (max-width: 640px) {
+  .tab thead { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0); }
+  .tab, .tab tbody, .tab tr, .tab td { display: block; width: 100%; }
+  .tab tr { padding: var(--sp-3) 0; border-bottom: 1px solid var(--border); }
+  .tab tr:last-child { border-bottom: none; }
+  .tab td { padding: var(--sp-1) 0; border-bottom: none; }
+  .tab td[data-label]::before {
+    content: attr(data-label); display: block; margin-bottom: var(--sp-1);
+    font-size: var(--fs-label); font-weight: var(--fw-bold);
+    letter-spacing: var(--ls-label); text-transform: uppercase; color: var(--text-muted);
+  }
+  .tab td:first-child { font-size: var(--fs-body); }
+}
+.tab__fn { display: inline-flex; align-items: center; gap: var(--sp-2); color: var(--sec, var(--text-body)); font-weight: var(--fw-bold); }
+.pastille { width: 10px; height: 10px; flex: none; border-radius: 50%; background: var(--sec, var(--ink-400)); }
 
-.bank-list{display:flex;flex-direction:column;gap:10px}
-.bank-item{background:#fff;border:2.5px solid #DCDEF3;border-radius:14px;padding:16px 20px;cursor:pointer;transition:all .15s}
-.bank-item:hover{border-color:#4C51BF;box-shadow:0 2px 14px rgba(76,81,191,.1)}
-.bank-item-tag{font-size:11px;font-weight:900;text-transform:uppercase;letter-spacing:.08em;color:#4C51BF;margin-bottom:4px}
-.bank-item-txt{font-size:15px;font-weight:700;color:#2B2350}
+/* — Légende des fonctions — */
+.legende { display: flex; flex-wrap: wrap; gap: var(--sp-2) var(--sp-4); }
+.legende__item {
+  display: inline-flex; align-items: center; gap: var(--sp-2);
+  font-size: var(--fs-ui-sm); font-weight: var(--fw-semi); color: var(--text-body);
+}
 
-.free-box{background:#fff;border-radius:18px;padding:24px;box-shadow:0 2px 14px rgba(0,0,0,.06);display:flex;flex-direction:column;gap:14px}
-#freeInput{width:100%;min-height:110px;border:2.5px solid #DCDEF3;border-radius:12px;padding:14px 16px;font-family:'Nunito',sans-serif;font-size:16px;font-weight:700;color:#2B2350;background:#F8F8FD;resize:vertical}
-#freeInput:focus{outline:none;border-color:#4C51BF}
-.free-hint{font-size:12.5px;color:#6B6693;font-weight:600}
-
-.btn{font-family:'Nunito',sans-serif;font-size:15px;font-weight:800;border-radius:10px;padding:12px 22px;cursor:pointer;border:2.5px solid transparent;transition:all .15s}
-.btn-primary{background:#4C51BF;color:#fff}
-.btn-primary:hover{background:#3C4099}
-.btn-primary:disabled{opacity:.5;cursor:not-allowed}
-.btn-ghost{background:#EEF0FB;color:#4C51BF;border-color:#DCDEF3}
-.btn-ghost:hover{background:#E0E2F7}
-
-#statusMsg{font-size:14px;font-weight:800;color:#8A8A80;text-align:center;display:none}
-#statusMsg.on{display:block}
-#errorMsg{font-size:14px;font-weight:800;color:#B91C1C;background:#FEF2F2;border:2px solid #FCA5A5;border-radius:10px;padding:12px 16px;display:none}
-#errorMsg.on{display:block}
-
-/* Résultats */
-#results{display:flex;flex-direction:column;gap:22px}
-#results.hidden{display:none}
-.phrase-block{background:#fff;border-radius:16px;padding:20px 22px;box-shadow:0 2px 14px rgba(0,0,0,.06)}
-.phrase-annotated{font-size:19px;line-height:2.4;font-weight:700;color:#2B2350;margin-bottom:16px}
-.grp{padding:2px 4px;border-radius:5px;border-bottom:3px solid transparent;display:inline;white-space:pre-wrap}
-
-table.analyse-table{width:100%;border-collapse:collapse;font-size:13.5px}
-table.analyse-table th{text-align:left;padding:8px 10px;color:#6B6693;font-weight:800;text-transform:uppercase;font-size:11px;letter-spacing:.04em;border-bottom:2px solid #E0E2F7}
-table.analyse-table td{padding:9px 10px;border-bottom:1px solid #EEF0FB;color:#2B2350;font-weight:700}
-.fn-dot{width:10px;height:10px;border-radius:50%;display:inline-block;margin-right:6px;vertical-align:middle}
-
-.legend{display:flex;flex-wrap:wrap;gap:12px;margin-top:14px;font-size:12px;font-weight:700;color:#6B6693}
-.legend span{display:flex;align-items:center;gap:5px}
-
-.actions{display:flex;gap:10px;justify-content:flex-end}
+.resultats { display: flex; flex-direction: column; gap: var(--sp-6); }
+.is-hidden { display: none !important; }
 </style>
 </head>
-<body>
+<body class="page">
 
-<div id="hdr">
-  <div class="hdr-l">
-    <div class="hdr-ic">🔍</div>
-    <div>
-      <div class="hdr-eye">Grammaire</div>
-      <div class="hdr-h1">Analyse grammaticale</div>
-    </div>
+<header class="band">
+  <div class="container">
+    <div class="band__eyebrow">Francisation · Grammaire</div>
+    <h1>Analyse grammaticale</h1>
+    <p class="band__lead">Choisissez une phrase de la banque ou écrivez la vôtre. L'outil découpe la phrase en groupes de mots, puis donne la fonction et la nature de chaque groupe.</p>
   </div>
-</div>
+</header>
 
-<div id="main">
-  <div id="card">
-    <div class="intro">Choisis une phrase de la banque ou écris la tienne. L'outil découpe la phrase en groupes de mots et indique la <strong>fonction</strong> (sujet, verbe, complément...) et la <strong>nature</strong> (groupe nominal, groupe verbal...) de chacun.</div>
+<div class="container">
+  <div class="stack" style="padding: var(--sp-6) 0 var(--sp-12)">
 
-    <div class="mode-tabs">
-      <div class="mode-tab active" id="tabBank">Banque de phrases</div>
-      <div class="mode-tab" id="tabFree">Mes propres phrases</div>
-    </div>
-
-    <div id="bankView">
-      <div class="bank-list" id="bankList"></div>
-    </div>
-
-    <div id="freeView" class="hidden">
-      <div class="free-box">
-        <textarea id="freeInput" placeholder="Écris une ou plusieurs phrases en français..."></textarea>
-        <div class="free-hint">Tu peux écrire plusieurs phrases à la suite.</div>
-        <div class="actions">
-          <button class="btn btn-primary" id="analyzeFreeBtn">Analyser</button>
-        </div>
+    <div>
+      <span class="field-label" style="display:block">Choisissez une façon de travailler</span>
+      <div class="modes" role="group" aria-label="Façon de travailler">
+        <button type="button" class="mode" id="modeBanque" aria-pressed="true">Banque de phrases</button>
+        <button type="button" class="mode" id="modeLibre" aria-pressed="false">Mes propres phrases</button>
       </div>
     </div>
 
-    <div id="statusMsg">Analyse en cours…</div>
-    <div id="errorMsg"></div>
+    <div class="card card--flush" id="vueBanque">
+      <div id="banqueListe"></div>
+    </div>
 
-    <div id="results" class="hidden"></div>
+    <div class="card libre is-hidden" id="vueLibre">
+      <div>
+        <label class="field-label" for="texteLibre">Votre phrase</label>
+        <textarea id="texteLibre" class="field field--area" rows="3"
+          placeholder="Écrivez une ou plusieurs phrases en français."></textarea>
+        <p class="field-hint">Vous pouvez écrire plusieurs phrases à la suite.</p>
+      </div>
+      <div class="libre__actions">
+        <button type="button" class="btn btn--pri" id="analyserBtn">Analyser</button>
+        <button type="button" class="btn btn--ghost" id="effacerBtn">Effacer</button>
+      </div>
+    </div>
+
+    <p class="fb is-hidden" id="etat" aria-live="polite">Analyse en cours…</p>
+
+    <div class="fb-box fb-box--no is-hidden" id="erreur" aria-live="polite">
+      <div class="fb-box__title">Erreur</div>
+      <p class="fb-box__item" id="erreurTxt"></p>
+    </div>
+
+    <div class="resultats is-hidden" id="resultats"></div>
+
   </div>
 </div>
 
 <script>
-const FN_COLORS = {
-  "Sujet": "#3B82F6",
-  "Verbe": "#EF4444",
-  "Complément direct": "#22C55E",
-  "Complément indirect": "#F59E0B",
-  "Complément de phrase": "#A855F7",
-  "Attribut du sujet": "#14B8A6",
-  "Autre": "#94A3B8",
+/* ── Fonctions grammaticales : une couleur de repérage par fonction ──
+   La couleur ne dit jamais rien seule : le nom de la fonction est
+   toujours écrit à côté, sous le groupe et dans le tableau. */
+const FONCTIONS = {
+  "Sujet":                  "var(--acier-600)",
+  "Verbe":                  "var(--violet-600)",
+  "Complément direct":      "var(--green-600)",
+  "Complément indirect":    "var(--ambre-700)",
+  "Complément de phrase":   "var(--teal-700)",
+  "Attribut du sujet":      "var(--ink-900)",
+  "Autre":                  "var(--ink-400)",
 };
+const couleurDe = fn => FONCTIONS[fn] || FONCTIONS["Autre"];
 
-const BANK = [
-  { tag: "Santé", texte: "Le médecin m'a prescrit un antibiotique pour l'infection." },
-  { tag: "Consommation", texte: "Les fraises fraîches sont en rabais cette semaine au marché." },
-  { tag: "Logement", texte: "Nous avons signé le bail hier avec le propriétaire." },
-  { tag: "Monde du travail", texte: "Mon superviseur m'a expliqué mon horaire ce matin." },
-  { tag: "Culture / histoire", texte: "Jacques Cartier a exploré le fleuve Saint-Laurent en 1535." },
-  { tag: "Vie citoyenne", texte: "Vous devez faire une correspondance à la station Berri-UQAM." },
-  { tag: "Grammaire libre", texte: "Elle est devenue infirmière après ses études au Québec." },
+/* ── Banque de phrases : une couleur de section par thème ─────────── */
+const BANQUE = [
+  { tag: "Santé",              couleur: "var(--acier-600)",  texte: "Le médecin m'a prescrit un antibiotique pour l'infection." },
+  { tag: "Consommation",       couleur: "var(--violet-600)", texte: "Les fraises fraîches sont en rabais cette semaine au marché." },
+  { tag: "Logement",           couleur: "var(--ambre-700)",  texte: "Nous avons signé le bail hier avec le propriétaire." },
+  { tag: "Monde du travail",   couleur: "var(--teal-700)",   texte: "Mon superviseur m'a expliqué mon horaire ce matin." },
+  { tag: "Culture et histoire",couleur: "var(--foret-700)",  texte: "Jacques Cartier a exploré le fleuve Saint-Laurent en 1535." },
+  { tag: "Vie citoyenne",      couleur: "var(--green-600)",  texte: "Vous devez faire une correspondance à la station Berri-UQAM." },
+  { tag: "Grammaire",          couleur: "var(--acier-600)",  texte: "Elle est devenue infirmière après ses études au Québec." },
 ];
 
-const params = new URLSearchParams(location.search);
-const studentCode = params.get('code') || '';
-let analysisCount = 0;
+const codeEleve = new URLSearchParams(location.search).get('code') || '';
+let nbAnalyses = 0;
 
-const tabBank = document.getElementById('tabBank');
-const tabFree = document.getElementById('tabFree');
-const bankView = document.getElementById('bankView');
-const freeView = document.getElementById('freeView');
-const statusMsg = document.getElementById('statusMsg');
-const errorMsg = document.getElementById('errorMsg');
-const resultsEl = document.getElementById('results');
+const modeBanque = document.getElementById('modeBanque');
+const modeLibre  = document.getElementById('modeLibre');
+const vueBanque  = document.getElementById('vueBanque');
+const vueLibre   = document.getElementById('vueLibre');
+const etat       = document.getElementById('etat');
+const erreur     = document.getElementById('erreur');
+const erreurTxt  = document.getElementById('erreurTxt');
+const resultats  = document.getElementById('resultats');
 
-function renderBank() {
-  const list = document.getElementById('bankList');
-  list.innerHTML = '';
-  BANK.forEach(item => {
-    const div = document.createElement('div');
-    div.className = 'bank-item';
-    div.innerHTML = '<div class="bank-item-tag">' + escHtml(item.tag) + '</div>' +
-      '<div class="bank-item-txt">' + escHtml(item.texte) + '</div>';
-    div.addEventListener('click', () => analyze(item.texte));
-    list.appendChild(div);
+/* ── Banque ──────────────────────────────────────────────────────── */
+function afficherBanque() {
+  const liste = document.getElementById('banqueListe');
+  liste.innerHTML = '';
+  BANQUE.forEach(item => {
+    const btn = document.createElement('button');
+    btn.type = 'button';
+    btn.className = 'banque__item';
+    btn.style.setProperty('--sec', item.couleur);
+    btn.innerHTML = '<span class="banque__tag">' + esc(item.tag) + '</span>' +
+                    '<span class="banque__txt">' + esc(item.texte) + '</span>';
+    btn.addEventListener('click', () => analyser(item.texte));
+    liste.appendChild(btn);
   });
 }
 
-tabBank.addEventListener('click', () => {
-  tabBank.classList.add('active');
-  tabFree.classList.remove('active');
-  bankView.classList.remove('hidden');
-  freeView.classList.add('hidden');
+/* ── Mode ────────────────────────────────────────────────────────── */
+function choisirMode(libre) {
+  modeBanque.setAttribute('aria-pressed', String(!libre));
+  modeLibre.setAttribute('aria-pressed', String(libre));
+  vueBanque.classList.toggle('is-hidden', libre);
+  vueLibre.classList.toggle('is-hidden', !libre);
+}
+modeBanque.addEventListener('click', () => choisirMode(false));
+modeLibre.addEventListener('click', () => choisirMode(true));
+
+document.getElementById('analyserBtn').addEventListener('click', () => {
+  const texte = document.getElementById('texteLibre').value.trim();
+  if (!texte) { montrerErreur("Écrivez d'abord une phrase, puis appuyez sur « Analyser »."); return; }
+  analyser(texte);
+});
+document.getElementById('effacerBtn').addEventListener('click', () => {
+  document.getElementById('texteLibre').value = '';
+  cacherErreur();
+  resultats.classList.add('is-hidden');
 });
 
-tabFree.addEventListener('click', () => {
-  tabFree.classList.add('active');
-  tabBank.classList.remove('active');
-  freeView.classList.remove('hidden');
-  bankView.classList.add('hidden');
-});
-
-document.getElementById('analyzeFreeBtn').addEventListener('click', () => {
-  const text = document.getElementById('freeInput').value.trim();
-  if (!text) return;
-  analyze(text);
-});
-
-async function analyze(text) {
-  hideError();
-  resultsEl.classList.add('hidden');
-  statusMsg.classList.add('on');
+/* ── Analyse ─────────────────────────────────────────────────────── */
+async function analyser(texte) {
+  cacherErreur();
+  resultats.classList.add('is-hidden');
+  etat.classList.remove('is-hidden');
 
   try {
     const res = await fetch('/api/analyze-grammar', {
       method: 'POST',
-      headers: {'Content-Type': 'application/json'},
-      body: JSON.stringify({ code: studentCode, text }),
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ code: codeEleve, text: texte }),
     });
     const data = await res.json();
-    statusMsg.classList.remove('on');
+    etat.classList.add('is-hidden');
 
-    if (!res.ok) {
-      showError(data.error || 'Une erreur est survenue. Réessaie.');
-      return;
-    }
+    if (!res.ok) { montrerErreur(data.error || "L'analyse n'a pas fonctionné. Essayez de nouveau."); return; }
 
-    renderResults(data.phrases || []);
-    analysisCount++;
-    lmsTrack('exercise_completed', { zonesDone: analysisCount, score: null });
+    afficherResultats(data.phrases || []);
+    nbAnalyses++;
+    lmsTrack('exercise_completed', { zonesDone: nbAnalyses, score: null });
   } catch (err) {
-    statusMsg.classList.remove('on');
-    showError('Impossible de contacter le serveur. Réessaie dans quelques instants.');
+    etat.classList.add('is-hidden');
+    montrerErreur("Le serveur ne répond pas. Essayez de nouveau dans quelques instants.");
   }
 }
 
-function renderResults(phrases) {
-  resultsEl.innerHTML = '';
+function afficherResultats(phrases) {
+  resultats.innerHTML = '';
   if (!phrases.length) {
-    showError('Aucune analyse n\'a pu être générée pour ce texte.');
+    montrerErreur("Aucune analyse n'a pu être produite pour ce texte.");
     return;
   }
 
-  phrases.forEach(p => {
-    const block = document.createElement('div');
-    block.className = 'phrase-block';
+  phrases.forEach((p, i) => {
+    const groupes = p.groupes || [];
 
-    const annotated = document.createElement('div');
-    annotated.className = 'phrase-annotated';
-    (p.groupes || []).forEach((g, i) => {
-      const span = document.createElement('span');
-      span.className = 'grp';
-      span.style.borderBottomColor = FN_COLORS[g.fonction] || FN_COLORS['Autre'];
-      span.textContent = g.mots + (i < p.groupes.length - 1 ? ' ' : '');
-      annotated.appendChild(span);
+    const carte = document.createElement('section');
+    carte.className = 'card card--flush';
+
+    /* En-tête : sur-titre + phrase annotée */
+    const tete = document.createElement('div');
+    tete.className = 'card__row';
+    const surtitre = document.createElement('div');
+    surtitre.className = 'field-label';
+    surtitre.textContent = phrases.length > 1 ? 'Phrase ' + (i + 1) : 'La phrase, groupe par groupe';
+    tete.appendChild(surtitre);
+
+    const annotee = document.createElement('div');
+    annotee.className = 'annotee';
+    groupes.forEach(g => {
+      const grp = document.createElement('div');
+      grp.className = 'grp';
+      grp.style.setProperty('--sec', couleurDe(g.fonction));
+      grp.innerHTML = '<span class="grp__mots">' + esc(g.mots) + '</span>' +
+                      '<span class="grp__fn">' + esc(g.fonction) + '</span>';
+      annotee.appendChild(grp);
     });
-    block.appendChild(annotated);
+    tete.appendChild(annotee);
+    carte.appendChild(tete);
 
-    const table = document.createElement('table');
-    table.className = 'analyse-table';
-    table.innerHTML = '<thead><tr><th>Groupe de mots</th><th>Fonction</th><th>Nature</th></tr></thead>';
-    const tbody = document.createElement('tbody');
-    (p.groupes || []).forEach(g => {
+    /* Tableau */
+    const zoneTab = document.createElement('div');
+    zoneTab.className = 'card__row';
+    const tab = document.createElement('table');
+    tab.className = 'tab';
+    tab.innerHTML = '<thead><tr><th scope="col">Groupe de mots</th><th scope="col">Fonction</th><th scope="col">Nature</th></tr></thead>';
+    const corps = document.createElement('tbody');
+    groupes.forEach(g => {
       const tr = document.createElement('tr');
-      const color = FN_COLORS[g.fonction] || FN_COLORS['Autre'];
-      tr.innerHTML = '<td>' + escHtml(g.mots) + '</td>' +
-        '<td><span class="fn-dot" style="background:' + color + '"></span>' + escHtml(g.fonction) + '</td>' +
-        '<td>' + escHtml(g.nature) + '</td>';
-      tbody.appendChild(tr);
+      tr.innerHTML =
+        '<td data-label="Groupe de mots">' + esc(g.mots) + '</td>' +
+        '<td data-label="Fonction"><span class="tab__fn" style="--sec:' + couleurDe(g.fonction) + '">' +
+          '<span class="pastille" aria-hidden="true"></span>' + esc(g.fonction) + '</span></td>' +
+        '<td data-label="Nature">' + esc(g.nature) + '</td>';
+      corps.appendChild(tr);
     });
-    table.appendChild(tbody);
-    block.appendChild(table);
+    tab.appendChild(corps);
+    zoneTab.appendChild(tab);
+    carte.appendChild(zoneTab);
 
-    const legend = document.createElement('div');
-    legend.className = 'legend';
-    Object.keys(FN_COLORS).forEach(fn => {
-      legend.innerHTML += '<span><span class="fn-dot" style="background:' + FN_COLORS[fn] + '"></span>' + fn + '</span>';
-    });
-    block.appendChild(legend);
-
-    resultsEl.appendChild(block);
+    resultats.appendChild(carte);
   });
 
-  resultsEl.classList.remove('hidden');
+  /* Légende, une seule fois, sous les phrases */
+  const legende = document.createElement('div');
+  legende.className = 'card card--tinted';
+  legende.innerHTML = '<div class="field-label" style="display:block">Les fonctions</div>';
+  const ligne = document.createElement('div');
+  ligne.className = 'legende';
+  Object.keys(FONCTIONS).forEach(fn => {
+    const el = document.createElement('span');
+    el.className = 'legende__item';
+    el.innerHTML = '<span class="pastille" aria-hidden="true" style="background:' + FONCTIONS[fn] + '"></span>' + esc(fn);
+    ligne.appendChild(el);
+  });
+  legende.appendChild(ligne);
+  resultats.appendChild(legende);
+
+  resultats.classList.remove('is-hidden');
 }
 
-function showError(msg) {
-  errorMsg.textContent = msg;
-  errorMsg.classList.add('on');
+/* ── Rétroaction ─────────────────────────────────────────────────── */
+function montrerErreur(msg) {
+  erreurTxt.textContent = msg;
+  erreur.classList.remove('is-hidden');
 }
-function hideError() {
-  errorMsg.classList.remove('on');
-}
+function cacherErreur() { erreur.classList.add('is-hidden'); }
 
-function escHtml(s) {
+function esc(s) {
   return (s || '').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');
 }
 
 function lmsTrack(event, data) {
-  try { window.parent.postMessage(Object.assign({lms: true, event: event}, data||{}), '*'); } catch(e) {}
+  try { window.parent.postMessage(Object.assign({ lms: true, event: event }, data || {}), '*'); } catch (e) {}
 }
 
-renderBank();
+afficherBanque();
 </script>
 </body>
 </html>
