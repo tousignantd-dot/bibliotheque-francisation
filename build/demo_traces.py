@@ -46,13 +46,15 @@ FICHIERS = [
 # Chaque profil illustre une colonne du tableau de l'enseignant : la classe
 # n'est utile en présentation que si on y voit un élève en avance, un élève
 # qui s'accroche, et un élève qui n'a pas commencé.
+# Les élèves se donnent un pseudo, jamais leur vrai nom : la démonstration
+# montre la convention en même temps qu'elle montre le portail.
 ELEVES = [
-    {"id": 101, "code": "YULI42", "prenom": "Yulia",   "nom": "Yulia K."},
-    {"id": 102, "code": "MOHA47", "prenom": "Mohamed", "nom": "Mohamed D."},
-    {"id": 103, "code": "WENZ83", "prenom": "Wen",     "nom": "Wen Z."},
-    {"id": 104, "code": "ROSA55", "prenom": "Rosa",    "nom": "Rosa M."},
-    {"id": 105, "code": "AHMA23", "prenom": "Ahmad",   "nom": "Ahmad H."},
-    {"id": 106, "code": "CLAU94", "prenom": "Claudia", "nom": "Claudia N."},
+    {"id": 101, "code": "ETOI42", "prenom": "Étoile", "nom": "Étoile"},
+    {"id": 102, "code": "CACT47", "prenom": "Cactus", "nom": "Cactus"},
+    {"id": 103, "code": "BAMB83", "prenom": "Bambou", "nom": "Bambou"},
+    {"id": 104, "code": "TULI55", "prenom": "Tulipe", "nom": "Tulipe"},
+    {"id": 105, "code": "ERAB23", "prenom": "Érable", "nom": "Érable"},
+    {"id": 106, "code": "COLI94", "prenom": "Colibri", "nom": "Colibri"},
 ]
 IDS_DEMO = {e["id"] for e in ELEVES}
 
@@ -124,7 +126,7 @@ ECRITS = [
         "texte": "Bonjour,\nJe vous écris pour demander un rendez-vous. J'ai mal au genou "
                  "depuis trois jours et la douleur ne passe pas. Je suis disponible mercredi "
                  "après-midi et jeudi toute la journée. Est-ce que vous avez une place cette "
-                 "semaine ?\nMerci beaucoup,\nYulia",
+                 "semaine ?\nMerci beaucoup,\nÉtoile",
         "feedback": "Correction : Bonjour, Je vous écris pour demander un rendez-vous. J'ai mal au "
                     "genou depuis trois jours et la douleur ne passe pas. Je suis disponible mercredi "
                     "après-midi et jeudi toute la journée. Auriez-vous une place cette semaine ? "
@@ -143,10 +145,10 @@ ECRITS = [
         "eleve": 102, "jours": 1, "heure": "11:34:22",
         "texte": "Bonjour,\nMa fille a de la fièvre depuis hier soir et elle tousse. Je voudrais "
                  "un rendez-vous aujourd'hui si c'est possible. Je suis libre après quinze heures.\n"
-                 "Merci,\nMohamed",
+                 "Merci,\nCactus",
         "feedback": "Phrase correcte : Bonjour, Ma fille a de la fièvre depuis hier soir et elle tousse. "
                     "Je voudrais un rendez-vous aujourd'hui si c'est possible. Je suis libre après "
-                    "quinze heures. Merci, Mohamed",
+                    "quinze heures. Merci, Cactus",
     },
 ]
 

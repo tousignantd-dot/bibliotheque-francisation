@@ -37,6 +37,37 @@ Bibliothèque d'activités pédagogiques FLS (Niveau 4) pour enseignant en franc
   déposées avec leur fichier audio. L'atelier est une pratique libre : le
   suivi ne bloque jamais le dialogue (l'appel échoue en silence).
 
+## Reprise de la séance dans les modules
+
+L'élève commençait un module, s'arrêtait, revenait par sa fiche — et repartait
+de la première section, tout effacé. Rien n'était gardé : l'état vit dans des
+variables JavaScript (`S`, `TR`, `curSec`) et `/api/student/progress` ne reçoit
+que des compteurs (`zonesDone`, `firstTry`…), **jamais les réponses**. On ne
+pouvait donc pas restaurer depuis le serveur.
+
+- **La mémoire est locale**, une clé par élève et par module :
+  `localStorage['<MODULE_SLUG>:<code>:etat']`. La clé se construit à partir de
+  `MODULE_SLUG`, jamais d'un nom écrit en dur — sans quoi le module 9, généré
+  depuis `module-consultation`, hériterait de l'avancement du gabarit.
+- **Un seul point d'accroche pour sauver** : tout ce qui change l'état passe
+  par `render()`, où `reSauver()` est appelé (écriture regroupée à 300 ms). Les
+  champs de texte, qui n'y passent pas, se sauvent sur leur `input`, et
+  `pagehide` écrit sans attendre.
+- Sont gardés : la section courante, `S.pl`, `S.vfSel`, `S.fb`, les paires de
+  vocabulaire, `TR.attempts`/`TR.correct`, et la valeur de tous les `.winput`
+  et `textarea` — donc aussi le courriel de « Je me lance ».
+- **La reprise n'est jamais une prison** : la bannière « Tu reprends où tu
+  étais » porte un bouton « Recommencer le module » qui efface et recharge.
+- **La greffe passe par `build/greffe_reprise.py`**, jamais à la main :
+  cinq régions marquées `REPRISE-*:début/fin`, dégreffe avant regreffe,
+  `--retirer` pour dégreffer. Elle est réversible **à l'octet près** : chaque
+  région occupe des lignes entières, et le dégreffage ne mange pas le saut de
+  ligne qui la précède (sinon une ligne vide s'ajoute à chaque passage).
+  `python3 build/greffe_reprise.py` traite les onze modules ; il saute
+  `module-probleme`, **généré**, dont le `build.py` appelle la même `greffe()`.
+- La bannière n'a **aucune couleur en dur** : son filet reprend `--hdr-accent`,
+  donc elle prend la couleur du module.
+
 ## Dépôt des productions (oral et écrit)
 
 **Rien ne part sans un geste de l'élève.** `/api/correct-french` et

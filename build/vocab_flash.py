@@ -182,6 +182,20 @@ body { --sec: var(--green-600); --sec-soft: var(--green-100); }
 .vf-retour { min-height: 26px; text-align: center; margin: var(--sp-5) 0; }
 .vf-jeu__a { display: flex; justify-content: center; flex-wrap: wrap; gap: var(--sp-3); }
 
+/* ── Aide-mémoire des mots ──────────────────────────────────────────
+   Le même appui que dans Cartes mémoire, transposé : ici la question est
+   déjà à choix, la liste ne désigne donc rien — elle rappelle seulement
+   les mots du thème pendant qu'on répond. Des pastilles, pas des
+   boutons : on ne clique pas dedans. */
+.vf-aide-mots { max-width: 560px; margin: var(--sp-5) auto 0; }
+.vf-aide-mots__t { font-size: var(--fs-meta); font-weight: var(--fw-black);
+  letter-spacing: .06em; text-transform: uppercase; color: var(--text-muted);
+  text-align: center; margin-bottom: var(--sp-2); }
+.vf-aide-mots__l { display: flex; flex-wrap: wrap; justify-content: center; gap: var(--sp-2); }
+.vf-aide-mots__m { padding: 6px var(--sp-4); border-radius: var(--r-pill);
+  border: 1px solid var(--border); background: var(--surface-sunken);
+  font-size: var(--fs-ui-sm); font-weight: var(--fw-semi); color: var(--text-body); }
+
 /* ── Onglet « Maîtrise » ────────────────────────────────────────────── */
 .vf-bilan { display: grid; grid-template-columns: repeat(4, 1fr); gap: var(--sp-3); margin-bottom: var(--sp-6); }
 .vf-tuile { background: var(--surface-sunken); border: 1px solid var(--border);
@@ -371,7 +385,13 @@ body { --sec: var(--green-600); --sec-soft: var(--green-100); }
       <p class="vf-retour" id="retourPratique" aria-live="polite"></p>
       <div class="vf-jeu__a">
         <button type="button" class="btn btn--audio" id="ecouterPratique">@@SPEAKER@@Écouter</button>
+        <button type="button" class="btn btn--ghost" id="motsBtnPratique"
+                aria-expanded="false" aria-controls="motsBoxPratique">Voir les mots</button>
         <button type="button" class="btn btn--pri" id="suivantPratique">Question suivante</button>
+      </div>
+      <div class="vf-aide-mots" id="motsBoxPratique" hidden>
+        <p class="vf-aide-mots__t">Les mots du thème</p>
+        <div class="vf-aide-mots__l" id="motsLPratique"></div>
       </div>
     </div>
   </section>
@@ -392,7 +412,13 @@ body { --sec: var(--green-600); --sec-soft: var(--green-100); }
       <div class="vf-reponses" id="reponsesDefi"></div>
       <p class="vf-retour" id="retourDefi" aria-live="polite"></p>
       <div class="vf-jeu__a">
+        <button type="button" class="btn btn--ghost" id="motsBtnDefi"
+                aria-expanded="false" aria-controls="motsBoxDefi">Voir les mots</button>
         <button type="button" class="btn btn--pri" id="lancerDefi">Commencer le défi</button>
+      </div>
+      <div class="vf-aide-mots" id="motsBoxDefi" hidden>
+        <p class="vf-aide-mots__t">Les mots du thème</p>
+        <div class="vf-aide-mots__l" id="motsLDefi"></div>
       </div>
     </div>
   </section>
@@ -631,6 +657,43 @@ $$('.step').forEach(b => b.onclick = () => {
 function marquerBonne(zone, terme){
   $$(zone + ' .vf-rep').forEach(x => { if (x.textContent === terme) x.classList.add('is-answer'); });
 }
+
+/* ── Aide-mémoire des mots ──────────────────────────────────────────
+   Un même appui posé sous les deux jeux. Les mots sont rangés par ordre
+   alphabétique : l'ordre de la liste ne doit rien dire de la question.
+   L'état suit l'élève d'un onglet et d'un thème à l'autre — celui qui a
+   besoin de la liste en a besoin partout. */
+const CLE_MOTS = 'francisationFlashAideMots';
+let motsOuverts = localStorage.getItem(CLE_MOTS) === '1';
+
+function brancherAideMots(suffixe){
+  const btn = $('#motsBtn' + suffixe), box = $('#motsBox' + suffixe), zone = $('#motsL' + suffixe);
+  [...new Set(items.map(x => x.term))]
+    .sort((a, b) => a.localeCompare(b, 'fr'))
+    .forEach(term => {
+      const m = document.createElement('span');
+      m.className = 'vf-aide-mots__m';
+      m.textContent = term;
+      zone.appendChild(m);
+    });
+  btn.onclick = () => {
+    motsOuverts = !motsOuverts;
+    localStorage.setItem(CLE_MOTS, motsOuverts ? '1' : '0');
+    majAideMots();
+  };
+  return { btn, box };
+}
+
+const aidesMots = ['Pratique', 'Defi'].map(brancherAideMots);
+
+function majAideMots(){
+  aidesMots.forEach(({ btn, box }) => {
+    btn.setAttribute('aria-expanded', motsOuverts ? 'true' : 'false');
+    btn.textContent = motsOuverts ? 'Cacher les mots' : 'Voir les mots';
+    box.hidden = !motsOuverts;
+  });
+}
+majAideMots();
 
 /* ── Je m'entraîne ──────────────────────────────────────────────────── */
 let ciblePratique = null, repondu = false;

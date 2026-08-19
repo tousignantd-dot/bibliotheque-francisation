@@ -338,6 +338,17 @@ try:
 except ValueError as e:
     sys.exit('!! greffe du verrou des sections impossible : %s' % e)
 
+# ── 6 quater. Reprise de la séance ───────────────────────────────────
+# Même règle encore : la mémoire locale est celle de build/greffe_reprise.py.
+# Sa clé se construit à partir de MODULE_SLUG, déjà remplacé plus haut — le
+# module 9 garde donc son propre avancement, sans confusion avec le gabarit.
+from greffe_reprise import greffe as greffe_reprise   # noqa: E402
+
+try:
+    html = greffe_reprise(html, 'module-probleme')
+except ValueError as e:
+    sys.exit('!! greffe de la reprise de séance impossible : %s' % e)
+
 # ── 7. Filet de sécurité ─────────────────────────────────────────────
 leftovers = []
 for bad in ['module-consultation', 'Yannick', 'Rosalie', 'Beaulieu', 'tendinite',

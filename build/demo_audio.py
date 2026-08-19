@@ -31,20 +31,20 @@ MODELE = "eleven_multilingual_v2"
 # quelqu'un qui cherche ses mots.
 PRISES = [
     {
-        "code": "YULI42", "voix": "XB0fDUnXU5powFXDhCwa",  # Charlotte
+        "code": "ETOI42", "voix": "XB0fDUnXU5powFXDhCwa",  # Charlotte
         "reglages": {"stability": 0.35, "similarity_boost": 0.75, "style": 0.25},
         "texte": "Bonjour... j'ai mal au genou depuis trois jours. "
                  "La douleur est forte quand je monte les escaliers, "
                  "et le genou est enflé.",
     },
     {
-        "code": "AHMA23", "voix": "N2lVS1w4EtoT3dr4eOWO",  # Callum
+        "code": "ERAB23", "voix": "N2lVS1w4EtoT3dr4eOWO",  # Callum
         "reglages": {"stability": 0.3, "similarity_boost": 0.75, "style": 0.3},
         "texte": "Euh... j'ai mal à la gorge depuis lundi, et je tousse beaucoup. "
                  "J'ai pas de fièvre, mais... ça empire le soir.",
     },
     {
-        "code": "MOHA47", "voix": "JBFqnCBsd6RMkjVDRZzb",  # George
+        "code": "CACT47", "voix": "JBFqnCBsd6RMkjVDRZzb",  # George
         "reglages": {"stability": 0.35, "similarity_boost": 0.75, "style": 0.25},
         "texte": "Bonjour, je voudrais prendre un rendez-vous. "
                  "Ma fille... elle a de la fièvre depuis hier soir.",

@@ -27,6 +27,14 @@ body{display:flex;flex-direction:column;min-height:100vh}
 #btn-reset{background:var(--surface-card);color:var(--text-strong);border:1px solid var(--border);border-radius:999px;padding:10px 18px;font-family:'Nunito',sans-serif;font-size:15px;font-weight:800;cursor:pointer;white-space:nowrap;transition:background .15s}
 #btn-reset:hover{background:var(--paper-100)}
 #btn-reset:hover{background:rgba(255,255,255,.28)}
+/* REPRISE-CSS:début — greffé par build/greffe_reprise.py */
+#re-banniere{display:flex;align-items:center;gap:12px;flex-wrap:wrap;margin:14px auto 0;max-width:1180px;padding:12px 18px;background:var(--surface-card,#fff);border:2px solid var(--border,#D9DCE0);border-left:6px solid var(--hdr-accent,var(--accent-ink,#0A8F5B));border-radius:14px;font-family:'Nunito',sans-serif;font-size:15px;font-weight:800;color:var(--text-strong,#17181A)}
+#re-banniere .re-txt{flex:1;min-width:200px}
+#re-banniere .re-quand{display:block;font-weight:700;font-size:13px;color:var(--text-soft,#6E7175)}
+#re-banniere button{font-family:'Nunito',sans-serif;font-size:14px;font-weight:800;border-radius:999px;cursor:pointer;padding:9px 16px;background:var(--surface-card,#fff);color:var(--text-strong,#17181A);border:1px solid var(--border,#D9DCE0)}
+#re-banniere button:hover{background:var(--paper-100,#F2F4F5)}
+#re-banniere #re-fermer{padding:9px 13px}
+/* REPRISE-CSS:fin */
 
 #tabs{position:sticky;top:0;z-index:5;background:rgba(247,247,245,.94);backdrop-filter:blur(8px);display:flex;gap:8px;padding:12px 32px;border-bottom:1px solid var(--border);flex-wrap:wrap}
 .tab{min-height:var(--tap-min);border:1px solid var(--border);border-radius:999px;padding:0 16px;font-family:'Nunito',sans-serif;font-size:14px;font-weight:800;cursor:pointer;background:var(--surface-card);color:var(--text-body);transition:background .15s,border-color .15s;display:inline-flex;align-items:center;gap:8px}
@@ -212,6 +220,15 @@ body{display:flex;flex-direction:column;min-height:100vh}
 #fc-reveal-btn:hover{background:rgba(255,255,255,.38)}
 #fc-reveal-btn.hidden{display:none}
 #fc-btns{display:flex;gap:14px;margin-top:6px;flex-wrap:wrap;justify-content:center}
+/* ── La liste des mots de la série ──────────────────────────────────
+   Dépliée, elle reste dépliée d'une carte à l'autre : l'élève qui a
+   besoin de la liste en a besoin partout. Le mot affiché est marqué
+   par un cadre plein, jamais par la seule couleur. */
+#fc-liste{width:100%;max-height:34vh;overflow-y:auto;display:flex;flex-wrap:wrap;gap:8px;justify-content:center;padding-top:14px;border-top:1px solid rgba(255,255,255,.20)}
+#fc-liste.hidden{display:none}
+.fc-mot{background:rgba(255,255,255,.10);border:1px solid rgba(255,255,255,.30);color:#fff;border-radius:999px;padding:6px 14px;font-family:'Nunito',sans-serif;font-size:13px;font-weight:800;cursor:pointer}
+.fc-mot:hover{background:rgba(255,255,255,.24)}
+.fc-mot[aria-current="true"]{background:rgba(255,255,255,.92);border-color:rgba(255,255,255,.92);color:#1a2733}
 .fc-btn{background:rgba(255,255,255,.15);border:1px solid rgba(255,255,255,.38);color:#fff;border-radius:8px;padding:6px 14px;font-family:'Nunito',sans-serif;font-size:13px;font-weight:800;cursor:pointer}
 /* ── Traduction dans la langue de l'élève ───────────────────────────
    Le français ne bouge pas : la traduction s'ajoute sous un filet,
@@ -389,6 +406,16 @@ body{
   padding-bottom:12px; margin-bottom:16px;
   border-bottom:1px solid var(--ws-line);
 }
+/* L'en-tête de l'exercice était le premier élément de la COLONNE des énoncés :
+   le banc de réponses, colonne voisine, démarrait donc à la hauteur du bandeau
+   de titre, très au-dessus des zones de dépôt. L'en-tête occupe maintenant la
+   rangée entière (flex-basis:100%), et le banc commence vis-à-vis de la
+   première zone à remplir. Le -4px annule le row-gap de 20px de la rangée
+   pour retrouver exactement l'espacement d'origine (16px sous le bandeau). */
+.exo-row > .c-hdr{flex:0 0 calc(100% + 49px); margin-bottom:-4px}
+/* 49px = les débords gauche (26) et droit (23) de `.c-hdr:first-child` :
+   sans eux dans la base flex, le bandeau resterait 49px trop court et ne
+   rejoindrait pas les bords de la carte. */
 .qcard,.blanks-p,.word-chip{
   background:var(--ws-card); border:1px solid var(--ws-line); border-left:1px solid var(--ws-line);
   border-radius:18px; box-shadow:0 1px 2px rgba(20,20,20,.04); color:var(--ws-ink); font-weight:500;
@@ -769,8 +796,10 @@ textarea:focus-visible,.winput:focus-visible{outline:none;border-color:var(--ws-
     <div id="fc-btns">
       <button class="fc-btn" id="fc-prev">← Précédente</button>
       <button class="fc-btn" id="fc-next">Suivante →</button>
+      <button class="fc-btn" id="fc-liste-btn" aria-expanded="false" aria-controls="fc-liste">Voir les mots</button>
       <button class="fc-btn" id="fc-close">✕ Fermer</button>
     </div>
+    <div id="fc-liste" class="hidden"></div>
   </div>
 </div>
 
@@ -1878,9 +1907,9 @@ function buildStatic(){
       host.appendChild(card);
       return;
     }
-    h+='<div style="display:flex;gap:20px;align-items:flex-start;flex-wrap:wrap">';
-    h+='<div class="exo-main" style="flex:1;min-width:300px">';
+    h+='<div class="exo-row" style="display:flex;gap:20px;align-items:flex-start;flex-wrap:wrap">';
     h+='<div class="c-hdr">'+exoNumBadge(ex.num)+'<span class="tag">'+esc(ex.num)+'</span><span class="ctit">'+esc(ex.tit)+'</span><span class="csub">'+esc(ex.sub)+'</span></div>';
+    h+='<div class="exo-main" style="flex:1;min-width:300px">';
     if(ex.type==='blanks') h+='<p class="blanks-p" id="mount-'+ex.id+'"></p>';
     else h+='<div class="rows" id="mount-'+ex.id+'"></div>';
     h+='</div>';
@@ -2880,6 +2909,18 @@ function releverReponses(exId){
   return [];
 }
 
+/* Les deux journaux de l'enseignante nomment le même exercice : l'analyse
+   d'erreurs y met son titre, les signaux d'aide y mettaient l'identifiant
+   court. Deux noms pour une seule chose, et une colonne « Exercice » qu'on ne
+   peut pas lire sans le module ouvert à côté. Le titre part des deux côtés.
+   Repli sur l'identifiant : un exercice sans titre vaut mieux qu'un vide. */
+function titreExo(exId){
+  const ex = (typeof EXOS !== 'undefined') && EXOS.find(e => e.id === exId);
+  if(ex && ex.tit) return ex.tit;
+  if(typeof PLUS !== 'undefined' && PLUS[exId] && PLUS[exId].tit) return PLUS[exId].tit;
+  return exId;
+}
+
 function evaluerAide(exId, nbErreurs){
   if(!exId) return;
   // L'analyse d'erreurs vaut pour tout exercice reconstituable, avec ou sans
@@ -2913,14 +2954,14 @@ function proposerAide(exId){
     + '</div>'
     + '<div class="aide-out" id="aideout-' + exId + '" aria-live="polite"></div>';
   card.appendChild(el);
-  lmsTrack('aide_proposee', {exercice: exId, erreurs: n, analysable: analysable});
+  lmsTrack('aide_proposee', {exercice: titreExo(exId), erreurs: n, analysable: analysable});
 }
 
 function accepterAide(exId){
   AIDE.etat[exId] = 'ouverte';
   const el = document.querySelector('#exo-'+exId+' .aide');
   if(el) el.remove();
-  lmsTrack('aide_acceptee', {exercice: exId, erreurs: AIDE.err[exId]});
+  lmsTrack('aide_acceptee', {exercice: titreExo(exId), erreurs: AIDE.err[exId]});
   plusOpen(exId, 'labo');
 }
 
@@ -2975,7 +3016,7 @@ async function analyserErreurs(exId){
       + (d.explication ? '<div class="ao-k">Pourquoi</div><div class="ao-v">'+esc(d.explication)+'</div>' : '')
       + (d.conseil ? '<div class="ao-k">La prochaine fois</div><div class="ao-v ao-conseil">'+esc(d.conseil)+'</div>' : '');
     AIDE.etat[exId] = 'analysee';
-    lmsTrack('aide_analysee', {exercice: exId, erreurs: AIDE.err[exId]});
+    lmsTrack('aide_analysee', {exercice: titreExo(exId), erreurs: AIDE.err[exId]});
   }catch(e){
     out.className = 'aide-out on no';
     out.textContent = 'Impossible de contacter le serveur. Réessaie plus tard.';
@@ -2987,7 +3028,7 @@ function refuserAide(exId){
   AIDE.etat[exId] = 'refusee';
   const el = document.querySelector('#exo-'+exId+' .aide');
   if(el) el.remove();
-  lmsTrack('aide_refusee', {exercice: exId, erreurs: AIDE.err[exId]});
+  lmsTrack('aide_refusee', {exercice: titreExo(exId), erreurs: AIDE.err[exId]});
 }
 
 let plLastFocus=null;
@@ -3007,7 +3048,7 @@ function plusOpen(exId, cible){
   P.blocs.forEach((b,bi)=>{ if(b.t==='labo') plLabo(exId,bi,null,null); });
   plLastFocus=document.activeElement;
   document.getElementById('plus-close').focus();
-  lmsTrack('plus_open', {savoir: exId, cible: cible || ''});
+  lmsTrack('plus_open', {savoir: titreExo(exId), cible: cible || ''});
   if(cible){
     const i = P.blocs.findIndex(b => b.t === cible);
     if(i >= 0){
@@ -3165,6 +3206,9 @@ function render(){
     }
   });
   updateChip();
+  /* REPRISE-APPEL:début — greffé par build/greffe_reprise.py */
+  reSauver();   // toute modification de l'état passe par render()
+  /* REPRISE-APPEL:fin */
 }
 function updateChip(){
   const n=Object.keys(TR.correct).length;
@@ -3189,7 +3233,35 @@ function fcShow(){
   document.getElementById('fc-ex').classList.add('hidden');
   document.getElementById('fc-reveal-btn').classList.remove('hidden');
   fcTradRaz();
+  fcListeMaj();
 }
+// La liste des mots : bâtie une fois, marquée à chaque carte.
+const FC_CLE_LISTE='francisationCartesListeMots';
+let fcListeOuverte=localStorage.getItem(FC_CLE_LISTE)==='1';
+function fcListeBatir(){
+  const z=document.getElementById('fc-liste');
+  if(!z||z.childElementCount) return;
+  FC_CARDS.forEach((c,i)=>{
+    const b=document.createElement('button');
+    b.type='button'; b.className='fc-mot'; b.textContent=c.word;
+    b.addEventListener('click',()=>{fcIdx=i;fcShow()});
+    z.appendChild(b);
+  });
+}
+function fcListeMaj(){
+  const b=document.getElementById('fc-liste-btn'), z=document.getElementById('fc-liste');
+  if(!b||!z) return;
+  fcListeBatir();
+  b.setAttribute('aria-expanded',fcListeOuverte?'true':'false');
+  b.textContent=fcListeOuverte?'Cacher les mots':'Voir les mots';
+  z.classList.toggle('hidden',!fcListeOuverte);
+  [...z.children].forEach((m,i)=>m.setAttribute('aria-current',i===fcIdx?'true':'false'));
+}
+document.getElementById('fc-liste-btn').addEventListener('click',()=>{
+  fcListeOuverte=!fcListeOuverte;
+  localStorage.setItem(FC_CLE_LISTE,fcListeOuverte?'1':'0');
+  fcListeMaj();
+});
 // Chaque carte repart sans traduction : celle de la carte précédente,
 // laissée à l'écran, se lirait comme la traduction du nouveau mot.
 function fcTradRaz(){
@@ -3243,9 +3315,168 @@ if(window.ResizeObserver){
   if(c) ro.observe(c);
 }
 
+// ── REPRISE:début — greffé par build/greffe_reprise.py ──
+// L'élève ouvre le module, s'arrête, retourne à sa fiche, puis revient ici.
+// Sans mémoire locale il repartait de la première section avec tout effacé :
+// l'état vit dans des variables JavaScript, et le serveur ne garde que des
+// compteurs (zonesDone, firstTry…), jamais les réponses elles-mêmes. On garde
+// donc l'avancement dans le navigateur, une clé par élève et par module.
+const RE_CLE = MODULE_SLUG + ':' + (studentCode || 'anonyme') + ':etat';
+const RE_VERSION = 1;
+let reMinuteur = null;
+let reGel = false;   // vrai pendant la restauration : on n'écrase pas la sauvegarde
+
+// Les réponses écrites vivent dans le DOM, pas dans S : on les relève à part.
+function reChamps(){
+  const out = {};
+  document.querySelectorAll('.winput, textarea').forEach((el, i) => {
+    if (el.value) out[el.id || ('champ' + i)] = el.value;
+  });
+  return out;
+}
+
+function reEtat(){
+  return {
+    v: RE_VERSION, quand: Date.now(), curSec: curSec,
+    pl: S.pl, vfSel: S.vfSel, fb: S.fb,
+    vocabPairs: S.vocabPairs, vocabOrder: S.vocabOrder,
+    attempts: TR.attempts, correct: TR.correct,
+    champs: reChamps(),
+  };
+}
+
+function reEcrire(){
+  try { localStorage.setItem(RE_CLE, JSON.stringify(reEtat())); } catch(e) {}
+}
+
+// render() est appelé à chaque clic : on regroupe les écritures.
+function reSauver(){
+  if (reGel) return;
+  clearTimeout(reMinuteur);
+  reMinuteur = setTimeout(reEcrire, 300);
+}
+
+function reEffacer(){
+  clearTimeout(reMinuteur);
+  try { localStorage.removeItem(RE_CLE); } catch(e) {}
+}
+
+function reLire(){
+  try {
+    const d = JSON.parse(localStorage.getItem(RE_CLE) || 'null');
+    return (d && d.v === RE_VERSION) ? d : null;
+  } catch(e) { return null; }
+}
+
+function reprendre(){
+  const d = reLire();
+  if (!d) return null;
+  reGel = true;
+  S.pl = d.pl || {};
+  S.vfSel = d.vfSel || {};
+  S.fb = d.fb || {};
+  if (d.vocabPairs) S.vocabPairs = d.vocabPairs;
+  if (d.vocabOrder) S.vocabOrder = d.vocabOrder;
+  TR.attempts = d.attempts || {};
+  TR.correct = d.correct || {};
+  // Une section disparue depuis la dernière visite ne doit pas bloquer
+  // l'ouverture ; la greffe des sections peut encore déplacer l'élève si
+  // celle-ci a été refermée par l'enseignant.
+  if (d.curSec && SECTIONS.some(s => s.id === d.curSec)) curSec = d.curSec;
+  const champs = d.champs || {};
+  document.querySelectorAll('.winput, textarea').forEach((el, i) => {
+    const val = champs[el.id || ('champ' + i)];
+    if (val != null) el.value = val;
+  });
+  if (typeof peCount === 'function') peCount();
+  reGel = false;
+  return d;
+}
+
+// Une réponse écrite déjà validée reste verte — et verrouillée quand la bonne
+// réponse était connue d'avance, comme au moment de la validation.
+function reMarquerEcrits(){
+  EXOS.filter(e => e.type === 'write').forEach(ex => {
+    ex.items.forEach((it, i) => {
+      if (!TR.correct['w_' + ex.id + '_' + i]) return;
+      const inp = document.getElementById('wi_' + ex.id + '_' + i);
+      if (!inp) return;
+      inp.classList.add('good');
+      if (it.accept) inp.disabled = true;
+    });
+  });
+}
+
+// Le pointage des vrai/faux est recalculé : on ne réaffiche le total qu'aux
+// exercices que l'élève avait réellement corrigés (S.fb rempli partout).
+function reMarquerVf(){
+  EXOS.filter(e => e.type === 'vf').forEach(ex => {
+    const repondu = ex.rows.filter(r => S.vfSel[r.id]).length;
+    if (!repondu) return;
+    const corrige = ex.rows.every(r => S.fb[r.id]);
+    updateVfScore(ex, corrige);
+    if (!corrige) return;
+    const bons = ex.rows.filter(r => S.vfSel[r.id] === r.ok).length;
+    const sum = document.getElementById('vfsum-' + ex.id);
+    if (sum) {
+      sum.className = 'vf-summary ok';
+      sum.textContent = bons + ' / ' + ex.rows.length + ' bonnes réponses';
+    }
+  });
+}
+
+function reQuand(ms){
+  if (Date.now() - ms < 3600e3) return 'il y a moins d’une heure';
+  const j = new Date(ms);
+  const h = String(j.getHours()).padStart(2, '0') + ' h ' + String(j.getMinutes()).padStart(2, '0');
+  if (j.toDateString() === new Date().toDateString()) return 'plus tôt aujourd’hui, à ' + h;
+  const mois = ['janvier','février','mars','avril','mai','juin','juillet',
+                'août','septembre','octobre','novembre','décembre'];
+  return 'le ' + j.getDate() + ' ' + mois[j.getMonth()] + ', à ' + h;
+}
+
+// La reprise ne doit jamais être une prison : le bouton remet tout à zéro.
+function reBanniere(d){
+  const chrome = document.getElementById('chrome');
+  if (!chrome || !chrome.parentNode) return;
+  const el = document.createElement('div');
+  el.id = 're-banniere';
+  el.setAttribute('role', 'status');
+  const n = Object.keys(TR.correct).length;
+  el.innerHTML = '<span class="re-txt">↩︎ Tu reprends où tu étais : '
+    + (n ? n + ' réponse' + (n > 1 ? 's' : '') + ' déjà juste' + (n > 1 ? 's' : '')
+         : 'ton travail est retrouvé')
+    + '.<span class="re-quand">Dernier passage ' + reQuand(d.quand) + '.</span></span>'
+    + '<button type="button" id="re-recommencer">↺ Recommencer le module</button>'
+    + '<button type="button" id="re-fermer" aria-label="Masquer ce message">✕</button>';
+  chrome.parentNode.insertBefore(el, chrome.nextSibling);
+  document.getElementById('re-recommencer').addEventListener('click', () => {
+    if (!confirm('Recommencer le module depuis le début ? Tes réponses seront effacées.')) return;
+    reGel = true;   // le rechargement ne doit pas réécrire ce qu'on vient d'effacer
+    reEffacer();
+    location.reload();
+  });
+  document.getElementById('re-fermer').addEventListener('click', () => el.remove());
+}
+
+// Les champs de texte ne passent pas par render() : ils se sauvent seuls.
+document.addEventListener('input', e => {
+  const t = e.target;
+  if (t && (t.tagName === 'TEXTAREA' || t.classList.contains('winput'))) reSauver();
+});
+// Onglet fermé : on écrit tout de suite au lieu d'attendre la temporisation.
+addEventListener('pagehide', () => { if (!reGel) reEcrire(); });
+
+// ── REPRISE:fin ──
 // ── GO ────────────────────────────────────────────────────────────────
 buildStatic();
+/* REPRISE-GO:début — greffé par build/greffe_reprise.py */
+const reReprise = reprendre();
+/* REPRISE-GO:fin */
 render();
+/* REPRISE-MARQUES:début — greffé par build/greffe_reprise.py */
+if (reReprise) { reMarquerEcrits(); reMarquerVf(); reBanniere(reReprise); }
+/* REPRISE-MARQUES:fin */
 measureChrome();
 lmsTrack('file_opened');
 </script>

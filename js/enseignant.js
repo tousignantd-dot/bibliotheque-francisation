@@ -833,7 +833,7 @@
   }
 
   /** Ajouter des élèves, c'est générer leurs codes : le serveur en fabrique un
-      par élève et le renvoie. Un élève créé sans nom porte « Élève N » — on
+      par élève et le renvoie. Un élève créé sans pseudo porte « Élève N » — on
       prépare ainsi des codes d'avance, qu'on nomme à l'arrivée. */
   async function ajouterEleves(label, nombre) {
     const res = await envoyer('/api/admin/students',
@@ -1436,7 +1436,7 @@
     }
 
     if (bouton.dataset.renommer) {
-      const nom = prompt('Nom de l’élève', eleve.label || '');
+      const nom = prompt('Pseudo de l’élève', eleve.label || '');
       if (nom === null) return;
       const propre = nom.trim();
       if (!propre || propre === eleve.label) return;
@@ -1444,7 +1444,7 @@
         await envoyer(`/api/admin/students/${id}`, { label: propre }, 'PATCH');
         eleve.label = propre;
         rendreEleves();
-        dire('Nom enregistré. Le code d’accès, lui, ne change pas.');
+        dire('Pseudo enregistré. Le code d’accès, lui, ne change pas.');
       } catch (err) {
         dire(`Modification impossible : ${err.message}`);
       }

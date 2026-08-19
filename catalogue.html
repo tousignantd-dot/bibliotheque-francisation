@@ -48,7 +48,10 @@
     /* ---- GRILLE ---- */
     .page {
       max-width: 1180px; margin: 0 auto; padding: var(--sp-8) var(--sp-8) var(--sp-12);
-      display: grid; grid-template-columns: 400px 1fr; gap: var(--sp-6); align-items: start;
+      /* Le formulaire de dépôt n'a que des champs courts : 60 px de moins ne
+         lui coûtent rien, et c'est autant de gagné pour les titres de la
+         liste, qui étaient coupés. */
+      display: grid; grid-template-columns: 340px 1fr; gap: var(--sp-6); align-items: start;
     }
 
     /* ---- PANNEAUX ---- */
@@ -186,9 +189,14 @@
     }
 
     .activity-info { flex: 1; min-width: 0; }
+    /* Un titre trop long passe à la ligne plutôt que de se faire couper :
+       « Module 3 — Prendre rendez-vous et aller à la… » ne dit pas de quelle
+       activité il s'agit. Deux lignes au plus, pour que la rangée reste une
+       rangée. */
     .activity-name-display {
       font-size: var(--fs-ui); font-weight: var(--fw-bold); color: var(--text-strong);
-      white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
+      display: -webkit-box; -webkit-box-orient: vertical; -webkit-line-clamp: 2;
+      overflow: hidden; line-height: 1.35;
     }
     /* Le niveau est une donnée de structure, pas un accent de repérage : il
        reste en encre sur creux, pour ne pas rivaliser avec les compétences. */

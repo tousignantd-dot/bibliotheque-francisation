@@ -100,6 +100,23 @@ body { --sec: var(--green-600); --sec-soft: var(--green-100); }
 .vf-actions .btn { flex: 1; }
 .vf-fb { min-height: 22px; }
 
+/* Banc de mots : l'élève qui n'arrive pas à écrire le mot le reconnaît
+   dans la liste. Ce sont les mots de la session, rangés par ordre
+   alphabétique — l'ordre des cartes ne doit rien trahir. */
+.vf-choix { width: 100%; max-width: 420px; }
+.vf-choix__t { font-size: var(--fs-meta); font-weight: var(--fw-black);
+  letter-spacing: .06em; text-transform: uppercase; color: var(--text-muted);
+  margin-bottom: var(--sp-2); }
+.vf-choix__l { display: flex; flex-wrap: wrap; justify-content: center; gap: var(--sp-2); }
+.vf-choix__b { min-height: var(--tap-min); padding: 0 var(--sp-4);
+  border: 1px solid var(--border); border-radius: var(--r-pill);
+  background: var(--surface-card); color: var(--text-strong);
+  font-family: var(--font-sans); font-size: var(--fs-ui-sm);
+  font-weight: var(--fw-semi); cursor: pointer;
+  transition: background var(--dur) var(--ease), border-color var(--dur) var(--ease); }
+.vf-choix__b:hover { background: var(--paper-100); border-color: var(--border-strong, var(--border)); }
+.vf-choix__b:disabled { opacity: .5; cursor: default; }
+
 /* Traduction : un encadré creusé, sous un filet, comme le rail « Mes outils ».
    L'étiquette est en CSS pour que le script puisse écrire en textContent. */
 .vf-trad { width: 100%; max-width: 420px; text-align: left;
@@ -207,6 +224,12 @@ body { --sec: var(--green-600); --sec-soft: var(--green-100); }
             <div class="vf-actions">
               <button class="btn btn--ghost" id="giveUpBtn">Je ne sais pas</button>
               <button class="btn btn--pri" id="checkGuessBtn">Vérifier</button>
+            </div>
+            <button class="btn btn--ghost btn--sm" id="listeMotsBtn"
+                    aria-expanded="false" aria-controls="listeMotsBox">Choisir dans la liste</button>
+            <div class="vf-choix hidden" id="listeMotsBox">
+              <p class="vf-choix__t">Les mots de la session</p>
+              <div class="vf-choix__l" id="listeMotsL"></div>
             </div>
           </div>
 
@@ -366,6 +389,7 @@ async function startSession(activityId, titre){
       return;
     }
     cards = data.cards;
+    buildListeMots();
     idx = 0;
     counts = { encore: 0, difficile: 0, facile: 0 };
     streak = 0;
@@ -425,12 +449,53 @@ function renderCard(){
   document.getElementById('guessZone').classList.remove('hidden');
   document.getElementById('checkGuessBtn').disabled = false;
   document.getElementById('giveUpBtn').disabled = false;
+  document.getElementById('listeMotsBtn').disabled = false;
+  document.querySelectorAll('#listeMotsL .vf-choix__b').forEach(b => b.disabled = false);
+  majListeMots();
 
   cachedTranslation = null;
   revealed = false;
   buildProgbar();
   guessInput.focus();
 }
+
+/* ── Banc de mots ───────────────────────────────────────────────────
+   Le bouton reste ouvert d'une carte à l'autre : l'élève qui a besoin de
+   l'appui en a besoin partout, il ne va pas le rouvrir vingt fois. */
+let listeMotsOuverte = localStorage.getItem('vocabListeMots') === '1';
+
+function buildListeMots(){
+  const zone = document.getElementById('listeMotsL');
+  zone.innerHTML = '';
+  const mots = [...new Set(cards.map(c => c.mot))]
+    .sort((a, b) => a.localeCompare(b, 'fr'));
+  mots.forEach(mot => {
+    const b = document.createElement('button');
+    b.type = 'button';
+    b.className = 'vf-choix__b';
+    b.textContent = mot;
+    b.addEventListener('click', () => {
+      if (revealed) return;
+      document.getElementById('guessInput').value = mot;
+      document.getElementById('checkGuessBtn').click();
+    });
+    zone.appendChild(b);
+  });
+}
+
+function majListeMots(){
+  const btn = document.getElementById('listeMotsBtn');
+  const box = document.getElementById('listeMotsBox');
+  btn.setAttribute('aria-expanded', listeMotsOuverte ? 'true' : 'false');
+  btn.textContent = listeMotsOuverte ? 'Cacher la liste' : 'Choisir dans la liste';
+  box.classList.toggle('hidden', !listeMotsOuverte);
+}
+
+document.getElementById('listeMotsBtn').addEventListener('click', () => {
+  listeMotsOuverte = !listeMotsOuverte;
+  localStorage.setItem('vocabListeMots', listeMotsOuverte ? '1' : '0');
+  majListeMots();
+});
 
 function normalizeGuess(s){
   return (s || '')
@@ -448,6 +513,8 @@ function revealCard(){
   document.getElementById('guessInput').disabled = true;
   document.getElementById('checkGuessBtn').disabled = true;
   document.getElementById('giveUpBtn').disabled = true;
+  document.getElementById('listeMotsBtn').disabled = true;
+  document.querySelectorAll('#listeMotsL .vf-choix__b').forEach(b => b.disabled = true);
 }
 
 /* Le compteur de série est un repère, pas une récompense : un mot, un

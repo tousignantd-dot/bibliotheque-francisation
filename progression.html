@@ -57,6 +57,11 @@
                       color: var(--text-strong); margin: 0; }
     .pg-sec-tete p { font-size: var(--fs-body-sm); color: var(--text-muted); margin: 0; }
 
+    /* Le tableau de bord n'est pas un texte suivi : ses rangées ont huit
+       colonnes, et la largeur de lecture du portail les étranglait au point
+       d'imposer une barre de défilement sous chaque tableau. */
+    body { --content-max: 1180px; }
+
     /* — Tuiles de bilan — */
     .pg-tuiles { display: grid; grid-template-columns: repeat(auto-fit, minmax(210px, 1fr)); gap: var(--sp-4); }
     .pg-tuile { background: var(--surface-card); border: 1px solid var(--border);
@@ -70,27 +75,30 @@
 
     /* — Barre de progression — */
     .pg-bar { height: 6px; border-radius: 3px; background: var(--paper-200);
-              overflow: hidden; margin: var(--sp-2) 0; max-width: 260px; }
+              overflow: hidden; margin: var(--sp-2) 0; max-width: 190px; }
     .pg-bar b { display: block; height: 100%; background: var(--accent); }
 
     /* — Tableaux — */
     /* Un tableau large ne pousse jamais la page : il défile dans son cadre. */
     .pg-scroll { overflow-x: auto; }
-    .pg-table { width: 100%; min-width: 720px; border-collapse: collapse; background: var(--surface-card);
+    /* Caractères et marges resserrés : tout doit tenir dans le cadre. Le
+       défilement horizontal reste là pour les petits écrans, mais sur un
+       poste d'enseignante on ne le voit plus. */
+    .pg-table { width: 100%; min-width: 640px; border-collapse: collapse; background: var(--surface-card);
                 border: 1px solid var(--border); border-radius: 10px; overflow: hidden; }
-    .pg-table th { text-align: left; font-size: var(--fs-label); font-weight: var(--fw-bold);
-                   letter-spacing: .08em; text-transform: uppercase; color: var(--text-muted);
-                   padding: var(--sp-3) var(--sp-4); border-bottom: 1px solid var(--border);
+    .pg-table th { text-align: left; font-size: 11.5px; font-weight: var(--fw-bold);
+                   letter-spacing: .05em; text-transform: uppercase; color: var(--text-muted);
+                   padding: 10px var(--sp-3); border-bottom: 1px solid var(--border);
                    background: var(--surface-sunken); white-space: nowrap; }
-    .pg-table td { padding: var(--sp-3) var(--sp-4); border-bottom: 1px solid var(--paper-200);
-                   font-size: var(--fs-ui); color: var(--text-body); vertical-align: middle; }
+    .pg-table td { padding: 10px var(--sp-3); border-bottom: 1px solid var(--paper-200);
+                   font-size: 13.5px; color: var(--text-body); vertical-align: middle; }
     .pg-table tr:last-child td { border-bottom: none; }
     .pg-table td b { color: var(--text-strong); font-weight: var(--fw-bold); }
     .pg-num { text-align: center; font-weight: var(--fw-black); white-space: nowrap; }
     /* Le nom et l'avancement se lisent d'un coup d'œil : on leur laisse de la
        place plutôt que de les casser sur trois lignes. */
-    .pg-table td:first-child { min-width: 170px; }
-    .pg-table td:nth-child(2) { min-width: 190px; }
+    .pg-table td:first-child { min-width: 132px; }
+    .pg-table td:nth-child(2) { min-width: 150px; }
     .pg-ok   { color: var(--ok-ink); }
     .pg-warn { color: var(--warn-ink); }
     .pg-no   { color: var(--no-ink); }
@@ -98,17 +106,23 @@
     .pg-code { font-family: ui-monospace, SFMono-Regular, Menlo, monospace;
                font-weight: var(--fw-black); letter-spacing: .08em;
                background: var(--accent-soft); color: var(--accent-ink);
-               border-radius: 6px; padding: 2px 8px; font-size: var(--fs-ui-sm); }
+               border-radius: 6px; padding: 1px 6px; font-size: 11.5px; }
 
     /* — Chevron d'une rangée : les envois de l'élève, dépliés sur place — */
     .pg-qui { display: flex; align-items: center; gap: var(--sp-3); }
-    .pg-chevron { width: 44px; height: 44px; flex: none; display: flex;
+    /* Le nom mène au dossier de l'élève : le bouton du bout de la rangée
+       disparaît sous le défilement horizontal, le nom, jamais. */
+    .pg-nom { font-weight: 700; color: inherit; text-decoration: none; }
+    .pg-nom:hover, .pg-nom:focus-visible { text-decoration: underline; }
+    .pg-nom-fleche { margin-left: 4px; opacity: .45; font-weight: 400; }
+    .pg-nom:hover .pg-nom-fleche { opacity: 1; }
+    .pg-chevron { width: 34px; height: 34px; flex: none; display: flex;
                   align-items: center; justify-content: center;
                   background: none; border: 1px solid var(--border); border-radius: var(--r-sm);
                   font-size: 15px; font-weight: var(--fw-black); color: var(--ink-500); cursor: pointer; }
     .pg-chevron:hover { border-color: var(--accent); color: var(--text-accent); }
     /* Sans envoi, pas de chevron — mais la colonne garde son alignement. */
-    .pg-chevron-vide { width: 44px; flex: none; }
+    .pg-chevron-vide { width: 34px; flex: none; }
     .pg-detail > td { background: var(--surface-sunken); padding: var(--sp-5) var(--sp-4); }
     .pg-detail-tete { font-size: var(--fs-label); font-weight: var(--fw-bold); letter-spacing: .1em;
                       text-transform: uppercase; color: var(--text-accent); margin-bottom: var(--sp-4); }
@@ -116,7 +130,7 @@
 
     /* — Pastilles d'état : couleur + glyphe + mot — */
     .pg-etat { display: inline-flex; align-items: center; gap: 6px; border-radius: 999px;
-               padding: 3px 10px; font-size: var(--fs-ui-sm); font-weight: var(--fw-bold); white-space: nowrap; }
+               padding: 2px 8px; font-size: 12px; font-weight: var(--fw-bold); white-space: nowrap; }
     .pg-etat--fait  { background: var(--ok-bg); color: var(--ok-ink); }
     .pg-etat--cours { background: var(--warn-bg); color: var(--warn-ink); }
     .pg-etat--rien  { background: var(--surface-sunken); color: var(--text-muted); }
@@ -144,6 +158,18 @@
       body { background: var(--white); }
       .pg-tete { background: var(--white); }
       .pg-sec { break-inside: avoid; }
+      /* À l'écran la page fait 1180 px ; sur du papier lettre, cette largeur
+         serait rognée et les dernières colonnes tomberaient hors de la feuille.
+         Sur papier : colonne au format, en-têtes sur deux lignes plutôt que
+         d'imposer leur largeur, caractères et marges réduits, et pas de bouton
+         « Dossier » — sur une feuille, il ne mène nulle part. */
+      body { --content-max: 100%; }
+      .pg-scroll { overflow-x: visible; }
+      .pg-table { min-width: 0; }
+      .pg-table th { white-space: normal; font-size: 10px; padding: 6px 8px; }
+      .pg-table td { font-size: 11px; padding: 6px 8px; }
+      .pg-table td:first-child, .pg-table td:nth-child(2) { min-width: 0; }
+      .pg-table .btn { display: none; }
     }
   </style>
 </head>
@@ -561,7 +587,8 @@
             <div class="pg-qui">
               ${chevron}
               <div>
-                <b>${esc(nomEleve(f.el))}</b>
+                <a class="pg-nom" href="fiche-eleve.html?code=${encodeURIComponent(f.el.code)}"
+                   title="Ouvrir le dossier ${esc(deNom(nomEleve(f.el)))}">${esc(nomEleve(f.el))}<span class="pg-nom-fleche" aria-hidden="true">›</span></a>
                 <div style="margin-top:4px"><span class="pg-code">${esc(f.el.code)}</span></div>
               </div>
             </div>
