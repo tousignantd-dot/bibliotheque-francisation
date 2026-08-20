@@ -410,6 +410,58 @@ que du texte.
   Interdits explicites : banque d'images en ligne, URL distante, émoji ou SVG
   bricolé en remplacement d'une illustration demandée. La vidéo, elle, est
   payante : le préambule interdit à l'agent d’en lancer une seule.
+- **La fiche élève est un PDF format lettre, pas un markdown.** Le CLI écrit
+  `fiche-eleve.html` (mise en page d'impression) puis appelle
+  `~/Claude/programme/outils/fiche_pdf.py`, qui rend le PDF par Chrome sans
+  interface — le seul moteur d'impression du poste, déjà utilisé par
+  `captures.py`. Le format ne se règle **pas** en ligne de commande : Chrome
+  imprime ce que dit `@page { size: letter }`, et le script relit le
+  `/MediaBox` du PDF pour refuser tout ce qui ne fait pas 612 × 792 pt. Sans
+  cette relecture, une page A4 filerait jusqu'à l'imprimante de l'école. Les
+  deux fichiers sont gardés : le HTML est la mise en page, le PDF le livrable.
+  `ROLES` reconnaît encore `activite.md` pour les commandes d'avant ce
+  changement, et `ROLES_PRIORITE` fait gagner le PDF quand les deux existent —
+  l'ordre alphabétique donnait sinon la fiche au markdown.
+- **La mise en page des imprimés ne s'invente plus : elle se recopie.** Les dix
+  documents `assets/documents/module-*-fiches-eleves.html` portaient la même
+  feuille de style, identique octet pour octet, mais elle n'existait comme
+  fichier nulle part ; la forge, elle, n'était renvoyée au système de design que
+  « pour une page interactive » et réécrivait donc un habillage neuf à chaque
+  commande — Helvetica contre Nunito, classes inventées, en-tête différent. La
+  feuille est extraite en `assets/design-system/fiche-imprimee.css` et le
+  préambule impose d'en **recopier le contenu** dans le `<style>` des trois
+  imprimés. Recopier plutôt que lier : la fiche naît dans le dossier de la
+  commande puis déménage vers `assets/interactive/`, où un `<link>` relatif
+  casserait, et le HTML doit rester ouvrable par double-clic. Le prix de ce
+  choix est connu : corriger le gabarit ne rattrape pas les fiches déjà
+  produites. La feuille porte sa propre règle `@page{ size: 8.5in 11in }`, qui
+  donne les 612 × 792 pt attendus — d'où la consigne de ne pas en ajouter une
+  seconde. Elle demande aussi Nunito par le `<link>` Google Fonts des fiches du
+  catalogue ; sans lui la conversion retombe sur Trebuchet, et ça se voit.
+  `fiche_pdf.py` cherche cinq marques de la feuille (`--paper`, `--rule`,
+  `.eyebrow`, `.nomline`, `.chapeau`) et avertit sur la sortie d'erreur quand
+  elles manquent, **sans bloquer** : le format est une affaire d'imprimante et se
+  refuse, l'habillage est une affaire de cohérence et se signale. `gabarit_desaccorde()`
+  garde le contrôle honnête — si la feuille commune perdait ces marques, le script
+  dirait que son propre contrôle ne veut plus rien dire au lieu de crier au
+  manquement sur des documents conformes.
+- **Le vérificateur trouve seul le prompt d'une commande.** `verifie_activite.py`
+  ne cherchait que `<base>-prompt.md` ; la forge écrit `prompt.md`. Les commandes
+  de la forge sortaient donc en « doute » avec un code 0 — un appel distrait
+  ressemblait à une validation alors que quatre contrôles ne tournaient pas
+  (durée, savoirs, faits hors documentation, exigences). Il essaie maintenant
+  les deux noms, dans cet ordre, et le message de doute les nomme tous les deux.
+- **Un mot isolé qui existe dans une autre langue en prend l'accent.** Sur la
+  commande météo, « un abri » et « la radio » sont sortis à l'espagnol : `abrí`
+  et `radio` sont des mots espagnols, et un mot seul ne donne au modèle aucun
+  contexte de langue. Les six autres mots de la même liste, absents de
+  l'espagnol, étaient justes — ce n'était donc pas une affaire d'accents, qui
+  étaient bien présents dans les textes. Le seul levier reste l'orthographe
+  (`eleven_multilingual_v2` n'accepte ni `<phoneme>` ni `language_code`) : on
+  réécrit le mot d'une façon qui n'existe pas dans l'autre langue mais se
+  prononce pareil — « un abris », « la radiot ». Même technique que
+  `TEXT_OVERRIDES` dans `generer_audio_module_urgence_sons.py`. À vérifier
+  systématiquement sur les listes de mots isolés, jamais sur les phrases.
 - **Trois verrous, tous nécessaires** : session enseignante (`X-Prof-Token`),
   boucle locale (`_forge_locale()` refuse toute adresse autre que 127.0.0.1) et
   `forge.disponible()`, qui se tait dès que `RAILWAY_ENVIRONMENT` est présent

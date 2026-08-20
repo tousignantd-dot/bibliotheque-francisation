@@ -1,0 +1,362 @@
+<!DOCTYPE html>
+<html lang="fr"><head><meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Qu'est-ce qu'une tornade ? — fiche élève</title>
+<link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800;900&display=swap" rel="stylesheet">
+<style>
+/* ═══════════════════════════════════════════════════════════════════════════
+   FICHE IMPRIMÉE — LA FEUILLE COMMUNE
+   ───────────────────────────────────────────────────────────────────────────
+   La mise en page des trois imprimés : fiche élève, corrigé, notes de
+   passation. C'est la feuille que portent déjà, identique octet pour octet,
+   les dix documents `assets/documents/module-*-fiches-eleves.html`. Elle
+   n'existait jusqu'ici que recopiée dans chacun d'eux ; elle est extraite ici
+   pour que la forge puisse la reprendre au lieu d'en réinventer une à chaque
+   commande.
+
+   ON LA RECOPIE, ON N'Y LIE PAS. Une fiche produite par la forge naît dans le
+   dossier de sa commande puis part vers `assets/interactive/` : un `<link>`
+   relatif casserait au déménagement, et le HTML ne s'ouvrirait plus par
+   double-clic. Le contenu de ce fichier se colle donc tel quel dans le
+   `<style>` du document, avant les quelques règles propres à l'activité.
+
+   Corollaire à connaître : corriger ce fichier ne rattrape pas les fiches déjà
+   produites. Une retouche du gabarit demande de repasser sur les documents qui
+   la portent.
+
+   Le `@page` en bas donne 612 × 792 points, ce que `programme/outils/fiche_pdf.py`
+   exige et vérifie après conversion. Ne le retirez pas et n'en ajoutez pas un
+   second.
+
+   Les classes disponibles : `.hdr` / `.eyebrow` / `.nomline` (en-tête et lignes
+   Nom-Date), `.chapeau`, `.bloc` (ne se casse jamais entre deux pages), `.card`,
+   `.lbl`, `h2.t`, `.consigne`, `ol.obj` et `ol.ex`, `.billet`, `footer`, et
+   `table.som` pour le sommaire d'un document qui réunit plusieurs fiches.
+   ═══════════════════════════════════════════════════════════════════════════ */
+
+/* ═══════════════════════════════════════════════════════════════
+   FICHE ÉLÈVE · IMPRESSION LETTRE, NOIR ET BLANC
+   ───────────────────────────────────────────────────────────────
+   Aucune couleur : ces fiches sont photocopiées en noir et blanc.
+   Toute la hiérarchie passe par la GRAISSE, les FILETS et les MOTS.
+   C'est d'ailleurs la règle du système de design poussée à son
+   terme : « jamais d'information portée par la couleur seule ».
+
+   Les gris viennent des neutres du système (ink-900 à ink-400),
+   qui sont déjà quasi neutres. Les filets sont volontairement plus
+   sombres qu'à l'écran : une photocopieuse efface tout ce qui est
+   plus clair que 15 % de noir.
+   ═══════════════════════════════════════════════════════════════ */
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+:root{
+  --paper:#FFFFFF;
+  --tint:#F0F0EE;          /* aplat le plus clair encore visible en photocopie */
+  --line:#C9C9C6;          /* filet fin */
+  --rule:#17181A;          /* filet structurant */
+  --ink:#17181A;           /* titres */
+  --body:#2B2E30;          /* texte courant, un cran plus sombre qu'à l'écran */
+  --soft:#4B4F52;          /* texte secondaire */
+  --muted:#5E6165;         /* sur-titres, méta */
+}
+html{background:#BBBBBB}
+body{
+  font-family:'Nunito','Trebuchet MS',sans-serif;
+  font-size:11.5pt; line-height:1.5; color:var(--body);
+  background:var(--paper);
+  width:215.9mm;                    /* 8,5 po — format lettre */
+  margin:0 auto; padding:14mm 15mm 16mm;
+  -webkit-print-color-adjust:exact; print-color-adjust:exact;
+}
+h1,h2,h3{color:var(--ink); line-height:1.2; letter-spacing:-0.01em}
+
+/* ── En-tête ── */
+.hdr{border-bottom:2.5px solid var(--rule); padding-bottom:8px; margin-bottom:14px;
+     display:flex; align-items:flex-end; gap:14px}
+.hdr-l{flex:1}
+.eyebrow{font-size:9.5pt; font-weight:800; text-transform:uppercase;
+         letter-spacing:.12em; color:var(--muted)}
+.hdr h1{font-size:22pt; font-weight:900; margin-top:3px}
+.hdr-r{flex-shrink:0; display:flex; gap:10px; align-items:flex-end;
+       font-size:9.5pt; font-weight:800; text-transform:uppercase;
+       letter-spacing:.08em; color:var(--muted); padding-bottom:2px}
+.nomline{display:inline-block; border-bottom:1.5px solid var(--rule);
+         height:6mm; vertical-align:bottom; margin-left:5px}
+.nomline--nom{width:48mm} .nomline--date{width:26mm}
+.chapeau{font-size:12pt; font-weight:600; color:var(--soft); margin-bottom:16px}
+
+/* ── Blocs ── */
+.bloc{break-inside:avoid; page-break-inside:avoid; margin-bottom:13px}
+.card{border:1px solid var(--line); border-radius:12px; padding:11px 14px 12px;
+      background:var(--paper)}
+.lbl{font-size:9.5pt; font-weight:800; text-transform:uppercase;
+     letter-spacing:.12em; color:var(--muted); margin-bottom:5px}
+h2.t{font-size:15pt; font-weight:900; margin-bottom:7px}
+.consigne{font-size:11pt; font-weight:600; color:var(--soft); margin-bottom:8px}
+
+/* ── Objectifs et exercices : pastille en cerne, jamais en aplat ── */
+ol.obj,ol.ex{list-style:none}
+ol.obj{counter-reset:o} ol.ex{counter-reset:e}
+ol.obj li,ol.ex li{position:relative; padding-left:9mm; font-weight:600}
+ol.obj li{counter-increment:o; margin-bottom:6px}
+ol.ex li{counter-increment:e; margin-bottom:9px; break-inside:avoid}
+ol.obj li::before,ol.ex li::before{
+  position:absolute; left:0; top:0; width:6mm; height:6mm; border-radius:50%;
+  border:1.5px solid var(--rule); color:var(--ink);
+  font-size:9.5pt; font-weight:800;
+  display:flex; align-items:center; justify-content:center}
+ol.obj li::before{content:counter(o)}
+ol.ex li::before{content:counter(e)}
+
+/* ── Dialogue ── */
+.rep{display:flex; gap:10px; padding:4px 0; border-top:1px solid var(--line)}
+.rep:first-of-type{border-top:0}
+.rep--key{background:var(--tint); border-radius:8px; padding:5px 8px;
+          border-top:0; margin:2px 0}
+.qui{flex:0 0 30mm; font-weight:800; color:var(--ink); font-size:10.5pt}
+
+/* ── Règle : encadrée au filet épais, c'est elle qu'on repère de loin ── */
+.regle{border:2.5px solid var(--rule); border-radius:12px; padding:12px 14px}
+.regle .lbl{color:var(--ink)}
+.regle p.r{font-size:14pt; font-weight:900; color:var(--ink); line-height:1.3}
+.regle p.pr{margin-top:7px; font-weight:600; color:var(--soft)}
+
+/* ── Tableau ── */
+table{width:100%; border-collapse:collapse}
+th{font-size:9.5pt; font-weight:800; text-transform:uppercase; letter-spacing:.1em;
+   color:var(--muted); text-align:left; padding:0 8px 5px 0;
+   border-bottom:1.5px solid var(--rule)}
+td{padding:6px 8px 6px 0; border-top:1px solid var(--line); vertical-align:top;
+   font-weight:600}
+td.cle{font-weight:900; color:var(--ink)}   /* la colonne clé : en gras, pas en couleur */
+.note{margin-top:8px; font-size:10.5pt; font-weight:600; color:var(--soft);
+      background:var(--tint); border-radius:9px; padding:8px 11px}
+
+/* ── Cartes ── */
+.grid{display:grid; grid-template-columns:1fr 1fr; gap:9px}
+.grid .card h3{font-size:11.5pt; font-weight:900; color:var(--ink); margin-bottom:3px}
+.grid .card p{font-size:11pt}
+
+/* ── Piège : le filet distingue les deux colonnes, pas la couleur ──
+   À gauche, un filet TIRETÉ — ce qui ne tient pas.
+   À droite, un filet PLEIN et épais — ce qu'il faut retenir.
+   Les deux intitulés disent la même chose en mots.                */
+.duo{display:grid; grid-template-columns:1fr 1fr; gap:10px}
+.duo>div{border-radius:12px; padding:10px 13px}
+.duo .no{border:1.5px dashed var(--muted)}
+.duo .ok{border:2.5px solid var(--rule); background:var(--tint)}
+.duo .k{font-size:9.5pt; font-weight:800; text-transform:uppercase;
+        letter-spacing:.1em; margin-bottom:4px; color:var(--muted)}
+.duo .ok .k{color:var(--ink)}
+.duo p.ph{font-size:12pt; font-weight:800; color:var(--ink); line-height:1.3}
+.duo .no p.ph{font-weight:600; font-style:italic; color:var(--soft)}
+
+/* ── Vocabulaire ── */
+.voc{width:100%; border-collapse:collapse}
+.voc td{border-top:1px solid var(--line); padding:6px 8px 6px 0}
+.voc td.mot{width:38%; font-weight:900; color:var(--ink)}
+.voc td.def{color:var(--soft)}
+
+/* ── Zones de réponse ── */
+.ligne{display:block; border-bottom:1px dotted #8E8E8A; height:8mm; margin-top:2px}
+.ligne--court{width:55%}
+
+/* ── Billet de sortie ── */
+.billet{border:2.5px solid var(--rule); border-radius:12px; padding:13px 15px}
+.billet .k{font-size:9.5pt; font-weight:800; text-transform:uppercase;
+           letter-spacing:.12em; color:var(--ink); margin-bottom:4px}
+.billet p.c{font-size:14pt; font-weight:900; color:var(--ink); line-height:1.3}
+.billet ul{list-style:none; margin-top:7px}
+.billet li{font-weight:600; color:var(--soft); margin-bottom:3px}
+
+/* ── Pied ── */
+footer{margin-top:16px; padding-top:7px; border-top:1px solid var(--line);
+       font-size:9.5pt; font-weight:700; color:var(--muted);
+       display:flex; justify-content:space-between}
+
+/* ── Impression ── */
+@page{size:8.5in 11in; margin:14mm 15mm}
+@media print{
+  html{background:#FFFFFF}
+  body{width:auto; padding:0}
+  .bloc{break-inside:avoid; page-break-inside:avoid}
+  h2.t,.lbl{break-after:avoid; page-break-after:avoid}
+}
+
+table.som{width:100%;border-collapse:collapse}
+table.som td{padding:7px 8px 7px 0;border-top:1px solid var(--line);font-weight:600}
+table.som tr.grp td{border-top:0;padding-top:16px;font-size:9.5pt;font-weight:800;
+  text-transform:uppercase;letter-spacing:.12em;color:var(--ink)}
+table.som td.c{width:16mm;font-weight:800;color:var(--ink)}
+table.som td.d{width:24mm;text-align:right;color:var(--muted)}
+table.som a{color:var(--ink);text-decoration:none}
+table.som a:hover{text-decoration:underline}
+
+/* ═══════════════════════════════════════════════════════════════
+   PROPRE À CETTE ACTIVITÉ
+   ───────────────────────────────────────────────────────────────
+   Ce que la feuille commune ne porte pas encore : les choix à
+   encercler, les cases de vrai-faux, les espaces à remplir et la
+   ligne de pointage. Même logique que le reste — filets et graisse,
+   aucune teinte. Si un de ces blocs revient dans une deuxième
+   activité, sa place est dans la feuille commune, pas ici.
+   ═══════════════════════════════════════════════════════════════ */
+
+/* Choix à encercler : les options sur leur propre ligne, aérées, pour
+   qu'un trait de crayon autour de l'une n'en touche pas une autre. */
+.options{display:block; margin-top:3px; font-weight:600; color:var(--ink)}
+.options i{font-style:normal}
+.sep{padding:0 4mm; color:var(--muted)}
+
+/* Vrai ou faux : deux colonnes étroites, la lettre isolée s'encercle. */
+td.centre,th.centre{text-align:center}
+td.vf{width:13mm; font-weight:900; color:var(--ink); letter-spacing:2px}
+th.num,td.num{width:9mm; text-align:center}
+
+/* L'espace à écrire. 34 mm et un filet plein : une main d'adulte qui
+   apprend à écrire a besoin de plus qu'un trait typographique. */
+.trou{display:inline-block; min-width:34mm; border-bottom:1.5px solid var(--rule);
+      margin:0 1.5mm}
+
+/* Liste à cocher : la case est un carré au filet, jamais un aplat. */
+ul.cases{list-style:none}
+ul.cases li{margin-bottom:5px; padding-left:9mm; text-indent:-9mm; font-weight:600}
+.case{display:inline-block; width:4.6mm; height:4.6mm; border:1.5px solid var(--rule);
+      border-radius:3px; margin-right:4mm; vertical-align:-.7mm}
+
+/* Le pointage : à droite de l'exercice, discret mais repérable. */
+.points{text-align:right; font-weight:800; font-size:10.5pt; color:var(--muted);
+        margin-top:7px}
+.points u{display:inline-block; min-width:16mm; border-bottom:1.5px solid var(--rule);
+          text-decoration:none}
+</style></head><body>
+
+<header class="hdr">
+  <div class="hdr-l">
+    <div class="eyebrow">Niveau 2 · LAN-2029-4 — Des mots de tous les jours</div>
+    <h1>Qu'est-ce qu'une tornade ?</h1>
+  </div>
+  <div class="hdr-r">
+    Nom<span class="nomline nomline--nom"></span>
+    Date<span class="nomline nomline--date"></span>
+  </div>
+</header>
+
+<p class="chapeau">Compréhension orale et production orale · 30 minutes · en dyade</p>
+
+<div class="bloc"><div class="card">
+  <div class="lbl">Les mots</div>
+  <h2 class="t">Les mots de la tornade</h2>
+  <p class="consigne">Écoutez chaque mot. Répétez le mot à voix haute avec votre partenaire.</p>
+  <table class="voc">
+    <tr><td class="mot">une tornade</td><td class="def">un vent très fort qui tourne</td></tr>
+    <tr><td class="mot">le vent</td><td class="def">l'air qui bouge dehors</td></tr>
+    <tr><td class="mot">un nuage</td><td class="def">une forme grise ou blanche dans le ciel</td></tr>
+    <tr><td class="mot">la pluie</td><td class="def">l'eau qui tombe du ciel</td></tr>
+    <tr><td class="mot">le ciel</td><td class="def">ce qu'on voit au-dessus de nous</td></tr>
+    <tr><td class="mot">un abri</td><td class="def">un endroit où on est en sécurité</td></tr>
+    <tr><td class="mot">la radio</td><td class="def">un appareil qui donne les nouvelles</td></tr>
+    <tr><td class="mot">un danger</td><td class="def">quelque chose qui peut blesser</td></tr>
+  </table>
+</div></div>
+
+<div class="bloc"><div class="card">
+  <div class="lbl">Exercice 1</div>
+  <h2 class="t">J'écoute et je choisis le bon mot</h2>
+  <p class="consigne">Écoutez le mot. Encerclez le mot que vous entendez.</p>
+  <ol class="ex">
+    <li><span class="options"><i>le vent</i><span class="sep">·</span><i>le ciel</i><span class="sep">·</span><i>la pluie</i></span></li>
+    <li><span class="options"><i>un abri</i><span class="sep">·</span><i>un nuage</i><span class="sep">·</span><i>un danger</i></span></li>
+    <li><span class="options"><i>la pluie</i><span class="sep">·</span><i>la radio</i><span class="sep">·</span><i>le ciel</i></span></li>
+    <li><span class="options"><i>une tornade</i><span class="sep">·</span><i>un abri</i><span class="sep">·</span><i>le vent</i></span></li>
+    <li><span class="options"><i>la radio</i><span class="sep">·</span><i>une tornade</i><span class="sep">·</span><i>un nuage</i></span></li>
+    <li><span class="options"><i>la pluie</i><span class="sep">·</span><i>le ciel</i><span class="sep">·</span><i>la radio</i></span></li>
+  </ol>
+  <p class="points"><u></u> / 6</p>
+</div></div>
+
+<div class="bloc"><div class="card">
+  <div class="lbl">Exercice 2</div>
+  <h2 class="t">Le bulletin de météo</h2>
+  <p class="consigne">Écoutez le bulletin deux fois. Ensuite, encerclez : vrai ou faux ?</p>
+  <table>
+    <tr><th class="num">N°</th><th>Phrase</th>
+        <th class="centre">Vrai</th><th class="centre">Faux</th></tr>
+    <tr><td class="num cle">1</td><td>La météo est pour mardi.</td><td class="centre vf">V</td><td class="centre vf">F</td></tr>
+    <tr><td class="num cle">2</td><td>Le ciel est bleu.</td><td class="centre vf">V</td><td class="centre vf">F</td></tr>
+    <tr><td class="num cle">3</td><td>Une tornade, c'est un vent très fort qui tourne.</td><td class="centre vf">V</td><td class="centre vf">F</td></tr>
+    <tr><td class="num cle">4</td><td>Il faut ouvrir les fenêtres.</td><td class="centre vf">V</td><td class="centre vf">F</td></tr>
+    <tr><td class="num cle">5</td><td>Il faut écouter la radio.</td><td class="centre vf">V</td><td class="centre vf">F</td></tr>
+  </table>
+  <p class="points"><u></u> / 5</p>
+</div></div>
+
+<div class="bloc"><div class="card">
+  <div class="lbl">Exercice 3</div>
+  <h2 class="t">Nadia parle à son voisin Marc</h2>
+  <p class="consigne">Écoutez le dialogue. Ensuite, encerclez la bonne réponse.</p>
+  <ol class="ex">
+    <li>Où est l'information sur la tornade ?
+      <span class="options"><i>a) dans le journal</i><span class="sep">·</span><i>b) à la radio</i><span class="sep">·</span><i>c) à l'école</i></span></li>
+    <li>À quelle heure arrive la tornade ?
+      <span class="options"><i>a) à sept heures</i><span class="sep">·</span><i>b) à dix heures</i><span class="sep">·</span><i>c) à deux heures</i></span></li>
+    <li>Où vont Nadia et Marc ?
+      <span class="options"><i>a) sur le toit</i><span class="sep">·</span><i>b) au sous-sol</i><span class="sep">·</span><i>c) dans l'auto</i></span></li>
+    <li>Qu'est-ce que Marc prend ?
+      <span class="options"><i>a) une radio et une lampe</i><span class="sep">·</span><i>b) un parapluie et un manteau</i><span class="sep">·</span><i>c) un téléphone et des clés</i></span></li>
+  </ol>
+  <p class="points"><u></u> / 4</p>
+</div></div>
+
+<div class="bloc"><div class="card">
+  <div class="lbl">Exercice 4</div>
+  <h2 class="t">Je complète avec le bon mot</h2>
+  <p class="consigne">Écrivez un mot de la banque dans chaque espace. Chaque mot sert une seule fois.</p>
+  <div class="regle" style="margin-bottom:10px">
+    <div class="lbl">Banque de mots</div>
+    <p class="r">fenêtres · nuage · radio · sous-sol · tornade · vent</p>
+  </div>
+  <ol class="ex">
+    <li>Le ciel est gris. Un gros <span class="trou"></span> noir cache le soleil.</li>
+    <li>Une <span class="trou"></span>, c'est un vent très fort qui tourne.</li>
+    <li>Avant la tornade, je ferme les <span class="trou"></span> de la maison.</li>
+    <li>Je descends au <span class="trou"></span> avec ma famille.</li>
+    <li>J'écoute la <span class="trou"></span> pour avoir les informations.</li>
+    <li>Le <span class="trou"></span> casse les arbres dans la rue.</li>
+  </ol>
+  <p class="points"><u></u> / 6</p>
+</div></div>
+
+<div class="bloc"><div class="card">
+  <div class="lbl">Exercice 5</div>
+  <h2 class="t">Je parle avec mon partenaire</h2>
+  <p class="consigne">Une personne joue A. L'autre personne joue B. Faites le dialogue.
+     Ensuite, changez de rôle.</p>
+  <table>
+    <tr><th style="width:50%">Élève A · le voisin</th><th>Élève B · la voisine</th></tr>
+    <tr><td><span class="qui" style="flex:none">1.</span> « Bonjour. Tu as écouté la radio ? »</td>
+        <td><span class="qui" style="flex:none">1.</span> « Non. Pourquoi ? »</td></tr>
+    <tr><td><span class="qui" style="flex:none">2.</span> « Il y a une tornade. Elle arrive à … heures. »</td>
+        <td><span class="qui" style="flex:none">2.</span> « À … heures ? C'est bientôt ! »</td></tr>
+    <tr><td><span class="qui" style="flex:none">3.</span> « Une tornade, c'est … »</td>
+        <td><span class="qui" style="flex:none">3.</span> « Qu'est-ce qu'on fait ? »</td></tr>
+    <tr><td><span class="qui" style="flex:none">4.</span> « On descend au sous-sol. C'est un bon abri. »</td>
+        <td><span class="qui" style="flex:none">4.</span> « D'accord. Je prends la radio et une lampe. »</td></tr>
+  </table>
+  <p class="consigne" style="margin-top:10px">Je me vérifie — cochez après le dialogue.</p>
+  <ul class="cases">
+    <li><span class="case"></span>J'ai dit une heure (par exemple : à deux heures).</li>
+    <li><span class="case"></span>J'ai dit ce qu'est une tornade : un vent très fort qui tourne.</li>
+    <li><span class="case"></span>J'ai nommé deux gestes de sécurité : fermer les fenêtres, descendre au sous-sol.</li>
+    <li><span class="case"></span>J'ai utilisé quatre mots de la liste des huit mots.</li>
+    <li><span class="case"></span>Mon partenaire m'a compris sans répéter.</li>
+  </ul>
+</div></div>
+
+<div class="bloc billet">
+  <div class="k">Mon résultat</div>
+  <p class="c"><span class="trou" style="min-width:22mm"></span> / 21 &nbsp;<span style="font-size:10.5pt; font-weight:700; color:var(--muted)">(exercices 1 à 4)</span></p>
+</div>
+
+<footer><span>Qu'est-ce qu'une tornade ? · fiche élève</span><span>Niveau 2 · LAN-2029-4</span></footer>
+
+</body></html>

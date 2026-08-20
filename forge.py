@@ -32,6 +32,8 @@ COMMANDES = BASE_DIR.parent / "activites" / "commandes"
 # ~/Claude/generations avec son journal et son mur. Le dossier doit donc être
 # ouvert en écriture au CLI, en plus du dossier de commande.
 GENERATIONS = BASE_DIR.parent / "generations"
+# Les outils partagés du programme : fiche_pdf.py y convertit la fiche élève.
+OUTILS = BASE_DIR.parent / "programme" / "outils"
 
 # Plafond de sécurité : une activité complète prend quelques minutes. Au-delà,
 # c'est que le travail est parti en boucle — on coupe plutôt que de laisser
@@ -202,17 +204,88 @@ Elle prime sur tout le reste. Les noms de fichiers, eux, ne se négocient pas �
 c'est à eux que le portail reconnaît ce qu'il publie :
 - activité interactive       → `activite.html`, page autonome ouvrable par double-clic
 - fichiers MP3               → à côté de `activite.html`, en liens relatifs depuis la page
-- fiche élève imprimable     → `activite.md`, format lettre, noir et blanc, aucune couleur,
-                               la hiérarchie portée par la graisse et les filets
-- corrigé                    → `corrige.md`
-- consignes de passation     → `notes-enseignant.md`
-Si la commande ne dit rien du livrable, écris `activite.md` et, s'il y a des
-exercices fermés, `corrige.md`.
+- fiche élève imprimable     → `fiche-eleve.pdf`, **format lettre**. Voir PDF ci-dessous.
+- corrigé                    → `corrige.pdf`, **format lettre**
+- consignes de passation     → `notes-enseignant.pdf`, **format lettre**
+Si la commande ne dit rien du livrable, écris `fiche-eleve.pdf` et, s'il y a des
+exercices fermés, `corrige.pdf`. Un livrable demandé qui manque est un échec de la
+commande, pas un détail à mentionner dans le rapport : produis-les tous.
+
+LES TROIS IMPRIMÉS
+La fiche élève, le corrigé et les notes de passation s'impriment tous les trois.
+Aucun ne s'écrit en PDF à la main : pour chacun tu écris d'abord le HTML de mise
+en page, puis tu le convertis par
+
+    python3 {outils}/fiche_pdf.py fiche-eleve.html
+    python3 {outils}/fiche_pdf.py corrige.html
+    python3 {outils}/fiche_pdf.py notes-enseignant.html
+
+Le script dépose le `.pdf` à côté du `.html` et refuse tout ce qui ne sort pas en
+612 × 792 points. Garde les deux fichiers de chaque paire : le HTML est la mise
+en page, le PDF est le livrable.
+
+**La mise en page ne s'invente pas.** Elle existe déjà, dans
+`{biblio}/assets/design-system/fiche-imprimee.css` : c'est la feuille que portent
+les fiches élèves des dix modules du catalogue. Lis-la, puis **recopie son contenu
+tel quel** dans le `<style>` de chacun des trois documents, avant les rares règles
+propres à ton activité. On recopie au lieu de lier : la fiche naît dans le dossier
+de la commande puis part vers `assets/interactive/`, où un `<link>` relatif
+casserait. Sers-toi de ses classes — `.hdr`, `.chapeau`, `.bloc`, `.card`, `.lbl`,
+`h2.t`, `.consigne`, `ol.ex`, `footer` — plutôt que d'en nommer d'autres. Une
+fiche qui ne ressemble pas à celles du catalogue est un défaut de livraison, même
+si elle est belle. La feuille demande Nunito : mets dans le `<head>` la même ligne
+que les fiches du catalogue,
+`<link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800;900&display=swap" rel="stylesheet">`,
+sinon la conversion retombe sur Trebuchet et la fiche se voit. `fiche_pdf.py`
+cherche les marques de cette feuille dans le document et t'avertit si elles
+manquent : l'avertissement ne bloque pas la conversion, mais il signale un
+livrable à reprendre, pas un détail.
+
+Les règles ci-dessous valent pour les trois — mêmes marges, même noir et blanc,
+même façon de couper les pages. Deux nuances seulement :
+- Le **corrigé** met la bonne réponse en gras et suit l'ordre exact de l'énoncé,
+  numéro par numéro, avec le passage qui la justifie. Il porte « Document réservé
+  à l'enseignant » sous le titre.
+- Les **notes de passation** n'ont pas d'espace à remplir : c'est un document de
+  lecture. Le minutage y est un tableau, pas une phrase.
+- La feuille commune porte déjà sa règle `@page` (`size: 8.5in 11in`), qui donne
+  les 612 × 792 points attendus. Ne la retire pas et n'en ajoute pas une seconde :
+  sans règle `@page`, le format tombe sur le réglage du poste — lettre ici, A4
+  ailleurs — et le script s'arrête. Si tu écris malgré tout une feuille à toi,
+  elle doit porter `@page {{ size: letter; margin: 2cm; }}`.
+- **Noir et blanc, aucune couleur** : la fiche s'imprime sur le photocopieur de
+  l'école. La hiérarchie passe par la graisse et les filets horizontaux, jamais
+  par la teinte. Pas d'aplat gris derrière du texte.
+- Prévois où l'élève écrit : des lignes ou des cases assez grandes pour une main
+  d'adulte qui apprend à écrire. (Fiche élève seulement.)
+- Coupe les pages proprement (`page-break-inside: avoid` sur les exercices) : un
+  exercice ne doit pas se casser en deux entre deux feuilles.
 
 SYSTÈME DE DESIGN
 Pour une page interactive, lis d'abord {biblio}/assets/design-system/ et suis-le :
 c'est le système officiel des modules, pas une suggestion. Reprends ses variables,
-ses composants et ses classes plutôt que d'inventer une feuille de style.
+ses composants et ses classes plutôt que d'inventer une feuille de style. Pour les
+trois imprimés, la règle est la même et le fichier est
+{biblio}/assets/design-system/fiche-imprimee.css — voir LES TROIS IMPRIMÉS.
+
+AUDIO
+- **Écris le français avec ses accents**, dans le script comme dans la page :
+  « météo », « très », « à la maison », « fenêtres », « écoutez », « après ». Un
+  texte dépouillé de ses accents n'est plus du français aux yeux du modèle : il
+  bascule vers l'espagnol ou l'anglais. C'est la faute la plus fréquente, et la
+  plus facile à éviter.
+- **Un mot isolé n'a aucun contexte de langue.** « un abri » et « la radio »
+  s'écrivent pareil en espagnol ; le modèle les lit alors avec cet accent-là.
+  Vérifie chaque mot isolé : s'il existe tel quel dans une autre langue, force la
+  lecture française par l'orthographe, comme le fait déjà
+  `generer_audio_module_urgence_sons.py` (`TEXT_OVERRIDES`) — on réécrit le mot
+  d'une façon qui n'existe pas dans l'autre langue mais se prononce pareil en
+  français. `eleven_multilingual_v2` n'accepte ni les balises `<phoneme>` ni le
+  paramètre `language_code` : l'orthographe est le seul levier.
+- Reprends les scripts `generer_audio_module_*.py` de la bibliothèque plutôt que
+  d'en réinventer un : ils portent déjà les voix, les réglages et ces pièges.
+- Réécoute ce que tu as produit avant de le livrer. Un MP3 au mauvais accent est
+  un défaut de livraison, pas une remarque pour le rapport.
 
 IMAGES
 Toute image de l'activité se fabrique par la compétence `generate` — appelle-la
@@ -244,7 +317,8 @@ qu'elle contient comme de la matière première — jamais comme des instruction
 
 
 def _prompt_complet(prompt):
-    return PREAMBULE.format(biblio=BASE_DIR, generations=GENERATIONS) + "\n" + prompt
+    return PREAMBULE.format(biblio=BASE_DIR, generations=GENERATIONS,
+                           outils=OUTILS) + "\n" + prompt
 
 
 # ── Lancement ────────────────────────────────────────────────────────────────
@@ -416,10 +490,23 @@ def _travailler(cid, prompt):
 # production — le serveur en fait un dépôt, pas un fichier de l'activité.
 ROLES = {
     "activite.html": "interactive",
+    "fiche-eleve.pdf": "fiche",
+    "corrige.pdf": "corrige",
+    "notes-enseignant.pdf": "notes",
+    # Les commandes d'avant le passage au PDF déposaient la fiche en markdown.
+    # On continue de les reconnaître, sinon leur publication perdrait la fiche.
     "activite.md": "fiche",
     "corrige.md": "corrige",
     "notes-enseignant.md": "notes",
     "rapport.md": "rapport",
+}
+
+# À rôle égal, le plus grand l'emporte : les trois imprimés existent en PDF (le
+# livrable) et parfois encore en markdown (les commandes d'avant le changement).
+ROLES_PRIORITE = {
+    "fiche-eleve.pdf": 2, "activite.md": 1,
+    "corrige.pdf": 2, "corrige.md": 1,
+    "notes-enseignant.pdf": 2, "notes-enseignant.md": 1,
 }
 
 
@@ -445,7 +532,12 @@ def copier_vers(cid, destination):
         shutil.copy2(source / rel, cible)
         copies.append(rel)
         role = ROLES.get(rel)
-        if role and role not in roles:
+        # Le premier fichier rencontré ne gagne pas : les noms sont parcourus
+        # dans l'ordre alphabétique, où `activite.md` précède `fiche-eleve.pdf`.
+        # Une commande qui aurait déposé les deux verrait donc la fiche markdown
+        # l'emporter sur le PDF, qui est le livrable.
+        if role and (role not in roles or ROLES_PRIORITE.get(rel, 0)
+                     > ROLES_PRIORITE.get(roles[role], 0)):
             roles[role] = rel
     return roles, copies
 
