@@ -2202,12 +2202,19 @@ def jeu_de_role_system(scenario_id, cas_id, role_eleve):
     """
     scenario = JEU_DE_ROLE_SCENARIOS[scenario_id]
     cas = scenario["cas"][cas_id]
-    ia_role = "proprietaire" if role_eleve == "locataire" else "locataire"
+    # Chaque scénario nomme ses deux rôles ; l'assistant prend celui que
+    # l'élève ne joue pas. La paire locataire/propriétaire était écrite en dur
+    # ici : un scénario aux rôles différents n'aurait rien trouvé dans `cas`.
+    roles = list(scenario["roles"])
+    ia_role = roles[0] if role_eleve == roles[1] else roles[1]
     faits = "\n".join("- " + f for f in cas[ia_role])
     # Les cas de « louer » nomment leur contexte « annonce » depuis l'origine ;
     # les scénarios plus récents utilisent « contexte ».
     contexte = cas.get("contexte") or cas["annonce"]
     role_def = scenario["roles"][ia_role]
+    # Un échange informel entre coéquipières ne se vouvoie pas. Les scénarios
+    # qui ne disent rien gardent le vouvoiement d'origine.
+    adresse = scenario.get("adresse", "Vouvoie l'élève.")
 
     return (
         "Tu joues un rôle dans un exercice oral de francisation au Québec, niveau 4 "
@@ -2219,7 +2226,7 @@ def jeu_de_role_system(scenario_id, cas_id, role_eleve):
         "Comment tu parles :\n"
         "- Deux ou trois phrases maximum par réplique. Jamais de paragraphe.\n"
         "- Français québécois courant et simple, phrases courtes, vocabulaire de tous les jours.\n"
-        "- Vouvoie l'élève.\n"
+        "- " + adresse + "\n"
         "- Reste dans ton personnage quoi qu'il arrive. Si l'élève sort du jeu, ramène-le "
         "dans la conversation avec naturel.\n"
         "- Ne corrige jamais le français de l'élève et ne commente jamais ses fautes : "
@@ -4498,9 +4505,11 @@ class Handler(http.server.SimpleHTTPRequestHandler):
     def _handle_jeu_de_role(self):
         """Un tour de conversation du jeu de rôle « louer un logement ».
 
-        Corps attendu : {code, scenario, cas, role: 'locataire'|'proprietaire',
-        historique: [{role:'user'|'assistant', contenu}]}.
-        `role` est celui que joue l'ÉLÈVE ; l'assistant prend l'autre.
+        Corps attendu : {code, scenario, cas, role, historique:
+        [{role:'user'|'assistant', contenu}]}.
+        `role` est celui que joue l'ÉLÈVE ; l'assistant prend l'autre. Les
+        rôles valides sont ceux du scénario demandé — ils ne sont plus
+        forcément locataire/propriétaire.
 
         `scenario` vaut 'louer' par défaut et `cas` accepte l'ancien nom
         `logement` : les modules déjà en ligne continuent de fonctionner sans
@@ -4524,7 +4533,8 @@ class Handler(http.server.SimpleHTTPRequestHandler):
         if scenario not in JEU_DE_ROLE_SCENARIOS:
             json_response(self, {"error": "Scénario inconnu"}, 400)
             return
-        if cas not in JEU_DE_ROLE_SCENARIOS[scenario]["cas"] or role not in ("locataire", "proprietaire"):
+        if (cas not in JEU_DE_ROLE_SCENARIOS[scenario]["cas"]
+                or role not in JEU_DE_ROLE_SCENARIOS[scenario]["roles"]):
             json_response(self, {"error": "Cas ou rôle inconnu"}, 400)
             return
 
