@@ -36,6 +36,10 @@ const EXOS = [
 
   {sec:'prep', id:'prImg', type:'imgmatch', num:'Exercice 3', tit:'Les gestes de la semaine', color:'#0D7A6F',
    sub:"Glisse chaque photo sur la phrase qui la décrit.",
+   savoir:{h:"› Les mots de la semaine — à écouter et à répéter", speak:true, rows:[
+     ["Le ménage et le lavage","Ces mots reviennent chaque semaine dans la conversation. Écoute la phrase entière, puis répète-la à voix haute.", ["brassée","balayeuse","recyclage"]],
+     ["Le travail et le temps libre","Au Québec, on parle de son <b>quart</b> de travail et de ses <b>congés</b>.", ["quart","congé"]],
+   ]},
    images:[
     {id:'ir1', src:'/assets/interactive/module-relations/images/brassee.jpg'},
     {id:'ir2', src:'/assets/interactive/module-relations/images/balayeuse.jpg'},
@@ -137,6 +141,10 @@ const EXOS = [
 
   {sec:'t1', id:'t1sport', type:'match', num:'Exercice 4', tit:'Les mots du sport', color:'#1D6B8F',
    sub:"Associe chaque verbe à ce qu'il veut dire.", bankLbl:'Le sens', zonePh:'glisse le sens ici',
+   savoir:{h:"› Les mots du loisir — à écouter et à répéter", speak:true, rows:[
+     ["Se rendre à l'activité","Le <b>covoiturage</b> et le <b>centre communautaire</b> sont deux mots qu'on entend partout dans un quartier.", ["covoiturage","communautaire"]],
+     ["Dans l'équipe","Une <b>coéquipière</b>, <b>s'entraîner</b>, un <b>tournoi</b> : le vocabulaire de base de tout sport d'équipe.", ["coéquipière","entraîner","tournoi"]],
+   ]},
    rows:[
     {id:'s1', q:"s'entraîner", aid:'s1', a:"pratiquer souvent pour devenir meilleur"},
     {id:'s2', q:"disputer un match", aid:'s2', a:"jouer une partie contre une autre équipe"},
@@ -160,6 +168,10 @@ const EXOS = [
  // ── DÉFI 2 · CE QUE J'AI VÉCU ───────────────────────────────
   {sec:'t2', id:'t2vf', type:'vf', num:'Exercice 1', tit:'Vrai ou Faux — Mon premier hiver', color:'#B45309',
    sub:"Écoute le dialogue, puis réponds.", tiles:['VRAI','FAUX'],
+   savoir:{h:"› Les mots du récit — à écouter et à répéter", speak:true, rows:[
+     ["L'arrivée","Trois mots du récit de Mariama. Écoute la phrase entière : un mot seul se prononce mal.", ["aéroport","oreilles","fenêtre"]],
+     ["Changer de logement","Un <b>déménagement</b>, au Québec, se fait très souvent le premier juillet.", ["déménagement"]],
+   ]},
    rows:[
     {id:'u1a', txt:"Mariama est arrivée au Québec au mois de janvier.", ok:'VRAI'},
     {id:'u1b', txt:"Elle savait qu'il ferait très froid à son arrivée.", ok:'FAUX'},
@@ -319,6 +331,10 @@ const EXOS = [
 
   {sec:'t3', id:'t3form', type:'match', num:'Exercice 5', tit:'La bonne formule', color:'#7C3AED',
    sub:"Associe chaque occasion à la formule qui convient.", bankLbl:'La formule', zonePh:'glisse la formule ici',
+   savoir:{h:"› Les mots des nouvelles — à écouter et à répéter", speak:true, rows:[
+     ["Ce qu'on annonce","Une <b>naissance</b>, un mariage, un déménagement : les occasions d'écrire à quelqu'un.", ["naissance","nouvelles"]],
+     ["Ce qu'on envoie","Une carte <b>postale</b> raconte ; une carte de <b>vœux</b> félicite.", ["postale","vœux"]],
+   ]},
    rows:[
     {id:'m1', q:"Une naissance", aid:'m1', a:"« Bienvenue au petit ! Toutes nos félicitations. »"},
     {id:'m2', q:"Un mariage", aid:'m2', a:"« Beaucoup de bonheur à vous deux. »"},

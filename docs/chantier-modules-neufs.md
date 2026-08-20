@@ -62,3 +62,19 @@ Le 17 est pris par `module-banque`, d'où le saut.
   cassait tout le script de la page — et la page continuait de s'afficher,
   muette. Le contrôle utile n'est pas « la page s'affiche » mais « les
   constantes existent ».
+- **Médias faits.** 21 images (fal.ai / Nano Banana 2, 0,71 $) : huit
+  illustrations d'exercice à 1024 px et treize photos de vocabulaire réduites à
+  800 px / qualité 82. 213 MP3 (ElevenLabs) : 82 répliques sur sept dialogues
+  et 131 mots, phrases et mini-leçons. Contrôle : les **213 URL d'audio et les
+  22 URL d'images que la page peut demander répondent toutes** — aucune n'est
+  manquante.
+- Le générateur d'audio de ce module **ne recopie plus les dialogues** : il lit
+  `build/contenu/module-relations/dialogues.js`. Les générateurs précédents en
+  gardaient une copie, qui divergeait du module à la première correction.
+- Nouvel outil : `build/collecte_sons.py`. Le relevé des identifiants d'audio
+  se collait jusqu'ici à la main depuis la console du navigateur ; il est
+  maintenant reçu directement et écrit dans `sons_<slug>.json`.
+- Piège aligné juste à temps : le calcul du nom de fichier d'une réplique doit
+  reproduire `charSlug()` du moteur **au caractère près**. Une expression
+  régulière « propre » aurait écrit `jean_philippe` là où le moteur demande
+  `jean-philippe`.
