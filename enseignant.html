@@ -146,6 +146,16 @@
     .pe-pastille--offerte { background: var(--ok-bg); color: var(--ok-ink); }
     .pe-pastille--avenir  { background: var(--acier-100); color: var(--acier-600); }
 
+    /* La pastille porte une infobulle, et `card--flush` découpe (c'est ce
+       découpage qui arrondit les aplats d'un bandeau ou d'un pied). Sur la
+       dernière rangée d'une liste, ou sur une carte courte du catalogue, la
+       bulle était coupée net — vu à l'écran. On rend donc leur débord aux
+       seules cartes qui portent une pastille et qui n'ont ni bandeau ni
+       pied : là, rien ne dépend de la découpe. */
+    .pe .card--flush:has(.pe-pastille):not(:has(.card__band)):not(:has(.card__foot)) {
+      overflow: visible;
+    }
+
     /* — Sections d'un module (« Je découvre · Défi 1 · … ») —
        Une rangée par section, cochable et datable comme le module lui-même.
        Le retrait à gauche dit l'appartenance ; la case reste alignée sur celle

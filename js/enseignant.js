@@ -197,8 +197,18 @@
     return statut(section.dates);
   }
 
+  /* Ce que l'état veut dire du côté de l'élève. La pastille porte un mot et
+     une date ; ce qu'elle ne peut pas écrire, c'est ce que l'élève voit — et
+     c'est la seule chose qu'on cherche à savoir en la regardant. */
+  const INFO_ETAT = {
+    vide: "Aucune date posée : la ligne n'est pas encore au programme et l'élève ne la voit pas dans son portail.",
+    offerte: "L'élève la voit dans son portail et peut y entrer dès maintenant.",
+    fermee: "La date de fin est passée : l'élève ne peut plus y entrer, mais ce qu'il a fait reste enregistré.",
+    avenir: "La date d'ouverture n'est pas arrivée : l'élève ne la voit pas encore.",
+  };
+
   const pastille = (st, texte) =>
-    `<span class="pe-pastille pe-pastille--${st.cle}"><span aria-hidden="true">${st.glyphe}</span>${esc(texte || st.texte)}</span>`;
+    `<span class="pe-pastille pe-pastille--${st.cle}" tabindex="0" data-info="${esc(INFO_ETAT[st.cle] || '')}"><span aria-hidden="true">${st.glyphe}</span>${esc(texte || st.texte)}</span>`;
 
   /* ══════════ Session ══════════ */
 

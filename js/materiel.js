@@ -56,10 +56,15 @@ window.Materiel = (() => {
     plan: 'Plan de cours',
     annexe: 'Document annexe',
   };
+  /* `info` : l'état porte un mot, pas ce qu'il compte. « Partiel » ne dit pas
+     s'il manque une présentation ou quinze. */
   const ETATS = {
-    complet: { classe: 'offerte', glyphe: '✓', mot: 'Complet' },
-    partiel: { classe: 'fermee', glyphe: '·', mot: 'Partiel' },
-    'a-venir': { classe: 'vide', glyphe: '→', mot: 'À venir' },
+    complet: { classe: 'offerte', glyphe: '✓', mot: 'Complet',
+               info: "Toutes les séances prévues du module ont leur matériel : présentation, fiches, annexes." },
+    partiel: { classe: 'fermee', glyphe: '·', mot: 'Partiel',
+               info: "Une partie des séances seulement a son matériel. Le compte qui suit dit combien sur combien." },
+    'a-venir': { classe: 'vide', glyphe: '→', mot: 'À venir',
+                 info: "Aucune séance de ce module n'a encore de matériel déposé." },
   };
 
   /* ══════════ État ══════════ */
@@ -383,7 +388,7 @@ window.Materiel = (() => {
           <div class="pe-eyebrow">${esc(a.level || '')} · ${esc(a.domaineDeVie || '')} · cours de 4 h</div>
           <h3>${esc(a.title)}</h3>
           <div class="mat-module-etat">
-            <span class="pe-pastille pe-pastille--${e.classe}"><span aria-hidden="true">${e.glyphe}</span>${e.mot}</span>
+            <span class="pe-pastille pe-pastille--${e.classe}" tabindex="0" data-info="${esc(e.info || '')}"><span aria-hidden="true">${e.glyphe}</span>${e.mot}</span>
             <span style="font-size:var(--fs-ui-sm);font-weight:var(--fw-semi);color:var(--text-muted)">
               ${p.seancesEquipees} séance${p.seancesEquipees > 1 ? 's' : ''} équipée${p.seancesEquipees > 1 ? 's' : ''} sur ${p.seancesPrevues}</span>
             ${neuf ? '<span class="mat-neuf">Nouveau</span>' : ''}

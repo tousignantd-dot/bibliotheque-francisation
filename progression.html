@@ -80,12 +80,20 @@
 
     /* — Tableaux — */
     /* Un tableau large ne pousse jamais la page : il défile dans son cadre. */
-    .pg-scroll { overflow-x: auto; }
+    /* Le rembourrage du bas laisse sortir l'infobulle des en-têtes, que le
+       défilement horizontal découpait ; la marge négative le reprend. Ce qui
+       suit le tableau est peint par-dessus cette bande et reste cliquable ;
+       la bulle, elle, a son `z-index` et passe au-dessus. */
+    .pg-scroll { overflow-x: auto; padding-bottom: 130px; margin-bottom: -130px; }
     /* Caractères et marges resserrés : tout doit tenir dans le cadre. Le
        défilement horizontal reste là pour les petits écrans, mais sur un
        poste d'enseignante on ne le voit plus. */
+    /* Sans `overflow: hidden` : il découpait l'infobulle des en-têtes sur un
+       tableau court. Les coins reviennent par les cellules du bout. */
     .pg-table { width: 100%; min-width: 640px; border-collapse: collapse; background: var(--surface-card);
-                border: 1px solid var(--border); border-radius: 10px; overflow: hidden; }
+                border: 1px solid var(--border); border-radius: 10px; }
+    .pg-table thead tr:first-child th:first-child { border-top-left-radius: 10px; }
+    .pg-table thead tr:first-child th:last-child  { border-top-right-radius: 10px; }
     .pg-table th { text-align: left; font-size: 11.5px; font-weight: var(--fw-bold);
                    letter-spacing: .05em; text-transform: uppercase; color: var(--text-muted);
                    padding: 10px var(--sp-3); border-bottom: 1px solid var(--border);
@@ -609,11 +617,14 @@
       + ' Le chevron ouvre ses textes et ses enregistrements.',
       `<div class="pg-scroll"><table class="pg-table">
         <thead><tr>
-          <th>Élève</th><th>Avancement</th><th>État</th>
-          <th style="text-align:center">Réussi du 1er coup</th>
-          <th style="text-align:center">Enregistrements</th>
-          <th style="text-align:center">Textes</th>
-          <th>Dernière trace</th><th></th>
+          <th>Élève</th>
+          <th tabindex="0" data-info="La part des zones remplies sur l'ensemble des zones des modules ouverts au groupe. Une zone est une réponse à trouver.">Avancement</th>
+          <th>État</th>
+          <th style="text-align:center" tabindex="0" data-info="Zones réussies dès la première tentative, sur les zones remplies. Deux élèves peuvent finir le même module : celui qui est à 90 % et celui qui est à 45 % n'ont pas fait le même travail.">Réussi du 1er coup</th>
+          <th style="text-align:center" tabindex="0" data-info="Productions orales que l'élève a choisi d'envoyer. Ce qu'il a enregistré sans l'envoyer ne vous parvient pas.">Enregistrements</th>
+          <th style="text-align:center" tabindex="0" data-info="Textes que l'élève a choisi d'envoyer après correction. Les corrections restées privées ne sont jamais gardées.">Textes</th>
+          <th tabindex="0" data-info-cote="droite" data-info="Le dernier moment où quelque chose a été enregistré pour cet élève, dans la période retenue.">Dernière trace</th>
+          <th></th>
         </tr></thead>
         <tbody>${lignes}</tbody>
       </table></div>`);

@@ -1,0 +1,142 @@
+/* ============================================================
+   FRANCISATION · INFOBULLE
+   Une explication courte, au survol et au clavier.
+
+   Elle sert aux repères qui ne peuvent pas porter leur
+   explication en toutes lettres : un voyant, une pastille, un
+   bouton à icône. Elle ne remplace jamais un libellé — si la
+   place existe pour écrire, on écrit.
+
+   Usage :
+       <span class="badge" data-info="Vert dès que l'élève a
+             écouté le dialogue." tabindex="0">Dialogue</span>
+
+   Trois règles tenues ici :
+   · elle paraît au SURVOL et au FOCUS — un repère qu'on ne peut
+     atteindre qu'à la souris n'existe pas pour qui navigue au
+     clavier ;
+   · sur un repère qui n'est pas un bouton, ajoutez `tabindex="0"` :
+     l'élève au doigt n'a pas de survol, la touche lui donne le
+     focus, donc l'explication ;
+   · le texte est du CONTENU, pas du style : il vit dans
+     l'attribut `data-info`, jamais dans la feuille de style.
+
+   Un piège, vérifié au navigateur : un ancêtre en `overflow:
+   hidden` ou `overflow-x: auto` DÉCOUPE la bulle. Nos tableaux
+   arrondis en étaient là. Le remède n'est pas dans ce fichier —
+   c'est à l'ancêtre de cesser de découper : sur un tableau, on
+   retire l'`overflow: hidden` et on arrondit les deux cellules
+   d'en-tête du bout ; sur un conteneur de défilement, on lui
+   donne un `padding-bottom` que reprend une marge négative.
+   Voir `.fe-table` dans fiche-eleve.html et `.pg-scroll` dans
+   progression.html.
+   ============================================================ */
+
+[data-info] { position: relative; }
+
+[data-info]::after {
+  content: attr(data-info);
+  position: absolute;
+  top: calc(100% + 9px);
+  left: 50%;
+  transform: translateX(-50%) translateY(-2px);
+  z-index: 90;
+  width: max-content;
+  max-width: 264px;
+  padding: var(--sp-2, 8px) var(--sp-3, 12px);
+  border-radius: var(--r-sm, 10px);
+  /* La plaque encre du système : le seul aplat foncé autorisé hors
+     bandeau, et le meilleur contraste sur toutes nos surfaces. */
+  background: var(--sel-bg, #17181A);
+  color: var(--sel-ink, #FFFFFF);
+  box-shadow: var(--sh-2, 0 6px 18px rgba(20, 20, 20, .18));
+  font-family: var(--font-sans, system-ui, sans-serif);
+  font-size: var(--fs-meta, 13px);
+  font-weight: var(--fw-medium, 500);
+  line-height: 1.45;
+  /* Le repère est souvent en capitales espacées ; l'explication,
+     elle, est une phrase et se lit comme une phrase. */
+  text-transform: none;
+  letter-spacing: 0;
+  text-align: left;
+  white-space: normal;
+  opacity: 0;
+  visibility: hidden;
+  pointer-events: none;
+  transition: opacity var(--dur, .15s) var(--ease, ease),
+              transform var(--dur, .15s) var(--ease, ease);
+}
+
+/* La pointe, du même noir, sans ombre pour ne pas doubler le trait. */
+[data-info]::before {
+  content: '';
+  position: absolute;
+  top: calc(100% + 3px);
+  left: 50%;
+  transform: translateX(-50%) translateY(-2px);
+  z-index: 91;
+  border: 6px solid transparent;
+  border-bottom-color: var(--sel-bg, #17181A);
+  opacity: 0;
+  visibility: hidden;
+  pointer-events: none;
+  transition: opacity var(--dur, .15s) var(--ease, ease),
+              transform var(--dur, .15s) var(--ease, ease);
+}
+
+[data-info]:hover::after,
+[data-info]:hover::before,
+[data-info]:focus-visible::after,
+[data-info]:focus-visible::before,
+[data-info][tabindex]:focus::after,
+[data-info][tabindex]:focus::before {
+  opacity: 1;
+  visibility: visible;
+  transform: translateX(-50%) translateY(0);
+}
+
+/* ── Sens et alignement ──────────────────────────────────────
+   Par défaut l'infobulle descend. En bas d'écran, ou sous une
+   barre collée en bas, elle monte. */
+[data-info-sens="haut"]::after {
+  top: auto;
+  bottom: calc(100% + 9px);
+  transform: translateX(-50%) translateY(2px);
+}
+[data-info-sens="haut"]::before {
+  top: auto;
+  bottom: calc(100% + 3px);
+  border-bottom-color: transparent;
+  border-top-color: var(--sel-bg, #17181A);
+  transform: translateX(-50%) translateY(2px);
+}
+
+/* Contre un bord d'écran, une bulle centrée sort de la page. On
+   l'accroche alors par un côté plutôt que par son milieu. */
+[data-info-cote="droite"]::after { left: auto; right: 0; transform: translateY(-2px); }
+[data-info-cote="gauche"]::after { left: 0; transform: translateY(-2px); }
+[data-info-cote="droite"]:hover::after,
+[data-info-cote="droite"]:focus-visible::after,
+[data-info-cote="droite"][tabindex]:focus::after,
+[data-info-cote="gauche"]:hover::after,
+[data-info-cote="gauche"]:focus-visible::after,
+[data-info-cote="gauche"][tabindex]:focus::after { transform: translateY(0); }
+
+/* Un repère qui porte une explication l'annonce : le curseur
+   d'aide, et un focus visible comme partout ailleurs. */
+[data-info][tabindex] { cursor: help; }
+[data-info][tabindex]:focus-visible {
+  outline: 2px solid var(--accent, #0A8F5B);
+  outline-offset: 3px;
+  border-radius: var(--r-sm, 10px);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  [data-info]::after, [data-info]::before { transition: none; }
+}
+
+/* Écrans étroits : la bulle prend la largeur qu'elle peut, sans
+   pousser la page. */
+@media (max-width: 520px) {
+  [data-info]::after { max-width: min(264px, 72vw); }
+}

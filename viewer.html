@@ -28,6 +28,49 @@
     .badge.done { color: #22c55e; border-color: #14532d; background: #052e16; }
     .badge svg { width: 11px; height: 11px; }
 
+    /* Infobulle. Même comportement et même texte que
+       assets/design-system/components/infobulle.css ; les règles sont
+       recopiées ici parce que cette page-ci est autonome (elle ne lie pas
+       le système de design, elle est en thème sombre et n'a que sa propre
+       feuille). Si vous touchez à l'une, touchez à l'autre.
+       Elle DESCEND sous la barre : la barre est tout en haut de l'écran,
+       une bulle qui monterait sortirait de la fenêtre. */
+    [data-info] { position: relative; }
+    [data-info]::after {
+      content: attr(data-info);
+      position: absolute; top: calc(100% + 11px); left: 50%;
+      transform: translateX(-50%) translateY(-2px);
+      z-index: 90; width: max-content; max-width: 260px;
+      padding: 8px 12px; border-radius: 8px;
+      background: #f8fafc; color: #0f172a;
+      box-shadow: 0 8px 24px rgba(0,0,0,.45);
+      font-size: 12px; font-weight: 500; line-height: 1.45;
+      text-align: left; white-space: normal;
+      opacity: 0; visibility: hidden; pointer-events: none;
+      transition: opacity .15s ease, transform .15s ease;
+    }
+    [data-info]::before {
+      content: ''; position: absolute; top: calc(100% + 5px); left: 50%;
+      transform: translateX(-50%) translateY(-2px); z-index: 91;
+      border: 6px solid transparent; border-bottom-color: #f8fafc;
+      opacity: 0; visibility: hidden; pointer-events: none;
+      transition: opacity .15s ease, transform .15s ease;
+    }
+    [data-info-cote="droite"]::after { left: auto; right: 0; transform: translateY(-2px); }
+    [data-info]:hover::after, [data-info]:hover::before,
+    [data-info]:focus-visible::after, [data-info]:focus-visible::before,
+    [data-info][tabindex]:focus::after, [data-info][tabindex]:focus::before {
+      opacity: 1; visibility: visible; transform: translateX(-50%) translateY(0);
+    }
+    [data-info-cote="droite"]:hover::after,
+    [data-info-cote="droite"]:focus-visible::after,
+    [data-info-cote="droite"][tabindex]:focus::after { transform: translateY(0); }
+    [data-info][tabindex] { cursor: help; }
+    [data-info][tabindex]:focus-visible { outline: 2px solid #38bdf8; outline-offset: 3px; border-radius: 20px; }
+    @media (prefers-reduced-motion: reduce) {
+      [data-info]::after, [data-info]::before { transition: none; }
+    }
+
     .btn-back {
       font-size: 12px; font-weight: 600; color: #94a3b8;
       background: rgba(255,255,255,.06); border: 1px solid rgba(255,255,255,.1);
@@ -48,16 +91,19 @@
   <span class="bar-title" id="actTitle">Activité interactive</span>
   <div class="bar-right">
     <div class="status-badges">
-      <span class="badge pending" id="badgeDialogue">
+      <span class="badge pending" id="badgeDialogue" tabindex="0"
+            data-info="Pas encore écouté. Ce voyant passe au vert dès que vous avez écouté le dialogue en entier.">
         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5"/><path d="M15.54 8.46a5 5 0 0 1 0 7.07"/><path d="M19.07 4.93a10 10 0 0 1 0 14.14"/></svg>
         Dialogue
       </span>
-      <span class="badge pending" id="badgeExercise">
+      <span class="badge pending" id="badgeExercise" tabindex="0"
+            data-info="Pas encore terminé. Ce voyant passe au vert quand vous avez fait tous les exercices de l'activité.">
         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M9 11l3 3L22 4"/><path d="M21 12v7a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11"/></svg>
         Exercices
       </span>
     </div>
-    <a href="#" class="btn-back" id="btnBack">
+    <a href="#" class="btn-back" id="btnBack" data-info-cote="droite"
+       data-info="Ferme cet onglet et vous ramène à votre portail. Votre travail est déjà enregistré.">
       <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="15 18 9 12 15 6"/></svg>
       Retour
     </a>
@@ -140,10 +186,19 @@
     } catch(e) { /* silencieux */ }
   }
 
+  // L'explication suit l'état du voyant : « ce qu'il vous reste à faire »
+  // tant qu'il est gris, « c'est acquis » une fois vert. Un texte figé au
+  // futur devant un voyant vert se lirait comme un reproche.
+  const INFO_FAIT = {
+    badgeDialogue: "C'est fait : vous avez écouté le dialogue.",
+    badgeExercise: "C'est fait : vous avez terminé les exercices de l'activité.",
+  };
+
   function markDone(id) {
     const el = document.getElementById(id);
     el.classList.remove('pending');
     el.classList.add('done');
+    if (INFO_FAIT[id]) el.setAttribute('data-info', INFO_FAIT[id]);
   }
 
   // Écouter les messages postMessage venant de l'iframe

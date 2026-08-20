@@ -415,9 +415,12 @@
     const s = bilan.semaine || {jours: 0, sur: 7, minutes: 0};
     const pctSemaine = Math.round((s.jours || 0) / (s.sur || 7) * 100);
 
-    const carte = (classe, surtitre, chiffre, pct, legende) => `
+    // `info` : ce que le chiffre compte au juste. Trois chiffres de bilan se
+    // lisent vite de travers — « maîtrisé » et « minutes » surtout — et la
+    // carte n'a pas la place de l'écrire sans noyer le chiffre.
+    const carte = (classe, surtitre, chiffre, pct, legende, info) => `
       <div class="exo ${classe}">
-        <div class="card card--marked">
+        <div class="card card--marked" tabindex="0" data-info="${escHtml(info)}">
           <div class="om-bilan-sur">${surtitre}</div>
           <div class="om-bilan-chiffre">${chiffre}</div>
           <div class="om-bar"><b style="width:${pct}%"></b></div>
@@ -429,11 +432,14 @@
       <div class="om-sec"><span>Votre bilan</span><i></i></div>
       <div class="om-bilan">
         ${carte('exo--orale', 'Modules', `${termines} / ${total}`, pctModules,
-                `terminés · ${encours} commencé${encours > 1 ? 's' : ''}`)}
+                `terminés · ${encours} commencé${encours > 1 ? 's' : ''}`,
+                "Les modules de 4 h ouverts à votre groupe. Un module compte comme terminé quand vous avez fait toutes ses sections.")}
         ${carte('exo--vocab', 'Vocabulaire', `${v.mastered} / ${v.total}`, pctVocab,
-                `mots maîtrisés · ${v.learning} à revoir`)}
+                `mots maîtrisés · ${v.learning} à revoir`,
+                "Un mot est maîtrisé quand vous l'avez retrouvé juste plusieurs fois de suite, à quelques jours d'intervalle. Le total ne compte que les mots des activités déjà ouvertes.")}
         ${carte('exo--ecriture', 'Cette semaine', `${s.jours} jour${s.jours > 1 ? 's' : ''}`, pctSemaine,
-                `de pratique sur ${s.sur} · ${s.minutes} min`)}
+                `de pratique sur ${s.sur} · ${s.minutes} min`,
+                "Les jours des sept derniers où vous avez travaillé au moins une fois. Les minutes sont une estimation d'après vos traces, pas un chronomètre.")}
       </div>
     </div>`;
   }

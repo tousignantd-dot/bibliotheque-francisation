@@ -64,8 +64,14 @@
     .fe-bar b { display: block; height: 100%; background: var(--accent); }
 
     /* — Tableau d'activités — */
+    /* Pas d'`overflow: hidden` ici : il découpait l'infobulle des en-têtes
+       dès que le tableau était plus court que la bulle. Seul le fond des
+       en-têtes dépassait des coins arrondis — on arrondit donc les deux
+       cellules du bout plutôt que de découper tout le tableau. */
     .fe-table { width: 100%; border-collapse: collapse; background: var(--surface-card);
-                border: 1px solid var(--border); border-radius: 10px; overflow: hidden; }
+                border: 1px solid var(--border); border-radius: 10px; }
+    .fe-table thead tr:first-child th:first-child { border-top-left-radius: 10px; }
+    .fe-table thead tr:first-child th:last-child  { border-top-right-radius: 10px; }
     /* Caractères et marges resserrés, comme dans « Progression des élèves » :
        une rangée doit tenir en entier dans le cadre. */
     .fe-table th { text-align: left; font-size: 11.5px; font-weight: var(--fw-bold);
@@ -311,18 +317,24 @@
     const modules = (Array.isArray(activites) ? activites : [])
       .filter(a => a.categorie === 'cours');
     const finis = modules.filter(m => (b.parActivite || {})[String(m.id)]?.faite).length;
-    const tuile = (cle, val, pied) => `<div class="fe-tuile">
+    // `info` : ce que le chiffre compte au juste. Ce sont les chiffres de
+    // l'élève, repris tels quels de son portail ; l'enseignant, lui, doit
+    // savoir sur quoi ils sont calculés avant de s'en servir.
+    const tuile = (cle, val, pied, info) => `<div class="fe-tuile" tabindex="0" data-info="${esc(info)}">
       <div class="fe-tuile-cle">${esc(cle)}</div>
       <div class="fe-tuile-val">${esc(val)}</div>
       <div class="fe-tuile-pied">${esc(pied)}</div>
     </div>`;
     return section('Le bilan', 'Ce que l’élève voit sur son propre portail.', `<div class="fe-tuiles">
       ${tuile('Modules', `${finis} / ${modules.length}`,
-              `terminés · série de ${b.streak ?? 0} jour${(b.streak ?? 0) > 1 ? 's' : ''}`)}
+              `terminés · série de ${b.streak ?? 0} jour${(b.streak ?? 0) > 1 ? 's' : ''}`,
+              "Les modules de cours ouverts à son groupe, les ateliers exclus. Un module compte comme terminé quand toutes ses sections ont été faites. La série compte les jours consécutifs de travail.")}
       ${tuile('Vocabulaire', `${voc.mastered ?? 0} / ${voc.total ?? 0}`,
-              `mots maîtrisés · ${voc.learning ?? 0} à revoir`)}
+              `mots maîtrisés · ${voc.learning ?? 0} à revoir`,
+              "Un mot est maîtrisé quand l'élève l'a retrouvé juste plusieurs fois de suite, à quelques jours d'intervalle. Le total ne compte que les mots des activités déjà ouvertes.")}
       ${tuile('Cette semaine', `${sem.jours ?? 0} jour${(sem.jours ?? 0) > 1 ? 's' : ''}`,
-              `de pratique sur ${sem.sur ?? 7} · ${sem.minutes ?? 0} min estimées`)}
+              `de pratique sur ${sem.sur ?? 7} · ${sem.minutes ?? 0} min estimées`,
+              "Les jours des sept derniers où l'élève a laissé au moins une trace. Les minutes sont une estimation d'après ces traces, pas un chronomètre.")}
     </div>`);
   }
 
@@ -428,9 +440,11 @@
       + ' Le chevron ouvre ce qu’il a remis.',
       `<table class="fe-table">
         <thead><tr>
-          <th>Activité</th><th>État</th><th style="text-align:center">Dialogues</th>
-          <th style="text-align:center">Réussi du 1er coup</th>
-          <th style="text-align:center">Erreurs</th><th>Dernière trace</th>
+          <th>Activité</th><th>État</th>
+          <th style="text-align:center" tabindex="0" data-info="Coché dès que l'élève a écouté le dialogue de l'activité en entier. Une écoute partielle ne compte pas.">Dialogues</th>
+          <th style="text-align:center" tabindex="0" data-info="Zones réussies dès la première tentative, sur les zones remplies. Réussir 123 zones en 19 erreurs ou en 97 erreurs, ce n'est pas le même élève.">Réussi du 1er coup</th>
+          <th style="text-align:center" tabindex="0" data-info="Toutes les réponses fausses posées dans l'activité, y compris les tentatives répétées sur la même zone.">Erreurs</th>
+          <th tabindex="0" data-info-cote="droite" data-info="Le dernier moment où quelque chose a été enregistré pour cette activité : une page ouverte, un dialogue écouté, un exercice terminé.">Dernière trace</th>
         </tr></thead>
         <tbody>${corps}</tbody>
       </table>`);
@@ -528,10 +542,10 @@
     const tableau = parExo.size ? `<table class="fe-table" style="margin-top:var(--sp-4)">
       <thead><tr>
         <th>Exercice</th>
-        <th style="text-align:center">Aide offerte</th>
-        <th style="text-align:center">Acceptée</th>
-        <th style="text-align:center">Refusée</th>
-        <th style="text-align:center">Mini-leçons</th>
+        <th style="text-align:center" tabindex="0" data-info="Fois où le module a proposé de l'aide de lui-même, après une suite d'erreurs sur le même exercice.">Aide offerte</th>
+        <th style="text-align:center" tabindex="0" data-info="Fois où l'élève a dit oui à l'aide proposée.">Acceptée</th>
+        <th style="text-align:center" tabindex="0" data-info="Fois où l'élève a dit non. Un refus répété sur un exercice difficile mérite un mot en classe.">Refusée</th>
+        <th style="text-align:center" tabindex="0" data-info="Mini-leçons « En apprendre plus » que l'élève a ouvertes depuis cet exercice.">Mini-leçons</th>
         <th>Dernière fois</th>
       </tr></thead>
       <tbody>${[...parExo.values()]
@@ -610,8 +624,10 @@
     return section('Vocabulaire et pratique libre',
       'Cartes mémoire et séances de « Corrige-moi ! ».',
       vocCorps + `<table class="fe-table" style="margin-top:var(--sp-4)">
-        <thead><tr><th>Thème</th><th style="text-align:center">Réponses</th>
-          <th style="text-align:center">Justes du 1er coup</th><th>Dernière séance</th></tr></thead>
+        <thead><tr><th>Thème</th>
+          <th style="text-align:center" tabindex="0" data-info="Cartes mémoire retournées dans ce thème, toutes séances confondues. Un même mot revu cinq fois compte cinq fois.">Réponses</th>
+          <th style="text-align:center" tabindex="0" data-info="Cartes retrouvées juste sans avoir retourné la carte ni demandé d'indice.">Justes du 1er coup</th>
+          <th>Dernière séance</th></tr></thead>
         <tbody>${lignes}</tbody></table>`);
   }
 
