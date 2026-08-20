@@ -1,5 +1,5 @@
 /* =========================================================================
-   Session enseignante — partagée par catalogue.html, index.html et lms.html.
+   Session enseignante — partagée par catalogue.html, enseignant.html et lms.html.
 
    Le portail est passé d'un enseignant unique à plusieurs enseignants ayant
    chacun un ou plusieurs groupes. Le catalogue d'activités reste commun ;
@@ -75,7 +75,7 @@ const Prof = (() => {
   }
 
   function versConnexion() {
-    const retour = location.pathname.split('/').pop() || 'index.html';
+    const retour = location.pathname.split('/').pop() || 'enseignant.html';
     location.href = `prof.html?retour=${encodeURIComponent(retour)}`;
   }
 

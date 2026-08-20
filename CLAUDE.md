@@ -202,7 +202,7 @@ ne verrouille rien. Un verrou qui se trompe fermerait la classe.
 
 Chaque activité porte une `categorie` : `cours` (modules de 4 h, le matin) ou
 `atelier` (activités de 2 h, l'après-midi). Les listes enseignantes
-(`catalogue.html`, `index.html`) sont rendues en deux sections dans cet ordre.
+(`catalogue.html`, `enseignant.html`) sont rendues en deux sections dans cet ordre.
 Le champ se choisit à la création et dans le modal de modification ; pour une
 activité qui ne l'aurait pas, `normalize_categorie()` le déduit du chemin
 (`assets/interactive/module-*` → `cours`). Il figure dans `USER_FIELDS`, donc le
@@ -217,7 +217,8 @@ choix de l'enseignant survit aux redéploiements.
   La liste montre **tous** les comptes, administrateurs en tête, et chaque
   ligne porte son rôle en toutes lettres.
   `js/prof.js` fournit `Prof.fetch` / `Prof.withGroup` / `Prof.body` aux trois
-  pages enseignantes (`catalogue.html`, `index.html`, `lms.html`) — toute requête
+  pages enseignantes (`catalogue.html`, `lms.html`, `fiche-eleve.html`,
+  `progression.html`) — toute requête
   d'administration doit passer par là, sinon elle répond 401.
 - Rôles : `admin` (crée les autres enseignants, voit tous les groupes) et `prof`.
 - **Le compte fondateur** est le seul à pouvoir ouvrir un compte
@@ -276,7 +277,7 @@ plus — ajouter une activité, ajouter du matériel à une activité.
   par groupe. Le catalogue appelle donc `GET /api/activities?catalogue=1`,
   qui rend le fonds sans superposer les dates d'un groupe. Sans ce drapeau,
   la route se comporte exactement comme avant (`?groupId=` obligatoire) :
-  rien ne change pour `index.html`, `lms.html` ni le portail élève.
+  rien ne change pour `lms.html` ni le portail élève.
 - **Rien ne disparaît, rien ne se remplace.** Pas de suppression d'activité,
   pas de suppression de fichier, pas de renommage, pas de changement de type.
   Un emplacement déjà rempli s'affiche avec son fichier en lien et n'offre
@@ -291,7 +292,7 @@ plus — ajouter une activité, ajouter du matériel à une activité.
   miniature. Le corrigé est rangé dans `assets/corriges/<slug><ext>`.
 - **Le niveau se choisit au dépôt** et se lit sur chaque ligne, avec son
   propre filtre. Le champ est `level`, dans la forme « Niveau N » déjà
-  écrite partout ailleurs (`js/app.js`, `js/materiel.js`) — on ne change
+  écrite partout ailleurs (`js/enseignant.js`, `js/materiel.js`) — on ne change
   pas de forme en chemin. `normalize_level()` accepte les huit niveaux du
   programme et retombe sur *Niveau 4* pour toute autre valeur, y compris
   l'absence : les 43 activités écrites avant ce champ sont de ce cours-là.
@@ -312,8 +313,8 @@ plus — ajouter une activité, ajouter du matériel à une activité.
     design (aucune couleur en dur). Son en-tête ramène à l'espace enseignant,
     en face du bouton « Catalogue » du portail. La barre de groupe vient
     encore de `js/prof.js`, qui injecte ses bleus : elle est rhabillée sur
-    place par `#profBar …`, sans toucher `prof.js` que partagent `index.html`
-    et `lms.html`.
+    place par `#profBar …`, sans toucher `prof.js` que partagent les autres
+    pages enseignantes.
 
 ## Portail enseignant (`enseignant.html`)
 

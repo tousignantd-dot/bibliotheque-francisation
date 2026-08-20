@@ -2178,8 +2178,8 @@ class Handler(http.server.SimpleHTTPRequestHandler):
             return
 
         # La racine est la porte des élèves : ils sont trente pour un
-        # enseignant, qui entre par /prof.html et retrouve la bibliothèque
-        # sur /index.html. L'adresse à donner à la classe reste donc courte.
+        # enseignant, qui entre par /prof.html et travaille dans
+        # /enseignant.html. L'adresse à donner à la classe reste donc courte.
         if path == "/":
             self.path = "/eleve.html"
             super().do_GET()
