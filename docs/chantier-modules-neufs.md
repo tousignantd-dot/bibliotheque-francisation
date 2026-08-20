@@ -14,8 +14,8 @@ livrer**.
 |----|------|-----------|----------------|
 | 11 | `module-relations` | Relations sociales | **terminé** |
 | 12 | `module-deplacement` | Déplacement dans une ville | **terminé** |
-| 13 | `module-activite` | Participation à une activité culturelle ou sportive | en cours |
-| 14 | `module-alimentation` | Achat d'aliments ou de produits d'entretien | — |
+| 13 | `module-activite` | Participation à une activité culturelle ou sportive | **terminé** |
+| 14 | `module-alimentation` | Achat d'aliments ou de produits d'entretien | en cours |
 | 15 | `module-achat` | Achat de biens de consommation durables | — |
 | 16 | `module-restaurant` | Service de restauration | — |
 | 18 | `module-vetements` | Achat de vêtements | — |
@@ -128,3 +128,31 @@ production.
 les indications pour venir chez soi), parce que l'architecture des modules en
 prévoit une et que les attentes de fin de cours du niveau demandent un court
 texte suivi. À signaler à l'utilisateur plutôt qu'à décider seul.
+
+
+## Module 13 — S'inscrire à une activité
+
+- **Scénario** : Rosa, arrivée de Colombie il y a un an, inscrit son garçon à
+  la natation, puis se cherche une activité pour elle. Sept dialogues, quinze
+  mots, vingt-deux exercices, sept mini-leçons.
+- **Grammaire** : entendre les chiffres (70, 80, 90 et le piège de soixante) ·
+  il faut / il est important que · le superlatif · l'impératif avec un pronom ·
+  chaque, plusieurs, quelques · lire un dépliant · le registre familier contre
+  le registre standard. Tous neufs dans la collection.
+- **Couleur** : vert `#166534` / `#E3F1E7`. **Activité** : 50.
+- Médias : 21 images (0,71 $), 200 MP3. Les **221 URL** de la page répondent.
+- Séances : 16 présentations, 190 diapositives, 16 fiches (148 blocs).
+  `MODULE 13` dans les seize `.pptx`.
+- Cinquième scénario de jeu de rôle, aux rôles « parent » et « prepose ».
+
+### Une faute qui rendait la page muette
+
+Le titre du module commence par « S'inscrire ». Cette apostrophe, injectée
+dans `el.innerHTML='…'`, a cassé **tout le script de la page** — qui a continué
+de s'afficher, sans exercices, sans mini-leçons, sans rien. Le seul symptôme
+visible était que les constantes n'existaient plus.
+
+`build/module.py` **refuse maintenant** une apostrophe non échappée dans
+`bravo` ou `relance`, avec le message qui dit quoi écrire. Le contrôle utile
+n'est pas « la page s'affiche » mais « les constantes existent » — c'est
+désormais la première chose que vérifie le relevé fait dans le navigateur.

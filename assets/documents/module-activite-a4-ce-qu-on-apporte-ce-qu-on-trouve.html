@@ -1,0 +1,172 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>A4 · Ce qu'on apporte, ce qu'on trouve — Fiche élève</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800;900&display=swap" rel="stylesheet">
+<style>
+/* ═══════════════════════════════════════════════════════════════
+   FICHE ÉLÈVE · IMPRESSION LETTRE, NOIR ET BLANC
+   ───────────────────────────────────────────────────────────────
+   Aucune couleur : ces fiches sont photocopiées en noir et blanc.
+   Toute la hiérarchie passe par la GRAISSE, les FILETS et les MOTS.
+   C'est d'ailleurs la règle du système de design poussée à son
+   terme : « jamais d'information portée par la couleur seule ».
+
+   Les gris viennent des neutres du système (ink-900 à ink-400),
+   qui sont déjà quasi neutres. Les filets sont volontairement plus
+   sombres qu'à l'écran : une photocopieuse efface tout ce qui est
+   plus clair que 15 % de noir.
+   ═══════════════════════════════════════════════════════════════ */
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+:root{
+  --paper:#FFFFFF;
+  --tint:#F0F0EE;          /* aplat le plus clair encore visible en photocopie */
+  --line:#C9C9C6;          /* filet fin */
+  --rule:#17181A;          /* filet structurant */
+  --ink:#17181A;           /* titres */
+  --body:#2B2E30;          /* texte courant, un cran plus sombre qu'à l'écran */
+  --soft:#4B4F52;          /* texte secondaire */
+  --muted:#5E6165;         /* sur-titres, méta */
+}
+html{background:#BBBBBB}
+body{
+  font-family:'Nunito','Trebuchet MS',sans-serif;
+  font-size:11.5pt; line-height:1.5; color:var(--body);
+  background:var(--paper);
+  width:215.9mm;                    /* 8,5 po — format lettre */
+  margin:0 auto; padding:14mm 15mm 16mm;
+  -webkit-print-color-adjust:exact; print-color-adjust:exact;
+}
+h1,h2,h3{color:var(--ink); line-height:1.2; letter-spacing:-0.01em}
+
+/* ── En-tête ── */
+.hdr{border-bottom:2.5px solid var(--rule); padding-bottom:8px; margin-bottom:14px;
+     display:flex; align-items:flex-end; gap:14px}
+.hdr-l{flex:1}
+.eyebrow{font-size:9.5pt; font-weight:800; text-transform:uppercase;
+         letter-spacing:.12em; color:var(--muted)}
+.hdr h1{font-size:22pt; font-weight:900; margin-top:3px}
+.hdr-r{flex-shrink:0; display:flex; gap:10px; align-items:flex-end;
+       font-size:9.5pt; font-weight:800; text-transform:uppercase;
+       letter-spacing:.08em; color:var(--muted); padding-bottom:2px}
+.nomline{display:inline-block; border-bottom:1.5px solid var(--rule);
+         height:6mm; vertical-align:bottom; margin-left:5px}
+.nomline--nom{width:48mm} .nomline--date{width:26mm}
+.chapeau{font-size:12pt; font-weight:600; color:var(--soft); margin-bottom:16px}
+
+/* ── Blocs ── */
+.bloc{break-inside:avoid; page-break-inside:avoid; margin-bottom:13px}
+.card{border:1px solid var(--line); border-radius:12px; padding:11px 14px 12px;
+      background:var(--paper)}
+.lbl{font-size:9.5pt; font-weight:800; text-transform:uppercase;
+     letter-spacing:.12em; color:var(--muted); margin-bottom:5px}
+h2.t{font-size:15pt; font-weight:900; margin-bottom:7px}
+.consigne{font-size:11pt; font-weight:600; color:var(--soft); margin-bottom:8px}
+
+/* ── Objectifs et exercices : pastille en cerne, jamais en aplat ── */
+ol.obj,ol.ex{list-style:none}
+ol.obj{counter-reset:o} ol.ex{counter-reset:e}
+ol.obj li,ol.ex li{position:relative; padding-left:9mm; font-weight:600}
+ol.obj li{counter-increment:o; margin-bottom:6px}
+ol.ex li{counter-increment:e; margin-bottom:9px; break-inside:avoid}
+ol.obj li::before,ol.ex li::before{
+  position:absolute; left:0; top:0; width:6mm; height:6mm; border-radius:50%;
+  border:1.5px solid var(--rule); color:var(--ink);
+  font-size:9.5pt; font-weight:800;
+  display:flex; align-items:center; justify-content:center}
+ol.obj li::before{content:counter(o)}
+ol.ex li::before{content:counter(e)}
+
+/* ── Dialogue ── */
+.rep{display:flex; gap:10px; padding:4px 0; border-top:1px solid var(--line)}
+.rep:first-of-type{border-top:0}
+.rep--key{background:var(--tint); border-radius:8px; padding:5px 8px;
+          border-top:0; margin:2px 0}
+.qui{flex:0 0 30mm; font-weight:800; color:var(--ink); font-size:10.5pt}
+
+/* ── Règle : encadrée au filet épais, c'est elle qu'on repère de loin ── */
+.regle{border:2.5px solid var(--rule); border-radius:12px; padding:12px 14px}
+.regle .lbl{color:var(--ink)}
+.regle p.r{font-size:14pt; font-weight:900; color:var(--ink); line-height:1.3}
+.regle p.pr{margin-top:7px; font-weight:600; color:var(--soft)}
+
+/* ── Tableau ── */
+table{width:100%; border-collapse:collapse}
+th{font-size:9.5pt; font-weight:800; text-transform:uppercase; letter-spacing:.1em;
+   color:var(--muted); text-align:left; padding:0 8px 5px 0;
+   border-bottom:1.5px solid var(--rule)}
+td{padding:6px 8px 6px 0; border-top:1px solid var(--line); vertical-align:top;
+   font-weight:600}
+td.cle{font-weight:900; color:var(--ink)}   /* la colonne clé : en gras, pas en couleur */
+.note{margin-top:8px; font-size:10.5pt; font-weight:600; color:var(--soft);
+      background:var(--tint); border-radius:9px; padding:8px 11px}
+
+/* ── Cartes ── */
+.grid{display:grid; grid-template-columns:1fr 1fr; gap:9px}
+.grid .card h3{font-size:11.5pt; font-weight:900; color:var(--ink); margin-bottom:3px}
+.grid .card p{font-size:11pt}
+
+/* ── Piège : le filet distingue les deux colonnes, pas la couleur ──
+   À gauche, un filet TIRETÉ — ce qui ne tient pas.
+   À droite, un filet PLEIN et épais — ce qu'il faut retenir.
+   Les deux intitulés disent la même chose en mots.                */
+.duo{display:grid; grid-template-columns:1fr 1fr; gap:10px}
+.duo>div{border-radius:12px; padding:10px 13px}
+.duo .no{border:1.5px dashed var(--muted)}
+.duo .ok{border:2.5px solid var(--rule); background:var(--tint)}
+.duo .k{font-size:9.5pt; font-weight:800; text-transform:uppercase;
+        letter-spacing:.1em; margin-bottom:4px; color:var(--muted)}
+.duo .ok .k{color:var(--ink)}
+.duo p.ph{font-size:12pt; font-weight:800; color:var(--ink); line-height:1.3}
+.duo .no p.ph{font-weight:600; font-style:italic; color:var(--soft)}
+
+/* ── Vocabulaire ── */
+.voc{width:100%; border-collapse:collapse}
+.voc td{border-top:1px solid var(--line); padding:6px 8px 6px 0}
+.voc td.mot{width:38%; font-weight:900; color:var(--ink)}
+.voc td.def{color:var(--soft)}
+
+/* ── Zones de réponse ── */
+.ligne{display:block; border-bottom:1px dotted #8E8E8A; height:8mm; margin-top:2px}
+.ligne--court{width:55%}
+
+/* ── Billet de sortie ── */
+.billet{border:2.5px solid var(--rule); border-radius:12px; padding:13px 15px}
+.billet .k{font-size:9.5pt; font-weight:800; text-transform:uppercase;
+           letter-spacing:.12em; color:var(--ink); margin-bottom:4px}
+.billet p.c{font-size:14pt; font-weight:900; color:var(--ink); line-height:1.3}
+.billet ul{list-style:none; margin-top:7px}
+.billet li{font-weight:600; color:var(--soft); margin-bottom:3px}
+
+/* ── Pied ── */
+footer{margin-top:16px; padding-top:7px; border-top:1px solid var(--line);
+       font-size:9.5pt; font-weight:700; color:var(--muted);
+       display:flex; justify-content:space-between}
+
+/* ── Impression ── */
+@page{size:8.5in 11in; margin:14mm 15mm}
+@media print{
+  html{background:#FFFFFF}
+  body{width:auto; padding:0}
+  .bloc{break-inside:avoid; page-break-inside:avoid}
+  h2.t,.lbl{break-after:avoid; page-break-after:avoid}
+}
+</style>
+</head>
+<body>
+<header class="hdr">
+  <div class="hdr-l">
+    <div class="eyebrow">Séance A4 · Module 13 · 50 minutes</div>
+    <h1>Ce qu'on apporte, ce qu'on trouve</h1>
+  </div>
+  <div class="hdr-r"><span>Nom<span class="nomline nomline--nom"></span></span><span>Date<span class="nomline nomline--date"></span></span></div>
+</header>
+<p class="chapeau">Huit lieux et objets d'un centre de loisirs. Les nommer, c'est pouvoir demander où ils sont — et savoir ce qu'on doit mettre dans son sac.</p>
+<section class="bloc card"><div class="lbl">Objectifs</div><h2 class="t">À la fin, je serai capable de…</h2><ol class="obj"><li>nommer huit lieux et objets d'un centre de loisirs ;</li><li>distinguer ce qui est obligatoire de ce qui est recommandé ;</li><li>employer l'article juste : un maillot, le bonnet, la piscine ;</li><li>faire la liste de ce que je dois mettre dans mon sac.</li></ol></section><section class="bloc"><div class="lbl">Les quatre objets</div><h2 class="t">Ce qu'on apporte</h2><div class="grid"><div class="card"><h3>un maillot de bain</h3><p>Se dit « maillot » tout court dans la conversation. Au Québec, on entend aussi « costume de bain ».</p></div><div class="card"><h3>un bonnet de bain</h3><p>Obligatoire dans beaucoup de piscines publiques d'ici. Il se vend au comptoir, quelques dollars.</p></div><div class="card"><h3>une serviette</h3><p>Grande, pour se sécher. À ne pas confondre avec la serviette de table.</p></div><div class="card"><h3>des sandales</h3><p>Pour le bord de la piscine et la douche. Souvent recommandées plutôt qu'obligatoires.</p></div></div></section><section class="bloc"><div class="lbl">Les quatre lieux</div><h2 class="t">Ce qu'on trouve sur place</h2><div class="grid"><div class="card"><h3>le comptoir</h3><p>L'endroit où on s'inscrit, où on paie et où on pose ses questions.</p></div><div class="card"><h3>le vestiaire</h3><p>Où on se change et où on laisse ses affaires. Souvent avec des casiers à cadenas.</p></div><div class="card"><h3>la piscine</h3><p>Le bassin lui-même. « Aller à la piscine » désigne aussi tout l'édifice.</p></div><div class="card"><h3>le gymnase</h3><p>La grande salle des sports d'équipe et des cours de groupe.</p></div></div></section><section class="bloc card"><div class="lbl">Analyse</div><h2 class="t">Obligatoire ou recommandé ?</h2><table><thead><tr><th>Ce qu'on entend</th><th>Ce que ça veut dire</th></tr></thead><tbody><tr><td class="cle">Le bonnet est obligatoire.</td><td>sans lui, pas d'accès à l'eau</td></tr><tr><td class="cle">Des sandales sont recommandées.</td><td>c'est un conseil, pas une condition</td></tr><tr><td class="cle">Il faut une preuve de résidence.</td><td>sans elle, je paie le tarif élevé</td></tr><tr><td class="cle">Les partitions sont fournies.</td><td>je n'ai rien à acheter</td></tr></tbody></table><div class="note">Écoutez le mot exact : obligatoire, recommandé, fourni. Chacun décide d'une dépense ou d'un refus.</div></section><section class="bloc"><div class="lbl">Attention</div><h2 class="t">Confondre obligatoire et recommandé</h2><div class="duo"><div class="no"><div class="k">On entend souvent</div><p class="ph">On m'a dit d'apporter des sandales, alors j'ai pensé que le bonnet aussi, c'était juste conseillé.</p></div><div class="ok"><div class="k">Il faut dire plutôt</div><p class="ph">Le bonnet est obligatoire. Les sandales sont recommandées.</p></div></div><div class="note">Un objet obligatoire vous empêche de participer si vous ne l'avez pas. Un objet recommandé, non. La différence tient à un mot, et elle décide si votre enfant entre dans l'eau ce samedi-là.</div></section><section class="bloc card"><div class="lbl">Pratique</div><h2 class="t">Le mot juste</h2><p class="consigne">Complétez avec le mot du vocabulaire.</p><ol class="ex"><li><span class="q">Le ___ de bain est obligatoire dans cette piscine.</span><span class="ligne ligne--court"></span></li><li><span class="q">Les enfants se changent au ___ avant le cours.</span><span class="ligne ligne--court"></span></li><li><span class="q">C'est au ___ qu'on s'inscrit et qu'on paie.</span><span class="ligne ligne--court"></span></li><li><span class="q">Apportez un ___ , une serviette et des sandales.</span><span class="ligne ligne--court"></span></li><li><span class="q">Le cours de groupe a lieu dans le ___ .</span><span class="ligne ligne--court"></span></li><li><span class="q">Il faut une ___ de résidence pour le tarif réduit.</span><span class="ligne ligne--court"></span></li></ol></section><section class="bloc billet"><div class="k">Billet de sortie</div><p class="c">Faites la liste de ce qu'il faut apporter à une activité que vous connaissez.</p><ul><li>Séparez ce qui est obligatoire de ce qui est recommandé.</li><li>Si vous ne pratiquez aucune activité, faites la liste pour le cours de natation de Mateo.</li></ul><span class="ligne"></span><span class="ligne"></span><span class="ligne"></span></section>
+<footer><span>A4 · S'inscrire à une activité</span><span>Fiche élève</span></footer>
+</body>
+</html>

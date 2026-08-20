@@ -1,0 +1,172 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>A1 · Au comptoir du centre sportif — Fiche élève</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800;900&display=swap" rel="stylesheet">
+<style>
+/* ═══════════════════════════════════════════════════════════════
+   FICHE ÉLÈVE · IMPRESSION LETTRE, NOIR ET BLANC
+   ───────────────────────────────────────────────────────────────
+   Aucune couleur : ces fiches sont photocopiées en noir et blanc.
+   Toute la hiérarchie passe par la GRAISSE, les FILETS et les MOTS.
+   C'est d'ailleurs la règle du système de design poussée à son
+   terme : « jamais d'information portée par la couleur seule ».
+
+   Les gris viennent des neutres du système (ink-900 à ink-400),
+   qui sont déjà quasi neutres. Les filets sont volontairement plus
+   sombres qu'à l'écran : une photocopieuse efface tout ce qui est
+   plus clair que 15 % de noir.
+   ═══════════════════════════════════════════════════════════════ */
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+:root{
+  --paper:#FFFFFF;
+  --tint:#F0F0EE;          /* aplat le plus clair encore visible en photocopie */
+  --line:#C9C9C6;          /* filet fin */
+  --rule:#17181A;          /* filet structurant */
+  --ink:#17181A;           /* titres */
+  --body:#2B2E30;          /* texte courant, un cran plus sombre qu'à l'écran */
+  --soft:#4B4F52;          /* texte secondaire */
+  --muted:#5E6165;         /* sur-titres, méta */
+}
+html{background:#BBBBBB}
+body{
+  font-family:'Nunito','Trebuchet MS',sans-serif;
+  font-size:11.5pt; line-height:1.5; color:var(--body);
+  background:var(--paper);
+  width:215.9mm;                    /* 8,5 po — format lettre */
+  margin:0 auto; padding:14mm 15mm 16mm;
+  -webkit-print-color-adjust:exact; print-color-adjust:exact;
+}
+h1,h2,h3{color:var(--ink); line-height:1.2; letter-spacing:-0.01em}
+
+/* ── En-tête ── */
+.hdr{border-bottom:2.5px solid var(--rule); padding-bottom:8px; margin-bottom:14px;
+     display:flex; align-items:flex-end; gap:14px}
+.hdr-l{flex:1}
+.eyebrow{font-size:9.5pt; font-weight:800; text-transform:uppercase;
+         letter-spacing:.12em; color:var(--muted)}
+.hdr h1{font-size:22pt; font-weight:900; margin-top:3px}
+.hdr-r{flex-shrink:0; display:flex; gap:10px; align-items:flex-end;
+       font-size:9.5pt; font-weight:800; text-transform:uppercase;
+       letter-spacing:.08em; color:var(--muted); padding-bottom:2px}
+.nomline{display:inline-block; border-bottom:1.5px solid var(--rule);
+         height:6mm; vertical-align:bottom; margin-left:5px}
+.nomline--nom{width:48mm} .nomline--date{width:26mm}
+.chapeau{font-size:12pt; font-weight:600; color:var(--soft); margin-bottom:16px}
+
+/* ── Blocs ── */
+.bloc{break-inside:avoid; page-break-inside:avoid; margin-bottom:13px}
+.card{border:1px solid var(--line); border-radius:12px; padding:11px 14px 12px;
+      background:var(--paper)}
+.lbl{font-size:9.5pt; font-weight:800; text-transform:uppercase;
+     letter-spacing:.12em; color:var(--muted); margin-bottom:5px}
+h2.t{font-size:15pt; font-weight:900; margin-bottom:7px}
+.consigne{font-size:11pt; font-weight:600; color:var(--soft); margin-bottom:8px}
+
+/* ── Objectifs et exercices : pastille en cerne, jamais en aplat ── */
+ol.obj,ol.ex{list-style:none}
+ol.obj{counter-reset:o} ol.ex{counter-reset:e}
+ol.obj li,ol.ex li{position:relative; padding-left:9mm; font-weight:600}
+ol.obj li{counter-increment:o; margin-bottom:6px}
+ol.ex li{counter-increment:e; margin-bottom:9px; break-inside:avoid}
+ol.obj li::before,ol.ex li::before{
+  position:absolute; left:0; top:0; width:6mm; height:6mm; border-radius:50%;
+  border:1.5px solid var(--rule); color:var(--ink);
+  font-size:9.5pt; font-weight:800;
+  display:flex; align-items:center; justify-content:center}
+ol.obj li::before{content:counter(o)}
+ol.ex li::before{content:counter(e)}
+
+/* ── Dialogue ── */
+.rep{display:flex; gap:10px; padding:4px 0; border-top:1px solid var(--line)}
+.rep:first-of-type{border-top:0}
+.rep--key{background:var(--tint); border-radius:8px; padding:5px 8px;
+          border-top:0; margin:2px 0}
+.qui{flex:0 0 30mm; font-weight:800; color:var(--ink); font-size:10.5pt}
+
+/* ── Règle : encadrée au filet épais, c'est elle qu'on repère de loin ── */
+.regle{border:2.5px solid var(--rule); border-radius:12px; padding:12px 14px}
+.regle .lbl{color:var(--ink)}
+.regle p.r{font-size:14pt; font-weight:900; color:var(--ink); line-height:1.3}
+.regle p.pr{margin-top:7px; font-weight:600; color:var(--soft)}
+
+/* ── Tableau ── */
+table{width:100%; border-collapse:collapse}
+th{font-size:9.5pt; font-weight:800; text-transform:uppercase; letter-spacing:.1em;
+   color:var(--muted); text-align:left; padding:0 8px 5px 0;
+   border-bottom:1.5px solid var(--rule)}
+td{padding:6px 8px 6px 0; border-top:1px solid var(--line); vertical-align:top;
+   font-weight:600}
+td.cle{font-weight:900; color:var(--ink)}   /* la colonne clé : en gras, pas en couleur */
+.note{margin-top:8px; font-size:10.5pt; font-weight:600; color:var(--soft);
+      background:var(--tint); border-radius:9px; padding:8px 11px}
+
+/* ── Cartes ── */
+.grid{display:grid; grid-template-columns:1fr 1fr; gap:9px}
+.grid .card h3{font-size:11.5pt; font-weight:900; color:var(--ink); margin-bottom:3px}
+.grid .card p{font-size:11pt}
+
+/* ── Piège : le filet distingue les deux colonnes, pas la couleur ──
+   À gauche, un filet TIRETÉ — ce qui ne tient pas.
+   À droite, un filet PLEIN et épais — ce qu'il faut retenir.
+   Les deux intitulés disent la même chose en mots.                */
+.duo{display:grid; grid-template-columns:1fr 1fr; gap:10px}
+.duo>div{border-radius:12px; padding:10px 13px}
+.duo .no{border:1.5px dashed var(--muted)}
+.duo .ok{border:2.5px solid var(--rule); background:var(--tint)}
+.duo .k{font-size:9.5pt; font-weight:800; text-transform:uppercase;
+        letter-spacing:.1em; margin-bottom:4px; color:var(--muted)}
+.duo .ok .k{color:var(--ink)}
+.duo p.ph{font-size:12pt; font-weight:800; color:var(--ink); line-height:1.3}
+.duo .no p.ph{font-weight:600; font-style:italic; color:var(--soft)}
+
+/* ── Vocabulaire ── */
+.voc{width:100%; border-collapse:collapse}
+.voc td{border-top:1px solid var(--line); padding:6px 8px 6px 0}
+.voc td.mot{width:38%; font-weight:900; color:var(--ink)}
+.voc td.def{color:var(--soft)}
+
+/* ── Zones de réponse ── */
+.ligne{display:block; border-bottom:1px dotted #8E8E8A; height:8mm; margin-top:2px}
+.ligne--court{width:55%}
+
+/* ── Billet de sortie ── */
+.billet{border:2.5px solid var(--rule); border-radius:12px; padding:13px 15px}
+.billet .k{font-size:9.5pt; font-weight:800; text-transform:uppercase;
+           letter-spacing:.12em; color:var(--ink); margin-bottom:4px}
+.billet p.c{font-size:14pt; font-weight:900; color:var(--ink); line-height:1.3}
+.billet ul{list-style:none; margin-top:7px}
+.billet li{font-weight:600; color:var(--soft); margin-bottom:3px}
+
+/* ── Pied ── */
+footer{margin-top:16px; padding-top:7px; border-top:1px solid var(--line);
+       font-size:9.5pt; font-weight:700; color:var(--muted);
+       display:flex; justify-content:space-between}
+
+/* ── Impression ── */
+@page{size:8.5in 11in; margin:14mm 15mm}
+@media print{
+  html{background:#FFFFFF}
+  body{width:auto; padding:0}
+  .bloc{break-inside:avoid; page-break-inside:avoid}
+  h2.t,.lbl{break-after:avoid; page-break-after:avoid}
+}
+</style>
+</head>
+<body>
+<header class="hdr">
+  <div class="hdr-l">
+    <div class="eyebrow">Séance A1 · Module 13 · 75 minutes</div>
+    <h1>Au comptoir du centre sportif</h1>
+  </div>
+  <div class="hdr-r"><span>Nom<span class="nomline nomline--nom"></span></span><span>Date<span class="nomline nomline--date"></span></span></div>
+</header>
+<p class="chapeau">Rosa est arrivée de Colombie il y a un an. Son garçon Mateo, neuf ans, veut apprendre à nager. Elle se présente au comptoir sans savoir ce qu'il faut demander.</p>
+<section class="bloc card"><div class="lbl">Objectifs</div><h2 class="t">À la fin, je serai capable de…</h2><ol class="obj"><li>me présenter à un comptoir de service et dire ce que je veux ;</li><li>poser les six questions qui font le tour d'une inscription ;</li><li>comprendre un tarif, un horaire et une durée ;</li><li>répéter les informations avant de partir.</li></ol></section><section class="bloc"><div class="lbl">La situation</div><h2 class="t">Ce qu'on sait de Rosa</h2><div class="grid"><div class="card"><h3>D'où elle vient</h3><p>De Colombie. Elle habite la ville depuis un an.</p></div><div class="card"><h3>Ce qu'elle veut</h3><p>Inscrire Mateo, neuf ans, à un cours de natation. Il ne sait pas nager.</p></div><div class="card"><h3>Ce qu'elle ignore</h3><p>Ce qu'il faut apporter, ce qui sert de preuve d'adresse, et combien ça coûte vraiment.</p></div><div class="card"><h3>Ce qu'elle fait de bien</h3><p>Elle répète tout à la fin : « samedi neuf heures, quatre-vingt-cinq dollars, une preuve d'adresse, et le bonnet ». C'est ce qui lui évite un deuxième déplacement.</p></div></div></section><section class="bloc card"><div class="lbl">Dialogue · 1 de 3</div><h2 class="t">Le jour et l'heure</h2><p class="consigne">Écoutez d'abord l'enregistrement, diapo masquée. Lisez ensuite.</p><div class="rep rep--key"><div class="qui">ROSA</div><div>Bonjour. Je voudrais inscrire mon garçon à un cours de natation. Il a neuf ans.</div></div><div class="rep"><div class="qui">LOUISE</div><div>Bonjour. Neuf ans, parfait. On a deux groupes : le samedi matin et le mardi après l'école.</div></div><div class="rep rep--key"><div class="qui">ROSA</div><div>Le samedi matin, ce serait mieux. À quelle heure exactement ?</div></div><div class="rep"><div class="qui">LOUISE</div><div>De neuf heures à dix heures. Douze semaines, de septembre à décembre.</div></div></section><section class="bloc card"><div class="lbl">Dialogue · 2 de 3</div><h2 class="t">Le prix et le papier</h2><div class="rep rep--key"><div class="qui">ROSA</div><div>Et ça coûte combien ?</div></div><div class="rep"><div class="qui">LOUISE</div><div>Quatre-vingt-cinq dollars pour les résidents. Cent dix pour les autres.</div></div><div class="rep rep--key"><div class="qui">ROSA</div><div>J'habite ici depuis un an. Qu'est-ce que je dois apporter comme preuve ?</div></div><div class="rep"><div class="qui">LOUISE</div><div>Une facture d'électricité ou un bail à votre nom. N'importe quel document récent avec l'adresse.</div></div></section><section class="bloc card"><div class="lbl">Dialogue · 3 de 3</div><h2 class="t">Le matériel obligatoire</h2><div class="rep rep--key"><div class="qui">ROSA</div><div>D'accord. Et il faut apporter quoi, pour le cours ?</div></div><div class="rep"><div class="qui">LOUISE</div><div>Maillot, serviette, et des sandales pour le bord de la piscine. Le bonnet de bain est obligatoire.</div></div><div class="rep rep--key"><div class="qui">ROSA</div><div>Le bonnet est obligatoire. Vous en vendez ici ?</div></div><div class="rep"><div class="qui">LOUISE</div><div>Oui, cinq dollars au comptoir. Prenez-en un tout de suite, ça évite un retour.</div></div></section><section class="bloc card"><div class="lbl">Vocabulaire · 1 de 2</div><h2 class="t">S'inscrire</h2><table class="voc"><tbody><tr><td class="mot">une inscription</td><td class="def">L'action de s'enregistrer pour participer à une activité.</td></tr><tr><td class="mot">le tarif</td><td class="def">Le prix demandé.</td></tr><tr><td class="mot">un résident</td><td class="def">Une personne qui habite la ville ; elle paie moins cher.</td></tr><tr><td class="mot">une preuve de résidence</td><td class="def">Un document récent à son nom, avec l'adresse.</td></tr><tr><td class="mot">une session</td><td class="def">La période pendant laquelle l'activité a lieu.</td></tr></tbody></table></section><section class="bloc card"><div class="lbl">Vocabulaire · 2 de 2</div><h2 class="t">Ce qu'on apporte</h2><table class="voc"><tbody><tr><td class="mot">un maillot de bain</td><td class="def">Le vêtement pour se baigner.</td></tr><tr><td class="mot">un bonnet de bain</td><td class="def">Obligatoire dans plusieurs piscines du Québec.</td></tr><tr><td class="mot">une serviette</td><td class="def">Pour se sécher en sortant de l'eau.</td></tr><tr><td class="mot">un vestiaire</td><td class="def">La pièce où on se change.</td></tr><tr><td class="mot">obligatoire</td><td class="def">Sans cela, on ne peut pas participer. À distinguer de « recommandé ».</td></tr></tbody></table></section><section class="bloc regle"><div class="lbl">Ce qu'il faut retenir</div><p class="r">Répétez les informations avant de partir. Toujours.</p><p class="pr">« Samedi neuf heures, quatre-vingt-cinq dollars, une preuve d'adresse, et le bonnet. » Quatre choses, une phrase. C'est ce qui distingue une inscription réussie d'un deuxième déplacement.</p></section><section class="bloc"><div class="lbl">Attention</div><h2 class="t">Repartir sans avoir tout demandé</h2><div class="duo"><div class="no"><div class="k">On entend souvent</div><p class="ph">Merci, je vais y penser.</p></div><div class="ok"><div class="k">Il faut dire plutôt</div><p class="ph">Alors : samedi neuf heures, quatre-vingt-cinq dollars, une preuve d'adresse, et le bonnet.</p></div></div><div class="note">Repartir sans avoir vérifié coûte un aller-retour complet — souvent une heure d'autobus et une journée de congé. Les quatre secondes que prend la récapitulation sont le meilleur investissement de la conversation.</div></section><section class="bloc billet"><div class="k">Billet de sortie</div><p class="c">Notez les six questions que vous poserez la prochaine fois que vous inscrirez quelqu'un.</p><ul><li>Une par ligne : l'horaire, le tarif, la durée, le matériel, les documents, l'inscription.</li><li>Écrivez-les comme vous les diriez, pas comme dans un manuel.</li></ul><span class="ligne"></span><span class="ligne"></span><span class="ligne"></span></section>
+<footer><span>A1 · S'inscrire à une activité</span><span>Fiche élève</span></footer>
+</body>
+</html>
