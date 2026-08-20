@@ -95,6 +95,15 @@ body{display:flex;flex-direction:column;min-height:100vh}
 #fc-reveal-btn{background:rgba(255,255,255,.18);border:1px solid rgba(255,255,255,.4);color:#fff;border-radius:8px;padding:8px 20px;font-family:'Nunito',sans-serif;font-size:14px;font-weight:800;cursor:pointer;letter-spacing:.04em}
 #fc-reveal-btn:hover{background:rgba(255,255,255,.38)}
 #fc-reveal-btn.hidden{display:none}
+/* ── La liste des mots de la série ──────────────────────────────────
+   Dépliée, elle reste dépliée d'une carte à l'autre : l'élève qui a
+   besoin de la liste en a besoin partout. Le mot affiché est marqué par
+   un cadre plein, jamais par la seule couleur. */
+#fc-liste{width:100%;max-height:34vh;overflow-y:auto;display:flex;flex-wrap:wrap;gap:8px;justify-content:center;padding-top:14px;margin-top:4px;border-top:1px solid rgba(255,255,255,.20)}
+#fc-liste.hidden{display:none}
+.fc-mot{background:rgba(255,255,255,.10);border:1px solid rgba(255,255,255,.30);color:#fff;border-radius:999px;padding:6px 14px;font-family:'Nunito',sans-serif;font-size:13px;font-weight:800;cursor:pointer}
+.fc-mot:hover{background:rgba(255,255,255,.24)}
+.fc-mot[aria-current="true"]{background:rgba(255,255,255,.92);border-color:rgba(255,255,255,.92);color:#1a2733}
 #fc-btns{display:flex;gap:14px;margin-top:6px}
 .fc-btn{background:rgba(255,255,255,.15);border:2px solid rgba(255,255,255,.38);color:#fff;border-radius:10px;padding:10px 22px;font-family:'Nunito',sans-serif;font-size:15px;font-weight:800;cursor:pointer}
 .fc-btn:hover{background:rgba(255,255,255,.28)}
@@ -142,7 +151,9 @@ body{display:flex;flex-direction:column;min-height:100vh}
       <button class="fc-btn" id="fc-prev">← Précédente</button>
       <button class="fc-btn" id="fc-next">Suivante →</button>
       <button class="fc-btn" id="fc-close">✕ Fermer</button>
+          <button class="fc-btn" id="fc-liste-btn" aria-expanded="false" aria-controls="fc-liste">Voir les mots</button>
     </div>
+    <div id="fc-liste" class="hidden"></div>
   </div>
 </div>
 
@@ -593,6 +604,47 @@ function lmsTrack(event, data) {
     }
   } catch(e2) {}
 }
+</script>
+<script>
+/* ── La liste des mots dans la carte mémoire ─────────────────────────
+   Écrit par build/cartes_memoire_liste_activites.py — ne pas éditer ici.
+   Le mot courant est lu à l'écran plutôt que dans un compteur interne :
+   c'est le seul repère que les trois générations de cartes partagent. */
+(function(){
+  var btn=document.getElementById('fc-liste-btn'), box=document.getElementById('fc-liste');
+  if(!btn||!box||typeof FC_CARDS==='undefined'||typeof fcOpen!=='function') return;
+  var CLE='francisationCartesListeMots';
+  var ouverte=localStorage.getItem(CLE)==='1';
+  FC_CARDS.forEach(function(c,i){
+    var m=document.createElement('button');
+    m.type='button'; m.className='fc-mot'; m.textContent=c.word;
+    m.addEventListener('click',function(){ fcOpen(i); });
+    box.appendChild(m);
+  });
+  function maj(){
+    btn.setAttribute('aria-expanded',ouverte?'true':'false');
+    btn.textContent=ouverte?'Cacher les mots':'Voir les mots';
+    box.classList.toggle('hidden',!ouverte);
+    var mot=(document.getElementById('fc-word')||{}).textContent||'';
+    [].forEach.call(box.children,function(m){
+      m.setAttribute('aria-current',m.textContent===mot?'true':'false');
+    });
+  }
+  btn.addEventListener('click',function(){
+    ouverte=!ouverte;
+    localStorage.setItem(CLE,ouverte?'1':'0');
+    maj();
+  });
+  // Selon la génération, la carte est peinte par fcShow, par showCard, ou
+  // par fcOpen lui-même. On enveloppe celles qui existent — marquer deux
+  // fois ne coûte rien, ne pas marquer laisserait la liste mentir.
+  ['fcShow','showCard','fcOpen'].forEach(function(n){
+    if(typeof window[n]!=='function') return;
+    var o=window[n];
+    window[n]=function(){ var r=o.apply(this,arguments); maj(); return r; };
+  });
+  maj();
+})();
 </script>
 </body>
 </html>
