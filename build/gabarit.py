@@ -358,6 +358,74 @@ def percer_identite(html):
     return html
 
 
+def corriger_envoi_oral(html):
+    """L'envoi de l'oral annonçait toujours la tâche de la consultation.
+
+    `fd.append('taskLabel', 'Production orale — décrire une douleur')` était
+    écrit en dur dans le module d'origine : tout module bâti sur le gabarit
+    déposait ses enregistrements sous le libellé d'un autre, et l'enseignante
+    lisait « décrire une douleur » sur une production de magasinage. Le dépôt
+    de l'écrit, lui, lit le titre et la consigne dans le DOM (`libelle()` /
+    `consigne()` de `greffe_depot_ecrit`) — l'oral fait maintenant pareil, avec
+    ses propres fonctions, celles de la greffe vivant dans une fermeture.
+    """
+    OLD = ("  fd.append('taskLabel','Production orale — décrire une douleur'); "
+           "fd.append('question','Décrire une douleur à un professionnel de la santé');")
+    NEW = "  fd.append('taskLabel', poLibelle()); fd.append('question', poConsigne());"
+    html = upgrade(html, OLD, NEW, "libellé de l'envoi oral")
+
+    OLD_FN = "async function poSend(){"
+    NEW_FN = (
+        "function poCarte(){ const t=document.getElementById('poText');"
+        " return t?t.closest('.card'):null; }\n"
+        "function poLibelle(){ const c=poCarte(), h=c&&c.querySelector('.prod-tit');\n"
+        "  return h?h.textContent.trim():'Production orale'; }\n"
+        "function poConsigne(){ const c=poCarte(), p=c&&c.querySelector('.prod-lead');\n"
+        "  return p?p.textContent.trim():''; }\n"
+        "async function poSend(){")
+    html = upgrade(html, OLD_FN, NEW_FN, "fonctions de libellé de l'oral")
+    return html
+
+
+def images_en_paysage(html):
+    """Les images d'exercice passent du carré au 3:2.
+
+    La zone de glisser-déposer mesure 223 x 132 px, soit un rapport de 1,7 :
+    une image carrée y est recadrée par `object-fit:cover` et perd le haut et
+    le bas. Les images se génèrent désormais en 3:2 (voir le journal
+    `docs/chantier-tous-niveaux.md`), et les trois cadres qui les reçoivent
+    prennent le même rapport — sans quoi on ne ferait que déplacer le
+    recadrage vers la banque.
+
+    Les images déjà produites, elles, sont carrées : dans un cadre paysage,
+    `object-fit:cover` leur couperait le tiers du haut et du bas. Les trois
+    cadres passent donc à `contain`, qui montre l'image entière et laisse au
+    besoin une bande de fond sur les côtés. Aucune régression sur les dix-huit
+    modules existants, et les images 3:2 des modules neufs rempliront le cadre
+    exactement.
+    """
+    PATCHES = [
+        # La vignette qu'on prend dans la banque.
+        (".imgtile{width:100px;height:100px;border-radius:10px;",
+         ".imgtile{width:150px;aspect-ratio:3/2;border-radius:10px;"),
+        # La zone où on la dépose : elle annonce la forme attendue.
+        (".imgzone{width:100%;min-height:110px;border-radius:10px;",
+         ".imgzone{width:100%;aspect-ratio:3/2;border-radius:10px;"),
+        # « Le mot et son image », dans le banc de vocabulaire.
+        ("  aspect-ratio:1/1;object-fit:cover;border-radius:var(--r-md);",
+         "  aspect-ratio:3/2;object-fit:contain;border-radius:var(--r-md);"),
+        # Montrer l'image entière plutôt que de la recadrer : les images déjà
+        # produites sont carrées, les neuves seront en 3:2.
+        (".imgtile img{width:100%;height:100%;object-fit:cover;display:block;",
+         ".imgtile img{width:100%;height:100%;object-fit:contain;display:block;"),
+        (".imgzone img{width:100%;height:100%;object-fit:cover;display:block;",
+         ".imgzone img{width:100%;height:100%;object-fit:contain;display:block;"),
+    ]
+    for old, new in PATCHES:
+        html = upgrade(html, old, new, "cadre d'image (%r)" % old[:28])
+    return html
+
+
 def main():
     html = SRC.read_text(encoding='utf-8')
     src_len = len(html)
@@ -368,6 +436,8 @@ def main():
     html = greffer_jeu_de_role(html)
     html = refondre_production(html)
     html = refondre_vocabulaire(html)
+    html = corriger_envoi_oral(html)
+    html = images_en_paysage(html)
     html = percer_contenu(html)
     html = percer_identite(html)
 

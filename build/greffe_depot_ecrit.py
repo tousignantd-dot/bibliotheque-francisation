@@ -121,6 +121,22 @@ THEMES = {
 }
 
 
+def theme_du_module(html, slug):
+    """Le thème LMS du module, lu là où il est déjà écrit.
+
+    L'envoi de l'oral porte `fd.append('theme','…')`, rempli par le jeton
+    `%%THEME%%` du gabarit — donc par le manifeste du module. Le relire ici
+    évite une seconde source : la table `THEMES` ne servait plus qu'à laisser
+    un thème vide aux modules qu'on oubliait d'y inscrire, et c'est
+    exactement ce qui est arrivé aux sept modules du niveau 4 produits en
+    août 2026. Elle reste en repli pour un module bâti hors de la chaîne.
+    """
+    m = re.search(r"fd\.append\('theme','((?:[^'\\]|\\.)*)'\)", html)
+    if m:
+        return m.group(1)
+    return THEMES.get(slug, '')
+
+
 def degreffe(html):
     for debut, fin in ((HTML_DEBUT, HTML_FIN), (JS_DEBUT, JS_FIN)):
         html = re.sub(r'\s*' + re.escape(debut) + r'.*?' + re.escape(fin), '',
@@ -141,7 +157,7 @@ def greffe(html, slug):
     fin_doc = re.search(r'</body>\s*</html>\s*$', html)
     if not fin_doc:
         raise ValueError('fin de document </body></html> introuvable')
-    js = GABARIT_JS % {'slug': slug, 'theme': THEMES.get(slug, '')}
+    js = GABARIT_JS % {'slug': slug, 'theme': theme_du_module(html, slug)}
     return html[:fin_doc.start()] + js + '\n' + html[fin_doc.start():]
 
 

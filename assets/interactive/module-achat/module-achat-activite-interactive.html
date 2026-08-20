@@ -199,12 +199,12 @@ body{display:flex;flex-direction:column;min-height:100vh}
 .ghost{position:fixed;z-index:9999;pointer-events:none;opacity:.88;transform:scale(1.06) rotate(1.5deg);box-shadow:0 8px 24px rgba(0,0,0,.25);border-radius:10px}
 
 /* Association image */
-.imgtile{width:100px;height:100px;border-radius:10px;overflow:hidden;cursor:grab;border:2.5px solid #5EEAD4;box-shadow:0 2px 7px rgba(0,0,0,.08);transition:all .15s;flex:none}
-.imgtile img{width:100%;height:100%;object-fit:cover;display:block;pointer-events:none}
+.imgtile{width:150px;aspect-ratio:3/2;border-radius:10px;overflow:hidden;cursor:grab;border:2.5px solid #5EEAD4;box-shadow:0 2px 7px rgba(0,0,0,.08);transition:all .15s;flex:none}
+.imgtile img{width:100%;height:100%;object-fit:contain;display:block;pointer-events:none}
 .imgtile:active{cursor:grabbing;transform:scale(1.04)}
 .imgtile.sel{border-color:#FBBF24;box-shadow:0 0 0 4px rgba(245,158,11,.22)}
-.imgzone{width:100%;min-height:110px;border-radius:10px;border:2.5px dashed #93C5D6;background:#F0F9FF;display:flex;align-items:center;justify-content:center;cursor:pointer;overflow:hidden;transition:all .15s}
-.imgzone img{width:100%;height:100%;object-fit:cover;display:block;pointer-events:none}
+.imgzone{width:100%;aspect-ratio:3/2;border-radius:10px;border:2.5px dashed #93C5D6;background:#F0F9FF;display:flex;align-items:center;justify-content:center;cursor:pointer;overflow:hidden;transition:all .15s}
+.imgzone img{width:100%;height:100%;object-fit:contain;display:block;pointer-events:none}
 .imgzone-ph{font-size:13px;color:#5A6B7D;padding:10px}
 .imgzone.dov{border-color:var(--sel-line);background:var(--sel-bg)}
 .imgzone.filled{border-style:solid;border-color:var(--sel-line)}
@@ -874,7 +874,7 @@ body{
 
 /* ── Exercice 3 · Le mot et son image ───────────────────────────────── */
 .vc-photo{display:block;width:100%;max-width:380px;margin:0 auto 18px;
-  aspect-ratio:1/1;object-fit:cover;border-radius:var(--r-md);
+  aspect-ratio:3/2;object-fit:contain;border-radius:var(--r-md);
   border:1px solid var(--ws-line);background:var(--ws-bg)}
 .vc-choix{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:10px}
 .choice{min-height:44px;font-family:inherit;font-size:17px;font-weight:800;
@@ -893,7 +893,6 @@ body{
 .voc-lang:focus-visible,.voc-flag:focus-visible,.vc-note:focus-visible,
 .choice:focus-visible{outline:3px solid var(--ws-accent);outline-offset:2px}
 
-
 /* Focus clavier visible partout (B.4) */
 :focus-visible{outline:3px solid var(--ws-accent);outline-offset:2px;border-radius:inherit}
 textarea:focus-visible,.winput:focus-visible{outline:none;border-color:var(--ws-accent)}
@@ -901,10 +900,12 @@ textarea:focus-visible,.winput:focus-visible{outline:none;border-color:var(--ws-
 <!-- OUTILS-ELEVE-CSS:début -->
 <link rel="stylesheet" href="/assets/design-system/outils-eleve.css">
 <!-- OUTILS-ELEVE-CSS:fin -->
+
 </head>
 <body>
 
 <div id="hdr">
+
   <div class="hdr-l">
     <div><div class="hdr-eye">Acheter un appareil</div>
     <h1 class="hdr-h1" id="hdr-title">Je découvre</h1>
@@ -1780,7 +1781,6 @@ function markRead(btn){
   btn.classList.add('done'); btn.textContent='✓ Lu';
   if(!dialogueRead){ dialogueRead=true; lmsTrack('dialogue_listened'); }
 }
-
 
 // ── LOGIQUE DE PLACEMENT ──────────────────────────────────────────────
 function checkOk(zid, iid, lbl) {
@@ -2936,13 +2936,18 @@ async function poGetFeedback(){
     showErr('poErr','Impossible de contacter le serveur.');
   }
 }
+function poCarte(){ const t=document.getElementById('poText'); return t?t.closest('.card'):null; }
+function poLibelle(){ const c=poCarte(), h=c&&c.querySelector('.prod-tit');
+  return h?h.textContent.trim():'Production orale'; }
+function poConsigne(){ const c=poCarte(), p=c&&c.querySelector('.prod-lead');
+  return p?p.textContent.trim():''; }
 async function poSend(){
   if(!audioBlob){ showErr('poErr',"Enregistre-toi d'abord."); return; }
   const btn=document.getElementById('poSendBtn'); btn.disabled=true; btn.textContent='Envoi…';
   const ext=(audioBlob.type||'').includes('mp4')?'m4a':'webm';
   const fd=new FormData();
   fd.append('code',studentCode); fd.append('theme','Achat de biens de consommation durables'); fd.append('taskId','module-achat-po');
-  fd.append('taskLabel','Production orale — décrire une douleur'); fd.append('question','Décrire une douleur à un professionnel de la santé');
+  fd.append('taskLabel', poLibelle()); fd.append('question', poConsigne());
   fd.append('transcription',document.getElementById('poText').value.trim()); fd.append('feedback',poFeedback);
   fd.append('audio',audioBlob,'enregistrement.'+ext);
   try{
@@ -4696,7 +4701,7 @@ lmsTrack('file_opened');
         method: 'POST', headers: {'Content-Type': 'application/json'},
         body: JSON.stringify({
           code: typeof studentCode !== 'undefined' ? studentCode : '',
-          theme: '', taskId: 'module-achat-pe',
+          theme: 'Achat de biens de consommation durables', taskId: 'module-achat-pe',
           taskLabel: libelle(), question: consigne(),
           texte: texte, feedback: retroDeposee,
         }),
