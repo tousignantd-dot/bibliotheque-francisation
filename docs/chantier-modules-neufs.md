@@ -96,3 +96,35 @@ Le 17 est pris par `module-banque`, d'où le saut.
 
 Contenu, build, médias, seize séances, seize fiches, dépôt à jour, poussé en
 production.
+
+## Module 12 — Trouver son chemin
+
+- **Scénario** : Nour, arrivée de Syrie il y a huit mois, cherche une adresse,
+  puis un hôpital en métro, puis explique le chemin à Patrice. Sept dialogues,
+  quinze mots, vingt-trois exercices, six mini-leçons.
+- **Grammaire** : la chute des consonnes finales · l'impératif · jusqu'à, vers,
+  par · les repères de lieu · celui, celle, ceux · la lecture d'un horaire et
+  d'un plan. Aucun de ces six points n'était traité ailleurs.
+- **Couleur** : ambre `#B45309` / `#FBEEDC`. **Activité** : 49.
+- Médias : 21 images (0,71 $), 182 MP3. Contrôle : les **203 URL** que la page
+  peut demander répondent toutes.
+- Séances : 16 présentations, 187 diapositives, 16 fiches (144 blocs).
+  `MODULE 12` dans les seize `.pptx`.
+- Le serveur gagne un troisième scénario de jeu de rôle, aux rôles « perdu » et
+  « guide ».
+
+### Deux garde-fous du socle qui ont servi
+
+- `theme.py` **refuse un caractère absent de Verdana** : le symbole phonétique
+  du « r » aurait été projeté en carré vide. Remplacé par « le r final ».
+- `theme.py` **refuse un tableau trop chargé** pour une diapositive projetée.
+  Deux tableaux ont dû être scindés ou allégés. Ces deux contrôles valent mieux
+  qu'une relecture : ils ne se fatiguent pas.
+
+### Une situation sans production écrite au programme
+
+« Déplacement dans une ville » ne porte **aucune intention de production
+écrite** — seulement CO, PO et CE. Le module en propose une quand même (écrire
+les indications pour venir chez soi), parce que l'architecture des modules en
+prévoit une et que les attentes de fin de cours du niveau demandent un court
+texte suivi. À signaler à l'utilisateur plutôt qu'à décider seul.
