@@ -159,7 +159,7 @@ const EXOS = [
    ]},
 
  // ── DÉFI 2 · L'AVIS ET L'ENTRETIEN ──────────────────────────
-  {sec:'t2', id:'t2vf', type:'vf', num:'Exercice 1', tit:'Vrai ou Faux — Ça vous va bien', color:'#6B4FBB',
+  {sec:'t2', id:'t2vf', type:'vf', num:'Exercice 1', tit:'Vrai ou Faux — Ça vous va bien', color:'#3B49A0',
    sub:"Écoute le dialogue, puis réponds.", tiles:['VRAI','FAUX'],
    savoir:{h:"› Les mots du manteau — à écouter et à répéter", speak:true, rows:[
      ["Ce qui protège","Deux parties qui font toute la différence en janvier.", ["capuchon","duvet"]],
@@ -178,7 +178,7 @@ const EXOS = [
     {id:'u1j', txt:"Kofi choisit le bleu, finalement.", ok:'FAUX'},
    ]},
 
-  {sec:'t2', id:'t2opinion', type:'write', num:'Exercice 2', tit:'Demander et donner un avis', color:'#6B4FBB', cols:2,
+  {sec:'t2', id:'t2opinion', type:'write', num:'Exercice 2', tit:'Demander et donner un avis', color:'#3B49A0', cols:2,
    sub:"Complète la phrase qui donne ou demande un avis.",
    savoir:{h:"› Dire ce qu'on en pense", rows:[
      ["Demander un avis","« <b>Qu'est-ce que tu en penses ?</b> » · « <b>Comment tu trouves ça ?</b> » · « <b>Ça me va ?</b> » Trois formules courtes, à un proche."],
@@ -196,7 +196,7 @@ const EXOS = [
     {q:"Chez un vendeur, on entendra : « Ça ___ va bien. »", accept:["vous"], ph:"vouvoiement"},
    ]},
 
-  {sec:'t2', id:'t2entretien', type:'write', num:'Exercice 3', tit:"Lire l'étiquette d'entretien", color:'#6B4FBB', cols:2,
+  {sec:'t2', id:'t2entretien', type:'write', num:'Exercice 3', tit:"Lire l'étiquette d'entretien", color:'#3B49A0', cols:2,
    sub:"Complète d'après ce que la conseillère explique.",
    savoir:{h:"› Cinq dessins, cinq consignes", rows:[
      ["Le bac d'eau","Le <b>lavage</b>. Le chiffre à l'intérieur est la température maximale : 30 veut dire eau froide. Une main dans le bac : lavage à la main. Le bac barré : ne pas laver à l'eau."],
@@ -215,7 +215,7 @@ const EXOS = [
     {q:"Le fer barré veut dire : pas de ___ .", accept:["repassage"], ph:"…"},
    ]},
 
-  {sec:'t2', id:'t2b', type:'vf', num:'Exercice 4', tit:"Vrai ou Faux — L'étiquette d'entretien", color:'#6B4FBB',
+  {sec:'t2', id:'t2b', type:'vf', num:'Exercice 4', tit:"Vrai ou Faux — L'étiquette d'entretien", color:'#3B49A0',
    sub:"Écoute le deuxième dialogue, puis réponds.", tiles:['VRAI','FAUX'], dialogue:'t2b',
    rows:[
     {id:'b1', txt:"L'étiquette d'entretien est dans le col.", ok:'VRAI'},
@@ -228,7 +228,7 @@ const EXOS = [
     {id:'b8', txt:"On peut laver un manteau cinq fois par hiver.", ok:'FAUX'},
    ]},
 
-  {sec:'t2', id:'t2symbole', type:'match', num:'Exercice 5', tit:'Le symbole et sa consigne', color:'#6B4FBB',
+  {sec:'t2', id:'t2symbole', type:'match', num:'Exercice 5', tit:'Le symbole et sa consigne', color:'#3B49A0',
    sub:"Associe chaque symbole à ce qu'il veut dire.", bankLbl:'Ce que ça veut dire', zonePh:'glisse ici',
    rows:[
     {id:'s1', q:"Un bac d'eau avec « 30 »", aid:'s1', a:"laver à trente degrés, à l'eau froide"},

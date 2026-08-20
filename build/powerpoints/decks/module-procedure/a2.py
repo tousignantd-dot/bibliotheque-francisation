@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 """A2 · Trois sons du bureau : « ui », « j » et « gn ».
-Bloc A · couleur violet (graphie-phonie) · 60 min.
+Bloc A · couleur indigo (graphie-phonie) · 60 min.
 Source : exercice `prPhon` et sa mini-leçon.
 
 Le module affiche ces sons en alphabet phonétique. Pas ici : Verdana ne
@@ -12,7 +12,7 @@ from theme import Deck
 
 def build(dossier):
     d = Deck(
-        code='A2', section='violet',
+        code='A2', section='indigo',
         titre='Trois sons du bureau',
         chapeau="« Aujourd'hui, je joins ma signature en ligne. » Trois sons difficiles "
                 "dans une seule phrase de travail — et trois orthographes qui ne se "

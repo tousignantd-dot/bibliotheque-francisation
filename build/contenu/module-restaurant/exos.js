@@ -159,7 +159,7 @@ const EXOS = [
    ]},
 
  // ── DÉFI 2 · PENDANT LE REPAS ───────────────────────────────
-  {sec:'t2', id:'t2vf', type:'vf', num:'Exercice 1', tit:'Vrai ou Faux — Pendant le repas', color:'#6B4FBB',
+  {sec:'t2', id:'t2vf', type:'vf', num:'Exercice 1', tit:'Vrai ou Faux — Pendant le repas', color:'#3B49A0',
    sub:"Écoute le dialogue, puis réponds.", tiles:['VRAI','FAUX'],
    savoir:{h:"› Les mots du service — à écouter et à répéter", speak:true, rows:[
      ["Sur la table","Ce qu'on demande le plus souvent pendant le repas.", ["carafe","robinet"]],
@@ -178,7 +178,7 @@ const EXOS = [
     {id:'u1j', txt:"Il le rapporte dans deux minutes.", ok:'VRAI'},
    ]},
 
-  {sec:'t2', id:'t2signal', type:'vf', num:'Exercice 2', tit:"Est-ce qu'on peut le dire ?", color:'#6B4FBB',
+  {sec:'t2', id:'t2signal', type:'vf', num:'Exercice 2', tit:"Est-ce qu'on peut le dire ?", color:'#3B49A0',
    sub:"Dans un restaurant d'ici, est-ce qu'on peut signaler cela au serveur ?", tiles:['OUI','MIEUX VAUT NON'],
    rows:[
     {id:'s1', txt:"Mon plat est froid.", ok:'OUI'},
@@ -191,7 +191,7 @@ const EXOS = [
     {id:'s8', txt:"Le prix me semble élevé.", ok:'MIEUX VAUT NON'},
    ]},
 
-  {sec:'t2', id:'t2demander', type:'write', num:'Exercice 3', tit:'Demander pendant le repas', color:'#6B4FBB', cols:2,
+  {sec:'t2', id:'t2demander', type:'write', num:'Exercice 3', tit:'Demander pendant le repas', color:'#3B49A0', cols:2,
    sub:"Écris la demande à la forme polie.",
    savoir:{h:"› Trois façons de demander, du plus simple au plus doux", rows:[
      ["Pour une petite chose","<b>Est-ce que je pourrais avoir…</b><span class='savoir-ex'>Est-ce que je pourrais avoir un peu de sel, s'il vous plaît ?</span>Sel, poivre, eau, un couvert, une serviette : rien de tout cela ne dérange."],
@@ -209,7 +209,7 @@ const EXOS = [
     {q:"Vous voulez l'addition. › ___ m'apporter l'addition ?", accept:["Pourriez-vous","pourriez-vous"], ph:"…"},
    ]},
 
-  {sec:'t2', id:'t2b', type:'vf', num:'Exercice 4', tit:'Vrai ou Faux — Un plat qui ne convient pas', color:'#6B4FBB',
+  {sec:'t2', id:'t2b', type:'vf', num:'Exercice 4', tit:'Vrai ou Faux — Un plat qui ne convient pas', color:'#3B49A0',
    sub:"Écoute le deuxième dialogue, puis réponds.", tiles:['VRAI','FAUX'], dialogue:'t2b',
    rows:[
     {id:'b1', txt:"Manon avait demandé le poulet sans sauce.", ok:'VRAI'},
@@ -222,7 +222,7 @@ const EXOS = [
     {id:'b8', txt:"Les restaurants préfèrent qu'on le dise.", ok:'VRAI'},
    ]},
 
-  {sec:'t2', id:'t2accomp', type:'match', num:'Exercice 5', tit:"Le plat et son accompagnement", color:'#6B4FBB',
+  {sec:'t2', id:'t2accomp', type:'match', num:'Exercice 5', tit:"Le plat et son accompagnement", color:'#3B49A0',
    sub:"Associe chaque plat à ce qui est servi avec.", bankLbl:'Servi avec', zonePh:'glisse ici',
    rows:[
     {id:'a1', q:"La truite du jour", aid:'a1', a:"des légumes et du riz"},

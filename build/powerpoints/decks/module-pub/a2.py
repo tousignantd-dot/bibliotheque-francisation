@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 """A2 · L'accent d'insistance.
-Bloc A · couleur violet (graphie-phonie) · 60 min.
+Bloc A · couleur indigo (graphie-phonie) · 60 min.
 Source : exercice `prAccent` et sa mini-leçon.
 """
 from theme import Deck
@@ -8,7 +8,7 @@ from theme import Deck
 
 def build(dossier):
     d = Deck(
-        code='A2', section='violet',
+        code='A2', section='indigo',
         titre="L'accent d'insistance",
         chapeau="« Cet atelier est complètement gratuit. » Un mot est dit plus long et "
                 "plus haut que les autres : c'est celui qu'on retiendra. En publicité, "

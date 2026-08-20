@@ -15,10 +15,12 @@ MANIFESTE = {
     # Thème envoyé au suivi LMS avec la production orale.
     'theme': 'Logement',
 
-    # Couleur d'en-tête : violet graphie-phonie, distincte de module-logement
-    # (acier) qui est son voisin immédiat, et du gabarit (acier).
-    'accent': '#6B4FBB',
-    'accent_doux': '#EFEAFA',
+    # Couleur d'en-tête : ambre. Elle était violette, mais le violet est passé
+    # à la marque SAAF, qui le veut exclusif. L'ambre se distingue de ses deux
+    # voisins immédiats — module-logement (9, acier) et module-relations
+    # (11, teal) — et du gabarit (acier).
+    'accent': '#B45309',
+    'accent_doux': '#FBEEDC',
 
     # Consigne envoyée à l'IA pour corriger la production orale.
     'ia_oral': "L'élève explique oralement un problème dans son logement à sa "

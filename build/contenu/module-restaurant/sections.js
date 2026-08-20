@@ -7,7 +7,7 @@ const SECTIONS = [
    lead:"Comprendre les formules, poser une question, passer sa commande.",
    intro:"Défi 1 — Carte, menu du jour, table d'hôte, à la carte : quatre mots qui ne veulent pas dire la même chose, et un écart de prix qui peut doubler. Puis vient le moment de commander — et une question d'allergie à ne pas oublier.",
    dialogue:'t1', next:{id:'t2', tit:'Défi 2 · Pendant le repas', sub:"Demander ce qu'il faut, et signaler poliment ce qui ne va pas."}},
-  {id:'t2', no:'2', title:'Défi 2 · Pendant le repas', color:'#6B4FBB',
+  {id:'t2', no:'2', title:'Défi 2 · Pendant le repas', color:'#3B49A0',
    lead:"Demander ce qu'il faut, et signaler poliment ce qui ne va pas.",
    intro:"Défi 2 — Le poisson est un peu froid. Faut-il le dire ? Andrés n'ose pas. Manon lui explique que ce n'est pas se plaindre — et que les restaurants préfèrent le savoir.",
    dialogue:'t2', next:{id:'t3', tit:"Défi 3 · L'addition", sub:"Les taxes, le pourboire, et payer ensemble ou séparément."}},

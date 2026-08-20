@@ -259,7 +259,7 @@ const EXOS = [
    ]},
 
  // ── DÉFI 3 · LES MESSAGES QU'ON ENTEND ──────────────────────
-  {sec:'t3', id:'t3vf', type:'vf', num:'Exercice 1', tit:'Vrai ou Faux — Les annonces', color:'#6B4FBB',
+  {sec:'t3', id:'t3vf', type:'vf', num:'Exercice 1', tit:'Vrai ou Faux — Les annonces', color:'#3B49A0',
    sub:"Écoute les six annonces, puis réponds.", tiles:['VRAI','FAUX'],
    savoir:{h:"› Les mots des annonces — à écouter et à répéter", speak:true, rows:[
      ["Quand ça ne va pas","Deux mots à reconnaître tout de suite : le service est coupé, ou l'arrêt est sauté.", ["interruption","dessert"]],
@@ -278,7 +278,7 @@ const EXOS = [
     {id:'f10', txt:"Les travaux sont la cause du changement pour le 45.", ok:'VRAI'},
    ]},
 
-  {sec:'t3', id:'t3annonce', type:'vf', num:'Exercice 2', tit:"Ce que l'annonce vous demande", color:'#6B4FBB',
+  {sec:'t3', id:'t3annonce', type:'vf', num:'Exercice 2', tit:"Ce que l'annonce vous demande", color:'#3B49A0',
    sub:"Chaque annonce dit une information, ou demande de faire quelque chose. Laquelle ?", tiles:['ON M\'INFORME','ON ME DEMANDE'],
    rows:[
     {id:'a1', txt:"Prochain arrêt : boulevard Curé-Poirier.", ok:'ON M\'INFORME'},
@@ -293,7 +293,7 @@ const EXOS = [
     {id:'a10', txt:"Un service d'autobus est offert à la sortie.", ok:'ON M\'INFORME'},
    ]},
 
-  {sec:'t3', id:'t3horaire', type:'write', num:'Exercice 3', tit:'Lire un horaire', color:'#6B4FBB', cols:2,
+  {sec:'t3', id:'t3horaire', type:'write', num:'Exercice 3', tit:'Lire un horaire', color:'#3B49A0', cols:2,
    sub:"Réponds d'après ce que Nour explique à Patrice.",
    savoir:{h:"› Ce qu'un horaire ne dit pas à voix haute", rows:[
      ["Deux colonnes, deux régimes","La <b>première colonne</b> est celle de la semaine, la <b>deuxième</b> celle de la fin de semaine. Un horaire de fin de semaine est toujours plus rare."],
@@ -312,7 +312,7 @@ const EXOS = [
     {q:"Ce qui donne la direction, c'est toujours le nom du ___.", accept:["terminus"], ph:"…"},
    ]},
 
-  {sec:'t3', id:'t3plan', type:'match', num:'Exercice 4', tit:'Les symboles du plan', color:'#6B4FBB',
+  {sec:'t3', id:'t3plan', type:'match', num:'Exercice 4', tit:'Les symboles du plan', color:'#3B49A0',
    sub:"Associe chaque symbole à ce qu'il veut dire.", bankLbl:'Ce que ça veut dire', zonePh:'glisse ici',
    rows:[
     {id:'s1', q:"Un cercle blanc", aid:'s1', a:"un arrêt ordinaire : on peut descendre, mais pas changer de ligne"},
@@ -323,7 +323,7 @@ const EXOS = [
     {id:'s6', q:"Un trait pointillé", aid:'s6', a:"un service temporaire ou partiel"},
    ]},
 
-  {sec:'t3', id:'t3b', type:'vf', num:'Exercice 5', tit:'Vrai ou Faux — Lire un plan et un horaire', color:'#6B4FBB',
+  {sec:'t3', id:'t3b', type:'vf', num:'Exercice 5', tit:'Vrai ou Faux — Lire un plan et un horaire', color:'#3B49A0',
    sub:"Écoute le dernier dialogue, puis réponds.", tiles:['VRAI','FAUX'], dialogue:'t3b',
    rows:[
     {id:'n1', txt:"L'horaire a deux colonnes de chiffres.", ok:'VRAI'},

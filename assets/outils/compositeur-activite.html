@@ -38,7 +38,7 @@
   --ink-900:#17181A; --ink-600:#3C3F43; --ink-400:#6E7175;
   --green-800:#07734A; --green-600:#0A8F5B; --green-100:#E6F5EE; --green-050:#EDF6F1;
   --acier-600:#1D6B8F; --acier-100:#E7F0F6;
-  --violet-600:#6B4FBB; --violet-100:#EFEAFA;
+  --indigo-600:#3B49A0; --indigo-100:#E8EAFA;
   --ambre-700:#B45309; --ambre-100:#FBEEDC;
   --teal-700:#0D7A6F; --teal-100:#DCF2EF;
   --foret-700:#166534; --foret-100:#E3F1E7;
@@ -68,7 +68,7 @@ h1,h2,h3{margin:0; line-height:1.2}
 .sec-acier{--sec:var(--acier-600); --sec-soft:var(--acier-100)}
 .sec-teal{--sec:var(--teal-700); --sec-soft:var(--teal-100)}
 .sec-ambre{--sec:var(--ambre-700); --sec-soft:var(--ambre-100)}
-.sec-violet{--sec:var(--violet-600); --sec-soft:var(--violet-100)}
+.sec-indigo{--sec:var(--indigo-600); --sec-soft:var(--indigo-100)}
 .sec-foret{--sec:var(--foret-700); --sec-soft:var(--foret-100)}
 
 /* ---------- Bande d'en-tête (claire, jamais foncée) ---------- */
@@ -155,7 +155,7 @@ label.lab{display:block; font-size:15px; font-weight:800; margin:0 0 var(--sp-2)
 .etiq{display:inline-block; margin:var(--sp-1) var(--sp-1) 0 0; padding:1px 10px; border-radius:var(--r-pill);
   background:var(--paper-200); color:var(--ink-600); font-size:13px; font-weight:800}
 .etiq--hors{background:var(--red-50); color:var(--red-700)}
-.etiq--portee{background:var(--violet-100); color:var(--violet-600)}
+.etiq--portee{background:var(--indigo-100); color:var(--indigo-600)}
 .etiq--oral{background:var(--acier-100); color:var(--acier-600)}
 .etiq--ecrit{background:var(--ambre-100); color:var(--ambre-700)}
 .vide{margin:0; padding:var(--sp-4); border:1px dashed var(--line-200); border-radius:var(--r-md);
@@ -431,7 +431,7 @@ textarea#edition:focus-visible{box-shadow:inset 0 0 0 3px var(--green-100)}
       </div>
     </section>
 
-    <section class="carte etape sec-violet" aria-labelledby="t4">
+    <section class="carte etape sec-indigo" aria-labelledby="t4">
       <div class="pastille" aria-hidden="true">04</div>
       <div>
         <h2 id="t4">Les savoirs</h2>
@@ -1078,7 +1078,7 @@ function ligneSavoir(s, hors){
   lab.append(inp, corps);
   return lab;
 }
-const COULEURS_SECTION = ["sec-acier","sec-ambre","sec-violet","sec-foret","sec-teal"];
+const COULEURS_SECTION = ["sec-acier","sec-ambre","sec-indigo","sec-foret","sec-teal"];
 function rendreSavoirs(){
   const z = $("zone-savoirs"); z.textContent = "";
   if(S.niveau == null){ z.append(el("p","vide","Choisissez un niveau pour voir les savoirs prescrits.")); return; }

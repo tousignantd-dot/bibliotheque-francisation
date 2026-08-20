@@ -18,7 +18,7 @@ const EXOS = [
     {id:'p1j', txt:"Selon Bertrand, ce genre de problème se règle souvent par un simple appel.", ok:'VRAI'},
    ]},
 
-  {sec:'prep', id:'prPhon', type:'vf', num:'Exercice 2', tit:'Le son [ø] ou le son [œ] ?', color:'#6B4FBB', accent:'#6B4FBB', cards:true, listen:true,
+  {sec:'prep', id:'prPhon', type:'vf', num:'Exercice 2', tit:'Le son [ø] ou le son [œ] ?', color:'#3B49A0', accent:'#3B49A0', cards:true, listen:true,
    sub:"Clique sur l'icône d'écoute pour entendre le mot, puis indique le son que tu entends.", tiles:['[ø]','[œ]'],
    savoir:{h:"› Des sons et des lettres — [ø] et [œ]", speak:true, rows:[
      ["La règle en une phrase","Les lettres <b>eu</b> se disent de deux façons : bouche presque fermée <b>[ø]</b>, ou bouche ouverte <b>[œ]</b>. C'est la fin du mot qui décide.", ["deux","peur"]],

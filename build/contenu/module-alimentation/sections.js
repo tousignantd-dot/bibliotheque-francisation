@@ -1,5 +1,5 @@
 const SECTIONS = [
-  {id:'prep', no:'<img class="icon-svg tno-play" src="/assets/interactive/module-alimentation/icons/play.svg" alt="">', title:'Je découvre', color:'#6B4FBB',
+  {id:'prep', no:'<img class="icon-svg tno-play" src="/assets/interactive/module-alimentation/icons/play.svg" alt="">', title:'Je découvre', color:'#3B49A0',
    lead:"Trouver un produit dans un magasin, et demander quand on ne trouve pas.",
    intro:"Farida est arrivée du Maroc il y a deux ans. Elle fait son épicerie chaque semaine, mais elle perd du temps à chercher — et elle n'a jamais vraiment su lire une étiquette. Aujourd'hui, elle demande.",
    dialogue:'prep', next:{id:'t1', tit:"Défi 1 · S'informer sur un produit", sub:"Demander d'où vient un produit, comment il se garde, comment il se cuisine."}},

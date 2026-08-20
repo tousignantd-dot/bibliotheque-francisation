@@ -7,7 +7,7 @@ const SECTIONS = [
    lead:"Essayer, dire ce qui ne va pas, et savoir ce qu'on doit vérifier.",
    intro:"Défi 1 — Serré aux épaules, manches trop longues, longueur aux genoux : décrire ce qui ne va pas demande quelques mots précis. Et un manteau d'hiver se choisit une taille plus grand qu'on ne croit.",
    dialogue:'t1', next:{id:'t2', tit:"Défi 2 · L'avis et l'entretien", sub:"Demander un avis, le comprendre, et lire l'étiquette du col."}},
-  {id:'t2', no:'2', title:"Défi 2 · L'avis et l'entretien", color:'#6B4FBB',
+  {id:'t2', no:'2', title:"Défi 2 · L'avis et l'entretien", color:'#3B49A0',
    lead:"Demander un avis, le comprendre, et lire l'étiquette du col.",
    intro:"Défi 2 — « Le noir te va bien. » « Il est trop grand aux épaules. » Un avis se demande, se donne et se comprend. Et dans le col, cinq petits dessins disent comment laver le manteau sans l'abîmer.",
    dialogue:'t2', next:{id:'t3', tit:'Défi 3 · Échanger et se faire rembourser', sub:"Rapporter un article, connaître ses délais, et mettre de côté."}},

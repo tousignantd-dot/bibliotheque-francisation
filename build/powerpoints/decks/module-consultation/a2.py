@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 """A2 · Trois sons dans le nez.
-Bloc A · couleur violet (graphie-phonie) · 60 min.
+Bloc A · couleur indigo (graphie-phonie) · 60 min.
 Source : exercice `prPhon` et sa mini-leçon.
 
 Le module affiche les sons en alphabet phonétique. **Pas ici** : Verdana ne
@@ -14,7 +14,7 @@ from theme import Deck
 
 def build(dossier):
     d = Deck(
-        code='A2', section='violet',
+        code='A2', section='indigo',
         titre='Trois sons dans le nez',
         chapeau="« Patient », « front », « médecin » : trois mots de la salle d'attente, "
                 "trois sons nasaux différents. Les confondre change le mot — et "

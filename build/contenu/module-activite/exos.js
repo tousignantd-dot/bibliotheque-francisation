@@ -239,7 +239,7 @@ const EXOS = [
    ]},
 
  // ── DÉFI 3 · LE DÉPLIANT ET L'INSCRIPTION ───────────────────
-  {sec:'t3', id:'t3vf', type:'vf', num:'Exercice 1', tit:'Vrai ou Faux — Le dépliant de la ville', color:'#6B4FBB',
+  {sec:'t3', id:'t3vf', type:'vf', num:'Exercice 1', tit:'Vrai ou Faux — Le dépliant de la ville', color:'#3B49A0',
    sub:"Écoute le dialogue, puis réponds.", tiles:['VRAI','FAUX'],
    savoir:{h:"› Les mots du dépliant — à écouter et à répéter", speak:true, rows:[
      ["Ce qu'on y cherche","Le prix, ce qui reste, et l'explication des symboles.", ["tarif","places","légende"]],
@@ -258,7 +258,7 @@ const EXOS = [
     {id:'f10', txt:"La natation coûte plus cher à cause de la piscine.", ok:'VRAI'},
    ]},
 
-  {sec:'t3', id:'t3registre', type:'vf', num:'Exercice 2', tit:'Deux façons de dire la même chose', color:'#6B4FBB',
+  {sec:'t3', id:'t3registre', type:'vf', num:'Exercice 2', tit:'Deux façons de dire la même chose', color:'#3B49A0',
    sub:"Chaque phrase dit la même chose d'une autre manière. Est-elle familière ou standard ?", tiles:['FAMILIER','STANDARD'],
    rows:[
     {id:'r1', txt:"Envoye, embarque ! On commence dans deux minutes !", ok:'FAMILIER'},
@@ -273,7 +273,7 @@ const EXOS = [
     {id:'r10', txt:"Il n'y a aucun problème, madame.", ok:'STANDARD'},
    ]},
 
-  {sec:'t3', id:'t3depliant', type:'write', num:'Exercice 3', tit:'Lire le tableau du dépliant', color:'#6B4FBB', cols:2,
+  {sec:'t3', id:'t3depliant', type:'write', num:'Exercice 3', tit:'Lire le tableau du dépliant', color:'#3B49A0', cols:2,
    sub:"Réponds d'après ce que Denis explique à Rosa.",
    savoir:{h:"› Un dépliant se lit dans un ordre précis", rows:[
      ["Ce qu'on regarde en premier","La <b>colonne de gauche</b> : le nom de l'activité et l'âge demandé. Si l'âge ne convient pas, rien d'autre ne compte."],
@@ -292,7 +292,7 @@ const EXOS = [
     {q:"Elle se trouve en ___ de la page.", accept:["bas"], ph:"…"},
    ]},
 
-  {sec:'t3', id:'t3lire', type:'match', num:'Exercice 4', tit:"Où chercher l'information", color:'#6B4FBB',
+  {sec:'t3', id:'t3lire', type:'match', num:'Exercice 4', tit:"Où chercher l'information", color:'#3B49A0',
    sub:"Associe chaque question à l'endroit du dépliant où se trouve la réponse.", bankLbl:'Où je regarde', zonePh:'glisse ici',
    rows:[
     {id:'l1', q:"« Mon garçon a-t-il le bon âge ? »", aid:'l1', a:"la colonne de gauche, à côté du nom de l'activité"},
@@ -303,7 +303,7 @@ const EXOS = [
     {id:'l6', q:"« À quelle heure, quel jour ? »", aid:'l6', a:"la colonne de l'horaire, au milieu du tableau"},
    ]},
 
-  {sec:'t3', id:'t3b', type:'vf', num:'Exercice 5', tit:'Vrai ou Faux — Deux façons de parler', color:'#6B4FBB',
+  {sec:'t3', id:'t3b', type:'vf', num:'Exercice 5', tit:'Vrai ou Faux — Deux façons de parler', color:'#3B49A0',
    sub:"Écoute le dernier dialogue, puis réponds.", tiles:['VRAI','FAUX'], dialogue:'t3b',
    rows:[
     {id:'n1', txt:"Rosa ne comprend pas la première phrase de Kevin.", ok:'VRAI'},

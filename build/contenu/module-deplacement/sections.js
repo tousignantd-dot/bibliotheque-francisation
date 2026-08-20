@@ -11,7 +11,7 @@ const SECTIONS = [
    lead:"Donner un itinéraire à quelqu'un, étape par étape, dans le bon ordre.",
    intro:"Défi 2 — Cette fois, c'est Nour qui explique. Patrice doit se rendre au centre d'emploi demain matin. Sortir, tourner, traverser, marcher : quatre verbes et deux repères suffisent, si l'ordre est bon.",
    dialogue:'t2', next:{id:'t3', tit:"Défi 3 · Les messages qu'on entend", sub:"Comprendre une annonce dans le transport, lire un horaire et un plan."}},
-  {id:'t3', no:'3', title:"Défi 3 · Les messages qu'on entend", color:'#6B4FBB',
+  {id:'t3', no:'3', title:"Défi 3 · Les messages qu'on entend", color:'#3B49A0',
    lead:"Comprendre une annonce dans le transport, lire un horaire et un plan.",
    intro:"Défi 3 — Les annonces du métro et de l'autobus sont courtes, rapides et souvent mal audibles. Elles suivent pourtant toujours la même forme. Et sur un horaire, une seule petite lettre peut changer tout votre trajet.",
    dialogue:'t3', next:{id:'appli', tit:'Je me lance', sub:"Demander son chemin à voix haute, expliquer un trajet, puis l'écrire."}},

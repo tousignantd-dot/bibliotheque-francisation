@@ -1,10 +1,10 @@
 const EXOS = [
  // ── JE DÉCOUVRE ─────────────────────────────────────────────
-  {sec:'prep', id:'prVocab', type:'match', num:'Vocabulaire · 1', tit:'Le mot et sa définition', color:'#6B4FBB',
+  {sec:'prep', id:'prVocab', type:'match', num:'Vocabulaire · 1', tit:'Le mot et sa définition', color:'#3B49A0',
    sub:'Choisis un mot, puis sa définition. Six mots à la fois.', noQLbl:true, bankLbl:'Définitions', zonePh:'glisse la définition ici',
    rows: FC_CARDS.map((c,i)=>({id:'pv'+i, q:c.word, aid:'pv'+i, a:c.def}))},
 
-  {sec:'prep', id:'pr1', type:'vf', num:'Exercice 1', tit:"Vrai ou Faux — Dans l'allée des conserves", color:'#6B4FBB',
+  {sec:'prep', id:'pr1', type:'vf', num:'Exercice 1', tit:"Vrai ou Faux — Dans l'allée des conserves", color:'#3B49A0',
    sub:'Écoute de nouveau le dialogue, puis réponds.', tiles:['VRAI','FAUX'],
    savoir:{h:"› Les mots du magasin — à écouter et à répéter", speak:true, rows:[
      ["Où on cherche","Trois mots pour se repérer dans un magasin d'alimentation.", ["allée","étiquette","conserve"]],
@@ -23,7 +23,7 @@ const EXOS = [
     {id:'p1j', txt:"Le commis conseille de ne pas déranger les employés.", ok:'FAUX'},
    ]},
 
-  {sec:'prep', id:'prPhon', type:'vf', num:'Exercice 2', tit:'Entends-tu la liaison ?', color:'#6B4FBB', accent:'#6B4FBB', cards:true, listen:true,
+  {sec:'prep', id:'prPhon', type:'vf', num:'Exercice 2', tit:'Entends-tu la liaison ?', color:'#3B49A0', accent:'#3B49A0', cards:true, listen:true,
    sub:"Écoute chaque groupe. Entends-tu un son de liaison entre les deux mots ?", tiles:['LIAISON','PAS DE LIAISON'],
    rows:[
     {id:'pha', txt:"deux œufs", ok:'LIAISON'},
@@ -38,7 +38,7 @@ const EXOS = [
     {id:'phj', txt:"six citrons", ok:'PAS DE LIAISON'},
    ]},
 
-  {sec:'prep', id:'prImg', type:'imgmatch', num:'Exercice 3', tit:'Où ça se trouve', color:'#6B4FBB',
+  {sec:'prep', id:'prImg', type:'imgmatch', num:'Exercice 3', tit:'Où ça se trouve', color:'#3B49A0',
    sub:"Glisse chaque photo sur la phrase qui la décrit.",
    images:[
     {id:'ie1', src:'/assets/interactive/module-alimentation/images/allee-conserves.jpg'},
@@ -61,7 +61,7 @@ const EXOS = [
     {id:'ie8', txt:"La balance donne le poids et le prix.", ok:'ie8'},
    ]},
 
-  {sec:'prep', id:'prAllee', type:'match', num:'Exercice 4', tit:'Dans quelle allée ?', color:'#6B4FBB',
+  {sec:'prep', id:'prAllee', type:'match', num:'Exercice 4', tit:'Dans quelle allée ?', color:'#3B49A0',
    sub:"Associe chaque produit à l'endroit du magasin où il se trouve.", bankLbl:'Où le chercher', zonePh:'glisse ici',
    rows:[
     {id:'a1', q:"De la pâte de tomate", aid:'a1', a:"avec les sauces, pas avec les légumes en conserve"},
@@ -72,7 +72,7 @@ const EXOS = [
     {id:'a6', q:"Du jambon tranché", aid:'a6', a:"au comptoir de la charcuterie"},
    ]},
 
-  {sec:'prep', id:'prEtiqOu', type:'write', num:'Exercice 5', tit:"Où regarder sur l'emballage", color:'#6B4FBB', cols:2,
+  {sec:'prep', id:'prEtiqOu', type:'write', num:'Exercice 5', tit:"Où regarder sur l'emballage", color:'#3B49A0', cols:2,
    sub:"Complète d'après le dialogue.",
    savoir:{h:"› Un emballage se lit toujours au même endroit", rows:[
      ["Le tableau de la valeur nutritive","Toujours <b>au dos</b>, en noir et blanc, encadré. Il ne change jamais de place, quelle que soit la marque."],

@@ -11,7 +11,7 @@ const SECTIONS = [
    lead:"Suivre les directives d'un moniteur, puis en donner à son tour.",
    intro:"Défi 2 — Au bord de la piscine, Kevin parle vite et court. Prenez-la, ne la lâchez pas, mets-toi là. Une semaine plus tard, c'est Rosa qui donne les consignes, comme bénévole.",
    dialogue:'t2', next:{id:'t3', tit:"Défi 3 · Le dépliant et l'inscription", sub:"Lire un dépliant de la ville, comparer, et s'inscrire."}},
-  {id:'t3', no:'3', title:"Défi 3 · Le dépliant et l'inscription", color:'#6B4FBB',
+  {id:'t3', no:'3', title:"Défi 3 · Le dépliant et l'inscription", color:'#3B49A0',
    lead:"Lire un dépliant de la ville, comparer, et s'inscrire.",
    intro:"Défi 3 — Une trentaine d'activités sur quatre pages, trois colonnes de chiffres et des petites étoiles. Rosa cherche quelque chose pour elle. Et elle découvre que Kevin, au bord de la piscine, ne parle pas comme Louise au comptoir.",
    dialogue:'t3', next:{id:'appli', tit:'Je me lance', sub:"S'informer à voix haute, donner des consignes, puis écrire à la ville."}},

@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 """A2 · Les consonnes qui tombent en fin de mot.
-Bloc A · couleur violet (graphie-phonie) · 60 min.
+Bloc A · couleur indigo (graphie-phonie) · 60 min.
 Source : exercice `prPhon` — le l, le r et le t finaux à l'oral.
 """
 from theme import Deck
@@ -8,7 +8,7 @@ from theme import Deck
 
 def build(dossier):
     d = Deck(
-        code='A2', section='violet',
+        code='A2', section='indigo',
         titre='Les consonnes qui tombent',
         chapeau="« Possible », « quatre », « exact ». À l'écrit, la consonne finale est "
                 "là. À l'oral, au Québec, elle disparaît souvent — et c'est pour ça "

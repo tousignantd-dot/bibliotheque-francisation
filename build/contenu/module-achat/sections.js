@@ -11,7 +11,7 @@ const SECTIONS = [
    lead:"Comprendre ce qui est couvert, comment payer, quand on livre.",
    intro:"Défi 2 — L'appareil est choisi. Reste le reste : ce que couvre la garantie et ce qu'elle ne couvre pas, les versements, la livraison, l'installation. C'est là que les surprises coûtent cher.",
    dialogue:'t2', next:{id:'t3', tit:"Défi 3 · Le mode d'emploi", sub:"Quatre pages à lire sur quarante, et un tableau qui évite un appel de service."}},
-  {id:'t3', no:'3', title:"Défi 3 · Le mode d'emploi", color:'#6B4FBB',
+  {id:'t3', no:'3', title:"Défi 3 · Le mode d'emploi", color:'#3B49A0',
    lead:"Quatre pages à lire sur quarante, et un tableau qui évite un appel de service.",
    intro:"Défi 3 — Quarante pages en trois langues. En réalité, quatre pages comptent : l'installation, la première utilisation, les avertissements, et le tableau des problèmes. Ce dernier vaut quatre-vingt-dix dollars à lui seul.",
    dialogue:'t3', next:{id:'appli', tit:'Je me lance', sub:"S'informer à voix haute, décrire un appareil, puis écrire au magasin."}},

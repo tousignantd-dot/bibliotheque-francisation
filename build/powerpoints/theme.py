@@ -58,7 +58,7 @@ C = {
     'green_100': 'E6F5EE', 'green_050': 'EDF6F1',
     # Accents de section — repérage seulement
     'acier_600': '1D6B8F', 'acier_100': 'E7F0F6',
-    'violet_600':'6B4FBB', 'violet_100':'EFEAFA',
+    'indigo_600':'3B49A0', 'indigo_100':'E8EAFA',
     'ambre_700': 'B45309', 'ambre_100': 'FBEEDC',
     'teal_700':  '0D7A6F', 'teal_100':  'DCF2EF',
     'foret_700': '166534', 'foret_100': 'E3F1E7',
@@ -72,10 +72,12 @@ C = {
     'sel_bg':  '17181A', 'sel_ink': 'FFFFFF',
 }
 
-# Les cinq couleurs de section, chacune avec sa teinte pâle.
+# Les cinq couleurs de section, chacune avec sa teinte pâle. La graphie-phonie
+# était violette ; le violet #6B4FBB est passé à la marque SAAF, qui le veut
+# exclusif, et l'indigo l'a remplacé au repérage.
 SECTIONS = {
     'acier':  ('acier_600',  'acier_100'),   # compréhension orale
-    'violet': ('violet_600', 'violet_100'),  # graphie-phonie
+    'indigo': ('indigo_600', 'indigo_100'),  # graphie-phonie
     'ambre':  ('ambre_700',  'ambre_100'),   # écriture
     'teal':   ('teal_700',   'teal_100'),    # écoute et réponds
     'foret':  ('foret_700',  'foret_100'),   # vocabulaire / bilan

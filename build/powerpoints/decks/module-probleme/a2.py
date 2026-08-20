@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 """A2 · Les deux façons de dire « eu » : [ø] et [œ].
-Bloc A · couleur violet (graphie-phonie) · 60 min.
+Bloc A · couleur indigo (graphie-phonie) · 60 min.
 Source : mini-leçon `prPhon`, exercice `prPhon`, phrases porteuses du module.
 """
 from theme import Deck
@@ -8,7 +8,7 @@ from theme import Deck
 
 def build(dossier):
     d = Deck(
-        code='A2', section='violet',
+        code='A2', section='indigo',
         titre="Les deux façons de dire « eu »",
         chapeau="Le vocabulaire du logement est saturé de mots en -eur et en -eux : "
                 "une odeur, la chaleur, un couvreur, coûteux, dangereux. Deux sons "

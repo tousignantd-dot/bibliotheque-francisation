@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 """A2 · Le « é » fermé et le « è » ouvert.
-Bloc A · couleur violet (graphie-phonie) · 60 min.
+Bloc A · couleur indigo (graphie-phonie) · 60 min.
 Source : exercices `prPhon` et `prAccent`.
 
 Le module affiche ces sons en alphabet phonétique. Pas ici : Verdana ne
@@ -12,7 +12,7 @@ from theme import Deck
 
 def build(dossier):
     d = Deck(
-        code='A2', section='violet',
+        code='A2', section='indigo',
         titre="Le « é » fermé et le « è » ouvert",
         chapeau="« Dépanner » et « dépanné » s'écrivent presque pareil et se prononcent "
                 "pareil. « Père » et « dépanné », non. Un accent, deux sons, et une "

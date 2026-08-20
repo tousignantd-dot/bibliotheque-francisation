@@ -246,7 +246,7 @@ const EXOS = [
    ]},
 
  // ── DÉFI 3 · LE MODE D'EMPLOI ───────────────────────────────
-  {sec:'t3', id:'t3vf', type:'vf', num:'Exercice 1', tit:'Vrai ou Faux — Avant le premier lavage', color:'#6B4FBB',
+  {sec:'t3', id:'t3vf', type:'vf', num:'Exercice 1', tit:'Vrai ou Faux — Avant le premier lavage', color:'#3B49A0',
    sub:"Écoute le dialogue, puis réponds.", tiles:['VRAI','FAUX'],
    savoir:{h:"› Les mots du mode d'emploi — à écouter et à répéter", speak:true, rows:[
      ["Avant de brancher","Ce qu'on enlève, et ce qu'on vérifie.", ["boulon","niveau"]],
@@ -265,7 +265,7 @@ const EXOS = [
     {id:'f10', txt:"Sans les enlever, la machine saute.", ok:'VRAI'},
    ]},
 
-  {sec:'t3', id:'t3mode', type:'write', num:'Exercice 2', tit:"Les quatre pages qui comptent", color:'#6B4FBB', cols:2,
+  {sec:'t3', id:'t3mode', type:'write', num:'Exercice 2', tit:"Les quatre pages qui comptent", color:'#3B49A0', cols:2,
    sub:"Réponds d'après ce que Thérèse explique.",
    savoir:{h:"› Quarante pages, quatre à lire", rows:[
      ["Pourquoi c'est si épais","Les modes d'emploi vendus au Canada sont en <b>français et en anglais</b>, souvent aussi en espagnol. Les trois versions sont identiques : le tiers du livret suffit."],
@@ -284,7 +284,7 @@ const EXOS = [
     {q:"Le ___ des problèmes se trouve à la fin.", accept:["tableau"], ph:"…"},
    ]},
 
-  {sec:'t3', id:'t3pages', type:'match', num:'Exercice 3', tit:'Dans quelle partie ?', color:'#6B4FBB',
+  {sec:'t3', id:'t3pages', type:'match', num:'Exercice 3', tit:'Dans quelle partie ?', color:'#3B49A0',
    sub:"Associe chaque phrase à la partie du mode d'emploi où elle se trouve.", bankLbl:'La partie', zonePh:'glisse ici',
    rows:[
     {id:'p1', q:"« Retirer les quatre boulons de transport. »", aid:'p1', a:"l'installation"},
@@ -295,7 +295,7 @@ const EXOS = [
     {id:'p6', q:"« L'eau ne se vide pas : vérifier que le tuyau n'est pas plié. »", aid:'p6', a:"le tableau des problèmes"},
    ]},
 
-  {sec:'t3', id:'t3probleme', type:'match', num:'Exercice 4', tit:"Le problème et ce qu'il faut vérifier", color:'#6B4FBB',
+  {sec:'t3', id:'t3probleme', type:'match', num:'Exercice 4', tit:"Le problème et ce qu'il faut vérifier", color:'#3B49A0',
    sub:"Associe chaque problème à la première chose à vérifier.", bankLbl:'À vérifier', zonePh:'glisse ici',
    rows:[
     {id:'q1', q:"L'appareil vibre fort à l'essorage", aid:'q1', a:"les boulons de transport, le niveau, la répartition du linge"},
@@ -306,7 +306,7 @@ const EXOS = [
     {id:'q6', q:"L'appareil chauffe et sent le brûlé", aid:'q6', a:"débrancher et appeler le service — ne rien vérifier soi-même"},
    ]},
 
-  {sec:'t3', id:'t3b', type:'vf', num:'Exercice 5', tit:'Vrai ou Faux — Le tableau des problèmes', color:'#6B4FBB',
+  {sec:'t3', id:'t3b', type:'vf', num:'Exercice 5', tit:'Vrai ou Faux — Le tableau des problèmes', color:'#3B49A0',
    sub:"Écoute le dernier dialogue, puis réponds.", tiles:['VRAI','FAUX'], dialogue:'t3b',
    rows:[
     {id:'n1', txt:"La laveuse vibre beaucoup à l'essorage.", ok:'VRAI'},

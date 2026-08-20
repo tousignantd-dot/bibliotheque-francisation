@@ -10,9 +10,11 @@ MANIFESTE = {
     # chaîne JavaScript à guillemets simples.
     'theme': "Achat d\\'aliments ou de produits d\\'entretien",
 
-    # Violet : les voisins immédiats sont vert (13) et, plus loin, ambre (12).
-    'accent': '#6B4FBB',
-    'accent_doux': '#EFEAFA',
+    # Teal : le violet est passé à la marque SAAF, qui le veut exclusif. Les
+    # voisins immédiats sont vert (13) et acier (15) ; le teal se distingue des
+    # deux.
+    'accent': '#0D7A6F',
+    'accent_doux': '#DCF2EF',
 
     'ia_oral': "L'élève commande un produit à un comptoir d'épicerie ou "
                "s'informe sur un aliment : il nomme le produit, donne une "

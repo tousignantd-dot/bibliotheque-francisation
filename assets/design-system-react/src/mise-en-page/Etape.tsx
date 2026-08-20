@@ -11,7 +11,7 @@ export interface EtapeProps extends AnchorHTMLAttributes<HTMLAnchorElement> {
 
 const SECTIONS: Record<string, [string, string]> = {
   orale: ['var(--acier-600)', 'var(--acier-100)'],
-  phonie: ['var(--violet-600)', 'var(--violet-100)'],
+  phonie: ['var(--indigo-600)', 'var(--indigo-100)'],
   ecriture: ['var(--ambre-700)', 'var(--ambre-100)'],
   ecoute: ['var(--teal-700)', 'var(--teal-100)'],
   vocab: ['var(--green-600)', 'var(--green-100)'],

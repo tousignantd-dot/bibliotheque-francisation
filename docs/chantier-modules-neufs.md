@@ -166,7 +166,9 @@ désormais la première chose que vérifie le relevé fait dans le navigateur.
 - **Grammaire** : la liaison des quantités (deux œufs) · du, de la, des · ça se
   garde · le pronom en · livres, kilos et grammes · les trois lignes d'une
   étiquette · un mode d'emploi en trois blocs. Tous neufs dans la collection.
-- **Couleur** : violet `#6B4FBB` / `#EFEAFA`. **Activité** : 51.
+- **Couleur** : teal `#0D7A6F` / `#DCF2EF`. **Activité** : 51.
+  (Elle était violette. Le violet `#6B4FBB` est devenu la couleur de la marque
+  SAAF, qui le veut exclusif : il ne sert plus au repérage.)
 - Médias : 21 images (0,71 $), 204 MP3. Les **225 URL** de la page répondent.
 - Séances : 16 présentations, 194 diapositives, 16 fiches (150 blocs).
   `MODULE 14` dans les seize `.pptx`.

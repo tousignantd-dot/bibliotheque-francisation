@@ -308,18 +308,44 @@ c'est une refonte, pas une greffe.
 Le mot-symbole étiré de `eleve.html` (`letter-spacing: .06em`) a disparu : la
 remise interdit l'interlettrage positif sur le nom.
 
-Deux écarts connus, assumés :
+Un écart assumé : le filet du verrouillage est `--violet-100` dans la remise,
+sur fond blanc. Or ici le verrouillage vit toujours sur un bandeau teinté — un
+en-tête de module porte sa couleur de repérage, ceux du portail la teinte acier
+— où cette valeur s'efface au point de disparaître. `--marque-filet` vaut donc
+`#C3B4EA` par défaut ; sur un fond blanc, le rendre à `--marque-100`.
 
-- Le filet du verrouillage est `--violet-100` dans la remise, sur fond blanc.
-  Les en-têtes de module portent chacun leur teinte de repérage, où ce violet
-  s'efface. Le filet y prend donc `#C3B4EA`, par un `--marque-filet` redéfini
-  dans `.saaf-bandeau` seulement.
-- **Quatre modules ont encore le violet comme couleur d'en-tête** — probleme,
-  procedure, sante, alimentation — alors que la remise ne garde que quatre
-  couleurs de repérage : acier, ambre, teal, forêt. Sur ces quatre-là, la
-  pilule de marque se pose sur un bandeau de sa propre couleur. Décision du
-  20 août 2026 : on laisse, et on reprend les quatre en même temps que le
-  portail, dont les plaquettes portent la même couleur.
+### Le violet n'est plus qu'à la marque
+
+Le 20 août 2026, `#6B4FBB` a cessé d'être une couleur du système pour n'être
+plus que celle du logotype. Il ne sert plus ni de repérage, ni de niveau, ni
+d'état. Ce qu'il occupait a été redistribué :
+
+| Ce qui était violet | Devient | Pourquoi |
+|---|---|---|
+| section graphie-phonie « Les sons » | **indigo** `#3B49A0` / `#E8EAFA` | déjà la teinte du niveau 7 ; les deux échelles se partagent leurs hues depuis toujours |
+| niveau 8 de l'arc-en-ciel | **pourpre** `#7E3F98` / `#F3E8F7` | franchement plus magenta — distinct du logotype comme de la framboise du niveau 1 |
+| en-tête du module 3 santé | **teal** `#0D7A6F` | voisins : 2 ambre, 4 forêt |
+| en-tête du module 5 procédure | **acier** `#1D6B8F` | voisins : 4 forêt, 6 teal |
+| en-tête du module 10 problème | **ambre** `#B45309` | voisins : 9 acier, 11 teal |
+| en-tête du module 14 épicerie | **teal** `#0D7A6F` | voisins : 13 forêt, 15 acier |
+| étiquette « privée » de `presentations.html` | **neutre** `--paper-200` / `--ink-500` | « privée » est un état, et le violet n'en porte aucun |
+
+`--violet-600` et `--violet-100` **n'existent plus** dans
+`assets/design-system/tokens/colors.css`. Le seul violet du dépôt est
+`--marque-600` / `--marque-100`, dans `marque-saaf.css`. Le changement a touché
+les jetons, `.exo--phonie`, le paquet React, `theme.py` et les sept decks `a2`,
+les contenus de `build/contenu/`, les modules écrits à la main, les pages
+d'outils et le compositeur — puis la reconstruction des huit modules générés et
+des 3 835 diapositives.
+
+Une couleur d'en-tête d'un module neuf se prend donc parmi **quatre** : acier
+`#1D6B8F`, ambre `#B45309`, teal `#0D7A6F`, forêt `#166534`. L'indigo reste au
+repérage de la graphie-phonie et ne sert pas d'en-tête.
+
+Un reste connu : `assets/interactive/a-lepicerie/` — une activité ancienne,
+exportée par un bundler — porte encore un `#6B4FBB` dans un rectangle SVG
+décoratif. Elle est hors du système de design ; la reprendre serait la
+réécrire.
 
 ## Le cadre programme d'un module (`build/cadre.py`)
 
