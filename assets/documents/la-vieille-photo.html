@@ -39,6 +39,23 @@ html,body{margin:0;padding:0;background:#fff;color:#333;font-family:'Nunito',san
 .footer{font-size:8.5pt;color:#999;text-align:center;border-top:1px solid #ddd;padding-top:10pt;margin-top:12pt}
 .page2-col{display:grid;grid-template-columns:1fr 1fr;gap:14pt}
 .page2-col .sec{margin-bottom:0}
+
+/* ============================================================
+   IMPRESSION EN NOIR ET BLANC
+   La fiche élève se photocopie : elle sort sans couleur, quelle que
+   soit l'ambiance de l'écran. Le passage en gris conserve les écarts
+   de clarté — un texte clair sur un fond foncé reste lisible —, ce
+   qu'un aplatissement en noir sur blanc casserait. `exact` demande à
+   l'imprimante de rendre les fonds : sans lui, les blocs teintés
+   disparaîtraient et emporteraient leur texte avec eux.
+   ============================================================ */
+@media print{
+  html{
+    filter: grayscale(100%);
+    -webkit-print-color-adjust: exact;
+    print-color-adjust: exact;
+  }
+}
 </style>
 </head>
 <body>
