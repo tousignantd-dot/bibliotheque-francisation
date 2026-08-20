@@ -8,6 +8,13 @@ de page, l'ordre d'enseignement de ses séances et le nom de ses blocs. Tout le
 reste — `build.py`, `build_fiches.py`, `theme.py`, `fiche.py`,
 `build/materiel.py` — s'y rapporte au lieu de porter une constante à soi.
 
+Le champ `niveau` dit à quel niveau du programme le module appartient. Il est
+lu par `build/module.py` (qui le pose dans le HTML du module) et par
+`build_fiches.py` (l'en-tête des fiches élèves) : aucun générateur ne doit
+réécrire « niveau 4 » en dur. Les slugs restent **globalement uniques** — un
+`module-sante` de niveau 6 devrait porter un autre slug, sinon il écraserait
+celui du niveau 4, les dossiers de sortie étant à plat.
+
 Le **slug** est la clé : c'est celui de `assets/interactive/<slug>/`, donc
 celui de `assets/powerpoints/<slug>/` et le préfixe des fiches. C'est lui qui
 relie un fichier produit à son activité dans le dépôt de matériel.
@@ -39,7 +46,7 @@ def _blocs(defi1, defi2, defi3=None):
 
 MODULES = {
     'module-consultation': {
-        'numero': 1, 'activite': 35,
+        'numero': 1, 'activite': 35, 'niveau': 4,
         'titre': 'Consulter au bon endroit',
         'chapeau': "Décrire une douleur, choisir le bon service, comprendre "
                    "les conseils.",
@@ -47,7 +54,7 @@ MODULES = {
         'blocs': _blocs('Le triage', "L'examen", 'Le formulaire'),
     },
     'module-urgence': {
-        'numero': 2, 'activite': 36,
+        'numero': 2, 'activite': 36, 'niveau': 4,
         'titre': 'Une urgence au travail',
         'chapeau': "Réagir vite, appeler le bon service, raconter ce qui est "
                    "arrivé.",
@@ -55,7 +62,7 @@ MODULES = {
         'blocs': _blocs("À l'urgence", 'Les soins', "À l'accueil"),
     },
     'module-sante': {
-        'numero': 3, 'activite': 34,
+        'numero': 3, 'activite': 34, 'niveau': 4,
         'titre': 'Prendre rendez-vous et aller à la pharmacie',
         'chapeau': "Appeler une clinique, dire comment on se sent, comprendre "
                    "les consignes du pharmacien.",
@@ -63,7 +70,7 @@ MODULES = {
         'blocs': _blocs('À la pharmacie', 'La langue'),
     },
     'module-travail': {
-        'numero': 4, 'activite': 39,
+        'numero': 4, 'activite': 39, 'niveau': 4,
         'titre': 'Absent ou en retard : que faire ?',
         'chapeau': "Prévenir son superviseur, justifier un retard, écrire un "
                    "courriel.",
@@ -71,7 +78,7 @@ MODULES = {
         'blocs': _blocs('Le message', 'Le retard', 'Le courriel'),
     },
     'module-procedure': {
-        'numero': 5, 'activite': 40,
+        'numero': 5, 'activite': 40, 'niveau': 4,
         'titre': 'Quelle est la procédure ?',
         'chapeau': "Comprendre une procédure, suivre des étapes, lire une "
                    "directive.",
@@ -80,7 +87,7 @@ MODULES = {
                         'Avez-vous lu les directives ?'),
     },
     'module-nouvelles': {
-        'numero': 6, 'activite': 41,
+        'numero': 6, 'activite': 41, 'niveau': 4,
         'titre': "C'est l'heure des nouvelles",
         'chapeau': "Comprendre un fait divers à l'oral et à l'écrit, puis en "
                    "raconter un.",
@@ -89,7 +96,7 @@ MODULES = {
                         "Qu'est-ce que tu lis ?"),
     },
     'module-meteo': {
-        'numero': 7, 'activite': 42,
+        'numero': 7, 'activite': 42, 'niveau': 4,
         'titre': 'Quelles sont les prévisions ?',
         'chapeau': "Comprendre un bulletin, lire une alerte, décider d'une "
                    "journée de travail.",
@@ -98,7 +105,7 @@ MODULES = {
                         'Lire une alerte avant de partir'),
     },
     'module-pub': {
-        'numero': 8, 'activite': 43,
+        'numero': 8, 'activite': 43, 'niveau': 4,
         'titre': 'Des publicités efficaces',
         'chapeau': "Reconnaître les éléments et les valeurs d'une publicité, "
                    "puis en écrire une.",
@@ -107,7 +114,7 @@ MODULES = {
                         'Deux affiches sur le babillard'),
     },
     'module-logement': {
-        'numero': 9, 'activite': 44,
+        'numero': 9, 'activite': 44, 'niveau': 4,
         'titre': 'Comment est le logement ?',
         'chapeau': "Visiter, poser les bonnes questions, comparer deux "
                    "logements.",
@@ -116,7 +123,7 @@ MODULES = {
                         'Un logement pour chaque besoin'),
     },
     'module-probleme': {
-        'numero': 10, 'activite': 45,
+        'numero': 10, 'activite': 45, 'niveau': 4,
         'titre': 'Pouvez-vous régler le problème ?',
         'chapeau': "Signaler un problème, faire respecter ses droits, se "
                    "plaindre efficacement.",

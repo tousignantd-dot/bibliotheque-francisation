@@ -7,8 +7,10 @@ gabarit. Le contenu, lui, vit dans les fichiers `.js` de ce dossier.
 
 MANIFESTE = {
     'slug': 'module-probleme',
-    'niveau': 4,
-    'titre': 'Pouvez-vous régler le problème ?',
+
+    # `titre` et `niveau` ne sont PAS ici : ils viennent de
+    # `build/powerpoints/modules.py`, qui est la source unique. Les redéfinir
+    # ferait une source de plus, et le build refuserait la contradiction.
 
     # Thème envoyé au suivi LMS avec la production orale.
     'theme': 'Logement',

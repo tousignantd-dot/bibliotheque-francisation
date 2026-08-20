@@ -26,8 +26,10 @@ INTER = ROOT / 'assets/interactive'
 # progression de l'élève séparée d'un thème à l'autre : deux thèmes, deux
 # barres de maîtrise.
 THEMES = [
-    {'slug': 'vocab-flash-sante', 'theme': 'Santé et clinique', 'cle': 'francisationFlashSanteMasteryV1'},
-    {'slug': 'vocab-flash-conso', 'theme': 'Consommation',      'cle': 'francisationFlashConsoMasteryV1'},
+    {'slug': 'vocab-flash-sante', 'theme': 'Santé et clinique', 'niveau': 4,
+     'cle': 'francisationFlashSanteMasteryV1'},
+    {'slug': 'vocab-flash-conso', 'theme': 'Consommation',      'niveau': 4,
+     'cle': 'francisationFlashConsoMasteryV1'},
 ]
 
 # Le haut-parleur du système de design (assets/interactive/module-travail/
@@ -291,7 +293,7 @@ body { --sec: var(--green-600); --sec-soft: var(--green-100); }
 <header class="band vf-band">
   <div class="vf-band__in">
     <div>
-      <p class="band__eyebrow">Francisation · Niveau 4 · @@THEME@@</p>
+      <p class="band__eyebrow">Francisation · Niveau @@NIVEAU@@ · @@THEME@@</p>
       <h1 class="vf-band__t">Flash vocabulaire</h1>
     </div>
     <div class="vf-band__a">
@@ -864,6 +866,7 @@ def rendre(theme):
     mots = json.loads(io.open(dossier / 'mots.json', encoding='utf-8').read())
     return (GABARIT
             .replace('@@THEME@@', theme['theme'])
+            .replace('@@NIVEAU@@', str(theme['niveau']))
             .replace('@@CLE@@', theme['cle'])
             .replace('@@SPEAKER@@', SPEAKER)
             .replace('@@ITEMS@@', json.dumps(mots, ensure_ascii=False)))

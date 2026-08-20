@@ -9,8 +9,9 @@ Où vivent les choses
 --------------------
 - `build/gabarit/module.html` — le moteur, commun aux dix-huit modules, percé
   de jetons `%%NOM%%`. Produit par `build/gabarit.py`, jamais écrit à la main.
-- `build/contenu/<slug>/manifest.py` — l'identité du module : titre, niveau,
-  couleur, thème LMS, consignes de correction, scénario du jeu de rôle.
+- `build/contenu/<slug>/manifest.py` — l'identité du module : couleur, thème
+  LMS, consignes de correction, scénario du jeu de rôle. **Ni le titre ni le
+  niveau** : ils viennent du registre `build/powerpoints/modules.py`.
 - `build/contenu/<slug>/*.js` — le contenu pédagogique : `dialogues`,
   `sections`, `fccards`, `exos`, `carrier`, `plus`, `custom`.
 
@@ -54,6 +55,15 @@ def fatal(msg):
 
 
 def charger_manifeste(slug):
+    """Le manifeste du module, complété par le registre.
+
+    `titre` et `niveau` viennent de `build/powerpoints/modules.py`, qui se
+    déclare source unique et les porte déjà. Un manifeste qui les redéfinirait
+    ferait une source de plus — c'est exactement le défaut de numérotation à
+    trois sources que ce projet traîne déjà. Le manifeste ne les porte donc que
+    pour un module absent du registre, et le build refuse une redéfinition qui
+    contredirait celui-ci.
+    """
     chemin = CONTENU / slug / 'manifest.py'
     if not chemin.exists():
         fatal('%s : manifeste introuvable (%s)' % (slug, chemin))
@@ -64,6 +74,20 @@ def charger_manifeste(slug):
         fatal('%s : le manifeste ne définit pas MANIFESTE' % slug)
     if m.get('slug') != slug:
         fatal('%s : le manifeste annonce le slug %r' % (slug, m.get('slug')))
+
+    sys.path.insert(0, str(BUILD / 'powerpoints'))
+    from modules import MODULES
+    entree = MODULES.get(slug)
+    for champ in ('titre', 'niveau'):
+        if entree and champ in entree:
+            if champ in m and m[champ] != entree[champ]:
+                fatal('%s : le manifeste dit %s=%r, le registre %r — '
+                      'retirer le champ du manifeste, le registre fait foi'
+                      % (slug, champ, m[champ], entree[champ]))
+            m[champ] = entree[champ]
+        elif champ not in m:
+            fatal('%s : %s absent du manifeste et du registre '
+                  'build/powerpoints/modules.py' % (slug, champ))
     return m
 
 
@@ -92,6 +116,7 @@ def construire(slug, verbeux=True):
         '%%SLUG%%':          man['slug'],
         '%%NIVEAU%%':        str(man['niveau']),
         '%%TITRE%%':         man['titre'],
+        '%%TITRE_MAJ%%':     man['titre'].upper(),
         '%%THEME%%':         man['theme'],
         '%%ACCENT%%':        man['accent'],
         '%%ACCENT_DOUX%%':   man['accent_doux'],

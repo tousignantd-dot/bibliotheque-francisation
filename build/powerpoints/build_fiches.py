@@ -60,7 +60,7 @@ def sommaire(slug, m, faits):
                    f'<td><a href="{fiche.esc(nom)}">{fiche.esc(titre)}</a></td>'
                    f'<td class="d">{fiche.esc(duree)}</td></tr>')
     css = fiche.CSS
-    n, titre_mod = m['numero'], m['titre']
+    n, titre_mod, niveau = m['numero'], m['titre'], m['niveau']
     html = f"""<!DOCTYPE html>
 <html lang="fr"><head><meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
@@ -77,7 +77,7 @@ table.som a{{color:var(--ink);text-decoration:none}}
 table.som a:hover{{text-decoration:underline}}
 </style></head><body>
 <header class="hdr"><div class="hdr-l">
-<div class="eyebrow">Module {n} · Français niveau 4</div>
+<div class="eyebrow">Module {n} · Français niveau {niveau}</div>
 <h1>{fiche.esc(titre_mod)}</h1></div>
 <div class="hdr-r"><span>Nom<span class="nomline nomline--nom"></span></span></div></header>
 <p class="chapeau">{_en_lettres(len(faits))} fiches, une par séance. Gardez-les dans

@@ -335,6 +335,15 @@ def percer_identite(html):
         # en la lisant du module. L'ancien script de module-probleme croyait la
         # remplacer ici — la chaîne cherchée n'existait pas et le `replace`
         # était silencieusement sans effet.
+        # L'en-tête de commentaire du script portait encore le titre et le
+        # découpage d'avant la réécriture de la consultation — invisible pour
+        # l'élève, mais recopié tel quel dans chaque module engendré.
+        ('//  LA VISITE CHEZ LE MÉDECIN — Module interactif Niveau 4 (FLS)\n'
+         '//  Sections : Je découvre · Chez le médecin · La langue · Je parle ·\n'
+         "//             J'écris · Je m'évalue — suivi LMS intégré",
+         '//  %%TITRE_MAJ%% — Module interactif Niveau %%NIVEAU%% (FLS)\n'
+         '//  Sections : Je découvre · Défi 1 · … · Je me lance ·\n'
+         '//             Je retiens des mots — suivi LMS intégré'),
         ('🎉 Bravo, tu as terminé le module « Consulter au bon endroit » !',
          '%%BRAVO%%'),
         ("Tu peux revenir sur n\\'importe quel onglet pour pratiquer encore.",

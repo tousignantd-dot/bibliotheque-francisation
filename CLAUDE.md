@@ -212,9 +212,13 @@ lecture.
   des réponses courtes, tuiles Vrai/Faux à largeur variable). À côté de lui,
   `production.css`, `vocab.css` et `vocab.js` : les ressources génériques qu'il
   incorpore.
-- `build/contenu/<slug>/manifest.py` — l'identité : titre, niveau, couleur
-  d'en-tête, thème LMS, consignes envoyées à l'IA de correction, scénario du
-  jeu de rôle, texte de fin, et la liste des résidus interdits.
+- `build/contenu/<slug>/manifest.py` — l'identité : couleur d'en-tête, thème
+  LMS, consignes envoyées à l'IA de correction, scénario du jeu de rôle, texte
+  de fin, et la liste des résidus interdits. **Ni `titre` ni `niveau`** : ils
+  viennent de `build/powerpoints/modules.py`, qui se déclare source unique et
+  les porte déjà. Les redéfinir ici ferait une source de plus — le défaut de
+  numérotation à trois sources que ce projet traîne déjà — et le build refuse
+  une valeur qui contredirait le registre.
 - `build/contenu/<slug>/*.js` — le contenu pédagogique : `dialogues`,
   `sections`, `fccards`, `exos`, `carrier`, `plus`, `custom`.
 
@@ -628,9 +632,22 @@ visuelle. Quatrième onglet de `enseignant.html`, rendu par `js/materiel.js`.
   doit être refaite en ligne par le modal de modification d'admin, un
   redéploiement ne la porte pas.
   Le **registre `build/powerpoints/modules.py`** est la source unique : numéro,
-  titre affiché en pied de page, nom des blocs et ordre d'enseignement. Aucun
-  autre fichier ne porte de constante de module — pas `build.py`, pas `theme.py`,
-  pas `fiche.py`.
+  **niveau**, titre affiché en pied de page, nom des blocs et ordre
+  d'enseignement. Aucun autre fichier ne porte de constante de module — pas
+  `build.py`, pas `theme.py`, pas `fiche.py`, pas le manifeste de
+  `build/contenu/<slug>/`.
+- **Le niveau n'est écrit en dur nulle part** : il vient du registre. Le lisent
+  `build/module.py` (jeton `%%NIVEAU%%` du HTML) et `build_fiches.py`
+  (l'en-tête des fiches élèves) ; `build/vocab_flash.py` porte le sien dans sa
+  propre table de thèmes. Les seuls « Niveau 4 » restants dans le code sont les
+  **repères de recherche** de `build/gabarit.py` — le texte qu'il remplace par
+  un jeton — et des commentaires sur les niveaux de titre.
+- **Les slugs restent globalement uniques, tous niveaux confondus.** Les
+  dossiers de sortie sont à plat (`assets/interactive/<slug>/`,
+  `assets/powerpoints/<slug>/`) : un `module-sante` de niveau 6 écraserait
+  celui du niveau 4. Lui donner un autre slug coûte un mot ; ranger les
+  sorties par niveau casserait les adresses déjà distribuées aux élèves, les
+  chemins de `activities.json` et les clés de reprise en `localStorage`.
 - **Le nombre de séances suit le nombre de défis**, pas une grille imposée :
   trois défis donnent 4-4-4-2-2 (blocs A à E), deux défis donnent 4-5-5-2
   (blocs A, B, C, E). Seize séances dans les deux cas, mais un module sans
