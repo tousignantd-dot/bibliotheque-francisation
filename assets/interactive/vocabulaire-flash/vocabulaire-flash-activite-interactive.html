@@ -117,6 +117,25 @@ body { --sec: var(--green-600); --sec-soft: var(--green-100); }
 .vf-choix__b:hover { background: var(--paper-100); border-color: var(--border-strong, var(--border)); }
 .vf-choix__b:disabled { opacity: .5; cursor: default; }
 
+/* Glisser-déposer. Écrire le mot reste la voie principale — c'est ce qui
+   ancre l'orthographe — mais l'élève qui bloque devait cliquer une étiquette,
+   geste sans rapport avec ce qu'il fait dans les modules. Il glisse donc ici
+   comme il glisse là-bas, et le champ devient la zone de dépôt.
+   Le glissement passe par les événements « pointer » et non par l'API
+   drag-and-drop de HTML : celle-ci ne fonctionne pas au doigt, et la moitié
+   de la classe travaille sur tablette. */
+.vf-choix__b:not(:disabled) { cursor: grab; touch-action: none; }
+.vf-choix__b.is-prise { opacity: .35; cursor: grabbing; }
+.vf-choix__fant { position: fixed; z-index: 60; pointer-events: none;
+  transform: translate(-50%, -50%); box-shadow: var(--sh-2, 0 6px 18px rgba(20,20,20,.18));
+  background: var(--surface-card); }
+.vf-choix__aide { font-size: var(--fs-meta); color: var(--text-muted);
+  margin-bottom: var(--sp-2); }
+/* La cible ne s'annonce que pendant le glissement : un champ en pointillé
+   en permanence dirait « ne pas écrire ici », l'inverse de ce qu'on veut. */
+.vf-saisie .field.is-cible { border-style: dashed; border-width: 2px;
+  border-color: var(--accent); background: var(--accent-soft); }
+
 /* Traduction : un encadré creusé, sous un filet, comme le rail « Mes outils ».
    L'étiquette est en CSS pour que le script puisse écrire en textContent. */
 .vf-trad { width: 100%; max-width: 420px; text-align: left;
@@ -229,6 +248,7 @@ body { --sec: var(--green-600); --sec-soft: var(--green-100); }
                     aria-expanded="false" aria-controls="listeMotsBox">Choisir dans la liste</button>
             <div class="vf-choix hidden" id="listeMotsBox">
               <p class="vf-choix__t">Les mots de la session</p>
+              <p class="vf-choix__aide">Glissez un mot dans la case — ou touchez-le.</p>
               <div class="vf-choix__l" id="listeMotsL"></div>
             </div>
           </div>
@@ -475,11 +495,81 @@ function buildListeMots(){
     b.className = 'vf-choix__b';
     b.textContent = mot;
     b.addEventListener('click', () => {
-      if (revealed) return;
-      document.getElementById('guessInput').value = mot;
-      document.getElementById('checkGuessBtn').click();
+      // Un glissement se termine par un pointerup, que le navigateur fait
+      // suivre d'un clic quand il a eu lieu sur l'étiquette : sans ce
+      // garde-fou, le mot serait déposé deux fois.
+      if (b.dataset.glisse) return;
+      deposerMot(mot);
     });
+    armerGlissement(b, mot);
     zone.appendChild(b);
+  });
+}
+
+/* Un mot déposé vaut un mot écrit : même chemin de vérification, donc même
+   rétroaction et même comptage. */
+function deposerMot(mot){
+  if (revealed) return;
+  document.getElementById('guessInput').value = mot;
+  document.getElementById('checkGuessBtn').click();
+}
+
+/* Glisser une étiquette jusqu'au champ.
+   Le clic reste branché : le glissement ne remplace rien, il s'ajoute. Un
+   déplacement de moins de 6 px n'est donc pas un glissement mais un clic, et
+   on le laisse au navigateur — sinon toucher une étiquette ne ferait plus
+   rien sur tablette. */
+function armerGlissement(bouton, mot){
+  const SEUIL = 6;
+  bouton.addEventListener('pointerdown', ev => {
+    if (revealed || bouton.disabled || ev.button > 0) return;
+    const champ = document.getElementById('guessInput');
+    const depart = {x: ev.clientX, y: ev.clientY};
+    let fantome = null;
+
+    const surLeChamp = e => {
+      const r = champ.getBoundingClientRect();
+      return e.clientX >= r.left && e.clientX <= r.right
+          && e.clientY >= r.top && e.clientY <= r.bottom;
+    };
+    const bouger = e => {
+      if (!fantome) {
+        if (Math.hypot(e.clientX - depart.x, e.clientY - depart.y) < SEUIL) return;
+        fantome = bouton.cloneNode(true);
+        fantome.classList.add('vf-choix__fant');
+        fantome.style.width = bouton.offsetWidth + 'px';
+        fantome.style.height = bouton.offsetHeight + 'px';
+        document.body.appendChild(fantome);
+        bouton.classList.add('is-prise');
+        // La capture garde les événements sur l'étiquette même quand le doigt
+        // sort de son cadre — sans quoi le glissement s'arrête au premier
+        // pixel franchi. Elle échoue si le pointeur n'est plus actif : le
+        // glissement continue alors sans elle plutôt que de se rompre.
+        try { bouton.setPointerCapture(e.pointerId); } catch (_) {}
+      }
+      fantome.style.left = e.clientX + 'px';
+      fantome.style.top = e.clientY + 'px';
+      champ.classList.toggle('is-cible', surLeChamp(e));
+    };
+    const lacher = e => {
+      bouton.removeEventListener('pointermove', bouger);
+      bouton.removeEventListener('pointerup', lacher);
+      bouton.removeEventListener('pointercancel', lacher);
+      champ.classList.remove('is-cible');
+      if (!fantome) return;                 // simple clic : au gestionnaire de clic
+      fantome.remove();
+      bouton.classList.remove('is-prise');
+      // Le drapeau ne vaut que pour le clic immédiat, celui que le navigateur
+      // émet dans la foulée du pointerup. Il est levé au tour de boucle
+      // suivant : un glissement relâché À CÔTÉ du champ n'émet aucun clic, et
+      // un drapeau laissé en place rendrait l'étiquette muette au clic suivant.
+      bouton.dataset.glisse = '1';
+      setTimeout(() => { delete bouton.dataset.glisse; }, 0);
+      if (surLeChamp(e)) deposerMot(mot);
+    };
+    bouton.addEventListener('pointermove', bouger);
+    bouton.addEventListener('pointerup', lacher);
+    bouton.addEventListener('pointercancel', lacher);
   });
 }
 
