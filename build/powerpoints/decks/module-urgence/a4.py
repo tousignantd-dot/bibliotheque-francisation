@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 """A4 · La trousse de premiers soins et les groupes de mots.
-Bloc A · couleur foret (vocabulaire) · 60 min.
+Bloc A · couleur framboise (vocabulaire) · 60 min.
 Source : exercices `prMat` et `prGrp`.
 """
 from theme import Deck
@@ -8,7 +8,7 @@ from theme import Deck
 
 def build(dossier):
     d = Deck(
-        code='A4', section='foret',
+        code='A4', section='framboise',
         titre='La trousse de premiers soins',
         chapeau="Six objets qu'on trouve dans toute trousse, et une règle d'écriture : "
                 "nommer précisément suppose d'accorder correctement. « Une compresse "

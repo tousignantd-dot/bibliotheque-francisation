@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 """A4 · Les valeurs morales dans les publicités.
-Bloc A · couleur foret (vocabulaire) · 60 min.
+Bloc A · couleur framboise (vocabulaire) · 60 min.
 Source : exercice `prValeurs` et sa mini-leçon.
 """
 from theme import Deck
@@ -8,7 +8,7 @@ from theme import Deck
 
 def build(dossier):
     d = Deck(
-        code='A4', section='foret',
+        code='A4', section='framboise',
         titre='Les valeurs des publicités',
         chapeau="Une publicité ne vend pas seulement un service : elle propose une façon "
                 "de voir les choses. Réparer plutôt que jeter, c'est un geste — et "

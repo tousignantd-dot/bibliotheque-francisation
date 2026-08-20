@@ -9,7 +9,7 @@ from theme import Deck
 
 def build(dossier):
     d = Deck(
-        code='E2', section='foret',
+        code='E2', section='framboise',
         titre='Je retiens des mots',
         chapeau="Dernière séance : on range le vocabulaire par usage, on refait les "
                 "cartes mémoire, et chacun dit où il en est.",

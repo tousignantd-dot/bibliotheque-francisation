@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 """A3 · Le corps, les sens et la douleur.
-Bloc A · couleur foret (vocabulaire) · 50 min.
+Bloc A · couleur framboise (vocabulaire) · 50 min.
 Source : exercice `prSens`, cartes mémoire du corps, vocabulaire de la douleur.
 """
 from theme import Deck
@@ -8,7 +8,7 @@ from theme import Deck
 
 def build(dossier):
     d = Deck(
-        code='A3', section='foret',
+        code='A3', section='framboise',
         titre='Le corps, les sens et la douleur',
         chapeau="Pour se faire soigner, il faut d'abord pouvoir nommer. Les parties du "
                 "corps, les cinq sens, et surtout les quatre mots qui disent comment "

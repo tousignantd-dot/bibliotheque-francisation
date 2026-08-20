@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 """A3 · Le vocabulaire de l'hiver québécois.
-Bloc A · couleur foret (vocabulaire) · 60 min.
+Bloc A · couleur framboise (vocabulaire) · 60 min.
 Source : cartes mémoire et exercice `prImg`.
 """
 from theme import Deck
@@ -11,7 +11,7 @@ IMG = ('/Users/danieltousignant/Claude/bibliotheque-francisation/assets/'
 
 def build(dossier):
     d = Deck(
-        code='A3', section='foret',
+        code='A3', section='framboise',
         titre="Le vocabulaire de l'hiver",
         chapeau="Poudrerie, grésil, redoux, facteur éolien. Quatre mots qu'aucune "
                 "méthode de français ne contient, et qu'on entend tous les matins de "

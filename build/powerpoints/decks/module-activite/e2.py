@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 """E2 · Je retiens des mots.
-Bloc E « Je me lance » · couleur foret · 60 min.
+Bloc E « Je me lance » · couleur framboise · 60 min.
 Source : cartes mémoire, banc de vocabulaire et autoévaluation du module.
 """
 from theme import Deck
@@ -8,7 +8,7 @@ from theme import Deck
 
 def build(dossier):
     d = Deck(
-        code='E2', section='foret',
+        code='E2', section='framboise',
         titre='Je retiens des mots',
         chapeau="Quinze mots, sept points de langue, six questions. Dernière "
                 "séance : on rassemble, on révise, et chacun fait le point sur "

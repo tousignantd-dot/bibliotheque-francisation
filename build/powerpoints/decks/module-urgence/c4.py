@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 """C4 · Les examens, les soins et la fiche brûlure.
-Bloc C · couleur foret (vocabulaire) · 75 min.
+Bloc C · couleur framboise (vocabulaire) · 75 min.
 Source : exercices `t2exam`, `t2consult` et `t2fiche`.
 """
 from theme import Deck
@@ -8,7 +8,7 @@ from theme import Deck
 
 def build(dossier):
     d = Deck(
-        code='C4', section='foret',
+        code='C4', section='framboise',
         titre='Les examens et les soins',
         chapeau="Radiographie, prise de sang, points de suture, vaccin contre le tétanos. "
                 "Quatre mots qu'on entend à l'urgence, et qu'il vaut mieux comprendre "

@@ -8,7 +8,7 @@ from theme import Deck
 
 def build(dossier):
     d = Deck(
-        code='A3', section='foret',
+        code='A3', section='framboise',
         titre='Les mots de la santé',
         chapeau="Douze mots qui reviennent à chaque rendez-vous et à chaque passage à "
                 "la pharmacie. Les comprendre à l'oral compte plus que de savoir les "

@@ -42,6 +42,7 @@ ROOT = pathlib.Path(__file__).resolve().parent.parent
 CSS = ROOT / 'assets/design-system/tokens/colors.css'
 CONTENU = ROOT / 'build/contenu'
 INTERACTIF = ROOT / 'assets/interactive'
+ACTIVITES = ROOT / 'data/activities.json'
 
 sys.path.insert(0, str(ROOT / 'build'))
 
@@ -62,6 +63,46 @@ def palette():
 def registre():
     from powerpoints.modules import MODULES
     return {slug: fiche.get('niveau', 4) for slug, fiche in MODULES.items()}
+
+
+def activites():
+    """Numéro d'activité → niveau, pour la plaquette du portail."""
+    from powerpoints.modules import MODULES
+    return {fiche['activite']: fiche.get('niveau', 4)
+            for fiche in MODULES.values() if 'activite' in fiche}
+
+
+def pose_plaquette(ecrire, paires, par_activite):
+    """Corrige `nouveauDesignColor` / `nouveauDesignTint` dans activities.json.
+
+    La plaquette du portail répète la couleur de l'en-tête. Les deux ont
+    toujours dû concorder, et rien ne le garantissait : une couleur changée
+    dans le manifeste et oubliée ici faisait mentir le portail. On écrit ligne
+    à ligne plutôt que par un aller-retour JSON, pour ne pas reformater les
+    seize cents lignes du fichier au passage.
+    """
+    lignes = ACTIVITES.read_text(encoding='utf-8').split('\n')
+    id_courant = None
+    ecarts = []
+    for i, ligne in enumerate(lignes):
+        trouve = re.match(r'\s*"id":\s*(\d+)', ligne)
+        if trouve:
+            id_courant = int(trouve.group(1))
+            continue
+        niveau = par_activite.get(id_courant)
+        if niveau is None:
+            continue
+        accent, doux = paires[niveau]
+        for cle, valeur in (('nouveauDesignColor', accent),
+                            ('nouveauDesignTint', doux)):
+            trouve = re.match(r'(\s*"%s":\s*")(#[0-9A-Fa-f]{6})(".*)$' % cle, ligne)
+            if trouve and trouve.group(2).upper() != valeur:
+                lignes[i] = '%s%s%s' % (trouve.group(1), valeur, trouve.group(3))
+                ecarts.append('activité %d — %s (niveau %d → %s)'
+                              % (id_courant, cle, niveau, valeur))
+    if ecarts and ecrire:
+        ACTIVITES.write_text('\n'.join(lignes), encoding='utf-8')
+    return ecarts
 
 
 def html_du_module(slug):
@@ -111,7 +152,7 @@ def main():
 
     paires = palette()
     niveaux = registre()
-    ecarts = []
+    ecarts = pose_plaquette(ecrire, paires, activites())
 
     for slug in sorted(niveaux):
         niveau = niveaux[slug]

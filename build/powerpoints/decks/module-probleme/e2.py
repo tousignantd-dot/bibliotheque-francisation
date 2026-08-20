@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 """E2 · Je retiens des mots.
-Bloc E · couleur foret (vocabulaire et bilan) · 60 min.
+Bloc E · couleur framboise (vocabulaire et bilan) · 60 min.
 Source : les 16 cartes mémoire du module, autoévaluation, révision des 9 savoirs.
 """
 from theme import Deck
@@ -8,7 +8,7 @@ from theme import Deck
 
 def build(dossier):
     d = Deck(
-        code='E2', section='foret',
+        code='E2', section='framboise',
         titre='Je retiens des mots',
         chapeau="Dernière séance du module. On rassemble le vocabulaire, on revoit les "
                 "neuf savoirs, et chacun fait le point sur ce qu'il est maintenant "

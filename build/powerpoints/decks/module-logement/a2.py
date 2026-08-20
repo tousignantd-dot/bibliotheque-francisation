@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 """A2 · Le vocabulaire du logement.
-Bloc A · couleur foret (vocabulaire) · 60 min.
+Bloc A · couleur framboise (vocabulaire) · 60 min.
 Source : cartes mémoire et savoir sur le « ½ » des annonces.
 """
 from theme import Deck
@@ -8,7 +8,7 @@ from theme import Deck
 
 def build(dossier):
     d = Deck(
-        code='A2', section='foret',
+        code='A2', section='framboise',
         titre='Le vocabulaire du logement',
         chapeau="« 4 ½ chauffé et éclairé, non-fumeur, libre le 1er juillet. » Une "
                 "annonce de logement au Québec est écrite en abrégé — et chaque mot y "

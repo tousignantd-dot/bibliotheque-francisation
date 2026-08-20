@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 """B2 · Les chiffres et les unités du bulletin.
-Bloc B · couleur foret (vocabulaire) · 60 min.
+Bloc B · couleur framboise (vocabulaire) · 60 min.
 Source : le bulletin `t1` — degrés, kilomètres à l'heure, centimètres, heures.
 """
 from theme import Deck
@@ -8,7 +8,7 @@ from theme import Deck
 
 def build(dossier):
     d = Deck(
-        code='B2', section='foret',
+        code='B2', section='framboise',
         titre='Les chiffres du bulletin',
         chapeau="« Moins six », « soixante kilomètres à l'heure », « deux à quatre "
                 "centimètres ». Un bulletin est fait de chiffres — et un chiffre mal "

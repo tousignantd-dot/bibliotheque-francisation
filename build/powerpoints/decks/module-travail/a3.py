@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 """A3 · Retard, absence ou abandon ?
-Bloc A · couleur foret (vocabulaire) · 60 min.
+Bloc A · couleur framboise (vocabulaire) · 60 min.
 Source : exercices `t1situ` et `t1img`.
 """
 from theme import Deck
@@ -11,7 +11,7 @@ IMG = ('/Users/danieltousignant/Claude/bibliotheque-francisation/assets/'
 
 def build(dossier):
     d = Deck(
-        code='A3', section='foret',
+        code='A3', section='framboise',
         titre='Retard, absence ou abandon ?',
         chapeau="Trois mots, trois démarches complètement différentes. Se tromper de mot "
                 "au téléphone, c'est laisser croire qu'on ne reviendra jamais — ou "

@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 """A2 · Quatre sortes de nouvelles.
-Bloc A · couleur foret (vocabulaire) · 60 min.
+Bloc A · couleur framboise (vocabulaire) · 60 min.
 Source : exercice `prClass` — fait divers, régionale, nationale, internationale.
 """
 from theme import Deck
@@ -8,7 +8,7 @@ from theme import Deck
 
 def build(dossier):
     d = Deck(
-        code='A2', section='foret',
+        code='A2', section='framboise',
         titre='Quatre sortes de nouvelles',
         chapeau="Un feu de forêt en Australie, une piste cyclable à Alma, un cycliste "
                 "qui heurte un chevreuil. Trois nouvelles, trois catégories — et le "

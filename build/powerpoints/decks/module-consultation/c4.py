@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 """C4 · Lire une ordonnance.
-Bloc C · couleur foret (vocabulaire) · 60 min.
+Bloc C · couleur framboise (vocabulaire) · 60 min.
 Source : exercices `t2med` et `t2vf2` — les indications d'un médicament.
 """
 from theme import Deck
@@ -8,7 +8,7 @@ from theme import Deck
 
 def build(dossier):
     d = Deck(
-        code='C4', section='foret',
+        code='C4', section='framboise',
         titre='Lire une ordonnance',
         chapeau="« Deux fois par jour, à jeun, jusqu'à la fin du traitement. » Trois "
                 "indications, trois erreurs possibles. Un médicament mal pris ne soigne "

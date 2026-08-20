@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 """B3 · Le slogan.
-Bloc B · couleur foret (vocabulaire) · 60 min.
+Bloc B · couleur framboise (vocabulaire) · 60 min.
 Source : exercices `t1slogan` et `t1deviner`.
 """
 from theme import Deck
@@ -8,7 +8,7 @@ from theme import Deck
 
 def build(dossier):
     d = Deck(
-        code='B3', section='foret',
+        code='B3', section='framboise',
         titre='Le slogan',
         chapeau="« Rien ne se jette, tout se répare. » Cinq mots, et l'atelier tout "
                 "entier tient dedans. Un bon slogan ne décrit pas un service : il "

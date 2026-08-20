@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 """C4 · Le bail et le 1er juillet.
-Bloc C · couleur foret (vocabulaire) · 60 min.
+Bloc C · couleur framboise (vocabulaire) · 60 min.
 Source : savoir culturel du défi 2, vocabulaire du contrat de location.
 """
 from theme import Deck
@@ -8,7 +8,7 @@ from theme import Deck
 
 def build(dossier):
     d = Deck(
-        code='C4', section='foret',
+        code='C4', section='framboise',
         titre='Le bail et le 1er juillet',
         chapeau="Douze mois, une signature, et une date que tout le Québec connaît. Le "
                 "bail est le document le plus engageant qu'un locataire signe — et "

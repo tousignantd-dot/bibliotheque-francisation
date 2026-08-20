@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 """C4 · Privé, coopérative, HLM.
-Bloc C · couleur foret (vocabulaire et culture) · 55 min.
+Bloc C · couleur framboise (vocabulaire et culture) · 55 min.
 Source : mini-leçon `t2coop`, exercice `t2coop` et son encadré culturel.
 """
 from theme import Deck
@@ -8,7 +8,7 @@ from theme import Deck
 
 def build(dossier):
     d = Deck(
-        code='C4', section='foret',
+        code='C4', section='framboise',
         titre="Trois façons d'habiter au Québec",
         chapeau="Quand on cherche un logement, on rencontre trois modèles très différents. "
                 "Vos droits, vos coûts et vos obligations ne sont pas les mêmes dans les "

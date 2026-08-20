@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 """A3 · Le vocabulaire de bureau.
-Bloc A · couleur foret (vocabulaire) · 60 min.
+Bloc A · couleur framboise (vocabulaire) · 60 min.
 Source : exercices `prVocab` et `prVerbe`.
 """
 from theme import Deck
@@ -8,7 +8,7 @@ from theme import Deck
 
 def build(dossier):
     d = Deck(
-        code='A3', section='foret',
+        code='A3', section='framboise',
         titre='Le vocabulaire de bureau',
         chapeau="Remplir, joindre, soumettre, approuver, signaler, réserver. Six verbes "
                 "qui reviennent dans toutes les procédures d'entreprise — et qu'aucun "

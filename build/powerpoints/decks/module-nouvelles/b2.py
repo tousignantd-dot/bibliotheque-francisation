@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 """B2 · Expliquer un mot dans ses mots.
-Bloc B · couleur foret (vocabulaire) · 60 min.
+Bloc B · couleur framboise (vocabulaire) · 60 min.
 Source : exercice `t1vocab` — définir sans le dictionnaire.
 """
 from theme import Deck
@@ -8,7 +8,7 @@ from theme import Deck
 
 def build(dossier):
     d = Deck(
-        code='B2', section='foret',
+        code='B2', section='framboise',
         titre='Expliquer un mot dans ses mots',
         chapeau="Quand un mot manque, on ne s'arrête pas : on le contourne. Savoir "
                 "expliquer « une affiche » sans dire « affiche » est la compétence qui "

@@ -61,7 +61,7 @@ C = {
     'indigo_600':'3B49A0', 'indigo_100':'E8EAFA',
     'ambre_700': 'B45309', 'ambre_100': 'FBEEDC',
     'teal_700':  '0D7A6F', 'teal_100':  'DCF2EF',
-    'foret_700': '166534', 'foret_100': 'E3F1E7',
+    'framboise_600': 'A5335F', 'framboise_100': 'FCE9F0',
     # Audio — le seul aplat rouge
     'audio':     'DC2626', 'audio_hover': 'B91C1C',
     # Rétroaction
@@ -74,13 +74,16 @@ C = {
 
 # Les cinq couleurs de section, chacune avec sa teinte pâle. La graphie-phonie
 # était violette ; le violet #6B4FBB est passé à la marque SAAF, qui le veut
-# exclusif, et l'indigo l'a remplacé au repérage.
+# exclusif, et l'indigo l'a remplacé au repérage. Le vocabulaire était forêt ;
+# le 20 août 2026 le vert est sorti du repérage — dans les modules comme ici,
+# pour que la diapositive et l'écran s'accordent — et la framboise a pris sa
+# place. Le seul vert qui reste est l'accent unique, `green_600`.
 SECTIONS = {
     'acier':  ('acier_600',  'acier_100'),   # compréhension orale
     'indigo': ('indigo_600', 'indigo_100'),  # graphie-phonie
     'ambre':  ('ambre_700',  'ambre_100'),   # écriture
     'teal':   ('teal_700',   'teal_100'),    # écoute et réponds
-    'foret':  ('foret_700',  'foret_100'),   # vocabulaire / bilan
+    'framboise': ('framboise_600', 'framboise_100'),  # vocabulaire / bilan
 }
 
 FONT = 'Verdana'
