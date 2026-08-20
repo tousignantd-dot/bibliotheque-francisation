@@ -2197,6 +2197,73 @@ JEU_DE_ROLE_RENCONTRES = {
 }
 
 
+# ── Jeu de rôle « trouver son chemin » (module-deplacement) ──────────────────
+# Demander ou expliquer un itinéraire. Rôles « perdu » et « guide ».
+JEU_DE_ROLE_ITINERAIRES = {
+    "metro": {
+        "contexte": (
+            "Un terminus d'autobus au-dessus d'une station de métro, en fin d'avant-midi. "
+            "Quelqu'un cherche son quai et tourne en rond depuis plusieurs minutes."
+        ),
+        "guide": [
+            "Tu travailles dans ce terminus depuis des années et tu connais chaque quai.",
+            "Les quais 1 à 10 sont à cet étage ; les quais 11 à 18 sont derrière, en bas.",
+            "On y va par le corridor vitré, à gauche, puis l'escalier au bout.",
+            "L'autobus 90 part du quai 12 et va vers Saint-Hubert.",
+            "Le prochain départ est dans une dizaine de minutes ; il y en a un aux vingt minutes.",
+            "Le plancher du corridor vient d'être lavé : tu préviens qu'il est glissant.",
+            "Tu ne donnes jamais tout d'un coup : tu réponds à ce qu'on te demande.",
+        ],
+        "perdu": [
+            "Tu cherches le quai 12 et tu tournes en rond depuis dix minutes.",
+            "Ton autobus part bientôt et tu as peur de le manquer.",
+            "Tu ne sais pas qu'il y a un deuxième étage de quais.",
+            "Tu répètes ce qu'on te dit pour être sûr d'avoir compris.",
+        ],
+    },
+    "rue": {
+        "contexte": (
+            "Un coin de rue d'un quartier résidentiel, en après-midi. Quelqu'un vient de "
+            "descendre de l'autobus et cherche une adresse à quelques rues de là."
+        ),
+        "guide": [
+            "Tu habites le quartier et tu connais toutes les rues.",
+            "La rue cherchée est à dix minutes à pied : tout droit jusqu'au feu, puis à gauche.",
+            "Après avoir tourné, il faut marcher deux coins de rue.",
+            "On passe devant une pharmacie et une caisse ; la rue est juste après la caisse.",
+            "La rue est petite et facile à manquer.",
+            "Les numéros pairs sont du côté droit en marchant dans ce sens.",
+        ],
+        "perdu": [
+            "Tu cherches le 340 d'une rue que tu n'as jamais vue.",
+            "Tu es à pied et tu as un rendez-vous dans vingt minutes.",
+            "Tu ne sais pas si les numéros montent ou descendent de ce côté-ci.",
+            "Tu répètes l'itinéraire à voix haute pour le retenir.",
+        ],
+    },
+    "edifice": {
+        "contexte": (
+            "L'entrée d'un centre de formation, le matin. Quelqu'un doit se rendre à pied "
+            "à un bureau situé à une dizaine de minutes, de l'autre côté d'un parc."
+        ),
+        "guide": [
+            "Tu as fait ce trajet la semaine passée et tu t'en souviens bien.",
+            "Il faut sortir par la porte principale, tourner à droite et marcher jusqu'au parc.",
+            "On traverse le parc par le sentier du milieu et on arrive sur la rue Victoria.",
+            "Là, on tourne à gauche ; l'édifice est le troisième, celui à la porte vitrée.",
+            "L'enseigne est petite, au-dessus de la porte : il n'y a pas de grande affiche.",
+            "Le trajet prend douze minutes ; s'il pleut, le sentier du parc devient de la boue.",
+        ],
+        "perdu": [
+            "Tu dois te rendre à ce bureau demain matin et tu n'y es jamais allé.",
+            "Tu veux savoir combien de temps ça prend, pour partir à la bonne heure.",
+            "Tu demandes des repères visuels : tu n'es pas sûr de reconnaître l'édifice.",
+            "Tu poses tes questions une à la fois.",
+        ],
+    },
+}
+
+
 JEU_DE_ROLE_SCENARIOS = {
     "louer": {
         "cadre": "une visite de logement",
@@ -2298,6 +2365,45 @@ JEU_DE_ROLE_SCENARIOS = {
                 "conduite": ("Pose tes questions une à la fois : comment ça marche, à quelle "
                              "heure, combien ça coûte, qui vient. Raconte un peu de ta propre "
                              "vie quand on t'en demande, sans monopoliser la parole."),
+            },
+        },
+    },
+    "chemin": {
+        "cadre": "une demande d'itinéraire dans une ville",
+        "contexte_label": "L'endroit où vous vous trouvez tous les deux",
+        "cas": JEU_DE_ROLE_ITINERAIRES,
+        "adresse": "Vouvoie l'élève : on ne se connaît pas, on se croise dans un lieu public.",
+        "sujets": [
+            "le point de départ et la destination",
+            "les étapes du trajet, dans l'ordre, à l'impératif",
+            "les repères visuels qui confirment qu'on est sur le bon chemin",
+            "la direction à prendre (le nom du terminus, le côté de la rue)",
+            "la durée du trajet",
+            "ce qu'il ne faut pas faire ou ne pas manquer",
+        ],
+        "cloture": ("Quand l'itinéraire est complet, demande à l'autre de le répéter dans "
+                    "ses mots, confirme, et souhaite bonne route."),
+        "ouverture": {
+            "perdu": "Excusez-moi, je cherche mon chemin.",
+            "guide": "Bonjour, vous avez l'air de chercher quelque chose ?",
+        },
+        "roles": {
+            "guide": {
+                "qui": ("Tu connais bien l'endroit et tu expliques le chemin. L'élève est "
+                        "la personne qui cherche."),
+                "conduite": ("Donne une ou deux étapes à la fois, jamais tout l'itinéraire "
+                             "d'un coup — personne ne retient six étapes. Emploie "
+                             "l'impératif et des repères visuels. Attends que l'élève "
+                             "confirme avant de continuer, et corrige gentiment s'il "
+                             "répète de travers."),
+            },
+            "perdu": {
+                "qui": ("Tu cherches ton chemin et tu ne connais pas l'endroit. L'élève "
+                        "connaît les lieux et t'explique."),
+                "conduite": ("Pose tes questions une à la fois : où, de quel côté, combien "
+                             "de temps. Répète ce qu'on te dit pour vérifier. Si "
+                             "l'explication va trop vite ou saute une étape, demande de "
+                             "reprendre — c'est exactement ce qu'il faut apprendre à faire."),
             },
         },
     },

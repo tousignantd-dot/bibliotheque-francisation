@@ -142,6 +142,16 @@ MODULES = {
                         "Ce que j'ai vécu",
                         'Donner des nouvelles'),
     },
+    'module-deplacement': {
+        'numero': 12, 'activite': 49, 'niveau': 4,
+        'titre': 'Trouver son chemin',
+        'chapeau': "Demander un itinéraire, le suivre, l'expliquer à son tour, "
+                   "et comprendre les annonces en chemin.",
+        'seances': GRILLE_3_DEFIS,
+        'blocs': _blocs('Demander son chemin',
+                        'Expliquer le chemin',
+                        "Les messages qu'on entend"),
+    },
 }
 
 # L'ordre d'affichage : celui des numéros de module.
