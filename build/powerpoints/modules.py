@@ -210,6 +210,19 @@ MODULES = {
                         "Échanger et se faire rembourser"),
     },
 
+    # ── Niveau 1 ────────────────────────────────────────────────────
+    # Premier module court du projet : huit séances, deux défis, deux blocs
+    # de quatre heures. Seize séances sont trop longues pour un grand
+    # débutant qui n'a pas encore l'alphabet.
+    'module-n1-presenter': {
+        'numero': 1, 'activite': 56, 'niveau': 1,
+        'titre': 'Je me présente',
+        'chapeau': "Dire son nom et l'épeler, dire d'où on vient et ce qu'on "
+                   "parle, saluer et remercier.",
+        'seances': GRILLE_COURTE,
+        'blocs': _blocs('Se présenter', 'Saluer et remercier'),
+    },
+
     # ── Niveau 3 ────────────────────────────────────────────────────
     'module-n3-epicerie': {
         'numero': 1, 'activite': 55, 'niveau': 3,

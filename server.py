@@ -2599,6 +2599,66 @@ JEU_DE_ROLE_RESTAURANT = {
 # ── Jeu de rôle « acheter des vêtements » (module-vetements) ─────────────────
 # S'informer sur un vêtement, l'essayer, l'échanger. Rôles « client » et
 # « conseiller ».
+JEU_DE_ROLE_PRESENTER = {
+    "accueil": {
+        "contexte": (
+            "L'accueil d'un centre de francisation, un lundi matin. Une personne "
+            "arrive pour la première fois. Le stade est celui du grand débutant."
+        ),
+        "accueillant": [
+            "Tu demandes le prénom, puis le nom de famille — l'un après l'autre.",
+            "Tu demandes d'épeler le nom de famille, une lettre à la fois.",
+            "Tu répètes ce que tu as compris pour vérifier.",
+            "Les cours du matin commencent à huit heures trente.",
+            "Tu dis « bienvenue » à la fin.",
+        ],
+        "eleve": [
+            "C'est ton premier jour. Tu dis bonjour et tu donnes ton nom.",
+            "On te demande d'épeler ton nom de famille.",
+            "Tu ne comprends pas toujours : tu demandes de parler plus lentement.",
+            "Tu remercies avant de partir.",
+        ],
+    },
+    "classe": {
+        "contexte": (
+            "Une salle de classe de francisation, avant le début du cours. Deux "
+            "personnes qui ne se connaissent pas s'assoient côte à côte."
+        ),
+        "accueillant": [
+            "Tu es un élève de la classe, arrivé il y a quelques semaines.",
+            "Tu dis ton prénom, ton pays et ta langue — et tu poses les mêmes "
+            "questions en retour.",
+            "Tu tutoies : entre élèves, on se tutoie.",
+            "Tu parles lentement, avec des phrases très courtes.",
+        ],
+        "eleve": [
+            "Tu es nouveau dans la classe.",
+            "Tu dis ton prénom, d'où tu viens et quelle langue tu parles.",
+            "Tu demandes la même chose à l'autre personne.",
+            "Tu peux dire si tu as des enfants.",
+        ],
+    },
+    "secretariat": {
+        "contexte": (
+            "Le comptoir du secrétariat. On remplit la fiche d'un nouvel élève : "
+            "nom, adresse, langues parlées."
+        ),
+        "accueillant": [
+            "Tu demandes une information à la fois : le nom, puis l'adresse, "
+            "puis les langues.",
+            "Tu fais épeler le nom de famille et le nom de la rue.",
+            "Si on ne comprend pas, tu répètes plus lentement — sans hausser la voix.",
+            "Tu ne demandes jamais deux choses dans la même phrase.",
+        ],
+        "eleve": [
+            "Tu donnes ton nom, ton adresse et tes langues.",
+            "Tu ne comprends pas le mot « adresse » du premier coup.",
+            "Tu demandes de répéter plus lentement.",
+            "Tu épelles le nom de ta rue.",
+        ],
+    },
+}
+
 JEU_DE_ROLE_ALLEES = {
     "farine": {
         "contexte": (
@@ -3032,6 +3092,44 @@ JEU_DE_ROLE_SCENARIOS = {
                              "d'un plat, les boissons. Emploie des formes polies. Si un "
                              "problème survient, signale-le sans agressivité — et laisse "
                              "l'élève proposer la solution."),
+            },
+        },
+    },
+    "presenter": {
+        "cadre": "une première rencontre, où l'on se présente",
+        "contexte_label": "L'endroit où vous vous trouvez",
+        "cas": JEU_DE_ROLE_PRESENTER,
+        "adresse": ("Vouvoie l'élève à l'accueil et au secrétariat ; tutoie-le dans "
+                    "la classe, où l'on se tutoie entre élèves."),
+        "sujets": [
+            "le prénom et le nom de famille",
+            "épeler le nom, une lettre à la fois",
+            "le pays d'où l'on vient",
+            "la ville où l'on habite",
+            "les langues que l'on parle",
+            "les enfants, s'il y en a",
+        ],
+        "cloture": "Quand la fiche est complète, remercie et souhaite la bienvenue.",
+        "ouverture": {
+            "eleve": "Bonjour. Je m'appelle…",
+            "accueillant": "Bonjour ! Comment vous appelez-vous ?",
+        },
+        "roles": {
+            "accueillant": {
+                "qui": ("Tu accueilles une personne qui arrive pour la première fois. "
+                        "L'élève est cette personne."),
+                "conduite": ("Niveau grand débutant : phrases de cinq mots au plus, une "
+                             "question à la fois, jamais deux dans la même phrase. "
+                             "Répète ce que tu as compris pour vérifier. Si l'élève ne "
+                             "comprend pas, redis la même phrase plus lentement, avec "
+                             "d'autres mots plus simples — sans jamais lui reprocher."),
+            },
+            "eleve": {
+                "qui": ("Tu es la personne qui arrive. L'élève joue celle qui "
+                        "t'accueille."),
+                "conduite": ("Réponds par des phrases courtes. Épelle ton nom si on te "
+                             "le demande. Si la question est longue, dis « pardon ? » ou "
+                             "« plus lentement, s'il vous plaît »."),
             },
         },
     },

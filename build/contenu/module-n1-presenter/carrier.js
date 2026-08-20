@@ -1,0 +1,17 @@
+const CARRIER_PHRASES = {
+  'nom':      "Quel est votre nom de famille ?",
+  'prenom':   "Mon prénom, c'est Amina.",
+  'epeler':   "Pouvez-vous épeler votre nom ?",
+  'adresse':  "Mon adresse, c'est 4520, rue Bélanger.",
+  'pays':     "Je viens d'un pays chaud.",
+  'langue':   "Je parle deux langues.",
+  'habiter':  "J'habite à Montréal.",
+  'enfant':   "J'ai un enfant.",
+  'metier':   "Mon métier, c'est mécanicien.",
+  'bonjour':  "Bonjour, madame !",
+  'merci':    "Merci beaucoup.",
+  'pardon':   "Pardon ? Je ne comprends pas.",
+  'bonsoir':  "Bonsoir ! À demain.",
+  'de_rien':  "De rien. Ça me fait plaisir.",
+  'lentement':"Plus lentement, s'il vous plaît.",
+};
