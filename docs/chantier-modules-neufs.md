@@ -18,7 +18,7 @@ livrer**.
 | 14 | `module-alimentation` | Achat d'aliments ou de produits d'entretien | **terminé** |
 | 15 | `module-achat` | Achat de biens de consommation durables | **terminé** |
 | 16 | `module-restaurant` | Service de restauration | **terminé** |
-| 18 | `module-vetements` | Achat de vêtements | — |
+| 18 | `module-vetements` | Achat de vêtements | **terminé** |
 
 Le 17 est pris par `module-banque`, d'où le saut.
 
@@ -271,3 +271,48 @@ expliqués parce qu'ils déroutent et qu'ils coûtent :
   préfère le savoir. Le module montre aussi la nuance : on peut signaler sans
   exiger de correction — « je préfère vous le dire ». Les deux séances qui en
   traitent comparent les usages sans les hiérarchiser.
+
+## Module 18 — `module-vetements` · Acheter des vêtements
+
+Situation du programme : « Achat de vêtements », niveau 4. Une seule intention
+de communication au programme (s'informer sur un vêtement) ; le module a été
+étoffé avec le lexique de la situation — entretien, tailles, essayage, échange,
+remboursement, mise de côté — pour tenir les seize séances, sur décision de
+l'utilisateur.
+
+**Scénario.** Kofi, arrivé du Ghana il y a trois ans, a passé deux hivers avec
+un manteau trop léger. Il en achète un vrai. Diane, une amie, lui donne son
+avis ; VALÉRIE, conseillère, lui apprend à lire l'étiquette du col ; RÉMI, au
+service à la clientèle, échange les bottes de son fils.
+
+**Points de langue** (six mini-leçons, aucun doublon avec les onze autres
+modules) :
+
+- `prPhon` — le féminin qu'on entend : le -e réveille la consonne finale.
+- `t1taille` — dire ce qui ne va pas : degré + adjectif + endroit.
+- `t1decrire` — décrire un vêtement : l'adjectif suit le nom, la couleur
+  s'accorde, les couleurs invariables.
+- `t2opinion` — je trouve que, il me semble, à mon avis ; le pronom devant
+  « aller ».
+- `t2entretien` — les cinq symboles du col, la croix qui veut dire non.
+- `t3echange` — échange, remboursement, note de crédit, mise de côté ; les
+  quatre conditions.
+
+**Médias.** 21 images fal.ai (0,71 $), dont `bottes-hiver.jpg` réencodée de
+740 à 150 Ko. 193 MP3 ElevenLabs. Contrôle des URL : 214 demandées par la page,
+214 présentes.
+
+**Défauts trouvés et corrigés.**
+
+- Deux entêtes de tableau écrits sans apostrophe (« Ce quon fait ») par
+  prudence inutile : `theme.py` accepte très bien l'apostrophe, elle a été
+  remise.
+- `c3.py` pointait vers `etiquette-entretien.jpg` ; l'image produite s'appelle
+  `etiquette-col.jpg`. Le build s'arrête proprement sur un `FileNotFoundError`
+  de Pillow — c'est le bon comportement.
+- Le délai de mise de côté disait « trente jours » en D2 alors que la carte
+  mémoire dit quatorze. Aligné sur « souvent quatorze jours, parfois trente ».
+- La greffe d'identité de marque (travail d'une autre session, non commité)
+  ajoutait un bandeau SAAF dont le CSS n'est pas encore au dépôt. Les deux
+  régions marquées ont été retirées du HTML avant le commit, comme pour les
+  six modules précédents.
