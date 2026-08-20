@@ -18,13 +18,13 @@ du débutant qui apprend à se présenter à l'avancé qui suit l'actualité.
 
 | Niveau | Situation retenue | Slug prévu | Format | Pourquoi elle |
 |--------|-------------------|------------|--------|---------------|
-| 1 | Relations sociales | `n1-relations` | 8 séances | 4 intentions sur 9 ; se présenter est le premier besoin de tous |
-| 2 | Déplacement dans une ville | `n2-deplacement` | 8 séances | 4 intentions ; concret, visuel, immédiatement utile |
-| 3 | Achat d'aliments ou de produits d'entretien | `n3-alimentation` | 16 séances | 8 intentions, la plus riche du niveau |
-| 5 | Location d'un logement | `n5-logement` | 16 séances | 4 intentions ; la démarche la plus lourde d'une installation |
-| 6 | Recherche d'emploi | `n6-emploi` | 16 séances | 4 intentions ; le tournant du stade intermédiaire |
-| 7 | Suivi de l'actualité | `n7-actualite` | 16 séances | 6 intentions ; compréhension de discours longs |
-| 8 | Emploi | `n8-emploi` | 16 séances | 10 intentions, de loin la plus dense du programme |
+| 1 | Relations sociales | `module-n1-relations` | 8 séances | 4 intentions sur 9 ; se présenter est le premier besoin de tous |
+| 2 | Déplacement dans une ville | `module-n2-deplacement` | 8 séances | 4 intentions ; concret, visuel, immédiatement utile |
+| 3 | Achat d'aliments ou de produits d'entretien | `module-n3-epicerie` | 16 séances | 8 intentions, la plus riche du niveau |
+| 5 | Location d'un logement | `module-n5-logement` | 16 séances | 4 intentions ; la démarche la plus lourde d'une installation |
+| 6 | Recherche d'emploi | `module-n6-emploi` | 16 séances | 4 intentions ; le tournant du stade intermédiaire |
+| 7 | Suivi de l'actualité | `module-n7-actualite` | 16 séances | 6 intentions ; compréhension de discours longs |
+| 8 | Emploi | `module-n8-emploi` | 16 séances | 10 intentions, de loin la plus dense du programme |
 
 Les situations se répètent d'un niveau à l'autre dans le programme lui-même —
 « Relations sociales » existe aux niveaux 1, 2, 3, 4 et 6. Ce n'est pas une
@@ -55,6 +55,17 @@ se présente ; au niveau 6 on exprime un désaccord dans un groupe.
   le portail. C'est le seul point qui touche du code partagé.
 - **Le nombre de sections n'est pas un problème** : il vit dans `sections.js`,
   donc dans le contenu. Un module à cinq sections ne demande rien au gabarit.
+
+**Fait le 20 août 2026.** `GRILLE_COURTE` (huit séances : a1 a2 a3, b1 b2,
+c1 c2, e1) est dans le registre ; `ORDRE` trie par `(niveau, numero)` ;
+`build_fiches.py` sait écrire « Huit fiches » et non « 8 fiches ».
+
+**La convention de slug change**, et c'est une décision du chantier : le slug
+porte le niveau, `module-n3-epicerie`. Sans lui, le premier module du niveau 1
+sur les relations sociales entrerait en collision avec `module-relations` du
+niveau 4 — la même situation revient à cinq niveaux dans le programme. Le
+préfixe `module-` reste : huit scripts balaient `assets/interactive/module-*`
+et le perdre les rendrait aveugles.
 
 ## Ce que le programme donne, et ce qu'il faut chercher ailleurs
 

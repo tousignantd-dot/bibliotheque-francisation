@@ -34,6 +34,13 @@ GRILLE_3_DEFIS = ['a1', 'a2', 'a3', 'a4', 'b1', 'b2', 'b3', 'b4',
                   'c1', 'c2', 'c3', 'c4', 'd1', 'd2', 'e1', 'e2']
 GRILLE_2_DEFIS = ['a1', 'a2', 'a3', 'a4', 'b1', 'b2', 'b3', 'b4', 'b5',
                   'c1', 'c2', 'c3', 'c4', 'c5', 'e1', 'e2']
+# Huit séances, deux blocs de quatre heures — le format des niveaux 1 et 2.
+# Les deux grilles ci-dessus en font seize : c'est trop long pour un débutant
+# qui n'a pas encore l'alphabet, et l'utilisateur a tranché en ce sens le
+# 20 août 2026. Un bloc A de découverte, deux défis courts, une séance de
+# production. Pas de bloc « Je retiens des mots » séparé : le vocabulaire se
+# révise dans la dernière séance.
+GRILLE_COURTE = ['a1', 'a2', 'a3', 'b1', 'b2', 'c1', 'c2', 'e1']
 
 
 def _blocs(defi1, defi2, defi3=None):
@@ -205,7 +212,13 @@ MODULES = {
 }
 
 # L'ordre d'affichage : celui des numéros de module.
-ORDRE = sorted(MODULES, key=lambda s: MODULES[s]['numero'])
+# L'ordre d'affichage : par niveau, puis par numéro à l'intérieur du niveau.
+# Les dix-huit modules du niveau 4 portaient des numéros uniques, et trier sur
+# le seul numéro suffisait. À partir du moment où chaque niveau recommence à
+# 1 — le chantier des sept autres niveaux, août 2026 —, sept modules portent le
+# numéro 1 : sans le niveau en première clé, ils se mêlent aux modules du 4.
+ORDRE = sorted(MODULES, key=lambda s: (MODULES[s].get('niveau', 4),
+                                       MODULES[s]['numero']))
 
 _ACTIF = None
 

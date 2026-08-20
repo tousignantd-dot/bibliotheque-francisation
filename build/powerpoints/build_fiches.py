@@ -41,8 +41,10 @@ SORTIE = os.path.abspath(os.path.join(ICI, '..', '..', 'assets', 'documents'))
 def _en_lettres(n):
     """« Seize fiches », pas « 16 fiches » : le sommaire est une page de texte
     qu'on lit, pas un tableau de bord."""
-    mots = {12: 'Douze', 13: 'Treize', 14: 'Quatorze', 15: 'Quinze',
-            16: 'Seize', 17: 'Dix-sept', 18: 'Dix-huit'}
+    mots = {1: 'Une', 2: 'Deux', 3: 'Trois', 4: 'Quatre', 5: 'Cinq',
+            6: 'Six', 7: 'Sept', 8: 'Huit', 9: 'Neuf', 10: 'Dix',
+            11: 'Onze', 12: 'Douze', 13: 'Treize', 14: 'Quatorze',
+            15: 'Quinze', 16: 'Seize', 17: 'Dix-sept', 18: 'Dix-huit'}
     return mots.get(n, str(n))
 
 
