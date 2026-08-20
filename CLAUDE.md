@@ -401,6 +401,15 @@ d'API, pas de facturation au jeton, et surtout des **outils** : il lit le
 système de design et écrit de vrais fichiers, là où un appel d'API ne rendrait
 que du texte.
 
+- **Les images passent par la compétence `/generate`, jamais autrement.** Le
+  préambule de `forge.py` l'impose et `~/Claude/generations` est ouvert au CLI
+  par un second `--add-dir` : sans lui, l'agent ne peut ni y déposer l'image, ni
+  écrire le journal `.json`, ni régénérer le mur. L'image est ensuite recopiée
+  dans `images/` du dossier de commande et référencée en lien relatif — la
+  publication conserve l'arborescence, la page la retrouve donc telle quelle.
+  Interdits explicites : banque d'images en ligne, URL distante, émoji ou SVG
+  bricolé en remplacement d'une illustration demandée. La vidéo, elle, est
+  payante : le préambule interdit à l'agent d’en lancer une seule.
 - **Trois verrous, tous nécessaires** : session enseignante (`X-Prof-Token`),
   boucle locale (`_forge_locale()` refuse toute adresse autre que 127.0.0.1) et
   `forge.disponible()`, qui se tait dès que `RAILWAY_ENVIRONMENT` est présent
