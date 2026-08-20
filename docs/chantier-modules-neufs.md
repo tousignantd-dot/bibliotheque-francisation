@@ -15,9 +15,9 @@ livrer**.
 | 11 | `module-relations` | Relations sociales | **terminé** |
 | 12 | `module-deplacement` | Déplacement dans une ville | **terminé** |
 | 13 | `module-activite` | Participation à une activité culturelle ou sportive | **terminé** |
-| 14 | `module-alimentation` | Achat d'aliments ou de produits d'entretien | en cours |
-| 15 | `module-achat` | Achat de biens de consommation durables | — |
-| 16 | `module-restaurant` | Service de restauration | — |
+| 14 | `module-alimentation` | Achat d'aliments ou de produits d'entretien | **terminé** |
+| 15 | `module-achat` | Achat de biens de consommation durables | **terminé** |
+| 16 | `module-restaurant` | Service de restauration | en cours |
 | 18 | `module-vetements` | Achat de vêtements | — |
 
 Le 17 est pris par `module-banque`, d'où le saut.
@@ -222,3 +222,23 @@ La ligne 3529 (dépôt de l'écrit) montre la bonne façon de faire : elle calcu
 `libelle()` et `consigne()` depuis la carte de production plutôt que de les
 figer. Le correctif attend que la session qui travaille sur le gabarit ait
 fini.
+
+## Module 15 — Acheter un appareil
+
+- **Scénario** : Yin, arrivée de Chine il y a trois ans, achète une laveuse
+  pour un local de sous-sol d'un mètre de large. Elle compare deux modèles,
+  découvre ce que couvre la garantie, et apprend qu'un mode d'emploi de
+  quarante pages en contient quatre d'utiles. Sept dialogues, quinze mots,
+  vingt-deux exercices, sept mini-leçons.
+- **Grammaire** : le son de « un » contre celui de « pain » · la place et
+  l'accord de l'adjectif · ce, cet, cette contre celui, celle · ce que couvre
+  une garantie · le futur proche et le futur simple · le prix affiché et le
+  total réel · les quatre pages utiles d'un mode d'emploi.
+- **Couleur** : bleu `#1D6B8F` / `#E7F0F6`. **Activité** : 52.
+- Médias : 21 images (0,71 $), 210 MP3. Les **231 URL** de la page répondent.
+- Séances : 16 présentations, 192 diapositives, 16 fiches (149 blocs).
+  `MODULE 15` dans les seize `.pptx`.
+- Septième scénario de jeu de rôle, aux rôles « acheteur » et « vendeur ».
+- La marque SAAF a de nouveau été retirée du HTML avant le commit : la session
+  qui la pose regreffe les fichiers produits, et son travail n'est toujours pas
+  commité.

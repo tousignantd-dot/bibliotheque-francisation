@@ -172,6 +172,16 @@ MODULES = {
                         'Commander à un comptoir',
                         "L'étiquette et le mode d'emploi"),
     },
+    'module-achat': {
+        'numero': 15, 'activite': 52, 'niveau': 4,
+        'titre': 'Acheter un appareil',
+        'chapeau': "S'informer sur un appareil, comprendre la garantie, le "
+                   "paiement et la livraison, puis lire le mode d'emploi.",
+        'seances': GRILLE_3_DEFIS,
+        'blocs': _blocs("S'informer sur l'appareil",
+                        'La garantie et la livraison',
+                        "Le mode d'emploi"),
+    },
 }
 
 # L'ordre d'affichage : celui des numéros de module.

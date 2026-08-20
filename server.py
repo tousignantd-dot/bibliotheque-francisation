@@ -2405,6 +2405,78 @@ JEU_DE_ROLE_EPICERIE = {
 }
 
 
+# ── Jeu de rôle « acheter un appareil » (module-achat) ───────────────────────
+# S'informer sur un électroménager en magasin. Rôles « acheteur » et « vendeur ».
+JEU_DE_ROLE_APPAREILS = {
+    "laveuse": {
+        "contexte": (
+            "Le rayon des électroménagers d'un grand magasin, un samedi après-midi. Trois "
+            "laveuses presque identiques sont alignées ; un client les regarde depuis un "
+            "moment."
+        ),
+        "vendeur": [
+            "Le premier modèle fait 76 cm de large porte ouverte ; le deuxième, 68 cm.",
+            "Le deuxième est le plus vendu, justement parce qu'il entre partout.",
+            "Il fait 52 décibels à l'essorage — une conversation normale en fait 60.",
+            "Le troisième est plus grand, plus cher, et consomme 30 litres de moins par brassée.",
+            "La garantie est d'un an, pièces et main-d'œuvre, sur tous les modèles.",
+            "La garantie prolongée coûte 120 $ pour trois ans de plus et couvre le déplacement.",
+            "La livraison coûte 60 $, gratuite au-dessus de 1000 $ ; l'installation est à part, 40 $.",
+            "Le spécial sur le deuxième modèle se termine dimanche.",
+            "Tu demandes toujours l'espace disponible avant de parler de prix.",
+        ],
+        "acheteur": [
+            "Ton local de sous-sol fait environ un mètre de large.",
+            "Tu fais trois brassées par semaine, pour une famille de trois.",
+            "Tu ne sais pas ce que veut dire « capacité » ni si 52 décibels est beaucoup.",
+            "Tu veux comprendre ce qui justifie l'écart de prix entre deux modèles.",
+            "Tu ignores que l'installation n'est pas comprise dans la livraison.",
+        ],
+    },
+    "refrigerateur": {
+        "contexte": (
+            "Le même rayon, devant les petits réfrigérateurs. Un client cherche un appareil "
+            "pour un sous-sol, avec un espace limité."
+        ),
+        "vendeur": [
+            "Le modèle proposé fait 145 cm de haut sur 55 cm de large.",
+            "Il consomme 300 kilowattheures par année, un des plus économes de sa catégorie.",
+            "La garantie est d'un an complet et de cinq ans sur le compresseur.",
+            "Le compresseur est la pièce la plus chère : c'est pour ça qu'il est garanti plus longtemps.",
+            "La livraison coûte 60 $ et n'est pas incluse à ce prix-là.",
+            "L'appareil entre dans une voiture ; le magasin aide à le charger mais ne le déballe pas.",
+            "Il faut le laisser debout douze heures avant de le brancher, après transport couché.",
+        ],
+        "acheteur": [
+            "Ton espace fait un mètre cinquante de haut et soixante centimètres de large.",
+            "Tu veux savoir ce qu'il coûtera en électricité chaque année.",
+            "Tu hésites entre payer la livraison et le transporter toi-même.",
+            "Tu ne sais pas qu'un réfrigérateur transporté couché doit reposer avant d'être branché.",
+        ],
+    },
+    "cuisiniere": {
+        "contexte": (
+            "Le rayon des cuisinières. Un client remplace un appareil brisé et doit décider "
+            "rapidement, mais veut comprendre ce qu'il paie."
+        ),
+        "vendeur": [
+            "Les cuisinières standard font 76 cm de large : c'est l'ouverture prévue dans presque toutes les cuisines.",
+            "Il existe des modèles à éléments serpentins, moins chers, et à surface vitrocéramique, plus chers et plus faciles à nettoyer.",
+            "La garantie est d'un an complet ; les éléments sont garantis cinq ans sur certains modèles.",
+            "La livraison est de 60 $ ; l'installation d'une cuisinière électrique est de 40 $ et demande une prise à 240 volts.",
+            "Le magasin reprend l'ancien appareil sans frais si c'est noté sur le bon de livraison.",
+            "Il faut vérifier que la prise existante est bien à 240 volts avant l'achat.",
+        ],
+        "acheteur": [
+            "Ta cuisinière est brisée depuis trois jours et tu cuisines tous les jours.",
+            "Tu ne sais pas si ta prise est à 240 volts.",
+            "Tu veux savoir ce que le magasin fait de l'ancien appareil.",
+            "Tu compares deux modèles et tu veux comprendre ce qui justifie 200 $ d'écart.",
+        ],
+    },
+}
+
+
 JEU_DE_ROLE_SCENARIOS = {
     "louer": {
         "cadre": "une visite de logement",
@@ -2624,6 +2696,46 @@ JEU_DE_ROLE_SCENARIOS = {
                              "quantité. Pose une question sur la provenance et une sur la "
                              "conservation. Si l'élève oublie d'annoncer le prix, demande-le "
                              "avant de partir."),
+            },
+        },
+    },
+    "appareil": {
+        "cadre": "une demande de renseignements au rayon des électroménagers d'un magasin",
+        "contexte_label": "Le rayon où vous vous trouvez",
+        "cas": JEU_DE_ROLE_APPAREILS,
+        "adresse": "Vouvoie l'élève : c'est un commerce, on ne se connaît pas.",
+        "sujets": [
+            "les dimensions de l'appareil et l'espace disponible",
+            "la capacité et la consommation",
+            "la différence entre deux modèles, et ce qui justifie l'écart de prix",
+            "ce que couvre la garantie, et ce qu'elle ne couvre pas",
+            "le paiement : taxes, versements",
+            "la livraison, l'installation, et la reprise de l'ancien appareil",
+        ],
+        "cloture": ("Quand tout a été demandé, récapitule le prix total — appareil, taxes, "
+                    "livraison, installation — puis laisse l'autre décider sans le presser."),
+        "ouverture": {
+            "acheteur": "Bonjour, je cherche un appareil et j'aurais quelques questions.",
+            "vendeur": "Bonjour ! Je peux vous aider ?",
+        },
+        "roles": {
+            "vendeur": {
+                "qui": ("Tu vends des électroménagers et tu connais bien tes modèles. "
+                        "L'élève est le client."),
+                "conduite": ("Commence par demander l'espace disponible : c'est ce qui "
+                             "élimine le plus de modèles. Réponds à ce qu'on te demande, "
+                             "un point à la fois. Ne mentionne ni la livraison, ni "
+                             "l'installation, ni la garantie prolongée avant qu'on te les "
+                             "demande — mais si le client conclut sans avoir parlé de "
+                             "l'installation, préviens-le à la toute fin."),
+            },
+            "acheteur": {
+                "qui": ("Tu veux acheter un appareil. L'élève est le vendeur et te "
+                        "renseigne."),
+                "conduite": ("Pose tes questions une à la fois : les dimensions, la "
+                             "capacité, la consommation, puis la garantie et la livraison. "
+                             "Demande une précision chaque fois qu'on te donne un chiffre "
+                             "sans point de comparaison — « 52 décibels, c'est beaucoup ? »"),
             },
         },
     },
