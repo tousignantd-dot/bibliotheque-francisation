@@ -1,287 +1,292 @@
 <!DOCTYPE html>
 <html lang="fr">
 <head>
-<meta charset="UTF-8" />
-<meta name="viewport" content="width=device-width, initial-scale=1.0" />
-<title>Espace enseignant — Francisation</title>
-<link rel="preconnect" href="https://fonts.googleapis.com" />
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet" />
-<style>
-  :root {
-    --bg: #f6f7f9; --surface: #fff; --border: #e5e7eb;
-    --text: #111827; --text-2: #6b7280; --text-3: #9ca3af;
-    --accent: #3b6ff6; --accent-hover: #2b5ce0;
-    --danger: #ef4444; --danger-hover: #dc2626;
-    --radius: 12px;
-    --shadow: 0 1px 3px rgba(0,0,0,.06), 0 1px 2px rgba(0,0,0,.04);
-    --shadow-lg: 0 20px 40px rgba(0,0,0,.14);
-  }
-  * { box-sizing: border-box; }
-  body {
-    margin: 0; font-family: 'Inter', system-ui, sans-serif;
-    background: var(--bg); color: var(--text); font-size: 14px;
-    -webkit-font-smoothing: antialiased;
-  }
-  h1, h2 { margin: 0; letter-spacing: -.4px; }
-  button { font-family: inherit; cursor: pointer; }
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Comptes enseignants — Francisation</title>
+  <!-- Le système de design versionné, pas ds-bundle/ (ignoré par git). -->
+  <link rel="stylesheet" href="assets/design-system/styles.css" />
+  <style>
+    /* Comptes enseignants — installation du premier compte, connexion, et la
+       liste des comptes du centre. La planification, les groupes et les élèves
+       appartiennent au portail enseignant : ici, on ouvre un compte, on
+       réinitialise un mot de passe, rien d'autre. Même vocabulaire visuel que le portail
+       enseignant (`enseignant.html`) : bandeau clair, barre de liens, cartes
+       blanches. Aucune couleur en dur — uniquement des jetons du système. Ce
+       qui est écrit ici est ce que le système n'a pas : la carte de connexion,
+       la rangée de liste, la modale de saisie et le message d'état. */
 
-  /* ---------- Écran de connexion ---------- */
-  .auth-wrap {
-    min-height: 100vh; display: none; align-items: center;
-    justify-content: center; padding: 20px;
-  }
-  .auth-wrap.open { display: flex; }
-  .auth-card {
-    background: var(--surface); border-radius: 16px; box-shadow: var(--shadow-lg);
-    padding: 40px 36px; width: 420px; max-width: 100%;
-  }
-  .auth-logo {
-    width: 46px; height: 46px; border-radius: 12px; background: var(--accent);
-    display: flex; align-items: center; justify-content: center;
-    color: #fff; margin-bottom: 20px;
-  }
-  .auth-title { font-size: 21px; font-weight: 700; margin-bottom: 6px; }
-  .auth-sub { font-size: 14px; color: var(--text-2); margin-bottom: 28px; line-height: 1.5; }
+    body { margin: 0; --content-max: 1000px; }
+    .pc { min-height: 100vh; }
+    [hidden] { display: none !important; }
 
-  label {
-    display: block; font-size: 12px; font-weight: 600; color: var(--text-2);
-    margin-bottom: 6px; letter-spacing: .2px;
-  }
-  input[type=text], input[type=email], input[type=password], select {
-    width: 100%; height: 42px; padding: 0 13px; border: 1.5px solid var(--border);
-    border-radius: 9px; font-family: inherit; font-size: 14px; color: var(--text);
-    background: var(--bg); transition: border-color .15s, box-shadow .15s;
-  }
-  input:focus, select:focus {
-    outline: none; border-color: var(--accent); background: #fff;
-    box-shadow: 0 0 0 4px rgba(59,111,246,.12);
-  }
-  .field { margin-bottom: 16px; }
+    /* — Écran de connexion / installation : la carte vit dans le bandeau,
+         alignée à gauche de la colonne, comme dans le portail. — */
+    .pc-avant { background: var(--surface-card); border-top: 1px solid var(--border-tint); border-bottom: 1px solid var(--border-tint); }
+    .pc-avant .band { padding: var(--sp-8) 0 var(--sp-12); }
+    .pc-avant h1 {
+      margin: var(--sp-3) 0 0; font-size: var(--fs-hero); font-weight: var(--fw-black);
+      line-height: var(--lh-hero); letter-spacing: var(--ls-hero); color: var(--text-strong);
+    }
+    .pc-connexion { margin-top: var(--sp-8); max-width: 440px; }
+    .pc-note { margin: 0; font-size: var(--fs-ui); font-weight: var(--fw-semi); color: var(--text-muted); }
 
-  .btn {
-    height: 42px; padding: 0 18px; border: 1.5px solid transparent;
-    border-radius: 9px; font-size: 14px; font-weight: 600;
-    display: inline-flex; align-items: center; justify-content: center; gap: 7px;
-    transition: background .15s, box-shadow .15s, transform .1s;
-  }
-  .btn:active { transform: scale(.985); }
-  .btn-primary { background: var(--accent); color: #fff; width: 100%; }
-  .btn-primary:hover { background: var(--accent-hover); }
-  .btn-primary:disabled { opacity: .55; cursor: not-allowed; }
-  .btn-ghost {
-    background: var(--surface); border-color: var(--border);
-    color: var(--text-2); height: 36px; font-size: 13px; padding: 0 14px;
-  }
-  .btn-ghost:hover { background: var(--bg); color: var(--text); }
-  .btn-danger {
-    background: none; border: none; color: var(--danger); font-size: 12px;
-    font-weight: 600; padding: 4px 6px; border-radius: 6px;
-  }
-  .btn-danger:hover { background: #fee2e2; }
+    /* — En-tête connecté : 38 px comme le portail, pour rester compact
+         au-dessus de la barre de liens. — */
+    .pc-entete { padding: var(--sp-6) 0; }
+    .pc-entete > .container {
+      display: flex; flex-wrap: wrap; align-items: flex-end;
+      justify-content: space-between; gap: var(--sp-5);
+    }
+    .pc-identite { display: flex; flex-direction: column; gap: var(--sp-2); }
+    .pc-identite h1 {
+      margin: 0; font-size: 38px; font-weight: var(--fw-black);
+      line-height: var(--lh-title); letter-spacing: var(--ls-title); color: var(--text-strong);
+    }
+    .pc-session { display: flex; align-items: center; gap: var(--sp-3); }
+    .pc-session > div { text-align: right; }
+    .pc-nom { white-space: nowrap; font-size: var(--fs-body-sm); font-weight: var(--fw-semi); color: var(--text-strong); }
+    .pc-session-etat { font-size: var(--fs-ui); font-weight: var(--fw-medium); color: var(--text-muted); }
 
-  .msg {
-    display: none; font-size: 13px; border-radius: 8px;
-    padding: 10px 12px; margin-bottom: 16px; line-height: 1.45;
-  }
-  .msg.show { display: block; }
-  .msg.error { background: #fef2f2; color: #991b1b; border: 1px solid #fecaca; }
-  .msg.ok { background: #f0fdf4; color: #166534; border: 1px solid #bbf7d0; }
+    /* La barre de liens reprend la barre de parcours du système : ici elle ne
+       marque pas d'étape, elle mène aux autres pages enseignantes. */
+    .pc-liens .step { text-decoration: none; }
+    .pc-liens .pc-ici { background: var(--accent-soft); border-color: var(--accent); color: var(--accent-ink); }
 
-  /* ---------- Tableau de bord ---------- */
-  .app { display: none; }
-  .app.open { display: block; }
-  .header {
-    background: var(--surface); border-bottom: 1px solid var(--border);
-    position: sticky; top: 0; z-index: 20;
-  }
-  .header-inner {
-    max-width: 980px; margin: 0 auto; padding: 16px 24px;
-    display: flex; align-items: center; justify-content: space-between; gap: 16px; flex-wrap: wrap;
-  }
-  .header-title { font-size: 16px; font-weight: 700; }
-  .header-sub { font-size: 12px; color: var(--text-3); margin-top: 2px; }
-  .header-nav { display: flex; gap: 16px; align-items: center; font-size: 13px; }
-  .header-nav a { color: var(--text-2); text-decoration: none; }
-  .header-nav a:hover { color: var(--text); text-decoration: underline; }
+    .pc-pile { padding: var(--sp-8) 0 var(--sp-12); }
+    .pc-entete-section {
+      display: flex; align-items: flex-end; justify-content: space-between;
+      gap: var(--sp-4); margin-bottom: var(--sp-3); flex-wrap: wrap;
+    }
+    .pc-titre-section { font-size: var(--fs-h3); font-weight: var(--fw-black); color: var(--text-strong); }
+    .pc-consigne { margin: var(--sp-2) 0 0; max-width: 64ch; font-size: var(--fs-body-sm); font-weight: var(--fw-medium); color: var(--text-muted); }
 
-  .page { max-width: 980px; margin: 0 auto; padding: 28px 24px 64px; display: grid; gap: 22px; }
-  .panel {
-    background: var(--surface); border: 1px solid var(--border);
-    border-radius: var(--radius); box-shadow: var(--shadow); overflow: hidden;
-  }
-  .panel-header {
-    padding: 16px 20px; border-bottom: 1px solid var(--border);
-    display: flex; align-items: center; justify-content: space-between; gap: 12px; flex-wrap: wrap;
-  }
-  .panel-title { font-size: 15px; font-weight: 700; }
-  .panel-hint { font-size: 12px; color: var(--text-3); margin-top: 3px; line-height: 1.5; }
-  .panel-body { padding: 18px 20px; }
+    /* — Rangée de liste (un groupe, un enseignant) — */
+    .pc-rangee { display: flex; align-items: center; gap: var(--sp-4); flex-wrap: wrap; }
+    .pc-rangee-txt { flex: 1; min-width: 220px; }
+    .pc-rangee-titre { display: flex; align-items: center; gap: var(--sp-2); flex-wrap: wrap; font-size: var(--fs-body); font-weight: var(--fw-black); color: var(--text-strong); }
+    .pc-rangee-meta { margin-top: 2px; font-size: var(--fs-ui-sm); font-weight: var(--fw-semi); color: var(--text-muted); }
+    .pc-gestes { display: flex; gap: var(--sp-2); flex-wrap: wrap; }
+    /* Le geste destructeur porte le rouge de l'erreur, en texte seulement :
+       le seul aplat rouge de l'interface reste le bouton audio. */
+    .pc-btn-retrait {
+      min-height: var(--tap-min); padding: 0 var(--sp-3);
+      background: none; border: 1px solid transparent; border-radius: var(--r-pill);
+      font: inherit; font-size: var(--fs-ui-sm); font-weight: var(--fw-bold);
+      color: var(--no-ink); cursor: pointer;
+    }
+    .pc-btn-retrait:hover { background: var(--no-bg); border-color: var(--no-line); }
+    /* L'étiquette de rôle est portée par CHAQUE ligne, pas seulement par les
+       administrateurs : « enseignant » lu noir sur blanc vaut mieux qu'une
+       absence à interpréter. L'accent marque l'administrateur ; la plaque
+       encre reste inutilisée, un seul bloc foncé par page. */
+    .pc-etiquette {
+      flex: none; padding: 3px 9px; border-radius: var(--r-pill);
+      background: var(--paper-200); color: var(--ink-500);
+      font-size: var(--fs-meta); font-weight: var(--fw-black); letter-spacing: .06em; text-transform: uppercase;
+    }
+    .pc-etiquette--admin { background: var(--accent-soft); color: var(--accent-ink); }
+    .pc-rangee-moi { font-size: var(--fs-ui-sm); font-weight: var(--fw-semi); color: var(--text-muted); }
+    .pc-compte { font-size: var(--fs-ui); font-weight: var(--fw-bold); color: var(--ink-500); white-space: nowrap; }
 
-  .row {
-    display: flex; align-items: center; gap: 14px; padding: 13px 20px;
-    border-bottom: 1px solid var(--border);
-  }
-  .row:last-child { border-bottom: none; }
-  .row-main { flex: 1; min-width: 0; }
-  .row-name { font-weight: 600; font-size: 14px; }
-  .row-meta { font-size: 12px; color: var(--text-3); margin-top: 3px; }
-  .empty { padding: 26px 20px; text-align: center; color: var(--text-3); font-size: 13px; }
+    /* — Formulaires en pied de carte — */
+    .pc-formulaire { display: flex; gap: var(--sp-4); flex-wrap: wrap; align-items: flex-end; }
+    .pc-formulaire > div { flex: 1; min-width: 190px; }
+    .pc-formulaire > div.pc-court { flex: 0 0 170px; }
+    .pc-formulaire .btn { flex: none; }
+    .pc-select { background: var(--surface-card); font-weight: var(--fw-bold); }
 
-  .inline-form { display: flex; gap: 10px; flex-wrap: wrap; align-items: flex-end; }
-  .inline-form .field { margin-bottom: 0; flex: 1; min-width: 170px; }
-  .tag {
-    display: inline-block; font-size: 10px; font-weight: 700; letter-spacing: .5px;
-    text-transform: uppercase; padding: 2px 7px; border-radius: 5px;
-    background: rgba(59,111,246,.12); color: var(--accent); margin-left: 7px;
-  }
-  .toast {
-    position: fixed; bottom: 22px; left: 50%; transform: translateX(-50%) translateY(80px);
-    background: #111827; color: #fff; padding: 11px 18px; border-radius: 9px;
-    font-size: 13px; box-shadow: var(--shadow-lg); opacity: 0;
-    transition: transform .25s, opacity .25s; z-index: 300; pointer-events: none;
-  }
-  .toast.show { transform: translateX(-50%) translateY(0); opacity: 1; }
-  .toast.error { background: var(--danger); }
-</style>
+    /* — Modale de saisie (renommer, réinitialiser) : le système n'a pas de
+         modale ; celle-ci reprend celle du portail enseignant. — */
+    .pc-modale {
+      position: fixed; inset: 0; z-index: 60; background: rgba(23, 24, 26, .42);
+      display: flex; align-items: flex-start; justify-content: center;
+      padding: var(--sp-6); overflow: auto;
+    }
+    .pc-modale > div { width: 100%; max-width: 460px; margin: auto; }
+    .pc-modale-gestes { display: flex; gap: var(--sp-2); justify-content: flex-end; flex-wrap: wrap; }
+
+    /* — Message d'état — */
+    .pc-message {
+      position: fixed; left: 50%; bottom: 28px; transform: translateX(-50%); z-index: 70;
+      background: var(--ink-900); color: var(--white); padding: 14px 22px;
+      border-radius: var(--r-pill); font-size: var(--fs-body-sm); font-weight: var(--fw-bold);
+      box-shadow: 0 12px 30px rgba(23, 24, 26, .28);
+    }
+    .pc-message--no { background: var(--no-line); }
+  </style>
 </head>
 <body>
 
-<!-- ══════════ CONNEXION / INSTALLATION ══════════ -->
-<div class="auth-wrap" id="authWrap">
-  <div class="auth-card">
-    <div class="auth-logo">
-      <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"/><path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"/></svg>
-    </div>
-    <div class="auth-title" id="authTitle">Espace enseignant</div>
-    <div class="auth-sub" id="authSub">Connectez-vous pour gérer vos groupes et vos activités.</div>
+<!-- ══════════ Connexion / installation ══════════ -->
+<div class="page pc" id="ecranConnexion" hidden>
+  <div class="pc-avant">
+    <header class="band">
+      <div class="container">
+        <div class="band__eyebrow">Francisation · Personnel enseignant</div>
+        <h1 id="titreAvant">Comptes enseignants</h1>
+        <p class="band__lead" id="chapeauAvant">Les comptes du personnel enseignant du centre : les ouvrir, les retirer, réinitialiser un mot de passe. Vos groupes, vos élèves et votre planification vivent dans le portail enseignant.</p>
 
-    <div class="msg error" id="authError"></div>
-
-    <form id="authForm" novalidate>
-      <div class="field" id="nomField" style="display:none">
-        <label for="authNom">Votre nom</label>
-        <input type="text" id="authNom" autocomplete="name" placeholder="Ex : Daniel Tousignant" />
+        <div class="pc-connexion">
+          <form class="card" id="formConnexion" novalidate>
+            <div class="stack">
+              <div>
+                <div class="pc-titre-section" id="titreCarte">Connexion</div>
+                <p class="pc-note" style="margin-top:var(--sp-1)" id="sousTitreCarte">Utilisez le courriel fourni par le centre.</p>
+              </div>
+              <div id="champNom" hidden>
+                <label class="field-label" for="authNom">Votre nom</label>
+                <input id="authNom" class="field" type="text" autocomplete="name" placeholder="Prénom Nom" />
+              </div>
+              <div>
+                <label class="field-label" for="authCourriel">Courriel</label>
+                <input id="authCourriel" class="field" type="email" autocomplete="username" placeholder="prenom.nom@centre.qc.ca" required />
+              </div>
+              <div>
+                <label class="field-label" for="authMotDePasse">Mot de passe</label>
+                <input id="authMotDePasse" class="field" type="password" autocomplete="current-password" required />
+                <p class="field-hint" id="indiceMotDePasse" hidden>Au moins 8 caractères.</p>
+              </div>
+              <div class="fb fb--no" id="erreurConnexion" role="alert" hidden></div>
+              <button type="submit" class="btn btn--pri btn--lg" style="width:100%" id="boutonConnexion">Se connecter</button>
+              <p class="pc-note">Votre session reste ouverte 30 jours sur cet appareil. Mot de passe oublié : demandez à un compte administrateur de le réinitialiser.</p>
+              <p class="pc-note"><a href="enseignant.html">Aller au portail enseignant</a></p>
+            </div>
+          </form>
+        </div>
       </div>
-      <div class="field">
-        <label for="authEmail">Courriel</label>
-        <input type="email" id="authEmail" autocomplete="username" placeholder="vous@exemple.com" required />
-      </div>
-      <div class="field">
-        <label for="authPass">Mot de passe</label>
-        <input type="password" id="authPass" autocomplete="current-password" required />
-        <div class="panel-hint" id="passHint" style="display:none">Au moins 8 caractères.</div>
-      </div>
-      <button type="submit" class="btn btn-primary" id="authBtn">Se connecter</button>
-    </form>
+    </header>
   </div>
 </div>
 
-<!-- ══════════ GESTION ══════════ -->
-<div class="app" id="app">
-  <header class="header">
-    <div class="header-inner">
-      <div>
-        <div class="header-title">Espace enseignant</div>
-        <div class="header-sub" id="whoami"></div>
+<!-- ══════════ Comptes enseignants ══════════ -->
+<div class="page pc" id="ecranGestion" hidden>
+  <header class="band pc-entete">
+    <div class="container">
+      <div class="pc-identite">
+        <span class="band__eyebrow">Francisation · Personnel enseignant</span>
+        <h1>Comptes enseignants</h1>
       </div>
-      <nav class="header-nav">
-        <a href="enseignant.html">Espace enseignant</a>
-        <a href="index.html">Bibliothèque</a>
-        <a href="catalogue.html">Catalogue</a>
-        <a href="lms.html">Gestion élèves</a>
-        <a href="#" id="logoutLink">Déconnexion</a>
-      </nav>
+      <div class="pc-session">
+        <div>
+          <div class="pc-nom" id="nomEnseignant"></div>
+          <div class="pc-session-etat" id="etatSession">Session ouverte</div>
+        </div>
+        <button type="button" class="btn btn--ghost btn--sm" id="boutonDeconnexion">Déconnexion</button>
+      </div>
     </div>
   </header>
 
-  <div class="page">
+  <nav class="steps pc-liens" aria-label="Pages enseignantes">
+    <div class="steps__inner">
+      <span class="step pc-ici" aria-current="page"><span class="step__dot"></span>Comptes enseignants</span>
+      <a class="step" href="enseignant.html"><span class="step__dot"></span>Espace enseignant</a>
+      <a class="step" href="catalogue.html"><span class="step__dot"></span>Catalogue</a>
+      <a class="step" href="progression.html"><span class="step__dot"></span>Progression</a>
+    </div>
+  </nav>
 
-    <!-- Groupes -->
-    <section class="panel">
-      <div class="panel-header">
-        <div>
-          <div class="panel-title">Mes groupes</div>
-          <div class="panel-hint">Chaque groupe a ses propres élèves, ses propres dates de disponibilité et sa propre progression. Le catalogue d'activités, lui, est commun à tous les enseignants.</div>
+  <main class="container pc-pile">
+    <div class="stack-l">
+
+      <!-- ── Comptes du centre (administrateur seulement) ── -->
+      <section id="sectionEnseignants" hidden>
+        <div class="pc-entete-section">
+          <div>
+            <div class="pc-titre-section">Comptes du centre</div>
+            <p class="pc-consigne">Tous les comptes, administrateurs compris. Un compte « administrateur » peut ouvrir de nouveaux comptes, réinitialiser un mot de passe et voir tous les groupes ; un compte « enseignant » ne voit que les siens.</p>
+          </div>
+          <div class="pc-compte" id="resumeComptes"></div>
         </div>
-      </div>
-      <div id="groupList"></div>
-      <div class="panel-body" style="border-top:1px solid var(--border);background:var(--bg)">
-        <form class="inline-form" id="groupForm">
-          <div class="field">
-            <label for="groupNom">Nouveau groupe</label>
-            <input type="text" id="groupNom" placeholder="Ex : Niveau 4 — avant-midi" maxlength="80" />
+        <div class="card card--flush">
+          <div id="listeEnseignants"></div>
+          <div class="card__foot">
+            <form class="pc-formulaire" id="formEnseignant" style="width:100%">
+              <div>
+                <label class="field-label" for="nouvNom">Nom</label>
+                <input id="nouvNom" class="field" type="text" placeholder="Prénom Nom" />
+              </div>
+              <div>
+                <label class="field-label" for="nouvCourriel">Courriel</label>
+                <input id="nouvCourriel" class="field" type="email" placeholder="prenom.nom@centre.qc.ca" />
+              </div>
+              <div>
+                <label class="field-label" for="nouvMotDePasse">Mot de passe provisoire</label>
+                <input id="nouvMotDePasse" class="field" type="password" autocomplete="new-password" />
+              </div>
+              <div class="pc-court">
+                <label class="field-label" for="nouvRole">Rôle</label>
+                <select id="nouvRole" class="field pc-select">
+                  <option value="prof">Enseignant</option>
+                  <option value="admin">Administrateur</option>
+                </select>
+              </div>
+              <button type="submit" class="btn btn--pri">Ouvrir le compte</button>
+            </form>
           </div>
-          <div class="field" id="groupOwnerField" style="display:none;flex:0 0 220px">
-            <label for="groupOwner">Enseignant titulaire</label>
-            <select id="groupOwner"></select>
-          </div>
-          <button type="submit" class="btn btn-ghost" style="height:42px">Créer le groupe</button>
-        </form>
-      </div>
-    </section>
-
-    <!-- Enseignants (administrateur seulement) -->
-    <section class="panel" id="teacherPanel" style="display:none">
-      <div class="panel-header">
-        <div>
-          <div class="panel-title">Enseignants</div>
-          <div class="panel-hint">Les comptes « administrateur » peuvent créer d'autres enseignants et voir tous les groupes.</div>
         </div>
-      </div>
-      <div id="teacherList"></div>
-      <div class="panel-body" style="border-top:1px solid var(--border);background:var(--bg)">
-        <form class="inline-form" id="teacherForm">
-          <div class="field">
-            <label for="tNom">Nom</label>
-            <input type="text" id="tNom" placeholder="Prénom Nom" />
-          </div>
-          <div class="field">
-            <label for="tEmail">Courriel</label>
-            <input type="email" id="tEmail" placeholder="collegue@exemple.com" />
-          </div>
-          <div class="field">
-            <label for="tPass">Mot de passe provisoire</label>
-            <input type="password" id="tPass" autocomplete="new-password" />
-          </div>
-          <div class="field" style="flex:0 0 140px">
-            <label for="tRole">Rôle</label>
-            <select id="tRole">
-              <option value="prof">Enseignant</option>
-              <option value="admin">Administrateur</option>
-            </select>
-          </div>
-          <button type="submit" class="btn btn-ghost" style="height:42px">Ajouter</button>
-        </form>
-      </div>
-    </section>
+      </section>
 
-    <!-- Mot de passe -->
-    <section class="panel">
-      <div class="panel-header">
-        <div>
-          <div class="panel-title">Mon mot de passe</div>
+      <!-- Un compte « enseignant » n'a rien à gérer ici : le dire, plutôt que
+           de le laisser devant une page vide. -->
+      <section id="sectionReservee" hidden>
+        <div class="pc-entete-section">
+          <div>
+            <div class="pc-titre-section">Comptes du centre</div>
+            <p class="pc-consigne">L'ouverture des comptes et la réinitialisation des mots de passe sont réservées aux comptes « administrateur ». Demandez-en un si vous avez besoin d'un nouveau compte pour un collègue.</p>
+          </div>
         </div>
-      </div>
-      <div class="panel-body">
-        <form class="inline-form" id="passForm">
-          <div class="field">
-            <label for="pOld">Mot de passe actuel</label>
-            <input type="password" id="pOld" autocomplete="current-password" />
-          </div>
-          <div class="field">
-            <label for="pNew">Nouveau mot de passe</label>
-            <input type="password" id="pNew" autocomplete="new-password" />
-          </div>
-          <button type="submit" class="btn btn-ghost" style="height:42px">Changer</button>
-        </form>
-      </div>
-    </section>
+      </section>
 
-  </div>
+      <!-- ── Mon mot de passe ── -->
+      <section>
+        <div class="pc-entete-section">
+          <div>
+            <div class="pc-titre-section">Mon mot de passe</div>
+            <p class="pc-consigne">Au moins 8 caractères. Le changement prend effet tout de suite.</p>
+          </div>
+        </div>
+        <div class="card">
+          <form class="pc-formulaire" id="formMotDePasse">
+            <div>
+              <label class="field-label" for="ancienMotDePasse">Mot de passe actuel</label>
+              <input id="ancienMotDePasse" class="field" type="password" autocomplete="current-password" />
+            </div>
+            <div>
+              <label class="field-label" for="nouveauMotDePasse">Nouveau mot de passe</label>
+              <input id="nouveauMotDePasse" class="field" type="password" autocomplete="new-password" />
+            </div>
+            <button type="submit" class="btn btn--pri">Changer</button>
+          </form>
+        </div>
+      </section>
+
+    </div>
+  </main>
 </div>
 
-<div class="toast" id="toast"></div>
+<!-- ══════════ Modale de saisie ══════════ -->
+<div class="pc-modale" id="modale" hidden>
+  <div>
+    <form class="card" id="formModale">
+      <div class="stack">
+        <div>
+          <div class="pc-titre-section" id="titreModale"></div>
+          <p class="pc-note" style="margin-top:var(--sp-1)" id="sousTitreModale"></p>
+        </div>
+        <div>
+          <label class="field-label" for="champModale" id="etiquetteModale"></label>
+          <input id="champModale" class="field" type="text" />
+        </div>
+        <div class="fb fb--no" id="erreurModale" role="alert" hidden></div>
+        <div class="pc-modale-gestes">
+          <button type="button" class="btn btn--ghost" id="annulerModale">Annuler</button>
+          <button type="submit" class="btn btn--pri" id="validerModale">Enregistrer</button>
+        </div>
+      </div>
+    </form>
+  </div>
+</div>
 
 <script src="js/prof.js"></script>
 <script>
@@ -291,21 +296,69 @@ const RETOUR = params.get('retour') || '';
 let mode = 'login';           // 'login' | 'setup'
 let enseignants = [];
 
-function toast(msg, type = '') {
-  const el = document.getElementById('toast');
-  el.textContent = msg;
-  el.className = 'toast show' + (type ? ' ' + type : '');
-  setTimeout(() => { el.className = 'toast'; }, 3200);
+const $ = id => document.getElementById(id);
+
+function message(texte, type = '') {
+  document.querySelectorAll('.pc-message').forEach(el => el.remove());
+  const el = document.createElement('div');
+  el.className = 'pc-message' + (type === 'error' ? ' pc-message--no' : '');
+  el.setAttribute('role', 'status');
+  el.textContent = texte;
+  document.body.appendChild(el);
+  setTimeout(() => el.remove(), 3200);
 }
 function esc(s) {
   return String(s ?? '').replace(/[&<>"']/g, c => (
     { '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]));
 }
-function authError(msg) {
-  const el = document.getElementById('authError');
-  el.textContent = msg;
-  el.classList.toggle('show', !!msg);
+function erreurConnexion(texte) {
+  const el = $('erreurConnexion');
+  el.textContent = texte || '';
+  el.hidden = !texte;
 }
+
+/* ══════════ Modale de saisie ══════════
+   Le renommage et la réinitialisation passaient par `prompt()`, la seule
+   fenêtre de la page à ne suivre aucun jeton du système. Même geste, même
+   carte que le reste. */
+let resoudreModale = null;
+function demander({ titre, sousTitre = '', etiquette, valeur = '', type = 'text', bouton = 'Enregistrer' }) {
+  $('titreModale').textContent = titre;
+  $('sousTitreModale').textContent = sousTitre;
+  $('sousTitreModale').hidden = !sousTitre;
+  $('etiquetteModale').textContent = etiquette;
+  $('erreurModale').hidden = true;
+  $('validerModale').textContent = bouton;
+  const champ = $('champModale');
+  champ.type = type;
+  champ.value = valeur;
+  $('modale').hidden = false;
+  champ.focus();
+  champ.select();
+  return new Promise(resolve => { resoudreModale = resolve; });
+}
+function fermerModale(valeur) {
+  $('modale').hidden = true;
+  const resoudre = resoudreModale;
+  resoudreModale = null;
+  if (resoudre) resoudre(valeur);
+}
+$('formModale').addEventListener('submit', e => {
+  e.preventDefault();
+  const valeur = $('champModale').value.trim();
+  if (!valeur) {
+    const el = $('erreurModale');
+    el.textContent = 'Ce champ ne peut pas rester vide.';
+    el.hidden = false;
+    return;
+  }
+  fermerModale(valeur);
+});
+$('annulerModale').addEventListener('click', () => fermerModale(null));
+$('modale').addEventListener('click', e => { if (e.target === $('modale')) fermerModale(null); });
+document.addEventListener('keydown', e => {
+  if (e.key === 'Escape' && !$('modale').hidden) fermerModale(null);
+});
 
 /* ══════════ Démarrage ══════════ */
 (async function boot() {
@@ -314,8 +367,8 @@ function authError(msg) {
     const res = await Prof.fetch('/api/prof/me');
     data = await res.json();
   } catch {
-    authError("Le serveur est injoignable. Vérifiez qu'il est démarré.");
-    document.getElementById('authWrap').classList.add('open');
+    erreurConnexion("Le serveur est injoignable. Vérifiez qu'il est démarré.");
+    $('ecranConnexion').hidden = false;
     return;
   }
 
@@ -328,30 +381,32 @@ function authError(msg) {
 
   mode = data.installationRequise ? 'setup' : 'login';
   if (mode === 'setup') {
-    document.getElementById('authTitle').textContent = 'Premier démarrage';
-    document.getElementById('authSub').textContent =
-      "Aucun compte n'existe encore. Créez le compte administrateur : il pourra ensuite ajouter les autres enseignants.";
-    document.getElementById('nomField').style.display = '';
-    document.getElementById('passHint').style.display = '';
-    document.getElementById('authPass').setAttribute('autocomplete', 'new-password');
-    document.getElementById('authBtn').textContent = 'Créer le compte';
+    $('titreAvant').textContent = 'Premier démarrage';
+    $('chapeauAvant').textContent =
+      "Aucun compte n'existe encore. Créez le compte administrateur : il pourra ensuite ouvrir les comptes des autres enseignants.";
+    $('titreCarte').textContent = 'Compte administrateur';
+    $('sousTitreCarte').textContent = 'Ce compte ouvre les autres et voit tous les groupes du centre.';
+    $('champNom').hidden = false;
+    $('indiceMotDePasse').hidden = false;
+    $('authMotDePasse').setAttribute('autocomplete', 'new-password');
+    $('boutonConnexion').textContent = 'Créer le compte';
   }
-  document.getElementById('authWrap').classList.add('open');
-  document.getElementById('authEmail').focus();
+  $('ecranConnexion').hidden = false;
+  $('authCourriel').focus();
 })();
 
 /* ══════════ Connexion / installation ══════════ */
-document.getElementById('authForm').addEventListener('submit', async e => {
+$('formConnexion').addEventListener('submit', async e => {
   e.preventDefault();
-  authError('');
-  const btn = document.getElementById('authBtn');
+  erreurConnexion('');
+  const bouton = $('boutonConnexion');
   const payload = {
-    courriel: document.getElementById('authEmail').value.trim(),
-    motDePasse: document.getElementById('authPass').value,
+    courriel: $('authCourriel').value.trim(),
+    motDePasse: $('authMotDePasse').value,
   };
-  if (mode === 'setup') payload.nom = document.getElementById('authNom').value.trim();
+  if (mode === 'setup') payload.nom = $('authNom').value.trim();
 
-  btn.disabled = true;
+  bouton.disabled = true;
   try {
     const res = await fetch(mode === 'setup' ? '/api/prof/setup' : '/api/prof/login', {
       method: 'POST',
@@ -367,170 +422,108 @@ document.getElementById('authForm').addEventListener('submit', async e => {
 
     // Retour à la page d'où venait l'enseignant, s'il avait un groupe
     if (RETOUR && Prof.groupeId) { location.href = RETOUR; return; }
-    document.getElementById('authWrap').classList.remove('open');
     ouvrirGestion();
   } catch (err) {
-    authError(err.message);
+    erreurConnexion(err.message);
   } finally {
-    btn.disabled = false;
+    bouton.disabled = false;
   }
 });
 
 /* ══════════ Gestion ══════════ */
 function ouvrirGestion() {
-  document.getElementById('authWrap').classList.remove('open');
-  document.getElementById('app').classList.add('open');
+  $('ecranConnexion').hidden = true;
+  $('ecranGestion').hidden = false;
   const e = Prof.state.enseignant;
-  document.getElementById('whoami').textContent =
-    `${e.nom} — ${e.courriel}${e.role === 'admin' ? ' (administrateur)' : ''}`;
+  $('nomEnseignant').textContent = e.nom;
+  $('etatSession').textContent = e.courriel + (e.role === 'admin' ? ' · administrateur' : ' · enseignant');
+  // La liste des comptes n'est servie qu'aux administrateurs (403 sinon) :
+  // un compte « enseignant » voit le motif à la place, pas une page vide.
   if (e.role === 'admin') {
-    document.getElementById('teacherPanel').style.display = '';
-    document.getElementById('groupOwnerField').style.display = '';
+    $('sectionEnseignants').hidden = false;
     chargerEnseignants();
-  }
-  chargerGroupes();
-  if (params.get('nouveauGroupe')) {
-    document.getElementById('groupNom').focus();
-    toast('Créez d’abord un groupe pour commencer.');
+  } else {
+    $('sectionReservee').hidden = false;
   }
 }
 
-document.getElementById('logoutLink').addEventListener('click', e => {
-  e.preventDefault();
-  Prof.logout();
-});
+$('boutonDeconnexion').addEventListener('click', () => Prof.logout());
 
-async function chargerGroupes() {
-  const res = await Prof.fetch('/api/prof/groupes');
-  const groupes = await res.json();
-  Prof.setGroupes(groupes);
-  const el = document.getElementById('groupList');
-  if (!groupes.length) {
-    el.innerHTML = '<div class="empty">Aucun groupe pour l’instant. Créez-en un ci-dessous.</div>';
-    return;
-  }
-  const admin = Prof.state.enseignant.role === 'admin';
-  el.innerHTML = groupes.map(g => `
-    <div class="row">
-      <div class="row-main">
-        <div class="row-name">${esc(g.nom)}</div>
-        <div class="row-meta">
-          ${g.nbEleves} élève${g.nbEleves > 1 ? 's' : ''}
-          ${admin && g.titulaire ? ' · ' + esc(g.titulaire) : ''}
-        </div>
-      </div>
-      <button class="btn btn-ghost" data-eleves="${g.id}">Élèves</button>
-      <button class="btn btn-ghost" data-rename="${g.id}" data-nom="${esc(g.nom)}">Renommer</button>
-      <button class="btn btn-danger" data-del-group="${g.id}">Supprimer</button>
-    </div>`).join('');
-}
-
-document.getElementById('groupList').addEventListener('click', async e => {
-  // « Élèves » ouvre la gestion sur CE groupe : on le rend actif avant de
-  // partir, puisque lms.html lit le groupe mémorisé, pas l'URL.
-  const elevesBtn = e.target.closest('[data-eleves]');
-  if (elevesBtn) {
-    Prof.setGroupeActif(elevesBtn.dataset.eleves);
-    location.href = 'lms.html';
-    return;
-  }
-  const renameBtn = e.target.closest('[data-rename]');
-  if (renameBtn) {
-    const nom = prompt('Nouveau nom du groupe :', renameBtn.dataset.nom);
-    if (!nom || !nom.trim()) return;
-    const res = await Prof.fetch(`/api/prof/groupes/${renameBtn.dataset.rename}`, {
-      method: 'PATCH',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ nom: nom.trim() }),
-    });
-    const data = await res.json();
-    if (!res.ok) return toast(data.error, 'error');
-    toast('Groupe renommé.');
-    chargerGroupes();
-    return;
-  }
-  const delBtn = e.target.closest('[data-del-group]');
-  if (delBtn) {
-    if (!confirm('Supprimer ce groupe ? Sa planification sera perdue.')) return;
-    const res = await Prof.fetch(`/api/prof/groupes/${delBtn.dataset.delGroup}`, { method: 'DELETE' });
-    const data = await res.json();
-    if (!res.ok) return toast(data.error, 'error');
-    toast('Groupe supprimé.');
-    chargerGroupes();
-  }
-});
-
-document.getElementById('groupForm').addEventListener('submit', async e => {
-  e.preventDefault();
-  const nom = document.getElementById('groupNom').value.trim();
-  if (!nom) return toast('Donnez un nom au groupe.', 'error');
-  const payload = { nom };
-  const owner = document.getElementById('groupOwner');
-  if (Prof.state.enseignant.role === 'admin' && owner.value) payload.teacherId = parseInt(owner.value, 10);
-  const res = await Prof.fetch('/api/prof/groupes', {
-    method: 'POST',
-    headers: { 'Content-Type': 'application/json' },
-    body: JSON.stringify(payload),
-  });
-  const data = await res.json();
-  if (!res.ok) return toast(data.error, 'error');
-  document.getElementById('groupNom').value = '';
-  toast('Groupe créé.');
-  chargerGroupes();
-});
-
-/* ── Enseignants (administrateur) ── */
+/* ── Les comptes du centre (administrateur) ── */
 async function chargerEnseignants() {
   const res = await Prof.fetch('/api/prof/enseignants');
   if (!res.ok) return;
-  enseignants = await res.json();
-  document.getElementById('teacherList').innerHTML = enseignants.map(t => `
-    <div class="row">
-      <div class="row-main">
-        <div class="row-name">${esc(t.nom)}${t.role === 'admin' ? '<span class="tag">Admin</span>' : ''}</div>
-        <div class="row-meta">${esc(t.courriel)} · ${t.nbGroupes} groupe${t.nbGroupes > 1 ? 's' : ''}</div>
+  // Les administrateurs en tête : ce sont eux qu'on vient vérifier, et la
+  // liste d'un centre en compte peu. Puis l'ordre alphabétique.
+  enseignants = (await res.json()).sort((a, b) =>
+    (a.role === b.role ? 0 : a.role === 'admin' ? -1 : 1) ||
+    a.nom.localeCompare(b.nom, 'fr'));
+
+  const nbAdmins = enseignants.filter(t => t.role === 'admin').length;
+  const nbProfs = enseignants.length - nbAdmins;
+  $('resumeComptes').textContent =
+    `${nbAdmins} administrateur${nbAdmins > 1 ? 's' : ''} · ${nbProfs} enseignant${nbProfs > 1 ? 's' : ''}`;
+
+  $('listeEnseignants').innerHTML = enseignants.map(t => {
+    const admin = t.role === 'admin';
+    const moi = t.id === Prof.state.enseignant.id;
+    return `
+    <div class="card__row pc-rangee">
+      <div class="pc-rangee-txt">
+        <div class="pc-rangee-titre">
+          ${esc(t.nom)}
+          <span class="pc-etiquette${admin ? ' pc-etiquette--admin' : ''}">${admin ? 'Administrateur' : 'Enseignant'}</span>
+          ${moi ? '<span class="pc-rangee-moi">votre compte</span>' : ''}
+        </div>
+        <div class="pc-rangee-meta">${esc(t.courriel)} · ${t.nbGroupes} groupe${t.nbGroupes > 1 ? 's' : ''}</div>
       </div>
-      <button class="btn btn-ghost" data-reset="${t.id}">Réinitialiser le mot de passe</button>
-      ${t.id === Prof.state.enseignant.id ? '' : `<button class="btn btn-danger" data-del-teacher="${t.id}">Supprimer</button>`}
-    </div>`).join('');
-  document.getElementById('groupOwner').innerHTML = enseignants
-    .map(t => `<option value="${t.id}"${t.id === Prof.state.enseignant.id ? ' selected' : ''}>${esc(t.nom)}</option>`)
-    .join('');
+      <div class="pc-gestes">
+        <button type="button" class="btn btn--ghost btn--sm" data-reinitialiser="${t.id}" data-nom="${esc(t.nom)}">Réinitialiser le mot de passe</button>
+        ${moi ? '' : `<button type="button" class="pc-btn-retrait" data-retirer-enseignant="${t.id}">Supprimer</button>`}
+      </div>
+    </div>`;
+  }).join('');
 }
 
-document.getElementById('teacherList').addEventListener('click', async e => {
-  const reset = e.target.closest('[data-reset]');
-  if (reset) {
-    const pw = prompt('Nouveau mot de passe (8 caractères minimum) :');
-    if (!pw) return;
-    const res = await Prof.fetch(`/api/prof/enseignants/${reset.dataset.reset}`, {
+$('listeEnseignants').addEventListener('click', async e => {
+  const reinit = e.target.closest('[data-reinitialiser]');
+  if (reinit) {
+    const motDePasse = await demander({
+      titre: 'Réinitialiser le mot de passe',
+      sousTitre: `Compte de ${reinit.dataset.nom}. Transmettez-lui le nouveau mot de passe ; il pourra le changer lui-même ensuite.`,
+      etiquette: 'Nouveau mot de passe (8 caractères minimum)',
+      type: 'password',
+      bouton: 'Réinitialiser',
+    });
+    if (!motDePasse) return;
+    const res = await Prof.fetch(`/api/prof/enseignants/${reinit.dataset.reinitialiser}`, {
       method: 'PATCH',
       headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ motDePasse: pw }),
+      body: JSON.stringify({ motDePasse }),
     });
     const data = await res.json();
-    if (!res.ok) return toast(data.error, 'error');
-    toast('Mot de passe réinitialisé.');
+    if (!res.ok) return message(data.error, 'error');
+    message('Mot de passe réinitialisé.');
     return;
   }
-  const del = e.target.closest('[data-del-teacher]');
-  if (del) {
-    if (!confirm('Supprimer cet enseignant ?')) return;
-    const res = await Prof.fetch(`/api/prof/enseignants/${del.dataset.delTeacher}`, { method: 'DELETE' });
+  const retirer = e.target.closest('[data-retirer-enseignant]');
+  if (retirer) {
+    if (!confirm('Supprimer ce compte ? L’enseignant perdra l’accès ; ses groupes, eux, restent.')) return;
+    const res = await Prof.fetch(`/api/prof/enseignants/${retirer.dataset.retirerEnseignant}`, { method: 'DELETE' });
     const data = await res.json();
-    if (!res.ok) return toast(data.error, 'error');
-    toast('Enseignant supprimé.');
+    if (!res.ok) return message(data.error, 'error');
+    message('Compte supprimé.');
     chargerEnseignants();
   }
 });
 
-document.getElementById('teacherForm').addEventListener('submit', async e => {
+$('formEnseignant').addEventListener('submit', async e => {
   e.preventDefault();
   const payload = {
-    nom: document.getElementById('tNom').value.trim(),
-    courriel: document.getElementById('tEmail').value.trim(),
-    motDePasse: document.getElementById('tPass').value,
-    role: document.getElementById('tRole').value,
+    nom: $('nouvNom').value.trim(),
+    courriel: $('nouvCourriel').value.trim(),
+    motDePasse: $('nouvMotDePasse').value,
+    role: $('nouvRole').value,
   };
   const res = await Prof.fetch('/api/prof/enseignants', {
     method: 'POST',
@@ -538,27 +531,27 @@ document.getElementById('teacherForm').addEventListener('submit', async e => {
     body: JSON.stringify(payload),
   });
   const data = await res.json();
-  if (!res.ok) return toast(data.error, 'error');
+  if (!res.ok) return message(data.error, 'error');
   e.target.reset();
-  toast('Enseignant ajouté.');
+  message('Compte ouvert.');
   chargerEnseignants();
 });
 
 /* ── Mot de passe personnel ── */
-document.getElementById('passForm').addEventListener('submit', async e => {
+$('formMotDePasse').addEventListener('submit', async e => {
   e.preventDefault();
   const res = await Prof.fetch('/api/prof/motdepasse', {
     method: 'POST',
     headers: { 'Content-Type': 'application/json' },
     body: JSON.stringify({
-      ancien: document.getElementById('pOld').value,
-      nouveau: document.getElementById('pNew').value,
+      ancien: $('ancienMotDePasse').value,
+      nouveau: $('nouveauMotDePasse').value,
     }),
   });
   const data = await res.json();
-  if (!res.ok) return toast(data.error, 'error');
+  if (!res.ok) return message(data.error, 'error');
   e.target.reset();
-  toast('Mot de passe modifié.');
+  message('Mot de passe modifié.');
 });
 </script>
 </body>

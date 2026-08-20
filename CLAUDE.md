@@ -209,7 +209,13 @@ activité qui ne l'aurait pas, `normalize_categorie()` le déduit du chemin
 choix de l'enseignant survit aux redéploiements.
 - Authentification enseignante : courriel + mot de passe (PBKDF2-SHA256), jeton
   de session envoyé dans l'en-tête `X-Prof-Token`. `prof.html` porte la
-  connexion, l'installation initiale, la gestion des groupes et des comptes.
+  connexion, l'installation initiale et **les comptes du personnel
+  enseignant, rien d'autre** : ouvrir un compte, le retirer, réinitialiser un
+  mot de passe, changer le sien. Les groupes en sont partis — ils vivent dans
+  l'onglet « Groupes et comptes » du portail, qui les crée, les renomme et
+  les supprime ; garder les deux menait à deux endroits pour un même geste.
+  La liste montre **tous** les comptes, administrateurs en tête, et chaque
+  ligne porte son rôle en toutes lettres.
   `js/prof.js` fournit `Prof.fetch` / `Prof.withGroup` / `Prof.body` aux trois
   pages enseignantes (`catalogue.html`, `index.html`, `lms.html`) — toute requête
   d'administration doit passer par là, sinon elle répond 401.
@@ -240,7 +246,7 @@ choix de l'enseignant survit aux redéploiements.
   Élèves · Groupes et comptes)
 - `progression.html` — tableau de bord du groupe, module par module
 - `fiche-eleve.html` — le dossier d'un seul élève
-- `prof.html` — installation du premier compte, groupes et comptes (ancienne page)
+- `prof.html` — installation du premier compte, connexion, comptes enseignants
 - `catalogue.html` / `eleve.html` — catalogue (téléversement) / interface élève
   (l'ancien nom `admin.html` ne sert plus que de redirection vers
   `catalogue.html`, pour les signets pris avant le renommage)
@@ -299,8 +305,9 @@ plus — ajouter une activité, ajouter du matériel à une activité.
 - Refait selon la remise `~/Downloads/design_handoff_portail_enseignant`, qui
   est la **source de vérité visuelle** de cette page. Trois onglets dans une
   seule page : Planifier · Élèves · Groupes et comptes, plus son propre écran
-  de connexion. Il **remplace l'usage courant** de `lms.html` et de la partie
-  « groupes » de `prof.html` ; `catalogue.html` reste la page du catalogue
+  de connexion. Il **remplace l'usage courant** de `lms.html` et il est
+  désormais le **seul** endroit où l'on crée un groupe : `Prof.init()` y
+  envoie l'enseignant qui n'en a aucun. `catalogue.html` reste la page du catalogue
   (téléversement et modification d'activités), que la remise ne couvre pas.
 - La page ne passe **pas** par `js/prof.js` : celui-ci renvoie vers
   `prof.html` sur un 401, alors que le portail porte sa propre connexion. Elle

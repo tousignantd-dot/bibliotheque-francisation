@@ -102,8 +102,10 @@ const Prof = (() => {
     setGroupes(data.groupes);
     if (!state.groupes.length && redirect) {
       // Un enseignant sans groupe ne peut rien planifier : on l'envoie
-      // directement créer son premier groupe.
-      location.href = 'prof.html?nouveauGroupe=1';
+      // directement créer son premier groupe. Les groupes vivent dans le
+      // portail (onglet « Groupes et comptes ») ; `prof.html` ne porte plus
+      // que les comptes.
+      location.href = 'enseignant.html';
       return null;
     }
     return state;
@@ -169,7 +171,7 @@ const Prof = (() => {
           <select id="profGroupeSelect" aria-label="Groupe actif">${options}</select>
         </div>
         <span class="prof-bar-nom">${escapeHtml(state.enseignant?.nom || '')}</span>
-        <a href="prof.html">Groupes et comptes</a>
+        <a href="prof.html">Comptes enseignants</a>
         <button type="button" class="prof-bar-link" id="profLogout">Déconnexion</button>
       </div>`;
     container.querySelector('#profGroupeSelect').addEventListener('change', e => {
