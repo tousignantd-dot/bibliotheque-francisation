@@ -2544,6 +2544,77 @@ JEU_DE_ROLE_RESTAURANT = {
 }
 
 
+# ── Jeu de rôle « acheter des vêtements » (module-vetements) ─────────────────
+# S'informer sur un vêtement, l'essayer, l'échanger. Rôles « client » et
+# « conseiller ».
+JEU_DE_ROLE_VETEMENTS = {
+    "manteau": {
+        "contexte": (
+            "Le rayon des manteaux d'hiver d'un magasin de vêtements, en octobre. Un "
+            "client regarde les modèles sans savoir par où commencer."
+        ),
+        "conseiller": [
+            "Les manteaux vont du petit au très grand ; la taille varie beaucoup d'une marque à l'autre.",
+            "Un manteau d'hiver se prend une taille de plus : il faut de la place pour un chandail.",
+            "La cote de température est écrite en petit sur l'étiquette : moins vingt, moins trente.",
+            "Le duvet est plus chaud et plus léger que la fibre, mais il craint l'humidité.",
+            "La bonne longueur pour attendre l'autobus, c'est aux genoux.",
+            "Un capuchon bordé de fourrure coupe le vent sur le visage : ce n'est pas décoratif.",
+            "Les cabines d'essayage sont au fond ; on peut essayer autant de modèles qu'on veut.",
+            "Tu demandes toujours pour quelle température le client veut son manteau.",
+        ],
+        "client": [
+            "Tu passes tes hivers avec trois couches de vêtements et tu veux enfin un vrai manteau.",
+            "Tu ne connais pas ta taille dans les marques d'ici.",
+            "Tu ne sais pas ce que veut dire « coté moins trente ».",
+            "Tu hésites entre deux couleurs et tu voudrais un avis.",
+        ],
+    },
+    "bottes": {
+        "contexte": (
+            "Le rayon des chaussures d'hiver. Un client cherche des bottes et ne connaît "
+            "pas les usages d'ici."
+        ),
+        "conseiller": [
+            "Pour des bottes d'hiver, on prend une demi-pointure de plus : il faut la place d'un bas épais.",
+            "Il faut chercher « imperméable » sur l'étiquette et une semelle avec du relief.",
+            "Le verglas est plus dangereux que la neige : c'est la semelle qui compte.",
+            "Les bottes sont cotées elles aussi : moins vingt, moins quarante.",
+            "On peut les essayer en marchant dans le magasin, mais jamais dehors.",
+            "Une fois portées dehors, elles ne peuvent plus être échangées.",
+            "Tu demandes toujours la pointure habituelle avant de proposer un modèle.",
+        ],
+        "client": [
+            "Tu fais du neuf et demi, mais tes souliers d'ici te semblent serrés.",
+            "Tu ne sais pas qu'il faut prévoir la place d'un bas de laine.",
+            "Tu veux savoir ce qui compte pour la neige et pour le verglas.",
+            "Tu veux les essayer sérieusement avant de décider.",
+        ],
+    },
+    "echange": {
+        "contexte": (
+            "Le comptoir du service à la clientèle. Un client rapporte un article acheté "
+            "il y a moins de deux semaines."
+        ),
+        "conseiller": [
+            "Le délai d'échange ou de remboursement est de trente jours avec la facture.",
+            "L'article doit être en état : étiquettes en place, jamais porté dehors.",
+            "Un remboursement se fait sur le moyen de paiement utilisé — carte sur carte, comptant sur comptant.",
+            "Après un échange, les trente jours repartent à partir de la nouvelle date.",
+            "Les articles marqués « vente finale » ne sont ni repris ni échangés.",
+            "La mise de côté dure quatorze jours et demande un dépôt d'environ vingt pour cent.",
+            "Tu demandes toujours la facture en premier.",
+        ],
+        "client": [
+            "Tu rapportes un article qui ne fait pas la bonne taille.",
+            "Tu as la facture, l'achat date d'une douzaine de jours.",
+            "Tu ne sais pas si tu préfères un échange ou un remboursement.",
+            "Tu veux savoir ce qui se passe si le nouvel article ne convient pas non plus.",
+        ],
+    },
+}
+
+
 JEU_DE_ROLE_SCENARIOS = {
     "louer": {
         "cadre": "une visite de logement",
@@ -2842,6 +2913,45 @@ JEU_DE_ROLE_SCENARIOS = {
                              "d'un plat, les boissons. Emploie des formes polies. Si un "
                              "problème survient, signale-le sans agressivité — et laisse "
                              "l'élève proposer la solution."),
+            },
+        },
+    },
+    "vetement": {
+        "cadre": "un achat de vêtements dans un magasin",
+        "contexte_label": "Le rayon où vous vous trouvez",
+        "cas": JEU_DE_ROLE_VETEMENTS,
+        "adresse": "Vouvoie l'élève : c'est un commerce, on ne se connaît pas.",
+        "sujets": [
+            "ce que le client cherche, et pour quel usage",
+            "la taille ou la pointure, et l'essayage",
+            "ce qui ne va pas : serré, large, trop court",
+            "la matière, la couleur et la coupe",
+            "l'entretien : comment le laver sans l'abîmer",
+            "l'échange, le remboursement et les délais",
+        ],
+        "cloture": ("Quand tout a été demandé, récapitule ce que le client emporte et "
+                    "rappelle-lui de garder sa facture."),
+        "ouverture": {
+            "client": "Bonjour, je cherche quelque chose et j'aurais besoin d'aide.",
+            "conseiller": "Bonjour ! Je peux vous aider ?",
+        },
+        "roles": {
+            "conseiller": {
+                "qui": ("Tu conseilles les clients au rayon des vêtements. L'élève est le "
+                        "client."),
+                "conduite": ("Commence par demander pour quel usage et quelle taille. "
+                             "Réponds à ce qu'on te demande, un point à la fois. Ne parle "
+                             "de l'entretien ni de la politique d'échange que si on te le "
+                             "demande — mais si le client conclut sans avoir posé de "
+                             "question sur l'échange, rappelle-le-lui à la fin."),
+            },
+            "client": {
+                "qui": ("Tu achètes un vêtement. L'élève travaille au magasin et te "
+                        "conseille."),
+                "conduite": ("Dis ce que tu cherches, puis attends qu'on te demande ta "
+                             "taille. En essayant, décris ce qui ne va pas avec un adjectif "
+                             "et un endroit : « c'est serré aux épaules ». Demande un avis "
+                             "avant de décider."),
             },
         },
     },

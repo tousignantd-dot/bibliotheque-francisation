@@ -192,6 +192,16 @@ MODULES = {
                         'Pendant le repas',
                         "L'addition"),
     },
+    'module-vetements': {
+        'numero': 18, 'activite': 54, 'niveau': 4,
+        'titre': 'Acheter des vêtements',
+        'chapeau': "S'informer sur un vêtement, l'essayer, comprendre son "
+                   "entretien, et savoir comment l'échanger.",
+        'seances': GRILLE_3_DEFIS,
+        'blocs': _blocs('Trouver sa taille',
+                        "L'avis et l'entretien",
+                        "Échanger et se faire rembourser"),
+    },
 }
 
 # L'ordre d'affichage : celui des numéros de module.

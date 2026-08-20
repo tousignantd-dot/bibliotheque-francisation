@@ -1,0 +1,17 @@
+const FC_CARDS = [
+  {word:"un manteau", def:"Le vêtement d'extérieur long et chaud qu'on porte l'hiver.", ex:"Je cherche un <strong>manteau</strong> d'hiver, un vrai.", img:"/assets/interactive/module-vetements/vocab/manteau.jpg", tache:"prep"},
+  {word:"une cabine d'essayage", def:"Le petit espace fermé où on essaie les vêtements.", ex:"Les <strong>cabines d'essayage</strong> sont au fond du magasin.", img:"/assets/interactive/module-vetements/vocab/cabine.jpg", tache:"prep"},
+  {word:"la taille", def:"La grandeur d'un vêtement : petit, moyen, grand, très grand.", ex:"Vous faites quelle <strong>taille</strong>, d'habitude ?", img:"/assets/interactive/module-vetements/vocab/taille.jpg", tache:"prep"},
+  {word:"la pointure", def:"La grandeur d'une chaussure. On ne dit pas « taille » pour les souliers.", ex:"Je fais du neuf et demi de <strong>pointure</strong>.", img:"/assets/interactive/module-vetements/vocab/pointure.jpg", tache:"prep"},
+  {word:"serré", def:"Trop petit, qui empêche de bouger.", ex:"Il est un peu <strong>serré</strong> aux épaules.", tache:"t1"},
+  {word:"une manche", def:"La partie du vêtement qui couvre le bras.", ex:"Les <strong>manches</strong> sont un peu longues.", img:"/assets/interactive/module-vetements/vocab/manche.jpg", tache:"t1"},
+  {word:"le duvet", def:"Les plumes légères qui remplissent un manteau chaud.", ex:"C'est du <strong>duvet</strong> : c'est plus léger qu'il n'en a l'air.", img:"/assets/interactive/module-vetements/vocab/duvet.jpg", tache:"t1"},
+  {word:"un capuchon", def:"La partie du manteau qui couvre la tête.", ex:"Prends celui avec le <strong>capuchon</strong> bordé de fourrure.", img:"/assets/interactive/module-vetements/vocab/capuchon.jpg", tache:"t2"},
+  {word:"le mode d'entretien", def:"L'étiquette qui dit comment laver et sécher un vêtement.", ex:"Le <strong>mode d'entretien</strong> est sur l'étiquette du col.", img:"/assets/interactive/module-vetements/vocab/entretien.jpg", tache:"t2"},
+  {word:"la sécheuse", def:"L'appareil qui sèche le linge. En France : « sèche-linge ».", ex:"Le carré avec un cercle, c'est la <strong>sécheuse</strong>.", img:"/assets/interactive/module-vetements/vocab/secheuse.jpg", tache:"t2"},
+  {word:"imperméable", def:"Qui ne laisse pas passer l'eau.", ex:"Cherchez « <strong>imperméable</strong> » sur l'étiquette.", tache:"t2"},
+  {word:"un échange", def:"Rapporter un article et en prendre un autre à la place.", ex:"Vous voulez un <strong>échange</strong> ou un remboursement ?", img:"/assets/interactive/module-vetements/vocab/echange.jpg", tache:"t3"},
+  {word:"un remboursement", def:"Rapporter un article et récupérer son argent.", ex:"Le <strong>remboursement</strong> se fait sur la carte qui a servi à payer.", img:"/assets/interactive/module-vetements/vocab/remboursement.jpg", tache:"t3"},
+  {word:"la mise de côté", def:"Le magasin garde un article pour vous pendant quelques jours, contre un dépôt.", ex:"La <strong>mise de côté</strong> dure quatorze jours.", img:"/assets/interactive/module-vetements/vocab/mise-de-cote.jpg", tache:"t3"},
+  {word:"un dépôt", def:"Une partie du prix payée d'avance pour réserver un article.", ex:"Un <strong>dépôt</strong> de vingt pour cent, le reste à la livraison.", img:"/assets/interactive/module-vetements/vocab/depot.jpg", tache:"t3"},
+];
