@@ -14,7 +14,11 @@ sert à distinguer les onglets entre eux.
 
 Deux de ses teintes étaient vertes : la forêt `#166534`, qui coloriait presque
 toujours « Je retiens des mots », et le teal-vert `#0F766E`, qui coloriait
-« Je me lance ». Le 20 août 2026, le vert est sorti du repérage — voir
+« Je me lance » et l'étiquette du jeu de rôle. Elles vivaient sous deux formes
+— la clé `color:'#…'` de `sections.js` et `exos.js`, et le style en dur des
+cartes écrites à la main dans `custom.js`. Le script prend les deux : dans ces
+fichiers, ces deux valeurs hexadécimales n'ont jamais servi à autre chose qu'à
+une couleur de section. Le 20 août 2026, le vert est sorti du repérage — voir
 `build/couleurs_niveau.py` pour la moitié « niveau » de la même décision. Le
 vert du système de design (`--accent` `#0A8F5B` : boutons, pastilles, focus,
 rétroaction « correct ») n'est pas concerné et reste en place.
@@ -45,7 +49,7 @@ VERTS_RETIRES = {
 
 def cibles():
     """Les fichiers où vit une couleur de section."""
-    for nom in ('sections.js', 'exos.js'):
+    for nom in ('sections.js', 'exos.js', 'custom.js'):
         yield from sorted(CONTENU.glob('*/%s' % nom))
     for dossier in sorted(INTERACTIF.iterdir()):
         if not dossier.is_dir() or not dossier.name.startswith('module-'):
@@ -70,11 +74,9 @@ def main():
         texte = chemin.read_text(encoding='utf-8')
         neuf = texte
         for vert, remplacant in VERTS_RETIRES.items():
-            neuf = re.sub(r"(color:\s*')%s(')" % vert,
-                          lambda m, r=remplacant: '%s%s%s' % (m.group(1), r, m.group(2)),
-                          neuf, flags=re.I)
+            neuf = re.sub(re.escape(vert), remplacant, neuf, flags=re.I)
         if neuf != texte:
-            compte = sum(texte.upper().count("COLOR:'%s'" % v)
+            compte = sum(len(re.findall(re.escape(v), texte, flags=re.I))
                          for v in VERTS_RETIRES)
             touches.append((chemin.relative_to(ROOT), compte))
             if not args.verifier:

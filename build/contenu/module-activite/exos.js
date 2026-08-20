@@ -23,7 +23,7 @@ const EXOS = [
     {id:'p1j', txt:"L'inscription se fait seulement en personne.", ok:'FAUX'},
    ]},
 
-  {sec:'prep', id:'prChiffres', type:'vf', num:'Exercice 2', tit:'Quel chiffre entends-tu ?', color:'#A5335F', accent:'#166534', cards:true, listen:true,
+  {sec:'prep', id:'prChiffres', type:'vf', num:'Exercice 2', tit:'Quel chiffre entends-tu ?', color:'#A5335F', accent:'#A5335F', cards:true, listen:true,
    sub:"Écoute chaque phrase. Le montant ou l'heure que tu entends est-il celui qui est écrit ?", tiles:['C\'EST ÇA','CE N\'EST PAS ÇA'],
    rows:[
     {id:'cha', txt:"Quatre-vingt-cinq dollars.", ok:'C\'EST ÇA'},

@@ -16,7 +16,7 @@
 
   document.getElementById('exs-appli').innerHTML += `
    <div class="card custom" id="jeu-de-role">
-     <div class="c-hdr"><span class="tag" style="background:#0F766E">Jeu de rôle</span><span class="ctit" style="color:#0F766E">Présente-toi</span></div>
+     <div class="c-hdr"><span class="tag" style="background:#7E3F98">Jeu de rôle</span><span class="ctit" style="color:#7E3F98">Présente-toi</span></div>
      <p class="lead">L'assistant joue <b>la personne qui t'accueille</b>. Elle parle lentement et pose une question à la fois. Si tu ne comprends pas, dis-le : c'est permis.</p>
      <div class="jr-grid">
        ${ROLE_CAS.map(c=>`
@@ -161,19 +161,19 @@
   ];
   document.getElementById('exs-retiens').innerHTML = `
    <div class="card custom">
-     <div class="c-hdr"><span class="tag" style="background:#166534">Je retiens des mots</span><span class="ctit" style="color:#166534">Mes mots utiles</span></div>
-     <p class="lead">Note ici les mots et les expressions à retenir. Tu peux aussi <span style="font-weight:900;cursor:pointer;text-decoration:underline dotted;color:#166534" onclick="fcOpen(0)">réviser les cartes mémoire 🃏</span>.</p>
-     <div style="font-weight:800;color:#166534;font-size:13px;margin:6px 0 4px">Mon identité</div>
+     <div class="c-hdr"><span class="tag" style="background:#A5335F">Je retiens des mots</span><span class="ctit" style="color:#A5335F">Mes mots utiles</span></div>
+     <p class="lead">Note ici les mots et les expressions à retenir. Tu peux aussi <span style="font-weight:900;cursor:pointer;text-decoration:underline dotted;color:#A5335F" onclick="fcOpen(0)">réviser les cartes mémoire 🃏</span>.</p>
+     <div style="font-weight:800;color:#A5335F;font-size:13px;margin:6px 0 4px">Mon identité</div>
      <textarea rows="2" placeholder="Ex. : mon nom, mon prénom, épeler, mon adresse…"></textarea>
-     <div style="font-weight:800;color:#166534;font-size:13px;margin:12px 0 4px">D'où je viens</div>
+     <div style="font-weight:800;color:#A5335F;font-size:13px;margin:12px 0 4px">D'où je viens</div>
      <textarea rows="2" placeholder="Ex. : je viens de…, j'habite à…, je parle…"></textarea>
-     <div style="font-weight:800;color:#166534;font-size:13px;margin:12px 0 4px">Ma famille</div>
+     <div style="font-weight:800;color:#A5335F;font-size:13px;margin:12px 0 4px">Ma famille</div>
      <textarea rows="2" placeholder="Ex. : j'ai un enfant, un fils, une fille, il a six ans…"></textarea>
-     <div style="font-weight:800;color:#166534;font-size:13px;margin:12px 0 4px">Être poli</div>
+     <div style="font-weight:800;color:#A5335F;font-size:13px;margin:12px 0 4px">Être poli</div>
      <textarea rows="2" placeholder="Ex. : bonjour, merci, de rien, pardon, plus lentement…"></textarea>
    </div>
    <div class="card custom">
-     <div class="c-hdr"><span class="tag" style="background:#166534">Autoévaluation</span><span class="ctit" style="color:#166534">Qu'est-ce que je suis capable de faire ?</span></div>
+     <div class="c-hdr"><span class="tag" style="background:#A5335F">Autoévaluation</span><span class="ctit" style="color:#A5335F">Qu'est-ce que je suis capable de faire ?</span></div>
      <p class="lead">Pour chaque énoncé, choisis : pas encore 😟, un peu 🙂, ou oui 😃.</p>
      ${SELF.map((s,i)=>`<div class="selfrow"><div class="self-txt">${s}</div><div class="self-opts">
         <button onclick="rate(${i},this)">😟</button><button onclick="rate(${i},this)">🙂</button><button onclick="rate(${i},this)">😃</button>

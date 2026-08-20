@@ -16,7 +16,7 @@
 
   document.getElementById('exs-appli').innerHTML += `
    <div class="card custom" id="jeu-de-role">
-     <div class="c-hdr"><span class="tag" style="background:#0F766E">Jeu de rôle</span><span class="ctit" style="color:#0F766E">Fais connaissance avec quelqu'un</span></div>
+     <div class="c-hdr"><span class="tag" style="background:#7E3F98">Jeu de rôle</span><span class="ctit" style="color:#7E3F98">Fais connaissance avec quelqu'un</span></div>
      <p class="lead">L'assistant joue <b>l'autre personne</b>. Il ne connaît pas ta vie et il ne racontera pas la sienne avant que tu poses des questions — comme dans une vraie rencontre. Ton but : <b>apprendre trois choses</b> sur l'autre et <b>raconter une chose</b> sur toi.</p>
      <div class="jr-grid">
        ${ROLE_CAS.map(c=>`
@@ -161,19 +161,19 @@
   ];
   document.getElementById('exs-retiens').innerHTML = `
    <div class="card custom">
-     <div class="c-hdr"><span class="tag" style="background:#166534">Je retiens des mots</span><span class="ctit" style="color:#166534">Mes mots utiles</span></div>
-     <p class="lead">Note ici les mots et les expressions à retenir. Tu peux aussi <span style="font-weight:900;cursor:pointer;text-decoration:underline dotted;color:#166534" onclick="fcOpen(0)">réviser les cartes mémoire 🃏</span>.</p>
-     <div style="font-weight:800;color:#166534;font-size:13px;margin:6px 0 4px">Ma journée et ma semaine</div>
+     <div class="c-hdr"><span class="tag" style="background:#A5335F">Je retiens des mots</span><span class="ctit" style="color:#A5335F">Mes mots utiles</span></div>
+     <p class="lead">Note ici les mots et les expressions à retenir. Tu peux aussi <span style="font-weight:900;cursor:pointer;text-decoration:underline dotted;color:#A5335F" onclick="fcOpen(0)">réviser les cartes mémoire 🃏</span>.</p>
+     <div style="font-weight:800;color:#A5335F;font-size:13px;margin:6px 0 4px">Ma journée et ma semaine</div>
      <textarea rows="2" placeholder="Ex. : se lever, un quart de travail, une brassée, la balayeuse, le bac de recyclage, sortir les ordures…"></textarea>
-     <div style="font-weight:800;color:#166534;font-size:13px;margin:12px 0 4px">Mes loisirs et le sport</div>
+     <div style="font-weight:800;color:#A5335F;font-size:13px;margin:12px 0 4px">Mes loisirs et le sport</div>
      <textarea rows="2" placeholder="Ex. : s'entraîner, disputer un match, marquer, battre, une coéquipière, un tournoi, le covoiturage…"></textarea>
-     <div style="font-weight:800;color:#166534;font-size:13px;margin:12px 0 4px">Les évènements de la vie</div>
+     <div style="font-weight:800;color:#A5335F;font-size:13px;margin:12px 0 4px">Les évènements de la vie</div>
      <textarea rows="2" placeholder="Ex. : une naissance, un mariage, un déménagement, un voyage, une arrivée…"></textarea>
-     <div style="font-weight:800;color:#166534;font-size:13px;margin:12px 0 4px">Pour donner des nouvelles</div>
+     <div style="font-weight:800;color:#A5335F;font-size:13px;margin:12px 0 4px">Pour donner des nouvelles</div>
      <textarea rows="2" placeholder="Ex. : je t'écris de… · félicitations · meilleurs vœux · beaucoup de bonheur · tu me manques…"></textarea>
    </div>
    <div class="card custom">
-     <div class="c-hdr"><span class="tag" style="background:#166534">Autoévaluation</span><span class="ctit" style="color:#166534">Qu'est-ce que je suis capable de faire ?</span></div>
+     <div class="c-hdr"><span class="tag" style="background:#A5335F">Autoévaluation</span><span class="ctit" style="color:#A5335F">Qu'est-ce que je suis capable de faire ?</span></div>
      <p class="lead">Pour chaque énoncé, choisis : pas encore 😟, un peu 🙂, ou oui 😃.</p>
      ${SELF.map((s,i)=>`<div class="selfrow"><div class="self-txt">${s}</div><div class="self-opts">
         <button onclick="rate(${i},this)">😟</button><button onclick="rate(${i},this)">🙂</button><button onclick="rate(${i},this)">😃</button>

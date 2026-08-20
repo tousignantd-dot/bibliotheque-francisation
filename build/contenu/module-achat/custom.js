@@ -16,7 +16,7 @@
 
   document.getElementById('exs-appli').innerHTML += `
    <div class="card custom" id="jeu-de-role">
-     <div class="c-hdr"><span class="tag" style="background:#0F766E">Jeu de rôle</span><span class="ctit" style="color:#0F766E">Informe-toi sur un appareil</span></div>
+     <div class="c-hdr"><span class="tag" style="background:#7E3F98">Jeu de rôle</span><span class="ctit" style="color:#7E3F98">Informe-toi sur un appareil</span></div>
      <p class="lead">L'assistant joue <b>le vendeur</b>. Il commence par te demander ton espace disponible. Il ne parlera ni de la livraison, ni de l'installation, ni de la garantie prolongée avant que tu ne poses la question.</p>
      <div class="jr-grid">
        ${ROLE_CAS.map(c=>`
@@ -162,19 +162,19 @@
   ];
   document.getElementById('exs-retiens').innerHTML = `
    <div class="card custom">
-     <div class="c-hdr"><span class="tag" style="background:#166534">Je retiens des mots</span><span class="ctit" style="color:#166534">Mes mots utiles</span></div>
-     <p class="lead">Note ici les mots et les expressions à retenir. Tu peux aussi <span style="font-weight:900;cursor:pointer;text-decoration:underline dotted;color:#166534" onclick="fcOpen(0)">réviser les cartes mémoire 🃏</span>.</p>
-     <div style="font-weight:800;color:#166534;font-size:13px;margin:6px 0 4px">L'appareil</div>
+     <div class="c-hdr"><span class="tag" style="background:#A5335F">Je retiens des mots</span><span class="ctit" style="color:#A5335F">Mes mots utiles</span></div>
+     <p class="lead">Note ici les mots et les expressions à retenir. Tu peux aussi <span style="font-weight:900;cursor:pointer;text-decoration:underline dotted;color:#A5335F" onclick="fcOpen(0)">réviser les cartes mémoire 🃏</span>.</p>
+     <div style="font-weight:800;color:#A5335F;font-size:13px;margin:6px 0 4px">L'appareil</div>
      <textarea rows="2" placeholder="Ex. : un électroménager, une laveuse, la capacité, les dimensions, économe, silencieux…"></textarea>
-     <div style="font-weight:800;color:#166534;font-size:13px;margin:12px 0 4px">La garantie</div>
+     <div style="font-weight:800;color:#A5335F;font-size:13px;margin:12px 0 4px">La garantie</div>
      <textarea rows="2" placeholder="Ex. : pièces et main-d'œuvre, un défaut de fabrication, une garantie prolongée, le déplacement…"></textarea>
-     <div style="font-weight:800;color:#166534;font-size:13px;margin:12px 0 4px">Payer et se faire livrer</div>
+     <div style="font-weight:800;color:#A5335F;font-size:13px;margin:12px 0 4px">Payer et se faire livrer</div>
      <textarea rows="2" placeholder="Ex. : les taxes, un versement sans intérêt, la livraison, l'installation, le bon de livraison…"></textarea>
-     <div style="font-weight:800;color:#166534;font-size:13px;margin:12px 0 4px">Le mode d'emploi</div>
+     <div style="font-weight:800;color:#A5335F;font-size:13px;margin:12px 0 4px">Le mode d'emploi</div>
      <textarea rows="2" placeholder="Ex. : un boulon de transport, être de niveau, un cycle à vide, le tableau des problèmes…"></textarea>
    </div>
    <div class="card custom">
-     <div class="c-hdr"><span class="tag" style="background:#166534">Autoévaluation</span><span class="ctit" style="color:#166534">Qu'est-ce que je suis capable de faire ?</span></div>
+     <div class="c-hdr"><span class="tag" style="background:#A5335F">Autoévaluation</span><span class="ctit" style="color:#A5335F">Qu'est-ce que je suis capable de faire ?</span></div>
      <p class="lead">Pour chaque énoncé, choisis : pas encore 😟, un peu 🙂, ou oui 😃.</p>
      ${SELF.map((s,i)=>`<div class="selfrow"><div class="self-txt">${s}</div><div class="self-opts">
         <button onclick="rate(${i},this)">😟</button><button onclick="rate(${i},this)">🙂</button><button onclick="rate(${i},this)">😃</button>

@@ -1,0 +1,17 @@
+const CARRIER_PHRASES = {
+  'arret':          "L'arrêt est devant l'école.",
+  'coin':           "La bibliothèque est au coin.",
+  'feu':            "Tournez à droite après le feu.",
+  'tout_droit':     "Continuez tout droit.",
+  'trottoir':       "Marchez sur le trottoir.",
+  'plan':           "Regarde le plan à l'arrêt.",
+  'direction':      "Cet autobus va dans l'autre direction.",
+  'loin':           "Ce n'est pas loin : dix minutes à pied.",
+  'horaire':        "L'horaire est affiché à l'arrêt.",
+  'correspondance': "Gardez votre correspondance.",
+  'avis':           "Il y a un avis sur la porte.",
+  'jour_ferie':     "Le 5 septembre est un jour férié.",
+  'droite':         "Tournez à droite au feu.",
+  'gauche':         "C'est au coin, à gauche.",
+  'heure':          "Le prochain autobus est à huit heures dix.",
+};

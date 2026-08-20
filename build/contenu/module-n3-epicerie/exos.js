@@ -20,7 +20,7 @@ const EXOS = [
     {id:'p1f', txt:"Marisol veut faire du pain.", ok:'FAUX'},
    ]},
 
-  {sec:'prep', id:'prNombres', type:'vf', num:'Exercice 2', tit:"Treize ou trente ?", color:'#A5335F', accent:'#166534', cards:true, listen:true,
+  {sec:'prep', id:'prNombres', type:'vf', num:'Exercice 2', tit:"Treize ou trente ?", color:'#A5335F', accent:'#A5335F', cards:true, listen:true,
    sub:"Écoute bien la fin du mot. Entends-tu « ze » ou « te » ?", tiles:['13 · TREIZE','30 · TRENTE'],
    rows:[
     {id:'nba', txt:"treize", ok:'13 · TREIZE'},
