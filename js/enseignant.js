@@ -1561,6 +1561,10 @@
 
   $('boutonSignaler').addEventListener('click', async () => {
     $('erreurSignalement').hidden = true;
+    $('resultatEssai').hidden = true;
+    // L'essai d'envoi ne regarde que l'administrateur : c'est lui qui pose
+    // les variables de l'hébergeur.
+    $('boutonEssaiCourriel').hidden = etat.enseignant?.role !== 'admin';
     $('sEcran').value = ECRAN_LABEL[etat.ecran] || 'Autre';
     ouvrirModale('modaleSignalement');
     $('sDescription').focus();
@@ -1568,6 +1572,25 @@
       rendreSignalements(await json('/api/signalements'));
     } catch {
       $('blocSignalements').hidden = true;   // l'historique n'est qu'un confort
+    }
+  });
+
+  $('boutonEssaiCourriel').addEventListener('click', async () => {
+    const zone = $('resultatEssai');
+    zone.className = 'fb';
+    zone.textContent = 'Essai en cours…';
+    zone.hidden = false;
+    try {
+      const r = await envoyer('/api/signalement/essai', {});
+      const ou = r.config.destinataire || '(aucune adresse)';
+      const voie = r.config.resend ? 'Resend' : (r.config.smtp ? 'SMTP' : 'aucune voie configurée');
+      zone.className = `fb ${r.ok ? 'fb--ok' : 'fb--no'}`;
+      zone.textContent = r.ok
+        ? `Envoyé à ${ou} par ${voie}. Regardez aussi les indésirables.`
+        : `Échec (${voie}, destination ${ou}) : ${r.raison}`;
+    } catch (err) {
+      zone.className = 'fb fb--no';
+      zone.textContent = `Essai impossible : ${err.message}`;
     }
   });
 

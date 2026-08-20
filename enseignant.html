@@ -906,10 +906,14 @@
           <div class="field-hint">Sont joints automatiquement&nbsp;: votre nom, l'adresse de la page et votre navigateur. Aucun nom d'élève, aucune de leurs réponses.</div>
         </div>
         <div class="fb fb--no" id="erreurSignalement" hidden></div>
-        <div style="display:flex;gap:var(--sp-3);flex-wrap:wrap">
+        <div style="display:flex;gap:var(--sp-3);flex-wrap:wrap;align-items:center">
           <button type="submit" class="btn btn--pri" id="boutonEnvoiSignalement">Envoyer</button>
           <button type="button" class="btn btn--ghost" data-fermer="modaleSignalement">Annuler</button>
+          <!-- Réservé à l'administrateur : vérifie que le courriel part,
+               sans avoir à ouvrir les journaux de l'hébergeur. -->
+          <button type="button" class="pe-lien-plat" id="boutonEssaiCourriel" style="margin-left:auto" hidden>Tester l'envoi du courriel</button>
         </div>
+        <div class="fb" id="resultatEssai" hidden></div>
         <div id="blocSignalements" hidden>
           <div class="pe-eyebrow" style="margin-bottom:var(--sp-3)">Vos signalements précédents</div>
           <div class="pe-signal-liste" id="listeSignalements"></div>

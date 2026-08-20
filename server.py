@@ -1462,8 +1462,11 @@ _VERROU_SIGNALEMENTS = threading.Lock()
 
 
 def _envoyer_par_resend(sujet, corps, destinataire):
-    """Envoie par l'API HTTPS de Resend. Renvoie True, False, ou None si
-    Resend n'est pas configuré — auquel cas l'appelant essaie le SMTP.
+    """Envoie par l'API HTTPS de Resend. Renvoie (ok, raison), où ok vaut
+    None si Resend n'est pas configuré — auquel cas l'appelant essaie le SMTP.
+    La raison est écrite pour être lue par l'administrateur à l'écran : c'est
+    elle qui a fait gagner les heures de dépannage que les journaux de
+    l'hébergeur coûtaient.
 
     Pourquoi une API plutôt que SMTP : Gmail refuse les mots de passe
     d'application aux comptes scolaires et à ceux qui n'ont pas la double
@@ -1472,7 +1475,7 @@ def _envoyer_par_resend(sujet, corps, destinataire):
     """
     api_key = os.environ.get("RESEND_API_KEY", "").strip()
     if not api_key:
-        return None
+        return None, "RESEND_API_KEY absente"
     # Sans domaine vérifié chez Resend, seule l'adresse de bac à sable est
     # acceptée — elle n'écrit qu'au propriétaire du compte, ce qui est
     # exactement l'usage ici.
@@ -1497,15 +1500,14 @@ def _envoyer_par_resend(sujet, corps, destinataire):
         with urllib.request.urlopen(req, timeout=20) as resp:
             resp.read()
     except urllib.error.HTTPError as e:
-        detail = e.read().decode("utf-8", errors="replace")
-        print(f"[signalement] Resend a refusé ({e.code}) : {detail[:300]}",
-              flush=True)
-        return False
+        detail = e.read().decode("utf-8", errors="replace")[:300]
+        print(f"[signalement] Resend a refusé ({e.code}) : {detail}", flush=True)
+        return False, f"Resend a refusé ({e.code}) : {detail}"
     except Exception as e:                      # noqa: BLE001 — jamais fatal
         print(f"[signalement] Resend injoignable : {e}", flush=True)
-        return False
+        return False, f"Resend injoignable : {e}"
     print(f"[signalement] note envoyée à {destinataire} par Resend", flush=True)
-    return True
+    return True, f"Envoyée à {destinataire} par Resend"
 
 
 def envoyer_courriel(sujet, corps):
@@ -1520,27 +1522,31 @@ def envoyer_courriel(sujet, corps):
     STARTTLS), SMTP_USER, SMTP_MOTDEPASSE. Avec Gmail, SMTP_MOTDEPASSE est un
     « mot de passe d'application », jamais le mot de passe du compte.
     Destination, dans les deux cas : SIGNALEMENT_DESTINATAIRE.
+
+    Renvoie (ok, raison). La raison ne porte jamais de clé ni de mot de
+    passe : elle nomme la variable manquante, ou répète ce que le service a
+    répondu.
     """
     destinataire = (os.environ.get("SIGNALEMENT_DESTINATAIRE", "").strip()
                     or os.environ.get("SMTP_USER", "").strip())
     if not destinataire:
-        print("[signalement] aucune adresse de destination "
-              "(SIGNALEMENT_DESTINATAIRE) — note gardée seulement dans "
-              "data/signalements.json", flush=True)
-        return False
+        raison = ("aucune adresse de destination : posez "
+                  "SIGNALEMENT_DESTINATAIRE")
+        print(f"[signalement] {raison}", flush=True)
+        return False, raison
 
-    par_resend = _envoyer_par_resend(sujet, corps, destinataire)
-    if par_resend is not None:
-        return par_resend
+    ok, raison = _envoyer_par_resend(sujet, corps, destinataire)
+    if ok is not None:
+        return ok, raison
 
     hote = os.environ.get("SMTP_HOTE", "").strip()
     user = os.environ.get("SMTP_USER", "").strip()
     motdepasse = os.environ.get("SMTP_MOTDEPASSE", "")
     if not (hote and user and motdepasse):
-        print("[signalement] courriel non configuré (ni RESEND_API_KEY ni "
-              "SMTP_*) — note gardée seulement dans "
-              "data/signalements.json", flush=True)
-        return False
+        raison = ("aucun envoi configuré : ni RESEND_API_KEY, ni le trio "
+                  "SMTP_HOTE / SMTP_USER / SMTP_MOTDEPASSE")
+        print(f"[signalement] {raison}", flush=True)
+        return False, raison
 
     message = EmailMessage()
     message["Subject"] = sujet
@@ -1561,9 +1567,9 @@ def envoyer_courriel(sujet, corps):
                 serveur.send_message(message)
     except Exception as e:                      # noqa: BLE001 — jamais fatal
         print(f"[signalement] envoi du courriel impossible : {e}", flush=True)
-        return False
+        return False, f"SMTP : {e}"
     print(f"[signalement] note envoyée à {destinataire} par SMTP", flush=True)
-    return True
+    return True, f"Envoyée à {destinataire} par SMTP"
 
 
 def _prompt_triage(entry):
@@ -1634,11 +1640,12 @@ def traiter_signalement(entry):
         f"{analyse or '(indisponible : clé API absente ou appel échoué)'}\n"
         f"\nFiche complète : data/signalements.json (identifiant {entry.get('id')})\n"
     )
-    envoie = envoyer_courriel(
+    envoie, raison = envoyer_courriel(
         f"[Francisation] Signalement — {(entry.get('ecran') or 'portail enseignant')}",
         corps,
     )
-    maj_signalement(entry["id"], {"courrielEnvoye": bool(envoie)})
+    maj_signalement(entry["id"], {"courrielEnvoye": bool(envoie),
+                                  "courrielRaison": raison})
 
 
 # Boîtes de répétition espacée (système Leitner) : plus la boîte est haute,
@@ -2473,6 +2480,8 @@ class Handler(http.server.SimpleHTTPRequestHandler):
             self._handle_clear_log()
         elif path == "/api/signalement":
             self._handle_signalement()
+        elif path == "/api/signalement/essai":
+            self._handle_signalement_essai()
         elif path == "/api/student/progress":
             self._handle_student_progress()
         elif path == "/api/correct-french":
@@ -5510,6 +5519,35 @@ class Handler(http.server.SimpleHTTPRequestHandler):
         ]
         json_response(self, sorted(entries, key=lambda e: e.get("timestamp", ""),
                                    reverse=True))
+
+    def _handle_signalement_essai(self):
+        """Essai d'envoi, réservé à l'administrateur.
+
+        Les journaux de l'hébergeur disent pourquoi un courriel n'est pas
+        parti, mais il faut les ouvrir, et le message se perd au milieu du
+        reste. Ce bouton pose la question et rapporte la réponse à l'écran,
+        avec l'état des variables — leur présence, jamais leur valeur.
+        """
+        teacher = self._require_teacher(admin=True)
+        if not teacher:
+            return
+        ok, raison = envoyer_courriel(
+            "[Francisation] Essai d'envoi",
+            "Ceci est un essai déclenché depuis l'espace enseignant.\n"
+            "S'il vous parvient, les signalements vous parviendront aussi.\n",
+        )
+        json_response(self, {
+            "ok": ok,
+            "raison": raison,
+            "config": {
+                # Présence seulement : une clé ne s'affiche pas, même à
+                # l'administrateur, même sur sa propre page.
+                "resend": bool(os.environ.get("RESEND_API_KEY", "").strip()),
+                "smtp": bool(os.environ.get("SMTP_HOTE", "").strip()),
+                "destinataire": (os.environ.get("SIGNALEMENT_DESTINATAIRE", "").strip()
+                                 or os.environ.get("SMTP_USER", "").strip()),
+            },
+        })
 
     def _handle_corrige_moi_list(self, params):
         teacher = self._require_teacher()
