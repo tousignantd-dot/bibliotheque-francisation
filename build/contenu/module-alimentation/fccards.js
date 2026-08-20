@@ -1,0 +1,17 @@
+const FC_CARDS = [
+  {word:"une allée", def:"Le corridor entre deux rangées d'étagères, dans un magasin.", ex:"La pâte de tomate est dans l'<strong>allée</strong> cinq.", img:"/assets/interactive/module-alimentation/vocab/allee.jpg", tache:"prep"},
+  {word:"une étiquette", def:"Le papier collé sur un produit, avec le prix et les informations.", ex:"C'est écrit sur l'<strong>étiquette</strong>, au dos.", img:"/assets/interactive/module-alimentation/vocab/etiquette.jpg", tache:"prep"},
+  {word:"la valeur nutritive", def:"Le tableau qui donne les calories, le sodium, le sucre d'un aliment.", ex:"Le tableau de la <strong>valeur nutritive</strong> est toujours au dos.", img:"/assets/interactive/module-alimentation/vocab/valeur-nutritive.jpg", tache:"prep"},
+  {word:"la provenance", def:"Le pays ou la région d'où vient un produit.", ex:"La <strong>provenance</strong> est écrite en petit, sous le code-barres.", tache:"prep"},
+  {word:"une conserve", def:"Un aliment vendu dans une boîte de métal fermée.", ex:"Les <strong>conserves</strong> se gardent des mois dans l'armoire.", img:"/assets/interactive/module-alimentation/vocab/conserve.jpg", tache:"prep"},
+  {word:"un comptoir", def:"L'endroit où un employé sert les clients : boucherie, poissonnerie, charcuterie.", ex:"Au <strong>comptoir</strong>, on demande la quantité qu'on veut.", img:"/assets/interactive/module-alimentation/vocab/comptoir.jpg", tache:"t1"},
+  {word:"une livre", def:"Une unité de poids encore très employée au Québec : environ 450 grammes.", ex:"Quatre poitrines, ça fait environ une <strong>livre</strong> et demie.", img:"/assets/interactive/module-alimentation/vocab/livre.jpg", tache:"t1"},
+  {word:"le bœuf haché", def:"De la viande de bœuf passée au hachoir.", ex:"Le <strong>bœuf haché</strong> se garde deux jours au réfrigérateur.", img:"/assets/interactive/module-alimentation/vocab/boeuf-hache.jpg", tache:"t2"},
+  {word:"emballer", def:"Envelopper un aliment pour le protéger.", ex:"<strong>Emballez</strong>-le bien avant de le congeler.", tache:"t2"},
+  {word:"congeler", def:"Mettre au congélateur pour garder longtemps.", ex:"On peut le <strong>congeler</strong> trois mois.", img:"/assets/interactive/module-alimentation/vocab/congeler.jpg", tache:"t2"},
+  {word:"la date de péremption", def:"La date après laquelle un aliment ne doit plus être consommé.", ex:"« Meilleur avant » n'est pas la même chose qu'une <strong>date de péremption</strong>.", img:"/assets/interactive/module-alimentation/vocab/date.jpg", tache:"t3"},
+  {word:"un mode d'emploi", def:"Le texte qui explique comment utiliser un produit.", ex:"Le <strong>mode d'emploi</strong> donne la dose exacte.", img:"/assets/interactive/module-alimentation/vocab/mode-emploi.jpg", tache:"t3"},
+  {word:"diluer", def:"Mélanger un produit avec de l'eau pour le rendre moins fort.", ex:"<strong>Diluer</strong> trente millilitres dans quatre litres d'eau.", img:"/assets/interactive/module-alimentation/vocab/diluer.jpg", tache:"t3"},
+  {word:"un avertissement", def:"Un texte qui prévient d'un danger, souvent avec un triangle.", ex:"Les <strong>avertissements</strong> sont toujours en bas de l'étiquette.", img:"/assets/interactive/module-alimentation/vocab/avertissement.jpg", tache:"t3"},
+  {word:"un produit d'entretien", def:"Un savon ou un nettoyant pour la maison.", ex:"Les <strong>produits d'entretien</strong> sont dans l'allée huit.", img:"/assets/interactive/module-alimentation/vocab/produit-entretien.jpg", tache:"t3"},
+];

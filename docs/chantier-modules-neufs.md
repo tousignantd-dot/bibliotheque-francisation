@@ -156,3 +156,69 @@ visible était que les constantes n'existaient plus.
 `bravo` ou `relance`, avec le message qui dit quoi écrire. Le contrôle utile
 n'est pas « la page s'affiche » mais « les constantes existent » — c'est
 désormais la première chose que vérifie le relevé fait dans le navigateur.
+
+## Module 14 — Faire l'épicerie
+
+- **Scénario** : Farida, arrivée du Maroc il y a deux ans, cherche un produit,
+  s'informe sur la conservation, commande à trois comptoirs, puis apprend à
+  lire une étiquette et un mode d'emploi. Sept dialogues, quinze mots,
+  vingt-deux exercices, sept mini-leçons.
+- **Grammaire** : la liaison des quantités (deux œufs) · du, de la, des · ça se
+  garde · le pronom en · livres, kilos et grammes · les trois lignes d'une
+  étiquette · un mode d'emploi en trois blocs. Tous neufs dans la collection.
+- **Couleur** : violet `#6B4FBB` / `#EFEAFA`. **Activité** : 51.
+- Médias : 21 images (0,71 $), 204 MP3. Les **225 URL** de la page répondent.
+- Séances : 16 présentations, 194 diapositives, 16 fiches (150 blocs).
+  `MODULE 14` dans les seize `.pptx`.
+- Sixième scénario de jeu de rôle, aux rôles « client » et « commis ».
+
+### Le thème du module a cassé la page
+
+Le thème de ce module est « Achat d'aliments ou de produits d'entretien ».
+Deux apostrophes — et le gabarit injecte `%%THEME%%` dans
+`fd.append('theme','…')`, une chaîne JavaScript à guillemets simples. Tout le
+script de la page est mort, et la page a continué de s'afficher, muette.
+
+Le garde-fou posé au module 13 ne couvrait que `bravo` et `relance`. Il est
+maintenant **généralisé** : `build/module.py` regarde le gabarit, repère les
+jetons qui y sont entourés de guillemets simples, et refuse toute valeur
+contenant une apostrophe non échappée. Plus de liste de champs à tenir à jour.
+
+### Trois sessions dans le même dépôt
+
+Pendant la production de ce module, deux autres sessions travaillaient dans
+`bibliotheque-francisation` : l'une sur une banque de présentations (commitée),
+l'autre sur une marque « SAAF » greffée dans `build/gabarit/module.html` et
+dans les quatorze modules produits. Conséquences, et ce qui a été fait :
+
+- **Ne pas lancer `build/gabarit.py`** tant que la greffe de marque n'est pas
+  intégrée : le script régénère le gabarit depuis `module-consultation` et
+  effacerait le travail de l'autre session. Les deux sessions ont été prévenues.
+- `build/module.py` accepte désormais **`--gabarit <chemin>`**, pour bâtir sur
+  une autre copie du moteur — par exemple celle du dernier commit, quand une
+  session modifie celle du dépôt.
+- La marque a été **retirée du HTML de ce module avant le commit** : elle n'est
+  pas encore commitée par la session qui la pose, et ce n'est pas à ce chantier
+  de la mettre en production à sa place.
+- **Ne plus utiliser `git add -A`** dans ce dépôt tant que plusieurs sessions y
+  travaillent : il emporterait le travail en cours des autres.
+
+### Un défaut du gabarit, à corriger quand il sera libre
+
+`build/gabarit/module.html`, ligne ~2233 :
+
+```
+fd.append('taskLabel','Production orale — décrire une douleur');
+fd.append('question','Décrire une douleur à un professionnel de la santé');
+```
+
+Un reste de `module-consultation`, jamais transformé en jeton. **Les six
+modules bâtis par la nouvelle chaîne** — consultation, relations, deplacement,
+activite, alimentation, probleme — envoient donc tous ce libellé au dépôt de
+l'enseignant avec leur production orale. Les neuf plus anciens, écrits à la
+main, n'ont pas le défaut.
+
+La ligne 3529 (dépôt de l'écrit) montre la bonne façon de faire : elle calcule
+`libelle()` et `consigne()` depuis la carte de production plutôt que de les
+figer. Le correctif attend que la session qui travaille sur le gabarit ait
+fini.

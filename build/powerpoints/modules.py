@@ -162,6 +162,16 @@ MODULES = {
                         'Comprendre et donner des consignes',
                         "Le dépliant et l'inscription"),
     },
+    'module-alimentation': {
+        'numero': 14, 'activite': 51, 'niveau': 4,
+        'titre': "Faire l'épicerie",
+        'chapeau': "S'informer sur un produit, commander à un comptoir, lire "
+                   "une étiquette et un mode d'emploi.",
+        'seances': GRILLE_3_DEFIS,
+        'blocs': _blocs("S'informer sur un produit",
+                        'Commander à un comptoir',
+                        "L'étiquette et le mode d'emploi"),
+    },
 }
 
 # L'ordre d'affichage : celui des numéros de module.

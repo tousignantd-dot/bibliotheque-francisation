@@ -2338,6 +2338,73 @@ JEU_DE_ROLE_ACTIVITES = {
 }
 
 
+# ── Jeu de rôle « faire l'épicerie » (module-alimentation) ───────────────────
+# Commander à un comptoir d'épicerie. Rôles « client » et « commis ».
+JEU_DE_ROLE_EPICERIE = {
+    "boucherie": {
+        "contexte": (
+            "Le comptoir de la boucherie d'une épicerie de quartier, en fin d'après-midi. "
+            "Un client attend son tour ; il y a du monde derrière lui."
+        ),
+        "commis": [
+            "Les poitrines de poulet sont à 6,50 $ la livre ; quatre poitrines font environ une livre et demie.",
+            "Le bœuf haché maigre est à 7 $ la livre ; il en reste environ trois livres.",
+            "Le poulet vient du Québec ; le bœuf vient de l'Ontario.",
+            "Le bœuf haché se garde deux jours au réfrigérateur, trois mois au congélateur.",
+            "Tu peux emballer séparément si on te le demande, mais tu ne le proposes pas.",
+            "Il y a un spécial sur les cuisses de poulet cette semaine : 3,50 $ la livre.",
+            "Tu demandes toujours « autre chose ? » avant de conclure.",
+        ],
+        "client": [
+            "Tu veux du poulet pour quatre personnes et du bœuf haché pour un plat.",
+            "Tu ne sais pas combien de poids représentent quatre poitrines.",
+            "Tu veux savoir d'où vient la viande et combien de temps elle se garde.",
+            "Tu voudrais que le poulet soit emballé en deux paquets, mais tu hésites à le demander.",
+        ],
+    },
+    "poisson": {
+        "contexte": (
+            "Le comptoir du poisson d'une épicerie, un jeudi matin. Le poisson frais du jour "
+            "est disposé sur la glace."
+        ),
+        "commis": [
+            "Il y a de la truite d'élevage du Québec à 12 $ la livre, et du saumon de l'Atlantique à 16 $.",
+            "Le poisson frais se garde deux jours au réfrigérateur, trois mois au congélateur s'il est bien emballé.",
+            "Il faut le sortir de son papier et le mettre dans un contenant fermé, dans le bas du frigo.",
+            "La truite est plus délicate que le saumon : dix minutes de cuisson suffisent.",
+            "Tu peux le vider et l'écailler sur demande, sans supplément.",
+            "Il reste aussi des filets surgelés, moins chers, dans le congélateur de l'allée voisine.",
+        ],
+        "client": [
+            "Tu veux du poisson frais, mais tu ne le cuisineras pas ce soir.",
+            "Tu ne sais pas combien de temps ça se garde ni comment le conserver.",
+            "Tu n'as jamais cuisiné de truite et tu veux savoir si c'est difficile.",
+            "Tu compares le prix avec le saumon avant de choisir.",
+        ],
+    },
+    "charcuterie": {
+        "contexte": (
+            "Le comptoir de la charcuterie d'une épicerie, en avant-midi. Les jambons et les "
+            "fromages sont derrière la vitre."
+        ),
+        "commis": [
+            "Il y a un jambon du Québec à 2,70 $ les cent grammes, et un autre importé à 1,90 $.",
+            "L'importé est nettement plus salé ; tu le dis si on te le demande.",
+            "Deux cents grammes de jambon tranché mince font environ une douzaine de tranches.",
+            "Une fois ouvert, le jambon tranché se garde trois jours dans un contenant fermé.",
+            "Tu demandes toujours si on veut tranché mince ou épais.",
+            "Il y a aussi du fromage en spécial cette semaine, mais tu ne le proposes que si on demande autre chose.",
+        ],
+        "client": [
+            "Tu veux du jambon pour les sandwichs de la semaine.",
+            "Tu ne sais pas combien de grammes commander pour une douzaine de tranches.",
+            "Tu veux savoir d'où il vient et s'il se garde longtemps.",
+            "Tu regardes le prix : deux jambons, deux prix différents.",
+        ],
+    },
+}
+
+
 JEU_DE_ROLE_SCENARIOS = {
     "louer": {
         "cadre": "une visite de logement",
@@ -2518,6 +2585,45 @@ JEU_DE_ROLE_SCENARIOS = {
                              "matériel, les documents. Réagis à chaque réponse. Si une "
                              "réponse est vague, demande une précision — un chiffre, une "
                              "heure, un nom de document."),
+            },
+        },
+    },
+    "epicerie": {
+        "cadre": "une commande à un comptoir d'épicerie",
+        "contexte_label": "Le comptoir où vous vous trouvez",
+        "cas": JEU_DE_ROLE_EPICERIE,
+        "adresse": "Vouvoie l'élève : c'est un commerce, on ne se connaît pas.",
+        "sujets": [
+            "le produit demandé et sa sorte ou sa coupe",
+            "la quantité, avec une unité (livre, grammes, nombre de morceaux)",
+            "la provenance du produit",
+            "combien de temps ça se garde, et comment le conserver",
+            "le prix, vérifié avant de repartir",
+            "une demande particulière : emballer à part, trancher mince",
+        ],
+        "cloture": ("Quand la commande est complète, annonce le prix, demande « autre "
+                    "chose ? », puis salue."),
+        "ouverture": {
+            "client": "Bonjour, je voudrais commander quelque chose, s'il vous plaît.",
+            "commis": "Bonjour ! Qu'est-ce que je vous sers ?",
+        },
+        "roles": {
+            "commis": {
+                "qui": ("Tu travailles au comptoir et tu sers les clients. L'élève est le "
+                        "client."),
+                "conduite": ("Demande ce qu'il veut, puis la quantité — l'une après "
+                             "l'autre, jamais les deux d'un coup. Si la quantité est "
+                             "vague, propose un poids et demande si ça convient. Ne donne "
+                             "la provenance et la durée de conservation que si on te les "
+                             "demande. Annonce le prix à la fin."),
+            },
+            "client": {
+                "qui": ("Tu commandes à un comptoir. L'élève travaille derrière et te "
+                        "sert."),
+                "conduite": ("Dis ce que tu veux, puis attends qu'on te demande la "
+                             "quantité. Pose une question sur la provenance et une sur la "
+                             "conservation. Si l'élève oublie d'annoncer le prix, demande-le "
+                             "avant de partir."),
             },
         },
     },

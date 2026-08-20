@@ -21,9 +21,9 @@ refonte a déjà été perdue ainsi. Toute correction se fait dans `build/`.
 Ce que le script fait, dans l'ordre
 -----------------------------------
 1. Lit le gabarit et remplit ses jetons avec le manifeste et les fichiers `.js`.
-2. Applique les quatre greffes partagées — barre d'outils, dépôt de l'écrit,
-   verrou des sections datées, reprise de séance. Chacune commence par retirer
-   celle du gabarit, qui porte le slug de la consultation.
+2. Applique les cinq greffes partagées — barre d'outils, dépôt de l'écrit,
+   verrou des sections datées, reprise de séance, identité de marque. Chacune
+   commence par retirer celle du gabarit, qui porte le slug de la consultation.
 3. Vérifie qu'aucun résidu du gabarit ne survit, puis écrit le fichier.
 """
 import argparse
@@ -91,7 +91,13 @@ def charger_manifeste(slug):
     return m
 
 
-def construire(slug, verbeux=True):
+def construire(slug, verbeux=True, gabarit=None):
+    """`gabarit` permet de bâtir sur une autre copie du moteur que celle du
+    dépôt — utile quand une autre session est en train d'en modifier une, pour
+    ne pas embarquer son travail en cours dans un commit."""
+    global GABARIT
+    if gabarit:
+        GABARIT = pathlib.Path(gabarit)
     if not GABARIT.exists():
         fatal('gabarit absent — lancer d\'abord : python3 build/gabarit.py')
     html = GABARIT.read_text(encoding='utf-8')
@@ -131,16 +137,27 @@ def construire(slug, verbeux=True):
     for jeton, valeur in valeurs.items():
         html = html.replace(jeton, valeur)
 
-    # `bravo` et `relance` finissent dans une chaîne JavaScript à guillemets
-    # simples (`el.innerHTML='…'`). Une apostrophe non échappée y casse tout le
-    # script du module — et la page continue de s'afficher, muette. Le manifeste
-    # doit écrire \\' ; on le vérifie plutôt que de le corriger en silence.
-    for champ in ('bravo', 'relance'):
-        valeur = man[champ]
-        if re.search(r"(?<!\\)'", valeur):
-            fatal("%s : %s contient une apostrophe non échappée — écrire \\\\' "
-                  "dans le manifeste (la valeur part dans une chaîne JavaScript "
-                  "à guillemets simples)" % (slug, champ))
+    # Certaines valeurs du manifeste finissent dans une chaîne JavaScript à
+    # guillemets simples (`fd.append('theme','%%THEME%%')`, l'écran de fin…).
+    # Une apostrophe non échappée y casse tout le script du module — et la page
+    # continue de s'afficher, muette. Plutôt que de tenir une liste de champs à
+    # la main, on regarde le gabarit : si le jeton y est entouré de guillemets
+    # simples, la valeur doit être échappée.
+    gabarit_src = GABARIT.read_text(encoding='utf-8')
+    for jeton, valeur in valeurs.items():
+        if not isinstance(valeur, str):
+            continue
+        entre_apostrophes = False
+        for m in re.finditer(re.escape(jeton), gabarit_src):
+            avant = gabarit_src[m.start() - 1:m.start()]
+            apres = gabarit_src[m.end():m.end() + 1]
+            if avant == "'" and apres == "'":
+                entre_apostrophes = True
+                break
+        if entre_apostrophes and re.search(r"(?<!\\)'", valeur):
+            fatal("%s : la valeur de %s contient une apostrophe non échappée "
+                  "— écrire \\\\' dans le manifeste. Le gabarit place ce jeton "
+                  "dans une chaîne JavaScript à guillemets simples." % (slug, jeton))
 
     restants = sorted(set(re.findall(r'%%[A-Z_]+%%', html)))
     if restants:
@@ -154,6 +171,7 @@ def construire(slug, verbeux=True):
     from greffe_depot_ecrit import greffe as greffe_depot_ecrit
     from greffe_sections import greffe as greffe_sections, activites_par_slug
     from greffe_reprise import greffe as greffe_reprise
+    from greffe_marque import greffe as greffe_marque
 
     ids = activites_par_slug()
     if slug not in ids:
@@ -164,7 +182,8 @@ def construire(slug, verbeux=True):
             ("barre d'outils",      greffe_outils,      slug),
             ("dépôt de l'écrit",    greffe_depot_ecrit, slug),
             ('verrou des sections', greffe_sections,    ids[slug]),
-            ('reprise de séance',   greffe_reprise,     slug)]:
+            ('reprise de séance',   greffe_reprise,     slug),
+            ('identité de marque',  greffe_marque,      slug)]:
         try:
             html = fonction(html, argument)
         except ValueError as e:
@@ -201,6 +220,8 @@ def main():
     p.add_argument('slug', nargs='?', help='le module à construire')
     p.add_argument('--tous', action='store_true',
                    help='construire tous les modules de build/contenu/')
+    p.add_argument('--gabarit',
+                   help='bâtir sur une autre copie du moteur que build/gabarit/module.html')
     a = p.parse_args()
 
     if a.tous:
@@ -208,10 +229,10 @@ def main():
         if not dispo:
             fatal('aucun module dans %s' % CONTENU)
         for slug in dispo:
-            construire(slug)
+            construire(slug, gabarit=a.gabarit)
         print('\n%d modules construits.' % len(dispo))
     elif a.slug:
-        construire(a.slug)
+        construire(a.slug, gabarit=a.gabarit)
     else:
         print(__doc__)
         print('Modules disponibles : %s' % (', '.join(modules_disponibles()) or '(aucun)'))
