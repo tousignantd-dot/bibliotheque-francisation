@@ -1051,7 +1051,40 @@ def teacher_from_token(token):
     return next((t for t in load_teachers() if t["id"] == session["teacherId"]), None)
 
 
-def public_teacher(teacher):
+def founder_id(teachers=None):
+    """L'identifiant du compte fondateur.
+
+    Le fondateur est le compte du premier démarrage — celui que crée
+    `/api/prof/setup` ou l'amorce par variables d'environnement. Les deux
+    chemins lui donnent l'`id` 1 ; on prend malgré tout le plus petit `id`
+    présent, pour ne pas dépendre d'un nombre écrit en dur.
+
+    `PROF_FONDATEUR` (un courriel) permet de désigner un autre compte sans
+    toucher au code — utile si le compte du premier démarrage n'est pas celui
+    de la personne qui tient l'installation.
+    """
+    teachers = load_teachers() if teachers is None else teachers
+    if not teachers:
+        return None
+    voulu = normalize_email(os.environ.get("PROF_FONDATEUR", ""))
+    if voulu:
+        for t in teachers:
+            if normalize_email(t.get("courriel")) == voulu:
+                return t["id"]
+    return min(t["id"] for t in teachers)
+
+
+def is_founder(teacher, teachers=None):
+    """Seul le fondateur ouvre des comptes « administrateur ».
+
+    Un administrateur ordinaire gère les enseignants et leurs groupes ; il ne
+    fabrique pas ses pairs, et ne peut pas non plus s'emparer du compte
+    fondateur en lui réinitialisant son mot de passe.
+    """
+    return bool(teacher) and teacher.get("id") == founder_id(teachers)
+
+
+def public_teacher(teacher, teachers=None):
     """Vue d'un enseignant sans son empreinte de mot de passe."""
     return {
         "id": teacher["id"],
@@ -1059,6 +1092,7 @@ def public_teacher(teacher):
         "courriel": teacher.get("courriel", ""),
         "role": teacher.get("role", "prof"),
         "createdAt": teacher.get("createdAt", ""),
+        "fondateur": is_founder(teacher, teachers),
     }
 
 
@@ -3466,10 +3500,11 @@ class Handler(http.server.SimpleHTTPRequestHandler):
         if not teacher:
             return
         groups = load_groups()
+        teachers = load_teachers()
         json_response(self, [
-            {**public_teacher(t),
+            {**public_teacher(t, teachers),
              "nbGroupes": sum(1 for g in groups if g.get("teacherId") == t["id"])}
-            for t in load_teachers()
+            for t in teachers
         ])
 
     def _handle_teacher_add(self):
@@ -3489,6 +3524,13 @@ class Handler(http.server.SimpleHTTPRequestHandler):
             return
         if len(password) < 8:
             json_response(self, {"error": "Le mot de passe doit faire au moins 8 caractères"}, 400)
+            return
+        if body.get("role") == "admin" and not is_founder(admin, teachers):
+            json_response(self, {
+                "error": "Seul le compte fondateur peut ouvrir un compte "
+                         "administrateur. Créez un compte « enseignant », "
+                         "ou demandez-lui de le faire."
+            }, 403)
             return
         teacher = {
             "id": max((t["id"] for t in teachers), default=0) + 1,
@@ -3512,9 +3554,25 @@ class Handler(http.server.SimpleHTTPRequestHandler):
         if target is None:
             json_response(self, {"error": "Enseignant introuvable"}, 404)
             return
+        # Le compte fondateur ne se modifie que par lui-même : sans cette
+        # barrière, un administrateur ordinaire s'en emparerait en lui
+        # réinitialisant son mot de passe, et la règle du dessus ne tiendrait
+        # plus.
+        if is_founder(target, teachers) and not is_founder(admin, teachers):
+            json_response(self, {
+                "error": "Le compte fondateur ne peut être modifié que par lui-même."
+            }, 403)
+            return
         if "nom" in body:
             target["nom"] = (body["nom"] or "").strip() or target["nom"]
         if "role" in body:
+            # Promouvoir ou rétrograder un administrateur revient à en créer
+            # un : même réserve que l'ouverture de compte.
+            if not is_founder(admin, teachers):
+                json_response(self, {
+                    "error": "Seul le compte fondateur peut changer le rôle d'un compte."
+                }, 403)
+                return
             # Ne jamais laisser l'installation sans administrateur
             if body["role"] != "admin" and target.get("role") == "admin" \
                     and sum(1 for t in teachers if t.get("role") == "admin") <= 1:
@@ -3540,6 +3598,11 @@ class Handler(http.server.SimpleHTTPRequestHandler):
         target = next((t for t in teachers if t["id"] == teacher_id), None)
         if target is None:
             json_response(self, {"error": "Enseignant introuvable"}, 404)
+            return
+        if is_founder(target, teachers):
+            json_response(self, {
+                "error": "Le compte fondateur ne peut pas être supprimé."
+            }, 403)
             return
         if any(g.get("teacherId") == teacher_id for g in load_groups()):
             json_response(self, {

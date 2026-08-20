@@ -220,6 +220,21 @@ choix de l'enseignant survit aux redéploiements.
   pages enseignantes (`catalogue.html`, `index.html`, `lms.html`) — toute requête
   d'administration doit passer par là, sinon elle répond 401.
 - Rôles : `admin` (crée les autres enseignants, voit tous les groupes) et `prof`.
+- **Le compte fondateur** est le seul à pouvoir ouvrir un compte
+  `admin`. Un administrateur ordinaire ouvre des comptes `prof`, réinitialise
+  leur mot de passe, gère les groupes — il ne fabrique pas ses pairs. Le
+  fondateur est le compte du premier démarrage : `founder_id()` prend le plus
+  petit `id` présent (les deux chemins d'amorce, `/api/prof/setup` et les
+  variables `PROF_*`, lui donnent l'`id` 1), et la variable d'environnement
+  `PROF_FONDATEUR` (un courriel) permet d'en désigner un autre sans toucher au
+  code. Trois refus en 403, tous côté serveur : ouvrir un `admin`, changer le
+  rôle d'un compte, et **toucher au compte fondateur** — sans ce dernier, un
+  administrateur s'en emparerait en lui réinitialisant son mot de passe et la
+  règle ne tiendrait plus. Le fondateur ne peut pas non plus être supprimé.
+  `public_teacher()` porte le drapeau `fondateur` : `prof.html` s'en sert pour
+  ne pas offrir un geste que le serveur refusera (le sélecteur de rôle
+  n'apparaît qu'au fondateur, et la ligne du fondateur n'offre aucun geste
+  aux autres).
 - **Premier démarrage** : s'il n'existe aucun compte, `/prof.html` affiche
   l'écran d'installation qui crée le premier administrateur. On peut aussi
   semer ce compte par les variables `PROF_COURRIEL` / `PROF_MOTDEPASSE` /

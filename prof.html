@@ -86,6 +86,10 @@
       font-size: var(--fs-meta); font-weight: var(--fw-black); letter-spacing: .06em; text-transform: uppercase;
     }
     .pc-etiquette--admin { background: var(--accent-soft); color: var(--accent-ink); }
+    /* Le fondateur : le seul compte qui en ouvre d'autres au rang
+       d'administrateur, et le seul qu'on ne peut ni supprimer ni modifier de
+       l'extérieur. Il se lit au premier coup d'œil. */
+    .pc-etiquette--fondateur { background: var(--acier-100); color: var(--acier-600); }
     .pc-rangee-moi { font-size: var(--fs-ui-sm); font-weight: var(--fw-semi); color: var(--text-muted); }
     .pc-compte { font-size: var(--fs-ui); font-weight: var(--fw-bold); color: var(--ink-500); white-space: nowrap; }
 
@@ -194,7 +198,7 @@
         <div class="pc-entete-section">
           <div>
             <div class="pc-titre-section">Comptes du centre</div>
-            <p class="pc-consigne">Tous les comptes, administrateurs compris. Un compte « administrateur » peut ouvrir de nouveaux comptes, réinitialiser un mot de passe et voir tous les groupes ; un compte « enseignant » ne voit que les siens.</p>
+            <p class="pc-consigne">Tous les comptes, administrateurs compris. Un compte « administrateur » ouvre des comptes enseignants, réinitialise un mot de passe et voit tous les groupes ; un compte « enseignant » ne voit que les siens. <strong>Ouvrir un compte « administrateur » est réservé au compte fondateur</strong>, celui du premier démarrage.</p>
           </div>
           <div class="pc-compte" id="resumeComptes"></div>
         </div>
@@ -214,7 +218,7 @@
                 <label class="field-label" for="nouvMotDePasse">Mot de passe provisoire</label>
                 <input id="nouvMotDePasse" class="field" type="password" autocomplete="new-password" />
               </div>
-              <div class="pc-court">
+              <div class="pc-court" id="champRole" hidden>
                 <label class="field-label" for="nouvRole">Rôle</label>
                 <select id="nouvRole" class="field pc-select">
                   <option value="prof">Enseignant</option>
@@ -222,6 +226,7 @@
                 </select>
               </div>
               <button type="submit" class="btn btn--pri">Ouvrir le compte</button>
+              <p class="pc-note" id="noteRole" style="flex:1 0 100%" hidden>Le compte ouvert sera un compte « enseignant ». Seul le compte fondateur ouvre des comptes « administrateur ».</p>
             </form>
           </div>
         </div>
@@ -436,11 +441,16 @@ function ouvrirGestion() {
   $('ecranGestion').hidden = false;
   const e = Prof.state.enseignant;
   $('nomEnseignant').textContent = e.nom;
-  $('etatSession').textContent = e.courriel + (e.role === 'admin' ? ' · administrateur' : ' · enseignant');
+  $('etatSession').textContent = e.courriel +
+    (e.fondateur ? ' · fondateur' : e.role === 'admin' ? ' · administrateur' : ' · enseignant');
   // La liste des comptes n'est servie qu'aux administrateurs (403 sinon) :
   // un compte « enseignant » voit le motif à la place, pas une page vide.
   if (e.role === 'admin') {
     $('sectionEnseignants').hidden = false;
+    // Le rôle ne se choisit que si on a le droit de le choisir. Le serveur
+    // tranche de toute façon (403) ; la page n'offre pas un geste refusé.
+    $('champRole').hidden = !e.fondateur;
+    $('noteRole').hidden = !!e.fondateur;
     chargerEnseignants();
   } else {
     $('sectionReservee').hidden = false;
@@ -467,19 +477,23 @@ async function chargerEnseignants() {
   $('listeEnseignants').innerHTML = enseignants.map(t => {
     const admin = t.role === 'admin';
     const moi = t.id === Prof.state.enseignant.id;
+    // Le serveur refuse ces deux gestes sur le fondateur (403) : ne pas les
+    // offrir pour les voir échouer.
+    const intouchable = t.fondateur && !Prof.state.enseignant.fondateur;
     return `
     <div class="card__row pc-rangee">
       <div class="pc-rangee-txt">
         <div class="pc-rangee-titre">
           ${esc(t.nom)}
           <span class="pc-etiquette${admin ? ' pc-etiquette--admin' : ''}">${admin ? 'Administrateur' : 'Enseignant'}</span>
+          ${t.fondateur ? '<span class="pc-etiquette pc-etiquette--fondateur">Fondateur</span>' : ''}
           ${moi ? '<span class="pc-rangee-moi">votre compte</span>' : ''}
         </div>
         <div class="pc-rangee-meta">${esc(t.courriel)} · ${t.nbGroupes} groupe${t.nbGroupes > 1 ? 's' : ''}</div>
       </div>
       <div class="pc-gestes">
-        <button type="button" class="btn btn--ghost btn--sm" data-reinitialiser="${t.id}" data-nom="${esc(t.nom)}">Réinitialiser le mot de passe</button>
-        ${moi ? '' : `<button type="button" class="pc-btn-retrait" data-retirer-enseignant="${t.id}">Supprimer</button>`}
+        ${intouchable ? '' : `<button type="button" class="btn btn--ghost btn--sm" data-reinitialiser="${t.id}" data-nom="${esc(t.nom)}">Réinitialiser le mot de passe</button>`}
+        ${moi || t.fondateur ? '' : `<button type="button" class="pc-btn-retrait" data-retirer-enseignant="${t.id}">Supprimer</button>`}
       </div>
     </div>`;
   }).join('');
@@ -523,7 +537,7 @@ $('formEnseignant').addEventListener('submit', async e => {
     nom: $('nouvNom').value.trim(),
     courriel: $('nouvCourriel').value.trim(),
     motDePasse: $('nouvMotDePasse').value,
-    role: $('nouvRole').value,
+    role: Prof.state.enseignant.fondateur ? $('nouvRole').value : 'prof',
   };
   const res = await Prof.fetch('/api/prof/enseignants', {
     method: 'POST',
