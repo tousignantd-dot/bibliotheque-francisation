@@ -205,7 +205,7 @@ d'un gabarit commun et de son contenu. Trois emplacements, un seul sens de
 lecture.
 
 - `build/gabarit/module.html` — le moteur, commun à tous les modules, percé de
-  dix-neuf jetons `%%NOM%%`. **Produit, jamais écrit à la main** :
+  vingt jetons `%%NOM%%`. **Produit, jamais écrit à la main** :
   `python3 build/gabarit.py` le régénère depuis `module-consultation`, en y
   appliquant les améliorations qui valent pour tous (section vocabulaire à
   trois exercices, moteur de jeu de rôle, blocs de production refaits, grille
