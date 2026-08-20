@@ -254,6 +254,46 @@ Deux pièges déjà payés :
   remplacer et son `replace` était sans effet — code mort découvert en
   généralisant.
 
+## Le cadre programme d'un module (`build/cadre.py`)
+
+Avant d'écrire une ligne d'un module, on en sort la spécification
+ministérielle :
+
+```
+python3 build/cadre.py 4                      # les situations du niveau
+python3 build/cadre.py 4 "Relations sociales" # le cadre d'une situation
+python3 build/cadre.py 4 sante --savoirs      # + les points de savoir
+```
+
+Il lit `~/Claude/programme/programme-francisation.json` — **600 Ko** — et en
+rend **une page** (~12 Ko) : la situation, son domaine, ses intentions de
+communication rangées par compétence, son lexique, l'index des savoirs du
+cours, les attentes et les critères. Éprouvé sur les huit niveaux. Ne jamais
+charger le JSON entier pour cadrer un module : c'est cher, et ça invite à
+reconstituer de mémoire ce qu'on aurait dû lire.
+
+Trois défauts de la source, traités par le script plutôt que tus :
+
+- **Le lexique vient d'un autre document** que le programme — la « Progression
+  du lexique » du CSS de Laval, juin 2020 — et nomme parfois les situations
+  autrement (« Consultation médicale » pour « Consultation d'un professionnel
+  de la santé »). D'où `ALIAS_LEXIQUE`, explicite et commenté.
+- **Une entrée de lexique sans situation continue la précédente** : les
+  trente-deux expressions « avoir mal » suivent « Consultation médicale ». Le
+  script reporte la situation et marque l'entrée « (rattachée) ». Sans cette
+  règle, *Relations sociales* rendrait 7 entrées au lieu de 28.
+- **Trois entrées du niveau 4 sont de la bouillie d'extraction** : des consignes
+  de grammaire classées en vocabulaire. Elles sont écartées et **comptées dans
+  un avertissement**, jamais supprimées en silence.
+
+Huit des dix-sept situations du niveau 4 n'ont **aucun lexique** — le document
+de Laval ne les couvre pas. Le script le dit au lieu d'afficher une liste vide :
+le vocabulaire se compose alors à partir des intentions.
+
+**Le programme donne la spécification, jamais le contenu.** Scénario,
+personnages, dialogues et exercices s'inventent — voir la règle du contenu
+inventé plutôt que copié.
+
 ## Cours et ateliers
 
 Chaque activité porte une `categorie` : `cours` (modules de 4 h, le matin) ou
