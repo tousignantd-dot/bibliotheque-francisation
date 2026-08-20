@@ -223,6 +223,42 @@ ul.cases li{margin-bottom:5px; padding-left:9mm; text-indent:-9mm; font-weight:6
 .case{display:inline-block; width:4.6mm; height:4.6mm; border:1.5px solid var(--rule);
       border-radius:3px; margin-right:4mm; vertical-align:-.7mm}
 
+/* ── Resserrement : tenir en trois pages ─────────────────────────
+   Écart assumé avec les dix fiches du catalogue, et le seul de cette
+   feuille. La fiche élève est celle qu'on photocopie pour toute la
+   classe ; la mise en page du catalogue la portait à quatre pages,
+   soit une feuille de plus par élève. On resserre les blancs — marges
+   de page, marges intérieures des cartes, interlignes de tableau et
+   d'exercice — sans toucher au corps du texte ni aux espaces où
+   l'élève écrit : c'est le blanc qui part, pas la lisibilité.
+   Les deux documents de l'enseignant gardent la mise en page pleine.
+   ───────────────────────────────────────────────────────────────── */
+@page{margin:12mm 14mm}
+/* Le corps descend d'un demi-point et l'interligne se serre. Les espaces où
+   l'élève écrit ne suivent pas : `.trou`, `.case` et les lignes Nom-Date sont
+   donnés en millimètres, indépendants du corps du texte. */
+body{padding:12mm 14mm 13mm; font-size:11pt; line-height:1.42}
+.bloc{margin-bottom:5px}
+.card{padding:6px 11px 7px}
+.lbl{margin-bottom:3px}
+.consigne{margin-bottom:5px}
+td{padding:3px 8px 3px 0}
+th{padding:0 8px 3px 0}
+ol.ex li{margin-bottom:4px}
+.voc td{padding:3.5px 8px 3.5px 0}
+/* Le titre tenait sur deux lignes à 22 pt, ce qui coûtait une ligne entière
+   en haut de la première page. À 19 pt il tient sur une, sans cesser d'être
+   le plus gros caractère de la fiche. */
+.hdr h1{font-size:17.5pt}
+.hdr{padding-bottom:6px; margin-bottom:11px}
+.nomline--nom{width:40mm}
+.chapeau{margin-bottom:11px}
+.total{border-top:2.5px solid var(--rule); margin-top:8px; padding-top:6px;
+  display:flex; justify-content:space-between; align-items:baseline;
+  font-size:12pt; font-weight:900; color:var(--ink)}
+.total .pt{font-weight:700; font-size:10pt; color:var(--muted)}
+footer{margin-top:10px; padding-top:5px}
+
 /* Le pointage : à droite de l'exercice, discret mais repérable. */
 .points{text-align:right; font-weight:800; font-size:10.5pt; color:var(--muted);
         margin-top:7px}
@@ -352,9 +388,9 @@ ul.cases li{margin-bottom:5px; padding-left:9mm; text-indent:-9mm; font-weight:6
   </ul>
 </div></div>
 
-<div class="bloc billet">
-  <div class="k">Mon résultat</div>
-  <p class="c"><span class="trou" style="min-width:22mm"></span> / 21 &nbsp;<span style="font-size:10.5pt; font-weight:700; color:var(--muted)">(exercices 1 à 4)</span></p>
+<div class="bloc total">
+  <span>MON RÉSULTAT<span class="trou" style="min-width:24mm"></span> / 21</span>
+  <span class="pt">exercices 1 à 4</span>
 </div>
 
 <footer><span>Qu'est-ce qu'une tornade ? · fiche élève</span><span>Niveau 2 · LAN-2029-4</span></footer>

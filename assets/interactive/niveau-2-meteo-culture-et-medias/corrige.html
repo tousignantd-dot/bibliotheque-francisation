@@ -1,69 +1,256 @@
-<meta charset="utf-8">
-<title>Qu'est-ce qu'une tornade ? — corrigé</title>
+<!DOCTYPE html>
+<html lang="fr"><head><meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Corrigé — Qu'est-ce qu'une tornade ?</title>
+<link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800;900&display=swap" rel="stylesheet">
 <style>
-  @page { size: letter; margin: 1.9cm 2cm; }
+/* ═══════════════════════════════════════════════════════════════════════════
+   FICHE IMPRIMÉE — LA FEUILLE COMMUNE
+   ───────────────────────────────────────────────────────────────────────────
+   La mise en page des trois imprimés : fiche élève, corrigé, notes de
+   passation. C'est la feuille que portent déjà, identique octet pour octet,
+   les dix documents `assets/documents/module-*-fiches-eleves.html`. Elle
+   n'existait jusqu'ici que recopiée dans chacun d'eux ; elle est extraite ici
+   pour que la forge puisse la reprendre au lieu d'en réinventer une à chaque
+   commande.
 
-  * { box-sizing: border-box; }
-  body { font: 11pt/1.42 "Helvetica Neue", Helvetica, Arial, sans-serif;
-         color: #000; background: #fff; margin: 0;
-         -webkit-print-color-adjust: exact; print-color-adjust: exact; }
+   ON LA RECOPIE, ON N'Y LIE PAS. Une fiche produite par la forge naît dans le
+   dossier de sa commande puis part vers `assets/interactive/` : un `<link>`
+   relatif casserait au déménagement, et le HTML ne s'ouvrirait plus par
+   double-clic. Le contenu de ce fichier se colle donc tel quel dans le
+   `<style>` du document, avant les quelques règles propres à l'activité.
 
-  h1 { font-size: 17pt; margin: 0 0 2mm;
-       border-bottom: 2.5pt solid #000; padding-bottom: 2mm; }
-  .cartouche { font-size: 10pt; margin: 0 0 2mm; }
-  /* La mention est encadrée, pas grisée : un aplat de gris derrière du texte
-     boit l'encre au photocopieur et se lit mal. */
-  .reserve { border: 1.5pt solid #000; padding: 2mm 3mm; font-weight: 700;
-             font-size: 10.5pt; margin: 0 0 5mm; }
+   Corollaire à connaître : corriger ce fichier ne rattrape pas les fiches déjà
+   produites. Une retouche du gabarit demande de repasser sur les documents qui
+   la portent.
 
-  section { page-break-inside: avoid; margin-bottom: 6mm; }
-  h2 { font-size: 12pt; text-transform: uppercase; letter-spacing: .5px;
-       margin: 0 0 2mm; padding-bottom: 1mm; border-bottom: 1.25pt solid #000; }
+   Le `@page` en bas donne 612 × 792 points, ce que `programme/outils/fiche_pdf.py`
+   exige et vérifie après conversion. Ne le retirez pas et n'en ajoutez pas un
+   second.
 
-  table { width: 100%; border-collapse: collapse; margin: 0 0 3mm; font-size: 10.5pt; }
-  th, td { border: .75pt solid #000; padding: 1.8mm 2.5mm; text-align: left;
-           vertical-align: top; }
-  th { font-weight: 700; }
-  td.num { width: 9mm; text-align: center; font-weight: 700; }
-  .rep { font-weight: 700; }
+   Les classes disponibles : `.hdr` / `.eyebrow` / `.nomline` (en-tête et lignes
+   Nom-Date), `.chapeau`, `.bloc` (ne se casse jamais entre deux pages), `.card`,
+   `.lbl`, `h2.t`, `.consigne`, `ol.obj` et `ol.ex`, `.billet`, `footer`, et
+   `table.som` pour le sommaire d'un document qui réunit plusieurs fiches.
+   ═══════════════════════════════════════════════════════════════════════════ */
 
-  /* Les textes enregistrés : filet à gauche, comme une citation. Ils ne sont pas
-     des réponses mais la matière que l'enseignante lit si le son manque. */
-  .texte { border-left: 2.5pt solid #000; padding: 1mm 0 1mm 4mm; margin: 0 0 3mm;
-           font-size: 10.5pt; }
-  .texte p { margin: 0 0 1.2mm; }
-  .intro { margin: 0 0 2.5mm; font-size: 10.5pt; }
+/* ═══════════════════════════════════════════════════════════════
+   FICHE ÉLÈVE · IMPRESSION LETTRE, NOIR ET BLANC
+   ───────────────────────────────────────────────────────────────
+   Aucune couleur : ces fiches sont photocopiées en noir et blanc.
+   Toute la hiérarchie passe par la GRAISSE, les FILETS et les MOTS.
+   C'est d'ailleurs la règle du système de design poussée à son
+   terme : « jamais d'information portée par la couleur seule ».
 
-  ol.criteres { margin: 0 0 3mm; padding-left: 6mm; font-size: 10.5pt; }
-  ol.criteres li { margin-bottom: 1.8mm; }
+   Les gris viennent des neutres du système (ink-900 à ink-400),
+   qui sont déjà quasi neutres. Les filets sont volontairement plus
+   sombres qu'à l'écran : une photocopieuse efface tout ce qui est
+   plus clair que 15 % de noir.
+   ═══════════════════════════════════════════════════════════════ */
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+:root{
+  --paper:#FFFFFF;
+  --tint:#F0F0EE;          /* aplat le plus clair encore visible en photocopie */
+  --line:#C9C9C6;          /* filet fin */
+  --rule:#17181A;          /* filet structurant */
+  --ink:#17181A;           /* titres */
+  --body:#2B2E30;          /* texte courant, un cran plus sombre qu'à l'écran */
+  --soft:#4B4F52;          /* texte secondaire */
+  --muted:#5E6165;         /* sur-titres, méta */
+}
+html{background:#BBBBBB}
+body{
+  font-family:'Nunito','Trebuchet MS',sans-serif;
+  font-size:11.5pt; line-height:1.5; color:var(--body);
+  background:var(--paper);
+  width:215.9mm;                    /* 8,5 po — format lettre */
+  margin:0 auto; padding:14mm 15mm 16mm;
+  -webkit-print-color-adjust:exact; print-color-adjust:exact;
+}
+h1,h2,h3{color:var(--ink); line-height:1.2; letter-spacing:-0.01em}
 
-  .total { margin-top: 5mm; border-top: 2.5pt solid #000; padding-top: 3mm;
-           font-weight: 700; font-size: 12pt; }
-</style>
+/* ── En-tête ── */
+.hdr{border-bottom:2.5px solid var(--rule); padding-bottom:8px; margin-bottom:14px;
+     display:flex; align-items:flex-end; gap:14px}
+.hdr-l{flex:1}
+.eyebrow{font-size:9.5pt; font-weight:800; text-transform:uppercase;
+         letter-spacing:.12em; color:var(--muted)}
+.hdr h1{font-size:22pt; font-weight:900; margin-top:3px}
+.hdr-r{flex-shrink:0; display:flex; gap:10px; align-items:flex-end;
+       font-size:9.5pt; font-weight:800; text-transform:uppercase;
+       letter-spacing:.08em; color:var(--muted); padding-bottom:2px}
+.nomline{display:inline-block; border-bottom:1.5px solid var(--rule);
+         height:6mm; vertical-align:bottom; margin-left:5px}
+.nomline--nom{width:48mm} .nomline--date{width:26mm}
+.chapeau{font-size:12pt; font-weight:600; color:var(--soft); margin-bottom:16px}
 
-<h1>Corrigé — Qu'est-ce qu'une tornade ?</h1>
-<p class="cartouche"><b>Niveau 2 · LAN-2029-4 — Des mots de tous les jours</b></p>
-<p class="reserve">Document réservé à l'enseignant · Total : 21 points (exercices 1 à 4)</p>
+/* ── Blocs ── */
+.bloc{break-inside:avoid; page-break-inside:avoid; margin-bottom:13px}
+.card{border:1px solid var(--line); border-radius:12px; padding:11px 14px 12px;
+      background:var(--paper)}
+.lbl{font-size:9.5pt; font-weight:800; text-transform:uppercase;
+     letter-spacing:.12em; color:var(--muted); margin-bottom:5px}
+h2.t{font-size:15pt; font-weight:900; margin-bottom:7px}
+.consigne{font-size:11pt; font-weight:600; color:var(--soft); margin-bottom:8px}
 
-<section>
-  <h2>Exercice 1 · J'écoute et je choisis le bon mot — 6 points</h2>
-  <p class="intro">Le mot à faire entendre est écrit entre guillemets. Sur la page
+/* ── Objectifs et exercices : pastille en cerne, jamais en aplat ── */
+ol.obj,ol.ex{list-style:none}
+ol.obj{counter-reset:o} ol.ex{counter-reset:e}
+ol.obj li,ol.ex li{position:relative; padding-left:9mm; font-weight:600}
+ol.obj li{counter-increment:o; margin-bottom:6px}
+ol.ex li{counter-increment:e; margin-bottom:9px; break-inside:avoid}
+ol.obj li::before,ol.ex li::before{
+  position:absolute; left:0; top:0; width:6mm; height:6mm; border-radius:50%;
+  border:1.5px solid var(--rule); color:var(--ink);
+  font-size:9.5pt; font-weight:800;
+  display:flex; align-items:center; justify-content:center}
+ol.obj li::before{content:counter(o)}
+ol.ex li::before{content:counter(e)}
+
+/* ── Dialogue ── */
+.rep{display:flex; gap:10px; padding:4px 0; border-top:1px solid var(--line)}
+.rep:first-of-type{border-top:0}
+.rep--key{background:var(--tint); border-radius:8px; padding:5px 8px;
+          border-top:0; margin:2px 0}
+.qui{flex:0 0 30mm; font-weight:800; color:var(--ink); font-size:10.5pt}
+
+/* ── Règle : encadrée au filet épais, c'est elle qu'on repère de loin ── */
+.regle{border:2.5px solid var(--rule); border-radius:12px; padding:12px 14px}
+.regle .lbl{color:var(--ink)}
+.regle p.r{font-size:14pt; font-weight:900; color:var(--ink); line-height:1.3}
+.regle p.pr{margin-top:7px; font-weight:600; color:var(--soft)}
+
+/* ── Tableau ── */
+table{width:100%; border-collapse:collapse}
+th{font-size:9.5pt; font-weight:800; text-transform:uppercase; letter-spacing:.1em;
+   color:var(--muted); text-align:left; padding:0 8px 5px 0;
+   border-bottom:1.5px solid var(--rule)}
+td{padding:6px 8px 6px 0; border-top:1px solid var(--line); vertical-align:top;
+   font-weight:600}
+td.cle{font-weight:900; color:var(--ink)}   /* la colonne clé : en gras, pas en couleur */
+.note{margin-top:8px; font-size:10.5pt; font-weight:600; color:var(--soft);
+      background:var(--tint); border-radius:9px; padding:8px 11px}
+
+/* ── Cartes ── */
+.grid{display:grid; grid-template-columns:1fr 1fr; gap:9px}
+.grid .card h3{font-size:11.5pt; font-weight:900; color:var(--ink); margin-bottom:3px}
+.grid .card p{font-size:11pt}
+
+/* ── Piège : le filet distingue les deux colonnes, pas la couleur ──
+   À gauche, un filet TIRETÉ — ce qui ne tient pas.
+   À droite, un filet PLEIN et épais — ce qu'il faut retenir.
+   Les deux intitulés disent la même chose en mots.                */
+.duo{display:grid; grid-template-columns:1fr 1fr; gap:10px}
+.duo>div{border-radius:12px; padding:10px 13px}
+.duo .no{border:1.5px dashed var(--muted)}
+.duo .ok{border:2.5px solid var(--rule); background:var(--tint)}
+.duo .k{font-size:9.5pt; font-weight:800; text-transform:uppercase;
+        letter-spacing:.1em; margin-bottom:4px; color:var(--muted)}
+.duo .ok .k{color:var(--ink)}
+.duo p.ph{font-size:12pt; font-weight:800; color:var(--ink); line-height:1.3}
+.duo .no p.ph{font-weight:600; font-style:italic; color:var(--soft)}
+
+/* ── Vocabulaire ── */
+.voc{width:100%; border-collapse:collapse}
+.voc td{border-top:1px solid var(--line); padding:6px 8px 6px 0}
+.voc td.mot{width:38%; font-weight:900; color:var(--ink)}
+.voc td.def{color:var(--soft)}
+
+/* ── Zones de réponse ── */
+.ligne{display:block; border-bottom:1px dotted #8E8E8A; height:8mm; margin-top:2px}
+.ligne--court{width:55%}
+
+/* ── Billet de sortie ── */
+.billet{border:2.5px solid var(--rule); border-radius:12px; padding:13px 15px}
+.billet .k{font-size:9.5pt; font-weight:800; text-transform:uppercase;
+           letter-spacing:.12em; color:var(--ink); margin-bottom:4px}
+.billet p.c{font-size:14pt; font-weight:900; color:var(--ink); line-height:1.3}
+.billet ul{list-style:none; margin-top:7px}
+.billet li{font-weight:600; color:var(--soft); margin-bottom:3px}
+
+/* ── Pied ── */
+footer{margin-top:16px; padding-top:7px; border-top:1px solid var(--line);
+       font-size:9.5pt; font-weight:700; color:var(--muted);
+       display:flex; justify-content:space-between}
+
+/* ── Impression ── */
+@page{size:8.5in 11in; margin:14mm 15mm}
+@media print{
+  html{background:#FFFFFF}
+  body{width:auto; padding:0}
+  .bloc{break-inside:avoid; page-break-inside:avoid}
+  h2.t,.lbl{break-after:avoid; page-break-after:avoid}
+}
+
+table.som{width:100%;border-collapse:collapse}
+table.som td{padding:7px 8px 7px 0;border-top:1px solid var(--line);font-weight:600}
+table.som tr.grp td{border-top:0;padding-top:16px;font-size:9.5pt;font-weight:800;
+  text-transform:uppercase;letter-spacing:.12em;color:var(--ink)}
+table.som td.c{width:16mm;font-weight:800;color:var(--ink)}
+table.som td.d{width:24mm;text-align:right;color:var(--muted)}
+table.som a{color:var(--ink);text-decoration:none}
+table.som a:hover{text-decoration:underline}
+
+/* ═══════════════════════════════════════════════════════════════
+   PROPRE AUX DOCUMENTS DE L'ENSEIGNANT
+   ───────────────────────────────────────────────────────────────
+   Ce que la feuille commune ne porte pas : la liste à puces, le
+   nom de fichier cité dans une phrase, et le cadre des textes
+   transcrits. Aucune teinte — filets et graisse, comme le reste.
+   Si un de ces blocs revient ailleurs, sa place est dans la
+   feuille commune, pas ici.
+   ═══════════════════════════════════════════════════════════════ */
+
+/* Liste à puces : un carré au filet, dans la même famille que les
+   pastilles cerclées des exercices. */
+ul.pts{list-style:none}
+ul.pts li{position:relative; padding-left:7mm; margin-bottom:6px; font-weight:600}
+ul.pts li::before{content:""; position:absolute; left:0; top:2.4mm;
+  width:1.8mm; height:1.8mm; background:var(--rule)}
+
+/* Un nom de fichier cité dans une phrase : reconnaissable sans couleur. */
+.fichier{font-family:"SFMono-Regular",Menlo,Consolas,monospace; font-size:10pt;
+  font-weight:700; color:var(--ink); border-bottom:1px solid var(--line)}
+
+/* Les textes transcrits — bulletin, dialogue, réponse modèle. Encadrés au
+   filet fin : ce sont des pièces à lire, pas des consignes. */
+.transcription{border:1px solid var(--line); border-radius:12px; padding:10px 13px;
+  margin-bottom:9px}
+.transcription p{font-weight:600; color:var(--soft)}
+.transcription p+p{margin-top:3px}
+</style></head><body>
+
+<header class="hdr">
+  <div class="hdr-l">
+    <div class="eyebrow">Corrigé · Niveau 2 · LAN-2029-4 — Des mots de tous les jours</div>
+    <h1>Qu'est-ce qu'une tornade ?</h1>
+  </div>
+  <div class="hdr-r">Corrigé</div>
+</header>
+
+<p class="chapeau">Document réservé à l'enseignant · Total : 21 points (exercices 1 à 4)</p>
+
+<div class="bloc"><div class="card">
+  <div class="lbl">Exercice 1 · 6 points</div>
+  <h2 class="t">J'écoute et je choisis le bon mot</h2>
+  <p class="consigne">Le mot à faire entendre est écrit entre guillemets. Sur la page
      interactive, c'est le fichier MP3 indiqué.</p>
   <table>
-    <tr><th class="num">N°</th><th>Mot entendu</th><th>Réponse</th><th>Fichier</th></tr>
-    <tr><td class="num">1.</td><td>« le vent »</td><td class="rep">le vent</td><td>mot-vent.mp3</td></tr>
-    <tr><td class="num">2.</td><td>« un nuage »</td><td class="rep">un nuage</td><td>mot-nuage.mp3</td></tr>
-    <tr><td class="num">3.</td><td>« la pluie »</td><td class="rep">la pluie</td><td>mot-pluie.mp3</td></tr>
-    <tr><td class="num">4.</td><td>« un abri »</td><td class="rep">un abri</td><td>mot-abri.mp3</td></tr>
-    <tr><td class="num">5.</td><td>« une tornade »</td><td class="rep">une tornade</td><td>mot-tornade.mp3</td></tr>
-    <tr><td class="num">6.</td><td>« la radio »</td><td class="rep">la radio</td><td>mot-radio.mp3</td></tr>
+    <tr><th class="num">N°</th><th>Mot entendu</th><th style="width:32mm">Réponse</th><th style="width:36mm">Fichier</th></tr>
+    <tr><td class="num cle">1</td><td>« le vent »</td><td class="cle">le vent</td><td><span class="fichier">mot-vent.mp3</span></td></tr>
+    <tr><td class="num cle">2</td><td>« un nuage »</td><td class="cle">un nuage</td><td><span class="fichier">mot-nuage.mp3</span></td></tr>
+    <tr><td class="num cle">3</td><td>« la pluie »</td><td class="cle">la pluie</td><td><span class="fichier">mot-pluie.mp3</span></td></tr>
+    <tr><td class="num cle">4</td><td>« un abri »</td><td class="cle">un abri</td><td><span class="fichier">mot-abri.mp3</span></td></tr>
+    <tr><td class="num cle">5</td><td>« une tornade »</td><td class="cle">une tornade</td><td><span class="fichier">mot-tornade.mp3</span></td></tr>
+    <tr><td class="num cle">6</td><td>« la radio »</td><td class="cle">la radio</td><td><span class="fichier">mot-radio.mp3</span></td></tr>
   </table>
-</section>
+</div></div>
 
-<section>
-  <h2>Exercice 2 · Le bulletin de météo — 5 points</h2>
-  <p class="intro"><b>Texte du bulletin</b> (bulletin.mp3) :</p>
-  <div class="texte">
+<div class="bloc"><div class="card">
+  <div class="lbl">Exercice 2 · 5 points</div>
+  <h2 class="t">Le bulletin de météo</h2>
+  <p class="consigne">Texte du bulletin — <span class="fichier">bulletin.mp3</span></p>
+  <div class="transcription">
     <p>Bonjour. Voici la météo de mardi. Le ciel est gris. Il y a beaucoup de vent.
        Un gros nuage noir arrive sur la ville. C'est une tornade. Une tornade, c'est
        un vent très fort qui tourne. Attention : c'est un danger. Restez à la maison.
@@ -71,60 +258,63 @@
        vite. Après, le soleil revient.</p>
   </div>
   <table>
-    <tr><th class="num">N°</th><th>Phrase</th><th style="width:18mm">Réponse</th><th>Passage du bulletin</th></tr>
-    <tr><td class="num">1.</td><td>La météo est pour mardi.</td><td class="rep">VRAI</td><td>« Voici la météo de mardi. »</td></tr>
-    <tr><td class="num">2.</td><td>Le ciel est bleu.</td><td class="rep">FAUX</td><td>« Le ciel est gris. »</td></tr>
-    <tr><td class="num">3.</td><td>Une tornade, c'est un vent très fort qui tourne.</td><td class="rep">VRAI</td><td>« Une tornade, c'est un vent très fort qui tourne. »</td></tr>
-    <tr><td class="num">4.</td><td>Il faut ouvrir les fenêtres.</td><td class="rep">FAUX</td><td>« Fermez les fenêtres. »</td></tr>
-    <tr><td class="num">5.</td><td>Il faut écouter la radio.</td><td class="rep">VRAI</td><td>« Écoutez la radio. »</td></tr>
+    <tr><th class="num">N°</th><th>Phrase</th><th style="width:20mm">Réponse</th><th>Passage du bulletin</th></tr>
+    <tr><td class="num cle">1</td><td>La météo est pour mardi.</td><td class="cle">VRAI</td><td>« Voici la météo de mardi. »</td></tr>
+    <tr><td class="num cle">2</td><td>Le ciel est bleu.</td><td class="cle">FAUX</td><td>« Le ciel est gris. »</td></tr>
+    <tr><td class="num cle">3</td><td>Une tornade, c'est un vent très fort qui tourne.</td><td class="cle">VRAI</td><td>« Une tornade, c'est un vent très fort qui tourne. »</td></tr>
+    <tr><td class="num cle">4</td><td>Il faut ouvrir les fenêtres.</td><td class="cle">FAUX</td><td>« Fermez les fenêtres. »</td></tr>
+    <tr><td class="num cle">5</td><td>Il faut écouter la radio.</td><td class="cle">VRAI</td><td>« Écoutez la radio. »</td></tr>
   </table>
-</section>
+</div></div>
 
-<section>
-  <h2>Exercice 3 · Nadia parle à son voisin Marc — 4 points</h2>
-  <p class="intro"><b>Texte du dialogue</b> (dialogue.mp3) :</p>
-  <div class="texte">
-    <p><b>Nadia :</b> Marc, tu as écouté la radio ce matin ?</p>
-    <p><b>Marc :</b> Non. Pourquoi ?</p>
-    <p><b>Nadia :</b> Il y a une alerte. Une tornade arrive vers deux heures.</p>
-    <p><b>Marc :</b> Une tornade ici ? C'est rare.</p>
-    <p><b>Nadia :</b> Oui, mais ça arrive. Le vent tourne très fort. Il casse les arbres.</p>
-    <p><b>Marc :</b> Qu'est-ce qu'on fait ?</p>
-    <p><b>Nadia :</b> On ferme les fenêtres. On descend au sous-sol. C'est l'abri le plus sûr.</p>
-    <p><b>Marc :</b> Et mon auto ?</p>
-    <p><b>Nadia :</b> Laisse ton auto dehors. Reste en bas avec nous.</p>
-    <p><b>Marc :</b> D'accord. Je prends la radio et une lampe.</p>
-    <p><b>Nadia :</b> Parfait. À deux heures, on est en bas.</p>
+<div class="bloc"><div class="card">
+  <div class="lbl">Exercice 3 · 4 points</div>
+  <h2 class="t">Nadia parle à son voisin Marc</h2>
+  <p class="consigne">Texte du dialogue — <span class="fichier">dialogue.mp3</span></p>
+  <div class="transcription">
+    <div class="rep"><span class="qui">Nadia</span><span>Marc, tu as écouté la radio ce matin ?</span></div>
+    <div class="rep"><span class="qui">Marc</span><span>Non. Pourquoi ?</span></div>
+    <div class="rep"><span class="qui">Nadia</span><span>Il y a une alerte. Une tornade arrive vers deux heures.</span></div>
+    <div class="rep"><span class="qui">Marc</span><span>Une tornade ici ? C'est rare.</span></div>
+    <div class="rep"><span class="qui">Nadia</span><span>Oui, mais ça arrive. Le vent tourne très fort. Il casse les arbres.</span></div>
+    <div class="rep"><span class="qui">Marc</span><span>Qu'est-ce qu'on fait ?</span></div>
+    <div class="rep"><span class="qui">Nadia</span><span>On ferme les fenêtres. On descend au sous-sol. C'est l'abri le plus sûr.</span></div>
+    <div class="rep"><span class="qui">Marc</span><span>Et mon auto ?</span></div>
+    <div class="rep"><span class="qui">Nadia</span><span>Laisse ton auto dehors. Reste en bas avec nous.</span></div>
+    <div class="rep"><span class="qui">Marc</span><span>D'accord. Je prends la radio et une lampe.</span></div>
+    <div class="rep"><span class="qui">Nadia</span><span>Parfait. À deux heures, on est en bas.</span></div>
   </div>
   <table>
-    <tr><th class="num">N°</th><th>Question</th><th style="width:38mm">Réponse</th><th>Passage du dialogue</th></tr>
-    <tr><td class="num">1.</td><td>Où est l'information sur la tornade ?</td><td class="rep">b) à la radio</td><td>« Tu as écouté la radio ce matin ? … Il y a une alerte. »</td></tr>
-    <tr><td class="num">2.</td><td>À quelle heure arrive la tornade ?</td><td class="rep">c) à deux heures</td><td>« Une tornade arrive vers deux heures. »</td></tr>
-    <tr><td class="num">3.</td><td>Où vont Nadia et Marc ?</td><td class="rep">b) au sous-sol</td><td>« On descend au sous-sol. »</td></tr>
-    <tr><td class="num">4.</td><td>Qu'est-ce que Marc prend ?</td><td class="rep">a) une radio et une lampe</td><td>« Je prends la radio et une lampe. »</td></tr>
+    <tr><th class="num">N°</th><th>Question</th><th style="width:40mm">Réponse</th><th>Passage du dialogue</th></tr>
+    <tr><td class="num cle">1</td><td>Où est l'information sur la tornade ?</td><td class="cle">b) à la radio</td><td>« Tu as écouté la radio ce matin ? … Il y a une alerte. »</td></tr>
+    <tr><td class="num cle">2</td><td>À quelle heure arrive la tornade ?</td><td class="cle">c) à deux heures</td><td>« Une tornade arrive vers deux heures. »</td></tr>
+    <tr><td class="num cle">3</td><td>Où vont Nadia et Marc ?</td><td class="cle">b) au sous-sol</td><td>« On descend au sous-sol. »</td></tr>
+    <tr><td class="num cle">4</td><td>Qu'est-ce que Marc prend ?</td><td class="cle">a) une radio et une lampe</td><td>« Je prends la radio et une lampe. »</td></tr>
   </table>
-</section>
+</div></div>
 
-<section>
-  <h2>Exercice 4 · Je complète avec le bon mot — 6 points</h2>
-  <p class="intro">Banque : fenêtres · nuage · radio · sous-sol · tornade · vent.
+<div class="bloc"><div class="card">
+  <div class="lbl">Exercice 4 · 6 points</div>
+  <h2 class="t">Je complète avec le bon mot</h2>
+  <p class="consigne">Banque : fenêtres · nuage · radio · sous-sol · tornade · vent.
      Chaque mot sert une seule fois.</p>
   <table>
-    <tr><th class="num">N°</th><th>Phrase complétée</th><th style="width:28mm">Réponse</th></tr>
-    <tr><td class="num">1.</td><td>Le ciel est gris. Un gros <b>nuage</b> noir cache le soleil.</td><td class="rep">nuage</td></tr>
-    <tr><td class="num">2.</td><td>Une <b>tornade</b>, c'est un vent très fort qui tourne.</td><td class="rep">tornade</td></tr>
-    <tr><td class="num">3.</td><td>Avant la tornade, je ferme les <b>fenêtres</b> de la maison.</td><td class="rep">fenêtres</td></tr>
-    <tr><td class="num">4.</td><td>Je descends au <b>sous-sol</b> avec ma famille.</td><td class="rep">sous-sol</td></tr>
-    <tr><td class="num">5.</td><td>J'écoute la <b>radio</b> pour avoir les informations.</td><td class="rep">radio</td></tr>
-    <tr><td class="num">6.</td><td>Le <b>vent</b> casse les arbres dans la rue.</td><td class="rep">vent</td></tr>
+    <tr><th class="num">N°</th><th>Phrase complétée</th><th style="width:30mm">Réponse</th></tr>
+    <tr><td class="num cle">1</td><td>Le ciel est gris. Un gros <b>nuage</b> noir cache le soleil.</td><td class="cle">nuage</td></tr>
+    <tr><td class="num cle">2</td><td>Une <b>tornade</b>, c'est un vent très fort qui tourne.</td><td class="cle">tornade</td></tr>
+    <tr><td class="num cle">3</td><td>Avant la tornade, je ferme les <b>fenêtres</b> de la maison.</td><td class="cle">fenêtres</td></tr>
+    <tr><td class="num cle">4</td><td>Je descends au <b>sous-sol</b> avec ma famille.</td><td class="cle">sous-sol</td></tr>
+    <tr><td class="num cle">5</td><td>J'écoute la <b>radio</b> pour avoir les informations.</td><td class="cle">radio</td></tr>
+    <tr><td class="num cle">6</td><td>Le <b>vent</b> casse les arbres dans la rue.</td><td class="cle">vent</td></tr>
   </table>
-</section>
+</div></div>
 
-<section>
-  <h2>Exercice 5 · Je parle avec mon partenaire — non noté</h2>
-  <p class="intro">Il n'y a pas une seule bonne réponse. On observe la production orale.
+<div class="bloc"><div class="card">
+  <div class="lbl">Exercice 5 · non noté</div>
+  <h2 class="t">Je parle avec mon partenaire</h2>
+  <p class="consigne">Il n'y a pas une seule bonne réponse. On observe la production orale.
      La réponse de l'élève est acceptée si elle contient ces cinq éléments :</p>
-  <ol class="criteres">
+  <ol class="ex">
     <li><b>Une heure est dite</b> — « à deux heures », « à trois heures »… (l'heure est libre).</li>
     <li><b>La définition est dite</b> — « une tornade, c'est un vent très fort qui tourne »
         (ou une reformulation équivalente : « c'est un gros vent qui tourne »).</li>
@@ -133,17 +323,25 @@
     <li><b>Quatre mots de la liste des huit</b> sont réutilisés.</li>
     <li><b>Le partenaire comprend sans faire répéter.</b></li>
   </ol>
-  <p class="intro"><b>Réponse modèle</b> (à donner seulement si la dyade bloque) :</p>
-  <div class="texte">
-    <p><b>A :</b> Bonjour. Tu as écouté la radio ?</p>
-    <p><b>B :</b> Non. Pourquoi ?</p>
-    <p><b>A :</b> Il y a une tornade. Elle arrive à deux heures.</p>
-    <p><b>B :</b> À deux heures ? C'est bientôt !</p>
-    <p><b>A :</b> Une tornade, c'est un vent très fort qui tourne. C'est un danger.</p>
-    <p><b>B :</b> Qu'est-ce qu'on fait ?</p>
-    <p><b>A :</b> On descend au sous-sol. C'est un bon abri.</p>
-    <p><b>B :</b> D'accord. Je prends la radio et une lampe.</p>
+  <p class="consigne">Réponse modèle — à donner seulement si la dyade bloque</p>
+  <div class="transcription">
+    <div class="rep"><span class="qui">Élève A</span><span>Bonjour. Tu as écouté la radio ?</span></div>
+    <div class="rep"><span class="qui">Élève B</span><span>Non. Pourquoi ?</span></div>
+    <div class="rep"><span class="qui">Élève A</span><span>Il y a une tornade. Elle arrive à deux heures.</span></div>
+    <div class="rep"><span class="qui">Élève B</span><span>À deux heures ? C'est bientôt !</span></div>
+    <div class="rep"><span class="qui">Élève A</span><span>Une tornade, c'est un vent très fort qui tourne. C'est un danger.</span></div>
+    <div class="rep"><span class="qui">Élève B</span><span>Qu'est-ce qu'on fait ?</span></div>
+    <div class="rep"><span class="qui">Élève A</span><span>On descend au sous-sol. C'est un bon abri.</span></div>
+    <div class="rep"><span class="qui">Élève B</span><span>D'accord. Je prends la radio et une lampe.</span></div>
   </div>
-</section>
+</div></div>
 
-<p class="total">TOTAL : 21 points — exercice 1 : 6 · exercice 2 : 5 · exercice 3 : 4 · exercice 4 : 6.</p>
+<div class="bloc billet">
+  <div class="k">Total</div>
+  <p class="c">21 points</p>
+  <ul><li>Exercice 1 : 6 · exercice 2 : 5 · exercice 3 : 4 · exercice 4 : 6 · exercice 5 : non noté.</li></ul>
+</div>
+
+<footer><span>Qu'est-ce qu'une tornade ? · corrigé</span><span>Document réservé à l'enseignant</span></footer>
+
+</body></html>
