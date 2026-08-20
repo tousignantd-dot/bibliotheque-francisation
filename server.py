@@ -1461,22 +1461,85 @@ def maj_signalement(sid, champs):
 _VERROU_SIGNALEMENTS = threading.Lock()
 
 
-def envoyer_courriel(sujet, corps):
-    """Envoie une note au responsable du projet. Sans configuration SMTP,
-    ne fait rien et le dit dans le journal — le signalement reste enregistré.
+def _envoyer_par_resend(sujet, corps, destinataire):
+    """Envoie par l'API HTTPS de Resend. Renvoie True, False, ou None si
+    Resend n'est pas configuré — auquel cas l'appelant essaie le SMTP.
 
-    Variables d'environnement : SMTP_HOTE, SMTP_PORT (465 par défaut, SSL),
-    SMTP_USER, SMTP_MOTDEPASSE, et SIGNALEMENT_DESTINATAIRE (à défaut,
-    SMTP_USER). Avec Gmail, SMTP_MOTDEPASSE est un « mot de passe
-    d'application », jamais le mot de passe du compte.
+    Pourquoi une API plutôt que SMTP : Gmail refuse les mots de passe
+    d'application aux comptes scolaires et à ceux qui n'ont pas la double
+    validation, et un hébergeur bloque volontiers le port 465 sortant. Une
+    requête HTTPS ne rencontre ni l'un ni l'autre.
     """
+    api_key = os.environ.get("RESEND_API_KEY", "").strip()
+    if not api_key:
+        return None
+    # Sans domaine vérifié chez Resend, seule l'adresse de bac à sable est
+    # acceptée — elle n'écrit qu'au propriétaire du compte, ce qui est
+    # exactement l'usage ici.
+    expediteur = (os.environ.get("RESEND_EXPEDITEUR", "").strip()
+                  or "Signalements <onboarding@resend.dev>")
+    payload = json.dumps({
+        "from": expediteur,
+        "to": [destinataire],
+        "subject": sujet,
+        "text": corps,
+    }).encode("utf-8")
+    req = urllib.request.Request(
+        "https://api.resend.com/emails",
+        data=payload,
+        headers={
+            "Authorization": f"Bearer {api_key}",
+            "Content-Type": "application/json",
+        },
+        method="POST",
+    )
+    try:
+        with urllib.request.urlopen(req, timeout=20) as resp:
+            resp.read()
+    except urllib.error.HTTPError as e:
+        detail = e.read().decode("utf-8", errors="replace")
+        print(f"[signalement] Resend a refusé ({e.code}) : {detail[:300]}",
+              flush=True)
+        return False
+    except Exception as e:                      # noqa: BLE001 — jamais fatal
+        print(f"[signalement] Resend injoignable : {e}", flush=True)
+        return False
+    print(f"[signalement] note envoyée à {destinataire} par Resend", flush=True)
+    return True
+
+
+def envoyer_courriel(sujet, corps):
+    """Envoie une note au responsable du projet. Deux chemins, essayés dans
+    cet ordre : l'API Resend, puis un serveur SMTP. Sans configuration ni de
+    l'un ni de l'autre, ne fait rien et le dit dans le journal — le
+    signalement reste enregistré.
+
+    Resend : RESEND_API_KEY, RESEND_EXPEDITEUR (à défaut, l'adresse de bac à
+    sable, qui n'écrit qu'au propriétaire du compte Resend).
+    SMTP : SMTP_HOTE, SMTP_PORT (465 par défaut, SSL ; 587 bascule en
+    STARTTLS), SMTP_USER, SMTP_MOTDEPASSE. Avec Gmail, SMTP_MOTDEPASSE est un
+    « mot de passe d'application », jamais le mot de passe du compte.
+    Destination, dans les deux cas : SIGNALEMENT_DESTINATAIRE.
+    """
+    destinataire = (os.environ.get("SIGNALEMENT_DESTINATAIRE", "").strip()
+                    or os.environ.get("SMTP_USER", "").strip())
+    if not destinataire:
+        print("[signalement] aucune adresse de destination "
+              "(SIGNALEMENT_DESTINATAIRE) — note gardée seulement dans "
+              "data/signalements.json", flush=True)
+        return False
+
+    par_resend = _envoyer_par_resend(sujet, corps, destinataire)
+    if par_resend is not None:
+        return par_resend
+
     hote = os.environ.get("SMTP_HOTE", "").strip()
     user = os.environ.get("SMTP_USER", "").strip()
     motdepasse = os.environ.get("SMTP_MOTDEPASSE", "")
-    destinataire = os.environ.get("SIGNALEMENT_DESTINATAIRE", "").strip() or user
-    if not (hote and user and motdepasse and destinataire):
-        print("[signalement] courriel non configuré (SMTP_*) — note gardée "
-              "seulement dans data/signalements.json", flush=True)
+    if not (hote and user and motdepasse):
+        print("[signalement] courriel non configuré (ni RESEND_API_KEY ni "
+              "SMTP_*) — note gardée seulement dans "
+              "data/signalements.json", flush=True)
         return False
 
     message = EmailMessage()
@@ -1499,7 +1562,7 @@ def envoyer_courriel(sujet, corps):
     except Exception as e:                      # noqa: BLE001 — jamais fatal
         print(f"[signalement] envoi du courriel impossible : {e}", flush=True)
         return False
-    print(f"[signalement] note envoyée à {destinataire}", flush=True)
+    print(f"[signalement] note envoyée à {destinataire} par SMTP", flush=True)
     return True
 
 
@@ -3054,7 +3117,14 @@ class Handler(http.server.SimpleHTTPRequestHandler):
             "studentDoc": f"{base}/{roles['fiche']}" if "fiche" in roles else "",
             "slideshow": "",
             "planCours": "",
-            "autres": "",
+            # Le catalogue a un emplacement « Corrigé » et un emplacement
+            # « Autres » (voir MATERIEL dans catalogue.html) ; la publication
+            # les laissait vides et n'envoyait ces fichiers qu'au dépôt. Une
+            # enseignante qui cherchait le corrigé à sa place habituelle ne le
+            # trouvait donc pas. `eleve.html` n'affiche ni l'un ni l'autre :
+            # les remplir ne les met pas sous les yeux de l'élève.
+            "corrige": f"{base}/{roles['corrige']}" if "corrige" in roles else "",
+            "autres": f"{base}/{roles['notes']}" if "notes" in roles else "",
             "keywords": [],
             "domaineDeVie": criteres.get("domaine") or "",
             "datePrevue": "",

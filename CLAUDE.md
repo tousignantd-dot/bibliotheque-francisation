@@ -853,11 +853,22 @@ Personne d'autre ne le voit : le portail élève ne porte rien de cela.
 - Les deux appels sont sans filet obligatoire : sans `ANTHROPIC_API_KEY`
   l'analyse reste vide, sans configuration SMTP rien ne part — la fiche est
   gardée dans les deux cas, et le journal le dit.
-- **Configuration du courriel** (variables Railway) : `SMTP_HOTE`,
-  `SMTP_PORT` (465 SSL par défaut, 587 bascule en STARTTLS), `SMTP_USER`,
-  `SMTP_MOTDEPASSE`, `SIGNALEMENT_DESTINATAIRE` (à défaut, `SMTP_USER`).
-  Avec Gmail, `SMTP_MOTDEPASSE` est un **mot de passe d'application**, jamais
-  le mot de passe du compte.
+- **Configuration du courriel** (variables Railway) — deux chemins, essayés
+  dans cet ordre par `envoyer_courriel()` :
+  1. **Resend** (celui en service) : `RESEND_API_KEY`, et `RESEND_EXPEDITEUR`
+     si un domaine est vérifié — à défaut, l'adresse de bac à sable
+     `onboarding@resend.dev`, qui n'écrit qu'au propriétaire du compte
+     Resend. Une requête HTTPS, donc ni port sortant bloqué ni mot de passe
+     de compte en jeu. **Gmail a été écarté** : les mots de passe
+     d'application ne sont pas offerts au compte (comptes scolaires, clés
+     d'accès ou double validation absente — Google masque l'option sans dire
+     laquelle).
+  2. **SMTP**, gardé pour un éventuel relais du centre : `SMTP_HOTE`,
+     `SMTP_PORT` (465 SSL par défaut, 587 bascule en STARTTLS), `SMTP_USER`,
+     `SMTP_MOTDEPASSE`.
+  Destination commune : `SIGNALEMENT_DESTINATAIRE`. Une clé Resend présente
+  mais refusée **ne bascule pas** sur le SMTP : une configuration cassée doit
+  se voir dans le journal, pas se faire rattraper en silence.
 - `GET /api/signalements` renvoie les siens ; le compte administrateur voit
   tout. La modale n'en affiche que les trois derniers : elle sert à écrire,
   pas à consulter.
