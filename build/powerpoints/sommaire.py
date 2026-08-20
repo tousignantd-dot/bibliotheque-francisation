@@ -83,6 +83,16 @@ CSS = """
 """
 
 
+def _en_lettres(n):
+    """« Les huit présentations », pas « Les 8 » : c'est un titre, pas un
+    tableau de bord. Même table que `build_fiches.py`."""
+    mots = {1: 'Une', 2: 'Deux', 3: 'Trois', 4: 'Quatre', 5: 'Cinq', 6: 'Six',
+            7: 'Sept', 8: 'Huit', 9: 'Neuf', 10: 'Dix', 11: 'Onze',
+            12: 'Douze', 13: 'Treize', 14: 'Quatorze', 15: 'Quinze',
+            16: 'Seize', 17: 'Dix-sept', 18: 'Dix-huit'}
+    return mots.get(n, str(n))
+
+
 def fatal(msg):
     sys.exit('!! %s' % msg)
 
@@ -124,7 +134,7 @@ def page(slug, p):
     parts.append('<!DOCTYPE html>\n<html lang="fr"><head><meta charset="utf-8">')
     parts.append('<meta name="viewport" content="width=device-width, initial-scale=1">')
     parts.append('<title>Module %d · Les %s présentations</title>'
-                 % (m['numero'], 'seize' if len(seances) == 16 else str(len(seances))))
+                 % (m['numero'], _en_lettres(len(seances)).lower()))
     parts.append('<link rel="stylesheet" href="/assets/design-system/styles.css">')
     parts.append('<style>%s</style></head>' % CSS)
     parts.append('<body class="page">\n')

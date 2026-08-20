@@ -107,3 +107,54 @@ après chaque module**, sinon le mur montre l'état précédent.
 ## Journal
 
 _(une section par module, remplie à mesure)_
+
+## Niveau 3 — `module-n3-epicerie` · À l'épicerie · **livré**
+
+Situation « Achat d'aliments ou de produits d'entretien », huit intentions.
+Distinct du module 14 du niveau 4, qui porte sur le comptoir et l'étiquette :
+ici, on **trouve** un produit, on **choisit** avec la circulaire, et on
+**paie**.
+
+**Scénario.** Marisol, arrivée du Guatemala il y a huit mois, fait ses courses
+seule dans une grande épicerie. Elle cherche de la farine de maïs qui n'est pas
+avec les farines ; sa voisine Ginette lui montre la circulaire et les mises en
+garde des produits d'entretien ; au comptoir, Stéphane lui rembourse un spécial
+qui n'était pas passé.
+
+**Six mini-leçons** : treize ou trente · dire où c'est · demander de l'aide ·
+les mots qui mesurent · les dessins qui avertissent · lire une facture.
+
+**Médias.** 19 images (0,64 $), **les premières en 3:2**. 204 MP3. Contrôle des
+URL : 227 demandées, 227 présentes.
+
+**Défauts trouvés et corrigés.**
+
+- Deux tableaux trop pleins pour une diapositive projetée (A4, C2) : coupés en
+  deux. `theme.py` refuse proprement, c'est le bon comportement.
+- Un item de type `write` sans `accept` est corrigé **par l'IA** — c'est ce
+  qu'il fallait pour « Ma fiche », dont les réponses sont libres. Les `accept`
+  y avaient été mis par réflexe et auraient rendu l'exercice impossible.
+- La caissière est devenue **un caissier** : la banque ElevenLabs ne compte que
+  deux voix féminines, déjà prises par Marisol et Ginette.
+
+## Niveau 1 — `module-n1-presenter` · Je me présente · **en cours**
+
+Premier module **court** du projet : huit séances, deux défis, cinq sections au
+lieu de six. Le moteur ne bronche pas — le nombre de sections vit dans
+`sections.js`, donc dans le contenu.
+
+**Scénario.** Amina, arrivée d'Algérie il y a deux semaines, passe son premier
+jour au centre : on lui demande son nom et de l'épeler, elle se présente à Lin,
+elle apprend à dire qu'elle ne comprend pas.
+
+**Quatre mini-leçons** : épeler son nom · les cinq phrases pour se présenter ·
+de, du, d' devant le pays · saluer, remercier, faire répéter.
+
+**Médias.** 14 images (0,47 $). L'audio a été interrompu par une panne d'API.
+
+**Le défaut que la panne a révélé.** `generer_audio_*.py` s'arrêtait sur la
+trace d'une exception à la première coupure réseau, au milieu de deux cents
+extraits. Une panne passagère du fournisseur n'est pas une erreur du
+programme : `parle()` réessaie maintenant cinq fois, en doublant l'attente, et
+traite aussi les 429 et les 5xx. À reporter dans les prochains générateurs.
+
