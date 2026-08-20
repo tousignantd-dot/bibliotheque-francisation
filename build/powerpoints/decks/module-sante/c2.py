@@ -68,6 +68,8 @@ def build(dossier):
        notes="C'est l'exercice 2 du défi 2. Faire dire chaque phrase complète à voix "
              "haute après l'avoir écrite.")
 
+    d.capture('l2', "Les verbes pronominaux")
+
     d.piege("Le piège du pronom oublié",
             "Je sens fatiguée.",
             "Je me sens fatiguée.",

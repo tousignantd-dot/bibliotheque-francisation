@@ -54,6 +54,8 @@ def build(dossier):
        notes="C'est l'exercice 3 du défi 2. Faire justifier chaque forme : nom ou "
              "infinitif, voyelle ou consonne.")
 
+    d.capture('l3', "Avoir besoin de")
+
     d.piege("Le piège du « de » qui saute",
             "J'ai besoin un rendez-vous.",
             "J'ai besoin d'un rendez-vous.",

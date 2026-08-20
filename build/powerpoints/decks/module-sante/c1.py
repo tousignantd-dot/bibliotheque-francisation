@@ -58,6 +58,8 @@ def build(dossier):
        notes="C'est l'exercice 1 du défi 2. Le faire à l'écrit, puis relire à voix "
              "haute : la forme s'entend mieux qu'elle ne se voit.")
 
+    d.capture('l1', "Le futur proche")
+
     d.piege("Le piège du deuxième verbe conjugué",
             "Je vais prends un rendez-vous.",
             "Je vais prendre un rendez-vous.",

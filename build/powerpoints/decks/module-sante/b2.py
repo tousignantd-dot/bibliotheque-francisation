@@ -67,6 +67,8 @@ def build(dossier):
        notes="Dire chaque heure une seule fois, au rythme normal du téléphone. Répéter "
              "seulement si un élève le DEMANDE — c'est l'exercice de B4 qui commence ici.")
 
+    d.capture('co2', "L'heure du rendez-vous")
+
     d.cartes('Analyse', "Faire répéter, poliment", [
         ("Demander de répéter",
          "« Pardon, pouvez-vous répéter, s'il vous plaît ? » La formule passe partout, "

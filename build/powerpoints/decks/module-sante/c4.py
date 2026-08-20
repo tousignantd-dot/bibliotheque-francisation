@@ -54,6 +54,8 @@ def build(dossier):
        notes="C'est l'exercice 4 du défi 2. Les indices entre parenthèses sont ceux du "
              "module : les garder, ils évitent de deviner.")
 
+    d.capture('l4', "Les adverbes d'intensité")
+
     d.piege("Le piège du trop qui veut dire très",
             "Ce médecin est trop gentil !",
             "Ce médecin est très gentil !",

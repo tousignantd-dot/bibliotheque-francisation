@@ -72,6 +72,8 @@ def build(dossier):
        notes="C'est l'exercice 1 du module. Le faire d'abord à l'oral, en groupe, avant "
              "de l'ouvrir dans l'activité interactive.")
 
+    d.capture('pr1', "Où s'adresser ?")
+
     d.pratique('Pratique · 2 de 3', "Et dans ces cas-là ?",
                "Six situations qui ne sont pas dans le module. Discutez à deux.", [
         ("Vous toussez depuis trois jours, sans fièvre.",

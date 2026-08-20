@@ -35,6 +35,8 @@ def build(dossier):
        notes="C'est l'exercice 3 du défi 1. Faire remarquer que la colonne de droite dit "
              "la même chose en mots de tous les jours : c'est ça, comprendre.")
 
+    d.capture('co3', "Les consignes du pharmacien")
+
     d.tableau('Analyse', "Quatre questions à se poser devant un médicament",
               ['La question', 'Ce qu\'on cherche sur l\'étiquette'],
               [["Combien ?", "un comprimé, deux comprimés, une cuillère"],

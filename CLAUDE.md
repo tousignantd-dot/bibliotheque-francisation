@@ -542,6 +542,22 @@ visuelle. Quatrième onglet de `enseignant.html`, rendu par `js/materiel.js`.
 - **Le `studentDoc` d'un module de cours est son sommaire de fiches**,
   `assets/documents/<slug>-fiches-eleves.html`, produit par `build_fiches.py`.
   Les neuf sont renseignés dans `data/activities.json`.
+- **Captures des exercices dans les séances** :
+  `python3 build/powerpoints/captures.py <slug>` produit une image par
+  exercice à banc de réponses dans `build/powerpoints/_captures/<slug>/`, et
+  `d.capture('pr1', "titre")` la pose dans un deck, **après** la diapositive
+  « Pratique » du même exercice — elle ne la remplace pas : une image projetée
+  ne se lit pas d'aussi loin qu'un texte composé pour l'être, et l'enseignante
+  a besoin du corrigé écrit. L'écran est capturé **vierge**, zones de dépôt
+  vides. Le nom du fichier est l'identifiant d'exercice que l'en-tête du deck
+  cite déjà (« Source du module : … exercice `pr1` »).
+  Trois pièges de Chrome sans interface, tous documentés dans le script :
+  `--dump-dom` ne rend jamais la main sur ces modules (d'où le manifeste
+  renvoyé au serveur) ; **la capture n'est écrite qu'à l'arrêt** du
+  navigateur, mais le couper trop tôt n'écrit rien — d'où le signal « c'est
+  cadré » émis par la page, puis quelques secondes de répit ; et le banc de
+  réponses, `sticky`, doit repasser en `static` pour la capture, sinon il
+  apparaît décroché de ses zones de dépôt.
 - **Vignettes** : `python3 build/vignettes.py` → `assets/vignettes/<slug>/<CODE>.png`.
   Le poste n'a pas LibreOffice ; on réutilise `build/powerpoints/apercu.py`, qui
   relit le `.pptx` livré et le repeint avec Pillow (paramètre `limite=1`).

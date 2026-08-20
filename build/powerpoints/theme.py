@@ -687,6 +687,59 @@ class Deck:
                 "Corriger en groupe. Donner la bonne réponse, sans revenir sur qui s'est trompé.")
         return self
 
+    # ── gabarit 9b · l'exercice à l'écran ───────────────────────────
+    def capture(self, exo, titre, consigne=None, notes=''):
+        """L'écran même de l'exercice interactif, projeté avant qu'on l'ouvre.
+
+        Elle vient APRÈS la diapositive « Pratique » qui reprend le même
+        exercice en texte : le groupe a d'abord travaillé à l'oral, puis voit
+        ce qu'il va manipuler. Elle ne la remplace pas — une image projetée ne
+        se lit pas de la dernière rangée aussi bien qu'un texte composé pour
+        elle, et l'enseignante a besoin du corrigé écrit.
+
+        `exo` est l'identifiant de l'exercice dans le module (`pr1`), celui-là
+        même que l'en-tête du deck cite. L'image est produite par
+        `python3 captures.py <module>` ; on ne la fabrique pas ici, sinon
+        chaque construction relancerait un navigateur.
+        """
+        import os
+        chemin = os.path.join(os.path.dirname(os.path.abspath(__file__)),
+                              '_captures', self.slug, exo + '.png')
+        if not os.path.exists(chemin):
+            raise SystemExit(
+                f'{self.code} : capture manquante pour « {exo} ».\n'
+                f'   Attendue : {chemin}\n'
+                f'   Produisez-la : python3 captures.py {self.slug}')
+        sl = self._new()
+        self._entete(sl, "Dans l'activité interactive", titre)
+        y = BODY_TOP + 0.02
+        sl.text(consigne or "L'écran que les élèves vont ouvrir. "
+                            "Les réponses sont encore dans le banc, à droite.",
+                MARGIN, y, CONTENT_W, 0.36, size=FS['body_sm'],
+                color='ink_400', autofit=False)
+        y += 0.5
+        haut = FOOT_Y - 0.22 - y
+        # Même calcul d'ajustement que `Slide.image`, mais mené ici parce que
+        # le cadre doit épouser l'image : un filet posé sur la boîte pleine
+        # flotterait autour d'une capture plus étroite qu'elle.
+        from PIL import Image as _Img
+        with _Img.open(chemin) as im:
+            ratio = im.width / im.height
+        iw, ih = CONTENT_W, CONTENT_W / ratio
+        if ih > haut:
+            ih, iw = haut, haut * ratio
+        ix, iy = MARGIN + (CONTENT_W - iw) / 2, y + (haut - ih) / 2
+        sl.rect(ix - 0.02, iy - 0.02, iw + 0.04, ih + 0.04,
+                fill=C['white'], line=C['line_300'], radius=RADIUS_CTRL)
+        sl.shapes.add_picture(chemin, Inches(ix), Inches(iy),
+                              Inches(iw), Inches(ih))
+        sl.notes(notes or
+                 "Projeter avant d'ouvrir l'activité. Faire dire à deux ou "
+                 "trois élèves où irait la première réponse, sans y toucher : "
+                 "on vérifie qu'ils ont compris la consigne, pas le contenu. "
+                 "Ouvrir ensuite le module sur les postes.")
+        return sl
+
     # ── gabarit 10 · vocabulaire ────────────────────────────────────
     def vocabulaire(self, surtitre, titre, mots, notes=''):
         """mots = [(mot, définition)] — l'article fait partie du mot."""
