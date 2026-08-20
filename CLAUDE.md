@@ -245,14 +245,81 @@ Deux pièges déjà payés :
 - **Les marqueurs de fin de région n'ont pas de saut de ligne.** Un marqueur
   qui en contient un saute silencieusement jusqu'au bloc suivant et avale la
   constante d'après.
-- **Les quatre greffes partagées** — barre d'outils, dépôt de l'écrit, verrou
-  des sections, reprise de séance — commencent chacune par retirer celle du
-  gabarit, qui porte le slug (ou le numéro d'activité) de la consultation.
-  Sans ce dégreffage, un module hériterait du carnet d'un autre.
+- **Les cinq greffes partagées** — barre d'outils, dépôt de l'écrit, verrou
+  des sections, reprise de séance, identité de marque — commencent chacune par
+  retirer celle du gabarit, qui porte le slug (ou le numéro d'activité) de la
+  consultation. Sans ce dégreffage, un module hériterait du carnet d'un autre.
 - La consigne de correction de la production **écrite** ne vit pas dans le
   gabarit : `build/greffe_depot_ecrit.py` la pose. L'ancien script croyait la
   remplacer et son `replace` était sans effet — code mort découvert en
   généralisant.
+
+## L'identité de marque SAAF
+
+La plateforme s'appelle **SAAF** — Système d'aide à l'apprentissage du
+français. Le logotype est la **pilule à contour violet** (variante « 5c ») :
+contour de 3 px `#6B4FBB`, fond blanc, « SAAF » en Nunito 900, descripteur **à
+droite** du contour et séparé par un filet vertical. Il est purement
+typographique — aucun fichier image, tout se construit en markup et en CSS — et
+**statique** : aucun survol, aucune animation.
+
+- `assets/design-system/marque-saaf.css` — les jetons et les classes du
+  verrouillage et du monogramme. Les jetons s'appellent `--marque-600` et
+  `--marque-100`, **pas** `--violet-600` : le système de design emploie déjà ce
+  dernier nom comme couleur de repérage de la section « Les sons ». Deux noms,
+  une seule valeur, pour que la marque ne dépende pas d'un jeton de repérage.
+- `assets/design-system/marque-saaf-favicon.svg` — le monogramme « à », aplat
+  violet, pastille ronde. Sous 44 px, la règle est l'aplat et non le contour.
+- `build/greffe_marque.py` — pose le verrouillage en première ligne de `#hdr`,
+  au-dessus du sur-titre du module. Idempotente, comme les autres greffes :
+
+```
+python3 build/greffe_marque.py            # tous les modules écrits à la main
+python3 build/greffe_marque.py meteo pub  # seulement ceux-là
+python3 build/greffe_marque.py --retirer  # dégreffe tout
+```
+
+Les modules qui ont un manifeste dans `build/contenu/` sont sautés : leur
+greffe est posée par `build/module.py` pendant la construction. Le script lit
+le dossier plutôt que d'en tenir une liste, qui vieillirait.
+
+**Le violet est réservé à la marque** : il ne va sur aucun bouton, aucun état,
+aucune rétroaction. L'action reste le vert `--accent`, l'audio reste le rouge
+`--audio`, et le bandeau d'en-tête reste clair — jamais noir.
+
+Dans le portail, la marque ne passe pas par une greffe : ces pages sont écrites
+à la main et ne se régénèrent pas. Chacune lie `marque-saaf.css` et pose le
+verrouillage **une fois**, dans son en-tête principal — jamais dans les
+bandeaux de sous-vue, qui ne sont pas des en-têtes de page.
+
+| Page | Verrouillage |
+|---|---|
+| `eleve.html` | grand (64 px) sur l'écran de connexion — c'est le `h1` ; réduit (44 px) sur l'accueil |
+| `enseignant.html`, `prof.html` | grand sur la connexion, réduit dans l'en-tête permanent |
+| `progression.html`, `fiche-eleve.html` | réduit, dans le bandeau d'identité — pas dans la barre collante |
+| `catalogue.html` | de barre : pilule · filet · `.header-brand`, la disposition de l'en-tête de module |
+| `presentations.html` | grand ; sa copie locale du logotype a été retirée au profit de la feuille partagée |
+
+`lms.html` et `viewer.html` sont restés à l'écart : ils ne parlent pas le
+système de design Francisation (Inter, accent bleu, chrome foncé pour le
+lecteur). Y poser la pilule mettrait la marque sur une page qui la contredit ;
+c'est une refonte, pas une greffe.
+
+Le mot-symbole étiré de `eleve.html` (`letter-spacing: .06em`) a disparu : la
+remise interdit l'interlettrage positif sur le nom.
+
+Deux écarts connus, assumés :
+
+- Le filet du verrouillage est `--violet-100` dans la remise, sur fond blanc.
+  Les en-têtes de module portent chacun leur teinte de repérage, où ce violet
+  s'efface. Le filet y prend donc `#C3B4EA`, par un `--marque-filet` redéfini
+  dans `.saaf-bandeau` seulement.
+- **Quatre modules ont encore le violet comme couleur d'en-tête** — probleme,
+  procedure, sante, alimentation — alors que la remise ne garde que quatre
+  couleurs de repérage : acier, ambre, teal, forêt. Sur ces quatre-là, la
+  pilule de marque se pose sur un bandeau de sa propre couleur. Décision du
+  20 août 2026 : on laisse, et on reprend les quatre en même temps que le
+  portail, dont les plaquettes portent la même couleur.
 
 ## Le cadre programme d'un module (`build/cadre.py`)
 

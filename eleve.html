@@ -6,6 +6,8 @@
   <title>SAAF — Francisation Niveau 4</title>
   <!-- Le système de design versionné, pas ds-bundle/ (ignoré par git). -->
   <link rel="stylesheet" href="assets/design-system/styles.css" />
+  <link rel="stylesheet" href="assets/design-system/marque-saaf.css" />
+  <link rel="icon" type="image/svg+xml" href="assets/design-system/marque-saaf-favicon.svg" />
   <style>
     /* Portail élève — variante 2a du système de design Francisation.
        Rien ici n'invente de couleur ni de graduation : uniquement des
@@ -102,19 +104,11 @@
 
     .om-vide { font-size: var(--fs-body-sm); font-weight: var(--fw-semi); color: var(--text-muted); }
 
-    /* — Marque SAAF : l'acronyme porte la page, la forme longue l'explique. — */
-    .om-marque {
-      font-size: clamp(56px, 9vw, 92px);
-      letter-spacing: .06em;
-      line-height: 1;
-      margin: var(--sp-3) 0 0;
-    }
-    .om-marque-sous {
-      margin: var(--sp-3) 0 0;
-      font-size: var(--fs-lead);
-      font-weight: var(--fw-semi);
-      color: var(--ink-500);
-    }
+    /* — Marque SAAF — la forme et les tailles viennent de marque-saaf.css.
+         Ici, seulement sa place dans le bandeau. Le nom ne s'écrit jamais
+         avec un interlettrage positif : c'est la pilule qui porte la marque,
+         pas un mot-symbole étiré. — */
+    .om-marque { margin: var(--sp-5) 0 0; }
 
     @media (max-width: 720px) {
       .om-bilan { grid-template-columns: 1fr; }
@@ -130,8 +124,11 @@
   <header class="band">
     <div class="container">
       <div class="band__eyebrow">Centre Lartigue · CSSDM</div>
-      <h1 class="om-marque">SAAF</h1>
-      <p class="om-marque-sous">Système d'aide à l'apprentissage du français</p>
+      <h1 class="saaf-lockup saaf-lockup--grand om-marque">
+        <span class="saaf-pilule"><span class="saaf-nom">SAAF</span></span>
+        <span class="saaf-filet" aria-hidden="true"></span>
+        <span class="saaf-desc">Système d'aide<br />à l'apprentissage<br />du français</span>
+      </h1>
       <p class="band__lead">Niveau 4. Entrez votre code d'accès pour retrouver vos activités et votre bilan.</p>
       <div class="om-connexion">
         <div class="card">
@@ -158,9 +155,16 @@
 <div class="page om-portail" id="ecranAccueil" hidden>
   <header class="band">
     <div class="container">
+      <div class="saaf-bandeau-portail">
+        <span class="saaf-lockup">
+          <span class="saaf-pilule"><span class="saaf-nom">SAAF</span></span>
+          <span class="saaf-filet" aria-hidden="true"></span>
+          <span class="saaf-desc">Système d'aide à l'apprentissage du français</span>
+        </span>
+      </div>
       <div class="om-band-haut">
         <div>
-          <div class="band__eyebrow" id="bandSurtitre">SAAF · Niveau 4</div>
+          <div class="band__eyebrow" id="bandSurtitre">Niveau 4</div>
           <h1 id="bandTitre">Bonjour</h1>
         </div>
         <button class="btn btn--ghost btn--sm" id="logoutBtn">Se déconnecter</button>
@@ -261,8 +265,10 @@
                 || (session.label || '').trim().split(/\s+/)[0] || '';
     document.getElementById('bandTitre').textContent =
       prenom ? `Bonjour ${prenom}` : 'Bonjour';
+    // Le nom de la marque est dans le verrouillage juste au-dessus : le
+    // sur-titre n'a pas à le répéter.
     document.getElementById('bandSurtitre').textContent =
-      `SAAF · Niveau 4 · Code ${session.code}`;
+      `Niveau 4 · Code ${session.code}`;
     charger();
   }
 
