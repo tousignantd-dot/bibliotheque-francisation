@@ -2477,6 +2477,73 @@ JEU_DE_ROLE_APPAREILS = {
 }
 
 
+# ── Jeu de rôle « au restaurant » (module-restaurant) ────────────────────────
+# Commander en salle à manger. Rôles « client » et « serveur ».
+JEU_DE_ROLE_RESTAURANT = {
+    "commande": {
+        "contexte": (
+            "Un restaurant de quartier, en début de soirée. Le client est assis, la carte "
+            "devant lui, et le serveur vient prendre la commande."
+        ),
+        "serveur": [
+            "La table d'hôte est à 32 $ : soupe ou salade, poisson du jour ou poulet, dessert au choix.",
+            "Le poisson du jour est de la truite, servie avec des légumes et du riz.",
+            "À la carte, le poulet est à 24 $ et la truite à 27 $.",
+            "L'eau du robinet est gratuite ; on la sert en carafe.",
+            "Le dessert du jour est un gâteau aux noix — tu vérifies en cuisine si on te pose une question d'allergie.",
+            "Le service prend environ vingt minutes pour le plat principal.",
+            "Tu demandes toujours si le client veut quelque chose à boire.",
+        ],
+        "client": [
+            "Tu n'as jamais mangé dans ce restaurant et tu ne connais pas les formules.",
+            "Tu hésites entre la table d'hôte et un plat seul.",
+            "Tu as une allergie aux arachides et tu dois le dire avant le dessert.",
+            "Tu veux savoir ce qu'il y a dans le plat du jour avant de choisir.",
+        ],
+    },
+    "repas": {
+        "contexte": (
+            "Le repas est servi depuis quelques minutes. Le serveur passe voir si tout va "
+            "bien ; le client a une demande à faire."
+        ),
+        "serveur": [
+            "Tu passes voir les tables toutes les dix minutes environ.",
+            "Le sel, le poivre et l'eau sont apportés sans discussion, en moins d'une minute.",
+            "Un plat froid se réchauffe en cuisine en deux minutes ; tu t'excuses et tu le fais.",
+            "Une erreur de commande — une sauce non demandée — se refait, mais cela prend vingt minutes.",
+            "Tu proposes toujours de refaire le plat, même si le client dit que ce n'est pas nécessaire.",
+            "Tu notes les erreurs pour la cuisine.",
+        ],
+        "client": [
+            "Ton plat est un peu froid et tu hésites à le dire.",
+            "Tu voudrais aussi du sel et un peu d'eau.",
+            "Tu ne veux pas déranger, mais tu préfères que ce soit corrigé.",
+            "Tu ne connais pas les formules polies et tu commences par des phrases trop directes.",
+        ],
+    },
+    "addition": {
+        "contexte": (
+            "La fin du repas. Le client demande l'addition ; deux personnes ont mangé et il "
+            "faut décider comment payer."
+        ),
+        "serveur": [
+            "Le total est de 58,40 $, taxes comprises.",
+            "Tu demandes toujours « ensemble ou séparé ? » avant d'imprimer.",
+            "Une fois l'addition imprimée ensemble, la séparer prend plusieurs minutes.",
+            "Le terminal demande le pourboire avant le code ; il propose 15, 18 et 20 %.",
+            "Les pourcentages proposés sont calculés après taxes ; « autre montant » est en bas de l'écran.",
+            "Tu acceptes le comptant, le débit et le crédit.",
+        ],
+        "client": [
+            "Vous êtes deux et tu ne sais pas s'il vaut mieux payer ensemble ou séparément.",
+            "Tu ne sais pas si le pourboire est déjà sur l'addition.",
+            "Tu ne sais pas combien laisser ni comment le calculer.",
+            "Tu veux payer par débit.",
+        ],
+    },
+}
+
+
 JEU_DE_ROLE_SCENARIOS = {
     "louer": {
         "cadre": "une visite de logement",
@@ -2736,6 +2803,45 @@ JEU_DE_ROLE_SCENARIOS = {
                              "capacité, la consommation, puis la garantie et la livraison. "
                              "Demande une précision chaque fois qu'on te donne un chiffre "
                              "sans point de comparaison — « 52 décibels, c'est beaucoup ? »"),
+            },
+        },
+    },
+    "restaurant": {
+        "cadre": "un repas dans un restaurant avec service aux tables",
+        "contexte_label": "Le moment du repas où vous êtes",
+        "cas": JEU_DE_ROLE_RESTAURANT,
+        "adresse": "Vouvoie l'élève : c'est un service, on ne se connaît pas.",
+        "sujets": [
+            "les formules du menu : carte, menu du jour, table d'hôte, à la carte",
+            "ce que contient un plat, et ce qui est servi avec",
+            "une allergie ou une restriction alimentaire",
+            "les boissons, et ce qui est gratuit",
+            "signaler poliment ce qui ne va pas",
+            "l'addition, les taxes et le pourboire",
+        ],
+        "cloture": ("Quand le repas est réglé, remercie et souhaite une bonne fin de "
+                    "journée ou de soirée."),
+        "ouverture": {
+            "client": "Bonsoir. Nous sommes prêts à commander, je crois.",
+            "serveur": "Bonsoir ! Vous avez fait votre choix ?",
+        },
+        "roles": {
+            "serveur": {
+                "qui": ("Tu es serveur ou serveuse dans un restaurant de quartier. L'élève "
+                        "est le client."),
+                "conduite": ("Réponds à ce qu'on te demande, sans réciter tout le menu. Si "
+                             "on te pose une question sur un plat, réponds précisément. Si "
+                             "on te signale un problème, excuse-toi et propose une "
+                             "solution. Ne mentionne le pourboire que si on te pose la "
+                             "question."),
+            },
+            "client": {
+                "qui": ("Tu manges au restaurant. L'élève est le serveur ou la serveuse et "
+                        "s'occupe de toi."),
+                "conduite": ("Pose tes questions une à la fois : les formules, le contenu "
+                             "d'un plat, les boissons. Emploie des formes polies. Si un "
+                             "problème survient, signale-le sans agressivité — et laisse "
+                             "l'élève proposer la solution."),
             },
         },
     },

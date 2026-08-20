@@ -182,6 +182,16 @@ MODULES = {
                         'La garantie et la livraison',
                         "Le mode d'emploi"),
     },
+    'module-restaurant': {
+        'numero': 16, 'activite': 53, 'niveau': 4,
+        'titre': 'Au restaurant',
+        'chapeau': "Lire un menu, commander en salle à manger, demander ce "
+                   "qu'il faut pendant le repas, et payer.",
+        'seances': GRILLE_3_DEFIS,
+        'blocs': _blocs('Lire le menu et commander',
+                        'Pendant le repas',
+                        "L'addition"),
+    },
 }
 
 # L'ordre d'affichage : celui des numéros de module.

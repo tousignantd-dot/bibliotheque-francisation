@@ -17,7 +17,7 @@ livrer**.
 | 13 | `module-activite` | Participation à une activité culturelle ou sportive | **terminé** |
 | 14 | `module-alimentation` | Achat d'aliments ou de produits d'entretien | **terminé** |
 | 15 | `module-achat` | Achat de biens de consommation durables | **terminé** |
-| 16 | `module-restaurant` | Service de restauration | en cours |
+| 16 | `module-restaurant` | Service de restauration | **terminé** |
 | 18 | `module-vetements` | Achat de vêtements | — |
 
 Le 17 est pris par `module-banque`, d'où le saut.
@@ -242,3 +242,32 @@ fini.
 - La marque SAAF a de nouveau été retirée du HTML avant le commit : la session
   qui la pose regreffe les fichiers produits, et son travail n'est toujours pas
   commité.
+
+
+## Module 16 — Au restaurant
+
+- **Scénario** : Andrés, arrivé du Pérou il y a deux ans, invite une collègue
+  pour la remercier. C'est son premier repas assis dans un restaurant d'ici.
+  Sept dialogues, quinze mots, vingt-deux exercices, six mini-leçons.
+- **Grammaire** : le « e » qui tombe — pour comprendre un serveur qui parle
+  vite · l'accueil et ses trois questions · les quatre formules du menu · je
+  voudrais, pourriez-vous, ce serait possible · demander et signaler pendant le
+  repas · les taxes et le pourboire.
+- **Couleur** : teal `#0D7A6F` / `#DCF2EF`. **Activité** : 53.
+- Médias : 21 images (0,71 $), 193 MP3. Les **214 URL** de la page répondent.
+- Séances : 16 présentations, 196 diapositives, 16 fiches (150 blocs).
+  `MODULE 16` dans les seize `.pptx`.
+- Huitième scénario de jeu de rôle, aux rôles « client » et « serveur ».
+
+### Deux points culturels traités de front
+
+Le module ne se contente pas du vocabulaire. Deux usages du Québec sont
+expliqués parce qu'ils déroutent et qu'ils coûtent :
+
+- **Le pourboire fait partie du revenu du personnel de service.** Il n'est
+  jamais sur l'addition, il s'ajoute — environ 15 % du montant avant taxes. La
+  méthode de calcul mental (le dixième, plus sa moitié) est enseignée deux fois.
+- **Signaler n'est pas se plaindre.** Un plat froid se dit, et le restaurant
+  préfère le savoir. Le module montre aussi la nuance : on peut signaler sans
+  exiger de correction — « je préfère vous le dire ». Les deux séances qui en
+  traitent comparent les usages sans les hiérarchiser.

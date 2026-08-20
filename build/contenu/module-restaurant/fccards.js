@@ -1,0 +1,17 @@
+const FC_CARDS = [
+  {word:"la carte", def:"La liste de tout ce que le restaurant sert, avec les prix.", ex:"Voici la <strong>carte</strong>. Le menu du jour est sur l'ardoise.", img:"/assets/interactive/module-restaurant/vocab/carte.jpg", tache:"prep"},
+  {word:"le menu du jour", def:"Un choix limité qui change chaque jour et coûte moins cher que la carte.", ex:"Le <strong>menu du jour</strong> est écrit sur l'ardoise.", img:"/assets/interactive/module-restaurant/vocab/menu-jour.jpg", tache:"prep"},
+  {word:"la table d'hôte", def:"Un prix fixe pour trois services : entrée, plat et dessert.", ex:"La <strong>table d'hôte</strong> est souvent le meilleur choix.", img:"/assets/interactive/module-restaurant/vocab/table-hote.jpg", tache:"prep"},
+  {word:"une réservation", def:"Une table réservée d'avance, à son nom.", ex:"Je n'ai pas de <strong>réservation</strong>, est-ce qu'il y a de la place ?", tache:"prep"},
+  {word:"une entrée", def:"Le premier plat du repas : soupe, salade, petite portion.", ex:"Soupe ou salade en <strong>entrée</strong>.", img:"/assets/interactive/module-restaurant/vocab/entree.jpg", tache:"t1"},
+  {word:"le plat principal", def:"Le plat le plus important du repas, servi après l'entrée.", ex:"Comme <strong>plat principal</strong>, le poisson du jour ou le poulet.", img:"/assets/interactive/module-restaurant/vocab/plat.jpg", tache:"t1"},
+  {word:"le plat du jour", def:"Le plat que le restaurant prépare seulement ce jour-là.", ex:"Le <strong>plat du jour</strong>, c'est de la truite avec des légumes.", img:"/assets/interactive/module-restaurant/vocab/plat-jour.jpg", tache:"t1"},
+  {word:"à la carte", def:"Choisir un plat seul, sans formule et sans entrée.", ex:"Je vais prendre le poulet, mais <strong>à la carte</strong>.", tache:"t1"},
+  {word:"une carafe", def:"Un pichet d'eau qu'on met sur la table, pour partager.", ex:"Une <strong>carafe</strong> d'eau pour deux, s'il vous plaît.", img:"/assets/interactive/module-restaurant/vocab/carafe.jpg", tache:"t2"},
+  {word:"l'eau du robinet", def:"L'eau ordinaire, servie gratuitement au Québec.", ex:"Est-ce que l'<strong>eau du robinet</strong> est gratuite ?", img:"/assets/interactive/module-restaurant/vocab/robinet.jpg", tache:"t2"},
+  {word:"un accompagnement", def:"Ce qui est servi à côté du plat : riz, légumes, frites, salade.", ex:"La truite est servie avec des légumes et du riz comme <strong>accompagnement</strong>.", img:"/assets/interactive/module-restaurant/vocab/accompagnement.jpg", tache:"t2"},
+  {word:"l'addition", def:"Le papier qui donne le total à payer.", ex:"L'<strong>addition</strong>, s'il vous plaît.", img:"/assets/interactive/module-restaurant/vocab/addition.jpg", tache:"t3"},
+  {word:"le pourboire", def:"L'argent laissé au serveur en plus du montant, environ 15 % au Québec.", ex:"Le <strong>pourboire</strong>, ce n'est pas sur l'addition : on l'ajoute.", img:"/assets/interactive/module-restaurant/vocab/pourboire.jpg", tache:"t3"},
+  {word:"taxes comprises", def:"Le montant inclut déjà les taxes ; rien ne s'ajoute.", ex:"Cinquante-huit dollars, <strong>taxes comprises</strong>.", img:"/assets/interactive/module-restaurant/vocab/taxes.jpg", tache:"t3"},
+  {word:"payer séparément", def:"Chaque personne paie sa part, sur une addition différente.", ex:"Ensemble ou <strong>séparément</strong> ?", img:"/assets/interactive/module-restaurant/vocab/separement.jpg", tache:"t3"},
+];
