@@ -433,6 +433,12 @@
 
   /* ══════════ Écran Planifier ══════════ */
 
+  /* Les outils transversaux — « Corrige-moi ! », les cartes de vocabulaire,
+     l'analyse grammaticale — ne se planifient pas : ils restent ouverts. Même
+     règle de reconnaissance que le catalogue et le portail élève. */
+  const DOMAINES_OUTILS = /^(vocabulaire|grammaire transversale|pratique orale libre)/i;
+  const estOutil = (a) => DOMAINES_OUTILS.test(a.domaineDeVie || '');
+
   function visibles() {
     const q = etat.recherche.trim().toLowerCase();
     const liste = etat.activites.filter((a) => {
@@ -446,7 +452,7 @@
     // « Module 2 », quel que soit son rang dans activities.json, où l'ordre
     // des enregistrements reflète la date d'ajout, pas la progression.
     // Les ateliers gardent l'ordre du catalogue : le tri est stable.
-    const rang = (a) => (a.categorie === 'cours' ? 0 : 1);
+    const rang = (a) => (estOutil(a) ? 2 : a.categorie === 'cours' ? 0 : 1);
     const numero = (a) => {
       const m = /^Module\s+(\d+)/.exec(a.title || '');
       return m ? parseInt(m[1], 10) : Number.MAX_SAFE_INTEGER;
@@ -519,16 +525,20 @@
       const secs = sectionsDe(a.id);
       const deplie = etat.deplies.has(a.id);
       const temps = (a.tempsVerbaux && a.tempsVerbaux.length ? a.tempsVerbaux : (infos ? infos.temps : []));
+      // Le type ouvre la méta en étiquette teintée — même code de couleur que
+      // le catalogue, et le mot reste lisible sans la couleur.
+      const outil = estOutil(a);
+      const etiquetteType = `<span class="pe-type">${outil ? 'Outil' : estCours ? 'Cours 4 h' : 'Atelier 2 h'}</span>`;
       const meta = estCours
-        ? `Cours · ${esc(a.domaineDeVie || 'domaine à préciser')}`
-        : `Atelier · ${esc(a.domaineDeVie || 'domaine à préciser')} · ${esc(temps.join(', ') || '—')}`;
+        ? `${etiquetteType}${esc(a.domaineDeVie || 'domaine à préciser')}`
+        : `${etiquetteType}${esc(a.domaineDeVie || 'domaine à préciser')} · ${esc(temps.join(', ') || '—')}`;
 
       const coche = etat.selection.has(cle(a.id));
       const metaSec = secs.length
         ? `${meta} · ${secs.length} sections`
         : meta;
       const rangee = `
-        <div class="card__row pe-rangee${coche ? ' is-checked' : ''}" data-id="${a.id}">
+        <div class="card__row pe-rangee pe-rangee--${outil ? 'outil' : estCours ? 'cours' : 'atelier'}${coche ? ' is-checked' : ''}" data-id="${a.id}">
           ${deployable(a)
             ? `<button type="button" class="pe-chevron" data-deploi="${a.id}" aria-expanded="${deplie}"
                        aria-label="Détails de ${esc(a.title)}">${deplie ? '▾' : '▸'}</button>`

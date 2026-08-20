@@ -45,13 +45,13 @@
       font-size: var(--fs-ui-sm); margin: 0 var(--sp-1);
     }
 
-    /* ---- GRILLE ---- */
+    /* ---- GRILLE ----
+       Déposer une activité se fait quelques fois par session ; consulter le
+       fonds se fait tous les jours. Le formulaire a donc quitté la colonne de
+       gauche pour une fenêtre appelée depuis l'en-tête, et toute la largeur
+       revient aux activités. */
     .page {
       max-width: 1180px; margin: 0 auto; padding: var(--sp-8) var(--sp-8) var(--sp-12);
-      /* Le formulaire de dépôt n'a que des champs courts : 60 px de moins ne
-         lui coûtent rien, et c'est autant de gagné pour les titres de la
-         liste, qui étaient coupés. */
-      display: grid; grid-template-columns: 340px 1fr; gap: var(--sp-6); align-items: start;
     }
 
     /* ---- PANNEAUX ---- */
@@ -119,19 +119,16 @@
     }
     .drop-zone-preview-size { flex-shrink: 0; font-size: var(--fs-meta); font-weight: var(--fw-bold); color: var(--text-muted); }
 
-    .thumb-preview {
-      display: none; width: 100%; aspect-ratio: 16/9; object-fit: cover;
-      margin-top: var(--sp-3); border: 1px solid var(--border); border-radius: var(--r-sm);
-    }
-    .thumb-preview.visible { display: block; }
-
     /* ---- BOUTONS ----
        .btn vient du système (pilule, plancher 44 px). Ici, seulement les
        rôles propres à la page. Le rouge plein reste interdit : une action
        destructrice porte les jetons d'erreur, filet et texte, sans aplat. */
-    .btn-primary { background: var(--ink-900); color: var(--text-inverse); width: 100%; }
-    .btn-primary:hover { background: var(--accent); }
-    .btn-primary:disabled { opacity: .5; cursor: not-allowed; }
+    /* Sept emplacements l'un sous l'autre feraient un rouleau : dans la
+       fenêtre, ils tiennent en deux colonnes. */
+    /* Niveau et type de contenu sont deux choix courts : ils tiennent côte à côte. */
+    .form-duo { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 0 var(--sp-4); }
+    #ajoutMateriel { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 0 var(--sp-4); }
+    #ajoutMateriel .mat-bloc { margin-bottom: var(--sp-4); }
     .spinner {
       display: none; width: 18px; height: 18px; border-radius: 50%;
       border: 2px solid rgba(255,255,255,.4); border-top-color: var(--white);
@@ -168,73 +165,68 @@
 
     /* ---- Planification en lot ---- */
 
-    /* ---- Une ligne d'activité ---- */
-    .activity-item {
-      display: flex; align-items: center; gap: var(--sp-3);
-      padding: var(--sp-3) var(--sp-5); border-bottom: 1px solid var(--paper-200);
-      transition: background var(--dur-fast) var(--ease);
+    /* ---- UNE ACTIVITÉ : une carte, plus une rangée ----
+       Les mêmes informations qu'avant, mais posées : la miniature se regarde,
+       le titre tient sur une ligne de lecture, et le matériel est écrit en
+       toutes lettres au lieu d'être serré dans une bande de méta. */
+    /* Une carte blanche sur un panneau blanc ne se voit pas : la grille pose
+       le fond de page sous les cartes, et chaque section porte sa teinte —
+       vert pour les cours du matin, acier pour les ateliers. */
+    .activity-grid {
+      display: grid; gap: var(--sp-3); padding: var(--sp-5);
+      grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+      background: var(--surface-page);
     }
-    .activity-item:last-child { border-bottom: none; }
-    .activity-item:hover { background: var(--paper-50); }
-    /* Sélection = plaque claire teintée, jamais une couleur de plus. */
+    .activity-section { --sec-ligne: var(--accent);     --sec-fond: var(--accent-soft); --sec-ink: var(--accent-ink); }
+    .activity-section--atelier { --sec-ligne: var(--acier-600); --sec-fond: var(--acier-100); --sec-ink: var(--acier-600); }
+    .activity-section--outil   { --sec-ligne: var(--violet-600); --sec-fond: var(--violet-100); --sec-ink: var(--violet-600); }
 
-    .activity-thumb, .activity-thumb-placeholder {
-      flex-shrink: 0; width: 56px; height: 36px;
-      border: 1px solid var(--border); border-radius: var(--r-sm);
+    /* Un outil — « Corrige-moi ! », les cartes de vocabulaire, l'analyse
+       grammaticale — ne porte ni fiche, ni corrigé, ni présentation : il n'y a
+       que la chose elle-même, ouverte toute l'année. Sa carte le dit : pas de
+       liste de matériel, pas de bouton de dépôt, et l'outil en pleine largeur. */
+    .activity-card--outil { justify-content: space-between; }
+    .activity-card--outil .card-interactif { min-height: 42px; }
+    .activity-card--outil .card-interactif .ci-nom { font-size: var(--fs-ui); }
+    .card-note {
+      font-size: var(--fs-meta); font-weight: var(--fw-semi); color: var(--text-muted);
     }
-    .activity-thumb { object-fit: cover; background: var(--surface-sunken); }
-    .activity-thumb-placeholder {
-      display: flex; align-items: center; justify-content: center;
-      background: var(--surface-sunken); color: var(--text-muted);
+    .activity-card {
+      display: flex; flex-direction: column; gap: var(--sp-3);
+      padding: var(--sp-4) var(--sp-4) var(--sp-3);
+      background: var(--surface-card); border: 1px solid var(--border);
+      border-left: 3px solid var(--sec-ligne);
+      border-radius: var(--r-md); box-shadow: var(--sh-card);
+      transition: border-color var(--dur-fast) var(--ease), box-shadow var(--dur-fast) var(--ease);
     }
+    .activity-card:hover { border-color: var(--sec-ligne); box-shadow: var(--sh-raise); }
 
-    .activity-info { flex: 1; min-width: 0; }
-    /* Un titre trop long passe à la ligne plutôt que de se faire couper :
-       « Module 3 — Prendre rendez-vous et aller à la… » ne dit pas de quelle
-       activité il s'agit. Deux lignes au plus, pour que la rangée reste une
-       rangée. */
-    .activity-name-display {
-      font-size: var(--fs-ui); font-weight: var(--fw-bold); color: var(--text-strong);
-      display: -webkit-box; -webkit-box-orient: vertical; -webkit-line-clamp: 2;
-      overflow: hidden; line-height: 1.35;
+    .activity-info { min-width: 0; }
+    .card-ligne-haut {
+      display: flex; align-items: center; gap: var(--sp-2);
+      margin-bottom: var(--sp-2);
     }
     /* Le niveau est une donnée de structure, pas un accent de repérage : il
        reste en encre sur creux, pour ne pas rivaliser avec les compétences. */
     .act-niveau {
-      display: inline-block; margin-right: var(--sp-2);
       border: 1px solid var(--border); border-radius: var(--r-pill);
-      padding: 0 var(--sp-2);
+      padding: 1px var(--sp-2);
       background: var(--surface-sunken); color: var(--text-body);
       font-size: var(--fs-meta); font-weight: var(--fw-bold);
     }
-
-    /* Ce que l'activité contient déjà : présent en vert, manquant en gris.
-       Le glyphe porte l'information autant que la couleur. */
-    .act-meta {
-      display: flex; gap: var(--sp-2); flex-wrap: wrap; margin-top: 2px;
-      font-size: var(--fs-meta); font-weight: var(--fw-bold); color: var(--text-muted);
+    .activity-id { margin-left: auto; font-size: var(--fs-meta); font-weight: var(--fw-bold); color: var(--text-muted); }
+    /* Un titre trop long passe à la ligne plutôt que de se faire couper :
+       « Module 3 — Prendre rendez-vous et aller à la… » ne dit pas de quelle
+       activité il s'agit. */
+    .activity-name-display {
+      font-size: var(--fs-body-sm); font-weight: var(--fw-black); color: var(--text-strong);
+      line-height: 1.3; letter-spacing: var(--ls-title);
+      display: -webkit-box; -webkit-box-orient: vertical; -webkit-line-clamp: 3; overflow: hidden;
     }
-    .act-meta .is-on { color: var(--text-accent); }
-    /* Le materiel present est un lien : le catalogue sert d'abord a le
-       retrouver. Ce qui manque reste ecrit, en gris, pour qu'on voie le trou. */
-    .act-meta a {
-      color: var(--text-accent); text-decoration: none;
-      border-bottom: 1px solid var(--border-tint);
-    }
-    .act-meta a:hover { color: var(--accent); border-bottom-color: var(--accent); }
-    .act-meta .est-vide { color: var(--text-muted); }
 
-    /* Fenetre d'ajout de materiel : un emplacement rempli est montre, jamais
-       repris — on ajoute, on ne remplace pas. */
-    .mat-bloc { margin-bottom: var(--sp-5); }
-    .mat-bloc:last-child { margin-bottom: 0; }
-    .current-file a { color: var(--ok-ink); }
-    .mat-vide { font-size: var(--fs-ui-sm); font-weight: var(--fw-medium); color: var(--text-muted); }
-
-
-    .act-tags { display: flex; gap: var(--sp-1); flex-wrap: wrap; margin-top: 3px; }
+    .act-tags { display: flex; gap: var(--sp-1); flex-wrap: wrap; margin-top: var(--sp-2); }
     .act-tag {
-      border-radius: var(--r-pill); padding: 1px var(--sp-2);
+      border-radius: var(--r-pill); padding: 2px var(--sp-2);
       font-size: var(--fs-meta); font-weight: var(--fw-bold);
       background: var(--sec-soft); color: var(--sec);
     }
@@ -242,9 +234,85 @@
     .act-tag--temps  { --sec: var(--ambre-700); --sec-soft: var(--ambre-100); }
     .act-tag--dom    { --sec: var(--foret-700); --sec-soft: var(--foret-100); }
 
+    /* L'activité interactive est le nœud du module : c'est elle que l'élève
+       ouvre, et c'est elle qu'on cherche dans le catalogue. Elle sort donc de
+       la liste du matériel et prend une plaquette à sa taille. */
+    .card-interactif {
+      display: flex; align-items: center; gap: var(--sp-2);
+      min-height: 34px; padding: var(--sp-2) var(--sp-3);
+      border-radius: var(--r-sm); text-decoration: none;
+    }
+    .card-interactif .ci-icone {
+      width: 22px; height: 22px; flex-shrink: 0;
+      display: flex; align-items: center; justify-content: center;
+      border-radius: var(--r-pill);
+    }
+    .card-interactif .ci-icone svg { width: 12px; height: 12px; }
+    .card-interactif .ci-texte { min-width: 0; display: flex; align-items: baseline; gap: var(--sp-2); }
+    .card-interactif .ci-nom {
+      font-size: var(--fs-ui-sm); font-weight: var(--fw-black);
+    }
+    .card-interactif .ci-etat {
+      font-size: var(--fs-meta); font-weight: var(--fw-bold);
+      letter-spacing: var(--ls-label); text-transform: uppercase; opacity: .75;
+    }
+    .card-interactif .ci-fleche { margin-left: auto; flex-shrink: 0; width: 14px; height: 14px; }
 
-    .activity-actions { display: flex; gap: var(--sp-2); flex-shrink: 0; }
-    .activity-id { flex-shrink: 0; width: 34px; text-align: right; font-size: var(--fs-meta); font-weight: var(--fw-bold); color: var(--text-muted); }
+    /* Déposée : pleine, cliquable, à la teinte de la section. */
+    .card-interactif--oui {
+      background: var(--sec-fond); border: 1px solid var(--sec-ligne); color: var(--sec-ink);
+      transition: background var(--dur-fast) var(--ease);
+    }
+    .card-interactif--oui:hover { background: var(--surface-card); }
+    .card-interactif--oui .ci-icone { background: var(--sec-ligne); color: var(--white); }
+
+    /* Absente : le même encombrement, en creux — le trou se voit. */
+    .card-interactif--non {
+      background: var(--surface-sunken); border: 1px dashed var(--line-300); color: var(--text-muted);
+    }
+    .card-interactif--non .ci-icone { background: var(--surface-card); border: 1px solid var(--border); color: var(--text-muted); }
+
+    /* Ce que l'activité contient déjà : deux colonnes de lignes nommées.
+       Présent en vert et cliquable, manquant en gris — le glyphe porte
+       l'information autant que la couleur. */
+    .card-materiel {
+      padding: var(--sp-3);
+      background: var(--surface-sunken); border: 1px solid var(--border);
+      border-radius: var(--r-sm);
+    }
+    .card-materiel-titre {
+      margin-bottom: var(--sp-2);
+      font-size: var(--fs-label); font-weight: var(--fw-bold);
+      letter-spacing: var(--ls-label); text-transform: uppercase; color: var(--text-muted);
+    }
+    .act-meta {
+      display: grid; grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 2px var(--sp-3);
+      font-size: var(--fs-meta); font-weight: var(--fw-semi);
+    }
+    .mat-ligne {
+      display: flex; align-items: center; gap: var(--sp-2);
+      min-width: 0; color: var(--text-muted);
+    }
+    .mat-ligne .puce { flex-shrink: 0; font-weight: var(--fw-black); }
+    .mat-ligne .nom { overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+    /* Le materiel present est un lien : le catalogue sert d'abord a le
+       retrouver. Ce qui manque reste ecrit, en gris, pour qu'on voie le trou. */
+    .mat-ligne--oui { color: var(--text-accent); }
+    .mat-ligne--oui a { color: inherit; text-decoration: none; border-bottom: 1px solid var(--border-tint); }
+    .mat-ligne--oui a:hover { color: var(--accent); border-bottom-color: var(--accent); }
+
+    .card-actions {
+      display: flex; align-items: center; justify-content: flex-end;
+      gap: var(--sp-2); margin-top: auto;
+    }
+
+    /* Fenetre d'ajout de materiel : un emplacement rempli est montre, jamais
+       repris — on ajoute, on ne remplace pas. */
+    .mat-bloc { margin-bottom: var(--sp-5); }
+    .mat-bloc:last-child { margin-bottom: 0; }
+    .current-file a { color: var(--ok-ink); }
+    .mat-vide { font-size: var(--fs-ui-sm); font-weight: var(--fw-medium); color: var(--text-muted); }
 
     .empty-list {
       display: none; padding: var(--sp-12) var(--sp-5); text-align: center;
@@ -255,16 +323,15 @@
     /* En-tête de section : cours (matin) / ateliers (après-midi) */
     .section-head {
       display: flex; align-items: baseline; gap: var(--sp-3); list-style: none;
-      padding: var(--sp-4) var(--sp-5) var(--sp-2);
-      background: var(--surface-sunken); border-bottom: 1px solid var(--border);
+      padding: var(--sp-4) var(--sp-5);
+      background: var(--sec-fond); border-bottom: 1px solid var(--border);
     }
-    .section-head:not(:first-child) { margin-top: var(--sp-2); border-top: 1px solid var(--border); }
-    .section-head-title { font-size: var(--fs-ui); font-weight: var(--fw-black); }
-    .section-head-sub { font-size: var(--fs-ui-sm); font-weight: var(--fw-medium); color: var(--text-muted); }
+    .section-head-title { font-size: var(--fs-ui); font-weight: var(--fw-black); color: var(--sec-ink); }
+    .section-head-sub { font-size: var(--fs-ui-sm); font-weight: var(--fw-medium); color: var(--sec-ink); opacity: .8; }
     .section-head-count {
       margin-left: auto; border-radius: var(--r-pill); padding: 1px var(--sp-2);
       background: var(--surface-card); border: 1px solid var(--border);
-      font-size: var(--fs-meta); font-weight: var(--fw-bold); color: var(--text-muted);
+      font-size: var(--fs-meta); font-weight: var(--fw-bold); color: var(--sec-ink);
     }
 
     /* ---- TOASTS ---- (le seul bloc foncé de la page) */
@@ -319,6 +386,9 @@
       flex-shrink: 0; display: flex; gap: var(--sp-3); justify-content: flex-end;
       padding: var(--sp-4) var(--sp-6); border-top: 1px solid var(--border);
     }
+    /* La fenêtre de dépôt porte un formulaire entier : elle est plus large
+       que celle du matériel, et son corps défile. */
+    .edit-modal--large { width: 680px; }
     .btn-edit-save { background: var(--ink-900); color: var(--text-inverse); }
     .btn-edit-save:hover { background: var(--accent); }
     .btn-edit-save:disabled { opacity: .5; cursor: not-allowed; }
@@ -346,13 +416,14 @@
     .progress-bar { width: 0%; height: 100%; background: var(--accent); border-radius: var(--r-pill); transition: width .3s var(--ease); }
 
     @media (max-width: 900px) {
-      .page { grid-template-columns: 1fr; }
+      .activity-grid { grid-template-columns: 1fr; }
     }
     @media (max-width: 560px) {
       .header-inner { padding: var(--sp-3) var(--sp-4); }
-      .page { padding: var(--sp-5) var(--sp-4) var(--sp-8); gap: var(--sp-5); }
-      .panel-body, .list-header { padding: var(--sp-4); }
+      .page { padding: var(--sp-5) var(--sp-4) var(--sp-8); }
+      .panel-body, .list-header, .activity-grid { padding: var(--sp-4); }
       .list-search { width: 100%; }
+      .act-meta { grid-template-columns: 1fr; }
     }
   </style>
 <body>
@@ -367,6 +438,10 @@
     </div>
     <nav class="header-nav">
       <a href="enseignant.html" class="btn btn--ghost btn--sm"><span aria-hidden="true">←</span> Espace enseignant</a>
+      <button type="button" class="btn btn--pri btn--sm" id="openAddBtn">
+        <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
+        Ajouter une activité
+      </button>
     </nav>
   </div>
 </header>
@@ -379,63 +454,6 @@
 </div>
 
 <div class="page">
-
-  <!-- ======== AJOUTER UNE ACTIVITÉ ======== -->
-  <div class="panel">
-    <div class="panel-header">
-      <div class="panel-icon" aria-hidden="true">
-        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
-      </div>
-      <span class="panel-title">Ajouter une activité</span>
-    </div>
-    <div class="panel-body">
-      <form id="addForm" novalidate>
-
-        <div class="form-group">
-          <label class="required" for="titleInput">Titre de l'activité</label>
-          <input type="text" id="titleInput" placeholder="Ex : Le Vieux-Port de Montréal" maxlength="120" required />
-        </div>
-
-        <div class="form-group">
-          <label for="niveauInput">Niveau</label>
-          <select id="niveauInput" class="select-categorie">
-            <option>Niveau 1</option>
-            <option>Niveau 2</option>
-            <option>Niveau 3</option>
-            <option selected>Niveau 4</option>
-            <option>Niveau 5</option>
-            <option>Niveau 6</option>
-            <option>Niveau 7</option>
-            <option>Niveau 8</option>
-          </select>
-        </div>
-
-        <div class="form-group">
-          <label for="categorieInput">Type de contenu</label>
-          <select id="categorieInput" class="select-categorie">
-            <option value="atelier">Atelier — 2 h, l'après-midi</option>
-            <option value="cours">Cours — 4 h, le matin</option>
-          </select>
-        </div>
-
-        <!-- Les emplacements de matériel sont rendus par le script, à partir
-             de la même liste que la fenêtre d'ajout : un seul endroit décide
-             de ce qu'une activité peut porter. -->
-        <div id="ajoutMateriel"></div>
-
-        <div class="progress-bar-wrap" id="progressWrap">
-          <div class="progress-bar" id="progressBar"></div>
-        </div>
-
-        <div class="form-group">
-          <button type="submit" class="btn btn-primary" id="submitBtn">
-            <span class="btn-text">Ajouter l'activité</span>
-            <span class="spinner"></span>
-          </button>
-        </div>
-      </form>
-    </div>
-  </div>
 
   <!-- ======== TOUTES LES ACTIVITÉS ======== -->
   <div class="panel">
@@ -461,10 +479,73 @@
       </select>
     </div>
 
-    <ul class="activity-list" id="activityList"></ul>
+    <div class="activity-list" id="activityList"></div>
     <div class="empty-list" id="emptyList">Aucune activité trouvée.</div>
   </div>
 
+</div>
+
+<!-- FENÊTRE DE DÉPÔT — appelée depuis l'en-tête. Ajouter une activité est
+     rare : le formulaire ne prend plus une colonne à l'année, il se pose
+     par-dessus la liste le temps du dépôt. -->
+<div class="modal-overlay" id="addModal">
+  <div class="edit-modal edit-modal--large" role="dialog" aria-modal="true" aria-labelledby="addModalTitle">
+    <div class="edit-modal-header">
+      <span class="edit-modal-title" id="addModalTitle">Ajouter une activité</span>
+      <button class="edit-modal-close" id="addModalClose" aria-label="Fermer">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+      </button>
+    </div>
+    <div class="edit-modal-body">
+      <form id="addForm" novalidate>
+
+        <div class="form-group">
+          <label class="required" for="titleInput">Titre de l'activité</label>
+          <input type="text" id="titleInput" placeholder="Ex : Le Vieux-Port de Montréal" maxlength="120" required />
+        </div>
+
+        <div class="form-duo">
+        <div class="form-group">
+          <label for="niveauInput">Niveau</label>
+          <select id="niveauInput" class="select-categorie">
+            <option>Niveau 1</option>
+            <option>Niveau 2</option>
+            <option>Niveau 3</option>
+            <option selected>Niveau 4</option>
+            <option>Niveau 5</option>
+            <option>Niveau 6</option>
+            <option>Niveau 7</option>
+            <option>Niveau 8</option>
+          </select>
+        </div>
+
+        <div class="form-group">
+          <label for="categorieInput">Type de contenu</label>
+          <select id="categorieInput" class="select-categorie">
+            <option value="atelier">Atelier — 2 h, l'après-midi</option>
+            <option value="cours">Cours — 4 h, le matin</option>
+          </select>
+        </div>
+        </div>
+
+        <!-- Les emplacements de matériel sont rendus par le script, à partir
+             de la même liste que la fenêtre d'ajout : un seul endroit décide
+             de ce qu'une activité peut porter. -->
+        <div id="ajoutMateriel"></div>
+
+        <div class="progress-bar-wrap" id="progressWrap">
+          <div class="progress-bar" id="progressBar"></div>
+        </div>
+      </form>
+    </div>
+    <div class="edit-modal-footer">
+      <button type="button" class="btn btn--ghost" id="addCancelBtn">Annuler</button>
+      <button type="submit" form="addForm" class="btn btn-edit-save" id="submitBtn">
+        <span class="btn-text">Ajouter l'activité</span>
+        <span class="spinner"></span>
+      </button>
+    </div>
+  </div>
 </div>
 
 <!-- FENÊTRE D'AJOUT DE MATÉRIEL -->
@@ -589,6 +670,27 @@ function brancherDepot(prefixe, m) {
 document.getElementById('ajoutMateriel').innerHTML = MATERIEL.map(m => blocDepot('add', m)).join('');
 MATERIEL.forEach(m => brancherDepot('add', m));
 
+/* La fenêtre de dépôt : ouverte depuis l'en-tête, fermée par la croix, par
+   « Annuler », par le fond ou par Échap. Le formulaire n'est pas vidé à la
+   fermeture — un dépôt interrompu se reprend là où il en était. */
+function ouvrirDepot() {
+  document.getElementById('addModal').classList.add('open');
+  document.getElementById('titleInput').focus();
+}
+function fermerDepot() { document.getElementById('addModal').classList.remove('open'); }
+
+document.getElementById('openAddBtn').addEventListener('click', ouvrirDepot);
+document.getElementById('addModalClose').addEventListener('click', fermerDepot);
+document.getElementById('addCancelBtn').addEventListener('click', fermerDepot);
+document.getElementById('addModal').addEventListener('click', e => {
+  if (e.target === e.currentTarget) fermerDepot();
+});
+document.addEventListener('keydown', e => {
+  if (e.key !== 'Escape') return;
+  if (document.getElementById('addModal').classList.contains('open')) fermerDepot();
+  else if (document.getElementById('editModal').classList.contains('open')) fermerAjout();
+});
+
 document.getElementById('addForm').addEventListener('submit', async e => {
   e.preventDefault();
 
@@ -628,6 +730,7 @@ document.getElementById('addForm').addEventListener('submit', async e => {
     if (!res.ok) throw new Error(data.error || 'Erreur serveur');
 
     toast(`« ${title} » ajoutée au catalogue.`);
+    fermerDepot();
     document.getElementById('addForm').reset();
     document.querySelectorAll('#ajoutMateriel .drop-zone-preview')
       .forEach(p => p.classList.remove('visible'));
@@ -680,17 +783,37 @@ async function loadPresentations() {
   }
 }
 
+/* La plaquette de l'activité interactive : déposée, elle s'ouvre ; absente,
+   elle garde sa place pour que le trou se voie. */
+function blocInteractif(a, outil) {
+  const fleche = `<svg class="ci-fleche" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg>`;
+  const icone = `<span class="ci-icone" aria-hidden="true"><svg width="12" height="12" viewBox="0 0 24 24" fill="currentColor" stroke="currentColor" stroke-width="2" stroke-linejoin="round"><polygon points="6 4 20 12 6 20 6 4"/></svg></span>`;
+  if (a.interactive) {
+    return `<a class="card-interactif card-interactif--oui" href="${escHtml(a.interactive)}" target="_blank" rel="noopener">
+      ${icone}
+      <span class="ci-texte"><span class="ci-nom">${outil ? 'Ouvrir l’outil' : 'Activité interactive'}</span>${outil ? '' : '<span class="ci-etat">Ouvrir</span>'}</span>
+      ${fleche}
+    </a>`;
+  }
+  return `<div class="card-interactif card-interactif--non">
+    ${icone}
+    <span class="ci-texte"><span class="ci-nom">${outil ? 'Outil' : 'Activité interactive'}</span><span class="ci-etat">À déposer</span></span>
+  </div>`;
+}
+
 /* Le matériel d'une ligne. Trois cas : le fichier est nommé dans l'activité,
    ou il n'y est pas mais l'inventaire en porte plusieurs, ou il n'y a rien. */
 function chipMateriel(a, m) {
   if (a[m.cle]) {
-    return `<a href="${escHtml(a[m.cle])}" target="_blank" rel="noopener">✓ ${escHtml(m.nom)}</a>`;
+    return `<span class="mat-ligne mat-ligne--oui"><span class="puce" aria-hidden="true">✓</span>
+      <a class="nom" href="${escHtml(a[m.cle])}" target="_blank" rel="noopener">${escHtml(m.nom)}</a></span>`;
   }
   const n = m.cle === 'slideshow' ? (PRESENTATIONS[a.id] || 0) : 0;
   if (n) {
-    return `<a href="#" class="lien-zip" data-zip="${a.id}">✓ ${n} présentations (.zip)</a>`;
+    return `<span class="mat-ligne mat-ligne--oui"><span class="puce" aria-hidden="true">✓</span>
+      <a class="nom lien-zip" href="#" data-zip="${a.id}">${n} présentations</a></span>`;
   }
-  return `<span class="est-vide">— ${escHtml(m.nom)}</span>`;
+  return `<span class="mat-ligne"><span class="puce" aria-hidden="true">○</span><span class="nom">${escHtml(m.nom)}</span></span>`;
 }
 
 /* Le jeton enseignant voyage en en-tête : un simple lien ne suffit pas, on
@@ -781,11 +904,21 @@ function applyFilters() {
   }));
 }
 
-// Les contenus se lisent en deux blocs : les cours (modules de 4 h, le matin)
-// et les ateliers (activités de 2 h, l'après-midi).
+/* Les outils transversaux se reconnaissent à leur domaine, exactement comme
+   dans le portail élève (eleve.html) : une seule règle pour les deux écrans. */
+const DOMAINES_OUTILS = /^(vocabulaire|grammaire transversale|pratique orale libre)/i;
+const estOutil = a => DOMAINES_OUTILS.test(a.domaineDeVie || '');
+
+// Les contenus se lisent en trois blocs : les cours (modules de 4 h, le matin),
+// les ateliers (activités de 2 h, l'après-midi) et les outils, qui ne se
+// planifient pas — ils restent ouverts et ne portent aucun matériel.
 const SECTIONS = [
-  { cle: 'cours',   titre: 'Cours',    sousTitre: '4 h — le matin' },
-  { cle: 'atelier', titre: 'Ateliers', sousTitre: '2 h — l’après-midi' },
+  { cle: 'cours',   titre: 'Cours',    sousTitre: '4 h — le matin',
+    garde: a => (a.categorie || 'atelier') === 'cours' && !estOutil(a) },
+  { cle: 'atelier', titre: 'Ateliers', sousTitre: '2 h — l’après-midi',
+    garde: a => (a.categorie || 'atelier') !== 'cours' && !estOutil(a) },
+  { cle: 'outil',   titre: 'Outils',   sousTitre: 'toujours ouverts — sans matériel',
+    garde: estOutil },
 ];
 
 function renderList(items) {
@@ -801,47 +934,50 @@ function renderList(items) {
   empty.classList.remove('visible');
 
   list.innerHTML = SECTIONS.map(section => {
-    const lot = items.filter(a => (a.categorie || 'atelier') === section.cle);
+    const lot = items.filter(section.garde);
     if (!lot.length) return '';
     return `
-      <li class="section-head">
-        <span class="section-head-title">${section.titre}</span>
-        <span class="section-head-sub">${section.sousTitre}</span>
-        <span class="section-head-count">${lot.length}</span>
-      </li>
-      ${renderItems(lot)}`;
+      <section class="activity-section activity-section--${section.cle}">
+        <div class="section-head">
+          <span class="section-head-title">${section.titre}</span>
+          <span class="section-head-sub">${section.sousTitre}</span>
+          <span class="section-head-count">${lot.length}</span>
+        </div>
+        <div class="activity-grid">${renderItems(lot, section)}</div>
+      </section>`;
   }).join('');
 
   attachListEvents();
 }
 
-function renderItems(items) {
+function renderItems(items, section) {
+  const outil = section.cle === 'outil';
   return items.map(a => `
-    <li class="activity-item" data-id="${a.id}">
-      ${a.thumbnail
-        ? `<img class="activity-thumb" src="${escHtml(a.thumbnail)}" alt="" onerror="this.style.display='none';this.nextElementSibling.style.display='flex'">`
-        : ''}
-      <div class="activity-thumb-placeholder" ${a.thumbnail ? 'style="display:none"' : ''} aria-hidden="true">
-        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="8.5" cy="8.5" r="1.5"/><polyline points="21 15 16 10 5 21"/></svg>
-      </div>
+    <article class="activity-card${outil ? ' activity-card--outil' : ''}" data-id="${a.id}">
       <div class="activity-info">
-        <div class="activity-name-display">
-          <span class="act-niveau">${escHtml(niveauDe(a))}</span>${escHtml(a.title)}
+        <div class="card-ligne-haut">
+          <span class="act-niveau">${escHtml(niveauDe(a))}</span>
+          <span class="activity-id">#${a.id}</span>
         </div>
-        <div class="act-meta">
-          ${MATERIEL.map(m => chipMateriel(a, m)).join('')}
-        </div>
+        <h3 class="activity-name-display">${escHtml(a.title)}</h3>
         ${(a.competences?.length || a.tempsVerbaux?.length || a.domaineDeVie) ? `<div class="act-tags">
           ${(a.competences || []).map(c => `<span class="act-tag act-tag--comp">${escHtml(c)}</span>`).join('')}
           ${(a.tempsVerbaux || []).map(t => `<span class="act-tag act-tag--temps">${escHtml(t)}</span>`).join('')}
           ${a.domaineDeVie ? `<span class="act-tag act-tag--dom">${escHtml(a.domaineDeVie)}</span>` : ''}
         </div>` : ''}
       </div>
-      <div class="activity-actions">
-        <button class="btn btn--ghost btn--sm ajout-btn" data-id="${a.id}">Ajouter du matériel</button>
+      ${blocInteractif(a, outil)}
+      ${outil ? `<div class="card-note">Aucun matériel à déposer : l'outil est le contenu.</div>` : `
+      <div class="card-materiel">
+        <div class="card-materiel-titre">Autre matériel</div>
+        <div class="act-meta">
+          ${MATERIEL.filter(m => m.cle !== 'interactive').map(m => chipMateriel(a, m)).join('')}
+        </div>
       </div>
-      <span class="activity-id">#${a.id}</span>
-    </li>`).join('');
+      <div class="card-actions">
+        <button class="btn btn--ghost btn--sm ajout-btn" data-id="${a.id}">Ajouter du matériel</button>
+      </div>`}
+    </article>`).join('');
 }
 
 function attachListEvents() {

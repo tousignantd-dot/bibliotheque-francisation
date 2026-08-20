@@ -122,9 +122,24 @@
     }
     .pe-titre-section { font-size: var(--fs-h3); font-weight: var(--fw-black); color: var(--text-strong); }
 
-    /* — Rangées d'activité — */
-    .pe-rangee { display: flex; align-items: center; gap: var(--sp-4); flex-wrap: wrap; }
+    /* — Rangées d'activité —
+       Le même code de couleur que le catalogue : vert pour les cours de 4 h du
+       matin, acier pour les ateliers de 2 h de l'après-midi. Le filet de gauche
+       et l'étiquette de type le portent ensemble ; le mot reste écrit. */
+    .pe-rangee {
+      display: flex; align-items: center; gap: var(--sp-4); flex-wrap: wrap;
+      border-left: 3px solid var(--sec-ligne);
+    }
+    .pe-rangee--cours   { --sec-ligne: var(--accent);     --sec-fond: var(--accent-soft); --sec-ink: var(--accent-ink); }
+    .pe-rangee--atelier { --sec-ligne: var(--acier-600);  --sec-fond: var(--acier-100);   --sec-ink: var(--acier-600); }
+    .pe-rangee--outil   { --sec-ligne: var(--violet-600); --sec-fond: var(--violet-100);  --sec-ink: var(--violet-600); }
     .pe-rangee.is-checked { background: var(--accent-soft); }
+    .pe-type {
+      display: inline-block; margin-right: var(--sp-2);
+      border-radius: var(--r-pill); padding: 1px var(--sp-2);
+      background: var(--sec-fond); color: var(--sec-ink);
+      font-size: var(--fs-meta); font-weight: var(--fw-bold);
+    }
     .pe-chevron {
       width: 44px; height: 44px; flex: none; display: flex; align-items: center; justify-content: center;
       background: none; border: 1px solid var(--border); border-radius: var(--r-sm);
