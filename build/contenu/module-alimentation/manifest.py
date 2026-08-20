@@ -13,8 +13,8 @@ MANIFESTE = {
     # Teal : le violet est passé à la marque SAAF, qui le veut exclusif. Les
     # voisins immédiats sont vert (13) et acier (15) ; le teal se distingue des
     # deux.
-    'accent': '#0D7A6F',
-    'accent_doux': '#DCF2EF',
+    'accent': '#8C6A07',
+    'accent_doux': '#F7F0DA',
 
     'ia_oral': "L'élève commande un produit à un comptoir d'épicerie ou "
                "s'informe sur un aliment : il nomme le produit, donne une "

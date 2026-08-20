@@ -223,6 +223,19 @@ MODULES = {
         'blocs': _blocs('Se présenter', 'Saluer et remercier'),
     },
 
+    # ── Niveau 2 ────────────────────────────────────────────────────
+    # Deuxième module court : huit séances, deux défis. Distinct de
+    # `module-deplacement` (niveau 4), qui porte sur le trajet complet et le
+    # métro ; ici, on demande son chemin et on lit un horaire d'autobus.
+    'module-n2-autobus': {
+        'numero': 1, 'activite': 57, 'niveau': 2,
+        'titre': "Prendre l'autobus",
+        'chapeau': "Demander son chemin, comprendre une direction, trouver "
+                   "l'arrêt et lire l'horaire de l'autobus.",
+        'seances': GRILLE_COURTE,
+        'blocs': _blocs('Demander son chemin', "L'autobus et l'horaire"),
+    },
+
     # ── Niveau 3 ────────────────────────────────────────────────────
     'module-n3-epicerie': {
         'numero': 1, 'activite': 55, 'niveau': 3,

@@ -19,8 +19,8 @@ MANIFESTE = {
     # à la marque SAAF, qui le veut exclusif. L'ambre se distingue de ses deux
     # voisins immédiats — module-logement (9, acier) et module-relations
     # (11, teal) — et du gabarit (acier).
-    'accent': '#B45309',
-    'accent_doux': '#FBEEDC',
+    'accent': '#8C6A07',
+    'accent_doux': '#F7F0DA',
 
     # Consigne envoyée à l'IA pour corriger la production orale.
     'ia_oral': "L'élève explique oralement un problème dans son logement à sa "

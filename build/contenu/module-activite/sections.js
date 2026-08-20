@@ -1,5 +1,5 @@
 const SECTIONS = [
-  {id:'prep', no:'<img class="icon-svg tno-play" src="/assets/interactive/module-activite/icons/play.svg" alt="">', title:'Je découvre', color:'#166534',
+  {id:'prep', no:'<img class="icon-svg tno-play" src="/assets/interactive/module-activite/icons/play.svg" alt="">', title:'Je découvre', color:'#A5335F',
    lead:"Se présenter au comptoir d'un centre de loisirs et poser les bonnes questions.",
    intro:"Rosa est arrivée de Colombie il y a un an. Son garçon Mateo, neuf ans, veut apprendre à nager. Elle se présente au comptoir du centre sportif de sa ville, sans savoir ce qu'il faut demander.",
    dialogue:'prep', next:{id:'t1', tit:"Défi 1 · S'informer sur une activité", sub:"Poser les questions qui manquent, et comprendre les conditions."}},
@@ -15,10 +15,10 @@ const SECTIONS = [
    lead:"Lire un dépliant de la ville, comparer, et s'inscrire.",
    intro:"Défi 3 — Une trentaine d'activités sur quatre pages, trois colonnes de chiffres et des petites étoiles. Rosa cherche quelque chose pour elle. Et elle découvre que Kevin, au bord de la piscine, ne parle pas comme Louise au comptoir.",
    dialogue:'t3', next:{id:'appli', tit:'Je me lance', sub:"S'informer à voix haute, donner des consignes, puis écrire à la ville."}},
-  {id:'appli', no:'<img class="icon-svg tno-play" src="/assets/interactive/module-activite/icons/play.svg" alt="">', title:'Je me lance', color:'#0F766E', custom:true,
+  {id:'appli', no:'<img class="icon-svg tno-play" src="/assets/interactive/module-activite/icons/play.svg" alt="">', title:'Je me lance', color:'#7E3F98', custom:true,
    lead:"S'informer à voix haute, donner des consignes, puis écrire à la ville.",
    intro:"Je me lance — C'est à toi : tu t'informes sur une activité qui t'intéresse, tu expliques une activité que tu connais en donnant des consignes, et tu écris à ta ville pour poser tes questions."},
-  {id:'retiens', no:'✓', title:'Je retiens des mots', color:'#166534', custom:true,
+  {id:'retiens', no:'✓', title:'Je retiens des mots', color:'#A5335F', custom:true,
    lead:"Rassembler le vocabulaire de l'inscription et des consignes, et faire le point.",
    intro:"Je retiens des mots — Note tes mots utiles, révise avec les cartes mémoire, puis évalue ce que tu es maintenant capable de faire."},
 ];

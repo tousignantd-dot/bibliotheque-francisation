@@ -161,7 +161,7 @@ const EXOS = [
    ]},
 
  // ── DÉFI 2 · LA GARANTIE ET LA LIVRAISON ────────────────────
-  {sec:'t2', id:'t2vf', type:'vf', num:'Exercice 1', tit:'Vrai ou Faux — La garantie et la livraison', color:'#166534',
+  {sec:'t2', id:'t2vf', type:'vf', num:'Exercice 1', tit:'Vrai ou Faux — La garantie et la livraison', color:'#A5335F',
    sub:"Écoute le dialogue, puis réponds.", tiles:['VRAI','FAUX'],
    savoir:{h:"› Les mots de l'achat — à écouter et à répéter", speak:true, rows:[
      ["Payer","Comment le prix se règle, en une fois ou en plusieurs.", ["versement","bon"]],
@@ -180,7 +180,7 @@ const EXOS = [
     {id:'u1j', txt:"Le magasin appelle la veille de la livraison.", ok:'VRAI'},
    ]},
 
-  {sec:'t2', id:'t2garantie', type:'vf', num:'Exercice 2', tit:'Couvert, ou pas couvert ?', color:'#166534',
+  {sec:'t2', id:'t2garantie', type:'vf', num:'Exercice 2', tit:'Couvert, ou pas couvert ?', color:'#A5335F',
    sub:"La garantie du magasin couvre-t-elle cette situation ?", tiles:['COUVERT','PAS COUVERT'],
    rows:[
     {id:'g1', txt:"Le moteur brise après huit mois, sans raison apparente.", ok:'COUVERT'},
@@ -193,7 +193,7 @@ const EXOS = [
     {id:'g8', txt:"Le technicien doit se déplacer, sans garantie prolongée.", ok:'PAS COUVERT'},
    ]},
 
-  {sec:'t2', id:'t2futur', type:'write', num:'Exercice 3', tit:'Quand ça va arriver', color:'#166534', cols:2,
+  {sec:'t2', id:'t2futur', type:'write', num:'Exercice 3', tit:'Quand ça va arriver', color:'#A5335F', cols:2,
    sub:"Mets le verbe au futur proche ou au futur simple, selon ce qui est demandé.",
    savoir:{h:"› Deux façons de parler de la suite", rows:[
      ["Le futur proche : aller + infinitif","Pour ce qui est décidé, prévu, tout proche.<span class='savoir-ex'>Ils <em>vont livrer</em> jeudi.</span><span class='savoir-ex'>Je <em>vais prendre</em> l'installation.</span>C'est la forme la plus employée à l'oral."],
@@ -213,7 +213,7 @@ const EXOS = [
     {q:"[futur simple] Ils (reprendre) ___ l'ancienne laveuse.", accept:["reprendront"], ph:"…"},
    ]},
 
-  {sec:'t2', id:'t2paiement', type:'write', num:'Exercice 4', tit:'Payer et se faire livrer', color:'#166534', cols:2,
+  {sec:'t2', id:'t2paiement', type:'write', num:'Exercice 4', tit:'Payer et se faire livrer', color:'#A5335F', cols:2,
    sub:"Réponds d'après le dialogue.",
    savoir:{h:"› Ce qui se paie, et ce qui s'ajoute", rows:[
      ["Le prix affiché n'est pas le total","Au Québec, les <b>taxes</b> s'ajoutent à la caisse : environ <b>15 %</b>. Un appareil affiché à 800 $ coûte près de 920 $."],
@@ -232,7 +232,7 @@ const EXOS = [
     {q:"Pour que le magasin reprenne l'ancien appareil, il faut que ce soit noté sur le ___ de livraison.", accept:["bon"], ph:"…"},
    ]},
 
-  {sec:'t2', id:'t2b', type:'vf', num:'Exercice 5', tit:'Vrai ou Faux — La veille de la livraison', color:'#166534',
+  {sec:'t2', id:'t2b', type:'vf', num:'Exercice 5', tit:'Vrai ou Faux — La veille de la livraison', color:'#A5335F',
    sub:"Écoute le deuxième dialogue, puis réponds.", tiles:['VRAI','FAUX'], dialogue:'t2b',
    rows:[
     {id:'b1', txt:"La livraison est confirmée entre huit heures et midi.", ok:'VRAI'},
@@ -320,7 +320,7 @@ const EXOS = [
    ]},
 
  // ── JE ME LANCE ─────────────────────────────────────────────
-  {sec:'appli', id:'aQui', type:'vf', num:'Exercice 1', tit:'Qui parle ?', color:'#0F766E',
+  {sec:'appli', id:'aQui', type:'vf', num:'Exercice 1', tit:'Qui parle ?', color:'#7E3F98',
    sub:"Écoute le dialogue du réfrigérateur, puis indique qui dit chaque phrase.", tiles:['YIN','MARTIN'],
    dialogue:'appli',
    rows:[
@@ -334,7 +334,7 @@ const EXOS = [
     {id:'x8', txt:"Avancez votre auto à la porte trois.", ok:'MARTIN'},
    ]},
 
-  {sec:'appli', id:'aComp', type:'write', num:'Exercice 2', tit:'Le mot juste', color:'#0F766E', cols:2,
+  {sec:'appli', id:'aComp', type:'write', num:'Exercice 2', tit:'Le mot juste', color:'#7E3F98', cols:2,
    sub:"Complète chaque phrase avec le mot qui convient.",
    items:[
     {q:"Les ___ sont au fond du magasin : laveuses, réfrigérateurs, cuisinières.", accept:["électroménagers","electromenagers"], ph:"un mot"},

@@ -240,7 +240,7 @@ const EXOS = [
    ]},
 
  // ── DÉFI 3 · ÉCHANGER ET SE FAIRE REMBOURSER ────────────────
-  {sec:'t3', id:'t3vf', type:'vf', num:'Exercice 1', tit:'Vrai ou Faux — Échanger les bottes', color:'#166534',
+  {sec:'t3', id:'t3vf', type:'vf', num:'Exercice 1', tit:'Vrai ou Faux — Échanger les bottes', color:'#A5335F',
    sub:"Écoute le dialogue, puis réponds.", tiles:['VRAI','FAUX'],
    savoir:{h:"› Les mots du service à la clientèle — à écouter et à répéter", speak:true, rows:[
      ["Rapporter un article","Les deux mots à connaître, et le papier sans lequel rien n'est possible.", ["échange","remboursement","facture"]],
@@ -259,7 +259,7 @@ const EXOS = [
     {id:'f10', txt:"Il se fait sur le moyen de paiement utilisé.", ok:'VRAI'},
    ]},
 
-  {sec:'t3', id:'t3echange', type:'write', num:'Exercice 2', tit:'Échange, remboursement, mise de côté', color:'#166534', cols:2,
+  {sec:'t3', id:'t3echange', type:'write', num:'Exercice 2', tit:'Échange, remboursement, mise de côté', color:'#A5335F', cols:2,
    sub:"Complète d'après les deux dialogues.",
    savoir:{h:"› Trois choses différentes", rows:[
      ["L'échange","Vous rapportez l'article et vous en prenez un autre. Souvent le plus simple, et parfois le seul possible sur un article en solde."],
@@ -278,7 +278,7 @@ const EXOS = [
     {q:"Elle demande un ___ d'environ vingt pour cent.", accept:["dépôt","depot"], ph:"…"},
    ]},
 
-  {sec:'t3', id:'t3possible', type:'vf', num:'Exercice 3', tit:'Est-ce possible ?', color:'#166534',
+  {sec:'t3', id:'t3possible', type:'vf', num:'Exercice 3', tit:'Est-ce possible ?', color:'#A5335F',
    sub:"Le magasin acceptera-t-il, dans les conditions habituelles ?", tiles:['OUI','NON'],
    rows:[
     {id:'q1', txt:"Des bottes rapportées après douze jours, avec la facture, jamais portées dehors.", ok:'OUI'},
@@ -291,7 +291,7 @@ const EXOS = [
     {id:'q8', txt:"Un remboursement comptant pour un achat payé par carte.", ok:'NON'},
    ]},
 
-  {sec:'t3', id:'t3b', type:'vf', num:'Exercice 4', tit:'Vrai ou Faux — La mise de côté', color:'#166534',
+  {sec:'t3', id:'t3b', type:'vf', num:'Exercice 4', tit:'Vrai ou Faux — La mise de côté', color:'#A5335F',
    sub:"Écoute le dernier dialogue, puis réponds.", tiles:['VRAI','FAUX'], dialogue:'t3b',
    rows:[
     {id:'n1', txt:"Diane veut acheter un manteau pour sa fille.", ok:'VRAI'},
@@ -304,7 +304,7 @@ const EXOS = [
     {id:'n8', txt:"Après quatorze jours, l'article retourne en magasin.", ok:'VRAI'},
    ]},
 
-  {sec:'t3', id:'t3garder', type:'match', num:'Exercice 5', tit:"Ce qu'il faut garder", color:'#166534',
+  {sec:'t3', id:'t3garder', type:'match', num:'Exercice 5', tit:"Ce qu'il faut garder", color:'#A5335F',
    sub:"Associe chaque chose à ce qu'elle permet.", bankLbl:'Ce que ça permet', zonePh:'glisse ici',
    rows:[
     {id:'g1', q:"La facture", aid:'g1', a:"prouver la date d'achat — sans elle, presque rien n'est possible"},
@@ -316,7 +316,7 @@ const EXOS = [
    ]},
 
  // ── JE ME LANCE ─────────────────────────────────────────────
-  {sec:'appli', id:'aQui', type:'vf', num:'Exercice 1', tit:'Qui parle ?', color:'#0F766E',
+  {sec:'appli', id:'aQui', type:'vf', num:'Exercice 1', tit:'Qui parle ?', color:'#7E3F98',
    sub:"Écoute le dialogue des bottes, puis indique qui dit chaque phrase.", tiles:['KOFI','VALÉRIE'],
    dialogue:'appli',
    rows:[
@@ -330,7 +330,7 @@ const EXOS = [
     {id:'x8', txt:"Mais pas dehors : après, on ne peut plus les échanger.", ok:'VALÉRIE'},
    ]},
 
-  {sec:'appli', id:'aComp', type:'write', num:'Exercice 2', tit:'Le mot juste', color:'#0F766E', cols:2,
+  {sec:'appli', id:'aComp', type:'write', num:'Exercice 2', tit:'Le mot juste', color:'#7E3F98', cols:2,
    sub:"Complète chaque phrase avec le mot qui convient.",
    items:[
     {q:"Je cherche un ___ d'hiver, un vrai.", accept:["manteau"], ph:"un mot"},

@@ -13,8 +13,8 @@ MANIFESTE = {
     'theme': 'Déplacement dans une ville',
 
     # Ambre : le voisin immédiat (module-relations) est teal.
-    'accent': '#B45309',
-    'accent_doux': '#FBEEDC',
+    'accent': '#8C6A07',
+    'accent_doux': '#F7F0DA',
 
     'ia_oral': "L'élève explique oralement un itinéraire à quelqu'un : il "
                "nomme le point de départ et l'arrivée, donne les étapes dans "

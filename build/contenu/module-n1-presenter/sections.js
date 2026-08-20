@@ -11,10 +11,10 @@ const SECTIONS = [
    lead:"Bonjour, merci, pardon — et dire qu'on n'a pas compris.",
    intro:"Défi 2 — « Je ne comprends pas » n'est pas un échec : c'est une phrase de la langue, aussi utile que « bonjour ». Amina l'apprend le premier jour.",
    dialogue:'t2', next:{id:'appli', tit:'Je me lance', sub:"Se présenter à voix haute, puis écrire sa fiche."}},
-  {id:'appli', no:'<img class="icon-svg tno-play" src="/assets/interactive/module-n1-presenter/icons/play.svg" alt="">', title:'Je me lance', color:'#0F766E', custom:true,
+  {id:'appli', no:'<img class="icon-svg tno-play" src="/assets/interactive/module-n1-presenter/icons/play.svg" alt="">', title:'Je me lance', color:'#7E3F98', custom:true,
    lead:"Se présenter à voix haute, puis écrire sa fiche.",
    intro:"Je me lance — C'est à toi : tu te présentes à voix haute, puis tu écris ta fiche d'inscription."},
-  {id:'retiens', no:'✓', title:'Je retiens des mots', color:'#166534', custom:true,
+  {id:'retiens', no:'✓', title:'Je retiens des mots', color:'#A5335F', custom:true,
    lead:"Rassembler les mots de l'identité et de la politesse.",
    intro:"Je retiens des mots — Note tes mots utiles, révise avec les cartes mémoire, puis évalue ce que tu es maintenant capable de faire."},
 ];

@@ -158,7 +158,7 @@ const EXOS = [
    ]},
 
  // ── JE ME LANCE ─────────────────────────────────────────────
-  {sec:'appli', id:'aQui', type:'vf', num:'Exercice 1', tit:'Qui parle ?', color:'#0F766E',
+  {sec:'appli', id:'aQui', type:'vf', num:'Exercice 1', tit:'Qui parle ?', color:'#7E3F98',
    sub:"Écoute le dialogue « Au secrétariat », puis réponds.", tiles:['AMINA','LE SECRÉTAIRE'],
    rows:[
     {id:'a1', txt:"« Vous êtes une nouvelle élève ? »", ok:'LE SECRÉTAIRE'},
@@ -168,7 +168,7 @@ const EXOS = [
     {id:'a5', txt:"« J'habite au 4520, rue Bélanger. »", ok:'AMINA'},
    ]},
 
-  {sec:'appli', id:'aFiche', type:'write', num:'Exercice 2', tit:'Ma fiche', color:'#0F766E', cols:2,
+  {sec:'appli', id:'aFiche', type:'write', num:'Exercice 2', tit:'Ma fiche', color:'#7E3F98', cols:2,
    sub:"Écris ta réponse à chaque question.",
    items:[
     {q:"Comment vous appelez-vous ?", ph:"Je m'appelle…"},

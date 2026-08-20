@@ -367,7 +367,7 @@ body{
   /* Teinte propre à ce module (même couleur que sa plaquette dans le portail
      et la barre du lecteur) — seulement pour l'en-tête, le reste de
      l'interface garde l'accent vert unique du système de design. */
-  --hdr-accent:#0D7A6F; --hdr-accent-soft:#DCF2EF;
+  --hdr-accent:#8C6A07; --hdr-accent-soft:#F7F0DA;
   --pad-x:32px;      /* gouttière de page — identique partout */
   --pad-card:22px;   /* padding intérieur de TOUS les cadres */
   --bleed:-23px;     /* = -(var(--pad-card) + 1px de bordure) */
@@ -865,7 +865,7 @@ const DIALOGUES = {
 // Atelier de 2 h, pas un module de 4 h : cinq sections, pas six, et pas de
 // numérotation « Défi N » — celle-ci appartient aux modules de cours.
 const SECTIONS = [
-  {id:'prep', no:'<img class="icon-svg tno-play" src="/assets/interactive/module-sante/icons/play.svg" alt="">', title:'Je découvre', color:'#0F766E',
+  {id:'prep', no:'<img class="icon-svg tno-play" src="/assets/interactive/module-sante/icons/play.svg" alt="">', title:'Je découvre', color:'#7E3F98',
    lead:"Savoir où s'adresser, puis prendre un rendez-vous au téléphone.",
    intro:"Lina ne se sent pas bien depuis deux semaines. Elle veut voir un médecin : où s'adresser, et comment obtenir un rendez-vous ?",
    dialogue:'prep', next:{id:'t1', tit:'Défi 1 · À la pharmacie', sub:"Comprendre les consignes du pharmacien."}},
@@ -880,7 +880,7 @@ const SECTIONS = [
   {id:'appli', no:'<img class="icon-svg tno-play" src="/assets/interactive/module-sante/icons/play.svg" alt="">', title:'Je me lance', color:'#0D9488', custom:true,
    lead:"Appeler la clinique à voix haute, puis écrire pour faire renouveler une ordonnance.",
    intro:"Je me lance — Prends rendez-vous à l'oral, puis écris à ta pharmacie."},
-  {id:'retiens', no:'✓', title:'Je retiens des mots', color:'#166534', custom:true,
+  {id:'retiens', no:'✓', title:'Je retiens des mots', color:'#A5335F', custom:true,
    lead:"Noter le vocabulaire utile et réviser avec les cartes mémoire.",
    intro:"Je retiens des mots — Note le vocabulaire utile et révise avec les cartes mémoire."},
 ];
@@ -906,11 +906,11 @@ const FC_CARDS = [
 ];
 
 const EXOS = [
- {sec:'prep', id:'prVocab', type:'match', num:'Vocabulaire', tit:'Associe le mot ou le groupe de mots à sa définition', color:'#0F766E',
+ {sec:'prep', id:'prVocab', type:'match', num:'Vocabulaire', tit:'Associe le mot ou le groupe de mots à sa définition', color:'#7E3F98',
   sub:'Choisis un mot, puis sa définition.', noQLbl:true, bankLbl:'Définitions', zonePh:'glissez la définition ici',
   rows: FC_CARDS.map((c,i)=>({id:'pv'+i, q:c.word, aid:'pv'+i, a:c.def}))},
 
-  {sec:'prep', id:'pr1', type:'match', num:'Exercice 1', tit:'Où s\'adresser ?', color:'#0F766E',
+  {sec:'prep', id:'pr1', type:'match', num:'Exercice 1', tit:'Où s\'adresser ?', color:'#7E3F98',
    sub:'Associez chaque situation à la bonne ressource de santé.',
    bankLbl:'Ressources', zonePh:'glissez la réponse ici',
    rows:[
@@ -921,7 +921,7 @@ const EXOS = [
     {id:'pr1e', q:"Voir un médecin vite, sans rendez-vous.", aid:'pa5', a:"la clinique sans rendez-vous"},
    ]},
 
-  {sec:'prep', id:'pr2', type:'vf', num:'Exercice 2', tit:'Vrai ou Faux — Appeler la clinique', color:'#0F766E',
+  {sec:'prep', id:'pr2', type:'vf', num:'Exercice 2', tit:'Vrai ou Faux — Appeler la clinique', color:'#7E3F98',
    sub:'Écoutez de nouveau le dialogue, puis répondez.', tiles:['VRAI','FAUX'],
    rows:[
     {id:'pr2a', txt:"Lina appelle pour prendre un rendez-vous.", ok:'VRAI'},
@@ -932,7 +932,7 @@ const EXOS = [
     {id:'pr2f', txt:"La réceptionniste lui rappelle d'apporter sa carte d'assurance maladie.", ok:'VRAI'},
    ]},
 
-  {sec:'prep', id:'prSons', type:'vf', num:'Exercice 3', tit:"Le son [ɑ̃] ou [ɛ̃]", color:'#0F766E', accent:'#0F766E', cards:true, listen:true,
+  {sec:'prep', id:'prSons', type:'vf', num:'Exercice 3', tit:"Le son [ɑ̃] ou [ɛ̃]", color:'#7E3F98', accent:'#0F766E', cards:true, listen:true,
    sub:"Clique sur l'icône d'écoute pour entendre le mot, puis indique le son entendu.", tiles:['[ɑ̃]','[ɛ̃]'],
    savoir:{h:"› Des sons et des lettres", speak:true, rows:[
      ["[ɑ̃] comme dans « attente »","<b>an, am, en, em</b> : attente, pendant, ordonnance, traitement", ["attente","pendant","ordonnance"]],

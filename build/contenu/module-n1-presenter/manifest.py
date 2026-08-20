@@ -15,8 +15,8 @@ MANIFESTE = {
 
     # Acier : la couleur la plus sobre des quatre, pour un premier contact
     # avec le portail.
-    'accent': '#1D6B8F',
-    'accent_doux': '#DCEBF3',
+    'accent': '#A5335F',
+    'accent_doux': '#FCE9F0',
 
     'ia_oral': "L'élève se présente : il dit son nom, l'épelle, dit d'où il "
                "vient, quelle langue il parle, ce qu'il fait, et s'il a des "

@@ -15,10 +15,10 @@ const SECTIONS = [
    lead:"Comprendre une annonce dans le transport, lire un horaire et un plan.",
    intro:"Défi 3 — Les annonces du métro et de l'autobus sont courtes, rapides et souvent mal audibles. Elles suivent pourtant toujours la même forme. Et sur un horaire, une seule petite lettre peut changer tout votre trajet.",
    dialogue:'t3', next:{id:'appli', tit:'Je me lance', sub:"Demander son chemin à voix haute, expliquer un trajet, puis l'écrire."}},
-  {id:'appli', no:'<img class="icon-svg tno-play" src="/assets/interactive/module-deplacement/icons/play.svg" alt="">', title:'Je me lance', color:'#0F766E', custom:true,
+  {id:'appli', no:'<img class="icon-svg tno-play" src="/assets/interactive/module-deplacement/icons/play.svg" alt="">', title:'Je me lance', color:'#7E3F98', custom:true,
    lead:"Demander son chemin à voix haute, expliquer un trajet, puis l'écrire.",
    intro:"Je me lance — C'est à toi : tu demandes ton chemin à quelqu'un, tu expliques un trajet que tu connais, et tu écris les indications pour une personne qui vient chez toi pour la première fois."},
-  {id:'retiens', no:'✓', title:'Je retiens des mots', color:'#166534', custom:true,
+  {id:'retiens', no:'✓', title:'Je retiens des mots', color:'#A5335F', custom:true,
    lead:"Rassembler le vocabulaire de la rue et du transport, et faire le point.",
    intro:"Je retiens des mots — Note tes mots utiles, révise avec les cartes mémoire, puis évalue ce que tu es maintenant capable de faire."},
 ];

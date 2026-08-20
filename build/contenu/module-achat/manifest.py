@@ -9,8 +9,8 @@ MANIFESTE = {
     'theme': 'Achat de biens de consommation durables',
 
     # Bleu : les voisins immédiats sont violet (14) et vert (13).
-    'accent': '#1D6B8F',
-    'accent_doux': '#E7F0F6',
+    'accent': '#8C6A07',
+    'accent_doux': '#F7F0DA',
 
     'ia_oral': "L'élève s'informe sur un appareil ménager ou explique celui "
                "qu'il a choisi : il le décrit avec des adjectifs justes, "

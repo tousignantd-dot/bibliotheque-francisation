@@ -1,10 +1,10 @@
 const EXOS = [
  // ── JE DÉCOUVRE ─────────────────────────────────────────────
-  {sec:'prep', id:'prVocab', type:'match', num:'Vocabulaire · 1', tit:'Le mot et sa définition', color:'#166534',
+  {sec:'prep', id:'prVocab', type:'match', num:'Vocabulaire · 1', tit:'Le mot et sa définition', color:'#A5335F',
    sub:'Choisis un mot, puis sa définition. Six mots à la fois.', noQLbl:true, bankLbl:'Définitions', zonePh:'glisse la définition ici',
    rows: FC_CARDS.map((c,i)=>({id:'pv'+i, q:c.word, aid:'pv'+i, a:c.def}))},
 
-  {sec:'prep', id:'pr1', type:'vf', num:'Exercice 1', tit:'Vrai ou Faux — Au comptoir du centre sportif', color:'#166534',
+  {sec:'prep', id:'pr1', type:'vf', num:'Exercice 1', tit:'Vrai ou Faux — Au comptoir du centre sportif', color:'#A5335F',
    sub:'Écoute de nouveau le dialogue, puis réponds.', tiles:['VRAI','FAUX'],
    savoir:{h:"› Les mots de l'inscription — à écouter et à répéter", speak:true, rows:[
      ["Ce qu'on demande","Trois mots à connaître avant de se présenter à un comptoir.", ["inscription","tarif","session"]],
@@ -23,7 +23,7 @@ const EXOS = [
     {id:'p1j', txt:"L'inscription se fait seulement en personne.", ok:'FAUX'},
    ]},
 
-  {sec:'prep', id:'prChiffres', type:'vf', num:'Exercice 2', tit:'Quel chiffre entends-tu ?', color:'#166534', accent:'#166534', cards:true, listen:true,
+  {sec:'prep', id:'prChiffres', type:'vf', num:'Exercice 2', tit:'Quel chiffre entends-tu ?', color:'#A5335F', accent:'#166534', cards:true, listen:true,
    sub:"Écoute chaque phrase. Le montant ou l'heure que tu entends est-il celui qui est écrit ?", tiles:['C\'EST ÇA','CE N\'EST PAS ÇA'],
    rows:[
     {id:'cha', txt:"Quatre-vingt-cinq dollars.", ok:'C\'EST ÇA'},
@@ -36,7 +36,7 @@ const EXOS = [
     {id:'chh', txt:"Vingt et une heures.", ok:'C\'EST ÇA'},
    ]},
 
-  {sec:'prep', id:'prImg', type:'imgmatch', num:'Exercice 3', tit:"Ce qu'on apporte, ce qu'on trouve", color:'#166534',
+  {sec:'prep', id:'prImg', type:'imgmatch', num:'Exercice 3', tit:"Ce qu'on apporte, ce qu'on trouve", color:'#A5335F',
    sub:"Glisse chaque photo sur la phrase qui la décrit.",
    images:[
     {id:'ia1', src:'/assets/interactive/module-activite/images/comptoir.jpg'},
@@ -59,7 +59,7 @@ const EXOS = [
     {id:'ia8', txt:"Il faut remplir ce formulaire pour s'inscrire.", ok:'ia8'},
    ]},
 
-  {sec:'prep', id:'prQuest', type:'match', num:'Exercice 4', tit:"La question et ce qu'elle demande", color:'#166534',
+  {sec:'prep', id:'prQuest', type:'match', num:'Exercice 4', tit:"La question et ce qu'elle demande", color:'#A5335F',
    sub:"Associe chaque question à l'information qu'elle cherche.", bankLbl:'Ce que je veux savoir', zonePh:'glisse ici',
    rows:[
     {id:'q1', q:"« Ça coûte combien ? »", aid:'q1', a:"le tarif, et s'il change selon où j'habite"},
@@ -70,7 +70,7 @@ const EXOS = [
     {id:'q6', q:"« Je peux m'inscrire en ligne ? »", aid:'q6', a:"la façon de s'inscrire et de payer"},
    ]},
 
-  {sec:'prep', id:'prTarif', type:'write', num:'Exercice 5', tit:'Les chiffres du comptoir', color:'#166534', cols:2,
+  {sec:'prep', id:'prTarif', type:'write', num:'Exercice 5', tit:'Les chiffres du comptoir', color:'#A5335F', cols:2,
    sub:"Réponds d'après le dialogue.",
    savoir:{h:"› Entendre les chiffres du premier coup", rows:[
      ["Les dizaines difficiles","<b>70</b> se dit « soixante-dix », <b>80</b> « quatre-vingts », <b>90</b> « quatre-vingt-dix ». Ce sont les trois qui font hésiter, et ce sont justement ceux des tarifs.<span class='savoir-ex'>quatre-vingt-cinq dollars = 85 $</span>"],
@@ -317,7 +317,7 @@ const EXOS = [
    ]},
 
  // ── JE ME LANCE ─────────────────────────────────────────────
-  {sec:'appli', id:'aQui', type:'vf', num:'Exercice 1', tit:'Qui parle ?', color:'#0F766E',
+  {sec:'appli', id:'aQui', type:'vf', num:'Exercice 1', tit:'Qui parle ?', color:'#7E3F98',
    sub:"Écoute le dialogue de la chorale, puis indique qui dit chaque phrase.", tiles:['ROSA','LOUISE'],
    dialogue:'appli',
    rows:[
@@ -331,7 +331,7 @@ const EXOS = [
     {id:'x8', txt:"Prenez votre temps. Je remplis le formulaire.", ok:'LOUISE'},
    ]},
 
-  {sec:'appli', id:'aComp', type:'write', num:'Exercice 2', tit:'Le mot juste', color:'#0F766E', cols:2,
+  {sec:'appli', id:'aComp', type:'write', num:'Exercice 2', tit:'Le mot juste', color:'#7E3F98', cols:2,
    sub:"Complète chaque phrase avec le mot qui convient.",
    items:[
     {q:"L'___ se fait en ligne ou au comptoir.", accept:["inscription"], ph:"un mot"},

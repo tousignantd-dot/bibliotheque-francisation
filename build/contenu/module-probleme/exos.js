@@ -367,7 +367,7 @@ const EXOS = [
     {q:"Une odeur de moisissure persiste dans votre salle de bain malgré vos nettoyages.", hint:"Ex. : Une odeur de moisissure revient dans la salle de bain même après le ménage. Je suis inquiète pour la santé de mes enfants. Il faudrait faire installer un ventilateur.", ph:"…"},
    ]},
 
-  {sec:'appli', id:'aQui', type:'vf', num:'Exercice 1', tit:'Qui parle ?', color:'#0F766E',
+  {sec:'appli', id:'aQui', type:'vf', num:'Exercice 1', tit:'Qui parle ?', color:'#7E3F98',
    sub:"Écoute le dialogue, puis indique qui dit chaque phrase : la locataire ou la propriétaire.", tiles:['LOCATAIRE','PROPRIÉTAIRE'],
    dialogue:'appli',
    rows:[
@@ -381,7 +381,7 @@ const EXOS = [
     {id:'q8', txt:"Ça m'inquiétait pour la santé de ma fille.", ok:'LOCATAIRE'},
    ]},
 
-  {sec:'appli', id:'aComp', type:'write', num:'Exercice 2', tit:'Le mot juste', color:'#0F766E', cols:2,
+  {sec:'appli', id:'aComp', type:'write', num:'Exercice 2', tit:'Le mot juste', color:'#7E3F98', cols:2,
    sub:"Complète chaque phrase avec le mot qui convient.",
    items:[
     {q:"Il y a une ___ d'eau sous l'évier : le tuyau goutte.", accept:["fuite","une fuite"], ph:"un mot"},

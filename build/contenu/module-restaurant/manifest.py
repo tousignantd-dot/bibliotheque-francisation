@@ -9,8 +9,8 @@ MANIFESTE = {
     'theme': 'Service de restauration',
 
     # Teal : le voisin immédiat est bleu (15), et le violet est plus loin.
-    'accent': '#0D7A6F',
-    'accent_doux': '#DCF2EF',
+    'accent': '#8C6A07',
+    'accent_doux': '#F7F0DA',
 
     'ia_oral': "L'élève commande un repas en salle à manger ou raconte un "
                "repas au restaurant : il emploie les formules de politesse "

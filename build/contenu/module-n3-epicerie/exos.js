@@ -1,10 +1,10 @@
 const EXOS = [
  // ── JE DÉCOUVRE ─────────────────────────────────────────────
-  {sec:'prep', id:'prVocab', type:'match', num:'Vocabulaire · 1', tit:'Le mot et sa définition', color:'#166534',
+  {sec:'prep', id:'prVocab', type:'match', num:'Vocabulaire · 1', tit:'Le mot et sa définition', color:'#A5335F',
    sub:'Choisis un mot, puis sa définition. Six mots à la fois.', noQLbl:true, bankLbl:'Définitions', zonePh:'glisse la définition ici',
    rows: FC_CARDS.map((c,i)=>({id:'pv'+i, q:c.word, aid:'pv'+i, a:c.def}))},
 
-  {sec:'prep', id:'pr1', type:'vf', num:'Exercice 1', tit:"Vrai ou Faux — Je ne trouve pas", color:'#166534',
+  {sec:'prep', id:'pr1', type:'vf', num:'Exercice 1', tit:"Vrai ou Faux — Je ne trouve pas", color:'#A5335F',
    sub:'Écoute de nouveau le dialogue, puis réponds.', tiles:['VRAI','FAUX'],
    savoir:{h:"› Les mots du magasin — à écouter et à répéter", speak:true, rows:[
      ["Où on cherche","Trois mots pour dire où se trouve un produit.", ["allée","affichette","tablette"]],
@@ -20,7 +20,7 @@ const EXOS = [
     {id:'p1f', txt:"Marisol veut faire du pain.", ok:'FAUX'},
    ]},
 
-  {sec:'prep', id:'prNombres', type:'vf', num:'Exercice 2', tit:"Treize ou trente ?", color:'#166534', accent:'#166534', cards:true, listen:true,
+  {sec:'prep', id:'prNombres', type:'vf', num:'Exercice 2', tit:"Treize ou trente ?", color:'#A5335F', accent:'#166534', cards:true, listen:true,
    sub:"Écoute bien la fin du mot. Entends-tu « ze » ou « te » ?", tiles:['13 · TREIZE','30 · TRENTE'],
    rows:[
     {id:'nba', txt:"treize", ok:'13 · TREIZE'},
@@ -33,7 +33,7 @@ const EXOS = [
     {id:'nbh', txt:"soixante", ok:'30 · TRENTE'},
    ]},
 
-  {sec:'prep', id:'prImg', type:'imgmatch', num:'Exercice 3', tit:"Dans l'épicerie", color:'#166534',
+  {sec:'prep', id:'prImg', type:'imgmatch', num:'Exercice 3', tit:"Dans l'épicerie", color:'#A5335F',
    sub:"Glisse chaque photo sur la phrase qui la décrit.",
    images:[
     {id:'ie1', src:'/assets/interactive/module-n3-epicerie/images/allee-numerotee.jpg'},
@@ -56,7 +56,7 @@ const EXOS = [
     {id:'ie8', txt:"Le papier à vérifier avant de partir.", ok:'ie8'},
    ]},
 
-  {sec:'prep', id:'prCommerce', type:'match', num:'Exercice 4', tit:'Où aller acheter ?', color:'#166534',
+  {sec:'prep', id:'prCommerce', type:'match', num:'Exercice 4', tit:'Où aller acheter ?', color:'#A5335F',
    sub:"Associe chaque commerce à ce qu'on y trouve.", bankLbl:'Le commerce', zonePh:'glisse ici',
    rows:[
     {id:'c1', q:"Tout pour la semaine, au meilleur prix", aid:'c1', a:"une épicerie ou un supermarché"},
@@ -67,7 +67,7 @@ const EXOS = [
     {id:'c6', q:"Des produits de votre pays", aid:'c6', a:"une épicerie spécialisée"},
    ]},
 
-  {sec:'prep', id:'prTrouver', type:'write', num:'Exercice 5', tit:"Trouver un produit", color:'#166534', cols:2,
+  {sec:'prep', id:'prTrouver', type:'write', num:'Exercice 5', tit:"Trouver un produit", color:'#A5335F', cols:2,
    sub:"Complète d'après le dialogue.",
    savoir:{h:"› Comment une épicerie est rangée", rows:[
      ["Les allées ont un numéro","Un grand chiffre est suspendu au bout de chaque rangée. C'est le numéro qu'on vous donnera si vous demandez de l'aide : « allée douze »."],
@@ -273,7 +273,7 @@ const EXOS = [
    ]},
 
  // ── JE ME LANCE ─────────────────────────────────────────────
-  {sec:'appli', id:'aQui', type:'vf', num:'Exercice 1', tit:'Qui parle ?', color:'#0F766E',
+  {sec:'appli', id:'aQui', type:'vf', num:'Exercice 1', tit:'Qui parle ?', color:'#7E3F98',
    sub:"Écoute le dialogue « Toute seule », puis réponds.", tiles:['MARISOL','ÉRIC'],
    rows:[
     {id:'a1', txt:"« Je cherche le riz. Le grand sac, pas le petit. »", ok:'MARISOL'},
@@ -283,7 +283,7 @@ const EXOS = [
     {id:'a5', txt:"« Alors je prends deux sacs. »", ok:'MARISOL'},
    ]},
 
-  {sec:'appli', id:'aComp', type:'write', num:'Exercice 2', tit:'Le mot juste', color:'#0F766E', cols:2,
+  {sec:'appli', id:'aComp', type:'write', num:'Exercice 2', tit:'Le mot juste', color:'#7E3F98', cols:2,
    sub:"Complète avec un mot du module.",
    items:[
     {q:"Le panneau au-dessus de l'allée est une ___ .", accept:["affichette"], ph:"…"},

@@ -9,8 +9,8 @@ MANIFESTE = {
     'theme': 'Achat de vêtements',
 
     # Ambre : le voisin immédiat est teal (16), et le bleu est plus loin.
-    'accent': '#B45309',
-    'accent_doux': '#FBEEDC',
+    'accent': '#8C6A07',
+    'accent_doux': '#F7F0DA',
 
     'ia_oral': "L'élève s'informe sur un vêtement ou en décrit un : il donne "
                "sa taille, demande à l'essayer, décrit la couleur, la matière "

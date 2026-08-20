@@ -15,10 +15,10 @@ const SECTIONS = [
    lead:"Exprimer son mécontentement avec des mots justes.",
    intro:"Défi 3 — Quatre personnes de l'immeuble décrivent une situation qu'elles ne tolèrent plus. Se plaindre, ce n'est pas seulement décrire : c'est décrire et demander un changement.",
    dialogue:'t3', next:{id:'appli', tit:'Je me lance', sub:"Parler à sa propriétaire à voix haute, puis écrire pour laisser une trace."}},
-  {id:'appli', no:'<img class="icon-svg tno-play" src="/assets/interactive/module-probleme/icons/play.svg" alt="">', title:'Je me lance', color:'#0F766E', custom:true,
+  {id:'appli', no:'<img class="icon-svg tno-play" src="/assets/interactive/module-probleme/icons/play.svg" alt="">', title:'Je me lance', color:'#7E3F98', custom:true,
    lead:"Parler à sa propriétaire à voix haute, puis écrire pour laisser une trace.",
    intro:"Je me lance — Un dernier dialogue à analyser, puis c'est à toi : tu expliques ton problème à l'oral, et tu écris le courriel qui garde une trace de ta demande."},
-  {id:'retiens', no:'✓', title:'Je retiens des mots', color:'#166534', custom:true,
+  {id:'retiens', no:'✓', title:'Je retiens des mots', color:'#A5335F', custom:true,
    lead:"Rassembler le vocabulaire du logement et faire le point sur ce qu'on sait faire.",
    intro:"Je retiens des mots — Notez vos mots utiles, révisez avec les cartes mémoire, puis évaluez ce que vous êtes maintenant capable de faire."},
 ];

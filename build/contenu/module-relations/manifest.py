@@ -16,8 +16,8 @@ MANIFESTE = {
 
     # Teal : la rotation à cinq couleurs du projet. Le voisin immédiat
     # (module-probleme) est violet, celui d'avant bleu.
-    'accent': '#0D7A6F',
-    'accent_doux': '#DCF2EF',
+    'accent': '#8C6A07',
+    'accent_doux': '#F7F0DA',
 
     # Consigne envoyée à l'IA pour corriger la production orale.
     'ia_oral': "L'élève raconte oralement une expérience personnelle "

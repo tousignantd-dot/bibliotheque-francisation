@@ -376,7 +376,7 @@ body{
   /* Teinte propre à ce module (même couleur que sa plaquette dans le portail
      et la barre du lecteur) — seulement pour l'en-tête, le reste de
      l'interface garde l'accent vert unique du système de design. */
-  --hdr-accent:#166534; --hdr-accent-soft:#DCF0E1;
+  --hdr-accent:#B45309; --hdr-accent-soft:#FBEEDC;
   --pad-x:32px;      /* gouttière de page — identique partout */
   --pad-card:22px;   /* padding intérieur de TOUS les cadres */
   --bleed:-23px;     /* = -(var(--pad-card) + 1px de bordure) */
@@ -1102,7 +1102,7 @@ const DIALOGUES = {
 
 // ── SECTIONS ──────────────────────────────────────────────────────────
 const SECTIONS = [
-  {id:'prep', no:'<img class="icon-svg tno-play" src="/assets/interactive/module-n3-epicerie/icons/play.svg" alt="">', title:'Je découvre', color:'#166534',
+  {id:'prep', no:'<img class="icon-svg tno-play" src="/assets/interactive/module-n3-epicerie/icons/play.svg" alt="">', title:'Je découvre', color:'#A5335F',
    lead:"Nommer les rayons, comprendre un numéro d'allée, demander de l'aide.",
    intro:"Marisol est arrivée du Guatemala il y a huit mois. Elle fait ses courses seule pour la première fois dans une grande épicerie. Elle cherche de la farine de maïs — et elle apprend qu'ici, elle n'est pas avec les autres farines.",
    dialogue:'prep', next:{id:'t1', tit:'Défi 1 · Trouver le produit', sub:"Demander où c'est, comprendre la réponse, et faire répéter."}},
@@ -1118,10 +1118,10 @@ const SECTIONS = [
    lead:"Répondre aux questions, comprendre le montant, et vérifier la facture.",
    intro:"Défi 3 — Le caissier pose toujours les mêmes questions : la carte de points, les sacs, débit ou crédit. Et après, il reste un papier à lire — celui qui dit si on a payé le bon prix.",
    dialogue:'t3', next:{id:'appli', tit:'Je me lance', sub:"Chercher un produit à voix haute, puis écrire sa liste d'épicerie."}},
-  {id:'appli', no:'<img class="icon-svg tno-play" src="/assets/interactive/module-n3-epicerie/icons/play.svg" alt="">', title:'Je me lance', color:'#0F766E', custom:true,
+  {id:'appli', no:'<img class="icon-svg tno-play" src="/assets/interactive/module-n3-epicerie/icons/play.svg" alt="">', title:'Je me lance', color:'#7E3F98', custom:true,
    lead:"Chercher un produit à voix haute, puis écrire sa liste d'épicerie.",
    intro:"Je me lance — C'est à toi : tu demandes où se trouve un produit et tu t'informes sur son prix, puis tu écris ta liste d'épicerie avec les quantités."},
-  {id:'retiens', no:'✓', title:'Je retiens des mots', color:'#166534', custom:true,
+  {id:'retiens', no:'✓', title:'Je retiens des mots', color:'#A5335F', custom:true,
    lead:"Rassembler les mots de l'épicerie, des quantités et de la caisse.",
    intro:"Je retiens des mots — Note tes mots utiles, révise avec les cartes mémoire, puis évalue ce que tu es maintenant capable de faire."},
 ];
@@ -1151,11 +1151,11 @@ const FC_CARDS = [
 
 const EXOS = [
  // ── JE DÉCOUVRE ─────────────────────────────────────────────
-  {sec:'prep', id:'prVocab', type:'match', num:'Vocabulaire · 1', tit:'Le mot et sa définition', color:'#166534',
+  {sec:'prep', id:'prVocab', type:'match', num:'Vocabulaire · 1', tit:'Le mot et sa définition', color:'#A5335F',
    sub:'Choisis un mot, puis sa définition. Six mots à la fois.', noQLbl:true, bankLbl:'Définitions', zonePh:'glisse la définition ici',
    rows: FC_CARDS.map((c,i)=>({id:'pv'+i, q:c.word, aid:'pv'+i, a:c.def}))},
 
-  {sec:'prep', id:'pr1', type:'vf', num:'Exercice 1', tit:"Vrai ou Faux — Je ne trouve pas", color:'#166534',
+  {sec:'prep', id:'pr1', type:'vf', num:'Exercice 1', tit:"Vrai ou Faux — Je ne trouve pas", color:'#A5335F',
    sub:'Écoute de nouveau le dialogue, puis réponds.', tiles:['VRAI','FAUX'],
    savoir:{h:"› Les mots du magasin — à écouter et à répéter", speak:true, rows:[
      ["Où on cherche","Trois mots pour dire où se trouve un produit.", ["allée","affichette","tablette"]],
@@ -1171,7 +1171,7 @@ const EXOS = [
     {id:'p1f', txt:"Marisol veut faire du pain.", ok:'FAUX'},
    ]},
 
-  {sec:'prep', id:'prNombres', type:'vf', num:'Exercice 2', tit:"Treize ou trente ?", color:'#166534', accent:'#166534', cards:true, listen:true,
+  {sec:'prep', id:'prNombres', type:'vf', num:'Exercice 2', tit:"Treize ou trente ?", color:'#A5335F', accent:'#166534', cards:true, listen:true,
    sub:"Écoute bien la fin du mot. Entends-tu « ze » ou « te » ?", tiles:['13 · TREIZE','30 · TRENTE'],
    rows:[
     {id:'nba', txt:"treize", ok:'13 · TREIZE'},
@@ -1184,7 +1184,7 @@ const EXOS = [
     {id:'nbh', txt:"soixante", ok:'30 · TRENTE'},
    ]},
 
-  {sec:'prep', id:'prImg', type:'imgmatch', num:'Exercice 3', tit:"Dans l'épicerie", color:'#166534',
+  {sec:'prep', id:'prImg', type:'imgmatch', num:'Exercice 3', tit:"Dans l'épicerie", color:'#A5335F',
    sub:"Glisse chaque photo sur la phrase qui la décrit.",
    images:[
     {id:'ie1', src:'/assets/interactive/module-n3-epicerie/images/allee-numerotee.jpg'},
@@ -1207,7 +1207,7 @@ const EXOS = [
     {id:'ie8', txt:"Le papier à vérifier avant de partir.", ok:'ie8'},
    ]},
 
-  {sec:'prep', id:'prCommerce', type:'match', num:'Exercice 4', tit:'Où aller acheter ?', color:'#166534',
+  {sec:'prep', id:'prCommerce', type:'match', num:'Exercice 4', tit:'Où aller acheter ?', color:'#A5335F',
    sub:"Associe chaque commerce à ce qu'on y trouve.", bankLbl:'Le commerce', zonePh:'glisse ici',
    rows:[
     {id:'c1', q:"Tout pour la semaine, au meilleur prix", aid:'c1', a:"une épicerie ou un supermarché"},
@@ -1218,7 +1218,7 @@ const EXOS = [
     {id:'c6', q:"Des produits de votre pays", aid:'c6', a:"une épicerie spécialisée"},
    ]},
 
-  {sec:'prep', id:'prTrouver', type:'write', num:'Exercice 5', tit:"Trouver un produit", color:'#166534', cols:2,
+  {sec:'prep', id:'prTrouver', type:'write', num:'Exercice 5', tit:"Trouver un produit", color:'#A5335F', cols:2,
    sub:"Complète d'après le dialogue.",
    savoir:{h:"› Comment une épicerie est rangée", rows:[
      ["Les allées ont un numéro","Un grand chiffre est suspendu au bout de chaque rangée. C'est le numéro qu'on vous donnera si vous demandez de l'aide : « allée douze »."],
@@ -1424,7 +1424,7 @@ const EXOS = [
    ]},
 
  // ── JE ME LANCE ─────────────────────────────────────────────
-  {sec:'appli', id:'aQui', type:'vf', num:'Exercice 1', tit:'Qui parle ?', color:'#0F766E',
+  {sec:'appli', id:'aQui', type:'vf', num:'Exercice 1', tit:'Qui parle ?', color:'#7E3F98',
    sub:"Écoute le dialogue « Toute seule », puis réponds.", tiles:['MARISOL','ÉRIC'],
    rows:[
     {id:'a1', txt:"« Je cherche le riz. Le grand sac, pas le petit. »", ok:'MARISOL'},
@@ -1434,7 +1434,7 @@ const EXOS = [
     {id:'a5', txt:"« Alors je prends deux sacs. »", ok:'MARISOL'},
    ]},
 
-  {sec:'appli', id:'aComp', type:'write', num:'Exercice 2', tit:'Le mot juste', color:'#0F766E', cols:2,
+  {sec:'appli', id:'aComp', type:'write', num:'Exercice 2', tit:'Le mot juste', color:'#7E3F98', cols:2,
    sub:"Complète avec un mot du module.",
    items:[
     {q:"Le panneau au-dessus de l'allée est une ___ .", accept:["affichette"], ph:"…"},

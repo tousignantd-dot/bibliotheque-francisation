@@ -9,8 +9,8 @@ MANIFESTE = {
     'theme': 'Participation à une activité culturelle ou sportive',
 
     # Vert : les voisins immédiats sont teal (11) et ambre (12).
-    'accent': '#166534',
-    'accent_doux': '#E3F1E7',
+    'accent': '#8C6A07',
+    'accent_doux': '#F7F0DA',
 
     'ia_oral': "L'élève s'informe oralement sur une activité de loisir ou "
                "donne des consignes simples pendant une activité : il pose "

@@ -15,10 +15,10 @@ const SECTIONS = [
    lead:"Les taxes, le pourboire, et payer ensemble ou séparément.",
    intro:"Défi 3 — Cinquante-huit dollars quarante, taxes comprises. Et le pourboire ? Il n'est pas sur l'addition, il s'ajoute — et au Québec, il fait partie du salaire du serveur.",
    dialogue:'t3', next:{id:'appli', tit:'Je me lance', sub:"Commander à voix haute, raconter un repas, puis écrire une recommandation."}},
-  {id:'appli', no:'<img class="icon-svg tno-play" src="/assets/interactive/module-restaurant/icons/play.svg" alt="">', title:'Je me lance', color:'#0F766E', custom:true,
+  {id:'appli', no:'<img class="icon-svg tno-play" src="/assets/interactive/module-restaurant/icons/play.svg" alt="">', title:'Je me lance', color:'#7E3F98', custom:true,
    lead:"Commander à voix haute, raconter un repas, puis écrire une recommandation.",
    intro:"Je me lance — C'est à toi : tu commandes un repas complet, tu racontes un repas au restaurant, et tu écris à quelqu'un pour lui recommander un endroit."},
-  {id:'retiens', no:'✓', title:'Je retiens des mots', color:'#166534', custom:true,
+  {id:'retiens', no:'✓', title:'Je retiens des mots', color:'#A5335F', custom:true,
    lead:"Rassembler le vocabulaire du menu, du repas et de l'addition.",
    intro:"Je retiens des mots — Note tes mots utiles, révise avec les cartes mémoire, puis évalue ce que tu es maintenant capable de faire."},
 ];

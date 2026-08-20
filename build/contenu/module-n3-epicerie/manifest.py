@@ -14,8 +14,8 @@ MANIFESTE = {
 
     # Forêt : le module d'alimentation du niveau 4 est teal, et les deux
     # peuvent se retrouver côte à côte dans le catalogue.
-    'accent': '#166534',
-    'accent_doux': '#DCF0E1',
+    'accent': '#B45309',
+    'accent_doux': '#FBEEDC',
 
     'ia_oral': "L'élève cherche un produit dans une épicerie : il demande où "
                "il se trouve, demande de l'aide, s'informe sur un format ou "

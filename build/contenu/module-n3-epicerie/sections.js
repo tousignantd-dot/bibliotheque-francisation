@@ -1,5 +1,5 @@
 const SECTIONS = [
-  {id:'prep', no:'<img class="icon-svg tno-play" src="/assets/interactive/module-n3-epicerie/icons/play.svg" alt="">', title:'Je découvre', color:'#166534',
+  {id:'prep', no:'<img class="icon-svg tno-play" src="/assets/interactive/module-n3-epicerie/icons/play.svg" alt="">', title:'Je découvre', color:'#A5335F',
    lead:"Nommer les rayons, comprendre un numéro d'allée, demander de l'aide.",
    intro:"Marisol est arrivée du Guatemala il y a huit mois. Elle fait ses courses seule pour la première fois dans une grande épicerie. Elle cherche de la farine de maïs — et elle apprend qu'ici, elle n'est pas avec les autres farines.",
    dialogue:'prep', next:{id:'t1', tit:'Défi 1 · Trouver le produit', sub:"Demander où c'est, comprendre la réponse, et faire répéter."}},
@@ -15,10 +15,10 @@ const SECTIONS = [
    lead:"Répondre aux questions, comprendre le montant, et vérifier la facture.",
    intro:"Défi 3 — Le caissier pose toujours les mêmes questions : la carte de points, les sacs, débit ou crédit. Et après, il reste un papier à lire — celui qui dit si on a payé le bon prix.",
    dialogue:'t3', next:{id:'appli', tit:'Je me lance', sub:"Chercher un produit à voix haute, puis écrire sa liste d'épicerie."}},
-  {id:'appli', no:'<img class="icon-svg tno-play" src="/assets/interactive/module-n3-epicerie/icons/play.svg" alt="">', title:'Je me lance', color:'#0F766E', custom:true,
+  {id:'appli', no:'<img class="icon-svg tno-play" src="/assets/interactive/module-n3-epicerie/icons/play.svg" alt="">', title:'Je me lance', color:'#7E3F98', custom:true,
    lead:"Chercher un produit à voix haute, puis écrire sa liste d'épicerie.",
    intro:"Je me lance — C'est à toi : tu demandes où se trouve un produit et tu t'informes sur son prix, puis tu écris ta liste d'épicerie avec les quantités."},
-  {id:'retiens', no:'✓', title:'Je retiens des mots', color:'#166534', custom:true,
+  {id:'retiens', no:'✓', title:'Je retiens des mots', color:'#A5335F', custom:true,
    lead:"Rassembler les mots de l'épicerie, des quantités et de la caisse.",
    intro:"Je retiens des mots — Note tes mots utiles, révise avec les cartes mémoire, puis évalue ce que tu es maintenant capable de faire."},
 ];

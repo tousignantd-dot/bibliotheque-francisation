@@ -338,9 +338,60 @@ les contenus de `build/contenu/`, les modules écrits à la main, les pages
 d'outils et le compositeur — puis la reconstruction des huit modules générés et
 des 3 835 diapositives.
 
-Une couleur d'en-tête d'un module neuf se prend donc parmi **quatre** : acier
-`#1D6B8F`, ambre `#B45309`, teal `#0D7A6F`, forêt `#166534`. L'indigo reste au
-repérage de la graphie-phonie et ne sert pas d'en-tête.
+### La couleur d'un module est celle de son niveau
+
+Le 20 août 2026, la règle ci-dessus a été remplacée. Choisir une couleur
+d'en-tête parmi quatre, en évitant seulement le module voisin, entretenait deux
+échelles pour une seule idée : un élève voyait une pastille ambre au catalogue
+et un en-tête forêt en ouvrant le module. **La couleur d'un module est
+désormais celle de son niveau, et rien d'autre ne la décide** — les jetons
+`--niv-N-line` / `--niv-N-bg` de `colors.css` servent au catalogue, au portail
+et à l'en-tête du module.
+
+Le vert est sorti de l'échelle par la même occasion. Les quatre premiers
+niveaux forment une montée chaude, les quatre derniers une descente froide :
+
+| Niveau | Teinte | Filet / fond |
+|---|---|---|
+| 1 | framboise | `#A5335F` / `#FCE9F0` |
+| 2 | brique | `#A83A22` / `#FBEAE4` |
+| 3 | ambre | `#B45309` / `#FBEEDC` |
+| 4 | or | `#8C6A07` / `#F7F0DA` |
+| 5 | sarcelle | `#0D7A6F` / `#DCF2EF` |
+| 6 | acier | `#1D6B8F` / `#E7F0F6` |
+| 7 | indigo | `#3B49A0` / `#E8EAFA` |
+| 8 | pourpre | `#7E3F98` / `#F3E8F7` |
+
+L'olive du niveau 3 et la forêt du niveau 4 ont disparu ; l'ambre est descendu
+du niveau 2 au niveau 3, et la brique a pris le niveau 2, encore vide de
+modules à ce moment-là. L'indigo reste aussi au repérage de la graphie-phonie.
+
+`build/couleurs_niveau.py` est ce qui tient la règle. Il lit les jetons dans
+`colors.css` et le niveau dans `build/powerpoints/modules.py`, puis pose la
+paire dans `build/contenu/<slug>/manifest.py` pour les modules générés, ou
+directement dans le HTML pour les plus anciens, qui n'ont pas de dossier de
+contenu. `--verifier` signale les écarts, y compris un module généré dont le
+manifeste est juste mais qui n'a pas été reconstruit.
+
+    python3 build/couleurs_niveau.py --verifier
+
+Un module neuf n'a donc **aucune couleur à choisir** pour son en-tête : lui
+donner son niveau dans le registre suffit.
+
+Le vert a quitté les **couleurs de section** par la même décision. La palette
+qui distingue les onglets d'un module — `sections.js`, répétée par `exos.js`
+sur les exercices — portait la forêt `#166534` sur « Je retiens des mots » et
+le teal-vert `#0F766E` sur « Je me lance ». Elles sont devenues framboise
+`#A5335F` et pourpre `#7E3F98`. `build/couleurs_sections.py` applique et
+vérifie la substitution, dans les contenus comme dans le HTML des modules
+anciens :
+
+    python3 build/couleurs_sections.py --verifier
+
+Le seul vert qui reste est celui du **système de design** : `--accent`
+`#0A8F5B` — boutons, pastilles, focus, et la rétroaction « correct ». Il n'a
+jamais servi au repérage, et le retirer serait une refonte du système, pas une
+retouche de module.
 
 Un reste connu : `assets/interactive/a-lepicerie/` — une activité ancienne,
 exportée par un bundler — porte encore un `#6B4FBB` dans un rectangle SVG

@@ -358,7 +358,7 @@ const EXOS = [
    ]},
 
  // ── JE ME LANCE ─────────────────────────────────────────────
-  {sec:'appli', id:'aQui', type:'vf', num:'Exercice 1', tit:'Qui parle ?', color:'#0F766E',
+  {sec:'appli', id:'aQui', type:'vf', num:'Exercice 1', tit:'Qui parle ?', color:'#7E3F98',
    sub:"Écoute le dialogue du tournoi, puis indique qui dit chaque phrase.", tiles:['MARIAMA','OLIVIER'],
    dialogue:'appli',
    rows:[
@@ -372,7 +372,7 @@ const EXOS = [
     {id:'a8', txt:"Bonne chance contre nous tantôt.", ok:'OLIVIER'},
    ]},
 
-  {sec:'appli', id:'aComp', type:'write', num:'Exercice 2', tit:'Le mot juste', color:'#0F766E', cols:2,
+  {sec:'appli', id:'aComp', type:'write', num:'Exercice 2', tit:'Le mot juste', color:'#7E3F98', cols:2,
    sub:"Complète chaque phrase avec le mot qui convient.",
    items:[
     {q:"Mon ___ de travail commence à sept heures du matin.", accept:["quart"], ph:"un mot"},

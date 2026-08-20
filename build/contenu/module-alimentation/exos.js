@@ -241,7 +241,7 @@ const EXOS = [
    ]},
 
  // ── DÉFI 3 · L'ÉTIQUETTE ET LE MODE D'EMPLOI ────────────────
-  {sec:'t3', id:'t3vf', type:'vf', num:'Exercice 1', tit:"Vrai ou Faux — Ce qui est écrit sur l'étiquette", color:'#166534',
+  {sec:'t3', id:'t3vf', type:'vf', num:'Exercice 1', tit:"Vrai ou Faux — Ce qui est écrit sur l'étiquette", color:'#A5335F',
    sub:"Écoute le dialogue, puis réponds.", tiles:['VRAI','FAUX'],
    savoir:{h:"› Les mots de l'étiquette — à écouter et à répéter", speak:true, rows:[
      ["Ce qu'on vérifie","La date et le texte qui explique comment s'en servir.", ["péremption","emploi"]],
@@ -260,7 +260,7 @@ const EXOS = [
     {id:'f10', txt:"Claude comprend bien les étiquettes.", ok:'FAUX'},
    ]},
 
-  {sec:'t3', id:'t3etiq', type:'write', num:'Exercice 2', tit:'Les trois lignes qui comptent', color:'#166534', cols:2,
+  {sec:'t3', id:'t3etiq', type:'write', num:'Exercice 2', tit:'Les trois lignes qui comptent', color:'#A5335F', cols:2,
    sub:"Réponds d'après ce que Farida explique.",
    savoir:{h:"› Lire un tableau de valeur nutritive en dix secondes", rows:[
      ["La portion, tout en haut","<b>Tous</b> les chiffres du tableau valent pour cette portion-là, pas pour le contenant. Deux marques qui affichent des portions différentes ne se comparent pas directement."],
@@ -278,7 +278,7 @@ const EXOS = [
     {q:"« Meilleur avant » est une date de ___ , pas de danger.", accept:["qualité","qualite"], ph:"…"},
    ]},
 
-  {sec:'t3', id:'t3mode', type:'write', num:'Exercice 3', tit:"Suivre un mode d'emploi", color:'#166534', cols:2,
+  {sec:'t3', id:'t3mode', type:'write', num:'Exercice 3', tit:"Suivre un mode d'emploi", color:'#A5335F', cols:2,
    sub:"Réponds d'après le mode d'emploi du nettoyant.",
    savoir:{h:"› Un mode d'emploi tient en trois blocs", rows:[
      ["1 · La dose, en haut","Combien de produit, dans combien d'eau.<span class='savoir-ex'>« Diluer 30 ml dans 4 litres d'eau tiède. »</span>Un bouchon doseur accompagne presque toujours la bouteille."],
@@ -296,7 +296,7 @@ const EXOS = [
     {q:"Il faut tenir le produit hors de la ___ des enfants.", accept:["portée","portee"], ph:"…"},
    ]},
 
-  {sec:'t3', id:'t3bloc', type:'match', num:'Exercice 4', tit:'Dans quel bloc ?', color:'#166534',
+  {sec:'t3', id:'t3bloc', type:'match', num:'Exercice 4', tit:'Dans quel bloc ?', color:'#A5335F',
    sub:"Associe chaque phrase au bloc du mode d'emploi où elle se trouve.", bankLbl:'Le bloc', zonePh:'glisse ici',
    rows:[
     {id:'o1', q:"« Diluer 30 ml dans 4 litres d'eau tiède. »", aid:'o1', a:"la dose — en haut"},
@@ -307,7 +307,7 @@ const EXOS = [
     {id:'o6', q:"« Utiliser le bouchon doseur fourni. »", aid:'o6', a:"la dose — en haut"},
    ]},
 
-  {sec:'t3', id:'t3b', type:'vf', num:'Exercice 5', tit:"Vrai ou Faux — Le mode d'emploi du nettoyant", color:'#166534',
+  {sec:'t3', id:'t3b', type:'vf', num:'Exercice 5', tit:"Vrai ou Faux — Le mode d'emploi du nettoyant", color:'#A5335F',
    sub:"Écoute le dernier dialogue, puis réponds.", tiles:['VRAI','FAUX'], dialogue:'t3b',
    rows:[
     {id:'n1', txt:"Il faut diluer trente millilitres dans quatre litres d'eau.", ok:'VRAI'},
@@ -321,7 +321,7 @@ const EXOS = [
    ]},
 
  // ── JE ME LANCE ─────────────────────────────────────────────
-  {sec:'appli', id:'aQui', type:'vf', num:'Exercice 1', tit:'Qui parle ?', color:'#0F766E',
+  {sec:'appli', id:'aQui', type:'vf', num:'Exercice 1', tit:'Qui parle ?', color:'#7E3F98',
    sub:"Écoute le dialogue de la charcuterie, puis indique qui dit chaque phrase.", tiles:['FARIDA','SIMON'],
    dialogue:'appli',
    rows:[
@@ -335,7 +335,7 @@ const EXOS = [
     {id:'x8', txt:"Ça fait cinq dollars quarante.", ok:'SIMON'},
    ]},
 
-  {sec:'appli', id:'aComp', type:'write', num:'Exercice 2', tit:'Le mot juste', color:'#0F766E', cols:2,
+  {sec:'appli', id:'aComp', type:'write', num:'Exercice 2', tit:'Le mot juste', color:'#7E3F98', cols:2,
    sub:"Complète chaque phrase avec le mot qui convient.",
    items:[
     {q:"La pâte de tomate est dans l'___ cinq.", accept:["allée","allee"], ph:"un mot"},

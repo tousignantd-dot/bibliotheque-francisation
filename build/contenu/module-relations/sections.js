@@ -15,10 +15,10 @@ const SECTIONS = [
    lead:"Lire les nouvelles qu'on reçoit, et en donner par écrit.",
    intro:"Défi 3 — Fatou, la sœur de Mariama, laisse un message vocal : le bébé est né. Il faut répondre. Et Chantal aussi a une nouvelle. Une carte postale et une carte de vœux, ce n'est ni la même chose ni la même écriture.",
    dialogue:'t3', next:{id:'appli', tit:'Je me lance', sub:"Faire connaissance à voix haute, raconter son histoire, puis écrire sa carte."}},
-  {id:'appli', no:'<img class="icon-svg tno-play" src="/assets/interactive/module-relations/icons/play.svg" alt="">', title:'Je me lance', color:'#0F766E', custom:true,
+  {id:'appli', no:'<img class="icon-svg tno-play" src="/assets/interactive/module-relations/icons/play.svg" alt="">', title:'Je me lance', color:'#7E3F98', custom:true,
    lead:"Faire connaissance à voix haute, raconter son histoire, puis écrire sa carte.",
    intro:"Je me lance — C'est à toi : tu fais connaissance avec quelqu'un dans une activité, tu racontes une expérience qui t'a marqué, et tu écris la carte que tu remets ou que tu postes."},
-  {id:'retiens', no:'✓', title:'Je retiens des mots', color:'#166534', custom:true,
+  {id:'retiens', no:'✓', title:'Je retiens des mots', color:'#A5335F', custom:true,
    lead:"Rassembler le vocabulaire de la semaine, des loisirs et des nouvelles, et faire le point.",
    intro:"Je retiens des mots — Note tes mots utiles, révise avec les cartes mémoire, puis évalue ce que tu es maintenant capable de faire."},
 ];
