@@ -17,7 +17,7 @@ def build(dossier):
                 "Que faire avant d'appeler la propriétaire ?",
         duree='75 minutes')
 
-    d.titre(notes="Ouverture du module 9. Ne pas encore expliquer le vocabulaire : "
+    d.titre(notes="Ouverture du module. Ne pas encore expliquer le vocabulaire : "
                   "la séance commence par une situation, pas par une liste de mots. "
                   "Écrire au tableau : 4B, dernier étage, six logements.")
 
