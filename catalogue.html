@@ -652,12 +652,77 @@ document.getElementById('addForm').addEventListener('submit', async e => {
    ====================================================== */
 let allActivities = [];
 
+/* Les présentations d'un module ne tiennent pas dans le champ `slideshow` :
+   un cours en a seize, une par séance, et elles vivent dans l'inventaire du
+   dépôt, pas dans la fiche de l'activité. La ligne du catalogue les annonçait
+   donc comme absentes alors que les 160 fichiers existaient. On compte ici ce
+   que l'inventaire porte ; le lien de la ligne descend l'archive des seize. */
+let PRESENTATIONS = {};
+
+async function loadPresentations() {
+  try {
+    const res = await Prof.fetch('/api/materiel');
+    if (!res.ok) return;
+    const d = await res.json();
+    const compte = {};
+    for (const porteur of (d.materiel?.porteurs || [])) {
+      let n = 0;
+      for (const seance of (porteur.seances || [])) {
+        for (const f of (seance.fichiers || [])) {
+          if (f.type === 'presentation') n++;
+        }
+      }
+      if (n) compte[porteur.activiteId] = n;
+    }
+    PRESENTATIONS = compte;
+  } catch {
+    // Le catalogue reste lisible sans ce complément : on n'en fait pas une panne.
+  }
+}
+
+/* Le matériel d'une ligne. Trois cas : le fichier est nommé dans l'activité,
+   ou il n'y est pas mais l'inventaire en porte plusieurs, ou il n'y a rien. */
+function chipMateriel(a, m) {
+  if (a[m.cle]) {
+    return `<a href="${escHtml(a[m.cle])}" target="_blank" rel="noopener">✓ ${escHtml(m.nom)}</a>`;
+  }
+  const n = m.cle === 'slideshow' ? (PRESENTATIONS[a.id] || 0) : 0;
+  if (n) {
+    return `<a href="#" class="lien-zip" data-zip="${a.id}">✓ ${n} présentations (.zip)</a>`;
+  }
+  return `<span class="est-vide">— ${escHtml(m.nom)}</span>`;
+}
+
+/* Le jeton enseignant voyage en en-tête : un simple lien ne suffit pas, on
+   récupère l'archive puis on déclenche l'enregistrement. Même méthode que
+   l'écran « Matériel » du portail (js/materiel.js). */
+async function telechargerPresentations(id) {
+  const params = new URLSearchParams({ activiteId: id, portee: 'presentations' });
+  toast('Archive en préparation…');
+  try {
+    const res = await Prof.fetch(`/api/materiel/archive?${params}`);
+    if (!res.ok) throw new Error(`erreur ${res.status}`);
+    const blob = await res.blob();
+    const nom = (res.headers.get('Content-Disposition') || '')
+      .match(/filename="([^"]+)"/)?.[1] || 'presentations.zip';
+    const url = URL.createObjectURL(blob);
+    const lien = document.createElement('a');
+    lien.href = url; lien.download = nom;
+    document.body.appendChild(lien); lien.click(); lien.remove();
+    setTimeout(() => URL.revokeObjectURL(url), 4000);
+    toast(`Téléchargement démarré : ${nom}`);
+  } catch (e) {
+    toast(`Archive impossible : ${e.message}`, 'error');
+  }
+}
+
 async function loadList() {
   try {
     // `catalogue=1` : le fonds entier, sans les dates d'un groupe.
     const res = await Prof.fetch('/api/activities?catalogue=1');
     if (!res.ok) throw new Error();
     allActivities = await res.json();
+    await loadPresentations();
     populateFilterOptions();
     applyFilters();
     document.getElementById('serverBanner').style.display = 'none';
@@ -764,9 +829,7 @@ function renderItems(items) {
           <span class="act-niveau">${escHtml(niveauDe(a))}</span>${escHtml(a.title)}
         </div>
         <div class="act-meta">
-          ${MATERIEL.map(m => a[m.cle]
-            ? `<a href="${escHtml(a[m.cle])}" target="_blank" rel="noopener">✓ ${escHtml(m.nom)}</a>`
-            : `<span class="est-vide">— ${escHtml(m.nom)}</span>`).join('')}
+          ${MATERIEL.map(m => chipMateriel(a, m)).join('')}
         </div>
         ${(a.competences?.length || a.tempsVerbaux?.length || a.domaineDeVie) ? `<div class="act-tags">
           ${(a.competences || []).map(c => `<span class="act-tag act-tag--comp">${escHtml(c)}</span>`).join('')}
@@ -782,6 +845,12 @@ function renderItems(items) {
 }
 
 function attachListEvents() {
+  document.querySelectorAll('.lien-zip').forEach(lien => {
+    lien.addEventListener('click', (ev) => {
+      ev.preventDefault();
+      telechargerPresentations(Number(lien.dataset.zip));
+    });
+  });
   document.querySelectorAll('.ajout-btn').forEach(btn => {
     btn.addEventListener('click', () => {
       const activity = allActivities.find(a => a.id === Number(btn.dataset.id));
