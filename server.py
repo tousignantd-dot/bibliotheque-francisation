@@ -14,6 +14,8 @@ import os
 import shutil
 import threading
 import cgi
+import smtplib
+from email.message import EmailMessage
 import urllib.parse
 import urllib.request
 import urllib.error
@@ -152,6 +154,11 @@ ANALYSES_ERREURS_MAX = 3000
 # le .catch() de lmsTrack. Un cumul par (élève, activité, exercice), comme
 # corrige_moi.json : ce qui compte est la fréquence, pas l'horodatage.
 SIGNAUX_AIDE_FILE = STORAGE_DIR / "data" / "signaux_aide.json"
+# Signalements des enseignants : l'outil est en développement, et la personne
+# qui trouve le défaut est celle qui l'a sous les yeux. Un seul fichier, écrit
+# en entier à chaque ajout — le volume attendu se compte en dizaines.
+SIGNALEMENTS_FILE = STORAGE_DIR / "data" / "signalements.json"
+SIGNALEMENTS_MAX = 2000
 # Les événements que /api/student/progress accepte. Les trois premiers font
 # l'avancement dans progress.json ; les cinq suivants font le journal de l'aide.
 ALLOWED_EVENTS = {"dialogue_listened", "exercise_completed", "file_opened"}
@@ -1418,6 +1425,159 @@ def save_signaux_aide(data):
         json.dump(data, f, ensure_ascii=False, indent=2)
 
 
+# ── Signalements (« J'ai vu un problème ») ───────────────────────────────────
+# L'outil est en développement et les enseignantes sont les seules à voir ses
+# défauts en situation. Trois temps, dans cet ordre : on écrit le signalement
+# (rien ne doit pouvoir le perdre), on demande à l'IA un premier tri, on envoie
+# le courriel. Les deux derniers se font dans un fil séparé : l'enseignante a
+# déjà sa confirmation, elle n'attend ni l'API ni le serveur de courriel.
+
+def load_signalements():
+    if SIGNALEMENTS_FILE.exists():
+        with open(SIGNALEMENTS_FILE, "r", encoding="utf-8") as f:
+            return json.load(f)
+    return []
+
+
+def save_signalements(data):
+    SIGNALEMENTS_FILE.parent.mkdir(parents=True, exist_ok=True)
+    with open(SIGNALEMENTS_FILE, "w", encoding="utf-8") as f:
+        json.dump(data, f, ensure_ascii=False, indent=2)
+
+
+def maj_signalement(sid, champs):
+    """Relit, modifie une fiche, réécrit. Le fil de fond est seul à écrire
+    après coup, mais l'enseignante peut en envoyer un deuxième entre-temps :
+    on ne réécrit jamais à partir d'une liste gardée en mémoire."""
+    with _VERROU_SIGNALEMENTS:
+        entries = load_signalements()
+        for e in entries:
+            if e.get("id") == sid:
+                e.update(champs)
+                break
+        save_signalements(entries)
+
+
+_VERROU_SIGNALEMENTS = threading.Lock()
+
+
+def envoyer_courriel(sujet, corps):
+    """Envoie une note au responsable du projet. Sans configuration SMTP,
+    ne fait rien et le dit dans le journal — le signalement reste enregistré.
+
+    Variables d'environnement : SMTP_HOTE, SMTP_PORT (465 par défaut, SSL),
+    SMTP_USER, SMTP_MOTDEPASSE, et SIGNALEMENT_DESTINATAIRE (à défaut,
+    SMTP_USER). Avec Gmail, SMTP_MOTDEPASSE est un « mot de passe
+    d'application », jamais le mot de passe du compte.
+    """
+    hote = os.environ.get("SMTP_HOTE", "").strip()
+    user = os.environ.get("SMTP_USER", "").strip()
+    motdepasse = os.environ.get("SMTP_MOTDEPASSE", "")
+    destinataire = os.environ.get("SIGNALEMENT_DESTINATAIRE", "").strip() or user
+    if not (hote and user and motdepasse and destinataire):
+        print("[signalement] courriel non configuré (SMTP_*) — note gardée "
+              "seulement dans data/signalements.json", flush=True)
+        return False
+
+    message = EmailMessage()
+    message["Subject"] = sujet
+    message["From"] = user
+    message["To"] = destinataire
+    message.set_content(corps)
+
+    port = int(os.environ.get("SMTP_PORT", "465"))
+    try:
+        if port == 587:
+            with smtplib.SMTP(hote, port, timeout=20) as serveur:
+                serveur.starttls()
+                serveur.login(user, motdepasse)
+                serveur.send_message(message)
+        else:
+            with smtplib.SMTP_SSL(hote, port, timeout=20) as serveur:
+                serveur.login(user, motdepasse)
+                serveur.send_message(message)
+    except Exception as e:                      # noqa: BLE001 — jamais fatal
+        print(f"[signalement] envoi du courriel impossible : {e}", flush=True)
+        return False
+    print(f"[signalement] note envoyée à {destinataire}", flush=True)
+    return True
+
+
+def _prompt_triage(entry):
+    return (
+        "Un enseignant de francisation vient de signaler un problème dans le "
+        "portail enseignant (outil maison, en développement). Fais un premier "
+        "tri, en français, en trois lignes exactement et rien d'autre :\n"
+        "Gravité : bloquant | gênant | cosmétique | demande d'amélioration\n"
+        "Nature : ce qui semble en cause (interface, données, contenu "
+        "pédagogique, performance, malentendu d'usage…), en une phrase.\n"
+        "À corriger : oui / non / à voir — suivi d'une phrase qui dit "
+        "pourquoi, et où regarder si tu peux le deviner.\n\n"
+        f"Écran : {entry.get('ecran') or '(non précisé)'}\n"
+        f"Adresse : {entry.get('url') or '(inconnue)'}\n"
+        f"Description : {entry.get('description', '')}"
+    )
+
+
+def triage_signalement(entry):
+    """Premier tri par l'IA. Renvoie le texte, ou None si l'appel échoue."""
+    api_key = os.environ.get("ANTHROPIC_API_KEY", "")
+    if not api_key:
+        return None
+    payload = json.dumps({
+        "model": "claude-haiku-4-5-20251001",
+        "max_tokens": 400,
+        "messages": [{"role": "user", "content": _prompt_triage(entry)}],
+    }).encode("utf-8")
+    req = urllib.request.Request(
+        "https://api.anthropic.com/v1/messages",
+        data=payload,
+        headers={
+            "x-api-key": api_key,
+            "anthropic-version": "2023-06-01",
+            "content-type": "application/json",
+        },
+        method="POST",
+    )
+    try:
+        with urllib.request.urlopen(req, timeout=40) as resp:
+            result = json.loads(resp.read().decode("utf-8"))
+    except Exception as e:                      # noqa: BLE001 — jamais fatal
+        print(f"[signalement] triage impossible : {e}", flush=True)
+        return None
+    texte = " ".join(
+        b.get("text", "") for b in result.get("content", [])
+        if b.get("type") == "text"
+    ).strip()
+    return texte or None
+
+
+def traiter_signalement(entry):
+    """Fil de fond : trier, garder l'analyse, puis prévenir par courriel."""
+    analyse = triage_signalement(entry)
+    if analyse:
+        entry["analyse"] = analyse
+        maj_signalement(entry["id"], {"analyse": analyse})
+
+    corps = (
+        f"Signalement de {entry.get('enseignantNom') or 'un enseignant'}"
+        f" ({entry.get('enseignantCourriel') or 'courriel inconnu'})\n"
+        f"Reçu le {entry.get('timestamp', '')}\n"
+        f"Écran : {entry.get('ecran') or '(non précisé)'}\n"
+        f"Adresse : {entry.get('url') or '(inconnue)'}\n"
+        f"Navigateur : {entry.get('agent') or '(inconnu)'}\n"
+        f"\n--- Ce qui est décrit ---\n{entry.get('description', '')}\n"
+        f"\n--- Premier tri par l'IA ---\n"
+        f"{analyse or '(indisponible : clé API absente ou appel échoué)'}\n"
+        f"\nFiche complète : data/signalements.json (identifiant {entry.get('id')})\n"
+    )
+    envoie = envoyer_courriel(
+        f"[Francisation] Signalement — {(entry.get('ecran') or 'portail enseignant')}",
+        corps,
+    )
+    maj_signalement(entry["id"], {"courrielEnvoye": bool(envoie)})
+
+
 # Boîtes de répétition espacée (système Leitner) : plus la boîte est haute,
 # plus l'intervalle avant la prochaine révision est grand.
 VOCAB_INTERVALS_DAYS = [0, 1, 3, 7, 14, 30, 60]
@@ -2166,6 +2326,9 @@ class Handler(http.server.SimpleHTTPRequestHandler):
         if path in ("/api/admin/analyses-erreurs", "/api/admin/signaux-aide"):
             self._handle_journal_list(path, params)
             return
+        if path == "/api/signalements":
+            self._handle_signalements_list()
+            return
 
         # Fichiers interactifs intégrés au code : servir directement depuis BASE_DIR
         if path.startswith("/assets/interactive/"):
@@ -2245,6 +2408,8 @@ class Handler(http.server.SimpleHTTPRequestHandler):
             self._handle_add_student()
         elif path == "/api/admin/clear-log":
             self._handle_clear_log()
+        elif path == "/api/signalement":
+            self._handle_signalement()
         elif path == "/api/student/progress":
             self._handle_student_progress()
         elif path == "/api/correct-french":
@@ -5218,6 +5383,63 @@ class Handler(http.server.SimpleHTTPRequestHandler):
             (e for e in source
              if e.get("groupId") == group_id or e.get("studentId") in student_ids),
             key=lambda e: e.get(cle, ""), reverse=True))
+
+    def _handle_signalement(self):
+        """Un enseignant signale un défaut de l'outil.
+
+        On répond dès que la fiche est écrite : le tri par l'IA et le courriel
+        partent dans un fil de fond. Un serveur de courriel lent ne doit pas
+        faire croire que le signalement n'est pas passé.
+        """
+        teacher = self._require_teacher()
+        if not teacher:
+            return
+        body = self._read_json_body()
+        description = (body.get("description") or "").strip()
+        if not description:
+            json_response(self, {"error": "Décrivez ce que vous avez vu"}, 400)
+            return
+
+        entry = {
+            "id": uuid.uuid4().hex[:12],
+            "timestamp": datetime.now().isoformat(timespec="seconds"),
+            "enseignantNom": teacher.get("nom", ""),
+            "enseignantCourriel": teacher.get("courriel", teacher.get("email", "")),
+            "ecran": (body.get("ecran") or "").strip()[:120],
+            "url": (body.get("url") or "").strip()[:400],
+            "agent": (self.headers.get("User-Agent") or "")[:300],
+            # 4000 caractères : de quoi coller un message d'erreur entier sans
+            # laisser un copier-coller accidentel gonfler le fichier.
+            "description": description[:4000],
+            "analyse": "",
+            "courrielEnvoye": False,
+        }
+        with _VERROU_SIGNALEMENTS:
+            entries = load_signalements()
+            entries.append(entry)
+            save_signalements(entries[-SIGNALEMENTS_MAX:])
+
+        threading.Thread(target=traiter_signalement, args=(entry,),
+                         daemon=True).start()
+        json_response(self, {"success": True, "id": entry["id"]})
+
+    def _handle_signalements_list(self):
+        """Les signalements déjà envoyés, du plus récent au plus ancien.
+
+        Chacun ne voit que les siens : un signalement porte le nom de la
+        personne et sa façon de dire les choses.
+        """
+        teacher = self._require_teacher()
+        if not teacher:
+            return
+        courriel = normalize_email(teacher.get("courriel", teacher.get("email", "")))
+        est_admin = teacher.get("role") == "admin"
+        entries = [
+            e for e in load_signalements()
+            if est_admin or normalize_email(e.get("enseignantCourriel", "")) == courriel
+        ]
+        json_response(self, sorted(entries, key=lambda e: e.get("timestamp", ""),
+                                   reverse=True))
 
     def _handle_corrige_moi_list(self, params):
         teacher = self._require_teacher()

@@ -784,6 +784,34 @@ vers les diapositives.
   dialogues. `narrer.py` ne repaie pas un plan déjà narré (facturation au
   caractère) : effacer un MP3 précis pour le refaire.
 
+## Signalements (« Outil en développement »)
+
+Le portail enseignant porte, sous la barre de parcours, un bandeau ambre qui
+dit que l'outil est en développement, et le bouton **« Signaler un problème »**.
+Personne d'autre ne le voit : le portail élève ne porte rien de cela.
+
+- `POST /api/signalement` (session enseignante) écrit la fiche dans
+  `data/signalements.json`, **puis répond**. Le tri par l'IA et le courriel
+  partent dans un fil de fond : un serveur SMTP lent ne doit jamais faire
+  croire que le signalement n'est pas passé.
+- Le fil de fond fait deux choses, dans cet ordre : `triage_signalement()`
+  (modèle `claude-haiku-4-5-20251001`, trois lignes — gravité, nature, à
+  corriger ou non) écrit dans le champ `analyse`, puis `envoyer_courriel()`
+  envoie la note au responsable avec la description **et** ce premier tri.
+- Les deux appels sont sans filet obligatoire : sans `ANTHROPIC_API_KEY`
+  l'analyse reste vide, sans configuration SMTP rien ne part — la fiche est
+  gardée dans les deux cas, et le journal le dit.
+- **Configuration du courriel** (variables Railway) : `SMTP_HOTE`,
+  `SMTP_PORT` (465 SSL par défaut, 587 bascule en STARTTLS), `SMTP_USER`,
+  `SMTP_MOTDEPASSE`, `SIGNALEMENT_DESTINATAIRE` (à défaut, `SMTP_USER`).
+  Avec Gmail, `SMTP_MOTDEPASSE` est un **mot de passe d'application**, jamais
+  le mot de passe du compte.
+- `GET /api/signalements` renvoie les siens ; le compte administrateur voit
+  tout. La modale n'en affiche que les trois derniers : elle sert à écrire,
+  pas à consulter.
+- Le signalement ne porte **aucun nom d'élève ni aucune de leurs réponses** :
+  nom de l'enseignante, écran, adresse de la page, navigateur, description.
+
 ## Voix des modules (ElevenLabs)
 
 Les MP3 des modules sont produits par les scripts `generer_audio_*.py` à la

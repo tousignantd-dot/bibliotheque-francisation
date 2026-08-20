@@ -271,6 +271,37 @@
     .pe-eleve-gestes { display: flex; gap: var(--sp-2); flex-wrap: wrap; }
     .pe-neuf { background: var(--ok-bg); }
 
+    /* — Bandeau « en développement » —
+         Il annonce que l'outil bouge encore, et il porte le seul bouton qui
+         fait remonter un défaut. Teinte d'avertissement du système, filet
+         plutôt qu'aplat saturé : il vit sous la barre de parcours toute la
+         journée, il ne doit pas crier. */
+    .pe-dev {
+      background: var(--warn-bg); border-bottom: 1px solid var(--warn-line);
+    }
+    .pe-dev > .container {
+      display: flex; flex-wrap: wrap; align-items: center; gap: var(--sp-4);
+      padding-top: var(--sp-3); padding-bottom: var(--sp-3);
+    }
+    .pe-dev p { margin: 0; flex: 1; min-width: 260px;
+      font-size: var(--fs-body-sm); font-weight: var(--fw-medium); color: var(--warn-ink); }
+    .pe-dev b { font-weight: var(--fw-black); }
+    .pe-dev .btn { border-color: var(--warn-line); color: var(--warn-ink); }
+
+    /* La liste des signalements déjà envoyés, dans la modale. */
+    .pe-signal-liste { display: grid; gap: var(--sp-3); }
+    .pe-signal-item {
+      border: 1px solid var(--border); border-radius: var(--r-md);
+      padding: var(--sp-3) var(--sp-4); font-size: var(--fs-ui-sm);
+    }
+    .pe-signal-item time { color: var(--text-muted); font-weight: var(--fw-semi); }
+    .pe-signal-item p { margin: var(--sp-1) 0 0; color: var(--text-strong); }
+    .pe-signal-analyse {
+      margin-top: var(--sp-2); padding-top: var(--sp-2);
+      border-top: 1px solid var(--border-tint);
+      color: var(--text-muted); white-space: pre-wrap;
+    }
+
     /* — Modales — */
     .pe-modale {
       position: fixed; inset: 0; z-index: 60; background: rgba(23, 24, 26, .42);
@@ -564,6 +595,15 @@
     </div>
   </nav>
 
+  <!-- L'outil est en développement : l'enseignante doit le savoir avant de
+       s'étonner, et pouvoir le dire au moment où elle voit le défaut. -->
+  <div class="pe-dev">
+    <div class="container">
+      <p><b>Outil en développement.</b> Des erreurs d'affichage ou de calcul sont possibles, et certaines pages changent d'une semaine à l'autre. Rien de ce que vous enregistrez n'est perdu&nbsp;: en cas de doute, rechargez la page.</p>
+      <button type="button" class="btn btn--ghost btn--sm" id="boutonSignaler">Signaler un problème</button>
+    </div>
+  </div>
+
   <!-- Le contexte de groupe reste hors des quatre vues : il vaut pour toutes. -->
   <div class="container pe-contexte">
     <div class="card card--tinted">
@@ -833,6 +873,46 @@
         <div style="display:flex;gap:var(--sp-3);flex-wrap:wrap">
           <button type="submit" class="btn btn--pri">Enregistrer</button>
           <button type="button" class="btn btn--ghost" data-fermer="modaleDates">Annuler</button>
+        </div>
+      </div>
+    </form>
+  </div>
+</div>
+
+<div class="pe-modale" id="modaleSignalement" hidden>
+  <div>
+    <form class="card" id="formSignalement">
+      <div class="stack">
+        <div>
+          <div class="pe-titre-section">Signaler un problème</div>
+          <p class="pe-note" style="margin-top:var(--sp-1)">Décrivez ce que vous avez vu et ce que vous attendiez. Le signalement part au responsable du projet, avec un premier tri automatique.</p>
+        </div>
+        <div>
+          <label class="field-label" for="sEcran">Où cela s'est-il passé&nbsp;?</label>
+          <select id="sEcran" class="field">
+            <option value="Planifier">Planifier</option>
+            <option value="Élèves">Élèves</option>
+            <option value="Groupes et comptes">Groupes et comptes</option>
+            <option value="Matériel">Matériel</option>
+            <option value="Portail de l'élève">Portail de l'élève</option>
+            <option value="Un module ou une activité">Un module ou une activité</option>
+            <option value="Autre">Autre</option>
+          </select>
+        </div>
+        <div>
+          <label class="field-label" for="sDescription">Ce que vous avez vu</label>
+          <textarea id="sDescription" class="field" rows="5" required
+            placeholder="Exemple : dans Planifier, la date de fermeture ne s'enregistre pas pour l'activité « Chez le médecin ». Le message vert apparaît, mais la date est vide quand je reviens."></textarea>
+          <div class="field-hint">Sont joints automatiquement&nbsp;: votre nom, l'adresse de la page et votre navigateur. Aucun nom d'élève, aucune de leurs réponses.</div>
+        </div>
+        <div class="fb fb--no" id="erreurSignalement" hidden></div>
+        <div style="display:flex;gap:var(--sp-3);flex-wrap:wrap">
+          <button type="submit" class="btn btn--pri" id="boutonEnvoiSignalement">Envoyer</button>
+          <button type="button" class="btn btn--ghost" data-fermer="modaleSignalement">Annuler</button>
+        </div>
+        <div id="blocSignalements" hidden>
+          <div class="pe-eyebrow" style="margin-bottom:var(--sp-3)">Vos signalements précédents</div>
+          <div class="pe-signal-liste" id="listeSignalements"></div>
         </div>
       </div>
     </form>

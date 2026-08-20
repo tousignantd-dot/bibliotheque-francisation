@@ -1536,6 +1536,67 @@
     }
   });
 
+  /* ══════════ Signalements ══════════ */
+  /* L'outil est en développement : le bandeau le dit, ce bouton fait remonter
+     ce qui cloche. Le serveur écrit la fiche, demande un premier tri à l'IA et
+     envoie la note par courriel — d'où une seule requête ici. */
+
+  const ECRAN_LABEL = {
+    planif: 'Planifier', eleves: 'Élèves',
+    groupes: 'Groupes et comptes', materiel: 'Matériel',
+  };
+
+  function rendreSignalements(entrees) {
+    const bloc = $('blocSignalements');
+    if (!entrees.length) { bloc.hidden = true; return; }
+    bloc.hidden = false;
+    // Les trois derniers suffisent : la modale sert à écrire, pas à consulter.
+    $('listeSignalements').innerHTML = entrees.slice(0, 3).map((e) => `
+      <div class="pe-signal-item">
+        <time>${esc(court(String(e.timestamp || '').slice(0, 10)))} · ${esc(e.ecran || '')}</time>
+        <p>${esc(e.description || '')}</p>
+        ${e.analyse ? `<div class="pe-signal-analyse">${esc(e.analyse)}</div>` : ''}
+      </div>`).join('');
+  }
+
+  $('boutonSignaler').addEventListener('click', async () => {
+    $('erreurSignalement').hidden = true;
+    $('sEcran').value = ECRAN_LABEL[etat.ecran] || 'Autre';
+    ouvrirModale('modaleSignalement');
+    $('sDescription').focus();
+    try {
+      rendreSignalements(await json('/api/signalements'));
+    } catch {
+      $('blocSignalements').hidden = true;   // l'historique n'est qu'un confort
+    }
+  });
+
+  $('formSignalement').addEventListener('submit', async (e) => {
+    e.preventDefault();
+    const description = $('sDescription').value.trim();
+    if (!description) return;
+    const bouton = $('boutonEnvoiSignalement');
+    bouton.disabled = true;
+    bouton.textContent = 'Envoi…';
+    try {
+      await envoyer('/api/signalement', {
+        description,
+        ecran: $('sEcran').value,
+        url: location.href,
+      });
+      $('sDescription').value = '';
+      fermerModale('modaleSignalement');
+      dire('Signalement envoyé. Merci — il sera examiné.');
+    } catch (err) {
+      const zone = $('erreurSignalement');
+      zone.textContent = `Envoi impossible : ${err.message}`;
+      zone.hidden = false;
+    } finally {
+      bouton.disabled = false;
+      bouton.textContent = 'Envoyer';
+    }
+  });
+
   /* ══════════ Amorçage ══════════ */
 
   $('dateDebut').value = aujourdhui();
