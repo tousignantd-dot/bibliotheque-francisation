@@ -1628,7 +1628,22 @@ def triage_signalement(entry):
 
 
 def traiter_signalement(entry):
-    """Fil de fond : trier, garder l'analyse, puis prévenir par courriel."""
+    """Fil de fond : trier, garder l'analyse, puis prévenir par courriel.
+
+    Tout est rattrapé et écrit dans la fiche. Un fil de fond qui meurt ne
+    laisse aucune trace visible : l'enseignante a eu son bandeau vert, et le
+    courriel n'arrive jamais sans que rien ne dise pourquoi. Le redémarrage
+    du conteneur pendant un déploiement suffit à provoquer ce silence.
+    """
+    try:
+        _traiter_signalement(entry)
+    except Exception as e:                      # noqa: BLE001 — jamais fatal
+        print(f"[signalement] traitement interrompu : {e}", flush=True)
+        maj_signalement(entry["id"],
+                        {"courrielRaison": f"traitement interrompu : {e}"})
+
+
+def _traiter_signalement(entry):
     analyse = triage_signalement(entry)
     if analyse:
         entry["analyse"] = analyse

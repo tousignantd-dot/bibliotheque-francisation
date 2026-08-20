@@ -1551,11 +1551,16 @@
     if (!entrees.length) { bloc.hidden = true; return; }
     bloc.hidden = false;
     // Les trois derniers suffisent : la modale sert à écrire, pas à consulter.
+    // Le sort du courriel est affiché avec le reste : sans lui, un envoi
+    // manqué ne se voyait qu'à l'absence de courriel, ce qui ne dit rien.
     $('listeSignalements').innerHTML = entrees.slice(0, 3).map((e) => `
       <div class="pe-signal-item">
         <time>${esc(court(String(e.timestamp || '').slice(0, 10)))} · ${esc(e.ecran || '')}</time>
         <p>${esc(e.description || '')}</p>
         ${e.analyse ? `<div class="pe-signal-analyse">${esc(e.analyse)}</div>` : ''}
+        <div class="fb ${e.courrielEnvoye ? 'fb--ok' : 'fb--warn'}" style="margin-top:var(--sp-2)">
+          ${e.courrielEnvoye ? 'Courriel envoyé' : `Courriel non parti — ${esc(e.courrielRaison || 'raison inconnue')}`}
+        </div>
       </div>`).join('');
   }
 
