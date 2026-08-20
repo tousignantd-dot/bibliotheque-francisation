@@ -1493,6 +1493,12 @@ def _envoyer_par_resend(sujet, corps, destinataire):
         headers={
             "Authorization": f"Bearer {api_key}",
             "Content-Type": "application/json",
+            # Sans cet en-tête, urllib s'annonce « Python-urllib/3.x » et le
+            # pare-feu devant l'API répond 403 « error code: 1010 » — un
+            # refus de Cloudflare, pas de Resend : la requête n'arrive même
+            # pas jusqu'à eux, et la clé n'y est pour rien. Symptôme
+            # trompeur, à ne pas réintroduire en nettoyant les en-têtes.
+            "User-Agent": "bibliotheque-francisation/1.0",
         },
         method="POST",
     )
