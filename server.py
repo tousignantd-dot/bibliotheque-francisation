@@ -2794,7 +2794,113 @@ JEU_DE_ROLE_VETEMENTS = {
 }
 
 
+# Trois situations pour le module de niveau 2 « Prendre l'autobus ». Elles sont
+# volontairement plus courtes que celles des modules de niveau 4 : un élève de
+# niveau 2 tient une phrase à la fois, et l'assistant doit s'y tenir aussi.
+JEU_DE_ROLE_AUTOBUS = {
+    "chemin": {
+        "contexte": (
+            "Un trottoir de quartier, en fin d'avant-midi. Quelqu'un cherche la "
+            "bibliothèque et arrête un passant."
+        ),
+        "habitant": [
+            "Tu habites le quartier depuis longtemps et tu connais les rues.",
+            "La bibliothèque est sur la rue Bélanger, à dix minutes à pied.",
+            "Le chemin tient en trois étapes : tout droit, à droite au feu, au coin à gauche.",
+            "Tu donnes UNE étape à la fois et tu attends que l'autre la répète.",
+            "Tu emploies des repères qui se voient : le feu, la pharmacie, l'école.",
+            "Si on te le demande, tu dis que ce n'est pas loin et qu'on ne peut pas la manquer.",
+        ],
+        "passager": [
+            "Tu cherches la bibliothèque et tu ne connais pas le quartier.",
+            "Tu répètes chaque étape à voix haute pour être sûr d'avoir compris.",
+            "Si on parle vite, tu demandes « plus lentement, s'il vous plaît ».",
+            "Avant de partir, tu redis tout le chemin et tu demandes « c'est ça ? ».",
+        ],
+    },
+    "arret": {
+        "contexte": (
+            "Un arrêt d'autobus, tôt le matin. Deux personnes attendent. L'une "
+            "des deux prend cette ligne tous les jours."
+        ),
+        "habitant": [
+            "Tu prends le 51 chaque matin et tu connais l'horaire par cœur.",
+            "C'est bien l'arrêt du 51, et il passe aux quinze minutes.",
+            "Le prochain est à huit heures dix — dans cinq minutes.",
+            "Le dernier du soir passe à onze heures et quart ; après, il n'y en a plus.",
+            "L'autobus qui va vers l'est est de l'autre côté de la rue.",
+            "Tu réponds à la question posée, sans ajouter trois informations de plus.",
+        ],
+        "passager": [
+            "Tu ne sais pas si c'est le bon arrêt et tu veux vérifier.",
+            "Tu demandes l'heure du prochain passage, puis celle du dernier.",
+            "Tu confonds parfois « huit heures dix » et « huit heures et demie » : tu fais répéter.",
+            "Tu remercies avant de conclure.",
+        ],
+    },
+    "correspondance": {
+        "contexte": (
+            "À bord d'un autobus, en début d'après-midi. Quelqu'un doit se rendre "
+            "à l'hôpital et n'est pas sûr d'être dans le bon véhicule."
+        ),
+        "habitant": [
+            "Tu prends souvent cette ligne et tu sais où elle va.",
+            "Cet autobus va vers l'est ; pour l'hôpital, il faut le 32.",
+            "L'arrêt du 32 est de l'autre côté de la rue, devant la pharmacie.",
+            "Le trajet prend une vingtaine de minutes.",
+            "Tu rappelles de garder la correspondance : le deuxième autobus est alors gratuit.",
+            "Tu expliques ce qu'est une correspondance si on ne connaît pas le mot.",
+        ],
+        "passager": [
+            "Tu vas à l'hôpital et tu n'es pas sûr d'avoir pris le bon autobus.",
+            "Tu ne connais pas le mot « correspondance » et tu demandes ce que c'est.",
+            "Tu veux savoir combien de temps ça prend.",
+            "Tu répètes le numéro de l'autobus et l'endroit de l'arrêt pour les retenir.",
+        ],
+    },
+}
+
+
 JEU_DE_ROLE_SCENARIOS = {
+    "autobus": {
+        "cadre": "une demande d'information dans la rue ou à un arrêt d'autobus",
+        "contexte_label": "L'endroit où vous vous trouvez tous les deux",
+        "cas": JEU_DE_ROLE_AUTOBUS,
+        "adresse": "Vouvoie l'élève : on ne se connaît pas, on se croise dans un lieu public.",
+        "sujets": [
+            "le lieu ou la ligne d'autobus qu'on cherche",
+            "la direction, avec un repère qui se voit",
+            "l'heure du prochain passage, et celle du dernier",
+            "le temps que ça prend",
+            "la répétition de ce qui a été compris, pour vérifier",
+            "un merci pour finir",
+        ],
+        "cloture": ("Quand l'information est donnée, demande à l'autre de la répéter "
+                    "dans ses mots, confirme d'un mot, et souhaite bonne journée."),
+        "ouverture": {
+            "passager": "Excusez-moi, madame. Je cherche la bibliothèque.",
+            "habitant": "Bonjour. Vous cherchez quelque chose ?",
+        },
+        "roles": {
+            "habitant": {
+                "qui": ("Tu connais le quartier et les autobus. L'élève est la personne "
+                        "qui demande."),
+                "conduite": ("Niveau 2 : phrases courtes, une information à la fois, "
+                             "jamais deux questions dans la même réplique. Emploie des "
+                             "repères visibles plutôt que des noms de rue. Attends que "
+                             "l'élève répète avant de continuer, et reformule plus "
+                             "lentement s'il te le demande, sans jamais te fâcher."),
+            },
+            "passager": {
+                "qui": ("Tu cherches ton chemin ou ton autobus. L'élève connaît les "
+                        "lieux et te renseigne."),
+                "conduite": ("Pose une seule question à la fois. Répète ce qu'on te dit "
+                             "pour vérifier. Si l'explication va trop vite ou donne trois "
+                             "choses d'un coup, demande de reprendre plus lentement — "
+                             "c'est exactement ce que le module apprend à faire."),
+            },
+        },
+    },
     "louer": {
         "cadre": "une visite de logement",
         "contexte_label": "L'annonce que vous avez tous les deux sous les yeux",

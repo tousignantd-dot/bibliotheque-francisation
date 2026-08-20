@@ -18,8 +18,8 @@ du débutant qui apprend à se présenter à l'avancé qui suit l'actualité.
 
 | Niveau | Situation retenue | Slug prévu | Format | Pourquoi elle |
 |--------|-------------------|------------|--------|---------------|
-| 1 | Relations sociales | `module-n1-relations` | 8 séances | 4 intentions sur 9 ; se présenter est le premier besoin de tous |
-| 2 | Déplacement dans une ville | `module-n2-deplacement` | 8 séances | 4 intentions ; concret, visuel, immédiatement utile |
+| 1 | Relations sociales | `module-n1-presenter` | 8 séances | 4 intentions sur 9 ; se présenter est le premier besoin de tous |
+| 2 | Déplacement dans une ville | `module-n2-autobus` | 8 séances | 4 intentions ; concret, visuel, immédiatement utile |
 | 3 | Achat d'aliments ou de produits d'entretien | `module-n3-epicerie` | 16 séances | 8 intentions, la plus riche du niveau |
 | 5 | Location d'un logement | `module-n5-logement` | 16 séances | 4 intentions ; la démarche la plus lourde d'une installation |
 | 6 | Recherche d'emploi | `module-n6-emploi` | 16 séances | 4 intentions ; le tournant du stade intermédiaire |
@@ -137,7 +137,7 @@ URL : 227 demandées, 227 présentes.
 - La caissière est devenue **un caissier** : la banque ElevenLabs ne compte que
   deux voix féminines, déjà prises par Marisol et Ginette.
 
-## Niveau 1 — `module-n1-presenter` · Je me présente · **en cours**
+## Niveau 1 — `module-n1-presenter` · Je me présente · **livré**
 
 Premier module **court** du projet : huit séances, deux défis, cinq sections au
 lieu de six. Le moteur ne bronche pas — le nombre de sections vit dans
@@ -158,3 +158,54 @@ extraits. Une panne passagère du fournisseur n'est pas une erreur du
 programme : `parle()` réessaie maintenant cinq fois, en doublant l'attente, et
 traite aussi les 429 et les 5xx. À reporter dans les prochains générateurs.
 
+**Livré.** Commit `3d2724d`. L'audio a été repris après la panne et le module
+est en ligne.
+
+
+## Niveau 2 — `module-n2-autobus` · Prendre l'autobus · **livré**
+
+Deuxième module **court** : huit séances, deux défis, cinq sections. Distinct
+de `module-deplacement` (niveau 4), qui porte sur le trajet complet et le
+métro ; ici, on demande son chemin et on lit un horaire d'autobus.
+
+**Scénario.** Hassan, arrivé de Syrie il y a huit mois, cherche la
+bibliothèque de son quartier, puis apprend à lire un horaire, à comprendre un
+avis affiché et à demander une correspondance.
+
+**Quatre mini-leçons** : où on va — à la, au, à l' · les mots de la direction ·
+répéter pour être sûr · l'heure de l'autobus.
+
+**Le jeu de rôle a demandé un scénario neuf.** Le manifeste appelait
+`jr_scenario: 'autobus'`, qui n'existait pas dans `server.py` — le scénario
+`chemin` du niveau 4 était le seul voisin, et il est trop lourd pour un niveau
+2 (six étapes, noms de terminus). `JEU_DE_ROLE_AUTOBUS` a donc été ajouté :
+trois cas — dans la rue, à l'arrêt, dans l'autobus —, deux rôles, `passager` et
+`habitant`, et une conduite qui impose une information à la fois.
+
+**Médias.** 14 images (0,48 $) et 143 extraits audio. Le décor n'est pas le
+centre de formation, contrairement aux modules précédents : c'est la rue, et
+les six photos de l'exercice doivent se reconnaître sans légende.
+
+**Huit séances.** 87 diapositives. La séance de graphie-phonie (A2) ne porte
+pas sur des lettres mais sur les chiffres de l'heure : c'est là que l'oreille
+d'un élève de niveau 2 décroche à l'arrêt. B2 n'apprend aucun mot nouveau —
+elle apprend ce qu'on fait quand les mots manquent.
+
+
+## La couleur d'un module est devenue celle de son niveau
+
+Décidé par l'utilisateur le 20 août 2026, au milieu de ce chantier, et
+appliqué à tout le dépôt avant de reprendre le niveau 2. Deux échelles
+vivaient pour une seule idée : une pastille ambre au catalogue, un en-tête
+forêt en ouvrant le module. Elles n'en font plus qu'une, et le vert en est
+sorti — l'olive du niveau 3 et la forêt du niveau 4 ont disparu, l'ambre est
+descendu du 2 au 3, la brique a pris le 2 et l'or le 4.
+
+Deux scripts tiennent la règle, tous deux avec `--verifier` :
+
+    python3 build/couleurs_niveau.py --verifier
+    python3 build/couleurs_sections.py --verifier
+
+Conséquence pour la suite du chantier : **un module neuf n'a plus de couleur à
+choisir.** Lui donner son niveau dans `build/powerpoints/modules.py` suffit, et
+`sections.js` ne doit contenir ni `#166534` ni `#0F766E`.
