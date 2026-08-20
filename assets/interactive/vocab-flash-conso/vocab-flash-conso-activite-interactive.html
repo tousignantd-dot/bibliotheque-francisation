@@ -53,15 +53,24 @@ body { --sec: var(--green-600); --sec-soft: var(--green-100); }
 .vf-track span { display: block; height: 100%; background: var(--accent); transition: width var(--dur) var(--ease); }
 .vf-piste__n { font-size: var(--fs-ui-sm); font-weight: var(--fw-bold); color: var(--text-muted); white-space: nowrap; }
 
-.vf-planche { display: grid; grid-template-columns: minmax(0, 38%) minmax(0, 1fr); }
-.vf-image { background: var(--surface-sunken); border-right: 1px solid var(--border);
+/* L'image passe en bandeau, sur toute la largeur de la carte, au lieu d'une
+   colonne étroite de 38 %. Les photos du recueil vont du carré (900x900) au
+   panoramique (1200x542) : dans une colonne, `contain` les réduisait à la
+   largeur disponible et il ne restait qu'une vignette. En pleine largeur,
+   la même règle `contain` les affiche entières et deux fois plus grandes,
+   sans jamais les déformer ni les rogner. La fiche descend sous l'image et
+   garde une colonne de texte lisible. */
+.vf-planche { display: grid; grid-template-columns: 1fr; }
+.vf-image { background: var(--surface-sunken); border-bottom: 1px solid var(--border);
   display: flex; flex-direction: column; }
 .vf-image__l { padding: var(--sp-3) var(--sp-5); font-size: var(--fs-label); font-weight: var(--fw-black);
   letter-spacing: var(--ls-label); text-transform: uppercase; color: var(--sec);
   border-bottom: 1px solid var(--border); }
-.vf-image img { width: 100%; flex: 1; min-height: 0; height: 260px; object-fit: contain; display: block; padding: var(--sp-4); }
+.vf-image img { width: 100%; height: clamp(320px, 54vh, 560px); object-fit: contain;
+  display: block; padding: var(--sp-4); }
 
-.vf-fiche { padding: var(--sp-6); display: flex; flex-direction: column; gap: var(--sp-4); }
+.vf-fiche { padding: var(--sp-6); display: flex; flex-direction: column; gap: var(--sp-4);
+  width: 100%; max-width: 820px; margin: 0 auto; }
 .vf-terme { font-size: clamp(32px, 4vw, 44px); font-weight: var(--fw-black);
   letter-spacing: var(--ls-title); line-height: 1.05; }
 .vf-gram { font-size: var(--fs-body-sm); font-weight: var(--fw-bold); color: var(--text-muted); }
@@ -115,9 +124,9 @@ body { --sec: var(--green-600); --sec-soft: var(--green-100); }
   gap: var(--sp-4); border-bottom: 1px solid var(--border); padding-bottom: var(--sp-5); margin-bottom: var(--sp-6); }
 .vf-jeu__t h2 { margin: var(--sp-1) 0 var(--sp-1); }
 .vf-jeu__t p { font-size: var(--fs-body-sm); font-weight: var(--fw-medium); color: var(--text-muted); }
-.vf-question { max-width: 760px; margin: 0 auto var(--sp-6); text-align: center;
+.vf-question { max-width: 860px; margin: 0 auto var(--sp-6); text-align: center;
   font-size: var(--fs-lead); font-weight: var(--fw-semi); line-height: var(--lh-loose); }
-.vf-question img { width: min(560px, 100%); max-height: 300px; object-fit: contain;
+.vf-question img { width: 100%; height: clamp(300px, 48vh, 500px); object-fit: contain;
   border-radius: var(--r-sm); background: var(--surface-sunken); display: block; margin: 0 auto var(--sp-4); }
 .vf-question__c { font-size: var(--fs-body-sm); font-weight: var(--fw-medium); color: var(--text-muted); margin-top: var(--sp-2); }
 .vf-trou { font-weight: var(--fw-black); letter-spacing: .06em; }
@@ -206,6 +215,7 @@ body { --sec: var(--green-600); --sec-soft: var(--green-100); }
 .is-presentation .vf-prof, .is-presentation .vf-piste, .is-presentation .vf-aide { display: none !important; }
 .is-presentation .vf-wrap { padding: 0; max-width: none; }
 .is-presentation .vf-layout { grid-template-columns: 1fr; gap: 0; }
+.is-presentation .vf-image img { height: 52vh; }
 .is-presentation .card { border: none; border-radius: 0; box-shadow: none; }
 .is-presentation .vf-planche { min-height: 100vh; }
 .is-presentation .vf-terme { font-size: clamp(48px, 6vw, 84px); }
@@ -223,8 +233,6 @@ body { --sec: var(--green-600); --sec-soft: var(--green-100); }
   .vf-layout > .card { order: 1; }
   .vf-cote { order: 2; }
   .vf-mots { display: grid; grid-template-columns: repeat(2, 1fr); }
-  .vf-planche { grid-template-columns: 1fr; }
-  .vf-image { border-right: none; border-bottom: 1px solid var(--border); }
 }
 @media (max-width: 640px) {
   .vf-band__in, .vf-steps__in, .vf-wrap { padding-left: var(--sp-5); padding-right: var(--sp-5); }
@@ -233,6 +241,8 @@ body { --sec: var(--green-600); --sec-soft: var(--green-100); }
   .vf-bilan { grid-template-columns: repeat(2, 1fr); }
   .vf-ligne { grid-template-columns: 1fr; gap: var(--sp-2); }
   .vf-fiche { padding: var(--sp-5); }
+  .vf-image img { height: clamp(220px, 34vh, 320px); padding: var(--sp-3); }
+  .vf-question img { height: clamp(200px, 32vh, 300px); }
 }
 </style>
 </head>
