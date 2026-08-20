@@ -176,10 +176,24 @@
       display: grid; gap: var(--sp-3); padding: var(--sp-5);
       grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
       background: var(--surface-page);
+      /* Défaut posé sur la grille, pas sur la carte : les classes de niveau
+         ont la même force qu'elle et doivent l'emporter. */
+      --niv-bg: var(--surface-card); --niv-line: var(--border);
     }
     .activity-section { --sec-ligne: var(--accent);     --sec-fond: var(--accent-soft); --sec-ink: var(--accent-ink); }
     .activity-section--atelier { --sec-ligne: var(--acier-600); --sec-fond: var(--acier-100); --sec-ink: var(--acier-600); }
-    .activity-section--outil   { --sec-ligne: var(--violet-600); --sec-fond: var(--violet-100); --sec-ink: var(--violet-600); }
+    .activity-section--outil   { --sec-ligne: var(--niv-outil-line); --sec-fond: var(--niv-outil-bg); --sec-ink: var(--ink-500); }
+
+    .activity-card--n1 { --niv-bg: var(--niv-1-bg); --niv-line: var(--niv-1-line); }
+    .activity-card--n2 { --niv-bg: var(--niv-2-bg); --niv-line: var(--niv-2-line); }
+    .activity-card--n3 { --niv-bg: var(--niv-3-bg); --niv-line: var(--niv-3-line); }
+    .activity-card--n4 { --niv-bg: var(--niv-4-bg); --niv-line: var(--niv-4-line); }
+    .activity-card--n5 { --niv-bg: var(--niv-5-bg); --niv-line: var(--niv-5-line); }
+    .activity-card--n6 { --niv-bg: var(--niv-6-bg); --niv-line: var(--niv-6-line); }
+    .activity-card--n7 { --niv-bg: var(--niv-7-bg); --niv-line: var(--niv-7-line); }
+    .activity-card--n8 { --niv-bg: var(--niv-8-bg); --niv-line: var(--niv-8-line); }
+    /* Un outil n'est d'aucun niveau : fond graphite, pastille « Outil ». */
+    .activity-card--outil { --niv-bg: var(--niv-outil-bg); --niv-line: var(--niv-outil-line); }
 
     /* Un outil — « Corrige-moi ! », les cartes de vocabulaire, l'analyse
        grammaticale — ne porte ni fiche, ni corrigé, ni présentation : il n'y a
@@ -191,10 +205,15 @@
     .card-note {
       font-size: var(--fs-meta); font-weight: var(--fw-semi); color: var(--text-muted);
     }
+    /* Le fond de la carte dit le NIVEAU (huit teintes, un arc-en-ciel), le
+       filet de gauche dit le TYPE (cours, atelier, outil). Deux questions,
+       deux signaux : on cherche « tout le niveau 6 » d'un coup d'œil sans
+       perdre la distinction du matin et de l'après-midi.
+       Les blocs intérieurs repassent en blanc pour rester lisibles. */
     .activity-card {
       display: flex; flex-direction: column; gap: var(--sp-3);
       padding: var(--sp-4) var(--sp-4) var(--sp-3);
-      background: var(--surface-card); border: 1px solid var(--border);
+      background: var(--niv-bg); border: 1px solid var(--border);
       border-left: 3px solid var(--sec-ligne);
       border-radius: var(--r-md); box-shadow: var(--sh-card);
       transition: border-color var(--dur-fast) var(--ease), box-shadow var(--dur-fast) var(--ease);
@@ -209,9 +228,8 @@
     /* Le niveau est une donnée de structure, pas un accent de repérage : il
        reste en encre sur creux, pour ne pas rivaliser avec les compétences. */
     .act-niveau {
-      border: 1px solid var(--border); border-radius: var(--r-pill);
-      padding: 1px var(--sp-2);
-      background: var(--surface-sunken); color: var(--text-body);
+      border-radius: var(--r-pill); padding: 1px var(--sp-2);
+      background: var(--niv-line); color: var(--text-inverse);
       font-size: var(--fs-meta); font-weight: var(--fw-bold);
     }
     .activity-id { margin-left: auto; font-size: var(--fs-meta); font-weight: var(--fw-bold); color: var(--text-muted); }
@@ -260,15 +278,15 @@
 
     /* Déposée : pleine, cliquable, à la teinte de la section. */
     .card-interactif--oui {
-      background: var(--sec-fond); border: 1px solid var(--sec-ligne); color: var(--sec-ink);
+      background: var(--surface-card); border: 1px solid var(--sec-ligne); color: var(--sec-ink);
       transition: background var(--dur-fast) var(--ease);
     }
-    .card-interactif--oui:hover { background: var(--surface-card); }
+    .card-interactif--oui:hover { background: var(--sec-fond); }
     .card-interactif--oui .ci-icone { background: var(--sec-ligne); color: var(--white); }
 
     /* Absente : le même encombrement, en creux — le trou se voit. */
     .card-interactif--non {
-      background: var(--surface-sunken); border: 1px dashed var(--line-300); color: var(--text-muted);
+      background: var(--surface-card); border: 1px dashed var(--line-300); color: var(--text-muted);
     }
     .card-interactif--non .ci-icone { background: var(--surface-card); border: 1px solid var(--border); color: var(--text-muted); }
 
@@ -277,7 +295,7 @@
        l'information autant que la couleur. */
     .card-materiel {
       padding: var(--sp-3);
-      background: var(--surface-sunken); border: 1px solid var(--border);
+      background: var(--surface-card); border: 1px solid var(--border);
       border-radius: var(--r-sm);
     }
     .card-materiel-titre {
@@ -606,6 +624,11 @@ function toast(msg, type = 'success') {
 // `level` est le nom du champ depuis toujours, et sa forme est « Niveau N ».
 // Les activités déposées avant ce champ sont du niveau 4, le cours d'origine.
 const niveauDe = a => a.level || 'Niveau 4';
+// « Niveau 6 » → 6. Hors de 1-8, la carte garde le fond blanc.
+const numeroNiveau = a => {
+  const n = parseInt(String(niveauDe(a)).replace(/\D/g, ''), 10);
+  return n >= 1 && n <= 8 ? n : 0;
+};
 
 function escHtml(s) {
   return String(s).replace(/[&<>"']/g, c => (
@@ -953,10 +976,10 @@ function renderList(items) {
 function renderItems(items, section) {
   const outil = section.cle === 'outil';
   return items.map(a => `
-    <article class="activity-card${outil ? ' activity-card--outil' : ''}" data-id="${a.id}">
+    <article class="activity-card${outil ? ' activity-card--outil' : ` activity-card--n${numeroNiveau(a)}`}" data-id="${a.id}">
       <div class="activity-info">
         <div class="card-ligne-haut">
-          <span class="act-niveau">${escHtml(niveauDe(a))}</span>
+          <span class="act-niveau">${outil ? 'Outil' : escHtml(niveauDe(a))}</span>
           <span class="activity-id">#${a.id}</span>
         </div>
         <h3 class="activity-name-display">${escHtml(a.title)}</h3>

@@ -529,9 +529,14 @@
       // le catalogue, et le mot reste lisible sans la couleur.
       const outil = estOutil(a);
       const etiquetteType = `<span class="pe-type">${outil ? 'Outil' : estCours ? 'Cours 4 h' : 'Atelier 2 h'}</span>`;
+      // Le niveau d'abord, à sa teinte : c'est le premier tri de l'œil.
+      const nNiv = parseInt(String(a.level || '').replace(/\D/g, ''), 10);
+      const etiquetteNiveau = outil
+        ? ''
+        : `<span class="pe-niveau pe-niveau--n${nNiv >= 1 && nNiv <= 8 ? nNiv : 4}">${esc(a.level || 'Niveau 4')}</span>`;
       const meta = estCours
-        ? `${etiquetteType}${esc(a.domaineDeVie || 'domaine à préciser')}`
-        : `${etiquetteType}${esc(a.domaineDeVie || 'domaine à préciser')} · ${esc(temps.join(', ') || '—')}`;
+        ? `${etiquetteNiveau}${etiquetteType}${esc(a.domaineDeVie || 'domaine à préciser')}`
+        : `${etiquetteNiveau}${etiquetteType}${esc(a.domaineDeVie || 'domaine à préciser')} · ${esc(temps.join(', ') || '—')}`;
 
       const coche = etat.selection.has(cle(a.id));
       const metaSec = secs.length
