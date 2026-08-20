@@ -11,7 +11,7 @@ existante avant de la reposer.
     python3 build/greffe_depot_ecrit.py consultation urgence
     python3 build/greffe_depot_ecrit.py --retirer  # dégreffe tout
 
-module-probleme est **généré** par build/module-probleme/build.py : le greffer
+module-probleme est **généré** par build/module.py module-probleme : le greffer
 ici serait écrasé à la reconstruction suivante. Le script le saute quand on ne
 le nomme pas explicitement.
 """

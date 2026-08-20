@@ -15,7 +15,7 @@ avant de la reposer.
     python3 build/greffe_reprise.py travail    # un ou plusieurs modules
     python3 build/greffe_reprise.py --retirer  # dégreffe tout
 
-module-probleme est **généré** par build/module-probleme/build.py : le greffer
+module-probleme est **généré** par build/module.py module-probleme : le greffer
 ici serait écrasé à la reconstruction suivante. Le script le saute quand on ne
 le nomme pas explicitement.
 """

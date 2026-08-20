@@ -196,7 +196,59 @@ la greffe depuis `activities.json` — un module ne connaît pas son propre id.
 **Le silence ouvre tout** : sans code élève, sans serveur ou sans découpage, on
 ne verrouille rien. Un verrou qui se trompe fermerait la classe.
 `module-probleme` est **généré** : sa greffe est posée par
-`build/module-probleme/build.py`, jamais à la main.
+`build/module.py module-probleme`, jamais à la main.
+
+## La chaîne de production des modules
+
+Un module interactif n'est plus écrit à la main : il est **assemblé** à partir
+d'un gabarit commun et de son contenu. Trois emplacements, un seul sens de
+lecture.
+
+- `build/gabarit/module.html` — le moteur, commun à tous les modules, percé de
+  dix-neuf jetons `%%NOM%%`. **Produit, jamais écrit à la main** :
+  `python3 build/gabarit.py` le régénère depuis `module-consultation`, en y
+  appliquant les améliorations qui valent pour tous (section vocabulaire à
+  trois exercices, moteur de jeu de rôle, blocs de production refaits, grille
+  des réponses courtes, tuiles Vrai/Faux à largeur variable). À côté de lui,
+  `production.css`, `vocab.css` et `vocab.js` : les ressources génériques qu'il
+  incorpore.
+- `build/contenu/<slug>/manifest.py` — l'identité : titre, niveau, couleur
+  d'en-tête, thème LMS, consignes envoyées à l'IA de correction, scénario du
+  jeu de rôle, texte de fin, et la liste des résidus interdits.
+- `build/contenu/<slug>/*.js` — le contenu pédagogique : `dialogues`,
+  `sections`, `fccards`, `exos`, `carrier`, `plus`, `custom`.
+
+```
+python3 build/gabarit.py                 # après une amélioration du moteur
+python3 build/module.py module-probleme  # un module
+python3 build/module.py --tous           # tous ceux de build/contenu/
+```
+
+**Ne jamais éditer le HTML produit** — la prochaine construction l'écrase, et
+une refonte a déjà été perdue ainsi. Toute correction se fait dans `build/`.
+
+Pourquoi cette séparation : jusqu'au 20 août 2026, `module-probleme` était
+fabriqué par un script à lui de 365 lignes qui appliquait quatre-vingt-treize
+kilo-octets de retouches au HTML de la consultation. Ces retouches étaient
+génériques, mais captives d'un seul module — d'où dix modules sur onze écrits à
+la main, et une correction de design à refaire dix-huit fois. Le découpage
+gabarit/contenu a été validé par reconstruction : le nouveau
+`build/module.py` reproduit `module-probleme` **à l'octet près** (306 683
+octets), ce qui reste le test de non-régression de la chaîne.
+
+Deux pièges déjà payés :
+
+- **Les marqueurs de fin de région n'ont pas de saut de ligne.** Un marqueur
+  qui en contient un saute silencieusement jusqu'au bloc suivant et avale la
+  constante d'après.
+- **Les quatre greffes partagées** — barre d'outils, dépôt de l'écrit, verrou
+  des sections, reprise de séance — commencent chacune par retirer celle du
+  gabarit, qui porte le slug (ou le numéro d'activité) de la consultation.
+  Sans ce dégreffage, un module hériterait du carnet d'un autre.
+- La consigne de correction de la production **écrite** ne vit pas dans le
+  gabarit : `build/greffe_depot_ecrit.py` la pose. L'ancien script croyait la
+  remplacer et son `replace` était sans effet — code mort découvert en
+  généralisant.
 
 ## Cours et ateliers
 
@@ -752,7 +804,7 @@ visuelle. Quatrième onglet de `enseignant.html`, rendu par `js/materiel.js`.
   depuis un module. La greffe dans les onze modules passe par
   `python3 build/cartes_memoire.py` (`--verifier` pour un état des lieux) :
   substitutions exactes, refusées si le module a divergé. `module-probleme`
-  étant généré, on relance ensuite `build/module-probleme/build.py`.
+  étant généré, on relance ensuite `build/module.py module-probleme`.
 - `server.py` lit `.env` au démarrage (les variables déjà définies gagnent) :
   sans ça, rien n'est testable en local. En production les clés viennent des
   Variables Railway — **et un changement de variable n'atteint le serveur
@@ -917,7 +969,7 @@ module à l'autre, pour qu'un personnage sonne pareil partout.
   les fichiers audio sont servis sans `Cache-Control`, et sans ce numéro le
   navigateur d'un élève resservirait l'ancienne voix. Pour `module-probleme`,
   le HTML est généré : le numéro se change dans le gabarit
-  (`module-consultation`), puis `python3 build/module-probleme/build.py`.
+  (`module-consultation`), puis `python3 build/module.py module-probleme`.
 
 ## Langue
 

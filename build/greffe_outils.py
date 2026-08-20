@@ -9,7 +9,7 @@ puis la repose. On peut donc le relancer après toute modification du gabarit.
     python3 build/greffe_outils.py meteo pub  # seulement ceux-là
     python3 build/greffe_outils.py --retirer  # dégreffe tout
 
-module-probleme est **généré** par build/module-probleme/build.py, qui appelle
+module-probleme est **généré** par build/module.py module-probleme, qui appelle
 ces mêmes fonctions : ne pas le greffer à la main ici, il serait écrasé à la
 reconstruction suivante.
 """

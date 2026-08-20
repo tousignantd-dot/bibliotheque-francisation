@@ -11,7 +11,7 @@ aurait divergé.
   python3 build/cartes_memoire.py --verifier  → dit qui est à jour, n'écrit rien
 
 module-probleme est GÉNÉRÉ à partir de module-consultation : on le laisse de
-côté et on relance `python3 build/module-probleme/build.py` après coup.
+côté et on relance `python3 build/module.py module-probleme` après coup.
 """
 import pathlib
 import sys
@@ -112,7 +112,7 @@ def main():
             t = t.replace(av, ap, 1)
         f.write_text(t, encoding='utf-8')
         print(f'ok  {nom}')
-    print('\nmodule-probleme est généré : relancer build/module-probleme/build.py')
+    print('\nmodule-probleme est généré : relancer build/module.py module-probleme')
     return 1 if souci else 0
 
 

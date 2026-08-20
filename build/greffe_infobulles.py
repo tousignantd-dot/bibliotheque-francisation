@@ -108,7 +108,7 @@ def main():
     if laisses:
         print(f"{etat} : {' '.join(laisses)}")
     if not args.retirer:
-        print("\nmodule-probleme est généré : python3 build/module-probleme/build.py "
+        print("\nmodule-probleme est généré : python3 build/module.py module-probleme "
               "le refera à partir du gabarit déjà greffé.")
 
 

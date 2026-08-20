@@ -22,7 +22,7 @@ Trois précautions, parce qu'un verrou qui se trompe ferme la classe :
 3. **On n'abandonne jamais l'élève sur une section fermée** : si la sienne
    vient de se verrouiller, on le pose sur la première section ouverte.
 
-module-probleme est **généré** (`build/module-probleme/build.py`) : ne pas le
+module-probleme est **généré** (`build/module.py module-probleme`) : ne pas le
 greffer à la main, il serait écrasé à la reconstruction suivante.
 """
 import json
