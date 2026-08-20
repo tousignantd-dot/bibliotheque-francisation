@@ -1,0 +1,337 @@
+<!DOCTYPE html>
+<html lang="fr"><head><meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Module 1 · Les seize présentations</title>
+<link rel="stylesheet" href="/assets/design-system/styles.css">
+<style>
+.som          { padding: var(--sp-8) 0 var(--sp-12); }
+.som__bloc    { margin-top: var(--sp-12); }
+.som__bloc:first-child { margin-top: 0; }
+.som__head    { display: flex; flex-wrap: wrap; align-items: center; gap: var(--sp-4);
+                margin-bottom: var(--sp-5); }
+.som__lettre  { flex-shrink: 0; width: 44px; height: 44px; border-radius: var(--r-md);
+                display: flex; align-items: center; justify-content: center;
+                background: var(--accent-soft); color: var(--accent-ink);
+                font-size: 19px; font-weight: var(--fw-black); }
+.som__titre   { font-size: var(--fs-h3); font-weight: var(--fw-black); margin: 0; }
+.som__rule    { flex: 1; height: 1px; background: var(--border); }
+.som__compte  { background: var(--accent-soft); color: var(--accent-ink);
+                padding: 6px var(--sp-3); border-radius: var(--r-pill);
+                font-size: var(--fs-ui-sm); font-weight: var(--fw-bold);
+                white-space: nowrap; }
+
+.seance       { display: grid; grid-template-columns: 56px minmax(0, 1fr) auto;
+                gap: var(--sp-4); align-items: start; }
+.seance__code { grid-row: 1 / -1; width: 56px; height: 56px; border-radius: var(--r-md);
+                display: flex; align-items: center; justify-content: center;
+                border: 1px solid var(--border); background: var(--surface-sunken);
+                color: var(--text-strong);
+                font-size: var(--fs-lead); font-weight: var(--fw-black);
+                letter-spacing: .02em; }
+.seance__nom  { font-size: var(--fs-lead); font-weight: var(--fw-black);
+                color: var(--text-strong); margin: 0 0 2px; line-height: var(--lh-title); }
+.seance__quoi { font-size: var(--fs-body-sm); font-weight: var(--fw-medium);
+                color: var(--text-body); line-height: var(--lh-body); margin: 0; }
+.seance__meta { display: flex; flex-wrap: wrap; gap: var(--sp-3);
+                margin-top: var(--sp-2);
+                font-size: var(--fs-meta); font-weight: var(--fw-bold);
+                letter-spacing: var(--ls-label); text-transform: uppercase;
+                color: var(--text-muted); }
+.seance__liens{ grid-column: 3; grid-row: 1 / -1;
+                display: flex; flex-direction: column; gap: var(--sp-2);
+                align-items: stretch; }
+.seance__liens .btn { justify-content: center; white-space: nowrap; }
+
+/* Sous 720 px : le code passe au-dessus, les liens en pleine largeur. */
+@media (max-width: 720px) {
+  .seance        { grid-template-columns: 56px minmax(0, 1fr); }
+  .seance__liens { grid-column: 1 / -1; grid-row: auto; flex-direction: row;
+                   flex-wrap: wrap; margin-top: var(--sp-4); }
+  .seance__liens .btn { flex: 1 1 200px; }
+}
+</style></head>
+<body class="page">
+
+<header class="band">
+  <div class="container">
+    <p class="band__eyebrow">Module 1 · Français niveau 4 · Matériel de l'enseignant</p>
+    <h1 style="font-size:var(--fs-hero);font-weight:var(--fw-black);line-height:var(--lh-hero);letter-spacing:var(--ls-hero);margin:var(--sp-3) 0 0">Consulter au bon endroit</h1>
+    <p class="band__lead">Décrire une douleur, choisir le bon service, comprendre les conseils. Chaque séance a sa fiche élève correspondante, en noir et blanc, prête à photocopier.</p>
+    <p class="seance__meta" style="margin-top:var(--sp-5)">
+      <span>16 séances</span><span>246 diapositives</span><span>Environ 18 heures de classe</span>
+    </p>
+  </div>
+</header>
+
+<main class="container som">
+
+  <section class="som__bloc">
+    <div class="som__head">
+      <span class="som__lettre">A</span>
+      <h2 class="som__titre">Je découvre</h2>
+      <span class="som__rule"></span>
+      <span class="som__compte">4 séances · 245 min</span>
+    </div>
+    <div class="stack">
+
+      <article class="card seance">
+        <span class="seance__code">A1</span>
+        <div>
+          <h3 class="seance__nom">Le genou de Yannick</h3>
+          <p class="seance__quoi">Yannick finit son quart à l&#x27;entrepôt à minuit.</p>
+          <p class="seance__meta"><span>75 minutes</span><span>15 diapositives</span></p>
+        </div>
+        <div class="seance__liens">
+          <a class="btn btn--pri" href="/assets/powerpoints/module-consultation/A1-le-genou-de-yannick.pptx">Présentation</a>
+          <a class="btn btn--ghost" href="/assets/documents/module-consultation-a1-le-genou-de-yannick.html" target="_blank" rel="noopener">Fiche élève</a>
+        </div>
+      </article>
+
+      <article class="card seance">
+        <span class="seance__code">A2</span>
+        <div>
+          <h3 class="seance__nom">Trois sons dans le nez</h3>
+          <p class="seance__quoi">« Patient », « front », « médecin » : trois mots de la salle d&#x27;attente, trois sons nasaux différents.</p>
+          <p class="seance__meta"><span>60 minutes</span><span>16 diapositives</span></p>
+        </div>
+        <div class="seance__liens">
+          <a class="btn btn--pri" href="/assets/powerpoints/module-consultation/A2-trois-sons-dans-le-nez.pptx">Présentation</a>
+          <a class="btn btn--ghost" href="/assets/documents/module-consultation-a2-trois-sons-dans-le-nez.html" target="_blank" rel="noopener">Fiche élève</a>
+        </div>
+      </article>
+
+      <article class="card seance">
+        <span class="seance__code">A3</span>
+        <div>
+          <h3 class="seance__nom">Le corps, les sens et la douleur</h3>
+          <p class="seance__quoi">Pour se faire soigner, il faut d&#x27;abord pouvoir nommer.</p>
+          <p class="seance__meta"><span>50 minutes</span><span>16 diapositives</span></p>
+        </div>
+        <div class="seance__liens">
+          <a class="btn btn--pri" href="/assets/powerpoints/module-consultation/A3-le-corps-les-sens-et-la-douleur.pptx">Présentation</a>
+          <a class="btn btn--ghost" href="/assets/documents/module-consultation-a3-le-corps-les-sens-et-la-douleur.html" target="_blank" rel="noopener">Fiche élève</a>
+        </div>
+      </article>
+
+      <article class="card seance">
+        <span class="seance__code">A4</span>
+        <div>
+          <h3 class="seance__nom">Qui soigne quoi, et où aller</h3>
+          <p class="seance__quoi">Six professionnels, trois portes d&#x27;entrée.</p>
+          <p class="seance__meta"><span>60 minutes</span><span>15 diapositives</span></p>
+        </div>
+        <div class="seance__liens">
+          <a class="btn btn--pri" href="/assets/powerpoints/module-consultation/A4-qui-soigne-quoi-et-ou-aller.pptx">Présentation</a>
+          <a class="btn btn--ghost" href="/assets/documents/module-consultation-a4-qui-soigne-quoi-et-ou-aller.html" target="_blank" rel="noopener">Fiche élève</a>
+        </div>
+      </article>
+
+    </div>
+  </section>
+
+  <section class="som__bloc">
+    <div class="som__head">
+      <span class="som__lettre">B</span>
+      <h2 class="som__titre">Défi 1 · Le triage</h2>
+      <span class="som__rule"></span>
+      <span class="som__compte">4 séances · 285 min</span>
+    </div>
+    <div class="stack">
+
+      <article class="card seance">
+        <span class="seance__code">B1</span>
+        <div>
+          <h3 class="seance__nom">Yannick au triage</h3>
+          <p class="seance__quoi">Avant de voir la docteure, il faut passer par l&#x27;infirmière du triage.</p>
+          <p class="seance__meta"><span>75 minutes</span><span>16 diapositives</span></p>
+        </div>
+        <div class="seance__liens">
+          <a class="btn btn--pri" href="/assets/powerpoints/module-consultation/B1-yannick-au-triage.pptx">Présentation</a>
+          <a class="btn btn--ghost" href="/assets/documents/module-consultation-b1-yannick-au-triage.html" target="_blank" rel="noopener">Fiche élève</a>
+        </div>
+      </article>
+
+      <article class="card seance">
+        <span class="seance__code">B2</span>
+        <div>
+          <h3 class="seance__nom">Dire pourquoi</h3>
+          <p class="seance__quoi">« Je consulte parce que mon genou est enflé » ou « à cause de mon genou enflé » ?</p>
+          <p class="seance__meta"><span>75 minutes</span><span>16 diapositives</span></p>
+        </div>
+        <div class="seance__liens">
+          <a class="btn btn--pri" href="/assets/powerpoints/module-consultation/B2-dire-pourquoi.pptx">Présentation</a>
+          <a class="btn btn--ghost" href="/assets/documents/module-consultation-b2-dire-pourquoi.html" target="_blank" rel="noopener">Fiche élève</a>
+        </div>
+      </article>
+
+      <article class="card seance">
+        <span class="seance__code">B3</span>
+        <div>
+          <h3 class="seance__nom">Poser une question</h3>
+          <p class="seance__quoi">L&#x27;infirmière pose sept questions à Yannick, et il n&#x27;en pose aucune.</p>
+          <p class="seance__meta"><span>75 minutes</span><span>15 diapositives</span></p>
+        </div>
+        <div class="seance__liens">
+          <a class="btn btn--pri" href="/assets/powerpoints/module-consultation/B3-poser-une-question.pptx">Présentation</a>
+          <a class="btn btn--ghost" href="/assets/documents/module-consultation-b3-poser-une-question.html" target="_blank" rel="noopener">Fiche élève</a>
+        </div>
+      </article>
+
+      <article class="card seance">
+        <span class="seance__code">B4</span>
+        <div>
+          <h3 class="seance__nom">Décrire sa douleur à voix haute</h3>
+          <p class="seance__quoi">Tout ce qui a été écrit depuis A1 doit maintenant sortir de la bouche, en trente secondes, devant quelqu&#x27;un qui attend.</p>
+          <p class="seance__meta"><span>60 minutes</span><span>13 diapositives</span></p>
+        </div>
+        <div class="seance__liens">
+          <a class="btn btn--pri" href="/assets/powerpoints/module-consultation/B4-decrire-sa-douleur-a-voix-haute.pptx">Présentation</a>
+          <a class="btn btn--ghost" href="/assets/documents/module-consultation-b4-decrire-sa-douleur-a-voix-haute.html" target="_blank" rel="noopener">Fiche élève</a>
+        </div>
+      </article>
+
+    </div>
+  </section>
+
+  <section class="som__bloc">
+    <div class="som__head">
+      <span class="som__lettre">C</span>
+      <h2 class="som__titre">Défi 2 · L&#x27;examen</h2>
+      <span class="som__rule"></span>
+      <span class="som__compte">4 séances · 270 min</span>
+    </div>
+    <div class="stack">
+
+      <article class="card seance">
+        <span class="seance__code">C1</span>
+        <div>
+          <h3 class="seance__nom">L&#x27;examen de la docteure Beaulieu</h3>
+          <p class="seance__quoi">Sept répliques, et tout y est : le diagnostic, l&#x27;arrêt de travail, la référence, les soins à la maison.</p>
+          <p class="seance__meta"><span>60 minutes</span><span>17 diapositives</span></p>
+        </div>
+        <div class="seance__liens">
+          <a class="btn btn--pri" href="/assets/powerpoints/module-consultation/C1-l-examen-de-la-docteure-beaulieu.pptx">Présentation</a>
+          <a class="btn btn--ghost" href="/assets/documents/module-consultation-c1-l-examen-de-la-docteure-beaulieu.html" target="_blank" rel="noopener">Fiche élève</a>
+        </div>
+      </article>
+
+      <article class="card seance">
+        <span class="seance__code">C2</span>
+        <div>
+          <h3 class="seance__nom">Le présent de l&#x27;indicatif</h3>
+          <p class="seance__quoi">« J&#x27;ai mal », « je suis fatigué », « je peux marcher » : trois phrases de consultation, trois verbes irréguliers.</p>
+          <p class="seance__meta"><span>75 minutes</span><span>16 diapositives</span></p>
+        </div>
+        <div class="seance__liens">
+          <a class="btn btn--pri" href="/assets/powerpoints/module-consultation/C2-le-present-de-l-indicatif.pptx">Présentation</a>
+          <a class="btn btn--ghost" href="/assets/documents/module-consultation-c2-le-present-de-l-indicatif.html" target="_blank" rel="noopener">Fiche élève</a>
+        </div>
+      </article>
+
+      <article class="card seance">
+        <span class="seance__code">C3</span>
+        <div>
+          <h3 class="seance__nom">La phrase négative</h3>
+          <p class="seance__quoi">« Je n&#x27;ai pas de fièvre » est peut-être la phrase la plus utile de toute une consultation.</p>
+          <p class="seance__meta"><span>75 minutes</span><span>16 diapositives</span></p>
+        </div>
+        <div class="seance__liens">
+          <a class="btn btn--pri" href="/assets/powerpoints/module-consultation/C3-la-phrase-negative.pptx">Présentation</a>
+          <a class="btn btn--ghost" href="/assets/documents/module-consultation-c3-la-phrase-negative.html" target="_blank" rel="noopener">Fiche élève</a>
+        </div>
+      </article>
+
+      <article class="card seance">
+        <span class="seance__code">C4</span>
+        <div>
+          <h3 class="seance__nom">Lire une ordonnance</h3>
+          <p class="seance__quoi">« Deux fois par jour, à jeun, jusqu&#x27;à la fin du traitement. » Trois indications, trois erreurs possibles.</p>
+          <p class="seance__meta"><span>60 minutes</span><span>15 diapositives</span></p>
+        </div>
+        <div class="seance__liens">
+          <a class="btn btn--pri" href="/assets/powerpoints/module-consultation/C4-lire-une-ordonnance.pptx">Présentation</a>
+          <a class="btn btn--ghost" href="/assets/documents/module-consultation-c4-lire-une-ordonnance.html" target="_blank" rel="noopener">Fiche élève</a>
+        </div>
+      </article>
+
+    </div>
+  </section>
+
+  <section class="som__bloc">
+    <div class="som__head">
+      <span class="som__lettre">D</span>
+      <h2 class="som__titre">Défi 3 · Le formulaire</h2>
+      <span class="som__rule"></span>
+      <span class="som__compte">2 séances · 150 min</span>
+    </div>
+    <div class="stack">
+
+      <article class="card seance">
+        <span class="seance__code">D1</span>
+        <div>
+          <h3 class="seance__nom">Le questionnaire et la fiche-conseil</h3>
+          <p class="seance__quoi">Avant la physiothérapie, Yannick doit remplir un formulaire et lire une fiche.</p>
+          <p class="seance__meta"><span>75 minutes</span><span>15 diapositives</span></p>
+        </div>
+        <div class="seance__liens">
+          <a class="btn btn--pri" href="/assets/powerpoints/module-consultation/D1-le-questionnaire-et-la-fiche-conseil.pptx">Présentation</a>
+          <a class="btn btn--ghost" href="/assets/documents/module-consultation-d1-le-questionnaire-et-la-fiche-conseil.html" target="_blank" rel="noopener">Fiche élève</a>
+        </div>
+      </article>
+
+      <article class="card seance">
+        <span class="seance__code">D2</span>
+        <div>
+          <h3 class="seance__nom">Le pluriel, devoir et il faut</h3>
+          <p class="seance__quoi">Deux savoirs d&#x27;écriture pour finir le défi 3 : mettre au pluriel sans se tromper, et dire une obligation autrement…</p>
+          <p class="seance__meta"><span>75 minutes</span><span>18 diapositives</span></p>
+        </div>
+        <div class="seance__liens">
+          <a class="btn btn--pri" href="/assets/powerpoints/module-consultation/D2-le-pluriel-devoir-et-il-faut.pptx">Présentation</a>
+          <a class="btn btn--ghost" href="/assets/documents/module-consultation-d2-le-pluriel-devoir-et-il-faut.html" target="_blank" rel="noopener">Fiche élève</a>
+        </div>
+      </article>
+
+    </div>
+  </section>
+
+  <section class="som__bloc">
+    <div class="som__head">
+      <span class="som__lettre">E</span>
+      <h2 class="som__titre">Je me lance</h2>
+      <span class="som__rule"></span>
+      <span class="som__compte">2 séances · 150 min</span>
+    </div>
+    <div class="stack">
+
+      <article class="card seance">
+        <span class="seance__code">E1</span>
+        <div>
+          <h3 class="seance__nom">À toi : la clinique et le courriel</h3>
+          <p class="seance__quoi">Tout le module en une séance.</p>
+          <p class="seance__meta"><span>90 minutes</span><span>14 diapositives</span></p>
+        </div>
+        <div class="seance__liens">
+          <a class="btn btn--pri" href="/assets/powerpoints/module-consultation/E1-a-toi-la-clinique-et-le-courriel.pptx">Présentation</a>
+          <a class="btn btn--ghost" href="/assets/documents/module-consultation-e1-a-toi-la-clinique-et-le-courriel.html" target="_blank" rel="noopener">Fiche élève</a>
+        </div>
+      </article>
+
+      <article class="card seance">
+        <span class="seance__code">E2</span>
+        <div>
+          <h3 class="seance__nom">Je retiens des mots</h3>
+          <p class="seance__quoi">Dernière séance du module.</p>
+          <p class="seance__meta"><span>60 minutes</span><span>13 diapositives</span></p>
+        </div>
+        <div class="seance__liens">
+          <a class="btn btn--pri" href="/assets/powerpoints/module-consultation/E2-je-retiens-des-mots.pptx">Présentation</a>
+          <a class="btn btn--ghost" href="/assets/documents/module-consultation-e2-je-retiens-des-mots.html" target="_blank" rel="noopener">Fiche élève</a>
+        </div>
+      </article>
+
+    </div>
+  </section>
+
+</main>
+</body></html>

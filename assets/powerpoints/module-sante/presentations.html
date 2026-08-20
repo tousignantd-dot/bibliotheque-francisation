@@ -1,0 +1,325 @@
+<!DOCTYPE html>
+<html lang="fr"><head><meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Module 3 · Les seize présentations</title>
+<link rel="stylesheet" href="/assets/design-system/styles.css">
+<style>
+.som          { padding: var(--sp-8) 0 var(--sp-12); }
+.som__bloc    { margin-top: var(--sp-12); }
+.som__bloc:first-child { margin-top: 0; }
+.som__head    { display: flex; flex-wrap: wrap; align-items: center; gap: var(--sp-4);
+                margin-bottom: var(--sp-5); }
+.som__lettre  { flex-shrink: 0; width: 44px; height: 44px; border-radius: var(--r-md);
+                display: flex; align-items: center; justify-content: center;
+                background: var(--accent-soft); color: var(--accent-ink);
+                font-size: 19px; font-weight: var(--fw-black); }
+.som__titre   { font-size: var(--fs-h3); font-weight: var(--fw-black); margin: 0; }
+.som__rule    { flex: 1; height: 1px; background: var(--border); }
+.som__compte  { background: var(--accent-soft); color: var(--accent-ink);
+                padding: 6px var(--sp-3); border-radius: var(--r-pill);
+                font-size: var(--fs-ui-sm); font-weight: var(--fw-bold);
+                white-space: nowrap; }
+
+.seance       { display: grid; grid-template-columns: 56px minmax(0, 1fr) auto;
+                gap: var(--sp-4); align-items: start; }
+.seance__code { grid-row: 1 / -1; width: 56px; height: 56px; border-radius: var(--r-md);
+                display: flex; align-items: center; justify-content: center;
+                border: 1px solid var(--border); background: var(--surface-sunken);
+                color: var(--text-strong);
+                font-size: var(--fs-lead); font-weight: var(--fw-black);
+                letter-spacing: .02em; }
+.seance__nom  { font-size: var(--fs-lead); font-weight: var(--fw-black);
+                color: var(--text-strong); margin: 0 0 2px; line-height: var(--lh-title); }
+.seance__quoi { font-size: var(--fs-body-sm); font-weight: var(--fw-medium);
+                color: var(--text-body); line-height: var(--lh-body); margin: 0; }
+.seance__meta { display: flex; flex-wrap: wrap; gap: var(--sp-3);
+                margin-top: var(--sp-2);
+                font-size: var(--fs-meta); font-weight: var(--fw-bold);
+                letter-spacing: var(--ls-label); text-transform: uppercase;
+                color: var(--text-muted); }
+.seance__liens{ grid-column: 3; grid-row: 1 / -1;
+                display: flex; flex-direction: column; gap: var(--sp-2);
+                align-items: stretch; }
+.seance__liens .btn { justify-content: center; white-space: nowrap; }
+
+/* Sous 720 px : le code passe au-dessus, les liens en pleine largeur. */
+@media (max-width: 720px) {
+  .seance        { grid-template-columns: 56px minmax(0, 1fr); }
+  .seance__liens { grid-column: 1 / -1; grid-row: auto; flex-direction: row;
+                   flex-wrap: wrap; margin-top: var(--sp-4); }
+  .seance__liens .btn { flex: 1 1 200px; }
+}
+</style></head>
+<body class="page">
+
+<header class="band">
+  <div class="container">
+    <p class="band__eyebrow">Module 3 · Français niveau 4 · Matériel de l'enseignant</p>
+    <h1 style="font-size:var(--fs-hero);font-weight:var(--fw-black);line-height:var(--lh-hero);letter-spacing:var(--ls-hero);margin:var(--sp-3) 0 0">Prendre rendez-vous et aller à la pharmacie</h1>
+    <p class="band__lead">Appeler une clinique, dire comment on se sent, comprendre les consignes du pharmacien. Chaque séance a sa fiche élève correspondante, en noir et blanc, prête à photocopier.</p>
+    <p class="seance__meta" style="margin-top:var(--sp-5)">
+      <span>16 séances</span><span>214 diapositives</span><span>Environ 18 heures de classe</span>
+    </p>
+  </div>
+</header>
+
+<main class="container som">
+
+  <section class="som__bloc">
+    <div class="som__head">
+      <span class="som__lettre">A</span>
+      <h2 class="som__titre">Je découvre</h2>
+      <span class="som__rule"></span>
+      <span class="som__compte">4 séances · 250 min</span>
+    </div>
+    <div class="stack">
+
+      <article class="card seance">
+        <span class="seance__code">A1</span>
+        <div>
+          <h3 class="seance__nom">Lina appelle la clinique</h3>
+          <p class="seance__quoi">Lina se sent fatiguée depuis deux semaines et a souvent mal à la tête.</p>
+          <p class="seance__meta"><span>75 minutes</span><span>12 diapositives</span></p>
+        </div>
+        <div class="seance__liens">
+          <a class="btn btn--pri" href="/assets/powerpoints/module-sante/A1-lina-appelle-la-clinique.pptx">Présentation</a>
+          <a class="btn btn--ghost" href="/assets/documents/module-sante-a1-lina-appelle-la-clinique.html" target="_blank" rel="noopener">Fiche élève</a>
+        </div>
+      </article>
+
+      <article class="card seance">
+        <span class="seance__code">A2</span>
+        <div>
+          <h3 class="seance__nom">911, 811, clinique ou pharmacie ?</h3>
+          <p class="seance__quoi">Cinq portes d&#x27;entrée dans le système de santé québécois.</p>
+          <p class="seance__meta"><span>60 minutes</span><span>13 diapositives</span></p>
+        </div>
+        <div class="seance__liens">
+          <a class="btn btn--pri" href="/assets/powerpoints/module-sante/A2-911-811-clinique-ou-pharmacie.pptx">Présentation</a>
+          <a class="btn btn--ghost" href="/assets/documents/module-sante-a2-911-811-clinique-ou-pharmacie.html" target="_blank" rel="noopener">Fiche élève</a>
+        </div>
+      </article>
+
+      <article class="card seance">
+        <span class="seance__code">A3</span>
+        <div>
+          <h3 class="seance__nom">Les mots de la santé</h3>
+          <p class="seance__quoi">Douze mots qui reviennent à chaque rendez-vous et à chaque passage à la pharmacie.</p>
+          <p class="seance__meta"><span>60 minutes</span><span>18 diapositives</span></p>
+        </div>
+        <div class="seance__liens">
+          <a class="btn btn--pri" href="/assets/powerpoints/module-sante/A3-les-mots-de-la-sante.pptx">Présentation</a>
+          <a class="btn btn--ghost" href="/assets/documents/module-sante-a3-les-mots-de-la-sante.html" target="_blank" rel="noopener">Fiche élève</a>
+        </div>
+      </article>
+
+      <article class="card seance">
+        <span class="seance__code">A4</span>
+        <div>
+          <h3 class="seance__nom">Dire comment on se sent</h3>
+          <p class="seance__quoi">Deux symptômes et une durée : c&#x27;est tout ce que la réceptionniste attend.</p>
+          <p class="seance__meta"><span>55 minutes</span><span>12 diapositives</span></p>
+        </div>
+        <div class="seance__liens">
+          <a class="btn btn--pri" href="/assets/powerpoints/module-sante/A4-dire-comment-on-se-sent.pptx">Présentation</a>
+          <a class="btn btn--ghost" href="/assets/documents/module-sante-a4-dire-comment-on-se-sent.html" target="_blank" rel="noopener">Fiche élève</a>
+        </div>
+      </article>
+
+    </div>
+  </section>
+
+  <section class="som__bloc">
+    <div class="som__head">
+      <span class="som__lettre">B</span>
+      <h2 class="som__titre">Défi 1 · À la pharmacie</h2>
+      <span class="som__rule"></span>
+      <span class="som__compte">5 séances · 325 min</span>
+    </div>
+    <div class="stack">
+
+      <article class="card seance">
+        <span class="seance__code">B1</span>
+        <div>
+          <h3 class="seance__nom">Lina apporte son ordonnance</h3>
+          <p class="seance__quoi">Le médecin a prescrit des antibiotiques.</p>
+          <p class="seance__meta"><span>75 minutes</span><span>12 diapositives</span></p>
+        </div>
+        <div class="seance__liens">
+          <a class="btn btn--pri" href="/assets/powerpoints/module-sante/B1-lina-apporte-son-ordonnance.pptx">Présentation</a>
+          <a class="btn btn--ghost" href="/assets/documents/module-sante-b1-lina-apporte-son-ordonnance.html" target="_blank" rel="noopener">Fiche élève</a>
+        </div>
+      </article>
+
+      <article class="card seance">
+        <span class="seance__code">B2</span>
+        <div>
+          <h3 class="seance__nom">L&#x27;heure du rendez-vous</h3>
+          <p class="seance__quoi">Une heure mal comprise, c&#x27;est un rendez-vous manqué — et souvent trois semaines d&#x27;attente pour le suivant.</p>
+          <p class="seance__meta"><span>60 minutes</span><span>14 diapositives</span></p>
+        </div>
+        <div class="seance__liens">
+          <a class="btn btn--pri" href="/assets/powerpoints/module-sante/B2-l-heure-du-rendez-vous.pptx">Présentation</a>
+          <a class="btn btn--ghost" href="/assets/documents/module-sante-b2-l-heure-du-rendez-vous.html" target="_blank" rel="noopener">Fiche élève</a>
+        </div>
+      </article>
+
+      <article class="card seance">
+        <span class="seance__code">B3</span>
+        <div>
+          <h3 class="seance__nom">Comprendre la posologie</h3>
+          <p class="seance__quoi">« Un comprimé deux fois par jour, avec de la nourriture, pendant sept jours, sans alcool. » Quatre consignes en une…</p>
+          <p class="seance__meta"><span>75 minutes</span><span>15 diapositives</span></p>
+        </div>
+        <div class="seance__liens">
+          <a class="btn btn--pri" href="/assets/powerpoints/module-sante/B3-comprendre-la-posologie.pptx">Présentation</a>
+          <a class="btn btn--ghost" href="/assets/documents/module-sante-b3-comprendre-la-posologie.html" target="_blank" rel="noopener">Fiche élève</a>
+        </div>
+      </article>
+
+      <article class="card seance">
+        <span class="seance__code">B4</span>
+        <div>
+          <h3 class="seance__nom">Quand on n&#x27;a pas compris</h3>
+          <p class="seance__quoi">Le pharmacien parle vite, il y a du monde derrière vous, et vous hochez la tête.</p>
+          <p class="seance__meta"><span>55 minutes</span><span>12 diapositives</span></p>
+        </div>
+        <div class="seance__liens">
+          <a class="btn btn--pri" href="/assets/powerpoints/module-sante/B4-quand-on-n-a-pas-compris.pptx">Présentation</a>
+          <a class="btn btn--ghost" href="/assets/documents/module-sante-b4-quand-on-n-a-pas-compris.html" target="_blank" rel="noopener">Fiche élève</a>
+        </div>
+      </article>
+
+      <article class="card seance">
+        <span class="seance__code">B5</span>
+        <div>
+          <h3 class="seance__nom">Au comptoir, en vrai</h3>
+          <p class="seance__quoi">Tout le défi 1 dans un seul échange de deux minutes : présenter son ordonnance, écouter la posologie, poser une…</p>
+          <p class="seance__meta"><span>60 minutes</span><span>10 diapositives</span></p>
+        </div>
+        <div class="seance__liens">
+          <a class="btn btn--pri" href="/assets/powerpoints/module-sante/B5-au-comptoir-en-vrai.pptx">Présentation</a>
+          <a class="btn btn--ghost" href="/assets/documents/module-sante-b5-au-comptoir-en-vrai.html" target="_blank" rel="noopener">Fiche élève</a>
+        </div>
+      </article>
+
+    </div>
+  </section>
+
+  <section class="som__bloc">
+    <div class="som__head">
+      <span class="som__lettre">C</span>
+      <h2 class="som__titre">Défi 2 · La langue</h2>
+      <span class="som__rule"></span>
+      <span class="som__compte">5 séances · 330 min</span>
+    </div>
+    <div class="stack">
+
+      <article class="card seance">
+        <span class="seance__code">C1</span>
+        <div>
+          <h3 class="seance__nom">Le futur proche</h3>
+          <p class="seance__quoi">« Je vais voir le médecin jeudi. » Deux verbes qui travaillent ensemble : le premier se conjugue, le second ne bouge…</p>
+          <p class="seance__meta"><span>75 minutes</span><span>15 diapositives</span></p>
+        </div>
+        <div class="seance__liens">
+          <a class="btn btn--pri" href="/assets/powerpoints/module-sante/C1-le-futur-proche.pptx">Présentation</a>
+          <a class="btn btn--ghost" href="/assets/documents/module-sante-c1-le-futur-proche.html" target="_blank" rel="noopener">Fiche élève</a>
+        </div>
+      </article>
+
+      <article class="card seance">
+        <span class="seance__code">C2</span>
+        <div>
+          <h3 class="seance__nom">Les verbes pronominaux</h3>
+          <p class="seance__quoi">« Je me sens fatiguée. » Sans le petit mot du milieu, la phrase change de sens : « je sens » parle d&#x27;une odeur.</p>
+          <p class="seance__meta"><span>75 minutes</span><span>16 diapositives</span></p>
+        </div>
+        <div class="seance__liens">
+          <a class="btn btn--pri" href="/assets/powerpoints/module-sante/C2-les-verbes-pronominaux.pptx">Présentation</a>
+          <a class="btn btn--ghost" href="/assets/documents/module-sante-c2-les-verbes-pronominaux.html" target="_blank" rel="noopener">Fiche élève</a>
+        </div>
+      </article>
+
+      <article class="card seance">
+        <span class="seance__code">C3</span>
+        <div>
+          <h3 class="seance__nom">Avoir besoin de</h3>
+          <p class="seance__quoi">La phrase qui ouvre presque toutes les demandes : à l&#x27;accueil, au comptoir, au téléphone.</p>
+          <p class="seance__meta"><span>60 minutes</span><span>15 diapositives</span></p>
+        </div>
+        <div class="seance__liens">
+          <a class="btn btn--pri" href="/assets/powerpoints/module-sante/C3-avoir-besoin-de.pptx">Présentation</a>
+          <a class="btn btn--ghost" href="/assets/documents/module-sante-c3-avoir-besoin-de.html" target="_blank" rel="noopener">Fiche élève</a>
+        </div>
+      </article>
+
+      <article class="card seance">
+        <span class="seance__code">C4</span>
+        <div>
+          <h3 class="seance__nom">Un peu, assez, très, trop</h3>
+          <p class="seance__quoi">Quatre mots pour doser ce qu&#x27;on ressent.</p>
+          <p class="seance__meta"><span>60 minutes</span><span>15 diapositives</span></p>
+        </div>
+        <div class="seance__liens">
+          <a class="btn btn--pri" href="/assets/powerpoints/module-sante/C4-un-peu-assez-tres-trop.pptx">Présentation</a>
+          <a class="btn btn--ghost" href="/assets/documents/module-sante-c4-un-peu-assez-tres-trop.html" target="_blank" rel="noopener">Fiche élève</a>
+        </div>
+      </article>
+
+      <article class="card seance">
+        <span class="seance__code">C5</span>
+        <div>
+          <h3 class="seance__nom">Les quatre points, ensemble</h3>
+          <p class="seance__quoi">Le futur proche, les verbes pronominaux, « avoir besoin de » et les adverbes d&#x27;intensité tiennent dans une seule…</p>
+          <p class="seance__meta"><span>60 minutes</span><span>12 diapositives</span></p>
+        </div>
+        <div class="seance__liens">
+          <a class="btn btn--pri" href="/assets/powerpoints/module-sante/C5-les-quatre-points-ensemble.pptx">Présentation</a>
+          <a class="btn btn--ghost" href="/assets/documents/module-sante-c5-les-quatre-points-ensemble.html" target="_blank" rel="noopener">Fiche élève</a>
+        </div>
+      </article>
+
+    </div>
+  </section>
+
+  <section class="som__bloc">
+    <div class="som__head">
+      <span class="som__lettre">E</span>
+      <h2 class="som__titre">Je me lance</h2>
+      <span class="som__rule"></span>
+      <span class="som__compte">2 séances · 150 min</span>
+    </div>
+    <div class="stack">
+
+      <article class="card seance">
+        <span class="seance__code">E1</span>
+        <div>
+          <h3 class="seance__nom">À toi : l&#x27;appel et le courriel</h3>
+          <p class="seance__quoi">Deux productions, deux canaux : on appelle la clinique à voix haute, puis on écrit à la pharmacie.</p>
+          <p class="seance__meta"><span>90 minutes</span><span>12 diapositives</span></p>
+        </div>
+        <div class="seance__liens">
+          <a class="btn btn--pri" href="/assets/powerpoints/module-sante/E1-a-toi-l-appel-et-le-courriel.pptx">Présentation</a>
+          <a class="btn btn--ghost" href="/assets/documents/module-sante-e1-a-toi-l-appel-et-le-courriel.html" target="_blank" rel="noopener">Fiche élève</a>
+        </div>
+      </article>
+
+      <article class="card seance">
+        <span class="seance__code">E2</span>
+        <div>
+          <h3 class="seance__nom">Je retiens des mots</h3>
+          <p class="seance__quoi">Dernière séance : on range le vocabulaire par usage, on refait les cartes mémoire, et chacun dit où il en est.</p>
+          <p class="seance__meta"><span>60 minutes</span><span>11 diapositives</span></p>
+        </div>
+        <div class="seance__liens">
+          <a class="btn btn--pri" href="/assets/powerpoints/module-sante/E2-je-retiens-des-mots.pptx">Présentation</a>
+          <a class="btn btn--ghost" href="/assets/documents/module-sante-e2-je-retiens-des-mots.html" target="_blank" rel="noopener">Fiche élève</a>
+        </div>
+      </article>
+
+    </div>
+  </section>
+
+</main>
+</body></html>
