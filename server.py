@@ -221,6 +221,60 @@ def _meme_contenu(a, b, morceau=1 << 16):
         return False
 
 
+def _sync_interactive(src, dst):
+    """Recopie `assets/interactive/` dans le volume, fichier par fichier.
+
+    Avant, c'était `rmtree` puis `copytree` : tout le magasin était effacé et
+    réécrit à chaque démarrage — 200 Mo d'écritures pour quelques fichiers
+    changés. Et surtout, la moindre erreur en cours de route (volume plein,
+    fichier verrouillé) laissait le magasin **à moitié copié**, sans que rien
+    ne le signale : le 20 août 2026, la copie s'est arrêtée juste avant
+    `module-vetements`, dernier dossier dans l'ordre alphabétique, et le
+    module a répondu 404 en production alors qu'il était bien dans le code.
+
+    Ici, chaque fichier est comparé avant d'être copié (taille et date), les
+    erreurs sont comptées et journalisées, et un échec sur un fichier
+    n'empêche pas les suivants. Un magasin incomplet reste possible si le
+    volume est plein — mais il se voit dans les journaux au lieu de se
+    deviner.
+    """
+    copies = ignores = 0
+    echecs = []
+    for chemin_src in src.rglob('*'):
+        rel = chemin_src.relative_to(src)
+        chemin_dst = dst / rel
+        try:
+            if chemin_src.is_dir():
+                chemin_dst.mkdir(parents=True, exist_ok=True)
+                continue
+            if chemin_dst.exists():
+                s, d = chemin_src.stat(), chemin_dst.stat()
+                if s.st_size == d.st_size and int(s.st_mtime) <= int(d.st_mtime):
+                    ignores += 1
+                    continue
+            chemin_dst.parent.mkdir(parents=True, exist_ok=True)
+            shutil.copy2(str(chemin_src), str(chemin_dst))
+            copies += 1
+        except OSError as e:
+            echecs.append("%s : %s" % (rel, e))
+
+    # Les fichiers que le code ne porte plus : on les retire, sinon un module
+    # renommé laisserait sa version d'avant en ligne.
+    for chemin_dst in list(dst.rglob('*')):
+        if chemin_dst.is_file() and not (src / chemin_dst.relative_to(dst)).exists():
+            try:
+                chemin_dst.unlink()
+            except OSError as e:
+                echecs.append("%s (retrait) : %s" % (chemin_dst.relative_to(dst), e))
+
+    print("[init] interactive : %d copié(s), %d inchangé(s), %d échec(s)"
+          % (copies, ignores, len(echecs)), flush=True)
+    for e in echecs[:20]:
+        print("[WARN] interactive " + e, flush=True)
+    if len(echecs) > 20:
+        print("[WARN] interactive : %d autres échecs" % (len(echecs) - 20), flush=True)
+
+
 def init_storage():
     """Crée les répertoires nécessaires et migre les données initiales si besoin."""
     if STORAGE_DIR == BASE_DIR:
@@ -253,9 +307,7 @@ def init_storage():
     src_interactive = BASE_DIR / "assets" / "interactive"
     dst_interactive = STORAGE_DIR / "assets" / "interactive"
     if src_interactive.exists():
-        if dst_interactive.exists():
-            shutil.rmtree(str(dst_interactive))
-        shutil.copytree(str(src_interactive), str(dst_interactive))
+        _sync_interactive(src_interactive, dst_interactive)
 
     # Fusionner les activités intégrées au code dans le volume :
     #  - les ids présents dans git mais absents du volume sont ajoutés ;
@@ -2547,6 +2599,73 @@ JEU_DE_ROLE_RESTAURANT = {
 # ── Jeu de rôle « acheter des vêtements » (module-vetements) ─────────────────
 # S'informer sur un vêtement, l'essayer, l'échanger. Rôles « client » et
 # « conseiller ».
+JEU_DE_ROLE_ALLEES = {
+    "farine": {
+        "contexte": (
+            "Les allées d'une grande épicerie, un samedi matin. Un client cherche un "
+            "produit qu'il ne trouve pas là où il s'attendait à le voir."
+        ),
+        "commis": [
+            "La farine de maïs n'est pas avec les farines : elle est dans l'allée des "
+            "produits du monde, l'allée douze, tout au fond.",
+            "Les farines ordinaires sont dans l'allée quatre, avec le sucre.",
+            "L'allée douze rassemble les produits d'Amérique latine, d'Asie et d'Afrique.",
+            "Il y a deux formats : un sac d'un kilo à 4,29 $ et un sac de cinq kilos "
+            "à 15,99 $.",
+            "Les grands sacs sont sur la tablette du bas ; ils sont lourds.",
+            "Si le client ne trouve pas, tu lui dis de revenir te voir.",
+        ],
+        "client": [
+            "Tu veux de la farine de maïs pour faire des tortillas.",
+            "Tu as déjà cherché avec les autres farines et tu n'as rien trouvé.",
+            "Tu ne connais pas l'expression « produits du monde ».",
+            "Tu voudrais le grand format, mais tu veux d'abord savoir le prix.",
+        ],
+    },
+    "special": {
+        "contexte": (
+            "L'allée de la viande, un jeudi. La circulaire de la semaine vient de "
+            "sortir et le client a une photo sur son téléphone."
+        ),
+        "commis": [
+            "Le poulet entier est bien à 3 $ la livre cette semaine ; le prix régulier "
+            "est de 4,79 $.",
+            "Le spécial finit le mercredi soir ; les nouveaux spéciaux commencent le "
+            "jeudi.",
+            "Il y a une limite de quatre par famille.",
+            "Les poitrines, elles, ne sont pas en spécial : 6,50 $ la livre.",
+            "Si l'étiquette du rayon montre encore l'ancien prix, c'est la caisse qui "
+            "fait foi — et il faut le signaler au service à la clientèle.",
+        ],
+        "client": [
+            "Tu as vu le poulet à 3 $ la livre dans la circulaire.",
+            "Tu veux vérifier que c'est le bon prix et jusqu'à quand ça dure.",
+            "Tu ne sais pas si le spécial vaut aussi pour les poitrines.",
+            "Tu veux savoir combien tu peux en acheter.",
+        ],
+    },
+    "entretien": {
+        "contexte": (
+            "L'allée des produits d'entretien. Le client tient une bouteille et "
+            "regarde les petits dessins sur l'étiquette."
+        ),
+        "commis": [
+            "Les produits pour le plancher sont dans l'allée dix, au milieu.",
+            "Le nettoyant fort porte un dessin de main percée : il est corrosif, il "
+            "faut des gants.",
+            "Il existe une version douce, sans mise en garde, un peu plus chère.",
+            "Il ne faut jamais mélanger deux produits d'entretien.",
+            "Tu ne fais pas de sermon : tu réponds à ce qu'on te demande, simplement.",
+        ],
+        "client": [
+            "Tu cherches un produit pour laver le plancher.",
+            "Tu as vu un dessin sur la bouteille et tu ne sais pas ce qu'il veut dire.",
+            "Tu as de jeunes enfants à la maison.",
+            "Tu veux savoir s'il existe quelque chose de moins dangereux.",
+        ],
+    },
+}
+
 JEU_DE_ROLE_VETEMENTS = {
     "manteau": {
         "contexte": (
@@ -2913,6 +3032,46 @@ JEU_DE_ROLE_SCENARIOS = {
                              "d'un plat, les boissons. Emploie des formes polies. Si un "
                              "problème survient, signale-le sans agressivité — et laisse "
                              "l'élève proposer la solution."),
+            },
+        },
+    },
+    "allees": {
+        "cadre": "la recherche d'un produit dans une grande épicerie",
+        "contexte_label": "L'endroit du magasin où vous vous trouvez",
+        "cas": JEU_DE_ROLE_ALLEES,
+        "adresse": "Vouvoie l'élève : c'est un commerce, on ne se connaît pas.",
+        "sujets": [
+            "ce que le client cherche",
+            "le numéro d'allée, et la façon de le faire répéter",
+            "la position : au fond, près de l'entrée, en face des caisses",
+            "la hauteur : en haut, au milieu, en bas",
+            "le format et la quantité",
+            "le prix, et le spécial de la semaine s'il y en a un",
+        ],
+        "cloture": ("Quand le client a ce qu'il cherchait, dis-lui de revenir te voir "
+                    "s'il ne trouve pas, et salue."),
+        "ouverture": {
+            "client": "Excusez-moi, je cherche quelque chose.",
+            "commis": "Bonjour ! Je peux vous aider ?",
+        },
+        "roles": {
+            "commis": {
+                "qui": ("Tu travailles dans les allées de l'épicerie et tu places la "
+                        "marchandise. L'élève est le client."),
+                "conduite": ("Réponds vite et court, comme quelqu'un qui répond à cette "
+                             "question cent fois par jour : un numéro d'allée, et une "
+                             "précision. Ne répète pas de toi-même — si l'élève n'a pas "
+                             "compris, attends qu'il te le demande, puis répète plus "
+                             "lentement et compte les allées à voix haute. Ne donne le "
+                             "prix ou le format que si on te le demande."),
+            },
+            "client": {
+                "qui": ("Tu cherches un produit dans une épicerie que tu connais mal. "
+                        "L'élève travaille au magasin."),
+                "conduite": ("Dis ce que tu cherches, sans donner tous les détails d'un "
+                             "coup. Si on te donne un numéro d'allée, répète-le pour "
+                             "vérifier — « allée cinq ou allée quinze ? ». Demande le "
+                             "prix ou le format avant de partir, et remercie."),
             },
         },
     },
