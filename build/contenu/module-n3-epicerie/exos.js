@@ -1,0 +1,296 @@
+const EXOS = [
+ // ── JE DÉCOUVRE ─────────────────────────────────────────────
+  {sec:'prep', id:'prVocab', type:'match', num:'Vocabulaire · 1', tit:'Le mot et sa définition', color:'#166534',
+   sub:'Choisis un mot, puis sa définition. Six mots à la fois.', noQLbl:true, bankLbl:'Définitions', zonePh:'glisse la définition ici',
+   rows: FC_CARDS.map((c,i)=>({id:'pv'+i, q:c.word, aid:'pv'+i, a:c.def}))},
+
+  {sec:'prep', id:'pr1', type:'vf', num:'Exercice 1', tit:"Vrai ou Faux — Je ne trouve pas", color:'#166534',
+   sub:'Écoute de nouveau le dialogue, puis réponds.', tiles:['VRAI','FAUX'],
+   savoir:{h:"› Les mots du magasin — à écouter et à répéter", speak:true, rows:[
+     ["Où on cherche","Trois mots pour dire où se trouve un produit.", ["allée","affichette","tablette"]],
+     ["Ce qu'on prend","Deux mots pour transporter ses achats.", ["panier","sac"]],
+     ["Où on achète","Le petit commerce ouvert tard, quand l'épicerie est fermée.", ["dépanneur"]],
+   ]},
+   rows:[
+    {id:'p1a', txt:"Marisol cherche de la farine de maïs.", ok:'VRAI'},
+    {id:'p1b', txt:"La farine de maïs est avec les autres farines.", ok:'FAUX'},
+    {id:'p1c', txt:"Elle est dans l'allée des produits du monde.", ok:'VRAI'},
+    {id:'p1d', txt:"C'est l'allée cinq.", ok:'FAUX'},
+    {id:'p1e', txt:"Le commis dit à Marisol de revenir si elle ne trouve pas.", ok:'VRAI'},
+    {id:'p1f', txt:"Marisol veut faire du pain.", ok:'FAUX'},
+   ]},
+
+  {sec:'prep', id:'prNombres', type:'vf', num:'Exercice 2', tit:"Treize ou trente ?", color:'#166534', accent:'#166534', cards:true, listen:true,
+   sub:"Écoute bien la fin du mot. Entends-tu « ze » ou « te » ?", tiles:['13 · TREIZE','30 · TRENTE'],
+   rows:[
+    {id:'nba', txt:"treize", ok:'13 · TREIZE'},
+    {id:'nbb', txt:"trente", ok:'30 · TRENTE'},
+    {id:'nbc', txt:"quatorze", ok:'13 · TREIZE'},
+    {id:'nbd', txt:"quarante", ok:'30 · TRENTE'},
+    {id:'nbe', txt:"quinze", ok:'13 · TREIZE'},
+    {id:'nbf', txt:"cinquante", ok:'30 · TRENTE'},
+    {id:'nbg', txt:"seize", ok:'13 · TREIZE'},
+    {id:'nbh', txt:"soixante", ok:'30 · TRENTE'},
+   ]},
+
+  {sec:'prep', id:'prImg', type:'imgmatch', num:'Exercice 3', tit:"Dans l'épicerie", color:'#166534',
+   sub:"Glisse chaque photo sur la phrase qui la décrit.",
+   images:[
+    {id:'ie1', src:'/assets/interactive/module-n3-epicerie/images/allee-numerotee.jpg'},
+    {id:'ie2', src:'/assets/interactive/module-n3-epicerie/images/affichette-rayon.jpg'},
+    {id:'ie3', src:'/assets/interactive/module-n3-epicerie/images/circulaire-ouverte.jpg'},
+    {id:'ie4', src:'/assets/interactive/module-n3-epicerie/images/caisse-tapis.jpg'},
+    {id:'ie5', src:'/assets/interactive/module-n3-epicerie/images/pictogramme-poison.jpg'},
+    {id:'ie6', src:'/assets/interactive/module-n3-epicerie/images/balance-fruits.jpg'},
+    {id:'ie7', src:'/assets/interactive/module-n3-epicerie/images/sacs-reutilisables.jpg'},
+    {id:'ie8', src:'/assets/interactive/module-n3-epicerie/images/facture-epicerie.jpg'},
+   ],
+   rows:[
+    {id:'ie1', txt:"Un grand chiffre suspendu au bout d'une rangée.", ok:'ie1'},
+    {id:'ie2', txt:"Le panneau qui dit ce qu'on trouve dans l'allée.", ok:'ie2'},
+    {id:'ie3', txt:"Le journal des spéciaux de la semaine.", ok:'ie3'},
+    {id:'ie4', txt:"C'est ici qu'on paie, à la sortie.", ok:'ie4'},
+    {id:'ie5', txt:"Le petit dessin qui avertit d'un danger.", ok:'ie5'},
+    {id:'ie6', txt:"On y pose les fruits pour connaître leur poids.", ok:'ie6'},
+    {id:'ie7', txt:"On les rachète une fois et on les rapporte.", ok:'ie7'},
+    {id:'ie8', txt:"Le papier à vérifier avant de partir.", ok:'ie8'},
+   ]},
+
+  {sec:'prep', id:'prCommerce', type:'match', num:'Exercice 4', tit:'Où aller acheter ?', color:'#166534',
+   sub:"Associe chaque commerce à ce qu'on y trouve.", bankLbl:'Le commerce', zonePh:'glisse ici',
+   rows:[
+    {id:'c1', q:"Tout pour la semaine, au meilleur prix", aid:'c1', a:"une épicerie ou un supermarché"},
+    {id:'c2', q:"Du lait à dix heures du soir", aid:'c2', a:"un dépanneur"},
+    {id:'c3', q:"Des légumes frais l'été, dehors", aid:'c3', a:"un marché public"},
+    {id:'c4', q:"De la viande coupée devant vous", aid:'c4', a:"une boucherie"},
+    {id:'c5', q:"Du pain sorti du four le matin", aid:'c5', a:"une boulangerie"},
+    {id:'c6', q:"Des produits de votre pays", aid:'c6', a:"une épicerie spécialisée"},
+   ]},
+
+  {sec:'prep', id:'prTrouver', type:'write', num:'Exercice 5', tit:"Trouver un produit", color:'#166534', cols:2,
+   sub:"Complète d'après le dialogue.",
+   savoir:{h:"› Comment une épicerie est rangée", rows:[
+     ["Les allées ont un numéro","Un grand chiffre est suspendu au bout de chaque rangée. C'est le numéro qu'on vous donnera si vous demandez de l'aide : « allée douze »."],
+     ["L'affichette dit ce qu'il y a dedans","Au-dessus de chaque allée, un panneau nomme les grandes familles : pâtes, riz, conserves. Le lire coûte trois secondes et évite de marcher dix minutes."],
+     ["Les produits du monde sont à part","Beaucoup d'épiceries rassemblent les produits d'autres pays dans une seule allée, au lieu de les mettre avec leur famille. La farine de maïs n'est donc pas avec les farines."],
+     ["Le frais est sur les murs","Les fruits, la viande, le lait et le pain sont presque toujours sur les côtés du magasin. Le milieu, ce sont les boîtes et les sacs."],
+     ["En bas, les grands formats","Les grands sacs et les grosses bouteilles sont sur la tablette du bas : ils sont lourds. Le petit format est à hauteur des yeux."],
+   ]},
+   items:[
+    {q:"La farine de maïs est dans l'allée ___ .", accept:["12","douze"], ph:"un nombre"},
+    {q:"C'est l'allée des produits du ___ .", accept:["monde"], ph:"…"},
+    {q:"Le panneau au-dessus de l'allée s'appelle une ___ .", accept:["affichette"], ph:"…"},
+    {q:"Les grands sacs sont sur la tablette du ___ .", accept:["bas"], ph:"…"},
+    {q:"Quand l'épicerie est fermée, on va au ___ .", accept:["dépanneur","depanneur"], ph:"…"},
+   ]},
+
+ // ── DÉFI 1 · TROUVER LE PRODUIT ─────────────────────────────
+  {sec:'t1', id:'t1vf', type:'vf', num:'Exercice 1', tit:"Vrai ou Faux — Dans quelle allée ?", color:'#1D6B8F',
+   sub:'Écoute de nouveau le dialogue, puis réponds.', tiles:['VRAI','FAUX'],
+   rows:[
+    {id:'t1a', txt:"Marisol cherche l'huile.", ok:'VRAI'},
+    {id:'t1b', txt:"L'huile est dans l'allée quinze.", ok:'FAUX'},
+    {id:'t1c', txt:"Marisol n'est pas sûre d'avoir bien entendu.", ok:'VRAI'},
+    {id:'t1d', txt:"Le commis compte jusqu'à cinq pour être clair.", ok:'VRAI'},
+    {id:'t1e', txt:"L'huile est sur la tablette du haut.", ok:'FAUX'},
+    {id:'t1f', txt:"L'huile est à côté du vinaigre.", ok:'VRAI'},
+   ]},
+
+  {sec:'t1', id:'t1ou', type:'write', num:'Exercice 2', tit:"Dire où c'est", color:'#1D6B8F', cols:2,
+   sub:"Complète avec le mot de lieu qui convient.",
+   savoir:{h:"› Les mots qui disent où", speak:true, rows:[
+     ["Dans, au fond, au bout","<b>Dans</b> l'allée cinq. <b>Au fond</b> du magasin, c'est le mur d'en face, le plus loin de la porte. <b>Au bout</b> de l'allée, c'est là où elle se termine.", ["allée"]],
+     ["À côté de, en face de","<b>À côté du</b> vinaigre : juste à droite ou à gauche. <b>En face des</b> caisses : de l'autre côté, quand on se tourne. Ce sont les deux repères qu'on vous donnera le plus souvent."],
+     ["En haut, au milieu, en bas","Ce sont les tablettes. <b>En haut</b>, il faut lever le bras ; <b>au milieu</b>, c'est à hauteur des yeux ; <b>en bas</b>, il faut se pencher."],
+     ["Près de, loin de","<b>Près de</b> l'entrée, <b>loin des</b> caisses. Utile quand on ne connaît pas les numéros d'allée."],
+   ]},
+   items:[
+    {q:"L'huile est ___ l'allée cinq.", accept:["dans"], ph:"…"},
+    {q:"Les produits du monde sont tout au ___ .", accept:["fond"], ph:"…"},
+    {q:"L'huile est ___ côté du vinaigre.", accept:["à","a"], ph:"…"},
+    {q:"Les grands sacs sont ___ bas.", accept:["en"], ph:"…"},
+    {q:"La pharmacie est ___ face des caisses.", accept:["en"], ph:"…"},
+    {q:"Le pain est ___ de l'entrée.", accept:["près","pres","proche"], ph:"…"},
+   ]},
+
+  {sec:'t1', id:'t1aide', type:'write', num:'Exercice 3', tit:"Demander de l'aide", color:'#1D6B8F', cols:2,
+   sub:"Écris une phrase polie pour chaque situation.",
+   savoir:{h:"› Demander, et faire répéter", speak:true, rows:[
+     ["Commencer par « Excusez-moi »","C'est le mot qui ouvre. On ne commence pas par la question : on attire l'attention, on attend que la personne se tourne, puis on demande.", ["affichette"]],
+     ["Trois façons de demander","« Où est le riz ? » — court et clair. « Je cherche le riz. » — encore plus simple. « Pourriez-vous m'indiquer le riz ? » — plus poli, plus long."],
+     ["Faire répéter sans gêne","« Pardon ? » « Vous pouvez répéter ? » « Plus lentement, s'il vous plaît. » Ces trois phrases ne sont pas un aveu d'échec : tout le monde les emploie, même les gens d'ici."],
+     ["Vérifier ce qu'on a compris","« Allée cinq ou allée quinze ? » Répéter le chiffre en donnant les deux possibilités : la personne corrige tout de suite, et personne ne perd son temps."],
+     ["Remercier","« Merci beaucoup. » On répond souvent « Ça me fait plaisir » ou « Bienvenue » — ici, « bienvenue » veut dire « de rien »."],
+   ]},
+   items:[
+    {q:"Vous voulez attirer l'attention d'un commis.", accept:["excusez-moi","excusez moi","excusez-moi monsieur","excusez-moi madame"], ph:"…"},
+    {q:"Vous cherchez le riz. Dites-le simplement.", accept:["je cherche le riz","où est le riz","ou est le riz","je cherche du riz"], ph:"…"},
+    {q:"Vous n'avez pas compris le numéro.", accept:["pardon","vous pouvez répéter","vous pouvez repeter","pouvez-vous répéter","répétez s'il vous plaît"], ph:"…"},
+    {q:"On parle trop vite pour vous.", accept:["plus lentement s'il vous plaît","plus lentement","moins vite s'il vous plaît","parlez plus lentement"], ph:"…"},
+    {q:"On vient de vous aider.", accept:["merci beaucoup","merci","merci bien"], ph:"…"},
+   ]},
+
+  {sec:'t1', id:'t1nombre', type:'match', num:'Exercice 4', tit:"Le chiffre qu'on entend", color:'#1D6B8F',
+   sub:"Associe chaque nombre à ce qui l'accompagne souvent à l'épicerie.", bankLbl:'Ce que ça veut dire', zonePh:'glisse ici',
+   rows:[
+    {id:'n1', q:"« Allée douze »", aid:'n1', a:"le numéro d'une rangée — un grand chiffre suspendu"},
+    {id:'n2', q:"« Trois dollars la livre »", aid:'n2', a:"un prix au poids — il faut peser pour connaître le total"},
+    {id:'n3', q:"« Deux pour cinq dollars »", aid:'n3', a:"un spécial — il faut en prendre deux pour avoir ce prix"},
+    {id:'n4', q:"« Quarante-deux quinze »", aid:'n4', a:"un montant à payer : 42 $ et 15 ¢"},
+    {id:'n5', q:"« Format de 750 millilitres »", aid:'n5', a:"la grosseur du contenant, écrite sur l'étiquette"},
+   ]},
+
+ // ── DÉFI 2 · CHOISIR ────────────────────────────────────────
+  {sec:'t2', id:'t2vf', type:'vf', num:'Exercice 1', tit:'Vrai ou Faux — La circulaire de la semaine', color:'#B45309',
+   sub:'Écoute de nouveau le dialogue, puis réponds.', tiles:['VRAI','FAUX'],
+   rows:[
+    {id:'t2a', txt:"La circulaire arrive le mercredi.", ok:'VRAI'},
+    {id:'t2b1', txt:"Marisol lisait la circulaire chaque semaine.", ok:'FAUX'},
+    {id:'t2c', txt:"Le poulet est à trois dollars la livre.", ok:'VRAI'},
+    {id:'t2d', txt:"Les spéciaux durent tout le mois.", ok:'FAUX'},
+    {id:'t2e', txt:"Les spéciaux changent le jeudi.", ok:'VRAI'},
+    {id:'t2f', txt:"La date de fin est écrite en petit, en bas.", ok:'VRAI'},
+   ]},
+
+  {sec:'t2', id:'t2quantite', type:'write', num:'Exercice 2', tit:'Dire la quantité', color:'#B45309', cols:2,
+   sub:"Complète avec le mot de quantité qui convient.",
+   savoir:{h:"› Les mots qui mesurent", speak:true, rows:[
+     ["Ce qui contient","<b>Un paquet de</b> pâtes, <b>une boîte de</b> conserve, <b>un sac de</b> riz, <b>une bouteille d'</b>huile, <b>un pot de</b> confiture, <b>une douzaine d'</b>œufs.", ["paquet","conserve"]],
+     ["Ce qui pèse","<b>Une livre</b> — un peu moins d'un demi-kilo — et <b>un kilo</b>. Les deux s'emploient ici : la viande s'annonce souvent à la livre, les fruits au kilo.", ["livre","kilo"]],
+     ["Ce qui se verse","<b>Un litre</b> de lait, <b>500 millilitres</b> de crème. Le contenant le dit : c'est écrit sur l'étiquette, en chiffres."],
+     ["Toujours « de »","Un paquet <b>de</b> pâtes, un kilo <b>de</b> pommes, une bouteille <b>d'</b>huile. Le mot de quantité est toujours suivi de « de », et « de » devient « d' » devant une voyelle."],
+     ["Combien j'en prends ?","« J'en prends deux. » Le petit mot <b>en</b> remplace le produit dont on parle : on ne répète pas son nom."],
+   ]},
+   items:[
+    {q:"Un ___ de pâtes, s'il vous plaît.", accept:["paquet","sac"], ph:"…"},
+    {q:"Deux ___ de conserve de tomates.", accept:["boîtes","boites"], ph:"…"},
+    {q:"Le poulet est à trois dollars la ___ .", accept:["livre"], ph:"…"},
+    {q:"Une ___ d'huile, la grande.", accept:["bouteille"], ph:"…"},
+    {q:"Une ___ d'œufs, ça fait douze.", accept:["douzaine"], ph:"…"},
+    {q:"Un kilo ___ pommes.", accept:["de"], ph:"…"},
+   ]},
+
+  {sec:'t2', id:'t2circulaire', type:'match', num:'Exercice 3', tit:'Lire la circulaire', color:'#B45309',
+   sub:"Associe chaque mention à ce qu'elle veut dire.", bankLbl:'Ce que ça veut dire', zonePh:'glisse ici',
+   rows:[
+    {id:'ci1', q:"« 2 pour 5 $ »", aid:'ci1', a:"il faut en prendre deux ; un seul coûte plus cher"},
+    {id:'ci2', q:"« 3,99 $ / lb »", aid:'ci2', a:"le prix d'une livre — le total dépend du poids"},
+    {id:'ci3', q:"« Jusqu'au mercredi 27 »", aid:'ci3', a:"la date de fin du spécial"},
+    {id:'ci4', q:"« Limite de 4 par famille »", aid:'ci4', a:"on ne peut pas en acheter dix au prix du spécial"},
+    {id:'ci5', q:"« Prix régulier 6,49 $ »", aid:'ci5', a:"le prix des autres semaines — de quoi mesurer le rabais"},
+    {id:'ci6', q:"« Quantités limitées »", aid:'ci6', a:"il peut ne plus y en avoir : venir tôt"},
+   ]},
+
+  {sec:'t2', id:'t2danger', type:'write', num:'Exercice 4', tit:'Les mises en garde', color:'#B45309', cols:2,
+   sub:"Complète : que veut dire ce dessin ?",
+   savoir:{h:"› Les dessins qui avertissent", speak:true, rows:[
+     ["Une tête de mort","<b>Poison.</b> Le produit tue si on l'avale. C'est le plus grave des quatre dessins. À ranger en haut, hors de portée des enfants.", ["mise en garde"]],
+     ["Une main percée","<b>Corrosif.</b> Le produit brûle la peau et les yeux. Il faut des <b>gants</b>, et ne jamais se frotter le visage en travaillant.", ["gants"]],
+     ["Une flamme","<b>Inflammable.</b> Le produit prend feu. Loin de la cuisinière, loin d'une cigarette."],
+     ["Une bombe qui éclate","<b>Explosif.</b> Le contenant peut éclater s'il chauffe. Ne jamais laisser dans une auto l'été."],
+     ["La règle qu'on oublie","<b>Ne jamais mélanger deux produits.</b> L'eau de Javel et un nettoyant à l'ammoniac font ensemble un gaz qui envoie des gens à l'hôpital chaque année. C'est écrit sur la bouteille — et presque personne ne le lit."],
+   ]},
+   items:[
+    {q:"Une tête de mort veut dire ___ .", accept:["poison","danger de mort"], ph:"…"},
+    {q:"Une main percée veut dire que ça ___ la peau.", accept:["brûle","brule"], ph:"…"},
+    {q:"Une flamme veut dire que le produit prend ___ .", accept:["feu"], ph:"…"},
+    {q:"Pour un produit corrosif, il faut mettre des ___ .", accept:["gants"], ph:"…"},
+    {q:"Il ne faut jamais ___ deux produits.", accept:["mélanger","melanger"], ph:"…"},
+   ]},
+
+  {sec:'t2', id:'t2b', type:'vf', num:'Exercice 5', tit:"Vrai ou Faux — Attention, c'est dangereux", color:'#B45309',
+   sub:'Écoute de nouveau le dialogue, puis réponds.', tiles:['VRAI','FAUX'],
+   rows:[
+    {id:'d1', txt:"Marisol cherche un produit pour le plancher.", ok:'VRAI'},
+    {id:'d2', txt:"Le dessin avec la tête de mort veut dire « poison ».", ok:'VRAI'},
+    {id:'d3', txt:"Ginette conseille de travailler la fenêtre fermée.", ok:'FAUX'},
+    {id:'d4', txt:"Mélanger deux produits peut faire un gaz dangereux.", ok:'VRAI'},
+    {id:'d5', txt:"L'avertissement n'est écrit nulle part.", ok:'FAUX'},
+   ]},
+
+ // ── DÉFI 3 · À LA CAISSE ────────────────────────────────────
+  {sec:'t3', id:'t3vf', type:'vf', num:'Exercice 1', tit:'Vrai ou Faux — À la caisse', color:'#0D7A6F',
+   sub:'Écoute de nouveau le dialogue, puis réponds.', tiles:['VRAI','FAUX'],
+   rows:[
+    {id:'q1', txt:"Marisol a déjà une carte de points.", ok:'FAUX'},
+    {id:'q2', txt:"La carte de points est gratuite.", ok:'VRAI'},
+    {id:'q3', txt:"Le magasin donne encore des sacs de plastique.", ok:'FAUX'},
+    {id:'q4', txt:"Un sac réutilisable coûte deux dollars.", ok:'VRAI'},
+    {id:'q5', txt:"Marisol paie avec sa carte de crédit.", ok:'FAUX'},
+    {id:'q6', txt:"Elle demande de répéter le montant.", ok:'VRAI'},
+   ]},
+
+  {sec:'t3', id:'t3caisse', type:'match', num:'Exercice 2', tit:'Les questions de la caisse', color:'#0D7A6F',
+   sub:"Associe chaque question à la bonne réponse.", bankLbl:'La réponse', zonePh:'glisse ici',
+   rows:[
+    {id:'k1', q:"« Vous avez la carte de points ? »", aid:'k1', a:"« Oui, la voici. » ou « Non, merci. »"},
+    {id:'k2', q:"« Vous avez des sacs ? »", aid:'k2', a:"« J'en ai deux. » ou « Non, j'en prends un. »"},
+    {id:'k3', q:"« Débit ou crédit ? »", aid:'k3', a:"« Débit, s'il vous plaît. »"},
+    {id:'k4', q:"« Vous voulez la facture ? »", aid:'k4', a:"« Oui, je la garde. »"},
+    {id:'k5', q:"« Ça fait quarante-deux quinze. »", aid:'k5', a:"« Pardon, vous pouvez répéter ? »"},
+   ]},
+
+  {sec:'t3', id:'t3facture', type:'write', num:'Exercice 3', tit:'Lire la facture', color:'#0D7A6F', cols:2,
+   sub:"Complète : que dit cette ligne de la facture ?",
+   savoir:{h:"› Ce qui est écrit sur une facture", speak:true, rows:[
+     ["Une ligne par produit","Le nom est souvent coupé — « BANANES BIO » devient « BAN BIO ». C'est normal : la caisse écrit court.", ["facture"]],
+     ["Le sous-total","Le total <b>avant</b> les taxes. C'est le chiffre qui correspond aux prix affichés dans les allées."],
+     ["TPS et TVQ","Les deux taxes. Sur les aliments de base — pain, lait, légumes, viande — il n'y en a <b>pas</b>. Elles s'ajoutent sur les produits d'entretien, les boissons et les produits préparés."],
+     ["Le total","Ce qu'on paie vraiment. C'est le seul chiffre que la machine vous demandera d'approuver."],
+     ["Les économies","Beaucoup de factures écrivent en bas « Vous avez économisé X $ ». C'est la somme des spéciaux — de quoi vérifier qu'ils sont bien passés."],
+   ]},
+   items:[
+    {q:"Le total avant les taxes s'appelle le ___ .", accept:["sous-total","sous total","soustotal"], ph:"…"},
+    {q:"Les deux taxes s'appellent la TPS et la ___ .", accept:["TVQ","tvq"], ph:"…"},
+    {q:"Sur le pain et le lait, il n'y a pas de ___ .", accept:["taxes","taxe"], ph:"…"},
+    {q:"Le chiffre qu'on paie vraiment, c'est le ___ .", accept:["total"], ph:"…"},
+    {q:"En bas, la facture dit combien on a ___ .", accept:["économisé","economise","économise"], ph:"…"},
+   ]},
+
+  {sec:'t3', id:'t3b', type:'vf', num:'Exercice 4', tit:"Vrai ou Faux — Ce n'est pas le bon prix", color:'#0D7A6F',
+   sub:'Écoute de nouveau le dialogue, puis réponds.', tiles:['VRAI','FAUX'],
+   rows:[
+    {id:'f1', txt:"Le poulet a été facturé cinq dollars la livre.", ok:'VRAI'},
+    {id:'f2', txt:"Dans la circulaire, il était à trois dollars.", ok:'VRAI'},
+    {id:'f3', txt:"Marisol n'a aucune preuve.", ok:'FAUX'},
+    {id:'f4', txt:"Le caissier refuse de vérifier.", ok:'FAUX'},
+    {id:'f5', txt:"Marisol se fait rembourser six dollars.", ok:'VRAI'},
+    {id:'f6', txt:"Le caissier dit que ça n'arrive jamais.", ok:'FAUX'},
+   ]},
+
+  {sec:'t3', id:'t3erreur', type:'write', num:'Exercice 5', tit:"Signaler une erreur", color:'#0D7A6F', cols:2,
+   sub:"Que dire ? Écris une phrase polie.",
+   savoir:{h:"› Signaler sans se fâcher", rows:[
+     ["Dire le fait, pas le reproche","« Le poulet, c'est cinq dollars sur la facture. Dans la circulaire, c'est trois. » On décrit ce qu'on voit ; on n'accuse personne. Le caissier n'a pas fixé le prix."],
+     ["Avoir la preuve avec soi","Une photo de la circulaire sur le téléphone suffit. Sans preuve, la vérification est plus longue — mais elle se fait quand même."],
+     ["Le mot juste","« Il y a une <b>erreur</b> sur ma facture. » « Le prix ne correspond pas au spécial. » Ce sont les deux phrases qu'on entend au comptoir."],
+     ["Où aller","Si la file est longue derrière vous, le caissier vous enverra au <b>service à la clientèle</b>. Ce n'est pas un refus : c'est le comptoir prévu pour ça."],
+   ]},
+   items:[
+    {q:"Vous avez vu un prix différent dans la circulaire.", accept:["dans la circulaire c'est trois dollars","le prix ne correspond pas","il y a une erreur","le prix n'est pas le bon"], ph:"…"},
+    {q:"On vous demande une preuve.", accept:["j'ai la photo sur mon téléphone","j'ai la circulaire","voici la circulaire","j'ai une photo"], ph:"…"},
+    {q:"Vous voulez signaler poliment.", accept:["excusez-moi, il y a une erreur","excusez-moi il y a une erreur","je pense qu'il y a une erreur"], ph:"…"},
+   ]},
+
+ // ── JE ME LANCE ─────────────────────────────────────────────
+  {sec:'appli', id:'aQui', type:'vf', num:'Exercice 1', tit:'Qui parle ?', color:'#0F766E',
+   sub:"Écoute le dialogue « Toute seule », puis réponds.", tiles:['MARISOL','ÉRIC'],
+   rows:[
+    {id:'a1', txt:"« Je cherche le riz. Le grand sac, pas le petit. »", ok:'MARISOL'},
+    {id:'a2', txt:"« Allée huit, avec les pâtes. »", ok:'ÉRIC'},
+    {id:'a3', txt:"« Le sucre est en spécial cette semaine ? »", ok:'MARISOL'},
+    {id:'a4', txt:"« Deux sacs pour cinq dollars. »", ok:'ÉRIC'},
+    {id:'a5', txt:"« Alors je prends deux sacs. »", ok:'MARISOL'},
+   ]},
+
+  {sec:'appli', id:'aComp', type:'write', num:'Exercice 2', tit:'Le mot juste', color:'#0F766E', cols:2,
+   sub:"Complète avec un mot du module.",
+   items:[
+    {q:"Le panneau au-dessus de l'allée est une ___ .", accept:["affichette"], ph:"…"},
+    {q:"Le journal des spéciaux est la ___ .", accept:["circulaire"], ph:"…"},
+    {q:"Le papier qu'on vérifie après avoir payé est la ___ .", accept:["facture"], ph:"…"},
+    {q:"Le petit commerce ouvert tard est un ___ .", accept:["dépanneur","depanneur"], ph:"…"},
+    {q:"Le dessin qui avertit d'un danger est une ___ .", accept:["mise en garde","mise-en-garde"], ph:"…"},
+    {q:"Les sacs qu'on rapporte chaque semaine sont ___ .", accept:["réutilisables","reutilisables"], ph:"…"},
+   ]},
+];

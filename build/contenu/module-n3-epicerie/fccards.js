@@ -1,0 +1,17 @@
+const FC_CARDS = [
+  {word:"une allée", def:"Le passage entre deux rangées de tablettes. Chaque allée a un numéro.", ex:"La farine de maïs est dans l'<strong>allée</strong> douze.", img:"/assets/interactive/module-n3-epicerie/vocab/allee.jpg", tache:"prep"},
+  {word:"une affichette", def:"Le petit panneau au-dessus d'une allée. Il dit ce qu'on y trouve.", ex:"Lisez les <strong>affichettes</strong> : c'est plus vite que de chercher.", img:"/assets/interactive/module-n3-epicerie/vocab/affichette.jpg", tache:"prep"},
+  {word:"une tablette", def:"La planche où les produits sont posés. Il y en a du bas jusqu'en haut.", ex:"Les grands sacs sont sur la <strong>tablette</strong> du bas.", img:"/assets/interactive/module-n3-epicerie/vocab/tablette.jpg", tache:"prep"},
+  {word:"un panier", def:"Le petit contenant qu'on porte à la main. Le grand, sur roues, est un panier d'épicerie.", ex:"Prends un <strong>panier</strong>, on a seulement trois choses à acheter.", img:"/assets/interactive/module-n3-epicerie/vocab/panier.jpg", tache:"prep"},
+  {word:"un dépanneur", def:"Le petit commerce ouvert tard. Plus cher que l'épicerie, mais tout près.", ex:"Il est neuf heures : va au <strong>dépanneur</strong>, l'épicerie est fermée.", tache:"prep"},
+  {word:"la circulaire", def:"Le journal de publicité qui montre les spéciaux de la semaine.", ex:"La <strong>circulaire</strong> arrive le mercredi dans la boîte aux lettres.", img:"/assets/interactive/module-n3-epicerie/vocab/circulaire.jpg", tache:"t2"},
+  {word:"un spécial", def:"Un prix réduit pendant quelques jours. Après, le prix remonte.", ex:"Le poulet est en <strong>spécial</strong> jusqu'à mercredi soir.", tache:"t2"},
+  {word:"une livre", def:"Une mesure de poids d'ici : un peu moins d'un demi-kilo.", ex:"Le poulet est à trois dollars la <strong>livre</strong>.", tache:"t2"},
+  {word:"un paquet", def:"Ce qui contient plusieurs morceaux ensemble, dans du papier ou du plastique.", ex:"Prends un <strong>paquet</strong> de pâtes, pas deux.", img:"/assets/interactive/module-n3-epicerie/vocab/paquet.jpg", tache:"t2"},
+  {word:"une boîte de conserve", def:"La boîte de métal qui garde les aliments longtemps.", ex:"Deux <strong>boîtes de conserve</strong> de tomates, s'il vous plaît.", img:"/assets/interactive/module-n3-epicerie/vocab/conserve.jpg", tache:"t2"},
+  {word:"une mise en garde", def:"Le dessin ou le mot qui avertit d'un danger sur un produit.", ex:"Cette bouteille a une <strong>mise en garde</strong> : ça brûle la peau.", img:"/assets/interactive/module-n3-epicerie/vocab/mise-en-garde.jpg", tache:"t2"},
+  {word:"la caisse", def:"L'endroit où on paie, à la sortie du magasin.", ex:"Il y a trois personnes à la <strong>caisse</strong>.", img:"/assets/interactive/module-n3-epicerie/vocab/caisse.jpg", tache:"t3"},
+  {word:"la facture", def:"Le papier qui montre ce qu'on a acheté et ce qu'on a payé.", ex:"Vérifiez votre <strong>facture</strong> avant de partir.", img:"/assets/interactive/module-n3-epicerie/vocab/facture.jpg", tache:"t3"},
+  {word:"un sac réutilisable", def:"Le sac solide qu'on rachète une fois et qu'on rapporte chaque semaine.", ex:"Les <strong>sacs réutilisables</strong> sont à deux dollars.", img:"/assets/interactive/module-n3-epicerie/vocab/sac.jpg", tache:"t3"},
+  {word:"la carte de points", def:"La carte gratuite qui donne des rabais après plusieurs achats.", ex:"Vous avez la <strong>carte de points</strong> ?", tache:"t3"},
+];

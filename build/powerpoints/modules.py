@@ -209,9 +209,20 @@ MODULES = {
                         "L'avis et l'entretien",
                         "Échanger et se faire rembourser"),
     },
+
+    # ── Niveau 3 ────────────────────────────────────────────────────
+    'module-n3-epicerie': {
+        'numero': 1, 'activite': 55, 'niveau': 3,
+        'titre': "À l'épicerie",
+        'chapeau': "Trouver un produit, comprendre un numéro d'allée, lire la "
+                   "circulaire et vérifier sa facture.",
+        'seances': GRILLE_3_DEFIS,
+        'blocs': _blocs('Trouver le produit',
+                        'Choisir',
+                        'À la caisse'),
+    },
 }
 
-# L'ordre d'affichage : celui des numéros de module.
 # L'ordre d'affichage : par niveau, puis par numéro à l'intérieur du niveau.
 # Les dix-huit modules du niveau 4 portaient des numéros uniques, et trier sur
 # le seul numéro suffisait. À partir du moment où chaque niveau recommence à

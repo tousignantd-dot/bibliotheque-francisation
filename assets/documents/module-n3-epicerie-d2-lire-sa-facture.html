@@ -1,0 +1,172 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>D2 · Lire sa facture — Fiche élève</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800;900&display=swap" rel="stylesheet">
+<style>
+/* ═══════════════════════════════════════════════════════════════
+   FICHE ÉLÈVE · IMPRESSION LETTRE, NOIR ET BLANC
+   ───────────────────────────────────────────────────────────────
+   Aucune couleur : ces fiches sont photocopiées en noir et blanc.
+   Toute la hiérarchie passe par la GRAISSE, les FILETS et les MOTS.
+   C'est d'ailleurs la règle du système de design poussée à son
+   terme : « jamais d'information portée par la couleur seule ».
+
+   Les gris viennent des neutres du système (ink-900 à ink-400),
+   qui sont déjà quasi neutres. Les filets sont volontairement plus
+   sombres qu'à l'écran : une photocopieuse efface tout ce qui est
+   plus clair que 15 % de noir.
+   ═══════════════════════════════════════════════════════════════ */
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+:root{
+  --paper:#FFFFFF;
+  --tint:#F0F0EE;          /* aplat le plus clair encore visible en photocopie */
+  --line:#C9C9C6;          /* filet fin */
+  --rule:#17181A;          /* filet structurant */
+  --ink:#17181A;           /* titres */
+  --body:#2B2E30;          /* texte courant, un cran plus sombre qu'à l'écran */
+  --soft:#4B4F52;          /* texte secondaire */
+  --muted:#5E6165;         /* sur-titres, méta */
+}
+html{background:#BBBBBB}
+body{
+  font-family:'Nunito','Trebuchet MS',sans-serif;
+  font-size:11.5pt; line-height:1.5; color:var(--body);
+  background:var(--paper);
+  width:215.9mm;                    /* 8,5 po — format lettre */
+  margin:0 auto; padding:14mm 15mm 16mm;
+  -webkit-print-color-adjust:exact; print-color-adjust:exact;
+}
+h1,h2,h3{color:var(--ink); line-height:1.2; letter-spacing:-0.01em}
+
+/* ── En-tête ── */
+.hdr{border-bottom:2.5px solid var(--rule); padding-bottom:8px; margin-bottom:14px;
+     display:flex; align-items:flex-end; gap:14px}
+.hdr-l{flex:1}
+.eyebrow{font-size:9.5pt; font-weight:800; text-transform:uppercase;
+         letter-spacing:.12em; color:var(--muted)}
+.hdr h1{font-size:22pt; font-weight:900; margin-top:3px}
+.hdr-r{flex-shrink:0; display:flex; gap:10px; align-items:flex-end;
+       font-size:9.5pt; font-weight:800; text-transform:uppercase;
+       letter-spacing:.08em; color:var(--muted); padding-bottom:2px}
+.nomline{display:inline-block; border-bottom:1.5px solid var(--rule);
+         height:6mm; vertical-align:bottom; margin-left:5px}
+.nomline--nom{width:48mm} .nomline--date{width:26mm}
+.chapeau{font-size:12pt; font-weight:600; color:var(--soft); margin-bottom:16px}
+
+/* ── Blocs ── */
+.bloc{break-inside:avoid; page-break-inside:avoid; margin-bottom:13px}
+.card{border:1px solid var(--line); border-radius:12px; padding:11px 14px 12px;
+      background:var(--paper)}
+.lbl{font-size:9.5pt; font-weight:800; text-transform:uppercase;
+     letter-spacing:.12em; color:var(--muted); margin-bottom:5px}
+h2.t{font-size:15pt; font-weight:900; margin-bottom:7px}
+.consigne{font-size:11pt; font-weight:600; color:var(--soft); margin-bottom:8px}
+
+/* ── Objectifs et exercices : pastille en cerne, jamais en aplat ── */
+ol.obj,ol.ex{list-style:none}
+ol.obj{counter-reset:o} ol.ex{counter-reset:e}
+ol.obj li,ol.ex li{position:relative; padding-left:9mm; font-weight:600}
+ol.obj li{counter-increment:o; margin-bottom:6px}
+ol.ex li{counter-increment:e; margin-bottom:9px; break-inside:avoid}
+ol.obj li::before,ol.ex li::before{
+  position:absolute; left:0; top:0; width:6mm; height:6mm; border-radius:50%;
+  border:1.5px solid var(--rule); color:var(--ink);
+  font-size:9.5pt; font-weight:800;
+  display:flex; align-items:center; justify-content:center}
+ol.obj li::before{content:counter(o)}
+ol.ex li::before{content:counter(e)}
+
+/* ── Dialogue ── */
+.rep{display:flex; gap:10px; padding:4px 0; border-top:1px solid var(--line)}
+.rep:first-of-type{border-top:0}
+.rep--key{background:var(--tint); border-radius:8px; padding:5px 8px;
+          border-top:0; margin:2px 0}
+.qui{flex:0 0 30mm; font-weight:800; color:var(--ink); font-size:10.5pt}
+
+/* ── Règle : encadrée au filet épais, c'est elle qu'on repère de loin ── */
+.regle{border:2.5px solid var(--rule); border-radius:12px; padding:12px 14px}
+.regle .lbl{color:var(--ink)}
+.regle p.r{font-size:14pt; font-weight:900; color:var(--ink); line-height:1.3}
+.regle p.pr{margin-top:7px; font-weight:600; color:var(--soft)}
+
+/* ── Tableau ── */
+table{width:100%; border-collapse:collapse}
+th{font-size:9.5pt; font-weight:800; text-transform:uppercase; letter-spacing:.1em;
+   color:var(--muted); text-align:left; padding:0 8px 5px 0;
+   border-bottom:1.5px solid var(--rule)}
+td{padding:6px 8px 6px 0; border-top:1px solid var(--line); vertical-align:top;
+   font-weight:600}
+td.cle{font-weight:900; color:var(--ink)}   /* la colonne clé : en gras, pas en couleur */
+.note{margin-top:8px; font-size:10.5pt; font-weight:600; color:var(--soft);
+      background:var(--tint); border-radius:9px; padding:8px 11px}
+
+/* ── Cartes ── */
+.grid{display:grid; grid-template-columns:1fr 1fr; gap:9px}
+.grid .card h3{font-size:11.5pt; font-weight:900; color:var(--ink); margin-bottom:3px}
+.grid .card p{font-size:11pt}
+
+/* ── Piège : le filet distingue les deux colonnes, pas la couleur ──
+   À gauche, un filet TIRETÉ — ce qui ne tient pas.
+   À droite, un filet PLEIN et épais — ce qu'il faut retenir.
+   Les deux intitulés disent la même chose en mots.                */
+.duo{display:grid; grid-template-columns:1fr 1fr; gap:10px}
+.duo>div{border-radius:12px; padding:10px 13px}
+.duo .no{border:1.5px dashed var(--muted)}
+.duo .ok{border:2.5px solid var(--rule); background:var(--tint)}
+.duo .k{font-size:9.5pt; font-weight:800; text-transform:uppercase;
+        letter-spacing:.1em; margin-bottom:4px; color:var(--muted)}
+.duo .ok .k{color:var(--ink)}
+.duo p.ph{font-size:12pt; font-weight:800; color:var(--ink); line-height:1.3}
+.duo .no p.ph{font-weight:600; font-style:italic; color:var(--soft)}
+
+/* ── Vocabulaire ── */
+.voc{width:100%; border-collapse:collapse}
+.voc td{border-top:1px solid var(--line); padding:6px 8px 6px 0}
+.voc td.mot{width:38%; font-weight:900; color:var(--ink)}
+.voc td.def{color:var(--soft)}
+
+/* ── Zones de réponse ── */
+.ligne{display:block; border-bottom:1px dotted #8E8E8A; height:8mm; margin-top:2px}
+.ligne--court{width:55%}
+
+/* ── Billet de sortie ── */
+.billet{border:2.5px solid var(--rule); border-radius:12px; padding:13px 15px}
+.billet .k{font-size:9.5pt; font-weight:800; text-transform:uppercase;
+           letter-spacing:.12em; color:var(--ink); margin-bottom:4px}
+.billet p.c{font-size:14pt; font-weight:900; color:var(--ink); line-height:1.3}
+.billet ul{list-style:none; margin-top:7px}
+.billet li{font-weight:600; color:var(--soft); margin-bottom:3px}
+
+/* ── Pied ── */
+footer{margin-top:16px; padding-top:7px; border-top:1px solid var(--line);
+       font-size:9.5pt; font-weight:700; color:var(--muted);
+       display:flex; justify-content:space-between}
+
+/* ── Impression ── */
+@page{size:8.5in 11in; margin:14mm 15mm}
+@media print{
+  html{background:#FFFFFF}
+  body{width:auto; padding:0}
+  .bloc{break-inside:avoid; page-break-inside:avoid}
+  h2.t,.lbl{break-after:avoid; page-break-after:avoid}
+}
+</style>
+</head>
+<body>
+<header class="hdr">
+  <div class="hdr-l">
+    <div class="eyebrow">Séance D2 · Module 1 · 60 minutes</div>
+    <h1>Lire sa facture</h1>
+  </div>
+  <div class="hdr-r"><span>Nom<span class="nomline nomline--nom"></span></span><span>Date<span class="nomline nomline--date"></span></span></div>
+</header>
+<p class="chapeau">Une ligne par produit, un sous-total, les taxes, un total. Deux choses à vérifier seulement : que les spéciaux sont passés, et que rien n'est compté deux fois.</p>
+<section class="bloc card"><div class="lbl">Objectifs</div><h2 class="t">À la fin, je serai capable de…</h2><ol class="obj"><li>reconnaître les quatre parties d'une facture ;</li><li>savoir sur quoi il y a des taxes ;</li><li>vérifier qu'un spécial est bien passé ;</li><li>signaler une erreur poliment.</li></ol></section><section class="bloc card"><div class="lbl">Analyse</div><h2 class="t">Les quatre parties</h2><table><thead><tr><th>La partie</th><th>Ce qu'elle contient</th></tr></thead><tbody><tr><td>Les lignes</td><td class="cle">un produit par ligne, nom écrit court</td></tr><tr><td>Le sous-total</td><td class="cle">le total avant les taxes</td></tr><tr><td>TPS et TVQ</td><td class="cle">les deux taxes</td></tr><tr><td>Le total</td><td class="cle">ce qu'on paie vraiment</td></tr></tbody></table><div class="note">Le sous-total correspond aux prix affichés dans les allées.</div></section><section class="bloc regle"><div class="lbl">Les taxes sur l'alimentation</div><p class="r">Sur les aliments de base, il n'y en a pas.</p><p class="pr">Pain, lait, légumes, viande, œufs : &lt;b&gt;aucune taxe&lt;/b&gt;. Les taxes s'ajoutent sur les produits d'entretien, les boissons gazeuses, les plats préparés et les portions individuelles. C'est pour cela que la ligne des taxes est souvent très petite sur une facture d'épicerie.</p></section><section class="bloc card"><div class="lbl">Dialogue</div><h2 class="t">Ce n'est pas le bon prix</h2><p class="consigne">Écoutez, puis relevez les trois phrases de Marisol.</p><div class="rep rep--key"><div class="qui">MARISOL</div><div>Excusez-moi. Je regarde ma facture. Le poulet, c'est cinq dollars.</div></div><div class="rep"><div class="qui">STÉPHANE</div><div>Oui, cinq dollars la livre.</div></div><div class="rep rep--key"><div class="qui">MARISOL</div><div>Mais dans la circulaire, c'est trois dollars.</div></div><div class="rep"><div class="qui">STÉPHANE</div><div>Vous avez la circulaire ?</div></div><div class="rep rep--key"><div class="qui">MARISOL</div><div>J'ai la photo sur mon téléphone.</div></div><div class="rep rep--key"><div class="qui">STÉPHANE</div><div>Attendez, je regarde… Vous avez raison. Le spécial n'est pas passé.</div></div></section><section class="bloc regle"><div class="lbl">Signaler sans accuser</div><p class="r">On décrit le fait, on ne met personne en cause.</p><p class="pr">« Le poulet, c'est cinq dollars sur la facture. Dans la circulaire, c'est trois. » La personne à la caisse n'a pas fixé le prix : le plus souvent, c'est un spécial qui n'est pas entré dans le système. Décrire l'écart obtient une vérification ; accuser obtient une discussion.</p></section><section class="bloc"><div class="lbl">La ligne des économies</div><h2 class="t">Le contrôle le plus rapide</h2><div class="grid"><div class="card"><h3>Elle est en bas</h3><p>« Vous avez économisé 8,40 $ » — la somme de tous les spéciaux appliqués.</p></div><div class="card"><h3>Si elle est à zéro</h3><p>Aucun spécial n'est passé. C'est le signal qu'il faut regarder les lignes une par une.</p></div><div class="card"><h3>Un coup d'œil suffit</h3><p>Avant de quitter le magasin, regardez ce chiffre. S'il correspond à peu près à ce que vous attendiez, tout va bien.</p></div></div></section><section class="bloc"><div class="lbl">Attention</div><h2 class="t">Découvrir l'erreur à la maison</h2><div class="duo"><div class="no"><div class="k">On entend souvent</div><p class="ph">En rangeant les sacs, je vois que le prix n'est pas le bon.</p></div><div class="ok"><div class="k">Il faut dire plutôt</div><p class="ph">Dix secondes près de la sortie.</p></div></div><div class="note">Une fois rentré, il faut revenir au magasin avec la facture et le produit. Dix secondes de vérification avant de partir évitent un deuxième déplacement — et beaucoup de gens ne reviennent jamais, ce qui revient à payer l'erreur.</div></section><section class="bloc card"><div class="lbl">Pratique · 1 de 2</div><h2 class="t">Que dit cette ligne ?</h2><p class="consigne">Répondez en une phrase.</p><ol class="ex"><li><span class="q">POULET 3 LB · 15,00</span><span class="ligne"></span></li><li><span class="q">SOUS-TOTAL · 38,40</span><span class="ligne"></span></li><li><span class="q">TPS · 0,45</span><span class="ligne"></span></li><li><span class="q">TOTAL · 42,15</span><span class="ligne ligne--court"></span></li><li><span class="q">ÉCONOMIES · 8,40</span><span class="ligne"></span></li></ol></section><section class="bloc card"><div class="lbl">Pratique · 2 de 2</div><h2 class="t">À deux · signaler une erreur</h2><p class="consigne">Un client, une personne à la caisse.</p><ol class="ex"><li><span class="q">Le client</span><span class="ligne"></span></li><li><span class="q">La caisse</span><span class="ligne"></span></li><li><span class="q">Le client</span><span class="ligne"></span></li><li><span class="q">On change de rôle</span><span class="ligne ligne--court"></span></li></ol></section><section class="bloc billet"><div class="k">Billet de sortie</div><p class="c">Gardez la facture de votre prochaine épicerie et vérifiez-la.</p><ul><li>La ligne des économies correspond-elle à ce que vous attendiez ?</li><li>Un prix vous surprend-il ?</li></ul><span class="ligne"></span><span class="ligne"></span><span class="ligne"></span></section>
+<footer><span>D2 · À l'épicerie</span><span>Fiche élève</span></footer>
+</body>
+</html>
