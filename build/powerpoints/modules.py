@@ -152,6 +152,16 @@ MODULES = {
                         'Expliquer le chemin',
                         "Les messages qu'on entend"),
     },
+    'module-activite': {
+        'numero': 13, 'activite': 50, 'niveau': 4,
+        'titre': "S'inscrire à une activité",
+        'chapeau': "S'informer sur une activité, comprendre les consignes du "
+                   "moniteur, lire un dépliant et s'inscrire.",
+        'seances': GRILLE_3_DEFIS,
+        'blocs': _blocs("S'informer sur une activité",
+                        'Comprendre et donner des consignes',
+                        "Le dépliant et l'inscription"),
+    },
 }
 
 # L'ordre d'affichage : celui des numéros de module.

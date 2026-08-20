@@ -1,0 +1,17 @@
+const FC_CARDS = [
+  {word:"une inscription", def:"L'action de s'enregistrer pour participer à une activité.", ex:"L'<strong>inscription</strong> se fait en ligne ou au comptoir.", img:"/assets/interactive/module-activite/vocab/inscription.jpg", tache:"prep"},
+  {word:"un dépliant", def:"Une petite brochure pliée qui présente les activités offertes.", ex:"J'ai reçu le <strong>dépliant</strong> de la ville dans ma boîte aux lettres.", img:"/assets/interactive/module-activite/vocab/depliant.jpg", tache:"prep"},
+  {word:"le tarif", def:"Le prix demandé pour une activité ou un service.", ex:"Le <strong>tarif</strong> est de quatre-vingt-cinq dollars pour les résidents.", img:"/assets/interactive/module-activite/vocab/tarif.jpg", tache:"prep"},
+  {word:"une preuve de résidence", def:"Un document récent à son nom qui montre où on habite.", ex:"Apportez une <strong>preuve de résidence</strong> : une facture ou un bail.", img:"/assets/interactive/module-activite/vocab/preuve-residence.jpg", tache:"prep"},
+  {word:"une session", def:"La période pendant laquelle une activité a lieu : douze semaines, par exemple.", ex:"La <strong>session</strong> va de septembre à décembre.", tache:"prep"},
+  {word:"un moniteur", def:"La personne qui dirige une activité sportive et donne les consignes.", ex:"Le <strong>moniteur</strong> demande de ne pas sauter dans l'eau.", img:"/assets/interactive/module-activite/vocab/moniteur.jpg", tache:"t1"},
+  {word:"un maillot de bain", def:"Le vêtement qu'on porte pour se baigner.", ex:"Apportez un <strong>maillot de bain</strong> et une serviette.", img:"/assets/interactive/module-activite/vocab/maillot.jpg", tache:"t1"},
+  {word:"un bonnet de bain", def:"Le bonnet de tissu ou de caoutchouc obligatoire dans plusieurs piscines.", ex:"Le <strong>bonnet de bain</strong> est obligatoire, il coûte cinq dollars.", img:"/assets/interactive/module-activite/vocab/bonnet.jpg", tache:"t1"},
+  {word:"un vestiaire", def:"La pièce où on se change et où on laisse ses vêtements.", ex:"Les enfants se changent au <strong>vestiaire</strong> avant le cours.", img:"/assets/interactive/module-activite/vocab/vestiaire.jpg", tache:"t1"},
+  {word:"une planche", def:"La planche de mousse qu'on tient devant soi pour apprendre à nager.", ex:"Tenez la <strong>planche</strong> à deux mains, ne la lâchez pas.", img:"/assets/interactive/module-activite/vocab/planche.jpg", tache:"t2"},
+  {word:"une consigne", def:"Une instruction donnée par la personne qui dirige l'activité.", ex:"Le moniteur répète la <strong>consigne</strong> deux fois.", tache:"t2"},
+  {word:"un bénévole", def:"Une personne qui aide sans être payée.", ex:"Rosa donne un coup de main comme <strong>bénévole</strong>.", img:"/assets/interactive/module-activite/vocab/benevole.jpg", tache:"t2"},
+  {word:"une chorale", def:"Un groupe de personnes qui chantent ensemble.", ex:"La <strong>chorale</strong> se réunit le jeudi soir.", img:"/assets/interactive/module-activite/vocab/chorale.jpg", tache:"t3"},
+  {word:"une place disponible", def:"Une place encore libre dans un groupe.", ex:"Il reste trois <strong>places disponibles</strong> dans la chorale.", img:"/assets/interactive/module-activite/vocab/places.jpg", tache:"t3"},
+  {word:"la légende", def:"L'explication des symboles, écrite en bas d'un dépliant ou d'un tableau.", ex:"La <strong>légende</strong> explique ce que veut dire l'étoile.", img:"/assets/interactive/module-activite/vocab/legende.jpg", tache:"t3"},
+];

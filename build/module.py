@@ -131,6 +131,17 @@ def construire(slug, verbeux=True):
     for jeton, valeur in valeurs.items():
         html = html.replace(jeton, valeur)
 
+    # `bravo` et `relance` finissent dans une chaîne JavaScript à guillemets
+    # simples (`el.innerHTML='…'`). Une apostrophe non échappée y casse tout le
+    # script du module — et la page continue de s'afficher, muette. Le manifeste
+    # doit écrire \\' ; on le vérifie plutôt que de le corriger en silence.
+    for champ in ('bravo', 'relance'):
+        valeur = man[champ]
+        if re.search(r"(?<!\\)'", valeur):
+            fatal("%s : %s contient une apostrophe non échappée — écrire \\\\' "
+                  "dans le manifeste (la valeur part dans une chaîne JavaScript "
+                  "à guillemets simples)" % (slug, champ))
+
     restants = sorted(set(re.findall(r'%%[A-Z_]+%%', html)))
     if restants:
         fatal('%s : jetons non remplis — %s' % (slug, ' '.join(restants)))

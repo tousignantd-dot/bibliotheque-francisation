@@ -12,9 +12,9 @@ livrer**.
 
 | N° | Slug | Situation | Étape atteinte |
 |----|------|-----------|----------------|
-| 11 | `module-relations` | Relations sociales | contenu ✔ · build ✔ · médias… |
-| 12 | `module-deplacement` | Déplacement dans une ville | — |
-| 13 | `module-activite` | Participation à une activité culturelle ou sportive | — |
+| 11 | `module-relations` | Relations sociales | **terminé** |
+| 12 | `module-deplacement` | Déplacement dans une ville | **terminé** |
+| 13 | `module-activite` | Participation à une activité culturelle ou sportive | en cours |
 | 14 | `module-alimentation` | Achat d'aliments ou de produits d'entretien | — |
 | 15 | `module-achat` | Achat de biens de consommation durables | — |
 | 16 | `module-restaurant` | Service de restauration | — |

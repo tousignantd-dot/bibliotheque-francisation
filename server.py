@@ -2264,6 +2264,80 @@ JEU_DE_ROLE_ITINERAIRES = {
 }
 
 
+# ── Jeu de rôle « s'inscrire à une activité » (module-activite) ──────────────
+# S'informer sur une activité de loisir offerte par une ville. Rôles « parent »
+# (la personne qui s'informe) et « prepose » (le comptoir).
+JEU_DE_ROLE_ACTIVITES = {
+    "natation": {
+        "contexte": (
+            "Le comptoir d'un centre sportif municipal, en fin d'avant-midi. Une personne "
+            "veut inscrire son enfant de neuf ans à un cours de natation pour la session "
+            "d'automne."
+        ),
+        "prepose": [
+            "Deux groupes sont offerts pour cet âge : le samedi de 9 h à 10 h, et le mardi après l'école.",
+            "La session dure douze semaines, de septembre à décembre.",
+            "Le tarif est de 85 $ pour les résidents de la ville, 110 $ pour les autres.",
+            "Une facture récente ou un bail au nom du parent sert de preuve de résidence.",
+            "Il faut un maillot, une serviette, des sandales, et le bonnet de bain est obligatoire.",
+            "Le bonnet se vend 5 $ au comptoir.",
+            "Le groupe du samedi est de niveau débutant : l'enfant n'a pas besoin de savoir nager.",
+            "Il est préférable que les parents restent dans la salle d'attente ; une vitre permet de voir.",
+            "Il n'y a pas de reprise si un cours est manqué, mais chaque cours revoit ce qui précède.",
+        ],
+        "parent": [
+            "Ton enfant a neuf ans et ne sait pas nager.",
+            "Tu travailles le mardi après-midi : seul le samedi te convient.",
+            "Tu habites la ville depuis un an mais tu ignores ce qui sert de preuve.",
+            "Tu veux savoir ce qu'il faut apporter, et combien ça coûte en tout.",
+            "Tu répètes les informations avant de partir, pour être sûr.",
+        ],
+    },
+    "chorale": {
+        "contexte": (
+            "Le comptoir d'un centre communautaire, en début de soirée. Une personne "
+            "s'intéresse à la chorale du jeudi soir, annoncée dans le dépliant de la ville."
+        ),
+        "prepose": [
+            "La chorale a lieu le jeudi de 19 h à 21 h, dix semaines.",
+            "Il reste trois places seulement ; le dépliant portait une étoile pour cette raison.",
+            "Le tarif est de 30 $ pour les résidents, 45 $ pour les autres.",
+            "Il n'est pas nécessaire de savoir lire la musique ni d'avoir de l'expérience.",
+            "Il faut apporter une bouteille d'eau et un crayon ; les partitions sont fournies.",
+            "L'inscription se fait au comptoir ou en ligne, mais la preuve de résidence doit être présentée.",
+            "Le premier cours a lieu la semaine prochaine.",
+        ],
+        "parent": [
+            "Tu cherches une activité pour toi, pas pour un enfant.",
+            "Tu n'as jamais chanté dans une chorale et tu ne lis pas la musique.",
+            "Tu veux savoir s'il reste des places et combien ça coûte.",
+            "Tu as une facture d'électricité dans ton sac, mais tu ne sais pas si elle convient.",
+        ],
+    },
+    "soccer": {
+        "contexte": (
+            "Le comptoir du service des loisirs d'une ville, un samedi matin. Une personne "
+            "veut inscrire sa fille de onze ans au soccer pour la saison d'été."
+        ),
+        "prepose": [
+            "La saison va de mai à août, une pratique le mercredi soir et un match le samedi.",
+            "Le tarif est de 120 $ pour les résidents, 160 $ pour les autres, chandail inclus.",
+            "Il faut des souliers à crampons, des protège-tibias et une bouteille d'eau.",
+            "Les inscriptions se terminent le 15 avril ; après, l'enfant est mis sur une liste d'attente.",
+            "Une preuve de résidence et la carte d'assurance maladie de l'enfant sont demandées.",
+            "Les parents bénévoles sont bienvenus : il manque toujours des accompagnateurs.",
+            "En cas de pluie, les matchs sont reportés et l'information est envoyée par courriel.",
+        ],
+        "parent": [
+            "Ta fille a onze ans et joue déjà au soccer à l'école.",
+            "Tu ne sais pas quel équipement il faut acheter ni combien ça coûte.",
+            "Tu travailles certains samedis et tu veux savoir si c'est un problème.",
+            "Tu demandes s'il est trop tard pour s'inscrire.",
+        ],
+    },
+}
+
+
 JEU_DE_ROLE_SCENARIOS = {
     "louer": {
         "cadre": "une visite de logement",
@@ -2404,6 +2478,46 @@ JEU_DE_ROLE_SCENARIOS = {
                              "de temps. Répète ce qu'on te dit pour vérifier. Si "
                              "l'explication va trop vite ou saute une étape, demande de "
                              "reprendre — c'est exactement ce qu'il faut apprendre à faire."),
+            },
+        },
+    },
+    "activite": {
+        "cadre": "une demande de renseignements au comptoir d'un centre de loisirs municipal",
+        "contexte_label": "L'activité dont il est question",
+        "cas": JEU_DE_ROLE_ACTIVITES,
+        "adresse": "Vouvoie l'élève : c'est un comptoir de service, on ne se connaît pas.",
+        "sujets": [
+            "le jour, l'heure et la durée de la session",
+            "le tarif, et la différence entre résidents et non-résidents",
+            "les documents à fournir pour l'inscription",
+            "le matériel à apporter, et ce qui est obligatoire",
+            "les conditions d'admission (âge, niveau, expérience)",
+            "la façon de s'inscrire et de payer",
+        ],
+        "cloture": ("Quand tout a été demandé, invite l'autre à récapituler ce qu'il a "
+                    "retenu, confirme, et termine poliment."),
+        "ouverture": {
+            "parent": "Bonjour, je voudrais des renseignements sur une activité.",
+            "prepose": "Bonjour, qu'est-ce que je peux faire pour vous ?",
+        },
+        "roles": {
+            "prepose": {
+                "qui": ("Tu travailles au comptoir du centre et tu renseignes le public. "
+                        "L'élève est la personne qui s'informe."),
+                "conduite": ("Réponds à ce qu'on te demande, sans dérouler toute la fiche "
+                             "d'un coup : c'est à l'élève d'aller chercher chaque "
+                             "renseignement. S'il oublie une information importante — le "
+                             "matériel obligatoire, la preuve de résidence — ne la donne "
+                             "pas d'office ; attends, et mentionne-la seulement à la fin "
+                             "s'il n'y a pas pensé."),
+            },
+            "parent": {
+                "qui": ("Tu viens t'informer sur une activité. L'élève travaille au "
+                        "comptoir et te renseigne."),
+                "conduite": ("Pose tes questions une à la fois : l'horaire, le prix, le "
+                             "matériel, les documents. Réagis à chaque réponse. Si une "
+                             "réponse est vague, demande une précision — un chiffre, une "
+                             "heure, un nom de document."),
             },
         },
     },
