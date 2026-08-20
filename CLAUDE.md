@@ -869,6 +869,20 @@ Personne d'autre ne le voit : le portail élève ne porte rien de cela.
   Destination commune : `SIGNALEMENT_DESTINATAIRE`. Une clé Resend présente
   mais refusée **ne bascule pas** sur le SMTP : une configuration cassée doit
   se voir dans le journal, pas se faire rattraper en silence.
+- **L'en-tête `User-Agent` n'est pas décoratif.** Sans lui, urllib s'annonce
+  « Python-urllib/3.x » et le pare-feu devant l'API de Resend répond
+  `403 error code: 1010` — un refus de Cloudflare, jamais atteint par la clé.
+  Le message ressemble à un problème d'authentification et n'en est pas un.
+  Ne pas le retirer en nettoyant les en-têtes.
+- **Le bouton « Tester l'envoi du courriel »** (fenêtre de signalement,
+  `POST /api/signalement/essai`) déclenche un envoi et rapporte la réponse du
+  service à l'écran : la voie utilisée, l'adresse de destination et le message
+  brut du refus. Ouvert à **toute session enseignante** — le réserver à
+  l'administrateur le cachait à la personne qui dépannait, et la réponse ne
+  porte ni clé ni mot de passe. C'est lui qui a rendu le `1010` lisible ;
+  sans lui, il fallait ouvrir les journaux de l'hébergeur.
+- La raison de l'échec est gardée dans la fiche (`courrielRaison`) : on peut
+  relire après coup pourquoi une note n'est pas partie.
 - `GET /api/signalements` renvoie les siens ; le compte administrateur voit
   tout. La modale n'en affiche que les trois derniers : elle sert à écrire,
   pas à consulter.
