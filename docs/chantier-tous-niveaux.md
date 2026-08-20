@@ -65,6 +65,34 @@ faut vérifier les faits québécois (montants, délais, noms d'organismes) plut
 que les inventer. Ces vérifications se font au coup par coup, sur les sites
 officiels, et se notent ici.
 
+## Le format des images, changé pour ce chantier
+
+Les images des exercices étaient carrées. Mesure faite dans le navigateur sur
+`module-vetements` : la zone de glisser-déposer (`.imgzone`) fait **223 × 132
+px**, soit un rapport de 1,7 — un rectangle paysage. Une image carrée y est
+recadrée par `object-fit:cover`, et le tiers du haut et du bas disparaît.
+
+Décision : générer les prochaines images en **3:2 paysage** (1536 × 1024 chez
+fal.ai), et aligner le CSS pour ne plus recadrer :
+
+- `.imgtile` (la vignette de la banque) : 100 × 100 → `aspect-ratio:3/2`,
+  largeur 150 px ;
+- `.vc-photo` (le mot et son image) : `aspect-ratio:1/1` → `3/2` ;
+- `.imgzone` : déjà un rectangle, à fixer en `aspect-ratio:3/2` pour que la
+  zone vide annonce la forme de ce qu'elle attend.
+
+**Ces trois retouches vivent dans le gabarit**, qu'une autre session est en
+train de modifier (l'identité de marque SAAF). Elles se feront quand elle aura
+commité — avant la génération d'images du premier module, pas après.
+
+## Le suivi des images sur le mur
+
+Toutes les images produites sont déjà versées dans `~/Claude/generations`, à
+plat, avec leur fichier `.json` de traçabilité (prompt, modèle, coût). Le mur
+`le-mur.html` les lit par `mur-data.js`, régénéré par `maj-mur.py`. État au
+20 août 2026 : 210 médias, 6,94 $ cumulés. **Refaire `python3 maj-mur.py`
+après chaque module**, sinon le mur montre l'état précédent.
+
 ## Journal
 
 _(une section par module, remplie à mesure)_
