@@ -1,0 +1,328 @@
+<!doctype html>
+<html lang="fr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Pitch institutionnel — Francisation Niveau 4</title>
+<style>
+/* ============================================================
+   Présentations — Bibliothèque de francisation
+   Palette et tokens repris de css/style.css du projet
+   ============================================================ */
+:root{
+  --bg:#f8f9fb; --surface:#ffffff; --border:#e8eaed;
+  --ink:#0f1117; --ink2:#5c6470; --ink3:#9aa0aa;
+  --accent:#3b6ff6; --accent2:#7c3aed; --accent3:#0ea5e9;
+  --accent-light:#eef2ff;
+  --ok:#0f9d58; --warn:#d97706;
+  --font:'Inter','Segoe UI',system-ui,-apple-system,sans-serif;
+  --shadow:0 1px 3px rgba(0,0,0,.06),0 2px 8px rgba(0,0,0,.04);
+  --shadow-lg:0 10px 40px rgba(15,17,23,.10),0 2px 8px rgba(15,17,23,.05);
+}
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+html,body{height:100%}
+body{
+  font-family:var(--font); color:var(--ink); background:var(--bg);
+  -webkit-font-smoothing:antialiased; overflow:hidden;
+}
+
+/* ---------- scène ---------- */
+#stage{position:fixed;inset:0;display:grid;place-items:center;
+  background:
+    radial-gradient(ellipse 80% 50% at 15% -10%, rgba(59,111,246,.10) 0%, transparent 60%),
+    radial-gradient(ellipse 60% 45% at 85% 110%, rgba(124,58,237,.08) 0%, transparent 60%),
+    var(--bg);
+}
+.slide{
+  position:absolute; width:min(96vw, calc(96vh * 16 / 9)); aspect-ratio:16/9;
+  background:var(--surface); border:1px solid var(--border); border-radius:18px;
+  box-shadow:var(--shadow-lg); overflow:hidden;
+  opacity:0; transform:translateY(14px) scale(.995); pointer-events:none;
+  transition:opacity .32s ease, transform .32s ease;
+  container-type:inline-size;
+}
+.slide.on{opacity:1;transform:none;pointer-events:auto}
+.slide::before{content:'';position:absolute;top:0;left:0;right:0;height:4px;
+  background:linear-gradient(90deg,var(--accent) 0%,var(--accent2) 45%,var(--accent3) 100%)}
+
+.pad{position:absolute;inset:0;padding:4.5cqw 5.4cqw 7.2cqw;
+  display:flex;flex-direction:column;justify-content:center}
+
+/* ---------- typographie fluide (relative à la largeur de diapo) ---------- */
+.kicker{font-size:2.1cqw;font-weight:700;letter-spacing:.13em;text-transform:uppercase;
+  color:var(--accent);margin-bottom:2.4cqw}
+h1{font-size:6.6cqw;line-height:1.06;letter-spacing:-.028em;font-weight:800}
+h2{font-size:4.5cqw;line-height:1.12;letter-spacing:-.022em;font-weight:800;margin-bottom:2.2cqw}
+h3{font-size:2.9cqw;line-height:1.2;font-weight:700;letter-spacing:-.01em}
+p,li{font-size:2.32cqw;line-height:1.46;color:var(--ink2)}
+.lead{font-size:2.8cqw;line-height:1.4;color:var(--ink2);max-width:74%}
+strong{color:var(--ink);font-weight:700}
+em{font-style:normal;color:var(--accent);font-weight:600}
+.small{font-size:1.85cqw;color:var(--ink3);line-height:1.45}
+
+/* ---------- titre de couverture ---------- */
+.cover h1{font-size:7cqw;max-width:88%}
+.cover .sub{margin-top:2.6cqw;font-size:2.7cqw;color:var(--ink2)}
+.cover .meta{margin-top:auto;padding-top:3cqw;display:flex;gap:2.4cqw;align-items:center;
+  font-size:1.9cqw;color:var(--ink3)}
+.dotsep{width:4px;height:4px;border-radius:50%;background:var(--ink3);opacity:.6}
+
+/* ---------- grilles ---------- */
+.grid{display:grid;gap:1.85cqw}
+.g2{grid-template-columns:1fr 1fr}
+.g3{grid-template-columns:repeat(3,1fr)}
+.g4{grid-template-columns:repeat(4,1fr)}
+.card{background:var(--bg);border:1px solid var(--border);border-radius:14px;
+  padding:2.1cqw 2cqw;display:flex;flex-direction:column;gap:.85cqw}
+.card h3{font-size:2.3cqw}
+.card p{font-size:1.84cqw}
+.card .ico{font-size:2.9cqw;line-height:1}
+.card.accent{background:var(--accent-light);border-color:#d8e2ff}
+
+/* ---------- chiffres ---------- */
+.stats{display:grid;grid-template-columns:repeat(4,1fr);gap:2cqw;margin-top:1cqw}
+.stat{border-left:3px solid var(--accent);padding-left:1.8cqw}
+.stat .n{font-size:5.5cqw;font-weight:800;letter-spacing:-.035em;line-height:1;
+  background:linear-gradient(120deg,var(--accent),var(--accent2));
+  -webkit-background-clip:text;background-clip:text;color:transparent}
+.stat .l{font-size:1.85cqw;color:var(--ink2);margin-top:.9cqw;line-height:1.35}
+
+/* ---------- listes ---------- */
+ul.clean{list-style:none;display:flex;flex-direction:column;gap:1.22cqw}
+ul.clean li{position:relative;padding-left:2.6cqw}
+ul.clean li::before{content:'';position:absolute;left:0;top:.95em;
+  width:.85cqw;height:.85cqw;border-radius:50%;background:var(--accent)}
+ul.clean li.no::before{background:#e05252}
+ul.clean li.yes::before{background:var(--ok)}
+
+/* ---------- flux / chaîne ---------- */
+.flow{display:flex;align-items:stretch;gap:1.2cqw;margin-top:1.5cqw}
+.flow .step{flex:1;background:var(--bg);border:1px solid var(--border);border-radius:12px;
+  padding:2cqw 1.6cqw;display:flex;flex-direction:column;gap:.9cqw}
+.flow .step .t{font-size:2.05cqw;font-weight:700;color:var(--ink)}
+.flow .step .d{font-size:1.7cqw;color:var(--ink2);line-height:1.4}
+.flow .arw{display:flex;align-items:center;color:var(--ink3);font-size:2.6cqw}
+
+/* ---------- citation / punch ---------- */
+.punch{font-size:4.25cqw;line-height:1.22;font-weight:700;letter-spacing:-.02em;max-width:88%}
+.punch .hl{background:linear-gradient(120deg,var(--accent),var(--accent2));
+  -webkit-background-clip:text;background-clip:text;color:transparent}
+
+/* ---------- barres avant/après ---------- */
+.bars{display:flex;flex-direction:column;gap:2.2cqw;margin-top:1cqw}
+.bar{display:grid;grid-template-columns:26% 1fr;align-items:center;gap:2cqw}
+.bar .lbl{font-size:2.2cqw;font-weight:700}
+.bar .track{height:4.6cqw;background:var(--bg);border:1px solid var(--border);
+  border-radius:10px;overflow:hidden;display:flex}
+.bar .fill{height:100%;display:flex;align-items:center;padding:0 1.4cqw;
+  font-size:1.8cqw;font-weight:600;color:#fff;white-space:nowrap}
+.f-mat{background:linear-gradient(90deg,#94a3b8,#64748b)}
+.f-ens{background:linear-gradient(90deg,var(--accent),var(--accent2))}
+
+/* ---------- pied de diapo ---------- */
+.foot{position:absolute;left:5.8cqw;right:5.8cqw;bottom:3.2cqw;
+  display:flex;justify-content:space-between;
+  align-items:center;font-size:1.55cqw;color:var(--ink3)}
+.tag{background:var(--accent-light);color:#2563eb;border-radius:5px;
+  padding:.5cqw 1.1cqw;font-weight:600;font-size:1.55cqw}
+
+/* ---------- barre de progression + compteur ---------- */
+#prog{position:fixed;top:0;left:0;height:3px;z-index:50;
+  background:linear-gradient(90deg,var(--accent),var(--accent2));transition:width .3s ease}
+#count{position:fixed;right:16px;bottom:12px;z-index:50;font-size:12px;color:var(--ink3);
+  background:rgba(255,255,255,.8);backdrop-filter:blur(8px);border:1px solid var(--border);
+  border-radius:6px;padding:4px 9px;font-variant-numeric:tabular-nums}
+#hint{position:fixed;left:16px;bottom:12px;z-index:50;font-size:12px;color:var(--ink3);
+  transition:opacity .4s ease}
+#hint.gone{opacity:0}
+@media print{
+  body{overflow:visible}
+  #stage{position:static;display:block}
+  .slide{position:relative;opacity:1;transform:none;page-break-after:always;
+    width:100%;box-shadow:none;margin-bottom:0}
+  #prog,#count,#hint{display:none}
+}
+
+/* ---------- diapos denses ---------- */
+.slide.dense h2{font-size:3.8cqw;margin-bottom:1.6cqw}
+.slide.dense .card{padding:1.15cqw 1.25cqw;gap:.35cqw;border-radius:10px}
+.slide.dense .card h3{font-size:1.8cqw;line-height:1.2}
+.slide.dense .card .small{font-size:1.45cqw;line-height:1.35}
+.slide.dense .grid{gap:1cqw}
+
+.slide.tight ul.clean{gap:1.35cqw}
+.slide.tight ul.clean li{font-size:2.15cqw}
+.slide.tight h2{font-size:4.1cqw;margin-bottom:1.9cqw}
+.slide.tight .lead{font-size:2.6cqw}
+
+</style>
+</head>
+<body>
+<div id="prog"></div>
+<div id="stage">
+
+<!-- 1 -->
+<section class="slide cover"><div class="pad">
+  <div class="kicker">Francisation · Chaîne de production pédagogique</div>
+  <h1>Le secret n'est pas<br>le prompt.<br>C'est l'atelier.</h1>
+  <div class="sub">Comment une seule personne a produit un programme complet de francisation —<br>et pourquoi la méthode se reproduit sur les huit niveaux.</div>
+  <div class="meta"><span>Daniel Tousignant</span><span class="dotsep"></span><span>Présentation institutionnelle</span></div>
+</div></section>
+
+<!-- 2 -->
+<section class="slide"><div class="pad">
+  <div class="kicker">L'état des lieux</div>
+  <h2>Ce qui existe, aujourd'hui, sur disque.</h2>
+  <div class="stats">
+    <div class="stat"><div class="n">11</div><div class="l">modules de cours interactifs, complets</div></div>
+    <div class="stat"><div class="n">1&nbsp;431</div><div class="l">fichiers audio générés</div></div>
+    <div class="stat"><div class="n">160</div><div class="l">présentations de séance</div></div>
+    <div class="stat"><div class="n">43</div><div class="l">activités au catalogue</div></div>
+  </div>
+  <p class="lead" style="margin-top:3.6cqw;max-width:86%">Avec le portail enseignant, la planification par groupe, les fiches imprimables et 298 illustrations. <strong>Produit par une personne, en quelques mois.</strong></p>
+  <div class="foot"><span>Chiffres relevés dans le dépôt, pas estimés.</span><span class="tag">02</span></div>
+</div></section>
+
+<!-- 3 -->
+<section class="slide"><div class="pad">
+  <div class="punch">La plupart des projets d'IA en éducation s'arrêtent au prompt&nbsp;: on demande un exercice, on le colle dans Word.<br><br><span class="hl">Ici, il y a une usine.</span></div>
+  <div class="foot"><span></span><span class="tag">03</span></div>
+</div></section>
+
+<!-- 4 -->
+<section class="slide"><div class="pad">
+  <div class="kicker">La chaîne</div>
+  <h2>Du référentiel officiel au cours donné.</h2>
+  <div class="flow">
+    <div class="step"><div class="t">1 · Le programme</div><div class="d">Les huit niveaux du programme, encodés en données interrogeables.</div></div>
+    <div class="arw">→</div>
+    <div class="step"><div class="t">2 · Le compositeur</div><div class="d">Il assemble la demande à partir des critères réels du niveau visé.</div></div>
+    <div class="arw">→</div>
+    <div class="step"><div class="t">3 · La forge</div><div class="d">Scénario, dialogues, exercices, mini-leçons, banc de réponses.</div></div>
+    <div class="arw">→</div>
+    <div class="step"><div class="t">4 · Les médias</div><div class="d">Une voix par réplique, une image par notion. Par lots, automatisés.</div></div>
+    <div class="arw">→</div>
+    <div class="step"><div class="t">5 · Le rendu</div><div class="d">Module web, diapositives, fiches papier&nbsp;: trois sorties, une source.</div></div>
+  </div>
+  <div class="foot"><span>Chaque étape est un programme, pas une manipulation.</span><span class="tag">04</span></div>
+</div></section>
+
+<!-- 5 -->
+<section class="slide"><div class="pad">
+  <div class="kicker">Conformité</div>
+  <h2>Le programme officiel est<br>dans le pipeline, pas dans un PDF.</h2>
+  <div class="grid g2">
+    <div class="card"><div class="ico">📘</div><h3>Les huit niveaux en données</h3><p>Compétences, savoirs, critères d'évaluation&nbsp;: le référentiel est structuré et consultable au moment de produire une activité.</p></div>
+    <div class="card accent"><div class="ico">✅</div><h3>La conformité est vérifiable</h3><p>On peut répondre à «&nbsp;pourquoi cette activité, à ce niveau&nbsp;?&nbsp;» en pointant le critère du programme dont elle est issue. Ce n'est pas une déclaration d'intention.</p></div>
+  </div>
+  <div class="foot"><span>Ce qui rend l'ensemble transposable à un autre niveau, ou à un autre centre.</span><span class="tag">05</span></div>
+</div></section>
+
+<!-- 6 -->
+<section class="slide tight"><div class="pad">
+  <div class="kicker">L'effet de levier</div>
+  <h2>Une décision, une commande,<br>onze modules.</h2>
+  <ul class="clean" style="max-width:86%">
+    <li>Un <strong>système de design unique</strong> impose la même grammaire visuelle à tout le matériel, écran comme papier.</li>
+    <li>Des <strong>scripts de greffe</strong> appliquent un changement structurel aux onze modules d'un coup&nbsp;: une section, un outil, un dépôt de production.</li>
+    <li>Un <strong>registre central</strong> décrit chaque module&nbsp;; diapositives et fiches y puisent au lieu de dupliquer.</li>
+  </ul>
+  <p class="lead" style="margin-top:2.8cqw;max-width:90%">Le coût d'une amélioration ne dépend plus du nombre de modules.</p>
+  <div class="foot"><span></span><span class="tag">06</span></div>
+</div></section>
+
+<!-- 7 -->
+<section class="slide"><div class="pad">
+  <div class="kicker">Propriété du contenu</div>
+  <h2>Rien n'est copié.</h2>
+  <div class="grid g2">
+    <div class="card"><div class="ico">📕</div><h3>Le manuel sert de modèle</h3><p>Structure, progression grammaticale, niveau de difficulté&nbsp;: le manuel de référence a servi de gabarit méthodologique.</p></div>
+    <div class="card accent"><div class="ico">✍️</div><h3>Le texte est original</h3><p>Chaque module a son propre scénario et ses propres personnages — Josée, Solange, Ibrahim, Oksana, Lina. Zéro reproduction textuelle.</p></div>
+  </div>
+  <p class="lead" style="margin-top:2.8cqw">Ce n'est pas un manuel numérisé&nbsp;: c'est un cours écrit, dont le centre détient le contenu.</p>
+  <div class="foot"><span>Règle posée dès le premier module, tenue sur les onze.</span><span class="tag">07</span></div>
+</div></section>
+
+<!-- 8 -->
+<section class="slide dense"><div class="pad">
+  <div class="kicker">Architecture</div>
+  <h2>Pensé pour un centre, pas pour une classe.</h2>
+  <div class="grid g4">
+    <div class="card"><h3>Multi-enseignants</h3><p class="small">Comptes distincts, groupes distincts, catalogue commun.</p></div>
+    <div class="card"><h3>Planification par groupe</h3><p class="small">Cours de 4&nbsp;h le matin, ateliers de 2&nbsp;h l'après-midi.</p></div>
+    <div class="card"><h3>Progression</h3><p class="small">Tableau de bord du groupe, dossier de l'élève.</p></div>
+    <div class="card"><h3>Dépôt des productions</h3><p class="small">L'élève envoie, l'enseignant reçoit et annote.</p></div>
+  </div>
+  <p class="small" style="margin-top:2.2cqw">Une classe de démonstration — six élèves fictifs et leurs traces — permet de présenter l'outil sans exposer de données réelles.</p>
+  <div class="foot"><span></span><span class="tag">08</span></div>
+</div></section>
+
+<!-- 9 -->
+<section class="slide tight"><div class="pad">
+  <div class="kicker">Données</div>
+  <h2>La confidentialité est<br>une décision de conception.</h2>
+  <ul class="clean" style="max-width:86%">
+    <li class="no">Pendant l'entraînement libre, <strong>aucun contenu n'est stocké</strong>&nbsp;: seulement un cumul par élève et par thème, réponses et réussites du premier coup.</li>
+    <li class="yes">Du travail de module, on conserve les <strong>patrons d'erreur</strong>&nbsp;: ce qu'un enseignant ne peut pas voir autrement quand la même faute revient chez six élèves.</li>
+    <li class="yes">Les productions ne remontent que si <strong>l'élève choisit de les envoyer</strong>&nbsp;: rien n'est versé au dossier à son insu.</li>
+  </ul>
+  <div class="foot"><span>Écrit dans le serveur, pas dans une politique.</span><span class="tag">09</span></div>
+</div></section>
+
+<!-- 10 -->
+<section class="slide"><div class="pad">
+  <div class="kicker">Ce qui vient ensuite</div>
+  <h2>Le niveau 4 est la preuve.<br>La méthode vaut pour les huit.</h2>
+  <div class="grid g3">
+    <div class="card"><div class="ico">📐</div><h3>Le gabarit est écrit</h3><p>Structure, nomenclature des sections, blocs de production&nbsp;: tout est documenté et exécutable.</p></div>
+    <div class="card"><div class="ico">🔁</div><h3>Le référentiel est déjà là</h3><p>Produire le niveau 3 ou le niveau 6 ne demande pas de reconstruire l'atelier.</p></div>
+    <div class="card accent"><div class="ico">🚀</div><h3>Le coût est décroissant</h3><p>Le premier module a coûté cher, le onzième presque rien. L'inverse de la production éditoriale.</p></div>
+  </div>
+  <div class="foot"><span></span><span class="tag">10</span></div>
+</div></section>
+
+<!-- 11 -->
+<section class="slide"><div class="pad">
+  <div class="punch">La question n'est plus<br>« est-ce que l'IA peut aider à enseigner&nbsp;».<br><br>C'est&nbsp;: <span class="hl">combien de temps encore<br>allons-nous photocopier&nbsp;?</span></div>
+  <p class="lead" style="margin-top:2.6cqw">Ce que je demande&nbsp;: un groupe pilote, une session, et le mandat d'étendre la chaîne à un deuxième niveau.</p>
+  <div class="foot"><span>Daniel Tousignant</span><span class="tag">11</span></div>
+</div></section>
+
+</div>
+<div id="count"></div>
+<div id="hint">← → pour naviguer · <b>P</b> pour imprimer</div>
+
+<script>
+(function(){
+  var slides = Array.prototype.slice.call(document.querySelectorAll('.slide'));
+  var i = 0, prog = document.getElementById('prog'),
+      count = document.getElementById('count'), hint = document.getElementById('hint');
+  function show(n){
+    i = Math.max(0, Math.min(slides.length-1, n));
+    slides.forEach(function(s,k){ s.classList.toggle('on', k===i); });
+    prog.style.width = ((i+1)/slides.length*100) + '%';
+    count.textContent = (i+1) + ' / ' + slides.length;
+    location.hash = i+1;
+  }
+  function go(d){ show(i+d); hint.classList.add('gone'); }
+  document.addEventListener('keydown', function(e){
+    if(['ArrowRight','ArrowDown',' ','PageDown','Enter'].indexOf(e.key)>-1){ e.preventDefault(); go(1); }
+    else if(['ArrowLeft','ArrowUp','PageUp','Backspace'].indexOf(e.key)>-1){ e.preventDefault(); go(-1); }
+    else if(e.key==='Home'){ show(0); }
+    else if(e.key==='End'){ show(slides.length-1); }
+    else if(e.key==='p'||e.key==='P'){ window.print(); }
+    else if(e.key==='f'||e.key==='F'){
+      if(document.fullscreenElement){ document.exitFullscreen(); }
+      else { document.documentElement.requestFullscreen(); }
+    }
+  });
+  document.getElementById('stage').addEventListener('click', function(e){
+    go(e.clientX < window.innerWidth*0.28 ? -1 : 1);
+  });
+  var start = parseInt((location.hash||'').slice(1), 10);
+  show(isNaN(start) ? 0 : start-1);
+  setTimeout(function(){ hint.classList.add('gone'); }, 6000);
+})();
+</script>
+</body>
+</html>

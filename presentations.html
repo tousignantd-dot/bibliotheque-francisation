@@ -1,0 +1,623 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Banque de présentations — SAAF</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800;900&display=swap">
+<style>
+  /* ---------------------------------------------------------------
+     Banque de présentations — système de design Francisation / SAAF.
+     Le violet est exclusif à la marque ; le vert porte l'action.
+     Thème clair unique : l'en-tête n'est jamais foncé.
+     --------------------------------------------------------------- */
+  :root{
+    --violet-600:#6B4FBB;  --violet-100:#EFEAFA;
+    --accent:#0A8F5B;      --accent-soft:#E6F5EE;  --accent-ink:#07734A;
+    --surface-band:#EDF6F1;
+    --ink-900:#17181A; --ink-700:#3A3D40; --ink-500:#4B4F52; --ink-400:#6E7175;
+    --surface-page:#F7F7F5; --surface-card:#FFFFFF; --surface-sunken:#FBFBFA;
+    --paper-200:#F0F0EE;
+    --border:#EAEAE8; --border-firm:#D6D6D2; --border-tint:#D8E8DF;
+    --acier-600:#1D6B8F; --acier-100:#E7F0F6;
+    --ambre-700:#B45309; --ambre-100:#FBEEDC;
+    --teal-700:#0D7A6F;  --teal-100:#E3F2F0;
+    --foret-700:#166534;
+    --font-sans:"Nunito",system-ui,-apple-system,"Segoe UI",sans-serif;
+    --sp-1:4px; --sp-2:8px; --sp-3:12px; --sp-4:16px; --sp-5:20px;
+    --sp-6:24px; --sp-8:32px; --sp-12:48px;
+    --content-max:1000px; --gutter:32px;
+    --fs-hero:clamp(38px,6vw,58px); --fs-h2:30px; --fs-h3:24px; --fs-lead:19px;
+    --fs-body:18px; --fs-body-sm:17px; --fs-ui:15px; --fs-ui-sm:14px;
+    --fs-label:13px; --fs-meta:12px;
+    --lh-title:1.2; --ls-hero:-0.02em; --ls-title:-0.015em; --ls-label:0.12em;
+    --r-sm:10px; --r-md:14px; --r-lg:18px; --r-pill:999px;
+    --sh-card:0 1px 2px rgba(20,20,20,.04);
+    --sh-raise:0 4px 20px rgba(20,20,20,.06);
+    --dur:140ms; --ease:cubic-bezier(.2,.7,.3,1);
+    --tap-min:44px; --tap-comfort:48px;
+    --focus-ring:#0A8F5B;
+  }
+  *{box-sizing:border-box}
+  body{
+    margin:0; background:var(--surface-page); color:var(--ink-900);
+    font-family:var(--font-sans); font-size:var(--fs-body); font-weight:600;
+    line-height:1.5; -webkit-font-smoothing:antialiased;
+  }
+  :focus-visible{outline:3px solid var(--focus-ring); outline-offset:2px; border-radius:4px}
+  .conteneur{max-width:var(--content-max); margin:0 auto; padding:0 var(--gutter)}
+
+  /* ---------- bandeau de marque ---------- */
+  .bande{background:var(--surface-band); border-bottom:1px solid var(--border-tint);
+    padding:var(--sp-12) 0 var(--sp-8)}
+  .bande .conteneur{display:flex; flex-direction:column; gap:var(--sp-6)}
+  .surtitre{font-size:var(--fs-label); font-weight:800; letter-spacing:var(--ls-label);
+    text-transform:uppercase; color:var(--violet-600)}
+  .verrouillage{display:flex; align-items:center; gap:var(--sp-5)}
+  .pilule{display:inline-flex; align-items:center; height:64px; padding:0 28px;
+    border-radius:var(--r-pill); border:3px solid var(--violet-600);
+    background:var(--surface-card); flex-shrink:0;
+    font-size:34px; font-weight:900; color:var(--ink-900);
+    letter-spacing:-0.02em; line-height:1}
+  .filet{width:3px; align-self:stretch; margin:6px 0; border-radius:2px;
+    background:var(--violet-100)}
+  .descripteur{font-size:var(--fs-ui); font-weight:600; color:var(--ink-500); line-height:1.4}
+  h1{font-size:var(--fs-hero); font-weight:900; line-height:1.04;
+    letter-spacing:var(--ls-hero); margin:var(--sp-2) 0 0; text-wrap:balance}
+  .chapeau{font-size:var(--fs-lead); font-weight:600; color:var(--ink-500);
+    max-width:600px; margin:0}
+
+  /* ---------- barre de tri ---------- */
+  .tri{position:sticky; top:0; z-index:5; background:var(--surface-page);
+    border-bottom:1px solid var(--border); padding:var(--sp-4) 0}
+  .tri .conteneur{display:flex; flex-wrap:wrap; align-items:center; gap:var(--sp-3)}
+  .onglets{display:flex; flex-wrap:wrap; gap:var(--sp-2); margin-right:auto}
+  .onglet{
+    appearance:none; font:inherit; font-size:var(--fs-ui-sm); font-weight:800;
+    min-height:var(--tap-min); padding:0 var(--sp-5); border-radius:var(--r-pill);
+    border:1px solid var(--border-firm); background:var(--surface-card); color:var(--ink-700);
+    cursor:pointer; display:inline-flex; align-items:center; gap:var(--sp-2);
+    transition:background var(--dur) var(--ease), border-color var(--dur) var(--ease),
+               color var(--dur) var(--ease);
+  }
+  .onglet:hover{background:var(--paper-200)}
+  .onglet[aria-pressed="true"]{background:var(--ink-900); border-color:var(--ink-900); color:#FFFFFF}
+  .onglet .n{font-size:var(--fs-meta); font-weight:800; font-variant-numeric:tabular-nums;
+    color:var(--ink-400)}
+  .onglet[aria-pressed="true"] .n{color:rgba(255,255,255,.72)}
+  .recherche{
+    font:inherit; font-size:var(--fs-ui); font-weight:600; color:var(--ink-900);
+    background:var(--surface-card); border:1px solid var(--border-firm);
+    border-radius:var(--r-pill); min-height:var(--tap-min); padding:0 var(--sp-5);
+    width:min(260px,100%);
+  }
+  .recherche::placeholder{color:var(--ink-400); font-weight:600}
+
+  /* ---------- familles ---------- */
+  main{padding-bottom:var(--sp-12)}
+  .famille{padding:var(--sp-8) 0 0}
+  .famille[hidden]{display:none}
+  .tete{margin-bottom:var(--sp-5)}
+  .eyebrow{font-size:var(--fs-label); font-weight:800; letter-spacing:var(--ls-label);
+    text-transform:uppercase; display:block; margin-bottom:var(--sp-2)}
+  .e-acier{color:var(--acier-600)} .e-teal{color:var(--teal-700)}
+  .e-ambre{color:var(--ambre-700)} .e-foret{color:var(--foret-700)}
+  h2{font-size:var(--fs-h2); font-weight:900; letter-spacing:var(--ls-title);
+    line-height:var(--lh-title); margin:0; text-wrap:balance}
+  .tete p{font-size:var(--fs-body-sm); font-weight:600; color:var(--ink-400);
+    max-width:66ch; margin:var(--sp-2) 0 0}
+
+  .liste{display:grid; gap:var(--sp-4)}
+  .fiche{
+    background:var(--surface-card); border:1px solid var(--border);
+    border-radius:var(--r-lg); box-shadow:var(--sh-card); padding:var(--sp-5) var(--sp-6);
+    display:grid; grid-template-columns:1fr auto; gap:var(--sp-4) var(--sp-5);
+    align-items:start;
+  }
+  .fiche[hidden]{display:none}
+  .fiche .titre{font-size:var(--fs-h3); font-weight:900; letter-spacing:var(--ls-title);
+    line-height:var(--lh-title); margin:0}
+  .fiche .quoi{font-size:var(--fs-body-sm); font-weight:600; color:var(--ink-700);
+    margin:var(--sp-2) 0 0; max-width:62ch}
+  .meta{display:flex; flex-wrap:wrap; align-items:center; gap:var(--sp-2);
+    margin-top:var(--sp-3)}
+  .eti{display:inline-flex; align-items:center; padding:3px 11px; border-radius:var(--r-pill);
+    font-size:var(--fs-meta); font-weight:800; letter-spacing:.05em; text-transform:uppercase}
+  .eti-diapo{background:var(--acier-100); color:var(--acier-600)}
+  .eti-page{background:var(--teal-100); color:var(--teal-700)}
+  .eti-pptx{background:var(--ambre-100); color:var(--ambre-700)}
+  .eti-privee{background:var(--violet-100); color:var(--violet-600)}
+  .date{font-size:var(--fs-ui-sm); font-weight:700; color:var(--ink-400);
+    font-variant-numeric:tabular-nums}
+  .ou{font-size:var(--fs-ui-sm); font-weight:700; color:var(--ink-400);
+    word-break:break-word}
+  .actions{display:flex; flex-direction:column; gap:var(--sp-2); align-items:stretch}
+  .btn{
+    appearance:none; font:inherit; font-size:var(--fs-ui); font-weight:800;
+    text-decoration:none; text-align:center; white-space:nowrap;
+    min-height:var(--tap-comfort); padding:0 var(--sp-5); border-radius:var(--r-pill);
+    display:inline-flex; align-items:center; justify-content:center;
+    border:1px solid var(--accent); background:var(--accent); color:#FFFFFF;
+    transition:background var(--dur) var(--ease), border-color var(--dur) var(--ease);
+  }
+  .btn:hover{background:var(--accent-ink); border-color:var(--accent-ink)}
+  .btn-2{background:var(--surface-card); border-color:var(--border-firm); color:var(--ink-700)}
+  .btn-2:hover{background:var(--paper-200); border-color:var(--border-firm)}
+
+  .vide{display:none; background:var(--surface-sunken); border:1px solid var(--border);
+    border-radius:var(--r-lg); padding:var(--sp-6); color:var(--ink-400);
+    font-size:var(--fs-body-sm); font-weight:600; margin-top:var(--sp-8)}
+  .vide[data-on="oui"]{display:block}
+
+  /* ---------- note de bas de page ---------- */
+  .note{margin-top:var(--sp-12); background:var(--surface-card); border:1px solid var(--border);
+    border-left:4px solid var(--ambre-700); border-radius:var(--r-lg);
+    padding:var(--sp-5) var(--sp-6)}
+  .note b{display:block; font-size:var(--fs-body-sm); font-weight:900; margin-bottom:var(--sp-2)}
+  .note p{margin:0 0 var(--sp-2); font-size:var(--fs-body-sm); font-weight:600;
+    color:var(--ink-700); max-width:70ch}
+  .note p:last-child{margin-bottom:0}
+
+  footer{border-top:1px solid var(--border); background:var(--surface-band);
+    padding:var(--sp-8) 0}
+  footer .conteneur{display:flex; align-items:center; gap:var(--sp-4); flex-wrap:wrap}
+  .pilule-sm{display:inline-flex; align-items:center; height:var(--tap-min);
+    padding:0 var(--sp-5); border-radius:var(--r-pill); border:3px solid var(--violet-600);
+    background:var(--surface-card); font-size:var(--fs-lead); font-weight:900;
+    color:var(--ink-900); letter-spacing:-0.02em; line-height:1}
+  footer p{font-size:var(--fs-ui); font-weight:700; color:var(--ink-400); margin:0}
+  footer a{color:var(--accent-ink)}
+
+  @media (max-width:720px){
+    :root{--gutter:20px}
+    .verrouillage{flex-direction:column; align-items:flex-start; gap:14px}
+    .filet{display:none}
+    .pilule{height:56px; padding:0 24px; font-size:28px}
+    .fiche{grid-template-columns:1fr}
+    .actions{flex-direction:row; flex-wrap:wrap}
+    .recherche{width:100%}
+    .onglets{margin-right:0}
+  }
+  @media (prefers-reduced-motion:reduce){*{transition-duration:0ms!important}}
+</style>
+</head>
+<body>
+
+<header class="bande">
+  <div class="conteneur">
+    <div class="surtitre">Banque de présentations · Le projet, pas les modules</div>
+
+    <div class="verrouillage">
+      <div class="pilule">SAAF</div>
+      <div class="filet" aria-hidden="true"></div>
+      <div class="descripteur">Système d'aide<br>à l'apprentissage<br>du français</div>
+    </div>
+
+    <h1>Tout ce qui sert à présenter le projet</h1>
+    <p class="chapeau">Seize documents, rangés par public. À qui je la montre décide de
+    la famille ; le sujet et la date sont écrits sur chaque fiche.</p>
+  </div>
+</header>
+
+<nav class="tri" aria-label="Filtrer les présentations">
+  <div class="conteneur">
+    <div class="onglets" role="group" aria-label="Filtrer par public">
+      <button type="button" class="onglet" data-f="tout" aria-pressed="true">Tout <span class="n">16</span></button>
+      <button type="button" class="onglet" data-f="direction" aria-pressed="false">Direction <span class="n">3</span></button>
+      <button type="button" class="onglet" data-f="enseignants" aria-pressed="false">Enseignants <span class="n">5</span></button>
+      <button type="button" class="onglet" data-f="chantier" aria-pressed="false">Chantier <span class="n">4</span></button>
+      <button type="button" class="onglet" data-f="reperes" aria-pressed="false">Repères <span class="n">4</span></button>
+    </div>
+    <input type="search" class="recherche" id="q" placeholder="Chercher un titre…"
+           aria-label="Chercher une présentation par titre ou par sujet">
+  </div>
+</nav>
+
+<main>
+  <div class="conteneur">
+
+    <!-- ══════════ DIRECTION ══════════ -->
+    <section class="famille" data-fam="direction">
+      <div class="tete">
+        <span class="eyebrow e-acier">Public · Direction et institution</span>
+        <h2>Convaincre, obtenir, rendre des comptes</h2>
+        <p>Ce qu'on montre à une direction ou à un comité : le problème, ce qui existe
+        déjà, et ce que ça a coûté à produire.</p>
+      </div>
+      <div class="liste">
+
+        <article class="fiche" data-cle="oser parler mur oral adulte francisation">
+          <div>
+            <h3 class="titre">Oser parler</h3>
+            <p class="quoi">« Ils comprennent. Ils n'osent pas parler. » Le mur de la
+            francisation adulte, et le cours bâti pour le franchir : s'entraîner à
+            l'oral sans témoin, n'être entendu qu'une fois prêt. Cinq diapositives,
+            c'est la version courte.</p>
+            <div class="meta">
+              <span class="eti eti-diapo">Diaporama</span>
+              <span class="date">19 août 2026</span>
+              <span class="ou">assets/presentations/oser-parler.html</span>
+            </div>
+          </div>
+          <div class="actions">
+            <a class="btn" href="assets/presentations/oser-parler.html" target="_blank" rel="noopener">Ouvrir</a>
+            <a class="btn btn-2" href="https://claude.ai/code/artifact/04c85f2c-0b97-4f4a-9cfd-a77f941c0e22" target="_blank" rel="noopener">Version privée</a>
+          </div>
+        </article>
+
+        <article class="fiche" data-cle="pitch institutionnel atelier chaine production huit niveaux">
+          <div>
+            <h3 class="titre">Le secret n'est pas le prompt, c'est l'atelier</h3>
+            <p class="quoi">Pitch institutionnel : comment une seule personne a produit
+            un programme complet de francisation, et pourquoi la méthode se reproduit
+            sur les huit niveaux. C'est la présentation à faire si la question est
+            « est-ce que ça tient sans vous ? ».</p>
+            <div class="meta">
+              <span class="eti eti-diapo">Diaporama</span>
+              <span class="date">18 août 2026</span>
+              <span class="ou">assets/presentations/pitch-institutionnel.html</span>
+            </div>
+          </div>
+          <div class="actions">
+            <a class="btn" href="assets/presentations/pitch-institutionnel.html" target="_blank" rel="noopener">Ouvrir</a>
+          </div>
+        </article>
+
+        <article class="fiche" data-cle="planifier proposition administration planification groupes">
+          <div>
+            <h3 class="titre">Planifier — proposition pour l'administration</h3>
+            <p class="quoi">La proposition faite à l'administration sur la planification :
+            comment les activités sont ouvertes à un groupe, et ce que ça change pour
+            l'organisation des cours.</p>
+            <div class="meta">
+              <span class="eti eti-privee">Artefact privé</span>
+              <span class="date">12 août 2026</span>
+            </div>
+          </div>
+          <div class="actions">
+            <a class="btn" href="https://claude.ai/code/artifact/4a0c8bdd-b177-4e46-86cc-a12d3585a78b" target="_blank" rel="noopener">Ouvrir</a>
+          </div>
+        </article>
+
+      </div>
+    </section>
+
+    <!-- ══════════ ENSEIGNANTS ══════════ -->
+    <section class="famille" data-fam="enseignants">
+      <div class="tete">
+        <span class="eyebrow e-teal">Public · Collègues enseignants</span>
+        <h2>Faire adopter, expliquer les partis pris</h2>
+        <p>Ce qu'on présente à l'équipe : ce que le matériel fait, pourquoi il est
+        construit ainsi, et ce que la recherche en dit.</p>
+      </div>
+      <div class="liste">
+
+        <article class="fiche" data-cle="pitch enseignants cours complet materiel retroaction">
+          <div>
+            <h3 class="titre">Un cours complet, construit pour faire parler les élèves</h3>
+            <p class="quoi">Pitch pour l'équipe : les deux problèmes que tout le monde
+            connaît — la moitié du temps passée à fabriquer du matériel, et l'élève qui
+            ne parle pas — puis ce que les modules y répondent.</p>
+            <div class="meta">
+              <span class="eti eti-diapo">Diaporama</span>
+              <span class="date">18 août 2026</span>
+              <span class="ou">assets/presentations/pitch-enseignants.html</span>
+            </div>
+          </div>
+          <div class="actions">
+            <a class="btn" href="assets/presentations/pitch-enseignants.html" target="_blank" rel="noopener">Ouvrir</a>
+          </div>
+        </article>
+
+        <article class="fiche" data-cle="fondements pedagogiques knowles gagne mayer merrill andragogie adultes">
+          <div>
+            <h3 class="titre">Concevoir pour des adultes en francisation</h3>
+            <p class="quoi">Les fondements pédagogiques, en vingt et une diapositives :
+            qui apprend ici, l'andragogie de Knowles confrontée à notre matériel, les
+            trois choses que nous avons refusées, puis nos choix de design relus à
+            travers Gagné, Mayer et Merrill.</p>
+            <div class="meta">
+              <span class="eti eti-pptx">PowerPoint · 21 diapos</span>
+              <span class="date">15 août 2026</span>
+              <span class="ou">assets/presentations/fondements-pedagogiques-francisation.pptx</span>
+            </div>
+          </div>
+          <div class="actions">
+            <a class="btn" href="assets/presentations/fondements-pedagogiques-francisation.pptx">Télécharger</a>
+          </div>
+        </article>
+
+        <article class="fiche" data-cle="abord situation methode points forts grammaire outil">
+          <div>
+            <h3 class="titre">D'abord la situation, la règle ensuite</h3>
+            <p class="quoi">Les huit points forts de la méthode, un par diapositive : on
+            entre par une situation réelle et non par un point de grammaire, six temps
+            toujours les mêmes, l'erreur qui ouvre une porte, sept outils toujours là,
+            rien qui part sans un geste de l'élève.</p>
+            <div class="meta">
+              <span class="eti eti-privee">Artefact privé</span>
+              <span class="date">19 août 2026</span>
+            </div>
+          </div>
+          <div class="actions">
+            <a class="btn" href="https://claude.ai/code/artifact/e6b13c01-2918-4b00-8d3b-a00acdb74592" target="_blank" rel="noopener">Ouvrir</a>
+          </div>
+        </article>
+
+        <article class="fiche" data-cle="materiel francisation presentation equipe">
+          <div>
+            <h3 class="titre">Le matériel de francisation — présentation à l'équipe</h3>
+            <p class="quoi">La première présentation d'ensemble faite à l'équipe : ce
+            qui existe, module par module, et comment s'en servir en classe.</p>
+            <div class="meta">
+              <span class="eti eti-privee">Artefact privé</span>
+              <span class="date">13 août 2026</span>
+            </div>
+          </div>
+          <div class="actions">
+            <a class="btn" href="https://claude.ai/code/artifact/34b194f1-e866-4124-8a4f-ac26b18d75f8" target="_blank" rel="noopener">Ouvrir</a>
+          </div>
+        </article>
+
+        <article class="fiche" data-cle="miroir juge reconnaissance vocale prononciation perfectionnement">
+          <div>
+            <h3 class="titre">Un miroir, pas un juge</h3>
+            <p class="quoi">La reconnaissance vocale en classe de langue : ce qu'elle
+            mesure vraiment, ce qu'elle ne mesure pas, et comment s'en servir avec un
+            groupe d'adultes. Un temps de parole illimité et sans témoin, pour un effet
+            réel mais modeste — c'est une présentation de perfectionnement, pas une
+            promotion d'outil.</p>
+            <div class="meta">
+              <span class="eti eti-page">Page du site</span>
+              <span class="date">18 août 2026</span>
+              <span class="ou">assets/outils/reconnaissance-vocale.html</span>
+            </div>
+          </div>
+          <div class="actions">
+            <a class="btn" href="assets/outils/reconnaissance-vocale.html" target="_blank" rel="noopener">Ouvrir</a>
+            <a class="btn btn-2" href="https://claude.ai/code/artifact/8227a939-f629-4b33-a05c-19a0d1e2c4fb" target="_blank" rel="noopener">Version privée</a>
+          </div>
+        </article>
+
+      </div>
+    </section>
+
+    <!-- ══════════ CHANTIER ══════════ -->
+    <section class="famille" data-fam="chantier">
+      <div class="tete">
+        <span class="eyebrow e-ambre">Public · Moi, pour décider</span>
+        <h2>Propositions, états d'avancement, choix à faire</h2>
+        <p>Les présentations qui ne servent pas à convaincre quelqu'un d'autre : elles
+        servent à voir clair avant de trancher, et à savoir où on en est.</p>
+      </div>
+      <div class="liste">
+
+        <article class="fiche" data-cle="chaine production moteurs generateurs gabarit forge serveur">
+          <div>
+            <h3 class="titre">La chaîne de production</h3>
+            <p class="quoi">Comment le matériel est fabriqué : les trois moteurs, les
+            huit fichiers de contenu, les huit générateurs, le rôle du serveur, la forge
+            des ateliers, les six étapes d'un module neuf et les quatre règles qui
+            tiennent l'ensemble debout.</p>
+            <div class="meta">
+              <span class="eti eti-privee">Artefact privé</span>
+              <span class="date">20 août 2026</span>
+            </div>
+          </div>
+          <div class="actions">
+            <a class="btn" href="https://claude.ai/code/artifact/e3fabcd5-e405-4446-800d-cdb7a46b761c" target="_blank" rel="noopener">Ouvrir</a>
+          </div>
+        </article>
+
+        <article class="fiche" data-cle="ce que les modules savent deja diagnostic sept propositions">
+          <div>
+            <h3 class="titre">Ce que les modules savent déjà</h3>
+            <p class="quoi">Sept propositions pour mieux voir où en sont les élèves, sans
+            écrire un seul exercice de plus. Le constat de départ : le module sait ce que
+            l'élève ne comprend pas, l'enseignante reçoit trois chiffres.</p>
+            <div class="meta">
+              <span class="eti eti-page">Page du site</span>
+              <span class="date">18 août 2026</span>
+              <span class="ou">assets/outils/diagnostic-modules.html</span>
+            </div>
+          </div>
+          <div class="actions">
+            <a class="btn" href="assets/outils/diagnostic-modules.html" target="_blank" rel="noopener">Ouvrir</a>
+            <a class="btn btn-2" href="https://claude.ai/code/artifact/0289a809-b1bb-4a2c-a79d-0404572850e3" target="_blank" rel="noopener">Version privée</a>
+          </div>
+        </article>
+
+        <article class="fiche" data-cle="diagnostic branche livre analyses erreurs signaux aide">
+          <div>
+            <h3 class="titre">Le diagnostic est branché</h3>
+            <p class="quoi">La suite de la précédente : ce qui a été fait des sept
+            propositions. Les deux premières sont livrées, le serveur garde désormais
+            les analyses d'erreurs et le parcours de l'aide, et deux pages montrent
+            « ce qui bloque ».</p>
+            <div class="meta">
+              <span class="eti eti-page">Page du site</span>
+              <span class="date">18 août 2026</span>
+              <span class="ou">assets/outils/diagnostic-livre.html</span>
+            </div>
+          </div>
+          <div class="actions">
+            <a class="btn" href="assets/outils/diagnostic-livre.html" target="_blank" rel="noopener">Ouvrir</a>
+            <a class="btn btn-2" href="https://claude.ai/code/artifact/deca590e-672e-48bd-8af9-a57eb862cba3" target="_blank" rel="noopener">Version privée</a>
+          </div>
+        </article>
+
+        <article class="fiche" data-cle="plan serie sante modules planification">
+          <div>
+            <h3 class="titre">Plan de la série Santé</h3>
+            <p class="quoi">Le plan de la série de modules sur la santé, dressé avant
+            leur production. C'est la plus ancienne pièce de la banque — elle montre à
+            quoi ressemblait la planification au départ.</p>
+            <div class="meta">
+              <span class="eti eti-privee">Artefact privé</span>
+              <span class="date">16 juillet 2026</span>
+            </div>
+          </div>
+          <div class="actions">
+            <a class="btn" href="https://claude.ai/code/artifact/29f97235-df29-4377-baf0-ca296c6013e3" target="_blank" rel="noopener">Ouvrir</a>
+          </div>
+        </article>
+
+      </div>
+    </section>
+
+    <!-- ══════════ REPÈRES ══════════ -->
+    <section class="famille" data-fam="reperes">
+      <div class="tete">
+        <span class="eyebrow e-foret">Public · Qui doit s'y retrouver</span>
+        <h2>Index, hiérarchie et guides d'usage</h2>
+        <p>Pas des présentations à faire debout devant un groupe : des pages où l'on va
+        chercher un lien, un écran ou une marche à suivre.</p>
+      </div>
+      <div class="liste">
+
+        <article class="fiche" data-cle="acces francisation tous les liens portails modules ateliers index">
+          <div>
+            <h3 class="titre">Tous les accès du projet, en un seul endroit</h3>
+            <p class="quoi">L'index des liens en ligne : les cinq portails, les modules
+            de cours et les ateliers, avec un filtre. Attention, les liens directs
+            contournent la règle de la date : pratique pour vérifier, à ne pas envoyer à
+            la classe.</p>
+            <div class="meta">
+              <span class="eti eti-privee">Artefact privé</span>
+              <span class="date">14 août 2026</span>
+            </div>
+          </div>
+          <div class="actions">
+            <a class="btn" href="https://claude.ai/code/artifact/2a25295f-16e1-42c6-aa51-9a2abe8ca68e" target="_blank" rel="noopener">Ouvrir</a>
+          </div>
+        </article>
+
+        <article class="fiche" data-cle="hierarchie site tableau bord serveur railway local disque">
+          <div>
+            <h3 class="titre">Hiérarchie du site</h3>
+            <p class="quoi">Quelle page dépend de quoi, et ce qui marche selon d'où on
+            ouvre : Railway, le serveur local, ou un fichier du disque. C'est la page à
+            relire quand quelque chose « ne marche pas » sans raison apparente.</p>
+            <div class="meta">
+              <span class="eti eti-page">Page du site</span>
+              <span class="date">19 août 2026</span>
+              <span class="ou">assets/presentations/hierarchie-site-francisation.html</span>
+            </div>
+          </div>
+          <div class="actions">
+            <a class="btn" href="assets/presentations/hierarchie-site-francisation.html" target="_blank" rel="noopener">Ouvrir</a>
+          </div>
+        </article>
+
+        <article class="fiche" data-cle="guide espace enseignant vingt ecrans portail planifier eleves groupes">
+          <div>
+            <h3 class="titre">L'espace enseignant, outil par outil</h3>
+            <p class="quoi">Vingt écrans pour faire le tour du portail : poser les dates,
+            suivre les élèves, gérer les groupes, sortir le matériel de la semaine. C'est
+            le document à donner à une collègue qui arrive.</p>
+            <div class="meta">
+              <span class="eti eti-page">Page du site</span>
+              <span class="date">17 août 2026</span>
+              <span class="ou">assets/outils/guide-espace-enseignant.html</span>
+            </div>
+          </div>
+          <div class="actions">
+            <a class="btn" href="assets/outils/guide-espace-enseignant.html" target="_blank" rel="noopener">Ouvrir</a>
+          </div>
+        </article>
+
+        <article class="fiche" data-cle="tutoriels espace enseignant pas a pas">
+          <div>
+            <h3 class="titre">Tutoriels de l'espace enseignant</h3>
+            <p class="quoi">Les marches à suivre, une par geste, telles qu'elles sont
+            offertes dans le portail lui-même.</p>
+            <div class="meta">
+              <span class="eti eti-page">Page du site</span>
+              <span class="date">17 août 2026</span>
+              <span class="ou">assets/outils/tutoriels-enseignant.html</span>
+            </div>
+          </div>
+          <div class="actions">
+            <a class="btn" href="assets/outils/tutoriels-enseignant.html" target="_blank" rel="noopener">Ouvrir</a>
+          </div>
+        </article>
+
+      </div>
+    </section>
+
+    <p class="vide" id="vide">Aucune présentation ne correspond à cette recherche.</p>
+
+    <div class="note">
+      <b>Deux endroits, et la différence compte</b>
+      <p><b>Page du site</b> et <b>PowerPoint</b> : le fichier est dans ce dépôt, il est
+      en ligne avec le reste et s'ouvre depuis n'importe quel appareil.</p>
+      <p><b>Artefact privé</b> : la présentation vit sur claude.ai. Elle ne s'ouvre
+      qu'avec le compte qui l'a produite, tant qu'elle n'est pas partagée depuis le menu
+      de la page. Pour la montrer à quelqu'un d'autre, il faut la partager — ou en
+      redemander une copie dans le dépôt.</p>
+      <p>Quand une fiche offre les deux, c'est le même document : la page du site est la
+      copie qui suit le dépôt, l'artefact est celle qui se met à jour en conversation.</p>
+    </div>
+
+  </div>
+</main>
+
+<footer>
+  <div class="conteneur">
+    <div class="pilule-sm">SAAF</div>
+    <p>Banque de présentations · mise à jour du 20 août 2026 · <a href="catalogue.html">Catalogue des activités</a></p>
+  </div>
+</footer>
+
+<script>
+(function () {
+  var onglets = Array.prototype.slice.call(document.querySelectorAll('.onglet'));
+  var familles = Array.prototype.slice.call(document.querySelectorAll('.famille'));
+  var fiches = Array.prototype.slice.call(document.querySelectorAll('.fiche'));
+  var q = document.getElementById('q');
+  var vide = document.getElementById('vide');
+  var filtre = 'tout';
+
+  function texte(fiche) {
+    return ((fiche.dataset.cle || '') + ' ' + fiche.textContent).toLowerCase();
+  }
+
+  function appliquer() {
+    var mot = q.value.trim().toLowerCase();
+    var vus = 0;
+
+    familles.forEach(function (fam) {
+      var famVisible = (filtre === 'tout' || filtre === fam.dataset.fam);
+      var restants = 0;
+
+      Array.prototype.slice.call(fam.querySelectorAll('.fiche')).forEach(function (f) {
+        var ok = famVisible && (!mot || texte(f).indexOf(mot) !== -1);
+        f.hidden = !ok;
+        if (ok) { restants++; vus++; }
+      });
+
+      fam.hidden = (restants === 0);
+    });
+
+    vide.dataset.on = vus ? 'non' : 'oui';
+  }
+
+  onglets.forEach(function (b) {
+    b.addEventListener('click', function () {
+      filtre = b.dataset.f;
+      onglets.forEach(function (o) {
+        o.setAttribute('aria-pressed', o === b ? 'true' : 'false');
+      });
+      appliquer();
+    });
+  });
+
+  q.addEventListener('input', appliquer);
+  appliquer();
+})();
+</script>
+
+</body>
+</html>

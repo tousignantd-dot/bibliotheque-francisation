@@ -1,0 +1,489 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Tableau de bord — Hiérarchie du site de francisation</title>
+<style>
+  :root{
+    --papier:#FAF8F5; --carte:#FFFFFF; --bande:#F1EEE9;
+    --encre:#17181A; --texte:#2C2E33; --gris:#6B6E76;
+    --trait:#DCD7CF; --traitpale:#EAE6E0;
+    --eleve:#1F6F5C; --eleve-doux:#E4F1ED;
+    --prof:#8A4B1E; --prof-doux:#F6EADF;
+    --commun:#3B5A93; --commun-doux:#E6ECF7;
+    --vieux:#7A7480; --vieux-doux:#EFEDF1;
+  }
+  *{box-sizing:border-box}
+  body{
+    margin:0; background:var(--papier); color:var(--texte);
+    font-family:"Nunito","Segoe UI",system-ui,-apple-system,sans-serif;
+    font-size:16px; line-height:1.5;
+  }
+  .wrap{max-width:1180px; margin:0 auto; padding:0 24px 80px}
+
+  /* ── Barre de commande, collante ── */
+  .barre{
+    position:sticky; top:0; z-index:40; margin:0 -24px 0; padding:14px 24px;
+    background:var(--carte); border-bottom:1px solid var(--trait);
+    display:flex; align-items:center; gap:16px; flex-wrap:wrap;
+  }
+  .barre .marque{font-weight:900; color:var(--encre); font-size:15px; white-space:nowrap}
+  .barre .marque span{display:block; font-size:11px; font-weight:800; letter-spacing:.1em; text-transform:uppercase; color:var(--gris)}
+  .champ-groupe{display:flex; align-items:center; gap:8px}
+  .champ-groupe label{font-size:11px; font-weight:900; letter-spacing:.08em; text-transform:uppercase; color:var(--gris)}
+  select, input[type=text], input[type=search]{
+    font:inherit; font-size:14px; font-weight:700; color:var(--texte);
+    background:var(--papier); border:1px solid var(--trait); border-radius:8px;
+    padding:7px 11px;
+  }
+  input[type=search]{font-weight:600; min-width:230px}
+  .base-actuelle{
+    font-family:ui-monospace,Menlo,monospace; font-size:12px; color:var(--gris);
+    margin-left:auto; text-align:right; max-width:100%; word-break:break-all;
+  }
+  .avert{
+    display:none; width:100%; margin-top:2px; padding:8px 12px; border-radius:8px;
+    background:#FDF3E3; border:1px solid #E9D5AC; color:#7A5A15; font-size:13px; font-weight:700;
+  }
+  .avert.on{display:block}
+
+  header.tete{padding:34px 0 18px; border-bottom:2px solid var(--encre); margin-bottom:8px}
+  h1{margin:6px 0 8px; font-size:32px; font-weight:900; color:var(--encre); line-height:1.15}
+  .chapeau{max-width:72ch; color:var(--gris); font-size:15px; margin:0}
+  .surtitre{font-size:12px; font-weight:800; letter-spacing:.12em; text-transform:uppercase; color:var(--gris)}
+
+  .legende{display:flex; flex-wrap:wrap; gap:10px; margin:22px 0 10px}
+  .pastille{display:inline-flex; align-items:center; gap:8px; padding:6px 12px; border-radius:999px;
+    font-size:13px; font-weight:800; border:1px solid var(--trait); background:var(--carte)}
+  .pastille i{width:10px; height:10px; border-radius:50%; display:inline-block}
+
+  h2.titre-bloc{display:flex; align-items:baseline; gap:12px; flex-wrap:wrap;
+    margin:44px 0 4px; font-size:22px; font-weight:900; color:var(--encre)}
+  h2.titre-bloc small{font-size:13px; font-weight:700; color:var(--gris)}
+  .sous-bloc{margin:0 0 20px; color:var(--gris); font-size:14px; max-width:76ch}
+
+  ul.arbre{list-style:none; margin:0; padding:0}
+  ul.arbre ul{list-style:none; margin:0; padding:0 0 0 30px; position:relative}
+  ul.arbre ul::before{content:""; position:absolute; left:10px; top:0; bottom:22px; border-left:2px solid var(--trait)}
+  ul.arbre li{position:relative; margin:10px 0}
+  ul.arbre ul > li::before{content:""; position:absolute; left:-20px; top:22px; width:20px; border-top:2px solid var(--trait)}
+
+  .noeud{
+    display:block; background:var(--carte); border:1px solid var(--trait);
+    border-left:4px solid var(--trait); border-radius:10px; padding:11px 15px;
+    text-decoration:none; color:inherit; position:relative;
+  }
+  a.noeud{transition:border-color .12s, transform .12s, box-shadow .12s}
+  a.noeud:hover{border-color:var(--encre); box-shadow:0 2px 10px rgba(0,0,0,.07); transform:translateY(-1px)}
+  a.noeud::after{
+    content:"↗"; position:absolute; right:13px; top:11px;
+    font-size:14px; font-weight:900; color:var(--trait);
+  }
+  a.noeud:hover::after{color:var(--encre)}
+  .noeud .ligne1{display:flex; align-items:baseline; gap:10px; flex-wrap:wrap; padding-right:22px}
+  .noeud .nom{font-weight:900; color:var(--encre); font-size:15px}
+  .noeud code{font-family:ui-monospace,Menlo,monospace; font-size:12.5px; background:var(--bande);
+    border:1px solid var(--traitpale); border-radius:5px; padding:1px 6px; color:var(--texte)}
+  .noeud .quoi{margin-top:3px; font-size:13.5px; color:var(--gris)}
+  .etiq{font-size:11px; font-weight:900; letter-spacing:.06em; text-transform:uppercase;
+    padding:2px 8px; border-radius:999px; white-space:nowrap}
+
+  .t-eleve{border-left-color:var(--eleve)}  .t-eleve .etiq{background:var(--eleve-doux); color:var(--eleve)}
+  .t-prof{border-left-color:var(--prof)}    .t-prof .etiq{background:var(--prof-doux); color:var(--prof)}
+  .t-commun{border-left-color:var(--commun)}.t-commun .etiq{background:var(--commun-doux); color:var(--commun)}
+  .t-vieux{border-left-color:var(--vieux); background:var(--vieux-doux)} .t-vieux .etiq{background:#fff; color:var(--vieux)}
+  .t-feuille{border-left-color:var(--traitpale); background:var(--bande)}
+
+  .racine > .noeud{border-width:1px 1px 1px 6px; padding:16px 20px; border-radius:12px}
+  .racine > .noeud .nom{font-size:19px}
+
+  details.pli{margin-top:10px}
+  details.pli > summary{
+    cursor:pointer; list-style:none; display:inline-flex; align-items:center; gap:8px;
+    font-size:13px; font-weight:900; color:var(--commun); padding:6px 12px;
+    border:1px solid var(--trait); border-radius:999px; background:var(--carte);
+  }
+  details.pli > summary::-webkit-details-marker{display:none}
+  details.pli > summary::before{content:"▸"; font-size:11px}
+  details.pli[open] > summary::before{content:"▾"}
+  .grille{display:grid; grid-template-columns:repeat(auto-fill,minmax(280px,1fr)); gap:8px; margin-top:12px}
+  a.tuile{
+    display:block; text-decoration:none; color:inherit; background:var(--carte);
+    border:1px solid var(--trait); border-radius:8px; padding:9px 12px; font-size:13.5px;
+  }
+  a.tuile:hover{border-color:var(--encre); background:var(--bande)}
+  a.tuile b{display:block; font-weight:800; color:var(--encre)}
+  a.tuile span{font-size:11.5px; color:var(--gris); font-family:ui-monospace,Menlo,monospace}
+  .vide{font-size:13px; color:var(--gris); padding:10px 0}
+
+  .note{margin:14px 0 0; padding:12px 16px; border-left:3px solid var(--trait);
+    background:var(--bande); border-radius:0 8px 8px 0; font-size:13.5px; color:var(--gris)}
+  .note b{color:var(--texte)}
+
+  table.api{width:100%; border-collapse:collapse; margin-top:14px; font-size:13.5px}
+  table.api th, table.api td{border-bottom:1px solid var(--traitpale); padding:8px 10px; text-align:left; vertical-align:top}
+  table.api th{font-size:11px; text-transform:uppercase; letter-spacing:.08em; color:var(--gris)}
+  table.api code{font-family:ui-monospace,Menlo,monospace; font-size:12.5px}
+
+  footer{margin-top:56px; padding-top:16px; border-top:1px solid var(--trait); font-size:13px; color:var(--gris)}
+
+  @media print{
+    .barre, details.pli{display:none}
+    body{background:#fff} .wrap{padding:0}
+    a.noeud::after{display:none}
+  }
+</style>
+</head>
+<body>
+
+<div class="wrap">
+
+<!-- ══════════ Barre de commande ══════════ -->
+<div class="barre">
+  <div class="marque"><span>Francisation</span>Tableau de bord</div>
+
+  <div class="champ-groupe">
+    <label for="selBase">Serveur</label>
+    <select id="selBase">
+      <option value="https://bibliotheque-francisation-production.up.railway.app/">Production (Railway)</option>
+      <option value="http://localhost:8000/">Local — localhost:8000</option>
+      <option value="file:///Users/danieltousignant/Claude/bibliotheque-francisation/">Fichiers du disque</option>
+    </select>
+  </div>
+
+  <div class="champ-groupe">
+    <label for="champCode">Code élève</label>
+    <input type="text" id="champCode" maxlength="8" size="8" placeholder="XXXXXX" autocomplete="off">
+  </div>
+
+  <div class="champ-groupe">
+    <input type="search" id="champRecherche" placeholder="Filtrer les 43 activités…" autocomplete="off">
+  </div>
+
+  <div class="base-actuelle" id="baseActuelle"></div>
+  <div class="avert" id="avertFichier">
+    <b>Fichiers du disque :</b> les pages s'ouvrent, mais rien ne parle au serveur — pas de connexion, pas de planification, pas de progression. Bon pour relire une fiche ou un module, pas pour tester le portail.
+  </div>
+</div>
+
+<header class="tete">
+  <div class="surtitre">Bibliothèque Francisation · Niveau 4</div>
+  <h1>Hiérarchie des pages du site</h1>
+  <p class="chapeau">Les deux portes d'entrée du site et tout ce qui s'ouvre derrière elles. Chaque bloc est cliquable et s'ouvre dans un nouvel onglet, sur le serveur choisi ci-dessus. Un code élève saisi dans la barre est ajouté aux liens qui en attendent un.</p>
+</header>
+
+<div class="legende">
+  <span class="pastille"><i style="background:var(--eleve)"></i>Côté élève</span>
+  <span class="pastille"><i style="background:var(--prof)"></i>Côté enseignant</span>
+  <span class="pastille"><i style="background:var(--commun)"></i>Outil autonome</span>
+  <span class="pastille"><i style="background:var(--vieux)"></i>Ancienne page</span>
+  <span class="pastille"><i style="background:var(--trait)"></i>Ressource terminale</span>
+</div>
+
+<!-- ══════════ ENTRÉE 1 — ÉLÈVE ══════════ -->
+<h2 class="titre-bloc">Entrée 1 — l'élève <small>racine du site : <code>/</code> sert <code>eleve.html</code></small></h2>
+<p class="sous-bloc">L'élève n'a ni compte ni mot de passe : il entre un code à six caractères que l'enseignante lui a remis. Tout ce qu'il voit dépend de la planification de son groupe.</p>
+
+<ul class="arbre">
+  <li class="racine">
+    <a class="noeud t-eleve" data-href="eleve.html">
+      <div class="ligne1"><span class="nom">Portail élève</span><code>/ → eleve.html</code><span class="etiq">Entrée</span></div>
+      <div class="quoi">Écran de code, puis le tableau de bord : bilan en trois chiffres, « Votre prochaine étape », modules du cours en tuiles, ateliers thématiques, exercices libres.</div>
+    </a>
+    <ul>
+      <li>
+        <a class="noeud t-eleve" data-href="viewer.html?src=assets/interactive/module-consultation/module-consultation-activite-interactive.html&amp;activityId=35&amp;title=Module%201" data-code="1">
+          <div class="ligne1"><span class="nom">Cadre d'ouverture d'une activité</span><code>viewer.html?src=…&amp;code=…</code></div>
+          <div class="quoi">Barre de titre + iframe. Il passe le code élève à l'activité et remonte les traces de progression. Le lien ouvre le module 1 en exemple.</div>
+        </a>
+        <ul>
+          <li>
+            <div class="noeud t-eleve">
+              <div class="ligne1"><span class="nom">Modules de cours</span><code>assets/interactive/module-*/</code><span class="etiq">11 modules</span></div>
+              <div class="quoi">Cours de 4 h du matin. Chacun est un HTML autonome découpé en sections (Je découvre · Défis · Je me lance · Je retiens des mots).</div>
+              <details class="pli"><summary>Ouvrir la liste des modules</summary>
+                <div class="grille" data-liste="cours"></div>
+              </details>
+            </div>
+            <ul>
+              <li>
+                <div class="noeud t-eleve">
+                  <div class="ligne1"><span class="nom">Rail « Mes outils »</span><code>assets/design-system/outils-eleve.js</code><span class="etiq">7 outils</span></div>
+                  <div class="quoi">Traduire · Lire · Simplifier · Prononcer · Assistant · Mon carnet · Réviser. Greffé dans les onze modules, jamais écrit module par module — il n'a pas de page à lui.</div>
+                </div>
+                <ul>
+                  <li>
+                    <a class="noeud t-feuille" data-href="assets/interactive/vocabulaire-flash/vocabulaire-flash-activite-interactive.html" data-code="1">
+                      <div class="ligne1"><span class="nom">Cartes mémoire (vocabulaire)</span><code>vocabulaire-flash/</code></div>
+                      <div class="quoi">Ouvert par l'outil « Réviser » sur la liste du module. Répétition espacée à sept boîtes ; seule porte d'entrée dans la progression du vocabulaire.</div>
+                    </a>
+                  </li>
+                </ul>
+              </li>
+            </ul>
+          </li>
+          <li>
+            <div class="noeud t-eleve">
+              <div class="ligne1"><span class="nom">Ateliers thématiques</span><code>assets/interactive/&lt;slug&gt;/</code><span class="etiq">32 ateliers</span></div>
+              <div class="quoi">Enquêtes, visites, jeux de rôle, mystères. Activités de 2 h de l'après-midi, par opposition aux modules du matin.</div>
+              <details class="pli"><summary>Ouvrir la liste des ateliers</summary>
+                <div class="grille" data-liste="atelier"></div>
+              </details>
+            </div>
+          </li>
+          <li>
+            <div class="noeud t-eleve">
+              <div class="ligne1"><span class="nom">Exercices libres</span><span class="etiq">Hors calendrier</span></div>
+              <div class="quoi">Domaines transversaux, affichés sans état d'avancement.</div>
+              <details class="pli"><summary>Ouvrir les cinq exercices libres</summary>
+                <div class="grille" data-liste="libre"></div>
+              </details>
+            </div>
+          </li>
+        </ul>
+      </li>
+      <li>
+        <div class="noeud t-feuille">
+          <div class="ligne1"><span class="nom">Fiches à imprimer</span><code>assets/documents/*.html</code><span class="etiq">194 fiches</span></div>
+          <div class="quoi">Documents élèves en noir et blanc, format lettre. Un exemple ci-dessous ; les autres suivent la même adresse, un fichier par section de module.</div>
+          <details class="pli"><summary>Ouvrir une fiche d'exemple</summary>
+            <div class="grille" data-liste="fiches"></div>
+          </details>
+        </div>
+      </li>
+    </ul>
+  </li>
+</ul>
+
+<div class="note"><b>Ce que l'élève ne voit jamais :</b> le catalogue, la planification, les autres groupes, et les corrections IA de ses camarades. Le portail ne rend que les activités ouvertes à son groupe.</div>
+
+<!-- ══════════ ENTRÉE 2 — ENSEIGNANT ══════════ -->
+<h2 class="titre-bloc">Entrée 2 — l'enseignante <small>page d'accueil du personnel : <code>enseignant.html</code></small></h2>
+<p class="sous-bloc">Le portail enseignant porte sa propre connexion et remplace l'usage courant des anciennes pages. Plusieurs enseignantes, plusieurs groupes : le catalogue est commun, la planification se fait par groupe.</p>
+
+<ul class="arbre">
+  <li class="racine">
+    <a class="noeud t-prof" data-href="enseignant.html">
+      <div class="ligne1"><span class="nom">Portail enseignant</span><code>enseignant.html</code><span class="etiq">Entrée</span></div>
+      <div class="quoi">Connexion, sélecteur de groupe, puis quatre onglets dans une seule page. Session partagée avec les autres pages du personnel par <code>localStorage</code>.</div>
+    </a>
+    <ul>
+      <li><div class="noeud t-prof"><div class="ligne1"><span class="nom">Onglet · Planifier</span><span class="etiq">Dans la page</span></div><div class="quoi">Dater les activités du groupe. Le chevron déplie les sections d'un module, cochables et datables une à une.</div></div></li>
+      <li><div class="noeud t-prof"><div class="ligne1"><span class="nom">Onglet · Élèves</span><span class="etiq">Dans la page</span></div><div class="quoi">Inscrire un élève, générer son code à six caractères, renommer, retirer, imprimer les billets. Un élève ne s'inscrit jamais lui-même.</div></div></li>
+      <li><div class="noeud t-prof"><div class="ligne1"><span class="nom">Onglet · Groupes et comptes</span><span class="etiq">Dans la page</span></div><div class="quoi">Créer un groupe, gérer les comptes enseignants, le mot de passe, le lien de rencontre et les fichiers partagés au groupe.</div></div></li>
+      <li>
+        <div class="noeud t-prof"><div class="ligne1"><span class="nom">Onglet · Matériel</span><span class="etiq">Dans la page</span></div><div class="quoi">Dépôt des PowerPoints et des fiches à imprimer, avec promotion d'un dépôt vers l'officiel (réservé à l'admin).</div></div>
+        <ul>
+          <li><a class="noeud t-feuille" data-href="assets/plans/enquete-criminelle-plan-de-cours.html"><div class="ligne1"><span class="nom">Plans de cours</span><code>assets/plans/</code><span class="etiq">12</span></div><div class="quoi">Le lien ouvre le plan de l'enquête criminelle, en exemple.</div></a></li>
+          <li><div class="noeud t-feuille"><div class="ligne1"><span class="nom">PowerPoints des séances</span><code>assets/powerpoints/</code><span class="etiq">144 séances</span></div><div class="quoi">Fichiers <code>.pptx</code>, un dossier par module — ils se téléchargent depuis l'onglet Matériel, pas depuis une page à eux.</div></div></li>
+        </ul>
+      </li>
+      <li>
+        <a class="noeud t-prof" data-href="progression.html">
+          <div class="ligne1"><span class="nom">Progression du groupe</span><code>progression.html</code></div>
+          <div class="quoi">Le tableau de bord du groupe, module par module : qui a fait quoi, où ça bloque.</div>
+        </a>
+        <ul>
+          <li>
+            <a class="noeud t-prof" data-href="fiche-eleve.html">
+              <div class="ligne1"><span class="nom">Fiche de l'élève</span><code>fiche-eleve.html?code=…</code></div>
+              <div class="quoi">Le dossier d'un seul élève : parcours, vocabulaire maîtrisé, productions orales et écrites déposées. Les corrections IA privées n'y apparaissent jamais.</div>
+            </a>
+          </li>
+        </ul>
+      </li>
+      <li>
+        <a class="noeud t-prof" data-href="catalogue.html">
+          <div class="ligne1"><span class="nom">Catalogue</span><code>catalogue.html</code></div>
+          <div class="quoi">Le fonds, pas la planification : toutes les activités, tous niveaux confondus, et le matériel qui va avec. Deux gestes seulement — ajouter une activité, ajouter du matériel. Aucune date, aucune suppression.</div>
+        </a>
+      </li>
+      <li>
+        <a class="noeud t-prof" data-href="index.html">
+          <div class="ligne1"><span class="nom">Bibliothèque</span><code>index.html</code></div>
+          <div class="quoi">La vitrine de recherche des activités du groupe actif, avec dates, vignettes et filtres. Nav commune : Espace enseignant · Bibliothèque · Catalogue.</div>
+        </a>
+      </li>
+      <li>
+        <a class="noeud t-commun" data-href="assets/outils/compositeur-activite.html?de=enseignant">
+          <div class="ligne1"><span class="nom">Compositeur d'activité</span><code>assets/outils/compositeur-activite.html</code><span class="etiq">Autonome</span></div>
+          <div class="quoi">Ni session, ni groupe, ni appel au serveur : il assemble un prompt à partir des critères du programme. Le fichier du dépôt est une copie ; la source vit hors dépôt.</div>
+        </a>
+      </li>
+      <li>
+        <a class="noeud t-commun" data-href="assets/outils/tutoriels-enseignant.html?de=enseignant">
+          <div class="ligne1"><span class="nom">Tutoriels de l'espace enseignant</span><code>assets/outils/tutoriels-enseignant.html</code><span class="etiq">Autonome</span></div>
+          <div class="quoi">Les capsules vidéo (<code>assets/tutoriels/*.mp4</code> et leurs sous-titres) : tour du portail, planifier, sections, élèves, matériel.</div>
+        </a>
+        <ul>
+          <li><a class="noeud t-feuille" data-href="assets/outils/guide-espace-enseignant.html"><div class="ligne1"><span class="nom">Guide de l'espace enseignant</span><code>guide-espace-enseignant.html</code></div></a></li>
+        </ul>
+      </li>
+    </ul>
+  </li>
+</ul>
+
+<!-- ══════════ AUTONOMES ══════════ -->
+<h2 class="titre-bloc">Pages autonomes <small>aucune page du site n'y mène ; on les ouvre par leur adresse</small></h2>
+<ul class="arbre">
+  <li><a class="noeud t-commun" data-href="assets/outils/diagnostic-livre.html"><div class="ligne1"><span class="nom">Diagnostic — le livre</span><code>assets/outils/diagnostic-livre.html</code></div><div class="quoi">Relevé des notions du manuel, hors du portail.</div></a></li>
+  <li><a class="noeud t-commun" data-href="assets/outils/diagnostic-modules.html"><div class="ligne1"><span class="nom">Diagnostic — les modules</span><code>assets/outils/diagnostic-modules.html</code></div><div class="quoi">Le même relevé, côté modules produits.</div></a></li>
+  <li><a class="noeud t-commun" data-href="assets/outils/reconnaissance-vocale.html"><div class="ligne1"><span class="nom">Reconnaissance vocale</span><code>assets/outils/reconnaissance-vocale.html</code></div><div class="quoi">Banc d'essai de la dictée vocale.</div></a></li>
+</ul>
+
+<!-- ══════════ ANCIENNES ══════════ -->
+<h2 class="titre-bloc">Anciennes pages <small>conservées pour les signets et l'installation, remplacées à l'usage</small></h2>
+<ul class="arbre">
+  <li><a class="noeud t-vieux" data-href="admin.html"><div class="ligne1"><span class="nom">Ancien nom du catalogue</span><code>admin.html</code><span class="etiq">Redirection</span></div><div class="quoi">Ne fait plus que rediriger vers <code>catalogue.html</code>, pour les signets pris avant le renommage.</div></a></li>
+  <li><a class="noeud t-vieux" data-href="prof.html"><div class="ligne1"><span class="nom">Installation du premier compte</span><code>prof.html</code></div><div class="quoi">Sert encore à poser le tout premier compte enseignant ; sa partie « groupes » est reprise par le portail.</div></a></li>
+  <li><a class="noeud t-vieux" data-href="lms.html"><div class="ligne1"><span class="nom">Ancien tableau des élèves</span><code>lms.html</code></div><div class="quoi">Codes et suivi des élèves, remplacé par l'onglet « Élèves » et par <code>progression.html</code>.</div></a></li>
+  <li><a class="noeud t-vieux" data-href="maquette-outils-eleve.html"><div class="ligne1"><span class="nom">Maquette du rail d'outils</span><code>maquette-outils-eleve.html</code></div><div class="quoi">Banc d'essai du design, sans lien depuis le site. Voir aussi <code>essai-outils.html</code>.</div></a></li>
+</ul>
+
+<!-- ══════════ SERVEUR ══════════ -->
+<h2 class="titre-bloc">Derrière les pages <small>le serveur, en une ligne par famille</small></h2>
+<p class="sous-bloc">Un seul <code>server.py</code> (<code>http.server</code>, stdlib) sert les fichiers statiques et répond aux appels JSON. Aucune page n'a de base de données propre.</p>
+<table class="api">
+  <thead><tr><th>Famille</th><th>Routes</th><th>Qui appelle</th></tr></thead>
+  <tbody>
+    <tr><td>Élève</td><td><code>/api/auth</code>, <code>/api/student/dashboard</code>, <code>/activities</code>, <code>/progress</code>, <code>/sections</code></td><td><code>eleve.html</code>, <code>viewer.html</code></td></tr>
+    <tr><td>Outils de l'élève</td><td><code>/api/outils/traduire</code>, <code>/simplifier</code>, <code>/assistant</code>, <code>/api/voix</code></td><td>rail « Mes outils » des modules</td></tr>
+    <tr><td>Vocabulaire</td><td><code>/api/vocab/listes</code>, <code>/session</code>, <code>/answer</code>, <code>/translate</code>, <code>/signaler</code></td><td>cartes mémoire, « Je retiens des mots »</td></tr>
+    <tr><td>Productions</td><td><code>/api/oral/submit</code>, <code>/api/ecrit/submit</code>, <code>/api/correct-french</code>, <code>/api/check-written</code>, <code>/api/corrige-moi/seance</code></td><td>modules et activités de correction</td></tr>
+    <tr><td>Enseignant</td><td><code>/api/prof/login</code>, <code>/me</code>, <code>/groupes</code>, <code>/enseignants</code>, <code>/documents</code>, <code>/planification/copier</code></td><td><code>enseignant.html</code>, <code>prof.html</code></td></tr>
+    <tr><td>Catalogue et matériel</td><td><code>/api/activities</code>, <code>/api/sections</code>, <code>/api/materiel</code>, <code>/depot</code>, <code>/promotion</code>, <code>/archive</code></td><td><code>catalogue.html</code>, <code>index.html</code>, onglet Matériel</td></tr>
+    <tr><td>Suivi</td><td><code>/api/admin/students</code>, <code>/oral-submissions</code>, <code>/written-submissions</code>, <code>/analyses-erreurs</code>, <code>/access-log</code></td><td><code>progression.html</code>, <code>fiche-eleve.html</code></td></tr>
+    <tr><td>Forge (poste local)</td><td><code>/api/forge/commande</code>, <code>/etat</code>, <code>/fichier</code>, <code>/publier</code>, <code>/annuler</code></td><td>compositeur d'activité</td></tr>
+  </tbody>
+</table>
+
+<footer>
+  Carte établie le 19 août 2026 à partir de <code>server.py</code>, des liens réels entre les pages et de <code>CLAUDE.md</code>. 43 activités au catalogue — 11 modules de cours, 32 ateliers — toutes de niveau 4.
+</footer>
+
+</div>
+
+<script>
+/* ═══ Le fonds : les 43 activités, lues dans data/activities.json ═══ */
+const ACTIVITES = [{"id":4,"t":"À la clinique","c":"atelier","h":"assets/interactive/a-la-clinique/a-la-clinique-activite-interactive-avec-bouton-1.html"},{"id":5,"t":"Le Marché Jean-Talon","c":"atelier","h":"assets/interactive/le-marche-jean-talon/marche-jean-talon-activite-interactive-avec-bouton.html"},{"id":6,"t":"La poutine","c":"atelier","h":"assets/interactive/la-poutine/poutine-activite-interactive-avec-bouton.html"},{"id":7,"t":"À l'épicerie","c":"atelier","h":"assets/interactive/a-lepicerie/epicerie-activite-interactive-avec-bouton.html"},{"id":8,"t":"Chez le Docteur","c":"atelier","h":"assets/interactive/chez-le-docteur/chez-le-docteur-activite-interactive-avec-bouton.html"},{"id":9,"t":"Le Mont-Royal","c":"atelier","h":"assets/interactive/le-mont-royal/mont-royal-activite-interactive-avec-bouton-1.html"},{"id":10,"t":"Jeux Olympique 1976","c":"atelier","h":"assets/interactive/jeux-olympique-1976/expo-1976-activite-interactive-avec-bouton.html"},{"id":11,"t":"Louer un appartement","c":"atelier","h":"assets/interactive/louer-un-appartement/logement-activite-interactive-avec-bouton-1.html"},{"id":12,"t":"Au travail","c":"atelier","h":"assets/interactive/au-travail/au-travail-activite-interactive-avec-bouton.html"},{"id":13,"t":"Sport et loisirs","c":"atelier","h":"assets/interactive/sport-et-loisirs/sport-activite-interactive-avec-bouton-1.html"},{"id":14,"t":"Trouver son chemin","c":"atelier","h":"assets/interactive/trouver-son-chemin/deplacement-activite-interactive-avec-bouton.html"},{"id":15,"t":"Le Vieux-port de Montréal","c":"atelier","h":"assets/interactive/le-vieux-port-de-montreal/vieux-port-activite-interactive-avec-bouton-2.html"},{"id":16,"t":"Je déménage !","c":"atelier","h":"assets/interactive/je-demenage/je-demenage-activite-interactive.html"},{"id":17,"t":"Parler de sa santé","c":"atelier","h":"assets/interactive/parler-de-sa-sante/parler-de-sa-sante-activite-interactive.html"},{"id":18,"t":"Visite du Vieux-Montréal","c":"atelier","h":"assets/interactive/visite-vieux-montreal/visite-vieux-montreal-activite-interactive.html"},{"id":19,"t":"L'enquête criminelle - vol de café","c":"atelier","h":"assets/interactive/lenquete-criminelle-vol-de-cafe/enquete-criminelle-activite-interactive.html"},{"id":20,"t":"Le mystère de la classe","c":"atelier","h":"assets/interactive/le-mystere-de-la-classe/myclassinter.html"},{"id":21,"t":"Le voleur de la cafétéria","c":"atelier","h":"assets/interactive/le-voleur-de-la-cafeteria/voleurcafetinter.html"},{"id":22,"t":"La vieille photo","c":"atelier","h":"assets/interactive/la-vieille-photo/vieillephotointer.html"},{"id":23,"t":"Une fête de quartier","c":"atelier","h":"assets/interactive/une-fete-de-quartier/fetequartinter.html"},{"id":24,"t":"Mystère à la bibliothèque","c":"atelier","h":"assets/interactive/mystere-a-la-bibliotheque/mystere-bibliotheque-interactive.html"},{"id":25,"t":"Mystère au laboratoire","c":"atelier","h":"assets/interactive/mystere-au-laboratoire/mystere-laboratoire-standalone.html"},{"id":26,"t":"Visite à la BANQ","c":"atelier","h":"assets/interactive/visite-a-la-banq/banq-standalone.html"},{"id":27,"t":"Visite au Jardin Botanique","c":"atelier","h":"assets/interactive/visite-au-jardin-botanique/jardin-botanique-standalone.html"},{"id":28,"t":"Détective des temps","c":"atelier","h":"assets/interactive/detective-des-temps/detective-des-temps-activite-interactive.html"},{"id":29,"t":"Corrige-moi ! (assistant oral)","c":"atelier","h":"assets/interactive/corrige-moi/corrige-moi-activite-interactive.html"},{"id":30,"t":"Rédaction de courriel (biochimiste)","c":"atelier","h":"assets/interactive/correction-courriel/correction-courriel-activite-interactive.html"},{"id":31,"t":"Vocabulaire — Cartes mémoire","c":"atelier","h":"assets/interactive/vocabulaire-flash/vocabulaire-flash-activite-interactive.html"},{"id":32,"t":"Analyse grammaticale","c":"atelier","h":"assets/interactive/analyse-grammaticale/analyse-grammaticale-activite-interactive.html"},{"id":33,"t":"Cabine d'enregistrement — Santé","c":"atelier","h":"assets/interactive/cabine-sante/cabine-sante-activite-interactive.html"},{"id":34,"t":"Module 3 — Prendre rendez-vous et aller à la pharmacie","c":"cours","h":"assets/interactive/module-sante/module-sante-activite-interactive.html"},{"id":35,"t":"Module 1 — Consulter au bon endroit","c":"cours","h":"assets/interactive/module-consultation/module-consultation-activite-interactive.html"},{"id":36,"t":"Module 2 — Une urgence au travail","c":"cours","h":"assets/interactive/module-urgence/module-urgence-activite-interactive.html"},{"id":37,"t":"Vocabulaire Santé — Cartes illustrées","c":"atelier","h":"assets/interactive/vocab-flash-sante/vocab-flash-sante-activite-interactive.html"},{"id":38,"t":"Vocabulaire Consommation — Cartes illustrées","c":"atelier","h":"assets/interactive/vocab-flash-conso/vocab-flash-conso-activite-interactive.html"},{"id":39,"t":"Module 4 — Absent ou en retard : que faire ?","c":"cours","h":"assets/interactive/module-travail/module-travail-activite-interactive.html"},{"id":40,"t":"Module 5 — Quelle est la procédure ?","c":"cours","h":"assets/interactive/module-procedure/module-procedure-activite-interactive.html"},{"id":41,"t":"Module 6 — C'est l'heure des nouvelles ?","c":"cours","h":"assets/interactive/module-nouvelles/module-nouvelles-activite-interactive.html"},{"id":42,"t":"Module 7 — Quelles sont les prévisions ?","c":"cours","h":"assets/interactive/module-meteo/module-meteo-activite-interactive.html"},{"id":43,"t":"Module 8 — Des publicités efficaces","c":"cours","h":"assets/interactive/module-pub/module-pub-activite-interactive.html"},{"id":44,"t":"Module 9 — Comment est le logement ?","c":"cours","h":"assets/interactive/module-logement/module-logement-activite-interactive.html"},{"id":45,"t":"Module 10 — Pouvez-vous régler le problème ?","c":"cours","h":"assets/interactive/module-probleme/module-probleme-activite-interactive.html"},{"id":46,"t":"Module 17 — Besoin d'un compte bancaire ?","c":"cours","h":"assets/interactive/module-banque/module-banque-activite-interactive.html"}];
+
+/* Les cinq exercices libres : domaines transversaux, hors calendrier. */
+const LIBRES = [31, 37, 38, 32, 29];
+
+/* Quelques fiches d'exemple parmi les 194. */
+const FICHES = [
+  ["Module 1 · Le corps, les sens et la douleur", "assets/documents/module-consultation-a3-le-corps-les-sens-et-la-douleur.html"],
+  ["Module 3 · Dire comment on se sent", "assets/documents/module-sante-a4-dire-comment-on-se-sent.html"],
+  ["Module 10 · Fiches élèves (recueil)", "assets/documents/module-probleme-fiches-eleves.html"],
+  ["Atelier · Je déménage", "assets/documents/je-demenage.html"]
+];
+
+const CLE_BASE = "hierarchie_base";
+const CLE_CODE = "hierarchie_code";
+
+const selBase = document.getElementById("selBase");
+const champCode = document.getElementById("champCode");
+const champRecherche = document.getElementById("champRecherche");
+const baseActuelle = document.getElementById("baseActuelle");
+const avertFichier = document.getElementById("avertFichier");
+
+/* Reprendre le choix précédent. */
+const baseGardee = localStorage.getItem(CLE_BASE);
+if (baseGardee && [...selBase.options].some(o => o.value === baseGardee)) selBase.value = baseGardee;
+champCode.value = localStorage.getItem(CLE_CODE) || "";
+
+function base() { return selBase.value; }
+
+function lien(chemin, avecCode) {
+  let url = base() + chemin;
+  const code = champCode.value.trim();
+  if (avecCode && code) url += (url.includes("?") ? "&" : "?") + "code=" + encodeURIComponent(code);
+  return url;
+}
+
+/* ─ Les blocs de l'arbre ─ */
+function poserLiens() {
+  document.querySelectorAll("a.noeud[data-href]").forEach(a => {
+    a.href = lien(a.dataset.href, a.dataset.code === "1");
+    a.target = "_blank";
+    a.rel = "noopener";
+  });
+  document.querySelectorAll("a.tuile[data-href]").forEach(a => {
+    a.href = lien(a.dataset.href, true);
+  });
+  baseActuelle.textContent = base();
+  avertFichier.classList.toggle("on", base().startsWith("file:"));
+  localStorage.setItem(CLE_BASE, base());
+  localStorage.setItem(CLE_CODE, champCode.value.trim());
+}
+
+/* Accents mis de côté : « météo » doit trouver « module-meteo », et
+   inversement. Sans ça, le filtre rate la moitié des modules, dont le
+   dossier est écrit sans accent. */
+function sansAccents(t) {
+  return t.normalize("NFD").replace(/[\u0300-\u036f]/g, "").toLowerCase();
+}
+
+/* ─ Les listes dépliables ─ */
+function tuile(titre, chemin, num) {
+  const a = document.createElement("a");
+  a.className = "tuile";
+  a.target = "_blank";
+  a.rel = "noopener";
+  a.dataset.href = chemin;
+  a.dataset.num = num == null ? "" : String(num);
+  a.dataset.cherche = sansAccents(titre + " " + chemin);
+  const b = document.createElement("b");
+  b.textContent = titre;
+  const s = document.createElement("span");
+  s.textContent = chemin.replace("assets/interactive/", "").replace(/\/[^/]+$/, "");
+  a.append(b, s);
+  return a;
+}
+
+function numeroModule(titre) {
+  const m = titre.match(/Module\s+(\d+)/);
+  return m ? parseInt(m[1], 10) : 999;
+}
+
+function remplirListes() {
+  const cours = ACTIVITES.filter(a => a.c === "cours" && a.h)
+                         .sort((a, b) => numeroModule(a.t) - numeroModule(b.t));
+  const libres = LIBRES.map(id => ACTIVITES.find(a => a.id === id)).filter(a => a && a.h);
+  const idsLibres = new Set(libres.map(a => a.id));
+  const ateliers = ACTIVITES.filter(a => a.c === "atelier" && a.h && !idsLibres.has(a.id))
+                            .sort((a, b) => a.t.localeCompare(b.t, "fr"));
+
+  const cible = n => document.querySelector('[data-liste="' + n + '"]');
+  cours.forEach(a => cible("cours").append(tuile(a.t, a.h, a.id)));
+  ateliers.forEach(a => cible("atelier").append(tuile(a.t, a.h, a.id)));
+  libres.forEach(a => cible("libre").append(tuile(a.t, a.h, a.id)));
+  FICHES.forEach(([titre, chemin]) => cible("fiches").append(tuile(titre, chemin, null)));
+}
+
+/* ─ Le filtre ─ */
+function filtrer() {
+  const q = sansAccents(champRecherche.value.trim());
+  document.querySelectorAll("details.pli").forEach(d => {
+    const grille = d.querySelector(".grille");
+    if (!grille) return;
+    let visibles = 0;
+    grille.querySelectorAll("a.tuile").forEach(a => {
+      const ok = !q || a.dataset.cherche.includes(q) || a.dataset.num === q;
+      a.style.display = ok ? "" : "none";
+      if (ok) visibles++;
+    });
+    if (q) { d.open = visibles > 0; }
+  });
+}
+
+remplirListes();
+poserLiens();
+
+selBase.addEventListener("change", poserLiens);
+champCode.addEventListener("input", poserLiens);
+champRecherche.addEventListener("input", filtrer);
+</script>
+</body>
+</html>
