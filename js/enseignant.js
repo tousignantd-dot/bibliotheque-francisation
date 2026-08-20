@@ -1562,9 +1562,7 @@
   $('boutonSignaler').addEventListener('click', async () => {
     $('erreurSignalement').hidden = true;
     $('resultatEssai').hidden = true;
-    // L'essai d'envoi ne regarde que l'administrateur : c'est lui qui pose
-    // les variables de l'hébergeur.
-    $('boutonEssaiCourriel').hidden = etat.enseignant?.role !== 'admin';
+    $('boutonEssaiCourriel').hidden = false;
     $('sEcran').value = ECRAN_LABEL[etat.ecran] || 'Autre';
     ouvrirModale('modaleSignalement');
     $('sDescription').focus();

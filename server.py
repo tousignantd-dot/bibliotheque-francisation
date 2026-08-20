@@ -5521,14 +5521,21 @@ class Handler(http.server.SimpleHTTPRequestHandler):
                                    reverse=True))
 
     def _handle_signalement_essai(self):
-        """Essai d'envoi, réservé à l'administrateur.
+        """Essai d'envoi, ouvert à toute session enseignante.
 
         Les journaux de l'hébergeur disent pourquoi un courriel n'est pas
         parti, mais il faut les ouvrir, et le message se perd au milieu du
         reste. Ce bouton pose la question et rapporte la réponse à l'écran,
         avec l'état des variables — leur présence, jamais leur valeur.
+
+        Il a d'abord été réservé à l'administrateur, et c'était une fausse
+        prudence : elle cachait le bouton à la personne même qui dépannait,
+        les rôles n'étant pas les mêmes d'un compte à l'autre. La réponse ne
+        porte aucune clé, aucun mot de passe, et la destination est fixée par
+        l'hébergeur — un enseignant curieux ne peut qu'écrire au responsable
+        du projet.
         """
-        teacher = self._require_teacher(admin=True)
+        teacher = self._require_teacher()
         if not teacher:
             return
         ok, raison = envoyer_courriel(
