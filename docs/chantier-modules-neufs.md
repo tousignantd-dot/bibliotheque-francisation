@@ -12,7 +12,7 @@ livrer**.
 
 | N° | Slug | Situation | Étape atteinte |
 |----|------|-----------|----------------|
-| 11 | `module-relations` | Relations sociales | inventer ✔ · contenu… |
+| 11 | `module-relations` | Relations sociales | contenu ✔ · build ✔ · médias… |
 | 12 | `module-deplacement` | Déplacement dans une ville | — |
 | 13 | `module-activite` | Participation à une activité culturelle ou sportive | — |
 | 14 | `module-alimentation` | Achat d'aliments ou de produits d'entretien | — |
@@ -45,3 +45,20 @@ Le 17 est pris par `module-banque`, d'où le saut.
   rôles déclarés par le scénario, plus une clé `adresse` pour qu'un échange
   informel se tutoie. Les deux scénarios existants produisent une consigne
   système **identique au caractère près** (346 lignes comparées).
+
+- Contenu écrit : 7 dialogues (86 répliques), 15 mots de vocabulaire,
+  25 exercices, 7 mini-leçons (34 combinaisons de laboratoire), 18 phrases
+  porteuses. Module construit : 285 776 octets.
+- Le gabarit a gagné un vingt-et-unième jeton, `%%JR_ROLE%%` : le rôle de
+  départ du jeu de rôle était écrit en dur (`role:'locataire'`) et aurait
+  envoyé un rôle inexistant au serveur. `module-probleme` se reconstruit
+  toujours à l'octet près (md5 inchangé).
+- Vérifié dans le navigateur : 6 sections rendues sans erreur, 25 exercices,
+  les 7 mini-leçons s'ouvrent, **34 combinaisons de laboratoire toutes
+  pourvues**, aucune clé de `PLUS` orpheline, aucun dialogue inutilisé ni
+  manquant, 95 identifiants d'audio relevés.
+- Une faute de fabrication attrapée là : une virgule doublée dans
+  `dialogues.js`, produite par le script d'ajout du septième dialogue. Elle
+  cassait tout le script de la page — et la page continuait de s'afficher,
+  muette. Le contrôle utile n'est pas « la page s'affiche » mais « les
+  constantes existent ».

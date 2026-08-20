@@ -2124,6 +2124,79 @@ JEU_DE_ROLE_PROBLEMES = {
 # Un scénario décrit tout ce qui change d'un jeu de rôle à l'autre : les cas
 # jouables, les sujets à couvrir, et la façon dont chaque rôle se comporte.
 # Ajouter un module = ajouter une entrée ici, sans toucher au reste du serveur.
+# ── Jeu de rôle « relations sociales » (module-relations) ────────────────────
+# Faire connaissance dans une activité de loisir. Les deux rôles sont
+# « nouveau » et « membre » : c'est le scénario qui a obligé à sortir la paire
+# locataire/propriétaire du code.
+JEU_DE_ROLE_RENCONTRES = {
+    "volleyball": {
+        "contexte": (
+            "La ligue de volleyball du centre communautaire, le jeudi soir, avant "
+            "l'entraînement. Les gens arrivent au vestiaire les uns après les autres. "
+            "Une nouvelle personne s'est inscrite cette semaine."
+        ),
+        "membre": [
+            "Tu joues dans cette ligue depuis six ans ; c'est ta voisine qui t'avait amenée.",
+            "Tu travailles de jour et tu arrives toujours à la dernière minute.",
+            "Il y a un tournoi de deux jours à Drummondville en avril, et il reste des places.",
+            "L'équipe cherche quelqu'un qui sait servir : la moitié des joueuses ratent leur service.",
+            "Tu fais du covoiturage avec deux autres joueuses et tu pourrais en prendre une de plus.",
+            "Tu as un bébé de trois mois à la maison ; tu ne dors plus mais tu ne manques jamais un jeudi.",
+            "Tu es curieuse de savoir ce que la personne faisait avant d'arriver ici.",
+        ],
+        "nouveau": [
+            "Tu t'es inscrit cette semaine, tu ne connais encore personne.",
+            "Tu jouais régulièrement dans ton pays, puis tu as arrêté pendant un an en arrivant.",
+            "Ton horaire de travail t'empêche de venir les autres soirs.",
+            "Tu cherches surtout à rencontrer du monde ; le sport est une raison de sortir.",
+            "Tu hésites à demander comment fonctionne la ligue, de peur de déranger.",
+        ],
+    },
+    "cuisine": {
+        "contexte": (
+            "La cuisine collective du quartier, un samedi matin. Six personnes préparent "
+            "ensemble des plats à rapporter chez elles. C'est la première fois que l'une "
+            "d'elles y participe."
+        ),
+        "membre": [
+            "Tu viens à la cuisine collective une fois par mois, depuis deux ans.",
+            "Chacun repart avec quatre portions ; la contribution est de cinq dollars.",
+            "Le groupe choisit les recettes ensemble, le mois d'avant.",
+            "Tu cuisines déjà pour la semaine le dimanche et tu trouves que ça sauve du temps.",
+            "Il y a aussi un groupe de marche le dimanche matin, parti de la même place.",
+            "Tu veux savoir ce que la personne cuisine chez elle et ce qu'elle mangeait dans son pays.",
+        ],
+        "nouveau": [
+            "C'est ta première fois ; une collègue t'en a parlé.",
+            "Tu cuisines en grande quantité chez toi et tu congèles.",
+            "Tu ne sais pas si tu dois apporter quelque chose ni combien ça coûte.",
+            "Tu travailles cinq jours sur sept et tes soirées sont courtes.",
+        ],
+    },
+    "marche": {
+        "contexte": (
+            "Le groupe de marche du dimanche matin, dans un parc du quartier. Le groupe "
+            "part à neuf heures et marche une heure et demie. Quelqu'un s'est joint au "
+            "groupe pour la première fois ce matin."
+        ),
+        "membre": [
+            "Tu marches avec ce groupe chaque dimanche depuis trois ans, beau temps mauvais temps.",
+            "Le groupe part à neuf heures pile et personne n'attend les retardataires.",
+            "En hiver, le groupe marche quand même ; il faut des crampons sous les bottes.",
+            "Tu as déménagé neuf fois avant d'avoir trente ans et tu connais tous les quartiers.",
+            "Après la marche, la moitié du groupe va déjeuner au restaurant du coin.",
+            "Tu veux savoir depuis quand la personne habite le quartier.",
+        ],
+        "nouveau": [
+            "Tu viens pour la première fois ; tu as vu l'affiche au centre communautaire.",
+            "Tu habites le quartier depuis quatorze mois et tu connais peu de monde.",
+            "Tu travailles la semaine et le dimanche est ton seul matin libre.",
+            "Tu ne sais pas jusqu'où le groupe marche ni combien de temps ça dure.",
+        ],
+    },
+}
+
+
 JEU_DE_ROLE_SCENARIOS = {
     "louer": {
         "cadre": "une visite de logement",
@@ -2187,6 +2260,44 @@ JEU_DE_ROLE_SCENARIOS = {
                 "conduite": ("Expose ton problème en une ou deux phrases, puis laisse l'élève poser "
                              "ses questions. Donne tes renseignements au fur et à mesure qu'on te les "
                              "demande. Insiste poliment si aucune date ne t'est proposée."),
+            },
+        },
+    },
+    "relations": {
+        "cadre": "une rencontre informelle dans une activité de loisir du quartier",
+        "contexte_label": "L'activité où vous vous trouvez tous les deux",
+        "cas": JEU_DE_ROLE_RENCONTRES,
+        "adresse": "Tutoie l'élève : on se tutoie entre participants d'une activité de loisir.",
+        "sujets": [
+            "ce que chacun fait de ses semaines (travail, horaire, ménage, repas)",
+            "depuis quand chacun participe à l'activité",
+            "comment chacun a connu l'activité et qui l'y a amené",
+            "une expérience personnelle du passé (une arrivée, un déménagement, un voyage)",
+            "ce qui a changé depuis ce moment-là",
+            "une prochaine occasion de se revoir",
+        ],
+        "cloture": ("Quand les sujets sont couverts, propose une prochaine occasion de se "
+                    "revoir et termine la conversation chaleureusement."),
+        "ouverture": {
+            "nouveau": "Bonjour, c'est ma première fois ici.",
+            "membre": "Salut ! Toi, je ne t'ai jamais vue ici.",
+        },
+        "roles": {
+            "membre": {
+                "qui": ("Tu participes à cette activité depuis des années. L'élève est une "
+                        "personne qui vient pour la première fois."),
+                "conduite": ("Accueille-la, mais ne raconte pas tout d'un coup : pose des "
+                             "questions sur ses semaines, son horaire, ce qu'elle faisait "
+                             "avant d'arriver ici. Réagis à ce qu'elle raconte avant "
+                             "d'enchaîner. Si elle reste sur des réponses d'un mot, relance "
+                             "avec une question ouverte."),
+            },
+            "nouveau": {
+                "qui": ("Tu viens pour la première fois à cette activité. L'élève y participe "
+                        "depuis longtemps et t'accueille."),
+                "conduite": ("Pose tes questions une à la fois : comment ça marche, à quelle "
+                             "heure, combien ça coûte, qui vient. Raconte un peu de ta propre "
+                             "vie quand on t'en demande, sans monopoliser la parole."),
             },
         },
     },

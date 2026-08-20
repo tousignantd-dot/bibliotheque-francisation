@@ -170,7 +170,8 @@ def greffer_jeu_de_role(html):
     jr_css = jr_css.replace('Jeu de rôle du défi 1', 'Jeu de rôle de « Je me lance »')
     # Le cas de départ, le scénario envoyé au serveur et la consigne de
     # correction deviennent des jetons : ils changent à chaque module.
-    jr_js = jr_js.replace("const JR = {log:'A',", "const JR = {log:'%%JR_CAS%%',")
+    jr_js = jr_js.replace("const JR = {log:'A', role:'locataire',",
+                          "const JR = {log:'%%JR_CAS%%', role:'%%JR_ROLE%%',")
     jr_js = jr_js.replace("logement:JR.log, role:JR.role",
                           "scenario:'%%JR_SCENARIO%%', cas:JR.log, role:JR.role")
     jr_js = jr_js.replace(
@@ -178,7 +179,8 @@ def greffer_jeu_de_role(html):
         'pour louer un logement, avec le pronom de reprise '
         '(Le chauffage est-il inclus ?)."',
         'question:"%%IA_JEU_DE_ROLE%%"')
-    for repere in ['%%JR_CAS%%', '%%JR_SCENARIO%%', '%%IA_JEU_DE_ROLE%%']:
+    for repere in ['%%JR_CAS%%', '%%JR_ROLE%%', '%%JR_SCENARIO%%',
+                   '%%IA_JEU_DE_ROLE%%']:
         if repere not in jr_js:
             fatal('adaptation du JS jeu de rôle incomplète : %s manquant' % repere)
 

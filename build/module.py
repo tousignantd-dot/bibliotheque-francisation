@@ -122,6 +122,7 @@ def construire(slug, verbeux=True):
         '%%ACCENT_DOUX%%':   man['accent_doux'],
         '%%IA_ORAL%%':       man['ia_oral'],
         '%%JR_CAS%%':        man['jr_cas'],
+        '%%JR_ROLE%%':       man.get('jr_role', 'locataire'),
         '%%JR_SCENARIO%%':   man['jr_scenario'],
         '%%IA_JEU_DE_ROLE%%': man['ia_jeu_de_role'],
         '%%BRAVO%%':         man['bravo'],

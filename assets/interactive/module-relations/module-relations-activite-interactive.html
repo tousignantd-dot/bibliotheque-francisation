@@ -2,7 +2,7 @@
 <html lang="fr"><head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>%%TITRE%% — Module Niveau %%NIVEAU%%</title>
+<title>Des nouvelles à donner — Module Niveau 4</title>
 <link rel="stylesheet" href="/assets/design-system/styles.css">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -376,7 +376,7 @@ body{
   /* Teinte propre à ce module (même couleur que sa plaquette dans le portail
      et la barre du lecteur) — seulement pour l'en-tête, le reste de
      l'interface garde l'accent vert unique du système de design. */
-  --hdr-accent:%%ACCENT%%; --hdr-accent-soft:%%ACCENT_DOUX%%;
+  --hdr-accent:#0D7A6F; --hdr-accent-soft:#DCF2EF;
   --pad-x:32px;      /* gouttière de page — identique partout */
   --pad-card:22px;   /* padding intérieur de TOUS les cadres */
   --bleed:-23px;     /* = -(var(--pad-card) + 1px de bordure) */
@@ -906,7 +906,7 @@ textarea:focus-visible,.winput:focus-visible{outline:none;border-color:var(--ws-
 
 <div id="hdr">
   <div class="hdr-l">
-    <div><div class="hdr-eye">%%TITRE%%</div>
+    <div><div class="hdr-eye">Des nouvelles à donner</div>
     <h1 class="hdr-h1" id="hdr-title">Je découvre</h1>
     <p class="hdr-lead" id="hdr-lead"></p></div>
   </div>
@@ -958,7 +958,7 @@ textarea:focus-visible,.winput:focus-visible{outline:none;border-color:var(--ws-
 
 <script>
 // ═══════════════════════════════════════════════════════════════════════
-//  %%TITRE_MAJ%% — Module interactif Niveau %%NIVEAU%% (FLS)
+//  DES NOUVELLES À DONNER — Module interactif Niveau 4 (FLS)
 //  Sections : Je découvre · Défi 1 · … · Je me lance ·
 //             Je retiens des mots — suivi LMS intégré
 // ═══════════════════════════════════════════════════════════════════════
@@ -971,19 +971,553 @@ function getCode(){
 const studentCode=getCode();
 
 // ── DIALOGUES ─────────────────────────────────────────────────────────
-%%DIALOGUES%%
+const DIALOGUES = {
+  prep: {
+    label: "Dialogue — Jeudi soir, au vestiaire",
+    lines: [
+      ["CHANTAL","Tu es arrivée avant tout le monde ce soir. D'habitude, tu entres en courant à la dernière minute."],
+      ["MARIAMA","Le jeudi, je finis mon quart à quatre heures. Les autres soirs, je sors à six heures et je n'arrive jamais à temps."],
+      ["CHANTAL","Tu travailles où, déjà ?"],
+      ["MARIAMA","À la buanderie de l'hôpital. Je commence à sept heures, alors je me lève à cinq heures et quart."],
+      ["CHANTAL","Cinq heures et quart ! Moi, je me lève à six heures et je trouve déjà ça dur."],
+      ["MARIAMA","Le matin, ça va. C'est le soir qui est difficile. Je fais le souper, je fais une brassée, et là il est neuf heures."],
+      ["CHANTAL","Et le ménage, tu le fais quand ?"],
+      ["MARIAMA","Le samedi matin. Je passe l'aspirateur, je sors les ordures, et après je suis libre."],
+      ["CHANTAL","Nous, on fait ça le dimanche. Mon chum lave le plancher pendant que je m'occupe du lavage."],
+      ["MARIAMA","Le dimanche, moi, je cuisine pour la semaine. Je fais un grand chaudron et je congèle."],
+      ["CHANTAL","C'est intelligent, ça. Moi, je décide à cinq heures et demie ce qu'on va manger, et c'est toujours la panique."],
+      ["MARIAMA","Chez nous, on cuisinait toujours pour beaucoup de monde. J'ai gardé l'habitude."],
+      ["CHANTAL","Bon, on y va ? L'entraînement commence dans deux minutes et Julie déteste attendre."],
+    ]
+  },
+
+  t1: {
+    label: "Dialogue — Le covoiturage du jeudi",
+    lines: [
+      ["CHANTAL","Si tu veux, je peux venir te chercher le jeudi. Je passe devant l'hôpital de toute façon."],
+      ["MARIAMA","Tu ferais ça ? L'autobus que je prends s'arrête à trois coins de rue d'ici."],
+      ["CHANTAL","Ça ne me dérange pas. C'est le trajet que je fais chaque semaine."],
+      ["MARIAMA","Merci beaucoup. Le gymnase où on joue n'est pas facile à trouver en autobus le soir."],
+      ["CHANTAL","Tu joues depuis longtemps ? Tu sers mieux que la moitié de l'équipe."],
+      ["MARIAMA","Dans mon pays, je jouais au volleyball trois fois par semaine. Ici, j'ai arrêté pendant un an."],
+      ["CHANTAL","Pourquoi tu as arrêté ?"],
+      ["MARIAMA","Je ne connaissais personne et je ne savais pas où aller. C'est une collègue qui m'a parlé du centre."],
+      ["CHANTAL","C'est souvent comme ça. Moi, c'est ma voisine qui m'a amenée la première fois, il y a six ans."],
+      ["MARIAMA","Six ans dans la même équipe !"],
+      ["CHANTAL","La même équipe, oui. Les gens que je vois le jeudi, c'est presque ma famille maintenant."],
+      ["MARIAMA","Et le tournoi dont Julie parlait tantôt, c'est quand ?"],
+      ["CHANTAL","En avril. Deux jours à Drummondville. Tu viens avec nous, c'est décidé."],
+    ]
+  },
+
+  t2: {
+    label: "Dialogue — Mon premier hiver",
+    lines: [
+      ["CHANTAL","Il fait moins vingt demain. Tu vas encore me dire que tu aimes ça."],
+      ["MARIAMA","Maintenant, oui. Mon premier hiver, par exemple, ça a été autre chose."],
+      ["CHANTAL","Raconte."],
+      ["MARIAMA","Je suis arrivée le douze janvier. À l'aéroport, je portais une veste et des sandales."],
+      ["CHANTAL","Des sandales ! En janvier !"],
+      ["MARIAMA","Personne ne m'avait expliqué. Chez moi, il faisait trente degrés le matin même."],
+      ["CHANTAL","Et quand les portes se sont ouvertes ?"],
+      ["MARIAMA","J'ai eu mal aux oreilles. Je pensais que j'étais malade. Mon cousin riait tellement qu'il n'arrivait plus à parler."],
+      ["CHANTAL","Il t'attendait à l'aéroport ?"],
+      ["MARIAMA","Oui, avec un manteau et des bottes dans un sac. Il avait tout prévu, sauf de me prévenir."],
+      ["CHANTAL","Et après ?"],
+      ["MARIAMA","Les trois premiers mois, je ne sortais pas. Je regardais la neige par la fenêtre et je comptais les jours."],
+      ["CHANTAL","Qu'est-ce qui a changé ?"],
+      ["MARIAMA","Une voisine m'a emmenée glisser avec ses enfants. J'ai compris ce jour-là qu'on pouvait aimer l'hiver."],
+      ["CHANTAL","Quatorze mois plus tard, tu joues au volleyball le jeudi soir par moins vingt."],
+      ["MARIAMA","Grâce à cette voisine, oui. Elle ne le sait même pas."],
+    ]
+  },
+
+  t2b: {
+    label: "Dialogue — Le déménagement de Chantal",
+    lines: [
+      ["MARIAMA","Toi, tu as toujours habité à Longueuil ?"],
+      ["CHANTAL","Non. J'ai déménagé neuf fois avant d'avoir trente ans."],
+      ["CHANTAL","Le pire, c'était le premier juillet il y a dix ans. Il pleuvait, on n'avait pas de camion."],
+      ["MARIAMA","Vous avez fait comment ?"],
+      ["CHANTAL","Mon frère avait une petite voiture. On a fait onze voyages. À la fin, on riait, on ne sentait plus nos bras."],
+      ["MARIAMA","Et le nouvel appartement, il était comment ?"],
+      ["CHANTAL","Petit, mais il y avait un balcon. On y mangeait tous les soirs de l'été."],
+      ["MARIAMA","Vous êtes restés longtemps ?"],
+      ["CHANTAL","Quatre ans. On est partis à cause du bruit. Il y avait un bar en bas qui fermait à trois heures."],
+      ["MARIAMA","À cause du bruit, on comprend."],
+      ["CHANTAL","Mais c'est là que j'ai rencontré ma meilleure amie. Elle habitait le logement d'en face."],
+    ]
+  },
+
+  t3: {
+    label: "Message vocal — Fatou donne des nouvelles",
+    lines: [
+      ["FATOU","Mariama, c'est ta sœur. J'ai une grande nouvelle et je ne voulais pas te l'écrire."],
+      ["FATOU","Le bébé est arrivé mardi matin. Une petite fille. Trois kilos deux."],
+      ["FATOU","Tout s'est bien passé. J'étais fatiguée, mais je vais bien, et elle mange déjà comme quatre."],
+      ["FATOU","Maman est restée avec nous toute la semaine. Elle dit qu'elle te ressemble quand tu étais bébé."],
+      ["FATOU","On a choisi son nom hier soir : Aminata, comme grand-mère."],
+      ["FATOU","Envoie-moi des photos de la neige. Je veux les lui montrer quand elle sera grande."],
+      ["FATOU","Écris-moi vite. Tu me manques."],
+    ]
+  },
+
+  t3b: {
+    label: "Dialogue — Une carte pour Chantal",
+    lines: [
+      ["MARIAMA","Julie m'a dit pour ton fils. Félicitations !"],
+      ["CHANTAL","Merci. Il est né dimanche. On ne dort plus, mais on est tellement contents."],
+      ["MARIAMA","Chez nous, on écrit toujours une carte quand un enfant naît. Est-ce que ça se fait ici ?"],
+      ["CHANTAL","Oui, ça se fait beaucoup. Les gens en envoient pour les naissances, les mariages, le Nouvel An."],
+      ["MARIAMA","Et qu'est-ce qu'on écrit ? Je ne veux pas me tromper."],
+      ["CHANTAL","Pas grand-chose. Trois lignes suffisent : tu félicites, tu souhaites quelque chose, tu signes."],
+      ["MARIAMA","Et une carte postale, c'est pareil ?"],
+      ["CHANTAL","Presque. Sur une carte postale, tu racontes plutôt où tu es et ce que tu fais."],
+      ["MARIAMA","J'en ai acheté une à Québec le mois passé. Elle est encore dans mon sac, jamais écrite."],
+      ["CHANTAL","Envoie-la à ta sœur. Ça va lui faire plus plaisir qu'un message sur le téléphone."],
+    ]
+  },
+  appli: {
+    label: "Dialogue — Au tournoi de Drummondville",
+    lines: [
+      ["MARIAMA","Excuse-moi, c'est bien ici, le vestiaire des équipes de Longueuil ?"],
+      ["OLIVIER","Oui, entre. Moi, c'est Olivier, je joue pour Saint-Hubert. Toi, tu es avec Chantal ?"],
+      ["MARIAMA","Mariama. Oui, c'est elle qui m'a amenée. Je joue avec elles depuis l'automne."],
+      ["OLIVIER","Depuis l'automne seulement ? Tu as l'air de jouer depuis dix ans."],
+      ["MARIAMA","J'ai commencé à quatorze ans, dans mon pays. J'ai arrêté un an en arrivant ici."],
+      ["OLIVIER","Qu'est-ce que tu faisais, cette année-là ?"],
+      ["MARIAMA","Des cours de français le matin et du travail le soir. Le samedi, je dormais."],
+      ["OLIVIER","Je comprends. Et là, tu joues combien de fois par semaine ?"],
+      ["MARIAMA","Une seule. Le jeudi. Mais je m'entraîne toute seule le dimanche, au parc où mes enfants jouent."],
+      ["OLIVIER","Il y a une ligue du dimanche matin ici. Si ça t'intéresse, je peux t'envoyer l'information."],
+      ["MARIAMA","Ça m'intéresse beaucoup. Le dimanche matin, je suis libre."],
+      ["OLIVIER","Parfait. Bonne chance contre nous tantôt — mais pas trop, quand même."],
+    ]
+  },
+};
 
 // ── SECTIONS ──────────────────────────────────────────────────────────
-%%SECTIONS%%
+const SECTIONS = [
+  {id:'prep', no:'<img class="icon-svg tno-play" src="/assets/interactive/module-relations/icons/play.svg" alt="">', title:'Je découvre', color:'#0D7A6F',
+   lead:"Parler de sa semaine : les heures, le travail, le ménage, ce qu'on fait de son temps.",
+   intro:"Mariama est arrivée de Guinée il y a quatorze mois. Depuis septembre, elle joue au volleyball le jeudi soir au centre communautaire. Ce soir-là, elle arrive en avance et Chantal en profite pour jaser.",
+   dialogue:'prep', next:{id:'t1', tit:'Défi 1 · Ce que je fais de mes semaines', sub:"Échanger sur ses activités et ses loisirs, et poser des questions à l'autre."}},
+  {id:'t1', no:'1', title:'Défi 1 · Ce que je fais de mes semaines', color:'#1D6B8F',
+   lead:"Échanger sur ses activités et ses loisirs, et poser des questions à l'autre.",
+   intro:"Défi 1 — Chantal propose à Mariama de la prendre en voiture le jeudi. Une offre d'aide devient une conversation : depuis quand tu joues, qui t'a amenée ici, où on va en avril.",
+   dialogue:'t1', next:{id:'t2', tit:"Défi 2 · Ce que j'ai vécu", sub:"Raconter une expérience personnelle : le décor, les évènements, ce que ça a changé."}},
+  {id:'t2', no:'2', title:"Défi 2 · Ce que j'ai vécu", color:'#B45309',
+   lead:"Raconter une expérience personnelle : le décor, les évènements, ce que ça a changé.",
+   intro:"Défi 2 — Il fera moins vingt demain. Mariama raconte son premier hiver : l'aéroport en sandales, les trois mois passés derrière la fenêtre, et la voisine qui a tout changé. Chantal, elle, raconte un premier juillet sous la pluie.",
+   dialogue:'t2', next:{id:'t3', tit:'Défi 3 · Donner des nouvelles', sub:"Lire les nouvelles qu'on reçoit, et en donner par écrit."}},
+  {id:'t3', no:'3', title:'Défi 3 · Donner des nouvelles', color:'#7C3AED',
+   lead:"Lire les nouvelles qu'on reçoit, et en donner par écrit.",
+   intro:"Défi 3 — Fatou, la sœur de Mariama, laisse un message vocal : le bébé est né. Il faut répondre. Et Chantal aussi a une nouvelle. Une carte postale et une carte de vœux, ce n'est ni la même chose ni la même écriture.",
+   dialogue:'t3', next:{id:'appli', tit:'Je me lance', sub:"Faire connaissance à voix haute, raconter son histoire, puis écrire sa carte."}},
+  {id:'appli', no:'<img class="icon-svg tno-play" src="/assets/interactive/module-relations/icons/play.svg" alt="">', title:'Je me lance', color:'#0F766E', custom:true,
+   lead:"Faire connaissance à voix haute, raconter son histoire, puis écrire sa carte.",
+   intro:"Je me lance — C'est à toi : tu fais connaissance avec quelqu'un dans une activité, tu racontes une expérience qui t'a marqué, et tu écris la carte que tu remets ou que tu postes."},
+  {id:'retiens', no:'✓', title:'Je retiens des mots', color:'#166534', custom:true,
+   lead:"Rassembler le vocabulaire de la semaine, des loisirs et des nouvelles, et faire le point.",
+   intro:"Je retiens des mots — Note tes mots utiles, révise avec les cartes mémoire, puis évalue ce que tu es maintenant capable de faire."},
+];
 
 // ── EXERCICES ─────────────────────────────────────────────────────────
 // type 'vf'     : lignes {id,txt,ok} — tuiles fixes (labels)
 // type 'match'  : lignes {id,q,aid,a} — banque = réponses
 // type 'blanks' : segs {k:'t'/'b',id,c} + words {id,l}
 // ── FLASHCARDS ────────────────────────────────────────────────────────
-%%FC_CARDS%%
+const FC_CARDS = [
+  {word:"une brassée", def:"Une quantité de linge qu'on lave en une seule fois dans la laveuse.", ex:"Je fais le souper et je pars une <strong>brassée</strong> en même temps.", img:"/assets/interactive/module-relations/vocab/brassee.jpg", tache:"prep"},
+  {word:"la balayeuse", def:"L'appareil qui aspire la poussière sur le plancher. On dit aussi « l'aspirateur ».", ex:"Le samedi matin, je passe la <strong>balayeuse</strong> dans tout le logement.", img:"/assets/interactive/module-relations/vocab/balayeuse.jpg", tache:"prep"},
+  {word:"le bac de recyclage", def:"Le grand bac où on met le papier, le carton et le plastique.", ex:"On sort le <strong>bac de recyclage</strong> le mardi soir.", img:"/assets/interactive/module-relations/vocab/bac-recyclage.jpg", tache:"prep"},
+  {word:"un quart de travail", def:"Les heures qu'une personne travaille dans une journée : le jour, le soir ou la nuit.", ex:"Mon <strong>quart de travail</strong> finit à quatre heures le jeudi.", img:"/assets/interactive/module-relations/vocab/quart-travail.jpg", tache:"prep"},
+  {word:"un congé", def:"Une journée où on ne travaille pas.", ex:"J'ai pris un <strong>congé</strong> pour aller au tournoi.", tache:"prep"},
+  {word:"le covoiturage", def:"Voyager à plusieurs dans la même voiture pour partager le trajet.", ex:"On fait du <strong>covoiturage</strong> le jeudi : Chantal passe me chercher.", img:"/assets/interactive/module-relations/vocab/covoiturage.jpg", tache:"t1"},
+  {word:"un centre communautaire", def:"Un endroit du quartier où on peut faire du sport, des cours et des activités.", ex:"Le volleyball a lieu au <strong>centre communautaire</strong>, le jeudi soir.", img:"/assets/interactive/module-relations/vocab/centre-communautaire.jpg", tache:"t1"},
+  {word:"une coéquipière", def:"Une personne qui joue dans la même équipe que soi.", ex:"Mes <strong>coéquipières</strong> m'ont appelée quand j'ai manqué deux jeudis.", img:"/assets/interactive/module-relations/vocab/coequipiere.jpg", tache:"t1"},
+  {word:"s'entraîner", def:"Pratiquer un sport régulièrement pour devenir meilleur.", ex:"On <strong>s'entraîne</strong> deux heures avant chaque tournoi.", img:"/assets/interactive/module-relations/vocab/sentrainer.jpg", tache:"t1"},
+  {word:"un tournoi", def:"Une compétition où plusieurs équipes jouent l'une contre l'autre.", ex:"Le <strong>tournoi</strong> dure deux jours, à Drummondville.", img:"/assets/interactive/module-relations/vocab/tournoi.jpg", tache:"t1"},
+  {word:"un déménagement", def:"Le fait de changer de logement et de transporter ses affaires.", ex:"Son <strong>déménagement</strong> s'est fait sous la pluie, sans camion.", img:"/assets/interactive/module-relations/vocab/demenagement.jpg", tache:"t2"},
+  {word:"une naissance", def:"L'arrivée d'un bébé dans une famille.", ex:"On envoie une carte pour une <strong>naissance</strong> ou pour un mariage.", img:"/assets/interactive/module-relations/vocab/naissance.jpg", tache:"t3"},
+  {word:"des nouvelles", def:"Ce qu'on raconte de sa vie à quelqu'un qu'on ne voit pas souvent.", ex:"Ma sœur m'a laissé un message pour me donner des <strong>nouvelles</strong>.", tache:"t3"},
+  {word:"une carte postale", def:"Une carte avec une photo d'un lieu, qu'on envoie par la poste pendant un voyage.", ex:"J'ai acheté une <strong>carte postale</strong> à Québec et je ne l'ai jamais écrite.", img:"/assets/interactive/module-relations/vocab/carte-postale.jpg", tache:"t3"},
+  {word:"une carte de vœux", def:"Une carte qu'on envoie pour féliciter ou pour souhaiter quelque chose.", ex:"Elle a reçu douze <strong>cartes de vœux</strong> après la naissance de son fils.", img:"/assets/interactive/module-relations/vocab/carte-voeux.jpg", tache:"t3"},
+];
 
-%%EXOS%%
+const EXOS = [
+ // ── JE DÉCOUVRE ─────────────────────────────────────────────
+  {sec:'prep', id:'prVocab', type:'match', num:'Vocabulaire · 1', tit:'Le mot et sa définition', color:'#0D7A6F',
+   sub:'Choisis un mot, puis sa définition. Six mots à la fois.', noQLbl:true, bankLbl:'Définitions', zonePh:'glisse la définition ici',
+   rows: FC_CARDS.map((c,i)=>({id:'pv'+i, q:c.word, aid:'pv'+i, a:c.def}))},
+
+  {sec:'prep', id:'pr1', type:'vf', num:'Exercice 1', tit:'Vrai ou Faux — Jeudi soir, au vestiaire', color:'#0D7A6F',
+   sub:'Écoute de nouveau le dialogue, puis réponds.', tiles:['VRAI','FAUX'],
+   rows:[
+    {id:'p1a', txt:"D'habitude, Mariama arrive en avance à l'entraînement.", ok:'FAUX'},
+    {id:'p1b', txt:"Le jeudi, son quart de travail finit plus tôt que les autres jours.", ok:'VRAI'},
+    {id:'p1c', txt:"Elle se lève à cinq heures et quart.", ok:'VRAI'},
+    {id:'p1d', txt:"Elle trouve les matins plus difficiles que les soirs.", ok:'FAUX'},
+    {id:'p1e', txt:"Chantal fait son ménage le samedi, comme Mariama.", ok:'FAUX'},
+    {id:'p1f', txt:"Chez Chantal, deux personnes se partagent le ménage.", ok:'VRAI'},
+    {id:'p1g', txt:"Mariama cuisine chaque soir de la semaine.", ok:'FAUX'},
+    {id:'p1h', txt:"Elle a pris l'habitude de cuisiner en grande quantité dans son pays.", ok:'VRAI'},
+    {id:'p1i', txt:"Chantal planifie ses soupers longtemps d'avance.", ok:'FAUX'},
+    {id:'p1j', txt:"Les deux femmes arrivent en retard à l'entraînement.", ok:'FAUX'},
+   ]},
+
+  {sec:'prep', id:'prPhon', type:'vf', num:'Exercice 2', tit:"On insiste, ou pas ?", color:'#0D7A6F', accent:'#0D7A6F', cards:true, listen:true,
+   sub:"Écoute chaque phrase. Est-ce que la personne dit la chose calmement, ou est-ce qu'elle insiste ?", tiles:['ON INSISTE','C\'EST NEUTRE'],
+   rows:[
+    {id:'pha', txt:"Des sandales ! En janvier !", ok:'ON INSISTE'},
+    {id:'phb', txt:"Elle portait des sandales à l'aéroport.", ok:'C\'EST NEUTRE'},
+    {id:'phc', txt:"Cinq heures et quart !", ok:'ON INSISTE'},
+    {id:'phd', txt:"Je me lève à cinq heures et quart.", ok:'C\'EST NEUTRE'},
+    {id:'phe', txt:"Six ans dans la même équipe !", ok:'ON INSISTE'},
+    {id:'phf', txt:"Elle joue dans cette équipe depuis six ans.", ok:'C\'EST NEUTRE'},
+    {id:'phg', txt:"Tu ferais ça ?", ok:'ON INSISTE'},
+    {id:'phh', txt:"Elle propose de venir me chercher.", ok:'C\'EST NEUTRE'},
+    {id:'phi', txt:"Onze voyages !", ok:'ON INSISTE'},
+    {id:'phj', txt:"Ils ont fait onze voyages en voiture.", ok:'C\'EST NEUTRE'},
+   ]},
+
+  {sec:'prep', id:'prImg', type:'imgmatch', num:'Exercice 3', tit:'Les gestes de la semaine', color:'#0D7A6F',
+   sub:"Glisse chaque photo sur la phrase qui la décrit.",
+   images:[
+    {id:'ir1', src:'/assets/interactive/module-relations/images/brassee.jpg'},
+    {id:'ir2', src:'/assets/interactive/module-relations/images/balayeuse.jpg'},
+    {id:'ir3', src:'/assets/interactive/module-relations/images/ordures.jpg'},
+    {id:'ir4', src:'/assets/interactive/module-relations/images/chaudron.jpg'},
+    {id:'ir5', src:'/assets/interactive/module-relations/images/reveil.jpg'},
+    {id:'ir6', src:'/assets/interactive/module-relations/images/gymnase.jpg'},
+    {id:'ir7', src:'/assets/interactive/module-relations/images/autobus.jpg'},
+    {id:'ir8', src:'/assets/interactive/module-relations/images/balcon.jpg'},
+   ],
+   rows:[
+    {id:'ir1', txt:"Elle met une brassée avant de partir travailler.", ok:'ir1'},
+    {id:'ir2', txt:"Il passe la balayeuse dans le salon.", ok:'ir2'},
+    {id:'ir3', txt:"Elle sort les ordures avant le camion du mardi.", ok:'ir3'},
+    {id:'ir4', txt:"Elle cuisine un grand chaudron pour toute la semaine.", ok:'ir4'},
+    {id:'ir5', txt:"Le réveil sonne à cinq heures et quart.", ok:'ir5'},
+    {id:'ir6', txt:"L'entraînement a lieu dans le gymnase du centre.", ok:'ir6'},
+    {id:'ir7', txt:"Elle attend l'autobus à trois coins de rue de chez elle.", ok:'ir7'},
+    {id:'ir8', txt:"L'été, ils mangeaient tous les soirs sur le balcon.", ok:'ir8'},
+   ]},
+
+  {sec:'prep', id:'prJour', type:'match', num:'Exercice 4', tit:'À quel moment ?', color:'#0D7A6F',
+   sub:"Associe chaque moment de la semaine à ce que Mariama y fait.", bankLbl:'Ce qu\'elle fait', zonePh:'glisse ici',
+   rows:[
+    {id:'j1', q:"Le matin, à cinq heures et quart", aid:'j1', a:"elle se lève pour son quart de sept heures"},
+    {id:'j2', q:"Le jeudi, après quatre heures", aid:'j2', a:"elle va jouer au volleyball"},
+    {id:'j3', q:"Le samedi matin", aid:'j3', a:"elle fait le ménage et sort les ordures"},
+    {id:'j4', q:"Le dimanche", aid:'j4', a:"elle cuisine pour toute la semaine"},
+    {id:'j5', q:"Le soir, après le souper", aid:'j5', a:"elle met une brassée de lavage"},
+    {id:'j6', q:"Une fois par année, en avril", aid:'j6', a:"elle part au tournoi avec l'équipe"},
+   ]},
+
+  {sec:'prep', id:'prFreq', type:'write', num:'Exercice 5', tit:'Souvent, parfois, jamais', color:'#0D7A6F', cols:2,
+   sub:"Complète avec l'adverbe de fréquence qui convient au sens de la phrase.",
+   savoir:{h:"› Les adverbes de fréquence", rows:[
+     ["À quoi ça sert","Ils disent <b>combien de fois</b> une chose arrive, sans donner de chiffre. Du plus au moins souvent : <b>toujours</b> › <b>souvent</b> › <b>parfois</b> › <b>rarement</b> › <b>jamais</b>."],
+     ["Où on les place","Avec un verbe simple, l'adverbe se met <b>après le verbe</b>.<span class='savoir-ex'>Je cuisine <em>souvent</em> le dimanche.</span>Avec le passé composé, il se met <b>entre l'auxiliaire et le participe</b>.<span class='savoir-ex'>Je n'ai <em>jamais</em> joué au hockey.</span>"],
+     ["Le cas de « jamais »","<b>jamais</b> a besoin de <b>ne</b> devant le verbe.<span class='savoir-ex'>Elle <em>ne</em> sort <em>jamais</em> le soir.</span>À l'oral, on entend souvent « a sort jamais le soir » — le <em>ne</em> tombe, mais il s'écrit."],
+   ]},
+   items:[
+    {q:"Le jeudi, Mariama finit à quatre heures : elle arrive ___ à l'heure ce soir-là.", accept:["toujours","souvent"], ph:"toujours / souvent / parfois / rarement"},
+    {q:"Les autres soirs, elle sort à six heures : elle n'arrive ___ à temps.", accept:["jamais"], ph:"…"},
+    {q:"Chantal fait son ménage le dimanche. Elle le fait ___ le samedi.", accept:["rarement","parfois"], ph:"…"},
+    {q:"Mariama cuisine un grand chaudron : après, elle n'a ___ besoin de cuisiner en semaine.", accept:["plus","jamais"], ph:"…"},
+    {q:"Chantal décide à cinq heures et demie : c'est ___ la panique.", accept:["toujours","souvent"], ph:"…"},
+    {q:"Elle a ___ joué au volleyball avant l'âge de vingt ans.", accept:["rarement","jamais","peu"], ph:"…"},
+    {q:"Le tournoi a lieu une fois par année : les joueuses y vont ___.", accept:["rarement","parfois"], ph:"…"},
+    {q:"Julie déteste attendre : elle est ___ la première arrivée.", accept:["toujours","souvent"], ph:"…"},
+   ]},
+
+ // ── DÉFI 1 · CE QUE JE FAIS DE MES SEMAINES ─────────────────
+  {sec:'t1', id:'t1vf', type:'vf', num:'Exercice 1', tit:'Vrai ou Faux — Le covoiturage du jeudi', color:'#1D6B8F',
+   sub:"Écoute le dialogue, puis réponds.", tiles:['VRAI','FAUX'],
+   rows:[
+    {id:'t1a', txt:"Chantal offre de prendre Mariama en voiture le jeudi.", ok:'VRAI'},
+    {id:'t1b', txt:"Chantal doit faire un long détour pour passer à l'hôpital.", ok:'FAUX'},
+    {id:'t1c', txt:"L'arrêt d'autobus est juste devant le gymnase.", ok:'FAUX'},
+    {id:'t1d', txt:"Mariama jouait au volleyball trois fois par semaine dans son pays.", ok:'VRAI'},
+    {id:'t1e', txt:"Elle a joué sans interruption depuis son arrivée au Québec.", ok:'FAUX'},
+    {id:'t1f', txt:"C'est une collègue de travail qui lui a parlé du centre communautaire.", ok:'VRAI'},
+    {id:'t1g', txt:"Chantal est arrivée dans l'équipe grâce à sa voisine.", ok:'VRAI'},
+    {id:'t1h', txt:"Chantal joue dans cette équipe depuis deux ans.", ok:'FAUX'},
+    {id:'t1i', txt:"Le tournoi a lieu à Drummondville, en avril.", ok:'VRAI'},
+    {id:'t1j', txt:"Mariama hésite encore à participer au tournoi.", ok:'FAUX'},
+   ]},
+
+  {sec:'t1', id:'t1rel', type:'write', num:'Exercice 2', tit:'Les pronoms relatifs qui, que et où', color:'#1D6B8F', cols:2,
+   sub:"Complète chaque phrase avec « qui », « que » ou « où ».",
+   savoir:{h:"› Les pronoms relatifs qui, que et où", rows:[
+     ["À quoi ça sert","Ils <b>collent deux phrases ensemble</b> pour ne pas répéter le même mot.<span class='savoir-ex'>Je prends un autobus. Cet autobus s'arrête loin. › Je prends un autobus <em>qui</em> s'arrête loin.</span>"],
+     ["qui = le sujet","Après <b>qui</b>, il n'y a <u>pas</u> d'autre sujet : le verbe suit tout de suite.<span class='savoir-ex'>C'est une collègue <em>qui</em> m'a parlé du centre.</span>"],
+     ["que = le complément direct","Après <b>que</b>, il y a <b>un autre sujet</b>.<span class='savoir-ex'>C'est le trajet <em>que</em> je fais chaque semaine.</span><span style='opacity:.7'>(je fais le trajet)</span>"],
+     ["où = un lieu ou un moment","<b>où</b> reprend un endroit, mais aussi un moment.<span class='savoir-ex'>Le gymnase <em>où</em> on joue est difficile à trouver.</span><span class='savoir-ex'>Le jour <em>où</em> elle est arrivée, il faisait moins vingt.</span>"],
+     ["Le test qui marche","Regarde ce qui vient <b>juste après</b> le trou. Un verbe › <b>qui</b>. Un sujet (je, tu, elle, mon frère…) › <b>que</b>. Un lieu ou un moment devant › <b>où</b>."],
+   ]},
+   items:[
+    {q:"L'autobus ___ je prends s'arrête à trois coins de rue.", accept:["que"], ph:"qui / que / où"},
+    {q:"C'est une collègue ___ m'a parlé du centre communautaire.", accept:["qui"], ph:"…"},
+    {q:"Le gymnase ___ on joue est au sous-sol.", accept:["où"], ph:"…"},
+    {q:"Les gens ___ je vois le jeudi sont presque ma famille.", accept:["que"], ph:"…"},
+    {q:"C'est le trajet ___ je fais chaque semaine.", accept:["que"], ph:"…"},
+    {q:"Le tournoi ___ commence en avril dure deux jours.", accept:["qui"], ph:"…"},
+    {q:"Le parc ___ mes enfants jouent est à côté de la maison.", accept:["où"], ph:"…"},
+    {q:"Ma voisine, ___ m'a amenée la première fois, joue encore.", accept:["qui"], ph:"…"},
+    {q:"L'année ___ je suis arrivée, je ne connaissais personne.", accept:["où"], ph:"…"},
+    {q:"Le manteau ___ mon cousin avait apporté était trop grand.", accept:["que"], ph:"…"},
+   ]},
+
+  {sec:'t1', id:'t1relGN', type:'match', num:'Exercice 3', tit:'De quoi on parle ?', color:'#1D6B8F',
+   sub:"Chaque phrase contient « qui », « que » ou « où ». Associe-la au mot que le pronom remplace.", bankLbl:'Le mot remplacé', zonePh:'glisse ici',
+   rows:[
+    {id:'r1', q:"« Le gymnase où on joue n'est pas facile à trouver. »", aid:'r1', a:"le gymnase"},
+    {id:'r2', q:"« C'est une collègue qui m'a parlé du centre. »", aid:'r2', a:"une collègue"},
+    {id:'r3', q:"« L'autobus que je prends s'arrête loin. »", aid:'r3', a:"l'autobus"},
+    {id:'r4', q:"« Les gens que je vois le jeudi sont ma famille. »", aid:'r4', a:"les gens"},
+    {id:'r5', q:"« L'année où je suis arrivée, il faisait froid. »", aid:'r5', a:"l'année"},
+    {id:'r6', q:"« Le tournoi qui commence en avril dure deux jours. »", aid:'r6', a:"le tournoi"},
+   ]},
+
+  {sec:'t1', id:'t1sport', type:'match', num:'Exercice 4', tit:'Les mots du sport', color:'#1D6B8F',
+   sub:"Associe chaque verbe à ce qu'il veut dire.", bankLbl:'Le sens', zonePh:'glisse le sens ici',
+   rows:[
+    {id:'s1', q:"s'entraîner", aid:'s1', a:"pratiquer souvent pour devenir meilleur"},
+    {id:'s2', q:"disputer un match", aid:'s2', a:"jouer une partie contre une autre équipe"},
+    {id:'s3', q:"battre une équipe", aid:'s3', a:"gagner contre elle"},
+    {id:'s4', q:"marquer", aid:'s4', a:"faire un point"},
+    {id:'s5', q:"servir", aid:'s5', a:"lancer le ballon pour commencer l'échange"},
+    {id:'s6', q:"participer", aid:'s6', a:"prendre part à l'activité avec les autres"},
+   ]},
+
+  {sec:'t1', id:'t1q', type:'write', num:'Exercice 5', tit:"Poser la question à l'autre", color:'#1D6B8F', cols:2,
+   sub:"Écris la question qui va avec la réponse. Utilise « tu ».",
+   items:[
+    {q:"— ___ ?  — À la buanderie de l'hôpital.", accept:["où travailles-tu","tu travailles où","où est-ce que tu travailles","où tu travailles"], ph:"une question avec « où »"},
+    {q:"— ___ ?  — À cinq heures et quart.", accept:["à quelle heure te lèves-tu","tu te lèves à quelle heure","à quelle heure est-ce que tu te lèves","à quelle heure tu te lèves"], ph:"une question avec « à quelle heure »"},
+    {q:"— ___ ?  — Une fois par semaine, le jeudi.", accept:["combien de fois joues-tu","tu joues combien de fois","combien de fois est-ce que tu joues","combien de fois tu joues"], ph:"une question avec « combien de fois »"},
+    {q:"— ___ ?  — Depuis l'automne.", accept:["depuis quand joues-tu","tu joues depuis quand","depuis quand est-ce que tu joues","depuis quand tu joues"], ph:"une question avec « depuis quand »"},
+    {q:"— ___ ?  — Parce que je ne connaissais personne.", accept:["pourquoi as-tu arrêté","tu as arrêté pourquoi","pourquoi est-ce que tu as arrêté","pourquoi tu as arrêté"], ph:"une question avec « pourquoi »"},
+    {q:"— ___ ?  — Le ménage, et je cuisine pour la semaine.", accept:["que fais-tu la fin de semaine","qu'est-ce que tu fais la fin de semaine","tu fais quoi la fin de semaine"], ph:"une question avec « qu'est-ce que »"},
+   ]},
+
+ // ── DÉFI 2 · CE QUE J'AI VÉCU ───────────────────────────────
+  {sec:'t2', id:'t2vf', type:'vf', num:'Exercice 1', tit:'Vrai ou Faux — Mon premier hiver', color:'#B45309',
+   sub:"Écoute le dialogue, puis réponds.", tiles:['VRAI','FAUX'],
+   rows:[
+    {id:'u1a', txt:"Mariama est arrivée au Québec au mois de janvier.", ok:'VRAI'},
+    {id:'u1b', txt:"Elle savait qu'il ferait très froid à son arrivée.", ok:'FAUX'},
+    {id:'u1c', txt:"Le matin de son départ, il faisait trente degrés chez elle.", ok:'VRAI'},
+    {id:'u1d', txt:"Elle a eu mal aux oreilles en sortant de l'aéroport.", ok:'VRAI'},
+    {id:'u1e', txt:"Son cousin avait apporté un manteau et des bottes.", ok:'VRAI'},
+    {id:'u1f', txt:"Il l'avait prévenue du froid avant son départ.", ok:'FAUX'},
+    {id:'u1g', txt:"Les trois premiers mois, elle sortait tous les jours.", ok:'FAUX'},
+    {id:'u1h', txt:"C'est une voisine qui l'a emmenée glisser.", ok:'VRAI'},
+    {id:'u1i', txt:"Cette voisine sait qu'elle a changé la vie de Mariama.", ok:'FAUX'},
+    {id:'u1j', txt:"Quatorze mois plus tard, Mariama déteste encore l'hiver.", ok:'FAUX'},
+   ]},
+
+  {sec:'t2', id:'t2temps', type:'write', num:'Exercice 2', tit:"L'imparfait et le passé composé", color:'#B45309', cols:2,
+   sub:"Mets le verbe entre parenthèses à l'imparfait ou au passé composé.",
+   savoir:{h:"› Raconter au passé : le décor et les évènements", rows:[
+     ["Deux temps, deux rôles","Quand on raconte, on a besoin des deux. L'<b>imparfait</b> plante le <b>décor</b> : comment c'était, ce qui durait, ce qui se répétait. Le <b>passé composé</b> dit <b>ce qui est arrivé</b> : les évènements, l'un après l'autre."],
+     ["Le décor à l'imparfait","<span class='savoir-ex'>Je <em>portais</em> une veste et des sandales.</span><span class='savoir-ex'>Il <em>faisait</em> trente degrés.</span><span class='savoir-ex'>Je <em>regardais</em> la neige par la fenêtre.</span>Rien ne bouge : c'est la toile de fond."],
+     ["L'évènement au passé composé","<span class='savoir-ex'>Je <em>suis arrivée</em> le douze janvier.</span><span class='savoir-ex'>J'<em>ai eu</em> mal aux oreilles.</span><span class='savoir-ex'>Une voisine m'<em>a emmenée</em> glisser.</span>Chaque phrase fait avancer l'histoire."],
+     ["Le test qui marche","Demande-toi : « Est-ce que je peux répondre <b>combien de fois</b> ? » Une fois, à un moment précis › <b>passé composé</b>. Tous les jours, pendant des mois, on ne sait pas combien de fois › <b>imparfait</b>."],
+     ["Attention à l'accord","Avec <b>être</b>, le participe s'accorde avec le sujet.<span class='savoir-ex'>Je suis <em>arrivée</em> le douze janvier.</span><span class='savoir-ex'>On <em>est partis</em> à cause du bruit.</span>Avec <b>avoir</b>, il ne bouge pas.<span class='savoir-ex'>J'ai <em>eu</em> mal aux oreilles.</span>"],
+   ]},
+   items:[
+    {q:"Je (arriver) ___ le douze janvier.", accept:["suis arrivée","suis arrivé"], ph:"un seul verbe"},
+    {q:"À l'aéroport, je (porter) ___ une veste et des sandales.", accept:["portais"], ph:"…"},
+    {q:"Chez moi, il (faire) ___ trente degrés le matin même.", accept:["faisait"], ph:"…"},
+    {q:"Quand les portes se sont ouvertes, j'(avoir) ___ mal aux oreilles.", accept:["ai eu"], ph:"…"},
+    {q:"Mon cousin (rire) ___ tellement qu'il ne pouvait plus parler.", accept:["riait","a ri"], ph:"…"},
+    {q:"Il (avoir) ___ tout prévu, sauf de me prévenir.", accept:["avait"], ph:"…"},
+    {q:"Les trois premiers mois, je ne (sortir) ___ pas.", accept:["sortais"], ph:"…"},
+    {q:"Je (regarder) ___ la neige et je (compter) ___ les jours.", accept:["regardais et je comptais","regardais, comptais","regardais et comptais"], ph:"deux verbes"},
+    {q:"Un jour, une voisine m'(emmener) ___ glisser avec ses enfants.", accept:["a emmenée","a emmené"], ph:"…"},
+    {q:"Ce jour-là, je (comprendre) ___ qu'on pouvait aimer l'hiver.", accept:["ai compris"], ph:"…"},
+    {q:"Il (pleuvoir) ___ et on n'(avoir) ___ pas de camion.", accept:["pleuvait et on n'avait","pleuvait, on n'avait","pleuvait et on avait"], ph:"deux verbes"},
+    {q:"On (faire) ___ onze voyages avec la voiture de mon frère.", accept:["a fait"], ph:"…"},
+   ]},
+
+  {sec:'t2', id:'t2decor', type:'vf', num:'Exercice 3', tit:'Décor ou évènement ?', color:'#B45309',
+   sub:"Pour chaque phrase, dis si elle plante le décor ou si elle raconte un évènement.", tiles:['DÉCOR','ÉVÈNEMENT'],
+   rows:[
+    {id:'d1', txt:"Je portais une veste et des sandales.", ok:'DÉCOR'},
+    {id:'d2', txt:"Je suis arrivée le douze janvier.", ok:'ÉVÈNEMENT'},
+    {id:'d3', txt:"Il faisait trente degrés chez moi.", ok:'DÉCOR'},
+    {id:'d4', txt:"J'ai eu mal aux oreilles.", ok:'ÉVÈNEMENT'},
+    {id:'d5', txt:"Mon cousin m'attendait avec un manteau.", ok:'DÉCOR'},
+    {id:'d6', txt:"Une voisine m'a emmenée glisser.", ok:'ÉVÈNEMENT'},
+    {id:'d7', txt:"Je comptais les jours devant la fenêtre.", ok:'DÉCOR'},
+    {id:'d8', txt:"J'ai compris ce jour-là qu'on pouvait aimer l'hiver.", ok:'ÉVÈNEMENT'},
+    {id:'d9', txt:"Il pleuvait et on n'avait pas de camion.", ok:'DÉCOR'},
+    {id:'d10', txt:"On a fait onze voyages en voiture.", ok:'ÉVÈNEMENT'},
+   ]},
+
+  {sec:'t2', id:'t2liaison', type:'vf', num:'Exercice 4', tit:"Le [t] qu'on entend au passé composé", color:'#B45309', accent:'#B45309', cards:true, listen:true,
+   sub:"Écoute chaque phrase. Est-ce que tu entends un son [t] entre les deux mots ?", tiles:['ON ENTEND [t]','PAS DE [t]'],
+   rows:[
+    {id:'la', txt:"Je suis arrivée le douze janvier.", ok:'ON ENTEND [t]'},
+    {id:'lb', txt:"J'ai eu mal aux oreilles.", ok:'PAS DE [t]'},
+    {id:'lc', txt:"Tu es allée au tournoi ?", ok:'ON ENTEND [t]'},
+    {id:'ld', txt:"J'ai compris ce jour-là.", ok:'PAS DE [t]'},
+    {id:'le', txt:"Je suis entrée dans le gymnase.", ok:'ON ENTEND [t]'},
+    {id:'lf', txt:"On a fait onze voyages.", ok:'PAS DE [t]'},
+    {id:'lg', txt:"Tu es partie avant la fin ?", ok:'ON ENTEND [t]'},
+    {id:'lh', txt:"Elle a choisi son nom hier soir.", ok:'PAS DE [t]'},
+   ]},
+
+  {sec:'t2', id:'t2y', type:'write', num:'Exercice 5', tit:'Reprendre un lieu avec y et là', color:'#B45309', cols:2,
+   sub:"Réécris la fin de la phrase en remplaçant le lieu souligné par « y » ou par « là ».",
+   savoir:{h:"› y et là : ne pas répéter le lieu", rows:[
+     ["Le problème","Répéter le lieu alourdit tout.<span class='savoir-ex' style='opacity:.6'>Je vais au centre communautaire. Je vais au centre communautaire chaque jeudi.</span>On le remplace."],
+     ["y, devant le verbe","<b>y</b> remplace un lieu introduit par <b>à, au, aux, dans, chez, sur</b>. Il se met <b>avant le verbe</b>.<span class='savoir-ex'>Je vais au gymnase. › J'<em>y</em> vais le jeudi.</span><span class='savoir-ex'>Elle habite dans ce quartier. › Elle <em>y</em> habite depuis six ans.</span>"],
+     ["Au passé composé","<b>y</b> se place devant l'auxiliaire.<span class='savoir-ex'>J'<em>y</em> suis allée deux fois.</span>"],
+     ["là, tout seul","<b>là</b> montre un endroit dont on vient de parler, et se met plutôt <b>après le verbe</b>.<span class='savoir-ex'>Le balcon ? On mangeait <em>là</em> tous les soirs.</span><span class='savoir-ex'>Je suis restée <em>là</em> trois heures.</span>"],
+     ["Le piège","Avec <b>aller</b> au futur proche, <b>y</b> disparaît à l'oral : on dit « je vais aller » et non « je vais y aller au parc ». Le lieu se dit une seule fois."],
+   ]},
+   items:[
+    {q:"Je vais <u>au centre communautaire</u> le jeudi. › J'___ vais le jeudi.", accept:["y"], ph:"y / là"},
+    {q:"Elle joue <u>dans cette équipe</u> depuis six ans. › Elle ___ joue depuis six ans.", accept:["y"], ph:"…"},
+    {q:"Mes enfants jouent <u>au parc</u>. › Ils ___ jouent tous les dimanches.", accept:["y"], ph:"…"},
+    {q:"On mangeait <u>sur le balcon</u> tous les soirs. › On mangeait ___ tous les soirs.", accept:["là"], ph:"…"},
+    {q:"Je suis allée <u>à Québec</u> le mois passé. › J'___ suis allée le mois passé.", accept:["y"], ph:"…"},
+    {q:"Elle est restée <u>dans le vestiaire</u> trois heures. › Elle est restée ___ trois heures.", accept:["là"], ph:"…"},
+    {q:"Nous habitons <u>chez ma sœur</u> depuis mars. › Nous ___ habitons depuis mars.", accept:["y"], ph:"…"},
+    {q:"Le tournoi a lieu <u>à Drummondville</u>. › On ___ va en autobus.", accept:["y"], ph:"…"},
+   ]},
+
+  {sec:'t2', id:'t2b', type:'vf', num:'Exercice 6', tit:'Vrai ou Faux — Le déménagement de Chantal', color:'#B45309',
+   sub:"Écoute le deuxième dialogue, puis réponds.", tiles:['VRAI','FAUX'], dialogue:'t2b',
+   rows:[
+    {id:'b1', txt:"Chantal a toujours habité à Longueuil.", ok:'FAUX'},
+    {id:'b2', txt:"Elle a déménagé neuf fois avant trente ans.", ok:'VRAI'},
+    {id:'b3', txt:"Son pire déménagement a eu lieu un premier juillet.", ok:'VRAI'},
+    {id:'b4', txt:"Ils avaient loué un camion.", ok:'FAUX'},
+    {id:'b5', txt:"Ils ont fait onze voyages en voiture.", ok:'VRAI'},
+    {id:'b6', txt:"Le nouvel appartement était grand.", ok:'FAUX'},
+    {id:'b7', txt:"Ils mangeaient sur le balcon l'été.", ok:'VRAI'},
+    {id:'b8', txt:"Ils sont partis à cause du bruit d'un bar.", ok:'VRAI'},
+   ]},
+
+ // ── DÉFI 3 · DONNER DES NOUVELLES ───────────────────────────
+  {sec:'t3', id:'t3vf', type:'vf', num:'Exercice 1', tit:'Vrai ou Faux — Le message de Fatou', color:'#7C3AED',
+   sub:"Écoute le message vocal, puis réponds.", tiles:['VRAI','FAUX'],
+   rows:[
+    {id:'f1', txt:"Fatou est la sœur de Mariama.", ok:'VRAI'},
+    {id:'f2', txt:"Elle a préféré annoncer la nouvelle par écrit.", ok:'FAUX'},
+    {id:'f3', txt:"Le bébé est né un mardi matin.", ok:'VRAI'},
+    {id:'f4', txt:"C'est un garçon.", ok:'FAUX'},
+    {id:'f5', txt:"L'accouchement s'est bien passé.", ok:'VRAI'},
+    {id:'f6', txt:"Leur mère est restée avec eux toute la semaine.", ok:'VRAI'},
+    {id:'f7', txt:"Le nom du bébé n'est pas encore choisi.", ok:'FAUX'},
+    {id:'f8', txt:"Aminata est le nom de leur grand-mère.", ok:'VRAI'},
+    {id:'f9', txt:"Fatou demande des photos de la neige.", ok:'VRAI'},
+    {id:'f10', txt:"Elle dit à Mariama de ne pas se presser pour répondre.", ok:'FAUX'},
+   ]},
+
+  {sec:'t3', id:'t3carte', type:'vf', num:'Exercice 2', tit:'Carte postale ou carte de vœux ?', color:'#7C3AED',
+   sub:"Chaque phrase vient d'une vraie carte. Dis de laquelle.", tiles:['CARTE POSTALE','CARTE DE VŒUX'],
+   rows:[
+    {id:'c1', txt:"Nous sommes à Québec depuis deux jours et il neige sans arrêt.", ok:'CARTE POSTALE'},
+    {id:'c2', txt:"Félicitations à vous deux pour cette belle nouvelle !", ok:'CARTE DE VŒUX'},
+    {id:'c3', txt:"Je vous souhaite beaucoup de bonheur avec le petit.", ok:'CARTE DE VŒUX'},
+    {id:'c4', txt:"Hier, on a marché dans le Vieux-Port toute la journée.", ok:'CARTE POSTALE'},
+    {id:'c5', txt:"Meilleurs vœux pour la nouvelle année, à toi et à ta famille.", ok:'CARTE DE VŒUX'},
+    {id:'c6', txt:"Il fait moins quinze, mais le soleil est magnifique.", ok:'CARTE POSTALE'},
+    {id:'c7', txt:"Bienvenue à la petite Aminata. Nous pensons à vous.", ok:'CARTE DE VŒUX'},
+    {id:'c8', txt:"Je t'écris de la terrasse d'un café, en face du fleuve.", ok:'CARTE POSTALE'},
+    {id:'c9', txt:"Toutes mes félicitations pour ton mariage. Sois heureuse.", ok:'CARTE DE VŒUX'},
+    {id:'c10', txt:"On repart demain matin. Je te raconterai tout au téléphone.", ok:'CARTE POSTALE'},
+   ]},
+
+  {sec:'t3', id:'t3ordre', type:'match', num:'Exercice 3', tit:'Les quatre parties d\'une carte postale', color:'#7C3AED',
+   sub:"Associe chaque partie de la carte à ce qu'on y écrit.", bankLbl:'Ce qu\'on y écrit', zonePh:'glisse ici',
+   rows:[
+    {id:'o1', q:"1. La salutation", aid:'o1', a:"« Bonjour Fatou, » ou « Chère Fatou, »"},
+    {id:'o2', q:"2. Où je suis", aid:'o2', a:"« Je t'écris de Québec, il neige depuis hier. »"},
+    {id:'o3', q:"3. Ce que je fais", aid:'o3', a:"« Hier, on a visité le Vieux-Port et on a mangé de la poutine. »"},
+    {id:'o4', q:"4. La fin", aid:'o4', a:"« Tu me manques. Je t'embrasse. Mariama »"},
+   ]},
+
+  {sec:'t3', id:'t3cause', type:'write', num:'Exercice 4', tit:'Grâce à ou à cause de ?', color:'#7C3AED', cols:2,
+   sub:"Complète avec « grâce à » ou « à cause de » (attention : à cause du, à cause des).",
+   savoir:{h:"› Dire la cause : grâce à ou à cause de", rows:[
+     ["Deux causes, deux couleurs","Les deux disent <b>pourquoi</b>. Mais <b>grâce à</b> annonce un résultat <b>heureux</b>, et <b>à cause de</b> un résultat <b>malheureux</b> ou neutre.<span class='savoir-ex'><em>Grâce à</em> cette voisine, j'ai aimé l'hiver.</span><span class='savoir-ex'>On est partis <em>à cause du</em> bruit.</span>"],
+     ["Ce qui suit","Les deux sont suivis d'un <b>nom</b> ou d'un <b>pronom</b>, jamais d'un verbe conjugué.<span class='savoir-ex'>grâce à <em>ma voisine</em> · grâce à <em>toi</em></span>Pour enchaîner sur un verbe, on prend <b>parce que</b>.<span class='savoir-ex'>Je suis restée <em>parce qu'</em>il faisait froid.</span>"],
+     ["Le piège de la fusion","<b>à cause de</b> se fusionne avec <b>le</b> et <b>les</b> : à cause <em>du</em> bruit, à cause <em>des</em> voisins. Mais <b>grâce à</b> se fusionne aussi : grâce <em>au</em> covoiturage, grâce <em>aux</em> coéquipières."],
+     ["Le test","Remplace par « heureusement » ou « malheureusement ». Si « heureusement » va › <b>grâce à</b>. Sinon › <b>à cause de</b>."],
+   ]},
+   items:[
+    {q:"___ cette voisine, Mariama a compris qu'on pouvait aimer l'hiver.", accept:["grâce à","grace a","Grâce à"], ph:"grâce à / à cause de"},
+    {q:"Ils sont partis de cet appartement ___ bruit du bar.", accept:["à cause du","a cause du"], ph:"…"},
+    {q:"___ covoiturage, elle n'attend plus l'autobus le jeudi soir.", accept:["grâce au","grace au","Grâce au"], ph:"…"},
+    {q:"Elle a manqué deux entraînements ___ son horaire de travail.", accept:["à cause de","a cause de"], ph:"…"},
+    {q:"___ sa collègue, elle a découvert le centre communautaire.", accept:["grâce à","grace a","Grâce à"], ph:"…"},
+    {q:"Le déménagement a été long ___ pluie.", accept:["à cause de la","a cause de la"], ph:"…"},
+    {q:"___ ses coéquipières, elle s'est fait des amies au Québec.", accept:["grâce à ses","grace a ses","Grâce à ses"], ph:"…"},
+    {q:"Il n'a pas entendu le message ___ bruit dans le gymnase.", accept:["à cause du","a cause du"], ph:"…"},
+   ]},
+
+  {sec:'t3', id:'t3form', type:'match', num:'Exercice 5', tit:'La bonne formule', color:'#7C3AED',
+   sub:"Associe chaque occasion à la formule qui convient.", bankLbl:'La formule', zonePh:'glisse la formule ici',
+   rows:[
+    {id:'m1', q:"Une naissance", aid:'m1', a:"« Bienvenue au petit ! Toutes nos félicitations. »"},
+    {id:'m2', q:"Un mariage", aid:'m2', a:"« Beaucoup de bonheur à vous deux. »"},
+    {id:'m3', q:"Le Nouvel An", aid:'m3', a:"« Meilleurs vœux pour la nouvelle année. »"},
+    {id:'m4', q:"Un déménagement", aid:'m4', a:"« Bonne installation dans votre nouveau chez-vous ! »"},
+    {id:'m5', q:"Un décès dans la famille", aid:'m5', a:"« Mes sincères condoléances. Je pense à toi. »"},
+    {id:'m6', q:"Un nouvel emploi", aid:'m6', a:"« Félicitations et bon succès dans ce nouveau défi. »"},
+   ]},
+
+  {sec:'t3', id:'t3b', type:'vf', num:'Exercice 6', tit:'Vrai ou Faux — Une carte pour Chantal', color:'#7C3AED',
+   sub:"Écoute le dernier dialogue, puis réponds.", tiles:['VRAI','FAUX'], dialogue:'t3b',
+   rows:[
+    {id:'n1', txt:"Le fils de Chantal est né un dimanche.", ok:'VRAI'},
+    {id:'n2', txt:"Mariama demande si l'usage d'écrire une carte existe ici.", ok:'VRAI'},
+    {id:'n3', txt:"Chantal répond que ça ne se fait pas au Québec.", ok:'FAUX'},
+    {id:'n4', txt:"Une carte de vœux doit être longue.", ok:'FAUX'},
+    {id:'n5', txt:"Sur une carte postale, on raconte où on est et ce qu'on fait.", ok:'VRAI'},
+    {id:'n6', txt:"Mariama a acheté une carte postale à Québec.", ok:'VRAI'},
+    {id:'n7', txt:"Elle l'a déjà envoyée à sa sœur.", ok:'FAUX'},
+    {id:'n8', txt:"Chantal lui conseille d'envoyer plutôt un message sur le téléphone.", ok:'FAUX'},
+   ]},
+
+ // ── JE ME LANCE ─────────────────────────────────────────────
+  {sec:'appli', id:'aQui', type:'vf', num:'Exercice 1', tit:'Qui parle ?', color:'#0F766E',
+   sub:"Écoute le dialogue du tournoi, puis indique qui dit chaque phrase.", tiles:['MARIAMA','OLIVIER'],
+   dialogue:'appli',
+   rows:[
+    {id:'a1', txt:"C'est bien ici, le vestiaire des équipes de Longueuil ?", ok:'MARIAMA'},
+    {id:'a2', txt:"Tu as l'air de jouer depuis dix ans.", ok:'OLIVIER'},
+    {id:'a3', txt:"J'ai commencé à quatorze ans, dans mon pays.", ok:'MARIAMA'},
+    {id:'a4', txt:"Qu'est-ce que tu faisais, cette année-là ?", ok:'OLIVIER'},
+    {id:'a5', txt:"Des cours de français le matin et du travail le soir.", ok:'MARIAMA'},
+    {id:'a6', txt:"Il y a une ligue du dimanche matin ici.", ok:'OLIVIER'},
+    {id:'a7', txt:"Le dimanche matin, je suis libre.", ok:'MARIAMA'},
+    {id:'a8', txt:"Bonne chance contre nous tantôt.", ok:'OLIVIER'},
+   ]},
+
+  {sec:'appli', id:'aComp', type:'write', num:'Exercice 2', tit:'Le mot juste', color:'#0F766E', cols:2,
+   sub:"Complète chaque phrase avec le mot qui convient.",
+   items:[
+    {q:"Mon ___ de travail commence à sept heures du matin.", accept:["quart"], ph:"un mot"},
+    {q:"Je pars une ___ de lavage avant de souper.", accept:["brassée","brassee"], ph:"…"},
+    {q:"On sort le ___ de recyclage le mardi soir.", accept:["bac"], ph:"…"},
+    {q:"On fait du ___ : Chantal passe me chercher le jeudi.", accept:["covoiturage"], ph:"…"},
+    {q:"Le volleyball a lieu au ___ communautaire.", accept:["centre"], ph:"…"},
+    {q:"Mes ___ m'ont appelée quand j'ai manqué deux jeudis.", accept:["coéquipières","coequipieres"], ph:"…"},
+    {q:"Le ___ dure deux jours, à Drummondville.", accept:["tournoi"], ph:"…"},
+    {q:"On envoie une carte de ___ pour une naissance.", accept:["vœux","voeux"], ph:"…"},
+    {q:"J'ai acheté une carte ___ à Québec, avec une photo du Château.", accept:["postale"], ph:"…"},
+    {q:"Ma sœur m'a laissé un message pour me donner des ___.", accept:["nouvelles"], ph:"…"},
+   ]},
+];
 
 // ── ÉTAT ──────────────────────────────────────────────────────────────
 const S = {pl:{}, sel:null, fb:{}, vfSel:{}, vocabPick:null, vocabPairs:{}, vocabOrder:null};
@@ -1034,15 +1568,15 @@ function trackPlacement(zid, ok) {
 
 // ── DIALOGUE (audio réel si disponible, sinon synthèse vocale) ────────
 let dialogueRead = false;
-const MODULE_SLUG = '%%SLUG%%';
+const MODULE_SLUG = 'module-relations';
 // Bump ce numéro chaque fois qu'un MP3 est régénéré, pour forcer le
 // navigateur à recharger le fichier au lieu de servir une version en cache.
 const AUDIO_V = '6';
 // Icônes des boutons son/micro de "Je découvre" — change ces deux valeurs
-// pour remplacer les emojis par une image (ex. '<img src="/assets/interactive/%%SLUG%%/icons/speaker.svg">').
-const ICON_SPEAK = '<img class="icon-svg" src="/assets/interactive/%%SLUG%%/icons/speaker.svg" alt="Écouter">';
-const ICON_MIC = '<img class="icon-svg" src="/assets/interactive/%%SLUG%%/icons/mic.svg" alt="Micro">';
-const ICON_ASSISTANT = '<img class="icon-svg" src="/assets/interactive/%%SLUG%%/icons/assistant.svg" alt="Assistant IA">';
+// pour remplacer les emojis par une image (ex. '<img src="/assets/interactive/module-relations/icons/speaker.svg">').
+const ICON_SPEAK = '<img class="icon-svg" src="/assets/interactive/module-relations/icons/speaker.svg" alt="Écouter">';
+const ICON_MIC = '<img class="icon-svg" src="/assets/interactive/module-relations/icons/mic.svg" alt="Micro">';
+const ICON_ASSISTANT = '<img class="icon-svg" src="/assets/interactive/module-relations/icons/assistant.svg" alt="Assistant IA">';
 let dlgAudio=null, dlgBtn=null, dlgState='idle', dlgUsingSpeech=false, dlgFallbackLines=null, dlgPollIv=null;
 
 function charSlug(name){ return name.toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g,'').replace(/'/g,'').replace(/\s+/g,'_'); }
@@ -1154,7 +1688,26 @@ function pronMatches(said, target){
 // cette vérification par inclusion — aucun changement de logique requis).
 // ⚠️ À reproduire dans TOUS les futurs modules dès qu'un mot isolé est
 // demandé en prononciation (voir aussi memory: cours-niveau4-modules.md).
-%%CARRIER_PHRASES%%
+const CARRIER_PHRASES = {
+  'brassée':      "Je pars une brassée avant de souper.",
+  'balayeuse':    "Je passe la balayeuse le samedi matin.",
+  'recyclage':    "On sort le bac de recyclage le mardi.",
+  'quart':        "Mon quart de travail finit à quatre heures.",
+  'congé':        "J'ai pris un congé pour le tournoi.",
+  'covoiturage':  "On fait du covoiturage le jeudi soir.",
+  'communautaire':"Le centre communautaire est à deux rues.",
+  'coéquipière':  "Ma coéquipière m'a appelée hier.",
+  'entraîner':    "On va s'entraîner deux heures.",
+  'tournoi':      "Le tournoi a lieu en avril.",
+  'déménagement': "Son déménagement s'est fait sous la pluie.",
+  'naissance':    "On a fêté la naissance de sa fille.",
+  'nouvelles':    "Elle m'a donné des nouvelles hier.",
+  'postale':      "J'ai acheté une carte postale à Québec.",
+  'vœux':         "Elle a reçu douze cartes de vœux.",
+  'aéroport':     "Mon cousin m'attendait à l'aéroport.",
+  'oreilles':     "J'ai eu mal aux oreilles dehors.",
+  'fenêtre':      "Je regardais la neige par la fenêtre.",
+};
 function pronCheck(btn, expected){
   const SRC = window.SpeechRecognition || window.webkitSpeechRecognition;
   let fb = btn.nextElementSibling && btn.nextElementSibling.classList.contains('pron-fb') ? btn.nextElementSibling : null;
@@ -2122,11 +2675,199 @@ function buildStatic(){
 
 // ── SECTIONS PERSONNALISÉES (oral / écrit / autoéval) ─────────────────
 function injectCustom(){
-%%CUSTOM%%
+// ── JE ME LANCE ──────────────────────────────────────────
+  // Trois productions : un jeu de rôle avec l'assistant, une prise orale
+  // corrigée, une carte corrigée. Le jeu de rôle vient en premier parce
+  // qu'il sert de répétition avant les deux autres.
+  // Seule la situation publique est côté client ; ce que sait le personnage
+  // joué par l'assistant vit dans server.py.
+  const ROLE_CAS = [
+    {id:'volleyball', titre:'Le volleyball du jeudi', txt:"La ligue du <b>centre communautaire</b>, le jeudi soir, avant l'entraînement. Les gens arrivent au vestiaire un à un. Quelqu'un s'est inscrit cette semaine."},
+    {id:'cuisine', titre:'La cuisine collective', txt:"Un <b>samedi matin</b>. Six personnes préparent ensemble des plats à rapporter chez elles. C'est la première fois que l'une d'elles y participe."},
+    {id:'marche', titre:'La marche du dimanche', txt:"Le groupe part à <b>neuf heures</b> et marche une heure et demie dans le parc. Quelqu'un s'est joint au groupe ce matin pour la première fois."},
+  ];
+  const ROLE_SUJETS = ["Ce que tu fais de tes semaines","Ton horaire de travail",
+    "Depuis quand tu viens ici","Qui t'a amené la première fois",
+    "Une expérience du passé","Ce que ça a changé pour toi",
+    "Une prochaine occasion de se revoir"];
+
+  document.getElementById('exs-appli').innerHTML += `
+   <div class="card custom" id="jeu-de-role">
+     <div class="c-hdr"><span class="tag" style="background:#0F766E">Jeu de rôle</span><span class="ctit" style="color:#0F766E">Fais connaissance avec quelqu'un</span></div>
+     <p class="lead">L'assistant joue <b>l'autre personne</b>. Il ne connaît pas ta vie et il ne racontera pas la sienne avant que tu poses des questions — comme dans une vraie rencontre. Ton but : <b>apprendre trois choses</b> sur l'autre et <b>raconter une chose</b> sur toi.</p>
+     <div class="jr-grid">
+       ${ROLE_CAS.map(c=>`
+       <div class="jr-log">
+         <div class="jr-log-h">${esc(c.titre)}</div>
+         <div class="jr-log-a">${c.txt}</div>
+       </div>`).join('')}
+     </div>
+     <div class="jr-sub">Les sept sujets à couvrir</div>
+     <div class="jr-sujets">
+       ${ROLE_SUJETS.map(s=>`<div class="jr-sujet"><span class="jr-box"></span>${esc(s)}</div>`).join('')}
+     </div>
+     <div class="jr-gram">
+       <div class="jr-gram-t">Réutilise ce que tu viens d'apprendre</div>
+       Colle deux phrases ensemble :
+       <span class='savoir-ex'>C'est une collègue <b>qui</b> m'a parlé du centre.</span>
+       <span class='savoir-ex'>Le gymnase <b>où</b> on joue est au sous-sol.</span>
+       Raconte au passé :
+       <span class='savoir-ex'>Je <b>portais</b> des sandales quand je <b>suis arrivée</b>.</span>
+       Dis à qui tu dois quelque chose :
+       <span class='savoir-ex'><b>Grâce à</b> ma voisine, j'ai aimé l'hiver.</span>
+     </div>
+
+     <div class="jr-sep"></div>
+     <div class="jr-sub">Choisis ta situation et ton rôle</div>
+     <div class="jr-choix">
+       <div class="jr-choix-l">Quelle activité ?</div>
+       <div class="jr-opts" id="jrLogs">
+         ${ROLE_CAS.map((c,i)=>`<button class="jr-opt${i===0?' on':''}" type="button" data-log="${c.id}" onclick="jrChoisir('log','${c.id}')">${esc(c.titre)}</button>`).join('')}
+       </div>
+       <div class="jr-choix-l">Tu joues qui ?</div>
+       <div class="jr-opts" id="jrRoles">
+         <button class="jr-opt on" type="button" data-role="nouveau" onclick="jrChoisir('role','nouveau')">La personne qui arrive</button>
+         <button class="jr-opt" type="button" data-role="membre" onclick="jrChoisir('role','membre')">La personne qui accueille</button>
+       </div>
+       <div class="jr-choix-l">Comment ?</div>
+       <div class="jr-opts" id="jrModes">
+         <button class="jr-opt on" type="button" data-mode="texte" onclick="jrModeVoix(false)">✍️ Écrire</button>
+         <button class="jr-opt" type="button" data-mode="voix" onclick="jrModeVoix(true)">🎤 Parler</button>
+       </div>
+       <button class="btn btn-pri" id="jrStart" type="button" onclick="jrDemarrer()" style="margin-top:14px">Commencer la conversation</button>
+     </div>
+
+     <div id="jrChat" class="hidden">
+       <div class="jr-fil" id="jrFil" aria-live="polite"></div>
+       <div class="jr-mic hidden" id="jrMicZone">
+         <button id="jrMic" type="button" onclick="jrParler()" aria-label="Parler">🎤</button>
+         <span class="jr-mic-l" id="jrMicLbl">Touche pour parler</span>
+       </div>
+       <div class="jr-saisie">
+         <input id="jrInput" type="text" placeholder="Écris ce que tu dis…" autocomplete="off"
+                onkeydown="if(event.key==='Enter'){event.preventDefault();jrEnvoyer();}">
+         <button class="btn btn-pri" id="jrSend" type="button" onclick="jrEnvoyer()">Envoyer</button>
+       </div>
+       <div class="status" id="jrStatus">L'assistant réfléchit…</div>
+       <div class="err" id="jrErr"></div>
+       <div class="jr-fin">
+         <button class="btn btn-ghost" type="button" onclick="jrRecommencer()">↺ Recommencer</button>
+         <button class="btn btn-send" type="button" onclick="jrFini()">J'ai fini — corrige mes phrases</button>
+       </div>
+       <div class="fb" id="jrFb" aria-live="polite"></div>
+     </div>
+   </div>
+
+   <div class="card custom">
+     <div class="prod-eyebrow"><span class="prod-num">1</span><span class="prod-kind">Production orale</span></div>
+     <h3 class="prod-tit">Raconte une expérience qui t'a marqué</h3>
+     <p class="prod-lead">Choisis un moment de ta vie : une arrivée, un déménagement, un voyage, un mariage, une naissance. Raconte-le comme tu le raconterais à une personne rencontrée à une activité.</p>
+     <div class="plan">
+       <div class="plan-step"><div class="plan-no">TEMPS 1</div><div class="plan-t">Le décor, à l'imparfait</div><div class="plan-ex">« C'était en janvier. Il faisait trente degrés chez moi et je portais des sandales. »</div></div>
+       <div class="plan-step"><div class="plan-no">TEMPS 2</div><div class="plan-t">Ce qui est arrivé, au passé composé</div><div class="plan-ex">« Je suis arrivée le douze janvier. J'ai eu mal aux oreilles en sortant. »</div></div>
+       <div class="plan-step"><div class="plan-no">TEMPS 3</div><div class="plan-t">Ce que ça a changé</div><div class="plan-ex">« Grâce à une voisine, j'ai compris qu'on pouvait aimer l'hiver. »</div></div>
+     </div>
+     <div class="rec-panel">
+       <div class="rec-steps">
+         <div class="rec-step on" id="recStep1"><span class="n">1</span><span class="l">Je m'enregistre</span></div>
+         <div class="rec-step" id="recStep2"><span class="n">2</span><span class="l">Je m'écoute et je corrige</span></div>
+         <div class="rec-step" id="recStep3"><span class="n">3</span><span class="l">J'envoie à mon enseignant</span></div>
+       </div>
+       <div class="rec-body">
+         <button id="recBtn" type="button" aria-label="Démarrer l'enregistrement"><span class="dot"></span></button>
+         <div>
+           <div class="rec-lbl" id="recLbl">Touche pour t'enregistrer</div>
+           <div class="rec-hint">Parle environ 45 secondes. Tu pourras recommencer autant de fois que tu veux.</div>
+         </div>
+       </div>
+     </div>
+     <div id="poPrev" class="hidden prod-tools" style="display:flex;flex-direction:column;gap:12px">
+       <audio id="poAudio" controls style="width:100%"></audio>
+       <textarea id="poText" rows="2" placeholder="Transcription automatique (tu peux la corriger)…"></textarea>
+       <div style="display:flex;gap:10px;flex-wrap:wrap">
+         <button class="btn btn-ghost" onclick="resetRec()">Recommencer</button>
+         <button class="btn btn-pri" id="poFbBtn" onclick="poGetFeedback()">Obtenir une rétroaction</button>
+       </div>
+       <div class="fb" id="poFb" aria-live="polite"></div>
+       <div id="poSend" style="display:none;gap:10px;flex-wrap:wrap;align-items:center">
+         <button class="btn btn-send" id="poSendBtn" onclick="poSend()">Envoyer à mon enseignant</button>
+       </div>
+     </div>
+     <div class="status" id="poStatus">Analyse en cours…</div>
+     <div class="err" id="poErr"></div>
+   </div>
+
+   <div class="card custom">
+     <div class="prod-eyebrow"><span class="prod-num">2</span><span class="prod-kind">Production écrite</span></div>
+     <h3 class="prod-tit">La carte que tu envoies</h3>
+     <p class="prod-lead">Choisis : une <b>carte postale</b> à quelqu'un qui est loin, ou une <b>carte de vœux</b> pour une naissance, un mariage ou la nouvelle année. Écris de 5 à 8 phrases.</p>
+     <div class="req">
+       <div class="req-hd">Ta carte doit contenir</div>
+       <div class="req-grid">
+         <div class="req-it"><span class="req-box" aria-hidden="true"></span><span>Une salutation</span></div>
+         <div class="req-it"><span class="req-box" aria-hidden="true"></span><span>Où tu es, ou l'occasion</span></div>
+         <div class="req-it"><span class="req-box" aria-hidden="true"></span><span>Ce que tu as fait, ou ce que tu souhaites</span></div>
+         <div class="req-it"><span class="req-box" aria-hidden="true"></span><span>Une fin et ta signature</span></div>
+       </div>
+       <div class="req-note">Emploie au moins une fois <em>qui</em>, <em>que</em> ou <em>où</em>, et un verbe au <em>passé composé</em>.</div>
+     </div>
+     <div class="mail">
+       <div class="mail-row"><span class="mail-k">À</span><span class="mail-v">la personne de ton choix</span></div>
+       <div class="mail-row"><span class="mail-k">Occasion</span><span class="mail-v">Carte postale d'un voyage · ou carte de vœux</span></div>
+       <textarea id="peText" rows="7" aria-label="Ta carte" data-min="5" data-max="8" oninput="peCount()" placeholder="Bonjour Fatou,&#10;Je t'écris de Québec. Il neige depuis hier et…"></textarea>
+       <div class="mail-foot">
+         <span class="mail-count" id="peCountLbl">0 phrase sur 5 à 8</span>
+         <button class="btn-prod" id="peBtn" type="button" onclick="peCheck()">Vérifier ma carte</button>
+       </div>
+     </div>
+     <div class="fb" id="peFb" aria-live="polite"></div>
+       <!-- DEPOT-ECRIT:début — greffé par build/greffe_depot_ecrit.py -->
+       <div id="peSend" style="display:none;gap:10px;flex-wrap:wrap;align-items:center">
+         <button class="btn btn-send" id="peSendBtn" onclick="peSend()">Envoyer à mon enseignant</button>
+       </div>
+       <!-- DEPOT-ECRIT:fin -->
+     <div class="status" id="peStatus">Analyse en cours…</div>
+     <div class="err" id="peErr"></div>
+   </div>`;
+  const rb=document.getElementById('recBtn'); if(rb) rb.addEventListener('click',toggleRec);
+
+  // JE RETIENS DES MOTS — notes + cartes mémoire + autoévaluation
+  const SELF=[
+    "Je peux parler de mes journées : mon horaire, mon travail, le ménage, les repas.",
+    "Je peux poser des questions à quelqu'un sur ses activités et ses loisirs.",
+    "Je peux coller deux phrases ensemble avec qui, que et où.",
+    "Je peux raconter une expérience du passé : le décor à l'imparfait, les évènements au passé composé.",
+    "Je peux remplacer un lieu par y ou par là sans le répéter.",
+    "Je comprends un message où quelqu'un me donne des nouvelles.",
+    "Je peux écrire une carte postale et une carte de vœux avec la bonne formule.",
+  ];
+  document.getElementById('exs-retiens').innerHTML = `
+   <div class="card custom">
+     <div class="c-hdr"><span class="tag" style="background:#166534">Je retiens des mots</span><span class="ctit" style="color:#166534">Mes mots utiles</span></div>
+     <p class="lead">Note ici les mots et les expressions à retenir. Tu peux aussi <span style="font-weight:900;cursor:pointer;text-decoration:underline dotted;color:#166534" onclick="fcOpen(0)">réviser les cartes mémoire 🃏</span>.</p>
+     <div style="font-weight:800;color:#166534;font-size:13px;margin:6px 0 4px">Ma journée et ma semaine</div>
+     <textarea rows="2" placeholder="Ex. : se lever, un quart de travail, une brassée, la balayeuse, le bac de recyclage, sortir les ordures…"></textarea>
+     <div style="font-weight:800;color:#166534;font-size:13px;margin:12px 0 4px">Mes loisirs et le sport</div>
+     <textarea rows="2" placeholder="Ex. : s'entraîner, disputer un match, marquer, battre, une coéquipière, un tournoi, le covoiturage…"></textarea>
+     <div style="font-weight:800;color:#166534;font-size:13px;margin:12px 0 4px">Les évènements de la vie</div>
+     <textarea rows="2" placeholder="Ex. : une naissance, un mariage, un déménagement, un voyage, une arrivée…"></textarea>
+     <div style="font-weight:800;color:#166534;font-size:13px;margin:12px 0 4px">Pour donner des nouvelles</div>
+     <textarea rows="2" placeholder="Ex. : je t'écris de… · félicitations · meilleurs vœux · beaucoup de bonheur · tu me manques…"></textarea>
+   </div>
+   <div class="card custom">
+     <div class="c-hdr"><span class="tag" style="background:#166534">Autoévaluation</span><span class="ctit" style="color:#166534">Qu'est-ce que je suis capable de faire ?</span></div>
+     <p class="lead">Pour chaque énoncé, choisis : pas encore 😟, un peu 🙂, ou oui 😃.</p>
+     ${SELF.map((s,i)=>`<div class="selfrow"><div class="self-txt">${s}</div><div class="self-opts">
+        <button onclick="rate(${i},this)">😟</button><button onclick="rate(${i},this)">🙂</button><button onclick="rate(${i},this)">😃</button>
+     </div></div>`).join('')}
+     <div style="margin-top:16px"><button class="btn btn-pri" onclick="finishEval()">Terminer le module 🎉</button></div>
+     <div id="evalDone" class="fb" aria-live="polite"></div>
+   </div>`;
+}
 function rate(i,btn){ [...btn.parentElement.children].forEach(b=>b.classList.remove('sel')); btn.classList.add('sel'); }
 function finishEval(){
   const el=document.getElementById('evalDone');
-  el.innerHTML='<div class="fb-c">%%BRAVO%% %%RELANCE%%</div>';
+  el.innerHTML='<div class="fb-c">🎉 Bravo, tu as terminé le module « Des nouvelles à donner » ! Tu peux revenir sur n\'importe quel onglet pour pratiquer encore.</div>';
   el.classList.add('on');
   lmsTrack('exercise_completed',{finished:true});
 }
@@ -2198,7 +2939,7 @@ async function poGetFeedback(){
   document.getElementById('poStatus').classList.add('on');
   document.getElementById('poFbBtn').disabled=true;
   try{
-    const res=await fetch('/api/correct-french',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({code:studentCode,text,question:"%%IA_ORAL%%"})});
+    const res=await fetch('/api/correct-french',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({code:studentCode,text,question:"L'élève raconte oralement une expérience personnelle marquante — une arrivée, un déménagement, un voyage, une naissance, un mariage : il plante le décor à l'imparfait, raconte les évènements au passé composé, et dit ce que ça a changé pour lui."})});
     const data=await res.json();
     document.getElementById('poStatus').classList.remove('on');
     document.getElementById('poFbBtn').disabled=false;
@@ -2216,7 +2957,7 @@ async function poSend(){
   const btn=document.getElementById('poSendBtn'); btn.disabled=true; btn.textContent='Envoi…';
   const ext=(audioBlob.type||'').includes('mp4')?'m4a':'webm';
   const fd=new FormData();
-  fd.append('code',studentCode); fd.append('theme','%%THEME%%'); fd.append('taskId','%%SLUG%%-po');
+  fd.append('code',studentCode); fd.append('theme','Relations sociales'); fd.append('taskId','module-relations-po');
   fd.append('taskLabel','Production orale — décrire une douleur'); fd.append('question','Décrire une douleur à un professionnel de la santé');
   fd.append('transcription',document.getElementById('poText').value.trim()); fd.append('feedback',poFeedback);
   fd.append('audio',audioBlob,'enregistrement.'+ext);
@@ -2320,7 +3061,7 @@ function hideErr(id){ const e=document.getElementById(id); if(e)e.classList.remo
 // Le client ne connaît que la partie publique des annonces. Ce que sait le
 // personnage joué par l'assistant vit dans server.py — sinon un coup d'œil au
 // code source de la page suffirait à vider l'exercice de son sens.
-const JR = {log:'%%JR_CAS%%', role:'%%JR_ROLE%%', hist:[], occupe:false, voix:false, rec:null};
+const JR = {log:'volleyball', role:'nouveau', hist:[], occupe:false, voix:false, rec:null};
 
 const jrSRC = () => window.SpeechRecognition || window.webkitSpeechRecognition;
 
@@ -2475,7 +3216,7 @@ async function jrTour(){
   hideErr('jrErr');
   try{
     const res=await fetch('/api/jeu-de-role',{method:'POST',headers:{'Content-Type':'application/json'},
-      body:JSON.stringify({code:studentCode, scenario:'%%JR_SCENARIO%%', cas:JR.log, role:JR.role, historique:JR.hist})});
+      body:JSON.stringify({code:studentCode, scenario:'relations', cas:JR.log, role:JR.role, historique:JR.hist})});
     const d=await res.json();
     if(!res.ok){ showErr('jrErr', d.error||"L'assistant n'a pas pu répondre."); return; }
     // Au premier tour, le serveur écrit la salutation à notre place : on
@@ -2514,7 +3255,7 @@ async function jrFini(){
   try{
     const res=await fetch('/api/correct-french',{method:'POST',headers:{'Content-Type':'application/json'},
       body:JSON.stringify({code:studentCode, text:mes.join(' '),
-        question:"%%IA_JEU_DE_ROLE%%"})});
+        question:"L'élève fait connaissance avec quelqu'un dans une activité de loisir : il parle de ses activités de la semaine, pose des questions sur celles de l'autre, raconte une expérience personnelle au passé et propose de se revoir."})});
     const d=await res.json();
     if(!res.ok){ showErr('jrErr', d.error||'Une erreur est survenue.'); return; }
     renderCorr('jrFb', d, mes.join(' '));
@@ -2581,7 +3322,545 @@ async function checkWrite(exId, i){
 // Blocs disponibles : texte, ana (anatomie étiquetée), labo (manipulation
 // à axes), ex (exemples audio), piege, check (micro-vérification, hors score).
 // Dans un mot, {…} souligne en vert la terminaison d'accord.
-%%PLUS%%
+const PLUS = {
+  prPhon: {
+    eye:'Mini-leçon', tit:"Quand la voix insiste",
+    blocs:[
+      {t:'texte', h:"La même phrase, deux intentions",
+       p:"En français, on ne change pas les mots pour montrer qu'on est surpris ou qu'on trouve ça énorme : <b>on change la voix</b>. La syllabe importante monte plus haut, dure plus longtemps, et se prononce plus fort. C'est ce qu'on appelle l'<b>accent d'insistance</b>.",
+       note:"Comparez « Elle portait des sandales. » et « Des sandales ! » — mêmes mots, deux messages complètement différents."},
+
+      {t:'ana', h:"La phrase neutre : on informe",
+       p:"La voix descend tranquillement jusqu'au point. Aucune syllabe ne ressort.",
+       mots:[['Ce qu\'on fait','on donne une information'],['La voix','elle descend',true],['Comme dans','Elle portait des {san}dales.']],
+       say:"Elle portait des sandales à l'aéroport.",
+       note:"C'est la façon normale de raconter. Vous l'entendez toute la journée, à la radio comme au travail."},
+
+      {t:'ana', h:"La phrase exclamative : on insiste",
+       p:"Une syllabe est nettement plus haute et plus longue que les autres, et la phrase est souvent très courte.",
+       mots:[['Ce qu\'on fait','on réagit, on s\'étonne'],['La voix','elle monte fort',true],['Comme dans','Des {SAN}dales !']],
+       say:"Des sandales ! En janvier !",
+       note:"Souvent, la personne ne répète que le mot qui la surprend. C'est plus fort qu'une phrase complète."},
+
+      {t:'texte', h:"Ce que ça change pour vous",
+       p:"Vous n'êtes pas obligé de produire cet accent parfaitement. Mais vous devez le <b>reconnaître</b> : c'est lui qui vous dit si votre interlocuteur est surpris, choqué, admiratif — ou s'il constate simplement un fait.",
+       note:"Si quelqu'un vous répond « Cinq heures et quart ! », il ne vous demande pas l'heure : il trouve que c'est très tôt."},
+
+      {t:'labo', h:"Écoutez la différence",
+       p:"Choisissez une paire et écoutez les deux versions l'une après l'autre.",
+       axes:[{id:'p', lbl:'Quelle paire ?', opts:[['a','les sandales'],['b','cinq heures et quart'],['c','six ans'],['d','onze voyages']]}],
+       out:{
+         a:{w:['Elle portait des {san}dales.'], say:"Elle portait des sandales à l'aéroport.", n:'neutre — on informe'},
+         b:{w:['Je me lève à cinq heures et {quart}.'], say:"Je me lève à cinq heures et quart.", n:'neutre — on informe'},
+         c:{w:['Elle joue depuis {six} ans.'], say:"Elle joue dans cette équipe depuis six ans.", n:'neutre — on informe'},
+         d:{w:['Ils ont fait onze {vo}yages.'], say:"Ils ont fait onze voyages en voiture.", n:'neutre — on informe'},
+       },
+       note:"Réécoutez ensuite l'exercice 2 : les phrases courtes sont celles où la voix insiste."},
+
+      {t:'ex', h:"Les exclamations du module",
+       p:"Écoutez chacune et répétez en exagérant la montée de la voix.",
+       rows:[
+         ["Des sandales ! En janvier !","surprise — la voix monte sur « san- »"],
+         ["Cinq heures et quart !","étonnement — la voix monte sur « cinq »"],
+         ["Six ans dans la même équipe !","admiration — la voix monte sur « six »"],
+         ["Onze voyages !","incrédulité — tout le groupe monte"],
+         ["Tu ferais ça ?","surprise reconnaissante — la voix monte à la fin"],
+         ["Félicitations !","joie — la voix monte sur « -tions »"],
+       ]},
+
+      {t:'piege', h:"Deux malentendus fréquents",
+       rows:[
+         ["croire qu'une exclamation est une question","« Des sandales ! » n'attend pas de réponse",
+          "Une question demande une information. Une exclamation <b>réagit</b> à ce que vous venez de dire. Souvent, il suffit de confirmer : « Oui, je ne savais pas. »"],
+         ["parler toujours sur le même ton","une phrase française n'est jamais plate",
+          "Si toutes vos phrases ont la même voix, vos interlocuteurs vous trouveront difficile à suivre. Laissez monter la voix sur le mot qui compte le plus pour vous."],
+       ]},
+
+      {t:'check', h:"Est-ce que c'est clair maintenant ?",
+       p:"Trois questions rapides. Elles ne comptent pas dans votre score.",
+       qs:[
+         {q:"Pour insister en français, on change surtout…", opts:["les mots de la phrase","la hauteur et la durée de la voix"], ok:1,
+          fb:"Les mots restent les mêmes. C'est la <b>voix</b> qui porte l'insistance."},
+         {q:"« Cinq heures et quart ! » veut dire…", opts:["je trouve ça très tôt","quelle heure est-il ?"], ok:0,
+          fb:"C'est une réaction, pas une question. La personne s'étonne."},
+         {q:"Les phrases où on insiste sont souvent…", opts:["longues et complètes","très courtes"], ok:1,
+          fb:"On répète souvent le seul mot qui surprend : « Des sandales ! »"},
+       ]},
+    ]
+  },
+
+  t1rel: {
+    eye:'Mini-leçon', tit:"qui, que, où : coller deux phrases ensemble",
+    blocs:[
+      {t:'texte', h:"Le problème qu'ils résolvent",
+       p:"Quand deux phrases parlent du <b>même mot</b>, on ne veut pas le répéter. Les pronoms relatifs <b>qui</b>, <b>que</b> et <b>où</b> servent à coller les deux phrases en une seule, en gardant le mot une seule fois.",
+       note:"« Je prends un autobus. Cet autobus s'arrête loin. » devient « Je prends un autobus <b>qui</b> s'arrête loin. »"},
+
+      {t:'ana', h:"qui — il n'y a pas d'autre sujet après",
+       p:"Après <b>qui</b>, le verbe arrive tout de suite. <b>qui</b> est lui-même le sujet du verbe qui suit.",
+       mots:[['Ce qui suit','un verbe, directement'],['Le pronom est','le sujet',true],['Comme dans','une collègue {qui} m\'a parlé']],
+       say:"C'est une collègue qui m'a parlé du centre.",
+       note:"Autres exemples : le tournoi <b>qui</b> commence en avril · ma voisine <b>qui</b> m'a amenée · les gens <b>qui</b> jouent le jeudi."},
+
+      {t:'ana', h:"que — il y a un autre sujet après",
+       p:"Après <b>que</b>, on trouve un sujet (je, tu, elle, mon frère…), puis le verbe. La chose dont on parle est le <b>complément</b> de ce verbe.",
+       mots:[['Ce qui suit','un sujet, puis un verbe'],['Le pronom est','le complément direct',true],['Comme dans','le trajet {que} je fais']],
+       say:"C'est le trajet que je fais chaque semaine.",
+       note:"Autres exemples : l'autobus <b>que</b> je prends · les gens <b>que</b> je vois · le manteau <b>que</b> mon cousin avait apporté."},
+
+      {t:'ana', h:"où — un lieu, ou un moment",
+       p:"<b>où</b> reprend un endroit. Mais il reprend aussi un <b>moment</b> : le jour où, l'année où, le soir où.",
+       mots:[['Ce qui précède','un lieu ou un moment'],['Le pronom est','un complément de lieu ou de temps',true],['Comme dans','le gymnase {où} on joue']],
+       say:"Le gymnase où on joue est au sous-sol.",
+       note:"C'est la partie que les élèves oublient : « l'année <b>où</b> je suis arrivée » est aussi correct que « le parc <b>où</b> je vais »."},
+
+      {t:'texte', h:"Le test en trois secondes",
+       p:"Regardez uniquement ce qui vient <b>juste après le trou</b>. Un <b>verbe</b> ? C'est <b>qui</b>. Un <b>sujet</b> (je, tu, il, elle, on, nous, mon frère) ? C'est <b>que</b>. Et si le mot d'avant est un lieu ou un moment, pensez d'abord à <b>où</b>.",
+       note:"Ce test ne se trompe presque jamais. Faites-le à voix basse avant d'écrire."},
+
+      {t:'labo', h:"Essayez le test",
+       p:"Choisissez une phrase et regardez ce qui vient après le trou.",
+       axes:[{id:'p', lbl:'Quelle phrase ?', opts:[
+         ['a',"L'autobus ___ je prends"],
+         ['b',"une collègue ___ m'a parlé"],
+         ['c',"le gymnase ___ on joue"],
+         ['d',"les gens ___ je vois"],
+         ['e',"l'année ___ je suis arrivée"]]}],
+       out:{
+         a:{w:["L'autobus {que} je prends"], say:"L'autobus que je prends s'arrête loin.", n:"après le trou : « je » → un sujet → que"},
+         b:{w:["une collègue {qui} m'a parlé"], say:"C'est une collègue qui m'a parlé du centre.", n:"après le trou : « m'a parlé » → un verbe → qui"},
+         c:{w:["le gymnase {où} on joue"], say:"Le gymnase où on joue est au sous-sol.", n:"avant le trou : un lieu → où"},
+         d:{w:["les gens {que} je vois"], say:"Les gens que je vois le jeudi sont ma famille.", n:"après le trou : « je » → un sujet → que"},
+         e:{w:["l'année {où} je suis arrivée"], say:"L'année où je suis arrivée, il faisait moins vingt.", n:"avant le trou : un moment → où"},
+       },
+       note:"Remarquez que <b>que</b> et <b>où</b> sont tous les deux suivis d'un sujet. C'est le mot <u>d'avant</u> qui les départage."},
+
+      {t:'ex', h:"Les phrases du module",
+       p:"Écoutez chacune et repérez le pronom relatif.",
+       rows:[
+         ["C'est une collègue qui m'a parlé du centre.","qui — sujet du verbe « a parlé »"],
+         ["C'est le trajet que je fais chaque semaine.","que — « je » suit, donc complément"],
+         ["Le gymnase où on joue est au sous-sol.","où — un lieu"],
+         ["Les gens que je vois le jeudi sont ma famille.","que — « je » suit"],
+         ["Le tournoi qui commence en avril dure deux jours.","qui — sujet du verbe « commence »"],
+         ["L'année où je suis arrivée, il faisait froid.","où — un moment, pas un lieu"],
+       ]},
+
+      {t:'piege', h:"Trois pièges à connaître",
+       rows:[
+         ["choisir « qui » parce que la personne est humaine","« les gens que je vois » et non « les gens qui je vois »",
+          "<b>qui</b> et <b>que</b> ne dépendent <u>pas</u> de la personne ou de la chose. Ils dépendent uniquement de ce qui suit : un verbe, ou un sujet."],
+         ["oublier que « où » sert aussi pour le temps","« le jour où » est correct",
+          "En anglais on dirait <em>when</em>. En français, c'est <b>où</b> : le jour <b>où</b>, l'année <b>où</b>, le moment <b>où</b>."],
+         ["écrire « qu'il » au lieu de « qui »","« la personne qui est arrivée »",
+          "<b>que</b> devient <b>qu'</b> devant une voyelle, mais <b>qui</b> ne se raccourcit <u>jamais</u> : on écrit toujours « qui il », « qui elle », « qui est »."],
+       ]},
+
+      {t:'check', h:"Est-ce que c'est clair maintenant ?",
+       p:"Quatre questions rapides.",
+       qs:[
+         {q:"« Le tournoi ___ commence en avril » demande…", opts:["qui","que"], ok:0,
+          fb:"« commence » est un verbe : c'est <b>qui</b>."},
+         {q:"« Le manteau ___ mon cousin avait apporté » demande…", opts:["qui","que"], ok:1,
+          fb:"« mon cousin » est un sujet : c'est <b>que</b>."},
+         {q:"« L'année ___ je suis arrivée » demande…", opts:["que","où"], ok:1,
+          fb:"« l'année » est un moment : c'est <b>où</b>, même si ce n'est pas un lieu."},
+         {q:"Le choix entre qui et que dépend…", opts:["de ce qui suit le pronom","du fait que ce soit une personne ou une chose"], ok:0,
+          fb:"Un verbe après › <b>qui</b>. Un sujet après › <b>que</b>. La personne ou la chose n'y change rien."},
+       ]},
+    ]
+  },
+
+  t2temps: {
+    eye:'Mini-leçon', tit:"Raconter : le décor et les évènements",
+    blocs:[
+      {t:'texte', h:"Deux temps qui travaillent ensemble",
+       p:"Pour raconter une histoire au passé, le français a besoin des <b>deux</b> temps en même temps. L'<b>imparfait</b> peint le décor : comment c'était, ce qui durait, ce qui se répétait. Le <b>passé composé</b> raconte les évènements : ce qui est arrivé, une fois, à un moment précis.",
+       note:"C'est comme un film : l'imparfait, c'est le paysage derrière. Le passé composé, c'est ce que font les personnages."},
+
+      {t:'ana', h:"L'imparfait — le décor",
+       p:"Rien n'avance. On décrit une situation, une habitude, un sentiment qui durait.",
+       mots:[['Ce que ça dit','comment c\'était'],['Ça dure','oui, longtemps ou souvent',true],['Comme dans','je {portais} une veste']],
+       say:"À l'aéroport, je portais une veste et des sandales.",
+       note:"Autres exemples : il <b>faisait</b> trente degrés · je <b>regardais</b> la neige · mon cousin m'<b>attendait</b> · on n'<b>avait</b> pas de camion."},
+
+      {t:'ana', h:"Le passé composé — l'évènement",
+       p:"L'histoire avance. Chaque phrase est un pas de plus.",
+       mots:[['Ce que ça dit','ce qui est arrivé'],['Ça dure','non, c\'est un moment',true],['Comme dans','je {suis arrivée} le douze janvier']],
+       say:"Je suis arrivée le douze janvier.",
+       note:"Autres exemples : j'<b>ai eu</b> mal aux oreilles · une voisine m'<b>a emmenée</b> glisser · j'<b>ai compris</b> ce jour-là · on <b>a fait</b> onze voyages."},
+
+      {t:'texte', h:"Le test des « combien de fois »",
+       p:"Posez-vous la question : <b>est-ce que je peux compter ?</b> Si vous pouvez dire « une fois, le douze janvier » → <b>passé composé</b>. Si c'était tous les jours, pendant des mois, sans qu'on puisse compter → <b>imparfait</b>.",
+       note:"« Les trois premiers mois, je ne <b>sortais</b> pas » : impossible de compter, c'est une situation qui a duré. Imparfait."},
+
+      {t:'ana', h:"L'accord avec être",
+       p:"Au passé composé, quatorze verbes de mouvement et tous les verbes pronominaux se construisent avec <b>être</b>. Dans ce cas, le participe s'accorde avec le sujet, comme un adjectif.",
+       mots:[['Avec être','le participe s\'accorde'],['Une femme dit','je suis arriv{ée}',true],['Plusieurs disent','on est parti{s}']],
+       say:"Je suis arrivée le douze janvier.",
+       note:"Avec <b>avoir</b>, rien ne bouge : « j'ai eu », « on a fait », « elle a choisi » — jamais de -e ni de -s."},
+
+      {t:'labo', h:"Le décor ou l'évènement ?",
+       p:"Choisissez une phrase de l'histoire de Mariama.",
+       axes:[{id:'p', lbl:'Quelle phrase ?', opts:[
+         ['a','arriver le douze janvier'],
+         ['b','porter une veste et des sandales'],
+         ['c','avoir mal aux oreilles'],
+         ['d','regarder la neige pendant trois mois'],
+         ['e','comprendre ce jour-là']]}],
+       out:{
+         a:{w:['Je {suis arrivée} le douze janvier.'], say:"Je suis arrivée le douze janvier.", n:'évènement — une date précise → passé composé'},
+         b:{w:['Je {portais} une veste et des sandales.'], say:"Je portais une veste et des sandales.", n:'décor — c\'est la situation → imparfait'},
+         c:{w:["J'{ai eu} mal aux oreilles."], say:"J'ai eu mal aux oreilles.", n:'évènement — au moment où les portes s\'ouvrent → passé composé'},
+         d:{w:['Je {regardais} la neige par la fenêtre.'], say:"Je regardais la neige par la fenêtre.", n:'décor — tous les jours pendant trois mois → imparfait'},
+         e:{w:["J'{ai compris} ce jour-là."], say:"J'ai compris ce jour-là qu'on pouvait aimer l'hiver.", n:'évènement — un jour précis → passé composé'},
+       },
+       note:"Remarquez que « ce jour-là » et « le douze janvier » annoncent le passé composé, tandis que « pendant trois mois » annonce l'imparfait."},
+
+      {t:'ex', h:"L'histoire complète, dans l'ordre",
+       p:"Écoutez le récit phrase par phrase. Repérez l'alternance.",
+       rows:[
+         ["Je suis arrivée le douze janvier.","évènement"],
+         ["À l'aéroport, je portais une veste et des sandales.","décor"],
+         ["Chez moi, il faisait trente degrés le matin même.","décor"],
+         ["J'ai eu mal aux oreilles.","évènement"],
+         ["Mon cousin m'attendait avec un manteau.","décor"],
+         ["Les trois premiers mois, je ne sortais pas.","décor"],
+         ["Une voisine m'a emmenée glisser.","évènement"],
+         ["J'ai compris ce jour-là qu'on pouvait aimer l'hiver.","évènement"],
+       ]},
+
+      {t:'piege', h:"Trois pièges à connaître",
+       rows:[
+         ["tout raconter au passé composé","« il faisait froid » et non « il a fait froid »",
+          "Une histoire uniquement au passé composé se comprend, mais elle sonne comme une liste. Le décor a besoin de l'imparfait pour respirer."],
+         ["oublier l'accord avec être","une femme écrit « je suis arriv<b>ée</b> »",
+          "Avec <b>être</b>, le participe s'accorde avec le sujet : arrivée, partie, restées. C'est la faute la plus visible à l'écrit."],
+         ["mettre un -s au participe avec avoir","« j'ai eu », jamais « j'ai eus »",
+          "Avec <b>avoir</b>, le participe ne bouge pas, quel que soit le sujet : nous avons <em>fait</em>, elles ont <em>compris</em>."],
+       ]},
+
+      {t:'check', h:"Est-ce que c'est clair maintenant ?",
+       p:"Quatre questions rapides.",
+       qs:[
+         {q:"« Les trois premiers mois, je ne ___ pas » demande…", opts:["sortais","suis sortie"], ok:0,
+          fb:"Trois mois qu'on ne peut pas compter : c'est du décor, donc l'<b>imparfait</b>."},
+         {q:"« Un jour, une voisine m'___ glisser » demande…", opts:["emmenait","a emmenée"], ok:1,
+          fb:"« Un jour » annonce un évènement précis : <b>passé composé</b>."},
+         {q:"Une femme écrit correctement…", opts:["je suis arrivé","je suis arrivée"], ok:1,
+          fb:"Avec <b>être</b>, le participe s'accorde avec le sujet."},
+         {q:"Avec l'auxiliaire avoir, le participe…", opts:["s'accorde avec le sujet","ne change pas"], ok:1,
+          fb:"« elle a compris », « nous avons fait » — rien ne bouge."},
+       ]},
+    ]
+  },
+
+  t2liaison: {
+    eye:'Mini-leçon', tit:"Le [t] qu'on entend et qu'on n'écrit pas",
+    blocs:[
+      {t:'texte', h:"Un son qui n'est pas dans le mot",
+       p:"Quand vous entendez « je suis-<b>t</b>-arrivée » ou « tu es-<b>t</b>-allé », vous n'avez pas mal entendu. Beaucoup de gens, au Québec comme ailleurs, ajoutent un <b>[t]</b> entre le verbe <em>être</em> et le participe passé. Ce [t] ne s'écrit pas.",
+       note:"On l'appelle une <b>liaison analogique</b> : la voix imite les autres liaisons du français (« il est-t-arrivé », où le t existe vraiment)."},
+
+      {t:'ana', h:"Où vous l'entendez",
+       p:"Surtout avec <b>je suis</b> et <b>tu es</b>, suivis d'un participe qui commence par une voyelle.",
+       mots:[['Ce qu\'on écrit','je suis arrivée'],['Ce qu\'on entend','je suis {t}arrivée',true],['Aussi','tu es {t}allé']],
+       say:"Je suis arrivée le douze janvier.",
+       note:"Le [t] apparaît parce que le mot suivant commence par une voyelle : <em>arrivée</em>, <em>allé</em>, <em>entrée</em>, <em>parti</em>… non, pas <em>parti</em> : celui-là commence par une consonne."},
+
+      {t:'ana', h:"Où vous ne l'entendez pas",
+       p:"Avec l'auxiliaire <b>avoir</b>, il n'y a pas de liaison de ce type.",
+       mots:[['Ce qu\'on écrit','j\'ai eu mal'],['Ce qu\'on entend','j\'ai eu mal',true],['Pas de','[t] ajouté']],
+       say:"J'ai eu mal aux oreilles.",
+       note:"C'est un bon repère à l'oreille : entendre ce [t] vous dit que l'auxiliaire est <b>être</b>, donc que le participe s'accorde."},
+
+      {t:'texte', h:"Faut-il le dire vous-même ?",
+       p:"<b>Non.</b> Ce [t] n'est pas obligatoire et il n'appartient pas au français soigné. Vous n'avez pas à le produire. Mais vous devez le <b>reconnaître</b>, sinon vous chercherez un mot qui n'existe pas.",
+       note:"Le programme du cours demande de le <em>reconnaître</em>, pas de le produire. C'est exactement le bon objectif."},
+
+      {t:'labo', h:"Avec ou sans [t] ?",
+       p:"Choisissez une phrase et écoutez le début.",
+       axes:[{id:'p', lbl:'Quelle phrase ?', opts:[
+         ['a','je suis arrivée'],
+         ['b',"j'ai eu mal"],
+         ['c','tu es allée au tournoi'],
+         ['d','on a fait onze voyages'],
+         ['e','je suis entrée dans le gymnase']]}],
+       out:{
+         a:{w:['je suis {t}arrivée'], say:"Je suis arrivée le douze janvier.", n:'être + voyelle → le [t] apparaît'},
+         b:{w:["j'ai eu mal"], say:"J'ai eu mal aux oreilles.", n:'avoir → pas de [t]'},
+         c:{w:['tu es {t}allée'], say:"Tu es allée au tournoi ?", n:'être + voyelle → le [t] apparaît'},
+         d:{w:['on a fait onze voyages'], say:"On a fait onze voyages.", n:'avoir → pas de [t]'},
+         e:{w:['je suis {t}entrée'], say:"Je suis entrée dans le gymnase.", n:'être + voyelle → le [t] apparaît'},
+       },
+       note:"Écoutez « je suis arrivée » puis « j'ai eu mal » l'un après l'autre : la différence saute à l'oreille."},
+
+      {t:'ex', h:"Les phrases à écouter",
+       p:"Écoutez et notez mentalement si le [t] est là.",
+       rows:[
+         ["Je suis arrivée le douze janvier.","[t] — auxiliaire être"],
+         ["J'ai eu mal aux oreilles.","pas de [t] — auxiliaire avoir"],
+         ["Tu es allée au tournoi ?","[t] — auxiliaire être"],
+         ["J'ai compris ce jour-là.","pas de [t] — auxiliaire avoir"],
+         ["Je suis entrée dans le gymnase.","[t] — auxiliaire être"],
+         ["Elle a choisi son nom hier soir.","pas de [t] — auxiliaire avoir"],
+       ]},
+
+      {t:'piege', h:"Deux malentendus fréquents",
+       rows:[
+         ["écrire le [t] qu'on entend","on écrit « je suis arrivée », jamais « je suis t'arrivée »",
+          "Ce son n'existe qu'à l'oral. À l'écrit, il n'y a rien entre l'auxiliaire et le participe."],
+         ["croire qu'on a mal entendu le verbe","« je suis-t-allée » est bien « je suis allée »",
+          "Si un mot vous semble commencer par un [t] inconnu, essayez de l'enlever : le mot réapparaît."],
+       ]},
+
+      {t:'check', h:"Est-ce que c'est clair maintenant ?",
+       p:"Trois questions rapides.",
+       qs:[
+         {q:"Ce [t] entre l'auxiliaire et le participe…", opts:["s'écrit","ne s'écrit jamais"], ok:1,
+          fb:"Il n'existe qu'à l'oral. Rien ne s'écrit."},
+         {q:"On l'entend surtout avec…", opts:["l'auxiliaire être","l'auxiliaire avoir"], ok:0,
+          fb:"« je suis-t-arrivée », « tu es-t-allée » — avec <b>être</b>."},
+         {q:"Devez-vous le prononcer vous-même ?", opts:["oui, c'est obligatoire","non, il suffit de le reconnaître"], ok:1,
+          fb:"Le programme demande de le <b>reconnaître</b> pour comprendre, pas de le produire."},
+       ]},
+    ]
+  },
+
+  t2y: {
+    eye:'Mini-leçon', tit:"y et là : ne pas répéter le lieu",
+    blocs:[
+      {t:'texte', h:"Pourquoi on remplace",
+       p:"Répéter le lieu à chaque phrase alourdit tout : « Je vais au centre communautaire. Je vais au centre communautaire chaque jeudi. » Le français a deux petits mots pour éviter ça : <b>y</b> et <b>là</b>.",
+       note:"Ce n'est pas du luxe. Un francophone qui répète le lieu trois fois se fait interrompre — on comprend qu'il cherche ses mots."},
+
+      {t:'ana', h:"y — devant le verbe",
+       p:"<b>y</b> remplace un lieu introduit par <b>à, au, aux, dans, chez, sur</b>. Il se place <b>avant</b> le verbe, collé à lui.",
+       mots:[['Ce qu\'il remplace','à / au / dans / chez + lieu'],['Sa place','avant le verbe',true],['Comme dans','j\'{y} vais le jeudi']],
+       say:"J'y vais le jeudi.",
+       note:"Au passé composé, <b>y</b> passe devant l'auxiliaire : « j'<b>y</b> suis allée deux fois »."},
+
+      {t:'ana', h:"là — après le verbe",
+       p:"<b>là</b> montre un endroit dont on vient de parler, et se place plutôt <b>après</b> le verbe. Il est plus concret, plus proche du geste de montrer du doigt.",
+       mots:[['Ce qu\'il remplace','un lieu déjà nommé'],['Sa place','après le verbe',true],['Comme dans','on mangeait {là} tous les soirs']],
+       say:"On mangeait là tous les soirs.",
+       note:"« Je suis restée <b>là</b> trois heures » · « Le balcon ? On mangeait <b>là</b>. » — souvent en réponse à une question."},
+
+      {t:'texte', h:"Comment choisir",
+       p:"Avec un verbe de <b>déplacement</b> (aller, retourner, se rendre), prenez <b>y</b>. Pour dire qu'on <b>reste</b> ou qu'on <b>fait quelque chose</b> à un endroit déjà nommé, <b>là</b> passe souvent mieux.",
+       note:"Les deux sont corrects dans beaucoup de phrases. Ne bloquez pas là-dessus : l'important est de ne pas répéter le lieu."},
+
+      {t:'labo', h:"Remplacez le lieu",
+       p:"Choisissez une phrase et voyez ce qu'elle devient.",
+       axes:[{id:'p', lbl:'Quelle phrase ?', opts:[
+         ['a','Je vais au centre communautaire.'],
+         ['b','Elle joue dans cette équipe.'],
+         ['c','On mangeait sur le balcon.'],
+         ['d','Je suis allée à Québec.'],
+         ['e','Elle est restée dans le vestiaire.']]}],
+       out:{
+         a:{w:["J'{y} vais le jeudi."], say:"J'y vais le jeudi.", n:'au + lieu, verbe de déplacement → y'},
+         b:{w:['Elle {y} joue depuis six ans.'], say:"Elle y joue depuis six ans.", n:'dans + lieu → y, devant le verbe'},
+         c:{w:['On mangeait {là} tous les soirs.'], say:"On mangeait là tous les soirs.", n:'lieu déjà nommé, on y fait quelque chose → là'},
+         d:{w:["J'{y} suis allée le mois passé."], say:"J'y suis allée le mois passé.", n:'au passé composé, y passe devant l\'auxiliaire'},
+         e:{w:['Elle est restée {là} trois heures.'], say:"Elle est restée là trois heures.", n:'rester + lieu déjà nommé → là'},
+       },
+       note:"Comparez a et c : le même endroit, mais « aller » appelle <b>y</b> et « manger » appelle <b>là</b>."},
+
+      {t:'ex', h:"Les phrases du module",
+       p:"Écoutez chacune et repérez le petit mot.",
+       rows:[
+         ["J'y vais le jeudi.","y — devant le verbe"],
+         ["Elle y joue depuis six ans.","y — devant le verbe"],
+         ["J'y suis allée le mois passé.","y — devant l'auxiliaire"],
+         ["On mangeait là tous les soirs.","là — après le verbe"],
+         ["Elle est restée là trois heures.","là — après le verbe"],
+         ["Ils y habitent depuis mars.","y — devant le verbe"],
+       ]},
+
+      {t:'piege', h:"Trois pièges à connaître",
+       rows:[
+         ["répéter le lieu après y","« j'y vais » et non « j'y vais au centre »",
+          "Si vous dites <b>y</b>, le lieu est déjà dedans. Le redire est une faute et ça s'entend tout de suite."],
+         ["placer y après le verbe","« j'y vais », jamais « je vais y »",
+          "<b>y</b> se colle <u>devant</u> le verbe. C'est l'inverse de l'anglais, et c'est ce qui demande le plus de pratique."],
+         ["oublier y avec le futur proche","on dit « je vais y aller »",
+          "Avec deux verbes, <b>y</b> se place devant celui qui porte le sens : « je vais <b>y</b> aller », « je dois <b>y</b> retourner »."],
+       ]},
+
+      {t:'check', h:"Est-ce que c'est clair maintenant ?",
+       p:"Quatre questions rapides.",
+       qs:[
+         {q:"« Je vais au gymnase » devient…", opts:["j'y vais","je vais y"], ok:0,
+          fb:"<b>y</b> se met devant le verbe : « j'y vais »."},
+         {q:"Au passé composé, y se place…", opts:["devant l'auxiliaire","après le participe"], ok:0,
+          fb:"« j'<b>y</b> suis allée » — devant l'auxiliaire."},
+         {q:"« On mangeait sur le balcon » devient plutôt…", opts:["on y mangeait","on mangeait là"], ok:1,
+          fb:"Les deux se disent, mais <b>là</b> est plus naturel ici : on parle d'un endroit déjà nommé."},
+         {q:"Après avoir dit « j'y vais », faut-il nommer le lieu ?", opts:["oui, pour être clair","non, il est déjà dans le y"], ok:1,
+          fb:"Le redire est une faute : <b>y</b> contient déjà le lieu."},
+       ]},
+    ]
+  },
+
+  t3carte: {
+    eye:'Mini-leçon', tit:"La carte postale et la carte de vœux",
+    blocs:[
+      {t:'texte', h:"Deux cartes, deux buts",
+       p:"Les deux tiennent en quelques lignes, mais elles ne servent pas à la même chose. La <b>carte postale</b> raconte <b>où vous êtes</b> et ce que vous y faites. La <b>carte de vœux</b> <b>félicite</b> ou <b>souhaite</b> quelque chose à quelqu'un, à l'occasion d'un évènement.",
+       note:"Se tromper de genre se remarque tout de suite : raconter son voyage sur une carte de naissance met l'attention au mauvais endroit."},
+
+      {t:'ana', h:"La carte postale — quatre parties",
+       p:"On la lit en dix secondes. Elle suit presque toujours le même ordre.",
+       mots:[['1','Bonjour Fatou,'],['2','Je t\'écris de {Québec}',true],['3','Hier, on a visité le Vieux-Port'],['4','Tu me manques. Je t\'embrasse.']],
+       say:"Je t'écris de Québec, il neige depuis hier.",
+       note:"Les verbes y sont au <b>présent</b> (où je suis, ce que je vois) et au <b>passé composé</b> (ce que j'ai fait hier)."},
+
+      {t:'ana', h:"La carte de vœux — trois lignes",
+       p:"Encore plus court. On félicite, on souhaite, on signe.",
+       mots:[['1','Félicitations à vous deux !'],['2','Je vous souhaite {beaucoup de bonheur}',true],['3','Mariama']],
+       say:"Félicitations à vous deux ! Je vous souhaite beaucoup de bonheur.",
+       note:"On ne raconte pas sa propre vie sur une carte de vœux. Elle parle de l'autre, pas de soi."},
+
+      {t:'texte', h:"Les formules qui vont avec l'occasion",
+       p:"Chaque évènement a ses mots. <b>Naissance</b> : « Bienvenue au petit ! Toutes nos félicitations. » · <b>Mariage</b> : « Beaucoup de bonheur à vous deux. » · <b>Nouvel An</b> : « Meilleurs vœux pour la nouvelle année. » · <b>Décès</b> : « Mes sincères condoléances. »",
+       note:"Ces formules sont figées : on ne les invente pas, on les réutilise telles quelles. C'est une bonne nouvelle — il y en a une dizaine à connaître, pas plus."},
+
+      {t:'labo', h:"Quelle carte, quelle phrase ?",
+       p:"Choisissez une occasion et voyez ce qu'on écrit.",
+       axes:[{id:'p', lbl:'Quelle occasion ?', opts:[
+         ['a','un voyage à Québec'],
+         ['b','une naissance'],
+         ['c','un mariage'],
+         ['d','le Nouvel An'],
+         ['e','un déménagement']]}],
+       out:{
+         a:{w:["Je t'écris de {Québec}, il neige depuis hier."], say:"Je t'écris de Québec, il neige depuis hier.", n:'carte postale — où je suis, ce que je fais'},
+         b:{w:['Bienvenue à la petite {Aminata} !'], say:"Bienvenue à la petite Aminata ! Toutes nos félicitations.", n:'carte de vœux — on félicite'},
+         c:{w:['Beaucoup de {bonheur} à vous deux.'], say:"Beaucoup de bonheur à vous deux.", n:'carte de vœux — on souhaite'},
+         d:{w:['Meilleurs {vœux} pour la nouvelle année.'], say:"Meilleurs vœux pour la nouvelle année.", n:'carte de vœux — formule figée'},
+         e:{w:['Bonne {installation} dans votre nouveau chez-vous !'], say:"Bonne installation dans votre nouveau chez-vous !", n:'carte de vœux — on souhaite'},
+       },
+       note:"Une seule des cinq est une carte postale. Toutes les autres félicitent ou souhaitent."},
+
+      {t:'ex', h:"Des phrases de vraies cartes",
+       p:"Écoutez et devinez de quelle carte chacune vient.",
+       rows:[
+         ["Je t'écris de la terrasse d'un café, en face du fleuve.","carte postale"],
+         ["Félicitations à vous deux pour cette belle nouvelle !","carte de vœux"],
+         ["Hier, on a marché dans le Vieux-Port toute la journée.","carte postale"],
+         ["Je vous souhaite beaucoup de bonheur avec le petit.","carte de vœux"],
+         ["Il fait moins quinze, mais le soleil est magnifique.","carte postale"],
+         ["Meilleurs vœux pour la nouvelle année, à toi et à ta famille.","carte de vœux"],
+       ]},
+
+      {t:'piege', h:"Trois pièges à connaître",
+       rows:[
+         ["écrire une lettre au lieu d'une carte","trois à six phrases suffisent",
+          "Une carte n'est pas une lettre. Si vous avez besoin de dix phrases, écrivez un courriel."],
+         ["parler de soi sur une carte de vœux","« je vous souhaite » et non « moi, cette année… »",
+          "La carte de vœux est tournée vers l'autre. On peut signer, mais on ne raconte pas sa propre vie."],
+         ["oublier de signer","le nom, seul, à la fin",
+          "Sur une carte, on signe simplement de son prénom. Pas de « cordialement », pas de formule longue."],
+       ]},
+
+      {t:'check', h:"Est-ce que c'est clair maintenant ?",
+       p:"Quatre questions rapides.",
+       qs:[
+         {q:"« Hier, on a visité le Vieux-Port » vient…", opts:["d'une carte postale","d'une carte de vœux"], ok:0,
+          fb:"On raconte où on est et ce qu'on y fait : c'est une <b>carte postale</b>."},
+         {q:"Sur une carte de vœux, on parle surtout…", opts:["de soi","de la personne à qui on écrit"], ok:1,
+          fb:"On félicite ou on souhaite : la carte est tournée vers l'autre."},
+         {q:"Pour une naissance, on écrit…", opts:["Meilleurs vœux pour la nouvelle année","Bienvenue au petit ! Toutes nos félicitations"], ok:1,
+          fb:"Chaque occasion a sa formule figée."},
+         {q:"La bonne longueur d'une carte, c'est…", opts:["trois à six phrases","une page complète"], ok:0,
+          fb:"Une carte se lit en dix secondes. Au-delà, écrivez un courriel."},
+       ]},
+    ]
+  },
+
+  t3cause: {
+    eye:'Mini-leçon', tit:"grâce à ou à cause de",
+    blocs:[
+      {t:'texte', h:"La même question, deux réponses",
+       p:"Les deux répondent à « pourquoi ? ». Mais ils ne sont pas neutres : <b>grâce à</b> annonce que le résultat est <b>heureux</b>, <b>à cause de</b> qu'il est <b>malheureux</b> ou au moins ennuyeux.",
+       note:"Choisir le mauvais change le sens de la phrase. « À cause de ma voisine, j'ai aimé l'hiver » laisse entendre que c'est un problème."},
+
+      {t:'ana', h:"grâce à — le bon résultat",
+       p:"On remercie, on reconnaît une aide. Souvent une personne, parfois une chose.",
+       mots:[['Ce que ça annonce','un résultat heureux'],['Suivi de','un nom ou un pronom',true],['Comme dans','{grâce à} cette voisine']],
+       say:"Grâce à cette voisine, j'ai compris qu'on pouvait aimer l'hiver.",
+       note:"Autres exemples : <b>grâce au</b> covoiturage · <b>grâce à</b> ses coéquipières · <b>grâce à</b> toi."},
+
+      {t:'ana', h:"à cause de — le résultat ennuyeux",
+       p:"On explique un problème, un empêchement, un départ.",
+       mots:[['Ce que ça annonce','un résultat ennuyeux'],['Suivi de','un nom ou un pronom',true],['Comme dans','{à cause du} bruit']],
+       say:"On est partis à cause du bruit.",
+       note:"Autres exemples : <b>à cause de</b> la pluie · <b>à cause de</b> son horaire · <b>à cause des</b> voisins."},
+
+      {t:'ana', h:"La fusion avec le et les",
+       p:"Les deux se fusionnent avec le déterminant qui suit. C'est là que les fautes arrivent.",
+       mots:[['à cause de + le','à cause {du}'],['à cause de + les','à cause {des}',true],['grâce à + le','grâce {au}']],
+       say:"Grâce au covoiturage, elle n'attend plus l'autobus.",
+       note:"On n'écrit jamais « à cause de le bruit » ni « grâce à le covoiturage ». La fusion est obligatoire."},
+
+      {t:'texte', h:"Et si je veux enchaîner sur un verbe ?",
+       p:"<b>grâce à</b> et <b>à cause de</b> sont toujours suivis d'un <b>nom</b> ou d'un <b>pronom</b>, jamais d'un verbe conjugué. Pour un verbe, prenez <b>parce que</b>.",
+       note:"« Je suis restée <b>parce qu'</b>il faisait froid » — et non « à cause de il faisait froid »."},
+
+      {t:'labo', h:"Heureux ou ennuyeux ?",
+       p:"Choisissez une phrase et voyez lequel s'impose.",
+       axes:[{id:'p', lbl:'Quelle phrase ?', opts:[
+         ['a','la voisine qui l\'a emmenée glisser'],
+         ['b','le bruit du bar en bas'],
+         ['c','le covoiturage du jeudi'],
+         ['d','la pluie du premier juillet'],
+         ['e','la collègue qui lui a parlé du centre']]}],
+       out:{
+         a:{w:['{Grâce à} cette voisine'], say:"Grâce à cette voisine, j'ai aimé l'hiver.", n:'résultat heureux → grâce à'},
+         b:{w:['{à cause du} bruit'], say:"On est partis à cause du bruit.", n:'résultat ennuyeux → à cause de + du'},
+         c:{w:['{Grâce au} covoiturage'], say:"Grâce au covoiturage, elle n'attend plus l'autobus.", n:'résultat heureux → grâce à + au'},
+         d:{w:['{à cause de la} pluie'], say:"Le déménagement a été long à cause de la pluie.", n:'résultat ennuyeux → à cause de + la'},
+         e:{w:['{Grâce à} sa collègue'], say:"Grâce à sa collègue, elle a découvert le centre.", n:'résultat heureux → grâce à'},
+       },
+       note:"Le test le plus rapide : remplacez par « heureusement » ou « malheureusement » et écoutez lequel sonne juste."},
+
+      {t:'ex', h:"Les phrases du module",
+       p:"Écoutez chacune et repérez la cause.",
+       rows:[
+         ["Grâce à cette voisine, j'ai aimé l'hiver.","résultat heureux"],
+         ["On est partis à cause du bruit.","résultat ennuyeux"],
+         ["Grâce au covoiturage, elle n'attend plus l'autobus.","résultat heureux"],
+         ["Elle a manqué deux entraînements à cause de son horaire.","résultat ennuyeux"],
+         ["Grâce à ses coéquipières, elle s'est fait des amies.","résultat heureux"],
+         ["Le déménagement a été long à cause de la pluie.","résultat ennuyeux"],
+       ]},
+
+      {t:'piege', h:"Trois pièges à connaître",
+       rows:[
+         ["oublier la fusion","« à cause du bruit », jamais « à cause de le bruit »",
+          "de + le = <b>du</b>, de + les = <b>des</b>, à + le = <b>au</b>, à + les = <b>aux</b>. La fusion est obligatoire en français."],
+         ["mettre un verbe après","« parce qu'il faisait froid »",
+          "<b>grâce à</b> et <b>à cause de</b> ne prennent qu'un nom ou un pronom. Pour un verbe conjugué, c'est <b>parce que</b>."],
+         ["employer « à cause de » pour une bonne nouvelle","« grâce à mes amies » et non « à cause de mes amies »",
+          "Dire « à cause de mes amies, je me suis fait des amies » fait entendre un reproche. Le choix n'est jamais neutre."],
+       ]},
+
+      {t:'check', h:"Est-ce que c'est clair maintenant ?",
+       p:"Quatre questions rapides.",
+       qs:[
+         {q:"« ___ cette voisine, j'ai aimé l'hiver » demande…", opts:["Grâce à","À cause de"], ok:0,
+          fb:"Le résultat est heureux : <b>grâce à</b>."},
+         {q:"« Ils sont partis ___ bruit » demande…", opts:["à cause du","à cause de le"], ok:0,
+          fb:"de + le = <b>du</b>. La fusion est obligatoire."},
+         {q:"Après grâce à, on peut mettre…", opts:["un verbe conjugué","un nom ou un pronom"], ok:1,
+          fb:"Pour un verbe, il faut <b>parce que</b>."},
+         {q:"« Grâce à » et « à cause de » sont…", opts:["interchangeables","porteurs d'un jugement différent"], ok:1,
+          fb:"L'un annonce du bon, l'autre du mauvais. Ce n'est jamais neutre."},
+       ]},
+    ]
+  },
+};
 
 // ── « EN APPRENDRE PLUS » : rendu du panneau ──────────────────────────
 // Souligne en vert ce qui est noté entre accolades : « superficiel{le} »,
@@ -3344,7 +4623,7 @@ lmsTrack('file_opened');
   var depart = sectionCourante();
   Outils.init({
     code: typeof studentCode !== 'undefined' ? studentCode : '',
-    module: 'module-consultation',
+    module: 'module-relations',
     section: depart ? depart.title : '',
     blocs: '.card, .savoir'
   });
@@ -3363,6 +4642,73 @@ lmsTrack('file_opened');
 })();
 </script>
 <!-- OUTILS-ELEVE:fin -->
+<!-- DEPOT-ECRIT-JS:début — greffé par build/greffe_depot_ecrit.py -->
+<script>
+(function () {
+  var texteDepose = '', retroDeposee = '';
+
+  function carteEcrite() {
+    var t = document.getElementById('peText');
+    return t ? t.closest('.card') : null;
+  }
+  function libelle() {
+    var c = carteEcrite(), h = c && c.querySelector('.prod-tit');
+    return h ? h.textContent.trim() : 'Production écrite';
+  }
+  function consigne() {
+    var c = carteEcrite(), p = c && c.querySelector('.prod-lead');
+    return p ? p.textContent.trim() : '';
+  }
+
+  // renderCorr est globale au module et sert aussi à l'oral : on n'ouvre le
+  // dépôt que pour la zone écrite.
+  if (typeof renderCorr === 'function') {
+    var rendreOrig = renderCorr;
+    renderCorr = function (elId, data, orig) {
+      var r = rendreOrig.apply(this, arguments);
+      if (elId === 'peFb') {
+        texteDepose = orig || '';
+        retroDeposee = (typeof corrSummary === 'function') ? corrSummary(data, orig) : '';
+        var zone = document.getElementById('peSend');
+        if (zone) zone.style.display = 'flex';
+      }
+      return r;
+    };
+  }
+
+  window.peSend = async function () {
+    var btn = document.getElementById('peSendBtn');
+    var texte = (document.getElementById('peText') || {}).value || texteDepose;
+    texte = (texte || '').trim();
+    if (!texte) { showErr('peErr', "Écris ton message d'abord."); return; }
+    hideErr('peErr');
+    btn.disabled = true; btn.textContent = 'Envoi…';
+    try {
+      var res = await fetch('/api/ecrit/submit', {
+        method: 'POST', headers: {'Content-Type': 'application/json'},
+        body: JSON.stringify({
+          code: typeof studentCode !== 'undefined' ? studentCode : '',
+          theme: '', taskId: 'module-relations-pe',
+          taskLabel: libelle(), question: consigne(),
+          texte: texte, feedback: retroDeposee,
+        }),
+      });
+      var data = await res.json();
+      if (!res.ok) {
+        showErr('peErr', data.error || "L'envoi a échoué.");
+        btn.disabled = false; btn.textContent = 'Envoyer à mon enseignant';
+        return;
+      }
+      document.getElementById('peSend').innerHTML =
+        '<span class="sent">✅ Envoyé à ton enseignant !</span>';
+    } catch (e) {
+      showErr('peErr', "Impossible d'envoyer.");
+      btn.disabled = false; btn.textContent = 'Envoyer à mon enseignant';
+    }
+  };
+})();
+</script>
+<!-- DEPOT-ECRIT-JS:fin -->
 <!-- SECTIONS-DATEES:début — greffé par build/greffe_sections.py -->
 <style>
   .tab.verrouillee { opacity: .55; cursor: not-allowed; }
@@ -3375,7 +4721,7 @@ lmsTrack('file_opened');
 </style>
 <script>
 (function () {
-  var ACTIVITE = 35;
+  var ACTIVITE = 48;
 
   function joli(iso) {
     if (!iso) return '';
@@ -3466,71 +4812,4 @@ lmsTrack('file_opened');
 })();
 </script>
 <!-- SECTIONS-DATEES:fin -->
-<!-- DEPOT-ECRIT-JS:début — greffé par build/greffe_depot_ecrit.py -->
-<script>
-(function () {
-  var texteDepose = '', retroDeposee = '';
-
-  function carteEcrite() {
-    var t = document.getElementById('peText');
-    return t ? t.closest('.card') : null;
-  }
-  function libelle() {
-    var c = carteEcrite(), h = c && c.querySelector('.prod-tit');
-    return h ? h.textContent.trim() : 'Production écrite';
-  }
-  function consigne() {
-    var c = carteEcrite(), p = c && c.querySelector('.prod-lead');
-    return p ? p.textContent.trim() : '';
-  }
-
-  // renderCorr est globale au module et sert aussi à l'oral : on n'ouvre le
-  // dépôt que pour la zone écrite.
-  if (typeof renderCorr === 'function') {
-    var rendreOrig = renderCorr;
-    renderCorr = function (elId, data, orig) {
-      var r = rendreOrig.apply(this, arguments);
-      if (elId === 'peFb') {
-        texteDepose = orig || '';
-        retroDeposee = (typeof corrSummary === 'function') ? corrSummary(data, orig) : '';
-        var zone = document.getElementById('peSend');
-        if (zone) zone.style.display = 'flex';
-      }
-      return r;
-    };
-  }
-
-  window.peSend = async function () {
-    var btn = document.getElementById('peSendBtn');
-    var texte = (document.getElementById('peText') || {}).value || texteDepose;
-    texte = (texte || '').trim();
-    if (!texte) { showErr('peErr', "Écris ton message d'abord."); return; }
-    hideErr('peErr');
-    btn.disabled = true; btn.textContent = 'Envoi…';
-    try {
-      var res = await fetch('/api/ecrit/submit', {
-        method: 'POST', headers: {'Content-Type': 'application/json'},
-        body: JSON.stringify({
-          code: typeof studentCode !== 'undefined' ? studentCode : '',
-          theme: 'Santé', taskId: 'module-consultation-pe',
-          taskLabel: libelle(), question: consigne(),
-          texte: texte, feedback: retroDeposee,
-        }),
-      });
-      var data = await res.json();
-      if (!res.ok) {
-        showErr('peErr', data.error || "L'envoi a échoué.");
-        btn.disabled = false; btn.textContent = 'Envoyer à mon enseignant';
-        return;
-      }
-      document.getElementById('peSend').innerHTML =
-        '<span class="sent">✅ Envoyé à ton enseignant !</span>';
-    } catch (e) {
-      showErr('peErr', "Impossible d'envoyer.");
-      btn.disabled = false; btn.textContent = 'Envoyer à mon enseignant';
-    }
-  };
-})();
-</script>
-<!-- DEPOT-ECRIT-JS:fin -->
 </body></html>

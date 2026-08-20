@@ -132,6 +132,16 @@ MODULES = {
                         "Des problèmes dans l'immeuble",
                         'Une situation inacceptable'),
     },
+    'module-relations': {
+        'numero': 11, 'activite': 48, 'niveau': 4,
+        'titre': 'Des nouvelles à donner',
+        'chapeau': "Parler de ses semaines, raconter une expérience "
+                   "personnelle, donner des nouvelles par écrit.",
+        'seances': GRILLE_3_DEFIS,
+        'blocs': _blocs('Ce que je fais de mes semaines',
+                        "Ce que j'ai vécu",
+                        'Donner des nouvelles'),
+    },
 }
 
 # L'ordre d'affichage : celui des numéros de module.
