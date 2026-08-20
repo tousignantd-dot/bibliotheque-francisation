@@ -838,6 +838,10 @@ class Deck:
 
 def _slug(s):
     import unicodedata, re
+    # NFKD ne décompose pas les ligatures : « vœux » deviendrait « vux ».
+    # On les écrit d'abord en toutes lettres.
+    for lig, deux in (('œ', 'oe'), ('Œ', 'OE'), ('æ', 'ae'), ('Æ', 'AE')):
+        s = s.replace(lig, deux)
     s = unicodedata.normalize('NFKD', s).encode('ascii', 'ignore').decode()
     s = re.sub(r"[^a-zA-Z0-9]+", '-', s).strip('-').lower()
     return re.sub(r'-+', '-', s)[:48]

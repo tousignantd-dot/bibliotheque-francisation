@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Bibliothèque d'activités — Francisation Niveau 4</title>
+  <title>SAAF — Francisation Niveau 4</title>
   <!-- Le système de design versionné, pas ds-bundle/ (ignoré par git). -->
   <link rel="stylesheet" href="assets/design-system/styles.css" />
   <style>
@@ -102,6 +102,20 @@
 
     .om-vide { font-size: var(--fs-body-sm); font-weight: var(--fw-semi); color: var(--text-muted); }
 
+    /* — Marque SAAF : l'acronyme porte la page, la forme longue l'explique. — */
+    .om-marque {
+      font-size: clamp(56px, 9vw, 92px);
+      letter-spacing: .06em;
+      line-height: 1;
+      margin: var(--sp-3) 0 0;
+    }
+    .om-marque-sous {
+      margin: var(--sp-3) 0 0;
+      font-size: var(--fs-lead);
+      font-weight: var(--fw-semi);
+      color: var(--ink-500);
+    }
+
     @media (max-width: 720px) {
       .om-bilan { grid-template-columns: 1fr; }
       .om-rangee { flex-wrap: wrap; }
@@ -116,8 +130,9 @@
   <header class="band">
     <div class="container">
       <div class="band__eyebrow">Centre Lartigue · CSSDM</div>
-      <h1>Bibliothèque d'activités</h1>
-      <p class="band__lead">Francisation — Niveau 4. Entrez votre code d'accès pour retrouver vos activités et votre bilan.</p>
+      <h1 class="om-marque">SAAF</h1>
+      <p class="om-marque-sous">Système d'aide à l'apprentissage du français</p>
+      <p class="band__lead">Niveau 4. Entrez votre code d'accès pour retrouver vos activités et votre bilan.</p>
       <div class="om-connexion">
         <div class="card">
           <div class="om-connexion-rangee">
@@ -145,7 +160,7 @@
     <div class="container">
       <div class="om-band-haut">
         <div>
-          <div class="band__eyebrow" id="bandSurtitre">Francisation · Niveau 4</div>
+          <div class="band__eyebrow" id="bandSurtitre">SAAF · Niveau 4</div>
           <h1 id="bandTitre">Bonjour</h1>
         </div>
         <button class="btn btn--ghost btn--sm" id="logoutBtn">Se déconnecter</button>
@@ -247,7 +262,7 @@
     document.getElementById('bandTitre').textContent =
       prenom ? `Bonjour ${prenom}` : 'Bonjour';
     document.getElementById('bandSurtitre').textContent =
-      `Francisation · Niveau 4 · Code ${session.code}`;
+      `SAAF · Niveau 4 · Code ${session.code}`;
     charger();
   }
 

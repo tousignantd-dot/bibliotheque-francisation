@@ -293,6 +293,13 @@ textarea#edition:focus-visible{box-shadow:inset 0 0 0 3px var(--green-100)}
   border-radius:999px; font-size:14px; font-weight:800; text-decoration:none}
 .forge__fichiers a:hover{text-decoration:underline}
 .forge__err{margin:var(--sp-3) 0 0; font-size:14px; font-weight:700; color:var(--red-700)}
+/* Une réserve n'est pas une erreur : l'activité est là, il lui manque quelque
+   chose. D'où l'ambre, et le fait qu'on puisse publier quand même. */
+.forge__reserves{margin:var(--sp-3) 0 0; padding:var(--sp-3) var(--sp-4); list-style:none;
+  border-left:3px solid var(--amber-500,#d97706); background:var(--paper-50)}
+.forge__reserves li{font-size:14px; font-weight:700; color:var(--ink-700); margin:0 0 var(--sp-1)}
+.forge__reserves li:last-child{margin:0}
+.forge__reserves li::before{content:"⚠ "; color:var(--amber-500,#d97706)}
 .forge__b{display:flex; flex-wrap:wrap; gap:var(--sp-2); margin-top:var(--sp-3)}
 
 /* ---------- Catalogue ---------- */
@@ -522,6 +529,7 @@ textarea#edition:focus-visible{box-shadow:inset 0 0 0 3px var(--green-100)}
         <p class="forge__t">Génération sur ce poste</p>
         <p class="forge__etat" id="forge-etat"></p>
         <pre class="forge__journal" id="forge-journal" hidden></pre>
+        <ul class="forge__reserves" id="forge-reserves" hidden></ul>
         <p class="forge__err" id="forge-err" hidden></p>
         <ul class="forge__fichiers" id="forge-fichiers"></ul>
         <div class="forge__b" id="forge-b"></div>
@@ -1702,9 +1710,15 @@ function suivreForge(){
 function rendreForge(fiche){
   const depuis = fiche.debut ? Math.round((Date.now() - new Date(fiche.debut)) / 1000) : 0;
   const duree = depuis < 90 ? depuis + " s" : Math.floor(depuis / 60) + " min " + (depuis % 60) + " s";
+  /* La dépense se voit monter pendant que ça tourne : c'est le seul moment où
+     on peut encore appuyer sur Annuler. En cours, elle est estimée ; à la fin,
+     le CLI donne le chiffre réel. */
+  const sous = fiche.cout != null ? fiche.cout : fiche.coutEstime;
+  const argent = sous ? " · " + Number(sous).toFixed(2) + " $"
+                      + (fiche.cout == null ? " (estimé)" : "") : "";
   const titres = {
-    en_cours: "<b>Génération en cours…</b> " + esc(fiche.titre) + " · " + duree,
-    fait:     "<b>Activité générée ✓</b> " + esc(fiche.titre) + " · " + duree,
+    en_cours: "<b>Génération en cours…</b> " + esc(fiche.titre) + " · " + duree + argent,
+    fait:     "<b>Activité générée ✓</b> " + esc(fiche.titre) + " · " + duree + argent,
     echec:    "<b>Génération interrompue.</b> " + esc(fiche.titre),
     annulee:  "<b>Génération annulée.</b> " + esc(fiche.titre)
   };
@@ -1717,6 +1731,16 @@ function rendreForge(fiche){
     j.textContent = fiche.journal.join("\n");
     if(enBas) j.scrollTop = j.scrollHeight;   // suivre le fil sans voler le défilement
   }
+
+  const res = $("forge-reserves");
+  res.textContent = "";
+  const reserves = (fiche.reserves || []).concat(
+    (fiche.intrusions || []).length
+      ? ["Des fichiers de la bibliothèque ont été modifiés pendant la commande : "
+         + fiche.intrusions.slice(0, 5).join(", ") + ". À vérifier avec git."]
+      : []);
+  res.hidden = !reserves.length;
+  reserves.forEach(r => { const li = document.createElement("li"); li.textContent = r; res.append(li); });
 
   $("forge-err").hidden = !fiche.erreur;
   if(fiche.erreur) $("forge-err").textContent = fiche.erreur;

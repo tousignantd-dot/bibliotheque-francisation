@@ -18,6 +18,7 @@ surtout pas d'exécution de commandes.
 
 import json
 import os
+import re
 import shutil
 import subprocess
 import threading
@@ -39,6 +40,35 @@ OUTILS = BASE_DIR.parent / "programme" / "outils"
 # c'est que le travail est parti en boucle — on coupe plutôt que de laisser
 # tourner un processus oublié.
 DUREE_MAX_S = 30 * 60
+
+# La minuterie ne suffit pas : une commande peut brûler beaucoup en peu de
+# temps. La commande Météo, qui est une activité complète avec ses vingt MP3 et
+# ses trois imprimés, a coûté 2,22 $ en huit minutes. Cinq dollars laissent donc
+# de la marge à une commande honnête et coupent celle qui tourne en rond.
+PLAFOND_USD = float(os.environ.get("FORGE_PLAFOND_USD") or 5.0)
+
+# Troisième garde-fou : le nombre de tours. Le CLI installé ici n'a pas de
+# --max-turns (vérifié dans son --help), on compte donc nous-mêmes. La commande
+# Météo, qui est une activité complète, en a pris 28.
+TOURS_MAX = int(os.environ.get("FORGE_TOURS_MAX") or 150)
+
+# $ par million de jetons : entrée, sortie, cache lu, cache écrit (1 h).
+# Reconstruit puis vérifié sur la commande Météo, dont le coût réel annoncé par
+# le CLI était de 2,220103 $ : la formule en rend 2,2178. À revoir si les tarifs
+# changent — un tarif périmé ne casse rien, il décale seulement le plafond.
+TARIFS = {
+    "opus":   (5.0, 25.0, 0.5, 10.0),
+    "sonnet": (3.0, 15.0, 0.3,  6.0),
+    "haiku":  (1.0,  5.0, 0.1,  2.0),
+}
+
+# Le compte de jetons de SORTIE n'arrive qu'à la toute fin, dans l'événement
+# `result` — trop tard pour couper quoi que ce soit. On l'estime donc au fil de
+# l'eau à partir des caractères émis. Le facteur est calibré sur la commande
+# Météo (67 126 caractères vus pour 38 961 jetons facturés, le raisonnement
+# invisible compris). L'entrée, elle, est comptée exactement : c'est elle qui
+# s'emballe quand une commande boucle, et elle pèse la moitié de la facture.
+CARACTERES_PAR_JETON = 1.7
 
 # Les commandes en cours, par identifiant. Le disque reste la vérité (le
 # serveur peut redémarrer) ; ce registre ne sert qu'à pouvoir annuler.
@@ -158,7 +188,11 @@ def fichiers_produits(cid):
     d = _dossier(cid)
     if not d.exists():
         return []
-    service = {"commande.json", "journal.txt", "prompt.md", "flux.jsonl"}
+    # `reglages.json` et `garde.log` sont posés par la forge elle-même : ils ne
+    # sont pas le travail de la commande et n'ont rien à faire dans une
+    # activité publiée.
+    service = {"commande.json", "journal.txt", "prompt.md", "flux.jsonl",
+               "reglages.json", "garde.log"}
     out = []
     for p in sorted(d.rglob("*")):
         if p.is_dir() or p.name in service or p.name.startswith("."):
@@ -321,6 +355,138 @@ def _prompt_complet(prompt):
                            outils=OUTILS) + "\n" + prompt
 
 
+# ── Garde-fous ───────────────────────────────────────────────────────────────
+
+GARDE = BASE_DIR / "forge_garde.py"
+FEUILLE = BASE_DIR / "assets" / "design-system" / "fiche-imprimee.css"
+
+
+def _tarif(modele):
+    """Le tarif du modèle annoncé au démarrage. Dans le doute, le plus cher."""
+    m = (modele or "").lower()
+    for cle, prix in TARIFS.items():
+        if cle in m:
+            return prix
+    return TARIFS["opus"]
+
+
+def _cout_vu(tarif, jetons, caracteres):
+    """Le coût de ce qui a été consommé jusqu'ici, en dollars. Une estimation."""
+    sortie = caracteres / CARACTERES_PAR_JETON
+    return (jetons["entree"] * tarif[0] + sortie * tarif[1]
+            + jetons["cache_lu"] * tarif[2] + jetons["cache_ecrit"] * tarif[3]) / 1e6
+
+
+def _ecrire_reglages(d):
+    """Branche le garde comme hook PreToolUse, et renvoie le fichier de réglages.
+
+    Les règles `deny` sont la première ligne : elles suffisent pour Write et
+    Edit si le CLI les applique sous `bypassPermissions` — ce qui n'a pas pu
+    être vérifié ici. Le hook, lui, s'exécute dans tous les modes. On met les
+    deux, et `garde.log` dira laquelle a servi.
+    """
+    biblio = str(BASE_DIR.resolve())
+    reglages = {
+        "permissions": {"deny": [f"Write({biblio}/**)", f"Edit({biblio}/**)",
+                                 f"NotebookEdit({biblio}/**)"]},
+        "hooks": {"PreToolUse": [{
+            "matcher": "Write|Edit|NotebookEdit|Bash",
+            "hooks": [{"type": "command", "command": f"python3 {GARDE}"}],
+        }]},
+    }
+    f = d / "reglages.json"
+    f.write_text(json.dumps(reglages, ensure_ascii=False, indent=2), encoding="utf-8")
+    return f
+
+
+def _empreinte_biblio():
+    """L'état de la bibliothèque, pour pouvoir le comparer après coup.
+
+    Le garde travaille sur du texte de commande ; il peut se faire contourner
+    par une écriture qu'il n'a pas su lire. Git, lui, ne se fait pas contourner :
+    ce qui a bougé se voit. On ne répare rien automatiquement — l'enseignante
+    peut très bien avoir édité un fichier pendant que la commande tournait — on
+    le dit, ce qui suffit à ne pas découvrir la chose trois semaines plus tard.
+    """
+    try:
+        p = subprocess.run(["git", "status", "--porcelain"], cwd=str(BASE_DIR),
+                           capture_output=True, text=True, timeout=30)
+        if p.returncode != 0:
+            return None
+        return set(p.stdout.splitlines())
+    except (OSError, subprocess.TimeoutExpired):
+        return None
+
+
+def _intrusions(avant):
+    """Les fichiers de la bibliothèque qui ont bougé pendant la commande."""
+    if avant is None:
+        return []
+    apres = _empreinte_biblio()
+    if apres is None:
+        return []
+    return sorted(l[3:].strip() for l in (apres - avant))
+
+
+# ── Contrôle de livraison ────────────────────────────────────────────────────
+# « Le dossier n'est pas vide » ne veut pas dire « l'activité est livrable ».
+# Une commande qui dépose la page interactive et rien d'autre passait pour
+# réussie ; l'enseignante ne s'en apercevait qu'en cherchant la fiche.
+
+ATTENDUS = {
+    "activite.html": "la page interactive",
+    "fiche-eleve.pdf": "la fiche de l'élève",
+    "corrige.pdf": "le corrigé",
+    "notes-enseignant.pdf": "les notes de l'enseignante",
+}
+# Sans celui-là, il n'y a pas d'activité du tout : c'est un échec, pas une
+# réserve.
+ESSENTIEL = "activite.html"
+
+LETTRE = (612, 792)   # 8,5 × 11 po en points PostScript
+MARQUES_FEUILLE = ("--paper", "--rule", ".eyebrow", ".nomline", ".chapeau")
+
+
+def _format_pdf(fichier):
+    """(largeur, hauteur) en points d'après le premier /MediaBox, ou None."""
+    try:
+        donnees = fichier.read_bytes()[:400_000]
+    except OSError:
+        return None
+    m = re.search(rb"/MediaBox\s*\[\s*([\d.]+)\s+([\d.]+)\s+([\d.]+)\s+([\d.]+)", donnees)
+    if not m:
+        return None
+    x0, y0, x1, y1 = (float(v) for v in m.groups())
+    return round(x1 - x0), round(y1 - y0)
+
+
+def _verifier_livraison(cid):
+    """La liste des réserves sur ce qui a été livré. Vide = rien à signaler."""
+    d = _dossier(cid)
+    presents = {f["nom"] for f in fichiers_produits(cid)}
+    reserves = []
+
+    for nom, quoi in ATTENDUS.items():
+        if nom not in presents:
+            reserves.append(f"Il manque {quoi} ({nom}).")
+            continue
+        if nom.endswith(".pdf"):
+            mesure = _format_pdf(d / nom)
+            if mesure and (abs(mesure[0] - LETTRE[0]) > 2 or abs(mesure[1] - LETTRE[1]) > 2):
+                reserves.append(f"{nom} n'est pas au format lettre "
+                                f"({mesure[0]}×{mesure[1]} pt au lieu de 612×792).")
+            source = d / (nom[:-4] + ".html")
+            if source.exists():
+                texte = source.read_text(encoding="utf-8", errors="replace")
+                if [m for m in MARQUES_FEUILLE if m not in texte]:
+                    reserves.append(f"{nom} n'a pas été bâti sur la feuille commune "
+                                    "— la mise en page a été réinventée.")
+            elif nom != "fiche-eleve.pdf":
+                reserves.append(f"{nom} n'a pas de source HTML : impossible de vérifier "
+                                "sa mise en page.")
+    return reserves
+
+
 # ── Lancement ────────────────────────────────────────────────────────────────
 
 def creer(prompt, titre="", criteres=None):
@@ -346,7 +512,10 @@ def creer(prompt, titre="", criteres=None):
         "erreur": None,
         "criteres": criteres or {},
         "cout": None,
+        "coutEstime": 0,
         "tours": 0,
+        "reserves": [],
+        "intrusions": [],
     }
     _ecrire_fiche(cid, fiche)
 
@@ -401,21 +570,35 @@ def _resumer(evenement):
 def _travailler(cid, prompt):
     d = _dossier(cid)
     fiche = json.loads(_fiche(cid).read_text(encoding="utf-8"))
+    reglages = _ecrire_reglages(d)
     cmd = [
         chemin_cli(), "-p",
         "--output-format", "stream-json", "--verbose",
         # Le travail est confiné au dossier de la commande, mais il doit pouvoir
         # y écrire et y lancer les scripts audio sans qu'on soit là pour
-        # approuver. La bibliothèque est ajoutée en lecture par --add-dir.
+        # approuver.
         "--permission-mode", "bypassPermissions",
+        # --add-dir ouvre un dossier EN ÉCRITURE, pas en lecture. La
+        # bibliothèque est donc ajoutée pour être lue, et refermée par
+        # forge_garde.py, qui refuse tout ce qui voudrait y écrire.
         "--add-dir", str(BASE_DIR),
         "--add-dir", str(GENERATIONS),
+        "--settings", str(reglages),
     ]
     _noter(cid, "Commande reçue — " + fiche["titre"])
+    _noter(cid, f"Plafond : {PLAFOND_USD:.2f} $ · {TOURS_MAX} tours · "
+                f"{DUREE_MAX_S // 60} minutes")
+
+    # Le garde travaille sur ce qu'il voit passer ; git dit ce qui a vraiment
+    # bougé. On relève l'état d'avant pour pouvoir comparer.
+    empreinte = _empreinte_biblio()
+
+    env = _env_propre()
+    env.update(FORGE_BIBLIO=str(BASE_DIR), FORGE_DOSSIER=str(d), FORGE_CWD=str(d))
 
     try:
         p = subprocess.Popen(
-            cmd, cwd=str(d), env=_env_propre(),
+            cmd, cwd=str(d), env=env,
             stdin=subprocess.PIPE, stdout=subprocess.PIPE, stderr=subprocess.PIPE,
             text=True, encoding="utf-8", bufsize=1,
         )
@@ -437,6 +620,12 @@ def _travailler(cid, prompt):
 
     limite = time.monotonic() + DUREE_MAX_S
     resultat, tours, cout = None, 0, None
+    # La comptabilité du fil : les jetons d'entrée sont lus tels quels, ceux de
+    # sortie sont estimés d'après ce qui est émis. Un message arrive en
+    # plusieurs morceaux qui répètent le même compte d'entrée — d'où `vus`.
+    tarif, vus, caracteres = TARIFS["opus"], set(), 0
+    jetons = {"entree": 0, "cache_lu": 0, "cache_ecrit": 0}
+    palier = PLAFOND_USD / 4
     with open(d / "flux.jsonl", "a", encoding="utf-8") as brut:
         for ligne in p.stdout:
             brut.write(ligne)
@@ -451,8 +640,45 @@ def _travailler(cid, prompt):
                 ev = json.loads(ligne)
             except json.JSONDecodeError:
                 continue
+            if ev.get("type") == "system" and ev.get("subtype") == "init":
+                tarif = _tarif(ev.get("model"))
             if ev.get("type") == "assistant":
                 tours += 1
+                message = ev.get("message") or {}
+                if message.get("id") not in vus:
+                    vus.add(message.get("id"))
+                    u = message.get("usage") or {}
+                    jetons["entree"] += u.get("input_tokens") or 0
+                    jetons["cache_lu"] += u.get("cache_read_input_tokens") or 0
+                    jetons["cache_ecrit"] += u.get("cache_creation_input_tokens") or 0
+                for bloc in message.get("content", []):
+                    if bloc.get("type") == "text":
+                        caracteres += len(bloc.get("text") or "")
+                    elif bloc.get("type") == "thinking":
+                        caracteres += len(bloc.get("thinking") or "")
+                    elif bloc.get("type") == "tool_use":
+                        caracteres += len(json.dumps(bloc.get("input") or {},
+                                                     ensure_ascii=False))
+                vu = _cout_vu(tarif, jetons, caracteres)
+                if vu >= palier:
+                    # Un repère tous les quarts de plafond : assez pour suivre la
+                    # dépense monter, pas assez pour noyer le journal.
+                    _noter(cid, f"Dépense estimée : {vu:.2f} $ sur {PLAFOND_USD:.2f} $")
+                    palier += PLAFOND_USD / 4
+                    _majcout(cid, vu)
+                if tours > TOURS_MAX:
+                    p.terminate()
+                    _terminer(cid, "echec",
+                              f"Arrêtée après {tours} tours (plafond {TOURS_MAX}). "
+                              "Le travail tournait en rond.", tours=tours, cout=vu)
+                    return
+                if vu >= PLAFOND_USD:
+                    p.terminate()
+                    _terminer(cid, "echec",
+                              f"Arrêtée au plafond de {PLAFOND_USD:.2f} $ "
+                              f"({vu:.2f} $ estimés, {tours} tours). Le plafond se "
+                              "règle avec FORGE_PLAFOND_USD.", tours=tours, cout=vu)
+                    return
             if ev.get("type") == "result":
                 resultat = ev
                 cout = ev.get("total_cost_usd")
@@ -465,17 +691,35 @@ def _travailler(cid, prompt):
     with _verrou:
         _processus.pop(cid, None)
 
+    intrusions = _intrusions(empreinte)
+    if intrusions:
+        _noter(cid, "⚠ Fichiers de la bibliothèque modifiés pendant la commande : "
+                    + ", ".join(intrusions[:6])
+                    + (f" (+{len(intrusions) - 6})" if len(intrusions) > 6 else ""))
+
     if resultat and resultat.get("is_error"):
         _terminer(cid, "echec", resultat.get("result") or "Erreur signalée par Claude Code",
-                  tours=tours, cout=cout)
+                  tours=tours, cout=cout, intrusions=intrusions)
     elif p.returncode not in (0, None):
         motif = "Annulée" if p.returncode < 0 else (erreurs[-400:] or f"Code de sortie {p.returncode}")
-        _terminer(cid, "annulee" if p.returncode < 0 else "echec", motif, tours=tours, cout=cout)
+        _terminer(cid, "annulee" if p.returncode < 0 else "echec", motif,
+                  tours=tours, cout=cout, intrusions=intrusions)
     elif not fichiers_produits(cid):
         _terminer(cid, "echec", "Le travail s'est terminé sans produire de fichier",
-                  tours=tours, cout=cout)
+                  tours=tours, cout=cout, intrusions=intrusions)
     else:
-        _terminer(cid, "fait", None, tours=tours, cout=cout)
+        reserves = _verifier_livraison(cid)
+        # Sans la page interactive il n'y a rien à publier : c'est un échec, et
+        # non une activité livrée avec une réserve.
+        manque_essentiel = not (d / ESSENTIEL).exists()
+        for r in reserves:
+            _noter(cid, "⚠ " + r)
+        if manque_essentiel:
+            _terminer(cid, "echec", reserves[0] if reserves else "Activité incomplète",
+                      tours=tours, cout=cout, reserves=reserves, intrusions=intrusions)
+        else:
+            _terminer(cid, "fait", None, tours=tours, cout=cout,
+                      reserves=reserves, intrusions=intrusions)
 
 
 # ── Publication ──────────────────────────────────────────────────────────────
@@ -556,9 +800,20 @@ def marquer_publiee(cid, activite_id):
     return fiche
 
 
-def _terminer(cid, etat, erreur, tours=0, cout=None):
+def _majcout(cid, cout):
+    """Note la dépense en cours sur la fiche, que le suivi la montre monter."""
+    try:
+        fiche = json.loads(_fiche(cid).read_text(encoding="utf-8"))
+    except (OSError, ValueError):
+        return
+    fiche["coutEstime"] = round(cout, 4)
+    _ecrire_fiche(cid, fiche)
+
+
+def _terminer(cid, etat, erreur, tours=0, cout=None, reserves=None, intrusions=None):
     fiche = json.loads(_fiche(cid).read_text(encoding="utf-8"))
     fiche.update(etat=etat, erreur=erreur, tours=tours, cout=cout,
+                 reserves=reserves or [], intrusions=intrusions or [],
                  fin=datetime.now().isoformat(timespec="seconds"))
     _ecrire_fiche(cid, fiche)
     _noter(cid, {"fait": "Terminé ✓", "annulee": "Annulée"}.get(etat, "Échec : " + str(erreur)))

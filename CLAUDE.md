@@ -599,12 +599,48 @@ que du texte.
   dossier de la commande et `--add-dir` sur la bibliothèque : il faut qu'il
   puisse écrire et lancer les scripts audio sans personne pour approuver.
   C'est le prix de la génération sans surveillance — d'où la boucle locale.
+- **`--add-dir` ouvre un dossier en écriture, pas en lecture.** La bibliothèque
+  y était ajoutée pour être *lue* ; en `bypassPermissions`, cela revenait à
+  laisser une commande égarée réécrire un module. `forge_garde.py` la referme :
+  branché comme hook `PreToolUse` (les hooks s'exécutent dans tous les modes,
+  contrairement aux permissions), il refuse tout geste d'écriture vers la
+  bibliothèque et laisse passer les lectures. Write et Edit sont décidés sur le
+  champ `file_path` — exact ; Bash est décidé sur le texte de la commande —
+  heuristique (redirections, `tee`, `mv`/`cp` à destination, `rm`, `sed -i`,
+  `git` qui modifie). D'où la deuxième ligne : `_empreinte_biblio()` relève
+  `git status` avant et après, et ce qui a bougé est écrit au journal et sur la
+  fiche (`intrusions`). On ne répare rien tout seul — l'enseignante peut avoir
+  édité un fichier pendant que la commande tournait.
+- **`garde.log`, dans le dossier de la commande, dit si le garde s'est
+  déclenché.** Fichier vide = le hook n'a jamais été appelé, ce qui est un
+  défaut de branchement, pas une absence de danger. C'est le premier endroit à
+  regarder si l'on doute du dispositif.
+- **Trois plafonds, pas un.** `DUREE_MAX_S` (30 min), `TOURS_MAX` (150 tours,
+  comptés ici — le CLI installé n'a pas de `--max-turns`) et `PLAFOND_USD`
+  (5 $, réglable par `FORGE_PLAFOND_USD`). Le coût réel n'arrive qu'à la fin,
+  dans l'événement `result` : trop tard pour couper. On l'estime donc au fil de
+  l'eau — jetons d'entrée comptés exactement (dédoublonnés par `message.id`,
+  un message arrivant en plusieurs morceaux), jetons de sortie déduits des
+  caractères émis (`CARACTERES_PAR_JETON`). Formule et tarifs vérifiés sur la
+  commande Météo : 2,2309 $ estimés contre 2,2201 $ facturés, soit 0,5 %
+  d'écart. La dépense monte dans la ligne d'état du compositeur, marquée
+  « estimé » tant que le chiffre réel n'est pas là.
+- **« Le dossier n'est pas vide » ne veut pas dire « c'est livrable ».**
+  `_verifier_livraison()` réclame les quatre fichiers (`activite.html` et les
+  trois imprimés), vérifie que chaque PDF est bien au format lettre (612×792
+  pt, lu dans son `/MediaBox`) et que sa source HTML porte les marques de la
+  feuille commune. Ce qui manque devient une **réserve** : l'activité reste
+  publiable, mais la réserve s'affiche en ambre dans le compositeur et reste
+  sur la fiche. Seule l'absence d'`activite.html` est un échec — il n'y a alors
+  rien à publier.
 - Le prompt part par **l'entrée standard** : avec de la documentation jointe il
   dépasse ce qui passe confortablement en argument de ligne de commande.
 - `/api/forge/fichier` ne sert que les chemins **réellement produits**, relevés
   par `fichiers_produits()` : le paramètre d'URL choisit parmi eux, il ne
   désigne jamais un chemin. Même règle que les archives du dépôt de matériel.
-- Plafond de 30 minutes (`DUREE_MAX_S`), puis le processus est coupé.
+- `reglages.json` et `garde.log` sont posés par la forge dans le dossier de la
+  commande : ils comptent parmi les **fichiers de service**, sans quoi la
+  publication les recopierait dans l'activité.
 
 ## Dépôt de matériel (PowerPoints et fiches à imprimer)
 

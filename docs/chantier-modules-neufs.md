@@ -78,3 +78,21 @@ Le 17 est pris par `module-banque`, d'où le saut.
   reproduire `charSlug()` du moteur **au caractère près**. Une expression
   régulière « propre » aurait écrit `jean_philippe` là où le moteur demande
   `jean-philippe`.
+- **Séances faites.** Seize présentations, 187 diapositives, et les seize
+  fiches élèves qui en sortent (142 blocs, noir et blanc vérifié). Pied de page
+  contrôlé dans les seize `.pptx` livrés : `MODULE 11` partout, conforme au
+  registre. `sections.json` et `materiel.json` relevés et vérifiés.
+- Un défaut du socle corrigé en passant : `_slug()` de `theme.py` passait par
+  `NFKD`, qui **ne décompose pas les ligatures** — « vœux » devenait « vux »
+  dans le nom de fichier. Les ligatures sont maintenant écrites en toutes
+  lettres avant la normalisation. Aucun autre module n'est touché : aucun titre
+  de séance existant ne contient de ligature (vérifié sur les 160 fichiers de
+  `decks/`).
+- `Deck.capture()` attend un **identifiant d'exercice**, pas un titre libre, et
+  demande une capture produite par `captures.py`. Seul `module-sante` en
+  utilise ; la diapositive prévue pour E1 a été refaite en cartes.
+
+## Module 11 — terminé
+
+Contenu, build, médias, seize séances, seize fiches, dépôt à jour, poussé en
+production.
