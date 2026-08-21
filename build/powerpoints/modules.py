@@ -326,6 +326,17 @@ MODULES = {
                         'Trouver le rayon et demander',
                         'Payer et faire livrer'),
     },
+    'module-n3-restaurant': {
+        'numero': 4, 'activite': 77, 'niveau': 3,
+        'titre': 'Commander au comptoir',
+        'chapeau': "Lire le tableau du menu, commander un format au "
+                   "comptoir, comprendre le préposé et demander ce qui "
+                   "manque.",
+        'seances': GRILLE_3_DEFIS,
+        'blocs': _blocs('Lire le menu',
+                        'Commander au comptoir',
+                        'Comprendre le préposé'),
+    },
     # ── Niveau 5 ────────────────────────────────────────────────────
     # `module-logement` (niveau 4) traite la même situation du programme, mais
     # s'arrête à la visite et à la comparaison. Ici, on téléphone, on prend des
