@@ -1,0 +1,21 @@
+const FC_CARDS = [
+  {word:"une description de tâches", def:"Le document qui énumère tout ce qu'une personne doit faire dans son poste.", ex:"Sa <strong>description de tâches</strong> compte quatre blocs, de la réception au compte rendu.", img:"/assets/interactive/module-n8-emploi/vocab/description-taches.jpg", tache:"prep"},
+  {word:"un supérieur immédiat", def:"La personne à qui on rend des comptes directement, celle qui approuve et qui tranche.", ex:"Manon Trépanier est le <strong>supérieur immédiat</strong> de Nadia.", tache:"prep"},
+  {word:"faire le suivi", def:"Reprendre un dossier commencé pour savoir où il en est et le faire avancer.", ex:"Le mardi et le jeudi, elle <strong>fait le suivi</strong> des livraisons auprès du transporteur.", img:"/assets/interactive/module-n8-emploi/vocab/suivi.jpg", tache:"prep"},
+  {word:"un imprévu", def:"Ce qui arrive sans avoir été planifié et qui oblige à changer sa journée.", ex:"Un bon de commande reçu à deux heures est un <strong>imprévu</strong>, pas une urgence.", tache:"prep"},
+
+  {word:"un relevé de paie", def:"Le document qui détaille les heures travaillées, le taux et les retenues d'une période.", ex:"Sur son <strong>relevé de paie</strong>, les quarante-quatre heures sont au taux simple.", img:"/assets/interactive/module-n8-emploi/vocab/releve-paie.jpg", tache:"t1"},
+  {word:"les heures supplémentaires", def:"Les heures travaillées au-delà de la semaine normale de travail.", ex:"Au-delà de quarante heures, les <strong>heures supplémentaires</strong> sont majorées de cinquante pour cent.", img:"/assets/interactive/module-n8-emploi/vocab/heures-supplementaires.jpg", tache:"t1"},
+  {word:"une réclamation", def:"La démarche par laquelle on demande qu'une somme due soit corrigée ou versée.", ex:"Sa <strong>réclamation</strong> porte sur deux périodes de paie, pas une seule.", tache:"t1"},
+  {word:"un accusé de réception", def:"Le message par lequel une personne confirme qu'elle a bien reçu un document.", ex:"Elle demande un <strong>accusé de réception</strong> pour garder une trace de la date.", img:"/assets/interactive/module-n8-emploi/vocab/accuse-reception.jpg", tache:"t1"},
+
+  {word:"un ordre du jour", def:"La liste des points qui seront traités pendant une réunion, dans l'ordre prévu.", ex:"La quincaillerie est le point trois de l'<strong>ordre du jour</strong>.", img:"/assets/interactive/module-n8-emploi/vocab/ordre-du-jour.jpg", tache:"t2"},
+  {word:"un compte rendu", def:"Le texte court qui rapporte les décisions d'une réunion, qui les applique et pour quand.", ex:"Son <strong>compte rendu</strong> tient en une page : trois décisions, trois responsables, trois dates.", img:"/assets/interactive/module-n8-emploi/vocab/compte-rendu.jpg", tache:"t2"},
+  {word:"un compromis", def:"La solution intermédiaire que deux parties acceptent quand aucune n'obtient tout.", ex:"Partager les commandes entre deux fournisseurs est un <strong>compromis</strong>.", tache:"t2"},
+  {word:"une échéance", def:"La date limite à laquelle une chose doit être faite.", ex:"L'<strong>échéance</strong> du calcul d'espace est fixée au douze septembre.", img:"/assets/interactive/module-n8-emploi/vocab/echeance.jpg", tache:"t2"},
+
+  {word:"le perfectionnement", def:"Le fait d'améliorer des compétences qu'on possède déjà, plutôt que d'apprendre un métier neuf.", ex:"Le <strong>perfectionnement</strong> se fait souvent par des formations courtes, le soir.", img:"/assets/interactive/module-n8-emploi/vocab/perfectionnement.jpg", tache:"t3"},
+  {word:"une attestation", def:"Le document officiel qui prouve qu'une formation a été suivie et réussie.", ex:"L'<strong>attestation</strong> se donne le soir, à raison de deux cours par session.", tache:"t3"},
+  {word:"un congé de formation", def:"Le temps libéré par l'employeur pour qu'un employé suive un cours pendant ses heures.", ex:"Elle demande un <strong>congé de formation</strong> d'une demi-journée par semaine.", img:"/assets/interactive/module-n8-emploi/vocab/conge-formation.jpg", tache:"t3"},
+  {word:"la reconnaissance des acquis", def:"La démarche qui fait créditer officiellement ce qu'une personne sait déjà faire.", ex:"Grâce à la <strong>reconnaissance des acquis</strong>, elle ne suivrait que ce qui lui manque.", img:"/assets/interactive/module-n8-emploi/vocab/reconnaissance-acquis.jpg", tache:"t3"},
+];
