@@ -222,7 +222,14 @@ def _meme_contenu(a, b, morceau=1 << 16):
 
 
 def _sync_interactive(src, dst):
-    """Recopie `assets/interactive/` dans le volume, fichier par fichier.
+    """**Plus appelée depuis le 21 août 2026** — gardée pour mémoire.
+
+    Elle recopiait `assets/interactive/` dans le volume à chaque démarrage.
+    Ce dossier est servi depuis BASE_DIR : la copie n'a jamais été lue, et
+    c'est elle qui a rempli le volume (588 Mo) jusqu'à tronquer
+    `activities.json` en pleine écriture. Voir `init_storage`.
+
+    Recopie `assets/interactive/` dans le volume, fichier par fichier.
 
     Avant, c'était `rmtree` puis `copytree` : tout le magasin était effacé et
     réécrit à chaque démarrage — 200 Mo d'écritures pour quelques fichiers
@@ -302,12 +309,37 @@ def init_storage():
     data_dst.mkdir(parents=True, exist_ok=True)
     assets_dst.mkdir(parents=True, exist_ok=True)
 
-    # Toujours synchroniser assets/interactive/ depuis BASE_DIR à chaque démarrage
-    # (les fichiers interactifs évoluent avec chaque déploiement)
+    # `assets/interactive/` n'est PLUS recopié dans le volume — et c'est la
+    # correction du 21 août 2026, jour où le volume s'est rempli et où
+    # `activities.json` s'est retrouvé tronqué en pleine écriture.
+    #
+    # Ce dossier est **servi depuis BASE_DIR** (voir le `do_GET` : le chemin
+    # `/assets/interactive/` part directement dans `super().do_GET()`, sans
+    # passer par `_serve_from_storage`). Sa copie sur le volume n'était donc
+    # jamais lue : 588 Mo de doublons, qui grandissaient de quelques dizaines
+    # de mégaoctets à chaque module produit — cent vingt PowerPoints et deux
+    # mille MP3 en deux jours.
+    #
+    # Rien n'est supprimé ici. `_upload_interactive` écrit dans ce même
+    # dossier du volume quand une activité est téléversée : des fichiers
+    # peuvent s'y trouver qui n'existent nulle part dans le code, et un
+    # `rmtree` les emporterait. Le ménage se fait à la main, en connaissance
+    # de cause.
     src_interactive = BASE_DIR / "assets" / "interactive"
     dst_interactive = STORAGE_DIR / "assets" / "interactive"
-    if src_interactive.exists():
-        _sync_interactive(src_interactive, dst_interactive)
+    if STORAGE_DIR == BASE_DIR:
+        pass                      # en local, la source EST la destination
+    elif dst_interactive.exists():
+        try:
+            poids = sum(f.stat().st_size for f in dst_interactive.rglob('*')
+                        if f.is_file())
+            libre = shutil.disk_usage(str(STORAGE_DIR)).free
+            print("[INFO] volume : %.0f Mo libres · %.0f Mo dormants dans "
+                  "assets/interactive/, jamais servis depuis le volume "
+                  "(récupérables à la main)" % (libre / 1e6, poids / 1e6),
+                  flush=True)
+        except OSError as e:
+            print("[WARN] volume non mesuré : %s" % e, flush=True)
 
     # Fusionner les activités intégrées au code dans le volume :
     #  - les ids présents dans git mais absents du volume sont ajoutés ;
