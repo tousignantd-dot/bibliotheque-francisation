@@ -201,6 +201,50 @@ Ce que cette nuit a appris, et qui est déjà écrit là où il faut :
 **La file reprend à l'activité 65** (niveau 5 · Consultation d'un professionnel
 de la santé), consigne prête dans `docs/consignes-a-coller.md`.
 
+**21 août 2026 — vague 3 entamée : activité 75, `module-n3-vetements`.**
+« Magasiner du linge », niveau 3, `numero` 2. Scénario inventé : Farida,
+arrivée du Maroc il y a cinq mois, achète son premier manteau d'hiver ;
+Jocelyne conseille au rayon, Samir aux chaussures, Kevin est à la caisse.
+23 exercices, 7 mini-leçons, 7 dialogues, 16 mots, 22 images, **249 extraits
+audio**, 16 séances (195 diapositives, 145 blocs de fiches).
+
+*Ce qui le distingue de son voisin du 4* : `module-vetements` (activité 54)
+fait essayer, demander un avis, lire l'entretien et se faire rembourser ; au
+niveau 3, les deux seules intentions du programme sont « s'informer sur un
+vêtement » et « lire une étiquette », alors on nomme, on demande et on compare
+deux prix — rien de plus. Le scénario `vetement` de `server.py` était trop
+lourd d'un cran pour la même raison : un scénario `linge` a été ajouté, en
+phrases courtes et au présent, sans entretien ni échange.
+
+Quatre choses apprises, qui valent pour les onze modules restants du niveau 3 :
+
+- **Les clés de `CARRIER_PHRASES` sont les mots accentués.** Le gabarit fait
+  `CARRIER_PHRASES[w]` sur le mot **tel qu'il est écrit** dans la liste
+  `savoir[…][2]`. Une clé en slug (`allee` pour « allée ») n'est jamais
+  trouvée : la pastille lit alors le mot seul, mal prononcé — exactement ce
+  que la phrase porteuse existe pour éviter. `module-n3-epicerie` a ce défaut
+  sur douze de ses quinze mots.
+- **`carrier.js` doit commencer par `const CARRIER_PHRASES = `.** Un
+  commentaire d'en-tête arrête le build ; le commentaire va **dans** l'objet.
+- **Le relevé des sons se fait très bien hors navigateur.** Une page ouverte
+  en `data:` ne peut pas écrire dans `localStorage` : `render()` y échoue et le
+  relevé par le DOM rend zéro pastille de mot — sans rien dire. Vingt lignes
+  de node sur `exos.js`, `carrier.js` et `plus.js` reproduisent les trois
+  endroits du gabarit qui appellent `playWord`, et le résultat a été comparé au
+  relevé du navigateur : même nombre de clés, mêmes valeurs.
+- **`theme.py` refuse un tableau trop chargé**, et c'est une bonne nouvelle.
+  Quatre tableaux ont dû être raccourcis ou coupés en deux. De même, aucun
+  caractère hors Verdana : une flèche dans un encadré de règle serait partie
+  en carré vide chez l'enseignante.
+
+*Sur les fichiers partagés* : au plus fort de la soirée, **trois** sessions
+écrivaient dans `modules.py` et `activities.json`. Mes deux entrées ont été
+emportées par le commit d'une session voisine pendant qu'elles étaient dans
+l'index — l'incident exact décrit à la règle 1. Rien n'a été perdu, tout est
+poussé, et l'historique ment d'une ligne. La leçon tient : **ne pas laisser
+l'index habité**, et vérifier tout de suite avec
+`git show --name-only --format="" HEAD`.
+
 
 ## Vague 4 — le niveau 2 au complet
 
