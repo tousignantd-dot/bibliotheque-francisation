@@ -226,3 +226,31 @@ reformulations. Ni les `sub`, ni les `tit`, ni les intitulés de bandeau
 n'entrent dans le manifeste audio — seules les listes `savoir[…][2]` et les
 `txt` des exercices à cartes y entrent. Reformuler une consigne ou un intitulé
 est donc gratuit ; reformuler la réponse d'un exercice d'écoute ne l'est pas.
+
+`module-n3-loyer` (activité 81), mesuré le 21 août 2026, **avant tout média** :
+ses **212** énoncés visibles de plus de douze caractères — `txt`, `q`, `a`,
+`sub` et `tit`, donc le relevé large — ont été comparés aux **7 153** des
+trente-sept autres modules de `build/contenu/`. Première mesure :
+**6 identiques, soit 2,8 %**, déjà sous le seuil.
+
+Quatre ont été reformulés avec les mots du module : deux consignes que le
+moteur impose à ses types d'exercice (« Réécoute la conversation dans le
+corridor, puis réponds. », « Lis chaque phrase et dis si elle est vraie ou
+fausse. »), un titre de vrai-ou-faux (« Vrai ou Faux — Je vous appelle pour
+l'annonce », que `module-n5-logement` portait déjà) et **une phrase de
+contenu** — « Le logement est libre le premier juillet. » — que le même voisin
+portait mot pour mot. Elle est devenue « On peut emménager à partir du premier
+juillet. » La mesure tombe à **2 identiques sur 212, soit 0,9 %**.
+
+Les deux qui restent sont des **entrées du lexique du programme** : « un quatre
+et demie » et « chauffé et éclairé ». Elles sont communes à
+`module-n5-logement` parce que le programme les rattache à la même situation
+aux deux niveaux. Les renommer éloignerait le module de sa seule source, comme
+pour les quatre mots de `module-n3-restaurant`.
+
+Le point de méthode tient une fois de plus, et il a été vérifié par `diff` :
+les 224 clés de `sons_module_n3_loyer.json` sont identiques avant et après les
+quatre reformulations. La ligne de contenu touchée appartient à un `vf` **sans
+cartes écoutables** — seuls les `vf` à `cards:true, listen:true` mettent leurs
+`txt` au manifeste. Vérifier ce point avant de reformuler une réponse coûte dix
+secondes et évite de repayer des MP3.
