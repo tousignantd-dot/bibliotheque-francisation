@@ -486,6 +486,35 @@ MODULES = {
                         "Téléphoner pour visiter",
                         "Poser mes questions sur place"),
     },
+    # `build/cadre.py 3 "Relations sociales"` a décidé de la forme de ce
+    # module, et son verdict est franc : **treize intentions, dont dix orales**
+    # — comprendre et formuler une invitation, comprendre et donner une
+    # permission, se présenter et présenter quelqu'un, complimenter, décrire un
+    # objet, une personne ou un problème. La compréhension écrite n'en compte
+    # qu'une (lire une description) et la production écrite deux (rédiger une
+    # invitation, décrire). Le module est donc une suite de conversations
+    # d'escalier, et non un module de papiers : les deux seuls écrits sont un
+    # carton d'invitation et une petite affiche de description.
+    #
+    # Trois voisins sur le même sujet, aucun recoupement. `module-n2-bonjour`
+    # (niveau 2) s'arrête au salut et au « ça va ? » ; `module-relations`
+    # (niveau 4) donne des nouvelles et raconte une expérience passée ;
+    # `module-n5-voisinage` (niveau 5) organise une fête de ruelle et
+    # argumente son refus. Ici, au niveau 3, on entretient le lien court et
+    # régulier de l'immeuble : demander la permission, inviter, remercier,
+    # décrire ce qui manque.
+    'module-n3-voisins': {
+        'numero': 9, 'activite': 82, 'niveau': 3,
+        'titre': "L'escalier de la rue Dézéry",
+        'chapeau': "Se présenter et présenter quelqu'un dans son immeuble, "
+                   "demander et donner une permission, inviter ses voisins et "
+                   "répondre à une invitation, puis décrire une personne ou "
+                   "un objet perdu.",
+        'seances': GRILLE_3_DEFIS,
+        'blocs': _blocs("Est-ce que je peux ?",
+                        "Venez prendre un café",
+                        "Il est comment ?"),
+    },
     # ── Niveau 5 ────────────────────────────────────────────────────
     # `module-logement` (niveau 4) traite la même situation du programme, mais
     # s'arrête à la visite et à la comparaison. Ici, on téléphone, on prend des
@@ -690,6 +719,30 @@ MODULES = {
         'blocs': _blocs("Au comptoir de la gare d'autocars",
                         "Ce qui est écrit sur la région",
                         "Sur place, avec les gens de la région"),
+    },
+
+    # « Suivi de l'actualité », niveau 5. Le programme n'y donne qu'une seule
+    # intention, en compréhension écrite : comprendre un fait divers dans un
+    # journal. Le module est bâti sur elle et sur ce que le niveau 5 demande
+    # d'en faire — un discours simple mais organisé : on lit, on raconte à
+    # quelqu'un qui n'a pas lu, on rapporte ce que les gens ont dit, puis on
+    # donne son avis. Ne recoupe pas `module-nouvelles` (41), au niveau 4, où
+    # l'on écoute le bulletin et où l'on répond à des questions de repérage ;
+    # ici la lecture n'est qu'un point de départ et tout le travail est de
+    # restituer. Ne recoupe pas non plus `module-n7-actualite` (60), qui
+    # démêle les genres du journalisme et intervient dans un blogue, ni
+    # `module-n5-transport` (69), qui écoute un bulletin de circulation pour
+    # refaire son trajet le matin même.
+    'module-n5-actualite': {
+        'numero': 11, 'activite': 71, 'niveau': 5,
+        'titre': 'Raconter une nouvelle',
+        'chapeau': "Lire un fait divers dans le journal local, le raconter à "
+                   "quelqu'un qui ne l'a pas lu, rapporter ce que les gens "
+                   "ont dit et donner son avis.",
+        'seances': GRILLE_3_DEFIS,
+        'blocs': _blocs("Ce qui est arrivé",
+                        'Ce que les gens ont dit',
+                        "Ce que j'en pense"),
     },
 
     'module-n6-recherche': {
