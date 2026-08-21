@@ -4623,6 +4623,89 @@ JEU_DE_ROLE_POSTE = {
 }
 
 
+# ── module-n3-loyer (activité 81) ─────────────────────────────────────────
+# Le scénario `louer` existait déjà et sert aux niveaux 4 et 5. Il ne convient
+# pas ici, et la raison est dans le programme : au niveau 3, la situation
+# « Location d'un logement » ne porte que deux intentions — comprendre et
+# demander des renseignements **pendant une visite**, et lire une petite
+# annonce. Les cas de `louer` demandent bien davantage : comparer un budget,
+# soupeser le bruit et les animaux, discuter la durée du bail. Un débutant y
+# noierait ses trois questions. D'où `visite` : les mêmes lieux, mais des cas
+# tenus en six lignes d'annonce, une personne qui répond une chose à la fois,
+# et six sujets au lieu de sept — ce qu'on peut couvrir en cinq minutes.
+JEU_DE_ROLE_VISITES = {
+    "chabot": {
+        "annonce": (
+            "4 ½ à louer, rue Chabot, Villeray. 2e étage. Deux chambres "
+            "fermées, cuisine avec balcon arrière. Chauffé, éclairé. Non "
+            "meublé. Buanderie au sous-sol. Pas de stationnement. Libre le "
+            "1er juillet. 1 150 $ par mois."
+        ),
+        "proprietaire": [
+            "Le chauffage et l'électricité sont compris dans le loyer : 1 150 $, il n'y a rien à ajouter.",
+            "Il n'y a aucun meuble et aucun électroménager : le logement est vide.",
+            "La buanderie est au sous-sol, deux laveuses et deux sécheuses, 2 $ la brassée.",
+            "Il n'y a pas de stationnement. On se gare dans la rue, avec une vignette de la Ville.",
+            "L'école primaire est à cinq minutes à pied et le métro Jean-Talon à dix minutes.",
+            "Le logement est libre le 1er juillet. Le bail est de douze mois.",
+            "Les enfants sont les bienvenus : la loi interdit de refuser une famille pour cette raison.",
+            "Tu ne demandes jamais plus que le premier mois de loyer : au Québec, un dépôt de garantie est interdit.",
+        ],
+        "locataire": [
+            "Tu habites à trois dans un 2 ½ trop petit et tu cherches un 4 ½.",
+            "Tu veux savoir si le chauffage est compris ou s'il s'ajoute au loyer.",
+            "Tu n'as pas d'auto, mais tu veux savoir si le métro est loin.",
+            "Tu as un enfant de six ans et tu cherches l'école la plus proche.",
+            "Tu veux savoir à quelle date tu peux emménager.",
+        ],
+    },
+    "soussol": {
+        "annonce": (
+            "3 ½ au sous-sol, rue de Bellechasse, Rosemont. Une chambre "
+            "fermée. Laveuse et sécheuse incluses. Non chauffé. Chat "
+            "accepté. Libre le 1er août. 850 $ par mois."
+        ),
+        "proprietaire": [
+            "Le loyer est de 850 $, mais le chauffage n'est pas compris : c'est environ 90 $ par mois l'hiver.",
+            "La laveuse et la sécheuse restent dans le logement : elles sont comprises.",
+            "Il y a une seule chambre fermée. Le salon n'a pas de porte.",
+            "Les fenêtres sont petites et hautes : le logement est au sous-sol.",
+            "Le chat est accepté. Le chien, non : les voisins du dessus ont un bébé.",
+            "Il y a une place de stationnement derrière, comprise dans le loyer.",
+        ],
+        "locataire": [
+            "Tu vis seul et tu as un chat.",
+            "Tu veux savoir combien coûte le chauffage l'hiver, parce que le loyer ne le comprend pas.",
+            "Tu veux savoir s'il y a de la lumière dans le logement.",
+            "Tu demandes si la laveuse reste ou si le propriétaire la reprend.",
+            "Tu demandes s'il y a une place pour ton auto.",
+        ],
+    },
+    "meuble": {
+        "annonce": (
+            "2 ½ meublé, rue Saint-Hubert, près du métro. Meublé et "
+            "chauffé, électricité comprise. Internet non compris. Libre "
+            "immédiatement. 780 $ par mois."
+        ),
+        "proprietaire": [
+            "Tout est compris dans le 780 $ : les meubles, le chauffage et l'électricité.",
+            "Internet n'est pas compris : le locataire ouvre son propre compte.",
+            "Il y a un lit, une table, deux chaises et une commode. Pas de vaisselle.",
+            "Le logement est libre tout de suite : on peut signer cette semaine.",
+            "Le bail est de douze mois, comme partout.",
+            "Il n'y a pas de balcon, mais il y a une grande fenêtre sur la rue.",
+        ],
+        "locataire": [
+            "Tu viens d'arriver au Québec et tu n'as aucun meuble.",
+            "Tu veux savoir ce qui est compris dans le loyer, exactement.",
+            "Tu demandes à quelle date tu peux entrer.",
+            "Tu demandes s'il y a un balcon ou un endroit pour prendre l'air.",
+            "Tu demandes combien de temps dure le bail.",
+        ],
+    },
+}
+
+
 # ── module-n5-quebec (activité 70) ────────────────────────────────────────
 # Se renseigner sur une région du Québec et parler aux gens qu'on y trouve.
 # Aucun des dix-neuf scénarios existants ne convenait : `circulation`
@@ -6071,6 +6154,64 @@ JEU_DE_ROLE_SCENARIOS = {
                         "L'élève est le ou la propriétaire et fait visiter."),
                 "conduite": ("Pose tes questions une à la fois, en commençant par ce qui compte le plus "
                              "pour ta situation. Réagis brièvement à chaque réponse avant de passer à la suite."),
+            },
+        },
+    },
+    "visite": {
+        "cadre": ("la visite d'un logement à louer, annoncé dans une petite "
+                  "annonce, au niveau débutant"),
+        "contexte_label": "L'annonce que vous avez tous les deux sous les yeux",
+        "cas": JEU_DE_ROLE_VISITES,
+        "adresse": ("Vouvoie l'élève : on ne se connaît pas, on se rencontre "
+                    "pour la première fois devant un logement."),
+        "sujets": [
+            "se présenter et dire qu'on vient pour l'annonce",
+            "le loyer, et ce qui est compris dedans : le chauffage, l'électricité",
+            "le nombre de pièces et de chambres fermées",
+            "la buanderie, le stationnement, le balcon",
+            "la date à laquelle le logement est libre",
+            "ce qu'il faut faire ensuite pour l'avoir",
+        ],
+        "cloture": ("Quand l'élève a posé ses questions et connaît le loyer, "
+                    "ce qui est compris et la date, redis-le en une phrase "
+                    "courte, puis termine poliment la visite. N'ajoute aucun "
+                    "renseignement qu'on ne t'a pas demandé."),
+        "ouverture": {
+            "locataire": "Bonjour, entrez. C'est pour l'annonce ?",
+            "proprietaire": "Bonjour, je viens pour le logement à louer.",
+        },
+        "roles": {
+            "proprietaire": {
+                "qui": ("Tu es le ou la propriétaire du logement et tu le "
+                        "fais visiter. L'élève est la personne qui vient le "
+                        "voir."),
+                "conduite": ("Niveau 3 : phrases courtes, un renseignement à "
+                             "la fois, jamais deux questions dans la même "
+                             "réplique. Ne donne jamais un renseignement "
+                             "avant qu'on te le demande — c'est tout "
+                             "l'exercice. Tiens-toi à ce que dit ta liste et "
+                             "n'invente aucun prix. Dis les montants et les "
+                             "dates lentement, et laisse à l'élève le temps "
+                             "de les répéter. Répète plus lentement si on te "
+                             "le demande, sans t'impatienter. Emploie les "
+                             "vrais mots du logement : chauffé, éclairé, "
+                             "meublé, le bail, la buanderie, le sous-sol, le "
+                             "stationnement, libre le premier juillet. Si "
+                             "l'élève ne pose aucune question, invite-le à en "
+                             "poser une, sans répondre à sa place."),
+            },
+            "locataire": {
+                "qui": ("Tu es la personne qui vient visiter le logement. "
+                        "L'élève est le ou la propriétaire et fait visiter."),
+                "conduite": ("Vouvoie l'élève. Pose tes questions une à la "
+                             "fois, en phrases courtes, et attends la réponse "
+                             "avant la suivante. Réagis brièvement à chaque "
+                             "réponse. Si la réponse est vague — « ça "
+                             "dépend », « c'est correct » —, redemande une "
+                             "fois, poliment : compris ou pas compris, "
+                             "combien exactement, à quelle date. Répète le "
+                             "loyer qu'on te donne pour vérifier que tu as "
+                             "bien compris."),
             },
         },
     },

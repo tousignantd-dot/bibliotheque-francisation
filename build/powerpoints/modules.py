@@ -460,6 +460,32 @@ MODULES = {
                         "Dire ce qu'il y a dedans, et payer",
                         "Le carton dans la boîte aux lettres"),
     },
+    # `build/cadre.py 3 "Location d’un logement"` donne **deux** intentions,
+    # et elles tiennent en deux gestes : « demander et comprendre des
+    # renseignements sur le logement pendant une visite » (compréhension et
+    # production orales) et « lire des petites annonces simples »
+    # (compréhension écrite). Aucune production écrite rattachée à la
+    # situation. Le module s'arrête donc là où le programme s'arrête : une
+    # annonce qu'on décode, un appel qu'on passe pour prendre rendez-vous,
+    # trois questions qu'on pose sur place. Ni bail à lire, ni comparaison
+    # argumentée, ni démarche au tribunal.
+    #
+    # Deux voisins, aucun recoupement. `module-logement` (niveau 4, module 9)
+    # visite deux logements et les compare pour choisir ; `module-n5-logement`
+    # fait la démarche entière — l'appel avec prise de notes, la visite, le
+    # bail et l'avis de renouvellement. Ici, l'élève ne compare rien et ne
+    # signe rien : il lit six lignes d'annonce, il téléphone, il demande.
+    'module-n3-loyer': {
+        'numero': 8, 'activite': 81, 'niveau': 3,
+        'titre': 'Trois questions avant de louer',
+        'chapeau': "Lire une petite annonce de logement, téléphoner pour "
+                   "prendre rendez-vous, puis poser ses questions pendant la "
+                   "visite.",
+        'seances': GRILLE_3_DEFIS,
+        'blocs': _blocs("Lire la petite annonce",
+                        "Téléphoner pour visiter",
+                        "Poser mes questions sur place"),
+    },
     # ── Niveau 5 ────────────────────────────────────────────────────
     # `module-logement` (niveau 4) traite la même situation du programme, mais
     # s'arrête à la visite et à la comparaison. Ici, on téléphone, on prend des
