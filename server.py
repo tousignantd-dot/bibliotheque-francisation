@@ -5116,6 +5116,105 @@ JEU_DE_ROLE_VOISINS = {
 }
 
 
+# ── module-n3-secretariat (activité 86) ───────────────────────────────────
+# Prévenir le personnel du centre de formation d'une absence ou d'un abandon.
+# C'est la seule intention que le programme rattache à cette situation au
+# niveau 3, inscrite deux fois : en production orale et en production écrite.
+# Aucun des scénarios existants ne convenait. `classe` (niveau 2) se passe
+# dans la salle, l'enseignante parle et l'élève exécute ; `couloirs`
+# (niveau 2) cherche un local ; les onze comptoirs du niveau 3 achètent un
+# produit ou un service. Ici, personne ne vend rien : l'élève vient annoncer
+# une chose qui le concerne, lui, et que le centre doit inscrire à son
+# dossier. C'est le seul scénario du dépôt où l'assistant n'a rien à offrir
+# et tout à consigner.
+#
+# Ce que sait la secrétaire est de la vie ordinaire d'un centre de formation
+# des adultes, pas d'un règlement particulier : on prévient avant plutôt
+# qu'après, un billet de clinique ou de garderie justifie une absence, une
+# absence sans nouvelle reste inscrite comme telle, un abandon se déclare et
+# l'attestation de fréquentation se demande avant de partir. Aucun chiffre
+# officiel n'est avancé — les délais nommés sont ceux du centre inventé.
+JEU_DE_ROLE_SECRETARIAT = {
+    "garderie": {
+        "contexte": (
+            "Le comptoir du secrétariat, un mercredi à huit heures moins "
+            "dix. Votre fils de cinq ans a fait de la fièvre toute la nuit "
+            "et la garderie ne le prendra pas demain. Vous venez dire que "
+            "vous ne serez pas là demain matin."
+        ),
+        "secretaire": [
+            "Tu salues, puis tu demandes le nom, le prénom et le groupe : c'est la première chose, chaque fois.",
+            "Tu demandes quel jour exactement, et si c'est l'avant-midi ou toute la journée.",
+            "Tu demandes la raison en une phrase : tu ne poses aucune question sur la santé de l'enfant.",
+            "Tu dis que tu inscris l'absence au dossier et que tu préviens l'enseignante.",
+            "Tu expliques qu'une absence annoncée d'avance est notée comme prévenue, et que ce n'est pas la même chose qu'une absence sans nouvelle.",
+            "Tu dis qu'un papier de la garderie ou de la clinique justifie l'absence, mais qu'il n'est pas obligatoire pour une seule journée.",
+            "Tu rappelles de demander à une camarade ce qui a été fait pendant l'absence.",
+            "Tu ne proposes jamais un service qu'on ne t'a pas demandé.",
+        ],
+        "eleve": [
+            "Tu viens dire que tu vas manquer le cours de demain matin.",
+            "Ton fils de cinq ans est malade et la garderie ne le prendra pas.",
+            "Tu ne sais pas encore si tu vas manquer une journée ou deux : tu le dis.",
+            "Tu demandes si tu dois apporter un papier.",
+            "Tu demandes qui prévient ton enseignante, toi ou le secrétariat.",
+            "Tu répètes la date à voix haute avant de partir.",
+        ],
+    },
+    "billet": {
+        "contexte": (
+            "Vous avez manqué trois jours la semaine passée : une grippe, "
+            "puis un rendez-vous à la clinique. Vous revenez ce matin avec "
+            "un papier de la clinique dans votre sac et vous passez au "
+            "secrétariat avant d'entrer en classe."
+        ),
+        "secretaire": [
+            "Tu demandes le nom, le prénom et le groupe avant tout.",
+            "Tu demandes quelles journées exactement ont été manquées, une date à la fois.",
+            "Tu regardes le papier et tu vérifies qu'on y lit une date et le nom de la personne.",
+            "Si le papier ne porte aucune date, tu le dis simplement et tu demandes de le faire compléter.",
+            "Tu expliques que tu inscris l'absence comme justifiée au dossier et que l'enseignante le verra.",
+            "Tu offres de faire une photocopie et de rendre l'original : tu ne gardes jamais le seul papier de quelqu'un.",
+            "Tu réponds une chose à la fois, sans deviner ce qu'on ne t'a pas demandé.",
+        ],
+        "eleve": [
+            "Tu reviens après trois jours d'absence et tu apportes un papier de la clinique.",
+            "Tu dis quelles journées tu as manquées : lundi, mardi et mercredi passés.",
+            "Tu demandes si le papier suffit pour les trois jours.",
+            "Tu demandes si tu peux garder l'original.",
+            "Tu demandes ce que tu as manqué et comment le reprendre.",
+            "Tu remercies avant de partir.",
+        ],
+    },
+    "arret": {
+        "contexte": (
+            "Vous commencez un emploi à temps plein le premier du mois "
+            "prochain et vous ne pourrez plus suivre le cours du matin. "
+            "Vous venez le dire au secrétariat et demander un papier qui "
+            "prouve que vous avez suivi le cours cette année."
+        ),
+        "secretaire": [
+            "Tu demandes le nom, le prénom et le groupe, puis tu écoutes jusqu'au bout sans interrompre.",
+            "Tu demandes la date du dernier jour de cours, et tu la fais répéter.",
+            "Tu demandes la raison en une phrase, sans insister.",
+            "Tu expliques la différence entre arrêter pour un temps et abandonner le cours : la première se note, la seconde ferme le dossier.",
+            "Tu proposes une seule fois d'en parler à l'enseignante avant de décider, puis tu respectes la réponse.",
+            "Tu dis qu'une attestation de fréquentation se prépare en quelques jours et qu'elle se demande avant de partir, jamais après.",
+            "Tu demandes à quelle adresse ou à quel courriel envoyer le papier.",
+            "Tu dis que la porte reste ouverte pour une inscription à une autre session, sans en faire une promesse.",
+        ],
+        "eleve": [
+            "Tu commences un emploi à temps plein le premier du mois prochain.",
+            "Tu viens dire que tu ne pourras plus venir au cours du matin.",
+            "Tu donnes la date de ton dernier jour.",
+            "Tu demandes une attestation qui prouve que tu as suivi le cours.",
+            "Tu demandes si tu pourras revenir à une autre session.",
+            "Tu demandes s'il faut signer quelque chose.",
+        ],
+    },
+}
+
+
 JEU_DE_ROLE_SCENARIOS = {
     "voisins": {
         "cadre": ("les petits échanges entre voisins d'un même immeuble — "
@@ -7010,6 +7109,65 @@ JEU_DE_ROLE_SCENARIOS = {
                              "taille. En essayant, décris ce qui ne va pas avec un adjectif "
                              "et un endroit : « c'est serré aux épaules ». Demande un avis "
                              "avant de décider."),
+            },
+        },
+    },
+    "secretariat": {
+        "cadre": ("une démarche au comptoir du secrétariat d'un centre de "
+                  "formation — prévenir d'une absence, la justifier, annoncer "
+                  "qu'on arrête —, au niveau débutant"),
+        "contexte_label": "Ce qui vous amène au secrétariat",
+        "cas": JEU_DE_ROLE_SECRETARIAT,
+        "adresse": ("Vouvoie l'élève : c'est le comptoir d'un établissement "
+                    "scolaire, on ne se tutoie pas."),
+        "sujets": [
+            "le nom, le prénom et le groupe, donnés dès le début",
+            "la salutation et la formule d'appel : bonjour madame, bonjour monsieur",
+            "ce qu'on vient annoncer, dit en une phrase : je vais être absente, je dois arrêter",
+            "quand : le jour, la date, l'avant-midi ou la journée complète",
+            "la raison, dite en une phrase courte avec « parce que »",
+            "le papier : est-ce qu'il en faut un, lequel, et quand l'apporter",
+        ],
+        "cloture": ("Quand l'élève a dit ce qu'il venait dire, redis en une "
+                    "phrase courte ce que tu inscris au dossier — la date, la "
+                    "raison, le papier attendu —, demande si c'est bien ça, "
+                    "puis conclus. N'allonge pas la conversation."),
+        "ouverture": {
+            "eleve": "Bonjour ! Qu'est-ce que je peux faire pour vous ?",
+            "secretaire": "Bonjour madame. J'aurais quelque chose à vous dire, s'il vous plaît.",
+        },
+        "roles": {
+            "secretaire": {
+                "qui": ("Tu es Ginette Cloutier, la secrétaire au comptoir de "
+                        "l'accueil du centre. L'élève est devant toi."),
+                "conduite": ("Niveau 3 : phrases courtes, une question à la "
+                             "fois, jamais deux dans la même réplique. Tu "
+                             "commences toujours par le nom, le prénom et le "
+                             "groupe. Tu ne juges jamais l'absence et tu ne "
+                             "demandes aucun détail médical. Redis les dates "
+                             "en toutes lettres et laisse à l'élève le temps "
+                             "de les répéter. Emploie les vrais mots du "
+                             "comptoir : une absence, un billet d'absence, "
+                             "justifier, le dossier, un abandon, une "
+                             "attestation de fréquentation. Si l'élève oublie "
+                             "de dire quand, demande-le : c'est le "
+                             "renseignement sans lequel tu ne peux rien "
+                             "inscrire. Reformule plus lentement si on te le "
+                             "demande, sans t'impatienter."),
+            },
+            "eleve": {
+                "qui": ("Tu es l'élève qui se présente au comptoir, et c'est "
+                        "l'élève de la classe qui joue la secrétaire du "
+                        "centre."),
+                "conduite": ("Vouvoie l'élève. Tu es un peu intimidé et tu ne "
+                             "connais pas les règles du centre : tu poses des "
+                             "questions simples et tu attends qu'on "
+                             "t'explique. Tu ne devines rien à la place de "
+                             "l'élève. Si sa réponse est vague — « c'est "
+                             "correct », « ça dépend » —, tu redemandes une "
+                             "fois, poliment : quel jour exactement, quel "
+                             "papier. Tu répètes la date qu'on te donne pour "
+                             "vérifier que tu as bien compris."),
             },
         },
     },
