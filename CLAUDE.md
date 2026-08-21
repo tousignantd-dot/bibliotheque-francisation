@@ -2,6 +2,20 @@
 
 Bibliothèque d'activités pédagogiques FLS (Niveau 4) pour enseignant en francisation au Québec. Serveur Python simple (`server.py`, stdlib seulement) + fichiers statiques HTML.
 
+## Si une autre session travaille dans ce dépôt
+
+Vérifier au démarrage (`ListAgents`), et lire **`docs/deux-agents-en-parallele.md`**
+avant d'écrire quoi que ce soit. Il donne le protocole — chemins explicites au
+`git add`, jamais `-A` ; la liste des six fichiers réellement partagés, le
+contenu d'un module étant isolé ; la réservation d'avance des numéros
+d'activité — et la répartition en cours entre les sessions.
+
+Quatre sessions ont travaillé ici le 20 août 2026 et trois se sont nui sans le
+vouloir : du travail non commité emporté sous un message sans rapport, une
+session bridée par une contrainte inexistante, une information périmée
+propagée. Ce fichier-ci et `docs/` sont le seul canal qui survit à la
+fermeture d'une session ; un message d'agent à agent, non.
+
 ## Déploiement (Railway)
 
 - Push sur `main` → redéploiement automatique sur Railway
