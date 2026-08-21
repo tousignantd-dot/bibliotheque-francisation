@@ -31,6 +31,7 @@ import json
 import os
 import sys
 import time
+import subprocess
 import unicodedata
 from pathlib import Path
 
@@ -185,43 +186,51 @@ def slug(nom):
 def parle(cle, texte, voix, chemin):
     """Un extrait, avec reprise sur coupure réseau.
 
-    ElevenLabs coupe la liaison par intermittence (`SSLEOFError`), parfois une
-    heure durant. Une panne passagère du fournisseur n'est pas une erreur du
-    programme : on réessaie en doublant l'attente, et on ne déclare l'échec
-    qu'après cinq tentatives. Le script est relançable — il saute ce qui existe.
+    **Le transport est `curl`, pas `requests`.** Le Python du système est en
+    3.9.6, compilé avec LibreSSL 2.8.3, et sa liaison TLS vers
+    api.elevenlabs.io tombe en `SSLEOFError` deux fois sur trois — pas une
+    panne du fournisseur, un défaut de la pile TLS locale. Le même appel par
+    `curl` passe trois fois sur trois. Mesuré le 21 août 2026 en produisant
+    module-n5-emmenagement ; voir docs/deux-agents-en-parallele.md.
+
+    Le script reste relançable : il saute ce qui existe déjà.
     """
+    corps = json.dumps({
+        "text": texte, "model_id": "eleven_multilingual_v2",
+        "voice_settings": {"stability": 0.5, "similarity_boost": 0.75},
+    }, ensure_ascii=False)
+    chemin.parent.mkdir(parents=True, exist_ok=True)
+    tmp = chemin.with_suffix(".part")
+
     for essai in range(1, ESSAIS + 1):
-        try:
-            r = requests.post(
-                f"https://api.elevenlabs.io/v1/text-to-speech/{voix}",
-                json={"text": texte, "model_id": "eleven_multilingual_v2",
-                      "voice_settings": {"stability": 0.5, "similarity_boost": 0.75}},
-                headers={"xi-api-key": cle, "Content-Type": "application/json"},
-                timeout=60)
-        except requests.exceptions.RequestException as e:
-            if essai == ESSAIS:
-                print(f"   ❌ réseau après {ESSAIS} essais : {type(e).__name__}")
-                return False
-            attente = ATTENTE_BASE_S * (2 ** (essai - 1))
-            print(f"⏳{attente}s", end="", flush=True)
-            time.sleep(attente)
-            continue
+        proc = subprocess.run([
+            "curl", "-s", "-o", str(tmp), "-w", "%{http_code}", "--max-time", "120",
+            "-X", "POST",
+            f"https://api.elevenlabs.io/v1/text-to-speech/{voix}",
+            "-H", f"xi-api-key: {cle}",
+            "-H", "Content-Type: application/json",
+            "--data-binary", "@-",
+        ], input=corps.encode("utf-8"), capture_output=True)
+        code = proc.stdout.decode().strip()
 
-        # 429 (débit) et 5xx (panne du service) valent aussi une reprise ;
-        # un 401 ou un 422 sont des erreurs à nous, inutile d'insister.
-        if r.status_code in (429, 500, 502, 503, 504) and essai < ESSAIS:
-            attente = ATTENTE_BASE_S * (2 ** (essai - 1))
-            print(f"⏳{r.status_code}/{attente}s", end="", flush=True)
-            time.sleep(attente)
-            continue
-        if r.status_code != 200:
-            print(f"   ❌ {r.status_code}: {r.text[:150]}")
+        if code == "200" and tmp.exists() and tmp.stat().st_size > 500:
+            tmp.replace(chemin)
+            ralentir_si_enseignante(chemin, voix)
+            return True
+
+        # 429 (débit) et 5xx (panne du service) valent une reprise ; un 401 ou
+        # un 422 sont des erreurs à nous, inutile d'insister.
+        if code in ("401", "422") :
+            print(f"   ❌ {code}: {tmp.read_bytes()[:150] if tmp.exists() else b''}")
+            tmp.unlink(missing_ok=True)
             return False
-
-        chemin.parent.mkdir(parents=True, exist_ok=True)
-        chemin.write_bytes(r.content)
-        ralentir_si_enseignante(chemin, voix)
-        return True
+        if essai == ESSAIS:
+            print(f"   ❌ après {ESSAIS} essais : code {code or 'aucun'}")
+            tmp.unlink(missing_ok=True)
+            return False
+        attente = ATTENTE_BASE_S * (2 ** (essai - 1))
+        print(f"⏳{code or 'net'}/{attente}s", end="", flush=True)
+        time.sleep(attente)
     return False
 
 
