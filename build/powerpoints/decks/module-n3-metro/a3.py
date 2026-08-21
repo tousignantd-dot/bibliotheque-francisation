@@ -92,8 +92,8 @@ def build(dossier):
         ("La borne de vente.", "une machine où on achète tout seul"),
         ("Les places réservées.", "les premiers sièges, en avant de l'autobus"),
     ], corrige=True,
-       notes="Prépare l'exercice 3 de l'activité, qui fait glisser des photos sur ces "
-             "mêmes phrases. Si le groupe a une station à proximité, la visiter : "
+       notes="Prépare l'exercice 3 de l'activité, qui reprend ces mêmes endroits par "
+             "glisser-déposer. Si le groupe a une station à proximité, la visiter : "
              "quinze minutes sur place valent une heure de diapositives.")
 
     d.billet(

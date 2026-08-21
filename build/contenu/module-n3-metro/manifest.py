@@ -43,6 +43,22 @@ s'ils sont accompagnés d'une personne de 14 ans et plus, qui ne peut pas en
 accompagner plus de cinq ; la correspondance est de 120 minutes à partir de
 la validation, enregistrée automatiquement sur la carte, et elle ne permet
 pas de refaire le même parcours en sens inverse.
+
+**Les vingt-trois images du module sont en attente.** Le compte fal.ai était
+verrouillé au moment de la production (`HTTP 403 · "User is locked. Reason:
+TOP_UP"`), deux tentatives à une heure d'intervalle. Le contenu a donc été
+ajusté à ce qui existe, comme le veut la règle :
+
+- les onze cartes de `fccards.js` ont perdu leur champ `img` plutôt que de
+  pointer dans le vide — le gabarit accepte parfaitement une carte sans
+  photo ;
+- les deux exercices `imgmatch` (`prImg` et `t2img`) sont livrés en `match`,
+  ce qui les garde utilisables ; leur en-tête dans `exos.js` le dit.
+
+`gen_images.py` porte les vingt-trois prompts et il est relançable tel quel :
+il saute ce qui existe déjà. Une seule passe suffira quand le compte sera
+renfloué. La liste exacte est dans `docs/vagues-suivantes.md`, journal de
+l'activité 79.
 """
 
 MANIFESTE = {
