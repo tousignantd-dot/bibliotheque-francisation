@@ -109,7 +109,8 @@ def lire_dialogues():
 
 
 ESSAIS = 5           # tentatives par extrait
-ATTENTE_BASE_S = 4   # doublée à chaque échec : 4, 8, 16, 32 s
+ATTENTE_BASE_S = 4   # 429 et 5xx, doublée à chaque échec : 4, 8, 16, 32 s
+ATTENTE_RESEAU_S = 1  # coupure TLS : 1, 2, 4, 8 s — voir parle()
 
 
 def parle(cle, texte, voix, chemin):
@@ -136,7 +137,15 @@ def parle(cle, texte, voix, chemin):
             if essai == ESSAIS:
                 print(f"   ❌ réseau après {ESSAIS} essais : {type(e).__name__}")
                 return False
-            attente = ATTENTE_BASE_S * (2 ** (essai - 1))
+            # Une coupure TLS n'est pas un refus de débit : rien ne se calme en
+            # attendant une minute, la liaison revient d'elle-même en quelques
+            # secondes. Le 21 août, la panne d'ElevenLabs faisait échouer une
+            # requête sur deux, et l'attente de 4-8-16-32 s coûtait plus de
+            # temps que la génération elle-même — huit extraits par tranche de
+            # dix minutes. On garde le doublement, sur une base plus courte.
+            # Le 429 et les 5xx, eux, gardent l'attente longue plus bas : là,
+            # insister trop vite aggrave vraiment les choses.
+            attente = ATTENTE_RESEAU_S * (2 ** (essai - 1))
             print(f"⏳{attente}s", end="", flush=True)
             time.sleep(attente)
             continue
@@ -207,7 +216,11 @@ def main():
         if only and not any(etiquette.startswith(o) or
                             chemin.stem.startswith(o) for o in only):
             continue
-        if chemin.exists() and not force and not only:
+        # `--only` ne veut pas dire « refais-les » : il veut dire « ne
+        # regarde que ceux-là ». Sans cette nuance, partitionner le
+        # travail entre plusieurs processus repayait tout ce qui était
+        # déjà produit. Pour refaire un extrait, c'est `--force`.
+        if chemin.exists() and not force:
             saute += 1
             continue
         print(f"  {etiquette:34s} « {texte[:40]} » → ", end="", flush=True)
