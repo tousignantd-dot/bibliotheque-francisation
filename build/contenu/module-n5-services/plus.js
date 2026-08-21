@@ -108,12 +108,12 @@ const PLUS = {
       {t:'ex', h:"Le même sens, deux registres",
        p:"Six paires à écouter et à répéter.",
        rows:[
-         ["J'ai fait une demande. → J'ai ouvert une requête.","demande / requête"],
-         ["Ça prend combien de temps ? → Quel est le délai ?","temps / délai"],
-         ["Les vidanges → Les matières résiduelles","vidanges / matières résiduelles"],
-         ["Le monsieur au comptoir → Le préposé","monsieur / préposé"],
-         ["Les prix d'astheure → Les tarifs en vigueur","d'astheure / en vigueur"],
-         ["Les jours de semaine → Les jours ouvrables","semaine / ouvrables"],
+         ["On dit « j'ai fait une demande », et au service « j'ai ouvert une requête ».","demande / requête"],
+         ["On dit « ça prend combien de temps ? », et au service « quel est le délai ? ».","temps / délai"],
+         ["On dit « les vidanges », et au service « les matières résiduelles ».","vidanges / matières résiduelles"],
+         ["On dit « le monsieur au comptoir », et au service « le préposé ».","monsieur / préposé"],
+         ["On dit « les prix d'astheure », et au service « les tarifs en vigueur ».","d'astheure / en vigueur"],
+         ["On dit « les jours de semaine », et au service « les jours ouvrables ».","semaine / ouvrables"],
        ]},
 
       {t:'piege', h:"Deux pièges de registre",
@@ -304,7 +304,7 @@ const PLUS = {
        rows:[
          ["Un instant, je prends une feuille.","gagner cinq secondes"],
          ["Pouvez-vous répéter plus lentement, s'il vous plaît ?","la plus utile de toutes"],
-         ["Je vous répète le numéro : … C'est bien ça ?","vérifier et écrire"],
+         ["Je vous répète le numéro, et vous me dites si c'est bien ça.","vérifier et écrire"],
          ["Trois jours ouvrables. Donc pas avant vendredi, si je comprends bien ?","reformuler pour confirmer"],
          ["Excusez-moi, comment ça s'écrit ?","pour un nom ou une rue"],
          ["Et à qui est-ce que je parle, s'il vous plaît ?","le nom de la personne"],
