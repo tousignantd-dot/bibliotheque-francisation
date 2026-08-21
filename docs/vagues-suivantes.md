@@ -934,3 +934,152 @@ Ce que cette production ajoute à ce qui était déjà su :
   `node --check` du script produit.
 
 **La file reprend** à l'activité 69 (niveau 5), 79 (niveau 3) et 91 (niveau 2).
+
+---
+
+**21 août 2026 — activité 69, `module-n5-transport` « Ça bloque ce matin ».**
+Niveau 5, situation « Déplacements dans une ville », numéro 9 du niveau, seize
+séances. Livré, vérifié, poussé — **sans ses médias**, et c'est le seul travail
+en attente qu'il laisse : voir « Ce qui manque » plus bas. 175 diapositives,
+16 fiches, 21 exercices, 10 mini-leçons, 16 mots, 0 image sur 19, 15 extraits
+audio sur 258.
+
+Tereza Nogueira, arrivée du Brésil il y a quatre ans, aide-technicienne dans un
+atelier d'assemblage de Saint-Laurent, qui part de Longueuil à six heures
+cinquante ; Amine Haddad, le collègue avec qui elle covoiture depuis deux ans ;
+Gaétan Roy, la voix de la chronique de circulation ; Ghislaine Lachance, la
+responsable de l'atelier, qu'on appelle quand la 40 est bloquée.
+
+**C'est `build/cadre.py 5 "Déplacements dans une ville"` qui a décidé de la
+forme, et il a été catégorique** : la situation ne donne au niveau 5 qu'**une
+seule intention de communication**, en compréhension orale — *suivre un
+bulletin de circulation routière*. Une seule. Le module n'est donc pas un
+module de déplacement, c'est un module d'écoute, et les trois défis sont trois
+étapes de la même intention : comprendre une annonce (défi 1), suivre un
+bulletin entier de quatre routes (défi 2), en faire quelque chose — expliquer
+le détour, annoncer le retard (défi 3). Les sept points de lexique du savoir
+« Écoute d'un bulletin de circulation routière » ont tous servi ; le programme
+ne fournissant aucun lexique pour cette situation, les seize mots du banc sont
+composés à partir d'eux.
+
+**Ce qui distingue ce module de ses trois voisins**, puisque la consigne le
+demandait en une phrase chacun. De `module-deplacement` (niveau 4), qui porte
+la même situation : là-bas on compose un trajet et on lit un plan de métro pour
+se rendre quelque part, tandis qu'ici on ne cherche pas son chemin — on apprend
+que celui qu'on connaît est bloqué, et tout le travail est de comprendre une
+voix qui parle vite. De `module-n3-metro` (79, produit en parallèle cette même
+nuit) : lui achète un titre de transport et demande son chemin à quelqu'un qui
+répond, alors qu'ici personne ne répond — un bulletin ne prend pas de
+questions. De `module-n2-autobus` (niveau 2) : lui lit une heure dans un
+horaire imprimé, alors qu'ici l'information est dite une fois et que la durée
+annoncée change pendant qu'on parle.
+
+**Le scénario de jeu de rôle `chemin` ne convenait pas**, et le juger a pris
+deux minutes : il vient du niveau 4 et il fait *demander* son chemin en six
+étapes à quelqu'un qui sait. Ici c'est l'inverse — c'est l'élève qui sait,
+parce qu'il a écouté la radio, et il doit expliquer à quelqu'un qui n'a rien
+entendu. D'où `circulation`, ajouté à `server.py` : trois cas (un pont fermé,
+un carambolage, une bretelle en travaux) et deux rôles pour l'assistant, le
+collègue de covoiturage qui tutoie et la responsable de l'atelier qui vouvoie.
+
+**Les faits québécois ont été vérifiés, pas devinés.** Québec 511 est le service
+d'information routière du ministère des Transports (ligne 511 et
+quebec511.info) et publie les entraves planifiées ; le pont Jacques-Cartier et
+le pont Samuel-De Champlain relient la Rive-Sud à Montréal, le pont-tunnel
+Louis-Hippolyte-La Fontaine passe par l'autoroute 25 ; la 40 est la
+Métropolitaine et la 15 la Décarie ; la ligne jaune du métro relie Longueuil à
+Berri-UQAM et la ligne orange dessert Saint-Laurent ; on se range à droite pour
+un véhicule d'urgence, et il existe une règle du corridor de sécurité ; les
+nids-de-poule se signalent au 311 à Montréal et apparaissent au dégel. Les
+personnes, l'atelier, la station de radio et les heures sont inventés.
+
+Ce que cette production ajoute ou confirme :
+
+- **Les pièges de `CLAUDE.md` ont tous tenu.** `build/releve_sons.js` a rendu
+  ses 200 clés sans ouvrir de port — `collecte_sons.py` n'a jamais été lancé ;
+  les quinze bandeaux `savoir` portent `speak:true` dès l'écriture ; les seize
+  clés de `CARRIER_PHRASES` sont les mots accentués, dont deux à apostrophe —
+  *l'accotement* et *un véhicule d'urgence* — écrites entre guillemets doubles ;
+  l'originalité a été mesurée **avant** les MP3 ; `sommaire.py <slug>` a eu son
+  étape d'écriture avant `--verifier`.
+- **L'originalité : 1 identique sur 169 énoncés, soit 0,6 %**, ramené à **0** en
+  reformulant une seule consigne générique (« Faites glisser chaque photo vers
+  la phrase qui la décrit »). Aucun extrait n'a été payé puis jeté — et pour
+  cause, aucun n'a pu l'être.
+- **Un contrôle de cohérence en une commande `node`, qui a trouvé zéro écart et
+  qui vaut mieux qu'une capture d'écran.** Il charge les six `.js` dans un
+  contexte vide et vérifie : chaque `sec` d'exercice existe dans `SECTIONS`,
+  chaque clé de `PLUS` correspond à un `id` d'exercice, aucun `id` d'énoncé
+  n'est dupliqué, chaque `ok` d'un `imgmatch` a son image, chaque `ok` d'un
+  `vf` est dans ses `tiles`, chaque `write` a des `items`, **chaque pastille
+  `savoir` et chaque `w:` de laboratoire a sa phrase porteuse**, et **chaque
+  bloc `ana` a son `say:`** — quarante blocs vérifiés d'un coup. C'est la
+  vérification que le navigateur ne fait pas et que les incidents des nuits
+  précédentes réclamaient. Elle tient en trente lignes, se relance en deux
+  secondes, et mériterait de devenir un septième contrôle.
+- **Le serveur de prévisualisation n'a pas pu être lancé** : cinq serveurs
+  tournaient déjà dans le dossier, tous appartenant aux sessions voisines. La
+  vérification navigateur a donc été remplacée par le contrôle ci-dessus, plus
+  le `node --check` des six `.js` et des quatre blocs `<script>` extraits du
+  HTML produit — verts. `custom.js` échoue au `node --check` comme dans tous
+  les modules : c'est un fragment, pas un fichier.
+- **Les tableaux courts, écrits courts dès le départ, sont tous passés.** Aucun
+  refus de `theme.py` sur les trente-deux tableaux des seize séances : deux
+  colonnes, quatre à six lignes, cellules brèves. La consigne héritée de
+  l'activité 90 fonctionne, et elle épargne une demi-heure d'allers-retours.
+- **Les images des séances sont posées derrière un `img()` qui rend `None`
+  quand le fichier n'existe pas.** Les seize decks se sont donc construits
+  malgré l'absence totale d'illustrations, et les reprendront d'eux-mêmes à la
+  prochaine construction, sans qu'on touche à un seul deck. À reprendre dans
+  les modules suivants tant que fal.ai est verrouillé.
+- **Les fichiers partagés n'ont voyagé nulle part, pour une fois.** `git status`
+  juste avant chaque `commit`, chemins explicites après `--`, et
+  `git show --name-only` juste après : les trois lignes de `modules.py`, de
+  `activities.json` et de `server.py` sont parties dans le commit prévu.
+
+### Ce qui manque à ce module, et comment le finir
+
+**Les deux fournisseurs de médias étaient à sec en même temps.** Ce n'est pas
+un défaut du module ni une erreur de manipulation : les deux comptes sont
+vides, et les deux scripts sont relançables tels quels — ils sautent ce qui
+existe déjà.
+
+**fal.ai · `HTTP 403 · "User is locked. Reason: TOP_UP"` · 0 image sur 19.**
+Une boucle de relances espacées de deux minutes a tourné pendant toute la
+production sans obtenir une seule image ; contrairement à la nuit de l'activité
+68, le solde ne s'est pas libéré par à-coups. Les dix-neuf prompts sont écrits,
+commentés et prêts dans `build/contenu/module-n5-transport/gen_images.py` — il
+n'y a rien à réécrire, seulement à relancer :
+
+    python3 build/contenu/module-n5-transport/gen_images.py
+
+Les six illustrations de l'exercice `prImg` : `images/autoroute-bouchon.jpg`,
+`accotement-panne`, `chantier-cones`, `remorqueuse-travail`,
+`nid-de-poule-rue`, `panneau-detour`. Les treize photos du banc de mots :
+`vocab/ralentissement`, `bouchon`, `accotement`, `carambolage`, `remorqueuse`,
+`voie`, `vehicule-urgence`, `chaussee`, `nid-de-poule`, `detour`, `bretelle`,
+`covoiturage`, `stationnement-incitatif`. **Le contenu n'a pas été ajusté au
+manque** — l'`imgmatch` garde ses six énoncés et les treize cartes gardent leur
+champ `img` — parce qu'ici, contrairement à l'activité 90, il ne manque pas
+quelques images sur vingt-quatre : elles manquent toutes. Amputer le module
+d'un exercice entier pour une panne de facturation aurait coûté plus cher que
+d'attendre.
+
+**ElevenLabs · `401 · quota_exceeded`, 21 crédits restants · 15 extraits sur
+258.** Ce n'est ni le bac à sable réseau ni la liaison coupée décrits dans
+`CLAUDE.md` : `curl` répond `404` normalement, la clé est bonne, c'est le quota
+du compte qui est épuisé — vraisemblablement par les 276 extraits de l'activité
+79, produits quelques heures plus tôt sur la même clé. Le générateur a produit
+treize répliques du dialogue `prep`, une de `t1` et une de `t3` avant de buter,
+et il a été arrêté aussitôt plutôt que de brûler cinquante-huit secondes par
+extrait dans le vide. Il reste **43 répliques de dialogue et les 200 extraits
+de `sons_module_n5_transport.json`**. Une seule commande, hors bac à sable :
+
+    nohup python3 generer_audio_module_n5_transport.py > /private/tmp/audio.log 2>&1 &
+
+Le relevé des sons est déjà fait, commité et vérifié : aucune valeur ne
+contient de balise HTML, et les dix seuls extraits courts sont les cartes de
+l'exercice de discrimination `prPhon`, où le mot doit précisément être dit nu —
+c'est le seul endroit du projet où une phrase porteuse nuirait.
+
+**La file reprend** à l'activité 70 (niveau 5), 80 (niveau 3) et 92 (niveau 2).
