@@ -252,6 +252,22 @@ MODULES = {
         'blocs': _blocs('Lire la circulaire', "L'étiquette et l'affichette"),
     },
 
+    # Quatrième module court du dépôt, troisième du niveau 2. La situation
+    # du programme est « Relations sociales ». Le niveau 1
+    # (`module-n1-presenter`) apprend à dire son nom ; ici on entre dans un
+    # échange court avec quelqu'un qu'on recroisera — on salue, on répond à
+    # « ça va ? », on dit ce qu'on fait de sa journée, on comprend une demande
+    # d'aide, on remercie et on souhaite. Distinct de `module-relations`
+    # (niveau 4), qui tient une conversation suivie et raconte au passé.
+    'module-n2-bonjour': {
+        'numero': 3, 'activite': 88, 'niveau': 2,
+        'titre': 'Bonjour, ça va ?',
+        'chapeau': "Saluer un voisin, répondre à « ça va ? », dire ce qu'on "
+                   "fait de sa journée, remercier et souhaiter.",
+        'seances': GRILLE_COURTE,
+        'blocs': _blocs('Ça va ? Et toi ?', 'Merci et bonne fête'),
+    },
+
     # ── Niveau 3 ────────────────────────────────────────────────────
     'module-n3-epicerie': {
         'numero': 1, 'activite': 55, 'niveau': 3,
