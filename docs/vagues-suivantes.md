@@ -573,6 +573,20 @@ Ce que le niveau 2 impose, et qu'un agent habitué au niveau 4 oublie :
 
 Dernier numéro réservé après cette vague : **95**.
 
+**21 août 2026 — l'activité 90 est livrée.** `module-n2-couloirs` · « Où est
+le local 214 ? » : huit séances, 89 diapositives, 18 images, 261 extraits
+audio, les six contrôles verts pour ce module plus le `node --check`. Le
+journal détaillé est dans `docs/chantier-tous-niveaux.md`. **La file du
+niveau 2 reprend à l'activité 91** (Inscription, `module-n2-inscription`).
+
+Deux choses que cette production a apprises : le générateur d'images peut
+rendre **HTTP 403 « User is locked. Reason: TOP_UP »** en pleine série — c'est
+le crédit fal.ai épuisé, pas le prompt ni la clé, et une relance quelques
+minutes plus tard suffit, le script sautant ce qui existe déjà ; et le
+garde-fou de `theme.py` refuse un **tableau trop plein** avant de refuser un
+glyphe absent de Verdana — un plan de bâtiment en six rangées se coupe en deux
+diapositives.
+
 **21 août 2026 — l'activité 89 est livrée.** `module-n2-classe` · « Ouvrez
 votre cahier » : huit séances, 88 diapositives, 18 images, 280 extraits audio,
 les six contrôles verts pour ce module plus le `node --check`. Le journal
@@ -655,4 +669,5 @@ Ce que la nuit a appris, et qui est déjà dans `CLAUDE.md` :
   Une seule intention en compréhension écrite pour l'activité 76, trois pour la
   77 : on bâtit sur ce que le programme donne, on ne calque pas le niveau 4.
 
-**La file reprend** à l'activité 68 (niveau 5), 78 (niveau 3) et 90 (niveau 2).
+**La file reprend** à l'activité 68 (niveau 5), 78 (niveau 3) et 91
+(niveau 2 — l'activité 90 a été livrée le 21 août au soir).

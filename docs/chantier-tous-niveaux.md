@@ -842,6 +842,83 @@ langue du module : le même échange, joué deux fois, au « tu » puis au « vo
 produisaient au même moment, pas des écarts de celui-ci.
 
 
+## Niveau 2 — `module-n2-couloirs` · Où est le local 214 ? · **livré**
+
+Activité **90**, réservée d'avance par `docs/vagues-suivantes.md` (vague 4).
+Sixième module **court** du dépôt, cinquième du niveau 2 : huit séances, deux
+défis, cinq sections, `GRILLE_COURTE`. Produit le 21 août 2026, en parallèle
+des activités 68 et 78.
+
+**Ce qui le distingue de ses voisins**, en une phrase : `module-n2-autobus`
+(57) est dehors et se repère à des noms de rues, `module-n2-classe` (89) ne
+quitte jamais une seule salle et occupe déjà la consigne d'enseignante et
+l'avis affiché près de la porte — ici l'élève **circule entre les deux**, et
+ce qui le guide n'est pas un mot mais un chiffre.
+
+**Le cadre l'a décidé.** `build/cadre.py 2 "Orientation dans l’établissement"`
+ne donne que **trois** intentions, et elles disent toutes la même chose : se
+renseigner sur la localisation (CO et PO), en donner (PO), comprendre le plan
+d'un établissement de formation (CE). Aucun lexique n'est fourni pour cette
+situation — le script le dit explicitement — donc les seize mots du banc sont
+composés à partir des seules intentions. La structure en découle : Défi 1 pour
+la localisation **lue** (le plan, les numéros de porte), Défi 2 pour la
+localisation **demandée puis donnée** (le corridor, les repères), et « Je me
+lance » pour le renversement, où l'élève devient celui qui renseigne. La
+production écrite, qu'aucune intention ne réclame à ce niveau, se réduit à
+trois lignes pour dire à quelqu'un où est son local.
+
+Les savoirs pris dans le niveau : les **adjectifs ordinaux** (premier,
+deuxième), les **prépositions et groupes prépositionnels** — le savoir le plus
+fourni du niveau 2, dix points à lui seul —, les **phrases interrogatives**
+(où est / où sont), les **phrases à construction particulière** (il y a),
+l'**impératif présent** (prenez, montez, tournez, descendez) et, en
+phonétique, le **système vocalique** appliqué aux nombres qui se ressemblent.
+
+**Scénario.** Soraya arrive au Centre Bellevue avec « 214 » écrit sur une
+feuille et ne sait pas où c'est. Gilles, le concierge, lui donne l'étage puis
+le côté — jamais les deux dans la même phrase. Vincent, un élève du groupe,
+lui montre le plan affiché près de l'accueil et la règle que personne ne lui
+avait dite : le premier chiffre dit l'étage. Deux semaines plus tard, Amina
+entre pour sa première journée, et c'est Soraya qui répond.
+
+**Le plan du Centre Bellevue**, inventé pour le module et repris tel quel dans
+le bandeau noir de l'exercice 3 comme dans la séance B1 : rez-de-chaussée pour
+les numéros en 0 (accueil 001, secrétariat 005, cafétéria 012, casiers 015),
+premier étage pour les numéros en 1 (bibliothèque 108, locaux 110 à 118),
+deuxième étage pour les numéros en 2 (locaux 210 à 218, le 214 au bout à
+droite). Escalier et ascenseur au milieu du corridor, toilettes en face de
+l'ascenseur, sortie à côté de l'accueil.
+
+**Le piège du bâtiment est phonétique**, et c'est lui qui donne la séance A2 :
+*quatorze* et *quarante*. Le 214 existe, le 240 n'existe pas, et un seul son
+sépare la bonne porte de trois étages de marche. Les quatre paires deux/douze,
+trois/treize, quatre/quatorze, six/seize s'installent avant tout le reste.
+
+**Chiffres.** 205 clés de sons et 56 répliques, soit **261 extraits audio** ;
+**18 images** ; 89 diapositives sur 8 séances ; 66 blocs de fiches ; 117
+énoncés visibles.
+
+**Originalité : 0 %.** Première mesure, faite **avant** la génération des MP3 :
+6 identiques sur 113, soit 5,3 %, toutes des consignes que le moteur impose à
+ses types d'exercice. Reformulées avec les mots du module — « Réécoute Soraya
+et Gilles dans le corridor, puis réponds. » —, la mesure retombe à **0 sur
+117**. Aucun extrait audio n'était en cause : ni les `sub` ni les `tit`
+n'entrent dans le relevé des sons.
+
+**Jeu de rôle neuf**, `couloirs`, ajouté à `server.py` : trois cas — chercher
+un local, chercher les casiers et les toilettes, indiquer le chemin à
+quelqu'un — et deux rôles, l'élève et Gilles le concierge. Aucun scénario
+existant ne convenait : `chemin` (niveau 4) donne six étapes et des noms de
+terminus, `classe` ne quitte pas la salle.
+
+**Deux choses apprises ici.** Le générateur d'images a rendu **HTTP 403
+« User is locked. Reason: TOP_UP »** sur les trois dernières images du banc :
+ce n'est pas une erreur de prompt ni de clé, c'est le crédit fal.ai épuisé en
+cours de série, et une relance quelques minutes plus tard les a produites sans
+rien changer. Et le garde-fou de `theme.py` refuse un tableau **trop plein**
+avant de refuser un glyphe : le plan du centre en six rangées a dû être coupé
+en deux diapositives, « les trois étages » et « les repères ».
+
 ## Niveau 2 — `module-n2-classe` · Ouvrez votre cahier · **livré**
 
 Activité **89**, réservée d'avance par `docs/vagues-suivantes.md` (vague 4).

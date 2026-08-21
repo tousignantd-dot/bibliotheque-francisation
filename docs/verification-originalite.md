@@ -145,3 +145,19 @@ La leçon de `module-n5-urgence` a été appliquée dans l'ordre qu'elle recomma
 trois reformulations ne touchent que des `sub` et des `tit`, qui n'entrent pas
 dans le relevé des sons ; aucun extrait n'a été payé puis jeté.
 
+`module-n2-couloirs` (activité 90), mesuré le 21 août 2026 : ses énoncés
+visibles de plus de douze caractères — `txt`, `q`, `a`, `sub`, `tit`, plus les
+mots et définitions du banc, donc le relevé large — ont été comparés à ceux des
+vingt-huit autres modules de `build/contenu/`. Première mesure : **6 identiques
+sur 113, soit 5,3 %**, toutes des consignes que le moteur impose à ses types
+d'exercice (« Le mot et sa définition », « Écoute de nouveau le dialogue, puis
+réponds. », « Glisse chaque photo sur la phrase qui la décrit. »). Reformulées
+avec les mots du module — « Réécoute Soraya et Gilles dans le corridor, puis
+réponds. », « Les seize mots du centre » —, la mesure retombe à **0 identique
+sur 117**.
+
+La mesure a été faite **avant** la génération des MP3, comme la nuit du 21 août
+l'a établi : les 205 clés du relevé des sons sont restées identiques après
+reformulation, puisque ni les `sub` ni les `tit` n'y entrent. Aucun extrait
+n'a été payé deux fois.
+
