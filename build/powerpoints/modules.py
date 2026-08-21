@@ -445,6 +445,29 @@ MODULES = {
                         "L'étage et le congé"),
     },
 
+    # Niveau 5 · Emploi. Le cadre du programme ne parle pas ici de relations
+    # d'équipe mais d'écrits de travail : comprendre et nommer les étapes
+    # d'une démarche administrative simple, enregistrer un message dans sa
+    # boîte vocale, lire un mode d'emploi, rédiger des notes d'utilisation du
+    # matériel, un court message à partir de notes, et un courriel de réponse
+    # automatique en cas d'absence. Rien à voir avec `module-travail` (39),
+    # qui annonce une absence par téléphone, ni avec `module-n8-emploi` (61),
+    # qui fait tenir son bout, ni avec `module-n6-recherche` (59), qui
+    # cherche un emploi : ici l'emploi est déjà obtenu, et c'est la paperasse
+    # du poste qu'il faut apprendre.
+    'module-n5-travail': {
+        'numero': 7, 'activite': 67, 'niveau': 5,
+        'titre': "Le travail par écrit",
+        'chapeau': "Enregistrer un message d'accueil et prendre une note "
+                   "d'appel, lire et écrire un mode d'emploi du matériel de "
+                   "bureau, puis nommer les étapes d'une demande de congé et "
+                   "régler son courriel d'absence.",
+        'seances': GRILLE_3_DEFIS,
+        'blocs': _blocs("La boîte vocale et la note",
+                        "Le mode d'emploi",
+                        "La demande de congé"),
+    },
+
     'module-n6-recherche': {
         'numero': 1, 'activite': 59, 'niveau': 6,
         'titre': "Chercher un emploi",
