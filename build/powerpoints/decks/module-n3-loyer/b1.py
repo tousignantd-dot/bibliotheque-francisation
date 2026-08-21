@@ -96,7 +96,7 @@ def build(dossier):
         ("« Éclairé » veut dire qu'il y a beaucoup de fenêtres.", "faux — l'électricité est comprise"),
         ("Le logement est meublé.", "faux — non meublé"),
         ("Le loyer est de mille cent cinquante dollars.", "vrai"),
-        ("Le logement est libre le premier juillet.", "vrai"),
+        ("On peut emménager à partir du premier juillet.", "vrai"),
     ], corrige=True,
        notes="C'est l'exercice 1 du Défi 1. Faire justifier chaque « faux » par la "
              "réplique exacte du dialogue.")
