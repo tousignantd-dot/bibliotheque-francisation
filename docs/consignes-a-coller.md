@@ -142,7 +142,7 @@ discours simples mais organisés — des échanges suivis, pas des questions-
 réponses ; le programme fournit moins de lexique qu'au niveau 4, une bonne
 part de la liste s'invente à partir des savoirs ; et le module de niveau 4 qui
 porte la même situation existe déjà, tu dois t'en écarter — fais dire au
-programme les intentions propres au niveau 5 avec build/cadre.py 5 "<situation>"
+programme les intentions propres au niveau 5 avec build/cadre.py 5 "Problèmes reliés à l'habitation"
 avant d'inventer le scénario, et dis en une phrase, dans ton journal, ce qui
 distingue ton module de son voisin du 4.
 
@@ -192,7 +192,7 @@ discours simples mais organisés — des échanges suivis, pas des questions-
 réponses ; le programme fournit moins de lexique qu'au niveau 4, une bonne
 part de la liste s'invente à partir des savoirs ; et le module de niveau 4 qui
 porte la même situation existe déjà, tu dois t'en écarter — fais dire au
-programme les intentions propres au niveau 5 avec build/cadre.py 5 "<situation>"
+programme les intentions propres au niveau 5 avec build/cadre.py 5 "Emménagement dans un nouveau logement"
 avant d'inventer le scénario, et dis en une phrase, dans ton journal, ce qui
 distingue ton module de son voisin du 4.
 
@@ -242,7 +242,7 @@ discours simples mais organisés — des échanges suivis, pas des questions-
 réponses ; le programme fournit moins de lexique qu'au niveau 4, une bonne
 part de la liste s'invente à partir des savoirs ; et le module de niveau 4 qui
 porte la même situation existe déjà, tu dois t'en écarter — fais dire au
-programme les intentions propres au niveau 5 avec build/cadre.py 5 "<situation>"
+programme les intentions propres au niveau 5 avec build/cadre.py 5 "Utilisation des services publics"
 avant d'inventer le scénario, et dis en une phrase, dans ton journal, ce qui
 distingue ton module de son voisin du 4.
 
@@ -292,7 +292,7 @@ discours simples mais organisés — des échanges suivis, pas des questions-
 réponses ; le programme fournit moins de lexique qu'au niveau 4, une bonne
 part de la liste s'invente à partir des savoirs ; et le module de niveau 4 qui
 porte la même situation existe déjà, tu dois t'en écarter — fais dire au
-programme les intentions propres au niveau 5 avec build/cadre.py 5 "<situation>"
+programme les intentions propres au niveau 5 avec build/cadre.py 5 "Consultation d'un professionnel de la santé"
 avant d'inventer le scénario, et dis en une phrase, dans ton journal, ce qui
 distingue ton module de son voisin du 4.
 
@@ -342,7 +342,7 @@ discours simples mais organisés — des échanges suivis, pas des questions-
 réponses ; le programme fournit moins de lexique qu'au niveau 4, une bonne
 part de la liste s'invente à partir des savoirs ; et le module de niveau 4 qui
 porte la même situation existe déjà, tu dois t'en écarter — fais dire au
-programme les intentions propres au niveau 5 avec build/cadre.py 5 "<situation>"
+programme les intentions propres au niveau 5 avec build/cadre.py 5 "Urgence et hospitalisation"
 avant d'inventer le scénario, et dis en une phrase, dans ton journal, ce qui
 distingue ton module de son voisin du 4.
 
@@ -392,7 +392,7 @@ discours simples mais organisés — des échanges suivis, pas des questions-
 réponses ; le programme fournit moins de lexique qu'au niveau 4, une bonne
 part de la liste s'invente à partir des savoirs ; et le module de niveau 4 qui
 porte la même situation existe déjà, tu dois t'en écarter — fais dire au
-programme les intentions propres au niveau 5 avec build/cadre.py 5 "<situation>"
+programme les intentions propres au niveau 5 avec build/cadre.py 5 "Emploi"
 avant d'inventer le scénario, et dis en une phrase, dans ton journal, ce qui
 distingue ton module de son voisin du 4.
 
@@ -442,7 +442,7 @@ discours simples mais organisés — des échanges suivis, pas des questions-
 réponses ; le programme fournit moins de lexique qu'au niveau 4, une bonne
 part de la liste s'invente à partir des savoirs ; et le module de niveau 4 qui
 porte la même situation existe déjà, tu dois t'en écarter — fais dire au
-programme les intentions propres au niveau 5 avec build/cadre.py 5 "<situation>"
+programme les intentions propres au niveau 5 avec build/cadre.py 5 "Relations sociales"
 avant d'inventer le scénario, et dis en une phrase, dans ton journal, ce qui
 distingue ton module de son voisin du 4.
 
@@ -492,7 +492,7 @@ discours simples mais organisés — des échanges suivis, pas des questions-
 réponses ; le programme fournit moins de lexique qu'au niveau 4, une bonne
 part de la liste s'invente à partir des savoirs ; et le module de niveau 4 qui
 porte la même situation existe déjà, tu dois t'en écarter — fais dire au
-programme les intentions propres au niveau 5 avec build/cadre.py 5 "<situation>"
+programme les intentions propres au niveau 5 avec build/cadre.py 5 "Déplacements dans une ville"
 avant d'inventer le scénario, et dis en une phrase, dans ton journal, ce qui
 distingue ton module de son voisin du 4.
 
@@ -542,7 +542,7 @@ discours simples mais organisés — des échanges suivis, pas des questions-
 réponses ; le programme fournit moins de lexique qu'au niveau 4, une bonne
 part de la liste s'invente à partir des savoirs ; et le module de niveau 4 qui
 porte la même situation existe déjà, tu dois t'en écarter — fais dire au
-programme les intentions propres au niveau 5 avec build/cadre.py 5 "<situation>"
+programme les intentions propres au niveau 5 avec build/cadre.py 5 "Déplacements dans tout le Québec"
 avant d'inventer le scénario, et dis en une phrase, dans ton journal, ce qui
 distingue ton module de son voisin du 4.
 
@@ -592,7 +592,7 @@ discours simples mais organisés — des échanges suivis, pas des questions-
 réponses ; le programme fournit moins de lexique qu'au niveau 4, une bonne
 part de la liste s'invente à partir des savoirs ; et le module de niveau 4 qui
 porte la même situation existe déjà, tu dois t'en écarter — fais dire au
-programme les intentions propres au niveau 5 avec build/cadre.py 5 "<situation>"
+programme les intentions propres au niveau 5 avec build/cadre.py 5 "Suivi de l'actualité"
 avant d'inventer le scénario, et dis en une phrase, dans ton journal, ce qui
 distingue ton module de son voisin du 4.
 
@@ -642,7 +642,7 @@ discours simples mais organisés — des échanges suivis, pas des questions-
 réponses ; le programme fournit moins de lexique qu'au niveau 4, une bonne
 part de la liste s'invente à partir des savoirs ; et le module de niveau 4 qui
 porte la même situation existe déjà, tu dois t'en écarter — fais dire au
-programme les intentions propres au niveau 5 avec build/cadre.py 5 "<situation>"
+programme les intentions propres au niveau 5 avec build/cadre.py 5 "Météo"
 avant d'inventer le scénario, et dis en une phrase, dans ton journal, ce qui
 distingue ton module de son voisin du 4.
 
@@ -692,7 +692,7 @@ discours simples mais organisés — des échanges suivis, pas des questions-
 réponses ; le programme fournit moins de lexique qu'au niveau 4, une bonne
 part de la liste s'invente à partir des savoirs ; et le module de niveau 4 qui
 porte la même situation existe déjà, tu dois t'en écarter — fais dire au
-programme les intentions propres au niveau 5 avec build/cadre.py 5 "<situation>"
+programme les intentions propres au niveau 5 avec build/cadre.py 5 "Découverte d'œuvres littéraires, musicales, cinématographiques ou télévisuelles"
 avant d'inventer le scénario, et dis en une phrase, dans ton journal, ce qui
 distingue ton module de son voisin du 4.
 
@@ -742,7 +742,7 @@ discours simples mais organisés — des échanges suivis, pas des questions-
 réponses ; le programme fournit moins de lexique qu'au niveau 4, une bonne
 part de la liste s'invente à partir des savoirs ; et le module de niveau 4 qui
 porte la même situation existe déjà, tu dois t'en écarter — fais dire au
-programme les intentions propres au niveau 5 avec build/cadre.py 5 "<situation>"
+programme les intentions propres au niveau 5 avec build/cadre.py 5 "Communication avec le personnel de l'établissement"
 avant d'inventer le scénario, et dis en une phrase, dans ton journal, ce qui
 distingue ton module de son voisin du 4.
 
@@ -794,7 +794,7 @@ vague : c'est encore le stade débutant, les énoncés restent courts et le
 soutien visuel compte — mais le format est celui du 4, seize séances et trois
 défis ; le niveau 4 couvre déjà presque toutes ces situations avec ses dix-huit
 modules, et le niveau 3 n'est pas un niveau 4 allégé — fais dire au programme
-les intentions propres au niveau 3 avec build/cadre.py 3 "<situation>" avant
+les intentions propres au niveau 3 avec build/cadre.py 3 "Achat de vêtements" avant
 d'inventer le scénario, et dis en une phrase, dans ton journal, ce qui
 distingue ton module de son voisin du 4 ; et le lexique du programme est
 généreux à ce stade, sers-t'en plutôt que d'inventer.
@@ -844,7 +844,7 @@ vague : c'est encore le stade débutant, les énoncés restent courts et le
 soutien visuel compte — mais le format est celui du 4, seize séances et trois
 défis ; le niveau 4 couvre déjà presque toutes ces situations avec ses dix-huit
 modules, et le niveau 3 n'est pas un niveau 4 allégé — fais dire au programme
-les intentions propres au niveau 3 avec build/cadre.py 3 "<situation>" avant
+les intentions propres au niveau 3 avec build/cadre.py 3 "Achat de biens de consommation durables" avant
 d'inventer le scénario, et dis en une phrase, dans ton journal, ce qui
 distingue ton module de son voisin du 4 ; et le lexique du programme est
 généreux à ce stade, sers-t'en plutôt que d'inventer.
@@ -894,7 +894,7 @@ vague : c'est encore le stade débutant, les énoncés restent courts et le
 soutien visuel compte — mais le format est celui du 4, seize séances et trois
 défis ; le niveau 4 couvre déjà presque toutes ces situations avec ses dix-huit
 modules, et le niveau 3 n'est pas un niveau 4 allégé — fais dire au programme
-les intentions propres au niveau 3 avec build/cadre.py 3 "<situation>" avant
+les intentions propres au niveau 3 avec build/cadre.py 3 "Service de restauration" avant
 d'inventer le scénario, et dis en une phrase, dans ton journal, ce qui
 distingue ton module de son voisin du 4 ; et le lexique du programme est
 généreux à ce stade, sers-t'en plutôt que d'inventer.
@@ -944,7 +944,7 @@ vague : c'est encore le stade débutant, les énoncés restent courts et le
 soutien visuel compte — mais le format est celui du 4, seize séances et trois
 défis ; le niveau 4 couvre déjà presque toutes ces situations avec ses dix-huit
 modules, et le niveau 3 n'est pas un niveau 4 allégé — fais dire au programme
-les intentions propres au niveau 3 avec build/cadre.py 3 "<situation>" avant
+les intentions propres au niveau 3 avec build/cadre.py 3 "Consultation en pharmacie" avant
 d'inventer le scénario, et dis en une phrase, dans ton journal, ce qui
 distingue ton module de son voisin du 4 ; et le lexique du programme est
 généreux à ce stade, sers-t'en plutôt que d'inventer.
@@ -994,7 +994,7 @@ vague : c'est encore le stade débutant, les énoncés restent courts et le
 soutien visuel compte — mais le format est celui du 4, seize séances et trois
 défis ; le niveau 4 couvre déjà presque toutes ces situations avec ses dix-huit
 modules, et le niveau 3 n'est pas un niveau 4 allégé — fais dire au programme
-les intentions propres au niveau 3 avec build/cadre.py 3 "<situation>" avant
+les intentions propres au niveau 3 avec build/cadre.py 3 "Déplacement dans une ville" avant
 d'inventer le scénario, et dis en une phrase, dans ton journal, ce qui
 distingue ton module de son voisin du 4 ; et le lexique du programme est
 généreux à ce stade, sers-t'en plutôt que d'inventer.
@@ -1044,7 +1044,7 @@ vague : c'est encore le stade débutant, les énoncés restent courts et le
 soutien visuel compte — mais le format est celui du 4, seize séances et trois
 défis ; le niveau 4 couvre déjà presque toutes ces situations avec ses dix-huit
 modules, et le niveau 3 n'est pas un niveau 4 allégé — fais dire au programme
-les intentions propres au niveau 3 avec build/cadre.py 3 "<situation>" avant
+les intentions propres au niveau 3 avec build/cadre.py 3 "Démarches à la poste" avant
 d'inventer le scénario, et dis en une phrase, dans ton journal, ce qui
 distingue ton module de son voisin du 4 ; et le lexique du programme est
 généreux à ce stade, sers-t'en plutôt que d'inventer.
@@ -1094,7 +1094,7 @@ vague : c'est encore le stade débutant, les énoncés restent courts et le
 soutien visuel compte — mais le format est celui du 4, seize séances et trois
 défis ; le niveau 4 couvre déjà presque toutes ces situations avec ses dix-huit
 modules, et le niveau 3 n'est pas un niveau 4 allégé — fais dire au programme
-les intentions propres au niveau 3 avec build/cadre.py 3 "<situation>" avant
+les intentions propres au niveau 3 avec build/cadre.py 3 "Location d'un logement" avant
 d'inventer le scénario, et dis en une phrase, dans ton journal, ce qui
 distingue ton module de son voisin du 4 ; et le lexique du programme est
 généreux à ce stade, sers-t'en plutôt que d'inventer.
@@ -1144,7 +1144,7 @@ vague : c'est encore le stade débutant, les énoncés restent courts et le
 soutien visuel compte — mais le format est celui du 4, seize séances et trois
 défis ; le niveau 4 couvre déjà presque toutes ces situations avec ses dix-huit
 modules, et le niveau 3 n'est pas un niveau 4 allégé — fais dire au programme
-les intentions propres au niveau 3 avec build/cadre.py 3 "<situation>" avant
+les intentions propres au niveau 3 avec build/cadre.py 3 "Relations sociales" avant
 d'inventer le scénario, et dis en une phrase, dans ton journal, ce qui
 distingue ton module de son voisin du 4 ; et le lexique du programme est
 généreux à ce stade, sers-t'en plutôt que d'inventer.
@@ -1194,7 +1194,7 @@ vague : c'est encore le stade débutant, les énoncés restent courts et le
 soutien visuel compte — mais le format est celui du 4, seize séances et trois
 défis ; le niveau 4 couvre déjà presque toutes ces situations avec ses dix-huit
 modules, et le niveau 3 n'est pas un niveau 4 allégé — fais dire au programme
-les intentions propres au niveau 3 avec build/cadre.py 3 "<situation>" avant
+les intentions propres au niveau 3 avec build/cadre.py 3 "Recherche d'emploi" avant
 d'inventer le scénario, et dis en une phrase, dans ton journal, ce qui
 distingue ton module de son voisin du 4 ; et le lexique du programme est
 généreux à ce stade, sers-t'en plutôt que d'inventer.
@@ -1244,7 +1244,7 @@ vague : c'est encore le stade débutant, les énoncés restent courts et le
 soutien visuel compte — mais le format est celui du 4, seize séances et trois
 défis ; le niveau 4 couvre déjà presque toutes ces situations avec ses dix-huit
 modules, et le niveau 3 n'est pas un niveau 4 allégé — fais dire au programme
-les intentions propres au niveau 3 avec build/cadre.py 3 "<situation>" avant
+les intentions propres au niveau 3 avec build/cadre.py 3 "Emploi" avant
 d'inventer le scénario, et dis en une phrase, dans ton journal, ce qui
 distingue ton module de son voisin du 4 ; et le lexique du programme est
 généreux à ce stade, sers-t'en plutôt que d'inventer.
@@ -1294,7 +1294,7 @@ vague : c'est encore le stade débutant, les énoncés restent courts et le
 soutien visuel compte — mais le format est celui du 4, seize séances et trois
 défis ; le niveau 4 couvre déjà presque toutes ces situations avec ses dix-huit
 modules, et le niveau 3 n'est pas un niveau 4 allégé — fais dire au programme
-les intentions propres au niveau 3 avec build/cadre.py 3 "<situation>" avant
+les intentions propres au niveau 3 avec build/cadre.py 3 "Participation à une activité culturelle ou sportive" avant
 d'inventer le scénario, et dis en une phrase, dans ton journal, ce qui
 distingue ton module de son voisin du 4 ; et le lexique du programme est
 généreux à ce stade, sers-t'en plutôt que d'inventer.
@@ -1344,7 +1344,7 @@ vague : c'est encore le stade débutant, les énoncés restent courts et le
 soutien visuel compte — mais le format est celui du 4, seize séances et trois
 défis ; le niveau 4 couvre déjà presque toutes ces situations avec ses dix-huit
 modules, et le niveau 3 n'est pas un niveau 4 allégé — fais dire au programme
-les intentions propres au niveau 3 avec build/cadre.py 3 "<situation>" avant
+les intentions propres au niveau 3 avec build/cadre.py 3 "Communication avec le personnel de l'établissement" avant
 d'inventer le scénario, et dis en une phrase, dans ton journal, ce qui
 distingue ton module de son voisin du 4 ; et le lexique du programme est
 généreux à ce stade, sers-t'en plutôt que d'inventer.
