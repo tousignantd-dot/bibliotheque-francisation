@@ -117,8 +117,13 @@ MANIFESTE = {
                "tenir en trente à quarante-cinq secondes : signaler ce qui "
                "est de trop plutôt que d'exiger un vocabulaire savant.",
 
+    # `jr_role` est le rôle de l'ÉLÈVE ; le serveur donne l'autre à
+    # l'assistant. L'élève est le voyageur, donc l'assistant tient le
+    # comptoir — l'inverse aurait fait renseigner l'élève au lieu de le
+    # faire demander. La clé, le cas et les deux rôles existent dans
+    # `JEU_DE_ROLE_SCENARIOS['regions']` de server.py.
     'jr_cas': 'depart',
-    'jr_role': 'prepose',
+    'jr_role': 'voyageur',
     'jr_scenario': 'regions',
     'ia_jeu_de_role': "L'élève prépare un voyage dans une région du Québec et "
                       "il parle à quelqu'un qui a l'information : un préposé "
