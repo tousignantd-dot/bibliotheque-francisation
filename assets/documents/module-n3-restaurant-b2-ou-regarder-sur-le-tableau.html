@@ -1,0 +1,172 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>B2 · Où regarder sur le tableau — Fiche élève</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800;900&display=swap" rel="stylesheet">
+<style>
+/* ═══════════════════════════════════════════════════════════════
+   FICHE ÉLÈVE · IMPRESSION LETTRE, NOIR ET BLANC
+   ───────────────────────────────────────────────────────────────
+   Aucune couleur : ces fiches sont photocopiées en noir et blanc.
+   Toute la hiérarchie passe par la GRAISSE, les FILETS et les MOTS.
+   C'est d'ailleurs la règle du système de design poussée à son
+   terme : « jamais d'information portée par la couleur seule ».
+
+   Les gris viennent des neutres du système (ink-900 à ink-400),
+   qui sont déjà quasi neutres. Les filets sont volontairement plus
+   sombres qu'à l'écran : une photocopieuse efface tout ce qui est
+   plus clair que 15 % de noir.
+   ═══════════════════════════════════════════════════════════════ */
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+:root{
+  --paper:#FFFFFF;
+  --tint:#F0F0EE;          /* aplat le plus clair encore visible en photocopie */
+  --line:#C9C9C6;          /* filet fin */
+  --rule:#17181A;          /* filet structurant */
+  --ink:#17181A;           /* titres */
+  --body:#2B2E30;          /* texte courant, un cran plus sombre qu'à l'écran */
+  --soft:#4B4F52;          /* texte secondaire */
+  --muted:#5E6165;         /* sur-titres, méta */
+}
+html{background:#BBBBBB}
+body{
+  font-family:'Nunito','Trebuchet MS',sans-serif;
+  font-size:11.5pt; line-height:1.5; color:var(--body);
+  background:var(--paper);
+  width:215.9mm;                    /* 8,5 po — format lettre */
+  margin:0 auto; padding:14mm 15mm 16mm;
+  -webkit-print-color-adjust:exact; print-color-adjust:exact;
+}
+h1,h2,h3{color:var(--ink); line-height:1.2; letter-spacing:-0.01em}
+
+/* ── En-tête ── */
+.hdr{border-bottom:2.5px solid var(--rule); padding-bottom:8px; margin-bottom:14px;
+     display:flex; align-items:flex-end; gap:14px}
+.hdr-l{flex:1}
+.eyebrow{font-size:9.5pt; font-weight:800; text-transform:uppercase;
+         letter-spacing:.12em; color:var(--muted)}
+.hdr h1{font-size:22pt; font-weight:900; margin-top:3px}
+.hdr-r{flex-shrink:0; display:flex; gap:10px; align-items:flex-end;
+       font-size:9.5pt; font-weight:800; text-transform:uppercase;
+       letter-spacing:.08em; color:var(--muted); padding-bottom:2px}
+.nomline{display:inline-block; border-bottom:1.5px solid var(--rule);
+         height:6mm; vertical-align:bottom; margin-left:5px}
+.nomline--nom{width:48mm} .nomline--date{width:26mm}
+.chapeau{font-size:12pt; font-weight:600; color:var(--soft); margin-bottom:16px}
+
+/* ── Blocs ── */
+.bloc{break-inside:avoid; page-break-inside:avoid; margin-bottom:13px}
+.card{border:1px solid var(--line); border-radius:12px; padding:11px 14px 12px;
+      background:var(--paper)}
+.lbl{font-size:9.5pt; font-weight:800; text-transform:uppercase;
+     letter-spacing:.12em; color:var(--muted); margin-bottom:5px}
+h2.t{font-size:15pt; font-weight:900; margin-bottom:7px}
+.consigne{font-size:11pt; font-weight:600; color:var(--soft); margin-bottom:8px}
+
+/* ── Objectifs et exercices : pastille en cerne, jamais en aplat ── */
+ol.obj,ol.ex{list-style:none}
+ol.obj{counter-reset:o} ol.ex{counter-reset:e}
+ol.obj li,ol.ex li{position:relative; padding-left:9mm; font-weight:600}
+ol.obj li{counter-increment:o; margin-bottom:6px}
+ol.ex li{counter-increment:e; margin-bottom:9px; break-inside:avoid}
+ol.obj li::before,ol.ex li::before{
+  position:absolute; left:0; top:0; width:6mm; height:6mm; border-radius:50%;
+  border:1.5px solid var(--rule); color:var(--ink);
+  font-size:9.5pt; font-weight:800;
+  display:flex; align-items:center; justify-content:center}
+ol.obj li::before{content:counter(o)}
+ol.ex li::before{content:counter(e)}
+
+/* ── Dialogue ── */
+.rep{display:flex; gap:10px; padding:4px 0; border-top:1px solid var(--line)}
+.rep:first-of-type{border-top:0}
+.rep--key{background:var(--tint); border-radius:8px; padding:5px 8px;
+          border-top:0; margin:2px 0}
+.qui{flex:0 0 30mm; font-weight:800; color:var(--ink); font-size:10.5pt}
+
+/* ── Règle : encadrée au filet épais, c'est elle qu'on repère de loin ── */
+.regle{border:2.5px solid var(--rule); border-radius:12px; padding:12px 14px}
+.regle .lbl{color:var(--ink)}
+.regle p.r{font-size:14pt; font-weight:900; color:var(--ink); line-height:1.3}
+.regle p.pr{margin-top:7px; font-weight:600; color:var(--soft)}
+
+/* ── Tableau ── */
+table{width:100%; border-collapse:collapse}
+th{font-size:9.5pt; font-weight:800; text-transform:uppercase; letter-spacing:.1em;
+   color:var(--muted); text-align:left; padding:0 8px 5px 0;
+   border-bottom:1.5px solid var(--rule)}
+td{padding:6px 8px 6px 0; border-top:1px solid var(--line); vertical-align:top;
+   font-weight:600}
+td.cle{font-weight:900; color:var(--ink)}   /* la colonne clé : en gras, pas en couleur */
+.note{margin-top:8px; font-size:10.5pt; font-weight:600; color:var(--soft);
+      background:var(--tint); border-radius:9px; padding:8px 11px}
+
+/* ── Cartes ── */
+.grid{display:grid; grid-template-columns:1fr 1fr; gap:9px}
+.grid .card h3{font-size:11.5pt; font-weight:900; color:var(--ink); margin-bottom:3px}
+.grid .card p{font-size:11pt}
+
+/* ── Piège : le filet distingue les deux colonnes, pas la couleur ──
+   À gauche, un filet TIRETÉ — ce qui ne tient pas.
+   À droite, un filet PLEIN et épais — ce qu'il faut retenir.
+   Les deux intitulés disent la même chose en mots.                */
+.duo{display:grid; grid-template-columns:1fr 1fr; gap:10px}
+.duo>div{border-radius:12px; padding:10px 13px}
+.duo .no{border:1.5px dashed var(--muted)}
+.duo .ok{border:2.5px solid var(--rule); background:var(--tint)}
+.duo .k{font-size:9.5pt; font-weight:800; text-transform:uppercase;
+        letter-spacing:.1em; margin-bottom:4px; color:var(--muted)}
+.duo .ok .k{color:var(--ink)}
+.duo p.ph{font-size:12pt; font-weight:800; color:var(--ink); line-height:1.3}
+.duo .no p.ph{font-weight:600; font-style:italic; color:var(--soft)}
+
+/* ── Vocabulaire ── */
+.voc{width:100%; border-collapse:collapse}
+.voc td{border-top:1px solid var(--line); padding:6px 8px 6px 0}
+.voc td.mot{width:38%; font-weight:900; color:var(--ink)}
+.voc td.def{color:var(--soft)}
+
+/* ── Zones de réponse ── */
+.ligne{display:block; border-bottom:1px dotted #8E8E8A; height:8mm; margin-top:2px}
+.ligne--court{width:55%}
+
+/* ── Billet de sortie ── */
+.billet{border:2.5px solid var(--rule); border-radius:12px; padding:13px 15px}
+.billet .k{font-size:9.5pt; font-weight:800; text-transform:uppercase;
+           letter-spacing:.12em; color:var(--ink); margin-bottom:4px}
+.billet p.c{font-size:14pt; font-weight:900; color:var(--ink); line-height:1.3}
+.billet ul{list-style:none; margin-top:7px}
+.billet li{font-weight:600; color:var(--soft); margin-bottom:3px}
+
+/* ── Pied ── */
+footer{margin-top:16px; padding-top:7px; border-top:1px solid var(--line);
+       font-size:9.5pt; font-weight:700; color:var(--muted);
+       display:flex; justify-content:space-between}
+
+/* ── Impression ── */
+@page{size:8.5in 11in; margin:14mm 15mm}
+@media print{
+  html{background:#FFFFFF}
+  body{width:auto; padding:0}
+  .bloc{break-inside:avoid; page-break-inside:avoid}
+  h2.t,.lbl{break-after:avoid; page-break-after:avoid}
+}
+</style>
+</head>
+<body>
+<header class="hdr">
+  <div class="hdr-l">
+    <div class="eyebrow">Séance B2 · Module 4 · 75 minutes</div>
+    <h1>Où regarder sur le tableau</h1>
+  </div>
+  <div class="hdr-r"><span>Nom<span class="nomline nomline--nom"></span></span><span>Date<span class="nomline nomline--date"></span></span></div>
+</header>
+<p class="chapeau">Cinq endroits, et le panneau entier devient lisible : le titre du bloc, le nom du plat, ce qui vient après le nom, le prix à droite, et les petites lignes du bas.</p>
+<section class="bloc card"><div class="lbl">Objectifs</div><h2 class="t">À la fin, je serai capable de…</h2><ol class="obj"><li>trouver une information précise sur un tableau de menu ;</li><li>distinguer un prix unique de trois prix de formats ;</li><li>lire les petites lignes du bas de l'affiche ;</li><li>poser une question quand le tableau ne dit pas tout.</li></ol></section><section class="bloc card"><div class="lbl">Analyse</div><h2 class="t">Où est quoi ?</h2><table><thead><tr><th>Tu cherches</th><th>Regarde</th></tr></thead><tbody><tr><td>ce qu'il y a dans le plat</td><td class="cle">après le nom : au poulet, aux légumes</td></tr><tr><td>le prix</td><td class="cle">au bout de la ligne, à droite</td></tr><tr><td>les formats</td><td class="cle">trois prix côte à côte sur la même ligne</td></tr><tr><td>ce qui vient avec</td><td class="cle">sous le titre du bloc, en petit</td></tr></tbody></table><div class="note">Les conditions, elles, sont tout en bas de l'affiche.</div></section><section class="bloc regle"><div class="lbl">Trois prix ne font pas trois plats</div><p class="r">Soupe aux légumes   3,25  4,25  5,25</p><p class="pr">C'est la même soupe. Ce qui change, c'est la portion — la quantité dans le bol. Les prix sont toujours dans le même ordre : du plus petit au plus grand, de gauche à droite.</p></section><section class="bloc card"><div class="lbl">Analyse</div><h2 class="t">Le tableau de chez Marcel</h2><table><thead><tr><th>Bloc</th><th>Ce qui y est écrit</th></tr></thead><tbody><tr><td>Sandwichs</td><td class="cle">au poulet, aux œufs, au jambon — servis avec salade ou frites</td></tr><tr><td>Soupes</td><td class="cle">aux légumes, au poulet et nouilles — petit, moyen, grand</td></tr><tr><td>Breuvages</td><td class="cle">jus de pomme, jus d'orange, lait, café, eau</td></tr><tr><td>Trios</td><td class="cle">sandwich, accompagnement et breuvage — un seul prix</td></tr></tbody></table><div class="note">Le bloc « Extras » ajoute le fromage, le bacon, une seconde portion.</div></section><section class="bloc card"><div class="lbl">Analyse</div><h2 class="t">Les petites lignes du bas</h2><table><thead><tr><th>Ce qui est écrit</th><th>Ce que ça veut dire</th></tr></thead><tbody><tr><td>Taxes en sus</td><td class="cle">le montant de la caisse sera un peu plus haut</td></tr><tr><td>Comptant et débit seulement</td><td class="cle">la carte de crédit n'est pas acceptée</td></tr><tr><td>Le dessin d'une feuille</td><td class="cle">le plat est sans viande</td></tr></tbody></table><div class="note">Trois lignes de rien du tout, et ce sont elles qui décident.</div></section><section class="bloc card"><div class="lbl">Compréhension écrite</div><h2 class="t">Vrai ou faux ?</h2><p class="consigne">Répondez d'après le tableau de chez Marcel.</p><ol class="ex"><li><span class="q">Il y a trois sortes de sandwichs.</span><span class="ligne ligne--court"></span></li><li><span class="q">La salade et les frites sont des accompagnements.</span><span class="ligne ligne--court"></span></li><li><span class="q">La soupe existe en trois formats.</span><span class="ligne ligne--court"></span></li><li><span class="q">On peut payer avec une carte de crédit.</span><span class="ligne"></span></li><li><span class="q">Le fromage est compris dans le prix du sandwich.</span><span class="ligne ligne--court"></span></li></ol></section><section class="bloc"><div class="lbl">Quand le tableau ne dit pas tout</div><h2 class="t">Quatre questions</h2><div class="grid"><div class="card"><h3>Qu'est-ce qu'il y a dans ce sandwich ?</h3><p>Quand le nom ne suffit pas, ou quand un mot est inconnu. C'est la question la plus fréquente au comptoir.</p></div><div class="card"><h3>Ça vient avec quoi ?</h3><p>Quand la ligne « servi avec » n'est pas visible de là où on est. Le préposé répond en deux mots.</p></div><div class="card"><h3>Quelle est la soupe du jour ?</h3><p>Elle change tous les jours et elle est souvent écrite à la craie, en petit, sur un tableau à part.</p></div><div class="card"><h3>Est-ce que je peux payer avec ma carte ?</h3><p>Si la ligne du bas n'est pas lisible. Mieux vaut demander avant de commander que de chercher un guichet après.</p></div></div></section><section class="bloc"><div class="lbl">Attention</div><h2 class="t">Additionner les prix du trio</h2><div class="duo"><div class="no"><div class="k">On entend souvent</div><p class="ph">6,50 + 2,00 + 1,75</p></div><div class="ok"><div class="k">Il faut dire plutôt</div><p class="ph">le trio a son propre prix, plus bas</p></div></div><div class="note">Le trio n'est pas la somme des trois lignes : c'est justement pour ça qu'il existe. Son prix est écrit dans son propre bloc, à droite. Comparer les deux chiffres est la seule façon de savoir ce qui est avantageux.</div></section><section class="bloc billet"><div class="k">Billet de sortie</div><p class="c">Trouvez un menu et écrivez cinq informations.</p><ul><li>Un plat, son prix, ce qui vient avec, un format, une ligne du bas.</li><li>Une photo de menu sur un téléphone suffit.</li></ul><span class="ligne"></span><span class="ligne"></span><span class="ligne"></span></section>
+<footer><span>B2 · Commander au comptoir</span><span>Fiche élève</span></footer>
+</body>
+</html>
