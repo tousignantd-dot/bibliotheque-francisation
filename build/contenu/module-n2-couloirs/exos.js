@@ -1,11 +1,11 @@
 const EXOS = [
  // ── JE DÉCOUVRE ─────────────────────────────────────────────
-  {sec:'prep', id:'prVocab', type:'match', num:'Vocabulaire · 1', tit:'Le mot et sa définition', color:'#0D7A6F',
-   sub:'Choisis un mot, puis sa définition. Six mots à la fois.', noQLbl:true, bankLbl:'Définitions', zonePh:'glisse la définition ici',
+  {sec:'prep', id:'prVocab', type:'match', num:'Vocabulaire · 1', tit:'Les seize mots du centre', color:'#0D7A6F',
+   sub:'Prends un mot du centre, puis glisse dessus sa définition. Six à la fois.', noQLbl:true, bankLbl:'Définitions', zonePh:'glisse la définition ici',
    rows: FC_CARDS.map((c,i)=>({id:'pv'+i, q:c.word, aid:'pv'+i, a:c.def}))},
 
   {sec:'prep', id:'pr1', type:'vf', num:'Exercice 1', tit:'Vrai ou Faux — Où est le local 214 ?', color:'#0D7A6F',
-   sub:'Écoute de nouveau le dialogue, puis réponds.', tiles:['VRAI','FAUX'],
+   sub:"Réécoute Soraya et Gilles dans le corridor, puis réponds.", tiles:['VRAI','FAUX'],
    savoir:{h:"› Les lieux du centre — à écouter et à répéter", speak:true, rows:[
      ["Le long passage entre les portes","On marche dedans pour aller d'un local à l'autre.", ["corridor"]],
      ["Les marches qui montent","On les prend quand on change d'étage.", ["escalier"]],
@@ -41,7 +41,7 @@ const EXOS = [
    ]},
 
   {sec:'prep', id:'prImg', type:'imgmatch', num:'Exercice 3', tit:'Les endroits du centre', color:'#0D7A6F',
-   sub:"Glisse chaque photo sur la phrase qui la décrit.",
+   sub:"Glisse chaque photo du centre sur la phrase qui la décrit.",
    images:[
     {id:'ie1', src:'/assets/interactive/module-n2-couloirs/images/corridor-etage.jpg'},
     {id:'ie2', src:'/assets/interactive/module-n2-couloirs/images/escalier-centre.jpg'},
@@ -79,7 +79,7 @@ const EXOS = [
 
  // ── DÉFI 1 · LE PLAN ET LES NUMÉROS ─────────────────────────
   {sec:'t1', id:'t1vf', type:'vf', num:'Exercice 1', tit:'Vrai ou Faux — Le plan du centre', color:'#1D6B8F',
-   sub:'Écoute de nouveau le dialogue, puis réponds.', tiles:['VRAI','FAUX'],
+   sub:"Réécoute Soraya et Vincent devant le plan, puis réponds.", tiles:['VRAI','FAUX'],
    rows:[
     {id:'q1', txt:"Le papier au mur est le plan du centre.", ok:'VRAI'},
     {id:'q2', txt:"Le centre a trois étages.", ok:'VRAI'},
@@ -126,7 +126,7 @@ const EXOS = [
    ]},
 
   {sec:'t1', id:'t1ou', type:'write', num:'Exercice 4', tit:'Au, à la, à l\', aux', color:'#1D6B8F', cols:2,
-   sub:"Complète avec « au », « à la », « à l' » ou « aux ».",
+   sub:"Complète avec au, à la, à l' ou aux, selon l'endroit dont on parle.",
    savoir:{h:"› Dire où on va, où c'est", speak:true, rows:[
      ["Un mot masculin : au","<span class='savoir-ex'><b>au</b> secrétariat · <b>au</b> premier étage · <b>au</b> rez-de-chaussée</span>", ["secrétariat"]],
      ["Un mot féminin : à la","<span class='savoir-ex'><b>à la</b> cafétéria · <b>à la</b> bibliothèque · <b>à la</b> sortie</span>", ["bibliothèque"]],
@@ -144,7 +144,7 @@ const EXOS = [
    ]},
 
   {sec:'t1', id:'t1b', type:'vf', num:'Exercice 5', tit:'Vrai ou Faux — Quatorze ou quarante ?', color:'#1D6B8F',
-   sub:'Écoute de nouveau le dialogue, puis réponds.', tiles:['VRAI','FAUX'],
+   sub:"Réécoute Soraya au sujet du numéro 240, puis réponds.", tiles:['VRAI','FAUX'],
    savoir:{h:"› Quand on n'est pas sûr du numéro", speak:true, rows:[
      ["On répète le numéro","<span class='savoir-ex'>Deux cent quatorze ? D'accord.</span>", ["numéro"]],
      ["On demande de répéter","<span class='savoir-ex'>Pouvez-vous répéter le numéro, s'il vous plaît ?</span>"],
@@ -160,7 +160,7 @@ const EXOS = [
 
  // ── DÉFI 2 · DEMANDER SON CHEMIN ────────────────────────────
   {sec:'t2', id:'t2vf', type:'vf', num:'Exercice 1', tit:'Vrai ou Faux — À gauche ou à droite ?', color:'#B45309',
-   sub:'Écoute de nouveau le dialogue, puis réponds.', tiles:['VRAI','FAUX'],
+   sub:"Réécoute les indications de Gilles, puis réponds.", tiles:['VRAI','FAUX'],
    rows:[
     {id:'u1', txt:"Les toilettes sont au bout du corridor.", ok:'VRAI'},
     {id:'u2', txt:"Il faut tourner à gauche.", ok:'FAUX'},
@@ -216,7 +216,7 @@ const EXOS = [
    ]},
 
   {sec:'t2', id:'t2b', type:'vf', num:'Exercice 5', tit:"Vrai ou Faux — C'est où, la bibliothèque ?", color:'#B45309',
-   sub:'Écoute de nouveau le dialogue, puis réponds.', tiles:['VRAI','FAUX'],
+   sub:"Réécoute Amina qui cherche la bibliothèque, puis réponds.", tiles:['VRAI','FAUX'],
    rows:[
     {id:'v1', txt:"Amina cherche la bibliothèque.", ok:'VRAI'},
     {id:'v2', txt:"La bibliothèque est le local 108.", ok:'VRAI'},
@@ -237,7 +237,7 @@ const EXOS = [
    ]},
 
   {sec:'appli', id:'aMoi', type:'write', num:'Exercice 2', tit:'Et toi, ton centre ?', color:'#7E3F98', cols:2,
-   sub:"Écris ta réponse à chaque question.",
+   sub:"Écris ta réponse en pensant à ton vrai centre.",
    items:[
     {q:"Ton cours est dans quel local ?", ph:"Mon cours est dans le local…"},
     {q:"C'est à quel étage ?", ph:"C'est au…"},
