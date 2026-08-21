@@ -1,0 +1,247 @@
+const EXOS = [
+ // ── JE DÉCOUVRE ─────────────────────────────────────────────
+  {sec:'prep', id:'prVocab', type:'match', num:'Vocabulaire · 1', tit:'Le mot et sa définition', color:'#0D7A6F',
+   sub:'Choisis un mot, puis sa définition. Six mots à la fois.', noQLbl:true, bankLbl:'Définitions', zonePh:'glisse la définition ici',
+   rows: FC_CARDS.map((c,i)=>({id:'pv'+i, q:c.word, aid:'pv'+i, a:c.def}))},
+
+  {sec:'prep', id:'pr1', type:'vf', num:'Exercice 1', tit:'Vrai ou Faux — Où est le local 214 ?', color:'#0D7A6F',
+   sub:'Écoute de nouveau le dialogue, puis réponds.', tiles:['VRAI','FAUX'],
+   savoir:{h:"› Les lieux du centre — à écouter et à répéter", speak:true, rows:[
+     ["Le long passage entre les portes","On marche dedans pour aller d'un local à l'autre.", ["corridor"]],
+     ["Les marches qui montent","On les prend quand on change d'étage.", ["escalier"]],
+     ["La petite pièce qui monte toute seule","Elle est presque toujours à côté de l'escalier.", ["ascenseur"]],
+     ["La salle avec un numéro sur la porte","Le cours de Soraya est dans le 214.", ["local"]],
+   ]},
+   rows:[
+    {id:'p1a', txt:"Soraya cherche le local 214.", ok:'VRAI'},
+    {id:'p1b', txt:"Le local 214 est au rez-de-chaussée.", ok:'FAUX'},
+    {id:'p1c', txt:"Gilles montre l'escalier à Soraya.", ok:'VRAI'},
+    {id:'p1d', txt:"L'escalier est au milieu du corridor.", ok:'VRAI'},
+    {id:'p1e', txt:"Il n'y a pas d'ascenseur dans le centre.", ok:'FAUX'},
+   ]},
+
+  {sec:'prep', id:'prSons', type:'vf', num:'Exercice 2', tit:'Le petit nombre ou le grand ?', color:'#0D7A6F', accent:'#0D7A6F', cards:true, listen:true,
+   sub:"Écoute chaque nombre. Est-ce qu'il est avant 10 ou après 10 ?", tiles:['AVANT 10','APRÈS 10'],
+   savoir:{h:"› Les nombres qui se ressemblent", rows:[
+     ["deux et douze","<span class='savoir-ex'><b>deux</b> · <b>douze</b> — le grand finit par « ouze »</span>"],
+     ["trois et treize","<span class='savoir-ex'><b>trois</b> · <b>treize</b> — le grand finit par « èze »</span>"],
+     ["quatre et quatorze","<span class='savoir-ex'><b>quatre</b> · <b>quatorze</b> — le grand a une syllabe de plus</span>"],
+     ["six et seize","<span class='savoir-ex'><b>six</b> · <b>seize</b> — écoute bien le début</span>"],
+     ["Le piège du centre","<span class='savoir-ex'>quator<b>ze</b> · quaran<b>te</b> — 14 et 40 ne sont pas le même local</span>"],
+   ]},
+   rows:[
+    {id:'nb1', txt:"deux", ok:'AVANT 10'},
+    {id:'nb2', txt:"douze", ok:'APRÈS 10'},
+    {id:'nb3', txt:"trois", ok:'AVANT 10'},
+    {id:'nb4', txt:"treize", ok:'APRÈS 10'},
+    {id:'nb5', txt:"quatre", ok:'AVANT 10'},
+    {id:'nb6', txt:"quatorze", ok:'APRÈS 10'},
+    {id:'nb7', txt:"six", ok:'AVANT 10'},
+    {id:'nb8', txt:"seize", ok:'APRÈS 10'},
+   ]},
+
+  {sec:'prep', id:'prImg', type:'imgmatch', num:'Exercice 3', tit:'Les endroits du centre', color:'#0D7A6F',
+   sub:"Glisse chaque photo sur la phrase qui la décrit.",
+   images:[
+    {id:'ie1', src:'/assets/interactive/module-n2-couloirs/images/corridor-etage.jpg'},
+    {id:'ie2', src:'/assets/interactive/module-n2-couloirs/images/escalier-centre.jpg'},
+    {id:'ie3', src:'/assets/interactive/module-n2-couloirs/images/ascenseur-porte.jpg'},
+    {id:'ie4', src:'/assets/interactive/module-n2-couloirs/images/salle-casiers.jpg'},
+    {id:'ie5', src:'/assets/interactive/module-n2-couloirs/images/cafeteria-centre.jpg'},
+    {id:'ie6', src:'/assets/interactive/module-n2-couloirs/images/comptoir-accueil.jpg'},
+   ],
+   rows:[
+    {id:'ie1', txt:"Le long passage avec des portes des deux côtés.", ok:'ie1'},
+    {id:'ie2', txt:"Les marches qu'on monte pour changer d'étage.", ok:'ie2'},
+    {id:'ie3', txt:"On appuie sur le bouton et on attend la porte.", ok:'ie3'},
+    {id:'ie4', txt:"Les petites armoires de métal où on laisse son manteau.", ok:'ie4'},
+    {id:'ie5', txt:"La grande salle avec des tables, où on mange le midi.", ok:'ie5'},
+    {id:'ie6', txt:"Le premier comptoir, juste après la porte d'entrée.", ok:'ie6'},
+   ]},
+
+  {sec:'prep', id:'prOu', type:'write', num:'Exercice 4', tit:'Où est… ? Où sont… ?', color:'#0D7A6F', cols:2,
+   sub:"Complète la question avec « est » ou « sont ».",
+   savoir:{h:"› La question qui ouvre toutes les portes", speak:true, rows:[
+     ["Un seul endroit","<span class='savoir-ex'>Où <b>est</b> la cafétéria ? · Où <b>est</b> le secrétariat ?</span>", ["cafétéria"]],
+     ["Plusieurs endroits","<span class='savoir-ex'>Où <b>sont</b> les toilettes ? · Où <b>sont</b> les casiers ?</span>", ["toilettes"]],
+     ["Plus court, à l'oral","<span class='savoir-ex'>La sortie, c'est où ? · Les casiers, c'est où ?</span>", ["sortie"]],
+     ["On commence toujours pareil","<span class='savoir-ex'><b>Excusez-moi</b>, où est l'ascenseur ?</span>", ["ascenseur"]],
+     ["On remercie à la fin","<span class='savoir-ex'>Merci beaucoup, monsieur. · Merci, madame.</span>"],
+   ]},
+   items:[
+    {q:"Excusez-moi, où ___ le local 214 ?", accept:["est"], ph:"est / sont"},
+    {q:"Où ___ les toilettes, s'il vous plaît ?", accept:["sont"], ph:"…"},
+    {q:"Où ___ la cafétéria ?", accept:["est"], ph:"…"},
+    {q:"Où ___ les casiers ?", accept:["sont"], ph:"…"},
+    {q:"Où ___ l'ascenseur ?", accept:["est"], ph:"…"},
+    {q:"Où ___ les escaliers ?", accept:["sont"], ph:"…"},
+   ]},
+
+ // ── DÉFI 1 · LE PLAN ET LES NUMÉROS ─────────────────────────
+  {sec:'t1', id:'t1vf', type:'vf', num:'Exercice 1', tit:'Vrai ou Faux — Le plan du centre', color:'#1D6B8F',
+   sub:'Écoute de nouveau le dialogue, puis réponds.', tiles:['VRAI','FAUX'],
+   rows:[
+    {id:'q1', txt:"Le papier au mur est le plan du centre.", ok:'VRAI'},
+    {id:'q2', txt:"Le centre a trois étages.", ok:'VRAI'},
+    {id:'q3', txt:"C'est le dernier chiffre qui dit l'étage.", ok:'FAUX'},
+    {id:'q4', txt:"Le local 108 est au premier étage.", ok:'VRAI'},
+    {id:'q5', txt:"La cafétéria est au deuxième étage.", ok:'FAUX'},
+   ]},
+
+  {sec:'t1', id:'t1etage', type:'write', num:'Exercice 2', tit:"Le premier chiffre dit l'étage", color:'#1D6B8F', cols:2,
+   sub:"Écris à quel étage est chaque local.",
+   savoir:{h:"› Lire un numéro de porte au Centre Bellevue", speak:true, rows:[
+     ["Le numéro commence par 0","C'est au <b>rez-de-chaussée</b>. <span class='savoir-ex'>005 · 012 · 015</span>", ["rez-de-chaussée"]],
+     ["Le numéro commence par 1","C'est au <b>premier</b> étage. <span class='savoir-ex'>108 · 110 · 118</span>", ["étage"]],
+     ["Le numéro commence par 2","C'est au <b>deuxième</b> étage. <span class='savoir-ex'>210 · 212 · 214</span>", ["local"]],
+     ["Les deux autres chiffres","Ils disent seulement quelle porte, pas quel étage.", ["porte"]],
+     ["On dit le numéro en entier","<span class='savoir-ex'>deux cent quatorze · cent huit · zéro quinze</span>", ["numéro"]],
+   ]},
+   items:[
+    {q:"Le local 214 est au ___ étage.", accept:["deuxième","deuxieme","2e"], ph:"premier / deuxième"},
+    {q:"Le local 108 est au ___ étage.", accept:["premier","1er"], ph:"…"},
+    {q:"Le local 012 est au ___ .", accept:["rez-de-chaussée","rez de chaussée","rez-de-chaussee"], ph:"rez-de-chaussée"},
+    {q:"Le local 210 est au ___ étage.", accept:["deuxième","deuxieme","2e"], ph:"…"},
+    {q:"Le local 118 est au ___ étage.", accept:["premier","1er"], ph:"…"},
+    {q:"Le local 005 est au ___ .", accept:["rez-de-chaussée","rez de chaussée","rez-de-chaussee"], ph:"…"},
+   ]},
+
+  {sec:'t1', id:'t1plan', type:'vf', num:'Exercice 3', tit:'Lire le plan affiché près de l\'accueil', color:'#1D6B8F',
+   sub:"Lis le plan dans le bandeau noir, puis réponds.", tiles:['VRAI','FAUX'],
+   savoir:{h:"› PLAN DU CENTRE BELLEVUE — affiché près de l'accueil", rows:[
+     ["Rez-de-chaussée","l'accueil (001) · le secrétariat (005) · la cafétéria (012) · les casiers (015)"],
+     ["Premier étage","la bibliothèque (108) · les locaux 110 à 118"],
+     ["Deuxième étage","les locaux 210 à 218 · le local 214 est au bout, à droite"],
+     ["Escalier et ascenseur","au milieu du corridor, à chaque étage"],
+     ["Toilettes","à chaque étage, en face de l'ascenseur"],
+     ["Sortie","à côté de l'accueil, au rez-de-chaussée"],
+   ]},
+   rows:[
+    {id:'r1', txt:"Le secrétariat est au rez-de-chaussée.", ok:'VRAI'},
+    {id:'r2', txt:"La bibliothèque est au deuxième étage.", ok:'FAUX'},
+    {id:'r3', txt:"Il y a des toilettes à chaque étage.", ok:'VRAI'},
+    {id:'r4', txt:"L'escalier est au bout du corridor.", ok:'FAUX'},
+    {id:'r5', txt:"Le local 214 est au bout du corridor, à droite.", ok:'VRAI'},
+    {id:'r6', txt:"La sortie est à côté de l'accueil.", ok:'VRAI'},
+   ]},
+
+  {sec:'t1', id:'t1ou', type:'write', num:'Exercice 4', tit:'Au, à la, à l\', aux', color:'#1D6B8F', cols:2,
+   sub:"Complète avec « au », « à la », « à l' » ou « aux ».",
+   savoir:{h:"› Dire où on va, où c'est", speak:true, rows:[
+     ["Un mot masculin : au","<span class='savoir-ex'><b>au</b> secrétariat · <b>au</b> premier étage · <b>au</b> rez-de-chaussée</span>", ["secrétariat"]],
+     ["Un mot féminin : à la","<span class='savoir-ex'><b>à la</b> cafétéria · <b>à la</b> bibliothèque · <b>à la</b> sortie</span>", ["bibliothèque"]],
+     ["Un mot qui commence par une voyelle : à l'","<span class='savoir-ex'><b>à l'</b>accueil · <b>à l'</b>ascenseur · <b>à l'</b>étage</span>", ["accueil"]],
+     ["Plusieurs : aux","<span class='savoir-ex'><b>aux</b> toilettes · <b>aux</b> casiers</span>", ["casier"]],
+     ["On ne dit jamais « à le »","On dit <b>au</b>. C'est le même mot, plus court."],
+   ]},
+   items:[
+    {q:"Je vais ___ cafétéria.", accept:["à la","a la"], ph:"au / à la / à l' / aux"},
+    {q:"Mon cours est ___ deuxième étage.", accept:["au"], ph:"…"},
+    {q:"Elle est ___ accueil.", accept:["à l'","a l'","à l","à l’"], ph:"…"},
+    {q:"Je vais ___ toilettes.", accept:["aux"], ph:"…"},
+    {q:"Le plan est ___ rez-de-chaussée.", accept:["au"], ph:"…"},
+    {q:"Vincent travaille ___ bibliothèque.", accept:["à la","a la"], ph:"…"},
+   ]},
+
+  {sec:'t1', id:'t1b', type:'vf', num:'Exercice 5', tit:'Vrai ou Faux — Quatorze ou quarante ?', color:'#1D6B8F',
+   sub:'Écoute de nouveau le dialogue, puis réponds.', tiles:['VRAI','FAUX'],
+   savoir:{h:"› Quand on n'est pas sûr du numéro", speak:true, rows:[
+     ["On répète le numéro","<span class='savoir-ex'>Deux cent quatorze ? D'accord.</span>", ["numéro"]],
+     ["On demande de répéter","<span class='savoir-ex'>Pouvez-vous répéter le numéro, s'il vous plaît ?</span>"],
+     ["On dit les chiffres un par un","<span class='savoir-ex'>Deux, un, quatre. · Zéro, un, cinq.</span>"],
+     ["On regarde la porte","Le numéro est écrit sur chaque porte du corridor.", ["porte"]],
+   ]},
+   rows:[
+    {id:'s1', txt:"Soraya cherche d'abord le local 240.", ok:'VRAI'},
+    {id:'s2', txt:"Le local 240 existe au centre.", ok:'FAUX'},
+    {id:'s3', txt:"Sur la feuille de Soraya, c'est écrit 214.", ok:'VRAI'},
+    {id:'s4', txt:"Gilles dit qu'il faut répéter chaque numéro.", ok:'VRAI'},
+   ]},
+
+ // ── DÉFI 2 · DEMANDER SON CHEMIN ────────────────────────────
+  {sec:'t2', id:'t2vf', type:'vf', num:'Exercice 1', tit:'Vrai ou Faux — À gauche ou à droite ?', color:'#B45309',
+   sub:'Écoute de nouveau le dialogue, puis réponds.', tiles:['VRAI','FAUX'],
+   rows:[
+    {id:'u1', txt:"Les toilettes sont au bout du corridor.", ok:'VRAI'},
+    {id:'u2', txt:"Il faut tourner à gauche.", ok:'FAUX'},
+    {id:'u3', txt:"La salle des casiers est au rez-de-chaussée.", ok:'VRAI'},
+    {id:'u4', txt:"La salle des casiers est à côté de la cafétéria.", ok:'VRAI'},
+    {id:'u5', txt:"La salle des casiers ferme le midi.", ok:'FAUX'},
+   ]},
+
+  {sec:'t2', id:'t2prep', type:'write', num:'Exercice 2', tit:'À côté de, en face de, au bout de', color:'#B45309', cols:2,
+   sub:"Complète avec les mots qui disent où c'est.",
+   savoir:{h:"› Cinq façons de dire où c'est", speak:true, rows:[
+     ["Tout près, du même côté","<span class='savoir-ex'><b>à côté de</b> la cafétéria · <b>à côté de</b> l'accueil</span>", ["cafétéria"]],
+     ["De l'autre côté, en se regardant","<span class='savoir-ex'><b>en face de</b> l'ascenseur · <b>en face de</b> l'accueil</span>", ["ascenseur"]],
+     ["Tout au fond du corridor","<span class='savoir-ex'><b>au bout du</b> corridor</span>", ["corridor"]],
+     ["Ni au début ni au fond","<span class='savoir-ex'><b>au milieu du</b> corridor</span>", ["escalier"]],
+     ["Avec deux choses des deux côtés","<span class='savoir-ex'><b>entre</b> l'escalier <b>et</b> l'ascenseur</span>", ["local"]],
+     ["Attention à de + le","On dit <b>du</b> corridor, jamais « de le corridor »."],
+   ]},
+   items:[
+    {q:"Les toilettes sont ___ de l'ascenseur : on se regarde.", accept:["en face"], ph:"en face / à côté"},
+    {q:"La salle des casiers est ___ de la cafétéria : les deux portes se touchent.", accept:["à côté","a côté","à cote","a cote"], ph:"…"},
+    {q:"Le local 214 est au ___ du corridor : c'est le dernier.", accept:["bout","fond"], ph:"…"},
+    {q:"L'escalier est au ___ du corridor : ni au début, ni au fond.", accept:["milieu"], ph:"…"},
+    {q:"L'ascenseur est ___ l'escalier et les toilettes.", accept:["entre"], ph:"…"},
+   ]},
+
+  {sec:'t2', id:'t2chemin', type:'match', num:'Exercice 3', tit:"L'indication et ce que tu fais", color:'#B45309',
+   sub:"Associe chaque indication à ce que tu fais dans le corridor.", bankLbl:"Ce que tu fais", zonePh:'glisse ici',
+   rows:[
+    {id:'c1', q:"« Prenez l'escalier. »", aid:'c1', a:"Tu montes les marches, un étage plus haut."},
+    {id:'c2', q:"« Continuez tout droit. »", aid:'c2', a:"Tu marches devant toi, sans tourner."},
+    {id:'c3', q:"« Tournez à droite. »", aid:'c3', a:"Tu changes de direction, du côté de ta main droite."},
+    {id:'c4', q:"« C'est au bout du corridor. »", aid:'c4', a:"Tu marches jusqu'à la dernière porte."},
+    {id:'c5', q:"« C'est en face de l'ascenseur. »", aid:'c5', a:"Tu te places devant l'ascenseur et tu regardes de l'autre côté."},
+    {id:'c6', q:"« Descendez au rez-de-chaussée. »", aid:'c6', a:"Tu redescends l'escalier jusqu'en bas."},
+   ]},
+
+  {sec:'t2', id:'t2ilya', type:'write', num:'Exercice 4', tit:"Il y a… et c'est…", color:'#B45309', cols:2,
+   sub:"Complète avec « il y a » ou « c'est ».",
+   savoir:{h:"› Décrire le centre en deux tournures", speak:true, rows:[
+     ["Pour dire qu'une chose existe","<span class='savoir-ex'><b>Il y a</b> un ascenseur. · <b>Il y a</b> trois étages.</span>", ["ascenseur"]],
+     ["Pour nommer, pour situer","<span class='savoir-ex'><b>C'est</b> le local 214. · <b>C'est</b> au deuxième étage.</span>", ["local"]],
+     ["Avec plusieurs choses, « il y a » ne change pas","<span class='savoir-ex'>Il y a <b>une</b> sortie. · Il y a <b>six</b> locaux.</span>", ["sortie"]],
+     ["Pour demander","<span class='savoir-ex'>Est-ce qu'<b>il y a</b> un ascenseur ? · <b>C'est</b> où, la bibliothèque ?</span>", ["bibliothèque"]],
+     ["Pour dire non","<span class='savoir-ex'><b>Il n'y a pas</b> de local 240.</span>", ["numéro"]],
+   ]},
+   items:[
+    {q:"Au deuxième étage, ___ neuf locaux.", accept:["il y a"], ph:"il y a / c'est"},
+    {q:"Le 214, ___ au bout du corridor.", accept:["c'est","c est"], ph:"…"},
+    {q:"Est-ce qu'___ un ascenseur ici ?", accept:["il y a"], ph:"…"},
+    {q:"La cafétéria, ___ le local 012.", accept:["c'est","c est"], ph:"…"},
+    {q:"À chaque étage, ___ des toilettes.", accept:["il y a"], ph:"…"},
+   ]},
+
+  {sec:'t2', id:'t2b', type:'vf', num:'Exercice 5', tit:"Vrai ou Faux — C'est où, la bibliothèque ?", color:'#B45309',
+   sub:'Écoute de nouveau le dialogue, puis réponds.', tiles:['VRAI','FAUX'],
+   rows:[
+    {id:'v1', txt:"Amina cherche la bibliothèque.", ok:'VRAI'},
+    {id:'v2', txt:"La bibliothèque est le local 108.", ok:'VRAI'},
+    {id:'v3', txt:"Il faut prendre l'escalier, puis tourner à droite.", ok:'FAUX'},
+    {id:'v4', txt:"Le secrétariat est au rez-de-chaussée.", ok:'VRAI'},
+    {id:'v5', txt:"Le secrétariat est en face de l'accueil.", ok:'VRAI'},
+   ]},
+
+ // ── JE ME LANCE ─────────────────────────────────────────────
+  {sec:'appli', id:'aQui', type:'vf', num:'Exercice 1', tit:'Qui parle ?', color:'#7E3F98',
+   sub:"Écoute le dialogue « Bienvenue au centre », puis réponds.", tiles:['SORAYA','AMINA'],
+   rows:[
+    {id:'w1', txt:"« C'est ma première journée ici. »", ok:'AMINA'},
+    {id:'w2', txt:"« Vous cherchez quel local ? »", ok:'SORAYA'},
+    {id:'w3', txt:"« Il y a un ascenseur ? »", ok:'AMINA'},
+    {id:'w4', txt:"« Au rez-de-chaussée. Le 012, à côté des casiers. »", ok:'SORAYA'},
+    {id:'w5', txt:"« Merci beaucoup ! »", ok:'AMINA'},
+   ]},
+
+  {sec:'appli', id:'aMoi', type:'write', num:'Exercice 2', tit:'Et toi, ton centre ?', color:'#7E3F98', cols:2,
+   sub:"Écris ta réponse à chaque question.",
+   items:[
+    {q:"Ton cours est dans quel local ?", ph:"Mon cours est dans le local…"},
+    {q:"C'est à quel étage ?", ph:"C'est au…"},
+    {q:"Où est la sortie ?", ph:"La sortie est…"},
+    {q:"Où sont les toilettes, à ton étage ?", ph:"Les toilettes sont…"},
+   ]},
+];

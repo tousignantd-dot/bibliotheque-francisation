@@ -1,0 +1,18 @@
+const FC_CARDS = [
+  {word:"un corridor", def:"Le long passage étroit qui va d'une porte à l'autre.", ex:"L'escalier est au milieu du <strong>corridor</strong>.", img:"/assets/interactive/module-n2-couloirs/vocab/corridor.jpg", tache:"prep"},
+  {word:"un étage", def:"Un niveau du bâtiment : on monte pour y aller.", ex:"Le local 214 est au deuxième <strong>étage</strong>.", tache:"prep"},
+  {word:"un escalier", def:"Les marches qu'on monte pour changer d'étage.", ex:"Prenez l'<strong>escalier</strong> et montez un étage.", img:"/assets/interactive/module-n2-couloirs/vocab/escalier.jpg", tache:"prep"},
+  {word:"un ascenseur", def:"La petite pièce qui monte et qui descend toute seule.", ex:"L'<strong>ascenseur</strong> est à côté de l'escalier.", img:"/assets/interactive/module-n2-couloirs/vocab/ascenseur.jpg", tache:"prep"},
+  {word:"le rez-de-chaussée", def:"L'étage du bas, celui de la porte d'entrée.", ex:"L'accueil est au <strong>rez-de-chaussée</strong>.", tache:"prep"},
+  {word:"un local", def:"Une salle du centre, avec un numéro sur la porte.", ex:"Mon cours est dans le <strong>local</strong> 214.", tache:"prep"},
+  {word:"une porte", def:"Ce qu'on ouvre pour entrer dans une salle.", ex:"Le numéro est écrit sur la <strong>porte</strong>.", img:"/assets/interactive/module-n2-couloirs/vocab/porte.jpg", tache:"t1"},
+  {word:"un numéro", def:"Les chiffres qui disent quel local c'est.", ex:"Le <strong>numéro</strong> 214 commence par un 2.", tache:"t1"},
+  {word:"un plan", def:"Le dessin du bâtiment, affiché au mur, avec tous les locaux.", ex:"Le <strong>plan</strong> du centre est près de l'accueil.", img:"/assets/interactive/module-n2-couloirs/vocab/plan.jpg", tache:"t1"},
+  {word:"un casier", def:"La petite armoire de métal où on laisse son manteau.", ex:"Mon <strong>casier</strong> est au rez-de-chaussée, le 015.", img:"/assets/interactive/module-n2-couloirs/vocab/casier.jpg", tache:"t1"},
+  {word:"le secrétariat", def:"Le bureau où on va pour son inscription et ses papiers.", ex:"Le <strong>secrétariat</strong> est en face de l'accueil.", img:"/assets/interactive/module-n2-couloirs/vocab/secretariat.jpg", tache:"t1"},
+  {word:"l'accueil", def:"Le premier comptoir, juste après la porte d'entrée.", ex:"Demandez à l'<strong>accueil</strong> : ils connaissent tous les locaux.", img:"/assets/interactive/module-n2-couloirs/vocab/accueil.jpg", tache:"t2"},
+  {word:"la cafétéria", def:"La grande salle où on mange le midi.", ex:"La <strong>cafétéria</strong> est à côté des casiers.", img:"/assets/interactive/module-n2-couloirs/vocab/cafeteria.jpg", tache:"t2"},
+  {word:"les toilettes", def:"La petite salle avec les lavabos, à chaque étage.", ex:"Les <strong>toilettes</strong> sont en face de l'ascenseur.", img:"/assets/interactive/module-n2-couloirs/vocab/toilettes.jpg", tache:"t2"},
+  {word:"la sortie", def:"La porte par où on quitte le bâtiment.", ex:"La <strong>sortie</strong> est à côté de l'accueil.", img:"/assets/interactive/module-n2-couloirs/vocab/sortie.jpg", tache:"t2"},
+  {word:"la bibliothèque", def:"La salle calme où on emprunte des livres et où on travaille.", ex:"La <strong>bibliothèque</strong>, c'est le local 108.", img:"/assets/interactive/module-n2-couloirs/vocab/bibliotheque.jpg", tache:"t2"},
+];
