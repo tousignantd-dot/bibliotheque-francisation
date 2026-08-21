@@ -1248,4 +1248,13 @@ fichiers partagés — `modules.py`, `activities.json`, `server.py`,
 `sections.json`, `materiel.json` — ont été pris avec `git pull --rebase` juste
 avant et commités aussitôt après, chemins explicites, jamais `-A`.
 
+**Un grain de sable partagé, à savoir** : `data/materiel.json` est un relevé
+du **disque**, pas du dépôt. Au moment où il a été refait, la session qui
+produit `module-n3-loyer` (activité 81) avait ses fichiers sur le disque mais
+pas encore commités : le relevé les mentionne donc neuf fois. Ce n'est pas une
+erreur à corriger à la main — elle se dissout dès que cette session commite les
+siens et relance `python3 build/materiel.py`. Le contrôle a aussi échoué une
+première fois parce que l'autre session écrivait pendant la génération :
+relancer avant de conclure à un écart.
+
 **La file reprend** à l'activité 71 (niveau 5).
