@@ -263,6 +263,19 @@ MODULES = {
                         'Le bail'),
     },
 
+    'module-n5-degat': {
+        'numero': 2, 'activite': 62, 'niveau': 5,
+        'titre': "Un dégât d'eau",
+        'chapeau': "Décrire un dégât et raconter ce qui s'est passé, lire "
+                   "l'avis de travaux affiché dans l'immeuble, puis "
+                   "argumenter jusqu'au bout de la démarche : réduction de "
+                   "loyer et réclamation d'assurance.",
+        'seances': GRILLE_3_DEFIS,
+        'blocs': _blocs('Le constat',
+                        "L'avis",
+                        'La réclamation'),
+    },
+
     'module-n6-recherche': {
         'numero': 1, 'activite': 59, 'niveau': 6,
         'titre': "Chercher un emploi",
