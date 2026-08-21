@@ -4623,7 +4623,215 @@ JEU_DE_ROLE_POSTE = {
 }
 
 
+# ── module-n5-quebec (activité 70) ────────────────────────────────────────
+# Se renseigner sur une région du Québec et parler aux gens qu'on y trouve.
+# Aucun des dix-neuf scénarios existants ne convenait : `circulation`
+# (niveau 5) est le plus proche par le domaine, mais la route y est bloquée et
+# tout se joue dans l'heure qui vient, alors qu'ici la route est simplement
+# longue et le voyage se prépare des jours d'avance ; `titre` et `autobus`
+# achètent un déplacement urbain qu'on refait le lendemain ; `comptoir` sert
+# au comptoir mais ne fait voyager personne. Ce qui est propre à celui-ci :
+# l'élève ne pose pas une question à la fois, il expose une demande complète —
+# où, quand, combien de temps, combien de personnes, quels bagages — et il en
+# écoute la réponse jusqu'au bout. C'est l'exigence du niveau 5, premier
+# niveau du stade intermédiaire : des discours simples mais organisés.
+#
+# Les faits cités sont réels et vérifiés, jamais devinés : Gare d'autocars de
+# Montréal au 1717, rue Berri, au-dessus de la station Berri-UQAM, ouverte
+# 24 heures, guichet de 5 h 30 à 23 h 15 ; Orléans Express dessert Montréal —
+# Québec — Bas-Saint-Laurent — Gaspé, départs quotidiens ; bagages : un bagage
+# à main de 5 kg et 115 cm linéaires, plus deux bagages en soute, le
+# dépassement partant par le service Expedibus, au poids et selon la
+# destination ; réservation sur orleansexpress.com ou au 1 833 449-6444 ;
+# l'Océan de VIA Rail relie Montréal à Halifax trois fois par semaine —
+# mercredi, vendredi, dimanche, départ de Montréal à 18 h 30 — en s'arrêtant à
+# Rivière-du-Loup, Rimouski, Matapédia, Miramichi et Moncton ; parc national du
+# Bic, de la Sépaq, à l'ouest de Rimouski, 33 km² de caps, de baies et
+# d'anses, camping en quatre secteurs — Tombolo, Rioux, La Coulée,
+# Rivière-du-Sud-Ouest — et prêt-à-camper. Les prix, les heures de départ
+# précises et les personnes sont inventés : un tarif change trop vite pour
+# être écrit dans un module, et le module apprend à le demander.
+JEU_DE_ROLE_REGIONS = {
+    "depart": {
+        "contexte": (
+            "Le comptoir de la Gare d'autocars de Montréal, au 1717, rue "
+            "Berri, un mardi après-midi. Vous avez une semaine de congé à la "
+            "fin de septembre et vous voulez aller dans le Bas-Saint-Laurent, "
+            "du côté de Rimouski, pour voir le fleuve et le parc national du "
+            "Bic. Vous n'êtes jamais sortie de l'île de Montréal et vous ne "
+            "savez ni combien de temps dure le trajet, ni ce que vous avez le "
+            "droit d'emporter."
+        ),
+        "prepose": [
+            "Orléans Express part de Montréal vers Québec, le "
+            "Bas-Saint-Laurent et la Gaspésie, tous les jours.",
+            "Le trajet de Montréal à Rimouski est long : tu dis franchement "
+            "qu'il faut compter la journée, et tu donnes une heure de départ "
+            "et une heure d'arrivée quand on te les demande.",
+            "Les bagages : un bagage à main de cinq kilos au maximum, cent "
+            "quinze centimètres en dimensions linéaires, plus deux bagages en "
+            "soute. Ce qui dépasse part par le service Expedibus, au poids et "
+            "selon la destination.",
+            "On peut aussi réserver en ligne sur orleansexpress.com ou par "
+            "téléphone au 1 833 449-6444, tous les jours de l'année.",
+            "Il existe un aller-retour, et tu demandes la date du retour "
+            "avant de vendre quoi que ce soit.",
+            "Le train est une autre possibilité : l'Océan de VIA Rail passe à "
+            "Rimouski trois fois par semaine seulement — le mercredi, le "
+            "vendredi et le dimanche — et il part de Montréal à 18 h 30.",
+            "Tu ne donnes jamais un prix que tu n'as pas : tu dis que ça "
+            "dépend de la date, que tu vérifies, puis tu annonces un montant "
+            "clair.",
+        ],
+        "voyageur": [
+            "Tu pars une semaine à la fin de septembre et tu vas à Rimouski.",
+            "Tu voyages seule, avec une grosse valise et un sac à dos.",
+            "Tu veux savoir combien de temps dure le trajet et à quelle heure "
+            "tu arriverais.",
+            "Tu ne connais pas la différence entre l'autocar et le train : tu "
+            "la demandes.",
+        ],
+    },
+    "gite": {
+        "contexte": (
+            "Le salon d'un petit gîte du village du Bic, en fin d'après-midi. "
+            "Vous venez d'arriver après une journée d'autocar. L'hôtesse vous "
+            "accueille, vous offre un café et vous demande d'où vous venez. "
+            "Vous restez cinq nuits et vous ne savez pas encore ce que vous "
+            "ferez de vos journées."
+        ),
+        "prepose": [
+            "Tu tiens le gîte depuis quinze ans et tu es née dans le village.",
+            "Le parc national du Bic est à quelques minutes : des caps, des "
+            "baies, des anses, des sentiers au bord du fleuve, et des phoques "
+            "qu'on voit à marée basse.",
+            "Le déjeuner est servi de sept heures à neuf heures trente, et tu "
+            "le dis sans qu'on te le demande, parce que ça concerne demain "
+            "matin.",
+            "Tu demandes d'où vient la personne, depuis combien de temps elle "
+            "est au Québec, et ce qu'elle veut voir — c'est une conversation, "
+            "pas un formulaire.",
+            "Tu conseilles d'aller au parc tôt le matin, quand la lumière est "
+            "belle et qu'il n'y a personne.",
+            "Tu vouvoies : vous ne vous connaissez pas. Tu ne proposes le "
+            "tutoiement à personne le premier soir.",
+        ],
+        "voyageur": [
+            "Tu arrives d'une longue journée de route et tu es fatiguée mais "
+            "contente.",
+            "Tu restes cinq nuits et tu n'as rien prévu.",
+            "Tu veux savoir ce qu'il y a à voir et à quelle heure est le "
+            "déjeuner.",
+        ],
+    },
+    "sentier": {
+        "contexte": (
+            "Un sentier du parc national du Bic, le matin, au bord du fleuve. "
+            "Vous vous êtes arrêtée pour regarder les phoques sur les roches. "
+            "Une autre personne s'arrête à côté de vous et engage la "
+            "conversation. Vous ne la reverrez jamais, et c'est justement "
+            "pour ça qu'on se parle librement."
+        ),
+        "prepose": [
+            "Tu es un vacancier comme l'autre : tu viens de Sherbrooke et tu "
+            "es ici pour quatre jours.",
+            "Tu commences par le paysage et par la marée, parce que c'est ce "
+            "qu'on a devant les yeux.",
+            "Tu demandes d'où vient la personne et si c'est sa première fois "
+            "dans la région.",
+            "Tu racontes ce que tu as fait hier et ce que tu feras demain, au "
+            "passé composé et au futur, pour donner l'exemple sans le dire.",
+            "Tu conseilles un endroit que tu as aimé, et tu dis pourquoi.",
+            "Tu vouvoies, mais tu es chaleureux : c'est une conversation "
+            "spontanée entre inconnus, pas un service au comptoir.",
+        ],
+        "voyageur": [
+            "Tu es à ta première sortie hors de Montréal depuis ton arrivée "
+            "au Québec.",
+            "Tu es venue en autocar et tu loges dans un gîte du village.",
+            "Tu as marché au bord du fleuve hier et tu as vu le phare.",
+        ],
+    },
+}
+
+
 JEU_DE_ROLE_SCENARIOS = {
+    "regions": {
+        "cadre": ("la préparation d'un voyage dans une région du Québec et "
+                  "les conversations qu'on y a une fois sur place, au stade "
+                  "intermédiaire"),
+        "contexte_label": "Où vous êtes et ce que vous préparez",
+        "cas": JEU_DE_ROLE_REGIONS,
+        "adresse": ("Vouvoie l'élève du début à la fin : le préposé du "
+                    "comptoir, l'hôtesse du gîte et le vacancier du sentier "
+                    "sont tous des inconnus. Ne propose jamais le tutoiement."),
+        "sujets": [
+            "la demande exposée d'un seul tenant : où l'on va, quand, pour "
+            "combien de temps, à combien de personnes",
+            "les dates et les heures dites en chiffres, jamais « bientôt » "
+            "ni « dans pas long »",
+            "la question posée poliment : je voudrais savoir si, est-ce que "
+            "je pourrais, pourriez-vous me dire",
+            "le lieu dit avec la bonne préposition : à Rimouski, en Gaspésie, "
+            "au Bas-Saint-Laurent, dans les Laurentides",
+            "les bagages : ce qu'on emporte, ce qui va en soute, ce qui "
+            "dépasse",
+            "ce qu'on a fait et ce qu'on fera, au passé composé et au futur "
+            "simple",
+        ],
+        "cloture": ("Quand l'élève a dit où il va, quand, pour combien de "
+                    "temps et ce qu'il voulait savoir, redis en une phrase "
+                    "courte ce qui est retenu — la destination, la date, "
+                    "l'heure — pour qu'il l'entende une seconde fois, puis "
+                    "conclus. N'accepte pas une demande en morceaux : si "
+                    "l'élève ne donne qu'une information, demande-lui la "
+                    "suite au lieu de deviner à sa place."),
+        "ouverture": {
+            "voyageur": "Bonjour. Je voudrais des renseignements pour aller dans le Bas-Saint-Laurent, s'il vous plaît.",
+            "prepose": "Bonjour ! Où est-ce que vous voulez aller ?",
+        },
+        "roles": {
+            "prepose": {
+                "qui": ("Tu es Serge Ouellet, le préposé au comptoir de la "
+                        "Gare d'autocars de Montréal — ou, selon le cas, "
+                        "Rose-Aimée Caron, qui tient le gîte du Bic, ou "
+                        "Denis, un vacancier rencontré sur un sentier du "
+                        "parc. L'élève est la personne qui voyage."),
+                "conduite": ("Niveau 5 : l'élève doit tenir un discours "
+                             "organisé, pas répondre à une suite de "
+                             "questions. Laisse-le exposer sa demande au "
+                             "complet avant de répondre, et ne lui arrache "
+                             "pas les informations une par une. S'il ne donne "
+                             "qu'un morceau — « je veux aller à Rimouski » —, "
+                             "demande-lui le reste en une seule fois : quand, "
+                             "pour combien de temps, à combien de personnes. "
+                             "Dis les heures et les prix en toutes lettres et "
+                             "laisse-lui le temps de les répéter. N'invente "
+                             "aucun tarif : tiens-toi à ce que tu sais, et "
+                             "dis que ça dépend de la date quand tu ne l'as "
+                             "pas. Emploie les vrais mots du voyage : un "
+                             "aller-retour, un départ, une correspondance, la "
+                             "soute, un bagage à main, une escale, la durée "
+                             "du trajet, une région, un attrait, un gîte, un "
+                             "sentier, la marée."),
+            },
+            "voyageur": {
+                "qui": ("Tu es la personne qui voyage, et c'est l'élève qui "
+                        "tient le comptoir, le gîte ou la conversation sur "
+                        "le sentier."),
+                "conduite": ("Vouvoie l'élève. Tu ne connais pas la région et "
+                             "tu ne devines rien à sa place. Tu exposes ta "
+                             "demande au complet dès le début — où, quand, "
+                             "combien de temps, combien de personnes — puis "
+                             "tu poses tes questions. Si la réponse reste "
+                             "vague — « ça dépend », « c'est pas loin » —, tu "
+                             "redemandes une fois, poliment : combien "
+                             "d'heures exactement, à quelle heure. Tu répètes "
+                             "à voix haute l'heure et le prix qu'on te donne "
+                             "pour vérifier que tu as bien compris."),
+            },
+        },
+    },
     "poste": {
         "cadre": ("une démarche au comptoir d'un bureau de poste — envoyer, "
                   "ramasser ou faire suivre —, au niveau débutant"),
