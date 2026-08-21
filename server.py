@@ -463,6 +463,15 @@ def load_activities():
     except (json.JSONDecodeError, UnicodeDecodeError) as e:
         secours = BASE_DIR / "data" / "activities.json"
         print("[ERREUR] %s illisible (%s)" % (DATA_FILE, e), flush=True)
+        try:
+            import shutil as _sh
+            libre = _sh.disk_usage(str(DATA_FILE.parent)).free
+            if libre < 5_000_000:
+                print("[ALERTE] il reste %.1f Mo sur le volume — c'est la "
+                      "cause la plus probable du fichier tronqué"
+                      % (libre / 1e6), flush=True)
+        except Exception:
+            pass
         if DATA_FILE != secours and secours.exists():
             epave = DATA_FILE.with_suffix(
                 ".corrompu-%s.json" % datetime.now().strftime("%Y%m%d-%H%M%S"))
@@ -473,9 +482,17 @@ def load_activities():
                 print("[WARN] épave non conservée : %s" % err, flush=True)
             with open(secours, "r", encoding="utf-8") as f:
                 activities = json.load(f)
-            save_activities(activities)
-            print("[INFO] catalogue restauré depuis %s (%d activités)"
-                  % (secours, len(activities)), flush=True)
+            # Réécrire le volume est un bonus, pas une condition. Le disque
+            # plein est précisément ce qui a tronqué le fichier : si on laisse
+            # l'erreur remonter, la panne se rejoue à chaque requête et le
+            # catalogue reste vide alors qu'on tient déjà les données en main.
+            try:
+                save_activities(activities)
+                print("[INFO] catalogue restauré depuis %s (%d activités)"
+                      % (secours, len(activities)), flush=True)
+            except OSError as err:
+                print("[WARN] catalogue servi depuis le code sans être réécrit "
+                      "(%s) — le volume est probablement plein" % err, flush=True)
         else:
             return []
     for a in activities:
