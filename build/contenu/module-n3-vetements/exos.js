@@ -104,7 +104,7 @@ const EXOS = [
      ["Au féminin, on ajoute un e","<b>noir → noire</b> · <b>gris → grise</b> · <b>vert → verte</b> · <b>bleu → bleue</b>. On entend souvent la différence : « gri » devient « gri<b>z</b>e »."],
      ["Au pluriel, on ajoute un s","<b>des bottes noires</b> · <b>des gants gris</b>. Le s ne s'entend pas, mais il s'écrit — et l'étiquette, elle, s'écrit."],
      ["Quatre couleurs ne changent jamais","<b>rouge</b>, <b>jaune</b>, <b>rose</b>, <b>beige</b> finissent déjà par un e : une tuque <b>rouge</b>, des mitaines <b>rouges</b>. Et <b>marine</b> ou <b>marron</b> ne bougent pas du tout.", ["rouge"]],
-     ["Pâle et foncé se mettent après la couleur","« bleu <b>pâle</b> », « gris <b>foncé</b> ». Quand la couleur est ainsi précisée, plus rien ne s'accorde : « des mitaines <b>bleu pâle</b> ».", ["pale","fonce"]],
+     ["Pâle et foncé se mettent après la couleur","« bleu <b>pâle</b> », « gris <b>foncé</b> ». Quand la couleur est ainsi précisée, plus rien ne s'accorde : « des mitaines <b>bleu pâle</b> ».", ["pâle","foncé"]],
    ]},
    items:[
     {q:"Je cherche un manteau ___ . (noir)", accept:["noir"], ph:"noir / noire"},
@@ -121,7 +121,7 @@ const EXOS = [
      ["Trois lettres sur l'étiquette","<b>P</b> pour petit, <b>M</b> pour moyen, <b>G</b> pour grand. On dit aussi « TP » (très petit) et « TG » (très grand). Les chiffres — 8, 10, 12 — existent aussi, surtout pour les pantalons.", ["taille"]],
      ["Le vêtement a une taille, le pied a une pointure","On demande « Vous portez quelle <b>taille</b> ? » pour un manteau, et « Quelle <b>pointure</b> faites-vous ? » pour des bottes. Confondre les deux ne se voit pas à l'écrit, mais s'entend tout de suite.", ["pointure"]],
      ["La question avec « quel »","<b>Quelle</b> taille ? <b>Quelle</b> couleur ? <b>Quelle</b> pointure ? — ces trois mots sont féminins, d'où « quelle ». Pour un mot masculin : <b>quel</b> modèle, <b>quel</b> prix."],
-     ["Dire ce qui ne va pas","Un adjectif et un endroit, c'est assez : « c'est trop <b>serré</b> aux épaules », « les manches sont trop <b>longues</b> », « c'est un peu <b>grand</b> ».", ["serre"]],
+     ["Dire ce qui ne va pas","Un adjectif et un endroit, c'est assez : « c'est trop <b>serré</b> aux épaules », « les manches sont trop <b>longues</b> », « c'est un peu <b>grand</b> ».", ["serré"]],
      ["Ce qu'on demande ensuite","« Vous l'avez en <b>moyen</b> ? » « Vous l'avez dans une autre <b>couleur</b> ? » « Je peux l'<b>essayer</b> ? » Trois phrases qui suffisent presque toujours."],
    ]},
    items:[
@@ -238,9 +238,9 @@ const EXOS = [
   {sec:'t3', id:'t3entretien', type:'write', num:'Exercice 2', tit:"Les dessins de l'étiquette", color:'#0D7A6F', cols:2,
    sub:"Complète : que dit ce dessin ?",
    savoir:{h:"› Cinq dessins, et une règle qui les explique tous", speak:true, rows:[
-     ["La règle d'abord","Un dessin <b>barré</b> d'une croix veut toujours dire <b>ne pas faire</b>. Apprends la règle, et les cinq dessins deviennent faciles.", ["etiquette_dentretien"]],
+     ["La règle d'abord","Un dessin <b>barré</b> d'une croix veut toujours dire <b>ne pas faire</b>. Apprends la règle, et les cinq dessins deviennent faciles.", ["étiquette"]],
      ["Le petit bassin d'eau","<b>Laver.</b> Le chiffre dedans donne la température en degrés : 30, c'est de l'eau froide ; 60, de l'eau chaude. Une main dans le bassin veut dire « laver à la main »."],
-     ["Le carré avec un rond","<b>La sécheuse.</b> Barré : ne pas mettre à la sécheuse — le vêtement rapetisserait. Les points dans le rond disent la chaleur : un point, chaleur douce.", ["secheuse"]],
+     ["Le carré avec un rond","<b>La sécheuse.</b> Barré : ne pas mettre à la sécheuse — le vêtement rapetisserait. Les points dans le rond disent la chaleur : un point, chaleur douce.", ["sécheuse"]],
      ["Le triangle","<b>Le javellisant.</b> Barré : ne pas javelliser. Sur de la couleur, le javellisant fait des taches jaunes qui ne partent plus."],
      ["Le fer et le rond","Le <b>fer à repasser</b>, avec ses points de chaleur ; et le <b>rond</b>, qui parle du nettoyage à sec, chez le nettoyeur. Un rond barré : jamais chez le nettoyeur."],
    ]},

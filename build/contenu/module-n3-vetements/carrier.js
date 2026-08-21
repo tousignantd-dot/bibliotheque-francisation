@@ -1,53 +1,31 @@
 const CARRIER_PHRASES = {
-  // Les seize mots du banc de vocabulaire
-  'manteau':               "Il me faut un manteau chaud pour janvier.",
-  'tuque':                 "Mets ta tuque, il fait moins quinze.",
-  'chandail':              "Ce chandail de laine est trop chaud.",
-  'bottes':                "Ces bottes sont doublées en laine.",
-  'raye':                  "Je préfère l'uni au rayé.",
-  'fonce':                 "Un bleu foncé salit moins vite.",
-  'taille':                "Vous portez quelle taille ?",
-  'cabine':                "La cabine d'essayage est au fond.",
-  'cabine_dessayage':      "La cabine d'essayage est au fond, à droite.",
-  'cintre':                "Je décroche le manteau du cintre.",
-  'serre':                 "Le moyen est trop serré aux épaules.",
-  'rabais':                "Trente pour cent de rabais sur les chandails.",
-  'etiquette':             "Regardez l'étiquette dans le col.",
-  'etiquette_de_prix':     "L'étiquette de prix est rouge.",
-  'etiquette_dentretien':  "L'étiquette d'entretien montre cinq dessins.",
-  'liquidation':           "Ces bottes sont en liquidation.",
-  'secheuse':              "Ce chandail ne va pas à la sécheuse.",
-  'facture':               "Gardez la facture dans votre poche.",
+  // Les clés sont les mots **exactement tels qu'ils sont écrits** dans les
+  // listes `savoir[…][2]` de exos.js — accents compris. Le gabarit fait
+  // `CARRIER_PHRASES[w]` sur le mot affiché : une clé sans accent ne serait
+  // jamais trouvée, et la pastille lirait le mot seul, mal prononcé.
+  // Les vêtements
+  'manteau':   "Il me faut un manteau chaud pour janvier.",
+  'chandail':  "Ce chandail de laine est trop chaud.",
+  'tuque':     "Mets ta tuque, il fait moins quinze.",
+  'mitaines':  "Les mitaines sont plus chaudes que les gants.",
+  'foulard':   "Mets ton foulard, le vent est froid.",
+  'bottes':    "Ces bottes sont doublées en laine.",
+  'pantalon':  "Ce pantalon est un peu long.",
+  'jupe':      "Cette jupe est trop longue.",
+  'bas':       "Une paire de bas de laine, s'il vous plaît.",
 
-  // Les autres vêtements nommés dans les encadrés
-  'pantalon':              "Ce pantalon est un peu long.",
-  'mitaines':              "Les mitaines sont plus chaudes que les gants.",
-  'foulard':               "Mets ton foulard, le vent est froid.",
-  'gants':                 "Je cherche des gants de cuir.",
-  'jupe':                  "Cette jupe est trop longue.",
-  'pull':                  "Le pull gris est en rabais.",
-  'blouson':               "Le blouson n'est pas assez chaud.",
-  'souliers':              "Ces souliers sont trop serrés.",
-  'bas':                   "Une paire de bas de laine, s'il vous plaît.",
+  // Les couleurs et les motifs
+  'pâle':      "Le bleu pâle salit vite.",
+  'foncé':     "Un bleu foncé salit moins vite.",
+  'rouge':     "L'étiquette rouge veut dire rabais.",
 
-  // Couleurs, motifs et matières
-  'pale':                  "Le bleu pâle salit vite.",
-  'uni':                   "Je préfère un chandail uni.",
-  'a_pois':                "La blouse à pois est très jolie.",
-  'coton':                 "Ce chandail est en coton.",
-  'laine':                 "Les bottes sont doublées en laine.",
-  'nylon':                 "Le manteau est en nylon.",
-  'tissu':                 "Le tissu est doux au toucher.",
-  'rouge':                 "L'étiquette rouge veut dire rabais.",
-  'capuchon':              "Le manteau a un capuchon.",
-  'bouton':                "Il manque un bouton au manteau.",
-  'doublure':              "La doublure est en laine.",
+  // La taille et l'essayage
+  'taille':    "Vous portez quelle taille ?",
+  'pointure':  "Quelle pointure faites-vous ?",
+  'serré':     "Le moyen est trop serré aux épaules.",
 
-  // Les mots du prix et du paiement
-  'prix_regulier':         "Le prix régulier est de cent trente dollars.",
-  'comptant':              "Je paie comptant, en argent.",
-  'debit':                 "Je paie avec ma carte de débit.",
-  'credit':                "Débit ou crédit ?",
-  'pointure':              "Quelle pointure faites-vous ?",
-  'echange':               "L'échange est possible pendant trente jours.",
+  // Le prix, l'étiquette et le paiement
+  'étiquette': "Regardez l'étiquette dans le col.",
+  'sécheuse':  "Ce chandail ne va pas à la sécheuse.",
+  'facture':   "Gardez la facture dans votre poche.",
 };
