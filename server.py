@@ -3223,7 +3223,140 @@ JEU_DE_ROLE_DEGATS = {
 }
 
 
+# Les trois situations du module « Les services de ma ville » (niveau 5,
+# activité 64). Aucun des douze scénarios précédents ne convient : l'appel à un
+# service public a sa conduite propre — un menu, un préposé qui ne devine rien,
+# une requête qui n'existe que si on la demande, un numéro à noter.
+JEU_DE_ROLE_SERVICES = {
+    "bac": {
+        "contexte": (
+            "Un appel au service à la clientèle de la Ville : un bac brun "
+            "qui n'a pas été ramassé depuis deux semaines."
+        ),
+        "prepose": [
+            "Tu réponds pour le service à la clientèle de la Ville, après le menu automatisé.",
+            "Tu demandes toujours l'adresse complète et le code postal avant toute autre chose : sans eux, tu ne peux rien vérifier.",
+            "Dans ce secteur, la collecte des résidus alimentaires se fait le mardi matin, et le bac doit être sorti la veille après vingt heures ou avant sept heures le matin même.",
+            "Tu ne devines pas le problème : si la personne ne dit pas à quelle heure elle sort son bac, tu le lui demandes.",
+            "Tu n'ouvres une requête que si on te le demande, ou si tu as établi que le camion est bien en cause.",
+            "Quand tu ouvres une requête, tu donnes le numéro 24-118-7690 et un délai de trois jours ouvrables.",
+            "Tu ne donnes jamais un renseignement qu'on ne t'a pas demandé, sauf celui qui explique le problème.",
+        ],
+        "citoyen": [
+            "Ton bac brun n'a pas été vidé depuis deux semaines et tu ne sais pas pourquoi.",
+            "Tu habites au 7412, rue De Normanville, appartement 3, code postal H2R 2V8.",
+            "Tu sors ton bac le mardi vers midi, en revenant de ton cours — mais tu ne le dis que si on te le demande.",
+            "Tu veux deux choses : comprendre ce qui se passe, et faire vider le bac.",
+            "Tu demandes qu'on ouvre une requête, tu notes le numéro et tu le répètes pour le confirmer.",
+            "Tu demandes le délai, et tu vérifies qu'il s'agit bien de jours ouvrables.",
+        ],
+    },
+    "ecocentre": {
+        "contexte": (
+            "Un appel pour savoir si un vieux réfrigérateur et deux pots de "
+            "peinture s'apportent à l'écocentre."
+        ),
+        "prepose": [
+            "Tu réponds pour le service des matières résiduelles de la Ville.",
+            "Les gros appareils électroménagers sont acceptés à l'écocentre, et la peinture aussi si elle est dans son contenant d'origine avec son étiquette lisible.",
+            "Ce qui est refusé : les contenants sans étiquette, les pneus de camion, les déchets provenant d'un chantier commercial.",
+            "L'accès est gratuit pour les résidents, sur présentation d'une preuve de résidence à leur nom : bail, permis de conduire ou facture récente.",
+            "Le nombre de visites gratuites est limité par année ; tu le précises seulement si on te pose la question.",
+            "Tu conseilles de vérifier le temps d'attente en direct avant de se déplacer, mais seulement une fois le reste réglé.",
+            "Si on ne te demande pas ce qu'il faut apporter, tu ne le dis pas : c'est à la personne de penser à la question.",
+        ],
+        "citoyen": [
+            "Tu dois te débarrasser d'un vieux réfrigérateur et de deux pots de peinture entamés.",
+            "Tes pots de peinture sont dans leur contenant d'origine, avec l'étiquette — mais tu ne le dis que si on te le demande.",
+            "Tu ne sais pas si c'est payant, ni ce qu'il faut apporter, ni si tu as besoin d'un rendez-vous.",
+            "Tu poses au moins trois questions précises avant de raccrocher.",
+            "Tu demandes les heures d'ouverture et tu les notes.",
+        ],
+    },
+    "carte": {
+        "contexte": (
+            "Un appel après une demande de carte de citoyenne restée bloquée "
+            "à la dernière page du formulaire en ligne."
+        ),
+        "prepose": [
+            "Tu réponds au service à la clientèle et tu connais bien les défauts du formulaire en ligne.",
+            "Tu demandes d'abord si la demande a été refusée ou si elle est restée bloquée : ce n'est pas le même problème.",
+            "Le formulaire se bloque souvent quand l'adresse est écrite autrement que dans le système : il attend « app. 3 » et non « appartement 3 ».",
+            "La demande ne peut pas se faire par téléphone : il faut se présenter au comptoir, ou reprendre le formulaire en corrigeant l'adresse.",
+            "Au comptoir, il faut deux pièces : une avec photo, une avec l'adresse. Une facture doit dater de moins de trois mois ; un bail à deux noms convient.",
+            "La carte s'imprime sur place, en une dizaine de minutes.",
+            "Tu reconnais volontiers que c'est une faiblesse du formulaire et non une erreur de la personne — mais seulement quand elle a décrit ce qui s'est passé.",
+        ],
+        "citoyen": [
+            "Ta demande de carte de citoyenne s'est bloquée à la dernière page du formulaire.",
+            "Tu avais rempli tout le formulaire et il te redemandait ton adresse, sans dire pourquoi.",
+            "Tu avais écrit « appartement 3 » au long — mais tu ne le dis que si on te pose la question.",
+            "Tu veux savoir s'il faut recommencer, si ça se règle par téléphone, ou s'il faut te déplacer.",
+            "Si on te dit de te déplacer, tu demandes ce qu'il faut apporter, et de quelle date.",
+            "Tu demandes combien de temps ça prend une fois sur place.",
+        ],
+    },
+}
+
+
 JEU_DE_ROLE_SCENARIOS = {
+    "services": {
+        "cadre": "un appel téléphonique à un service public de la ville",
+        "contexte_label": "La situation que vous avez tous les deux sous les yeux",
+        "cas": JEU_DE_ROLE_SERVICES,
+        "adresse": "Vouvoie l'élève : un appel à un service public se fait au « vous », des deux côtés.",
+        "sujets": [
+            "la raison de l'appel, dite en une seule phrase",
+            "l'adresse et le code postal, épelés au besoin",
+            "les questions précises sur la règle, l'horaire ou ce qu'il faut apporter",
+            "le délai, exprimé en jours ouvrables",
+            "l'ouverture d'une requête, demandée et non attendue",
+            "le numéro de requête, noté puis répété pour confirmation",
+            "ce qu'il faut préparer ou apporter avant de se déplacer",
+        ],
+        "cloture": ("Quand les sujets sont couverts, récapitule en une phrase ce qui "
+                    "a été convenu — le numéro de requête, le délai, ce que chacun "
+                    "fait ensuite — et invite la personne à rappeler avec ce numéro "
+                    "si rien n'arrive dans le délai annoncé."),
+        "ouverture": {
+            "citoyen": "Bonjour, je vous appelle au sujet d'un problème avec un service de la ville.",
+            "prepose": "Service à la clientèle, bonjour. Comment puis-je vous aider ?",
+        },
+        "roles": {
+            "prepose": {
+                "qui": ("Tu es le préposé ou la préposée du service public. L'élève est "
+                        "la personne qui appelle."),
+                "conduite": ("Niveau 5 : l'élève doit tenir un échange suivi, pas répondre "
+                             "à un questionnaire. Tu es poli, calme et compétent, jamais "
+                             "pressé ni sec. Point capital : **tu ne donnes jamais un "
+                             "renseignement avant qu'on te le demande** — c'est tout "
+                             "l'exercice. Si l'élève ne demande pas le délai, tu ne le dis "
+                             "pas ; s'il ne demande pas de requête, tu n'en ouvres pas. "
+                             "Demande l'adresse et le code postal avant de vérifier quoi que "
+                             "ce soit, et fais épeler si ce n'est pas clair. Emploie les mots "
+                             "du service — requête, délai, jours ouvrables, pièce "
+                             "justificative — sans les expliquer d'office. Si l'élève emploie "
+                             "une question directe sèche, réponds quand même, mais reformule "
+                             "toi-même en « je comprends que vous voudriez savoir si… » pour "
+                             "lui donner le modèle. Ne rappelle jamais à l'élève ce qu'il a "
+                             "oublié de demander : la conversation doit lui apprendre le "
+                             "prix de la question manquante."),
+            },
+            "citoyen": {
+                "qui": ("Tu es la personne qui appelle le service. L'élève joue le préposé "
+                        "et te répond."),
+                "conduite": ("Explique ta situation en deux ou trois phrases, en plantant "
+                             "le décor à l'imparfait et les faits au passé composé. Donne "
+                             "ensuite tes renseignements au fur et à mesure qu'on te les "
+                             "demande, jamais d'avance. Si l'élève ne te demande pas ton "
+                             "adresse, ne la donne pas. Si aucune requête ne t'est proposée, "
+                             "demande-la. Avant de raccrocher, demande le numéro de requête "
+                             "et le délai, et répète le numéro à voix haute pour le "
+                             "confirmer. Reste courtois même si l'échange est laborieux."),
+            },
+        },
+    },
+
     "degat": {
         "cadre": "un appel téléphonique au sujet d'un dégât d'eau dans un logement loué",
         "contexte_label": "La situation que vous connaissez tous les deux",

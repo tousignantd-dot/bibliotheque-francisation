@@ -293,6 +293,26 @@ MODULES = {
                         'Les voisins'),
     },
 
+    # « Utilisation des services publics » : le programme n'en donne que trois
+    # intentions — demander et comprendre des renseignements par téléphone, et
+    # comprendre un formulaire complexe, une brochure ou un site Web. Le
+    # domaine général de formation est « Consommation et environnement », d'où
+    # l'angle municipal. Ne recoupe pas `module-n5-emmenagement` (63), qui fait
+    # brancher les services le jour du déménagement : ici tout est branché
+    # depuis huit mois, et c'est le service qui a mal fonctionné.
+    'module-n5-services': {
+        'numero': 4, 'activite': 64, 'niveau': 5,
+        'titre': 'Les services de ma ville',
+        'chapeau': "Comprendre une brochure officielle, téléphoner à un "
+                   "service public et noter un numéro de requête, lire un "
+                   "site Web et un formulaire complexe, puis se présenter "
+                   "au guichet avec les bonnes pièces.",
+        'seances': GRILLE_3_DEFIS,
+        'blocs': _blocs("L'appel",
+                        "L'écran",
+                        'Le guichet'),
+    },
+
     'module-n6-recherche': {
         'numero': 1, 'activite': 59, 'niveau': 6,
         'titre': "Chercher un emploi",
