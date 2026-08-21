@@ -340,6 +340,25 @@ MODULES = {
         'blocs': _blocs('Le bulletin du matin', "Je m'habille pour dehors"),
     },
 
+    # Neuvième module court du dépôt, huitième du niveau 2. La situation du
+    # programme est « Transactions bancaires », et ses deux intentions
+    # découpent le module d'elles-mêmes : « effectuer des opérations
+    # courantes au guichet » en compréhension écrite, « libeller un chèque »
+    # en production écrite. Distinct de `module-banque` (niveau 4), dont
+    # l'élève va au comptoir, parle à un conseiller et compare des forfaits
+    # dans une brochure ; ici, personne n'ouvre de compte : on lit six
+    # phrases sur un écran, on tape quatre chiffres, on prend ses billets,
+    # puis on remplit les cinq cases d'un chèque.
+    'module-n2-guichet': {
+        'numero': 8, 'activite': 93, 'niveau': 2,
+        'titre': "Je retire de l'argent",
+        'chapeau': "Suivre les phrases d'un guichet automatique, retirer un "
+                   "montant en dollars, comprendre un relevé et des frais, "
+                   "et remplir un chèque au complet.",
+        'seances': GRILLE_COURTE,
+        'blocs': _blocs('Au guichet automatique', 'Je fais un chèque'),
+    },
+
     # ── Niveau 3 ────────────────────────────────────────────────────
     'module-n3-epicerie': {
         'numero': 1, 'activite': 55, 'niveau': 3,
