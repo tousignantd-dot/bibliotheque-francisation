@@ -201,6 +201,51 @@ Ce que cette nuit a appris, et qui est déjà écrit là où il faut :
 **La file reprend à l'activité 65** (niveau 5 · Consultation d'un professionnel
 de la santé), consigne prête dans `docs/consignes-a-coller.md`.
 
+**21 août 2026 — activité 65, `module-n5-rendezvous`.** « Prendre rendez-vous
+chez le médecin », niveau 5, `numero` 5. Scénario inventé : Rachid Benali,
+52 ans, préposé à l'entretien dans une école de Longueuil, a des
+étourdissements le matin depuis le mois de mars et appelle ça « rien » ; sa
+fille Nadia compte les mois à sa place, Manon tient le téléphone de la Clinique
+de la Rive, la docteure Fongang tient le bureau. 19 exercices, 12 mini-leçons,
+4 dialogues, 16 mots, 24 images, **267 extraits audio**, 16 séances
+(185 diapositives, 129 blocs de fiches). Originalité : 136 énoncés visibles,
+**0 identique** dans les 2 618 énoncés des vingt-deux autres modules.
+
+*Ce qui le distingue de son voisin du 4* : `module-consultation` (activité 35)
+fait **choisir le bon service** et décrire une douleur au triage ; ici l'élève
+tient le rendez-vous d'un bout à l'autre — il l'obtient au téléphone, il
+raconte trois mois de symptômes dans le bureau (imparfait pour le décor, passé
+composé pour ce qui est arrivé, gérondif pour dire à quel moment), puis il le
+déplace et l'annule dans les règles. Le programme ne donne qu'une intention
+pour cette situation, en CO et en PO — « prendre, annuler ou modifier un
+rendezvous par téléphone » — et aucun lexique : les seize mots sont inventés à
+partir des savoirs. Un scénario `rendezvous` a été ajouté à `server.py` : au
+bout du fil d'une clinique, il n'y a ni soignant ni commerçant, mais une agente
+qui n'a pas le droit de donner un avis médical et qui n'annonce ni l'heure
+d'arrivée ni le délai d'annulation tant qu'on ne les lui demande pas.
+
+Trois choses apprises, qui valent pour les modules restants :
+
+- **`render()` du gabarit ne prend aucun argument** — il rend la section
+  courante. Le `SECTIONS.forEach(s=>render(s.id))` que l'en-tête des
+  générateurs audio recommande ne rend donc que la **première** section, et les
+  pastilles à phrase porteuse des autres manquent au relevé, sans rien dire. Il
+  faut poser `curSec` avant chaque `render()`. Relevé du navigateur et recalcul
+  hors navigateur ont ensuite donné le même nombre : 183 extraits.
+- **Le champ `theme` du manifeste échappe son apostrophe**, au même titre que
+  `bravo` et `relance` : « Consultation d'un professionnel de la santé » arrête
+  le build tant que l'apostrophe n'est pas écrite `\\'`. Aucun module ne
+  l'avait montré, aucun thème n'en contenant jusqu'ici.
+- **`d.capture()` n'existe que dans `theme.Deck`**, pas dans `fiche.Deck` : les
+  quatre séances qui en portent une la mettent sous `if hasattr(d, 'capture')`,
+  comme `module-n5-services` le faisait déjà. Et seuls les exercices à banc de
+  réponses se capturent — un `write` n'en a pas.
+
+*Sur les contrôles* : les six passent, plus le `node --check` du script produit.
+`sommaire.py --verifier` signale encore deux liens cassés — `module-n3-electro`
+(76) et `module-n2-bonjour` (88), inscrits au registre par les deux sessions
+voisines mais pas encore produits. Ce ne sont pas des écarts de ce module.
+
 **21 août 2026 — vague 3 entamée : activité 75, `module-n3-vetements`.**
 « Magasiner du linge », niveau 3, `numero` 2. Scénario inventé : Farida,
 arrivée du Maroc il y a cinq mois, achète son premier manteau d'hiver ;

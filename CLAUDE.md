@@ -325,6 +325,16 @@ Deux pièges déjà payés :
   de 169 clés par un relevé partiel de 164, une fois les MP3 déjà générés et
   commités. Le fichier commité était bon, `git checkout --` a suffi ; mais rien
   n'avertit, et un générateur relancé ensuite aurait produit un module troué.
+- **Le champ `theme` du manifeste échappe son apostrophe**, comme `bravo` et
+  `relance` : le gabarit le place lui aussi dans une chaîne JavaScript à
+  guillemets simples, et le build s'arrête tant que l'apostrophe n'est pas
+  écrite `\\'`. Découvert le 21 août 2026 avec « Consultation d'un
+  professionnel de la santé » — aucun thème n'en contenait avant.
+- **`render()` du gabarit ne prend aucun argument** : il rend la section
+  **courante**. Le relevé des sons par la console —
+  `SECTIONS.forEach(s=>render(s.id))` — ne rend donc que la première section,
+  et les pastilles à phrase porteuse des autres manquent au manifeste sans
+  qu'aucune erreur ne le dise. Poser `curSec` avant chaque `render()`.
 - **Tout bloc `ana` d'une mini-leçon veut son champ `say:`.** Sans lui, le
   bouton d'écoute ne se tait pas : le moteur concatène toutes les lignes de
   `mots`, balises HTML comprises, et l'extrait audio part lire « cent quarante
