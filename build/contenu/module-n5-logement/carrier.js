@@ -1,29 +1,22 @@
 const CARRIER_PHRASES = {
-  'bail':                "Le bail est signé pour un an.",
-  'avis_modification':   "L'avis de modification arrive en février.",
-  'loyer':               "Le loyer se paie le premier du mois.",
-  'quatre_et_demie':     "Elle cherche un quatre et demie.",
-  'chauffe_eclaire':     "Le logement est chauffé et éclairé.",
-  'date_occupation':     "La date d'occupation est le premier juillet.",
-  'electromenagers':     "Les électroménagers sont fournis.",
-  'buanderie':           "La buanderie est au sous-sol.",
-  'case_stationnement':  "Une case de stationnement vient avec le loyer.",
-  'insonorise':          "L'immeuble n'est pas insonorisé.",
-  'ensoleille':          "Le salon est ensoleillé le matin.",
-  'bois_franc':          "Il y a du bois franc dans le corridor.",
-  'remise':              "La remise prend deux vélos.",
-  'renouvellement':      "Le renouvellement se fait tout seul.",
-  'sous_louer':          "Elle a le droit de sous-louer.",
-  'tribunal_logement':   "Le Tribunal administratif du logement tranchera.",
-
-  // Les fusions de l'oral québécois — mini-leçon prPhon. Chaque mot isolé
-  // sort mal de la synthèse : la phrase porteuse le remet dans son débit.
-  'sur_le':              "Les clés sont sur le comptoir.",
-  'sur_la':              "L'avis était sur la table de cuisine.",
-  'dans_la':             "La lettre était dans la boîte aux lettres.",
-  'dans_les':            "Il y a du bois franc dans les chambres.",
-  'dans_un':             "Ils habitent dans un immeuble de six logements.",
-  'dans_une':            "Le linge se lave dans une buanderie commune.",
-  'a_la':                "Elle s'adresse à la propriétaire.",
-  'sur_un':              "Pas de barbecue sur un balcon.",
+  // La clé est le mot LITTÉRAL tel qu'il apparaît dans un tableau `mots` d'un
+  // bloc `savoir` : le gabarit fait `CARRIER_PHRASES[w]` sans normaliser. Une
+  // clé écrite en style de nom de fichier (`avis_modification`) ne serait
+  // jamais trouvée, et le mot partirait seul à la synthèse — mal accentué.
+  'bail':                  "Le bail est signé pour un an.",
+  'avis de modification':  "L'avis de modification arrive en février.",
+  'loyer':                 "Le loyer se paie le premier du mois.",
+  'quatre et demie':       "Elle cherche un quatre et demie.",
+  'chauffé et éclairé':    "Le logement est chauffé et éclairé.",
+  'date d\'occupation':    "La date d'occupation est le premier juillet.",
+  'électroménagers':       "Les électroménagers sont fournis.",
+  'buanderie':             "La buanderie est au sous-sol.",
+  'case de stationnement': "Une case de stationnement vient avec le loyer.",
+  'insonorisé':            "L'immeuble n'est pas insonorisé.",
+  'ensoleillé':            "Le salon est ensoleillé le matin.",
+  'bois franc':            "Il y a du bois franc dans le corridor.",
+  'remise':                "La remise prend deux vélos.",
+  'renouvellement':        "Le renouvellement se fait tout seul.",
+  'sous-louer':            "Elle a le droit de sous-louer.",
+  'tribunal':              "Le Tribunal administratif du logement tranchera.",
 };
