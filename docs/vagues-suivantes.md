@@ -691,6 +691,118 @@ Ce que la nuit a appris, et qui est déjà dans `CLAUDE.md` :
 **La file reprend** à l'activité 68 (niveau 5), 78 (niveau 3) et 91
 (niveau 2 — l'activité 90 a été livrée le 21 août au soir).
 
+**21 août 2026 — l'activité 79 est livrée.** `module-n3-metro` · « Le bon titre
+de transport » : 16 séances, 188 diapositives, 16 fiches, 276 extraits audio,
+**0 image sur 23** — le compte fal.ai est verrouillé, la liste exacte des
+manquantes est plus bas. Les six contrôles passés, plus le `node --check` ;
+verts pour ce module. Les deux contrôles de séances signalent encore
+`module-n5-transport` (activité 69), dont la session voisine n'a pas fini ses
+séances : `pieds_de_page.py` rend « OK module-n3-metro · niveau 3 · numéro 6 ·
+16 pptx · vus ['6'] » et `sommaire.py --verifier` ne porte aucune ligne à ce
+module. **La file du niveau 3 reprend à l'activité 80** (Démarches à la poste).
+
+Ce que cette production a appris ou confirmé :
+
+- **Au niveau 3, « Déplacement dans une ville » ne parle pas du trajet.**
+  `build/cadre.py 3` rend **trois intentions, et les trois disent la même
+  chose** : « demander et comprendre de l'information pour acheter un titre de
+  transport » en compréhension et en production orales, « lire l'information
+  pour acheter un titre de transport » en compréhension écrite. Il n'y a ni
+  itinéraire, ni direction, ni terminus, ni annonce à comprendre. Les trois
+  défis sont donc les trois intentions, dans cet ordre : comprendre ce qu'on me
+  répond, demander au guichet, lire la grille des tarifs. C'est le cadre le
+  plus étroit rencontré jusqu'ici, et il a décidé de tout.
+- **Ce qui distingue ce module de chacun de ses trois voisins**, en une phrase
+  chacun, comme la consigne le demandait. De `module-deplacement` (niveau 4,
+  activité 49) : celui-là fait le trajet complet — demander son chemin,
+  expliquer un itinéraire, comprendre les annonces du métro — et ne s'arrête à
+  aucun guichet ni ne nomme aucun prix, alors qu'ici il n'y a qu'un comptoir,
+  une carte, une grille et de l'argent. De `module-n2-autobus` (niveau 2) :
+  celui-là demande son chemin dans la rue et lit l'heure du prochain passage,
+  sans jamais parler de carte, de titre ni de tarif. De `module-n2-couloirs`
+  (niveau 2) : celui-là se repère à des numéros de porte à l'intérieur d'un
+  bâtiment, et ne touche pas au transport collectif.
+- **Un scénario de jeu de rôle neuf, `titre`, a été ajouté à `server.py`.**
+  `chemin` (niveau 4) donne un itinéraire en six étapes avec des noms de
+  terminus, ce qui n'a aucun sens devant un comptoir ; `autobus` (niveau 2) se
+  joue dans la rue, sans argent. Trois cas — `mensuel`, `reduit`,
+  `occasionnel` — et deux rôles, `client` et `prepose`. La clé a été vérifiée
+  dans `JEU_DE_ROLE_SCENARIOS` : rien ne la contrôle à la construction.
+- **Les faits québécois viennent de la grille tarifaire de l'ARTM en vigueur
+  le 1er juillet 2026 et des pages de la STM, pas d'une estimation.** Quatre
+  zones (A · Montréal ; B · Laval et Longueuil ; C · couronnes ; D · hors
+  territoire) ; en zone A, 1 passage 3,75 $ (2,75 $ réduit), 10 passages
+  35,00 $ (23,50 $), hebdo 33,25 $ du lundi au dimanche (20,00 $), mensuel
+  110,00 $ (66,00 $), 24 h 11,25 $, Soirée illimitée 6,75 $ de 18 h à 5 h,
+  Week-end illimité 17,00 $ du vendredi 16 h au lundi 5 h ; quatre catégories
+  — Ordinaire, Réduit 6-17 ans, Réduit étudiant 18 ans et plus, Réduit 65 ans
+  et plus — toutes les trois réduites exigeant une carte OPUS **avec photo** ;
+  les 11 ans et moins gratuits s'ils sont accompagnés d'une personne de 14 ans
+  et plus, qui ne peut en accompagner plus de cinq ; correspondance de
+  120 minutes à partir de la validation, sans retour sur le même parcours.
+- **Le lexique du programme a servi tel quel**, comme le demandait la
+  consigne : les titres de transport (tarif mensuel, tarif réduit), les
+  catégories d'âge, le transport adapté avec ses places pour personnes à
+  mobilité réduite, femmes enceintes et personnes âgées, le parcours, et les
+  verbes se renseigner, se déplacer, se repérer, se perdre. Chacun est dans un
+  exercice ou une mini-leçon.
+- **L'originalité a été mesurée avant les MP3**, puis remesurée après
+  l'ajustement des images : **0,8 %** sur 237 énoncés visibles, comparés aux
+  32 autres modules du dépôt. Les deux seules coïncidences sont « un titre de
+  transport » et « une correspondance », des mots du lexique du programme
+  qu'on ne renomme pas. Une consigne générique a été reformulée avec les mots
+  du module avant que le premier extrait ne soit payé.
+- **Les 60 clés de `CARRIER_PHRASES` ont été relevées sur `exos.js`, pas
+  écrites à la main** : un script rend les listes `savoir[…][2]` et compare
+  dans les deux sens — 60 mots, 60 phrases porteuses, aucune clé en trop ni
+  manquante. C'est trente secondes de travail contre les douze clés en slug
+  que `module-n3-epicerie` traîne encore.
+- **`theme.py` a refusé un tableau de E1** — sept rangées plus une note — et il
+  a été coupé en deux diapositives, comme le prescrit `CLAUDE.md`. Un seul
+  aller-retour : écrire les tableaux courts dès le départ finit par rentrer.
+- **`build/module.py` refuse un `fccards.js` qui ne commence pas exactement par
+  `const FC_CARDS = `.** Un commentaire d'en-tête, même de cinq lignes, fait
+  échouer la construction avec un message clair. Les notes de ce genre vont
+  dans le docstring du manifeste, pas en tête d'un fichier de contenu.
+
+**Les vingt-trois images manquantes de l'activité 79.** Le 403 est revenu aux
+deux tentatives, à une heure d'intervalle. Tous les prompts sont écrits et
+prêts dans `build/contenu/module-n3-metro/gen_images.py`, qui saute ce qui
+existe déjà : **une seule commande les produira toutes** quand le compte sera
+renfloué.
+
+    python3 build/contenu/module-n3-metro/gen_images.py
+
+Treize vont dans `images/` — `comptoir-station`, `tourniquets`, `carte-main`,
+`grille-affichee`, `borne-vente`, `autobus-arret`, `places-avant`,
+`recharge-comptoir`, `validation-autobus`, `paiement-carte`,
+`argent-comptant`, `photo-carte`, `recu-titre` — et dix dans `vocab/` :
+`carte-opus`, `point-de-service`, `titre-mensuel`, `recharger-carte`,
+`valider-titre`, `tourniquet`, `zone-tarifaire`, `place-reservee`,
+`transport-adapte`, `correspondance`.
+
+**Et il y a trois retouches à faire en même temps**, parce que le contenu a été
+ajusté à leur absence plutôt que laissé à pointer dans le vide :
+
+1. rendre à `fccards.js` les dix champs `img` retirés, sous la forme
+   `img:"/assets/interactive/module-n3-metro/vocab/<nom>.jpg"` — les noms de
+   fichiers sont ceux de la liste `vocab/` ci-dessus, et chacun correspond au
+   mot de même sens ;
+2. rendre `prImg` (« Ce qu'on voit dans la station », sept énoncés) et `t2img`
+   (« Les gestes de l'achat », six énoncés) à leur type `imgmatch`, avec leur
+   bloc `images:` — les identifiants `im1`-`im7` et `ig1`-`ig6` sont déjà en
+   place sur les rangées, il n'y a que le bloc `images:` à remettre et le
+   `type:` à changer ; un en-tête de commentaire le rappelle dans `exos.js` ;
+3. reconstruire, puis refaire `build/vignettes.py` : la note de la séance A3
+   parle du glisser-déposer sans dire « photos », elle n'a pas à changer.
+
+La difficulté propre à ces prompts, notée pour celui qui les relancera : tout
+l'univers du module est couvert d'écriture — une grille de tarifs, une carte,
+un écran de borne, un reçu — alors que le générateur a l'ordre de ne produire
+aucun texte lisible. Les prompts demandent donc des objets dont la forme est
+reconnaissable sans qu'un mot ne se lise, et aucune marque de société de
+transport. Vérifier à la réception qu'aucun sigle n'est apparu.
+
 **21 août 2026 — l'activité 78 est livrée.** `module-n3-pharmacie` · « Aller à
 la pharmacie » : 16 séances, 175 diapositives, 16 fiches, 295 extraits audio,
 12 images. Les six contrôles passés, plus le `node --check` du script produit —

@@ -316,7 +316,22 @@ Deux pièges déjà payés :
   des clés simplement **inutilisées** sont normales et ne se corrigent pas.
 - **`carrier.js` doit commencer par `const CARRIER_PHRASES = `**, comme les
   six autres fichiers de contenu commencent par le leur. Un commentaire
-  d'en-tête arrête le build : le commentaire va **dans** l'objet.
+  d'en-tête arrête le build : le commentaire va **dans** l'objet. Vérifié une
+  seconde fois le 21 août 2026 sur `fccards.js`, en produisant l'activité 79 :
+  la règle vaut pour **tous** les fichiers de contenu, pas seulement
+  `carrier.js`, et le message d'erreur est explicite (« ne commence pas par
+  'const FC_CARDS = ' »). Une note qui ne rentre pas dans l'objet va dans le
+  docstring de `manifest.py`, qui est fait pour ça.
+- **Les clés de `CARRIER_PHRASES` se relèvent, elles ne s'écrivent pas.**
+  Trente lignes de node qui compilent `fccards.js`+`exos.js`+`carrier.js`,
+  extraient les listes `savoir[…][2]` et comparent **dans les deux sens**
+  rendent en une seconde les mots sans phrase porteuse et les clés inutiles.
+  C'est ce qui a donné 60 clés pour 60 mots du premier coup à l'activité 79,
+  et c'est le seul moyen fiable d'éviter le défaut des clés en slug décrit
+  ci-dessus. Le même script vérifie utilement, dans la foulée, que chaque
+  bloc `savoir` porte `speak:true`, que chaque bloc `ana` de `plus.js` porte
+  son `say:`, que les clés de `PLUS` correspondent à un exercice réel et
+  qu'aucune image référencée ne manque sur le disque.
 - **Le relevé des sons se fait aussi hors navigateur.** Une page de module
   ouverte en `data:` ou en `file:` ne peut pas écrire dans `localStorage` :
   `render()` y échoue, et le relevé par le DOM rend **zéro** pastille de mot
