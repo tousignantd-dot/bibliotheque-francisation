@@ -40,29 +40,23 @@ const EXOS = [
     {id:'al8', txt:"la lettre L", ok:'SON « È »'},
    ]},
 
-  // ── prImg — l'exercice à photos, en attente des images ───────────────
-  // Écrit d'abord en `imgmatch` sur six photos du secrétariat. Le compte
-  // fal.ai était verrouillé faute de crédit (« User is locked. Reason:
-  // TOP_UP ») le jour de la production : une seule des six images est sortie.
-  // Un glisser-déposer de photos avec cinq vignettes cassées ne vaut rien, et
-  // laisser l'exercice tel quel aurait mis l'écart sous les yeux de l'élève.
-  // Il est donc rendu en `match` — les mêmes six phrases, associées au mot du
-  // secrétariat qu'elles décrivent — et le module est complet sans image.
-  //
-  // Pour le rendre à sa forme d'origine quand les six fichiers de
-  // `assets/interactive/module-n2-inscription/images/` existeront : remettre
-  // `type:'imgmatch'`, le bloc `images:` avec is1…is6, et les six `rows` avec
-  // leur `ok:'isN'`. Les noms de fichiers sont dans `gen_images.py`, dans
-  // l'ordre des six phrases ci-dessous.
-  {sec:'prep', id:'prImg', type:'match', num:'Exercice 3', tit:"Ce qu'on voit au secrétariat", color:'#0D7A6F',
-   sub:"Prends une phrase du secrétariat, puis glisse dessus le mot qui va avec.", bankLbl:'Les mots', zonePh:'glisse le mot ici',
+  {sec:'prep', id:'prImg', type:'imgmatch', num:'Exercice 3', tit:"Ce qu'on voit au secrétariat", color:'#0D7A6F',
+   sub:"Glisse chaque photo du secrétariat vers la phrase qui la décrit.",
+   images:[
+    {id:'is1', src:'/assets/interactive/module-n2-inscription/images/comptoir-secretariat.jpg'},
+    {id:'is2', src:'/assets/interactive/module-n2-inscription/images/formulaire-vide.jpg'},
+    {id:'is3', src:'/assets/interactive/module-n2-inscription/images/babillard-annonce.jpg'},
+    {id:'is4', src:'/assets/interactive/module-n2-inscription/images/calendrier-septembre.jpg'},
+    {id:'is5', src:'/assets/interactive/module-n2-inscription/images/main-signature.jpg'},
+    {id:'is6', src:'/assets/interactive/module-n2-inscription/images/carte-identite.jpg'},
+   ],
    rows:[
-    {id:'is1', q:"Le comptoir où on donne ses papiers.", aid:'is1', a:"le secrétariat"},
-    {id:'is2', q:"La feuille avec des cases vides.", aid:'is2', a:"un formulaire"},
-    {id:'is3', q:"Le tableau de liège où on affiche les annonces.", aid:'is3', a:"un babillard"},
-    {id:'is4', q:"La feuille des jours et des mois de l'année.", aid:'is4', a:"un calendrier"},
-    {id:'is5', q:"Le nom écrit à la main au bas d'une page.", aid:'is5', a:"une signature"},
-    {id:'is6', q:"La petite carte avec un nom et une photo.", aid:'is6', a:"une pièce d'identité"},
+    {id:'is1', txt:"Le comptoir où on donne ses papiers.", ok:'is1'},
+    {id:'is2', txt:"La feuille avec des cases vides.", ok:'is2'},
+    {id:'is3', txt:"Le tableau de liège où on affiche les annonces.", ok:'is3'},
+    {id:'is4', txt:"La feuille des jours et des mois de l'année.", ok:'is4'},
+    {id:'is5', txt:"Le nom écrit à la main au bas d'une page.", ok:'is5'},
+    {id:'is6', txt:"La petite carte avec un nom et une photo.", ok:'is6'},
    ]},
 
   {sec:'prep', id:'prQuel', type:'write', num:'Exercice 4', tit:"Quel est votre nom ?", color:'#0D7A6F', cols:2,
