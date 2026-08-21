@@ -342,6 +342,84 @@ de `docs/deux-agents-en-parallele.md`, il se fait quand personne d'autre
 n'écrit, pas au milieu d'un module.
 
 
+## Niveau 8 — `module-n8-emploi` · Tenir son bout au travail · **livré**
+
+Activité **61**, `numero` 1 du niveau 8, seize séances. Produit le 21 août 2026,
+en parallèle du niveau 7, selon `docs/vagues-suivantes.md`.
+
+**Le scénario.** Nadia Kessab, adjointe administrative depuis huit mois chez
+Portes et fenêtres Valmont, une PME de quarante employés à Laval. Autour
+d'elle : Manon Trépanier, sa superviseure ; Yves Boudreault, magasinier ;
+Sylvain Ouellet, au service de la paie ; Claudia Fortin, conseillère en
+formation continue. L'arc suit une même personne **déjà en poste** — c'est ce
+qui le sépare de `module-n6-recherche`, où l'on cherche encore un emploi. Elle
+comprend ses tâches en détail, règle une erreur de paie, intervient dans une
+réunion de décision, puis demande un congé de formation.
+
+**Ce que le niveau 8 impose, et qu'aucun module précédent n'avait.** La
+situation « Emploi » porte **dix** intentions de communication, la plus dense
+des six du niveau. Les dialogues font de dix-huit à vingt et une répliques,
+souvent longues : la compétence vise des communications complexes, pas des
+échanges de trois tours. Le programme ne fournit **aucun lexique** pour cette
+situation — les seize mots sont composés à partir des intentions et des
+savoirs. Douze mini-leçons plutôt que neuf, pour couvrir la progression :
+prosodie des phrases longues, registres, subjonctif de nécessité, phrase
+passive, lettre d'affaires, les deux conditionnels, connecteurs, discours
+rapporté, pronoms relatifs composés, hypothèse au plus-que-parfait, reprise de
+l'information.
+
+**Les faits québécois ont été vérifiés à la source, jamais écrits de
+mémoire.** Ce module cite des normes du travail dans un exercice, une
+mini-leçon et deux séances (B2 et D1) ; s'y tromper aurait des conséquences
+réelles pour un élève. Vérifications faites le 20 août 2026 :
+
+- **CNESST** — au-delà de **40 heures** par semaine, majoration de **50 %** ;
+  remplacement par un congé payé équivalent aux heures **plus 50 %**, à la
+  demande du salarié, à prendre dans les **12 mois** ;
+- **CNESST** — période de repas de **30 minutes** après **5 heures**
+  consécutives, non payée sauf si le salarié ne peut quitter son poste ;
+  pause-café non obligatoire, mais payée et comptée si elle est accordée ;
+- **CNESST / Tribunal administratif du travail** — congédiement sans cause
+  juste et suffisante : **2 ans** de service continu, plainte dans les
+  **45 jours** ; harcèlement psychologique ou sexuel : plainte dans les
+  **2 ans** de la dernière manifestation ;
+- **CPMT / Revenu Québec** — « loi du 1 % » : les employeurs dont la masse
+  salariale dépasse **2 000 000 $** investissent au moins **1 %** en formation,
+  sinon cotisent au FDRCMO.
+
+Le site de la CNESST refuse les requêtes automatisées (HTTP 403) : les données
+ont été relevées par recherche sur les domaines officiels, puis recoupées avec
+les articles de la Loi sur les normes du travail (55, 79, 123.7, 124). Aucun
+délai n'a été écrit sans avoir été vu — en particulier, **rien n'est dit du
+délai de réclamation de salaire**, qui n'a pas été vérifié.
+
+**Le jeu de rôle a demandé un scénario neuf dans `server.py`.** Clé `emploi`,
+trois cas — une erreur sur la paie, un horaire changé sans avis, une facture
+réglée deux fois — et deux rôles, `employe` et `service`. Aucun scénario
+existant ne convenait : ceux du niveau 4 donnent des répliques courtes, et
+`entrevue` suppose qu'on cherche encore un emploi. La conduite de l'assistant
+lui impose **d'objecter au moins une fois** avant de bouger : c'est là que la
+compétence du niveau 8 se joue, et un interlocuteur trop conciliant ne fait
+rien travailler.
+
+**Deux pièges payés, à ne pas repayer.**
+
+- Le manifeste des sons se relève d'ordinaire dans le navigateur. Le poste n'a
+  pas de Node, mais il a **`jsc`**
+  (`/System/Library/Frameworks/JavaScriptCore.framework/Versions/A/Helpers/jsc`) :
+  les quatre fichiers de contenu s'y chargent tels quels et la logique de
+  `plAudioManifest()` s'y rejoue en vingt lignes. Résultat comparé au relevé du
+  navigateur : 152 entrées de part et d'autre.
+- Un bloc `ana` **sans `say`** ne produit pas un extrait audio : il produit la
+  **concaténation de sa colonne `mots`**, balises `<i>` comprises, qui serait
+  lue telle quelle à l'élève. Vingt-neuf blocs étaient dans ce cas. Écrire un
+  `say` sur chaque `ana`, sans exception.
+
+**Originalité : 0 %.** Aucun des 184 énoncés visibles par l'élève n'est
+identique à un énoncé d'un autre module du dépôt. Rien n'a été copié d'un
+manuel ; le programme n'a donné que la spécification.
+
+
 ## La couleur d'un module est devenue celle de son niveau
 
 Décidé par l'utilisateur le 20 août 2026, au milieu de ce chantier, et
