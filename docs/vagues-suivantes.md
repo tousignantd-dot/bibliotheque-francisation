@@ -245,6 +245,16 @@ poussé, et l'historique ment d'une ligne. La leçon tient : **ne pas laisser
 l'index habité**, et vérifier tout de suite avec
 `git show --name-only --format="" HEAD`.
 
+*Un écrivain silencieux, découvert après coup.* `build/collecte_sons.py`, lancé
+en tâche de fond puis oublié quand le relevé a été fait hors navigateur, a reçu
+un envoi tardif et réécrit `sons_module_n3_vetements.json` : 164 clés à la
+place de 169, **après** que les 249 MP3 aient été générés et commités. Le
+fichier du dépôt était le bon, `git checkout --` a tout réglé, et la
+vérification finale — 169 attendus, 0 manquant, 0 orphelin — le confirme. Mais
+rien n'avertit, et un générateur relancé sur le fichier corrompu aurait produit
+un module troué sans le dire. La consigne est dans `CLAUDE.md` : on l'arrête
+dès qu'on n'en a plus besoin.
+
 
 ## Vague 4 — le niveau 2 au complet
 

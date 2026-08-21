@@ -318,6 +318,13 @@ Deux pièges déjà payés :
   `playWord` — le bloc `savoir` (`ex.id+'_savoir_'+ri+'_'+wi`), les exercices
   `vf` à cartes (`ex.id+'_'+r.id`) et `plAudioManifest()` — et donnent le même
   résultat que la console, vérification faite.
+- **Arrêter `build/collecte_sons.py` dès que le relevé est obtenu autrement.**
+  Il n'expire pas : il attend un seul envoi, et il écrit `sons_<slug>.json`
+  quand celui-ci arrive — même longtemps après qu'on a cessé d'y penser. Laissé
+  en tâche de fond après un relevé fait hors navigateur, il a écrasé un relevé
+  de 169 clés par un relevé partiel de 164, une fois les MP3 déjà générés et
+  commités. Le fichier commité était bon, `git checkout --` a suffi ; mais rien
+  n'avertit, et un générateur relancé ensuite aurait produit un module troué.
 - **Tout bloc `ana` d'une mini-leçon veut son champ `say:`.** Sans lui, le
   bouton d'écoute ne se tait pas : le moteur concatène toutes les lignes de
   `mots`, balises HTML comprises, et l'extrait audio part lire « cent quarante
