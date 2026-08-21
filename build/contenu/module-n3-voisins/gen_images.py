@@ -161,12 +161,15 @@ for nom, dossier, page, prompt in IMAGES:
         echecs.append('%s : %s' % (etiquette, e)); continue
 
     brut = data
-    if dossier == 'vocab':
-        try:
-            data = reduire(data)
-        except Exception as e:
-            echecs.append('%s : réduction impossible (%s) — image brute gardée'
-                          % (etiquette, e))
+    # La route Google directe rend des JPEG bien plus lourds que fal.ai —
+    # de 650 à 1000 Ko contre 350. À l'écran, l'image d'exercice occupe
+    # 223 x 132 px et la photo du banc encore moins : les deux se réduisent,
+    # seulement pas au même format.
+    try:
+        data = reduire(data, *((800, 82) if dossier == 'vocab' else (1200, 85)))
+    except Exception as e:
+        echecs.append('%s : réduction impossible (%s) — image brute gardée'
+                      % (etiquette, e))
 
     base = '%s_%s-%s_%s' % (MODULE, dossier, nom, horodatage)
     (GEN / (base + '.jpg')).write_bytes(brut)
