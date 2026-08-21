@@ -301,6 +301,45 @@ un module troué sans le dire. La consigne est dans `CLAUDE.md` : on l'arrête
 dès qu'on n'en a plus besoin.
 
 
+**21 août 2026 — activité 76, `module-n3-electro`.** « Acheter un appareil »,
+niveau 3, `numero` 3. Scénario inventé : Marisol, dont la laveuse lâche au
+milieu d'un lavage ; sa voisine Louise lui apprend à lire la circulaire, le
+vendeur Mario tient le rayon, Rachid le comptoir de la livraison. 22 exercices,
+8 mini-leçons, 5 dialogues (60 répliques), 16 mots, 23 images, **246 extraits
+audio**, 16 séances (180 diapositives, 136 blocs de fiches).
+
+*Ce qui le distingue de son voisin du 4* : `module-achat` (activité 52)
+s'informe sur l'appareil, lit une garantie et un mode d'emploi ; au niveau 3,
+le programme ne donne à cette situation qu'**une seule** intention, et elle est
+en compréhension écrite — « lire des circulaires, des catalogues, des
+affichettes et des sites d'achats en ligne ». Le module est donc construit
+autour de quatre papiers — la circulaire, l'affiche du rayon, l'affichette, le
+bon de livraison — et l'oral n'y sert qu'à demander ce que le papier ne dit
+pas. Le scénario `appareil` de `server.py` portait la garantie et la
+comparaison : un scénario `electro` a été ajouté, trois cas, phrases courtes,
+et un vendeur qui ne donne jamais un renseignement avant qu'on le lui demande.
+
+Deux choses apprises, qui valent pour les dix modules restants du niveau 3 :
+
+- **`build/powerpoints/sommaire.py` a une étape d'écriture** que la liste des
+  six contrôles ne nomme pas. `--verifier` échoue sur « lien diaporamas cassé »
+  tant que `python3 build/powerpoints/sommaire.py <slug>` n'a pas produit
+  `assets/powerpoints/<slug>/presentations.html` — ni `build.py` ni
+  `build_fiches.py` ne le font. C'est une commande de plus dans la séquence de
+  l'étape 6, pas un écart à diagnostiquer.
+- **`maj-mur.py` n'est pas dans le dépôt** : il vit dans
+  `~/Claude/generations`, à côté des médias qu'il relève. Il se lance depuis ce
+  dossier-là.
+
+*Sur les fichiers partagés* : trois sessions écrivaient encore dans
+`modules.py` et `activities.json`. Les deux entrées ont été écrites, commitées
+et poussées en une minute, index vidé aussitôt, et `git show --name-only` l'a
+confirmé. Les deux écarts que laissent `pieds_de_page.py` et
+`sommaire.py --verifier` à la fin de cette production — `module-n2-classe` et
+`module-n5-urgence` — appartiennent aux deux sessions voisines, qui n'avaient
+pas encore produit leurs séances.
+
+
 ## Vague 4 — le niveau 2 au complet
 
 Ajoutée le 21 août 2026, à la demande de l'utilisateur (« les modules suivants
