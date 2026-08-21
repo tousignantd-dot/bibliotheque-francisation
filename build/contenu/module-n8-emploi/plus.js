@@ -90,11 +90,13 @@ const PLUS = {
       {t:'ana', h:"Ce qui change dans les mots",
        p:"Le vocabulaire familier est concret, imagé, court.",
        mots:[['Familier','une job · un gars · jaser · plate · le fun'],['Standard','un emploi · un employé · discuter · regrettable · agréable'],['Soutenu','un poste · un collaborateur · s\'entretenir · déplorable · plaisant']],
+       say:"Familier : une job. Standard : un emploi. Soutenu : un poste.",
        note:"La colonne du milieu est celle du travail écrit. La troisième ne sert qu'à la correspondance très formelle : employée partout, elle sonne faux."},
 
       {t:'ana', h:"Ce qui change dans la phrase",
        p:"Trois marques, faciles à repérer et à corriger.",
        mots:[['Le « ne »','Familier : <i>Ça marche pas.</i> — Standard : <i>Cela {ne} fonctionne pas.</i>'],['La question','Familier : <i>Tu viens-tu ?</i> — Standard : <i>{Venez-vous} ?</i>'],['Le sujet repris','Familier : <i>Mon boss, {lui}, il dit que…</i> — Standard : <i>Ma superviseure {estime} que…</i>']],
+       say:"Cela ne fonctionne pas. Venez-vous ? Ma superviseure estime que le délai est trop long.",
        note:"À l'oral standard, le « ne » disparaît chez presque tout le monde. À l'écrit, son absence est une faute — sans exception."},
 
       {t:'texte', h:"Le vrai risque, au travail",
@@ -149,21 +151,25 @@ const PLUS = {
       {t:'ana', h:"Règle 1 — les heures supplémentaires",
        p:"Au-delà de <b>quarante heures</b> dans une même semaine, chaque heure est majorée de <b>cinquante pour cent</b>.",
        mots:[['Le seuil','{quarante heures} par semaine'],['La majoration','{cinquante pour cent} du taux habituel'],['Un exemple','22 $ l\'heure → {33 $} la quarante et unième']],
+       say:"Au-delà de quarante heures par semaine, la majoration est de cinquante pour cent.",
        note:"Le seuil est hebdomadaire, pas quotidien : douze heures un mardi ne sont pas supplémentaires si la semaine reste sous quarante."},
 
       {t:'ana', h:"Règle 2 — le congé au lieu du paiement",
        p:"À la <b>demande du salarié</b>, l'employeur peut remplacer le paiement par un congé payé équivalent aux heures faites <b>plus cinquante pour cent</b>.",
        mots:[['Qui demande','le {salarié}, pas l\'employeur seul'],['Le calcul','4 heures faites → {6 heures} de congé'],['Le délai','à prendre dans les {douze mois}']],
+       say:"Quatre heures supplémentaires donnent six heures de congé, à prendre dans les douze mois.",
        note:"Passé les douze mois, les heures se paient. Ce n'est pas une faveur : c'est la suite prévue par la loi."},
 
       {t:'ana', h:"Règle 3 — la période de repas",
        p:"Après <b>cinq heures consécutives</b> de travail, le salarié a droit à <b>trente minutes</b> pour manger.",
        mots:[['Le déclencheur','{cinq heures} consécutives'],['La durée','{trente minutes}'],['Payée ?','{non} — sauf si vous ne pouvez pas quitter votre poste']],
+       say:"Après cinq heures consécutives, vous avez droit à trente minutes pour manger.",
        note:"« Rester au comptoir au cas où un client arrive » veut dire que le repas est payé."},
 
       {t:'ana', h:"Règle 4 — la pause-café",
        p:"L'employeur <b>n'est pas obligé</b> d'accorder une pause. Mais s'il en accorde une, elle est <b>payée</b>.",
        mots:[['Obligatoire ?','{non}'],['Si accordée','{payée} et comptée dans les heures travaillées'],['Conséquence','elle compte pour le seuil de {quarante heures}']],
+       say:"Une pause accordée est payée et comptée dans les heures travaillées.",
        note:"C'est la seule des quatre règles qui dépende de l'employeur — et une fois qu'il l'accorde, il ne peut plus la retirer du temps payé."},
 
       {t:'texte', h:"Et quand ça ne se règle pas dans l'entreprise",
@@ -215,16 +221,19 @@ const PLUS = {
       {t:'ana', h:"La formation, en trois gestes",
        p:"Presque tous les verbes suivent le même chemin.",
        mots:[['1. Le « ils » du présent','ils {vérifient} · ils {passent} · ils {avancent}'],['2. On enlève -ent','vérifi- · pass- · avanc-'],['3. On ajoute','-e, -es, -e, {-ions}, {-iez}, -ent']],
+       say:"Ils vérifient. Que je vérifie, que nous vérifiions.",
        note:"Aux formes <i>nous</i> et <i>vous</i>, le subjonctif ressemble à l'imparfait : <i>que nous vérifiions, que vous passiez</i>. Le double « i » de <i>vérifiions</i> est correct."},
 
       {t:'ana', h:"Les quatre à savoir par cœur",
        p:"Ce sont ceux qui reviennent tout le temps, et ils sont irréguliers.",
        mots:[['être','que je {sois}, que nous {soyons}'],['avoir','que j\'{aie}, que nous {ayons}'],['faire','que je {fasse}'],['aller','que j\'{aille}, que nous {allions}']],
+       say:"Que je sois, que j'aie, que je fasse, que j'aille.",
        note:"Ajoutez-en trois si vous avez le temps : <i>que je puisse</i> (pouvoir), <i>que je sache</i> (savoir), <i>qu'il faille</i> (falloir)."},
 
       {t:'ana', h:"Les déclencheurs du bureau",
        p:"Ce n'est pas le sens de la phrase qu'il faut deviner : c'est le mot qui précède.",
        mots:[['La nécessité','il faut que · il est nécessaire que · il est important que'],['La volonté','je souhaite que · j\'aimerais que · je demande que'],['Le but et le temps','pour que · avant que · jusqu\'à ce que'],['La condition et l\'opposition','à condition que · pourvu que · bien que · quoique']],
+       say:"Il faut que, il est important que, pour que, bien que, à condition que.",
        note:"Apprenez la liste, pas la règle. Ces vingt expressions couvrent la quasi-totalité des cas d'un courriel professionnel."},
 
       {t:'texte', h:"Les faux amis : ceux qui n'en veulent pas",
@@ -285,6 +294,7 @@ const PLUS = {
       {t:'ana', h:"L'accord, qui ne pardonne pas",
        p:"Le participe passé s'accorde <b>avec le sujet</b>, toujours, sans exception.",
        mots:[['Masculin pluriel','Les dossiers ont été {mêlés}'],['Féminin pluriel','Les heures ont été {saisies}'],['Féminin singulier','La majoration n\'a pas été {appliquée}']],
+       say:"Les heures ont été saisies, mais la majoration n'a pas été appliquée.",
        note:"C'est plus simple que l'accord avec <i>avoir</i> : il n'y a rien à chercher, le sujet est devant."},
 
       {t:'texte', h:"Quand ne pas l'employer",
@@ -337,11 +347,13 @@ const PLUS = {
       {t:'ana', h:"L'objet, qui décide de tout",
        p:"C'est la seule ligne qu'on est sûr que le destinataire lira.",
        mots:[['Mauvais','{Question} · {Problème} · {Suivi}'],['Bon','{Correction des heures supplémentaires — périodes du 2 au 15 août}'],['Pourquoi','il dit {quoi} et {quand} sans ouvrir le message']],
+       say:"Objet : correction des heures supplémentaires, périodes du deux au quinze août.",
        note:"Un objet qui se lit seul permet aussi de retrouver la lettre six mois plus tard, dans une boîte de trois mille courriels."},
 
       {t:'ana', h:"Les formules qui portent",
        p:"Elles sont peu nombreuses ; les apprendre une fois suffit pour dix ans.",
        mots:[['Rattacher','Je {donne suite} à notre conversation du 19 août.'],['Nommer l\'écart','{Or}, la majoration n\'a pas été appliquée.'],['Demander','Je vous {demande} de corriger les deux périodes.'],['Fixer l\'échéance','Je vous {saurais gré} de me confirmer avant le 27.'],['Annoncer les pièces','Vous trouverez {ci-joint} les deux courriels.']],
+       say:"Je donne suite à notre conversation du dix-neuf août. Or, la majoration n'a pas été appliquée.",
        note:"<b>Or</b> est le mot le plus utile de la lettre : il oppose le fait attendu au fait constaté, sans accuser personne."},
 
       {t:'texte', h:"Le ton : ni excuse ni menace",
@@ -396,11 +408,13 @@ const PLUS = {
       {t:'ana', h:"Le conditionnel présent",
        p:"Le radical du <b>futur</b>, les terminaisons de l'<b>imparfait</b>.",
        mots:[['Formation','proposer- + {-ais} → je {proposerais}'],['Régulier','ferait · resterait · mettrait · pourrait'],['Irréguliers utiles','je {serais} · j\'{aurais} · je {ferais} · j\'{irais} · je {voudrais} · je {pourrais}']],
+       say:"Je proposerais un partage. Ça me ferait deux heures de plus par mois.",
        note:"Si vous savez faire le futur, vous savez faire le conditionnel : c'est le même radical."},
 
       {t:'ana', h:"Le conditionnel passé",
        p:"<b>avoir</b> ou <b>être</b> au conditionnel présent, plus le participe passé.",
        mots:[['Formation','{aurais} + fait · {serait} + resté'],['Le regret','On {aurait dû} demander leurs délais.'],['Le résultat manqué','Il {serait resté} vingt mille dollars.']],
+       say:"On aurait dû demander leurs délais. Il serait resté vingt mille dollars.",
        note:"<i>On aurait dû</i> est la formule la plus utile de toute la réunion : elle reconnaît une erreur sans désigner de coupable."},
 
       {t:'texte', h:"Ce que chacun dit vraiment",
@@ -455,16 +469,19 @@ const PLUS = {
       {t:'ana', h:"L'opposition, en deux nuances",
        p:"Elles ne sont pas interchangeables.",
        mots:[['J\'admets et j\'objecte','{cependant} · {toutefois} · {néanmoins}'],['Je mets en balance','{en revanche} · {par contre}'],['Exemple','L\'écart est réel. {Cependant}, le délai est de dix jours.']],
+       say:"L'écart est réel. Cependant, le délai est de dix jours.",
        note:"<i>Par contre</i> est parfaitement correct au Québec, à l'oral comme à l'écrit courant. <i>En revanche</i> est plus soutenu ; dans une lettre d'affaires, il passe mieux."},
 
       {t:'ana', h:"La conséquence et l'explication",
        p:"Deux familles qu'on confond souvent, et qui vont dans des sens opposés.",
        mots:[['La conséquence suit','{par conséquent} · {donc} · {c\'est pourquoi} · {d\'où}'],['L\'explication précède','{en effet} · {car} · {en raison de}'],['Le test','« en effet » confirme ce qui vient d\'être dit ; « en fait » le {corrige}']],
+       say:"Le stock doublerait ; par conséquent, l'économie tombe à vingt mille.",
        note:"<i>En effet</i> et <i>en fait</i> ne sont pas la même chose. « Le portrait change. En effet, le délai passe à dix jours » confirme. « En fait, le délai est de dix jours » corrige ce qu'on croyait."},
 
       {t:'ana', h:"La condition et le mode qui suit",
        p:"C'est ici qu'on se trompe le plus, parce que le mode change selon le connecteur.",
        mots:[['+ indicatif','{du moment que} · {dès lors que} · {puisque}'],['+ subjonctif','{à condition que} · {pourvu que} · {à moins que}'],['Exemple','Ça me va, {du moment que} Ferrico n\'impose pas son augmentation.']],
+       say:"Ça me va, du moment que Ferrico n'impose pas son augmentation.",
        note:"En cas de doute, employez <i>si</i> + indicatif : c'est toujours correct, et personne ne vous reprochera d'être simple."},
 
       {t:'texte', h:"Reformuler pour garder la parole",
@@ -519,16 +536,19 @@ const PLUS = {
       {t:'ana', h:"Le recul des temps",
        p:"Quand le verbe introducteur est au passé, tout recule d'un cran.",
        mots:[['présent → imparfait','« Je vérifie » → elle a précisé qu\'elle {vérifiait}'],['passé composé → plus-que-parfait','« J\'ai fait le calcul » → elle a indiqué qu\'elle {avait fait}'],['futur → conditionnel','« On tranchera » → elle a annoncé qu\'on {trancherait}']],
+       say:"Elle a précisé qu'elle vérifiait deux fois.",
        note:"Si le verbe introducteur est au présent (<i>elle dit que…</i>), rien ne recule. C'est le passé qui déclenche le mouvement."},
 
       {t:'ana', h:"Les pronoms et les repères de temps",
        p:"Ils changent aussi, et on les oublie plus souvent que les temps.",
        mots:[['Les personnes','je → {elle} · tu → {vous} ou le nom'],['Les jours','aujourd\'hui → {ce jour-là} · demain → {le lendemain} · hier → {la veille}'],['Les lieux','ici → {là} · ce bureau-ci → {ce bureau-là}']],
+       say:"Elle a annoncé que la décision serait prise le lendemain.",
        note:"Un compte rendu qui garde « demain » oblige le lecteur à retrouver la date de la réunion pour comprendre."},
 
       {t:'ana', h:"Les questions rapportées",
        p:"Elles perdent l'inversion et le point d'interrogation.",
        mots:[['est-ce que → si','« Es-tu sûre ? » → il lui a demandé {si elle était sûre}'],['Mot interrogatif conservé','« Quand ? » → il a demandé {quand} la décision serait prise'],['qu\'est-ce que → ce que','« Qu\'est-ce qu\'on fait ? » → il a demandé {ce qu\'on ferait}']],
+       say:"Il lui a demandé si elle était sûre de son information.",
        note:"Écrire « il a demandé est-ce qu'elle était sûre » est la faute la plus visible du discours rapporté."},
 
       {t:'texte', h:"Le verbe introducteur porte l'intention",
@@ -583,16 +603,19 @@ const PLUS = {
       {t:'ana', h:"Avec « à »",
        p:"Les quatre formes, selon le genre et le nombre du nom repris.",
        mots:[['Masculin singulier','le service {auquel} je m\'adresse'],['Féminin singulier','la formation {à laquelle} elle pense'],['Pluriel','les cours {auxquels} · les questions {auxquelles}']],
+       say:"Le service auquel je m'adresse, la formation à laquelle elle pense.",
        note:"Pour une personne, <i>à qui</i> est plus naturel : <i>la conseillère à qui j'ai parlé</i>. Pour une chose, seulement <i>à laquelle</i>."},
 
       {t:'ana', h:"Avec « de » : presque toujours « dont »",
        p:"C'est la forme la plus fréquente, et la plus simple.",
        mots:[['parler de','la démarche {dont} je parle'],['avoir besoin de','le document {dont} j\'ai besoin'],['connaître les étapes de','une démarche {dont} je ne connaissais pas les étapes']],
+       say:"Le document dont j'ai besoin, la démarche dont je parle.",
        note:"<b>duquel</b> ne s'emploie que dans une locution : <i>au bout duquel, à côté duquel, en raison duquel</i>. Ailleurs, <i>dont</i> gagne toujours."},
 
       {t:'ana', h:"Avec les autres prépositions",
        p:"On garde la préposition et on ajoute <i>lequel</i>.",
        mots:[['sur','le formulaire {sur lequel} elle a écrit'],['pour','la raison {pour laquelle} il refuse'],['avec','les collègues {avec lesquels} elle travaille'],['sans','un cours {sans lequel} elle ne progresserait pas']],
+       say:"Le formulaire sur lequel elle a écrit, la raison pour laquelle il refuse.",
        note:"<i>avec lesquels</i> ou <i>avec qui</i> pour des personnes : les deux sont corrects, le second est plus courant à l'oral."},
 
       {t:'texte', h:"Quand il n'y a pas de nom devant",
@@ -647,16 +670,19 @@ const PLUS = {
       {t:'ana', h:"Le montage, en deux moitiés",
        p:"Chaque moitié a son temps, et ils ne s'échangent pas.",
        mots:[['La condition','{si} + plus-que-parfait'],['Le résultat','{conditionnel passé}'],['En entier','{Si} j\'{avais su}, j\'{aurais économisé} quarante heures.']],
+       say:"Si j'avais su, j'aurais économisé quarante heures.",
        note:"L'ordre des deux moitiés est libre : <i>J'aurais économisé quarante heures si j'avais su</i> dit exactement la même chose."},
 
       {t:'ana', h:"Le plus-que-parfait",
        p:"C'est le passé du passé : <b>avoir</b> ou <b>être</b> à l'imparfait, plus le participe.",
        mots:[['avoir','j\'{avais su} · nous {avions eu} · elle {avait lu}'],['être','elle {était partie} · nous {étions arrivés}'],['Accord','avec être, on accorde : nous {étions prévenus}']],
+       say:"J'avais su, nous avions eu, elle était partie.",
        note:"Le même temps sert aussi à raconter : <i>Elle avait déjà tenu la comptabilité d'une école avant d'arriver ici.</i>"},
 
       {t:'ana', h:"Les trois hypothèses, côte à côte",
        p:"Une seule chose change : la distance avec le réel.",
        mots:[['C\'est probable','{si} + présent → futur : si vous m\'écrivez, je {répondrai}'],['C\'est imaginé','{si} + imparfait → conditionnel présent : si le cours était le jour, je m\'{inscrirais}'],['C\'est trop tard','{si} + plus-que-parfait → conditionnel passé : si j\'avais su, j\'{aurais économisé}']],
+       say:"Si vous m'écrivez, je répondrai. Si le cours était offert le jour, je m'inscrirais. Si j'avais su, j'aurais économisé.",
        note:"Apprenez les trois ensemble : c'est en les comparant qu'on cesse de les mélanger."},
 
       {t:'texte', h:"La règle absolue, sans aucune exception",
@@ -711,16 +737,19 @@ const PLUS = {
       {t:'ana', h:"Quatre façons de reprendre",
        p:"De la plus simple à la plus utile.",
        mots:[['Le pronom','La soumission… {elle} · {celle-ci} · {ce dernier}'],['Le synonyme','la formation → {le cours}, {la session}'],['Le nom générique','…→ {cette démarche}, {cette solution}, {ce document}'],['La nominalisation','Lachance a livré en dix jours → {ce délai de livraison}']],
+       say:"Ce délai de livraison nous met en défaut.",
        note:"Les deux dernières sont celles qui manquent le plus souvent, et ce sont les plus efficaces."},
 
       {t:'ana', h:"La nominalisation, geste par geste",
        p:"On transforme le verbe de la phrase précédente en nom, et on le fait précéder d'un démonstratif.",
        mots:[['augmenter','→ {cette augmentation}, {cette hausse}'],['reporter','→ {ce report}'],['livrer en dix jours','→ {ce délai de livraison}'],['décider','→ {cette décision}']],
+       say:"Le fournisseur a augmenté ses prix. Cette hausse était prévue.",
        note:"C'est la reprise reine du compte rendu : elle résume une phrase entière en trois mots, et elle porte un jugement discret sur ce qui vient d'être dit."},
 
       {t:'ana', h:"Le nom générique",
        p:"Un mot large qui range ce qui précède dans une catégorie.",
        mots:[['Pour une action','{cette démarche} · {cette mesure} · {cette initiative}'],['Pour une idée','{cette solution} · {cette proposition} · {cette approche}'],['Pour un écrit','{ce document} · {ce formulaire} · {cette lettre}']],
+       say:"Cette démarche, cette solution, ce document.",
        note:"Le choix du nom générique n'est pas neutre : <i>cette proposition</i> et <i>cette exigence</i> ne racontent pas la même réunion."},
 
       {t:'texte', h:"Le danger : la reprise qui laisse un doute",
