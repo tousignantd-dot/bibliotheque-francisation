@@ -1,0 +1,21 @@
+const FC_CARDS = [
+  {word:"un fait divers", def:"Un court article qui raconte un évènement arrivé près de chez soi : un feu, un vol, une inondation.", ex:"Elle lit les <strong>faits divers</strong> avant tout le reste du journal.", img:"/assets/interactive/module-n5-actualite/vocab/fait-divers.jpg", tache:"prep"},
+  {word:"un hebdomadaire", def:"Un journal qui paraît une seule fois par semaine, toujours le même jour.", ex:"L'<strong>hebdomadaire</strong> de la région sort tous les mardis matin.", img:"/assets/interactive/module-n5-actualite/vocab/hebdomadaire.jpg", tache:"prep"},
+  {word:"le chapeau", def:"Les deux ou trois lignes en gras placées sous le titre, qui disent toute la nouvelle d'un coup.", ex:"Lis le <strong>chapeau</strong> : tu sauras déjà l'essentiel.", img:"/assets/interactive/module-n5-actualite/vocab/chapeau.jpg", tache:"prep"},
+  {word:"un témoin", def:"La personne qui se trouvait sur place et qui a vu ce qui s'est passé.", ex:"Un <strong>témoin</strong> a vu trois vélos dans une remorque, vers minuit.", img:"/assets/interactive/module-n5-actualite/vocab/temoin.jpg", tache:"prep"},
+
+  {word:"un incendie", def:"Un feu qui échappe au contrôle et qui détruit un bâtiment ou une forêt.", ex:"L'<strong>incendie</strong> a détruit les quatre logements de l'immeuble.", img:"/assets/interactive/module-n5-actualite/vocab/incendie.jpg", tache:"t1"},
+  {word:"évacuer", def:"Faire sortir tout le monde d'un endroit devenu dangereux, le plus vite possible.", ex:"Les pompiers ont fait <strong>évacuer</strong> l'immeuble en pleine nuit.", img:"/assets/interactive/module-n5-actualite/vocab/evacuer.jpg", tache:"t1"},
+  {word:"un sinistré", def:"Une personne qui a perdu son logement ou ses biens dans un feu ou une inondation.", ex:"Onze <strong>sinistrés</strong> ont été hébergés par la Croix-Rouge.", img:"/assets/interactive/module-n5-actualite/vocab/sinistre.jpg", tache:"t1"},
+  {word:"une inondation", def:"De l'eau qui monte et qui entre là où elle ne devrait pas : une rue, une cave, un champ.", ex:"L'<strong>inondation</strong> a rempli une dizaine de sous-sols de la rue.", img:"/assets/interactive/module-n5-actualite/vocab/inondation.jpg", tache:"t1"},
+
+  {word:"une déclaration", def:"Ce que quelqu'un dit officiellement, et que le journal peut répéter mot pour mot.", ex:"Sa <strong>déclaration</strong> tient en une phrase, entre guillemets.", img:"/assets/interactive/module-n5-actualite/vocab/declaration.jpg", tache:"t2"},
+  {word:"une enquête", def:"Le travail qu'on fait après un évènement pour comprendre comment il est arrivé.", ex:"L'<strong>enquête</strong> dira si le feu est parti de la cuisine.", img:"/assets/interactive/module-n5-actualite/vocab/enquete.jpg", tache:"t2"},
+  {word:"un enquêteur", def:"La personne chargée de chercher les causes et de poser les questions.", ex:"L'<strong>enquêteur</strong> a passé la matinée dans les décombres.", img:"/assets/interactive/module-n5-actualite/vocab/enqueteur.jpg", tache:"t2"},
+  {word:"un avertissement", def:"L'annonce officielle qui prévient d'un danger qui s'en vient : pluie forte, verglas, chaleur.", ex:"Un <strong>avertissement</strong> de pluie abondante avait été émis la veille.", img:"/assets/interactive/module-n5-actualite/vocab/avertissement.jpg", tache:"t2"},
+
+  {word:"un vol", def:"Le fait de prendre une chose qui appartient à quelqu'un d'autre, sans permission.", ex:"Le <strong>vol</strong> a eu lieu pendant la nuit, dans un cabanon ouvert.", img:"/assets/interactive/module-n5-actualite/vocab/vol.jpg", tache:"t3"},
+  {word:"un suspect", def:"La personne que la police croit responsable, tant que rien n'est prouvé.", ex:"Aucun <strong>suspect</strong> n'a été arrêté pour l'instant.", img:"/assets/interactive/module-n5-actualite/vocab/suspect.jpg", tache:"t3"},
+  {word:"un cabanon", def:"La petite bâtisse de la cour où on range les outils, les pelles et les vélos.", ex:"Les voleurs sont entrés par la porte du <strong>cabanon</strong>.", img:"/assets/interactive/module-n5-actualite/vocab/cabanon.jpg", tache:"t3"},
+  {word:"la prévention", def:"Tout ce qu'on fait d'avance pour empêcher qu'une chose fâcheuse arrive.", ex:"Noter son numéro de série, c'est de la <strong>prévention</strong>.", img:"/assets/interactive/module-n5-actualite/vocab/prevention.jpg", tache:"t3"},
+];

@@ -1,0 +1,111 @@
+const DIALOGUES = {
+  prep: {
+    label: "Dialogue — Qu'est-ce que tu lis là, à tous les mardis ?",
+    lines: [
+      ["SYLVAIN","Marisol, tu lis encore ton petit journal. Il sort quand, celui-là ?"],
+      ["MARISOL","Le mardi. Une fois par semaine. C'est un hebdomadaire de la région."],
+      ["SYLVAIN","Et il y a quoi dedans ? Des annonces de garage ?"],
+      ["MARISOL","Il y a des annonces, oui. Mais moi, je lis les faits divers."],
+      ["SYLVAIN","Les faits divers, c'est quoi au juste ?"],
+      ["MARISOL","Des petites nouvelles d'ici. Un feu, une inondation, un vol de vélos."],
+      ["SYLVAIN","Ah, les affaires qui arrivent aux voisins."],
+      ["MARISOL","Exactement. C'est court : cinq paragraphes, jamais plus."],
+      ["SYLVAIN","Tu lis tout, du début à la fin ?"],
+      ["MARISOL","Non. Je lis le titre, puis les trois lignes en gras en dessous."],
+      ["SYLVAIN","Les lignes en gras, ça s'appelle comment ?"],
+      ["MARISOL","Le chapeau. Il dit toute la nouvelle en une phrase ou deux."],
+      ["SYLVAIN","Et après ?"],
+      ["MARISOL","Après, le texte donne les détails, et il fait parler du monde."],
+      ["SYLVAIN","Du monde comme qui ?"],
+      ["MARISOL","Un témoin, un pompier, quelqu'un de la Ville. Ceux qui étaient là."],
+      ["SYLVAIN","Moi, je n'ai jamais le temps. Tu me raconteras."],
+      ["MARISOL","Ça me fait pratiquer mon français. Assis-toi, j'en ai une bonne."],
+    ]
+  },
+
+  t1: {
+    label: "Dialogue — Le feu de la rue Alexandre",
+    lines: [
+      ["SYLVAIN","Bon, raconte. Il est arrivé quoi ?"],
+      ["MARISOL","Un immeuble a passé au feu, cette nuit, sur la rue Alexandre."],
+      ["SYLVAIN","Cette nuit ? Je n'ai rien entendu."],
+      ["MARISOL","Vers quatre heures du matin. Tout le monde dormait."],
+      ["SYLVAIN","Il y a du monde de blessé ?"],
+      ["MARISOL","Non, personne. C'est ça qui est chanceux."],
+      ["SYLVAIN","Comment ça, personne ? Un immeuble au complet ?"],
+      ["MARISOL","Quatre logements. Un locataire s'est réveillé et il a cogné à toutes les portes."],
+      ["SYLVAIN","Il a fait le tour de l'immeuble pendant que ça brûlait ?"],
+      ["MARISOL","Oui. Les pompiers sont arrivés huit minutes après l'appel."],
+      ["SYLVAIN","Et l'immeuble ?"],
+      ["MARISOL","Perdu. Il ne reste que les murs. Onze personnes n'ont plus de logement."],
+      ["SYLVAIN","Onze ! Elles ont dormi où, après ?"],
+      ["MARISOL","La Croix-Rouge les a hébergées. Le journal le dit à la fin."],
+      ["SYLVAIN","Et le feu, il est parti d'où ?"],
+      ["MARISOL","De la cuisine du deuxième. Mais ce n'est pas encore certain."],
+      ["SYLVAIN","Tu racontes ça comme si tu étais là."],
+      ["MARISOL","Je raconte ce que j'ai lu. Et j'essaie de le dire dans l'ordre."],
+    ]
+  },
+
+  t2: {
+    label: "Dialogue — Qui a dit ça, au juste ?",
+    lines: [
+      ["TERESA","Allô ! Ça va ? Il paraît qu'il a mouillé sans bon sens chez vous."],
+      ["MARISOL","Trois jours de pluie. La rivière Magog est sortie de son lit."],
+      ["TERESA","Sortie de son lit ? C'est grave, ça ?"],
+      ["MARISOL","Une dizaine de sous-sols inondés sur la rue des Peupliers."],
+      ["TERESA","Et la Ville, elle fait quoi ?"],
+      ["MARISOL","La Ville dit qu'elle a distribué des sacs de sable dès lundi."],
+      ["TERESA","Elle le dit, ou tu le penses ?"],
+      ["MARISOL","Elle le dit. C'est écrit dans le journal, entre guillemets."],
+      ["TERESA","Et le monde de la rue, ils disent quoi ?"],
+      ["MARISOL","Une résidente raconte qu'elle a tout perdu dans son sous-sol."],
+      ["TERESA","Pauvre elle. Elle demande quelque chose ?"],
+      ["MARISOL","Elle demande si la Ville va refaire le fossé au bout de la rue."],
+      ["TERESA","Et personne ne répond à ça ?"],
+      ["MARISOL","Le journal écrit que la Ville n'a pas voulu dire quand."],
+      ["TERESA","Toi, tu me dis toujours qui parle. J'aime ça."],
+      ["MARISOL","Sinon on ne sait plus qui pense quoi. C'est mêlant."],
+      ["TERESA","C'est vrai. Bon, et il reste de l'eau dans les maisons ?"],
+      ["MARISOL","Les pompiers expliquent qu'ils pompent depuis mercredi matin."],
+    ]
+  },
+
+  t3: {
+    label: "Dialogue — Moi, ce qui me surprend, c'est le nombre",
+    lines: [
+      ["MARISOL","Sylvain, trente vélos volés dans le quartier en un mois."],
+      ["SYLVAIN","Trente ? Voyons donc. Volés où ?"],
+      ["MARISOL","Dans des cabanons et des garages laissés ouverts, presque tous."],
+      ["SYLVAIN","Bon. Ça, c'est de la négligence, pas du vol."],
+      ["MARISOL","Je ne suis pas d'accord avec toi. Une porte ouverte, ce n'est pas une invitation."],
+      ["SYLVAIN","Peut-être. Mais barre ta porte, et il n'arrive rien."],
+      ["MARISOL","C'est vrai que ça aide. Par contre, ça n'excuse pas celui qui entre."],
+      ["SYLVAIN","La police dit quoi, elle ?"],
+      ["MARISOL","Elle demande aux gens de noter le numéro de série de leur vélo."],
+      ["SYLVAIN","Un numéro. Ça ne ramènera jamais un vélo, ça."],
+      ["MARISOL","Moi, ce qui me surprend, c'est qu'un vélo retrouvé sans numéro reste à la police."],
+      ["SYLVAIN","Ah oui ? Ils le gardent ?"],
+      ["MARISOL","Ils ne savent pas à qui le rendre. C'est pour ça que le numéro sert."],
+      ["SYLVAIN","Ça, je ne le savais pas. Tu marques un point."],
+      ["MARISOL","Et il y a un témoin : un commerçant a vu trois vélos dans une remorque."],
+      ["SYLVAIN","Tard le soir, j'imagine ?"],
+      ["MARISOL","Vers minuit. Il l'a signalé le lendemain matin."],
+      ["SYLVAIN","C'est plate à dire, mais tu me fais lire le journal sans que je le lise."],
+    ]
+  },
+
+  appli: {
+    label: "Dialogue — Tu racontes mieux que le journal",
+    lines: [
+      ["SYLVAIN","Franchement, tu racontes mieux que le journal."],
+      ["MARISOL","Je fais toujours pareil : ce qui est arrivé, où, quand."],
+      ["SYLVAIN","Et après, qui a dit quoi."],
+      ["MARISOL","Oui. Et je nomme toujours la personne qui l'a dit."],
+      ["SYLVAIN","C'est là que tu me pognes. Moi, je dis « il paraît que »."],
+      ["MARISOL","« Il paraît que », ça ne vaut rien. Ça vient de nulle part."],
+      ["SYLVAIN","Et à la fin, tu donnes ton idée."],
+      ["MARISOL","Mon idée, oui. Mais je dis que c'est mon idée, pas un fait."],
+    ]
+  },
+};
