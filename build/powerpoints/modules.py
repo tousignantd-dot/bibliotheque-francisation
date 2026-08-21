@@ -263,6 +263,23 @@ MODULES = {
                         'Choisir',
                         'À la caisse'),
     },
+
+    # `module-vetements` (niveau 4, activité 54) traite la même situation du
+    # programme, mais son élève essaie, demande un avis, lit l'étiquette
+    # d'entretien et va se faire rembourser. Au niveau 3, les deux seules
+    # intentions sont « s'informer sur un vêtement » et « lire une étiquette » :
+    # on reste au plus concret — nommer le vêtement, dire sa taille, comparer
+    # deux prix, et comprendre ce que le pictogramme interdit.
+    'module-n3-vetements': {
+        'numero': 2, 'activite': 75, 'niveau': 3,
+        'titre': 'Magasiner du linge',
+        'chapeau': "Nommer un vêtement et sa couleur, dire sa taille, "
+                   "comparer deux prix et lire une étiquette.",
+        'seances': GRILLE_3_DEFIS,
+        'blocs': _blocs("Demander ce qu'on cherche",
+                        'Comparer deux prix',
+                        "L'étiquette et le paiement"),
+    },
     # ── Niveau 5 ────────────────────────────────────────────────────
     # `module-logement` (niveau 4) traite la même situation du programme, mais
     # s'arrête à la visite et à la comparaison. Ici, on téléphone, on prend des
@@ -327,6 +344,27 @@ MODULES = {
         'blocs': _blocs("L'appel",
                         "L'écran",
                         'Le guichet'),
+    },
+
+    # « Consultation d'un professionnel de la santé », niveau 5. Le programme
+    # n'y donne qu'une intention, en CO et en PO : prendre, annuler ou modifier
+    # un rendez-vous par téléphone. Le module 1 du niveau 4 (« Consulter au bon
+    # endroit ») choisit le bon service et décrit une douleur au triage ; ici
+    # l'élève tient le rendez-vous d'un bout à l'autre — il le prend, il raconte
+    # trois mois de symptômes dans le bureau, puis il le déplace et l'annule
+    # sans perdre sa place.
+    'module-n5-rendezvous': {
+        'numero': 5, 'activite': 65, 'niveau': 5,
+        'titre': 'Prendre rendez-vous chez le médecin',
+        'chapeau': "Téléphoner à une clinique pour obtenir un rendez-vous, "
+                   "raconter un problème de santé qui dure depuis des mois, "
+                   "comprendre l'explication du médecin et poser ses "
+                   "questions, puis déplacer ou annuler un rendez-vous dans "
+                   "les règles.",
+        'seances': GRILLE_3_DEFIS,
+        'blocs': _blocs("L'appel à la clinique",
+                        'Dans le bureau',
+                        'Déplacer ou annuler'),
     },
 
     'module-n6-recherche': {
