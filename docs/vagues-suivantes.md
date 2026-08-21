@@ -58,7 +58,7 @@ Ce que ces deux-là portent de particulier, et qu'aucun module précédent n'a e
 `module-n5-logement` (activité 58) est le premier. Restent les treize autres
 situations du niveau, activités **62 à 74** :
 
-| `numero` | Situation | Slug proposé | Activité |
+| `numero` | Situation | Slug | Activité |
 |---|---|---|---|
 | 2 | Problèmes reliés à l'habitation | `module-n5-degat` | 62 |
 | 3 | Emménagement dans un nouveau logement | `module-n5-emmenagement` | 63 |
@@ -79,10 +79,12 @@ branche les services, on se soigne, on travaille, puis viennent le loisir et
 l'école. Un agent qui prend un module prend **la ligne suivante non commencée**,
 et annonce laquelle dans son premier commit.
 
-Les slugs sont des propositions : le slug nomme le **scénario**, pas la
-situation du programme. Un agent qui change le sien le fait **avant d'écrire
-quoi que ce soit** et corrige la ligne ici même. Ce qu'il ne peut pas changer,
-c'est le numéro d'activité.
+**Les slugs des trois tableaux sont arrêtés** — décision de l'utilisateur, le
+20 août 2026. Un agent les prend tels quels : il n'a ni slug ni numéro à
+choisir, seulement un scénario à inventer. Ils nomment d'ailleurs le scénario
+et non la situation du programme, ce qui est la convention du dépôt depuis les
+niveaux 1 et 2. Si l'un d'eux s'avère vraiment impraticable, le changement se
+discute avec l'utilisateur avant d'écrire la première ligne, jamais après.
 
 
 ## Vague 3 — le niveau 3 au complet
@@ -90,7 +92,7 @@ c'est le numéro d'activité.
 `module-n3-epicerie` (activité 55) est le premier. Restent les douze autres,
 activités **75 à 86**, en 16 séances comme le reste du niveau :
 
-| `numero` | Situation | Slug proposé | Activité |
+| `numero` | Situation | Slug | Activité |
 |---|---|---|---|
 | 2 | Achat de vêtements | `module-n3-vetements` | 75 |
 | 3 | Achat de biens de consommation durables | `module-n3-electro` | 76 |
@@ -151,7 +153,8 @@ cinq valeurs entre chevrons, rien d'autre.
 > Tu m'écris en français. Tu m'annonces au départ, en cinq lignes, le scénario
 > et les personnages que tu as inventés, et tu continues sans attendre ma
 > réponse. Tu me préviens seulement si tu dois toucher un fichier transversal
-> (gabarit, moteur, système de design) ou changer ton slug.
+> (gabarit, moteur, système de design). Ton slug et ton numéro d'activité
+> sont arrêtés : ils ne se renégocient pas.
 
 Pour la vague 1, les deux consignes se donnent en même temps, une par agent, en
 ajoutant à chacune : « Un autre agent produit le niveau `<7 ou 8>` en parallèle.
