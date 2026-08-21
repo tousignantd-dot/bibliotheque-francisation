@@ -47,3 +47,19 @@ Deux exceptions notées :
   — le programme d'études officiel du MEQ — sans source antérieure. Le
   vérificateur n'a plus d'objet pour eux : il n'existe pas de version d'origine
   à laquelle les comparer.
+
+## Les modules neufs, mesurés autrement
+
+Faute de version d'origine, un module écrit à partir du programme se mesure à
+ses voisins : combien de ses énoncés visibles se retrouvent mot pour mot dans
+un autre module du dépôt. Le seuil reste 5 %.
+
+| Module | Énoncés | Communs | % | Nature |
+|---|---|---|---|---|
+| module-n6-recherche | 209 | 4 | 1,9 % | quatre consignes du gabarit |
+
+Les quatre : « Le mot et sa définition », « Choisissez un mot, puis sa
+définition. Six mots à la fois. », « Écoutez de nouveau le dialogue, puis
+répondez. », « Glissez chaque photo sur la phrase qui la décrit. » Ce sont les
+consignes que le moteur impose à ses types d'exercice — les faire varier pour
+elles-mêmes nuirait à l'élève, qui les reconnaît d'un module à l'autre.

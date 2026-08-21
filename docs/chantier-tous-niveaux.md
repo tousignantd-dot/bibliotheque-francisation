@@ -199,6 +199,72 @@ d'un élève de niveau 2 décroche à l'arrêt. B2 n'apprend aucun mot nouveau �
 elle apprend ce qu'on fait quand les mots manquent.
 
 
+## Niveau 6 — `module-n6-recherche` · Chercher un emploi · **livré**
+
+Produit en parallèle du niveau 5, selon le protocole de
+`docs/deux-agents-en-parallele.md`. Activité **59**, réservée d'avance.
+
+**Le slug a changé.** Le tableau de ce fichier annonçait `module-n6-emploi`.
+La situation « Emploi » du programme est celle retenue pour le niveau 8 : deux
+slugs voisins pour deux modules très différents se seraient confondus. Le slug
+nomme le scénario, pas la situation du programme — comme aux niveaux 1 et 2.
+
+**Scénario.** Marisol Aguirre, arrivée de Colombie il y a deux ans, ancienne
+responsable des stocks, veut quitter son temps partiel. Djamila Toubaï la
+reçoit au Tremplin-Emploi ; Robert Chartier, chef d'entrepôt chez Boisverte,
+la reçoit en entrevue.
+
+**Les trois défis suivent la démarche réelle**, et chacun porte une des quatre
+intentions du programme : lire l'offre détaillée et s'informer sur
+l'entreprise (CE), remplir la demande d'emploi (PE), passer la courte entrevue
+et offrir ses services (CO/PO).
+
+**Neuf mini-leçons.** Nasales AN/ON et formation des mots à la découverte ;
+adjectifs en -able et relatif « où » au Défi 1 ; infinitif passé et
+subordonnée infinitive avec de/à au Défi 2 ; subjonctif après verbe
+introducteur et connecteurs d'exemplification au Défi 3. Tous ces points
+sortent des savoirs du niveau 6, sans en inventer un seul.
+
+**Un scénario de jeu de rôle neuf**, `entrevue` — le treizième de
+`server.py`. Aucun des douze existants n'était voisin. Trois postes (commis à
+l'inventaire, aide-cuisinier, préposé à l'entretien), deux rôles, et une
+conduite qui **relance quand la réponse tient en une phrase** : c'est la
+différence du niveau 6, où l'élève doit tenir un discours détaillé.
+
+**Ce que le sujet a coûté aux images.** Tout ce qu'on photographie ici est du
+papier écrit — une offre, un formulaire, une lettre. Au premier passage,
+l'affiche d'offre d'emploi portait « ANNOUNCEMENT » en anglais bien lisible,
+et quatre photos de feuilles posées sur une table de bois étaient
+indistinguables les unes des autres dans un banc de vocabulaire. Cinq images
+refaites, avec des supports distincts — une main qui tend un CV, un calendrier
+mural, une tablette, une enveloppe — et une consigne explicite contre toute
+lettre lisible. **À retenir pour le niveau 8**, qui portera sur l'emploi et
+photographiera les mêmes objets.
+
+**Deux limites du gabarit de diapositives**, découvertes ici et payées :
+Verdana n'a ni les symboles de l'alphabet phonétique ni la flèche `→`, donc la
+séance de graphie-phonie dit « le son AN » et « le son ON » là où le module
+interactif garde `[ɑ̃]` et `[ɔ̃]` ; et un tableau de six lignes à deux colonnes
+ne tient pas sur une diapositive projetée — `theme.py` le refuse avec un
+message clair, et il faut le couper en deux.
+
+**Originalité.** Le vérificateur de copie n'a pas d'objet : il n'existe aucune
+version antérieure. La mesure faite est donc la coïncidence avec les onze
+autres modules du dépôt : **4 énoncés sur 209, soit 1,9 %**, et les quatre sont
+des consignes du gabarit (« Le mot et sa définition », « Écoutez de nouveau le
+dialogue, puis répondez »). Sous le seuil de 5 %.
+
+**Ce qui reste à corriger, et qui ne m'appartient pas.** Les invites de
+`server.py` disent « niveau 4 (débutant-intermédiaire) » **en dur** — dans
+`jeu_de_role_system()` comme dans les correcteurs de production orale et
+écrite. Les sept modules des autres niveaux font donc parler l'assistant comme
+au niveau 4 : trop simple pour le 6 et le 7, trop complexe pour le 1 et le 2.
+Le niveau est pourtant connu (`modules.py`, `normalize_level`). C'est un
+changement transversal qui touche tous les modules à la fois : selon la règle 5
+de `docs/deux-agents-en-parallele.md`, il se fait quand personne d'autre
+n'écrit, pas au milieu d'un module.
+
+
 ## La couleur d'un module est devenue celle de son niveau
 
 Décidé par l'utilisateur le 20 août 2026, au milieu de ce chantier, et
