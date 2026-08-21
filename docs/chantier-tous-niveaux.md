@@ -936,3 +936,87 @@ aucun contenu narratif en commun.
 **Les six contrôles** passent pour ce module. `sommaire.py --verifier` signale
 encore `module-n3-restaurant` (activité 77), produit au même moment par une
 session voisine : ce n'est pas un écart de celui-ci.
+
+## Niveau 3 — `module-n3-restaurant` · Commander au comptoir · **livré**
+
+Activité **77**, réservée d'avance par `docs/vagues-suivantes.md` (vague 3),
+`numero` 4 du niveau. Produit le 21 août 2026, en parallèle des activités 67
+et 89.
+
+**Ce qui le distingue de son voisin**, en une phrase : `module-restaurant`
+(niveau 4) tient le repas complet — la table d'hôte, le service aux tables,
+l'addition, les taxes, le pourboire — tandis qu'ici on ne s'assoit jamais :
+on lit un tableau de loin, on commande un format, on répond à cinq questions
+et on demande ce qui manque sur le plateau.
+
+**Le cadre l'a décidé, et il est étroit.** `build/cadre.py 3 "Service de
+restauration"` rend **trois** intentions pour deux compétences : « commander au
+comptoir et comprendre l'information donnée par le préposé » (CO et PO) et
+« lire un menu simple » (CE). Aucune intention de production écrite. Le lexique
+tient en deux entrées — *types de formats* ; *ustensiles, serviettes de table,
+condiments* —, et elles suffisent à donner la moitié du banc de mots et deux
+des dix mini-leçons. C'est le module de la vague dont le programme dicte le
+plus directement le contenu.
+
+**Scénario.** Yolette Désir, 43 ans, arrivée d'Haïti il y a huit mois, a une
+heure pour dîner entre deux cours. Sa camarade Fatou l'emmène chez Marcel, le
+casse-croûte du coin, et lui montre où est le menu — en haut, au-dessus de la
+caisse. Steve prend la commande et donne un numéro ; Marcel l'appelle au poste
+de ramassage, où il manque une cuillère et où le jus de pomme est épuisé.
+
+**Dix mini-leçons** : le son OU et le son U · petit, moyen, grand · où regarder
+sur le tableau · au poulet, à la tomate, aux légumes · ce, cet, cette, ces ·
+je voudrais · les cinq questions du préposé · du sel, de la moutarde, des
+serviettes · il manque quelque chose sur mon plateau · il n'en reste plus.
+
+**Le jeu de rôle a demandé un scénario neuf.** Le scénario `restaurant` de
+`server.py` existe, mais sa conduite est écrite pour un serveur en salle :
+formules du menu, allergies, addition, pourboire. `JEU_DE_ROLE_COMPTOIR` a
+donc été ajouté — trois cas (le trio du midi, la soupe du jour, deux repas pour
+emporter), deux rôles, `client` et `prepose`, et une conduite qui interdit
+explicitement de parler de table d'hôte, d'addition ou de pourboire.
+
+**Médias.** 24 images fal.ai (0,78 $) et 289 extraits audio, sans un seul échec
+réseau. Yolette prend la voix féminine 2, Fatou celle de l'enseignante ralentie
+à 0,85, Steve la voix masculine et Marcel celle du narrateur — les quatre se
+répondent, aucune voix n'est partagée.
+
+**La difficulté propre à ce module est que son objet central est un tableau
+écrit**, alors que le générateur d'images a l'ordre de ne produire aucun texte
+lisible. Les prompts demandent donc des panneaux dont la *forme* est nette —
+colonnes, lignes régulières, prix alignés à droite — sans qu'aucun mot ne se
+lise. L'élève reconnaît le tableau du menu ; c'est l'exercice qui en donne le
+contenu, et l'encadré noir de B2 en tient le texte exact.
+
+**Seize séances.** 187 diapositives, 141 blocs de fiches. A2 est la séance de
+phonétique et porte sur **OU / U** : « soupe » et « jus » l'offrent tout fait,
+et la difficulté est réelle pour la plupart des élèves. C3 est la séance qui
+répond à la moitié « compréhension orale » de l'intention du programme : les
+cinq questions du préposé, apprises par cœur avec leurs cinq réponses de deux
+mots.
+
+**Originalité : 0 %** sur les 139 énoncés de contenu. Le relevé large — 225
+chaînes, consignes et mots du banc compris — rend 17 coïncidences, toutes des
+consignes du gabarit ou des mots du lexique du programme. Le détail est dans
+`docs/verification-originalite.md`.
+
+**Trois pièges, dont deux neufs.**
+
+- **`build/collecte_sons.py` n'a pas été lancé du tout.** C'est la façon la
+  plus sûre de faire disparaître les deux incidents de la nuit précédente : ni
+  port à réserver, ni processus à arrêter, ni écrivain tardif. Le relevé hors
+  navigateur rend les mêmes 228 clés, et le générateur audio le dit dans son
+  en-tête pour que le prochain ne rouvre pas la question.
+- **Un `nohup … &` lancé dans une commande de fond meurt avec elle.** Le
+  générateur d'images a produit une image sur vingt-quatre avant d'être
+  emporté, et son journal ne montrait rien d'anormal — le processus n'a pas
+  échoué, il a été tué. Une commande longue se lance en avant-plan dans une
+  tâche de fond de l'outil, sans `nohup` ni `&`.
+- **Le piège zsh de la règle 1 vaut aussi pour les six contrôles.** Une boucle
+  `for c in "…" ; python3 $c` les fait tous échouer d'un coup, parce que zsh ne
+  découpe pas `$c` en mots. Six « ÉCART » alignés, et aucun écart réel.
+  `${=c}` règle l'affaire.
+
+**Les six contrôles** passent pour ce module, plus le `node --check` du script
+produit. `sommaire.py --verifier` signale encore `module-n5-travail` : c'est le
+module de la session voisine, pas un écart de celui-ci.

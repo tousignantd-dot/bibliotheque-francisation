@@ -73,6 +73,12 @@ zsh, où `$VARIABLE` ne se découpe pas en mots.** `git add $CHEMINS` passe donc
 la liste entière comme un seul chemin et échoue avec un message de cent lignes.
 `${=CHEMINS}` en zsh, ou `--pathspec-from-file`, qui est plus lisible.
 
+**Le même piège fait mentir les six contrôles.** Ajouté le 21 août 2026, en
+produisant l'activité 77. Les enchaîner dans une boucle — `for c in
+"build/sections.py --verifier" … ; python3 $c` — les fait tous échouer d'un
+coup : zsh passe la ligne entière comme un seul nom de fichier. Six « ÉCART »
+alignés, et pas un seul écart réel. `python3 ${=c}`, et les six repassent.
+
 **2. Commiter et pousser souvent, par petites tranches.**
 
 Ce qui traîne non commité est ce qui se fait ramasser. Un module se pousse

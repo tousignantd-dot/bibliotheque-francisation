@@ -108,3 +108,23 @@ heures du matin, puis répondez. » — ce qui ramène la mesure à **0 identiqu
 L'opération est sans risque à condition de vérifier une chose : ni les `sub` ni
 les `tit` d'un exercice n'entrent dans le relevé des sons. Le manifeste des 183
 extraits est resté identique avant et après, donc aucun MP3 n'a été à refaire.
+
+`module-n3-restaurant` (activité 77), mesuré le 21 août 2026 : ses **139**
+énoncés visibles de plus de vingt-cinq caractères ont été comparés à ceux des
+vingt-cinq autres modules de `build/contenu/`. **Aucun n'est identique.**
+
+Le relevé large — 225 chaînes, consignes, titres d'exercices et mots du banc
+compris — rend 17 coïncidences, soit 7,6 %. Elles ont été regardées une à une :
+ce sont les six consignes que le moteur impose à ses types d'exercice
+(« Le mot et sa définition », « Écoute de nouveau le dialogue, puis
+réponds. », « Glisse chaque photo sur la phrase qui la décrit. »,
+« Complète avec « ce », « cet », « cette » ou « ces ». »…) et **quatre mots du
+lexique** — *la caisse*, *un accompagnement*, *le poulet*, *une minute* — qui
+appartiennent au programme et qu'on ne va pas renommer pour éviter un doublon.
+Rien de narratif, aucun énoncé de contenu.
+
+La leçon de `module-n5-urgence` tient toujours : reformuler une consigne avec
+les mots du module est sans risque, puisque ni les `sub` ni les `tit` n'entrent
+dans le relevé des sons. Ici, elle n'a pas été appliquée aux quatre mots de
+lexique — les renommer aurait éloigné le module du programme, qui est la seule
+source.

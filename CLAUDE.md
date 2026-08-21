@@ -338,6 +338,20 @@ Deux pièges déjà payés :
   de 169 clés par un relevé partiel de 164, une fois les MP3 déjà générés et
   commités. Le fichier commité était bon, `git checkout --` a suffi ; mais rien
   n'avertit, et un générateur relancé ensuite aurait produit un module troué.
+- **Le plus sûr est de ne pas lancer `build/collecte_sons.py` du tout.** Le
+  relevé hors navigateur, vingt lignes de node sur `exos.js`, `carrier.js` et
+  `plus.js`, rend exactement les mêmes clés — vérifié sur quatre modules. Il
+  n'a ni port à réserver, ni processus à arrêter, ni envoi tardif à craindre :
+  les deux incidents ci-dessus disparaissent avec lui. `module-n3-restaurant`
+  a été produit ainsi, et son générateur audio le dit dans son en-tête pour
+  que la question ne se rouvre pas.
+- **Un `nohup … &` lancé dans une commande de fond meurt avec elle.** Le
+  générateur d'images de `module-n3-restaurant`, lancé ainsi, a produit **une**
+  image sur vingt-quatre : la commande qui l'avait lancé s'est terminée tout de
+  suite et a emporté son enfant. Rien ne le dit — le journal du générateur
+  s'arrête net, sans erreur, et le code de sortie est 0. Une commande longue se
+  lance en **avant-plan** dans une tâche de fond de l'outil, sans `nohup` ni
+  `&`.
 - **Le champ `theme` du manifeste échappe son apostrophe**, comme `bravo` et
   `relance` : le gabarit le place lui aussi dans une chaîne JavaScript à
   guillemets simples, et le build s'arrête tant que l'apostrophe n'est pas

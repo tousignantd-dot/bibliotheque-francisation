@@ -399,6 +399,63 @@ confirmé. Les deux écarts que laissent `pieds_de_page.py` et
 pas encore produit leurs séances.
 
 
+**21 août 2026 — activité 77, `module-n3-restaurant`.** « Commander au
+comptoir », niveau 3, `numero` 4. Scénario inventé : Yolette Désir, arrivée
+d'Haïti il y a huit mois, dîne au casse-croûte Chez Marcel entre deux cours ;
+sa camarade Fatou lui apprend à lire le tableau du menu, Steve prend les
+commandes à la caisse, Marcel appelle les numéros au poste de ramassage.
+22 exercices, 10 mini-leçons, 5 dialogues (61 répliques), 16 mots, 24 images,
+**289 extraits audio**, 16 séances (187 diapositives, 141 blocs de fiches).
+
+*Ce qui le distingue de son voisin du 4* : `module-restaurant` (activité 53)
+tient le repas complet — la table d'hôte, le service aux tables, ce qu'on
+demande pendant le repas, l'addition, les taxes et le pourboire ; au niveau 3,
+le programme ne donne que trois intentions, « commander au comptoir et
+comprendre l'information donnée par le préposé » et « lire un menu simple »,
+alors il n'y a ni serveur, ni addition, ni pourboire : une file, un tableau
+qu'on lit de loin, un format à choisir et un numéro qu'on appelle. Le lexique
+du programme, deux entrées seulement — les types de formats, les ustensiles,
+serviettes de table et condiments —, donne à lui seul la moitié du banc de
+mots et deux des dix mini-leçons.
+
+*Le jeu de rôle a demandé un scénario neuf.* Le scénario `restaurant` existe,
+mais il vient du niveau 4 : sa liste de sujets porte la table d'hôte, les
+allergies, l'addition et le pourboire — trop lourd d'un cran. `server.py`
+gagne donc `JEU_DE_ROLE_COMPTOIR` et l'entrée `comptoir` : trois cas (le trio
+du midi, la soupe du jour, deux repas pour emporter), deux rôles, `client` et
+`prepose`, et un préposé qui ne donne jamais un renseignement avant qu'on le
+lui demande. Vérification en une ligne :
+`python3 -c "import server; print(server.JEU_DE_ROLE_SCENARIOS['comptoir'])"`.
+
+Trois choses apprises, qui valent pour les neuf modules restants du niveau 3 :
+
+- **`build/collecte_sons.py` n'a pas été lancé du tout**, et c'est la bonne
+  façon de faire disparaître les deux incidents de la nuit précédente. Vingt
+  lignes de node sur `exos.js`, `carrier.js` et `plus.js` rendent le même
+  relevé — 228 clés ici — sans port à réserver, sans processus à arrêter et
+  sans écrivain tardif. Le générateur audio le dit dans son en-tête, pour que
+  le prochain ne rouvre pas la question.
+- **Un `nohup … &` lancé dans une commande de fond meurt avec elle.** Le
+  générateur d'images, lancé ainsi, a produit **une** image sur vingt-quatre
+  avant d'être emporté par la fin de la commande qui l'avait lancé — et son
+  journal, écrit à part, ne montrait rien d'anormal. La commande longue se
+  lance en avant-plan dans une tâche de fond de l'outil, sans `nohup` ni `&`.
+- **Le piège de shell de la règle 1 vaut aussi pour les contrôles.** Enchaîner
+  les six dans une boucle zsh avec `python3 $c` les fait tous échouer d'un
+  coup, pour la seule raison que zsh ne découpe pas `$c` en mots : « ÉCART »
+  partout, sans qu'aucun écart existe. `${=c}`, et les six repassent.
+
+*Sur les fichiers partagés* : deux sessions voisines écrivaient en même temps
+(activités 67 et 89). Les deux entrées de `modules.py` et d'`activities.json`
+ont été écrites, commitées et poussées en une minute, index vidé aussitôt, puis
+**revérifiées après coup** — elles y sont. `sections.py` et `materiel.py` ont
+inscrit au passage `module-n2-classe` (89) et `module-n5-travail` (67), ce qui
+est dit dans le message de commit. Les six contrôles passent, plus le
+`node --check` du script produit ; le seul écart restant,
+`module-n5-travail` dans `sommaire.py --verifier`, appartient à la session
+voisine, qui n'avait pas encore produit ses séances.
+
+
 ## Vague 4 — le niveau 2 au complet
 
 Ajoutée le 21 août 2026, à la demande de l'utilisateur (« les modules suivants
