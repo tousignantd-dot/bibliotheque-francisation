@@ -3657,7 +3657,117 @@ JEU_DE_ROLE_ELECTRO = {
 }
 
 
+# Scénario du module-n2-classe (niveau 2). Aucun scénario existant ne convenait :
+# `presenter` (niveau 1) s'arrête au nom, et les scénarios de niveau 4 tiennent
+# une conversation suivie. Ici, l'enseignante donne une consigne de trois mots,
+# la répète sans s'impatienter, et l'élève demande une permission.
+JEU_DE_ROLE_CLASSE = {
+    "consigne": {
+        "contexte": (
+            "Une salle de classe de francisation, le matin. L'enseignante "
+            "vient de donner une consigne à toute la classe, et un élève "
+            "n'a pas compris."
+        ),
+        "enseignante": [
+            "Tu es madame Leduc, l'enseignante du groupe.",
+            "Tu donnes une seule consigne à la fois : « Ouvrez votre cahier à la page douze. »",
+            "Si l'élève ne comprend pas, tu répètes la même consigne plus lentement, avec les mêmes mots.",
+            "Tu montres l'objet dont tu parles et tu nommes la page en chiffres.",
+            "Tu félicites l'élève quand il demande de répéter : c'est ce qu'il faut faire.",
+        ],
+        "moi": [
+            "Tu es en classe et tu n'as pas compris la consigne.",
+            "Tu dis « je n'ai pas compris » ou « pouvez-vous répéter ? ».",
+            "Tu redis la consigne dans tes mots pour vérifier.",
+            "Tu remercies quand c'est clair.",
+        ],
+    },
+    "permission": {
+        "contexte": (
+            "La même salle, au milieu de l'avant-midi. Un élève n'a pas de "
+            "crayon et il a aussi besoin d'aller aux toilettes."
+        ),
+        "enseignante": [
+            "Tu es madame Leduc. Tu réponds « oui, bien sûr » ou « oui, mais attends deux minutes ».",
+            "Tu rappelles une règle de la classe en une phrase : la pause est à dix heures.",
+            "Tu dis ce qui est permis et ce qui est interdit, avec ces deux mots-là.",
+            "Tu ne poses jamais plus d'une question à la fois.",
+        ],
+        "moi": [
+            "Tu n'as pas de crayon et tu veux en emprunter un.",
+            "Tu demandes la permission avec « est-ce que je peux… ? ».",
+            "Tu demandes aussi à quelle heure est la pause.",
+            "Tu remercies avant de retourner à ta place.",
+        ],
+    },
+    "absence": {
+        "contexte": (
+            "Au bureau de l'enseignante, à la fin du cours. Un élève doit "
+            "manquer le cours de demain pour un rendez-vous."
+        ),
+        "enseignante": [
+            "Tu es madame Leduc. Tu demandes quel jour et pourquoi, une question à la fois.",
+            "Tu dis qu'il faut téléphoner au centre avant huit heures et demie.",
+            "Tu dis quelle page l'élève doit faire à la maison.",
+            "Tu termines par « à jeudi » ou « bonne journée ».",
+        ],
+        "moi": [
+            "Tu as un rendez-vous demain matin et tu vas être absent.",
+            "Tu préviens ton enseignante : « Demain, je suis absent. »",
+            "Tu demandes ce qu'il faut faire à la maison.",
+            "Tu remercies et tu prends congé.",
+        ],
+    },
+}
+
+
 JEU_DE_ROLE_SCENARIOS = {
+    "classe": {
+        "cadre": "un court échange en classe, entre un élève et son enseignante",
+        "contexte_label": "Le moment du cours où vous vous parlez",
+        "cas": JEU_DE_ROLE_CLASSE,
+        "adresse": "Vouvoie l'élève quand tu joues l'enseignante ; l'élève, lui, vouvoie toujours son enseignante.",
+        "sujets": [
+            "la consigne, redite ou répétée",
+            "« je n'ai pas compris » et « pouvez-vous répéter ? »",
+            "une permission demandée avec « est-ce que je peux… ? »",
+            "une règle de la classe : la pause, ce qui est permis, ce qui est interdit",
+            "un retard ou une absence, annoncé en une phrase",
+            "le merci et la prise de congé",
+        ],
+        "cloture": ("Quand la consigne est comprise et que la permission est donnée, "
+                    "dis « c'est bon » et souhaite une bonne journée. N'allonge pas : "
+                    "un échange en classe dure trente secondes."),
+        "ouverture": {
+            "moi": "Excusez-moi, madame. Je n'ai pas compris.",
+            "enseignante": "Ouvrez votre cahier à la page douze, s'il vous plaît.",
+        },
+        "roles": {
+            "enseignante": {
+                "qui": ("Tu es madame Leduc, l'enseignante de francisation. L'élève est "
+                        "une personne adulte de ton groupe, assise au premier rang."),
+                "conduite": ("Niveau 2 : deux ou trois répliques suffisent, et jamais plus "
+                             "d'une question à la fois. Phrases très courtes, au présent "
+                             "ou à l'impératif, sans subordonnée. Emploie les mots du "
+                             "module — ouvrez, fermez, écoutez, prenez, la page, le "
+                             "cahier, la pause, permis, interdit, en retard, absent — et "
+                             "rien de plus compliqué. Ne raconte jamais au passé. Si "
+                             "l'élève ne comprend pas, répète exactement la même phrase "
+                             "plus lentement : ne la reformule pas avec d'autres mots."),
+            },
+            "moi": {
+                "qui": ("Tu es un élève du groupe. L'élève à qui tu parles joue madame "
+                        "Leduc, l'enseignante, et te répond."),
+                "conduite": ("Dis une seule chose à la fois, en trois ou quatre mots. "
+                             "Demande de répéter, demande une permission avec « est-ce "
+                             "que je peux… ? », annonce ton absence en une phrase, "
+                             "remercie et prends congé. Si l'enseignante parle vite ou "
+                             "dit trois choses d'un coup, demande de reprendre plus "
+                             "lentement."),
+            },
+        },
+    },
+
     "electro": {
         "cadre": "l'achat d'un appareil dans un magasin, au niveau débutant",
         "contexte_label": "L'endroit du magasin où vous vous trouvez",

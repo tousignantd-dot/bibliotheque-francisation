@@ -268,6 +268,26 @@ MODULES = {
         'blocs': _blocs('Ça va ? Et toi ?', 'Merci et bonne fête'),
     },
 
+    # Cinquième module court du dépôt, quatrième du niveau 2. La situation du
+    # programme est « Salle de classe », et ses trois intentions tiennent
+    # toutes dans la même salle : comprendre une directive à l'oral et à
+    # l'écrit, puis donner des renseignements sur le fonctionnement de la
+    # classe. C'est la seule situation où l'élève parle de l'endroit où il est
+    # assis : aucun module du dépôt ne la portait. Distinct de
+    # `module-n2-bonjour`, qui salue un voisin dans un immeuble, et de
+    # `module-procedure` (niveau 4), qui suit une marche à suivre écrite de
+    # plusieurs étapes ; ici, une consigne fait trois mots et commence par un
+    # verbe.
+    'module-n2-classe': {
+        'numero': 4, 'activite': 89, 'niveau': 2,
+        'titre': 'Ouvrez votre cahier',
+        'chapeau': "Comprendre une consigne, nommer les objets de la classe, "
+                   "demander une permission et prévenir d'un retard.",
+        'seances': GRILLE_COURTE,
+        'blocs': _blocs("La consigne de l'enseignante",
+                        'Permission, retard, absence'),
+    },
+
     # ── Niveau 3 ────────────────────────────────────────────────────
     'module-n3-epicerie': {
         'numero': 1, 'activite': 55, 'niveau': 3,
