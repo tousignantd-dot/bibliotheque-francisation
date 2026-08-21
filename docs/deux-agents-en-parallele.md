@@ -162,19 +162,11 @@ Trois rappels qui viennent des modules livrés cette semaine :
 
 ## Avant de publier
 
-Les quatre contrôles sont réunis dans `CLAUDE.md`, section « Les quatre
-contrôles avant de publier un module ». Ils sortent tous en code 1 sur écart,
-donc ils s'enchaînent :
-
-```bash
-python3 build/sections.py --verifier && python3 build/materiel.py --verifier && python3 build/couleurs_niveau.py --verifier && python3 build/couleurs_sections.py --verifier
-```
-
-Deux autres, propres aux séances :
-
-```bash
-python3 build/controles/pieds_de_page.py && python3 build/powerpoints/sommaire.py --verifier
-```
+Les six contrôles sont réunis dans `CLAUDE.md`, section « Les contrôles avant
+de publier un module ». C'est là qu'ils vivent, et c'est là qu'il faut les
+relire : ils sortent tous en code 1 sur écart, donc ils s'enchaînent. Les
+quatre premiers portent sur le module interactif, les deux derniers sur les
+séances — un module n'est pas publié sans ses présentations et ses fiches.
 
 Le déploiement se fait **sur `git push`** — Railway s'en charge, ne lance
 jamais `railway up`. Compte quelques minutes avant que les médias neufs soient
