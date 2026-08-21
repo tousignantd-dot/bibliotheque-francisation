@@ -4302,7 +4302,124 @@ JEU_DE_ROLE_INSCRIPTION = {
 }
 
 
+# Les trois cas du module « Le bon titre de transport » (module-n3-metro,
+# niveau 3). Le scénario `chemin` du niveau 4 ne convenait pas : il donne un
+# itinéraire en six étapes avec des noms de terminus, alors qu'ici il n'est
+# jamais question du trajet — seulement du titre, du prix et de la carte.
+# `autobus` (niveau 2) ne convenait pas non plus : il se joue dans la rue,
+# sans comptoir ni argent.
+#
+# Les prix sont ceux de la grille tarifaire de l'ARTM en vigueur le
+# 1er juillet 2026. Ils ne s'inventent pas : c'est ce que l'élève entendra
+# vraiment au guichet.
+JEU_DE_ROLE_TITRE = {
+    "mensuel": {
+        "contexte": (
+            "Le point de service d'une station de métro, un lundi matin. "
+            "Quelqu'un vient acheter un titre de transport pour le mois."
+        ),
+        "prepose": [
+            "Tu vends les titres au point de service de la station.",
+            "Un titre mensuel Tous modes A coûte cent dix dollars et il est bon jusqu'à la fin du mois.",
+            "Un passage coûte trois dollars soixante-quinze ; dix passages, trente-cinq dollars.",
+            "L'hebdo coûte trente-trois vingt-cinq et il va du lundi au dimanche.",
+            "Tu demandes d'abord combien de fois par semaine la personne se déplace.",
+            "Tu recharges la carte OPUS que la personne a déjà : tu n'en vends pas une neuve sans raison.",
+            "Tu ne donnes jamais deux prix dans la même réplique.",
+        ],
+        "client": [
+            "Tu viens acheter un titre pour tout le mois.",
+            "Tu te déplaces cinq jours par semaine, matin et soir, dans la zone A.",
+            "Tu as déjà une carte OPUS dans ton portefeuille.",
+            "Tu demandes le prix, puis tu le répètes à voix haute pour vérifier.",
+        ],
+    },
+    "reduit": {
+        "contexte": (
+            "Le même comptoir, en fin d'après-midi. Un parent se renseigne sur "
+            "le tarif réduit pour sa fille de quinze ans et pour sa mère de "
+            "soixante-huit ans."
+        ),
+        "prepose": [
+            "Le tarif réduit existe pour les 6-17 ans, pour les étudiants de 18 ans et plus, et pour les 65 ans et plus.",
+            "Dans les trois cas, il faut une carte OPUS **avec photo**.",
+            "La photo se fait ici même ; il faut venir avec la personne et une preuve de son âge.",
+            "Le mensuel à tarif réduit coûte soixante-six dollars au lieu de cent dix.",
+            "Les enfants de onze ans et moins voyagent gratuitement s'ils sont accompagnés d'une personne de quatorze ans et plus.",
+            "Tu réponds à la question posée et tu attends la suivante.",
+        ],
+        "client": [
+            "Tu veux savoir si ta fille de quinze ans paie moins cher.",
+            "Tu veux aussi savoir pour ta mère, qui a soixante-huit ans.",
+            "Tu demandes où et comment on fait faire la carte avec photo.",
+            "Tu demandes quoi apporter avant de repartir.",
+        ],
+    },
+    "occasionnel": {
+        "contexte": (
+            "Le comptoir, un vendredi. Quelqu'un cherche un titre pour une "
+            "visiteuse qui reste trois jours et n'a aucune carte."
+        ),
+        "prepose": [
+            "Le Week-end illimité coûte dix-sept dollars, du vendredi seize heures au lundi cinq heures.",
+            "Le titre 24 h coûte onze dollars vingt-cinq ; la Soirée illimitée, six soixante-quinze, de dix-huit heures à cinq heures.",
+            "Sans carte OPUS, tu mets le titre sur une carte à puce occasionnelle.",
+            "Tous ces titres valent seulement dans la zone A : pour Laval ou Longueuil, il faut un titre Tous modes AB.",
+            "Tu demandes quels jours et quelles heures avant de proposer un titre.",
+        ],
+        "client": [
+            "Une personne de ta famille arrive samedi et repart lundi.",
+            "Elle veut visiter la ville : métro, autobus, plusieurs fois par jour.",
+            "Elle n'a pas de carte OPUS et tu ne sais pas si c'est un problème.",
+            "Tu demandes si le titre est bon jusqu'à Laval.",
+        ],
+    },
+}
+
+
 JEU_DE_ROLE_SCENARIOS = {
+    "titre": {
+        "cadre": ("un achat de titre de transport au point de service d'une "
+                  "station, au niveau débutant"),
+        "contexte_label": "Ce qui vous amène au point de service",
+        "cas": JEU_DE_ROLE_TITRE,
+        "adresse": "Vouvoie l'élève : c'est un comptoir de service public, on ne se tutoie pas.",
+        "sujets": [
+            "le titre qu'on cherche, dit en une phrase",
+            "combien de fois par semaine on se déplace, et dans quelle zone",
+            "le prix du titre, demandé puis répété pour vérifier",
+            "la carte OPUS : on en a déjà une, ou il en faut une",
+            "le tarif réduit et la catégorie d'âge",
+            "la façon de payer : comptant ou par carte",
+        ],
+        "cloture": ("Quand le titre est choisi, redis en une phrase courte ce que "
+                    "la personne achète, le prix et jusqu'à quand c'est bon, puis "
+                    "rappelle de valider la carte. N'allonge pas la conversation."),
+        "ouverture": {
+            "client": "Bonjour ! Qu'est-ce que je peux faire pour vous ?",
+            "prepose": "Bonjour. Je voudrais un titre de transport, s'il vous plaît.",
+        },
+        "roles": {
+            "prepose": {
+                "qui": ("Tu es la personne au comptoir du point de service. "
+                        "L'élève est le client, devant toi."),
+                "conduite": ("Niveau 3 : phrases courtes, un prix à la fois, jamais "
+                             "deux questions dans la même réplique. Dis les prix en "
+                             "toutes lettres et laisse à l'élève le temps de les "
+                             "répéter. Ne donne pas un renseignement avant qu'on te "
+                             "le demande, et reformule plus lentement si on te le "
+                             "demande, sans jamais t'impatienter."),
+            },
+            "client": {
+                "qui": ("Tu viens acheter un titre de transport. L'élève tient le "
+                        "comptoir et te renseigne."),
+                "conduite": ("Pose une seule question à la fois. Répète chaque prix "
+                             "qu'on te donne pour vérifier. Si on te dit trois choses "
+                             "d'un coup, demande de reprendre plus lentement — c'est "
+                             "exactement ce que le module apprend à faire."),
+            },
+        },
+    },
     "pharmacie": {
         "cadre": "une visite au comptoir des ordonnances d'une pharmacie de quartier, au niveau débutant",
         "contexte_label": "Ce qui vous amène à la pharmacie",

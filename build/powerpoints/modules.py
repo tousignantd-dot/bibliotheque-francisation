@@ -392,6 +392,27 @@ MODULES = {
                         "Renouveler l'ordonnance",
                         'Lire la posologie'),
     },
+    # Au niveau 3, « Déplacement dans une ville » n'a que trois intentions et
+    # elles disent toutes la même chose : demander, comprendre et lire
+    # l'information **pour acheter un titre de transport**. Le module ne parle
+    # donc pas du trajet — pas d'itinéraire, pas de direction, pas de
+    # terminus : un comptoir, une carte, une grille de tarifs et de l'argent.
+    #
+    # Trois voisins, et aucun recoupement. `module-deplacement` (niveau 4)
+    # fait le trajet complet et ne s'arrête à aucun guichet ;
+    # `module-n2-autobus` (niveau 2) demande son chemin et lit un horaire ;
+    # `module-n2-couloirs` (niveau 2) se repère aux numéros d'un bâtiment.
+    'module-n3-metro': {
+        'numero': 6, 'activite': 79, 'niveau': 3,
+        'titre': 'Le bon titre de transport',
+        'chapeau': "Comprendre les titres et les prix qu'on vous nomme au "
+                   "comptoir, acheter le bon titre pour ses déplacements et "
+                   "lire la grille des tarifs affichée.",
+        'seances': GRILLE_3_DEFIS,
+        'blocs': _blocs("Comprendre ce qu'on me répond",
+                        'Demander au guichet',
+                        'Lire la grille des tarifs'),
+    },
     # ── Niveau 5 ────────────────────────────────────────────────────
     # `module-logement` (niveau 4) traite la même situation du programme, mais
     # s'arrête à la visite et à la comparaison. Ici, on téléphone, on prend des
