@@ -436,6 +436,31 @@ Quatre portent sur le module interactif :
     python3 build/couleurs_niveau.py --verifier    # l'en-tête porte la couleur de son niveau
     python3 build/couleurs_sections.py --verifier  # aucun vert dans les couleurs de section
 
+Un septième porte sur la **cohérence interne** du module — ce qu'aucun des six
+autres ne regarde, puisqu'ils le jugent de l'extérieur :
+
+    node build/coherence.js <slug>     # un module
+    node build/coherence.js --tous     # les vingt et un
+
+Il lit `fccards.js`, `exos.js`, `carrier.js`, `plus.js` et `sections.js`, et
+attrape les fautes qui ne lèvent aucune erreur : un exercice sans bonne réponse
+enregistrée, une réponse qui désigne une image inexistante, un identifiant en
+double, une section inconnue, un mot à pastille sans phrase porteuse, un bloc
+`ana` ou une sortie de labo sans `say:`, une mini-leçon appelée mais absente,
+une image manquante sur le disque. Ce sont précisément celles qui ne se voient
+qu'à l'usage — ou une fois les MP3 payés.
+
+Il lit comme le moteur, pas comme on croit que le moteur lit : `aid` toléré
+pour un `imgmatch` de `module-consultation` et `module-probleme`, `speak:true`
+exigé **seulement** quand des rangées portent une troisième colonne, et une clé
+de `CARRIER_PHRASES` inutilisée n'est pas un écart. Écrit le 21 août 2026 après
+que trois agents l'aient réécrit de zéro trois nuits de suite, aux activités
+69, 80 et 81. Il se valide lui-même : lancé sur les vingt et un modules, il
+retrouve sans rien savoir de leur histoire les **deux seuls** modules que ce
+fichier signale comme encore fautifs — `module-n1-presenter` (« prénom »,
+« épeler », « de rien ») et `module-n2-autobus` (« tout droit ») — et rien
+d'autre, hors les images des modules en cours de production.
+
 Deux autres portent sur les **séances** produites — les présentations et les
 fiches — plutôt que sur le module interactif. Un module n'est publié qu'avec
 elles, donc ils font partie du même passage :
