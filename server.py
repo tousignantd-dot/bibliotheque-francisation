@@ -3148,7 +3148,130 @@ JEU_DE_ROLE_EMPLOI = {
 }
 
 
+# Trois dégâts pour le module de niveau 5 « Un dégât d'eau ». Le scénario
+# `probleme` du niveau 4 ne convenait pas : il demande d'exposer le problème
+# « en une ou deux phrases » et s'arrête à la promesse de réparation. Ici la
+# démarche va plus loin — on relate au passé, on argumente, on demande une
+# compensation — d'où un scénario à part plutôt qu'un scénario forcé.
+JEU_DE_ROLE_DEGATS = {
+    "plafond": {
+        "contexte": (
+            "Un appel téléphonique le matin même, après la découverte d'un "
+            "cerne d'eau au plafond d'une chambre."
+        ),
+        "proprietaire": [
+            "Tu possèdes un immeuble de six logements et tu t'en occupes toi-même.",
+            "Tu apprends le dégât par cet appel ; la locataire du dessus t'a laissé un message que tu n'as pas encore écouté.",
+            "La cause est le chauffe-eau du logement du dessus, un réservoir de quinze ans, mais tu ne le sais pas encore.",
+            "Ton plombier peut passer dans la journée ; une compagnie d'assèchement, dès le lendemain matin.",
+            "L'assèchement prend trois ou quatre jours et les appareils sont bruyants jour et nuit.",
+            "Tu es de bonne foi mais tu ne proposes jamais d'argent le premier : une réduction de loyer se demande.",
+            "Si on te la demande avec une raison et un chiffre, tu acceptes d'en discuter et tu demandes la demande par écrit.",
+            "Tu réclames toujours des photos datées avant de faire quoi que ce soit.",
+        ],
+        "locataire": [
+            "Tu loues le logement du deuxième et l'eau a coulé du plafond de ta chambre pendant la nuit.",
+            "Tu racontes en plantant d'abord le décor à l'imparfait, puis les événements au passé composé.",
+            "Tu décris les dommages pièce par pièce : un cerne d'un mètre, trois lattes de plancher qui gondolent, un matelas humide.",
+            "Tu dis ce que tu as déjà fait : une chaudière sous la fuite, vingt-deux photos datées, rien de jeté.",
+            "Tu demandes une date d'intervention, et tu insistes poliment si on ne t'en donne pas.",
+            "Avant de raccrocher, tu demandes une compensation pour les nuits sans chambre, en disant pourquoi.",
+        ],
+    },
+    "soussol": {
+        "contexte": (
+            "Un appel le lendemain d'un gros orage, après un refoulement de "
+            "drain dans un logement de sous-sol."
+        ),
+        "proprietaire": [
+            "Tu gères un triplex et le logement du sous-sol a pris l'eau après l'orage de la nuit.",
+            "Le drain a refoulé ; ça s'est déjà produit il y a quatre ans, et tu ne tiens pas à ce qu'on te le rappelle.",
+            "Tu fais venir un nettoyeur spécialisé, mais pas avant deux jours : tous les entrepreneurs sont débordés après l'orage.",
+            "Tu tiens à ce que le locataire n'installe rien lui-même et ne jette rien avant le passage du nettoyeur.",
+            "Tu sais qu'une eau d'égout est un risque de santé et tu prends la chose au sérieux, sans le dire tout de suite.",
+            "Tu n'offres pas de compensation spontanément, mais tu écoutes une demande chiffrée et justifiée.",
+        ],
+        "locataire": [
+            "Tu loues le logement du sous-sol et tu as trouvé cinq centimètres d'eau sale en te levant.",
+            "Tu décris précisément : l'eau, l'odeur, le tapis à jeter, les boîtes rangées au fond.",
+            "Tu dis depuis quand ça dure et ce que tu as fait pour limiter les dommages.",
+            "Tu demandes quand quelqu'un viendra, et ce que tu fais en attendant.",
+            "Tu demandes une compensation pour les jours où le logement est inhabitable, avec une raison.",
+        ],
+    },
+    "laveuse": {
+        "contexte": (
+            "Un appel en fin de journée, après qu'un boyau de laveuse a cédé "
+            "dans le logement du dessus."
+        ),
+        "proprietaire": [
+            "Tu possèdes un immeuble de huit logements et tu travailles à temps plein ailleurs.",
+            "Le boyau de la laveuse du logement du dessus a cédé pendant la journée ; le voisin s'en est aperçu en rentrant.",
+            "Tu penses d'abord que c'est mineur : il faut qu'on te décrive les dommages pour que tu changes d'avis.",
+            "Tu peux passer constater le soir même, mais tu n'as personne avant deux jours pour les travaux.",
+            "Tu demandes toujours si l'électricité a été touchée : de l'eau le long d'un mur près d'une prise t'inquiète.",
+            "Tu acceptes de reconnaître ce qui est clairement établi, mais tu ne t'engages jamais sur un montant au téléphone.",
+        ],
+        "locataire": [
+            "Tu loues le logement du rez-de-chaussée et l'eau a traversé le plafond de ta cuisine.",
+            "Tu racontes ce que tu as trouvé en rentrant du travail, en employant un gérondif.",
+            "Tu décris : la peinture qui cloque, l'armoire du bas gonflée, le plancher humide sur un mètre.",
+            "Tu mets en avant ce qui compte le plus pour toi, avec « ce qui m'inquiète, c'est… ».",
+            "Tu demandes une date pour le constat et une date pour les travaux, séparément.",
+        ],
+    },
+}
+
+
 JEU_DE_ROLE_SCENARIOS = {
+    "degat": {
+        "cadre": "un appel téléphonique au sujet d'un dégât d'eau dans un logement loué",
+        "contexte_label": "La situation que vous connaissez tous les deux",
+        "cas": JEU_DE_ROLE_DEGATS,
+        "adresse": "Vouvoie l'élève : locataire et propriétaire se vouvoient au Québec.",
+        "sujets": [
+            "ce qui est arrivé, et quand (imparfait pour le décor, passé composé pour l'événement)",
+            "ce qu'on voit aujourd'hui, pièce par pièce, avec le mot juste",
+            "ce qui a déjà été fait pour limiter les dommages",
+            "la cause, si elle est connue",
+            "ce que le dégât empêche de faire dans le logement",
+            "la date de l'intervention, et ce qui se passe en attendant",
+            "la compensation demandée, et la raison qui la justifie",
+        ],
+        "cloture": ("Quand les sujets sont couverts, récapitule en une phrase ce qui "
+                    "a été convenu — la date, qui fait quoi, ce qui reste à trancher — "
+                    "et demande une confirmation par écrit."),
+        "ouverture": {
+            "locataire": "Bonjour, je vous appelle au sujet d'un dégât d'eau dans mon logement.",
+            "proprietaire": "Bonjour, oui, j'écoute ?",
+        },
+        "roles": {
+            "proprietaire": {
+                "qui": ("Tu es le ou la propriétaire de l'immeuble. L'élève est ton "
+                        "locataire et t'appelle au sujet d'un dégât d'eau."),
+                "conduite": ("Niveau 5 : l'élève doit tenir un échange suivi, pas répondre "
+                             "à un questionnaire. Laisse-le raconter sans l'interrompre, puis "
+                             "relance sur ce qu'il a omis — la date, le rythme de la fuite, ce "
+                             "qui est abîmé, ce qu'il a déjà fait. Demande des précisions "
+                             "chiffrées plutôt que de deviner à sa place. Ne propose jamais "
+                             "d'argent le premier : c'est à l'élève de demander une "
+                             "compensation et de la justifier. Si sa demande n'a ni raison ni "
+                             "chiffre, réponds « on verra » et attends qu'il précise. Reste "
+                             "de bonne foi et courtois, jamais hostile."),
+            },
+            "locataire": {
+                "qui": ("Tu es le ou la locataire et tu appelles pour signaler un dégât "
+                        "d'eau. L'élève joue la personne propriétaire et te répond."),
+                "conduite": ("Raconte en trois ou quatre phrases : le décor à l'imparfait, "
+                             "l'événement au passé composé, puis l'état actuel. Laisse ensuite "
+                             "l'élève mener l'appel et donne tes renseignements au fur et à "
+                             "mesure qu'on te les demande. Si aucune date ne t'est proposée, "
+                             "insiste poliment. Avant de raccrocher, demande une compensation "
+                             "pour ce que tu n'as pas pu utiliser, en donnant ta raison."),
+            },
+        },
+    },
+
     "emploi": {
         "cadre": "un appel pour régler un problème administratif au travail",
         "contexte_label": "Le dossier que vous avez tous les deux sous les yeux",
