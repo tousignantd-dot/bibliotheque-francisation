@@ -701,3 +701,58 @@ Deux scripts tiennent la règle, tous deux avec `--verifier` :
 Conséquence pour la suite du chantier : **un module neuf n'a plus de couleur à
 choisir.** Lui donner son niveau dans `build/powerpoints/modules.py` suffit, et
 `sections.js` ne doit contenir ni `#166534` ni `#0F766E`.
+
+## Niveau 2 — `module-n2-panier` · Remplir mon panier · **livré**
+
+Activité **87**, réservée d'avance par `docs/vagues-suivantes.md` (vague 4).
+Troisième module **court** du dépôt : huit séances, deux défis, cinq sections,
+`GRILLE_COURTE`. Produit le 21 août 2026, en parallèle des niveaux 5 et 3.
+
+**Ce qui le distingue de ses voisins**, en une phrase : `module-n3-epicerie`
+fait trouver, choisir et payer, `module-alimentation` (niveau 4) tient le
+comptoir et l'étiquette — ici, on ne parle presque pas, on **lit des chiffres
+et des formats** avant de remplir son panier, parce que l'unique intention que
+le programme donne à cette situation au niveau 2 est en compréhension écrite :
+« consulter des circulaires, des étiquettes et des affichettes pour repérer
+des indications de mesure et de prix ».
+
+**Scénario.** Aminata reçoit la circulaire du mardi dans sa boîte aux lettres.
+Sa voisine Rose lui apprend à y lire les prix — « 2 pour 9 $ », « 3,99 $ le
+kilo » — et à écrire une liste. Au magasin, le commis Denis lui donne l'allée,
+le format et le prix ; à la caisse, elle fait valoir un spécial en montrant sa
+circulaire.
+
+**Cinq mini-leçons** : la lettre s, [s] ou [z] · lire un prix, et le dire ·
+un, une, des — et « pas de » · les questions courtes du magasin · un kilo de
+riz, un litre de lait.
+
+**Le jeu de rôle a demandé un scénario neuf.** Le scénario `epicerie` existe,
+mais il est écrit pour le niveau 3 et fait tenir un échange suivi.
+`JEU_DE_ROLE_PANIER` a donc été ajouté à `server.py` : trois cas — dans
+l'allée, devant les fruits, à la caisse —, deux rôles, `client` et `commis`,
+et une conduite qui impose deux ou trois répliques, pas davantage.
+
+**Médias.** 18 images (0,61 $) et 189 extraits audio (43 répliques sur six
+dialogues, 146 mots et phrases). Aminata prend la voix féminine 2, Rose celle
+de l'enseignante ralentie à 0,85, Denis la voix masculine — les trois se
+répondent, aucune voix n'est partagée. ElevenLabs n'a pas coupé une seule
+fois cette nuit-là ; une seule image a expiré et une relance a suffi.
+
+**La difficulté propre à ce module est que ses images portent du texte.**
+Circulaire, étiquette, affichette : ce sont des papiers écrits, et le
+générateur a l'ordre de ne produire aucun texte lisible. Les prompts
+demandent donc des papiers dont la *forme* est nette — grille de cases,
+colonnes de chiffres, petit carton dans son rail — sans qu'aucun mot ne se
+lise. Un élève de niveau 2 reconnaît l'objet ; le contenu, c'est l'exercice
+qui le donne.
+
+**Huit séances.** 90 diapositives, 67 blocs de fiches. A2 est la séance de
+phonétique et porte sur [s] / [z], que le programme du niveau demande et que
+le rayon des fruits offre tout fait — cerise, raisin, framboise, saucisse.
+B1 est la séance qui répond à l'intention du programme : trois écritures de
+prix, dont « 3,99 $ / kg », qui est le piège réel de l'épicerie.
+
+**Un piège du build, payé une fois.** Le champ `theme` du manifeste passe lui
+aussi dans une chaîne JavaScript à guillemets simples : « Achat d'aliments ou
+de produits d'entretien » a dû s'écrire `d\\'aliments`, exactement comme
+`bravo` et `relance`. Le build s'arrête proprement et le dit.

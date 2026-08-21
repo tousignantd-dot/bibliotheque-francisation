@@ -7,8 +7,8 @@ slugs arrêtés vivent là-bas ; ici il n'y a que le texte à donner à l'agent.
 Deux agents à la fois, jamais plus. Chacun prend la première ligne non
 commencée de sa vague et l'annonce dans son premier commit.
 
-Les trois vagues sont ici : la première d'abord, puis les vingt-cinq modules
-des niveaux 5 et 3.
+Les quatre vagues sont ici : la première d'abord, puis les vingt-cinq modules
+des niveaux 5 et 3, puis les neuf du niveau 2.
 
 
 ## Vague 1 — les niveaux 7 et 8, à donner en même temps
@@ -1363,3 +1363,514 @@ les personnages que tu as inventés, et tu continues sans attendre ma réponse.
 Tu me préviens seulement si tu dois toucher un fichier transversal (gabarit,
 moteur, système de design).
 ```
+
+
+## Vague 4 — le niveau 2 au complet
+
+Ouverte le 21 août 2026, en même temps que la production de l'activité 87.
+`module-n2-autobus` (57) est le premier du niveau ; les neuf autres situations
+portent les activités **87 à 95**, toutes au **format court** — huit séances,
+deux défis, `GRILLE_COURTE`. Le tableau et l'ordre sont dans
+`docs/vagues-suivantes.md`, section « Vague 4 ».
+
+Ces consignes diffèrent de celles des vagues 2 et 3 sur quatre points, tous
+appris en produisant l'activité 87 : le format court y est écrit noir sur
+blanc ; `build/cadre.py` veut l'apostrophe typographique du programme ; le
+`node --check` du script produit fait partie des contrôles ; et `maj-mur.py`
+vit dans `~/Claude/generations`, pas dans le dépôt.
+
+### Activité 87 · Achat d'aliments ou de produits d'entretien
+
+```text
+Tu produis un module de francisation dans
+/Users/danieltousignant/Claude/bibliotheque-francisation.
+
+Ton module : niveau 2, situation « Achat d'aliments ou de produits d'entretien » du programme,
+slug module-n2-panier, numéro d'activité 87 (réservé — ne prends jamais « le prochain
+libre »), numero 2 dans son niveau, format court : huit séances, deux défis,
+deux blocs de quatre heures, GRILLE_COURTE dans build/powerpoints/modules.py,
+exactement comme module-n1-presenter et module-n2-autobus.
+
+Lis d'abord, dans cet ordre : docs/vagues-suivantes.md — sa section « Vague 4 —
+le niveau 2 au complet », qui dit pourquoi ce module, ce numéro et ce format ;
+docs/deux-agents-en-parallele.md (les cinq règles et les fichiers partagés — un
+autre agent travaille en même temps que toi) ; puis la skill module-neuf, que
+tu suis étape par étape.
+
+Un autre agent produit un autre module en parallèle. Vos contenus sont isolés ;
+vos seuls points de rencontre sont build/powerpoints/modules.py,
+data/activities.json et server.py. Les numéros d'activité de toute la vague
+sont réservés dans docs/vagues-suivantes.md : prends le tien, jamais un autre.
+
+Livré le 21 août 2026 — gardée ici comme modèle de la vague. Distincte de module-n3-epicerie (trouver, choisir, payer) et de module-alimentation au 4 : l'unique intention du programme est en compréhension écrite, on lit des chiffres et des formats avant de remplir son panier.
+
+Ce que le niveau 2 impose, et qu'un agent habitué au niveau 4 oublie : des
+énoncés très courts, deux ou trois répliques, du présent, aucune subordonnée ;
+le lexique du programme suffit presque, ne l'enrichis pas de mots du niveau 4 ;
+fais dire au programme les intentions propres au niveau 2 avec
+build/cadre.py 2 "Achat d'aliments ou de produits d'entretien" avant d'inventer le
+scénario — attention, le script attend l'apostrophe typographique du programme,
+« d’aliments » et non « d'aliments » — et dis en une phrase, dans ton journal,
+ce qui distingue ton module de ses voisins des autres niveaux.
+
+Aucun scénario de jeu de rôle ne convenait : JEU_DE_ROLE_PANIER a été ajouté dans server.py — trois cas courts, deux rôles, client et commis. Un module se construit sans erreur même si sa clé
+jr_scenario manque : le jeu de rôle échoue seulement chez l'élève. Vérifie que
+ta clé existe bien dans JEU_DE_ROLE_SCENARIOS.
+
+Les points sur lesquels je ne veux aucune improvisation : git add avec des
+chemins explicites, jamais -A ni . ; git commit prend lui aussi ses chemins,
+après -- ; git pull avant tout fichier partagé ; commits petits et fréquents ;
+rien n'est copié d'un manuel, tout s'invente à partir du programme ; tout bloc
+ana porte son champ say: ; les six contrôles de CLAUDE.md passent avant la
+publication, plus le node --check du script produit ; le déploiement se fait
+par git push, jamais railway up ; python3 maj-mur.py après les médias — il est
+dans ~/Claude/generations, pas dans le dépôt.
+
+Ton slug et ton numéro d'activité sont arrêtés : ils ne se renégocient pas.
+
+Tu m'écris en français. Tu m'annonces au départ, en cinq lignes, le scénario et
+les personnages que tu as inventés, et tu continues sans attendre ma réponse.
+Tu me préviens seulement si tu dois toucher un fichier transversal (gabarit,
+moteur, système de design).
+```
+
+### Activité 88 · Relations sociales
+
+```text
+Tu produis un module de francisation dans
+/Users/danieltousignant/Claude/bibliotheque-francisation.
+
+Ton module : niveau 2, situation « Relations sociales » du programme,
+slug module-n2-bonjour, numéro d'activité 88 (réservé — ne prends jamais « le prochain
+libre »), numero 3 dans son niveau, format court : huit séances, deux défis,
+deux blocs de quatre heures, GRILLE_COURTE dans build/powerpoints/modules.py,
+exactement comme module-n1-presenter et module-n2-autobus.
+
+Lis d'abord, dans cet ordre : docs/vagues-suivantes.md — sa section « Vague 4 —
+le niveau 2 au complet », qui dit pourquoi ce module, ce numéro et ce format ;
+docs/deux-agents-en-parallele.md (les cinq règles et les fichiers partagés — un
+autre agent travaille en même temps que toi) ; puis la skill module-neuf, que
+tu suis étape par étape.
+
+Un autre agent produit un autre module en parallèle. Vos contenus sont isolés ;
+vos seuls points de rencontre sont build/powerpoints/modules.py,
+data/activities.json et server.py. Les numéros d'activité de toute la vague
+sont réservés dans docs/vagues-suivantes.md : prends le tien, jamais un autre.
+
+Saluer, se présenter à un voisin, remercier, prendre congé. Le niveau 1 (module-n1-presenter) apprend déjà à dire son nom : ici on entre dans un échange, court, avec quelqu'un qu'on recroisera.
+
+Ce que le niveau 2 impose, et qu'un agent habitué au niveau 4 oublie : des
+énoncés très courts, deux ou trois répliques, du présent, aucune subordonnée ;
+le lexique du programme suffit presque, ne l'enrichis pas de mots du niveau 4 ;
+fais dire au programme les intentions propres au niveau 2 avec
+build/cadre.py 2 "Relations sociales" avant d'inventer le
+scénario — attention, le script attend l'apostrophe typographique du programme,
+« d’aliments » et non « d'aliments » — et dis en une phrase, dans ton journal,
+ce qui distingue ton module de ses voisins des autres niveaux.
+
+Le scénario relations existe, mais il est écrit pour le niveau 4 : vérifie-le avant de le reprendre, et ajoute-en un court si sa conduite est trop lourde. Un module se construit sans erreur même si sa clé
+jr_scenario manque : le jeu de rôle échoue seulement chez l'élève. Vérifie que
+ta clé existe bien dans JEU_DE_ROLE_SCENARIOS.
+
+Les points sur lesquels je ne veux aucune improvisation : git add avec des
+chemins explicites, jamais -A ni . ; git commit prend lui aussi ses chemins,
+après -- ; git pull avant tout fichier partagé ; commits petits et fréquents ;
+rien n'est copié d'un manuel, tout s'invente à partir du programme ; tout bloc
+ana porte son champ say: ; les six contrôles de CLAUDE.md passent avant la
+publication, plus le node --check du script produit ; le déploiement se fait
+par git push, jamais railway up ; python3 maj-mur.py après les médias — il est
+dans ~/Claude/generations, pas dans le dépôt.
+
+Ton slug et ton numéro d'activité sont arrêtés : ils ne se renégocient pas.
+
+Tu m'écris en français. Tu m'annonces au départ, en cinq lignes, le scénario et
+les personnages que tu as inventés, et tu continues sans attendre ma réponse.
+Tu me préviens seulement si tu dois toucher un fichier transversal (gabarit,
+moteur, système de design).
+```
+
+### Activité 89 · Salle de classe
+
+```text
+Tu produis un module de francisation dans
+/Users/danieltousignant/Claude/bibliotheque-francisation.
+
+Ton module : niveau 2, situation « Salle de classe » du programme,
+slug module-n2-classe, numéro d'activité 89 (réservé — ne prends jamais « le prochain
+libre »), numero 4 dans son niveau, format court : huit séances, deux défis,
+deux blocs de quatre heures, GRILLE_COURTE dans build/powerpoints/modules.py,
+exactement comme module-n1-presenter et module-n2-autobus.
+
+Lis d'abord, dans cet ordre : docs/vagues-suivantes.md — sa section « Vague 4 —
+le niveau 2 au complet », qui dit pourquoi ce module, ce numéro et ce format ;
+docs/deux-agents-en-parallele.md (les cinq règles et les fichiers partagés — un
+autre agent travaille en même temps que toi) ; puis la skill module-neuf, que
+tu suis étape par étape.
+
+Un autre agent produit un autre module en parallèle. Vos contenus sont isolés ;
+vos seuls points de rencontre sont build/powerpoints/modules.py,
+data/activities.json et server.py. Les numéros d'activité de toute la vague
+sont réservés dans docs/vagues-suivantes.md : prends le tien, jamais un autre.
+
+Comprendre les consignes de l'enseignante, demander une feuille, un crayon, dire qu'on n'a pas compris. C'est la situation la plus immédiate de l'élève, et aucun module du dépôt ne la porte.
+
+Ce que le niveau 2 impose, et qu'un agent habitué au niveau 4 oublie : des
+énoncés très courts, deux ou trois répliques, du présent, aucune subordonnée ;
+le lexique du programme suffit presque, ne l'enrichis pas de mots du niveau 4 ;
+fais dire au programme les intentions propres au niveau 2 avec
+build/cadre.py 2 "Salle de classe" avant d'inventer le
+scénario — attention, le script attend l'apostrophe typographique du programme,
+« d’aliments » et non « d'aliments » — et dis en une phrase, dans ton journal,
+ce qui distingue ton module de ses voisins des autres niveaux.
+
+Aucun scénario de jeu de rôle ne convient : tu dois en ajouter un dans server.py. Un module se construit sans erreur même si sa clé
+jr_scenario manque : le jeu de rôle échoue seulement chez l'élève. Vérifie que
+ta clé existe bien dans JEU_DE_ROLE_SCENARIOS.
+
+Les points sur lesquels je ne veux aucune improvisation : git add avec des
+chemins explicites, jamais -A ni . ; git commit prend lui aussi ses chemins,
+après -- ; git pull avant tout fichier partagé ; commits petits et fréquents ;
+rien n'est copié d'un manuel, tout s'invente à partir du programme ; tout bloc
+ana porte son champ say: ; les six contrôles de CLAUDE.md passent avant la
+publication, plus le node --check du script produit ; le déploiement se fait
+par git push, jamais railway up ; python3 maj-mur.py après les médias — il est
+dans ~/Claude/generations, pas dans le dépôt.
+
+Ton slug et ton numéro d'activité sont arrêtés : ils ne se renégocient pas.
+
+Tu m'écris en français. Tu m'annonces au départ, en cinq lignes, le scénario et
+les personnages que tu as inventés, et tu continues sans attendre ma réponse.
+Tu me préviens seulement si tu dois toucher un fichier transversal (gabarit,
+moteur, système de design).
+```
+
+### Activité 90 · Orientation dans l'établissement
+
+```text
+Tu produis un module de francisation dans
+/Users/danieltousignant/Claude/bibliotheque-francisation.
+
+Ton module : niveau 2, situation « Orientation dans l'établissement » du programme,
+slug module-n2-couloirs, numéro d'activité 90 (réservé — ne prends jamais « le prochain
+libre »), numero 5 dans son niveau, format court : huit séances, deux défis,
+deux blocs de quatre heures, GRILLE_COURTE dans build/powerpoints/modules.py,
+exactement comme module-n1-presenter et module-n2-autobus.
+
+Lis d'abord, dans cet ordre : docs/vagues-suivantes.md — sa section « Vague 4 —
+le niveau 2 au complet », qui dit pourquoi ce module, ce numéro et ce format ;
+docs/deux-agents-en-parallele.md (les cinq règles et les fichiers partagés — un
+autre agent travaille en même temps que toi) ; puis la skill module-neuf, que
+tu suis étape par étape.
+
+Un autre agent produit un autre module en parallèle. Vos contenus sont isolés ;
+vos seuls points de rencontre sont build/powerpoints/modules.py,
+data/activities.json et server.py. Les numéros d'activité de toute la vague
+sont réservés dans docs/vagues-suivantes.md : prends le tien, jamais un autre.
+
+Trouver un local, un étage, la salle des toilettes, la sortie ; lire un numéro de porte. Distinct de module-n2-autobus, qui est dehors : ici on est dans le bâtiment, et les repères sont des numéros.
+
+Ce que le niveau 2 impose, et qu'un agent habitué au niveau 4 oublie : des
+énoncés très courts, deux ou trois répliques, du présent, aucune subordonnée ;
+le lexique du programme suffit presque, ne l'enrichis pas de mots du niveau 4 ;
+fais dire au programme les intentions propres au niveau 2 avec
+build/cadre.py 2 "Orientation dans l'établissement" avant d'inventer le
+scénario — attention, le script attend l'apostrophe typographique du programme,
+« d’aliments » et non « d'aliments » — et dis en une phrase, dans ton journal,
+ce qui distingue ton module de ses voisins des autres niveaux.
+
+Aucun scénario de jeu de rôle ne convient : tu dois en ajouter un dans server.py. Un module se construit sans erreur même si sa clé
+jr_scenario manque : le jeu de rôle échoue seulement chez l'élève. Vérifie que
+ta clé existe bien dans JEU_DE_ROLE_SCENARIOS.
+
+Les points sur lesquels je ne veux aucune improvisation : git add avec des
+chemins explicites, jamais -A ni . ; git commit prend lui aussi ses chemins,
+après -- ; git pull avant tout fichier partagé ; commits petits et fréquents ;
+rien n'est copié d'un manuel, tout s'invente à partir du programme ; tout bloc
+ana porte son champ say: ; les six contrôles de CLAUDE.md passent avant la
+publication, plus le node --check du script produit ; le déploiement se fait
+par git push, jamais railway up ; python3 maj-mur.py après les médias — il est
+dans ~/Claude/generations, pas dans le dépôt.
+
+Ton slug et ton numéro d'activité sont arrêtés : ils ne se renégocient pas.
+
+Tu m'écris en français. Tu m'annonces au départ, en cinq lignes, le scénario et
+les personnages que tu as inventés, et tu continues sans attendre ma réponse.
+Tu me préviens seulement si tu dois toucher un fichier transversal (gabarit,
+moteur, système de design).
+```
+
+### Activité 91 · Inscription
+
+```text
+Tu produis un module de francisation dans
+/Users/danieltousignant/Claude/bibliotheque-francisation.
+
+Ton module : niveau 2, situation « Inscription » du programme,
+slug module-n2-inscription, numéro d'activité 91 (réservé — ne prends jamais « le prochain
+libre »), numero 6 dans son niveau, format court : huit séances, deux défis,
+deux blocs de quatre heures, GRILLE_COURTE dans build/powerpoints/modules.py,
+exactement comme module-n1-presenter et module-n2-autobus.
+
+Lis d'abord, dans cet ordre : docs/vagues-suivantes.md — sa section « Vague 4 —
+le niveau 2 au complet », qui dit pourquoi ce module, ce numéro et ce format ;
+docs/deux-agents-en-parallele.md (les cinq règles et les fichiers partagés — un
+autre agent travaille en même temps que toi) ; puis la skill module-neuf, que
+tu suis étape par étape.
+
+Un autre agent produit un autre module en parallèle. Vos contenus sont isolés ;
+vos seuls points de rencontre sont build/powerpoints/modules.py,
+data/activities.json et server.py. Les numéros d'activité de toute la vague
+sont réservés dans docs/vagues-suivantes.md : prends le tien, jamais un autre.
+
+Donner ses coordonnées, épeler son nom, comprendre un formulaire court. L'épellation est déjà au niveau 1 : ici elle sert à remplir un papier, pas à se présenter.
+
+Ce que le niveau 2 impose, et qu'un agent habitué au niveau 4 oublie : des
+énoncés très courts, deux ou trois répliques, du présent, aucune subordonnée ;
+le lexique du programme suffit presque, ne l'enrichis pas de mots du niveau 4 ;
+fais dire au programme les intentions propres au niveau 2 avec
+build/cadre.py 2 "Inscription" avant d'inventer le
+scénario — attention, le script attend l'apostrophe typographique du programme,
+« d’aliments » et non « d'aliments » — et dis en une phrase, dans ton journal,
+ce qui distingue ton module de ses voisins des autres niveaux.
+
+Aucun scénario de jeu de rôle ne convient : tu dois en ajouter un dans server.py. Un module se construit sans erreur même si sa clé
+jr_scenario manque : le jeu de rôle échoue seulement chez l'élève. Vérifie que
+ta clé existe bien dans JEU_DE_ROLE_SCENARIOS.
+
+Les points sur lesquels je ne veux aucune improvisation : git add avec des
+chemins explicites, jamais -A ni . ; git commit prend lui aussi ses chemins,
+après -- ; git pull avant tout fichier partagé ; commits petits et fréquents ;
+rien n'est copié d'un manuel, tout s'invente à partir du programme ; tout bloc
+ana porte son champ say: ; les six contrôles de CLAUDE.md passent avant la
+publication, plus le node --check du script produit ; le déploiement se fait
+par git push, jamais railway up ; python3 maj-mur.py après les médias — il est
+dans ~/Claude/generations, pas dans le dépôt.
+
+Ton slug et ton numéro d'activité sont arrêtés : ils ne se renégocient pas.
+
+Tu m'écris en français. Tu m'annonces au départ, en cinq lignes, le scénario et
+les personnages que tu as inventés, et tu continues sans attendre ma réponse.
+Tu me préviens seulement si tu dois toucher un fichier transversal (gabarit,
+moteur, système de design).
+```
+
+### Activité 92 · Météo
+
+```text
+Tu produis un module de francisation dans
+/Users/danieltousignant/Claude/bibliotheque-francisation.
+
+Ton module : niveau 2, situation « Météo » du programme,
+slug module-n2-neige, numéro d'activité 92 (réservé — ne prends jamais « le prochain
+libre »), numero 7 dans son niveau, format court : huit séances, deux défis,
+deux blocs de quatre heures, GRILLE_COURTE dans build/powerpoints/modules.py,
+exactement comme module-n1-presenter et module-n2-autobus.
+
+Lis d'abord, dans cet ordre : docs/vagues-suivantes.md — sa section « Vague 4 —
+le niveau 2 au complet », qui dit pourquoi ce module, ce numéro et ce format ;
+docs/deux-agents-en-parallele.md (les cinq règles et les fichiers partagés — un
+autre agent travaille en même temps que toi) ; puis la skill module-neuf, que
+tu suis étape par étape.
+
+Un autre agent produit un autre module en parallèle. Vos contenus sont isolés ;
+vos seuls points de rencontre sont build/powerpoints/modules.py,
+data/activities.json et server.py. Les numéros d'activité de toute la vague
+sont réservés dans docs/vagues-suivantes.md : prends le tien, jamais un autre.
+
+Comprendre s'il fait froid, s'il neige, s'il faut s'habiller autrement ; lire une température. Distinct de module-meteo (niveau 4), qui lit un bulletin et une alerte : ici, trois mots et un chiffre suffisent.
+
+Ce que le niveau 2 impose, et qu'un agent habitué au niveau 4 oublie : des
+énoncés très courts, deux ou trois répliques, du présent, aucune subordonnée ;
+le lexique du programme suffit presque, ne l'enrichis pas de mots du niveau 4 ;
+fais dire au programme les intentions propres au niveau 2 avec
+build/cadre.py 2 "Météo" avant d'inventer le
+scénario — attention, le script attend l'apostrophe typographique du programme,
+« d’aliments » et non « d'aliments » — et dis en une phrase, dans ton journal,
+ce qui distingue ton module de ses voisins des autres niveaux.
+
+Aucun scénario de jeu de rôle ne convient : tu dois en ajouter un dans server.py. Un module se construit sans erreur même si sa clé
+jr_scenario manque : le jeu de rôle échoue seulement chez l'élève. Vérifie que
+ta clé existe bien dans JEU_DE_ROLE_SCENARIOS.
+
+Les points sur lesquels je ne veux aucune improvisation : git add avec des
+chemins explicites, jamais -A ni . ; git commit prend lui aussi ses chemins,
+après -- ; git pull avant tout fichier partagé ; commits petits et fréquents ;
+rien n'est copié d'un manuel, tout s'invente à partir du programme ; tout bloc
+ana porte son champ say: ; les six contrôles de CLAUDE.md passent avant la
+publication, plus le node --check du script produit ; le déploiement se fait
+par git push, jamais railway up ; python3 maj-mur.py après les médias — il est
+dans ~/Claude/generations, pas dans le dépôt.
+
+Ton slug et ton numéro d'activité sont arrêtés : ils ne se renégocient pas.
+
+Tu m'écris en français. Tu m'annonces au départ, en cinq lignes, le scénario et
+les personnages que tu as inventés, et tu continues sans attendre ma réponse.
+Tu me préviens seulement si tu dois toucher un fichier transversal (gabarit,
+moteur, système de design).
+```
+
+### Activité 93 · Transactions bancaires
+
+```text
+Tu produis un module de francisation dans
+/Users/danieltousignant/Claude/bibliotheque-francisation.
+
+Ton module : niveau 2, situation « Transactions bancaires » du programme,
+slug module-n2-guichet, numéro d'activité 93 (réservé — ne prends jamais « le prochain
+libre »), numero 8 dans son niveau, format court : huit séances, deux défis,
+deux blocs de quatre heures, GRILLE_COURTE dans build/powerpoints/modules.py,
+exactement comme module-n1-presenter et module-n2-autobus.
+
+Lis d'abord, dans cet ordre : docs/vagues-suivantes.md — sa section « Vague 4 —
+le niveau 2 au complet », qui dit pourquoi ce module, ce numéro et ce format ;
+docs/deux-agents-en-parallele.md (les cinq règles et les fichiers partagés — un
+autre agent travaille en même temps que toi) ; puis la skill module-neuf, que
+tu suis étape par étape.
+
+Un autre agent produit un autre module en parallèle. Vos contenus sont isolés ;
+vos seuls points de rencontre sont build/powerpoints/modules.py,
+data/activities.json et server.py. Les numéros d'activité de toute la vague
+sont réservés dans docs/vagues-suivantes.md : prends le tien, jamais un autre.
+
+Retirer de l'argent au guichet, comprendre un montant, demander de l'aide. Distinct de module-banque (niveau 4), qui va au comptoir et lit une brochure.
+
+Ce que le niveau 2 impose, et qu'un agent habitué au niveau 4 oublie : des
+énoncés très courts, deux ou trois répliques, du présent, aucune subordonnée ;
+le lexique du programme suffit presque, ne l'enrichis pas de mots du niveau 4 ;
+fais dire au programme les intentions propres au niveau 2 avec
+build/cadre.py 2 "Transactions bancaires" avant d'inventer le
+scénario — attention, le script attend l'apostrophe typographique du programme,
+« d’aliments » et non « d'aliments » — et dis en une phrase, dans ton journal,
+ce qui distingue ton module de ses voisins des autres niveaux.
+
+Aucun scénario de jeu de rôle ne convient : tu dois en ajouter un dans server.py. Un module se construit sans erreur même si sa clé
+jr_scenario manque : le jeu de rôle échoue seulement chez l'élève. Vérifie que
+ta clé existe bien dans JEU_DE_ROLE_SCENARIOS.
+
+Les points sur lesquels je ne veux aucune improvisation : git add avec des
+chemins explicites, jamais -A ni . ; git commit prend lui aussi ses chemins,
+après -- ; git pull avant tout fichier partagé ; commits petits et fréquents ;
+rien n'est copié d'un manuel, tout s'invente à partir du programme ; tout bloc
+ana porte son champ say: ; les six contrôles de CLAUDE.md passent avant la
+publication, plus le node --check du script produit ; le déploiement se fait
+par git push, jamais railway up ; python3 maj-mur.py après les médias — il est
+dans ~/Claude/generations, pas dans le dépôt.
+
+Ton slug et ton numéro d'activité sont arrêtés : ils ne se renégocient pas.
+
+Tu m'écris en français. Tu m'annonces au départ, en cinq lignes, le scénario et
+les personnages que tu as inventés, et tu continues sans attendre ma réponse.
+Tu me préviens seulement si tu dois toucher un fichier transversal (gabarit,
+moteur, système de design).
+```
+
+### Activité 94 · Démarches à la poste
+
+```text
+Tu produis un module de francisation dans
+/Users/danieltousignant/Claude/bibliotheque-francisation.
+
+Ton module : niveau 2, situation « Démarches à la poste » du programme,
+slug module-n2-colis, numéro d'activité 94 (réservé — ne prends jamais « le prochain
+libre »), numero 9 dans son niveau, format court : huit séances, deux défis,
+deux blocs de quatre heures, GRILLE_COURTE dans build/powerpoints/modules.py,
+exactement comme module-n1-presenter et module-n2-autobus.
+
+Lis d'abord, dans cet ordre : docs/vagues-suivantes.md — sa section « Vague 4 —
+le niveau 2 au complet », qui dit pourquoi ce module, ce numéro et ce format ;
+docs/deux-agents-en-parallele.md (les cinq règles et les fichiers partagés — un
+autre agent travaille en même temps que toi) ; puis la skill module-neuf, que
+tu suis étape par étape.
+
+Un autre agent produit un autre module en parallèle. Vos contenus sont isolés ;
+vos seuls points de rencontre sont build/powerpoints/modules.py,
+data/activities.json et server.py. Les numéros d'activité de toute la vague
+sont réservés dans docs/vagues-suivantes.md : prends le tien, jamais un autre.
+
+Envoyer une lettre ou un colis, comprendre un prix et un délai, écrire une adresse sur une enveloppe — ce dernier point est un savoir explicite du niveau 2.
+
+Ce que le niveau 2 impose, et qu'un agent habitué au niveau 4 oublie : des
+énoncés très courts, deux ou trois répliques, du présent, aucune subordonnée ;
+le lexique du programme suffit presque, ne l'enrichis pas de mots du niveau 4 ;
+fais dire au programme les intentions propres au niveau 2 avec
+build/cadre.py 2 "Démarches à la poste" avant d'inventer le
+scénario — attention, le script attend l'apostrophe typographique du programme,
+« d’aliments » et non « d'aliments » — et dis en une phrase, dans ton journal,
+ce qui distingue ton module de ses voisins des autres niveaux.
+
+Aucun scénario de jeu de rôle ne convient : tu dois en ajouter un dans server.py. Un module se construit sans erreur même si sa clé
+jr_scenario manque : le jeu de rôle échoue seulement chez l'élève. Vérifie que
+ta clé existe bien dans JEU_DE_ROLE_SCENARIOS.
+
+Les points sur lesquels je ne veux aucune improvisation : git add avec des
+chemins explicites, jamais -A ni . ; git commit prend lui aussi ses chemins,
+après -- ; git pull avant tout fichier partagé ; commits petits et fréquents ;
+rien n'est copié d'un manuel, tout s'invente à partir du programme ; tout bloc
+ana porte son champ say: ; les six contrôles de CLAUDE.md passent avant la
+publication, plus le node --check du script produit ; le déploiement se fait
+par git push, jamais railway up ; python3 maj-mur.py après les médias — il est
+dans ~/Claude/generations, pas dans le dépôt.
+
+Ton slug et ton numéro d'activité sont arrêtés : ils ne se renégocient pas.
+
+Tu m'écris en français. Tu m'annonces au départ, en cinq lignes, le scénario et
+les personnages que tu as inventés, et tu continues sans attendre ma réponse.
+Tu me préviens seulement si tu dois toucher un fichier transversal (gabarit,
+moteur, système de design).
+```
+
+### Activité 95 · Communication avec le personnel de l'établissement
+
+```text
+Tu produis un module de francisation dans
+/Users/danieltousignant/Claude/bibliotheque-francisation.
+
+Ton module : niveau 2, situation « Communication avec le personnel de l'établissement » du programme,
+slug module-n2-secretaire, numéro d'activité 95 (réservé — ne prends jamais « le prochain
+libre »), numero 10 dans son niveau, format court : huit séances, deux défis,
+deux blocs de quatre heures, GRILLE_COURTE dans build/powerpoints/modules.py,
+exactement comme module-n1-presenter et module-n2-autobus.
+
+Lis d'abord, dans cet ordre : docs/vagues-suivantes.md — sa section « Vague 4 —
+le niveau 2 au complet », qui dit pourquoi ce module, ce numéro et ce format ;
+docs/deux-agents-en-parallele.md (les cinq règles et les fichiers partagés — un
+autre agent travaille en même temps que toi) ; puis la skill module-neuf, que
+tu suis étape par étape.
+
+Un autre agent produit un autre module en parallèle. Vos contenus sont isolés ;
+vos seuls points de rencontre sont build/powerpoints/modules.py,
+data/activities.json et server.py. Les numéros d'activité de toute la vague
+sont réservés dans docs/vagues-suivantes.md : prends le tien, jamais un autre.
+
+Signaler une absence, demander un papier au secrétariat, comprendre une réponse courte. Le module 95 ferme le niveau 2.
+
+Ce que le niveau 2 impose, et qu'un agent habitué au niveau 4 oublie : des
+énoncés très courts, deux ou trois répliques, du présent, aucune subordonnée ;
+le lexique du programme suffit presque, ne l'enrichis pas de mots du niveau 4 ;
+fais dire au programme les intentions propres au niveau 2 avec
+build/cadre.py 2 "Communication avec le personnel de l'établissement" avant d'inventer le
+scénario — attention, le script attend l'apostrophe typographique du programme,
+« d’aliments » et non « d'aliments » — et dis en une phrase, dans ton journal,
+ce qui distingue ton module de ses voisins des autres niveaux.
+
+Aucun scénario de jeu de rôle ne convient : tu dois en ajouter un dans server.py. Un module se construit sans erreur même si sa clé
+jr_scenario manque : le jeu de rôle échoue seulement chez l'élève. Vérifie que
+ta clé existe bien dans JEU_DE_ROLE_SCENARIOS.
+
+Les points sur lesquels je ne veux aucune improvisation : git add avec des
+chemins explicites, jamais -A ni . ; git commit prend lui aussi ses chemins,
+après -- ; git pull avant tout fichier partagé ; commits petits et fréquents ;
+rien n'est copié d'un manuel, tout s'invente à partir du programme ; tout bloc
+ana porte son champ say: ; les six contrôles de CLAUDE.md passent avant la
+publication, plus le node --check du script produit ; le déploiement se fait
+par git push, jamais railway up ; python3 maj-mur.py après les médias — il est
+dans ~/Claude/generations, pas dans le dépôt.
+
+Ton slug et ton numéro d'activité sont arrêtés : ils ne se renégocient pas.
+
+Tu m'écris en français. Tu m'annonces au départ, en cinq lignes, le scénario et
+les personnages que tu as inventés, et tu continues sans attendre ma réponse.
+Tu me préviens seulement si tu dois toucher un fichier transversal (gabarit,
+moteur, système de design).
+```
+

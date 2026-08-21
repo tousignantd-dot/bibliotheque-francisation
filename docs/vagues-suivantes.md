@@ -237,3 +237,17 @@ Ce que le niveau 2 impose, et qu'un agent habitué au niveau 4 oublie :
 - **Le numéro d'activité est réservé ici**, jamais « le prochain libre ».
 
 Dernier numéro réservé après cette vague : **95**.
+
+**21 août 2026 — l'activité 87 est livrée.** `module-n2-panier` · « Remplir mon
+panier » : huit séances, 90 diapositives, 18 images, 189 extraits audio, les
+six contrôles verts plus le `node --check`. Le journal détaillé est dans
+`docs/chantier-tous-niveaux.md` ; les neuf consignes de la vague sont dans
+`docs/consignes-a-coller.md`, section « Vague 4 ». **La file du niveau 2
+reprend à l'activité 88** (Relations sociales, `module-n2-bonjour`).
+
+Trois choses que cette production a apprises, et qui sont déjà écrites où il
+faut : le champ **`theme`** du manifeste doit échapper son apostrophe, comme
+`bravo` et `relance` — aucun module ne l'avait montré avant ; **`build/cadre.py`
+attend l'apostrophe typographique** du programme (« Achat d’aliments »), sinon
+il ne trouve pas la situation ; et **`maj-mur.py` vit dans
+`~/Claude/generations`**, pas à la racine du dépôt.
