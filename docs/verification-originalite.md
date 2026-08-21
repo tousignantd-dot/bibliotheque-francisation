@@ -161,3 +161,25 @@ l'a établi : les 205 clés du relevé des sons sont restées identiques après
 reformulation, puisque ni les `sub` ni les `tit` n'y entrent. Aucun extrait
 n'a été payé deux fois.
 
+`module-n3-pharmacie` (activité 78), mesuré le 21 août 2026 : ses **228**
+énoncés visibles de plus de douze caractères — `txt`, `q`, `a`, `sub` et `tit`,
+donc le relevé large — ont été comparés aux 6 312 des vingt-huit autres modules
+de `build/contenu/`. Première mesure : **17 identiques, soit 7,5 %**, toutes
+des consignes ou des titres que le moteur impose à ses types d'exercice (« Le
+mot et sa définition », « Écoute de nouveau le dialogue, puis réponds. »,
+« Glisse chaque photo sur la phrase qui la décrit. ») — plus quatre mots du
+lexique. Dix reformulations avec les mots du module — « Les seize mots de la
+pharmacie », « Réécoute la scène du renouvellement, puis réponds. », « Fais
+glisser chaque photo de la pharmacie vers la phrase qui la décrit » — ramènent
+la mesure à **4 identiques, soit 1,8 %**.
+
+Les quatre qui restent sont des **mots du lexique du programme** — *une
+ordonnance*, *la carte d'assurance maladie*, *une étiquette* — que
+`module-n5-rendezvous` et `module-alimentation` emploient aussi. Les renommer
+éloignerait le module du programme, qui est sa seule source. Rien de narratif,
+aucun énoncé de contenu.
+
+Le contrôle a été fait **avant la génération des MP3**, et les reformulations
+ne touchent que des `sub` et des `tit`, qui n'entrent pas dans le relevé des
+sons : les 231 clés de `sons_module_n3_pharmacie.json` sont restées les mêmes
+avant et après.
