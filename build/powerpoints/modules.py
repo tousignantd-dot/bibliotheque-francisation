@@ -571,6 +571,27 @@ MODULES = {
                         "Les nouvelles et les félicitations"),
     },
 
+    # Niveau 5 · « Déplacements dans une ville ». Le programme ne donne ici
+    # qu'une seule intention, et elle est en compréhension orale : suivre un
+    # bulletin de circulation routière. Le module est donc bâti sur elle
+    # seule — on écoute une voix qui annonce ce qui bloque, on en tire ce qui
+    # touche son trajet, et on explique ensuite le détour et le retard.
+    # Rien à voir avec `module-deplacement` (niveau 4), où l'on compose un
+    # trajet et où l'on lit un plan de métro pour se rendre quelque part ;
+    # rien à voir non plus avec `module-n3-metro` (79), qui achète le bon
+    # titre de transport, ni avec `module-n2-autobus`, qui lit un horaire.
+    'module-n5-transport': {
+        'numero': 9, 'activite': 69, 'niveau': 5,
+        'titre': "\u00c7a bloque ce matin",
+        'chapeau': "Suivre un bulletin de circulation, comprendre ce qui "
+                   "bloque la route et depuis quand, choisir un autre chemin, "
+                   "puis expliquer son retard de vive voix et par \u00e9crit.",
+        'seances': GRILLE_3_DEFIS,
+        'blocs': _blocs("Ce qui bloque la route",
+                        "Le bulletin de 6\u202fh\u202f50",
+                        "Le trajet refait"),
+    },
+
     'module-n6-recherche': {
         'numero': 1, 'activite': 59, 'niveau': 6,
         'titre': "Chercher un emploi",
