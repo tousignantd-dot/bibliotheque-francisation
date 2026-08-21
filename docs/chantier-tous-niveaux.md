@@ -567,6 +567,123 @@ consignes génériques imposées par le moteur — « Le mot et sa définition �
 Rien n'a été copié d'un manuel ; le programme n'a donné que la spécification.
 
 
+## Niveau 5 — `module-n5-services` · Les services de ma ville · **livré**
+
+Quatrième module du niveau 5, activité **64**, produit le 21 août 2026 pendant
+que trois autres sessions travaillaient dans le dépôt.
+
+**La situation du programme est étroite, et c'est ce qui la rend difficile.**
+« Utilisation des services publics » ne donne que trois intentions de
+communication — comprendre et demander des renseignements par téléphone (CO et
+PO), comprendre de l'information dans un formulaire complexe, une brochure ou
+un site Web (CE) — et **aucun lexique** : le document de Laval ne couvre pas
+cette situation. Les seize mots s'inventent donc entièrement à partir des
+savoirs et des intentions. Le domaine général de formation, lui, tranche la
+question du sujet : « Consommation et environnement », d'où l'angle municipal
+plutôt qu'administratif au sens large.
+
+**Ce qui distingue ce module de ses voisins.** Le niveau 4 n'a aucun module sur
+cette situation ; le plus proche, « Quelle est la procédure ? » (40), reste
+dans l'établissement scolaire. Le vrai risque de recoupement était
+`module-n5-emmenagement` (63), dont le défi 2 fait justement changer d'adresse
+et brancher les services. La ligne de partage est nette et vaut d'être notée :
+**là-bas on branche un service le jour du déménagement, ici tout est branché
+depuis huit mois et c'est le service qui a mal fonctionné.** Le module ne parle
+donc pas d'installation mais de démarche — appeler, lire, se présenter,
+relancer.
+
+**Le scénario.** Leïla Haddad, 41 ans, arrivée de Tunis, habite Villeray depuis
+huit mois. Elle a pris la brochure de la Ville pour de la publicité. Son bac
+brun n'est plus ramassé : elle appelle le 311 (défi 1), lit la page de
+l'écocentre et un formulaire qui se bloque (défi 2), puis se présente au
+guichet avec un billet de file d'attente (défi 3). Autour d'elle : Pierre-Luc,
+un collègue de son cours ; Micheline, préposée au service à la clientèle ;
+Gaétan, agent au comptoir ; et VOIX, le menu automatisé.
+
+**Les faits québécois, vérifiés le 21 août 2026 sur les sites officiels** —
+aucun n'est inventé, et aucun montant en dollars n'apparaît dans le module :
+
+- le **311** de la Ville de Montréal enregistre les demandes citoyennes sous
+  forme de requêtes numérotées, et sert à signaler un problème de collecte
+  (montreal.ca, « Signaler un problème de collecte », données ouvertes
+  « Requêtes 311 ») ;
+- **Info-collectes** donne l'horaire par code postal, et il diffère d'une rue
+  à l'autre (montreal.ca, « Horaire des collectes ») ;
+- les **écocentres** reprennent peinture, appareils électroniques, débris de
+  construction et métal ; les tarifs et les temps d'attente sont publiés
+  (montreal.ca, « Écocentres ») ;
+- **Hydro-Québec**, service à la clientèle résidentielle : 1 888 385-7252
+  (hydroquebec.com, « Nous joindre ») — vérifié, puis **non employé**, le
+  module ayant basculé du branchement vers le municipal ;
+- le **Service québécois de changement d'adresse** transmet l'adresse à sept
+  ministères et organismes en une démarche (quebec.ca) ;
+- la **SAAQ** demande d'être avisée dans les **30 jours** suivant un
+  déménagement (saaq.gouv.qc.ca, « Changement d'adresse »).
+
+Les seuls chiffres inventés du module sont le numéro de requête (24-118-7690),
+l'adresse de Leïla et le numéro de téléphone de la production orale, qui est en
+555 — c'est voulu.
+
+**Le jeu de rôle a fallu l'écrire.** Aucun des scénarios existants ne rend la
+conduite d'un appel à un service public, et le module s'était construit sans
+erreur avec une clé absente : rien ne le vérifie. `server.py` gagne donc
+`JEU_DE_ROLE_SERVICES` (trois cas : le bac non ramassé, l'écocentre, la demande
+bloquée en ligne) et l'entrée `services`, rôles `citoyen` et `prepose`. Sa
+règle de conduite est le cœur de l'exercice : **le préposé ne donne jamais un
+renseignement avant qu'on le lui demande**, et il ne rappelle jamais à l'élève
+ce qu'il a oublié de demander. La vérification tient en une ligne :
+`python3 -c "import server; print(server.JEU_DE_ROLE_SCENARIOS['services'])"`.
+
+**Trois choses apprises en produisant les séances**, qui valent pour le
+prochain module :
+
+- `theme.py` refuse l'alphabet phonétique, et il a raison : la séance A2 nomme
+  les sons par leurs lettres et un mot repère (« le son AN, comme dans
+  attente »). Le module interactif, lui, garde les symboles. **La flèche « → »
+  n'est pas dans Verdana non plus** — elle passe le garde-fou des glyphes sans
+  être signalée, parce que celui-ci ne contrôle pas les caractères de
+  ponctuation. Trois séances en portaient.
+- **Un tableau de six lignes ne passe pas sur une diapositive projetée.** Trois
+  l'ont appris (A4, C4, D1) et sont coupés en deux.
+- **`build/powerpoints/fiche.py` n'a pas de méthode `capture()`**, contrairement
+  à `theme.py`. Les quatre appels sont donc gardés par `hasattr` dans les
+  séances de ce module — une fiche noir et blanc n'a de toute façon rien à
+  faire d'une capture d'écran. **Le défaut est antérieur et bloque aussi
+  `module-sante`, dont les fiches ne se régénèrent plus** : à corriger dans le
+  moteur quand personne d'autre n'écrit.
+
+**Le dossier `icons/` ne sort d'aucun générateur.** Il se copie d'un module
+voisin, et rien ne signale son absence : le build passe, les six contrôles
+passent, et ce sont trois 404 chez l'élève. Vu seulement en ouvrant le module
+déployé dans un navigateur — c'est l'argument pour continuer de le faire.
+
+**Deux textes ont dû être réécrits pour la synthèse vocale.** Les six paires de
+registres de `prReg` étaient reliées par une flèche, que la voix lit à haute
+voix, et une formule de `t1notes` portait des points de suspension. La règle
+générale : tout ce qui entre dans `sons_<slug>.json` doit se lire à voix haute
+sans caractère qui ne se prononce pas.
+
+**Originalité : 1 %.** Sur 151 énoncés visibles par l'élève, un seul est
+identique à un énoncé d'un autre module — « Glissez chaque photo sur la phrase
+qui la décrit », la consigne standard d'un `imgmatch`. Rien n'est copié d'un
+manuel : le module n'a aucune source antérieure.
+
+**Livré** : 19 exercices, 11 mini-leçons, 4 dialogues (70 répliques), 16 mots
+de vocabulaire, 24 images fal.ai (0,82 $), 16 présentations (197 diapositives),
+16 fiches (143 blocs), 16 vignettes, un scénario de jeu de rôle.
+
+**L'audio reste à produire.** ElevenLabs coupait la liaison TLS au moment de la
+production — `curl` sur `api.elevenlabs.io` rend `000` dans le bac à sable
+**comme en dehors**. Les 185 extraits (70 répliques + 115 sons) sont relevés
+dans `sons_module_n5_services.json` et le générateur est écrit ; il est
+relançable et saute ce qui existe déjà. Une seule commande suffit quand la
+liaison revient :
+
+    for i in 1 2 3 4 5; do python3 generer_audio_module_n5_services.py; done
+
+Le module se livre ainsi, comme le niveau 8 avant lui : les boutons d'écoute
+restent en place et ne sont **pas** masqués à la main dans le HTML.
+
 ## La couleur d'un module est devenue celle de son niveau
 
 Décidé par l'utilisateur le 20 août 2026, au milieu de ce chantier, et
