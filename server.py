@@ -3868,7 +3868,162 @@ JEU_DE_ROLE_COMPTOIR = {
 }
 
 
+# ── module-n5-travail (activité 67) ───────────────────────────────────────
+# Demander un congé à son chef d'équipe. Aucun scénario existant ne convenait :
+# `entrevue` porte l'embauche et non la vie du poste, et tous les autres
+# mettent en scène un service qui répond à une demande de client. Ici
+# l'interlocuteur est un supérieur, il n'accorde rien sur-le-champ, il renvoie
+# à un formulaire et à la paie, et c'est l'élève qui doit mener sa demande
+# jusqu'au bout — dates, remplacement, papier, confirmation écrite.
+JEU_DE_ROLE_CONGE = {
+    "vacances": {
+        "contexte": (
+            "Le petit bureau du chef d'équipe, un mardi matin. Vous avez une "
+            "semaine de vacances déjà inscrite au calendrier en juillet, et "
+            "vous voulez la déplacer en août : votre sœur arrive de "
+            "l'étranger le 12 août. Le calendrier de l'équipe est affiché au "
+            "mur, derrière lui."
+        ),
+        "chef": [
+            "La semaine du 12 août est déjà demandée par une autre personne "
+            "de l'équipe ; celle du 19 est libre.",
+            "Un changement de date doit passer par le formulaire de demande "
+            "de congé, signé par toi, puis envoyé à la paie.",
+            "Tu rappelles que l'employeur doit annoncer les dates de vacances "
+            "au moins quatre semaines à l'avance, et que ça vaut aussi quand "
+            "c'est l'employé qui demande le changement.",
+            "Tu ne demandes jamais pourquoi quelqu'un veut ses vacances : "
+            "ça ne te regarde pas.",
+            "Tu veux savoir qui répond au téléphone de l'accueil pendant "
+            "l'absence.",
+            "Tu ne confirmes rien de vive voix : la paie renvoie une "
+            "confirmation par courriel, et c'est elle qui compte.",
+        ],
+        "employe": [
+            "Tu veux déplacer ta semaine de juillet vers le mois d'août.",
+            "Tu donnes tout de suite la date de début et la date de fin.",
+            "Tu proposes toi-même qui pourrait répondre au téléphone.",
+            "Tu demandes ce qu'il faut remplir et à qui l'envoyer.",
+            "Tu demandes quand tu recevras la confirmation écrite.",
+        ],
+    },
+    "famille": {
+        "contexte": (
+            "Le corridor devant la salle de réunion, un jeudi à quatre "
+            "heures. L'école de votre fils vous convoque lundi matin à neuf "
+            "heures. Vous travaillez lundi de huit heures à seize heures."
+        ),
+        "chef": [
+            "Une absence pour obligation familiale se demande dès qu'on la "
+            "connaît, pas le matin même.",
+            "Après trois mois de service continu, deux journées d'absence "
+            "par année sont payées ; les suivantes ne le sont pas.",
+            "Tu proposes de reprendre les heures plutôt que de les perdre, "
+            "si l'équipe peut s'organiser.",
+            "Tu demandes l'heure exacte du rendez-vous et l'heure du retour "
+            "possible : une demi-journée n'est pas une journée.",
+            "Tu inscris toi-même l'absence au registre des heures, mais le "
+            "formulaire reste à remplir.",
+            "Tu ne demandes aucun papier de l'école : ce n'est pas ta "
+            "politique.",
+        ],
+        "employe": [
+            "Tu es convoqué à l'école de ton fils lundi à neuf heures.",
+            "Tu dis dès la première phrase de quoi il s'agit et quand.",
+            "Tu proposes de revenir travailler après le rendez-vous.",
+            "Tu demandes si la journée est payée et ce que ça change sur "
+            "ta paie.",
+            "Tu demandes ce qu'il faut faire de ta boîte vocale et de ton "
+            "courriel pendant l'avant-midi.",
+        ],
+    },
+    "sansolde": {
+        "contexte": (
+            "Le bureau du chef d'équipe, un lundi de novembre. Vous demandez "
+            "quatre jours sans solde en février, avant votre première année "
+            "complète dans le poste. Le mois de février est le plus occupé "
+            "de l'année."
+        ),
+        "chef": [
+            "Quatre jours sans solde ne sont prévus par aucune loi : c'est "
+            "une faveur, décidée cas par cas.",
+            "Février est le mois le plus occupé ; tu commences par dire non "
+            "à cette période-là.",
+            "Tu changes d'avis seulement si l'élève propose une solution "
+            "concrète pour le remplacement et une autre semaine possible.",
+            "Tu demandes que la demande soit écrite et déposée au moins "
+            "trois semaines d'avance.",
+            "Tu ne réponds pas le jour même : tu dis que tu en parles à la "
+            "direction et que tu redonnes une réponse dans la semaine.",
+        ],
+        "employe": [
+            "Tu demandes quatre jours sans solde en février.",
+            "Tu acceptes qu'on te dise non et tu proposes autre chose.",
+            "Tu offres une solution pour ton remplacement à l'accueil.",
+            "Tu demandes quand tu auras la réponse et sous quelle forme.",
+            "Tu restes poli et tu vouvoies ton chef d'équipe.",
+        ],
+    },
+}
+
+
 JEU_DE_ROLE_SCENARIOS = {
+    "conge": {
+        "cadre": "une demande de congé faite à son chef d'équipe, au travail",
+        "contexte_label": "La demande que vous avez à faire",
+        "cas": JEU_DE_ROLE_CONGE,
+        "adresse": "Vouvoie l'élève : au travail, un chef d'équipe et un employé qui se connaissent peu se vouvoient.",
+        "sujets": [
+            "la demande, dite en une phrase, avec les dates",
+            "la raison, donnée seulement quand elle sert à quelque chose",
+            "le remplacement pendant l'absence, proposé plutôt que subi",
+            "le formulaire à remplir et la personne à qui l'envoyer",
+            "le délai à respecter avant la date demandée",
+            "ce qui est payé et ce qui ne l'est pas",
+            "la confirmation écrite, demandée avant de sortir du bureau",
+        ],
+        "cloture": ("Quand les dates, le remplacement et le formulaire sont réglés, "
+                    "dis ce que tu vas faire de ton côté et quand la paie répondra. "
+                    "N'accorde jamais le congé de vive voix : la confirmation écrite "
+                    "est la seule qui compte, et c'est ce que l'élève doit apprendre "
+                    "à réclamer."),
+        "ouverture": {
+            "employe": "Entrez, assoyez-vous. Vous vouliez me parler ?",
+            "chef": "Bonjour. Est-ce que je peux vous parler deux minutes de mes dates de congé ?",
+        },
+        "roles": {
+            "chef": {
+                "qui": ("Tu es Ghislain Marcoux, chef d'équipe. L'élève est l'employé "
+                        "qui vient te demander un congé."),
+                "conduite": ("Niveau 5 : l'élève doit tenir un échange suivi et organisé "
+                             "avec un supérieur. Tu es cordial mais tu ne facilites rien. "
+                             "Tu ne donnes aucun renseignement avant qu'on te le demande — "
+                             "ni le formulaire, ni le délai, ni ce qui est payé. Tu demandes "
+                             "toujours les deux dates, celle du début et celle du retour, et "
+                             "tu ne te contentes pas de « la semaine prochaine ». Tu poses la "
+                             "question du remplacement à l'accueil et tu attends une "
+                             "proposition, pas un haussement d'épaules. Tu n'accordes jamais "
+                             "le congé sur-le-champ : tu renvoies au formulaire et à la paie, "
+                             "et tu dis quand la réponse viendra. Si l'élève parle de sa vie "
+                             "privée plus qu'il n'est utile, tu ramènes poliment la "
+                             "conversation aux dates. Tu emploies le vocabulaire réel du "
+                             "travail : le registre des heures, le formulaire de demande de "
+                             "congé, la paie, le calendrier de l'équipe, la confirmation "
+                             "par courriel."),
+            },
+            "employe": {
+                "qui": ("Tu es un employé de la coopérative et tu viens demander un congé. "
+                        "L'élève est le chef d'équipe et c'est lui qui répond."),
+                "conduite": ("Fais ta demande en une phrase, avec les dates, puis attends. "
+                             "Pose une question à la fois : le formulaire, le délai, ce qui "
+                             "est payé, qui te remplace, quand tu auras la réponse. Vouvoie "
+                             "l'élève. Ne devine pas les règles à sa place : s'il ne te dit "
+                             "pas ce qu'il faut remplir, demande-le. Si sa réponse est vague "
+                             "— « on verra », « c'est correct » — redemande une date ou une "
+                             "confirmation écrite, poliment. Ne te fâche jamais."),
+            },
+        },
+    },
     "comptoir": {
         "cadre": "une commande au comptoir d'un casse-croûte, au niveau débutant",
         "contexte_label": "Le moment de la commande où vous êtes",
