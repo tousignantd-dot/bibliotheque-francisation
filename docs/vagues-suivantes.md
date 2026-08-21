@@ -573,6 +573,25 @@ Ce que le niveau 2 impose, et qu'un agent habitué au niveau 4 oublie :
 
 Dernier numéro réservé après cette vague : **95**.
 
+**21 août 2026 — l'activité 91 est livrée.** `module-n2-inscription` · « Je
+m'inscris au cours de français » : huit séances, 91 diapositives, 244 extraits
+audio, les six contrôles verts pour ce module plus le `node --check`. **Six
+images sur dix-sept seulement** : le compte fal.ai est verrouillé faute de
+crédit. Le journal détaillé est dans `docs/chantier-tous-niveaux.md`, avec la
+liste des onze images manquantes et leurs prompts. **La file du niveau 2
+reprend à l'activité 92** (Météo, `module-n2-neige`).
+
+Deux choses que cette production a apprises : le **403 « User is locked.
+Reason: TOP_UP » peut ne pas se résorber** — le compte laisse passer une image
+par lot, puis se referme, et relancer dix fois n'y change rien. La conduite qui
+tient : livrer le module complet pour tout le reste, garder le champ `img` des
+cartes du banc (le gabarit affiche la carte sans photo), **changer de type
+l'exercice de glisser-déposer de photos** plutôt que de le laisser avec des
+vignettes cassées, et écrire au journal la liste exacte de ce qui manque. Et
+un **exercice `vf` à cartes écoutables lit son `txt` tel quel** : les
+`CARRIER_PHRASES` ne s'appliquent qu'aux pastilles des blocs `savoir`, donc une
+lettre seule doit s'écrire « la lettre B » et non « B ».
+
 **21 août 2026 — l'activité 90 est livrée.** `module-n2-couloirs` · « Où est
 le local 214 ? » : huit séances, 89 diapositives, 18 images, 261 extraits
 audio, les six contrôles verts pour ce module plus le `node --check`. Le

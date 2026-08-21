@@ -842,6 +842,148 @@ langue du module : le même échange, joué deux fois, au « tu » puis au « vo
 produisaient au même moment, pas des écarts de celui-ci.
 
 
+## Niveau 2 — `module-n2-inscription` · Je m'inscris au cours de français · **livré**
+
+Activité **91**, réservée d'avance par `docs/vagues-suivantes.md` (vague 4).
+Septième module **court** du dépôt, sixième du niveau 2 : huit séances, deux
+défis, cinq sections, `GRILLE_COURTE`. Produit le 21 août 2026, en parallèle
+des activités 68 et 79.
+
+**Ce qui le distingue de ses voisins**, en une phrase : `module-n2-classe`
+(89) et `module-n2-couloirs` (90) se passent dans le même établissement, mais
+l'un écoute une consigne et l'autre cherche une porte — ici, l'élève fait une
+**démarche**, et son adversaire n'est ni une personne ni un bâtiment, c'est un
+papier couvert de mots qu'il ne lit pas encore.
+
+**Le cadre l'a décidé, et plus nettement que partout ailleurs.**
+`build/cadre.py 2 "Inscription"` ne donne que **deux** intentions, et elles se
+suivent : repérer des renseignements sur un cours dans une petite annonce et
+les prendre en note (compréhension écrite, puis production écrite), remplir un
+formulaire d'inscription (production écrite). Les deux défis sont ces deux
+intentions, dans cet ordre — l'annonce, puis le formulaire — et rien n'a été
+inventé autour. Le programme ne demande **aucune production orale** pour cette
+situation : la prise orale de « Je me lance » est là pour la démarche
+elle-même, qui se fait debout et de vive voix, pas pour cocher une intention.
+
+Le lexique de la situation tient en deux entrées — « Date, heure et lieu » et
+« Scolarité » — plus onze verbes : comprendre, arriver, apprendre, écrire,
+fermer, inscrire, aller, partir, savoir, ouvrir, demander. Les seize mots du
+banc en sortent, sans un mot de plus.
+
+Les savoirs pris dans le niveau : la **graphie-phonie** appliquée au nom des
+lettres, les **phrases interrogatives partielles** sans inversion (quel /
+quelle), les **prépositions et groupes prépositionnels de temps** (à, de… à,
+du… au, le lundi), les **déterminants possessifs** (mon, ma, mes · votre,
+vos), les **éléments de graphie** — les trois façons de présenter une date
+abrégée — et la **présentation matérielle**, qui est ici le formulaire
+lui-même.
+
+**Scénario.** Yara vient d'arriver au Québec. Marco, son voisin, lui montre
+une annonce affichée au babillard de l'épicerie : cours de français au Centre
+Delorme, du 7 septembre au 11 décembre, de 8 h 30 à 12 h 30, local 214.
+L'annonce ne dit pas tout, alors Yara téléphone au secrétariat. Puis elle se
+présente au comptoir du local 005, où madame Bourgeois lui fait remplir les
+sept cases une à une et s'arrête sur son nom : « Haddad… comment ça s'écrit ? »
+À la fin, c'est Yara qui explique la case « scolarité » à Hamid.
+
+**L'annonce du Centre Delorme**, inventée pour le module et reprise telle
+quelle dans le bandeau noir de l'exercice 2 comme dans la séance B1 : cours de
+français niveau 2, groupe du matin ; du lundi 7 septembre au vendredi
+11 décembre ; du lundi au vendredi, de 8 h 30 à 12 h 30 ; local 214, deuxième
+étage ; inscription du 24 au 28 août, de 9 h à 15 h, au local 005 ; apporter
+une pièce d'identité. Les deux locaux différents — celui du cours et celui de
+l'inscription — sont le piège volontaire de la compréhension écrite, et
+personne ne le voit la première fois.
+
+**Le piège du module est l'alphabet, pas le formulaire.** Un nom mal
+orthographié au comptoir suit une personne des années, sur tous les papiers du
+centre. La séance A2 sépare donc les lettres en deux familles — celles qui
+finissent sur « é » (B, C, D, G, P, T, V) et celles qui commencent par « è »
+(F, L, M, N, R, S) — et installe « B comme bonjour ». L'épellation existe déjà
+au niveau 1, dans `module-n1-presenter` : elle y sert à se présenter, elle
+sert ici à faire écrire.
+
+**Chiffres.** 187 clés de sons et 57 répliques, soit **244 extraits audio**,
+sans un seul échec réseau ; **6 images sur 17** ; 91 diapositives sur
+8 séances ; 68 blocs de fiches ; 18 exercices, 7 mini-leçons, 6 dialogues,
+16 mots de vocabulaire.
+
+**Originalité : 4,2 %.** Première mesure, faite **avant** la génération des
+MP3 : 11 identiques sur 234 énoncés visibles de plus de douze caractères,
+comparés aux 8 742 des vingt-huit autres modules de `build/contenu/`. Six
+étaient des consignes et des intitulés génériques, reformulés avec les mots du
+module ; la mesure est retombée à **6 sur 234**, soit 2,6 %. Le remplacement
+de l'exercice à photos (voir plus bas) en a ramené quatre, tous du même genre :
+la mesure finale est de **10 sur 239**. Les dix sont des mots du lexique —
+*une inscription*, *un formulaire*, *le secrétariat*, *un calendrier*, *une
+pièce d'identité* — et on ne renomme pas un mot du programme pour éviter un
+doublon. Rien de narratif, aucun énoncé de contenu.
+
+**Jeu de rôle neuf**, `inscription`, ajouté à `server.py` : trois cas —
+l'appel au sujet de l'annonce, le formulaire au comptoir, le nom à épeler — et
+deux rôles, l'élève et madame Bourgeois. Aucun scénario existant ne convenait :
+`presenter` (niveau 1) s'arrête au nom, `couloirs` cherche une porte au lieu
+de remplir un papier.
+
+**Ce que cette production a appris.**
+
+- **Le compte fal.ai est verrouillé faute de crédit** — `HTTP 403 · "User is
+  locked. Reason: TOP_UP"` — et cette fois la relance n'a pas suffi. Le compte
+  laisse passer une image par lot, à peu près, puis se referme : six des
+  dix-sept ont été produites en une dizaine de passes. Le module a été livré
+  complet pour tout le reste, et les onze prompts manquants sont listés plus
+  bas, prêts pour une seule passe quand le compte sera renfloué.
+  `gen_images.py` saute ce qui existe déjà : il se relance tel quel.
+- **`theme.py` refuse un tableau trop plein avant de refuser un glyphe**, et ce
+  module l'a rencontré deux fois : l'annonce en six rangées (B1) et les sept
+  cases du formulaire (C1). Les deux ont été coupées en deux diapositives, et
+  la coupure sert le sens — le cours d'un côté, la démarche de l'autre ; les
+  quatre premières cases d'un côté, les trois dernières de l'autre.
+- **Un exercice à cartes écoutables lit son `txt` tel quel**, sans phrase
+  porteuse : `CARRIER_PHRASES` ne s'applique qu'aux pastilles des blocs
+  `savoir`. Une lettre seule envoyée à la synthèse sort mal ; les huit cartes
+  de l'exercice de l'alphabet disent donc « la lettre B », pas « B ».
+
+### Les onze images qui manquent
+
+À produire en une passe :
+`python3 build/contenu/module-n2-inscription/gen_images.py`. Les prompts sont
+dans le fichier, à leur place ; la liste ci-dessous dit seulement lesquels
+n'ont pas abouti.
+
+| Fichier | Où elle sert | Ce que le prompt demande |
+|---|---|---|
+| `images/formulaire-vide.jpg` | exercice 3, *Je découvre* | une feuille de formulaire, cases vides, étiquettes en traits gris flous, un stylo en diagonale |
+| `images/babillard-annonce.jpg` | exercice 3 | un tableau de liège couvert de feuilles punaisées, vu de face, sans un mot lisible |
+| `images/calendrier-septembre.jpg` | exercice 3 | un calendrier mural, grille de cases carrées, chiffres flous, une case entourée au rouge |
+| `images/main-signature.jpg` | exercice 3 | gros plan d'une main tenant un stylo au-dessus d'une ligne, aucun visage |
+| `images/carte-identite.jpg` | exercice 3 | une carte plastifiée posée sur un bureau, photo et lignes entièrement floues |
+| `vocab/formulaire.jpg` | banc de mots | la feuille vue d'en haut, à plat, ses cases bien visibles |
+| `vocab/case.jpg` | banc de mots | très gros plan sur deux rectangles vides, la pointe d'un stylo dans le premier |
+| `vocab/secretariat.jpg` | banc de mots | le bureau vu depuis la porte : comptoir bas, classeur, chaise vide |
+| `vocab/annonce.jpg` | banc de mots | une seule feuille punaisée sur du liège, vue de près, lignes en traits gris |
+| `vocab/horaire.jpg` | banc de mots | une grille imprimée à colonnes et à rangées, cellules vides |
+| `vocab/adresse.jpg` | banc de mots | une façade d'immeuble de Montréal, escalier de métal, plaque de numéro hors foyer |
+
+**Les cinq cartes du banc concernées gardent leur champ `img`** : le gabarit
+affiche la carte sans photo tant que le fichier n'existe pas, et la photo
+apparaîtra d'elle-même à la première génération. Rien d'autre n'est à faire
+pour elles.
+
+**L'exercice 3 de *Je découvre*, lui, a changé de type.** Il était écrit en
+`imgmatch` sur les six photos du secrétariat ; une seule est sortie, et un
+glisser-déposer de photos avec cinq vignettes cassées ne vaut rien. Il est
+rendu en `match` — les mêmes six phrases, associées au mot du secrétariat
+qu'elles décrivent — et le module est complet sans image. La marche à suivre
+pour lui rendre sa forme d'origine est écrite en tête de l'exercice, dans
+`build/contenu/module-n2-inscription/exos.js` : remettre `type:'imgmatch'`, le
+bloc `images:` avec is1…is6, et les six `rows` avec leur `ok:'isN'`. Les six
+noms de fichiers sont dans `gen_images.py`, dans l'ordre des six phrases.
+
+La seule image produite, `images/comptoir-secretariat.jpg`, n'est pas perdue :
+elle sert de déclencheur aux séances A1 et E1.
+
+
 ## Niveau 2 — `module-n2-couloirs` · Où est le local 214 ? · **livré**
 
 Activité **90**, réservée d'avance par `docs/vagues-suivantes.md` (vague 4).
