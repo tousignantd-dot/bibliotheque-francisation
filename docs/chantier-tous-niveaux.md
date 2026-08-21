@@ -276,6 +276,16 @@ une photo.
 221 extraits audio, 16 présentations (200 diapositives), 16 fiches
 (149 blocs), 16 vignettes.
 
+**Quatre passes ont été nécessaires pour l'audio.** ElevenLabs a coupé par
+intermittence pendant toute la production : 32 échecs à la première passe, puis
+21, puis 12, puis 5. Aucun extrait n'était en cause — la reprise du script fait
+exactement ce pour quoi elle a été écrite, et une relance saute ce qui existe
+déjà. Deux images ont échoué de la même façon et se sont rattrapées en une
+commande. **Conclusion pratique : ne pas surveiller la première passe, boucler
+la relance.** `for i in 1 2 3 4 5; do python3 generer_audio_… ; done` coûte
+moins cher en attention qu'un suivi ligne à ligne, et le compte de fichiers dit
+seul quand c'est fini.
+
 ## Niveau 6 — `module-n6-recherche` · Chercher un emploi · **livré**
 
 Produit en parallèle du niveau 5, selon le protocole de
