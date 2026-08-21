@@ -1,0 +1,22 @@
+const FC_CARDS = [
+  {word:"un dégât d'eau", def:"Les dommages causés dans un logement par de l'eau qui s'est répandue là où elle ne devait pas aller.", ex:"Le <strong>dégât d'eau</strong> a commencé pendant la nuit, sans que personne l'entende.", img:"/assets/interactive/module-n5-degat/vocab/degat-eau.jpg", tache:"prep"},
+  {word:"un cerne", def:"La marque ronde et plus foncée que laisse l'eau en séchant sur un mur ou un plafond.", ex:"Un <strong>cerne</strong> brun d'un mètre est apparu au-dessus du lit.", img:"/assets/interactive/module-n5-degat/vocab/cerne.jpg", tache:"prep"},
+  {word:"le plafond", def:"La surface qui ferme une pièce par le haut, au-dessus de la tête.", ex:"L'eau tombait du <strong>plafond</strong> dans le coin de la chambre.", img:"/assets/interactive/module-n5-degat/vocab/plafond.jpg", tache:"prep"},
+  {word:"une chaudière", def:"Le seau de plastique qu'on met par terre pour recueillir l'eau qui tombe. Au Québec, on dit une chaudière.", ex:"Elle a placé une <strong>chaudière</strong> sous la fuite avant de partir travailler.", img:"/assets/interactive/module-n5-degat/vocab/chaudiere.jpg", tache:"prep"},
+  {word:"gondoler", def:"Se déformer en faisant des vagues, comme un plancher de bois qui a bu de l'eau.", ex:"Les lattes du plancher ont commencé à <strong>gondoler</strong> près du mur.", img:"/assets/interactive/module-n5-degat/vocab/gondoler.jpg", tache:"prep"},
+
+  {word:"un chauffe-eau", def:"Le gros réservoir qui chauffe l'eau du logement. Il dure une quinzaine d'années.", ex:"Le <strong>chauffe-eau</strong> du logement du dessus a lâché pendant la nuit.", img:"/assets/interactive/module-n5-degat/vocab/chauffe-eau.jpg", tache:"t1"},
+  {word:"une fuite", def:"Un trou ou une fissure par où l'eau sort d'un appareil ou d'un tuyau.", ex:"Le plombier a trouvé la <strong>fuite</strong> en moins de dix minutes.", img:"/assets/interactive/module-n5-degat/vocab/fuite.jpg", tache:"t1"},
+  {word:"une infiltration", def:"De l'eau qui passe lentement à travers un mur, un plancher ou un plafond.", ex:"L'<strong>infiltration</strong> a traversé le plancher du troisième avant d'atteindre son plafond.", img:"/assets/interactive/module-n5-degat/vocab/infiltration.jpg", tache:"t1"},
+  {word:"les dommages", def:"Tout ce qui a été abîmé : le logement lui-même et les affaires qui étaient dedans.", ex:"Elle a décrit les <strong>dommages</strong> pièce par pièce, sans rien oublier.", img:"/assets/interactive/module-n5-degat/vocab/dommages.jpg", tache:"t1"},
+
+  {word:"un avis", def:"Un papier officiel affiché ou remis pour annoncer quelque chose. On le lit au complet, jusqu'aux lignes en petit.", ex:"L'<strong>avis</strong> était affiché dans l'entrée, à côté des boîtes aux lettres.", img:"/assets/interactive/module-n5-degat/vocab/avis.jpg", tache:"t2"},
+  {word:"l'assèchement", def:"Le travail qui consiste à faire partir toute l'eau d'un mur ou d'un plancher avant de réparer.", ex:"Les travaux d'<strong>assèchement</strong> ont duré trois jours complets.", img:"/assets/interactive/module-n5-degat/vocab/assechement.jpg", tache:"t2"},
+  {word:"un asséchateur", def:"L'appareil bruyant qui souffle de l'air chaud et sec pour faire sécher un mur.", ex:"Deux <strong>asséchateurs</strong> ont tourné jour et nuit dans la chambre.", img:"/assets/interactive/module-n5-degat/vocab/assecheur.jpg", tache:"t2"},
+  {word:"l'accès au logement", def:"La possibilité, pour un ouvrier ou le propriétaire, d'entrer chez vous pour faire les travaux.", ex:"L'avis demandait de prévoir un <strong>accès au logement</strong> entre 8 h et 17 h.", tache:"t2"},
+
+  {word:"une réclamation", def:"La demande qu'on fait à son assureur pour se faire rembourser ce qui a été abîmé.", ex:"Elle a ouvert sa <strong>réclamation</strong> le lendemain du dégât.", tache:"t3"},
+  {word:"une franchise", def:"Le montant qui reste toujours à votre charge dans une réclamation. L'assureur paie ce qui dépasse.", ex:"Avec une <strong>franchise</strong> de cinq cents dollars, une petite perte ne vaut pas la peine d'être réclamée.", tache:"t3"},
+  {word:"une réduction de loyer", def:"Une baisse temporaire du loyer parce qu'on n'a pas pu se servir d'une partie du logement.", ex:"Trois nuits sans chambre justifient une <strong>réduction de loyer</strong>.", tache:"t3"},
+  {word:"une mise en demeure", def:"Une lettre ferme qui donne un délai précis pour agir, et qui annonce la suite si rien ne bouge.", ex:"Sans réponse en dix jours, la <strong>mise en demeure</strong> part par courrier recommandé.", tache:"t3"},
+];
