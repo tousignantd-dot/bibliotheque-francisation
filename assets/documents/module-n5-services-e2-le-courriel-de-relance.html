@@ -1,0 +1,172 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>E2 · Le courriel de relance — Fiche élève</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800;900&display=swap" rel="stylesheet">
+<style>
+/* ═══════════════════════════════════════════════════════════════
+   FICHE ÉLÈVE · IMPRESSION LETTRE, NOIR ET BLANC
+   ───────────────────────────────────────────────────────────────
+   Aucune couleur : ces fiches sont photocopiées en noir et blanc.
+   Toute la hiérarchie passe par la GRAISSE, les FILETS et les MOTS.
+   C'est d'ailleurs la règle du système de design poussée à son
+   terme : « jamais d'information portée par la couleur seule ».
+
+   Les gris viennent des neutres du système (ink-900 à ink-400),
+   qui sont déjà quasi neutres. Les filets sont volontairement plus
+   sombres qu'à l'écran : une photocopieuse efface tout ce qui est
+   plus clair que 15 % de noir.
+   ═══════════════════════════════════════════════════════════════ */
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+:root{
+  --paper:#FFFFFF;
+  --tint:#F0F0EE;          /* aplat le plus clair encore visible en photocopie */
+  --line:#C9C9C6;          /* filet fin */
+  --rule:#17181A;          /* filet structurant */
+  --ink:#17181A;           /* titres */
+  --body:#2B2E30;          /* texte courant, un cran plus sombre qu'à l'écran */
+  --soft:#4B4F52;          /* texte secondaire */
+  --muted:#5E6165;         /* sur-titres, méta */
+}
+html{background:#BBBBBB}
+body{
+  font-family:'Nunito','Trebuchet MS',sans-serif;
+  font-size:11.5pt; line-height:1.5; color:var(--body);
+  background:var(--paper);
+  width:215.9mm;                    /* 8,5 po — format lettre */
+  margin:0 auto; padding:14mm 15mm 16mm;
+  -webkit-print-color-adjust:exact; print-color-adjust:exact;
+}
+h1,h2,h3{color:var(--ink); line-height:1.2; letter-spacing:-0.01em}
+
+/* ── En-tête ── */
+.hdr{border-bottom:2.5px solid var(--rule); padding-bottom:8px; margin-bottom:14px;
+     display:flex; align-items:flex-end; gap:14px}
+.hdr-l{flex:1}
+.eyebrow{font-size:9.5pt; font-weight:800; text-transform:uppercase;
+         letter-spacing:.12em; color:var(--muted)}
+.hdr h1{font-size:22pt; font-weight:900; margin-top:3px}
+.hdr-r{flex-shrink:0; display:flex; gap:10px; align-items:flex-end;
+       font-size:9.5pt; font-weight:800; text-transform:uppercase;
+       letter-spacing:.08em; color:var(--muted); padding-bottom:2px}
+.nomline{display:inline-block; border-bottom:1.5px solid var(--rule);
+         height:6mm; vertical-align:bottom; margin-left:5px}
+.nomline--nom{width:48mm} .nomline--date{width:26mm}
+.chapeau{font-size:12pt; font-weight:600; color:var(--soft); margin-bottom:16px}
+
+/* ── Blocs ── */
+.bloc{break-inside:avoid; page-break-inside:avoid; margin-bottom:13px}
+.card{border:1px solid var(--line); border-radius:12px; padding:11px 14px 12px;
+      background:var(--paper)}
+.lbl{font-size:9.5pt; font-weight:800; text-transform:uppercase;
+     letter-spacing:.12em; color:var(--muted); margin-bottom:5px}
+h2.t{font-size:15pt; font-weight:900; margin-bottom:7px}
+.consigne{font-size:11pt; font-weight:600; color:var(--soft); margin-bottom:8px}
+
+/* ── Objectifs et exercices : pastille en cerne, jamais en aplat ── */
+ol.obj,ol.ex{list-style:none}
+ol.obj{counter-reset:o} ol.ex{counter-reset:e}
+ol.obj li,ol.ex li{position:relative; padding-left:9mm; font-weight:600}
+ol.obj li{counter-increment:o; margin-bottom:6px}
+ol.ex li{counter-increment:e; margin-bottom:9px; break-inside:avoid}
+ol.obj li::before,ol.ex li::before{
+  position:absolute; left:0; top:0; width:6mm; height:6mm; border-radius:50%;
+  border:1.5px solid var(--rule); color:var(--ink);
+  font-size:9.5pt; font-weight:800;
+  display:flex; align-items:center; justify-content:center}
+ol.obj li::before{content:counter(o)}
+ol.ex li::before{content:counter(e)}
+
+/* ── Dialogue ── */
+.rep{display:flex; gap:10px; padding:4px 0; border-top:1px solid var(--line)}
+.rep:first-of-type{border-top:0}
+.rep--key{background:var(--tint); border-radius:8px; padding:5px 8px;
+          border-top:0; margin:2px 0}
+.qui{flex:0 0 30mm; font-weight:800; color:var(--ink); font-size:10.5pt}
+
+/* ── Règle : encadrée au filet épais, c'est elle qu'on repère de loin ── */
+.regle{border:2.5px solid var(--rule); border-radius:12px; padding:12px 14px}
+.regle .lbl{color:var(--ink)}
+.regle p.r{font-size:14pt; font-weight:900; color:var(--ink); line-height:1.3}
+.regle p.pr{margin-top:7px; font-weight:600; color:var(--soft)}
+
+/* ── Tableau ── */
+table{width:100%; border-collapse:collapse}
+th{font-size:9.5pt; font-weight:800; text-transform:uppercase; letter-spacing:.1em;
+   color:var(--muted); text-align:left; padding:0 8px 5px 0;
+   border-bottom:1.5px solid var(--rule)}
+td{padding:6px 8px 6px 0; border-top:1px solid var(--line); vertical-align:top;
+   font-weight:600}
+td.cle{font-weight:900; color:var(--ink)}   /* la colonne clé : en gras, pas en couleur */
+.note{margin-top:8px; font-size:10.5pt; font-weight:600; color:var(--soft);
+      background:var(--tint); border-radius:9px; padding:8px 11px}
+
+/* ── Cartes ── */
+.grid{display:grid; grid-template-columns:1fr 1fr; gap:9px}
+.grid .card h3{font-size:11.5pt; font-weight:900; color:var(--ink); margin-bottom:3px}
+.grid .card p{font-size:11pt}
+
+/* ── Piège : le filet distingue les deux colonnes, pas la couleur ──
+   À gauche, un filet TIRETÉ — ce qui ne tient pas.
+   À droite, un filet PLEIN et épais — ce qu'il faut retenir.
+   Les deux intitulés disent la même chose en mots.                */
+.duo{display:grid; grid-template-columns:1fr 1fr; gap:10px}
+.duo>div{border-radius:12px; padding:10px 13px}
+.duo .no{border:1.5px dashed var(--muted)}
+.duo .ok{border:2.5px solid var(--rule); background:var(--tint)}
+.duo .k{font-size:9.5pt; font-weight:800; text-transform:uppercase;
+        letter-spacing:.1em; margin-bottom:4px; color:var(--muted)}
+.duo .ok .k{color:var(--ink)}
+.duo p.ph{font-size:12pt; font-weight:800; color:var(--ink); line-height:1.3}
+.duo .no p.ph{font-weight:600; font-style:italic; color:var(--soft)}
+
+/* ── Vocabulaire ── */
+.voc{width:100%; border-collapse:collapse}
+.voc td{border-top:1px solid var(--line); padding:6px 8px 6px 0}
+.voc td.mot{width:38%; font-weight:900; color:var(--ink)}
+.voc td.def{color:var(--soft)}
+
+/* ── Zones de réponse ── */
+.ligne{display:block; border-bottom:1px dotted #8E8E8A; height:8mm; margin-top:2px}
+.ligne--court{width:55%}
+
+/* ── Billet de sortie ── */
+.billet{border:2.5px solid var(--rule); border-radius:12px; padding:13px 15px}
+.billet .k{font-size:9.5pt; font-weight:800; text-transform:uppercase;
+           letter-spacing:.12em; color:var(--ink); margin-bottom:4px}
+.billet p.c{font-size:14pt; font-weight:900; color:var(--ink); line-height:1.3}
+.billet ul{list-style:none; margin-top:7px}
+.billet li{font-weight:600; color:var(--soft); margin-bottom:3px}
+
+/* ── Pied ── */
+footer{margin-top:16px; padding-top:7px; border-top:1px solid var(--line);
+       font-size:9.5pt; font-weight:700; color:var(--muted);
+       display:flex; justify-content:space-between}
+
+/* ── Impression ── */
+@page{size:8.5in 11in; margin:14mm 15mm}
+@media print{
+  html{background:#FFFFFF}
+  body{width:auto; padding:0}
+  .bloc{break-inside:avoid; page-break-inside:avoid}
+  h2.t,.lbl{break-after:avoid; page-break-after:avoid}
+}
+</style>
+</head>
+<body>
+<header class="hdr">
+  <div class="hdr-l">
+    <div class="eyebrow">Séance E2 · Module 4 · 75 minutes</div>
+    <h1>Le courriel de relance</h1>
+  </div>
+  <div class="hdr-r"><span>Nom<span class="nomline nomline--nom"></span></span><span>Date<span class="nomline nomline--date"></span></span></div>
+</header>
+<p class="chapeau">Une semaine a passé et rien n'est arrivé. Un courriel qui accuse se traite moins vite qu'un courriel qui informe — et il tient en dix phrases, numéro de requête compris.</p>
+<section class="bloc card"><div class="lbl">Objectifs</div><h2 class="t">À la fin, je serai capable de…</h2><ol class="obj"><li>écrire un courriel de relance à un service public ;</li><li>rappeler une démarche au passé composé et à l'imparfait ;</li><li>poser deux demandes en subordonnée interrogative ;</li><li>faire le bilan de ce qu'on est maintenant capable de faire.</li></ol></section><section class="bloc regle"><div class="lbl">Restez factuel : c'est ce qui va vite</div><p class="r">Un courriel qui informe se traite ; un courriel qui accuse se transmet.</p><p class="pr">Un service public ne juge pas votre ton, mais il traite d'abord ce qu'il peut traiter. Un numéro de requête, une date, un fait : voilà de quoi agir. La colère, elle, doit d'abord être lue par quelqu'un d'autre avant que rien ne bouge.</p></section><section class="bloc card"><div class="lbl">Les cinq éléments du courriel</div><h2 class="t">Rien de plus, rien de moins</h2><table><thead><tr><th>Élément</th><th>Exemple</th></tr></thead><tbody><tr><td class="cle">Le numéro et la date</td><td>« la requête 24-118-7690, ouverte le mardi 12 mai »</td></tr><tr><td class="cle">Le rappel de la situation</td><td>« J'avais appelé parce que mon bac n'était pas ramassé. »</td></tr><tr><td class="cle">Le délai annoncé</td><td>« On m'avait annoncé trois jours ouvrables. »</td></tr><tr><td class="cle">Deux demandes en subordonnée</td><td>« Je voudrais savoir si… », « Pouvez-vous me dire… »</td></tr><tr><td class="cle">La suite et vos coordonnées</td><td>« Si rien ne bouge d'ici vendredi, je rappellerai. »</td></tr></tbody></table><div class="note">De six à dix phrases. Au-delà, le courriel perd son lecteur.</div></section><section class="bloc"><div class="lbl">La forme du courriel</div><h2 class="t">Quatre repères</h2><div class="grid"><div class="card"><h3>L'objet</h3><p>« Requête 24-118-7690 — collecte non effectuée, suivi ». Le numéro dans l'objet.</p></div><div class="card"><h3>L'ouverture</h3><p>« Bonjour, » puis « Je vous écris au sujet de… » — et « vous » du début à la fin.</p></div><div class="card"><h3>Le corps</h3><p>Le passé composé pour les étapes, l'imparfait pour le décor. Comme en D2.</p></div><div class="card"><h3>La clôture</h3><p>Une formule de salutation, votre nom, et un numéro où vous joindre.</p></div></div></section><section class="bloc card"><div class="lbl">Écriture</div><h2 class="t">Écrivez les phrases une à une</h2><p class="consigne">Une phrase par élément, avant de rédiger le courriel complet.</p><ol class="ex"><li><span class="q">Le numéro et la date de votre appel</span><span class="ligne"></span></li><li><span class="q">Le rappel, à l'imparfait</span><span class="ligne"></span></li><li><span class="q">Ce qui avait été annoncé</span><span class="ligne"></span></li><li><span class="q">L'état actuel, au présent</span><span class="ligne ligne--court"></span></li><li><span class="q">Une demande avec « si »</span><span class="ligne"></span></li><li><span class="q">Une demande avec « ce que » ou un autre mot</span><span class="ligne"></span></li><li><span class="q">La suite</span><span class="ligne ligne--court"></span></li></ol></section><section class="bloc"><div class="lbl">Attention</div><h2 class="t">Écrire un courriel sans numéro de requête</h2><div class="duo"><div class="no"><div class="k">On entend souvent</div><p class="ph">« Bonjour, j'avais appelé la semaine dernière au sujet de mon bac. »</p></div><div class="ok"><div class="k">Il faut dire plutôt</div><p class="ph">« Bonjour, je vous écris au sujet de la requête 24-118-7690, ouverte le 12 mai. »</p></div></div><div class="note">Sans numéro, le service doit chercher — par nom, par adresse, par date — et votre courriel attend derrière ceux qui en ont un. Le numéro n'est pas un détail administratif : c'est ce qui rend la relance possible.</div></section><section class="bloc card"><div class="lbl">Bilan · les mots à emporter</div><h2 class="t">Les huit qui servent partout</h2><table class="voc"><tbody><tr><td class="mot">une requête</td><td class="def">la demande enregistrée, avec son numéro</td></tr><tr><td class="mot">un délai</td><td class="def">le temps annoncé, en jours ouvrables</td></tr><tr><td class="mot">un préposé</td><td class="def">la personne qui répond, au téléphone ou au comptoir</td></tr><tr><td class="mot">en vigueur</td><td class="def">ce qui s'applique aujourd'hui</td></tr><tr><td class="mot">une pièce justificative</td><td class="def">le document qui prouve ce que vous déclarez</td></tr><tr><td class="mot">une preuve de résidence</td><td class="def">le papier qui montre où vous habitez</td></tr><tr><td class="mot">le cas échéant</td><td class="def">si cela s'applique à vous</td></tr><tr><td class="mot">un jour ouvrable</td><td class="def">du lundi au vendredi, sauf les fériés</td></tr></tbody></table></section><section class="bloc card"><div class="lbl">Autoévaluation</div><h2 class="t">Qu'est-ce que je suis capable de faire ?</h2><p class="consigne">Pour chaque énoncé : pas encore, un peu, ou oui.</p><ol class="ex"><li><span class="q">Je peux téléphoner à un service et dire en une phrase pourquoi j'appelle.</span><span class="ligne ligne--court"></span></li><li><span class="q">Je pose mes questions avec « Pouvez-vous me dire… ».</span><span class="ligne ligne--court"></span></li><li><span class="q">Je note un numéro de requête et je le répète pour le confirmer.</span><span class="ligne ligne--court"></span></li><li><span class="q">Je comprends la différence entre trois jours et trois jours ouvrables.</span><span class="ligne ligne--court"></span></li><li><span class="q">Je trouve l'encadré qui compte dans une page de service public.</span><span class="ligne ligne--court"></span></li><li><span class="q">Je comprends les mots d'un formulaire officiel.</span><span class="ligne ligne--court"></span></li><li><span class="q">Je peux me présenter à un guichet et raconter ce que j'ai déjà essayé.</span><span class="ligne ligne--court"></span></li><li><span class="q">Je peux écrire à un service pour relancer une demande.</span><span class="ligne ligne--court"></span></li></ol></section><section class="bloc billet"><div class="k">Billet de sortie</div><p class="c">Terminez le module en ligne : envoyez votre courriel et votre enregistrement.</p><ul><li>Le module garde votre avancement : vous pouvez finir à la maison.</li><li>Et la semaine prochaine, faites une vraie démarche avec ce que vous savez.</li></ul><span class="ligne"></span><span class="ligne"></span><span class="ligne"></span></section>
+<footer><span>E2 · Les services de ma ville</span><span>Fiche élève</span></footer>
+</body>
+</html>
