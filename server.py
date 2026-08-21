@@ -4134,7 +4134,163 @@ JEU_DE_ROLE_VOISINAGE = {
 }
 
 
+# ── module-n3-pharmacie (activité 78) ─────────────────────────────────────
+# Aller à la pharmacie, au niveau 3. Aucun scénario existant ne convenait :
+# `probleme` et `chemin` sont d'un autre monde, et il n'existe rien pour la
+# santé — `module-consultation` (niveau 4) n'a jamais eu de jeu de rôle. Ici
+# l'interlocuteur est un pharmacien du Québec, dont les pouvoirs sont réels et
+# vérifiés : il peut prolonger une ordonnance qui expire, il tient un dossier
+# de tous les médicaments d'une personne, il demande la carte d'assurance
+# maladie, et il vend certains médicaments sans ordonnance mais en gardant
+# la boîte derrière son comptoir.
+JEU_DE_ROLE_PHARMACIE = {
+    "toux": {
+        "contexte": (
+            "Le comptoir des ordonnances d'une pharmacie de quartier, un "
+            "mardi après-midi. Vous toussez depuis quatre jours et vous ne "
+            "dormez plus la nuit. Vous n'avez pas de médecin de famille et "
+            "vous venez demander conseil au pharmacien."
+        ),
+        "pharmacien": [
+            "Tu demandes d'abord depuis quand ça dure, puis s'il y a de la "
+            "fièvre.",
+            "Tu demandes si la personne prend déjà d'autres médicaments, et "
+            "si elle est allergique à quelque chose.",
+            "Tu conseilles un sirop vendu sans ordonnance et tu dis combien "
+            "de fois par jour le prendre.",
+            "Tu dis qu'une toux qui dure plus de sept jours, ou une fièvre "
+            "qui persiste, demande de voir un médecin.",
+            "Tu ne donnes aucun de ces renseignements avant qu'on te parle : "
+            "tu commences par « Bonjour, qu'est-ce que je peux faire pour "
+            "vous ? » et tu attends.",
+        ],
+        "client": [
+            "Tu tousses depuis quatre jours et tu dors mal.",
+            "Tu dis depuis quand ça dure, sans attendre qu'on te le demande "
+            "deux fois.",
+            "Tu réponds aux questions du pharmacien : la fièvre, tes autres "
+            "médicaments.",
+            "Tu demandes combien de fois par jour tu dois prendre le sirop.",
+            "Tu demandes quand il faudrait voir un médecin.",
+        ],
+    },
+    "renouvellement": {
+        "contexte": (
+            "Le comptoir des ordonnances, un jeudi matin. Il vous reste deux "
+            "comprimés de votre médicament pour la pression et votre "
+            "ordonnance est finie. Votre rendez-vous chez le médecin est "
+            "seulement dans six semaines. Vous avez votre carte d'assurance "
+            "maladie dans votre portefeuille."
+        ),
+        "pharmacien": [
+            "Tu demandes le nom de la personne, sa date de naissance et sa "
+            "carte d'assurance maladie.",
+            "Tu vérifies le dossier : le médicament, la dose, la dernière "
+            "date où il a été servi.",
+            "Tu expliques que tu peux prolonger l'ordonnance toi-même en "
+            "attendant le rendez-vous, sans dépasser un an.",
+            "Tu dis combien de temps la préparation prendra — une vingtaine "
+            "de minutes — et où attendre.",
+            "Tu dis ce que la personne paiera : une partie du prix reste à "
+            "sa charge, même avec l'assurance médicaments.",
+            "Tu ne devines rien : si la personne ne sait pas le nom de son "
+            "médicament, tu lui demandes le flacon ou l'étiquette.",
+        ],
+        "client": [
+            "Il te reste deux comprimés et ton ordonnance est finie.",
+            "Tu donnes ton nom et tu sors ta carte d'assurance maladie.",
+            "Tu demandes si c'est possible de renouveler sans voir le "
+            "médecin.",
+            "Tu demandes combien de temps ça prend et combien ça coûte.",
+            "Tu vouvoies le pharmacien.",
+        ],
+    },
+    "posologie": {
+        "contexte": (
+            "Le comptoir des ordonnances, en fin de journée. Votre "
+            "médicament est prêt, dans un petit sac de papier. Sur "
+            "l'étiquette du flacon, il est écrit « 1 comprimé 3 fois par "
+            "jour, avec de la nourriture, pendant 7 jours ». Vous voulez "
+            "être certain de comprendre avant de partir."
+        ),
+        "pharmacien": [
+            "Tu lis l'étiquette à voix haute, lentement, une ligne à la fois.",
+            "Tu expliques « avec de la nourriture » : pendant le repas ou "
+            "juste après, jamais l'estomac vide.",
+            "Tu dis de finir les sept jours même si la personne se sent "
+            "mieux avant.",
+            "Tu expliques quoi faire si un comprimé est oublié : le prendre "
+            "en s'en rendant compte, mais jamais deux à la fois.",
+            "Tu nommes un ou deux effets possibles — mal au cœur, sommeil — "
+            "et tu dis d'appeler la pharmacie si ça inquiète.",
+            "Tu réponds à une question à la fois, en phrases courtes : "
+            "l'élève est débutant.",
+        ],
+        "client": [
+            "Tu viens chercher ton médicament et tu veux comprendre "
+            "l'étiquette.",
+            "Tu demandes combien de comprimés par jour et à quel moment.",
+            "Tu demandes ce que « avec de la nourriture » veut dire.",
+            "Tu demandes ce qu'il faut faire si tu oublies un comprimé.",
+            "Tu répètes à voix haute ce que tu as compris avant de partir.",
+        ],
+    },
+}
+
+
 JEU_DE_ROLE_SCENARIOS = {
+    "pharmacie": {
+        "cadre": "une visite au comptoir des ordonnances d'une pharmacie de quartier, au niveau débutant",
+        "contexte_label": "Ce qui vous amène à la pharmacie",
+        "cas": JEU_DE_ROLE_PHARMACIE,
+        "adresse": "Vouvoie l'élève : c'est un commerce et un professionnel de la santé, on ne se tutoie pas.",
+        "sujets": [
+            "ce qui ne va pas, dit en une phrase",
+            "depuis quand ça dure",
+            "les autres médicaments déjà pris",
+            "la carte d'assurance maladie, sortie sans qu'on la redemande",
+            "combien de comprimés, combien de fois par jour, pendant combien de jours",
+            "le temps d'attente et ce qu'il y a à payer",
+        ],
+        "cloture": ("Quand la demande est réglée, redis en une phrase courte ce que "
+                    "la personne doit faire — le médicament, la dose, le moment — puis "
+                    "dis où attendre ou salue. N'allonge pas la conversation."),
+        "ouverture": {
+            "client": "Bonjour ! Qu'est-ce que je peux faire pour vous ?",
+            "pharmacien": "Bonjour. J'aurais besoin d'un conseil, s'il vous plaît.",
+        },
+        "roles": {
+            "pharmacien": {
+                "qui": ("Tu es le pharmacien de la pharmacie du quartier. L'élève "
+                        "est le client, devant ton comptoir."),
+                "conduite": ("Parle en phrases courtes, au présent, une idée par "
+                             "phrase : l'élève est débutant. Pose tes questions une à "
+                             "la fois et attends la réponse. Ne donne jamais un "
+                             "renseignement avant qu'on te le demande — ni le prix, ni "
+                             "le temps d'attente, ni ce que tu peux faire — et ne "
+                             "rappelle pas à l'élève ce qu'il a oublié de demander. "
+                             "Reste dans ce qu'un pharmacien du Québec fait "
+                             "réellement : tu prolonges une ordonnance qui finit, tu "
+                             "conseilles un médicament vendu sans ordonnance, tu "
+                             "expliques une posologie, tu demandes la carte "
+                             "d'assurance maladie. Tu ne poses pas de diagnostic et tu "
+                             "ne remplaces pas le médecin : quand un mal dure ou "
+                             "s'aggrave, tu dis d'aller consulter. Tu ne donnes aucun "
+                             "conseil médical chiffré qui sortirait de l'étiquette."),
+            },
+            "client": {
+                "qui": ("Tu es un client de la pharmacie et l'élève est le "
+                        "pharmacien derrière le comptoir."),
+                "conduite": ("Dis ce qui ne va pas en une phrase, puis attends. Pose "
+                             "une question à la fois, en mots simples : combien de "
+                             "fois par jour, pendant combien de jours, avant ou après "
+                             "le repas, combien ça coûte. Vouvoie l'élève. Si sa "
+                             "réponse est vague — « ça va être correct » —, redemande "
+                             "poliment un chiffre ou un moment précis. Ne te fâche "
+                             "jamais et ne récite pas la réponse à sa place."),
+            },
+        },
+    },
     "voisinage": {
         "cadre": "une invitation entre voisins d'un même immeuble, au stade intermédiaire",
         "contexte_label": "Ce qui se passe entre vous deux",
