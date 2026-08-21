@@ -52,6 +52,16 @@ rapport — 271 lignes de `forge.py` ont failli être perdues. Un `git status`
 qui montre des fichiers que tu n'as pas écrits n'est pas une anomalie à
 nettoyer : c'est le travail de quelqu'un d'autre.
 
+**Et `git commit` prend des chemins, lui aussi : `git commit -- <chemins>`.**
+Ajouté le 21 août 2026, en produisant le niveau 5. La règle ne parlait que de
+`git add`, ce qui ne suffit pas : les deux sessions partagent **le même index**,
+et un `git commit` nu emporte tout ce qui s'y trouve — y compris ce que l'autre
+session vient d'y mettre et n'a pas encore commité. Pendant cette production,
+les huit fichiers du niveau 6 se sont trouvés *staged* au moment précis d'un
+commit du niveau 5. Répéter les chemins après `--` est la seule façon de s'en
+tenir aux siens, et `git show --name-only --format="" HEAD` le vérifie en une
+ligne.
+
 **2. Commiter et pousser souvent, par petites tranches.**
 
 Ce qui traîne non commité est ce qui se fait ramasser. Un module se pousse

@@ -199,6 +199,83 @@ d'un élève de niveau 2 décroche à l'arrêt. B2 n'apprend aucun mot nouveau �
 elle apprend ce qu'on fait quand les mots manquent.
 
 
+## Niveau 5 — `module-n5-logement` · Louer un logement · **livré**
+
+Produit en parallèle du niveau 6, selon le protocole de
+`docs/deux-agents-en-parallele.md`. Activité **58**, réservée d'avance.
+Aucun conflit : les deux sessions n'ont touché `modules.py` et
+`activities.json` qu'une fois chacune, et s'en sont retirées aussitôt.
+
+**Le niveau 4 traite déjà cette situation** (`module-logement`, « Comment est
+le logement ? ») et s'arrête à la visite et à la comparaison. Le niveau 5 va
+plus loin, là où le programme le demande : on téléphone, on **prend des
+notes**, et on **lit son bail**. D'où un slug qui porte son niveau.
+
+**Scénario.** Nadège habite un trois et demie à Fleurimont avec sa fille de
+sept ans, qui dort dans le salon. En février, un avis de modification du bail
+arrive dans sa boîte aux lettres : le loyer monte, et la case de stationnement
+disparaît. Samuel, du comité logement, lui explique qu'elle a un mois pour
+répondre. Hélène est la propriétaire du quatre et demie de la rue Bowen.
+
+**Samuel n'est pas un collègue, et c'est un choix de langue** : entre
+collègues on se tutoie, et le module tient le vouvoiement d'un bout à l'autre —
+au niveau 5, l'élève s'adresse à un propriétaire, pas à un ami.
+
+**Les trois défis portent les quatre intentions du programme**, sans qu'aucune
+reste sans tâche : l'appel et la prise de notes (CO/PE), la visite comprise
+**et donnée** (CO/PO), le bail et son renouvellement (CE).
+
+**Neuf mini-leçons.** Les fusions de l'oral d'ici, la lecture d'une annonce et
+l'avis de modification à la découverte ; discours indirect au présent et prise
+de notes au Défi 1 ; relatifs *qui/que/où* et gérondif au Défi 2 ; futur simple
+et phrases impersonnelles au Défi 3. Tous ces points sortent des savoirs du
+niveau 5.
+
+**Aucune écriture dans `server.py`.** Le scénario `louer` existe depuis le
+niveau 4 et porte déjà les **deux rôles** dont le niveau 5 a besoin — celui qui
+demande et celui qui donne les renseignements. C'est le seul module du chantier
+à n'avoir rien coûté au fichier partagé.
+
+**Deux défauts trouvés dans le mécanisme des phrases porteuses**, et ils valent
+pour tous les modules :
+
+- **Les clés de `carrier.js` sont les mots littéraux**, pas des noms de
+  fichiers. Le gabarit fait `CARRIER_PHRASES[w]` **sans normaliser** : une clé
+  `avis_modification` n'est jamais trouvée, et le mot part seul à la synthèse,
+  mal accentué — précisément ce que le mécanisme existe pour éviter.
+  `module-n3-epicerie` porte le même défaut (clés `allee`, `special` contre les
+  mots `allée`, `spécial`) : ses mots isolés partent seuls. Non corrigé ici,
+  c'est le module d'une autre session.
+- **Une carte de phonétique ne porte jamais un fragment nu.** Les huit cartes
+  disaient « sur le », « dans la ». Envoyé seul à la synthèse, un fragment de
+  ce genre ressort **sur-articulé** — le contraire exact de ce que la leçon
+  fait entendre, puisqu'elle porte justement sur la fusion à l'oral rapide.
+  Elles portent maintenant la phrase entière, et l'élève y repère la
+  préposition.
+
+**Sept tableaux de séance dépassaient la hauteur d'une diapositive projetée.**
+Coupés en deux plutôt que raccourcis : ce sont des tableaux de référence, que
+l'élève photographie, et une cellule tronquée ne lui sert à rien. Le garde-fou
+de `theme.py` les a tous attrapés d'un coup — il suffit d'importer les seize
+decks et d'appeler leur `build()` dans un dossier temporaire pour avoir la
+liste complète, au lieu de reconstruire seize fois de suite.
+
+**La flèche « → » n'existe pas dans Verdana.** Le garde-fou de `save()` l'a
+arrêtée dans trois decks de grammaire, où elle servait à écrire
+« nous regardons → en regardant ». Remplacée par « donne » — le mot que
+l'enseignante dit de toute façon à voix haute.
+
+**Ce que le sujet a coûté aux images.** Comme au niveau 6, presque tout ce
+qu'on photographie ici est du papier écrit : un bail, un avis, une annonce. Les
+prompts interdisant tout texte lisible, les documents sont pris de biais et en
+faible profondeur de champ, les lignes réduites à des traits gris. C'est voulu
+et non un pis-aller : un élève ne doit pas lire un faux bail approximatif sur
+une photo.
+
+**Bilan.** 24 exercices, 9 mini-leçons, 5 dialogues, 16 mots, 30 images,
+221 extraits audio, 16 présentations (200 diapositives), 16 fiches
+(149 blocs), 16 vignettes.
+
 ## Niveau 6 — `module-n6-recherche` · Chercher un emploi · **livré**
 
 Produit en parallèle du niveau 5, selon le protocole de
