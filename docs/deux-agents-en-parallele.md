@@ -17,6 +17,13 @@ la paire change, on réécrit la répartition, pas le protocole.
 | Session A (celle qui a écrit ce fichier) | Niveau 5 · Location d'un logement | `module-n5-logement` | **58** | 16 séances |
 | Session B (toi, si tu lis ceci) | Niveau 6 · Recherche d'emploi | `module-n6-recherche` | **59** | 16 séances |
 
+**Le niveau 6 est livré** (20 août 2026) : module, 15 images, 244 MP3,
+16 présentations, 16 fiches, le scénario `entrevue` dans `server.py`, et en
+ligne. Le journal est dans `chantier-tous-niveaux.md`. Le protocole a tenu :
+aucun conflit, aucun travail écrasé, quatre points de contact seulement —
+`modules.py`, `activities.json`, `server.py`, et les deux relevés de la
+livraison.
+
 **Les numéros d'activité sont réservés d'avance, et c'est le point le plus
 important de ce fichier.** Le numéro d'activité est la clé qui relie
 `build/powerpoints/modules.py`, `data/activities.json` et le portail. Deux
