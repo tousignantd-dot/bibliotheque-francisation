@@ -926,6 +926,13 @@ de conclure trop vite :
 
     for i in $(seq 1 20); do curl -s -o /dev/null -w "%{http_code}\n" <url>; sleep 25; done
 
+**Originalité : 4,2 %.** Sur les 120 énoncés visibles par l'élève, cinq se
+retrouvent tels quels dans un autre module du dépôt, et ce sont les cinq
+consignes génériques qu'on attendait : « Écoute de nouveau le dialogue, puis
+réponds », « Glisse chaque photo sur la phrase qui la décrit », « Le mot et sa
+définition ». Sous le seuil de 5 % de `docs/verification-originalite.md`, et
+aucun contenu narratif en commun.
+
 **Les six contrôles** passent pour ce module. `sommaire.py --verifier` signale
 encore `module-n3-restaurant` (activité 77), produit au même moment par une
 session voisine : ce n'est pas un écart de celui-ci.
