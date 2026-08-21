@@ -204,3 +204,26 @@ volume s'est déjà arrêtée en cours de route et un module entier répondait 4
 
 À quatre, la coordination a coûté plus de messages que de code. À deux, avec
 ces règles, deux modules par jour sont un objectif raisonnable.
+
+
+## Le bac à sable réseau bloque ElevenLabs (21 août 2026)
+
+Découvert en produisant `module-n5-emmenagement`. Les appels à
+`api.elevenlabs.io` échouent tous en `SSLError` / « EOF occurred in violation
+of protocol », y compris avec `curl`, et **quel que soit le nombre de
+reprises** : la fonction `parle()` épuise ses cinq essais et rend
+« ❌ réseau après 5 essais ».
+
+Ce n'est pas une panne d'ElevenLabs, ce n'est pas la clé, et rien ne sert
+d'attendre. C'est le bac à sable réseau de l'outil Bash, qui laisse passer
+`fal.run` (les images) mais pas `api.elevenlabs.io`. Le générateur audio se
+lance donc avec `dangerouslyDisableSandbox: true` :
+
+    nohup python3 generer_audio_<slug>.py > /private/tmp/audio_<slug>.log 2>&1 &
+
+Le test d'une ligne, pour ne pas diagnostiquer à l'aveugle :
+
+    curl -s -o /dev/null -w "%{http_code}\n" https://api.elevenlabs.io/v1/models
+
+`000` dans le bac à sable, `404` en dehors — le 404 signifie que la connexion
+s'établit, ce qui est tout ce qu'on veut savoir.
