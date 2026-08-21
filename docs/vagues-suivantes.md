@@ -612,3 +612,47 @@ faut : le champ **`theme`** du manifeste doit échapper son apostrophe, comme
 attend l'apostrophe typographique** du programme (« Achat d’aliments »), sinon
 il ne trouve pas la situation ; et **`maj-mur.py` vit dans
 `~/Claude/generations`**, pas à la racine du dépôt.
+
+**21 août 2026, nuit — neuf modules, trois voies.** Mandat d'absence : trois
+modules du niveau 5, trois du niveau 3, trois du niveau 2. Tous livrés,
+vérifiés et servis en production.
+
+| Activité | Module | MP3 | Images | Séances |
+|---|---|---|---|---|
+| 65 | N5 · Prendre rendez-vous chez le médecin | 267 | 24 | 16 |
+| 66 | N5 · Une nuit à l'urgence | 283 | 19 | 16 |
+| 67 | N5 · Le travail par écrit | 309 | 20 | 16 |
+| 75 | N3 · Magasiner du linge | 249 | 22 | 16 |
+| 76 | N3 · Acheter un appareil | 246 | 23 | 16 |
+| 77 | N3 · Commander au comptoir | 289 | 24 | 16 |
+| 87 | N2 · Remplir mon panier | 189 | 18 | 8 |
+| 88 | N2 · Bonjour, ça va ? | 214 | 18 | 8 |
+| 89 | N2 · Ouvrez votre cahier | 280 | 18 | 8 |
+
+**2 326 extraits audio, 186 images, 120 séances.** Les six contrôles repassés
+à la fin de la nuit, tous verts, arbre propre. Le niveau 5 compte sept
+modules, le niveau 3 quatre, le niveau 2 quatre.
+
+Trois voies parallèles au lieu de deux : une par niveau, donc des contenus qui
+ne se touchent jamais. Ça tient — les seuls incidents ont porté sur les
+fichiers partagés et sur un serveur de relevé, pas sur les modules.
+
+Ce que la nuit a appris, et qui est déjà dans `CLAUDE.md` :
+
+- **`build/collecte_sons.py` est à abandonner.** Deux incidents en une nuit :
+  un port déjà pris par un agent voisin, et un serveur oublié qui réécrit le
+  relevé longtemps après. Dans les deux cas le fichier écrasé était celui d'un
+  *autre* module, et rien ne le disait. `build/releve_sons.js`, écrit à
+  l'activité 89, ne lance aucun serveur et rend le même relevé à l'octet près.
+- **L'originalité se mesure avant les MP3, jamais après** (activités 66 et 67) :
+  5,7 % et 1,5 % ramenés à 0 % sans repayer un seul extrait.
+- **Les pastilles `savoir` sont muettes sans `speak:true`** — 27 clés
+  manquaient au relevé de l'activité 67 avant qu'on s'en aperçoive.
+- **Les clés de `CARRIER_PHRASES` sont les mots accentués**, pas des slugs.
+  `module-n3-epicerie` porte encore ce défaut sur douze de ses quinze mots :
+  c'est le seul travail en attente laissé par cette nuit.
+- **Au niveau 3, c'est `build/cadre.py` qui décide de la forme du module.**
+  Une seule intention en compréhension écrite pour l'activité 76, trois pour la
+  77 : on bâtit sur ce que le programme donne, on ne calque pas le niveau 4.
+
+**La file reprend** à l'activité 68 (niveau 5), 78 (niveau 3) et 90 (niveau 2).
