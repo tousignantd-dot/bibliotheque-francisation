@@ -1,0 +1,16 @@
+const FC_CARDS = [
+  {word:"un voisin", def:"La personne qui habite tout près, dans la même rue ou le même immeuble.", ex:"Mon <strong>voisin</strong> du quatrième dit toujours bonjour.", img:"/assets/interactive/module-n2-bonjour/vocab/voisin.jpg", tache:"prep"},
+  {word:"un immeuble", def:"Une grande maison avec plusieurs logements, les uns au-dessus des autres.", ex:"J'habite dans un <strong>immeuble</strong> de six étages.", img:"/assets/interactive/module-n2-bonjour/vocab/immeuble.jpg", tache:"prep"},
+  {word:"le matin", def:"Le début de la journée, avant midi.", ex:"Le <strong>matin</strong>, je pars à sept heures et demie.", img:"/assets/interactive/module-n2-bonjour/vocab/matin.jpg", tache:"prep"},
+  {word:"le soir", def:"La fin de la journée, quand il fait noir.", ex:"Le <strong>soir</strong>, je travaille à la pharmacie.", img:"/assets/interactive/module-n2-bonjour/vocab/soir.jpg", tache:"prep"},
+  {word:"une salutation", def:"Le petit mot qu'on dit quand on arrive ou quand on part.", ex:"« Bonjour » et « à demain » sont des <strong>salutations</strong>.", tache:"prep"},
+  {word:"l'après-midi", def:"Le milieu de la journée, après le dîner et avant le soir.", ex:"L'<strong>après-midi</strong>, j'étudie à la maison.", img:"/assets/interactive/module-n2-bonjour/vocab/apres-midi.jpg", tache:"t1"},
+  {word:"déjeuner", def:"Manger le premier repas de la journée, le matin.", ex:"Je <strong>déjeune</strong> à sept heures avec ma sœur.", img:"/assets/interactive/module-n2-bonjour/vocab/dejeuner.jpg", tache:"t1"},
+  {word:"le centre", def:"L'école des adultes où on apprend le français.", ex:"Je marche jusqu'au <strong>centre</strong> tous les matins.", img:"/assets/interactive/module-n2-bonjour/vocab/centre.jpg", tache:"t1"},
+  {word:"à pied", def:"En marchant, sans autobus et sans auto.", ex:"Je vais au centre <strong>à pied</strong>, en douze minutes.", img:"/assets/interactive/module-n2-bonjour/vocab/a-pied.jpg", tache:"t1"},
+  {word:"travailler", def:"Faire un métier, dans un magasin, une usine ou un bureau.", ex:"Samir <strong>travaille</strong> le samedi.", img:"/assets/interactive/module-n2-bonjour/vocab/travailler.jpg", tache:"t1"},
+  {word:"de l'aide", def:"Ce qu'on donne à une personne qui n'y arrive pas toute seule.", ex:"Madame Roy a besoin <strong>d'aide</strong> avec ses sacs.", tache:"t2"},
+  {word:"une porte", def:"Ce qu'on ouvre pour entrer dans un immeuble ou dans un logement.", ex:"Pouvez-vous tenir la <strong>porte</strong>, s'il vous plaît ?", img:"/assets/interactive/module-n2-bonjour/vocab/porte.jpg", tache:"t2"},
+  {word:"une carte de vœux", def:"Un petit carton qu'on écrit et qu'on donne pour une fête.", ex:"J'écris une <strong>carte de vœux</strong> pour ma voisine.", img:"/assets/interactive/module-n2-bonjour/vocab/carte-voeux.jpg", tache:"t2"},
+  {word:"une fête", def:"Le jour où on célèbre quelqu'un ou quelque chose.", ex:"Samedi, c'est la <strong>fête</strong> de madame Roy.", img:"/assets/interactive/module-n2-bonjour/vocab/fete.jpg", tache:"t2"},
+];
