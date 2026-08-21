@@ -227,3 +227,24 @@ Le test d'une ligne, pour ne pas diagnostiquer à l'aveugle :
 
 `000` dans le bac à sable, `404` en dehors — le 404 signifie que la connexion
 s'établit, ce qui est tout ce qu'on veut savoir.
+
+**Précision du 21 août, en produisant `module-n8-emploi` : ce n'est pas
+seulement le bac à sable.** Vers 00 h 25, `api.elevenlabs.io` a cessé de
+répondre **aussi avec `dangerouslyDisableSandbox`**, après que neuf MP3 du
+module de niveau 8 soient passés normalement. Le diagnostic en deux lignes :
+
+    host api.elevenlabs.io          # résout : 31.169.123.224
+    curl -sv https://api.elevenlabs.io/v1/models
+
+La connexion TCP s'établit (« Connected … port 443 »), puis la poignée de main
+TLS est coupée juste après le *Client hello* (`SSL_ERROR_SYSCALL`). Ce n'est
+donc ni la clé, ni le bac à sable, ni ElevenLabs qui refuse la requête : c'est
+la liaison qui est coupée en route. `fal.run` continue de répondre pendant ce
+temps, ce qui rend le diagnostic trompeur.
+
+**Ce qu'il faut en faire.** Ne pas laisser `parle()` brûler soixante secondes
+par extrait dans le vide : arrêter le générateur, et le relancer plus tard —
+il est relançable et saute ce qui existe déjà. Un module se livre très bien
+avec son audio en attente, à condition de l'écrire dans le journal ; il ne se
+livre pas avec un HTML modifié à la main pour masquer les boutons d'écoute.
+
