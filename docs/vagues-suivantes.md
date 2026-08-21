@@ -730,3 +730,76 @@ Ce que cette production a appris ou confirmé :
   Verdana, qui ne les possède pas. Écrire les tableaux courts dès le départ —
   deux colonnes, quatre à six lignes, des cellules de moins de quarante
   caractères — évite six allers-retours de construction.
+
+---
+
+**21 août 2026 — activité 68, `module-n5-voisinage` « La ruelle en fête ».**
+Niveau 5, situation « Relations sociales », numéro 8 du niveau, seize séances.
+Livré, vérifié, servi en production. 271 extraits audio, 19 images,
+177 diapositives, 16 fiches.
+
+Marisol Vergara, arrivée du Chili il y a trois ans, deuxième étage du 7412 rue
+De Normanville ; Réjean Deslauriers, rez-de-chaussée, trente ans dans
+l'immeuble, qui organise la fête de la ruelle ; Ndeye Faye, troisième étage,
+infirmière de nuit, qui laisse le message dans le répondeur et obtient sa
+citoyenneté.
+
+**Ce qui distingue ce module de ses deux voisins**, puisque la consigne le
+demandait en une phrase chacun. De `module-relations` (48, niveau 4), qui porte
+la même situation : là-bas deux inconnus bavardent dans une activité de loisir
+et se racontent leurs semaines, personne n'ayant rien à demander ni à refuser,
+tandis qu'ici il y a une date, une heure, un plat à apporter, et une réponse
+justifiée à donner. De `module-n5-travail` (67), qui a déjà la boîte vocale et
+la note d'appel : les siennes sont celles d'un bureau et parlent au nom d'un
+employeur, celles-ci sont celles d'une cuisine et ne doivent surtout pas dire
+où l'on habite ni quand on part.
+
+**C'est `build/cadre.py 5 "Relations sociales"` qui a décidé de la forme**, et
+il a surpris : sur les dix intentions, une seule est du bavardage. Les neuf
+autres sont des actes — accepter ou refuser avec justification, féliciter,
+enregistrer un message d'accueil, laisser un message, rédiger un mot à partir
+de notes, écrire un courriel de nouvelles. D'où trois défis qui suivent les
+intentions plutôt que le fil d'une amitié : l'invitation, le message, les
+félicitations. Recevoir des nouvelles n'est plus la matière du module, c'en est
+le fil.
+
+Ce que cette production ajoute à ce qui était déjà su :
+
+- **Les cinq leçons de la nuit ont toutes tenu.** `build/releve_sons.js` a rendu
+  ses 190 clés sans ouvrir de port ; les quinze bandeaux portaient `speak:true`
+  dès l'écriture ; les seize clés de `CARRIER_PHRASES` sont les mots accentués,
+  et aucun des seize mots de ce module ne contient d'apostrophe, ce qui a
+  simplifié le contrôle ; l'originalité a été mesurée **avant** les MP3.
+- **L'originalité : 2 identiques sur 202, soit 1,0 %**, ramenés à **0** en
+  reformulant deux consignes (`sub`), qui n'entrent pas dans le relevé des
+  sons. Aucun extrait payé puis jeté.
+- **Ne pas écrire les decks sans accents, puis les rattraper par
+  substitution.** Fait ici par excès de prudence — Verdana a pourtant tout le
+  latin accentué, et `theme.py` refuse justement ce qu'il ne peut pas rendre.
+  La substitution automatique a produit des « quantite » restés en chemin, des
+  « a » qui auraient dû être « à », et surtout elle a renommé la méthode
+  `d.regle` en `d.règle`. Les quatre fichiers ont été réécrits. **Écrire le
+  français correct du premier coup coûte moins cher que de le restaurer.**
+- **Deux tableaux sur trente-deux ont été refusés** par `theme.py` pour cause
+  de densité, et c'est peu : la consigne « deux colonnes, quatre à six lignes,
+  des cellules courtes », écrite après l'activité 90, fonctionne.
+- **Le compte fal.ai était à sec** (`HTTP 403 · TOP_UP`) pendant toute la
+  production. Les 19 images ont fini par sortir, mais en une quarantaine de
+  relances étalées : le solde se libère par à-coups, probablement au rythme des
+  sessions voisines. `gen_images.py` étant relançable et sautant ce qui existe,
+  une boucle `for i in $(seq 1 12); do … && break; done` suffit — inutile
+  d'ajuster le contenu au manque, comme il avait fallu le faire à l'activité 90.
+- **Les fichiers partagés ont encore voyagé dans les commits des voisins.**
+  Les trois lignes de `modules.py`, `activities.json` et `server.py` ont été
+  écrites, puis emportées par les commits des activités 78 et 90 avant que le
+  commit prévu ne les prenne. Rien n'a été perdu — vérification faite ligne à
+  ligne, comme la règle 1 le demande — mais l'historique ment une fois de plus.
+  Le point à retenir n'est pas nouveau : **entre le `add` et le `commit`, il ne
+  doit rien se passer**, et un `git status` juste avant vaut mieux qu'une
+  vérification juste après.
+- **Le seul écart des six contrôles appartient à quelqu'un d'autre** :
+  `sommaire.py --verifier` signale l'activité 91 (`module-n2-inscription`), qui
+  n'a pas encore eu son étape d'écriture. Les cinq autres sont verts, plus le
+  `node --check` du script produit.
+
+**La file reprend** à l'activité 69 (niveau 5), 79 (niveau 3) et 91 (niveau 2).

@@ -183,3 +183,19 @@ Le contrôle a été fait **avant la génération des MP3**, et les reformulatio
 ne touchent que des `sub` et des `tit`, qui n'entrent pas dans le relevé des
 sons : les 231 clés de `sons_module_n3_pharmacie.json` sont restées les mêmes
 avant et après.
+
+`module-n5-voisinage` (activité 68), mesuré le 21 août 2026 : ses **202**
+énoncés visibles de plus de douze caractères — `txt`, `q`, `a`, `sub` et `tit`,
+donc le relevé large — ont été comparés aux 4 969 des vingt-neuf autres modules
+de `build/contenu/`. Première mesure : **2 identiques, soit 1,0 %**, toutes deux
+des consignes que le type d'exercice impose (« Complétez avec le mot juste.
+Écrivez le mot seul, sans article. » et « Mettez le verbe entre parenthèses au
+futur simple. »). Elles ont été reformulées avec les mots du module —
+« Complétez avec le mot de l'immeuble qui convient. » et « Chaque phrase est une
+promesse : mettez le verbe entre parenthèses au futur simple. » — ce qui ramène
+la mesure à **0 identique**.
+
+Mesure faite **avant** la génération des MP3, comme la leçon de
+`module-n5-urgence` le demande. Les deux reformulations ne touchent que des
+`sub`, qui n'entrent pas dans le relevé des sons : le manifeste des 190 extraits
+est resté identique avant et après.
