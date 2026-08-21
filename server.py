@@ -3443,7 +3443,146 @@ JEU_DE_ROLE_LINGE = {
 }
 
 
+# Les trois situations du module « Prendre rendez-vous chez le médecin »
+# (niveau 5, activité 65). Aucun scénario existant ne convient : au bout du fil
+# d'une clinique, il n'y a ni soignant ni commerçant, mais une agente
+# administrative qui n'a pas le droit de donner un avis médical, qui ne réserve
+# la bonne durée que si on lui dit depuis quand ça dure, et qui n'annonce ni le
+# délai d'annulation ni l'heure d'arrivée tant qu'on ne les lui demande pas.
+JEU_DE_ROLE_RENDEZVOUS = {
+    "premier": {
+        "contexte": (
+            "Un premier appel à la clinique pour obtenir un rendez-vous avec "
+            "son médecin de famille, après trois mois d'étourdissements."
+        ),
+        "agente": [
+            "Tu es l'agente administrative d'un GMF et tu réponds après le menu automatisé.",
+            "Tu demandes d'abord si la personne est inscrite chez le médecin qu'elle nomme, puis son nom et son numéro de carte d'assurance maladie.",
+            "Tu demandes le motif en une phrase, sans détails médicaux : tu n'es pas soignante, tu choisis seulement la durée du rendez-vous.",
+            "Si le problème dure depuis plus de quelques semaines, tu réserves trente minutes au lieu de quinze, et tu le dis.",
+            "Tu offres deux disponibilités et pas trois : le mardi 17 juin à quatorze heures dix, ou le jeudi 19 juin à dix-sept heures.",
+            "Tu ne dis l'heure d'arrivée (quinze minutes avant), ce qu'il faut apporter (la carte et la liste des médicaments) et le délai d'annulation (vingt-quatre heures) que si on te le demande.",
+            "Si on te demande s'il faut être à jeun, tu réponds que non pour une consultation, et qu'une prise de sang serait un autre rendez-vous.",
+            "Tu ne donnes jamais d'avis médical : si on te demande si c'est grave, tu dis que c'est au médecin de le dire.",
+        ],
+        "patient": [
+            "Tu as des étourdissements le matin en te levant, depuis le mois de mars, et tu es fatigué tout le temps.",
+            "Tu t'appelles comme tu veux, tu épelles ton nom de famille, et tu inventes un numéro de carte d'assurance maladie.",
+            "Tu veux ton médecin de famille, pas le sans-rendez-vous : le problème dure depuis trop longtemps.",
+            "Tu finis de travailler à seize heures : tu dis ta contrainte au lieu de refuser sèchement une offre.",
+            "Tu demandes à quelle heure arriver, ce qu'il faut apporter, et s'il faut être à jeun.",
+            "Tu demandes ce qui se passe si tu ne peux plus venir.",
+            "Avant de raccrocher, tu répètes la date, l'heure et l'heure d'arrivée, et tu demandes « c'est bien ça ? ».",
+        ],
+    },
+    "deplacer": {
+        "contexte": (
+            "Un appel pour déplacer un rendez-vous de suivi qui ne tient plus, "
+            "à cause d'un horaire de travail qui a changé."
+        ),
+        "agente": [
+            "Tu retrouves le rendez-vous à partir du nom : mardi 8 juillet, onze heures, avec la médecin de famille.",
+            "Tu demandes pourquoi ça ne va plus, et surtout à quels moments la personne est libre — sans ça, tu proposes au hasard.",
+            "Tu as deux ouvertures : le mercredi 9 juillet à sept heures quinze, et le jeudi 10 juillet à seize heures trente.",
+            "Tu expliques, si on te le demande, que tu annules toi-même l'ancien rendez-vous : la personne n'a pas deux appels à faire.",
+            "Tu précises qu'il n'y a pas de frais quand on appelle plus de vingt-quatre heures à l'avance, mais seulement si la question est posée.",
+            "Si on te demande le délai des résultats d'une prise de sang, tu dis trois jours ouvrables en général, sans rien promettre.",
+            "Tu emploies les mots du métier — déplacer, annuler, une plage, un suivi — sans les expliquer d'office.",
+        ],
+        "patient": [
+            "Ton horaire de travail a changé : tu commences à sept heures et tu finis à quinze heures.",
+            "Tu veux garder le rendez-vous mais à un autre moment : tu dis « déplacer », pas « annuler ».",
+            "Tu dis quand tu es libre : en fin de journée, ou très tôt le matin.",
+            "Si on te propose sept heures quinze, tu expliques que tu dois être au travail à sept heures ce jour-là.",
+            "Tu demandes si l'ancien rendez-vous est annulé et s'il y a des frais.",
+            "Tu répètes la nouvelle date et la nouvelle heure avant de raccrocher.",
+        ],
+    },
+    "annuler": {
+        "contexte": (
+            "Un appel d'annulation la veille du rendez-vous, parce qu'un "
+            "enfant est malade — et la reprise d'une date."
+        ),
+        "agente": [
+            "Tu retrouves le rendez-vous du lendemain, seize heures trente.",
+            "Tu demandes le nom et la date de naissance avant de toucher au dossier.",
+            "Tu comptes le délai à voix haute : plus de vingt-quatre heures avant, donc pas de frais d'absence ; moins, et la clinique facture.",
+            "Tu ne proposes une nouvelle date que si on te la demande — sinon tu annules et tu conclus.",
+            "Tu as deux ouvertures la semaine suivante : le mardi à quatorze heures, et le vendredi à seize heures quinze.",
+            "Tu expliques la différence entre une annulation et une absence seulement si on te pose la question.",
+            "Tu restes courtoise et brève : la personne est déjà dans une journée difficile.",
+        ],
+        "patient": [
+            "Ton garçon est malade et tu dois rester avec lui : tu annules le rendez-vous de demain, seize heures trente.",
+            "Tu donnes ton nom et ta date de naissance sans qu'on insiste.",
+            "Tu veux savoir s'il y a des frais, et si tu seras noté absent.",
+            "Tu demandes tout de suite un autre rendez-vous, le plus tôt possible.",
+            "Tu donnes un numéro où l'on peut te joindre, et tu le répètes.",
+            "Tu remercies et tu confirmes la nouvelle date avant de raccrocher.",
+        ],
+    },
+}
+
+
 JEU_DE_ROLE_SCENARIOS = {
+    "rendezvous": {
+        "cadre": "un appel téléphonique à une clinique, au sujet d'un rendez-vous médical",
+        "contexte_label": "La situation que vous avez tous les deux sous les yeux",
+        "cas": JEU_DE_ROLE_RENDEZVOUS,
+        "adresse": "Vouvoie l'élève : un appel à une clinique se fait au « vous », des deux côtés.",
+        "sujets": [
+            "la raison de l'appel, dite en une seule phrase",
+            "le nom, épelé au besoin, et le numéro de carte d'assurance maladie",
+            "ce qu'on a et depuis quand, en deux phrases",
+            "les disponibilités, avec la contrainte qui les explique",
+            "l'heure d'arrivée et ce qu'il faut apporter",
+            "le délai d'annulation, demandé et non attendu",
+            "la date et l'heure, répétées pour confirmation",
+        ],
+        "cloture": ("Quand les sujets sont couverts, récapitule en une phrase ce qui "
+                    "a été convenu — la date, l'heure, l'heure d'arrivée, ce qu'il faut "
+                    "apporter — et rappelle le délai d'annulation avant de raccrocher."),
+        "ouverture": {
+            "patient": "Bonjour, j'aimerais prendre un rendez-vous, s'il vous plaît.",
+            "agente": "Clinique de la Rive, bonjour. Comment puis-je vous aider ?",
+        },
+        "roles": {
+            "agente": {
+                "qui": ("Tu es l'agente administrative de la clinique. L'élève est la "
+                        "personne qui appelle."),
+                "conduite": ("Niveau 5 : l'élève doit tenir un échange suivi, pas répondre "
+                             "à un questionnaire. Tu es polie, calme et rapide, jamais sèche. "
+                             "Point capital : **tu ne donnes jamais un renseignement avant "
+                             "qu'on te le demande** — ni l'heure d'arrivée, ni ce qu'il faut "
+                             "apporter, ni le délai d'annulation. C'est tout l'exercice. "
+                             "Tu n'es pas soignante : si l'élève te décrit ses symptômes en "
+                             "détail, tu l'arrêtes gentiment et tu expliques que tu as besoin "
+                             "d'une phrase seulement, pour choisir la durée du rendez-vous. "
+                             "Tu demandes toujours depuis combien de temps ça dure : c'est ce "
+                             "qui décide de quinze ou de trente minutes. Si l'élève ne dit pas "
+                             "quand il est libre, tu proposes au hasard et tu le laisses "
+                             "refuser — sans jamais lui souffler qu'il devrait dire ses "
+                             "disponibilités. Ne rappelle jamais à l'élève ce qu'il a oublié "
+                             "de demander : la conversation doit lui apprendre le prix de la "
+                             "question manquante."),
+            },
+            "patient": {
+                "qui": ("Tu es la personne qui appelle la clinique. L'élève joue l'agente "
+                        "administrative et te répond."),
+                "conduite": ("Dis en une phrase pourquoi tu appelles, puis donne tes "
+                             "renseignements au fur et à mesure qu'on te les demande, jamais "
+                             "d'avance. Situe ton problème dans la durée avec « depuis » ou "
+                             "« ça fait… que », et emploie un gérondif pour dire à quel moment "
+                             "ça arrive (« en me levant »). Si l'élève ne te demande ni ton "
+                             "nom ni ton numéro de carte, ne les donne pas. Si aucune date ne "
+                             "t'est proposée, redemande-la. Avant de raccrocher, demande "
+                             "l'heure d'arrivée, ce qu'il faut apporter et le délai "
+                             "d'annulation, puis répète la date à voix haute. Reste courtois "
+                             "même si l'échange est laborieux."),
+            },
+        },
+    },
+
     "linge": {
         "cadre": "un achat de vêtements dans un grand magasin, au niveau débutant",
         "contexte_label": "Le rayon où vous vous trouvez",
