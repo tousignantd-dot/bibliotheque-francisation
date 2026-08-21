@@ -14,7 +14,7 @@ la paire change, on réécrit la répartition, pas le protocole.
 
 | Qui | Module | Slug | Activité | Format |
 |---|---|---|---|---|
-| A | Niveau 7 · Suivi de l'actualité | `module-n7-actualite` | **60** | 16 séances |
+| A | Niveau 7 · Suivi de l'actualité | `module-n7-actualite` | **60** | 16 séances · **livré** |
 | B | Niveau 8 · Emploi | `module-n8-emploi` | **61** | 16 séances |
 | C | Niveau 5 · Problèmes reliés à l'habitation | `module-n5-degat` | **62** | 16 séances |
 | D | Niveau 5 · Emménagement dans un nouveau logement | `module-n5-emmenagement` | **63** | 16 séances |
