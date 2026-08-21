@@ -3011,7 +3011,126 @@ JEU_DE_ROLE_DEMENAGEMENT = {
 }
 
 
+# Les trois cas du module de niveau 7 « Suivre l'actualité ». Ce que sait
+# l'interlocuteur vit ici, côté serveur : dans le HTML, l'élève lirait les
+# réponses dans la source de la page. Côté client, seule la situation
+# publique est donnée (build/contenu/module-n7-actualite/custom.js).
+JEU_DE_ROLE_ACTUALITE = {
+    "depot": {
+        "contexte": (
+            "Une conversation entre deux voisins au sujet du point de dépôt de "
+            "consigne qui pourrait ouvrir rue Boisjoli."
+        ),
+        "citoyen": [
+            "Tu as écouté le reportage de la radio du quartier et tu as lu l'article du lendemain.",
+            "Tu sais que le comité exécutif recommande le local de la rue Boisjoli, et que le conseil tranche le 14 octobre.",
+            "Tu sais que la consigne est de dix cents, et de vingt-cinq cents sur le verre de 500 ml et plus.",
+            "Tu sais que les heures d'ouverture ne sont pas fixées : c'est ce qui t'inquiète le plus.",
+            "Tu trouves le projet utile, mais tu veux une réponse sur l'horaire avant de te réjouir.",
+        ],
+        "voisin": [
+            "Tu n'as pas suivi le dossier et tu te fies à ce qu'on t'a raconté.",
+            "Tu crois que c'est la Ville qui va exploiter le dépôt : c'est faux, et tu le défends d'abord.",
+            "Tu penses que c'est déjà décidé et que ça ne sert à rien d'en parler.",
+            "Tu changes d'avis seulement si on te donne une date, un chiffre ou une source précise.",
+            "Tu finis par admettre que la question des heures d'ouverture est bonne.",
+        ],
+    },
+    "stationnement": {
+        "contexte": (
+            "Une discussion sur les huit places de stationnement situées devant "
+            "le dépanneur, dont deux seraient réservées aux usagers du dépôt."
+        ),
+        "citoyen": [
+            "Tu sais que deux des huit places seraient réservées, avec une limite de quinze minutes.",
+            "Tu sais que le commerçant d'en face craint de perdre des clients, et tu trouves son inquiétude légitime.",
+            "Tu penses qu'une place limitée à quinze minutes sert plus de monde qu'une place sans limite.",
+            "Tu te déplaces à pied et tu le dis, pour être honnête sur ton point de vue.",
+        ],
+        "voisin": [
+            "Tu tiens un commerce ou tu prends toujours ton auto : les places, tu y tiens.",
+            "Tu rappelles que la rue a été refaite il y a quatre ans et que le commerce en a souffert.",
+            "Tu exagères un peu : tu dis d'abord que les huit places seraient perdues, alors qu'il n'y en a que deux.",
+            "Tu acceptes la nuance si on te la donne calmement, avec le chiffre exact.",
+        ],
+    },
+    "chronique": {
+        "contexte": (
+            "Un échange sur la chronique du samedi, qui écrit que le projet a "
+            "été « imposé » au quartier."
+        ),
+        "citoyen": [
+            "Tu as lu la chronique et tu as vérifié : les chiffres qu'elle cite sont exacts.",
+            "Tu considères que le mot « imposé » est un jugement, pas un fait : le conseil vote en séance publique le 14 octobre.",
+            "Tu sais que toute séance du conseil comprend une période de questions pour les personnes présentes.",
+            "Tu reconnais que la chroniqueuse a raison sur un point : personne ne connaît les heures d'ouverture.",
+        ],
+        "voisin": [
+            "Tu as lu la même chronique et tu la prends entièrement pour de l'information.",
+            "Tu répètes que « ça a été imposé » sans voir que c'est une appréciation.",
+            "Tu mélanges les faits exacts du texte et les jugements de l'auteure, et tu défends le tout ensemble.",
+            "Tu acceptes de distinguer les deux si on te montre une phrase précise et qu'on te dit pourquoi.",
+        ],
+    },
+}
+
+
 JEU_DE_ROLE_SCENARIOS = {
+    "actualite": {
+        "cadre": "une conversation entre deux voisins sur une nouvelle du quartier",
+        "contexte_label": "La nouvelle que vous avez tous les deux en tête",
+        "cas": JEU_DE_ROLE_ACTUALITE,
+        "adresse": "Tutoie l'élève : vous êtes deux voisins qui se connaissent depuis des années.",
+        "sujets": [
+            "de quoi il s'agit, en deux ou trois phrases",
+            "d'où vient l'information, et si elle est confirmée",
+            "ce qui est établi et ce qui ne l'est pas encore",
+            "ce que la conseillère ou le commerçant a dit, rapporté correctement",
+            "le point qu'on accorde à l'autre avant d'objecter",
+            "l'opinion, annoncée comme une opinion et non comme un fait",
+            "la question que personne n'a encore posée",
+        ],
+        "cloture": ("Quand tout est dit, résume en une phrase ce sur quoi vous êtes "
+                    "d'accord, nomme le point qui reste en litige, et rappelle que le "
+                    "conseil se prononce le 14 octobre en séance publique."),
+        "ouverture": {
+            "citoyen": "As-tu entendu parler du local de la rue Boisjoli ? Il paraît qu'il va se passer quelque chose.",
+            "voisin": "Aïe, j'ai entendu dire qu'ils allaient nous mettre un dépôt de canettes en pleine rue. C'est vrai, ça ?",
+        },
+        "roles": {
+            "voisin": {
+                "qui": ("Tu es le voisin qui n'a pas suivi le dossier de près et qui "
+                        "n'a pas le même avis. L'élève est celui qui s'est informé."),
+                "conduite": ("Niveau 7 : des tours de parole longs et nuancés, jamais "
+                             "des répliques de trois mots. Développe en trois ou quatre "
+                             "phrases liées par des connecteurs — « par contre », "
+                             "« quant à », « autrement dit ». Défends d'abord ton idée "
+                             "reçue, même si elle est fausse : c'est ce qui oblige "
+                             "l'élève à citer une source et un chiffre. Ne cède qu'à un "
+                             "fait précis, jamais à un simple désaccord ; et quand tu "
+                             "cèdes, dis-le franchement au lieu de changer de sujet. "
+                             "Mélange volontairement un fait exact et un jugement dans "
+                             "la même phrase au moins une fois, pour que l'élève ait à "
+                             "les séparer. Reste cordial : vous vous croisez tous les "
+                             "jours."),
+            },
+            "citoyen": {
+                "qui": ("Tu es le voisin qui a écouté le reportage et lu l'article. "
+                        "L'élève est celui qui découvre la nouvelle et te questionne."),
+                "conduite": ("Raconte la nouvelle en discours suivi, pas en liste. "
+                             "Sépare toujours ce que tu sais de ce que tu supposes : "
+                             "emploie le conditionnel pour ce qui n'est pas confirmé "
+                             "(« le local serait loué pour cinq ans ») et rapporte au "
+                             "passé ce que les gens ont dit (« la conseillère a dit que "
+                             "la décision serait prise le 14 octobre »). Donne ton "
+                             "opinion seulement après les faits, et annonce-la comme "
+                             "une opinion. Accorde un point à l'élève avec « bien que » "
+                             "ou « même si » avant d'objecter. Si l'élève affirme "
+                             "quelque chose sans source, demande-lui gentiment où il l'a "
+                             "lu."),
+            },
+        },
+    },
     "demenagement": {
         "cadre": "un appel à une compagnie de déménagement",
         "contexte_label": "L'appel que vous avez tous les deux en tête",
