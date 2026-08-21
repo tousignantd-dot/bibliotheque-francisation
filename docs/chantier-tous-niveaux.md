@@ -835,3 +835,97 @@ langue du module : le même échange, joué deux fois, au « tu » puis au « vo
 `sommaire.py --verifier` signalent encore `module-n3-electro` et
 `module-n5-urgence` : ce sont les deux modules que les sessions voisines
 produisaient au même moment, pas des écarts de celui-ci.
+
+
+## Niveau 2 — `module-n2-classe` · Ouvrez votre cahier · **livré**
+
+Activité **89**, réservée d'avance par `docs/vagues-suivantes.md` (vague 4).
+Cinquième module **court** du dépôt, quatrième du niveau 2 : huit séances,
+deux défis, cinq sections, `GRILLE_COURTE`. Produit le 21 août 2026, en
+parallèle des activités 66 et 76.
+
+**Ce qui le distingue de ses voisins**, en une phrase : `module-n2-bonjour`
+salue un voisin dans une entrée d'immeuble et `module-procedure` (niveau 4)
+suit une marche à suivre écrite de plusieurs étapes — ici, la directive fait
+**trois mots**, commence par un verbe à l'impératif, et la bonne réponse de
+l'élève est souvent « pouvez-vous répéter ? ».
+
+**Le cadre l'a décidé.** `build/cadre.py 2 "Salle de classe"` ne donne que
+**trois** intentions, et deux d'entre elles sont la même : comprendre une
+directive à l'oral (CO), comprendre une directive à l'écrit (CE), donner des
+renseignements sur le fonctionnement de la classe et de l'établissement (PO).
+C'est le module le plus resserré du niveau, et c'est ce qui l'a structuré :
+Défi 1 pour la directive entendue, Défi 2 pour la directive lue — l'avis
+affiché près de la porte —, et « Je me lance » pour le renversement, où
+l'élève explique enfin ce qu'il a passé quatre séances à comprendre. La
+production écrite, qu'aucune intention ne réclame à ce niveau, se réduit à ce
+qu'un débutant écrit vraiment : un mot d'absence de trois lignes.
+
+Le lexique du programme est repris tel quel, sans un mot de plus : objets de la
+classe ; les cinq couleurs rouge, bleu, jaune, vert, noir ; pause, congé,
+calendrier ; permission, absence, retard ; et les énoncés à mémoriser — lisez,
+ouvrez, fermez, enlevez, donnez, mettez, écoutez, c'est permis, c'est interdit,
+soyez à l'heure.
+
+**Scénario.** Tariq est arrivé lundi au centre et s'assoit au premier rang, à
+côté de Myriam. Madame Leduc donne la première consigne du matin ; Tariq ne
+comprend pas et le dit. Il apprend les huit verbes, puis demande la permission
+de sortir, lit l'avis affiché, et prévient d'une absence pour un rendez-vous.
+À la dernière séance, c'est lui qui explique la classe à quelqu'un d'autre.
+
+**Huit mini-leçons** : la fin des mots en « é » · les couleurs de la classe ·
+la consigne commence par un verbe · où se place la couleur · quand je n'ai pas
+compris · demander la permission · permis, interdit · en retard, absent.
+
+**Le jeu de rôle a demandé un scénario neuf.** Aucun scénario existant ne
+convenait : `presenter` (niveau 1) s'arrête au nom, et ceux du niveau 4 tiennent
+une conversation suivie. `JEU_DE_ROLE_CLASSE` a donc été ajouté à `server.py` —
+trois cas (« je n'ai pas compris », « est-ce que je peux ? », « demain, je suis
+absent »), deux rôles, `moi` et `enseignante`, et une conduite qui impose une
+consigne à la fois et, surtout, de **répéter les mêmes mots plus lentement**
+plutôt que de reformuler : reformuler donnerait à l'élève une deuxième phrase
+inconnue à comprendre.
+
+**Médias.** 18 images (0,61 $) et 280 extraits audio (51 répliques sur six
+dialogues, 229 mots et phrases), sans un seul échec réseau. Tariq prend la voix
+masculine, Myriam la voix féminine 2, madame Leduc celle de l'enseignante
+ralentie à 0,85 — c'est elle qui donne toutes les consignes, et une consigne
+mal entendue fait rater l'exercice entier.
+
+**La difficulté propre à ce module est qu'une vraie salle de classe est pleine
+de texte** — au tableau, sur les cahiers, sur l'avis affiché — alors que le
+générateur a l'ordre de ne produire aucun mot lisible. Les prompts demandent
+donc des traces d'effacement grises, des pages lignées vides, des lignes
+d'écriture qui « se lisent comme des traits gris flous ». Deuxième difficulté,
+plus insidieuse : dix-huit images de la même pièce se ressemblent. Chaque
+prompt change donc de distance — le gros plan sur un objet posé, le pupitre vu
+de trois quarts, la salle vue du fond, la porte vue du corridor.
+
+**Huit séances.** 88 diapositives, 65 blocs de fiches. A2 est la séance de
+graphie-phonie et porte sur la terminaison **-ez**, qui se dit « é » : toutes
+les consignes de la classe finissent ainsi, et le z muet est l'erreur la plus
+audible du niveau. B2 porte le premier accord du programme — la couleur après
+l'objet, et son -e au féminin — que C2 réutilise aussitôt pour « absent /
+absente ». C2 est la séance de compréhension écrite, bâtie sur l'avis affiché
+près de la porte, avec la consigne d'apporter le vrai avis du centre.
+
+**Le relevé des sons s'est fait sans `build/collecte_sons.py`**, et c'est la
+seule chose neuve de cette production. Le script n'a **jamais** été lancé :
+`build/releve_sons.js`, écrit ici, reproduit hors navigateur les trois endroits
+du gabarit qui appellent `playWord`. Il a été validé en le rejouant sur
+`module-n2-bonjour`, dont il rend les 164 clés **et leurs valeurs** à l'octet
+près. Plus de port à surveiller, plus de collecteur oublié en tâche de fond,
+plus de relevé qui part écraser le fichier de sons d'un autre module.
+
+**Un piège de déploiement, à connaître.** Après le `git push`, le HTML du
+module a été servi par Railway **plusieurs minutes avant ses médias** : la page
+se chargeait, et les 301 images et MP3 répondaient tous 404. Ce n'est pas une
+synchronisation cassée, c'est le volume qui n'a pas fini de se remplir — ici,
+un peu plus de trois minutes. Vérifier en boucle sur un seul fichier plutôt que
+de conclure trop vite :
+
+    for i in $(seq 1 20); do curl -s -o /dev/null -w "%{http_code}\n" <url>; sleep 25; done
+
+**Les six contrôles** passent pour ce module. `sommaire.py --verifier` signale
+encore `module-n3-restaurant` (activité 77), produit au même moment par une
+session voisine : ce n'est pas un écart de celui-ci.

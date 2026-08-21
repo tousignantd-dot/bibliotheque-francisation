@@ -318,6 +318,19 @@ Deux pièges déjà payés :
   `playWord` — le bloc `savoir` (`ex.id+'_savoir_'+ri+'_'+wi`), les exercices
   `vf` à cartes (`ex.id+'_'+r.id`) et `plAudioManifest()` — et donnent le même
   résultat que la console, vérification faite.
+- **Le relevé des sons se fait maintenant par `build/releve_sons.js`**, et
+  `build/collecte_sons.py` n'a plus à être lancé du tout :
+
+      node build/releve_sons.js module-n2-classe > sons_module_n2_classe.json
+
+  Vingt lignes de node sur `exos.js`, `carrier.js` et `plus.js`, qui
+  reproduisent les trois endroits du gabarit appelant `playWord`. Écrit le
+  21 août 2026 en produisant `module-n2-classe`, et validé en le rejouant sur
+  `module-n2-bonjour` : il rend ses 164 clés **et leurs valeurs** à l'octet
+  près. Il supprime d'un coup les deux incidents ci-dessous — plus de port à
+  surveiller, plus de collecteur oublié en tâche de fond. Le point à ne pas
+  perdre si le gabarit change : le suffixe des clés de `plus.js` est
+  **l'indice du bloc** dans `blocs`, pas un compteur.
 - **Arrêter `build/collecte_sons.py` dès que le relevé est obtenu autrement.**
   Il n'expire pas : il attend un seul envoi, et il écrit `sons_<slug>.json`
   quand celui-ci arrive — même longtemps après qu'on a cessé d'y penser. Laissé

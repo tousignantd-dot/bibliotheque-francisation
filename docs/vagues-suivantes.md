@@ -435,6 +435,19 @@ Ce que le niveau 2 impose, et qu'un agent habitué au niveau 4 oublie :
 
 Dernier numéro réservé après cette vague : **95**.
 
+**21 août 2026 — l'activité 89 est livrée.** `module-n2-classe` · « Ouvrez
+votre cahier » : huit séances, 88 diapositives, 18 images, 280 extraits audio,
+les six contrôles verts pour ce module plus le `node --check`. Le journal
+détaillé est dans `docs/chantier-tous-niveaux.md`. **La file du niveau 2
+reprend à l'activité 90** (Orientation dans l'établissement,
+`module-n2-couloirs`).
+
+Une chose que cette production a apprise, et qui vaut pour toutes les
+suivantes : **le relevé des sons n'a plus besoin de `build/collecte_sons.py`**.
+`build/releve_sons.js` le fait hors navigateur, sans port à surveiller et sans
+risque d'écraser le fichier d'un autre module ; il a été validé en le rejouant
+sur `module-n2-bonjour`, dont il rend les 164 clés à l'octet près.
+
 **21 août 2026 — l'activité 88 est livrée.** `module-n2-bonjour` · « Bonjour,
 ça va ? » : huit séances, 93 diapositives, 18 images, 214 extraits audio, les
 six contrôles verts pour ce module plus le `node --check`. Le journal détaillé
