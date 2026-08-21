@@ -639,6 +639,33 @@ MODULES = {
                         "Le trajet refait"),
     },
 
+    # Niveau 5 · « Déplacements dans tout le Québec ». Le cadre donne trois
+    # intentions, et aucune ne parle de circulation : s'informer sur les
+    # régions du Québec et échanger avec les vacanciers ou les gens de la
+    # région visitée, chacune à l'oral, puis lire de l'information sur les
+    # régions. La situation, c'est sortir de la ville — on se renseigne, on
+    # réserve, on lit, on part, et on parle à des gens qu'on ne reverra pas.
+    # Rien à voir avec `module-n5-transport` (69), livré le même jour au même
+    # niveau, où la route est bloquée et où tout le travail est d'écouter un
+    # bulletin ; ici la route n'est pas bloquée, elle est longue : un horaire
+    # interurbain à lire, un billet à acheter, une valise à mettre en soute et
+    # cinq cents kilomètres à faire. Rien à voir non plus avec
+    # `module-deplacement` (niveau 4), qui compose un trajet dans une ville et
+    # lit un plan de métro, ni avec `module-n3-metro` (79), qui achète un
+    # titre au guichet et repart le jour même.
+    'module-n5-quebec': {
+        'numero': 10, 'activite': 70, 'niveau': 5,
+        'titre': "Une semaine au Bic",
+        'chapeau': "Se renseigner et réserver de vive voix au comptoir des "
+                   "autocars, lire l'horaire, la fiche du parc et la "
+                   "politique de bagages, puis jaser avec l'hôtesse du gîte "
+                   "et les gens de la région.",
+        'seances': GRILLE_3_DEFIS,
+        'blocs': _blocs("Au comptoir de la gare d'autocars",
+                        "Ce qui est écrit sur la région",
+                        "Sur place, avec les gens de la région"),
+    },
+
     'module-n6-recherche': {
         'numero': 1, 'activite': 59, 'niveau': 6,
         'titre': "Chercher un emploi",
