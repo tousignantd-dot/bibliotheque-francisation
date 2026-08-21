@@ -247,6 +247,17 @@ MODULES = {
                         'Choisir',
                         'À la caisse'),
     },
+    'module-n6-recherche': {
+        'numero': 1, 'activite': 59, 'niveau': 6,
+        'titre': "Chercher un emploi",
+        'chapeau': "Lire une offre d'emploi détaillée, s'informer sur "
+                   "l'entreprise, remplir une demande et offrir ses services "
+                   "en entrevue.",
+        'seances': GRILLE_3_DEFIS,
+        'blocs': _blocs("L'offre d'emploi",
+                        'La demande',
+                        "L'entrevue"),
+    },
 }
 
 # L'ordre d'affichage : par niveau, puis par numéro à l'intérieur du niveau.
