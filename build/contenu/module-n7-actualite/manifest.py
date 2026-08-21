@@ -44,7 +44,12 @@ MANIFESTE = {
                       "de l'opinion, réagit à un avis contraire sans le "
                       "rejeter, et concède un point avant de donner le sien.",
 
-    'bravo': "🎉 Bravo, vous avez terminé le module « Suivre l'actualité » !",
+    # L'apostrophe doit être échappée, comme dans `relance` : les deux valeurs
+    # sont injectées dans la même chaîne JavaScript à guillemets simples. Un
+    # titre sans apostrophe ne le montre pas — celui-ci, si : non échappée,
+    # elle ferme la chaîne et tout le script du module meurt sur une
+    # SyntaxError, donc plus un seul exercice ne s'affiche.
+    'bravo': "🎉 Bravo, vous avez terminé le module « Suivre l\\'actualité » !",
     'relance': "Vous pouvez revenir sur n\\'importe quel onglet pour "
                "pratiquer encore.",
 

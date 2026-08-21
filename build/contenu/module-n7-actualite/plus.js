@@ -97,6 +97,7 @@ const PLUS = {
              ['Des dates','le 1er novembre 2023 · le 14 octobre'],
              ['Des noms précis','le comité exécutif · le conseil municipal'],
              ['Un verbe neutre','est · a été retenu · comprend',true]],
+       say:"cent quarante mètres carrés, le quatorze octobre, le conseil municipal",
        note:"Le fait n'a besoin d'aucun adjectif pour tenir debout."},
 
       {t:'ana', h:"Les marques de l'opinion",
@@ -105,6 +106,7 @@ const PLUS = {
              ['Des adverbes','trop · enfin · encore une fois · malheureusement'],
              ['Des verbes','je trouve · je pense · il faudrait · on devrait',true],
              ['Des questions rhétoriques','« Faut-il vraiment attendre encore un an ? »']],
+       say:"ridicule, scandaleux, inacceptable, je trouve que, il faudrait",
        note:"Aucun de ces mots ne se vérifie. Deux personnes de bonne foi peuvent les employer en sens contraire."},
 
       {t:'texte', h:"Le cas difficile : le faux fait",
@@ -153,6 +155,7 @@ const PLUS = {
              ['Les terminaisons','-ais · -ais · -ait · -ions · -iez · -aient'],
              ['Le résultat','il ouvrir{ait} · ils ouvrir{aient}',true],
              ['Ça se prononce','[ɛ] au singulier comme au pluriel']],
+       say:"il ouvrira, il ouvrirait",
        note:"<b>il ouvrira</b> (futur) et <b>il ouvrirait</b> (conditionnel) ne diffèrent que par la fin. C'est peu, et c'est décisif."},
 
       {t:'ana', h:"Les trois verbes du journaliste",
@@ -223,6 +226,7 @@ const PLUS = {
        mots:[['Annoncer le plan','d\'abord · premièrement · commençons par'],
              ['Rappeler l\'acquis','rappelons que · on se souviendra que'],
              ['Ce que ça vous dit','ce qui suit est du contexte, pas la nouvelle',true]],
+       say:"D'abord, les faits. Rappelons que la consigne est de dix cents.",
        note:"« Rappelons que » signale une information ancienne. Si vous la connaissez déjà, vous pouvez relâcher l'attention deux secondes."},
 
       {t:'ana', h:"Changer de sujet : la topicalisation",
@@ -230,6 +234,7 @@ const PLUS = {
        mots:[['Les formules','quant à · en ce qui concerne · à propos de · à l\'égard de'],
              ['Un exemple','<i>Quant à la date d\'ouverture, elle n\'est pas arrêtée.</i>'],
              ['Ce que ça vous dit','nouveau sujet — remettez-vous en marche',true]],
+       say:"Quant à la date d'ouverture, elle n'est pas arrêtée.",
        note:"Elles sont toujours suivies du sujet dont on va parler. Le mot qui vient juste après vous donne le thème du paragraphe."},
 
       {t:'ana', h:"Ajouter, reformuler, conclure",
@@ -237,6 +242,7 @@ const PLUS = {
        mots:[['Ajouter un aspect','par ailleurs · d\'autre part'],
              ['Redire plus simplement','autrement dit · c\'est-à-dire · en d\'autres termes'],
              ['Résumer ou conclure','en somme · donc · par conséquent',true]],
+       say:"par ailleurs, autrement dit, en somme, par conséquent",
        note:"<b>Autrement dit</b> est un cadeau : le journaliste vient de dire quelque chose de technique et il le retraduit. Si vous avez manqué la version savante, la version simple arrive."},
 
       {t:'texte', h:"La différence entre « en somme » et « par conséquent »",
@@ -291,6 +297,7 @@ const PLUS = {
              ['Le participe passé','publié · retenu · pris · fixé'],
              ['Au passé composé','a été + participe passé',true],
              ['Un exemple','Le comité a retenu le local → Le local <b>a été retenu</b>']],
+       say:"Le local a été retenu par le comité.",
        note:"C'est <i>être</i> qui porte le temps. Le participe, lui, ne bouge pas."},
 
       {t:'ana', h:"L'accord se fait avec le sujet",
@@ -299,6 +306,7 @@ const PLUS = {
              ['Féminin singulier','La décision a été pris{e}'],
              ['Masculin pluriel','Les locaux ont été visit{és}'],
              ['Féminin pluriel','Les heures ont été fix{ées}',true]],
+       say:"Le dossier a été déposé. La décision a été prise. Les heures ont été fixées.",
        note:"Regardez le sujet, pas le complément. C'est lui qui commande la terminaison."},
 
       {t:'texte', h:"« Par » : présent, ou absent",
@@ -323,11 +331,11 @@ const PLUS = {
       {t:'piege', h:"Trois pièges",
        rows:[
          ["accorder avec le complément","accorder avec le sujet",
-          "<i>❌ La décision a été pris par le conseil.</i> → <i>✅ La décision a été pris<b>e</b>.</i> « Le conseil » est masculin, mais ce n'est pas le sujet."},
+          "<i>❌ La décision a été pris par le conseil.</i> → <i>✅ La décision a été pris<b>e</b>.</i> « Le conseil » est masculin, mais ce n'est pas le sujet."],
          ["oublier « été »","être + participe",
           "<i>❌ Le local a retenu par le comité.</i> Sans « été », la phrase dit le contraire : c'est le local qui retient quelqu'un."],
          ["employer la passive partout","alterner",
-          "Un texte tout en passives devient froid et lourd. Les articles alternent : deux ou trois passives, puis une active."},
+          "Un texte tout en passives devient froid et lourd. Les articles alternent : deux ou trois passives, puis une active."],
        ]},
 
       {t:'check', h:"Est-ce que c'est clair maintenant ?",
@@ -358,6 +366,7 @@ const PLUS = {
              ['Ce qui était en cours','présent → <b>imparfait</b>'],
              ['Ce qui restait à venir','futur → <b>conditionnel présent</b>',true],
              ['Variante parlée','futur proche → <b>allait</b> + infinitif']],
+       say:"passé composé, plus-que-parfait ; présent, imparfait ; futur, conditionnel présent",
        note:"Trois lignes. Presque tout le discours indirect au passé tient là-dedans."},
 
       {t:'ana', h:"Le plus-que-parfait : ce qui précède le passé",
@@ -399,11 +408,11 @@ const PLUS = {
       {t:'piege', h:"Trois pièges",
        rows:[
          ["garder le futur","le futur devient conditionnel",
-          "<i>❌ Elle a dit qu'elle me rappellera.</i> → <i>✅ qu'elle me rappellerait.</i> Après un verbe introducteur au passé, le futur ne survit pas."},
+          "<i>❌ Elle a dit qu'elle me rappellera.</i> → <i>✅ qu'elle me rappellerait.</i> Après un verbe introducteur au passé, le futur ne survit pas."],
          ["lire le conditionnel comme un doute","regarder le verbe introducteur",
-          "<i>Elle a promis qu'elle viendrait</i> ne dit aucun doute : elle a promis. C'est <i>selon nos informations, elle viendrait</i> qui doute."},
+          "<i>Elle a promis qu'elle viendrait</i> ne dit aucun doute : elle a promis. C'est <i>selon nos informations, elle viendrait</i> qui doute."],
          ["oublier de changer les pronoms","« vous » devient « me »",
-          "<i>« Je vous rappellerai » → elle a dit qu'elle <b>me</b> rappellerait.</i> Sans ce changement, on ne sait plus qui parle à qui."},
+          "<i>« Je vous rappellerai » → elle a dit qu'elle <b>me</b> rappellerait.</i> Sans ce changement, on ne sait plus qui parle à qui."],
        ]},
 
       {t:'check', h:"Est-ce que c'est clair maintenant ?",
@@ -435,6 +444,7 @@ const PLUS = {
              ['-ure','ouvrir → l\'ouvert{ure} · fermer → la fermet{ure}'],
              ['-age','dépanner → le dépann{age}',true],
              ['sans suffixe','reporter → le report · appeler → l\'appel']],
+       say:"l'installation, l'ouverture, la fermeture, le stationnement, le report",
        note:"Le genre suit le suffixe : <b>-tion</b> et <b>-ure</b> sont féminins, <b>-ment</b> et <b>-age</b> sont masculins. C'est une règle presque sans exception."},
 
       {t:'ana', h:"Ce que devient le reste de la phrase",
@@ -442,6 +452,7 @@ const PLUS = {
        mots:[['Phrase verbale','On a fermé <b>le local</b>.'],
              ['Phrase nominale','la fermeture <b>du</b> local'],
              ['Le sujet aussi','Les citoyens participent → la participation <b>des</b> citoyens',true]],
+       say:"la fermeture du local, la participation des citoyens",
        note:"« de + le » donne « du », « de + les » donne « des ». C'est le seul calcul à faire."},
 
       {t:'texte', h:"Ce qu'on gagne et ce qu'on perd",
@@ -464,9 +475,9 @@ const PLUS = {
       {t:'piege', h:"Deux pièges",
        rows:[
          ["inventer le nom","vérifier qu'il existe",
-          "Tous les verbes n'ont pas de nom en -tion. <i>❌ la retenition</i> pour « retenir » : le nom est <b>la rétention</b>, et il ne s'emploie pas ici. Dans le doute, gardez le verbe."},
+          "Tous les verbes n'ont pas de nom en -tion. <i>❌ la retenition</i> pour « retenir » : le nom est <b>la rétention</b>, et il ne s'emploie pas ici. Dans le doute, gardez le verbe."],
          ["se tromper de genre","suivre le suffixe",
-          "<b>-tion</b> et <b>-ure</b> : féminin. <b>-ment</b> et <b>-age</b> : masculin. <i>la décision, l'ouverture, le stationnement, le dépannage.</i>"},
+          "<b>-tion</b> et <b>-ure</b> : féminin. <b>-ment</b> et <b>-age</b> : masculin. <i>la décision, l'ouverture, le stationnement, le dépannage.</i>"],
        ]},
 
       {t:'check', h:"Est-ce que c'est clair maintenant ?",
@@ -516,6 +527,7 @@ const PLUS = {
              ['pourtant','C\'est un bon projet. Pourtant, personne n\'est content.'],
              ['quand même','Le local est petit ; il fera quand même l\'affaire.'],
              ['par contre','L\'idée est bonne. Par contre, la date est mauvaise.',true]],
+       say:"malgré le retard ; pourtant ; quand même ; par contre",
        note:"<b>Malgré</b> est suivi d'un <b>nom</b>, jamais d'une phrase. <i>❌ malgré qu'il soit tard</i> — dites <i>bien qu'il soit tard</i>."},
 
       {t:'texte', h:"L'ordre décide de ce qu'on retient",
@@ -538,7 +550,7 @@ const PLUS = {
          ["bien que + indicatif","bien que + subjonctif",
           "<i>❌ Bien que c'est une bonne idée…</i> → <i>✅ Bien que <b>ce soit</b> une bonne idée…</i> C'est l'erreur numéro un."],
          ["même si + subjonctif","même si + indicatif",
-          "<i>❌ Même si ce soit tard…</i> → <i>✅ Même si <b>c'est</b> tard…</i> Les deux marqueurs se ressemblent et ne se conduisent pas pareil."},
+          "<i>❌ Même si ce soit tard…</i> → <i>✅ Même si <b>c'est</b> tard…</i> Les deux marqueurs se ressemblent et ne se conduisent pas pareil."],
          ["malgré que","bien que",
           "<i>malgré que</i> s'entend, mais reste critiqué à l'écrit. Dans un texte que vous signez, écrivez <b>bien que</b>."],
        ]},
@@ -613,9 +625,9 @@ const PLUS = {
          ["choisir « que » à la place de « qui »","tester le sujet",
           "<i>❌ C'est le comité que a retenu…</i> Après le blanc, « a retenu » n'a pas de sujet : il faut <b>qui</b>."],
          ["oublier l'accord après « qui »","le verbe suit l'élément encadré",
-          "<i>❌ C'est moi qui est venue.</i> → <i>✅ C'est moi qui <b>suis</b> venue.</i>"},
+          "<i>❌ C'est moi qui est venue.</i> → <i>✅ C'est moi qui <b>suis</b> venue.</i>"],
          ["en mettre partout","un par paragraphe",
-          "La mise en relief perd tout effet si chaque phrase en porte une. Réservez-la à ce qui compte vraiment."},
+          "La mise en relief perd tout effet si chaque phrase en porte une. Réservez-la à ce qui compte vraiment."],
        ]},
 
       {t:'check', h:"Est-ce que c'est clair maintenant ?",
@@ -655,6 +667,7 @@ const PLUS = {
              ['c\'est-à-dire','sert aussi à définir un mot au passage'],
              ['en d\'autres termes','plus soutenu'],
              ['en somme','résume plusieurs phrases d\'un coup',true]],
+       say:"autrement dit, c'est-à-dire, en d'autres termes, en somme",
        note:"Écrire « autrement dit » vous oblige à formuler deux fois la même idée. C'est un excellent exercice : si la seconde version ne vient pas, c'est que la première n'était pas claire."},
 
       {t:'ana', h:"Conclure : tirer une conséquence",
@@ -663,6 +676,7 @@ const PLUS = {
              ['par conséquent','plus formel, à l\'écrit'],
              ['c\'est pourquoi','met la cause en avant'],
              ['La différence','<b>en somme</b> résume · <b>par conséquent</b> ajoute une conséquence',true]],
+       say:"donc, par conséquent, c'est pourquoi",
        note:"<i>« Le local est plus grand, par conséquent le comité l'a retenu. »</i> Il y a bien une conséquence. <i>« Par conséquent, merci de votre attention »</i> n'en a aucune : c'est la faute à éviter."},
 
       {t:'ex', h:"Six formules à réutiliser dans votre billet",
@@ -679,11 +693,11 @@ const PLUS = {
       {t:'piege', h:"Trois pièges",
        rows:[
          ["lire « ne… que » comme une négation","c'est « seulement »",
-          "<i>Il n'a répondu qu'à deux questions</i> ne veut pas dire qu'il n'a pas répondu. Il a répondu à deux."},
+          "<i>Il n'a répondu qu'à deux questions</i> ne veut pas dire qu'il n'a pas répondu. Il a répondu à deux."],
          ["placer « que » n'importe où","juste devant l'élément restreint",
-          "<i>Je ne lis <b>que</b> le journal le samedi</i> (rien d'autre que le journal) ≠ <i>Je ne lis le journal <b>que</b> le samedi</i> (aucun autre jour)."},
+          "<i>Je ne lis <b>que</b> le journal le samedi</i> (rien d'autre que le journal) ≠ <i>Je ne lis le journal <b>que</b> le samedi</i> (aucun autre jour)."],
          ["conclure sans conséquence","garder « en somme » pour résumer",
-          "« Par conséquent » annonce un effet. S'il n'y en a pas, employez « en somme » ou ne mettez rien."},
+          "« Par conséquent » annonce un effet. S'il n'y en a pas, employez « en somme » ou ne mettez rien."],
        ]},
 
       {t:'check', h:"Est-ce que c'est clair maintenant ?",
