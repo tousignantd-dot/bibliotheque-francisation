@@ -402,7 +402,7 @@ lui impose **d'objecter au moins une fois** avant de bouger : c'est là que la
 compétence du niveau 8 se joue, et un interlocuteur trop conciliant ne fait
 rien travailler.
 
-**Deux pièges payés, à ne pas repayer.**
+**Trois pièges payés, à ne pas repayer.**
 
 - Le manifeste des sons se relève d'ordinaire dans le navigateur. Le poste n'a
   pas de Node, mais il a **`jsc`**
@@ -410,6 +410,16 @@ rien travailler.
   les quatre fichiers de contenu s'y chargent tels quels et la logique de
   `plAudioManifest()` s'y rejoue en vingt lignes. Résultat comparé au relevé du
   navigateur : 152 entrées de part et d'autre.
+- **Le HTML produit par `build/module.py` est versionné, et rien ne le
+  commite pour vous.** Les seize séances, les seize fiches, les dix-sept
+  images, les relevés et le journal étaient en ligne ; la page que l'élève
+  ouvre, non — elle répondait 404 en production pendant que tout le reste
+  répondait 200. Le `git add` par chemins explicites, qui protège le travail
+  des autres sessions, a exactement ce revers : ce qu'on n'a pas nommé n'est
+  pas commité. Vérifier avant de conclure :
+
+      git status --short assets/interactive/<slug>/
+
 - Un bloc `ana` **sans `say`** ne produit pas un extrait audio : il produit la
   **concaténation de sa colonne `mots`**, balises `<i>` comprises, qui serait
   lue telle quelle à l'élève. Vingt-neuf blocs étaient dans ce cas. Écrire un
