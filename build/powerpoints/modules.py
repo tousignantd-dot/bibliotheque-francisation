@@ -296,6 +296,16 @@ MODULES = {
                         'Comparer deux prix',
                         "L'étiquette et le paiement"),
     },
+    'module-n3-electro': {
+        'numero': 3, 'activite': 76, 'niveau': 3,
+        'titre': 'Acheter un appareil',
+        'chapeau': "Lire une circulaire, trouver le rayon, demander le prix "
+                   "d'un appareil, payer et faire livrer.",
+        'seances': GRILLE_3_DEFIS,
+        'blocs': _blocs('Lire la circulaire',
+                        'Trouver le rayon et demander',
+                        'Payer et faire livrer'),
+    },
     # ── Niveau 5 ────────────────────────────────────────────────────
     # `module-logement` (niveau 4) traite la même situation du programme, mais
     # s'arrête à la visite et à la comparaison. Ici, on téléphone, on prend des
