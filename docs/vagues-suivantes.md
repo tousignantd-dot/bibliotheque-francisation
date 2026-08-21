@@ -200,3 +200,40 @@ Ce que cette nuit a appris, et qui est déjà écrit là où il faut :
 
 **La file reprend à l'activité 65** (niveau 5 · Consultation d'un professionnel
 de la santé), consigne prête dans `docs/consignes-a-coller.md`.
+
+
+## Vague 4 — le niveau 2 au complet
+
+Ajoutée le 21 août 2026, à la demande de l'utilisateur (« les modules suivants
+du niveau 2 »). `module-n2-autobus` (activité 57) est le premier du niveau ;
+restent les **neuf autres situations**, activités **87 à 95**, au **format
+court** — huit séances, deux défis, deux blocs de quatre heures, `GRILLE_COURTE`
+dans `build/powerpoints/modules.py`, comme le niveau 1.
+
+| `numero` | Situation | Slug | Activité |
+|---|---|---|---|
+| 2 | Achat d'aliments ou de produits d'entretien | `module-n2-panier` | **87** |
+| 3 | Relations sociales | `module-n2-bonjour` | **88** |
+| 4 | Salle de classe | `module-n2-classe` | **89** |
+| 5 | Orientation dans l'établissement | `module-n2-couloirs` | **90** |
+| 6 | Inscription | `module-n2-inscription` | **91** |
+| 7 | Météo | `module-n2-neige` | **92** |
+| 8 | Transactions bancaires | `module-n2-guichet` | **93** |
+| 9 | Démarches à la poste | `module-n2-colis` | **94** |
+| 10 | Communication avec le personnel de l'établissement | `module-n2-secretaire` | **95** |
+
+L'ordre suit la vie de l'élève dans son centre et son quartier : on fait son
+épicerie, on salue ses voisins, on s'installe en classe, puis viennent les
+démarches (inscription, banque, poste, secrétariat).
+
+Ce que le niveau 2 impose, et qu'un agent habitué au niveau 4 oublie :
+
+- **Le format court**, `GRILLE_COURTE` et deux défis — pas seize séances.
+- **Des énoncés très courts** : deux ou trois répliques, du présent, pas de
+  subordonnée. Le lexique du programme suffit presque ; ne pas l'enrichir de
+  mots du niveau 4.
+- **Le jeu de rôle** : les scénarios de `server.py` écrits pour le niveau 4
+  sont trop lourds (six étapes, noms de terminus). En ajouter un, court.
+- **Le numéro d'activité est réservé ici**, jamais « le prochain libre ».
+
+Dernier numéro réservé après cette vague : **95**.
