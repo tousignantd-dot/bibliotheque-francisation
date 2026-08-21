@@ -3075,7 +3075,137 @@ JEU_DE_ROLE_ACTUALITE = {
 }
 
 
+# Les trois cas du module de niveau 8 « Tenir son bout au travail ». Ce que
+# sait l'interlocuteur vit ici, côté serveur : dans le HTML, l'élève lirait
+# les réponses dans la source de la page. Côté client, seule la situation
+# publique est donnée (build/contenu/module-n8-emploi/custom.js).
+JEU_DE_ROLE_EMPLOI = {
+    "paie": {
+        "contexte": (
+            "Un appel au service administratif au sujet de quatre heures "
+            "supplémentaires payées au taux simple."
+        ),
+        "employe": [
+            "Tu as travaillé 44 heures la semaine du 10 août, dont 4 au-delà de 40.",
+            "Ta superviseure t'a demandé de rester le mardi et le mercredi soir, par courriel.",
+            "Le relevé montre bien 44 heures, mais toutes au taux simple.",
+            "Tu sais qu'au-delà de 40 heures par semaine, la majoration est de 50 % : c'est la norme du travail, pas une politique de l'entreprise.",
+            "Tu veux une correction sur la prochaine paie et une confirmation écrite.",
+            "Tu restes cordial : la personne au bout du fil n'a pas commis l'erreur.",
+        ],
+        "service": [
+            "Tu es au service de la paie. Tu vois bien les 44 heures saisies au dossier.",
+            "Dans ton système, l'autorisation et la majoration sont deux champs différents : sans autorisation, les heures sortent au taux régulier.",
+            "Tu ne contestes pas la règle des 50 % ; tu n'as simplement pas le droit de corriger sans approbation.",
+            "Il te faut un courriel de la superviseure confirmant les heures et la date, avec la mention « heures supplémentaires autorisées ».",
+            "La période de paie se ferme le mercredi midi ; passé ce moment, la correction glisse à la paie suivante.",
+            "Si on te le demande, tu vérifies les autres périodes et tu trouves le même écart sur la semaine précédente.",
+            "Tu acceptes d'envoyer une confirmation écrite avec un numéro de dossier si l'élève la demande.",
+        ],
+    },
+    "horaire": {
+        "contexte": (
+            "Un appel au sujet d'un horaire modifié dans le système sans que "
+            "personne n'ait prévenu la personne concernée."
+        ),
+        "employe": [
+            "Ton horaire de la semaine prochaine est passé de deux à trois soirs, sans avis.",
+            "Tu suis un cours le mercredi soir et tu l'avais annoncé en juin.",
+            "Tu ne refuses pas les soirs : tu demandes un autre jour que le mercredi.",
+            "Tu proposes une solution plutôt que d'exiger : le jeudi t'irait.",
+            "Tu veux savoir qui a fait la modification et comment être prévenue la prochaine fois.",
+        ],
+        "service": [
+            "Tu gères les horaires. La modification vient d'un manque de personnel au service à la clientèle.",
+            "Tu crois d'abord que l'avis a été envoyé : vérification faite, il ne l'a pas été.",
+            "Tu expliques que les horaires se ferment le jeudi pour la semaine suivante.",
+            "Tu peux échanger le mercredi contre le jeudi si l'élève le demande clairement et propose l'échange.",
+            "Tu tiens à ce que le nombre de soirs reste à trois cette semaine-là : c'est le seul point non négociable.",
+            "Tu proposes d'inscrire une note permanente au dossier pour le mercredi, si on te le demande.",
+        ],
+    },
+    "facture": {
+        "contexte": (
+            "Un appel à un fournisseur au sujet d'une facture de 1 840 $ "
+            "réglée deux fois, dont le crédit n'est pas apparu."
+        ),
+        "employe": [
+            "La facture 4471, de 1 840 $, a été payée deux fois : le 3 et le 17 juillet.",
+            "Tu as signalé l'erreur il y a trois semaines et on t'a promis un crédit.",
+            "Le crédit n'apparaît sur aucun des deux derniers états de compte.",
+            "Tu as les deux numéros de confirmation de paiement sous les yeux.",
+            "Tu veux une date de remboursement, pas une note de crédit à appliquer plus tard.",
+        ],
+        "service": [
+            "Tu es au service des comptes clients du fournisseur.",
+            "Tu retrouves les deux paiements, mais le dossier a été fermé par erreur le 24 juillet.",
+            "Ta politique habituelle est d'émettre une note de crédit sur la prochaine commande.",
+            "Tu acceptes un remboursement par virement si l'élève explique pourquoi la note de crédit ne convient pas.",
+            "Tu demandes les deux numéros de confirmation avant de rouvrir le dossier.",
+            "Tu peux t'engager sur un délai de dix jours ouvrables, pas moins.",
+        ],
+    },
+}
+
+
 JEU_DE_ROLE_SCENARIOS = {
+    "emploi": {
+        "cadre": "un appel pour régler un problème administratif au travail",
+        "contexte_label": "Le dossier que vous avez tous les deux sous les yeux",
+        "cas": JEU_DE_ROLE_EMPLOI,
+        "adresse": "Vouvoie l'élève : c'est un appel professionnel entre deux personnes qui ne se connaissent pas.",
+        "sujets": [
+            "qui appelle, et de quel dossier il s'agit",
+            "les faits, avec leurs dates et leurs chiffres",
+            "l'écart constaté, nommé sans accuser personne",
+            "l'objection de procédure, et la réponse qu'on y donne",
+            "la règle ou la pièce qui appuie la demande",
+            "ce qu'il faut, de qui, et pour quand",
+            "la confirmation écrite, et les remerciements",
+        ],
+        "cloture": ("Quand tout est dit, récapitule ce que tu vas faire, nomme la "
+                    "date à laquelle ce sera fait, offre d'envoyer une confirmation "
+                    "écrite avec un numéro de dossier, et remercie la personne "
+                    "d'avoir été claire."),
+        "ouverture": {
+            "employe": "Bonjour, Nadia Kessab, de Valmont, à Laval. J'appelle au sujet d'un dossier qui n'est pas réglé.",
+            "service": "Service administratif, bonjour. Qu'est-ce que je peux faire pour vous ?",
+        },
+        "roles": {
+            "service": {
+                "qui": ("Tu es l'employé du service administratif. L'élève est la "
+                        "personne qui appelle pour faire corriger quelque chose."),
+                "conduite": ("Niveau 8 : des tours de parole développés, trois ou "
+                             "quatre phrases liées, jamais des répliques de trois "
+                             "mots. Tu n'es pas de mauvaise foi, mais tu as des "
+                             "procédures et tu objectes au moins une fois avant de "
+                             "bouger — c'est ce qui oblige l'élève à tenir son bout. "
+                             "Emploie la voix passive pour parler des erreurs (« le "
+                             "dossier a été fermé par erreur ») et le conditionnel "
+                             "pour ce qui n'est pas confirmé. Ne cède qu'à un fait "
+                             "précis : une date, un chiffre, une pièce, une règle. "
+                             "Si l'élève hausse le ton ou menace, reste calme et "
+                             "rappelle la procédure ; s'il expose calmement, avance "
+                             "d'un cran. Ne propose jamais toi-même la confirmation "
+                             "écrite : attends qu'on te la demande. Termine par un "
+                             "engagement daté."),
+            },
+            "employe": {
+                "qui": ("Tu es la personne qui appelle pour faire corriger un "
+                        "dossier. L'élève tient le service administratif et doit "
+                        "gérer ta demande."),
+                "conduite": ("Expose ton problème en discours suivi, avec des dates "
+                             "et des chiffres, sans agressivité. Nomme l'écart à la "
+                             "voix passive plutôt que d'accuser. Si l'élève t'oppose "
+                             "une procédure, demande précisément ce qu'il te faut, "
+                             "de qui et pour quand, au lieu de discuter la procédure "
+                             "elle-même. Réutilise ce qu'on te répond : « si je "
+                             "comprends bien, il faudrait que… ». Demande une "
+                             "confirmation écrite avant de raccrocher, en disant "
+                             "pourquoi. Remercie si l'élève a fait son travail."),
+            },
+        },
+    },
     "actualite": {
         "cadre": "une conversation entre deux voisins sur une nouvelle du quartier",
         "contexte_label": "La nouvelle que vous avez tous les deux en tête",
