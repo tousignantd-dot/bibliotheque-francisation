@@ -434,6 +434,119 @@ identique à un énoncé d'un autre module du dépôt. Rien n'a été copié d'u
 manuel ; le programme n'a donné que la spécification.
 
 
+## Niveau 7 — `module-n7-actualite` · Suivre l'actualité · **livré**
+
+Produit le 21 août 2026, en parallèle du niveau 8. Activité **60**, `numero` 1
+dans le niveau 7, seize séances, indigo `#3B49A0` — la couleur du niveau, qui
+ne se choisit plus.
+
+**Le scénario.** Farida Benali, éducatrice en CPE, s'est mise à suivre
+l'actualité de son quartier depuis qu'un projet municipal touche sa rue. Sa
+voisine Suzie Lamontagne anime le blogue du quartier ; Ludovic Chagnon,
+journaliste à la radio communautaire, signe le reportage et l'entrevue ;
+Hélène Ferron est la conseillère, Benoît Sarrazin le dépanneur d'en face,
+Marjolaine Cusson la résidente sans auto. Quatre pas : elle écoute un
+reportage, elle lit un article, elle démêle le fait de l'opinion dans une
+chronique, elle écrit son propre billet. Le module va du bruit de
+l'information à la prise de parole.
+
+**Ce que ce niveau porte de neuf, et qu'aucun module précédent n'avait.**
+
+- **Des discours longs.** La compétence vise des textes et des échanges
+  étendus, pas des dialogues de trois répliques. Le reportage fait dix-sept
+  répliques, l'entrevue vingt-deux, plusieurs de quatre ou cinq phrases. Le
+  Défi 1 est donc bâti sur la **méthode des trois écoutes** — une pour le
+  sujet, une pour les chiffres, une pour ce qui est confirmé — et chaque
+  séance du bloc B en fait une. C'est le découpage qui rend un extrait long
+  travaillable ; sans lui, il est seulement décourageant.
+- **Aucun lexique fourni.** `build/cadre.py 7 "Suivi de l'actualité"` rend
+  zéro entrée : le document de lexique ne couvre pas cette situation. Les
+  dix-huit mots du banc sont composés à partir des savoirs et des intentions,
+  comme le script l'annonce lui-même.
+- **Un scénario de jeu de rôle neuf.** `actualite` dans `server.py` : deux
+  voisins qui discutent d'une nouvelle, trois cas, deux rôles. Le voisin
+  sceptique défend d'abord une idée reçue fausse — que la Ville exploitera le
+  dépôt — pour obliger l'élève à citer une source ; et il mêle une fois un
+  fait exact à un jugement, pour qu'il ait à les séparer. Vérifié dans les
+  deux sens : `jr_scenario`, `jr_cas` et `jr_role` du manifeste existent bien
+  côté serveur. Rien ne le vérifie au build, et l'échec ne se verrait que chez
+  l'élève.
+
+**Le même conditionnel, deux fois, et le module le dit.** Au Défi 1 il marque
+l'information non confirmée (« le local *serait* loué ») ; au Défi 2 la
+postériorité dans le discours rapporté (« elle a promis qu'elle *rappellerait*
+»). C'est le verbe introducteur qui tranche, et la mini-leçon `t2indirect` le
+pose explicitement comme le piège du bloc. Les élèves qui ont bien compris B3
+sur-interprètent en C3 : c'est bon signe, et il faut l'attendre.
+
+**Les faits québécois, vérifiés et non inventés.** Deux seulement, et ils
+portent tout le dossier :
+
+- la **consigne** est de 0,10 $ sur les contenants visés et de 0,25 $ sur le
+  verre de 500 ml et plus, en vigueur depuis le **1er novembre 2023** ; les
+  contenants de plastique sont visés depuis le **1er mars 2025** ; le verre et
+  les multicouches s'ajouteront en **mars 2027**. Vérifié sur RECYC-QUÉBEC et
+  Consignaction, et sur l'annonce gouvernementale de la réforme.
+- toute **séance du conseil** d'une municipalité comprend une **période de
+  questions** où les personnes présentes peuvent interroger les élus ; le
+  conseil en fixe la durée et la procédure par règlement. Vérifié à
+  l'article 322 de la *Loi sur les cités et villes*.
+
+Tout le reste — le quartier du Ruisseau, la rue Boisjoli, la radio
+communautaire, le blogue, les six personnages — est **inventé**, et la séance
+B2 le dit au groupe en toutes lettres : un élève doit savoir ce qu'il peut
+répéter à l'extérieur du cours. C'est la raison pour laquelle aucune vraie
+municipalité n'est nommée : prêter un projet fictif à une ville réelle aurait
+fabriqué exactement le genre de fausse information que le module apprend à
+repérer.
+
+**Deux fautes trouvées en chemin, toutes deux dans le contenu, toutes deux
+invisibles au build.**
+
+1. L'apostrophe de `bravo` n'était pas échappée dans le manifeste. Elle est
+   injectée dans une chaîne JavaScript à guillemets simples, exactement comme
+   `relance` — dont la documentation, elle, signale l'échappement. Non
+   échappée, elle ferme la chaîne : `SyntaxError`, script mort, plus un seul
+   exercice affiché. Aucun module précédent ne l'avait rencontrée parce
+   qu'aucun titre ne contenait d'apostrophe ; « Suivre l'actualité », si.
+2. Treize lignes de bloc `piege` de `plus.js` étaient fermées par `}` au lieu
+   de `]`. Même effet, même invisibilité.
+
+D'où **une vérification qui manquait à la chaîne** et qui est maintenant dans
+`CLAUDE.md` : extraire le plus gros script inline du HTML produit et le passer
+à `node --check`. Le build assemble du JavaScript qu'il ne lit jamais ; sans ce
+contrôle, la première personne à voir l'erreur est l'élève.
+
+**Un détail des mini-leçons, à retenir pour les prochains modules.** Un bloc
+`ana` sans champ `say:` ne fait pas taire le bouton d'écoute : le moteur
+concatène toutes les lignes du tableau, balises comprises, et l'extrait part
+lire « cent quarante mètres carrés huit places quinze minutes le 1er novembre
+2023 ». Quatorze blocs étaient dans ce cas. **Tout bloc `ana` veut son
+`say:`.**
+
+**Les médias.** Treize images en 3:2 par fal.ai (environ 0,44 $) — six pour le
+glisser-déposer, sept pour le banc. Le sujet étant l'information écrite,
+presque chaque image contient du papier, un écran ou un micro : chaque prompt
+exige que toute ligne de texte soit un trait gris. Vérifié sur
+`journal-etale`, la plus risquée : ni mot ni manchette lisibles.
+
+Côté audio, **201 extraits** attendus — 80 répliques et 121 sons — et la même
+panne intermittente d'ElevenLabs que le niveau 8 a rencontrée le même jour. Le
+générateur `generer_audio_module_n7_actualite.py` est écrit, relançable, et
+son manifeste `sons_module_n7_actualite.json` est complet (121 entrées,
+relevés dans le navigateur). Il saute ce qui existe déjà :
+
+    python3 generer_audio_module_n7_actualite.py
+
+Aucun `AUDIO_V` à incrémenter : ce sont des fichiers neufs.
+
+**Originalité : 3 %.** Sur 218 énoncés visibles par l'élève, six sont
+identiques à un énoncé d'un autre module du dépôt, et les six sont des
+consignes génériques imposées par le moteur — « Le mot et sa définition »,
+« Glissez chaque photo sur la phrase qui la décrit ». Sous le seuil de 5 %.
+Rien n'a été copié d'un manuel ; le programme n'a donné que la spécification.
+
+
 ## La couleur d'un module est devenue celle de son niveau
 
 Décidé par l'utilisateur le 20 août 2026, au milieu de ce chantier, et

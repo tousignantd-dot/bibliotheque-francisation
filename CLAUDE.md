@@ -278,6 +278,31 @@ Deux pièges déjà payés :
   gabarit : `build/greffe_depot_ecrit.py` la pose. L'ancien script croyait la
   remplacer et son `replace` était sans effet — code mort découvert en
   généralisant.
+- **Le build assemble du JavaScript qu'il ne lit jamais.** Une apostrophe non
+  échappée ou une accolade à la place d'un crochet, quelque part dans les sept
+  fichiers de contenu, produit un HTML de la bonne taille, sans erreur, dont le
+  script entier meurt sur une `SyntaxError` : plus un seul exercice ne
+  s'affiche, et la première personne à le voir est l'élève. Le contrôle qui
+  manquait, à passer après chaque `build/module.py` :
+
+      python3 - <<'PY' > /tmp/inline.js
+      import re, pathlib, sys
+      h = pathlib.Path(sys.argv[1]).read_text(encoding='utf-8')
+      print(max(re.findall(r'<script(?![^>]*\bsrc=)[^>]*>(.*?)</script>', h, re.S), key=len))
+      PY
+      node --check /tmp/inline.js
+
+  Deux façons de tomber dedans, toutes deux rencontrées le 21 août 2026 en
+  produisant le niveau 7 : le champ **`bravo`** du manifeste doit échapper son
+  apostrophe (`l\\'actualité`) au même titre que `relance`, dont la
+  documentation le disait déjà — aucun module ne l'avait montré avant, parce
+  qu'aucun titre ne contenait d'apostrophe ; et les lignes d'un bloc `piege` de
+  `plus.js` sont des **tableaux**, donc fermées par `]`, jamais par `}`.
+- **Tout bloc `ana` d'une mini-leçon veut son champ `say:`.** Sans lui, le
+  bouton d'écoute ne se tait pas : le moteur concatène toutes les lignes de
+  `mots`, balises HTML comprises, et l'extrait audio part lire « cent quarante
+  mètres carrés huit places quinze minutes le 1er novembre 2023 ». Ça ne se
+  voit qu'au relevé des sons, une fois les MP3 payés.
 
 ### Les contrôles avant de publier un module
 
