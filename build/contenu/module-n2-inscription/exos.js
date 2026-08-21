@@ -41,7 +41,7 @@ const EXOS = [
    ]},
 
   {sec:'prep', id:'prImg', type:'imgmatch', num:'Exercice 3', tit:"Ce qu'on voit au secrétariat", color:'#0D7A6F',
-   sub:"Glisse chaque photo sur la phrase qui la décrit.",
+   sub:"Glisse chaque photo du secrétariat sur la phrase qui la décrit.",
    images:[
     {id:'is1', src:'/assets/interactive/module-n2-inscription/images/comptoir-secretariat.jpg'},
     {id:'is2', src:'/assets/interactive/module-n2-inscription/images/formulaire-vide.jpg'},
@@ -65,8 +65,8 @@ const EXOS = [
      ["Devant un mot masculin","<span class='savoir-ex'><b>Quel</b> est votre nom ? · <b>Quel</b> est votre prénom ?</span>", ["prénom"]],
      ["Devant un mot féminin","<span class='savoir-ex'><b>Quelle</b> est votre adresse ? · <b>Quelle</b> est votre date de naissance ?</span>", ["adresse"]],
      ["Les deux se disent pareil","On entend « kèl » dans les deux cas. Seule l'écriture change.", ["date de naissance"]],
-     ["Plus court, à l'oral","<span class='savoir-ex'>Votre nom, s'il vous plaît. · Votre courriel ?</span>", ["courriel"]],
-     ["Quand on n'a pas compris","<span class='savoir-ex'>Pouvez-vous répéter, s'il vous plaît ?</span>"],
+     ["Plus court, au comptoir","<span class='savoir-ex'>Votre nom, s'il vous plaît. · Votre courriel ?</span>", ["courriel"]],
+     ["Quand la question va trop vite","<span class='savoir-ex'>Pouvez-vous répéter, s'il vous plaît ?</span>"],
    ]},
    items:[
     {q:"___ est votre nom de famille ?", accept:["Quel","quel"], ph:"Quel / Quelle"},
@@ -215,7 +215,7 @@ const EXOS = [
    ]},
 
   {sec:'t2', id:'t2mon', type:'write', num:'Exercice 4', tit:"Mon, ma, mes — votre, vos", color:'#B45309', cols:2,
-   sub:"Complète avec « mon », « ma », « mes », « votre » ou « vos ».",
+   sub:"Complète le dialogue du comptoir avec « mon », « ma », « mes », « votre » ou « vos ».",
    savoir:{h:"› Le mot qui dit à qui c'est", speak:true, rows:[
      ["La secrétaire parle de toi","<span class='savoir-ex'><b>votre</b> nom · <b>votre</b> adresse · <b>vos</b> papiers</span>", ["adresse"]],
      ["Toi, tu parles de toi","<span class='savoir-ex'><b>mon</b> nom · <b>ma</b> rue · <b>mes</b> papiers</span>", ["nom de famille"]],

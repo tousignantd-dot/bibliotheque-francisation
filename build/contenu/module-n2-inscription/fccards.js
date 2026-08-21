@@ -2,7 +2,7 @@ const FC_CARDS = [
   {word:"une inscription", def:"Ce qu'on fait pour entrer dans un cours : un papier et des questions.", ex:"L'<strong>inscription</strong> se fait au local 005.", img:"/assets/interactive/module-n2-inscription/vocab/inscription.jpg", tache:"prep"},
   {word:"un formulaire", def:"La feuille avec des cases vides à remplir.", ex:"Voici le <strong>formulaire</strong> d'inscription.", img:"/assets/interactive/module-n2-inscription/vocab/formulaire.jpg", tache:"prep"},
   {word:"une case", def:"Le petit espace vide où on écrit une seule réponse.", ex:"J'écris onze dans la <strong>case</strong> « scolarité ».", img:"/assets/interactive/module-n2-inscription/vocab/case.jpg", tache:"prep"},
-  {word:"le secrétariat", def:"Le bureau du centre où on s'inscrit et où on donne ses papiers.", ex:"Le <strong>secrétariat</strong> est au rez-de-chaussée.", img:"/assets/interactive/module-n2-inscription/vocab/secretariat.jpg", tache:"prep"},
+  {word:"le secrétariat", def:"Le bureau du centre où on s'inscrit et où on donne ses papiers.", ex:"Je vais au <strong>secrétariat</strong> pour mon inscription.", img:"/assets/interactive/module-n2-inscription/vocab/secretariat.jpg", tache:"prep"},
   {word:"une signature", def:"Son nom écrit à la main, au bas de la page.", ex:"Il manque votre <strong>signature</strong> en bas.", img:"/assets/interactive/module-n2-inscription/vocab/signature.jpg", tache:"prep"},
 
   {word:"une annonce", def:"Le petit papier affiché qui donne un renseignement.", ex:"Marco montre une <strong>annonce</strong> à Yara.", img:"/assets/interactive/module-n2-inscription/vocab/annonce.jpg", tache:"t1"},

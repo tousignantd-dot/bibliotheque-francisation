@@ -7,7 +7,7 @@ const CARRIER_PHRASES = {
   'inscription':        "L'inscription se fait au local 005.",
   'formulaire':         "Voici le formulaire d'inscription.",
   'case':               "J'écris onze dans la case « scolarité ».",
-  'secrétariat':        "Le secrétariat est au rez-de-chaussée.",
+  'secrétariat':        "Je vais au secrétariat pour mon inscription.",
   'signature':          "Il manque votre signature en bas de la page.",
   'annonce':            "Marco montre une annonce à Yara.",
   'cours':              "Le cours de français commence le 7 septembre.",
