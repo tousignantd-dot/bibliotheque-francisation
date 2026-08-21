@@ -288,6 +288,24 @@ MODULES = {
                         'Permission, retard, absence'),
     },
 
+    # Niveau 5 du programme au sens des situations : « Orientation dans
+    # l'établissement ». Trois intentions seulement, et elles disent toutes la
+    # même chose — se renseigner sur la localisation, en donner, lire le plan
+    # d'un établissement de formation. Le module tient donc entièrement sur
+    # les repères du bâtiment : un numéro de porte, un étage, un corridor.
+    # Distinct de `module-n2-autobus` (57), qui est dehors et se repère à des
+    # noms de rues ; distinct de `module-n2-classe` (89), qui ne quitte pas
+    # une seule salle. Ici l'élève circule, et ce qui le guide est un chiffre.
+    'module-n2-couloirs': {
+        'numero': 5, 'activite': 90, 'niveau': 2,
+        'titre': 'Où est le local 214 ?',
+        'chapeau': "Lire le plan du centre, comprendre un numéro de porte, "
+                   "demander son chemin et l'indiquer à quelqu'un.",
+        'seances': GRILLE_COURTE,
+        'blocs': _blocs('Le plan et les numéros',
+                        'Demander son chemin'),
+    },
+
     # ── Niveau 3 ────────────────────────────────────────────────────
     'module-n3-epicerie': {
         'numero': 1, 'activite': 55, 'niveau': 3,
@@ -336,6 +354,28 @@ MODULES = {
         'blocs': _blocs('Lire le menu',
                         'Commander au comptoir',
                         'Comprendre le préposé'),
+    },
+    # Au niveau 3, la pharmacie tient tout un module, sans médecin : le
+    # programme n'y met que trois intentions, et elles sont étroites —
+    # « décrire un problème de santé courant » et « demander le renouvellement
+    # de l'ordonnance d'un médicament » en production orale, « lire une
+    # posologie » en compréhension écrite. Les trois défis sont ces trois
+    # intentions, dans cet ordre.
+    #
+    # `module-consultation` (niveau 4, activité 45) mêle la pharmacie au
+    # rendez-vous médical : on y choisit le bon endroit où consulter, on
+    # raconte l'histoire de son mal, on remplit des formulaires. Ici, il n'y a
+    # ni médecin, ni salle d'attente, ni papier à remplir : il y a deux
+    # comptoirs, une carte d'assurance maladie et une étiquette à lire.
+    'module-n3-pharmacie': {
+        'numero': 5, 'activite': 78, 'niveau': 3,
+        'titre': 'Aller à la pharmacie',
+        'chapeau': "Dire ce qui ne va pas depuis quand, faire renouveler une "
+                   "ordonnance et lire la posologie sur l'étiquette.",
+        'seances': GRILLE_3_DEFIS,
+        'blocs': _blocs('Dire ce qui ne va pas',
+                        "Renouveler l'ordonnance",
+                        'Lire la posologie'),
     },
     # ── Niveau 5 ────────────────────────────────────────────────────
     # `module-logement` (niveau 4) traite la même situation du programme, mais
@@ -466,6 +506,33 @@ MODULES = {
         'blocs': _blocs("La boîte vocale et la note",
                         "Le mode d'emploi",
                         "La demande de congé"),
+    },
+
+    # Niveau 5 · Relations sociales. Le cadre du programme donne dix
+    # intentions, et elles ne parlent presque pas de bavardage : accepter ou
+    # refuser avec justification une offre ou une invitation, féliciter
+    # quelqu'un, enregistrer un message d'accueil téléphonique, laisser un
+    # message téléphonique, rédiger un mot à partir des notes prises en
+    # écoutant un message, clavarder ou écrire un bref courriel pour donner
+    # des nouvelles. Recevoir et donner des nouvelles n'est plus la matière du
+    # module : c'en est le fil. Ne recoupe pas `module-relations` (48), au
+    # niveau 4, où l'on raconte ses semaines et son passé dans une activité de
+    # loisir ; ici l'échange se prolonge et se justifie, et il passe autant par
+    # le téléphone et l'écrit que par la conversation. Ne recoupe pas non plus
+    # `module-n5-travail` (67), dont la boîte vocale et la note d'appel sont
+    # celles d'un bureau : ici le répondeur est celui de la maison, le mot se
+    # laisse sur une table et les félicitations sont sincères, pas polies.
+    'module-n5-voisinage': {
+        'numero': 8, 'activite': 68, 'niveau': 5,
+        'titre': "La ruelle en fête",
+        'chapeau': "Accepter ou refuser une invitation en disant pourquoi, "
+                   "laisser un message sur un répondeur et en tirer un mot "
+                   "lisible, puis donner des nouvelles et féliciter "
+                   "quelqu'un, de vive voix comme par écrit.",
+        'seances': GRILLE_3_DEFIS,
+        'blocs': _blocs("L'invitation",
+                        "Le message et le mot",
+                        "Les nouvelles et les félicitations"),
     },
 
     'module-n6-recherche': {
