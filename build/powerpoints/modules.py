@@ -247,6 +247,22 @@ MODULES = {
                         'Choisir',
                         'À la caisse'),
     },
+    # ── Niveau 5 ────────────────────────────────────────────────────
+    # `module-logement` (niveau 4) traite la même situation du programme, mais
+    # s'arrête à la visite et à la comparaison. Ici, on téléphone, on prend des
+    # notes et on lit son bail — d'où un slug qui porte le niveau.
+    'module-n5-logement': {
+        'numero': 1, 'activite': 58, 'niveau': 5,
+        'titre': 'Louer un logement',
+        'chapeau': "Se renseigner par téléphone et prendre des notes, "
+                   "comprendre et donner des renseignements pendant une "
+                   "visite, lire son bail et son avis de renouvellement.",
+        'seances': GRILLE_3_DEFIS,
+        'blocs': _blocs("L'appel",
+                        'La visite',
+                        'Le bail'),
+    },
+
     'module-n6-recherche': {
         'numero': 1, 'activite': 59, 'niveau': 6,
         'titre': "Chercher un emploi",
