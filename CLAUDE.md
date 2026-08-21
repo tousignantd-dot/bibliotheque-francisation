@@ -360,6 +360,14 @@ elles, donc ils font partie du même passage :
     python3 build/controles/pieds_de_page.py        # le numéro inscrit dans les .pptx livrés
     python3 build/powerpoints/sommaire.py --verifier # le sommaire ↔ les séances existantes
 
+Le second a une **étape d'écriture** que rien d'autre ne fait : ni
+`build.py` ni `build_fiches.py` ne produisent
+`assets/powerpoints/<slug>/presentations.html`. Tant que
+`python3 build/powerpoints/sommaire.py <slug>` n'a pas été lancé, le contrôle
+sort « lien diaporamas cassé » pour le module neuf — ce n'est pas un écart à
+diagnostiquer, c'est une commande qui manque à la séquence. Vu le 21 août 2026
+en produisant `module-n3-electro`.
+
 Les deux premiers sont des **relevés** : ils déduisent du disque ce que le
 portail affiche, et un écart veut dire qu'un module a été produit sans que le
 relevé soit refait. Les deux suivants tiennent la règle des couleurs — un
