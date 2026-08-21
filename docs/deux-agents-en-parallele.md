@@ -14,34 +14,27 @@ la paire change, on réécrit la répartition, pas le protocole.
 
 | Qui | Module | Slug | Activité | Format |
 |---|---|---|---|---|
-| Session A (celle qui a écrit ce fichier) | Niveau 5 · Location d'un logement | `module-n5-logement` | **58** | 16 séances |
-| Session B (toi, si tu lis ceci) | Niveau 6 · Recherche d'emploi | `module-n6-recherche` | **59** | 16 séances |
+| Session A | Niveau 7 · Suivi de l'actualité | `module-n7-actualite` | **60** | 16 séances |
+| Session B | Niveau 8 · Emploi | `module-n8-emploi` | **61** | 16 séances |
 
-**Le niveau 6 est livré** (20 août 2026) : module, 15 images, 244 MP3,
-16 présentations, 16 fiches, le scénario `entrevue` dans `server.py`, et en
-ligne. Le journal est dans `chantier-tous-niveaux.md`. Le protocole a tenu :
-aucun conflit, aucun travail écrasé, quatre points de contact seulement —
-`modules.py`, `activities.json`, `server.py`, et les deux relevés de la
-livraison.
+C'est la vague 1 de `docs/vagues-suivantes.md`, lancée le 20 août 2026 pendant
+que `module-n5-logement` finissait ses images — donc trois sessions dans le
+dépôt un moment, une de plus que ce que ce fichier recommande. Raison assumée :
+l'utilisateur est absent et le niveau 5 est à son dernier pas.
+
+Les niveaux 5 et 6 de la répartition précédente sont livrés (activités 58 et
+59). Les vingt-cinq consignes des vagues suivantes sont écrites d'avance dans
+`docs/consignes-a-coller.md`, numéros d'activité réservés jusqu'à 86.
 
 **Les numéros d'activité sont réservés d'avance, et c'est le point le plus
 important de ce fichier.** Le numéro d'activité est la clé qui relie
 `build/powerpoints/modules.py`, `data/activities.json` et le portail. Deux
 agents qui prennent « le prochain numéro libre » à dix minutes d'intervalle
-prennent le même. 58 est à A, 59 est à B, même si B publie le premier.
+prennent le même.
 
 Le format long, seize séances, se prend dans `build/powerpoints/modules.py` :
 `GRILLE_3_DEFIS` (quatre séances par bloc, trois défis) ou `GRILLE_2_DEFIS`
 (deux défis plus longs). `GRILLE_COURTE` est réservée aux niveaux 1 et 2.
-
-Sur le slug : le tableau de `chantier-tous-niveaux.md` annonçait
-`module-n6-emploi`. À éviter — la situation « Emploi » du programme est celle
-retenue pour le **niveau 8**, et les deux slugs se ressembleraient trop pour
-des modules très différents. Les niveaux 1 et 2 ont déjà quitté le slug annoncé
-pour la même raison : le slug nomme le scénario, pas la situation du
-programme. `module-n6-recherche` est la proposition ; si tu préfères autre
-chose, change-le **avant** d'écrire quoi que ce soit, et dis-le à l'autre
-session.
 
 
 ## Les cinq règles
