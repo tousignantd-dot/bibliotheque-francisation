@@ -80,6 +80,7 @@ La mesure est donc l'autre : on compare les énoncés visibles par l'élève
 |---|---|---|---|---|
 | module-n5-logement | 162 | 0 | 0 % | 🟢 |
 | module-n5-rendezvous | 136 | 0 | 0 % | 🟢 |
+| module-n5-urgence | 283 | 0 | 0 % | 🟢 |
 
 Comparé aux 1 949 énoncés des quatorze autres modules de `build/contenu/`.
 Les consignes courtes (« Écoutez de nouveau le dialogue, puis répondez. »)
@@ -93,3 +94,17 @@ visibles de 25 caractères ou plus ont été comparés aux 2 618 des vingt-deux
 autres modules de `build/contenu/`. Aucun n'est identique. La situation du
 programme ne fournissant aucun lexique, les seize mots du banc sont eux aussi
 composés à partir des savoirs du niveau.
+
+`module-n5-urgence` (activité 66), mesuré le 21 août 2026 : ses 283 énoncés
+visibles de plus de douze caractères — consignes, titres d'exercices, intitulés
+de bandeau noir compris, donc un relevé plus sévère que celui du module
+précédent — ont été comparés aux 6 001 des vingt-trois autres modules de
+`build/contenu/`. Première mesure : 16 identiques, soit 5,7 %, toutes des
+consignes génériques (« Le mot et sa définition », « Écoutez le dialogue du
+Défi 1, puis répondez. ») ou des intitulés de règle (« La forme négative »).
+Elles ont été reformulées avec les mots du module — « Réécoutez l'appel de deux
+heures du matin, puis répondez. » — ce qui ramène la mesure à **0 identique**.
+
+L'opération est sans risque à condition de vérifier une chose : ni les `sub` ni
+les `tit` d'un exercice n'entrent dans le relevé des sons. Le manifeste des 183
+extraits est resté identique avant et après, donc aucun MP3 n'a été à refaire.

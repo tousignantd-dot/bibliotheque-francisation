@@ -201,6 +201,65 @@ Ce que cette nuit a appris, et qui est déjà écrit là où il faut :
 **La file reprend à l'activité 65** (niveau 5 · Consultation d'un professionnel
 de la santé), consigne prête dans `docs/consignes-a-coller.md`.
 
+**21 août 2026 — activité 66, `module-n5-urgence`.** « Une nuit à l'urgence »,
+niveau 5, `numero` 6. Scénario inventé : Marisol Quintero, 38 ans, arrivée de
+Colombie il y a trois ans, opératrice dans une buanderie industrielle de
+Saint-Léonard ; sa mère Amparo, 71 ans, fait de la fièvre depuis deux jours et
+répète que ce n'est rien, puis tombe dans l'escalier à deux heures du matin.
+Patrick tient la ligne d'Info-Santé, Vincent celle du 9-1-1, Karine le comptoir
+du triage, la docteure Lamontagne l'unité de soins, et Julio est le frère resté
+à Laval qui ne sait encore rien. 19 exercices, 12 mini-leçons, 4 dialogues,
+16 mots, 19 images, **283 extraits audio**, 16 séances (190 diapositives,
+138 blocs de fiches). Originalité : 283 énoncés visibles, **0 identique** dans
+les 6 001 énoncés des vingt-trois autres modules de `build/contenu/`.
+
+*Ce qui le distingue de son voisin du 4* : `module-urgence` (activité 36) fait
+**raconter après coup** un accident de travail — une brûlure — à l'urgence puis
+à l'accueil, et l'élève y est le blessé. Ici l'élève accompagne quelqu'un
+d'autre : il compose le 9-1-1 **pendant** que ça se passe et doit tenir un
+appel où c'est l'autre qui mène, puis il traverse le triage, l'attente, une
+hospitalisation de trois jours et un congé — tout ce que le niveau 4 ne fait
+pas. Le programme ne donne qu'une intention pour cette situation, en CO et en
+PO — « téléphoner au 9-1-1 et au 8-1-1 » — et aucun lexique : les seize mots
+sont inventés à partir des savoirs. La progression grammaticale vient du même
+endroit : nasales [ɑ̃]/[ɔ̃] au téléphone, impératif présent et place du pronom
+au défi 1, imparfait contre passé composé et interrogation indirecte au défi 2,
+futur simple et discours rapporté au défi 3. Un scénario `urgence911` a été
+ajouté à `server.py` : aucun des existants ne convenait, tous mettant en scène
+un service qui répond à une demande, alors que le répartiteur mène l'échange
+dans un ordre fixe, ne console pas, ne diagnostique pas, interrompt le récit
+pour redemander l'adresse et n'autorise pas à raccrocher.
+
+*Les faits québécois ont été vérifiés, pas inventés*, auprès de Québec.ca, du
+MSSS et d'Urgences-santé : 8-1-1 gratuit jour et nuit toute l'année ; échelle
+canadienne de triage et de gravité à cinq niveaux, évaluation de moins de cinq
+minutes ; transport ambulancier facturé environ 125 $ plus 1,75 $ le kilomètre,
+payé pour les 65 ans et plus **lorsque le médecin de l'établissement confirme
+après coup** que le transport était nécessaire — la nuance compte, et le module
+la porte telle quelle.
+
+Trois choses apprises, qui valent pour les modules restants :
+
+- **Les symboles de l'alphabet phonétique n'existent pas dans Verdana.** Le
+  contrôle de glyphes de `theme.py` arrête le build sur `ɑ̃`, `ɔ̃`, `ɛ̃` — et
+  sur la flèche `→`, qu'on emploie pourtant volontiers dans un tableau de
+  transformation. Le module interactif, lui, les affiche très bien : c'est une
+  contrainte des séances seulement. La séance de phonétique dit donc « an » et
+  « on », et les tableaux disent « donne » au lieu de la flèche.
+- **Le contrôle de densité des tableaux se déclenche vite** : quatre tableaux
+  ont dû être raccourcis, cellule par cellule. Écrire court dès le départ coûte
+  moins cher que raccourcir après coup.
+- **Reformuler les consignes génériques à la fin ne coûte rien** — à condition
+  de vérifier que le relevé des sons est identique avant et après. Seize
+  coïncidences ont fait passer l'originalité de 5,7 % à 0 % sans qu'un seul MP3
+  soit à refaire : ni les identifiants, ni les textes lus à voix haute ne
+  touchent aux `sub` et aux `tit` des exercices.
+
+*Sur les contrôles* : les six passent, plus le `node --check` du script produit.
+`sommaire.py --verifier` signale encore deux liens cassés — `module-n3-restaurant`
+(77) et `module-n2-classe` (89), inscrits au registre par les deux sessions
+voisines mais pas encore produits. Ce ne sont pas des écarts de ce module.
+
 **21 août 2026 — activité 65, `module-n5-rendezvous`.** « Prendre rendez-vous
 chez le médecin », niveau 5, `numero` 5. Scénario inventé : Rachid Benali,
 52 ans, préposé à l'entretien dans une école de Longueuil, a des
