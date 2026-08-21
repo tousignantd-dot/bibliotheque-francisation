@@ -243,9 +243,14 @@ pour tous les modules :
   fichiers. Le gabarit fait `CARRIER_PHRASES[w]` **sans normaliser** : une clé
   `avis_modification` n'est jamais trouvée, et le mot part seul à la synthèse,
   mal accentué — précisément ce que le mécanisme existe pour éviter.
-  `module-n3-epicerie` porte le même défaut (clés `allee`, `special` contre les
-  mots `allée`, `spécial`) : ses mots isolés partent seuls. Non corrigé ici,
-  c'est le module d'une autre session.
+  `module-n3-epicerie` portait le même défaut (clés `allee`, `special` contre
+  les mots `allée`, `spécial`) : ses mots isolés partaient seuls. **Corrigé le
+  21 août 2026** — `carrier.js` réécrit avec les mots accentués, module
+  reconstruit, quatre MP3 refaits (`pr1_savoir_0_0`, `pr1_savoir_2_0`,
+  `t1ou_savoir_0_0`, `t2danger_savoir_0_0`). Le relevé passé au même moment sur
+  tous les `build/contenu/*/carrier.js` laisse deux modules qui portent encore
+  le défaut, à corriger : `module-n1-presenter` (`prenom`, `epeler`, `de_rien`)
+  et `module-n2-autobus` (`tout_droit`).
 - **Une carte de phonétique ne porte jamais un fragment nu.** Les huit cartes
   disaient « sur le », « dans la ». Envoyé seul à la synthèse, un fragment de
   ce genre ressort **sur-articulé** — le contraire exact de ce que la leçon

@@ -1616,26 +1616,40 @@ function pronMatches(said, target){
 // ⚠️ À reproduire dans TOUS les futurs modules dès qu'un mot isolé est
 // demandé en prononciation (voir aussi memory: cours-niveau4-modules.md).
 const CARRIER_PHRASES = {
-  'allee':          "La farine est dans l'allée douze.",
-  'affichette':     "Lisez l'affichette au-dessus de l'allée.",
-  'tablette':       "Les grands sacs sont sur la tablette du bas.",
-  'panier':         "Prends un panier, on achète peu de choses.",
-  'depanneur':      "L'épicerie est fermée : va au dépanneur.",
-  'circulaire':     "La circulaire arrive le mercredi.",
-  'special':        "Le poulet est en spécial cette semaine.",
-  'livre':          "C'est trois dollars la livre.",
-  'paquet':         "Prends un paquet de pâtes.",
-  'conserve':       "Deux boîtes de conserve, s'il vous plaît.",
-  'mise_en_garde':  "Cette bouteille a une mise en garde.",
-  'caisse':         "Il y a trois personnes à la caisse.",
-  'facture':        "Vérifiez votre facture avant de partir.",
-  'sac':            "Les sacs réutilisables sont à deux dollars.",
-  'carte_de_points':"Vous avez la carte de points ?",
-  'treize':         "Treize dollars, pas trente.",
-  'quinze':         "Allée quinze, tout au fond.",
-  'kilo':           "Un kilo de pommes, s'il vous plaît.",
-  'rabais':         "Avec la carte, vous avez un rabais.",
-  'gants':          "Mettez des gants pour ce produit.",
+  // Les clés sont les mots **exactement tels qu'ils sont écrits** dans les
+  // listes `savoir[…][2]` de exos.js — accents et espaces compris. Le gabarit
+  // fait `CARRIER_PHRASES[w]` sur le mot affiché : une clé en forme de slug
+  // (`allee` pour « allée ») n'est jamais trouvée, et la pastille lit alors le
+  // mot seul, mal prononcé. Corrigé le 21 août 2026 ; douze clés étaient des
+  // slugs.
+
+  // Les lieux et le matériel du magasin
+  'allée':           "La farine est dans l'allée douze.",
+  'affichette':      "Lisez l'affichette au-dessus de l'allée.",
+  'tablette':        "Les grands sacs sont sur la tablette du bas.",
+  'panier':          "Prends un panier, on achète peu de choses.",
+  'dépanneur':       "L'épicerie est fermée : va au dépanneur.",
+
+  // Les prix et les quantités
+  'circulaire':      "La circulaire arrive le mercredi.",
+  'spécial':         "Le poulet est en spécial cette semaine.",
+  'livre':           "C'est trois dollars la livre.",
+  'kilo':            "Un kilo de pommes, s'il vous plaît.",
+  'paquet':          "Prends un paquet de pâtes.",
+  'conserve':        "Deux boîtes de conserve, s'il vous plaît.",
+  'treize':          "Treize dollars, pas trente.",
+  'quinze':          "Allée quinze, tout au fond.",
+  'rabais':          "Avec la carte, vous avez un rabais.",
+
+  // Les avertissements
+  'mise en garde':   "Cette bouteille a une mise en garde.",
+  'gants':           "Mettez des gants pour ce produit.",
+
+  // La caisse
+  'caisse':          "Il y a trois personnes à la caisse.",
+  'facture':         "Vérifiez votre facture avant de partir.",
+  'sac':             "Les sacs réutilisables sont à deux dollars.",
+  'carte de points': "Vous avez la carte de points ?",
 };
 function pronCheck(btn, expected){
   const SRC = window.SpeechRecognition || window.webkitSpeechRecognition;

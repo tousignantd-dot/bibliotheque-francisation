@@ -305,8 +305,15 @@ Deux pièges déjà payés :
   mal prononcé, ce que la phrase porteuse existe précisément pour éviter.
   Rien ne le signale : le build passe, l'audio se paie, et le défaut ne
   s'entend qu'à l'écoute. Découvert le 21 août 2026 en produisant
-  `module-n3-vetements` ; `module-n3-epicerie` le porte encore sur douze de
-  ses quinze mots.
+  `module-n3-vetements`. `module-n3-epicerie` a été corrigé le même jour —
+  quatre pastilles lisaient le mot seul (`allée`, `dépanneur` deux fois,
+  `mise en garde`), quatre MP3 refaits. Le relevé passé sur les vingt et un
+  `build/contenu/*/carrier.js` en laisse **deux** qui portent encore le
+  défaut, non corrigés : `module-n1-presenter` (`prenom`, `epeler`, `de_rien`
+  contre « prénom », « épeler », « de rien ») et `module-n2-autobus`
+  (`tout_droit` contre « tout droit »). Le même relevé, en trente lignes de
+  node sur `fccards.js`+`exos.js`+`carrier.js`, est ce qui attrape le défaut ;
+  des clés simplement **inutilisées** sont normales et ne se corrigent pas.
 - **`carrier.js` doit commencer par `const CARRIER_PHRASES = `**, comme les
   six autres fichiers de contenu commencent par le leur. Un commentaire
   d'en-tête arrête le build : le commentaire va **dans** l'objet.
