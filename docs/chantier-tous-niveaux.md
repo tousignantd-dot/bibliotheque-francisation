@@ -756,3 +756,82 @@ prix, dont « 3,99 $ / kg », qui est le piège réel de l'épicerie.
 aussi dans une chaîne JavaScript à guillemets simples : « Achat d'aliments ou
 de produits d'entretien » a dû s'écrire `d\\'aliments`, exactement comme
 `bravo` et `relance`. Le build s'arrête proprement et le dit.
+
+## Niveau 2 — `module-n2-bonjour` · Bonjour, ça va ? · **livré**
+
+Activité **88**, réservée d'avance par `docs/vagues-suivantes.md` (vague 4).
+Quatrième module **court** du dépôt, troisième du niveau 2 : huit séances,
+deux défis, cinq sections, `GRILLE_COURTE`. Produit le 21 août 2026, en
+parallèle des niveaux 3 et 5.
+
+**Ce qui le distingue de ses voisins**, en une phrase : `module-n1-presenter`
+apprend à dire son nom et `module-relations` (niveau 4) tient une conversation
+suivie qui raconte au passé — ici, on entre dans un échange de deux ou trois
+répliques, au présent, avec quelqu'un qu'on **recroisera demain matin** dans
+l'entrée de l'immeuble.
+
+**Le cadre l'a décidé.** `build/cadre.py 2 "Relations sociales"` donne cinq
+intentions, et elles couvrent les quatre compétences : comprendre une demande
+d'aide (CO), décrire ses activités quotidiennes (PO), comprendre des souhaits
+ou des remerciements et choisir une carte de vœux (CE), rédiger des souhaits
+et des remerciements simples (PE). C'est le premier module court du dépôt dont
+le programme réclame les quatre — d'où deux défis nettement séparés : l'échange
+parlé, puis l'aide et l'écrit.
+
+**Scénario.** Nadia habite au troisième et croise madame Roy, sa voisine
+retraitée du deuxième, chaque matin dans l'entrée. Au centre, elle tutoie son
+camarade Samir ; avec madame Roy, elle vouvoie — et madame Roy la tutoie. Puis
+la voisine revient de l'épicerie les mains pleines et demande de l'aide ;
+samedi, c'est sa fête, et Nadia écrit une carte.
+
+**Six mini-leçons** : la voix qui monte et la voix qui descend · bonjour,
+bonsoir, bonne journée · tu ou vous · ma journée au présent · demander de
+l'aide · merci et bonne fête.
+
+**Le jeu de rôle a demandé un scénario neuf.** Le scénario `relations` existe,
+mais il est écrit pour le niveau 4 : conversation suivie, récit au passé.
+`JEU_DE_ROLE_BONJOUR` a donc été ajouté à `server.py` — trois cas (l'entrée le
+matin, l'ascenseur avec les sacs, la carte de fête), deux rôles, `moi` et
+`voisine`, et une conduite qui impose deux ou trois répliques, une seule
+question à la fois, jamais de passé.
+
+**Médias.** 18 images (0,61 $) et 214 extraits audio (50 répliques sur six
+dialogues, 164 mots et phrases), sans un seul échec réseau. Nadia prend la voix
+féminine 2, madame Roy celle de l'enseignante ralentie à 0,85, Samir la voix
+masculine — les trois se répondent, aucune voix n'est partagée.
+
+**La difficulté propre à ce module est que ses images montrent des gens qui se
+parlent**, alors que le générateur a l'ordre de ne produire aucune personne
+identifiable. Les prompts demandent donc des silhouettes de dos, des mains, des
+pieds, ou la pièce juste après que la personne est passée : se croiser dans un
+hall, tenir une porte, marcher sur un trottoir. Le geste se lit ; aucun visage
+n'apparaît.
+
+**Huit séances.** 93 diapositives, 70 blocs de fiches. A2 est la séance de
+phonétique et porte sur l'**intonation** — la voix qui monte pour demander,
+qui descend pour répondre —, le premier savoir prosodique que le programme
+demande au niveau 2, et « ça va » l'offre tout fait. B1 porte le point de
+langue du module : le même échange, joué deux fois, au « tu » puis au « vous ».
+
+**Deux pièges, dont un neuf.**
+
+- **Les flèches ↗ et ↘ ne sont pas dans Verdana**, et le garde-fou de
+  `theme.py` refuse la production tant qu'elles restent dans un deck. C'est la
+  règle « rien qui sorte de Verdana » appliquée à un cas qu'on ne voit venir
+  qu'en écrivant une séance de prosodie : l'intonation se dit alors en mots
+  (« la voix monte »), ce qui est de toute façon plus clair projeté. Les
+  flèches restent dans le module interactif, que le navigateur rend bien.
+- **`build/collecte_sons.py` écoute un port, et le port peut être déjà pris.**
+  Lancé sur 8799 pendant qu'une autre session y écoutait, il a échoué au
+  démarrage — `Address already in use`, dans un `nohup` dont personne ne lit la
+  sortie — et le relevé envoyé depuis le navigateur est allé écrire dans le
+  `sons_<slug>.json` **de l'autre module**. Rien n'a été perdu (la session
+  voisine a régénéré le sien), mais l'incident est le même que celui déjà
+  documenté dans `CLAUDE.md` : un collecteur qui n'est pas le sien répond « ok »
+  sans qu'on puisse le distinguer. **Vérifier que le port est libre avant de
+  lancer, et vérifier le nom du fichier écrit après.**
+
+**Les six contrôles** passent pour ce module. `pieds_de_page.py` et
+`sommaire.py --verifier` signalent encore `module-n3-electro` et
+`module-n5-urgence` : ce sont les deux modules que les sessions voisines
+produisaient au même moment, pas des écarts de celui-ci.

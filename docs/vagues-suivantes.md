@@ -337,6 +337,19 @@ Ce que le niveau 2 impose, et qu'un agent habitué au niveau 4 oublie :
 
 Dernier numéro réservé après cette vague : **95**.
 
+**21 août 2026 — l'activité 88 est livrée.** `module-n2-bonjour` · « Bonjour,
+ça va ? » : huit séances, 93 diapositives, 18 images, 214 extraits audio, les
+six contrôles verts pour ce module plus le `node --check`. Le journal détaillé
+est dans `docs/chantier-tous-niveaux.md`. **La file du niveau 2 reprend à
+l'activité 89** (Salle de classe, `module-n2-classe`).
+
+Deux choses que cette production a apprises : les **flèches ↗ et ↘ ne sont pas
+dans Verdana** et le garde-fou de `theme.py` refuse un deck qui en porte — une
+séance de prosodie dit donc l'intonation en mots ; et
+**`build/collecte_sons.py` peut trouver son port déjà pris** par la session
+voisine, auquel cas le relevé part écrire dans le `sons_<slug>.json` d'un autre
+module sans que rien ne le dise. Vérifier le port avant, le fichier écrit après.
+
 **21 août 2026 — l'activité 87 est livrée.** `module-n2-panier` · « Remplir mon
 panier » : huit séances, 90 diapositives, 18 images, 189 extraits audio, les
 six contrôles verts plus le `node --check`. Le journal détaillé est dans
