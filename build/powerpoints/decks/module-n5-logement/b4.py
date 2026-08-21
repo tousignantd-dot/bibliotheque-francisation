@@ -38,20 +38,26 @@ def build(dossier):
               "Personne n'aura tout. C'est le but : l'écart entre ce qu'on entend et ce "
               "qu'on retient justifie toute la séance.")
 
-    d.tableau('La feuille d\'appel', "Trois colonnes, préparées avant d'appeler",
+    d.tableau('La feuille · 1 de 2', "Ce qu'on note pendant l'appel",
               ['Ce que je demande', 'Ce qu\'on me répond'],
               [["Chauffage et électricité inclus ?", "non — élec., ±100 $/mois hiver"],
                ["Électroménagers fournis ?", "poêle + frigo oui / laveuse non"],
                ["Buanderie ?", "s/s, 2 $ la brassée"],
-               ["Stationnement ?", "1 case incl."],
-               ["Date d'occupation ?", "1er juill."],
+               ["Stationnement ?", "1 case incl."]],
+              cle=0,
+              note="Des mots et des chiffres. Jamais de phrases.",
+              notes="Diapositive à photographier. Distribuer la feuille vierge à trois "
+                    "colonnes après l'avoir montrée.")
+
+    d.tableau('La feuille · 2 de 2', "Et ce qui reste à vérifier",
+              ['Ce que je demande', 'Ce qu\'on me répond'],
+              [["Date d'occupation ?", "1er juill."],
                ["Insonorisé ?", "à vérifier à la visite"],
                ["Loyer de l'ancien locataire ?", "à demander jeudi"]],
               cle=0,
-              note="Une troisième colonne, à droite : ce qui reste à vérifier pendant la visite.",
-              notes="Diapositive à photographier. Distribuer la feuille vierge à trois "
-                    "colonnes après l'avoir montrée. Les élèves ont déjà écrit les "
-                    "questions au devoir B1 : ils n'ont qu'à les recopier.")
+              note="La troisième colonne prépare la visite : c'est celle qu'on oublie.",
+              notes="Les élèves ont déjà écrit les questions au devoir B1 : ils n'ont "
+                    "qu'à les recopier dans la colonne de gauche.")
 
     d.regle("Des mots, pas des phrases",
             "« chauff. non incl. — ±100 $/mois hiver » vaut mieux qu'une phrase complète.",

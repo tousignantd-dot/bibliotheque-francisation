@@ -40,8 +40,8 @@ def build(dossier):
 
     d.regle("En + le verbe en -ant",
             "On part de la personne « nous » au présent, on enlève -ons, on ajoute -ant.",
-            precision="nous regardONS → en regardANT · nous finissONS → en finissANT · "
-                      "nous prenONS → en prenANT. Cette règle vaut pour toute la langue, y "
+            precision="nous regardONS donne en regardANT · nous finissONS donne en finissANT · "
+                      "nous prenONS donne en prenANT. Cette règle vaut pour toute la langue, y "
                       "compris pour les verbes irréguliers au singulier : c'est la forme "
                       "« nous » qui porte le bon radical.",
             notes="Diapositive à photographier. Faire conjuguer trois verbes au « nous » "
@@ -55,7 +55,7 @@ def build(dossier):
                ["nous lisons", "en lisant"],
                ["nous arrivons", "en arrivant"]],
               cle=0,
-              note="Trois irréguliers seulement : être → en étant · avoir → en ayant · savoir → en sachant.",
+              note="Trois irréguliers seulement : être donne en étant · avoir donne en ayant · savoir donne en sachant.",
               notes="Diapositive à photographier. Insister sur la note : trois exceptions "
                     "dans toute la langue, c'est peu, et ça se retient.")
 
@@ -83,11 +83,11 @@ def build(dossier):
 
     d.pratique('Formation', "Écrivez le gérondif",
                "Passez par la personne « nous ».", [
-        ("regarder", "nous regardons → en regardant"),
-        ("finir", "nous finissons → en finissant"),
-        ("prendre", "nous prenons → en prenant"),
-        ("relire", "nous relisons → en relisant"),
-        ("poser", "nous posons → en posant"),
+        ("regarder", "nous regardons donne en regardant"),
+        ("finir", "nous finissons donne en finissant"),
+        ("prendre", "nous prenons donne en prenant"),
+        ("relire", "nous relisons donne en relisant"),
+        ("poser", "nous posons donne en posant"),
         ("être", "en étant — irrégulier"),
         ("avoir", "en ayant — irrégulier"),
         ("savoir", "en sachant — irrégulier"),

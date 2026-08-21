@@ -47,29 +47,37 @@ def build(dossier):
             notes="Diapositive à photographier. Rassurer : l'élève n'a pas mal appris, il "
                   "a appris la forme écrite, et personne ne lui a dit que l'oral diffère.")
 
-    d.tableau('Les six fusions', "Ce qui est écrit, ce qui est entendu",
+    d.tableau('Les fusions · 1 de 2', "Ce qui est écrit, ce qui est entendu",
               ['On écrit', 'On entend'],
-              [["sur le comptoir", "SUL comptoir — le « e » tombe"],
-               ["sur la table", "SA table — le « r » tombe"],
-               ["dans la boîte", "DAN boîte — voyelle allongée"],
-               ["dans les chambres", "DIN chambres — la voyelle dit le pluriel"],
-               ["dans un immeuble", "DUN immeuble"],
-               ["à la propriétaire", "A propriétaire — une seule voyelle"]],
+              [["sur le comptoir", "SUL comptoir"],
+               ["sur la table", "SA table"],
+               ["à la propriétaire", "A propriétaire"]],
               cle=0,
-              note="Le singulier et le pluriel ne se distinguent que par la voyelle.",
+              note="Le « e », le « r » et le « l » disparaissent.",
               notes="Diapositive à photographier. Faire répéter chaque ligne en chœur, "
                     "colonne de droite seulement, avant de montrer la gauche.")
 
+    d.tableau('Les fusions · 2 de 2', "Le pluriel tient à la voyelle",
+              ['On écrit', 'On entend'],
+              [["dans la boîte", "DAN boîte"],
+               ["dans les chambres", "DIN chambres"],
+               ["dans un immeuble", "DUN immeuble"]],
+              cle=0,
+              note="« dan » au singulier, « din » au pluriel : le « s » ne se dit jamais.",
+              notes="Diapositive à photographier. C'est la seule marque du pluriel à "
+                    "l'oral ici : si l'élève ne l'entend pas, il ne sait pas combien de "
+                    "chambres on lui décrit.")
+
     d.cartes("Ce qui disparaît", "Trois sons qui s'effacent", [
         ("Le « e » de « le »",
-         "sur le → SUL. Le nom qui suit se colle : il n'y a plus de pause."),
+         "sur le donne SUL. Le nom qui suit se colle : il n'y a plus de pause."),
         ("Le « r » de « sur »",
-         "sur la → SA. C'est la fusion qui trompe le plus : « sur la table » "
+         "sur la donne SA. C'est la fusion qui trompe le plus : « sur la table » "
          "ressemble à « sa table »."),
         ("Le « s » de « dans les »",
          "Il ne se prononce jamais. Seule la voyelle porte le pluriel : dan / din."),
         ("Le « l » de « à la »",
-         "à la → A. Rien ne reste. Seule la longueur de la voyelle dit qu'il y "
+         "à la donne A. Rien ne reste. Seule la longueur de la voyelle dit qu'il y "
          "avait deux mots."),
     ], notes="Insister sur la deuxième carte : c'est la seule qui crée une vraie ambiguïté "
              "de sens, et c'est le contexte qui tranche.")

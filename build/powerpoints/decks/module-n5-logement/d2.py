@@ -39,28 +39,34 @@ def build(dossier):
               "même chose dans les baux apportés en classe.")
 
     d.regle("Le futur simple : l'infinitif + les terminaisons d'avoir",
-            "parler → je parlerai, tu parleras, il parlera, nous parlerons, vous parlerez, "
+            "parler donne je parlerai, tu parleras, il parlera, nous parlerons, vous parlerez, "
             "ils parleront.",
             precision="Ces six terminaisons sont celles du verbe avoir au présent, et elles "
                       "ne changent jamais, pour aucun verbe de la langue. Les verbes en "
-                      "-re perdent seulement leur e final : prendre → je prendrai.",
+                      "-re perdent seulement leur e final : prendre donne je prendrai.",
             notes="Diapositive à photographier. Faire remarquer qu'il y a toujours un r "
                   "avant la terminaison : c'est la marque du futur, et un outil de "
                   "vérification.")
 
-    d.tableau('Sept radicaux irréguliers', "Les terminaisons, elles, ne bougent pas",
+    d.tableau('Irréguliers · 1 de 2', "Les quatre plus fréquents",
               ['Le verbe', 'Le futur'],
               [["être", "je serai"],
                ["avoir", "j'aurai"],
                ["aller", "j'irai"],
-               ["faire", "je ferai"],
-               ["venir", "je viendrai"],
+               ["faire", "je ferai"]],
+              cle=0,
+              note="Tous finissent par un r. C'est la marque du futur.",
+              notes="Diapositive à photographier. Quatre formes à apprendre par cœur.")
+
+    d.tableau('Irréguliers · 2 de 2', "Les trois du bail",
+              ['Le verbe', 'Le futur'],
+              [["venir", "je viendrai"],
                ["pouvoir", "je pourrai"],
                ["devoir", "je devrai"]],
               cle=0,
-              note="Tous finissent par un r. C'est la marque du futur, sans exception.",
-              notes="Diapositive à photographier. Sept formes à apprendre par cœur : c'est "
-                    "peu, et elles couvrent l'essentiel de ce qu'on lit dans un bail.")
+              note="Sept en tout, et les terminaisons ne bougent jamais.",
+              notes="Diapositive à photographier. Ces trois-là couvrent l'essentiel de ce "
+                    "qu'on lit dans un bail : ce qu'on pourra et ce qu'on devra faire.")
 
     d.piege("Le présent après « quand »",
             "Quand vous signez, vous recevrez une copie.",

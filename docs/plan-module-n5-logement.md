@@ -33,7 +33,9 @@ téléphone, elle visite, elle lit le bail avant de signer.
 Trois personnages, tous neufs (aucun nom déjà pris dans les onze modules) :
 
 - **NADÈGE** — la locataire, préposée aux bénéficiaires au CHUS.
-- **SAMUEL** — un collègue qui a déménagé trois fois et qui explique.
+- **SAMUEL** — intervenant au comité logement de Sherbrooke. Ce n'est pas
+  un collègue : entre collègues on se tutoie, et le module tient le
+  vouvoiement d'un bout à l'autre.
 - **HÉLÈNE** — la propriétaire du 4 ½ de la rue Bowen.
 
 Vouvoiement tenu partout, y compris dans les consignes : au niveau 5, l'élève
@@ -75,3 +77,16 @@ Sept points, tous pris dans les savoirs du niveau 5, chacun avec son exercice
    renseignements sans qu'on ait à les demander deux fois.
 3. **Production écrite** — le courriel de notes après un appel : ce qu'on a
    demandé, ce qu'on a appris, ce qui reste à vérifier.
+
+## Ce que la production a changé au plan
+
+- **24 exercices**, et non 26 : `t1questions` et `t2decrire` ont absorbé ce qui
+  était prévu en deux exercices chacun.
+- Les huit cartes de `prPhon` portent une **phrase entière** et non le fragment
+  (« sur le »). Un fragment envoyé seul à la synthèse ressort sur-articulé,
+  c'est-à-dire le contraire exact de ce que la leçon fait entendre.
+- Les clés de `carrier.js` sont les **mots littéraux** : le gabarit fait
+  `CARRIER_PHRASES[w]` sans normaliser. Une clé en style de nom de fichier
+  (`avis_modification`) n'est jamais trouvée, et le mot part seul à la synthèse.
+- Le scénario `louer` de `server.py` a été **réutilisé tel quel**, avec ses cas
+  A, B et C : aucune écriture dans le fichier partagé, comme prévu.

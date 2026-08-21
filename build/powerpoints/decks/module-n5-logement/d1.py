@@ -83,17 +83,24 @@ def build(dossier):
              "source d'un grand nombre de conflits. Faire lire les annexes réelles "
              "apportées par les élèves.")
 
-    d.tableau('Les sections du bail', "Où regarder, et quoi y chercher",
+    d.tableau('Le bail · 1 de 2', "Qui, combien de temps, combien",
               ['La section', 'Ce qu\'elle contient'],
               [["L'identification", "les noms et l'adresse du logement"],
                ["La durée", "la date du début et celle de la fin"],
-               ["Le loyer", "le montant, la date de paiement, ce qui est compris"],
-               ["La section G", "le loyer le plus bas payé dans les 12 derniers mois"],
+               ["Le loyer", "le montant, la date de paiement, ce qui est compris"]],
+              cle=0,
+              note="Les trois premières se lisent en une minute.",
+              notes="Diapositive à photographier. C'est la grille de lecture du défi 3.")
+
+    d.tableau('Le bail · 2 de 2', "Ce que peu de gens lisent",
+              ['La section', 'Ce qu\'elle contient'],
+              [["La section G", "le loyer le plus bas payé dans les 12 derniers mois"],
                ["Les travaux", "ce que le propriétaire s'engage à faire"],
-               ["L'annexe", "les règlements de l'immeuble — ils font partie du bail"]],
+               ["L'annexe", "les règlements — ils font partie du bail"]],
               cle=0,
               note="Cinq minutes suffisent si vous savez où regarder.",
-              notes="Diapositive à photographier. C'est la grille de lecture du défi 3.")
+              notes="Diapositive à photographier. Ce sont ces trois-là qui produisent les "
+                    "conflits, justement parce qu'on ne les lit pas.")
 
     d.regle("Le bail se renouvelle tout seul",
             "Si personne n'envoie d'avis, le bail recommence aux mêmes conditions.",

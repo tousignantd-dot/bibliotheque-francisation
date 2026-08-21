@@ -38,21 +38,27 @@ def build(dossier):
               "ensuite avec le tableau suivant. Les élèves proposent presque toujours le "
               "prix en premier — or le prix est déjà dans l'annonce.")
 
-    d.tableau('Les huit questions', "Chacune sert à savoir une chose précise",
+    d.tableau('Les questions · 1 de 2', "Ce qui coûte de l'argent",
               ['La question', 'Ce qu\'elle vous apprend'],
-              [["Le chauffage et l'électricité sont inclus ?", "si le loyer est le prix final"],
-               ["Quels électroménagers sont fournis ?", "s'il faudra acheter des appareils"],
-               ["Y a-t-il une buanderie dans l'immeuble ?", "où vous laverez votre linge"],
+              [["Le chauffage est-il inclus ?", "si le loyer est le prix final"],
+               ["Quels électroménagers sont fournis ?", "s'il faudra en acheter"],
                ["Le stationnement est-il inclus ?", "si l'auto aura une place l'hiver"],
-               ["Quelle est la date d'occupation ?", "quand le bail commence"],
-               ["L'immeuble est-il bien insonorisé ?", "si vous dormirez bien"],
-               ["Depuis quand le loyer n'a-t-il pas augmenté ?", "si la hausse à venir sera raisonnable"],
-               ["Les animaux sont-ils acceptés ?", "si vous gardez votre chat"]],
+               ["Depuis quand le loyer n'a-t-il pas augmenté ?", "si la hausse à venir sera raisonnable"]],
               cle=0,
               note="Le prix n'est pas dans la liste : il est déjà dans l'annonce.",
+              notes="Diapositive à photographier. La dernière ligne est celle que presque "
+                    "personne ne connaît.")
+
+    d.tableau('Les questions · 2 de 2', "Ce qui décide de la vie quotidienne",
+              ['La question', 'Ce qu\'elle vous apprend'],
+              [["Y a-t-il une buanderie ?", "où vous laverez votre linge"],
+               ["Quelle est la date d'occupation ?", "quand le bail commence"],
+               ["L'immeuble est-il bien insonorisé ?", "si vous dormirez bien"],
+               ["Les animaux sont-ils acceptés ?", "si vous gardez votre chat"]],
+              cle=0,
+              note="La question des animaux se pose tôt : elle est éliminatoire ou non.",
               notes="Diapositive à photographier. C'est le cœur du défi 1 et l'outil que "
-                    "les élèves emporteront. Faire remarquer la ligne 7 : c'est la seule "
-                    "que presque personne ne connaît.")
+                    "les élèves emporteront.")
 
     d.regle("Demandez depuis quand le loyer n'a pas augmenté",
             "La question qui surprend les propriétaires — et qui est parfaitement légitime.",

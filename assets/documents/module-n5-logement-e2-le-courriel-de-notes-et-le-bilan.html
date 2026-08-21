@@ -1,0 +1,172 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>E2 · Le courriel de notes, et le bilan — Fiche élève</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800;900&display=swap" rel="stylesheet">
+<style>
+/* ═══════════════════════════════════════════════════════════════
+   FICHE ÉLÈVE · IMPRESSION LETTRE, NOIR ET BLANC
+   ───────────────────────────────────────────────────────────────
+   Aucune couleur : ces fiches sont photocopiées en noir et blanc.
+   Toute la hiérarchie passe par la GRAISSE, les FILETS et les MOTS.
+   C'est d'ailleurs la règle du système de design poussée à son
+   terme : « jamais d'information portée par la couleur seule ».
+
+   Les gris viennent des neutres du système (ink-900 à ink-400),
+   qui sont déjà quasi neutres. Les filets sont volontairement plus
+   sombres qu'à l'écran : une photocopieuse efface tout ce qui est
+   plus clair que 15 % de noir.
+   ═══════════════════════════════════════════════════════════════ */
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+:root{
+  --paper:#FFFFFF;
+  --tint:#F0F0EE;          /* aplat le plus clair encore visible en photocopie */
+  --line:#C9C9C6;          /* filet fin */
+  --rule:#17181A;          /* filet structurant */
+  --ink:#17181A;           /* titres */
+  --body:#2B2E30;          /* texte courant, un cran plus sombre qu'à l'écran */
+  --soft:#4B4F52;          /* texte secondaire */
+  --muted:#5E6165;         /* sur-titres, méta */
+}
+html{background:#BBBBBB}
+body{
+  font-family:'Nunito','Trebuchet MS',sans-serif;
+  font-size:11.5pt; line-height:1.5; color:var(--body);
+  background:var(--paper);
+  width:215.9mm;                    /* 8,5 po — format lettre */
+  margin:0 auto; padding:14mm 15mm 16mm;
+  -webkit-print-color-adjust:exact; print-color-adjust:exact;
+}
+h1,h2,h3{color:var(--ink); line-height:1.2; letter-spacing:-0.01em}
+
+/* ── En-tête ── */
+.hdr{border-bottom:2.5px solid var(--rule); padding-bottom:8px; margin-bottom:14px;
+     display:flex; align-items:flex-end; gap:14px}
+.hdr-l{flex:1}
+.eyebrow{font-size:9.5pt; font-weight:800; text-transform:uppercase;
+         letter-spacing:.12em; color:var(--muted)}
+.hdr h1{font-size:22pt; font-weight:900; margin-top:3px}
+.hdr-r{flex-shrink:0; display:flex; gap:10px; align-items:flex-end;
+       font-size:9.5pt; font-weight:800; text-transform:uppercase;
+       letter-spacing:.08em; color:var(--muted); padding-bottom:2px}
+.nomline{display:inline-block; border-bottom:1.5px solid var(--rule);
+         height:6mm; vertical-align:bottom; margin-left:5px}
+.nomline--nom{width:48mm} .nomline--date{width:26mm}
+.chapeau{font-size:12pt; font-weight:600; color:var(--soft); margin-bottom:16px}
+
+/* ── Blocs ── */
+.bloc{break-inside:avoid; page-break-inside:avoid; margin-bottom:13px}
+.card{border:1px solid var(--line); border-radius:12px; padding:11px 14px 12px;
+      background:var(--paper)}
+.lbl{font-size:9.5pt; font-weight:800; text-transform:uppercase;
+     letter-spacing:.12em; color:var(--muted); margin-bottom:5px}
+h2.t{font-size:15pt; font-weight:900; margin-bottom:7px}
+.consigne{font-size:11pt; font-weight:600; color:var(--soft); margin-bottom:8px}
+
+/* ── Objectifs et exercices : pastille en cerne, jamais en aplat ── */
+ol.obj,ol.ex{list-style:none}
+ol.obj{counter-reset:o} ol.ex{counter-reset:e}
+ol.obj li,ol.ex li{position:relative; padding-left:9mm; font-weight:600}
+ol.obj li{counter-increment:o; margin-bottom:6px}
+ol.ex li{counter-increment:e; margin-bottom:9px; break-inside:avoid}
+ol.obj li::before,ol.ex li::before{
+  position:absolute; left:0; top:0; width:6mm; height:6mm; border-radius:50%;
+  border:1.5px solid var(--rule); color:var(--ink);
+  font-size:9.5pt; font-weight:800;
+  display:flex; align-items:center; justify-content:center}
+ol.obj li::before{content:counter(o)}
+ol.ex li::before{content:counter(e)}
+
+/* ── Dialogue ── */
+.rep{display:flex; gap:10px; padding:4px 0; border-top:1px solid var(--line)}
+.rep:first-of-type{border-top:0}
+.rep--key{background:var(--tint); border-radius:8px; padding:5px 8px;
+          border-top:0; margin:2px 0}
+.qui{flex:0 0 30mm; font-weight:800; color:var(--ink); font-size:10.5pt}
+
+/* ── Règle : encadrée au filet épais, c'est elle qu'on repère de loin ── */
+.regle{border:2.5px solid var(--rule); border-radius:12px; padding:12px 14px}
+.regle .lbl{color:var(--ink)}
+.regle p.r{font-size:14pt; font-weight:900; color:var(--ink); line-height:1.3}
+.regle p.pr{margin-top:7px; font-weight:600; color:var(--soft)}
+
+/* ── Tableau ── */
+table{width:100%; border-collapse:collapse}
+th{font-size:9.5pt; font-weight:800; text-transform:uppercase; letter-spacing:.1em;
+   color:var(--muted); text-align:left; padding:0 8px 5px 0;
+   border-bottom:1.5px solid var(--rule)}
+td{padding:6px 8px 6px 0; border-top:1px solid var(--line); vertical-align:top;
+   font-weight:600}
+td.cle{font-weight:900; color:var(--ink)}   /* la colonne clé : en gras, pas en couleur */
+.note{margin-top:8px; font-size:10.5pt; font-weight:600; color:var(--soft);
+      background:var(--tint); border-radius:9px; padding:8px 11px}
+
+/* ── Cartes ── */
+.grid{display:grid; grid-template-columns:1fr 1fr; gap:9px}
+.grid .card h3{font-size:11.5pt; font-weight:900; color:var(--ink); margin-bottom:3px}
+.grid .card p{font-size:11pt}
+
+/* ── Piège : le filet distingue les deux colonnes, pas la couleur ──
+   À gauche, un filet TIRETÉ — ce qui ne tient pas.
+   À droite, un filet PLEIN et épais — ce qu'il faut retenir.
+   Les deux intitulés disent la même chose en mots.                */
+.duo{display:grid; grid-template-columns:1fr 1fr; gap:10px}
+.duo>div{border-radius:12px; padding:10px 13px}
+.duo .no{border:1.5px dashed var(--muted)}
+.duo .ok{border:2.5px solid var(--rule); background:var(--tint)}
+.duo .k{font-size:9.5pt; font-weight:800; text-transform:uppercase;
+        letter-spacing:.1em; margin-bottom:4px; color:var(--muted)}
+.duo .ok .k{color:var(--ink)}
+.duo p.ph{font-size:12pt; font-weight:800; color:var(--ink); line-height:1.3}
+.duo .no p.ph{font-weight:600; font-style:italic; color:var(--soft)}
+
+/* ── Vocabulaire ── */
+.voc{width:100%; border-collapse:collapse}
+.voc td{border-top:1px solid var(--line); padding:6px 8px 6px 0}
+.voc td.mot{width:38%; font-weight:900; color:var(--ink)}
+.voc td.def{color:var(--soft)}
+
+/* ── Zones de réponse ── */
+.ligne{display:block; border-bottom:1px dotted #8E8E8A; height:8mm; margin-top:2px}
+.ligne--court{width:55%}
+
+/* ── Billet de sortie ── */
+.billet{border:2.5px solid var(--rule); border-radius:12px; padding:13px 15px}
+.billet .k{font-size:9.5pt; font-weight:800; text-transform:uppercase;
+           letter-spacing:.12em; color:var(--ink); margin-bottom:4px}
+.billet p.c{font-size:14pt; font-weight:900; color:var(--ink); line-height:1.3}
+.billet ul{list-style:none; margin-top:7px}
+.billet li{font-weight:600; color:var(--soft); margin-bottom:3px}
+
+/* ── Pied ── */
+footer{margin-top:16px; padding-top:7px; border-top:1px solid var(--line);
+       font-size:9.5pt; font-weight:700; color:var(--muted);
+       display:flex; justify-content:space-between}
+
+/* ── Impression ── */
+@page{size:8.5in 11in; margin:14mm 15mm}
+@media print{
+  html{background:#FFFFFF}
+  body{width:auto; padding:0}
+  .bloc{break-inside:avoid; page-break-inside:avoid}
+  h2.t,.lbl{break-after:avoid; page-break-after:avoid}
+}
+</style>
+</head>
+<body>
+<header class="hdr">
+  <div class="hdr-l">
+    <div class="eyebrow">Séance E2 · Module 1 · 60 minutes</div>
+    <h1>Le courriel de notes, et le bilan</h1>
+  </div>
+  <div class="hdr-r"><span>Nom<span class="nomline nomline--nom"></span></span><span>Date<span class="nomline nomline--date"></span></span></div>
+</header>
+<p class="chapeau">Seize mots, sept points de langue, dix questions. Dernière séance : on écrit, on rassemble, et chacun fait le point.</p>
+<section class="bloc card"><div class="lbl">Objectifs</div><h2 class="t">À la fin, je serai capable de…</h2><ol class="obj"><li>écrire un courriel qui rapporte les renseignements d'un appel ;</li><li>employer deux phrases rapportées dans un texte suivi ;</li><li>rassembler le vocabulaire du module en quatre familles ;</li><li>évaluer ce que je suis maintenant capable de faire.</li></ol></section><section class="bloc card"><div class="lbl">La production écrite</div><h2 class="t">Ce que le courriel doit contenir</h2><table><thead><tr><th>L'élément</th><th>Ce qu'on écrit</th></tr></thead><tbody><tr><td class="cle">Le loyer et la date</td><td>1 050 $ par mois, libre le 1er juillet</td></tr><tr><td class="cle">Ce qui est inclus</td><td>et surtout ce qui ne l'est pas</td></tr><tr><td class="cle">Deux phrases rapportées</td><td>« Elle me dit que… », « Je lui ai demandé si… »</td></tr><tr><td class="cle">Ce qui reste à vérifier</td><td>le bruit, les fenêtres, le loyer d'avant</td></tr><tr><td class="cle">Le rendez-vous</td><td>jeudi 18 h, 412 rue Bowen, appartement 3</td></tr></tbody></table><div class="note">De 6 à 10 phrases. Rapportez, ne recopiez pas.</div></section><section class="bloc card"><div class="lbl">Écriture</div><h2 class="t">Écrivez le courriel</h2><p class="consigne">À la personne qui déménagera avec vous, après votre appel.</p><ol class="ex"><li><span class="q">L'ouverture</span><span class="ligne"></span></li><li><span class="q">Ce qu'on vous a dit</span><span class="ligne"></span></li><li><span class="q">La question que vous avez posée</span><span class="ligne"></span></li><li><span class="q">La réponse</span><span class="ligne"></span></li><li><span class="q">Ce qui reste</span><span class="ligne"></span></li><li><span class="q">Le rendez-vous</span><span class="ligne"></span></li></ol></section><section class="bloc card"><div class="lbl">Famille · 1 de 4</div><h2 class="t">Le logement et l'annonce</h2><table class="voc"><tbody><tr><td class="mot">un quatre et demie</td><td class="def">Deux chambres, un salon, une cuisine, plus la salle de bain.</td></tr><tr><td class="mot">chauffé et éclairé</td><td class="def">Le loyer comprend le chauffage et l'électricité.</td></tr><tr><td class="mot">un plancher de bois franc</td><td class="def">De vraies planches de bois dur.</td></tr><tr><td class="mot">ensoleillé</td><td class="def">Le soleil entre une bonne partie de la journée.</td></tr><tr><td class="mot">insonorisé</td><td class="def">On n'entend pas les voisins.</td></tr></tbody></table></section><section class="bloc card"><div class="lbl">Famille · 2 de 4</div><h2 class="t">L'appel et la visite</h2><table class="voc"><tbody><tr><td class="mot">la date d'occupation</td><td class="def">Le jour où le bail commence.</td></tr><tr><td class="mot">les électroménagers</td><td class="def">Poêle, réfrigérateur, laveuse, sécheuse.</td></tr><tr><td class="mot">une buanderie</td><td class="def">Le local commun où les locataires lavent leur linge.</td></tr><tr><td class="mot">une case de stationnement</td><td class="def">L'espace réservé où un locataire gare son auto.</td></tr><tr><td class="mot">une remise</td><td class="def">Un petit espace fermé pour ranger vélos et pneus.</td></tr></tbody></table></section><section class="bloc card"><div class="lbl">Famille · 3 de 4</div><h2 class="t">Le bail</h2><table class="voc"><tbody><tr><td class="mot">un bail</td><td class="def">Le contrat écrit, sur le formulaire officiel du Québec.</td></tr><tr><td class="mot">le loyer</td><td class="def">La somme payée chaque mois.</td></tr><tr><td class="mot">un avis de modification</td><td class="def">Ce que le propriétaire veut changer l'an prochain.</td></tr><tr><td class="mot">le renouvellement</td><td class="def">Le bail recommence sans qu'on le resigne.</td></tr></tbody></table></section><section class="bloc card"><div class="lbl">Famille · 4 de 4</div><h2 class="t">Mes droits</h2><table class="voc"><tbody><tr><td class="mot">sous-louer</td><td class="def">Laisser quelqu'un habiter chez soi en gardant son bail.</td></tr><tr><td class="mot">le Tribunal administratif du logement</td><td class="def">L'organisme qui tranche entre locataire et propriétaire.</td></tr></tbody></table></section><section class="bloc card"><div class="lbl">Les points de langue · 1 de 2</div><h2 class="t">Écouter et rapporter</h2><table><thead><tr><th>Le point</th><th>En une phrase</th></tr></thead><tbody><tr><td class="cle">sur le, dans la, à la</td><td>à l'oral, les deux mots se collent</td></tr><tr><td class="cle">le discours indirect</td><td>« est-ce que » devient « si », et les pronoms changent</td></tr><tr><td class="cle">qui, que, où</td><td>on regarde ce qui suit le petit mot</td></tr></tbody></table><div class="note">Les trois points des défis 1 et 2.</div></section><section class="bloc card"><div class="lbl">Les points de langue · 2 de 2</div><h2 class="t">Décrire et lire un contrat</h2><table><thead><tr><th>Le point</th><th>En une phrase</th></tr></thead><tbody><tr><td class="cle">le gérondif</td><td>en + le verbe en -ant, même sujet pour les deux</td></tr><tr><td class="cle">le futur simple</td><td>l'infinitif plus les terminaisons d'avoir</td></tr><tr><td class="cle">les impersonnelles</td><td>un « il » qui ne désigne personne</td></tr></tbody></table><div class="note">Six lignes, six séances de grammaire.</div></section><section class="bloc"><div class="lbl">Attention</div><h2 class="t">Croire qu'on ne peut rien dire à un propriétaire</h2><div class="duo"><div class="no"><div class="k">On entend souvent</div><p class="ph">C'est lui qui décide, je n'ai rien à dire.</p></div><div class="ok"><div class="k">Il faut dire plutôt</div><p class="ph">J'ai un mois pour répondre, et le droit de refuser.</p></div></div><div class="note">C'est le fil de tout le module. Poser huit questions au téléphone, demander le loyer de l'ancien locataire, lire le bail avant de signer, refuser une hausse par écrit : ce sont quatre gestes ordinaires, et ils sont tous permis.</div></section><section class="bloc billet"><div class="k">Billet de sortie</div><p class="c">Gardez la feuille des huit questions dans vos papiers.</p><ul><li>Vous en aurez besoin le jour où vous chercherez un logement.</li><li>Et le 1er juillet arrive vite.</li></ul><span class="ligne"></span><span class="ligne"></span><span class="ligne"></span></section>
+<footer><span>E2 · Louer un logement</span><span>Fiche élève</span></footer>
+</body>
+</html>

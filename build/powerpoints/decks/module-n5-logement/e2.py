@@ -85,18 +85,25 @@ def build(dossier):
     ], notes="Rappeler l'ancien nom, la Régie du logement : les élèves l'entendront encore "
              "longtemps autour d'eux.")
 
-    d.tableau('Les points de langue', "Une phrase chacun",
+    d.tableau('Les points de langue · 1 de 2', "Écouter et rapporter",
               ['Le point', 'En une phrase'],
-              [["sur le, dans la, à la", "à l'oral, la préposition et le déterminant se collent"],
+              [["sur le, dans la, à la", "à l'oral, les deux mots se collent"],
                ["le discours indirect", "« est-ce que » devient « si », et les pronoms changent"],
-               ["qui, que, où", "on regarde ce qui suit : un verbe, un sujet, un lieu"],
-               ["le gérondif", "en + le verbe en -ant, et le même sujet pour les deux"],
-               ["le futur simple", "l'infinitif plus les terminaisons d'avoir, toujours avec un r"],
-               ["les impersonnelles", "un « il » qui ne désigne personne : c'est la langue des contrats"]],
+               ["qui, que, où", "on regarde ce qui suit le petit mot"]],
+              cle=0,
+              note="Les trois points des défis 1 et 2.",
+              notes="Faire reformuler chaque ligne par un élève différent avant d'afficher "
+                    "la colonne de droite.")
+
+    d.tableau('Les points de langue · 2 de 2', "Décrire et lire un contrat",
+              ['Le point', 'En une phrase'],
+              [["le gérondif", "en + le verbe en -ant, même sujet pour les deux"],
+               ["le futur simple", "l'infinitif plus les terminaisons d'avoir"],
+               ["les impersonnelles", "un « il » qui ne désigne personne"]],
               cle=0,
               note="Six lignes, six séances de grammaire.",
-              notes="Faire reformuler chaque ligne par un élève différent avant d'afficher "
-                    "la colonne de droite. C'est la révision la plus efficace de la séance.")
+              notes="C'est la révision la plus efficace de la séance : reformuler avant de "
+                    "lire.")
 
     d.piege("Croire qu'on ne peut rien dire à un propriétaire",
             "C'est lui qui décide, je n'ai rien à dire.",

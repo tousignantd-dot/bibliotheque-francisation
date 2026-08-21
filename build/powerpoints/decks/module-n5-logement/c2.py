@@ -41,18 +41,24 @@ def build(dossier):
               "Demander chaque fois : « et qu'est-ce que ça apprend à quelqu'un qui n'est "
               "pas là ? » C'est le fil de toute la séance.")
 
-    d.tableau('Les adjectifs de l\'annonce', "Ce qu'ils disent vraiment",
+    d.tableau('Les adjectifs · 1 de 2', "Le confort de la pièce",
               ['L\'adjectif', 'Ce que ça veut dire'],
-              [["ensoleillé", "le soleil entre une bonne partie de la journée"],
+              [["ensoleillé", "le soleil entre une bonne partie du jour"],
                ["insonorisé", "on n'entend pas les voisins"],
-               ["meublé", "les meubles sont là — mais pas les électroménagers"],
-               ["chauffé", "le chauffage est compris dans le loyer"],
                ["rénové", "les planchers et la cuisine ont été refaits"],
-               ["en demi-sous-sol", "le logement est à moitié sous le niveau du sol"],
-               ["non-fumeur", "il n'y a jamais eu de fumée dans le logement"],
-               ["accessible", "un ascenseur, et pas de marches à l'entrée"]],
+               ["en demi-sous-sol", "à moitié sous le niveau du sol"]],
               cle=0,
               note="« Rénové » ne dit pas quand. Demandez toujours l'année.",
+              notes="Diapositive à photographier.")
+
+    d.tableau('Les adjectifs · 2 de 2', "Ce qui vient avec le loyer",
+              ['L\'adjectif', 'Ce que ça veut dire'],
+              [["meublé", "les meubles sont là — pas les électroménagers"],
+               ["chauffé", "le chauffage est compris dans le loyer"],
+               ["non-fumeur", "il n'y a jamais eu de fumée dedans"],
+               ["accessible", "un ascenseur, pas de marches à l'entrée"]],
+              cle=0,
+              note="« Meublé » ne veut pas dire « équipé » : le poêle se demande à part.",
               notes="Diapositive à photographier. Insister sur « meublé » : c'est l'erreur "
                     "de la séance A3, et elle coûte cher.")
 

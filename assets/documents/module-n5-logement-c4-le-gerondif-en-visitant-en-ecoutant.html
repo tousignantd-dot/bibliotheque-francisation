@@ -1,0 +1,172 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>C4 · Le gérondif : en visitant, en écoutant — Fiche élève</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800;900&display=swap" rel="stylesheet">
+<style>
+/* ═══════════════════════════════════════════════════════════════
+   FICHE ÉLÈVE · IMPRESSION LETTRE, NOIR ET BLANC
+   ───────────────────────────────────────────────────────────────
+   Aucune couleur : ces fiches sont photocopiées en noir et blanc.
+   Toute la hiérarchie passe par la GRAISSE, les FILETS et les MOTS.
+   C'est d'ailleurs la règle du système de design poussée à son
+   terme : « jamais d'information portée par la couleur seule ».
+
+   Les gris viennent des neutres du système (ink-900 à ink-400),
+   qui sont déjà quasi neutres. Les filets sont volontairement plus
+   sombres qu'à l'écran : une photocopieuse efface tout ce qui est
+   plus clair que 15 % de noir.
+   ═══════════════════════════════════════════════════════════════ */
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+:root{
+  --paper:#FFFFFF;
+  --tint:#F0F0EE;          /* aplat le plus clair encore visible en photocopie */
+  --line:#C9C9C6;          /* filet fin */
+  --rule:#17181A;          /* filet structurant */
+  --ink:#17181A;           /* titres */
+  --body:#2B2E30;          /* texte courant, un cran plus sombre qu'à l'écran */
+  --soft:#4B4F52;          /* texte secondaire */
+  --muted:#5E6165;         /* sur-titres, méta */
+}
+html{background:#BBBBBB}
+body{
+  font-family:'Nunito','Trebuchet MS',sans-serif;
+  font-size:11.5pt; line-height:1.5; color:var(--body);
+  background:var(--paper);
+  width:215.9mm;                    /* 8,5 po — format lettre */
+  margin:0 auto; padding:14mm 15mm 16mm;
+  -webkit-print-color-adjust:exact; print-color-adjust:exact;
+}
+h1,h2,h3{color:var(--ink); line-height:1.2; letter-spacing:-0.01em}
+
+/* ── En-tête ── */
+.hdr{border-bottom:2.5px solid var(--rule); padding-bottom:8px; margin-bottom:14px;
+     display:flex; align-items:flex-end; gap:14px}
+.hdr-l{flex:1}
+.eyebrow{font-size:9.5pt; font-weight:800; text-transform:uppercase;
+         letter-spacing:.12em; color:var(--muted)}
+.hdr h1{font-size:22pt; font-weight:900; margin-top:3px}
+.hdr-r{flex-shrink:0; display:flex; gap:10px; align-items:flex-end;
+       font-size:9.5pt; font-weight:800; text-transform:uppercase;
+       letter-spacing:.08em; color:var(--muted); padding-bottom:2px}
+.nomline{display:inline-block; border-bottom:1.5px solid var(--rule);
+         height:6mm; vertical-align:bottom; margin-left:5px}
+.nomline--nom{width:48mm} .nomline--date{width:26mm}
+.chapeau{font-size:12pt; font-weight:600; color:var(--soft); margin-bottom:16px}
+
+/* ── Blocs ── */
+.bloc{break-inside:avoid; page-break-inside:avoid; margin-bottom:13px}
+.card{border:1px solid var(--line); border-radius:12px; padding:11px 14px 12px;
+      background:var(--paper)}
+.lbl{font-size:9.5pt; font-weight:800; text-transform:uppercase;
+     letter-spacing:.12em; color:var(--muted); margin-bottom:5px}
+h2.t{font-size:15pt; font-weight:900; margin-bottom:7px}
+.consigne{font-size:11pt; font-weight:600; color:var(--soft); margin-bottom:8px}
+
+/* ── Objectifs et exercices : pastille en cerne, jamais en aplat ── */
+ol.obj,ol.ex{list-style:none}
+ol.obj{counter-reset:o} ol.ex{counter-reset:e}
+ol.obj li,ol.ex li{position:relative; padding-left:9mm; font-weight:600}
+ol.obj li{counter-increment:o; margin-bottom:6px}
+ol.ex li{counter-increment:e; margin-bottom:9px; break-inside:avoid}
+ol.obj li::before,ol.ex li::before{
+  position:absolute; left:0; top:0; width:6mm; height:6mm; border-radius:50%;
+  border:1.5px solid var(--rule); color:var(--ink);
+  font-size:9.5pt; font-weight:800;
+  display:flex; align-items:center; justify-content:center}
+ol.obj li::before{content:counter(o)}
+ol.ex li::before{content:counter(e)}
+
+/* ── Dialogue ── */
+.rep{display:flex; gap:10px; padding:4px 0; border-top:1px solid var(--line)}
+.rep:first-of-type{border-top:0}
+.rep--key{background:var(--tint); border-radius:8px; padding:5px 8px;
+          border-top:0; margin:2px 0}
+.qui{flex:0 0 30mm; font-weight:800; color:var(--ink); font-size:10.5pt}
+
+/* ── Règle : encadrée au filet épais, c'est elle qu'on repère de loin ── */
+.regle{border:2.5px solid var(--rule); border-radius:12px; padding:12px 14px}
+.regle .lbl{color:var(--ink)}
+.regle p.r{font-size:14pt; font-weight:900; color:var(--ink); line-height:1.3}
+.regle p.pr{margin-top:7px; font-weight:600; color:var(--soft)}
+
+/* ── Tableau ── */
+table{width:100%; border-collapse:collapse}
+th{font-size:9.5pt; font-weight:800; text-transform:uppercase; letter-spacing:.1em;
+   color:var(--muted); text-align:left; padding:0 8px 5px 0;
+   border-bottom:1.5px solid var(--rule)}
+td{padding:6px 8px 6px 0; border-top:1px solid var(--line); vertical-align:top;
+   font-weight:600}
+td.cle{font-weight:900; color:var(--ink)}   /* la colonne clé : en gras, pas en couleur */
+.note{margin-top:8px; font-size:10.5pt; font-weight:600; color:var(--soft);
+      background:var(--tint); border-radius:9px; padding:8px 11px}
+
+/* ── Cartes ── */
+.grid{display:grid; grid-template-columns:1fr 1fr; gap:9px}
+.grid .card h3{font-size:11.5pt; font-weight:900; color:var(--ink); margin-bottom:3px}
+.grid .card p{font-size:11pt}
+
+/* ── Piège : le filet distingue les deux colonnes, pas la couleur ──
+   À gauche, un filet TIRETÉ — ce qui ne tient pas.
+   À droite, un filet PLEIN et épais — ce qu'il faut retenir.
+   Les deux intitulés disent la même chose en mots.                */
+.duo{display:grid; grid-template-columns:1fr 1fr; gap:10px}
+.duo>div{border-radius:12px; padding:10px 13px}
+.duo .no{border:1.5px dashed var(--muted)}
+.duo .ok{border:2.5px solid var(--rule); background:var(--tint)}
+.duo .k{font-size:9.5pt; font-weight:800; text-transform:uppercase;
+        letter-spacing:.1em; margin-bottom:4px; color:var(--muted)}
+.duo .ok .k{color:var(--ink)}
+.duo p.ph{font-size:12pt; font-weight:800; color:var(--ink); line-height:1.3}
+.duo .no p.ph{font-weight:600; font-style:italic; color:var(--soft)}
+
+/* ── Vocabulaire ── */
+.voc{width:100%; border-collapse:collapse}
+.voc td{border-top:1px solid var(--line); padding:6px 8px 6px 0}
+.voc td.mot{width:38%; font-weight:900; color:var(--ink)}
+.voc td.def{color:var(--soft)}
+
+/* ── Zones de réponse ── */
+.ligne{display:block; border-bottom:1px dotted #8E8E8A; height:8mm; margin-top:2px}
+.ligne--court{width:55%}
+
+/* ── Billet de sortie ── */
+.billet{border:2.5px solid var(--rule); border-radius:12px; padding:13px 15px}
+.billet .k{font-size:9.5pt; font-weight:800; text-transform:uppercase;
+           letter-spacing:.12em; color:var(--ink); margin-bottom:4px}
+.billet p.c{font-size:14pt; font-weight:900; color:var(--ink); line-height:1.3}
+.billet ul{list-style:none; margin-top:7px}
+.billet li{font-weight:600; color:var(--soft); margin-bottom:3px}
+
+/* ── Pied ── */
+footer{margin-top:16px; padding-top:7px; border-top:1px solid var(--line);
+       font-size:9.5pt; font-weight:700; color:var(--muted);
+       display:flex; justify-content:space-between}
+
+/* ── Impression ── */
+@page{size:8.5in 11in; margin:14mm 15mm}
+@media print{
+  html{background:#FFFFFF}
+  body{width:auto; padding:0}
+  .bloc{break-inside:avoid; page-break-inside:avoid}
+  h2.t,.lbl{break-after:avoid; page-break-after:avoid}
+}
+</style>
+</head>
+<body>
+<header class="hdr">
+  <div class="hdr-l">
+    <div class="eyebrow">Séance C4 · Module 1 · 75 minutes</div>
+    <h1>Le gérondif : en visitant, en écoutant</h1>
+  </div>
+  <div class="hdr-r"><span>Nom<span class="nomline nomline--nom"></span></span><span>Date<span class="nomline nomline--date"></span></span></div>
+</header>
+<p class="chapeau">« Elle prend des notes en écoutant la propriétaire. » Une seule personne, deux actions en même temps. Et la même forme sert à dire comment on fait quelque chose.</p>
+<section class="bloc card"><div class="lbl">Objectifs</div><h2 class="t">À la fin, je serai capable de…</h2><ol class="obj"><li>former un gérondif à partir de la personne « nous » ;</li><li>exprimer deux actions en même temps ;</li><li>exprimer la manière : comment on fait quelque chose ;</li><li>vérifier que les deux verbes ont le même sujet.</li></ol></section><section class="bloc regle"><div class="lbl">En + le verbe en -ant</div><p class="r">On part de la personne « nous » au présent, on enlève -ons, on ajoute -ant.</p><p class="pr">nous regardONS donne en regardANT · nous finissONS donne en finissANT · nous prenONS donne en prenANT. Cette règle vaut pour toute la langue, y compris pour les verbes irréguliers au singulier : c'est la forme « nous » qui porte le bon radical.</p></section><section class="bloc card"><div class="lbl">La formation</div><h2 class="t">Cinq verbes du module</h2><table><thead><tr><th>La personne « nous »</th><th>Le gérondif</th></tr></thead><tbody><tr><td class="cle">nous regardons</td><td>en regardant</td></tr><tr><td class="cle">nous finissons</td><td>en finissant</td></tr><tr><td class="cle">nous prenons</td><td>en prenant</td></tr><tr><td class="cle">nous lisons</td><td>en lisant</td></tr><tr><td class="cle">nous arrivons</td><td>en arrivant</td></tr></tbody></table><div class="note">Trois irréguliers seulement : être donne en étant · avoir donne en ayant · savoir donne en sachant.</div></section><section class="bloc"><div class="lbl">Deux emplois</div><h2 class="t">La même forme, deux usages</h2><div class="grid"><div class="card"><h3>La simultanéité</h3><p>Deux actions en même temps : « Elle prend des notes en écoutant. »</p></div><div class="card"><h3>La manière</h3><p>Comment on fait : « On apprend le vrai prix en posant des questions. »</p></div><div class="card"><h3>En tête de phrase</h3><p>« En arrivant, vous avez vu la ruelle. » Le sens est le même.</p></div><div class="card"><h3>Jamais d'accord</h3><p>Le gérondif ne change jamais de forme, ni en genre ni en nombre.</p></div></div></section><section class="bloc"><div class="lbl">Attention</div><h2 class="t">Deux sujets différents</h2><div class="duo"><div class="no"><div class="k">On entend souvent</div><p class="ph">En arrivant, la ruelle était bruyante.</p></div><div class="ok"><div class="k">Il faut dire plutôt</div><p class="ph">En arrivant, vous avez vu la ruelle.</p></div></div><div class="note">La ruelle n'arrive pas. Le gérondif exige que les deux verbes aient le même sujet. Si les sujets diffèrent, il faut « quand » ou « pendant que » : « Quand vous êtes arrivée, la ruelle était bruyante. »</div></section><section class="bloc card"><div class="lbl">Formation</div><h2 class="t">Écrivez le gérondif</h2><p class="consigne">Passez par la personne « nous ».</p><ol class="ex"><li><span class="q">regarder</span><span class="ligne"></span></li><li><span class="q">finir</span><span class="ligne"></span></li><li><span class="q">prendre</span><span class="ligne"></span></li><li><span class="q">relire</span><span class="ligne"></span></li><li><span class="q">poser</span><span class="ligne"></span></li><li><span class="q">être</span><span class="ligne ligne--court"></span></li><li><span class="q">avoir</span><span class="ligne ligne--court"></span></li><li><span class="q">savoir</span><span class="ligne"></span></li></ol></section><section class="bloc card"><div class="lbl">Application</div><h2 class="t">Complétez avec un gérondif</h2><p class="consigne">Le verbe est entre parenthèses.</p><ol class="ex"><li><span class="q">Elle prend des notes … (écouter) la propriétaire.</span><span class="ligne ligne--court"></span></li><li><span class="q">… (arriver), on voit tout de suite la ruelle.</span><span class="ligne ligne--court"></span></li><li><span class="q">On apprend le vrai prix … (poser) des questions.</span><span class="ligne ligne--court"></span></li><li><span class="q">Elle a comparé les logements … (regarder) ses trois fiches.</span><span class="ligne ligne--court"></span></li><li><span class="q">Il a compris l'avis … (relire) le papier lentement.</span><span class="ligne ligne--court"></span></li><li><span class="q">On évite les surprises … (être) précis au téléphone.</span><span class="ligne ligne--court"></span></li><li><span class="q">Elle a signé … (savoir) ce qu'elle acceptait.</span><span class="ligne ligne--court"></span></li></ol></section><section class="bloc card"><div class="lbl">Production</div><h2 class="t">Donnez trois conseils avec un gérondif</h2><p class="consigne">À quelqu'un qui cherche un logement pour la première fois.</p><ol class="ex"><li><span class="q">Un conseil sur l'appel</span><span class="ligne"></span></li><li><span class="q">Un conseil sur la visite</span><span class="ligne"></span></li><li><span class="q">Un conseil sur le bail</span><span class="ligne"></span></li></ol></section><section class="bloc billet"><div class="k">Billet de sortie</div><p class="c">Écrivez cinq conseils à quelqu'un qui cherche un logement.</p><ul><li>Chacun avec un gérondif.</li><li>« On évite les mauvaises surprises en… »</li></ul><span class="ligne"></span><span class="ligne"></span><span class="ligne"></span></section>
+<footer><span>C4 · Louer un logement</span><span>Fiche élève</span></footer>
+</body>
+</html>

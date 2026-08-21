@@ -41,16 +41,23 @@ def build(dossier):
               "N/C veut dire non chauffé, et Hydro coûte environ cent dollars par mois "
               "l'hiver. Laisser le groupe se tromper avant d'expliquer.")
 
-    d.tableau('Le code des annonces', "Vingt abréviations, et on lit tout",
+    d.tableau('Le code · 1 de 2', "Les pièces et ce qui est inclus",
               ['Abréviation', 'Ce que ça veut dire'],
-              [["4 ½", "deux chambres, un salon, une cuisine — le demi, c'est la salle de bain"],
-               ["C/E", "chauffé et éclairé : tout est compris dans le loyer"],
-               ["N/C", "non chauffé : la facture d'Hydro s'ajoute"],
-               ["Libre imm.", "libre immédiatement"],
+              [["4 ½", "deux chambres, un salon, une cuisine"],
+               ["C/E", "chauffé et éclairé : tout est compris"],
+               ["N/C", "non chauffé : Hydro s'ajoute"]],
+              cle=0,
+              note="Le demi, c'est toujours la salle de bain.",
+              notes="Diapositive à photographier. Ce sont les trois mentions qui décident "
+                    "du prix réel.")
+
+    d.tableau('Le code · 2 de 2', "La date, l'étage, le reste",
+              ['Abréviation', 'Ce que ça veut dire'],
+              [["Libre imm.", "libre immédiatement"],
                ["s/s · 2e ét.", "sous-sol · deuxième étage"],
                ["stat. · n/f", "stationnement · non-fumeur"]],
               cle=0,
-              note="Lisez toujours dans cet ordre : les pièces, le prix, ce qui est inclus, la date.",
+              note="Lisez dans cet ordre : les pièces, le prix, ce qui est inclus, la date.",
               notes="Diapositive à photographier. C'est l'outil que les élèves emporteront "
                     "pour chercher un logement cette semaine.")
 
