@@ -671,3 +671,60 @@ Ce que la nuit a appris, et qui est déjà dans `CLAUDE.md` :
 
 **La file reprend** à l'activité 68 (niveau 5), 78 (niveau 3) et 91
 (niveau 2 — l'activité 90 a été livrée le 21 août au soir).
+
+**21 août 2026 — l'activité 78 est livrée.** `module-n3-pharmacie` · « Aller à
+la pharmacie » : 16 séances, 175 diapositives, 16 fiches, 295 extraits audio,
+12 images. Les six contrôles verts, plus le `node --check` du script produit.
+**La file du niveau 3 reprend à l'activité 79** (Déplacement dans une ville).
+
+Ce que cette production a appris ou confirmé :
+
+- **`build/cadre.py 3 "Consultation en pharmacie"` a décidé de la forme du
+  module, comme la nuit précédente l'avait recommandé.** Trois intentions, pas
+  une de plus : « décrire un problème de santé courant » et « demander le
+  renouvellement de l'ordonnance d'un médicament » en production orale, « lire
+  une posologie » en compréhension écrite. Les trois défis sont ces trois
+  intentions, dans cet ordre — rien n'a été inventé autour. **Ce qui distingue
+  ce module de son voisin du niveau 4** (`module-consultation`, activité 45) :
+  il n'y a ni médecin, ni salle d'attente, ni formulaire à remplir ; il y a
+  deux comptoirs, une carte d'assurance maladie et une étiquette à lire.
+- **Le lexique du programme est généreux à ce niveau, et il a servi tel quel** :
+  les parties du corps, les prépositions de temps (depuis, ça fait, il y a,
+  pendant, dans), les marqueurs de fréquence, les expressions de posologie
+  (de plus de, de moins de) et les onze verbes — tousser, avoir de la fièvre,
+  se couper, s'étouffer, se faire mal, consulter, questionner, administrer,
+  persister, rincer. Chacun est dans un exercice ou une mini-leçon.
+- **Les faits québécois ont été vérifiés, pas devinés.** Le pharmacien peut
+  prolonger une ordonnance qui vient à échéance, sans dépasser un an (loi 31,
+  en vigueur depuis 2021) ; il tient un dossier des médicaments de chaque
+  personne ; on présente sa carte d'assurance maladie ; le régime public
+  laisse à la charge une franchise et une coassurance ; certains médicaments
+  se vendent sans ordonnance mais restent derrière le comptoir, sous le
+  jugement du pharmacien (annexes II et III). Sources consultées : Ordre des
+  pharmaciens du Québec, RAMQ, Collège des médecins.
+- **L'originalité a été mesurée avant les MP3**, comme la règle le demande :
+  7,5 % au premier relevé, ramenés à **1,8 %** en reformulant dix consignes et
+  titres génériques avec les mots du module. Les quatre coïncidences restantes
+  sont des mots du lexique du programme — *une ordonnance*, *la carte
+  d'assurance maladie*, *une étiquette* — qu'on ne renomme pas. Aucun extrait
+  n'a été payé puis jeté.
+- **Le compte fal.ai s'est verrouillé en cours de génération d'images**
+  (`HTTP 403 · "User is locked. Reason: TOP_UP"`), après douze images sur
+  vingt-quatre. Ce n'est ni un prompt refusé ni une panne : c'est le solde.
+  Le contenu a été ajusté à ce qui existe — un énoncé retiré de l'`imgmatch`,
+  les cartes sans photo laissées sans champ `img`, ce que le gabarit accepte —
+  et `gen_images.py` est relançable tel quel : il saute ce qui est déjà là.
+  **Les douze images manquantes sont le seul travail en attente laissé par
+  cette production.**
+- **Le `node --check` ne se lance pas sur le HTML produit** : l'extension
+  `.html` fait échouer node avant même de lire le fichier, et `custom.js` est
+  un fragment, donc il échoue lui aussi — c'est vrai de tous les modules. Ce
+  qui se vérifie utilement : les six autres `.js` de `build/contenu/<slug>/`,
+  et le contenu des balises `<script>` du HTML extrait dans un fichier `.js`
+  temporaire. C'est ce qui a été fait ici, et c'est vert.
+- **`theme.py` refuse les tableaux trop denses et les émojis**, l'un après
+  l'autre, à la construction. Neuf tableaux ont dû être raccourcis et la grille
+  d'autoévaluation de E2 a perdu ses trois frimousses : le gabarit est en
+  Verdana, qui ne les possède pas. Écrire les tableaux courts dès le départ —
+  deux colonnes, quatre à six lignes, des cellules de moins de quarante
+  caractères — évite six allers-retours de construction.
