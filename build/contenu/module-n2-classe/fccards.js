@@ -1,0 +1,18 @@
+const FC_CARDS = [
+  {word:"un cahier", def:"Des feuilles attachées ensemble, où on écrit en classe.", ex:"Ouvrez votre <strong>cahier</strong> à la page douze.", img:"/assets/interactive/module-n2-classe/vocab/cahier.jpg", tache:"prep"},
+  {word:"un crayon", def:"Ce qu'on tient dans la main pour écrire.", ex:"Myriam prend un <strong>crayon</strong> rouge dans la boîte.", img:"/assets/interactive/module-n2-classe/vocab/crayon.jpg", tache:"prep"},
+  {word:"une feuille", def:"Un papier blanc, seul, qui n'est pas dans un cahier.", ex:"Prenez une <strong>feuille</strong> blanche.", img:"/assets/interactive/module-n2-classe/vocab/feuille.jpg", tache:"prep"},
+  {word:"une gomme à effacer", def:"Le petit objet qui enlève ce qu'on a écrit au crayon.", ex:"J'enlève le mot avec ma <strong>gomme à effacer</strong>.", img:"/assets/interactive/module-n2-classe/vocab/gomme.jpg", tache:"prep"},
+  {word:"un tableau", def:"La grande surface au mur, devant la classe, où l'enseignante écrit.", ex:"Regardez le <strong>tableau</strong> : les cinq mots sont en bleu.", img:"/assets/interactive/module-n2-classe/vocab/tableau.jpg", tache:"prep"},
+  {word:"un pupitre", def:"La petite table où l'élève s'assoit pour travailler.", ex:"Mon <strong>pupitre</strong> est au premier rang.", img:"/assets/interactive/module-n2-classe/vocab/pupitre.jpg", tache:"prep"},
+  {word:"une consigne", def:"Ce que l'enseignante demande de faire, en une courte phrase.", ex:"La <strong>consigne</strong> est simple : écrivez votre nom en haut.", tache:"t1"},
+  {word:"une page", def:"Un côté d'une feuille de cahier, avec son numéro.", ex:"Le travail est à la <strong>page</strong> douze.", img:"/assets/interactive/module-n2-classe/vocab/page.jpg", tache:"t1"},
+  {word:"effacer", def:"Enlever ce qu'on a écrit, avec la gomme ou avec un chiffon.", ex:"J'<strong>efface</strong> le mot et je recommence.", img:"/assets/interactive/module-n2-classe/vocab/effacer.jpg", tache:"t1"},
+  {word:"répéter", def:"Dire une deuxième fois la même chose.", ex:"Pouvez-vous <strong>répéter</strong>, s'il vous plaît ?", tache:"t1"},
+  {word:"la pause", def:"Le petit arrêt du cours, quand on sort de la classe quelques minutes.", ex:"La <strong>pause</strong> est à dix heures, tous les matins.", img:"/assets/interactive/module-n2-classe/vocab/pause.jpg", tache:"t2"},
+  {word:"un congé", def:"Un jour sans cours et sans travail.", ex:"Lundi, c'est un <strong>congé</strong> : le centre est fermé.", img:"/assets/interactive/module-n2-classe/vocab/conge.jpg", tache:"t2"},
+  {word:"un calendrier", def:"La feuille qui montre les jours et les mois de l'année.", ex:"Les congés sont écrits sur le <strong>calendrier</strong> du centre.", img:"/assets/interactive/module-n2-classe/vocab/calendrier.jpg", tache:"t2"},
+  {word:"une permission", def:"Le droit de faire quelque chose, donné par une personne.", ex:"Je demande la <strong>permission</strong> de sortir deux minutes.", tache:"t2"},
+  {word:"un retard", def:"Le fait d'arriver après l'heure du début.", ex:"Un <strong>retard</strong> de dix minutes, ça arrive à tout le monde.", img:"/assets/interactive/module-n2-classe/vocab/retard.jpg", tache:"t2"},
+  {word:"une absence", def:"Le fait de ne pas être là, un jour de cours.", ex:"Il faut téléphoner au centre pour une <strong>absence</strong>.", tache:"t2"},
+];

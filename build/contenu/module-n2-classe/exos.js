@@ -1,0 +1,257 @@
+const EXOS = [
+ // ── JE DÉCOUVRE ─────────────────────────────────────────────
+  {sec:'prep', id:'prVocab', type:'match', num:'Vocabulaire · 1', tit:'Le mot et sa définition', color:'#0D7A6F',
+   sub:'Choisis un mot, puis sa définition. Six mots à la fois.', noQLbl:true, bankLbl:'Définitions', zonePh:'glisse la définition ici',
+   rows: FC_CARDS.map((c,i)=>({id:'pv'+i, q:c.word, aid:'pv'+i, a:c.def}))},
+
+  {sec:'prep', id:'pr1', type:'vf', num:'Exercice 1', tit:"Vrai ou Faux — Ouvrez votre cahier", color:'#0D7A6F',
+   sub:'Écoute de nouveau le dialogue, puis réponds.', tiles:['VRAI','FAUX'],
+   savoir:{h:"› Les objets de la classe — à écouter et à répéter", speak:true, rows:[
+     ["Ce qu'on ouvre pour écrire","Des feuilles attachées ensemble, avec des numéros de page.", ["cahier"]],
+     ["Ce qu'on tient dans la main","Il écrit en noir, en bleu ou en rouge.", ["crayon"]],
+     ["Le grand mur devant la classe","L'enseignante y écrit les mots du jour.", ["tableau"]],
+     ["La petite table de l'élève","Chacun a la sienne, avec sa chaise.", ["pupitre"]],
+   ]},
+   rows:[
+    {id:'p1a', txt:"Madame Leduc demande d'ouvrir le cahier.", ok:'VRAI'},
+    {id:'p1b', txt:"Tariq comprend la consigne tout de suite.", ok:'FAUX'},
+    {id:'p1c', txt:"Le travail est à la page douze.", ok:'VRAI'},
+    {id:'p1d', txt:"Myriam n'a pas de crayon.", ok:'VRAI'},
+    {id:'p1e', txt:"Myriam prend un crayon bleu.", ok:'FAUX'},
+   ]},
+
+  {sec:'prep', id:'prSons', type:'vf', num:'Exercice 2', tit:"La fin du mot : « é » ou pas ?", color:'#0D7A6F', accent:'#0D7A6F', cards:true, listen:true,
+   sub:"Écoute chaque mot. Est-ce que la fin se dit « é » ?", tiles:['LA FIN SE DIT « É »','LA FIN NE SE DIT PAS « É »'],
+   savoir:{h:"› Les lettres -ez, -er et -é se disent toutes « é »", rows:[
+     ["-ez à la fin d'une consigne","On n'entend pas le z. <span class='savoir-ex'>ouvr<b>ez</b> · ferm<b>ez</b> · écout<b>ez</b></span>"],
+     ["-er à la fin d'un verbe","Même son. <span class='savoir-ex'>effac<b>er</b> · répét<b>er</b> · regard<b>er</b></span>"],
+     ["-é tout seul","Même son encore. <span class='savoir-ex'>un cahi<b>er</b> · la cl<b>é</b> · l'<b>é</b>cole</span>"],
+     ["Attention à -e tout court","Là, on n'entend rien. <span class='savoir-ex'>j'ouvr<b>e</b> · je ferm<b>e</b> · une gomm<b>e</b></span>"],
+   ]},
+   rows:[
+    {id:'ez1', txt:"ouvrez", ok:'LA FIN SE DIT « É »'},
+    {id:'ez2', txt:"j'ouvre", ok:'LA FIN NE SE DIT PAS « É »'},
+    {id:'ez3', txt:"écoutez", ok:'LA FIN SE DIT « É »'},
+    {id:'ez4', txt:"j'écoute", ok:'LA FIN NE SE DIT PAS « É »'},
+    {id:'ez5', txt:"un cahier", ok:'LA FIN SE DIT « É »'},
+    {id:'ez6', txt:"une gomme", ok:'LA FIN NE SE DIT PAS « É »'},
+    {id:'ez7', txt:"répéter", ok:'LA FIN SE DIT « É »'},
+    {id:'ez8', txt:"une feuille", ok:'LA FIN NE SE DIT PAS « É »'},
+   ]},
+
+  {sec:'prep', id:'prImg', type:'imgmatch', num:'Exercice 3', tit:"Ce qu'il y a dans la classe", color:'#0D7A6F',
+   sub:"Glisse chaque photo sur la phrase qui la décrit.",
+   images:[
+    {id:'ic1', src:'/assets/interactive/module-n2-classe/images/cahier-ouvert.jpg'},
+    {id:'ic2', src:'/assets/interactive/module-n2-classe/images/tableau-classe.jpg'},
+    {id:'ic3', src:'/assets/interactive/module-n2-classe/images/pupitre-eleve.jpg'},
+    {id:'ic4', src:'/assets/interactive/module-n2-classe/images/boite-crayons.jpg'},
+    {id:'ic5', src:'/assets/interactive/module-n2-classe/images/horloge-classe.jpg'},
+    {id:'ic6', src:'/assets/interactive/module-n2-classe/images/avis-porte.jpg'},
+   ],
+   rows:[
+    {id:'ic1', txt:"On l'ouvre à la page douze et on écrit dedans.", ok:'ic1'},
+    {id:'ic2', txt:"L'enseignante écrit les mots du jour dessus.", ok:'ic2'},
+    {id:'ic3', txt:"La petite table où l'élève s'assoit.", ok:'ic3'},
+    {id:'ic4', txt:"On y prend un crayon quand on n'en a pas.", ok:'ic4'},
+    {id:'ic5', txt:"Elle dit l'heure de la pause.", ok:'ic5'},
+    {id:'ic6', txt:"Le papier affiché près de la porte de la classe.", ok:'ic6'},
+   ]},
+
+  {sec:'prep', id:'prCouleur', type:'match', num:'Exercice 4', tit:'De quelle couleur ?', color:'#0D7A6F',
+   sub:"Associe chaque objet à sa couleur.", bankLbl:'La couleur', zonePh:'glisse ici',
+   rows:[
+    {id:'k1', q:"Le crayon de Myriam, comme une tomate.", aid:'k1', a:"rouge"},
+    {id:'k2', q:"Les cinq mots au tableau, comme le ciel.", aid:'k2', a:"bleu"},
+    {id:'k3', q:"La feuille neuve, comme la neige.", aid:'k3', a:"blanche"},
+    {id:'k4', q:"Le tableau du fond, comme la nuit.", aid:'k4', a:"noir"},
+    {id:'k5', q:"Le sac de Tariq, comme l'herbe du parc.", aid:'k5', a:"vert"},
+    {id:'k6', q:"La gomme à effacer, comme le soleil.", aid:'k6', a:"jaune"},
+   ]},
+
+ // ── DÉFI 1 · LA CONSIGNE DE L'ENSEIGNANTE ───────────────────
+  {sec:'t1', id:'t1vf', type:'vf', num:'Exercice 1', tit:"Vrai ou Faux — Fermez votre cahier", color:'#1D6B8F',
+   sub:'Écoute de nouveau le dialogue, puis réponds.', tiles:['VRAI','FAUX'],
+   rows:[
+    {id:'f1', txt:"Madame Leduc demande de prendre une feuille.", ok:'VRAI'},
+    {id:'f2', txt:"La feuille est jaune.", ok:'FAUX'},
+    {id:'f3', txt:"Il faut écrire son nom en haut de la feuille.", ok:'VRAI'},
+    {id:'f4', txt:"Myriam demande de répéter.", ok:'VRAI'},
+    {id:'f5', txt:"Les cinq mots au tableau sont en bleu.", ok:'VRAI'},
+   ]},
+
+  {sec:'t1', id:'t1imper', type:'write', num:'Exercice 2', tit:'La consigne commence par un verbe', color:'#1D6B8F', cols:2,
+   sub:"Complète chaque consigne avec le verbe qui convient.",
+   savoir:{h:"› Huit consignes à connaître par cœur", speak:true, rows:[
+     ["On commence à travailler","<span class='savoir-ex'><b>Ouvrez</b> votre cahier. · <b>Prenez</b> une feuille.</span>", ["cahier"]],
+     ["On écoute et on regarde","<span class='savoir-ex'><b>Écoutez</b> bien. · <b>Regardez</b> le tableau.</span>", ["tableau"]],
+     ["On écrit et on enlève","<span class='savoir-ex'><b>Écrivez</b> votre nom. · <b>Effacez</b> le mot.</span>", ["effacer"]],
+     ["On finit","<span class='savoir-ex'><b>Fermez</b> votre cahier. · <b>Donnez</b>-moi votre feuille.</span>"],
+     ["La consigne n'a pas de « vous » devant","On dit <b>Ouvrez</b>, pas « vous ouvrez ». Le verbe est seul, au début.", ["consigne"]],
+     ["Le -ez ne s'entend pas comme un z","<span class='savoir-ex'>ouvr<b>ez</b> se dit « ouvré »</span>"],
+   ]},
+   items:[
+    {q:"___ votre cahier à la page douze.", accept:["ouvrez","Ouvrez"], ph:"un verbe"},
+    {q:"___ le tableau, s'il vous plaît.", accept:["regardez","Regardez"], ph:"…"},
+    {q:"___ bien : je dis les mots une seule fois.", accept:["écoutez","Écoutez","ecoutez"], ph:"…"},
+    {q:"___ votre nom en haut de la feuille.", accept:["écrivez","Écrivez","ecrivez"], ph:"…"},
+    {q:"___ votre cahier : le cours est fini.", accept:["fermez","Fermez"], ph:"…"},
+    {q:"___ le mot avec votre gomme.", accept:["effacez","Effacez"], ph:"…"},
+   ]},
+
+  {sec:'t1', id:'t1couleur', type:'write', num:'Exercice 3', tit:"La couleur se dit après l'objet", color:'#1D6B8F', cols:2,
+   sub:"Complète avec la couleur, à la bonne forme.",
+   savoir:{h:"› Où se place la couleur, et quand elle change", speak:true, rows:[
+     ["En français, la couleur vient après","<span class='savoir-ex'>un crayon <b>rouge</b> · une feuille <b>blanche</b></span>", ["crayon"]],
+     ["Avec un mot féminin, on ajoute souvent un -e","<span class='savoir-ex'>un cahier ver<b>t</b> · une gomme ver<b>te</b></span>", ["feuille"]],
+     ["Quatre couleurs ne changent pas","<span class='savoir-ex'>rouge · jaune · rose · beige</span>"],
+     ["Blanc devient blanche","<span class='savoir-ex'>un mur <b>blanc</b> · une feuille <b>blanche</b></span>"],
+     ["Plusieurs objets : on ajoute un -s","<span class='savoir-ex'>deux crayons <b>bleus</b> · trois feuilles <b>blanches</b></span>", ["page"]],
+   ]},
+   items:[
+    {q:"Myriam prend un crayon ___ . (rouge)", accept:["rouge"], ph:"une couleur"},
+    {q:"Prenez une feuille ___ . (blanc)", accept:["blanche"], ph:"…"},
+    {q:"Les cinq mots du tableau sont ___ . (bleu)", accept:["bleus"], ph:"…"},
+    {q:"Le sac de Tariq est ___ . (vert)", accept:["vert"], ph:"…"},
+    {q:"J'ai deux gommes ___ . (jaune)", accept:["jaunes"], ph:"…"},
+    {q:"La chaise du fond est ___ . (noir)", accept:["noire"], ph:"…"},
+   ]},
+
+  {sec:'t1', id:'t1geste', type:'match', num:'Exercice 4', tit:'La consigne et le geste', color:'#1D6B8F',
+   sub:"Associe chaque consigne à ce que fait l'élève.", bankLbl:"Ce que fait l'élève", zonePh:'glisse ici',
+   rows:[
+    {id:'g1', q:"« Ouvrez votre cahier à la page douze. »", aid:'g1', a:"Il cherche le numéro 12 en haut de la page."},
+    {id:'g2', q:"« Prenez une feuille blanche. »", aid:'g2', a:"Il sort un papier de son sac."},
+    {id:'g3', q:"« Effacez le mot. »", aid:'g3', a:"Il enlève le mot avec sa gomme."},
+    {id:'g4', q:"« Regardez le tableau. »", aid:'g4', a:"Il lève les yeux vers l'avant de la classe."},
+    {id:'g5', q:"« Donnez-moi votre feuille. »", aid:'g5', a:"Il se lève et va porter son travail."},
+    {id:'g6', q:"« Fermez votre cahier. »", aid:'g6', a:"Il arrête d'écrire et range son crayon."},
+   ]},
+
+  {sec:'t1', id:'t1b', type:'vf', num:'Exercice 5', tit:"Vrai ou Faux — Je n'ai pas compris", color:'#1D6B8F',
+   sub:'Écoute de nouveau le dialogue, puis réponds.', tiles:['VRAI','FAUX'],
+   savoir:{h:"› Quatre phrases quand on ne comprend pas", speak:true, rows:[
+     ["On le dit tout de suite","<span class='savoir-ex'>Je n'ai pas compris.</span>"],
+     ["On demande une deuxième fois","<span class='savoir-ex'>Pouvez-vous <b>répéter</b>, s'il vous plaît ?</span>", ["répéter"]],
+     ["On demande moins vite","<span class='savoir-ex'>Plus lentement, s'il vous plaît.</span>"],
+     ["On demande un mot","<span class='savoir-ex'>Qu'est-ce que ça veut dire, « effacez » ?</span>"],
+   ]},
+   rows:[
+    {id:'n1', txt:"Tariq ne comprend pas le mot « effacez ».", ok:'VRAI'},
+    {id:'n2', txt:"Myriam explique le mot à Tariq.", ok:'VRAI'},
+    {id:'n3', txt:"Myriam dit que l'enseignante ne répète jamais.", ok:'FAUX'},
+    {id:'n4', txt:"Effacer, c'est enlever avec la gomme.", ok:'VRAI'},
+   ]},
+
+ // ── DÉFI 2 · PERMISSION, RETARD, ABSENCE ────────────────────
+  {sec:'t2', id:'t2vf', type:'vf', num:'Exercice 1', tit:"Vrai ou Faux — Est-ce que je peux ?", color:'#B45309',
+   sub:'Écoute de nouveau le dialogue, puis réponds.', tiles:['VRAI','FAUX'],
+   rows:[
+    {id:'v1', txt:"Tariq demande la permission de sortir.", ok:'VRAI'},
+    {id:'v2', txt:"La pause est à onze heures.", ok:'FAUX'},
+    {id:'v3', txt:"Le téléphone est interdit en classe.", ok:'VRAI'},
+    {id:'v4', txt:"L'eau est permise en classe.", ok:'VRAI'},
+    {id:'v5', txt:"Myriam veut ouvrir la fenêtre.", ok:'VRAI'},
+   ]},
+
+  {sec:'t2', id:'t2peux', type:'write', num:'Exercice 2', tit:'Est-ce que je peux… ?', color:'#B45309', cols:2,
+   sub:"Écris la question que tu poses à ton enseignante.",
+   savoir:{h:"› Demander la permission en une phrase", speak:true, rows:[
+     ["La formule, toujours la même","<span class='savoir-ex'><b>Est-ce que je peux</b> + un verbe qui ne change pas</span>", ["permission"]],
+     ["Trois exemples","<span class='savoir-ex'>Est-ce que je peux <b>sortir</b> ? · <b>ouvrir</b> la fenêtre ? · <b>prendre</b> un crayon ?</span>"],
+     ["Le deuxième verbe ne bouge jamais","On dit « je peux <b>sortir</b> », jamais « je peux je sors »."],
+     ["Plus court, à l'oral","<span class='savoir-ex'>Je peux sortir ? — la voix monte à la fin.</span>"],
+     ["On ajoute la politesse","<span class='savoir-ex'>Est-ce que je peux sortir, <b>s'il vous plaît</b> ?</span>"],
+     ["La réponse qu'on entend","<span class='savoir-ex'>Oui, bien sûr. · Oui, mais attends deux minutes. · Non, pas maintenant.</span>"],
+   ]},
+   items:[
+    {q:"Tu veux sortir deux minutes.", accept:["est-ce que je peux sortir ?","est-ce que je peux sortir","je peux sortir ?","est-ce que je peux sortir deux minutes ?"], ph:"Est-ce que je peux…"},
+    {q:"Tu n'as pas de crayon et tu veux en emprunter un.", accept:["est-ce que je peux prendre un crayon ?","est-ce que je peux prendre un crayon","je peux prendre un crayon ?","est-ce que je peux emprunter un crayon ?"], ph:"…"},
+    {q:"Il fait chaud et tu veux ouvrir la fenêtre.", accept:["est-ce que je peux ouvrir la fenêtre ?","est-ce que je peux ouvrir la fenêtre","je peux ouvrir la fenêtre ?"], ph:"…"},
+    {q:"Tu veux boire de l'eau pendant le cours.", accept:["est-ce que je peux boire de l'eau ?","est-ce que je peux boire de l'eau","je peux boire de l'eau ?"], ph:"…"},
+    {q:"Tu n'as pas compris et tu veux qu'on répète.", accept:["pouvez-vous répéter ?","pouvez-vous répéter","est-ce que vous pouvez répéter ?"], ph:"…"},
+   ]},
+
+  {sec:'t2', id:'t2avis', type:'vf', num:'Exercice 3', tit:"Lire l'avis affiché près de la porte", color:'#B45309',
+   sub:"Lis l'avis dans le bandeau noir, puis réponds.", tiles:['VRAI','FAUX'],
+   savoir:{h:"› AVIS AUX ÉLÈVES — Centre de formation, local 114", rows:[
+     ["Cours","du lundi au vendredi, de 8 h 30 à 12 h 30"],
+     ["Pause","de 10 h à 10 h 15, dans le corridor ou dehors"],
+     ["Congé","le lundi 5 octobre : le centre est fermé"],
+     ["Retard","Entrez sans frapper. Assoyez-vous en silence."],
+     ["Absence","Téléphonez au 514 555-0142 avant 8 h 30."],
+     ["En classe","L'eau est permise. Le téléphone est interdit."],
+   ]},
+   rows:[
+    {id:'w1', txt:"Le cours finit à midi et demi.", ok:'VRAI'},
+    {id:'w2', txt:"La pause dure quinze minutes.", ok:'VRAI'},
+    {id:'w3', txt:"Le lundi 5 octobre, il y a un cours.", ok:'FAUX'},
+    {id:'w4', txt:"Quand on est en retard, il faut frapper à la porte.", ok:'FAUX'},
+    {id:'w5', txt:"Pour une absence, on téléphone avant 8 h 30.", ok:'VRAI'},
+    {id:'w6', txt:"On peut apporter une bouteille d'eau en classe.", ok:'VRAI'},
+   ]},
+
+  {sec:'t2', id:'t2permis', type:'vf', num:'Exercice 4', tit:"C'est permis ou c'est interdit ?", color:'#B45309',
+   sub:"Lis chaque phrase et choisis.", tiles:["C'EST PERMIS","C'EST INTERDIT"],
+   savoir:{h:"› Quatre mots pour dire oui ou non", speak:true, rows:[
+     ["Ce qu'on a le droit de faire","<span class='savoir-ex'>C'est <b>permis</b>. · C'est <b>autorisé</b>. · C'est <b>possible</b>.</span>", ["permission"]],
+     ["Ce qu'on n'a pas le droit de faire","<span class='savoir-ex'>C'est <b>interdit</b>. · Ce n'est pas permis.</span>"],
+     ["Sur un avis, c'est écrit court","<span class='savoir-ex'>Téléphone interdit · Eau permise</span>", ["calendrier"]],
+     ["Avec « devoir », c'est une obligation","<span class='savoir-ex'>Vous <b>devez</b> téléphoner avant 8 h 30.</span>", ["absence"]],
+     ["Soyez à l'heure","La règle la plus répétée du centre : le cours commence à 8 h 30."],
+   ]},
+   rows:[
+    {id:'x1', txt:"Boire de l'eau pendant le cours.", ok:"C'EST PERMIS"},
+    {id:'x2', txt:"Répondre au téléphone en classe.", ok:"C'EST INTERDIT"},
+    {id:'x3', txt:"Sortir deux minutes avec la permission de l'enseignante.", ok:"C'EST PERMIS"},
+    {id:'x4', txt:"Fumer dans le corridor du centre.", ok:"C'EST INTERDIT"},
+    {id:'x5', txt:"Prendre un crayon dans la boîte de la classe.", ok:"C'EST PERMIS"},
+    {id:'x6', txt:"Arriver à neuf heures sans téléphoner.", ok:"C'EST INTERDIT"},
+   ]},
+
+  {sec:'t2', id:'t2mot', type:'write', num:'Exercice 5', tit:'Le retard et l\'absence', color:'#B45309', cols:2,
+   sub:"Complète avec le mot qui manque.",
+   savoir:{h:"› Être en retard, être absent", speak:true, rows:[
+     ["On arrive après l'heure","<span class='savoir-ex'>Je suis <b>en retard</b>. · J'ai dix minutes de <b>retard</b>.</span>", ["retard"]],
+     ["On n'est pas là du tout","<span class='savoir-ex'>Je suis <b>absent</b>. · Je suis <b>absente</b>. (une femme)</span>", ["absence"]],
+     ["On dit quel jour","<span class='savoir-ex'>Demain, je suis absent. · Jeudi, je suis absente.</span>"],
+     ["On dit pourquoi, en trois mots","<span class='savoir-ex'>J'ai un rendez-vous. · Mon enfant est malade.</span>"],
+     ["Le jour sans cours, c'est autre chose","Un <b>congé</b> est pour tout le groupe ; une <b>absence</b> est pour une seule personne.", ["congé"]],
+   ]},
+   items:[
+    {q:"J'arrive à neuf heures. Je suis ___ retard.", accept:["en"], ph:"…"},
+    {q:"Demain, je ne viens pas. Je suis ___ . (un homme)", accept:["absent"], ph:"…"},
+    {q:"Jeudi, Myriam ne vient pas. Elle est ___ . (une femme)", accept:["absente"], ph:"…"},
+    {q:"Lundi, le centre est fermé : c'est un ___ .", accept:["congé","conge"], ph:"…"},
+    {q:"Pour une absence, il faut ___ au centre avant 8 h 30.", accept:["téléphoner","telephoner","appeler"], ph:"un verbe"},
+   ]},
+
+  {sec:'t2', id:'t2b', type:'vf', num:'Exercice 6', tit:'Vrai ou Faux — Demain, je suis absent', color:'#B45309',
+   sub:'Écoute de nouveau le dialogue, puis réponds.', tiles:['VRAI','FAUX'],
+   rows:[
+    {id:'y1', txt:"Tariq a un rendez-vous à la clinique.", ok:'VRAI'},
+    {id:'y2', txt:"Il doit téléphoner au centre avant huit heures et demie.", ok:'VRAI'},
+    {id:'y3', txt:"Il n'a rien à faire à la maison.", ok:'FAUX'},
+    {id:'y4', txt:"Le travail est aux pages quinze et seize.", ok:'VRAI'},
+   ]},
+
+ // ── JE ME LANCE ─────────────────────────────────────────────
+  {sec:'appli', id:'aQui', type:'vf', num:'Exercice 1', tit:'Qui parle ?', color:'#7E3F98',
+   sub:"Écoute le dialogue « Bienvenue dans la classe », puis réponds.", tiles:['TARIQ','MYRIAM'],
+   rows:[
+    {id:'z1', txt:"« Le cours commence à quelle heure ? »", ok:'MYRIAM'},
+    {id:'z2', txt:"« À huit heures et demie. »", ok:'TARIQ'},
+    {id:'z3', txt:"« Et on apporte quoi ? »", ok:'MYRIAM'},
+    {id:'z4', txt:"« Un cahier, un crayon et une gomme à effacer. »", ok:'TARIQ'},
+    {id:'z5', txt:"« Merci beaucoup ! À demain. »", ok:'MYRIAM'},
+   ]},
+
+  {sec:'appli', id:'aMoi', type:'write', num:'Exercice 2', tit:'Et toi, ta classe ?', color:'#7E3F98', cols:2,
+   sub:"Écris ta réponse à chaque question.",
+   items:[
+    {q:"Le cours commence à quelle heure ?", ph:"Le cours commence à…"},
+    {q:"La pause est à quelle heure ?", ph:"La pause est à…"},
+    {q:"Qu'est-ce qu'on apporte en classe ?", ph:"J'apporte…"},
+    {q:"Qu'est-ce qui est interdit dans ta classe ?", ph:"…, c'est interdit."},
+   ]},
+];
