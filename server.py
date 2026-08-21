@@ -3587,7 +3587,123 @@ JEU_DE_ROLE_BONJOUR = {
 }
 
 
+JEU_DE_ROLE_ELECTRO = {
+    "laveuse": {
+        "contexte": (
+            "Le rayon des électroménagers d'un grand magasin, un jeudi "
+            "d'automne. Une laveuse Norlac LT 4200 blanche est en spécial à "
+            "849 $ dans la circulaire de la semaine ; le client tient la "
+            "circulaire dans sa main."
+        ),
+        "vendeur": [
+            "La laveuse de la circulaire est la blanche, modèle LT 4200.",
+            "Elle est à 849 $ cette semaine ; le prix régulier est 1 049 $.",
+            "Le spécial finit dimanche.",
+            "Elle fait 27 pouces de large. Le même modèle en gris coûte "
+            "50 $ de plus.",
+            "La livraison coûte 60 $ ; le camion passe jeudi ou samedi.",
+            "Tu ne parles jamais de garantie ni d'échange : ce n'est pas ce "
+            "niveau-ci.",
+        ],
+        "client": [
+            "Ta laveuse est brisée depuis lundi.",
+            "Tu as la circulaire et tu montres la photo du doigt.",
+            "Tu as mesuré chez toi : tu as 28 pouces de place.",
+            "Tu demandes le prix, puis la largeur, puis la livraison.",
+        ],
+    },
+    "microondes": {
+        "contexte": (
+            "La deuxième allée du magasin, où sont les petits appareils. "
+            "Les micro-ondes sont en haut des tablettes, avec une affichette "
+            "devant chacun."
+        ),
+        "vendeur": [
+            "Les micro-ondes sont dans la deuxième allée, à droite.",
+            "Le noir est à 129 $, en spécial jusqu'à dimanche ; le blanc est "
+            "à 99 $, au prix régulier.",
+            "Le noir fait 20 pouces de large, le blanc 18 pouces.",
+            "Les deux se transportent : la boîte est sous la tablette.",
+            "Tu donnes un renseignement à la fois, seulement si on te le "
+            "demande.",
+        ],
+        "client": [
+            "Tu cherches un micro-ondes pour une petite cuisine.",
+            "Tu ne sais pas où il est dans le magasin : tu demandes.",
+            "Tu as 22 pouces entre le mur et le réfrigérateur.",
+            "Tu demandes si tu peux l'emporter tout de suite.",
+        ],
+    },
+    "livraison": {
+        "contexte": (
+            "Le comptoir de la livraison, près de la sortie. Le client vient "
+            "de payer à la caisse et tient son reçu."
+        ),
+        "vendeur": [
+            "La livraison coûte 60 $ et se paie ici.",
+            "Le camion peut passer jeudi ou samedi, entre 8 h et midi.",
+            "Il faut une adresse et un numéro de téléphone.",
+            "Le magasin reprend l'ancien appareil sans rien charger, s'il "
+            "est près de la porte.",
+            "Tu remets un bon de livraison et tu dis de le garder.",
+        ],
+        "client": [
+            "Tu as payé ton appareil et tu n'as pas d'auto.",
+            "Tu demandes quels jours le camion passe.",
+            "Tu donnes ton adresse et ton numéro de téléphone.",
+            "Tu demandes si le magasin emporte le vieil appareil.",
+        ],
+    },
+}
+
+
 JEU_DE_ROLE_SCENARIOS = {
+    "electro": {
+        "cadre": "l'achat d'un appareil dans un magasin, au niveau débutant",
+        "contexte_label": "L'endroit du magasin où vous vous trouvez",
+        "cas": JEU_DE_ROLE_ELECTRO,
+        "adresse": "Vouvoie l'élève : c'est un commerce, on ne se connaît pas.",
+        "sujets": [
+            "l'appareil cherché, nommé en un mot",
+            "le rayon ou l'allée où il se trouve",
+            "le prix de cette semaine, et le spécial",
+            "le format de l'appareil, en pouces",
+            "la livraison : le jour, l'heure, le prix",
+            "un merci pour finir",
+        ],
+        "cloture": ("Quand l'appareil est choisi et la livraison fixée, redis "
+                    "le jour de la livraison, dis de garder le bon, et salue. "
+                    "N'allonge pas la conversation."),
+        "ouverture": {
+            "client": "Bonjour. Je cherche une laveuse.",
+            "vendeur": "Bonjour ! Je peux vous aider ?",
+        },
+        "roles": {
+            "vendeur": {
+                "qui": ("Tu vends les appareils au rayon des "
+                        "électroménagers. L'élève est le client."),
+                "conduite": ("Parle en phrases courtes, au présent, une idée "
+                             "par phrase : l'élève est débutant. Ne donne "
+                             "jamais un renseignement avant qu'on te le "
+                             "demande — ni le prix, ni la largeur, ni la "
+                             "livraison — et ne rappelle pas à l'élève ce "
+                             "qu'il a oublié de demander. Dis les prix en "
+                             "toutes lettres. Ne parle ni de garantie, ni "
+                             "d'échange, ni de remboursement : ce n'est pas "
+                             "ce niveau-ci. Si l'élève ne comprend pas, "
+                             "répète plus lentement avec les mêmes mots."),
+            },
+            "client": {
+                "qui": ("Tu achètes un appareil. L'élève travaille au "
+                        "magasin et te sert."),
+                "conduite": ("Dis ce que tu cherches en une phrase courte, "
+                             "puis pose une question à la fois : le prix, la "
+                             "largeur, la livraison. Deux ou trois répliques "
+                             "de suite, pas davantage. Remercie avant de "
+                             "partir."),
+            },
+        },
+    },
     "bonjour": {
         "cadre": "un court échange entre deux voisines, dans un immeuble",
         "contexte_label": "L'endroit où vous vous croisez tous les deux",
