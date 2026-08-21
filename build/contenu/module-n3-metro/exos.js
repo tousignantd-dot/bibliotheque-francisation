@@ -99,7 +99,7 @@ const EXOS = [
    ]},
 
   {sec:'t1', id:'t1demons', type:'write', num:'Exercice 3', tit:'Ce titre-là, cette carte-là, ces prix-là', color:'#1D6B8F', cols:2,
-   sub:"Complète avec « ce », « cet », « cette » ou « ces ».",
+   sub:"Tu montres du doigt, sur la grille ou sur le comptoir. Complète avec « ce », « cet », « cette » ou « ces ».",
    savoir:{h:"› Montrer une chose au comptoir : ce, cet, cette, ces", speak:true, rows:[
      ["Devant un mot masculin : ce","<b>ce</b> titre · <b>ce</b> passage · <b>ce</b> comptoir.", ["ce titre","ce passage"]],
      ["Devant une voyelle : cet","<b>cet</b> autobus · <b>cet</b> appareil. On ne dit jamais « ce autobus ».", ["cet autobus","cet appareil"]],
