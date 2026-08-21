@@ -226,13 +226,13 @@ const EXOS = [
 
   {sec:'t2', id:'t2rel', type:'write', num:'Exercice 2', cols:2,
    tit:"Le sentier qui, la région que, le village où", color:'#1D6B8F',
-   sub:"Complétez chaque phrase avec le pronom relatif qui convient : qui, que, où, dont.",
+   sub:"Choisissez le pronom relatif qui convient à chaque phrase : qui, que, où, dont.",
    savoir:{h:"› Les pronoms relatifs : une seule phrase au lieu de deux", speak:true, rows:[
      ["À quoi ça sert, ici","Un dépliant n'écrit pas : « Le sentier fait cinq kilomètres. Il longe le fleuve. » Il écrit : <span class='savoir-ex'>Le sentier qui longe le fleuve fait cinq kilomètres.</span> Une phrase au lieu de deux, et l'on sait au passage de quel sentier il s'agit. C'est cela, au niveau 5, un discours organisé.", ['un sentier']],
-     ["Qui — le sujet du verbe qui suit","<span class='savoir-ex'>le gîte qui sert le déjeuner · l'autocar qui part à sept heures · la région qui borde le fleuve</span>. Après <b>qui</b>, il y a tout de suite un verbe, et c'est la chose nommée avant qui fait l'action.", ['un gîte']],
-     ["Que — le complément direct","<span class='savoir-ex'>le sentier que nous avons fait hier · la chambre que j'ai réservée</span>. Après <b>que</b>, il y a un sujet, puis le verbe. Le truc qui ne trompe pas : si vous pouvez mettre « je », « nous », « vous » juste après, c'est <b>que</b>."],
-     ["Où — le lieu, et aussi le moment","<span class='savoir-ex'>le village où l'autocar s'arrête · l'anse où les phoques se couchent · le matin où il a plu</span>. <b>Où</b> remplace un lieu, mais aussi un moment. On ne dit pas « le jour que », même si ça s'entend : on dit <b>le jour où</b>.", ['la marée']],
-     ["Dont — quand la suite commence par « de »","<span class='savoir-ex'>le parc dont je vous parlais · le belvédère dont on voit les îles</span>. On dit parler <b>de</b> quelque chose, voir quelque chose <b>de</b> quelque part : ce « de » devient <b>dont</b>.", ['un belvédère']],
+     ["Qui — il est suivi tout de suite d'un verbe","<span class='savoir-ex'>le gîte qui sert le déjeuner · l'autocar qui part à sept heures · la région qui borde le fleuve</span>. Après <b>qui</b>, il y a tout de suite un verbe, et c'est la chose nommée avant qui fait l'action.", ['un gîte']],
+     ["Que — il est suivi d'un sujet, puis d'un verbe","<span class='savoir-ex'>le sentier que nous avons fait hier · la chambre que j'ai réservée</span>. Après <b>que</b>, il y a un sujet, puis le verbe. Le truc qui ne trompe pas : si vous pouvez mettre « je », « nous », « vous » juste après, c'est <b>que</b>."],
+     ["Où — un endroit, ou bien un moment","<span class='savoir-ex'>le village où l'autocar s'arrête · l'anse où les phoques se couchent · le matin où il a plu</span>. <b>Où</b> remplace un lieu, mais aussi un moment. On ne dit pas « le jour que », même si ça s'entend : on dit <b>le jour où</b>.", ['la marée']],
+     ["Dont — il remplace un complément en « de »","<span class='savoir-ex'>le parc dont je vous parlais · le belvédère dont on voit les îles</span>. On dit parler <b>de</b> quelque chose, voir quelque chose <b>de</b> quelque part : ce « de » devient <b>dont</b>.", ['un belvédère']],
    ]},
    items:[
     {q:"Le sentier ___ longe le fleuve fait cinq kilomètres.", accept:["qui"], ph:"qui / que"},
@@ -287,7 +287,7 @@ const EXOS = [
    savoir:{h:"› Une fiche de voyage tient sur un bout de papier", rows:[
      ["Le renseignement d'abord, l'explication jamais","<span class='savoir-ex'>Départ — lundi 28, 7 h, quai 12</span>. On n'écrit ni « le », ni « la », ni de verbe. Une fiche se relit debout, dans un hall, avec une valise dans chaque main."],
      ["Les six lignes qui servent vraiment","Le départ · l'arrivée · l'hébergement et son adresse · le retour · un numéro de téléphone · une chose à ne pas oublier. Le reste tient dans votre téléphone, et votre téléphone tombera en panne de pile."],
-     ["Les chiffres se notent en chiffres","28 sept., 7 h, quai 12, 90 $ la nuit, 6 nuits. Écrire en toutes lettres double la longueur et ne rend rien plus clair."],
+     ["Une date, une heure, un nombre de nuits","28 sept., 7 h, quai 12, 90 $ la nuit, 6 nuits. Écrire en toutes lettres double la longueur et ne rend rien plus clair."],
      ["La dernière ligne est celle qu'on oublie","« Regarder les heures de marée à l'accueil. » « Arriver 20 min avant. » C'est la ligne qui sauve le voyage, et c'est celle qu'on n'écrit jamais parce qu'on croit s'en souvenir."],
    ]},
    items:[
@@ -351,11 +351,11 @@ const EXOS = [
   {sec:'t3', id:'t3ger', type:'write', num:'Exercice 3', cols:2,
    tit:"En marchant, en passant par le petit chemin", color:'#A5335F',
    sub:"Récrivez la partie soulignée avec « en » + le verbe en -ant, comme dans l'exemple : « Vous passez par le chemin de l'église et vous coupez dix minutes. » → « En passant par le chemin de l'église, vous coupez dix minutes. »",
-   savoir:{h:"› Le gérondif : dire par quel moyen, et dire en même temps", speak:true, rows:[
+   savoir:{h:"› Le gérondif : par quel chemin, et pendant que", speak:true, rows:[
      ["Comment il se forme","On prend le verbe à <b>nous</b> au présent, on enlève <b>-ons</b>, on ajoute <b>-ant</b>, et on met <b>en</b> devant. Nous marchons → en marchant. Nous prenons → en prenant. Nous partons → en partant. Trois exceptions à retenir : être → en étant, avoir → en ayant, savoir → en sachant."],
-     ["Le moyen : par quoi on y arrive","<span class='savoir-ex'>En passant par le petit chemin, vous coupez dix minutes. · En réservant en basse saison, on paie vingt dollars de moins.</span> C'est l'emploi le plus utile du module : le gérondif dit <b>comment</b>, et il tient en trois mots.", ['la basse saison']],
-     ["La simultanéité : deux choses à la fois","<span class='savoir-ex'>Elle a regardé le fleuve en voyageant. · Il a lu le dépliant en attendant l'autocar.</span> Les deux actions se passent au même moment, et c'est la même personne qui fait les deux — c'est la règle qui ne se contourne pas.", ['un dépliant']],
-     ["La même personne pour les deux verbes","On ne dit pas « en montant au belvédère, les îles sont apparues » : ce ne sont pas les îles qui montent. On dit <span class='savoir-ex'>en montant au belvédère, nous avons vu les îles</span>. Le sujet du gérondif est toujours celui de la phrase.", ['un belvédère']],
+     ["Le chemin qu'on prend pour y arriver","<span class='savoir-ex'>En passant par le petit chemin, vous coupez dix minutes. · En réservant en basse saison, on paie vingt dollars de moins.</span> C'est l'emploi le plus utile du module : le gérondif dit <b>comment</b>, et il tient en trois mots.", ['la basse saison']],
+     ["Deux choses menées dans le même moment","<span class='savoir-ex'>Elle a regardé le fleuve en voyageant. · Il a lu le dépliant en attendant l'autocar.</span> Les deux actions se passent au même moment, et c'est la même personne qui fait les deux — c'est la règle qui ne se contourne pas.", ['un dépliant']],
+     ["Un seul sujet commande les deux verbes","On ne dit pas « en montant au belvédère, les îles sont apparues » : ce ne sont pas les îles qui montent. On dit <span class='savoir-ex'>en montant au belvédère, nous avons vu les îles</span>. Le sujet du gérondif est toujours celui de la phrase.", ['un belvédère']],
      ["Où il sert dans la vraie vie","C'est la tournure qui explique un chemin en une phrase, et l'on vous en donnera beaucoup en région : <span class='savoir-ex'>En sortant du gîte et en tournant à droite après l'église, vous êtes au sentier en dix minutes.</span> Deux gérondifs, un chemin complet.", ['un sentier']],
    ]},
    items:[

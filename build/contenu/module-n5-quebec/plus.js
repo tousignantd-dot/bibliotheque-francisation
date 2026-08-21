@@ -676,7 +676,7 @@ const PLUS = {
        say:"En marchant, comptez quarante minutes. En passant par le petit chemin, vous coupez dix minutes.",
        note:"La recette marche même sur les verbes irréguliers : nous faisons → en faisant, nous allons → en allant, nous venons → en venant. Il n'y a vraiment que trois exceptions."},
 
-      {t:'ana', h:"Le moyen : par quoi on y arrive",
+      {t:'ana', h:"Le chemin qu'on prend pour y arriver",
        p:"C'est l'emploi le plus utile du module. Le gérondif répond à « comment ? ».",
        mots:[["Un chemin","En passant par le chemin de l'église, vous coupez dix minutes."],["Une économie","En réservant en basse saison, on paie vingt dollars de moins par nuit.",true],["Un conseil","En partant tôt le matin, vous éviterez le monde sur le sentier."]],
        say:"En réservant après le quinze septembre, je paie le tarif de basse saison.",
