@@ -274,6 +274,19 @@ Deux pièges déjà payés :
   sens : le `degreffe()` en tête de chaque greffe n'est **pas** du code mort —
   le retirer ferait empiler un bandeau de plus à chaque build. Un doute là-dessus
   a déjà coûté à une session de s'interdire `gabarit.py` pour rien.
+- **La bonne réponse d'un `imgmatch` se lit sous `ok`, pas sous `aid`.** Le
+  moteur ne lisait que `aid`, la clé de `module-consultation`, d'où il est
+  sorti ; les modules assemblés depuis `build/contenu` écrivent tous `ok`,
+  comme les `vf` et les `rows`. La zone n'avait donc aucune bonne réponse et
+  **aucune photo n'était jamais acceptée** — glisser-déposer cassé dans les
+  trente-quatre modules à `imgmatch`, sans la moindre erreur en console.
+  Corrigé le 21 août 2026 : `cv:(r.ok!==undefined?r.ok:r.aid)`, `aid` restant
+  toléré pour `module-consultation` et `module-probleme`. Le type `match`, lui,
+  n'a que `aid` — c'est de là que venait la confusion. Ce que cet épisode
+  enseigne : un exercice qui ne lève pas d'erreur peut être mort. Un module
+  neuf mérite qu'on place une bonne réponse et qu'on vérifie qu'elle est
+  acceptée, pas seulement que la page s'affiche.
+
 - La consigne de correction de la production **écrite** ne vit pas dans le
   gabarit : `build/greffe_depot_ecrit.py` la pose. L'ancien script croyait la
   remplacer et son `replace` était sans effet — code mort découvert en

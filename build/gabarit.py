@@ -140,6 +140,34 @@ def ameliorer(html):
         '}\n'
         '.vf-summary{font-size:13px;font-weight:800}',
         'tuiles Vrai/Faux sous 620 px')
+    # 1c. Association d'images : le moteur ne lisait que `aid`, la clé de
+    # `module-consultation`. Tous les modules assemblés depuis build/contenu
+    # écrivent `ok` sur les rangées d'un `imgmatch` — la zone n'avait donc pas
+    # de bonne réponse et aucune photo n'était jamais acceptée. On lit `ok`
+    # d'abord, `aid` ensuite pour les deux modules historiques.
+    html = upgrade(
+        html,
+        "  if (ex.type === 'imgmatch') ex.rows.forEach(r => ZONES[r.id] = "
+        "{cv:r.aid, zcat:'id', exo:ex.id});",
+        "  // imgmatch : la bonne image est sous `ok` (comme vf/rows) ; `aid` reste toléré,\n"
+        "  // un module historique l'utilise. Ne pas confondre avec `match`, qui n'a que `aid`.\n"
+        "  if (ex.type === 'imgmatch') ex.rows.forEach(r => ZONES[r.id] = "
+        "{cv:(r.ok!==undefined?r.ok:r.aid), zcat:'id', exo:ex.id});",
+        'bonne réponse des imgmatch')
+    # Le second argument de mkImgZone n'a jamais servi : la fonction ignore
+    # `im` et relit l'image placée dans ALL_IMAGES. C'est lui qui a fait croire
+    # que `aid` était la clé.
+    html = upgrade(
+        html,
+        "        const z=mkImgZone(r.id, ex.images.find(im=>im.id===r.aid));",
+        "        const z=mkImgZone(r.id);",
+        'appel de mkImgZone')
+    html = upgrade(
+        html,
+        "function mkImgZone(zid, im){",
+        "function mkImgZone(zid){",
+        'signature de mkImgZone')
+
     VF_W = ("      const _vfw=Math.max(72, Math.max.apply(null,"
             "ex.tiles.map(function(t){return t.length}))*8.5+28);\n"
             "      card.style.setProperty('--vfw', _vfw+'px');\n")
