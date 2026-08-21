@@ -37,7 +37,7 @@ MANIFESTE = {
 
     # `titre` et `niveau` viennent de `build/powerpoints/modules.py`.
 
-    'theme': "Consultation d'un professionnel de la santé",
+    'theme': "Consultation d\\'un professionnel de la santé",
 
     # Sarcelle : la couleur du niveau 5. Posée par build/couleurs_niveau.py,
     # qui la relit dans colors.css — ne pas la choisir à la main.
