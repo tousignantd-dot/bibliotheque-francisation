@@ -274,6 +274,18 @@ MODULES = {
                         'La demande',
                         "L'entrevue"),
     },
+
+    'module-n7-actualite': {
+        'numero': 1, 'activite': 60, 'niveau': 7,
+        'titre': "Suivre l'actualité",
+        'chapeau': "Écouter un reportage en plusieurs écoutes, lire un "
+                   "article informatif, démêler le fait de l'opinion dans "
+                   "une chronique, puis intervenir dans un blogue.",
+        'seances': GRILLE_3_DEFIS,
+        'blocs': _blocs('Le reportage',
+                        "L'article",
+                        "L'opinion"),
+    },
 }
 
 # L'ordre d'affichage : par niveau, puis par numéro à l'intérieur du niveau.
