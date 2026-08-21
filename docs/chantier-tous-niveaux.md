@@ -182,9 +182,16 @@ répéter pour être sûr · l'heure de l'autobus.
 trois cas — dans la rue, à l'arrêt, dans l'autobus —, deux rôles, `passager` et
 `habitant`, et une conduite qui impose une information à la fois.
 
-**Médias.** 14 images (0,48 $) et 143 extraits audio. Le décor n'est pas le
-centre de formation, contrairement aux modules précédents : c'est la rue, et
-les six photos de l'exercice doivent se reconnaître sans légende.
+**Médias.** 14 images (0,48 $) et 143 extraits audio, tous en place. Le décor
+n'est pas le centre de formation, contrairement aux modules précédents :
+c'est la rue, et les six photos de l'exercice doivent se reconnaître sans
+légende.
+
+ElevenLabs a de nouveau coupé par intermittence — neuf extraits manqués au
+premier passage, trois au second. La reprise introduite pour le niveau 1 a
+tenu : le script est allé au bout, et deux relances ont comblé les trous. À
+retenir pour les niveaux suivants : **ne pas conclure d'un échec réseau que
+l'extrait est en cause**, relancer plus tard suffit.
 
 **Huit séances.** 87 diapositives. La séance de graphie-phonie (A2) ne porte
 pas sur des lettres mais sur les chiffres de l'heure : c'est là que l'oreille
