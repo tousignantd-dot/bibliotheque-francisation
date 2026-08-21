@@ -3299,7 +3299,121 @@ JEU_DE_ROLE_SERVICES = {
 }
 
 
+# Les trois situations du module « Remplir mon panier » (niveau 2,
+# activité 87). Le scénario `epicerie` existe déjà, mais il est écrit pour le
+# niveau 3 : il fait tenir un échange suivi. Ici, tout tient en deux ou trois
+# répliques — on demande où est un produit, combien il coûte, si le spécial de
+# la circulaire est encore bon. Le commis répond court et ne devine rien.
+JEU_DE_ROLE_PANIER = {
+    "trouver": {
+        "contexte": (
+            "Une allée d'épicerie de quartier, un mardi après-midi. Quelqu'un "
+            "cherche le savon à vaisselle et ne le trouve pas."
+        ),
+        "commis": [
+            "Tu places des boîtes dans l'allée 5 et tu portes le tablier du magasin.",
+            "Les produits d'entretien sont dans l'allée 7, au fond, à droite.",
+            "Le savon à vaisselle est sur la tablette du milieu, à côté des essuie-tout.",
+            "Tu réponds en une phrase courte, une information à la fois.",
+            "Si on ne comprend pas, tu répètes plus lentement et tu montres du doigt.",
+            "Tu ne donnes le prix que si on te le demande : 4,29 $ pour le grand format.",
+        ],
+        "client": [
+            "Tu cherches du savon à vaisselle et tu ne sais pas dans quelle allée il est.",
+            "Tu dis bonjour, puis tu poses une seule question.",
+            "Tu répètes le numéro de l'allée pour être sûr.",
+            "Tu demandes le prix avant de partir, puis tu remercies.",
+        ],
+    },
+    "prix": {
+        "contexte": (
+            "Devant la tablette des fruits. Deux affichettes se touchent et "
+            "on ne sait plus laquelle va avec quel sac."
+        ),
+        "commis": [
+            "Tu travailles aux fruits et légumes et tu connais les prix de la semaine.",
+            "Les oranges sont à 3,99 $ le sac de deux kilos.",
+            "Les pommes sont à 1,79 $ le kilo, et il faut les peser soi-même.",
+            "Tu dis les prix lentement, chiffre par chiffre, et tu les répètes si on te le demande.",
+            "Tu ne parles pas du spécial si personne ne pose la question.",
+        ],
+        "client": [
+            "Tu veux acheter des oranges mais tu ne sais pas quelle affichette va avec.",
+            "Tu demandes « c'est combien ? » ou « ça coûte combien ? ».",
+            "Tu fais répéter le prix et tu le redis à voix haute.",
+            "Tu demandes aussi le format : le kilo, ou le sac ?",
+        ],
+    },
+    "circulaire": {
+        "contexte": (
+            "À la caisse, avec la circulaire de la semaine à la main. Le "
+            "spécial affiché n'est pas celui de la caisse."
+        ),
+        "commis": [
+            "Tu es à la caisse et tu vois beaucoup de circulaires dans une journée.",
+            "Le spécial du poulet, 2 pour 9 $, finit le mercredi soir : aujourd'hui, il est encore bon.",
+            "Le spécial du fromage, lui, était la semaine passée.",
+            "Tu demandes toujours à voir la date écrite en haut de la circulaire.",
+            "Tu corriges le prix si le spécial est encore bon, sans faire d'histoire.",
+        ],
+        "client": [
+            "Tu as la circulaire de la semaine et deux produits en spécial dans ton panier.",
+            "Le prix de la caisse n'est pas le prix de la circulaire.",
+            "Tu montres la circulaire et tu dis le prix que tu as lu.",
+            "Tu demandes poliment : « C'est encore le spécial ? »",
+        ],
+    },
+}
+
+
 JEU_DE_ROLE_SCENARIOS = {
+    "panier": {
+        "cadre": "une courte question posée à un commis, dans une épicerie de quartier",
+        "contexte_label": "Le rayon où vous vous trouvez tous les deux",
+        "cas": JEU_DE_ROLE_PANIER,
+        "adresse": "Vouvoie l'élève : on ne se connaît pas, c'est un commerce.",
+        "sujets": [
+            "le produit qu'on cherche",
+            "l'allée ou le rayon où il se trouve",
+            "le prix, demandé avec « c'est combien ? »",
+            "le format : le kilo, le litre, le sac, la douzaine",
+            "la répétition du prix ou du numéro d'allée, pour vérifier",
+            "un merci pour finir",
+        ],
+        "cloture": ("Quand le produit est trouvé et le prix dit, fais répéter le "
+                    "prix une dernière fois, confirme d'un mot, et souhaite une "
+                    "bonne journée."),
+        "ouverture": {
+            "client": "Bonjour. Excusez-moi, je cherche le savon à vaisselle.",
+            "commis": "Bonjour ! Je peux vous aider ?",
+        },
+        "roles": {
+            "commis": {
+                "qui": ("Tu es le commis ou la commise de l'épicerie. L'élève est la "
+                        "personne qui fait ses courses."),
+                "conduite": ("Niveau 2 : deux ou trois répliques suffisent. Phrases "
+                             "très courtes, au présent, une information à la fois, "
+                             "jamais deux questions dans la même réplique. Emploie les "
+                             "mots du module — allée, tablette, format, kilo, litre, "
+                             "spécial — et rien de plus compliqué. Dis les prix "
+                             "lentement et attends que l'élève les répète avant de "
+                             "continuer. S'il te demande de répéter, répète sans "
+                             "t'impatienter. Ne donne jamais un renseignement qu'on ne "
+                             "t'a pas demandé."),
+            },
+            "client": {
+                "qui": ("Tu fais tes courses et tu cherches un produit. L'élève est le "
+                        "commis et te répond."),
+                "conduite": ("Pose une seule question à la fois, en trois ou quatre "
+                             "mots : « C'est où ? », « C'est combien ? », « C'est quel "
+                             "format ? ». Répète ce qu'on te dit pour vérifier. Si "
+                             "l'élève parle vite ou donne trois choses d'un coup, "
+                             "demande de reprendre plus lentement. Remercie avant de "
+                             "partir."),
+            },
+        },
+    },
+
     "services": {
         "cadre": "un appel téléphonique à un service public de la ville",
         "contexte_label": "La situation que vous avez tous les deux sous les yeux",
