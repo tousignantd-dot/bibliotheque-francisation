@@ -2934,7 +2934,131 @@ JEU_DE_ROLE_ENTREVUE = {
 }
 
 
+# Trois appels pour le module de niveau 5 « Emménager dans un nouveau
+# logement ». Aucun scénario existant ne convenait : `louer` sert à visiter un
+# logement avant de signer, `probleme` à faire réparer. Ici le bail est signé et
+# il faut faire monter les meubles. Ce que la répartitrice sait de ses tarifs
+# vit ici, côté serveur : l'élève doit aller le chercher en posant des
+# questions, pas le lire dans la page.
+JEU_DE_ROLE_DEMENAGEMENT = {
+    "troisdemie": {
+        "contexte": (
+            "Un appel à une compagnie de déménagement, un soir de mai. Il faut "
+            "vider un trois et demie d'un deuxième étage, sans ascenseur, pour "
+            "le premier juillet."
+        ),
+        "repartitrice": [
+            "Tu répartis les camions chez Déménagement Cap-Rouge, une entreprise de dix employés.",
+            "Le tarif est de 145 $ l'heure pour deux hommes et un camion, avec un minimum de trois heures.",
+            "Tu ajoutes une heure de déplacement au total : c'est le temps d'aller et de revenir au garage.",
+            "Un troisième homme coûte 45 $ l'heure de plus, et il fait souvent économiser du temps.",
+            "L'assurance de base est comprise et couvre 0,60 $ la livre ; une protection complète coûte 45 $.",
+            "Tu demandes un dépôt de 100 $ pour réserver, remboursable jusqu'à sept jours avant.",
+            "Tu fournis les couvertures et le diable, jamais les boîtes : celles-là s'achètent.",
+            "Le premier juillet se réserve six semaines d'avance ; après le 20 mai, il ne reste que des camions le matin.",
+            "Tu demandes toujours l'étage, s'il y a un ascenseur, et si l'escalier est en dehors.",
+        ],
+        "client": [
+            "Tu déménages d'un trois et demie situé au deuxième étage, sans ascenseur.",
+            "L'escalier est à l'extérieur et il tourne : deux hommes ont eu de la misère la dernière fois.",
+            "Tu as une quinzaine de boîtes, un divan, un lit et une table.",
+            "Tu veux savoir combien ça va coûter en tout, pas seulement le tarif de l'heure.",
+        ],
+    },
+    "gros": {
+        "contexte": (
+            "Un appel à une compagnie de déménagement pour un quatre et demie "
+            "qui contient un congélateur et un piano droit."
+        ),
+        "repartitrice": [
+            "Tu répartis les camions chez Déménagement Cap-Rouge, une entreprise de dix employés.",
+            "Le tarif est de 145 $ l'heure pour deux hommes et un camion, avec un minimum de trois heures.",
+            "Un piano droit demande un troisième homme et coûte 90 $ de plus : tu le dis dès qu'on te parle d'un piano.",
+            "Un congélateur plein doit être vidé et dégivré la veille, sinon tes hommes ne le prennent pas.",
+            "Tu ajoutes 25 $ par étage au-delà du deuxième quand l'escalier est en dehors.",
+            "L'assurance de base couvre 0,60 $ la livre ; pour un piano, tu recommandes la protection complète à 45 $.",
+            "Tu demandes un dépôt de 100 $ pour réserver, remboursable jusqu'à sept jours avant.",
+            "Tu demandes toujours la largeur de la porte d'entrée quand il y a un gros meuble.",
+        ],
+        "client": [
+            "Tu déménages un quatre et demie et tu as un piano droit qui vient de ta mère.",
+            "Tu as aussi un congélateur, encore plein, que tu comptes vider la veille.",
+            "Tu t'inquiètes pour le piano et tu demandes ce qui arrive s'il est abîmé.",
+            "Tu veux une date et une heure fermes avant de raccrocher.",
+        ],
+    },
+    "camion": {
+        "contexte": (
+            "Un appel pour louer un camion et le conduire soi-même, avec des "
+            "amis pour aider."
+        ),
+        "repartitrice": [
+            "Tu loues aussi des camions sans chauffeur : 89 $ la journée, plus 0,89 $ le kilomètre.",
+            "Le plein d'essence doit être fait au retour, sinon tu le factures 1,90 $ le litre.",
+            "Il faut un permis de conduire valide depuis au moins deux ans et une carte de crédit au même nom.",
+            "Le camion de seize pieds convient à un quatre et demie ; celui de douze pieds, à un trois et demie.",
+            "Les couvertures et le diable se louent 20 $ pour la journée, et ils partent vite le premier juillet.",
+            "Le camion se prend à huit heures le matin et se rapporte avant dix-neuf heures.",
+            "Tu préviens que le stationnement d'un camion de seize pieds en ville n'est pas simple.",
+        ],
+        "client": [
+            "Tu veux louer un camion et le conduire toi-même : trois amis viennent t'aider.",
+            "Tu ne sais pas quelle grandeur de camion prendre et tu décris ton logement.",
+            "Tu demandes ce qui est compris dans le prix et ce qui ne l'est pas.",
+            "Tu vérifies l'heure de départ et l'heure de retour avant de raccrocher.",
+        ],
+    },
+}
+
+
 JEU_DE_ROLE_SCENARIOS = {
+    "demenagement": {
+        "cadre": "un appel à une compagnie de déménagement",
+        "contexte_label": "L'appel que vous avez tous les deux en tête",
+        "cas": JEU_DE_ROLE_DEMENAGEMENT,
+        "adresse": "Vouvoie l'élève : c'est un appel d'affaires entre deux personnes qui ne se connaissent pas.",
+        "sujets": [
+            "la date, l'heure et les deux adresses",
+            "la grandeur du logement, l'étage et l'escalier",
+            "ce qu'il y a de gros ou de fragile à transporter",
+            "le tarif, ce qui s'ajoute au tarif, et le total approximatif",
+            "l'assurance et le dépôt à verser pour réserver",
+            "la répétition de la date et de l'heure, pour être sûr",
+        ],
+        "cloture": ("Quand tout est dit, redis la date, l'heure et l'adresse de départ, "
+                    "annonce le dépôt à verser, et dis que la confirmation s'en vient "
+                    "par courriel."),
+        "ouverture": {
+            "client": "Bonjour. J'appelle pour faire déménager mes affaires le premier juillet.",
+            "repartitrice": "Déménagement Cap-Rouge, bonjour. Qu'est-ce que je peux faire pour vous ?",
+        },
+        "roles": {
+            "repartitrice": {
+                "qui": ("Tu réponds au téléphone à la compagnie de déménagement. "
+                        "L'élève est la personne qui appelle."),
+                "conduite": ("Niveau 5 : des échanges suivis, pas des questions-"
+                             "réponses. Enchaîne deux ou trois phrases quand tu "
+                             "expliques un tarif, et relie-les — « parce que », "
+                             "« donc », « par contre ». Pose une question à la fois. Ne "
+                             "donne jamais un prix avant qu'on te le demande, sauf le "
+                             "tarif de base à la première question sur le coût : le "
+                             "reste, l'élève doit aller le chercher. Si l'élève oublie "
+                             "l'étage ou l'escalier, demande-le toi-même : c'est ce que "
+                             "ferait une vraie répartitrice. Reste chaleureuse et "
+                             "pressée, comme quelqu'un qui a douze appels à retourner."),
+            },
+            "client": {
+                "qui": ("Tu es la personne qui déménage. L'élève répond au téléphone "
+                        "pour la compagnie."),
+                "conduite": ("Explique ta situation en trois ou quatre phrases suivies, "
+                             "pas en mots isolés. Demande le prix total, pas seulement "
+                             "le tarif de l'heure, et fais répéter si un chiffre passe "
+                             "trop vite. Emploie le futur proche et le présent pour "
+                             "parler du jour du déménagement. Avant de raccrocher, "
+                             "répète la date et l'heure pour les confirmer."),
+            },
+        },
+    },
     "entrevue": {
         "cadre": "une courte entrevue d'embauche",
         "contexte_label": "Le poste et le lieu que vous avez tous les deux en tête",
