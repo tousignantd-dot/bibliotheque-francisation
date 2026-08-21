@@ -276,6 +276,23 @@ MODULES = {
                         'La réclamation'),
     },
 
+    # La situation « Emménagement dans un nouveau logement » n'existe pas au
+    # niveau 4 : elle commence au 5. Elle ne recoupe ni `module-n5-logement`
+    # (58), qui s'arrête à la signature du bail, ni `module-n5-degat` (62), qui
+    # répare. Ici le bail est signé et tout ce qui suit reste à faire.
+    'module-n5-emmenagement': {
+        'numero': 3, 'activite': 63, 'niveau': 5,
+        'titre': 'Emménager dans un nouveau logement',
+        'chapeau': "Réserver un service de déménagement au téléphone et "
+                   "diriger les déménageurs le jour venu, changer son adresse "
+                   "et faire brancher ses services, puis se présenter à ses "
+                   "voisins et comprendre les usages de l'immeuble.",
+        'seances': GRILLE_3_DEFIS,
+        'blocs': _blocs('Le camion',
+                        "La nouvelle adresse",
+                        'Les voisins'),
+    },
+
     'module-n6-recherche': {
         'numero': 1, 'activite': 59, 'niveau': 6,
         'titre': "Chercher un emploi",
