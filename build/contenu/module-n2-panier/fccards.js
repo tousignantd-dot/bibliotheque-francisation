@@ -1,0 +1,16 @@
+const FC_CARDS = [
+  {word:"une circulaire", def:"Le grand papier qui montre les prix de la semaine.", ex:"La <strong>circulaire</strong> arrive le mardi.", img:"/assets/interactive/module-n2-panier/vocab/circulaire.jpg", tache:"prep"},
+  {word:"un panier", def:"Ce qu'on porte pour mettre ses achats dedans.", ex:"Mon <strong>panier</strong> est presque plein.", img:"/assets/interactive/module-n2-panier/vocab/panier.jpg", tache:"prep"},
+  {word:"une allée", def:"Le chemin entre deux rangées de tablettes.", ex:"Le savon est dans l'<strong>allée</strong> 7.", img:"/assets/interactive/module-n2-panier/vocab/allee.jpg", tache:"prep"},
+  {word:"une tablette", def:"La planche où les produits sont posés.", ex:"Le riz est sur la <strong>tablette</strong> du bas.", img:"/assets/interactive/module-n2-panier/vocab/tablette.jpg", tache:"prep"},
+  {word:"un spécial", def:"Un prix plus bas, seulement pendant quelques jours.", ex:"Le poulet est en <strong>spécial</strong> cette semaine.", tache:"prep"},
+  {word:"un prix", def:"L'argent qu'il faut payer pour un produit.", ex:"Le <strong>prix</strong> est écrit sur l'affichette.", tache:"t1"},
+  {word:"une liste", def:"Le papier où on écrit ce qu'on veut acheter.", ex:"J'écris ma <strong>liste</strong> avant de partir.", img:"/assets/interactive/module-n2-panier/vocab/liste.jpg", tache:"t1"},
+  {word:"une douzaine", def:"Douze choses ensemble, dans la même boîte.", ex:"Je prends une <strong>douzaine</strong> d'œufs.", img:"/assets/interactive/module-n2-panier/vocab/douzaine.jpg", tache:"t1"},
+  {word:"un kilo", def:"Une mesure de poids. Mille grammes.", ex:"Les pommes sont à 3,99 $ le <strong>kilo</strong>.", img:"/assets/interactive/module-n2-panier/vocab/kilo.jpg", tache:"t1"},
+  {word:"une étiquette", def:"Le petit papier collé sur le produit.", ex:"L'<strong>étiquette</strong> dit « 908 g ».", img:"/assets/interactive/module-n2-panier/vocab/etiquette.jpg", tache:"t2"},
+  {word:"une affichette", def:"Le petit carton posé sur la tablette, sous le produit.", ex:"L'<strong>affichette</strong> donne le prix du kilo.", img:"/assets/interactive/module-n2-panier/vocab/affichette.jpg", tache:"t2"},
+  {word:"un litre", def:"Une mesure pour le lait, l'eau, le jus.", ex:"J'achète deux <strong>litres</strong> de lait.", img:"/assets/interactive/module-n2-panier/vocab/litre.jpg", tache:"t2"},
+  {word:"du savon à vaisselle", def:"Le liquide qui sert à laver les assiettes.", ex:"Le <strong>savon à vaisselle</strong> est dans l'allée 7.", img:"/assets/interactive/module-n2-panier/vocab/savon-vaisselle.jpg", tache:"t2"},
+  {word:"un essuie-tout", def:"Le gros rouleau de papier de cuisine.", ex:"Je prends aussi un <strong>essuie-tout</strong>.", img:"/assets/interactive/module-n2-panier/vocab/essuie-tout.jpg", tache:"t2"},
+];
