@@ -63,3 +63,26 @@ définition. Six mots à la fois. », « Écoutez de nouveau le dialogue, puis
 répondez. », « Glissez chaque photo sur la phrase qui la décrit. » Ce sont les
 consignes que le moteur impose à ses types d'exercice — les faire varier pour
 elles-mêmes nuirait à l'élève, qui les reconnaît d'un module à l'autre.
+
+## Les modules neufs — mesure du 21 août 2026
+
+Un module produit à partir du programme n'a **aucun antécédent SOFAD** : le
+vérificateur de réécriture ne s'y applique pas, puisqu'il compare au plus
+ancien état du fichier dans git — qui est déjà la version neuve. Le risque
+change de nature : ce n'est plus la copie, c'est la **coïncidence avec les
+modules déjà écrits**, sur les consignes génériques que le type de tâche
+impose (« Écoutez de nouveau le dialogue, puis répondez. »).
+
+La mesure est donc l'autre : on compare les énoncés visibles par l'élève
+(`txt:` et `q:` de `exos.js`) à ceux de **tous** les autres modules générés.
+
+| Module | Énoncés | Identiques ailleurs | % | Verdict |
+|---|---|---|---|---|
+| module-n5-logement | 162 | 0 | 0 % | 🟢 |
+
+Comparé aux 1 949 énoncés des quatorze autres modules de `build/contenu/`.
+Les consignes courtes (« Écoutez de nouveau le dialogue, puis répondez. »)
+sont sous le seuil de longueur du relevé — elles se répètent d'un module à
+l'autre et c'est voulu : une consigne d'exercice n'a pas à être originale, et
+la varier pour la varier nuirait à l'élève, qui la reconnaît d'un module au
+suivant.
