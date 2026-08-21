@@ -393,6 +393,27 @@ MODULES = {
                         'Déplacer ou annuler'),
     },
 
+    # « Urgence et hospitalisation », niveau 5. Le programme n'y donne qu'une
+    # intention, en CO et en PO : téléphoner au 9-1-1 et au 8-1-1. Le module 2
+    # du niveau 4 (« Une urgence au travail ») fait raconter un accident déjà
+    # arrivé, à l'urgence puis à l'accueil ; ici l'élève est celui qui
+    # accompagne — il compose le 9-1-1 pendant que ça se passe, il traverse le
+    # triage et l'attente, puis il suit une hospitalisation de trois jours et
+    # donne des nouvelles.
+    'module-n5-urgence': {
+        'numero': 6, 'activite': 66, 'niveau': 5,
+        'titre': "Une nuit à l'urgence",
+        'chapeau': "Reconnaître ce qui relève du 8-1-1 et ce qui relève du "
+                   "9-1-1, mener un appel d'urgence sans perdre le fil, "
+                   "raconter au triage ce qui est arrivé, puis comprendre "
+                   "une hospitalisation et donner des nouvelles à ses "
+                   "proches.",
+        'seances': GRILLE_3_DEFIS,
+        'blocs': _blocs("L'appel au 9-1-1",
+                        "Le triage et l'attente",
+                        "L'étage et le congé"),
+    },
+
     'module-n6-recherche': {
         'numero': 1, 'activite': 59, 'niveau': 6,
         'titre': "Chercher un emploi",
