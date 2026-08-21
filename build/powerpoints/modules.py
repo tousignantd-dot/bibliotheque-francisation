@@ -432,6 +432,34 @@ MODULES = {
                         'Demander au guichet',
                         'Lire la grille des tarifs'),
     },
+    # `build/cadre.py 3 "Démarches à la poste"` est le cadre le plus étroit de
+    # tout le niveau : **une seule intention de communication**, « s'informer
+    # pour obtenir un produit ou un service », inscrite deux fois — en
+    # compréhension orale et en production orale. Aucune compréhension écrite,
+    # aucune production écrite. Le module est donc entièrement une affaire de
+    # comptoir parlé : on demande, on écoute la réponse, on redemande. Les
+    # trois défis sont les trois moments de cette même intention — se
+    # renseigner avant de choisir, choisir et payer, obtenir un service.
+    #
+    # Aucun voisin : la situation « Démarches à la poste » n'existe qu'aux
+    # niveaux 2 et 3 du programme, et aucun module du dépôt ne l'avait
+    # traitée. Ce qui la sépare des six autres comptoirs du niveau 3
+    # (épicerie, vêtements, électro, restaurant, pharmacie, métro) : ici
+    # l'objet part sans vous, et tout ce qui se dit porte sur un moment qu'on
+    # ne verra pas — le prix d'un service rendu ailleurs, un délai, une
+    # signature à l'autre bout.
+    'module-n3-poste': {
+        'numero': 7, 'activite': 80, 'niveau': 3,
+        'titre': 'Le colis de Yassine',
+        'chapeau': "Se renseigner au comptoir d'un bureau de poste avant de "
+                   "choisir, dire ce que contient son colis et payer le bon "
+                   "envoi, puis demander un service : ramasser un colis, "
+                   "faire suivre son courrier.",
+        'seances': GRILLE_3_DEFIS,
+        'blocs': _blocs("Demander avant de choisir",
+                        "Dire ce qu'il y a dedans, et payer",
+                        "Le carton dans la boîte aux lettres"),
+    },
     # ── Niveau 5 ────────────────────────────────────────────────────
     # `module-logement` (niveau 4) traite la même situation du programme, mais
     # s'arrête à la visite et à la comparaison. Ici, on téléphone, on prend des

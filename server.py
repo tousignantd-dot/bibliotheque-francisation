@@ -4529,7 +4529,156 @@ JEU_DE_ROLE_CIRCULATION = {
 }
 
 
+# ── module-n3-poste (activité 80) ─────────────────────────────────────────
+# Se renseigner au comptoir d'un bureau de poste pour obtenir un produit ou un
+# service. Aucun des treize scénarios existants ne convenait : `titre`
+# (niveau 3) est le plus proche par la forme — un comptoir, un prix, un
+# débutant — mais il vend un objet qu'on emporte et qu'on utilise soi-même,
+# alors qu'ici l'objet part sans son propriétaire. Tout ce qui se demande
+# porte sur un moment qu'on ne verra pas : un délai, une signature à l'autre
+# bout, un colis gardé quinze jours. `epicerie` et `allees` achètent, ils ne
+# confient rien à personne.
+#
+# Les chiffres cités sont ceux de Postes Canada, vérifiés et non estimés :
+# timbre du régime intérieur 1,24 $ en carnet et 1,44 $ à l'unité ; Courrier
+# recommandé 13,15 $ en sus de l'affranchissement, avec signature, numéro de
+# repérage et couverture de 100 $ ; mandat-poste 8,50 $, maximum 999,99 $,
+# comptant ou débit seulement ; colis avisé gardé 15 jours civils au bureau de
+# poste, avis final après 5 jours, puis retour à l'expéditeur ; réacheminement
+# du courrier jusqu'à 12 mois, et il ne couvre pas les colis.
+JEU_DE_ROLE_POSTE = {
+    "colis": {
+        "contexte": (
+            "Le bureau de poste du quartier, un samedi matin. Vous avez une "
+            "boîte sous le bras : un cadeau d'anniversaire pour votre frère, "
+            "qui habite Calgary. Vous ne savez pas combien ça coûte, combien "
+            "de temps ça prend, ni ce qu'il faut écrire dessus."
+        ),
+        "prepose": [
+            "Tu demandes d'abord où va le colis et ce qu'il y a dedans : c'est obligatoire.",
+            "Tu poses la boîte sur la balance et tu annonces le poids à voix haute.",
+            "Tu offres deux vitesses, jamais plus : le colis standard, plus lent et moins cher, ou l'Xpresspost, qui arrive en un ou deux jours ouvrables.",
+            "Tu dis un seul prix à la fois et tu attends que la personne le répète.",
+            "Le repérage est compris dans les deux services : tu le dis si on te le demande.",
+            "Tu demandes l'adresse complète du destinataire, avec le code postal, et tu fais épeler ce que tu ne comprends pas.",
+            "Tu rappelles qu'il faut aussi l'adresse de l'expéditeur, en haut à gauche.",
+            "Tu ne parles jamais de douane : le colis reste au Canada.",
+        ],
+        "client": [
+            "Tu envoies une boîte à ton frère, à Calgary.",
+            "Tu veux savoir combien ça coûte et combien de temps ça prend, avant de choisir.",
+            "Tu dis ce qu'il y a dans la boîte : des vêtements et un livre. Rien de fragile.",
+            "Tu demandes si tu peux suivre le colis sur Internet.",
+            "Tu demandes ce qu'il faut écrire sur la boîte, et où.",
+            "Tu répètes le prix à voix haute avant de payer.",
+        ],
+    },
+    "avis": {
+        "contexte": (
+            "Vous avez trouvé un carton dans votre boîte aux lettres : un "
+            "colis est arrivé pendant que vous étiez au travail et il vous "
+            "attend au bureau de poste. Vous vous présentez au comptoir avec "
+            "le carton à la main."
+        ),
+        "prepose": [
+            "Tu demandes le carton d'avis et une pièce d'identité avec photo : les deux, chaque fois.",
+            "Tu expliques que le colis est gardé quinze jours au bureau de poste, puis retourné à l'expéditeur.",
+            "Tu précises qu'un deuxième carton, l'avis final, est envoyé après cinq jours.",
+            "Tu dis que le nom sur la pièce d'identité doit être celui du carton.",
+            "Si l'élève n'a pas son carton, tu peux chercher avec l'adresse, mais tu demandes quand même une pièce d'identité.",
+            "Tu fais signer avant de remettre le colis.",
+            "Tu réponds une chose à la fois, sans deviner ce qu'on ne t'a pas demandé.",
+        ],
+        "client": [
+            "Tu as trouvé un carton d'avis dans ta boîte aux lettres.",
+            "Tu ne sais pas ce qu'il faut apporter : tu le demandes.",
+            "Tu veux savoir jusqu'à quand le colis est gardé.",
+            "Tu demandes si quelqu'un d'autre de ta famille peut venir le chercher à ta place.",
+            "Tu demandes les heures d'ouverture pour la prochaine fois.",
+        ],
+    },
+    "adresse": {
+        "contexte": (
+            "Vous déménagez le premier juillet, dans le même quartier. Vous "
+            "venez demander ce qu'il faut faire pour continuer de recevoir "
+            "votre courrier à la nouvelle adresse."
+        ),
+        "prepose": [
+            "Tu expliques qu'il existe un service qui fait suivre le courrier à la nouvelle adresse.",
+            "Tu dis que le service dure au maximum douze mois et qu'il se demande ici ou sur Internet.",
+            "Tu préviens que le service fait suivre les lettres, le courrier recommandé et les magazines, mais **pas les colis**.",
+            "Tu conseilles de commencer quelques jours avant le déménagement, pas après.",
+            "Tu demandes l'ancienne adresse, la nouvelle, et la date du déménagement.",
+            "Tu rappelles qu'il faut aussi prévenir soi-même sa banque, son école et son employeur : la poste ne le fait pas.",
+            "Tu dis les prix seulement si on te les demande, et un à la fois.",
+        ],
+        "client": [
+            "Tu déménages le premier juillet et tu veux garder ton courrier.",
+            "Tu demandes combien de temps le service dure.",
+            "Tu veux savoir si les colis suivent aussi.",
+            "Tu demandes quand il faut faire la demande.",
+            "Tu demandes ce qu'il faut apporter au comptoir.",
+        ],
+    },
+}
+
+
 JEU_DE_ROLE_SCENARIOS = {
+    "poste": {
+        "cadre": ("une démarche au comptoir d'un bureau de poste — envoyer, "
+                  "ramasser ou faire suivre —, au niveau débutant"),
+        "contexte_label": "Ce qui vous amène au bureau de poste",
+        "cas": JEU_DE_ROLE_POSTE,
+        "adresse": ("Vouvoie l'élève : c'est un comptoir de service public, on "
+                    "ne se tutoie pas."),
+        "sujets": [
+            "ce qu'on vient faire, dit en une phrase dès le début",
+            "la question posée poliment : je voudrais, j'aimerais, est-ce que je pourrais",
+            "ce qu'il y a dans le colis, et si c'est fragile",
+            "le prix et le délai, demandés puis répétés à voix haute pour vérifier",
+            "l'adresse complète, épelée quand on la demande",
+            "le choix annoncé clairement : je vais le prendre, je vais en prendre trois",
+        ],
+        "cloture": ("Quand l'élève a obtenu ce qu'il venait chercher, redis en "
+                    "une phrase courte ce qui est décidé — le service, le prix, "
+                    "le délai — puis conclus. N'allonge pas la conversation et "
+                    "n'ajoute aucun service qu'on ne t'a pas demandé."),
+        "ouverture": {
+            "client": "Bonjour ! Qu'est-ce que je peux faire pour vous ?",
+            "prepose": "Bonjour. J'aurais besoin d'un renseignement, s'il vous plaît.",
+        },
+        "roles": {
+            "prepose": {
+                "qui": ("Tu es Carole Dufresne, la préposée au comptoir du "
+                        "bureau de poste. L'élève est le client, devant toi."),
+                "conduite": ("Niveau 3 : phrases courtes, un renseignement à la "
+                             "fois, jamais deux questions dans la même réplique. "
+                             "Dis les prix et les délais en toutes lettres et "
+                             "laisse à l'élève le temps de les répéter. Ne donne "
+                             "jamais un renseignement avant qu'on te le demande — "
+                             "c'est tout l'exercice. Reformule plus lentement si "
+                             "on te le demande, sans t'impatienter. Emploie les "
+                             "vrais mots du comptoir : un envoi, l'expéditeur, le "
+                             "destinataire, affranchir, le code postal, le "
+                             "repérage, un avis de livraison, une pièce "
+                             "d'identité. N'invente aucun prix : tiens-toi à ceux "
+                             "de ta liste, et si on t'en demande un que tu n'as "
+                             "pas, dis que ça dépend du poids et propose de peser."),
+            },
+            "client": {
+                "qui": ("Tu es le client ou la cliente devant le comptoir, et "
+                        "c'est l'élève qui joue la préposée du bureau de poste."),
+                "conduite": ("Vouvoie l'élève. Tu ne connais rien aux services de "
+                             "la poste : tu poses des questions simples et tu "
+                             "attends qu'on t'explique. Tu ne devines rien à la "
+                             "place de l'élève. Si sa réponse est vague — « ça "
+                             "dépend », « c'est correct » —, tu redemandes une "
+                             "fois, poliment : combien exactement, combien de "
+                             "jours. Tu répètes le prix qu'on te donne pour "
+                             "vérifier que tu as bien compris."),
+            },
+        },
+    },
     "circulation": {
         "cadre": ("un imprévu de circulation qu'on explique à quelqu'un qui "
                   "n'a pas entendu le bulletin, au stade intermédiaire"),
