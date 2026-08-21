@@ -127,6 +127,11 @@ treize en vague 2, douze en vague 3.
 
 ## La consigne à coller à un agent
 
+Les vingt-sept consignes sont déjà écrites, une par module, dans
+**`docs/consignes-a-coller.md`** : il n'y a qu'à copier celle de la ligne
+voulue. Le modèle ci-dessous est la forme dont elles sortent, pour le jour où
+il faudra en écrire une de plus.
+
 Une seule forme, pour n'importe quelle ligne des trois tableaux. Remplacer les
 cinq valeurs entre chevrons, rien d'autre.
 
