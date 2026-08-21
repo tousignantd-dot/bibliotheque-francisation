@@ -1066,7 +1066,7 @@ const DIALOGUES = {
   },
 
   appli: {
-    label: "Dialogue — Toute seule au comptoir",
+    label: "Dialogue — Un sirop pour mon garçon",
     lines: [
       ["NADIA","Bonjour. Mon garçon a mal à la gorge depuis hier."],
       ["ÉTIENNE","Quel âge a-t-il ?"],
@@ -1132,12 +1132,12 @@ const FC_CARDS = [
 
 const EXOS = [
  // ── JE DÉCOUVRE ─────────────────────────────────────────────
-  {sec:'prep', id:'prVocab', type:'match', num:'Vocabulaire · 1', tit:'Le mot et sa définition', color:'#A5335F',
-   sub:'Choisis un mot, puis sa définition. Six mots à la fois.', noQLbl:true, bankLbl:'Définitions', zonePh:'glisse la définition ici',
+  {sec:'prep', id:'prVocab', type:'match', num:'Vocabulaire · 1', tit:'Les seize mots de la pharmacie', color:'#A5335F',
+   sub:'Prends un mot de la pharmacie, puis glisse dessus sa définition. Six à la fois.', noQLbl:true, bankLbl:'Définitions', zonePh:'glisse la définition ici',
    rows: FC_CARDS.map((c,i)=>({id:'pv'+i, q:c.word, aid:'pv'+i, a:c.def}))},
 
   {sec:'prep', id:'pr1', type:'vf', num:'Exercice 1', tit:'Vrai ou Faux — Les deux comptoirs de la pharmacie', color:'#A5335F',
-   sub:'Écoute de nouveau le dialogue, puis réponds.', tiles:['VRAI','FAUX'],
+   sub:'Réécoute la visite des deux comptoirs, puis réponds.', tiles:['VRAI','FAUX'],
    savoir:{h:"› Les mots de la pharmacie — à écouter et à répéter", speak:true, rows:[
      ["Là où on parle au pharmacien","Au fond du magasin, pas à la caisse de devant.", ["le comptoir des ordonnances"]],
      ["Le papier du médecin","Sans lui, la pharmacie ne peut pas donner certains médicaments.", ["une ordonnance"]],
@@ -1169,7 +1169,7 @@ const EXOS = [
    ]},
 
   {sec:'prep', id:'prImg', type:'imgmatch', num:'Exercice 3', tit:'Dans la pharmacie', color:'#A5335F',
-   sub:"Glisse chaque photo sur la phrase qui la décrit.",
+   sub:"Fais glisser chaque photo de la pharmacie vers la phrase qui la décrit.",
    images:[
     {id:'ip1', src:'/assets/interactive/module-n3-pharmacie/images/comptoir-fond.jpg'},
     {id:'ip2', src:'/assets/interactive/module-n3-pharmacie/images/allee-sirops.jpg'},
@@ -1192,7 +1192,7 @@ const EXOS = [
    ]},
 
   {sec:'prep', id:'prCorps', type:'write', num:'Exercice 4', tit:"J'ai mal à la tête, j'ai mal au dos", color:'#A5335F', cols:2,
-   sub:"Complète avec « au », « à la », « à l' » ou « aux ».",
+   sub:"Écris « au », « à la », « à l' » ou « aux » devant la partie du corps.",
    savoir:{h:"› Dire où on a mal", speak:true, rows:[
      ["La phrase de base","<b>J'ai mal à…</b> et le nom de la partie du corps. C'est la première phrase à dire au comptoir.", ["j'ai mal"]],
      ["Devant un mot masculin : au","j'ai mal <b>au</b> dos · j'ai mal <b>au</b> ventre · j'ai mal <b>au</b> pied.", ["j'ai mal au dos","j'ai mal au ventre"]],
@@ -1211,7 +1211,7 @@ const EXOS = [
 
  // ── DÉFI 1 · DIRE CE QUI NE VA PAS ──────────────────────────
   {sec:'t1', id:'t1vf', type:'vf', num:'Exercice 1', tit:'Vrai ou Faux — Qu\'est-ce que vous avez, madame ?', color:'#1D6B8F',
-   sub:'Écoute de nouveau le dialogue, puis réponds.', tiles:['VRAI','FAUX'],
+   sub:'Réécoute la conversation avec le pharmacien, puis réponds.', tiles:['VRAI','FAUX'],
    rows:[
     {id:'q1a', txt:"Nadia tousse depuis quatre jours.", ok:'VRAI'},
     {id:'q1b', txt:"Le pharmacien demande depuis quand ça dure.", ok:'VRAI'},
@@ -1284,7 +1284,7 @@ const EXOS = [
 
  // ── DÉFI 2 · RENOUVELER L'ORDONNANCE ────────────────────────
   {sec:'t2', id:'t2vf', type:'vf', num:'Exercice 1', tit:'Vrai ou Faux — Il me reste deux comprimés', color:'#B45309',
-   sub:'Écoute de nouveau le dialogue, puis réponds.', tiles:['VRAI','FAUX'],
+   sub:'Réécoute la scène du renouvellement, puis réponds.', tiles:['VRAI','FAUX'],
    rows:[
     {id:'r1a', txt:"L'ordonnance de Nadia est finie.", ok:'VRAI'},
     {id:'r1b', txt:"On lui demande son nom et sa carte d'assurance maladie.", ok:'VRAI'},
@@ -1341,8 +1341,8 @@ const EXOS = [
     {id:'e6', q:"Tu passes à la caisse", aid:'e6', a:"tu paies la partie qui reste à ta charge"},
    ]},
 
-  {sec:'t2', id:'t2phrases', type:'match', num:'Exercice 5', tit:'Les phrases du comptoir', color:'#B45309',
-   sub:"Associe chaque phrase à ce qu'elle veut dire.", bankLbl:'Ce que ça veut dire', zonePh:'glisse ici',
+  {sec:'t2', id:'t2phrases', type:'match', num:'Exercice 5', tit:'Les phrases du comptoir des ordonnances', color:'#B45309',
+   sub:"Associe chaque phrase du pharmacien à ce qu'elle veut dire.", bankLbl:'Ce que ça veut dire', zonePh:'glisse ici',
    rows:[
     {id:'f1', q:"« Il vous reste un renouvellement. »", aid:'f1', a:"tu peux avoir ce médicament encore une fois, sans nouveau papier"},
     {id:'f2', q:"« Votre ordonnance est échue. »", aid:'f2', a:"le papier du médecin n'est plus bon : la date est passée"},
@@ -1353,8 +1353,8 @@ const EXOS = [
    ]},
 
  // ── DÉFI 3 · LIRE LA POSOLOGIE ──────────────────────────────
-  {sec:'t3', id:'t3vf', type:'vf', num:'Exercice 1', tit:"Vrai ou Faux — Ce qui est écrit sur l'étiquette", color:'#0D7A6F',
-   sub:'Écoute de nouveau le dialogue, puis réponds.', tiles:['VRAI','FAUX'],
+  {sec:'t3', id:'t3vf', type:'vf', num:'Exercice 1', tit:"Vrai ou Faux — La posologie expliquée au comptoir", color:'#0D7A6F',
+   sub:"Réécoute l'explication de l'étiquette, puis réponds.", tiles:['VRAI','FAUX'],
    rows:[
     {id:'s1a', txt:"Nadia doit prendre un comprimé trois fois par jour.", ok:'VRAI'},
     {id:'s1b', txt:"« Avec de la nourriture » veut dire l'estomac vide.", ok:'FAUX'},
@@ -1450,7 +1450,7 @@ const EXOS = [
 
  // ── JE ME LANCE ─────────────────────────────────────────────
   {sec:'appli', id:'aQui', type:'vf', num:'Exercice 1', tit:'Qui parle ?', color:'#7E3F98',
-   sub:"Écoute le dialogue « Toute seule au comptoir », puis réponds.", tiles:['NADIA','ÉTIENNE'],
+   sub:"Écoute le dialogue « Un sirop pour mon garçon », puis réponds.", tiles:['NADIA','ÉTIENNE'],
    rows:[
     {id:'a1', txt:"« Mon garçon a mal à la gorge depuis hier. »", ok:'NADIA'},
     {id:'a2', txt:"« Quel âge a-t-il ? »", ok:'ÉTIENNE'},
@@ -1460,7 +1460,7 @@ const EXOS = [
    ]},
 
   {sec:'appli', id:'aComp', type:'write', num:'Exercice 2', tit:'Le mot juste', color:'#7E3F98', cols:2,
-   sub:"Complète avec un mot du module.",
+   sub:"Complète avec un mot de la pharmacie.",
    items:[
     {q:"Le papier du médecin qui permet d'avoir un médicament est une ___ .", accept:["ordonnance"], ph:"…"},
     {q:"Ce qui dit combien en prendre et quand est la ___ .", accept:["posologie"], ph:"…"},

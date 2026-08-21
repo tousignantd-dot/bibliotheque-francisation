@@ -80,7 +80,7 @@ const DIALOGUES = {
   },
 
   appli: {
-    label: "Dialogue — Toute seule au comptoir",
+    label: "Dialogue — Un sirop pour mon garçon",
     lines: [
       ["NADIA","Bonjour. Mon garçon a mal à la gorge depuis hier."],
       ["ÉTIENNE","Quel âge a-t-il ?"],
