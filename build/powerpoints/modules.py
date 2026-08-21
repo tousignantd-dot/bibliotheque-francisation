@@ -321,6 +321,25 @@ MODULES = {
         'blocs': _blocs('La petite annonce', "Le formulaire d'inscription"),
     },
 
+    # Huitième module court du dépôt, septième du niveau 2. La situation du
+    # programme est « Météo », et elle n'a qu'**une seule** intention :
+    # comprendre un bulletin météo, en compréhension écrite. Tout le module
+    # tient dans ce geste — trois mots et un chiffre — et dans ce qu'on en
+    # fait le matin : s'habiller autrement. Distinct de `module-meteo`
+    # (niveau 4), qui lit un bulletin détaillé et une alerte de vigilance ;
+    # ici, l'élève cherche le mot du temps, le nombre de degrés et le signe
+    # qui est devant.
+    'module-n2-neige': {
+        'numero': 7, 'activite': 92, 'niveau': 2,
+        'titre': "Il fait froid, je m'habille",
+        'chapeau': "Comprendre un bulletin météo simple, lire une "
+                   "température au-dessus et au-dessous de zéro, dire le "
+                   "temps qu'il fait et choisir ses vêtements pour la "
+                   "journée.",
+        'seances': GRILLE_COURTE,
+        'blocs': _blocs('Le bulletin du matin', "Je m'habille pour dehors"),
+    },
+
     # ── Niveau 3 ────────────────────────────────────────────────────
     'module-n3-epicerie': {
         'numero': 1, 'activite': 55, 'niveau': 3,

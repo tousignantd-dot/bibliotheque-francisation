@@ -4302,6 +4302,75 @@ JEU_DE_ROLE_INSCRIPTION = {
 }
 
 
+# Les trois cas du module « Il fait froid, je m'habille » (module-n2-neige,
+# niveau 2). Aucun scénario existant ne convenait : ceux du niveau 4 tiennent
+# une conversation de six étapes, et ceux du niveau 2 se jouent tous dans un
+# établissement, devant un comptoir. Ici, on est à la porte d'un immeuble, il
+# fait moins vingt, et la conversation dure trente secondes : le temps qu'il
+# fait, le nombre de degrés, ce qu'on met pour sortir.
+JEU_DE_ROLE_METEO = {
+    "matin": {
+        "contexte": (
+            "Sept heures du matin, dans l'entrée d'un immeuble de Montréal. "
+            "L'élève part au cours de français. Un voisin rentre de dehors, "
+            "le manteau couvert de neige."
+        ),
+        "voisin": [
+            "Tu es Roland, un voisin retraité. Tu rentres de dehors.",
+            "Il neige depuis la nuit. Il fait moins douze degrés.",
+            "Le vent est fort : avec le vent, on dirait moins vingt.",
+            "Tu donnes un seul renseignement par phrase.",
+            "Tu dis « il neige », « il vente », « il fait froid » — jamais un mot plus long.",
+        ],
+        "moi": [
+            "Tu pars au cours de français et tu ne sais pas quel temps il fait.",
+            "Tu demandes le temps, puis la température, une question à la fois.",
+            "Tu redis le nombre de degrés pour vérifier.",
+            "Tu dis ce que tu mets pour sortir, puis tu remercies.",
+        ],
+    },
+    "bulletin": {
+        "contexte": (
+            "La cuisine, la radio allumée. L'élève a entendu le bulletin "
+            "météo mais n'a pas tout compris. Le voisin, lui, l'a écouté au "
+            "complet."
+        ),
+        "voisin": [
+            "Tu es Roland. Tu as écouté le bulletin météo de sept heures.",
+            "Aujourd'hui à Montréal : neige, moins huit degrés.",
+            "Demain : soleil, moins deux degrés.",
+            "À Québec, il fait plus froid : moins seize.",
+            "Tu réponds à une question à la fois, avec trois ou quatre mots.",
+        ],
+        "moi": [
+            "Tu demandes le temps qu'il fait aujourd'hui.",
+            "Tu demandes la température, en degrés.",
+            "Tu demandes le temps de demain.",
+            "Tu répètes chaque nombre pour vérifier, puis tu remercies.",
+        ],
+    },
+    "tempete": {
+        "contexte": (
+            "Un matin de tempête. Il tombe trente centimètres de neige et le "
+            "centre de formation ferme pour la journée. L'élève ne le sait "
+            "pas encore."
+        ),
+        "voisin": [
+            "Tu es Roland. Tu sais qu'il y a une tempête aujourd'hui.",
+            "Il tombe trente centimètres de neige. Les autobus sont en retard.",
+            "Le centre de formation est fermé aujourd'hui.",
+            "Tu conseilles de rester à la maison : « Ne sortez pas aujourd'hui. »",
+            "Tu répètes la même phrase plus lentement si on ne comprend pas.",
+        ],
+        "moi": [
+            "Tu veux savoir s'il y a de l'école aujourd'hui.",
+            "Tu demandes ce qu'il y a dehors : la neige, le vent, la glace.",
+            "Tu demandes de répéter quand ça va trop vite.",
+            "Tu dis ce que tu fais : « Je reste à la maison. »",
+        ],
+    },
+}
+
 # Les trois cas du module « Le bon titre de transport » (module-n3-metro,
 # niveau 3). Le scénario `chemin` du niveau 4 ne convenait pas : il donne un
 # itinéraire en six étapes avec des noms de terminus, alors qu'ici il n'est
@@ -4714,6 +4783,62 @@ JEU_DE_ROLE_SCENARIOS = {
                              "« c'est où ». Épelle ton nom lentement, lettre par "
                              "lettre. Redis la date et l'heure pour vérifier. Demande "
                              "de répéter si c'est trop vite. Remercie avant de "
+                             "partir."),
+            },
+        },
+    },
+    "meteo": {
+        "cadre": "un échange de trente secondes sur la météo, entre voisins, au niveau débutant",
+        "contexte_label": "Ce qu'il y a dehors ce matin",
+        "cas": JEU_DE_ROLE_METEO,
+        "adresse": ("Vouvoyez-vous : vous habitez le même immeuble, mais vous "
+                    "ne vous connaissez pas beaucoup."),
+        "sujets": [
+            "le temps qu'il fait : il neige, il pleut, il vente, il fait beau",
+            "la température, en degrés, avec « moins » ou « plus » devant",
+            "le temps de demain",
+            "ce qu'on met pour sortir : le manteau, la tuque, les mitaines, les bottes",
+            "« pouvez-vous répéter ? » quand ça va trop vite",
+            "merci et bonne journée, à la fin",
+        ],
+        "cloture": ("Quand l'élève a dit le temps qu'il fait, le nombre de degrés "
+                    "et ce qu'il met pour sortir, redis la température en une "
+                    "phrase courte pour vérifier, souhaite une bonne journée et "
+                    "arrête. N'ajoute aucun renseignement nouveau à la fin."),
+        "ouverture": {
+            "moi": "Bonjour ! Il fait froid aujourd'hui, hein ?",
+            "voisin": "Bonjour. Il fait quel temps dehors ?",
+        },
+        "roles": {
+            "voisin": {
+                "qui": ("Tu es Roland Pelchat, un voisin retraité du même "
+                        "immeuble. Tu sors marcher tous les matins, beau temps "
+                        "mauvais temps, et tu sais toujours quel temps il fait."),
+                "conduite": ("Niveau 2 : deux ou trois répliques suffisent, une "
+                             "seule question à la fois. Phrases très courtes, au "
+                             "présent, sans subordonnée. Emploie les mots du "
+                             "module — il neige, il pleut, il vente, il fait "
+                             "froid, il fait beau, la neige, la pluie, le vent, "
+                             "le soleil, un degré, une tempête, un manteau, une "
+                             "tuque, des mitaines, des bottes — et rien de plus "
+                             "compliqué. Ne dis jamais « poudrerie », « rafale », "
+                             "« facteur éolien » ni « avertissement » : ces mots "
+                             "sont d'un autre niveau. Dis les températures en "
+                             "toutes lettres, avec « moins » devant quand c'est "
+                             "sous zéro. Ne raconte jamais au passé. Si l'élève "
+                             "ne comprend pas, répète exactement la même phrase "
+                             "plus lentement, sans la reformuler."),
+            },
+            "moi": {
+                "qui": ("Tu es un adulte qui part au cours de français. La "
+                        "personne à qui tu parles joue Roland, le voisin qui "
+                        "rentre de dehors."),
+                "conduite": ("Dis une seule chose à la fois, en trois ou quatre "
+                             "mots. Pose tes questions avec « quel temps fait-il ? "
+                             "», « est-ce qu'il neige ? », « il fait combien de "
+                             "degrés ? ». Répète le nombre de degrés pour "
+                             "vérifier. Demande de répéter si c'est trop vite. "
+                             "Dis ce que tu mets pour sortir. Remercie avant de "
                              "partir."),
             },
         },
