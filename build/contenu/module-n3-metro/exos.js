@@ -36,21 +36,25 @@ const EXOS = [
     {id:'pnh', txt:"cent dix dollars", ok:'AN · comme TRENTE'},
    ]},
 
-  // Cet exercice est un `imgmatch` en attente de ses sept photos : le compte
-  // fal.ai était verrouillé (HTTP 403 · TOP_UP) au moment de la production.
-  // Il est livré en `match` pour rester utilisable, et la forme en images se
-  // rétablit en une passe — voir docs/vagues-suivantes.md, journal de
-  // l'activité 79, qui porte les vingt-trois prompts.
-  {sec:'prep', id:'prImg', type:'match', num:'Exercice 3', tit:'Ce qu\'on voit dans la station', color:'#A5335F',
-   sub:"Fais glisser chaque endroit vers la phrase qui le décrit.", bankLbl:'Ce que c\'est', zonePh:'glisse ici',
+  {sec:'prep', id:'prImg', type:'imgmatch', num:'Exercice 3', tit:'Ce qu\'on voit dans la station', color:'#A5335F',
+   sub:"Glisse chaque photo de la station vers l'énoncé qui la nomme.",
+   images:[
+    {id:'im1', src:'/assets/interactive/module-n3-metro/images/comptoir-station.jpg'},
+    {id:'im2', src:'/assets/interactive/module-n3-metro/images/tourniquets.jpg'},
+    {id:'im3', src:'/assets/interactive/module-n3-metro/images/carte-main.jpg'},
+    {id:'im4', src:'/assets/interactive/module-n3-metro/images/grille-affichee.jpg'},
+    {id:'im5', src:'/assets/interactive/module-n3-metro/images/borne-vente.jpg'},
+    {id:'im6', src:'/assets/interactive/module-n3-metro/images/autobus-arret.jpg'},
+    {id:'im7', src:'/assets/interactive/module-n3-metro/images/places-avant.jpg'},
+   ],
    rows:[
-    {id:'im1', q:"Le comptoir du point de service, dans la station.", aid:'im1', a:"L'endroit où on achète son titre et où on pose ses questions"},
-    {id:'im2', q:"La rangée de tourniquets, avant les escaliers.", aid:'im2', a:"Les barrières qui s'ouvrent quand le titre est bon"},
-    {id:'im3', q:"Une main qui tient sa carte de transport.", aid:'im3', a:"La carte bleue et blanche, qu'on garde des années"},
-    {id:'im4', q:"La grille des tarifs affichée au mur.", aid:'im4', a:"Le tableau qui donne tous les prix, ligne par ligne"},
-    {id:'im5', q:"La borne où on achète un titre tout seul.", aid:'im5', a:"La machine libre-service, sans personne derrière"},
-    {id:'im6', q:"Un autobus arrêté, les portes ouvertes.", aid:'im6', a:"On valide sa carte en montant, près du chauffeur"},
-    {id:'im7', q:"Les sièges en avant de l'autobus.", aid:'im7', a:"Les places gardées pour ceux qui en ont le plus besoin"},
+    {id:'im1', txt:"Le comptoir du point de service, dans la station.", ok:'im1'},
+    {id:'im2', txt:"La rangée de tourniquets, avant les escaliers.", ok:'im2'},
+    {id:'im3', txt:"Une main qui tient sa carte de transport.", ok:'im3'},
+    {id:'im4', txt:"La grille des tarifs affichée au mur.", ok:'im4'},
+    {id:'im5', txt:"La borne où on achète un titre tout seul.", ok:'im5'},
+    {id:'im6', txt:"Un autobus arrêté, les portes ouvertes.", ok:'im6'},
+    {id:'im7', txt:"Les sièges en avant de l'autobus.", ok:'im7'},
    ]},
 
   {sec:'prep', id:'prPrix', type:'write', num:'Exercice 4', tit:'Écrire le prix qu\'on entend', color:'#A5335F', cols:2,
@@ -193,18 +197,23 @@ const EXOS = [
     {id:'to6', q:"Tu veux être sûr avant de partir.", aid:'to6', a:"Un mensuel, zone A, cent dix dollars. C'est ça ?"},
    ]},
 
-  // Même chose ici : `imgmatch` en attente de ses six photos, livré en
-  // `match`. Le verbe est en question, pas la photo — l'exercice garde donc
-  // toute sa valeur en attendant.
-  {sec:'t2', id:'t2img', type:'match', num:'Exercice 5', tit:'Les gestes de l\'achat', color:'#B45309',
-   sub:"Associe chaque geste au verbe qui le nomme.", bankLbl:'Le verbe', zonePh:'glisse ici',
+  {sec:'t2', id:'t2img', type:'imgmatch', num:'Exercice 5', tit:'Les gestes de l\'achat', color:'#B45309',
+   sub:"Glisse chaque photo du comptoir vers le geste qu'elle montre.",
+   images:[
+    {id:'ig1', src:'/assets/interactive/module-n3-metro/images/recharge-comptoir.jpg'},
+    {id:'ig2', src:'/assets/interactive/module-n3-metro/images/validation-autobus.jpg'},
+    {id:'ig3', src:'/assets/interactive/module-n3-metro/images/paiement-carte.jpg'},
+    {id:'ig4', src:'/assets/interactive/module-n3-metro/images/argent-comptant.jpg'},
+    {id:'ig5', src:'/assets/interactive/module-n3-metro/images/photo-carte.jpg'},
+    {id:'ig6', src:'/assets/interactive/module-n3-metro/images/recu-titre.jpg'},
+   ],
    rows:[
-    {id:'ig1', q:"On met un nouveau titre sur une carte qu'on a déjà.", aid:'ig1', a:"recharger sa carte"},
-    {id:'ig2', q:"On passe sa carte sur l'appareil en montant dans l'autobus.", aid:'ig2', a:"valider son titre"},
-    {id:'ig3', q:"On paie en approchant sa carte bancaire du terminal.", aid:'ig3', a:"payer par carte"},
-    {id:'ig4', q:"On paie avec des billets et de la monnaie.", aid:'ig4', a:"payer comptant"},
-    {id:'ig5', q:"On se fait prendre en photo pour obtenir le tarif réduit.", aid:'ig5', a:"faire faire sa carte avec photo"},
-    {id:'ig6', q:"On regarde le petit papier qui dit ce qui reste sur la carte.", aid:'ig6', a:"lire son reçu"},
+    {id:'ig1', txt:"On met un nouveau titre sur une carte qu'on a déjà.", ok:'ig1'},
+    {id:'ig2', txt:"On passe sa carte sur l'appareil en montant dans l'autobus.", ok:'ig2'},
+    {id:'ig3', txt:"On paie en approchant sa carte bancaire du terminal.", ok:'ig3'},
+    {id:'ig4', txt:"On paie avec des billets et de la monnaie.", ok:'ig4'},
+    {id:'ig5', txt:"On se fait prendre en photo pour obtenir le tarif réduit.", ok:'ig5'},
+    {id:'ig6', txt:"On regarde le petit papier qui dit ce qui reste sur la carte.", ok:'ig6'},
    ]},
 
  // ── DÉFI 3 · LIRE LA GRILLE DES TARIFS ──────────────────────
