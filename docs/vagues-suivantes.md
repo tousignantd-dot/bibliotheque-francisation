@@ -726,6 +726,40 @@ Ce que la nuit a appris, et qui est déjà dans `CLAUDE.md` :
 **La file reprend** à l'activité 68 (niveau 5), 78 (niveau 3) et 91
 (niveau 2 — l'activité 90 a été livrée le 21 août au soir).
 
+**21 août 2026 — l'activité 80 est livrée.** `module-n3-poste` · « Le colis
+de Yassine » : 16 séances, 190 diapositives, 16 fiches, 23 images, les six
+contrôles verts pour ce module plus le `node --check`. **Sans audio** : le
+compte ElevenLabs répond encore `401 quota_exceeded` (« 0 credits
+remaining »), vérifié sur un seul extrait de deux mots avant tout gros
+travail. Le relevé des sons, le générateur complet et relançable et le nombre
+d'extraits attendus sont en place : `python3
+generer_audio_module_n3_poste.py`, **316 extraits** — 72 répliques sur cinq
+dialogues et les 244 clés de `sons_module_n3_poste.json`. **La file du
+niveau 3 reprend à l'activité 81** (Location d'un logement), déjà entamée par
+une session voisine. Le journal détaillé est dans
+`docs/chantier-tous-niveaux.md`.
+
+Ce que cette production a appris ou confirmé :
+
+- **« Démarches à la poste » n'a aucun voisin au niveau 4.** C'est une
+  situation des niveaux 2 et 3 seulement ; les dix-sept modules du 4 ne la
+  traitent nulle part. Ses voisins sont les six autres comptoirs du niveau 3,
+  et ce qui l'en sépare tient en une phrase : ici l'objet part sans vous, et
+  tout ce qui se demande porte sur un moment qu'on ne verra pas.
+- **Le lexique du programme donne des énoncés-types tout faits.** Le cadre du
+  niveau 3 rend « Donnez-moi… », « Je vais le prendre » et « Je vais en prendre
+  trois » comme entrées de lexique. Ils sont devenus deux exercices et une
+  séance entière. Au niveau 3, le programme est plus prescriptif qu'on ne le
+  croit : le lire avant d'inventer économise une invention inutile.
+- **Le contrôle d'originalité passe avant les MP3, et il est gratuit.** Mesuré
+  ici avant le premier extrait : 2,9 %, ramené à 0,3 % par huit reformulations
+  d'intitulés de bandeau. Le relevé des 244 sons est identique à l'octet avant
+  et après — ni les `sub`, ni les `tit`, ni les intitulés n'y entrent.
+- **Commiter après chaque morceau, pas après chaque étape.** Ce module a été
+  interrompu quatre fois. Rien n'a été perdu, et rien n'a été réécrit deux
+  fois : chaque reprise a commencé par `git status` et a trouvé le travail
+  précédent en place.
+
 **21 août 2026 — l'activité 79 est livrée.** `module-n3-metro` · « Le bon titre
 de transport » : 16 séances, 188 diapositives, 16 fiches, 276 extraits audio,
 **0 image sur 23** — le compte fal.ai est verrouillé, la liste exacte des
