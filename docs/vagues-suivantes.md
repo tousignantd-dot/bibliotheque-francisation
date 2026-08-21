@@ -573,6 +573,41 @@ Ce que le niveau 2 impose, et qu'un agent habitué au niveau 4 oublie :
 
 Dernier numéro réservé après cette vague : **95**.
 
+**21 août 2026 — l'activité 92 est livrée.** `module-n2-neige` · « Il fait
+froid, je m'habille » : huit séances, 100 diapositives, 20 images, les six
+contrôles verts pour ce module plus le `node --check`. **Sans audio** : le
+compte ElevenLabs répond encore `401 quota_exceeded` (« 0 credits
+remaining »), vérifié sur un seul extrait avant tout gros travail, comme la
+consigne le demandait. Le relevé `sons_module_n2_neige.json` est complet et
+vérifié (`node build/releve_sons.js module-n2-neige`, 177 sons, identique à
+celui de la veille), et le générateur est prêt et relançable — il saute ce qui
+existe, donc une reprise ne coûte rien :
+
+    python3 generer_audio_module_n2_neige.py      # 234 extraits attendus
+                                                  # 57 répliques sur 6 dialogues + 177 sons
+
+**Ce qui distingue ce module de ses voisins.** `module-meteo` (niveau 4) fait
+lire un bulletin écrit et une alerte météo, avec des subordonnées et du futur ;
+ici, trois mots et un chiffre suffisent — le mot du temps, la ville, le nombre
+de degrés — et toute la grammaire du module tient dans la phrase
+impersonnelle (« il neige », « il fait froid », « il y a du vent ») et dans le
+signe qui précède la température.
+
+**Ce que cette production a appris.** Le `401 quota_exceeded` d'ElevenLabs et
+le `401 missing_permissions` de `/v1/user/subscription` ne veulent pas dire la
+même chose : la clé du dépôt n'a pas la permission `user_read`, donc
+**interroger l'abonnement ne dit rien de l'état du quota**. Le seul test qui
+tranche est une vraie génération d'un extrait court. Et un `tableau` de six
+rangées qui porte en plus une `note` dépasse la diapositive : `theme.py` le
+refuse en clair, et c'est la `note` qu'on retire, pas une rangée.
+
+**21 août 2026 — l'activité 91 est complétée.** Ses **dix-sept images**
+existent maintenant (le compte fal.ai s'est débloqué), et l'exercice 3 de
+« Je découvre » est **rendu à sa forme d'origine** : `imgmatch`, six photos du
+secrétariat à glisser sur six phrases, comme le commentaire en tête de
+l'exercice l'avait prévu. Les huit `.pptx` ont été reconstruits pour reprendre
+les photos.
+
 **21 août 2026 — l'activité 91 est livrée.** `module-n2-inscription` · « Je
 m'inscris au cours de français » : huit séances, 91 diapositives, 244 extraits
 audio, les six contrôles verts pour ce module plus le `node --check`. **Six

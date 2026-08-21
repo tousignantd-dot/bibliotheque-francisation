@@ -842,6 +842,75 @@ langue du module : le même échange, joué deux fois, au « tu » puis au « vo
 produisaient au même moment, pas des écarts de celui-ci.
 
 
+## Niveau 2 — `module-n2-neige` · Il fait froid, je m'habille · **livré, sans audio**
+
+Activité **92**, réservée d'avance par `docs/vagues-suivantes.md` (vague 4).
+Huitième module **court** du dépôt, septième du niveau 2 : huit séances, deux
+défis, cinq sections, `GRILLE_COURTE`. Produit les 21 et 22 août 2026, en
+parallèle des activités 70 et 80.
+
+**Ce qui le distingue de ses voisins**, en une phrase : `module-meteo`
+(niveau 4) fait lire un bulletin écrit et une alerte de tempête, avec des
+subordonnées et du futur ; ici, trois mots et un chiffre suffisent — le mot du
+temps, la ville, le nombre de degrés — et toute la grammaire du module tient
+dans la phrase impersonnelle et dans le signe qui précède la température.
+
+**Le cadre est le plus maigre de tout le niveau.** `build/cadre.py 2 "Météo"`
+donne **une seule** intention de communication, en compréhension écrite :
+comprendre un bulletin météo. Le lexique tient en cinq entrées — conditions
+météorologiques (temps, température, saisons, principales villes et régions du
+Québec), pleuvoir, neiger, venter, « il fait froid, chaud, beau, soleil,
+mauvais ». C'est tout. Les deux défis se déduisent de là sans rien inventer
+autour : **lire le bulletin** (défi 1), puis **en tirer une décision** — quoi
+mettre pour sortir (défi 2), qui est la seule chose qu'un débutant fasse
+réellement d'un bulletin.
+
+Les savoirs pris dans le niveau : les **phrases impersonnelles** — un seul
+point dans tout le niveau 2, et il tombe pile sur la météo, qui est le seul
+endroit de la vie courante où un débutant en rencontre tous les jours ; les
+**phrases interrogatives** (quel temps fait-il, est-ce qu'il neige, il fait
+combien) ; l'**impératif présent** (mets, mettez) ; les **déterminants
+numéraux** pour les degrés ; et la **graphie-phonie** du système vocalique,
+séance A2, sur les deux nasales qui décident de tout l'hiver — le son de
+« vent » et le son de « bonjour ». Aucun alphabet phonétique sur les
+diapositives : le gabarit est en Verdana, et le niveau 2 n'en demande pas.
+
+Scénario inventé : Zina Berrada, arrivée du Maroc en octobre, voit sa première
+neige ; son fils Youssef, neuf ans ; leur voisin retraité Roland Pelchat, qui
+donne un renseignement par phrase. Trois cas de jeu de rôle — l'entrée de
+l'immeuble, le bulletin mal compris, le jour de tempête — ajoutés à `server.py`
+sous la clé `meteo` : aucun scénario existant ne convenait, ceux du niveau 4
+tenant une conversation de six étapes et ceux du niveau 2 se jouant tous devant
+un comptoir.
+
+**Les huit séances.** A1 les quatre mots du ciel · A2 « an » ou « on » ·
+A3 le « il » de la météo · B1 le bulletin de sept heures · B2 moins huit, plus
+quatre · C1 qu'est-ce que je mets ? · C2 quel temps fait-il ? · E1 je me
+lance. Cent diapositives, 73 blocs de fiches, 20 images.
+
+**L'audio n'est pas produit.** Le compte ElevenLabs répond toujours
+`401 quota_exceeded` (« 0 credits remaining »), vérifié sur **un seul extrait
+court** avant tout gros travail. Tout le reste est livré. Le relevé
+`sons_module_n2_neige.json` est complet et revérifié
+(`node build/releve_sons.js module-n2-neige` — 177 sons, identique à celui de
+la veille), et `generer_audio_module_n2_neige.py` est prêt et relançable : il
+saute ce qui existe déjà, donc une reprise après coupure ne coûte rien.
+
+    python3 generer_audio_module_n2_neige.py      # 234 extraits attendus
+                                                  # 57 répliques sur 6 dialogues + 177 sons
+
+**Deux pièges payés ici.** Le `401 quota_exceeded` d'ElevenLabs et le
+`401 missing_permissions` de `/v1/user/subscription` ne disent pas la même
+chose : la clé du dépôt n'a pas la permission `user_read`, donc **interroger
+l'abonnement ne renseigne pas sur le quota** — seule une vraie génération
+tranche. Et un `tableau` de six rangées qui porte en plus une `note` dépasse la
+diapositive : `theme.py` refuse en clair, et c'est la `note` qu'on retire, pas
+une rangée.
+
+**Le relevé des `CARRIER_PHRASES` est propre** : aucun mot de `savoir[…][2]`
+sans phrase porteuse, aucune clé inutilisée, toutes les clés en mots accentués.
+
+
 ## Niveau 2 — `module-n2-inscription` · Je m'inscris au cours de français · **livré**
 
 Activité **91**, réservée d'avance par `docs/vagues-suivantes.md` (vague 4).
@@ -944,7 +1013,16 @@ de remplir un papier.
   `savoir`. Une lettre seule envoyée à la synthèse sort mal ; les huit cartes
   de l'exercice de l'alphabet disent donc « la lettre B », pas « B ».
 
-### Les onze images qui manquent
+### Les onze images qui manquaient — **produites le 21 août 2026**
+
+Le compte fal.ai s'est débloqué le soir même. Les onze images de la liste
+ci-dessous existent, l'exercice 3 de *Je découvre* est **rendu à son
+`imgmatch`** d'origine — six photos du secrétariat à glisser sur six phrases,
+`ok:'isN'` et non `aid` —, le module est reconstruit (`node --check` vert) et
+les **huit `.pptx` ont été refaits** pour reprendre les photos dans leurs
+diapositives de déclencheur et de vocabulaire. La section qui suit est
+conservée telle quelle : elle documente la conduite à tenir la prochaine fois
+qu'un fournisseur d'images se refermera.
 
 À produire en une passe :
 `python3 build/contenu/module-n2-inscription/gen_images.py`. Les prompts sont
