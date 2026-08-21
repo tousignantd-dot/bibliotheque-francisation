@@ -221,6 +221,65 @@ def _meme_contenu(a, b, morceau=1 << 16):
         return False
 
 
+def nettoyer_doublons_interactive(src, dst):
+    """Récupère la place prise par des fichiers que le serveur ne lit jamais.
+
+    `assets/interactive/` est servi depuis BASE_DIR (voir `do_GET`). La copie
+    que l'ancien `_sync_interactive` entretenait sur le volume n'a donc jamais
+    été lue une seule fois — 588 Mo le 21 août 2026, assez pour remplir le
+    volume, tronquer `activities.json` en pleine écriture et mettre le
+    catalogue de tous les enseignants par terre.
+
+    **La règle de suppression est étroite, et c'est voulu** : un fichier du
+    volume n'est effacé que si le **même chemin relatif** existe dans le code
+    avec la **même taille**. Autrement dit, seulement quand on peut prouver
+    qu'il est un doublon — et un doublon d'un fichier que le déploiement
+    remet en place à chaque fois.
+
+    Ce qui n'est **jamais** touché : tout fichier présent sur le volume et
+    absent du code. `_upload_interactive` écrit ici quand une enseignante
+    téléverse une activité ; ces fichiers-là n'existent nulle part ailleurs,
+    et les emporter serait une perte sèche. Un fichier de taille différente
+    est laissé aussi : la différence peut être une modification faite en
+    ligne, et on ne tranche pas à sa place.
+    """
+    if not dst.exists() or src == dst:
+        return
+    effaces = octets = gardes = 0
+    for chemin_dst in list(dst.rglob('*')):
+        if not chemin_dst.is_file():
+            continue
+        rel = chemin_dst.relative_to(dst)
+        jumeau = src / rel
+        try:
+            if not jumeau.exists():
+                gardes += 1                     # propre au volume : intouchable
+                continue
+            taille = chemin_dst.stat().st_size
+            if jumeau.stat().st_size != taille:
+                gardes += 1                     # divergent : on ne tranche pas
+                continue
+            chemin_dst.unlink()
+            effaces += 1
+            octets += taille
+        except OSError as e:
+            print("[WARN] nettoyage %s : %s" % (rel, e), flush=True)
+
+    # Les dossiers vidés n'ont plus de raison d'être ; ceux qui gardent un
+    # fichier propre au volume restent, avec leur contenu.
+    for dossier in sorted((d for d in dst.rglob('*') if d.is_dir()),
+                          key=lambda d: len(d.parts), reverse=True):
+        try:
+            dossier.rmdir()
+        except OSError:
+            pass
+
+    if effaces or gardes:
+        print("[INFO] nettoyage du volume : %d doublon(s) effacé(s), %.0f Mo "
+              "récupérés · %d fichier(s) propres au volume conservés"
+              % (effaces, octets / 1e6, gardes), flush=True)
+
+
 def _sync_interactive(src, dst):
     """**Plus appelée depuis le 21 août 2026** — gardée pour mémoire.
 
@@ -331,15 +390,18 @@ def init_storage():
         pass                      # en local, la source EST la destination
     elif dst_interactive.exists():
         try:
-            poids = sum(f.stat().st_size for f in dst_interactive.rglob('*')
-                        if f.is_file())
             libre = shutil.disk_usage(str(STORAGE_DIR)).free
-            print("[INFO] volume : %.0f Mo libres · %.0f Mo dormants dans "
-                  "assets/interactive/, jamais servis depuis le volume "
-                  "(récupérables à la main)" % (libre / 1e6, poids / 1e6),
-                  flush=True)
+            print("[INFO] volume : %.0f Mo libres avant nettoyage"
+                  % (libre / 1e6), flush=True)
         except OSError as e:
             print("[WARN] volume non mesuré : %s" % e, flush=True)
+        nettoyer_doublons_interactive(src_interactive, dst_interactive)
+        try:
+            libre = shutil.disk_usage(str(STORAGE_DIR)).free
+            print("[INFO] volume : %.0f Mo libres après nettoyage"
+                  % (libre / 1e6), flush=True)
+        except OSError:
+            pass
 
     # Fusionner les activités intégrées au code dans le volume :
     #  - les ids présents dans git mais absents du volume sont ajoutés ;
