@@ -472,11 +472,13 @@
   </div>
 </header>
 
-<!-- Bannière serveur non démarré -->
+<!-- Bannière d'échec de chargement : deux causes, deux messages -->
 <div id="serverBanner" class="banner banner--no" style="display:none">
-  ⚠️ Le serveur local n'est pas démarré. Ouvrez un Terminal et lancez :
-  <code>python3 /Users/danieltousignant/Claude/bibliotheque-francisation/server.py</code>
-  puis rafraîchissez la page.
+  <span id="serverBannerText">
+    ⚠️ Le serveur local n'est pas démarré. Ouvrez un Terminal et lancez :
+    <code>python3 /Users/danieltousignant/Claude/bibliotheque-francisation/server.py</code>
+    puis rafraîchissez la page.
+  </span>
 </div>
 
 <div class="page">
@@ -870,10 +872,28 @@ async function telechargerPresentations(id) {
   }
 }
 
+function montrerBanniere(cause) {
+  const banniere = document.getElementById('serverBanner');
+  const texte = document.getElementById('serverBannerText');
+  texte.innerHTML = cause === 'connexion'
+    ? '\u26a0\ufe0f Votre session enseignante a expir\u00e9. '
+      + '<a href="enseignant.html">Reconnectez-vous \u00e0 l\'espace enseignant</a>, '
+      + 'puis revenez au catalogue.'
+    : '\u26a0\ufe0f Le serveur local n\'est pas d\u00e9marr\u00e9. Ouvrez un Terminal et lancez\u00a0: '
+      + '<code>python3 /Users/danieltousignant/Claude/bibliotheque-francisation/server.py</code> '
+      + 'puis rafra\u00eechissez la page.';
+  banniere.style.display = 'block';
+}
+
 async function loadList() {
   try {
     // `catalogue=1` : le fonds entier, sans les dates d'un groupe.
     const res = await Prof.fetch('/api/activities?catalogue=1');
+    // 401 : le serveur répond très bien, c'est la session enseignante qui
+    // manque ou qui a expiré. Dire « lancez server.py » ici envoyait chercher
+    // une panne qui n'existe pas — surtout en production, où le serveur n'est
+    // pas local du tout.
+    if (res.status === 401) { montrerBanniere('connexion'); renderList([]); return; }
     if (!res.ok) throw new Error();
     allActivities = await res.json();
     await loadPresentations();
@@ -881,7 +901,7 @@ async function loadList() {
     applyFilters();
     document.getElementById('serverBanner').style.display = 'none';
   } catch {
-    document.getElementById('serverBanner').style.display = 'block';
+    montrerBanniere('serveur');
     renderList([]);
   }
 }
