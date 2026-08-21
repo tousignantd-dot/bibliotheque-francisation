@@ -4377,7 +4377,147 @@ JEU_DE_ROLE_TITRE = {
 }
 
 
+# ── module-n5-transport (activité 69) ─────────────────────────────────────
+# Expliquer une entrave entendue à la radio et refaire un trajet avec
+# quelqu'un. Aucun scénario existant ne convenait : `chemin` vient du niveau 4
+# et fait demander son chemin à un inconnu — six étapes, des noms de terminus,
+# une personne qui sait et une qui ne sait pas. Ici c'est l'inverse : c'est
+# l'élève qui sait, parce qu'il a écouté le bulletin de circulation, et il doit
+# expliquer à quelqu'un qui n'a rien entendu ce qui bloque, où, depuis quand et
+# pour combien de temps — puis proposer autre chose et annoncer une heure
+# d'arrivée. C'est un discours organisé, pas une question-réponse.
+JEU_DE_ROLE_CIRCULATION = {
+    "pont": {
+        "contexte": (
+            "Le stationnement incitatif de Longueuil, un mardi, six heures "
+            "cinquante-cinq. Vous venez d'entendre à la radio que le pont "
+            "Jacques-Cartier est fermé en direction de Montréal jusqu'à neuf "
+            "heures. Votre collègue vous attend dans son auto, moteur en "
+            "marche, et il n'a pas écouté la radio."
+        ),
+        "collegue": [
+            "Tu n'as rien entendu : tu as roulé sans radio.",
+            "Tu prends toujours le pont Jacques-Cartier et tu allais y aller.",
+            "Tu veux savoir trois choses : ce qui bloque, où exactement, et "
+            "jusqu'à quand.",
+            "Tu ne connais pas d'autre chemin : c'est à l'élève de proposer.",
+            "Tu demandes à quelle heure vous allez arriver, et tu veux un "
+            "chiffre.",
+        ],
+        "responsable": [
+            "Tu apprends que la personne sera en retard et tu veux savoir de "
+            "combien.",
+        ],
+    },
+    "carambolage": {
+        "contexte": (
+            "Sept heures vingt, dans l'auto, sur le boulevard. Le bulletin "
+            "vient d'annoncer un carambolage de quatre véhicules sur "
+            "l'autoroute 40 en direction ouest, à la hauteur de la sortie "
+            "Côte-de-Liesse : deux voies sur trois sont bloquées et les "
+            "remorqueuses sont sur place."
+        ),
+        "collegue": [
+            "Tu es au volant et tu approches de l'entrée de l'autoroute.",
+            "Tu veux savoir tout de suite si vous entrez sur la 40 ou non.",
+            "Tu demandes combien de voies restent ouvertes et combien de "
+            "temps ça va durer.",
+            "Tu proposes d'attendre : c'est à l'élève de dire si ça vaut la "
+            "peine ou non, et pourquoi.",
+        ],
+        "responsable": [
+            "Tu es la responsable de l'atelier et le téléphone sonne à sept "
+            "heures vingt-cinq.",
+            "Tu demandes ce qui se passe, puis à quelle heure la personne "
+            "pense arriver.",
+            "Tu demandes qui va ouvrir l'atelier en attendant.",
+            "Tu ne te fâches pas : un retard annoncé n'est pas un problème, "
+            "un retard non annoncé en est un.",
+        ],
+    },
+    "travaux": {
+        "contexte": (
+            "Vendredi, seize heures. Le bulletin annonce que la bretelle qui "
+            "mène de l'autoroute 15 en direction nord à l'autoroute 40 en "
+            "direction ouest sera fermée toute la fin de semaine, pour des "
+            "travaux de réfection de la chaussée."
+        ),
+        "collegue": [
+            "Tu dois aller chercher quelqu'un samedi matin et tu passes "
+            "toujours par cette bretelle.",
+            "Tu ne sais pas ce que veut dire « une bretelle » : tu le "
+            "demandes.",
+            "Tu veux savoir si c'est fermé les deux jours ou seulement le "
+            "samedi.",
+            "Tu demandes par où passer à la place, et tu veux un chemin "
+            "clair, pas un « tu verras bien ».",
+        ],
+        "responsable": [
+            "Tu veux savoir si les travaux touchent le trajet du lundi "
+            "matin.",
+        ],
+    },
+}
+
+
 JEU_DE_ROLE_SCENARIOS = {
+    "circulation": {
+        "cadre": ("un imprévu de circulation qu'on explique à quelqu'un qui "
+                  "n'a pas entendu le bulletin, au stade intermédiaire"),
+        "contexte_label": "Ce que vous venez d'entendre à la radio",
+        "cas": JEU_DE_ROLE_CIRCULATION,
+        "adresse": ("Tutoie l'élève quand tu joues le collègue de covoiturage : "
+                    "vous faites la route ensemble tous les matins. Vouvoie-le "
+                    "quand tu joues la responsable de l'atelier."),
+        "sujets": [
+            "ce qui bloque : un accident, des travaux, un véhicule en panne",
+            "l'endroit, dit avec une préposition juste : sur la 40, entre "
+            "deux sorties, à la hauteur de, en direction de",
+            "depuis quand ça dure, et pour combien de temps encore",
+            "le nombre de voies bloquées et celles qui restent ouvertes",
+            "l'autre chemin proposé, dit dans l'ordre et jusqu'au bout",
+            "l'heure d'arrivée annoncée, en chiffres",
+        ],
+        "cloture": ("Quand l'élève a dit ce qui bloque, où, jusqu'à quand, et "
+                    "qu'il a proposé un autre chemin avec une heure d'arrivée, "
+                    "redis le plan en une phrase courte pour vérifier que vous "
+                    "avez compris la même chose, puis conclus. N'accepte pas "
+                    "« ça bloque » comme explication : redemande où, une fois."),
+        "ouverture": {
+            "collegue": "Embarque ! On part tout de suite, on est corrects pour le temps.",
+            "responsable": "Atelier d'assemblage, Ghislaine Lachance, bonjour.",
+        },
+        "roles": {
+            "collegue": {
+                "qui": ("Tu es Amine Haddad, 45 ans, le collègue avec qui l'élève "
+                        "fait du covoiturage tous les matins depuis deux ans. Tu "
+                        "conduis, l'élève est à côté de toi."),
+                "conduite": ("Niveau 5 : l'élève doit tenir un discours organisé, "
+                             "pas répondre à des questions. Tu tutoies. Tu n'as pas "
+                             "écouté la radio et tu ne devines rien : si l'élève dit "
+                             "seulement « ça bloque », tu demandes où, et tu "
+                             "redemandes une fois si la réponse reste vague. Tu es "
+                             "pressé mais jamais fâché. Tu ne proposes jamais le "
+                             "détour toi-même : c'est l'élève qui doit le trouver et "
+                             "le dire dans l'ordre. Tu parles la langue de la route "
+                             "avec des mots réels : une entrave, une bretelle, "
+                             "l'accotement, une remorqueuse, un bouchon, le pont, la "
+                             "sortie, les deux sens."),
+            },
+            "responsable": {
+                "qui": ("Tu es Ghislaine Lachance, la responsable de l'atelier "
+                        "d'assemblage où travaille l'élève. Il t'appelle pour "
+                        "annoncer qu'il sera en retard."),
+                "conduite": ("Vouvoie l'élève. Tu décroches en te nommant. Tu "
+                             "attends qu'il se nomme lui aussi : s'il ne le fait "
+                             "pas, tu demandes qui parle. Tu veux trois choses, dans "
+                             "cet ordre : ce qui se passe, l'heure d'arrivée "
+                             "prévue, ce qu'on fait en attendant. Tu ne reproches "
+                             "rien et tu ne devines pas à sa place : s'il dit "
+                             "« bientôt », tu demandes une heure."),
+            },
+        },
+    },
     "titre": {
         "cadre": ("un achat de titre de transport au point de service d'une "
                   "station, au niveau débutant"),
