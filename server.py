@@ -7037,13 +7037,24 @@ class Handler(http.server.SimpleHTTPRequestHandler):
             teacher = self._require_teacher()
             if not teacher:
                 return
-            if params.get("catalogue", [""])[0]:
-                json_response(self, load_activities())
-                return
-            group_id = self._group_from_params(teacher, params)
-            if group_id is None:
-                return
-            json_response(self, activities_for_group(group_id))
+            # Une exception qui remonte d'ici tue le fil sans rien écrire, et
+            # Railway rend un 502 opaque : côté enseignant, le catalogue est
+            # vide et le message ne dit rien. Vu le 21 août 2026. On répond
+            # donc une erreur lisible, et la trace part dans les journaux.
+            try:
+                if params.get("catalogue", [""])[0]:
+                    json_response(self, load_activities())
+                    return
+                group_id = self._group_from_params(teacher, params)
+                if group_id is None:
+                    return
+                json_response(self, activities_for_group(group_id))
+            except Exception as e:
+                import traceback
+                traceback.print_exc()
+                print("[ERREUR] /api/activities : %r" % e, flush=True)
+                json_response(self, {"error": "catalogue illisible : %s: %s"
+                                     % (type(e).__name__, e)}, 500)
             return
         if path == "/api/sections":
             self._handle_sections(params)
