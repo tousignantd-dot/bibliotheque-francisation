@@ -12,24 +12,9 @@ la paire change, on réécrit la répartition, pas le protocole.
 
 ## La répartition en cours
 
-| Qui | Module | Slug | Activité | Format |
-|---|---|---|---|---|
-| A | Niveau 7 · Suivi de l'actualité | `module-n7-actualite` | **60** | 16 séances · **livré** |
-| B | Niveau 8 · Emploi | `module-n8-emploi` | **61** | 16 séances |
-| C | Niveau 5 · Problèmes reliés à l'habitation | `module-n5-degat` | **62** | 16 séances |
-| D | Niveau 5 · Emménagement dans un nouveau logement | `module-n5-emmenagement` | **63** | 16 séances |
-| E | Niveau 5 · Utilisation des services publics | `module-n5-services` | **64** | 16 séances · **livré, audio en attente** |
-
-**Quatre agents à la fois, et non deux** — décision de l'utilisateur le 20 août
-2026, pendant son absence : la vague 1 et la vague 2 de
-`docs/vagues-suivantes.md` roulent ensemble. Le fichier recommande deux ; le
-mandat en veut quatre, et la file des vagues 2 et 3 se vide au fur et à mesure,
-un module lancé pour chaque module livré. Ce qui rend les quatre tenables,
-c'est que les vingt-sept numéros d'activité sont réservés d'avance dans
-`docs/consignes-a-coller.md` : personne n'a de numéro à choisir. Ce qui les
-rend dangereux reste le `git add -A`, interdit sans exception.
-
-Les niveaux 5 · Location (58) et 6 · Recherche d'emploi (59) sont livrés.
+**Personne ne produit en ce moment.** Les activités 60 à 64 sont livrées ; la
+file reprend à **65**, consigne prête dans `docs/consignes-a-coller.md`. Le
+journal des vagues est dans `docs/vagues-suivantes.md`.
 
 **Les numéros d'activité sont réservés d'avance, et c'est le point le plus
 important de ce fichier.** Le numéro d'activité est la clé qui relie

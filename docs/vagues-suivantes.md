@@ -165,3 +165,38 @@ Pour la vague 1, les deux consignes se donnent en même temps, une par agent, en
 ajoutant à chacune : « Un autre agent produit le niveau `<7 ou 8>` en parallèle.
 Vos numéros d'activité sont 60 et 61 ; vos contenus sont isolés ; vos seuls
 points de rencontre sont `modules.py`, `activities.json` et `server.py`. »
+
+## Journal des vagues
+
+**21 août 2026 — vague 1 close, vague 2 entamée.** Cinq modules livrés, en
+ligne, audio complet, les six contrôles verts plus le `node --check` :
+
+| Activité | Module | Extraits audio |
+|---|---|---|
+| 60 | Niveau 7 · Suivre l'actualité | 202 |
+| 61 | Niveau 8 · Tenir son bout au travail | 230 |
+| 62 | Niveau 5 · Un dégât d'eau | 241 |
+| 63 | Niveau 5 · Emménager dans un nouveau logement | 255 |
+| 64 | Niveau 5 · Les services de ma ville | 185 |
+
+Le chantier « un module par niveau » de `docs/chantier-tous-niveaux.md` est
+**terminé** : les huit niveaux ont chacun le leur. Le niveau 5 en a quatre.
+
+Ce que cette nuit a appris, et qui est déjà écrit là où il faut :
+
+- **Le `node --check` du script produit** manquait à la chaîne. Une apostrophe
+  non échappée dans `bravo`, une accolade au lieu d'un crochet dans un bloc
+  `piege` : le build ne voit rien, l'élève reçoit une page morte. Le contrôle
+  est dans `CLAUDE.md`.
+- **Tout bloc `ana` veut son champ `say:`**, sinon l'extrait lit les balises
+  HTML à voix haute — et ça ne se découvre qu'une fois les MP3 payés.
+- **Une coupure TLS n'est pas un refus de débit.** Le générateur attendait
+  4-8-16-32 s pour une liaison qui revient en deux secondes ; la base courte
+  est dans `generer_audio_module_n5_degat.py`, à copier dans les prochains.
+- **Une limite d'usage peut tuer toutes les sessions d'un coup.** Ce jour-là,
+  cinq agents sont morts en même temps ; tout ce qui était commité a survécu,
+  le reste a été retrouvé dans l'arbre. C'est la règle 2 — commiter souvent —
+  qui a fait la différence.
+
+**La file reprend à l'activité 65** (niveau 5 · Consultation d'un professionnel
+de la santé), consigne prête dans `docs/consignes-a-coller.md`.
