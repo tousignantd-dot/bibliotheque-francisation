@@ -443,19 +443,60 @@ def normalize_level(value):
 
 
 def load_activities():
-    if DATA_FILE.exists():
+    """Le catalogue, avec un filet sous le fichier du volume.
+
+    Le 21 août 2026, `activities.json` du volume Railway s'est retrouvé
+    **tronqué** — le JSON s'arrêtait au milieu. Cause : `save_activities`
+    écrivait en place, et un processus qui meurt pendant l'écriture laisse un
+    fichier à moitié écrit, illisible pour toujours. Conséquence : le
+    catalogue de tous les enseignants vide, et un 502 qui n'expliquait rien.
+
+    Un fichier de données corrompu ne doit pas mettre le portail par terre.
+    On met donc l'épave de côté — jamais supprimée, elle peut porter des
+    activités déposées depuis l'interface — et on repart de la copie livrée
+    avec le code."""
+    if not DATA_FILE.exists():
+        return []
+    try:
         with open(DATA_FILE, "r", encoding="utf-8") as f:
             activities = json.load(f)
-        for a in activities:
-            a["categorie"] = normalize_categorie(a.get("categorie"), a.get("interactive", ""))
-        return activities
-    return []
+    except (json.JSONDecodeError, UnicodeDecodeError) as e:
+        secours = BASE_DIR / "data" / "activities.json"
+        print("[ERREUR] %s illisible (%s)" % (DATA_FILE, e), flush=True)
+        if DATA_FILE != secours and secours.exists():
+            epave = DATA_FILE.with_suffix(
+                ".corrompu-%s.json" % datetime.now().strftime("%Y%m%d-%H%M%S"))
+            try:
+                DATA_FILE.rename(epave)
+                print("[INFO] épave conservée : %s" % epave, flush=True)
+            except OSError as err:
+                print("[WARN] épave non conservée : %s" % err, flush=True)
+            with open(secours, "r", encoding="utf-8") as f:
+                activities = json.load(f)
+            save_activities(activities)
+            print("[INFO] catalogue restauré depuis %s (%d activités)"
+                  % (secours, len(activities)), flush=True)
+        else:
+            return []
+    for a in activities:
+        a["categorie"] = normalize_categorie(a.get("categorie"), a.get("interactive", ""))
+    return activities
 
 
 def save_activities(activities):
+    """Écriture atomique : on écrit à côté, puis on remplace d'un seul geste.
+
+    `os.replace` est atomique sur le même système de fichiers : ou bien
+    l'ancien fichier est intact, ou bien le nouveau est complet, jamais un
+    mélange des deux. C'est ce qui manquait le jour où le catalogue s'est
+    tronqué."""
     DATA_FILE.parent.mkdir(parents=True, exist_ok=True)
-    with open(DATA_FILE, "w", encoding="utf-8") as f:
+    provisoire = DATA_FILE.with_suffix(".json.tmp")
+    with open(provisoire, "w", encoding="utf-8") as f:
         json.dump(activities, f, ensure_ascii=False, indent=2)
+        f.flush()
+        os.fsync(f.fileno())
+    os.replace(provisoire, DATA_FILE)
 
 
 def load_students():
