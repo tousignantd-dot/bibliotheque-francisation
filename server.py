@@ -3798,7 +3798,130 @@ JEU_DE_ROLE_URGENCE911 = {
 }
 
 
+JEU_DE_ROLE_COMPTOIR = {
+    "trio": {
+        "contexte": (
+            "Le comptoir du casse-croûte Chez Marcel, un midi de semaine. Le "
+            "tableau du menu est accroché au-dessus de la caisse. Les trios "
+            "comprennent un sandwich, un accompagnement et un breuvage."
+        ),
+        "prepose": [
+            "Les sandwichs sont au poulet, aux œufs ou au jambon.",
+            "Le trio comprend le sandwich, l'accompagnement et le breuvage.",
+            "L'accompagnement est au choix : salade ou frites.",
+            "Les breuvages sont : jus de pomme, jus d'orange, lait, café, eau.",
+            "Tu demandes toujours « pour ici ou pour emporter ? » avant de "
+            "donner le prix.",
+            "Tu donnes un numéro de commande à la fin : le 42.",
+            "Tu ne parles ni de table d'hôte, ni d'addition, ni de pourboire : "
+            "il n'y a pas de service aux tables ici.",
+        ],
+        "client": [
+            "Tu as une heure pour dîner et tu veux un trio.",
+            "Tu ne sais pas ce qu'il y a dans les sandwichs.",
+            "Tu demandes ce que le trio comprend avant de choisir.",
+            "Tu manges sur place.",
+        ],
+    },
+    "soupe": {
+        "contexte": (
+            "Le même comptoir, un peu plus tard. La soupe du jour est écrite "
+            "à la craie sur un petit tableau posé sur la caisse. Elle existe "
+            "en trois formats."
+        ),
+        "prepose": [
+            "La soupe du jour est aux légumes ; il y a aussi la soupe au "
+            "poulet et nouilles.",
+            "Les formats sont petit, moyen et grand.",
+            "Le café se prend petit, moyen ou grand lui aussi.",
+            "Les ustensiles et les serviettes sont en libre-service, dans les "
+            "bacs à gauche.",
+            "S'il te reste peu de soupe, tu peux dire qu'il n'en reste plus.",
+        ],
+        "client": [
+            "Tu veux une soupe et un café.",
+            "Tu ne sais pas quelle est la soupe du jour.",
+            "Tu demandes quels formats existent.",
+            "Tu manges sur place.",
+        ],
+    },
+    "emporter": {
+        "contexte": (
+            "Le comptoir, à midi et quart. La file est longue. Le client "
+            "commande pour deux personnes et repart avec les repas."
+        ),
+        "prepose": [
+            "Pour emporter, tout va dans un sac de papier.",
+            "La soupe pour emporter reçoit un couvercle et une cuillère.",
+            "Tu mets les serviettes et les sachets de condiments dans le sac "
+            "seulement si on te le demande.",
+            "Tu demandes « débit ou comptant ? » — la carte de crédit n'est "
+            "pas acceptée.",
+        ],
+        "client": [
+            "Tu commandes deux repas, un pour toi et un pour une camarade.",
+            "Vous mangez au centre : c'est pour emporter.",
+            "Tu demandes des ustensiles et des serviettes.",
+            "Tu paies avec ta carte de débit.",
+        ],
+    },
+}
+
+
 JEU_DE_ROLE_SCENARIOS = {
+    "comptoir": {
+        "cadre": "une commande au comptoir d'un casse-croûte, au niveau débutant",
+        "contexte_label": "Le moment de la commande où vous êtes",
+        "cas": JEU_DE_ROLE_COMPTOIR,
+        "adresse": "Vouvoie l'élève : c'est un commerce, on ne se connaît pas.",
+        "sujets": [
+            "ce qu'on veut, dit avec « je voudrais »",
+            "ce qu'il y a dans un plat, demandé avant de choisir",
+            "le format : petit, moyen ou grand",
+            "« pour ici ou pour emporter ? », répondu du premier coup",
+            "un ustensile, une serviette ou un condiment",
+            "le numéro de commande, retenu avant de partir",
+        ],
+        "cloture": ("Quand la commande est complète et payée, donne le numéro "
+                    "de commande, dis de l'attendre au poste de ramassage, et "
+                    "salue. N'allonge pas la conversation."),
+        "ouverture": {
+            "client": "Bonjour ! Prochaine personne, s'il vous plaît.",
+            "prepose": "Bonjour. Je voudrais un trio, s'il vous plaît.",
+        },
+        "roles": {
+            "prepose": {
+                "qui": ("Tu es le préposé du comptoir, chez Marcel. L'élève "
+                        "est le client."),
+                "conduite": ("Parle en phrases courtes, au présent, une idée "
+                             "par phrase : l'élève est débutant. Ne donne "
+                             "jamais un renseignement avant qu'on te le "
+                             "demande — ni le contenu d'un plat, ni les "
+                             "formats, ni le prix — et ne rappelle pas à "
+                             "l'élève ce qu'il a oublié de demander. Pose tes "
+                             "questions une à la fois, dans l'ordre du "
+                             "comptoir : l'accompagnement, le format, le "
+                             "breuvage, « pour ici ou pour emporter ? », puis "
+                             "« débit ou comptant ? ». Dis les prix en toutes "
+                             "lettres. Ne parle ni de table d'hôte, ni "
+                             "d'addition, ni de pourboire : il n'y a pas de "
+                             "service aux tables. Si l'élève ne comprend pas, "
+                             "répète plus lentement avec les mêmes mots."),
+            },
+            "client": {
+                "qui": ("Tu commandes ton dîner au comptoir. L'élève est le "
+                        "préposé et te sert."),
+                "conduite": ("Dis ce que tu veux en une phrase courte, puis "
+                             "pose une question à la fois : ce qu'il y a dans "
+                             "le plat, les formats, ce qui vient avec. "
+                             "Emploie « je voudrais » et « s'il vous plaît ». "
+                             "Attends que l'élève te demande le format et le "
+                             "mode de paiement plutôt que de les donner "
+                             "d'avance. Ne parle jamais d'addition ni de "
+                             "pourboire."),
+            },
+        },
+    },
     "urgence911": {
         "cadre": "un appel au 9-1-1 fait pour quelqu'un d'autre",
         "contexte_label": "La situation que vous avez tous les deux sous les yeux",
