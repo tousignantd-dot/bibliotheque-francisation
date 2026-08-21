@@ -674,7 +674,9 @@ Ce que la nuit a appris, et qui est déjà dans `CLAUDE.md` :
 
 **21 août 2026 — l'activité 78 est livrée.** `module-n3-pharmacie` · « Aller à
 la pharmacie » : 16 séances, 175 diapositives, 16 fiches, 295 extraits audio,
-12 images. Les six contrôles verts, plus le `node --check` du script produit.
+12 images. Les six contrôles passés, plus le `node --check` du script produit —
+verts pour ce module ; au dernier passage, `sommaire.py --verifier` signalait
+encore l'activité 68, dont la session voisine n'avait pas fini ses séances.
 **La file du niveau 3 reprend à l'activité 79** (Déplacement dans une ville).
 
 Ce que cette production a appris ou confirmé :
