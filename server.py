@@ -3721,7 +3721,141 @@ JEU_DE_ROLE_CLASSE = {
 }
 
 
+# Scénario du module-n5-urgence (niveau 5, activité 66). Aucun scénario
+# existant ne convenait : tous les autres mettent en scène un service qui
+# répond à une demande, alors qu'ici c'est l'assistant qui mène l'échange, dans
+# un ordre fixe, et qui donne des consignes à exécuter. Le répartiteur du 9-1-1
+# ne console pas, ne diagnostique pas et ne laisse pas raccrocher.
+JEU_DE_ROLE_URGENCE911 = {
+    "chute": {
+        "contexte": (
+            "Deux heures du matin. Une dame de soixante et onze ans est "
+            "tombée dans l'escalier intérieur d'un logement de Saint-Léonard. "
+            "Elle est consciente, elle a mal à la hanche droite et elle ne "
+            "peut pas se relever. Sa fille est seule avec elle."
+        ),
+        "repartiteur": [
+            "Tu es le répartiteur du 9-1-1. Ta première question porte sur l'endroit, jamais sur ce qui se passe.",
+            "Tu demandes ensuite le numéro de téléphone d'où l'on appelle, puis « dites-moi ce qui se passe ».",
+            "Tu demandes si la personne est consciente, puis si elle respire normalement.",
+            "Tu donnes des consignes à l'impératif : ne la déplacez pas, couvrez-la, ne lui donnez rien à boire.",
+            "Tu demandes l'âge, les médicaments, et si la porte de l'immeuble est barrée.",
+            "Tu ne laisses pas raccrocher : tu dis de rester en ligne jusqu'à l'arrivée des ambulanciers.",
+        ],
+        "appelant": [
+            "Tu appelles pour ta mère, tombée dans l'escalier ; elle te répond mais ne peut pas se relever.",
+            "Tu donnes l'adresse complète : 5412, rue des Ormeaux, appartement 2, à Saint-Léonard.",
+            "Tu réponds court, par oui ou par non, et tu dis « je ne sais pas » plutôt que d'inventer.",
+            "Tu exécutes les consignes et tu dis à voix haute ce que tu fais.",
+            "Tu ne raccroches pas avant qu'on te le dise.",
+        ],
+    },
+    "poitrine": {
+        "contexte": (
+            "Un voisin de soixante ans a une forte douleur à la poitrine "
+            "depuis dix minutes. Il transpire et refuse l'ambulance parce "
+            "qu'il la trouve trop chère. L'appel est fait de son logement, "
+            "au troisième étage d'un immeuble sans ascenseur."
+        ),
+        "repartiteur": [
+            "Tu es le répartiteur du 9-1-1. Tu prends l'endroit d'abord, avec l'étage et le numéro d'appartement.",
+            "Tu demandes depuis combien de temps la douleur dure et si la personne est consciente.",
+            "Tu dis de faire asseoir la personne, de ne pas la faire marcher et de ne rien lui donner à manger.",
+            "Tu demandes s'il y a un ascenseur : les ambulanciers doivent le savoir avant d'arriver.",
+            "Si l'appelant hésite à cause du coût, tu réponds une seule fois, calmement, que ce n'est pas la question maintenant.",
+            "Tu demandes de déverrouiller la porte et d'envoyer quelqu'un attendre en bas s'il y a quelqu'un d'autre.",
+        ],
+        "appelant": [
+            "Tu appelles pour ton voisin, qui a une douleur à la poitrine depuis dix minutes.",
+            "Tu précises l'étage et l'absence d'ascenseur sans qu'on te le demande deux fois.",
+            "Tu dis qu'il transpire et qu'il refuse l'ambulance.",
+            "Tu demandes ce que tu peux faire en attendant.",
+            "Tu suis les consignes et tu restes en ligne.",
+        ],
+    },
+    "dehors": {
+        "contexte": (
+            "Le soir, sur un trottoir, devant un dépanneur. Une personne "
+            "inconnue est par terre et ne répond pas quand on lui parle. "
+            "L'appelant ne connaît ni son nom ni le numéro exact de la rue."
+        ),
+        "repartiteur": [
+            "Tu es le répartiteur du 9-1-1. Tu aides l'appelant à situer l'endroit sans adresse exacte : commerce, coin de rue, panneau, arrêt d'autobus.",
+            "Tu demandes si la personne respire, et tu fais décrire ce qu'on voit plutôt que ce qu'on croit.",
+            "Tu acceptes « je ne sais pas » et tu poses une autre question plus simple.",
+            "Tu dis de ne pas déplacer la personne et de dégager autour d'elle.",
+            "Tu demandes s'il y a quelqu'un d'autre pour faire signe à l'ambulance depuis la rue.",
+            "Tu restes en ligne et tu fais décrire tout changement.",
+        ],
+        "appelant": [
+            "Tu ne connais pas la personne et tu n'es pas certain du numéro de la rue.",
+            "Tu lis à voix haute ce qui est écrit autour de toi : l'enseigne du dépanneur, le nom des deux rues.",
+            "Tu dis ce que tu vois et ce que tu ne sais pas.",
+            "Tu demandes s'il faut faire quelque chose en attendant.",
+            "Tu restes sur place jusqu'à l'arrivée des secours.",
+        ],
+    },
+}
+
+
 JEU_DE_ROLE_SCENARIOS = {
+    "urgence911": {
+        "cadre": "un appel au 9-1-1 fait pour quelqu'un d'autre",
+        "contexte_label": "La situation que vous avez tous les deux sous les yeux",
+        "cas": JEU_DE_ROLE_URGENCE911,
+        "adresse": "Vouvoie l'élève : au 9-1-1, les deux personnes se vouvoient, même en pleine urgence.",
+        "sujets": [
+            "l'endroit exact, donné avant tout le reste",
+            "le numéro de téléphone d'où l'on appelle",
+            "ce qui se passe, dit en une seule phrase",
+            "« consciente ? » et « respire-t-elle ? », répondues par oui ou par non",
+            "l'âge, les médicaments, les allergies — ou « je ne sais pas »",
+            "les consignes à l'impératif, exécutées et dites à voix haute",
+            "l'accès : porte barrée, lumière, étage, ascenseur",
+        ],
+        "cloture": ("Quand l'endroit est confirmé, l'état décrit et les consignes "
+                    "exécutées, dis que les ambulanciers arrivent dans quelques minutes "
+                    "et demande de rester en ligne. Ne termine jamais l'échange sur "
+                    "« au revoir » : c'est toi qui autorises à raccrocher."),
+        "ouverture": {
+            "appelant": "Neuf un un, quel est l'endroit de votre urgence ?",
+            "repartiteur": "Venez vite, ma mère est tombée !",
+        },
+        "roles": {
+            "repartiteur": {
+                "qui": ("Tu es le répartiteur du 9-1-1. L'élève est la personne qui "
+                        "appelle."),
+                "conduite": ("Niveau 5 : l'élève doit tenir un échange suivi et organisé, "
+                             "sous pression. Tu mènes l'appel, toujours dans le même ordre : "
+                             "l'endroit, le numéro de téléphone, ce qui se passe, la "
+                             "conscience, la respiration, puis les consignes. Tu poses une "
+                             "seule question à la fois et tu répètes l'adresse pour la faire "
+                             "confirmer. Tu es calme, direct et bref ; tu ne consoles pas et "
+                             "tu ne fais pas de diagnostic. Si l'élève commence par raconter "
+                             "toute l'histoire, tu l'interromps poliment et tu redemandes "
+                             "l'endroit — c'est le cœur de l'exercice. Si l'élève répond "
+                             "longuement à une question fermée, tu lui redemandes « oui ou "
+                             "non ». Tu acceptes « je ne sais pas » sans insister. Tes "
+                             "consignes sont à l'impératif, deux ou trois à la fois. Tu ne "
+                             "laisses jamais l'élève raccrocher de lui-même : tu dis de "
+                             "rester en ligne."),
+            },
+            "appelant": {
+                "qui": ("Tu es la personne qui appelle le 9-1-1. L'élève joue le "
+                        "répartiteur et doit te faire parler."),
+                "conduite": ("Tu es inquiet et tu parles trop au début : ta première phrase "
+                             "est une phrase de panique, sans adresse. Si l'élève ne te "
+                             "demande pas où tu es, ne le dis pas — laisse-le découvrir que "
+                             "personne ne peut partir. Tu réponds ensuite à ce qu'on te "
+                             "demande, sans devancer les questions. Si l'élève te donne une "
+                             "consigne à l'impératif, tu l'exécutes et tu le dis. Si l'élève "
+                             "oublie de te faire décrire la respiration ou la conscience, ne "
+                             "les mentionne pas. Reste dans la situation choisie et ne "
+                             "raccroche pas de toi-même."),
+            },
+        },
+    },
+
     "classe": {
         "cadre": "un court échange en classe, entre un élève et son enseignante",
         "contexte_label": "Le moment du cours où vous vous parlez",
