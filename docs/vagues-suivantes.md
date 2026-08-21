@@ -1258,3 +1258,155 @@ première fois parce que l'autre session écrivait pendant la génération :
 relancer avant de conclure à un écart.
 
 **La file reprend** à l'activité 71 (niveau 5).
+
+---
+
+**21 août 2026 — activité 81, `module-n3-loyer` « Trois questions avant de
+louer ».** Niveau 3, situation « Location d'un logement », numéro 8 du niveau,
+seize séances. Livré, vérifié, poussé — **sans ses médias, et sans qu'aucun
+appel n'ait été tenté** : cette session tournait dans un environnement distant
+qui ne porte ni la clé d'ElevenLabs ni celle de fal.ai. Voir « Ce qui manque »
+plus bas. 204 diapositives, 16 fiches, 23 exercices, 11 mini-leçons, 16 mots,
+0 image sur 26, 0 extrait audio sur 301.
+
+Dilnoza Karimova, arrivée d'Ouzbékistan il y a quatorze mois, qui vit à trois
+dans un deux et demie de Villeray où son garçon de six ans dort dans le salon ;
+Rachid, le camarade de classe qui a déjà déménagé deux fois et qui lit
+l'annonce avec elle ; Claudine, la propriétaire du quatre et demie de la rue
+Chabot, au téléphone puis pendant la visite ; Théo, le concierge, qui montre la
+buanderie du sous-sol.
+
+**C'est `build/cadre.py 3 "Location d'un logement"` qui a décidé de la forme, et
+il a été étroit** : la situation ne porte au niveau 3 que **deux intentions de
+communication** — *demander et comprendre des renseignements sur le logement
+pendant une visite*, inscrite en compréhension et en production orales, et
+*lire des petites annonces simples* en compréhension écrite. Aucune production
+écrite rattachée à la situation ; celle du module s'appuie donc sur les attentes
+de fin de cours du niveau, qui demandent « un message compréhensible d'une ou de
+quelques phrases simples ». Les trois défis sont ces deux intentions mises en
+gestes : on lit une annonce, on téléphone, on pose trois questions sur place.
+Le lexique que le programme rattache à la situation — les pièces, 3 ½ et 4 ½,
+meublé, chauffé, éclairé, électricité comprise, le bail, louer, se renseigner,
+chauffer, éclairer — a servi tel quel, comme la consigne le demandait.
+
+**Ce qui distingue ce module de ses deux voisins**, puisque la consigne le
+demandait en une phrase. De `module-logement` (niveau 4, module 9), qui porte la
+même situation : là-bas on visite **deux** logements et on les compare pour
+choisir, on argumente, on pèse ce qui compte pour soi — ici il n'y a qu'un seul
+logement et aucune comparaison, tout le travail consiste à aller chercher six
+renseignements qu'on ne vous donnera pas spontanément. De `module-n5-logement` :
+lui fait la démarche entière, l'appel avec prise de notes, la visite, puis le
+bail, l'annexe et l'avis de renouvellement — ici aucun papier ne se lit sauf six
+lignes d'annonce, et personne ne signe.
+
+**Le scénario de jeu de rôle `louer` ne convenait pas**, et la consigne
+demandait justement de le vérifier. Il existe et il sert aux niveaux 4 et 5,
+mais ses trois cas font comparer un budget, soupeser le bruit et les animaux et
+discuter la durée du bail — sept sujets pour un débutant qui a trois questions à
+poser. D'où `visite`, ajouté à `server.py` : trois cas tenus en six lignes
+d'annonce chacun (le 4 ½ chauffé et éclairé de la rue Chabot, le 3 ½ non chauffé
+du sous-sol, le 2 ½ meublé), deux rôles, six sujets au lieu de sept, et une
+conduite qui impose au niveau 3 des phrases courtes, un renseignement à la fois
+et jamais deux questions dans la même réplique.
+
+**Les faits québécois ont été vérifiés, pas devinés.** Le bail est le formulaire
+obligatoire du Tribunal administratif du logement — la Régie du logement jusqu'en
+2020 — il dure habituellement douze mois et se reconduit tout seul si personne
+n'envoie d'avis ; le 1er juillet est la date de déménagement usuelle et la
+plupart des baux courent du 1er juillet au 30 juin ; un propriétaire ne peut
+exiger ni dépôt de garantie, ni dernier mois d'avance, ni plus d'un mois de
+loyer — seulement le premier ; il ne peut pas refuser un logement à une famille
+avec des enfants, la Charte des droits l'interdit ; un 3 ½ a une chambre fermée,
+un 4 ½ en a deux, et le demi est la salle de bain. Les personnes, l'immeuble,
+l'annonce, l'adresse et le numéro de téléphone sont inventés — le numéro est
+dans la plage 555-01xx, réservée à la fiction.
+
+Ce que cette production ajoute ou confirme :
+
+- **Les pièges de `CLAUDE.md` ont tous tenu.** `build/collecte_sons.py` n'a
+  jamais été lancé — `node build/releve_sons.js module-n3-loyer` a rendu ses
+  224 clés sans ouvrir de port ; les quinze bandeaux `savoir` portaient
+  `speak:true` dès l'écriture ; les 57 clés de `CARRIER_PHRASES` sont les mots
+  accentués, dont neuf à apostrophe, écrites entre guillemets doubles ; le champ
+  `theme` du manifeste échappe son apostrophe (« Location d\\'un logement ») ;
+  `render()` a été appelé sans argument, `curSec` posé avant ; `sommaire.py
+  <slug>` a eu son étape d'écriture avant `--verifier`.
+- **Le contrôle de cohérence en une commande `node`, réclamé par la nuit du
+  20 août, a de nouveau tout attrapé du premier coup** : chaque `sec` existe
+  dans `SECTIONS`, chaque clé de `PLUS` correspond à un exercice réel, aucun
+  `id` d'énoncé n'est dupliqué, chaque `ok` d'`imgmatch` a son image, chaque
+  `ok` de `vf` est dans ses `tiles`, chaque `write` a des `items`, chaque
+  pastille `savoir` a sa phrase porteuse et chaque bloc `ana` son `say:`. Il a
+  rendu **57 mots à pastille pour 57 phrases porteuses, aucune clé inutile**.
+  Il mérite toujours de devenir un septième contrôle.
+- **La vérification navigateur a pu se faire, cette fois**, sur le serveur de
+  prévisualisation : zéro erreur console, les six sections se rendent, les onze
+  mini-leçons s'ouvrent et leurs laboratoires couvrent toutes leurs
+  combinaisons, les trois productions de « Je me lance » sont là avec leurs huit
+  sujets et leurs six exigences, et **les quatre-vingt-dix zones de dépôt ont
+  toutes une bonne réponse enregistrée** — le contrôle qui manquait le
+  21 août, quand `imgmatch` lisait `aid` au lieu de `ok`. Les seuls 404 sont les
+  vingt-six images absentes.
+- **L'originalité : 6 identiques sur 212, soit 2,8 %**, ramenés à **0,9 %** en
+  reformulant quatre chaînes. Les deux qui restent sont des entrées du lexique
+  du programme. Le manifeste des sons est identique avant et après, vérifié par
+  `diff` — détail dans `docs/verification-originalite.md`.
+- **Un seul tableau refusé par `theme.py`** sur trente-deux, en C3, et
+  raccourci sur place. La consigne « deux colonnes, quatre à six lignes,
+  cellules brèves » fonctionne.
+- **Les fichiers partagés n'ont voyagé nulle part.** `git status` juste avant
+  chaque `commit`, chemins explicites après `--`, `git show --name-only` juste
+  après : les lignes de `modules.py`, d'`activities.json` et de `server.py` sont
+  parties dans le commit prévu, et y sont restées après les commits des trois
+  sessions voisines. `--pathspec-from-file` pour les soixante-six fichiers des
+  séances, comme la règle 1 le conseille.
+
+### Ce qui manque à ce module, et comment le finir
+
+**Rien n'a été tenté, et c'est voulu.** Cette session tournait dans un
+environnement distant sans `~/Claude/.env` : les deux clés sont absentes, tout
+appel aurait échoué. Le contenu n'a donc **pas** été ajusté au manque — les
+treize cartes à photo gardent leur champ `img`, les deux `imgmatch` gardent
+leurs treize illustrations, les bandeaux gardent leurs pastilles. Deux commandes
+à lancer sur la machine locale, dans n'importe quel ordre.
+
+**fal.ai · 26 images.** Treize dans `images/` et treize dans `vocab/`. Le
+générateur est écrit, commenté et relançable tel quel ; il saute ce qui existe
+déjà :
+
+    python3 build/contenu/module-n3-loyer/gen_images.py
+
+Les sept de `prPieces` : `images/cuisine.jpg`, `salon`, `chambre`,
+`salle-de-bain`, `balcon-arriere`, `couloir`, `escalier-exterieur`. Les six de
+`t3img` : `images/buanderie`, `fenetres-neuves`, `cour-arriere`,
+`rue-stationnement`, `sous-sol-escalier`, `immeuble-facade`. Les treize du banc :
+`vocab/logement`, `quatre-et-demie`, `chambre-a-coucher`, `balcon`,
+`petite-annonce`, `meuble`, `chauffe`, `electricite-comprise`, `proprietaire`,
+`bail`, `sous-sol`, `chauffage`, `stationnement`. Environ **0,88 $** au total.
+Deux contraintes propres à ce module sont écrites dans les prompts : les
+logements sont **vides** — un générateur produit spontanément des intérieurs
+meublés, ce qui contredirait l'annonce « non meublé » et fausserait l'exercice —
+et les papiers (l'annonce, le bail) montrent leur forme sans qu'un mot ne se
+lise.
+
+**ElevenLabs · 301 extraits.** 77 répliques sur cinq dialogues, plus les 224
+clés de `sons_module_n3_loyer.json`, déjà relevé et commité. Une seule commande,
+en avant-plan dans une tâche de fond de l'outil — **jamais `nohup … &`**, qui
+meurt avec la commande qui l'a lancé :
+
+    python3 generer_audio_module_n3_loyer.py
+
+Quatre personnages, quatre voix : Dilnoza sur `feminin_2`, Claudine sur
+`enseignante` — ralentie à 0,85 par `voix_lente.py`, ce qui tombe juste
+puisqu'elle donne tous les loyers, les dates et les heures —, Rachid sur
+`masculin_1`, Théo sur `narrateur`. Le décompte a été vérifié à vide, sans clé :
+14 + 17 + 18 + 18 + 10 répliques et 224 sons. Aucune valeur du manifeste ne
+contient de balise HTML, et les cinq seuls extraits d'un mot nu sont les cartes
+de `prPhon`, où le mot doit précisément être dit seul.
+
+**Et après les médias** : `python3 build/module.py module-n3-loyer` pour que le
+HTML reprenne les images, puis `python3 build/materiel.py` et
+`python3 maj-mur.py`. Ce dernier n'existe pas dans l'environnement distant : il
+n'a pas été lancé.
+
+**La file reprend** à l'activité 82 (niveau 3).
