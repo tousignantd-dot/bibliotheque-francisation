@@ -201,6 +201,87 @@ Ce que cette nuit a appris, et qui est déjà écrit là où il faut :
 **La file reprend à l'activité 65** (niveau 5 · Consultation d'un professionnel
 de la santé), consigne prête dans `docs/consignes-a-coller.md`.
 
+**21 août 2026 — activité 67, `module-n5-travail`.** « Le travail par écrit »,
+niveau 5, `numero` 7. Scénario inventé : Dorine Kabeya, 41 ans, arrivée de
+Kinshasa il y a deux ans, passe de l'entretien à l'accueil de la Coopérative
+d'aide à domicile de Rosemont — un bureau, un poste de téléphone, et presque
+tout ce qui change s'écrit. Ghislain Marcoux est son chef d'équipe, Kevin
+Dorais le collègue du corridor, Sylvie Painchaud tient la paie, et madame
+Thériault est la cliente dont on entend le message dans la boîte vocale.
+20 exercices, 14 mini-leçons, 4 dialogues, 16 mots, 20 images, **309 extraits
+audio** (76 répliques et 233 sons), 16 séances (195 diapositives, 140 blocs de
+fiches). Originalité : 203 énoncés visibles, **0 identique** dans les 4 687 des
+vingt-six autres modules de `build/contenu/`.
+
+*Ce qui le distingue de ses trois voisins* : `module-travail` (39), au niveau 4,
+fait **annoncer une absence ou un retard** par téléphone, dans l'urgence du
+matin ; ici l'absence se prépare trois semaines d'avance, par écrit, en six
+étapes, et le téléphone ne sert qu'à laisser un message que personne n'écoute
+en direct. `module-n8-emploi` (61) fait **tenir son bout** et défendre un point
+de vue devant un supérieur ; ici on ne négocie rien, on suit une procédure et
+on réclame une trace écrite. `module-n6-recherche` (59) **cherche** un emploi —
+offre, demande, entrevue ; ici l'emploi est déjà obtenu, et c'est la paperasse
+du poste qu'il faut apprendre.
+
+*C'est le cadre qui a décidé de la forme du module, et il surprend.* La
+situation « Emploi » du niveau 5 ne parle pas de relations d'équipe : ses sept
+intentions sont des **écrits et des procédures** — comprendre puis nommer les
+étapes d'une démarche administrative simple, enregistrer un message
+téléphonique, lire un mode d'emploi, rédiger des notes pratiques sur
+l'utilisation du matériel courant, rédiger un court message à partir de notes
+détaillées, et rédiger un courriel de réponse automatique en cas d'absence. Les
+savoirs lexicaux du niveau les répètent mot pour mot : « photocopieur,
+imprimante, boîte vocale », « appuyer, insérer, verrouiller, confirmer »,
+« autorisation d'absence, registre des heures », « abréviations ». Aucun
+lexique n'est fourni : les seize mots s'inventent à partir des savoirs. La
+progression grammaticale vient du même endroit : la liaison obligatoire et le
+registre en « Je découvre », impératif et place du pronom puis discours
+rapporté au présent au défi 1, marqueurs de temps et impératif contre infinitif
+de consigne au défi 2, futur simple et interrogation indirecte au défi 3. Un
+scénario `conge` a été ajouté à `server.py` : `entrevue` porte l'embauche et non
+la vie du poste, et tous les autres mettent en scène un service qui répond à la
+demande d'un client — alors qu'ici l'interlocuteur est un supérieur qui
+n'accorde rien de vive voix et renvoie au formulaire.
+
+*Les faits québécois ont été vérifiés, pas inventés*, le 21 août 2026 auprès de
+la CNESST et de Légis Québec : deux journées d'absence payées par année pour
+maladie ou obligations familiales après trois mois de service continu, jusqu'à
+dix journées d'absence par année à ce titre ; deux semaines de vacances après
+un an de service continu et trois semaines après trois ans ; l'employeur doit
+faire connaître les dates de vacances au moins quatre semaines à l'avance ;
+le bulletin de paie doit permettre de vérifier le calcul du salaire (art. 46 de
+la Loi sur les normes du travail). Le délai de trois semaines de la coopérative,
+lui, est une **politique interne inventée**, et le module le dit explicitement —
+savoir d'où vient une règle permet de savoir si elle se discute.
+
+Trois choses apprises, qui valent pour les modules restants :
+
+- **Le gabarit ne rend les pastilles d'un bloc `savoir` que si celui-ci porte
+  `speak:true`.** Écrire des listes `savoir[…][2]` sans ce champ produit des
+  pastilles qui n'existent pas : rien ne s'affiche, rien ne s'entend, et rien
+  ne le signale. Les quinze bandeaux du module ont été passés à `speak:true`
+  d'un coup, ce qui a fait passer le relevé de 206 à 233 sons — vingt-sept
+  pastilles, une par mot du banc, chacune lisant sa phrase porteuse.
+- **Le relevé des sons hors navigateur se fait en trente lignes de node, et il
+  faut charger `fccards.js` en premier.** `exos.js` appelle `FC_CARDS.map()` au
+  moment de l'évaluation : dans l'autre ordre, node s'arrête sur « Cannot access
+  FC_CARDS before initialization ». Et `eval(src)` ne fait pas fuir les `const`
+  hors de sa portée en CommonJS : il faut terminer par
+  `; ({EXOS, PLUS, CARRIER_PHRASES})` et déstructurer le résultat.
+  `build/collecte_sons.py` n'a pas été lancé une seule fois, et le point noir
+  des deux nuits précédentes ne s'est donc pas représenté.
+- **Un `git commit` avec des chemins de dossier emporte tout ce que le dossier
+  contient, y compris ce qui vient d'y arriver.** Le commit des pastilles,
+  fait avec `-- build/contenu/<slug> assets/interactive/<slug>`, a emporté les
+  309 MP3 et les 20 images produits pendant l'écriture des séances : rien de
+  perdu, rien à réparer, mais le message ne parlait que des pastilles. Nommer
+  les fichiers plutôt que les dossiers quand des médias sont en train de
+  tomber dedans, ou dire dans le message qu'ils suivent.
+
+*Sur les contrôles* : les six passent, plus le `node --check` du script produit
+et la vérification que les 233 clés du manifeste ont chacune leur MP3.
+`sommaire.py --verifier` ne signale plus aucun lien cassé.
+
 **21 août 2026 — activité 66, `module-n5-urgence`.** « Une nuit à l'urgence »,
 niveau 5, `numero` 6. Scénario inventé : Marisol Quintero, 38 ans, arrivée de
 Colombie il y a trois ans, opératrice dans une buanderie industrielle de

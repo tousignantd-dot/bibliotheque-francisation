@@ -368,6 +368,27 @@ Deux pièges déjà payés :
   mètres carrés huit places quinze minutes le 1er novembre 2023 ». Ça ne se
   voit qu'au relevé des sons, une fois les MP3 payés.
 
+- **Un bloc `savoir` ne rend ses pastilles que s'il porte `speak:true`.** Le
+  gabarit teste `ex.savoir.speak && r[2]` : une troisième colonne de rangée
+  écrite sans ce champ produit des pastilles qui n'existent pas — rien ne
+  s'affiche, rien ne s'entend, aucune erreur. Découvert le 21 août 2026 en
+  produisant `module-n5-travail`, dont les quinze bandeaux ont été passés à
+  `speak:true` d'un coup : le relevé des sons est passé de 206 à 233 clés.
+- **Le relevé des sons hors navigateur charge `fccards.js` en premier.**
+  `exos.js` appelle `FC_CARDS.map()` à l'évaluation ; dans l'autre ordre, node
+  s'arrête sur « Cannot access FC_CARDS before initialization ». Et en
+  CommonJS, `eval(src)` ne fait pas fuir les `const` hors de sa portée : il
+  faut terminer la source évaluée par `; ({EXOS, PLUS, CARRIER_PHRASES})` et
+  déstructurer le résultat. Trente lignes de node, et `build/collecte_sons.py`
+  n'a plus à être lancé du tout.
+- **`git commit -- <dossier>` emporte tout ce que le dossier contient**, y
+  compris ce qui vient d'y tomber pendant que le message se rédigeait. Le
+  21 août 2026, un commit qui devait porter trois lignes de contenu a emporté
+  309 MP3 et 20 images arrivés entre-temps dans `assets/interactive/<slug>/` :
+  rien de perdu, mais un message qui ne dit pas ce qu'il contient. Quand des
+  médias sont en cours de génération, nommer les fichiers plutôt que leur
+  dossier — ou l'annoncer dans le message.
+
 ### Les contrôles avant de publier un module
 
 Ils existaient déjà, dispersés dans ce fichier ; les voici ensemble, parce que

@@ -128,3 +128,20 @@ les mots du module est sans risque, puisque ni les `sub` ni les `tit` n'entrent
 dans le relevé des sons. Ici, elle n'a pas été appliquée aux quatre mots de
 lexique — les renommer aurait éloigné le module du programme, qui est la seule
 source.
+
+`module-n5-travail` (activité 67), mesuré le 21 août 2026 : ses **203** énoncés
+visibles de plus de douze caractères — `txt`, `q`, `a`, `sub` et `tit`, donc le
+relevé large — ont été comparés aux 4 687 des vingt-six autres modules de
+`build/contenu/`. Première mesure : **3 identiques, soit 1,5 %**, toutes des
+consignes que le moteur impose à ses types d'exercice (« Chaque mot, sa
+définition », « Prenez un mot, puis glissez dessus la définition qui lui va »,
+« Faites glisser chaque photo vers la phrase qui lui correspond »). Elles ont
+été reformulées avec les mots du module — « Les seize mots du poste »,
+« Prenez un mot du bureau… », « Faites glisser chaque photo du bureau vers la
+phrase qui la décrit » — ce qui ramène la mesure à **0 identique**.
+
+La leçon de `module-n5-urgence` a été appliquée dans l'ordre qu'elle recommande :
+**le contrôle d'originalité passe avant la génération des MP3, pas après.** Les
+trois reformulations ne touchent que des `sub` et des `tit`, qui n'entrent pas
+dans le relevé des sons ; aucun extrait n'a été payé puis jeté.
+
