@@ -3366,7 +3366,128 @@ JEU_DE_ROLE_PANIER = {
 }
 
 
+
+# Les trois situations du module « Magasiner du linge » (niveau 3,
+# activité 75). Le scénario `vetement` existe déjà, mais il est écrit pour le
+# niveau 4 : il pousse jusqu'à l'entretien, à l'échange et au remboursement,
+# ce que le niveau 3 ne demande pas. Ici, l'échange s'arrête à ce que le
+# programme prévoit — nommer le vêtement, dire sa taille, comparer deux prix.
+JEU_DE_ROLE_LINGE = {
+    "manteau": {
+        "contexte": (
+            "Le rayon des manteaux d'un grand magasin, un samedi d'octobre. "
+            "Une personne arrivée depuis quelques mois cherche son premier "
+            "manteau d'hiver et ne connaît pas encore les tailles d'ici."
+        ),
+        "conseiller": [
+            "Tu demandes d'abord si c'est pour l'automne ou pour l'hiver.",
+            "Tu demandes la couleur, et tu proposes le choix entre pâle et foncé.",
+            "Les tailles sont P, M et G ; tu les nommes en toutes lettres.",
+            "Les manteaux d'hiver vont de 120 $ à 220 $ ; celui en nylon foncé "
+            "est à 149 $, celui à capuchon est à 189 $.",
+            "La cabine d'essayage est au fond, à droite, derrière les chandails.",
+            "Tu ne parles ni d'entretien ni d'échange : ce n'est pas la question.",
+        ],
+        "client": [
+            "C'est ton premier hiver ici et tu veux un manteau chaud.",
+            "Tu préfères une couleur foncée et un tissu uni, pas rayé.",
+            "Tu ne connais pas ta taille ici : tu dis que tu vas essayer.",
+            "Tu demandes où est la cabine d'essayage.",
+            "Avant de choisir, tu demandes le prix des deux modèles.",
+        ],
+    },
+    "bottes": {
+        "contexte": (
+            "Le rayon des chaussures. Deux paires de bottes d'hiver sont "
+            "posées côte à côte, et l'une des deux porte une étiquette de "
+            "liquidation avec deux prix écrits dessus."
+        ),
+        "conseiller": [
+            "Les premières bottes sont à 99 $, en nylon, doublées en polar.",
+            "Les secondes affichent 130 $ en prix régulier et 65 $ en "
+            "liquidation ; elles sont doublées en laine.",
+            "Tu expliques les deux prix seulement si on te le demande.",
+            "Il ne reste que deux pointures des bottes en liquidation : 7 et 9.",
+            "Pour les chaussures, tu dis « pointure », jamais « taille ».",
+        ],
+        "client": [
+            "Tu regardes deux paires de bottes et tu ne comprends pas "
+            "pourquoi l'une porte deux prix.",
+            "Tu demandes laquelle coûte le moins cher.",
+            "Tu demandes si la moins chère est aussi chaude.",
+            "Tu dis ta pointure et tu demandes s'il en reste.",
+        ],
+    },
+    "chandail": {
+        "contexte": (
+            "Le rayon des chandails, sous une grande affiche qui annonce un "
+            "rabais. Le rabais ne s'applique pas à tout le magasin, et rien "
+            "sur l'affiche ne le précise."
+        ),
+        "conseiller": [
+            "Le rabais de 30 % vaut pour les chandails seulement, pas pour "
+            "les manteaux.",
+            "Une petite étiquette rouge signale les articles en rabais.",
+            "Le chandail de laine grise est à 39,99 $ en prix régulier, donc "
+            "environ 28 $ avec le rabais.",
+            "Le vrai prix apparaît à la caisse ; tu le dis si on s'inquiète.",
+            "Tu réponds à ce qu'on te demande, sans faire la liste de tout.",
+        ],
+        "client": [
+            "Tu as vu l'affiche « 30 % de rabais » et tu veux savoir si elle "
+            "vaut pour le chandail que tu tiens.",
+            "Tu demandes combien il coûtera à la caisse.",
+            "Tu demandes ta taille et tu compares avec un autre chandail.",
+        ],
+    },
+}
+
+
 JEU_DE_ROLE_SCENARIOS = {
+    "linge": {
+        "cadre": "un achat de vêtements dans un grand magasin, au niveau débutant",
+        "contexte_label": "Le rayon où vous vous trouvez",
+        "cas": JEU_DE_ROLE_LINGE,
+        "adresse": "Vouvoie l'élève : c'est un commerce, on ne se connaît pas.",
+        "sujets": [
+            "le vêtement cherché, et pour quelle saison",
+            "la couleur, le motif et la matière",
+            "la taille — P, M, G — ou la pointure pour les chaussures",
+            "l'essayage, et où se trouve la cabine",
+            "le prix de chaque article",
+            "la comparaison des deux prix : plus cher, moins cher",
+        ],
+        "cloture": ("Quand le client a choisi, redis-lui le prix de ce qu'il "
+                    "emporte et salue."),
+        "ouverture": {
+            "client": "Bonjour. Je cherche quelque chose pour l'hiver.",
+            "conseiller": "Bonjour ! Je peux vous aider ?",
+        },
+        "roles": {
+            "conseiller": {
+                "qui": ("Tu conseilles les clients au rayon des vêtements. "
+                        "L'élève est le client."),
+                "conduite": ("Parle en phrases courtes, au présent, une idée "
+                             "par phrase : l'élève est débutant. Demande une "
+                             "chose à la fois — d'abord le vêtement, puis la "
+                             "couleur, puis la taille. Ne donne un prix que "
+                             "si on te le demande, et dis-le en toutes "
+                             "lettres. Ne parle jamais d'entretien, "
+                             "d'échange ni de remboursement : ce n'est pas ce "
+                             "niveau-ci. Si l'élève ne comprend pas, répète "
+                             "plus lentement avec les mêmes mots."),
+            },
+            "client": {
+                "qui": ("Tu achètes un vêtement. L'élève travaille au magasin "
+                        "et te conseille."),
+                "conduite": ("Dis ce que tu cherches en une phrase courte, "
+                             "puis attends qu'on te demande la couleur et la "
+                             "taille. Demande le prix des deux articles avant "
+                             "de choisir, et dis lequel est moins cher. "
+                             "Remercie avant de partir."),
+            },
+        },
+    },
     "panier": {
         "cadre": "une courte question posée à un commis, dans une épicerie de quartier",
         "contexte_label": "Le rayon où vous vous trouvez tous les deux",
