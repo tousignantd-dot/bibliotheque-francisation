@@ -199,3 +199,30 @@ Mesure faite **avant** la génération des MP3, comme la leçon de
 `module-n5-urgence` le demande. Les deux reformulations ne touchent que des
 `sub`, qui n'entrent pas dans le relevé des sons : le manifeste des 190 extraits
 est resté identique avant et après.
+
+`module-n3-poste` (activité 80), mesuré le 21 août 2026, **avant la génération
+du moindre MP3** : ses **307** énoncés visibles de plus de douze caractères —
+`txt`, `q`, `a`, `sub`, `tit`, les intitulés et les explications des bandeaux
+`savoir`, plus les mots et définitions du banc, donc le relevé large — ont été
+comparés aux 10 650 des trente autres modules de `build/contenu/`. Première
+mesure : **9 identiques, soit 2,9 %**, déjà sous le seuil. Toutes des
+**intitulés de bandeau** : les cinq lignes de la leçon sur « ce, cet, cette,
+ces », que `module-n3-restaurant` porte mot pour mot parce que la grammaire est
+la même, plus « Demander le prix », « Demander la permission », « La place du
+petit mot » et la formule « Merci beaucoup. Bonne journée. ».
+
+Huit reformulations avec les mots du module — « Le carton, le colis, le reçu :
+ce », « La boîte, l'enveloppe, la lettre : cette », « Demander le prix de
+l'envoi » — ramènent la mesure à **1 identique sur 307, soit 0,3 %**.
+
+Le dernier est « Merci beaucoup. Bonne journée. », et il reste **exprès** :
+c'est une formule de politesse figée, elle est la bonne réponse d'un exercice
+d'écoute (`t1qui`), et à ce titre elle porte un extrait audio. La reformuler
+changerait une clé du relevé des sons sans rien améliorer.
+
+Le point de méthode, une fois de plus vérifié : le relevé des **244** clés de
+`sons_module_n3_poste.json` est identique à l'octet avant et après les huit
+reformulations. Ni les `sub`, ni les `tit`, ni les intitulés de bandeau
+n'entrent dans le manifeste audio — seules les listes `savoir[…][2]` et les
+`txt` des exercices à cartes y entrent. Reformuler une consigne ou un intitulé
+est donc gratuit ; reformuler la réponse d'un exercice d'écoute ne l'est pas.

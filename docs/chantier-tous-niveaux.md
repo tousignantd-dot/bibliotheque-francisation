@@ -1322,3 +1322,121 @@ consignes du gabarit ou des mots du lexique du programme. Le détail est dans
 **Les six contrôles** passent pour ce module, plus le `node --check` du script
 produit. `sommaire.py --verifier` signale encore `module-n5-travail` : c'est le
 module de la session voisine, pas un écart de celui-ci.
+
+## Niveau 3 — `module-n3-poste` · Le colis de Yassine · **livré**
+
+Activité **80**, réservée d'avance par `docs/vagues-suivantes.md` (vague 3),
+`numero` 7 du niveau. Produit le 21 août 2026, en parallèle des activités 70
+et 91-92. Le module a survécu à **quatre interruptions** — arrêts commandés,
+mise en veille, coupure réseau — et c'est le commit après chaque morceau, pas
+après chaque étape, qui a permis de le reprendre quatre fois sans rien
+réécrire.
+
+**Ce qui le distingue de son voisin** — il n'en a pas au niveau 4. « Démarches
+à la poste » est une situation des niveaux 2 et 3 seulement : les dix-sept
+modules du 4 ne la traitent nulle part. Ses vrais voisins sont les six autres
+comptoirs du niveau 3 (épicerie, vêtements, électro, restaurant, pharmacie,
+métro), et ce qui l'en sépare tient en une phrase : **ici l'objet part sans
+vous**. Tout ce qui se demande porte sur un moment qu'on ne verra pas — un
+délai, une signature à l'autre bout du pays, un colis gardé quinze jours.
+Ailleurs, on emporte ce qu'on a acheté et la transaction se termine sur place.
+
+**Le cadre est étroit et il dicte presque tout.** `build/cadre.py 3 "Démarches
+à la poste"` rend **une seule** intention, pour deux compétences : « s'informer
+pour obtenir un produit ou un service » (CO et PO). Aucune intention de lecture
+ni d'écriture. En revanche le **lexique est généreux et très précis** — 26
+entrées, dont *préposé*, *colis*, *mandat-poste*, *courrier recommandé*,
+*timbrer*, *affranchir*, *contenir*, *il y a*, et trois énoncés-types donnés
+tels quels : **« Donnez-moi… »**, **« Je vais le prendre »**, **« Je vais en
+prendre trois »**. Ces trois-là sont devenus les exercices `t2donnez` et
+`t2pron` et la séance C3 : le programme n'a pas été interprété, il a été suivi.
+
+**Scénario.** Yassine Berrada, arrivé du Maroc il y a quatorze mois, habite un
+quatre et demie dans Limoilou. Sa voisine retraitée, Denise Pelletier, lui
+explique ce qu'on peut faire dans un bureau de poste. Au comptoir de la
+3e Avenue, Carole, la préposée, pèse sa boîte pour Calgary, lui demande ce
+qu'il y a dedans et lui nomme deux vitesses. Plus tard, un carton d'avis dans
+la boîte aux lettres le ramène au même comptoir, où il apprend qu'un colis
+n'attend que quinze jours.
+
+**Onze mini-leçons** : le « eu » de deux et celui de neuf · je voudrais,
+j'aimerais, est-ce que je pourrais · les cinq questions du comptoir · les prix
+et les délais, et comment les faire répéter · il y a, contient, c'est, ce sont
+· le, la, les, en · donnez-moi · l'adresse sur la boîte · le carton d'avis ·
+ce, cet, cette, ces · ce qui suit quand on déménage.
+
+**Le jeu de rôle a demandé un scénario neuf.** Aucun des treize scénarios de
+`server.py` ne convenait : `titre` est le plus proche par la forme — un
+comptoir, un prix, un débutant — mais il vend un objet qu'on emporte.
+`epicerie` et `allees` achètent, ils ne confient rien à personne. La clé
+`poste` a donc été ajoutée, avec trois cas : le colis pour Calgary, le carton
+dans la boîte aux lettres, le déménagement du premier juillet.
+
+**Les chiffres cités sont vérifiés, pas estimés** : timbre du régime intérieur
+1,24 $ en carnet et 1,44 $ à l'unité, Courrier recommandé 13,15 $ en sus de
+l'affranchissement, mandat-poste 8,50 $ jusqu'à 999,99 $, colis gardé quinze
+jours avec avis final au cinquième, réacheminement jusqu'à douze mois pour les
+lettres mais jamais pour les colis. Un module de démarches qui invente ses
+chiffres apprend à l'élève des choses fausses.
+
+**Médias — images faites, audio à faire.** 23 images fal.ai (7 illustrations
+d'exercice, 16 photos du banc), environ 0,75 $, aucun échec.
+
+**L'audio n'a pas pu être généré : ElevenLabs répond 401 `quota_exceeded`,
+zéro crédit.** Vérifié en engageant *un seul* extrait de deux mots avant tout
+gros travail, comme la consigne le demandait. Tout le reste a donc été fait, et
+le module est livré sans son : les pastilles resteront muettes jusqu'à ce que
+le compte soit rechargé. **Une seule commande le complètera**, sans autre
+préparation :
+
+    python3 generer_audio_module_n3_poste.py
+
+**316 extraits attendus** — 72 répliques sur 5 dialogues, plus les 244 clés de
+`sons_module_n3_poste.json`, relevé par `node build/releve_sons.js
+module-n3-poste`. Le script est relançable : un fichier déjà présent est sauté.
+Trois voix, aucune partagée : Yassine masculin 1, Denise la voix
+« enseignante » ralentie à 0,85 — c'est elle qui pose le vocabulaire —, Carole
+la féminine 2. Carole garde une vitesse normale **exprès** : le dialogue `prep`
+dit qu'elle « parle un peu vite », et la ralentir démentirait l'exercice
+d'écoute qui suit.
+
+**La difficulté propre à ce module est que tout son univers est couvert
+d'écriture** — un timbre, une adresse, un carton d'avis, un reçu, un
+mandat-poste —, alors que le générateur d'images a l'ordre de ne produire aucun
+texte lisible. Les prompts demandent donc des objets dont la **forme** est
+reconnaissable sans qu'un mot ne se lise : un carton rectangulaire qui dépasse
+d'une fente, une planchette de petits carrés dentelés, une boîte brune fermée
+au ruban. L'élève reconnaît l'objet ; c'est l'exercice qui en donne le contenu,
+et le tableau de C4 tient le texte exact de l'adresse.
+
+**Seize séances.** 190 diapositives, 139 blocs de fiches. A2 est la séance de
+phonétique et porte sur le **« eu » fermé de « deux » contre le « eu » ouvert
+de « neuf »** : « neuf heures » et « deux heures » ne sont pas la même heure,
+et c'est la seule erreur de prononciation du module qui coûte vraiment quelque
+chose. C4 réunit l'écriture de l'adresse et les six étapes de l'envoi ; D1 est
+une séance de compréhension écrite sur un formulaire — l'avis de livraison —,
+ce que le programme vise au niveau 3 sans en faire une intention séparée.
+
+**Originalité : 0,3 %**, mesurée **avant** le moindre MP3. Ses 307 énoncés
+visibles ont été comparés à ceux des trente autres modules de `build/contenu/` :
+9 identiques au départ (2,9 %), tous des intitulés de bandeau `savoir`
+(« Devant un mot masculin : ce », « Demander le prix »). Huit ont été
+reformulés avec les mots du module ; le neuvième est « Merci beaucoup. Bonne
+journée. », une formule de politesse figée qui porte un extrait audio et qu'on
+ne touche pas. Le relevé des 244 sons est **identique à l'octet** avant et
+après : ni les intitulés ni les `sub` n'y entrent, ce que la leçon de
+`module-n5-urgence` disait déjà.
+
+**Les six contrôles** passent pour ce module, plus le `node --check` du
+JavaScript assemblé. `sommaire.py --verifier` signale `module-n3-loyer`
+(activité 81) et `module-n5-quebec` (activité 70) : ce sont les modules des
+sessions voisines, en cours de production, pas des écarts de celui-ci.
+`build/materiel.py`, qui régénère son relevé à partir du disque, a inscrit ces
+deux-là du même coup — c'est son comportement voulu, et le message de commit
+le dit.
+
+**Un point de méthode confirmé.** `build/collecte_sons.py` n'a pas été lancé,
+et `build/releve_sons.js` a suffi. Le fichier `sons_module_n3_poste.json` a été
+commité **avant** que le premier MP3 n'existe : c'est ce qui permet de dire
+avec certitude combien d'extraits sont attendus, et de reprendre la génération
+des mois plus tard sans rien redécouvrir.
