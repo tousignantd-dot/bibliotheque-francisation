@@ -193,16 +193,19 @@ IMAGES = [
 ]
 
 
-def genere(prompt):
-    corps = json.dumps({"prompt": prompt, "num_images": 1, "aspect_ratio": RATIO,
-                        "resolution": "1K", "output_format": "jpeg"}).encode()
-    req = urllib.request.Request(
-        "https://fal.run/fal-ai/nano-banana-2", data=corps,
-        headers={"Authorization": "Key " + FAL, "Content-Type": "application/json"})
-    with urllib.request.urlopen(req, timeout=240) as r:
-        d = json.loads(r.read())
-    with urllib.request.urlopen(d["images"][0]["url"], timeout=240) as r:
-        return r.read()
+# Écrit dans le nuage avant la bascule du 21 août 2026, ce générateur appelait
+# fal.ai en dur — 0,08 $ l'image, contre 0,0336 $ chez Google en direct pour le
+# même modèle. Il passe maintenant par la route commune, qui essaie les
+# fournisseurs dans l'ordre du prix et annonce tout repli.
+import sys as _sys
+_sys.path.insert(0, str(pathlib.Path(__file__).resolve().parents[2]))
+from route_images import generer_image as _generer_image
+
+
+def genere(prompt, cible=""):
+    data, route = _generer_image(prompt, ratio=RATIO, resolution="1K",
+                                 module=MODULE, cible=cible)
+    return data
 
 
 def reduire(data, largeur=800, qualite=82):
@@ -231,7 +234,7 @@ for nom, dossier, page, prompt in IMAGES:
     if cible.exists() and cible.stat().st_size > 1000:
         sautes.append(etiquette); continue
     try:
-        data = genere(prompt)
+        data = genere(prompt, etiquette)
     except urllib.error.HTTPError as e:
         echecs.append('%s : HTTP %s %s' % (etiquette, e.code, e.read()[:180])); continue
     except Exception as e:

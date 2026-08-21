@@ -549,13 +549,32 @@ def load_activities():
     On met donc l'épave de côté — jamais supprimée, elle peut porter des
     activités déposées depuis l'interface — et on repart de la copie livrée
     avec le code."""
+    secours = BASE_DIR / "data" / "activities.json"
     if not DATA_FILE.exists():
-        return []
+        # Le fichier du volume peut manquer pour deux raisons : premier
+        # démarrage, ou — vu le 21 août 2026 — une épave mise de côté dont la
+        # réécriture a échoué parce que le disque était plein. Dans les deux
+        # cas, rendre une liste vide est le pire choix possible : le catalogue
+        # s'affiche parfaitement, sans une seule activité, et rien ne dit
+        # pourquoi. La copie livrée avec le code fait toujours mieux que rien.
+        if DATA_FILE == secours or not secours.exists():
+            return []
+        print("[WARN] %s absent — catalogue servi depuis le code" % DATA_FILE,
+              flush=True)
+        with open(secours, "r", encoding="utf-8") as f:
+            activities = json.load(f)
+        try:
+            save_activities(activities)
+        except OSError as err:
+            print("[WARN] non réécrit sur le volume (%s)" % err, flush=True)
+        for a in activities:
+            a["categorie"] = normalize_categorie(a.get("categorie"),
+                                                 a.get("interactive", ""))
+        return activities
     try:
         with open(DATA_FILE, "r", encoding="utf-8") as f:
             activities = json.load(f)
     except (json.JSONDecodeError, UnicodeDecodeError) as e:
-        secours = BASE_DIR / "data" / "activities.json"
         print("[ERREUR] %s illisible (%s)" % (DATA_FILE, e), flush=True)
         try:
             import shutil as _sh
