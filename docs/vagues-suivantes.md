@@ -1152,3 +1152,100 @@ l'exercice de discrimination `prPhon`, où le mot doit précisément être dit n
 c'est le seul endroit du projet où une phrase porteuse nuirait.
 
 **La file reprend** à l'activité 70 (niveau 5), 80 (niveau 3) et 92 (niveau 2).
+
+---
+
+**21 août 2026 — activité 70, `module-n5-quebec` « Une semaine au Bic ».**
+Niveau 5, situation « Déplacements dans tout le Québec », numéro 10 du niveau,
+seize séances. Module repris après **quatre interruptions** : les dix
+mini-leçons et les sept fichiers de contenu étaient déjà commités
+(`a44f9d6c`, `0f23ce5b`) et intacts — `node --check` vert sur les six vrais
+`.js`, `custom.js` étant un fragment qui n'a pas à passer seul. Rien n'a été
+réécrit ; tout ce qui manquait était en aval du contenu.
+
+**Ce qui le distingue de ses voisins**, en une phrase : `module-n5-transport`
+(69) est un module d'écoute où la route est bloquée et où tout se joue dans
+l'heure qui vient, tandis qu'ici la route n'est pas bloquée, elle est longue —
+un horaire interurbain à lire, un billet à acheter, une valise à mettre en
+soute et cinq cents kilomètres à faire ; `module-deplacement` (niveau 4)
+compose un trajet dans une ville et lit un plan de métro, alors qu'on quitte
+ici la ville pour une semaine.
+
+**Ce qui manquait, et qui a été fait** : l'inscription au registre
+`build/powerpoints/modules.py` et à `data/activities.json` (id 70, aucune des
+deux n'existait — vérifié, pas supposé), le scénario de jeu de rôle
+`regions` dans `server.py`, le module bâti, les 18 images, les 16 séances, les
+fiches, le sommaire et les deux relevés.
+
+**Le jeu de rôle : le rôle de l'élève était à l'envers.** Le manifeste portait
+`jr_role: 'prepose'`, ce qui aurait fait *renseigner* l'élève au lieu de le
+faire *demander* — `jeu_de_role_system()` donne à l'assistant le rôle que
+l'élève ne joue pas. Corrigé en `voyageur`, et la résolution a été rejouée
+hors serveur sur les trois cas et les deux rôles avant d'écrire quoi que ce
+soit : avec `jr_role: 'voyageur'`, l'assistant prend bien `prepose`. Le
+scénario `regions` a trois cas — `depart` (le comptoir de la rue Berri),
+`gite` (le salon du gîte), `sentier` (la conversation entre vacanciers) — et
+deux rôles.
+
+**ElevenLabs · toujours `401 · quota_exceeded`, 0 crédit.** Vérifié comme
+demandé par **un seul extrait court** (« un phare », 4 crédits) avant tout
+travail en gros : `"You have 0 credits remaining"`. Le compte n'a pas été
+rechargé depuis l'activité 69. Rien n'a été insisté. Le module est donc livré
+complet et **sans audio**, avec tout le nécessaire pour que ça ne soit qu'une
+commande à lancer :
+
+    python3 generer_audio_module_n5_quebec.py
+
+**281 extraits attendus** : 70 répliques sur quatre dialogues (`prep` 17,
+`t1` 17, `t2` 17, `t3` 19) et 211 sons de
+`sons_module_n5_quebec.json`. Le relevé a été fait par
+`node build/releve_sons.js module-n5-quebec` — **`build/collecte_sons.py` n'a
+jamais été lancé**. Le générateur est relançable sans risque (un extrait
+présent est sauté) et son en-tête porte l'état exact. Vérifier d'abord le
+rechargement avec `--only pr1_savoir_0_0` plutôt que de relire 281 échecs.
+Cinq personnages pour quatre voix : THUY traverse les quatre dialogues et
+garde la voix féminine #2 ; CAMILLE et ROSE-AIMÉE ne paraissent jamais dans
+le même dialogue et partagent la voix « enseignante », ralentie à 0,85 — ce
+sont les deux qui *expliquent* à Thuy, un débit lent y est voulu. Aucune
+collision de voix dans aucun dialogue, vérifié par script.
+
+**Les images, elles, fonctionnent** : 18 sur 18 par fal.ai (nano-banana-2, 3:2,
+0 échec), six illustrations de `prImg` et douze photos du banc réduites à
+800 px. Les 18 chemins référencés par le contenu ont été croisés avec ce que
+le générateur produit — correspondance exacte dans les deux sens — puis
+revérifiés par `fetch` dans le navigateur avec les quatre icônes : 22 sur 22.
+`maj-mur.py` lancé depuis `~/Claude/generations`.
+
+**L'originalité, mesurée puis corrigée.** Faute de source antérieure, la
+mesure est celle des voisins : 23 énoncés sur 417 communs à un autre module,
+soit **5,5 %** — au-dessus du seuil de 5 %. Aucun n'était narratif : c'était
+l'échafaudage des mini-leçons (« Qui — le sujet du verbe qui suit », « Le
+gérondif : dire par quel moyen… ») partagé mot pour mot avec
+`module-n5-transport`, écrit la même nuit par la même méthode. Les onze
+libellés en cause ont été réécrits — l'audio n'existant pas encore, ça ne
+coûtait rien — et la mesure est retombée à **3,1 %** (13 énoncés, tous des
+libellés du gabarit ou des fragments de deux mots). Refaire cette mesure sur
+un module neuf vaut la peine : elle attrape ce qu'aucun contrôle ne regarde.
+
+**Les six contrôles** sont verts pour ce module. Les deux seuls écarts du
+dépôt appartiennent à quelqu'un d'autre : `pieds_de_page.py` et
+`sommaire.py --verifier` signalent tous deux `module-n3-loyer` (activité 81),
+dont l'étape d'écriture du sommaire n'a pas encore été lancée par la session
+qui le produit. `module-n5-quebec` y sort
+`OK · niveau 5 · numéro 10 · 16 pptx`. Plus le `node --check` du script en
+ligne du module bâti, et la vérification au navigateur : les six sections
+rendues sans erreur, zéro message de console, les 88 blocs des dix
+mini-leçons rendus, le manifeste audio à 148 clés.
+
+**Les 16 séances** font 178 diapositives, et les fiches élèves 133 blocs en
+noir et blanc. Le bloc D compte deux séances pour six exercices : D1 prend le
+dialogue et le registre (tu/vous), D2 le gérondif et le couple passé composé /
+imparfait.
+
+**Un seul `git push`, à la fin**, sur consigne reçue en cours de route : trois
+agents qui poussent mettent le catalogue en 502 toutes les six minutes. Les
+fichiers partagés — `modules.py`, `activities.json`, `server.py`,
+`sections.json`, `materiel.json` — ont été pris avec `git pull --rebase` juste
+avant et commités aussitôt après, chemins explicites, jamais `-A`.
+
+**La file reprend** à l'activité 71 (niveau 5).
