@@ -265,20 +265,28 @@ Deux pièges déjà payés :
   remplacer et son `replace` était sans effet — code mort découvert en
   généralisant.
 
-### Les quatre contrôles avant de publier un module
+### Les contrôles avant de publier un module
 
 Ils existaient déjà, dispersés dans ce fichier ; les voici ensemble, parce que
 c'est ainsi qu'on s'en sert. Aucun n'écrit quoi que ce soit, et **chacun sort
 en code 1 quand il trouve un écart** — de quoi les enchaîner dans un `&&`.
+Quatre portent sur le module interactif :
 
     python3 build/sections.py --verifier           # data/sections.json ↔ les SECTIONS des modules
     python3 build/materiel.py --verifier           # data/materiel.json ↔ ce qui est sur le disque
     python3 build/couleurs_niveau.py --verifier    # l'en-tête porte la couleur de son niveau
     python3 build/couleurs_sections.py --verifier  # aucun vert dans les couleurs de section
 
+Deux autres portent sur les **séances** produites — les présentations et les
+fiches — plutôt que sur le module interactif. Un module n'est publié qu'avec
+elles, donc ils font partie du même passage :
+
+    python3 build/controles/pieds_de_page.py        # le numéro inscrit dans les .pptx livrés
+    python3 build/powerpoints/sommaire.py --verifier # le sommaire ↔ les séances existantes
+
 Les deux premiers sont des **relevés** : ils déduisent du disque ce que le
 portail affiche, et un écart veut dire qu'un module a été produit sans que le
-relevé soit refait. Les deux derniers tiennent la règle des couleurs — un
+relevé soit refait. Les deux suivants tiennent la règle des couleurs — un
 module qui sort de la forge ou d'un vieux gabarit réintroduit du vert sans le
 savoir, et c'est le seul endroit qui l'attrape.
 
