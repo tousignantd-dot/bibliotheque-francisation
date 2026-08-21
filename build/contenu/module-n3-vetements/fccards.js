@@ -1,0 +1,18 @@
+const FC_CARDS = [
+  {word:"un manteau", def:"Le grand vêtement qu'on met par-dessus les autres pour sortir dehors.", ex:"Pour janvier, il te faut un <strong>manteau</strong> chaud.", img:"/assets/interactive/module-n3-vetements/vocab/manteau.jpg", tache:"prep"},
+  {word:"une tuque", def:"Le chapeau de laine qui couvre les oreilles, ici, l'hiver.", ex:"Mets ta <strong>tuque</strong> : il fait moins quinze.", img:"/assets/interactive/module-n3-vetements/vocab/tuque.jpg", tache:"prep"},
+  {word:"un chandail", def:"Le vêtement du haut du corps, avec ou sans manches longues.", ex:"Ce <strong>chandail</strong> de laine est trop chaud pour l'automne.", img:"/assets/interactive/module-n3-vetements/vocab/chandail.jpg", tache:"prep"},
+  {word:"des bottes", def:"Les chaussures hautes qui protègent le pied et la jambe de la neige.", ex:"Ces <strong>bottes</strong> sont doublées en laine.", img:"/assets/interactive/module-n3-vetements/vocab/bottes.jpg", tache:"prep"},
+  {word:"rayé", def:"Se dit d'un tissu qui a des lignes de deux couleurs. Le contraire est « uni ».", ex:"Je préfère le chandail uni au chandail <strong>rayé</strong>.", img:"/assets/interactive/module-n3-vetements/vocab/raye.jpg", tache:"prep"},
+  {word:"foncé", def:"Se dit d'une couleur proche du noir. Le contraire est « pâle ».", ex:"Un bleu <strong>foncé</strong> salit moins vite qu'un bleu pâle.", tache:"prep"},
+  {word:"la taille", def:"La grandeur du vêtement : petit, moyen ou grand.", ex:"Vous portez quelle <strong>taille</strong> ?", img:"/assets/interactive/module-n3-vetements/vocab/taille.jpg", tache:"t1"},
+  {word:"une cabine d'essayage", def:"La petite pièce fermée où on met le vêtement pour voir s'il fait.", ex:"La <strong>cabine d'essayage</strong> est au fond, à droite.", img:"/assets/interactive/module-n3-vetements/vocab/cabine.jpg", tache:"t1"},
+  {word:"un cintre", def:"Le crochet de plastique ou de bois qui tient le vêtement suspendu.", ex:"Je décroche le manteau du <strong>cintre</strong>.", img:"/assets/interactive/module-n3-vetements/vocab/cintre.jpg", tache:"t1"},
+  {word:"serré", def:"Se dit d'un vêtement trop petit, qui presse le corps.", ex:"Le moyen est trop <strong>serré</strong> aux épaules.", tache:"t1"},
+  {word:"un rabais", def:"L'argent qu'on enlève du prix pendant quelques jours.", ex:"Trente pour cent de <strong>rabais</strong> sur les chandails.", img:"/assets/interactive/module-n3-vetements/vocab/rabais.jpg", tache:"t2"},
+  {word:"une étiquette de prix", def:"Le petit carton attaché au vêtement, qui dit combien il coûte.", ex:"L'<strong>étiquette de prix</strong> rouge veut dire que l'article est en rabais.", img:"/assets/interactive/module-n3-vetements/vocab/etiquette-prix.jpg", tache:"t2"},
+  {word:"la liquidation", def:"La vente des derniers articles, à très bas prix, avant qu'il n'y en ait plus.", ex:"Ces bottes sont en <strong>liquidation</strong> : il reste deux pointures.", img:"/assets/interactive/module-n3-vetements/vocab/liquidation.jpg", tache:"t2"},
+  {word:"une étiquette d'entretien", def:"La petite étiquette de tissu, dans le col, qui dit comment laver.", ex:"L'<strong>étiquette d'entretien</strong> montre cinq dessins.", img:"/assets/interactive/module-n3-vetements/vocab/etiquette-entretien.jpg", tache:"t3"},
+  {word:"la sécheuse", def:"La machine chaude qui sèche le linge après le lavage.", ex:"Ce chandail ne va pas à la <strong>sécheuse</strong> : il rapetisserait.", img:"/assets/interactive/module-n3-vetements/vocab/secheuse.jpg", tache:"t3"},
+  {word:"la facture", def:"Le papier qui prouve ce qu'on a acheté et le prix qu'on a payé.", ex:"Gardez la <strong>facture</strong> dans votre poche.", img:"/assets/interactive/module-n3-vetements/vocab/facture.jpg", tache:"t3"},
+];
