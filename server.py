@@ -4238,6 +4238,70 @@ JEU_DE_ROLE_PHARMACIE = {
 }
 
 
+JEU_DE_ROLE_INSCRIPTION = {
+    "annonce": {
+        "contexte": (
+            "Un appel de deux minutes au secrétariat d'un centre de formation "
+            "pour adultes. L'élève a vu une petite annonce : « Cours de "
+            "français, tous les matins ». L'annonce ne dit ni la date du "
+            "début, ni l'heure, ni le local."
+        ),
+        "secretaire": [
+            "Tu es madame Bourgeois, la secrétaire du Centre Delorme.",
+            "Le cours commence le 8 septembre et finit le 12 décembre.",
+            "C'est du lundi au vendredi, de 8 h 30 à 12 h 30.",
+            "L'inscription se fait au secrétariat, le local 005, au rez-de-chaussée.",
+            "Tu donnes un seul renseignement par phrase, et tu attends la question.",
+        ],
+        "moi": [
+            "Tu veux t'inscrire au cours de français.",
+            "Tu demandes la date, l'heure et le lieu, une question à la fois.",
+            "Tu écris les renseignements pendant que tu parles.",
+            "Tu redis la date et l'heure pour vérifier, puis tu remercies.",
+        ],
+    },
+    "formulaire": {
+        "contexte": (
+            "Le comptoir du secrétariat, un matin de septembre. L'élève est "
+            "devant la secrétaire, avec un formulaire d'inscription vide et "
+            "un stylo."
+        ),
+        "secretaire": [
+            "Tu es madame Bourgeois. Tu demandes les cases du formulaire dans l'ordre.",
+            "D'abord le nom de famille, ensuite le prénom, ensuite la date de naissance.",
+            "Après : l'adresse, le numéro de téléphone, le courriel.",
+            "Tu demandes aussi le nombre d'années d'école dans son pays.",
+            "À la fin, tu demandes une pièce d'identité et une signature au bas de la page.",
+        ],
+        "moi": [
+            "Tu remplis ton formulaire d'inscription avec la secrétaire.",
+            "Tu réponds une chose à la fois, en trois ou quatre mots.",
+            "Tu demandes « c'est quoi, cette case ? » quand tu ne comprends pas un mot.",
+            "Tu demandes de répéter quand ça va trop vite.",
+        ],
+    },
+    "epeler": {
+        "contexte": (
+            "Le même comptoir. La secrétaire écrit le nom de l'élève à "
+            "l'ordinateur et ne comprend pas comment il s'écrit."
+        ),
+        "secretaire": [
+            "Tu es madame Bourgeois. Tu écris le nom à l'ordinateur.",
+            "Tu demandes : « Comment ça s'écrit ? »",
+            "Tu redis chaque lettre après l'élève pour vérifier.",
+            "Tu confonds parfois B et V, M et N : tu redemandes alors la lettre.",
+            "Tu demandes aussi d'épeler le nom de la rue et le courriel.",
+        ],
+        "moi": [
+            "Tu épelles ton nom de famille, lettre par lettre, lentement.",
+            "Tu dis « B comme bonjour » quand la personne hésite entre deux lettres.",
+            "Tu épelles aussi le nom de ta rue et ton courriel.",
+            "Tu vérifies à la fin : « Est-ce que c'est bien écrit ? »",
+        ],
+    },
+}
+
+
 JEU_DE_ROLE_SCENARIOS = {
     "pharmacie": {
         "cadre": "une visite au comptoir des ordonnances d'une pharmacie de quartier, au niveau débutant",
@@ -4341,6 +4405,59 @@ JEU_DE_ROLE_SCENARIOS = {
                              "une fois. Si l'élève te félicite, remercie-le simplement et "
                              "raconte un détail, pas trois. Ne te fâche jamais et ne "
                              "corrige pas sa langue : tu réponds au sens."),
+            },
+        },
+    },
+    "inscription": {
+        "cadre": "une inscription au secrétariat d'un centre de formation pour adultes",
+        "contexte_label": "Ce qui vous amène au secrétariat",
+        "cas": JEU_DE_ROLE_INSCRIPTION,
+        "adresse": "Vouvoyez-vous : le secrétariat est un bureau, et vous ne vous connaissez pas.",
+        "sujets": [
+            "la date du début et de la fin du cours",
+            "l'heure du cours et les jours de la semaine",
+            "le lieu : le local et l'étage",
+            "le nom de famille et le prénom, épelés lettre par lettre",
+            "la date de naissance, l'adresse, le téléphone, le courriel",
+            "le nombre d'années d'école, pour la case « scolarité »",
+            "« pouvez-vous répéter ? » quand ça va trop vite",
+        ],
+        "cloture": ("Quand le formulaire est rempli et signé, dis en une phrase le "
+                    "jour et l'heure du premier cours, puis salue. N'allonge pas : "
+                    "il y a quelqu'un derrière dans la file."),
+        "ouverture": {
+            "moi": "Bonjour. Je voudrais m'inscrire au cours de français.",
+            "secretaire": "Bonjour ! Qu'est-ce que je peux faire pour vous ?",
+        },
+        "roles": {
+            "secretaire": {
+                "qui": ("Tu es madame Bourgeois, la secrétaire du Centre Delorme. "
+                        "Tu inscris les nouveaux élèves au cours de français, tous "
+                        "les matins, au comptoir du local 005."),
+                "conduite": ("Niveau 2 : deux ou trois répliques suffisent, une seule "
+                             "question à la fois. Phrases très courtes, au présent ou "
+                             "à l'impératif, sans subordonnée. Demande les cases du "
+                             "formulaire dans l'ordre et attends la réponse avant de "
+                             "passer à la suivante. Emploie les mots du module — une "
+                             "inscription, un formulaire, une case, le nom de famille, "
+                             "le prénom, la date de naissance, l'adresse, le "
+                             "téléphone, le courriel, la scolarité, une signature, "
+                             "une pièce d'identité — et rien de plus compliqué. Ne "
+                             "raconte jamais au passé. Si l'élève ne comprend pas, "
+                             "répète exactement la même phrase plus lentement, sans "
+                             "la reformuler. Quand tu demandes d'épeler, redis les "
+                             "lettres après lui."),
+            },
+            "moi": {
+                "qui": ("Tu es un adulte qui s'inscrit au cours de français. La "
+                        "personne à qui tu parles joue madame Bourgeois, la "
+                        "secrétaire du centre."),
+                "conduite": ("Dis une seule chose à la fois, en trois ou quatre mots. "
+                             "Pose tes questions avec « quel est », « c'est quand », "
+                             "« c'est où ». Épelle ton nom lentement, lettre par "
+                             "lettre. Redis la date et l'heure pour vérifier. Demande "
+                             "de répéter si c'est trop vite. Remercie avant de "
+                             "partir."),
             },
         },
     },

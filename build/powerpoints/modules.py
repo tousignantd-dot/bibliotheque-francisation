@@ -306,6 +306,21 @@ MODULES = {
                         'Demander son chemin'),
     },
 
+    # Septième module court du dépôt, sixième du niveau 2. La situation du
+    # programme est « Inscription ». Distinct de `module-n2-couloirs` (90),
+    # qui circule dans le même bâtiment : ici, l'élève ne cherche pas une
+    # porte, il remplit un papier — une annonce à lire, un formulaire à
+    # remplir, un nom à épeler case par case.
+    'module-n2-inscription': {
+        'numero': 6, 'activite': 91, 'niveau': 2,
+        'titre': "Je m'inscris au cours de français",
+        'chapeau': "Lire une petite annonce de cours, prendre en note la date, "
+                   "l'heure et le lieu, épeler son nom et remplir un "
+                   "formulaire d'inscription.",
+        'seances': GRILLE_COURTE,
+        'blocs': _blocs('La petite annonce', "Le formulaire d'inscription"),
+    },
+
     # ── Niveau 3 ────────────────────────────────────────────────────
     'module-n3-epicerie': {
         'numero': 1, 'activite': 55, 'niveau': 3,
