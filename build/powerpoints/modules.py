@@ -236,6 +236,22 @@ MODULES = {
         'blocs': _blocs('Demander son chemin', "L'autobus et l'horaire"),
     },
 
+    # Troisième module court du dépôt, deuxième du niveau 2. La situation du
+    # programme est « Achat d'aliments ou de produits d'entretien », dont
+    # l'unique intention est en compréhension écrite : lire une circulaire,
+    # une étiquette, une affichette pour y repérer un prix et une mesure.
+    # C'est ce qui le distingue de `module-n3-epicerie` (trouver, choisir,
+    # payer) et de `module-alimentation` (niveau 4) : ici on ne parle presque
+    # pas, on lit des chiffres et des formats avant de remplir son panier.
+    'module-n2-panier': {
+        'numero': 2, 'activite': 87, 'niveau': 2,
+        'titre': 'Remplir mon panier',
+        'chapeau': "Lire une circulaire, une étiquette et une affichette : "
+                   "repérer le prix, le format et la quantité.",
+        'seances': GRILLE_COURTE,
+        'blocs': _blocs('Lire la circulaire', "L'étiquette et l'affichette"),
+    },
+
     # ── Niveau 3 ────────────────────────────────────────────────────
     'module-n3-epicerie': {
         'numero': 1, 'activite': 55, 'niveau': 3,
