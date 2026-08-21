@@ -5116,7 +5116,121 @@ JEU_DE_ROLE_VOISINS = {
 }
 
 
+# Trois situations pour le module de niveau 2 « Je retire de l'argent ». Comme
+# celles de l'autobus, elles tiennent en une phrase à la fois : l'élève de
+# niveau 2 n'en soutient pas davantage, et l'employé du hall non plus. Ce que
+# l'employé sait — le montant des frais, l'endroit du bouton, la marche à
+# suivre quand une carte reste dans la machine — vit ici, côté serveur.
+JEU_DE_ROLE_GUICHET = {
+    "retrait": {
+        "contexte": (
+            "Le hall des guichets d'une caisse populaire, un matin de semaine. "
+            "Un employé range des dépliants près de la porte. Une personne "
+            "s'approche du guichet avec sa carte à la main."
+        ),
+        "employe": [
+            "Tu travailles dans le hall et tu aides les gens à se servir des guichets.",
+            "Tu ne demandes JAMAIS le NIP de personne, et tu rappelles de ne pas le dire à voix haute.",
+            "Les étapes sont toujours les mêmes : la carte, le NIP, l'opération, le montant, la carte, l'argent, le relevé.",
+            "Tu donnes UNE étape à la fois et tu attends que l'autre l'ait faite.",
+            "Les montants offerts par l'écran sont vingt, quarante, soixante et cent dollars.",
+            "Quarante dollars sortent en deux billets de vingt ; soixante, en trois billets de vingt.",
+            "Les boutons sont à côté de l'écran, à droite et à gauche, vis-à-vis de chaque ligne.",
+        ],
+        "moi": [
+            "C'est ta première fois au guichet et tu veux retirer quarante dollars.",
+            "Tu dis ce que tu veux faire, puis tu demandes sur quel bouton appuyer.",
+            "Tu répètes le montant à voix haute pour vérifier : « quarante dollars, c'est ça ? »",
+            "Tu ne dis jamais ton NIP.",
+            "Avant de partir, tu nommes ce que tu reprends : ta carte, ton argent, ton relevé.",
+        ],
+    },
+    "frais": {
+        "contexte": (
+            "Le guichet d'un dépanneur, en soirée. L'écran annonce des frais "
+            "avant de donner l'argent. Un employé du commerce passe à côté."
+        ),
+        "employe": [
+            "Ce guichet n'appartient pas à une caisse : il demande trois dollars de frais par retrait.",
+            "Tu expliques que la banque de la personne peut, elle aussi, compter des frais en plus.",
+            "Tu dis que l'écran écrit toujours le montant des frais AVANT de donner l'argent.",
+            "On peut refuser : il suffit d'appuyer sur « annuler » et de reprendre sa carte.",
+            "Le guichet d'une caisse, lui, ne compte pas de frais à ses membres.",
+            "Tu ne juges personne : beaucoup de gens acceptent les frais quand ils sont pressés.",
+        ],
+        "moi": [
+            "L'écran écrit « des frais de 3 $ » et tu ne comprends pas pourquoi.",
+            "Tu demandes si tu peux dire non, et comment faire.",
+            "Tu demandes où il n'y a pas de frais.",
+            "Si la réponse va vite, tu dis « plus lentement, s'il vous plaît ».",
+        ],
+    },
+    "carte": {
+        "contexte": (
+            "Le hall des guichets, en fin d'après-midi. Une personne a son "
+            "argent dans la main, mais sa carte est restée dans la machine."
+        ),
+        "employe": [
+            "Une carte oubliée est avalée par le guichet au bout d'une trentaine de secondes.",
+            "Tu rassures d'abord : l'argent du compte n'est pas perdu, la carte seule est retenue.",
+            "Tu dis d'aller au comptoir avec une pièce d'identité ; la carte est reprise là.",
+            "Si la caisse est fermée, la carte est remise le lendemain matin.",
+            "Tu conseilles de reprendre la carte AVANT l'argent, chaque fois : c'est l'ordre de l'écran.",
+            "Tu donnes une information à la fois, sans énumérer trois choses d'un coup.",
+        ],
+        "moi": [
+            "Tu as ton argent, mais ta carte est restée dans le guichet.",
+            "Tu demandes ce qu'il faut faire, et si ton argent est perdu.",
+            "Tu demandes quand tu peux reprendre ta carte.",
+            "Tu remercies avant de conclure.",
+        ],
+    },
+}
+
+
 JEU_DE_ROLE_SCENARIOS = {
+    "guichet": {
+        "cadre": "une demande d'aide devant un guichet automatique",
+        "contexte_label": "L'endroit où vous vous trouvez tous les deux",
+        "cas": JEU_DE_ROLE_GUICHET,
+        "adresse": "Vouvoie l'élève : on ne se connaît pas, on se croise dans un lieu public.",
+        "sujets": [
+            "ce qu'on veut faire au guichet",
+            "le montant, dit en dollars",
+            "le bouton sur lequel appuyer",
+            "la répétition du montant, pour vérifier",
+            "une demande de répéter plus lentement",
+            "ce qu'on reprend avant de partir : la carte, l'argent, le relevé",
+            "un merci pour finir",
+        ],
+        "cloture": ("Quand l'opération est comprise, demande à l'autre de redire les "
+                    "étapes dans ses mots, confirme d'un mot, et souhaite bonne journée."),
+        "ouverture": {
+            "moi": "Bonjour, monsieur. C'est ma première fois.",
+            "employe": "Bonjour. Vous avez besoin d'aide avec le guichet ?",
+        },
+        "roles": {
+            "employe": {
+                "qui": ("Tu travailles dans le hall des guichets et tu aides les gens à "
+                        "s'en servir. L'élève est la personne qui demande de l'aide."),
+                "conduite": ("Niveau 2 : phrases courtes, une information à la fois, "
+                             "jamais deux questions dans la même réplique. Ne demande "
+                             "jamais le NIP et rappelle de ne pas le dire à voix haute. "
+                             "Attends que l'élève ait fait l'étape avant de donner la "
+                             "suivante, et reprends plus lentement s'il te le demande, "
+                             "sans jamais t'impatienter."),
+            },
+            "moi": {
+                "qui": ("Tu es devant le guichet et tu ne sais pas quoi faire. L'élève "
+                        "est l'employé qui te renseigne."),
+                "conduite": ("Pose une seule question à la fois. Répète le montant qu'on "
+                             "te dit pour vérifier. Si l'explication va trop vite ou "
+                             "donne trois choses d'un coup, demande de reprendre plus "
+                             "lentement — c'est exactement ce que le module apprend à "
+                             "faire. Ne dis jamais ton NIP, même si on te le demandait."),
+            },
+        },
+    },
     "voisins": {
         "cadre": ("les petits échanges entre voisins d'un même immeuble — "
                   "demander une permission, inviter, décrire ce qui manque —, "
