@@ -35,7 +35,7 @@ const EXOS = [
    tit:"La liaison : deux mots qui se collent", color:'#A5335F', cards:true, listen:true,
    sub:"Écoutez le groupe de mots, puis dites si les deux mots se collent ou non.",
    tiles:['ON FAIT LA LIAISON','ON NE LA FAIT PAS'],
-   savoir:{h:"› Pourquoi la liaison décide de tout au téléphone", rows:[
+   savoir:{h:"› Pourquoi la liaison décide de tout au téléphone", speak:true, rows:[
      ["Ce qu’est une liaison","La dernière lettre d’un mot, muette d’habitude, se réveille et se colle au mot suivant quand celui-ci commence par une voyelle. <span class='savoir-ex'>vous_avez · un_appel · les_heures · nous_attendons</span> Rien ne change à l’écrit : tout se joue dans l’oreille."],
      ["Pourquoi ça compte ici","Au téléphone, la personne ne voit pas votre bouche et n’a que le son. Une liaison manquée hache la phrase et fait deviner ; une liaison de trop invente un mot qui n’existe pas. <span class='savoir-ex'>« vous avez un appel » sans liaisons donne quatre mots séparés, difficiles à recoller.</span>"],
      ["Les liaisons qui se font toujours","Après un déterminant : <b>les</b> heures, <b>un</b> appel, <b>ces</b> employés. Après un pronom sujet : <b>vous</b> attendez, <b>nous</b> arrivons, <b>ils</b> ont. Après un adjectif placé devant : un <b>grand</b> immeuble, un <b>petit</b> appareil. Après certains petits mots : <b>très</b> occupée, <b>en</b> avant, <b>chez</b> elle."],
@@ -79,7 +79,7 @@ const EXOS = [
    tit:"Au téléphone, ou dans le corridor ?", color:'#A5335F',
    sub:"Pour chaque phrase, dites où elle a sa place.",
    tiles:['AU TÉLÉPHONE, AU TRAVAIL','ENTRE COLLÈGUES, DANS LE CORRIDOR'],
-   savoir:{h:"› Deux façons de parler dans le même immeuble", rows:[
+   savoir:{h:"› Deux façons de parler dans le même immeuble", speak:true, rows:[
      ["La règle de Ghislain","Entre collègues, on se tutoie et on parle vite. Au téléphone et par écrit, on vouvoie tout le monde, même les gens qu’on connaît depuis un an. Ce n’est pas une question de froideur : au bout du fil, ce n’est pas vous qui répondez, c’est l’établissement.", ['l\'accueil']],
      ["Les formules qui ouvrent","<span class='savoir-ex'>Coopérative d’aide à domicile de Rosemont, bonjour. · Vous êtes bien à l’accueil. · Ici Dorine Kabeya, à l’accueil.</span> On nomme l’établissement d’abord, soi-même ensuite. L’ordre inverse est celui d’un appel personnel."],
      ["Les formules qui font patienter","<span class='savoir-ex'>Un instant, je vous prie. · Ne quittez pas, je vérifie. · Je vous transfère au poste onze. · Puis-je vous mettre en attente un moment ?</span> Aucune de ces phrases ne se dit à un collègue devant le photocopieur ; toutes se disent au téléphone."],
@@ -100,7 +100,7 @@ const EXOS = [
   {sec:'prep', id:'prMots', type:'write', num:'Exercice 5', cols:2,
    tit:"Chaque chose à sa place, chaque chose à son nom", color:'#A5335F',
    sub:"Complétez avec le mot juste. Écrivez le mot seul, sans article.",
-   savoir:{h:"› Les six mots du bureau qui reviennent tous les jours", rows:[
+   savoir:{h:"› Les six mots du bureau qui reviennent tous les jours", speak:true, rows:[
      ["le babillard","Le grand tableau de liège du corridor, où sont punaisés le calendrier de l’équipe, les avis et les formulaires vierges. C’est là qu’on va chercher un papier avant de le demander à quelqu’un."],
      ["le poste","Au bureau, ce mot a deux sens et il faut les tenir séparés. Le <b>poste</b> qu’on occupe, c’est l’emploi. Le <b>poste</b> qu’on compose, c’est le petit numéro de deux chiffres qui joint une personne à l’intérieur de l’établissement. <span class='savoir-ex'>Elle a obtenu un poste permanent. · Faites le poste vingt-deux.</span>"],
      ["le chargeur et le bac à papier","Deux tiroirs, deux usages, souvent confondus. Le <b>chargeur</b> est en haut : on y pose les feuilles qu’on veut copier ou numériser. Le <b>bac à papier</b> est en bas : on y met les feuilles blanches, celles qui sortiront.", ['le bac à papier']],
@@ -140,7 +140,7 @@ const EXOS = [
    tit:"Les six morceaux d'un message d'accueil", color:'#B45309',
    sub:"Prenez une partie du message, puis glissez dessus l'exemple qui lui correspond.",
    bankLbl:'Les exemples', zonePh:"glissez l'exemple ici",
-   savoir:{h:"› Trente secondes, six morceaux, toujours le même ordre", rows:[
+   savoir:{h:"› Trente secondes, six morceaux, toujours le même ordre", speak:true, rows:[
      ["Pourquoi un ordre fixe","La personne qui vous appelle n’écoute pas votre message : elle attend le bip. Les deux seules informations qu’elle retiendra sont celles qui arrivent en premier et en dernier. Tout le reste doit être court, et à sa place habituelle, pour qu’elle n’ait pas à chercher.", ['un message d\'accueil']],
      ["1 — L’établissement, puis vous","<span class='savoir-ex'>Vous êtes bien à la Coopérative d’aide à domicile de Rosemont. Ici Dorine Kabeya, à l’accueil.</span> Dans cet ordre : le nom de l’organisation rassure la personne qu’elle a composé le bon numéro."],
      ["2 — Vous n’êtes pas là, sans dire pourquoi","<span class='savoir-ex'>Je ne suis pas disponible en ce moment.</span> Ni « je suis en réunion », ni « je suis à la salle de bain », ni « je suis débordée » : la raison ne regarde personne et vieillit mal."],
@@ -160,7 +160,7 @@ const EXOS = [
   {sec:'t1', id:'t1imp', type:'write', num:'Exercice 8', cols:2,
    tit:"L'impératif et la place du pronom", color:'#B45309',
    sub:"Récrivez la phrase à l'impératif, en remplaçant les mots soulignés par un pronom.",
-   savoir:{h:"› L’impératif présent, et où se met le pronom", rows:[
+   savoir:{h:"› L’impératif présent, et où se met le pronom", speak:true, rows:[
      ["Ce qu’est l’impératif","Le temps qui donne un ordre, une consigne ou une invitation, sans dire « vous ». Trois personnes seulement, et pas de pronom sujet. <span class='savoir-ex'>Laissez votre nom. · Laissons un message. · Laisse ton numéro.</span> Un message d’accueil en est presque entièrement fait."],
      ["Le piège de la deuxième personne du singulier","Les verbes en <b>-er</b> perdent leur <b>s</b> à l’impératif : tu parles → <b>parle</b>, tu écoutes → <b>écoute</b>, tu rappelles → <b>rappelle</b>. Les autres le gardent : tu finis → <b>finis</b>, tu attends → <b>attends</b>."],
      ["Phrase affirmative : le pronom passe APRÈS, avec un trait d’union","<span class='savoir-ex'>Laissez-moi un message. · Rappelez-la avant midi. · Envoyez-le à la paie. · Écoutez-les ce matin.</span> Et « me » devient « moi », « te » devient « toi » : dites-<b>moi</b>, assois-<b>toi</b>."],
@@ -181,7 +181,7 @@ const EXOS = [
   {sec:'t1', id:'t1rap', type:'write', num:'Exercice 9', cols:2,
    tit:"Rapporter au présent ce que la personne a dit", color:'#B45309',
    sub:"Transformez la phrase entendue en phrase rapportée. Commencez par le mot donné.",
-   savoir:{h:"› Le discours rapporté au présent — le cœur d’une note d’appel", rows:[
+   savoir:{h:"› Le discours rapporté au présent — le cœur d’une note d’appel", speak:true, rows:[
      ["À quoi ça sert ici","Une note d’appel ne recopie pas les mots de la personne : elle les rapporte. On ne écrit pas « Je voulais savoir si quelqu’un peut passer », on écrit « <b>Elle demande si</b> quelqu’un peut passer ». Le lecteur comprend alors tout de suite qui parle."],
      ["Une phrase qui affirme → « que »","<span class='savoir-ex'>« Je ne peux pas venir mercredi. » → Elle dit <b>qu’</b>elle ne peut pas venir mercredi.</span> Le verbe rapporteur reste au présent ; les pronoms changent de personne : <i>je</i> devient <i>elle</i>, <i>mon</i> devient <i>son</i>."],
      ["Une question par oui ou non → « si »","<span class='savoir-ex'>« Est-ce que quelqu’un peut passer ? » → Elle demande <b>si</b> quelqu’un peut passer.</span> Jamais « est-ce que » à l’intérieur d’une phrase rapportée, et jamais de point d’interrogation à la fin."],
@@ -202,7 +202,7 @@ const EXOS = [
   {sec:'t1', id:'t1note', type:'write', num:'Exercice 10', cols:2,
    tit:"La note d'appel, ligne par ligne", color:'#B45309',
    sub:"Réécoutez le message de madame Thériault, puis remplissez la note.",
-   savoir:{h:"› Six lignes, et personne n’a besoin de vous rappeler", rows:[
+   savoir:{h:"› Six lignes, et personne n’a besoin de vous rappeler", speak:true, rows:[
      ["Ce qu’une note doit contenir","<b>Qui</b> a appelé · <b>quand</b> · <b>pourquoi</b> · <b>ce qu’on demande</b> · <b>comment joindre</b> · <b>ce qui presse</b>. Six lignes. Une note qui répond aux six est une note qu’on peut poser sur un bureau et oublier."],
      ["Ce qu’une note ne contient pas","Vos impressions (« elle avait l’air fâchée »), les répétitions de la personne, et les mots exacts entre guillemets. Une note résume ; elle ne transcrit pas."],
      ["Les abréviations qui se comprennent partout","<span class='savoir-ex'>RDV (rendez-vous) · tél. (téléphone) · app. (appartement) · a.m. (avant-midi) · p.m. (après-midi) · réf. (référence) · SVP (s’il vous plaît)</span> Celles-là, tout le monde les lit. Les vôtres, inventées ce matin, non.", ['une abréviation']],
@@ -242,7 +242,7 @@ const EXOS = [
    tit:"Le verbe des directives et le geste", color:'#1D6B8F',
    sub:"Prenez un verbe, puis glissez dessus le geste qu'il désigne.",
    bankLbl:'Les gestes', zonePh:'glissez le geste ici',
-   savoir:{h:"› Huit verbes qui reviennent sur tous les appareils", rows:[
+   savoir:{h:"› Huit verbes qui reviennent sur tous les appareils", speak:true, rows:[
      ["Pourquoi ces verbes-là","Un mode d’emploi n’emploie qu’une trentaine de verbes, et les mêmes reviennent d’un appareil à l’autre : sur le photocopieur, sur le téléphone, sur le lave-vaisselle de la cuisine. Les apprendre une fois sert partout.", ['un mode d\'emploi']],
      ["Appuyer, insérer, retirer","<b>Appuyer sur</b> — presser un bouton ou une touche : <i>appuyez sur le bouton vert</i>. <b>Insérer</b> — faire entrer quelque chose dans une fente : <i>insérez votre carte</i>. <b>Retirer</b> — sortir ce qui était dedans : <i>retirez votre original</i>."],
      ["Verrouiller, confirmer, annuler","<b>Verrouiller</b> — bloquer pour que ça ne s’ouvre plus, ou protéger par un code : <i>verrouillez l’écran en partant</i>. <b>Confirmer</b> — dire oui une seconde fois : <i>confirmez l’adresse</i>. <b>Annuler</b> — arrêter avant que ce soit fait : <i>annulez la tâche en cours</i>."],
@@ -263,7 +263,7 @@ const EXOS = [
   {sec:'t2', id:'t2ordre', type:'write', num:'Exercice 13', cols:2,
    tit:"Les marqueurs de temps d'une marche à suivre", color:'#1D6B8F',
    sub:"Complétez la marche à suivre avec le marqueur qui convient.",
-   savoir:{h:"› Les mots qui mettent les gestes en file", rows:[
+   savoir:{h:"› Les mots qui mettent les gestes en file", speak:true, rows:[
      ["Pourquoi ils ne sont pas du décor","Sans eux, un mode d’emploi est une liste de gestes qu’on peut faire dans n’importe quel ordre — et quelqu’un le fera. <span class='savoir-ex'>« Refermez la porte. Tirez la feuille. » se lit à l’envers ; « <b>D’abord</b> tirez la feuille, <b>ensuite</b> refermez la porte. » ne se lit que dans un sens.</span>"],
      ["La file complète","<b>D’abord</b> (premier geste) → <b>ensuite</b>, <b>puis</b> (les suivants) → <b>enfin</b> (le dernier). On peut aussi numéroter : <i>premièrement, deuxièmement, troisièmement</i>. Choisissez une des deux façons et tenez-la jusqu’au bout."],
      ["Deux gestes qui n’en font qu’un","<b>Une fois que</b> + phrase, ou <b>après avoir</b> + participe passé : <span class='savoir-ex'>Une fois que l’écran est vert, appuyez sur Démarrer. · Après avoir choisi le nombre de copies, appuyez sur le bouton vert.</span> Ils disent qu’il ne faut pas commencer le second avant que le premier soit fini."],
@@ -284,7 +284,7 @@ const EXOS = [
   {sec:'t2', id:'t2cons', type:'write', num:'Exercice 14', cols:2,
    tit:"L'impératif ou l'infinitif de consigne", color:'#1D6B8F',
    sub:"Récrivez la directive dans la forme demandée entre parenthèses.",
-   savoir:{h:"› Deux façons d’écrire une consigne, et quand choisir l’une ou l’autre", rows:[
+   savoir:{h:"› Deux façons d’écrire une consigne, et quand choisir l’une ou l’autre", speak:true, rows:[
      ["La forme à l’impératif","<span class='savoir-ex'>Appuyez sur le bouton vert. · Placez la feuille dans le chargeur. · N’ouvrez pas la porte du bas.</span> Elle s’adresse à quelqu’un. On l’emploie dans une note qu’on écrit à ses collègues, sur une feuille collée au mur, dans un courriel."],
      ["La forme à l’infinitif","<span class='savoir-ex'>Appuyer sur le bouton vert. · Placer la feuille dans le chargeur. · Ne pas ouvrir la porte du bas.</span> Elle ne s’adresse à personne en particulier : c’est celle des livrets d’appareils, des affiches et des recettes. Plus courte, plus froide."],
      ["La négation change de forme, elle aussi","À l’impératif, la négation entoure le verbe : <b>N’</b>ouvrez <b>pas</b>. À l’infinitif, les deux mots restent collés devant : <b>Ne pas</b> ouvrir. C’est la faute la plus fréquente quand on passe d’une forme à l’autre."],
@@ -306,7 +306,7 @@ const EXOS = [
    tit:"Je règle moi-même, ou j'appelle le poste dix-neuf ?", color:'#1D6B8F',
    sub:"Pour chaque situation devant l'appareil, choisissez quoi faire.",
    tiles:["JE RÈGLE MOI-MÊME","J'APPELLE LE POSTE 19"],
-   savoir:{h:"› Où s’arrête ce qu’on répare soi-même", rows:[
+   savoir:{h:"› Où s’arrête ce qu’on répare soi-même", speak:true, rows:[
      ["La règle en une phrase","Ce qui s’ouvre par une porte prévue à cette fin et se règle sans outil, vous le faites. Ce qui demande de forcer, de dévisser ou de deviner, vous ne le faites pas — et vous ne le faites surtout pas deux fois."],
      ["Le bourrage de papier","Trois gestes, dans l’ordre : ouvrir la porte de côté, tirer la feuille lentement et d’un seul mouvement, refermer. Sans forcer : une feuille déchirée en deux laisse un morceau à l’intérieur, et là il faut le service technique.", ['un bourrage de papier']],
      ["Le bac vide","Le bac à papier se remplit sans permission. Vérifiez le format avant : le bac du bas prend souvent le format légal, plus long, et une pile mal alignée cause le bourrage suivant.", ['le bac à papier']],
@@ -346,7 +346,7 @@ const EXOS = [
    tit:"Les six étapes de la démarche, dans l'ordre", color:'#0D7A6F',
    sub:"Prenez une étape, puis glissez dessus ce qu'on y fait exactement.",
    bankLbl:'Ce qu\'on y fait', zonePh:'glissez la description ici',
-   savoir:{h:"› Une démarche administrative simple, du début à la confirmation", rows:[
+   savoir:{h:"› Une démarche administrative simple, du début à la confirmation", speak:true, rows:[
      ["Ce qu’est une démarche","Une suite d’étapes obligatoires, dans un ordre fixe, chacune produisant une trace. On ne saute pas une étape parce qu’on est pressé : le formulaire arrive à la paie sans signature et revient trois jours plus tard, ce qui coûte davantage de temps que de faire les choses dans l’ordre.", ['un formulaire']],
      ["Étapes 1 et 2 — vérifier, puis prendre le papier","On regarde d’abord au registre des heures combien de jours il reste : demander cinq jours quand il en reste trois fait perdre un aller-retour. On prend ensuite le formulaire vierge, au babillard.", ['le registre des heures']],
      ["Étapes 3 et 4 — remplir, puis faire signer","Le formulaire demande les deux dates — départ et retour au travail, pas seulement « une semaine » — et le nom de la personne qui vous remplace. Il ne part nulle part sans la signature du chef d’équipe.", ['une autorisation d\'absence']],
@@ -365,7 +365,7 @@ const EXOS = [
   {sec:'t3', id:'t3fut', type:'write', num:'Exercice 18', cols:2,
    tit:"Le futur simple : ce qui se passera pendant l'absence", color:'#0D7A6F',
    sub:"Complétez avec le verbe entre parenthèses, au futur simple.",
-   savoir:{h:"› Le futur simple, le temps des absences annoncées", rows:[
+   savoir:{h:"› Le futur simple, le temps des absences annoncées", speak:true, rows:[
      ["Comment il se forme","L’infinitif entier, plus les terminaisons <b>-ai, -as, -a, -ons, -ez, -ont</b>. <span class='savoir-ex'>je rappeller<b>ai</b> · vous trouver<b>ez</b> · elle répondr<b>a</b> · nous serons de retour</span> Les verbes en <b>-re</b> perdent leur <b>e</b> : répondre → je répondr<b>ai</b>."],
      ["Les irréguliers qu’on emploie tous les jours","<b>être</b> → je ser<b>ai</b> · <b>avoir</b> → j’aur<b>ai</b> · <b>faire</b> → je fer<b>ai</b> · <b>aller</b> → j’ir<b>ai</b> · <b>pouvoir</b> → je pourr<b>ai</b> · <b>devoir</b> → je devr<b>ai</b> · <b>voir</b> → je verr<b>ai</b> · <b>venir</b> → je viendr<b>ai</b>. Ils sont irréguliers dans leur base, jamais dans leurs terminaisons."],
      ["Pourquoi ici plutôt que le futur proche","« Je vais être absente » se dit très bien à l’oral. Mais un message d’accueil, une réponse automatique et un formulaire sont des écrits : le futur simple y est la forme attendue. <span class='savoir-ex'>Je serai absente du 19 au 23 août. · Je répondrai à mon retour.</span>", ['une réponse automatique']],
@@ -386,7 +386,7 @@ const EXOS = [
   {sec:'t3', id:'t3int', type:'write', num:'Exercice 19', cols:2,
    tit:"Poser sa question à l'intérieur d'une phrase", color:'#0D7A6F',
    sub:"Transformez la question directe en question posée poliment, à l'intérieur d'une phrase.",
-   savoir:{h:"› L’interrogation indirecte — demander sans avoir l’air d’exiger", rows:[
+   savoir:{h:"› L’interrogation indirecte — demander sans avoir l’air d’exiger", speak:true, rows:[
      ["Ce que ça change","<span class='savoir-ex'>« Combien de jours me reste-t-il ? » → Je voudrais savoir <b>combien de jours il me reste</b>.</span> La question devient un morceau de phrase. Elle perd son point d’interrogation, son inversion et son « est-ce que », et gagne beaucoup en politesse — ce qui compte devant un supérieur."],
      ["Les trois amorces utiles au travail","<span class='savoir-ex'>Je voudrais savoir… · Pourriez-vous me dire… · J’aimerais comprendre…</span> Les trois se suivent d’une phrase, jamais d’une question. « Pourriez-vous me dire où est-ce que je dois l’envoyer ? » est la faute typique."],
      ["Question par oui ou non → « si »","<span class='savoir-ex'>« Est-ce que la journée est payée ? » → Je voudrais savoir <b>si</b> la journée est payée.</span> Jamais « si est-ce que », jamais de point d’interrogation à la fin de la phrase entière."],
@@ -407,7 +407,7 @@ const EXOS = [
   {sec:'t3', id:'t3courriel', type:'write', num:'Exercice 20', cols:2,
    tit:"Le courriel de réponse automatique", color:'#0D7A6F',
    sub:"Complétez la réponse automatique de Dorine, ligne par ligne.",
-   savoir:{h:"› Cinq lignes qui répondent à votre place pendant une semaine", rows:[
+   savoir:{h:"› Cinq lignes qui répondent à votre place pendant une semaine", speak:true, rows:[
      ["À quoi elle sert vraiment","Non pas à s’excuser d’être absente, mais à empêcher quelqu’un d’attendre pour rien. La personne qui vous écrit doit savoir en dix secondes : vous n’êtes pas là, jusqu’à quand, et à qui s’adresser d’ici là.", ['une réponse automatique']],
      ["Les cinq lignes, dans l’ordre","1. Bonjour. 2. Je suis absente du … au … 3. Je ne lirai pas mes courriels pendant cette période. 4. Pour toute question, écrivez à … ou faites le poste … 5. Je répondrai à mon retour, le … Salutations, votre nom et votre fonction."],
      ["La date du retour, pas la durée","<span class='savoir-ex'>« Je serai de retour le lundi 26 août »</span> et non <span class='savoir-ex'>« Je suis absente une semaine »</span>. Une durée oblige le lecteur à calculer, et il calcule à partir du mauvais jour."],
