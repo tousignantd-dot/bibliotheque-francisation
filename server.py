@@ -4455,6 +4455,78 @@ JEU_DE_ROLE_TITRE = {
 # expliquer à quelqu'un qui n'a rien entendu ce qui bloque, où, depuis quand et
 # pour combien de temps — puis proposer autre chose et annoncer une heure
 # d'arrivée. C'est un discours organisé, pas une question-réponse.
+JEU_DE_ROLE_FAITDIVERS = {
+    "incendie": {
+        "contexte": (
+            "La pause de dix heures, à la cafétéria. Vous venez de lire dans "
+            "l'hebdomadaire local qu'un incendie a détruit un immeuble de "
+            "quatre logements de la rue Alexandre, à Sherbrooke, vers quatre "
+            "heures du matin. Personne n'a été blessé, mais onze personnes se "
+            "retrouvent sans logement et la Croix-Rouge les héberge. Le "
+            "Service de sécurité incendie dit que le feu serait parti de la "
+            "cuisine du deuxième étage."
+        ),
+        "sylvain": [
+            "Tu n'as pas lu le journal et tu n'as pas d'idée de ce dont on parle.",
+            "Tu veux savoir quatre choses : ce qui est arrivé, où, quand, et si "
+            "quelqu'un a été blessé.",
+            "Tu demandes qui a dit que le feu venait de la cuisine.",
+            "Tu penses tout haut que les gens sont imprudents avec leur "
+            "friteuse, et tu attends de voir si l'élève est d'accord ou non.",
+        ],
+        "teresa": [
+            "Tu appelles le soir et tu as entendu parler de l'incendie sans "
+            "connaître les détails.",
+            "Tu veux savoir si les gens ont été relogés, et par qui.",
+        ],
+    },
+    "inondation": {
+        "contexte": (
+            "Vous venez de lire qu'après trois jours de pluie, la rivière "
+            "Magog est sortie de son lit et que le sous-sol d'une dizaine de "
+            "maisons de la rue des Peupliers a été inondé. La Ville a fermé "
+            "une rue et distribué des sacs de sable. Une résidente raconte "
+            "qu'elle a tout perdu dans son sous-sol et qu'elle demande à la "
+            "Ville de refaire le fossé."
+        ),
+        "sylvain": [
+            "Tu habites en haut de la côte et l'eau ne t'a jamais touché.",
+            "Tu veux savoir combien de maisons, quelle rue, et depuis quand.",
+            "Tu demandes ce que la Ville a répondu, exactement.",
+            "Tu dis que les gens n'avaient qu'à ne pas acheter au bord de "
+            "l'eau : l'élève doit te répondre sans se fâcher.",
+        ],
+        "teresa": [
+            "Tu appelles parce qu'il a plu chez toi aussi et tu veux savoir si "
+            "c'est pire à Sherbrooke.",
+            "Tu demandes ce que la résidente a dit dans le journal.",
+        ],
+    },
+    "velos": {
+        "contexte": (
+            "Vous venez de lire qu'une trentaine de vélos ont été volés en un "
+            "mois dans le quartier, presque tous dans des cabanons et des "
+            "garages laissés ouverts. Le Service de police de Sherbrooke "
+            "demande aux gens de noter le numéro de série de leur vélo et de "
+            "signaler tout vol, même petit. Un commerçant du coin dit qu'il a "
+            "vu passer trois vélos dans une remorque, tard le soir."
+        ),
+        "sylvain": [
+            "Ton garçon a un vélo neuf et tu deviens attentif tout de suite.",
+            "Tu veux savoir combien de vélos, où, et sur quelle période.",
+            "Tu demandes ce que la police conseille de faire, précisément.",
+            "Tu trouves que noter un numéro ne sert à rien : l'élève doit "
+            "défendre son point de vue.",
+        ],
+        "teresa": [
+            "Tu appelles et tu veux savoir si le quartier est encore "
+            "tranquille.",
+            "Tu demandes qui a vu quoi, et si c'est la police qui l'a dit.",
+        ],
+    },
+}
+
+
 JEU_DE_ROLE_CIRCULATION = {
     "pont": {
         "contexte": (
@@ -5141,6 +5213,73 @@ JEU_DE_ROLE_SCENARIOS = {
                              "prévue, ce qu'on fait en attendant. Tu ne reproches "
                              "rien et tu ne devines pas à sa place : s'il dit "
                              "« bientôt », tu demandes une heure."),
+            },
+        },
+    },
+    "faitdivers": {
+        "cadre": ("le compte rendu d'un fait divers lu dans le journal local, "
+                  "raconté à quelqu'un qui ne l'a pas lu, au stade "
+                  "intermédiaire"),
+        "contexte_label": "Le fait divers que vous venez de lire",
+        "cas": JEU_DE_ROLE_FAITDIVERS,
+        "adresse": ("Tutoie l'élève du début à la fin : Sylvain est le "
+                    "collègue avec qui il travaille tous les jours, et Teresa "
+                    "est de la famille. Ne propose jamais le vouvoiement."),
+        "sujets": [
+            "ce qui est arrivé, dit d'un seul tenant avant tout détail",
+            "où et quand, avec un marqueur de temps précis : vers quatre "
+            "heures du matin, mardi dernier, depuis trois jours",
+            "le déroulement au passé composé, le décor à l'imparfait",
+            "qui a dit quoi, rapporté au présent : le porte-parole dit que, "
+            "la résidente demande si, la police explique ce qu'il faut faire",
+            "l'opinion donnée comme une opinion : moi, ce qui me surprend, "
+            "c'est que…",
+            "une raison introduite après le deux-points ou par parce que",
+        ],
+        "cloture": ("Quand l'élève a raconté ce qui est arrivé, dit où et "
+                    "quand, rapporté au moins une parole et donné son avis en "
+                    "le justifiant, redis la nouvelle en deux phrases courtes "
+                    "pour vérifier que tu as compris la même chose, puis "
+                    "conclus. N'accepte pas « il y a eu un problème » comme "
+                    "récit : redemande ce qui est arrivé, une fois."),
+        "ouverture": {
+            "sylvain": "Tiens, tu lis encore ton journal, toi. Il y a quoi dedans à matin ?",
+            "teresa": "Allô ! Je te dérange pas ? Raconte-moi donc ce qui se passe chez vous.",
+        },
+        "roles": {
+            "sylvain": {
+                "qui": ("Tu es Sylvain Ouellet, 55 ans, cuisinier à la "
+                        "cafétéria où l'élève travaille. Vous prenez votre "
+                        "pause ensemble tous les matins. Tu n'ouvres jamais un "
+                        "journal."),
+                "conduite": ("Niveau 5 : l'élève doit tenir un récit organisé, "
+                             "pas répondre à un questionnaire. Tu tutoies. Tu "
+                             "n'as rien lu et tu ne devines rien : si l'élève "
+                             "commence par un détail, tu demandes d'abord ce "
+                             "qui est arrivé. Tu redemandes une fois quand une "
+                             "réponse reste vague — « où ça ? », « quand ? », "
+                             "« qui a dit ça ? ». Tu es curieux, jamais "
+                             "moqueur. Vers la fin, tu donnes ton avis à toi, "
+                             "un peu tranché, pour que l'élève ait à répondre "
+                             "et à donner le sien. Tu ne racontes jamais la "
+                             "nouvelle à sa place. Tu parles la langue du "
+                             "journal avec des mots réels : un fait divers, un "
+                             "porte-parole, les pompiers, la Sûreté du Québec, "
+                             "un sinistré, un témoin, une enquête."),
+            },
+            "teresa": {
+                "qui": ("Tu es Teresa, 34 ans, la belle-sœur de l'élève. Tu "
+                        "habites Granby et tu appelles le soir, comme deux ou "
+                        "trois fois par semaine."),
+                "conduite": ("Tu tutoies. Tu es au téléphone : tu ne vois "
+                             "rien, donc tout doit se dire. Tu t'intéresses "
+                             "surtout aux gens — qui a été touché, qui a parlé, "
+                             "ce qu'ils ont dit — et tu redemandes chaque fois "
+                             "que l'élève rapporte une parole sans dire de qui "
+                             "elle vient. Tu ne connais pas Sherbrooke : "
+                             "demande où se trouve la rue ou la rivière dont on "
+                             "te parle. Tu finis par demander ce que l'élève, "
+                             "lui, en pense."),
             },
         },
     },
