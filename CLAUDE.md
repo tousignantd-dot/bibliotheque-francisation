@@ -249,10 +249,50 @@ Deux pièges déjà payés :
   des sections, reprise de séance, identité de marque — commencent chacune par
   retirer celle du gabarit, qui porte le slug (ou le numéro d'activité) de la
   consultation. Sans ce dégreffage, un module hériterait du carnet d'un autre.
+- **Régénérer le gabarit ne détruit aucune greffe** — et la raison est le
+  dégreffage ci-dessus, pas autre chose. Le gabarit **porte** les marqueurs des
+  greffes : `MARQUE-SAAF` s'y lit aux alentours de la ligne 904, arrivé là par
+  le HTML de `module-consultation`, déjà greffé. Ce sont `build/module.py` et
+  ses cinq greffes qui les remettent d'aplomb à chaque construction, chacune en
+  retirant d'abord la précédente. Conséquence pratique : `python3
+  build/gabarit.py` peut être relancé sans précaution, même pendant qu'une
+  autre session travaille sur l'identité de marque. Corollaire, dans l'autre
+  sens : le `degreffe()` en tête de chaque greffe n'est **pas** du code mort —
+  le retirer ferait empiler un bandeau de plus à chaque build. Un doute là-dessus
+  a déjà coûté à une session de s'interdire `gabarit.py` pour rien.
 - La consigne de correction de la production **écrite** ne vit pas dans le
   gabarit : `build/greffe_depot_ecrit.py` la pose. L'ancien script croyait la
   remplacer et son `replace` était sans effet — code mort découvert en
   généralisant.
+
+### Les quatre contrôles avant de publier un module
+
+Ils existaient déjà, dispersés dans ce fichier ; les voici ensemble, parce que
+c'est ainsi qu'on s'en sert. Aucun n'écrit quoi que ce soit, et **chacun sort
+en code 1 quand il trouve un écart** — de quoi les enchaîner dans un `&&`.
+
+    python3 build/sections.py --verifier           # data/sections.json ↔ les SECTIONS des modules
+    python3 build/materiel.py --verifier           # data/materiel.json ↔ ce qui est sur le disque
+    python3 build/couleurs_niveau.py --verifier    # l'en-tête porte la couleur de son niveau
+    python3 build/couleurs_sections.py --verifier  # aucun vert dans les couleurs de section
+
+Les deux premiers sont des **relevés** : ils déduisent du disque ce que le
+portail affiche, et un écart veut dire qu'un module a été produit sans que le
+relevé soit refait. Les deux derniers tiennent la règle des couleurs — un
+module qui sort de la forge ou d'un vieux gabarit réintroduit du vert sans le
+savoir, et c'est le seul endroit qui l'attrape.
+
+Deux pièges de lecture :
+
+- `couleurs_niveau.py` liste sous « hors registre, sans niveau » les modules
+  qu'il laisse tels quels — `module-banque` aujourd'hui. Ce n'est **pas** un
+  écart : c'est un module absent de `build/powerpoints/modules.py`, donc sans
+  niveau à appliquer. Le signaler plutôt que le corriger est le comportement
+  voulu.
+- `sections.py --verifier` échoue tant qu'un module neuf n'a pas été inscrit au
+  relevé. Pendant une production en cours, c'est normal et ça se résout en
+  lançant `python3 build/sections.py` à la livraison — pas en modifiant
+  `data/sections.json` à la main.
 
 ## L'identité de marque SAAF
 
