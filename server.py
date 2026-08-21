@@ -3524,7 +3524,115 @@ JEU_DE_ROLE_RENDEZVOUS = {
 }
 
 
+# Scénario du module-n2-bonjour (niveau 2). Le scénario `relations` existe,
+# mais il est écrit pour le niveau 4 : il tient une conversation suivie et
+# raconte au passé. Ici, deux ou trois répliques suffisent, au présent, et la
+# voisine vouvoie l'élève parce que c'est elle qu'on vouvoie dans le module.
+JEU_DE_ROLE_BONJOUR = {
+    "entree": {
+        "contexte": (
+            "L'entrée d'un immeuble de trois étages, un matin de semaine, "
+            "vers huit heures. Deux voisines descendent en même temps."
+        ),
+        "voisine": [
+            "Tu es madame Roy, une voisine retraitée du deuxième étage.",
+            "Tu dis bonjour la première et tu demandes « ça va ? ».",
+            "Tu demandes une seule chose à la fois : le centre, l'heure du cours, la journée.",
+            "Tu parles de ta propre journée en une phrase courte si on te le demande.",
+            "Tu termines par « bonne journée » ou « à demain ».",
+        ],
+        "moi": [
+            "Tu croises ta voisine en partant au centre.",
+            "Tu dis bonjour, tu réponds à « ça va ? », puis tu redemandes « et vous ? ».",
+            "Tu dis une ou deux choses que tu fais dans ta journée.",
+            "Tu prends congé avant de sortir.",
+        ],
+    },
+    "ascenseur": {
+        "contexte": (
+            "Devant l'ascenseur, au rez-de-chaussée. Une voisine revient de "
+            "l'épicerie avec deux sacs lourds et n'a plus de main libre."
+        ),
+        "voisine": [
+            "Tu as deux sacs lourds et tu n'arrives pas à ouvrir la porte.",
+            "Tu demandes de l'aide en une phrase courte : « Peux-tu m'aider ? ».",
+            "Tu dis merci dès qu'on t'aide, et tu dis à quel étage tu vas : le deuxième.",
+            "Tu ne demandes jamais deux choses dans la même réplique.",
+        ],
+        "moi": [
+            "Tu vois ta voisine avec ses sacs et tu comprends qu'elle a besoin d'aide.",
+            "Tu proposes ton aide, ou tu réponds « oui, bien sûr » quand elle demande.",
+            "Tu demandes à quel étage elle va.",
+            "Tu réponds « ce n'est rien » quand elle te remercie.",
+        ],
+    },
+    "fete": {
+        "contexte": (
+            "Sur le palier du deuxième étage, un samedi. C'est la fête de la "
+            "voisine et on frappe à sa porte avec une carte à la main."
+        ),
+        "voisine": [
+            "C'est ta fête aujourd'hui : tu as soixante-dix ans.",
+            "Tu es surprise et contente qu'on t'apporte une carte.",
+            "Tu remercies, tu dis que c'est beau, et tu offres du thé.",
+            "Tu comprends très bien qu'on refuse le thé si on doit travailler.",
+        ],
+        "moi": [
+            "Tu apportes une carte de vœux à ta voisine pour sa fête.",
+            "Tu souhaites « bonne fête » et une deuxième chose : bonne santé, par exemple.",
+            "Tu remercies pour un service qu'elle t'a rendu.",
+            "Tu prends congé poliment, même si tu refuses le thé.",
+        ],
+    },
+}
+
+
 JEU_DE_ROLE_SCENARIOS = {
+    "bonjour": {
+        "cadre": "un court échange entre deux voisines, dans un immeuble",
+        "contexte_label": "L'endroit où vous vous croisez tous les deux",
+        "cas": JEU_DE_ROLE_BONJOUR,
+        "adresse": "Vouvoie l'élève : la voisine est plus âgée, et c'est elle qu'on vouvoie dans le module.",
+        "sujets": [
+            "la salutation, dite en premier",
+            "« ça va ? », et la réponse renvoyée par « et vous ? »",
+            "une ou deux choses qu'on fait dans sa journée",
+            "une demande d'aide, comprise et acceptée",
+            "un merci, ou un souhait de fête",
+            "la prise de congé : bonne journée, à demain",
+        ],
+        "cloture": ("Quand les salutations sont faites et que chacun a dit un mot de "
+                    "sa journée, souhaite une bonne journée et dis « à demain ». "
+                    "N'allonge pas la conversation : elle dure trente secondes."),
+        "ouverture": {
+            "moi": "Bonjour, madame Roy.",
+            "voisine": "Bonjour ! Ça va ce matin ?",
+        },
+        "roles": {
+            "voisine": {
+                "qui": ("Tu es madame Roy, la voisine du deuxième étage, retraitée. "
+                        "L'élève est la personne qui habite au troisième."),
+                "conduite": ("Niveau 2 : deux ou trois répliques suffisent, et jamais "
+                             "plus d'une question à la fois. Phrases très courtes, au "
+                             "présent, sans subordonnée. Emploie les mots du module — "
+                             "bonjour, ça va, le matin, le soir, merci, bonne journée — "
+                             "et rien de plus compliqué. Ne raconte jamais au passé. Si "
+                             "l'élève ne répond pas, repose la même question plus "
+                             "lentement, avec les mêmes mots. S'il te demande de "
+                             "répéter, répète sans t'impatienter."),
+            },
+            "moi": {
+                "qui": ("Tu es la voisine du troisième qui part au centre. L'élève joue "
+                        "madame Roy, la voisine plus âgée, et te répond."),
+                "conduite": ("Dis une seule chose à la fois, en trois ou quatre mots. "
+                             "Salue, demande « ça va ? », dis ce que tu fais de ta "
+                             "journée en une phrase, remercie et prends congé. Si "
+                             "l'élève parle vite ou dit trois choses d'un coup, demande "
+                             "de reprendre plus lentement."),
+            },
+        },
+    },
+
     "rendezvous": {
         "cadre": "un appel téléphonique à une clinique, au sujet d'un rendez-vous médical",
         "contexte_label": "La situation que vous avez tous les deux sous les yeux",
