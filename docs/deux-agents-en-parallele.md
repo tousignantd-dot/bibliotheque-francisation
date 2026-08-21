@@ -18,6 +18,7 @@ la paire change, on réécrit la répartition, pas le protocole.
 | B | Niveau 8 · Emploi | `module-n8-emploi` | **61** | 16 séances |
 | C | Niveau 5 · Problèmes reliés à l'habitation | `module-n5-degat` | **62** | 16 séances |
 | D | Niveau 5 · Emménagement dans un nouveau logement | `module-n5-emmenagement` | **63** | 16 séances |
+| E | Niveau 5 · Utilisation des services publics | `module-n5-services` | **64** | 16 séances · **livré, audio en attente** |
 
 **Quatre agents à la fois, et non deux** — décision de l'utilisateur le 20 août
 2026, pendant son absence : la vague 1 et la vague 2 de
@@ -61,6 +62,31 @@ les huit fichiers du niveau 6 se sont trouvés *staged* au moment précis d'un
 commit du niveau 5. Répéter les chemins après `--` est la seule façon de s'en
 tenir aux siens, et `git show --name-only --format="" HEAD` le vérifie en une
 ligne.
+
+**Vu de l'autre côté, le 21 août 2026, en produisant le niveau 5 · services.**
+La règle est écrite du point de vue de celui qui commet la faute ; voici ce que
+ça fait quand on la subit. Un `git add` avait échoué sur un chemin de
+`.gitignore`, laissant quatre-vingt-douze fichiers *staged* sans commit. Dans
+l'intervalle, une autre session a fait son `git commit` — et les
+quatre-vingt-douze sont partis dans le sien, sous un message qui parlait
+d'extraits audio. **Rien n'a été perdu**, et il n'y a rien à réparer : les
+fichiers sont suivis, poussés, servis. Mais l'historique ment, et on ne
+réécrit pas l'historique d'une branche partagée pour si peu.
+
+Deux conséquences pratiques, à ajouter à la règle 1 :
+
+- **ne jamais laisser l'index habité entre un `add` et un `commit`.** Si le
+  `commit` échoue, il faut recommencer tout de suite, pas plus tard ;
+- **`git add` échoue en entier sur un seul mauvais chemin.** Un dossier ignoré
+  dans la liste (`build/powerpoints/_captures`, par exemple) et rien n'est
+  ajouté — sans que ce soit une erreur fatale visible dans un enchaînement.
+  D'où l'intérêt de `--pathspec-from-file`, qui prend la liste dans un fichier
+  et se relit.
+
+Et un piège de shell, qui a coûté deux tentatives : **le shell de cet outil est
+zsh, où `$VARIABLE` ne se découpe pas en mots.** `git add $CHEMINS` passe donc
+la liste entière comme un seul chemin et échoue avec un message de cent lignes.
+`${=CHEMINS}` en zsh, ou `--pathspec-from-file`, qui est plus lisible.
 
 **2. Commiter et pousser souvent, par petites tranches.**
 
