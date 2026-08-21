@@ -286,6 +286,18 @@ MODULES = {
                         "L'article",
                         "L'opinion"),
     },
+
+    'module-n8-emploi': {
+        'numero': 1, 'activite': 61, 'niveau': 8,
+        'titre': "Tenir son bout au travail",
+        'chapeau': "Comprendre ses tâches en détail, régler un problème de "
+                   "paie, intervenir dans une réunion de décision et demander "
+                   "une formation.",
+        'seances': GRILLE_3_DEFIS,
+        'blocs': _blocs('Une erreur sur la paie',
+                        'La réunion',
+                        'Se perfectionner'),
+    },
 }
 
 # L'ordre d'affichage : par niveau, puis par numéro à l'intérieur du niveau.
