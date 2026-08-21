@@ -872,36 +872,51 @@ async function telechargerPresentations(id) {
   }
 }
 
-function montrerBanniere(cause) {
+/* La bannière disait toujours « lancez server.py », quelle que soit la panne.
+   En production le serveur n'est pas local, et une session expirée renvoie de
+   toute façon à l'écran de connexion avant d'arriver ici : ce message envoyait
+   donc chercher une panne qui n'existe pas. Elle dit maintenant ce qui a
+   réellement échoué. */
+function montrerBanniere(detail) {
   const banniere = document.getElementById('serverBanner');
   const texte = document.getElementById('serverBannerText');
-  texte.innerHTML = cause === 'connexion'
-    ? '\u26a0\ufe0f Votre session enseignante a expir\u00e9. '
-      + '<a href="enseignant.html">Reconnectez-vous \u00e0 l\'espace enseignant</a>, '
-      + 'puis revenez au catalogue.'
-    : '\u26a0\ufe0f Le serveur local n\'est pas d\u00e9marr\u00e9. Ouvrez un Terminal et lancez\u00a0: '
-      + '<code>python3 /Users/danieltousignant/Claude/bibliotheque-francisation/server.py</code> '
-      + 'puis rafra\u00eechissez la page.';
+  const local = location.hostname === 'localhost' || location.hostname === '127.0.0.1';
+  const aide = local
+    ? ' Le serveur local n\'est peut-\u00eatre pas d\u00e9marr\u00e9\u00a0: '
+      + '<code>python3 server.py</code>, puis rafra\u00eechissez.'
+    : ' Rafra\u00eechissez la page\u00a0; si le message revient, notez ce d\u00e9tail.';
+  texte.innerHTML = '\u26a0\ufe0f Le catalogue n\'a pas pu \u00eatre charg\u00e9\u00a0: '
+    + '<strong>' + escapeHtmlBanniere(detail) + '</strong>.' + aide;
   banniere.style.display = 'block';
 }
 
+function escapeHtmlBanniere(s) {
+  return String(s).replace(/[&<>"']/g, c => (
+    { '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]
+  ));
+}
+
 async function loadList() {
+  let etape = 'requête';
   try {
     // `catalogue=1` : le fonds entier, sans les dates d'un groupe.
     const res = await Prof.fetch('/api/activities?catalogue=1');
-    // 401 : le serveur répond très bien, c'est la session enseignante qui
-    // manque ou qui a expiré. Dire « lancez server.py » ici envoyait chercher
-    // une panne qui n'existe pas — surtout en production, où le serveur n'est
-    // pas local du tout.
-    if (res.status === 401) { montrerBanniere('connexion'); renderList([]); return; }
-    if (!res.ok) throw new Error();
+    if (!res.ok) {
+      // Le corps d'erreur du serveur vaut mieux que le code seul.
+      let msg = '';
+      try { msg = (await res.json()).error || ''; } catch {}
+      throw new Error(`HTTP ${res.status}${msg ? ' — ' + msg : ''}`);
+    }
+    etape = 'lecture des données';
     allActivities = await res.json();
+    etape = 'affichage';
     await loadPresentations();
     populateFilterOptions();
     applyFilters();
     document.getElementById('serverBanner').style.display = 'none';
-  } catch {
-    montrerBanniere('serveur');
+  } catch (err) {
+    console.error('[catalogue] échec au stade « %s »', etape, err);
+    montrerBanniere(`${etape} — ${err?.message || err}`);
     renderList([]);
   }
 }
