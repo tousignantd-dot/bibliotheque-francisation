@@ -415,6 +415,20 @@ rien travailler.
   lue telle quelle à l'élève. Vingt-neuf blocs étaient dans ce cas. Écrire un
   `say` sur chaque `ana`, sans exception.
 
+**L'audio est en attente, et c'est la seule pièce qui manque.** Neuf MP3 sur
+230 ont été produits avant que `api.elevenlabs.io` ne devienne injoignable, le
+21 août vers 00 h 25 — la poignée de main TLS est coupée juste après le
+*Client hello*, y compris hors du bac à sable et avec `curl`. Voir la section
+« Le bac à sable réseau bloque ElevenLabs » de `docs/deux-agents-en-parallele.md`
+et sa précision du 21 août. Le générateur `generer_audio_module_n8_emploi.py`
+est écrit, vérifié, relançable, et son manifeste `sons_module_n8_emploi.json`
+est complet (152 entrées) : il n'y a qu'à le relancer quand la liaison revient.
+
+    python3 generer_audio_module_n8_emploi.py
+
+Aucun `AUDIO_V` à incrémenter : ce sont des fichiers neufs, pas des fichiers
+régénérés sous le même nom.
+
 **Originalité : 0 %.** Aucun des 184 énoncés visibles par l'élève n'est
 identique à un énoncé d'un autre module du dépôt. Rien n'a été copié d'un
 manuel ; le programme n'a donné que la spécification.
