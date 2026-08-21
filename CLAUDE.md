@@ -298,6 +298,26 @@ Deux pièges déjà payés :
   documentation le disait déjà — aucun module ne l'avait montré avant, parce
   qu'aucun titre ne contenait d'apostrophe ; et les lignes d'un bloc `piege` de
   `plus.js` sont des **tableaux**, donc fermées par `]`, jamais par `}`.
+- **Les clés de `CARRIER_PHRASES` sont les mots accentués**, tels qu'ils
+  paraissent dans les listes `savoir[…][2]` de `exos.js`. Le gabarit fait
+  `CARRIER_PHRASES[w]` sur le mot affiché : une clé écrite en slug (`allee`
+  pour « allée ») n'est jamais trouvée, et la pastille lit alors le mot seul —
+  mal prononcé, ce que la phrase porteuse existe précisément pour éviter.
+  Rien ne le signale : le build passe, l'audio se paie, et le défaut ne
+  s'entend qu'à l'écoute. Découvert le 21 août 2026 en produisant
+  `module-n3-vetements` ; `module-n3-epicerie` le porte encore sur douze de
+  ses quinze mots.
+- **`carrier.js` doit commencer par `const CARRIER_PHRASES = `**, comme les
+  six autres fichiers de contenu commencent par le leur. Un commentaire
+  d'en-tête arrête le build : le commentaire va **dans** l'objet.
+- **Le relevé des sons se fait aussi hors navigateur.** Une page de module
+  ouverte en `data:` ou en `file:` ne peut pas écrire dans `localStorage` :
+  `render()` y échoue, et le relevé par le DOM rend **zéro** pastille de mot
+  sans rien signaler. Vingt lignes de node sur `exos.js`, `carrier.js` et
+  `plus.js` reproduisent les trois endroits du gabarit qui appellent
+  `playWord` — le bloc `savoir` (`ex.id+'_savoir_'+ri+'_'+wi`), les exercices
+  `vf` à cartes (`ex.id+'_'+r.id`) et `plAudioManifest()` — et donnent le même
+  résultat que la console, vérification faite.
 - **Tout bloc `ana` d'une mini-leçon veut son champ `say:`.** Sans lui, le
   bouton d'écoute ne se tait pas : le moteur concatène toutes les lignes de
   `mots`, balises HTML comprises, et l'extrait audio part lire « cent quarante
