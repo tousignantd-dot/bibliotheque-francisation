@@ -2861,7 +2861,124 @@ JEU_DE_ROLE_AUTOBUS = {
 }
 
 
+# Trois postes pour le module de niveau 6 « Chercher un emploi ». Au niveau 6,
+# l'élève tient un discours détaillé : l'employeur pose donc de vraies questions
+# ouvertes et relance quand la réponse tient en une phrase. Ce que l'employeur
+# sait du poste vit ici, côté serveur — sinon l'élève lirait dans la page les
+# réponses qu'il est censé aller chercher.
+JEU_DE_ROLE_ENTREVUE = {
+    "inventaire": {
+        "contexte": (
+            "Le petit bureau vitré d'un entrepôt de meubles, à Longueuil. Une "
+            "courte entrevue pour un poste de commis à l'inventaire."
+        ),
+        "employeur": [
+            "Tu es chef d'entrepôt chez Boisverte, un fabricant de meubles en bois massif fondé en 1998.",
+            "L'entreprise compte une quarantaine d'employés et a agrandi son entrepôt l'an dernier.",
+            "Le poste est permanent, 37,5 h, de 7 h à 15 h du lundi au vendredi, rarement du temps supplémentaire.",
+            "L'assurance collective commence après trois mois ; il y a deux semaines de vacances la première année.",
+            "Deux ans d'expérience en entrepôt sont requis ; connaître un logiciel d'inventaire est un atout, pas une exigence.",
+            "Ton logiciel s'apprend en deux semaines : ce qui t'intéresse, c'est la rigueur, pas la marque du logiciel.",
+            "Tu veux qu'on te signale tout de suite un écart entre le papier et la tablette.",
+            "Tu reçois trois personnes cette semaine et tu rappelleras vendredi, quelle que soit ta décision.",
+        ],
+        "candidat": [
+            "Tu postules pour un poste de commis à l'inventaire et tu as de l'expérience dans le domaine.",
+            "Tu développes chaque réponse avec un exemple précis et un chiffre.",
+            "Tu dis honnêtement ce que tu ne connais pas encore, et ce que tu es prêt à apprendre.",
+            "Avant de conclure, tu poses au moins une question sur l'horaire, l'équipe ou la formation.",
+        ],
+    },
+    "restauration": {
+        "contexte": (
+            "Une table du fond, dans un restaurant de quartier fermé entre deux "
+            "services. Une entrevue pour un poste d'aide-cuisinier."
+        ),
+        "employeur": [
+            "Tu es propriétaire d'un restaurant de quartier de quarante places, ouvert depuis six ans.",
+            "Le poste est à temps partiel : de vingt à vingt-cinq heures, surtout les soirs et les fins de semaine.",
+            "L'expérience est un atout, pas une exigence : tu formes toi-même la personne en deux semaines.",
+            "Le salaire est le minimum plus le partage des pourboires de la cuisine.",
+            "Ce qui compte pour toi : la ponctualité, la propreté et la capacité à tenir un coup de feu sans paniquer.",
+            "Tu demandes toujours si la personne peut travailler les vendredis et samedis soir : c'est là que tu manques de monde.",
+            "Tu décides vite — souvent dans les deux jours.",
+        ],
+        "candidat": [
+            "Tu postules comme aide-cuisinier et tu cherches un horaire de soir.",
+            "Tu dis clairement tes disponibilités, y compris les fins de semaine.",
+            "Si tu n'as pas d'expérience en restaurant, tu parles de ce que tu sais faire ailleurs : la vitesse, l'ordre, le travail en équipe.",
+            "Tu poses une question sur la formation ou sur le nombre d'heures réelles.",
+        ],
+    },
+    "entretien": {
+        "contexte": (
+            "Le hall d'un immeuble de bureaux, en fin d'après-midi. Une entrevue "
+            "pour un poste de préposé à l'entretien."
+        ),
+        "employeur": [
+            "Tu gères un immeuble de bureaux de six étages pour une compagnie d'entretien.",
+            "Le poste est de soir : de 17 h à 23 h, du lundi au vendredi, à temps plein.",
+            "La personne travaille seule la plupart du temps : l'autonomie compte plus que l'expérience.",
+            "Tu fournis les produits, l'équipement et l'uniforme ; il faut être capable de soulever une vingtaine de kilos.",
+            "Une vérification d'antécédents est demandée, parce que la personne a les clés de l'immeuble.",
+            "Tu insistes sur la ponctualité : un étage non fait le soir se voit le lendemain matin.",
+            "Tu offres une formation payée de trois jours au début.",
+        ],
+        "candidat": [
+            "Tu postules pour un poste d'entretien de soir et l'horaire te convient.",
+            "Tu montres que tu es capable de travailler seul et d'organiser ton temps.",
+            "Tu donnes un exemple concret d'un travail que tu as fait sans supervision.",
+            "Tu poses une question sur la formation, l'équipement ou la vérification demandée.",
+        ],
+    },
+}
+
+
 JEU_DE_ROLE_SCENARIOS = {
+    "entrevue": {
+        "cadre": "une courte entrevue d'embauche",
+        "contexte_label": "Le poste et le lieu que vous avez tous les deux en tête",
+        "cas": JEU_DE_ROLE_ENTREVUE,
+        "adresse": "Vouvoie l'élève : c'est une rencontre professionnelle entre deux personnes qui ne se connaissent pas.",
+        "sujets": [
+            "la présentation et le parcours, en quelques phrases",
+            "un exemple précis d'une tâche déjà faite, avec un chiffre",
+            "ce que la personne sait faire, et ce qu'elle ne connaît pas encore",
+            "les disponibilités et la date d'entrée en poste",
+            "au moins une question posée par la personne qui postule",
+            "la suite du processus, et un merci pour finir",
+        ],
+        "cloture": ("Quand les sujets sont couverts, dis que tu rencontres d'autres "
+                    "personnes cette semaine, annonce quand tu donneras une réponse, "
+                    "et remercie la personne d'être venue."),
+        "ouverture": {
+            "candidat": "Bonjour. Marisol Aguirre, je viens pour l'entrevue.",
+            "employeur": "Bonjour, entrez, asseyez-vous. Merci d'être venue.",
+        },
+        "roles": {
+            "employeur": {
+                "qui": ("Tu fais passer l'entrevue. L'élève est la personne qui "
+                        "postule."),
+                "conduite": ("Pose des questions ouvertes — « Parlez-moi de votre "
+                             "expérience », « Racontez-moi un problème que vous avez "
+                             "réglé » — et une seule à la fois. Si la réponse tient en "
+                             "une phrase, relance une fois : « Donnez-moi un exemple. » "
+                             "Ne donne jamais un renseignement sur le poste avant qu'on "
+                             "te le demande : c'est à l'élève d'aller le chercher. Reste "
+                             "cordial et direct, jamais intimidant, et demande à la fin "
+                             "si la personne a des questions."),
+            },
+            "candidat": {
+                "qui": ("Tu es la personne qui postule. L'élève fait passer "
+                        "l'entrevue."),
+                "conduite": ("Réponds en trois ou quatre phrases, avec un exemple "
+                             "concret et un chiffre. Emploie un connecteur "
+                             "d'exemplification — par exemple, notamment, entre autres. "
+                             "Si la question n'est pas claire, fais-la répéter. Pose ta "
+                             "propre question avant la fin de la rencontre."),
+            },
+        },
+    },
     "autobus": {
         "cadre": "une demande d'information dans la rue ou à un arrêt d'autobus",
         "contexte_label": "L'endroit où vous vous trouvez tous les deux",
