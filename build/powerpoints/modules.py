@@ -873,6 +873,27 @@ MODULES = {
                         "Ce que j'en pense"),
     },
 
+    # Niveau 5, situation « Météo ». La météo n'y est plus une information
+    # mais une contrainte : quelqu'un attend une décision, et cette décision
+    # engage trente personnes. Ne recoupe pas `module-meteo` (34), au niveau
+    # 4, qui écoute le bulletin pour savoir quoi mettre pour sortir, ni
+    # `module-n2-neige`, qui n'en garde que les trois mots du matin. Ne
+    # recoupe pas non plus `module-n5-transport` (69), même niveau, où la
+    # décision porte sur son propre trajet du matin même : ici elle porte sur
+    # un groupe et sur la semaine prochaine, ce qui oblige au futur simple.
+    'module-n5-saisons': {
+        'numero': 12, 'activite': 72, 'niveau': 5,
+        'titre': 'Quand la m\u00e9t\u00e9o d\u00e9cide',
+        'chapeau': "Distinguer une veille d'un avertissement, tirer d'un "
+                   "bulletin ce qui est annonc\u00e9 et pour quand, d\u00e9cider si "
+                   "une activit\u00e9 est maintenue, report\u00e9e ou annul\u00e9e, puis "
+                   "dire pourquoi et ce qu'il faut apporter.",
+        'seances': GRILLE_3_DEFIS,
+        'blocs': _blocs("Ce que l'avertissement annonce",
+                        'La d\u00e9cision, et pourquoi',
+                        "Ce qu'il faut apporter"),
+    },
+
     'module-n5-oeuvres': {
         'numero': 13, 'activite': 73, 'niveau': 5,
         'titre': 'Le club du jeudi',
