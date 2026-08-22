@@ -1,0 +1,172 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>A4 · La première phrase, et où on la dit — Fiche élève</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800;900&display=swap" rel="stylesheet">
+<style>
+/* ═══════════════════════════════════════════════════════════════
+   FICHE ÉLÈVE · IMPRESSION LETTRE, NOIR ET BLANC
+   ───────────────────────────────────────────────────────────────
+   Aucune couleur : ces fiches sont photocopiées en noir et blanc.
+   Toute la hiérarchie passe par la GRAISSE, les FILETS et les MOTS.
+   C'est d'ailleurs la règle du système de design poussée à son
+   terme : « jamais d'information portée par la couleur seule ».
+
+   Les gris viennent des neutres du système (ink-900 à ink-400),
+   qui sont déjà quasi neutres. Les filets sont volontairement plus
+   sombres qu'à l'écran : une photocopieuse efface tout ce qui est
+   plus clair que 15 % de noir.
+   ═══════════════════════════════════════════════════════════════ */
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+:root{
+  --paper:#FFFFFF;
+  --tint:#F0F0EE;          /* aplat le plus clair encore visible en photocopie */
+  --line:#C9C9C6;          /* filet fin */
+  --rule:#17181A;          /* filet structurant */
+  --ink:#17181A;           /* titres */
+  --body:#2B2E30;          /* texte courant, un cran plus sombre qu'à l'écran */
+  --soft:#4B4F52;          /* texte secondaire */
+  --muted:#5E6165;         /* sur-titres, méta */
+}
+html{background:#BBBBBB}
+body{
+  font-family:'Nunito','Trebuchet MS',sans-serif;
+  font-size:11.5pt; line-height:1.5; color:var(--body);
+  background:var(--paper);
+  width:215.9mm;                    /* 8,5 po — format lettre */
+  margin:0 auto; padding:14mm 15mm 16mm;
+  -webkit-print-color-adjust:exact; print-color-adjust:exact;
+}
+h1,h2,h3{color:var(--ink); line-height:1.2; letter-spacing:-0.01em}
+
+/* ── En-tête ── */
+.hdr{border-bottom:2.5px solid var(--rule); padding-bottom:8px; margin-bottom:14px;
+     display:flex; align-items:flex-end; gap:14px}
+.hdr-l{flex:1}
+.eyebrow{font-size:9.5pt; font-weight:800; text-transform:uppercase;
+         letter-spacing:.12em; color:var(--muted)}
+.hdr h1{font-size:22pt; font-weight:900; margin-top:3px}
+.hdr-r{flex-shrink:0; display:flex; gap:10px; align-items:flex-end;
+       font-size:9.5pt; font-weight:800; text-transform:uppercase;
+       letter-spacing:.08em; color:var(--muted); padding-bottom:2px}
+.nomline{display:inline-block; border-bottom:1.5px solid var(--rule);
+         height:6mm; vertical-align:bottom; margin-left:5px}
+.nomline--nom{width:48mm} .nomline--date{width:26mm}
+.chapeau{font-size:12pt; font-weight:600; color:var(--soft); margin-bottom:16px}
+
+/* ── Blocs ── */
+.bloc{break-inside:avoid; page-break-inside:avoid; margin-bottom:13px}
+.card{border:1px solid var(--line); border-radius:12px; padding:11px 14px 12px;
+      background:var(--paper)}
+.lbl{font-size:9.5pt; font-weight:800; text-transform:uppercase;
+     letter-spacing:.12em; color:var(--muted); margin-bottom:5px}
+h2.t{font-size:15pt; font-weight:900; margin-bottom:7px}
+.consigne{font-size:11pt; font-weight:600; color:var(--soft); margin-bottom:8px}
+
+/* ── Objectifs et exercices : pastille en cerne, jamais en aplat ── */
+ol.obj,ol.ex{list-style:none}
+ol.obj{counter-reset:o} ol.ex{counter-reset:e}
+ol.obj li,ol.ex li{position:relative; padding-left:9mm; font-weight:600}
+ol.obj li{counter-increment:o; margin-bottom:6px}
+ol.ex li{counter-increment:e; margin-bottom:9px; break-inside:avoid}
+ol.obj li::before,ol.ex li::before{
+  position:absolute; left:0; top:0; width:6mm; height:6mm; border-radius:50%;
+  border:1.5px solid var(--rule); color:var(--ink);
+  font-size:9.5pt; font-weight:800;
+  display:flex; align-items:center; justify-content:center}
+ol.obj li::before{content:counter(o)}
+ol.ex li::before{content:counter(e)}
+
+/* ── Dialogue ── */
+.rep{display:flex; gap:10px; padding:4px 0; border-top:1px solid var(--line)}
+.rep:first-of-type{border-top:0}
+.rep--key{background:var(--tint); border-radius:8px; padding:5px 8px;
+          border-top:0; margin:2px 0}
+.qui{flex:0 0 30mm; font-weight:800; color:var(--ink); font-size:10.5pt}
+
+/* ── Règle : encadrée au filet épais, c'est elle qu'on repère de loin ── */
+.regle{border:2.5px solid var(--rule); border-radius:12px; padding:12px 14px}
+.regle .lbl{color:var(--ink)}
+.regle p.r{font-size:14pt; font-weight:900; color:var(--ink); line-height:1.3}
+.regle p.pr{margin-top:7px; font-weight:600; color:var(--soft)}
+
+/* ── Tableau ── */
+table{width:100%; border-collapse:collapse}
+th{font-size:9.5pt; font-weight:800; text-transform:uppercase; letter-spacing:.1em;
+   color:var(--muted); text-align:left; padding:0 8px 5px 0;
+   border-bottom:1.5px solid var(--rule)}
+td{padding:6px 8px 6px 0; border-top:1px solid var(--line); vertical-align:top;
+   font-weight:600}
+td.cle{font-weight:900; color:var(--ink)}   /* la colonne clé : en gras, pas en couleur */
+.note{margin-top:8px; font-size:10.5pt; font-weight:600; color:var(--soft);
+      background:var(--tint); border-radius:9px; padding:8px 11px}
+
+/* ── Cartes ── */
+.grid{display:grid; grid-template-columns:1fr 1fr; gap:9px}
+.grid .card h3{font-size:11.5pt; font-weight:900; color:var(--ink); margin-bottom:3px}
+.grid .card p{font-size:11pt}
+
+/* ── Piège : le filet distingue les deux colonnes, pas la couleur ──
+   À gauche, un filet TIRETÉ — ce qui ne tient pas.
+   À droite, un filet PLEIN et épais — ce qu'il faut retenir.
+   Les deux intitulés disent la même chose en mots.                */
+.duo{display:grid; grid-template-columns:1fr 1fr; gap:10px}
+.duo>div{border-radius:12px; padding:10px 13px}
+.duo .no{border:1.5px dashed var(--muted)}
+.duo .ok{border:2.5px solid var(--rule); background:var(--tint)}
+.duo .k{font-size:9.5pt; font-weight:800; text-transform:uppercase;
+        letter-spacing:.1em; margin-bottom:4px; color:var(--muted)}
+.duo .ok .k{color:var(--ink)}
+.duo p.ph{font-size:12pt; font-weight:800; color:var(--ink); line-height:1.3}
+.duo .no p.ph{font-weight:600; font-style:italic; color:var(--soft)}
+
+/* ── Vocabulaire ── */
+.voc{width:100%; border-collapse:collapse}
+.voc td{border-top:1px solid var(--line); padding:6px 8px 6px 0}
+.voc td.mot{width:38%; font-weight:900; color:var(--ink)}
+.voc td.def{color:var(--soft)}
+
+/* ── Zones de réponse ── */
+.ligne{display:block; border-bottom:1px dotted #8E8E8A; height:8mm; margin-top:2px}
+.ligne--court{width:55%}
+
+/* ── Billet de sortie ── */
+.billet{border:2.5px solid var(--rule); border-radius:12px; padding:13px 15px}
+.billet .k{font-size:9.5pt; font-weight:800; text-transform:uppercase;
+           letter-spacing:.12em; color:var(--ink); margin-bottom:4px}
+.billet p.c{font-size:14pt; font-weight:900; color:var(--ink); line-height:1.3}
+.billet ul{list-style:none; margin-top:7px}
+.billet li{font-weight:600; color:var(--soft); margin-bottom:3px}
+
+/* ── Pied ── */
+footer{margin-top:16px; padding-top:7px; border-top:1px solid var(--line);
+       font-size:9.5pt; font-weight:700; color:var(--muted);
+       display:flex; justify-content:space-between}
+
+/* ── Impression ── */
+@page{size:8.5in 11in; margin:14mm 15mm}
+@media print{
+  html{background:#FFFFFF}
+  body{width:auto; padding:0}
+  .bloc{break-inside:avoid; page-break-inside:avoid}
+  h2.t,.lbl{break-after:avoid; page-break-after:avoid}
+}
+</style>
+</head>
+<body>
+<header class="hdr">
+  <div class="hdr-l">
+    <div class="eyebrow">Séance A4 · Module 13 · 75 minutes</div>
+    <h1>La première phrase, et où on la dit</h1>
+  </div>
+  <div class="hdr-r"><span>Nom<span class="nomline nomline--nom"></span></span><span>Date<span class="nomline nomline--date"></span></span></div>
+</header>
+<p class="chapeau">Une bibliothèque de quartier, c'est un rayon, un comptoir, une salle du fond et un babillard à l'entrée. Chacun de ces endroits demande une façon de parler d'une œuvre — et tous commencent par la même phrase.</p>
+<section class="bloc card"><div class="lbl">Objectifs</div><h2 class="t">À la fin, je serai capable de…</h2><ol class="obj"><li>reconnaître les lieux d'une bibliothèque de quartier et ce qu'on y fait ;</li><li>écrire la première phrase d'une présentation : support, genre, longueur ;</li><li>la dire à voix haute sans la lire ;</li><li>comprendre ce qu'un carton de coup de cœur contient et ne contient pas.</li></ol></section><section class="bloc"><div class="lbl">Quatre endroits, quatre façons de parler</div><h2 class="t">Dans une bibliothèque de quartier</h2><div class="grid"><div class="card"><h3>Le rayon</h3><p>On cherche seul. On lit les dos, on ouvre, on repose.</p></div><div class="card"><h3>Le comptoir</h3><p>On demande conseil. Il faut dire ce qu'on a aimé avant qu'on nous conseille.</p></div><div class="card"><h3>La salle du fond</h3><p>Le club. On parle deux minutes, personne ne coupe, on justifie.</p></div><div class="card"><h3>Le babillard</h3><p>On écrit pour quelqu'un qu'on ne verra jamais. Sept à dix phrases.</p></div></div></section><section class="bloc regle"><div class="lbl">La première phrase dit toujours trois choses</div><p class="r">Le support, le genre, et une mesure : trois cents pages, huit épisodes, deux heures.</p><p class="pr">« C'est un roman, une histoire de famille, à peu près trois cents pages. » Après cette phrase-là, la personne en face sait dans quoi elle s'embarque, et tout ce que vous ajoutez ensuite se range tout seul. Sans elle, les dix premières secondes servent à deviner de quoi vous parlez.</p></section><section class="bloc card"><div class="lbl">Cinq moules</div><h2 class="t">La même phrase, selon le support</h2><table><thead><tr><th>Support</th><th>La première phrase</th></tr></thead><tbody><tr><td>Un roman</td><td class="cle">C'est un roman, une histoire de famille, trois cents pages.</td></tr><tr><td>Une bande dessinée</td><td class="cle">C'est le premier tome d'une série de quatre albums.</td></tr><tr><td>Une série</td><td class="cle">C'est une série de huit épisodes de quarante minutes.</td></tr><tr><td>Un film</td><td class="cle">C'est un film de deux heures, une histoire vraie.</td></tr><tr><td>Une chanson</td><td class="cle">C'est une chanson de quatre minutes, mon coup de cœur du mois.</td></tr></tbody></table></section><section class="bloc card"><div class="lbl">Repérage</div><h2 class="t">Où est-on, et qu'est-ce qu'on y voit ?</h2><p class="consigne">Associez chaque description au lieu ou à l'objet.</p><ol class="ex"><li><span class="q">Une affiche collée sur la porte vitrée d'une salle.</span><span class="ligne ligne--court"></span></li><li><span class="q">Une dizaine de chaises placées en cercle.</span><span class="ligne"></span></li><li><span class="q">Un rayon rempli de romans du plancher au plafond.</span><span class="ligne ligne--court"></span></li><li><span class="q">Des livres debout et de petits cartons écrits à la main.</span><span class="ligne"></span></li><li><span class="q">Un grand livre dont la page est découpée en petits carrés.</span><span class="ligne"></span></li><li><span class="q">Une femme assise près d'une fenêtre, un casque sur les oreilles.</span><span class="ligne ligne--court"></span></li></ol></section><section class="bloc"><div class="lbl">Attention</div><h2 class="t">Écrire un carton qui ne dit pas ce que c'est</h2><div class="duo"><div class="no"><div class="k">On entend souvent</div><p class="ph">Un livre magnifique, je l'ai adoré, courez le lire !</p></div><div class="ok"><div class="k">Il faut dire plutôt</div><p class="ph">C'est un roman, une histoire de famille. Ce qui m'a touchée, c'est…</p></div></div><div class="note">Un carton de babillard est lu par quelqu'un qui passe et qui n'a pas trente secondes. S'il ne sait pas ce que c'est en une ligne, il continue son chemin — et l'enthousiasme tout seul n'a jamais fait lire personne.</div></section><section class="bloc card"><div class="lbl">À l'oral</div><h2 class="t">Dites votre première phrase</h2><p class="consigne">Debout, sans lire. Trois choses : le support, le genre, une mesure.</p><ol class="ex"><li><span class="q">Dites-la une première fois, en lisant si nécessaire.</span><span class="ligne ligne--court"></span></li><li><span class="q">Redites-la sans regarder votre feuille.</span><span class="ligne ligne--court"></span></li><li><span class="q">Redites-la une troisième fois, plus lentement.</span><span class="ligne ligne--court"></span></li><li><span class="q">Écoutez celle de votre voisin et dites ce que vous avez retenu.</span><span class="ligne ligne--court"></span></li></ol></section><section class="bloc billet"><div class="k">Billet de sortie</div><p class="c">Écrivez la première phrase de votre présentation, telle que vous la direz.</p><ul><li>Trois choses : le support, le genre, et une mesure — pages, épisodes, minutes.</li><li>Relisez-la à voix basse : si elle ne tient pas en une respiration, coupez.</li></ul><span class="ligne"></span><span class="ligne"></span><span class="ligne"></span></section>
+<footer><span>A4 · Le club du jeudi</span><span>Fiche élève</span></footer>
+</body>
+</html>
