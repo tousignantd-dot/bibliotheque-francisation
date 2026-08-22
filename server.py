@@ -6590,7 +6590,178 @@ JEU_DE_ROLE_DEMARCHEINTERNE = {
 }
 
 
+# module-n6-sante (activité 104) — la consultation en médecine interne.
+# **Aucun conseil de santé qui pourrait être suivi.** L'assistant qui joue la
+# spécialiste n'énonce jamais de diagnostic, ne nomme aucun médicament, ne
+# donne aucune dose et ne dit jamais quoi faire devant un symptôme : il
+# explique une démarche, il demande des examens et il dit ce qu'on ne sait pas
+# encore. Les seules notions de santé nommées le sont comme vocabulaire, à la
+# façon dont le programme du niveau 6 les nomme lui-même.
+JEU_DE_ROLE_SPECIALISTE = {
+    "fatigue": {
+        "contexte": (
+            "Le bureau d'une interniste, dans la clinique externe d'un "
+            "hôpital régional, un jeudi en fin d'avant-midi. Le rendez-vous "
+            "dure vingt minutes et il a été attendu sept mois. La personne "
+            "consulte pour une fatigue apparue en février et qui ne part "
+            "pas ; elle est aide à domicile et commence sa journée à sept "
+            "heures. Un bilan sanguin de mars montrait une anémie légère, "
+            "dont la cause n'est pas connue."
+        ),
+        "leyla": [
+            "Tu commences par « je suis fatiguée » et tu ne sais pas quoi "
+            "ajouter.",
+            "Tu as du mal à dater le début autrement que par un évènement de "
+            "ta vie.",
+        ],
+        "specialiste": [
+            "Tu ne demandes pas comment la personne va : tu demandes ce qui a "
+            "changé, et depuis quand.",
+            "Tu refuses les moyennes et tu fais décrire une journée "
+            "ordinaire, heure par heure.",
+            "Tu reformules chaque réponse utile pour montrer ce qui est un "
+            "renseignement et ce qui n'en est pas un.",
+            "Tu ne poses aucun diagnostic et tu ne nommes aucun médicament.",
+        ],
+    },
+    "resultat": {
+        "contexte": (
+            "La personne a entendu le mot « anémie » au printemps, sans "
+            "explication. Une anémie est un résultat d'analyse : elle dit que "
+            "le sang transporte l'oxygène moins bien qu'il le devrait. Ce "
+            "n'est pas une cause, et les causes possibles sont nombreuses. "
+            "C'est pour cela qu'on demande d'autres examens plutôt que de "
+            "donner une réponse le jour même."
+        ),
+        "leyla": [
+            "Tu crois qu'un mot écrit sur une feuille est déjà un diagnostic.",
+            "Tu veux savoir si c'est grave, et tu le demandes franchement.",
+        ],
+        "specialiste": [
+            "Tu expliques la différence entre un résultat et une cause, une "
+            "fois, calmement, avec des mots ordinaires.",
+            "Tu dis ce que tu ne sais pas, et pourquoi tu ne le sais pas "
+            "encore.",
+            "Tu ne réponds jamais « c'est grave » ni « ce n'est rien » : tu "
+            "dis ce que tu vois et ce que tu vas chercher.",
+            "Tu n'inventes aucun chiffre et tu ne recommandes aucun produit "
+            "ni aucun traitement.",
+        ],
+    },
+    "suite": {
+        "contexte": (
+            "La fin de la rencontre. Rien n'est nommé aujourd'hui, et il "
+            "reste à dire ce qui vient ensuite : de nouveaux prélèvements au "
+            "laboratoire du rez-de-chaussée, un relevé quotidien tenu par la "
+            "personne pendant six semaines, puis un rappel du secrétariat à "
+            "la réception des résultats. Un compte rendu part au médecin de "
+            "famille, qui a fait la demande ; la personne en reçoit une "
+            "copie. Une attestation de présence peut être remise sur-le-champ, "
+            "mais un arrêt de travail relève du médecin de famille."
+        ),
+        "leyla": [
+            "Tu veux repartir en sachant qui fait quoi, et quand.",
+            "Ton employeur va te demander un papier et tu ne sais pas lequel "
+            "demander.",
+        ],
+        "specialiste": [
+            "Tu énonces la suite en trois temps, dans l'ordre, avec un délai "
+            "pour chacun.",
+            "Tu distingues ce que tu peux signer toi-même de ce qui revient "
+            "au médecin de famille.",
+            "Tu expliques ce qu'est un compte rendu de consultation et à qui "
+            "il est adressé.",
+            "Tu redemandes à la personne de te redire la suite dans ses mots "
+            "avant qu'elle parte.",
+        ],
+    },
+}
+
+
 JEU_DE_ROLE_SCENARIOS = {
+    "specialiste": {
+        "cadre": ("une consultation avec une médecin spécialiste, dans la "
+                  "clinique externe d'un hôpital, pour un problème de santé "
+                  "qui dure depuis des mois, au stade intermédiaire"),
+        "contexte_label": "Ce que vous savez tous les deux du dossier",
+        "cas": JEU_DE_ROLE_SPECIALISTE,
+        "adresse": ("Vouvoie l'élève du début à la fin : c'est un rendez-vous "
+                    "professionnel entre deux personnes qui ne se "
+                    "connaissent pas. Ne propose jamais le tutoiement."),
+        "sujets": [
+            "l'histoire racontée dans l'ordre, avec des repères de temps "
+            "accrochés à des évènements",
+            "un changement plutôt qu'un état : avant je faisais ceci, "
+            "maintenant non",
+            "un exemple précis, avec un lieu et un nombre",
+            "une demande de répétition ou d'explication quand un mot échappe",
+            "au moins deux questions posées par la personne elle-même",
+            "une reprise sans répétition : cette fatigue, ce rendez-vous, ces "
+            "examens",
+            "une reformulation de la suite, avec les dates, avant de partir",
+        ],
+        "cloture": ("Quand la personne a raconté son histoire avec des "
+                    "repères de temps, décrit au moins un changement précis "
+                    "et posé deux questions, récapitule la suite en trois "
+                    "temps avec ses délais, demande-lui de te la redire dans "
+                    "ses mots, puis conclus. N'accepte pas « ça va » ni « je "
+                    "suis fatiguée » comme réponse finale : redemande une "
+                    "fois ce qui a changé, précisément."),
+        # `ouverture[role_eleve]` est la phrase que l'ÉLÈVE dit en premier :
+        # celle qui consulte ouvre en disant ce qui l'amène, la spécialiste
+        # ouvre en accueillant et en demandant ce qui amène.
+        "ouverture": {
+            "leyla": "Bonjour. J'ai attendu sept mois pour ce rendez-vous, et je ne sais pas trop par où commencer.",
+            "specialiste": "Bonjour, assoyez-vous. J'ai votre dossier devant moi, mais je préfère l'entendre de vous. Qu'est-ce qui vous amène ?",
+        },
+        "roles": {
+            "leyla": {
+                "qui": ("Tu es une adulte de quarante et un ans, arrivée de "
+                        "Turquie il y a cinq ans, aide à domicile. Tu es "
+                        "fatiguée depuis février d'une fatigue qui ne part "
+                        "pas, et tu as attendu sept mois ce rendez-vous."),
+                "conduite": ("Niveau 6 : ton interlocuteur doit tenir une "
+                             "explication suivie, pas réciter une liste. Tu "
+                             "vouvoies. Tu racontes, tu poses des questions "
+                             "et tu notes les dates — mais tu n'expliques "
+                             "jamais la médecine à sa place : si c'est lui la "
+                             "spécialiste, tu écoutes et tu reformules. Tu "
+                             "emploies les mots du dossier : un malaise, la "
+                             "fatigue chronique, un prélèvement, un "
+                             "antécédent, un diagnostic. Tu ne connais aucun "
+                             "résultat que la spécialiste ne t'a pas donné, "
+                             "et tu n'inventes aucun symptôme spectaculaire."),
+            },
+            "specialiste": {
+                "qui": ("Tu es une médecin interniste dans la clinique "
+                        "externe d'un hôpital régional. Tu as vingt minutes "
+                        "par personne et onze rendez-vous ce matin. Tu reçois "
+                        "une adulte adressée par son médecin de famille pour "
+                        "une fatigue qui dure depuis des mois."),
+                "conduite": ("Niveau 6 : l'élève doit raconter et poser des "
+                             "questions, pas répondre à un questionnaire. Tu "
+                             "vouvoies. Tu es précise, patiente et jamais "
+                             "pressée. **Tu ne donnes aucun conseil de santé "
+                             "qui pourrait être suivi** : tu ne poses aucun "
+                             "diagnostic, tu ne nommes aucun médicament, tu "
+                             "ne donnes aucune dose, tu ne dis jamais quoi "
+                             "faire devant un symptôme et tu n'inventes aucun "
+                             "résultat. Ce que tu fais, c'est expliquer une "
+                             "démarche : tu demandes ce qui a changé et "
+                             "depuis quand, tu fais décrire une journée "
+                             "ordinaire, tu expliques qu'un résultat n'est "
+                             "pas une cause, tu annonces d'autres examens et "
+                             "tu dis franchement ce que tu ne sais pas "
+                             "encore. Si l'élève insiste pour savoir ce qu'il "
+                             "a, tu réponds que tu ne le sais pas encore, que "
+                             "tu vas chercher, et tu redis la suite. Si "
+                             "l'élève décrit quelque chose d'inquiétant, tu "
+                             "l'invites simplement à en parler à son médecin "
+                             "ou à consulter, sans rien évaluer. Tu termines "
+                             "toujours par une suite datée."),
+            },
+        },
+    },
     "reconnaitre": {
         "cadre": ("la description d'une personne à quelqu'un qui va la "
                   "chercher au terminus d'autobus et qui ne l'a jamais vue, "
