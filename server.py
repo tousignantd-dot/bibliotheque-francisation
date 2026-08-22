@@ -3892,6 +3892,73 @@ JEU_DE_ROLE_CLASSE = {
 }
 
 
+# Scénario du module-n1-classe (niveau 1, activité 98). `classe` ci-dessus est
+# celui du niveau 2 : l'élève y demande une permission, annonce une absence et
+# explique le fonctionnement de la classe. Le niveau 1 n'a que deux intentions,
+# toutes deux en compréhension orale — comprendre une consigne, comprendre
+# l'information sur le fonctionnement de la classe. L'échange se réduit donc à
+# ceci : l'enseignante dit deux mots, l'élève fait le geste, nomme un objet ou
+# dit « Pardon ? ». Rien ne se négocie, rien ne s'explique.
+JEU_DE_ROLE_CLASSE1 = {
+    "consigne": {
+        "contexte": (
+            "Une salle de classe de francisation, le tout premier matin. "
+            "L'enseignante donne des consignes de deux mots et vérifie que "
+            "chacun a compris."
+        ),
+        "enseignante": [
+            "Tu es madame Cyr, l'enseignante du groupe de niveau 1.",
+            "Tu donnes une consigne de deux ou trois mots : « Ouvrez le livre. »",
+            "Tu attends la réponse de l'élève avant d'en donner une autre.",
+            "Si l'élève ne comprend pas, tu répètes exactement les mêmes mots, plus lentement.",
+            "Tu félicites l'élève dès qu'il dit « Pardon ? » : c'est ce qu'il faut faire.",
+        ],
+        "moi": [
+            "Tu es en classe, le premier jour, et tu comprends peu de choses.",
+            "Quand tu comprends, tu dis ce que tu fais : « J'ouvre le livre. »",
+            "Quand tu ne comprends pas, tu dis « Pardon ? ».",
+            "Tu remercies à la fin.",
+        ],
+    },
+    "objet": {
+        "contexte": (
+            "La même salle. L'enseignante montre un objet de la classe et "
+            "demande à l'élève de le nommer."
+        ),
+        "enseignante": [
+            "Tu es madame Cyr. Tu montres un objet et tu demandes « Qu'est-ce que c'est ? ».",
+            "Tu nommes toi-même l'objet si l'élève ne le trouve pas, puis tu lui demandes de répéter.",
+            "Tu ne montres qu'un seul objet à la fois : un livre, un stylo, une chaise, un sac, une porte, une horloge.",
+            "Tu demandes parfois où est l'objet : « Où est le stylo ? »",
+        ],
+        "moi": [
+            "Tu nommes l'objet en un mot ou deux : « un livre ».",
+            "Tu dis où il est avec sur, dans ou sous : « sous la chaise ».",
+            "Si tu ne connais pas le mot, tu dis « Je ne sais pas ».",
+            "Tu répètes le mot après l'enseignante.",
+        ],
+    },
+    "heure": {
+        "contexte": (
+            "La fin de l'avant-midi. Un élève ne sait plus à quelle heure le "
+            "cours finit ni quels jours il y a cours."
+        ),
+        "enseignante": [
+            "Tu es madame Cyr. Tu donnes l'heure en toutes lettres : « à midi », « à huit heures et demie ».",
+            "Tu ne donnes qu'un renseignement à la fois : l'heure de la fin, puis la pause, puis les jours.",
+            "Tu dis que le cours est de lundi à jeudi et qu'il n'y a pas de cours le vendredi.",
+            "Tu montres l'horloge et l'horaire affiché près de la porte.",
+        ],
+        "moi": [
+            "Tu demandes à quelle heure le cours finit.",
+            "Tu demandes à quelle heure est la pause.",
+            "Tu demandes quels jours il y a cours.",
+            "Tu répètes l'heure entendue pour vérifier, puis tu remercies.",
+        ],
+    },
+}
+
+
 # Scénario du module-n2-couloirs (niveau 2, activité 90). Aucun scénario
 # existant ne convenait : `chemin` (niveau 4) donne six étapes et des noms de
 # terminus, ce qui est ingérable au niveau 2, et `classe` ne quitte pas la
@@ -7312,6 +7379,57 @@ JEU_DE_ROLE_SCENARIOS = {
                              "remercie et prends congé. Si l'enseignante parle vite ou "
                              "dit trois choses d'un coup, demande de reprendre plus "
                              "lentement."),
+            },
+        },
+    },
+
+    "classe1": {
+        "cadre": "un très court échange en classe, au tout premier niveau",
+        "contexte_label": "Le moment du cours où vous vous parlez",
+        "cas": JEU_DE_ROLE_CLASSE1,
+        "adresse": "Vouvoie l'élève quand tu joues l'enseignante ; l'élève, lui, vouvoie toujours son enseignante.",
+        "sujets": [
+            "une consigne de deux mots, comprise ou redemandée",
+            "« Pardon ? » quand on n'a pas compris",
+            "le nom d'un objet de la classe",
+            "où est l'objet : sur, dans, sous",
+            "l'heure du cours, de la pause, et les jours",
+            "le merci de la fin",
+        ],
+        "cloture": ("Quand la consigne est faite ou l'objet nommé, dis « c'est "
+                    "bon » et souhaite une bonne journée. N'allonge jamais : au "
+                    "niveau 1, un échange fait quatre répliques."),
+        "ouverture": {
+            "moi": "Pardon, madame ?",
+            "enseignante": "Ouvrez le livre.",
+        },
+        "roles": {
+            "enseignante": {
+                "qui": ("Tu es madame Cyr, l'enseignante de francisation du "
+                        "niveau 1. L'élève est une personne adulte arrivée "
+                        "depuis quelques semaines au Québec."),
+                "conduite": ("Niveau 1, le tout premier du programme : une "
+                             "phrase de deux à quatre mots à la fois, jamais "
+                             "deux idées ensemble, jamais de subordonnée, "
+                             "jamais de passé. Emploie seulement les mots du "
+                             "module — écoutez, regardez, ouvrez, fermez, le "
+                             "livre, le stylo, la chaise, le sac, la porte, "
+                             "l'horloge, sur, dans, sous, l'heure, midi, la "
+                             "pause, les jours de la semaine. Si l'élève ne "
+                             "comprend pas, répète exactement les mêmes mots "
+                             "plus lentement : ne reformule jamais. Ne "
+                             "demande pas d'explication : l'élève de ce "
+                             "niveau nomme et fait, il n'explique pas."),
+            },
+            "moi": {
+                "qui": ("Tu es un élève du groupe, au tout premier niveau. "
+                        "L'élève à qui tu parles joue madame Cyr, "
+                        "l'enseignante."),
+                "conduite": ("Dis une seule chose à la fois, en un à quatre "
+                             "mots. Nomme un objet, dis où il est, dis "
+                             "« Pardon ? » si tu n'as pas compris, demande "
+                             "l'heure. Ne fais jamais de phrase longue et ne "
+                             "raconte rien."),
             },
         },
     },
