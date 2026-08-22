@@ -1,13 +1,13 @@
 const PLUS = {
 
   prGraphie: {
-    eye:'Mini-leçon', tit:"Quand les lettres mentent : ch, x, sh",
+    eye:'Mini-leçon', tit:"Ce qui s'écrit ch, x, sh — et ce qui s'entend",
     blocs:[
-      {t:'texte', h:"Trois cas où l'écriture trompe l'oreille",
+      {t:'texte', h:"Trois groupes de lettres à ne pas lire comme ils s'écrivent",
        p:"Le français écrit une chose et en dit souvent une autre. Ce n'est pas grave dans la vie courante : on finit par savoir. Ça devient gênant le jour où l'on entend un mot pour la première fois au travail — le nom d'un produit, d'un appareil, d'un poste —, qu'on va le chercher, et qu'on ne le trouve pas, parce qu'on l'a écrit comme on l'a entendu.",
-       note:"Le programme du niveau 6 nomme ces trois cas : « ch » qui se dit comme un k, « x » qui se dit comme un s, et « sh » ou « sch » qui se disent comme un ch."},
+       note:"Ces trois cas sont exactement ceux que le programme du niveau 6 inscrit à la graphie-phonie : le k écrit ch, le s écrit x, le son de « chat » écrit sh ou sch."},
 
-      {t:'ana', h:"Cas 1 — « ch » qui se dit comme un K",
+      {t:'ana', h:"Premier groupe — ch qui sonne k",
        p:"Presque toujours dans des mots venus du grec. Ce sont des mots savants et techniques, et une usine en est pleine.",
        mots:[['On écrit','un te{ch}nicien · un {ch}ronomètre · le {ch}lore · un é{ch}o'],
              ['On entend','[k], comme dans « kilo »', true],
@@ -15,15 +15,15 @@ const PLUS = {
        say:"un technicien, un chronomètre, le chlore, un écho",
        note:"Attention : « chercher », « chaque », « chose », « machine » gardent le son normal. Le K est l'exception, pas la règle."},
 
-      {t:'ana', h:"Cas 2 — « x » qui se dit comme un S",
+      {t:'ana', h:"Deuxième groupe — x qui sonne s",
        p:"Dans quelques nombres très fréquents, et dans quelques noms de lieux.",
        mots:[['On écrit','di{x} · si{x} · soi{x}ante · soi{x}ante-dix'],
              ['On entend','[s], comme dans « dis »', true],
-             ['Le piège du nombre','« dix » se dit [dis] tout seul, [di] devant un nom qui commence par une consonne, et [diz] devant une voyelle']],
+             ['Le piège du nombre','seul, on entend le s final ; devant une consonne il se tait ; devant une voyelle il se lie']],
        say:"dix, six, soixante, soixante-dix",
        note:"Dix jours se dit « di jours ». Dix ans se dit « diz ans ». Dix, tout seul, se dit « dis ». Les trois formes se comprennent."},
 
-      {t:'ana', h:"Cas 3 — « sh » et « sch » qui se disent comme un CH",
+      {t:'ana', h:"Troisième groupe — sh et sch qui sonnent comme chat",
        p:"Des mots empruntés à l'anglais ou à l'allemand, et devenus courants.",
        mots:[['On écrit','un {sh}ampoing · un t-{sh}irt · un {sh}ort · un {sch}éma'],
              ['On entend','le son de « chat »', true],
@@ -32,54 +32,54 @@ const PLUS = {
        note:"« Un schéma », dans une note de service, revient très souvent : c'est le dessin qui accompagne une explication."},
 
       {t:'labo', h:"Écoutez, puis répétez",
-       p:"Choisissez un cas et un exemple.",
+       p:"Prenez un groupe de lettres, puis un mot.",
        axes:[
          {id:'c', lbl:'Quelles lettres ?', opts:[['a','ch qui dit K'],['b','x qui dit S'],['c','sh, sch qui disent CH']]},
          {id:'n', lbl:'Quel exemple ?', opts:[['1','le premier'],['2','le second']]}],
        out:{
          a1:{w:["un technicien"], say:"un technicien", n:'mot savant : « tec-nicien »'},
          a2:{w:["un chronomètre"], say:"un chronomètre", n:'« cro-nomètre », jamais « chro » de chat'},
-         b1:{w:["dix"], say:"dix", n:'tout seul, on entend le S final'},
-         b2:{w:["soixante"], say:"soixante", n:'« soi-sante », jamais « soi-ksante »'},
-         c1:{w:["un schéma"], say:"un schéma", n:'trois lettres pour le son de « chat »'},
-         c2:{w:["un t-shirt"], say:"un t-shirt", n:'venu de l\'anglais, prononcé à la française'},
+         b1:{w:["dix"], say:"dix", n:'le s final s\'entend nettement quand le mot est isolé'},
+         b2:{w:["soixante"], say:"soixante", n:'deux syllabes, sans le k que la lettre laisse croire'},
+         c1:{w:["un schéma"], say:"un schéma", n:'sch se ramasse en un seul son, celui de chat'},
+         c2:{w:["un t-shirt"], say:"un t-shirt", n:'emprunté à l\'anglais, mais dit avec la bouche du français'},
        },
-       note:"Écoutez deux fois avant de répéter. C'est l'oreille qu'on entraîne, pas la mémoire."},
+       note:"Deux écoutes avant de parler. Ce qui se travaille ici est l'oreille : la bouche suivra d'elle-même."},
 
       {t:'ex', h:"Huit mots du module",
-       p:"À gauche ce qui est écrit, à droite ce qui se dit.",
+       p:"La colonne de gauche est l'orthographe, celle de droite la prononciation.",
        rows:[
          ["un technicien","« tec-nicien » — le ch fait k"],
          ["un chronomètre","« cro-nomètre » — le ch fait k"],
          ["le chlore","« clore » — le ch fait k"],
          ["un écho","« é-co » — le ch fait k"],
-         ["dix jours","« di jours » — le x se tait devant une consonne"],
-         ["soixante","« soi-sante » — le x fait s"],
+         ["dix jours","« di jours » — devant une consonne, le x disparaît"],
+         ["soixante","« soi-sante » — deux syllabes, un s au milieu"],
          ["un schéma","« ché-ma » — sch fait ch"],
          ["un t-shirt","« ti-cheurt » — sh fait ch"],
        ]},
 
-      {t:'piege', h:"Deux pièges, une consolation",
+      {t:'piege', h:"Deux ennuis, et une bonne nouvelle",
        rows:[
-         ["chercher le mot avec la lettre entendue","chercher avec la lettre écrite",
+         ["taper le mot comme on l'a entendu","essayer l'autre orthographe",
           "Vous entendez « tecnicien » et vous cherchez « tecnicien » : rien. Quand un mot entendu ne se trouve pas, essayez « ch » à la place du k, et « x » à la place du s."],
-         ["prononcer chaque « ch » comme dans « chat »","reconnaître les mots savants",
+         ["appliquer le son de « chat » à tous les ch","repérer d'abord les mots techniques",
           "« Technicien » dit avec le son de « chat » ne se comprend pas du tout. Ces mots-là sont peu nombreux : ils s'apprennent un par un."],
-         ["s'inquiéter pour « dix »","les trois formes se comprennent",
-          "Personne ne vous reprendra si vous dites « diz jours ». Ce qui compte, c'est de reconnaître les trois formes à l'écoute, pas de les produire parfaitement."],
+         ["se tracasser pour le x de « dix »","se dire que les trois formes passent",
+          "Dire « diz jours » ne fera lever un sourcil à personne. Ce que la séance vise, c'est de reconnaître les trois formes quand on les entend — pas de les placer parfaitement."],
        ]},
 
-      {t:'check', h:"Est-ce que c'est clair maintenant ?",
-       p:"Quatre questions rapides.",
+      {t:'check', h:"Quatre questions pour vérifier",
+       p:"Une minute, sans revenir en arrière.",
        qs:[
          {q:"Dans « technicien », les lettres « ch » se disent…", opts:["comme dans chat","comme un k"], ok:1,
           fb:"C'est un mot venu du grec : « tec-nicien »."},
-         {q:"Dans « soixante », la lettre « x » se dit…", opts:["comme un s","comme un ks"], ok:0,
-          fb:"« Soi-sante ». Même chose dans « dix » et « six »."},
-         {q:"Dans « un schéma », les lettres « sch » se disent…", opts:["comme un sk","comme dans chat"], ok:1,
-          fb:"Trois lettres pour un seul son, celui de « chat »."},
+         {q:"Le x de « soixante » sonne…", opts:["comme un s","comme un ks"], ok:0,
+          fb:"Deux syllabes : soi-sante. Même chose pour dix et six."},
+         {q:"Le sch de « schéma » sonne…", opts:["comme un sk","comme dans chat"], ok:1,
+          fb:"Trois lettres ramassées en un seul son."},
          {q:"« Dix jours » se prononce…", opts:["« di jours »","« diss jours »"], ok:0,
-          fb:"Devant une consonne, le x de « dix » ne s'entend pas."},
+          fb:"Le x tombe dès qu'une consonne le suit."},
        ]},
 
       {t:'revoir', h:"À retenir",
@@ -134,7 +134,7 @@ const PLUS = {
          ["l'usine a ouvert en 1961","l'ouverture remonte à 1961"],
        ]},
 
-      {t:'piege', h:"Trois erreurs qui coûtent cher",
+      {t:'piege', h:"Trois faux pas de vocabulaire",
        rows:[
          ["inventer un nom qui n'existe pas","vérifier avant d'écrire",
           "Tous les verbes n'ont pas de nom en -age. On ne dit pas « un vérifiage » : c'est « une vérification ». En cas de doute, employez le verbe : personne ne vous reprochera une phrase claire."],
@@ -272,7 +272,7 @@ const PLUS = {
 
       {t:'ana', h:"Les mots qui annoncent une étape à l'oral",
        p:"Quelqu'un qui explique de vive voix ne dit pas « étape 1 ». Il emploie ces mots-là, et il faut les entendre.",
-       mots:[['Les rangs','premièrement, deuxièmement, troisièmement'],
+       mots:[['Les rangs','premièrement, deuxièmement, troisièmement, et ainsi de suite'],
              ['Les plus parlés','d\'abord, ensuite, après ça, puis, finalement'],
              ['Ceux qui cachent l\'ordre','avant de, une fois que, après avoir, dès que', true],
              ['Celui qui ferme','et c\'est tout · voilà · ça fait le tour']],
@@ -435,7 +435,7 @@ const PLUS = {
           "« Je le sais » ne parle d'aucune chose. Le « le » renvoie à toute une idée. Quand vous ne trouvez pas l'objet, c'est qu'il n'y en a pas."],
          ["employer « en » pour une personne","garder la préposition",
           "« Elle en parle » pour parler de sa collègue est faux : on dit « elle parle d'elle ». La règle est simple — chose : en ; personne : de + pronom."],
-         ["mettre le pronom après le verbe","le mettre devant",
+         ["placer le pronom derrière le verbe","le ramener devant",
           "On dit « je le sais », jamais « je sais le ». Avec deux verbes, il se colle à l'infinitif : « je vais en parler »."],
        ]},
 
@@ -449,7 +449,7 @@ const PLUS = {
          {q:"« Il a dit que c'était fini. » On reprend par…", opts:["Il l'a dit.","Il en a dit."], ok:0,
           fb:"Une phrase entière se reprend par « le », ici élidé en « l' »."},
          {q:"« Elle parle de sa collègue. » On reprend par…", opts:["Elle en parle.","Elle parle d'elle."], ok:1,
-          fb:"Pour une personne, on garde la préposition."},
+          fb:"Dès qu'il s'agit d'une personne, la préposition reste."},
        ]},
 
       {t:'revoir', h:"À retenir",
@@ -879,7 +879,7 @@ const PLUS = {
           "« Elle a obtenu le poste parce qu'elle avait suivi la formation » : la formation d'abord. Confondre les deux fait disparaître la cause."],
          ["employer le passé composé partout","garder le plus-que-parfait pour l'antériorité",
           "« Elle a obtenu le poste parce qu'elle a suivi la formation » n'est pas faux, mais l'ordre devient flou. Le plus-que-parfait le rend net."],
-         ["oublier l'accord avec être","accorder le participe",
+         ["laisser le participe invariable avec être","l'accorder avec le sujet",
           "« Elles étaient arrivées », pas « elles étaient arrivé ». Même règle qu'au passé composé."],
        ]},
 
@@ -888,7 +888,7 @@ const PLUS = {
        qs:[
          {q:"« Elle a obtenu le poste parce qu'elle avait suivi la formation. » Qu'est-ce qui vient en premier ?", opts:["la formation","l'obtention du poste"], ok:0,
           fb:"Le plus-que-parfait recule d'un cran."},
-         {q:"Le plus-que-parfait se forme avec…", opts:["avoir ou être à l'imparfait","avoir ou être au futur"], ok:0,
+         {q:"Quel auxiliaire, et à quel temps ?", opts:["avoir ou être à l'imparfait","avoir ou être au futur"], ok:0,
           fb:"Imparfait de l'auxiliaire + participe passé."},
          {q:"« Ils ___ déjà arrivés quand la rencontre a commencé. »", opts:["étaient","avaient"], ok:0,
           fb:"« Arriver » prend « être »."},
@@ -977,7 +977,7 @@ const PLUS = {
   },
 
   t3ps: {
-    eye:'Mini-leçon', tit:"Le passé simple : le reconnaître, jamais l'écrire",
+    eye:'Mini-leçon', tit:"Le passé simple se lit, il ne s'écrit pas",
     blocs:[
       {t:'texte', h:"Un temps qu'on ne parle pas et qu'on lit tout le temps",
        p:"Personne, au Québec, ne dit « je fermai la porte ». Mais tout le monde lit « l'entreprise déménagea en 1988 », dans une histoire d'entreprise, un roman, un article de fond, un documentaire. Le passé simple est le temps du récit écrit. Le programme demande de le reconnaître à la troisième personne et de l'associer au passé composé — pas de le produire.",
@@ -1131,7 +1131,7 @@ const PLUS = {
     blocs:[
       {t:'texte', h:"Le mot qui permet de demander sans accuser",
        p:"« Si je ne suis pas choisie, est-ce que je peux me présenter l'an prochain ? » C'est la question la plus utile d'une rencontre d'information, et elle ne met personne en cause. « Si » pose une hypothèse : elle n'affirme rien, elle n'accuse personne, et elle oblige quand même à répondre. Au travail, c'est un outil.",
-       note:"Le programme demande d'exprimer la condition dans une hypothèse avec le marqueur « si », et d'employer l'indicatif présent après « si » dans les hypothèses réalistes."},
+       note:"Deux points du programme tiennent ici : poser une condition avec « si », et garder l'indicatif présent derrière lui quand l'hypothèse est réaliste."},
 
       {t:'ana', h:"Hypothèse sur maintenant ou sur bientôt",
        p:"C'est le cas le plus courant, et la règle tient en une ligne.",
@@ -1175,7 +1175,7 @@ const PLUS = {
 
       {t:'piege', h:"La faute à ne plus jamais faire",
        rows:[
-         ["mettre un futur après « si »","mettre le présent",
+         ["glisser un futur derrière « si »","y laisser le présent",
           "« Si tu viendras » est faux ; on dit « si tu viens ». Le futur va dans l'autre moitié. C'est la faute la plus fréquente à tous les niveaux, et elle s'entend tout de suite."],
          ["employer « si » pour une question indirecte et s'y perdre","distinguer les deux",
           "« Je me demande si elle viendra » n'est pas une hypothèse : c'est une question rapportée, et là le futur est permis. Le « si » de condition, lui, refuse le futur."],

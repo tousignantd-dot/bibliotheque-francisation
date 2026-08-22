@@ -23,8 +23,8 @@ const EXOS = [
     {id:'pf8', txt:"Le compte rendu raconte ce qui s'est dit à une rencontre.", ok:'VRAI'},
    ]},
 
-  {sec:'prep', id:'prGraphie', type:'vf', num:'Exercice 2', tit:'Des lettres qui ne se disent pas comme on croit', color:'#A5335F', accent:'#A5335F', cards:true, listen:true,
-   sub:"Écoute chaque mot. Quel son entends-tu à l'endroit des lettres soulignées ?",
+  {sec:'prep', id:'prGraphie', type:'vf', num:'Exercice 2', tit:"Trois lettres qui trompent l'oreille", color:'#A5335F', accent:'#A5335F', cards:true, listen:true,
+   sub:"Écoute le mot, puis dis quel son porte le groupe de lettres en cause.",
    tiles:['COMME K','COMME S','COMME CH'],
    rows:[
     {id:'gr1', txt:"un technicien", ok:'COMME K'},
@@ -147,13 +147,13 @@ const EXOS = [
     {id:'in8', txt:"Le formulaire se remplit après la lecture de la note de service. → <u>lire la note de service</u>", ok:'EN PREMIER'},
    ]},
 
-  {sec:'t1', id:'t1repr', type:'write', num:'Exercice 4', tit:'Le petit mot qui renvoie à ce qui précède', color:'#1D6B8F', cols:1,
+  {sec:'t1', id:'t1repr', type:'write', num:'Exercice 4', tit:"Un mot de trois lettres qui porte toute une phrase", color:'#1D6B8F', cols:1,
    sub:"Complète la deuxième phrase avec « le », « l' », « en » ou « y ». Regarde la partie soulignée de la première.",
-   savoir:{h:"› Le, en, y : trois façons de ne pas répéter", rows:[
-     ["« le » remplace toute une idée","Pas un objet : une <b>phrase entière</b> déjà dite. <span class='savoir-ex'>Je sais <u>que le comité choisit sur les compétences</u>. → Je <b>le</b> sais.</span> Ce « le » ne s'accorde jamais : il ne désigne ni un homme, ni une femme, ni un pluriel."],
-     ["« en » remplace « de + chose »","<span class='savoir-ex'>Elle parle <u>de sa candidature</u>. → Elle <b>en</b> parle.</span> Pour une personne, on garde la préposition. <span class='savoir-ex'>Elle parle <u>de sa collègue</u>. → Elle parle <b>d'elle</b>.</span>"],
-     ["« y » remplace « à + chose » ou un lieu","<span class='savoir-ex'>Je pense <u>à ma rencontre</u>. → J'<b>y</b> pense.</span> <span class='savoir-ex'>Elle va <u>au bureau douze</u>. → Elle <b>y</b> va.</span>"],
-     ["Où se place le pronom","<b>Devant le verbe</b>, toujours. <span class='savoir-ex'>Je <b>le</b> sais. · Je ne <b>le</b> savais pas. · Je vais <b>en</b> parler.</span> Avec deux verbes, il se colle à l'infinitif."],
+   savoir:{h:"› Trois pronoms qui évitent de tout redire", rows:[
+     ["« le » tient lieu d'une phrase entière","Pas un objet : une <b>phrase entière</b> déjà dite. <span class='savoir-ex'>Je sais <u>que le comité choisit sur les compétences</u>. → Je <b>le</b> sais.</span> Ce « le » ne s'accorde jamais : il ne désigne ni un homme, ni une femme, ni un pluriel."],
+     ["« en » tient lieu de « de » et d'une chose","<span class='savoir-ex'>Elle parle <u>de sa candidature</u>. → Elle <b>en</b> parle.</span> Pour une personne, on garde la préposition. <span class='savoir-ex'>Elle parle <u>de sa collègue</u>. → Elle parle <b>d'elle</b>.</span>"],
+     ["« y » tient lieu de « à » et d'une chose, ou d'un endroit","<span class='savoir-ex'>Je pense <u>à ma rencontre</u>. → J'<b>y</b> pense.</span> <span class='savoir-ex'>Elle va <u>au bureau douze</u>. → Elle <b>y</b> va.</span>"],
+     ["Sa place dans la phrase","Il se glisse <b>devant le verbe</b>, sans exception. <span class='savoir-ex'>Je <b>le</b> savais déjà. · Elle ne <b>l'</b>avait pas lu. · Il faudra <b>y</b> repenser.</span> Quand deux verbes se suivent, il se colle à l'infinitif."],
      ["Le réflexe de lecture","Quand tu entends « le », « en » ou « y », recule d'une phrase et demande-toi : ça remplace quoi ? C'est là que se perd le fil d'une explication en cinq étapes."],
    ]},
    items:[
@@ -187,7 +187,7 @@ const EXOS = [
     {q:"Attention, celui-ci n'est pas au subjonctif. J'espère qu'elle ___ (obtenir, futur) le poste.", accept:["obtiendra"], ph:"espérer ne prend pas le subjonctif"},
    ]},
 
-  {sec:'t1', id:'t1chiffres', type:'write', num:'Exercice 6', tit:'Deuxième écoute — les chiffres exacts', color:'#1D6B8F', cols:2,
+  {sec:'t1', id:'t1chiffres', type:'write', num:'Exercice 6', tit:'À la deuxième écoute — relever les nombres', color:'#1D6B8F', cols:2,
    sub:"Réécoute l'explication et complète. Tu peux arrêter l'extrait et revenir en arrière.",
    items:[
     {q:"La démarche compte ___ étapes.", accept:["cinq","5"], ph:"en lettres"},
@@ -279,12 +279,12 @@ const EXOS = [
 
   {sec:'t2', id:'t2ou', type:'write', num:'Exercice 5', tit:'« où » pour un endroit, « où » pour un moment', color:'#B45309', cols:1,
    sub:"Réunis les deux phrases en une seule avec « où », « qui » ou « que ».",
-   savoir:{h:"› Le nom, puis la phrase qui le complète", rows:[
+   savoir:{h:"› Un nom, et la phrase qui vient s'y accrocher", rows:[
      ["La structure du niveau 6","<b>Déterminant + nom + subordonnée relative.</b> <span class='savoir-ex'>la cafétéria <b>où</b> se tiendra la rencontre · le jour <b>où</b> l'affichage est descendu</span> C'est ce qui permet de dire long sans faire deux phrases."],
      ["« où » pour un lieu","<span class='savoir-ex'>le bureau <b>où</b> l'on dépose les formulaires · l'atelier <b>où</b> les boîtes sont pesées</span> On peut toujours remplacer par « dans lequel », « à cet endroit-là »."],
      ["« où » pour un moment — et c'est le plus fréquent à l'écrit","<span class='savoir-ex'>le jour <b>où</b> · l'année <b>où</b> · le matin <b>où</b> · la semaine <b>où</b></span> Beaucoup d'élèves écrivent « le jour que » : c'est faux, même si on l'entend."],
-     ["« qui » quand il manque le sujet","<span class='savoir-ex'>Le technicien <b>qui</b> est venu n'avait pas la pièce.</span> Après « qui », le verbe est là mais son sujet manque : c'est le nom d'avant."],
-     ["« que » quand il manque le complément direct","<span class='savoir-ex'>Le formulaire <b>qu'</b>elle a rempli tient sur une page.</span> Le sujet est là (elle) : c'est l'objet qui manque."],
+     ["Il manque le sujet : « qui »","<span class='savoir-ex'>La conseillère <b>qui</b> reçoit les formulaires travaille au bureau douze.</span> Derrière « qui », le verbe est bien là, mais rien devant lui : le sujet, c'est le nom qui précède."],
+     ["Il manque le complément direct : « que »","<span class='savoir-ex'>Le formulaire <b>qu'</b>elle a rempli tient sur une page.</span> Le sujet est là (elle) : c'est l'objet qui manque."],
      ["Le test qui tranche","Enlève le mot et remets la phrase droite. Verbe sans sujet → <b>qui</b>. Verbe sans objet → <b>que</b>. Un endroit ou un moment → <b>où</b>."],
    ]},
    items:[
@@ -397,7 +397,7 @@ const EXOS = [
     {q:"<u>L'entreprise a ouvert</u> ses portes en 1961. → ___ remonte à 1961.", accept:["L'ouverture","l'ouverture","L’ouverture"], ph:"un nom en -ure"},
    ]},
 
-  {sec:'t3', id:'t3si', type:'write', num:'Exercice 5', tit:'Poser une condition avec « si »', color:'#3B49A0', cols:1,
+  {sec:'t3', id:'t3si', type:'write', num:'Exercice 5', tit:"Mettre une condition devant, avec « si »", color:'#3B49A0', cols:1,
    sub:"Complète avec le verbe au bon temps. Attention : jamais de futur juste après « si ».",
    savoir:{h:"› L'hypothèse réaliste avec « si »", rows:[
      ["Sur un fait présent ou à venir","<b>si + présent</b>, puis présent, futur ou impératif. <span class='savoir-ex'>Si tu <b>remplis</b> le formulaire aujourd'hui, il <b>sera</b> reçu. · Si ça ne <b>convient pas</b>, <b>reviens</b> à ton poste.</span>"],
