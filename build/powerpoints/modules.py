@@ -1036,6 +1036,19 @@ MODULES = {
                         'Le courrier des lecteurs'),
     },
 
+    'module-n6-etablissement': {
+        'numero': 5, 'activite': 102, 'niveau': 6,
+        'titre': "Choisir la suite",
+        'chapeau': "S'informer auprès d'un conseiller d'orientation pour "
+                   "choisir un programme d'études, lire une description de "
+                   "programme et un avis officiel, puis prendre sa place dans "
+                   "une rencontre scolaire.",
+        'seances': GRILLE_3_DEFIS,
+        'blocs': _blocs("La rencontre d'orientation",
+                        'Les papiers du centre',
+                        'La rencontre du 14 novembre'),
+    },
+
     'module-n7-actualite': {
         'numero': 1, 'activite': 60, 'niveau': 7,
         'titre': "Suivre l'actualité",
