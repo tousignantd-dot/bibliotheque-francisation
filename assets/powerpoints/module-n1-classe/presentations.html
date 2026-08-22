@@ -1,0 +1,221 @@
+<!DOCTYPE html>
+<html lang="fr"><head><meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Module 4 · Les huit présentations</title>
+<link rel="stylesheet" href="/assets/design-system/styles.css">
+<style>
+.som          { padding: var(--sp-8) 0 var(--sp-12); }
+.som__bloc    { margin-top: var(--sp-12); }
+.som__bloc:first-child { margin-top: 0; }
+.som__head    { display: flex; flex-wrap: wrap; align-items: center; gap: var(--sp-4);
+                margin-bottom: var(--sp-5); }
+.som__lettre  { flex-shrink: 0; width: 44px; height: 44px; border-radius: var(--r-md);
+                display: flex; align-items: center; justify-content: center;
+                background: var(--accent-soft); color: var(--accent-ink);
+                font-size: 19px; font-weight: var(--fw-black); }
+.som__titre   { font-size: var(--fs-h3); font-weight: var(--fw-black); margin: 0; }
+.som__rule    { flex: 1; height: 1px; background: var(--border); }
+.som__compte  { background: var(--accent-soft); color: var(--accent-ink);
+                padding: 6px var(--sp-3); border-radius: var(--r-pill);
+                font-size: var(--fs-ui-sm); font-weight: var(--fw-bold);
+                white-space: nowrap; }
+
+.seance       { display: grid; grid-template-columns: 56px minmax(0, 1fr) auto;
+                gap: var(--sp-4); align-items: start; }
+.seance__code { grid-row: 1 / -1; width: 56px; height: 56px; border-radius: var(--r-md);
+                display: flex; align-items: center; justify-content: center;
+                border: 1px solid var(--border); background: var(--surface-sunken);
+                color: var(--text-strong);
+                font-size: var(--fs-lead); font-weight: var(--fw-black);
+                letter-spacing: .02em; }
+.seance__nom  { font-size: var(--fs-lead); font-weight: var(--fw-black);
+                color: var(--text-strong); margin: 0 0 2px; line-height: var(--lh-title); }
+.seance__quoi { font-size: var(--fs-body-sm); font-weight: var(--fw-medium);
+                color: var(--text-body); line-height: var(--lh-body); margin: 0; }
+.seance__meta { display: flex; flex-wrap: wrap; gap: var(--sp-3);
+                margin-top: var(--sp-2);
+                font-size: var(--fs-meta); font-weight: var(--fw-bold);
+                letter-spacing: var(--ls-label); text-transform: uppercase;
+                color: var(--text-muted); }
+.seance__liens{ grid-column: 3; grid-row: 1 / -1;
+                display: flex; flex-direction: column; gap: var(--sp-2);
+                align-items: stretch; }
+.seance__liens .btn { justify-content: center; white-space: nowrap; }
+
+/* Sous 720 px : le code passe au-dessus, les liens en pleine largeur. */
+@media (max-width: 720px) {
+  .seance        { grid-template-columns: 56px minmax(0, 1fr); }
+  .seance__liens { grid-column: 1 / -1; grid-row: auto; flex-direction: row;
+                   flex-wrap: wrap; margin-top: var(--sp-4); }
+  .seance__liens .btn { flex: 1 1 200px; }
+}
+</style></head>
+<body class="page">
+
+<header class="band">
+  <div class="container">
+    <p class="band__eyebrow">Module 4 · Français niveau 1 · Matériel de l'enseignant</p>
+    <h1 style="font-size:var(--fs-hero);font-weight:var(--fw-black);line-height:var(--lh-hero);letter-spacing:var(--ls-hero);margin:var(--sp-3) 0 0">Regardez le tableau</h1>
+    <p class="band__lead">Comprendre une consigne courte, nommer les objets de la classe, comprendre l&#x27;heure du cours et l&#x27;horaire de la semaine. Chaque séance a sa fiche élève correspondante, en noir et blanc, prête à photocopier.</p>
+    <p class="seance__meta" style="margin-top:var(--sp-5)">
+      <span>8 séances</span><span>90 diapositives</span><span>Environ 9 heures de classe</span>
+    </p>
+  </div>
+</header>
+
+<main class="container som">
+
+  <section class="som__bloc">
+    <div class="som__head">
+      <span class="som__lettre">A</span>
+      <h2 class="som__titre">Je découvre</h2>
+      <span class="som__rule"></span>
+      <span class="som__compte">3 séances · 210 min</span>
+    </div>
+    <div class="stack">
+
+      <article class="card seance">
+        <span class="seance__code">A1</span>
+        <div>
+          <h3 class="seance__nom">Voici ta place</h3>
+          <p class="seance__quoi">Le premier matin dans une classe de français : une chaise, un livre, un stylo, et des mots pour les nommer.</p>
+          <p class="seance__meta"><span>75 minutes</span><span>11 diapositives</span></p>
+        </div>
+        <div class="seance__liens">
+          <a class="btn btn--pri" href="/assets/powerpoints/module-n1-classe/A1-voici-ta-place.pptx">Présentation</a>
+          <a class="btn btn--ghost" href="/assets/documents/module-n1-classe-a1-voici-ta-place.html" target="_blank" rel="noopener">Fiche élève</a>
+        </div>
+      </article>
+
+      <article class="card seance">
+        <span class="seance__code">A2</span>
+        <div>
+          <h3 class="seance__nom">Deux ou douze ?</h3>
+          <p class="seance__quoi">Quatre paires de nombres qui se ressemblent beaucoup.</p>
+          <p class="seance__meta"><span>75 minutes</span><span>13 diapositives</span></p>
+        </div>
+        <div class="seance__liens">
+          <a class="btn btn--pri" href="/assets/powerpoints/module-n1-classe/A2-deux-ou-douze.pptx">Présentation</a>
+          <a class="btn btn--ghost" href="/assets/documents/module-n1-classe-a2-deux-ou-douze.html" target="_blank" rel="noopener">Fiche élève</a>
+        </div>
+      </article>
+
+      <article class="card seance">
+        <span class="seance__code">A3</span>
+        <div>
+          <h3 class="seance__nom">Un livre, une chaise</h3>
+          <p class="seance__quoi">En français, le nom vient rarement seul.</p>
+          <p class="seance__meta"><span>60 minutes</span><span>11 diapositives</span></p>
+        </div>
+        <div class="seance__liens">
+          <a class="btn btn--pri" href="/assets/powerpoints/module-n1-classe/A3-un-livre-une-chaise.pptx">Présentation</a>
+          <a class="btn btn--ghost" href="/assets/documents/module-n1-classe-a3-un-livre-une-chaise.html" target="_blank" rel="noopener">Fiche élève</a>
+        </div>
+      </article>
+
+    </div>
+  </section>
+
+  <section class="som__bloc">
+    <div class="som__head">
+      <span class="som__lettre">B</span>
+      <h2 class="som__titre">Défi 1 · La consigne</h2>
+      <span class="som__rule"></span>
+      <span class="som__compte">2 séances · 150 min</span>
+    </div>
+    <div class="stack">
+
+      <article class="card seance">
+        <span class="seance__code">B1</span>
+        <div>
+          <h3 class="seance__nom">Écoutez, regardez</h3>
+          <p class="seance__quoi">Une consigne de classe fait deux mots et commence par un verbe.</p>
+          <p class="seance__meta"><span>75 minutes</span><span>11 diapositives</span></p>
+        </div>
+        <div class="seance__liens">
+          <a class="btn btn--pri" href="/assets/powerpoints/module-n1-classe/B1-ecoutez-regardez.pptx">Présentation</a>
+          <a class="btn btn--ghost" href="/assets/documents/module-n1-classe-b1-ecoutez-regardez.html" target="_blank" rel="noopener">Fiche élève</a>
+        </div>
+      </article>
+
+      <article class="card seance">
+        <span class="seance__code">B2</span>
+        <div>
+          <h3 class="seance__nom">Sur, dans, sous</h3>
+          <p class="seance__quoi">Trois petits mots pour dire où est la chose.</p>
+          <p class="seance__meta"><span>75 minutes</span><span>11 diapositives</span></p>
+        </div>
+        <div class="seance__liens">
+          <a class="btn btn--pri" href="/assets/powerpoints/module-n1-classe/B2-sur-dans-sous.pptx">Présentation</a>
+          <a class="btn btn--ghost" href="/assets/documents/module-n1-classe-b2-sur-dans-sous.html" target="_blank" rel="noopener">Fiche élève</a>
+        </div>
+      </article>
+
+    </div>
+  </section>
+
+  <section class="som__bloc">
+    <div class="som__head">
+      <span class="som__lettre">C</span>
+      <h2 class="som__titre">Défi 2 · L&#x27;heure et l&#x27;horaire</h2>
+      <span class="som__rule"></span>
+      <span class="som__compte">2 séances · 135 min</span>
+    </div>
+    <div class="stack">
+
+      <article class="card seance">
+        <span class="seance__code">C1</span>
+        <div>
+          <h3 class="seance__nom">À quelle heure ?</h3>
+          <p class="seance__quoi">L&#x27;heure du cours, l&#x27;heure de la pause, l&#x27;heure de la fin.</p>
+          <p class="seance__meta"><span>75 minutes</span><span>13 diapositives</span></p>
+        </div>
+        <div class="seance__liens">
+          <a class="btn btn--pri" href="/assets/powerpoints/module-n1-classe/C1-a-quelle-heure.pptx">Présentation</a>
+          <a class="btn btn--ghost" href="/assets/documents/module-n1-classe-c1-a-quelle-heure.html" target="_blank" rel="noopener">Fiche élève</a>
+        </div>
+      </article>
+
+      <article class="card seance">
+        <span class="seance__code">C2</span>
+        <div>
+          <h3 class="seance__nom">Lundi, mardi, mercredi</h3>
+          <p class="seance__quoi">Sept jours dans la semaine, quatre jours de cours.</p>
+          <p class="seance__meta"><span>60 minutes</span><span>11 diapositives</span></p>
+        </div>
+        <div class="seance__liens">
+          <a class="btn btn--pri" href="/assets/powerpoints/module-n1-classe/C2-lundi-mardi-mercredi.pptx">Présentation</a>
+          <a class="btn btn--ghost" href="/assets/documents/module-n1-classe-c2-lundi-mardi-mercredi.html" target="_blank" rel="noopener">Fiche élève</a>
+        </div>
+      </article>
+
+    </div>
+  </section>
+
+  <section class="som__bloc">
+    <div class="som__head">
+      <span class="som__lettre">E</span>
+      <h2 class="som__titre">Je me lance</h2>
+      <span class="som__rule"></span>
+      <span class="som__compte">1 séance · 60 min</span>
+    </div>
+    <div class="stack">
+
+      <article class="card seance">
+        <span class="seance__code">E1</span>
+        <div>
+          <h3 class="seance__nom">Je me lance</h3>
+          <p class="seance__quoi">Tout le module tient en trente secondes de parole : cinq objets, où en est un, et l&#x27;heure du cours.</p>
+          <p class="seance__meta"><span>60 minutes</span><span>9 diapositives</span></p>
+        </div>
+        <div class="seance__liens">
+          <a class="btn btn--pri" href="/assets/powerpoints/module-n1-classe/E1-je-me-lance.pptx">Présentation</a>
+          <a class="btn btn--ghost" href="/assets/documents/module-n1-classe-e1-je-me-lance.html" target="_blank" rel="noopener">Fiche élève</a>
+        </div>
+      </article>
+
+    </div>
+  </section>
+
+</main>
+</body></html>

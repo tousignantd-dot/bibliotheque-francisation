@@ -1535,3 +1535,60 @@ niveau 6 entre les deux au lieu de l'inventer.
 **Format** : `GRILLE_COURTE` aux numéros 96-98 (le niveau 1 est le plus court
 du programme) ; au 99, l'agent décide et **écrit pourquoi** — c'est la
 question à laquelle le pilote doit répondre.
+
+### Journal de la vague 5
+
+**22 août 2026 — activité 98, `module-n1-classe`.** « Regardez le tableau »,
+niveau 1, `numero` 4, `GRILLE_COURTE`. Scénario inventé : Bopha Sok, 34 ans,
+arrivée du Cambodge il y a un mois, premier lundi au centre ; madame Cyr,
+l'enseignante, lui montre sa place, une chaise, un livre, un stylo ; Ivan,
+arrivé d'Ukraine trois semaines plus tôt, est le voisin de pupitre qui ne
+comprend pas non plus. 16 exercices, 6 mini-leçons, 5 dialogues, 14 mots,
+19 images, **160 extraits audio** (37 répliques et 123 sons), 8 séances
+(90 diapositives, 67 blocs de fiches). Originalité : 242 énoncés visibles,
+**2 identiques** dans les 18 866 des quarante-neuf autres modules, soit 0,8 %.
+
+*Ce qui le sépare de `module-n2-classe` (89), même situation au niveau 2* :
+le programme ne donne au niveau 1 que **deux intentions, toutes deux en
+compréhension orale** — comprendre l'information sur le fonctionnement de la
+classe, comprendre une consigne. Aucune production, aucune compréhension
+écrite. Le module ne demande donc jamais d'expliquer quoi que ce soit : au 2,
+l'élève lit une directive écrite, demande une permission, annonce une absence
+et explique le fonctionnement de la classe à un nouveau ; ici, une consigne
+fait deux mots, la bonne réponse est un geste, le seul texte lu est l'heure sur
+une horloge, et la phrase à savoir est « Pardon ? ». Les quatorze mots ne
+reprennent aucun des seize du niveau 2 — le cahier, le crayon et le pupitre y
+restent, le livre, le stylo, l'horloge et l'horaire sont ici.
+
+*La deuxième entrée de lexique du niveau commande la moitié du module* :
+« heure, horaire ». Le défi 2 lui est entièrement donné — l'heure juste, la
+demie, midi, les jours, la feuille affichée près de la porte. C'est aussi ce
+qui a décidé de la graphie-phonie : les quatre paires de nombres qui ne
+diffèrent que par la fin du mot (deux/douze, trois/treize, quatre/quatorze,
+six/seize), parce qu'une page, une heure et un numéro de local sont les
+premiers nombres qu'un débutant doit entendre juste.
+
+Un scénario `classe1` a été ajouté à `server.py` : le `classe` existant est
+celui du niveau 2 et fait demander une permission, annoncer une absence et
+expliquer les règles — trois choses que le niveau 1 ne demande pas.
+
+Trois choses apprises, qui valent pour les modules restants :
+
+- **Les séances se construisent avant les images.** `Deck.image()` ouvre le
+  fichier avec PIL : une image pas encore produite arrête le build sur une
+  erreur qui ne nomme pas sa cause. Les quatre decks à `declencheur` passent
+  par une petite fonction `photo()` qui rend le chemin ou rien.
+- **La reformulation des consignes génériques se fait à la fin, et coûte
+  presque rien.** Seize coïncidences sur 242 énoncés — toutes des consignes
+  que tous les modules finissent par écrire pareil, aucune un emprunt — ont
+  fait passer l'originalité de 6,6 % à 0,8 %. Une seule valeur du relevé des
+  sons a bougé, et aucun MP3 n'était encore payé.
+- **`build/voix.py` n'existe pas dans un worktree ouvert avant lui.** Le
+  générateur audio l'importe quand même : il arrivera par la fusion vers
+  `main`. Vérifier après la fusion que l'import passe, avant de lancer les
+  160 extraits.
+
+*Restent à faire* : lancer `build/contenu/module-n1-classe/gen_images.py`
+(19 images) et `generer_audio_module_n1_classe.py` (160 extraits). Les
+19 écarts de `node build/coherence.js module-n1-classe` sont exactement ces
+19 images absentes du disque, et rien d'autre.
