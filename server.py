@@ -5909,6 +5909,89 @@ JEU_DE_ROLE_ECOLE = {
 }
 
 
+# Trois situations pour le module de niveau 3 « On embauche ». Le scénario
+# `entrevue` existe déjà, mais il est calibré pour le niveau 6 : parcours,
+# arguments, questions au recruteur. Ici le geste est plus petit — on pousse la
+# porte d'un commerce, on demande si ça engage, on laisse son nom. Ce que sait
+# le gérant — l'horaire, le salaire, les tâches, la date du rappel — vit ici,
+# côté serveur : dans la page, l'élève lirait les réponses.
+#
+# Les deux rôles portent leurs faits, contrairement à plusieurs scénarios plus
+# anciens qui n'en donnent qu'au personnage de l'assistant : `jeu_de_role_system`
+# lit `cas[ia_role]`, et l'élève peut choisir de jouer le gérant.
+JEU_DE_ROLE_EMBAUCHE = {
+    "affiche": {
+        "contexte": (
+            "La boulangerie du quartier, un mardi à neuf heures et demie, "
+            "quand le comptoir est calme. Une affiche rouge est collée dans "
+            "la vitrine : « On embauche ». L'élève pousse la porte sans "
+            "rendez-vous pour offrir ses services."
+        ),
+        "gerant": [
+            "Tu es le gérant de la boulangerie. Tu es correct et pressé : tu réponds à ce qu'on te demande, tu n'expliques rien d'avance.",
+            "Le poste est commis au comptoir : servir les clients, remplir les tablettes, nettoyer à la fermeture. Tu ne nommes les tâches que si on te les demande.",
+            "L'horaire est du mardi au samedi, de 6 h 30 à 11 h 30. Tu ne le donnes que si on parle de disponibilités.",
+            "Le salaire est de 17 $ de l'heure, payé aux deux semaines. Tu ne donnes le chiffre que si on pose la question.",
+            "Aucune expérience en boulangerie n'est exigée, mais tu veux entendre ce que la personne sait faire avant de le dire.",
+            "Tu demandes le nom, et tu le fais épeler si tu ne le comprends pas du premier coup.",
+            "Tu demandes un numéro de téléphone et tu tends ton carnet pour qu'on l'écrive : tu ne notes rien toi-même.",
+            "Tu rappelles dans la semaine, jamais le jour même. Tu le dis à la fin, si on te demande quand.",
+        ],
+        "candidat": [
+            "Tu cherches du travail le matin ; tu es à l'école de français l'après-midi.",
+            "Tu n'as jamais travaillé en boulangerie, mais tu sais faire le ménage et tu as gardé des enfants pendant six ans.",
+            "Tu réponds aux questions une à la fois, en phrases courtes.",
+            "Tu demandes toi-même à écrire ton numéro plutôt que de le dicter.",
+        ],
+    },
+    "centre": {
+        "contexte": (
+            "L'accueil du centre communautaire Léo-Bourdon, un jeudi matin. "
+            "Il n'y a pas d'affiche : c'est une voisine qui a dit que le "
+            "centre cherchait quelqu'un pour l'entretien. L'élève entre et "
+            "doit d'abord demander à qui parler."
+        ),
+        "gerant": [
+            "Tu es à l'accueil du centre. Tu n'engages pas toi-même : c'est Hugo Pelletier, responsable de la cuisine et de l'entretien, qui le fait.",
+            "Tu ne donnes le nom d'Hugo que si on te demande à qui parler.",
+            "Hugo est là de 9 h à 13 h, du mardi au samedi. Tu le dis si on te demande quand revenir.",
+            "Il y a deux postes : l'entretien le soir, et l'aide à la cuisine le jour. Tu ne parles du second que si on demande s'il y a autre chose.",
+            "Aucune expérience n'est exigée et la formation est donnée sur place ; tu le dis si on te demande ce qu'il faut.",
+            "Tu proposes de prendre un nom et un numéro pour Hugo, mais seulement si la personne ne le propose pas elle-même.",
+            "Tu es aimable et bref : trois personnes attendent derrière.",
+        ],
+        "candidat": [
+            "Tu cherches du travail le jour ; tu ne peux pas le soir, tes enfants sont à la maison.",
+            "Tu sais faire le ménage et tu as travaillé en cuisine dans ton pays.",
+            "Tu demandes à qui parler, à quelle heure cette personne est là, et tu laisses ton nom et ton numéro.",
+        ],
+    },
+    "babillard": {
+        "contexte": (
+            "La caisse de l'épicerie du quartier, un lundi matin. Une petite "
+            "annonce était punaisée au babillard, près des paniers : on "
+            "cherche quelqu'un pour remplir les tablettes, le matin. L'élève "
+            "l'apporte à la caisse et offre ses services."
+        ),
+        "gerant": [
+            "Tu tiens la caisse et tu es aussi le propriétaire du commerce. Tu sers les clients pendant que tu parles : tes réponses sont courtes.",
+            "Le poste est du lundi au vendredi, de 7 h à 11 h, vingt heures par semaine. C'est du temps partiel, et tu le dis si on te le demande.",
+            "Le salaire est de 16,50 $ de l'heure. Tu ne le donnes que si on pose la question.",
+            "Le travail est de remplir les tablettes et de sortir les boîtes : il faut pouvoir soulever des caisses. Tu poses la question si on ne l'aborde pas.",
+            "Tu demandes depuis quand la personne est au Québec et ce qu'elle a déjà fait comme travail.",
+            "Tu n'as pas de formulaire : tu notes le nom et le numéro sur le dos de l'annonce, si on te les donne.",
+            "Tu dis que tu rappelles vendredi avant cinq heures, seulement si on te demande quand.",
+        ],
+        "candidat": [
+            "Tu es libre le matin et tu peux commencer tôt.",
+            "Tu n'as jamais travaillé dans une épicerie, mais tu es capable de soulever des caisses.",
+            "Tu poses tes questions une à la fois : l'horaire, le salaire, les tâches.",
+            "Tu laisses ton nom et ton numéro avant de partir, même si rien n'est promis.",
+        ],
+    },
+}
+
+
 JEU_DE_ROLE_SCENARIOS = {
     "colis": {
         "cadre": "une courte démarche au comptoir postal d'une pharmacie",
@@ -6070,6 +6153,57 @@ JEU_DE_ROLE_SCENARIOS = {
                              "jour et l'heure pour vérifier. Demande de "
                              "répéter si c'est trop vite. Remercie avant de "
                              "partir."),
+            },
+        },
+    },
+    "embauche": {
+        "cadre": "une visite sans rendez-vous dans un commerce pour offrir ses services",
+        "contexte_label": "La situation que vous connaissez tous les deux",
+        "cas": JEU_DE_ROLE_EMBAUCHE,
+        "adresse": "Vouvoie l'élève : on ne se connaît pas, et c'est un lieu de travail.",
+        "sujets": [
+            "pourquoi la personne se présente (l'affiche, l'annonce, le bouche-à-oreille)",
+            "si le commerce engage encore, et à qui il faut parler",
+            "ce que la personne sait faire et ce qu'elle a déjà fait",
+            "le poste : les tâches, l'horaire, le salaire",
+            "les disponibilités, en jours et en heures",
+            "le nom, épelé au besoin, et le numéro de téléphone",
+            "quand on rappellera",
+        ],
+        "cloture": ("Quand les sujets sont couverts, redis à voix haute le nom et le "
+                    "numéro qu'on t'a laissés, dis quand tu rappelleras, et termine "
+                    "poliment."),
+        "ouverture": {
+            "candidat": "Bonjour. Excusez-moi de vous déranger, j'ai vu votre affiche.",
+            "gerant": "Bonjour, je peux vous aider ?",
+        },
+        "roles": {
+            "gerant": {
+                "qui": ("Tu es la personne qui engage dans ce commerce — gérant, "
+                        "propriétaire ou personne à l'accueil. L'élève entre sans "
+                        "rendez-vous pour offrir ses services."),
+                "conduite": ("Niveau 3 : phrases courtes, une idée à la fois, pas de "
+                             "vocabulaire d'entrevue. Tu es occupé mais correct. Tu ne "
+                             "donnes jamais d'avance l'horaire, le salaire ni les "
+                             "tâches : c'est à l'élève de les demander. Tu poses tes "
+                             "questions une à la fois — ce qu'il sait faire, quand il "
+                             "est libre, comment il s'appelle — et tu attends la "
+                             "réponse. Si l'élève reste vague (« n'importe quand », "
+                             "« un peu de tout »), tu redemandes une fois, poliment : "
+                             "quels jours, quelles heures, quel travail exactement. Tu "
+                             "n'engages personne séance tenante : tu prends le nom et "
+                             "le numéro, et tu dis quand tu rappelles."),
+            },
+            "candidat": {
+                "qui": ("Tu es la personne qui cherche du travail et tu entres offrir "
+                        "tes services. C'est l'élève qui tient le commerce et qui te "
+                        "répond."),
+                "conduite": ("Niveau 3 : phrases courtes. Tu dis pourquoi tu viens, "
+                             "puis tu laisses l'élève poser ses questions et tu y "
+                             "réponds une à la fois. Tu demandes ce que tu ne sais pas "
+                             "— l'horaire, le salaire, les tâches — mais une question à "
+                             "la fois. Avant de partir, tu laisses ton nom et ton "
+                             "numéro, et tu demandes quand on te rappellera."),
             },
         },
     },

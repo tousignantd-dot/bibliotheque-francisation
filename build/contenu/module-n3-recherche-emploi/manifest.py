@@ -57,7 +57,9 @@ MANIFESTE = {
 
     # `titre` et `niveau` viennent de `build/powerpoints/modules.py`.
 
-    'theme': 'Recherche d\'emploi',
+    # L'apostrophe s'échappe : le gabarit place ce jeton dans une chaîne
+    # JavaScript à guillemets simples, comme `bravo` et `relance`.
+    'theme': 'Recherche d\\\'emploi',
 
     # Ambre : la couleur du niveau 3. Elle ne se choisit pas — voir
     # `build/couleurs_niveau.py`.
@@ -72,7 +74,12 @@ MANIFESTE = {
                "numéro de téléphone chiffre par chiffre avant de remercier.",
 
     'jr_cas': 'affiche',
-    'jr_role': 'gerant',
+    # `jr_role` est le rôle de l'ÉLÈVE, pas celui de l'assistant : server.py
+    # le reçoit sous le nom `role_eleve` et donne à l'assistant l'autre rôle
+    # du scénario. L'élève vient offrir ses services, donc « candidat » ;
+    # l'assistant joue le gérant. Écrire « gerant » ici inverserait les deux
+    # et l'assistant se mettrait à chercher du travail.
+    'jr_role': 'candidat',
     'jr_scenario': 'embauche',
     'ia_jeu_de_role': "L'élève entre quelque part pour offrir ses services : "
                       "à la boulangerie où une affiche « On embauche » est "
