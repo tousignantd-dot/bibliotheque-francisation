@@ -427,3 +427,31 @@ clés avant comme après** les réécritures. Ni les `sub`, ni les `tit`, ni les
 intitulés de bandeau, ni les `note` d'un bloc de mini-leçon n'entrent dans le
 manifeste des extraits — seuls les `say` y entrent, et aucun n'a été touché.
 Reformuler pour l'originalité reste gratuit en audio.
+`module-n6-classe` (activité 107), mesuré le 22 août 2026, en **deux** relevés
+plutôt qu'un — et c'est le point de cette entrée.
+
+Le relevé habituel, sur les énoncés visibles de `fccards.js` et `exos.js` de
+plus de vingt-cinq caractères : **323 chaînes**, comparées aux **15 165** des
+cinquante-sept autres modules de `build/contenu/`. **7 identiques, soit 2,2 %**
+— quatre consignes du gabarit (« Choisis un mot, puis va chercher sa
+définition… », « Choisis une question, puis clique dans le texte… ») et trois
+intitulés de bandeau. Vert.
+
+Le second relevé, sur les **651 chaînes de `plus.js`** — titres de mini-leçon,
+en-têtes de bloc, paragraphes, notes, lignes de tableau —, comparées aux
+**26 242** des autres modules : **23 identiques, soit 3,5 %**. Vert aussi. Mais
+**dix-huit des vingt-trois venaient de la seule mini-leçon de graphie-phonie**,
+comparée à celle de `module-n6-etablissement` : le savoir est commun à tout le
+niveau 6, ses exemples sont ceux du programme, et la mini-leçon avait beau
+avoir été réécrite, une quinzaine de tournures étaient revenues d'elles-mêmes.
+
+**La leçon.** Le relevé qui ne regarde que `exos.js` ne voit pas l'endroit où
+la coïncidence se loge vraiment. `plus.js` est le plus gros fichier d'un module
+— soixante-dix kilo-octets ici, contre trente pour `exos.js` — et c'est celui
+qu'on décalque sans y penser, parce que trois de ses savoirs sont communs à
+tout le niveau. **Les deux relevés se passent, toujours.**
+
+Les vingt-cinq formulations en cause ont été refaites. Nouvelle mesure : **0
+sur 323 et 0 sur 651.** L'opération est gratuite en audio à une condition,
+vérifiée ici : ni les identifiants de bloc ni la position des `say:` ne
+bougent. Le manifeste des sons est resté à 155 clés, à l'octet près.
