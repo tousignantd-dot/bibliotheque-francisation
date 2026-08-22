@@ -1,0 +1,172 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>B1 · Quel est votre nom ? — Fiche élève</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800;900&display=swap" rel="stylesheet">
+<style>
+/* ═══════════════════════════════════════════════════════════════
+   FICHE ÉLÈVE · IMPRESSION LETTRE, NOIR ET BLANC
+   ───────────────────────────────────────────────────────────────
+   Aucune couleur : ces fiches sont photocopiées en noir et blanc.
+   Toute la hiérarchie passe par la GRAISSE, les FILETS et les MOTS.
+   C'est d'ailleurs la règle du système de design poussée à son
+   terme : « jamais d'information portée par la couleur seule ».
+
+   Les gris viennent des neutres du système (ink-900 à ink-400),
+   qui sont déjà quasi neutres. Les filets sont volontairement plus
+   sombres qu'à l'écran : une photocopieuse efface tout ce qui est
+   plus clair que 15 % de noir.
+   ═══════════════════════════════════════════════════════════════ */
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+:root{
+  --paper:#FFFFFF;
+  --tint:#F0F0EE;          /* aplat le plus clair encore visible en photocopie */
+  --line:#C9C9C6;          /* filet fin */
+  --rule:#17181A;          /* filet structurant */
+  --ink:#17181A;           /* titres */
+  --body:#2B2E30;          /* texte courant, un cran plus sombre qu'à l'écran */
+  --soft:#4B4F52;          /* texte secondaire */
+  --muted:#5E6165;         /* sur-titres, méta */
+}
+html{background:#BBBBBB}
+body{
+  font-family:'Nunito','Trebuchet MS',sans-serif;
+  font-size:11.5pt; line-height:1.5; color:var(--body);
+  background:var(--paper);
+  width:215.9mm;                    /* 8,5 po — format lettre */
+  margin:0 auto; padding:14mm 15mm 16mm;
+  -webkit-print-color-adjust:exact; print-color-adjust:exact;
+}
+h1,h2,h3{color:var(--ink); line-height:1.2; letter-spacing:-0.01em}
+
+/* ── En-tête ── */
+.hdr{border-bottom:2.5px solid var(--rule); padding-bottom:8px; margin-bottom:14px;
+     display:flex; align-items:flex-end; gap:14px}
+.hdr-l{flex:1}
+.eyebrow{font-size:9.5pt; font-weight:800; text-transform:uppercase;
+         letter-spacing:.12em; color:var(--muted)}
+.hdr h1{font-size:22pt; font-weight:900; margin-top:3px}
+.hdr-r{flex-shrink:0; display:flex; gap:10px; align-items:flex-end;
+       font-size:9.5pt; font-weight:800; text-transform:uppercase;
+       letter-spacing:.08em; color:var(--muted); padding-bottom:2px}
+.nomline{display:inline-block; border-bottom:1.5px solid var(--rule);
+         height:6mm; vertical-align:bottom; margin-left:5px}
+.nomline--nom{width:48mm} .nomline--date{width:26mm}
+.chapeau{font-size:12pt; font-weight:600; color:var(--soft); margin-bottom:16px}
+
+/* ── Blocs ── */
+.bloc{break-inside:avoid; page-break-inside:avoid; margin-bottom:13px}
+.card{border:1px solid var(--line); border-radius:12px; padding:11px 14px 12px;
+      background:var(--paper)}
+.lbl{font-size:9.5pt; font-weight:800; text-transform:uppercase;
+     letter-spacing:.12em; color:var(--muted); margin-bottom:5px}
+h2.t{font-size:15pt; font-weight:900; margin-bottom:7px}
+.consigne{font-size:11pt; font-weight:600; color:var(--soft); margin-bottom:8px}
+
+/* ── Objectifs et exercices : pastille en cerne, jamais en aplat ── */
+ol.obj,ol.ex{list-style:none}
+ol.obj{counter-reset:o} ol.ex{counter-reset:e}
+ol.obj li,ol.ex li{position:relative; padding-left:9mm; font-weight:600}
+ol.obj li{counter-increment:o; margin-bottom:6px}
+ol.ex li{counter-increment:e; margin-bottom:9px; break-inside:avoid}
+ol.obj li::before,ol.ex li::before{
+  position:absolute; left:0; top:0; width:6mm; height:6mm; border-radius:50%;
+  border:1.5px solid var(--rule); color:var(--ink);
+  font-size:9.5pt; font-weight:800;
+  display:flex; align-items:center; justify-content:center}
+ol.obj li::before{content:counter(o)}
+ol.ex li::before{content:counter(e)}
+
+/* ── Dialogue ── */
+.rep{display:flex; gap:10px; padding:4px 0; border-top:1px solid var(--line)}
+.rep:first-of-type{border-top:0}
+.rep--key{background:var(--tint); border-radius:8px; padding:5px 8px;
+          border-top:0; margin:2px 0}
+.qui{flex:0 0 30mm; font-weight:800; color:var(--ink); font-size:10.5pt}
+
+/* ── Règle : encadrée au filet épais, c'est elle qu'on repère de loin ── */
+.regle{border:2.5px solid var(--rule); border-radius:12px; padding:12px 14px}
+.regle .lbl{color:var(--ink)}
+.regle p.r{font-size:14pt; font-weight:900; color:var(--ink); line-height:1.3}
+.regle p.pr{margin-top:7px; font-weight:600; color:var(--soft)}
+
+/* ── Tableau ── */
+table{width:100%; border-collapse:collapse}
+th{font-size:9.5pt; font-weight:800; text-transform:uppercase; letter-spacing:.1em;
+   color:var(--muted); text-align:left; padding:0 8px 5px 0;
+   border-bottom:1.5px solid var(--rule)}
+td{padding:6px 8px 6px 0; border-top:1px solid var(--line); vertical-align:top;
+   font-weight:600}
+td.cle{font-weight:900; color:var(--ink)}   /* la colonne clé : en gras, pas en couleur */
+.note{margin-top:8px; font-size:10.5pt; font-weight:600; color:var(--soft);
+      background:var(--tint); border-radius:9px; padding:8px 11px}
+
+/* ── Cartes ── */
+.grid{display:grid; grid-template-columns:1fr 1fr; gap:9px}
+.grid .card h3{font-size:11.5pt; font-weight:900; color:var(--ink); margin-bottom:3px}
+.grid .card p{font-size:11pt}
+
+/* ── Piège : le filet distingue les deux colonnes, pas la couleur ──
+   À gauche, un filet TIRETÉ — ce qui ne tient pas.
+   À droite, un filet PLEIN et épais — ce qu'il faut retenir.
+   Les deux intitulés disent la même chose en mots.                */
+.duo{display:grid; grid-template-columns:1fr 1fr; gap:10px}
+.duo>div{border-radius:12px; padding:10px 13px}
+.duo .no{border:1.5px dashed var(--muted)}
+.duo .ok{border:2.5px solid var(--rule); background:var(--tint)}
+.duo .k{font-size:9.5pt; font-weight:800; text-transform:uppercase;
+        letter-spacing:.1em; margin-bottom:4px; color:var(--muted)}
+.duo .ok .k{color:var(--ink)}
+.duo p.ph{font-size:12pt; font-weight:800; color:var(--ink); line-height:1.3}
+.duo .no p.ph{font-weight:600; font-style:italic; color:var(--soft)}
+
+/* ── Vocabulaire ── */
+.voc{width:100%; border-collapse:collapse}
+.voc td{border-top:1px solid var(--line); padding:6px 8px 6px 0}
+.voc td.mot{width:38%; font-weight:900; color:var(--ink)}
+.voc td.def{color:var(--soft)}
+
+/* ── Zones de réponse ── */
+.ligne{display:block; border-bottom:1px dotted #8E8E8A; height:8mm; margin-top:2px}
+.ligne--court{width:55%}
+
+/* ── Billet de sortie ── */
+.billet{border:2.5px solid var(--rule); border-radius:12px; padding:13px 15px}
+.billet .k{font-size:9.5pt; font-weight:800; text-transform:uppercase;
+           letter-spacing:.12em; color:var(--ink); margin-bottom:4px}
+.billet p.c{font-size:14pt; font-weight:900; color:var(--ink); line-height:1.3}
+.billet ul{list-style:none; margin-top:7px}
+.billet li{font-weight:600; color:var(--soft); margin-bottom:3px}
+
+/* ── Pied ── */
+footer{margin-top:16px; padding-top:7px; border-top:1px solid var(--line);
+       font-size:9.5pt; font-weight:700; color:var(--muted);
+       display:flex; justify-content:space-between}
+
+/* ── Impression ── */
+@page{size:8.5in 11in; margin:14mm 15mm}
+@media print{
+  html{background:#FFFFFF}
+  body{width:auto; padding:0}
+  .bloc{break-inside:avoid; page-break-inside:avoid}
+  h2.t,.lbl{break-after:avoid; page-break-after:avoid}
+}
+</style>
+</head>
+<body>
+<header class="hdr">
+  <div class="hdr-l">
+    <div class="eyebrow">Séance B1 · Module 2 · 75 minutes</div>
+    <h1>Quel est votre nom ?</h1>
+  </div>
+  <div class="hdr-r"><span>Nom<span class="nomline nomline--nom"></span></span><span>Date<span class="nomline nomline--date"></span></span></div>
+</header>
+<p class="chapeau">Une question, une case, une réponse. On répond, on épelle, et on vérifie ce qui est écrit.</p>
+<section class="bloc card"><div class="lbl">Objectifs</div><h2 class="t">À la fin, je serai capable de…</h2><ol class="obj"><li>comprendre « quel est votre nom de famille ? » ;</li><li>répondre et épeler ;</li><li>distinguer le nom de famille du prénom ;</li><li>comprendre madame, monsieur, F et H.</li></ol></section><section class="bloc card"><div class="lbl">Dialogue · 1 de 2</div><h2 class="t">Le nom, puis le prénom</h2><p class="consigne">Écoutez deux fois avant de lire.</p><div class="rep rep--key"><div class="qui">MADAME CÔTÉ</div><div>Quel est votre nom de famille ?</div></div><div class="rep rep--key"><div class="qui">YUSUF</div><div>Daoud. D - A - O - U - D.</div></div><div class="rep rep--key"><div class="qui">MADAME CÔTÉ</div><div>Merci. Et votre prénom ?</div></div><div class="rep rep--key"><div class="qui">YUSUF</div><div>Yusuf. Y - U - S - U - F.</div></div></section><section class="bloc card"><div class="lbl">Dialogue · 2 de 2</div><h2 class="t">On vérifie, on coche</h2><div class="rep rep--key"><div class="qui">MADAME CÔTÉ</div><div>Monsieur Yusuf Daoud. C'est bien ça ?</div></div><div class="rep rep--key"><div class="qui">YUSUF</div><div>Oui, c'est ça.</div></div><div class="rep rep--key"><div class="qui">MADAME CÔTÉ</div><div>Je coche « H ». H pour homme, F pour femme.</div></div></section><section class="bloc card"><div class="lbl">Analyse</div><h2 class="t">Deux mots, deux cases</h2><table><thead><tr><th>Le mot</th><th>Un exemple</th></tr></thead><tbody><tr><td>le nom de famille</td><td>Daoud — celui de toute la famille</td></tr><tr><td>le prénom</td><td>Yusuf — le vôtre seulement</td></tr><tr><td>ici, on écrit d'abord</td><td>le prénom, puis le nom : Yusuf Daoud</td></tr></tbody></table><div class="note">Sur la fiche, les deux cases sont séparées et nommées.</div></section><section class="bloc regle"><div class="lbl">Quel est votre… ?</div><p class="r">C'est la question de toutes les fiches.</p><p class="pr">Elle revient à chaque case : « &lt;b&gt;quel&lt;/b&gt; est votre nom de famille ? », « &lt;b&gt;quel&lt;/b&gt; est votre prénom ? », « &lt;b&gt;quelle&lt;/b&gt; est votre adresse ? ». À l'oreille, &lt;b&gt;quel&lt;/b&gt; et &lt;b&gt;quelle&lt;/b&gt; se disent exactement pareil : vous n'avez rien à choisir en parlant.</p></section><section class="bloc"><div class="lbl">Les mots courts de la fiche</div><h2 class="t">Quatre à reconnaître</h2><div class="grid"><div class="card"><h3>Madame · Monsieur</h3><p>Devant le nom d'une femme, devant celui d'un homme. Écrits en court : Mme, M.</p></div><div class="card"><h3>F · H</h3><p>La case du sexe. F pour femme, H pour homme.</p></div><div class="card"><h3>M · F</h3><p>Sur d'autres fiches : M pour masculin, F pour féminin. Même case, même réponse.</p></div><div class="card"><h3>Attention au F</h3><p>Ici F veut dire femme, là F veut dire féminin. Ce n'est jamais « français ».</p></div></div></section><section class="bloc card"><div class="lbl">Compréhension</div><h2 class="t">Vrai ou faux ?</h2><p class="consigne">Répondez d'après le dialogue.</p><ol class="ex"><li><span class="q">Le nom de famille de Yusuf est Daoud.</span><span class="ligne ligne--court"></span></li><li><span class="q">Son prénom est Yusuf.</span><span class="ligne ligne--court"></span></li><li><span class="q">Il n'épelle pas son nom.</span><span class="ligne"></span></li><li><span class="q">Madame Côté coche « F ».</span><span class="ligne"></span></li><li><span class="q">« H » veut dire « homme ».</span><span class="ligne ligne--court"></span></li></ol></section><section class="bloc card"><div class="lbl">Pratique · à deux</div><h2 class="t">On remplit votre fiche</h2><p class="consigne">L'un pose les questions, l'autre répond. Puis on échange.</p><ol class="ex"><li><span class="q">Question 1</span><span class="ligne"></span></li><li><span class="q">Question 2</span><span class="ligne ligne--court"></span></li><li><span class="q">Question 3</span><span class="ligne"></span></li><li><span class="q">Question 4</span><span class="ligne"></span></li></ol></section><section class="bloc billet"><div class="k">Billet de sortie</div><p class="c">Écrivez la question qu'on vous pose, puis votre réponse.</p><ul><li>Quel est votre nom de famille ?</li><li>Mon nom de famille est…</li><li>Et épelez-le, à côté.</li></ul><span class="ligne"></span><span class="ligne"></span><span class="ligne"></span></section>
+<footer><span>B1 · Je remplis ma fiche</span><span>Fiche élève</span></footer>
+</body>
+</html>

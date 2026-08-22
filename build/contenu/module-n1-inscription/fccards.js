@@ -1,0 +1,15 @@
+const FC_CARDS = [
+  {word:"une inscription", def:"Le moment où on donne son nom pour entrer dans un cours.", ex:"L'<strong>inscription</strong> commence à huit heures.", img:"/assets/interactive/module-n1-inscription/vocab/inscription.jpg", tache:"prep"},
+  {word:"une fiche", def:"La feuille de papier où on écrit ses renseignements.", ex:"Madame Côté donne une <strong>fiche</strong> à Yusuf.", img:"/assets/interactive/module-n1-inscription/vocab/fiche.jpg", tache:"prep"},
+  {word:"une case", def:"Le petit rectangle où on écrit une seule chose.", ex:"Écrivez votre prénom dans cette <strong>case</strong>.", img:"/assets/interactive/module-n1-inscription/vocab/case.jpg", tache:"prep"},
+  {word:"remplir", def:"Écrire dans toutes les cases d'une feuille.", ex:"Yusuf va <strong>remplir</strong> sa fiche.", img:"/assets/interactive/module-n1-inscription/vocab/remplir.jpg", tache:"prep"},
+  {word:"le nom de famille", def:"Le nom de vos parents, celui que toute la famille porte.", ex:"Son <strong>nom de famille</strong>, c'est Daoud.", tache:"t1"},
+  {word:"le prénom", def:"Le nom qu'on vous donne à la naissance, à vous seul.", ex:"Son <strong>prénom</strong>, c'est Yusuf.", tache:"t1"},
+  {word:"la date de naissance", def:"Le jour, le mois et l'année où vous êtes né.", ex:"Sa <strong>date de naissance</strong> est le 12 mars 1992.", img:"/assets/interactive/module-n1-inscription/vocab/date-de-naissance.jpg", tache:"t1"},
+  {word:"l'année", def:"Douze mois. 1992, 2026 sont des années.", ex:"En quelle <strong>année</strong> êtes-vous né ?", img:"/assets/interactive/module-n1-inscription/vocab/annee.jpg", tache:"t1"},
+  {word:"l'adresse", def:"Le numéro, la rue et la ville où vous habitez.", ex:"Son <strong>adresse</strong>, c'est 3120, avenue Papineau.", img:"/assets/interactive/module-n1-inscription/vocab/adresse.jpg", tache:"t2"},
+  {word:"un appartement", def:"Un logement dans un immeuble. Il porte un numéro.", ex:"Carlos habite à l'<strong>appartement</strong> 4.", img:"/assets/interactive/module-n1-inscription/vocab/appartement.jpg", tache:"t2"},
+  {word:"le code postal", def:"Six caractères qui disent au facteur où aller.", ex:"Mon <strong>code postal</strong> est H2K 1N4.", img:"/assets/interactive/module-n1-inscription/vocab/code-postal.jpg", tache:"t2"},
+  {word:"le téléphone", def:"L'appareil pour parler de loin. Son numéro a dix chiffres.", ex:"Écrivez votre numéro de <strong>téléphone</strong> ici.", img:"/assets/interactive/module-n1-inscription/vocab/telephone.jpg", tache:"t2"},
+  {word:"le courriel", def:"L'adresse pour recevoir des messages sur un écran.", ex:"Le centre écrit à Yusuf par <strong>courriel</strong>.", img:"/assets/interactive/module-n1-inscription/vocab/courriel.jpg", tache:"t2"},
+];
