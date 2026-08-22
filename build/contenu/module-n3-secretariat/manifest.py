@@ -24,7 +24,9 @@ MANIFESTE = {
 
     # `titre` et `niveau` viennent de `build/powerpoints/modules.py`.
 
-    'theme': "Communication avec le personnel de l'établissement",
+    # L'apostrophe est échappée : le jeton %%THEME%% est posé dans une chaîne
+    # JavaScript à guillemets simples, et le build refuse de continuer sans.
+    'theme': "Communication avec le personnel de l\\'établissement",
 
     # Ambre : la couleur du niveau 3. Elle ne se choisit pas — voir
     # `build/couleurs_niveau.py`.
