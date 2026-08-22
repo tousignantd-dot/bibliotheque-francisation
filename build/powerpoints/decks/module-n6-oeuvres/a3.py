@@ -41,14 +41,13 @@ def build(dossier):
 
     d.tableau('Analyse', "Le champ lexical du cinéma",
               ['Le mot', 'Ce qu\'il dit de plus que « film »'],
-              [["un long métrage", "il dure plus d'une heure, on le voit en salle"],
-               ["un court métrage", "moins de vingt minutes, souvent un premier film"],
-               ["un documentaire", "il montre des faits réels, pas une fiction"],
-               ["une série", "elle est découpée en épisodes"],
+              [["un long métrage", "plus d'une heure, en salle"],
+               ["un court métrage", "moins de vingt minutes"],
+               ["un documentaire", "des faits réels, pas une fiction"],
+               ["une série", "une histoire en épisodes"],
                ["une scène", "un seul lieu, d'un seul tenant"],
-               ["une rétrospective", "tous les films d'une personne, repris ensemble"]],
+               ["une rétrospective", "tous les films d'une personne"]],
               cle=0,
-              note="Chaque mot porte un détail : c'est du temps de parole gagné.",
               notes="Diapositive à photographier. Faire remarquer que ce n'est pas la "
                     "difficulté du mot qui compte, mais le détail qu'il porte.")
 

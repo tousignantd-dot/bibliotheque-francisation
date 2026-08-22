@@ -42,13 +42,12 @@ def build(dossier):
     d.tableau('Analyse', "La ligne du temps d'Aurélie Pichette",
               ['L\'année', 'Ce qui arrive'],
               [["1951", "naissance à Rimouski"],
-               ["1972", "entrée dans une salle de montage, pour onze ans"],
-               ["1979", "premier court métrage, projeté trois fois"],
-               ["1994", "le long métrage sort dans huit salles"],
-               ["2007", "elle cesse de tourner et se met à enseigner"],
+               ["1972", "salle de montage, pour onze ans"],
+               ["1979", "court métrage, projeté trois fois"],
+               ["1994", "le long métrage, huit salles"],
+               ["2007", "elle cesse de tourner, elle enseigne"],
                ["2016", "rétrospective à la salle Beauchemin"]],
               cle=0,
-              note="Le texte ne donne pas ces dates dans cet ordre : c'est le lecteur qui les range.",
               notes="Diapositive à photographier. Faire construire la ligne du temps "
                     "par le groupe, au tableau, avant de projeter celle-ci.")
 
