@@ -1,7 +1,7 @@
 const EXOS = [
  // ── JE DÉCOUVRE ─────────────────────────────────────────────
   {sec:'prep', id:'prVocab', type:'match', num:'Vocabulaire · 1', tit:'Le mot et sa définition', color:'#A5335F',
-   sub:"Choisis un mot, puis va chercher sa définition dans le banc. Six à la fois.", noQLbl:true, bankLbl:'Définitions', zonePh:'glisse la définition ici',
+   sub:"Prends un mot du travail de recherche, puis pose dessus la définition qui lui va. Six à la fois.", noQLbl:true, bankLbl:'Définitions', zonePh:'glisse la définition ici',
    rows: FC_CARDS.map((c,i)=>({id:'pv'+i, q:c.word, aid:'pv'+i, a:c.def}))},
 
   {sec:'prep', id:'prVF', type:'vf', num:'Exercice 1', tit:"Vrai ou Faux — Trois semaines à partir de lundi", color:'#A5335F',
@@ -24,8 +24,8 @@ const EXOS = [
     {id:'pf8', txt:"Le compte rendu devant la classe dure environ vingt minutes.", ok:'FAUX'},
    ]},
 
-  {sec:'prep', id:'prGraphie', type:'vf', num:'Exercice 2', tit:'Trois familles de lettres qui trompent', color:'#A5335F', accent:'#A5335F', cards:true, listen:true,
-   sub:"Écoute chaque mot une fois. Quelle est la famille des lettres marquées ?",
+  {sec:'prep', id:'prGraphie', type:'vf', num:'Exercice 2', tit:'Les lettres qui ne disent pas le son qu\'on croit', color:'#A5335F', accent:'#A5335F', cards:true, listen:true,
+   sub:"Un seul écoute par mot. À quelle famille appartiennent les lettres marquées ?",
    tiles:['COMME K','COMME S','COMME CH'],
    rows:[
     {id:'gr1', txt:"le chlore", ok:'COMME K'},
@@ -102,7 +102,7 @@ const EXOS = [
    ]},
 
   {sec:'t1', id:'t1cons', type:'texte', num:'Exercice 2', tit:'Ce que dit la consigne, exactement', color:'#B45309',
-   sub:"Choisis une question, puis clique dans le texte le passage qui y répond.",
+   sub:"Arme une question, puis va chercher dans la page le passage qui y répond.",
    paras:[
      "Centre d'éducation des adultes des Trois-Chênes — Francisation, groupe 402. Travail de recherche en équipe, session d'automne. [[eq|Les équipes sont de trois personnes]] et se forment en classe le 30 octobre.",
      "Chaque équipe choisira son sujet dans la liste ci-jointe. [[sujet|Le sujet devra être approuvé par l'enseignante avant le 3 novembre]]. Une fois le sujet approuvé, l'équipe cherchera [[srcs|au moins trois sources de genres différents]] : les trois documents ne peuvent pas venir du même endroit.",
@@ -223,7 +223,7 @@ const EXOS = [
    ]},
 
   {sec:'t2', id:'t2src', type:'texte', num:'Exercice 2', tit:'Ce que dit la page de la ville', color:'#1D6B8F',
-   sub:"Choisis une question, puis clique dans le texte le passage qui y répond.",
+   sub:"Arme une question, puis va chercher dans la page le passage qui y répond.",
    paras:[
      "Ville de Sainte-Angèle-des-Prés — La collecte des matières organiques. [[quoi|Le bac brun reçoit les restes de table, les résidus de jardin et le papier souillé par la nourriture]]. Il est ramassé [[quand|chaque semaine du printemps à l'automne, et une semaine sur deux l'hiver]].",
      "[[non|Aucun sac de plastique n'est accepté, même vendu comme biodégradable]], à moins qu'il porte une certification reconnue. Un seul sac de plastique peut faire refuser le contenu d'un camion entier, et le camion repart alors vers le site d'enfouissement.",
@@ -244,7 +244,7 @@ const EXOS = [
    sub:"Dans chaque paire de phrases, un mot de deux lettres remplace quelque chose. Associe-le à ce qu'il remplace.",
    bankLbl:"Ce que le mot remplace", zonePh:'glisse la réponse ici',
    savoir:{h:"› Le, en, y : trois mots qui renvoient en arrière", rows:[
-     ["Pourquoi c'est le cœur du niveau","Dans un texte suivi, on ne répète pas : on renvoie. Perdre le fil d'un renvoi, dans un travail de recherche, c'est écrire le contraire de sa source sans s'en apercevoir. Ce n'est pas un détail de grammaire, c'est un accident de lecture."],
+     ["Ce que ça coûte de perdre un renvoi","Dans un texte suivi, on ne répète pas : on renvoie. Perdre le fil d'un renvoi, dans un travail de recherche, c'est écrire le contraire de sa source sans s'en apercevoir. Ce n'est pas un détail de grammaire, c'est un accident de lecture."],
      ["« le » ramasse une phrase entière","Pas un objet : ce qui vient d'être dit. <span class='savoir-ex'>Elle pense <u>que la collecte fonctionne</u>. → Elle <b>le</b> pense.</span> Ce « le » ne s'accorde jamais : il ne désigne ni un homme, ni une femme, ni un pluriel. Devant une voyelle, il devient <b>l'</b>."],
      ["« en » reprend un groupe en « de »","<span class='savoir-ex'>Ils ont besoin <u>d'une troisième source</u>. → Ils <b>en</b> ont besoin.</span> Il reprend aussi une quantité : <span class='savoir-ex'>Le bulletin donne trois chiffres. Nous <b>en</b> gardons un seul.</span>"],
      ["« y » reprend un groupe en « à », et les lieux","<span class='savoir-ex'>Elle pense <u>à son exposé</u>. → Elle <b>y</b> pense.</span> <span class='savoir-ex'>Elle va <u>à la bibliothèque</u>. → Elle <b>y</b> va.</span>"],
@@ -306,8 +306,8 @@ const EXOS = [
    savoir:{h:"› Le passé simple : à reconnaître, jamais à écrire", rows:[
      ["Où tu le rencontreras","Dans les historiques, les brochures de musée, les romans, les documentaires. Un bulletin municipal qui raconte ses débuts y passe toujours. Jamais dans une conversation, jamais dans un courriel, jamais dans ce que tu écriras."],
      ["Ce que le programme demande, et rien de plus","<b>Reconnaître les verbes courants à la 3e personne</b> et <b>associer le passé simple au passé composé</b>. Personne ne te demandera d'en produire un — et si quelqu'un te le demandait, il se tromperait."],
-     ["Les terminaisons qui reviennent","<b>-a</b> et <b>-èrent</b> pour les verbes en -er : <span class='savoir-ex'>il adopta, ils adoptèrent</span> ; <b>-it</b> et <b>-irent</b> ailleurs : <span class='savoir-ex'>elle partit, elles partirent</span> ; <b>-ut</b> et <b>-urent</b> pour un troisième groupe : <span class='savoir-ex'>il disparut, ils disparurent</span>."],
-     ["Trois formes à connaître par cœur","<b>il fut</b> (il a été) · <b>il eut</b> (il a eu) · <b>il fit</b> (il a fait). Elles sont si courtes qu'on ne les reconnaît pas comme des verbes, et elles reviennent à toutes les pages."],
+     ["Les fins de verbe à repérer","<b>-a</b> et <b>-èrent</b> pour les verbes en -er : <span class='savoir-ex'>il adopta, ils adoptèrent</span> ; <b>-it</b> et <b>-irent</b> ailleurs : <span class='savoir-ex'>elle partit, elles partirent</span> ; <b>-ut</b> et <b>-urent</b> pour un troisième groupe : <span class='savoir-ex'>il disparut, ils disparurent</span>."],
+     ["Les trois que tout historique emploie","<b>il fut</b> (il a été) · <b>il eut</b> (il a eu) · <b>il fit</b> (il a fait). Elles sont si courtes qu'on ne les reconnaît pas comme des verbes, et elles reviennent à toutes les pages."],
      ["La façon de le lire","Traduis-le en passé composé dans ta tête et continue. Ne t'arrête pas dessus : dans un document, le passé simple porte le décor, jamais l'information dont tu as besoin."],
    ]},
    rows:[

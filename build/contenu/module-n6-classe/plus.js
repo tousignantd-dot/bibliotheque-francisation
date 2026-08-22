@@ -34,19 +34,19 @@ const PLUS = {
        p:"Trois nombres, pas un de plus. Mais ce sont trois nombres qu'une consigne écrite vous donnera vingt fois : nombre de pages, nombre de sources, date de remise.",
        mots:[['Ce que la page montre','si{x} · di{x} · soi{x}ante'],
              ['Ce que la bouche fait','un s franc, comme à la fin d\'« autobus »', true],
-             ['Ce qui bouge selon la suite','seul, on entend le s ; devant une consonne, il disparaît ; devant une voyelle, il devient z']],
+             ['Ce qui bouge selon la suite',"tout seul, le s s'entend ; devant une consonne il tombe ; devant une voyelle il se change en z"]],
        say:"six, dix, soixante",
        note:"Essayez sur une échéance : « le six » se dit sisse, « six novembre » se dit si novembre, « six ans » se dit siz ans. Même mot, trois fins."},
 
       {t:'ana', h:"Troisième famille — sh et sch qui sonnent ch",
        p:"Des mots venus d'ailleurs et installés chez nous. Ils sont brefs, et rien dans leur écriture ne prévient l'œil.",
-       mots:[['Ce que la page montre','un {sch}éma · un {sh}ampoing · un {sh}ort'],
-             ['Ce que la bouche fait','le souffle de « chat », exactement', true],
+       mots:[['Ce que la page montre','un {sh}ort · un {sch}éma · un {sh}ampoing'],
+             ['Ce que la bouche fait','exactement le souffle du mot « chat »', true],
              ['Le signe qui ne trompe pas','un mot court, souvent un objet du quotidien']],
-       say:"un schéma, un shampoing, un short",
+       say:"un short, un schéma, un shampoing",
        note:"Retenez « un schéma » avant les autres : une page d'information municipale en contient presque toujours un, et c'est lui qui explique la démarche d'un coup d'œil."},
 
-      {t:'labo', h:"Le mot entendu, puis répété",
+      {t:'labo', h:"Entendre d'abord, répéter ensuite",
        p:"Choisissez une famille, puis un exemple.",
        axes:[
          {id:'f', lbl:'Quelle famille ?', opts:[['a','ch qui sonne k'],['b','x qui sonne s'],['c','sh et sch qui sonnent ch']]},
@@ -54,10 +54,10 @@ const PLUS = {
        out:{
          a1:{w:["le chlore"], say:"le chlore", n:'deux syllabes, la première commence par un k'},
          a2:{w:["une orchidée"], say:"une orchidée", n:'or-ki-dée, jamais or-chi-dée'},
-         b1:{w:["dix"], say:"dix", n:'isolé, le mot se termine par un s bien net'},
+         b1:{w:["dix"], say:"dix", n:'tout seul, le mot finit sur un s net'},
          b2:{w:["soixante"], say:"soixante", n:'soi-sante : aucun k au milieu'},
-         c1:{w:["un schéma"], say:"un schéma", n:'trois consonnes écrites, un seul souffle'},
-         c2:{w:["un shampoing"], say:"un shampoing", n:'le mot vient de loin, la bouche reste française'},
+         c1:{w:["un schéma"], say:"un schéma", n:"trois consonnes à l'écrit, un souffle à l'oreille"},
+         c2:{w:["un shampoing"], say:"un shampoing", n:"venu d'ailleurs, prononcé à la française"},
        },
        note:"Écoutez deux fois avant d'ouvrir la bouche. Ce qu'on entraîne ici, c'est l'oreille ; la langue suit toute seule."},
 
@@ -69,8 +69,8 @@ const PLUS = {
          ["l'archéologie","ar-ké-o-lo-gie, en cinq temps"],
          ["la technique","tec-nique, comme technologie"],
          ["six sources","si sources : le x disparaît devant la consonne"],
-         ["soixante","soi-sante, jamais soi-ksante"],
-         ["un schéma","ché-ma, trois lettres pour un souffle"],
+         ["soixante","soi-sante : aucun k, jamais"],
+         ["un schéma","ché-ma : trois lettres, un seul souffle"],
          ["un short","chort, à la française"],
        ]},
 
@@ -78,23 +78,23 @@ const PLUS = {
        rows:[
          ["taper le mot exactement comme on l'a entendu","essayer la lettre muette avant d'abandonner",
           "Vous cherchez « cronomètre » et le catalogue reste vide. Prenez l'habitude d'essayer un ch devant un k et un x devant un s : le mot apparaît presque toujours du premier coup, et vous venez de gagner un quart d'heure."],
-         ["donner à tous les ch le souffle de chat","apprendre la petite liste savante",
+         ["croire que tout ch fait le souffle de chat","retenir la courte liste des mots savants",
           "Prononcer « technique » avec le souffle de « chat » rend le mot méconnaissable, et personne ne devinera. Ces mots-là se comptent sur les doigts : une carte suffit."],
-         ["se crisper sur les trois façons de dire six","viser la reconnaissance, pas la perfection",
+         ["se crisper sur les trois façons de dire six","chercher à reconnaître, pas à réussir",
           "Personne ne vous reprendra sur « siz jours ». Ce qu'il faut, c'est comprendre l'échéance qu'on vous donne. La produire parfaitement viendra plus tard, ou pas du tout, et la grille d'évaluation ne l'évalue pas."],
        ]},
 
-      {t:'check', h:"Vérifions en quatre questions",
-       p:"Une seule bonne réponse chaque fois.",
+      {t:'check', h:"On vérifie — quatre questions",
+       p:"Une bonne réponse par question.",
        qs:[
          {q:"Dans « un chronomètre », les lettres ch produisent…", opts:["le souffle de chat","un k"], ok:1,
           fb:"Cro-no-mètre. Le mot vient du grec, comme presque tous ceux de cette famille."},
-         {q:"Dans « soixante », la lettre x produit…", opts:["un s","le groupe ks"], ok:0,
+         {q:"Dans « soixante », que fait la lettre x ?", opts:["un s","le groupe ks"], ok:0,
           fb:"Soi-sante. Le x y fait le même travail que dans six et dans dix."},
-         {q:"Dans « un schéma », les lettres sch produisent…", opts:["le groupe sk","le souffle de chat"], ok:1,
+         {q:"Dans « un schéma », que font les lettres sch ?", opts:["le groupe sk","le souffle de chat"], ok:1,
           fb:"Trois consonnes à l'œil, un seul souffle à l'oreille."},
          {q:"« Six sources » se dit…", opts:["si sources","sisse sources"], ok:0,
-          fb:"Devant une consonne, la fin de six s'efface complètement."},
+          fb:"Devant une consonne, la fin de « six » disparaît."},
        ]},
 
       {t:'revoir', h:"Ce qu'il faut garder",
@@ -154,8 +154,8 @@ const PLUS = {
           "Cinq minutes, c'est très court. Sans répétition, on en dit la moitié en huit minutes, on se fait couper, et on n'arrive jamais à la conclusion — qui est justement la partie évaluée."],
        ]},
 
-      {t:'check', h:"Vérifions en trois questions",
-       p:"Une seule bonne réponse chaque fois.",
+      {t:'check', h:"On vérifie — trois questions",
+       p:"Une bonne réponse par question.",
        qs:[
          {q:"Quand faut-il écrire la bibliographie ?", opts:["pendant qu'on lit les sources","la veille de la remise"], ok:0,
           fb:"Retrouver trois jours plus tard la page d'où venait une phrase prend plus de temps que de l'avoir notée sur le coup."},
@@ -214,8 +214,8 @@ const PLUS = {
           "Une consigne se lit trois fois : au début, avant d'écrire, et une dernière fois la feuille à la main juste avant de remettre. La troisième lecture prend quatre minutes et sauve des points chaque session."],
        ]},
 
-      {t:'check', h:"Vérifions en trois questions",
-       p:"Une seule bonne réponse chaque fois.",
+      {t:'check', h:"On vérifie — trois questions",
+       p:"Une bonne réponse par question.",
        qs:[
          {q:"Que faut-il remettre, selon la consigne du groupe 402 ?", opts:["un texte de deux pages","un texte de deux pages et le plan"], ok:1,
           fb:"La partie qui manque est presque toujours celle d'après le « et »."},
@@ -274,8 +274,8 @@ const PLUS = {
           "L'accent n'est évalué nulle part, à aucun niveau du programme. Cette inquiétude-là fait taire des adultes qui auraient beaucoup à dire, et elle ne repose sur rien."],
        ]},
 
-      {t:'check', h:"Vérifions en trois questions",
-       p:"Une seule bonne réponse chaque fois.",
+      {t:'check', h:"On vérifie — trois questions",
+       p:"Une bonne réponse par question.",
        qs:[
          {q:"Quelle ligne vaut le plus de points ?", opts:["le contenu, huit points","l'organisation, quatre points"], ok:0,
           fb:"Huit sur vingt. C'est aussi la ligne qui demande le plus de temps."},
@@ -335,8 +335,8 @@ const PLUS = {
           "« Dès que vous avez trois sources » veut dire : deux ne suffisent pas. C'est une condition, pas seulement un moment."],
        ]},
 
-      {t:'check', h:"Vérifions en trois questions",
-       p:"Une seule bonne réponse chaque fois.",
+      {t:'check', h:"On vérifie — trois questions",
+       p:"Une bonne réponse par question.",
        qs:[
          {q:"« Avant de choisir, lisez la liste. » Que fait-on en premier ?", opts:["choisir","lire la liste"], ok:1,
           fb:"Le verbe écrit en premier n'est pas l'action faite en premier. C'est le seul des quatre indices qui inverse."},
@@ -405,8 +405,8 @@ const PLUS = {
           "« De écrire » ne se prononce pas : la bouche le refuse avant que l'œil le voie. Dire la phrase règle la question à tous les coups."],
        ]},
 
-      {t:'check', h:"Vérifions en quatre questions",
-       p:"Une seule bonne réponse chaque fois.",
+      {t:'check', h:"On vérifie — quatre questions",
+       p:"Une bonne réponse par question.",
        qs:[
          {q:"Ils ont réussi ___ trouver une source.", opts:["de","à"], ok:1,
           fb:"réussir appartient à la famille « à », comme commencer et apprendre."},
@@ -467,8 +467,8 @@ const PLUS = {
           "À la négative, tout change de place : « Ne me le donne pas. » Les pronoms repassent devant le verbe et l'ordre s'inverse. N'essayez pas de relier les deux formes : apprenez-les comme deux phrases différentes."],
        ]},
 
-      {t:'check', h:"Vérifions en trois questions",
-       p:"Une seule bonne réponse chaque fois.",
+      {t:'check', h:"On vérifie — trois questions",
+       p:"Une bonne réponse par question.",
        qs:[
          {q:"Comment demander le plan, à quelqu'un qu'on tutoie ?", opts:["Donne-moi-le.","Donne-le-moi."], ok:1,
           fb:"La chose d'abord, la personne ensuite. C'est l'ordre à retenir."},
@@ -520,7 +520,7 @@ const PLUS = {
 
       {t:'piege', h:"Trois pièges de lecture",
        rows:[
-         ["lire du début à la fin, une fois, lentement","regarder d'abord, lire ensuite",
+         ["lire du début à la fin, une fois, lentement","repérer d'abord, lire ensuite",
           "Une lecture linéaire d'une page dense laisse une impression et aucune information précise. Trente secondes de repérage rendent la lecture deux fois plus efficace."],
          ["confondre ce que le texte dit et ce qu'on en pense","souligner les deux d'une couleur différente",
           "C'est exactement ce que la ligne « contenu » de la grille regarde, et ça vaut huit points sur vingt. Un travail qui écrit « il est prouvé que » là où sa source écrivait « selon nous » perd ces points-là."],
@@ -528,8 +528,8 @@ const PLUS = {
           "Retrouver la date trois jours plus tard prend plus de temps que de l'avoir écrite, et une source sans date ne compte pas dans cette grille."],
        ]},
 
-      {t:'check', h:"Vérifions en trois questions",
-       p:"Une seule bonne réponse chaque fois.",
+      {t:'check', h:"On vérifie — trois questions",
+       p:"Une bonne réponse par question.",
        qs:[
          {q:"Que fait-on avant de lire une page d'information ?", opts:["on la lit au complet","on regarde qui publie, la date et les intertitres"], ok:1,
           fb:"Trente secondes de repérage, et la lecture devient deux fois plus rapide."},
@@ -593,12 +593,12 @@ const PLUS = {
           "Ces mots font deux lettres et ne se prononcent presque pas. C'est justement pour ça qu'on les saute — et qu'on perd le fil sans le sentir."],
          ["accorder le « le » de la phrase reprise","le laisser tel quel, toujours",
           "« Elle la pense » en parlant d'une idée : non. Une phrase n'a pas de genre, et ce « le »-là ne change jamais."],
-         ["employer « y » pour une personne","garder la préposition et le pronom disjoint",
+         ["employer « y » en parlant de quelqu'un","garder la préposition et le pronom disjoint",
           "« J'y pense » en parlant de sa coéquipière ne se dit pas. C'est « je pense à elle ». Même chose avec « en » : « je parle d'elle », pas « j'en parle »."],
        ]},
 
-      {t:'check', h:"Vérifions en quatre questions",
-       p:"Une seule bonne réponse chaque fois.",
+      {t:'check', h:"On vérifie — quatre questions",
+       p:"Une bonne réponse par question.",
        qs:[
          {q:"« Elle pense que le plan est bon. Elle ___ pense. »", opts:["le","y"], ok:0,
           fb:"« le » ramasse toute la phrase qui suit « que »."},
@@ -669,8 +669,8 @@ const PLUS = {
           "Trois phrases courtes qui répètent le même nom se lisent moins bien qu'une phrase tenue. La grille appelle ça l'organisation, et c'est là que ces quatre points se gagnent."],
        ]},
 
-      {t:'check', h:"Vérifions en quatre questions",
-       p:"Une seule bonne réponse chaque fois.",
+      {t:'check', h:"On vérifie — quatre questions",
+       p:"Une bonne réponse par question.",
        qs:[
          {q:"« C'est l'année ___ le règlement a été adopté. »", opts:["que","où"], ok:1,
           fb:"« l'année » est un nom de temps : c'est « où »."},
@@ -690,7 +690,7 @@ const PLUS = {
   t2subst: {
     eye:'Mini-leçon', tit:"Reprendre sans répéter",
     blocs:[
-      {t:'texte', h:"Ce qui sépare un texte d'une liste",
+      {t:'texte', h:"Pourquoi un texte n'est pas une liste",
        p:"Lisez deux paragraphes qui commencent tous les deux par « la collecte des matières organiques ». Ça se lit comme une liste : chaque paragraphe repart de zéro, rien ne monte. Maintenant, remplacez le deuxième par « ce ramassage ». Le texte avance. C'est tout l'écart entre un travail qui obtient ses quatre points d'organisation et un travail qui les perd.",
        note:"Le programme l'appelle : employer des procédés de substitution lexicale pour reprendre un référent — synonymie, nominalisation, et le reste."},
 
@@ -737,12 +737,12 @@ const PLUS = {
           "« La collecte des matières organiques » trois fois en une page se remarque immédiatement, et le texte donne l'impression de tourner en rond."],
          ["changer de mot sans prévenir","garder le démonstratif",
           "Passer de « la collecte » à « le ramassage » sans « ce » devant fait croire au lecteur qu'on parle d'autre chose. Un seul mot manquant, et le fil casse."],
-         ["chercher un synonyme à tout prix","répéter plutôt que de dire faux",
+         ["vouloir un synonyme coûte que coûte","répéter plutôt que de dire faux",
           "Un mot précis répété vaut mieux qu'un synonyme approximatif. « Biométhanisation » n'a pas de synonyme, et personne ne vous reprochera de l'écrire deux fois."],
        ]},
 
-      {t:'check', h:"Vérifions en trois questions",
-       p:"Une seule bonne réponse chaque fois.",
+      {t:'check', h:"On vérifie — trois questions",
+       p:"Une bonne réponse par question.",
        qs:[
          {q:"« On enfouit les matières. » Le nom correspondant est…", opts:["l'enfouissement","l'enfouissage"], ok:0,
           fb:"Suffixe -ment. Il ne se devine pas : il se note en même temps que le verbe."},
@@ -781,7 +781,7 @@ const PLUS = {
        note:"Apprenez ces trois-là et vous comprendrez la moitié des textes historiques que vous rencontrerez, en français comme dans une brochure de musée."},
 
       {t:'ex', h:"Sept phrases du bulletin municipal",
-       p:"À gauche ce qui est écrit, à droite ce qu'on dirait.",
+       p:"À gauche la forme écrite, à droite ce qu'on dit.",
        rows:[
          ["le conseil adopta le règlement","le conseil a adopté le règlement"],
          ["les premiers bacs arrivèrent en avril","les premiers bacs sont arrivés en avril"],
@@ -802,8 +802,8 @@ const PLUS = {
           "Les deux s'écrivent pareil pour certains verbes. Si le paragraphe raconte une histoire avec des dates, c'est du passé simple. C'est le seul test, et il suffit."],
        ]},
 
-      {t:'check', h:"Vérifions en trois questions",
-       p:"Une seule bonne réponse chaque fois.",
+      {t:'check', h:"On vérifie — trois questions",
+       p:"Une bonne réponse par question.",
        qs:[
          {q:"« Le conseil adopta » se dit…", opts:["le conseil a adopté","le conseil adoptera"], ok:0,
           fb:"Terminaison -a : un verbe en -er, à la troisième personne du singulier, au passé."},
@@ -863,8 +863,8 @@ const PLUS = {
           "Deux points et une flèche entre eux : trente secondes. C'est la vérification la moins chère de tout le travail, et c'est l'erreur la plus coûteuse à la correction."],
        ]},
 
-      {t:'check', h:"Vérifions en trois questions",
-       p:"Une seule bonne réponse chaque fois.",
+      {t:'check', h:"On vérifie — trois questions",
+       p:"Une bonne réponse par question.",
        qs:[
          {q:"« La ville avait distribué les bacs quand la collecte commença. » Quoi d'abord ?", opts:["la distribution","le début de la collecte"], ok:0,
           fb:"Le plus-que-parfait recule d'un cran : la distribution est arrivée avant."},
