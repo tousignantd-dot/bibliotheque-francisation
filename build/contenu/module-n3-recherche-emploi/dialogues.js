@@ -1,0 +1,91 @@
+const DIALOGUES = {
+  prep: {
+    label: "Dialogue — L'affiche dans la vitrine",
+    lines: [
+      ["FANTA","Sylvie, regardez. Il y a un papier dans la vitrine de la boulangerie."],
+      ["SYLVIE","« On embauche. » C'est écrit gros, en rouge. Vous savez ce que ça veut dire ?"],
+      ["FANTA","Ça veut dire qu'ils cherchent quelqu'un ?"],
+      ["SYLVIE","Exactement. Embaucher, c'est engager quelqu'un pour travailler."],
+      ["FANTA","Mais moi, je n'ai pas de curriculum vitæ. Je n'ai jamais travaillé ici."],
+      ["SYLVIE","Pour une affiche comme celle-là, on n'en demande pas toujours. Vous entrez, et vous offrez vos services."],
+      ["FANTA","J'entre comme ça ? Sans rendez-vous ?"],
+      ["SYLVIE","Sans rendez-vous. Vous saluez, vous dites pourquoi vous venez, et vous laissez votre nom."],
+      ["FANTA","Je dis quoi, exactement ?"],
+      ["SYLVIE","Trois choses. Ce que vous savez faire. Quand vous êtes libre. Où on peut vous joindre."],
+      ["FANTA","Je sais faire le ménage. J'ai gardé des enfants pendant six ans, à Conakry."],
+      ["SYLVIE","Voilà. C'est votre expérience, ça. On dit : « J'ai de l'expérience en garde d'enfants. »"],
+      ["FANTA","Et si le patron n'est pas là ?"],
+      ["SYLVIE","Vous demandez à qui parler, et vous laissez votre numéro de téléphone. Écrit, pas juste dit."],
+      ["FANTA","D'accord. Je vais essayer demain matin."],
+      ["SYLVIE","Le matin, c'est bien. Mais pas entre onze heures et deux heures : c'est l'heure du dîner, ils sont débordés."],
+    ]
+  },
+
+  t1: {
+    label: "Dialogue — Est-ce que vous engagez ?",
+    lines: [
+      ["FANTA","Bonjour, monsieur. Excusez-moi de vous déranger."],
+      ["GILLES","Bonjour. Je peux vous aider ?"],
+      ["FANTA","J'ai vu votre affiche dans la vitrine. Est-ce que vous engagez encore ?"],
+      ["GILLES","Oui, on cherche quelqu'un. Vous avez déjà travaillé en boulangerie ?"],
+      ["FANTA","Non, jamais. Mais j'ai de l'expérience en ménage et en garde d'enfants."],
+      ["GILLES","Le poste, c'est commis au comptoir. Servir les clients, remplir les tablettes, nettoyer à la fermeture."],
+      ["FANTA","Le ménage, je sais faire. Servir les clients, je peux apprendre vite."],
+      ["GILLES","Vous êtes disponible quels jours ?"],
+      ["FANTA","Du lundi au vendredi, le matin. Je suis à l'école de français l'après-midi."],
+      ["GILLES","Le matin, ça m'arrange. On ouvre à six heures et demie."],
+      ["FANTA","Six heures et demie, ce n'est pas un problème pour moi."],
+      ["GILLES","Bon. Vous vous appelez comment ?"],
+      ["FANTA","Fanta Traoré. F-A-N-T-A. Traoré : T-R-A-O-R-É."],
+      ["GILLES","Et je vous joins où ?"],
+      ["FANTA","Au 438 555-0192. Je peux vous l'écrire ?"],
+      ["GILLES","Écrivez-le ici, sur le carnet. Je vous rappelle cette semaine."],
+    ]
+  },
+
+  t2: {
+    label: "Dialogue — Deux offres au babillard",
+    lines: [
+      ["SYLVIE","Alors, la boulangerie ? Il vous a rappelée ?"],
+      ["FANTA","Pas encore. Mais j'ai pris deux annonces au babillard de l'épicerie."],
+      ["SYLVIE","Montrez-moi. On va les lire ensemble. La première dit quoi ?"],
+      ["FANTA","« Préposée à l'entretien. Vingt heures par semaine. Le soir. »"],
+      ["SYLVIE","Vingt heures, c'est du temps partiel. Et le salaire ?"],
+      ["FANTA","« Seize dollars cinquante de l'heure. » Ça veut dire quoi, « de l'heure » ?"],
+      ["SYLVIE","Que vous recevez seize dollars cinquante pour chaque heure travaillée."],
+      ["FANTA","Alors vingt heures, ça fait trois cent trente dollars par semaine."],
+      ["SYLVIE","C'est ça. Et l'horaire du soir, ça vous convient ?"],
+      ["FANTA","Non. Mes enfants sont à la maison le soir. Je cherche le jour."],
+      ["SYLVIE","Bon. Écartez celle-là. Et la deuxième ?"],
+      ["FANTA","« Centre Léo-Bourdon. Aide à la cuisine, de neuf heures à une heure, du mardi au samedi. »"],
+      ["SYLVIE","Quatre heures par jour, cinq jours. Ça fait combien d'heures ?"],
+      ["FANTA","Vingt heures aussi. Mais le jour, cette fois."],
+      ["SYLVIE","Et il faut de l'expérience ?"],
+      ["FANTA","C'est écrit : « Aucune expérience exigée. Formation donnée sur place. »"],
+      ["SYLVIE","Alors c'est celle-là qu'il faut essayer. Demandez Hugo Pelletier."],
+    ]
+  },
+
+  t3: {
+    label: "Dialogue — Écrivez en lettres moulées",
+    lines: [
+      ["HUGO","Bonjour. Vous venez pour le poste à la cuisine ?"],
+      ["FANTA","Oui, monsieur. J'ai vu l'annonce au babillard de l'épicerie."],
+      ["HUGO","Parfait. Remplissez ce formulaire, et je le regarde tout de suite."],
+      ["FANTA","D'accord. Il y a beaucoup de cases…"],
+      ["HUGO","Ce n'est pas long. Écrivez en lettres moulées, s'il vous plaît."],
+      ["FANTA","En lettres moulées ? C'est-à-dire ?"],
+      ["HUGO","En majuscules, bien détachées. Comme sur une carte d'assurance maladie."],
+      ["FANTA","Ah, d'accord. Et ici, « prénom » d'abord ou « nom » d'abord ?"],
+      ["HUGO","Suivez les cases. Nom de famille dans la première, prénom dans la deuxième."],
+      ["FANTA","« Poste demandé »… J'écris quoi ?"],
+      ["HUGO","Aide à la cuisine. Exactement comme dans l'annonce."],
+      ["FANTA","Et « disponibilités » ? J'écris les jours ?"],
+      ["HUGO","Les jours et les heures. Soyez précise : « du mardi au samedi, de 9 h à 13 h »."],
+      ["FANTA","Ici, il y a une case à cocher : « Avez-vous un permis de conduire ? »"],
+      ["HUGO","Cochez « non » si vous n'en avez pas. Ne laissez jamais une case vide."],
+      ["FANTA","Voilà. J'ai signé en bas et j'ai mis la date."],
+      ["HUGO","Merci. Je vous rappelle vendredi, avant cinq heures."],
+    ]
+  },
+};
