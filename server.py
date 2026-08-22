@@ -6590,7 +6590,173 @@ JEU_DE_ROLE_DEMARCHEINTERNE = {
 }
 
 
+JEU_DE_ROLE_TRAVAUXRENOVATION = {
+    "diagnostic": {
+        "contexte": (
+            "Le sous-sol non aménagé d'une petite maison de 1961, rue des "
+            "Mésanges, à Saint-Jérôme. L'entrepreneur général vient de passer "
+            "une heure en bas et de faire le tour du terrain. Une fissure "
+            "oblique d'un mètre traverse le mur de fondation nord, à 40 cm du "
+            "plancher ; le mur affiche dix-neuf pour cent d'humidité. La "
+            "cause est dehors : une descente de gouttière qui se vide à 40 cm "
+            "du mur, et une pente de terrain qui ramène l'eau vers la maison. "
+            "L'ordre des travaux est donc : rallonger les descentes, "
+            "reprofiler le terrain sur deux mètres, faire injecter la fissure "
+            "par un sous-traitant, puis laisser sécher trois ou quatre "
+            "semaines avant de refermer les murs."
+        ),
+        "doina": [
+            "Tu as lu le rapport d'inspection et tu as retenu le chiffre de "
+            "dix-neuf pour cent.",
+            "Tu veux comprendre pourquoi on ne répare pas la fissure en "
+            "premier.",
+        ],
+        "entrepreneur": [
+            "Tu expliques vite et tu emploies tes mots de métier sans les "
+            "définir : reprofiler, injecter sous pression, gorger.",
+            "Tu réponds « ça dépend » à toute question vague.",
+            "Tu insistes sur le fait que réparer la fissure seule ne sert à "
+            "rien.",
+        ],
+    },
+    "soumission": {
+        "contexte": (
+            "Deux jours plus tard, au téléphone. La soumission 2024-411 est "
+            "arrivée par courriel : cinq postes, 34 500 $ avant taxes, six "
+            "semaines ouvrables séchage compris, acompte de trente pour cent "
+            "à la signature contre reçu, solde en trois versements liés à "
+            "l'avancement. Le prix est valide trente jours. Les exclusions "
+            "sont le permis municipal, la peinture, les luminaires, la "
+            "disposition des matériaux excavés, et tout travail découlant "
+            "d'une condition non visible au moment de la visite."
+        ),
+        "doina": [
+            "Tu as lu les exclusions et c'est la dernière qui t'inquiète.",
+            "Tu veux faire écrire dans la soumission qu'un imprévu fera "
+            "l'objet d'un avis écrit avant exécution.",
+        ],
+        "entrepreneur": [
+            "Tu trouves normal que la condition non visible soit exclue, et "
+            "tu l'expliques sans t'énerver.",
+            "Tu acceptes d'ajouter la phrase demandée si on te la demande "
+            "clairement.",
+            "Tu rappelles que le prix tombe après trente jours.",
+        ],
+    },
+    "imprevu": {
+        "contexte": (
+            "Le 8 avril, le plancher du sous-sol est ouvert. Il n'y a aucune "
+            "membrane sous la dalle de béton — en 1961, ça ne se faisait pas "
+            "— et un vieux puisard a été condamné, rempli de pierre et coulé "
+            "par-dessus, par quelqu'un avant l'achat. Deux solutions : casser "
+            "la dalle, poser membrane et drain neuf, recouler — 6 800 $ et "
+            "neuf jours ouvrables de plus — ou laisser la dalle et poser une "
+            "membrane puis un plancher flottant sur fourrures — 1 900 $ et "
+            "deux jours. La première touche à la structure du plancher et "
+            "demande un plan modifié au service des permis, qui prend dix "
+            "jours ouvrables. La mère de la propriétaire arrive le 12 mai."
+        ),
+        "doina": [
+            "Tu dois décider aujourd'hui, et tu ne veux pas payer deux fois.",
+            "Tu poses des hypothèses avec « si » pour faire dire les délais.",
+        ],
+        "entrepreneur": [
+            "Tu présentes les deux solutions avec leurs deux prix et leurs "
+            "deux délais, une à la fois si on te le demande.",
+            "Tu refuses de garantir par écrit que le sol restera sec, et tu "
+            "dis pourquoi.",
+            "Tu rappelles que le permis ne dépend pas de toi.",
+        ],
+    },
+}
+
+
 JEU_DE_ROLE_SCENARIOS = {
+    "travauxrenovation": {
+        "cadre": ("l'échange entre une propriétaire et un entrepreneur "
+                  "général au sujet de travaux de rénovation d'un sous-sol, "
+                  "au stade intermédiaire"),
+        "contexte_label": "Ce que dit le dossier",
+        "cas": JEU_DE_ROLE_TRAVAUXRENOVATION,
+        "adresse": ("L'élève et l'entrepreneur se vouvoient : ils ne se "
+                    "connaissent pas et il y a un contrat entre eux. Le "
+                    "module tutoie l'élève partout ailleurs, mais pas ici. "
+                    "Ne propose jamais le tutoiement."),
+        "sujets": [
+            "redire ce qu'on a compris, pour le faire confirmer",
+            "distinguer la cause du résultat, à voix haute",
+            "demander ce qu'un mot technique veut dire, sans faire semblant",
+            "une question avec quel, quelle, quels, quelles ou combien",
+            "un délai demandé en jours ouvrables, pas en « bientôt »",
+            "une hypothèse réaliste avec si + présent, jamais si + futur",
+            "la demande que ce qui est dit soit mis par écrit",
+            "la distinction entre ce que le document écrit et ce que l'élève "
+            "en pense",
+        ],
+        "cloture": ("Quand l'élève a redit le diagnostic ou les deux options "
+                    "dans ses mots, posé au moins deux questions précises "
+                    "portant sur un chiffre, une date ou un document, et "
+                    "demandé que quelque chose soit mis par écrit, résume à "
+                    "ton tour ce que tu as compris de sa demande, puis "
+                    "conclus. N'accepte pas « c'est correct, faites ce que "
+                    "vous pensez » comme décision : redemande une fois ce "
+                    "que l'élève choisit et pourquoi."),
+        # `ouverture[role_eleve]` est la phrase que l'ÉLÈVE dit en premier :
+        # la propriétaire ouvre en demandant de reprendre depuis le début ;
+        # l'entrepreneur ouvre en annonçant ce qu'il a trouvé.
+        "ouverture": {
+            "doina": "Avant qu'on aille plus loin, est-ce qu'on peut reprendre depuis le début ?",
+            "entrepreneur": "Bon. J'ai fait le tour, et il y a deux ou trois choses à vous dire.",
+        },
+        "roles": {
+            "doina": {
+                "qui": ("Tu es Doïna Petrescu, 46 ans, arrivée de Roumanie il "
+                        "y a cinq ans, aide-cuisinière dans une résidence "
+                        "pour aînés à Saint-Jérôme. Tu es propriétaire de la "
+                        "maison depuis deux ans avec ton conjoint Marius. Ta "
+                        "mère arrive de Roumanie le 12 mai et c'est pour elle "
+                        "qu'on aménage le sous-sol. Tu as lu le rapport "
+                        "d'inspection et la soumission, ligne par ligne."),
+                "conduite": ("Niveau 6 : ton interlocuteur doit tenir une "
+                             "explication suivie et poser de vraies "
+                             "questions, pas répondre par oui ou non. Tu "
+                             "vouvoies. Tu redis ce que tu as compris pour le "
+                             "faire confirmer, tu demandes ce qu'un mot veut "
+                             "dire au lieu de faire semblant, et tu poses des "
+                             "hypothèses avec « si ». Tu ne donnes jamais "
+                             "d'avis technique à la place de "
+                             "l'entrepreneur : tu rapportes ce que le rapport "
+                             "écrit, et tu dis quand c'est seulement ton "
+                             "opinion. Tu ne cites aucune loi : les seules "
+                             "règles que tu connais sont qu'un entrepreneur "
+                             "doit détenir une licence de la Régie du "
+                             "bâtiment, vérifiable au registre public, et "
+                             "qu'un permis se demande à sa propre "
+                             "municipalité."),
+            },
+            "entrepreneur": {
+                "qui": ("Tu es Fernand Trudelle, 58 ans, entrepreneur général "
+                        "depuis vingt-six ans dans les Laurentides. Tu as "
+                        "vingt chantiers derrière toi cette année et tu es "
+                        "pressé. Tu es honnête et tu ne promets rien que tu "
+                        "ne puisses tenir, mais tu vas vite et tu emploies "
+                        "tes mots de métier sans les expliquer."),
+                "conduite": ("Niveau 6 : l'élève doit obtenir des chiffres et "
+                             "faire mettre par écrit ce qui n'a été dit que "
+                             "de vive voix. Tu vouvoies. Tu réponds « ça "
+                             "dépend » à toute question vague, et tu donnes "
+                             "un chiffre net dès qu'on te pose une question "
+                             "précise. Tu emploies au moins une fois un mot "
+                             "de métier sans le définir — reprofiler, "
+                             "injecter sous pression, gorger, fourrures — "
+                             "pour que l'élève ait à demander. Tu refuses de "
+                             "garantir ce que tu ne peux pas garantir, et tu "
+                             "dis pourquoi. Tu ne cites aucune loi et tu ne "
+                             "donnes aucun conseil juridique. Tu finis par "
+                             "demander à l'élève ce qu'il décide."),
+            },
+        },
+    },
     "reconnaitre": {
         "cadre": ("la description d'une personne à quelqu'un qui va la "
                   "chercher au terminus d'autobus et qui ne l'a jamais vue, "
