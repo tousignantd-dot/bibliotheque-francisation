@@ -1,0 +1,172 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>A2 · Le son de « j » et le son de « ch » — Fiche élève</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800;900&display=swap" rel="stylesheet">
+<style>
+/* ═══════════════════════════════════════════════════════════════
+   FICHE ÉLÈVE · IMPRESSION LETTRE, NOIR ET BLANC
+   ───────────────────────────────────────────────────────────────
+   Aucune couleur : ces fiches sont photocopiées en noir et blanc.
+   Toute la hiérarchie passe par la GRAISSE, les FILETS et les MOTS.
+   C'est d'ailleurs la règle du système de design poussée à son
+   terme : « jamais d'information portée par la couleur seule ».
+
+   Les gris viennent des neutres du système (ink-900 à ink-400),
+   qui sont déjà quasi neutres. Les filets sont volontairement plus
+   sombres qu'à l'écran : une photocopieuse efface tout ce qui est
+   plus clair que 15 % de noir.
+   ═══════════════════════════════════════════════════════════════ */
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+:root{
+  --paper:#FFFFFF;
+  --tint:#F0F0EE;          /* aplat le plus clair encore visible en photocopie */
+  --line:#C9C9C6;          /* filet fin */
+  --rule:#17181A;          /* filet structurant */
+  --ink:#17181A;           /* titres */
+  --body:#2B2E30;          /* texte courant, un cran plus sombre qu'à l'écran */
+  --soft:#4B4F52;          /* texte secondaire */
+  --muted:#5E6165;         /* sur-titres, méta */
+}
+html{background:#BBBBBB}
+body{
+  font-family:'Nunito','Trebuchet MS',sans-serif;
+  font-size:11.5pt; line-height:1.5; color:var(--body);
+  background:var(--paper);
+  width:215.9mm;                    /* 8,5 po — format lettre */
+  margin:0 auto; padding:14mm 15mm 16mm;
+  -webkit-print-color-adjust:exact; print-color-adjust:exact;
+}
+h1,h2,h3{color:var(--ink); line-height:1.2; letter-spacing:-0.01em}
+
+/* ── En-tête ── */
+.hdr{border-bottom:2.5px solid var(--rule); padding-bottom:8px; margin-bottom:14px;
+     display:flex; align-items:flex-end; gap:14px}
+.hdr-l{flex:1}
+.eyebrow{font-size:9.5pt; font-weight:800; text-transform:uppercase;
+         letter-spacing:.12em; color:var(--muted)}
+.hdr h1{font-size:22pt; font-weight:900; margin-top:3px}
+.hdr-r{flex-shrink:0; display:flex; gap:10px; align-items:flex-end;
+       font-size:9.5pt; font-weight:800; text-transform:uppercase;
+       letter-spacing:.08em; color:var(--muted); padding-bottom:2px}
+.nomline{display:inline-block; border-bottom:1.5px solid var(--rule);
+         height:6mm; vertical-align:bottom; margin-left:5px}
+.nomline--nom{width:48mm} .nomline--date{width:26mm}
+.chapeau{font-size:12pt; font-weight:600; color:var(--soft); margin-bottom:16px}
+
+/* ── Blocs ── */
+.bloc{break-inside:avoid; page-break-inside:avoid; margin-bottom:13px}
+.card{border:1px solid var(--line); border-radius:12px; padding:11px 14px 12px;
+      background:var(--paper)}
+.lbl{font-size:9.5pt; font-weight:800; text-transform:uppercase;
+     letter-spacing:.12em; color:var(--muted); margin-bottom:5px}
+h2.t{font-size:15pt; font-weight:900; margin-bottom:7px}
+.consigne{font-size:11pt; font-weight:600; color:var(--soft); margin-bottom:8px}
+
+/* ── Objectifs et exercices : pastille en cerne, jamais en aplat ── */
+ol.obj,ol.ex{list-style:none}
+ol.obj{counter-reset:o} ol.ex{counter-reset:e}
+ol.obj li,ol.ex li{position:relative; padding-left:9mm; font-weight:600}
+ol.obj li{counter-increment:o; margin-bottom:6px}
+ol.ex li{counter-increment:e; margin-bottom:9px; break-inside:avoid}
+ol.obj li::before,ol.ex li::before{
+  position:absolute; left:0; top:0; width:6mm; height:6mm; border-radius:50%;
+  border:1.5px solid var(--rule); color:var(--ink);
+  font-size:9.5pt; font-weight:800;
+  display:flex; align-items:center; justify-content:center}
+ol.obj li::before{content:counter(o)}
+ol.ex li::before{content:counter(e)}
+
+/* ── Dialogue ── */
+.rep{display:flex; gap:10px; padding:4px 0; border-top:1px solid var(--line)}
+.rep:first-of-type{border-top:0}
+.rep--key{background:var(--tint); border-radius:8px; padding:5px 8px;
+          border-top:0; margin:2px 0}
+.qui{flex:0 0 30mm; font-weight:800; color:var(--ink); font-size:10.5pt}
+
+/* ── Règle : encadrée au filet épais, c'est elle qu'on repère de loin ── */
+.regle{border:2.5px solid var(--rule); border-radius:12px; padding:12px 14px}
+.regle .lbl{color:var(--ink)}
+.regle p.r{font-size:14pt; font-weight:900; color:var(--ink); line-height:1.3}
+.regle p.pr{margin-top:7px; font-weight:600; color:var(--soft)}
+
+/* ── Tableau ── */
+table{width:100%; border-collapse:collapse}
+th{font-size:9.5pt; font-weight:800; text-transform:uppercase; letter-spacing:.1em;
+   color:var(--muted); text-align:left; padding:0 8px 5px 0;
+   border-bottom:1.5px solid var(--rule)}
+td{padding:6px 8px 6px 0; border-top:1px solid var(--line); vertical-align:top;
+   font-weight:600}
+td.cle{font-weight:900; color:var(--ink)}   /* la colonne clé : en gras, pas en couleur */
+.note{margin-top:8px; font-size:10.5pt; font-weight:600; color:var(--soft);
+      background:var(--tint); border-radius:9px; padding:8px 11px}
+
+/* ── Cartes ── */
+.grid{display:grid; grid-template-columns:1fr 1fr; gap:9px}
+.grid .card h3{font-size:11.5pt; font-weight:900; color:var(--ink); margin-bottom:3px}
+.grid .card p{font-size:11pt}
+
+/* ── Piège : le filet distingue les deux colonnes, pas la couleur ──
+   À gauche, un filet TIRETÉ — ce qui ne tient pas.
+   À droite, un filet PLEIN et épais — ce qu'il faut retenir.
+   Les deux intitulés disent la même chose en mots.                */
+.duo{display:grid; grid-template-columns:1fr 1fr; gap:10px}
+.duo>div{border-radius:12px; padding:10px 13px}
+.duo .no{border:1.5px dashed var(--muted)}
+.duo .ok{border:2.5px solid var(--rule); background:var(--tint)}
+.duo .k{font-size:9.5pt; font-weight:800; text-transform:uppercase;
+        letter-spacing:.1em; margin-bottom:4px; color:var(--muted)}
+.duo .ok .k{color:var(--ink)}
+.duo p.ph{font-size:12pt; font-weight:800; color:var(--ink); line-height:1.3}
+.duo .no p.ph{font-weight:600; font-style:italic; color:var(--soft)}
+
+/* ── Vocabulaire ── */
+.voc{width:100%; border-collapse:collapse}
+.voc td{border-top:1px solid var(--line); padding:6px 8px 6px 0}
+.voc td.mot{width:38%; font-weight:900; color:var(--ink)}
+.voc td.def{color:var(--soft)}
+
+/* ── Zones de réponse ── */
+.ligne{display:block; border-bottom:1px dotted #8E8E8A; height:8mm; margin-top:2px}
+.ligne--court{width:55%}
+
+/* ── Billet de sortie ── */
+.billet{border:2.5px solid var(--rule); border-radius:12px; padding:13px 15px}
+.billet .k{font-size:9.5pt; font-weight:800; text-transform:uppercase;
+           letter-spacing:.12em; color:var(--ink); margin-bottom:4px}
+.billet p.c{font-size:14pt; font-weight:900; color:var(--ink); line-height:1.3}
+.billet ul{list-style:none; margin-top:7px}
+.billet li{font-weight:600; color:var(--soft); margin-bottom:3px}
+
+/* ── Pied ── */
+footer{margin-top:16px; padding-top:7px; border-top:1px solid var(--line);
+       font-size:9.5pt; font-weight:700; color:var(--muted);
+       display:flex; justify-content:space-between}
+
+/* ── Impression ── */
+@page{size:8.5in 11in; margin:14mm 15mm}
+@media print{
+  html{background:#FFFFFF}
+  body{width:auto; padding:0}
+  .bloc{break-inside:avoid; page-break-inside:avoid}
+  h2.t,.lbl{break-after:avoid; page-break-after:avoid}
+}
+</style>
+</head>
+<body>
+<header class="hdr">
+  <div class="hdr-l">
+    <div class="eyebrow">Séance A2 · Module 13 · 75 minutes</div>
+    <h1>Le son de « j » et le son de « ch »</h1>
+  </div>
+  <div class="hdr-r"><span>Nom<span class="nomline nomline--nom"></span></span><span>Date<span class="nomline nomline--date"></span></span></div>
+</header>
+<p class="chapeau">Un personnage, un passage, une image d'un côté ; un chapitre, une planche, une chanson de l'autre. Deux sons faits au même endroit dans la bouche, que rien ne distingue sur le visage de la personne qui parle — et un seul geste pour passer de l'un à l'autre.</p>
+<section class="bloc card"><div class="lbl">Objectifs</div><h2 class="t">À la fin, je serai capable de…</h2><ol class="obj"><li>sentir la différence entre le son de « j » et le son de « ch » ;</li><li>reconnaître les quatre orthographes qui donnent le son de « j » ;</li><li>prononcer les mots du module qui contiennent l'un ou l'autre ;</li><li>ne pas éteindre la voix en fin de mot : image, page, passage, village.</li></ol></section><section class="bloc regle"><div class="lbl">Même bouche, même langue — seule la voix change</div><p class="r">« j » sans voix devient « ch » ; « ch » avec la voix devient « j ».</p><p class="pr">Les lèvres avancent un peu, la langue monte vers l'avant du palais, l'air passe par une fente étroite : identique pour les deux. La gorge vibre pour « j », elle ne vibre pas pour « ch ». C'est tout, et c'est la seule chose à retenir.</p></section><section class="bloc card"><div class="lbl">Comment ça s'écrit</div><h2 class="t">Quatre façons pour un son, une seule pour l'autre</h2><table><thead><tr><th>Le son de « j »</th><th>Le son de « ch »</th></tr></thead><tbody><tr><td class="cle">j — j'ai, déjà, toujours, jamais</td><td>ch — un chapitre, chaque, chez</td></tr><tr><td class="cle">g devant e — une page, une image</td><td>ch — une planche, une chanson</td></tr><tr><td class="cle">g devant i — la gigue, agir</td><td>ch — chercher, toucher, marcher</td></tr><tr><td class="cle">ge devant a, o — nous mangeons</td><td>ch — une chaise, un chien</td></tr><tr><td class="cle">Et jamais : l'intrigue, une guide</td><td>Sauf : un chœur, une chorale (« k »)</td></tr></tbody></table></section><section class="bloc"><div class="lbl">Les paires à sentir</div><h2 class="t">Deux mots, une seule différence</h2><div class="grid"><div class="card"><h3>les gens / les champs</h3><p>La gorge vibre, puis elle ne vibre plus. Rien d'autre ne change.</p></div><div class="card"><h3>j'ai / chez</h3><p>Deux mots très courts : c'est là que la différence s'entend le mieux.</p></div><div class="card"><h3>bouger / boucher</h3><p>La même consonne au milieu, deux fois. À dire lentement.</p></div><div class="card"><h3>la cage / la cache</h3><p>En fin de mot : c'est le cas le plus difficile du français.</p></div></div></section><section class="bloc card"><div class="lbl">Écoute</div><h2 class="t">Vous entendez « j » ou « ch » ?</h2><p class="consigne">Écoutez le mot et dites lequel des deux sons vous entendez.</p><ol class="ex"><li><span class="q">un personnage</span><span class="ligne ligne--court"></span></li><li><span class="q">un chapitre</span><span class="ligne ligne--court"></span></li><li><span class="q">une image</span><span class="ligne ligne--court"></span></li><li><span class="q">une planche</span><span class="ligne ligne--court"></span></li><li><span class="q">un passage</span><span class="ligne ligne--court"></span></li><li><span class="q">une chanson</span><span class="ligne ligne--court"></span></li><li><span class="q">déjà lu</span><span class="ligne ligne--court"></span></li><li><span class="q">toucher</span><span class="ligne ligne--court"></span></li><li><span class="q">l'intrigue est jolie</span><span class="ligne"></span></li><li><span class="q">chercher un album</span><span class="ligne ligne--court"></span></li></ol></section><section class="bloc"><div class="lbl">Attention</div><h2 class="t">Éteindre la voix en fin de mot</h2><div class="duo"><div class="no"><div class="k">On entend souvent</div><p class="ph">un personnache · une imache · un passache</p></div><div class="ok"><div class="k">Il faut dire plutôt</div><p class="ph">un personnage · une image · un passage</p></div></div><div class="note">En fin de mot, la voix s'arrête souvent avant le son, et « j » devient « ch ». Il faut tenir la voix jusqu'au bout : la dernière syllabe de « personnage » bourdonne encore quand elle s'arrête.</div></section><section class="bloc card"><div class="lbl">Phrases à répéter</div><h2 class="t">Les deux sons dans la même phrase</h2><p class="consigne">Dites chaque phrase lentement, puis vite.</p><ol class="ex"><li><span class="q">J'ai lu ce roman en deux soirées.</span><span class="ligne ligne--court"></span></li><li><span class="q">Chaque chapitre commence par une chanson.</span><span class="ligne ligne--court"></span></li><li><span class="q">Ce personnage-là m'a touchée.</span><span class="ligne ligne--court"></span></li><li><span class="q">La planche du milieu ne contient aucune image.</span><span class="ligne ligne--court"></span></li><li><span class="q">Je cherche l'album que j'ai déjà lu.</span><span class="ligne ligne--court"></span></li><li><span class="q">Quelle belle façon de le dire !</span><span class="ligne ligne--court"></span></li></ol></section><section class="bloc billet"><div class="k">Billet de sortie</div><p class="c">Écrivez trois mots de votre œuvre qui contiennent le son de « j » ou celui de « ch ».</p><ul><li>Dites lequel des deux, et comment il s'écrit : j, g, ge ou ch.</li><li>Choisissez-en un et dites-le à voix haute avant de sortir.</li></ul><span class="ligne"></span><span class="ligne"></span><span class="ligne"></span></section>
+<footer><span>A2 · Le club du jeudi</span><span>Fiche élève</span></footer>
+</body>
+</html>
