@@ -1,11 +1,11 @@
 const EXOS = [
  // ── JE DÉCOUVRE ─────────────────────────────────────────────
-  {sec:'prep', id:'prVocab', type:'match', num:'Vocabulaire · 1', tit:'Le mot et sa définition', color:'#1D6B8F',
-   sub:'Choisis un mot, puis sa définition. Six mots à la fois.', noQLbl:true, bankLbl:'Définitions', zonePh:'glisse la définition ici',
+  {sec:'prep', id:'prVocab', type:'match', num:'Vocabulaire · 1', tit:"Chaque mot, ce qu'il veut dire", color:'#1D6B8F',
+   sub:'Prends un mot, puis va chercher sa définition.', noQLbl:true, bankLbl:'Définitions', zonePh:'glisse la définition ici',
    rows: FC_CARDS.map((c,i)=>({id:'pv'+i, q:c.word, aid:'pv'+i, a:c.def}))},
 
   {sec:'prep', id:'pr1', type:'vf', num:'Exercice 1', tit:'Vrai ou Faux — Voici ta place', color:'#1D6B8F',
-   sub:'Écoute de nouveau le dialogue, puis réponds.', tiles:['VRAI','FAUX'],
+   sub:'Réécoute le dialogue. Ensuite, réponds.', tiles:['VRAI','FAUX'],
    savoir:{h:"› Six objets de la classe — à écouter et à répéter", speak:true, rows:[
      ["On s'assoit dessus","Il y en a un par personne dans la classe.", ["chaise"]],
      ["On l'ouvre pour lire","Il a beaucoup de pages.", ["livre"]],
@@ -36,7 +36,7 @@ const EXOS = [
    ]},
 
   {sec:'prep', id:'prImg', type:'imgmatch', num:'Exercice 3', tit:'La salle de classe', color:'#1D6B8F',
-   sub:"Glisse chaque photo sur la phrase qui la décrit.",
+   sub:"Chaque photo va sur la phrase qui va avec.",
    images:[
     {id:'cl1', src:'/assets/interactive/module-n1-classe/images/salle-vide.jpg'},
     {id:'cl2', src:'/assets/interactive/module-n1-classe/images/tableau-blanc.jpg'},
@@ -73,7 +73,7 @@ const EXOS = [
 
  // ── DÉFI 1 · LA CONSIGNE ────────────────────────────────────
   {sec:'t1', id:'t1vf', type:'vf', num:'Exercice 1', tit:'Vrai ou Faux — Ouvrez le livre', color:'#0D7A6F',
-   sub:'Écoute de nouveau le dialogue, puis réponds.', tiles:['VRAI','FAUX'],
+   sub:'Réécoute le dialogue. Ensuite, réponds.', tiles:['VRAI','FAUX'],
    rows:[
     {id:'t1a', txt:"Madame Cyr dit d'ouvrir le livre.", ok:'VRAI'},
     {id:'t1b', txt:"Bopha comprend tout de suite.", ok:'FAUX'},
@@ -82,7 +82,7 @@ const EXOS = [
     {id:'t1e', txt:"Le tableau est derrière la classe.", ok:'FAUX'},
    ]},
 
-  {sec:'t1', id:'t1imper', type:'write', num:'Exercice 2', tit:'La consigne commence par un verbe', color:'#0D7A6F', cols:2,
+  {sec:'t1', id:'t1imper', type:'write', num:'Exercice 2', tit:'Le premier mot de la consigne', color:'#0D7A6F', cols:2,
    sub:"Complète la consigne de madame Cyr.",
    savoir:{h:"› Quatre consignes à reconnaître tout de suite", speak:true, rows:[
      ["Le premier mot est le verbe","Une consigne ne commence pas par « je » ni par « vous » : elle commence par le verbe. <span class='savoir-ex'><b>Ouvrez</b> le livre.</span>"],
@@ -94,7 +94,7 @@ const EXOS = [
    ]},
    items:[
     {q:"___ le livre à la page huit.", accept:["Ouvrez","ouvrez"], ph:"le verbe"},
-    {q:"___ le tableau, s'il vous plaît.", accept:["Regardez","regardez"], ph:"…"},
+    {q:"___ le tableau : les mots sont écrits dessus.", accept:["Regardez","regardez"], ph:"…"},
     {q:"___ bien : je dis le mot deux fois.", accept:["Écoutez","écoutez","Ecoutez","ecoutez"], ph:"…"},
     {q:"___ la porte, il y a du bruit.", accept:["Fermez","fermez"], ph:"…"},
    ]},
@@ -127,7 +127,7 @@ const EXOS = [
    ]},
 
   {sec:'t1', id:'t1b', type:'vf', num:'Exercice 5', tit:'Vrai ou Faux — Où est mon stylo ?', color:'#0D7A6F',
-   sub:'Écoute de nouveau le dialogue, puis réponds.', tiles:['VRAI','FAUX'],
+   sub:'Réécoute le dialogue. Ensuite, réponds.', tiles:['VRAI','FAUX'],
    rows:[
     {id:'ob1', txt:"Bopha cherche son stylo.", ok:'VRAI'},
     {id:'ob2', txt:"Le stylo est sur la table.", ok:'FAUX'},
@@ -137,7 +137,7 @@ const EXOS = [
 
  // ── DÉFI 2 · L'HEURE ET L'HORAIRE ───────────────────────────
   {sec:'t2', id:'t2vf', type:'vf', num:'Exercice 1', tit:'Vrai ou Faux — À quelle heure ?', color:'#B45309',
-   sub:'Écoute de nouveau le dialogue, puis réponds.', tiles:['VRAI','FAUX'],
+   sub:'Réécoute le dialogue. Ensuite, réponds.', tiles:['VRAI','FAUX'],
    rows:[
     {id:'h1', txt:"Le cours finit à midi.", ok:'VRAI'},
     {id:'h2', txt:"La pause est à neuf heures.", ok:'FAUX'},
@@ -146,7 +146,7 @@ const EXOS = [
    ]},
 
   {sec:'t2', id:'t2heure', type:'write', num:'Exercice 2', tit:'Quelle heure est-il ?', color:'#B45309', cols:2,
-   sub:"Complète avec le mot qui manque.",
+   sub:"Il manque un mot. Écris-le.",
    savoir:{h:"› Lire l'heure de son cours", speak:true, rows:[
      ["Le nombre, puis le mot heure","On dit le nombre en premier : <span class='savoir-ex'>huit <b>heures</b></span>. Après une heure, le mot prend un s : une heure, deux heures.", ["heure"]],
      ["La demie et le quart","Huit heures <b>et demie</b>, c'est 8 h 30. Huit heures <b>et quart</b>, c'est 8 h 15. Huit heures <b>moins quart</b>, c'est 7 h 45."],

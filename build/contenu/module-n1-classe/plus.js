@@ -39,18 +39,18 @@ const PLUS = {
        },
        note:"Écoutez chaque paire trois fois, puis dites-la à voix haute."},
 
-      {t:'ex', h:"À écouter et à répéter",
+      {t:'ex', h:"On écoute, on répète",
        p:"Les nombres dans une phrase de classe.",
        rows:[
          ["Ouvrez à la page deux.","le petit nombre"],
          ["Ouvrez à la page douze.","le grand nombre"],
          ["Il y a treize personnes dans la classe.","treize, pas trois"],
          ["Le cours est au local quatorze.","quatorze, pas quatre"],
-         ["La pause dure quinze minutes.","un grand nombre aussi"],
+         ["La pause est courte : quinze minutes.","un grand nombre aussi"],
          ["Prenez seize feuilles.","seize, pas six"],
        ]},
 
-      {t:'piege', h:"Trois pièges à connaître",
+      {t:'piege', h:"Trois erreurs qui reviennent",
        rows:[
          ["entendre le début seulement","« deu… » et on écrit 2",
           "Le début de « deux » et de « douze » se ressemble. Attendez la fin du mot avant d'écrire."],
@@ -60,8 +60,8 @@ const PLUS = {
           "Ce n'est pas l'oreille : ces mots se ressemblent vraiment. Les gens nés ici font répéter aussi, au téléphone."],
        ]},
 
-      {t:'check', h:"Est-ce que c'est clair maintenant ?",
-       p:"Quatre questions rapides.",
+      {t:'check', h:"Voyons si c'est clair",
+       p:"Quatre petites questions.",
        qs:[
          {q:"« Seize » est…", opts:["plus grand que dix","plus petit que dix"], ok:0,
           fb:"Seize, c'est 16."},
@@ -119,7 +119,7 @@ const PLUS = {
        },
        note:"Dites chaque paire à voix haute. Le petit mot et le nom ne se séparent pas."},
 
-      {t:'ex', h:"À écouter et à répéter",
+      {t:'ex', h:"On écoute, on répète",
        p:"Six objets, avec leur petit mot.",
        rows:[
          ["un livre","sur la table"],
@@ -130,7 +130,7 @@ const PLUS = {
          ["un sac","sous la chaise"],
        ]},
 
-      {t:'piege', h:"Trois pièges à connaître",
+      {t:'piege', h:"Trois erreurs qui reviennent",
        rows:[
          ["deviner d'après l'objet","« une chaise, parce que c'est doux »",
           "Rien dans l'objet ne dit l'article. Un tapis est « un », une table est « une » : il n'y a pas de règle à trouver."],
@@ -140,8 +140,8 @@ const PLUS = {
           "Devant « horloge », le son se colle et l'article s'entend mal. C'est <b>une</b> horloge — écoutez le petit « n » à la fin de « une »."],
        ]},
 
-      {t:'check', h:"Est-ce que c'est clair maintenant ?",
-       p:"Quatre questions rapides.",
+      {t:'check', h:"Voyons si c'est clair",
+       p:"Quatre petites questions.",
        qs:[
          {q:"On dit…", opts:["un chaise","une chaise"], ok:1,
           fb:"Une chaise."},
@@ -201,7 +201,7 @@ const PLUS = {
        },
        note:"Douze consignes. Faites le geste en même temps que vous écoutez : le corps retient mieux que la tête."},
 
-      {t:'ex', h:"À écouter et à répéter",
+      {t:'ex', h:"On écoute, on répète",
        p:"Six consignes du premier jour.",
        rows:[
          ["Écoutez bien.","les oreilles"],
@@ -212,7 +212,7 @@ const PLUS = {
          ["Répétez après moi.","la voix"],
        ]},
 
-      {t:'piege', h:"Trois pièges à connaître",
+      {t:'piege', h:"Trois erreurs qui reviennent",
        rows:[
          ["attendre la fin de la phrase","on écoute tout, puis on oublie le début",
           "Le mot important est le <b>premier</b>. Dès que vous l'avez, vous savez quoi faire."],
@@ -222,10 +222,10 @@ const PLUS = {
           "Une consigne ne demande pas de réponse. Elle demande un geste. Si vous n'avez pas compris, un seul mot suffit : « Pardon ? »"],
        ]},
 
-      {t:'check', h:"Est-ce que c'est clair maintenant ?",
-       p:"Quatre questions rapides.",
+      {t:'check', h:"Voyons si c'est clair",
+       p:"Quatre petites questions.",
        qs:[
-         {q:"Une consigne commence par…", opts:["le verbe","le nom"], ok:0,
+         {q:"Le premier mot d'une consigne, c'est…", opts:["le verbe","le nom"], ok:0,
           fb:"Ouvrez le livre : le verbe d'abord."},
          {q:"« Fermez » veut dire…", opts:["le contraire d'ouvrir","regarder"], ok:0,
           fb:"On ferme le livre, la porte, le sac."},
@@ -280,7 +280,7 @@ const PLUS = {
        },
        note:"Neuf phrases. Regardez autour de vous et dites où sont vos affaires."},
 
-      {t:'ex', h:"À écouter et à répéter",
+      {t:'ex', h:"On écoute, on répète",
        p:"Six phrases de la classe.",
        rows:[
          ["Le livre est sur la table.","dessus"],
@@ -291,7 +291,7 @@ const PLUS = {
          ["Mon stylo est tombé sous le pupitre.","plus bas"],
        ]},
 
-      {t:'piege', h:"Trois pièges à connaître",
+      {t:'piege', h:"Trois erreurs qui reviennent",
        rows:[
          ["confondre sur et sous","« le sac est sur la chaise » alors qu'il est dessous",
           "Ces deux mots ne diffèrent que par une voyelle. Faites le geste de la main en parlant : en haut pour « sur », en bas pour « sous »."],
@@ -301,14 +301,14 @@ const PLUS = {
           "« Dans » veut dire à l'intérieur. Un livre posé sur une table est <b>sur</b> la table ; un livre rangé dans un tiroir est <b>dans</b> le tiroir."],
        ]},
 
-      {t:'check', h:"Est-ce que c'est clair maintenant ?",
-       p:"Quatre questions rapides.",
+      {t:'check', h:"Voyons si c'est clair",
+       p:"Quatre petites questions.",
        qs:[
          {q:"Le stylo est à l'intérieur du sac. On dit…", opts:["sur le sac","dans le sac"], ok:1,
           fb:"Dans le sac : il est caché à l'intérieur."},
          {q:"Le sac est par terre, la chaise est au-dessus. On dit…", opts:["sous la chaise","sur la chaise"], ok:0,
           fb:"Sous la chaise."},
-         {q:"Le petit mot se place…", opts:["avant le nom","après le nom"], ok:0,
+         {q:"Sur, dans et sous se mettent…", opts:["avant le nom","après le nom"], ok:0,
           fb:"Sur la table, jamais « la table sur »."},
          {q:"Une horloge accrochée au mur est…", opts:["sur le mur","dans le mur"], ok:0,
           fb:"Sur le mur."},
@@ -358,8 +358,8 @@ const PLUS = {
        },
        note:"Cinq heures de la journée d'un élève. Dites-les à voix haute en regardant l'horloge de votre classe."},
 
-      {t:'ex', h:"À écouter et à répéter",
-       p:"Six phrases de l'horaire.",
+      {t:'ex', h:"On écoute, on répète",
+       p:"L'horaire du groupe en six phrases.",
        rows:[
          ["Le cours commence à huit heures et demie.","le matin"],
          ["La pause est à dix heures.","quinze minutes"],
@@ -369,7 +369,7 @@ const PLUS = {
          ["Le centre ferme à quatre heures.","la fin de la journée"],
        ]},
 
-      {t:'piege', h:"Trois pièges à connaître",
+      {t:'piege', h:"Trois erreurs qui reviennent",
        rows:[
          ["dire « douze heures »","pour 12 h",
           "À l'oral, on dit <b>midi</b>. « Douze heures » se comprend, mais personne ne le dit ici."],
@@ -379,8 +379,8 @@ const PLUS = {
           "« Et quart » vient après l'heure ; « moins quart » vient avant. Dans le doute, dites le chiffre : huit heures quinze."],
        ]},
 
-      {t:'check', h:"Est-ce que c'est clair maintenant ?",
-       p:"Quatre questions rapides.",
+      {t:'check', h:"Voyons si c'est clair",
+       p:"Quatre petites questions.",
        qs:[
          {q:"12 h se dit…", opts:["midi","douze heures"], ok:0,
           fb:"Midi."},
@@ -434,8 +434,8 @@ const PLUS = {
        },
        note:"Regardez l'horaire affiché près de la porte de votre classe et dites vos propres jours."},
 
-      {t:'ex', h:"À écouter et à répéter",
-       p:"Six phrases de l'horaire.",
+      {t:'ex', h:"On écoute, on répète",
+       p:"L'horaire du groupe en six phrases.",
        rows:[
          ["Le cours est de lundi à jeudi.","quatre jours"],
          ["Vendredi, il n'y a pas de cours.","le jour libre"],
@@ -445,7 +445,7 @@ const PLUS = {
          ["À lundi !","ce qu'on dit le jeudi en partant"],
        ]},
 
-      {t:'piege', h:"Trois pièges à connaître",
+      {t:'piege', h:"Trois erreurs qui reviennent",
        rows:[
          ["écrire les jours avec une majuscule","« Lundi »",
           "En français, les jours s'écrivent en minuscules au milieu d'une phrase : « je viens lundi »."],
@@ -455,8 +455,8 @@ const PLUS = {
           "Vendredi, le centre est ouvert : le secrétariat répond, on peut venir chercher un papier. C'est le <b>groupe</b> qui n'a pas de cours."],
        ]},
 
-      {t:'check', h:"Est-ce que c'est clair maintenant ?",
-       p:"Quatre questions rapides.",
+      {t:'check', h:"Voyons si c'est clair",
+       p:"Quatre petites questions.",
        qs:[
          {q:"Le premier jour de la semaine est…", opts:["lundi","dimanche"], ok:0,
           fb:"Ici, la semaine commence le lundi."},
