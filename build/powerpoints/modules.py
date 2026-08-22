@@ -534,6 +534,17 @@ MODULES = {
                         "Venez prendre un café",
                         "Il est comment ?"),
     },
+    'module-n3-secretariat': {
+        'numero': 13, 'activite': 86, 'niveau': 3,
+        'titre': "L'absence de Nawel",
+        'chapeau': "Prévenir le secrétariat qu'on va manquer un cours, "
+                   "apporter un billet pour justifier une absence, puis dire "
+                   "et écrire au personnel qu'on doit arrêter.",
+        'seances': GRILLE_3_DEFIS,
+        'blocs': _blocs("Prévenir avant",
+                        "Le billet d'absence",
+                        "Quand on doit arrêter"),
+    },
     # ── Niveau 5 ────────────────────────────────────────────────────
     # `module-logement` (niveau 4) traite la même situation du programme, mais
     # s'arrête à la visite et à la comparaison. Ici, on téléphone, on prend des
