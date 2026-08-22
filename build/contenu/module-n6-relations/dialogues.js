@@ -61,7 +61,7 @@ const DIALOGUES = {
       ["MARISOL","Je suis désolée, Ousmane. Vraiment."],
       ["OUSMANE","Merci. Il avait quatre-vingt-onze ans. On s'y attendait un peu, mais on ne s'y attend jamais tout à fait."],
       ["MARISOL","Et le mariage de septembre, c'est pour ça que vous descendez ?"],
-      ["OUSMANE","Oui. Ma cousine se marie le samedi 12, à Sainte-Rosalie. On arrive la veille, le vendredi, par l'autobus de 14 h 40 au terminus de Saint-Hyacinthe. Kadiatou vient avec moi ; elle n'a jamais vu la région."],
+      ["OUSMANE","Oui. Ma cousine se marie le samedi 12, à Sainte-Madeleine. On arrive la veille, le vendredi, par l'autobus de 14 h 40 au terminus de Saint-Hyacinthe. Kadiatou vient avec moi ; elle n'a jamais vu la région."],
       ["MARISOL","Vendredi, je suis à la boulangerie jusqu'à cinq heures. Mais j'ai quelqu'un pour vous. Il faudra juste que je lui explique à quoi vous ressemblez, parce qu'il ne vous a jamais vus tous les deux."]
     ]
   },

@@ -425,7 +425,7 @@ const PLUS = {
          ["en novembre","chute du beau-frère au garage"],
          ["en février","décès de l'oncle Mamadou, au pays"],
          ["en avril","retour au travail à temps partiel"],
-         ["le 12 septembre","mariage de la cousine, à Sainte-Rosalie"],
+         ["le 12 septembre","mariage de la cousine, à Sainte-Madeleine"],
        ]},
 
       {t:'piege', h:"Deux calculs qu'on rate souvent",

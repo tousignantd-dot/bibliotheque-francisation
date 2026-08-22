@@ -106,7 +106,7 @@ const EXOS = [
      "Objet : Des nouvelles, enfin. — Chère Marisol, je m'excuse d'avoir été si long à écrire. Deux ans, ça ne se raconte pas en trois lignes, et chaque fois que je commençais, je remettais à plus tard. Ce soir, [[assia|notre fille Assia est née le 14 mars]] et elle marche déjà partout dans la maison : je te dois bien un courriel complet.",
      "Nous ne sommes plus sur la rue Perreault. Quand je t'ai écrit la dernière fois, [[vendue|on l'avait déjà vendue]], mais on habitait encore dedans. [[demenagement|Le déménagement s'est fait en juin]], à l'autre bout de la ville, dans un logement plus grand et beaucoup plus proche du garage. Assia a maintenant sa chambre à elle.",
      "L'automne a été dur. [[kadiatou|Ma sœur Kadiatou est arrivée de Conakry en octobre]] et elle s'installait à peine chez nous quand [[accident|mon beau-frère est tombé d'une plateforme au garage]]. Cheville cassée à deux endroits, trois mois sans mettre le pied par terre, puis la réadaptation. Il est retourné travailler en avril, à temps partiel. Kadiatou nous a beaucoup aidés cet automne-là, parce que Fanta travaillait de nuit.",
-     "Il y a aussi une nouvelle triste, et je la garde pour la fin. [[oncle|Mon oncle Mamadou est décédé au pays en février]], à quatre-vingt-onze ans. Je n'ai pas pu m'y rendre ; c'est mon frère qui a tout organisé là-bas. Mais nous descendons dans ta région en septembre : [[mariage|ma cousine se marie le samedi 12, à Sainte-Rosalie]], et nous arrivons la veille par l'autobus. Kadiatou vient avec moi. Écris-moi vite. Ousmane"
+     "Il y a aussi une nouvelle triste, et je la garde pour la fin. [[oncle|Mon oncle Mamadou est décédé au pays en février]], à quatre-vingt-onze ans. Je n'ai pas pu m'y rendre ; c'est mon frère qui a tout organisé là-bas. Mais nous descendons dans ta région en septembre : [[mariage|ma cousine se marie le samedi 12, à Sainte-Madeleine]], et nous arrivons la veille par l'autobus. Kadiatou vient avec moi. Écris-moi vite. Ousmane"
    ],
    rows:[
     {id:'q1', q:"Quel évènement Ousmane annonce-t-il dans le premier paragraphe ?", ok:'assia'},
@@ -195,7 +195,7 @@ const EXOS = [
     {id:'or4', q:"en novembre", aid:'or4', a:"la chute du beau-frère au garage"},
     {id:'or5', q:"en février", aid:'or5', a:"le décès de l'oncle Mamadou, au pays"},
     {id:'or6', q:"en avril", aid:'or6', a:"le retour au travail à temps partiel"},
-    {id:'or7', q:"le samedi 12 septembre", aid:'or7', a:"le mariage de la cousine, à Sainte-Rosalie"},
+    {id:'or7', q:"le samedi 12 septembre", aid:'or7', a:"le mariage de la cousine, à Sainte-Madeleine"},
    ]},
 
   {sec:'t1', id:'t1react', type:'match', num:'Exercice 6', tit:"Répondre à un long courriel sans tout reprendre", color:'#1D6B8F',
