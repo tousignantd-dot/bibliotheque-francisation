@@ -14,7 +14,7 @@ const FC_CARDS = [
 
   {word:"une absence", def:"Le jour où une personne ne vient pas au cours.", ex:"Je préviens la secrétaire de mon <strong>absence</strong>.", tache:"t2"},
   {word:"un avis", def:"Le petit papier affiché sur la porte pour informer tout le monde.", ex:"L'<strong>avis</strong> dit que le centre est fermé lundi.", img:"/assets/interactive/module-n2-secretaire/vocab/avis.jpg", tache:"t2"},
-  {word:"un congé", def:"Un jour sans cours et sans travail.", ex:"Lundi, c'est un <strong>congé</strong> : le centre est fermé.", tache:"t2"},
+  {word:"un congé", def:"Un jour où le centre ferme et où personne ne travaille.", ex:"Lundi, c'est un <strong>congé</strong> : le centre est fermé.", tache:"t2"},
   {word:"la direction", def:"Le bureau des personnes qui dirigent le centre.", ex:"La <strong>direction</strong> signe l'avis affiché sur la porte.", img:"/assets/interactive/module-n2-secretaire/vocab/direction.jpg", tache:"t2"},
   {word:"une porte fermée", def:"Une porte qui ne s'ouvre pas : il n'y a personne dedans.", ex:"À midi, c'est une <strong>porte fermée</strong> : le bureau ouvre à treize heures.", img:"/assets/interactive/module-n2-secretaire/vocab/porte-fermee.jpg", tache:"t2"},
 ];
