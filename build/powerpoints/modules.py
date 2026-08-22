@@ -1036,6 +1036,38 @@ MODULES = {
                         'Le courrier des lecteurs'),
     },
 
+    # Vague 6, niveau 6. `build/cadre.py 6 "Emploi"` donne **cinq** intentions
+    # — une orale en compréhension (comprendre des explications sur les étapes
+    # d'une démarche administrative), une orale en production (décrire ces
+    # étapes), deux écrites en compréhension (lire de la documentation interne
+    # reliée à son emploi, lire un compte rendu) et une écrite en production
+    # (rédiger un courriel dans le contexte de relations professionnelles).
+    # C'est la situation la mieux fournie du niveau, et les trois défis
+    # sortent d'elle seule : un même dossier — une candidature à un poste
+    # affiché à l'interne — repris sous trois genres, l'explication de vive
+    # voix, la documentation interne, le compte rendu de rencontre.
+    #
+    # Ne recoupe aucun voisin. `module-travail` (39, niveau 4) prévient d'une
+    # absence et justifie un retard. `module-n3-horaire` (84, niveau 3) tient
+    # debout pendant le quart : l'heure, la tâche, la question qu'on ose
+    # poser. `module-n5-travail` (67, niveau 5) traite des relations d'équipe.
+    # `module-n6-recherche` (59, même niveau) cherche un emploi qu'on n'a pas
+    # encore ; ici l'emploi est acquis depuis deux ans et c'est **à l'interne**
+    # qu'on bouge. `module-n8-emploi` (61, niveau 8) fait tenir son bout.
+    'module-n6-emploi': {
+        'numero': 3, 'activite': 100, 'niveau': 6,
+        'titre': "Le poste affiché à l'interne",
+        'chapeau': "Comprendre les étapes d'une démarche administrative "
+                   "expliquées de vive voix, lire la documentation interne de "
+                   "son milieu de travail et un compte rendu de rencontre, "
+                   "puis décrire la démarche et écrire un courriel "
+                   "professionnel.",
+        'seances': GRILLE_3_DEFIS,
+        'blocs': _blocs("On m'explique la démarche",
+                        'Ce que disent les documents',
+                        'Le compte rendu'),
+    },
+
     'module-n7-actualite': {
         'numero': 1, 'activite': 60, 'niveau': 7,
         'titre': "Suivre l'actualité",
