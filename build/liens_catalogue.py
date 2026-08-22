@@ -84,8 +84,14 @@ def main():
         for a, champ, lien in absents:
             print('   %-4s %-34s %-11s %s' % (a['id'], (a.get('title') or '')[:34],
                                               champ, lien))
-    if not morts:
-        print('✓ tous les liens du catalogue mènent à un fichier qui existe')
+    # Il reste du travail tant qu'un lien est mort OU qu'une fiche existante
+    # n'est pas annoncée. Sortir sur le seul compte des liens morts annonçait
+    # « tout va bien » et rentrait sans raccrocher les fiches — c'est ce qui a
+    # laissé les seize fiches de module-n5-actualite invisibles au catalogue
+    # alors qu'elles étaient sur le disque.
+    a_faire = morts + [x for x in absents if x[1] == 'studentDoc']
+    if not a_faire:
+        print('✓ rien à décrocher, rien à raccrocher')
         return 0
     if not reparer:
         print('\n(`--reparer` pour décrocher les liens morts et raccrocher les fiches)')
