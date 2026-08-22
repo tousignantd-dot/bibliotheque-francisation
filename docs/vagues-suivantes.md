@@ -2189,3 +2189,101 @@ les deux se rattrapent d'un seul coup. `pieds_de_page.py` signale un écart sur
 `module-n3-horaire`, antérieur et étranger à ce module. La vérification au
 navigateur n'a pas pu se faire : le volet de prévisualisation était occupé par
 une autre session.
+### Ce que l'activité 104 a trouvé
+
+**22 août 2026 — activité 104, `module-n6-sante`.** « Nommer ce qu'on a »,
+niveau 6, `numero` 7, `GRILLE_3_DEFIS`. Scénario inventé : Leyla Demirci,
+41 ans, arrivée de Turquie il y a cinq ans, aide à domicile à Rimouski, entre
+chez les gens à sept heures du matin sept jours sur quatorze. Depuis février,
+une fatigue qui ne part pas ; une demande de consultation partie en avril, un
+appel en octobre, un rendez-vous en médecine interne ce matin à 9 h 40, à
+l'Hôpital de la Baie-Ronde. Mariette Pouliot tient l'accueil de la clinique
+externe, Gilles Ferron attend sa femme sur la banquette d'à côté, la docteure
+Sylvine Charest est l'interniste, Pierre-Luc Nadeau l'infirmier de liaison.
+23 exercices, 17 mini-leçons, 4 dialogues (85 répliques), 16 mots, 18 images,
+**292 extraits audio** (85 répliques et 207 sons), 16 séances
+(187 diapositives, 138 blocs de fiches). Originalité : 1 590 énoncés visibles,
+**10 identiques** dans les 49 021 des cinquante-sept autres modules de
+`build/contenu/`, soit **0,6 %**.
+
+*Ce qui le sépare de ses cinq voisins sur la même situation*, et ce n'est pas
+le sujet mais le **travail** : `module-n3-pharmacie` (78) demande un service au
+comptoir, `module-sante` (34, niveau 4) téléphone pour obtenir un rendez-vous,
+`module-consultation` (35, niveau 4) s'oriente dans le réseau et décrit une
+douleur au triage, `module-n5-rendezvous` (65) raconte à son médecin de famille
+un problème qui dure, `module-n5-urgence` (66) réagit dans l'urgence. Ici rien
+n'est urgent et rien ne fait mal : le rendez-vous est obtenu depuis sept mois,
+la spécialiste ne connaît pas la personne, et le motif tient en deux mots que
+personne ne sait dire. Ce qu'il faut faire est d'une autre nature — **nommer**.
+C'est aussi le seul module de la série où l'élève **parle à un autre patient**
+plutôt qu'à un professionnel : l'intention « échanger avec quelqu'un dans la
+salle d'attente » n'existe qu'au niveau 6, et c'est une conversation entre
+égaux, sans guichet entre les deux.
+
+*Les faits médicaux ne sont jamais inventés, parce qu'il n'y en a pas.* Le
+module enseigne la langue d'une consultation, pas la médecine : rien n'y
+indique quoi faire devant un symptôme, quoi prendre, quoi éviter, ni quand
+s'inquiéter. Les quatre notions de santé nommées — un malaise, une fatigue
+chronique, une anémie légère, des effets secondaires — le sont comme
+**vocabulaire**, à la façon dont le programme les nomme lui-même. La
+spécialiste ne pose aucun diagnostic, ne nomme aucun médicament, ne donne
+aucune dose : elle explique une démarche, demande des examens complémentaires
+et dit qu'une fatigue a beaucoup de causes possibles. Le feuillet du Défi 3 est
+un feuillet **de procédure** — quoi apporter, à qui téléphoner, ce qu'un compte
+rendu contient — et non un feuillet sur une maladie. Le scénario du jeu de
+rôle (`specialiste`, dans `server.py`) porte l'interdiction en toutes lettres
+dans la conduite du personnage, et non seulement dans un commentaire.
+
+Ce qui n'est pas médical est tenu pour vrai à un seul endroit : le
+fonctionnement courant d'un rendez-vous en spécialité — un médecin de famille
+adresse une demande de consultation, une clinique externe reçoit sans
+hospitaliser, on présente sa carte à l'accueil, le spécialiste envoie un compte
+rendu au médecin qui a fait la demande. Tout le reste — les personnes,
+l'hôpital, les dates, les numéros de dossier et de poste — est inventé : un
+compte rendu au nom d'un vrai établissement serait un faux document.
+
+*Deux exercices du type `texte`*, un par genre de l'unique intention de
+compréhension écrite de la situation : le feuillet d'information (cinq
+paragraphes, sept passages, sept questions) et le compte rendu de consultation
+(cinq paragraphes, sept passages, sept questions). Le septième contrôle les
+valide sans rien signaler.
+
+Trois choses apprises, qui valent pour les modules restants du niveau :
+
+- **L'avertissement du premier module de la vague se vérifie une deuxième
+  fois, et il faut le prendre au pied de la lettre.** La mini-leçon de
+  graphie-phonie, écrite en s'appuyant sur celle d'un voisin, portait à elle
+  seule **vingt-cinq** des cinquante-cinq coïncidences du premier relevé. La
+  mesure globale était pourtant de 3,5 %, sous le seuil : elle aurait laissé
+  passer un quasi-doublon. Réécrite depuis la situation — le mot entendu dans
+  un corridor d'hôpital, les noms d'examens et de spécialités —, elle ramène
+  l'ensemble à 0,6 %. **Ne pas ouvrir le `plus.js` d'un voisin avant d'avoir
+  écrit le sien.** C'est le seul moyen fiable, et il ne coûte rien.
+- **La liste de mots de la graphie-phonie, elle, se recoupe forcément.** Le
+  programme nomme lui-même les trois cas, et « six », « dix », « un schéma »,
+  « un shampoing », « un short » n'ont pas d'équivalent à substituer. Deux des
+  dix coïncidences restantes sont là, et il n'y a rien à en faire. Ce qui se
+  varie, c'est la moitié du choix qu'on maîtrise : les mots de la famille `ch`
+  se prennent dans le champ du module (échographie, psychiatre, cholestérol
+  ici ; psychologie, orchestre, chronologie ailleurs).
+- **Un module de santé peut être écrit sans donner un seul conseil de santé**,
+  et le résultat est meilleur. La contrainte force à porter la matière sur ce
+  que le programme demande vraiment — décrire, dater, préciser, lire un
+  document — au lieu de la porter sur des contenus cliniques qui n'y sont pas.
+  Elle se tient à trois endroits, et il faut les tenir tous les trois : le
+  contenu, le docstring du manifeste, et la `conduite` du personnage dans
+  `server.py`.
+
+*Sur les contrôles* : les sept passent. `coherence.js` rend 18 écarts, tous
+« image absente du disque » — `gen_images.py` est écrit mais n'a pas tourné, et
+le générateur audio non plus : le module est livré muet et sans illustration,
+les deux se rattrapent d'un seul coup. `pieds_de_page.py` signale un seul
+écart, `module-n3-horaire`, qui n'est pas de ce module : c'est un module
+inscrit au registre par une session voisine et pas encore produit. La
+vérification dans le navigateur n'a **pas** pu être faite : le plafond d'onglets
+de la session partagée était atteint. Elle est remplacée par trois contrôles
+hors navigateur — `node --check` sur le script en ligne du HTML produit (320 866
+octets), `node build/coherence.js`, et un relevé qui vérifie que les vingt-trois
+identifiants d'exercice, les quatorze passages cliquables des deux `texte`, le
+slug, le niveau et la couleur d'en-tête sont bien dans le fichier livré, et
+qu'aucun jeton `%%…%%` ni aucun résidu du gabarit n'y a survécu.

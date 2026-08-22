@@ -378,3 +378,52 @@ Quatrième confirmation du même point : le relevé des sons est resté **identi
 à l'octet près** avant et après les vingt réécritures (`diff` vide sur
 `sons_module_n6_logement.json`, 201 clés). Ni les `tit`, ni les `sub`, ni les
 intitulés de rangée d'un bandeau n'entrent dans le manifeste des extraits.
+`module-n6-sante` (activité 104), mesuré le 22 août 2026 : ses **1 590**
+énoncés visibles de vingt-cinq caractères ou plus — consignes, titres
+d'exercices, intitulés et cellules de bandeau noir, blocs de mini-leçon,
+paragraphes des exercices `texte`, définitions et exemples du banc, textes des
+sections et répliques des dialogues compris, donc le relevé le plus large des
+modules mesurés jusqu'ici — ont été comparés aux **49 021** des
+**cinquante-sept** autres modules de `build/contenu/`. **10 identiques, soit
+0,6 %.**
+
+Le chemin y menant est la vraie leçon. La **première** mesure donnait 55
+identiques, soit 3,5 % : sous le seuil, donc silencieuse. Mais **vingt-cinq
+d'entre elles venaient d'un seul bloc** — la mini-leçon de graphie-phonie,
+écrite en s'appuyant sur celle d'un module voisin. C'est exactement ce que
+l'activité 100 avait signalé et que ce fichier consigne depuis : *mesurer par
+module ne suffit pas, il faut regarder d'où viennent les coïncidences.* Un
+seuil global respecté peut cacher un quasi-doublon sur une leçon entière.
+
+La mini-leçon a été réécrite depuis la situation du module — le mot entendu
+dans un corridor d'hôpital, les noms d'examens et de spécialités —, et une
+quinzaine d'intitulés de bandeau et de bloc reformulés. Résultat : 0,6 %.
+
+Les dix coïncidences restantes ont été regardées une à une, et aucune ne se
+corrige :
+
+- **deux consignes que le moteur impose** à ses types d'exercice (« Choisis un
+  mot, puis va chercher sa définition dans le banc. Six à la fois. »,
+  « Choisis une question, puis clique dans le texte le passage qui y
+  répond. » — cette dernière est la forme canonique du type `texte`, écrite
+  dans `CLAUDE.md`) ;
+- **deux étiquettes de banc de réponses** (« Ce qu'on dirait à voix haute »,
+  « glisse l'équivalent parlé ici ») ;
+- **un terme du programme** (« la carte d'assurance maladie ») ;
+- **deux lignes de la liste sh/sch** (« un schéma, un shampoing, un short »),
+  que le programme nomme lui-même et pour lesquelles il n'existe pas
+  d'équivalent à substituer ;
+- **trois intitulés courts** de bloc de mini-leçon.
+
+Ce que ce module ajoute à la méthode : **la moitié du choix se maîtrise quand
+même**. Les trois cas de graphie-phonie sont imposés par le programme, mais les
+mots de la famille `ch` se prennent dans le champ lexical du module — une
+échographie, un psychiatre, le cholestérol ici ; une psychologie, un orchestre,
+une chronologie ailleurs. Seuls « six », « dix » et les trois mots en sh/sch
+sont réellement contraints.
+
+Quatrième confirmation du point sur l'audio : le relevé des sons rend **207
+clés avant comme après** les réécritures. Ni les `sub`, ni les `tit`, ni les
+intitulés de bandeau, ni les `note` d'un bloc de mini-leçon n'entrent dans le
+manifeste des extraits — seuls les `say` y entrent, et aucun n'a été touché.
+Reformuler pour l'originalité reste gratuit en audio.

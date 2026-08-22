@@ -1121,6 +1121,38 @@ MODULES = {
                         'La rencontre du 14 novembre'),
     },
 
+    # Vague 6, niveau 6. `build/cadre.py 6 "Consultation d'un professionnel de
+    # la santé"` donne **trois** intentions — échanger avec quelqu'un dans la
+    # salle d'attente (CO et PO), s'informer auprès d'un spécialiste à propos
+    # d'un problème de santé (CO et PO), comprendre de l'information sur un
+    # problème de santé (CE). Aucune production écrite : le courriel de
+    # « Je me lance » vient des attentes de fin de cours du niveau, et le
+    # manifeste le dit. Trois genres bien séparés, donc GRILLE_3_DEFIS (règle
+    # du pilote, `docs/vagues-suivantes.md`).
+    #
+    # Cinq voisins occupent la situation plus bas, et ce n'est pas le sujet qui
+    # change mais le travail. `module-n3-pharmacie` (78) dit ce qui ne va pas
+    # au comptoir. `module-sante` (34, niveau 4) téléphone pour un rendez-vous.
+    # `module-consultation` (35, niveau 4) choisit le bon service et décrit une
+    # douleur. `module-n5-rendezvous` (65) raconte au médecin de famille un
+    # problème qui dure. `module-n5-urgence` (66) passe une nuit à l'urgence.
+    # Ici, le rendez-vous est obtenu depuis sept mois, la douleur n'existe pas
+    # et rien ne presse : ce qu'il faut, c'est **nommer** — trouver les mots
+    # d'un malaise vague, les tenir devant une spécialiste, puis les
+    # reconnaître dans ce qui s'écrit après.
+    'module-n6-sante': {
+        'numero': 7, 'activite': 104, 'niveau': 6,
+        'titre': "Nommer ce qu'on a",
+        'chapeau': "Amorcer une conversation dans une salle d'attente, "
+                   "s'informer auprès d'une spécialiste sans se laisser "
+                   "presser, lire un feuillet d'information et un compte rendu "
+                   "de consultation, puis donner des nouvelles par écrit.",
+        'seances': GRILLE_3_DEFIS,
+        'blocs': _blocs('Deux heures dans la salle d\'attente',
+                        'Vingt minutes avec la spécialiste',
+                        "Ce qui s'écrit après"),
+    },
+
     # Vague 6, niveau 6. `build/cadre.py 6 "Emploi"` donne **cinq** intentions
     # — une orale en compréhension (comprendre des explications sur les étapes
     # d'une démarche administrative), une orale en production (décrire ces
