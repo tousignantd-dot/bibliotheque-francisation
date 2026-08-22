@@ -54,6 +54,28 @@ def fatal(msg):
     sys.exit('!! %s' % msg)
 
 
+def repere(man):
+    """« Module 12 · Niveau 3 », le repère de l'en-tête.
+
+    L'élève ouvre son module depuis le portail, depuis un signet, ou parce
+    qu'un voisin lui a passé l'adresse : rien à l'écran ne lui disait jusqu'ici
+    lequel des cinquante-huit il a sous les yeux, ni à quel niveau il se
+    trouve. L'enseignant non plus, quand il projette.
+
+    Le numéro et le niveau viennent du registre `build/powerpoints/modules.py`,
+    qui fait foi — jamais du manifeste, qui ferait une source de plus. Un
+    module absent du registre n'a pas encore de numéro : on affiche alors le
+    seul niveau plutôt que rien.
+
+    **Conséquence à connaître** : le numéro est désormais écrit *dans* le
+    module. Renuméroter un niveau obligeait déjà à régénérer les PowerPoints ;
+    il faut maintenant régénérer les modules aussi.
+    """
+    niveau = 'Niveau %s' % man['niveau']
+    numero = man.get('numero')
+    return ('Module %s · %s' % (numero, niveau)) if numero else niveau
+
+
 def charger_manifeste(slug):
     """Le manifeste du module, complété par le registre.
 
@@ -78,7 +100,7 @@ def charger_manifeste(slug):
     sys.path.insert(0, str(BUILD / 'powerpoints'))
     from modules import MODULES
     entree = MODULES.get(slug)
-    for champ in ('titre', 'niveau'):
+    for champ in ('titre', 'niveau', 'numero'):
         if entree and champ in entree:
             if champ in m and m[champ] != entree[champ]:
                 fatal('%s : le manifeste dit %s=%r, le registre %r — '
@@ -86,6 +108,11 @@ def charger_manifeste(slug):
                       % (slug, champ, m[champ], entree[champ]))
             m[champ] = entree[champ]
         elif champ not in m:
+            if champ == 'numero':
+                # Un module qu'on est en train d'écrire n'est pas encore au
+                # registre. Il se construit quand même : l'en-tête se passera
+                # de son numéro plutôt que d'empêcher l'aperçu.
+                continue
             fatal('%s : %s absent du manifeste et du registre '
                   'build/powerpoints/modules.py' % (slug, champ))
     return m
@@ -121,6 +148,7 @@ def construire(slug, verbeux=True, gabarit=None):
     valeurs = {
         '%%SLUG%%':          man['slug'],
         '%%NIVEAU%%':        str(man['niveau']),
+        '%%REPERE%%':        repere(man),
         '%%TITRE%%':         man['titre'],
         '%%TITRE_MAJ%%':     man['titre'].upper(),
         '%%THEME%%':         man['theme'],

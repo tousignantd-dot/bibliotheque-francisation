@@ -26,6 +26,7 @@ consultation ne passe jamais dans le gabarit : il est remplacé par des jetons.
 Les ressources génériques que le gabarit incorpore (`production.css`,
 `vocab.css`, `vocab.js`) vivent à côté de lui, dans `build/gabarit/`.
 """
+import re
 import pathlib
 import sys
 
@@ -323,6 +324,38 @@ def refondre_vocabulaire(html):
 #  2. Percer les jetons : contenu, puis identité
 # ══════════════════════════════════════════════════════════════════════
 
+def styler_repere(html):
+    """La règle CSS du repère « Module 12 · Niveau 3 ».
+
+    Elle se pose juste après `.hdr-eye`, dont elle hérite la ligne de base.
+    Trois partis pris :
+
+    · **Elle ne crie pas.** Le repère est un renseignement de service, pas le
+      titre : il passe en graisse normale, sans majuscules forcées, et prend
+      la couleur de texte discrète du système. Le titre garde son accent de
+      niveau à lui seul.
+    · **Un filet vertical plutôt qu'un point médian.** `.hdr-eye` est déjà un
+      flex avec un `gap` : une bordure gauche sépare sans ajouter de caractère
+      à ce que lit un lecteur d'écran.
+    · **Elle disparaît sous 480 px.** Sur un téléphone tenu à la verticale, la
+      place va au titre du module ; le numéro reste dans le `<title>` de
+      l'onglet et dans le pied de page.
+    """
+    if '.hdr-ref{' in html:
+        return html
+    ancre = '.hdr-eye{'
+    i = html.find(ancre)
+    if i < 0:
+        fatal('règle .hdr-eye introuvable : le repère n’aurait pas de style')
+    fin = html.find('}', i) + 1
+    regle = ("\n.hdr-ref{padding-left:8px;border-left:1px solid "
+             "var(--line-300,#D8DEE6);font-weight:var(--fw-regular,400);"
+             "text-transform:none;letter-spacing:0;color:var(--text-600,#5A6472);"
+             "white-space:nowrap}"
+             "\n@media(max-width:480px){.hdr-ref{display:none}}")
+    return html[:fin] + regle + html[fin:]
+
+
 def percer_contenu(html):
     """Les six régions de contenu et le bloc des sections personnalisées."""
     for const, fin, jeton in [
@@ -342,18 +375,35 @@ def percer_contenu(html):
     return html[:a] + '%%CUSTOM%%\n' + html[b:]
 
 
+RE_ACCENT = re.compile(r'--hdr-accent:#[0-9A-Fa-f]{6}; --hdr-accent-soft:#[0-9A-Fa-f]{6};')
+
+
 def percer_identite(html):
     """Tout ce qui nomme, colore ou adresse le module de la consultation."""
     remplacements = [
         ('<title>Consulter au bon endroit — Module Niveau 4</title>',
-         '<title>%%TITRE%% — Module Niveau %%NIVEAU%%</title>'),
+         '<title>%%TITRE%% — %%REPERE%%</title>'),
+        # Le titre du module, puis son repère : « Module 12 · Niveau 3 ».
+        # L'élève arrive ici par un signet ou par l'adresse qu'un voisin lui a
+        # passée ; rien à l'écran ne lui disait lequel des cinquante-huit il
+        # ouvrait. Le repère est un `<span>` séparé plutôt qu'un bout du même
+        # texte, pour que le titre reste lisible seul par un lecteur d'écran
+        # et que le repère puisse passer à la ligne sur un téléphone.
         ('<div class="hdr-eye">Consulter au bon endroit</div>',
-         '<div class="hdr-eye">%%TITRE%%</div>'),
+         '<div class="hdr-eye">%%TITRE%%'
+         '<span class="hdr-ref">%%REPERE%%</span></div>'),
         ("const MODULE_SLUG = 'module-consultation';",
          "const MODULE_SLUG = '%%SLUG%%';"),
         ('/assets/interactive/module-consultation/',
          '/assets/interactive/%%SLUG%%/'),
-        ('--hdr-accent:#1D6B8F; --hdr-accent-soft:#E7F0F6;',
+        # Les deux couleurs d'en-tête sont cherchées par leur FORME, pas par
+        # leur valeur. La consultation est passée du bleu à l'ambre du niveau
+        # 4 le jour où la couleur a été rattachée au niveau, et le gabarit,
+        # qui attendait encore `#1D6B8F`, a cessé de se construire — sans que
+        # personne s'en aperçoive, puisqu'on ne le régénère qu'en le
+        # modifiant. Une constante recopiée dans deux fichiers finit toujours
+        # par diverger ; un motif, non.
+        (RE_ACCENT,
          '--hdr-accent:%%ACCENT%%; --hdr-accent-soft:%%ACCENT_DOUX%%;'),
         ("fd.append('theme','Santé'); fd.append('taskId','module-consultation-po');",
          "fd.append('theme','%%THEME%%'); fd.append('taskId','%%SLUG%%-po');"),
@@ -380,6 +430,11 @@ def percer_identite(html):
          '%%RELANCE%%'),
     ]
     for old, new in remplacements:
+        if hasattr(old, 'sub'):
+            html, n = old.subn(new.replace('\\', '\\\\'), html)
+            if not n:
+                fatal('identité : motif introuvable — %s' % old.pattern)
+            continue
         if old not in html:
             fatal('identité : repère introuvable — %r' % old[:70])
         html = html.replace(old, new)
@@ -466,6 +521,7 @@ def main():
     html = refondre_vocabulaire(html)
     html = corriger_envoi_oral(html)
     html = images_en_paysage(html)
+    html = styler_repere(html)
     html = percer_contenu(html)
     html = percer_identite(html)
 
