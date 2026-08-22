@@ -1,0 +1,21 @@
+const FC_CARDS = [
+  {word:"le secrétariat", def:"Le bureau, près de l'entrée, où l'on règle tout ce qui touche à son dossier d'élève.", ex:"Le <strong>secrétariat</strong> est ouvert de huit heures à seize heures.", img:"/assets/interactive/module-n5-ecole/vocab/secretariat.jpg", tache:"prep"},
+  {word:"une conseillère", def:"La personne qui décide de votre parcours : votre groupe, votre horaire, la suite de vos cours.", ex:"La <strong>conseillère</strong> reçoit sur rendez-vous, au local 112.", img:"/assets/interactive/module-n5-ecole/vocab/conseillere.jpg", tache:"prep"},
+  {word:"un local", def:"La salle où se donne un cours, désignée par son numéro.", ex:"Le rattrapage se fait au <strong>local</strong> 118, deux midis par semaine.", img:"/assets/interactive/module-n5-ecole/vocab/local.jpg", tache:"prep"},
+  {word:"une session", def:"La période de plusieurs mois pendant laquelle un cours se donne, du début à la fin.", ex:"La <strong>session</strong> d'hiver se termine à la fin du mois de juin.", img:"/assets/interactive/module-n5-ecole/vocab/session.jpg", tache:"prep"},
+
+  {word:"une absence", def:"Le fait de ne pas être en classe un jour où l'on devrait y être.", ex:"Une <strong>absence</strong> annoncée d'avance ne se traite pas comme une absence apprise le matin même.", img:"/assets/interactive/module-n5-ecole/vocab/absence.jpg", tache:"t1"},
+  {word:"un motif", def:"La raison qu'on donne officiellement pour expliquer une demande ou une absence.", ex:"Le formulaire demande les dates, puis le <strong>motif</strong> en une phrase.", img:"/assets/interactive/module-n5-ecole/vocab/motif.jpg", tache:"t1"},
+  {word:"une pièce justificative", def:"Le papier qui prouve ce qu'on avance : un billet, une lettre, un reçu.", ex:"Elle apportera sa <strong>pièce justificative</strong> à son retour de voyage.", img:"/assets/interactive/module-n5-ecole/vocab/piece-justificative.jpg", tache:"t1"},
+  {word:"un rattrapage", def:"Les heures offertes après coup pour reprendre ce qui a été manqué.", ex:"Le <strong>rattrapage</strong> a lieu le midi, sur inscription au secrétariat.", img:"/assets/interactive/module-n5-ecole/vocab/rattrapage.jpg", tache:"t1"},
+
+  {word:"un avis", def:"Un court document officiel qui vous informe d'une décision et de ce que vous devez faire.", ex:"L'<strong>avis</strong> arrive par courriel et il faut le signer.", img:"/assets/interactive/module-n5-ecole/vocab/avis.jpg", tache:"t2"},
+  {word:"une échéance", def:"La date à laquelle une chose doit être faite, et après laquelle il est trop tard.", ex:"L'<strong>échéance</strong> est écrite en gras, tout en haut de la page.", img:"/assets/interactive/module-n5-ecole/vocab/echeance.jpg", tache:"t2"},
+  {word:"un formulaire", def:"Une feuille avec des cases à remplir, la même pour tout le monde.", ex:"Ce <strong>formulaire</strong> se remet au secrétariat avant le départ.", img:"/assets/interactive/module-n5-ecole/vocab/formulaire.jpg", tache:"t2"},
+  {word:"une prolongation", def:"Le fait de continuer plus longtemps que ce qui avait été annoncé.", ex:"En cas de <strong>prolongation</strong>, il faut appeler avant la fin de l'absence.", img:"/assets/interactive/module-n5-ecole/vocab/prolongation.jpg", tache:"t2"},
+
+  {word:"un transfert", def:"Le passage d'un groupe à un autre, sans quitter le cours.", ex:"Son <strong>transfert</strong> au groupe du soir prend effet lundi prochain.", img:"/assets/interactive/module-n5-ecole/vocab/transfert.jpg", tache:"t3"},
+  {word:"une attestation", def:"Le papier que le centre imprime pour confirmer que vous êtes bien inscrit chez lui.", ex:"Son employeur demande une <strong>attestation</strong> de fréquentation scolaire.", img:"/assets/interactive/module-n5-ecole/vocab/attestation.jpg", tache:"t3"},
+  {word:"un relevé", def:"Le document du ministère qui dit quels cours vous avez réussis, et quand.", ex:"Le <strong>relevé</strong> des apprentissages arrive plusieurs semaines après la fin du cours.", img:"/assets/interactive/module-n5-ecole/vocab/releve.jpg", tache:"t3"},
+  {word:"un délai", def:"Le temps qu'il faut attendre avant qu'une demande soit traitée.", ex:"Le <strong>délai</strong> est de dix jours ouvrables pour un changement de groupe.", img:"/assets/interactive/module-n5-ecole/vocab/delai.jpg", tache:"t3"},
+];
