@@ -15,12 +15,18 @@ Ce script règle les deux sens :
 · **Décrocher** ce qui n'existe pas. Un champ vide est prévu par le portail —
   trente-cinq activités en ont déjà — et il dit la vérité : le diaporama
   n'existe pas encore. Un lien mort, lui, ment.
-· **Signaler**, sans y toucher, un fichier présent que le champ n'annonce pas.
-  Le catalogue ne lit pas `slideshow` pour savoir si les présentations
-  existent : il les compte dans l'inventaire du dépôt, parce qu'un cours en a
-  seize et qu'un champ n'en porte qu'une. Remplir le champ ne réparerait donc
-  rien et changerait un affichage que personne n'a demandé de changer. On le
-  dit, on ne le fait pas.
+· **Raccrocher les fiches** apparues depuis. `studentDoc` n'a aucun repli :
+  si le champ est vide, la ligne du catalogue dit « absent » même quand le
+  fichier est là. Le jour où les séances manquantes sont construites, le lien
+  revient sans que personne ait à s'en souvenir — c'est tout l'intérêt d'une
+  dette qui se règle seule.
+
+· **Signaler seulement** un diaporama présent que le champ n'annonce pas.
+  `slideshow`, lui, A un repli : le catalogue compte les présentations dans
+  l'inventaire du dépôt, parce qu'un cours en a seize et qu'un champ n'en
+  porte qu'une, et il offre l'archive des seize. Remplir le champ
+  remplacerait cette archive par un lien vers une seule page — un changement
+  d'affichage que personne n'a demandé. On le dit, on ne le fait pas.
 
 Les chemins se déduisent du slug, comme le fait `build/powerpoints`. Sortie en
 code 1 s'il reste des liens morts après réparation — ce qui n'arrive que si le
@@ -82,16 +88,19 @@ def main():
         print('✓ tous les liens du catalogue mènent à un fichier qui existe')
         return 0
     if not reparer:
-        print('\n(`--reparer` pour décrocher les liens morts)')
+        print('\n(`--reparer` pour décrocher les liens morts et raccrocher les fiches)')
         return 1
 
     for a, champ, _ in morts:
         a[champ] = ''
+    raccroches = [x for x in absents if x[1] == 'studentDoc']
+    for a, champ, lien in raccroches:
+        a[champ] = lien
     CATALOGUE.write_text(json.dumps(activites, ensure_ascii=False, indent=2) + '\n',
                          encoding='utf-8')
-    print('\n%d lien(s) mort(s) décroché(s). Les %d fichiers non annoncés\n'
-      'sont laissés tels quels : voir l’en-tête de ce fichier.'
-      % (len(morts), len(absents)))
+    print('\n%d lien(s) mort(s) décroché(s), %d fiche(s) raccrochée(s).\n'
+          '%d diaporama(s) présent(s) laissés tels quels : voir l’en-tête.'
+          % (len(morts), len(raccroches), len(absents) - len(raccroches)))
     _, restants, _ = examiner()
     if restants:
         print('✗ %d lien(s) morts subsistent' % len(restants))
