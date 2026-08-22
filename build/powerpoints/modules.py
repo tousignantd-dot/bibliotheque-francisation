@@ -223,6 +223,27 @@ MODULES = {
         'blocs': _blocs('Se présenter', 'Saluer et remercier'),
     },
 
+    # Deuxième module du niveau 1. La situation du programme est « Salle de
+    # classe », et le niveau 1 n'en tire que deux intentions, toutes deux en
+    # compréhension orale : comprendre de l'information sur le fonctionnement
+    # de la classe, et comprendre une consigne. Le module ne demande donc
+    # jamais à l'élève d'expliquer quoi que ce soit — il écoute, il montre,
+    # il fait. Distinct de `module-n2-classe` (89), qui traite la même
+    # situation au niveau 2 : là-bas on lit une directive écrite, on demande
+    # une permission, on annonce une absence et on explique le
+    # fonctionnement de la classe à quelqu'un ; ici une consigne fait deux
+    # mots, la réponse de l'élève est un geste, et le seul texte lu est
+    # l'heure sur une horloge.
+    'module-n1-classe': {
+        'numero': 4, 'activite': 98, 'niveau': 1,
+        'titre': 'Regardez le tableau',
+        'chapeau': "Comprendre une consigne courte, nommer les objets de la "
+                   "classe, comprendre l'heure du cours et l'horaire de la "
+                   "semaine.",
+        'seances': GRILLE_COURTE,
+        'blocs': _blocs('La consigne', "L'heure et l'horaire"),
+    },
+
     # ── Niveau 2 ────────────────────────────────────────────────────
     # Deuxième module court : huit séances, deux défis. Distinct de
     # `module-deplacement` (niveau 4), qui porte sur le trajet complet et le
