@@ -69,10 +69,10 @@ def build(dossier):
              "tenue du crayon autant que le résultat.")
 
     d.vocabulaire('Vocabulaire', "Les quatre premiers lieux",
-                  [("les toilettes", "la petite salle avec les lavabos"),
-                   ("la cafétéria", "la grande salle où on mange, le midi"),
-                   ("l'accueil", "le premier comptoir, après la porte d'entrée"),
-                   ("la sortie", "la porte par où on part")],
+                  [("les toilettes", "un dessin d'homme ou de femme sur la porte"),
+                   ("la cafétéria", "un dessin de fourchette ; des tables, pour le dîner"),
+                   ("l'accueil", "après la porte, quelqu'un répond aux questions"),
+                   ("la sortie", "un dessin vert : quelqu'un qui court")],
                   notes="Faire répéter chaque mot avec son petit mot — le, la, les. "
                         "L'article fait partie du mot, on ne l'apprend jamais après.")
 
