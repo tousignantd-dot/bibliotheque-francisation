@@ -25,18 +25,25 @@ def build(dossier):
         "décider si l'offre convient.",
     ])
 
-    d.tableau('Analyse', "Six lignes, six questions",
-              ['La ligne de l\'annonce', 'La question à laquelle elle répond'],
+    d.tableau('Analyse · 1 de 2', "Le haut de l'annonce",
+              ['La ligne', 'La question à laquelle elle répond'],
               [["Aide à la cuisine", "Quel poste ? Le nom du travail."],
                ["20 heures par semaine", "Combien d'heures ? Plein ou partiel ?"],
-               ["Du mardi au samedi, de 9 h à 13 h", "Quels jours et quelles heures ?"],
-               ["16,50 $ de l'heure", "Combien pour chaque heure travaillée ?"],
+               ["Du mardi au samedi, de 9 h à 13 h", "Quels jours et quelles heures ?"]],
+              cle=0,
+              note="Trois lignes, et l'on sait déjà si l'horaire est possible.",
+              notes="Diapo à photographier. Faire recopier la colonne de droite : ce "
+                    "sont les questions à se poser devant n'importe quelle annonce.")
+
+    d.tableau('Analyse · 2 de 2', "Le bas de l'annonce",
+              ['La ligne', 'La question à laquelle elle répond'],
+              [["16,50 $ de l'heure", "Combien pour chaque heure travaillée ?"],
                ["Aucune expérience exigée", "Faut-il avoir déjà fait ce travail ?"],
                ["Demander Hugo Pelletier, 514 555-0148", "À qui s'adresser, et comment ?"]],
               cle=0,
-              note="Aucune de ces six lignes n'est facultative : une seule suffit à écarter l'offre.",
-              notes="Diapo à photographier, la plus utile du défi 2. Faire recopier "
-                    "la colonne de droite : ce sont les six questions à se poser.")
+              note="Aucune des six lignes n'est facultative : une seule suffit à écarter l'offre.",
+              notes="Diapo à photographier. La dernière ligne est celle qu'on lit le "
+                    "moins et celle qui décide du déplacement.")
 
     d.regle("La dernière ligne dit comment s'y prendre",
             "Se présenter en personne, entre 9 h et 11 h. Demander Hugo Pelletier.",
