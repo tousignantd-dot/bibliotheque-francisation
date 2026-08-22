@@ -2097,3 +2097,95 @@ seule la moitié des coïncidences du relevé d'originalité. La mesure globale
 restait sous le seuil (4,2 %), ce qui aurait laissé passer un quasi-doublon.
 **Mesurer par module ne suffit pas : regarder d'où viennent les coïncidences.**
 Le détail est dans `docs/verification-originalite.md`.
+
+### Le premier module à deux défis du niveau 6
+
+**22 août 2026 — activité 105, `module-n6-logement`.** « Six mois ailleurs »,
+niveau 6, `numero` 8, `GRILLE_2_DEFIS`. Scénario inventé : Farida Belkacem,
+39 ans, arrivée d'Algérie il y a quatre ans, aide-cuisinière dans un centre
+d'hébergement de Québec, part six mois remplacer quelqu'un à Sept-Îles et veut
+sous-louer son quatre et demie de la rue de la Canardière plutôt que de le
+perdre. Gilles Bédard est son collègue de cuisine, Mylène Poitras la préposée
+au service de renseignements du Tribunal, Lucien Tardif le locateur, Nicolas
+Trudel le sous-locataire proposé. 20 exercices, 16 mini-leçons, 4 dialogues
+(83 répliques), 16 mots, 15 images, **284 extraits audio** (83 répliques et
+201 sons), 16 séances (172 diapositives, 124 blocs de fiches). Originalité :
+1 216 énoncés visibles, **4 identiques** dans les 49 021 des cinquante-sept
+autres modules de `build/contenu/`, soit **0,3 %**.
+
+*Les faits québécois sont vérifiés, pas devinés* : le Tribunal administratif du
+logement a remplacé la Régie du logement le 31 août 2020, et la Régie avait été
+créée en 1980 — les deux dates servent l'exercice de passé simple. Les règles
+de la **sous-location** sont celles du Code civil et elles sont stables : avis
+écrit indiquant le nom et l'adresse de la personne proposée ; quinze jours pour
+répondre, à compter de la réception ; consentement présumé en cas de silence ;
+refus possible pour un **motif sérieux** seulement, et par écrit ; remboursement
+des **dépenses raisonnables** que la sous-location occasionne ; locataire qui
+demeure tenu de ses obligations. Le module s'arrête là : il ne dit **rien** de
+la procédure de refus d'une **cession** de bail, qui a changé récemment. La
+cession n'y est nommée que pour la distinguer de la sous-location, et le
+`server.py` l'interdit explicitement à l'assistant du jeu de rôle. Tout le reste
+est inventé, y compris la page Web citée, qui imite la forme d'une fiche
+officielle sans en reprendre le texte : prêter à un tribunal réel une page qu'il
+n'a pas écrite en ferait un faux document, et le Défi 1 dit à l'élève, dans un
+bandeau, que la page du module est un exemple.
+
+**La grille : deux défis, et le test du pilote appliqué pour vrai.** Une seule
+intention au programme — « s'informer sur ses droits et ses obligations en
+consultant un site Web », de compréhension écrite. Deux façons distinctes
+d'entrer dans la situation tiennent debout, chacune avec son dialogue et ses
+sept exercices : **le texte public** (une fiche de droits, écrite pour tout le
+monde, en intertitres et en puces, où l'on cherche une règle qui ne parle de
+personne) et **les deux lettres privées** (l'avis qu'on envoie, la réponse qu'on
+reçoit, adressées, datées, signées, qui parlent d'un seul cas et ne disent pas
+la même chose). Le troisième aurait été l'audience au Tribunal : c'est un autre
+travail — parler devant un tribunal n'est plus s'informer — et c'est le terrain
+de « Problèmes reliés à l'habitation » (106), qui suit dans la même vague. Le
+remplir ici aurait voulu dire faire relire une troisième lettre du même dossier.
+Deux défis, donc, et la répartition 4-5-5-2 se remplit sans effort : les blocs B
+et C portent sept exercices chacun.
+
+**Trois exercices du type `texte`, dont deux dans le même défi**, comme
+`module-n6-emploi` l'avait montré : la fiche de droits (onze passages, onze
+questions), l'avis de Farida (sept et sept), la réponse du locateur (sept et
+sept). Le septième contrôle les valide sans rien signaler. Une remarque qui vaut
+pour les modules restants : le type se prête particulièrement bien à **deux
+textes qui se répondent**. La fiche écrit « le locataire » et « celui-ci » ; la
+lettre écrit « vous » et « votre logement ». Faire chercher la même règle dans
+les deux, c'est exactement la cohésion que le niveau 6 demande, et c'est ce qui
+a donné sa forme au Défi 2.
+
+Trois choses apprises :
+
+- **Un quatrième dialogue n'a pas besoin d'une section à lui.** Le gabarit rend
+  `ex.dialogue` **uniquement** pour le type `write` (une seule occurrence dans
+  `build/gabarit/module.html`) : la visite du logement est donc portée par
+  l'exercice sur l'hypothèse en « si », qui est un `write`. Un module à deux
+  défis garde ainsi les quatre dialogues et les 80 répliques attendues au
+  niveau 6, sans inventer un onglet de plus. `module-n5-logement` a un dialogue
+  `t1b` qu'aucun exercice ne porte : il n'est jamais joué.
+- **La flèche a encore coûté un build.** `theme.py` a refusé le deck A4 pour
+  trois `→` — la mise en garde de `CLAUDE.md` est exacte, et elle vaut aussi
+  pour les listes de nominalisation, où la flèche vient toute seule sous les
+  doigts. Dans le HTML du module, elle passe sans problème ; c'est seulement
+  dans les `.pptx` qu'elle est interdite.
+- **Les intitulés partagés du niveau 6 pèsent, même sans copier une
+  mini-leçon.** Écrites de zéro, sans regarder celles des voisins, seize
+  mini-leçons ont tout de même rendu 2,0 % de coïncidence — pas un bloc entier,
+  mais vingt titres courts et prévisibles que le savoir commun appelle : « Les
+  terminaisons de la 3e personne », « Trois verbes irréguliers à connaître »,
+  « Deux passés dans la même phrase », « Le subjonctif après un verbe
+  introducteur ». Vingt reformulations les ramènent à **0,3 %**. Elles ne
+  coûtent rien : le relevé des sons est resté identique à l'octet près, ni les
+  `tit`, ni les `sub`, ni les intitulés de rangée n'entrant dans le manifeste
+  des extraits. La leçon du module 100 tient donc dans les deux sens — ce n'est
+  pas seulement la mini-leçon recopiée qui coûte, c'est aussi le titre qui va de
+  soi.
+
+*Sur les contrôles* : les sept passent. `coherence.js` rend 15 écarts, tous
+« image absente du disque » — `gen_images.py` est écrit mais n'a pas tourné, et
+le générateur audio non plus : le module est livré muet et sans illustration,
+les deux se rattrapent d'un seul coup. `pieds_de_page.py` signale un écart sur
+`module-n3-horaire`, antérieur et étranger à ce module. La vérification au
+navigateur n'a pas pu se faire : le volet de prévisualisation était occupé par
+une autre session.
