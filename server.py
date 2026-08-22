@@ -5207,6 +5207,95 @@ JEU_DE_ROLE_GUICHET = {
 }
 
 
+# ── module-n2-colis (activité 94) ─────────────────────────────────────────
+# Une démarche très courte au comptoir postal, au niveau 2. Aucun des
+# scénarios existants ne convenait. `poste` (niveau 3) porte la même
+# situation, mais son préposé répond par des phrases entières, compare deux
+# vitesses d'envoi et vend un mandat-poste : c'est trop long et trop riche
+# pour un débutant. `guichet` (niveau 2) est le plus proche par la forme — un
+# comptoir, un prix, quelqu'un qui n'a jamais fait la démarche — mais on y
+# manipule une machine, personne n'y confie un objet. Ici l'élève dit ce
+# qu'il veut en une phrase, il demande le prix, il redit le montant pour
+# vérifier, et il remercie. Trois répliques suffisent.
+#
+# Ce que sait le préposé est de la vie ordinaire d'un comptoir postal, pas
+# d'un tarif à jour : un timbre sert au courrier ordinaire, un colis se pèse,
+# une adresse incomplète revient, un colis avisé attend au comptoir et se
+# reprend avec une pièce d'identité et une signature. Le seul montant cité,
+# 1,44 $ pour un timbre à l'unité, est celui du module.
+JEU_DE_ROLE_COLIS = {
+    "timbre": {
+        "contexte": (
+            "Le comptoir postal au fond d'une pharmacie de quartier, un "
+            "matin. Une personne s'avance avec une enveloppe à la main. Elle "
+            "ne sait pas encore quoi demander."
+        ),
+        "prepose": [
+            "Tu travailles au comptoir postal, au fond de la pharmacie.",
+            "Tu parles en phrases très courtes, au présent, une seule information par réplique.",
+            "Un timbre à l'unité coûte un dollar quarante-quatre.",
+            "Tu demandes toujours d'abord où va la lettre : ici, au Québec, ou ailleurs.",
+            "Tu dis que le timbre se colle en haut, à droite de l'enveloppe.",
+            "Tu répètes le montant si on te le demande, plus lentement.",
+            "Tu ne parles ni de vitesses d'envoi, ni de mandat-poste, ni d'assurance.",
+        ],
+        "moi": [
+            "Tu veux envoyer une lettre et tu ne sais pas quoi demander.",
+            "Tu salues, puis tu dis ce que tu veux en une phrase très courte.",
+            "Tu demandes le prix : « Combien ça coûte ? »",
+            "Tu redis le montant que tu as entendu pour vérifier.",
+            "Si ça va trop vite, tu dis « plus lentement, s'il vous plaît ».",
+            "Tu remercies avant de partir.",
+        ],
+    },
+    "envoi": {
+        "contexte": (
+            "Le même comptoir, deux jours plus tard. Une personne pose une "
+            "boîte sur la balance. Le préposé lui tend une feuille avec des "
+            "cases."
+        ),
+        "prepose": [
+            "Tu pèses la boîte et tu dis son poids en kilos.",
+            "Tu donnes un formulaire et tu nommes une case à la fois.",
+            "En haut, c'est l'expéditeur : la personne qui envoie, avec son nom et son adresse.",
+            "En bas, c'est le destinataire : la personne qui reçoit, avec son nom et son adresse.",
+            "Tu demandes le code postal quand il manque : sans lui, le colis revient.",
+            "Tu montres où signer, à droite, tout en bas.",
+            "À la fin, tu donnes un reçu et tu dis de le garder.",
+        ],
+        "moi": [
+            "Tu envoies un colis et tu ne comprends pas le formulaire.",
+            "Tu demandes une case à la fois : « Qu'est-ce que j'écris ici ? »",
+            "Tu demandes la différence entre l'expéditeur et le destinataire.",
+            "Tu demandes où il faut signer.",
+            "Tu remercies et tu prends ton reçu.",
+        ],
+    },
+    "avis": {
+        "contexte": (
+            "Le comptoir postal, en fin de journée. Une personne arrive avec "
+            "un petit carton trouvé dans sa boîte aux lettres. Elle ne sait "
+            "pas ce que c'est."
+        ),
+        "prepose": [
+            "Le carton est un avis de livraison : un colis est arrivé pendant l'absence de la personne.",
+            "Le colis attend au comptoir postal, celui écrit sur le carton.",
+            "Tu demandes le carton et une carte avec une photo.",
+            "Tu dis que le colis est gardé quinze jours, puis renvoyé à l'expéditeur.",
+            "Tu fais signer avant de remettre le colis.",
+            "Tu réponds à une question à la fois, sans énumérer trois choses d'un coup.",
+        ],
+        "moi": [
+            "Tu as trouvé un carton dans ta boîte aux lettres et tu ne sais pas ce que c'est.",
+            "Tu demandes où est ton colis.",
+            "Tu demandes ce qu'il faut apporter.",
+            "Tu demandes jusqu'à quand le colis est gardé.",
+            "Tu signes et tu remercies.",
+        ],
+    },
+}
+
+
 # ── module-n3-secretariat (activité 86) ───────────────────────────────────
 # Prévenir le personnel du centre de formation d'une absence ou d'un abandon.
 # C'est la seule intention que le programme rattache à cette situation au
@@ -5409,6 +5498,54 @@ JEU_DE_ROLE_OEUVRES = {
 
 
 JEU_DE_ROLE_SCENARIOS = {
+    "colis": {
+        "cadre": "une courte démarche au comptoir postal d'une pharmacie",
+        "contexte_label": "L'endroit où vous vous trouvez tous les deux",
+        "cas": JEU_DE_ROLE_COLIS,
+        "adresse": "Vouvoie l'élève : on ne se connaît pas, c'est un comptoir de commerce.",
+        "sujets": [
+            "ce qu'on veut envoyer : une lettre, un colis",
+            "où ça va : la ville, la province",
+            "le prix, dit en dollars",
+            "la répétition du montant, pour vérifier",
+            "une demande de répéter plus lentement",
+            "ce qu'on écrit sur l'enveloppe ou dans une case du formulaire",
+            "un merci pour finir",
+        ],
+        "cloture": ("Quand la démarche est faite, redis en une phrase très courte ce "
+                    "qui a été demandé et ce que ça coûte, puis souhaite bonne "
+                    "journée."),
+        "ouverture": {
+            "moi": "Bonjour. Je veux envoyer cette lettre.",
+            "prepose": "Bonjour. Qu'est-ce que je peux faire pour vous ?",
+        },
+        "roles": {
+            "prepose": {
+                "qui": ("Tu tiens le comptoir postal au fond d'une pharmacie de "
+                        "quartier. L'élève est la personne qui vient envoyer "
+                        "quelque chose ou chercher un colis."),
+                "conduite": ("Niveau 2 : phrases très courtes, au présent, aucune "
+                             "subordonnée, une seule information par réplique, jamais "
+                             "deux questions d'affilée. Dis les montants en toutes "
+                             "lettres et redis-les plus lentement si on te le demande. "
+                             "Ne compare pas les vitesses d'envoi et ne propose ni "
+                             "assurance, ni mandat-poste, ni repérage : ce n'est pas "
+                             "de ce niveau. Attends que l'élève ait écrit ou répondu "
+                             "avant de nommer la case suivante, et ne t'impatiente "
+                             "jamais."),
+            },
+            "moi": {
+                "qui": ("Tu es au comptoir postal et c'est la première fois. L'élève "
+                        "est le préposé qui te sert."),
+                "conduite": ("Parle en phrases très courtes. Pose une seule question "
+                             "à la fois. Répète le montant qu'on te dit pour vérifier. "
+                             "Si la réponse va trop vite ou donne trois choses d'un "
+                             "coup, demande de reprendre plus lentement — c'est "
+                             "exactement ce que le module apprend à faire. Remercie "
+                             "avant de partir."),
+            },
+        },
+    },
     "guichet": {
         "cadre": "une demande d'aide devant un guichet automatique",
         "contexte_label": "L'endroit où vous vous trouvez tous les deux",
