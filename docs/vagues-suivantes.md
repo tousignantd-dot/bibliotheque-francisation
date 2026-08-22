@@ -1837,3 +1837,44 @@ ambre pour l'écriture et la grammaire, teal pour l'écoute et la réponse,
 framboise pour le bilan — et `module-n6-recherche` les répartissait déjà ainsi.
 Le pilote a suivi cette répartition, et non la couleur acier du niveau 6 : la
 couleur de niveau tient l'en-tête du module, pas les séances.
+
+---
+
+## Vague 6 — le niveau 6 au complet
+
+Ouverte le 22 août 2026, une fois le pilote (activité 99) livré et le type
+d'exercice `texte` versé au moteur. **Lire « Le pilote du niveau 6 — ce qu'il
+a trouvé » avant de commencer** : la grille de chaque situation y est décidée,
+et trois pièges du stade intermédiaire y sont nommés.
+
+**Les numéros sont réservés ici, et nulle part ailleurs.**
+
+| Numéro | Situation | Slug réservé | Grille |
+|--------|-----------|--------------|--------|
+| 100 | Emploi | `module-n6-emploi` | `GRILLE_3_DEFIS` |
+| 101 | Relations sociales | `module-n6-relations` | `GRILLE_3_DEFIS` |
+| 102 | Communication avec le personnel de l'établissement | `module-n6-etablissement` | `GRILLE_3_DEFIS` |
+| 103 | Découverte d'œuvres | `module-n6-oeuvres` | `GRILLE_3_DEFIS` |
+| 104 | Consultation d'un professionnel de la santé | `module-n6-sante` | `GRILLE_3_DEFIS` |
+| 105 | Location d'un logement | `module-n6-logement` | `GRILLE_2_DEFIS` |
+| 106 | Problèmes reliés à l'habitation | `module-n6-habitation` | `GRILLE_2_DEFIS` |
+| 107 | Salle de classe | `module-n6-classe` | `GRILLE_2_DEFIS` |
+
+Les grilles viennent du tableau du pilote, tiré de `build/cadre.py 6` : trois
+défis quand la situation porte trois intentions ou plus, deux quand elle n'en
+porte qu'une. **`GRILLE_COURTE` n'a sa place à aucun de ces huit modules.**
+Mais une seule intention ne condamne pas mécaniquement au format court : le
+vrai test est de savoir si l'on peut nommer trois façons distinctes d'entrer
+dans la situation, chacune avec son dialogue et ses exercices. Si le troisième
+défi ne se remplit qu'en répétant le deuxième, deux défis — inventer une
+séance sans contenu reste pire que de n'en pas avoir.
+
+**Le type `texte` est disponible et attendu.** Chaque module du niveau 6
+devrait porter au moins un exercice de compréhension d'un texte suivi : c'est
+le cœur du niveau, et c'est pour ces huit modules que le type a été ajouté.
+Sa forme est dans `CLAUDE.md`.
+
+**Les agents partent quatre à la fois**, jamais huit. Cinq agents lancés
+ensemble ont épuisé la limite de session le 22 août et sont morts à la même
+seconde. Quatre tiennent, et la fusion de la vague précédente se fait pendant
+que la suivante travaille.
