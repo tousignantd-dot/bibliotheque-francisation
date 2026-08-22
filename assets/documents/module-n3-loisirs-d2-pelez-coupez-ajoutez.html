@@ -1,0 +1,172 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>D2 · Pelez, coupez, ajoutez — Fiche élève</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800;900&display=swap" rel="stylesheet">
+<style>
+/* ═══════════════════════════════════════════════════════════════
+   FICHE ÉLÈVE · IMPRESSION LETTRE, NOIR ET BLANC
+   ───────────────────────────────────────────────────────────────
+   Aucune couleur : ces fiches sont photocopiées en noir et blanc.
+   Toute la hiérarchie passe par la GRAISSE, les FILETS et les MOTS.
+   C'est d'ailleurs la règle du système de design poussée à son
+   terme : « jamais d'information portée par la couleur seule ».
+
+   Les gris viennent des neutres du système (ink-900 à ink-400),
+   qui sont déjà quasi neutres. Les filets sont volontairement plus
+   sombres qu'à l'écran : une photocopieuse efface tout ce qui est
+   plus clair que 15 % de noir.
+   ═══════════════════════════════════════════════════════════════ */
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+:root{
+  --paper:#FFFFFF;
+  --tint:#F0F0EE;          /* aplat le plus clair encore visible en photocopie */
+  --line:#C9C9C6;          /* filet fin */
+  --rule:#17181A;          /* filet structurant */
+  --ink:#17181A;           /* titres */
+  --body:#2B2E30;          /* texte courant, un cran plus sombre qu'à l'écran */
+  --soft:#4B4F52;          /* texte secondaire */
+  --muted:#5E6165;         /* sur-titres, méta */
+}
+html{background:#BBBBBB}
+body{
+  font-family:'Nunito','Trebuchet MS',sans-serif;
+  font-size:11.5pt; line-height:1.5; color:var(--body);
+  background:var(--paper);
+  width:215.9mm;                    /* 8,5 po — format lettre */
+  margin:0 auto; padding:14mm 15mm 16mm;
+  -webkit-print-color-adjust:exact; print-color-adjust:exact;
+}
+h1,h2,h3{color:var(--ink); line-height:1.2; letter-spacing:-0.01em}
+
+/* ── En-tête ── */
+.hdr{border-bottom:2.5px solid var(--rule); padding-bottom:8px; margin-bottom:14px;
+     display:flex; align-items:flex-end; gap:14px}
+.hdr-l{flex:1}
+.eyebrow{font-size:9.5pt; font-weight:800; text-transform:uppercase;
+         letter-spacing:.12em; color:var(--muted)}
+.hdr h1{font-size:22pt; font-weight:900; margin-top:3px}
+.hdr-r{flex-shrink:0; display:flex; gap:10px; align-items:flex-end;
+       font-size:9.5pt; font-weight:800; text-transform:uppercase;
+       letter-spacing:.08em; color:var(--muted); padding-bottom:2px}
+.nomline{display:inline-block; border-bottom:1.5px solid var(--rule);
+         height:6mm; vertical-align:bottom; margin-left:5px}
+.nomline--nom{width:48mm} .nomline--date{width:26mm}
+.chapeau{font-size:12pt; font-weight:600; color:var(--soft); margin-bottom:16px}
+
+/* ── Blocs ── */
+.bloc{break-inside:avoid; page-break-inside:avoid; margin-bottom:13px}
+.card{border:1px solid var(--line); border-radius:12px; padding:11px 14px 12px;
+      background:var(--paper)}
+.lbl{font-size:9.5pt; font-weight:800; text-transform:uppercase;
+     letter-spacing:.12em; color:var(--muted); margin-bottom:5px}
+h2.t{font-size:15pt; font-weight:900; margin-bottom:7px}
+.consigne{font-size:11pt; font-weight:600; color:var(--soft); margin-bottom:8px}
+
+/* ── Objectifs et exercices : pastille en cerne, jamais en aplat ── */
+ol.obj,ol.ex{list-style:none}
+ol.obj{counter-reset:o} ol.ex{counter-reset:e}
+ol.obj li,ol.ex li{position:relative; padding-left:9mm; font-weight:600}
+ol.obj li{counter-increment:o; margin-bottom:6px}
+ol.ex li{counter-increment:e; margin-bottom:9px; break-inside:avoid}
+ol.obj li::before,ol.ex li::before{
+  position:absolute; left:0; top:0; width:6mm; height:6mm; border-radius:50%;
+  border:1.5px solid var(--rule); color:var(--ink);
+  font-size:9.5pt; font-weight:800;
+  display:flex; align-items:center; justify-content:center}
+ol.obj li::before{content:counter(o)}
+ol.ex li::before{content:counter(e)}
+
+/* ── Dialogue ── */
+.rep{display:flex; gap:10px; padding:4px 0; border-top:1px solid var(--line)}
+.rep:first-of-type{border-top:0}
+.rep--key{background:var(--tint); border-radius:8px; padding:5px 8px;
+          border-top:0; margin:2px 0}
+.qui{flex:0 0 30mm; font-weight:800; color:var(--ink); font-size:10.5pt}
+
+/* ── Règle : encadrée au filet épais, c'est elle qu'on repère de loin ── */
+.regle{border:2.5px solid var(--rule); border-radius:12px; padding:12px 14px}
+.regle .lbl{color:var(--ink)}
+.regle p.r{font-size:14pt; font-weight:900; color:var(--ink); line-height:1.3}
+.regle p.pr{margin-top:7px; font-weight:600; color:var(--soft)}
+
+/* ── Tableau ── */
+table{width:100%; border-collapse:collapse}
+th{font-size:9.5pt; font-weight:800; text-transform:uppercase; letter-spacing:.1em;
+   color:var(--muted); text-align:left; padding:0 8px 5px 0;
+   border-bottom:1.5px solid var(--rule)}
+td{padding:6px 8px 6px 0; border-top:1px solid var(--line); vertical-align:top;
+   font-weight:600}
+td.cle{font-weight:900; color:var(--ink)}   /* la colonne clé : en gras, pas en couleur */
+.note{margin-top:8px; font-size:10.5pt; font-weight:600; color:var(--soft);
+      background:var(--tint); border-radius:9px; padding:8px 11px}
+
+/* ── Cartes ── */
+.grid{display:grid; grid-template-columns:1fr 1fr; gap:9px}
+.grid .card h3{font-size:11.5pt; font-weight:900; color:var(--ink); margin-bottom:3px}
+.grid .card p{font-size:11pt}
+
+/* ── Piège : le filet distingue les deux colonnes, pas la couleur ──
+   À gauche, un filet TIRETÉ — ce qui ne tient pas.
+   À droite, un filet PLEIN et épais — ce qu'il faut retenir.
+   Les deux intitulés disent la même chose en mots.                */
+.duo{display:grid; grid-template-columns:1fr 1fr; gap:10px}
+.duo>div{border-radius:12px; padding:10px 13px}
+.duo .no{border:1.5px dashed var(--muted)}
+.duo .ok{border:2.5px solid var(--rule); background:var(--tint)}
+.duo .k{font-size:9.5pt; font-weight:800; text-transform:uppercase;
+        letter-spacing:.1em; margin-bottom:4px; color:var(--muted)}
+.duo .ok .k{color:var(--ink)}
+.duo p.ph{font-size:12pt; font-weight:800; color:var(--ink); line-height:1.3}
+.duo .no p.ph{font-weight:600; font-style:italic; color:var(--soft)}
+
+/* ── Vocabulaire ── */
+.voc{width:100%; border-collapse:collapse}
+.voc td{border-top:1px solid var(--line); padding:6px 8px 6px 0}
+.voc td.mot{width:38%; font-weight:900; color:var(--ink)}
+.voc td.def{color:var(--soft)}
+
+/* ── Zones de réponse ── */
+.ligne{display:block; border-bottom:1px dotted #8E8E8A; height:8mm; margin-top:2px}
+.ligne--court{width:55%}
+
+/* ── Billet de sortie ── */
+.billet{border:2.5px solid var(--rule); border-radius:12px; padding:13px 15px}
+.billet .k{font-size:9.5pt; font-weight:800; text-transform:uppercase;
+           letter-spacing:.12em; color:var(--ink); margin-bottom:4px}
+.billet p.c{font-size:14pt; font-weight:900; color:var(--ink); line-height:1.3}
+.billet ul{list-style:none; margin-top:7px}
+.billet li{font-weight:600; color:var(--soft); margin-bottom:3px}
+
+/* ── Pied ── */
+footer{margin-top:16px; padding-top:7px; border-top:1px solid var(--line);
+       font-size:9.5pt; font-weight:700; color:var(--muted);
+       display:flex; justify-content:space-between}
+
+/* ── Impression ── */
+@page{size:8.5in 11in; margin:14mm 15mm}
+@media print{
+  html{background:#FFFFFF}
+  body{width:auto; padding:0}
+  .bloc{break-inside:avoid; page-break-inside:avoid}
+  h2.t,.lbl{break-after:avoid; page-break-after:avoid}
+}
+</style>
+</head>
+<body>
+<header class="hdr">
+  <div class="hdr-l">
+    <div class="eyebrow">Séance D2 · Module 12 · 75 minutes</div>
+    <h1>Pelez, coupez, ajoutez</h1>
+  </div>
+  <div class="hdr-r"><span>Nom<span class="nomline nomline--nom"></span></span><span>Date<span class="nomline nomline--date"></span></span></div>
+</header>
+<p class="chapeau">Une recette ne raconte rien : elle demande de faire. D'où des verbes sans sujet devant, des quantités qu'on ne compte pas, et des mots écrits en abrégé. Trois points de langue, et la feuille se lit d'un trait.</p>
+<section class="bloc card"><div class="lbl">Objectifs</div><h2 class="t">À la fin, je serai capable de…</h2><ol class="obj"><li>employer la forme en -ez des consignes de recette ;</li><li>choisir entre du, de la, de l' et des ;</li><li>employer « de » après une quantité et après une négation ;</li><li>lire les abréviations d'une recette : ml, c. à soupe, c. à thé.</li></ol></section><section class="bloc regle"><div class="lbl">Les consignes d'une recette</div><p class="r">« Pelez six pommes de terre. » — aucun sujet devant le verbe.</p><p class="pr">On prend le verbe avec « vous » et on enlève le mot « vous ». Pelez, coupez, égouttez, écrasez, ajoutez, mélangez. Trois verbes irréguliers reviennent tout le temps : faites, mettez, soyez.</p></section><section class="bloc card"><div class="lbl">Analyse · 1 de 2</div><h2 class="t">Les six verbes de la recette</h2><table><thead><tr><th>Le verbe</th><th>Avec vous — la recette écrite</th><th>Avec tu — entre amis</th></tr></thead><tbody><tr><td>peler</td><td class="cle">Pelez les pommes de terre.</td><td>Pèle les pommes de terre.</td></tr><tr><td>couper</td><td class="cle">Coupez-les en morceaux.</td><td>Coupe-les en morceaux.</td></tr><tr><td>ajouter</td><td class="cle">Ajoutez 60 ml de lait.</td><td>Ajoute 60 ml de lait.</td></tr><tr><td>mélanger</td><td class="cle">Mélangez jusqu'au bout.</td><td>Mélange jusqu'au bout.</td></tr><tr><td>faire</td><td class="cle">Faites bouillir vingt minutes.</td><td>Fais bouillir vingt minutes.</td></tr></tbody></table><div class="note">À l'écrit, toujours la colonne du milieu. Et avec « tu », pas de s aux verbes en -er.</div></section><section class="bloc card"><div class="lbl">Écriture · 1 de 3</div><h2 class="t">Écrivez la consigne</h2><p class="consigne">Complétez avec le verbe entre parenthèses, à la forme de la recette.</p><ol class="ex"><li><span class="q">___ six pommes de terre. (peler)</span><span class="ligne ligne--court"></span></li><li><span class="q">___ -les en gros morceaux. (couper)</span><span class="ligne ligne--court"></span></li><li><span class="q">___ bouillir vingt minutes. (faire)</span><span class="ligne ligne--court"></span></li><li><span class="q">___ 60 ml de lait et une cuillère à soupe de beurre. (ajouter)</span><span class="ligne ligne--court"></span></li><li><span class="q">___ jusqu'à ce que ce soit lisse. (mélanger)</span><span class="ligne ligne--court"></span></li><li><span class="q">___ le chaudron sur le rond arrière. (mettre)</span><span class="ligne ligne--court"></span></li></ol></section><section class="bloc regle"><div class="lbl">Ce qui se compte, ce qui ne se compte pas</div><p class="r">du lait · de la crème · de l'eau · des pommes de terre</p><p class="pr">On ne compte pas le lait : on en prend une partie, d'où « du ». On compterait les pommes de terre une par une, d'où « des ». Mais après une quantité — 60 ml, un peu, beaucoup — il ne reste que « de » : un peu DE sel, jamais « un peu du sel ».</p></section><section class="bloc card"><div class="lbl">Analyse · 2 de 2</div><h2 class="t">Le petit mot devant l'aliment</h2><table><thead><tr><th>Le cas</th><th>Ce qu'on met</th><th>Exemple</th></tr></thead><tbody><tr><td>masculin, une partie</td><td class="cle">du</td><td>du lait, du sel</td></tr><tr><td>féminin, une partie</td><td class="cle">de la</td><td>de la crème</td></tr><tr><td>devant une voyelle</td><td class="cle">de l'</td><td>de l'eau, de l'huile</td></tr><tr><td>ça se compte</td><td class="cle">des</td><td>des oignons</td></tr><tr><td>après une quantité</td><td class="cle">de</td><td>un peu de sel</td></tr><tr><td>à la forme négative</td><td class="cle">pas de</td><td>pas de maïs</td></tr></tbody></table></section><section class="bloc card"><div class="lbl">Écriture · 2 de 3</div><h2 class="t">Du, de la, des, ou de ?</h2><p class="consigne">Complétez avec « du », « de la », « de l' », « des », « de » ou « d' ».</p><ol class="ex"><li><span class="q">Ajoutez ___ lait et une cuillère à soupe de beurre.</span><span class="ligne ligne--court"></span></li><li><span class="q">La recette demande ___ crème, mais on peut la remplacer.</span><span class="ligne ligne--court"></span></li><li><span class="q">Pelez ___ pommes de terre et deux oignons.</span><span class="ligne ligne--court"></span></li><li><span class="q">Mettez un peu ___ sel, pas plus.</span><span class="ligne ligne--court"></span></li><li><span class="q">Camila ne veut ___ maïs dans sa portion.</span><span class="ligne ligne--court"></span></li><li><span class="q">Faites bouillir beaucoup ___ eau dans le gros chaudron.</span><span class="ligne ligne--court"></span></li></ol></section><section class="bloc"><div class="lbl">Attention</div><h2 class="t">Le piège</h2><div class="duo"><div class="no"><div class="k">On entend souvent</div><p class="ph">un peu du sel, six des pommes de terre</p></div><div class="ok"><div class="k">Il faut dire plutôt</div><p class="ph">un peu de sel, six pommes de terre</p></div></div><div class="note">Deux fautes qui viennent du même réflexe : garder le petit mot alors qu'une quantité l'a déjà remplacé. Après « un peu », « beaucoup », « 60 ml » ou une tasse, il ne reste que « de ». Et devant un nombre, il ne reste rien du tout.</div></section><section class="bloc card"><div class="lbl">Écriture · 3 de 3</div><h2 class="t">Les abréviations de la recette</h2><p class="consigne">Que veut dire chaque abréviation ?</p><ol class="ex"><li><span class="q">ml</span><span class="ligne"></span></li><li><span class="q">c. à soupe</span><span class="ligne"></span></li><li><span class="q">c. à thé</span><span class="ligne"></span></li><li><span class="q">g</span><span class="ligne"></span></li><li><span class="q">min</span><span class="ligne"></span></li><li><span class="q">1 t.</span><span class="ligne ligne--court"></span></li><li><span class="q">4 pers.</span><span class="ligne ligne--court"></span></li></ol></section><section class="bloc billet"><div class="k">Billet de sortie</div><p class="c">Écrivez trois lignes d'une recette que vous connaissez.</p><ul><li>Employez la forme en -ez : pelez, coupez, ajoutez, mélangez.</li><li>Mettez au moins une quantité : un peu de…, 60 ml de…, une tasse de…</li></ul><span class="ligne"></span><span class="ligne"></span><span class="ligne"></span></section>
+<footer><span>D2 · Choisir une activité au centre</span><span>Fiche élève</span></footer>
+</body>
+</html>

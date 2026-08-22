@@ -109,6 +109,19 @@ L'opération est sans risque à condition de vérifier une chose : ni les `sub` 
 les `tit` d'un exercice n'entrent dans le relevé des sons. Le manifeste des 183
 extraits est resté identique avant et après, donc aucun MP3 n'a été à refaire.
 
+`module-n3-loisirs` (activité 85), mesuré le 22 août 2026 : ses **148** énoncés
+visibles de plus de vingt-cinq caractères — les tuiles des Vrai/Faux, les deux
+colonnes des appariements et les phrases à trous — ont été comparés aux **5 807**
+des **quarante-quatre** autres modules de `build/contenu/`. **Aucun n'est
+identique.**
+
+La situation « Participation à une activité culturelle ou sportive » ne fournit
+aucun lexique au niveau 3 : le programme ne donne, pour elle, que quatre points
+de savoir — les types de loisirs, les noms d'activités, les outils de cuisine
+(bol, tasse à mesurer, poêle, casserole) et les abréviations utiles. Les seize
+mots du banc sont composés à partir de là, et le scénario — Marisol, Camila,
+Thierry, Roxane, Denis, le centre de la rue Galt — est inventé de bout en bout.
+
 `module-n3-restaurant` (activité 77), mesuré le 21 août 2026 : ses **139**
 énoncés visibles de plus de vingt-cinq caractères ont été comparés à ceux des
 vingt-cinq autres modules de `build/contenu/`. **Aucun n'est identique.**

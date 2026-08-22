@@ -5626,6 +5626,87 @@ JEU_DE_ROLE_SECRETAIRE = {
 }
 
 
+# Trois situations pour le module de niveau 3 « Choisir une activité au
+# centre ». À ce stade, on se renseigne — on ne s'inscrit pas : le module 13
+# du niveau 4 remplit le formulaire au comptoir, celui-ci s'arrête avant.
+# D'où un scénario distinct de « activite », plus léger d'un cran : quatre
+# renseignements à aller chercher, jamais de document à fournir ni de
+# paiement à faire. Ce que la préposée sait vit ici, côté serveur, pour que
+# l'élève ne le lise pas dans la source de sa page.
+JEU_DE_ROLE_LOISIRS = {
+    "badminton": {
+        "contexte": (
+            "Le comptoir d'accueil d'un centre communautaire, en début de "
+            "soirée. Le feuillet d'automne annonce du badminton libre au "
+            "gymnase. Une personne s'approche pour se renseigner avant de "
+            "décider si elle vient."
+        ),
+        "prepose": [
+            "Le badminton libre a lieu le mardi soir, de dix-neuf heures à vingt et une heures.",
+            "Ça se passe toutes les semaines, jusqu'à la fin de la session d'automne, en décembre.",
+            "Le tarif est de trois dollars par séance, payés à l'entrée du gymnase.",
+            "Il faut des espadrilles propres, obligatoirement : le plancher du gymnase est en bois.",
+            "Les raquettes et les volants sont prêtés sur place ; on n'apporte que ses espadrilles et de l'eau.",
+            "Le gymnase est au fond du corridor, à gauche.",
+            "Le mardi soir est réservé aux adultes ; le samedi matin, de dix à onze heures, il y a une heure pour les familles.",
+            "Tu ne parles jamais d'inscription : ici, on paie à l'entrée, il n'y a rien à remplir.",
+        ],
+        "visiteur": [
+            "Tu veux essayer le badminton, mais tu n'as encore rien décidé.",
+            "Tu poses tes questions une à la fois : le jour, l'heure, le prix, ce qu'il faut apporter.",
+            "Tu ne sais pas si tu dois apporter une raquette : tu le demandes.",
+            "Tu répètes à voix haute ce qu'on te répond, pour vérifier que tu as bien compris.",
+        ],
+    },
+    "cine": {
+        "contexte": (
+            "Le comptoir du centre, un jeudi après-midi. Le feuillet du "
+            "ciné-club annonce un film par vendredi. Une personne veut savoir "
+            "lequel voir, et si elle peut venir avec son enfant."
+        ),
+        "prepose": [
+            "Le ciné-club a lieu tous les vendredis, dans la salle 2.",
+            "Les séances du soir commencent à dix-neuf heures, sauf celle du 17 octobre, à dix-neuf heures trente.",
+            "Le film du 24 octobre est présenté à quatorze heures : c'est la séance des familles.",
+            "L'entrée est gratuite pour tout le monde ; il n'y a pas de billet à acheter.",
+            "Le film du 17 octobre est un documentaire sur les rivières du Québec, en français, sous-titré.",
+            "Celui du 24 octobre est un film d'animation d'une heure cinq, pour les familles.",
+            "Il n'y a pas de réservation : on arrive quinze minutes d'avance, c'est tout.",
+            "Tu ne donnes le contenu d'un film que si on te le demande.",
+        ],
+        "visiteur": [
+            "Tu veux voir un film avec ton enfant de huit ans.",
+            "Tu demandes quel jour, à quelle heure, et combien ça coûte.",
+            "Tu veux savoir si un des films convient à un enfant.",
+            "Tu demandes s'il faut réserver, et tu répètes la date que tu as choisie.",
+        ],
+    },
+    "cuisine": {
+        "contexte": (
+            "Le comptoir du centre, un lundi matin. Une affiche annonce la "
+            "cuisine collective du mercredi. Une personne n'a jamais participé "
+            "et veut comprendre comment ça marche avant de s'engager."
+        ),
+        "prepose": [
+            "La cuisine collective se réunit le mercredi après-midi, de treize heures à seize heures.",
+            "On est quatre personnes par groupe, avec un animateur qui donne la recette.",
+            "Chaque personne repart avec quatre portions pour environ deux dollars.",
+            "Le centre fournit les aliments, les chaudrons et les tabliers.",
+            "Il faut apporter quatre contenants avec un couvercle pour rapporter les portions.",
+            "Aucune expérience n'est nécessaire : la recette est lue ensemble, une consigne à la fois.",
+            "On peut changer la recette pour une allergie ou un goût — il suffit de le dire en arrivant.",
+            "Tu ne parles pas de formulaire ni de preuve d'adresse : il n'y en a pas pour cette activité.",
+        ],
+        "visiteur": [
+            "Tu n'as jamais fait de cuisine collective et tu ne sais pas ce que c'est.",
+            "Tu demandes le jour, l'heure, le prix et ce qu'il faut apporter.",
+            "Tu veux savoir si tu dois déjà savoir cuisiner.",
+            "Ta fille n'aime pas le maïs : tu demandes si on peut changer quelque chose à la recette.",
+        ],
+    },
+}
+
+
 JEU_DE_ROLE_SCENARIOS = {
     "colis": {
         "cadre": "une courte démarche au comptoir postal d'une pharmacie",
@@ -7531,6 +7612,67 @@ JEU_DE_ROLE_SCENARIOS = {
                              "de temps. Répète ce qu'on te dit pour vérifier. Si "
                              "l'explication va trop vite ou saute une étape, demande de "
                              "reprendre — c'est exactement ce qu'il faut apprendre à faire."),
+            },
+        },
+    },
+    "loisirs": {
+        "cadre": ("une demande de renseignements au comptoir d'un centre "
+                  "communautaire, au niveau débutant — on se renseigne, on "
+                  "ne s'inscrit pas"),
+        "contexte_label": "L'activité dont vous venez vous informer",
+        "cas": JEU_DE_ROLE_LOISIRS,
+        "adresse": ("Vouvoie l'élève : c'est un comptoir de service, on ne se "
+                    "connaît pas."),
+        "sujets": [
+            "le jour et l'heure de l'activité, et si c'est toutes les semaines",
+            "le tarif, et s'il se paie à la séance ou pour la session",
+            "l'endroit exact dans le centre",
+            "ce qu'il faut apporter, et ce qui est prêté sur place",
+            "qui peut venir : les adultes, les enfants, les familles",
+            "ce que l'élève a compris, répété à voix haute avant de partir",
+        ],
+        "cloture": ("Quand les quatre renseignements ont été obtenus — le "
+                    "jour, l'heure, le prix et ce qu'il faut apporter —, "
+                    "invite l'élève à les répéter, confirme ce qui est juste, "
+                    "corrige doucement ce qui ne l'est pas, puis salue. "
+                    "N'ajoute aucune démarche d'inscription : elle n'existe "
+                    "pas dans ce module."),
+        "ouverture": {
+            "visiteur": "Bonjour ! Qu'est-ce que je peux faire pour vous ?",
+            "prepose": "Bonjour. Je voudrais des renseignements, s'il vous plaît.",
+        },
+        "roles": {
+            "prepose": {
+                "qui": ("Tu es Roxane, la préposée à l'accueil du centre "
+                        "communautaire. L'élève est la personne qui vient se "
+                        "renseigner."),
+                "conduite": ("Niveau 3 : phrases courtes, un renseignement à "
+                             "la fois, jamais deux questions dans la même "
+                             "réplique. Ne donne jamais un renseignement avant "
+                             "qu'on te le demande — aller le chercher, c'est "
+                             "tout l'exercice. Dis les heures des deux façons "
+                             "si on hésite : « dix-neuf heures, sept heures du "
+                             "soir ». Laisse à l'élève le temps de répéter, et "
+                             "reformule plus lentement si on te le demande, "
+                             "sans t'impatienter. Emploie les vrais mots du "
+                             "centre : le feuillet, la session, une séance, le "
+                             "tarif, le gymnase, l'heure des familles. "
+                             "N'invente aucun prix ni aucun horaire : tiens-toi "
+                             "à ta liste. Si l'élève parle de s'inscrire, dis "
+                             "simplement qu'il n'y a rien à remplir, qu'on "
+                             "vient et qu'on paie à l'entrée."),
+            },
+            "visiteur": {
+                "qui": ("Tu es la personne qui vient se renseigner au comptoir, "
+                        "et c'est l'élève qui joue la préposée du centre."),
+                "conduite": ("Vouvoie l'élève. Tu ne connais pas le centre : tu "
+                             "poses des questions simples, une à la fois, et tu "
+                             "attends qu'on t'explique. Tu ne devines rien à la "
+                             "place de l'élève. Si une réponse est vague — « ça "
+                             "dépend », « c'est pas cher » —, redemande une "
+                             "fois, poliment : quel jour exactement, combien de "
+                             "dollars. Répète à voix haute ce qu'on te donne "
+                             "pour vérifier que tu as bien compris."),
             },
         },
     },
