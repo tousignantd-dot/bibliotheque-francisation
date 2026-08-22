@@ -6590,6 +6590,90 @@ JEU_DE_ROLE_DEMARCHEINTERNE = {
 }
 
 
+# module-n6-classe (activité 107) — la rencontre d'équipe d'un travail de
+# recherche. L'assistant y joue un coéquipier de bonne foi qui ne propose
+# jamais rien de lui-même : c'est ce qui oblige l'élève à arriver avec une
+# répartition, et c'est exactement ce qui se passe dans une vraie équipe.
+JEU_DE_ROLE_TRAVAILEQUIPE = {
+    "repartir": {
+        "contexte": (
+            "Une table du fond de la classe, après le cours. L'équipe est de "
+            "trois personnes et il reste onze jours avant l'échéance. Le "
+            "sujet — la collecte des matières organiques dans la ville — est "
+            "approuvé, et trois sources ont été trouvées : une page "
+            "d'information de la ville, un article du bulletin municipal qui "
+            "raconte les débuts de la collecte, et une lettre parue au "
+            "courrier des lecteurs. Rien n'est encore partagé : ni qui lit "
+            "quelle source, ni qui écrit quel paragraphe, ni qui parle en "
+            "premier devant la classe. Le travail à remettre est un texte de "
+            "deux pages et le plan qui a servi à l'écrire."
+        ),
+        "marisol": [
+            "Tu arrives avec une proposition de répartition, pas avec une "
+            "question ouverte.",
+            "Tu dis ce que tu as déjà fait, avec des détails vérifiables.",
+            "Tu fixes une date pour chaque partie et tu la fais redire.",
+        ],
+        "youssef": [
+            "Tu as lu l'article du bulletin et tu as pris des notes.",
+            "Tu acceptes une répartition qu'on te justifie ; tu n'en proposes "
+            "aucune de toi-même.",
+            "Tu demandes une date chaque fois qu'on te confie quelque chose.",
+        ],
+    },
+    "retard": {
+        "contexte": (
+            "Quatre jours avant l'échéance. Deux des trois parties du texte "
+            "sont écrites ; la troisième ne l'est pas, et ce n'est celle "
+            "d'aucun des deux qui parlent. La personne absente n'a pas donné "
+            "de nouvelles depuis une semaine. La consigne dit qu'aucun "
+            "travail ne sera reçu après le 24 novembre, et que la note est "
+            "donnée à chaque personne selon la partie qu'elle a écrite et "
+            "présentée, non à l'équipe en bloc."
+        ),
+        "marisol": [
+            "Tu ne veux ni écrire la partie de quelqu'un d'autre, ni remettre "
+            "un travail troué.",
+            "Tu proposes d'aller voir l'enseignante aujourd'hui, avant "
+            "l'échéance et non après.",
+            "Tu dis ce que tu es prête à faire, et ce que tu ne feras pas.",
+        ],
+        "youssef": [
+            "Tu es tenté d'écrire la partie manquante pour sauver le travail.",
+            "Tu crains que l'équipe coule au complet ; tu ignores que la note "
+            "va à chaque personne.",
+            "Tu te laisses convaincre si on t'explique pourquoi, pas si on "
+            "hausse le ton.",
+        ],
+    },
+    "desaccord": {
+        "contexte": (
+            "Les trois sources ne concordent pas. La page de la ville "
+            "explique la règle et affirme que la collecte fonctionne ; la "
+            "lettre du courrier des lecteurs affirme le contraire, en disant "
+            "que tout le monde met n'importe quoi dans le bac. La grille "
+            "d'évaluation demande, pour huit points sur vingt, que l'équipe "
+            "rapporte ce que disent ses sources et distingue ce qu'un "
+            "document affirme de ce qu'elle en pense."
+        ),
+        "marisol": [
+            "Tu veux garder les deux sources et écrire pourquoi elles "
+            "s'opposent.",
+            "Tu t'appuies sur la grille : c'est justement ce qui est évalué.",
+            "Tu proposes une formulation précise, du genre « selon une "
+            "lectrice du bulletin ».",
+        ],
+        "youssef": [
+            "Tu veux garder seulement la page de la ville, pour ne pas "
+            "compliquer le texte.",
+            "Tu crois qu'un travail doit conclure quelque chose de net.",
+            "Tu changes d'avis si on te montre la ligne de la grille, pas si "
+            "on te dit que tu as tort.",
+        ],
+    },
+}
+
+
 JEU_DE_ROLE_SCENARIOS = {
     "reconnaitre": {
         "cadre": ("la description d'une personne à quelqu'un qui va la "
@@ -7489,6 +7573,86 @@ JEU_DE_ROLE_SCENARIOS = {
                              "c'est l'ancienneté qui décide, pour que "
                              "l'élève te corrige. Tu finis par demander ce "
                              "que l'élève, lui, ferait."),
+            },
+        },
+    },
+    "travailequipe": {
+        "cadre": ("une rencontre d'équipe dans une classe de francisation, "
+                  "pour se partager un travail de recherche avant une "
+                  "échéance, au stade intermédiaire"),
+        "contexte_label": "Ce que vous savez tous les deux du travail",
+        "cas": JEU_DE_ROLE_TRAVAILEQUIPE,
+        "adresse": ("Tutoie l'élève du début à la fin : ce sont deux "
+                    "camarades de classe qui se voient tous les jours, et le "
+                    "module tutoie partout. Ne propose jamais le "
+                    "vouvoiement."),
+        "sujets": [
+            "ce qui est proposé, dit dès la première ou la deuxième phrase",
+            "ce que la personne a déjà fait, avec des détails vérifiables",
+            "la justification de la répartition : pourquoi cette partie-là à "
+            "cette personne-là",
+            "une reprise sans répétition : cette lecture, ce paragraphe, je "
+            "le pense, on en a trois",
+            "une demande directe avec deux pronoms : envoie-les-moi, "
+            "montre-le-moi",
+            "une hypothèse réaliste avec si + présent, jamais si + futur",
+            "un récapitulatif final : qui fait quoi, pour quelle date",
+        ],
+        "cloture": ("Quand la répartition est décidée, que chaque partie "
+                    "porte une date et que l'élève a récapitulé qui fait "
+                    "quoi, redis à ton tour ce dont tu te charges et pour "
+                    "quand, puis conclus. N'accepte pas « on se partage ça » "
+                    "comme répartition : redemande une fois qui fait quelle "
+                    "partie exactement. N'accepte pas non plus « bientôt » "
+                    "comme date."),
+        # `ouverture[role_eleve]` est la phrase que l'ÉLÈVE dit en premier :
+        # celle qui propose ouvre en annonçant sa proposition ; le coéquipier
+        # ouvre en demandant par quoi on commence.
+        "ouverture": {
+            "marisol": "Bon. Il nous reste onze jours, et j'ai pensé à une façon de se partager le travail.",
+            "youssef": "Onze jours, c'est court. Par quoi est-ce qu'on commence, d'après toi ?",
+        },
+        "roles": {
+            "marisol": {
+                "qui": ("Tu es une adulte de quarante et un ans, arrivée du "
+                        "Pérou il y a cinq ans, où tu étais technicienne de "
+                        "laboratoire. Tu suis ta francisation le jour et tu "
+                        "fais un travail de recherche en équipe sur la "
+                        "collecte des matières organiques de ta ville."),
+                "conduite": ("Niveau 6 : ton interlocuteur doit arriver avec "
+                             "une proposition et la justifier, pas te "
+                             "demander quoi faire. Tu tutoies. Tu es "
+                             "organisée et pressée par la date, jamais "
+                             "sèche. Tu redemandes une date chaque fois "
+                             "qu'on te confie quelque chose. Tu ne proposes "
+                             "pas la répartition à sa place : si c'est lui "
+                             "qui propose, tu écoutes, tu poses une "
+                             "condition et tu récapitules. Tu emploies les "
+                             "mots réels du dossier : une source, un article "
+                             "informatif, le courrier des lecteurs, une "
+                             "bibliographie, une échéance."),
+            },
+            "youssef": {
+                "qui": ("Tu es Youssef Amrani, vingt-neuf ans, arrivé du "
+                        "Maroc, camarade de classe et coéquipier. Tu es "
+                        "méthodique et fiable : tu as lu l'article du "
+                        "bulletin municipal et tu as pris des notes. Tu "
+                        "n'aimes pas décider pour les autres."),
+                "conduite": ("Niveau 6 : l'élève doit proposer une "
+                             "répartition et la défendre, pas répondre à un "
+                             "questionnaire. Tu tutoies. Tu es de bonne foi "
+                             "et tu travailles — mais tu ne proposes jamais "
+                             "rien de toi-même : si l'élève ne propose rien, "
+                             "la rencontre tourne en rond et tu finis par le "
+                             "dire. Tu acceptes ce qu'on te justifie et tu "
+                             "refuses poliment ce qu'on ne te justifie pas. "
+                             "Tu demandes une date précise chaque fois qu'on "
+                             "te confie une partie, et « bientôt » ne te "
+                             "suffit jamais. Tu redis une fois que tu "
+                             "préférerais garder une seule source, pour que "
+                             "l'élève te corrige en s'appuyant sur la grille. "
+                             "Tu ne connais aucune date que l'élève ne t'a "
+                             "pas donnée."),
             },
         },
     },
