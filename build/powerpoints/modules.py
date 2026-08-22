@@ -223,6 +223,27 @@ MODULES = {
         'blocs': _blocs('Se présenter', 'Saluer et remercier'),
     },
 
+    # Deuxième module du niveau 1. La situation du programme est
+    # « Inscription », dont les deux intentions tiennent en une phrase
+    # chacune : comprendre une demande de renseignements personnels et y
+    # répondre ; lire un formulaire d'inscription et y transcrire des
+    # renseignements. Distinct de `module-n1-presenter`, qui apprend à *dire*
+    # son nom à l'oral : ici, on l'*écrit* dans une case, avec la date de
+    # naissance, l'adresse abrégée et le téléphone. Distinct aussi de
+    # `module-n2-inscription`, qui ajoute la petite annonce, le dialogue au
+    # secrétariat et la case « scolarité » — au niveau 1, on ne quitte jamais
+    # la fiche posée sur la table.
+    'module-n1-inscription': {
+        'numero': 2, 'activite': 96, 'niveau': 1,
+        'titre': 'Je remplis ma fiche',
+        'chapeau': "Comprendre une question sur son identité, y répondre, et "
+                   "écrire ses renseignements dans les cases d'une fiche "
+                   "d'inscription.",
+        'seances': GRILLE_COURTE,
+        'blocs': _blocs('Le nom et la date de naissance',
+                        "L'adresse et le téléphone"),
+    },
+
     # ── Niveau 2 ────────────────────────────────────────────────────
     # Deuxième module court : huit séances, deux défis. Distinct de
     # `module-deplacement` (niveau 4), qui porte sur le trajet complet et le
