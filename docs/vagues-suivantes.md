@@ -573,6 +573,47 @@ Ce que le niveau 2 impose, et qu'un agent habitué au niveau 4 oublie :
 
 Dernier numéro réservé après cette vague : **95**.
 
+**22 août 2026 — l'activité 94 est livrée.** `module-n2-colis` · « J'envoie
+une lettre et un colis » : huit séances, 97 diapositives, huit fiches, huit
+vignettes, un scénario de jeu de rôle neuf. Les neuf fichiers de contenu
+existaient déjà sur `main`, produits par une session précédente ; cette
+session a fait tout le reste — registre, `JEU_DE_ROLE_COLIS` dans `server.py`,
+catalogue, build, séances, relevé des sons et générateur audio.
+
+**Sans médias, et c'était le mandat** : cette session n'avait pas les clés
+d'API. `build/contenu/module-n2-colis/gen_images.py` est écrit, passe par
+`build/route_images.py` (jamais fal.ai en dur) et couvre exactement les vingt
+images du module ; `generer_audio_module_n2_colis.py` et son relevé sont
+prêts et relançables — ils sautent ce qui existe :
+
+    python3 build/contenu/module-n2-colis/gen_images.py   # 20 images
+    python3 generer_audio_module_n2_colis.py              # 231 extraits attendus
+                                                          # 63 répliques sur 6 dialogues + 168 sons
+
+Les **vingt écarts** de `node build/coherence.js module-n2-colis` sont donc
+tous « image absente du disque » — six illustrations d'exercice, quatorze
+photos du banc de vocabulaire — et rien d'autre. Les huit séances portent un
+garde-fou `_photo()` qui les laisse se construire sans les photos et les
+reprend d'elles-mêmes dès qu'elles existent : reconstruire les `.pptx` après
+la génération suffit.
+
+**Ce qui distingue ce module de ses voisins.** `module-n3-poste` (niveau 3,
+activité 80) porte la même situation du programme, mais son unique intention
+est **orale** — on se renseigne au comptoir, on compare deux vitesses d'envoi,
+on demande un mandat-poste ; ici, `build/cadre.py 2 "Démarches à la poste"` ne
+rend que deux intentions et elles sont toutes deux **écrites**, si bien que la
+parole tient en trois mots (« Un timbre, s'il vous plaît. ») et que tout le
+module se joue sur le papier : les cinq lignes d'une adresse, le code postal,
+les cases d'un formulaire et l'endroit où l'on signe.
+
+**Ce que cette production a appris.** `build/controles/pieds_de_page.py` fixe
+`ROOT` à `~/Claude/bibliotheque-francisation` en dur : lancé depuis un
+*worktree*, il contrôle le dépôt principal et **ne voit pas le module qu'on
+vient de produire**, sans rien dire. Il sort alors « OK » pour de mauvaises
+raisons. Depuis un worktree, refaire le relevé à la main avec le fragment de
+`docs/` ou de la skill — recoller les runs `<a:t>` — plutôt que de croire le
+script. Vérifié ainsi ici : les huit `.pptx` portent bien `MODULE 9`.
+
 **21 août 2026 — l'activité 92 est livrée.** `module-n2-neige` · « Il fait
 froid, je m'habille » : huit séances, 100 diapositives, 20 images, les six
 contrôles verts pour ce module plus le `node --check`. **Sans audio** : le

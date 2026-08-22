@@ -1787,7 +1787,7 @@ vos seuls points de rencontre sont build/powerpoints/modules.py,
 data/activities.json et server.py. Les numéros d'activité de toute la vague
 sont réservés dans docs/vagues-suivantes.md : prends le tien, jamais un autre.
 
-Envoyer une lettre ou un colis, comprendre un prix et un délai, écrire une adresse sur une enveloppe — ce dernier point est un savoir explicite du niveau 2.
+Livré le 22 août 2026. Envoyer une lettre ou un colis, comprendre un prix, écrire une adresse sur une enveloppe — ce dernier point est un savoir explicite du niveau 2. Distinct de module-n3-poste, qui porte la même situation un niveau plus haut mais dont l'unique intention est orale : ici les deux intentions du programme sont écrites, et tout le module se joue sur le papier.
 
 Ce que le niveau 2 impose, et qu'un agent habitué au niveau 4 oublie : des
 énoncés très courts, deux ou trois répliques, du présent, aucune subordonnée ;
