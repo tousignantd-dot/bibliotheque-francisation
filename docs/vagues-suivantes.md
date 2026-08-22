@@ -1738,3 +1738,46 @@ générateur audio passe par `enrichir()`, sans exception.**
     `module-n6-actualite` le 2. Les neuf suivants prennent 3 à 11, dans l'ordre
     du tableau de la section 1 de cette note. Leurs numéros d'activité restent
     à réserver ici avant qu'un agent commence.
+
+### 5. Les seize séances — ce que le niveau 6 leur fait subir
+
+190 diapositives, 134 blocs de fiches, 2 049 lignes de decks. Quatre points que
+les neuf modules suivants rencontreront, et qui coûtent une reprise chacun si
+on ne les sait pas d'avance.
+
+- **`d.dialogue` ne tient confortablement que quatre répliques par
+  diapositive**, alors qu'un dialogue de niveau 6 en fait dix-huit à vingt.
+  Au-delà de quatre, le corps du texte descend au plancher et la diapositive
+  n'est plus lisible de loin. Le bon rapport : **trois pages de quatre
+  répliques**, et le reste travaillé à l'écoute plutôt que projeté. C'est la
+  différence la plus visible avec les niveaux 2 et 3, dont les dialogues
+  tiennent en deux pages.
+- **Le contrôle de densité des tableaux se déclenche sur la colonne de
+  gauche**, pas sur le texte long de droite : à deux colonnes, la première ne
+  reçoit que 34 % de la largeur, et un libellé de plus de vingt-cinq caractères
+  se replie sur deux lignes et pousse toute la rangée. Règle pratique tirée du
+  pilote : **six rangées avec note, sept rangées sans note, libellé de gauche
+  sous vingt caractères.** Écrire court dès le départ ; raccourcir après coup
+  se paie cellule par cellule.
+- **`Slide.image()` ouvre le fichier sans garde** : un fichier absent lève une
+  exception et arrête le build des seize séances. Un module dont les images ne
+  sont pas encore générées se fait donc **sans aucun `image=`** — les
+  déclencheurs rendent alors en pleine largeur, et la mise en page l'absorbe
+  proprement. Ajouter les `image=` plus tard, quand `gen_images.py` aura
+  tourné, est un geste de deux minutes ; découvrir le problème au milieu du
+  build en coûte davantage.
+- **Les glyphes n'ont posé aucun problème** — `œ`, `«  »`, `’`, `—`, `·`
+  passent tous. Il a suffi d'éviter par principe ce que le dépôt sait déjà
+  refusé : l'alphabet phonétique, la flèche `→`, `✓`, `✕`, les emojis et les
+  points de suspension typographiques. Au niveau 6, la graphie-phonie porte
+  justement sur des lettres et non sur des symboles (« les lettres *ch* qui se
+  disent comme un *k*, dans *chronique* ») : le niveau se prête bien à la
+  contrainte.
+
+Une remarque de forme, pour que personne ne la reprenne à l'envers : **la
+couleur d'une séance n'est pas celle du module.** `theme.py` donne un sens à
+chacune — acier pour la compréhension orale, indigo pour la graphie-phonie,
+ambre pour l'écriture et la grammaire, teal pour l'écoute et la réponse,
+framboise pour le bilan — et `module-n6-recherche` les répartissait déjà ainsi.
+Le pilote a suivi cette répartition, et non la couleur acier du niveau 6 : la
+couleur de niveau tient l'en-tête du module, pas les séances.
