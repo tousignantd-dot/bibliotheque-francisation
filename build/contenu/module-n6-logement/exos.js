@@ -84,7 +84,7 @@ const EXOS = [
    sub:"Un texte de droit écrit des noms là où l'on dirait des verbes. Complétez avec le nom de la même famille.",
    savoir:{h:"› Les noms qui reviennent dans un texte de logement", rows:[
      ["Le verbe donne le nom en <b>-tion</b>","<span class='savoir-ex'>louer → la <b>location</b> · sous-louer → la <b>sous-location</b> · résilier → la <b>résiliation</b> · occuper → l'<b>occupation</b></span> C'est le suffixe des textes administratifs : il transforme une action en chose dont on peut parler."],
-     ["Le verbe donne le nom en <b>-ment</b>","<span class='savoir-ex'>renouveler → le <b>renouvellement</b> · consentir → le <b>consentement</b> · payer → le <b>paiement</b> · loger → le <b>logement</b></span>"],
+     ["Le suffixe <b>-ment</b> fabrique un masculin","<span class='savoir-ex'>renouveler → le <b>renouvellement</b> · consentir → le <b>consentement</b> · payer → le <b>paiement</b> · loger → le <b>logement</b></span>"],
      ["Deux noms qui ne suivent pas la règle","<span class='savoir-ex'>céder → la <b>cession</b> · indemniser → une <b>indemnité</b></span> Ils s'apprennent tels quels, et ils reviennent partout dans ce dossier."],
      ["Pourquoi ça change tout","La page du site écrit « la reconduction du bail », pas « le bail continue ». Retrouver le verbe sous le nom, c'est comprendre la phrase en une seconde au lieu de trois."],
      ["Le sens tient dans le préfixe","<span class='savoir-ex'>louer → <b>sous</b>-louer</span> Le préfixe <b>sous-</b> dit « en dessous », donc « qui dépend de ». Un sous-locataire dépend du locataire, jamais directement du locateur."],
@@ -160,7 +160,7 @@ const EXOS = [
     {id:'mp1', q:"le titre tout en haut", aid:'mp1', a:"de quoi la page traite, et si vous êtes au bon endroit"},
     {id:'mp2', q:"la ligne « Mise à jour le… »", aid:'mp2', a:"si ce que vous lisez est encore d'actualité"},
     {id:'mp3', q:"les intertitres numérotés 1, 2, 3", aid:'mp3', a:"l'ordre dans lequel les étapes se font"},
-    {id:'mp4', q:"le mot en caractères gras", aid:'mp4', a:"le terme exact à employer dans vos papiers"},
+    {id:'mp4', q:"un mot mis en gras dans le texte", aid:'mp4', a:"le terme exact à employer dans vos papiers"},
     {id:'mp5', q:"l'encadré « À retenir »", aid:'mp5', a:"ce que les gens oublient le plus souvent"},
     {id:'mp6', q:"le lien souligné en fin de paragraphe", aid:'mp6', a:"qu'une autre page traite le point plus au long"},
    ]},
@@ -210,9 +210,9 @@ const EXOS = [
    bankLbl:"Ce qu'on dirait en parlant", zonePh:'glissez la phrase ici',
    savoir:{h:"› Le passé simple : à reconnaître, pas à écrire", rows:[
      ["Où on le rencontre","Dans les récits écrits, les notices historiques, les contes et les romans. <b>Jamais</b> dans une conversation, jamais dans un courriel, jamais dans un avis. Personne au Québec ne dit « je pris le bail »."],
-     ["Ce que le programme demande","Le <b>reconnaître</b> à la troisième personne, et savoir à quel passé composé il correspond. Rien de plus : on ne vous demandera pas d'en écrire un."],
-     ["Les terminaisons de la 3e personne","<span class='savoir-ex'>il adopta · il finit · il reçut · il vint</span> Au pluriel, on ajoute <b>-nt</b> : <i>ils adoptèrent, ils finirent, ils reçurent, ils vinrent</i>. Ce sont ces formes-là qui reviennent."],
-     ["Trois verbes irréguliers à connaître","<span class='savoir-ex'>être → il <b>fut</b> · avoir → il <b>eut</b> · faire → il <b>fit</b></span> Ils sont courts, ils ne ressemblent à rien d'autre, et ils sont partout."],
+     ["Ce qu'on vous demande d'en faire","Le <b>reconnaître</b> à la troisième personne, et savoir à quel passé composé il correspond. Rien de plus : on ne vous demandera pas d'en écrire un."],
+     ["Ce qui change à la fin du verbe","<span class='savoir-ex'>il adopta · il finit · il reçut · il vint</span> Au pluriel, on ajoute <b>-nt</b> : <i>ils adoptèrent, ils finirent, ils reçurent, ils vinrent</i>. Ce sont ces formes-là qui reviennent."],
+     ["Trois irréguliers qu'on croise partout","<span class='savoir-ex'>être → il <b>fut</b> · avoir → il <b>eut</b> · faire → il <b>fit</b></span> Ils sont courts, ils ne ressemblent à rien d'autre, et ils sont partout."],
      ["Le piège de la lecture rapide","« Il fut » n'est pas un futur, et « il eut » n'est pas un présent. Devant une forme courte qui vous étonne dans un texte ancien, essayez le passé composé : si la phrase tient, c'est un passé simple."],
    ]},
    rows:[
@@ -318,7 +318,7 @@ const EXOS = [
     {id:'rp7', q:"Quelle demande d'argent n'est rattachée à aucune dépense précise ?", ok:'fr'},
    ]},
 
-  {sec:'t2', id:'t2pqp', type:'write', num:'Exercice 4', tit:'Ce qui était déjà fait avant', color:'#B45309', cols:1,
+  {sec:'t2', id:'t2pqp', type:'write', num:'Exercice 4', tit:'Remettre les deux passés dans l\'ordre', color:'#B45309', cols:1,
    sub:"Chaque item raconte deux moments du passé. Écrivez le verbe entre parenthèses au plus-que-parfait.",
    savoir:{h:"› Le plus-que-parfait : deux passés, et lequel vient d'abord", rows:[
      ["À quoi il sert","Il place une action <b>avant</b> une autre action passée. <span class='savoir-ex'>Quand elle a remis son avis, elle <b>avait</b> déjà <b>lu</b> la page trois fois.</span> Elle a lu d'abord, elle a remis ensuite — l'ordre des phrases ne le dit pas, le temps du verbe le dit."],
@@ -340,7 +340,7 @@ const EXOS = [
 
   {sec:'t2', id:'t2subj', type:'write', num:'Exercice 5', tit:'Après « il faut que », le verbe change', color:'#B45309', cols:1,
    sub:"Écrivez le verbe entre parenthèses à la forme qui convient. Attention : tous les verbes introducteurs ne demandent pas le subjonctif.",
-   savoir:{h:"› Le subjonctif après un verbe introducteur", rows:[
+   savoir:{h:"› Ce que « il faut que » fait au verbe", rows:[
      ["Les verbes qui l'imposent","<span class='savoir-ex'>il faut que · je veux que · j'exige que · je souhaite que · il ne faut pas que</span> Après eux et leur <b>que</b>, le verbe se met au subjonctif présent. Ce sont des verbes de volonté et d'obligation : rien n'est encore fait au moment où on parle."],
      ["Les verbes qui ne l'imposent pas","<span class='savoir-ex'>j'espère qu'il <b>répondra</b> · je pense qu'il <b>a</b> raison · je vois qu'il <b>est</b> pressé</span> <b>Espérer</b>, <b>penser</b>, <b>croire</b>, <b>voir</b> à la forme affirmative gardent l'indicatif. C'est le piège de l'exercice."],
      ["<b>de</b> + infinitif, ou <b>que</b> + subjonctif","<span class='savoir-ex'>Je demande <b>de</b> répondre par écrit. · Je demande <b>que</b> vous répondiez par écrit.</span> Avec <i>de</i>, un seul sujet et un infinitif. Avec <i>que</i>, deux sujets différents et un subjonctif. Le sens est le même ; la construction, non."],
@@ -358,7 +358,7 @@ const EXOS = [
     {q:"Elle espère qu'il ___ (répondre) avant le trois décembre.", accept:["répondra","repondra","répond","repond"], ph:"après « espérer que »"},
    ]},
 
-  {sec:'t2', id:'t2si', type:'write', num:'Exercice 6', tit:"Poser une condition avec « si »", color:'#B45309', cols:1, dialogue:'t2b',
+  {sec:'t2', id:'t2si', type:'write', num:'Exercice 6', tit:"Une condition, et la suite qu'elle appelle", color:'#B45309', cols:1, dialogue:'t2b',
    sub:"Écoutez d'abord la visite du logement, puis écrivez le verbe entre parenthèses au temps qui convient.",
    savoir:{h:"› L'hypothèse réaliste : « si » + présent", rows:[
      ["La règle en une ligne","<span class='savoir-ex'><b>Si</b> vous ne <b>payez</b> pas, c'est moi que le locateur poursuivra.</span> Après <b>si</b>, le présent. Dans l'autre partie de la phrase, le présent, le futur ou l'impératif — au choix."],

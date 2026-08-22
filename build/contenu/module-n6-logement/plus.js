@@ -46,10 +46,10 @@ const PLUS = {
        },
        note:"Écoutez deux fois avant d'ouvrir la bouche. Ce qui se travaille ici est l'oreille ; la bouche suit toute seule."},
 
-      {t:'ex', h:'Huit mots, écrits et dits',
+      {t:'ex', h:'Huit mots du module, écrits et entendus',
        p:"À gauche ce que vous lisez, à droite ce que vous entendez.",
        rows:[
-         ["une chorale","« co-rale » — le ch fait k"],
+         ["une chorale","« co-rale » : le ch se dit k"],
          ["la technologie","« tec-nologie » — le ch fait k"],
          ["un psychologue","« psi-cologue » — le ch fait k"],
          ["le chaos","« ca-o » — le ch fait k et le s se tait"],
@@ -275,7 +275,7 @@ const PLUS = {
        p:"Une fiche de droits est écrite pour des milliers de situations à la fois. Elle dit « le locataire », jamais « vous » ; elle dit « le cas échéant », « il est réputé », « de plein droit ». Cette langue-là n'est pas faite pour vous décourager : elle est faite pour être vraie dans tous les cas. Votre travail est de la traduire en une phrase qui commence par « moi, je ».",
        note:"C'est l'intention unique de la situation, au programme du niveau 6 : « s'informer sur ses droits et ses obligations en consultant un site Web »."},
 
-      {t:'ana', h:"L'ordre est presque toujours le même",
+      {t:'ana', h:"Une fiche suit toujours le même ordre",
        p:"Quatre morceaux, dans cet ordre. Le connaître fait gagner la moitié du temps de lecture.",
        mots:[['1. Ce que c\'est','une définition, et souvent la distinction avec ce qui lui ressemble'],
              ['2. Ce que vous devez faire','l\'action, la forme, le contenu obligatoire'],
@@ -437,9 +437,9 @@ const PLUS = {
 
       {t:'piege', h:'Trois erreurs, et leur remède',
        rows:[
-         ["placer le pronom après le verbe","le mettre devant, toujours",
+         ["mettre le pronom derrière le verbe","le mettre devant, toujours",
           "« Elle sait le » ne se dit pas. En français, le pronom passe devant le verbe conjugué : « elle le sait »."],
-         ["employer « en » pour une personne","garder « de lui », « d'elle »",
+         ["employer « en » en parlant de quelqu'un","garder « de lui », « d'elle »",
           "« Je parle de monsieur Tardif » ne donne pas « j'en parle » mais « je parle de lui ». « En » est réservé aux choses."],
          ["placer le pronom devant le participe","le mettre devant l'auxiliaire",
           "« Elle a en parlé » est impossible. C'est « elle en a parlé » : le pronom colle au verbe conjugué, qui est l'auxiliaire."],
@@ -517,13 +517,13 @@ const PLUS = {
   },
 
   t1ps: {
-    eye:'Mini-leçon', tit:'Le passé simple : le lire, jamais l\'écrire',
+    eye:'Mini-leçon', tit:'Un temps qui se lit et ne se dit pas',
     blocs:[
       {t:'texte', h:"Un temps qu'on rencontre et qu'on n'emploie pas",
        p:"Personne, au Québec, ne dit « je pris le bail » ou « il fut créé ». Le passé simple ne se parle plus depuis longtemps. Il survit à l'écrit : dans les romans, les contes, les notices historiques, les encadrés « un peu d'histoire » que les sites officiels aiment beaucoup. Vous le rencontrerez donc en lisant, et seulement en lisant.",
        note:"Le programme du niveau 6 ne demande que deux choses : « reconnaître les verbes courants à la 3e personne » et « associer le passé simple au passé composé ». Rien sur la production."},
 
-      {t:'ana', h:"Les terminaisons de la 3e personne",
+      {t:'ana', h:"Ce qui change à la fin du verbe",
        p:"Ce sont les seules à connaître : un texte au passé simple raconte, donc il parle de « il », « elle », « ils ».",
        mots:[['verbes en -er','il adopt<b>a</b> · ils adopt<b>èrent</b>'],
              ['verbes en -ir','il fin<b>it</b> · ils fin<b>irent</b>', true],
@@ -554,7 +554,7 @@ const PLUS = {
          ["Ils firent la démarche ensemble.","Ils ont fait la démarche ensemble."],
        ]},
 
-      {t:'piege', h:'Deux malentendus fréquents',
+      {t:'piege', h:'Deux malentendus qui reviennent',
        rows:[
          ["prendre « il fut » pour un futur","essayer le passé composé",
           "La ressemblance avec « futur » est une coïncidence. Devant une forme courte qui vous étonne dans un texte écrit, remplacez-la par un passé composé : si la phrase tient, c'était un passé simple."],
@@ -585,7 +585,7 @@ const PLUS = {
 
       {t:'ana', h:"Annoncer un point de vue",
        p:"Ils disent : ce qui suit n'est plus le texte, c'est moi.",
-       mots:[['à mon avis','le plus courant, à l\'oral comme à l\'écrit'],
+       mots:[['à mon avis','le plus courant, en parlant comme en écrivant'],
              ['selon moi','même chose, un peu plus ferme', true],
              ['pour ma part','quand d\'autres avis viennent d\'être exposés'],
              ['personnellement','à garder pour l\'oral : à l\'écrit, il alourdit']],
@@ -740,7 +740,7 @@ const PLUS = {
   t2pqp: {
     eye:'Mini-leçon', tit:'Le plus-que-parfait : ce qui était déjà fait',
     blocs:[
-      {t:'texte', h:"Deux passés dans la même phrase",
+      {t:'texte', h:"Deux passés, dans une seule phrase",
        p:"« Il a refusé parce qu'un locataire lui avait causé des ennuis. » Deux choses passées, et l'ordre n'est pas celui des mots : les ennuis sont d'il y a six ans, le refus est de novembre. Ce n'est pas la place dans la phrase qui le dit, c'est le temps du verbe. Un lecteur qui ne repère pas le plus-que-parfait met les événements dans le désordre.",
        note:"Le programme du niveau 6 le formule ainsi : « comprendre que le plus-que-parfait désigne une action précédant une autre action passée »."},
 
@@ -749,7 +749,7 @@ const PLUS = {
        mots:[['avec avoir','j\'<b>avais</b> lu · elle <b>avait</b> écrit · ils <b>avaient</b> reçu'],
              ['avec être','il <b>était</b> parti · elle <b>était</b> arrivée', true],
              ['pronominal','elle s\'<b>était</b> trompée de mot'],
-             ['La différence avec le passé composé','« j\'ai lu » (l\'auxiliaire au présent) · « j\'avais lu » (à l\'imparfait)']],
+             ['Ce qui le sépare du passé composé','« j\'ai lu » (l\'auxiliaire au présent) · « j\'avais lu » (à l\'imparfait)']],
        say:"j'avais lu, elle avait écrit, il était parti, elle s'était trompée",
        note:"Si vous savez faire un passé composé, vous savez faire un plus-que-parfait : il ne reste qu'à mettre l'auxiliaire à l'imparfait."},
 
@@ -777,7 +777,7 @@ const PLUS = {
        rows:[
          ["employer l'imparfait à sa place","se demander s'il y a deux passés",
           "« Elle lisait la page » raconte une action en cours. « Elle avait lu la page » dit que c'était fini avant autre chose. Les deux sont au passé ; un seul situe."],
-         ["oublier l'accord avec être","regarder le sujet",
+         ["oublier d'accorder avec être","regarder le sujet",
           "« Elle était partie », « ils étaient arrivés » : avec être, le participe s'accorde avec le sujet, exactement comme au passé composé."],
        ]},
 
@@ -789,7 +789,7 @@ const PLUS = {
   t2subj: {
     eye:'Mini-leçon', tit:'« Il faut que » et ce qui vient après',
     blocs:[
-      {t:'texte', h:"Le temps de ce qui n'est pas encore arrivé",
+      {t:'texte', h:"Le temps de ce qui n'est pas encore fait",
        p:"« Il faut que vous répondiez par écrit. » Au moment où on le dit, la réponse n'existe pas : elle est demandée, voulue, exigée. Le subjonctif est le temps de cela — de ce qui est visé et non constaté. Dans une lettre à un locateur, c'est le temps de toutes vos demandes, et il vaut mieux le tenir : « il faut que vous répondez » se remarque immédiatement.",
        note:"Le programme demande d'employer le subjonctif présent après quelques verbes introducteurs usuels, et de distinguer verbe + de de verbe + que."},
 
