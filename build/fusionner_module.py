@@ -46,7 +46,8 @@ RACINE = pathlib.Path(__file__).resolve().parent.parent
 RELEVES = {'data/sections.json': 'build/sections.py',
            'data/materiel.json': 'build/materiel.py'}
 PYTHON_PARTAGES = ('server.py', 'build/powerpoints/modules.py')
-JOURNAUX = ('docs/vagues-suivantes.md',)
+# Les journaux du chantier : on y écrit à la suite, jamais on n'y arbitre.
+JOURNAUX = ('docs/vagues-suivantes.md', 'docs/verification-originalite.md')
 
 
 def git(*args, verifier=True):
