@@ -556,6 +556,33 @@ MODULES = {
                         "Venez prendre un café",
                         "Il est comment ?"),
     },
+    # `build/cadre.py 3 "Emploi"` a décidé de la forme de ce module : six
+    # intentions, dont six orales sur huit — demander une permission et en
+    # comprendre la réponse, demander de l'aide ou un service et en comprendre
+    # la réponse, comprendre une consigne, répondre à une demande de service.
+    # La compréhension écrite n'en compte qu'une (lire des consignes simples)
+    # et la production écrite une seule (prendre en note une directive). Le
+    # module se tient donc debout, pendant le quart : ses deux seuls écrits
+    # sont l'horaire affiché au mur et le petit mot laissé au chef d'équipe.
+    #
+    # Quatre voisins sur la même situation, aucun recoupement. `module-travail`
+    # (niveau 4) est celui de l'absence : prévenir, justifier un retard, écrire
+    # un courriel. `module-n5-travail` (niveau 5) traite des relations
+    # d'équipe, `module-n8-emploi` (niveau 8) d'une erreur de paie et d'une
+    # réunion. Ici, au niveau 3, on est **présent** et la journée se déroule :
+    # l'heure, la tâche, et la question qu'on ose poser.
+    'module-n3-horaire': {
+        'numero': 11, 'activite': 84, 'niveau': 3,
+        'titre': 'Mon quart de travail',
+        'chapeau': "Lire son horaire et dire les heures d'un quart, demander "
+                   "une permission ou de l'aide et comprendre la réponse, "
+                   "puis comprendre une consigne, la noter et dire où on en "
+                   "est dans sa tâche.",
+        'seances': GRILLE_3_DEFIS,
+        'blocs': _blocs("Mon quart commence à quelle heure ?",
+                        "Est-ce que je peux vous demander ?",
+                        "Trois choses avant midi"),
+    },
     'module-n3-secretariat': {
         'numero': 13, 'activite': 86, 'niveau': 3,
         'titre': "L'absence de Nawel",

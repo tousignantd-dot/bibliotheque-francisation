@@ -5497,6 +5497,73 @@ JEU_DE_ROLE_OEUVRES = {
 }
 
 
+# module-n3-horaire (activité 84, niveau 3, situation « Emploi ») : la journée
+# de travail elle-même — lire son quart, demander une permission ou de l'aide,
+# dire où on en est dans sa tâche. Rien de l'absence ni du retard, qui sont la
+# matière de `module-travail`, au niveau 4.
+JEU_DE_ROLE_HORAIRE = {
+    "echange": {
+        "contexte": (
+            "La salle du personnel d'une cafétéria de résidence pour aînés, au début "
+            "d'un quart du matin. Un employé vient demander d'échanger une journée de "
+            "travail avec un collègue."
+        ),
+        "chef": [
+            "L'horaire de la semaine est affiché sur le tableau blanc, une ligne par personne.",
+            "Un échange de quart doit t'être annoncé au moins trois jours d'avance.",
+            "Tu acceptes l'échange seulement si l'employé nomme le collègue qui le remplace.",
+            "Tu changes l'horaire toi-même, sur le tableau, l'après-midi même.",
+            "Les quarts sont de six heures à quatorze heures, ou de quatorze heures à vingt-deux heures.",
+            "Tu redemandes toujours l'heure et le jour, pour être certain d'avoir compris.",
+        ],
+        "employe": [
+            "Tu travailles jeudi de six heures à quatorze heures.",
+            "Ton garçon a un rendez-vous à la clinique jeudi à dix heures.",
+            "Un collègue t'a dit qu'il pouvait prendre ton quart.",
+            "Tu ne sais pas s'il faut avertir longtemps d'avance.",
+        ],
+    },
+    "aide": {
+        "contexte": (
+            "La cuisine d'une cafétéria de résidence, pendant le quart du matin. Une "
+            "consigne vient d'être donnée trop vite et l'employé n'a pas tout retenu."
+        ),
+        "chef": [
+            "Tu as donné trois tâches : sortir les plateaux, ranger la livraison, éteindre le four à onze heures.",
+            "Tu ne te fâches jamais quand on te demande de répéter : tu préfères ça à une tâche oubliée.",
+            "Tu redonnes les consignes une par une, et tu attends que l'employé les redise.",
+            "Tu proposes de montrer une fois, quand l'employé n'a jamais fait la tâche.",
+            "Tu rappelles que les boîtes de la livraison vont dans la chambre froide.",
+        ],
+        "employe": [
+            "Tu n'as retenu qu'une des trois consignes.",
+            "Tu as ton crayon et ton carnet dans ta poche.",
+            "Tu veux redire les consignes à voix haute pour vérifier.",
+            "Tu n'as jamais fait fonctionner le lave-vaisselle.",
+        ],
+    },
+    "termine": {
+        "contexte": (
+            "Le corridor derrière la cuisine, vers onze heures. L'employé a fini sa "
+            "tâche plus vite que prévu et vient dire où il en est."
+        ),
+        "chef": [
+            "Tu demandes toujours où l'employé en est avant de donner une tâche de plus.",
+            "S'il reste du temps avant midi, la tâche suivante est de laver les chariots.",
+            "Le four doit être éteint à onze heures, quoi qu'il arrive.",
+            "La pause est de onze heures et demie à midi, et tu tiens à ce qu'elle soit prise.",
+            "Tu remercies quand une tâche est faite avant l'heure.",
+        ],
+        "employe": [
+            "Tu viens de finir de sortir les plateaux du deuxième étage.",
+            "Il te reste trois boîtes à ranger dans la chambre froide.",
+            "Tu veux savoir ce que tu fais après.",
+            "Tu voudrais savoir à quelle heure tu prends ta pause.",
+        ],
+    },
+}
+
+
 JEU_DE_ROLE_SCENARIOS = {
     "colis": {
         "cadre": "une courte démarche au comptoir postal d'une pharmacie",
@@ -5543,6 +5610,63 @@ JEU_DE_ROLE_SCENARIOS = {
                              "coup, demande de reprendre plus lentement — c'est "
                              "exactement ce que le module apprend à faire. Remercie "
                              "avant de partir."),
+            },
+        },
+    },
+    "horaire": {
+        "cadre": ("une journée de travail dans une cafétéria de résidence, au "
+                  "niveau débutant : l'horaire, la permission, l'aide et la "
+                  "tâche en cours"),
+        "contexte_label": "L'endroit où vous vous trouvez tous les deux",
+        "cas": JEU_DE_ROLE_HORAIRE,
+        "adresse": ("Vouvoie l'élève : au travail, l'employé et le chef "
+                    "d'équipe se vouvoient."),
+        "sujets": [
+            "le jour et l'heure du quart, dits avec de… à, jusqu'à ou à partir de",
+            "ce qu'on vient demander : une permission, de l'aide, ou la tâche suivante",
+            "la raison de la demande, en une phrase",
+            "la règle de la place : aviser à l'avance, poinçonner en arrivant",
+            "la répétition de l'heure ou de la consigne, pour vérifier",
+            "où on en est dans sa tâche : c'est fait, je viens de finir, je suis en train de",
+            "un merci pour finir",
+        ],
+        "cloture": ("Quand la demande est réglée, redis en une phrase courte "
+                    "ce qui a été décidé — le jour, l'heure, la tâche — "
+                    "demande à l'élève de le répéter, puis souhaite une bonne "
+                    "journée."),
+        "ouverture": {
+            "employe": "Bonjour monsieur Roy. Est-ce que je peux vous parler deux minutes ?",
+            "chef": "Bonjour ! Qu'est-ce qui se passe ?",
+        },
+        "roles": {
+            "chef": {
+                "qui": ("Tu es Gaétan Roy, chef d'équipe de la cafétéria de la "
+                        "Résidence des Ormes. L'élève est un employé de ton "
+                        "équipe, aide-cuisine depuis deux semaines."),
+                "conduite": ("Niveau 3 : phrases courtes, au présent, une "
+                             "information à la fois, jamais deux questions "
+                             "dans la même réplique. Donne les heures en "
+                             "toutes lettres — « six heures », « onze heures "
+                             "et demie ». Demande une fois à l'élève de "
+                             "redire l'heure ou la consigne, pour vérifier. "
+                             "Ne parle jamais de contrat, de paie, de "
+                             "syndicat ni d'absence de plusieurs jours : ce "
+                             "n'est pas ce niveau-ci. Si l'élève ne comprend "
+                             "pas, répète plus lentement avec les mêmes "
+                             "mots, sans jamais t'impatienter."),
+            },
+            "employe": {
+                "qui": ("Tu es aide-cuisine à la cafétéria depuis deux "
+                        "semaines. L'élève est le chef d'équipe et c'est lui "
+                        "qui répond à ta demande."),
+                "conduite": ("Dis en une phrase courte pourquoi tu viens, "
+                             "puis attends la réponse. Demande poliment, avec "
+                             "« est-ce que je peux » ou « est-ce que vous "
+                             "pouvez m'aider ». Redis l'heure qu'on te donne "
+                             "pour vérifier. Si on te donne trois consignes "
+                             "d'un coup, demande de reprendre plus lentement "
+                             "— c'est exactement ce que le module apprend à "
+                             "faire. Remercie avant de retourner à ta tâche."),
             },
         },
     },
