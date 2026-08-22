@@ -906,6 +906,27 @@ MODULES = {
                         "Dire ce qu'on en pense"),
     },
 
+    # Quatorzième et dernière situation du niveau 5. La situation existe aussi
+    # aux niveaux 1 à 3 — jamais au 4 — et le niveau 2 comme le niveau 3 la
+    # traitent au comptoir : on s'inscrit, on demande où est le local, on
+    # rapporte un billet d'absence de la veille. Ici, l'élève ne vient pas
+    # chercher un renseignement : il vient exposer une situation qui le
+    # regarde, lui, et qui dure — trois semaines d'absence à venir, un horaire
+    # qui ne tient plus, une preuve à obtenir. Il faut donc un discours
+    # organisé, une trace écrite, et la lecture d'un avis officiel qui, lui,
+    # ne se négocie pas.
+    'module-n5-ecole': {
+        'numero': 14, 'activite': 74, 'niveau': 5,
+        'titre': 'Régler une affaire au centre',
+        'chapeau': "Annoncer une absence prolongée au secrétariat, lire un "
+                   "avis officiel du centre jusqu'à la date limite, et "
+                   "demander par écrit un changement à son dossier.",
+        'seances': GRILLE_3_DEFIS,
+        'blocs': _blocs("Prévenir de son absence",
+                        "Lire l'avis du centre",
+                        'Demander un changement'),
+    },
+
     'module-n6-recherche': {
         'numero': 1, 'activite': 59, 'niveau': 6,
         'titre': "Chercher un emploi",

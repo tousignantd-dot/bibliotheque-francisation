@@ -1,0 +1,111 @@
+const DIALOGUES = {
+  prep: {
+    label: "Dialogue — Il faut que tu ailles au secrétariat",
+    lines: [
+      ["AMELIA","Koffi, je ne sais pas à qui parler. J'ai un problème et il dure."],
+      ["KOFFI","Un problème de cours ou un problème de papiers ?"],
+      ["AMELIA","De papiers. Je dois m'absenter trois semaines au mois de mars."],
+      ["KOFFI","Trois semaines ! Alors ce n'est pas ton enseignante qu'il faut voir."],
+      ["AMELIA","C'est qui, d'abord ? Je n'ose pas déranger le monde."],
+      ["KOFFI","Le secrétariat, en avant, à droite en entrant. C'est madame Paradis."],
+      ["AMELIA","Elle s'occupe de quoi, exactement ?"],
+      ["KOFFI","Des dossiers. Les absences, les inscriptions, les attestations."],
+      ["AMELIA","Et si c'est plus compliqué que ça ?"],
+      ["KOFFI","Là, elle te renvoie à monsieur Gauthier, le conseiller en formation."],
+      ["AMELIA","Il fait quoi, lui ?"],
+      ["KOFFI","Il touche à ton horaire et à ton groupe. Il décide ce qu'elle ne décide pas."],
+      ["AMELIA","Je vais dans quel local pour le voir ?"],
+      ["KOFFI","Au 112, mais sur rendez-vous. Tu passes par le secrétariat pareil."],
+      ["AMELIA","Et je perds ma place, si je m'absente si longtemps ?"],
+      ["KOFFI","Pas si tu préviens avant. C'est de ne rien dire qui coûte cher."],
+      ["AMELIA","Bon. Je vais y aller à la pause."],
+      ["KOFFI","Vas-y. Et vouvoie-les : ici, on se tutoie entre nous, pas avec le bureau."],
+    ]
+  },
+
+  t1: {
+    label: "Dialogue — Je voudrais savoir si je garde ma place",
+    lines: [
+      ["AMELIA","Bonjour. Je m'appelle Amelia Dumitrescu, groupe 4, francisation."],
+      ["JOCELYNE","Bonjour. Qu'est-ce que je peux faire pour vous, madame Dumitrescu ?"],
+      ["AMELIA","Je viens vous annoncer une absence. Une longue absence, prévue."],
+      ["JOCELYNE","Prévue, c'est déjà une bonne nouvelle. À partir de quand ?"],
+      ["AMELIA","À partir du 9 mars, et je reviendrai le 30. Trois semaines."],
+      ["JOCELYNE","Trois semaines. Et le motif, madame ?"],
+      ["AMELIA","Ma mère est opérée à Bucarest. Je suis seule à pouvoir y aller."],
+      ["JOCELYNE","Je comprends. Vous devrez me le mettre par écrit, par exemple."],
+      ["AMELIA","Je voudrais savoir si je garde ma place dans le groupe."],
+      ["JOCELYNE","Oui, si l'absence est motivée et annoncée d'avance. C'est votre cas."],
+      ["AMELIA","Et pourriez-vous me dire quand je dois remettre le papier ?"],
+      ["JOCELYNE","Avant votre départ. Le plus tôt sera le mieux, honnêtement."],
+      ["AMELIA","Je ne sais pas ce qu'il faut écrire dedans, par contre."],
+      ["JOCELYNE","Vos dates, votre motif, et une preuve si vous en avez une."],
+      ["AMELIA","J'aurai le papier de l'hôpital seulement au retour."],
+      ["JOCELYNE","Ça ira. Vous me l'apporterez quand vous reviendrez."],
+      ["AMELIA","Et mon allocation de participation, elle continue ?"],
+      ["JOCELYNE","Ça, je ne le décide pas. Monsieur Gauthier vous répondra là-dessus."],
+    ]
+  },
+
+  t2: {
+    label: "Dialogue — L'avis dit tout, il faut le lire jusqu'au bout",
+    lines: [
+      ["AMELIA","Monsieur Gauthier, j'ai reçu un avis du centre. Je ne suis pas sûre."],
+      ["RÉMI","Montrez-moi ça. Ah oui, c'est l'avis de confirmation d'absence."],
+      ["AMELIA","Il y a trois dates dedans. Je mélange tout."],
+      ["RÉMI","Regardez : votre absence court du 9 mars jusqu'au 27 mars inclusivement."],
+      ["AMELIA","Et le 6 mars, en gras, en haut ? C'est quoi, cette date-là ?"],
+      ["RÉMI","C'est l'échéance. Le formulaire doit être remis d'ici le 6 mars."],
+      ["AMELIA","D'ici le 6, ça veut dire le 6 au plus tard ?"],
+      ["RÉMI","Exactement. Après cette date-là, la demande n'est plus recevable."],
+      ["AMELIA","Et la troisième date, le 30 mars ?"],
+      ["RÉMI","Votre retour en classe. Celui-ci n'est pas une échéance, c'est un rappel."],
+      ["AMELIA","En bas, il est écrit « en cas de prolongation ». Je ne comprends pas."],
+      ["RÉMI","Si vous devez rester plus longtemps, vous nous appelez avant le 27."],
+      ["AMELIA","Et ce paragraphe-là, avec le rattrapage ?"],
+      ["RÉMI","Celui-là vous concerne au retour : deux midis par semaine, au local 118."],
+      ["AMELIA","Je dois répondre à cet avis ?"],
+      ["RÉMI","Non. Vous le signez et vous le rapportez au secrétariat, c'est tout."],
+      ["AMELIA","Et je garde une copie ?"],
+      ["RÉMI","Toujours. Un avis signé sans copie, c'est un avis qu'on n'a jamais reçu."],
+    ]
+  },
+
+  t3: {
+    label: "Dialogue — Ce qui me bloque, c'est l'horaire",
+    lines: [
+      ["AMELIA","Monsieur Gauthier, il faut que je vous parle de mon horaire."],
+      ["RÉMI","Asseyez-vous. Qu'est-ce qui se passe depuis votre retour ?"],
+      ["AMELIA","J'ai trouvé un emploi. Je commence à sept heures le matin."],
+      ["RÉMI","Ah. Et nos cours de jour finissent à midi et demi."],
+      ["AMELIA","Ce qui me bloque, c'est l'horaire, pas le cours. J'aime le cours."],
+      ["RÉMI","Vous voulez passer au groupe du soir, si je comprends bien."],
+      ["AMELIA","Oui. Il faut que je travaille, sinon je ne paie pas mon loyer."],
+      ["RÉMI","C'est légitime. Par contre, le soir, c'est quatre soirs par semaine."],
+      ["AMELIA","Quatre soirs, je peux. Comme je finis à trois heures, ça se place."],
+      ["RÉMI","Bien. Pour que le transfert se fasse, il me faut une demande écrite."],
+      ["AMELIA","Je dois l'écrire comment ? Je n'ai jamais fait ça en français."],
+      ["RÉMI","Court. Qui vous êtes, ce que vous demandez, pourquoi, et à partir de quand."],
+      ["AMELIA","Et mon employeur veut une preuve que je suis inscrite ici."],
+      ["RÉMI","Une attestation de fréquentation. Le secrétariat l'imprime sur-le-champ."],
+      ["AMELIA","Ce n'est pas la même chose que le relevé, alors ?"],
+      ["RÉMI","Non. Le relevé des apprentissages vient du ministère, à la fin du cours."],
+      ["AMELIA","Bon. J'écris ma demande ce soir pour qu'elle parte demain matin."],
+      ["RÉMI","Faites ça. Et gardez-en une copie : c'est votre dossier, pas le nôtre."],
+    ]
+  },
+
+  appli: {
+    label: "Dialogue — Vous savez maintenant à qui parler",
+    lines: [
+      ["JOCELYNE","Madame Dumitrescu ! Vous êtes revenue. Votre mère va mieux ?"],
+      ["AMELIA","Beaucoup mieux, merci. Je vous apporte le papier de l'hôpital."],
+      ["JOCELYNE","Parfait. Vous voyez, vous aviez prévenu : tout est resté en place."],
+      ["AMELIA","J'ai appris une chose : il faut dire les dates avant le reste."],
+      ["JOCELYNE","Et l'écrire. Un dossier ne se souvient pas d'une conversation."],
+      ["AMELIA","Je garde une copie de tout, maintenant. Même des courriels."],
+      ["JOCELYNE","Vous êtes mieux organisée que bien du monde, madame Dumitrescu."],
+      ["AMELIA","C'est que je ne veux plus jamais rester trois jours sans oser demander."],
+    ]
+  },
+};
