@@ -46,6 +46,7 @@ RACINE = pathlib.Path(__file__).resolve().parent.parent
 RELEVES = {'data/sections.json': 'build/sections.py',
            'data/materiel.json': 'build/materiel.py'}
 PYTHON_PARTAGES = ('server.py', 'build/powerpoints/modules.py')
+JOURNAUX = ('docs/vagues-suivantes.md',)
 
 
 def git(*args, verifier=True):
@@ -97,6 +98,40 @@ def fusionner_catalogue(branche):
     chemin.write_text(json.dumps(fusion, ensure_ascii=False, indent=2) + '\n',
                       encoding='utf-8')
     return [a['id'] for a in ajouts]
+
+
+def fusionner_journal(chemin):
+    """Deux sections ajoutées au même endroit d'un journal : on garde les deux.
+
+    `docs/vagues-suivantes.md` est un journal — on y écrit à la suite. Quand
+    deux agents livrent le même jour, git voit deux ajouts au même rang et
+    rend un conflit, alors qu'il n'y a rien à arbitrer : les deux sections
+    doivent y être, dans l'ordre. Fait à la main trois fois en une journée.
+
+    L'ordre choisi est « le nôtre, puis le leur », c'est-à-dire l'ordre
+    d'arrivée sur `main`. Et le résultat est **vérifié** : toute ligne présente
+    d'un côté ou de l'autre doit se retrouver dans le texte final. Un
+    recollage qui perdrait le compte rendu d'un agent échoue bruyamment plutôt
+    que de l'effacer en silence.
+    """
+    f = RACINE / chemin
+    lignes = f.read_text(encoding='utf-8').split('\n')
+    attendues = [l for l in lignes if not l.startswith(('<<<<<<<', '=======',
+                                                        '>>>>>>>'))]
+    while True:
+        debuts = [i for i, l in enumerate(lignes) if l.startswith('<<<<<<<')]
+        if not debuts:
+            break
+        d = debuts[-1]
+        m = next(i for i in range(d, len(lignes)) if lignes[i].startswith('======='))
+        fin = next(i for i in range(m, len(lignes)) if lignes[i].startswith('>>>>>>>'))
+        lignes = lignes[:d] + lignes[d + 1:m] + lignes[m + 1:fin] + lignes[fin + 1:]
+    resultat = '\n'.join(lignes)
+    manquantes = [l for l in attendues if l.strip() and l not in lignes]
+    if manquantes:
+        raise RuntimeError('%s : le recollage perdrait %d ligne(s), dont : %r'
+                           % (chemin, len(manquantes), manquantes[0][:70]))
+    f.write_text(resultat, encoding='utf-8')
 
 
 def fusionner_python(chemin, branche):
@@ -183,7 +218,7 @@ def main():
 
     inconnus = [c for c in en_conflit
                 if c not in RELEVES and c != 'data/activities.json'
-                and c not in PYTHON_PARTAGES]
+                and c not in PYTHON_PARTAGES and c not in JOURNAUX]
     if inconnus:
         print('✗ conflits que ce script ne sait pas traiter, rien n’est '
               'commité :\n    ' + '\n    '.join(inconnus))
@@ -201,6 +236,11 @@ def main():
                 fusionner_python(chemin, branche)
                 traites.append('%s : les deux blocs gardés, compilation et '
                                'clés vérifiées' % chemin)
+        for chemin in JOURNAUX:
+            if chemin in en_conflit:
+                fusionner_journal(chemin)
+                traites.append('%s : les deux sections gardées, aucune ligne '
+                               'perdue' % chemin)
         for chemin, script in RELEVES.items():
             if chemin in en_conflit:
                 git('checkout', '--theirs', '--', chemin, verifier=False)
