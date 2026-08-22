@@ -24,7 +24,7 @@ const EXOS = [
    ]},
 
   {sec:'prep', id:'prGraphie', type:'vf', num:'Exercice 2', tit:"Trois groupes de lettres qui trompent l'oreille", color:'#A5335F', accent:'#A5335F', cards:true, listen:true,
-   sub:"Écoute le mot, puis dis quel son porte le groupe de lettres en cause.",
+   sub:"Écoute chaque mot du chantier, puis dis ce que le groupe de lettres y fait entendre.",
    tiles:['COMME K','COMME S','COMME CH'],
    rows:[
     {id:'gp1', txt:"un architecte", ok:'COMME K'},
@@ -71,15 +71,15 @@ const EXOS = [
    ]},
 
   {sec:'prep', id:'prMots', type:'write', num:'Exercice 5', tit:"Le mot du métier et le mot de tous les jours", color:'#A5335F', cols:2,
-   sub:"Complète avec le mot de la même famille. Attention à l'article.",
+   sub:"Le mot manquant est de la même famille que le verbe de la phrase. Écris-le avec son article.",
    savoir:{h:"› Les mots du chantier se fabriquent les uns avec les autres", rows:[
-     ["Le verbe donne le nom en <b>-age</b>","<span class='savoir-ex'>creuser → un <b>creusage</b> · draper → un <b>drapage</b> · nettoyer → un <b>nettoyage</b> · démolir → un <b>démolissage</b> (familier)</span> Le nom en -age dit l'action, ou son résultat visible."],
-     ["Le verbe donne le nom en <b>-ment</b>","<span class='savoir-ex'>écouler → l'<b>écoulement</b> · effondrer → un <b>effondrement</b> · dédommager → un <b>dédommagement</b> · isoler → un <b>isolement</b></span> Attention : le nom de l'isolation d'une maison est « l'isolation », pas « l'isolement »."],
-     ["Le verbe donne le nom en <b>-tion</b>","<span class='savoir-ex'>rénover → une <b>rénovation</b> · installer → une <b>installation</b> · réparer → une <b>réparation</b> · inspecter → une <b>inspection</b></span> C'est le suffixe des documents techniques : un rapport en est plein."],
-     ["Le verbe donne l'adjectif en <b>-able</b>","<span class='savoir-ex'>habiter → <b>habitable</b> · réparer → <b>réparable</b> · payer → <b>payable</b> · vivre → <b>vivable</b></span> Il veut dire « qu'on peut ». Le contraire se fait avec in- : inhabitable, invivable, irréparable."],
-     ["Le préfixe <b>re-</b> ou <b>ré-</b> refait","<span class='savoir-ex'>faire → <b>refaire</b> · couler → <b>recouler</b> · aménager → <b>réaménager</b> · isoler → <b>réisoler</b></span> Sur un chantier, la moitié des verbes commencent par là : on refait plus souvent qu'on ne fait."],
-     ["Le préfixe <b>dé-</b> ou <b>dés-</b> défait","<span class='savoir-ex'>monter → <b>démonter</b> · brancher → <b>débrancher</b> · humidifier → <b>déshumidifier</b> · encombrer → <b>désencombrer</b></span> Devant une voyelle ou un h muet, on écrit dés-."],
-     ["Pourquoi ça compte ici","Un rapport d'inspection écrit « l'écoulement des eaux de surface est déficient » ; sur le trottoir, Léandre dit « l'eau part mal ». C'est la même chose. Retrouver le verbe caché dans le nom, c'est comprendre la phrase technique en une seconde."],
+     ["Ce qu'on fait devient un <b>-age</b>","<span class='savoir-ex'>creuser → un <b>creusage</b> · draper → un <b>drapage</b> · nettoyer → un <b>nettoyage</b> · démolir → un <b>démolissage</b> (familier)</span> Le nom en -age dit l'action, ou son résultat visible."],
+     ["Ce qui se produit devient un <b>-ment</b>","<span class='savoir-ex'>écouler → l'<b>écoulement</b> · effondrer → un <b>effondrement</b> · dédommager → un <b>dédommagement</b> · isoler → un <b>isolement</b></span> Attention : le nom de l'isolation d'une maison est « l'isolation », pas « l'isolement »."],
+     ["Ce qu'on entreprend devient une <b>-tion</b>","<span class='savoir-ex'>rénover → une <b>rénovation</b> · installer → une <b>installation</b> · réparer → une <b>réparation</b> · inspecter → une <b>inspection</b></span> C'est le suffixe des documents techniques : un rapport en est plein."],
+     ["Ce qu'on peut faire devient <b>-able</b>","<span class='savoir-ex'>habiter → <b>habitable</b> · réparer → <b>réparable</b> · payer → <b>payable</b> · vivre → <b>vivable</b></span> Il veut dire « qu'on peut ». Le contraire se fait avec in- : inhabitable, invivable, irréparable."],
+     ["<b>re-</b>, <b>ré-</b> : on recommence","<span class='savoir-ex'>faire → <b>refaire</b> · couler → <b>recouler</b> · aménager → <b>réaménager</b> · isoler → <b>réisoler</b></span> Sur un chantier, la moitié des verbes commencent par là : on refait plus souvent qu'on ne fait."],
+     ["<b>dé-</b>, <b>dés-</b> : on enlève","<span class='savoir-ex'>monter → <b>démonter</b> · brancher → <b>débrancher</b> · humidifier → <b>déshumidifier</b> · encombrer → <b>désencombrer</b></span> Devant une voyelle ou un h muet, on écrit dés-."],
+     ["À quoi ça sert sur un chantier","Un rapport d'inspection écrit « l'écoulement des eaux de surface est déficient » ; sur le trottoir, Léandre dit « l'eau part mal ». C'est la même chose. Retrouver le verbe caché dans le nom, c'est comprendre la phrase technique en une seconde."],
    ]},
    items:[
     {q:"On rénove le sous-sol : c'est ___ du sous-sol.", accept:["la rénovation","une rénovation"], ph:"un nom en -tion"},
@@ -117,7 +117,7 @@ const EXOS = [
    tiles:['LA CAUSE','LE RÉSULTAT'],
    savoir:{h:"› Remonter du visible à ce qui l'a produit", rows:[
      ["Ce qu'on voit vient toujours en second","Une tache, une fente, un plancher qui gondole : ce sont des résultats. La cause est ailleurs, presque toujours dehors, et presque toujours en rapport avec l'eau."],
-     ["Le test qui ne trompe pas","<span class='savoir-ex'>Si je répare ça et que rien d'autre ne change, est-ce que le problème revient ?</span> Si la réponse est oui, vous êtes devant un résultat, pas devant la cause."],
+     ["La question qui règle le doute","<span class='savoir-ex'>Si je répare ça et que rien d'autre ne change, est-ce que le problème revient ?</span> Si la réponse est oui, vous êtes devant un résultat, pas devant la cause."],
      ["Les mots qui annoncent la cause","<span class='savoir-ex'>C'est <b>à cause de</b> la gouttière. · Le mur fend <b>parce que</b> le sol pousse. · <b>Le sol se gorge d'eau, d'où</b> la pression sur le mur.</span>"],
      ["Les mots qui annoncent le résultat","<span class='savoir-ex'>Le sol pousse, <b>donc</b> le mur fend. · L'eau reste au pied du mur, <b>de sorte que</b> la fondation reste humide. · <b>Par conséquent</b>, la fissure revient.</span>"],
      ["Pourquoi ça vaut de l'argent","Réparer un résultat coûte une fois, puis une deuxième, puis une troisième. Réparer la cause coûte une fois. C'est toute la différence entre un chantier et un rapiéçage."],
@@ -137,7 +137,7 @@ const EXOS = [
    sub:"Lis les deux phrases, puis écris le pronom qui reprend ce dont on vient de parler.",
    savoir:{h:"› Reprendre au lieu de répéter : le, la, l', les, en, y", speak:true, rows:[
      ["<b>le</b>, <b>la</b>, <b>les</b> — pour ce qui suit le verbe sans préposition","On dit « je répare <u>la fissure</u> », donc on reprend par <b>la</b>. <span class='savoir-ex'>Je vois la fissure. Je <b>la</b> répare demain.</span>"],
-     ["<b>le</b> — pour toute une idée","Il reprend une phrase entière, pas un objet. <span class='savoir-ex'>Le sous-sol est humide. Fernand <b>le</b> sait, et il me <b>l'</b>a dit deux fois.</span> Ici, « le » ne remplace pas un mot : il remplace « que le sous-sol est humide »."],
+     ["<b>le</b> quand il reprend une idée entière","Il reprend une phrase entière, pas un objet. <span class='savoir-ex'>Le sous-sol est humide. Fernand <b>le</b> sait, et il me <b>l'</b>a dit deux fois.</span> Ici, « le » ne remplace pas un mot : il remplace « que le sous-sol est humide »."],
      ["<b>en</b> — pour ce qui vient après <i>de</i>","On dit « je parle <u>de la fissure</u> », donc on reprend par <b>en</b>. <span class='savoir-ex'>Vous avez une fissure ? On <b>en</b> a parlé hier.</span>"],
      ["<b>y</b> — pour ce qui vient après <i>à</i> ou pour un lieu","<span class='savoir-ex'>Il faut penser au permis. J'<b>y</b> pense tous les jours. · Le sous-sol ? On <b>y</b> descend par l'escalier de la cuisine.</span>"],
      ["La règle qui tranche","Cherchez la préposition du verbe. <i>Réparer quelque chose</i> → le, la, les. <i>Parler de quelque chose</i> → en. <i>Penser à quelque chose</i> → y. Le pronom ne se choisit pas au son : il se choisit sur le verbe.", ["une fissure"]],
@@ -159,7 +159,7 @@ const EXOS = [
    savoir:{h:"› Le plus-que-parfait : une action passée avant une autre action passée", rows:[
      ["Sa forme","<b>avoir</b> ou <b>être</b> à l'imparfait + participe passé. <span class='savoir-ex'>j'<b>avais vu</b> · elle <b>était venue</b> · nous <b>avions fait</b> · ils <b>s'étaient tassés</b></span>"],
      ["Ce qu'il fait","Il place une action <b>avant</b> une autre action déjà passée. <span class='savoir-ex'>Quand nous avons acheté la maison, la fissure <b>s'était</b> déjà <b>ouverte</b>.</span> L'achat est passé ; la fissure est encore plus ancienne."],
-     ["Le mot qui l'accompagne souvent","<b>déjà</b>. <span class='savoir-ex'>L'inspectrice l'<b>avait</b> déjà <b>noté</b> dans son rapport.</span> Quand vous entendez « déjà » dans un récit au passé, le plus-que-parfait n'est jamais loin."],
+     ["Le mot qui le trahit à l'écoute","<b>déjà</b>. <span class='savoir-ex'>L'inspectrice l'<b>avait</b> déjà <b>noté</b> dans son rapport.</span> Quand vous entendez « déjà » dans un récit au passé, le plus-que-parfait n'est jamais loin."],
      ["Pourquoi un homme de métier l'emploie sans arrêt","Un diagnostic remonte le temps. Il commence par aujourd'hui — « le mur est fendu » —, puis il va chercher plus loin — « quelqu'un <b>avait condamné</b> le puisard avant vous »."],
      ["L'erreur fréquente","Employer le passé composé partout. « Quand on a acheté, la fissure s'est ouverte » veut dire qu'elle s'est ouverte le jour de l'achat. Ce n'est pas ce qu'on voulait dire, et l'entrepreneur, lui, l'entend."],
    ]},
@@ -284,7 +284,7 @@ const EXOS = [
     {id:'mi6', q:"la durée de validité du prix", aid:'mi6', a:"la soumission, dans la première ligne, avec le numéro de dossier"},
    ]},
 
-  {sec:'t2', id:'t2ou', type:'write', num:'Exercice 5', tit:"« où » pour un endroit, « où » pour un moment", color:'#B45309', cols:1,
+  {sec:'t2', id:'t2ou', type:'write', num:'Exercice 5', tit:"Le mur où, et le jour où", color:'#B45309', cols:1,
    sub:"Réunis les deux phrases en une seule, avec « où ». Écris la phrase complète.",
    savoir:{h:"› Le pronom relatif « où » : il rattache un lieu ou un moment", rows:[
      ["Il remplace un endroit","<span class='savoir-ex'>Le mur nord. La fissure a été relevée dans ce mur. → Le mur nord, <b>où</b> la fissure a été relevée, présente dix-neuf pour cent d'humidité.</span>"],
@@ -303,8 +303,8 @@ const EXOS = [
    ]},
 
   {sec:'t2', id:'t2subj', type:'write', num:'Exercice 6', tit:"Ce qu'il faut, ce qu'on souhaite, ce qu'on exige", color:'#B45309', cols:1,
-   sub:"Mets le verbe entre parenthèses au subjonctif présent.",
-   savoir:{h:"› Le subjonctif présent après un verbe introducteur + que", rows:[
+   sub:"Chaque phrase est une demande écrite à quelqu'un du chantier. Mets le verbe au subjonctif présent.",
+   savoir:{h:"› Ce qui suit « il faut que » et « j'aimerais que »", rows:[
      ["Les verbes qui l'imposent","<span class='savoir-ex'>il faut <b>que</b> · je veux <b>que</b> · j'exige <b>que</b> · je souhaite <b>que</b> · j'aimerais <b>que</b> · je demande <b>que</b> · il est important <b>que</b></span> Après eux, le verbe suivant se met au subjonctif, sans exception."],
      ["Sa forme, pour les verbes usuels","On part du « ils » du présent, on enlève -ent : <span class='savoir-ex'>ils sèch<s>ent</s> → que je <b>sèche</b> · ils finiss<s>ent</s> → que tu <b>finisses</b> · ils écriv<s>ent</s> → qu'il <b>écrive</b></span>"],
      ["Les quatre irréguliers qu'on rencontre tous les jours","<span class='savoir-ex'>être → que je <b>sois</b> · avoir → que j'<b>aie</b> · faire → que je <b>fasse</b> · aller → que j'<b>aille</b></span> Ajoutez pouvoir → que je <b>puisse</b>, et vous avez presque tout."],
@@ -401,7 +401,7 @@ const EXOS = [
      ["Annoncer un point de vue","<span class='savoir-ex'><b>à mon avis</b> · <b>selon moi</b> · <b>d'après l'inspectrice</b> · <b>quant à moi</b> · <b>personnellement</b> · <b>si vous voulez mon avis</b></span> Ils préviennent : ce qui suit n'est pas un fait, c'est quelqu'un qui parle."],
      ["Pourquoi les deux familles vont ensemble ici","Devant un entrepreneur, il faut pouvoir séparer ce qui est écrit de ce qu'on en pense. « <b>D'après la soumission</b>, la peinture n'est pas comprise ; <b>à mon avis</b>, ça vaut la peine de la faire soi-même. » Deux phrases, deux statuts."],
      ["Le connecteur se met devant, et il se détache","Une virgule après, presque toujours. À l'oral, on marque un temps d'arrêt. C'est ce petit silence qui fait comprendre que la suite change de nature."],
-     ["Ce qu'il ne faut pas faire","Enchaîner un fait et une opinion sans rien entre les deux. Celui qui écoute prend alors votre opinion pour un fait, et il vous la ressort la semaine suivante."],
+     ["L'erreur qui coûte le plus cher","Enchaîner un fait et une opinion sans rien entre les deux. Celui qui écoute prend alors votre opinion pour un fait, et il vous la ressort la semaine suivante."],
    ]},
    items:[
     {q:"Plusieurs postes sont exclus, ___ le permis et la peinture.", accept:["notamment","par exemple","entre autres"], ph:"un exemple"},
