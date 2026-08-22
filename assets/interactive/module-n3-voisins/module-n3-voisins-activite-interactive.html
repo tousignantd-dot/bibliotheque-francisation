@@ -18,6 +18,38 @@ body{display:flex;flex-direction:column;min-height:100vh}
 .hdr-l{display:flex;align-items:center;gap:14px;flex:1 1 420px;min-width:0}
 .hdr-ic{width:44px;height:44px;background:rgba(255,255,255,.18);border-radius:50%;display:flex;align-items:center;justify-content:center;flex-shrink:0;font-size:22px}
 .hdr-eye{display:flex;align-items:center;gap:8px;font-size:var(--fs-label);font-weight:var(--fw-bold);text-transform:uppercase;letter-spacing:var(--ls-label);color:var(--hdr-accent,var(--text-accent));line-height:1}
+/* ── Exercice « texte » : un texte suivi et ses questions ─────────────── */
+.tx-grid{display:grid;grid-template-columns:minmax(0,1.15fr) minmax(0,1fr);
+  gap:18px;align-items:start}
+@media(max-width:900px){.tx-grid{grid-template-columns:1fr}}
+.tx-texte{background:var(--surface-50,#F7F8FA);border:1px solid var(--line-200,#E4E8ED);
+  border-radius:var(--radius-ctrl,10px);padding:16px 18px;line-height:1.75;
+  font-size:var(--fs-body,17px);position:sticky;top:12px}
+@media(max-width:900px){.tx-texte{position:static}}
+.tx-texte p{margin:0 0 12px}
+.tx-texte p:last-child{margin-bottom:0}
+.tx-seg{cursor:pointer;border-radius:5px;padding:1px 3px;
+  box-shadow:inset 0 -2px 0 var(--line-300,#D8DEE6);transition:background .12s}
+.tx-seg:hover{background:var(--surface-100,#EEF1F5)}
+.tx-seg.is-armed{background:var(--sec-color,#3F6C51);color:#fff;
+  box-shadow:none}
+.tx-seg.is-taken{background:var(--surface-200,#E4E8ED);box-shadow:none}
+.tx-seg.ok{background:#DFF3E4;box-shadow:inset 0 -2px 0 #2F8F4E}
+.tx-seg.no{background:#FBE3E3;box-shadow:inset 0 -2px 0 #C0392B}
+.tx-q{border:1px solid var(--line-200,#E4E8ED);border-radius:var(--radius-ctrl,10px);
+  padding:12px 14px;margin-bottom:10px;cursor:pointer;background:#fff}
+.tx-q:hover{border-color:var(--line-300,#D8DEE6)}
+.tx-q.is-active{border-color:var(--sec-color,#3F6C51);
+  box-shadow:0 0 0 2px color-mix(in srgb,var(--sec-color,#3F6C51) 18%, transparent)}
+.tx-q.ok{border-color:#2F8F4E;background:#F4FBF6}
+.tx-q.no{border-color:#C0392B;background:#FDF5F5}
+.tx-q-txt{font-size:var(--fs-body,17px);line-height:1.5}
+.tx-q-rep{margin-top:8px;font-size:var(--fs-label,13px);font-weight:var(--fw-bold,700);
+  letter-spacing:var(--ls-label,.04em);text-transform:uppercase;
+  color:var(--text-600,#5A6472)}
+.tx-q-rep.vide{font-weight:var(--fw-regular,400);text-transform:none;letter-spacing:0;
+  font-style:italic}
+
 .hdr-ref{padding-left:8px;border-left:1px solid var(--line-300,#D8DEE6);font-weight:var(--fw-regular,400);text-transform:none;letter-spacing:0;color:var(--text-600,#5A6472);white-space:nowrap}
 @media(max-width:480px){.hdr-ref{display:none}}
 .hdr-eye::before{content:"";width:8px;height:8px;border-radius:50%;background:var(--hdr-accent,var(--accent));flex-shrink:0}
@@ -1474,7 +1506,7 @@ const EXOS = [
 ];
 
 // ── ÉTAT ──────────────────────────────────────────────────────────────
-const S = {pl:{}, sel:null, fb:{}, vfSel:{}, vocabPick:null, vocabPairs:{}, vocabOrder:null};
+const S = {pl:{}, sel:null, fb:{}, vfSel:{}, vocabPick:null, vocabPairs:{}, vocabOrder:null, txQ:{}, txSel:{}};
 let curSec = 'prep';
 
 const ZONES = {};
@@ -1487,6 +1519,7 @@ EXOS.forEach(ex => {
   if (ex.type === 'rows')   ex.rows.forEach(r => ZONES[r.id] = {cv:r.cv, zcat:'id', exo:ex.id});
   if (ex.type === 'blanks') ex.segs.filter(s=>s.k==='b').forEach(s =>
     ZONES[s.id] = {cv:s.c, zcat: ex.byLabel ? 'lbl' : 'id', exo:ex.id});
+  if (ex.type === 'texte')  ex.rows.forEach(r => ZONES[r.id] = {cv:r.ok, zcat:'id', exo:ex.id});
   if (ex.type === 'write')  ex.items.forEach((it,i) =>
     ZONES['w_'+ex.id+'_'+i] = {zcat:'write', exo:ex.id});
 });
@@ -2343,6 +2376,92 @@ function toggleScript(btn, secId){
   const open = el.classList.toggle('is-hidden') === false;
   btn.textContent = open ? 'Cacher la transcription' : 'Lire la transcription';
 }
+// ── Exercice « texte » : cliquer dans le texte ────────────────────────
+// L'élève arme une question, puis clique le passage qui y répond. Les deux
+// gestes sont réversibles : recliquer un passage déjà pris le libère, et
+// changer de question n'efface rien. C'est ce qui permet de revenir sur une
+// réponse sans tout reprendre, comme dans le vrai-faux.
+function txArm(exId, qid){
+  S.txQ[exId] = (S.txQ[exId] === qid) ? null : qid;
+  render();
+}
+function txPick(exId, segId){
+  const ex = EXOS.find(e => e.id === exId);
+  if (!ex) return;
+  const qid = S.txQ[exId];
+  // Un passage déjà attribué se libère d'un clic, même sans question armée :
+  // sinon un élève qui se trompe de segment doit deviner quoi faire.
+  const dejaA = Object.keys(S.txSel).find(k => S.txSel[k] === segId
+                  && ex.rows.some(r => r.id === k));
+  if (dejaA && (!qid || dejaA === qid)) {
+    delete S.txSel[dejaA]; delete S.fb[dejaA]; render(); return;
+  }
+  if (!qid) return;
+  if (dejaA) delete S.txSel[dejaA];
+  S.txSel[qid] = segId;
+  delete S.fb[qid];
+  S.txQ[exId] = null;
+  render();
+}
+function txCheckAll(exId){
+  const ex = EXOS.find(e => e.id === exId);
+  if (!ex) return;
+  let repondu = 0, justes = 0;
+  ex.rows.forEach(r => {
+    const seg = S.txSel[r.id];
+    if (!seg) return;
+    repondu++;
+    const ok = seg === r.ok;
+    if (ok) justes++;
+    S.fb[r.id] = ok ? 'ok' : 'no';
+    S.pl[r.id] = {iid:r.id, lbl:seg, cat:'id'};
+    trackPlacement(r.id, ok);
+  });
+  if (repondu >= ex.rows.length) evaluerAide(exId, repondu - justes);
+  const sum = document.getElementById('txsum-'+exId);
+  if (sum) {
+    if (repondu < ex.rows.length) {
+      sum.className = 'vf-summary warn';
+      sum.textContent = 'Réponds à toutes les questions avant de corriger ('
+        + repondu + ' sur ' + ex.rows.length + ').';
+    } else {
+      sum.className = 'vf-summary ' + (justes === ex.rows.length ? 'ok' : 'warn');
+      sum.textContent = justes + ' bonne(s) réponse(s) sur ' + ex.rows.length + '.';
+    }
+  }
+  render();
+}
+// Le texte, segments compris. On échappe le texte AVANT de poser les balises :
+// un article de journal contient des guillemets et des apostrophes, et un
+// module qui les rendrait bruts casserait son propre script.
+function txHtml(ex){
+  const pris = {};
+  ex.rows.forEach(r => { if (S.txSel[r.id]) pris[S.txSel[r.id]] = r.id; });
+  return (ex.paras || []).map(p => {
+    let out = '', reste = p, m;
+    const re = /\[\[([A-Za-z0-9_-]+)\|([\s\S]*?)\]\]/;
+    while ((m = re.exec(reste))) {
+      out += esc(reste.slice(0, m.index));
+      const id = m[1], mots = m[2];
+      const qid = pris[id];
+      let cls = 'tx-seg';
+      if (qid) cls += (S.fb[qid] === 'ok') ? ' ok' : (S.fb[qid] === 'no') ? ' no' : ' is-taken';
+      out += '<span class="' + cls + '" role="button" tabindex="0"'
+           + ' onclick="txPick(\'' + ex.id + '\',\'' + id + '\')"'
+           + ' onkeydown="if(event.key===\'Enter\'||event.key===\' \'){event.preventDefault();'
+           + 'txPick(\'' + ex.id + '\',\'' + id + '\')}">' + esc(mots) + '</span>';
+      reste = reste.slice(m.index + m[0].length);
+    }
+    return '<p>' + out + esc(reste) + '</p>';
+  }).join('');
+}
+function txMotDuSegment(ex, segId){
+  for (const p of (ex.paras || [])) {
+    const m = new RegExp('\\[\\[' + segId + '\\|([\\s\\S]*?)\\]\\]').exec(p);
+    if (m) return m[1];
+  }
+  return segId;
+}
 function vfSelect(zid, lbl) {
   S.vfSel[zid] = lbl;
   delete S.fb[zid];
@@ -2620,6 +2739,17 @@ function buildStatic(){
          + 'En apprendre plus</button></div>';
       }
       h+='</div><div class="savoir-gap"></div>';
+    }
+    // ── Exercice « texte » : un texte suivi, ses questions à côté ──
+    if(ex.type==='texte'){
+      h+='<div class="c-hdr">'+exoNumBadge(ex.num)+'<span class="tag">'+esc(ex.num)+'</span><span class="exo-score" id="score-'+ex.id+'" aria-live="polite">0 / '+ex.rows.length+' répondu</span><span class="ctit">'+esc(ex.tit)+'</span><span class="csub">'+esc(ex.sub||'Choisissez une question, puis cliquez dans le texte le passage qui y répond.')+'</span></div>';
+      h+='<div class="tx-grid"><div class="tx-texte" id="txt-'+ex.id+'"></div>';
+      h+='<div id="txq-'+ex.id+'"></div></div>';
+      h+='<div style="margin-top:14px;display:flex;align-items:center;gap:12px;flex-wrap:wrap">';
+      h+='<button class="btn btn-pri" type="button" onclick="txCheckAll(\''+ex.id+'\')">✓ Corriger</button>';
+      h+='<div class="vf-summary" id="txsum-'+ex.id+'" aria-live="polite"></div>';
+      h+='</div>';
+      card.innerHTML=h; host.appendChild(card); return;
     }
     // ── Exercice Vrai/Faux (ou 2 catégories) — colonnes + bouton Corriger ──
     if(ex.type==='vf'){
@@ -4542,6 +4672,34 @@ function render(){
 
   const used=usedIds();
   EXOS.forEach(ex=>{
+    const txT=document.getElementById('txt-'+ex.id);
+    if(txT && ex.type==='texte'){
+      txT.innerHTML = txHtml(ex);
+      const arm = S.txQ[ex.id];
+      const qh = document.getElementById('txq-'+ex.id);
+      if(qh){
+        qh.innerHTML = ex.rows.map(function(r){
+          const seg = S.txSel[r.id];
+          const fb = S.fb[r.id];
+          let cls = 'tx-q' + (arm===r.id ? ' is-active' : '')
+                  + (fb==='ok' ? ' ok' : fb==='no' ? ' no' : '');
+          const rep = seg
+            ? '<div class="tx-q-rep">« ' + esc(txMotDuSegment(ex, seg)) + ' »</div>'
+            : '<div class="tx-q-rep vide">Cliquez ici, puis dans le texte.</div>';
+          return '<div class="' + cls + '" role="button" tabindex="0"'
+               + ' onclick="txArm(\'' + ex.id + '\',\'' + r.id + '\')"'
+               + ' onkeydown="if(event.key===\'Enter\'||event.key===\' \'){event.preventDefault();'
+               + 'txArm(\'' + ex.id + '\',\'' + r.id + '\')}">'
+               + '<div class="tx-q-txt">' + esc(r.q) + '</div>' + rep + '</div>';
+        }).join('');
+      }
+      const sc=document.getElementById('score-'+ex.id);
+      if(sc){
+        const n=ex.rows.filter(function(r){return S.txSel[r.id]}).length;
+        sc.textContent = n + ' / ' + ex.rows.length + ' répondu';
+      }
+      return;
+    }
     const mount=document.getElementById('mount-'+ex.id);
     if(!mount) return;
     const bank=document.getElementById('bank-'+ex.id);

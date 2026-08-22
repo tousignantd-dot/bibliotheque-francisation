@@ -287,6 +287,44 @@ Deux pièges déjà payés :
   neuf mérite qu'on place une bonne réponse et qu'on vérifie qu'elle est
   acceptée, pas seulement que la page s'affiche.
 
+- **Le type `texte` : un texte suivi et ses questions** — ajouté le 22 août
+  2026, pour les niveaux 6, 7 et 8. Les six autres types travaillent tous la
+  **phrase isolée**, or trois des quatre intentions de compréhension écrite du
+  niveau 6 portent sur un **texte**. Le contournement d'avant — loger le texte
+  dans le bandeau noir d'un `vf` — se lit bien mais interdit de faire cliquer
+  l'élève *dans* le texte. C'est le pilote du niveau 6 (activité 99) qui a
+  buté dessus et l'a demandé.
+
+  ```js
+  {sec:'d1', id:'t1art', type:'texte', num:'Exercice 2',
+   tit:"Ce que dit l'article", color:'#3F6C51',
+   sub:"Choisissez une question, puis cliquez dans le texte.",
+   paras:[
+     "La garantie protège l'acheteur [[ap|même après la fin de la garantie]].",
+     "[[nb|Nadège]] a envoyé une mise en demeure. Elle donne [[dx|dix jours]]."
+   ],
+   rows:[
+     {id:'q1', q:"Qui a envoyé la lettre ?", ok:'nb'},
+     {id:'q2', q:"Combien de temps le marchand a-t-il ?", ok:'dx'},
+     {id:'q3', q:"Jusqu'à quand la garantie protège-t-elle ?", ok:'ap'}
+   ]}
+  ```
+
+  `[[identifiant|les mots]]` marque un passage cliquable ; le `ok` d'une
+  question est l'identifiant du passage. L'élève arme une question, clique le
+  passage, et le lien se voit des deux côtés. Recliquer un passage déjà pris
+  le libère — sans quoi une erreur de clic n'aurait pas d'issue visible. Le
+  texte reste **à côté** des questions au-dessus de 900 px, au-dessus en
+  dessous : c'est tout l'intérêt du type, garder le texte sous les yeux.
+
+  Trois pièges, que `node build/coherence.js` attrape désormais : un `ok` qui
+  ne désigne aucun passage (la question devient invalidable), un passage
+  cliquable qu'aucune question n'attend (l'élève le prend pour une réponse
+  possible), et un exercice sans paragraphe. Le texte des `paras` est échappé
+  **avant** que les balises soient posées : un article de journal est plein de
+  guillemets et d'apostrophes, et les rendre bruts casserait le script du
+  module.
+
 - La consigne de correction de la production **écrite** ne vit pas dans le
   gabarit : `build/greffe_depot_ecrit.py` la pose. L'ancien script croyait la
   remplacer et son `replace` était sans effet — code mort découvert en

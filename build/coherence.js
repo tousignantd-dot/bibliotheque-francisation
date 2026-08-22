@@ -78,6 +78,11 @@ function verifier(slug) {
   for (const ex of EXOS) {
     const idsLignes = new Set((ex.rows || []).map(r => r && r.id));
     const idsImages = new Set((ex.images || []).map(im => im && im.id));
+    const idsSegments = new Set();
+    for (const p of (ex.paras || [])) {
+      for (const m of String(p).matchAll(/\[\[([A-Za-z0-9_-]+)\|/g))
+        idsSegments.add(m[1]);
+    }
     for (const [i, r] of (ex.rows || []).entries()) {
       const etiquette = `${ex.id} ligne ${i + 1}`;
       if (ex.type === 'vf') {
@@ -91,12 +96,35 @@ function verifier(slug) {
         if (!bonne) dire(`${etiquette} : aucune bonne réponse (imgmatch)`);
         else if (idsImages.size && !idsImages.has(bonne))
           dire(`${etiquette} : « ${bonne} » ne désigne aucune image de l’exercice`);
+      } else if (ex.type === 'texte') {
+        // Le type `texte` (niveaux 6 à 8) : la réponse d'une question est
+        // l'identifiant d'un segment marqué `[[id|les mots]]` dans `paras`.
+        // Une réponse qui ne désigne aucun segment donne une question que
+        // rien ne peut valider — l'élève cherche dans le texte un passage
+        // qui n'y est pas.
+        if (!r.q) dire(`${etiquette} : question vide (texte)`);
+        if (!r.ok) dire(`${etiquette} : aucune bonne réponse (texte)`);
+        else if (!idsSegments.has(r.ok))
+          dire(`${etiquette} : « ${r.ok} » ne désigne aucun passage marqué du texte`);
       } else if (ex.type === 'match') {
         if (!r.aid) dire(`${etiquette} : aucun « aid » (match)`);
         else if (!idsLignes.has(r.aid))
           dire(`${etiquette} : « aid: ${r.aid} » ne désigne aucune ligne de l’exercice`);
         if (!r.q || !r.a)
           dire(`${etiquette} : appariement incomplet (q ou a manquant)`);
+      }
+    }
+    if (ex.type === 'texte') {
+      if (!(ex.paras || []).length)
+        dire(`${ex.id} : exercice « texte » sans paragraphe`);
+      if (!idsSegments.size)
+        dire(`${ex.id} : aucun passage marqué [[id|…]] dans le texte`);
+      // Un segment que rien n'interroge est cliquable pour rien : l'élève le
+      // prend pour une réponse possible et se demande à quoi il sert.
+      const vises = new Set((ex.rows || []).map(r => r && r.ok));
+      for (const seg of idsSegments) {
+        if (!vises.has(seg))
+          dire(`${ex.id} : le passage « ${seg} » est cliquable mais aucune question ne l'attend`);
       }
     }
     // Un imgmatch dont une image manque laisse une zone vide à l'écran.
