@@ -545,6 +545,32 @@ MODULES = {
                         "Le billet d'absence",
                         "Quand on doit arrêter"),
     },
+    # `build/cadre.py 3 "Participation à une activité culturelle ou sportive"`
+    # a décidé de la forme de ce module, et il fait mentir l'attente : au
+    # niveau 3, cette situation **parle**. Quatre intentions, dont une en
+    # production orale — « demander et comprendre des renseignements pour
+    # choisir une activité » — la même en compréhension orale, plus deux
+    # lectures très précises : « lire une brève description de film dans un
+    # téléhoraire » et « lire une recette » (dont les consignes se
+    # comprennent aussi à l'oral). Le module est donc bâti sur des dialogues,
+    # et ses deux seuls papiers — le feuillet du ciné-club et la recette —
+    # sont exactement ceux que le programme nomme.
+    #
+    # `module-activite` (niveau 4, activité 50) traite la même situation, mais
+    # s'y **inscrit** : dépliant, consignes du moniteur, formulaire à remplir.
+    # Ici, on ne s'inscrit pas — on se renseigne avant de choisir : quand,
+    # combien, où, et quoi apporter.
+    'module-n3-loisirs': {
+        'numero': 12, 'activite': 85, 'niveau': 3,
+        'titre': 'Choisir une activité au centre',
+        'chapeau': "Demander l'horaire, le tarif et ce qu'il faut apporter, "
+                   "lire une brève description de film dans un téléhoraire, "
+                   "puis suivre les consignes d'une recette.",
+        'seances': GRILLE_3_DEFIS,
+        'blocs': _blocs("Quand, combien, quoi apporter ?",
+                        "Le ciné-club du vendredi",
+                        "La cuisine collective"),
+    },
     # ── Niveau 5 ────────────────────────────────────────────────────
     # `module-logement` (niveau 4) traite la même situation du programme, mais
     # s'arrête à la visite et à la comparaison. Ici, on téléphone, on prend des
