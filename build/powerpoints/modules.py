@@ -265,6 +265,23 @@ MODULES = {
                         "L'adresse et le téléphone"),
     },
 
+    # Troisième module du niveau 1. La situation du programme est
+    # « Orientation dans l'établissement » et elle n'a **qu'une** intention de
+    # communication, en compréhension écrite : décoder des panneaux avec ou
+    # sans pictogrammes. Distinct de `module-n2-couloirs` (niveau 2,
+    # activité 90), qui traite la même situation un niveau plus haut : là on
+    # lit un plan mural, on comprend qu'un 214 est au deuxième étage et on
+    # demande son chemin ; ici, l'élève ne va nulle part tout seul — il lit
+    # une porte. Un dessin, un mot, une réponse.
+    'module-n1-orientation': {
+        'numero': 3, 'activite': 97, 'niveau': 1,
+        'titre': 'Je lis les panneaux du centre',
+        'chapeau': "Reconnaître le dessin d'un panneau, lire le nom du lieu "
+                   "écrit à côté, et comprendre ce qui est permis ou interdit.",
+        'seances': GRILLE_COURTE,
+        'blocs': _blocs('Le mot sur la porte', 'Le panneau qui dit quoi faire'),
+    },
+
     # ── Niveau 2 ────────────────────────────────────────────────────
     # Deuxième module court : huit séances, deux défis. Distinct de
     # `module-deplacement` (niveau 4), qui porte sur le trajet complet et le

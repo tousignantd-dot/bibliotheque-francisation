@@ -1,0 +1,16 @@
+const FC_CARDS = [
+  {word:"un panneau", def:"La plaque avec un dessin ou un mot, sur un mur ou sur une porte.", ex:"Le <strong>panneau</strong> est à côté de la porte.", img:"/assets/interactive/module-n1-orientation/vocab/panneau.jpg", tache:"prep"},
+  {word:"un dessin", def:"La petite image du panneau. Elle dit tout, sans mot.", ex:"Le <strong>dessin</strong> montre un homme et une femme.", img:"/assets/interactive/module-n1-orientation/vocab/dessin.jpg", tache:"prep"},
+  {word:"les toilettes", def:"La salle avec un lavabo. Sur la porte, un dessin d'homme ou de femme.", ex:"Le mot <strong>toilettes</strong> est écrit sur les deux portes.", img:"/assets/interactive/module-n1-orientation/vocab/toilettes.jpg", tache:"prep"},
+  {word:"la cafétéria", def:"La salle avec des tables, pour le dîner. Son dessin : une fourchette.", ex:"Le dessin de la <strong>cafétéria</strong> montre une fourchette.", img:"/assets/interactive/module-n1-orientation/vocab/cafeteria.jpg", tache:"prep"},
+  {word:"une flèche", def:"Le petit trait avec une pointe. Il montre où aller.", ex:"La <strong>flèche</strong> montre la porte du fond.", img:"/assets/interactive/module-n1-orientation/vocab/fleche.jpg", tache:"prep"},
+  {word:"l'accueil", def:"L'endroit, tout de suite après la porte, où quelqu'un répond aux questions.", ex:"À l'<strong>accueil</strong>, on répond à mes questions.", img:"/assets/interactive/module-n1-orientation/vocab/accueil.jpg", tache:"t1"},
+  {word:"le service de garde", def:"La salle où les petits enfants restent pendant le cours.", ex:"Ma fille reste au <strong>service de garde</strong>.", img:"/assets/interactive/module-n1-orientation/vocab/service-de-garde.jpg", tache:"t1"},
+  {word:"l'entrée", def:"La porte pour aller dedans. Souvent, une flèche la montre.", ex:"Une flèche montre l'<strong>entrée</strong>, du côté de la rue.", img:"/assets/interactive/module-n1-orientation/vocab/entree.jpg", tache:"t1"},
+  {word:"la sortie", def:"La porte pour aller dehors. Son dessin : quelqu'un qui court.", ex:"Le dessin de la <strong>sortie</strong> est vert.", img:"/assets/interactive/module-n1-orientation/vocab/sortie.jpg", tache:"t1"},
+  {word:"le vestiaire", def:"La petite salle où on laisse son manteau et ses bottes.", ex:"Je laisse mon manteau au <strong>vestiaire</strong>.", img:"/assets/interactive/module-n1-orientation/vocab/vestiaire.jpg", tache:"t1"},
+  {word:"poussez", def:"Le mot écrit sur une porte qui s'ouvre loin de vous.", ex:"C'est écrit <strong>poussez</strong> : la porte va vers l'autre côté.", img:"/assets/interactive/module-n1-orientation/vocab/poussez.jpg", tache:"t2"},
+  {word:"tirez", def:"Le mot écrit sur une porte qui s'ouvre vers vous.", ex:"C'est écrit <strong>tirez</strong> : la porte vient vers moi.", img:"/assets/interactive/module-n1-orientation/vocab/tirez.jpg", tache:"t2"},
+  {word:"défense de fumer", def:"Le panneau qui dit qu'on ne fume pas ici.", ex:"Dans le centre, c'est <strong>défense de fumer</strong> partout.", img:"/assets/interactive/module-n1-orientation/vocab/defense-de-fumer.jpg", tache:"t2"},
+  {word:"la sortie de secours", def:"La porte verte pour partir vite, quand il y a un danger.", ex:"La <strong>sortie de secours</strong> est au bout du corridor.", img:"/assets/interactive/module-n1-orientation/vocab/sortie-de-secours.jpg", tache:"t2"},
+];
