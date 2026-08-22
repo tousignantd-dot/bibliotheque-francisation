@@ -6272,7 +6272,149 @@ JEU_DE_ROLE_CHRONIQUEPRATIQUE = {
 }
 
 
+JEU_DE_ROLE_RECONNAITRE = {
+    "terminus": {
+        "contexte": (
+            "Un appel téléphonique, la veille d'une arrivée. Kadiatou "
+            "Diallo, 32 ans, arrive vendredi à 14 h 40 au terminus "
+            "d'autobus de Saint-Hyacinthe avec son frère Ousmane. Celui qui "
+            "va la chercher ne l'a jamais vue. Elle est de taille moyenne, "
+            "plutôt mince ; visage allongé, pommettes hautes, cheveux "
+            "ondulés attachés en chignon bas, lunettes rondes à monture "
+            "fine et dorée, petite cicatrice au-dessus du sourcil gauche. "
+            "Elle portera un foulard vert et une longue veste grise, et "
+            "elle tirera une grosse valise rouge à roulettes."
+        ),
+        "marisol": [
+            "Tu as vu une photo d'elle, envoyée par son frère.",
+            "Tu sais qu'un terminus le vendredi après-midi n'est pas vide.",
+        ],
+        "ghislain": [
+            "Tu n'as jamais vu cette personne et tu n'as pas la photo.",
+            "Tu demandes d'abord ce qui se voit de loin : la taille, la "
+            "carrure, les vêtements, le bagage.",
+            "Tu redemandes chaque fois qu'un détail reste vague — « attachés "
+            "comment ? », « grande, elle ou la valise ? ».",
+            "Tu demandes aussi où te placer dans le terminus, et comment "
+            "eux te reconnaîtront.",
+        ],
+    },
+    "ousmane": {
+        "contexte": (
+            "Ousmane Diallo, 38 ans, arrive par le même autobus. Il est "
+            "très grand — presque six pieds trois —, mince, les épaules "
+            "larges, le crâne rasé et la barbe taillée court. Celui qui va "
+            "le chercher l'a rencontré deux fois il y a trois ans, quand il "
+            "avait encore les cheveux longs."
+        ),
+        "marisol": [
+            "Tu sais qu'il a beaucoup changé depuis trois ans.",
+        ],
+        "ghislain": [
+            "Tu gardes en tête l'image d'il y a trois ans et tu la dis.",
+            "Tu demandes ce qui a changé depuis.",
+            "Tu confonds volontiers « grand » et « gros », pour voir si "
+            "l'élève corrige.",
+        ],
+    },
+    "rendezvous": {
+        "contexte": (
+            "Il faut aussi que les voyageurs reconnaissent celui qui vient "
+            "les chercher : un homme dans la soixantaine, cheveux blancs, "
+            "casquette bleu marine, ancien manteau de travail brun. Il "
+            "attendra près du banc qui fait face au guichet, du côté où "
+            "arrivent les autobus venant du nord."
+        ),
+        "marisol": [
+            "Tu dois écrire ou dire à quoi ressemble celui qui vient les "
+            "chercher, et où il se tiendra.",
+        ],
+        "ghislain": [
+            "Tu tiens à ce que l'endroit soit dit précisément : le terminus "
+            "a deux portes.",
+            "Tu n'aimes pas qu'on dise « ton vieux manteau » et tu proposes "
+            "« mon ancien manteau de travail ».",
+            "Tu demandes ce qu'on fait si l'autobus est en retard.",
+        ],
+    },
+}
+
+
 JEU_DE_ROLE_SCENARIOS = {
+    "reconnaitre": {
+        "cadre": ("la description d'une personne à quelqu'un qui va la "
+                  "chercher au terminus d'autobus et qui ne l'a jamais vue, "
+                  "au stade intermédiaire"),
+        "contexte_label": "La personne à reconnaître",
+        "cas": JEU_DE_ROLE_RECONNAITRE,
+        "adresse": ("Tutoie l'élève du début à la fin : ce sont deux voisins "
+                    "qui se connaissent depuis des années, et le module "
+                    "tutoie partout. Ne propose jamais le vouvoiement."),
+        "sujets": [
+            "la silhouette et l'âge approximatif, donnés avant tout détail",
+            "les vêtements et le bagage, ce qui se voit de loin",
+            "le visage et les cheveux, en détail : visage allongé, cheveux "
+            "ondulés, chignon, lunettes",
+            "le signe particulier, gardé pour la fin",
+            "des adjectifs accordés, et placés du bon côté du nom",
+            "au moins une subordonnée relative avec « qui », « que » ou "
+            "« où » : le banc où l'on attend",
+            "une correction de soi-même quand une phrase a été ambiguë",
+        ],
+        "cloture": ("Quand l'élève a donné la silhouette, les vêtements, le "
+                    "visage et un signe particulier, redis la description en "
+                    "deux phrases pour vérifier que tu chercherais bien la "
+                    "même personne, puis conclus. N'accepte pas « elle est "
+                    "gentille » ou « elle est jolie » comme description : "
+                    "redemande quelque chose qui se voit de loin, une fois."),
+        # `ouverture[role_eleve]` est la phrase que l'ÉLÈVE dit en premier :
+        # celle qui décrit ouvre en annonçant qui arrive ; celui qui va au
+        # terminus ouvre en demandant à quoi ressemble la personne.
+        "ouverture": {
+            "marisol": "Ghislain, il faut que je vous explique à quoi elle ressemble.",
+            "ghislain": "Bon. Alors, cette personne, je la reconnais comment ?",
+        },
+        "roles": {
+            "marisol": {
+                "qui": ("Tu es Marisol Quintanilla, 41 ans, arrivée du "
+                        "Salvador il y a sept ans, aide-pâtissière à la "
+                        "boulangerie Trottier, à Saint-Hyacinthe. Tu as reçu "
+                        "une photo de la personne à reconnaître et tu "
+                        "travailles vendredi après-midi."),
+                "conduite": ("Niveau 6 : ton interlocuteur doit tenir une "
+                             "description suivie, pas répondre à un "
+                             "questionnaire. Tu tutoies. Tu donnes les "
+                             "détails dans l'ordre — silhouette, vêtements, "
+                             "visage, signe particulier — mais tu ne fais "
+                             "jamais le travail à sa place : si c'est lui qui "
+                             "décrit, tu écoutes et tu demandes des "
+                             "précisions. Tu emploies les mots du dossier : "
+                             "de taille moyenne, un visage allongé, des "
+                             "cheveux ondulés, un chignon bas, des lunettes "
+                             "rondes, un foulard vert, une grosse valise "
+                             "rouge."),
+            },
+            "ghislain": {
+                "qui": ("Tu es Ghislain Bourbeau, 62 ans, voisin retraité de "
+                        "Marisol. Tu vas au terminus vendredi à 14 h 30. Tu "
+                        "n'as jamais vu la personne à reconnaître et tu n'as "
+                        "pas de photo."),
+                "conduite": ("Niveau 6 : l'élève doit tenir une description "
+                             "détaillée et répondre à une demande de "
+                             "précision sans se contredire. Tu tutoies. Tu "
+                             "n'es ni pressé ni impatient, tu es méthodique : "
+                             "tu redemandes tout ce qui reste vague, tu fais "
+                             "remarquer les phrases ambiguës — « une grande "
+                             "valise, ou une grande femme ? » —, et tu "
+                             "répètes de temps en temps ce que tu as compris "
+                             "pour que l'élève corrige. Tu refuses poliment "
+                             "ce qui ne se voit pas de loin. Tu ne décris "
+                             "jamais la personne à sa place. Vers la fin, tu "
+                             "demandes où te placer et comment on te "
+                             "reconnaîtra, toi."),
+            },
+        },
+    },
     "colis": {
         "cadre": "une courte démarche au comptoir postal d'une pharmacie",
         "contexte_label": "L'endroit où vous vous trouvez tous les deux",

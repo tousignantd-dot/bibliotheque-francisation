@@ -1036,6 +1036,29 @@ MODULES = {
                         'Le courrier des lecteurs'),
     },
 
+    # Vague 6, niveau 6. La situation « Relations sociales » porte quatre
+    # intentions — décrire quelqu'un (PO), recevoir des nouvelles (CE),
+    # rédiger un courriel pour donner des nouvelles et raconter un évènement
+    # (PE), informer du contenu d'un article d'intérêt général (PE) — donc
+    # GRILLE_3_DEFIS, comme le veut le tableau du pilote du niveau. Les trois
+    # défis sont trois retours sur le même dossier : le courriel reçu, la
+    # personne à reconnaître, le courriel écrit. Ne recoupe aucun des cinq
+    # voisins de la même situation (niveaux 1, 2, 3, 4 et 5) : ce qui change
+    # d'un niveau à l'autre n'est pas le sujet, c'est le travail — ici, tenir
+    # le fil d'un texte long.
+    'module-n6-relations': {
+        'numero': 3, 'activite': 101, 'niveau': 6,
+        'titre': "Reprendre le fil",
+        'chapeau': "Lire un long courriel de nouvelles sans en perdre le "
+                   "fil, décrire quelqu'un assez précisément pour qu'on le "
+                   "reconnaisse, puis écrire à son tour pour donner des "
+                   "nouvelles et transmettre un article.",
+        'seances': GRILLE_3_DEFIS,
+        'blocs': _blocs("Le courriel d'Ousmane",
+                        'La personne à reconnaître',
+                        "L'article qu'on transmet"),
+    },
+
     'module-n7-actualite': {
         'numero': 1, 'activite': 60, 'niveau': 7,
         'titre': "Suivre l'actualité",
