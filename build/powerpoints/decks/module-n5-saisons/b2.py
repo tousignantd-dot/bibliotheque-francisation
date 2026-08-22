@@ -44,18 +44,18 @@ def build(dossier):
     d.regle("L'infinitif, puis six terminaisons",
             "-ai, -as, -a, -ons, -ez, -ont, ajoutés à l'infinitif entier.",
             precision="Pour les verbes en -re, on enlève seulement le e final : "
-                      "descendre → le mercure descendra.",
+                      "descendre donne « le mercure descendra ».",
             notes="Diapositive à photographier. C'est le temps le plus régulier du "
                   "français : toutes les personnes gardent le même radical. Ce qui se "
                   "travaille, ce ne sont pas les terminaisons, ce sont les irréguliers.")
 
     d.cartes("Sept irréguliers", "Ceux du bulletin, à savoir par cœur", [
-        ("être → il sera", "« Une amélioration sera possible en après-midi. »"),
-        ("avoir → il y aura", "« Il y aura de la poudrerie sur la route. »"),
-        ("faire → il fera", "« Il fera moins douze demain matin. »"),
-        ("aller → ça ira", "« Ça ira mieux à partir de samedi midi. »"),
-        ("pouvoir → on pourra", "« On pourra sortir sans crampons lundi. »"),
-        ("falloir → il faudra", "« Il faudra apporter des bottes. »"),
+        ("être : il sera", "« Une amélioration sera possible en après-midi. »"),
+        ("avoir : il y aura", "« Il y aura de la poudrerie sur la route. »"),
+        ("faire : il fera", "« Il fera moins douze demain matin. »"),
+        ("aller : ça ira", "« Ça ira mieux à partir de samedi midi. »"),
+        ("pouvoir : on pourra", "« On pourra sortir sans crampons lundi. »"),
+        ("falloir : il faudra", "« Il faudra apporter des bottes. »"),
     ], cols=2,
        notes="Cinq des sept sont impersonnels dans un bulletin : il sera, il y aura, il "
              "fera, il faudra, il viendra. L'élève n'aura presque jamais à les conjuguer "
