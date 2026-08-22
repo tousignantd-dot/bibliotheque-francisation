@@ -45,6 +45,9 @@ RATTACHEMENTS = {
     'module-pub': 'Publicité',
     'module-logement': "Location d'un logement",
     'module-probleme': "Problèmes reliés à l'habitation",
+    # Même abrègement que son voisin du niveau 4 : le manifeste annonce
+    # « Logement », le programme dit « Problèmes reliés à l'habitation ».
+    'module-n6-habitation': "Problèmes reliés à l'habitation",
     'module-n5-oeuvres': ('Découverte d’œuvres littéraires, musicales, '
                           'cinématographiques ou télévisuelles'),
     'module-n7-actualite': "Suivi de l'actualité",
