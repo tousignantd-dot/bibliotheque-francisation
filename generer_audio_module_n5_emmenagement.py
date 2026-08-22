@@ -41,6 +41,8 @@ except ImportError:
     print("❌ pip install requests"); sys.exit(1)
 
 from voix_lente import ralentir_si_enseignante
+sys.path.insert(0, str(Path(__file__).resolve().parent / 'build'))
+from voix import enrichir  # contexte français pour les mots isolés
 
 RACINE = Path(__file__).resolve().parent
 SORTIE = RACINE / "assets/interactive/module-n5-emmenagement"
@@ -195,10 +197,10 @@ def parle(cle, texte, voix, chemin):
 
     Le script reste relançable : il saute ce qui existe déjà.
     """
-    corps = json.dumps({
+    corps = json.dumps(enrichir({
         "text": texte, "model_id": "eleven_multilingual_v2",
         "voice_settings": {"stability": 0.5, "similarity_boost": 0.75},
-    }, ensure_ascii=False)
+    }), ensure_ascii=False)
     chemin.parent.mkdir(parents=True, exist_ok=True)
     tmp = chemin.with_suffix(".part")
 

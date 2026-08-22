@@ -17,6 +17,9 @@ except ImportError:
 
 # ── VOICES ────────────────────────────────────────────────────────────
 from voix_lente import ralentir_si_enseignante
+import sys as _sys, pathlib as _pl
+_sys.path.insert(0, str(_pl.Path(__file__).resolve().parent / 'build'))
+from voix import enrichir  # contexte français pour les mots isolés
 
 VOICES = {
     "enseignante": "K7gx0ylJdff0yjM2uVQS",      # 👩 Féminine #1
@@ -91,7 +94,7 @@ def generate_audio(api_key, text, voice_id, output_path):
         "voice_settings": {"stability": 0.5, "similarity_boost": 0.75},
     }
     try:
-        response = requests.post(url, json=payload, headers=headers, timeout=30)
+        response = requests.post(url, json=enrichir(payload), headers=headers, timeout=30)
         if response.status_code != 200:
             print(f"   ❌ Erreur {response.status_code}: {response.text[:200]}")
             return False

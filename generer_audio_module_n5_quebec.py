@@ -1,4 +1,7 @@
 """
+import sys as _sys, pathlib as _pl
+_sys.path.insert(0, str(_pl.Path(__file__).resolve().parent / 'build'))
+from voix import enrichir  # contexte français pour les mots isolés
 Générateur d'audio — module « Une semaine au Bic »
 (module-n5-quebec, niveau 5, activité 70).
 
@@ -172,8 +175,8 @@ def parle(cle, texte, voix, chemin):
         try:
             r = requests.post(
                 f"https://api.elevenlabs.io/v1/text-to-speech/{voix}",
-                json={"text": texte, "model_id": "eleven_multilingual_v2",
-                      "voice_settings": {"stability": 0.5, "similarity_boost": 0.75}},
+                json=enrichir({"text": texte, "model_id": "eleven_multilingual_v2",
+                      "voice_settings": {"stability": 0.5, "similarity_boost": 0.75}}),
                 headers={"xi-api-key": cle, "Content-Type": "application/json"},
                 timeout=60)
         except requests.exceptions.RequestException as e:

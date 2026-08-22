@@ -16,6 +16,9 @@ except ImportError:
     sys.exit(1)
 
 from voix_lente import ralentir_si_enseignante
+import sys as _sys, pathlib as _pl
+_sys.path.insert(0, str(_pl.Path(__file__).resolve().parent / 'build'))
+from voix import enrichir  # contexte français pour les mots isolés
 
 VOICES = {
     "narrateur":   "IPgYtHTNLjC7Bq7IPHrm",   # 👨 Narrateur — Le journaliste
@@ -77,7 +80,7 @@ def generate_audio(api_key, text, voice_id, output_path, voice_settings):
         "voice_settings": voice_settings,
     }
     try:
-        r = requests.post(url, json=payload, headers=headers, timeout=45)
+        r = requests.post(url, json=enrichir(payload), headers=headers, timeout=45)
         if r.status_code != 200:
             print(f"   ❌ {r.status_code}: {r.text[:200]}")
             return False

@@ -12,6 +12,9 @@ Voix unique (narrateur) — même voix que les mots isolés du module.
 """
 import os, sys, time
 from pathlib import Path
+import sys as _sys, pathlib as _pl
+_sys.path.insert(0, str(_pl.Path(__file__).resolve().parent / 'build'))
+from voix import enrichir  # contexte français pour les mots isolés
 
 try:
     import requests
@@ -111,7 +114,7 @@ def generate(api_key, text, path):
     url = f"https://api.elevenlabs.io/v1/text-to-speech/{VOICE}"
     payload = {"text": text, "model_id": "eleven_multilingual_v2",
                "voice_settings": {"stability": 0.5, "similarity_boost": 0.75}}
-    r = requests.post(url, json=payload,
+    r = requests.post(url, json=enrichir(payload),
                       headers={"xi-api-key": api_key, "Content-Type": "application/json"},
                       timeout=45)
     if r.status_code != 200:

@@ -10,6 +10,9 @@ dans la console — elle renvoie exactement ce dictionnaire, prêt à coller.
 """
 import os, sys, time
 from pathlib import Path
+import sys as _sys, pathlib as _pl
+_sys.path.insert(0, str(_pl.Path(__file__).resolve().parent / 'build'))
+from voix import enrichir  # contexte français pour les mots isolés
 
 try:
     import requests
@@ -102,7 +105,7 @@ def generate(api_key, text, path):
         "voice_settings": DEFAULT_VOICE_SETTINGS,
     }
     try:
-        r = requests.post(url, json=payload, headers=headers, timeout=45)
+        r = requests.post(url, json=enrichir(payload), headers=headers, timeout=45)
         if r.status_code != 200:
             print(f"   ❌ {r.status_code}: {r.text[:160]}")
             return False
