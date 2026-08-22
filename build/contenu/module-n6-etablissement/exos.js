@@ -1,7 +1,7 @@
 const EXOS = [
  // ── JE DÉCOUVRE ─────────────────────────────────────────────
   {sec:'prep', id:'prVocab', type:'match', num:'Vocabulaire · 1', tit:'Le mot et sa définition', color:'#A5335F',
-   sub:"Choisis un mot, puis sa définition. Six mots à la fois.", noQLbl:true, bankLbl:'Définitions', zonePh:'glisse la définition ici',
+   sub:"Choisis un mot, puis va chercher sa définition dans le banc. Six à la fois.", noQLbl:true, bankLbl:'Définitions', zonePh:'glisse la définition ici',
    rows: FC_CARDS.map((c,i)=>({id:'pv'+i, q:c.word, aid:'pv'+i, a:c.def}))},
 
   {sec:'prep', id:'prVF', type:'vf', num:'Exercice 1', tit:"Vrai ou Faux — Chaque question a sa personne", color:'#A5335F',
@@ -24,8 +24,8 @@ const EXOS = [
     {id:'pf8', txt:"Réal conseille de n'apporter que les papiers qu'on juge utiles.", ok:'FAUX'},
    ]},
 
-  {sec:'prep', id:'prGraphie', type:'vf', num:'Exercice 2', tit:'Des lettres qui ne se disent pas comme on croit', color:'#A5335F', accent:'#A5335F', cards:true, listen:true,
-   sub:"Écoute chaque mot. Quel son entends-tu à l'endroit des lettres soulignées ?",
+  {sec:'prep', id:'prGraphie', type:'vf', num:'Exercice 2', tit:'Trois familles de lettres qui trompent', color:'#A5335F', accent:'#A5335F', cards:true, listen:true,
+   sub:"Écoute chaque mot une fois. Quelle est la famille des lettres marquées ?",
    tiles:['COMME K','COMME S','COMME CH'],
    rows:[
     {id:'gr1', txt:"la psychologie", ok:'COMME K'},
@@ -63,7 +63,7 @@ const EXOS = [
    ]},
 
   {sec:'prep', id:'prImg', type:'imgmatch', num:'Exercice 4', tit:"Les lieux d'un établissement", color:'#A5335F',
-   sub:"Glisse chaque photo sur la phrase qui la décrit.",
+   sub:"Chaque photo montre un endroit du centre. Pose-la sur la phrase qui va avec.",
    images:[
     {id:'im1', src:'/assets/interactive/module-n6-etablissement/images/comptoir-accueil.jpg'},
     {id:'im2', src:'/assets/interactive/module-n6-etablissement/images/bureau-orientation.jpg'},
@@ -117,9 +117,9 @@ const EXOS = [
   {sec:'t1', id:'t1repr', type:'write', num:'Exercice 3', tit:'Le petit mot qui renvoie en arrière', color:'#1D6B8F', cols:1,
    sub:"Complète la deuxième phrase avec « le », « l' », « en » ou « y ». Le passage souligné de la première phrase est ce qu'il faut remplacer.",
    savoir:{h:"› Le, en, y : trois façons de ne pas se répéter", rows:[
-     ["« le » remplace une idée entière","Pas un objet : une <b>phrase déjà dite</b>. <span class='savoir-ex'>Je sais <u>que le test ne donne pas de diplôme</u>. → Je <b>le</b> sais.</span> Ce « le » ne s'accorde jamais : il ne désigne ni un homme, ni une femme, ni un pluriel."],
-     ["« en » remplace « de + chose »","<span class='savoir-ex'>Il parle <u>des préalables</u>. → Il <b>en</b> parle.</span> Pour une personne, on garde la préposition. <span class='savoir-ex'>Il parle <u>de sa conseillère</u>. → Il parle <b>d'elle</b>.</span>"],
-     ["« y » remplace « à + chose », ou un lieu","<span class='savoir-ex'>Je pense <u>à ma demande</u>. → J'<b>y</b> pense.</span> <span class='savoir-ex'>Elle va <u>au secrétariat</u>. → Elle <b>y</b> va.</span>"],
+     ["Le « le » qui ramasse une phrase","Pas un objet : une <b>phrase déjà dite</b>. <span class='savoir-ex'>Je sais <u>que le test ne donne pas de diplôme</u>. → Je <b>le</b> sais.</span> Ce « le » ne s'accorde jamais : il ne désigne ni un homme, ni une femme, ni un pluriel."],
+     ["Le « en » des groupes en de","<span class='savoir-ex'>Il parle <u>des préalables</u>. → Il <b>en</b> parle.</span> Pour une personne, on garde la préposition. <span class='savoir-ex'>Il parle <u>de sa conseillère</u>. → Il parle <b>d'elle</b>.</span>"],
+     ["Le « y » des groupes en à, et des lieux","<span class='savoir-ex'>Je pense <u>à ma demande</u>. → J'<b>y</b> pense.</span> <span class='savoir-ex'>Elle va <u>au secrétariat</u>. → Elle <b>y</b> va.</span>"],
      ["Devant une voyelle, « le » devient « l' »","<span class='savoir-ex'>Il <b>l'</b>a répété deux fois. · Elle <b>l'</b>ignorait encore lundi.</span> Le trou attend alors deux caractères et une apostrophe."],
      ["Le réflexe de lecture","Quand tu entends « le », « en » ou « y », recule d'une phrase et demande-toi : ça remplace quoi ? C'est là, et nulle part ailleurs, que se perd le fil d'un entretien."],
    ]},
@@ -159,10 +159,10 @@ const EXOS = [
    savoir:{h:"› La question qui entre dans une phrase", rows:[
      ["À quoi ça sert","Une question directe peut sembler brusque devant quelqu'un qu'on ne connaît pas. La question indirecte l'adoucit et la relie à ce qu'on vient de dire. <span class='savoir-ex'>Est-ce que ça compte ? → <b>Je me demande si</b> ça compte.</span>"],
      ["Trois choses disparaissent","Le point d'interrogation, l'inversion du sujet, et « est-ce que ». <span class='savoir-ex'>Où est-ce que je dépose ça ? → Je voudrais savoir <b>où</b> je dépose ça.</span> Écrire « je voudrais savoir où est-ce que… » est la faute la plus fréquente."],
-     ["« est-ce que » devient « si »","<span class='savoir-ex'>Est-ce que mes années comptent ? → Je me demande <b>si</b> mes années comptent.</span> Devant « il », « si » s'écrit <b>s'il</b> — et jamais « si il »."],
-     ["« qu'est-ce que » devient « ce que »","<span class='savoir-ex'>Qu'est-ce que je dois faire ? → Je ne sais pas <b>ce que</b> je dois faire.</span> Et « qu'est-ce qui » devient <b>ce qui</b> : <span class='savoir-ex'>J'aimerais savoir <b>ce qui</b> manque.</span>"],
+     ["« est-ce que » se change en « si »","<span class='savoir-ex'>Est-ce que mes années comptent ? → Je me demande <b>si</b> mes années comptent.</span> Devant « il », « si » s'écrit <b>s'il</b> — et jamais « si il »."],
+     ["« qu'est-ce que » se change en « ce que »","<span class='savoir-ex'>Qu'est-ce que je dois faire ? → Je ne sais pas <b>ce que</b> je dois faire.</span> Et « qu'est-ce qui » devient <b>ce qui</b> : <span class='savoir-ex'>J'aimerais savoir <b>ce qui</b> manque.</span>"],
      ["Avec un infinitif, c'est encore plus court","Quand le sujet est le même des deux côtés, on garde le mot interrogatif et on met l'infinitif. <span class='savoir-ex'>Je ne sais pas <b>comment</b> m'inscrire. · Je ne sais pas <b>quoi</b> faire de mes six ans.</span> Attention : c'est <b>quoi</b>, pas « que »."],
-     ["Les verbes qui l'appellent","se demander, savoir, ignorer, vouloir savoir, dire, expliquer, demander, comprendre. Après eux, la question s'assied et ne se lève plus."],
+     ["Les verbes qui réclament cette forme","se demander, savoir, ignorer, vouloir savoir, dire, expliquer, demander, comprendre. Après eux, la question s'assied et ne se lève plus."],
    ]},
    items:[
     {q:"« Est-ce que mes années comptent ? » → Je me demande ___ mes années comptent.", accept:["si"], ph:"un seul mot"},
@@ -175,7 +175,7 @@ const EXOS = [
     {q:"« Est-ce qu'il faut un rendez-vous ? » → Il demande ___ faut un rendez-vous.", accept:["s'il"], ph:"deux mots collés"},
    ]},
 
-  {sec:'t1', id:'t1chiffres', type:'write', num:'Exercice 6', tit:'Deuxième écoute — les chiffres exacts', color:'#1D6B8F', cols:2,
+  {sec:'t1', id:'t1chiffres', type:'write', num:'Exercice 6', tit:'Les chiffres, à la deuxième écoute', color:'#1D6B8F', cols:2,
    sub:"Réécoute l'entretien et complète. Tu peux arrêter l'extrait et revenir en arrière.",
    items:[
     {q:"Bintou a travaillé ___ ans dans une pharmacie à Bamako.", accept:["six","6"], ph:"en lettres"},
@@ -371,7 +371,7 @@ const EXOS = [
     {q:"L'enseignant insiste une dernière fois. Il demande qu'on lui ___ le résultat dès qu'il arrive. (dire)", accept:["dise"], ph:"…"},
    ]},
 
-  {sec:'t3', id:'t3si', type:'write', num:'Exercice 5', tit:'Poser une condition avec « si »', color:'#3B49A0', cols:1,
+  {sec:'t3', id:'t3si', type:'write', num:'Exercice 5', tit:'Dire non en déplaçant une date', color:'#3B49A0', cols:1,
    sub:"La première phrase donne la situation. Écris le verbe entre parenthèses à la forme qui convient après « si ».",
    savoir:{h:"› L'hypothèse réaliste avec « si »", rows:[
      ["Sur un fait présent ou à venir","<b>si + présent</b>, et la conséquence au présent ou au futur. <span class='savoir-ex'><b>Si</b> elle <b>réussit</b> le test, la preuve arrivera en janvier.</span> C'est la forme de toutes les négociations : on pose une condition, on annonce ce qui suit."],
@@ -391,9 +391,9 @@ const EXOS = [
     {q:"Voici la faute la plus fréquente à éviter. Si elle ___ demain, on regardera son dossier. (venir)", accept:["vient"], ph:"surtout pas « viendra »"},
    ]},
 
-  {sec:'t3', id:'t3pdv', type:'write', num:'Exercice 6', tit:'Annoncer que ce qui suit est un avis', color:'#3B49A0', cols:2,
-   sub:"Complète avec le connecteur qui convient. Chacun ne sert qu'une fois.",
-   savoir:{h:"› Les connecteurs de point de vue", rows:[
+  {sec:'t3', id:'t3pdv', type:'write', num:'Exercice 6', tit:'Deux mots avant de donner son opinion', color:'#3B49A0', cols:2,
+   sub:"Un connecteur par phrase, et aucun ne revient deux fois.",
+   savoir:{h:"› Dire que c'est un avis, et à qui il appartient", rows:[
      ["Pourquoi on les annonce","Une opinion présentée comme un fait se discute mal : l'autre doit d'abord démolir avant de répondre. Annoncée comme une opinion, elle laisse la place à la sienne. <span class='savoir-ex'><b>À mon avis</b>, trois semaines, c'est court.</span>"],
      ["Ceux qui parlent de soi","<b>à mon avis · selon moi · pour ma part · personnellement · quant à moi</b>. Ils se placent au début de la phrase, suivis d'une virgule."],
      ["Ceux qui parlent d'un autre","<b>selon</b> et <b>d'après</b>, suivis d'un nom : <span class='savoir-ex'><b>Selon</b> la responsable, aucun délai n'est possible.</span> Ils disent d'où vient l'information et à qui elle appartient — utile quand quatre personnes parlent."],
