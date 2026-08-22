@@ -28,5 +28,5 @@ const SECTIONS = [
 
   {id:'retiens', no:'✓', title:'Je retiens des mots', color:'#A5335F', custom:true,
    lead:"Rassembler les mots de l'hôpital, de l'attente, de l'entretien et de l'écrit qui reste.",
-   intro:"Je retiens des mots — Note tes mots utiles, révise avec les cartes mémoire, puis évalue ce que tu es maintenant capable de faire."},
+   intro:"Je retiens des mots — Rassemble ici les mots de la matinée de Leyla, révise-les avec les cartes mémoire, puis fais le point sur ce que tu sais faire."},
 ];

@@ -24,8 +24,8 @@ const EXOS = [
     {id:'pf8', txt:"Mariette conseille d'ouvrir l'enveloppe une fois rendue à la maison.", ok:'FAUX'},
    ]},
 
-  {sec:'prep', id:'prGraphie', type:'vf', num:'Exercice 2', tit:'Trois familles de lettres qui trompent', color:'#A5335F', accent:'#A5335F', cards:true, listen:true,
-   sub:"Écoute chaque mot une fois. Quelle est la famille des lettres marquées ?",
+  {sec:'prep', id:'prGraphie', type:'vf', num:'Exercice 2', tit:"Trois familles de lettres, et ce qu'elles cachent", color:'#A5335F', accent:'#A5335F', cards:true, listen:true,
+   sub:"Un mot d'hôpital par carte. Écoute-le une fois : que font les lettres marquées ?",
    tiles:['COMME K','COMME S','COMME CH'],
    rows:[
     {id:'gr1', txt:"une échographie", ok:'COMME K'},
@@ -132,7 +132,7 @@ const EXOS = [
      ["Le signal à l'écoute","Cherchez <b>avait</b> ou <b>était</b> suivis d'un participe. Chaque fois que vous les entendez, la personne recule d'un cran dans le temps ; quand elle revient au passé composé, elle est remontée."],
    ]},
    items:[
-    {q:"Le rendez-vous a eu lieu en novembre. Son médecin ___ la demande de consultation en avril. (envoyer)", accept:["avait envoyé"], ph:"avoir à l'imparfait + participe"},
+    {q:"Le rendez-vous a eu lieu en novembre. Son médecin ___ la demande de consultation en avril. (envoyer)", accept:["avait envoyé"], ph:"l'auxiliaire à l'imparfait, puis le participe"},
     {q:"Elle est arrivée fatiguée ce matin-là. Elle ___ neuf heures, pourtant. (dormir)", accept:["avait dormi"], ph:"…"},
     {q:"Au mois de mars, elle n'a rien fait. Elle ___ que c'était seulement l'hiver. (penser)", accept:["avait pensé"], ph:"…"},
     {q:"En août, la femme de Gilles voulait tout annuler. Elle ___ le courage d'attendre encore. (perdre)", accept:["avait perdu"], ph:"…"},
@@ -181,7 +181,7 @@ const EXOS = [
     {q:"Elle est repartie sans savoir ce qu'elle avait. Cette ___ est plus difficile à porter que la fatigue.", accept:["incertitude","ignorance"], ph:"le nom de « ne pas savoir »"},
    ]},
 
-  {sec:'t1', id:'t1chiffres', type:'write', num:'Exercice 6', tit:'Les chiffres, à la deuxième écoute', color:'#1D6B8F', cols:2,
+  {sec:'t1', id:'t1chiffres', type:'write', num:'Exercice 6', tit:'Les chiffres, en réécoutant', color:'#1D6B8F', cols:2,
    sub:"Réécoute la conversation et complète. Tu peux arrêter l'extrait et revenir en arrière.",
    items:[
     {q:"Gilles attend depuis ___ heures.", accept:["deux","2"], ph:"en lettres"},
@@ -193,7 +193,7 @@ const EXOS = [
    ]},
 
  // ── DÉFI 2 · VINGT MINUTES AVEC LA SPÉCIALISTE ──────────────
-  {sec:'t2', id:'t2vf', type:'vf', num:'Exercice 1', tit:'Vrai ou Faux — Dans le bureau', color:'#B45309',
+  {sec:'t2', id:'t2vf', type:'vf', num:'Exercice 1', tit:'Vrai ou Faux — Vingt minutes chronométrées', color:'#B45309',
    sub:"Écoute l'entretien en entier, puis réponds. Attention : la docteure dit aussi ce qu'elle ne sait pas.", tiles:['VRAI','FAUX'],
    savoir:{h:"› Les mots de l'entretien — à écouter et à répéter", speak:true, rows:[
      ["Ce qu'on redit à chaque nouveau médecin","Un <b>antécédent</b> est un évènement de santé déjà arrivé — une maladie, une opération, une grossesse. On les écrit une fois sur une feuille, et on cesse de les chercher de mémoire.", ["un antécédent"]],
@@ -274,12 +274,12 @@ const EXOS = [
    ]},
 
   {sec:'t2', id:'t2subj', type:'write', num:'Exercice 5', tit:'Quand une consigne n\'est pas une suggestion', color:'#B45309', cols:1,
-   sub:"La première phrase donne le ton. Écris le verbe entre parenthèses à la forme qui convient après « que ».",
-   savoir:{h:"› Le subjonctif après un verbe introducteur", rows:[
+   sub:"La première phrase dit qui veut quoi. Écris le verbe entre parenthèses comme il se met après « que ».",
+   savoir:{h:"› Le subjonctif des consignes qu'on reçoit", rows:[
      ["Quand il apparaît","Après un verbe de volonté, d'obligation, de souhait ou de crainte, suivi de <b>que</b>. <span class='savoir-ex'>Il faut <b>que</b> vous <b>passiez</b> d'autres prélèvements.</span> Ce n'est pas un fait : c'est ce que quelqu'un veut qu'il arrive."],
      ["Les verbes introducteurs de cette consultation","<b>il faut que · il faudrait que · j'aimerais que · je voudrais que · il vaut mieux que · je préfère que · je crains que · exiger que</b>. C'est le verbe qui déclenche la forme, pas le sujet de la phrase."],
      ["Comment on le forme","On part de la 3e personne du pluriel du présent, on enlève <b>-ent</b>, on ajoute <b>-e, -es, -e, -ions, -iez, -ent</b>. <span class='savoir-ex'>ils not<s>ent</s> → que je not<b>e</b>, que vous not<b>iez</b></span>"],
-     ["Les cinq irréguliers à savoir par cœur","<b>être</b> → que je sois · <b>avoir</b> → que j'aie · <b>aller</b> → que j'aille · <b>faire</b> → que je fasse · <b>pouvoir</b> → que je puisse."],
+     ["Cinq irréguliers, et ils suffisent","<b>être</b> → que je sois · <b>avoir</b> → que j'aie · <b>aller</b> → que j'aille · <b>faire</b> → que je fasse · <b>pouvoir</b> → que je puisse."],
      ["Le piège de politesse","« Il faudrait que » sonne plus doux que « il faut que », mais engage la même chose. Un professionnel qui adoucit sa consigne ne la retire pas — et c'est exactement là qu'un adulte croit avoir le choix."],
      ["« de » ou « que » — deux constructions à ne pas mélanger","Après <b>que</b>, un subjonctif ; après <b>de</b>, un infinitif. <span class='savoir-ex'>Elle demande <b>que</b> vous <b>notiez</b> vos journées. · Elle demande <b>de</b> <b>noter</b> vos journées.</span>"],
    ]},
@@ -295,7 +295,7 @@ const EXOS = [
    ]},
 
   {sec:'t2', id:'t2exempl', type:'write', num:'Exercice 6', tit:'Donner un exemple, et le dire', color:'#B45309', cols:2,
-   sub:"Un connecteur par phrase, et aucun ne revient deux fois.",
+   sub:"Un connecteur différent à chaque phrase : aucun ne sert deux fois.",
    savoir:{h:"› Les mots qui annoncent un exemple", rows:[
      ["À quoi ils servent","Une explication sans exemple ne se retient pas, et un exemple sans annonce se prend pour la règle. <span class='savoir-ex'>Notez ce qui a changé, <b>par exemple</b> l'heure où vous devez vous asseoir.</span>"],
      ["Les plus courants","<b>par exemple</b> (partout) · <b>comme</b> (dans la phrase, sans virgule) · <b>notamment</b> (un peu plus écrit) · <b>entre autres</b> (quand la liste est longue) · <b>ainsi</b> (au début d'une phrase, plus formel)."],
@@ -345,7 +345,7 @@ const EXOS = [
      ["À qui elle s'adresse","Un <b>compte rendu de consultation</b> va du spécialiste au médecin qui a fait la demande. Vous n'en êtes pas le destinataire : vous en avez la copie parce que c'est votre dossier. Les mots savants ne sont donc pas une impolitesse, ils sont une langue de métier."],
      ["Elle a toujours le même ordre","En-tête et date · à qui elle est adressée · qui est vu et pourquoi · ce que la personne a raconté · ce qui a été observé · ce qui est proposé · ce qui reste à décider. Repérez ces sept parties et le reste se lit tout seul."],
      ["Le paragraphe qui vous concerne vraiment","Celui de la <b>conduite proposée</b>, souvent présenté par des tirets. Si vous ne lisez qu'une partie de la lettre, lisez celle-là : c'est la seule qui vous demande quelque chose."],
-     ["Le futur qui n'annonce pas l'avenir","« La patiente sera revue » n'est pas une possibilité : c'est une décision, écrite au futur parce que c'est ainsi que l'administration écrit une obligation. Demandez alors qui doit bouger, et quand."],
+     ["Un futur qui ne parle pas de l'avenir","« La patiente sera revue » n'est pas une possibilité : c'est une décision, écrite au futur parce que c'est ainsi que l'administration écrit une obligation. Demandez alors qui doit bouger, et quand."],
      ["Ce qu'une lettre honnête contient toujours","Ce qu'on ne sait pas. <span class='savoir-ex'>d'étiologie à préciser · aucun diagnostic retenu à ce stade</span> Ces formules ne sont pas une dérobade : elles disent que la recherche continue, et elles vous protègent d'un mot posé trop vite."],
    ]},
    paras:[
@@ -383,7 +383,7 @@ const EXOS = [
    savoir:{h:"› La nominalisation : le même sens, une autre classe de mots", rows:[
      ["Ce que c'est","Prendre un verbe ou un adjectif et en faire un nom. <span class='savoir-ex'>elle attend → l'<b>attente</b> · c'est fatigant → la <b>fatigue</b> · on a prélevé → le <b>prélèvement</b></span> Rien n'est ajouté : le sens est le même, la classe du mot change."],
      ["À quoi ça sert","À écrire court et à reprendre sans répéter. <span class='savoir-ex'>Elle a attendu sept mois. <b>Cette attente</b> l'a découragée.</span> C'est le procédé de tous les documents administratifs, et c'est pour ça qu'ils paraissent difficiles."],
-     ["Les terminaisons qui reviennent","<b>-ment</b> (prélever → prélèvement) · <b>-tion</b> (consulter → consultation) · <b>-ance / -ence</b> (attendre → attente, exister → existence) · <b>-ité</b> (fatigué → fatigabilité) · <b>-ure</b> (ouvrir → ouverture)."],
+     ["Les terminaisons qui se devinent","<b>-ment</b> (prélever → prélèvement) · <b>-tion</b> (consulter → consultation) · <b>-ance / -ence</b> (attendre → attente, exister → existence) · <b>-ité</b> (fatigué → fatigabilité) · <b>-ure</b> (ouvrir → ouverture)."],
      ["Les irrégulières qu'il faut savoir","<b>attendre → l'attente</b> · <b>répondre → la réponse</b> · <b>suivre → le suivi</b> · <b>partir → le départ</b> · <b>venir → la venue</b> · <b>vivre → la vie</b>. Aucune règle ne les donne : elles s'apprennent en paires."],
      ["Et l'adjectif tiré du nom","Le programme le nomme dans la même ligne : <span class='savoir-ex'>elle fait de la fièvre → elle est <b>fiévreuse</b> · c'est un problème du cœur → c'est un problème <b>cardiaque</b> · ça dure depuis des mois → c'est <b>chronique</b></span>"],
      ["Le sens de la traduction","Du parlé vers l'écrit pour comprendre un document ; de l'écrit vers le parlé pour l'expliquer à quelqu'un. Savoir faire les deux, c'est tout ce que ce défi demande."],
@@ -406,7 +406,7 @@ const EXOS = [
      ["Où vous le rencontrerez","Dans les brochures d'association, les histoires de fondation, les romans, les documentaires. Jamais dans une conversation, jamais dans un courriel, jamais dans ce que vous écrirez vous-même."],
      ["Ce que le programme demande, et rien de plus","<b>Reconnaître les verbes courants à la 3e personne</b> et <b>associer le passé simple au passé composé</b>. Personne ne vous demandera d'en produire un."],
      ["Le texte d'où sortent ces phrases","<span class='savoir-ex'>Jeanne Loiselle attendit onze mois son premier rendez-vous. Elle comprit ce jour-là que personne ne l'attendait, elle. Elle réunit six personnes dans une cuisine et l'association naquit ainsi, en 1979.</span>"],
-     ["Les terminaisons à repérer","<b>-a</b> et <b>-èrent</b> pour les verbes en -er : <span class='savoir-ex'>elle not<b>a</b>, ils not<b>èrent</b></span> ; <b>-it</b> et <b>-irent</b> ailleurs : <span class='savoir-ex'>elle compr<b>it</b>, ils compr<b>irent</b></span> ; <b>-ut</b> et <b>-urent</b> pour un troisième groupe : <span class='savoir-ex'>il d<b>ut</b>, ils d<b>urent</b></span>."],
+     ["Trois familles de terminaisons","<b>-a</b> et <b>-èrent</b> pour les verbes en -er : <span class='savoir-ex'>elle not<b>a</b>, ils not<b>èrent</b></span> ; <b>-it</b> et <b>-irent</b> ailleurs : <span class='savoir-ex'>elle compr<b>it</b>, ils compr<b>irent</b></span> ; <b>-ut</b> et <b>-urent</b> pour un troisième groupe : <span class='savoir-ex'>il d<b>ut</b>, ils d<b>urent</b></span>."],
      ["La façon de le lire","Traduisez-le en passé composé dans votre tête et continuez. Ne vous arrêtez pas dessus : dans un document, il porte le décor et jamais l'information qui vous concerne."],
    ]},
    rows:[
