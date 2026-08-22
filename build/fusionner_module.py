@@ -163,7 +163,11 @@ def main():
         print(__doc__.split('\n\n')[1].strip())
         return 2
     branche = sys.argv[1]
-    if git('status', '--porcelain').stdout.strip():
+    # `--untracked-files=no` : un dossier non suivi qui traîne à côté ne
+    # gêne aucune fusion, et refuser de travailler pour ça obligeait à
+    # commiter n'importe quoi en vitesse — exactement ce qu'on veut
+    # éviter juste avant de toucher à des fichiers partagés.
+    if git('status', '--porcelain', '--untracked-files=no').stdout.strip():
         print('✗ l’arbre de travail n’est pas propre — commite ou range d’abord')
         return 2
 
