@@ -57,7 +57,9 @@ MANIFESTE = {
 
     # `titre` et `niveau` viennent de `build/powerpoints/modules.py`.
 
-    'theme': 'Recherche d\'emploi',
+    # L'apostrophe s'échappe : le gabarit place ce jeton dans une chaîne
+    # JavaScript à guillemets simples, comme `bravo` et `relance`.
+    'theme': 'Recherche d\\\'emploi',
 
     # Ambre : la couleur du niveau 3. Elle ne se choisit pas — voir
     # `build/couleurs_niveau.py`.
