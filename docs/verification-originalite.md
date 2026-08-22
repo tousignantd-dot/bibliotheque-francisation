@@ -288,3 +288,36 @@ Confirmation du point relevé pour `module-n5-urgence` : le relevé des sons est
 resté **identique à l'octet près** avant et après les onze reformulations
 (`diff` vide sur `sons_module_n2_secretaire.json`). Ni les `sub` ni les `tit`
 n'entrent dans le manifeste des extraits.
+
+---
+
+`module-n6-emploi` (activité 100), mesuré le 22 août 2026 : ses **1 439**
+énoncés visibles de 25 caractères ou plus — consignes, titres, énoncés,
+rangées de bandeau, blocs de mini-leçon, répliques et intitulés de section —
+comparés aux **43 192** des cinquante-trois autres modules de
+`build/contenu/`. Première mesure : **60 identiques, 4,2 %**, sous le seuil,
+mais la moitié venait d'un seul endroit — la mini-leçon de **graphie-phonie**,
+calquée sur celle du module pilote du niveau, `module-n6-actualite`.
+
+C'est le cas de figure que la vague 6 va rencontrer huit fois : le savoir
+(« ch » qui se dit k, « x » qui se dit s, « sh » et « sch » qui se disent ch)
+est **commun à tout le niveau 6**, donc les huit modules porteront la même
+mini-leçon. Le savoir est commun ; les phrases qui l'expliquent n'ont aucune
+raison de l'être. Une quarantaine de tournures ont été réécrites — titres de
+cas, notes de laboratoire, pièges, questions de vérification — ce qui ramène
+la mesure à **11 identiques, 0,8 %** 🟢.
+
+Ce qui reste est assumé, et c'est la même liste qu'ailleurs : les consignes que
+le moteur impose à ses types d'exercice (« Choisis un mot, puis sa
+définition. Six mots à la fois. », « Glisse chaque photo sur la phrase qui la
+décrit. », « glisse la description ici »), les intitulés de bloc de mini-leçon
+que tous les modules emploient (« Est-ce que c'est clair maintenant ? »,
+« Quatre questions rapides. ») et la phrase d'accueil de « Je retiens des
+mots ». Les faire varier pour elles-mêmes nuirait à l'élève, qui les reconnaît
+d'un module au suivant.
+
+Troisième confirmation du même point : le relevé des sons est resté
+**identique à l'octet près** avant et après les réécritures
+(`git diff` vide sur `sons_module_n6_emploi.json`, 206 clés). Ni les `sub`, ni
+les `tit`, ni les `note` d'un bloc de mini-leçon n'entrent dans le manifeste
+des extraits — seuls les `say` y entrent, et aucun n'a été touché.
