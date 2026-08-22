@@ -321,3 +321,31 @@ Troisième confirmation du même point : le relevé des sons est resté
 (`git diff` vide sur `sons_module_n6_emploi.json`, 206 clés). Ni les `sub`, ni
 les `tit`, ni les `note` d'un bloc de mini-leçon n'entrent dans le manifeste
 des extraits — seuls les `say` y entrent, et aucun n'a été touché.
+
+`module-n6-habitation` (activité 106), mesuré le 22 août 2026 : ses **460**
+énoncés visibles de plus de douze caractères — consignes, titres d'exercices,
+intitulés de bandeau, paragraphes des exercices `texte` et cartes de
+vocabulaire compris — ont été comparés aux **18 937** des **cinquante-sept**
+autres modules de `build/contenu/`. Première mesure : 19 identiques, soit
+**4,1 %** — sous le seuil, et pourtant à corriger.
+
+**Le total ne disait pas l'essentiel.** Neuf des dix-neuf coïncidences venaient
+d'un seul endroit : la mini-leçon de formation des mots, écrite avec les mêmes
+intitulés de rangée que celle de `module-n6-emploi` (« Le verbe donne le nom en
+-age », « Le verbe donne l'adjectif en -able », « Le préfixe dé- ou dés-
+défait »). Le savoir est commun au niveau 6 — tous ses modules le portent — mais
+la formulation, elle, doit être refaite. Réécrits en partant du chantier plutôt
+que de la grammaire (« Ce qu'on fait devient un -age », « Ce qu'on peut faire
+devient -able »), ils ramènent l'ensemble à **5 identiques, soit 1,1 %**.
+
+Les cinq qui restent sont les consignes que le moteur impose à ses types
+d'exercice (« Le mot et sa définition », « Choisis un mot, puis sa définition.
+Six mots à la fois. », « Glisse chaque photo sur la phrase qui la décrit. ») et
+deux intitulés de rangée de trois mots. Elles ne se corrigent pas : les faire
+varier pour elles-mêmes nuirait à l'élève, qui les reconnaît d'un module à
+l'autre.
+
+L'opération est sans risque, et la vérification à faire est toujours la même :
+ni les `sub`, ni les `tit`, ni les intitulés d'un bandeau `savoir` sans
+`speak:true` n'entrent dans le relevé des sons. Le manifeste des **258**
+extraits est resté identique avant et après, donc aucun MP3 n'était à refaire.

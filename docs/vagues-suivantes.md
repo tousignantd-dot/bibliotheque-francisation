@@ -1881,6 +1881,105 @@ que la suivante travaille.
 
 ### Journal de la vague 6
 
+**22 août 2026 — activité 106, `module-n6-habitation`.** « Faire faire des
+travaux », niveau 6, `numero` 9, **`GRILLE_3_DEFIS`** alors que le tableau du
+pilote réservait deux défis à cette situation. Scénario inventé : Doïna
+Petrescu, 46 ans, arrivée de Roumanie il y a cinq ans, aide-cuisinière dans une
+résidence pour aînés de Saint-Jérôme, propriétaire depuis deux ans d'une petite
+maison de 1961 rue des Mésanges. Sa mère Aurica arrive le 12 mai et il faut
+aménager le sous-sol. Léandre Bergevin est le voisin qui a fait les mêmes
+travaux l'an passé, Fernand Trudelle l'entrepreneur général, Kettly Alcindor
+l'inspectrice en bâtiment, Réjean Toupin le service des permis. 25 exercices,
+16 mini-leçons, 4 dialogues (83 répliques), 16 mots, 16 images, **341 extraits
+audio** (83 répliques et 258 sons), 16 séances (191 diapositives, 131 blocs de
+fiches). Originalité : 460 énoncés visibles, **5 identiques** dans les 18 937
+des cinquante-sept autres modules de `build/contenu/`, soit **1,1 %**.
+
+*Trois défis pour une intention, et pourquoi.* Le programme ne donne à cette
+situation qu'une seule intention, portée deux fois — « comprendre de
+l'information **et poser des questions** reliées à des travaux de réparation ou
+de rénovation ». C'est le mot « et » qui tranche : l'intention est double, et
+ses deux moitiés ne se travaillent pas dans la même séance. Défi 1, on
+*comprend* — un homme de métier explique un diagnostic de vive voix, l'élève
+reçoit. Défi 2, on *lit* — un rapport d'inspection et une soumission, deux
+exercices `texte`. Défi 3, on *demande* — le chantier découvre autre chose que
+prévu, quatre personnes en parlent en même temps, et c'est l'élève qui pose les
+questions et qui décide. Le troisième ne répète pas le deuxième : il change de
+genre (une rencontre à quatre voix), de temps (le futur et l'hypothèse en
+« si » là où le diagnostic était au plus-que-parfait) et de rôle. **La règle du
+pilote n'est donc pas « une intention, deux défis » : c'est « trois façons
+distinctes d'entrer, trois défis ».** Une situation à une seule intention peut
+en porter trois si l'intention elle-même est composite ; c'est à vérifier avant
+de se rabattre sur `GRILLE_2_DEFIS`.
+
+*Les faits québécois sont vérifiés, pas devinés*, et le module n'en avance que
+**trois** : un entrepreneur qui exécute ou fait exécuter des travaux de
+construction pour autrui doit détenir une **licence de la Régie du bâtiment du
+Québec**, vérifiable au registre public des détenteurs de licence ; la plupart
+des municipalités exigent un **permis** pour certains travaux de rénovation, et
+les exigences varient de l'une à l'autre, donc elles se demandent à sa propre
+municipalité ; avant de creuser, la localisation gratuite des infrastructures
+souterraines se demande à **Info-Excavation**. Rien d'autre n'est présenté
+comme la loi. Les personnes, les entreprises, l'adresse, les montants
+(34 500 $, 6 800 $, 1 900 $), les délais et les numéros de dossier sont
+inventés : une soumission ou un rapport au nom d'une entreprise réelle serait un
+faux document.
+
+*Ce qui le sépare de ses deux voisins sur la même situation*, et ce n'est pas
+le sujet mais le **rapport à la chose**. `module-probleme` (45, niveau 4) est
+le module du **locataire qui signale** : le calorifère du 4B, les parties
+communes, l'insalubrité, le recours. `module-n5-degat` (62, niveau 5) est celui
+du **locataire qui raconte un sinistre** : l'eau tombée pendant la nuit, le
+constat, l'avis de travaux, la réclamation. Dans les deux, rien n'est voulu et
+tout est subi, et il y a quelqu'un à convaincre. Ici, personne n'est locataire
+et rien n'est arrivé : la maison appartient à celle qui parle, les travaux sont
+**voulus, choisis et payés** par elle, et il n'y a personne à convaincre — il y
+a un métier à comprendre. C'est le seul des trois où l'élève est celui qui
+décide et qui paie.
+
+*Deux exercices du type `texte`* : le rapport d'inspection (huit passages, huit
+questions) et la soumission (neuf passages, neuf questions). Le septième
+contrôle les valide sans rien signaler. La section « Historique du bâtiment »
+du rapport porte le passé simple — c'est le prétexte le plus naturel qu'on
+puisse lui donner à ce niveau, puisqu'un rapport recopie des archives — et le
+savoir se travaille en `match`, jamais en `write`.
+
+Trois choses apprises, qui valent pour les modules restants :
+
+- **Le contrôle de densité des tableaux se déclenche sur la longueur des
+  cellules de gauche, même à quatre rangées.** Un tableau de `b4` a été refusé
+  avec quatre rangées seulement, parce que sa colonne de gauche portait des
+  phrases entières (« Quand ils ont acheté, la fissure s'était ouverte. »).
+  Réécrit en deux colonnes de fragments courts — « ils ont acheté » contre « la
+  fissure s'était ouverte » —, il passe, et il se lit mieux de loin. La règle
+  n'est donc pas un nombre de rangées : c'est **la longueur de la cellule la
+  plus longue de la colonne étroite**.
+- **Mesurer l'originalité ne suffit pas, il faut regarder d'où viennent les
+  coïncidences.** Le premier relevé rendait 4,1 % — sous le seuil — mais
+  **neuf** des dix-neuf venaient d'un seul endroit : la mini-leçon de formation
+  des mots, écrite avec les mêmes intitulés que celle de `module-n6-emploi`
+  (« Le verbe donne le nom en -age », etc.). Le savoir est commun au niveau, la
+  formulation ne doit pas l'être. Réécrits en partant du chantier — « Ce qu'on
+  fait devient un -age » —, ils ramènent l'ensemble à 1,1 %. **Ni les `sub` ni
+  les `tit` ni les intitulés de bandeau sans `speak` n'entrent dans le relevé
+  des sons** : le manifeste est resté à 258 clés avant et après, donc la
+  réécriture n'a rien coûté en audio. C'est le troisième module de la vague à
+  tomber dans ce piège ; il vaut mieux écrire les mini-leçons sans ouvrir
+  celles du voisin.
+- **Cinq personnages tiennent dans quatre voix** à condition de dresser la
+  matrice avant d'écrire les dialogues. Ici, LÉANDRE (le voisin, dans `prep`)
+  et RÉJEAN (le service des permis, dans `t3`) partagent le timbre
+  « narrateur » : ils n'apparaissent jamais ensemble. C'est le dialogue le plus
+  peuplé qui fixe la répartition — `t3` réunit quatre voix à lui seul —, donc
+  on l'écrit en premier dans sa tête, même s'il s'écrit en dernier.
+
+*Sur les contrôles* : les sept passent. `coherence.js` rend 16 écarts, tous
+« image absente du disque » — `gen_images.py` est écrit mais n'a pas tourné, et
+le générateur audio non plus : le module est livré muet et sans illustration,
+les deux se rattrapent d'un seul coup. `pieds_de_page.py` signale un écart, sur
+`module-n3-horaire`, étranger à ce module. `sommaire.py --verifier` ne rend
+aucun lien cassé.
+
 **22 août 2026 — activité 102, `module-n6-etablissement`.** « Choisir la
 suite », niveau 6, `numero` 5, `GRILLE_3_DEFIS`. Scénario inventé : Bintou
 Sangaré, 34 ans, arrivée du Mali il y a trois ans, commis de soir dans une
