@@ -1124,6 +1124,42 @@ MODULES = {
                         'Le compte rendu'),
     },
 
+    # Vague 6, niveau 6, et le dernier module du niveau. `build/cadre.py 6
+    # "Salle de classe"` ne donne qu'**une** intention — « comprendre de
+    # l'information liée à un sujet de recherche », en compréhension écrite —
+    # et un seul point de lexique, « vocabulaire lié aux sujets de recherche ».
+    # D'où `GRILLE_2_DEFIS` : le test du pilote (« peut-on nommer trois façons
+    # distinctes d'entrer dans la situation, chacune avec son dialogue et ses
+    # exercices ? ») échoue ici, et il échoue pour une raison précise — la
+    # troisième entrée qu'on aimerait nommer, la rencontre d'équipe et le
+    # compte rendu à la classe, est **déjà** « Je me lance » en entier. Un
+    # défi 3 aurait répété le jeu de rôle et l'exposé.
+    #
+    # Les deux défis sont deux retours sur le même dossier — un travail de
+    # recherche d'équipe sur la collecte des matières organiques — sous deux
+    # genres d'écrit qui ne se lisent pas de la même façon : ce que
+    # l'établissement demande (une consigne de travail et une grille
+    # d'évaluation), puis ce que les sources racontent (trois documents qui ne
+    # disent pas la même chose).
+    #
+    # Deux voisins traitent la même situation plus bas, et ce n'est pas le
+    # sujet qui change, c'est le **travail**. `module-n1-classe` (98) fait le
+    # geste que dit une consigne de deux mots. `module-n2-classe` (89)
+    # comprend une directive orale et demande une permission. Ici, l'élève
+    # n'exécute plus une consigne : il la **lit en entier**, la répartit avec
+    # d'autres et rend compte de ce qu'il a trouvé.
+    'module-n6-classe': {
+        'numero': 10, 'activite': 107, 'niveau': 6,
+        'titre': "Un travail de recherche en équipe",
+        'chapeau': "Lire une longue consigne de travail et la grille qui "
+                   "l'évalue, comprendre trois sources qui ne disent pas la "
+                   "même chose, puis rendre compte de sa recherche à l'oral "
+                   "et par écrit.",
+        'seances': GRILLE_2_DEFIS,
+        'blocs': _blocs('Ce que le travail demande',
+                        'Ce que disent les sources'),
+    },
+
     'module-n7-actualite': {
         'numero': 1, 'activite': 60, 'niveau': 7,
         'titre': "Suivre l'actualité",
