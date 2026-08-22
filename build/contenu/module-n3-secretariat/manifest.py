@@ -47,7 +47,11 @@ MANIFESTE = {
                       "groupe, la date, la raison, et demande quel papier "
                       "apporter.",
 
-    'bravo': "🎉 Bravo, tu as terminé le module « L'absence de Nawel » !",
+    # `bravo` échappe son apostrophe au même titre que `relance` et `theme` :
+    # le titre de ce module en contient une, et sans l'échappement le script
+    # entier du module meurt sur une SyntaxError — plus un seul exercice ne
+    # s'affiche, et la première personne à le voir serait l'élève.
+    'bravo': "🎉 Bravo, tu as terminé le module « L\\'absence de Nawel » !",
     'relance': "Tu peux revenir sur n\\'importe quel onglet pour pratiquer "
                "encore.",
 
