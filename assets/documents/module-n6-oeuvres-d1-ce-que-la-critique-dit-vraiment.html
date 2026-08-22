@@ -1,0 +1,172 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>D1 · Ce que la critique dit vraiment — Fiche élève</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800;900&display=swap" rel="stylesheet">
+<style>
+/* ═══════════════════════════════════════════════════════════════
+   FICHE ÉLÈVE · IMPRESSION LETTRE, NOIR ET BLANC
+   ───────────────────────────────────────────────────────────────
+   Aucune couleur : ces fiches sont photocopiées en noir et blanc.
+   Toute la hiérarchie passe par la GRAISSE, les FILETS et les MOTS.
+   C'est d'ailleurs la règle du système de design poussée à son
+   terme : « jamais d'information portée par la couleur seule ».
+
+   Les gris viennent des neutres du système (ink-900 à ink-400),
+   qui sont déjà quasi neutres. Les filets sont volontairement plus
+   sombres qu'à l'écran : une photocopieuse efface tout ce qui est
+   plus clair que 15 % de noir.
+   ═══════════════════════════════════════════════════════════════ */
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+:root{
+  --paper:#FFFFFF;
+  --tint:#F0F0EE;          /* aplat le plus clair encore visible en photocopie */
+  --line:#C9C9C6;          /* filet fin */
+  --rule:#17181A;          /* filet structurant */
+  --ink:#17181A;           /* titres */
+  --body:#2B2E30;          /* texte courant, un cran plus sombre qu'à l'écran */
+  --soft:#4B4F52;          /* texte secondaire */
+  --muted:#5E6165;         /* sur-titres, méta */
+}
+html{background:#BBBBBB}
+body{
+  font-family:'Nunito','Trebuchet MS',sans-serif;
+  font-size:11.5pt; line-height:1.5; color:var(--body);
+  background:var(--paper);
+  width:215.9mm;                    /* 8,5 po — format lettre */
+  margin:0 auto; padding:14mm 15mm 16mm;
+  -webkit-print-color-adjust:exact; print-color-adjust:exact;
+}
+h1,h2,h3{color:var(--ink); line-height:1.2; letter-spacing:-0.01em}
+
+/* ── En-tête ── */
+.hdr{border-bottom:2.5px solid var(--rule); padding-bottom:8px; margin-bottom:14px;
+     display:flex; align-items:flex-end; gap:14px}
+.hdr-l{flex:1}
+.eyebrow{font-size:9.5pt; font-weight:800; text-transform:uppercase;
+         letter-spacing:.12em; color:var(--muted)}
+.hdr h1{font-size:22pt; font-weight:900; margin-top:3px}
+.hdr-r{flex-shrink:0; display:flex; gap:10px; align-items:flex-end;
+       font-size:9.5pt; font-weight:800; text-transform:uppercase;
+       letter-spacing:.08em; color:var(--muted); padding-bottom:2px}
+.nomline{display:inline-block; border-bottom:1.5px solid var(--rule);
+         height:6mm; vertical-align:bottom; margin-left:5px}
+.nomline--nom{width:48mm} .nomline--date{width:26mm}
+.chapeau{font-size:12pt; font-weight:600; color:var(--soft); margin-bottom:16px}
+
+/* ── Blocs ── */
+.bloc{break-inside:avoid; page-break-inside:avoid; margin-bottom:13px}
+.card{border:1px solid var(--line); border-radius:12px; padding:11px 14px 12px;
+      background:var(--paper)}
+.lbl{font-size:9.5pt; font-weight:800; text-transform:uppercase;
+     letter-spacing:.12em; color:var(--muted); margin-bottom:5px}
+h2.t{font-size:15pt; font-weight:900; margin-bottom:7px}
+.consigne{font-size:11pt; font-weight:600; color:var(--soft); margin-bottom:8px}
+
+/* ── Objectifs et exercices : pastille en cerne, jamais en aplat ── */
+ol.obj,ol.ex{list-style:none}
+ol.obj{counter-reset:o} ol.ex{counter-reset:e}
+ol.obj li,ol.ex li{position:relative; padding-left:9mm; font-weight:600}
+ol.obj li{counter-increment:o; margin-bottom:6px}
+ol.ex li{counter-increment:e; margin-bottom:9px; break-inside:avoid}
+ol.obj li::before,ol.ex li::before{
+  position:absolute; left:0; top:0; width:6mm; height:6mm; border-radius:50%;
+  border:1.5px solid var(--rule); color:var(--ink);
+  font-size:9.5pt; font-weight:800;
+  display:flex; align-items:center; justify-content:center}
+ol.obj li::before{content:counter(o)}
+ol.ex li::before{content:counter(e)}
+
+/* ── Dialogue ── */
+.rep{display:flex; gap:10px; padding:4px 0; border-top:1px solid var(--line)}
+.rep:first-of-type{border-top:0}
+.rep--key{background:var(--tint); border-radius:8px; padding:5px 8px;
+          border-top:0; margin:2px 0}
+.qui{flex:0 0 30mm; font-weight:800; color:var(--ink); font-size:10.5pt}
+
+/* ── Règle : encadrée au filet épais, c'est elle qu'on repère de loin ── */
+.regle{border:2.5px solid var(--rule); border-radius:12px; padding:12px 14px}
+.regle .lbl{color:var(--ink)}
+.regle p.r{font-size:14pt; font-weight:900; color:var(--ink); line-height:1.3}
+.regle p.pr{margin-top:7px; font-weight:600; color:var(--soft)}
+
+/* ── Tableau ── */
+table{width:100%; border-collapse:collapse}
+th{font-size:9.5pt; font-weight:800; text-transform:uppercase; letter-spacing:.1em;
+   color:var(--muted); text-align:left; padding:0 8px 5px 0;
+   border-bottom:1.5px solid var(--rule)}
+td{padding:6px 8px 6px 0; border-top:1px solid var(--line); vertical-align:top;
+   font-weight:600}
+td.cle{font-weight:900; color:var(--ink)}   /* la colonne clé : en gras, pas en couleur */
+.note{margin-top:8px; font-size:10.5pt; font-weight:600; color:var(--soft);
+      background:var(--tint); border-radius:9px; padding:8px 11px}
+
+/* ── Cartes ── */
+.grid{display:grid; grid-template-columns:1fr 1fr; gap:9px}
+.grid .card h3{font-size:11.5pt; font-weight:900; color:var(--ink); margin-bottom:3px}
+.grid .card p{font-size:11pt}
+
+/* ── Piège : le filet distingue les deux colonnes, pas la couleur ──
+   À gauche, un filet TIRETÉ — ce qui ne tient pas.
+   À droite, un filet PLEIN et épais — ce qu'il faut retenir.
+   Les deux intitulés disent la même chose en mots.                */
+.duo{display:grid; grid-template-columns:1fr 1fr; gap:10px}
+.duo>div{border-radius:12px; padding:10px 13px}
+.duo .no{border:1.5px dashed var(--muted)}
+.duo .ok{border:2.5px solid var(--rule); background:var(--tint)}
+.duo .k{font-size:9.5pt; font-weight:800; text-transform:uppercase;
+        letter-spacing:.1em; margin-bottom:4px; color:var(--muted)}
+.duo .ok .k{color:var(--ink)}
+.duo p.ph{font-size:12pt; font-weight:800; color:var(--ink); line-height:1.3}
+.duo .no p.ph{font-weight:600; font-style:italic; color:var(--soft)}
+
+/* ── Vocabulaire ── */
+.voc{width:100%; border-collapse:collapse}
+.voc td{border-top:1px solid var(--line); padding:6px 8px 6px 0}
+.voc td.mot{width:38%; font-weight:900; color:var(--ink)}
+.voc td.def{color:var(--soft)}
+
+/* ── Zones de réponse ── */
+.ligne{display:block; border-bottom:1px dotted #8E8E8A; height:8mm; margin-top:2px}
+.ligne--court{width:55%}
+
+/* ── Billet de sortie ── */
+.billet{border:2.5px solid var(--rule); border-radius:12px; padding:13px 15px}
+.billet .k{font-size:9.5pt; font-weight:800; text-transform:uppercase;
+           letter-spacing:.12em; color:var(--ink); margin-bottom:4px}
+.billet p.c{font-size:14pt; font-weight:900; color:var(--ink); line-height:1.3}
+.billet ul{list-style:none; margin-top:7px}
+.billet li{font-weight:600; color:var(--soft); margin-bottom:3px}
+
+/* ── Pied ── */
+footer{margin-top:16px; padding-top:7px; border-top:1px solid var(--line);
+       font-size:9.5pt; font-weight:700; color:var(--muted);
+       display:flex; justify-content:space-between}
+
+/* ── Impression ── */
+@page{size:8.5in 11in; margin:14mm 15mm}
+@media print{
+  html{background:#FFFFFF}
+  body{width:auto; padding:0}
+  .bloc{break-inside:avoid; page-break-inside:avoid}
+  h2.t,.lbl{break-after:avoid; page-break-after:avoid}
+}
+</style>
+</head>
+<body>
+<header class="hdr">
+  <div class="hdr-l">
+    <div class="eyebrow">Séance D1 · Module 6 · 75 minutes</div>
+    <h1>Ce que la critique dit vraiment</h1>
+  </div>
+  <div class="hdr-r"><span>Nom<span class="nomline nomline--nom"></span></span><span>Date<span class="nomline nomline--date"></span></span></div>
+</header>
+<p class="chapeau">Charbonneau n'a pas écrit que la voisine est inutile : il a écrit qu'elle arrive trop tard. Ce n'est pas la même chose, et c'est beaucoup plus difficile à contredire.</p>
+<section class="bloc card"><div class="lbl">Objectifs</div><h2 class="t">À la fin, je serai capable de…</h2><ol class="obj"><li>repérer dans une critique le reproche exact, et non sa version grossie ;</li><li>reconnaître les guillemets qui mettent un mot à distance ;</li><li>distinguer un reproche vérifiable d'une impression ;</li><li>savoir qu'un grand film et un film grand ne disent pas la même chose.</li></ol></section><section class="bloc card"><div class="lbl">Dialogue · 1 de 3</div><h2 class="t">Trois reproches</h2><p class="consigne">Écouter d'abord, diapositive masquée.</p><div class="rep rep--key"><div class="qui">BRUNO</div><div>Tiens, la critique a paru ce matin dans L'Écho de la Magog. Léo Charbonneau. Il n'a pas aimé.</div></div><div class="rep rep--key"><div class="qui">THÉRÈSE</div><div>Il a le droit. Qu'est-ce qu'il reproche ?</div></div><div class="rep rep--key"><div class="qui">BRUNO</div><div>Trois choses. Que le film soit trop lent dans sa première demi-heure. Que les retours en arrière soient mal annoncés. Et que le personnage de la voisine ne serve à rien.</div></div><div class="rep rep--key"><div class="qui">THÉRÈSE</div><div>La voisine ? C'est elle qui donne la lettre. Sans elle, il n'y a pas de film.</div></div></section><section class="bloc card"><div class="lbl">Dialogue · 2 de 3</div><h2 class="t">Ce qu'il dit, et ce qu'on croit</h2><div class="rep rep--key"><div class="qui">BRUNO</div><div>Mais attention : il ne dit pas qu'elle est inutile, il dit qu'elle arrive trop tard. Ce n'est pas la même chose, et c'est plus difficile à contredire.</div></div><div class="rep rep--key"><div class="qui">THÉRÈSE</div><div>Alors je dois lire ce qu'il dit vraiment, pas ce que je crois qu'il dit.</div></div><div class="rep rep--key"><div class="qui">BRUNO</div><div>Toujours. Et regarde comment il écrit son avis. Il écrit : « un film qu'on dit ambitieux, faute de savoir quoi en dire ».</div></div><div class="rep rep--key"><div class="qui">THÉRÈSE</div><div>Les guillemets autour d'ambitieux, ils veulent dire qu'il n'y croit pas.</div></div></section><section class="bloc card"><div class="lbl">Dialogue · 3 de 3</div><h2 class="t">Accorder un point</h2><div class="rep rep--key"><div class="qui">THÉRÈSE</div><div>Moi, je ne suis pas d'accord avec lui, mais pas complètement non plus.</div></div><div class="rep rep--key"><div class="qui">BRUNO</div><div>Voilà la phrase que j'attendais depuis le début de l'année. Continue.</div></div><div class="rep rep--key"><div class="qui">THÉRÈSE</div><div>La première demi-heure est lente, c'est vrai. J'ai regardé l'heure deux fois. Mais je pense que c'est voulu : trois jours pour vider une maison, ça ne peut pas être rapide.</div></div><div class="rep rep--key"><div class="qui">BRUNO</div><div>Tu viens de faire quelque chose que peu de gens font : tu lui accordes un point avant de lui répondre. Ça donne du poids à ce qui suit.</div></div></section><section class="bloc card"><div class="lbl">Analyse</div><h2 class="t">Ce qu'il écrit, ce qu'on croit qu'il écrit</h2><table><thead><tr><th>La version rapide</th><th>Le texte exact</th></tr></thead><tbody><tr><td class="cle">c'est un mauvais film</td><td>un film qu'on dit « ambitieux »</td></tr><tr><td class="cle">le début est ennuyant</td><td>avance à la vitesse d'un déménagement</td></tr><tr><td class="cle">c'est une maladresse</td><td>ce n'est pas une maladresse : c'est un parti pris</td></tr><tr><td class="cle">la voisine est inutile</td><td>le personnage de la voisine arrive trop tard</td></tr><tr><td class="cle">il a détesté</td><td>un beau film qui a manqué d'être un grand film</td></tr></tbody></table><div class="note">Cinq fois, la version retenue est plus dure que le texte.</div></section><section class="bloc regle"><div class="lbl">Trois façons de dire du mal sans le dire</div><p class="r">Les guillemets, la comparaison, le compliment retourné.</p><p class="pr">Un critique expérimenté évite les mots durs : ils sont trop faciles à réfuter. Il met « ambitieux » entre guillemets, il compare le rythme à un déménagement, et il termine par « un beau film qui a manqué d'être un grand film ». Aucune de ces phrases ne se renvoie telle quelle.</p></section><section class="bloc regle"><div class="lbl">Un grand film, un film grand</div><p class="r">Avant le nom, l'adjectif juge ; après le nom, il décrit ce qui se mesure.</p><p class="pr">Un grand film est important ; un homme grand se mesure en centimètres. Une ancienne salle n'en est plus une ; une salle ancienne est vieille. Un drôle de personnage est étrange ; un personnage drôle fait rire. Cinq adjectifs seulement : grand, ancien, drôle, propre, nouveau.</p></section><section class="bloc card"><div class="lbl">Compréhension</div><h2 class="t">Vrai ou faux ?</h2><p class="consigne">Répondez d'après la critique et la discussion.</p><ol class="ex"><li><span class="q">Charbonneau reproche au film trois choses.</span><span class="ligne ligne--court"></span></li><li><span class="q">Il écrit que le personnage de la voisine est inutile.</span><span class="ligne"></span></li><li><span class="q">Il met « ambitieux » entre guillemets parce qu'il trouve le mot juste.</span><span class="ligne"></span></li><li><span class="q">Thérèse accorde que la première demi-heure est lente.</span><span class="ligne ligne--court"></span></li><li><span class="q">Selon Thérèse, cette lenteur est une maladresse.</span><span class="ligne ligne--court"></span></li><li><span class="q">L'Écho de la Magog publie des réponses de lecteurs.</span><span class="ligne ligne--court"></span></li></ol></section><section class="bloc billet"><div class="k">Billet de sortie</div><p class="c">Recopie le reproche de Charbonneau que tu trouves le plus juste.</p><ul><li>Recopie-le exactement, sans le reformuler.</li><li>Ajoute un mot pour dire pourquoi.</li></ul><span class="ligne"></span><span class="ligne"></span><span class="ligne"></span></section>
+<footer><span>D1 · Un film, et ce qu'on en écrit</span><span>Fiche élève</span></footer>
+</body>
+</html>

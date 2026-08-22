@@ -1059,6 +1059,26 @@ MODULES = {
                         "L'article qu'on transmet"),
     },
 
+    # Niveau 6, « Découverte d'œuvres littéraires, musicales,
+    # cinématographiques et télévisuelles ». Trois intentions seulement, une
+    # par compétence — regarder un film pour en repérer le déroulement, lire
+    # une biographie, résumer un film — mais trois genres bien séparés, donc
+    # GRILLE_3_DEFIS (règle du pilote, `docs/vagues-suivantes.md`).
+    # Ne recoupe pas `module-n5-oeuvres` (73), où l'on présente au club une
+    # œuvre qu'on a aimée : ici l'avis doit être nuancé, et le fil à tenir est
+    # celui d'un même film suivi dans trois écrits différents.
+    'module-n6-oeuvres': {
+        'numero': 6, 'activite': 103, 'niveau': 6,
+        'titre': "Un film, et ce qu'on en écrit",
+        'chapeau': "Repérer le déroulement d'un film malgré les retours en "
+                   "arrière, lire la biographie de sa réalisatrice, puis "
+                   "résumer et juger sans exagérer.",
+        'seances': GRILLE_3_DEFIS,
+        'blocs': _blocs('Le déroulement du film',
+                        'La biographie de la réalisatrice',
+                        'La critique et le résumé'),
+    },
+
     'module-n7-actualite': {
         'numero': 1, 'activite': 60, 'niveau': 7,
         'titre': "Suivre l'actualité",
