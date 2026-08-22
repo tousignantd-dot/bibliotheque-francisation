@@ -5408,6 +5408,111 @@ JEU_DE_ROLE_OEUVRES = {
 }
 
 
+# ── module-n5-saisons (activité 72) ───────────────────────────────────────
+# Décider d'une activité de groupe à partir d'un avis météo, et défendre la
+# décision. Aucun des scénarios existants ne convenait. `meteo` vient du
+# niveau 2 : on y échange trois mots sur le temps qu'il fait le matin même —
+# il neige, il vente, il fait froid — et l'élève y répond à des questions.
+# `circulation` (activité 69, même niveau) fait expliquer une entrave déjà en
+# cours pour refaire son propre trajet dans l'heure qui vient. Ici, l'avis
+# annonce ce qui n'est pas encore arrivé, la décision porte sur la semaine
+# prochaine et elle engage trente personnes : il faut tenir un discours
+# organisé — l'avis, l'effet attendu, la décision, la raison, la consigne — et
+# le tenir devant quelqu'un qui le conteste.
+JEU_DE_ROLE_SAISONS = {
+    "verglas": {
+        "contexte": (
+            "Jeudi, dix-sept heures trente, au Centre communautaire de la "
+            "Pointe, à Rimouski. Environnement Canada vient d'émettre un "
+            "avertissement de pluie verglaçante pour le Bas-Saint-Laurent : "
+            "de trois à cinq millimètres de glace, de vendredi soir à samedi "
+            "matin. La marche du groupe à la promenade de la mer est prévue "
+            "samedi à treize heures, avec trente personnes inscrites, dont "
+            "huit ont plus de soixante-dix ans."
+        ),
+        "rejean": [
+            "Tu n'as pas écouté la radio de la journée et tu ne devines rien : "
+            "tu demandes de quel avis il s'agit, veille ou avertissement, et "
+            "pour quelle région.",
+            "Tu fais remarquer que le bulletin annonce une amélioration samedi "
+            "après-midi, et tu attends que l'élève t'explique pourquoi la "
+            "glace resterait quand même au sol à treize heures.",
+            "Tu demandes si l'on reporte ou si l'on annule, et tu ne prends "
+            "pas la décision à sa place : tu redemandes une fois si la réponse "
+            "reste floue.",
+            "Tu veux la date de rechange, l'heure et le lieu avant de dire oui.",
+            "Tu rappelles qu'il faudra écrire aux trente personnes ce soir, et "
+            "tu demandes ce que l'élève compte leur dire d'apporter.",
+        ],
+        "participante": [
+            "Tu es Florence Bérubé, soixante-quinze ans, inscrite à la marche "
+            "depuis un mois et un peu déçue.",
+            "Tu demandes d'abord si la sortie a lieu, ensuite pourquoi, "
+            "ensuite quand elle est reprise.",
+            "Tu ne comprends pas le mot « avertissement » du premier coup : tu "
+            "demandes si c'est certain ou seulement possible.",
+            "Tu veux savoir exactement ce que tu dois apporter et à quelle "
+            "heure il faut être devant le Centre.",
+        ],
+    },
+    "crue": {
+        "contexte": (
+            "Mercredi, en fin d'avant-midi, au bureau du Centre. Le dégel des "
+            "derniers jours a fait monter l'eau : les sentiers du bas du parc "
+            "national du Bic sont inondés et le parc annonce une réouverture "
+            "dans deux semaines. La visite guidée du groupe est prévue "
+            "dimanche, l'autobus est réservé mais pas encore payé, et "
+            "vingt-deux personnes sont inscrites."
+        ),
+        "rejean": [
+            "Tu demandes d'où vient l'information : un avis météo, le parc "
+            "lui-même, quelqu'un qui y est passé.",
+            "Tu fais remarquer que l'autobus n'est pas encore payé et tu veux "
+            "savoir jusqu'à quand on peut l'annuler sans frais.",
+            "Tu proposes une seule chose, et seulement si l'élève ne propose "
+            "rien : marcher ailleurs le même jour. Tu ne dis pas où.",
+            "Tu demandes la nouvelle date et tu vérifies qu'elle tombe après "
+            "la réouverture annoncée du parc.",
+        ],
+        "participante": [
+            "Tu es Florence Bérubé et tu tiens beaucoup à cette visite-là.",
+            "Tu demandes pourquoi les sentiers sont fermés alors qu'il fait "
+            "beau depuis trois jours.",
+            "Tu veux savoir si l'on va au parc plus tard ou si l'on fait autre "
+            "chose dimanche.",
+        ],
+    },
+    "chaleur": {
+        "contexte": (
+            "Jeudi midi, en juillet. Un avertissement de chaleur extrême est "
+            "en vigueur pour le Bas-Saint-Laurent, de jeudi à dimanche : "
+            "trente-deux degrés, humidex de trente-neuf, indice UV de neuf. "
+            "Le tournoi de pétanque du Centre est prévu samedi à quatorze "
+            "heures, en plein soleil, sur le terrain derrière l'édifice."
+        ),
+        "rejean": [
+            "Tu trouves qu'il fait chaud tous les étés et qu'on ne va pas tout "
+            "arrêter pour ça : tu demandes ce que l'avertissement dit de plus "
+            "qu'une journée chaude ordinaire.",
+            "Tu demandes les chiffres — la température, l'humidex, l'indice "
+            "UV — et tu attends qu'on te les donne.",
+            "Tu proposes de garder la date si l'élève trouve une autre façon "
+            "de rendre la chose possible, et tu écoutes ce qu'il propose : "
+            "l'heure, l'ombre, l'eau.",
+            "Tu demandes qui apporte l'eau et combien, et tu veux un chiffre.",
+        ],
+        "participante": [
+            "Tu es Florence Bérubé et tu joues à la pétanque depuis quarante "
+            "ans, par tous les temps.",
+            "Tu trouves qu'on exagère avec la chaleur, et tu le dis une fois.",
+            "Tu changes d'avis si l'élève t'explique ce qu'est un coup de "
+            "chaleur et ce qu'il faut faire pour l'éviter.",
+            "Tu demandes à quelle heure il faut être là si l'on part plus tôt.",
+        ],
+    },
+}
+
+
 JEU_DE_ROLE_SCENARIOS = {
     "guichet": {
         "cadre": "une demande d'aide devant un guichet automatique",
@@ -5780,6 +5885,80 @@ JEU_DE_ROLE_SCENARIOS = {
                              "prévue, ce qu'on fait en attendant. Tu ne reproches "
                              "rien et tu ne devines pas à sa place : s'il dit "
                              "« bientôt », tu demandes une heure."),
+            },
+        },
+    },
+    "saisons": {
+        "cadre": ("une décision d'activité de groupe prise à partir d'un avis "
+                  "météo, et défendue devant quelqu'un qui la conteste, au "
+                  "stade intermédiaire"),
+        "contexte_label": "Ce qu'annonce la météo, et ce qui est prévu",
+        "cas": JEU_DE_ROLE_SAISONS,
+        "adresse": ("Vouvoie l'élève du début à la fin, dans les deux rôles : "
+                    "Réjean est le coordonnateur du Centre et madame Bérubé a "
+                    "soixante-quinze ans. Ne propose jamais le tutoiement."),
+        "sujets": [
+            "le nom exact de l'avis : une veille ou un avertissement, et de "
+            "quel phénomène",
+            "la région et le moment couverts par l'avis",
+            "l'effet attendu, en chiffres : des millimètres de glace, des "
+            "degrés, un indice UV",
+            "ce que cet effet devient à l'heure exacte de l'activité",
+            "la décision, d'un seul tenant : maintenue, reportée ou annulée",
+            "la raison, donnée avec un connecteur de cause",
+            "la nouvelle date, l'heure et le lieu, s'il y a report",
+            "ce qu'il faudra apporter, à l'impératif",
+        ],
+        "cloture": ("Quand l'élève a nommé l'avis, dit l'effet attendu, "
+                    "annoncé sa décision avec une raison et donné la date ou "
+                    "l'heure de rechange, redis le tout en une phrase courte "
+                    "pour vérifier que vous avez compris la même chose, puis "
+                    "conclus. N'accepte pas « il va faire mauvais » comme "
+                    "explication : redemande le phénomène et le chiffre, une "
+                    "fois."),
+        "ouverture": {
+            "rejean": "Entrez, Marisol. Vous avez l'air d'avoir une nouvelle.",
+            "participante": "Allô ? Oui bonjour, c'est Florence Bérubé.",
+        },
+        "roles": {
+            "rejean": {
+                "qui": ("Tu es Réjean Pelletier, 58 ans, coordonnateur du "
+                        "Centre communautaire de la Pointe, à Rimouski, depuis "
+                        "quatorze ans. L'élève anime les sorties de groupe et "
+                        "vient te voir avec une décision."),
+                "conduite": ("Niveau 5 : l'élève doit tenir un discours "
+                             "organisé, pas répondre à des questions. Tu "
+                             "vouvoies. Tu n'as pas écouté la radio et tu ne "
+                             "devines rien. Tu n'es pas contre la décision, "
+                             "mais tu ne l'acceptes pas sans raison : si "
+                             "l'élève dit seulement « il va faire mauvais », "
+                             "tu demandes quel phénomène et combien, et tu "
+                             "redemandes une fois si la réponse reste vague. "
+                             "Tu ne décides jamais à sa place et tu ne "
+                             "proposes pas la date de rechange toi-même. Tu "
+                             "emploies les vrais mots du métier : une veille, "
+                             "un avertissement, en vigueur, levé, reporter, "
+                             "annuler, maintenir. Tu rappelles une fois qu'il "
+                             "y a huit personnes de plus de soixante-dix ans "
+                             "dans le groupe."),
+            },
+            "participante": {
+                "qui": ("Tu es Florence Bérubé, 75 ans, inscrite aux sorties "
+                        "du Centre depuis des années. Tu appelles parce que tu "
+                        "as vu passer quelque chose et que tu veux savoir ce "
+                        "qui se passe."),
+                "conduite": ("Vouvoie l'élève. Tu ne connais pas le "
+                             "vocabulaire des avis météo : quand tu entends "
+                             "« avertissement » ou « veille », tu demandes si "
+                             "c'est certain ou seulement possible. Tu poses "
+                             "tes questions dans l'ordre où on se les pose "
+                             "vraiment : est-ce que ça a lieu, pourquoi, "
+                             "quand est-ce repris, qu'est-ce que j'apporte. "
+                             "Tu n'acceptes pas « bientôt » ni « on verra » : "
+                             "tu redemandes une date et une heure. Tu es "
+                             "aimable, jamais fâchée, et un peu déçue quand "
+                             "c'est reporté — dis-le une fois, sans "
+                             "insister."),
             },
         },
     },
