@@ -5,14 +5,14 @@
 qu'on lui donne. Sur une phrase, il ne se trompe jamais. Sur un mot nu, il n'a
 presque rien à se mettre sous la dent — et « pain », « brin », « certain »,
 « minute » ressortent régulièrement à l'anglaise ou à l'espagnole. Sur les
-8413 extraits relevés du dépôt, **661 font deux mots ou moins** : c'est là que
+8413 extraits relevés du dépôt, **1882 font quatre mots ou moins** : c'est là que
 la casse se produit, et c'est précisément le banc de vocabulaire et les cartes
 de prononciation, là où l'élève vient chercher le modèle à imiter.
 
 **Ce qui avait été tenté.** Réécrire le mot d'une façon qui n'existe pas en
 anglais — « urgence » → « urjance », « minute » → « minutte ». Ça marche, un
 mot à la fois, à condition d'avoir écouté le mot et deviné la graphie qui
-sauve. Six cent soixante et une fois, ce n'est pas une méthode.
+sauve. Mille huit cent quatre-vingt-deux fois, ce n'est pas une méthode.
 
 **Ce que fait ce module.** L'API accepte `previous_text` et `next_text` : du
 texte qui **conditionne la synthèse sans être prononcé**. On donne donc au
