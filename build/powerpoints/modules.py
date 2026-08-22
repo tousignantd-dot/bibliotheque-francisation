@@ -534,6 +534,23 @@ MODULES = {
                         "Venez prendre un café",
                         "Il est comment ?"),
     },
+    # « Recherche d'emploi » au niveau 3. `module-n6-recherche` (niveau 6)
+    # fait passer une entrevue : parcours, arguments, questions au recruteur.
+    # `module-travail` (niveau 4) part d'un emploi déjà obtenu — l'horaire,
+    # les tâches, le remplacement à demander. Ici l'emploi n'existe pas
+    # encore : on lit une affiche, on pousse la porte, on demande si ça
+    # engage, on laisse son nom et son numéro.
+    'module-n3-recherche-emploi': {
+        'numero': 10, 'activite': 83, 'niveau': 3,
+        'titre': 'On embauche',
+        'chapeau': "Offrir ses services en personne, lire une offre d'emploi "
+                   "simple, remplir un formulaire de demande d'emploi et "
+                   "rédiger une courte annonce.",
+        'seances': GRILLE_3_DEFIS,
+        'blocs': _blocs("Est-ce que vous engagez ?",
+                        "L'annonce dit quoi ?",
+                        "Mon nom sur le papier"),
+    },
     'module-n3-secretariat': {
         'numero': 13, 'activite': 86, 'niveau': 3,
         'titre': "L'absence de Nawel",
