@@ -1079,6 +1079,35 @@ MODULES = {
                         'La critique et le résumé'),
     },
 
+    # Vague 6, niveau 6. `build/cadre.py 6 "Location d'un logement"` ne donne
+    # qu'**une** intention — « s'informer sur ses droits et ses obligations en
+    # consultant un site Web » (CE) —, d'où GRILLE_2_DEFIS : deux façons
+    # distinctes d'entrer dans la situation, chacune avec son dialogue et ses
+    # sept exercices. Le troisième défi aurait été l'audience au Tribunal, qui
+    # est un autre travail et qui appartient à « Problèmes reliés à
+    # l'habitation » (106) ; le remplir ici aurait voulu dire relire une
+    # troisième lettre du même dossier. Le raisonnement complet est dans le
+    # docstring du manifeste.
+    #
+    # Ne recoupe aucun des trois voisins de la même situation.
+    # `module-n3-loyer` (81) décode une annonce et téléphone pour visiter ;
+    # `module-logement` (44, niveau 4) visite deux logements et les compare ;
+    # `module-n5-logement` (58) fait la démarche entière — l'appel, la visite,
+    # le bail. Tous trois cherchent un logement. Ici, le logement est trouvé
+    # depuis trois ans : ce qui se travaille est de **lire ses droits sur un
+    # site officiel**, puis de retrouver la même règle sous deux écrits qui ne
+    # s'accordent pas — l'avis qu'on envoie et la réponse qu'on reçoit.
+    'module-n6-logement': {
+        'numero': 8, 'activite': 105, 'niveau': 6,
+        'titre': 'Six mois ailleurs',
+        'chapeau': "Chercher ses droits de locataire sur un site officiel et "
+                   "en suivre le fil, puis lire l'avis de sous-location et la "
+                   "réponse du locateur avant d'écrire soi-même.",
+        'seances': GRILLE_2_DEFIS,
+        'blocs': _blocs('Ce que dit le site',
+                        "L'avis et la réponse"),
+    },
+
     'module-n6-etablissement': {
         'numero': 5, 'activite': 102, 'niveau': 6,
         'titre': "Choisir la suite",
