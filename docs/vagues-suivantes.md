@@ -1878,3 +1878,77 @@ Sa forme est dans `CLAUDE.md`.
 ensemble ont épuisé la limite de session le 22 août et sont morts à la même
 seconde. Quatre tiennent, et la fusion de la vague précédente se fait pendant
 que la suivante travaille.
+
+### Journal de la vague 6
+
+**22 août 2026 — activité 102, `module-n6-etablissement`.** « Choisir la
+suite », niveau 6, `numero` 5, `GRILLE_3_DEFIS`. Scénario inventé : Bintou
+Sangaré, 34 ans, arrivée du Mali il y a trois ans, commis de soir dans une
+pharmacie de quartier de Sherbrooke, termine sa francisation en février et ne
+sait pas ce qui vient après. Réal Duquette tient le comptoir de l'accueil,
+Pascal Lachapelle est le conseiller d'orientation, Rosa Villalba est sa
+camarade de classe, Marc-Olivier Béliveau son enseignant, et Amélie Dostie
+tient l'admission du centre de formation professionnelle. 23 exercices,
+15 mini-leçons, 4 dialogues (80 répliques), 16 mots, 18 images, **255 extraits
+audio** (80 répliques et 175 sons), 16 séances (182 diapositives, 130 blocs de
+fiches). Originalité : 1 209 énoncés visibles, **13 identiques** dans les
+43 192 des cinquante-trois autres modules de `build/contenu/`, soit **1,1 %**.
+
+*Les faits québécois sont vérifiés, pas devinés*, le 22 août 2026 : les trois
+voies d'admission d'un diplôme d'études professionnelles (diplôme d'études
+secondaires ou équivalent reconnu ; seize ans au 30 septembre et les unités de
+4e secondaire en langue d'enseignement, langue seconde et mathématiques ;
+dix-huit ans, la réussite du **test de développement général** et les
+préalables particuliers) ; la distinction entre ce test et le **test
+d'équivalence de niveau de scolarité**, seul à mener à une attestation valant
+une cinquième secondaire ; et la portée réelle de l'**évaluation comparative
+des études effectuées hors du Québec**, qui est un avis d'expert du ministère
+de l'Immigration — ni équivalence de diplôme, ni permis d'exercice, ni
+garantie d'admission. Le centre, les personnes, les dates et les numéros de
+dossier sont inventés : un avis officiel au nom d'un vrai établissement serait
+un faux document.
+
+*Ce qui le sépare de ses cinq voisins sur la même situation*, et ce n'est pas
+le sujet mais le **travail** : `module-n2-inscription` (91) s'inscrit,
+`module-n2-secretaire` (95) demande un renseignement, `module-n3-secretariat`
+(86) informe d'une absence, `module-travail` (39, niveau 4) justifie un retard
+au téléphone, `module-n5-ecole` (74) règle une affaire déjà là. Ici rien n'est
+arrivé et rien ne cloche : l'élève vient chercher de quoi **décider**. Il
+assemble une dizaine de renseignements venus de trois sources qui ne disent pas
+la même chose, il reçoit un avis officiel qui ne se discute pas au comptoir, et
+il finit assis dans une rencontre où quatre personnes parlent de son dossier.
+C'est le seul module de la série où il faut **suivre plusieurs interlocuteurs à
+la fois** — le savoir « saisir les rapports entre les interlocuteurs »
+n'apparaît qu'au niveau 6.
+
+*Deux exercices du type `texte`*, un par intention de compréhension écrite du
+programme : la description du programme d'études (six passages, six questions)
+et l'avis d'admission conditionnelle (cinq passages, cinq questions). Le
+septième contrôle les valide sans rien signaler.
+
+Trois choses apprises, qui valent pour les modules restants du niveau :
+
+- **Le contrôle de densité des tableaux se déclenche à six rangées, pas à
+  sept**, dès que la note est un peu longue et que la colonne de gauche porte
+  des libellés courts mais nombreux. Deux tableaux de `a2` et un de `c3` ont dû
+  passer à cinq rangées, et la note à une phrase. La règle pratique du pilote —
+  six rangées avec note — est un plafond, pas une garantie.
+- **Reprendre la structure d'une mini-leçon du pilote coûte cher en
+  originalité.** Les mini-leçons de graphie-phonie et de reprise de
+  l'information partaient à 9,1 % de coïncidence : le savoir est commun au
+  niveau, mais la formulation, elle, doit être refaite. Réécrites en ancrant
+  chaque exemple dans le contexte scolaire, elles ramènent l'ensemble à 1,1 %.
+  Ni les identifiants ni les textes lus à voix haute des bandeaux n'ayant
+  bougé, le relevé des sons est resté identique — la réécriture n'a rien coûté
+  en audio.
+- **`build/liens_catalogue.py` n'existe pas sur cette branche.** Le lien des
+  fiches a donc été vérifié à la main : le `studentDoc` et le `slideshow` de
+  l'entrée 102 pointent sur des fichiers présents. Si le script est arrivé sur
+  `main` entre-temps, le lancer après la fusion ne coûte rien.
+
+*Sur les contrôles* : les sept passent. `coherence.js` rend 18 écarts, tous
+« image absente du disque » — `gen_images.py` est écrit mais n'a pas tourné, et
+le générateur audio non plus : le module est livré muet et sans illustration,
+les deux se rattrapent d'un seul coup. `sommaire.py --verifier` signale huit
+liens cassés, aucun de ce module : ce sont des modules inscrits au registre par
+des sessions voisines et pas encore produits.

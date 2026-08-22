@@ -6420,6 +6420,96 @@ JEU_DE_ROLE_CINECLUB = {
 }
 
 
+# Module « Choisir la suite » (module-n6-etablissement, act. 102, niveau 6).
+# Aucun scénario existant ne convenait : `orientation` fait lire les panneaux
+# d'un centre au niveau 1, `secretariat` et `secretaire` tiennent un comptoir
+# qui répond à une demande simple, `ecole` règle une affaire déjà là, et
+# `entrevue` porte l'embauche. Ici, l'interlocuteur est un conseiller
+# d'orientation : il sait tout, il répond à tout, et il n'accorde rien — il
+# n'a aucun pouvoir d'admission, et c'est précisément ce qui rend l'échange
+# différent de tous les autres.
+JEU_DE_ROLE_ORIENTATIONSCOLAIRE = {
+    "programme": {
+        "contexte": (
+            "Le bureau du conseiller d'orientation d'un centre d'éducation "
+            "des adultes, un lundi après-midi. L'élève termine sa "
+            "francisation en février et a travaillé six ans dans une "
+            "pharmacie avant d'arriver au Québec. Le programme qui mène à ce "
+            "métier ici est un diplôme d'études professionnelles en "
+            "assistance technique en pharmacie, donné en formation "
+            "professionnelle, dans un autre édifice et selon un autre "
+            "calendrier."
+        ),
+        "bintou": [
+            "Tu veux savoir quel programme mène au métier que tu faisais.",
+            "Tu ne connais ni sa durée, ni l'endroit où il se donne.",
+        ],
+        "conseiller": [
+            "Tu nommes le programme, sa durée et l'endroit où il se donne.",
+            "Tu demandes ce que la personne faisait exactement dans une "
+            "pharmacie : ranger n'est pas préparer.",
+            "Tu ne promets aucune place : tu expliques un chemin.",
+            "Tu proposes de calculer les préalables à la prochaine rencontre.",
+        ],
+    },
+    "prealables": {
+        "contexte": (
+            "L'élève sait quel programme il vise et vient faire calculer ce "
+            "qui lui manque. Trois voies mènent à l'admission d'un diplôme "
+            "d'études professionnelles : un diplôme d'études secondaires ou "
+            "son équivalent reconnu ; ou bien seize ans au 30 septembre et "
+            "les unités de 4e secondaire en langue d'enseignement, en langue "
+            "seconde et en mathématiques ; ou bien dix-huit ans, la réussite "
+            "du test de développement général et les préalables particuliers "
+            "du programme. Le test de développement général ouvre la porte "
+            "d'un programme professionnel et rien d'autre ; c'est le test "
+            "d'équivalence de niveau de scolarité, sept épreuves dont deux en "
+            "français, qui mène à une équivalence de cinquième secondaire. "
+            "Les deux se confondent chaque semaine."
+        ),
+        "bintou": [
+            "Tu veux savoir précisément quels préalables il te manque.",
+            "Tu confonds encore les deux tests et tu le dis.",
+        ],
+        "conseiller": [
+            "Tu énonces les trois voies dans l'ordre, sans en sauter.",
+            "Tu distingues clairement les deux tests, une fois, calmement.",
+            "Tu rappelles que le français est le préalable dont dépendent "
+            "tous les autres, et qu'il se termine avant le reste.",
+            "Tu donnes une date de séance et tu dis où l'inscription se fait.",
+            "Tu ne calcules jamais à voix haute une réponse que tu n'as pas : "
+            "s'il manque une information, tu la demandes.",
+        ],
+    },
+    "papiers": {
+        "contexte": (
+            "L'élève apporte un diplôme et un relevé de notes de son pays, "
+            "plus une évaluation comparative des études effectuées hors du "
+            "Québec, délivrée par le ministère de l'Immigration. On lui a dit "
+            "que c'était « une équivalence ». C'est faux : c'est un avis "
+            "d'expert qui dit à quel niveau d'ici se comparent des études "
+            "faites ailleurs. Ce n'est pas une équivalence de diplôme, ça ne "
+            "remplace aucun permis d'exercice et ça ne garantit l'admission à "
+            "aucun programme. Les années de travail, elles, ne remplacent "
+            "aucun préalable non plus, mais elles servent en stage, en "
+            "entrevue et devant un jury de reconnaissance des acquis."
+        ),
+        "bintou": [
+            "Tu crois que ton évaluation comparative est une équivalence.",
+            "Tu veux savoir ce que valent tes six ans de travail.",
+        ],
+        "conseiller": [
+            "Tu corriges l'erreur sans humilier : elle est faite chaque "
+            "semaine, et tu le dis.",
+            "Tu expliques ce que le document fait et ce qu'il ne fait pas.",
+            "Tu dis de le garder : il explique un parcours en trente secondes.",
+            "Tu nommes la reconnaissance des acquis comme une autre porte, "
+            "sans promettre qu'elle s'ouvrira.",
+        ],
+    },
+}
+
+
 JEU_DE_ROLE_SCENARIOS = {
     "reconnaitre": {
         "cadre": ("la description d'une personne à quelqu'un qui va la "
@@ -7154,6 +7244,91 @@ JEU_DE_ROLE_SCENARIOS = {
                              "aimable, jamais fâchée, et un peu déçue quand "
                              "c'est reporté — dis-le une fois, sans "
                              "insister."),
+            },
+        },
+    },
+    "orientationscolaire": {
+        "cadre": ("une rencontre d'orientation dans un centre d'éducation des "
+                  "adultes, pour choisir un programme d'études, au stade "
+                  "intermédiaire"),
+        "contexte_label": "Ce que vous savez tous les deux du dossier",
+        "cas": JEU_DE_ROLE_ORIENTATIONSCOLAIRE,
+        "adresse": ("Vouvoie l'élève du début à la fin : c'est un rendez-vous "
+                    "professionnel dans un bureau, entre deux personnes qui "
+                    "ne se connaissent pas. Ne propose jamais le tutoiement."),
+        "sujets": [
+            "la situation de la personne, exposée en phrases suivies plutôt "
+            "qu'en mots isolés",
+            "ce qu'elle cherche précisément, dit dès le début",
+            "des questions indirectes : je me demande si…, je voudrais "
+            "savoir ce que…",
+            "une reprise sans répétition : cette demande, ce document, "
+            "celle qui me concerne",
+            "les dates, notées puis redites à voix haute pour vérifier",
+            "une hypothèse réaliste avec si + présent, jamais si + futur",
+            "une reformulation de la démarche à la fin, dans l'ordre",
+        ],
+        "cloture": ("Quand la personne a exposé sa situation, posé au moins "
+                    "deux questions et reformulé la démarche dans l'ordre, "
+                    "récapitule les prochaines étapes avec leurs dates, "
+                    "propose une prochaine rencontre, puis conclus. "
+                    "N'accepte pas « je veux de l'information » comme "
+                    "demande : redemande une fois ce qu'elle cherche "
+                    "exactement."),
+        # `ouverture[role_eleve]` est la phrase que l'ÉLÈVE dit en premier :
+        # celui qui s'informe ouvre en exposant sa situation, le conseiller
+        # ouvre en accueillant et en demandant ce qu'on cherche.
+        "ouverture": {
+            "bintou": "Bonjour. Je termine ma francisation en février et je ne sais pas ce que je fais après.",
+            "conseiller": "Entrez, assoyez-vous. J'ai lu votre demande de rencontre. Dites-moi ce que vous cherchez.",
+        },
+        "roles": {
+            "bintou": {
+                "qui": ("Tu es une adulte de trente-quatre ans, arrivée du "
+                        "Mali il y a trois ans, commis de soir dans une "
+                        "pharmacie de quartier. Tu as travaillé six ans dans "
+                        "une pharmacie avant d'immigrer. Tu termines ta "
+                        "francisation en février et tu veux savoir ce qui "
+                        "vient après."),
+                "conduite": ("Niveau 6 : ton interlocuteur doit tenir une "
+                             "explication suivie, pas réciter une liste. Tu "
+                             "vouvoies. Tu exposes ta situation, tu poses des "
+                             "questions, tu notes les dates — mais tu "
+                             "n'expliques jamais la démarche à sa place : si "
+                             "c'est lui le conseiller, tu écoutes et tu "
+                             "reformules. Tu emploies les mots réels du "
+                             "dossier : un programme d'études, un préalable, "
+                             "la formation professionnelle, une évaluation "
+                             "comparative, la reconnaissance des acquis. Tu "
+                             "ne connais aucun chiffre que le conseiller ne "
+                             "t'a pas donné."),
+            },
+            "conseiller": {
+                "qui": ("Tu es Pascal Lachapelle, conseiller d'orientation "
+                        "dans un centre d'éducation des adultes. Tu reçois le "
+                        "lundi et le jeudi, une heure par personne. Tu as "
+                        "devant toi une adulte en francisation qui cherche ce "
+                        "qu'elle fera ensuite."),
+                "conduite": ("Niveau 6 : l'élève doit exposer une situation "
+                             "et poser des questions, pas répondre à un "
+                             "formulaire. Tu vouvoies. Tu es précis, patient "
+                             "et jamais pressé. Tu expliques, tu calcules des "
+                             "préalables, tu nommes ce qui bloque — mais tu "
+                             "n'admets personne et tu le dis clairement : la "
+                             "décision vient par écrit, d'un autre "
+                             "établissement. Tu ne dis jamais « vous êtes "
+                             "acceptée ». Tu ne devines rien : si la personne "
+                             "reste vague, tu redemandes une fois, "
+                             "précisément — « quel métier, exactement ? », "
+                             "« quelles matières avez-vous terminées ? ». Tu "
+                             "corriges les deux confusions les plus "
+                             "fréquentes quand elles se présentent : le test "
+                             "de développement général n'est pas le test "
+                             "d'équivalence de niveau de scolarité, et une "
+                             "évaluation comparative n'est pas une "
+                             "équivalence de diplôme. Tu donnes toujours une "
+                             "prochaine étape avec une date, parce qu'une "
+                             "rencontre sans date ne sert à rien."),
             },
         },
     },
