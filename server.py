@@ -6590,7 +6590,173 @@ JEU_DE_ROLE_DEMARCHEINTERNE = {
 }
 
 
+# module-n6-logement (activité 105) — le projet de sous-location de Farida
+# Belkacem. Les règles nommées ici sont celles du Code civil du Québec sur la
+# **sous-location**, et elles sont stables : avis écrit avec le nom et
+# l'adresse de la personne proposée, quinze jours pour répondre, consentement
+# présumé en cas de silence, refus possible pour un motif sérieux seulement,
+# remboursement des dépenses raisonnables que la sous-location occasionne,
+# locataire qui demeure tenu de ses obligations. L'assistant ne doit **jamais**
+# décrire la procédure d'une cession de bail : ce module ne la traite pas, il
+# ne fait que la distinguer de la sous-location. Il ne rend jamais de décision
+# et renvoie au service de renseignements du Tribunal pour tout cas
+# particulier. Les personnes, l'immeuble, les dates et les montants sont
+# inventés.
+JEU_DE_ROLE_SOUSLOCATION = {
+    "projet": {
+        "contexte": (
+            "Le palier du deuxième étage d'un immeuble de six logements de la "
+            "rue de la Canardière, à Québec, un soir de novembre. La "
+            "locataire du logement 2 part travailler six mois à Sept-Îles, du "
+            "6 janvier au 30 juin, et veut sous-louer son quatre et demie du "
+            "5 janvier au 28 juin à Nicolas Trudel, étudiant, dont elle a le "
+            "nom et l'adresse. Le loyer est de 895 $ chauffé, le bail se "
+            "termine le 30 juin. Le locateur ne sait encore rien du projet."
+        ),
+        "farida": [
+            "Tu as lu la page du Tribunal et tu as téléphoné au service de "
+            "renseignements avant de venir.",
+            "Tu arrives avec un nom, une adresse et deux dates, pas avec une "
+            "demande en l'air.",
+        ],
+        "locateur": [
+            "Tu crois d'abord qu'elle résilie son bail et tu t'en inquiètes.",
+            "Tu as déjà eu une mauvaise sous-location dans l'immeuble il y a "
+            "six ans.",
+            "Tu demandes qui est la personne, et tu doutes qu'un étudiant "
+            "paie.",
+            "Tu finis par demander ce que tu es censé faire de ce papier.",
+        ],
+    },
+    "refus": {
+        "contexte": (
+            "Onze jours plus tard. Le locateur a répondu par écrit, dans le "
+            "délai de quinze jours, et il refuse. Il invoque deux motifs : la "
+            "personne proposée est aux études et il préfère les personnes en "
+            "emploi ; et il a relevé au dossier de cette personne un défaut "
+            "de paiement de deux mois chez son précédent locateur, en 2024. "
+            "Un des deux motifs se vérifie, l'autre est une préférence."
+        ),
+        "farida": [
+            "Tu sais qu'un motif doit regarder la personne ou le logement, et "
+            "pouvoir se montrer.",
+            "Tu ne prétends pas trancher : tu poses des questions par écrit.",
+        ],
+        "locateur": [
+            "Tu tiens à ta préférence pour les personnes en emploi et tu la "
+            "défends.",
+            "Tu t'appuies sur le défaut de paiement, qui est ton meilleur "
+            "argument.",
+            "Tu demandes ce que l'élève compte faire, exactement.",
+            "Tu refuses de discuter de vive voix de ce qui n'est pas écrit.",
+        ],
+    },
+    "frais": {
+        "contexte": (
+            "Même lettre, dernier paragraphe : le locateur exige 200 $ de "
+            "frais d'ouverture de dossier avant d'examiner une autre "
+            "candidature. La page du Tribunal parle du remboursement des "
+            "dépenses raisonnables que la sous-location lui occasionne — une "
+            "vérification de crédit, par exemple —, pas d'un montant fixe "
+            "décidé d'avance."
+        ),
+        "farida": [
+            "Tu demandes par écrit à quelles dépenses ce montant correspond.",
+            "Tu ne refuses pas de payer : tu demandes de quoi il s'agit.",
+        ],
+        "locateur": [
+            "Tu trouves normal de facturer ton temps et tes démarches.",
+            "Tu n'as pas encore fait de vérification de crédit et tu évites "
+            "de le dire.",
+            "Tu t'impatientes si l'élève reste vague, et tu redemandes une "
+            "réponse claire.",
+            "Tu finis par demander qui tranche, si vous n'êtes pas d'accord.",
+        ],
+    },
+}
+
+
 JEU_DE_ROLE_SCENARIOS = {
+    "souslocation": {
+        "cadre": ("un projet de sous-location exposé à son locateur, par une "
+                  "locataire qui a lu ses droits sur un site officiel, au "
+                  "stade intermédiaire"),
+        "contexte_label": "Ce que dit le site",
+        "cas": JEU_DE_ROLE_SOUSLOCATION,
+        "adresse": ("Vouvoie l'élève du début à la fin : c'est une relation "
+                    "de locataire à locateur, et le module vouvoie partout. "
+                    "Ne propose jamais le tutoiement."),
+        "sujets": [
+            "de quoi il s'agit, dit avant tout détail",
+            "le nom et l'adresse de la personne proposée",
+            "les dates exactes de la sous-location",
+            "le délai de quinze jours, rappelé sans menacer",
+            "le fait que le locataire demeure responsable du loyer",
+            "une reprise sans répétition : cet avis, celui-ci, il en dispose",
+            "une hypothèse réaliste avec si + présent, jamais si + futur",
+            "la distinction entre ce que le site écrit et ce que l'élève en "
+            "pense",
+        ],
+        "cloture": ("Quand l'élève a dit de quoi il s'agit, nommé la personne "
+                    "avec son adresse, donné les deux dates et rappelé le "
+                    "délai, redis la démarche en une phrase pour vérifier que "
+                    "tu as compris la même chose, puis conclus. N'accepte pas "
+                    "« je vais sous-louer à quelqu'un » comme avis : "
+                    "redemande le nom et l'adresse, une fois."),
+        # `ouverture[role_eleve]` est la phrase que l'ÉLÈVE dit en premier :
+        # la locataire ouvre en annonçant qu'elle a un papier à remettre ; le
+        # locateur ouvre en demandant ce qui se passe.
+        "ouverture": {
+            "farida": "Monsieur Tardif, j'ai un papier à vous remettre et j'aimerais vous l'expliquer moi-même.",
+            "locateur": "Vous vouliez me voir ? J'espère que ce n'est pas encore une histoire de chauffage.",
+        },
+        "roles": {
+            "farida": {
+                "qui": ("Tu es Farida Belkacem, 39 ans, arrivée d'Algérie il "
+                        "y a quatre ans. Tu travailles à la cuisine d'un "
+                        "centre d'hébergement de Québec et tu loues le "
+                        "logement 2 depuis trois ans, sans jamais un retard. "
+                        "Tu as lu la page du Tribunal sur la sous-location et "
+                        "tu as téléphoné au service de renseignements."),
+                "conduite": ("Niveau 6 : ton interlocuteur doit tenir une "
+                             "explication suivie, pas répondre à un "
+                             "questionnaire. Tu vouvoies. Tu exposes la "
+                             "démarche étape par étape et tu cites la page, "
+                             "mais tu ne fais jamais le travail à sa place : "
+                             "si c'est lui qui explique, tu écoutes. Tu "
+                             "emploies les mots réels du dossier — l'avis "
+                             "écrit, le nom et l'adresse, les quinze jours, "
+                             "le motif sérieux, le consentement présumé, les "
+                             "dépenses raisonnables. Tu ne donnes jamais "
+                             "d'avis juridique et tu ne dis jamais qu'un "
+                             "refus est illégal : tu rapportes ce que le site "
+                             "écrit, tu poses des questions par écrit, et tu "
+                             "rappelles que c'est au Tribunal d'apprécier un "
+                             "motif. Tu ne parles jamais de la procédure de "
+                             "cession de bail : ce n'est pas ta démarche."),
+            },
+            "locateur": {
+                "qui": ("Tu es Lucien Tardif, 63 ans, propriétaire de "
+                        "l'immeuble de six logements depuis vingt-deux ans. "
+                        "Tu l'entretiens toi-même et tu n'aimes pas les "
+                        "surprises. Une sous-location s'est mal passée chez "
+                        "toi il y a six ans et tu n'as jamais oublié."),
+                "conduite": ("Niveau 6 : l'élève doit tenir une explication "
+                             "en étapes et répondre à une objection sans se "
+                             "fâcher. Tu vouvoies. Tu n'es pas hostile, tu es "
+                             "bourru et méfiant. Tu interromps une fois ou "
+                             "deux pour demander où c'est écrit. Tu "
+                             "redemandes une date chaque fois que l'élève "
+                             "reste vague — « cet hiver », c'est vague ; « du "
+                             "5 janvier au 28 juin », c'est précis. Tu "
+                             "répètes au moins une fois qu'un étudiant ne "
+                             "paiera pas, pour que l'élève te réponde sur la "
+                             "personne et non sur les étudiants en général. "
+                             "Tu finis par demander ce que l'élève attend de "
+                             "toi, exactement."),
+            },
+        },
+    },
     "reconnaitre": {
         "cadre": ("la description d'une personne à quelqu'un qui va la "
                   "chercher au terminus d'autobus et qui ne l'a jamais vue, "
