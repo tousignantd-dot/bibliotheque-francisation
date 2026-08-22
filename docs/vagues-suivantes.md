@@ -1851,7 +1851,7 @@ et trois pièges du stade intermédiaire y sont nommés.
 
 | Numéro | Situation | Slug réservé | Grille |
 |--------|-----------|--------------|--------|
-| 100 | Emploi | `module-n6-emploi` | `GRILLE_3_DEFIS` |
+| 100 | Emploi | `module-n6-emploi` | `GRILLE_3_DEFIS` (fait) |
 | 101 | Relations sociales | `module-n6-relations` | `GRILLE_3_DEFIS` |
 | 102 | Communication avec le personnel de l'établissement | `module-n6-etablissement` | `GRILLE_3_DEFIS` |
 | 103 | Découverte d'œuvres | `module-n6-oeuvres` | `GRILLE_3_DEFIS` |
@@ -1878,3 +1878,50 @@ Sa forme est dans `CLAUDE.md`.
 ensemble ont épuisé la limite de session le 22 août et sont morts à la même
 seconde. Quatre tiennent, et la fusion de la vague précédente se fait pendant
 que la suivante travaille.
+
+### Ce que le premier module de la vague 6 a trouvé
+
+**22 août 2026 — activité 100, `module-n6-emploi`.** « Le poste affiché à
+l'interne », niveau 6, `numero` 3. Yaneth Mosquera, 36 ans, arrivée de
+Colombie il y a quatre ans, deux ans à l'expédition chez Emballages Bocage, à
+Saint-Hyacinthe. Un poste de vérificatrice à la qualité est affiché au
+babillard et il reste dix jours ouvrables. 24 exercices, 17 mini-leçons,
+4 dialogues (84 répliques), 16 mots, 15 images, **290 extraits audio**,
+16 séances, 191 diapositives. Originalité : 0,8 %.
+
+Quatre points pour les sept modules qui restent.
+
+**1. La situation « Emploi » est la seule du niveau qui n'a pas à emprunter
+ses productions.** Ses cinq intentions couvrent les quatre compétences : la
+production orale du programme est « décrire les étapes d'une démarche
+administrative » et la production écrite « rédiger un courriel dans le
+contexte de relations professionnelles » — ce sont, mot pour mot, les deux
+blocs de « Je me lance ». Le pilote devait aller chercher les siennes dans les
+attentes de fin de cours ; ici, non. Vérifier ce point pour chaque situation
+avant d'écrire : c'est la première chose que `build/cadre.py` doit dire.
+
+**2. Le type `texte` supporte très bien d'être employé deux fois dans le même
+défi.** `t2note` porte la note de service, `t2polit` l'article 4 de la
+politique — deux genres différents du même dossier, le premier avec des
+puces, le second avec des articles numérotés. Ce n'est pas une répétition :
+c'est ce que le programme demande en distinguant « lire de la documentation
+interne » de la lecture ordinaire. Un bloc `savoir` se pose sur un exercice
+`texte` comme sur les autres ; le moteur le rend avant la grille.
+
+**3. Le contrôle de densité des tableaux de séance se déclenche plus tôt qu'on
+ne croit.** La règle du pilote — six rangées avec note, sept sans — est
+juste, mais elle suppose une colonne de gauche courte **et** une note courte.
+Deux tableaux ont été refusés : l'un à six rangées dont une note de quatre-
+vingt-dix caractères, l'autre à six rangées dont la colonne de gauche faisait
+vingt-cinq caractères. Le remède le moins coûteux est de descendre la note
+dans les `notes` de l'enseignante : elle y sert autant, et la diapositive
+passe.
+
+**4. La graphie-phonie sera la même dans les huit modules — ses phrases ne
+doivent pas l'être.** Le savoir (`ch` qui dit k, `x` qui dit s, `sh`/`sch` qui
+disent ch) est commun au niveau, donc chaque module portera cet exercice et sa
+mini-leçon. Écrite en s'appuyant sur celle du pilote, elle a produit à elle
+seule la moitié des coïncidences du relevé d'originalité. La mesure globale
+restait sous le seuil (4,2 %), ce qui aurait laissé passer un quasi-doublon.
+**Mesurer par module ne suffit pas : regarder d'où viennent les coïncidences.**
+Le détail est dans `docs/verification-originalite.md`.
