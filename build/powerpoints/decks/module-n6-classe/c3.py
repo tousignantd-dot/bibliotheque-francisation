@@ -89,7 +89,7 @@ def build(dossier):
                "Dites ce que remplace le mot en gras dans la deuxième phrase.", [
         ("Le bulletin donne trois chiffres. Nous n'en avons gardé qu'un.", "des trois chiffres"),
         ("La lectrice croit que la collecte ne sert à rien. Youssef ne le croit pas.", "que la collecte ne sert à rien"),
-        ("Marisol travaille à la bibliothèque. Elle y passe ses jeudis.", "à la bibliothèque"),
+        ("Milagros travaille à la bibliothèque. Elle y passe ses jeudis.", "à la bibliothèque"),
         ("Le texte finit par une bibliographie. L'équipe y met ses sources.", "dans la bibliographie"),
         ("Il leur manque une source. Ils en cherchent une depuis lundi.", "une source"),
         ("Le plan est resté sur la table. Youssef l'a oublié là.", "le plan"),

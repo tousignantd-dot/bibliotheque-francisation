@@ -42,7 +42,7 @@ def build(dossier):
 
     d.dialogue('Écoute 1', "Deux questions par document", [
         ("DANIÈLE", "Alors, l'équipe du bac brun. Vous avez apporté ce que vous avez trouvé ?", False),
-        ("MARISOL", "Trois documents. Mais plus on les lit, moins on comprend.", False),
+        ("MILAGROS", "Trois documents. Mais plus on les lit, moins on comprend.", False),
         ("DANIÈLE", "C'est bon signe. Étalez-les. On va les regarder un par un, et je vais vous poser à chaque fois les deux mêmes questions : qui parle, et qu'est-ce que cette personne veut ?", True),
         ("YOUSSEF", "Le premier vient du site de la ville. C'est une page qui explique la collecte : ce qu'on met dans le bac, ce qu'on n'y met pas, et pourquoi.", False),
     ], consigne="Première écoute : quelles sont les deux questions ?",
@@ -51,9 +51,9 @@ def build(dossier):
 
     d.dialogue('Écoute 2', "La page de la ville, et le bulletin", [
         ("DANIÈLE", "Elle veut que la collecte fonctionne. Ce n'est pas un défaut, c'est un fait à savoir : cette page vous donnera très bien la liste des matières acceptées, et elle ne vous dira jamais ce qui a mal marché la première année.", True),
-        ("MARISOL", "Le deuxième, c'est un article du bulletin municipal. Il raconte l'histoire de la collecte. C'est écrit d'une drôle de façon : « le conseil adopta le règlement ».", False),
+        ("MILAGROS", "Le deuxième, c'est un article du bulletin municipal. Il raconte l'histoire de la collecte. C'est écrit d'une drôle de façon : « le conseil adopta le règlement ».", False),
         ("DANIÈLE", "Le passé simple. On ne le parle jamais et on l'écrit encore souvent, dans les historiques surtout. Traduisez-le en passé composé dans votre tête et continuez.", True),
-        ("MARISOL", "J'ai buté sur une phrase. « La ville avait distribué les bacs en avril, mais la collecte ne commença qu'en juin. »", False),
+        ("MILAGROS", "J'ai buté sur une phrase. « La ville avait distribué les bacs en avril, mais la collecte ne commença qu'en juin. »", False),
     ], consigne="Deuxième écoute : quels temps de verbe sont nommés ?",
        notes="Les deux temps du défi 2 apparaissent ici : le passé simple et "
              "le plus-que-parfait. Ils seront travaillés en C5 ; ici, il "
@@ -62,7 +62,7 @@ def build(dossier):
     d.dialogue('Écoute 3', "La lettre, et ce qu'on en fait", [
         ("YOUSSEF", "Le troisième, c'est une lettre. Une dame écrit au bulletin pour dire que le compostage ne sert à rien.", False),
         ("DANIÈLE", "Elle veut convaincre. Ce n'est pas une source de faits, c'est une source d'opinions — et vous en avez besoin, à condition de la présenter pour ce qu'elle est.", True),
-        ("MARISOL", "Mais alors, laquelle des trois a raison ?", False),
+        ("MILAGROS", "Mais alors, laquelle des trois a raison ?", False),
         ("DANIÈLE", "Aucune ne ment. Vous les mettez côte à côte, vous notez à quel endroit elles se contredisent, et vous l'écrivez. C'est ça, votre travail — pas de choisir un gagnant.", True),
     ], consigne="Troisième écoute : que faut-il faire des contradictions ?",
        notes="C'est la réplique la plus importante du module. La faire "

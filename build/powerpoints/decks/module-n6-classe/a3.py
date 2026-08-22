@@ -43,7 +43,7 @@ def build(dossier):
 
     d.dialogue('Écoute 1', "L'annonce, premières répliques", [
         ("MIREILLE", "Avant qu'on ouvre le cahier, j'ai quelque chose à vous annoncer, et j'aime autant vous le dire tout de suite : ça va durer trois semaines.", False),
-        ("MARISOL", "Trois semaines de quoi, madame ?", False),
+        ("MILAGROS", "Trois semaines de quoi, madame ?", False),
         ("MIREILLE", "D'un travail de recherche. En équipe de trois. Chaque équipe choisit un sujet dans une liste, cherche de l'information, écrit un court texte et vient présenter ce qu'elle a trouvé devant la classe.", True),
         ("YOUSSEF", "Un exposé ? Devant tout le monde ?", False),
     ], consigne="Première écoute : ne rien noter, seulement écouter.",
@@ -53,7 +53,7 @@ def build(dossier):
 
     d.dialogue('Écoute 2', "Ce qu'on attend vraiment", [
         ("MIREILLE", "Un compte rendu, plutôt. Cinq minutes par équipe. Ce n'est pas un concours : personne ne va vous demander d'être drôle. On veut savoir ce que vous avez trouvé et d'où ça vient.", True),
-        ("MARISOL", "Et le sujet, on le choisit vraiment ? Ou bien il est déjà choisi et vous nous laissez croire qu'on choisit ?", False),
+        ("MILAGROS", "Et le sujet, on le choisit vraiment ? Ou bien il est déjà choisi et vous nous laissez croire qu'on choisit ?", False),
         ("MIREILLE", "Vous choisissez vraiment. Il y a huit sujets sur la feuille et ils touchent tous la ville : la collecte des matières organiques, le transport en commun, les bibliothèques de quartier, l'eau potable…", False),
         ("MIREILLE", "Prenez celui qui vous fâche ou celui qui vous intrigue, ça revient au même.", False),
     ], consigne="Deuxième écoute : notez les chiffres.",

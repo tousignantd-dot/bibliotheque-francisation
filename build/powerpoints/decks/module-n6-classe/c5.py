@@ -97,7 +97,7 @@ def build(dossier):
                "Le fait souligné est-il arrivé avant l'autre, ou après ?", [
         ("La ville avait distribué les bacs quand la collecte commença.", "avant"),
         ("Le conseil adopta le règlement, puis il fit imprimer le dépliant.", "après"),
-        ("Quand Marisol trouva la page, Youssef avait déjà lu l'article.", "avant"),
+        ("Quand Milagros trouva la page, Youssef avait déjà lu l'article.", "avant"),
         ("L'équipe remit son plan, et l'enseignante le corrigea le soir même.", "après"),
         ("Ils se plaignirent parce que personne ne leur avait expliqué la règle.", "avant"),
         ("La lectrice écrivit parce qu'elle avait vu un sac de plastique.", "avant"),

@@ -65,7 +65,7 @@
        </div>
        <div class="jr-choix-l">Tu joues qui ?</div>
        <div class="jr-opts" id="jrRoles">
-         <button class="jr-opt on" type="button" data-role="marisol" onclick="jrChoisir('role','marisol')">Celle qui propose</button>
+         <button class="jr-opt on" type="button" data-role="milagros" onclick="jrChoisir('role','milagros')">Celle qui propose</button>
          <button class="jr-opt" type="button" data-role="youssef" onclick="jrChoisir('role','youssef')">Le coéquipier</button>
        </div>
        <div class="jr-choix-l">Comment ?</div>

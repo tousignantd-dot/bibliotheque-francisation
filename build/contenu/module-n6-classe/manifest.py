@@ -40,7 +40,7 @@ Le niveau 6 est le niveau de la cohésion
 ----------------------------------------
 
 Le 5 raconte, le 7 démasque, le 6 **suit un fil**. Les deux défis sont deux
-retours sur le **même dossier** — le travail de recherche de Marisol, Youssef
+retours sur le **même dossier** — le travail de recherche de Milagros, Youssef
 et leur équipe sur la collecte des matières organiques — sous deux genres
 d'écrit qui ne se lisent pas de la même façon : un écrit qui **ordonne** (la
 consigne, la grille) et un écrit qui **rapporte** (la page d'information, la
@@ -119,7 +119,7 @@ que l'ensemble des municipalités soient desservies ; et le plastique, même dit
 **Tout le reste est inventé, à commencer par la municipalité.** La ville de
 Sainte-Angèle-des-Prés, le Centre d'éducation des adultes des Trois-Chênes, le
 bulletin municipal, les chiffres de tonnage, les dates et les personnes —
-Marisol Ferreyra, Mireille Charpentier, Youssef Amrani, Danièle Ouimet — n'ont
+Milagros Zevallos, Mireille Charpentier, Youssef Amrani, Danièle Ouimet — n'ont
 aucun modèle réel. Attribuer une page d'information ou un tonnage fabriqué à
 une vraie ville produirait un faux document, et un élève le citerait de bonne
 foi dans un vrai travail.
@@ -152,7 +152,7 @@ MANIFESTE = {
                "enseignante.",
 
     'jr_cas': 'repartir',
-    'jr_role': 'marisol',
+    'jr_role': 'milagros',
     'jr_scenario': 'travailequipe',
     'ia_jeu_de_role': "L'élève participe à une rencontre d'équipe où trois "
                       "personnes doivent se partager un travail de recherche "

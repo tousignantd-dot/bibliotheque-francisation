@@ -65,7 +65,7 @@ def build(dossier):
         ("Elle demande ... le plan avec le texte. (remettre)", "de remettre"),
         ("Il a oublié ... les verbes de la consigne. (souligner)", "de souligner"),
         ("Ils ont réussi ... une troisième source. (trouver)", "à trouver"),
-        ("Marisol a appris ... une source. (juger)", "à juger"),
+        ("Milagros a appris ... une source. (juger)", "à juger"),
         ("Ils espèrent ... avant le 24 novembre. (finir)", "finir"),
         ("Ils ont commencé ... le lundi soir. (écrire)", "à écrire"),
     ], corrige=True, cols=1,

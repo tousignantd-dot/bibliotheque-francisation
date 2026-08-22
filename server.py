@@ -6608,7 +6608,7 @@ JEU_DE_ROLE_TRAVAILEQUIPE = {
             "premier devant la classe. Le travail à remettre est un texte de "
             "deux pages et le plan qui a servi à l'écrire."
         ),
-        "marisol": [
+        "milagros": [
             "Tu arrives avec une proposition de répartition, pas avec une "
             "question ouverte.",
             "Tu dis ce que tu as déjà fait, avec des détails vérifiables.",
@@ -6631,7 +6631,7 @@ JEU_DE_ROLE_TRAVAILEQUIPE = {
             "donnée à chaque personne selon la partie qu'elle a écrite et "
             "présentée, non à l'équipe en bloc."
         ),
-        "marisol": [
+        "milagros": [
             "Tu ne veux ni écrire la partie de quelqu'un d'autre, ni remettre "
             "un travail troué.",
             "Tu proposes d'aller voir l'enseignante aujourd'hui, avant "
@@ -6656,7 +6656,7 @@ JEU_DE_ROLE_TRAVAILEQUIPE = {
             "rapporte ce que disent ses sources et distingue ce qu'un "
             "document affirme de ce qu'elle en pense."
         ),
-        "marisol": [
+        "milagros": [
             "Tu veux garder les deux sources et écrire pourquoi elles "
             "s'opposent.",
             "Tu t'appuies sur la grille : c'est justement ce qui est évalué.",
@@ -7609,12 +7609,12 @@ JEU_DE_ROLE_SCENARIOS = {
         # celle qui propose ouvre en annonçant sa proposition ; le coéquipier
         # ouvre en demandant par quoi on commence.
         "ouverture": {
-            "marisol": "Bon. Il nous reste onze jours, et j'ai pensé à une façon de se partager le travail.",
+            "milagros": "Bon. Il nous reste onze jours, et j'ai pensé à une façon de se partager le travail.",
             "youssef": "Onze jours, c'est court. Par quoi est-ce qu'on commence, d'après toi ?",
         },
         "roles": {
-            "marisol": {
-                "qui": ("Tu es une adulte de quarante et un ans, arrivée du "
+            "milagros": {
+                "qui": ("Tu es une adulte de quarante-trois ans, arrivée du "
                         "Pérou il y a cinq ans, où tu étais technicienne de "
                         "laboratoire. Tu suis ta francisation le jour et tu "
                         "fais un travail de recherche en équipe sur la "

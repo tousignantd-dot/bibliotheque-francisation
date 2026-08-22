@@ -174,7 +174,7 @@ const PLUS = {
     eye:'Mini-leçon', tit:"Une consigne ne se lit pas, elle se démonte",
     blocs:[
       {t:'texte', h:"Pourquoi deux personnes lisent la même feuille différemment",
-       p:"Marisol a compris deux documents à remettre, Youssef un seul. Aucun des deux n'a mal lu au sens ordinaire : ils ont lu comme on lit un texte, en suivant le sens général. Or une consigne n'a pas de sens général. Chaque phrase y porte une obligation distincte, et rien n'est jamais dit deux fois. Il faut donc une autre façon de lire.",
+       p:"Milagros a compris deux documents à remettre, Youssef un seul. Aucun des deux n'a mal lu au sens ordinaire : ils ont lu comme on lit un texte, en suivant le sens général. Or une consigne n'a pas de sens général. Chaque phrase y porte une obligation distincte, et rien n'est jamais dit deux fois. Il faut donc une autre façon de lire.",
        note:"C'est la seule intention de communication que le programme rattache à cette situation, au niveau 6 : comprendre de l'information liée à un sujet de recherche. Elle commence par la consigne, avant les sources."},
 
       {t:'ana', h:"Un crayon, et sept verbes",
@@ -370,7 +370,7 @@ const PLUS = {
        p:"Les verbes du mouvement et de l'apprentissage : quelque chose se met en marche ou s'apprend.",
        mots:[['Les sept à connaître','réussir · apprendre · commencer · aider · hésiter · arriver · se mettre'],
              ['La forme','à ne change jamais, même devant une voyelle : ils ont commencé à écrire', true],
-             ['Un exemple du module','Marisol a appris à juger une source en deux questions']],
+             ['Un exemple du module','Milagros a appris à juger une source en deux questions']],
        say:"réussir, apprendre, commencer, aider, hésiter, arriver, se mettre",
        note:"« Commencer à » est le plus fréquent des sept. Si vous n'en retenez qu'un, retenez celui-là."},
 
@@ -388,7 +388,7 @@ const PLUS = {
          ["Elle demande de remettre le plan.","demander → famille « de »."],
          ["Il a oublié d'écrire son nom.","oublier → « de », devenu « d' » devant la voyelle."],
          ["Ils ont réussi à trouver une source.","réussir → famille « à »."],
-         ["Marisol a appris à juger une source.","apprendre → famille « à »."],
+         ["Milagros a appris à juger une source.","apprendre → famille « à »."],
          ["Ils ont choisi de garder le bac brun.","choisir → famille « de »."],
          ["Ils espèrent finir avant le 24.","espérer → rien du tout."],
          ["Ils voudraient écrire leur plan ce soir.","vouloir → rien du tout."],
@@ -580,7 +580,7 @@ const PLUS = {
        rows:[
          ["Le bulletin donne trois chiffres. Nous n'en avons gardé qu'un.","des trois chiffres du bulletin"],
          ["La lectrice croit que la collecte ne sert à rien. Youssef ne le croit pas.","que la collecte ne sert à rien"],
-         ["Marisol travaille à la bibliothèque. Elle y passe ses jeudis.","à la bibliothèque"],
+         ["Milagros travaille à la bibliothèque. Elle y passe ses jeudis.","à la bibliothèque"],
          ["Le texte finit par une bibliographie. L'équipe y met ses sources.","dans la bibliographie"],
          ["Il leur manque une source. Ils en cherchent une depuis lundi.","une source"],
          ["L'enseignante a dit que le retard ne se discute pas. Elle l'a répété.","que le retard ne se discute pas"],
@@ -654,7 +654,7 @@ const PLUS = {
          ["la page qu'elle a trouvée en premier","il manque le complément direct de « trouver »."],
          ["une lectrice qui écrit souvent","il manque le sujet de « écrit »."],
          ["le jour où ils ont remis leur plan","« le jour » est un nom de temps."],
-         ["la ville où Marisol habite","« la ville » est un lieu."],
+         ["la ville où Milagros habite","« la ville » est un lieu."],
          ["le tableau qu'ils ont recopié","il manque le complément direct de « recopier »."],
          ["le moment où une équipe se perd","« le moment » est un nom de temps."],
        ]},
@@ -835,10 +835,10 @@ const PLUS = {
 
       {t:'ana', h:"Ce qu'il fait dans une phrase",
        p:"Il place un fait avant un autre fait passé. Les mots de liaison, eux, ne disent rien de l'ordre.",
-       mots:[['Avec « quand »','Quand Marisol trouva la page, Youssef <b>avait déjà lu</b> l\'article. — Youssef d\'abord'],
+       mots:[['Avec « quand »','Quand Milagros trouva la page, Youssef <b>avait déjà lu</b> l\'article. — Youssef d\'abord'],
              ['Avec « parce que »','Ils se plaignirent parce que personne ne leur <b>avait expliqué</b> la règle. — l\'explication manquante d\'abord', true],
              ['Sans le plus-que-parfait','Ils se plaignirent parce que personne ne leur expliqua la règle. — les deux se suivent']],
-       say:"Quand Marisol trouva la page, Youssef avait déjà lu l'article.",
+       say:"Quand Milagros trouva la page, Youssef avait déjà lu l'article.",
        note:"« Déjà » accompagne souvent le plus-que-parfait et le rend plus visible. Mais il n'est pas obligatoire, et son absence ne change rien à l'ordre."},
 
       {t:'ex', h:"Sept phrases, deux ordres",
@@ -846,7 +846,7 @@ const PLUS = {
        rows:[
          ["La ville avait distribué les bacs quand la collecte commença.","La distribution des bacs."],
          ["Le conseil adopta le règlement, puis il fit imprimer le dépliant.","L'adoption du règlement."],
-         ["Quand Marisol trouva la page, Youssef avait déjà lu l'article.","La lecture de l'article."],
+         ["Quand Milagros trouva la page, Youssef avait déjà lu l'article.","La lecture de l'article."],
          ["L'équipe remit son plan, et l'enseignante le corrigea le soir même.","La remise du plan."],
          ["Ils se plaignirent parce que personne ne leur avait expliqué la règle.","L'explication qui n'a pas été donnée."],
          ["Danièle sortit les documents, puis elle posa deux questions.","La sortie des documents."],

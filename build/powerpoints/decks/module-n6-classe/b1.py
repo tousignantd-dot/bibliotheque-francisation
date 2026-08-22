@@ -36,20 +36,20 @@ def build(dossier):
             "Comment auriez-vous pu le savoir plus tôt ?",
         ],
         notes="La dernière question amène la seule bonne réponse : en allant "
-              "demander. C'est ce que font Marisol et Youssef, et c'est ce "
+              "demander. C'est ce que font Milagros et Youssef, et c'est ce "
               "que la classe doit retenir.")
 
     d.dialogue('Écoute 1', "Le désaccord", [
-        ("MARISOL", "Madame, on a lu la feuille tous les deux et on n'est pas d'accord sur ce qu'il faut remettre.", False),
+        ("MILAGROS", "Madame, on a lu la feuille tous les deux et on n'est pas d'accord sur ce qu'il faut remettre.", False),
         ("MIREILLE", "Assoyez-vous. Ça arrive à toutes les équipes, et c'est pour ça que je reste une demi-heure après le cours cette semaine.", True),
-        ("YOUSSEF", "Sur le nombre de textes. Moi je comprends qu'on remet un seul document. Marisol pense qu'il y en a deux.", False),
+        ("YOUSSEF", "Sur le nombre de textes. Moi je comprends qu'on remet un seul document. Milagros pense qu'il y en a deux.", False),
         ("MIREILLE", "Relisez-moi la deuxième ligne du paragraphe deux, celle qui commence par « chaque équipe remettra ».", False),
     ], consigne="Première écoute : qui a raison, à votre avis ?",
        notes="Laisser le groupe se prononcer avant la réponse. Le partage "
              "des voix est presque toujours le même que celui du dialogue.")
 
     d.dialogue('Écoute 2', "La réponse est dans la phrase", [
-        ("MARISOL", "« Chaque équipe remettra un texte de deux pages et le plan qui a servi à l'écrire. »", True),
+        ("MILAGROS", "« Chaque équipe remettra un texte de deux pages et le plan qui a servi à l'écrire. »", True),
         ("MIREILLE", "Deux documents, donc. Le texte et le plan. Youssef, tu as lu trop vite, et je ne t'en blâme pas : cette phrase-là est une phrase de consigne, et une consigne ne se lit pas comme un roman.", True),
         ("YOUSSEF", "Elle se lit comment ?", False),
         ("MIREILLE", "Une ligne à la fois, avec un crayon. Chaque fois qu'un verbe vous dit de faire quelque chose, vous le soulignez. Il y en a sept dans ma feuille, et je les ai comptés.", True),
@@ -58,7 +58,7 @@ def build(dossier):
              "après le « et ». C'est l'endroit le plus sauté d'une consigne.")
 
     d.dialogue('Écoute 3', "Le futur qui ordonne, et la grille", [
-        ("MARISOL", "C'est écrit « vous choisirez votre sujet avant le 3 novembre ». Ce n'est pas une question de ce qui va arriver, ça. C'est un ordre.", True),
+        ("MILAGROS", "C'est écrit « vous choisirez votre sujet avant le 3 novembre ». Ce n'est pas une question de ce qui va arriver, ça. C'est un ordre.", True),
         ("MIREILLE", "C'en est un. Dans un document écrit, le futur donne souvent un ordre poli. « Vous choisirez » veut dire « choisissez ».", True),
         ("YOUSSEF", "Parlez-nous de la grille. Il y a quatre lignes et je ne comprends pas la dernière.", False),
         ("MIREILLE", "Un paragraphe par idée principale. Un blanc entre les paragraphes. Et des mots qui relient une idée à la suivante.", False),
