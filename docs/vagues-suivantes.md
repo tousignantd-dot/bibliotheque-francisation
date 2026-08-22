@@ -1998,3 +1998,99 @@ seule la moitié des coïncidences du relevé d'originalité. La mesure globale
 restait sous le seuil (4,2 %), ce qui aurait laissé passer un quasi-doublon.
 **Mesurer par module ne suffit pas : regarder d'où viennent les coïncidences.**
 Le détail est dans `docs/verification-originalite.md`.
+
+### Le dernier module du niveau 6
+
+**22 août 2026 — activité 107, `module-n6-classe`.** « Un travail de recherche
+en équipe », niveau 6, `numero` 10, `GRILLE_2_DEFIS`. Milagros Zevallos,
+43 ans, arrivée du Pérou il y a cinq ans, où elle était technicienne de
+laboratoire, suit sa francisation le jour au Centre d'éducation des adultes des
+Trois-Chênes. Son enseignante annonce un travail de recherche : trois semaines,
+équipe de trois, trois sources, un texte de deux pages et cinq minutes devant
+la classe. Son équipe prend le bac brun. 18 exercices, 13 mini-leçons,
+3 dialogues (62 répliques), 16 mots, 20 images, **217 extraits audio**
+(62 répliques et 155 sons), 16 séances, 172 diapositives, 121 blocs de fiches.
+Originalité : **0 sur 323** énoncés visibles et **0 sur 651** chaînes de
+mini-leçon, après reformulation — voir le point 3 ci-dessous.
+
+*La municipalité est inventée, et c'est délibéré.* Les faits provinciaux
+retenus sont généraux et établis : les matières organiques enfouies se
+décomposent sans air et produisent du **méthane** ; deux traitements existent,
+le **compostage** et la **biométhanisation** ; le gouvernement du Québec s'est
+donné pour objectif que l'ensemble des municipalités soient desservies ; le
+plastique dit « biodégradable » n'est pas accepté sans certification. Mais la
+ville de Sainte-Angèle-des-Prés, son bulletin municipal, ses tonnages et ses
+dates n'ont aucun modèle réel — **attribuer une page d'information fabriquée à
+une vraie ville produirait un faux document, et un élève la citerait de bonne
+foi dans un vrai travail.** C'est un cran de prudence de plus que pour les
+autres modules : ici, la source inventée est le matériel de l'exercice.
+
+Quatre points pour la suite.
+
+**1. Le test des trois défis, et pourquoi il a échoué ici — proprement.**
+Deux entrées se nomment sans effort : ce que l'établissement **demande** (la
+consigne de travail, la grille d'évaluation) et ce que les sources
+**racontent** (trois documents qui ne concordent pas). La troisième qui vient à
+l'esprit — la rencontre d'équipe, la répartition, le compte rendu devant la
+classe — **est déjà « Je me lance » en entier** : c'est le jeu de rôle, c'est
+l'exposé oral, c'est le texte écrit. En faire un défi 3 aurait produit une
+séance qui répète la suivante. C'est un cas d'échec utile à nommer, parce qu'il
+ne ressemble pas à celui qu'on redoute : le troisième défi ne manquait pas de
+matière, il empiétait sur une section qui existe déjà. **Avant de trancher,
+regarder si la troisième entrée n'est pas « Je me lance » déguisé.**
+`GRILLE_2_DEFIS` donne d'ailleurs cinq séances par défi au lieu de quatre : les
+deux défis y gagnent ce que le troisième aurait pris.
+
+**2. Trois exercices du type `texte`, et deux d'entre eux ne lisent pas un
+document d'information.** La consigne de travail (`t1cons`, 6 passages) et la
+grille d'évaluation (`t1grille`, 5 passages) sont des écrits qui **ordonnent** ;
+la page de la ville (`t2src`, 6 passages) est un écrit qui **rapporte**. Le
+type se prête aussi bien aux deux, et l'écart entre les genres est précisément
+ce que le défi 1 et le défi 2 travaillent séparément. Un bloc `savoir` se pose
+sans problème sur un exercice `texte` : `t1grille` en porte un, à `speak:true`,
+et le moteur le rend avant la grille de questions. Le septième contrôle valide
+les trois sans rien signaler.
+
+**3. Le relevé d'originalité doit couvrir `plus.js`, pas seulement `exos.js`.**
+Le relevé habituel — les énoncés visibles de `fccards.js` et `exos.js` — rendait
+7 coïncidences sur 323, soit 2,2 %, toutes des consignes du gabarit. Vert. Un
+second relevé, passé sur les 651 chaînes de `plus.js`, en rendait **23**, soit
+3,5 % : vert aussi, et pourtant **dix-huit venaient de la seule mini-leçon de
+graphie-phonie**, comparée à celle de `module-n6-etablissement`. La leçon de la
+vague — mesurer par module ne suffit pas — se double donc d'une seconde : **le
+relevé qui ne regarde que `exos.js` ne voit pas l'endroit où la coïncidence se
+loge vraiment.** Les mini-leçons sont le plus gros fichier du module et le plus
+tentant à décalquer, puisque trois de leurs savoirs sont communs à tout le
+niveau. Les vingt-cinq formulations ont été refaites ; les deux relevés rendent
+maintenant **0**. L'opération est gratuite en audio à une condition, vérifiée
+ici : les identifiants de bloc et la **position** des `say:` ne bougent pas —
+le manifeste est resté à 155 clés, à l'octet près.
+
+**4. Trois Marisol au niveau 6, c'était deux de trop.** Le personnage
+s'appelait Marisol Ferreyra, 41 ans, arrivée du Pérou. `module-n6-recherche` a
+déjà une Marisol Aguirre et `module-n6-relations` une **Marisol Quintanilla,
+41 ans, arrivée du Salvador** — le sosie. Rebaptisée Milagros Zevallos, 43 ans,
+au prix d'un remplacement dans les six fichiers de contenu, les six decks
+concernés et **le seul bloc de `server.py` qui est le mien** : le prénom sert de
+`role_eleve` à trois autres scénarios de jeu de rôle, et un remplacement global
+dans `server.py` les aurait cassés sans bruit. **Avant de nommer un personnage,
+`grep -rl "<Prénom>" build/contenu/` — trente secondes, et le renommage après
+coup coûte une heure.**
+
+*Sur les contrôles* : les sept passent. `coherence.js` rend 20 écarts, tous
+« image absente du disque » — `gen_images.py` est écrit mais n'a pas tourné, et
+le générateur audio non plus : le module est livré muet et sans illustration,
+les deux se rattrapent d'un seul coup. `pieds_de_page.py` sort un écart, sur
+`module-n3-horaire`, qui n'a aucun `.pptx` sur cette branche et n'a rien à voir
+avec ce module. Le tableau de bilan de la séance E2 a dû descendre à cinq
+rangées **sans note** : le contrôle de densité l'a refusé à cinq rangées avec
+note, ce qui confirme une fois de plus que « six rangées avec note » est un
+plafond théorique. La flèche `→` a été retirée d'un billet de sortie de B4,
+comme prévu.
+
+*Ce qui reste* : les 20 images, les 217 extraits audio, et la vérification dans
+le navigateur — la fenêtre d'aperçu était saturée par les onglets des agents
+voisins et le plafond d'onglets refusait toute création. Le script inclus passe
+`node --check`, `coherence.js` ne signale rien d'autre que les images, et le
+HTML produit porte bien son niveau, son titre, ses deux défis et son scénario
+de jeu de rôle.
