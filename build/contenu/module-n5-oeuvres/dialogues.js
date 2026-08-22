@@ -1,0 +1,111 @@
+const DIALOGUES = {
+  prep: {
+    label: "Dialogue — Il y a un club, le jeudi soir ?",
+    lines: [
+      ["MAI","Excusez-moi. L'affiche sur la porte, là : « Club du jeudi ». C'est quoi ?"],
+      ["NADIA","Un club de lecture. On se réunit dans la petite salle du fond."],
+      ["MAI","Un club de lecture… il faut avoir lu quelque chose de précis ?"],
+      ["NADIA","Non. Chacun apporte une œuvre et la présente aux autres."],
+      ["MAI","Une œuvre, ça veut dire un livre ?"],
+      ["NADIA","Un livre, oui. Mais aussi un film, une série, une chanson, une bande dessinée."],
+      ["MAI","Ah bon. Même une chanson ?"],
+      ["NADIA","Même une chanson. Ce qui compte, c'est d'expliquer pourquoi vous l'aimez."],
+      ["MAI","Et on parle longtemps ?"],
+      ["NADIA","Deux minutes. Personne ne vous coupe, c'est la règle."],
+      ["MAI","Deux minutes toute seule ? Ça me paraît long."],
+      ["NADIA","C'est court, vous allez voir. On raconte l'histoire, on dit ce qu'on en pense."],
+      ["MAI","Toute l'histoire ? Même la fin ?"],
+      ["NADIA","Surtout pas la fin. Gilberte vous arrête tout de suite si vous la racontez."],
+      ["MAI","Gilberte ?"],
+      ["NADIA","Gilberte Sanschagrin. Elle anime le club depuis onze ans."],
+      ["MAI","Et si je n'ai rien lu cette semaine ?"],
+      ["NADIA","Alors vous écoutez. Et vous repartez avec trois suggestions."],
+    ]
+  },
+
+  t1: {
+    label: "Dialogue — De quoi ça parle, au juste ?",
+    lines: [
+      ["KARIM","Vous avez fini votre roman ? Vous en parlez jeudi ?"],
+      ["MAI","Je pense. Mais je ne sais pas comment le raconter."],
+      ["KARIM","Commencez par le commencement. Ça se passe où ?"],
+      ["MAI","Dans un village au bord de la mer. Une femme y revient après vingt ans."],
+      ["KARIM","Bon. Et elle revient pour quoi ?"],
+      ["MAI","Pour vendre la maison de sa mère. Elle veut repartir le jour même."],
+      ["KARIM","Attendez : vous racontez ça au présent ?"],
+      ["MAI","Oui. C'est comme ça qu'on raconte une histoire, non ?"],
+      ["KARIM","C'est exactement comme ça. Le présent, ça place l'autre dedans."],
+      ["MAI","Donc : elle arrive, elle ouvre la maison, et elle trouve une boîte de lettres."],
+      ["KARIM","Là, vous me tenez. Des lettres de qui ?"],
+      ["MAI","Ça, je ne le dis pas. C'est ce qui fait tourner toute l'histoire."],
+      ["KARIM","Parfait. Vous ne dites jamais ce qui arrive à la fin."],
+      ["MAI","Je m'arrête où, alors ?"],
+      ["KARIM","Au moment où le personnage doit choisir. Pas une phrase de plus."],
+      ["MAI","Et si quelqu'un me demande comment ça finit ?"],
+      ["KARIM","Vous répondez : « Lisez-le. » C'est la plus belle réponse du club."],
+      ["MAI","D'accord. Deux minutes, sans la fin. Je vais m'entraîner ce soir."],
+    ]
+  },
+
+  t2: {
+    label: "Dialogue — Ça se lit dans quel ordre ?",
+    lines: [
+      ["MAI","Nadia, je voudrais essayer une bande dessinée. Je n'en ai jamais lu."],
+      ["NADIA","Jamais ? Alors on commence par les mots. Voyez ce carré, ici."],
+      ["MAI","Le petit cadre avec le dessin dedans ?"],
+      ["NADIA","Ça s'appelle une case. La page complète, c'est une planche."],
+      ["MAI","Et ce rond blanc avec le texte ?"],
+      ["NADIA","Une bulle. Celle qui a une pointe vers un personnage, c'est lui qui parle."],
+      ["MAI","Et quand la pointe est en petits ronds ?"],
+      ["NADIA","Alors le personnage ne parle pas : il pense. C'est différent."],
+      ["MAI","Je lis dans quel ordre ? Je me perds un peu."],
+      ["NADIA","De gauche à droite, puis la rangée en dessous. Comme un texte ordinaire."],
+      ["MAI","Et le gros « BANG » dans le coin, qui n'est pas dans une bulle ?"],
+      ["NADIA","Une onomatopée. C'est un bruit écrit : celui de la porte, celui du vent."],
+      ["MAI","Ce livre-là est épais. Il y a une suite ?"],
+      ["NADIA","C'est un album. Celui que vous tenez est le premier tome d'une série."],
+      ["MAI","Donc l'album, la bande dessinée, l'histoire… c'est la même chose ?"],
+      ["NADIA","Presque. L'album, c'est l'objet ; l'histoire, c'est ce qu'il y a dedans."],
+      ["MAI","Je le prends. On les garde combien de temps ?"],
+      ["NADIA","Trois semaines. Vous renouvelez en ligne si vous n'avez pas fini."],
+    ]
+  },
+
+  t3: {
+    label: "Dialogue — Moi, ce qui m'a touchée, c'est le silence",
+    lines: [
+      ["GILBERTE","Alors, Mai. Qu'est-ce qui vous a le plus touchée là-dedans ?"],
+      ["MAI","Moi, ce qui m'a touchée, c'est le silence entre les deux sœurs."],
+      ["GILBERTE","Le silence. Expliquez-moi ça."],
+      ["MAI","Elles ne se disent presque rien, et on comprend tout quand même."],
+      ["KARIM","Moi, franchement, j'ai trouvé ça lent. Il ne se passe rien pendant cent pages."],
+      ["MAI","C'est vrai que c'est lent. Par contre, c'est justement ce que j'ai aimé."],
+      ["KARIM","Aimé parce que c'est lent ? Expliquez-moi ça, vous aussi."],
+      ["MAI","Parce que le temps du livre est le temps du village. On attend avec elles."],
+      ["GILBERTE","Quelle belle façon de le dire. Vous le conseilleriez à qui ?"],
+      ["MAI","À quelqu'un qui a quitté un pays. Il va reconnaître quelque chose."],
+      ["KARIM","Ça, ça me parle plus que « c'est bon »."],
+      ["MAI","« C'est bon », ça ne dit rien. Il fallait que je trouve mieux."],
+      ["GILBERTE","Et la fin ? Vous ne l'avez pas racontée, j'ai remarqué."],
+      ["MAI","La règle du club. Même si j'avais bien envie."],
+      ["KARIM","Bon. Je vais le lire. Mais je maintiens que c'est lent."],
+      ["MAI","Vous avez le droit. Vous me direz jeudi prochain."],
+      ["GILBERTE","Voilà. Deux avis, deux raisons, et personne ne s'est fâché."],
+      ["MAI","C'est la première fois que je parle deux minutes sans m'arrêter."],
+    ]
+  },
+
+  appli: {
+    label: "Dialogue — Vous avez trouvé vos mots",
+    lines: [
+      ["GILBERTE","Vous avez trouvé vos mots, Mai. Ça s'entend."],
+      ["MAI","Je fais toujours pareil, maintenant : le titre, le genre, où ça se passe."],
+      ["GILBERTE","Puis l'histoire, au présent, sans le dénouement."],
+      ["MAI","Et je m'arrête au moment où le personnage doit choisir."],
+      ["GILBERTE","Et l'avis ?"],
+      ["MAI","Un adjectif précis, jamais « c'est bon ». Et une raison derrière."],
+      ["GILBERTE","Et si quelqu'un n'est pas d'accord ?"],
+      ["MAI","Je lui accorde ce qu'il a de juste, puis je dis pourquoi je pense autrement."],
+    ]
+  },
+};

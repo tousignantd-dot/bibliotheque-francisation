@@ -1,0 +1,21 @@
+const FC_CARDS = [
+  {word:"une œuvre", def:"Une chose que quelqu'un a créée pour être lue, vue ou écoutée : un livre, un film, une chanson.", ex:"Chaque membre du club présente une <strong>œuvre</strong> qu'il a aimée.", img:"/assets/interactive/module-n5-oeuvres/vocab/oeuvre.jpg", tache:"prep"},
+  {word:"un roman", def:"Un livre épais qui raconte une histoire inventée, du début à la fin.", ex:"Elle a fini son <strong>roman</strong> dans l'autobus, un mardi matin.", img:"/assets/interactive/module-n5-oeuvres/vocab/roman.jpg", tache:"prep"},
+  {word:"une série", def:"Une histoire coupée en épisodes qu'on regarde ou qu'on lit l'un après l'autre.", ex:"La <strong>série</strong> compte huit épisodes de quarante minutes.", img:"/assets/interactive/module-n5-oeuvres/vocab/serie.jpg", tache:"prep"},
+  {word:"un coup de cœur", def:"L'œuvre qu'on a beaucoup aimée et qu'on a envie de faire connaître tout de suite.", ex:"Le comptoir affiche les <strong>coups de cœur</strong> du mois sur un petit carton.", img:"/assets/interactive/module-n5-oeuvres/vocab/coup-de-coeur.jpg", tache:"prep"},
+
+  {word:"l'intrigue", def:"L'histoire elle-même : ce qui arrive aux personnages et ce qui les tient en haleine.", ex:"L'<strong>intrigue</strong> commence quand la femme ouvre la maison de sa mère.", img:"/assets/interactive/module-n5-oeuvres/vocab/intrigue.jpg", tache:"t1"},
+  {word:"un personnage", def:"Une personne inventée qui vit dans l'histoire et à qui il arrive quelque chose.", ex:"Le <strong>personnage</strong> principal revient au village après vingt ans.", img:"/assets/interactive/module-n5-oeuvres/vocab/personnage.jpg", tache:"t1"},
+  {word:"le dénouement", def:"La toute fin de l'histoire, celle qui ne se raconte jamais à quelqu'un qui n'a pas lu.", ex:"Au club, on s'arrête avant le <strong>dénouement</strong> : c'est la règle.", img:"/assets/interactive/module-n5-oeuvres/vocab/denouement.jpg", tache:"t1"},
+  {word:"un extrait", def:"Un petit morceau d'une œuvre : quelques pages, quelques minutes, quelques lignes.", ex:"Elle lit un <strong>extrait</strong> de deux pages pour donner le ton.", img:"/assets/interactive/module-n5-oeuvres/vocab/extrait.jpg", tache:"t1"},
+
+  {word:"une case", def:"Le petit cadre d'une bande dessinée, avec un dessin à l'intérieur.", ex:"Dans la première <strong>case</strong>, on voit seulement une porte fermée.", img:"/assets/interactive/module-n5-oeuvres/vocab/case.jpg", tache:"t2"},
+  {word:"une bulle", def:"La forme blanche qui contient les paroles ou les pensées d'un personnage.", ex:"La pointe de la <strong>bulle</strong> montre qui est en train de parler.", img:"/assets/interactive/module-n5-oeuvres/vocab/bulle.jpg", tache:"t2"},
+  {word:"une planche", def:"Une page complète de bande dessinée, avec toutes ses cases.", ex:"Cette <strong>planche</strong> compte neuf cases et une seule bulle.", img:"/assets/interactive/module-n5-oeuvres/vocab/planche.jpg", tache:"t2"},
+  {word:"une onomatopée", def:"Un bruit écrit en grosses lettres, en dehors des bulles : BANG, TOC, VROUM.", ex:"L'<strong>onomatopée</strong> occupe le tiers de la case, en jaune.", img:"/assets/interactive/module-n5-oeuvres/vocab/onomatopee.jpg", tache:"t2"},
+
+  {word:"un album", def:"Le livre de bande dessinée lui-même, souvent grand et cartonné.", ex:"L'<strong>album</strong> que vous tenez est le premier tome de la série.", img:"/assets/interactive/module-n5-oeuvres/vocab/album.jpg", tache:"t2"},
+  {word:"émouvant", def:"Se dit d'une œuvre qui serre le cœur, qui fait monter les larmes ou la tendresse.", ex:"La scène du départ est la plus <strong>émouvante</strong> du film.", img:"/assets/interactive/module-n5-oeuvres/vocab/emouvant.jpg", tache:"t3"},
+  {word:"prévisible", def:"Se dit d'une histoire dont on devine la suite bien avant qu'elle arrive.", ex:"La fin est un peu <strong>prévisible</strong>, mais le reste tient debout.", img:"/assets/interactive/module-n5-oeuvres/vocab/previsible.jpg", tache:"t3"},
+  {word:"recommander", def:"Conseiller une œuvre à quelqu'un en disant pourquoi elle lui conviendrait.", ex:"Je vous le <strong>recommande</strong> si vous avez déjà quitté un pays.", img:"/assets/interactive/module-n5-oeuvres/vocab/recommander.jpg", tache:"t3"},
+];
