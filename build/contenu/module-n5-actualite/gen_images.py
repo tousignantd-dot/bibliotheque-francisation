@@ -1,5 +1,15 @@
 #!/usr/bin/env python3
-"""Génère les 22 images de module-n5-actualite par `build/route_images.py`.
+"""Les 22 images de module-n5-actualite, telles qu'elles ont été produites.
+
+Ce fichier n'a pas précédé les images : il les suit. Les vingt-deux photos ont
+été générées le 21 août 2026 par un agent qui a été coupé net — sommeil de
+l'ordinateur — avant d'avoir versé son générateur au dépôt. Les images, elles,
+étaient commitées. Les prompts ci-dessous sont les **vrais**, relus un à un
+dans les journaux .json de ~/Claude/generations : réécrire de mémoire des
+prompts « équivalents » aurait donné un fichier qui ment sur ce qu'on voit à
+l'écran, et la prochaine régénération aurait changé le module sans prévenir.
+
+Les vingt-deux sont passées par la **route Google directe**, sans repli.
 
 Deux destinations :
   · `images/` — les six photos de l'exercice 3 « Ce qu'on voit dans un fait
@@ -11,22 +21,8 @@ l'ordre du prix mesuré le 21 août 2026 — Google direct, puis fal.ai, puis
 WaveSpeed — et rend le nom de celle qui a servi, inscrit au journal de chaque
 image.
 
-**La difficulté propre à ce module est qu'il parle de journaux.** Cinq mots du
-banc — le fait divers, l'hebdomadaire, le chapeau, la déclaration,
-l'avertissement — désignent du papier ou de l'écrit, et le générateur a l'ordre
-de ne produire aucun texte lisible. Les prompts demandent donc des imprimés
-dont la *forme* se lit — colonnes, filets, un pavé plus gras sous le titre,
-une photo carrée — sans qu'aucun mot ne se déchiffre : l'élève reconnaît
-l'objet, et c'est la carte qui en donne le sens.
-
-**Et il parle de malheurs.** Un incendie, une inondation, un vol : les scènes
-montrent l'*après* et les choses, jamais la détresse de quelqu'un. Les
-personnes — témoin, sinistré, enquêteur, suspect, porte-parole — sont vues de
-dos, de trois quarts ou hors cadrage du visage. Personne n'est reconnaissable,
-et aucune image ne met en scène un visage qui pleure.
-
-Une image à la fois, journal .json adjacent dans ~/Claude/generations, puis
-copie vers le module. Relançable : une image déjà présente est sautée.
+Relançable : une image déjà présente est sautée. Pour en refaire une, efface
+son fichier d'abord.
 
   python3 build/contenu/module-n5-actualite/gen_images.py
   python3 build/contenu/module-n5-actualite/gen_images.py cabanon
@@ -42,103 +38,209 @@ RATIO = "3:2"
 sys.path.insert(0, str(pathlib.Path(__file__).resolve().parent.parent.parent))
 from route_images import generer_image                       # noqa: E402
 
-SOCLE = ("Photographie réaliste, format paysage, lumière naturelle, faible "
-         "profondeur de champ, palette sobre. Aucun texte lisible, aucune "
-         "écriture déchiffrable, aucun logo, aucun filigrane, aucune personne "
-         "identifiable.")
-
-QUARTIER = (SOCLE + " Scène d'un quartier ordinaire de Montréal — brique "
-            "rouge, escaliers de métal, ruelles, arbres de rue.")
-
-PERS = (SOCLE + " Une ou deux personnes vues de dos, de trois quarts ou hors "
-        "cadrage du visage. Aucun visage reconnaissable, aucune expression de "
-        "détresse visible.")
-
-PAPIER = (SOCLE + " Un imprimé dont on reconnaît la mise en page — colonnes, "
-          "filets gris, un pavé plus gras, une photo carrée — mais dont aucun "
-          "mot ne se déchiffre : les lignes sont de simples traits gris.")
-
 P_EX  = "Je découvre · Exercice 3 — Ce qu'on voit dans un fait divers"
 P_VOC = "Je retiens des mots — banc de vocabulaire"
 
 # (nom, dossier, page, prompt)
 IMAGES = [
  # ── Les six images de l'exercice 3 ────────────────────────────────────
- ('journal-cafeteria', 'images', P_EX, PAPIER + " Un journal de quartier "
-  "ouvert à plat sur une table de cafétéria, vu de trois quarts d'en haut, à "
-  "côté d'une tasse de café et d'un plateau. Deux pages visibles, colonnes et "
-  "une photo carrée. Personne à la table."),
- ('immeuble-incendie', 'images', P_EX, QUARTIER + " La façade d'un immeuble à "
-  "logements le lendemain d'un feu : trois fenêtres noircies, la brique "
-  "marquée de suie au-dessus des cadres, un ruban de plastique tendu devant "
-  "l'entrée. Ciel gris, aucune flamme, aucune personne."),
- ('sous-sol-inonde', 'images', P_EX, SOCLE + " Un sous-sol de maison où l'eau "
-  "brune monte à mi-hauteur de boîtes de carton empilées contre le mur. "
-  "Escalier de bois au fond, une ampoule allumée. Personne dans la pièce."),
- ('cabanon-ouvert', 'images', P_EX, QUARTIER + " Une petite remise de bois "
-  "peinte en gris au fond d'une cour arrière, la porte grande ouverte sur "
-  "l'intérieur sombre et vide, un cadenas brisé qui pend. Herbe et clôture de "
-  "bois autour, personne dans la cour."),
- ('pompiers-boyau', 'images', P_EX, PERS + " Deux pompiers en habit de combat "
-  "et casque, vus de dos, qui tiennent ensemble un boyau d'incendie dirigé "
-  "vers la façade d'un bâtiment. Camion rouge flou en arrière-plan, aucune "
-  "inscription lisible sur les habits."),
- ('porte-parole-micros', 'images', P_EX, PERS + " Une femme en veste sombre "
-  "vue de trois quarts arrière, debout devant quatre micros noirs tendus vers "
-  "elle sur des perches. Les micros sont nus, sans cube ni écusson. "
-  "Arrière-plan flou d'extérieur."),
-
+ ('cabanon-ouvert', 'images', P_EX,
+  "Photographie réaliste, format paysage, rue ordinaire d'un "
+   "quartier de Montréal, lumière naturelle, ciel couvert. Palette "
+   "sobre, aucune scène spectaculaire. Aucun texte lisible, aucun "
+   "mot déchiffrable, aucun logo, aucun filigrane, aucune personne "
+   "identifiable, aucun visage reconnaissable. Une petite remise de "
+   "bois peinte en gris au fond d'une cour arrière, la porte grande "
+   "ouverte sur des tablettes à moitié vides, un cadenas brisé qui "
+   "pend. Herbe et clôture de bois autour, personne dans la cour."),
+ ('immeuble-incendie', 'images', P_EX,
+  "Photographie réaliste, format paysage, rue ordinaire d'un "
+   "quartier de Montréal, lumière naturelle, ciel couvert. Palette "
+   "sobre, aucune scène spectaculaire. Aucun texte lisible, aucun "
+   "mot déchiffrable, aucun logo, aucun filigrane, aucune personne "
+   "identifiable, aucun visage reconnaissable. La façade de brique "
+   "d'un immeuble à logements le lendemain d'un feu : trois fenêtres "
+   "noircies au deuxième étage, des traces de suie au-dessus des "
+   "cadres, un ruban de chantier tendu devant l'entrée. Aucune "
+   "flamme, aucune fumée."),
+ ('journal-cafeteria', 'images', P_EX,
+  "Photographie réaliste, format paysage, lumière naturelle douce, "
+   "faible profondeur de champ. Du papier journal ordinaire : on "
+   "distingue un titre plus gras, des colonnes de lignes grises "
+   "serrées et parfois une photo carrée, mais l'écriture reste floue "
+   "et illisible. Aucun texte lisible, aucun mot déchiffrable, aucun "
+   "logo, aucun filigrane, aucune personne identifiable, aucun "
+   "visage reconnaissable. Un journal de quartier ouvert à plat sur "
+   "une table de cafétéria en stratifié, à côté d'une tasse de café "
+   "et d'un plateau. Vue de trois quarts, d'en haut."),
+ ('pompiers-boyau', 'images', P_EX,
+  "Photographie réaliste, format paysage, une ou deux personnes "
+   "vues de dos, de trois quarts ou hors cadrage du visage, lumière "
+   "naturelle douce, faible profondeur de champ. Aucun texte "
+   "lisible, aucun mot déchiffrable, aucun logo, aucun filigrane, "
+   "aucune personne identifiable, aucun visage reconnaissable. Deux "
+   "pompiers en habit de combat et casque, vus de dos, qui tiennent "
+   "un gros boyau devant la façade d'un immeuble. Camion rouge flou "
+   "en arrière-plan, aucune flamme visible."),
+ ('porte-parole-micros', 'images', P_EX,
+  "Photographie réaliste, format paysage, une ou deux personnes "
+   "vues de dos, de trois quarts ou hors cadrage du visage, lumière "
+   "naturelle douce, faible profondeur de champ. Aucun texte "
+   "lisible, aucun mot déchiffrable, aucun logo, aucun filigrane, "
+   "aucune personne identifiable, aucun visage reconnaissable. Une "
+   "femme en manteau debout dehors, vue de trois quarts arrière, "
+   "devant quatre micros noirs tendus vers elle par des mains hors "
+   "cadre. Aucun cube de station sur les micros."),
+ ('sous-sol-inonde', 'images', P_EX,
+  "Photographie réaliste, format paysage, intérieur ordinaire au "
+   "Québec, lumière naturelle douce, faible profondeur de champ. "
+   "Aucun texte lisible, aucun mot déchiffrable, aucun logo, aucun "
+   "filigrane, aucune personne identifiable, aucun visage "
+   "reconnaissable. Le sous-sol d'une maison où l'eau brune monte à "
+   "trente centimètres, au-dessus du bas de boîtes de carton rangées "
+   "contre le mur. Une chaudière, un escalier de bois, lumière crue "
+   "d'une ampoule nue."),
  # ── Les seize photos du banc de vocabulaire ───────────────────────────
- ('fait-divers', 'vocab', P_VOC, PAPIER + " Gros plan sur une page intérieure "
-  "de journal, une colonne courte encadrée d'un filet, une petite photo carrée "
-  "en haut. Le papier est posé sur une table de bois."),
- ('hebdomadaire', 'vocab', P_VOC, PAPIER + " Une pile de journaux de format "
-  "tabloïd pliés en deux dans un présentoir de métal, à l'entrée d'une "
-  "épicerie de quartier. On voit la tranche et la une du dessus, illisible."),
- ('chapeau', 'vocab', P_VOC, PAPIER + " Très gros plan sur le haut d'un "
-  "article : une grosse ligne noire épaisse, puis deux ou trois lignes plus "
-  "grasses que le reste, puis les colonnes de texte fin. Tout est en traits "
-  "gris, aucun mot lisible. Faible profondeur de champ."),
- ('temoin', 'vocab', P_VOC, PERS + " Une personne debout sur un trottoir, vue "
-  "de dos, qui pointe du doigt vers le fond d'une ruelle en parlant à "
-  "quelqu'un hors champ. Fin d'après-midi."),
- ('incendie', 'vocab', P_VOC, QUARTIER + " Une fenêtre d'immeuble noircie par "
-  "le feu, le cadre de bois carbonisé et la brique marquée de suie au-dessus. "
-  "Gros plan de trois quarts, aucune flamme."),
- ('evacuer', 'vocab', P_VOC, PERS + " Trois personnes en manteau par-dessus "
-  "des vêtements de nuit, vues de dos, qui s'éloignent de l'entrée d'un "
-  "immeuble sur le trottoir, la nuit. Gyrophares flous en arrière-plan."),
- ('sinistre', 'vocab', P_VOC, PERS + " Une personne assise de dos sur une "
-  "chaise pliante dans un gymnase transformé en refuge, une couverture grise "
-  "sur les épaules, un sac de sport à ses pieds. Lits de camp alignés au fond."),
- ('inondation', 'vocab', P_VOC, QUARTIER + " Une rue résidentielle dont la "
-  "chaussée est recouverte d'eau brune jusqu'au bas des portes de garage, un "
-  "panneau de rue dont la base trempe. Personne dans la rue."),
- ('declaration', 'vocab', P_VOC, PERS + " Gros plan sur un micro noir tendu "
-  "vers l'épaule d'une personne en veste, vue de trois quarts arrière, tête "
-  "hors cadre. Arrière-plan flou d'extérieur."),
- ('enquete', 'vocab', P_VOC, SOCLE + " Un ruban de plastique tendu en travers "
-  "d'une entrée de cour, noué à une clôture de bois, vu de près. Le ruban est "
-  "uni, sans aucune inscription. Cour floue derrière."),
- ('enqueteur', 'vocab', P_VOC, PERS + " Une personne en manteau, vue de dos, "
-  "accroupie devant une porte forcée, un calepin ouvert dans une main et un "
-  "crayon dans l'autre. Les pages du calepin sont vides."),
- ('avertissement', 'vocab', P_VOC, SOCLE + " Un téléphone cellulaire tenu à "
-  "deux mains, écran allumé sur un bandeau de couleur ambre occupant le haut "
-  "de l'écran, avec des lignes grises en dessous — aucun mot déchiffrable. "
-  "Fenêtre pluvieuse floue derrière."),
- ('vol', 'vocab', P_VOC, SOCLE + " Gros plan sur une porte de remise de bois "
-  "entrouverte, le moraillon arraché et le cadenas brisé qui pend au bout de "
-  "son anneau. Éclats de bois clair autour des vis."),
- ('suspect', 'vocab', P_VOC, PERS + " Une silhouette en capuchon vue de dos et "
-  "de loin, qui s'éloigne au fond d'une ruelle mal éclairée, la nuit. Image "
-  "volontairement peu contrastée, aucun détail du visage ni des vêtements."),
- ('cabanon', 'vocab', P_VOC, QUARTIER + " Une petite remise de bois au fond "
-  "d'une cour arrière, porte fermée, toit en pente, une pelle et un râteau "
-  "appuyés contre le mur à côté. Vue de face, plein jour."),
- ('prevention', 'vocab', P_VOC, SOCLE + " Deux mains qui posent un cadenas "
-  "neuf à anse épaisse sur le moraillon d'une porte de remise de bois. Gros "
-  "plan, visage hors cadre, plein jour."),
+ ('avertissement', 'vocab', P_VOC,
+  "Photographie réaliste, format paysage, intérieur ordinaire au "
+   "Québec, lumière naturelle douce, faible profondeur de champ. "
+   "Aucun texte lisible, aucun mot déchiffrable, aucun logo, aucun "
+   "filigrane, aucune personne identifiable, aucun visage "
+   "reconnaissable. Gros plan sur un téléphone posé sur une table de "
+   "cuisine, écran allumé montrant un bandeau d'alerte orange uni, "
+   "sans aucun mot lisible dessus."),
+ ('cabanon', 'vocab', P_VOC,
+  "Photographie réaliste, format paysage, rue ordinaire d'un "
+   "quartier de Montréal, lumière naturelle, ciel couvert. Palette "
+   "sobre, aucune scène spectaculaire. Aucun texte lisible, aucun "
+   "mot déchiffrable, aucun logo, aucun filigrane, aucune personne "
+   "identifiable, aucun visage reconnaissable. Une petite remise de "
+   "bois à toit en pente au fond d'une cour, porte fermée, une pelle "
+   "et un râteau appuyés contre le mur, vue de face."),
+ ('chapeau', 'vocab', P_VOC,
+  "Photographie réaliste, format paysage, lumière naturelle douce, "
+   "faible profondeur de champ. Du papier journal ordinaire : on "
+   "distingue un titre plus gras, des colonnes de lignes grises "
+   "serrées et parfois une photo carrée, mais l'écriture reste floue "
+   "et illisible. Aucun texte lisible, aucun mot déchiffrable, aucun "
+   "logo, aucun filigrane, aucune personne identifiable, aucun "
+   "visage reconnaissable. Très gros plan sur le haut d'un article : "
+   "un titre en gros caractères, puis deux ou trois lignes plus "
+   "grasses que le reste du texte, puis le corps en lignes fines."),
+ ('declaration', 'vocab', P_VOC,
+  "Photographie réaliste, format paysage, une ou deux personnes "
+   "vues de dos, de trois quarts ou hors cadrage du visage, lumière "
+   "naturelle douce, faible profondeur de champ. Aucun texte "
+   "lisible, aucun mot déchiffrable, aucun logo, aucun filigrane, "
+   "aucune personne identifiable, aucun visage reconnaissable. Gros "
+   "plan sur deux micros noirs tendus vers l'épaule d'une personne "
+   "qui parle, visage entièrement hors cadre, fond extérieur flou."),
+ ('enquete', 'vocab', P_VOC,
+  "Photographie réaliste, format paysage, rue ordinaire d'un "
+   "quartier de Montréal, lumière naturelle, ciel couvert. Palette "
+   "sobre, aucune scène spectaculaire. Aucun texte lisible, aucun "
+   "mot déchiffrable, aucun logo, aucun filigrane, aucune personne "
+   "identifiable, aucun visage reconnaissable. Un ruban de chantier "
+   "jaune tendu entre deux poteaux devant l'entrée d'un bâtiment, "
+   "cour vide derrière, fin de journée."),
+ ('enqueteur', 'vocab', P_VOC,
+  "Photographie réaliste, format paysage, une ou deux personnes "
+   "vues de dos, de trois quarts ou hors cadrage du visage, lumière "
+   "naturelle douce, faible profondeur de champ. Aucun texte "
+   "lisible, aucun mot déchiffrable, aucun logo, aucun filigrane, "
+   "aucune personne identifiable, aucun visage reconnaissable. Une "
+   "personne en manteau et gants, vue de dos, accroupie devant des "
+   "débris noircis dans une pièce vide, une lampe de poche à la "
+   "main."),
+ ('evacuer', 'vocab', P_VOC,
+  "Photographie réaliste, format paysage, une ou deux personnes "
+   "vues de dos, de trois quarts ou hors cadrage du visage, lumière "
+   "naturelle douce, faible profondeur de champ. Aucun texte "
+   "lisible, aucun mot déchiffrable, aucun logo, aucun filigrane, "
+   "aucune personne identifiable, aucun visage reconnaissable. Trois "
+   "personnes en manteau par-dessus des vêtements de nuit, vues de "
+   "dos, sur un trottoir devant un immeuble, une couverture sur les "
+   "épaules, la nuit, lumière orangée d'un lampadaire."),
+ ('fait-divers', 'vocab', P_VOC,
+  "Photographie réaliste, format paysage, lumière naturelle douce, "
+   "faible profondeur de champ. Du papier journal ordinaire : on "
+   "distingue un titre plus gras, des colonnes de lignes grises "
+   "serrées et parfois une photo carrée, mais l'écriture reste floue "
+   "et illisible. Aucun texte lisible, aucun mot déchiffrable, aucun "
+   "logo, aucun filigrane, aucune personne identifiable, aucun "
+   "visage reconnaissable. Gros plan sur une page intérieure de "
+   "journal : une colonne étroite surmontée d'un court titre gras et "
+   "d'une petite photo carrée."),
+ ('hebdomadaire', 'vocab', P_VOC,
+  "Photographie réaliste, format paysage, lumière naturelle douce, "
+   "faible profondeur de champ. Du papier journal ordinaire : on "
+   "distingue un titre plus gras, des colonnes de lignes grises "
+   "serrées et parfois une photo carrée, mais l'écriture reste floue "
+   "et illisible. Aucun texte lisible, aucun mot déchiffrable, aucun "
+   "logo, aucun filigrane, aucune personne identifiable, aucun "
+   "visage reconnaissable. Une pile de journaux gratuits pliés dans "
+   "un présentoir de métal, à l'entrée d'une épicerie de quartier."),
+ ('incendie', 'vocab', P_VOC,
+  "Photographie réaliste, format paysage, rue ordinaire d'un "
+   "quartier de Montréal, lumière naturelle, ciel couvert. Palette "
+   "sobre, aucune scène spectaculaire. Aucun texte lisible, aucun "
+   "mot déchiffrable, aucun logo, aucun filigrane, aucune personne "
+   "identifiable, aucun visage reconnaissable. Une maison de bois "
+   "dont le toit et une fenêtre sont noircis, vue de la rue le "
+   "lendemain d'un feu, planches de contreplaqué clouées sur "
+   "l'ouverture."),
+ ('inondation', 'vocab', P_VOC,
+  "Photographie réaliste, format paysage, rue ordinaire d'un "
+   "quartier de Montréal, lumière naturelle, ciel couvert. Palette "
+   "sobre, aucune scène spectaculaire. Aucun texte lisible, aucun "
+   "mot déchiffrable, aucun logo, aucun filigrane, aucune personne "
+   "identifiable, aucun visage reconnaissable. Une rue résidentielle "
+   "dont la chaussée est recouverte d'eau brune jusqu'au bas des "
+   "portes de garage, reflets des arbres à la surface. Aucune "
+   "voiture en mouvement."),
+ ('prevention', 'vocab', P_VOC,
+  "Photographie réaliste, format paysage, intérieur ordinaire au "
+   "Québec, lumière naturelle douce, faible profondeur de champ. "
+   "Aucun texte lisible, aucun mot déchiffrable, aucun logo, aucun "
+   "filigrane, aucune personne identifiable, aucun visage "
+   "reconnaissable. Gros plan sur des mains qui notent au crayon "
+   "dans un carnet quadrillé posé à côté d'un vélo renversé sur "
+   "l'établi d'un garage. Les traits du carnet sont illisibles."),
+ ('sinistre', 'vocab', P_VOC,
+  "Photographie réaliste, format paysage, une ou deux personnes "
+   "vues de dos, de trois quarts ou hors cadrage du visage, lumière "
+   "naturelle douce, faible profondeur de champ. Aucun texte "
+   "lisible, aucun mot déchiffrable, aucun logo, aucun filigrane, "
+   "aucune personne identifiable, aucun visage reconnaissable. Une "
+   "personne assise de dos sur une chaise pliante dans un gymnase "
+   "transformé en refuge, lits de camp alignés et sacs de vêtements "
+   "autour."),
+ ('suspect', 'vocab', P_VOC,
+  "Photographie réaliste, format paysage, rue ordinaire d'un "
+   "quartier de Montréal, lumière naturelle, ciel couvert. Palette "
+   "sobre, aucune scène spectaculaire. Aucun texte lisible, aucun "
+   "mot déchiffrable, aucun logo, aucun filigrane, aucune personne "
+   "identifiable, aucun visage reconnaissable. Une silhouette sombre "
+   "et floue qui s'éloigne au fond d'une ruelle la nuit, vue de très "
+   "loin et de dos, éclairée par un seul lampadaire. Aucun détail du "
+   "visage ni des vêtements."),
+ ('temoin', 'vocab', P_VOC,
+  "Photographie réaliste, format paysage, une ou deux personnes "
+   "vues de dos, de trois quarts ou hors cadrage du visage, lumière "
+   "naturelle douce, faible profondeur de champ. Aucun texte "
+   "lisible, aucun mot déchiffrable, aucun logo, aucun filigrane, "
+   "aucune personne identifiable, aucun visage reconnaissable. Une "
+   "personne debout sur un trottoir, vue de dos, qui parle à "
+   "quelqu'un dont on ne voit que l'épaule et un carnet ouvert dans "
+   "la main."),
+ ('vol', 'vocab', P_VOC,
+  "Photographie réaliste, format paysage, rue ordinaire d'un "
+   "quartier de Montréal, lumière naturelle, ciel couvert. Palette "
+   "sobre, aucune scène spectaculaire. Aucun texte lisible, aucun "
+   "mot déchiffrable, aucun logo, aucun filigrane, aucune personne "
+   "identifiable, aucun visage reconnaissable. Gros plan sur un "
+   "cadenas ouvert et une moraillon arraché sur la porte d'une "
+   "remise de bois, éclats de peinture autour de la vis."),
 ]
 
 
@@ -201,7 +303,7 @@ for nom, dossier, page, prompt in IMAGES:
     cible.write_bytes(data)
     faits.append(etiquette)
     routes[route] = routes.get(route, 0) + 1
-    print('  ✓ %-24s %6.1f Ko  par %s' % (etiquette, len(data) / 1024, route),
+    print('  \u2713 %-24s %6.1f Ko  par %s' % (etiquette, len(data) / 1024, route),
           flush=True)
 
 print()
@@ -210,4 +312,4 @@ print('%d produite(s), %d sautée(s), %d échec(s)'
 for route, n in sorted(routes.items()):
     print('   · %-18s %d image(s)' % (route, n))
 for e in echecs:
-    print('   ✗ ' + e)
+    print('   \u2717 ' + e)
