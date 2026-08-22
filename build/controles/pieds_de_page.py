@@ -10,7 +10,13 @@ import re
 import sys
 import zipfile
 
-ROOT = pathlib.Path.home() / 'Claude/bibliotheque-francisation'
+# Le dépôt est celui qui contient ce fichier, pas celui du dossier
+# personnel. Écrit en dur, `ROOT` faisait contrôler le dépôt
+# principal à un agent qui travaillait dans un worktree : le
+# contrôle sortait « OK » sans avoir jamais regardé le module
+# produit. Un contrôle qui approuve ce qu'il n'a pas lu est pire
+# que pas de contrôle du tout.
+ROOT = pathlib.Path(__file__).resolve().parents[2]
 sys.path.insert(0, str(ROOT / 'build/powerpoints'))
 from modules import MODULES, ORDRE  # noqa: E402
 
