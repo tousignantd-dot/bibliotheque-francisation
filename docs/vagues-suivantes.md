@@ -1535,3 +1535,206 @@ niveau 6 entre les deux au lieu de l'inventer.
 **Format** : `GRILLE_COURTE` aux numéros 96-98 (le niveau 1 est le plus court
 du programme) ; au 99, l'agent décide et **écrit pourquoi** — c'est la
 question à laquelle le pilote doit répondre.
+
+
+---
+
+## Le pilote du niveau 6 — ce qu'il a trouvé
+
+**22 août 2026 — activité 99, `module-n6-actualite`.** « Suivre un sujet dans
+les médias », niveau 6, `numero` 2. Scénario inventé : Nadège Beauplan,
+44 ans, arrivée d'Haïti il y a six ans, tient le comptoir d'accueil de la
+bibliothèque de la Batture, à Trois-Rivières. Sa laveuse de 780 $ a cessé de
+vidanger après trois ans et quatre mois, et le marchand lui répond que la
+garantie est expirée. Elle suit alors le même sujet à travers cinq genres :
+son collègue Raphaël Choquette le lui explique, la chroniqueuse Claudine
+Rousseau en fait une chronique pratique, l'animateur Théo Marchesseault
+interroge Myriam Vaugeois de l'Office de la protection du consommateur, un
+documentaire remonte à 1924, et le courrier des lecteurs du Courrier de la
+Batture s'en empare. 24 exercices, 15 mini-leçons, 4 dialogues (75 répliques),
+16 mots, 15 images, **232 extraits audio**, 16 séances. Originalité :
+433 énoncés visibles, **14 identiques** dans les 14 377 des quarante-neuf
+autres modules de `build/contenu/`, soit **3,2 %** — quatre consignes du
+gabarit, quatre mots du programme et six intitulés de bandeau.
+
+*Les faits québécois sont vérifiés, pas devinés*, auprès de l'Office de la
+protection du consommateur le 22 août 2026 : la garantie légale veut qu'un
+bien serve à l'usage normal auquel il est destiné et qu'il y serve **pendant
+une durée raisonnable** compte tenu du prix payé, du contrat et des conditions
+d'utilisation ; elle s'applique même quand la garantie du fabricant est
+expirée ; le recours passe par une **mise en demeure** écrite, où dix jours
+sont le plus souvent tenus pour un délai raisonnable, puis par la **Division
+des petites créances** pour une réclamation de 15 000 $ ou moins, où l'on se
+représente soi-même. Tout le reste — les personnes, la station CFTR, le journal,
+les prix, les dates — est inventé.
+
+### 1. La grille : `GRILLE_3_DEFIS`, et la règle n'est pas celle qu'on croit
+
+Seize séances, trois défis. Mais la raison n'est **pas** que le niveau 6 serait
+un niveau 5 en plus long, et ce n'est pas non plus le nombre d'intentions.
+
+`GRILLE_COURTE` existe parce qu'un débutant du niveau 1 ou 2 n'a pas encore
+l'alphabet et se fatigue : elle répond à une limite de l'élève. Au niveau 6, la
+limite n'est plus là. Elle est dans la **matière** : ce qu'il y a à apprendre,
+c'est de tenir le fil d'un texte suivi, et un fil ne se tient qu'en y revenant.
+Trois défis, ce sont trois retours sur le même dossier sous trois angles
+différents. Une grille courte n'aurait pas raccourci le module : elle aurait
+obligé à choisir un genre et à jeter les trois autres, donc à laisser sans
+exercice trois des quatre intentions du programme.
+
+**La règle pour les neuf suivants**, tirée de `python3 build/cadre.py 6` :
+
+| Situation | Intentions | Grille |
+|---|---|---|
+| Emploi | 5 | `GRILLE_3_DEFIS` |
+| Suivi de l'actualité | 4 | `GRILLE_3_DEFIS` (fait) |
+| Relations sociales | 4 | `GRILLE_3_DEFIS` |
+| Communication avec le personnel de l'établissement | 4 | `GRILLE_3_DEFIS` |
+| Recherche d'emploi | 4 | `GRILLE_3_DEFIS` (fait, act. 59) |
+| Découverte d'œuvres | 3 | `GRILLE_3_DEFIS` |
+| Consultation d'un professionnel de la santé | 3 | `GRILLE_3_DEFIS` |
+| Location d'un logement | 1 | `GRILLE_2_DEFIS` |
+| Problèmes reliés à l'habitation | 1 | `GRILLE_2_DEFIS` |
+| Salle de classe | 1 | `GRILLE_2_DEFIS` |
+
+**`GRILLE_COURTE` n'a sa place à aucun de ces dix modules.** Et une seule
+intention ne condamne pas mécaniquement au format à deux défis :
+`module-n5-actualite` n'en avait qu'une et a tenu trois défis en les tirant des
+attentes de fin de cours. Le vrai test est celui-ci : **peut-on nommer trois
+façons distinctes d'entrer dans la situation, chacune avec son dialogue et ses
+cinq ou six exercices ?** Si oui, trois défis. Si le troisième défi ne se
+remplit qu'en répétant le deuxième, deux défis — inventer une séance sans
+contenu reste pire que de n'en pas avoir.
+
+### 2. Ce que le stade intermédiaire-avancé exige, et que le gabarit ne prévoit pas
+
+Quatre points. Le premier est le seul qui vaudrait qu'on touche au moteur ; les
+trois autres se contournent, à condition de le savoir d'avance.
+
+**a) Il n'existe aucun type d'exercice pour un texte suivi — et c'est le cœur
+du niveau.** Les six types du moteur (`match`, `imgmatch`, `vf`, `write`,
+`blanks`, `rows`) travaillent tous la **phrase isolée**. Or trois des quatre
+intentions de compréhension écrite du niveau 6 portent sur un **texte** :
+comprendre un article informatif, comprendre un fait divers, lire le courrier
+des lecteurs. Le seul moyen de mettre un texte devant l'élève est de le loger
+dans le bloc `savoir` d'un `vf` et de poser les questions en rangées — c'est ce
+que fait `module-n7-actualite` (`t2lire`) et c'est ce que fait ici `t3fd`, avec
+les cinq phrases du fait divers. Ça fonctionne, et le résultat se lit bien.
+Mais c'est un détournement : le bandeau noir est fait pour une règle, pas pour
+un texte ; il n'y a aucun moyen de faire cliquer l'élève **dans** le texte, ni
+de lui faire retrouver un référent en le surlignant, ni d'afficher le texte à
+côté des questions plutôt qu'au-dessus. **Un type `texte` — un paragraphe suivi
+et ses questions — est le seul ajout au moteur qui vaudrait son coût, et il
+servirait aux niveaux 6, 7 et 8 à la fois.** À ne pas entreprendre au milieu
+d'une série de neuf modules : à décider avec l'utilisateur, une fois.
+
+**b) La reprise de l'information ne s'exerce pas en une phrase.** « Je le sais »
+n'a de sens qu'après la phrase qu'il reprend. Chaque item de `t1repr` est donc
+écrit en **deux phrases**, la première portant le référent souligné, la seconde
+le trou. Ça tient dans un `write`, mais les items font deux fois la longueur de
+ceux d'un module de niveau 3, et `cols:2` devient illisible. **Tout exercice de
+grammaire du texte se met en `cols:1`.** Cela vaut pour la reprise (`le`, `en`,
+`y`, `où`), pour la subordonnée relative et pour la substitution lexicale — les
+trois savoirs de grammaire du texte que tout module de niveau 6 devrait porter.
+
+**c) Le programme demande de *reconnaître*, et aucun type ne fait « reconnaître ».**
+Le passé simple en est le cas net : « reconnaître les verbes courants à la
+3e personne » et « associer le passé simple au passé composé ». `write` fait
+produire — et faire écrire un passé simple à un élève est exactement ce qu'il
+ne faut pas ; `vf` fait trancher entre deux étiquettes, ce qui est pauvre. Le
+seul type juste est **`match`** : la forme au passé simple d'un côté, son
+équivalent parlé de l'autre. Ce savoir étant commun à tout le niveau, les neuf
+modules le rencontreront : qu'ils le traitent tous en `match`.
+
+**d) Plusieurs situations du niveau 6 n'ont *aucune* intention de production, et
+« Je me lance » en réclame trois.** « Suivi de l'actualité » n'a que de la
+compréhension : une intention orale, trois écrites. Les productions se tirent
+alors des **attentes de fin de cours**, qui sont communes à tout le niveau et
+qui, elles, sont productives — « rédige un courriel [...] pour informer son
+destinataire du contenu d'un article d'intérêt général », « rédige un court
+texte en organisant ses idées à l'aide de paragraphes », « décrit les étapes
+d'une démarche administrative en donnant les détails nécessaires ». D'où, ici,
+un compte rendu oral en trois temps et un courriel formel au courrier des
+lecteurs. **Le docstring du manifeste doit dire d'où vient la production**,
+sinon le module a l'air d'avoir inventé une tâche hors programme — et le
+relecteur suivant la retirera.
+
+### 3. Ce qui a résisté
+
+**Les cinquante-quatre savoirs du niveau, dont trente en grammaire de la
+phrase.** Il est impossible d'en couvrir le quart, et rien dans le programme ne
+dit lesquels choisir. Le critère qui a servi, et qui se recommande :
+**« est-ce que ce savoir sert à suivre un texte ? »** Il retient d'un coup la
+reprise de l'information, les connecteurs, le plus-que-parfait, le passé
+simple, l'hypothèse en « si », le subjonctif après verbe introducteur, la
+relative en « où », la ponctuation. Il écarte tout aussi vite les déterminants
+non quantifiants indéfinis, les subordonnées corrélatives, les auxiliaires
+factitifs — grammaticalement intéressants, sans emploi dans la situation. Neuf
+savoirs retenus sur cinquante-quatre, répartis à raison de deux ou trois par
+défi.
+
+**Ne pas recouper le voisin du 5 ni celui du 7 sur la même situation.** La
+solution n'est pas de changer de sujet — elle est de changer de **travail**.
+`module-n5-actualite` *raconte* un fait divers à quelqu'un qui ne l'a pas lu.
+`module-n7-actualite` *démasque* l'opinion chez un auteur qui la mêle aux
+faits. Le niveau 6, entre les deux, *suit un fil* : le même sujet dans cinq
+genres, et ce qui est difficile n'est plus le jugement mais la cohésion — savoir
+ce que reprend « le », ce que « où » rattache, ce qu'un plus-que-parfait place
+avant quoi. Cette formulation-là est ce qui a débloqué le module, et elle vaut
+pour les neuf autres : **le niveau 6 n'est pas un niveau 7 facile, c'est le
+niveau de la cohésion.**
+
+**Le lexique de la situation est vide**, comme presque partout. Mais au
+niveau 6, les savoirs lexicaux **du niveau** nomment eux-mêmes la situation en
+deux lignes (ici : « vocabulaire lié à l'univers médiatique, à l'actualité, à
+l'opinion : documentaire, reportage, fait divers, courrier des lecteurs » et
+« verbes et locutions exprimant l'opinion »). C'est peu, mais c'est un point de
+départ ferme, et il faut aller le chercher avec `--savoirs` : la sortie sans
+argument ne le montre pas.
+
+**Une découverte payée par le pilote, sur l'audio.** Pour un exercice `vf` à
+`cards:true listen:true`, le relevé de `build/releve_sons.js` rend **le texte
+de la rangée**, pas la phrase porteuse de `CARRIER_PHRASES` — vérifié :
+`prGraphie_gr12` vaut « un short », pas la phrase. Les clés que l'on écrit dans
+`carrier.js` pour ces mots-là sont donc **inutilisées par le moteur** (et
+`coherence.js` a raison de ne pas les compter comme un écart). Conséquence
+réelle : ces mots partent **seuls** à la synthèse. Or l'exercice de
+graphie-phonie du niveau 6 porte précisément sur « six », « dix », « un
+short », « un schéma » — des mots courts que l'anglais connaît aussi. Sans le
+contexte français d'`enrichir()` (`build/voix.py`, posé le 22 août), ils
+seraient sortis à l'anglaise, et c'est exactement le mot dont l'élève doit
+entendre la prononciation française. **Les neuf modules du niveau 6 auront tous
+un exercice de graphie-phonie — le savoir est commun au niveau. Que leur
+générateur audio passe par `enrichir()`, sans exception.**
+
+### 4. Ce que je conseille aux neuf agents suivants
+
+1. **`GRILLE_3_DEFIS`**, sauf pour « Location d'un logement », « Problèmes
+   reliés à l'habitation » et « Salle de classe » — une seule intention chacune
+   — où `GRILLE_2_DEFIS` est plus honnête. Jamais `GRILLE_COURTE`.
+2. **Lire `build/cadre.py 6 "<situation>" --savoirs`, pas seulement
+   `build/cadre.py 6 "<situation>"`.** Au niveau 6, la situation est maigre (une
+   à cinq intentions) et le niveau est riche (54 savoirs). Le module se
+   construit à quatre-vingts pour cent sur les savoirs communs.
+3. **Neuf ou dix savoirs, pas davantage**, choisis par la question « est-ce que
+   ça sert à suivre un texte ? ». Deux ou trois par défi, chacun avec son couple
+   exercice + mini-leçon.
+4. **Les trois savoirs de grammaire du texte — connecteurs, reprise de
+   l'information, présentation matérielle — sont ce qui distingue vraiment le
+   niveau 6 des niveaux 3 et 5.** Aucun module de ce niveau ne devrait s'en
+   passer, quelle que soit sa situation.
+5. **`cols:1` pour tout exercice de grammaire du texte** : ses items font deux
+   phrases.
+6. **Le passé simple se travaille en `match`**, jamais en `write`.
+7. **Les productions se tirent des attentes de fin de cours**, et le docstring
+   du manifeste doit le dire.
+8. **Les dialogues font 18 à 20 répliques**, pas 10 à 16 : le niveau vise « des
+   discours détaillés et structurés ». Compter environ **230 extraits audio**
+   par module, dont plusieurs longs — le coût par extrait est plus élevé qu'aux
+   niveaux 2 et 3 à nombre égal.
+9. **Changer de travail, pas de sujet**, quand un voisin du 5 ou du 7 occupe
+   déjà la situation. Et l'écrire dans le manifeste, en une phrase par voisin.
+10. **Numéros** : `module-n6-recherche` est le `numero` 1 du niveau,
+    `module-n6-actualite` le 2. Les neuf suivants prennent 3 à 11, dans l'ordre
+    du tableau de la section 1 de cette note. Leurs numéros d'activité restent
+    à réserver ici avant qu'un agent commence.
