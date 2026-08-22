@@ -39,7 +39,7 @@ MANIFESTE = {
 
     # `titre` et `niveau` viennent de `build/powerpoints/modules.py`.
 
-    'theme': "Communication avec le personnel de l'établissement",
+    'theme': "Communication avec le personnel de l\\'établissement",
 
     # Couleur du niveau 2, posée par `build/couleurs_niveau.py`.
     'accent': '#A83A22',
