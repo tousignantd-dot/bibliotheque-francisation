@@ -5992,6 +5992,81 @@ JEU_DE_ROLE_EMBAUCHE = {
 }
 
 
+JEU_DE_ROLE_CHRONIQUEPRATIQUE = {
+    "laveuse": {
+        "contexte": (
+            "La pause du matin, derrière le comptoir de la bibliothèque. "
+            "L'élève a écouté mardi une chronique pratique de radio sur la "
+            "garantie légale. Une laveuse achetée 780 $ a cessé de vidanger "
+            "après trois ans et quatre mois ; la garantie du fabricant, d'un "
+            "an, est expirée depuis longtemps, et le marchand dit qu'il n'y "
+            "peut rien. La chronique disait que la garantie légale, elle, "
+            "court encore : un bien doit servir pendant une durée raisonnable "
+            "compte tenu du prix payé."
+        ),
+        "nadege": [
+            "Tu viens d'écouter la chronique et tu veux la raconter.",
+            "Tu sais que la garantie légale existe même quand celle du "
+            "fabricant est finie.",
+        ],
+        "sceptique": [
+            "Tu n'as rien écouté et tu trouves que ça sent l'arnaque.",
+            "Tu demandes d'où vient l'information : quelle station, quelle "
+            "émission, quelle loi.",
+            "Tu répètes que ton beau-frère a essayé et que ça n'a rien donné.",
+            "Tu finis par demander ce que l'élève, lui, ferait à ta place.",
+        ],
+    },
+    "demarche": {
+        "contexte": (
+            "L'élève doit expliquer les trois étapes données par la "
+            "chronique : retourner voir le commerçant en nommant la garantie "
+            "légale ; si ça ne bouge pas, écrire une mise en demeure avec un "
+            "délai de dix jours ; puis, en dernier recours, la Division des "
+            "petites créances de la Cour du Québec, pour une réclamation de "
+            "15 000 $ ou moins, où l'on se représente soi-même."
+        ),
+        "nadege": [
+            "Tu connais les trois étapes et tu tiens à ce qu'on ne les "
+            "mélange pas.",
+        ],
+        "sceptique": [
+            "Tu trouves ça beaucoup trop long et tu le dis.",
+            "Tu mélanges volontiers les étapes — tu proposes d'aller tout de "
+            "suite au tribunal — pour que l'élève ait à remettre l'ordre.",
+            "Tu demandes combien de temps il faut attendre entre deux étapes.",
+            "Tu dis que tu n'as pas gardé ta facture, pour voir ce qu'on te "
+            "répond.",
+        ],
+    },
+    "pieces": {
+        "contexte": (
+            "Le technicien est venu deux fois et attend une pièce de rechange "
+            "depuis cinq semaines. L'appareil n'est pas mal fait : il est "
+            "irréparable faute de pièce, ce qui n'est pas la même chose. "
+            "L'entrevue de l'Office distinguait trois problèmes derrière le "
+            "mot « obsolescence programmée » — un appareil mal conçu, un "
+            "appareil sans pièce disponible, un appareil dont la réparation "
+            "coûte plus cher qu'un neuf."
+        ),
+        "nadege": [
+            "Tu as retenu la distinction entre les trois problèmes et tu "
+            "essaies de la faire comprendre.",
+        ],
+        "sceptique": [
+            "Pour toi, tout est de l'obsolescence programmée et il n'y a rien "
+            "à distinguer.",
+            "Tu confonds exprès « réparer » et « remplacer », pour voir si "
+            "l'élève corrige.",
+            "Tu demandes à quoi ça sert de distinguer, si l'appareil est "
+            "brisé pareil.",
+            "Tu conclus en demandant ce qu'il faudrait changer, à ton avis à "
+            "toi.",
+        ],
+    },
+}
+
+
 JEU_DE_ROLE_SCENARIOS = {
     "colis": {
         "cadre": "une courte démarche au comptoir postal d'une pharmacie",
@@ -6652,6 +6727,85 @@ JEU_DE_ROLE_SCENARIOS = {
                              "aimable, jamais fâchée, et un peu déçue quand "
                              "c'est reporté — dis-le une fois, sans "
                              "insister."),
+            },
+        },
+    },
+    "chroniquepratique": {
+        "cadre": ("l'explication d'une démarche entendue dans une chronique "
+                  "pratique de radio, faite à quelqu'un qui n'a rien écouté "
+                  "et qui n'y croit pas, au stade intermédiaire"),
+        "contexte_label": "Ce que la chronique disait",
+        "cas": JEU_DE_ROLE_CHRONIQUEPRATIQUE,
+        "adresse": ("Tutoie l'élève du début à la fin : c'est un collègue de "
+                    "travail qu'il voit tous les jours, et le module tutoie "
+                    "partout. Ne propose jamais le vouvoiement."),
+        "sujets": [
+            "de quoi il s'agit et où l'élève l'a entendu, dit avant tout "
+            "détail",
+            "les étapes dans l'ordre, sans en sauter et sans les mélanger",
+            "au moins un exemple annoncé : par exemple, notamment, ainsi, "
+            "prenons",
+            "une reprise sans répétition : cette machine, ce refus, il en a "
+            "un, je le sais",
+            "une hypothèse réaliste avec si + présent, jamais si + futur",
+            "l'avis annoncé comme un avis : à mon avis, pour ma part, "
+            "personnellement",
+        ],
+        "cloture": ("Quand l'élève a dit de quoi il s'agit, nommé les trois "
+                    "étapes dans l'ordre, donné un exemple et terminé par son "
+                    "point de vue, redis les étapes en une phrase pour "
+                    "vérifier que tu as compris la même chose, puis conclus. "
+                    "N'accepte pas « il faut se plaindre » comme démarche : "
+                    "redemande les étapes, une fois."),
+        # `ouverture[role_eleve]` est la phrase que l'ÉLÈVE dit en premier :
+        # celui qui a écouté la chronique ouvre en annonçant qu'il a quelque
+        # chose à raconter ; celui qui doute ouvre en demandant de quoi il
+        # s'agit.
+        "ouverture": {
+            "nadege": "Raphaël, il faut que je te raconte ce que j'ai entendu à la radio mardi.",
+            "sceptique": "Coudonc, tu avais l'air songeuse à matin. Tu as écouté quelque chose à la radio ?",
+        },
+        "roles": {
+            "nadege": {
+                "qui": ("Tu es Nadège Beauplan, 44 ans, arrivée d'Haïti il y "
+                        "a six ans. Tu tiens le comptoir d'accueil de la "
+                        "bibliothèque de la Batture, à Trois-Rivières. Tu as "
+                        "écouté la chronique mardi matin et tu as pris des "
+                        "notes."),
+                "conduite": ("Niveau 6 : ton interlocuteur doit tenir une "
+                             "explication suivie, pas répondre à un "
+                             "questionnaire. Tu tutoies. Tu expliques la "
+                             "démarche étape par étape et tu illustres, mais "
+                             "tu ne fais jamais le travail à sa place : si "
+                             "c'est lui qui explique, tu écoutes. Tu emploies "
+                             "les mots réels du dossier — la garantie légale, "
+                             "une durée raisonnable, une mise en demeure, un "
+                             "recours, les petites créances, l'Office de la "
+                             "protection du consommateur. Tu ne donnes jamais "
+                             "de conseil juridique personnel : tu rapportes ce "
+                             "que la chronique disait."),
+            },
+            "sceptique": {
+                "qui": ("Tu es Raphaël Choquette, 38 ans, collègue au "
+                        "comptoir de la bibliothèque. Tu n'écoutes la radio "
+                        "qu'en conduisant et tu as manqué la chronique. Tu as "
+                        "déjà jeté deux appareils sans rien réclamer."),
+                "conduite": ("Niveau 6 : l'élève doit tenir une explication "
+                             "en étapes et répondre à une objection sans se "
+                             "fâcher. Tu tutoies. Tu n'es pas hostile, tu es "
+                             "incrédule : tu demandes d'où vient "
+                             "l'information, tu doutes que ça marche, tu "
+                             "trouves ça long. Tu redemandes une fois quand "
+                             "une étape reste vague — « et ensuite ? », « ça "
+                             "s'écrit comment, une mise en demeure ? », « il "
+                             "faut attendre combien de temps ? ». Tu mélanges "
+                             "parfois deux étapes exprès, pour voir si l'élève "
+                             "remet l'ordre. Tu ne racontes jamais la "
+                             "chronique à sa place et tu ne donnes jamais les "
+                             "étapes toi-même. Vers la fin, tu donnes ton avis "
+                             "à toi, un peu tranché — « c'est au commerçant de "
+                             "faire ça, pas au client » — pour que l'élève ait "
+                             "à répondre et à donner le sien."),
             },
         },
     },
