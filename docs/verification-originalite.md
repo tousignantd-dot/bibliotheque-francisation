@@ -321,3 +321,33 @@ Troisième confirmation du même point : le relevé des sons est resté
 (`git diff` vide sur `sons_module_n6_emploi.json`, 206 clés). Ni les `sub`, ni
 les `tit`, ni les `note` d'un bloc de mini-leçon n'entrent dans le manifeste
 des extraits — seuls les `say` y entrent, et aucun n'a été touché.
+
+---
+
+`module-n6-logement` (activité 105), mesuré le 22 août 2026 : ses **1 216**
+énoncés visibles de 25 caractères ou plus, comparés aux **49 021** des
+cinquante-sept autres modules de `build/contenu/`. Première mesure : **25
+identiques, 2,0 %** 🟢 — bien sous le seuil, et sans point chaud : aucune
+mini-leçon n'avait été bâtie sur celle d'un voisin, et les coïncidences se
+répartissaient sur onze modules différents.
+
+Ce qui les produisait était plus discret que le cas du module 100 : non pas une
+leçon recopiée, mais **vingt titres courts que le savoir commun appelle tout
+seul** — « Les terminaisons de la 3e personne », « Trois verbes irréguliers à
+connaître », « Deux passés dans la même phrase », « Le subjonctif après un verbe
+introducteur », « Poser une condition avec si ». Aucun n'a été emprunté ; chacun
+est simplement la façon la plus évidente de nommer la chose, et cinq agents
+successifs y arrivent séparément. Les vingt ont été refaits : la mesure tombe à
+**4 identiques, 0,3 %** 🟢.
+
+Les quatre qui restent sont ceux de toute la série et sont assumés : les trois
+consignes que le moteur impose à ses types d'exercice (« Choisissez un mot, puis
+sa définition. Six mots à la fois. », « Glissez chaque photo sur la phrase qui
+la décrit. », « glissez la définition ici ») et la phrase d'accueil de « Je
+retiens des mots ». Les faire varier nuirait à l'élève, qui les reconnaît d'un
+module au suivant.
+
+Quatrième confirmation du même point : le relevé des sons est resté **identique
+à l'octet près** avant et après les vingt réécritures (`diff` vide sur
+`sons_module_n6_logement.json`, 201 clés). Ni les `tit`, ni les `sub`, ni les
+intitulés de rangée d'un bandeau n'entrent dans le manifeste des extraits.
