@@ -26,7 +26,10 @@ def build(dossier):
     ])
 
     d.regle("Le -rais adoucit tout",
-            "Est-ce que je peux…  →  Est-ce que je pourrais…",
+            # La flèche « → » n'existe pas dans Verdana : elle s'afficherait en
+            # carré vide au projecteur, et le contrôle de glyphes de
+            # theme.py refuse de laisser passer ça.
+            "Est-ce que je peux…  devient  Est-ce que je pourrais…",
             precision="La première forme est courte, directe et parfaitement "
                       "correcte entre voisins. La seconde est celle qu'on "
                       "emploie avec quelqu'un qu'on connaît peu, ou quand on "

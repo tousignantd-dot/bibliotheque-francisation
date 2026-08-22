@@ -47,6 +47,22 @@ MORCEAUX = (
 )
 
 
+def dans_un_worktree():
+    """Un répertoire de travail lié (`git worktree`) plutôt que le dépôt.
+
+    Un agent isolé part d'un `main` plus ancien : les fichiers des modules
+    voisins ne sont pas chez lui. Lancer `--reparer` là décroche dix-sept liens
+    parfaitement valides, parce qu'ils pointent vers des fichiers qui existent
+    sur `main` mais pas dans ce répertoire. Deux agents l'ont fait le 22 août
+    2026 et ont eu le réflexe d'annuler ; le troisième aurait pu ne pas l'avoir.
+
+    Dans un worktree lié, `.git` est un FICHIER qui pointe ailleurs ; dans le
+    dépôt principal, c'est un dossier.
+    """
+    g = RACINE / '.git'
+    return g.is_file()
+
+
 def slug_de(activite):
     """Le slug se lit dans le lien du module interactif, seul champ toujours là."""
     m = re.search(r'assets/interactive/([^/]+)/', activite.get('interactive') or '')
@@ -71,6 +87,13 @@ def examiner():
 
 def main():
     reparer = '--reparer' in sys.argv
+    if reparer and dans_un_worktree():
+        print('✗ `--reparer` refuse de travailler dans un répertoire isolé.')
+        print('  Les fichiers des autres modules ne sont pas ici : le script')
+        print('  décrocherait des liens parfaitement valides. Lancez-le depuis')
+        print('  le dépôt principal, APRÈS la fusion. Sans `--reparer`, le')
+        print('  rapport reste consultable — sachant qu’il est faussé de même.')
+        return 2
     activites, morts, absents = examiner()
 
     if morts:

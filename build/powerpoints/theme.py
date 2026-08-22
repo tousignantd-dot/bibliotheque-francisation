@@ -33,6 +33,7 @@ Le plancher absolu est 14 pt : rien de plus petit n'est projeté, ce qui
 transpose la règle « jamais sous 17 px » du système.
 """
 
+import re
 import copy
 from pptx import Presentation
 from pptx.util import Inches, Pt, Emu
@@ -133,6 +134,48 @@ def _pil(bold=False, size=20):
                 else '/System/Library/Fonts/Supplemental/Verdana.ttf')
         _FONT_CACHE[key] = ImageFont.truetype(path, size)
     return _FONT_CACHE[key]
+
+
+# Les balises d'emphase des séances, traduites en runs plutôt qu'imprimées.
+#
+# `theme.py` ne les a jamais interprétées : `<b>` partait tel quel dans le XML
+# de la diapositive et s'affichait en clair au projecteur. Vérifié le 22 août
+# 2026 sur les fichiers livrés — vingt-trois modules, plus de cent
+# cinquante diapositives. Et le gras y est **pédagogique** : « le son de "un"
+# ne s'écrit que <b>un</b> ou <b>um</b> ». Le supprimer aurait fait perdre
+# exactement ce que la diapositive enseigne.
+#
+# **Liste blanche, jamais une expression générale.** Les séances contiennent
+# du texte légitime entre chevrons — « <une réduction de loyer> », « <Le
+# chauffe-eau du dessus> » — qu'un nettoyage naïf des balises avalerait. Seuls
+# `<b>`, `<u>`, `<i>` et leurs fermetures sont reconnus ; tout le reste est du
+# texte et le reste.
+RE_EMPHASE = re.compile(r'</?(b|u|i)>', re.I)
+
+
+def fragments(txt, gras=False, couleur='ink_900'):
+    """Rend une liste de (texte, gras, couleur, souligné, italique).
+
+    Un texte sans balise rend un seul fragment : le cas courant ne coûte rien.
+    """
+    if not txt or '<' not in txt:
+        return [(txt, gras, couleur, False, False)]
+    out, i = [], 0
+    etat = {'b': gras, 'u': False, 'i': False}
+    for m in RE_EMPHASE.finditer(txt):
+        if m.start() > i:
+            out.append((txt[i:m.start()], etat['b'], couleur, etat['u'], etat['i']))
+        nom = m.group(1).lower()
+        etat[nom] = not m.group(0).startswith('</')
+        i = m.end()
+    if i < len(txt):
+        out.append((txt[i:], etat['b'], couleur, etat['u'], etat['i']))
+    return [f for f in out if f[0]] or [('', gras, couleur, False, False)]
+
+
+def sans_emphase(txt):
+    """Le texte tel qu'il sera lu — pour mesurer, pas pour afficher."""
+    return RE_EMPHASE.sub('', txt or '')
 
 
 def text_w(txt, size, bold=False):
@@ -236,17 +279,28 @@ class Slide:
         tf.vertical_anchor = {'t': MSO_ANCHOR.TOP, 'm': MSO_ANCHOR.MIDDLE,
                               'b': MSO_ANCHOR.BOTTOM}[anchor]
         if autofit and txt:
-            size = fit(txt, w, h, size, bold, lh)
+            # On mesure le texte LU, pas le texte écrit : « <b>um</b> » fait
+            # deux caractères à l'écran, pas onze. Mesurer les balises faisait
+            # rétrécir la police pour rien.
+            size = fit(sans_emphase(txt), w, h, size, bold, lh)
         p = tf.paragraphs[0]
         p.alignment = {'l': PP_ALIGN.LEFT, 'c': PP_ALIGN.CENTER,
                        'r': PP_ALIGN.RIGHT}[align]
         p.line_spacing = lh
-        for seg_txt, seg_bold, seg_col in (lines or [(txt, bold, color)]):
+        # Chaque segment est redécoupé sur ses balises d'emphase : un appel qui
+        # passe déjà des `lines` en profite comme un appel simple.
+        bruts = lines or [(txt, bold, color)]
+        segments = []
+        for seg in bruts:
+            seg_txt, seg_bold, seg_col = seg[0], seg[1], seg[2]
+            segments.extend(fragments(seg_txt, seg_bold, seg_col))
+        for seg_txt, seg_bold, seg_col, seg_soul, seg_ital in segments:
             r = p.add_run()
             r.text = seg_txt
             r.font.size = Pt(size)
             r.font.bold = seg_bold
-            r.font.italic = italic
+            r.font.italic = italic or seg_ital
+            r.font.underline = seg_soul or None
             r.font.name = FONT
             r.font.color.rgb = RGBColor.from_string(C[seg_col])
             if spc:
