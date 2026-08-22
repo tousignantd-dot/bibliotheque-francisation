@@ -37,7 +37,7 @@ const EXOS = [
     {id:'gp8', txt:"Bruxelles", ok:'COMME S'},
     {id:'gp9', txt:"un schéma", ok:'COMME CH'},
     {id:'gp10', txt:"le shampoing", ok:'COMME CH'},
-    {id:'gp11', txt:"une schintoïste", ok:'COMME CH'},
+    {id:'gp11', txt:"le schiste", ok:'COMME CH'},
     {id:'gp12', txt:"un short", ok:'COMME CH'},
    ]},
 
