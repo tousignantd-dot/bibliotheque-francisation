@@ -1124,6 +1124,45 @@ MODULES = {
                         'Le compte rendu'),
     },
 
+    # Vague 6, niveau 6. « Problèmes reliés à l'habitation ». Le programme n'y
+    # met qu'**une seule** intention, orale des deux côtés : « comprendre de
+    # l'information et poser des questions reliées à des travaux de réparation
+    # ou de rénovation ». Le tableau du pilote (docs/vagues-suivantes.md)
+    # réservait donc GRILLE_2_DEFIS. Le module en prend **trois**, et le vrai
+    # test du pilote dit pourquoi : on peut nommer trois façons distinctes
+    # d'entrer dans la situation, chacune avec son dialogue et ses exercices.
+    # L'intention elle-même est double — *comprendre* et *poser des questions*
+    # —, et ces deux moitiés ne se travaillent pas dans la même séance.
+    #   · Défi 1, on comprend une explication technique de vive voix ;
+    #   · Défi 2, on lit les écrits du chantier — rapport d'inspection et
+    #     soumission — tirés des attentes de fin de cours, pas de la situation ;
+    #   · Défi 3, on pose les questions et on décide, quand le chantier
+    #     découvre autre chose que ce qui était prévu.
+    # Le troisième ne répète pas le deuxième : il change de genre (une
+    # rencontre à quatre voix), de temps (le futur et l'hypothèse au lieu du
+    # passé du diagnostic) et de rôle — l'élève n'y reçoit plus, il demande.
+    #
+    # Ne recoupe pas ses deux voisins sur la même situation. `module-probleme`
+    # (45, niveau 4) est celui du locataire qui *signale* : le chauffage, les
+    # parties communes, l'insalubrité, le recours. `module-n5-degat` (62,
+    # niveau 5) est celui du locataire qui *raconte un sinistre* et réclame.
+    # Ici, personne n'est locataire et rien n'est arrivé pendant la nuit : la
+    # maison appartient à celle qui parle, les travaux sont voulus, choisis et
+    # payés par elle, et toute la difficulté est de suivre ce qu'un homme de
+    # métier explique — puis de poser la question qui manque avant de signer.
+    'module-n6-habitation': {
+        'numero': 9, 'activite': 106, 'niveau': 6,
+        'titre': "Faire faire des travaux",
+        'chapeau': "Comprendre le diagnostic d'un homme de métier, lire un "
+                   "rapport d'inspection et une soumission, puis poser les "
+                   "questions qui manquent le jour où le chantier change de "
+                   "plan.",
+        'seances': GRILLE_3_DEFIS,
+        'blocs': _blocs('Le diagnostic',
+                        'Les papiers du chantier',
+                        'Quand le plan change'),
+    },
+
     'module-n7-actualite': {
         'numero': 1, 'activite': 60, 'niveau': 7,
         'titre': "Suivre l'actualité",
