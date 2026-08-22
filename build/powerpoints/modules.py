@@ -1015,6 +1015,27 @@ MODULES = {
                         "L'entrevue"),
     },
 
+    # Pilote du niveau 6 (vague 5). La situation « Suivi de l'actualité » n'a
+    # au niveau 6 que des intentions de **compréhension** — une orale, trois
+    # écrites — et cinq genres à distinguer : chronique pratique, entrevue,
+    # documentaire, fait divers, courrier des lecteurs. Trois défis, donc
+    # GRILLE_3_DEFIS : la raison est écrite dans `docs/vagues-suivantes.md`.
+    # Ne recoupe ni `module-n5-actualite` (71), qui n'a qu'un genre et un seul
+    # travail — raconter un fait divers —, ni `module-n7-actualite` (60), qui
+    # démêle le fait de l'opinion chez un auteur qui la cache.
+    'module-n6-actualite': {
+        'numero': 2, 'activite': 99, 'niveau': 6,
+        'titre': "Suivre un sujet dans les médias",
+        'chapeau': "Reconnaître les cinq genres de l'actualité, suivre une "
+                   "chronique pratique et une entrevue longue, lire un fait "
+                   "divers et le courrier des lecteurs, puis écrire au "
+                   "journal.",
+        'seances': GRILLE_3_DEFIS,
+        'blocs': _blocs('La chronique pratique',
+                        "L'entrevue et le documentaire",
+                        'Le courrier des lecteurs'),
+    },
+
     'module-n7-actualite': {
         'numero': 1, 'activite': 60, 'niveau': 7,
         'titre': "Suivre l'actualité",
