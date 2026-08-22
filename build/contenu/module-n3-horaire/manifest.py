@@ -70,7 +70,7 @@ MANIFESTE = {
                "puis il remercie avant de retourner à sa tâche.",
 
     'jr_cas': 'echange',
-    'jr_role': 'chef',
+    'jr_role': 'employe',
     'jr_scenario': 'horaire',
     'ia_jeu_de_role': "L'élève parle au chef d'équipe de la cafétéria : il "
                       "demande d'échanger un quart de travail, ou il demande "
