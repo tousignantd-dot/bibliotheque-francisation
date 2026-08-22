@@ -3958,6 +3958,78 @@ JEU_DE_ROLE_COULOIRS = {
 }
 
 
+# Scénario du module-n1-orientation (niveau 1, activité 97). `couloirs`
+# (niveau 2) ne convenait pas : il fait circuler dans le bâtiment, avec des
+# étages, des numéros de local à trois chiffres et une indication en deux
+# phrases. Ici l'élève ne va nulle part tout seul — il est devant une porte,
+# il regarde un dessin, il lit un mot, et il demande « c'est ici ? ». Trois
+# mots par réplique, et l'employé confirme ou corrige, sans jamais expliquer
+# le chemin.
+JEU_DE_ROLE_ORIENTATION = {
+    "toilettes": {
+        "contexte": (
+            "Le corridor du rez-de-chaussée d'un centre de formation, au "
+            "milieu de l'avant-midi. Un élève est arrêté devant deux portes "
+            "voisines. Chacune porte un petit dessin, et le même mot est "
+            "écrit sur les deux."
+        ),
+        "employe": [
+            "Tu travailles au centre et tu passes dans le corridor.",
+            "Tu réponds par oui ou par non, en trois ou quatre mots.",
+            "Tu nommes l'endroit avec « c'est » : « Oui, c'est les toilettes. »",
+            "Si ce n'est pas là, tu dis « non, ce n'est pas ici » et tu montres du doigt.",
+            "Tu ne donnes jamais d'itinéraire : tu montres, tu ne décris pas.",
+        ],
+        "eleve": [
+            "Tu cherches les toilettes et tu es devant deux portes.",
+            "Tu dis ce que tu vois : « Il y a un dessin. »",
+            "Tu lis le mot écrit à voix haute, lettre par lettre s'il le faut.",
+            "Tu demandes « c'est ici ? » et tu remercies.",
+        ],
+    },
+    "garde": {
+        "contexte": (
+            "Près de l'accueil, à huit heures moins dix. Un élève arrive avec "
+            "son enfant de quatre ans et cherche le service de garde. Un "
+            "panneau montre un adulte et un enfant, avec un mot long écrit "
+            "en dessous."
+        ),
+        "employe": [
+            "Tu es la personne de l'accueil. Tu vouvoies l'élève.",
+            "Tu confirmes ou tu corriges, en une phrase courte.",
+            "Tu lis le mot du panneau lentement, syllabe par syllabe, si on te le demande.",
+            "Tu dis l'heure d'ouverture en chiffres simples : « à huit heures ».",
+            "Tu ne demandes aucun papier et tu ne poses qu'une question à la fois.",
+        ],
+        "eleve": [
+            "Tu arrives avec ton enfant et tu cherches le service de garde.",
+            "Tu dis ce que montre le dessin : « un adulte et un enfant ».",
+            "Tu demandes « le service de garde, c'est ici ? ».",
+            "Tu demandes de répéter si le mot est trop long, puis tu remercies.",
+        ],
+    },
+    "porte": {
+        "contexte": (
+            "Devant une porte fermée, dans le corridor. Un mot de six ou "
+            "sept lettres est écrit dessus, et l'élève ne sait pas s'il faut "
+            "pousser ou tirer."
+        ),
+        "employe": [
+            "Tu passes par là et tu vois quelqu'un bloqué devant la porte.",
+            "Tu lis le mot avec lui : « C'est écrit tirez. »",
+            "Tu fais le geste en le nommant : « Tirez, c'est vers vous. »",
+            "Tu ne prends pas la poignée à sa place : tu le laisses faire.",
+            "Tu emploies seulement poussez, tirez, entrez, et le nom de la porte.",
+        ],
+        "eleve": [
+            "La porte ne s'ouvre pas et un mot est écrit dessus.",
+            "Tu lis le mot à voix haute, même si tu le lis mal.",
+            "Tu demandes ce que ça veut dire : « Ça veut dire quoi ? »",
+            "Tu fais le geste, puis tu remercies.",
+        ],
+    },
+}
+
 # Scénario du module-n5-urgence (niveau 5, activité 66). Aucun scénario
 # existant ne convenait : tous les autres mettent en scène un service qui
 # répond à une demande, alors qu'ici c'est l'assistant qui mène l'échange, dans
@@ -7100,6 +7172,55 @@ JEU_DE_ROLE_SCENARIOS = {
                              "Pose ta question avec « où est » ou « où sont ». Redis "
                              "l'indication dans tes mots pour vérifier. Demande de "
                              "répéter si c'est trop vite. Remercie avant de partir."),
+            },
+        },
+    },
+
+    "orientation": {
+        "cadre": "un échange de quinze secondes devant une porte, dans un centre de formation",
+        "contexte_label": "La porte devant laquelle vous êtes",
+        "cas": JEU_DE_ROLE_ORIENTATION,
+        "adresse": "Vouvoyez-vous : l'élève et la personne du centre ne se connaissent pas.",
+        "sujets": [
+            "ce que montre le dessin du panneau",
+            "le mot écrit à côté, lu à voix haute",
+            "la question « c'est ici ? »",
+            "la réponse « c'est… » ou « ce n'est pas ici »",
+            "le petit mot devant le nom : le, la, les, l'",
+            "« pouvez-vous répéter ? » quand le mot est trop long",
+            "le merci",
+        ],
+        "cloture": ("Dès que l'élève a nommé la bonne porte, confirme d'un mot et "
+                    "laisse-le partir. C'est un échange de quinze secondes debout "
+                    "dans un corridor : ne l'allonge sous aucun prétexte."),
+        "ouverture": {
+            "eleve": "Pardon… c'est ici ?",
+            "employe": "Bonjour ! Vous cherchez quelque chose ?",
+        },
+        "roles": {
+            "employe": {
+                "qui": ("Tu travailles au centre de formation — à l'accueil ou dans "
+                        "les corridors. L'élève est la personne qui cherche."),
+                "conduite": ("Niveau 1, grand débutant : trois ou quatre mots par "
+                             "réplique, jamais plus de six. Une seule idée à la fois. "
+                             "Emploie « c'est » et « ce n'est pas », et rien d'autre "
+                             "comme structure. Nomme l'endroit avec son petit mot — la "
+                             "cafétéria, les toilettes, l'accueil. Tu montres du doigt, "
+                             "tu ne décris jamais un chemin : pas d'étage, pas de "
+                             "numéro de local, pas de « à gauche au bout du corridor ». "
+                             "Si l'élève ne comprend pas, redis exactement la même "
+                             "phrase plus lentement, sans la reformuler. Ne corrige "
+                             "jamais sa prononciation."),
+            },
+            "eleve": {
+                "qui": ("Tu es un élève qui cherche un endroit dans le centre et qui "
+                        "ne lit pas encore bien le français. La personne à qui tu "
+                        "parles travaille au centre."),
+                "conduite": ("Dis une seule chose à la fois, en trois ou quatre mots. "
+                             "Dis d'abord ce que tu vois sur le dessin, puis lis le mot "
+                             "écrit, même mal. Pose ta question avec « c'est ici ? ». "
+                             "Demande de répéter si le mot est trop long. Remercie "
+                             "avant de partir."),
             },
         },
     },
