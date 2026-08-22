@@ -5248,7 +5248,7 @@ JEU_DE_ROLE_COLIS = {
             "Tu remercies avant de partir.",
         ],
     },
-    "envoi": {
+    "colis": {
         "contexte": (
             "Le même comptoir, deux jours plus tard. Une personne pose une "
             "boîte sur la balance. Le préposé lui tend une feuille avec des "
@@ -5521,9 +5521,9 @@ JEU_DE_ROLE_SCENARIOS = {
         },
         "roles": {
             "prepose": {
-                "qui": ("Tu tiens le comptoir postal au fond d'une pharmacie de "
-                        "quartier. L'élève est la personne qui vient envoyer "
-                        "quelque chose ou chercher un colis."),
+                "qui": ("Tu es Luc Tremblay et tu tiens le comptoir postal au fond "
+                        "d'une pharmacie de quartier. L'élève est la personne qui "
+                        "vient envoyer quelque chose ou chercher un colis."),
                 "conduite": ("Niveau 2 : phrases très courtes, au présent, aucune "
                              "subordonnée, une seule information par réplique, jamais "
                              "deux questions d'affilée. Dis les montants en toutes "
