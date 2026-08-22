@@ -381,6 +381,29 @@ MODULES = {
         'blocs': _blocs("J'écris l'adresse", 'Je remplis le formulaire'),
     },
 
+    # Dixième et dernier module du niveau 2. La situation du programme,
+    # « Communication avec le personnel de l'établissement de formation »,
+    # porte trois intentions : s'informer sur le fonctionnement du centre à
+    # l'oral (comprise et produite), comprendre la même information à l'écrit,
+    # et **lire un avis simple**. D'où les deux défis : le comptoir d'abord,
+    # le papier affiché ensuite.
+    #
+    # À ne pas confondre avec `module-n3-secretariat` (niveau 3, activité 86),
+    # qui traite la même porte avec des justifications, un billet du médecin
+    # et du passé. Ici, on demande un papier en une phrase et on lit quatre
+    # lignes sur une porte.
+    'module-n2-secretaire': {
+        'numero': 10, 'activite': 95, 'niveau': 2,
+        'titre': 'Je vais au secrétariat',
+        'chapeau': "Nommer le personnel du centre, trouver le secrétariat et "
+                   "son local, demander un papier ou une heure au comptoir, "
+                   "prévenir d'une absence et lire un avis affiché sur la "
+                   "porte.",
+        'seances': GRILLE_COURTE,
+        'blocs': _blocs('Au comptoir du secrétariat',
+                        "Je préviens et je lis l'avis"),
+    },
+
     # ── Niveau 3 ────────────────────────────────────────────────────
     'module-n3-epicerie': {
         'numero': 1, 'activite': 55, 'niveau': 3,

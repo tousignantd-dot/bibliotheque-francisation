@@ -5564,6 +5564,68 @@ JEU_DE_ROLE_HORAIRE = {
 }
 
 
+# module-n2-secretaire (activité 95) — le comptoir du secrétariat, niveau 2.
+# Trois situations, deux ou trois répliques chacune. Distinct du scénario
+# « secretariat » du niveau 3, qui justifie une absence et parle au passé.
+JEU_DE_ROLE_SECRETAIRE = {
+    "papier": {
+        "contexte": (
+            "Le comptoir du secrétariat d'un centre de formation, au "
+            "rez-de-chaussée, un matin. L'élève a besoin d'un papier qui "
+            "prouve qu'il suit le cours de français."
+        ),
+        "secretaire": [
+            "Tu es Line Chartrand, la secrétaire du centre.",
+            "L'attestation se prépare et elle est prête jeudi, après neuf heures.",
+            "Tu demandes le nom, puis le groupe ou le numéro du local.",
+            "Tu donnes un seul renseignement par phrase.",
+        ],
+        "moi": [
+            "Tu veux une attestation pour ton propriétaire.",
+            "Tu salues, tu dis ton nom, puis tu demandes le papier.",
+            "Tu demandes quel jour et à quelle heure il sera prêt.",
+            "Tu répètes le jour et l'heure, puis tu remercies.",
+        ],
+    },
+    "absence": {
+        "contexte": (
+            "Le comptoir du secrétariat, en fin d'avant-midi. L'élève a un "
+            "rendez-vous à la clinique demain matin et ne viendra pas au cours."
+        ),
+        "secretaire": [
+            "Tu es Line Chartrand, la secrétaire du centre.",
+            "Tu écris l'absence et tu préviens l'enseignante.",
+            "Aucun papier écrit n'est nécessaire : tu le dis clairement.",
+            "Tu demandes le nom et le groupe, dans cet ordre.",
+        ],
+        "moi": [
+            "Tu ne viens pas au cours demain : tu as un rendez-vous.",
+            "Tu le dis en une phrase, au présent, avec « ne … pas ».",
+            "Tu donnes ton nom et ton groupe quand on te les demande.",
+            "Tu demandes si tu dois écrire un papier, puis tu remercies.",
+        ],
+    },
+    "horaire": {
+        "contexte": (
+            "Le comptoir du secrétariat. L'élève veut revenir un autre jour "
+            "et ne connaît pas les heures d'ouverture du bureau."
+        ),
+        "secretaire": [
+            "Tu es Line Chartrand, la secrétaire du centre.",
+            "Le bureau ouvre à huit heures et ferme à seize heures.",
+            "Il est fermé le midi, de midi à treize heures, et la fin de semaine.",
+            "Tu dis les heures en toutes lettres, une à la fois.",
+        ],
+        "moi": [
+            "Tu veux savoir quand le secrétariat est ouvert.",
+            "Tu demandes l'heure d'ouverture, puis l'heure de fermeture.",
+            "Tu demandes si c'est ouvert le midi et la fin de semaine.",
+            "Tu répètes les heures entendues, puis tu remercies.",
+        ],
+    },
+}
+
+
 JEU_DE_ROLE_SCENARIOS = {
     "colis": {
         "cadre": "une courte démarche au comptoir postal d'une pharmacie",
@@ -5667,6 +5729,64 @@ JEU_DE_ROLE_SCENARIOS = {
                              "d'un coup, demande de reprendre plus lentement "
                              "— c'est exactement ce que le module apprend à "
                              "faire. Remercie avant de retourner à ta tâche."),
+            },
+        },
+    },
+    "secretaire": {
+        "cadre": "un échange de trente secondes au comptoir du secrétariat "
+                 "d'un centre de formation, au niveau débutant",
+        "contexte_label": "Ce qui vous amène au comptoir",
+        "cas": JEU_DE_ROLE_SECRETAIRE,
+        "adresse": "Vouvoyez-vous : le secrétariat est un bureau, et vous ne "
+                   "vous connaissez pas.",
+        "sujets": [
+            "saluer et dire son nom",
+            "ce qu'on veut : un papier, un renseignement, une absence à signaler",
+            "le groupe ou le numéro du local",
+            "le jour et l'heure",
+            "répéter la réponse pour vérifier",
+            "« pouvez-vous répéter ? » quand ça va trop vite",
+            "merci et bonne journée, à la fin",
+        ],
+        "cloture": ("Quand l'élève a dit ce qu'il voulait et qu'il a répété le "
+                    "jour ou l'heure de la réponse, redis-la une dernière fois "
+                    "en une phrase courte, souhaite une bonne journée et "
+                    "arrête. N'ajoute aucun renseignement nouveau à la fin : "
+                    "il y a quelqu'un derrière dans la file."),
+        "ouverture": {
+            "moi": "Bonjour, madame.",
+            "secretaire": "Bonjour ! Qu'est-ce que je peux faire pour vous ?",
+        },
+        "roles": {
+            "secretaire": {
+                "qui": ("Tu es Line Chartrand, la secrétaire du Centre "
+                        "Sainte-Émilie. Tu réponds au comptoir du "
+                        "rez-de-chaussée, tous les matins, à trente personnes."),
+                "conduite": ("Niveau 2 : deux ou trois répliques suffisent, "
+                             "une seule question à la fois. Phrases très "
+                             "courtes, au présent ou à l'impératif, sans "
+                             "subordonnée. Emploie les mots du module — le "
+                             "secrétariat, le comptoir, un étage, un local, "
+                             "une attestation, un horaire, une absence, un "
+                             "avis, un congé, ouvert, fermé — et rien de plus "
+                             "compliqué. Ne raconte jamais au passé et ne "
+                             "demande jamais de justifier une absence : au "
+                             "niveau 2, on la signale, on ne l'explique pas. "
+                             "Donne un seul renseignement par phrase. Si "
+                             "l'élève ne comprend pas, répète exactement la "
+                             "même phrase plus lentement, sans la reformuler."),
+            },
+            "moi": {
+                "qui": ("Tu es un adulte qui suit le cours de français du "
+                        "matin. La personne à qui tu parles joue Line "
+                        "Chartrand, la secrétaire du centre."),
+                "conduite": ("Dis une seule chose à la fois, en trois ou "
+                             "quatre mots. Salue et dis ton nom d'abord. "
+                             "Demande avec « je voudrais », « est-ce que », "
+                             "« où », « quand », « à quelle heure ». Répète le "
+                             "jour et l'heure pour vérifier. Demande de "
+                             "répéter si c'est trop vite. Remercie avant de "
+                             "partir."),
             },
         },
     },

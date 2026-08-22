@@ -254,3 +254,24 @@ quatre reformulations. La ligne de contenu touchée appartient à un `vf` **sans
 cartes écoutables** — seuls les `vf` à `cards:true, listen:true` mettent leurs
 `txt` au manifeste. Vérifier ce point avant de reformuler une réponse coûte dix
 secondes et évite de repayer des MP3.
+
+`module-n2-secretaire` (activité 95), mesuré le 22 août 2026 : ses **250**
+énoncés visibles de plus de douze caractères — consignes, titres d'exercices,
+intitulés et rangées de bandeau noir compris — comparés aux **12 470** des
+autres modules de `build/contenu/`. Première mesure : **15 identiques, 6,0 %**,
+au-dessus du seuil. Onze ont été reformulés avec les mots du module (« Les
+seize mots du secrétariat et des couloirs », « On entend “ou” ou on entend
+“u” ? », « Le local 214 se trouve au ___ étage. »), ce qui ramène la mesure à
+**4 identiques, 1,6 %** 🟢.
+
+Les quatre qui restent sont assumés : « le secrétariat », « le
+rez-de-chaussée » et « une attestation » sont des entrées du **lexique du
+programme** pour cette situation — les varier serait enseigner autre chose que
+ce que le ministère nomme ; « On ne dit pas » est l'intitulé de rangée que tous
+les bandeaux noirs du dépôt emploient, et le faire varier nuirait à l'élève qui
+le reconnaît.
+
+Confirmation du point relevé pour `module-n5-urgence` : le relevé des sons est
+resté **identique à l'octet près** avant et après les onze reformulations
+(`diff` vide sur `sons_module_n2_secretaire.json`). Ni les `sub` ni les `tit`
+n'entrent dans le manifeste des extraits.

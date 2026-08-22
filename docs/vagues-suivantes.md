@@ -573,6 +573,52 @@ Ce que le niveau 2 impose, et qu'un agent habitué au niveau 4 oublie :
 
 Dernier numéro réservé après cette vague : **95**.
 
+**22 août 2026 — l'activité 95 est livrée : le niveau 2 est complet.**
+`module-n2-secretaire` · « Je vais au secrétariat » : huit séances,
+95 diapositives, huit fiches, huit vignettes, un scénario de jeu de rôle neuf
+(`secretaire`), 167 sons relevés et 229 extraits audio en attente. Dixième et
+dernier module du niveau — la vague 4 est close.
+
+**Le scénario.** Amel Tazi, arrivée d'Algérie en septembre, en est à sa
+deuxième semaine au Centre Sainte-Émilie. Line Chartrand tient le comptoir du
+secrétariat, Marc Ouellet est le concierge, et Sami arrive pour son premier
+jour dans le dernier dialogue — c'est alors Amel qui explique. Défi 1 : le
+comptoir, demander un papier, une heure, un jour. Défi 2 : prévenir d'une
+absence, et lire l'avis collé sur la porte un matin de congé.
+
+**Ce qui distingue ce module de ses voisins.** `module-n3-secretariat`
+(niveau 3, activité 86) passe la même porte, mais y justifie une absence avec
+un billet du médecin et du passé composé ; ici on ne justifie rien et on ne
+raconte rien — on dit « demain, je ne viens pas », on donne son nom, et c'est
+fini. La consigne du jeu de rôle l'écrit noir sur blanc à l'assistant : ne
+jamais demander pourquoi.
+
+**Sans images et sans audio** : cette session n'avait aucune clé d'API. Les
+deux générateurs sont écrits, vérifiés et commités —
+`build/contenu/module-n2-secretaire/gen_images.py` (vingt images, routé par
+`build/route_images.py`) et `generer_audio_module_n2_secretaire.py` (229
+extraits). Le septième contrôle sort donc **20 écarts, tous « image absente du
+disque »**, et rien d'autre. Une fois les images produites, il faut
+reconstruire les huit `.pptx` : les séances les reprennent.
+
+**Trois choses que cette production a apprises.**
+
+- **Le chemin absolu des générateurs d'images ne survit pas à un *worktree*.**
+  Les `gen_images.py` plus anciens écrivent
+  `/Users/…/bibliotheque-francisation/assets/…` en dur. Produit dans un
+  worktree git — nécessaire ici, la copie principale étant occupée par la
+  session voisine — ce chemin dépose les images dans **l'autre** copie du
+  dépôt. Celui-ci déduit la racine de `__file__`.
+- **Les séances ne doivent pas s'arrêter faute de photo.** `theme.py` ouvre
+  l'image avec Pillow : un fichier manquant lève une exception et le module
+  entier ne se construit plus. Les quatre decks à déclencheur passent par une
+  petite fonction `img()` qui rend le chemin seulement si le fichier existe.
+- **La mesure d'originalité se fait avant de committer, pas après.** Première
+  mesure : 6,0 % de coïncidence avec les autres modules, au-dessus du seuil de
+  5 %. Onze consignes et titres reformulés, et la mesure tombe à 1,6 %. Le
+  relevé des sons est resté identique à l'octet près — ni les `sub` ni les
+  `tit` n'y entrent, donc rien à repayer.
+
 **22 août 2026 — l'activité 94 est livrée.** `module-n2-colis` · « J'envoie
 une lettre et un colis » : huit séances, 97 diapositives, huit fiches, huit
 vignettes, un scénario de jeu de rôle neuf. Les neuf fichiers de contenu
