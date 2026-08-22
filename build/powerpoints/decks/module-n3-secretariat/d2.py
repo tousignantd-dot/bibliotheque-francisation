@@ -92,8 +92,7 @@ def build(dossier):
               [["Élève", "Nawel Belkacem, groupe 12"],
                ["Motif du départ", "abandon, emploi à temps plein"],
                ["Dernier jour de cours", "vendredi 28 mars"],
-               ["Demandée le", "mardi 25 mars"],
-               ["Prête le", "vendredi 28 mars, au comptoir"],
+               ["Demandée le", "mardi 25 mars ; prête le vendredi 28"],
                ["Remise", "en main propre, sur signature"]],
               cle=1,
               note="Trois jours entre la demande et le papier : c'est pour ça "
