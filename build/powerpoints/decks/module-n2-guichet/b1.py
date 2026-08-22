@@ -70,11 +70,10 @@ def build(dossier):
                ["Prenez votre carte.", "la carte d'abord"],
                ["Prenez votre argent.", "les billets ensuite"],
                ["Voulez-vous un relevé ?", "oui ou non"]],
-              cle=2,
-              note="Six phrases suffisent pour tout un retrait. Elles ne changent pas "
-                   "d'un guichet à l'autre.",
+              cle=2, props=[0.5, 0.5],
               notes="Diapositive à photographier. C'est la page la plus utile du module : "
-                    "faire recopier à la main dans le cahier.")
+                    "faire recopier à la main dans le cahier. Six phrases suffisent pour "
+                    "tout un retrait, et elles ne changent pas d'un guichet à l'autre.")
 
     d.regle("Un ordre, c'est un verbe sans sujet",
             "Entrez. Choisissez. Appuyez. Prenez.",
