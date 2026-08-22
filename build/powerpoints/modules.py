@@ -801,6 +801,18 @@ MODULES = {
                         "Ce que j'en pense"),
     },
 
+    'module-n5-oeuvres': {
+        'numero': 13, 'activite': 73, 'niveau': 5,
+        'titre': 'Le club du jeudi',
+        'chapeau': "Raconter une histoire sans la dévoiler, lire une planche "
+                   "de bande dessinée, dire ce qu'on a aimé d'une œuvre et "
+                   "le justifier devant des gens qui ne sont pas d'accord.",
+        'seances': GRILLE_3_DEFIS,
+        'blocs': _blocs("Ce que raconte l'histoire",
+                        'Lire une bande dessinée',
+                        "Dire ce qu'on en pense"),
+    },
+
     'module-n6-recherche': {
         'numero': 1, 'activite': 59, 'niveau': 6,
         'titre': "Chercher un emploi",

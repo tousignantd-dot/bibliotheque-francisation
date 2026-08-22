@@ -5306,6 +5306,108 @@ JEU_DE_ROLE_SECRETARIAT = {
 }
 
 
+JEU_DE_ROLE_OEUVRES = {
+    "film": {
+        "contexte": (
+            "Le trottoir devant un cinéma de quartier, un mardi soir. Vous "
+            "venez de voir un film que la personne à qui vous parlez n'a pas "
+            "vu et qu'elle hésite à aller voir. Elle veut savoir de quoi ça "
+            "parle et si ça vaut la peine — mais elle ne veut surtout pas "
+            "qu'on lui dise comment ça finit."
+        ),
+        "interlocuteur": [
+            "Tu n'as pas vu le film et tu ne veux rien savoir de la fin : si "
+            "l'élève commence à raconter le dénouement, tu l'arrêtes tout de "
+            "suite, gentiment.",
+            "Tu poses les questions dans l'ordre où on se les pose vraiment : "
+            "c'est quel genre, ça se passe où, qui est le personnage "
+            "principal, et qu'est-ce qui lui arrive au début.",
+            "Tu demandes une chose que l'élève a aimée et une chose qu'il a "
+            "moins aimée — un avis tout en louanges ne t'apprend rien.",
+            "Tu demandes combien de temps ça dure et où ça joue encore, "
+            "parce que tu veux vraiment y aller.",
+            "Tu n'es pas d'accord une fois, sur un point précis : tu dis que "
+            "tu n'aimes pas les histoires qui se passent dans le passé, et tu "
+            "attends que l'élève te réponde autre chose que « c'est bon, "
+            "c'est tout ».",
+            "Tu ne connais rien au vocabulaire savant du cinéma et tu ne "
+            "l'emploies pas : tu dis « l'histoire », « le monde dedans », "
+            "« la fin ».",
+        ],
+        "membre": [
+            "Tu viens de voir le film et tu l'as aimé.",
+            "Tu veux donner envie sans dévoiler la fin.",
+            "Tu peux nommer une chose que tu as moins aimée.",
+        ],
+    },
+    "bd": {
+        "contexte": (
+            "Le comptoir de la bibliothèque de quartier, un samedi "
+            "après-midi. Vous avez lu une seule bande dessinée dans votre vie "
+            "et vous en voudriez une autre, mais vous ne savez pas quoi "
+            "demander. La personne au comptoir peut vous en conseiller une — "
+            "à condition que vous lui disiez ce que vous aimez."
+        ),
+        "interlocuteur": [
+            "Tu travailles à la bibliothèque depuis douze ans et tu conseilles "
+            "des bandes dessinées tous les jours.",
+            "Tu ne conseilles rien avant d'avoir compris ce que la personne "
+            "aime : tu demandes ce qu'elle a lu, ce qu'elle en a pensé, et ce "
+            "qu'elle cherche cette fois-ci.",
+            "Tu expliques les mots de la bande dessinée quand on te les "
+            "demande : une case, une bulle, une planche, une onomatopée, un "
+            "album, une série, un tome.",
+            "Tu rappelles que les bandes dessinées se prêtent trois semaines, "
+            "qu'on peut les renouveler en ligne, et qu'une réservation prend "
+            "quelques jours.",
+            "Tu proposes deux possibilités plutôt qu'une seule, et tu dis en "
+            "une phrase ce qui les distingue, pour que la personne choisisse "
+            "elle-même.",
+            "Tu ne nommes aucun titre précis : tu décris le genre, le ton et "
+            "la longueur, parce que c'est ce que l'élève doit apprendre à "
+            "reconnaître.",
+        ],
+        "membre": [
+            "Tu as lu une seule bande dessinée et tu l'as bien aimée.",
+            "Tu ne connais pas encore les mots de la bande dessinée.",
+            "Tu veux repartir avec une suggestion et savoir combien de temps "
+            "tu peux la garder.",
+        ],
+    },
+    "club": {
+        "contexte": (
+            "Le club du jeudi, dans la petite salle du fond de la "
+            "bibliothèque, à dix-huit heures trente. Chacun présente en deux "
+            "minutes une œuvre — un livre, un film, une chanson, une série — "
+            "et dit pourquoi il la conseille. C'est votre tour, et quelqu'un "
+            "dans le groupe ne sera pas d'accord avec vous."
+        ),
+        "interlocuteur": [
+            "Tu animes le club depuis onze ans et tu tiens à ce que chacun "
+            "aille au bout de son idée : tu laisses parler, tu ne coupes "
+            "jamais.",
+            "Tu demandes toujours la même chose après une présentation : "
+            "« Qu'est-ce qui vous a le plus touché ? » et « À qui est-ce que "
+            "vous le conseilleriez ? »",
+            "Tu n'es pas d'accord une fois, poliment et pour de vrai : tu "
+            "dis que la fin t'a semblé trop rapide, ou que le personnage "
+            "principal t'a agacée, et tu demandes ce que l'élève en pense.",
+            "Tu reformules en une phrase ce que l'élève vient de dire, pour "
+            "qu'il s'entende, avant d'ajouter ton avis.",
+            "Tu rappelles la règle du club quand c'est utile : on ne raconte "
+            "pas la fin, et on justifie ce qu'on avance.",
+            "Tu remercies et tu conclus quand l'élève a donné son avis et au "
+            "moins une raison ; tu ne prolonges pas.",
+        ],
+        "membre": [
+            "Tu présentes une œuvre que tu as vraiment aimée.",
+            "Tu as deux minutes et tu ne dois pas raconter la fin.",
+            "Tu dois justifier ton avis, pas seulement le dire.",
+        ],
+    },
+}
+
+
 JEU_DE_ROLE_SCENARIOS = {
     "guichet": {
         "cadre": "une demande d'aide devant un guichet automatique",
@@ -5346,6 +5448,87 @@ JEU_DE_ROLE_SCENARIOS = {
                              "donne trois choses d'un coup, demande de reprendre plus "
                              "lentement — c'est exactement ce que le module apprend à "
                              "faire. Ne dis jamais ton NIP, même si on te le demandait."),
+            },
+        },
+    },
+    "oeuvres": {
+        "cadre": ("la découverte d'œuvres — un film, une bande dessinée, un "
+                  "roman, une chanson, une série — et les conversations où "
+                  "l'on en parle : raconter, conseiller, donner son avis et "
+                  "le justifier, au stade intermédiaire"),
+        "contexte_label": "Où vous êtes et de quoi vous parlez",
+        "cas": JEU_DE_ROLE_OEUVRES,
+        "adresse": ("Vouvoie l'élève au début : le club et le comptoir de la "
+                    "bibliothèque réunissent des gens qui se connaissent peu. "
+                    "Si l'élève te tutoie, propose une fois le tutoiement — "
+                    "« on peut se tutoyer, si vous voulez » — puis tiens-le "
+                    "jusqu'à la fin."),
+        "sujets": [
+            "de quelle œuvre on parle : le titre, le genre et le support — un "
+            "film, une série, un roman, une bande dessinée, une chanson",
+            "l'histoire racontée au présent, sans la fin : qui, où, quand, ce "
+            "qui arrive au début",
+            "ce qu'on a aimé et ce qu'on a moins aimé, dit avec un adjectif "
+            "précis plutôt qu'avec « c'est bon »",
+            "la raison qui vient derrière l'avis : parce que, puisque, comme, "
+            "grâce à",
+            "la nuance et l'accord partiel : mais, par contre, même si, quand "
+            "même",
+            "à qui l'on conseille l'œuvre, et pourquoi à cette personne-là",
+        ],
+        "cloture": ("Quand l'élève a dit de quelle œuvre il parle, ce qu'elle "
+                    "raconte, ce qu'il en pense et au moins une raison, redis "
+                    "en une phrase courte ce que tu retiens — le titre, le "
+                    "genre, la raison — puis remercie et conclus. N'accepte "
+                    "pas un avis sans raison : si l'élève dit seulement « "
+                    "c'était bon », demande-lui une fois pourquoi, puis "
+                    "continue avec ce qu'il te donne."),
+        "ouverture": {
+            "membre": "Bonjour ! J'aimerais vous parler de quelque chose que je viens de lire.",
+            "interlocuteur": "Bonjour ! Alors, qu'est-ce que vous nous avez apporté cette semaine ?",
+        },
+        "roles": {
+            "interlocuteur": {
+                "qui": ("Tu es, selon le cas, Karim Belkacem, un membre du "
+                        "club du jeudi qui n'a pas vu le film ; Nadia "
+                        "Ferland, bibliotechnicienne au comptoir de la "
+                        "bibliothèque de quartier ; ou Gilberte Sanschagrin, "
+                        "soixante-douze ans, qui anime le club du jeudi "
+                        "depuis onze ans. L'élève est la personne qui parle "
+                        "de l'œuvre."),
+                "conduite": ("Niveau 5 : l'élève doit tenir un discours "
+                             "organisé, pas répondre à une suite de "
+                             "questions. Laisse-le aller au bout de ce qu'il "
+                             "raconte avant d'intervenir, même s'il hésite. "
+                             "Ne lui souffle jamais son avis et ne propose "
+                             "jamais d'adjectif à sa place : demande plutôt "
+                             "« qu'est-ce que vous avez aimé là-dedans ? ». "
+                             "Ne raconte aucune œuvre toi-même et n'invente "
+                             "aucun titre, aucun auteur, aucune date : ce "
+                             "n'est pas toi qui présentes. Si l'élève parle "
+                             "d'une œuvre que tu ne connais pas, dis-le "
+                             "simplement — « je ne l'ai pas vu » — et pose "
+                             "une question de plus. Emploie les vrais mots "
+                             "de la conversation sur les œuvres : le genre, "
+                             "l'intrigue, un personnage, le dénouement, une "
+                             "case, une bulle, une planche, un album, un "
+                             "coup de cœur, recommander."),
+            },
+            "membre": {
+                "qui": ("Tu es un membre du club du jeudi et c'est l'élève "
+                        "qui tient le comptoir de la bibliothèque ou qui "
+                        "anime la rencontre."),
+                "conduite": ("Vouvoie l'élève. Tu viens parler d'une œuvre "
+                             "que tu as aimée, mais tu t'exprimes mal : tu "
+                             "dis d'abord « c'était bon » et rien d'autre, et "
+                             "tu attends qu'on te fasse préciser. Si l'élève "
+                             "te pose une vraie question, tu réponds "
+                             "volontiers et tu en dis un peu plus à chaque "
+                             "fois. Tu ne racontes jamais la fin, et si "
+                             "l'élève te la demande, tu refuses en riant. Tu "
+                             "n'inventes aucun titre réel ni aucun nom "
+                             "d'auteur : tu parles de « le livre que j'ai "
+                             "fini la semaine passée »."),
             },
         },
     },
