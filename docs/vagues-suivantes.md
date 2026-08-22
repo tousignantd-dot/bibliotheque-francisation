@@ -1497,3 +1497,41 @@ HTML reprenne les images, puis `python3 build/materiel.py` et
 n'a pas été lancé.
 
 **La file reprend** à l'activité 82 (niveau 3).
+
+---
+
+## Vague 5 — les quatre derniers niveaux (1, 4, 6, 7, 8)
+
+Ouverte le 22 août 2026, une fois les niveaux 2, 3 et 5 fermés.
+
+`python3 build/bilan_programme.py` dit ce qui manque et le tiendra à jour :
+**28 modules**, répartis sur cinq niveaux. Trois d'entre eux sont des trous
+dans des niveaux qu'on croyait finis — dont « Communication avec le personnel
+de l'établissement » au **niveau 4**, que personne n'avait vu manquer.
+
+**Ce que cette vague a de neuf, et qui commande la prudence.** Les niveaux 6, 7
+et 8 sont d'un autre stade : textes suivis, argumentation, nuances. Les deux
+grilles du dépôt — `GRILLE_COURTE` (8 séances) et `GRILLE_3_DEFIS` (16) —
+viennent des niveaux 1 à 5 et n'ont jamais servi au-delà. Lancer neuf agents
+de niveau 6 sur un gabarit non validé, c'est risquer neuf modules à refaire.
+D'où l'ordre : le niveau 1 d'abord (terrain connu), **un pilote au niveau 6**
+ensuite, et les vagues suivantes seulement une fois le pilote relu.
+
+**Les numéros sont réservés ici**, et nulle part ailleurs. Un agent ne prend
+jamais « le prochain numéro libre » : deux agents lancés la même minute
+prendraient le même.
+
+| Numéro | Niveau | Situation | Slug réservé |
+|--------|--------|-----------|--------------|
+| 96 | 1 | Inscription | `module-n1-inscription` |
+| 97 | 1 | Orientation dans l'établissement | `module-n1-orientation` |
+| 98 | 1 | Salle de classe | `module-n1-classe` |
+| 99 | 6 | Suivi de l'actualité — **pilote** | `module-n6-actualite` |
+
+Le pilote est « Suivi de l'actualité » parce qu'il a deux voisins déjà écrits,
+`module-n5-actualite` et `module-n7-actualite` : l'agent peut calibrer le
+niveau 6 entre les deux au lieu de l'inventer.
+
+**Format** : `GRILLE_COURTE` aux numéros 96-98 (le niveau 1 est le plus court
+du programme) ; au 99, l'agent décide et **écrit pourquoi** — c'est la
+question à laquelle le pilote doit répondre.
