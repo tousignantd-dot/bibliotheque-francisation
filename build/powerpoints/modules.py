@@ -359,6 +359,28 @@ MODULES = {
         'blocs': _blocs('Au guichet automatique', 'Je fais un chèque'),
     },
 
+    # Dixième module court du dépôt, neuvième du niveau 2. La situation du
+    # programme est « Démarches à la poste », et son cadre décide de tout :
+    # `build/cadre.py 2 "Démarches à la poste"` ne rend que **deux**
+    # intentions, toutes les deux écrites — « lire et remplir un formulaire »
+    # (compréhension et production écrites) et « adresser une enveloppe »
+    # (production écrite). Défi 1 est donc l'enveloppe, Défi 2 le formulaire.
+    # Distinct de `module-n3-poste` (niveau 3, activité 80), qui porte la même
+    # situation un niveau plus haut : là-bas l'unique intention est orale — on
+    # s'informe au comptoir, on compare deux vitesses, on demande un
+    # mandat-poste. Ici la parole tient en trois mots et tout se joue sur le
+    # papier : les cinq lignes d'une adresse, le code postal, les cases d'un
+    # formulaire et l'endroit où l'on signe.
+    'module-n2-colis': {
+        'numero': 9, 'activite': 94, 'niveau': 2,
+        'titre': "J'envoie une lettre et un colis",
+        'chapeau': "Nommer ce qu'on envoie, écrire les cinq lignes d'une "
+                   "adresse du Québec sur une enveloppe, remplir le "
+                   "formulaire d'un colis et lire un avis de livraison.",
+        'seances': GRILLE_COURTE,
+        'blocs': _blocs("J'écris l'adresse", 'Je remplis le formulaire'),
+    },
+
     # ── Niveau 3 ────────────────────────────────────────────────────
     'module-n3-epicerie': {
         'numero': 1, 'activite': 55, 'niveau': 3,
