@@ -2830,6 +2830,72 @@ JEU_DE_ROLE_PRESENTER = {
     },
 }
 
+# `fiche` (niveau 1, module-n1-inscription) est le pendant écrit de
+# `presenter` : là on se nomme à l'oral, ici on remplit huit cases. Distinct
+# aussi de `inscription` (niveau 2), qui part d'une annonce de cours et va
+# jusqu'à la scolarité et la signature — au niveau 1, on ne quitte jamais la
+# table et l'élève ne demande rien : il répond.
+JEU_DE_ROLE_FICHE = {
+    "table": {
+        "contexte": (
+            "La table d'inscription d'un centre de francisation, un mardi matin. "
+            "Une fiche de huit cases est posée entre les deux personnes. On en est "
+            "aux quatre cases du haut : nom de famille, prénom, sexe, date de "
+            "naissance."
+        ),
+        "commis": [
+            "Tu demandes une seule case à la fois, dans l'ordre de la fiche.",
+            "Tu fais épeler le nom de famille, lettre par lettre.",
+            "Tu répètes à voix haute ce que tu as écrit, pour vérifier.",
+            "Pour la date de naissance, tu redis l'ordre : le jour, le mois, "
+            "puis l'année.",
+        ],
+        "eleve": [
+            "Tu t'inscris pour la première fois. Tu réponds aux questions.",
+            "Tu épelles ton nom de famille quand on te le demande.",
+            "Tu donnes ta date de naissance : le jour, le mois, l'année.",
+            "Si la question va trop vite, tu demandes de répéter plus lentement.",
+        ],
+    },
+    "adresse": {
+        "contexte": (
+            "La même table, un peu plus tard. On en est à la case de l'adresse : "
+            "le numéro, la rue, l'appartement, la ville, la province."
+        ),
+        "commis": [
+            "Tu demandes le numéro et la rue, puis l'appartement, puis la ville.",
+            "Tu fais épeler le nom de la rue s'il est long.",
+            "Tu dis quelles abréviations tu écris : app., av., boul., QC.",
+            "Tu ne demandes jamais deux choses dans la même phrase.",
+        ],
+        "eleve": [
+            "Tu donnes ton adresse : le numéro d'abord, puis la rue.",
+            "Tu dis ton numéro d'appartement, s'il y en a un.",
+            "Tu ne comprends pas « app. » du premier coup et tu le dis.",
+            "Tu épelles le nom de ta rue.",
+        ],
+    },
+    "chiffres": {
+        "contexte": (
+            "La fin de l'inscription. Il reste trois cases : le téléphone, le code "
+            "postal et le courriel. Ce sont les cases où l'on se fait le plus "
+            "souvent répéter."
+        ),
+        "commis": [
+            "Tu demandes le numéro de téléphone : dix chiffres, un par un.",
+            "Tu redis les chiffres après l'élève, en trois groupes.",
+            "Tu demandes le code postal, puis le courriel.",
+            "Si un caractère est incertain, tu le fais répéter sans t'impatienter.",
+        ],
+        "eleve": [
+            "Tu donnes ton numéro de téléphone, un chiffre à la fois.",
+            "Tu donnes ton code postal : trois caractères, puis trois.",
+            "Tu dis ton courriel avec « point » et « arobase ».",
+            "Tu demandes de ralentir dès que c'est trop rapide.",
+        ],
+    },
+}
+
 JEU_DE_ROLE_ALLEES = {
     "farine": {
         "contexte": (
@@ -8357,6 +8423,51 @@ JEU_DE_ROLE_SCENARIOS = {
                 "conduite": ("Réponds par des phrases courtes. Épelle ton nom si on te "
                              "le demande. Si la question est longue, dis « pardon ? » ou "
                              "« plus lentement, s'il vous plaît »."),
+            },
+        },
+    },
+    "fiche": {
+        "cadre": "une fiche d'inscription qu'on remplit case par case",
+        "contexte_label": "La case de la fiche où vous en êtes",
+        "cas": JEU_DE_ROLE_FICHE,
+        "adresse": "Vouvoie l'élève : c'est un comptoir, et vous ne vous connaissez pas.",
+        "sujets": [
+            "le nom de famille, épelé lettre par lettre",
+            "le prénom",
+            "la date de naissance : le jour, le mois, l'année",
+            "l'adresse : le numéro, la rue, l'appartement, la ville",
+            "le numéro de téléphone, dix chiffres un par un",
+            "le code postal et le courriel",
+            "« plus lentement, s'il vous plaît » quand ça va trop vite",
+        ],
+        "cloture": ("Quand les huit cases sont remplies, dis que la fiche est "
+                    "complète, souhaite la bienvenue, et arrête-toi là."),
+        "ouverture": {
+            "eleve": "Bonjour. Je viens pour l'inscription.",
+            "commis": "Bonjour ! Vous venez pour l'inscription ?",
+        },
+        "roles": {
+            "commis": {
+                "qui": ("Tu remplis la fiche d'inscription d'une personne qui "
+                        "arrive pour la première fois. L'élève est cette personne."),
+                "conduite": ("Niveau grand débutant : phrases de six mots au plus, "
+                             "une seule question à la fois, jamais deux dans la "
+                             "même phrase. Emploie la forme de la fiche — « quel "
+                             "est votre nom de famille ? », « quelle est votre date "
+                             "de naissance ? ». Répète à voix haute ce que tu as "
+                             "écrit pour vérifier. Ne raconte jamais au passé, "
+                             "n'explique pas le centre, ne parle pas des cours : la "
+                             "fiche, et rien d'autre. Si l'élève ne comprend pas, "
+                             "redis exactement la même phrase plus lentement, sans "
+                             "la reformuler et sans jamais lui reprocher."),
+            },
+            "eleve": {
+                "qui": ("Tu t'inscris et tu réponds aux questions de la fiche. "
+                        "L'élève joue la personne au comptoir."),
+                "conduite": ("Réponds par des phrases de trois ou quatre mots. "
+                             "Épelle ton nom si on te le demande. Donne les chiffres "
+                             "un par un. Si la question est longue, dis « pardon ? » "
+                             "ou « plus lentement, s'il vous plaît »."),
             },
         },
     },
