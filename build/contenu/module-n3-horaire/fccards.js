@@ -1,0 +1,18 @@
+const FC_CARDS = [
+  {word:"un quart de travail", def:"Le bloc d'heures que tu fais dans une journée, du début à la fin.", ex:"Mon <strong>quart de travail</strong> commence à six heures et finit à quatorze heures.", img:"/assets/interactive/module-n3-horaire/vocab/quart-de-travail.jpg", tache:"prep"},
+  {word:"un horaire", def:"Le papier ou le tableau qui dit quel jour et à quelle heure chacun travaille.", ex:"Mon nom est sur la première ligne de l'<strong>horaire</strong> de la semaine.", img:"/assets/interactive/module-n3-horaire/vocab/horaire.jpg", tache:"prep"},
+  {word:"un chef d'équipe", def:"La personne qui donne les tâches et qui répond aux questions du groupe.", ex:"Le <strong>chef d'équipe</strong> passe voir tout le monde au début du quart.", img:"/assets/interactive/module-n3-horaire/vocab/chef-equipe.jpg", tache:"prep"},
+  {word:"une tâche", def:"Un travail précis à faire, qui a un début et une fin.", ex:"Sortir les plateaux, c'est ma première <strong>tâche</strong> de la journée.", img:"/assets/interactive/module-n3-horaire/vocab/tache.jpg", tache:"prep"},
+  {word:"un uniforme", def:"Les vêtements pareils que tous les employés portent pour travailler.", ex:"Mon <strong>uniforme</strong> propre m'attend dans le casier numéro douze.", img:"/assets/interactive/module-n3-horaire/vocab/uniforme.jpg", tache:"prep"},
+  {word:"le vestiaire", def:"La pièce avec des casiers, où on se change avant de commencer.", ex:"Le <strong>vestiaire</strong>, c'est la porte grise, juste à côté de la cuisine.", img:"/assets/interactive/module-n3-horaire/vocab/vestiaire.jpg", tache:"prep"},
+  {word:"poinçonner", def:"Marquer l'heure de son arrivée et de son départ sur une machine.", ex:"On <strong>poinçonne</strong> avant d'entrer dans la cuisine, jamais après.", img:"/assets/interactive/module-n3-horaire/vocab/poinconner.jpg", tache:"prep"},
+  {word:"une pause", def:"Le moment court où on arrête de travailler pour se reposer ou manger.", ex:"Ma <strong>pause</strong> est de onze heures et demie à midi.", img:"/assets/interactive/module-n3-horaire/vocab/pause.jpg", tache:"t1"},
+  {word:"un congé", def:"Une journée où on ne travaille pas, et où rien n'est écrit sur l'horaire.", ex:"Samedi et dimanche, je suis en <strong>congé</strong>.", img:"/assets/interactive/module-n3-horaire/vocab/conge.jpg", tache:"t1"},
+  {word:"remplacer", def:"Faire le travail de quelqu'un qui n'est pas là.", ex:"Miguel va me <strong>remplacer</strong> jeudi matin.", tache:"t1"},
+  {word:"échanger", def:"Donner une chose à quelqu'un et prendre la sienne à la place.", ex:"J'aimerais <strong>échanger</strong> mon jeudi contre son vendredi.", tache:"t2"},
+  {word:"aviser", def:"Prévenir quelqu'un à l'avance, pour qu'il ne soit pas surpris.", ex:"Il faut <strong>aviser</strong> le chef d'équipe trois jours avant.", tache:"t2"},
+  {word:"prêter", def:"Donner une chose à quelqu'un pour un moment, en sachant qu'il la rend.", ex:"Est-ce que tu peux me <strong>prêter</strong> ton crayon deux minutes ?", tache:"t2"},
+  {word:"une livraison", def:"Les boîtes de marchandise qu'un camion apporte au travail.", ex:"La <strong>livraison</strong> de ce matin est encore dans le corridor.", img:"/assets/interactive/module-n3-horaire/vocab/livraison.jpg", tache:"t3"},
+  {word:"éteindre", def:"Arrêter un appareil ou une lumière, pour qu'ils cessent de fonctionner.", ex:"Il faut <strong>éteindre</strong> le four à onze heures pile.", img:"/assets/interactive/module-n3-horaire/vocab/eteindre.jpg", tache:"t3"},
+  {word:"ranger", def:"Mettre chaque chose à la place où elle doit être.", ex:"Je vais <strong>ranger</strong> les boîtes dans la chambre froide.", img:"/assets/interactive/module-n3-horaire/vocab/ranger.jpg", tache:"t3"},
+];
