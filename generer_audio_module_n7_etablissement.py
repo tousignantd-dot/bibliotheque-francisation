@@ -7,7 +7,7 @@ Deux familles de fichiers, comme dans les autres modules :
   1. les répliques des quatre dialogues → <module>/<dialId>/line_NN_<perso>.mp3
   2. les mots, phrases et mini-leçons → <module>/sons/<fileId>.mp3
 
-**268 extraits attendus** : 98 répliques sur quatre dialogues, et 170 sons.
+**274 extraits attendus** : 104 répliques sur quatre dialogues, et 170 sons.
 
 Les dialogues sont lus dans `build/contenu/module-n7-etablissement/dialogues.js` :
 une seule source, comme partout depuis le niveau 2.
