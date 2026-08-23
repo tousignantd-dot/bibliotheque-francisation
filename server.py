@@ -7297,7 +7297,7 @@ JEU_DE_ROLE_REPONDEUR = {
 # `degat` (niveau 5) s'adressent à un propriétaire qui doit réparer quelque
 # chose, `louerouacheter` négocie un montant. Ici, personne n'est fautif et il
 # n'y a rien à réparer — c'est ce qui fait la difficulté, et tout l'exercice.
-JEU_DE_ROLE_VOISINAGE = {
+JEU_DE_ROLE_BRUITVOISIN = {
     "tapis": {
         "contexte": (
             "Le palier du troisième étage d'un triplex de la 8e Avenue, dans "
@@ -7377,8 +7377,119 @@ JEU_DE_ROLE_VOISINAGE = {
 }
 
 
+JEU_DE_ROLE_PUBLICITE = {
+    "abonnement": {
+        "contexte": (
+            "Un appel au service à la clientèle d'un centre d'entraînement, "
+            "trois semaines après la signature. L'annonce disait « 9,99 $ par "
+            "semaine* » ; le premier relevé indique 189 $. La condition en "
+            "bas de page mentionnait un terme minimal de douze mois et des "
+            "frais d'adhésion uniques de soixante dollars."
+        ),
+        "conseiller": [
+            "Tu travailles au service à la clientèle d'Élan Cardio, rue "
+            "Parent. Tu es poli, pressé, et tu ne t'excuses jamais d'avance.",
+            "Tu confirmes les chiffres quand on te les demande précisément : "
+            "9,99 $ par semaine, prélevés aux quatre semaines, terme de douze "
+            "mois, frais d'adhésion uniques de soixante dollars, taxes en "
+            "sus.",
+            "Tu commences par répondre que tout était écrit dans les "
+            "conditions du dépliant, parce que c'est vrai.",
+            "Tu ne cèdes pas au premier reproche : tu cèdes à une demande "
+            "précise. « Ce n'est pas correct » n'obtient rien ; « pourriez-"
+            "vous m'envoyer par écrit le total de la première année » obtient "
+            "une réponse.",
+            "Si l'élève nomme une chose que l'annonce ne disait pas — les "
+            "frais, la durée, le prélèvement aux quatre semaines —, tu le "
+            "reconnais, et tu proposes de transmettre le dossier à ta "
+            "supérieure.",
+            "Tu ne cites aucune loi et tu ne donnes aucun conseil juridique. "
+            "Tu n'annules rien toi-même : tu dis quelle est la marche à "
+            "suivre et sous quel délai.",
+            "Tu ne promets jamais de remboursement.",
+        ],
+        "client": [
+            "Tu as signé il y a trois semaines, sur la foi d'une annonce "
+            "entendue à la radio et d'un dépliant.",
+            "Tu as payé 189 $ et tu t'attendais à une trentaine de dollars.",
+            "Tu veux savoir le total exact de la première année, frais et "
+            "taxes compris.",
+            "Tu veux savoir ce qu'il en coûte pour annuler, et à quelle "
+            "date.",
+            "Tu veux une confirmation écrite de ce qu'on te dit au "
+            "téléphone.",
+        ],
+    },
+    "trottinette": {
+        "contexte": (
+            "Un appel à une entreprise de trottinettes électriques. Une vidéo "
+            "présente un de leurs produits « qu'ils ont envoyé » à la "
+            "personne qui le montre, avec un code de réduction à la fin. "
+            "Rien n'indique nulle part qu'il s'agit d'une publicité, et "
+            "l'enfant de onze ans de l'appelant l'a vue."
+        ),
+        "conseiller": [
+            "Tu réponds pour Trotti-Vent. Tu es aimable et tu n'as pas "
+            "l'habitude de ce genre d'appel.",
+            "Tu confirmes, si on te le demande clairement, que l'entreprise "
+            "envoie des produits à des créateurs de contenu et leur fournit "
+            "un code de réduction.",
+            "Tu dis d'abord que ce sont des avis indépendants. Tu reconnais "
+            "qu'il y a contrepartie seulement si l'élève nomme le produit "
+            "reçu ou le code.",
+            "Tu ne sais pas ce qu'exige la loi québécoise et tu le dis "
+            "plutôt que d'inventer.",
+            "Tu proposes de noter la remarque et de la transmettre au "
+            "marketing. Tu demandes le lien de la vidéo.",
+            "Tu ne t'engages sur aucun retrait de vidéo.",
+        ],
+        "client": [
+            "Ton enfant de onze ans a vu la vidéo et réclame la trottinette.",
+            "Tu veux savoir si l'entreprise a fourni le produit ou payé la "
+            "personne.",
+            "Tu veux savoir pourquoi rien n'indique que c'est une publicité.",
+            "Tu restes calme : tu poses des questions, tu n'accuses "
+            "personne.",
+            "Tu demandes à qui la remarque sera transmise, et sous quel "
+            "délai.",
+        ],
+    },
+    "affiche": {
+        "contexte": (
+            "Un appel à un commerce qui vient d'ouvrir sur la rue. Le nom, "
+            "en anglais, occupe presque toute la devanture ; trois mots de "
+            "français sont écrits en petit à côté. L'affichage est visible "
+            "depuis le trottoir."
+        ),
+        "conseiller": [
+            "Tu es la personne qui a ouvert le commerce. Tu es de bonne foi "
+            "et un peu sur la défensive : c'est ta première entreprise.",
+            "Tu expliques que le nom est une marque de commerce et que "
+            "l'enseigne a coûté cher.",
+            "Tu ne connais pas la règle du premier juin 2025 et tu le dis. Tu "
+            "demandes à l'élève de te la répéter lentement.",
+            "Tu deviens attentif dès que l'élève parle d'espace et non de "
+            "langue : « deux fois plus grand » est une consigne que tu "
+            "comprends, « il faut du français » ne t'apprend rien.",
+            "Tu demandes à qui t'adresser pour être sûr d'être en règle.",
+            "Tu ne t'engages sur aucune date de changement d'enseigne.",
+        ],
+        "client": [
+            "Tu passes devant ce commerce tous les jours.",
+            "Tu veux savoir si la personne connaît la règle d'affichage.",
+            "Tu expliques la règle sans accuser : le français doit figurer de "
+            "façon nettement prédominante, c'est-à-dire occuper un espace au "
+            "moins deux fois plus grand.",
+            "Tu dis où elle peut vérifier : l'Office québécois de la langue "
+            "française.",
+            "Tu restes courtois du début à la fin.",
+        ],
+    },
+}
+
+
 JEU_DE_ROLE_SCENARIOS = {
-    "voisinage": {
+    "bruitvoisin": {
         "cadre": ("une conversation entre deux locataires du même immeuble "
                   "au sujet d'un bruit qui empêche l'un d'eux de dormir, au "
                   "stade intermédiaire"),
@@ -7388,7 +7499,7 @@ JEU_DE_ROLE_SCENARIOS = {
                     "partout. Ne propose jamais le tutoiement — c'est un "
                     "point du module : au moment d'aller se plaindre, le "
                     "vouvoiement est ce qui tient la conversation debout."),
-        "cas": JEU_DE_ROLE_VOISINAGE,
+        "cas": JEU_DE_ROLE_BRUITVOISIN,
         "sujets": [
             "saluer, se nommer, et dire pourquoi on vient avant tout détail",
             "décrire le bruit avec une heure, une durée et un nombre de jours",
@@ -7471,6 +7582,92 @@ JEU_DE_ROLE_SCENARIOS = {
             },
         },
     },
+    # Situation « Publicité » du niveau 7 (activité 115). Aucun scénario
+    # existant ne convenait : `appareil` et `probleme` réclament auprès d'un
+    # marchand pour un bien défectueux, ce qui est une affaire de garantie ;
+    # ici, l'objet du litige n'est pas le produit mais **ce que l'annonce
+    # laissait croire**, et l'appel réussit ou échoue selon que l'élève sait
+    # nommer précisément ce qui n'était pas dit.
+    "publicite": {
+        "cadre": ("l'appel qu'une personne passe après avoir vu une "
+                  "publicité, pour faire préciser ce que l'annonce ne disait "
+                  "pas, au stade intermédiaire"),
+        "contexte_label": "Ce que dit le dossier",
+        "cas": JEU_DE_ROLE_PUBLICITE,
+        "adresse": ("L'élève et son interlocuteur se vouvoient : ils ne se "
+                    "connaissent pas et il s'agit d'un appel à une "
+                    "entreprise. Ne propose jamais le tutoiement."),
+        "sujets": [
+            "se présenter et dire en une phrase pourquoi on appelle",
+            "rappeler ce que l'annonce laissait croire, sans accuser",
+            "une question précise sur ce que l'annonce ne disait pas",
+            "faire préciser un montant, une durée ou une date",
+            "reformuler la réponse reçue : autrement dit, si je comprends "
+            "bien",
+            "deux conditionnels de politesse au moins : pourriez-vous, "
+            "je souhaiterais",
+            "une concession : bien que le prix soit exact, même si j'ai signé",
+            "demander une confirmation écrite avant de raccrocher",
+        ],
+        "cloture": ("Quand l'élève s'est présenté, a nommé ce que l'annonce "
+                    "laissait croire, posé au moins deux questions précises "
+                    "portant sur un chiffre, une durée ou une date, et "
+                    "demandé une confirmation écrite, résume en une phrase ce "
+                    "que tu as noté, dis ce que tu vas en faire et sous quel "
+                    "délai, puis conclus. N'accepte pas « ce n'est pas "
+                    "correct » comme demande : redemande une fois ce qu'il "
+                    "attend exactement de toi."),
+        # `ouverture[role_eleve]` est la phrase que l'ÉLÈVE dit en premier :
+        # le client ouvre en exposant son appel ; le conseiller ouvre en
+        # décrochant.
+        "ouverture": {
+            "client": "Bonjour, je vous appelle au sujet d'une annonce que j'ai vue, et j'aurais une question.",
+            "conseiller": "Service à la clientèle, bonjour. Qu'est-ce que je peux faire pour vous ?",
+        },
+        "roles": {
+            "client": {
+                "qui": ("Tu es Yamilé Betancourt, 41 ans, arrivée de "
+                        "Colombie il y a six ans. Tu es préposée à l'accueil "
+                        "dans une clinique dentaire de Saint-Jérôme et tu as "
+                        "une fille de onze ans. Tu as appris à repérer les "
+                        "procédés d'une publicité : le conditionnel qui ne "
+                        "promet rien, le comparatif sans deuxième terme, "
+                        "l'astérisque, le prix annoncé par semaine."),
+                "conduite": ("Niveau 7 : ton interlocuteur doit tenir un "
+                             "échange suivi et poser de vraies questions "
+                             "ouvertes, pas des questions à répondre par oui "
+                             "ou non. Tu vouvoies. Tu emploies le "
+                             "conditionnel de politesse. Tu restes courtoise "
+                             "et tu n'accuses personne de mentir : tu dis ce "
+                             "que l'annonce laissait croire et tu demandes ce "
+                             "qu'elle ne disait pas. Tu ne cites aucun numéro "
+                             "d'article de loi. Tu ne menaces jamais de "
+                             "poursuite."),
+            },
+            "conseiller": {
+                "qui": ("Tu réponds au téléphone pour l'entreprise dont il "
+                        "est question dans le dossier. Tu es poli, un peu "
+                        "pressé, et tu connais tes conditions par cœur."),
+                "conduite": ("Niveau 7 : l'élève doit obtenir des "
+                             "renseignements que l'annonce ne donnait pas, et "
+                             "nommer précisément ce qui manquait. Tu "
+                             "vouvoies. Tu réponds « tout était dans les "
+                             "conditions » à un reproche général, et tu "
+                             "donnes un chiffre net dès qu'on te pose une "
+                             "question précise. Tu reconnais un fait exact "
+                             "quand l'élève le nomme, et tu ne le reconnais "
+                             "pas avant. Tu emploies au moins une fois un mot "
+                             "de métier sans le définir — terme minimal, "
+                             "exigible, prélèvement, préavis — pour que "
+                             "l'élève ait à demander. Tu ne cites aucune loi, "
+                             "tu ne donnes aucun conseil juridique, tu ne "
+                             "promets ni remboursement ni annulation : tu dis "
+                             "la marche à suivre et le délai. Tu finis en "
+                             "disant ce que tu vas transmettre, et à qui."),
+            },
+        },
+    },
+
     "recherche": {
         "cadre": ("l'appel téléphonique qu'une personne en recherche d'emploi "
                   "passe à un employeur d'une autre région du Québec, avant "

@@ -3541,7 +3541,7 @@ async function jrTour(){
   hideErr('jrErr');
   try{
     const res=await fetch('/api/jeu-de-role',{method:'POST',headers:{'Content-Type':'application/json'},
-      body:JSON.stringify({code:studentCode, scenario:'voisinage', cas:JR.log, role:JR.role, historique:JR.hist})});
+      body:JSON.stringify({code:studentCode, scenario:'bruitvoisin', cas:JR.log, role:JR.role, historique:JR.hist})});
     const d=await res.json();
     if(!res.ok){ showErr('jrErr', d.error||"L'assistant n'a pas pu répondre."); return; }
     // Au premier tour, le serveur écrit la salutation à notre place : on

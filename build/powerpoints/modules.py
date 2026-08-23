@@ -1359,6 +1359,22 @@ MODULES = {
                         'La lettre qui règle'),
     },
 
+    # Situation « Publicité » du niveau 7. Ne recoupe pas `module-pub` (14),
+    # de niveau 4, qui apprend à lire ce que la publicité DIT — quoi, quand,
+    # où, combien : celui-ci apprend à repérer ce qu'elle FAIT, le procédé.
+    'module-n7-publicite': {
+        'numero': 8, 'activite': 115, 'niveau': 7,
+        'titre': "Ce que la publicité ne dit pas",
+        'chapeau': "Écouter une publicité et séparer ce qu'elle affirme de ce "
+                   "qu'elle laisse croire, suivre l'astérisque jusqu'aux "
+                   "conditions écrites, et reconnaître une annonce qui ne se "
+                   "présente pas comme une annonce.",
+        'seances': GRILLE_3_DEFIS,
+        'blocs': _blocs('Trente secondes, et la moitié à la fin',
+                        "L'astérisque et les petits caractères",
+                        "Quand ce n'est pas écrit « publicité »"),
+    },
+
     'module-n8-emploi': {
         'numero': 1, 'activite': 61, 'niveau': 8,
         'titre': "Tenir son bout au travail",

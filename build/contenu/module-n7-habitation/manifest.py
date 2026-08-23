@@ -181,7 +181,7 @@ MANIFESTE = {
 
     'jr_cas': 'tapis',
     'jr_role': 'ruslana',
-    'jr_scenario': 'voisinage',
+    'jr_scenario': 'bruitvoisin',
     'ia_jeu_de_role': "L'élève va parler à son voisin d'un bruit qui l'empêche "
                       "de dormir : il commence par saluer et par dire "
                       "pourquoi il vient, décrit le bruit avec une heure et "
