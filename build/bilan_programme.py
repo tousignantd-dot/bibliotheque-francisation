@@ -51,6 +51,10 @@ RATTACHEMENTS = {
     # Le niveau 7 est le seul dont la situation nomme les deux gestes ;
     # le manifeste, lui, abrège comme partout ailleurs.
     'module-n7-logement': "Location ou achat d'un logement",
+    # Le manifeste abrège le titre à rallonge du programme, comme le font
+    # déjà les modules d'œuvres des niveaux 5 et 6.
+    'module-n7-oeuvres': ('Découverte d’œuvres littéraires, musicales, '
+                          'cinématographiques et télévisuelles'),
     'module-n5-oeuvres': ('Découverte d’œuvres littéraires, musicales, '
                           'cinématographiques ou télévisuelles'),
     'module-n7-actualite': "Suivi de l'actualité",
