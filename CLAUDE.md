@@ -1611,6 +1611,18 @@ module à l'autre, pour qu'un personnage sonne pareil partout.
   ralentie à 0,85 elle restait au niveau des autres non ralenties. La
   remplaçante est **`mActWQg9kibLro6Z2ouY`**, qui débite 17,7 c/s sans
   traitement, soit ce que l'ancienne donnait *après* `atempo`.
+- **Un changement de voix peut régler des prononciations, pas seulement un
+  débit.** Le 23 août 2026, deux défauts traînaient : les six lettres de
+  l'exercice d'épellation du niveau 1 (`prAlpha`, qui fait distinguer E/I,
+  G/J, M/N) sortaient à l'anglaise, et « brin » — dont tout l'exercice de
+  graphie-phonie de `module-achat` est de l'opposer à « brun ». La nouvelle
+  voix les dit **justes telles quelles** : cinq lettres sur six et « brin »
+  n'ont eu besoin d'aucune substitution. Seul « I » résiste, en sortant
+  « ir », et `TEXT_OVERRIDES` lui envoie **`i.`** — le point empêche le
+  modèle de fermer la syllabe sur une consonne. Neuf graphies essayées avant
+  celle-là. La leçon : avant d'écrire une table de substitution, réécouter
+  avec la voix en service — une substitution inutile est une occasion de
+  diverger, et elle ne se voit plus jamais.
 - **La voix « enseignante » est ralentie à 0,85**, ce qui la met à 15,1 c/s.
   C'est la voix que l'élève entend le plus — elle narre les mini-leçons et
   les mots isolés de presque tous les modules, en plus de rôles de dialogue

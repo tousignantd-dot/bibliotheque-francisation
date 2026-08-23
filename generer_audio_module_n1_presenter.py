@@ -64,6 +64,28 @@ VOIX_PERSO = {
 # Voix des mots isolés et des mini-leçons : celle de l'enseignante.
 VOIX_MOTS = VOIX["enseignante"]
 
+# Ce que le modèle doit LIRE quand il diffère de ce que l'élève VOIT.
+#
+# L'exercice `prAlpha` fait distinguer E/I, G/J et M/N — les trois paires
+# qu'on fait répéter au téléphone. Une lettre seule ne donne au modèle aucun
+# indice de langue, et c'est le pire cas possible : si « I » sort à
+# l'anglaise, l'exercice enseigne le contraire de ce qu'il vise.
+#
+# Vérifié à l'oreille le 23 août 2026, après le changement de voix : cinq des
+# six lettres sortent **justes telles quelles** avec `mActWQg9kibLro6Z2ouY`.
+# La nouvelle voix a réglé l'alphabet à elle seule — l'ancienne les lisait à
+# l'anglaise. Seul « I » résiste : il sort en « ir », le modèle fermant la
+# syllabe sur une consonne. Le point l'en empêche. Neuf graphies essayées
+# (`i`, `ih`, `î`, `hi`, `ii`, `i.`, `y`, et deux avec contexte) ; `i.` est
+# la seule qui tienne.
+#
+# Ne pas « nettoyer » cette table en y remettant les cinq autres lettres :
+# une substitution inutile est une occasion de diverger.
+TEXT_OVERRIDES = {
+    "prAlpha_alb": "i.",
+}
+
+
 
 def slug(nom):
     """Même règle que charSlug() dans le HTML — sinon le fichier n'est pas trouvé.
@@ -189,6 +211,7 @@ def main():
               f"lancer build/collecte_sons.py module-n1-presenter")
         sys.exit(1)
     sons = json.loads(MANIFESTE.read_text(encoding="utf-8"))
+    sons = {k: TEXT_OVERRIDES.get(k, v) for k, v in sons.items()}
     for file_id, texte in sons.items():
         taches.append((f"sons/{file_id}", texte, VOIX_MOTS,
                        SORTIE / "sons" / f"{file_id}.mp3"))
