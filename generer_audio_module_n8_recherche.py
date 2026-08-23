@@ -57,7 +57,12 @@ from voix import enrichir  # contexte français pour les mots isolés
 
 RACINE = Path(__file__).resolve().parent
 SORTIE = RACINE / "assets/interactive/module-n8-recherche"
-MANIFESTE = RACINE / "sons_module_n7_recherche.json"
+# Le manifeste de CE module. La coquille d'origine pointait sur celui du
+# niveau 7 (`sons_module_n7_recherche.json`) : le fichier existant, rien
+# ne levait d'erreur, et le module serait sorti avec les 221 sons du
+# voisin au lieu de ses 334 — neuf clés seulement se recoupent. Repérée
+# par trois agents indépendamment le 23 août 2026, avant toute production.
+MANIFESTE = RACINE / "sons_module_n8_recherche.json"
 DIALOGUES_JS = RACINE / "build/contenu/module-n8-recherche/dialogues.js"
 
 # Mêmes identifiants que les autres modules, pour que les voix soient les
