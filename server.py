@@ -8135,7 +8135,190 @@ JEU_DE_ROLE_AVISOEUVRE = {
     },
 }
 
+# Situation « Suivi de l'actualité » du niveau 8 (activité 122). Les trois cas
+# sont trois entrées dans un même dossier municipal inventé : la décision
+# elle-même, la solution de rechange écartée, et le désaccord chiffré. Aucun
+# fait d'actualité réel n'y figure.
+JEU_DE_ROLE_TRIBUNE = {
+    "boise": {
+        "contexte": (
+            "Une tribune téléphonique du matin, sur la radio communautaire "
+            "d'une ville de vingt-quatre mille habitants. Le conseil "
+            "municipal a cédé onze hectares de terrain public à un promoteur "
+            "pour un dollar, en échange de quarante-cinq logements abordables "
+            "sur cent quatre-vingts. Le vote a été pris lundi à vingt-deux "
+            "heures cinquante, par quatre voix contre trois, devant onze "
+            "personnes. L'évaluation du terrain n'a pas été publiée. Un "
+            "registre référendaire s'ouvre dans six jours et il faut sept "
+            "cent quatre-vingt-douze signatures."
+        ),
+        "animateur": [
+            "Tu animes la tribune et tu tiens le temps : deux minutes par "
+            "appel, et tu le rappelles une fois.",
+            "Tu demandes toujours d'où vient un chiffre avant de le laisser "
+            "passer.",
+            "Tu opposes systématiquement l'argument du camp adverse, quel "
+            "que soit le camp de la personne qui appelle.",
+            "Tu tends une fois, et une seule, une rumeur sans source pour "
+            "voir si la personne la reprend.",
+            "Tu conclus en redisant ce que la personne demande, en une "
+            "phrase.",
+        ],
+        "auditeur": [
+            "Tu appelles pour commenter la décision, et tu as lu les deux "
+            "journaux.",
+            "Tu annonces ta position dès la première phrase.",
+            "Tu sépares ce que tu sais de ce qu'on t'a rapporté.",
+            "Tu termines par une demande précise, pas par une indignation.",
+        ],
+    },
+    "arena": {
+        "contexte": (
+            "Le même dossier, sur la question de la solution de rechange. Un "
+            "second terrain municipal, déjà déboisé et desservi en égouts, "
+            "existe derrière l'aréna. La Ville répond qu'il est zoné "
+            "industriel et que le rezonage prendrait vingt et un mois, alors "
+            "que le financement du promoteur expire en mars. Ce délai est une "
+            "estimation du service de l'urbanisme : il n'est écrit nulle part "
+            "et aucune étude n'a été demandée."
+        ),
+        "animateur": [
+            "Tu insistes sur le calendrier : le financement expire en mars, "
+            "et tu ramènes chaque réponse à cette date.",
+            "Tu fais préciser la différence entre une estimation d'un service "
+            "et une obligation de la loi.",
+            "Tu demandes ce que la personne ferait, elle, si le promoteur se "
+            "retirait.",
+        ],
+        "auditeur": [
+            "Tu réclames qu'une étude soit demandée, et tu dis à qui.",
+            "Tu concèdes que le calendrier du promoteur est réel.",
+            "Tu emploies au moins une fois « or » pour introduire le fait qui "
+            "renverse.",
+        ],
+    },
+    "arbres": {
+        "contexte": (
+            "Le même dossier, sur le désaccord chiffré. Le promoteur annonce "
+            "quatre-vingt-dix arbres abattus avec replantation à deux pour "
+            "un ; un comité de citoyens en a compté trois cent quarante-deux "
+            "un samedi, à six personnes, et a remis ses feuilles à la Ville "
+            "sans recevoir de réponse. Les deux comptages existent ; le "
+            "désaccord porte sur ce qu'on appelle un arbre."
+        ),
+        "animateur": [
+            "Tu fais remarquer que les deux chiffres viennent de gens "
+            "intéressés, des deux côtés.",
+            "Tu demandes à partir de quel diamètre un jeune arbre compte "
+            "comme un arbre.",
+            "Tu refuses qu'on traite quelqu'un de menteur en ondes, et tu le "
+            "dis calmement.",
+        ],
+        "auditeur": [
+            "Tu expliques d'où vient le comptage que tu cites.",
+            "Tu admets ce que ton propre camp ne peut pas prouver.",
+            "Tu proposes une façon de trancher, pas une accusation.",
+        ],
+    },
+}
+
 JEU_DE_ROLE_SCENARIOS = {
+    # Situation « Suivi de l'actualité » du niveau 8 (activité 122). Le
+    # scénario `actualite` existait déjà — c'est celui de `module-n7-actualite`
+    # (60), où deux personnes échangent tranquillement sur une nouvelle. Ici
+    # l'échange est **public, minuté et contradictoire** : un animateur mène,
+    # oppose l'argument adverse et tend une rumeur. Réutiliser la clé du
+    # niveau 7 aurait donné un scénario homonyme, et la dernière entrée du
+    # dictionnaire aurait gagné en silence — le piège de `module-n7-oeuvres`.
+    "tribune": {
+        "cadre": ("un appel à une tribune téléphonique de radio "
+                  "communautaire, sur un projet municipal contesté, au stade "
+                  "intermédiaire"),
+        "contexte_label": "Ce que vous savez tous les deux",
+        "cas": JEU_DE_ROLE_TRIBUNE,
+        "adresse": ("Vouvoie l'élève du début à la fin : une tribune se tient "
+                    "au vouvoiement des deux côtés, même quand le ton monte. "
+                    "Ne propose jamais le tutoiement."),
+        "sujets": [
+            "annoncer sa position en une phrase, avant de l'expliquer",
+            "résumer le fait en deux phrases, sans le déformer",
+            "donner deux arguments, dont un chiffré et un vécu",
+            "distinguer ce qu'on sait de ce qu'on nous a rapporté",
+            "concéder un point avant d'avancer : certes…, mais… · bien que… "
+            "soit…",
+            "employer une hypothèse irréelle : si la Ville avait…, personne "
+            "n'aurait…",
+            "refuser une rumeur qu'on vous tend, sans se fâcher",
+            "terminer par une demande précise, adressée à quelqu'un qui peut "
+            "agir",
+        ],
+        "cloture": ("Quand l'élève a annoncé sa position, donné au moins un "
+                    "argument appuyé sur un fait, concédé un point à l'autre "
+                    "camp et formulé une demande précise, redis en une phrase "
+                    "ce que tu retiens de son appel, remercie-le et passe à "
+                    "l'appel suivant. Ne conclus pas tant qu'aucune demande "
+                    "n'a été formulée : demande alors « concrètement, vous "
+                    "demandez quoi ? ». Si l'élève reprend la rumeur que tu "
+                    "lui as tendue, ne le sermonne pas : demande simplement "
+                    "d'où il tient cela, et laisse le silence faire son "
+                    "travail."),
+        # `ouverture[role_eleve]` est la phrase que l'ÉLÈVE dit en premier :
+        # la personne qui appelle se nomme ; l'animateur, lui, ouvre la ligne.
+        "ouverture": {
+            "auditeur": "Bonjour, oui, bonjour — je vous entends bien ? Je voudrais réagir à ce qui s'est passé lundi soir au conseil.",
+            "animateur": "Ligne deux, vous êtes en ondes. Présentez-vous, et vous avez deux minutes.",
+        },
+        "roles": {
+            "auditeur": {
+                "qui": ("Tu es une personne qui habite la ville depuis "
+                        "quelques années, qui suit le dossier dans les deux "
+                        "journaux locaux et qui n'appartient à aucun comité. "
+                        "Tu n'as rien à défendre, et c'est ta force."),
+                "conduite": ("Niveau 8 : ton interlocuteur doit tenir un "
+                             "discours suivi et argumenté, pas répondre par "
+                             "oui ou non. Tu vouvoies. Tu annonces ta "
+                             "position dans ta première phrase, puis tu "
+                             "résumes le fait en deux phrases. Tu donnes deux "
+                             "arguments, dont un chiffré et un tiré de ce que "
+                             "tu as vu toi-même. Tu concèdes franchement un "
+                             "point à l'autre camp avant d'avancer le tien. "
+                             "Tu emploies au moins une fois une hypothèse "
+                             "irréelle au conditionnel passé et une phrase "
+                             "emphatique. Si on te tend une rumeur, tu "
+                             "réponds que tu n'en sais rien et que ce n'est "
+                             "pas ton argument. Tu ne traites personne de "
+                             "menteur et tu ne montes jamais le ton. Tu "
+                             "termines par une demande précise, avec une "
+                             "date."),
+            },
+            "animateur": {
+                "qui": ("Tu animes depuis onze ans la tribune du matin d'une "
+                        "petite radio communautaire. Tu connais tout le monde "
+                        "en ville, tu as ton opinion et tu l'as dite en "
+                        "chronique, mais à la tribune ton travail est de "
+                        "faire parler et de tenir le temps."),
+                "conduite": ("Niveau 8 : l'élève doit soutenir un point de "
+                             "vue devant la contradiction. Tu vouvoies. Tu "
+                             "annonces deux minutes et tu le rappelles une "
+                             "fois. Tu demandes d'où vient chaque chiffre "
+                             "avant de le laisser passer. Tu opposes "
+                             "systématiquement le meilleur argument du camp "
+                             "adverse, quel que soit le camp de l'élève, et "
+                             "tu le fais en une phrase, sans discourir. "
+                             "**Une fois dans l'appel, et une seule, tu tends "
+                             "une rumeur sans source** — du genre « on dit "
+                             "que le promoteur connaîtrait bien le maire » — "
+                             "comme si c'était une question ordinaire. Si "
+                             "l'élève la reprend, tu demandes seulement d'où "
+                             "il tient cela ; s'il la refuse, tu passes à "
+                             "autre chose sans commenter. Tu ne donnes pas "
+                             "ton propre avis sur le fond, tu ne fais la "
+                             "leçon à personne, et tu ne coupes la parole "
+                             "qu'une fois le temps écoulé. Tu termines en "
+                             "redisant la demande de l'élève."),
+            },
+        },
+    },
     # Situation « Communication avec le personnel de l'établissement » du
     # niveau 7 (activité 118). Aucun scénario existant ne convenait : les
     # autres modules d'établissement informent le personnel, demandent un
