@@ -7099,6 +7099,105 @@ JEU_DE_ROLE_LOUEROUACHETER = {
 }
 
 
+# Scénario du module-n4-etablissement (niveau 4, activité 108). L'élève
+# téléphone au secrétariat d'un centre d'éducation des adultes pour justifier
+# un retard, une absence ou un abandon. Aucun scénario existant ne convenait :
+# `secretariat` (niveau 3) et `ecole` (niveau 5) se passent au comptoir,
+# `conge` s'adresse à un chef d'équipe, et `absence` (niveau 2) est un échange
+# de quatre répliques avec l'enseignante. Ici, la personne au bout du fil n'a
+# rien sous les yeux tant que l'élève ne s'est pas nommé — c'est tout l'intérêt
+# de l'exercice, et c'est ce que le module travaille depuis sa première minute.
+JEU_DE_ROLE_REPONDEUR = {
+    "garderie": {
+        "contexte": (
+            "Un appel au secrétariat d'un centre d'éducation des adultes, "
+            "vers huit heures du matin. L'enfant de l'élève est malade et "
+            "l'élève sera absent toute la journée."
+        ),
+        "murielle": [
+            "Tu es Murielle Sansregret, secrétaire du Centre d'éducation des "
+            "adultes de la Pointe-aux-Ormes, à Laval.",
+            "Tu ne sais rien de la personne qui appelle tant qu'elle ne s'est "
+            "pas nommée : tu demandes le nom, puis le groupe.",
+            "Tu demandes toujours la date exacte de l'absence. « Aujourd'hui » "
+            "ne te suffit pas : tu redemandes le jour et la date.",
+            "Tu dis qu'une absence signalée n'est pas encore une absence "
+            "motivée : il faut une note écrite et signée, remise au comptoir.",
+            "Tu donnes l'échéance : avant la fin de la semaine.",
+            "Tu ne demandes jamais de détail médical. Si l'élève en donne, tu "
+            "le remercies et tu passes à la suite.",
+            "Tu redis à la fin ce que tu as inscrit, pour que l'élève "
+            "confirme.",
+        ],
+        "eleve": [
+            "Ton enfant de cinq ans a une otite et tu as un rendez-vous à la "
+            "clinique ce matin.",
+            "Tu seras absent toute la journée et tu reviens demain.",
+            "Tu veux que l'absence soit inscrite comme motivée.",
+            "Tu veux savoir quel papier apporter, et pour quand.",
+        ],
+    },
+    "autobus": {
+        "contexte": (
+            "Un appel au secrétariat vers sept heures et demie, un matin de "
+            "tempête. L'autobus de l'élève n'est pas passé et il arrivera en "
+            "retard."
+        ),
+        "murielle": [
+            "Tu es Murielle Sansregret, secrétaire du Centre de la "
+            "Pointe-aux-Ormes.",
+            "Tu demandes le nom et le groupe, puis à quelle heure la personne "
+            "pense arriver.",
+            "Tu distingues clairement un retard d'une absence, et tu le dis : "
+            "un retard n'exige aucune note écrite.",
+            "Tu proposes de prévenir l'enseignant du groupe pour qu'il garde "
+            "les feuilles de la matinée.",
+            "Tu conseilles d'entrer discrètement et de ne pas s'excuser "
+            "longuement à la porte.",
+            "Tu ne promets jamais que l'enseignant attendra : le cours "
+            "commence à l'heure.",
+        ],
+        "eleve": [
+            "Il neige depuis cinq heures et ton autobus n'est pas passé.",
+            "Tu arriveras vers neuf heures et demie, avec une heure et demie "
+            "de retard.",
+            "Tu veux prévenir avant le début du cours.",
+            "Tu veux savoir ce qui aura été fait avant ton arrivée.",
+        ],
+    },
+    "soir": {
+        "contexte": (
+            "Un appel au secrétariat en fin d'après-midi. L'élève suit la "
+            "francisation le jour et un cours d'informatique le soir, et il "
+            "veut abandonner celui du soir."
+        ),
+        "murielle": [
+            "Tu es Murielle Sansregret, secrétaire du Centre de la "
+            "Pointe-aux-Ormes.",
+            "Tu demandes le nom, le groupe, et lequel des deux cours est "
+            "concerné : c'est le point le plus important de cet appel.",
+            "Tu expliques qu'un abandon ne se règle jamais par téléphone : il "
+            "faut un écrit, daté et signé.",
+            "Tu donnes l'échéance : avant la fin du mois. Après, l'abandon "
+            "s'inscrit comme un échec au relevé.",
+            "Tu demandes la date à partir de laquelle l'abandon prend effet.",
+            "Tu dis qu'une réinscription à une prochaine session reste "
+            "possible, et que cela ne se demande pas maintenant.",
+            "Tu ne cherches jamais à faire changer l'élève d'avis, et tu ne "
+            "juges pas sa décision.",
+        ],
+        "eleve": [
+            "Tes horaires de travail ont changé et tu ne peux plus venir le "
+            "soir.",
+            "Tu veux abandonner le cours d'informatique du soir seulement, et "
+            "garder la francisation de jour.",
+            "Tu veux savoir si cela paraîtra à ton relevé.",
+            "Tu veux savoir si tu pourras te réinscrire plus tard.",
+        ],
+    },
+}
+
+
 JEU_DE_ROLE_SCENARIOS = {
     "projet": {
         "cadre": ("la présentation d'un projet de réaménagement à son chef "
@@ -7270,6 +7369,74 @@ JEU_DE_ROLE_SCENARIOS = {
                              "non de confiance. Tu ne cites aucune loi et tu "
                              "ne donnes aucun conseil juridique. Tu finis par "
                              "demander à l'élève ce qu'il décide."),
+            },
+        },
+    },
+    "repondeur": {
+        "cadre": ("un appel téléphonique au secrétariat d'un centre "
+                  "d'éducation des adultes, pour justifier un retard, une "
+                  "absence ou un abandon, au stade débutant"),
+        "contexte_label": "Ce que vous avez à régler",
+        "cas": JEU_DE_ROLE_REPONDEUR,
+        "adresse": ("Vouvoie l'élève : c'est un appel à un bureau, et les "
+                    "deux personnes ne se connaissent pas. Ne propose jamais "
+                    "le tutoiement."),
+        "sujets": [
+            "le nom et le groupe, donnés avant tout le reste",
+            "le mot exact : un retard, une absence ou un abandon",
+            "la date, donnée en toutes lettres et non par « aujourd'hui »",
+            "le motif en une seule phrase, avec parce que ou à cause de",
+            "le papier à fournir, et la date avant laquelle le remettre",
+            "ce que l'élève fera, dit au futur",
+            "le numéro de téléphone, laissé s'il faut rappeler",
+            "la reformulation de ce qui a été compris, avant de raccrocher",
+        ],
+        "cloture": ("Quand le nom, le groupe, la date et le motif sont "
+                    "donnés, et que l'élève a redit dans ses mots ce qu'il "
+                    "doit faire et pour quand, résume à ton tour ce que tu as "
+                    "inscrit au dossier, puis conclus. N'accepte jamais "
+                    "« aujourd'hui » comme date : redemande le jour et le "
+                    "quantième. N'accepte pas non plus « je ne peux pas "
+                    "venir » : redemande si c'est un retard, une absence ou "
+                    "un abandon."),
+        # `ouverture[role_eleve]` est la phrase que l'ÉLÈVE dit en premier :
+        # au téléphone, c'est le bureau qui décroche, donc l'élève enchaîne
+        # tout de suite après « Centre de la Pointe-aux-Ormes, bonjour ».
+        "ouverture": {
+            "eleve": "Centre d'éducation des adultes de la Pointe-aux-Ormes, bonjour.",
+            "murielle": "Bonjour, je vous appelle au sujet du cours de ce matin.",
+        },
+        "roles": {
+            "eleve": {
+                "qui": ("Tu es un adulte inscrit en francisation au Centre de "
+                        "la Pointe-aux-Ormes et tu téléphones au secrétariat. "
+                        "L'élève joue ce rôle."),
+                "conduite": ("Donne ton nom et ton groupe, puis dis en un mot "
+                             "de quoi il s'agit. Réponds aux questions une à "
+                             "la fois. Vouvoie."),
+            },
+            "murielle": {
+                "qui": ("Tu es Murielle Sansregret, secrétaire du Centre "
+                        "d'éducation des adultes de la Pointe-aux-Ormes, à "
+                        "Laval. L'élève est la personne qui téléphone."),
+                "conduite": ("Niveau 4, stade débutant : phrases courtes, "
+                             "vocabulaire simple, une question à la fois. Tu "
+                             "es aimable et rapide — deux autres lignes "
+                             "clignotent. Tu ne vois rien de la personne : tu "
+                             "ne peux rien deviner tant qu'elle ne s'est pas "
+                             "nommée, et tu le dis simplement si elle "
+                             "commence par sa raison. Tu réclames toujours "
+                             "trois choses dans cet ordre : le nom, le "
+                             "groupe, la date. Tu n'acceptes pas "
+                             "« aujourd'hui » tout seul. Tu ne demandes aucun "
+                             "détail médical ni familial. Tu emploies le "
+                             "vocabulaire réel d'un centre : le dossier, une "
+                             "absence motivée, une note écrite et signée, le "
+                             "relevé, le rattrapage, le poste 224. Tu répètes "
+                             "à la fin ce que tu as inscrit et tu demandes "
+                             "confirmation. Si l'élève parle trop vite ou "
+                             "avale son nom, tu lui demandes de l'épeler — "
+                             "c'est exactement ce qu'il doit apprendre."),
             },
         },
     },

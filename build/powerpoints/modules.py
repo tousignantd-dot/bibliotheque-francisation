@@ -199,6 +199,17 @@ MODULES = {
                         'Pendant le repas',
                         "L'addition"),
     },
+    'module-n4-etablissement': {
+        'numero': 17, 'activite': 108, 'niveau': 4,
+        'titre': 'Prévenir le centre',
+        'chapeau': "Appeler le secrétariat, laisser un message clair, "
+                   "comprendre les messages reçus et justifier une absence "
+                   "par écrit.",
+        'seances': GRILLE_3_DEFIS,
+        'blocs': _blocs('Le répondeur du centre',
+                        "Les messages qu'on me laisse",
+                        'La note à remettre'),
+    },
     'module-vetements': {
         'numero': 18, 'activite': 54, 'niveau': 4,
         'titre': 'Acheter des vêtements',
