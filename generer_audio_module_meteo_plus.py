@@ -23,7 +23,7 @@ import sys as _sys, pathlib as _pl
 _sys.path.insert(0, str(_pl.Path(__file__).resolve().parent / 'build'))
 from voix import enrichir  # contexte français pour les mots isolés
 
-VOICE = "K7gx0ylJdff0yjM2uVQS"
+VOICE = "mActWQg9kibLro6Z2ouY"
 
 CLIPS = {
     "plus_prPhon_ana1": "table",

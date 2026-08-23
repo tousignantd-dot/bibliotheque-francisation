@@ -21,7 +21,7 @@ _sys.path.insert(0, str(_pl.Path(__file__).resolve().parent / 'build'))
 from voix import enrichir  # contexte français pour les mots isolés
 
 MODULE_SLUG = "module-banque"
-VOICE = "K7gx0ylJdff0yjM2uVQS"        # ← même voix que les mots isolés du module
+VOICE = "mActWQg9kibLro6Z2ouY"        # ← même voix que les mots isolés du module
 
 CLIPS = {
     # Produit par plAudioManifest() dans la console du module.

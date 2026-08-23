@@ -21,7 +21,7 @@ _sys.path.insert(0, str(_pl.Path(__file__).resolve().parent / 'build'))
 from voix import enrichir  # contexte français pour les mots isolés
 
 VOICES = {
-    "enseignante": "K7gx0ylJdff0yjM2uVQS",   # 👩 Féminine #1 — La commis
+    "enseignante": "mActWQg9kibLro6Z2ouY",   # 👩 Féminine #1 — La commis
     "feminin_2":   "WW0JfNPk5DgcQdM0d6X6",   # 👩 Féminine #2 — Diane
     "masculin_1":  "93nuHbke4dTER9x2pDwE",   # 👨 Masculin #1 — Samuel
 }

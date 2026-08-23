@@ -29,7 +29,7 @@ sys.path.insert(0, str(Path(__file__).resolve().parent.parent))
 from voix_lente import ralentir_si_enseignante  # noqa: E402
 
 RACINE = Path(__file__).resolve().parent.parent
-VOICE = "K7gx0ylJdff0yjM2uVQS"   # 👩 enseignante
+VOICE = "mActWQg9kibLro6Z2ouY"   # 👩 enseignante
 THEMES = ("conso", "sante")
 
 # slug → ce qui est réellement lu pour le clip « mot ».

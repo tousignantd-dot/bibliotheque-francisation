@@ -1,11 +1,22 @@
 #!/usr/bin/env python3
 """
-Ralentissement de la voix « enseignante » (👩 féminine #1).
+Ralentissement de la voix « enseignante ».
 
 Cette voix narre les mini-leçons et les mots isolés de presque tous les
 modules, en plus de rôles de dialogue : c'est la voix que l'élève entend le
-plus, et elle débitait ~18,6 caractères par seconde — trop vite pour du
-niveau 4. Le paramètre `speed` d'ElevenLabs ne la corrige pas : avec
+plus, et c'est donc celle dont le débit compte le plus.
+
+**Elle a changé le 23 août 2026.** L'ancienne (`K7gx0ylJdff0yjM2uVQS`) est
+abandonnée : mesurée sur une même phrase contre les trois autres du dépôt,
+elle sortait à 20,8 caractères par seconde quand les autres tenaient 18 à 19
+— la plus rapide des quatre, et ralentie à 0,85 elle restait au niveau des
+autres non ralenties. La remplaçante (`mActWQg9kibLro6Z2ouY`) débite 17,7 c/s
+sans aucun traitement, soit exactement ce que l'ancienne donnait *après*
+`atempo` — et ralentie à son tour, elle descend à 15,1. Le facteur reste donc
+appliqué, mais il part de plus bas. Ne pas revenir à l'ancienne : la plainte
+portait sur elle, y compris ralentie.
+
+Le paramètre `speed` d'ElevenLabs ne corrige rien ici : avec
 `eleven_multilingual_v2`, l'API renvoie le même fichier octet pour octet
 avec ou sans `"speed": 0.85`. On ralentit donc après coup, avec le filtre
 `atempo` de ffmpeg, qui étire la durée sans toucher à la hauteur : même
@@ -19,7 +30,7 @@ import shutil
 import subprocess
 from pathlib import Path
 
-VOIX_ENSEIGNANTE = "K7gx0ylJdff0yjM2uVQS"
+VOIX_ENSEIGNANTE = "mActWQg9kibLro6Z2ouY"
 FACTEUR = 0.85          # 1,0 = débit d'origine ; 0,85 ≈ 15 % plus lent
 _averti = False
 

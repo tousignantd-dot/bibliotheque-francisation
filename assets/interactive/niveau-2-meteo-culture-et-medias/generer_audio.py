@@ -28,7 +28,7 @@ OUT = Path(__file__).resolve().parent
 V_METEO = "IPgYtHTNLjC7Bq7IPHrm"   # narrateur
 V_NADIA = "WW0JfNPk5DgcQdM0d6X6"   # féminin 2
 V_MARC = "93nuHbke4dTER9x2pDwE"    # masculin 1
-V_MOT = "K7gx0ylJdff0yjM2uVQS"     # enseignante (mots isolés, ralentie)
+V_MOT = "mActWQg9kibLro6Z2ouY"     # enseignante (mots isolés, ralentie)
 
 # L'ordre de la liste de vocabulaire. Le texte de chaque mot est dans TXT.
 MOTS = ["mot-tornade", "mot-vent", "mot-nuage", "mot-pluie",

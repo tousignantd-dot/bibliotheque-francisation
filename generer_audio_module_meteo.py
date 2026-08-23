@@ -25,7 +25,7 @@ VOICES = {
     "masculin_1":  "93nuHbke4dTER9x2pDwE",   # 👨 Masculin #1 — Diego
     "feminin_2":   "WW0JfNPk5DgcQdM0d6X6",   # 👩 Féminine #2 — Josée
     "feminin_3":   "rCmVtv8cYU60uhlsOo1M",   # 👩 Féminine #3 — Prisca
-    "enseignante": "K7gx0ylJdff0yjM2uVQS",   # 👩 Féminine #1 — Mado
+    "enseignante": "mActWQg9kibLro6Z2ouY",   # 👩 Féminine #1 — Mado
 }
 
 DEFAULT_VOICE_SETTINGS = {"stability": 0.5, "similarity_boost": 0.75}

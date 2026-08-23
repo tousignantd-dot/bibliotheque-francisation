@@ -1598,11 +1598,35 @@ module à l'autre, pour qu'un personnage sonne pareil partout.
   capsules publicitaires du même module prend `narrateur`, qui n'est pas
   ralentie : la vitesse de la mention légale **est** l'objet de l'exercice, et
   la poser sur la voix « enseignante » l'aurait effacée.
-- **La voix « enseignante » (`K7gx0ylJdff0yjM2uVQS`) est ralentie à 0,85.**
+- **Il n'y a que quatre voix, et ça se compte AVANT d'écrire les dialogues.**
+  Deux féminines (`enseignante`, `feminin_2`), deux masculines (`masculin_1`,
+  `narrateur`). Deux personnages ne peuvent en partager une que s'ils ne se
+  répondent **jamais** dans un même extrait — sinon l'élève entend la même
+  voix se répondre à elle-même. Un dialogue à trois personnages du même genre
+  est donc impossible, et c'est une contrainte d'écriture, pas de production.
+- **La voix « enseignante » a changé le 23 août 2026.** L'ancienne
+  (`K7gx0ylJdff0yjM2uVQS`) est **abandonnée, ne pas y revenir** : mesurée sur
+  une même phrase contre les trois autres, elle sortait à 20,8 caractères par
+  seconde quand les autres tenaient 18 à 19 — la plus rapide des quatre, et
+  ralentie à 0,85 elle restait au niveau des autres non ralenties. La
+  remplaçante est **`mActWQg9kibLro6Z2ouY`**, qui débite 17,7 c/s sans
+  traitement, soit ce que l'ancienne donnait *après* `atempo`.
+- **La voix « enseignante » est ralentie à 0,85**, ce qui la met à 15,1 c/s.
   C'est la voix que l'élève entend le plus — elle narre les mini-leçons et
   les mots isolés de presque tous les modules, en plus de rôles de dialogue
-  (la commis du module 5, madame Rioux du module 10, la conseillère…) — et
-  elle débitait 18,6 caractères par seconde, trop vite pour du niveau 4.
+  (la commis du module 5, madame Rioux du module 10, la conseillère…).
+- **Changer de voix oblige à effacer ce qu'elle a produit.** Les générateurs
+  sautent ce qui est sur le disque : sans effacement, la nouvelle voix ne
+  serait jamais produite. `python3 build/retirer_voix.py` compte,
+  `--effacer` retire — et seulement ce que le rôle nommé a produit (le
+  dossier `sons/` quand `VOIX_MOTS` le porte, et les `line_NN_<perso>.mp3`
+  des personnages qui l'ont). Tout effacer ferait repayer les milliers
+  d'extraits des trois autres voix, qui n'ont pas bougé : 5 556 contre 8 538
+  au changement du 23 août.
+- **Le débit se mesure, il ne se devine pas** : `python3
+  build/essai_debit.py [identifiant]` fait dire la même phrase aux quatre
+  voix, plus une candidate, à trois vitesses, et imprime les caractères par
+  seconde. Comparer deux voix sur deux textes différents ne veut rien dire.
 - **Le paramètre `speed` d'ElevenLabs ne sert à rien ici** : avec
   `eleven_multilingual_v2`, l'API renvoie le *même fichier octet pour octet*
   avec ou sans `"speed": 0.85`. Vérifié, pas supposé. Le ralentissement se

@@ -53,7 +53,7 @@ DIALOGUES_JS = RACINE / "build/contenu/module-n2-colis/dialogues.js"
 # Mêmes identifiants que les autres modules, pour que les voix soient les
 # mêmes d'un module à l'autre.
 VOIX = {
-    "enseignante": "K7gx0ylJdff0yjM2uVQS",   # 👩 féminine #1
+    "enseignante": "mActWQg9kibLro6Z2ouY",   # 👩 féminine #1
     "feminin_2":   "WW0JfNPk5DgcQdM0d6X6",   # 👩 féminine #2
     "masculin_1":  "93nuHbke4dTER9x2pDwE",   # 👨 masculin #1
     "narrateur":   "IPgYtHTNLjC7Bq7IPHrm",   # 👨 narrateur

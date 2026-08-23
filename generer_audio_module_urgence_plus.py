@@ -24,7 +24,7 @@ import sys as _sys, pathlib as _pl
 _sys.path.insert(0, str(_pl.Path(__file__).resolve().parent / 'build'))
 from voix import enrichir  # contexte français pour les mots isolés
 
-VOICE = "K7gx0ylJdff0yjM2uVQS"   # 👩 enseignante — même voix que les mots isolés
+VOICE = "mActWQg9kibLro6Z2ouY"   # 👩 enseignante — même voix que les mots isolés
 
 CLIPS = {
     # ── Mini-leçon « Les groupes de mots » ──

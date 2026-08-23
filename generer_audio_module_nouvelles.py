@@ -24,7 +24,7 @@ VOICES = {
     "narrateur":   "IPgYtHTNLjC7Bq7IPHrm",   # 👨 Narrateur — Le journaliste
     "masculin_1":  "93nuHbke4dTER9x2pDwE",   # 👨 Masculin #1 — Marc
     "feminin_2":   "WW0JfNPk5DgcQdM0d6X6",   # 👩 Féminine #2 — Sophie
-    "enseignante": "K7gx0ylJdff0yjM2uVQS",   # 👩 Féminine #1 — Dany
+    "enseignante": "mActWQg9kibLro6Z2ouY",   # 👩 Féminine #1 — Dany
 }
 
 DEFAULT_VOICE_SETTINGS = {"stability": 0.5, "similarity_boost": 0.75}
