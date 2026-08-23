@@ -79,7 +79,7 @@ const EXOS = [
     {id:'pm2', txt:"Deux boîtes de carton affaissées et gonflées d'eau, posées sur les planches mouillées d'un balcon.", ok:'pm2'},
     {id:'pm3', txt:"Un vaisselier de bois foncé couché sur une couverture grise, une longue fente le long du panneau de côté.", ok:'pm3'},
     {id:'pm4', txt:"Une remorque de déménagement blanche reculée dans une ruelle étroite, entre deux murs de brique rouge.", ok:'pm4'},
-    {id:'pm5', txt:"Un salon entièrement vide où il ne reste que quatre chaises empilées au milieu du plancher.", ok:'pm5'},
+    {id:'pm5', txt:"Un salon entièrement vide où il ne reste qu'une pile de chaises au milieu du plancher.", ok:'pm5'},
     {id:'pm6', txt:"Un plancher de bois franc gondolé et soulevé le long d'une plinthe électrique.", ok:'pm6'},
    ]},
 
