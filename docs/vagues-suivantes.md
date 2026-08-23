@@ -2790,3 +2790,111 @@ précision à ne pas reperdre : **`role_eleve` est le rôle de l'ÉLÈVE**, et
 `ia_role = roles[0] if role_eleve == roles[1] else roles[1]`. Le `jr_role` du
 manifeste doit donc nommer le rôle joué par l'élève, pas celui de l'assistant
 — d'où `'eleve'` ici, et un seul interlocuteur offert plutôt que deux boutons.
+
+**23 août 2026 — activité 110, `module-n7-recherche`.** « Chercher un emploi
+en région », niveau 7, `numero` 3, `GRILLE_3_DEFIS`. Scénario inventé : Hafida
+Zerouali, 38 ans, arrivée d'Algérie il y a quatre ans, technicienne de
+laboratoire pendant neuf ans là-bas, aujourd'hui préposée à l'entretien dans
+un centre de la petite enfance de Longueuil. Trente-quatre candidatures depuis
+janvier, trois refus. Sylvain Desbiens, agent d'aide à l'emploi, lui montre à
+la salle multiservice que le Québec n'est pas un marché du travail mais
+dix-sept (Je découvre) ; elle écoute un reportage économique sur le
+Saguenay–Lac-Saint-Jean, où Ghislain Néron traduit les pourcentages et
+Frédérick Gauthier-Simard, chef de laboratoire chez Alumico, dit n'avoir reçu
+que onze candidatures en six mois (défi 1) ; Marie-Ève Lapointe, conseillère en
+employabilité, lui apprend à comparer deux portraits régionaux en trois
+colonnes (défi 2) ; puis à retailler son curriculum vitæ et sa lettre pour
+l'offre d'Alumico (défi 3). 24 exercices, 14 mini-leçons, 4 dialogues
+(86 répliques), 18 mots, 15 images, 307 extraits audio relevés, 16 séances
+(170 diapositives, 120 blocs de fiches).
+
+*Les faits québécois sont vérifiés, pas devinés*, le 23 août 2026 : l'**Évaluation
+comparative des études effectuées hors du Québec** est un avis d'expert du
+gouvernement du Québec qui dit à quel niveau d'études d'ici se compare un
+diplôme étranger — elle n'est **ni une équivalence de diplôme ni un permis
+d'exercice**, et le dialogue d'ouverture le fait dire mot pour mot à l'agent ;
+la **salle multiservice** d'un bureau de Services Québec est gratuite et donne
+accès à des postes informatiques, une imprimante, un téléphone et **IMT en
+ligne**, qui couvre plus de cinq cents métiers avec leurs salaires et leurs
+perspectives, région par région ; le **portrait socioéconomique du
+Saguenay–Lac-Saint-Jean** publié par le gouvernement donne 286 395 habitants
+(11ᵉ des 17 régions), un PIB de 15,5 G$ en 2023, 137 100 emplois en 2025,
+11,1 G$ de ventes manufacturières, une fabrication à 11,2 % de l'emploi tournée
+vers la transformation des ressources naturelles, une construction à 8,9 %
+contre 7,0 % au Québec et un secteur primaire à 4,2 % contre 2,0 % — tous
+repris tels quels dans le reportage et dans l'exercice de texte. Alumico,
+les personnes, les adresses et les onze candidatures sont inventés.
+
+*Ce qui le distingue de ses voisins de situation*, en une phrase, écrite avant
+le scénario : `module-n3-recherche-emploi` (83) **offre ses services de vive
+voix** au comptoir, `module-n6-recherche` (59) **répond à une offre précise**
+et passe l'entrevue, et celui-ci **s'oriente avant de postuler** — on lit
+l'économie d'une région pour décider *où* chercher, puis on se rend lisible
+pour le marché qu'on a choisi. Aucun recoupement non plus avec
+`module-n7-emploi` (109), écrit en parallèle : « Recherche d'emploi », c'est
+avant l'embauche ; « Emploi », c'est une fois en poste.
+
+Quatre choses apprises, pour les treize modules qui restent.
+
+**1. Au niveau 7, la situation peut être plus nette que le niveau.** Trois
+intentions seulement, et elles se lisent comme un plan de module :
+s'informer sur les activités économiques régionales en **écoutant**, s'informer
+sur les mêmes en **lisant**, **rédiger** un curriculum vitæ et une lettre
+d'accompagnement. Il n'y a rien à choisir parmi les cinquante-sept savoirs
+avant d'avoir posé ces trois-là : les défis *sont* les intentions, une par
+défi, et les savoirs viennent ensuite se ranger dessous. C'est l'inverse du
+niveau 6, où la situation est maigre et le niveau riche. Vérifier lequel des
+deux cas on a **avant** de piocher dans les savoirs.
+
+**2. Le type `texte` sert deux fois, et pas pour la même chose.** `t2portrait`
+fait chercher des chiffres dans un portrait économique — l'élève clique un
+pourcentage ; `t3offre` fait chercher des conditions dans une offre d'emploi —
+l'élève clique une exigence. Même type, deux lectures différentes : la première
+prélève une donnée, la seconde décide si l'on est admissible. Un module de
+niveau 7 tient très bien deux `texte` sans se répéter, à condition que les deux
+textes soient de **genres** différents. Deux articles de journal se seraient
+répétés.
+
+**3. Un tableau de séance ne prend pas six rangées et une note.** Le garde-fou
+de `theme.py` a refusé trois diapositives d'affilée (D1, D2, E2), toutes bâties
+pareil : six rangées, deux colonnes, plus un `note=`. Au plancher de corps, ça
+ne rentre pas, et le refus a raison — une diapositive se lit de loin. La
+correction qui marche à tous les coups : **raccourcir la colonne de droite et
+descendre la note dans `notes=`**, où l'enseignante la dit à voix haute. La
+règle utile pour la suite : au-delà de cinq rangées, pas de `note`.
+
+**4. Les quatre règles d'image attrapent quatre images sur quinze, et la
+quatrième est bien la plus coûteuse.** `node build/contexte_images.js` mis à
+côté des photos a sorti : un babillard dont les feuilles portaient des titres
+**anglais lisibles** (« PUBLIC COMMUNITY BUILDING ») ; deux mains en gros plan
+tenant l'évaluation comparative ; un portrait économique dont les graphiques
+gardaient leurs étiquettes et des crochets de gabarit (« RÉPARTITION MENSUELLE
+POUR [ZONE] ») ; et surtout `marche-du-travail`, une file d'attente au comptoir
+d'un bureau public là où l'énoncé dit « l'ensemble des postes offerts **et des
+personnes qui les cherchent** ». Les trois premiers se voient sur la photo
+seule ; le quatrième ne se voit qu'avec la phrase à côté, et c'est celui qui
+rendait l'image inutile. Il est devenu un salon de l'emploi dans un gymnase,
+vu de la mezzanine. Deux remarques de méthode : **corriger le prompt dans
+`gen_images.py`, pas seulement le fichier** — une régénération redonnerait le
+même défaut ; et pour forcer l'illisibilité d'un document, la consigne qui
+marche n'est pas « aucun texte » (le modèle l'ignore) mais **sortir le papier
+du plan de netteté** : reculer, cadrer de trois quarts, mettre au point sur
+autre chose. Quatre images refaites, 0,14 $.
+
+*Originalité* : 464 énoncés visibles, **34 identiques** parmi les 20 899 des
+soixante-quatre autres modules de `build/contenu/`, soit **7,3 %** — sous le
+seuil vert. Relus un à un : cinq consignes du gabarit (« Le mot et sa
+définition », « Glissez chaque photo sur la phrase qui la décrit »), six mots
+du programme (« un curriculum vitæ », « un secteur d'activité »), et le reste
+en intitulés de bandeau de savoir (« Le principe », « Comment il se forme »,
+« Ce qu'il fait »). Aucun énoncé narratif en commun. Le chiffre est plus haut
+que les 3,2 % du pilote du niveau 6 pour une raison mécanique : la base de
+comparaison est passée de quarante-neuf à soixante-quatre modules, et les
+intitulés de bandeau sont un stock fini.
+
+*Reste à faire, hors de ce module* : `python3 build/controles/pieds_de_page.py`
+signale deux écarts qui ne sont pas les miens et que je n'ai pas touchés —
+`module-n3-horaire` (numéro 11, aucun numéro lu dans ses pptx) et
+`module-n6-relations` (numéro 4 au registre, « 3 » encore inscrit dans ses
+seize pptx, reste de la correction de numéro du 22 août : ses présentations
+demandent une régénération).
