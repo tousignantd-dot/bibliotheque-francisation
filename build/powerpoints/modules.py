@@ -1272,6 +1272,37 @@ MODULES = {
                         "L'opinion"),
     },
 
+    # Niveau 7, situation « Emploi ». Quatre intentions, et elles ne parlent
+    # ni de chercher un emploi ni de régler un différend : comprendre la
+    # présentation d'un projet, d'une évaluation sommaire ou d'un problème ;
+    # la faire soi-même devant ses collègues ; écrire une note de service ;
+    # rédiger une lettre d'affaires courantes.
+    #
+    # Ce que ce module fait, et qu'aucun voisin de la situation ne fait :
+    # il **expose**. `module-travail` (39, niveau 4) annonce une absence au
+    # téléphone ; `module-n5-travail` (67) suit une procédure écrite et
+    # réclame une trace ; `module-n6-emploi` (100) pose sa candidature à un
+    # poste affiché à l'interne ; `module-n8-emploi` (61) défend son point de
+    # vue et négocie. Ici, personne ne s'oppose à personne : il faut rendre
+    # compréhensible pour d'autres un projet qui n'existe que dans sa tête,
+    # à l'oral d'abord, puis dans les deux écrits formels du travail.
+    #
+    # `GRILLE_3_DEFIS` : trois façons distinctes d'entrer dans la situation —
+    # on écoute une présentation, on en fait une, on la met par écrit —
+    # chacune avec son dialogue et ses exercices.
+    'module-n7-emploi': {
+        'numero': 2, 'activite': 109, 'niveau': 7,
+        'titre': 'Présenter un projet au travail',
+        'chapeau': "Comprendre la présentation d'un projet en réunion, "
+                   "exposer un problème et son évaluation sommaire à ses "
+                   "collègues, puis l'écrire dans une note de service et une "
+                   "lettre d'affaires courantes.",
+        'seances': GRILLE_3_DEFIS,
+        'blocs': _blocs('La réunion de production',
+                        'Le poste 4',
+                        'Les deux écrits'),
+    },
+
     'module-n8-emploi': {
         'numero': 1, 'activite': 61, 'niveau': 8,
         'titre': "Tenir son bout au travail",
