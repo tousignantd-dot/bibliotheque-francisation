@@ -4171,3 +4171,188 @@ constaté, annulé). Un point de vigilance en plus : `data/sections.json` et
 connaît **pas** les activités 116 à 118, livrées entre-temps. Les prendre tels
 quels les effacerait. Le script les régénère au lieu de les fusionner, ce qui
 règle le cas — mais il faut que ce soit lui qui le fasse.
+
+**23 août 2026 — activité 121, `module-n8-habitation`.** « Faire renverser une
+décision », niveau 8, `numero` 4, `GRILLE_3_DEFIS`. Scénario inventé : Teodora
+Vlaicu, 46 ans, arrivée de Roumanie il y a sept ans, technicienne en
+documentation au cégep de Trois-Rivières, propriétaire-occupante d'un duplex de
+la rue Sainte-Julie. Un refoulement d'égout a inondé son sous-sol fini pendant
+un orage, et sa réclamation a été **refusée par écrit** pour défaut d'entretien
+du drain. Marjolaine Pelchat, agente au règlement des sinistres de la Mutuelle
+Saint-Maurice, lui annonce le refus et son motif (Je découvre) ; Normand
+Lauzière, expert en sinistre public qu'elle mandate elle-même, relit avec elle
+le rapport de l'expert de l'assureur, phrase par phrase (défi 1) ; elle
+conteste au téléphone, munie d'une contre-expertise (défi 2) ; puis Fabien
+Courtemanche, conseiller au service de renseignements de l'Autorité des marchés
+financiers, explique en capsule ce qu'on peut faire d'une décision qu'on
+refuse (défi 3). 18 exercices, 12 mini-leçons, 4 dialogues (85 répliques),
+16 mots, 10 images, 151 sons relevés — 236 extraits en tout —, 16 séances
+(174 diapositives, 122 blocs de fiches).
+
+*Ce qui le distingue de ses quatre voisins de situation*, en une phrase écrite
+avant le scénario : `module-probleme` (4) **signale** un problème au
+propriétaire, `module-n5-degat` (62) **décrit** un sinistre au passé,
+`module-n6-habitation` (106) **fait faire** des travaux, `module-n7-habitation`
+(112) **négocie** avec un voisin — et celui-ci commence là où les quatre
+s'arrêtent : le problème a déjà été examiné, **jugé, et refusé par écrit**. Le
+travail n'est plus d'obtenir une réparation, c'est de faire renverser une
+décision.
+
+*Trois défis pour une seule intention, et pourquoi.* `build/cadre.py 8
+habitation` ne rend qu'une intention, portée deux fois — échanger avec son
+assureur par téléphone, en compréhension et en production orales. Une intention
+appellerait `GRILLE_2_DEFIS`. Le module en prend trois, par le test du pilote du
+niveau 6 : peut-on nommer trois façons distinctes d'entrer dans la situation ?
+Ici oui, et elles ne se juxtaposent pas — **elles se suivent dans le temps**,
+parce qu'au niveau 8 la réclamation n'est plus un appel mais un dossier qui
+dure. S'armer (le rapport), contester (l'appel), porter plus haut (les
+recours). C'est un troisième cas de figure, après la situation maigre du
+niveau 6 et la situation nette du niveau 7 : ici la situation est maigre
+*et* le module long, parce que la même intention se rejoue à trois moments
+d'une même démarche.
+
+*Les faits québécois ont été vérifiés le jour même*, et le détail est dans le
+docstring du manifeste : l'avenant facultatif « eau du sol et égout » et le
+clapet antiretour (CAA-Québec, ClicAssure) ; l'expert en sinistre **public**,
+que l'assuré mandate lui-même et qu'encadre la Chambre de l'assurance de
+dommages ; la réponse finale écrite dans les soixante jours de la réception,
+quatre-vingt-dix en circonstances exceptionnelles, et le transfert du dossier à
+l'Autorité des marchés financiers (Règlement sur le traitement des plaintes et
+le règlement des différends dans le secteur financier) ; et — pour le seul
+exercice qui distingue les deux recours — le Tribunal administratif du
+logement, dont une décision se conteste par une demande de rétractation ou par
+une permission d'appeler à la Cour du Québec dans les trente jours. Rien de
+tout cela ne s'invente, et le module fait de la confusion des deux portes son
+avertissement le plus insistant.
+
+*Trois exercices de type `texte`*, dont le troisième suit la recommandation de
+l'activité 119 : le rapport d'expertise (prélever un fait, distinguer un
+constat d'une déduction), la lettre de refus (trouver la disposition invoquée
+et le paragraphe des recours), et **la demande de révision que l'élève écrira
+vingt minutes plus tard**, découpée par fonctions. Le troisième usage se
+confirme : il remplace une consigne d'écriture de douze lignes, et le genre
+diffère assez des deux autres pour ne pas se répéter.
+
+**Ce que cette production apprend, et qui n'était écrit nulle part.**
+
+*1. Suivre la note d'un module voisin fait recopier ses phrases.* La note de
+l'activité 119 sur l'intonation expressive — seul savoir de phonétique du
+niveau — dit exactement comment traiter ce savoir : `vf` à trois tuiles, des
+répliques entières, une mini-leçon qui décrit la mélodie et jamais un symbole
+phonétique. La note a été suivie, et avec elle ses formulations : **vingt-huit
+énoncés identiques mot pour mot**, tous dans la seule mini-leçon `prInto`,
+sur soixante-six recoupements en tout. Le savoir est commun et doit l'être ;
+les phrases pour le dire, non. `prInto` a été refaite de bout en bout — la
+mélodie s'y décrit en *courbes* et en *marches* plutôt qu'en montées et en
+freinages, et les huit sorties du laboratoire sont des répliques du dossier
+d'assurance. Le taux est passé de **7,9 % à 4,9 %**, sous le seuil vert. Il
+reste trois énoncés communs avec 119, et ce sont des mots du programme.
+**À retenir pour les modules qui restent** : quand deux modules d'un même
+niveau traitent le même savoir, lire la note du premier et écrire sans la
+relire.
+
+*2. La mesure d'originalité a deux défauts de plus, et ils se corrigent.* Le
+filtre de trois lignes que l'activité 119 recommande — pas de saut de ligne,
+pas de chevron, pas d'interpolation — ne suffit pas : la regex coupe aussi sur
+une **apostrophe échappée**, et rend alors des fragments de code sans saut de
+ligne ni chevron (`, tit:"Défi 2 · L`, `+i, q:c.word, aid:`). Trois marques les
+attrapent tous : une clé JavaScript (`x:"`), un début de fragment (`,` ou `+`),
+une fin de fragment (deux points collés). Et la mesure doit porter sur les
+**quatre fichiers d'énoncés visibles** — `dialogues`, `fccards`, `exos`,
+`plus` — et non sur les sept : `custom.js` est du markup, structurellement
+identique partout, et le compter revient à mesurer la ressemblance du gabarit
+avec lui-même. Les deux corrections valent **quatre points**, dans les deux
+sens. Le script est versionné à côté du contenu
+(`build/contenu/module-n8-habitation/_originalite.py`) plutôt que réécrit à
+chaque module.
+
+*3. Le générateur d'audio se forge, il ne se recopie pas.* Deux cent cinquante
+lignes identiques d'un module à l'autre — la reprise sur coupure réseau, la
+lecture des dialogues, la boucle — pour trois endroits qui changent : le slug,
+`VOIX_PERSO`, le docstring. `build/contenu/module-n8-habitation/_forger_generateur.py`
+les applique au générateur de l'activité 119 et écrit le nouveau. Le gain n'est
+pas le temps : c'est de ne pas pouvoir diverger sur `slug()`, dont `CLAUDE.md`
+dit expressément qu'elle ne doit pas être « améliorée ». **Le forgeage a aussi
+révélé un défaut chez le voisin** : `generer_audio_module_n8_recherche.py`
+pointe son `MANIFESTE` sur `sons_module_n7_recherche.json`, le relevé d'un
+autre module. Signalé à part, pas corrigé ici.
+
+*4. Deux cartes de vocabulaire ont perdu leur image, et la règle mérite d'être
+nommée.* « Une facture acquittée » et « une décision motivée » sont des
+**documents**, c'est-à-dire des objets dont le texte *est* le sujet. La parade
+au texte parasite — cadrer l'inscription hors du champ — ne s'y applique pas :
+sortir le texte du cadre d'une facture, c'est ne plus montrer de facture.
+`CLAUDE.md` le dit déjà autrement (« quand le texte est le sujet, il se compose
+en HTML ») ; le cas d'une **carte de vocabulaire** dont le mot désigne un
+document n'y était pas. La bonne réponse est de ne pas illustrer la carte, et
+de laisser le mot vivre dans un exercice de type `texte`, où il est lisible et
+correct.
+
+*Sur les images* : dix à 0,0336 $ par la route Google, **neuf bonnes du premier
+coup**. La seule reprise confirme la règle du cadrage sous une forme nouvelle :
+`camera-de-drain` cadrait le touret d'inspection **en entier**, roues comprises,
+et le modèle a couvert son flanc d'autocollants blancs et orange parfaitement
+lisibles — la première règle prise en défaut par l'objet le plus banal de la
+scène. Écrire « flanc coupé par le bord droit » n'avait pas suffi : **tant que
+l'objet est le sujet du prompt, le modèle le montre en entier.** Le prompt
+refait change de sujet — ce n'est plus le touret, c'est le câble et l'ouverture
+du drain — et le touret n'entre plus dans le champ que par sa moitié
+inférieure, de dos. À ajouter à la liste : déplacer le sujet est plus fiable
+que cadrer le sujet.
+
+*Sur les contrôles* : les sept passent. `coherence.js` ne signale rien,
+`sections.py --verifier` et `materiel.py --verifier` sont à jour, les deux
+contrôles de couleur ne rendent rien, `sommaire.py --verifier` ne trouve aucun
+lien cassé — à condition d'avoir lancé `python3 build/powerpoints/sommaire.py
+module-n8-habitation`, qui manque **toujours** à la séquence —, et
+`pieds_de_page.py` lit « niveau 8 · numéro 4 · 16 pptx · vus ['4'] ». Le seul
+écart qu'il rapporte est `module-n3-horaire`, connu de longue date et qui n'est
+pas le mien. Le `node --check` du script en ligne passe (291 386 octets).
+`grep -n "___.*___"` sur `exos.js` ne rend rien. Deux garde-fous du gabarit se
+sont déclenchés pendant la production des séances, et les deux avaient raison :
+un tableau de A2 et un de E2, à cinq et six rangées de libellés longs, refaits
+en colonne de décision ; et une flèche dans B3, remplacée par « donc ».
+
+*Une chose que les decks apprennent, et qui n'est pas dans la documentation* :
+`d.capture()` n'existe que dans `theme.Deck`. Les fiches imprimées passent par
+`build/powerpoints/fiche.py`, qui n'a pas la méthode — `build_fiches.py`
+s'arrête donc sur un `AttributeError` si un deck l'appelle sans garde. La
+protection est un `if hasattr(d, 'capture'):`, et `module-n5-rendezvous` la
+portait déjà avec son commentaire. Corollaire moins connu :
+`captures.py` ne produit d'image que pour les exercices **à banc de réponses**
+(`match`, `imgmatch`). Appeler `d.capture()` sur un `vf` ou un `write` arrête
+le build avec un message qui invite à produire une capture qui n'existera
+jamais.
+
+*La vérification dans le navigateur a été faite sur un serveur et un onglet à
+moi*, comme les activités 113 et 116 le recommandent. Aucune erreur de console,
+les six sections rendent, les douze mini-leçons s'ouvrent et le laboratoire de
+`prInto` couvre ses huit combinaisons, les quatorze ressources — dix images et
+quatre icônes — répondent 200. Le contrôle des zones a porté sur les **171** du
+module : les 112 à réponse enregistrée sont toutes acceptées par `checkOk()`,
+et les 59 zones `write` acceptent toutes leur première réponse par
+`checkWrite()`. Deux pièges de signature, à noter pour la prochaine fois :
+`checkOk(zid, iid, lbl)` prend la valeur d'une tuile `vf` en **troisième**
+argument, pas en deuxième — un test naïf refuse alors toutes les zones `vf` et
+fait croire à un module mort ; et l'élément de rétroaction d'un `write`
+s'appelle `wf_<exo>_<i>`, pas `wfb_<exo>_<i>`, qui est sa classe.
+
+*Un scénario de jeu de rôle a été ajouté à `server.py`* — `refusassurance`,
+trois cas, deux rôles. `reclamation` était **déjà pris**, et `degat` appartient
+au niveau 5, où l'on déclare un sinistre plutôt que de contester un refus. La
+conduite de l'agente est le cœur du scénario : **elle ne décide rien**, et
+l'élève n'obtient donc rien en la convainquant. Ce qu'il peut obtenir, c'est
+qu'une phrase soit inscrite au registre — ce qui exige un fait daté, une pièce
+et une demande précise. Quand il y arrive, elle la lui relit à voix haute dans
+les mots où le service la lira. C'est le signal audible de réussite, comme le
+« c'est ça » du scénario `equipe` de l'activité 117.
+
+*Ce qui reste* : les **236 extraits audio**.
+`generer_audio_module_n8_habitation.py` est écrit, il s'importe sans erreur, il
+retrouve ses 85 répliques sur quatre dialogues et son manifeste de 151 sons —
+il n'a **pas** été lancé, une production audio complète tournant sur le poste.
+Le module est livré complet et muet.
+
+*Comme les activités 108 à 119*, ni `VOCAB_BANK` de `server.py` ni la constante
+`DETAILS` de `js/enseignant.js` n'ont reçu quoi que ce soit : ces deux tables se
+sont arrêtées aux modules du niveau 4, et c'est un chantier à part.
