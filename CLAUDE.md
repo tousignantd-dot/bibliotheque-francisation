@@ -522,6 +522,29 @@ Deux pièges déjà payés :
   par genre avant d'écrire les dialogues** : la correction après coup a coûté
   quatre fichiers de contenu et une quinzaine d'accords à
   `module-n7-habitation`, dont la médiatrice est devenue un médiateur.
+- **Le manifeste de sons d'un générateur audio doit porter le slug de SON
+  module.** Découvert le 23 août 2026 en produisant `module-n8-emmenagement` :
+  `generer_audio_module_n8_recherche.py` lisait `sons_module_n7_recherche
+  .json`, celui du module du **niveau 7**. Le fichier existe, donc rien ne
+  lève d'erreur — le script aurait déposé les 221 sons du voisin dans
+  `assets/interactive/module-n8-recherche/sons/` au lieu de ses 334, et neuf
+  clés seulement se recoupent. Le module serait sorti muet aux trois quarts,
+  avec des extraits d'un autre par-dessus. Même famille de faute que la clé de
+  scénario homonyme : le nom se lit, donc rien n'avertit, et ni le build, ni
+  `coherence.js`, ni le `node --check` ne regardent là. Le générateur d'un
+  module neuf construit désormais son nom — `MANIFESTE = RACINE / ("sons_%s
+  .json" % MODULE.replace('-', '_'))` — plutôt que de l'écrire à la main.
+- **`checkOk` prend trois arguments, et le troisième décide des zones `vf`.**
+  Sa signature est `checkOk(zid, iid, lbl)`, et pour `z.zcat === 'vf'` ou
+  `'lbl'` elle compare `lbl` à `z.cv` ; pour tout le reste, `iid`. Le contrôle
+  des zones que recommande l'épisode de l'`imgmatch` mort déclare donc
+  **toutes les zones `vf` du module « refusées »** s'il est écrit avec deux
+  arguments — on croit avoir trouvé un défaut grave, et on a mal appelé la
+  fonction. Le contrôle correct :
+  `(z.zcat==='vf'||z.zcat==='lbl') ? checkOk(k,null,z.cv) : checkOk(k,z.cv,null)`.
+  Et les zones `write` n'ont pas de `cv` du tout : elles se vérifient à part,
+  en remplissant chaque `.winput` avec son `accept[0]` puis en appelant
+  `checkWrite`.
 - **`git commit -- <dossier>` emporte tout ce que le dossier contient**, y
   compris ce qui vient d'y tomber pendant que le message se rédigeait. Le
   21 août 2026, un commit qui devait porter trois lignes de contenu a emporté
