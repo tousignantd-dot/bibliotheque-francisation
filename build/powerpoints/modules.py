@@ -1047,7 +1047,7 @@ MODULES = {
     # d'un niveau à l'autre n'est pas le sujet, c'est le travail — ici, tenir
     # le fil d'un texte long.
     'module-n6-relations': {
-        'numero': 3, 'activite': 101, 'niveau': 6,
+        'numero': 4, 'activite': 101, 'niveau': 6,
         'titre': "Reprendre le fil",
         'chapeau': "Lire un long courriel de nouvelles sans en perdre le "
                    "fil, décrire quelqu'un assez précisément pour qu'on le "

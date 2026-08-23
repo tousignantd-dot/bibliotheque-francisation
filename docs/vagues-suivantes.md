@@ -2382,3 +2382,63 @@ voisins et le plafond d'onglets refusait toute création. Le script inclus passe
 `node --check`, `coherence.js` ne signale rien d'autre que les images, et le
 HTML produit porte bien son niveau, son titre, ses deux défis et son scénario
 de jeu de rôle.
+
+---
+
+## Vague 7 — les seize derniers modules (niveaux 4, 7 et 8)
+
+Ouverte le 22 août 2026, une fois le niveau 6 fermé (activités 99 à 107).
+`python3 build/bilan_programme.py` dit : **16 modules**, un seul trou au
+niveau 4, tout le reste aux niveaux 7 et 8. C'est la dernière vague : quand
+elle est close, les huit niveaux du programme sont couverts en entier.
+
+**Les numéros sont réservés ici, et nulle part ailleurs.** Dernier numéro
+utilisé au 22 août 2026 : **107** (`module-n6-classe`).
+
+| Activité | Niveau | Situation | Slug réservé | `numero` | Grille |
+|---|---|---|---|---|---|
+| 108 | 4 | Communication avec le personnel de l'établissement | `module-n4-etablissement` | 17 | `GRILLE_3_DEFIS` |
+| 109 | 7 | Emploi | `module-n7-emploi` | 2 | `GRILLE_3_DEFIS` |
+| 110 | 7 | Recherche d'emploi | `module-n7-recherche` | 3 | `GRILLE_3_DEFIS` |
+| 111 | 7 | Location ou achat d'un logement | `module-n7-logement` | 4 | `GRILLE_3_DEFIS` |
+| 112 | 7 | Problèmes reliés à l'habitation | `module-n7-habitation` | 5 | au choix (2 ou 3 défis) |
+| 113 | 7 | Achat de biens de consommation durables | `module-n7-achat` | 6 | au choix |
+| 114 | 7 | Transactions bancaires | `module-n7-banque` | 7 | au choix |
+| 115 | 7 | Publicité | `module-n7-publicite` | 8 | au choix |
+| 116 | 7 | Découverte d'œuvres | `module-n7-oeuvres` | 9 | `GRILLE_3_DEFIS` |
+| 117 | 7 | Salle de classe | `module-n7-classe` | 10 | au choix |
+| 118 | 7 | Communication avec le personnel de l'établissement | `module-n7-etablissement` | 11 | au choix |
+| 119 | 8 | Recherche d'emploi | `module-n8-recherche` | 2 | `GRILLE_3_DEFIS` |
+| 120 | 8 | Emménagement dans un nouveau logement | `module-n8-emmenagement` | 3 | au choix |
+| 121 | 8 | Problèmes reliés à l'habitation | `module-n8-habitation` | 4 | au choix |
+| 122 | 8 | Suivi de l'actualité | `module-n8-actualite` | 5 | `GRILLE_3_DEFIS` |
+| 123 | 8 | Découverte d'œuvres | `module-n8-oeuvres` | 6 | `GRILLE_3_DEFIS` |
+
+**« Au choix » veut dire : `build/cadre.py <niveau>` décide, et l'agent écrit
+pourquoi dans le journal.** La règle du pilote du niveau 6 vaut ici aussi :
+trois défis quand la situation porte trois intentions ou plus, deux quand elle
+n'en porte qu'une — mais le vrai test est de pouvoir nommer trois façons
+distinctes d'entrer dans la situation. `GRILLE_COURTE` n'a sa place à aucun de
+ces seize modules.
+
+**Ce que les niveaux 7 et 8 imposent**, et qui est déjà écrit ailleurs :
+la section « Le pilote du niveau 6 » de ce fichier (les trois pièges du stade
+intermédiaire, le type d'exercice `texte`), et le paragraphe de la vague 1 sur
+les discours longs, le lexique qui s'amenuise et les faits québécois à
+vérifier plutôt qu'à inventer. Chaque module de cette vague porte **au moins
+un exercice de type `texte`** — au niveau 8, deux.
+
+**Deux voisins par module, presque toujours.** `module-n7-actualite` (60) et
+`module-n8-emploi` (61) sont les seuls modules déjà écrits à ces niveaux ; en
+revanche chaque situation existe aux niveaux 3, 5 et 6. Avant d'inventer le
+scénario, lire ce que font les voisins et écrire en une phrase ce qui distingue
+le sien — c'est la discipline qui a tenu l'originalité sous 1 % depuis le
+niveau 2.
+
+**Les agents partent quatre à la fois**, jamais plus, chacun dans son propre
+worktree (`isolation: "worktree"`). Cinq ont épuisé la limite de session le
+22 août et sont morts à la même seconde ; six lancés en « remote » sont
+retombés dans le même répertoire et se sont marchés dessus. La fusion se fait
+avec `python3 build/fusionner_module.py`, jamais à la main.
+
+### Journal de la vague 7
