@@ -1,7 +1,6 @@
-#!/usr/bin/env python3
 """
-Générateur d'audio — module « Passer au travers du processus » (niveau 8)
-(module-n8-recherche, activité 119).
+Générateur d'audio — module « Deux versions, et la mienne » (niveau 8)
+(module-n8-actualite, activité 122).
 
 Deux familles de fichiers, comme dans les autres modules :
 
@@ -9,33 +8,36 @@ Deux familles de fichiers, comme dans les autres modules :
   2. les mots, phrases et mini-leçons  → <module>/sons/<fileId>.mp3
 
 Les dialogues ne sont pas recopiés ici : ils sont lus dans
-`build/contenu/module-n8-recherche/dialogues.js`, la source unique.
-
-Niveau 8, donc des **discours étendus** : les quatre extraits font de vingt à
-vingt-huit répliques, et l'entrevue du défi 3 est la plus longue — c'est la
-seule longueur qui laisse une objection s'installer, être entendue, et recevoir
-une réponse. La séance d'information du défi 2 est presque un monologue : douze
-répliques d'affilée du même locuteur, coupées par deux questions.
+`build/contenu/module-n8-actualite/dialogues.js`, la source unique.
 
 **Quatre personnages, quatre voix distinctes.** Le dépôt n'en a que quatre —
 deux féminines, deux masculines — et ce module les prend toutes, une chacune :
 il n'y a donc **aucun partage à vérifier**, aucun risque d'entendre la même
-voix se répondre à elle-même. C'est le cas le plus confortable, et il a été
-obtenu en comptant les personnages par genre **avant** d'écrire les dialogues,
-comme `CLAUDE.md` le demande depuis `module-n7-habitation`.
+voix se répondre à elle-même. Compté par extrait et par genre **avant**
+d'écrire les dialogues, comme `CLAUDE.md` le demande : aucun extrait ne réunit
+plus de deux femmes, et il n'y en a jamais eu trois dans le scénario.
+
+**Le choix de qui prend `narrateur` est le point de ce module.** C'est la seule
+voix masculine que `voix_lente` ne ralentit pas, et elle va à GRÉGOIRE
+FERLAND, l'animateur de radio : sa chronique du défi 2 est un quasi-monologue
+de douze répliques d'affilée, et **le débit rapide est l'objet même de
+l'exercice** — trois écoutes à consigne différente. La ralentir en retirerait
+la difficulté que le niveau 8 vise. Symétriquement, RÉGINE prend
+`enseignante`, ralentie à 0,85 : c'est la porte-parole du comité, celle qui
+explique posément à Mirela ce qu'est un registre référendaire.
 
 Le relevé des sons (famille 2) n'a **pas** été fait par le navigateur ni par
 `build/collecte_sons.py`, qu'il ne faut pas lancer :
 
-    node build/releve_sons.js module-n8-recherche > sons_module_n8_recherche.json
+    node build/releve_sons.js module-n8-actualite > sons_module_n8_actualite.json
 
 Vingt lignes de node sur `exos.js`, `carrier.js` et `plus.js`, qui reproduisent
 les trois endroits du gabarit appelant `playWord`. Pas de port à réserver, pas
 de processus à arrêter, pas d'envoi tardif qui écraserait un relevé complet par
-un relevé partiel — les deux incidents que `CLAUDE.md` raconte. 334 clés au
+un relevé partiel — les deux incidents que `CLAUDE.md` raconte. 197 clés au
 relevé du 23 août 2026.
 
-Usage :  python3 generer_audio_module_n8_recherche.py [--force] [--only prefixe,...]
+Usage :  python3 generer_audio_module_n8_actualite.py [--force] [--only prefixe,...]
 """
 import json
 import os
@@ -56,14 +58,9 @@ _sys.path.insert(0, str(_pl.Path(__file__).resolve().parent / 'build'))
 from voix import enrichir  # contexte français pour les mots isolés
 
 RACINE = Path(__file__).resolve().parent
-SORTIE = RACINE / "assets/interactive/module-n8-recherche"
-# Corrigé le 23 août 2026, en produisant l'activité 122 : cette ligne portait
-# `sons_module_n7_recherche.json`, le manifeste d'un **autre module** (le 110).
-# Le fichier existe, donc rien n'aurait protesté : le générateur aurait produit
-# 221 extraits du niveau 7 au lieu des 334 du sien — 9 clés en commun sur 334,
-# et un module troué dont personne n'aurait su pourquoi.
-MANIFESTE = RACINE / "sons_module_n8_recherche.json"
-DIALOGUES_JS = RACINE / "build/contenu/module-n8-recherche/dialogues.js"
+SORTIE = RACINE / "assets/interactive/module-n8-actualite"
+MANIFESTE = RACINE / "sons_module_n8_actualite.json"
+DIALOGUES_JS = RACINE / "build/contenu/module-n8-actualite/dialogues.js"
 
 # Mêmes identifiants que les autres modules, pour que les voix soient les
 # mêmes d'un module à l'autre.
@@ -80,22 +77,25 @@ VOIX = {
 #   prep  SHIRIN, ALEXANDRE          t1  DANIELLE, SHIRIN
 #   t2    RÉAL, SHIRIN               t3  DANIELLE, SHIRIN, RÉAL
 #
-# Le défi 3 réunit trois personnages, dont deux femmes : c'est la limite exacte
-# du dépôt, et elle tient parce que Danielle prend `enseignante` et Shirin
-# `feminin_2`. Une troisième femme aurait été impossible.
+# Répartition par extrait, comptée avant d'écrire les dialogues :
 #
-# Le choix de qui prend `enseignante` n'est pas neutre : c'est la seule voix
-# que `voix_lente` ralentit à 0,85. Elle va à DANIELLE, la conseillère en
-# acquisition de talents, qui mène l'appel de présélection et énonce les trois
-# étapes du processus — exactement le rôle pour lequel un débit posé a été
-# introduit. RÉAL garde `narrateur`, qui n'est pas ralentie : sa séance
-# d'information **est** l'exercice d'écoute longue du module, et la ralentir en
-# retirerait la difficulté que le niveau 8 vise.
+#   prep  MIRELA, RÉGINE                    t1  GRÉGOIRE, WILFRID, RÉGINE
+#   t2    GRÉGOIRE, MIRELA                  t3  GRÉGOIRE, RÉGINE, WILFRID, MIRELA
+#
+# Le défi 3 réunit les quatre, dont **deux femmes** : c'est la limite exacte du
+# dépôt, et elle tient parce que Régine prend `enseignante` et Mirela
+# `feminin_2`. Une troisième femme aurait été impossible, et c'est pour cela
+# que l'éditorialiste et l'animateur sont des hommes.
+#
+# GRÉGOIRE prend `narrateur`, la seule voix masculine que `voix_lente` ne
+# ralentit pas : sa chronique du défi 2 est un quasi-monologue de douze
+# répliques, et le débit d'un professionnel de la radio **est** ce que
+# l'exercice fait travailler.
 VOIX_PERSO = {
-    "SHIRIN":    "feminin_2",
-    "DANIELLE":  "enseignante",
-    "ALEXANDRE": "masculin_1",
-    "RÉAL":      "narrateur",
+    "MIRELA":   "feminin_2",
+    "RÉGINE":   "enseignante",
+    "WILFRID":  "masculin_1",
+    "GRÉGOIRE": "narrateur",
 }
 
 # Voix des mots isolés et des mini-leçons : celle de l'enseignante.
@@ -223,14 +223,14 @@ def main():
 
     if not MANIFESTE.exists():
         print(f"❌ {MANIFESTE.name} introuvable — "
-              f"lancer build/collecte_sons.py module-n8-recherche")
+              f"lancer node build/releve_sons.js module-n8-actualite")
         sys.exit(1)
     sons = json.loads(MANIFESTE.read_text(encoding="utf-8"))
     for file_id, texte in sons.items():
         taches.append((f"sons/{file_id}", texte, VOIX_MOTS,
                        SORTIE / "sons" / f"{file_id}.mp3"))
 
-    print(f"🔊 module-n8-recherche — {len(taches)} extraits "
+    print(f"🔊 module-n8-actualite — {len(taches)} extraits "
           f"({sum(len(v) for v in dialogues.values())} répliques "
           f"sur {len(dialogues)} dialogues + {len(sons)} sons)\n")
 
