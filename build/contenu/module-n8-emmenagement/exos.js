@@ -26,8 +26,8 @@ const EXOS = [
     {id:'p1j', txt:"Le déménageur lui conseille lui-même de réclamer à son assurance habitation.", ok:'VRAI'},
    ]},
 
-  {sec:'prep', id:'prInto', type:'vf', num:'Exercice 2', tit:"Ce que la voix ajoute aux mots", color:'#1D6B8F', accent:'#1D6B8F', cards:true, listen:true,
-   sub:"Écoutez chaque réplique. Les mots seuls ne suffisent pas : quelle intention la voix porte-t-elle ?",
+  {sec:'prep', id:'prInto', type:'vf', num:'Exercice 2', tit:"L'intention derrière la réplique", color:'#1D6B8F', accent:'#1D6B8F', cards:true, listen:true,
+   sub:"Les mots seuls ne tranchent pas. Écoutez la réplique : qu'est-ce que la voix y ajoute ?",
    tiles:['SURPRISE','DÉCEPTION','VOLONTÉ'],
    rows:[
     {id:'pia', txt:"Cent vingt dollars pour le meuble de ma mère ?", ok:'SURPRISE'},
@@ -41,18 +41,18 @@ const EXOS = [
     {id:'pii', txt:"J'irai jusqu'à la révision s'il le faut.", ok:'VOLONTÉ'},
    ]},
 
-  {sec:'prep', id:'prPass', type:'write', num:'Exercice 3', tit:"La phrase passive, et ce qu'elle cache", color:'#1D6B8F', cols:1,
+  {sec:'prep', id:'prPass', type:'write', num:'Exercice 3', tit:"La phrase passive, et qui elle efface", color:'#1D6B8F', cols:1,
    sub:"Récrivez le verbe à la voix passive, au temps indiqué entre parenthèses. Écrivez seulement le verbe et son auxiliaire.",
    savoir:{h:"› La phrase passive : la même scène, un autre sujet", rows:[
      ["Ce que le passif déplace","Le complément direct de la phrase active devient le sujet de la phrase passive. <span class='savoir-ex'>Le chauffeur <b>a signé</b> l'inventaire → L'inventaire <b>a été signé</b> par le chauffeur.</span> Rien n'a changé dans la réalité ; ce qui a changé, c'est de quoi la phrase parle."],
      ["La recette","<b>être</b> au temps du verbe actif + <b>participe passé</b>, accordé avec le sujet. <span class='savoir-ex'>on exclut → est exclu · on a refusé → a été refusé · on refusera → sera refusé · on avait offert → avait été offert.</span> Un seul point de difficulté : mettre « être » au bon temps, pas le participe."],
-     ["L'accord du participe","Il s'accorde toujours avec le sujet, comme un adjectif. <span class='savoir-ex'>La clause est <b>invoquée</b> · les dommages sont <b>exclus</b> · la rampe a été <b>tordue</b> · les boîtes ont été <b>laissées</b> dehors.</span>"],
+     ["L'accord du participe passif","Il s'accorde toujours avec le sujet, comme un adjectif. <span class='savoir-ex'>La clause est <b>invoquée</b> · les dommages sont <b>exclus</b> · la rampe a été <b>tordue</b> · les boîtes ont été <b>laissées</b> dehors.</span>"],
      ["Pourquoi les contrats l'adorent","Parce qu'il permet de ne pas dire qui agit. <span class='savoir-ex'>« Sont exclus les dommages causés aux biens meubles » — exclus par qui ? Par l'assureur qui a rédigé la phrase.</span> Chaque fois que vous lisez un passif sans « par », demandez-vous qui a disparu : c'est souvent le renseignement qui manque."],
      ["Ce qu'il vous sert à faire","À poser un fait sans accuser personne, au moment précis où accuser fermerait la conversation. <span class='savoir-ex'>« Aucune déclaration de valeur ne m'a été proposée » se discute ; « votre chauffeur ne me l'a pas proposée » se nie.</span> C'est un outil de négociation, pas seulement une forme grammaticale."],
      ["Le piège du passif sans complément","Ne confondez pas le passif avec « être + adjectif ». <span class='savoir-ex'>« Le meuble est fendu » décrit un état ; « le meuble a été fendu par le portage » décrit une action.</span> Devant un assureur, la seconde vaut infiniment plus que la première."],
    ]},
    items:[
-    {q:"L'inventaire (signer, passé composé) ___ par le chauffeur à huit heures.", accept:["a été signé"], ph:"a été + participe"},
+    {q:"L'inventaire (signer, passé composé) ___ par le chauffeur à huit heures.", accept:["a été signé"], ph:"a été + le participe"},
     {q:"La rampe (tordre, passé composé) ___ par le coin de la remorque.", accept:["a été tordue"], ph:"accordez le participe"},
     {q:"Les deux boîtes (laisser, passé composé) ___ sur le balcon pendant l'averse.", accept:["ont été laissées"], ph:"…"},
     {q:"Ces dommages-là (exclure, présent) ___ par la clause 7.3 du contrat.", accept:["sont exclus"], ph:"…"},
@@ -129,9 +129,9 @@ const EXOS = [
    ]},
 
   {sec:'t1', id:'t1subj', type:'write', num:'Exercice 3', tit:"Le subjonctif présent, et ce qui le déclenche", color:'#B45309', cols:1,
-   sub:"Mettez le verbe entre parenthèses au subjonctif présent.",
+   sub:"Mettez au subjonctif présent le verbe entre parenthèses.",
    savoir:{h:"› Le subjonctif présent : la nécessité, le doute, la concession", rows:[
-     ["Comment il se forme","On part de la troisième personne du pluriel du présent, on retire <b>-ent</b>, on ajoute <b>-e, -es, -e, -ions, -iez, -ent</b>. <span class='savoir-ex'>ils écriv<s>ent</s> → que j'écrive · ils envoi<s>ent</s> → que nous envoyions.</span> Six verbes seulement sont irréguliers, et vous les connaissez déjà : être, avoir, aller, faire, pouvoir, savoir."],
+     ["Comment il se fabrique","On part de la troisième personne du pluriel du présent, on retire <b>-ent</b>, on ajoute <b>-e, -es, -e, -ions, -iez, -ent</b>. <span class='savoir-ex'>ils écriv<s>ent</s> → que j'écrive · ils envoi<s>ent</s> → que nous envoyions.</span> Six verbes seulement sont irréguliers, et vous les connaissez déjà : être, avoir, aller, faire, pouvoir, savoir."],
      ["Ce qui le déclenche : la nécessité","<span class='savoir-ex'>Il faut que vous <b>déclariez</b> le sinistre aujourd'hui · Il est nécessaire que la clause <b>soit</b> citée · J'exige que la décision me <b>parvienne</b> par écrit.</span> C'est l'emploi que le programme du niveau 8 nomme explicitement, et le plus utile dans une réclamation."],
      ["Ce qui le déclenche : le souhait et le sentiment","<span class='savoir-ex'>J'aimerais qu'on <b>revoie</b> le troisième point · Je regrette que vous ne <b>puissiez</b> pas m'aider · Je suis surprise que personne ne me l'<b>ait</b> proposée.</span> Le verbe principal dit ce qu'on ressent ; la subordonnée passe au subjonctif."],
      ["Ce qui le déclenche : le doute et la concession","<span class='savoir-ex'>Je ne crois pas que cette clause s'<b>applique</b> ici · <b>Bien que</b> la clause <b>existe</b>, elle vise le transport · <b>À moins que</b> vous <b>ayez</b> une autre pièce, je maintiens ma position.</span> Ce sont les trois tournures de l'argumentation."],
@@ -294,7 +294,7 @@ const EXOS = [
   {sec:'t2', id:'t2irr', type:'write', num:'Exercice 3', tit:"Ce qui aurait pu ne pas arriver", color:'#A5335F', cols:1,
    sub:"Complétez l'hypothèse irréelle du passé. Mettez le verbe entre parenthèses au temps qui convient.",
    savoir:{h:"› L'hypothèse irréelle du passé : si + plus-que-parfait, conditionnel passé", rows:[
-     ["La règle en une ligne","<span class='savoir-ex'><b>Si</b> + plus-que-parfait, <b>conditionnel passé</b>. Si j'<b>avais lu</b> le connaissement, je l'<b>aurais refusé</b>.</span> Jamais de conditionnel après « si » : c'est la faute la plus fréquente, et elle s'entend tout de suite."],
+     ["La règle, en une seule ligne","<span class='savoir-ex'><b>Si</b> + plus-que-parfait, <b>conditionnel passé</b>. Si j'<b>avais lu</b> le connaissement, je l'<b>aurais refusé</b>.</span> Jamais de conditionnel après « si » : c'est la faute la plus fréquente, et elle s'entend tout de suite."],
      ["Comment se forment les deux temps","Plus-que-parfait : <b>avoir</b> ou <b>être</b> à l'imparfait + participe passé. <span class='savoir-ex'>j'avais lu · elle était partie.</span> Conditionnel passé : <b>avoir</b> ou <b>être</b> au conditionnel présent + participe passé. <span class='savoir-ex'>j'aurais refusé · elle serait restée.</span>"],
      ["Ce qu'elle dit vraiment","Que la condition ne s'est pas réalisée, et qu'elle ne se réalisera plus. <span class='savoir-ex'>« Si on m'avait offert une déclaration de valeur, j'en aurais fait une » veut dire : on ne me l'a pas offerte.</span> C'est un regret, et c'est aussi un reproche déguisé — d'où son utilité en négociation."],
      ["Pourquoi elle est l'arme d'une réclamation","Elle vous permet de désigner une faute sans accuser personne. <span class='savoir-ex'>« Si les boîtes avaient été rentrées, elles n'auraient pas pris l'eau » ne nomme pas le coupable, mais tout le monde le voit.</span> Employée une ou deux fois, elle porte ; employée cinq fois, elle devient de la plainte."],
@@ -302,16 +302,16 @@ const EXOS = [
      ["Le piège de l'accord du participe","Avec <b>avoir</b>, le participe s'accorde avec le complément direct <b>placé avant</b>. <span class='savoir-ex'>La photo que j'aurais <b>prise</b> · les pièces qu'elle aurait <b>envoyées</b>.</span> Avec <b>être</b>, il s'accorde avec le sujet : <span class='savoir-ex'>elles seraient <b>restées</b> au sec.</span>"],
    ]},
    items:[
-    {q:"Si j'avais lu le connaissement, je ne l'___ (signer).", accept:["aurais pas signé"], ph:"conditionnel passé"},
+    {q:"Si j'avais lu le connaissement, je ne l'___ (signer).", accept:["aurais pas signé"], ph:"au conditionnel passé"},
     {q:"Si on m'___ (offrir) une déclaration de valeur, j'en aurais fait une.", accept:["avait offert"], ph:"plus-que-parfait"},
-    {q:"Si les boîtes avaient été rentrées, elles n'___ (prendre) l'eau.", accept:["auraient pas pris"], ph:"conditionnel passé"},
+    {q:"Si les boîtes avaient été rentrées, elles n'___ (prendre) l'eau.", accept:["auraient pas pris"], ph:"au conditionnel passé"},
     {q:"Si le chauffeur ___ (noter) la fente sur l'inventaire, nous ne discuterions pas aujourd'hui.", accept:["avait noté"], ph:"plus-que-parfait"},
-    {q:"Si vous m'aviez appelée en criant, je vous ___ (lire) la clause et j'aurais raccroché.", accept:["aurais lu"], ph:"conditionnel passé"},
+    {q:"Si vous m'aviez appelée en criant, je vous ___ (lire) la clause et j'aurais raccroché.", accept:["aurais lu"], ph:"au conditionnel passé"},
     {q:"Si j'___ (savoir) que le portage n'était pas le transport, j'aurais posé la question avant.", accept:["avais su"], ph:"plus-que-parfait irrégulier"},
-    {q:"Si la rampe avait appartenu à mes biens, elle ___ (être) couverte par la section A.", accept:["aurait été"], ph:"conditionnel passé"},
+    {q:"Si la rampe avait appartenu à mes biens, elle ___ (être) couverte par la section A.", accept:["aurait été"], ph:"au conditionnel passé"},
     {q:"Si nous ___ (recevoir) l'évaluation plus tôt, le dossier serait déjà chez le réviseur.", accept:["avions reçu"], ph:"plus-que-parfait"},
     {q:"Si vous aviez encaissé le chèque du déménageur, le dossier ___ (se fermer) tout seul.", accept:["se serait fermé"], ph:"conditionnel passé, verbe pronominal"},
-    {q:"Si l'ébéniste n'était pas venu lundi, je n'___ (avoir) aucune estimation à vous proposer.", accept:["aurais eu"], ph:"conditionnel passé"},
+    {q:"Si l'ébéniste n'était pas venu lundi, je n'___ (avoir) aucune estimation à vous proposer.", accept:["aurais eu"], ph:"au conditionnel passé"},
    ]},
 
   {sec:'t2', id:'t2conc', type:'write', num:'Exercice 4', tit:"Concéder, puis avancer", color:'#A5335F', cols:1,
@@ -344,7 +344,7 @@ const EXOS = [
      ["Tournure 1 — c'est … qui / c'est … que","On encadre le groupe à mettre en avant. <span class='savoir-ex'><b>C'est</b> le portage <b>qui</b> a fendu le meuble. · <b>C'est</b> à onze heures vingt-deux <b>que</b> la photo a été prise. · <b>Ce sont</b> les albums <b>qui</b> ont le plus souffert.</span> « qui » quand le groupe est sujet, « que » dans tous les autres cas."],
      ["Tournure 2 — ce qui / ce que … , c'est","On annonce d'abord, on nomme ensuite. <span class='savoir-ex'><b>Ce que</b> je demande, <b>c'est</b> la révision du troisième point. · <b>Ce qui</b> m'étonne, <b>c'est</b> qu'aucune déclaration ne m'ait été proposée.</span> C'est la tournure la plus forte à l'oral : elle oblige l'autre à attendre la fin de votre phrase."],
      ["Tournure 3 — la reprise par un pronom","<span class='savoir-ex'>Ce point-là, je <b>le</b> conteste. · Le vaisselier, <b>il</b> était intact à huit heures. · Cette clause, je <b>l'</b>ai relue trois fois.</span> Très fréquente à l'oral québécois, plus rare à l'écrit formel. Employez-la au téléphone, pas dans la lettre."],
-     ["Ce qu'il ne faut pas en faire","Une emphase par phrase, deux au maximum dans un paragraphe. Enchaînées, elles donnent un ton théâtral qui affaiblit exactement ce qu'elles devaient renforcer. Réservez-les au point que vous voulez qu'on retienne : il n'y en a jamais plus de deux."],
+     ["Ce qu'il ne faut surtout pas en faire","Une emphase par phrase, deux au maximum dans un paragraphe. Enchaînées, elles donnent un ton théâtral qui affaiblit exactement ce qu'elles devaient renforcer. Réservez-les au point que vous voulez qu'on retienne : il n'y en a jamais plus de deux."],
      ["L'accord avec « ce sont »","<span class='savoir-ex'><b>C'est</b> le portage… · <b>Ce sont</b> les deux boîtes… · <b>Ce sont</b> eux qui avaient la garde.</span> Pluriel devant un groupe pluriel, dans un écrit soigné. À l'oral, « c'est les deux boîtes » se dit et ne choque personne."],
    ]},
    items:[

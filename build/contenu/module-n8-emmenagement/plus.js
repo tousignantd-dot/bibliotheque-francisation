@@ -33,7 +33,7 @@ const PLUS = {
        ]},
 
       {t:'check', h:"Quatre décisions du premier soir",
-       p:"Quatre questions rapides.",
+       p:"Quatre questions, vite fait.",
        qs:[
          {q:"Le vaisselier est fendu. Vous le faites réparer tout de suite ?", opts:["Oui, avant que ça empire","Non, on photographie et on attend l'expert"], ok:1,
           fb:"Un bien réparé ou jeté avant l'examen n'est plus indemnisable. On photographie, on garde, on attend."},
@@ -51,9 +51,9 @@ const PLUS = {
   },
 
   prInto: {
-    eye:'Mini-leçon', tit:"Ce que la voix dit et que les mots ne disent pas",
+    eye:'Mini-leçon', tit:"Quatre mélodies, et ce qu'elles engagent",
     blocs:[
-      {t:'texte', h:"Le seul savoir de phonétique du niveau 8",
+      {t:'texte', h:"La seule chose que le niveau 8 demande encore à l'oreille",
        p:"Le programme du niveau 8 ne demande plus qu'une chose à l'oreille et à la voix : produire l'<b>intonation expressive</b>. Pas un son nouveau, pas une liaison de plus — une mélodie. À ce stade, votre prononciation est assez bonne pour qu'on vous comprenne ; ce qui vous reste à gagner est ce que la voix ajoute par-dessus les mots. Une même phrase de six mots peut dire la surprise, la déception ou la détermination, et c'est souvent la seule chose que votre interlocuteur retiendra.",
        note:"Une intonation plate se lit comme de l'indifférence, alors qu'elle n'est le plus souvent que de la prudence."},
 
@@ -61,7 +61,7 @@ const PLUS = {
        p:"Au téléphone, votre interlocuteur n'a rien d'autre. Pas votre visage, pas vos papiers, pas la fente dans le panneau du meuble. Il a une voix, et il décide à partir d'elle si vous êtes quelqu'un qui se plaint ou quelqu'un qui a raison. Dire « je conteste ce point » d'une voix qui monte à la fin transforme votre position en demande de permission — et l'autre entendra une question là où vous vouliez poser un fait.",
        note:"C'est exactement ce que dit l'experte à la fin du défi 2 : « si vous m'aviez appelée en criant, je vous aurais lu la clause. » La voix décide de la suite."},
 
-      {t:'ana', h:"La surprise — la voix monte d'un coup, à la fin",
+      {t:'ana', h:"La surprise — tout se joue sur les deux dernières syllabes",
        p:"La phrase part normalement, puis grimpe brusquement sur les deux ou trois dernières syllabes. Souvent une question courte, souvent introduite par « comment ça » ou par la reprise du mot qui étonne.",
        mots:[['On dit','Cent vingt dollars pour le meuble de ma mère ?'],['La mélodie','plate, puis très haute à la fin',true],['Le repère','on répète le chiffre qui surprend']],
        say:"Cent vingt dollars pour le meuble de ma mère ?",
@@ -73,7 +73,7 @@ const PLUS = {
        say:"Ah. Je pensais que l'inventaire réglait la question.",
        note:"Chez votre interlocuteur, c'est le signal qu'une réponse ne lui a pas plu. Il ne le dira pas ; la mélodie l'a déjà dit."},
 
-      {t:'ana', h:"La volonté — la voix descend, et chaque mot pèse",
+      {t:'ana', h:"La volonté — la mélodie descend et les syllabes se détachent",
        p:"À l'inverse de la surprise : la mélodie descend, le débit ralentit, les syllabes se détachent. C'est la voix de l'engagement, et la seule qui convient à une négociation.",
        mots:[['On dit','Ce point-là, je le conteste, et je vais vous dire pourquoi.'],['La mélodie','descendante, appuyée sur « conteste »',true],['Le repère','on ne sourit pas en le disant']],
        say:"Ce point-là, je le conteste, et je vais vous dire pourquoi.",
@@ -83,10 +83,10 @@ const PLUS = {
        p:"On ne monte pas : on ralentit. Le débit se casse à l'endroit précis où le fil s'est rompu, avec un petit silence avant le mot en cause.",
        mots:[['On dit',"Le mot « subrogation »… vous l'entendez comment ?"],['La mélodie','un creux et un silence avant le mot',true],['Le repère',"on isole le mot avec la voix"]],
        say:"Le mot subrogation, vous l'entendez comment ?",
-       note:"C'est la mélodie qui dit « une seule chose m'échappe ». Sans elle, la même phrase se comprend comme « je n'ai rien suivi »."},
+       note:"Le freinage seul dit « un mot m'échappe ». Sans lui, on entend « je n'ai rien suivi du tout »."},
 
-      {t:'labo', h:"Écoutez les quatre intentions",
-       p:"Choisissez une intention et un exemple.",
+      {t:'labo', h:"Les quatre intentions, à l'oreille",
+       p:"Choisissez l'intention, puis l'exemple.",
        axes:[
          {id:'i', lbl:'Quelle intention ?', opts:[['a','surprise'],['b','déception'],['c','volonté'],['d','incompréhension']]},
          {id:'n', lbl:'Quel exemple ?', opts:[['1','le premier'],['2','le second']]}],
@@ -100,40 +100,40 @@ const PLUS = {
          d1:{w:["Attendez, je perds le fil."], say:"Attendez, je perds le fil.", n:'débit qui freine, mélodie creusée'},
          d2:{w:["Vous avez bien dit cinq cents ?"], say:"Vous avez bien dit cinq cents ?", n:'on isole le chiffre dont on n\'est pas sûr'},
        },
-       note:"Écoutez, puis répétez à voix haute en exagérant : l'exagération est ce qui fait entrer une mélodie dans l'oreille."},
+       note:"Répétez chaque exemple en forçant le trait. On rabat tout seul ensuite ; c'est en forçant qu'une mélodie s'installe."},
 
       {t:'ex', h:"La même idée, quatre intentions",
-       p:"À gauche, ce qui est dit. À droite, ce que la voix ajoute.",
+       p:"À gauche les mots ; à droite ce que la voix en fait.",
        rows:[
          ["Le meuble n'est pas couvert ?","surprise — la voix monte sur « couvert »"],
-         ["Le meuble n'est pas couvert.","constat — la voix reste plate"],
+         ["Le meuble n'est pas couvert.","constat — la mélodie ne bouge pas"],
          ["Le meuble n'est pas couvert…","déception — la voix tombe et laisse ouvert"],
-         ["Je veux la révision.","volonté — la voix descend, les mots pèsent"],
+         ["Je veux la révision.","volonté — la mélodie descend, chaque mot porte"],
          ["Je veux la révision ?","la même phrase se retourne en doute"],
-         ["Bon. Je demande la révision.","résignation — le « bon » tombe avant le reste"],
+         ["Bon. Je demande la révision.","résignation — le « bon » tombe le premier"],
        ]},
 
       {t:'piege', h:"Trois défauts d'intonation au téléphone",
        rows:[
-         ["monter la voix à chaque phrase","descendre quand on affirme",
+         ["faire monter la voix à la fin de chaque phrase","descendre quand on affirme",
           "Une mélodie qui monte partout transforme chaque affirmation en question et chaque question en demande d'autorisation. C'est le défaut le plus fréquent, et il vient de la prudence : on n'ose pas conclure."],
-         ["parler d'une voix parfaitement égale","varier sur les trois phrases importantes",
+         ["tenir la même note du début à la fin","varier sur les trois phrases importantes",
           "Une voix plate se lit comme de l'indifférence, jamais comme du calme. Trois phrases variées dans un appel de vingt minutes suffisent."],
-         ["baisser la voix au moment de demander","garder la même mélodie qu'aux autres phrases",
+         ["baisser la voix au moment de demander","demander sur la même mélodie que le reste",
           "Beaucoup de gens s'effacent en formulant leur demande. Elle devient inaudible, et l'autre en conclut qu'elle est négociable à zéro."],
        ]},
 
       {t:'check', h:"Quatre mélodies à reconnaître",
-       p:"Quatre questions rapides.",
+       p:"Quatre questions, vite fait.",
        qs:[
          {q:"« Soixante cents la livre ? » exprime…", opts:["la surprise","la volonté"], ok:0,
-          fb:"La voix monte brusquement à la fin : c'est la marque de la surprise."},
-         {q:"Pour exprimer la volonté, la mélodie…", opts:["monte à la fin","descend et appuie"], ok:1,
-          fb:"Elle descend. Une volonté dite en montant devient une demande de permission."},
-         {q:"« Ah. Bon. » dit avec une voix qui tombe exprime…", opts:["la déception","l'incompréhension"], ok:0,
+          fb:"La montée brusque des dernières syllabes est la marque de la surprise."},
+         {q:"Quand on affirme ce qu'on veut, la mélodie…", opts:["monte sur la fin","descend et pèse"], ok:1,
+          fb:"Elle descend. Dite en montant, la même phrase quémande une permission."},
+         {q:"« Ah. Bon. » dit avec une voix qui tombe exprime…", opts:["de la déception","de l'incompréhension"], ok:0,
           fb:"La chute dès la première syllabe est la marque de la déception."},
-         {q:"Une voix parfaitement égale pendant tout l'appel se lit comme…", opts:["du calme","de l'indifférence"], ok:1,
-          fb:"Comme de l'indifférence, même quand elle n'est que de la prudence."},
+         {q:"Une voix parfaitement égale pendant tout l'appel se lit comme…", opts:["du calme","de l'indifférence polie"], ok:1,
+          fb:"Comme de l'indifférence polie, alors qu'elle n'est que de la prudence."},
        ]},
 
       {t:'revoir', h:"À retenir",
@@ -142,7 +142,7 @@ const PLUS = {
   },
 
   prPass: {
-    eye:'Mini-leçon', tit:"La phrase passive, et ce qu'elle cache",
+    eye:'Mini-leçon', tit:"La phrase passive, et qui elle efface",
     blocs:[
       {t:'texte', h:"La même scène, un autre sujet",
        p:"Le complément direct de la phrase active devient le sujet de la phrase passive, et celui qui agissait passe derrière, précédé de « par » — ou disparaît. <b>Le chauffeur a signé l'inventaire</b> devient <b>l'inventaire a été signé par le chauffeur</b>, puis, si l'on veut, <b>l'inventaire a été signé</b>. Rien n'a changé dans la réalité ; ce qui a changé, c'est de quoi la phrase parle, et qui elle nomme.",
@@ -173,12 +173,12 @@ const PLUS = {
           "Le premier décrit un état, qui peut dater de trente ans. Le second décrit une action, située dans le temps. Devant un assureur, seul le second pèse quelque chose."],
          ["mettre le participe au temps voulu","mettre l'auxiliaire être au temps voulu",
           "On écrit « a été refusé » et non « a refusé été ». Le participe reste au participe ; c'est « être » qui voyage dans les temps."],
-         ["oublier l'accord du participe","accorder avec le sujet, comme un adjectif",
+         ["laisser le participe invariable","accorder avec le sujet, comme un adjectif",
           "La rampe a été <b>tordue</b>, les boîtes ont été <b>laissées</b>, les dommages sont <b>exclus</b>. L'oubli se voit immédiatement à l'écrit."],
        ]},
 
       {t:'check', h:"Quatre décisions sur le passif",
-       p:"Quatre questions rapides.",
+       p:"Quatre questions, vite fait.",
        qs:[
          {q:"« On a refusé la réclamation » au passif donne…", opts:["la réclamation a été refusée","la réclamation est refusée"], ok:0,
           fb:"Passé composé actif → passé composé passif : « a été refusée »."},
@@ -236,7 +236,7 @@ const PLUS = {
        ]},
 
       {t:'check', h:"Quatre calculs à faire de tête",
-       p:"Quatre questions rapides.",
+       p:"Quatre questions, vite fait.",
        qs:[
          {q:"Franchise de 500 $, dommage de 940 $. Vous touchez…", opts:["940 $","440 $"], ok:1,
           fb:"La franchise se soustrait : 940 moins 500 égale 440."},
@@ -294,7 +294,7 @@ const PLUS = {
        ]},
 
       {t:'check', h:"Quatre réflexes de conversation",
-       p:"Quatre questions rapides.",
+       p:"Quatre questions, vite fait.",
        qs:[
          {q:"Un mot technique vous échappe. Vous…", opts:["faites semblant et vérifierez après","le faites préciser tout de suite, une fois"], ok:1,
           fb:"Trois secondes maintenant, contre une réponse à côté dix minutes plus tard."},
@@ -318,7 +318,7 @@ const PLUS = {
        p:"Le subjonctif ne situe rien dans le temps : il dit comment celui qui parle considère le fait. Avec l'indicatif, le fait est posé comme réel. Avec le subjonctif, il est envisagé, voulu, craint, concédé — mais pas affirmé. « Je sais qu'elle <b>vient</b> » contre « je veux qu'elle <b>vienne</b> » : dans le second cas, elle n'est peut-être jamais venue.",
        note:"C'est pourquoi il apparaît presque toujours dans une subordonnée, après « que » : il faut un verbe principal pour dire comment on considère le fait."},
 
-      {t:'texte', h:"Comment il se forme, en une règle et six exceptions",
+      {t:'texte', h:"Comment il se fabrique, en une règle et six exceptions",
        p:"On prend la troisième personne du pluriel du présent, on retire <b>-ent</b>, on ajoute <b>-e, -es, -e, -ions, -iez, -ent</b>. <span class='savoir-ex'>ils écriv<s>ent</s> → que j'écrive · ils finiss<s>ent</s> → que tu finisses · ils envoi<s>ent</s> → qu'elle envoie.</span> Les formes « nous » et « vous » se prennent, elles, sur l'imparfait : que nous envoy<b>ions</b>, que vous envoy<b>iez</b>. Six verbes seulement échappent à tout : être, avoir, aller, faire, pouvoir, savoir.",
        note:"Vouloir et valoir sont irréguliers eux aussi (que je veuille, qu'il vaille), mais ils suivent au moins la terminaison."},
 
@@ -373,7 +373,7 @@ const PLUS = {
        ]},
 
       {t:'check', h:"Quatre décisions sur le mode",
-       p:"Quatre questions rapides.",
+       p:"Quatre questions, vite fait.",
        qs:[
          {q:"« Bien que la clause ___ claire »", opts:["est","soit"], ok:1,
           fb:"« Bien que » veut le subjonctif, toujours."},
@@ -433,7 +433,7 @@ const PLUS = {
        ]},
 
       {t:'check', h:"Quatre relatifs à placer",
-       p:"Quatre questions rapides.",
+       p:"Quatre questions, vite fait.",
        qs:[
          {q:"« Le point ___ je ne renonce pas » (renoncer à…)", opts:["dont","auquel"], ok:1,
           fb:"Renoncer se construit avec « à » : auquel."},
@@ -487,11 +487,11 @@ const PLUS = {
        ]},
 
       {t:'check', h:"Quatre lectures du sommaire",
-       p:"Quatre questions rapides.",
+       p:"Quatre questions, vite fait.",
        qs:[
          {q:"« Jusqu'à 50 000 $ » signifie…", opts:["ce que vous toucherez","le maximum que l'assureur versera"], ok:1,
           fb:"Un plafond n'est jamais un montant garanti."},
-         {q:"Une bague de 3 500 $ sous une sous-limite de 2 000 $ demande…", opts:["rien de particulier","un avenant et une déclaration de valeur"], ok:1,
+         {q:"Une bague de 3 500 $ sous une sous-limite de 2 000 $ demande…", opts:["rien à faire de particulier","un avenant et une déclaration de valeur"], ok:1,
           fb:"Au-delà de la sous-limite, il faut ajouter la protection par écrit."},
          {q:"La section « responsabilité civile » sert quand…", opts:["vos biens sont abîmés","vous causez un dommage à autrui"], ok:1,
           fb:"C'est la protection de ce que vous faites subir, pas de ce que vous possédez."},
@@ -550,7 +550,7 @@ const PLUS = {
        ]},
 
       {t:'check', h:"Quatre décisions dans une contestation",
-       p:"Quatre questions rapides.",
+       p:"Quatre questions, vite fait.",
        qs:[
          {q:"Un point de votre réclamation ne tient pas. Vous…", opts:["le défendez quand même","le concédez tout de suite, à voix haute"], ok:1,
           fb:"Le concéder coûte ce point-là et achète l'attention sur les autres."},
@@ -603,7 +603,7 @@ const PLUS = {
        ]},
 
       {t:'check', h:"Quatre lectures d'une décision",
-       p:"Quatre questions rapides.",
+       p:"Quatre questions, vite fait.",
        qs:[
          {q:"« Le dommage retenu s'établit à 940 $ » veut dire que vous recevrez…", opts:["940 $","940 $ moins la franchise"], ok:1,
           fb:"Le montant retenu est toujours avant franchise. Faites la soustraction."},
@@ -623,7 +623,7 @@ const PLUS = {
   t2irr: {
     eye:'Mini-leçon', tit:"Ce qui aurait pu ne pas arriver",
     blocs:[
-      {t:'texte', h:"La règle en une ligne, et la faute en une ligne",
+      {t:'texte', h:"La règle, en une seule ligne, et la faute en une ligne",
        p:"<b>Si + plus-que-parfait, conditionnel passé.</b> « Si j'<b>avais lu</b> le connaissement, je ne l'<b>aurais</b> pas <b>signé</b>. » La faute la plus fréquente est de mettre un conditionnel après « si » : « si j'aurais lu » ne se dit ni ne s'écrit, et cela s'entend immédiatement. Après « si », jamais de conditionnel — c'est la seule chose à retenir absolument.",
        note:"Moyen mnémotechnique : les deux « r » du conditionnel ne franchissent jamais le « si »."},
 
@@ -672,7 +672,7 @@ const PLUS = {
        ]},
 
       {t:'check', h:"Quatre phrases à compléter de tête",
-       p:"Quatre questions rapides.",
+       p:"Quatre questions, vite fait.",
        qs:[
          {q:"« Si j'___ le contrat, je ne l'aurais pas signé. »", opts:["aurais lu","avais lu"], ok:1,
           fb:"Après « si », plus-que-parfait. Jamais de conditionnel."},
@@ -748,7 +748,7 @@ const PLUS = {
        ]},
 
       {t:'check', h:"Quatre choix de connecteur",
-       p:"Quatre questions rapides.",
+       p:"Quatre questions, vite fait.",
        qs:[
          {q:"« ___ la clause soit claire, elle vise le transport. »", opts:["Bien que","Même si"], ok:0,
           fb:"« soit » est un subjonctif : c'est « bien que » qui le commande."},
@@ -805,8 +805,8 @@ const PLUS = {
           "« qui » quand le groupe encadré est sujet du verbe qui suit ; « que » dans tous les autres cas. Le test : remplacez par « il » ou « le »."],
        ]},
 
-      {t:'check', h:"Quatre mises en relief",
-       p:"Quatre questions rapides.",
+      {t:'check', h:"Quatre relations à mettre en relief",
+       p:"Quatre questions, vite fait.",
        qs:[
          {q:"« C'est le portage ___ a fendu le meuble. »", opts:["qui","que"], ok:0,
           fb:"Le portage est sujet du verbe « a fendu » : qui."},
@@ -814,7 +814,7 @@ const PLUS = {
           fb:"Le groupe encadré n'est pas sujet : que."},
          {q:"Dans une lettre, « le vaisselier, il était intact » est…", opts:["parfait","trop relâché : préférez une autre tournure"], ok:1,
           fb:"La reprise par un pronom appartient à l'oral. À l'écrit, elle sonne relâchée."},
-         {q:"Combien d'emphases dans un même paragraphe ?", opts:["autant qu'on veut","une, deux au maximum"], ok:1,
+         {q:"Combien d'emphases dans un même paragraphe ?", opts:["autant de fois qu'on veut","une, deux au maximum"], ok:1,
           fb:"Enchaînées, elles s'annulent : le lecteur ne sait plus ce qui compte."},
        ]},
 
@@ -867,7 +867,7 @@ const PLUS = {
        ]},
 
       {t:'check', h:"Quatre décisions de rédaction",
-       p:"Quatre questions rapides.",
+       p:"Quatre questions, vite fait.",
        qs:[
          {q:"Le premier paragraphe du corps de la lettre…", opts:["annonce le désaccord","dit ce que vous acceptez"], ok:1,
           fb:"Accepter d'abord montre que vous n'êtes pas dans le refus de principe, et change la lecture de la suite."},
