@@ -32,6 +32,11 @@ Trois familles de fichiers, trois traitements :
   ajouté par l'un ou l'autre côté doit se retrouver dans le résultat. Un
   recollage raté échoue bruyamment au lieu de passer.
 
+Et une quatrième vérification, qui ne cherche pas ce qui manque mais ce qui
+est **en trop** : `doublons()`. Python accepte sans un mot une constante ou une
+clé définie deux fois — la seconde gagne, la première disparaît. Un module neuf
+choisit ses noms, et rien ne lui dit lesquels sont déjà pris.
+
 Le script s'arrête net sur tout conflit qu'il ne sait pas traiter, sans rien
 commiter : mieux vaut la main que le hasard.
 """
@@ -82,6 +87,50 @@ def cles_de_dictionnaires(source):
     """
     return set(re.findall(r'^\s{4}[\'"]([a-z0-9_-]+)[\'"]\s*:\s*\{', source,
                           re.MULTILINE))
+
+
+def doublons(source):
+    """Ce qui est défini deux fois — constante de premier niveau, clé de dict.
+
+    Les trois autres relevés cherchent ce qui **manque**. Celui-ci cherche ce
+    qui est **en trop**, et c'est un défaut plus sournois : Python accepte une
+    seconde définition sans un mot, la seconde gagne, et la première disparaît
+    en silence. Le 23 août 2026, l'activité 112 a nommé son scénario de jeu de
+    rôle « voisinage », déjà porté par `module-n5-voisinage` — deux fois la
+    constante, deux fois la clé. Les deux modules se sont retrouvés avec un
+    jeu de rôle mélangé, rien n'a échoué, et seul un relevé fait à la main
+    l'a montré. Un module neuf choisit ses noms ; rien ne lui dit lesquels
+    sont pris.
+    """
+    doubles = set()
+    try:
+        arbre = ast.parse(source)
+    except SyntaxError:
+        return doubles
+    vus = set()
+    for n in arbre.body:
+        if isinstance(n, ast.Assign):
+            for c in n.targets:
+                if isinstance(c, ast.Name):
+                    if c.id in vus:
+                        doubles.add(c.id)
+                    vus.add(c.id)
+    # Les clés répétées **dans un même dictionnaire**. Le relevé se fait par
+    # l'arbre et non par une expression régulière : `JEU_DE_ROLE_HORAIRE` et
+    # `JEU_DE_ROLE_COLIS` ont tous deux un cas « absence », et c'est normal.
+    # Une expression sur l'indentation en compte vingt-neuf, tous faux.
+    for n in arbre.body:
+        if not (isinstance(n, ast.Assign) and isinstance(n.value, ast.Dict)):
+            continue
+        ou = next((c.id for c in n.targets if isinstance(c, ast.Name)), '?')
+        vues = set()
+        for k in n.value.keys:
+            if not (isinstance(k, ast.Constant) and isinstance(k.value, str)):
+                continue
+            if k.value in vues:
+                doubles.add('« %s » dans %s' % (k.value, ou))
+            vues.add(k.value)
+    return doubles
 
 
 def fusionner_catalogue(branche):
@@ -171,10 +220,13 @@ def fusionner_python(chemin, branche):
                 queue.append(l)
             else:
                 break
-        if not queue:
-            raise RuntimeError(
-                '%s : conflit sans fermeture commune repérable (ligne %d) — '
-                'à résoudre à la main' % (chemin, d + 1))
+        # Pas de fermeture après le marqueur : les deux côtés ajoutent alors
+        # des blocs **déjà complets** — deux entrées d'un même dictionnaire,
+        # par exemple, chacune finie par son `},`. Le recollage est « le nôtre
+        # + le leur », sans rien intercaler. On ne le devine pas : on l'essaie,
+        # et la compilation plus les trois relevés ci-dessous tranchent. Le
+        # 23 août 2026, ce cas s'est présenté à chacune des trois fusions de
+        # la nuit et a été résolu trois fois à la main, à l'identique.
         lignes = (lignes[:d] + lignes[d + 1:m] + queue
                   + lignes[m + 1:fin] + lignes[fin + 1:])
 
@@ -191,6 +243,14 @@ def fusionner_python(chemin, branche):
     if perdues:
         raise RuntimeError('%s : le recollage a perdu les clés %s'
                            % (chemin, ', '.join(sorted(perdues))))
+    # Les doublons **nouveaux** seulement : le dépôt en porte déjà, et un
+    # contrôle qui crie sur l'existant ne se lit plus au bout de deux fois.
+    nes = doublons(resultat) - doublons(git('show', 'HEAD:' + chemin).stdout)
+    if nes:
+        raise RuntimeError(
+            '%s : la fusion définit deux fois %s — la seconde définition '
+            'gagnerait en silence. Renomme ce qu\'ajoute la branche, puis '
+            'reconstruis son module.' % (chemin, ', '.join(sorted(nes))))
     f.write_text(resultat, encoding='utf-8')
 
 
