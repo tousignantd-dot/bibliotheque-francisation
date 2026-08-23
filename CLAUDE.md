@@ -259,6 +259,17 @@ Deux pièges déjà payés :
 - **Les marqueurs de fin de région n'ont pas de saut de ligne.** Un marqueur
   qui en contient un saute silencieusement jusqu'au bloc suivant et avale la
   constante d'après.
+- **Les icônes vont avec le moteur, pas avec le contenu.** Le gabarit les
+  appelle par `/assets/interactive/<slug>/icons/…`, un chemin qu'il fabrique à
+  partir du slug : chaque module a donc besoin de sa propre copie des quatre
+  SVG. Elles vivent dans `build/gabarit/icons/`, à côté de `production.css` et
+  de `vocab.js`, et `build/module.py` les recopie à chaque construction. Avant
+  le 23 août 2026 il ne le faisait pas, et l'oubli ne se voyait nulle part :
+  le bouton reste cliquable, seule l'image manque, et ni le build, ni
+  `coherence.js`, ni le `node --check` ne regardent là. Trois 404 dans le
+  journal du serveur, et rien d'autre — `module-n3-recherche-emploi` les
+  traînait depuis sa livraison.
+
 - **Les cinq greffes partagées** — barre d'outils, dépôt de l'écrit, verrou
   des sections, reprise de séance, identité de marque — commencent chacune par
   retirer celle du gabarit, qui porte le slug (ou le numéro d'activité) de la
