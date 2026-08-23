@@ -1,0 +1,93 @@
+const DIALOGUES = {
+  prep: {
+    label: "Dialogue — Il faut appeler avant huit heures",
+    lines: [
+      ["NOURHANE","Wilner, tu sais le numéro du centre ? Le vrai, pas celui du site."],
+      ["WILNER","Le 450 555-0180. Pourquoi ? Tu es là, pourtant."],
+      ["NOURHANE","C'est pour demain. Mon garçon a une otite et la clinique est à neuf heures."],
+      ["WILNER","Alors tu appelles demain matin, avant huit heures. Pas ce soir."],
+      ["NOURHANE","Le bureau est fermé le matin. Personne ne va décrocher."],
+      ["WILNER","Justement. Tu laisses ton message dans la boîte vocale, et ça compte pareil."],
+      ["NOURHANE","Ça compte ? Une machine, ça compte ?"],
+      ["WILNER","Madame Sansregret écoute tout à huit heures et elle écrit dans le dossier."],
+      ["NOURHANE","Et si je parle mal ? Elle ne pourra pas me demander de répéter."],
+      ["WILNER","C'est ça, le piège. Ton nom, ton groupe, la date. Lentement, au début."],
+      ["NOURHANE","Mon nom est long. Ouazzani, personne ne l'écrit du premier coup."],
+      ["WILNER","Tu l'épelles. Et tu laisses ton numéro deux fois, à la fin."],
+      ["NOURHANE","Deux fois le numéro ? Ça fait long, pour une minute."],
+      ["WILNER","Une minute, c'est beaucoup. Ce qui fait long, c'est de raconter l'otite."],
+      ["NOURHANE","Bon. Le nom, le groupe, la date, la raison en une phrase, le numéro."],
+      ["WILNER","Voilà. Et pour le papier de la clinique, tu le donnes à Fabien jeudi."],
+    ]
+  },
+
+  t1: {
+    label: "Dialogue — Vous avez rejoint le Centre de la Pointe-aux-Ormes",
+    lines: [
+      ["VOIX","Bonjour. Vous avez rejoint le Centre d'éducation des adultes de la Pointe-aux-Ormes."],
+      ["VOIX","Nos bureaux sont ouverts de huit heures à seize heures, du lundi au vendredi."],
+      ["VOIX","Pour signaler une absence ou un retard, appuyez sur le 1."],
+      ["VOIX","Pour parler au secrétariat, appuyez sur le 2."],
+      ["VOIX","Pour connaître le numéro d'un poste, appuyez sur le 3."],
+      ["VOIX","Pour réentendre ce menu, ne faites rien."],
+      ["NOURHANE","Le 1. C'est bien le 1, pour une absence."],
+      ["VOIX","Vous avez composé le 1. Signalement d'une absence ou d'un retard."],
+      ["VOIX","Laissez votre message après le signal sonore. Pour terminer, raccrochez."],
+      ["NOURHANE","Bonjour. Ici Nourhane Ouazzani, groupe 6, francisation de jour."],
+      ["NOURHANE","Je vous appelle pour signaler mon absence aujourd'hui, lundi le 14."],
+      ["NOURHANE","Je ne serai pas au cours parce que mon fils a une otite et j'ai un rendez-vous à la clinique à neuf heures."],
+      ["NOURHANE","Je serai en classe demain matin et je remettrai le papier de la clinique à monsieur Corriveau jeudi."],
+      ["NOURHANE","Mon nom s'épelle O, U, A, deux Z, A, N, I. Ouazzani."],
+      ["NOURHANE","Vous pouvez me rappeler au 450 555-0147. Je répète : 450 555-0147."],
+      ["NOURHANE","Merci beaucoup. Bonne journée."],
+    ]
+  },
+
+  t2: {
+    label: "Dialogue — Trois messages dans ma boîte vocale",
+    lines: [
+      ["NOURHANE","Trois messages. Je prends un crayon avant d'écouter."],
+      ["VOIX","Vous avez trois nouveaux messages. Premier message, reçu aujourd'hui à huit heures douze."],
+      ["MURIELLE","Bonjour madame Ouazzani, ici Murielle Sansregret, du secrétariat de la Pointe-aux-Ormes."],
+      ["MURIELLE","J'ai bien reçu votre message de ce matin et j'ai inscrit votre absence au dossier."],
+      ["MURIELLE","Par contre, une absence n'est motivée que si vous nous remettez une note écrite et signée."],
+      ["MURIELLE","Apportez-la-moi avant vendredi, au comptoir, avec le papier de la clinique. Merci."],
+      ["NOURHANE","Une note écrite. Avant vendredi. Bon."],
+      ["VOIX","Deuxième message, reçu aujourd'hui à midi quarante."],
+      ["FABIEN","Bonjour Nourhane, c'est Fabien Corriveau, votre enseignant du groupe 6."],
+      ["FABIEN","On a fait les nombres et l'heure ce matin ; je vous ai gardé les feuilles."],
+      ["FABIEN","Le rattrapage a lieu demain sur l'heure du dîner, au local 214, si ça vous convient."],
+      ["FABIEN","Ne vous inquiétez pas pour aujourd'hui : ça arrive à tout le monde. À demain."],
+      ["NOURHANE","Local 214, sur l'heure du dîner. Je note."],
+      ["VOIX","Troisième message, reçu aujourd'hui à quinze heures cinq."],
+      ["MURIELLE","Madame Ouazzani, Murielle Sansregret encore. Un détail que j'ai oublié."],
+      ["MURIELLE","Vous êtes aussi inscrite au cours d'informatique du soir. Si vous l'abandonnez, il faut nous le dire par écrit avant la fin du mois."],
+      ["MURIELLE","Sinon, l'abandon est inscrit comme un échec, et ce n'est pas la même chose du tout."],
+      ["NOURHANE","Ça, je ne le savais pas. Grâce à elle, je l'apprends à temps."],
+    ]
+  },
+
+  t3: {
+    label: "Dialogue — Votre note, il manque une chose",
+    lines: [
+      ["NOURHANE","Monsieur Corriveau, voici ma note pour lundi. Est-ce que je peux vous la lire ?"],
+      ["FABIEN","Lisez-la-moi, oui. C'est le meilleur moyen de voir ce qui manque."],
+      ["NOURHANE","Laval, le 16 septembre. Madame, Monsieur. Je suis Nourhane Ouazzani, du groupe 6."],
+      ["FABIEN","Bon début. La date et le groupe sont là dès les deux premières lignes."],
+      ["NOURHANE","J'ai été absente le lundi 14 septembre parce que mon fils est tombé malade."],
+      ["FABIEN","Une phrase, un motif. C'est exactement ce qu'il faut."],
+      ["NOURHANE","Je suis allée à la clinique avec lui et je suis revenue trop tard pour le cours."],
+      ["FABIEN","Attention : vous avez écrit « je suis allé », sans e. C'est vous qui êtes allée."],
+      ["NOURHANE","Avec être, le participe s'accorde. Je l'oublie chaque fois."],
+      ["FABIEN","Chaque fois, mais vous vous en souvenez quand vous relisez à voix haute. Continuez."],
+      ["NOURHANE","Je rattraperai la matière au local 214 et je vous remettrai le papier de la clinique."],
+      ["FABIEN","Le futur, ici, c'est ce que le centre attend. Vous dites ce qui va se passer."],
+      ["NOURHANE","Veuillez agréer mes salutations. Nourhane Ouazzani. Et je signe en dessous."],
+      ["FABIEN","Il manque une chose, et une seule : à qui la note est adressée."],
+      ["NOURHANE","Au secrétariat ? À vous ?"],
+      ["FABIEN","Au secrétariat, avec mon nom en dessous. Ainsi, madame Sansregret sait qu'elle me l'a montrée."],
+      ["NOURHANE","Je réécris la ligne du haut et je descends au comptoir avant midi."],
+      ["FABIEN","Faites-en une copie avant. Une note remise sans copie, ça n'a jamais existé."],
+    ]
+  },
+};
