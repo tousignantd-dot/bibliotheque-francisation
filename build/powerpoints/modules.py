@@ -1429,6 +1429,43 @@ MODULES = {
                         'La réunion',
                         'Se perfectionner'),
     },
+
+    # Niveau 8 · Recherche d'emploi. `build/cadre.py 8 "Recherche"` ne donne
+    # que **trois** intentions, et elles se lisent comme un plan de module :
+    # s'informer sur une entreprise ou sur un emploi en écoutant, s'y informer
+    # en lisant, et participer à une entrevue de sélection comportant
+    # **plusieurs étapes** (comprise et produite). Un défi par intention, donc
+    # `GRILLE_3_DEFIS` — et la troisième, à elle seule, justifierait la
+    # grille : un processus en trois étapes ne se joue pas en une séance.
+    #
+    # Aucune intention de production écrite dans la situation. Le courriel de
+    # suivi de « Je me lance » vient donc des **attentes de fin de cours** du
+    # niveau, qui demandent que l'adulte « rédige des lettres ou des courriels
+    # d'affaires ayant des objectifs particuliers en s'assurant que leur forme
+    # et leur contenu sont appropriés ».
+    #
+    # Trois voisins sur la même situation, aucun recoupement.
+    # `module-n3-recherche-emploi` (83) offre ses services de vive voix au
+    # comptoir ; `module-n6-recherche` (59) répond à une offre précise et
+    # passe une courte entrevue ; `module-n7-recherche` (110) lit l'économie
+    # d'une région pour décider où chercher. Ici l'offre est trouvée et la
+    # candidature déposée : tout le module se passe **pendant** le processus
+    # de sélection, et le travail n'est plus de chercher mais de soutenir sa
+    # candidature — répondre à l'objection qui n'est pas formulée, et
+    # négocier ce qui n'est pas affiché.
+    'module-n8-recherche': {
+        'numero': 2, 'activite': 119, 'niveau': 8,
+        'titre': 'Passer au travers du processus',
+        'chapeau': "Se renseigner sur une entreprise de vive voix et par "
+                   "écrit, comprendre les étapes d'un processus de sélection, "
+                   "faire valoir un parcours qui n'entre pas dans la case, "
+                   "répondre à ce qui n'est pas demandé et négocier ce qui "
+                   "n'est pas affiché.",
+        'seances': GRILLE_3_DEFIS,
+        'blocs': _blocs("L'appel de présélection",
+                        "Lire l'entreprise",
+                        "L'entrevue devant le comité"),
+    },
 }
 
 # L'ordre d'affichage : par niveau, puis par numéro à l'intérieur du niveau.
