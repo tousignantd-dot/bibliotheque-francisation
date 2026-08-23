@@ -327,8 +327,22 @@ def main():
     # gêne aucune fusion, et refuser de travailler pour ça obligeait à
     # commiter n'importe quoi en vitesse — exactement ce qu'on veut
     # éviter juste avant de toucher à des fichiers partagés.
-    if git('status', '--porcelain', '--untracked-files=no').stdout.strip():
+    #
+    # Les MP3 en cours de production sont **hors de ce contrôle**. Produire
+    # l'audio et fusionner un module sont deux travaux qui ne se rencontrent
+    # jamais : le premier réécrit `assets/interactive/*/…mp3`, le second des
+    # fichiers de contenu et de configuration. Or une production complète dure
+    # des heures et laisse en permanence des milliers de fichiers modifiés ou
+    # supprimés — exiger un arbre propre reviendrait à interdire toute fusion
+    # pendant ce temps, ou à commiter un dépôt à moitié muet.
+    sale = [l for l in git('status', '--porcelain',
+                           '--untracked-files=no').stdout.splitlines()
+            if not l.rstrip().endswith('.mp3')
+            and not l.rstrip().endswith('.mp3"')]
+    if sale:
         print('✗ l’arbre de travail n’est pas propre — commite ou range d’abord')
+        for l in sale[:5]:
+            print('   ' + l)
         return 2
 
     fusion = git('merge', '--no-edit', branche, verifier=False)

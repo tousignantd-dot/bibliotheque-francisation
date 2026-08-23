@@ -43,10 +43,46 @@ EXT = {".jpg", ".jpeg", ".png", ".webp"}
 MOTIFS = ("texte", "mains", "décor", "hors sujet")
 
 
+def registre():
+    """Le niveau et le numéro de chaque module, depuis la source unique.
+
+    `build/powerpoints/modules.py` les porte déjà ; les déduire du slug
+    échouerait sur les modules du niveau 4, dont le nom ne dit pas le niveau
+    (`module-achat`, `module-probleme`…). Un module absent du registre —
+    une activité ancienne, un atelier — est rangé à part plutôt que rattaché
+    au hasard.
+    """
+    import sys
+    sys.path.insert(0, str(BASE / 'build' / 'powerpoints'))
+    try:
+        import modules as reg
+    except Exception:
+        return {}
+    return {slug: (m.get('niveau'), m.get('numero'))
+            for slug, m in reg.MODULES.items()}
+
+
+REGISTRE = registre()
+
+
+def rang(module):
+    """(niveau, numéro) pour trier ; les modules hors registre passent après."""
+    n, num = REGISTRE.get(module, (None, None))
+    return (99 if n is None else n, 999 if num is None else num, module)
+
+
 def recenser(filtre=None):
-    """Rend la liste [(module, chemin_relatif_au_depot)], triée, stable."""
+    """Rend la liste [(module, chemin_relatif_au_depot)], **par niveau**.
+
+    L'ordre est celui du parcours de l'élève — niveau 1 d'abord, puis les
+    modules dans l'ordre du cours — et non l'ordre alphabétique des dossiers,
+    qui mêlait les huit niveaux. C'est ce qui permet de relire les images
+    d'un niveau d'un seul tenant : un décor qui convient au niveau 6 peut être
+    trop chargé pour le niveau 1, et ça ne se voit qu'en les voyant ensemble.
+    """
     trouvees = []
-    for module in sorted(d.name for d in RACINE.iterdir() if d.is_dir()):
+    for module in sorted((d.name for d in RACINE.iterdir() if d.is_dir()),
+                         key=rang):
         if filtre and filtre != module:
             continue
         for nom in DOSSIERS:
@@ -82,6 +118,7 @@ def page(images, ctx):
 
     sans_contexte = 0
     blocs = []
+    dernier_niveau = [object()]     # rien ne peut lui être égal au départ
     for module, lot in par_module.items():
         vignettes = []
         for numero, chemin in lot:
@@ -102,11 +139,32 @@ def page(images, ctx):
                 '<img loading="lazy" src="%s" alt="">'
                 '%s'
                 '<figcaption>%s</figcaption>'
-                '<div class="motifs">%s</div></figure>'
+                '<div class="motifs">%s</div>'
+                '<div class="motrow">'
+                '<input class="mot" type="text" '
+                'placeholder="En un mot : ce qu\'il faudrait à la place…">'
+                '<button class="dicte" title="Dicter" aria-label="Dicter">'
+                '<svg viewBox="0 0 24 24" width="15" height="15" fill="none" '
+                'stroke="currentColor" stroke-width="2.2" '
+                'stroke-linecap="round" stroke-linejoin="round">'
+                '<rect x="9" y="2" width="6" height="11" rx="3"></rect>'
+                '<path d="M5 10a7 7 0 0 0 14 0"></path>'
+                '<path d="M12 17v4"></path></svg></button>'
+                '</div>'
+                '</figure>'
                 % (numero, html.escape(chemin), numero,
                    html.escape(chemin), attendu, nom,
                    "".join('<button data-motif="%s">%s</button>' % (m, m)
                            for m in MOTIFS)))
+        # Un bandeau quand on change de niveau : sans lui, quatre-vingts
+        # sections se suivent et on ne sait plus à quel niveau on relit.
+        niveau = REGISTRE.get(module, (None, None))[0]
+        if niveau != dernier_niveau[0]:
+            dernier_niveau[0] = niveau
+            titre = ('Niveau %s' % niveau if niveau
+                     else 'Hors registre — ateliers et activités anciennes')
+            blocs.append('<h1 class="niv" id="niv%s">%s</h1>'
+                         % (niveau or 'x', html.escape(titre)))
         blocs.append(
             '<section><h2>%s <small>%d images · n° %d à %d</small></h2>'
             '<div class="grille">%s</div></section>'
@@ -129,6 +187,10 @@ def page(images, ctx):
            border-bottom:1px solid var(--trait); z-index:5; }
   h1 { margin:0 0 4px; font-size:20px; }
   header p { margin:0; color:var(--gris); }
+  h1.niv { margin:40px 0 4px; font-size:15px; letter-spacing:.06em;
+           text-transform:uppercase; color:var(--gris);
+           border-top:2px solid var(--encre); padding-top:10px; }
+  h1.niv:first-of-type { margin-top:20px; }
   h2 { margin:32px 0 10px; font-size:16px; }
   h2 small { color:var(--gris); font-weight:400; margin-left:8px; }
   .grille { display:grid; gap:14px;
@@ -152,6 +214,20 @@ def page(images, ctx):
   .motifs button { flex:1 1 40%%; border:1px solid var(--trait); background:#fff;
        color:var(--gris); font-size:11px; padding:4px 0; border-radius:5px;
        cursor:pointer; }
+  .motrow { display:none; gap:5px; margin-top:6px; align-items:stretch; }
+  .v.refaire .motrow { display:flex; }
+  .mot { flex:1; min-width:0; padding:6px 8px; font:inherit; font-size:12px;
+         border:1px solid var(--trait); border-radius:5px; background:#fff; }
+  .dicte { flex:0 0 auto; width:30px; border:1px solid var(--trait);
+           border-radius:5px; background:#fff; color:var(--gris);
+           cursor:pointer; display:flex; align-items:center;
+           justify-content:center; padding:0; }
+  .dicte:hover { color:var(--encre); }
+  .dicte.ecoute { background:var(--rouge); border-color:var(--rouge);
+                  color:#fff; animation:pulse 1.2s ease-in-out infinite; }
+  @keyframes pulse { 50%% { opacity:.55; } }
+  .sansvoix .dicte { display:none; }
+  .mot:focus { outline:2px solid var(--rouge); outline-offset:-1px; }
   .motifs button.choisi { background:var(--rouge); border-color:var(--rouge);
        color:#fff; font-weight:600; }
   footer { position:fixed; bottom:0; left:0; right:0; background:#101418;
@@ -182,42 +258,123 @@ def page(images, ctx):
 <script>
 const INDEX = %(index)s;
 const CLE = "planche-images-a-refaire";
-// { "47": "texte" } — la valeur vide veut dire « à refaire, motif non dit ».
-const choix = JSON.parse(localStorage.getItem(CLE) || "{}");
+// { "47": {motif: "texte", mot: "une cuisine plus petite"} }
+// Le motif dit COMMENT réparer, le mot dit QUOI mettre : le premier oriente
+// le prompt, le second le remplace. Les deux sont facultatifs — une vignette
+// marquée sans rien d'autre veut déjà dire « celle-ci ne va pas ».
+const brut = JSON.parse(localStorage.getItem(CLE) || "{}");
+// Reprise des marquages faits avant l'ajout du champ, qui étaient des chaînes.
+const choix = {};
+for (const [n, v] of Object.entries(brut))
+  choix[n] = (typeof v === "string") ? {motif: v, mot: ""} : v;
 
 function rendre() {
   document.querySelectorAll(".v").forEach(v => {
     const n = v.dataset.n, marque = n in choix;
     v.classList.toggle("refaire", marque);
     v.querySelectorAll(".motifs button").forEach(b => {
-      b.classList.toggle("choisi", marque && choix[n] === b.dataset.motif);
+      b.classList.toggle("choisi", marque && choix[n].motif === b.dataset.motif);
     });
+    const champ = v.querySelector(".mot");
+    // On n'écrase pas ce que la personne est en train de taper.
+    if (champ && document.activeElement !== champ)
+      champ.value = marque ? (choix[n].mot || "") : "";
   });
+  majListe();
+}
+
+function majListe() {
   const tri = Object.keys(choix).sort((a, b) => a - b);
   document.getElementById("compte").textContent = tri.length + " à refaire";
   document.getElementById("liste").value = tri.length
-    ? tri.map(n => n + "  " + (choix[n] || "—").padEnd(6) + "  "
-                 + INDEX[n].chemin).join("\\n")
+    ? tri.map(n => {
+        const c = choix[n];
+        return n + "  " + (c.motif || "—").padEnd(10) + "  " + INDEX[n].chemin
+             + (c.mot ? "\\n        → " + c.mot : "");
+      }).join("\\n")
     : "";
   localStorage.setItem(CLE, JSON.stringify(choix));
 }
 
 document.querySelectorAll(".v").forEach(v => {
   const n = v.dataset.n;
+  const champ = v.querySelector(".mot");
+
   v.addEventListener("click", e => {
-    // Un clic sur une pastille choisit le motif ; ailleurs, il bascule.
+    // Un clic dans le champ de texte ne doit surtout pas décocher la vignette.
+    if (e.target.closest(".mot")) return;
     const pastille = e.target.closest(".motifs button");
     if (pastille) {
-      choix[n] = choix[n] === pastille.dataset.motif
-        ? "" : pastille.dataset.motif;
+      const m = pastille.dataset.motif;
+      choix[n].motif = (choix[n].motif === m) ? "" : m;
     } else if (n in choix) {
       delete choix[n];
     } else {
-      choix[n] = "";
+      choix[n] = {motif: "", mot: ""};
     }
     rendre();
   });
+
+  const bouton = v.querySelector(".dicte");
+  if (bouton) {
+    bouton.addEventListener("click", e => {
+      e.stopPropagation();          // ne pas décocher la vignette
+      dicter(champ, bouton);
+    });
+  }
+
+  if (champ) {
+    champ.addEventListener("input", () => {
+      if (!(n in choix)) choix[n] = {motif: "", mot: ""};
+      choix[n].mot = champ.value;
+      localStorage.setItem(CLE, JSON.stringify(choix));
+      // La liste du bas se tient à jour à chaque frappe, mais on ne rerend
+      // pas les vignettes : le champ perdrait le curseur.
+      majListe();
+    });
+  }
 });
+// La reconnaissance vocale du navigateur. Elle n'existe pas partout — sans
+// elle, les boutons de dictée sont simplement masqués et le champ reste au
+// clavier. localhost compte comme contexte sécurisé, donc pas besoin de HTTPS.
+const Reco = window.SpeechRecognition || window.webkitSpeechRecognition;
+if (!Reco) document.body.classList.add("sansvoix");
+let enCours = null;               // une seule dictée à la fois
+
+function dicter(champ, bouton) {
+  if (enCours) {                  // recliquer arrête, ou bascule sur l'autre
+    const memeChamp = enCours.champ === champ;
+    enCours.reco.stop();
+    if (memeChamp) return;
+  }
+  const reco = new Reco();
+  reco.lang = "fr-CA";
+  reco.interimResults = true;     // le texte s'écrit pendant qu'on parle
+  reco.continuous = false;
+  const depart = champ.value ? champ.value.trim() + " " : "";
+
+  reco.onresult = e => {
+    let texte = "";
+    for (let i = 0; i < e.results.length; i++) texte += e.results[i][0].transcript;
+    champ.value = depart + texte.trim();
+    champ.dispatchEvent(new Event("input", {bubbles: true}));
+  };
+  reco.onerror = e => {
+    // « not-allowed » = micro refusé ; on le dit dans le champ plutôt que
+    // dans une alerte, qui ferait perdre la place dans la page.
+    if (e.error === "not-allowed" || e.error === "service-not-allowed")
+      champ.placeholder = "micro refusé — autorisez-le dans le navigateur";
+  };
+  reco.onend = () => {
+    bouton.classList.remove("ecoute");
+    if (enCours && enCours.reco === reco) enCours = null;
+  };
+
+  bouton.classList.add("ecoute");
+  enCours = {reco, champ};
+  reco.start();
+}
+
 document.getElementById("copier").addEventListener("click", () => {
   const t = document.getElementById("liste");
   t.select();
