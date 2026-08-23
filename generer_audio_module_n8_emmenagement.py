@@ -1,41 +1,51 @@
 #!/usr/bin/env python3
 """
-Générateur d'audio — module « Passer au travers du processus » (niveau 8)
-(module-n8-recherche, activité 119).
+Générateur d'audio — module « Ce qui est couvert, et ce qui se défend »
+(module-n8-emmenagement, niveau 8, activité 120).
 
 Deux familles de fichiers, comme dans les autres modules :
 
-  1. les répliques des quatre extraits → <module>/<dialId>/line_NN_<perso>.mp3
+  1. les répliques des trois extraits → <module>/<dialId>/line_NN_<perso>.mp3
   2. les mots, phrases et mini-leçons  → <module>/sons/<fileId>.mp3
 
 Les dialogues ne sont pas recopiés ici : ils sont lus dans
-`build/contenu/module-n8-recherche/dialogues.js`, la source unique.
+`build/contenu/module-n8-emmenagement/dialogues.js`, la source unique.
 
-Niveau 8, donc des **discours étendus** : les quatre extraits font de vingt à
-vingt-huit répliques, et l'entrevue du défi 3 est la plus longue — c'est la
-seule longueur qui laisse une objection s'installer, être entendue, et recevoir
-une réponse. La séance d'information du défi 2 est presque un monologue : douze
-répliques d'affilée du même locuteur, coupées par deux questions.
+**Trois extraits et non quatre**, parce que le module n'a que deux défis — la
+situation du programme ne porte qu'une intention, que les savoirs du cours
+déplient en exactement deux conversations. Les extraits sont d'autant plus
+longs : vingt-trois, trente-six et trente-trois répliques. Celui du défi 1
+contient un **exposé de quatorze répliques d'affilée** du même locuteur, coupé
+par deux questions — la forme que le programme du niveau 8 appelle « suivre le
+déroulement d'exposés bien structurés ».
 
 **Quatre personnages, quatre voix distinctes.** Le dépôt n'en a que quatre —
 deux féminines, deux masculines — et ce module les prend toutes, une chacune :
 il n'y a donc **aucun partage à vérifier**, aucun risque d'entendre la même
-voix se répondre à elle-même. C'est le cas le plus confortable, et il a été
-obtenu en comptant les personnages par genre **avant** d'écrire les dialogues,
-comme `CLAUDE.md` le demande depuis `module-n7-habitation`.
+voix se répondre à elle-même. Compté par extrait et par genre **avant**
+d'écrire la première réplique, comme `CLAUDE.md` le demande depuis
+`module-n7-habitation` : deux femmes en tout, et jamais trois dans un même
+extrait.
 
 Le relevé des sons (famille 2) n'a **pas** été fait par le navigateur ni par
 `build/collecte_sons.py`, qu'il ne faut pas lancer :
 
-    node build/releve_sons.js module-n8-recherche > sons_module_n8_recherche.json
+    node build/releve_sons.js module-n8-emmenagement > sons_module_n8_emmenagement.json
 
 Vingt lignes de node sur `exos.js`, `carrier.js` et `plus.js`, qui reproduisent
 les trois endroits du gabarit appelant `playWord`. Pas de port à réserver, pas
 de processus à arrêter, pas d'envoi tardif qui écraserait un relevé complet par
-un relevé partiel — les deux incidents que `CLAUDE.md` raconte. 334 clés au
+un relevé partiel — les deux incidents que `CLAUDE.md` raconte. 152 clés au
 relevé du 23 août 2026.
 
-Usage :  python3 generer_audio_module_n8_recherche.py [--force] [--only prefixe,...]
+**Le nom du manifeste porte le slug de CE module.** Ce n'est pas une évidence :
+`generer_audio_module_n8_recherche.py` pointait sur `sons_module_n7_recherche
+.json`, qui existe, si bien qu'il aurait produit les 221 sons du module voisin
+au lieu de ses 334 — sans lever la moindre erreur, puisque le fichier se lit.
+Vérifier que le nom du manifeste et le nom du script parlent du même module
+prend deux secondes et vaut la peine.
+
+Usage :  python3 generer_audio_module_n8_emmenagement.py [--force] [--only prefixe,...]
 """
 import json
 import os
@@ -55,19 +65,16 @@ import sys as _sys, pathlib as _pl
 _sys.path.insert(0, str(_pl.Path(__file__).resolve().parent / 'build'))
 from voix import enrichir  # contexte français pour les mots isolés
 
+MODULE = "module-n8-emmenagement"
 RACINE = Path(__file__).resolve().parent
-SORTIE = RACINE / "assets/interactive/module-n8-recherche"
-# Corrigé le 23 août 2026, en produisant l'activité 120 : cette ligne lisait
-# `sons_module_n7_recherche.json`, le manifeste du module **voisin**. Le
-# fichier existe, donc rien ne levait d'erreur — le script aurait produit les
-# 221 sons du niveau 7 dans `assets/interactive/module-n8-recherche/sons/` au
-# lieu de ses 334, et neuf clés seulement se recoupent. Le module serait sorti
-# muet aux trois quarts, avec des extraits d'un autre module par-dessus.
-MANIFESTE = RACINE / "sons_module_n8_recherche.json"
-DIALOGUES_JS = RACINE / "build/contenu/module-n8-recherche/dialogues.js"
+SORTIE = RACINE / "assets/interactive" / MODULE
+MANIFESTE = RACINE / ("sons_%s.json" % MODULE.replace('-', '_'))
+DIALOGUES_JS = RACINE / "build/contenu" / MODULE / "dialogues.js"
 
 # Mêmes identifiants que les autres modules, pour que les voix soient les
-# mêmes d'un module à l'autre.
+# mêmes d'un module à l'autre. La voix « enseignante » a changé le 23 août
+# 2026 : l'ancienne (K7gx0ylJdff0yjM2uVQS) est abandonnée, elle débitait
+# 20,8 caractères par seconde contre 17,7 pour celle-ci.
 VOIX = {
     "enseignante": "mActWQg9kibLro6Z2ouY",   # 👩 féminine #1
     "feminin_2":   "WW0JfNPk5DgcQdM0d6X6",   # 👩 féminine #2
@@ -78,25 +85,29 @@ VOIX = {
 # Quatre personnages, quatre voix — une chacune. Aucun partage, donc aucune
 # contrainte de croisement à vérifier :
 #
-#   prep  SHIRIN, ALEXANDRE          t1  DANIELLE, SHIRIN
-#   t2    RÉAL, SHIRIN               t3  DANIELLE, SHIRIN, RÉAL
+#   prep  AMIRA, DENIS          t1  AMIRA, GHISLAIN
+#   t2    AMIRA, VERONIQUE
 #
-# Le défi 3 réunit trois personnages, dont deux femmes : c'est la limite exacte
-# du dépôt, et elle tient parce que Danielle prend `enseignante` et Shirin
+# Deux femmes en tout dans le module, et jamais plus d'une par extrait avec
+# AMIRA : t2 les réunit toutes les deux, ce qui est exactement la limite du
+# dépôt, et elle tient parce que VERONIQUE prend `enseignante` et AMIRA
 # `feminin_2`. Une troisième femme aurait été impossible.
 #
 # Le choix de qui prend `enseignante` n'est pas neutre : c'est la seule voix
-# que `voix_lente` ralentit à 0,85. Elle va à DANIELLE, la conseillère en
-# acquisition de talents, qui mène l'appel de présélection et énonce les trois
-# étapes du processus — exactement le rôle pour lequel un débit posé a été
-# introduit. RÉAL garde `narrateur`, qui n'est pas ralentie : sa séance
-# d'information **est** l'exercice d'écoute longue du module, et la ralentir en
-# retirerait la difficulté que le niveau 8 vise.
+# que `voix_lente` ralentit à 0,85. Elle va à VERONIQUE, l'experte en sinistre,
+# qui lit une clause de contrat mot pour mot et énonce une décision en trois
+# points — exactement le rôle pour lequel un débit posé a été introduit.
+#
+# GHISLAIN, le courtier, garde `masculin_1`, **et surtout pas `enseignante`** :
+# c'est lui qui porte l'exposé de quatorze répliques d'affilée du défi 1, et
+# quatorze répliques ralenties de suite seraient interminables. C'est la
+# consigne tirée du journal de l'activité 119, appliquée ici sans l'avoir
+# payée.
 VOIX_PERSO = {
-    "SHIRIN":    "feminin_2",
-    "DANIELLE":  "enseignante",
-    "ALEXANDRE": "masculin_1",
-    "RÉAL":      "narrateur",
+    "AMIRA":     "feminin_2",
+    "VERONIQUE": "enseignante",
+    "GHISLAIN":  "masculin_1",
+    "DENIS":     "narrateur",
 }
 
 # Voix des mots isolés et des mini-leçons : celle de l'enseignante.
@@ -107,8 +118,8 @@ def slug(nom):
     """Même règle que charSlug() dans le HTML — sinon le fichier n'est pas trouvé.
 
     À ne surtout pas « améliorer » avec une expression régulière qui
-    normaliserait tout : charSlug garde le trait d'union, et le module
-    voisin a bien un `line_03_jean-philippe.mp3`.
+    normaliserait tout : charSlug garde le trait d'union, et un module voisin
+    a bien un `line_03_jean-philippe.mp3`.
     """
     s = unicodedata.normalize("NFD", nom.lower())
     s = "".join(c for c in s if unicodedata.category(c) != "Mn")
@@ -148,14 +159,11 @@ ATTENTE_BASE_S = 4   # doublée à chaque échec : 4, 8, 16, 32 s
 def parle(cle, texte, voix, chemin):
     """Un extrait, avec reprise sur coupure réseau.
 
-    Le 20 août 2026, l'API d'ElevenLabs a coupé la liaison en plein
-    téléversement (`SSLEOFError`) pendant une bonne heure, par intermittence.
-    Le script s'arrêtait alors sur la trace d'une exception, au milieu d'une
-    série de deux cents extraits — il fallait le relancer à la main, et il
-    reprenait où il en était, mais sans personne pour le surveiller il ne
-    faisait rien. Une panne passagère du fournisseur n'est pas une erreur du
-    programme : on réessaie, en doublant l'attente, et on ne déclare l'échec
-    qu'après cinq tentatives.
+    L'API d'ElevenLabs coupe la liaison par intermittence (`SSLEOFError`),
+    plusieurs fois par jour. Le script s'arrêtait alors sur la trace d'une
+    exception, au milieu d'une série de deux cents extraits. Une panne
+    passagère du fournisseur n'est pas une erreur du programme : on réessaie,
+    en doublant l'attente, et on ne déclare l'échec qu'après cinq tentatives.
     """
     for essai in range(1, ESSAIS + 1):
         try:
@@ -223,15 +231,15 @@ def main():
                            VOIX[VOIX_PERSO[perso]], SORTIE / dial_id / nom))
 
     if not MANIFESTE.exists():
-        print(f"❌ {MANIFESTE.name} introuvable — "
-              f"lancer build/collecte_sons.py module-n8-recherche")
+        print(f"❌ {MANIFESTE.name} introuvable — lancer\n"
+              f"   node build/releve_sons.js {MODULE} > {MANIFESTE.name}")
         sys.exit(1)
     sons = json.loads(MANIFESTE.read_text(encoding="utf-8"))
     for file_id, texte in sons.items():
         taches.append((f"sons/{file_id}", texte, VOIX_MOTS,
                        SORTIE / "sons" / f"{file_id}.mp3"))
 
-    print(f"🔊 module-n8-recherche — {len(taches)} extraits "
+    print(f"🔊 {MODULE} — {len(taches)} extraits "
           f"({sum(len(v) for v in dialogues.values())} répliques "
           f"sur {len(dialogues)} dialogues + {len(sons)} sons)\n")
 
