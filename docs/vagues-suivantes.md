@@ -3530,3 +3530,163 @@ sont pas non plus** : ces deux tables se sont arrêtées aux modules du niveau 4
 et ne font plus partie de la chaîne. Le noter ici évite au prochain agent de
 se demander s'il a oublié une étape — et signale, s'il faut un jour les
 remettre à jour, que c'est un chantier à part et non un oubli de module.
+
+**23 août 2026 — activité 117, `module-n7-classe`.** « Faire parler l'équipe »,
+niveau 7, `numero` 10, `GRILLE_3_DEFIS`. Scénario inventé : Neusa Marinho,
+38 ans, arrivée du Brésil il y a quatre ans, couturière dans un atelier de
+Rivière-Noire, suit sa francisation le soir au Centre d'éducation des adultes
+de la Pointe-aux-Ormes. Son enseignante Ghislaine Turcotte confie à chaque
+équipe un sujet de recherche **et un rôle** : Neusa n'a pas celui qu'elle
+espérait — elle voulait chercher les sources, on lui demande d'animer. Perrine
+Auclair, agente de projet, vient parler en classe des îlots de chaleur et des
+arbres de rue (défi 1) ; Ghislaine reprend avec elle et Miguel un résumé trop
+proche de sa source (défi 2) ; puis Youssouf Bangoura et Miguel Ospina ne
+s'entendent plus sur la méthode de terrain, et c'est Neusa qui doit conduire
+(défi 3). 23 exercices, 14 mini-leçons, 4 dialogues (84 répliques), 20 mots,
+10 images, **363 extraits audio** (84 répliques et 279 sons), 16 séances
+(177 diapositives, 126 blocs de fiches). Originalité : 1 392 chaînes visibles,
+**36 identiques** dans les 61 450 des soixante-neuf autres modules, soit
+**2,6 %**.
+
+*Ce qui le distingue de ses trois voisins de situation*, en une phrase, écrite
+avant le scénario : au niveau 1 (`module-n1-classe`) on comprend une consigne
+de deux mots, au niveau 2 (`module-n2-classe`) on demande une permission, au
+niveau 6 (`module-n6-classe`) Milagros **exécute** un travail de recherche
+qu'on lui donne — ici Neusa **anime le travail des autres**. Le sujet de
+recherche n'est pas l'objet du module : c'est le prétexte. L'objet, c'est la
+conduite de la parole d'un groupe, et c'est le seul module du dépôt où l'élève
+ne parle pas pour lui-même mais pour faire parler quelqu'un d'autre.
+
+*La grille était « au choix », et les cinq intentions ne la tranchent pas.*
+Le test du pilote du niveau 6 s'applique tel quel — trois façons distinctes
+d'entrer dans la situation, chacune avec son dialogue et ses six exercices —
+et il faut y ajouter la vérification que `module-n6-classe` a nommée : **la
+troisième entrée n'est-elle pas « Je me lance » déguisé ?** Ici, non, et c'est
+ce qui a décidé. Écouter une personne-ressource, lire et résumer, faire parler
+l'équipe : la troisième porte sur la conduite et le rapport de la parole
+d'autrui, alors que « Je me lance » fait produire à l'élève son propre exposé
+et sa propre lettre. Le défi 3 et la section finale ne se recouvrent nulle
+part.
+
+*Les productions ne se tirent pas des attentes de fin de cours, pour une fois.*
+Contrairement à la plupart des situations de niveau 7, celle-ci est
+**productive** : trois de ses cinq intentions le sont, et deux des trois tâches
+de « Je me lance » les reprennent mot pour mot — « faire un exposé sur un sujet
+concret » et « rédiger une lettre personnelle destinée à un camarade de
+classe ». La quatrième intention, « résumer un texte relié à son champ
+d'intérêt », est travaillée au défi 2 plutôt qu'en production finale : le
+résumé est l'outil de la lettre, pas sa concurrence. Cela vaut d'être noté,
+parce que les huit modules précédents de la vague ont tous dû aller chercher
+leurs productions ailleurs.
+
+**Le casting a été compté avant l'écriture, et c'est la première fois dans
+cette vague que la contrainte a servi à quelque chose plutôt qu'à réparer.**
+Le journal de l'activité 115 le demandait ; ce module l'a appliqué à la lettre,
+et il fallait le faire ici plus qu'ailleurs : une salle de classe réunit
+naturellement trois ou quatre personnes, et le dépôt n'a que deux voix
+féminines. Les cinq personnages ont été répartis sur les quatre dialogues avant
+qu'une seule réplique soit écrite — prep, t1 et t2 font parler deux femmes et un
+homme, t3 une femme et deux hommes — et c'est **ce comptage qui a décidé du
+genre de Miguel Ospina**. Coût : zéro. Le même choix fait après coup a coûté
+quatre fichiers de contenu à `module-n7-habitation`.
+
+*Trois exercices `texte`, de trois genres, et le troisième est celui que
+l'élève écrira lui-même.* La confirmation de ce que l'activité 113 avait
+trouvé — la condition est que les genres diffèrent, pas les documents — mais
+avec un cran de plus : `t1conf` est la **transcription d'un discours oral**,
+où l'on cherche les connecteurs et le conditionnel ; `t2fiche` est une **fiche
+d'information d'organisme**, où l'on cherche un renseignement sous un titre ;
+`t3cr` est le **compte rendu de la rencontre**, où l'on cherche la fonction de
+chaque paragraphe — et c'est exactement la pièce que « Je me lance » demande
+de produire. Faire lire le modèle du texte qu'on va écrire, dans le type
+`texte`, est un usage que les modules suivants voudront reprendre.
+
+*La municipalité est inventée, comme au niveau 6, et pour la même raison.* Les
+faits retenus sont généraux et enseignés partout — l'asphalte et les toits
+sombres absorbent le rayonnement et le restituent le soir ; un arbre rafraîchit
+par son ombre **et** par l'évapotranspiration ; la canopée se mesure en
+pourcentage du territoire ; un jeune arbre de rue doit être arrosé plusieurs
+étés et ses racines peuvent soulever un trottoir. Mais Rivière-Noire, sa fiche
+d'information, ses pourcentages et son programme de plantation n'ont aucun
+modèle réel : **la source inventée est le matériel même de l'exercice**, et
+attribuer une page fabriquée à une vraie ville la ferait citer de bonne foi
+dans un vrai travail.
+
+*Sur les images*, dix seulement, et une seule reprise. La règle du cadrage a
+été appliquée dès le premier jet à un module qui est un piège à texte et à
+visages — une salle de classe porte un tableau, un écran de projection, un
+babillard, et vingt visages. **La parade a été de ne pas cadrer la salle du
+tout** : les six photos d'exercice montrent le quartier que l'équipe est allée
+observer, et la seule image où des personnes paraissent est prise depuis le
+fond de la salle, la personne debout en silhouette à contre-jour, les auditeurs
+de dos, l'écran de projection coupé par le bord supérieur. Aucune inscription
+nulle part, du premier coup. La reprise a porté sur le quatrième défaut :
+`ilot-de-chaleur` était sorti en quartier résidentiel ordinaire, pelouses
+vertes comprises — le contraire de ce que dit son énoncé. Le prompt refait
+**remplit le cadre de minéral** au lieu de décrire un secteur, et il met le
+contraste dans l'image plutôt que dans le texte : le vert n'apparaît qu'au
+fond, très loin. Onze appels, 0,37 $.
+
+*Sur l'originalité* : 3,2 % au premier relevé, **2,6 %** après une passe de
+dix minutes sur vingt-huit intitulés — quatorze en-têtes de bloc `check`
+(« Est-ce que c'est clair maintenant ? » devient « Quatre décisions sur le
+conditionnel », « Quatre phrases à rapporter », « Quatre concessions à
+compléter ») et treize de bloc `piege`, qui commençaient tous par « Trois
+pièges ». Le relevé des sons **est resté à 279 clés, à l'octet près** : aucun
+`say:` n'a changé de place, donc aucun MP3 supplémentaire. C'est la troisième
+vérification consécutive de la même règle, et on peut la tenir pour acquise.
+
+*Une remarque sur le relevé d'originalité lui-même.* Le premier script écrit
+mesurait **7,7 %** — un chiffre faux, et de trois fois. Sa regex acceptait les
+chaînes à guillemets simples **et** doubles : la première apostrophe d'un mot
+français y ouvre une fausse chaîne, et le relevé se remplissait de fragments de
+code (`, ok:'VRAI'},\n    {id:`) que tous les modules partagent forcément. Ne
+relever que les chaînes à **guillemets doubles**, sans saut de ligne : les
+fichiers de contenu écrivent le texte visible ainsi, précisément parce qu'il
+est plein d'apostrophes. Un relevé d'originalité qui monte au-dessus de 5 %
+mérite d'abord qu'on regarde **ce qu'il a compté**.
+
+*Sur les contrôles* : les sept passent. `coherence.js` ne signale rien,
+`sections.py --verifier` et `materiel.py --verifier` sont à jour, les deux
+contrôles de couleur ne rendent rien, `sommaire.py --verifier` ne trouve aucun
+lien cassé, et `pieds_de_page.py` lit « niveau 7 · numéro 10 · 16 pptx · vus
+['10'] » — son seul écart reste `module-n3-horaire`, connu de longue date et
+qui n'est pas le mien. Deux garde-fous du gabarit se sont déclenchés pendant la
+production des séances, et les deux avaient raison : un tableau de C2 à six
+rangées et à libellés longs, refait en colonne de décision (« On garde » / « On
+enlève » à gauche, le renseignement à droite — un retournement qui raccourcit
+la colonne de gauche à neuf caractères et se lit mieux), et **six flèches** dans
+les exercices de discours rapporté de D2, remplacées par « devient : ». Le
+`node --check` du script produit passe.
+
+*La vérification dans le navigateur a été faite sur un serveur et un onglet à
+moi*, comme l'activité 113 le recommande : `python3 -m http.server` sur un port
+libre pointé sur mon worktree, puis `tabs_create`. Aucune erreur de console,
+les six sections rendent, les quatorze mini-leçons s'ouvrent et **aucun de
+leurs laboratoires n'a de combinaison sans sortie**, les treize images
+répondent 200, et le contrôle qui compte a été passé sur les **202 zones** du
+module : les 156 à réponse enregistrée sont toutes acceptées par `checkOk()`,
+et les 46 zones `write` portent toutes leur liste `accept`. C'est le contrôle
+que l'épisode de l'`imgmatch` mort recommande, et il tient en quinze lignes
+dans la console.
+
+*Un scénario de jeu de rôle a été ajouté à `server.py`* — `equipe`, trois cas
+(le désaccord sur la méthode, la part qui n'a pas été faite, celui qui ne dit
+rien), deux rôles. **`travailequipe` existait déjà et ne convenait pas** :
+c'est celui du niveau 6, où deux personnes se partagent un travail avant
+l'échéance. Ici l'élève ne s'organise pas, il conduit la parole de quelqu'un —
+d'où la conduite du personnage joué par l'assistant, qui a ses raisons et ne
+les donne pas d'emblée, qui se braque sur un reproche, et qui **signale une
+reformulation réussie en disant « c'est ça »**. Ce signal est le cœur du
+scénario : il donne à l'élève un critère audible pour savoir qu'il a bien fait
+son travail d'animateur.
+
+*Ce qui reste* : les **363 extraits audio**.
+`generer_audio_module_n7_classe.py` est écrit, il s'importe sans erreur, il
+retrouve ses 84 répliques sur quatre dialogues et son manifeste de 279 sons —
+il attend `build/audio_tous.py` avec les autres. Le module est livré complet et
+muet.
+
+*Comme les activités 108 à 113*, ni `VOCAB_BANK` de `server.py` ni la constante
+`DETAILS` de `js/enseignant.js` n'ont reçu quoi que ce soit : ces deux tables se
+sont arrêtées aux modules du niveau 4, et c'est un chantier à part.
