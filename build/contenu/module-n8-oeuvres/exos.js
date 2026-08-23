@@ -26,8 +26,8 @@ const EXOS = [
     {id:'p1j', txt:"Josyane accepte de venir à condition de ne pas parler la première.", ok:'VRAI'},
    ]},
 
-  {sec:'prep', id:'prInto', type:'vf', num:'Exercice 2', tit:"Ce que la voix ajoute aux mots", color:'#1D6B8F', accent:'#1D6B8F', cards:true, listen:true,
-   sub:"Écoutez chaque réplique. Les mots seuls ne suffisent pas : quelle intention la voix porte-t-elle ?",
+  {sec:'prep', id:'prInto', type:'vf', num:'Exercice 2', tit:"Ce que la voix pose par-dessus les mots", color:'#1D6B8F', accent:'#1D6B8F', cards:true, listen:true,
+   sub:"Écoutez chaque réplique. Les mots ne suffisent pas : qu'est-ce que la voix y ajoute ?",
    tiles:['ADMIRATION','DÉCEPTION','INCOMPRÉHENSION'],
    rows:[
     {id:'pia', txt:"Quatorze secondes sur des bottes de caoutchouc, quand même !", ok:'ADMIRATION'},

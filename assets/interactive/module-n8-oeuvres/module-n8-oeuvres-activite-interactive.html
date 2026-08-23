@@ -1343,8 +1343,8 @@ const EXOS = [
     {id:'p1j', txt:"Josyane accepte de venir à condition de ne pas parler la première.", ok:'VRAI'},
    ]},
 
-  {sec:'prep', id:'prInto', type:'vf', num:'Exercice 2', tit:"Ce que la voix ajoute aux mots", color:'#1D6B8F', accent:'#1D6B8F', cards:true, listen:true,
-   sub:"Écoutez chaque réplique. Les mots seuls ne suffisent pas : quelle intention la voix porte-t-elle ?",
+  {sec:'prep', id:'prInto', type:'vf', num:'Exercice 2', tit:"Ce que la voix pose par-dessus les mots", color:'#1D6B8F', accent:'#1D6B8F', cards:true, listen:true,
+   sub:"Écoutez chaque réplique. Les mots ne suffisent pas : qu'est-ce que la voix y ajoute ?",
    tiles:['ADMIRATION','DÉCEPTION','INCOMPRÉHENSION'],
    rows:[
     {id:'pia', txt:"Quatorze secondes sur des bottes de caoutchouc, quand même !", ok:'ADMIRATION'},
@@ -3781,9 +3781,9 @@ async function checkWrite(exId, i){
 const PLUS = {
 
   prInto: {
-    eye:'Mini-leçon', tit:"Ce que la voix ajoute aux mots",
+    eye:'Mini-leçon', tit:"Ce que la voix pose par-dessus les mots",
     blocs:[
-      {t:'texte', h:"Le seul savoir de phonétique du niveau 8",
+      {t:'texte', h:"Le seul savoir de phonétique qui reste",
        p:"Le programme du niveau 8 ne demande plus qu'une chose à l'oreille et à la voix : produire l'<b>intonation expressive</b>. Pas un son nouveau, pas une liaison de plus — une mélodie. À ce stade, vous prononcez assez bien pour être compris ; ce qui vous reste à gagner, c'est ce que la voix pose par-dessus les mots. Une même phrase de six mots peut dire l'admiration, la déception ou l'incompréhension, et c'est souvent la seule chose que votre interlocuteur retiendra.",
        note:"C'est aussi ce qui s'entend le plus vite chez quelqu'un qui apprend une langue : une intonation plate se lit comme de l'indifférence, alors qu'elle n'est le plus souvent que de la prudence."},
 
@@ -3801,43 +3801,43 @@ const PLUS = {
        p:"La mélodie descend tout de suite et ne remonte jamais. Le débit est régulier, presque lent, souvent précédé d'un « ah » ou d'un « bon » qui tombe tout seul.",
        mots:[['On dit',"Ah bon. Moi qui attendais cette finale depuis six semaines."],['La mélodie','descendante du premier mot au dernier',true],['Le repère',"un « ah » ou un « bon » en tête"]],
        say:"Ah bon. Moi qui attendais cette finale depuis six semaines.",
-       note:"Chez votre interlocuteur, c'est le signal qu'une réponse ne lui a pas plu. Il ne le dira pas ; la mélodie l'a déjà dit."},
+       note:"Chez l'autre, cette mélodie-là annonce qu'une réponse n'a pas plu. Il ne le dira pas ; sa voix vient de le faire."},
 
       {t:'ana', h:"L'incompréhension — la voix freine et laisse un trou",
        p:"On ne monte pas : on ralentit. Le débit se casse à l'endroit précis où le fil s'est rompu, souvent avec un petit silence juste avant le mot en cause.",
-       mots:[['On dit',"Le mot « défendable », vous l'entendez comment, exactement ?"],['La mélodie','un creux et un silence avant le mot',true],['Le repère',"on isole le mot avec la voix"]],
+       mots:[['On dit',"Le mot « défendable », vous l'entendez comment, exactement ?"],['La mélodie','un creux, puis un silence, puis le mot',true],['Le repère',"la voix isole le mot en cause"]],
        say:"Le mot défendable, vous l'entendez comment, exactement ?",
        note:"C'est la mélodie qui dit « une seule chose m'échappe ». Sans elle, la même phrase s'entend comme « je n'ai rien suivi »."},
 
-      {t:'ana', h:"La surprise — la voix monte d'un coup, à la fin",
+      {t:'ana', h:"La surprise — la voix grimpe sur les dernières syllabes",
        p:"La quatrième mélodie, la plus facile à produire et la plus facile à rater. La phrase part normalement puis grimpe brusquement sur les deux ou trois dernières syllabes.",
-       mots:[['On dit',"Quatorze secondes sur des bottes de caoutchouc ?"],['La mélodie','plate, puis très haute à la fin',true],['Le repère','on répète le mot qui étonne']],
+       mots:[['On dit',"Quatorze secondes sur des bottes de caoutchouc ?"],['La mélodie','plate, puis haute d\'un coup',true],['Le repère','on répète le mot qui étonne']],
        say:"Quatorze secondes sur des bottes de caoutchouc ?",
        note:"Attention : si la voix monte trop tôt, la surprise devient un reproche — « vous vous moquez de moi »."},
 
-      {t:'labo', h:"Écoutez les quatre intentions",
-       p:"Choisissez une intention et un exemple.",
+      {t:'labo', h:"Les quatre mélodies, une par une",
+       p:"Choisissez d'abord l'intention, puis la réplique.",
        axes:[
-         {id:'i', lbl:'Quelle intention ?', opts:[['a','admiration'],['b','déception'],['c','incompréhension'],['d','surprise']]},
-         {id:'n', lbl:'Quel exemple ?', opts:[['1','le premier'],['2','le second']]}],
+         {id:'i', lbl:'Quelle intention entendue ?', opts:[['a','admiration'],['b','déception'],['c','incompréhension'],['d','surprise']]},
+         {id:'n', lbl:'Lequel des deux ?', opts:[['1','le premier'],['2','le second']]}],
        out:{
          a1:{w:["C'est magnifique."], say:"C'est magnifique.", n:'la voix tient sur la deuxième syllabe'},
          a2:{w:["Elle réussit tout ça sans une seule réplique."], say:"Elle réussit tout ça sans une seule réplique.", n:'le débit ralentit à mesure que la phrase avance'},
-         b1:{w:["Ah bon."], say:"Ah bon.", n:'deux syllabes qui tombent : la déception se passe de phrase'},
+         b1:{w:["Ah bon."], say:"Ah bon.", n:'deux syllabes qui tombent : pas besoin de phrase'},
          b2:{w:["Six épisodes pour arriver à ça."], say:"Six épisodes pour arriver à ça.", n:'descendante du début à la fin, sans colère'},
-         c1:{w:["J'ai perdu le fil."], say:"J'ai perdu le fil.", n:'débit qui freine, mélodie creusée'},
+         c1:{w:["J'ai perdu le fil."], say:"J'ai perdu le fil.", n:'le débit freine et la mélodie se creuse'},
          c2:{w:["Vous avez bien dit quatorze secondes ?"], say:"Vous avez bien dit quatorze secondes ?", n:"on isole le chiffre dont on n'est pas sûr"},
          d1:{w:["Quatorze secondes ?"], say:"Quatorze secondes ?", n:"la voix monte d'un coup sur le chiffre"},
-         d2:{w:["Comment ça, elle ne détache pas la corde ?"], say:"Comment ça, elle ne détache pas la corde ?", n:'« comment ça » annonce la surprise'},
+         d2:{w:["Comment ça, elle ne détache pas la corde ?"], say:"Comment ça, elle ne détache pas la corde ?", n:'« comment ça » ouvre la surprise'},
        },
-       note:"Écoutez, puis répétez à voix haute en exagérant : l'exagération est ce qui fait entrer une mélodie dans l'oreille."},
+       note:"Écoutez, puis reprenez à voix haute en forçant le trait : c'est en exagérant qu'une mélodie entre dans l'oreille."},
 
       {t:'ex', h:"La même phrase, quatre intentions",
-       p:"À gauche, ce qui est dit. À droite, ce que la voix ajoute.",
+       p:"À gauche, la phrase. À droite, ce que la mélodie y met.",
        rows:[
          ["Elle ne détache pas la corde ?","surprise — la voix monte sur « corde »"],
-         ["Elle ne détache pas la corde.","constat — la voix reste plate"],
-         ["Elle ne détache pas la corde…","incompréhension — la voix freine et laisse ouvert"],
+         ["Elle ne détache pas la corde.","constat — la voix ne bouge pas"],
+         ["Elle ne détache pas la corde…","incompréhension — la voix freine et laisse la phrase en suspens"],
          ["Elle ne détache pas la corde !","admiration — la voix s'élargit et appuie"],
          ["Bon. Elle ne détache pas la corde.","déception — le « bon » tombe avant le reste"],
          ["Ce qu'elle fait là, c'est immense.","admiration — la lenteur porte tout"],
@@ -3845,16 +3845,16 @@ const PLUS = {
 
       {t:'piege', h:"Trois pièges de l'intonation, dans une discussion",
        rows:[
-         ["monter la voix à chaque phrase","descendre quand on affirme",
+         ["faire monter la voix à toutes les phrases","laisser la voix descendre sur ce qu'on affirme",
           "Une mélodie qui monte partout transforme chaque affirmation en question, et chaque lecture en demande d'autorisation. C'est le défaut le plus fréquent, et il vient de la prudence : on n'ose pas conclure."],
-         ["parler d'une voix parfaitement égale","varier sur les trois phrases qui comptent",
+         ["garder exactement la même hauteur du début à la fin","varier sur les trois phrases qui comptent",
           "Une voix plate se lit comme de l'indifférence, jamais comme du calme. Vous n'avez pas besoin de jouer la comédie : trois phrases sur une heure suffisent."],
-         ["baisser la voix pour dire son avis","garder la même mélodie qu'aux autres phrases",
+         ["baisser la voix pour dire son avis","dire sa lecture sur la mélodie de tout le reste",
           "Beaucoup de gens baissent la voix au moment de proposer une lecture. La proposition devient inaudible, et le groupe passe au suivant sans l'avoir entendue."],
        ]},
 
-      {t:'check', h:"Est-ce que c'est clair maintenant ?",
-       p:"Quatre questions rapides.",
+      {t:'check', h:"Quatre mélodies : les avez-vous ?",
+       p:"Quatre contrôles rapides.",
        qs:[
          {q:"Pour exprimer l'admiration, la voix…", opts:["monte brusquement à la fin","ralentit et appuie"], ok:1,
           fb:"Elle tient et elle appuie. Une admiration dite vite passe pour de la politesse."},
@@ -3880,27 +3880,27 @@ const PLUS = {
 
       {t:'ana', h:"Le fait — je peux le vérifier en revoyant",
        p:"Un fait est ce que n'importe qui peut constater en revenant en arrière. Il ne vous appartient pas ; c'est le terrain commun.",
-       mots:[['Un fait','Elle met les bottes de caoutchouc de sa mère.'],['Un fait','La corde reste attachée au taquet.',true],['Le test','je reviens en arrière et je vois la même chose']],
+       mots:[['Un fait','Elle met les bottes de caoutchouc de sa mère.'],['Un fait','La corde reste attachée au taquet.',true],['Le contrôle','je reviens en arrière et je vois la même chose']],
        say:"Elle met les bottes de caoutchouc de sa mère. La corde reste attachée au taquet.",
        note:"Un fait peut porter sur une durée, un objet, un mot prononcé, un mouvement de caméra. Il n'a pas besoin d'être important pour être un fait."},
 
       {t:'ana', h:"L'interprétation — j'ajoute ce que l'œuvre ne montre pas",
        p:"L'interprétation est le travail du lecteur. Elle n'est ni interdite ni douteuse : c'est elle qu'on est venu chercher. Le seul devoir est de savoir qu'on est en train d'en faire une.",
-       mots:[["Une interprétation",'Elle renonce à partir.'],["Une interprétation",'Elle prend la place de sa mère.',true],['Le test',"ce n'est écrit nulle part : c'est moi qui l'apporte"]],
+       mots:[["Une interprétation",'Elle renonce à partir.'],["Une interprétation",'Elle prend la place de sa mère.',true],['Le contrôle',"ce n'est écrit nulle part : c'est moi qui l'apporte"]],
        say:"Elle renonce à partir. Elle prend la place de sa mère.",
        note:"Le verbe trahit toujours l'opération : « s'asseoir » se voit, « renoncer » se déduit."},
 
       {t:'ana', h:"Le jugement — je dis si c'est bon",
        p:"Le jugement classe l'œuvre. Il arrive en dernier, et il coûte une raison : sans elle, il ne nous apprend rien sur l'œuvre, seulement sur celui qui parle.",
-       mots:[['Un jugement','Cette fin est ratée.'],['Un jugement','Les deux cadets jouent trop fort.',true],['Le test','je dis bon ou mauvais, pas ce qui se passe']],
+       mots:[['Un jugement','Cette fin est ratée.'],['Un jugement','Les deux cadets jouent trop fort.',true],['Le contrôle','je dis bon ou mauvais, pas ce qui se passe']],
        say:"Cette fin est ratée. Les deux cadets jouent trop fort.",
        note:"Un jugement accroché à un fait est un argument. Un jugement seul est une humeur."},
 
       {t:'labo', h:"Classez trois phrases sur la même scène",
        p:"Choisissez une scène et une opération.",
        axes:[
-         {id:'s', lbl:'Quelle scène ?', opts:[['a','la chaloupe'],['b','le pot de départ'],['c','le stationnement']]},
-         {id:'o', lbl:'Quelle opération ?', opts:[['1','un fait'],['2','une interprétation'],['3','un jugement']]}],
+         {id:'s', lbl:'Quelle scène du dossier ?', opts:[['a','la chaloupe'],['b','le pot de départ'],['c','le stationnement']]},
+         {id:'o', lbl:'Fait, lecture ou jugement ?', opts:[['1','un fait'],['2','une interprétation'],['3','un jugement']]}],
        out:{
          a1:{w:["Elle s'assoit dans la chaloupe et ne démarre pas le moteur."], say:"Elle s'assoit dans la chaloupe et ne démarre pas le moteur.", n:'vérifiable en revoyant la scène'},
          a2:{w:["Pour la première fois, c'est elle qui choisit."], say:"Pour la première fois, c'est elle qui choisit.", n:"le mot « choisit » n'est montré nulle part"},
@@ -3933,8 +3933,8 @@ const PLUS = {
           "« Évidemment », « clairement », « manifestement » font passer une interprétation pour un fait sans rien prouver. Quand vous entendez un de ces mots, cherchez le détail : s'il n'y en a pas, il n'y a rien."],
        ]},
 
-      {t:'check', h:"Est-ce que c'est clair maintenant ?",
-       p:"Quatre questions rapides.",
+      {t:'check', h:"Les trois questions, savez-vous les poser ?",
+       p:"Quatre contrôles rapides.",
        qs:[
          {q:"« La corde reste attachée au taquet » est…", opts:["un fait","une interprétation"], ok:0,
           fb:"On peut revoir la scène et le constater : c'est un fait."},
@@ -3984,7 +3984,7 @@ const PLUS = {
        p:"Choisissez un texte et un passage.",
        axes:[
          {id:'t', lbl:'Quel texte ?', opts:[['a','la télésérie'],['b','la nouvelle'],['c','le poème']]},
-         {id:'p', lbl:'Quel passage ?', opts:[['1','le premier'],['2','le second']]}],
+         {id:'p', lbl:'Quel extrait ?', opts:[['1','le premier'],['2','le second']]}],
        out:{
          a1:{w:["Elle laisse le téléphone sonner sur le quai."], say:"Elle laisse le téléphone sonner sur le quai.", n:"elle l'a porté jusque-là pour pouvoir le laisser"},
          a2:{w:["Elle met les bottes de caoutchouc de sa mère."], say:"Elle met les bottes de caoutchouc de sa mère.", n:"elle s'installe, ou elle prend une place qui était à quelqu'un"},
@@ -4014,8 +4014,8 @@ const PLUS = {
           "Le défaut inverse existe, et il est plus difficile à corriger : on prête à l'auteur des intentions que rien ne soutient. Le contrôle est le même que pour une lecture — montrez le passage."],
        ]},
 
-      {t:'check', h:"Est-ce que c'est clair maintenant ?",
-       p:"Trois questions rapides.",
+      {t:'check', h:"L'implicite, êtes-vous au clair ?",
+       p:"Trois contrôles rapides.",
        qs:[
          {q:"L'implicite, c'est…", opts:["ce qui est écrit en petits caractères","ce que le texte fait comprendre sans le dire"], ok:1,
           fb:"Sans le dire — et en comptant sur vous pour faire le dernier pas."},
@@ -4039,33 +4039,33 @@ const PLUS = {
 
       {t:'ana', h:"Autrement dit · en d'autres termes",
        p:"Ils redisent la même chose avec d'autres mots, sans rien ajouter ni retrancher. « En d'autres termes » est plus soutenu et se voit surtout à l'écrit.",
-       mots:[['On entend',"On saute du fait au jugement."],['On reformule',"Autrement dit, l'interprétation manque au milieu.",true],['La règle',"rien de neuf ne doit entrer"]],
+       mots:[['On entend',"On saute du fait au jugement."],['On reformule',"Autrement dit, l'interprétation manque au milieu.",true],['Ce qui vaut',"rien de neuf ne doit entrer"]],
        say:"On saute du fait au jugement. Autrement dit, l'interprétation manque au milieu.",
        note:"Le test : la personne citée doit pouvoir approuver votre phrase d'un signe de tête, sans rien corriger."},
 
       {t:'ana', h:"C'est-à-dire — pour préciser, pas pour résumer",
        p:"Il introduit le détail qui manquait, et rétrécit au lieu d'élargir.",
-       mots:[['On dit',"Elle a choisi le fond."],['On précise',"c'est-à-dire la table des stagiaires.",true],['La règle','la seconde moitié est plus étroite que la première']],
+       mots:[['On dit',"Elle a choisi le fond."],['On précise',"c'est-à-dire la table des stagiaires.",true],['Ce qui vaut','la seconde moitié est plus étroite que la première']],
        say:"Elle a choisi le fond, c'est-à-dire la table des stagiaires.",
        note:"S'écrit avec deux traits d'union. On le confond souvent avec « autrement dit », qui ne précise rien."},
 
       {t:'ana', h:"En somme · bref — pour rassembler",
        p:"Ils ramassent plusieurs éléments en un seul. « Bref » est familier, « en somme » convient à l'écrit et à une discussion tenue.",
-       mots:[['On énumère',"Deux lectures, trois indices, une heure et demie."],['On rassemble',"En somme, une bonne soirée.",true],['La règle','ce qui suit est plus court que ce qui précède']],
+       mots:[['On énumère',"Deux lectures, trois indices, une heure et demie."],['On rassemble',"En somme, une bonne soirée.",true],['Ce qui vaut','ce qui suit est plus court que ce qui précède']],
        say:"Deux lectures, trois indices, une heure et demie. En somme, une bonne soirée.",
        note:"« En somme » annonce une conclusion : ne l'employez pas au milieu d'un développement, l'auditoire croira que vous finissez."},
 
       {t:'ana', h:"Si je vous suis bien — la plus utile de toutes",
        p:"Elle rend la parole à l'autre et l'oblige à confirmer ou à corriger. C'est la reformulation de conversation, et elle transforme un désaccord en travail commun.",
-       mots:[['On demande',"Si je vous suis bien, vous dites qu'elle choisit de rester ?"],['L\'autre répond','oui, ou : pas tout à fait, je dis que…',true],['La règle','on finit sur une question, jamais sur un point']],
+       mots:[['On demande',"Si je vous suis bien, vous dites qu'elle choisit de rester ?"],['L\'autre répond','oui, ou : pas tout à fait, je dis que…',true],['Ce qui vaut','on finit sur une question, jamais sur un point']],
        say:"Si je vous suis bien, vous dites qu'elle choisit de rester ?",
        note:"Employée deux fois dans une heure, elle change une discussion. Employée à chaque tour de parole, elle exaspère."},
 
       {t:'labo', h:"Choisir le bon connecteur",
        p:"Choisissez ce que vous voulez faire et l'exemple.",
        axes:[
-         {id:'b', lbl:'Vous voulez…', opts:[['a','redire pareil'],['b','préciser'],['c','rassembler'],['d','faire confirmer']]},
-         {id:'n', lbl:'Quel exemple ?', opts:[['1','le premier'],['2','le second']]}],
+         {id:'b', lbl:'Votre intention…', opts:[['a','redire pareil'],['b','préciser'],['c','rassembler'],['d','faire confirmer']]},
+         {id:'n', lbl:'Lequel des deux ?', opts:[['1','le premier'],['2','le second']]}],
        out:{
          a1:{w:["Autrement dit, l'interprétation manque au milieu."], say:"Autrement dit, l'interprétation manque au milieu.", n:'même contenu, autres mots'},
          a2:{w:["En d'autres termes, il l'a écrit sans le savoir."], say:"En d'autres termes, il l'a écrit sans le savoir.", n:'la version soutenue, pour l\'écrit'},
@@ -4097,8 +4097,8 @@ const PLUS = {
           "Reformulée sans arrêt, la personne en face a l'impression de passer un examen. Gardez l'outil pour les endroits où le désaccord commence."],
        ]},
 
-      {t:'check', h:"Est-ce que c'est clair maintenant ?",
-       p:"Trois questions rapides.",
+      {t:'check', h:"Redire autrement : où en êtes-vous ?",
+       p:"Trois contrôles rapides.",
        qs:[
          {q:"« C'est-à-dire » sert à…", opts:["préciser","résumer"], ok:0,
           fb:"À préciser : ce qui suit est plus étroit que ce qui précède."},
@@ -4114,13 +4114,13 @@ const PLUS = {
   },
 
   t1cond: {
-    eye:'Mini-leçon', tit:"Le conditionnel passé",
+    eye:'Mini-leçon', tit:"Le temps de ce qui n'a pas eu lieu",
     blocs:[
       {t:'texte', h:"Le temps de ce qui n'a pas eu lieu",
        p:"Le conditionnel passé sert à nommer un geste que personne n'a fait. « Elle aurait pu détacher la corde » : elle ne l'a pas fait, et pourtant la phrase place le geste sous nos yeux. C'est pour cela qu'il est le premier outil de l'interprétation — une œuvre se comprend autant par ce qu'elle écarte que par ce qu'elle montre, et il faut un temps de verbe pour dire ce qu'elle a écarté.",
        note:"Sans ce temps, vous ne pouvez parler que de ce qui arrive. Avec lui, vous pouvez parler de tout ce qui aurait pu arriver — c'est-à-dire du travail de l'auteur."},
 
-      {t:'ana', h:"Comment il se fabrique",
+      {t:'ana', h:"Comment on le fabrique",
        p:"Deux morceaux que vous connaissez déjà : <b>avoir</b> ou <b>être</b> au conditionnel présent, puis le participe passé.",
        mots:[['Avec avoir',"j'aurais compris · elle aurait pu · nous aurions aimé"],['Avec être',"elle serait partie · ils seraient restés",true],['Aucune forme neuve',"vous savez déjà les deux moitiés"]],
        say:"J'aurais compris. Elle aurait pu. Elle serait partie.",
@@ -4134,15 +4134,15 @@ const PLUS = {
 
       {t:'ana', h:"L'information qu'on rapporte sans la garantir",
        p:"Le même temps sert au journalisme : il dit « je le rapporte, je ne le certifie pas ».",
-       mots:[['On lit',"Le tournage aurait duré onze jours de plus."],['Ça veut dire',"quelqu'un le dit, le journal ne le confirme pas",true],['Le repère','aucun « si » nulle part dans la phrase']],
+       mots:[['On lit',"Le tournage aurait duré onze jours de plus."],['Ce que ça signale',"quelqu'un le dit, le journal ne le confirme pas",true],['Le repère','aucun « si » nulle part dans la phrase']],
        say:"Le tournage aurait duré onze jours de plus que prévu.",
        note:"C'est le seul emploi du conditionnel qui ne parle pas d'hypothèse. Le reconnaître évite de croire un journal sur parole."},
 
       {t:'labo', h:"Trois emplois, deux exemples chacun",
        p:"Choisissez un emploi et un exemple.",
        axes:[
-         {id:'e', lbl:'Quel emploi ?', opts:[['a','le geste non fait'],['b','le regret'],['c','l\'information non confirmée']]},
-         {id:'n', lbl:'Quel exemple ?', opts:[['1','le premier'],['2','le second']]}],
+         {id:'e', lbl:'Quel usage ?', opts:[['a','le geste non fait'],['b','le regret'],['c','l\'information non confirmée']]},
+         {id:'n', lbl:'Lequel des deux ?', opts:[['1','le premier'],['2','le second']]}],
        out:{
          a1:{w:["Elle aurait pu détacher la corde."], say:"Elle aurait pu détacher la corde.", n:'le geste existe dans la phrase, pas dans la scène'},
          a2:{w:["Elle serait partie au printemps."], say:"Elle serait partie au printemps.", n:'avec être : le participe s\'accorde'},
@@ -4164,7 +4164,7 @@ const PLUS = {
          ["Elle aurait compris, si on lui avait expliqué.","la moitié d'une hypothèse irréelle"],
        ]},
 
-      {t:'piege', h:"Le piège de l'accord du participe",
+      {t:'piege', h:"L'accord du participe, et ses deux règles opposées",
        rows:[
          ["« elle aurait comprise »","« elle aurait compris »",
           "Avec <b>avoir</b>, le participe ne s'accorde jamais avec le sujet. C'est la faute la plus fréquente à ce temps-là, parce que l'oreille entend un sujet féminin et veut un e."],
@@ -4172,8 +4172,8 @@ const PLUS = {
           "Avec <b>être</b>, au contraire, il s'accorde toujours avec le sujet. Deux auxiliaires, deux règles opposées : c'est ce qui rend le temps difficile."],
        ]},
 
-      {t:'check', h:"Est-ce que c'est clair maintenant ?",
-       p:"Quatre questions rapides.",
+      {t:'check', h:"Le conditionnel passé, est-il en place ?",
+       p:"Quatre contrôles rapides.",
        qs:[
          {q:"Le conditionnel passé se fabrique avec…", opts:["avoir ou être au conditionnel présent + participe passé","l'imparfait + un infinitif"], ok:0,
           fb:"Deux morceaux que vous connaissez déjà."},
@@ -4199,7 +4199,7 @@ const PLUS = {
 
       {t:'ana', h:"La forme, et elle ne varie jamais",
        p:"<b>Si</b> + plus-que-parfait d'un côté, conditionnel passé de l'autre. L'ordre des deux moitiés est libre ; les temps, non.",
-       mots:[['La condition',"Si elle avait voulu partir,"],['La conséquence',"elle aurait détaché la corde.",true],['Dans l\'autre sens',"Elle aurait détaché la corde si elle avait voulu partir."]],
+       mots:[['La moitié « si »',"Si elle avait voulu partir,"],['La moitié qui suit',"elle aurait détaché la corde.",true],['Dans l\'autre sens',"Elle aurait détaché la corde si elle avait voulu partir."]],
        say:"Si elle avait voulu partir, elle aurait détaché la corde.",
        note:"Quand la condition vient en premier, une virgule sépare les deux moitiés. Quand elle vient en second, pas de virgule."},
 
@@ -4219,7 +4219,7 @@ const PLUS = {
        p:"Choisissez une marche et un exemple.",
        axes:[
          {id:'m', lbl:'Quelle hypothèse ?', opts:[['a','réelle'],['b','irréelle du présent'],['c','irréelle du passé']]},
-         {id:'n', lbl:'Quel exemple ?', opts:[['1','la chaloupe'],['2','la lecture']]}],
+         {id:'n', lbl:'Lequel des deux ?', opts:[['1','la chaloupe'],['2','la lecture']]}],
        out:{
          a1:{w:["Si elle part, la série finit autrement."], say:"Si elle part, la série finit autrement.", n:'présent + présent ou futur : c\'est encore possible'},
          a2:{w:["Si vous venez mardi, vous entendrez trois lectures."], say:"Si vous venez mardi, vous entendrez trois lectures.", n:'présent + futur'},
@@ -4249,10 +4249,10 @@ const PLUS = {
           "« Si elle était partie, je le dirais » boite : la première moitié est au passé, la seconde au présent. Elles doivent être du même cran, sauf effet voulu."],
        ]},
 
-      {t:'check', h:"Est-ce que c'est clair maintenant ?",
-       p:"Quatre questions rapides.",
+      {t:'check', h:"Les trois marches, les distinguez-vous ?",
+       p:"Quatre contrôles rapides.",
        qs:[
-         {q:"Après « si », dans l'irréel du passé, on met…", opts:["le plus-que-parfait","le conditionnel passé"], ok:0,
+         {q:"Dans l'irréel du passé, juste après « si », on met…", opts:["le plus-que-parfait","le conditionnel passé"], ok:0,
           fb:"Le plus-que-parfait. Le conditionnel passé va dans l'autre moitié."},
          {q:"« Si elle avait voulu partir, elle ___ la corde. »", opts:["aurait détaché","avait détaché"], ok:0,
           fb:"Conditionnel passé dans la conséquence."},
@@ -4326,8 +4326,8 @@ const PLUS = {
           "Reconnaître ce que l'autre couvre mieux ne vous affaiblit pas : cela vous rend crédible sur le reste, et c'est ce que le groupe entend."],
        ]},
 
-      {t:'check', h:"Est-ce que c'est clair maintenant ?",
-       p:"Trois questions rapides.",
+      {t:'check', h:"Mesurer une lecture : c'est acquis ?",
+       p:"Trois contrôles rapides.",
        qs:[
          {q:"On départage deux lectures en demandant…", opts:["qui a raison","laquelle explique le plus d'indices"], ok:1,
           fb:"C'est le seul critère mesurable, et il tranche mieux qu'une conviction."},
@@ -4351,13 +4351,13 @@ const PLUS = {
 
       {t:'ana', h:"Le clivage — c'est… qui · c'est… que",
        p:"On extrait un morceau de la phrase et on le place en vedette, entre « c'est » et un relatif.",
-       mots:[['La phrase plate',"Elle a remis la chaloupe à l'eau."],['Le sujet en vedette',"C'est elle qui a remis la chaloupe à l'eau.",true],['Le complément en vedette',"C'est la corde que vous passez sous silence."]],
+       mots:[['Sans mise en relief',"Elle a remis la chaloupe à l'eau."],['Le sujet en vedette',"C'est elle qui a remis la chaloupe à l'eau.",true],['Le complément en vedette',"C'est la corde que vous passez sous silence."]],
        say:"C'est elle qui a remis la chaloupe à l'eau. C'est la corde que vous passez sous silence.",
        note:"<b>qui</b> quand le morceau extrait est sujet, <b>que</b> dans tous les autres cas. C'est la seule décision à prendre."},
 
       {t:'ana', h:"Le pseudoclivage — ce qui… c'est",
        p:"On annonce d'abord de quoi on va parler, puis on le nomme. La phrase se lit en deux temps, et l'attente fait le travail.",
-       mots:[['La phrase plate',"Le téléphone compte le plus."],['Avec pseudoclivage',"Ce qui compte le plus, c'est le téléphone.",true],['Les autres formes',"ce que… c'est · ce dont… c'est · ce à quoi… c'est"]],
+       mots:[['Sans mise en relief',"Le téléphone compte le plus."],['Avec pseudoclivage',"Ce qui compte le plus, c'est le téléphone.",true],['Les autres formes',"ce que… c'est · ce dont… c'est · ce à quoi… c'est"]],
        say:"Ce qui compte le plus, c'est le téléphone.",
        note:"La forme se choisit sur la préposition du verbe : je pense <b>à</b> → ce <b>à quoi</b> je pense ; je parle <b>de</b> → ce <b>dont</b> je parle."},
 
@@ -4367,11 +4367,11 @@ const PLUS = {
        say:"C'est au sous-sol que le cercle se réunit. Si elle reste, c'est parce qu'elle a choisi.",
        note:"« Si… c'est parce que » est l'emphase de l'explication. Elle est très employée à l'écrit dans les textes d'opinion."},
 
-      {t:'labo', h:"La même phrase, trois mises en relief",
+      {t:'labo', h:"Une phrase, trois façons de la mettre en vedette",
        p:"Choisissez une phrase et le morceau à mettre en vedette.",
        axes:[
-         {id:'p', lbl:'Quelle phrase ?', opts:[['a',"Estelle laisse le téléphone sonner"],['b',"Gisèle emporte la nappe"]]},
-         {id:'m', lbl:'Quoi mettre en avant ?', opts:[['1','celle qui fait'],['2','ce qu\'elle fait'],['3','pourquoi']]}],
+         {id:'p', lbl:'Sur quelle phrase ?', opts:[['a',"Estelle laisse le téléphone sonner"],['b',"Gisèle emporte la nappe"]]},
+         {id:'m', lbl:'Quel morceau en vedette ?', opts:[['1','celle qui fait'],['2','ce qu\'elle fait'],['3','pourquoi']]}],
        out:{
          a1:{w:["C'est elle qui laisse le téléphone sonner."], say:"C'est elle qui laisse le téléphone sonner.", n:'clivage du sujet : personne ne l\'y oblige'},
          a2:{w:["Ce qu'elle laisse sonner, c'est le téléphone."], say:"Ce qu'elle laisse sonner, c'est le téléphone.", n:'pseudoclivage : l\'objet devient l\'indice'},
@@ -4403,8 +4403,8 @@ const PLUS = {
           "« qui » seulement si le morceau extrait est le sujet du verbe. Ici, c'est vous qui passez : « la corde » est complément, donc « que »."],
        ]},
 
-      {t:'check', h:"Est-ce que c'est clair maintenant ?",
-       p:"Quatre questions rapides.",
+      {t:'check', h:"La mise en relief, la maniez-vous ?",
+       p:"Quatre contrôles rapides.",
        qs:[
          {q:"« C'est la corde ___ vous passez sous silence. »", opts:["que","qui"], ok:0,
           fb:"« La corde » est complément du verbe passer : donc « que »."},
@@ -4430,26 +4430,26 @@ const PLUS = {
 
       {t:'ana', h:"Le passé simple — le temps du récit écrit",
        p:"Il ne se parle plus depuis longtemps, mais il tient tout le récit littéraire. À reconnaître, jamais à produire dans une conversation.",
-       mots:[['Verbes en -er',"elle poussa · ils poussèrent"],['La plupart des autres',"elle prit · il fit · on tendit · elle dit",true],['Les quatre à connaître',"elle fut · elle eut · elle fit · elle vint"]],
+       mots:[['Les verbes en -er',"elle poussa · ils poussèrent"],['La plupart des autres',"elle prit · il fit · on tendit · elle dit",true],['Les quatre irréguliers utiles',"elle fut · elle eut · elle fit · elle vint"]],
        say:"Elle poussa la porte. Elle prit la chaise du fond. Le contremaître fit un discours.",
        note:"Vous ne l'emploierez jamais à l'oral. Vous le lirez dans tous les romans, toutes les nouvelles et tous les contes que vous ouvrirez ici."},
 
       {t:'ana', h:"Le plus-que-parfait — ce qui s'était déjà passé",
        p:"Un cran plus tôt que le récit lui-même. Dans cette nouvelle, il porte tout ce qui s'est décidé sans Gisèle.",
-       mots:[['Le récit',"Gisèle poussa la porte."],['Ce qui précède',"On avait commencé sans elle.",true],['Les autres',"la carte que l'atelier avait signée · personne ne s'y était assis"]],
+       mots:[['Le récit',"Gisèle poussa la porte."],['Ce qui s\'était passé avant',"On avait commencé sans elle.",true],['Les autres',"la carte que l'atelier avait signée · personne ne s'y était assis"]],
        say:"Gisèle poussa la porte. On avait commencé sans elle.",
        note:"La grammaire dit ici la même chose que l'histoire : tout ce qui la concerne s'est réglé avant qu'elle entre."},
 
       {t:'ana', h:"La parenthèse du narrateur",
        p:"Une seule dans six pages. Le narrateur y sort de la scène pour nous dire ce que le personnage cache.",
-       mots:[['Ce qu\'elle dit',"Elle dit qu'elle avait oublié ses lunettes."],['Ce que le narrateur ajoute',"(elle ne les avait pas oubliées)",true],['La conséquence','tout le reste se relit autrement']],
+       mots:[['Ce que Gisèle dit',"Elle dit qu'elle avait oublié ses lunettes."],['Ce que le narrateur ajoute',"(elle ne les avait pas oubliées)",true],['La moitié qui suit','tout le reste se relit autrement']],
        say:"Elle dit qu'elle avait oublié ses lunettes ; elle ne les avait pas oubliées.",
        note:"Quand un texte court s'autorise cela une fois, la phrase concernée est le centre du texte. Cherchez toujours la seule fois."},
 
       {t:'labo', h:"Quatre gestes, deux lectures",
        p:"Choisissez un geste et une lecture.",
        axes:[
-         {id:'g', lbl:'Quel geste ?', opts:[['a','la chaise du fond'],['b','le refus de lire'],['c','la nappe emportée']]},
+         {id:'g', lbl:'Lequel des gestes ?', opts:[['a','la chaise du fond'],['b','le refus de lire'],['c','la nappe emportée']]},
          {id:'l', lbl:'Quelle lecture ?', opts:[['1','la femme effacée'],['2','la colère']]}],
        out:{
          a1:{w:["Elle se met au fond parce qu'elle s'est toujours mise au fond."], say:"Elle se met au fond parce qu'elle s'est toujours mise au fond.", n:'la lecture tendre : une habitude de retrait'},
@@ -4480,13 +4480,13 @@ const PLUS = {
           "Celui qui raconte est une voix construite : il peut se taire, se tromper, ou juger. Odile Brassard-Vézina n'est pas plus « la voix » de cette nouvelle que Gisèle n'est elle-même."],
        ]},
 
-      {t:'check', h:"Est-ce que c'est clair maintenant ?",
-       p:"Quatre questions rapides.",
+      {t:'check', h:"Lire une nouvelle : le fil tient-il ?",
+       p:"Quatre contrôles rapides.",
        qs:[
          {q:"« Elle prit la chaise du fond » est au…", opts:["passé simple","plus-que-parfait"], ok:0,
           fb:"Passé simple : l'action du récit lui-même."},
          {q:"« On avait commencé sans elle » place l'action…", opts:["avant le récit","après le récit"], ok:0,
-          fb:"Le plus-que-parfait recule d'un cran : c'était déjà fait."},
+          fb:"Le plus-que-parfait remonte d'un cran : c'était déjà arrivé."},
          {q:"La parenthèse du narrateur, dans cette nouvelle, apparaît…", opts:["une seule fois","à chaque page"], ok:0,
           fb:"Une seule fois — et c'est ce qui en fait le centre du texte."},
          {q:"La lecture qui explique le plus est celle qui rend compte…", opts:["des trois gestes et de la parenthèse","du geste le plus émouvant"], ok:0,
@@ -4519,7 +4519,7 @@ const PLUS = {
 
       {t:'ana', h:"Comparaison et métaphore",
        p:"La comparaison dit qu'elle compare ; la métaphore ne le dit pas et remplace directement.",
-       mots:[['Comparaison',"le bruit d'une allumette qui rate"],['Métaphore',"je déneige quelqu'un",true],['La différence',"« comme », « pareil à », « le bruit de » — ou rien"]],
+       mots:[['Comparaison',"le bruit d'une allumette qui rate"],['Métaphore',"je déneige quelqu'un",true],['Ce qui les sépare',"« comme », « pareil à », « le bruit de » — ou rien"]],
        say:"La gratte fait le bruit d'une allumette qui rate. Je déneige quelqu'un.",
        note:"« Déneiger quelqu'un » n'a aucun sens littéral, et c'est exactement ce qui le rend juste : le geste continue sans son objet."},
 
@@ -4563,8 +4563,8 @@ const PLUS = {
           "Dans le poème court, le sens arrive souvent en dernier et remonte. Une seule lecture ne peut donc pas suffire : ce n'est pas un défaut d'attention."],
        ]},
 
-      {t:'check', h:"Est-ce que c'est clair maintenant ?",
-       p:"Quatre questions rapides.",
+      {t:'check', h:"Le poème court : où regardez-vous ?",
+       p:"Quatre contrôles rapides.",
        qs:[
          {q:"Une ligne blanche entre deux groupes de vers est…", opts:["de la mise en page","une articulation de sens"], ok:1,
           fb:"Comme un paragraphe : elle sépare deux moments."},
@@ -4602,7 +4602,7 @@ const PLUS = {
 
       {t:'ana', h:"Le plus-que-parfait — un cran avant",
        p:"<b>avoir</b> ou <b>être</b> à l'imparfait, puis le participe passé.",
-       mots:[['Avec avoir',"on avait commencé · l'atelier avait signé"],['Avec être',"elle était partie · personne ne s'y était assis",true],['Ce qu\'il fait',"il place un fait plus tôt que le récit"]],
+       mots:[['Avec avoir',"on avait commencé · l'atelier avait signé"],['Avec être',"elle était partie · personne ne s'y était assis",true],['Son travail dans le récit',"il place un fait plus tôt que le récit"]],
        say:"On avait commencé sans elle. Personne ne s'y était assis.",
        note:"C'est le temps de tout ce qui s'est décidé avant que le personnage entre — et dans cette nouvelle, c'est beaucoup."},
 
@@ -4610,7 +4610,7 @@ const PLUS = {
        p:"Choisissez un plan et un exemple.",
        axes:[
          {id:'p', lbl:'Quel plan ?', opts:[['a','le décor (imparfait)'],['b','l\'action (passé simple)'],['c','l\'avant (plus-que-parfait)']]},
-         {id:'n', lbl:'Quel exemple ?', opts:[['1','le premier'],['2','le second']]}],
+         {id:'n', lbl:'Lequel des deux ?', opts:[['1','le premier'],['2','le second']]}],
        out:{
          a1:{w:["La salle était pleine."], say:"La salle était pleine.", n:'imparfait : un état, une toile de fond'},
          a2:{w:["Une chaise restait libre au centre."], say:"Une chaise restait libre au centre.", n:'imparfait : ça durait pendant la scène'},
@@ -4632,7 +4632,7 @@ const PLUS = {
          ["elle s'était assise","plus-que-parfait · s'asseoir"],
        ]},
 
-      {t:'piege', h:"Deux confusions fréquentes",
+      {t:'piege', h:"Deux confusions qui reviennent",
        rows:[
          ["« elle poussait » et « elle poussa »","l'un décrit, l'autre raconte",
           "L'imparfait installe un décor ou une habitude ; le passé simple avance l'histoire d'un geste. Dans un même paragraphe, ils alternent constamment."],
@@ -4640,8 +4640,8 @@ const PLUS = {
           "Aucun examen de ce cours ne vous demandera de produire un passé simple dans une conversation. Ce qui compte est de ne pas buter dessus en lisant."],
        ]},
 
-      {t:'check', h:"Est-ce que c'est clair maintenant ?",
-       p:"Quatre questions rapides.",
+      {t:'check', h:"Les deux temps du récit, les voyez-vous ?",
+       p:"Quatre contrôles rapides.",
        qs:[
          {q:"« Ils prirent » est le passé simple de…", opts:["prendre","prier"], ok:0,
           fb:"Prendre : elle prit, ils prirent."},
@@ -4665,13 +4665,13 @@ const PLUS = {
        p:"« Elle est en colère » ferme la porte : ou bien on vous croit, ou bien on vous contredit. « Il se peut qu'elle soit en colère » laisse la porte ouverte et invite l'autre à répondre. Le subjonctif n'est pas une politesse : c'est ce qui permet d'avancer une lecture forte sans prétendre qu'elle est la seule. C'est exactement ce que le cercle du mardi cherchait sans le savoir.",
        note:"Le mode du verbe fait ici un travail que le contenu ne peut pas faire : il dit à quel titre vous parlez."},
 
-      {t:'ana', h:"Ce qui déclenche le subjonctif",
+      {t:'ana', h:"Ce qui appelle le subjonctif",
        p:"Le doute, la possibilité, la concession, le refus de croire.",
-       mots:[['La possibilité',"il se peut que · il est possible que"],['La concession',"bien que · quoique",true],['Le doute nié',"je ne crois pas que · je ne pense pas que"]],
+       mots:[['Le possible',"il se peut que · il est possible que"],['L\'accord donné',"bien que · quoique",true],['Le doute nié',"je ne crois pas que · je ne pense pas que"]],
        say:"Il se peut qu'elle soit en colère. Bien qu'il ait raison, sa lecture explique moins.",
        note:"« Il semble que » demande le subjonctif ; « il me semble que » ne le demande pas. Un pronom, et tout change."},
 
-      {t:'ana', h:"Ce qui ne le déclenche pas",
+      {t:'ana', h:"Ce qui ne l'appelle pas",
        p:"La certitude, même faible, demande l'indicatif. C'est là que se produit presque toute la casse.",
        mots:[['Opinion assumée',"je crois que · je trouve que · il me semble que"],['Certitude',"il est certain que · il est clair que",true],['Rapport',"il paraît que · on dit que"]],
        say:"Il me semble qu'elle est en colère. Il paraît que la pièce se joue jusqu'au 14.",
@@ -4679,14 +4679,14 @@ const PLUS = {
 
       {t:'ana', h:"Les formes qu'il faut savoir écrire",
        p:"Six verbes irréguliers, et une règle pour tous les autres.",
-       mots:[['Les six',"qu'elle soit · qu'elle ait · qu'elle fasse · qu'elle puisse · qu'elle aille · qu'elle sache"],['La règle générale',"on part de la 3e personne du pluriel du présent",true],['Exemple',"ils prennent → qu'elle prenne · ils rendent → qu'elle rende"]],
+       mots:[['Les six',"qu'elle soit · qu'elle ait · qu'elle fasse · qu'elle puisse · qu'elle aille · qu'elle sache"],['Pour tous les autres',"on part de la 3e personne du pluriel du présent",true],['Exemple',"ils prennent → qu'elle prenne · ils rendent → qu'elle rende"]],
        say:"Qu'elle soit, qu'elle ait, qu'elle fasse, qu'elle puisse, qu'elle aille, qu'elle sache.",
        note:"Pour la plupart des verbes, le subjonctif présent s'écrit exactement comme l'indicatif présent. Ce sont les six irréguliers qui font tout le travail."},
 
       {t:'labo', h:"Le même contenu, deux modes",
        p:"Choisissez une idée et le degré d'engagement.",
        axes:[
-         {id:'i', lbl:'Quelle idée ?', opts:[['a','elle est en colère'],['b','l\'auteure l\'a fait exprès'],['c','cette lecture explique tout']]},
+         {id:'i', lbl:'Quel énoncé ?', opts:[['a','elle est en colère'],['b','l\'auteure l\'a fait exprès'],['c','cette lecture explique tout']]},
          {id:'d', lbl:'Vous…', opts:[['1','doutez'],['2','assumez']]}],
        out:{
          a1:{w:["Il se peut qu'elle soit en colère."], say:"Il se peut qu'elle soit en colère.", n:'subjonctif : la porte reste ouverte'},
@@ -4717,8 +4717,8 @@ const PLUS = {
           "« Avant que » demande le subjonctif ; « après que » demande l'indicatif, parce que la chose a eu lieu. La faute est si répandue qu'on l'entend partout, mais elle reste une faute à l'écrit."],
        ]},
 
-      {t:'check', h:"Est-ce que c'est clair maintenant ?",
-       p:"Quatre questions rapides.",
+      {t:'check', h:"Subjonctif ou indicatif : sûr de vous ?",
+       p:"Quatre contrôles rapides.",
        qs:[
          {q:"« Il se peut qu'elle ___ en colère. »", opts:["soit","est"], ok:0,
           fb:"« Il se peut que » demande le subjonctif."},
@@ -4763,8 +4763,8 @@ const PLUS = {
       {t:'labo', h:"Trois phrases, trois statuts",
        p:"Choisissez une phrase et ce que vous voulez en faire.",
        axes:[
-         {id:'p', lbl:'Quelle phrase ?', opts:[['a','le spectacle le plus juste'],['b','les cadets jouent trop fort'],['c','on devine que l\'auteur…']]},
-         {id:'q', lbl:'Vous voulez…', opts:[['1','la classer'],['2','y répondre']]}],
+         {id:'p', lbl:'Sur quelle phrase ?', opts:[['a','le spectacle le plus juste'],['b','les cadets jouent trop fort'],['c','on devine que l\'auteur…']]},
+         {id:'q', lbl:'Votre intention…', opts:[['1','la classer'],['2','y répondre']]}],
        out:{
          a1:{w:["Un jugement d'ensemble, posé avant tout argument."], say:"Un jugement d'ensemble, posé avant tout argument.", n:'aucun fait ne le soutient encore'},
          a2:{w:["Sur quoi appuyez-vous ce classement ?"], say:"Sur quoi appuyez-vous ce classement ?", n:'on demande le fait manquant, sans nier le jugement'},
@@ -4794,8 +4794,8 @@ const PLUS = {
           "Vous n'étiez pas dans la salle. Le seul terrain où vous êtes son égal est le texte : sa construction, ses appuis, ses trous."],
        ]},
 
-      {t:'check', h:"Est-ce que c'est clair maintenant ?",
-       p:"Quatre questions rapides.",
+      {t:'check', h:"Une critique, savez-vous la peser ?",
+       p:"Quatre contrôles rapides.",
        qs:[
          {q:"Sans avoir vu la pièce, on peut dire…", opts:["si la critique a raison","si la critique est appuyée"], ok:1,
           fb:"On peut examiner sa construction, pas vérifier son contenu."},
@@ -4839,14 +4839,14 @@ const PLUS = {
 
       {t:'ana', h:"Auquel, à laquelle, sur lequel — la chose est nommée",
        p:"Après une préposition, une chose prend lequel et ses composés ; une personne préfère « qui ».",
-       mots:[['Une chose',"la question à laquelle personne ne répond"],['Une chose',"le fait sur lequel il s'appuie",true],['Une personne',"la voisine à qui elle tend la carte"]],
+       mots:[['Pour une chose',"la question à laquelle personne ne répond"],['Pour une chose',"le fait sur lequel il s'appuie",true],['Pour une personne',"la voisine à qui elle tend la carte"]],
        say:"La question à laquelle personne ne répond. La voisine à qui elle tend la carte.",
        note:"à + lequel donne <b>auquel</b> ; à + lesquels donne <b>auxquels</b>. « à laquelle » ne se contracte pas."},
 
       {t:'labo', h:"Le verbe décide",
        p:"Choisissez un verbe et le mot repris.",
        axes:[
-         {id:'v', lbl:'Quel verbe ?', opts:[['a','parler de'],['b','penser à'],['c','s\'appuyer sur']]},
+         {id:'v', lbl:'Quel verbe commande ?', opts:[['a','parler de'],['b','penser à'],['c','s\'appuyer sur']]},
          {id:'m', lbl:'On reprend…', opts:[['1','une chose nommée'],['2','rien de nommé']]}],
        out:{
          a1:{w:["le détail dont il parle"], say:"Le détail dont il parle est à la troisième strophe.", n:'de → dont'},
@@ -4869,7 +4869,7 @@ const PLUS = {
          ["rien de nommé devant","ce dont, ce à quoi, ce sur quoi"],
        ]},
 
-      {t:'piege', h:"Trois pièges des relatifs",
+      {t:'piege', h:"Trois faux pas avec les relatifs",
        rows:[
          ["« le passage que vous parlez »","« le passage dont vous parlez »",
           "« Que » ne remplace jamais un complément introduit par une préposition. C'est la faute la plus répandue, et elle vient de l'oral rapide."],
@@ -4879,8 +4879,8 @@ const PLUS = {
           "À l'écrit soutenu, la préposition ne se rejette jamais à la fin de la phrase. La forme avec « dessus » est parlée et ne se publie pas."],
        ]},
 
-      {t:'check', h:"Est-ce que c'est clair maintenant ?",
-       p:"Quatre questions rapides.",
+      {t:'check', h:"Le bon relatif vous vient-il ?",
+       p:"Quatre contrôles rapides.",
        qs:[
          {q:"« Le détail ___ il parle. »", opts:["dont","auquel"], ok:0,
           fb:"Parler de… → dont."},
@@ -4906,7 +4906,7 @@ const PLUS = {
 
       {t:'ana', h:"Bien que · quoique + subjonctif",
        p:"Les deux concessives les plus employées, et elles demandent toujours le subjonctif.",
-       mots:[['On dit',"Bien que la corde soit attachée, c'est elle qui l'a remise à l'eau."],['On dit',"Quoiqu'il ait raison sur ce point, sa lecture explique moins.",true],['La règle','subjonctif, sans exception']],
+       mots:[['On dit',"Bien que la corde soit attachée, c'est elle qui l'a remise à l'eau."],['On dit',"Quoiqu'il ait raison sur ce point, sa lecture explique moins.",true],['Ce qui vaut','subjonctif, sans exception']],
        say:"Bien que la corde soit attachée, c'est elle qui l'a remise à l'eau.",
        note:"« Quoique » en un mot signifie « bien que ». « Quoi que » en deux mots signifie « peu importe ce que ». Deux mots différents."},
 
@@ -4931,8 +4931,8 @@ const PLUS = {
       {t:'labo', h:"Concéder ou opposer ?",
        p:"Choisissez ce que vous faites et le registre.",
        axes:[
-         {id:'g', lbl:'Vous voulez…', opts:[['a','concéder puis avancer'],['b','opposer deux choses'],['c','concéder par écrit']]},
-         {id:'r', lbl:'Quel exemple ?', opts:[['1','sur la télésérie'],['2','sur la critique']]}],
+         {id:'g', lbl:'Votre intention…', opts:[['a','concéder puis avancer'],['b','opposer deux choses'],['c','concéder par écrit']]},
+         {id:'r', lbl:'Lequel des deux ?', opts:[['1','sur la télésérie'],['2','sur la critique']]}],
        out:{
          a1:{w:["Bien que la corde soit attachée, c'est elle qui l'a remise à l'eau."], say:"Bien que la corde soit attachée, c'est elle qui l'a remise à l'eau.", n:'bien que + subjonctif'},
          a2:{w:["Même si vous n'avez pas vu la pièce, vous pouvez lire le texte."], say:"Même si vous n'avez pas vu la pièce, vous pouvez lire le texte.", n:'même si + indicatif'},
@@ -4964,8 +4964,8 @@ const PLUS = {
           "Une concession placée après votre argument l'annule. Placée avant, elle le prépare. L'ordre change tout, et il ne coûte rien."],
        ]},
 
-      {t:'check', h:"Est-ce que c'est clair maintenant ?",
-       p:"Quatre questions rapides.",
+      {t:'check', h:"Concéder, opposer : la règle est-elle prise ?",
+       p:"Quatre contrôles rapides.",
        qs:[
          {q:"« Bien que la corde ___ attachée… »", opts:["soit","est"], ok:0,
           fb:"Bien que + subjonctif, sans exception."},
@@ -4991,13 +4991,13 @@ const PLUS = {
 
       {t:'ana', h:"Citer — les mots exacts, entre guillemets",
        p:"Deux-points, guillemets ouvrants, majuscule, guillemets fermants. On ne change pas un mot, pas même pour corriger une faute.",
-       mots:[['La ponctuation',"Josyane a dit : « Une lecture se juge à ce qu'elle permet d'expliquer. »"],['Le point',"le point final se met à l'intérieur des guillemets",true],['La coupure',"trois points entre crochets pour ce qu'on retire"]],
+       mots:[['Les signes à poser',"Josyane a dit : « Une lecture se juge à ce qu'elle permet d'expliquer. »"],['Le point',"le point final se met à l'intérieur des guillemets",true],['La coupure',"trois points entre crochets pour ce qu'on retire"]],
        say:"Josyane a dit : une lecture se juge à ce qu'elle permet d'expliquer.",
        note:"En français, on emploie les guillemets français « » avec une espace à l'intérieur. Les guillemets droits sont tolérés, les italiques ne remplacent rien."},
 
       {t:'ana', h:"Résumer — d'autres mots, la même chose",
        p:"Aucun guillemet, et une seule règle : la personne doit pouvoir approuver votre phrase.",
-       mots:[['Elle a dit',"Une lecture se juge à ce qu'elle permet d'expliquer."],['On résume',"Selon Josyane, une lecture vaut par le nombre de détails dont elle rend compte.",true],['Le test','elle approuve d\'un signe de tête']],
+       mots:[['Elle a dit',"Une lecture se juge à ce qu'elle permet d'expliquer."],['On résume',"Selon Josyane, une lecture vaut par le nombre de détails dont elle rend compte.",true],['Le contrôle','elle approuve d\'un signe de tête']],
        say:"Selon Josyane, une lecture vaut par le nombre de détails dont elle rend compte.",
        note:"Le résumé est plus difficile que la citation, et beaucoup plus utile : il montre que vous avez compris."},
 
@@ -5009,7 +5009,7 @@ const PLUS = {
 
       {t:'ana', h:"Le verbe introducteur pèse lourd",
        p:"Le verbe que vous choisissez juge celui que vous rapportez, avant même que le lecteur ait lu la citation.",
-       mots:[['Neutres',"dit · écrit · explique · précise"],['Chargés',"prétend · avoue · admet · laisse entendre",true],['La règle','neutre quand vous voulez être cru']],
+       mots:[['Neutres',"dit · écrit · explique · précise"],['Chargés',"prétend · avoue · admet · laisse entendre",true],['Ce qui vaut','neutre quand vous voulez être cru']],
        say:"Il dit. Il explique. Il prétend. Il avoue.",
        note:"« Prétend » signale que vous ne le croyez pas ; « avoue » suppose qu'il y avait quelque chose à cacher. Employés sans le savoir, ils décrédibilisent votre propre texte."},
 
@@ -5050,8 +5050,8 @@ const PLUS = {
           "Changer un verbe de supposition en verbe de certitude supprime la seule précaution que l'autre avait prise. C'est ce qui rend un résumé injuste sans qu'un seul fait soit faux."],
        ]},
 
-      {t:'check', h:"Est-ce que c'est clair maintenant ?",
-       p:"Quatre questions rapides.",
+      {t:'check', h:"Citer, résumer, déformer : c'est clair ?",
+       p:"Quatre contrôles rapides.",
        qs:[
          {q:"Le test d'un bon résumé, c'est que la personne citée…", opts:["ne réponde pas","puisse l'approuver d'un signe de tête"], ok:1,
           fb:"C'est la frontière entre résumer et déformer."},
