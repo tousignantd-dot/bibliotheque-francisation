@@ -108,7 +108,7 @@ const EXOS = [
      ["Le suffixe <b>-tion</b> transforme l'action en chose","<span class='savoir-ex'>réclamer → une <b>réclamation</b> · réparer → une <b>réparation</b> · résoudre → une <b>résolution</b> · immatriculer → l'<b>immatriculation</b></span> C'est le suffixe des documents officiels : il permet de parler de l'action sans nommer qui la fait."],
      ["Le suffixe <b>-able</b> dit ce qui est possible","<span class='savoir-ex'>réparer → <b>réparable</b> · rembourser → <b>remboursable</b> · accepter → <b>acceptable</b> · raisonner → <b>raisonnable</b></span> Utile dans une lettre : « la pièce est réparable » engage moins que « réparez la pièce », et prépare la demande."],
      ["Le suffixe <b>-ment</b> fabrique un nom masculin","<span class='savoir-ex'>fonctionner → le <b>fonctionnement</b> · rembourser → le <b>remboursement</b> · cogner → un <b>cognement</b> · verser → un <b>versement</b></span>"],
-     ["Ce que ça change à la lecture","Le contrat écrit « en cas de dysfonctionnement, le remboursement n'est pas automatique ». Retrouver le verbe sous le nom — ça ne fonctionne pas, on ne vous rembourse pas forcément — c'est comprendre la phrase du premier coup."],
+     ["Ce que ça change quand on lit un contrat","Le contrat écrit « en cas de dysfonctionnement, le remboursement n'est pas automatique ». Retrouver le verbe sous le nom — ça ne fonctionne pas, on ne vous rembourse pas forcément — c'est comprendre la phrase du premier coup."],
    ]},
    items:[
     {q:"Elle demande au commerçant de réparer : elle fait une ___ .", accept:["réclamation","reclamation"], ph:"un nom en -tion"},
@@ -269,7 +269,7 @@ const EXOS = [
      ["Une fiche répond à des questions, pas à un sujet","On ne la lit pas du début à la fin : on arrive avec sa question et on cherche le paragraphe qui y répond. Le titre en majuscules du paragraphe est l'index."],
      ["Les chiffres sont les phrases importantes","Un mois, mille sept cents kilomètres, dix jours, quinze mille dollars. Dans un texte de droits, la partie qu'on doit pouvoir citer est presque toujours celle qui porte un nombre."],
      ["« Compte tenu de » introduit une nuance, pas une échappatoire","« Une durée raisonnable, compte tenu du prix payé » ne veut pas dire « ça dépend ». Ça veut dire que le prix est un argument : plus vous avez payé, plus la durée attendue est longue. C'est en votre faveur."],
-     ["Ce document-ci est un exemple","Il est écrit pour ce module, dans la forme d'une fiche de renseignements. Les règles qu'il énonce sont bien celles du Québec ; pour un vrai dossier, c'est la page de l'Office de la protection du consommateur qu'il faut ouvrir."],
+     ["Les deux documents ci-dessous sont des exemples","Il est écrit pour ce module, dans la forme d'une fiche de renseignements. Les règles qu'il énonce sont bien celles du Québec ; pour un vrai dossier, c'est la page de l'Office de la protection du consommateur qu'il faut ouvrir."],
    ]},
    paras:[
      "FICHE DE RENSEIGNEMENTS — « Une auto d'occasion qui brise » · Office de la protection du consommateur · Mise à jour le 14 janvier",
@@ -307,7 +307,7 @@ const EXOS = [
      ["Le procédé jumeau : <b>ce que… c'est</b>, <b>ce qui… c'est</b>","Pour mettre en avant une idée entière plutôt qu'un mot. <span class='savoir-ex'>Je demande la réparation. → <b>Ce que</b> je demande, <b>c'est</b> la réparation.</span> C'est la forme la plus utile dans une réclamation : elle annonce d'avance qu'une seule chose est demandée."],
      ["La reprise par un pronom : <b>moi, je…</b>, <b>l'auto, elle…</b>","<span class='savoir-ex'>L'auto, <b>elle</b>, a vingt-quatre jours de route. · Cette exclusion-<b>là</b>, je ne l'ai jamais lue.</span> C'est du français parlé du Québec, parfaitement correct à l'oral, et à éviter dans la lettre écrite."],
      ["Pourquoi ça change quelque chose au comptoir","La personne en face traite vingt dossiers par jour et retient la première moitié de votre phrase. Mettre en avant ce qui compte, ce n'est pas de l'effet de style : c'est décider vous-même de ce qu'elle retiendra."],
-     ["Le piège de l'accord","<span class='savoir-ex'>C'est <b>moi qui ai</b> signé.</span> — et non « qui a ». Le verbe s'accorde avec le pronom mis en relief, pas avec « c'est »."],
+     ["Le piège de l'accord après « c'est moi qui »","<span class='savoir-ex'>C'est <b>moi qui ai</b> signé.</span> — et non « qui a ». Le verbe s'accorde avec le pronom mis en relief, pas avec « c'est »."],
    ]},
    rows:[
     {id:'em1', q:"La garantie légale s'applique, pas la prolongée.", aid:'em1', a:"C'est la garantie légale qui s'applique, pas la prolongée."},
@@ -369,7 +369,7 @@ const EXOS = [
      ["Le droit, en une phrase, sans citation savante","<span class='savoir-ex'>« Mon véhicule est de catégorie C : la garantie de bon fonctionnement le couvrait au moment de la panne. »</span> Vous n'êtes pas obligé de citer un article de loi. Nommer la garantie et démontrer que vous étiez dedans suffit."],
      ["La demande : une seule, chiffrée, datée","Réparer, remplacer ou rembourser — un seul des trois, celui que vous voulez vraiment. Puis un délai : <span class='savoir-ex'>« dans un délai de dix jours à compter de la réception de la présente »</span>."],
      ["La suite annoncée, jamais menacée","<span class='savoir-ex'>« À défaut, je m'adresserai à la Division des petites créances. »</span> Un fait au futur, pas une menace. La différence tient au ton et au verbe : « je m'adresserai » plutôt que « vous le regretterez »."],
-     ["Ce document-ci est un exemple","La lettre ci-dessous est écrite pour ce module. Elle a la forme d'une vraie mise en demeure, mais un modèle officiel existe et se trouve chez l'Office de la protection du consommateur et au ministère de la Justice."],
+     ["Cette fiche-ci est un exemple, la vraie est en ligne","La lettre ci-dessous est écrite pour ce module. Elle a la forme d'une vraie mise en demeure, mais un modèle officiel existe et se trouve chez l'Office de la protection du consommateur et au ministère de la Justice."],
    ]},
    paras:[
      "Victoriaville, le 8 mai",
@@ -429,7 +429,7 @@ const EXOS = [
      ["Opposer : <b>cependant</b>, <b>toutefois</b>, <b>or</b>","<span class='savoir-ex'>Vous invoquez l'usure normale. <b>Or</b>, vingt-quatre jours s'étaient écoulés.</span> <b>Or</b> est le plus fort des trois : il introduit le fait qui renverse l'argument d'en face. On le garde pour ce moment-là."],
      ["Situer dans le temps : <b>dès</b>, <b>à compter de</b>, <b>par la suite</b>","<span class='savoir-ex'><b>Dès</b> le lendemain de la livraison · <b>à compter de</b> la réception de la présente</span> <b>À compter de</b> est la formule du délai ; <b>à partir de</b> se dit aussi, mais la lettre préfère la première."],
      ["Où se place le connecteur","En tête de paragraphe, suivi d'une virgule. Le mettre au milieu d'une phrase longue le rend invisible, et c'est justement ce qu'on ne veut pas : le connecteur est un panneau routier, il se voit de loin."],
-     ["Ce qu'il ne faut pas faire","Empiler. <span class='savoir-ex'>« Donc en conséquence, par conséquent… »</span> Un connecteur par charnière, et des paragraphes courts entre eux. La lettre d'Ernestine en compte cinq pour sept paragraphes : c'est le bon rapport."],
+     ["Ce qui affaiblit une lettre","Empiler. <span class='savoir-ex'>« Donc en conséquence, par conséquent… »</span> Un connecteur par charnière, et des paragraphes courts entre eux. La lettre d'Ernestine en compte cinq pour sept paragraphes : c'est le bon rapport."],
    ]},
    items:[
     {q:"___ le lendemain de la livraison, j'ai noté le kilométrage inscrit à l'odomètre.", accept:["Dès","Dés","dès"], ph:"un mot"},

@@ -35,7 +35,7 @@ const PLUS = {
        p:"Choisissez un fait, puis l'intention. Écoutez la différence avant de répéter.",
        axes:[
          {id:'f', lbl:'Quel fait ?', opts:[['b','le bruit'],['g','la garantie'],['r','le rappel promis']]},
-         {id:'i', lbl:'Quelle intention ?', opts:[['c','on constate'],['p','on se plaint'],['a','on accuse']]}],
+         {id:'i', lbl:'Sur quel ton ?', opts:[['c','on constate'],['p','on se plaint'],['a','on accuse']]}],
        out:{
          bc:{w:["Le cognement est apparu le vingt-quatre avril, à froid."], say:"Le cognement est apparu le vingt-quatre avril, à froid.", n:'un fait daté : rien à contredire'},
          bp:{w:["C'est décourageant d'entendre ça chaque matin depuis trois semaines."], say:"C'est décourageant d'entendre ça chaque matin depuis trois semaines.", n:'une émotion : vraie, mais elle ne prouve rien'},
@@ -49,7 +49,7 @@ const PLUS = {
        },
        note:"Remarquez la troisième colonne : les constats sont vérifiables, les plaintes sont vraies, les accusations sont indémontrables. Ce n'est pas une question de politesse — c'est une question de preuve."},
 
-      {t:'ex', h:'Neuf phrases, trois familles',
+      {t:'ex', h:'Neuf phrases, et ce que le comptoir en fait',
        p:"À gauche ce qui se dit, à droite ce que la personne en face en fait.",
        rows:[
          ["Le rapport du garage indique une fuite au carter.","elle le lit : c'est écrit ailleurs que dans votre bouche"],
@@ -63,8 +63,8 @@ const PLUS = {
          ["Vous faites exprès de ne pas rappeler.","elle défend son équipe : le sujet a changé"],
        ]},
 
-      {t:'check', h:'Quatre questions, sans filet',
-       p:"Répondez de mémoire, sans remonter plus haut.",
+      {t:'check', h:'Quatre questions sur le ton',
+       p:"Répondez sans remonter dans la leçon.",
        qs:[
          {q:"« L'étiquette porte la mention catégorie C » est…", opts:["un constat","une plainte"], ok:0,
           fb:"Voix plate, fait vérifiable : c'est le type de phrase qui fait ouvrir un dossier."},
@@ -110,9 +110,9 @@ const PLUS = {
 
       {t:'ana', h:"Les usages antérieurs : la ligne qu'on saute",
        p:"L'étiquette doit mentionner si le véhicule a servi de taxi, d'auto d'école de conduite, de véhicule de location, de voiture de police, d'ambulance, de véhicule de démonstration ou au transport de clients.",
-       mots:[['Pourquoi ça compte',"un véhicule de location a été conduit par cent personnes différentes"],
+       mots:[['Pourquoi cette ligne-là compte',"un véhicule de location a été conduit par cent personnes différentes"],
              ['Ce que ça ne veut pas dire',"que le véhicule est mauvais : il a souvent été mieux entretenu"],
-             ['Ce que ça change',"la valeur de revente, et les questions à poser sur l'entretien", true]],
+             ['Ce que ça change pour vous',"la valeur de revente, et les questions à poser sur l'entretien", true]],
        say:"Le véhicule a été utilisé comme voiture de location à court terme pendant deux ans.",
        note:"Cette mention est obligatoire. Son absence sur l'étiquette d'un véhicule qui a bel et bien servi ainsi est un manquement, et elle se plaide."},
 
@@ -157,8 +157,8 @@ const PLUS = {
          ["Obligation totale : 13 341,60 $","ce que vous verserez en tout : la case à comparer"],
        ]},
 
-      {t:'check', h:'Quatre questions, sans filet',
-       p:"Répondez de mémoire, sans remonter plus haut.",
+      {t:'check', h:'Quatre questions sur les deux documents',
+       p:"Répondez sans remonter dans la leçon.",
        qs:[
          {q:"Une auto de 6 ans avec 90 000 km est de catégorie…", opts:["B","C"], ok:1,
           fb:"Six ans dépasse les cinq ans de B : on descend en C, un mois ou 1 700 km."},
@@ -214,7 +214,7 @@ const PLUS = {
        p:"Il transforme un verbe en adjectif de possibilité : ce qui peut être fait.",
        mots:[['La fabrication',"réparer → réparable · rembourser → remboursable · accepter → acceptable"],
              ['Son intérêt dans une réclamation',"il constate une possibilité au lieu de donner un ordre"],
-             ['La forme négative',"in- + -able : irréparable, inacceptable, irrecevable", true]],
+             ['Sa forme négative',"in- + -able : irréparable, inacceptable, irrecevable", true]],
        say:"La pièce est réparable, et la réparation est couverte par la garantie.",
        note:"« La pièce est réparable » précède utilement « je vous demande de la réparer » : on établit d'abord que la chose est possible, on demande ensuite. Deux phrases, et la seconde ne peut plus être refusée pour impossibilité."},
 
@@ -222,7 +222,7 @@ const PLUS = {
        p:"Choisissez un verbe, puis la pièce à ajouter.",
        axes:[
          {id:'v', lbl:'Quel verbe ?', opts:[['r','réparer'],['b','rembourser'],['f','fonctionner']]},
-         {id:'p', lbl:'Quelle pièce ?', opts:[['n','le nom'],['a','l\'adjectif en -able'],['x','la négation']]}],
+         {id:'p', lbl:'Quelle transformation ?', opts:[['n','le nom'],['a','l\'adjectif en -able'],['x','la négation']]}],
        out:{
          rn:{w:["une réparation"], say:"une réparation", n:'-tion : le nom féminin de l\'action'},
          ra:{w:["réparable"], say:"La pièce est réparable.", n:'-able : ce qui peut être réparé'},
@@ -253,8 +253,8 @@ const PLUS = {
          ["irrecevable","ir- + recevoir + -able : qu'un tribunal refusera d'examiner"],
        ]},
 
-      {t:'check', h:'Quatre questions, sans filet',
-       p:"Répondez de mémoire, sans remonter plus haut.",
+      {t:'check', h:'Quatre questions sur la fabrique des mots',
+       p:"Répondez sans remonter dans la leçon.",
        qs:[
          {q:"« Ça marche mal » se dit…", opts:["un désfonctionnement","un dysfonctionnement"], ok:1,
           fb:"Dys- vient du grec et dit « mal ». Dé- défait ; ce n'est pas la même chose."},
@@ -319,7 +319,7 @@ const PLUS = {
        p:"Choisissez un appareil, puis la façon de le dire.",
        axes:[
          {id:'o', lbl:'Quel objet ?', opts:[['a','une auto'],['l','une laveuse'],['f','un four']]},
-         {id:'q', lbl:'Comment ?', opts:[['v','le vague'],['p','le précis']]}],
+         {id:'q', lbl:'Dit comment ?', opts:[['v','le vague'],['p','le précis']]}],
        out:{
          av:{w:["Mon auto est bizarre depuis un bout de temps."], say:"Mon auto est bizarre depuis un bout de temps.", n:'aucune des trois coordonnées : le garagiste part de zéro'},
          ap:{w:["Un cognement sous le plancher à droite, à froid, systématiquement au passage des rapports, depuis le 24 avril."], say:"Un cognement sous le plancher à droite, à froid, systématiquement au passage des rapports.", n:'quoi, où, quand, combien, depuis quand : cinq renseignements'},
@@ -345,8 +345,8 @@ const PLUS = {
          ["Je pense que c'est le moteur.","il devra vérifier le moteur pour vous rassurer"],
        ]},
 
-      {t:'check', h:'Quatre questions, sans filet',
-       p:"Répondez de mémoire, sans remonter plus haut.",
+      {t:'check', h:'Quatre questions sur les trois coordonnées',
+       p:"Répondez sans remonter dans la leçon.",
        qs:[
          {q:"Quelle est la coordonnée qu'on oublie le plus ?", opts:["le quoi","le quand"], ok:1,
           fb:"À froid, en côte, au freinage : c'est ce qui distingue deux pannes qui font le même bruit."},
@@ -451,8 +451,8 @@ const PLUS = {
          ["nettement","de façon marquée : utile pour dire que ça empire"],
        ]},
 
-      {t:'check', h:'Quatre questions, sans filet',
-       p:"Répondez de mémoire, sans remonter plus haut.",
+      {t:'check', h:'Quatre questions sur les adverbes',
+       p:"Répondez sans remonter dans la leçon.",
        qs:[
          {q:"« Je n'ai fait que 900 km » veut dire…", opts:["j'ai fait 900 km","je n'ai pas fait 900 km"], ok:0,
           fb:"« ne… que » restreint, il ne nie pas. La phrase affirme les 900 km et souligne qu'ils sont peu."},
@@ -491,7 +491,7 @@ const PLUS = {
        mots:[['Avec avoir',"j'avais signé · tu avais remarqué · elle avait commencé · nous avions demandé"],
              ['Avec être',"j'étais partie · il était revenu · elles étaient arrivées"],
              ['Le choix de l\'auxiliaire',"exactement le même qu'au passé composé", true],
-             ['Ce qui change',"l'auxiliaire passe du présent à l'imparfait, et c'est tout"]],
+             ['Ce qui change par rapport au passé composé',"l'auxiliaire passe du présent à l'imparfait, et c'est tout"]],
        say:"Quand je suis arrivée, le vendeur avait déjà ajouté la garantie au contrat.",
        note:"Si vous savez dire « j'ai signé », vous savez dire « j'avais signé ». Aucun verbe n'a de forme spéciale au plus-que-parfait."},
 
@@ -539,8 +539,8 @@ const PLUS = {
          ["Personne ne me l'avait expliqué.","antérieur, et c'est tout l'argument : plus-que-parfait"],
        ]},
 
-      {t:'check', h:'Quatre questions, sans filet',
-       p:"Répondez de mémoire, sans remonter plus haut.",
+      {t:'check', h:'Quatre questions sur les deux passés',
+       p:"Répondez sans remonter dans la leçon.",
        qs:[
          {q:"Le plus-que-parfait dit qu'un fait est…", opts:["très ancien","antérieur à un autre fait passé"], ok:1,
           fb:"Il est relatif : il n'existe qu'en paire. Un fait d'il y a vingt ans se dit très bien au passé composé."},
@@ -578,7 +578,7 @@ const PLUS = {
        p:"Elle est écrite dans la loi et s'applique à tout bien vendu par un commerçant : une auto, une laveuse, un téléphone.",
        mots:[['Ce qu\'elle exige',"que le bien serve à l'usage auquel il est normalement destiné"],
              ['Et surtout',"qu'il y serve pendant une durée raisonnable, compte tenu du prix payé", true],
-             ['Ce qu\'elle ne fait pas',"elle ne donne pas de nombre de mois : c'est le prix qui sert d'échelle"],
+             ['Ce qu\'elle ne chiffre pas',"elle ne donne pas de nombre de mois : c'est le prix qui sert d'échelle"],
              ['Sa force',"elle continue de s'appliquer quand toutes les autres sont expirées"]],
        say:"Un bien doit servir pendant une durée raisonnable, compte tenu du prix payé.",
        note:"« Compte tenu du prix payé » est en votre faveur, et c'est l'argument à retenir : plus vous avez payé, plus la durée attendue est longue. Une laveuse de 1 150 $ qui meurt à quatorze mois n'a pas servi une durée raisonnable, même si la garantie du fabricant est finie depuis deux mois."},
@@ -635,8 +635,8 @@ const PLUS = {
          ["Repassez la semaine prochaine.","Je vous laisse jusqu'à vendredi, puis je vous écris."],
        ]},
 
-      {t:'check', h:'Quatre questions, sans filet',
-       p:"Répondez de mémoire, sans remonter plus haut.",
+      {t:'check', h:'Quatre questions sur les trois garanties',
+       p:"Répondez sans remonter dans la leçon.",
        qs:[
          {q:"Une auto de catégorie D n'a…", opts:["aucun recours","pas de garantie de bon fonctionnement"], ok:1,
           fb:"La garantie légale s'applique à tout bien vendu par un commerçant, catégorie D comprise."},
@@ -702,7 +702,7 @@ const PLUS = {
        p:"Choisissez votre question, puis ce que vous cherchez.",
        axes:[
          {id:'q', lbl:'Votre question ?', opts:[['d','combien de temps suis-je couvert'],['a','puis-je annuler la garantie payée'],['s','le commerçant refuse']]},
-         {id:'c', lbl:'Vous cherchez…', opts:[['t','le titre du paragraphe'],['n','le nombre à retenir']]}],
+         {id:'c', lbl:'Vous voulez trouver…', opts:[['t','le titre du paragraphe'],['n','le nombre à retenir']]}],
        out:{
          dt:{w:["DURÉES — Catégories A, B, C et première limite atteinte"], say:"Durées : catégories A, B, C, et première limite atteinte.", n:'le titre suffit : inutile de lire la fiche entière'},
          dn:{w:["Un mois ou 1 700 kilomètres, en catégorie C"], say:"Un mois ou mille sept cents kilomètres, en catégorie C.", n:'la phrase à citer dans la lettre, mot pour mot'},
@@ -728,8 +728,8 @@ const PLUS = {
          ["selon la première limite atteinte","celle des deux qui arrive en premier arrête tout"],
        ]},
 
-      {t:'check', h:'Quatre questions, sans filet',
-       p:"Répondez de mémoire, sans remonter plus haut.",
+      {t:'check', h:'Quatre questions sur la fiche de droits',
+       p:"Répondez sans remonter dans la leçon.",
        qs:[
          {q:"Dans une fiche officielle, on lit d'abord…", opts:["le premier paragraphe","les titres"], ok:1,
           fb:"Le titre est l'index : il dit à quelle question le paragraphe répond."},
@@ -793,8 +793,8 @@ const PLUS = {
       {t:'labo', h:'La même phrase, trois mises en relief',
        p:"Choisissez une phrase plate, puis ce que vous voulez mettre en avant.",
        axes:[
-         {id:'p', lbl:'Quelle phrase ?', opts:[['g','La garantie légale s\'applique.'],['r','Je demande la réparation.'],['d','Je veux une réponse avant vendredi.']]},
-         {id:'m', lbl:'Quel procédé ?', opts:[['c','c\'est… qui / que'],['e','ce que… c\'est'],['n','la forme négative']]}],
+         {id:'p', lbl:'Quel énoncé plat ?', opts:[['g','La garantie légale s\'applique.'],['r','Je demande la réparation.'],['d','Je veux une réponse avant vendredi.']]},
+         {id:'m', lbl:'Quelle mise en relief ?', opts:[['c','c\'est… qui / que'],['e','ce que… c\'est'],['n','la forme négative']]}],
        out:{
          gc:{w:["C'est la garantie légale qui s'applique."], say:"C'est la garantie légale qui s'applique.", n:'sujet mis en avant, donc « qui »'},
          ge:{w:["Ce qui s'applique, c'est la garantie légale."], say:"Ce qui s'applique, c'est la garantie légale.", n:'la même idée, avec le suspense inversé'},
@@ -821,8 +821,8 @@ const PLUS = {
          ["L'information me manque.","Ce qui me manque, c'est l'information."],
        ]},
 
-      {t:'check', h:'Quatre questions, sans filet',
-       p:"Répondez de mémoire, sans remonter plus haut.",
+      {t:'check', h:'Quatre questions sur la mise en relief',
+       p:"Répondez sans remonter dans la leçon.",
        qs:[
          {q:"« C'est moi qui ___ signé. »", opts:["ai","a"], ok:0,
           fb:"Le verbe s'accorde avec le pronom mis en relief, pas avec « c'est »."},
@@ -896,7 +896,7 @@ const PLUS = {
        p:"Choisissez ce que vous demandez, puis le moment.",
        axes:[
          {id:'d', lbl:'Vous demandez…', opts:[['r','la réparation'],['v','une auto en attendant'],['e','une réponse écrite']]},
-         {id:'m', lbl:'À quel moment ?', opts:[['a','au comptoir'],['l','dans la lettre']]}],
+         {id:'m', lbl:'Vous le dites où ?', opts:[['a','au comptoir'],['l','dans la lettre']]}],
        out:{
          ra:{w:["Accepteriez-vous de faire réparer la transmission sans frais ?"], say:"Accepteriez-vous de faire réparer la transmission sans frais ?", n:'la porte reste ouverte : elle peut dire oui sans perdre la face'},
          rl:{w:["Je vous demande de procéder, à vos frais, à la réparation complète de la transmission."], say:"Je vous demande de procéder, à vos frais, à la réparation complète de la transmission.", n:'indicatif : la demande est devenue une exigence datée'},
@@ -922,8 +922,8 @@ const PLUS = {
          ["Je vous mets en demeure de…","la formule la plus forte, à réserver à la dernière lettre"],
        ]},
 
-      {t:'check', h:'Quatre questions, sans filet',
-       p:"Répondez de mémoire, sans remonter plus haut.",
+      {t:'check', h:'Quatre questions sur le conditionnel',
+       p:"Répondez sans remonter dans la leçon.",
        qs:[
          {q:"Le radical du conditionnel est celui…", opts:["de l'imparfait","du futur"], ok:1,
           fb:"Radical du futur, terminaisons de l'imparfait. Les deux moitiés viennent d'endroits différents."},
@@ -988,7 +988,7 @@ const PLUS = {
        p:"Choisissez ce que vous voulez dire, puis la version à retenir.",
        axes:[
          {id:'i', lbl:'Vous voulez dire…', opts:[['c','que c\'est arrivé vite'],['g','que la garantie s\'applique'],['s','que vous irez plus loin']]},
-         {id:'v', lbl:'Quelle version ?', opts:[['m','la version à éviter'],['b','la version qui tient']]}],
+         {id:'v', lbl:'On garde laquelle ?', opts:[['m','la version à éviter'],['b','la version qui tient']]}],
        out:{
          cm:{w:["C'est absolument inadmissible qu'une auto brise aussi vite."], say:"C'est absolument inadmissible qu'une auto brise aussi vite.", n:'un jugement : le destinataire peut ne pas le partager'},
          cb:{w:["Le véhicule m'a été livré le 6 avril ; la panne est survenue le 24 avril, après 900 kilomètres."], say:"Le véhicule m'a été livré le six avril ; la panne est survenue le vingt-quatre avril, après neuf cents kilomètres.", n:'deux dates et un chiffre : personne ne peut ne pas les partager'},
@@ -1015,8 +1015,8 @@ const PLUS = {
          ["Vous trouverez ci-joint copie…","les pièces, énumérées sans commentaire"],
        ]},
 
-      {t:'check', h:'Quatre questions, sans filet',
-       p:"Répondez de mémoire, sans remonter plus haut.",
+      {t:'check', h:'Quatre questions sur la mise en demeure',
+       p:"Répondez sans remonter dans la leçon.",
        qs:[
          {q:"L'objet d'une mise en demeure contient…", opts:["une phrase complète","le genre, le litige, le dossier"], ok:1,
           fb:"Trois éléments, sans verbe conjugué."},
@@ -1083,8 +1083,8 @@ const PLUS = {
       {t:'labo', h:'Où va cette phrase ?',
        p:"Choisissez une phrase, puis voyez son paragraphe.",
        axes:[
-         {id:'p', lbl:'Quelle phrase ?', opts:[['a','Le 6 avril, j\'ai acheté…'],['b','L\'étiquette dit catégorie C.'],['c','Vous disposez de dix jours.']]},
-         {id:'r', lbl:'Vous cherchez…', opts:[['n','son numéro'],['j','sa justification']]}],
+         {id:'p', lbl:'Laquelle de ces phrases ?', opts:[['a','Le 6 avril, j\'ai acheté…'],['b','L\'étiquette dit catégorie C.'],['c','Vous disposez de dix jours.']]},
+         {id:'r', lbl:'Ce qui vous intéresse…', opts:[['n','son numéro'],['j','sa justification']]}],
        out:{
          an:{w:["Paragraphe 1 — les faits de l'achat"], say:"Paragraphe un : les faits de l'achat.", n:'la date, le bien, le prix : rien d\'autre dans ce paragraphe'},
          aj:{w:["Sans elle, tout ce qui suit flotte : on ne sait pas de quoi on parle."], say:"Sans les faits de l'achat, tout ce qui suit flotte.", n:'c\'est le point d\'ancrage de la chronologie'},
@@ -1107,8 +1107,8 @@ const PLUS = {
          ["le délai et la suite","Vous disposez d'un délai de dix jours…"],
        ]},
 
-      {t:'check', h:'Quatre questions, sans filet',
-       p:"Répondez de mémoire, sans remonter plus haut.",
+      {t:'check', h:'Quatre questions sur le découpage',
+       p:"Répondez sans remonter dans la leçon.",
        qs:[
          {q:"Un paragraphe de six phrases…", opts:["est trop long","est normal"], ok:0,
           fb:"Deux à quatre phrases. Six veut presque toujours dire deux fonctions mélangées."},
@@ -1210,8 +1210,8 @@ const PLUS = {
          ["à ce jour","constater qu'il ne s'est rien passé"],
        ]},
 
-      {t:'check', h:'Quatre questions, sans filet',
-       p:"Répondez de mémoire, sans remonter plus haut.",
+      {t:'check', h:'Quatre questions sur les connecteurs',
+       p:"Répondez sans remonter dans la leçon.",
        qs:[
          {q:"Combien de fois « en conséquence » dans une lettre ?", opts:["une","autant qu'il en faut"], ok:0,
           fb:"Deux conclusions, c'est aucune conclusion."},
@@ -1312,8 +1312,8 @@ const PLUS = {
          ["Je m'attends à ce que…","subjonctif — attente, donc pas encore réalisé"],
        ]},
 
-      {t:'check', h:'Quatre questions, sans filet',
-       p:"Répondez de mémoire, sans remonter plus haut.",
+      {t:'check', h:'Quatre questions sur les deux modes',
+       p:"Répondez sans remonter dans la leçon.",
        qs:[
          {q:"« Je constate que la réparation ___ faite. »", opts:["est","soit"], ok:0,
           fb:"Constater est un verbe de fait : indicatif."},
