@@ -1,0 +1,172 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>A1 · Se plaindre, ou présenter un projet ? — Fiche élève</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800;900&display=swap" rel="stylesheet">
+<style>
+/* ═══════════════════════════════════════════════════════════════
+   FICHE ÉLÈVE · IMPRESSION LETTRE, NOIR ET BLANC
+   ───────────────────────────────────────────────────────────────
+   Aucune couleur : ces fiches sont photocopiées en noir et blanc.
+   Toute la hiérarchie passe par la GRAISSE, les FILETS et les MOTS.
+   C'est d'ailleurs la règle du système de design poussée à son
+   terme : « jamais d'information portée par la couleur seule ».
+
+   Les gris viennent des neutres du système (ink-900 à ink-400),
+   qui sont déjà quasi neutres. Les filets sont volontairement plus
+   sombres qu'à l'écran : une photocopieuse efface tout ce qui est
+   plus clair que 15 % de noir.
+   ═══════════════════════════════════════════════════════════════ */
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+:root{
+  --paper:#FFFFFF;
+  --tint:#F0F0EE;          /* aplat le plus clair encore visible en photocopie */
+  --line:#C9C9C6;          /* filet fin */
+  --rule:#17181A;          /* filet structurant */
+  --ink:#17181A;           /* titres */
+  --body:#2B2E30;          /* texte courant, un cran plus sombre qu'à l'écran */
+  --soft:#4B4F52;          /* texte secondaire */
+  --muted:#5E6165;         /* sur-titres, méta */
+}
+html{background:#BBBBBB}
+body{
+  font-family:'Nunito','Trebuchet MS',sans-serif;
+  font-size:11.5pt; line-height:1.5; color:var(--body);
+  background:var(--paper);
+  width:215.9mm;                    /* 8,5 po — format lettre */
+  margin:0 auto; padding:14mm 15mm 16mm;
+  -webkit-print-color-adjust:exact; print-color-adjust:exact;
+}
+h1,h2,h3{color:var(--ink); line-height:1.2; letter-spacing:-0.01em}
+
+/* ── En-tête ── */
+.hdr{border-bottom:2.5px solid var(--rule); padding-bottom:8px; margin-bottom:14px;
+     display:flex; align-items:flex-end; gap:14px}
+.hdr-l{flex:1}
+.eyebrow{font-size:9.5pt; font-weight:800; text-transform:uppercase;
+         letter-spacing:.12em; color:var(--muted)}
+.hdr h1{font-size:22pt; font-weight:900; margin-top:3px}
+.hdr-r{flex-shrink:0; display:flex; gap:10px; align-items:flex-end;
+       font-size:9.5pt; font-weight:800; text-transform:uppercase;
+       letter-spacing:.08em; color:var(--muted); padding-bottom:2px}
+.nomline{display:inline-block; border-bottom:1.5px solid var(--rule);
+         height:6mm; vertical-align:bottom; margin-left:5px}
+.nomline--nom{width:48mm} .nomline--date{width:26mm}
+.chapeau{font-size:12pt; font-weight:600; color:var(--soft); margin-bottom:16px}
+
+/* ── Blocs ── */
+.bloc{break-inside:avoid; page-break-inside:avoid; margin-bottom:13px}
+.card{border:1px solid var(--line); border-radius:12px; padding:11px 14px 12px;
+      background:var(--paper)}
+.lbl{font-size:9.5pt; font-weight:800; text-transform:uppercase;
+     letter-spacing:.12em; color:var(--muted); margin-bottom:5px}
+h2.t{font-size:15pt; font-weight:900; margin-bottom:7px}
+.consigne{font-size:11pt; font-weight:600; color:var(--soft); margin-bottom:8px}
+
+/* ── Objectifs et exercices : pastille en cerne, jamais en aplat ── */
+ol.obj,ol.ex{list-style:none}
+ol.obj{counter-reset:o} ol.ex{counter-reset:e}
+ol.obj li,ol.ex li{position:relative; padding-left:9mm; font-weight:600}
+ol.obj li{counter-increment:o; margin-bottom:6px}
+ol.ex li{counter-increment:e; margin-bottom:9px; break-inside:avoid}
+ol.obj li::before,ol.ex li::before{
+  position:absolute; left:0; top:0; width:6mm; height:6mm; border-radius:50%;
+  border:1.5px solid var(--rule); color:var(--ink);
+  font-size:9.5pt; font-weight:800;
+  display:flex; align-items:center; justify-content:center}
+ol.obj li::before{content:counter(o)}
+ol.ex li::before{content:counter(e)}
+
+/* ── Dialogue ── */
+.rep{display:flex; gap:10px; padding:4px 0; border-top:1px solid var(--line)}
+.rep:first-of-type{border-top:0}
+.rep--key{background:var(--tint); border-radius:8px; padding:5px 8px;
+          border-top:0; margin:2px 0}
+.qui{flex:0 0 30mm; font-weight:800; color:var(--ink); font-size:10.5pt}
+
+/* ── Règle : encadrée au filet épais, c'est elle qu'on repère de loin ── */
+.regle{border:2.5px solid var(--rule); border-radius:12px; padding:12px 14px}
+.regle .lbl{color:var(--ink)}
+.regle p.r{font-size:14pt; font-weight:900; color:var(--ink); line-height:1.3}
+.regle p.pr{margin-top:7px; font-weight:600; color:var(--soft)}
+
+/* ── Tableau ── */
+table{width:100%; border-collapse:collapse}
+th{font-size:9.5pt; font-weight:800; text-transform:uppercase; letter-spacing:.1em;
+   color:var(--muted); text-align:left; padding:0 8px 5px 0;
+   border-bottom:1.5px solid var(--rule)}
+td{padding:6px 8px 6px 0; border-top:1px solid var(--line); vertical-align:top;
+   font-weight:600}
+td.cle{font-weight:900; color:var(--ink)}   /* la colonne clé : en gras, pas en couleur */
+.note{margin-top:8px; font-size:10.5pt; font-weight:600; color:var(--soft);
+      background:var(--tint); border-radius:9px; padding:8px 11px}
+
+/* ── Cartes ── */
+.grid{display:grid; grid-template-columns:1fr 1fr; gap:9px}
+.grid .card h3{font-size:11.5pt; font-weight:900; color:var(--ink); margin-bottom:3px}
+.grid .card p{font-size:11pt}
+
+/* ── Piège : le filet distingue les deux colonnes, pas la couleur ──
+   À gauche, un filet TIRETÉ — ce qui ne tient pas.
+   À droite, un filet PLEIN et épais — ce qu'il faut retenir.
+   Les deux intitulés disent la même chose en mots.                */
+.duo{display:grid; grid-template-columns:1fr 1fr; gap:10px}
+.duo>div{border-radius:12px; padding:10px 13px}
+.duo .no{border:1.5px dashed var(--muted)}
+.duo .ok{border:2.5px solid var(--rule); background:var(--tint)}
+.duo .k{font-size:9.5pt; font-weight:800; text-transform:uppercase;
+        letter-spacing:.1em; margin-bottom:4px; color:var(--muted)}
+.duo .ok .k{color:var(--ink)}
+.duo p.ph{font-size:12pt; font-weight:800; color:var(--ink); line-height:1.3}
+.duo .no p.ph{font-weight:600; font-style:italic; color:var(--soft)}
+
+/* ── Vocabulaire ── */
+.voc{width:100%; border-collapse:collapse}
+.voc td{border-top:1px solid var(--line); padding:6px 8px 6px 0}
+.voc td.mot{width:38%; font-weight:900; color:var(--ink)}
+.voc td.def{color:var(--soft)}
+
+/* ── Zones de réponse ── */
+.ligne{display:block; border-bottom:1px dotted #8E8E8A; height:8mm; margin-top:2px}
+.ligne--court{width:55%}
+
+/* ── Billet de sortie ── */
+.billet{border:2.5px solid var(--rule); border-radius:12px; padding:13px 15px}
+.billet .k{font-size:9.5pt; font-weight:800; text-transform:uppercase;
+           letter-spacing:.12em; color:var(--ink); margin-bottom:4px}
+.billet p.c{font-size:14pt; font-weight:900; color:var(--ink); line-height:1.3}
+.billet ul{list-style:none; margin-top:7px}
+.billet li{font-weight:600; color:var(--soft); margin-bottom:3px}
+
+/* ── Pied ── */
+footer{margin-top:16px; padding-top:7px; border-top:1px solid var(--line);
+       font-size:9.5pt; font-weight:700; color:var(--muted);
+       display:flex; justify-content:space-between}
+
+/* ── Impression ── */
+@page{size:8.5in 11in; margin:14mm 15mm}
+@media print{
+  html{background:#FFFFFF}
+  body{width:auto; padding:0}
+  .bloc{break-inside:avoid; page-break-inside:avoid}
+  h2.t,.lbl{break-after:avoid; page-break-after:avoid}
+}
+</style>
+</head>
+<body>
+<header class="hdr">
+  <div class="hdr-l">
+    <div class="eyebrow">Séance A1 · Module 2 · 75 minutes</div>
+    <h1>Se plaindre, ou présenter un projet ?</h1>
+  </div>
+  <div class="hdr-r"><span>Nom<span class="nomline nomline--nom"></span></span><span>Date<span class="nomline nomline--date"></span></span></div>
+</header>
+<p class="chapeau">Tout le monde sait dire ce qui ne va pas au travail. Beaucoup moins de gens savent en faire un projet qu'on écoute jusqu'au bout. La différence n'est pas dans le ton : elle est dans ce qu'on met dans sa phrase.</p>
+<section class="bloc card"><div class="lbl">Objectifs</div><h2 class="t">À la fin, je serai capable de…</h2><ol class="obj"><li>distinguer une plainte d'un projet, et dire ce qui les sépare ;</li><li>nommer les cinq parties d'un projet : constat, cause, conséquence, correctif, échéance ;</li><li>employer les premiers mots du dossier : un projet, une évaluation sommaire, un ordre du jour ;</li><li>situer le scénario du module : Aïcha Traoré et le poste 4.</li></ol></section><section class="bloc card"><div class="lbl">Dialogue · 1 de 4</div><h2 class="t">Une feuille remplie à la maison</h2><p class="consigne">Écoutez d'abord, diapositive masquée.</p><div class="rep"><div class="qui">AÏCHA</div><div>Thérèse, tu as deux minutes ? Je voudrais te montrer quelque chose avant que tu partes.</div></div><div class="rep"><div class="qui">THÉRÈSE</div><div>Vas-y, mon dîner attendra. Qu'est-ce que tu as là ?</div></div><div class="rep rep--key"><div class="qui">AÏCHA</div><div>Une feuille que j'ai remplie toute seule, hier soir, à la maison. J'ai compté ce qui se passe au poste 4 depuis le mois de mars.</div></div><div class="rep"><div class="qui">THÉRÈSE</div><div>Le poste d'emballage. Celui où les caisses se ramassent à terre.</div></div></section><section class="bloc card"><div class="lbl">Dialogue · 2 de 4</div><h2 class="t">Ce n'est pas encore un projet</h2><div class="rep rep--key"><div class="qui">AÏCHA</div><div>Si je vais voir monsieur Cormier et que je lui dis que le poste 4 est mal fait, il va m'écouter deux minutes et passer à autre chose.</div></div><div class="rep rep--key"><div class="qui">THÉRÈSE</div><div>Il va t'écouter deux minutes, oui. Parce que ce que tu viens de me décrire, ce n'est pas encore un projet. C'est une plainte.</div></div><div class="rep"><div class="qui">AÏCHA</div><div>Une plainte. Le mot est dur.</div></div><div class="rep"><div class="qui">THÉRÈSE</div><div>Il n'est pas dur, il est exact, et ce n'est pas une critique.</div></div></section><section class="bloc card"><div class="lbl">Dialogue · 3 de 4</div><h2 class="t">Cinq choses, pas une</h2><div class="rep rep--key"><div class="qui">THÉRÈSE</div><div>Une plainte, ça dit ce qui ne va pas et ça s'arrête là. Un projet, ça dit ce qui ne va pas, ce que ça coûte, ce qu'on fait à la place, combien ça coûte et quand.</div></div><div class="rep"><div class="qui">AÏCHA</div><div>Cinq choses. Redis-les-moi lentement, je les écris.</div></div><div class="rep rep--key"><div class="qui">THÉRÈSE</div><div>Le constat. La cause. La conséquence, en chiffres si tu en as. Le correctif que tu proposes. Et l'échéance.</div></div><div class="rep"><div class="qui">AÏCHA</div><div>J'ai le constat et j'ai les chiffres. La cause aussi, je pense.</div></div></section><section class="bloc card"><div class="lbl">Dialogue · 4 de 4</div><h2 class="t">Écoute-le comme si tu prenais des notes</h2><div class="rep rep--key"><div class="qui">THÉRÈSE</div><div>Lundi matin, il y a la réunion de production. Monsieur Cormier présente son projet de quai. Écoute-le comme si tu prenais des notes pour l'école.</div></div><div class="rep"><div class="qui">AÏCHA</div><div>Pourquoi ? Son quai ne me concerne pas.</div></div><div class="rep rep--key"><div class="qui">THÉRÈSE</div><div>Son quai, non. Sa façon de le présenter, oui. Tu feras pareil pour le tien, deux semaines plus tard.</div></div><div class="rep"><div class="qui">AÏCHA</div><div>Donc j'apprends en écoutant quelqu'un d'autre.</div></div></section><section class="bloc card"><div class="lbl">Analyse</div><h2 class="t">Les cinq parties d'un projet</h2><table><thead><tr><th>La partie</th><th>Ce qu'elle contient</th></tr></thead><tbody><tr><td class="cle">Le constat</td><td>ce que vous avez vu et compté, avec la période</td></tr><tr><td class="cle">La cause</td><td>pourquoi ça arrive, sans désigner un coupable</td></tr><tr><td class="cle">La conséquence</td><td>ce que le problème coûte en jours ou en argent</td></tr><tr><td class="cle">Le correctif</td><td>ce que vous proposez, le gratuit avant le payant</td></tr><tr><td class="cle">L'échéance</td><td>une date précise, jamais « bientôt »</td></tr></tbody></table><div class="note">Une plainte contient la première partie, parfois la deuxième. Un projet contient les cinq.</div></section><section class="bloc regle"><div class="lbl">Un projet sans date n'est pas refusé : il est oublié</div><p class="r">Cinq parties, et la cinquième est une date.</p><p class="pr">C'est la partie qu'on omet le plus souvent, parce qu'elle engage. Sans elle, personne n'a à répondre, et le dossier s'enfonce dans la pile. Une date force une réponse, même négative - et une réponse négative se travaille, alors qu'un silence ne se travaille pas.</p></section><section class="bloc card"><div class="lbl">Vocabulaire</div><h2 class="t">Quatre mots pour commencer</h2><table class="voc"><tbody><tr><td class="mot">un projet</td><td class="def">Ce qu'on veut faire, avec les étapes, le coût et la date qui vont avec.</td></tr><tr><td class="mot">une évaluation sommaire</td><td class="def">Un premier examen rapide, qui donne des ordres de grandeur et non des chiffres définitifs.</td></tr><tr><td class="mot">un ordre du jour</td><td class="def">La liste écrite des points dont une réunion va traiter, dans l'ordre.</td></tr><tr><td class="mot">une réunion de production</td><td class="def">La rencontre régulière où l'équipe fait le point sur le travail de l'usine.</td></tr></tbody></table></section><section class="bloc card"><div class="lbl">Pratique</div><h2 class="t">Une plainte, ou un projet ?</h2><p class="consigne">Pour chaque phrase, dites de quoi il s'agit.</p><ol class="ex"><li><span class="q">Le poste 4 est mal fait, tout le monde le sait.</span><span class="ligne ligne--court"></span></li><li><span class="q">Depuis mars, trois personnes sur cinq ont consulté pour le dos.</span><span class="ligne"></span></li><li><span class="q">C'est toujours nous qui écopons, à l'expédition.</span><span class="ligne ligne--court"></span></li><li><span class="q">Une table élévatrice garderait la palette à hauteur de coude.</span><span class="ligne"></span></li><li><span class="q">Ça fait des années que ça dure et personne ne fait rien.</span><span class="ligne ligne--court"></span></li><li><span class="q">La rotation pourrait commencer le lundi 22 septembre.</span><span class="ligne"></span></li></ol></section><section class="bloc billet"><div class="k">Billet de sortie</div><p class="c">Écrivez le constat de quelque chose que vous voudriez voir changer.</p><ul><li>Depuis quand est-ce que ça dure ?</li><li>Combien de fois par jour ou par semaine ?</li><li>Combien de personnes est-ce que ça touche ?</li></ul><span class="ligne"></span><span class="ligne"></span><span class="ligne"></span></section>
+<footer><span>A1 · Présenter un projet au travail</span><span>Fiche élève</span></footer>
+</body>
+</html>
