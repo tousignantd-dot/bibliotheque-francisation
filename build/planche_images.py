@@ -26,6 +26,12 @@ import pathlib
 BASE = pathlib.Path(__file__).resolve().parent.parent
 RACINE = BASE / "assets" / "interactive"
 SORTIE = BASE / "planche-images.html"
+# Deux dossiers par module, deux natures : `images/` sert les exercices
+# d'association, `vocab/` illustre les cartes de vocabulaire. Les juger
+# ensemble mais les distinguer à l'écran — une carte de vocabulaire se lit
+# contre un mot, une image d'exercice contre une phrase à associer.
+DOSSIERS = ("images", "vocab")
+CONTEXTES = BASE / "build" / "_contexte_images.json"
 EXT = {".jpg", ".jpeg", ".png", ".webp"}
 
 # Les trois défauts relevés le 22 août 2026. Ils ne se réparent pas de la même
@@ -38,35 +44,65 @@ MOTIFS = ("texte", "mains", "décor")
 def recenser(filtre=None):
     """Rend la liste [(module, chemin_relatif_au_depot)], triée, stable."""
     trouvees = []
-    for dossier in sorted(RACINE.glob("*/images")):
-        module = dossier.parent.name
+    for module in sorted(d.name for d in RACINE.iterdir() if d.is_dir()):
         if filtre and filtre != module:
             continue
-        for f in sorted(dossier.iterdir()):
-            if f.suffix.lower() in EXT:
-                trouvees.append((module, f.relative_to(BASE).as_posix()))
+        for nom in DOSSIERS:
+            dossier = RACINE / module / nom
+            if not dossier.is_dir():
+                continue
+            for f in sorted(dossier.iterdir()):
+                if f.suffix.lower() in EXT:
+                    trouvees.append((module, f.relative_to(BASE).as_posix()))
     return trouvees
 
 
-def page(images):
+def contextes():
+    """Ce que chaque image est censée montrer, relevé par le script node.
+
+    Son absence n'empêche rien : la planche s'affiche alors sans énoncés, et
+    le dit plutôt que de laisser croire qu'aucune image n'a de contexte.
+    """
+    if not CONTEXTES.exists():
+        return {}
+    brut = json.loads(CONTEXTES.read_text(encoding="utf-8"))
+    # La clé du relevé est « module/fichier.jpg » ; celle de la planche est le
+    # chemin complet. On croise sur le nom de fichier, dans le bon module.
+    return {c.split("/", 1)[0] + "/" + c.rsplit("/", 1)[-1]: v
+            for c, v in brut.items()}
+
+
+def page(images, ctx):
     """La planche. Aucun style importé : elle doit s'ouvrir seule, partout."""
     par_module = {}
     for i, (module, chemin) in enumerate(images, start=1):
         par_module.setdefault(module, []).append((i, chemin))
 
+    sans_contexte = 0
     blocs = []
     for module, lot in par_module.items():
         vignettes = []
         for numero, chemin in lot:
             nom = html.escape(chemin.rsplit("/", 1)[-1])
+            c = ctx.get(module + "/" + chemin.rsplit("/", 1)[-1], {})
+            if not c.get("enonce"):
+                sans_contexte += 1
+            attendu = (
+                '<p class="attendu"><span class="ou">%s</span>%s</p>'
+                % (html.escape(c.get("exercice") or
+                               ("vocabulaire" if c.get("role") == "vocabulaire"
+                                else "contexte non relevé")),
+                   html.escape(c.get("enonce", "")))
+            )
             vignettes.append(
                 '<figure class="v" data-n="%d" data-chemin="%s">'
                 '<span class="n">%d</span>'
                 '<img loading="lazy" src="%s" alt="">'
+                '%s'
                 '<figcaption>%s</figcaption>'
                 '<div class="motifs">%s</div></figure>'
                 % (numero, html.escape(chemin), numero,
-                   html.escape(chemin), nom,
+                   html.escape(chemin), attendu, nom,
                    "".join('<button data-motif="%s">%s</button>' % (m, m)
                            for m in MOTIFS)))
         blocs.append(
@@ -102,6 +138,9 @@ def page(images):
   .n { position:absolute; top:8px; left:8px; background:rgba(16,20,24,.82);
        color:#fff; font-size:12px; font-weight:600; padding:2px 7px;
        border-radius:99px; }
+  .attendu { margin:7px 0 0; font-size:12px; line-height:1.35; }
+  .attendu .ou { display:block; font-size:10px; letter-spacing:.04em;
+       text-transform:uppercase; color:var(--gris); margin-bottom:2px; }
   figcaption { font-size:11px; color:var(--gris); margin-top:5px;
                word-break:break-all; }
   .v.refaire { border-color:var(--rouge); background:#fdeceb; }
@@ -125,8 +164,11 @@ def page(images):
 </style></head><body>
 <header>
   <h1>Planche des images — %(total)d images, %(modules)d modules</h1>
-  <p>Clique une vignette pour la marquer « à refaire ». La liste du bas se
-     tient à jour ; copie-la et colle-la-moi.</p>
+  <p>Sous chaque image, <strong>ce qu'elle est censée montrer</strong> :
+     l'exercice et la phrase que l'élève doit lui associer, ou le mot qu'elle
+     illustre. Clique une vignette qui ne correspond pas, puis dis pourquoi.
+     La liste du bas se tient à jour ; copie-la et colle-la-moi.
+     %(note)s</p>
 </header>
 %(blocs)s
 <footer>
@@ -187,8 +229,10 @@ rendre();
 </script>
 </body></html>
 """ % {"total": len(images), "modules": len(par_module),
-       "blocs": "\n".join(blocs), "index": json.dumps(index,
-                                                      ensure_ascii=False)}
+       "blocs": "\n".join(blocs),
+       "note": ("<em>%d images sans contexte relevé.</em>" % sans_contexte
+                if sans_contexte else ""),
+       "index": json.dumps(index, ensure_ascii=False)}
 
 
 def main():
@@ -201,13 +245,17 @@ def main():
     images = recenser(opt.module)
     if not images:
         raise SystemExit("aucune image trouvée")
+    ctx = contextes()
+    if not ctx:
+        print("  (aucun contexte : lancer d'abord"
+              " node build/contexte_images.js > build/_contexte_images.json)")
 
     if opt.liste:
         for i, (module, chemin) in enumerate(images, start=1):
             print("%4d  %-28s %s" % (i, module, chemin))
         return
 
-    SORTIE.write_text(page(images), encoding="utf-8")
+    SORTIE.write_text(page(images, ctx), encoding="utf-8")
     modules = len({m for m, _ in images})
     print("✓ %d images · %d modules · %s" % (len(images), modules, SORTIE))
     print("  http://localhost:5173/planche-images.html")
