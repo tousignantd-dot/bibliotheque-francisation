@@ -14,7 +14,10 @@ fenêtres, et rien à montrer à quelqu'un d'autre.
 
 Cette page les met côte à côte, une ligne par module :
 
-  · l'identité du module vient du registre `build/powerpoints/modules.py` ;
+  · l'identité du module vient du registre `build/powerpoints/modules.py` —
+    la colonne « N° » est le rang du module **dans son niveau** (`numero`), qui
+    est aussi l'ordre d'enseignement ; le numéro d'activité du dépôt de
+    matériel (`activite`), lui, est écrit sous le slug ;
   · la situation de vie vient du `theme` de son manifeste (les neuf modules
     d'avant le gabarit n'en ont pas : ils sont rattachés à la main, comme dans
     `build/bilan_programme.py`, dont la table est réutilisée telle quelle) ;
@@ -312,10 +315,10 @@ def ligne_module(slug, m, niv, lex, index):
     return """
       <tbody class="ligne" data-cle="%(cle)s">
         <tr class="rang">
-          <td class="num">%(activite)s</td>
+          <td class="num">%(numero)s</td>
           <td class="mod">
             <a href="%(lien)s" target="_blank" rel="noopener">%(titre)s</a>
-            <span class="slug">%(slug)s</span>
+            <span class="slug">%(slug)s · activité %(activite)s</span>
           </td>
           <td class="sit">%(situation)s<span class="dgf">%(domaine)s</span></td>
           <td class="ints">%(pastilles)s</td>
@@ -344,7 +347,8 @@ def ligne_module(slug, m, niv, lex, index):
           </td>
         </tr>
       </tbody>""" % {
-        'cle': e(cle), 'activite': m.get('activite', '—'), 'lien': e(lien),
+        'cle': e(cle), 'numero': m.get('numero', '—'),
+        'activite': m.get('activite', '—'), 'lien': e(lien),
         'titre': e(m['titre']), 'slug': e(slug),
         'situation': e(situation or 'hors situation du niveau'),
         'domaine': e(domaine), 'pastilles': pastilles, 'nlex': len(entrees),
@@ -369,7 +373,7 @@ def page(prog):
     for niv in prog['niveaux']:
         n = niv['niveau']
         liste = sorted(par_niveau.get(n, []),
-                       key=lambda x: (x[1].get('activite') or 0))
+                       key=lambda x: (x[1].get('numero') or 0))
         if not liste:
             continue
         lex = lexique_par_situation(niv)
@@ -413,7 +417,7 @@ def page(prog):
       <table class="modules">
         <thead>
           <tr>
-            <th class="num">Act.</th><th>Module</th><th>Situation de vie · domaine</th>
+            <th class="num">N<sup>o</sup></th><th>Module</th><th>Situation de vie · domaine</th>
             <th>Intentions</th><th>Lexique</th><th></th>
           </tr>
         </thead>
