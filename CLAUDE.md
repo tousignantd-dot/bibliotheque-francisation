@@ -454,6 +454,22 @@ Deux pièges déjà payés :
   faut terminer la source évaluée par `; ({EXOS, PLUS, CARRIER_PHRASES})` et
   déstructurer le résultat. Trente lignes de node, et `build/collecte_sons.py`
   n'a plus à être lancé du tout.
+- **`build/module.py` ne pose pas les icônes du module.** Le gabarit référence
+  `icons/play.svg`, `speaker.svg` et `mic.svg` **dans le dossier du module**, et
+  rien ne les y met : un module neuf sort avec trois 404 sur le bouton d'écoute
+  des dialogues et sur l'onglet « Je découvre ». Ni le build, ni
+  `coherence.js`, ni le `node --check` ne le signalent. La correction tient en
+  une ligne — `cp assets/interactive/<voisin>/icons/*.svg
+  assets/interactive/<slug>/icons/` — mais elle ne se voit qu'en **ouvrant le
+  module dans un navigateur et en regardant l'onglet réseau**, pas seulement la
+  console. Découvert le 23 août 2026 en produisant `module-n7-habitation`.
+- **Le dépôt n'a que deux voix féminines**, `enseignante` et `feminin_2` (plus
+  `masculin_1` et `narrateur`). Un dialogue qui fait parler **trois femmes** est
+  donc impossible : deux d'entre elles sonneraient pareil, et l'élève ne
+  pourrait pas dire qui a dit quoi. Compter les personnages **par dialogue et
+  par genre avant d'écrire les dialogues** : la correction après coup a coûté
+  quatre fichiers de contenu et une quinzaine d'accords à
+  `module-n7-habitation`, dont la médiatrice est devenue un médiateur.
 - **`git commit -- <dossier>` emporte tout ce que le dossier contient**, y
   compris ce qui vient d'y tomber pendant que le message se rédigeait. Le
   21 août 2026, un commit qui devait porter trois lignes de contenu a emporté
