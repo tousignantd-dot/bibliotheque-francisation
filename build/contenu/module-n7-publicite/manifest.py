@@ -79,7 +79,7 @@ entreprise n'est réelle :
   langue française.)
 
 Tout le reste est inventé : les personnes — Yamilé Betancourt, Réginald Nadon,
-Doriane Pageau, Mylène Sarrazin, Valeria —, le Carrefour budgétaire de la
+Doriane Pageau, Maxime Sarrazin, Valeria —, le Carrefour budgétaire de la
 Rivière-du-Nord, et les cinq entreprises du module — Élan Cardio, Boréa
 Literie, Croque-Lune, Trotti-Vent, Le Sillon. **Aucune marque réelle
 n'apparaît nulle part**, ni dans les dialogues, ni dans les exercices, ni dans

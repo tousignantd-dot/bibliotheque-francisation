@@ -358,7 +358,7 @@ const EXOS = [
     {id:'t3h', txt:"Une seule organisation reçoit les trois plaintes de Yamilé.", ok:'FAUX'},
    ]},
 
-  {sec:'t3', id:'t3fiche', type:'texte', num:'Exercice 2', tit:"La fiche que Mylène lui a envoyée", color:'#A5335F',
+  {sec:'t3', id:'t3fiche', type:'texte', num:'Exercice 2', tit:"La fiche que Maxime lui a envoyée", color:'#A5335F',
    sub:"Voici la fiche d'information reçue après l'appel. Choisissez une question, puis cliquez dans le texte le passage qui y répond.",
    savoir:{h:"› Lire un texte de règles sans se noyer", rows:[
      ["Cherchez le verbe d'obligation","<b>Doit</b>, <b>ne peut pas</b>, <b>est interdit</b>, <b>est tenu de</b> : ce sont les seuls endroits où le texte oblige. Tout le reste explique."],
