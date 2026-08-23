@@ -34,11 +34,13 @@ DOSSIERS = ("images", "vocab")
 CONTEXTES = BASE / "build" / "_contexte_images.json"
 EXT = {".jpg", ".jpeg", ".png", ".webp"}
 
-# Les trois défauts relevés le 22 août 2026. Ils ne se réparent pas de la même
-# façon : « texte » veut un prompt qui interdit toute écriture, « mains » veut
-# un cadrage qui les sort du champ, « décor » veut des repères québécois
-# nommés. D'où le motif demandé à la vignette plutôt qu'une simple croix.
-MOTIFS = ("texte", "mains", "décor")
+# Les quatre défauts relevés le 22 août 2026. Ils ne se réparent pas de la
+# même façon : « texte » veut un prompt qui interdit toute écriture, « mains »
+# veut un cadrage qui les sort du champ, « décor » veut des repères québécois
+# nommés, et « hors sujet » veut un prompt réécrit depuis l'énoncé — l'image
+# est bonne, elle ne montre simplement pas ce que la phrase demande. D'où le
+# motif demandé à la vignette plutôt qu'une simple croix.
+MOTIFS = ("texte", "mains", "décor", "hors sujet")
 
 
 def recenser(filtre=None):
@@ -145,9 +147,9 @@ def page(images, ctx):
                word-break:break-all; }
   .v.refaire { border-color:var(--rouge); background:#fdeceb; }
   .v.refaire .n { background:var(--rouge); }
-  .motifs { display:none; gap:5px; margin-top:6px; }
+  .motifs { display:none; gap:5px; margin-top:6px; flex-wrap:wrap; }
   .v.refaire .motifs { display:flex; }
-  .motifs button { flex:1; border:1px solid var(--trait); background:#fff;
+  .motifs button { flex:1 1 40%%; border:1px solid var(--trait); background:#fff;
        color:var(--gris); font-size:11px; padding:4px 0; border-radius:5px;
        cursor:pointer; }
   .motifs button.choisi { background:var(--rouge); border-color:var(--rouge);
