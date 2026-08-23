@@ -1303,6 +1303,19 @@ MODULES = {
                         'Les deux écrits'),
     },
 
+    'module-n7-logement': {
+        'numero': 4, 'activite': 111, 'niveau': 7,
+        'titre': "Rester locataire ou devenir propriétaire",
+        'chapeau': "Négocier une hausse de loyer avec son propriétaire, "
+                   "s'informer pour acheter une habitation, lire une promesse "
+                   "d'achat et ses conditions, puis peser les deux avant de "
+                   "décider.",
+        'seances': GRILLE_3_DEFIS,
+        'blocs': _blocs("L'avis du propriétaire",
+                        'La visite avec la courtière',
+                        "La promesse d'achat"),
+    },
+
     'module-n8-emploi': {
         'numero': 1, 'activite': 61, 'niveau': 8,
         'titre': "Tenir son bout au travail",
