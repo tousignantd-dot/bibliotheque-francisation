@@ -1582,6 +1582,24 @@ MODULES = {
                         "Ce qui n'est pas écrit",
                         "Défendre une lecture"),
     },
+
+    # Niveau 8 · « Problèmes reliés à l'habitation ». Quatre modules du dépôt
+    # traitent déjà cette situation — 4, 62, 106, 112 —, et tous les quatre
+    # s'arrêtent là où celui-ci commence : le problème a été examiné, jugé, et
+    # refusé par écrit. On ne signale plus, on ne négocie plus : on conteste
+    # un rapport d'expert, un motif, puis une décision qu'on porte plus haut.
+    'module-n8-habitation': {
+        'numero': 4, 'activite': 121, 'niveau': 8,
+        'titre': 'Faire renverser une décision',
+        'chapeau': "Lire un rapport d'expertise et distinguer ce qu'il a vu "
+                   "de ce qu'il en déduit, contester au téléphone le refus "
+                   "d'une réclamation d'assurance, suivre un exposé sur les "
+                   "recours, et écrire la demande de révision.",
+        'seances': GRILLE_3_DEFIS,
+        'blocs': _blocs("Le rapport qu'on discute",
+                        "L'appel qui conteste",
+                        "Porter la décision plus haut"),
+    },
 }
 
 # L'ordre d'affichage : par niveau, puis par numéro à l'intérieur du niveau.
