@@ -102,9 +102,11 @@ IMAGES = [
   "d'une fenêtre haute."),
  ('reveil-avant-aube', 'images', P_EX, S_OBJET +
   "Un réveille-matin numérique posé sur une table de chevet en bois, dans "
-  "une chambre encore sombre. L'écran émet une lueur rouge diffuse, sans "
-  "chiffre déchiffrable. Un verre d'eau et un téléphone posé à plat à côté. "
-  "Faible lumière bleutée par la fenêtre."),
+  "une chambre encore sombre, vu de trois quarts arrière et de très près, "
+  "de sorte que l'afficheur n'est PAS visible : seule sa lueur rouge se "
+  "reflète sur le bois de la table et sur un verre d'eau. Aucun chiffre, "
+  "aucun segment lumineux, aucune horloge lisible dans le cadre. Faible "
+  "lumière bleutée par la fenêtre."),
  ('enfant-malade-lit', 'images', P_EX, S_GENS +
   "Un jeune enfant couché sous une couette épaisse, vu de dos et de haut, "
   "seuls les cheveux et une épaule dépassent. Un thermomètre et un verre "
@@ -127,13 +129,17 @@ IMAGES = [
   "rouge clignote sur le côté du socle. L'écran est éteint. Pièce sombre en "
   "arrière-plan, une seule source de lumière chaude."),
  ('repondeur', 'vocab', P_VOC, S_OBJET +
-  "Un vieux répondeur téléphonique en plastique beige, posé de côté sur une "
-  "étagère de bois, avec deux gros boutons ronds et un petit haut-parleur "
-  "grillagé. Un fil torsadé descend derrière l'étagère."),
+  "Un vieux répondeur téléphonique en plastique beige, posé sur une étagère "
+  "de bois et vu de trois quarts arrière, en plongée légère : le dessus et "
+  "le flanc de l'appareil occupent le cadre, sa face avant est tournée hors "
+  "champ. Deux gros boutons ronds parfaitement lisses, SANS aucune "
+  "inscription, sans aucune étiquette, sans aucun mot gravé ni imprimé nulle "
+  "part sur le boîtier. Un fil torsadé descend derrière l'étagère."),
  ('clavier', 'vocab', P_VOC, S_OBJET +
   "Gros plan vu du dessus sur le clavier à touches carrées d'un téléphone de "
-  "bureau noir, un doigt sur le point d'appuyer sur une touche du haut. Les "
-  "touches sont nettes mais leurs caractères sont effacés par l'usage."),
+  "bureau noir posé sur une table. Aucune main, aucun doigt, aucune personne "
+  "dans le cadre. Les touches sont nettes mais leurs caractères sont effacés "
+  "par l'usage. Le combiné repose sur son socle, en haut du cadre."),
  ('ligne', 'vocab', P_VOC, S_OBJET +
   "Un fil de téléphone gris branché dans une prise murale beige, près d'une "
   "plinthe de bois, dans un couloir. Le fil monte hors du cadre en s'enroulant "
@@ -159,10 +165,11 @@ IMAGES = [
   "en cinq ou six lignes grises floues, avec un espace plus grand en bas et "
   "un trait de signature illisible. Un stylo bleu couché en travers."),
  ('signature', 'vocab', P_VOC, S_PAPIER +
-  "Gros plan sur une main qui signe un document au bas d'une page, stylo "
-  "bille bleu, vue de trois quarts au-dessus de l'épaule. La signature est "
-  "une boucle illisible ; le reste de la page ne montre que des lignes "
-  "grises."),
+  "Le bas d'une feuille déjà signée, posée sur un bureau de bois : une ligne "
+  "horizontale et, juste au-dessus, une boucle d'encre bleue parfaitement "
+  "illisible. Un stylo bille bleu couché à côté, capuchon retiré. Aucune "
+  "main, aucun bras, aucune personne dans le cadre. Le reste de la page ne "
+  "montre que des lignes grises floues."),
  ('copie', 'vocab', P_VOC, S_LIEU +
   "Un photocopieur de bureau ouvert, couvercle relevé, une feuille blanche "
   "posée sur la vitre. Lumière verte de balayage sur le côté. Bac de sortie "
