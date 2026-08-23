@@ -2898,3 +2898,154 @@ signale deux écarts qui ne sont pas les miens et que je n'ai pas touchés —
 `module-n6-relations` (numéro 4 au registre, « 3 » encore inscrit dans ses
 seize pptx, reste de la correction de numéro du 22 août : ses présentations
 demandent une régénération).
+
+**23 août 2026 — activité 115, `module-n7-publicite`.** « Ce que la publicité
+ne dit pas », niveau 7, `numero` 8, `GRILLE_3_DEFIS`. Scénario inventé : Yamilé
+Betancourt, 41 ans, arrivée de Colombie il y a six ans, préposée à l'accueil
+dans une clinique dentaire de Saint-Jérôme. Il y a trois semaines, elle a signé
+un abonnement pour « neuf quatre-vingt-dix-neuf par semaine » ; le premier
+relevé indique cent quatre-vingt-neuf dollars. Son voisin Réginald Nadon, qui a
+écrit de la publicité radio pendant trente ans à Laval, lui apprend à lire une
+annonce de l'intérieur du métier (Je découvre et défi 1) ; Doriane Pageau,
+conseillère au Carrefour budgétaire de la Rivière-du-Nord, lui fait lire le
+dépliant du bas vers le haut (défi 2) ; puis sa fille Valeria, onze ans,
+réclame une trottinette vue dans une vidéo, et Maxime Sarrazin, de l'Office de
+la protection du consommateur, distingue au téléphone les trois portes où
+s'adresser (défi 3). 24 exercices, 16 mini-leçons, 4 dialogues (92 répliques),
+19 mots, 13 images, 159 sons relevés — 251 extraits audio en tout —,
+16 séances (166 diapositives, 119 blocs de fiches).
+
+*Ce qui le distingue de son voisin de situation*, en une phrase écrite avant le
+scénario : `module-pub` (niveau 4) apprend à lire ce que la publicité **dit** —
+quoi, quand, où, combien ; celui-ci apprend à repérer ce qu'elle **fait** — le
+procédé, l'astérisque, le témoignage, la comparaison sans référence,
+l'influence. Au niveau 4, Solange prépare une capsule et cherche l'information
+factuelle. Au niveau 7, Yamilé a déjà signé, et elle veut comprendre pourquoi.
+
+*Trois défis pour deux intentions, et pourquoi.* La situation n'en porte que
+deux, et c'est deux fois la même phrase : « comprendre une publicité comportant
+un message implicite », une fois à l'oral, une fois à l'écrit. Le test du
+pilote du niveau 6 s'applique tel quel — peut-on nommer trois façons distinctes
+d'entrer dans la situation ? Ici oui, et la troisième n'est pas un canal de
+plus : ce qu'on **entend**, ce qu'on **lit**, et ce qui **ne se présente pas
+comme une publicité**. Le défi 3 change de statut juridique, pas de support,
+et c'est là que le module cesse d'apprendre à lire pour apprendre à
+reconnaître.
+
+*Les faits québécois sont vérifiés, pas devinés*, le 23 août 2026, et aucune
+entreprise n'est réelle : auprès de l'**Office de la protection du
+consommateur** — l'article 218 de la Loi sur la protection du consommateur veut
+qu'on juge une représentation sur l'**impression générale** qu'elle donne et,
+s'il y a lieu, sur le sens littéral des mots ; l'article 219 interdit toute
+représentation fausse ou trompeuse ; l'article 228 interdit d'**omettre un fait
+important** ; l'article 224 c) veut que le prix annoncé soit le prix **tout
+inclus**, seules la TPS et la TVQ pouvant s'y ajouter, et que le prix total
+ressorte **plus nettement** que les montants qui le composent ; les articles
+**248 et 249** interdisent la publicité commerciale destinée aux personnes de
+**moins de 13 ans**, l'article 249 donnant les trois critères — le but, la
+façon de présenter, le moment et l'endroit —, et l'intention déclarée de
+l'annonceur n'en fait pas partie. Auprès de **Normes de la publicité** — le
+Code canadien des normes de la publicité compte **quatorze articles** ; le 2
+interdit les techniques de publicité déguisée, le 7 veut qu'un témoignage
+reflète l'opinion véritable et raisonnablement actuelle de qui le donne.
+Auprès de l'**Office québécois de la langue française** — l'affichage public et
+la publicité commerciale se font en français, et depuis le **1er juin 2025**,
+une marque dans une autre langue visible de l'extérieur oblige le texte
+français à occuper un espace **au moins deux fois plus grand**, à visibilité,
+permanence et éclairage équivalents. Élan Cardio, Boréa Literie, Croque-Lune,
+Trotti-Vent, Le Sillon, les personnes et les montants sont inventés.
+
+**La trouvaille de ce module, et c'est celle que les huit suivants voudront
+connaître : quand le texte EST le sujet, il se compose en HTML, jamais dans
+l'image.** Une publicité est du texte. La règle 1 de la vague l'interdit dans
+l'image, et pour une raison qui ne se négocie pas — le modèle écrit du
+charabia, et l'élève de niveau 7 le lit. La sortie n'est pas de contourner la
+règle, c'est de **déplacer le texte** : les deux capsules radio, le dépliant
+avec ses conditions et la fiche de l'Office sont trois exercices de type
+`texte`, où l'élève clique dans un texte correct, relisible et modifiable. Les
+treize images ne montrent alors que la **scène autour** — l'abribus vu du
+trottoir d'en face, la boîte à courrier qui déborde, le téléviseur allumé dans
+un salon vide, la console du studio, la structure du panneau vue de l'arrière.
+Aucune ne montre une annonce, et le module n'y perd rien : le gabarit sait
+afficher un bandeau, un encadré et un texte suivi, il n'a jamais eu besoin
+d'une image pour montrer une annonce. Corollaire pour les situations à
+document — le formulaire, le relevé bancaire, l'affiche, le contrat : ce n'est
+pas une contrainte propre à la publicité, c'est la règle générale.
+
+*Deux images sur treize ont été refaites*, après relecture avec leur énoncé
+(`node build/contexte_images.js module-n7-publicite`), et aucune sur la
+règle 1 — le déplacement du texte l'avait déjà réglée. `boite-aux-lettres`
+était sortie **européenne** : crépi de pierre écaillé, porte de bois ancienne,
+boîte à couvercle bombé. C'est la règle 3, et elle ne se répare pas en
+ajoutant « au Québec » au prompt : il faut **nommer les objets du décor** —
+revêtement de vinyle beige, porte à moustiquaire, rampe de métal noir, marche
+de béton enneigée. `depliant` montrait une carte routière dépliée au lieu d'un
+dépliant commercial ; c'est la règle 4, et elle s'est réparée en donnant à
+l'objet sa **posture** (« plié en trois et posé debout sur ses plis ») plutôt
+qu'en répétant le mot. Les prompts sont corrigés dans `gen_images.py`, pas
+seulement les fichiers. Treize images par la route Google directe, deux
+reprises : **0,50 $** pour le module entier.
+
+**Une contrainte de casting que personne n'avait encore rencontrée, et qui se
+prévoit.** Le projet a **quatre voix** — deux féminines, deux masculines — et
+deux personnages ne peuvent en partager une que s'ils ne se répondent jamais
+dans un même extrait. Le troisième dialogue réunissait la mère, sa fille de
+onze ans et l'agente de l'Office : trois femmes dans une même scène, deux voix
+disponibles. Faire parler deux d'entre elles de la même voix s'entend
+immédiatement. Mylène Sarrazin est donc devenue **Maxime** Sarrazin. La règle
+pour les modules suivants tient en une ligne : **compter les locuteurs par
+extrait avant d'écrire les dialogues, pas après** — c'est gratuit avant, et
+c'est une réécriture après. Le commentaire de
+`generer_audio_module_n7_publicite.py` le dit à l'endroit où on le relira.
+
+*Un choix de voix qui n'est pas neutre* : l'annonceur des deux capsules prend
+la voix « narrateur », qui n'est pas ralentie par `voix_lente.py`. La vitesse
+de la mention légale **est** l'objet de l'exercice ; la ralentir en retirerait
+la difficulté. Doriane et Valeria partagent la voix « enseignante », ralentie à
+0,85 — la conseillère qui fait lire le dépliant ligne par ligne est exactement
+le rôle pour lequel le débit posé a été introduit.
+
+*Originalité* : 1 030 énoncés visibles, **48 identiques** parmi les 49 212 des
+soixante-cinq autres modules, soit **4,7 %**. Le chiffre était de 6,1 % avant
+une passe de dix minutes sur les intitulés de bandeau de savoir et les libellés
+d'axes de laboratoire — « Le réflexe à prendre », « Pourquoi on l'emploie »,
+« La règle générale », « devant ri / li », « milieu de mot ». Le journal de
+l'activité 109 le disait, et c'est vérifié une seconde fois : **onze
+substitutions font plus pour l'originalité mesurée que la réécriture d'un
+dialogue**, et le relevé des sons n'a pas bougé d'un octet — aucun `say:` n'a
+changé de place, donc aucun MP3 supplémentaire à payer. Les 48 restants sont
+cinq consignes du gabarit, onze fragments de code attrapés par la mesure, et le
+reste en termes de grammaire qui ne se disent pas autrement et en mots du
+programme.
+
+*Une remarque de méthode sur la mesure elle-même* : **le scratchpad est
+partagé entre les agents.** Le script d'originalité, écrit sous un nom
+générique, a été remplacé en cours de mesure par celui d'un voisin — deux
+chiffres différents pour le même module, à trois minutes d'intervalle, sans que
+rien ne le signale. Nommer ses fichiers de travail d'après son module.
+
+*Sur les contrôles* : les sept passent. `pieds_de_page.py` relève « niveau 7 ·
+numéro 8 · 16 pptx · vus ['8'] » ; son seul écart restant est
+`module-n3-horaire`, connu de longue date — `module-n6-relations`, signalé par
+les deux modules précédents, a été réglé entre-temps. Le `node --check` du
+script produit passe, et la vérification dans le navigateur ne laisse aucune
+erreur : les six sections rendent, les seize mini-leçons s'ouvrent, les trois
+exercices de type `texte` ont chacun autant de passages cliquables que de
+questions, et les six réponses de l'`imgmatch` désignent toutes une image
+existante. Deux flèches ont arrêté le build des séances sur le garde-fou de
+Verdana, en B3 et C2 : le contrôle a raison, une flèche part en carré vide chez
+l'enseignante.
+
+*Un scénario de jeu de rôle a été ajouté à `server.py`* — `publicite`, trois
+cas (l'abonnement, la trottinette « offerte », l'affiche du commerce neuf),
+deux rôles. Aucun des scénarios existants ne convenait : `appareil` et
+`probleme` réclament auprès d'un marchand pour un bien défectueux, ce qui est
+une affaire de garantie. Ici, l'objet du litige n'est pas le produit mais **ce
+que l'annonce laissait croire**, et l'appel n'aboutit que si l'élève sait
+nommer précisément ce qui n'était pas dit — d'où la conduite de
+l'interlocuteur, qui répond « tout était dans les conditions » à un reproche
+général et donne un chiffre net à une question précise.
+
+*Le module est livré muet* : les 251 extraits sont relevés, le générateur
+s'importe sans erreur et il est relançable, mais les 92 générateurs de la vague
+partent ensemble par `build/audio_tous.py`.

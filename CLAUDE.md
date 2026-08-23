@@ -1516,6 +1516,20 @@ racine : `<module>.py` pour les dialogues (une voix par personnage),
 mini-leçons. Les identifiants de voix sont volontairement les mêmes d'un
 module à l'autre, pour qu'un personnage sonne pareil partout.
 
+- **Il n'y a que quatre voix, et ça se compte AVANT d'écrire les dialogues.**
+  Deux féminines (`enseignante`, `feminin_2`), deux masculines (`masculin_1`,
+  `narrateur`). Deux personnages ne peuvent en partager une que s'ils ne se
+  répondent **jamais** dans un même extrait — sinon l'élève entend la même
+  voix se répondre à elle-même. Un dialogue à trois personnages du même genre
+  est donc impossible, et c'est une contrainte d'écriture, pas de production.
+  Découvert le 23 août 2026 en produisant `module-n7-publicite` : un extrait
+  réunissait une mère, sa fille de onze ans et une agente de l'Office de la
+  protection du consommateur. L'agente est devenue un agent. Compter les
+  locuteurs par extrait est gratuit avant ; après, c'est une réécriture.
+- **Une voix se choisit aussi contre le ralentissement.** L'annonceur des
+  capsules publicitaires du même module prend `narrateur`, qui n'est pas
+  ralentie : la vitesse de la mention légale **est** l'objet de l'exercice, et
+  la poser sur la voix « enseignante » l'aurait effacée.
 - **La voix « enseignante » (`K7gx0ylJdff0yjM2uVQS`) est ralentie à 0,85.**
   C'est la voix que l'élève entend le plus — elle narre les mini-leçons et
   les mots isolés de presque tous les modules, en plus de rôles de dialogue
