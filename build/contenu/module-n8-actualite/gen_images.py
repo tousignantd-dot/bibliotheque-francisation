@@ -155,15 +155,21 @@ IMAGES = [
   "sur les marches, ciel bleu sombre. Aucune personne." + SANS_MOTS),
  # « Un studio de radio minuscule : un micro sur bras, un casque posé, des
  #   panneaux de mousse au mur. »
+ # Refaite le 23 août 2026 : la première version plaçait une console de mixage
+ # dans le cadre, et le modèle y a écrit **le nom d'une marque réelle** en
+ # toutes lettres sur le flanc. « Vue de trois quarts arrière » ne suffit pas
+ # devant un appareil dont la face est couverte d'inscriptions : la seule
+ # parade est de **sortir la console du cadre** et de ne garder que ses câbles.
  ('studio-radio', 'images', P_EX1, STYLE + " L'intérieur d'un très petit "
   "studio de radio, vide, vu depuis la porte : un **microphone sur bras "
   "articulé** avec sa bonnette noire, penché au-dessus d'une table de bois "
-  "clair, un **casque d'écoute posé à plat** à côté, et des **panneaux de "
-  "mousse acoustique gris anthracite** en damier sur le mur du fond. Une "
-  "console de mixage occupe le coin droit, vue **de trois quarts arrière et "
-  "éteinte** : on n'en voit que le flanc et l'arrière des potentiomètres, "
-  "aucune étiquette, aucun afficheur. Chaise de bureau vide, tapis usé, "
-  "lumière chaude d'une lampe d'appoint. Aucune personne." + SANS_MOTS),
+  "clair, un **casque d'écoute posé à plat** à côté, son câble enroulé, et "
+  "des **panneaux de mousse acoustique gris anthracite** en damier sur tout "
+  "le mur du fond. **Aucun appareil électronique n'entre dans le cadre** : "
+  "pas de console de mixage, pas d'écran, pas de rack — seulement quelques "
+  "câbles noirs qui descendent de la table et sortent par le bord droit de "
+  "l'image. Chaise de bureau vide, tapis usé, lumière chaude d'une lampe "
+  "d'appoint posée sur une petite commode. Aucune personne." + SANS_MOTS),
  # « Un comptoir de retour de bibliothèque, avec un chariot de livres à côté et
  #   une lampe allumée. »
  # Piège à texte : les dos des livres. Ils sont sur la tranche, franchement
@@ -293,18 +299,26 @@ IMAGES = [
  # « La rencontre publique où une ville explique un projet et écoute les
  #   gens. »
  # Composition imposée : sans cela le modèle rend un groupe d'hommes d'une
- # seule origine, ce que ne montre aucune classe de francisation.
+ # seule origine, ce que ne montre aucune classe de francisation. Refaite le
+ # 23 août 2026 — la première version rendait une assistance entièrement
+ # blanche et âgée malgré la consigne « mixte et d'origines diverses », qui
+ # est trop abstraite : il faut **compter et décrire** les personnes une à
+ # une, comme le journal de l'activité 119 l'a appris sur `salle-examen`.
  ('assemblee-consultation', 'vocab', P_VOC, PERS + " " + STYLE + " Une salle "
   "communautaire **pleine de monde**, photographiée **du fond de la salle, en "
   "légère plongée** : une quarantaine de personnes assises sur des chaises "
   "pliantes grises, **toutes vues de dos**, aucun visage visible, tournées "
   "vers une petite estrade éclairée au fond où l'on distingue une table et "
   "deux silhouettes assises, minuscules et floues. Une personne debout dans "
-  "l'allée centrale, de dos, devant un micro sur pied. L'assistance est "
-  "**visiblement mixte et d'origines diverses** : hommes et femmes de tous "
-  "âges, cheveux de couleurs et de coiffures variées, quelques foulards, "
-  "manteaux d'automne sur les dossiers. Aucune banderole, aucun écran de "
-  "projection, aucune affiche au mur." + SANS_MOTS),
+  "l'allée centrale, de dos, devant un micro sur pied. **L'assistance est "
+  "celle d'un quartier multiethnique et il faut que cela se voie de dos** : "
+  "au moins **six personnes à la peau foncée** et **quatre à la peau brune "
+  "ou olive** parmi les têtes du premier tiers, **trois femmes portant un "
+  "foulard noué sur les cheveux**, **deux personnes aux cheveux noirs "
+  "raides** coiffés en chignon bas, des adultes de vingt à soixante-dix ans "
+  "en proportions égales, un enfant assis à côté d'un adulte. Manteaux "
+  "d'automne sur les dossiers. Aucune banderole, aucun écran de projection, "
+  "aucune affiche au mur." + SANS_MOTS),
  # « Le cahier qu'on ouvre une journée pour compter ceux qui demandent un
  #   référendum. »
  ('registre', 'vocab', P_VOC, STYLE + " Un **gros cahier relié à couverture "

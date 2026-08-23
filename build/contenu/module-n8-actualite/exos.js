@@ -428,7 +428,7 @@ const EXOS = [
    rows:[
     {id:'im1', txt:"Une salle communautaire remplie de chaises pliantes en rangées, avant que le monde arrive.", ok:'im1'},
     {id:'im2', txt:"Un micro sur pied, seul au milieu de l'allée centrale, devant les premières rangées.", ok:'im2'},
-    {id:'im3', txt:"Une table pliante dans un hall, un gros cahier relié ouvert dessus et un stylo posé à côté.", ok:'im3'},
+    {id:'im3', txt:"Une table pliante dans un hall, un grand cahier ouvert dessus et un stylo posé à côté.", ok:'im3'},
     {id:'im4', txt:"Une feuille pliée coincée dans la poignée d'une porte de maison, sur une galerie de bois.", ok:'im4'},
     {id:'im5', txt:"Le stationnement presque vide d'un aréna de tôle, un soir d'automne pluvieux.", ok:'im5'},
     {id:'im6', txt:"Une rue résidentielle bordée de duplex de brique, les arbres du boisé au bout de la rue.", ok:'im6'},
