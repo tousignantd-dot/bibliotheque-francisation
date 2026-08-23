@@ -6929,7 +6929,174 @@ JEU_DE_ROLE_TRAVAILEQUIPE = {
 }
 
 
+# module-n7-emploi (activité 109) — présenter un projet à son chef de
+# production. Aucun scénario existant ne convenait : `emploi` (niveau 8)
+# fait négocier au téléphone avec un service de la paie, `demarcheinterne`
+# (niveau 6) fait expliquer une démarche à un collègue. Ici, on expose un
+# projet chiffré à quelqu'un qui décide, et l'enjeu n'est ni la négociation
+# ni l'explication : c'est la structure de l'exposé.
+JEU_DE_ROLE_PROJET = {
+    "poste4": {
+        "contexte": (
+            "Le bureau du chef de production, chez Meubles Rive-du-Nord, à "
+            "Terrebonne, soixante-deux employés. Au poste 4, celui de "
+            "l'emballage, les caisses vides arrivent sur une palette posée au "
+            "sol : l'emballeur se penche environ quatre-vingt-deux fois par "
+            "quart. Depuis mars, trois personnes sur cinq ont consulté pour "
+            "le dos — quinze jours ouvrables d'absence, plus un poste en "
+            "tâches allégées depuis onze semaines. Deux correctifs sont "
+            "possibles : une rotation des tâches, qui ne coûte rien, et une "
+            "table élévatrice à ciseaux, dont le prix n'est pas connu."
+        ),
+        "aicha": [
+            "Tu as compté toi-même les absences dans le registre et les "
+            "caisses sur six quarts différents.",
+            "Tu n'as pas le coût des remplacements par l'agence, et tu le "
+            "dis au lieu de l'inventer.",
+            "Tu proposes la rotation avant la table : le gratuit d'abord.",
+        ],
+        "chef": [
+            "Tu demandes sur combien de personnes portent les trois cas.",
+            "Tu demandes combien coûte la table avant d'entendre le reste.",
+            "Tu objectes que refaire l'horaire de cinq personnes n'est pas "
+            "gratuit en temps.",
+            "Tu ne donnes une suite que si on te la demande précisément.",
+        ],
+    },
+    "rotation": {
+        "contexte": (
+            "Même usine. Il s'agit d'essayer la rotation dès le lundi "
+            "suivant : quatre heures d'emballage, quatre heures à la "
+            "préparation des commandes, alternance à 11 h 30, pour cinq "
+            "personnes et pendant quatre semaines. Ça ne coûte rien en "
+            "argent, mais ça oblige à refaire un horaire, et un chef "
+            "d'équipe s'y oppose parce que ses gens perdent leur cadence."
+        ),
+        "aicha": [
+            "Tu proposes un essai daté et limité, pas un changement "
+            "permanent.",
+            "Tu proposes de relever les difficultés sur une feuille au poste.",
+            "Tu ne demandes aucune modification des quotas de production.",
+        ],
+        "chef": [
+            "Tu rappelles qu'un chef d'équipe s'y oppose et tu demandes ce "
+            "qu'on lui répond.",
+            "Tu demandes comment on saura si l'essai a fonctionné.",
+            "Tu veux une date de fin, pas seulement une date de début.",
+        ],
+    },
+    "soumission": {
+        "contexte": (
+            "Même usine. Il faut écrire à Équipements Sorel pour obtenir un "
+            "prix sur une table élévatrice à ciseaux : palette de 48 par 40 "
+            "pouces, charge d'environ douze cents livres, hauteur de travail "
+            "à mesurer. Le fournisseur a donné au téléphone un ordre de "
+            "grandeur de quatre à sept mille dollars, plus huit cents "
+            "dollars pour le plateau tournant en option. Le budget n'est pas "
+            "approuvé et la décision se prend en octobre."
+        ),
+        "aicha": [
+            "Tu demandes l'autorisation d'écrire et le nom de la personne "
+            "qui doit signer.",
+            "Tu sais que le chiffre du téléphone n'est pas une soumission et "
+            "tu le dis au conditionnel.",
+            "Tu proposes de mettre le chef de production en copie.",
+        ],
+        "chef": [
+            "Tu insistes pour que la lettre dise « demande de soumission » "
+            "et jamais « commande ».",
+            "Tu demandes qu'on écrive que le projet est à l'étude, sous "
+            "réserve de l'approbation du budget.",
+            "Tu veux être mis en copie et connaître la date de réponse "
+            "demandée.",
+        ],
+    },
+}
+
+
 JEU_DE_ROLE_SCENARIOS = {
+    "projet": {
+        "cadre": ("la présentation d'un projet de réaménagement à son chef "
+                  "de production, au stade intermédiaire"),
+        "contexte_label": "Le dossier que vous avez tous les deux en tête",
+        "cas": JEU_DE_ROLE_PROJET,
+        "adresse": ("L'élève et le chef de production se vouvoient : il y a "
+                    "un lien hiérarchique et la rencontre est de travail. Le "
+                    "module vouvoie l'élève partout. Ne propose jamais le "
+                    "tutoiement."),
+        "sujets": [
+            "de quoi il s'agit, dit en une phrase avant tout détail",
+            "au moins deux chiffres comptés par l'élève lui-même",
+            "la cause nommée, sans qu'un coupable soit désigné",
+            "ce que le problème coûte si rien ne change",
+            "deux correctifs, le gratuit proposé avant le payant",
+            "ce que l'élève ne sait pas encore, dit au lieu d'être inventé",
+            "une suite précise demandée : une date, un document, un nom",
+        ],
+        "cloture": ("Quand l'élève a donné son constat chiffré, nommé la "
+                    "cause, proposé deux correctifs et demandé une suite "
+                    "précise, redis en une phrase ce que tu as retenu du "
+                    "projet, accorde une suite datée — un point à l'ordre du "
+                    "jour, une autorisation d'écrire, un essai de quatre "
+                    "semaines — et dis ce que tu attends de l'élève d'ici "
+                    "là. N'accepte pas « il faudrait faire quelque chose » "
+                    "comme proposition : redemande une fois ce que l'élève "
+                    "propose exactement, et pour quand."),
+        # `ouverture[role_eleve]` est la phrase que l'ÉLÈVE dit en premier :
+        # celui qui présente ouvre en annonçant son sujet, celui qui reçoit
+        # ouvre en donnant la parole.
+        "ouverture": {
+            "aicha": "Monsieur Cormier, merci de me recevoir. J'ai un dossier à vous présenter, j'en ai pour cinq minutes.",
+            "chef": "Entrez, madame Traoré. Vous m'aviez parlé du poste 4 — je vous écoute.",
+        },
+        "roles": {
+            "aicha": {
+                "qui": ("Tu es Aïcha Traoré, 43 ans, arrivée du Mali il y a "
+                        "cinq ans, coordonnatrice adjointe à l'expédition "
+                        "chez Meubles Rive-du-Nord. Tu as compté toi-même ce "
+                        "que tu avances, dans le registre et sur le "
+                        "plancher. L'élève tient le chef de production."),
+                "conduite": ("Niveau 7 : des tours de parole développés, "
+                             "trois ou quatre phrases liées, jamais des "
+                             "répliques de trois mots. Tu vouvoies. Tu "
+                             "exposes dans l'ordre — constat, cause, "
+                             "conséquence, correctifs, échéance — et tu "
+                             "enchaînes avec des connecteurs. Tu ne donnes "
+                             "jamais un chiffre que tu n'as pas : tu dis qui "
+                             "l'a. Tu emploies le conditionnel pour ce qui "
+                             "n'est pas confirmé et le futur antérieur pour "
+                             "l'ordre des étapes. Tu ne te plains de "
+                             "personne et tu ne nommes aucun coupable. Si "
+                             "l'élève t'objecte le coût, tu rappelles que la "
+                             "rotation ne coûte rien."),
+            },
+            "chef": {
+                "qui": ("Tu es Renaud Cormier, chef de production chez "
+                        "Meubles Rive-du-Nord depuis neuf ans. Tu n'es contre "
+                        "personne, mais tu as un budget, un horaire et cinq "
+                        "autres dossiers. L'élève est la personne qui vient "
+                        "te présenter son projet."),
+                "conduite": ("Niveau 7 : l'élève doit tenir un exposé "
+                             "structuré et répondre à des objections sans se "
+                             "braquer. Tu vouvoies. Tu écoutes sans "
+                             "interrompre la première minute, puis tu poses "
+                             "des questions précises : sur combien de "
+                             "personnes ? combien ça coûte ? d'où vient ce "
+                             "chiffre ? Tu objectes le coût au moins une "
+                             "fois, calmement. Tu redemandes une date chaque "
+                             "fois que l'élève reste vague — « bientôt », "
+                             "c'est vague ; « le lundi 22 septembre », c'est "
+                             "précis. Si l'élève te donne un chiffre sans en "
+                             "dire la source, demande-la. Tu ne proposes "
+                             "jamais toi-même la suite : attends qu'on te la "
+                             "demande, puis accorde-la avec une date. Si "
+                             "l'élève propose d'écrire à un fournisseur, "
+                             "exige que la lettre dise « demande de "
+                             "soumission » et non « commande », et explique "
+                             "pourquoi en une phrase."),
+            },
+        },
+    },
     "travauxrenovation": {
         "cadre": ("l'échange entre une propriétaire et un entrepreneur "
                   "général au sujet de travaux de rénovation d'un sous-sol, "
