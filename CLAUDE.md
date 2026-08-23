@@ -702,6 +702,27 @@ Le détail, les exemples et les deux situations pièges sont dans
    s'écrit à partir de la phrase de la rangée `ok`. C'est le défaut le plus
    fréquent, et le seul qui ne se voit pas sans mettre les deux côte à côte.
 
+**La parade aux deux premières règles n'est pas de les répéter, c'est de
+cadrer.** Vérifié le 23 août 2026 sur les quatre modules de la vague 7 : sept
+images refaites sur cinquante, et jamais parce que le prompt avait oublié
+d'interdire. Devant un objet qui *porte* une inscription — répondeur, réveil,
+calendrier, babillard, étiquette de prix, écran de guichet — « aucun texte
+lisible » ne tient pas : le modèle écrit le mot quand même, en charabia
+(`1:520`) ou en anglais (« March », « PLAY / STOP »). Ce qui marche est de
+mettre l'inscription **hors champ** : la face avant du répondeur tournée en
+trois quarts arrière, l'afficheur du réveil hors cadre et seule sa lueur rouge
+sur le bois, l'en-tête du calendrier coupé et seule la grille de cases. Même
+mécanique pour les mains : **imposer le poste de l'appareil** (le clavier seul
+sur la table, la feuille déjà signée et le stylo couché à côté) réussit du
+premier coup là où « pas de mains » échoue. Une négation décrit ce qu'on ne
+veut pas ; un cadrage décrit ce qu'on veut, et c'est la seule des deux qu'un
+modèle d'image sait exécuter.
+
+**Quand le texte *est* le sujet, il se compose en HTML, jamais dans l'image.**
+Une publicité, une affiche, un formulaire : le gabarit sait afficher un
+bandeau, un encadré, un texte suivi (type `texte`). L'image montre alors la
+scène autour — l'abribus vu de loin, l'écran éteint, la personne qui regarde.
+
 **Une skill s'invoque par son nom, elle ne se cherche pas sur le disque.** Un
 `find /` lancé pour retrouver un `SKILL.md` a fait ouvrir à macOS trois
 demandes d'autorisation — calendrier, photothèque, « données d'autres apps » —
