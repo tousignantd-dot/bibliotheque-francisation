@@ -135,11 +135,19 @@ IMAGES = [
   "l'autre au crayon et reliés par une flèche montante tracée à la main. Les "
   "chiffres et les mots sont des traits gris illisibles ; seule la flèche se voit "
   "nettement. Une calculatrice à côté. Aucune personne." + SANS_MOTS),
- ('delai-de-reponse', 'vocab', P_VOC, STYLE + " Gros plan sur un calendrier "
-  "mural de cuisine ouvert sur un mois de fin d'hiver, avec une case entourée au "
-  "crayon rouge et une seconde case entourée un mois plus loin, reliées par un "
-  "trait. Les chiffres et les noms de jours sont des traits gris illisibles ; "
-  "seuls les cercles rouges se voient." + SANS_MOTS),
+ # Refaite le 23 août 2026. La première version rendait un calendrier mural
+ # dont l'en-tête portait « March » en toutes lettres, et en anglais : le
+ # modèle écrit le nom du mois quoi qu'on lui demande. Le cadrage exclut donc
+ # désormais l'en-tête, et il ne reste que la grille de cases — deux cercles
+ # rouges reliés par un trait disent le délai sans un seul mot.
+ ('delai-de-reponse', 'vocab', P_VOC, STYLE + " Cadrage serré, vu de haut, sur "
+  "la moitié inférieure d'un calendrier de papier posé à plat sur une table de "
+  "cuisine en bois : on ne voit que la grille de cases carrées, l'en-tête du "
+  "mois et le nom des jours sont entièrement hors champ, coupés par le bord de "
+  "l'image. Une case est entourée au crayon rouge, une autre l'est quatre "
+  "rangées plus bas, et un trait rouge relie les deux. Les chiffres des cases "
+  "sont de petits traits gris illisibles. Un crayon rouge posé à côté. Aucune "
+  "personne, aucune main." + SANS_MOTS),
  ('contre-proposition', 'vocab', P_VOC, STYLE + " Deux feuilles posées côte à "
   "côte sur une table de cuisine, la seconde couverte d'annotations manuscrites "
   "dans la marge et d'un chiffre entouré au crayon. Un stylo en travers. Toutes "
