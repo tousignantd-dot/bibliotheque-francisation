@@ -676,6 +676,37 @@ exportée par un bundler — porte encore un `#6B4FBB` dans un rectangle SVG
 décoratif. Elle est hors du système de design ; la reprendre serait la
 réécrire.
 
+## Les images d'un module
+
+Elles se relisent **avec l'énoncé qu'elles illustrent**, jamais seules :
+
+    python3 build/planche_images.py    # planche de contact numérotée, 1 268 images
+    node build/contexte_images.js      # ce que chaque image est censée montrer
+
+La planche (`planche-images.html`, non versionnée) met sous chaque vignette
+l'exercice, la phrase de la rangée `ok` qui lui est associée, ou le mot de la
+carte de vocabulaire. On y marque une image d'un clic et on dit pourquoi —
+**texte · mains · décor · hors sujet**. Le relevé couvre les deux dossiers d'un
+module : `images/` (exercices d'association) et `vocab/` (cartes de
+vocabulaire), soit 501 et 767 fichiers au 22 août 2026.
+
+Quatre règles pour tout prompt d'image, tirées de la relecture du 22 août 2026.
+Le détail, les exemples et les deux situations pièges sont dans
+`docs/vagues-suivantes.md`, section « Les images de cette vague » :
+
+1. **Aucun texte dans l'image** — enseigne, étiquette, panneau, logo, slogan.
+   Le modèle écrit du charabia et l'élève le lit.
+2. **Pas de mains ni de visages en gros plan.**
+3. **Le décor est québécois et nommé** — pas « appartement moderne ».
+4. **L'image montre ce que dit son énoncé, pas le thème du module.** Le prompt
+   s'écrit à partir de la phrase de la rangée `ok`. C'est le défaut le plus
+   fréquent, et le seul qui ne se voit pas sans mettre les deux côte à côte.
+
+**Une skill s'invoque par son nom, elle ne se cherche pas sur le disque.** Un
+`find /` lancé pour retrouver un `SKILL.md` a fait ouvrir à macOS trois
+demandes d'autorisation — calendrier, photothèque, « données d'autres apps » —
+pour un fichier qui vit à `~/.claude/skills/<nom>/SKILL.md`.
+
 ## Le cadre programme d'un module (`build/cadre.py`)
 
 Avant d'écrire une ligne d'un module, on en sort la spécification
