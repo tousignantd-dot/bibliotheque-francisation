@@ -4568,6 +4568,132 @@ du drain — et le touret n'entre plus dans le champ que par sa moitié
 inférieure, de dos. À ajouter à la liste : déplacer le sujet est plus fiable
 que cadrer le sujet.
 
+**23 août 2026 — activité 120, `module-n8-emmenagement`.** « Ce qui est
+couvert, et ce qui se défend », niveau 8, `numero` 3, **`GRILLE_2_DEFIS`**.
+Scénario inventé : Amira Benkirane, 41 ans, arrivée du Maroc il y a six ans,
+technicienne en documentation dans un centre d'archives. Elle vient
+d'emménager au deuxième étage d'un triplex de brique rouge de la rue
+Sainte-Ursule, à Trois-Rivières. Le jour du déménagement, le camion de
+Déménagement Ducharme et Fils a accroché la rampe de l'escalier en colimaçon,
+deux boîtes de livres et d'albums ont passé une averse sur le balcon, et le
+vaisselier de sa mère est arrivé fendu. Denis Ducharme invoque la limite de
+son contrat de transport — soixante cents la livre (Je découvre) ; Ghislain
+Marcotte, courtier en assurance de dommages, lui explique ce que sa police
+couvre vraiment et comment se déroule une réclamation (défi 1) ; Véronique
+Chartier, experte en sinistre, accepte un élément et en refuse deux, et c'est
+là que le module se joue (défi 2). 17 exercices, 14 mini-leçons, 3 dialogues
+(92 répliques), 16 mots, 16 images, 152 sons relevés — 244 extraits en tout —,
+16 séances (155 diapositives, 109 blocs de fiches).
+
+*Ce qui le distingue de ses deux voisins de situation*, en une phrase écrite
+avant le scénario : `je-demenage` (16, niveau 4) **cherche et visite** un
+logement puis pend la crémaillère, `module-n5-emmenagement` (63) **organise**
+l'emménagement — le camion, l'adresse, les branchements, les voisins — et tout
+s'y passe bien ; celui-ci commence **le soir où ça a mal tourné**. On ne décrit
+plus un déménagement : on **soutient une réclamation devant deux personnes qui
+ont chacune de bonnes raisons de dire non**, et le travail de langue est
+d'argumenter — concéder ce qui se concède, refuser ce qui ne se concède pas, et
+le mettre par écrit.
+
+*La grille s'est décidée sur les savoirs, pas sur les intentions, et c'est
+nouveau.* « Emménagement dans un nouveau logement » ne porte qu'**une** seule
+intention de communication — « s'informer sur les assurances (vol,
+responsabilité, incendie, dégâts) », en compréhension et en production orales.
+La règle de la vague donne donc deux défis, et le vrai test — pouvoir nommer
+trois façons distinctes d'entrer dans la situation — n'en donne que deux non
+plus. Mais la raison profonde est ailleurs : ce sont **les savoirs du cours qui
+déplient l'unique intention en exactement deux conversations, et qui les
+nomment**. « Conversation portant sur le choix d'une police d'assurance »
+(cinq points de savoir : avantages et inconvénients, clauses, vocabulaire
+spécialisé, phrases clés pour résumer, phrases clés pour faire clarifier) donne
+le défi 1 ; « Communication téléphonique avec un assureur pour effectuer une
+réclamation » (trois points : mots pour décrire un sinistre, phrases clés pour
+l'accord et le désaccord, phrases clés pour défendre une opinion et réagir aux
+arguments d'autrui) donne le défi 2. Il n'y avait rien à choisir, et un
+troisième défi aurait fallu l'inventer hors situation. **À retenir pour les
+situations maigres du niveau 8 : quand les intentions ne suffisent pas à
+découper, regarder si les savoirs lexicaux le font à leur place.**
+
+*Trois exercices de type `texte`, de trois genres, et le troisième est encore
+celui que l'élève écrira lui-même* — l'usage que l'activité 119 recommandait de
+reprendre, et qui se confirme une fois de plus. `t1prop` est un **sommaire de
+police d'assurance**, où l'on prélève un plafond et une sous-limite ; `t2refus`
+est une **lettre de décision**, où l'on cherche la clause exacte d'un refus ;
+`t2lettre` est la **demande de révision** elle-même, découpée par fonctions —
+et c'est la pièce que « Je me lance » demande de produire vingt minutes plus
+tard. Trois documents administratifs, mais trois genres réellement différents :
+un contrat, une décision, une argumentation.
+
+*Le seul savoir de phonétique du niveau reste l'intonation expressive, et il a
+posé un problème que l'activité 119 n'avait pas rencontré* : le **plagiat de
+soi-même à l'échelle du dépôt**. Deux modules qui traitent le même unique
+savoir avec la même forme (`vf` à trois tuiles, rangées en répliques entières)
+finissent par se ressembler mot pour mot si l'on n'y prend pas garde.
+Vingt-cinq des quarante-trois coïncidences du premier relevé venaient de cette
+seule leçon. La forme, elle, ne se discute pas — elle marche, et rien d'autre
+ne marcherait ; ce sont les intitulés et les notes qu'il faut écrire neufs. Le
+troisième module du niveau 8 devra faire le même effort, et il vaut mieux le
+faire **en écrivant** qu'après coup.
+
+*Sur les voix* : quatre personnages, quatre voix, une chacune, comptées par
+extrait et par genre avant la première réplique. Deux femmes en tout, jamais
+trois dans un même extrait — t2 réunit AMIRA (`feminin_2`) et VERONIQUE
+(`enseignante`), soit la limite exacte du dépôt. Le choix qui compte est celui
+de GHISLAIN : il porte l'**exposé de quatorze répliques d'affilée** du défi 1,
+coupé par deux questions, et il prend `masculin_1` précisément parce que
+`voix_lente` ne le ralentit pas. C'est la consigne du journal de l'activité
+119, appliquée sans avoir eu à la repayer.
+
+*Sur les images*, seize, toutes par la route Google directe, **quatorze bonnes
+du premier coup**, deux reprises, 0,61 $ pour dix-huit appels. Aucune personne
+dans aucune image : elles montrent des lieux, des objets et des dommages,
+jamais une scène de conversation — la règle des mains et des visages ne se
+posait donc pas, et celle de l'activité 119 sur la composition des groupes non
+plus. Le module est pourtant un piège à inscriptions : un connaissement est un
+formulaire, un inventaire est une liste, une boîte porte le nom d'une pièce au
+marqueur. La parade par le cadrage a tenu du premier coup sur les trois — la
+liasse autocopiante vue **par la tranche**, face écrite retournée sur le
+hayon ; les boîtes comptées par des **bandes de ruban de couleur** plutôt que
+par des chiffres ; les deux flancs du camion masqués par les murs de la ruelle,
+donc aucune livrée dans le cadre.
+
+Les deux reprises portent la même leçon, celle du quatrième défaut sous sa
+forme la plus discrète — **le sujet y est, mais la position ou le nombre n'y
+sont pas**. `vaisselier-fendu` rendait le meuble **debout** quand son énoncé le
+dit **couché** : le prompt refait décrit **le point de vue** (en plongée,
+au-dessus du meuble) plutôt que la posture, parce qu'un adjectif comme
+« couché » se laisse ignorer et qu'un point de vue non. C'est la même mécanique
+que le `quai-chargement` de l'activité 119, où décrire *le joint* avait réussi
+là où décrire la scène échouait : **quand le modèle rate une relation
+spatiale, on lui impose la caméra, pas l'adjectif.** `salon-vide` annonçait
+quatre chaises empilées et en rendait deux, puis trois — le modèle ne compte
+pas. C'est l'**énoncé** qui a cédé, et c'est le bon arbitrage : le nombre
+n'était ni vérifiable dans une vignette de 223 px, ni ce qui distinguait cette
+photo des cinq autres.
+
+*Sur l'originalité* : 1 192 énoncés visibles, **7 identiques** parmi les 68 317
+des soixante-treize autres modules de `build/contenu/`, soit **0,6 %** — après
+une passe de trente-sept substitutions qui a fait tomber le chiffre de 3,6 %.
+Les sept qui restent sont irréductibles : trois consignes du gabarit, le
+bandeau de « Je retiens des mots », un mot du programme et « Allez-y, je vous
+écoute ». **Aucun `say:` n'a bougé** — `build/releve_sons.js` rend les mêmes
+152 clés avec les mêmes valeurs, comparaison JSON faite avant et après.
+Quatrième vérification consécutive de la même règle : une passe d'originalité
+ne coûte aucun MP3 tant qu'elle épargne les champs de synthèse.
+
+*Un troisième artefact du relevé d'originalité, après ceux des activités 110 et
+119.* Le premier chiffre était **6,7 %**, et l'écart n'était toujours pas
+pédagogique : `custom.js` est du HTML écrit à la main, et ses attributs
+(`aria-hidden=`, `autocomplete=`) comme ses valeurs de style
+(`background:#7E3F98`, `btn btn-ghost`) sont forcément identiques d'un module à
+l'autre, puisque le gabarit est commun. Trois filtres de plus — pas de `=`, pas
+de `;{}`, pas de chaîne d'un seul mot — et le chiffre tombe à 3,6 %. Le relevé
+a donc maintenant été faussé de trois façons différentes en trois modules : par
+les guillemets simples, par les sauts de ligne, par le balisage. **Un chiffre
+d'originalité mérite toujours qu'on regarde d'abord ce qu'il a compté**, et le
+script est désormais versionné avec le module (`_originalite.js`) pour que le
+suivant n'ait plus à le réécrire.
+
 *Sur les contrôles* : les sept passent. `coherence.js` ne signale rien,
 `sections.py --verifier` et `materiel.py --verifier` sont à jour, les deux
 contrôles de couleur ne rendent rien, `sommaire.py --verifier` ne trouve aucun
@@ -4646,6 +4772,69 @@ retrouve ses 85 répliques sur quatre dialogues et son manifeste de 151 sons —
 il n'a **pas** été lancé, une production audio complète tournant sur le poste.
 Le module est livré complet et muet.
 
+module-n8-emmenagement`, qui manque **toujours** à la séquence et qu'aucun
+autre script ne fait —, et `pieds_de_page.py` lit « niveau 8 · numéro 3 ·
+16 pptx · vus ['3'] ». Son seul écart reste `module-n3-horaire`, connu de
+longue date et qui n'est pas le mien. Le `node --check` du script en ligne
+passe (302 383 octets), et `grep -n "___.*___"` ne rend rien.
+
+Quatre garde-fous du gabarit se sont déclenchés pendant la production des
+séances, et les quatre avaient raison : trois tableaux trop denses pour une
+projection (A1, A4, C5, E2, ramenés à quatre rangées ou raccourcis) et huit
+flèches, remplacées par « devient : ».
+
+*La vérification dans le navigateur a été faite sur un serveur et un onglet à
+moi*, et elle a tenu cette fois — contrairement à la session de l'activité 119,
+dont toutes les captures sortaient blanches. Deux remarques quand même. La
+première : **les captures redeviennent blanches dès qu'on fait défiler la page
+par script** ; seule la vue en haut de page se rend. Ne pas en conclure que le
+module est cassé, et vérifier par le DOM. La seconde, plus utile : `checkOk`
+prend **trois** arguments (`zid, iid, lbl`) et ne lit le troisième que pour les
+zones `vf` et `lbl`. Un contrôle écrit avec deux arguments déclare donc les
+quarante-deux zones `vf` du module « refusées », et l'on croit avoir trouvé un
+défaut grave alors qu'on a mal appelé la fonction. Le contrôle correct :
+`(z.zcat === 'vf' || z.zcat === 'lbl') ? checkOk(k, null, z.cv) : checkOk(k,
+z.cv, null)`. Ainsi appelé, il rend **180 zones, dont 116 à réponse
+enregistrée, toutes acceptées, zéro refusée** ; les 64 restantes sont
+exactement celles des exercices `write`, vérifiées séparément en remplissant
+chaque `.winput` avec son `accept[0]` — 320 champs testés sur cinq rendus,
+aucun échec. Le reste : console vide, cinq sections rendues, quatorze
+mini-leçons qui s'ouvrent sans erreur, quatre laboratoires dont **aucune
+combinaison n'est sans sortie** (8, 12, 8 et 9 combinaisons), les trois
+exercices `texte` équilibrés au passage près (16/16, 12/12, 10/10), et les
+seize images plus les quatre icônes qui répondent 200.
+
+*Un scénario de jeu de rôle a été ajouté à `server.py`* — `sinistre`, trois cas
+(le vaisselier refusé, la lecture de la clause, le compromis chiffré), deux
+rôles. La clé n'est **pas** `reclamation`, déjà prise par le niveau 7 où l'on
+réclame au comptoir du commerçant qui a vendu l'appareil ; ni `probleme` ni
+`degat` ne convenaient non plus, puisqu'ils font réparer quelque chose alors
+qu'ici la décision est déjà rendue et qu'il faut la faire rouvrir. Le contrôle
+de la clé en double est passé, et il est versionné avec le module
+(`_verif_jr.py`). Sa conduite contient un parti pris à ne pas défaire :
+**l'experte ne cite jamais une clause spontanément, et ne la lit mot pour mot
+qu'à la deuxième demande**. C'est ce qui oblige l'élève à réclamer le texte
+plutôt que la raison — le geste que tout le défi 2 enseigne. Second parti
+pris : elle a raison sur deux points sur trois, et elle les tient.
+
+*Un défaut trouvé chez le voisin, et corrigé en une ligne.*
+`generer_audio_module_n8_recherche.py` (activité 119) lisait
+`sons_module_n7_recherche.json` — le manifeste du module du **niveau 7**. Le
+fichier existe, donc rien ne levait d'erreur : le script aurait déposé les 221
+sons du niveau 7 dans `assets/interactive/module-n8-recherche/sons/` au lieu de
+ses 334, et **neuf clés seulement se recoupent**. Le module serait sorti muet
+aux trois quarts, avec des extraits d'un autre module par-dessus. C'est le même
+genre de faute que la clé de scénario homonyme : le nom se lit, donc rien
+n'avertit, et ni le build ni aucun contrôle ne regarde là. **À vérifier avant
+que la production audio atteigne le module 119** : si ses sons ont déjà été
+produits, vider `assets/interactive/module-n8-recherche/sons/` et relancer.
+
+*Ce qui reste* : les **244 extraits audio**.
+`generer_audio_module_n8_emmenagement.py` est écrit, il s'importe sans erreur,
+il retrouve ses 92 répliques sur trois dialogues et son manifeste de 152 sons —
+il attend la production en cours avec les autres. Le module est livré complet
+et muet.
+
 *Comme les activités 108 à 119*, ni `VOCAB_BANK` de `server.py` ni la constante
 `DETAILS` de `js/enseignant.js` n'ont reçu quoi que ce soit : ces deux tables se
 sont arrêtées aux modules du niveau 4, et c'est un chantier à part.
@@ -4659,3 +4848,11 @@ deux relevés `data/sections.json` et `data/materiel.json`. Ces deux derniers on
 fait avec `python3 build/fusionner_module.py`, qui les régénère au lieu de les
 fusionner — jamais à la main.
 
+
+*Sur la fusion* : la branche `module-n8-emmenagement` est poussée sans être
+fusionnée. Elle touche cinq fichiers partagés — `build/powerpoints/modules.py`,
+`data/activities.json`, `server.py`, `data/sections.json` et
+`data/materiel.json` —, chacun dans un commit séparé et à jour de `main` au
+moment de l'écriture. Les deux relevés ont été régénérés depuis un disque qui
+connaît les activités jusqu'à 119 ; comme l'activité 119 l'a écrit, c'est
+`build/fusionner_module.py` qui doit les régénérer plutôt que les fusionner.
