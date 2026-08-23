@@ -2499,3 +2499,116 @@ raison d'en sortir, sauf pour `~/Claude/programme/` (le programme d'études),
 `~/Claude/generations/` (le registre des médias) et `~/Claude/.env` (les clés).
 
 ### Journal de la vague 7
+
+**22 août 2026 — activité 108, `module-n4-etablissement`.** « Communication
+avec le personnel de l'établissement », niveau 4, `numero` 17,
+`GRILLE_3_DEFIS`. Le dernier trou du niveau 4 est bouché : les dix-sept
+situations ont maintenant leur module. Scénario inventé : Nourhane Ouazzani,
+36 ans, arrivée du Maroc il y a un an, groupe 6 au Centre d'éducation des
+adultes de la Pointe-aux-Ormes, à Laval. Son fils Ilyes fait une otite un
+dimanche soir ; le lundi elle est absente, le mardi en retard, le jeudi elle
+apprend qu'elle doit abandonner le cours du soir — les trois motifs que le
+programme nomme, dans l'ordre. Autour d'elle : Wilner Céleste (camarade,
+tutoie), Murielle Sansregret (secrétaire, vouvoie), Fabien Corriveau
+(enseignant), et le système téléphonique du centre. 20 exercices,
+14 mini-leçons, 4 dialogues (68 répliques), 16 mots, 17 images, 247 extraits
+de la famille 2 — 315 au total —, 16 séances, 202 diapositives, 157 blocs de
+fiches.
+
+**Ce qui distingue ce module, en une phrase : ici, personne ne se parle.**
+Une machine répond, une machine enregistre, et le papier finit le travail.
+Six voisins occupent la même situation ou la frôlent —
+`module-n2-inscription` s'inscrit, `module-n2-secretaire` demande,
+`module-n3-secretariat` informe en personne, `module-travail` justifie à un
+employeur qui décroche, `module-n5-ecole` règle une affaire au comptoir,
+`module-n6-etablissement` décide d'un programme. Aucun ne travaille le
+**message à sens unique**, dans les deux directions : on en laisse un le
+matin, on en reçoit trois le soir. C'est l'intention « écouter un message
+téléphonique », que seul le niveau 4 porte sur cette situation.
+
+*Trois choses trouvées en produisant celui-ci*, et qui valent pour les quinze
+suivants :
+
+1. **Le type `rows` n'avait jamais servi dans `build/contenu/`** — vingt et un
+   modules, zéro emploi, alors que le moteur le rend depuis toujours. Il est
+   employé ici une fois (`t2notes`, six renseignements à ranger dans le message
+   où on les a entendus) et il fonctionne : rangées `{id, lbl, cv}`, banc
+   `{id, l}`, et la zone passe bien à `fb-ok` sur la bonne réponse — vérifié
+   dans le navigateur. Deux réserves : `cv`, pas `ok`, contrairement à tous les
+   autres types ; et `coherence.js` **ne le contrôle pas** — un `cv` qui ne
+   désigne aucune tuile du banc ne serait signalé nulle part. Le type est bon
+   pour un tableau à remplir ; il demande une relecture à la main.
+2. **`gen_images.py` écrit dans le dépôt principal, pas dans le worktree de
+   l'agent.** Le chemin `BASE` est absolu, comme dans tous les modules. Les
+   dix-sept images sont donc apparues dans
+   `~/Claude/bibliotheque-francisation/assets/interactive/<slug>/` et pas dans
+   `.claude/worktrees/<agent>/...` — il a fallu les rapatrier par `cp` avant de
+   les commiter. Sans danger tant que le dossier est neuf et n'appartient qu'à
+   un agent, mais à savoir : le générateur rapporte « 17 produites » et le
+   worktree reste vide. Même remarque pour `IMG` dans les decks, qui pointe
+   vers le dépôt principal — là, c'est sans conséquence, les images y sont.
+3. **La fenêtre d'aperçu est partagée entre les agents.** Le serveur
+   `bibliotheque` de `.claude/launch.json` est « réutilisé » et sert le dépôt
+   d'un autre worktree ; pire, un onglet ouvert se fait reprendre en cours de
+   vérification par un agent voisin (constaté : `render is not defined`, la
+   page ayant changé de module entre deux appels). La parade tient en deux
+   commandes : `python3 -m http.server <port libre> --directory <son
+   worktree>`, puis `tabs_create` pour avoir son propre onglet et passer
+   `tabId` à chaque appel.
+
+*Les dix-sept images relues avec leur énoncé*, après le rebase qui a apporté
+les quatre règles de la vague. `node build/contexte_images.js
+module-n4-etablissement` met la phrase à côté de la photo, et **quatre des
+dix-sept fautaient** — aucune sur la règle 4, qui est pourtant la plus
+fréquente : les énoncés avaient bien servi de prompt. C'étaient les règles 1
+et 2, deux chacune.
+
+- `repondeur` portait « PLAY », « STOP » et « VOLUME » en toutes lettres sur
+  le boîtier. Le prompt disait déjà « aucun texte lisible » : ça ne suffit pas
+  devant un objet dont le modèle *sait* qu'il porte des inscriptions. Ce qui a
+  marché : **tourner la face avant hors champ** (trois quarts arrière, plongée
+  légère) et exiger des boutons « parfaitement lisses, SANS aucune
+  inscription ». Règle générale à retenir — sur un appareil, la négation ne
+  tient pas, il faut cadrer l'inscription en dehors de l'image.
+- `reveil-avant-aube` affichait « 1:520 », du charabia numérique. Même parade :
+  l'afficheur passe hors champ, et seule **sa lueur rouge sur le bois** dit
+  que le réveil est allumé. L'énoncé (« un réveille-matin allumé dans une
+  chambre encore sombre ») reste vrai sans qu'un chiffre paraisse.
+- `clavier` et `signature` étaient deux gros plans de mains — le doigt qui
+  appuie, la main qui signe. Les deux se réparent en **retirant la personne et
+  en gardant la trace de son geste** : le clavier seul sur la table, la feuille
+  *déjà signée* avec le stylo couché à côté. C'est même mieux pour le
+  vocabulaire, qui nomme un objet et non une action.
+
+Quatre reprises à 0,0336 $ par la route Google directe, soit **0,13 $** pour
+les quatre. Le contrôle coûte moins cher que n'importe quelle relecture.
+
+*Sur les contrôles* : les sept passent pour ce module. `coherence.js` ne
+signale rien, `sections.py --verifier` et `materiel.py --verifier` sont à
+jour, les deux contrôles de couleur ne rendent rien, `sommaire.py --verifier`
+ne rend aucun lien cassé, et `pieds_de_page.py` lit bien « numéro 17 » dans
+les seize `.pptx` livrés. Les deux écarts qui restent à ce dernier ne sont pas
+les miens : `module-n3-horaire`, connu de longue date, et
+`module-n6-relations`, dont le pied de page dit 3 quand le registre dit 4.
+Le `node --check` du script produit passe. La vérification dans le navigateur
+ne laisse aucune erreur de script : les seuls 404 sont les 315 MP3, qui
+n'existent pas encore.
+
+*Un piège du rebase, à connaître pour les quinze suivants* :
+**`data/materiel.json` entre en conflit à tous les coups** — deux agents qui
+livrent un module le régénèrent chacun en entier. Il ne se résout pas à la
+main : on prend la version de `main` (`git checkout --ours`), on finit le
+rebase, puis on relance `python3 build/materiel.py`, qui relève le disque et
+réinscrit les deux modules. Même chose pour `data/sections.json`.
+
+*Ce qui reste* : **les 315 extraits audio**. Le compte ElevenLabs était à zéro
+jusqu'à 23 h 15 ; `generer_audio_module_n4_etablissement.py` est écrit, relevé
+fait par `build/releve_sons.js`, relançable, et attend `build/audio_tous.py`.
+Le module est livré complet et muet.
+
+*Le scénario de jeu de rôle `repondeur` a été ajouté à `server.py`* — trois
+cas (`garderie`, `autobus`, `soir`), deux rôles (`eleve`, `murielle`). Une
+précision à ne pas reperdre : **`role_eleve` est le rôle de l'ÉLÈVE**, et
+`ia_role = roles[0] if role_eleve == roles[1] else roles[1]`. Le `jr_role` du
+manifeste doit donc nommer le rôle joué par l'élève, pas celui de l'assistant
+— d'où `'eleve'` ici, et un seul interlocuteur offert plutôt que deux boutons.
