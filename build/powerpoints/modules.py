@@ -1533,6 +1533,19 @@ MODULES = {
                         "Lire l'entreprise",
                         "L'entrevue devant le comité"),
     },
+    'module-n8-oeuvres': {
+        'numero': 6, 'activite': 123, 'niveau': 8,
+        'titre': "Ce que l'œuvre ne dit pas",
+        'chapeau': "Comprendre une télésérie, une nouvelle et un poème dont "
+                   "la fin reste ouverte, tenir ensemble deux lectures "
+                   "défendables du même passage, discuter une critique sans "
+                   "avoir vu l'œuvre, et écrire au courrier des lecteurs pour "
+                   "défendre son interprétation.",
+        'seances': GRILLE_3_DEFIS,
+        'blocs': _blocs("La dernière scène",
+                        "Ce qui n'est pas écrit",
+                        "Défendre une lecture"),
+    },
 }
 
 # L'ordre d'affichage : par niveau, puis par numéro à l'intérieur du niveau.
