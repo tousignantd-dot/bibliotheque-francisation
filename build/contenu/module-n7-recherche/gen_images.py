@@ -80,10 +80,15 @@ IMAGES = [
   "grise, deux cheminées, un réseau de conduits aériens, un stationnement "
   "d'employés à moitié plein. Ciel couvert de fin d'automne, forêt d'épinettes "
   "à l'arrière-plan. Aucune enseigne lisible."),
- ('babillard-offres', 'images', P_EX, STYLE + " Gros plan sur un babillard de "
-  "liège couvert de feuilles de papier blanc punaisées les unes sur les "
-  "autres, certaines pendant de travers, quelques languettes découpées au bas "
-  "d'une feuille. Mur de couloir institutionnel." + SANS_MOT),
+ ('babillard-offres', 'images', P_EX, STYLE + " Un babillard de liège couvert "
+  "de feuilles de papier blanc punaisées les unes sur les autres, certaines "
+  "pendant de travers, quelques languettes découpées au bas d'une feuille. "
+  "Photographié **de loin et de trois quarts**, dans un couloir "
+  "institutionnel : le babillard occupe le tiers gauche du cadre et le "
+  "couloir fuit vers la droite. Ouverture très grande, mise au point sur le "
+  "cadre de bois : **les feuilles sont hors du plan de netteté**, on ne "
+  "distingue que des blocs gris flous. Aucun en-tête, aucun titre, aucune "
+  "majuscule lisible sur aucune feuille." + SANS_MOT),
  ('table-cv', 'images', P_EX, STYLE + " Une table de cuisine en bois clair, "
   "vue du dessus en légère plongée : deux feuilles imprimées posées côte à "
   "côte, un stylo bleu, une tasse de café, un téléphone retourné. Lumière de "
@@ -94,16 +99,22 @@ IMAGES = [
   "Aucun panneau lisible."),
 
  # ── Les neuf photos du banc de vocabulaire ────────────────────────────
- ('marche-du-travail', 'vocab', P_VOC, PERS + " Plusieurs personnes vues de dos "
-  "attendant devant un comptoir d'accueil de bureau public, sac à l'épaule, "
-  "dossier sous le bras. Salle claire et neutre." + SANS_MOT),
+ ('marche-du-travail', 'vocab', P_VOC, PERS + " Un salon de l'emploi dans un "
+  "gymnase d'école secondaire québécoise, vu **de haut et de loin, depuis le "
+  "fond de la salle** : deux rangées de kiosques à tables pliantes le long "
+  "des murs, une quinzaine de personnes qui circulent entre eux, toutes vues "
+  "de dos ou de très loin, aucun visage discernable. Panneaux de kiosque "
+  "entièrement unis, sans une seule inscription. Plancher de bois verni, "
+  "estrade repliée, éclairage de plafonniers." + SANS_MOT),
  ('salle-multiservice', 'vocab', P_VOC, PERS + " Une personne vue de dos assise "
   "à un poste informatique dans une salle publique, l'écran entièrement flou "
   "devant elle, une imprimante et un téléphone mural derrière." + SANS_MOT),
- ('evaluation-comparative', 'vocab', P_VOC, STYLE + " Gros plan sur une seule "
-  "feuille officielle posée sur une table, tenue par deux mains, avec un "
-  "en-tête, un bloc de lignes et un sceau en relief dans le coin. Toutes les "
-  "lignes sont des traits gris entièrement illisibles." + SANS_MOT),
+ ('evaluation-comparative', 'vocab', P_VOC, STYLE + " Une seule feuille "
+  "officielle **posée à plat sur un bureau de bois, sans personne et sans "
+  "aucune main dans le cadre**, vue en légère plongée de trois quarts. Un "
+  "bandeau d'en-tête, un bloc de lignes, et un sceau gaufré en relief dans le "
+  "coin inférieur droit. Une enveloppe ouverte à côté. Toutes les lignes sont "
+  "des traits gris entièrement illisibles." + SANS_MOT),
  ('curriculum-vitae', 'vocab', P_VOC, STYLE + " Gros plan sur deux feuilles "
   "imprimées agrafées, posées à plat sur une table de bois : un bandeau en "
   "haut, des blocs séparés par des filets, une colonne de dates à droite. "
@@ -119,11 +130,13 @@ IMAGES = [
   "travail et casque de sécurité, vues de dos, franchissant une porte "
   "d'usine à l'aube, l'une entrant et l'autre sortant. Éclairage extérieur "
   "bleuté." + SANS_MOT),
- ('portrait-economique', 'vocab', P_VOC, STYLE + " Gros plan sur un document "
-  "imprimé ouvert sur une table, montrant un diagramme à barres et un "
-  "diagramme circulaire côte à côte, avec des blocs de texte autour. Les "
-  "graphiques sont nets ; toutes les lignes de texte et toutes les étiquettes "
-  "sont des traits gris illisibles." + SANS_MOT),
+ ('portrait-economique', 'vocab', P_VOC, STYLE + " Un document imprimé broché "
+  "ouvert à plat sur une table de bois, vu **de trois quarts et en plongée**, "
+  "montrant un diagramme à barres et un diagramme circulaire côte à côte. Les "
+  "barres et les secteurs sont des aplats de couleur **sans aucune étiquette, "
+  "sans aucun chiffre, sans aucune légende et sans axe gradué** ; les titres "
+  "et tous les blocs de texte autour sont de simples traits gris. Aucun "
+  "crochet, aucun caractère, aucun pourcentage nulle part." + SANS_MOT),
  ('offre-emploi', 'vocab', P_VOC, STYLE + " Gros plan sur une feuille "
   "d'annonce punaisée seule au centre d'un babillard de liège, un peu "
   "gondolée, avec un titre en gras en haut et trois blocs de lignes en "
