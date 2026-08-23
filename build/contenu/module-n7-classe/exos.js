@@ -99,7 +99,7 @@ const EXOS = [
    ]},
 
   {sec:'t1', id:'t1img', type:'imgmatch', num:'Exercice 2', tit:"Ce que l'équipe est allée voir dans le quartier", color:'#1D6B8F',
-   sub:"Glissez chaque photo sur la phrase qui la décrit.",
+   sub:"Glissez chaque photo sur la phrase qui la décrit. Les six lieux sont dans le quartier de Neusa.",
    images:[
     {id:'iq1', src:'/assets/interactive/module-n7-classe/images/stationnement-asphalte.jpg'},
     {id:'iq2', src:'/assets/interactive/module-n7-classe/images/rue-erables.jpg'},

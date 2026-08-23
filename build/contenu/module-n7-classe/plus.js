@@ -35,7 +35,7 @@ const PLUS = {
        say:"regarder, reprendre, un relevé",
        note:"C'est le couple à retenir : <i>de</i> tient, <i>re</i> tombe. Deux syllabes qui se ressemblent à l'écrit et pas à l'oreille."},
 
-      {t:'labo', h:"Écoutez la différence",
+      {t:'labo', h:"Écoutez les deux formes",
        p:"Choisissez un cas, puis un exemple.",
        axes:[
          {id:'c', lbl:'Quel cas ?', opts:[['a','la bouche se ferme'],['b','deux consonnes butent'],['c','une seule consonne'],['d','le r du début']]},
@@ -73,8 +73,8 @@ const PLUS = {
           "Garder un « e » qui aurait pu tomber ne crée aucun malentendu et ne choque personne. Cette leçon sert surtout à comprendre, un peu à produire, jamais à s'inquiéter."],
        ]},
 
-      {t:'check', h:"Est-ce que c'est clair maintenant ?",
-       p:"Quatre mots, une décision chacun.",
+      {t:'check', h:"Quatre mots, et le « e » de chacun",
+       p:"Quatre mots du module, une décision chacun.",
        qs:[
          {q:"Dans « demain », le « e » de la première syllabe…", opts:["se prononce","tombe"], ok:0,
           fb:"Première syllabe, et « d » ferme la bouche : il se maintient."},
@@ -145,7 +145,7 @@ const PLUS = {
          ["« On lâche pas. »","« Nous poursuivons. »"],
        ]},
 
-      {t:'piege', h:"Trois pièges du niveau intermédiaire",
+      {t:'piege', h:"Ce qui trahit un mélange de variétés",
        rows:[
          ["mélanger deux variétés dans la même phrase","tenir la même du début à la fin",
           "« Je vous remercie, faque on se rappelle. » Le mélange s'entend beaucoup plus qu'une phrase entièrement familière. Choisissez, et tenez."],
@@ -155,7 +155,7 @@ const PLUS = {
           "« On se voit-tu ? » n'est pas une faute : c'est une question familière du français québécois, parfaitement régulière. Elle est simplement située."],
        ]},
 
-      {t:'check', h:"Est-ce que c'est clair maintenant ?",
+      {t:'check', h:"Quatre situations, quatre variétés",
        p:"Quatre situations, une décision chacune.",
        qs:[
          {q:"Vous parlez à un coéquipier pendant la rencontre de travail.", opts:["familier","standard"], ok:1,
@@ -232,7 +232,7 @@ const PLUS = {
          ["« En somme… »","c'est la fin : tout tient dans la phrase qui vient"],
        ]},
 
-      {t:'piege', h:"Trois pièges à l'écoute comme à la production",
+      {t:'piege', h:"Ce qui fait manquer un panneau",
        rows:[
          ["confondre « quant à » et « quand »","écouter ce qui suit",
           "« Quant à » est suivi d'un nom (quant au secteur, quant aux données) ; « quand » est suivi d'un verbe (quand nous irons). L'oreille ne les sépare pas, la suite de la phrase les sépare."],
@@ -242,7 +242,7 @@ const PLUS = {
           "Pendant qu'on écrit une phrase complète, la phrase suivante passe. Un tiret, le connecteur, trois mots-clés : c'est ce qu'on relit le soir avec profit."],
        ]},
 
-      {t:'check', h:"Est-ce que c'est clair maintenant ?",
+      {t:'check', h:"Quatre phrases entendues, quatre panneaux",
        p:"Quatre phrases entendues : que faut-il en conclure ?",
        qs:[
          {q:"« En ce qui concerne l'arrosage… »", opts:["on change de point","on conclut"], ok:0,
@@ -267,7 +267,7 @@ const PLUS = {
        p:"« L'écart <b>est</b> de dix degrés » et « l'écart <b>serait</b> de dix degrés » ne disent pas la même chose. La première affirme et vous engage : si le chiffre est faux, vous avez dit une chose fausse. La seconde rapporte : elle dit « voici ce qu'on m'a donné, je ne l'ai pas vérifié moi-même ». Dans un travail de recherche, cette syllabe-là vous protège.",
        note:"Perrine l'emploie deux fois dans la même soirée, et elle explique elle-même pourquoi : la mesure vient d'une seule journée."},
 
-      {t:'ana', h:"Comment il se fabrique",
+      {t:'ana', h:"Comment se fabrique un conditionnel",
        p:"Le radical du futur, les terminaisons de l'imparfait. Il y a toujours un <b>r</b> juste avant la terminaison.",
        mots:[['Régulier','je parler<b>ais</b> · tu parler<b>ais</b> · il parler<b>ait</b>'],['Suite','nous parler<b>ions</b> · vous parler<b>iez</b> · elles parler<b>aient</b>'],['Le repère','le <b>r</b> avant la terminaison, toujours',true]],
        say:"je parlerais, tu parlerais, il parlerait, nous parlerions, vous parleriez, elles parleraient",
@@ -319,7 +319,7 @@ const PLUS = {
          ["« Je veux revenir là-dessus. »","« Je voudrais revenir là-dessus un instant. »"],
        ]},
 
-      {t:'piege', h:"Trois pièges classiques",
+      {t:'piege', h:"Le r qu'on n'entend pas, et deux autres pièges",
        rows:[
          ["« je serai » pour « je serais »","écouter le r et compter les lettres",
           "Le futur <i>je serai</i> affirme ; le conditionnel <i>je serais</i> n'affirme pas. Un <b>s</b> à la fin, et le sens de la phrase change entièrement."],
@@ -329,7 +329,7 @@ const PLUS = {
           "Un exposé entièrement au conditionnel ne rassure personne : il donne l'impression que rien n'a été vérifié. Affirmez ce que vous avez vérifié."],
        ]},
 
-      {t:'check', h:"Est-ce que c'est clair maintenant ?",
+      {t:'check', h:"Quatre décisions sur le conditionnel",
        p:"Quatre décisions.",
        qs:[
          {q:"Un chiffre que vous avez lu dans une fiche datée et que vous citez avec sa source.", opts:["présent","conditionnel"], ok:0,
@@ -401,7 +401,7 @@ const PLUS = {
          ["« Le plus difficile, c'est d'arroser. »","opinion — mais d'une personne du métier"],
        ]},
 
-      {t:'piege', h:"Trois pièges de la prise de notes",
+      {t:'piege', h:"Ce qui rend une note inutilisable",
        rows:[
          ["noter le chiffre sans son statut","noter le chiffre et le mot qui l'accompagne",
           "« 17 % » ne vaut rien dans trois jours. « 17 % (ville, relevé l'an dernier) » se cite. « 17 % ? (elle dit serait) » se cite autrement."],
@@ -411,7 +411,7 @@ const PLUS = {
           "L'opinion d'une personne qui fait le métier depuis vingt ans est souvent la partie la plus utile de la rencontre. Elle se garde — avec son nom devant."],
        ]},
 
-      {t:'check', h:"Est-ce que c'est clair maintenant ?",
+      {t:'check', h:"Quatre phrases : établi ou approché ?",
        p:"Quatre phrases : fait, estimation ou opinion ?",
        qs:[
          {q:"« Les surfaces sombres absorbent le rayonnement du soleil. »", opts:["un fait","une estimation"], ok:0,
@@ -448,7 +448,7 @@ const PLUS = {
        say:"le remplacement, le déplacement, l'arrosage, l'abattage",
        note:"Ne cherchez pas la règle absolue : elle n'existe pas. Ces noms s'apprennent avec leur verbe, deux par deux."},
 
-      {t:'ana', h:"Les noms sans suffixe",
+      {t:'ana', h:"Les noms qui n'ajoutent rien au verbe",
        p:"Les plus courts, et les plus utiles dans un résumé. Le nom ne ressemble presque plus au verbe.",
        mots:[['Le verbe','perdre · choisir · mesurer · gagner'],['Le nom','la perte · le choix · la mesure · le gain'],['Le repère','aucun suffixe : c\'est le radical, parfois modifié',true]],
        say:"la perte, le choix, la mesure, le gain",
@@ -484,7 +484,7 @@ const PLUS = {
          ["absorber","l'absorption"],
        ]},
 
-      {t:'piege', h:"Trois pièges, dont un grave",
+      {t:'piege', h:"Ce que le nom d'action emporte avec lui",
        rows:[
          ["effacer qui a fait l'action","le remettre avec « par » ou « de »",
           "« la plantation de quatre cents arbres » ne dit pas qui les a plantés. Dans un résumé, c'est souvent une information qui compte : <i>la plantation, par la ville, l'an dernier</i>."],
@@ -494,7 +494,7 @@ const PLUS = {
           "« La mesure de l'observation de la répartition… » est illisible. La nominalisation allège une phrase sur trois, pas les trois."],
        ]},
 
-      {t:'check', h:"Est-ce que c'est clair maintenant ?",
+      {t:'check', h:"Quatre transformations en nom",
        p:"Quatre transformations.",
        qs:[
          {q:"« On a mesuré la canopée par avion. » →", opts:["la mesure de la canopée par avion","le mesurage de la canopée"], ok:0,
@@ -566,7 +566,7 @@ const PLUS = {
          ["pronom","« ils », quand il n'y a plus d'ambiguïté"],
        ]},
 
-      {t:'piege', h:"Trois pièges de la reprise",
+      {t:'piege', h:"Quand la reprise perd le lecteur",
        rows:[
          ["reprendre par un mot ambigu","vérifier qu'il n'y a qu'un candidat",
           "Si le paragraphe parle d'arbres et de trottoirs, « ces éléments » ne désigne plus rien. Le lecteur s'arrête, relit, et vous avez perdu."],
@@ -576,7 +576,7 @@ const PLUS = {
           "« Ils disent que… » — qui, ils ? Le pronom se met après une reprise nominale, jamais à sa place."],
        ]},
 
-      {t:'check', h:"Est-ce que c'est clair maintenant ?",
+      {t:'check', h:"Quatre reprises à juger",
        p:"Quatre reprises à juger.",
        qs:[
          {q:"« quatre cents érables » repris par « ces arbres » :", opts:["un mot plus général","un synonyme"], ok:0,
@@ -647,7 +647,7 @@ const PLUS = {
          ["en somme","la fin : tout tient dans cette phrase"],
        ]},
 
-      {t:'piege', h:"Trois pièges d'écriture",
+      {t:'piege', h:"Le t de quant à, et deux autres",
        rows:[
          ["« quand à » au lieu de « quant à »","le t de quant à",
           "Ils se prononcent pareil et ne s'écrivent pas pareil. <i>Quant à</i> est suivi d'un nom ; <i>quand</i> est suivi d'un verbe."],
@@ -657,7 +657,7 @@ const PLUS = {
           "Un texte saturé de connecteurs devient plus difficile à lire qu'un texte qui n'en a pas. Ils marquent les virages, et une route a peu de virages."],
        ]},
 
-      {t:'check', h:"Est-ce que c'est clair maintenant ?",
+      {t:'check', h:"Quatre connecteurs à choisir",
        p:"Quatre choix.",
        qs:[
          {q:"Vous venez d'expliquer un mécanisme et vous le redites en une phrase simple.", opts:["autrement dit","quant à"], ok:0,
@@ -726,7 +726,7 @@ const PLUS = {
          ["la ville avertit que la comparaison est délicate","on garde — c'est la réserve de la source"],
        ]},
 
-      {t:'piege', h:"Trois pièges du tri",
+      {t:'piege', h:"Pourquoi on garde ce qui ne répond pas",
        rows:[
          ["garder parce que c'est intéressant","garder parce que ça répond",
           "Le budget est un gros chiffre, la fondation de l'organisme est une jolie histoire. Ces phrases-là ne mentent pas : elles occupent la place de celles qui répondaient."],
@@ -736,7 +736,7 @@ const PLUS = {
           "Sans question devant les yeux, on résume le texte au lieu de résumer ce qui sert. C'est le défaut que Ghislaine a repéré en trois secondes."],
        ]},
 
-      {t:'check', h:"Est-ce que c'est clair maintenant ?",
+      {t:'check', h:"Quatre décisions de tri",
        p:"Quatre décisions, avec la question : pourquoi certaines rues chauffent-elles ?",
        qs:[
          {q:"« La fiche a été mise à jour au mois de mai. »", opts:["on garde","on enlève"], ok:1,
@@ -813,7 +813,7 @@ const PLUS = {
          ["fermer","« Je résume les décisions ; vérifie tes notes pendant que je parle. »"],
        ]},
 
-      {t:'piege', h:"Trois pièges de la personne qui anime",
+      {t:'piege', h:"Ce qui fait dérailler une animation",
        rows:[
          ["donner son avis en premier","le garder pour la fin, ou se le faire demander",
           "Dès que celui qui anime prend parti, les autres se rangent ou se taisent. Vous avez le droit d'avoir un avis ; annoncez alors que vous quittez un instant votre rôle."],
@@ -823,7 +823,7 @@ const PLUS = {
           "Une rencontre qui s'éteint faute de temps produit trois versions différentes de ce qui a été décidé, et on les découvre la semaine suivante."],
        ]},
 
-      {t:'check', h:"Est-ce que c'est clair maintenant ?",
+      {t:'check', h:"Quatre situations d'animation",
        p:"Quatre situations.",
        qs:[
          {q:"Deux coéquipiers se contredisent. Le premier geste est…", opts:["reformuler les deux positions","trancher tout de suite"], ok:0,
@@ -895,7 +895,7 @@ const PLUS = {
          ["« C'est vrai que c'est plus rapide. »","« On perd quand même l'essentiel. »"],
        ]},
 
-      {t:'piege', h:"Trois pièges de la concession",
+      {t:'piege', h:"Concéder à moitié, ou concéder trois fois",
        rows:[
          ["« même si ce soit »","« même si c'est »",
           "Le subjonctif appartient à <i>bien que</i>, jamais à <i>même si</i>. C'est l'erreur numéro un du niveau intermédiaire, et elle s'entend tout de suite."],
@@ -905,7 +905,7 @@ const PLUS = {
           "Trois concessions dans la même intervention et plus personne ne sait ce que vous pensez. Une seule, nette, puis votre position."],
        ]},
 
-      {t:'check', h:"Est-ce que c'est clair maintenant ?",
+      {t:'check', h:"Quatre concessions à compléter",
        p:"Quatre phrases à compléter.",
        qs:[
          {q:"« ___ ce soit plus long, ça en vaut la peine. »", opts:["Bien que","Même si"], ok:0,
@@ -977,7 +977,7 @@ const PLUS = {
          ["J'anime la rencontre.","C'est moi qui anime la rencontre."],
        ]},
 
-      {t:'piege', h:"Trois pièges de la mise en relief",
+      {t:'piege', h:"Qui ou que, et l'accord du verbe",
        rows:[
          ["« c'est moi qui anime » écrit « qui animent »","accorder avec la personne encadrée",
           "Le verbe ne s'accorde pas avec <i>c'est</i>. C'est moi qui <b>anime</b>, c'est toi qui <b>animes</b>, c'est nous qui <b>animons</b>."],
@@ -987,7 +987,7 @@ const PLUS = {
           "Si chaque phrase est emphatique, plus rien ne ressort. La mise en relief marche par contraste avec des phrases ordinaires autour."],
        ]},
 
-      {t:'check', h:"Est-ce que c'est clair maintenant ?",
+      {t:'check', h:"Quatre mises en relief",
        p:"Quatre choix.",
        qs:[
          {q:"« ___ Miguel ___ a trouvé la solution. »", opts:["C'est … qui","C'est … que"], ok:0,
@@ -1018,13 +1018,13 @@ const PLUS = {
        say:"Il a dit qu'il partait. Il a dit qu'il était parti. Il a dit qu'il partirait. Il a dit qu'il allait partir.",
        note:"Le troisième couple explique pourquoi le conditionnel du défi 1 revient ici : dans un discours rapporté au passé, il n'exprime aucune incertitude — il exprime l'avenir."},
 
-      {t:'ana', h:"Ce qui ne bouge pas",
+      {t:'ana', h:"Les trois temps qui ne reculent pas",
        p:"Trois temps sont déjà en arrière : il n'y a pas de cran de plus, et ils restent tels quels.",
        mots:[['L\'imparfait','« Je travaillais » → elle a dit qu\'elle <b>travaillait</b>'],['Le conditionnel','« Je viendrais » → elle a dit qu\'elle <b>viendrait</b>'],['Le subjonctif','« Il faut que je parte » → elle a dit qu\'il fallait qu\'elle <b>parte</b>',true]],
        say:"Elle a dit qu'elle travaillait. Elle a dit qu'elle viendrait.",
        note:"Beaucoup d'élèves reculent l'imparfait vers le plus-que-parfait par excès de zèle. Il n'y a rien à reculer."},
 
-      {t:'ana', h:"Ce qui change aussi, et qu'on oublie",
+      {t:'ana', h:"Ce qui bouge en même temps que le verbe",
        p:"Trois choses de plus bougent en même temps que le verbe. Les oublier produit des phrases où l'on ne sait plus de qui ni de quand on parle.",
        mots:[['Les personnes','je → il ou elle · tu → je, selon qui rapporte'],['Les possessifs','mon → son · notre → leur'],['Les repères de temps','aujourd\'hui → <b>ce jour-là</b> · demain → <b>le lendemain</b> · hier → <b>la veille</b>',true]],
        say:"Il a dit qu'il écrivait à Perrine le lendemain.",
@@ -1048,7 +1048,7 @@ const PLUS = {
          b2:{w:["Elle a précisé qu'elle avait pris la mesure en juillet."], say:"Elle a précisé qu'elle avait pris la mesure en juillet.", n:'passé composé → plus-que-parfait'},
          c1:{w:["Il promet qu'il vérifiera ses notes."], say:"Il promet qu'il vérifiera ses notes.", n:'futur conservé'},
          c2:{w:["Il a promis qu'il vérifierait ses notes."], say:"Il a promis qu'il vérifierait ses notes.", n:'futur → conditionnel présent'},
-         d1:{w:["Elle demande ce qu'il compte."], say:"Elle demande ce qu'il compte.", n:'la question devient « ce que », sans inversion'},
+         d1:{w:["Elle demande ce qu'il compte."], say:"Elle demande ce qu'il compte.", n:'« quoi » devient « ce que », sans inversion'},
          d2:{w:["Elle lui a demandé ce qu'il comptait."], say:"Elle lui a demandé ce qu'il comptait.", n:'et le présent recule à l\'imparfait'},
        },
        note:"Comparez chaque paire : c'est le temps du <b>verbe introducteur</b> qui commande tout le reste."},
@@ -1064,7 +1064,7 @@ const PLUS = {
          ["« J'écris à Perrine demain. »","Miguel a dit qu'il écrivait à Perrine le lendemain."],
        ]},
 
-      {t:'piege', h:"Trois pièges du discours rapporté",
+      {t:'piege', h:"Le demain qui ne veut plus rien dire",
        rows:[
          ["garder « demain » et « aujourd'hui »","le lendemain, ce jour-là",
           "Un compte rendu se relit des semaines plus tard. « Demain » ne veut alors plus rien dire, et personne ne sait quelle date était visée."],
@@ -1074,7 +1074,7 @@ const PLUS = {
           "« Elle a demandé quand partait-il ? » n'existe pas. On écrit : elle a demandé <b>quand il partait</b>, avec un point."],
        ]},
 
-      {t:'check', h:"Est-ce que c'est clair maintenant ?",
+      {t:'check', h:"Quatre phrases à rapporter",
        p:"Quatre transformations.",
        qs:[
          {q:"« Je pars à dix heures. » → Il a dit qu'il ___ à dix heures.", opts:["partait","est parti"], ok:0,
@@ -1151,7 +1151,7 @@ const PLUS = {
          ["6. La demande à l'absent","ce qu'on attend de lui, et avant quand"],
        ]},
 
-      {t:'piege', h:"Trois pièges du compte rendu",
+      {t:'piege', h:"Trois façons de rendre un compte rendu inutile",
        rows:[
          ["transcrire le dialogue","rapporter en une phrase par position",
           "Trois pages de répliques ne se lisent pas. Ce n'est pas un procès-verbal de tribunal : c'est une page de travail."],
@@ -1161,7 +1161,7 @@ const PLUS = {
           "Une décision qu'un absent apprend le vendredi pour un travail du samedi n'est pas une décision : c'est une nouvelle."],
        ]},
 
-      {t:'check', h:"Est-ce que c'est clair maintenant ?",
+      {t:'check', h:"Quatre décisions d'écriture",
        p:"Quatre décisions d'écriture.",
        qs:[
          {q:"Une position d'un coéquipier s'écrit…", opts:["en une phrase rapportée, avec son nom","au mot à mot, entre guillemets"], ok:0,
