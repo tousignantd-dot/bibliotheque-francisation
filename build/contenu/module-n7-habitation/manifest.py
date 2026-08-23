@@ -38,7 +38,7 @@ Mener, rapporter, écrire. Trois travaux, trois grammaires, trois genres :
     (« même si », « bien que »), corrélatives d'intensité (« tellement… que »,
     « assez… pour que »), restriction (« ne… que »).
   · **Défi 2 · Redire ce qui a été dit** — on rapporte. Au téléphone, à la
-    propriétaire, puis à une médiatrice. C'est le discours indirect au passé,
+    propriétaire, puis à un médiateur. C'est le discours indirect au passé,
     avec tout ce qu'il traîne : plus-que-parfait d'antériorité, conditionnel
     présent de postériorité, « aller » à l'imparfait + infinitif, reprise de
     l'information. Et le règlement municipal, qu'il faut lire.
@@ -148,11 +148,11 @@ avant de les nommer.
   · **Ginette Ostiguy**, 63 ans, propriétaire du triplex, habite Beauport.
     Trois immeubles, aucune envie d'histoires, et une inquiétude : perdre deux
     locataires au lieu d'un.
-  · **Huguette Vachon**, médiatrice bénévole au service de médiation citoyenne
+  · **Hubert Vachon**, médiateur bénévole au service de médiation citoyenne
     du quartier. Ne donne aucun conseil juridique et le dit.
 
 Le module **vouvoie** partout, y compris l'écran de fin : Ruslana ne tutoie ni
-son voisin, ni sa propriétaire, ni la médiatrice — et c'est un point du module,
+son voisin, ni sa propriétaire, ni le médiateur — et c'est un point du module,
 pas un hasard : au moment où l'on va se plaindre, le vouvoiement est ce qui
 tient la conversation debout.
 """

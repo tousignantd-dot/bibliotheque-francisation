@@ -6,7 +6,8 @@ const DIALOGUES = {
   // pour les heures et les chiffres, une fois pour ce qui est concédé.
   //
   // Cinq personnages, cinq timbres. RUSLANA parle dans les quatre ; MARLÈNE,
-  // CÉDRIC, GINETTE et HUGUETTE ne se rencontrent jamais entre eux.
+  // CÉDRIC, GINETTE et HUBERT ne se rencontrent jamais entre eux ; GINETTE
+  // passe le relais à HUBERT au milieu du dialogue du défi 2.
   prep: {
     label: "Dialogue — Trois semaines de cinq heures quarante-cinq",
     lines: [
@@ -90,48 +91,48 @@ const DIALOGUES = {
       ["RUSLANA","Justement, madame Ostiguy, quelqu'un m'a parlé d'un service de médiation dans le quartier. Est-ce que vous connaissez ça ?"],
       ["GINETTE","J'en ai entendu parler. C'est gratuit, il paraît, et c'est volontaire — personne ne peut vous forcer à y aller. Appelez-les, ça ne coûte rien de demander."],
       ["RUSLANA","Merci. Je vous rappelle dans deux semaines, quoi qu'il arrive."],
-      ["HUGUETTE","Service de médiation citoyenne, Huguette Vachon à l'appareil."],
-      ["RUSLANA","Bonjour madame Vachon. On m'a donné votre numéro. J'ai un problème de bruit avec le voisin du dessus, et j'aimerais savoir ce que vous faites, exactement."],
-      ["HUGUETTE","Je vais commencer par vous dire ce que nous ne faisons pas, ça ira plus vite. Nous ne décidons rien, nous ne donnons aucun conseil juridique, et nous ne disons jamais qui a raison."],
+      ["HUBERT","Service de médiation citoyenne, Hubert Vachon à l'appareil."],
+      ["RUSLANA","Bonjour monsieur Vachon. On m'a donné votre numéro. J'ai un problème de bruit avec le voisin du dessus, et j'aimerais savoir ce que vous faites, exactement."],
+      ["HUBERT","Je vais commencer par vous dire ce que nous ne faisons pas, ça ira plus vite. Nous ne décidons rien, nous ne donnons aucun conseil juridique, et nous ne disons jamais qui a raison."],
       ["RUSLANA","Vous faites quoi, alors ?"],
-      ["HUGUETTE","Nous asseyons deux personnes dans la même pièce avec quelqu'un de neutre au milieu, et nous les aidons à se parler jusqu'à ce qu'elles trouvent elles-mêmes une entente. C'est gratuit, c'est confidentiel, et c'est volontaire des deux côtés : votre voisin peut refuser, et vous pouvez partir en tout temps."],
+      ["HUBERT","Nous asseyons deux personnes dans la même pièce avec quelqu'un de neutre au milieu, et nous les aidons à se parler jusqu'à ce qu'elles trouvent elles-mêmes une entente. C'est gratuit, c'est confidentiel, et c'est volontaire des deux côtés : votre voisin peut refuser, et vous pouvez partir en tout temps."],
       ["RUSLANA","Est-ce que ça vaut la peine ? Nous nous sommes déjà parlé une fois, et ça s'est bien passé."],
-      ["HUGUETTE","Alors gardez-nous pour plus tard. Racontez-moi plutôt ce qu'il vous a dit, et je vous dirai ce que j'entends."],
+      ["HUBERT","Alors gardez-nous pour plus tard. Racontez-moi plutôt ce qu'il vous a dit, et je vous dirai ce que j'entends."],
       ["RUSLANA","Il m'a dit qu'il ne pouvait pas changer son heure, mais qu'il ferait trois choses. Il en a fait une la semaine suivante."],
-      ["HUGUETTE","Une sur trois. Et vous, qu'est-ce que vous en avez conclu ?"],
+      ["HUBERT","Une sur trois. Et vous, qu'est-ce que vous en avez conclu ?"],
       ["RUSLANA","J'ai conclu qu'il n'était pas de mauvaise foi, mais qu'il avait oublié."],
-      ["HUGUETTE","C'est une conclusion, ça, madame Kovalenko, ce n'est pas un fait. Retenez bien la différence : ce qu'il a dit, c'est un fait ; ce que vous en pensez, c'est votre lecture. Quand vous écrirez, séparez les deux — et écrivez, maintenant. Vous en êtes rendue là."],
+      ["HUBERT","C'est une conclusion, ça, madame Kovalenko, ce n'est pas un fait. Retenez bien la différence : ce qu'il a dit, c'est un fait ; ce que vous en pensez, c'est votre lecture. Quand vous écrirez, séparez les deux — et écrivez, maintenant. Vous en êtes rendue là."],
     ]
   },
 
   t3: {
     label: "Dialogue — Écrire, et à qui",
     lines: [
-      ["HUGUETTE","Alors, madame Kovalenko. Deux semaines de plus, et où en êtes-vous ?"],
+      ["HUBERT","Alors, madame Kovalenko. Deux semaines de plus, et où en êtes-vous ?"],
       ["RUSLANA","Le caoutchouc a été posé le 26 février. Ça a diminué le bruit, mais ça ne l'a pas fait disparaître. Le vélo, il le descend à l'épaule depuis le lendemain de notre conversation, ça c'est réglé. Le tapis n'a pas été déplacé."],
-      ["HUGUETTE","Donc deux sur trois. Ce n'est pas rien."],
+      ["HUBERT","Donc deux sur trois. Ce n'est pas rien."],
       ["RUSLANA","Ce n'est pas rien, mais je me réveille encore. Moins fort, et pas tous les matins. Neuf matins sur les quatorze derniers."],
-      ["HUGUETTE","Vous l'avez noté ?"],
+      ["HUBERT","Vous l'avez noté ?"],
       ["RUSLANA","Tous les jours depuis le 4 février. Date, heure du début, heure de la fin, ce que j'entends. Quarante-sept lignes."],
-      ["HUGUETTE","Gardez ça précieusement. C'est ce qui fera la différence si vous devez un jour vous expliquer devant quelqu'un. Maintenant, écrivez."],
+      ["HUBERT","Gardez ça précieusement. C'est ce qui fera la différence si vous devez un jour vous expliquer devant quelqu'un. Maintenant, écrivez."],
       ["RUSLANA","À monsieur Rondeau ou à la propriétaire ?"],
-      ["HUGUETTE","Aux deux, mais pas la même lettre et pas le même jour. Ce sont deux gestes différents et il ne faut pas les mélanger."],
+      ["HUBERT","Aux deux, mais pas la même lettre et pas le même jour. Ce sont deux gestes différents et il ne faut pas les mélanger."],
       ["RUSLANA","Expliquez-moi la différence."],
-      ["HUGUETTE","La première est une lettre à votre voisin. Elle est courte, elle est aimable, et elle sert à mettre par écrit ce que vous vous êtes dit sur le palier. Vous rappelez ce qui a été convenu, vous dites ce qui a été fait, vous dites ce qui reste, et vous demandez une date. Ce n'est pas une menace : c'est une mémoire commune."],
+      ["HUBERT","La première est une lettre à votre voisin. Elle est courte, elle est aimable, et elle sert à mettre par écrit ce que vous vous êtes dit sur le palier. Vous rappelez ce qui a été convenu, vous dites ce qui a été fait, vous dites ce qui reste, et vous demandez une date. Ce n'est pas une menace : c'est une mémoire commune."],
       ["RUSLANA","Et la deuxième ?"],
-      ["HUGUETTE","La deuxième est adressée à votre propriétaire, et celle-là a un nom : une mise en demeure. C'est une lettre qui dit trois choses — voici le problème, voici ce que je vous demande, voici le délai que je vous donne. Dix jours, en général. Elle s'envoie par courrier recommandé, et vous gardez la preuve d'envoi."],
+      ["HUBERT","La deuxième est adressée à votre propriétaire, et celle-là a un nom : une mise en demeure. C'est une lettre qui dit trois choses — voici le problème, voici ce que je vous demande, voici le délai que je vous donne. Dix jours, en général. Elle s'envoie par courrier recommandé, et vous gardez la preuve d'envoi."],
       ["RUSLANA","Pourquoi elle, et pas lui ? Ce n'est pas elle qui court sur le tapis."],
-      ["HUGUETTE","Parce que ce n'est pas la même obligation. Votre propriétaire s'est engagée, en signant votre bail, à vous procurer la jouissance paisible de votre logement. Et quand celui qui dérange est lui aussi son locataire — ce qui est le cas ici —, elle a quelque chose à faire. Si elle ne fait rien après avoir été avisée, c'est à elle que vous pourrez demander une diminution de loyer."],
+      ["HUBERT","Parce que ce n'est pas la même obligation. Votre propriétaire s'est engagée, en signant votre bail, à vous procurer la jouissance paisible de votre logement. Et quand celui qui dérange est lui aussi son locataire — ce qui est le cas ici —, elle a quelque chose à faire. Si elle ne fait rien après avoir été avisée, c'est à elle que vous pourrez demander une diminution de loyer."],
       ["RUSLANA","Une diminution de loyer. Ce n'est pas ce que je cherche. Je cherche à dormir."],
-      ["HUGUETTE","Je le sais. Écrivez-le dans la lettre, d'ailleurs : quant à la compensation, dites en une phrase que ce n'est pas votre premier objectif. Ça change le ton de tout le reste, et ça se remarque."],
+      ["HUBERT","Je le sais. Écrivez-le dans la lettre, d'ailleurs : quant à la compensation, dites en une phrase que ce n'est pas votre premier objectif. Ça change le ton de tout le reste, et ça se remarque."],
       ["RUSLANA","Comment est-ce que je rapporte ce que monsieur Rondeau m'a dit ? Je le cite ?"],
-      ["HUGUETTE","Vous pouvez, et c'est même la partie la plus solide de votre lettre. Deux-points, guillemets, ses mots exacts : « J'aime mieux ça qu'une lettre dans ma porte. » Une citation exacte vaut trois pages de résumé, à condition qu'elle soit exacte. Si vous n'êtes pas sûre des mots, ne mettez pas de guillemets — écrivez qu'il vous avait dit qu'il ferait telle chose."],
+      ["HUBERT","Vous pouvez, et c'est même la partie la plus solide de votre lettre. Deux-points, guillemets, ses mots exacts : « J'aime mieux ça qu'une lettre dans ma porte. » Une citation exacte vaut trois pages de résumé, à condition qu'elle soit exacte. Si vous n'êtes pas sûre des mots, ne mettez pas de guillemets — écrivez qu'il vous avait dit qu'il ferait telle chose."],
       ["RUSLANA","Et si je me trompe d'un mot ?"],
-      ["HUGUETTE","Alors vous perdez ce que vous aviez de plus précieux, qui est votre crédibilité. Entre une citation approximative et un résumé honnête, prenez toujours le résumé."],
+      ["HUBERT","Alors vous perdez ce que vous aviez de plus précieux, qui est votre crédibilité. Entre une citation approximative et un résumé honnête, prenez toujours le résumé."],
       ["RUSLANA","Est-ce que je dois écrire que je suis fatiguée, que j'ai relu un plateau deux fois au travail ?"],
-      ["HUGUETTE","Écrivez la conséquence, pas l'émotion. « Cela m'oblige à me lever à cinq heures trente », « cela m'empêche de dormir plus de quatre heures », « j'ai dû recommencer une tâche au travail » : ce sont des faits, et un fait ne se discute pas. « Je suis épuisée et personne ne m'écoute » se discute, et vous perdrez."],
+      ["HUBERT","Écrivez la conséquence, pas l'émotion. « Cela m'oblige à me lever à cinq heures trente », « cela m'empêche de dormir plus de quatre heures », « j'ai dû recommencer une tâche au travail » : ce sont des faits, et un fait ne se discute pas. « Je suis épuisée et personne ne m'écoute » se discute, et vous perdrez."],
       ["RUSLANA","En somme : les faits, les dates, ce que je demande, et un délai."],
-      ["HUGUETTE","En somme, oui. Et une dernière chose, madame Kovalenko. Cette lettre-là, vous allez la relire trois fois, et à chaque fois vous allez enlever un adjectif. Par conséquent, ce qui restera sera ce qui compte."],
+      ["HUBERT","En somme, oui. Et une dernière chose, madame Kovalenko. Cette lettre-là, vous allez la relire trois fois, et à chaque fois vous allez enlever un adjectif. Par conséquent, ce qui restera sera ce qui compte."],
     ]
   },
 };

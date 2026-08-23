@@ -90,7 +90,7 @@ const PLUS = {
     blocs:[
       {t:'texte', h:"Pourquoi « ça me dérange » ne marche jamais",
        p:"Quand on va se plaindre, la tentation est de dire ce qu'on ressent : je suis fatiguée, c'est insupportable, ça me rend folle. C'est vrai, c'est humain, et c'est exactement ce qui fait perdre. Un sentiment appartient à celui qui l'éprouve : l'autre peut répondre « moi, ça ne me dérange pas », et il a le droit. Une conséquence, elle, est un fait extérieur : elle se date, elle se compte, et il n'y a rien à répondre.",
-       note:"C'est la première chose que dit la médiatrice à Ruslana, et c'est ce qui distingue une lettre qui obtient quelque chose d'une lettre qu'on classe. Le programme du niveau 7 range ce point sous « mots servant à décrire les conséquences de la situation en litige »."},
+       note:"C'est la première chose que dit le médiateur à Ruslana, et c'est ce qui distingue une lettre qui obtient quelque chose d'une lettre qu'on classe. Le programme du niveau 7 range ce point sous « mots servant à décrire les conséquences de la situation en litige »."},
 
       {t:'ana', h:"<b>Cela m'empêche de</b> + infinitif — ce que je ne peux plus faire",
        p:"On nomme une action normale, quotidienne, que le problème rend impossible. Plus l'action est ordinaire, plus la phrase est forte.",
@@ -584,7 +584,7 @@ const PLUS = {
     eye:'Mini-leçon', tit:'Rapporter au passé : trois décalages, et rien de plus',
     blocs:[
       {t:'texte', h:"Redire exactement est une compétence, pas une bonne intention",
-       p:"Vous avez parlé à votre voisin. Deux jours plus tard, il faut raconter cette conversation à quelqu'un qui n'y était pas — la propriétaire, une médiatrice, plus tard peut-être un tribunal. Ce que vous direz alors ne sera pas ce qu'il a dit : ce sera ce qu'il a dit, décalé dans le temps. Le français a une mécanique précise pour ce décalage, et elle tient en trois règles.",
+       p:"Vous avez parlé à votre voisin. Deux jours plus tard, il faut raconter cette conversation à quelqu'un qui n'y était pas — la propriétaire, un médiateur, plus tard peut-être un tribunal. Ce que vous direz alors ne sera pas ce qu'il a dit : ce sera ce qu'il a dit, décalé dans le temps. Le français a une mécanique précise pour ce décalage, et elle tient en trois règles.",
        note:"Le programme du niveau 7 y consacre plusieurs savoirs : le plus-que-parfait pour l'antériorité quand le point de référence est décalé, le conditionnel présent pour la postériorité, « aller » à l'imparfait + infinitif. Trois savoirs, un seul geste."},
 
       {t:'ana', h:"Le principe : le point de référence n'est plus aujourd'hui",
@@ -852,7 +852,7 @@ const PLUS = {
     blocs:[
       {t:'texte', h:"La phrase qui glisse fait douter de tout le reste",
        p:"Rapporter fidèlement n'est pas une intention : c'est une compétence, et presque personne ne l'a spontanément. Tout le monde croit répéter ce qui a été dit, et tout le monde glisse — un mot par-ci, une intention prêtée par-là. Or il suffit d'une phrase qui glisse pour que celui qui vous écoute cesse de croire les quatre précédentes, y compris celles qui étaient exactes.",
-       note:"C'est ce que la médiatrice reproche à Ruslana, très doucement : « J'ai conclu qu'il avait oublié » — c'est une conclusion, pas un fait. Elle ne lui demande pas de la retirer : elle lui demande de la présenter comme telle."},
+       note:"C'est ce que le médiateur reproche à Ruslana, très doucement : « J'ai conclu qu'il avait oublié » — c'est une conclusion, pas un fait. Il ne lui demande pas de la retirer : il lui demande de la présenter comme telle."},
 
       {t:'ana', h:"Un fait se vérifie auprès de l'autre",
        p:"C'est le seul test, et il est simple : si on posait la question à l'autre personne, elle pourrait confirmer ou nier. Il n'y a pas de troisième possibilité.",
@@ -960,7 +960,7 @@ const PLUS = {
        p:"Chaque affirmation gagne une date, et chaque adjectif se supprime. C'est la dernière relecture, et c'est celle qui change tout.",
        mots:[['Avec des dates','Depuis le 4 février · le 19 février · le 26 février · au 12 mars'],
              ['Avec des adjectifs','un bruit épouvantable · une situation intenable · un voisin insouciant', true],
-             ['Le conseil de la médiatrice','relisez trois fois, et enlevez un adjectif à chaque fois']],
+             ['Le conseil du médiateur','relisez trois fois, et enlevez un adjectif à chaque fois']],
        say:"Depuis le quatre février, je suis réveillée neuf matins sur quatorze.",
        note:"Quatre dates valent mieux que quatre adjectifs : les dates ne se discutent pas, et elles montrent que quelqu'un a tenu un registre — ce qui est déjà la moitié du message."},
 

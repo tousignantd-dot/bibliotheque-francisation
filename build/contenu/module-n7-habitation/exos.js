@@ -223,10 +223,10 @@ const EXOS = [
     {id:'dv2', txt:"Elle rapporte à madame Ostiguy que son voisin a refusé de changer d'heure.", ok:'VRAI'},
     {id:'dv3', txt:"Madame Ostiguy a déjà perdu deux locataires dans une chicane de voisinage.", ok:'VRAI'},
     {id:'dv4', txt:"Madame Ostiguy dit que l'affaire ne concerne que les deux locataires.", ok:'FAUX'},
-    {id:'dv5', txt:"La médiatrice commence par dire ce que son service ne fait pas.", ok:'VRAI'},
+    {id:'dv5', txt:"Le médiateur commence par dire ce que son service ne fait pas.", ok:'VRAI'},
     {id:'dv6', txt:"La médiation citoyenne peut être imposée au voisin qui refuse d'y aller.", ok:'FAUX'},
-    {id:'dv7', txt:"La médiatrice conseille d'aller en médiation immédiatement.", ok:'FAUX'},
-    {id:'dv8', txt:"Selon la médiatrice, « il avait oublié » est une conclusion et non un fait.", ok:'VRAI'},
+    {id:'dv7', txt:"Le médiateur conseille d'aller en médiation immédiatement.", ok:'FAUX'},
+    {id:'dv8', txt:"Selon le médiateur, « il avait oublié » est une conclusion et non un fait.", ok:'VRAI'},
    ]},
 
   {sec:'t2', id:'t2ind', type:'write', num:'Exercice 2', tit:'Redire au passé ce qui a été dit', color:'#B45309', cols:1,
@@ -306,7 +306,7 @@ const EXOS = [
     {q:"Mon voisin s'est engagé à déplacer l'appareil. Cet ___ n'a pas encore été tenu.", accept:["engagement"], ph:"…"},
     {q:"Nous nous sommes parlé une première fois le 19 février. Cette ___ s'est bien déroulée des deux côtés.", accept:["conversation","rencontre","discussion"], ph:"…"},
     {q:"Le tapis roulant fait un bruit sourd et régulier. Cet ___ est plus lourd que ce que le plancher peut absorber.", accept:["appareil","équipement"], ph:"un mot qui reprend sans répéter"},
-    {q:"Au service de médiation, ___ m'ont expliqué que la démarche était volontaire. Dans ma lettre, j'écrirai plutôt « la médiatrice m'a expliqué ».", accept:["ils"], ph:"un pronom sans référent nommé"},
+    {q:"Au service de médiation, ___ m'ont expliqué que la démarche était volontaire. Dans ma lettre, j'écrirai plutôt « le médiateur m'a expliqué ».", accept:["ils"], ph:"un pronom sans référent nommé"},
    ]},
 
   {sec:'t2', id:'t2fait', type:'vf', num:'Exercice 5', tit:'Un fait ou votre interprétation ?', color:'#B45309',
@@ -332,7 +332,7 @@ const EXOS = [
 
  // ── DÉFI 3 · LA LETTRE QUI RÈGLE ────────────────────────────
   {sec:'t3', id:'t3vf', type:'vf', num:'Exercice 1', tit:'Vrai ou Faux — Écrire, et à qui', color:'#3B49A0',
-   sub:"Écoutez la seconde rencontre avec la médiatrice, puis répondez. Huit énoncés.", tiles:['VRAI','FAUX'],
+   sub:"Écoutez la seconde rencontre avec le médiateur, puis répondez. Huit énoncés.", tiles:['VRAI','FAUX'],
    savoir:{h:"› Quatre mots de l'écrit — à écouter et à répéter", speak:true, rows:[
      ["La lettre qui a un nom","Une <b>mise en demeure</b> n'est pas une lettre fâchée : c'est une lettre qui dit trois choses, dans cet ordre — voici le problème, voici ce que je demande, voici le délai que je vous donne. Rien de plus. Elle prépare la suite sans la déclencher.", ["une mise en demeure"]],
      ["Le temps qu'on laisse","Un <b>délai raisonnable</b> est celui qui permet vraiment d'agir : dix jours est le plus souvent employé. Trop court, il passe pour de la provocation ; trop long, il se fait oublier. Il se compte à partir de la réception, et il s'écrit en toutes lettres.", ["un délai raisonnable"]],
@@ -341,13 +341,13 @@ const EXOS = [
    ]},
    rows:[
     {id:'ev1', txt:"Deux des trois engagements de Cédric ont été tenus.", ok:'VRAI'},
-    {id:'ev2', txt:"La médiatrice conseille d'écrire la même lettre au voisin et à la propriétaire.", ok:'FAUX'},
+    {id:'ev2', txt:"Le médiateur conseille d'écrire la même lettre au voisin et à la propriétaire.", ok:'FAUX'},
     {id:'ev3', txt:"La lettre au voisin sert surtout à mettre par écrit ce qui a été convenu.", ok:'VRAI'},
     {id:'ev4', txt:"Une mise en demeure doit contenir un délai précis.", ok:'VRAI'},
-    {id:'ev5', txt:"Selon la médiatrice, il vaut mieux une citation approximative qu'un résumé.", ok:'FAUX'},
+    {id:'ev5', txt:"Selon le médiateur, il vaut mieux une citation approximative qu'un résumé.", ok:'FAUX'},
     {id:'ev6', txt:"Ruslana écrit à sa propriétaire parce que c'est elle qui fait le bruit.", ok:'FAUX'},
-    {id:'ev7', txt:"La médiatrice conseille d'écrire la conséquence plutôt que l'émotion.", ok:'VRAI'},
-    {id:'ev8', txt:"La médiatrice conseille de relire la lettre et d'y ajouter des adjectifs.", ok:'FAUX'},
+    {id:'ev7', txt:"Le médiateur conseille d'écrire la conséquence plutôt que l'émotion.", ok:'VRAI'},
+    {id:'ev8', txt:"Le médiateur conseille de relire la lettre et d'y ajouter des adjectifs.", ok:'FAUX'},
    ]},
 
   {sec:'t3', id:'t3lettre', type:'texte', num:'Exercice 2', tit:'Deux lettres, et ce qui les distingue', color:'#3B49A0',
@@ -426,7 +426,7 @@ const EXOS = [
     {id:'po4', txt:"Il m'a répondu ___ Je ne peux pas changer mon heure de départ. ___", ok:'DEUX-POINTS ET GUILLEMETS'},
     {id:'po5', txt:"Deux mesures ont été prises ___ la troisième est restée en suspens.", ok:'POINT-VIRGULE'},
     {id:'po6', txt:"___ une réponse écrite dans les dix jours", ok:'TIRET'},
-    {id:'po7', txt:"La médiatrice m'a prévenue ___ Écrivez la conséquence, pas l'émotion. ___", ok:'DEUX-POINTS ET GUILLEMETS'},
+    {id:'po7', txt:"Le médiateur m'a prévenue ___ Écrivez la conséquence, pas l'émotion. ___", ok:'DEUX-POINTS ET GUILLEMETS'},
     {id:'po8', txt:"Le bruit a diminué ___ il n'a pas cessé.", ok:'POINT-VIRGULE'},
     {id:'po9', txt:"___ le déplacement de l'appareil contre le mur du couloir", ok:'TIRET'},
    ]},
