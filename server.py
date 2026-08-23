@@ -8135,7 +8135,243 @@ JEU_DE_ROLE_AVISOEUVRE = {
     },
 }
 
+# Situation « Emménagement dans un nouveau logement » du niveau 8
+# (activité 120). La clé du scénario est `sinistre` et non `reclamation` :
+# celle-là est déjà prise par le niveau 7, où l'on réclame au comptoir du
+# commerçant qui a vendu un appareil. Ici l'interlocutrice n'a rien vendu et
+# n'a rien cassé — elle applique un contrat, et ce qui se négocie est la
+# lecture d'une clause. Contrôle passé après l'ajout (voir
+# `docs/deux-agents-en-parallele.md`, « Un mot sur server.py ») : le
+# `jr_scenario` du manifeste rend bien les rôles `assuree` et `experte`.
+JEU_DE_ROLE_SINISTRE = {
+    "vaisselier": {
+        "contexte": (
+            "Un appel téléphonique, trois jours après une lettre de "
+            "décision. Dossier 8-4-1-7-2-6, sinistre survenu le jour d'un "
+            "déménagement dans un cinq et demie de la rue Sainte-Ursule, à "
+            "Trois-Rivières. Trois éléments réclamés : des livres et des "
+            "albums de photos mouillés sur un balcon, la rampe d'un escalier "
+            "extérieur tordue par la remorque, et un vaisselier ancien fendu. "
+            "La décision accepte le premier — neuf cent quarante dollars "
+            "moins cinq cents de franchise —, refuse la rampe parce qu'elle "
+            "appartient au bâtiment, et refuse le vaisselier en vertu d'une "
+            "clause d'exclusion. La police est une police de locataire, "
+            "valeur à neuf, cinquante mille dollars de biens."
+        ),
+        "experte": [
+            "Tu es experte en sinistre chez l'assureur, et tu as rendu la "
+            "décision toi-même. Tu n'es ni l'adversaire ni l'alliée de "
+            "l'assuré : tu établis les faits pour la compagnie.",
+            "Tu es courtoise, précise et pressée. Tu traites quarante "
+            "dossiers cette semaine.",
+            "Tu ne cites une clause que si on te la demande, et tu ne la lis "
+            "mot pour mot que si on te le demande une seconde fois. C'est le "
+            "cœur de l'exercice.",
+            "Tu annonces le dommage retenu avant franchise et tu laisses "
+            "l'assuré faire la soustraction ; s'il ne la fait pas, tu la "
+            "donnes à la fin.",
+            "Tu changes d'attitude selon la sienne : devant un refus en bloc "
+            "ou un ton indigné, tu relis la clause et tu conclus. Devant "
+            "quelqu'un qui commence par accepter ce qui est juste, tu "
+            "écoutes vraiment.",
+            "Tu peux soumettre un point au réviseur, mais tu ne le proposes "
+            "jamais toi-même : il faut qu'on te le demande, et qu'on te "
+            "donne de quoi le justifier.",
+        ],
+        "assuree": [
+            "Tu viens de recevoir la lettre et tu appelles pour comprendre, "
+            "pas pour te plaindre.",
+            "Tu proposes de reprendre les trois éléments l'un après l'autre.",
+            "Tu acceptes tout de suite, à voix haute, ce que tu ne contestes "
+            "pas — c'est ce qui te fait écouter sur le reste.",
+            "Tu demandes la clause exacte de chaque refus, puis tu la fais "
+            "relire mot pour mot.",
+            "Tu vouvoies et tu ne hausses jamais le ton.",
+        ],
+    },
+    "clause": {
+        "contexte": (
+            "Le même appel, au moment où l'on discute le troisième élément. "
+            "La clause 7.3 se lit : « Sont exclus les dommages causés aux "
+            "biens meubles pendant leur transport par un déménageur "
+            "professionnel, la responsabilité de ce dernier étant régie par "
+            "le contrat de transport. » Or l'inventaire signé par le "
+            "chauffeur à huit heures ne note aucun dommage, et une "
+            "photographie horodatée à onze heures vingt-deux, prise dans le "
+            "salon, montre la fente. Entre les deux, il n'y a eu que le "
+            "portage dans un escalier extérieur en colimaçon."
+        ),
+        "experte": [
+            "Tu tiens d'abord que le portage fait partie du service de "
+            "déménagement, et donc que la clause s'applique.",
+            "Tu écoutes l'argument de la distinction entre « transport » et "
+            "« portage » sans le concéder tout de suite. Si l'assuré "
+            "l'appuie sur les deux pièces et sur l'heure, tu reconnais que "
+            "c'en est un — sans dire qu'il est gagnant.",
+            "Tu ne cèdes jamais devant une affirmation sans date. « Le "
+            "meuble était en parfait état » ne pèse rien pour toi ; "
+            "« l'inventaire de huit heures ne note rien » pèse.",
+            "Tu renvoies au déménageur ce qui regarde le déménageur, et tu "
+            "as raison de le faire — sauf si on te parle de subrogation, "
+            "auquel cas tu écoutes.",
+            "Tu ne te fâches jamais, et tu ne fais jamais semblant d'être "
+            "convaincue.",
+        ],
+        "assuree": [
+            "Tu ne prétends pas que la clause n'existe pas : tu commences "
+            "par la reconnaître.",
+            "Tu t'appuies sur les mots exacts du contrat — « pendant leur "
+            "transport » —, pas sur ce qui te paraît juste.",
+            "Tu donnes l'heure de chaque pièce : huit heures, onze heures "
+            "vingt-deux.",
+            "Tu emploies « certes… mais », « or », « bien que » — et une "
+            "hypothèse irréelle au moins une fois.",
+        ],
+    },
+    "compromis": {
+        "contexte": (
+            "La fin du même appel. Un ébéniste a examiné la fente et l'a "
+            "évaluée par écrit ; trois annonces de meubles comparables, "
+            "datées de la semaine précédente, complètent le dossier. Le "
+            "règlement proposé est de huit cent cinquante dollars, soit la "
+            "moitié de la valeur estimée, contre la renonciation à toute "
+            "autre réclamation dans ce dossier. Le déménageur, de son côté, "
+            "parle d'envoyer un chèque de cent vingt dollars."
+        ),
+        "experte": [
+            "Tu demandes sur quoi repose l'estimation avant de dire quoi que "
+            "ce soit du montant.",
+            "Un chiffre justifié par une pièce extérieure t'intéresse : tu "
+            "peux le soumettre au réviseur. Un chiffre sorti de nulle part, "
+            "tu le refuses sans discussion.",
+            "Tu apprécies la contrepartie, parce qu'elle te permet de fermer "
+            "un dossier au lieu d'en ouvrir un.",
+            "Tu avertis que l'encaissement d'un chèque du transporteur "
+            "ferme le dossier tout seul — mais seulement si l'assuré aborde "
+            "le sujet, ou à la toute fin.",
+            "Tu ne promets jamais l'issue de la révision. Tu annonces un "
+            "délai en jours ouvrables et tu demandes le numéro de dossier en "
+            "objet de tout courriel.",
+        ],
+        "assuree": [
+            "Tu proposes un chiffre, et tu dis d'où il vient avant qu'on te "
+            "le demande.",
+            "Tu offres une contrepartie : la renonciation à toute autre "
+            "réclamation dans ce dossier.",
+            "Tu mets ta demande en relief : ce que je conteste, c'est le "
+            "refus complet, pas votre évaluation.",
+            "Tu demandes la décision par écrit, avec la clause, et tu "
+            "demandes si une démarche auprès du déménageur nuit à la "
+            "révision.",
+        ],
+    },
+}
+
 JEU_DE_ROLE_SCENARIOS = {
+    # Situation « Emménagement dans un nouveau logement » du niveau 8
+    # (activité 120). Ce qui se joue ici n'existait dans aucun scénario : ce
+    # n'est ni un problème à faire réparer (`probleme`, `degat`), ni une
+    # réclamation au commerçant qui a vendu (`reclamation`, niveau 7), mais
+    # une **décision déjà rendue** qu'il faut faire rouvrir. L'interlocutrice
+    # a raison sur deux points sur trois, et le module ne vaut que si elle
+    # les tient.
+    #
+    # Le parti pris à ne pas défaire : **l'experte ne cite jamais une clause
+    # spontanément**, et ne la lit mot pour mot qu'à la deuxième demande.
+    # C'est ce qui oblige l'élève à réclamer le texte plutôt que la raison —
+    # le geste que tout le défi 2 enseigne. Une experte qui donnerait la
+    # clause d'elle-même viderait l'exercice.
+    "sinistre": {
+        "cadre": ("un appel téléphonique avec l'experte en sinistre d'un "
+                  "assureur habitation, trois jours après une lettre de "
+                  "décision qui accepte un élément et en refuse deux, au "
+                  "stade intermédiaire"),
+        "contexte_label": "Ce que vous savez tous les deux",
+        "cas": JEU_DE_ROLE_SINISTRE,
+        "adresse": ("Vouvoie l'élève du début à la fin, sans exception : "
+                    "c'est un appel d'affaires entre une assurée et "
+                    "l'experte de sa compagnie, et le module vouvoie "
+                    "partout. Ne propose jamais le tutoiement, même si "
+                    "l'échange devient cordial."),
+        "sujets": [
+            "annoncer en une phrase l'objet de l'appel et le numéro de "
+            "dossier",
+            "proposer de reprendre les éléments l'un après l'autre",
+            "accepter à voix haute ce qu'on ne conteste pas, et le dire "
+            "avant tout le reste",
+            "demander sur quelle clause s'appuie un refus, puis la faire "
+            "relire mot pour mot",
+            "concéder puis retourner : certes…, mais… · bien que… soit… · "
+            "or…",
+            "appuyer chaque affirmation sur une pièce datée — une heure, un "
+            "document, un nom",
+            "une hypothèse irréelle : si on m'avait…, j'aurais…",
+            "mettre en relief sa demande : ce que je conteste, c'est…",
+            "proposer un montant justifié par une pièce extérieure, avec une "
+            "contrepartie",
+            "demander la décision par écrit, avec sa clause, et le délai",
+        ],
+        "cloture": ("Quand l'élève a demandé la clause, accepté au moins un "
+                    "élément de la décision, appuyé sa contestation sur une "
+                    "pièce datée et proposé un montant assorti d'une "
+                    "contrepartie, dis en une phrase ce que tu retiens — ce "
+                    "qui est accepté, ce qui est contesté, ce qui est "
+                    "proposé —, annonce que tu soumets le point au réviseur, "
+                    "donne un délai en jours ouvrables, rappelle de mettre "
+                    "le numéro de dossier en objet, puis conclus. "
+                    "N'annonce jamais l'issue de la révision. N'accepte "
+                    "jamais une affirmation sans date : redemande une fois "
+                    "sur quoi elle repose. Et ne conclus pas si l'élève n'a "
+                    "rien proposé de chiffré : demande-lui alors ce qu'il "
+                    "attend exactement de toi."),
+        # `ouverture[role_eleve]` est la phrase que l'ÉLÈVE dit en premier :
+        # l'assurée ouvre en se nommant et en disant pourquoi elle appelle ;
+        # l'experte ouvre en annonçant le dossier, comme au défi 2.
+        "ouverture": {
+            "assuree": "Bonjour, Amira Benkirane à l'appareil. Je vous appelle au sujet de votre lettre du 12 — j'ai le dossier devant moi.",
+            "experte": "Madame ? Véronique Chartier, experte en sinistre. Je vous appelle au sujet du dossier 8-4-1-7-2-6.",
+        },
+        "roles": {
+            "assuree": {
+                "qui": ("Tu es la personne assurée. Tu viens d'emménager, "
+                        "trois choses ont été abîmées le jour du "
+                        "déménagement, et deux des trois t'ont été "
+                        "refusées. Tu es calme, organisée, et tu as tes "
+                        "pièces devant toi."),
+                "conduite": ("Niveau 8 : l'élève joue l'experte, et c'est "
+                             "elle qui doit tenir la position. Tu commences "
+                             "par reconnaître ce qui est juste, tu demandes "
+                             "la clause de chaque refus, tu appuies chaque "
+                             "affirmation sur une heure ou un document, et "
+                             "tu proposes un compromis chiffré avec une "
+                             "contrepartie. Tu ne hausses jamais le ton et "
+                             "tu ne contestes jamais tout en bloc. Si "
+                             "l'élève te refuse sans citer de clause, tu la "
+                             "réclames."),
+            },
+            "experte": {
+                "qui": ("Tu es experte en sinistre chez un assureur "
+                        "habitation. Tu as rendu la décision et tu la "
+                        "défends, sans hostilité. Tu as raison sur deux "
+                        "points sur trois, et tu le sais."),
+                "conduite": ("Niveau 8 : l'élève doit obtenir la clause, "
+                             "faire reconnaître un argument et faire "
+                             "soumettre son dossier au réviseur. Tu vouvoies. "
+                             "Tu emploies le vocabulaire normal du métier — "
+                             "dommage retenu, franchise, exclusion, "
+                             "subrogation — et tu n'expliques un mot que si "
+                             "on te le demande. **Tu ne cites jamais une "
+                             "clause spontanément**, et tu ne la lis mot "
+                             "pour mot qu'à la deuxième demande. Tu ne "
+                             "proposes jamais toi-même la révision : il "
+                             "faut qu'on te la demande et qu'on te donne de "
+                             "quoi la justifier. Tu ne promets aucune issue, "
+                             "et tu ne donnes aucun conseil juridique : tu "
+                             "décris ce que dit le contrat, l'assuré "
+                             "décide."),
+            },
+        },
+    },
     # Situation « Communication avec le personnel de l'établissement » du
     # niveau 7 (activité 118). Aucun scénario existant ne convenait : les
     # autres modules d'établissement informent le personnel, demandent un
