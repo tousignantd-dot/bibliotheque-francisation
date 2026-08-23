@@ -60,6 +60,8 @@ RATTACHEMENTS = {
     'module-n7-actualite': "Suivi de l'actualité",
     'module-n6-oeuvres': ('Découverte d’œuvres littéraires, musicales, '
                           'cinématographiques et télévisuelles'),
+    'module-n8-oeuvres': ('Découverte d’œuvres littéraires, musicales, '
+                          'cinématographiques et télévisuelles'),
 }
 
 

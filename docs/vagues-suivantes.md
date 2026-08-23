@@ -2500,6 +2500,163 @@ raison d'en sortir, sauf pour `~/Claude/programme/` (le programme d'études),
 
 ### Journal de la vague 7
 
+**23 août 2026 — activité 123, `module-n8-oeuvres`. Le dernier module du
+programme.** « Ce que l'œuvre ne dit pas », niveau 8, `numero` 6,
+`GRILLE_3_DEFIS`. Avec lui, `python3 build/bilan_programme.py` ne signale plus
+que les trois situations tenues par les activités 120, 121 et 122 : quand les
+quatre agents de cette nuit seront fusionnés, **les huit niveaux seront
+couverts en entier, 123 activités, aucune situation du programme sans son
+module**.
+
+Scénario inventé : Fatoumata Sidibé, 44 ans, arrivée du Mali il y a sept ans,
+technicienne en documentation à la bibliothèque du quartier Jacques-Cartier, à
+Sherbrooke. Elle anime depuis l'automne le cercle du mardi soir — dix-huit
+personnes, une œuvre par mois, au sous-sol — et le cercle tourne à vide :
+chacun raconte, chacun dit s'il a aimé, et à neuf heures moins quart tout le
+monde se lève. Elle demande à Josyane Deschatelets, qui enseigne la
+littérature au cégep et tient une chronique à la radio communautaire, de venir
+(Je découvre) ; elle discute la dernière scène de la télésérie « Les eaux
+basses » avec Léandre Pinsonneault, 67 ans, qui n'en tire pas la même histoire
+(défi 1) ; elle écoute Gaspard Thivierge décortiquer une nouvelle et un poème
+à la radio (défi 2) ; puis les deux lectures s'affrontent devant le cercle, et
+Josyane apporte une critique de journal que personne n'a les moyens de
+contredire (défi 3). 24 exercices, 16 mini-leçons, 4 dialogues (106
+répliques), 17 mots, 12 images, 287 sons relevés — 393 extraits en tout —,
+16 séances (187 diapositives, 133 blocs de fiches).
+
+*Ce qui le distingue de ses trois voisins de situation*, en une phrase écrite
+avant le scénario : `module-n5-oeuvres` (73) **raconte** une œuvre aimée,
+`module-n6-oeuvres` (103) **résume** un film et nuance son avis par écrit,
+`module-n7-oeuvres` (116) **défend un avis devant quelqu'un qui ne le partage
+pas** — et ici on ne défend plus un avis, on défend une **lecture**. Deux
+personnes ont vu la même scène, s'entendent sur tous les faits, et n'en tirent
+pas la même histoire. C'est le seul module du dépôt où le désaccord ne porte
+pas sur le goût mais sur le **sens**, et la règle qui le tient est mesurable :
+une lecture se juge au nombre de détails dont elle rend compte, jamais à la
+force avec laquelle on l'affirme.
+
+*Une œuvre inventée qui doit soutenir deux lectures opposées s'écrit indice par
+indice, et pas autrement.* C'est la seule chose de cette production qui a
+demandé du travail **avant** d'écrire quoi que ce soit. La dernière scène des
+« Eaux basses » a six indices : trois appuient « elle choisit » (le téléphone
+laissé sonner, les bottes de ville enlevées, la chaloupe remise à l'eau), deux
+appuient « elle est prise » (la corde restée attachée, six épisodes de
+promesses), et un appuie les deux (les bottes de la mère). Sans ce décompte
+posé d'avance, l'exercice `t1deux` — trois tuiles, « elle choisit », « elle
+est prise », « les deux » — n'aurait aucune bonne réponse défendable, et toute
+la séance B2 tomberait. Une œuvre esquissée en trois lignes ne se discute pas ;
+c'est vrai aussi de la nouvelle, dont les quatre gestes ont été choisis pour
+que la lecture de la colère en explique quatre et la lecture tendre deux.
+
+*Trois exercices de type `texte`, de trois genres différents*, comme le
+demandait la note du niveau 8 : une nouvelle littéraire au passé simple, un
+poème de vingt-deux vers donné strophe par strophe, et une critique de journal.
+Le troisième est le plus utile et il est reproductible partout : on fait
+découper à l'élève, par fonctions, un texte d'opinion qu'il n'a aucun moyen de
+vérifier — personne n'a vu la pièce —, et il ne lui reste qu'une prise, la
+seule qui vaille : ce jugement-là repose-t-il sur ce fait-là ? Le poème a
+demandé une décision de forme : les `paras` sont échappés avant que les balises
+soient posées, donc pas de `<br>`. Les vers sont séparés par une barre oblique
+à l'intérieur d'un paragraphe par strophe, et la consigne le dit.
+
+Trois choses apprises, pour les modules qui restent.
+
+**1. Reprendre la *forme* d'une mini-leçon voisine est recommandé ; en
+reprendre les mots coûte trois points d'originalité.** La note de l'activité
+119 dit comment traiter l'intonation expressive — des répliques entières, une
+mélodie décrite par ce que fait la voix, jamais un symbole — et elle a raison.
+J'ai suivi la forme *et* la formulation, et la première mesure d'originalité
+est sortie à **6,8 %**, au-dessus du seuil. Vingt-cinq des cent vingt-deux
+chaînes en collision venaient de cette seule mini-leçon. Réécrite, plus
+quarante-quatre substitutions sur les intitulés de bloc `check` (seize
+occurrences de « Est-ce que c'est clair maintenant ? ») et les étiquettes
+d'axes de laboratoire : **3,8 %**. La condition de l'activité 109 est tenue et
+vérifiée — `build/releve_sons.js` rend les mêmes **287 clés avec les mêmes
+valeurs**, comparaison JSON faite avant et après, parce qu'aucune substitution
+ne touchait un `say:`. La leçon à retenir : quand une note vous donne la forme
+d'un bloc, écrivez-le avec vos mots dès le premier jet — c'est moins cher que
+la passe de substitutions.
+
+**2. Le garde-fou des tableaux de `theme.py` a un budget, et il vaut la peine
+de le connaître : six rangées passent, six rangées plus une `note` ne passent
+pas.** Il s'est déclenché trois fois (B1, B2, C4) et les trois avaient raison.
+La correction n'est pas de couper le tableau en deux : c'est de descendre la
+`note` dans les `notes` de l'enseignante, où elle se lit de près et où elle est
+plus utile qu'en petits caractères sous un tableau projeté. Les trois notes
+concernées disaient d'ailleurs quelque chose à faire, pas quelque chose à lire.
+
+**3. Le contrôle des zones se trompe si l'on ignore les signatures.**
+`checkOk(zid, iid, lbl)` prend **trois** arguments : les zones `vf` et `lbl` se
+jugent sur le troisième, les autres sur le deuxième. Un contrôle qui passe le
+`cv` en deuxième position pour tout le monde rend **79 refus** sur un module
+sain — j'ai cru une seconde que tous les Vrai/Faux étaient morts. De même,
+`checkWrite(exId, i)` prend l'indice de l'item, pas seulement l'exercice.
+Passé correctement, le contrôle rend ce qu'il doit : **226 zones**, dont 154 à
+réponse enregistrée **toutes acceptées**, et 72 champs `write` dont les 72
+`accept[0]` rendent `wfb ok`. Les seize mini-leçons ouvrent, leurs seize
+laboratoires couvrent **toutes** leurs combinaisons, et les 54 blocs `ana`
+portent leur `say:`.
+
+*Sur les images* : douze, **dix bonnes du premier coup**, deux refaites. Aucune
+ne montre une œuvre — une couverture, une affiche, une page de journal portent
+toutes du texte, et le texte d'une œuvre se compose en HTML, ce que font
+justement les trois exercices `texte`. Les photos ne montrent que la scène
+autour : le quai, la chaloupe retournée, le taquet, la cafétéria d'usine, le
+stationnement avant le jour. Les deux reprises confirment la parade par le
+cadrage plutôt que par la négation. `cafeteria-usine` portait un tableau de
+menu en charabia et deux affiches de sécurité : « coupé par le bord supérieur »
+ne suffisait pas, parce que le modèle avait rempli les **murs latéraux**, que
+le prompt n'avait pas prévus — refaite en descendant l'appareil à hauteur de
+table, aucun mur n'entre plus dans le cadre et il n'y a plus de surface où
+écrire. `nappe-papier` rendait une feuille **dépliée** marquée de plis, alors
+que l'énoncé dit « pliée en quatre » : c'est le quatrième défaut sous sa forme
+la plus fine — le bon sujet, le bon décor, et un **état** de l'objet qui
+contredit la phrase. Le prompt refait décrit l'épaisseur (« quatre épaisseurs,
+la tranche feuilletée visible ») au lieu du pliage, et l'image sort juste.
+Aucune image ne comporte de personne, donc la règle « dire qui elles sont » n'a
+pas eu à servir.
+
+*Sur les cartes de vocabulaire* : **aucune n'a d'image**, et c'est la
+configuration la plus dépouillée du dépôt. Les dix-sept mots sont des
+opérations, pas des objets — une interprétation, l'implicite, un jugement de
+valeur, une métaphore, un argument. Le critère dégagé par l'activité 114 et
+confirmé par les 116 et 119 se vérifie une quatrième fois, et à sa limite : ce
+n'est pas le niveau qui décide, c'est le degré d'abstraction du lexique. Le
+poids visuel est porté par les deux `imgmatch`, dont les énoncés sont des
+scènes concrètes.
+
+*Sur le casting* : quatre personnages, quatre voix, **aucun partage** — donc
+aucune vérification de croisement. Le compte a été fait par extrait et par
+genre avant d'écrire une réplique : le défi 3 réunit Fatoumata, Josyane et
+Léandre, soit deux femmes, la limite exacte du dépôt. Gaspard prend `narrateur`
+et non `enseignante`, pour la raison que l'activité 119 avait écrite : ses
+quatorze répliques d'affilée du défi 2 sont un exposé suivi, et `voix_lente.py`
+ralentit `enseignante` à 0,85. La table `VOIX` a été reprise d'un générateur
+récent, jamais de mémoire — la voix « enseignante » a changé d'identifiant le
+23 août, et le générateur porte le nouveau (`mActWQg9kibLro6Z2ouY`), vérifié
+par assertion.
+
+*Sur le jeu de rôle* : la clé est **`interpretation`**. `oeuvres` est prise par
+le niveau 5, `avisoeuvre` par le 116 ; le contrôle en quatre lignes de
+`docs/deux-agents-en-parallele.md` a été passé après l'ajout et rend
+« interpretation, ['fatoumata', 'leandre'], True », 74 clés, aucun doublon.
+
+*Sur les contrôles* : les sept passent. `coherence.js --tous` ne signale que
+les cinq écarts connus de `module-n1-presenter` et `module-n2-autobus`, que
+`CLAUDE.md` documente et qui ne sont pas les miens ; `pieds_de_page.py` lit
+« niveau 8 · numéro 6 · 16 pptx · vus ['6'] » et son seul écart reste
+`module-n3-horaire`. `sommaire.py` a bien fallu lancer **deux fois** : la
+première sortait « absent de data/materiel.json », parce que le relevé n'avait
+pas encore été refait. L'ordre qui marche est `build.py`, `build_fiches.py`,
+`vignettes.py`, **`sections.py`, `materiel.py`**, puis `sommaire.py`.
+
+*Ce qui reste* : les **393 extraits audio**.
+`generer_audio_module_n8_oeuvres.py` est écrit, il s'importe sans erreur et
+retrouve ses quatre locuteurs sur quatre dialogues ; il n'a pas été lancé,
+une production complète tournant sur le poste. Le module est livré complet et
+muet.
+
+
 **23 août 2026 — activité 116, `module-n7-oeuvres`.** « Ce que j'en pense, et
 pourquoi », niveau 7, `numero` 9, `GRILLE_3_DEFIS`. Scénario inventé : Marilou
 Bautista, 41 ans, arrivée des Philippines il y a huit ans, préposée aux
