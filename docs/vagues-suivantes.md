@@ -2499,3 +2499,92 @@ raison d'en sortir, sauf pour `~/Claude/programme/` (le programme d'études),
 `~/Claude/generations/` (le registre des médias) et `~/Claude/.env` (les clés).
 
 ### Journal de la vague 7
+
+**23 août 2026 — activité 109, `module-n7-emploi`.** « Présenter un projet au
+travail », niveau 7, `numero` 2, `GRILLE_3_DEFIS`. Aïcha Traoré, 43 ans,
+arrivée du Mali il y a cinq ans, coordonnatrice adjointe à l'expédition chez
+Meubles Rive-du-Nord, une usine de meubles de soixante-deux personnes à
+Terrebonne. Trois de ses cinq collègues du poste d'emballage se sont fait mal
+au dos depuis mars : les caisses se prennent au sol, quatre-vingt-deux fois
+par quart. Elle veut une table élévatrice et une rotation des tâches. Trois
+retours sur le même dossier : elle **écoute** son chef de production présenter
+son projet de quai (Défi 1), elle **présente** le sien (Défi 2), elle
+l'**écrit** — note de service et lettre d'affaires (Défi 3). Personnages :
+Renaud Cormier, chef de production ; Thérèse Lapointe, représentante en santé
+et en sécurité ; Vincent Béliveau, conseiller chez Équipements Sorel.
+23 exercices, 18 mini-leçons, 4 dialogues (88 répliques), 16 mots, 16 images,
+143 sons relevés — 231 extraits audio en tout —, 16 séances. Originalité :
+354 énoncés visibles, **5 identiques** ailleurs dans `build/contenu/`, soit
+**1,4 %** — et les cinq sont des mots du banc de vocabulaire (« un ordre du
+jour », « un échéancier », « une soumission », « une note de service », « un
+accusé de réception »), pas des phrases. Scénario de jeu de rôle `projet`
+ajouté à `server.py`, trois cas.
+
+*Les faits québécois sont vérifiés, pas devinés*, auprès de la CNESST et de la
+Loi sur la santé et la sécurité du travail, le 22 août 2026. Le Règlement sur
+les mécanismes de prévention et de participation en établissement est en
+vigueur depuis le **1er octobre 2025** : un établissement de **vingt
+travailleurs ou plus** doit avoir un programme de prévention élaboré, appliqué
+et **mis à jour annuellement**, un comité de santé et de sécurité et un
+représentant en santé et en sécurité ; en deçà, un plan d'action et un agent
+de liaison. Le comité compte au moins la moitié de représentants des
+travailleurs, dont le représentant en santé et en sécurité. Tous les trois
+ans, l'employeur transmet ses priorités d'action à la CNESST. Le **droit de
+refus** (art. 12 LSST) tient à des « motifs raisonnables de croire » à un
+danger ; il tombe (art. 13) si le refus met en péril immédiat une autre
+personne ou si les conditions sont normales pour ce genre de travail, et c'est
+l'**inspecteur de la CNESST** qui tranche. C'est ce corpus-là, et lui seul, qui
+n'est pas inventé : Meubles Rive-du-Nord, Équipements Sorel, les personnes, les
+chiffres et les dates le sont.
+
+Trois choses que ce module apprend aux agents qui suivent :
+
+- **La situation « Emploi » du niveau 7 ne parle ni de chercher un emploi ni
+  de se défendre : elle parle d'exposer.** Ses quatre intentions — comprendre
+  la présentation d'un projet, d'une évaluation sommaire ou d'un problème ; la
+  faire ; écrire une note de service ; rédiger une lettre d'affaires courantes
+  — décrivent toutes le même geste sous deux formes. La phrase qui a débloqué
+  le module et qui le sépare de ses quatre voisins de situation : le 4
+  *annonce*, le 5 *suit une procédure*, le 6 *pose sa candidature*, le 8
+  *négocie*, et ici on rend compréhensible pour d'autres un projet qui
+  n'existe que dans sa tête. Les deux productions de « Je me lance » sortent
+  donc directement de la situation, sans détour par les attentes de fin de
+  cours — c'est l'inverse du pilote du niveau 6, et ça se dit dans le
+  docstring du manifeste dans les deux cas.
+- **Le `savoir` d'un exercice est le premier endroit où deux modules se
+  ressemblent, et la mesure d'originalité ne le voyait pas.** Les intitulés de
+  la colonne de gauche — « Comment il se forme », « Le problème », « Le
+  piège », « Le pronom » — sont ce qu'on écrit sans y penser, et ils sont
+  identiques d'un module à l'autre parce que la grammaire, elle, est la même.
+  Les rendre distinctifs (« Radical du futur, terminaisons de l'imparfait »,
+  « Le piège du -s final », « Le piège de la reprise floue ») coûte dix
+  minutes et fait plus pour l'originalité mesurée que de réécrire un dialogue.
+  À faire **avant** la mesure, pas après : c'est en la faisant qu'on découvre
+  ces dix-neuf intitulés.
+- **Le type `texte` porte le module, et quatre exercices ne sont pas de trop.**
+  La consigne de la vague en demande un ; il y en a quatre ici — l'ordre du
+  jour (`prOrdre`), le compte rendu de réunion (`t1compte`), l'extrait du
+  programme de prévention et le droit de refus (`t2cnesst`), la note de
+  service (`t3note`). C'est le seul type qui laisse mettre sous les yeux de
+  l'élève un **document de travail réel** et lui faire pointer la ligne qui
+  répond. Les quatre documents de ce module sont précisément ce qu'un adulte
+  en emploi doit savoir lire, et aucun des six autres types ne les rendait
+  lisibles. Corollaire : c'est aussi là que se logent les faits vérifiés, et
+  un texte cliquable rend la vérification visible — la phrase citée est celle
+  que l'élève clique.
+
+Une remarque de méthode sur les images, la vague ayant sa règle depuis la
+veille. Les seize images sont passées à `node build/contexte_images.js
+module-n7-emploi`, et **deux ont été refaites** — 0,0336 $ chacune par la
+route Google directe. `fournisseur` montrait deux collègues dans l'atelier de
+meubles, c'est-à-dire le thème du module, alors que son énoncé dit
+« l'entreprise qui vend à une autre entreprise ce dont elle a besoin » : c'est
+exactement le quatrième défaut de la liste, et il ne s'est vu qu'avec l'énoncé
+à côté. Le prompt refait **change de lieu** — l'entrepôt d'un distributeur, du
+matériel neuf encore emballé, ni établi ni copeau — parce que le défaut
+n'était pas dans le cadrage mais dans le sujet. `reunion-production` laissait
+voir cinq visages malgré une consigne qui les interdisait : le prompt refait
+**impose le poste de l'appareil** (« derrière la dernière chaise, à hauteur
+d'épaule ») au lieu de répéter l'interdiction, et c'est ce qui a marché du
+premier coup. Les deux reprises sont commentées dans `gen_images.py`, à côté
+de leur prompt, pour qu'on ne les refasse pas à l'envers.
