@@ -48,6 +48,9 @@ RATTACHEMENTS = {
     # Même abrègement que son voisin du niveau 4 : le manifeste annonce
     # « Logement », le programme dit « Problèmes reliés à l'habitation ».
     'module-n6-habitation': "Problèmes reliés à l'habitation",
+    # Le niveau 7 est le seul dont la situation nomme les deux gestes ;
+    # le manifeste, lui, abrège comme partout ailleurs.
+    'module-n7-logement': "Location ou achat d'un logement",
     'module-n5-oeuvres': ('Découverte d’œuvres littéraires, musicales, '
                           'cinématographiques ou télévisuelles'),
     'module-n7-actualite': "Suivi de l'actualité",
