@@ -8222,6 +8222,109 @@ JEU_DE_ROLE_TRIBUNE = {
     },
 }
 
+JEU_DE_ROLE_INTERPRETATION = {
+    "finale": {
+        "contexte": (
+            "Vous avez vu tous les deux le dernier épisode de la télésérie "
+            "« Les eaux basses ». Estelle sort du chalet à la nuit tombante, "
+            "met les bottes de caoutchouc de sa mère, descend au quai, "
+            "retourne la chaloupe et la remet à l'eau. Elle s'assoit dedans. "
+            "La corde reste attachée au taquet. Le téléphone sonne sur le "
+            "quai ; elle ne le prend pas. La lumière du quai s'allume toute "
+            "seule. Écran noir. Vous êtes d'accord sur tous ces faits, et sur "
+            "rien d'autre."
+        ),
+        "fatoumata": [
+            "Vous lisez la scène comme un choix : pour la première fois de la "
+            "série, c'est elle qui décide.",
+            "Votre indice principal est le téléphone : elle le porte jusqu'au "
+            "quai pour pouvoir le laisser sonner.",
+            "Votre second indice est le plan des bottes, quatorze secondes, "
+            "le plus long de l'épisode.",
+            "Vous savez que la corde attachée est l'indice qui vous gêne, et "
+            "vous le sortez vous-même plutôt que de l'éviter.",
+        ],
+        "leandre": [
+            "Vous lisez la scène comme un piège : elle est prise, et elle le "
+            "sait.",
+            "Votre indice est la corde. Une femme assise dans une embarcation "
+            "attachée ne part nulle part, et vous le répétez.",
+            "Vous rappelez qu'elle promet de partir au printemps depuis six "
+            "épisodes, et que rien n'est arrivé.",
+            "Vous avez une troisième lecture en réserve, que vous sortez si "
+            "l'on vous presse : elle prend la place de sa mère, ce qui est "
+            "pire que les deux autres.",
+        ],
+    },
+    "nouvelle": {
+        "contexte": (
+            "Vous avez lu tous les deux « La chaise du fond », d'Odile "
+            "Brassard-Vézina. Gisèle arrive à son propre pot de départ, prend "
+            "la chaise du fond alors qu'une place l'attendait au centre, "
+            "laisse le contremaître l'appeler deux fois Ginette, demande à sa "
+            "voisine de lire la carte à sa place en prétextant des lunettes "
+            "oubliées — et le narrateur précise entre parenthèses qu'elle ne "
+            "les avait pas oubliées. À la fin, elle plie la nappe de papier "
+            "et la met dans son sac."
+        ),
+        "fatoumata": [
+            "Vous lisez la nouvelle comme une colère silencieuse : chacun des "
+            "quatre gestes est choisi.",
+            "Votre indice décisif est la parenthèse du narrateur, la seule en "
+            "six pages.",
+            "Vous comptez : votre lecture rend compte des quatre gestes, "
+            "l'autre en explique deux.",
+            "Vous accordez que le texte est plein de petits gestes de "
+            "retrait, ce qui nourrit vraiment l'autre lecture.",
+        ],
+        "leandre": [
+            "Vous lisez la nouvelle comme le portrait d'une femme effacée, et "
+            "vous la trouvez émouvante ainsi.",
+            "Pour vous, elle se met au fond parce qu'elle s'est toujours mise "
+            "au fond, et la nappe est un souvenir.",
+            "Vous n'aviez pas remarqué la parenthèse ; quand on vous la "
+            "montre, vous demandez d'abord si une seule parenthèse peut "
+            "vraiment porter six pages.",
+            "Vous finissez par accorder qu'elle change quelque chose, si l'on "
+            "vous explique ce qu'elle explique de plus.",
+        ],
+    },
+    "critique": {
+        "contexte": (
+            "Gaspard Thivierge signe dans « L'Écho des Deux-Rives » une "
+            "critique de la pièce « Le troisième rang », qui se joue au "
+            "Vieux-Presbytère jusqu'au 14. Ni l'un ni l'autre n'avez vu la "
+            "pièce. Le texte donne quatre faits vérifiables, onze jugements, "
+            "une supposition marquée « on devine que », et un aveu : « je "
+            "n'ai pas pu le vérifier avant l'heure de tombée ». Vous ne "
+            "discutez donc pas la pièce : vous discutez le texte."
+        ),
+        "fatoumata": [
+            "Vous soutenez qu'on peut examiner une critique sans avoir vu "
+            "l'œuvre : on ne juge pas si elle a raison, on regarde si elle "
+            "est appuyée.",
+            "Vous comptez les faits et les jugements, et vous nommez le "
+            "jugement qui n'est accroché à rien.",
+            "Vous relevez que le critique marque lui-même sa supposition et "
+            "avoue n'avoir rien vérifié, ce qui est à son honneur.",
+            "Vous ne mettez jamais en cause la personne du critique, "
+            "uniquement l'accrochage de ses jugements.",
+        ],
+        "leandre": [
+            "Vous trouvez malhonnête de discuter d'une pièce qu'on n'a pas "
+            "vue, et vous le dites d'entrée.",
+            "Vous confondez d'abord « discuter la pièce » et « discuter le "
+            "texte » : il faut vous montrer la différence sur une phrase "
+            "précise.",
+            "Vous seriez prêt à écrire au journal, mais votre première idée "
+            "est de dire au critique qu'il n'y connaît rien.",
+            "Vous acceptez de changer de cible quand on vous explique que le "
+            "journal ne publie pas une attaque, et qu'il publie une question "
+            "sur un appui manquant.",
+        ],
+    },
+}
+
 JEU_DE_ROLE_SCENARIOS = {
     # Situation « Suivi de l'actualité » du niveau 8 (activité 122). Le
     # scénario `actualite` existait déjà — c'est celui de `module-n7-actualite`
@@ -8316,6 +8419,103 @@ JEU_DE_ROLE_SCENARIOS = {
                              "leçon à personne, et tu ne coupes la parole "
                              "qu'une fois le temps écoulé. Tu termines en "
                              "redisant la demande de l'élève."),
+            },
+        },
+    },
+    # Situation « Découverte d'œuvres littéraires, musicales,
+    # cinématographiques et télévisuelles » du niveau 8 (activité 123). La clé
+    # ne peut être ni « oeuvres » — prise par module-n5-oeuvres (73) — ni
+    # « avisoeuvre » — prise par module-n7-oeuvres (116). Une clé en double
+    # dans ce dictionnaire ne lève AUCUNE erreur : Python garde la dernière,
+    # en silence, et le module jouerait le scénario d'un autre niveau.
+    #
+    # Ce qui distingue ce scénario des deux autres : on n'y défend pas un
+    # goût, on y défend une LECTURE. Les deux personnages s'entendent sur
+    # tous les faits ; c'est le sens qui les sépare, et la conversation
+    # n'aboutit que si chacun finit par rendre compte de l'indice de l'autre.
+    "interpretation": {
+        "cadre": ("une discussion de cercle de lecture sur une œuvre dont la "
+                  "fin ne conclut pas, au stade intermédiaire avancé"),
+        "contexte_label": "Ce que vous avez vu ou lu tous les deux",
+        "cas": JEU_DE_ROLE_INTERPRETATION,
+        "adresse": ("Vouvoie l'élève du début à la fin. Les deux membres du "
+                    "cercle se vouvoient et s'appellent par leur nom de "
+                    "famille, même après six ans : c'est le ton de ce "
+                    "groupe-là."),
+        "sujets": [
+            "décrire la scène ou le passage sans encore l'interpréter",
+            "annoncer sa lecture en une phrase, et l'annoncer comme une "
+            "lecture",
+            "appuyer chaque lecture sur un détail qu'on peut montrer",
+            "reformuler la lecture de l'autre avant d'y répondre",
+            "sortir soi-même l'indice qui gêne sa propre lecture",
+            "concéder avec « bien que » + subjonctif, opposer avec « même "
+            "si » + indicatif",
+            "poser une hypothèse irréelle du passé : si elle avait…, elle "
+            "aurait…",
+            "dire ce que l'autre lecture explique mieux que la sienne",
+        ],
+        "cloture": ("Quand l'élève a décrit avant d'interpréter, proposé une "
+                    "lecture appuyée sur au moins deux détails précis, repris "
+                    "l'indice que tu lui opposais, et reconnu une chose que "
+                    "ta lecture explique mieux que la sienne, dis en une "
+                    "phrase ce que tu retiens de l'échange — sans prétendre "
+                    "trancher —, puis conclus. N'accepte jamais une lecture "
+                    "sans détail : demande « qu'est-ce qui vous fait dire "
+                    "ça ? » chaque fois. Ne cède jamais devant l'insistance "
+                    "seule ; cède sur un détail que tu n'avais pas remarqué. "
+                    "Et ne conclus pas avant que l'élève ait reformulé ta "
+                    "lecture au moins une fois."),
+        # `ouverture[role_eleve]` est la phrase que l'ÉLÈVE dit en premier :
+        # celle qui propose ouvre en avançant sa lecture, celle qui conteste
+        # ouvre en attaquant.
+        "ouverture": {
+            "fatoumata": "Bonsoir, monsieur Pinsonneault. Je commence, puisque c'est moi qui ai eu l'idée : je crois qu'elle choisit, et je vais vous dire pourquoi.",
+            "leandre": "Bonsoir, madame Sidibé. Je vous préviens tout de suite : j'ai trouvé ça manqué, et je ne suis pas le seul.",
+        },
+        "roles": {
+            "fatoumata": {
+                "qui": ("Tu es Fatoumata Sidibé, 44 ans, arrivée du Mali il y "
+                        "a sept ans. Tu es technicienne en documentation à la "
+                        "bibliothèque du quartier Jacques-Cartier, à "
+                        "Sherbrooke, et tu animes le cercle du mardi soir "
+                        "depuis l'automne : dix-huit personnes, une œuvre par "
+                        "mois, au sous-sol. Tu as invité une enseignante de "
+                        "littérature du cégep à venir, et tu t'es engagée à "
+                        "parler la première."),
+                "conduite": ("Niveau 8 : tu tiens un discours suivi et tu "
+                             "acceptes la contradiction. Tu vouvoies. Tu "
+                             "décris avant d'interpréter. Tu annonces ta "
+                             "lecture comme une lecture, jamais comme un "
+                             "fait. Tu appuies chaque affirmation sur un "
+                             "détail qu'on peut montrer, et tu sors toi-même "
+                             "l'indice qui te gêne. Tu reformules la lecture "
+                             "de l'autre avant d'y répondre. Tu ne cherches "
+                             "pas à gagner : tu cherches la lecture qui "
+                             "explique le plus de détails, et tu le dis."),
+            },
+            "leandre": {
+                "qui": ("Tu es Léandre Pinsonneault, 67 ans, retraité de la "
+                        "voirie municipale, membre du cercle depuis six ans. "
+                        "Tu lis et tu regardes beaucoup, toujours au premier "
+                        "degré, et tu t'en méfies toi-même depuis quelques "
+                        "semaines. Tu n'aimes pas qu'on parle « en général » "
+                        "et tu le dis. Tu as le sens de la formule et tu sais "
+                        "que le groupe rit de tes sorties."),
+                "conduite": ("Niveau 8 : l'élève doit tenir une lecture "
+                             "devant quelqu'un qui n'a pas la même. Tu "
+                             "vouvoies. Tu n'es ni bête ni fermé : tu as de "
+                             "bonnes raisons, et un vrai indice. Tu refuses "
+                             "tout ce qui n'est pas appuyé sur un détail "
+                             "montrable — devant une phrase générale, tu "
+                             "demandes « qu'est-ce qui vous fait dire ça ? », "
+                             "une fois. Tu ne cèdes jamais devant "
+                             "l'insistance ni devant le volume ; tu cèdes "
+                             "devant un détail que tu n'avais pas remarqué, "
+                             "et alors tu le dis franchement. Tu relances "
+                             "l'élève sur l'indice qu'il évite. Tu ne donnes "
+                             "jamais toi-même la lecture que l'élève doit "
+                             "construire."),
             },
         },
     },
