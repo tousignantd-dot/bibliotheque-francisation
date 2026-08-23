@@ -3919,6 +3919,158 @@ relever que les chaînes à **guillemets doubles**, sans saut de ligne : les
 fichiers de contenu écrivent le texte visible ainsi, précisément parce qu'il
 est plein d'apostrophes. Un relevé d'originalité qui monte au-dessus de 5 %
 mérite d'abord qu'on regarde **ce qu'il a compté**.
+**23 août 2026 — activité 119, `module-n8-recherche`.** « Passer au travers du
+processus », niveau 8, `numero` 2, `GRILLE_3_DEFIS`. Scénario inventé : Shirin
+Tabatabai, 46 ans, arrivée d'Iran il y a neuf ans, chef d'équipe au contrôle de
+la qualité dans une usine agroalimentaire de Téhéran pendant onze ans,
+aujourd'hui opératrice de production chez un sous-traitant de Sherbrooke. Elle
+postule à un poste de superviseure de production, quart de soir, chez Boréalis
+Emballages, et traverse un processus de sélection en trois étapes. Alexandre
+Pouliot-Nadeau, ancien collègue devenu contremaître là-bas, lui décrit
+l'entreprise de l'intérieur (Je découvre) ; Danielle Éthier, conseillère en
+acquisition de talents, mène l'appel de présélection (défi 1) ; Réal
+Bourbonnais, directeur de la production, présente l'entreprise aux candidats
+retenus (défi 2), puis siège au comité qui la reçoit (défi 3). 22 exercices,
+15 mini-leçons, 4 dialogues (94 répliques), 16 mots, 16 images, 334 extraits
+audio relevés, 16 séances (186 diapositives, 129 blocs de fiches).
+
+*Ce qui le distingue de ses trois voisins de situation*, en une phrase, écrite
+avant le scénario : `module-n3-recherche-emploi` (83) **offre ses services de
+vive voix** au comptoir, `module-n6-recherche` (59) **répond à une offre
+précise** et passe une courte entrevue, `module-n7-recherche` (110)
+**s'oriente avant de postuler** en lisant l'économie d'une région ; celui-ci se
+passe **pendant** le processus. L'offre est trouvée, la candidature est
+déposée, et le travail n'est plus de chercher mais de **soutenir sa candidature
+d'un bout à l'autre** — répondre à l'objection qui n'est jamais formulée, et
+négocier ce qui n'est pas affiché. Aucun recoupement non plus avec
+`module-n8-emploi` (61), le seul autre module du niveau : « Recherche
+d'emploi », c'est avant l'embauche ; « Emploi », c'est une fois en poste.
+
+*Les faits québécois sont vérifiés, pas devinés*, le 23 août 2026, auprès de la
+**Commission des droits de la personne et des droits de la jeunesse** et de la
+**CNESST**. L'article **18.1** de la Charte des droits et libertés de la
+personne interdit d'exiger, dans un formulaire de demande d'emploi ou lors
+d'une entrevue, un renseignement portant sur l'un des motifs de discrimination
+énumérés à l'article **10** — les quatorze motifs sont repris mot pour mot dans
+la mini-leçon `t3interdit` ; l'exception est étroite et tient à ce que le
+renseignement soit fondé sur les **aptitudes ou qualités requises par
+l'emploi**, ce qui rend permise « pouvez-vous soulever vingt kilos ? » et
+interdite « avez-vous un problème de dos ? ». Côté **normes du travail** : deux
+semaines de congé annuel après un an de **service continu**, trois semaines
+après trois ans, le service continu se comptant chez un **même** employeur —
+c'est pour cela qu'une expérience acquise ailleurs n'y entre jamais, et c'est
+un des trois points qui se négocient au défi 3. Boréalis Emballages, le Groupe
+Landron, les personnes, les adresses et tous les chiffres d'entreprise sont
+inventés.
+
+### Ce que le niveau 8 demande, et que le gabarit ne prévoit pas
+
+C'est le deuxième module du niveau et le premier depuis la vague 1. Les quatre
+agents qui suivront n'auront que cette note ; elle est écrite pour eux.
+
+**1. La situation est maigre, le niveau est énorme, et les deux à la fois.**
+« Recherche d'emploi » porte **trois** intentions ; le cours en porte
+**cinquante-huit** de savoirs, dont vingt et un pour les seuls connecteurs. Le
+pilote du niveau 6 avait décrit un cas — situation maigre, niveau riche — et
+l'activité 110 le cas inverse, un niveau 7 où la situation était plus nette que
+le niveau. Au niveau 8, **les deux sont vrais en même temps**, et c'est
+nouveau : les trois intentions donnent le plan du module en une ligne (écouter,
+lire, passer l'entrevue), et les savoirs remplissent ensuite chaque défi sans
+qu'aucun choix ne s'impose de lui-même. Le critère qui a servi, et qui se
+recommande : **« est-ce que ce savoir sert à soutenir un discours devant
+quelqu'un qui décide ? »** Il retient d'un coup les connecteurs argumentatifs,
+la concession, l'hypothèse irréelle, le subjonctif, l'emphase, les relatifs à
+préposition et la reprise par substitution ; il écarte tout aussi vite les
+corrélatives, les factitifs et les pronoms conjoints doubles. Dix savoirs sur
+cinquante-huit, deux ou trois par défi.
+
+**2. Aucune intention de production écrite, et il en faut une.** La situation
+n'a que de la compréhension et de la production **orales**. Le courriel de
+« Je me lance » vient donc des **attentes de fin de cours**, qui demandent que
+l'adulte « rédige des lettres ou des courriels d'affaires ayant des objectifs
+particuliers » et « résume les propos de son interlocuteur ». C'est le même
+mécanisme qu'au niveau 6, et il faut l'**écrire dans le manifeste et dans
+`custom.js`** — sans quoi un relecteur retire la tâche en la croyant hors
+programme. Fait ici aux deux endroits.
+
+**3. Le seul savoir de phonétique du niveau est l'intonation expressive, et il
+ne se traite pas comme les autres.** Aux niveaux 2 à 7, la section de
+graphie-phonie oppose deux sons et se met en `vf` à cartes écoutables. Ici il
+n'y a **plus de son à opposer** : le programme ne demande que « produire
+l'intonation expressive (surprise, admiration, déception, volonté,
+incompréhension) ». La forme qui marche est un `vf` à **trois tuiles** dont les
+rangées sont des **répliques entières** — la ponctuation et le tour de phrase
+portent l'intention, la voix de synthèse la rend, et l'élève juge. Ce qui ne
+marcherait pas : donner la même phrase trois fois en attendant trois mélodies
+différentes, qu'aucune synthèse ne produira. Et la mini-leçon doit décrire la
+**mélodie** (monte d'un coup, freine, descend et appuie), jamais un symbole
+phonétique : c'est un savoir qui s'entend et se répète, pas qui se lit.
+
+**4. Trois exercices de type `texte`, et le troisième n'est pas un document
+administratif de plus.** L'activité 110 en avait deux, les activités 113 et 114
+trois. Ici : un **profil d'entreprise** (prélever un fait), une **offre
+d'emploi** (décider de son admissibilité), et un **courriel qu'on va soi-même
+écrire** (retrouver la fonction de chaque paragraphe). Ce troisième usage est
+le plus intéressant et il est reproductible partout : faire lire à l'élève, en
+le découpant par fonctions, le modèle du texte qu'on lui demandera de produire
+vingt minutes plus tard. Il remplace avantageusement une consigne d'écriture de
+douze lignes, et il ne se répète pas avec les deux autres parce que le genre
+diffère.
+
+**5. Le niveau 8 rend les dialogues plus longs, mais surtout plus inégaux.**
+94 répliques sur quatre extraits, ce qui n'est pas beaucoup plus que le
+niveau 7 — la différence est ailleurs. La séance d'information du défi 2 est
+**presque un monologue** : douze répliques d'affilée du même locuteur, coupées
+par deux questions. C'est la forme que le programme appelle « suivre le
+déroulement d'exposés bien structurés », et aucun module des niveaux inférieurs
+n'en a. Elle se travaille en **trois écoutes à consigne différente** — le fait
+récent, puis les chiffres, puis ce qui est dit deux fois —, et le deck C1 est
+bâti là-dessus. Corollaire pour les voix : le locuteur du monologue ne doit
+**pas** prendre `enseignante`, que `voix_lente` ralentit ; douze répliques
+ralenties d'affilée sont interminables.
+
+**6. Quatre personnages, quatre voix, et c'est la seule configuration
+confortable.** Le module prend les quatre voix du dépôt, une par personnage :
+aucun partage, donc aucune vérification de croisement. Le défi 3 réunit trois
+personnages dont **deux femmes** — la limite exacte du dépôt, et elle tient
+parce que Danielle prend `enseignante` et Shirin `feminin_2`. Une troisième
+femme aurait été impossible. Compté avant d'écrire, comme `CLAUDE.md` le
+demande depuis `module-n7-habitation` ; cela n'a rien coûté.
+
+*Sur les images* : seize à 0,0336 $ par la route Google, **treize bonnes du
+premier coup**, trois refaites pour 0,10 $. Les prompts portaient la parade par
+le cadrage dès le premier jet, et elle a tenu sur tous les objets à
+inscriptions — les feuilles d'un examen hors du plan de netteté, les
+porte-étiquettes de casiers vides et vus de biais, l'écran d'une machine éteint
+et de profil, la signalisation d'une passerelle au-dessus du cadre. Les trois
+reprises apprennent autre chose. `quai-chargement` montrait une remorque garée
+**au milieu de la cour**, ouverte face à l'objectif, alors que l'énoncé dit
+« reculé **contre** un quai » : le quatrième défaut sous une forme qu'aucune
+des notes précédentes ne nomme — non pas le mauvais sujet, non pas le degré
+insuffisant, mais **la relation entre deux objets**. Le prompt refait décrit
+*le joint* (plancher au niveau du béton, bourrelets écrasés, aucun jour) plutôt
+que la scène, et l'image sort juste. Les deux autres reprises ne relèvent
+d'aucune des quatre règles : `salle-examen` et `entrevue-de-groupe` rendaient
+des groupes **entièrement masculins et d'une seule origine**, ce qui ne montre
+aucune des personnes qui suivent ce module et contredit son propre scénario. Le
+modèle y retombe seul tant que la composition n'est pas imposée ; l'imposer
+coûte une phrase. **À ajouter à la liste des choses qu'on écrit dans le prompt
+plutôt que d'espérer** : dès qu'une image porte plus d'une personne, dire qui
+elles sont.
+
+*Sur l'originalité* : 1 580 énoncés visibles, **73 identiques** parmi les
+51 480 des soixante-six autres modules de `build/contenu/`, soit **4,6 %**,
+sous le seuil vert. Une remarque de méthode qui vaut pour les mesures
+suivantes : la première passe donnait **8,9 %**, et l'écart n'était pas
+pédagogique. La regex qui relève les chaînes traverse les sauts de ligne et
+attrape des **fragments de code** (`, ok:'FAUX'},` suivi de la rangée d'après),
+évidemment identiques d'un module à l'autre puisque le gabarit est commun. Le
+journal de l'activité 110 les signalait déjà sans les écarter. Trois lignes de
+filtre — pas de saut de ligne, pas de chevron ouvrant, pas d'interpolation — et
+le chiffre passe à 4,6 %. **Mesurer sans ce filtre surestime d'environ quatre
+points**, et cela vaut pour tous les modules déjà mesurés. Ce qui reste est
+irréductible : cinq consignes du gabarit, des intitulés de bandeau, des mots du
+programme et des faits de langue qui ne se disent pas autrement.
 
 *Sur les contrôles* : les sept passent. `coherence.js` ne signale rien,
 `sections.py --verifier` et `materiel.py --verifier` sont à jour, les deux
@@ -3964,3 +4116,58 @@ muet.
 *Comme les activités 108 à 113*, ni `VOCAB_BANK` de `server.py` ni la constante
 `DETAILS` de `js/enseignant.js` n'ont reçu quoi que ce soit : ces deux tables se
 sont arrêtées aux modules du niveau 4, et c'est un chantier à part.
+lien cassé — à condition d'avoir lancé `python3 build/powerpoints/sommaire.py
+module-n8-recherche`, qui manque **toujours** à la séquence —, et
+`pieds_de_page.py` lit « niveau 8 · numéro 2 · 16 pptx · vus ['2'] ». Le seul
+écart qu'il rapporte est `module-n3-horaire`, connu de longue date et qui n'est
+pas le mien. Le `node --check` du script en ligne passe (358 645 octets), et le
+garde-fou Verdana n'a refusé aucune diapositive : aucune flèche nulle part, et
+aucun tableau de plus de cinq rangées ne porte de `note=`, ce que l'activité
+110 avait payé trois fois.
+
+*Sur la vérification dans le navigateur*, et c'est une note de méthode : le
+panneau d'aperçu de cette session rendait un **viewport de 0 par 0** puis s'est
+signalé « hidden », si bien que **toutes les captures d'écran sortaient
+blanches** alors que la page était intacte. Ne pas en conclure que le module ne
+se rend pas. La vérification qui compte a été faite **par script**, dans la
+console, et elle est plus complète qu'un coup d'œil : les six sections se
+rendent sans erreur, la console est vide, aucun 404 (les quatre icônes sont
+servies, `build/module.py` les copie désormais lui-même), les quinze clés de
+`PLUS` correspondent toutes à un exercice réel, les trois exercices `texte` ont
+autant de passages cliquables que de questions et aucun `ok` orphelin, et
+surtout **les 209 zones acceptent leur propre bonne réponse** par `checkOk()`
+— 64 en glisser-déposer, 70 en `vf` — plus les **75 items `write`**, vérifiés
+séparément puisqu'ils ne passent pas par `checkOk()` mais par `normWrite()` sur
+leur liste `accept`. C'est le contrôle que recommande l'épisode du `imgmatch`
+mort, et il tient en quinze lignes.
+
+*Un scénario de jeu de rôle a été ajouté à `server.py`* — `selection`, trois
+cas (le poste, les onze ans qui ne comptent pas, l'échelon non affiché), deux
+rôles. Aucun des scénarios existants ne convenait : `entrevue` (niveau 6) fait
+passer une courte entrevue d'embauche, et `recherche` (niveau 7) est un appel
+passé **avant** de postuler. Sa conduite porte le cœur du module, et elle
+contient un parti pris à ne pas défaire : **le directeur laisse passer une
+fois, et une seule, une question portant sur un motif interdit** — posée sans
+malice, comme une question pratique de disponibilité. Si l'élève y répond sans
+broncher, l'entrevue continue et rien n'est dit ; s'il la referme poliment en
+répondant à la disponibilité, le directeur retire la question et s'en excuse
+brièvement. C'est le seul endroit du dépôt où l'assistant joue un manquement
+plutôt qu'une résistance, et c'est ce qui rend l'exercice réel.
+
+*Le module est livré muet* : les 334 extraits sont relevés,
+`generer_audio_module_n8_recherche.py` s'importe sans erreur et retrouve ses
+94 répliques sur quatre dialogues ; il partira avec les autres par
+`build/audio_tous.py`.
+
+*Sur la fusion, et c'est à lire avant de fusionner cette branche* : elle a été
+poussée **sans rebase sur `main`**, volontairement. Le rebase a été tenté, il a
+ouvert les trois conflits attendus — `data/activities.json`, `server.py`, et
+les deux relevés — et il a été **abandonné** : `server.py` présente exactement
+le cas que `build/fusionner_module.py` décrit dans son en-tête, la ligne qui
+ferme le dernier bloc restant en contexte commun **après** le marqueur, et une
+résolution à la main coupe silencieusement un dictionnaire en deux (essayé,
+constaté, annulé). Un point de vigilance en plus : `data/sections.json` et
+`data/materiel.json` de cette branche ont été régénérés depuis un disque qui ne
+connaît **pas** les activités 116 à 118, livrées entre-temps. Les prendre tels
+quels les effacerait. Le script les régénère au lieu de les fusionner, ce qui
+règle le cas — mais il faut que ce soit lui qui le fasse.
