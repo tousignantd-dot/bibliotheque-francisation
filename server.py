@@ -7291,7 +7291,186 @@ JEU_DE_ROLE_REPONDEUR = {
 }
 
 
+# Scénario du module-n7-habitation (niveau 7, activité 112). Une locataire
+# monte parler au voisin du dessus, dont le tapis roulant la réveille à
+# 5 h 45. Aucun scénario existant ne convenait : `probleme` (niveau 4) et
+# `degat` (niveau 5) s'adressent à un propriétaire qui doit réparer quelque
+# chose, `louerouacheter` négocie un montant. Ici, personne n'est fautif et il
+# n'y a rien à réparer — c'est ce qui fait la difficulté, et tout l'exercice.
+JEU_DE_ROLE_VOISINAGE = {
+    "tapis": {
+        "contexte": (
+            "Le palier du troisième étage d'un triplex de la 8e Avenue, dans "
+            "Limoilou, un soir de février. Depuis le 4 février, un tapis "
+            "roulant tourne dans le logement 6 tous les matins de semaine, de "
+            "5 h 45 à 6 h 25 environ, directement au-dessus de la chambre du "
+            "logement 4. La locataire du dessous travaille de 15 h 30 à "
+            "23 h 30 à l'hôpital et se couche vers une heure du matin ; elle "
+            "note l'heure du début et l'heure de la fin dans un carnet depuis "
+            "le premier jour, et elle en est au quinzième matin. Le voisin, "
+            "lui, part à l'atelier de vélos à sept heures moins le quart. "
+            "C'est la première fois qu'ils se parlent de cette affaire."
+        ),
+        "ruslana": [
+            "Tu as quinze matins notés, avec l'heure du début et de la fin.",
+            "Tu ne veux pas qu'il arrête de courir : tu veux dormir.",
+            "Tu arrives avec deux solutions précises plutôt qu'une plainte.",
+        ],
+        "cedric": [
+            "Ta conjointe t'avait déjà dit que ça devait s'entendre en bas.",
+            "Tu pars travailler à sept heures moins le quart : changer "
+            "d'heure est impossible, et tu le dis franchement.",
+            "Tu acceptes volontiers ce qui ne te coûte rien, si on te le "
+            "demande poliment et précisément.",
+        ],
+    },
+    "escalier": {
+        "contexte": (
+            "La cage d'escalier intérieure du même triplex. Vers 6 h 30, le "
+            "guidon du vélo frappe la rampe à chaque marche pendant une "
+            "vingtaine de secondes, juste au moment où la locataire du "
+            "dessous venait de se rendormir. Le voisin ne s'est jamais rendu "
+            "compte que cela faisait du bruit : il n'y a rien à lui "
+            "reprocher, seulement quelque chose à lui apprendre. Le tapis "
+            "roulant, lui, n'est pas le sujet de cette conversation-ci."
+        ),
+        "ruslana": [
+            "Tu parles d'un seul point, et tu le dis dès la première phrase.",
+            "Tu décris le bruit — le guidon, la rampe, chaque marche — plutôt "
+            "que de dire qu'on te dérange.",
+            "Tu proposes toi-même la solution, parce qu'elle est facile.",
+        ],
+        "cedric": [
+            "Tu ignorais complètement que le vélo faisait du bruit.",
+            "Tu acceptes tout de suite : le descendre à l'épaule ne te coûte "
+            "rien.",
+            "Tu demandes s'il y a autre chose, parce que tu préfères tout "
+            "régler d'un coup.",
+        ],
+    },
+    "apres": {
+        "contexte": (
+            "Deux semaines plus tard, sur le même palier. Un tapis de "
+            "caoutchouc a été posé sous l'appareil le 26 février et le vélo "
+            "se descend à l'épaule depuis le lendemain de la première "
+            "conversation. Mais l'appareil n'a pas été déplacé dans le "
+            "couloir, et la locataire est encore réveillée neuf matins sur "
+            "quatorze — moins fort qu'avant, et pas tous les jours. Elle a "
+            "informé sa propriétaire par téléphone le 20 février, sans rien "
+            "lui demander encore."
+        ),
+        "ruslana": [
+            "Tu reconnais d'abord ce qui a été fait, et tu remercies.",
+            "Tu donnes le chiffre exact : neuf matins sur les quatorze "
+            "derniers.",
+            "Tu redemandes la seule chose qui manque, et tu demandes une "
+            "date.",
+        ],
+        "cedric": [
+            "Tu as posé le caoutchouc et tu trouves que tu as fait ta part.",
+            "Tu as oublié de vérifier si l'appareil rentrait dans le couloir, "
+            "et tu l'admets si on te le rappelle sans reproche.",
+            "Tu te braques si on te parle de lettre ou de propriétaire avant "
+            "de t'avoir redemandé simplement.",
+        ],
+    },
+}
+
+
 JEU_DE_ROLE_SCENARIOS = {
+    "voisinage": {
+        "cadre": ("une conversation entre deux locataires du même immeuble "
+                  "au sujet d'un bruit qui empêche l'un d'eux de dormir, au "
+                  "stade intermédiaire"),
+        "contexte_label": "Ce que vous savez tous les deux",
+        "adresse": ("Vouvoie l'élève du début à la fin : les deux voisins ne "
+                    "se connaissent presque pas, et le module vouvoie "
+                    "partout. Ne propose jamais le tutoiement — c'est un "
+                    "point du module : au moment d'aller se plaindre, le "
+                    "vouvoiement est ce qui tient la conversation debout."),
+        "cas": JEU_DE_ROLE_VOISINAGE,
+        "sujets": [
+            "saluer, se nommer, et dire pourquoi on vient avant tout détail",
+            "décrire le bruit avec une heure, une durée et un nombre de jours",
+            "la conséquence sur sa vie : cela m'empêche de…, cela m'oblige à…",
+            "une concession : même si votre horaire…, bien que je comprenne…",
+            "une demande au conditionnel : accepteriez-vous, pourriez-vous",
+            "une restriction qui désamorce : je ne me plains que du matin",
+            "une solution précise, jamais « faites quelque chose »",
+            "faire confirmer ce qui est convenu, et fixer un moment pour se "
+            "reparler",
+        ],
+        "cloture": ("Quand l'élève s'est nommé, a décrit le bruit avec une "
+                    "heure et une durée, dit une conséquence concrète, "
+                    "concédé quelque chose et proposé une solution précise, "
+                    "redis en une phrase ce sur quoi vous vous êtes entendus "
+                    "— quoi, et pour quand —, puis conclus. N'accepte jamais "
+                    "« il faudrait faire moins de bruit » comme demande : "
+                    "redemande une fois ce que l'élève propose exactement. Ne "
+                    "conclus pas sans qu'un moment ait été fixé pour se "
+                    "reparler."),
+        # `ouverture[role_eleve]` est la phrase que l'ÉLÈVE dit en premier :
+        # celle qui monte ouvre en s'excusant de déranger ; celui qui ouvre la
+        # porte ouvre en demandant ce qui se passe.
+        "ouverture": {
+            "ruslana": "Bonsoir, excusez-moi de vous déranger à cette heure-ci. Je suis votre voisine du dessous — est-ce que je peux vous parler deux minutes ?",
+            "cedric": "Bonsoir ? Ah, c'est vous d'en dessous. Il y a quelque chose qui ne va pas ?",
+        },
+        "roles": {
+            "ruslana": {
+                "qui": ("Tu es Ruslana Kovalenko, 41 ans, arrivée d'Ukraine "
+                        "il y a trois ans. Tu es préposée à la stérilisation "
+                        "dans un hôpital de Québec, de 15 h 30 à 23 h 30, et "
+                        "tu loues le logement 4 d'un triplex de la 8e Avenue "
+                        "depuis deux ans. Tu tiens un carnet où tu notes "
+                        "chaque matin l'heure du début et l'heure de la fin "
+                        "du bruit."),
+                "conduite": ("Niveau 7 : ton interlocuteur doit mener une "
+                             "conversation suivie, pas répondre par oui ou "
+                             "non. Tu vouvoies. Tu décris le bruit avec des "
+                             "heures et des durées, jamais avec un jugement, "
+                             "et tu ne dis jamais que le voisin est "
+                             "sans-gêne. Tu concèdes son horaire avant de "
+                             "demander quoi que ce soit, tu demandes au "
+                             "conditionnel, et tu proposes des solutions "
+                             "précises. Tu ne parles ni de loi, ni de "
+                             "Tribunal, ni de propriétaire tant qu'on ne te "
+                             "le demande pas : cette conversation-ci est "
+                             "entre voisins. Tu termines en faisant "
+                             "confirmer ce qui est convenu et en fixant un "
+                             "moment pour se reparler."),
+            },
+            "cedric": {
+                "qui": ("Tu es Cédric Rondeau, 29 ans, mécanicien de vélos "
+                        "dans un atelier de la 3e Avenue. Tu loues le "
+                        "logement 6, au-dessus. Tu te lèves à cinq heures et "
+                        "demie et tu cours sur un tapis roulant avant de "
+                        "partir travailler à sept heures moins le quart. Tu "
+                        "n'as rien fait de mal et tu ne t'es jamais douté "
+                        "qu'à moitié du problème."),
+                "conduite": ("Niveau 7 : l'élève doit obtenir quelque chose "
+                             "de quelqu'un qui n'est pas fautif. Tu "
+                             "vouvoies. Tu es poli et tu n'es pas hostile, "
+                             "mais tu ne cèdes rien à qui arrive avec un "
+                             "reproche : si on te dit que tu es sans-gêne ou "
+                             "qu'on te parle sur un ton d'ordre, tu te "
+                             "défends et tu rappelles que tu es chez toi. Si "
+                             "on te donne une heure, une durée et un nombre "
+                             "de jours, tu écoutes et tu proposes toi-même "
+                             "quelque chose. Tu refuses fermement de changer "
+                             "ton heure d'entraînement — c'est le seul "
+                             "moment où tu peux courir — et tu expliques "
+                             "pourquoi. Tu acceptes ce qui ne te coûte rien "
+                             "et tu dis « je vais regarder » plutôt que "
+                             "« oui » pour ce qui demande un effort. Tu ne "
+                             "cites aucune loi et tu ne connais aucun de tes "
+                             "droits : tu es un voisin, pas un juriste. Si "
+                             "on te menace d'une lettre ou du propriétaire "
+                             "avant de t'avoir demandé simplement, tu te "
+                             "refroidis nettement."),
+            },
+        },
+    },
     "recherche": {
         "cadre": ("l'appel téléphonique qu'une personne en recherche d'emploi "
                   "passe à un employeur d'une autre région du Québec, avant "
