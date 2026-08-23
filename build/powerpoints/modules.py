@@ -1533,6 +1533,25 @@ MODULES = {
                         "Lire l'entreprise",
                         "L'entrevue devant le comité"),
     },
+    # Deux défis, et ce n'est pas un raccourci : la situation
+    # « Emménagement dans un nouveau logement » ne porte qu'**une** intention
+    # de communication (« s'informer sur les assurances »), et les savoirs du
+    # cours la déplient en exactement deux conversations — « Conversation
+    # portant sur le choix d'une police d'assurance » et « Communication
+    # téléphonique avec un assureur pour effectuer une réclamation ». Un
+    # troisième défi aurait fallu l'inventer hors situation.
+    'module-n8-emmenagement': {
+        'numero': 3, 'activite': 120, 'niveau': 8,
+        'titre': 'Ce qui est couvert, et ce qui se défend',
+        'chapeau': "Comprendre ce qu'une police d'assurance habitation "
+                   "protège et ce qu'elle exclut, puis porter une "
+                   "réclamation contestée : exposer les faits, concéder ce "
+                   "qui se concède, et défendre par écrit ce qui ne se "
+                   "concède pas.",
+        'seances': GRILLE_2_DEFIS,
+        'blocs': _blocs("Ce qui est couvert",
+                        "Faire valoir sa réclamation"),
+    },
 }
 
 # L'ordre d'affichage : par niveau, puis par numéro à l'intérieur du niveau.
