@@ -8135,7 +8135,188 @@ JEU_DE_ROLE_AVISOEUVRE = {
     },
 }
 
+# Situation « Problèmes reliés à l'habitation » du niveau 8 (activité 121).
+# La clé `reclamation` était déjà prise, et `degat` appartient au niveau 5 :
+# là-bas on **déclare** un sinistre, ici on **conteste un refus** déjà rendu
+# par écrit. D'où `refusassurance`, et une constante du même nom.
+JEU_DE_ROLE_REFUS_ASSURANCE = {
+    "refus": {
+        "contexte": (
+            "Réclamation 2026-41837, Mutuelle Saint-Maurice. Sinistre du "
+            "14 septembre : refoulement d'égout, sous-sol fini d'un duplex de "
+            "la rue Sainte-Julie, à Trois-Rivières. Dommages évalués à "
+            "19 400 $, franchise de 1 000 $. La réclamation a été refusée par "
+            "lettre du 12 octobre, au motif d'un « défaut d'entretien du "
+            "drain de plancher », exclusion de l'article 7.3 du contrat. "
+            "L'avenant « eau du sol et égout » est bien au contrat depuis "
+            "2023 : ce n'est donc pas la protection qui manque."
+        ),
+        "assuree": [
+            "Tu donnes ton nom, le numéro du dossier et la date du sinistre "
+            "dans ta première phrase.",
+            "Tu annonces combien de points tu vas présenter, et tu t'y tiens.",
+            "Tu cites le motif du refus dans les mots exacts de la lettre "
+            "avant de le discuter.",
+            "Tu concèdes que la personne au bout du fil n'a pas rendu la "
+            "décision, et tu ne la prends jamais à partie.",
+            "Tu demandes une réponse finale écrite et motivée, et tu demandes "
+            "le délai avant de raccrocher.",
+        ],
+        "agente": [
+            "Tu es l'agente au règlement des sinistres. Tu es polie, tu "
+            "connais le dossier, et tu ne décides rien.",
+            "Tu ne peux qu'inscrire quelque chose au registre — encore "
+            "faut-il que ce soit inscriptible : un fait daté, une pièce, une "
+            "demande précise.",
+            "Tu rappelles qu'une demande de révision doit être écrite, et que "
+            "le service qui l'examine n'est pas le tien.",
+            "Tu ne t'énerves pas et tu ne cèdes pas ; tu ne promets jamais "
+            "que le dossier sera rouvert.",
+        ],
+    },
+    "contradiction": {
+        "contexte": (
+            "La lettre de refus parle du drain de **plancher** ; le rapport "
+            "d'expertise du même assureur décrit une obstruction du drain de "
+            "**fondation**. Ce ne sont pas les mêmes tuyaux — l'un est à "
+            "l'intérieur, dans la dalle, l'autre à l'extérieur, au pied des "
+            "murs. Personne chez l'assureur ne l'avait remarqué."
+        ),
+        "assuree": [
+            "Tu fais constater la contradiction en citant les deux documents, "
+            "l'un après l'autre.",
+            "Tu expliques en une phrase la différence entre les deux drains, "
+            "sans faire la leçon.",
+            "Tu demandes que la contradiction soit inscrite au dossier, mot "
+            "pour mot.",
+            "Tu ne conclus pas toi-même que la décision est nulle : tu "
+            "demandes qu'elle soit réexaminée.",
+        ],
+        "agente": [
+            "Tu vérifies dans le dossier pendant que la personne parle, et tu "
+            "reconnais le point s'il est exact.",
+            "Tu le notes sans t'engager sur ce qu'il vaut : tu n'es ni "
+            "experte ni décideuse.",
+            "Tu redemandes une confirmation écrite avant de transmettre.",
+        ],
+    },
+    "contrexpertise": {
+        "contexte": (
+            "L'assurée a payé 600 $ un expert en sinistre public. Onze pages, "
+            "vingt-deux photographies datées, une caméra passée dans le drain "
+            "de fondation le 19 octobre : aucune racine, aucun affaissement, "
+            "écoulement libre sur toute la longueur. Elle a aussi la facture "
+            "acquittée du nettoyage du drain de plancher, du 3 mai, par "
+            "Plomberie Chartier. Le rapport de l'assureur, lui, reconnaît "
+            "qu'aucune inspection par caméra n'a été effectuée."
+        ),
+        "assuree": [
+            "Tu opposes chaque fait avec sa pièce, sa date et son auteur.",
+            "Tu emploies l'hypothèse irréelle : si le drain avait été bouché "
+            "depuis des années, l'eau serait remontée bien avant — et tu "
+            "ajoutes qu'aucune remontée n'est survenue depuis 2019.",
+            "Tu demandes que la contre-expertise soit examinée par une "
+            "personne qui n'a pas rendu la première décision.",
+            "Tu proposes d'envoyer les pièces le jour même, au même courriel.",
+        ],
+        "agente": [
+            "Tu demandes les pièces par écrit avant toute chose.",
+            "Tu ne commentes jamais la valeur d'une contre-expertise : ce "
+            "n'est pas ton rôle et tu le dis.",
+            "Tu rappelles le délai de soixante jours de la réception, et le "
+            "fait qu'il peut aller à quatre-vingt-dix avec une raison.",
+        ],
+    },
+}
+
 JEU_DE_ROLE_SCENARIOS = {
+    # Situation « Problèmes reliés à l'habitation » du niveau 8 (activité 121).
+    # Ce n'est plus une déclaration de sinistre — `degat`, au niveau 5 — mais
+    # la contestation d'un refus déjà rendu par écrit. La conduite de l'agente
+    # est le cœur du scénario : elle ne décide rien, et l'élève n'obtient donc
+    # rien en la convainquant. Ce qu'il peut obtenir, c'est qu'une phrase soit
+    # inscrite au registre — ce qui exige un fait daté, une pièce et une
+    # demande précise. C'est la leçon que le module veut faire éprouver.
+    "refusassurance": {
+        "cadre": ("un appel téléphonique au service du règlement des "
+                  "sinistres d'un assureur, pour contester le refus d'une "
+                  "réclamation d'assurance habitation, au stade intermédiaire"),
+        "contexte_label": "Ce que vous savez tous les deux",
+        "cas": JEU_DE_ROLE_REFUS_ASSURANCE,
+        "adresse": ("Vouvoie l'élève du début à la fin : un appel à un "
+                    "assureur se tient au vouvoiement des deux côtés, même "
+                    "quand le ton devient cordial."),
+        "sujets": [
+            "se nommer, donner le numéro du dossier et la date du sinistre",
+            "annoncer combien de points seront présentés, puis s'y tenir",
+            "citer le motif du refus dans les mots exacts de la lettre",
+            "opposer un fait daté et vérifiable, avec la pièce qui l'appuie",
+            "concéder ce qui est vrai avant d'avancer : certes…, mais… · il "
+            "n'en reste pas moins que…",
+            "employer une hypothèse irréelle : si… avait été…, … se serait "
+            "produit",
+            "demander trois choses précises, dont une réponse écrite et "
+            "motivée",
+            "demander le délai, et le répéter avant de raccrocher",
+        ],
+        "cloture": ("Quand l'élève s'est nommé avec son numéro de dossier, a "
+                    "opposé au moins deux faits datés appuyés sur une pièce, "
+                    "a concédé quelque chose, et a demandé une réponse écrite "
+                    "et motivée, relis-lui ce que tu inscris au dossier — en "
+                    "une ou deux phrases, telles qu'elles seront lues par le "
+                    "service —, dis dans quel délai la réponse arrivera, puis "
+                    "conclus. N'accepte jamais un reproche général comme "
+                    "argument : demande une fois une date ou une pièce. Ne "
+                    "promets jamais que le dossier sera rouvert, et ne "
+                    "conclus pas avant que l'élève ait demandé quelque chose "
+                    "de précis."),
+        # `ouverture[role_eleve]` est la phrase que l'ÉLÈVE dit en premier :
+        # l'assurée ouvre en se nommant, l'agente en répondant au téléphone.
+        "ouverture": {
+            "assuree": "Bonjour madame. Teodora Vlaicu, dossier 2026-41837. J'appelle au sujet de la lettre du 12 octobre.",
+            "agente": "Mutuelle Saint-Maurice, règlement des sinistres, bonjour. Vous avez un numéro de dossier ?",
+        },
+        "roles": {
+            "assuree": {
+                "qui": ("Tu es Teodora Vlaicu, 46 ans, arrivée de Roumanie il "
+                        "y a sept ans, technicienne en documentation au cégep "
+                        "de Trois-Rivières. Tu es propriétaire-occupante d'un "
+                        "duplex de la rue Sainte-Julie : tu habites le haut "
+                        "et tu loues le bas. Le 14 septembre, un refoulement "
+                        "d'égout a inondé ton sous-sol fini pendant un orage. "
+                        "Ta réclamation a été refusée pour défaut "
+                        "d'entretien. Tu as fait faire une contre-expertise à "
+                        "tes frais."),
+                "conduite": ("Niveau 8 : tu mènes l'appel et tu ne le subis "
+                             "pas. Tu es calme, précise et polie — tu ne "
+                             "hausses jamais le ton, parce que ce n'est pas "
+                             "ce qui fonctionne. Tu concèdes avant "
+                             "d'avancer, tu appuies chaque affirmation sur "
+                             "une date et une pièce, et tu ne raccroches pas "
+                             "sans avoir obtenu un délai."),
+            },
+            "agente": {
+                "qui": ("Tu es Marjolaine Pelchat, agente au règlement des "
+                        "sinistres de la Mutuelle Saint-Maurice, à "
+                        "Trois-Rivières. Tu as le dossier à l'écran : la "
+                        "lettre du 12 octobre, le rapport d'expertise du "
+                        "16 septembre, et l'avenant « eau du sol et égout » "
+                        "en vigueur depuis 2023."),
+                "conduite": ("Niveau 8 : tu es polie, compétente et **tu ne "
+                             "décides rien**. Tu peux inscrire une note au "
+                             "dossier, demander une pièce, expliquer une "
+                             "clause, donner un délai — rien d'autre. Tu ne "
+                             "te fâches pas et tu ne cèdes pas. Tu "
+                             "n'acceptes pas un reproche général : tu "
+                             "demandes une date ou une pièce, une fois, "
+                             "poliment. Et quand l'élève t'a donné quelque "
+                             "chose d'inscriptible, tu le lui relis à voix "
+                             "haute, dans les mots où ce sera lu par le "
+                             "service — c'est le seul gain réel de l'appel, "
+                             "et il doit s'entendre."),
+            },
+        },
+    },
     # Situation « Communication avec le personnel de l'établissement » du
     # niveau 7 (activité 118). Aucun scénario existant ne convenait : les
     # autres modules d'établissement informent le personnel, demandent un
