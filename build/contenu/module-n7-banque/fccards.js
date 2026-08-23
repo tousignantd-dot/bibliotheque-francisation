@@ -3,14 +3,16 @@ const FC_CARDS = [
   // « Je retiens des mots », ses cartes mémoire et l'exercice `prVocab` en
   // dérivent tous.
   //
-  // **Quatre cartes seulement portent une image, et c'est délibéré.** Le
+  // **Trois cartes seulement portent une image, et c'est délibéré.** Le
   // vocabulaire d'une situation bancaire est abstrait — un solde, un taux,
   // une cote, un rendement, une protection ne se photographient pas. Leur
   // donner une image reviendrait à mettre derrière chaque mot une vue
   // générique de comptoir de caisse, c'est-à-dire le thème du module à la
   // place de ce que dit la carte : exactement le quatrième défaut relevé
-  // le 22 août 2026. Les quatre images retenues montrent un objet réel,
-  // décrit par la phrase d'exemple de sa carte.
+  // le 22 août 2026. Les trois images retenues montrent un objet réel, décrit
+  // par la phrase d'exemple de sa carte — et distinct de ceux que montrent
+  // déjà les dix images d'exercice, pour qu'une même photo ne se retrouve pas
+  // sous deux énoncés différents.
 
   // ── Je découvre : ce que dit le papier ──
   {word:"un relevé de compte",
@@ -32,7 +34,6 @@ const FC_CARDS = [
   {word:"les frais de crédit",
    def:"Ce que coûte l'argent emprunté, en plus de la somme empruntée elle-même.",
    ex:"Sur neuf mille dollars à dix-neuf pour cent, les <strong>frais de crédit</strong> dépassent mille huit cents dollars par année.",
-   img:"/assets/interactive/module-n7-banque/vocab/frais-de-credit.jpg",
    tache:"prep"},
 
   // ── Défi 1 : les mots de l'emprunt ──
