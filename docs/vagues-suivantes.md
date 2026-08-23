@@ -4171,3 +4171,155 @@ constaté, annulé). Un point de vigilance en plus : `data/sections.json` et
 connaît **pas** les activités 116 à 118, livrées entre-temps. Les prendre tels
 quels les effacerait. Le script les régénère au lieu de les fusionner, ce qui
 règle le cas — mais il faut que ce soit lui qui le fasse.
+
+**23 août 2026 — activité 122, `module-n8-actualite`.** « Deux versions, et la
+mienne », niveau 8, `numero` 5, `GRILLE_3_DEFIS`. Scénario inventé :
+Rivière-aux-Cèdres, vingt-quatre mille habitants à quarante minutes de
+Sherbrooke, dont le conseil a cédé lundi soir les onze hectares du boisé
+Sainte-Perpétue à un promoteur pour un dollar, en échange de quarante-cinq
+logements abordables sur cent quatre-vingts — par quatre voix contre trois, à
+vingt-deux heures cinquante, devant onze personnes. Mirela Petrescu,
+technicienne en documentation à la bibliothèque, a lu deux articles sur la même
+séance et n'y a pas reconnu la même soirée (Je découvre) ; elle écoute le
+reportage où Wilfrid Chamberland, éditorialiste, et Régine Sauvé, du comité de
+citoyens, racontent chacun « la même minute » (défi 1) ; elle suit la chronique
+de Grégoire Ferland, douze répliques d'affilée, qui se déclare pour le projet
+puis donne raison au comité (défi 2) ; puis elle appelle à la tribune, annonce
+qu'elle est pour le projet et qu'elle signera quand même le registre (défi 3).
+22 exercices, 13 mini-leçons, 4 dialogues (76 répliques), 16 mots, 17 images,
+197 sons relevés — 273 extraits en tout —, 16 séances (204 diapositives, 144
+blocs de fiches).
+
+*Ce qui le distingue de ses quatre voisins de situation*, écrit avant le
+scénario : `module-nouvelles` (41) **repère** dans un bulletin,
+`module-n5-actualite` (71) **raconte** un fait divers à qui ne l'a pas lu,
+`module-n6-actualite` (99) **suit un même sujet** à travers cinq genres,
+`module-n7-actualite` (60) **démêle le fait de l'opinion** — et ici, la nouvelle
+est connue de tous et personne n'en conteste les faits : ce qui se travaille est
+**le désaccord**. Deux comptes rendus qui choisissent autrement sans qu'aucun ne
+mente, un éditorial dont on discute la thèse et non les chiffres, un avis qu'il
+faut défendre en tenant compte de l'objection.
+
+*C'est la première situation du dépôt qui n'emprunte rien aux attentes de fin de
+cours.* Les activités 99 et 119 ont dû justifier leur tâche d'écriture, faute
+d'intention de production écrite dans leur situation. Ici, le programme en donne
+**deux** — « rédiger une lettre pour le courrier des lecteurs » et « résumer un
+texte d'opinion » —, et elles ne se séparent pas : la lettre de « Je me lance »
+commence par résumer en trois phrases l'éditorial qu'elle conteste, parce
+qu'une lettre qui ne résume pas ce qu'elle attaque n'a aucune prise, et qu'un
+résumé sans réponse n'est pas une lettre. Une intention de plus n'aurait pas
+tenu dans le module ; deux intentions dans une tâche, oui.
+
+*Trois exercices de type `texte`, un par défi*, et c'est le module le plus
+textuel du dépôt — quatre des sept intentions de la situation portent sur de
+l'écrit. Le troisième suit la recommandation de l'activité 119 (faire lire le
+modèle du texte qu'on demandera d'écrire), mais les deux premiers ajoutent un
+usage que le type n'avait pas encore : **deux documents dans le même exercice**.
+Les `paras` de `t1deux` portent les deux dépêches à la file, et les questions
+font sauter le lecteur de l'une à l'autre — « quel passage nomme le terrain de
+la façon la plus favorable au projet ? », puis « quel passage nomme le même
+terrain de la façon la plus favorable au comité ? ». Rien n'a été ajouté au
+moteur : le type sait déjà faire, il suffit de ne pas croire qu'un exercice
+`texte` égale un texte.
+
+Trois choses apprises.
+
+**1. Le piège à texte le plus coûteux n'est pas une enseigne, c'est une marque
+d'appareil.** Sur les dix-sept images, deux ont été refaites. La première pour
+la raison connue (une assistance entièrement blanche et âgée, alors que le
+prompt disait « mixte et d'origines diverses » — la formule est trop abstraite,
+il faut **compter et décrire** : six personnes à la peau foncée, trois foulards,
+un enfant). La seconde apprend autre chose. Le studio de radio contenait une
+console de mixage décrite comme « vue de trois quarts arrière et éteinte », ce
+qui est pourtant la parade recommandée — et le modèle y a écrit **le nom d'une
+marque réelle** en toutes lettres sur le flanc. Un appareil de studio est
+couvert d'inscriptions sur *toutes* ses faces : le tourner ne suffit pas. Le
+prompt refait le **sort du cadre** (« aucun appareil électronique n'entre dans le
+champ, seulement des câbles qui sortent par le bord droit ») et l'image est
+juste du premier coup. La règle à retenir : quand un objet porte son texte sur
+plusieurs faces, on ne le tourne pas, on le retire.
+
+**2. Une clé de scénario homonyme se cherche avant d'écrire, pas après.**
+`actualite` était déjà pris — c'est celui de `module-n7-actualite` (60), où deux
+personnes échangent tranquillement sur une nouvelle. Le nouveau s'appelle donc
+`tribune`, et il est autre chose : public, minuté, contradictoire, avec un
+animateur qui oppose l'argument adverse et **tend une rumeur** une fois par
+appel pour voir si l'élève la reprend. C'est le contrôle en quatre lignes de
+`docs/deux-agents-en-parallele.md`, passé avant le premier build plutôt qu'après
+— il coûte trente secondes et il a rendu les bons rôles (`auditeur`,
+`animateur`) du premier coup.
+
+**3. Le générateur audio du voisin lisait le manifeste d'un autre module.**
+Relevé en copiant `generer_audio_module_n8_recherche.py` comme modèle : sa ligne
+`MANIFESTE` portait `sons_module_n7_recherche.json` — le relevé de l'activité
+110, pas le sien. Le fichier existe, donc **rien n'aurait protesté** : le
+générateur aurait produit 221 extraits du niveau 7 au lieu des 334 du niveau 8,
+9 clés en commun sur 334, et un module troué dont personne n'aurait su pourquoi.
+Corrigé ici, avec le commentaire qui explique. Ce que ça enseigne vaut au-delà
+de cette ligne : dans une famille de scripts qui se copient les uns sur les
+autres, **un nom de fichier à moitié substitué ne lève aucune erreur** dès que
+l'ancien nom existe encore. Le contrôle est celui qui a servi ici — charger le
+générateur sans le lancer et lui faire dire ce qu'il a trouvé : ses dialogues,
+ses répliques, ses personnages sans voix, le nom de son manifeste et son
+nombre de sons.
+
+*Sur les voix* : quatre personnages, quatre voix, aucun partage. Le défi 3 les
+réunit tous, dont **deux femmes** — la limite exacte du dépôt, et elle tient
+parce que Régine prend `enseignante` et Mirela `feminin_2`. C'est pour cela que
+l'éditorialiste et l'animateur sont des hommes, décidé avant d'écrire une
+réplique. GRÉGOIRE prend `narrateur`, la seule voix masculine que `voix_lente`
+ne ralentit pas : sa chronique est le monologue du module, et le débit d'un
+professionnel de la radio **est** ce que l'exercice fait travailler — trois
+écoutes à consigne différente, et le deck C1 est bâti là-dessus.
+
+*Sur l'originalité* : 1 349 énoncés visibles, **51 identiques** parmi les 63 209
+des soixante-treize autres modules de `build/contenu/`, soit **3,8 %**. La
+première mesure donnait 4,7 %, et l'écart n'était pas dans les consignes du
+gabarit : il était dans la mini-leçon d'**intonation expressive**, qui reprenait
+mot pour mot une douzaine de formules de l'activité 119. C'est le même savoir —
+le seul de phonétique du niveau — et il n'y a que quatre mélodies à décrire,
+donc la convergence est naturelle ; elle n'est pas pour autant acceptable. Douze
+formules réécrites, et le chiffre tombe à 3,8 %. **À prévoir pour les activités
+120, 121 et 123** : la leçon d'intonation est l'endroit du niveau 8 où deux
+modules se ressemblent sans le vouloir, et c'est le premier à relire.
+
+*Sur les contrôles* : les sept passent. `coherence.js` ne signale rien,
+`sections.py --verifier` et `materiel.py --verifier` sont à jour, les deux
+contrôles de couleur ne rendent rien, `sommaire.py --verifier` ne trouve aucun
+lien cassé — après avoir lancé `python3 build/powerpoints/sommaire.py
+module-n8-actualite`, qui manque **toujours** à la séquence —, et
+`pieds_de_page.py` lit « niveau 8 · numéro 5 · 16 pptx · vus ['5'] ». Son seul
+écart reste `module-n3-horaire`, connu de longue date et qui n'est pas le mien.
+Le `node --check` du script en ligne passe (305 882 octets).
+
+*La vérification dans le navigateur* a été faite sur un serveur et un onglet à
+moi, comme les activités 113 et 116 le recommandent. Aucune erreur de console,
+les six sections rendent, les quatre icônes du module répondent 200, les
+dix-sept images aussi, les cinq laboratoires des mini-leçons n'ont **aucune
+combinaison sans sortie**, et le contrôle qui compte a été passé sur les **209
+zones** : les 153 à réponse enregistrée sont toutes acceptées par `checkOk()`,
+et les 56 champs des exercices `write` acceptent tous leur première réponse.
+Une note de méthode sur ce contrôle, qui a failli rendre un faux positif :
+`checkOk(zid, iid, lbl)` prend **trois** arguments, et les zones `vf` et `lbl`
+se jugent sur le **troisième** — l'appeler avec deux arguments fait échouer
+toutes les tuiles d'un coup, ce qui ressemble à s'y méprendre à quatre-vingt-huit
+exercices morts.
+
+*Ce qui reste* : les **273 extraits audio**.
+`generer_audio_module_n8_actualite.py` est écrit, il s'importe sans erreur, il
+retrouve ses 76 répliques sur quatre dialogues et son manifeste de 197 sons — il
+attend `build/audio_tous.py` avec les autres. Le module est livré complet et
+muet.
+
+*Comme les activités 108 à 119*, ni `VOCAB_BANK` de `server.py` ni la constante
+`DETAILS` de `js/enseignant.js` n'ont reçu quoi que ce soit : ces deux tables se
+sont arrêtées aux modules du niveau 4, et c'est un chantier à part.
+
+*Sur la fusion* : la branche est poussée **sans rebase sur `main`**, comme celle
+de l'activité 119 et pour la même raison. Elle touche trois fichiers partagés —
+`build/powerpoints/modules.py`, `data/activities.json` et `server.py`, plus les
+deux relevés `data/sections.json` et `data/materiel.json`. Ces deux derniers ont
+été régénérés depuis un disque qui ne connaît **pas** les activités 120, 121 et
+123, livrées en même temps : les prendre tels quels les effacerait. La fusion se
+fait avec `python3 build/fusionner_module.py`, qui les régénère au lieu de les
+fusionner — jamais à la main.

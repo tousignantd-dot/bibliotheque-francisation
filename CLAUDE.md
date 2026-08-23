@@ -791,6 +791,17 @@ Une publicité, une affiche, un formulaire : le gabarit sait afficher un
 bandeau, un encadré, un texte suivi (type `texte`). L'image montre alors la
 scène autour — l'abribus vu de loin, l'écran éteint, la personne qui regarde.
 
+**Un objet qui porte son texte sur plusieurs faces ne se tourne pas : il se
+retire du cadre.** Le cadrage suffit devant un répondeur ou un calendrier, qui
+n'ont qu'une face écrite. Une console de mixage, un tableau de bord, un
+appareil de studio en portent sur le dessus, le flanc et l'arrière : « vue de
+trois quarts arrière et éteinte » ne les sauve pas, et le modèle y écrit une
+**marque réelle** en toutes lettres. Découvert le 23 août 2026 en produisant
+`module-n8-actualite`, dont le studio de radio est sorti avec un nom de
+fabricant sur la console. Le prompt refait dit « aucun appareil électronique
+n'entre dans le champ, seulement des câbles qui sortent par le bord droit » ;
+l'image est juste du premier coup, et le micro sur bras suffit à dire le lieu.
+
 **Une skill s'invoque par son nom, elle ne se cherche pas sur le disque.** Un
 `find /` lancé pour retrouver un `SKILL.md` a fait ouvrir à macOS trois
 demandes d'autorisation — calendrier, photothèque, « données d'autres apps » —
@@ -1584,6 +1595,18 @@ racine : `<module>.py` pour les dialogues (une voix par personnage),
 mini-leçons. Les identifiants de voix sont volontairement les mêmes d'un
 module à l'autre, pour qu'un personnage sonne pareil partout.
 
+- **Un générateur se copie sur son voisin, et un nom de fichier à moitié
+  substitué ne lève aucune erreur.** Découvert le 23 août 2026 en produisant
+  `module-n8-actualite` : la ligne `MANIFESTE` de
+  `generer_audio_module_n8_recherche.py` portait `sons_module_n7_recherche.json`
+  — le relevé d'un **autre module**. Le fichier existe, donc rien n'aurait
+  protesté : le générateur aurait produit les 221 extraits du niveau 7 au lieu
+  des 334 du sien, 9 clés en commun sur 334, et un module troué dont personne
+  n'aurait su pourquoi. Le contrôle, à passer après avoir copié un générateur
+  et avant de le lancer : le **charger sans appeler `main()`** et lui faire dire
+  ce qu'il a trouvé — ses dialogues et leur nombre de répliques, les
+  personnages sans voix, le nom de son manifeste et son nombre de sons. Vingt
+  lignes, aucun appel réseau, aucun caractère facturé.
 - **Il n'y a que quatre voix, et ça se compte AVANT d'écrire les dialogues.**
   Deux féminines (`enseignante`, `feminin_2`), deux masculines (`masculin_1`,
   `narrateur`). Deux personnages ne peuvent en partager une que s'ils ne se
