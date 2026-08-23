@@ -56,22 +56,22 @@ def build(dossier):
             notes="Diapositive à photographier. Insister : ce n'est pas jouer la "
                   "comédie. Trois phrases sur dix minutes d'appel suffisent.")
 
-    d.cartes('Analyse', "Trois mélodies, trois repères", [
+    d.cartes('Analyse', "Quatre courbes, quatre repères", [
         ("La surprise",
-         "La voix monte d'un coup sur les deux ou trois dernières syllabes. "
-         "Souvent une question courte, souvent introduite par « comment ça ». "
+         "Les premiers mots sont plats, puis les deux ou trois dernières "
+         "syllabes montent d'un coup, comme une marche. "
          "« Vous me dites que le drain n'a pas été entretenu ? »"),
         ("L'incompréhension",
-         "On ne monte pas : on freine. Le débit se casse à l'endroit où le fil "
-         "s'est rompu, avec un petit silence avant le mot en cause. "
+         "Rien ne monte : le débit traîne exactement là où vous avez "
+         "décroché, avec un blanc juste avant le mot en cause. "
          "« Excusez-moi, le mot exclusion… vous l'employez comment ? »"),
         ("La volonté",
-         "La mélodie descend, le débit ralentit, les syllabes se détachent. "
-         "C'est la voix de l'engagement, et celle d'une contestation. "
-         "« Je veux une réponse écrite, et je l'aurai. »"),
+         "La courbe va vers le bas, les syllabes se séparent, et on marque "
+         "une pause avant le dernier groupe. C'est la voix d'une décision "
+         "déjà prise. « Je veux une réponse écrite, et je l'aurai. »"),
         ("La déception",
-         "La quatrième, surtout utile à reconnaître chez l'autre : la voix "
-         "tombe dès la première syllabe et ne remonte jamais. "
+         "La quatrième, celle qu'on entend chez l'autre : ça descend dès la "
+         "première syllabe et ça ne se relève jamais. "
          "« Ah. Je pensais que la facture était au dossier. »"),
     ], notes="Faire écouter chaque exemple dans le module, puis faire répéter en "
              "exagérant. L'exagération est ce qui fait entrer une mélodie dans "
