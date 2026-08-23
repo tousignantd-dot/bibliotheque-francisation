@@ -1346,6 +1346,19 @@ MODULES = {
                         "La promesse d'achat"),
     },
 
+    'module-n7-habitation': {
+        'numero': 5, 'activite': 112, 'niveau': 7,
+        'titre': "Le bruit d'en haut",
+        'chapeau': "Régler un problème de voisinage : parler soi-même au "
+                   "voisin, rapporter fidèlement ce qu'il a répondu, lire ce "
+                   "que disent le règlement de la ville et le bail, puis "
+                   "écrire la lettre qui règle.",
+        'seances': GRILLE_3_DEFIS,
+        'blocs': _blocs("Frapper à la porte d'en haut",
+                        'Redire ce qui a été dit',
+                        'La lettre qui règle'),
+    },
+
     'module-n8-emploi': {
         'numero': 1, 'activite': 61, 'niveau': 8,
         'titre': "Tenir son bout au travail",
