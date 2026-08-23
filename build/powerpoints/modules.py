@@ -1418,6 +1418,34 @@ MODULES = {
                         'La lettre de réclamation'),
     },
 
+    # Niveau 7, situation « Communication avec le personnel de
+    # l'établissement ». Trois intentions, et elles se lisent comme un plan :
+    # rédiger une lettre de motivation en vue de participer à une formation
+    # (PE), participer à une entrevue de sélection pour suivre une formation
+    # (CO/PO), téléphoner après une entrevue pour faire un suivi (CO/PO). Une
+    # par défi. La vague 7 laissait le choix de la grille ; le test des trois
+    # entrées la tranche sans forcer, puisque chaque défi porte une intention
+    # entière et un canal différent — l'écrit, le face à face, le téléphone.
+    #
+    # Ne recoupe aucun des quatre voisins de situation : `module-n3-secretariat`
+    # (86) informe le personnel d'une absence, `module-n5-ecole` (74) règle une
+    # affaire au comptoir, `module-n6-etablissement` (102) choisit un
+    # programme, `module-n4-etablissement` (108) laisse et reçoit des messages
+    # sans que personne se parle. Ici l'établissement **choisit**, et il peut
+    # dire non : plus de candidats que de places, un dossier qui ne rentre dans
+    # aucune case, et rien à faire sinon convaincre.
+    'module-n7-etablissement': {
+        'numero': 11, 'activite': 118, 'niveau': 7,
+        'titre': 'Entrer dans le programme',
+        'chapeau': "Écrire une lettre de motivation qui tient debout, répondre "
+                   "en entrevue de sélection sans réciter, puis relancer par "
+                   "téléphone une décision qui n'a pas de guichet.",
+        'seances': GRILLE_3_DEFIS,
+        'blocs': _blocs('La lettre de motivation',
+                        "L'entrevue de sélection",
+                        'Le suivi, après'),
+    },
+
     'module-n8-emploi': {
         'numero': 1, 'activite': 61, 'niveau': 8,
         'titre': "Tenir son bout au travail",
