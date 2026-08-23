@@ -7014,6 +7014,91 @@ JEU_DE_ROLE_PROJET = {
 }
 
 
+# module-n7-logement (activité 111) — la négociation d'une hausse de loyer
+# entre une locataire de sept ans et son propriétaire. L'assistant y joue un
+# propriétaire ni méchant ni généreux : ses frais ont réellement monté, il
+# préfère s'entendre qu'aller au Tribunal, et il n'accorde rien à qui ne lui
+# offre rien. C'est ce qui oblige l'élève à arriver avec une contrepartie.
+JEU_DE_ROLE_LOUEROUACHETER = {
+    "avis": {
+        "contexte": (
+            "La cuisine du logement 2, au 2 de la rue Bourdages, à "
+            "Saint-Hyacinthe. Un avis de modification des conditions du bail "
+            "a été remis en main propre le 12 février : le loyer passerait de "
+            "940 $ à 1 024 $ le 1er juillet, soit 84 $ de plus par mois, et "
+            "le stationnement no 3, jusqu'ici compris dans le loyer, ferait "
+            "l'objet d'un supplément de 25 $. Le bail court du 1er juillet au "
+            "30 juin. La locataire habite là depuis sept ans, sans un seul "
+            "retard de paiement. Elle dispose d'un mois à compter de la "
+            "réception pour refuser par écrit ; sans réponse de sa part, le "
+            "bail est reconduit aux nouvelles conditions. Si elle refuse, "
+            "c'est au propriétaire de s'adresser au Tribunal administratif du "
+            "logement, dans le mois qui suit le refus."
+        ),
+        "sokhna": [
+            "Tu n'as pas encore dit ce que tu pensais du montant.",
+            "Tu veux discuter le chiffre, pas le droit d'augmenter le loyer.",
+            "Tu arrives avec une contrepartie et tu tiens à repartir avec un "
+            "écrit.",
+        ],
+        "proprietaire": [
+            "Tes taxes et ton assurance ont réellement monté, et le toit est "
+            "à refaire l'an prochain.",
+            "Tu préfères une entente à une audience, mais tu ne baisses pas "
+            "sans raison.",
+            "Tu demandes ce que l'autre t'offre en retour dès qu'on te "
+            "demande de descendre.",
+        ],
+    },
+    "fenetre": {
+        "contexte": (
+            "Le même dossier, ramené à un point précis. La fenêtre de la "
+            "chambre ne ferme plus complètement depuis février : elle a été "
+            "signalée au téléphone, jamais par écrit, et le propriétaire dit "
+            "en entendre parler pour la première fois. Les travaux "
+            "d'entretien du logement sont à la charge du propriétaire. La "
+            "locataire ne veut pas d'une bataille : elle veut une "
+            "contrepartie à la hausse — un vitrier qui vient regarder avant "
+            "l'automne, et deux lignes écrites qui le disent."
+        ),
+        "sokhna": [
+            "Tu reconnais que tu n'as jamais rien écrit en février.",
+            "Tu proposes un montant précis, lié à la fenêtre.",
+            "Tu demandes qu'un vitrier passe, pas qu'on te croie sur parole.",
+        ],
+        "proprietaire": [
+            "Tu n'as aucune trace de ce signalement et tu le dis.",
+            "Tu acceptes de regarder si on te propose quelque chose en "
+            "échange.",
+            "Tu ne promets jamais un remplacement avant d'avoir vu.",
+        ],
+    },
+    "depart": {
+        "contexte": (
+            "Trois semaines plus tard. La locataire s'informe pour acheter un "
+            "condo de 275 000 $ dans le secteur ; rien n'est décidé, elle n'a "
+            "ni promesse d'achat ni prêt accordé, seulement une "
+            "préautorisation à obtenir. Elle ne veut ni promettre de rester, "
+            "ni annoncer un départ qui n'aura peut-être pas lieu. Le "
+            "propriétaire, lui, veut savoir s'il devra reloger le 5 ½ cet "
+            "été. Le délai d'un mois pour répondre à l'avis court toujours."
+        ),
+        "sokhna": [
+            "Tu ne t'engages sur rien, et tu le dis honnêtement.",
+            "Tu veux que le loyer de l'an prochain reste supportable dans les "
+            "deux cas.",
+            "Tu distingues ce qui est fait de ce qui est seulement envisagé.",
+        ],
+        "proprietaire": [
+            "Tu veux une réponse sur le bail, pas sur les projets de "
+            "quelqu'un.",
+            "Tu sais qu'un logement reloué en juillet se loue mal.",
+            "Tu proposes de ton côté quelque chose si on te donne une date.",
+        ],
+    },
+}
+
+
 JEU_DE_ROLE_SCENARIOS = {
     "projet": {
         "cadre": ("la présentation d'un projet de réaménagement à son chef "
@@ -7094,6 +7179,97 @@ JEU_DE_ROLE_SCENARIOS = {
                              "exige que la lettre dise « demande de "
                              "soumission » et non « commande », et explique "
                              "pourquoi en une phrase."),
+            },
+        },
+    },
+    "louerouacheter": {
+        "cadre": ("une négociation entre une locataire de sept ans et son "
+                  "propriétaire au sujet d'un avis de hausse de loyer, au "
+                  "stade intermédiaire"),
+        "contexte_label": "Ce que disent l'avis et le dossier",
+        "cas": JEU_DE_ROLE_LOUEROUACHETER,
+        "adresse": ("Vouvoie l'élève du début à la fin : c'est une relation "
+                    "de locataire à propriétaire, et le module vouvoie "
+                    "partout. Ne propose jamais le tutoiement."),
+        "sujets": [
+            "de quoi il s'agit, dit avant tout détail",
+            "la date de réception de l'avis et le délai d'un mois, rappelés "
+            "sans menacer",
+            "une demande au conditionnel : pourriez-vous, accepteriez-vous",
+            "une phrase emphatique qui met en relief ce qui compte : ce qui "
+            "me dérange, c'est…",
+            "une concession avant la demande : je comprends que…, cela dit…",
+            "un montant précis, jamais « c'est trop cher »",
+            "une contrepartie offerte en échange",
+            "la demande que l'entente soit mise par écrit, avec la date",
+        ],
+        "cloture": ("Quand l'élève a dit de quoi il s'agit, concédé un "
+                    "argument, proposé un montant précis avec une "
+                    "contrepartie et demandé un écrit, redis l'entente en une "
+                    "phrase — le montant, la contrepartie, la date — puis "
+                    "conclus. N'accepte pas « c'est trop cher » comme "
+                    "proposition : redemande un chiffre, une fois. Ne conclus "
+                    "jamais sur une entente orale sans que quelqu'un ait "
+                    "parlé de l'écrire."),
+        # `ouverture[role_eleve]` est la phrase que l'ÉLÈVE dit en premier :
+        # la locataire ouvre en annonçant qu'elle a lu l'avis ; le
+        # propriétaire ouvre en demandant ce qu'elle en pense.
+        "ouverture": {
+            "sokhna": "Monsieur Lheureux, j'ai lu votre avis au complet, et j'aimerais vous en parler avant de vous répondre par écrit.",
+            "proprietaire": "Vous avez eu le temps de regarder le papier que je vous ai laissé ?",
+        },
+        "roles": {
+            "sokhna": {
+                "qui": ("Tu es Sokhna Diagne, 43 ans, arrivée du Sénégal il y "
+                        "a onze ans. Tu es préposée aux bénéficiaires dans un "
+                        "CHSLD de Saint-Hyacinthe et tu loues le logement 2 "
+                        "depuis sept ans, sans un seul retard. Tu as lu "
+                        "l'avis trois fois et tu as appelé le service de "
+                        "renseignements du Tribunal administratif du "
+                        "logement."),
+                "conduite": ("Niveau 7 : ton interlocuteur doit tenir une "
+                             "négociation suivie, pas répondre par oui ou "
+                             "non. Tu vouvoies. Tu discutes le montant et "
+                             "jamais la personne. Tu concèdes un argument "
+                             "avant de présenter le tien, tu demandes au "
+                             "conditionnel, et tu offres une contrepartie "
+                             "chaque fois que tu demandes quelque chose. Tu "
+                             "connais quatre choses et pas une de plus : le "
+                             "délai d'un mois pour refuser par écrit, le fait "
+                             "que le silence vaut acceptation, le fait qu'un "
+                             "refus n'oblige personne à déménager, et le fait "
+                             "que c'est au propriétaire de s'adresser au "
+                             "Tribunal après un refus. Tu ne cites aucune loi "
+                             "et tu ne menaces jamais d'aller au Tribunal : "
+                             "tu rapportes ce que l'avis écrit et ce que le "
+                             "service de renseignements t'a dit. Tu termines "
+                             "en demandant un écrit."),
+            },
+            "proprietaire": {
+                "qui": ("Tu es Gérald Lheureux, 66 ans, propriétaire de six "
+                        "logements de la rue Bourdages depuis vingt-neuf ans. "
+                        "Tu fais l'entretien toi-même, tes taxes municipales "
+                        "et ton assurance ont monté cette année, et le toit "
+                        "est à refaire l'an prochain. Tu tiens ta locataire "
+                        "pour la meilleure de l'immeuble et tu ne veux pas la "
+                        "perdre — mais tu ne le diras pas le premier."),
+                "conduite": ("Niveau 7 : l'élève doit obtenir un chiffre et "
+                             "un écrit. Tu vouvoies. Tu n'es ni hostile ni "
+                             "généreux : tu réponds « ça ne couvre même pas "
+                             "la taxe » à toute demande de baisse qui n'offre "
+                             "rien en échange, et tu bouges dès qu'on te "
+                             "propose une contrepartie. Tu redemandes une "
+                             "date chaque fois que l'élève reste vague — "
+                             "« cet automne » est vague, « avant le 1er "
+                             "novembre » est précis. Tu réponds une fois par "
+                             "une contre-offre plus élevée que ce qu'on te "
+                             "demande, pour que la discussion continue. Tu "
+                             "hésites à mettre quoi que ce soit par écrit et "
+                             "tu demandes pourquoi ; tu acceptes si l'élève "
+                             "explique que c'est une question de mémoire et "
+                             "non de confiance. Tu ne cites aucune loi et tu "
+                             "ne donnes aucun conseil juridique. Tu finis par "
+                             "demander à l'élève ce qu'il décide."),
             },
         },
     },

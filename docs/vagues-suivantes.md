@@ -2441,4 +2441,61 @@ worktree (`isolation: "worktree"`). Cinq ont épuisé la limite de session le
 retombés dans le même répertoire et se sont marchés dessus. La fusion se fait
 avec `python3 build/fusionner_module.py`, jamais à la main.
 
+### Les images de cette vague — quatre règles, tirées d'une relecture
+
+Le 22 août 2026, l'utilisateur a passé les 1 268 images du projet sur une
+planche de contact numérotée (`build/planche_images.py`, avec les énoncés
+relevés par `node build/contexte_images.js`) et a nommé ce qui cloche. Quatre
+défauts, dont trois se réparent dans le prompt et un dans la méthode :
+
+1. **Aucun texte dans l'image.** Pas d'enseigne lisible, pas d'étiquette de
+   prix, pas de panneau écrit, pas de logo, pas de slogan. Le modèle écrit du
+   charabia qui ressemble à du français, et l'élève le lit. Deux situations
+   sont des pièges à texte et demandent un détour : la **banque** (relevé,
+   chèque, écran de guichet — cadrer de biais, flou, ou montrer l'objet plutôt
+   que le document) et la **publicité** (une pub *est* du texte : faire
+   dessiner ce qu'elle montre, jamais l'affiche elle-même, et laisser le texte
+   publicitaire vivre dans le contenu écrit du module, où il est correct).
+2. **Pas de mains ni de visages en gros plan.** Cadrer plus large, de dos, ou
+   hors champ.
+3. **Le décor est québécois, et nommé.** Escalier extérieur en colimaçon,
+   brique rouge, duplex, déneigeuse, thermostat électrique, sous-sol fini,
+   dépanneur. « Appartement moderne » ou « bureau lumineux » sortent
+   génériques américains.
+4. **L'image montre ce que dit son énoncé, pas le thème du module.** C'est le
+   défaut le plus fréquent, et il ne se voit qu'en mettant la phrase à côté de
+   la photo. Le prompt s'écrit **à partir de la phrase de la rangée `ok`**, pas
+   à partir du sujet général. Exemple relevé : l'exercice « Dans le magasin »
+   de `module-achat`, rangée « les quatre boulons à enlever avant le premier
+   lavage », avait reçu une photo de laveuses usagées rouillées sur un
+   trottoir. L'exercice est infaisable, et rien dans le HTML ne le disait.
+
+Le contrôle, à passer avant de livrer :
+
+    node build/contexte_images.js <slug>
+
+Il affiche, pour chaque image du module, l'énoncé qu'elle doit illustrer. Une
+image dont l'énoncé ne décrit pas ce qu'on voit se refait — à 0,0336 $ pièce
+par la route Google directe, c'est le moins cher des contrôles.
+
+### Ce qu'un agent ne fait pas : chercher une skill sur le disque
+
+Le 22 août 2026, un agent de cette vague a lancé
+
+    bfs -S dfs -regextype findutils-default / -name SKILL.md -path *module-neuf*
+
+— un `find` **depuis la racine**, pour retrouver le fichier d'une skill. Le
+balayage est passé sur `~/Library/Calendars`, la photothèque et les dossiers
+d'applications, et macOS a ouvert coup sur coup trois demandes d'autorisation,
+dont « Claude souhaite accéder aux données d'autres apps »
+(`kTCCServiceSystemPolicyAppData`). L'utilisateur a refusé, et il a eu raison :
+rien n'en dépendait.
+
+**Une skill s'invoque par son nom, elle ne se cherche pas.** Si un chemin est
+vraiment nécessaire, c'est `~/.claude/skills/<nom>/SKILL.md` — jamais un `find`
+au-delà du dépôt. La règle vaut pour toute recherche de fichier : le dépôt est
+`/Users/danieltousignant/Claude/bibliotheque-francisation`, et il n'y a aucune
+raison d'en sortir, sauf pour `~/Claude/programme/` (le programme d'études),
+`~/Claude/generations/` (le registre des médias) et `~/Claude/.env` (les clés).
+
 ### Journal de la vague 7
