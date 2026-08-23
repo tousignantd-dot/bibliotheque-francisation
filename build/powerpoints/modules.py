@@ -1418,6 +1418,25 @@ MODULES = {
                         'La lettre de réclamation'),
     },
 
+    # Niveau 7, situation « Salle de classe ». Ne recoupe ni
+    # `module-n1-classe` (98), où l'on comprend une consigne de deux mots, ni
+    # `module-n2-classe` (89), où l'on demande une permission, ni
+    # `module-n6-classe` (107), où l'on exécute un travail de recherche qu'on
+    # a reçu. Ici, on anime le travail des autres : faire parler, arbitrer un
+    # désaccord, rendre compte à celui qui n'était pas là.
+    'module-n7-classe': {
+        'numero': 10, 'activite': 117, 'niveau': 7,
+        'titre': "Faire parler l'équipe",
+        'chapeau': "Suivre une personne invitée en classe et distinguer ses "
+                   "faits de ses estimations, résumer une documentation sans "
+                   "la recopier, puis animer une rencontre d'équipe et "
+                   "rapporter ce que chacun a dit.",
+        'seances': GRILLE_3_DEFIS,
+        'blocs': _blocs("Écouter quelqu'un qui sait",
+                        'Lire, trier, résumer',
+                        "Faire parler l'équipe"),
+    },
+
     'module-n8-emploi': {
         'numero': 1, 'activite': 61, 'niveau': 8,
         'titre': "Tenir son bout au travail",
