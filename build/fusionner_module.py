@@ -269,12 +269,19 @@ def fusionner_python(chemin, branche):
         # avant d'être écrit ici.
         entete = re.compile(r'^([A-Z_][A-Z0-9_]*)\s*=\s*\{\s*$')
         notre, leur = lignes[d + 1:m], lignes[m + 1:fin]
-        n_ouvre = entete.match(notre[0]) if notre else None
-        tete_leur = next((i for i, l in enumerate(leur) if l.strip()), None)
-        l_ouvre = entete.match(leur[tete_leur]) if tete_leur is not None else None
-        if n_ouvre and l_ouvre and n_ouvre.group(1) == l_ouvre.group(1):
-            lignes = (lignes[:d] + notre + fermeture_manquante(notre)[:-1]
-                      + leur[tete_leur + 1:] + lignes[fin + 1:])
+
+        def ouvertures(bloc):
+            return [(j, entete.match(l).group(1))
+                    for j, l in enumerate(bloc) if entete.match(l)]
+
+        # Le dictionnaire partagé est le DERNIER que nous rouvrons et le
+        # PREMIER qu'ils rouvrent : entre les deux, chacun a pu déposer
+        # ses propres constantes, qui ne se recouvrent pas.
+        n_ouv, l_ouv = ouvertures(notre), ouvertures(leur)
+        if n_ouv and l_ouv and n_ouv[-1][1] == l_ouv[0][1]:
+            lignes = (lignes[:d] + leur[:l_ouv[0][0]] + notre
+                      + fermeture_manquante(notre)[:-1]
+                      + leur[l_ouv[0][0] + 1:] + lignes[fin + 1:])
             continue
 
         # Pas de fermeture après le marqueur : les deux côtés ajoutent alors
