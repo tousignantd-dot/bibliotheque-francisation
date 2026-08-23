@@ -3186,3 +3186,175 @@ général et donne un chiffre net à une question précise.
 *Le module est livré muet* : les 251 extraits sont relevés, le générateur
 s'importe sans erreur et il est relançable, mais les 92 générateurs de la vague
 partent ensemble par `build/audio_tous.py`.
+
+**23 août 2026 — activité 114, `module-n7-banque`.** « Emprunter, épargner, se
+protéger », niveau 7, `numero` 7, `GRILLE_3_DEFIS`. Scénario inventé : Marlène
+Saint-Preux, 41 ans, arrivée d'Haïti il y a huit ans, technicienne au contrôle
+de la qualité à la Fromagerie des Bois-Francs, à Victoriaville. Elle n'a jamais
+sauté un paiement de sa vie et doit pourtant 9 412 $ sur une carte à 19,90 % ;
+en un an, le solde n'a baissé que de 400 $. À la pause de dix heures, sa
+collègue Huguette Larochelle lui fait le calcul sur un coin de table (Je
+découvre) ; Damien Rouillard, conseiller en finances personnelles, lui présente
+trois façons d'emprunter et lui demande si elle a déjà remboursé une marge dans
+sa vie (défi 1) ; Nathalie Pomerleau, planificatrice, commence par une question
+qui n'a rien de financier — quand aurez-vous besoin de cet argent ? — avant de
+parler de CELI, de REER et de dépôt à terme (défi 2) ; puis une opération de
+780 $ paraît au relevé, chez un commerçant inconnu, et Steve Dumouchel, agent
+au service de la sécurité des cartes, lui apprend l'ordre des gestes (défi 3).
+22 exercices dont **trois de type `texte`**, 15 mini-leçons, 4 dialogues
+(90 répliques), 16 mots, 13 images, 280 sons relevés — 370 extraits en tout —,
+16 séances (184 diapositives, 134 blocs de fiches).
+
+*Ce qui le distingue de ses trois voisins de situation*, en une phrase, écrite
+avant le scénario : **c'est le seul module du dépôt où l'on achète quelque
+chose qu'on ne peut pas regarder.** `module-n2-guichet` (93) retire de l'argent
+et libelle un chèque — un nombre, un impératif, une signature ;
+`module-banque` (46), au niveau 4, ouvre un compte au comptoir et lit une
+brochure de forfaits ; `module-procedure` (40), rattaché à la même situation
+par `build/bilan_programme.py`, suit une marche à suivre administrative. Aucun
+des trois ne demande de **choisir entre deux produits dont le prix est un
+pourcentage et le défaut, une clause**.
+
+*Sur la grille* : la vague laissait le choix, et c'est `GRILLE_3_DEFIS`. La
+situation n'a que trois intentions, mais ce sont trois fois la même phrase —
+« s'informer sur des produits financiers liés au crédit ou à l'épargne » — en
+CO, en PO et en CE. Le test du pilote du niveau 6 tranche : les trois entrées
+distinctes ne viennent pas des intentions, elles viennent des **deux mots de
+l'intention elle-même**, *crédit* ou *épargne*, plus ce que le programme met
+autour. Défi 1, on écoute un conseiller ; défi 2, on lit une documentation
+comparative ; défi 3, on parle et on écrit. Trois défis, trois compétences, et
+le troisième ne répète pas le deuxième — c'est le seul moment du module où le
+client parle plus que l'institution.
+
+*Les faits québécois sont vérifiés, pas devinés*, le 23 août 2026. **Office de
+la protection du consommateur** : le paiement minimum d'une carte ne peut être
+inférieur à **5 % du solde** à la fin de la période ; un solde remboursé en
+entier avant l'échéance n'entraîne **aucuns frais de crédit** ; une **avance de
+fonds** fait courir les frais **dès le jour où elle est prise**, même
+remboursée à temps ; en cas d'utilisation non autorisée d'une carte perdue,
+volée ou fraudée, la responsabilité du titulaire est **limitée à 50 $** s'il
+avise l'émetteur **sans délai**, et après l'avis il n'est plus responsable de
+rien, la négligence sur le NIP faisant exception. **Autorité des marchés
+financiers** : l'assurance-dépôts couvre **100 000 $ par catégorie de dépôts**,
+par personne et par institution autorisée, capital et intérêts courus compris,
+automatiquement et gratuitement, sur les dépôts payables au Québec ; et le
+**registre des entreprises et des individus autorisés à exercer** se consulte
+avant d'investir. **Agence du revenu du Canada** : plafond du **CELI** à
+**7 000 $ pour 2026**, cotisations non déductibles, retraits non imposables,
+droits rendus le **1er janvier suivant**, impôt de **1 % par mois** sur
+l'excédent ; **REER** déductible à l'entrée, imposable à la sortie, droit
+annuel de **18 % du revenu gagné de l'année précédente**. **Equifax Canada et
+TransUnion Canada**, pointage de **300 à 900**, consultation de son propre
+dossier gratuite et sans effet. Le plafond REER en dollars pour 2026 n'a **pas**
+été vérifié : il n'est donc écrit nulle part dans le module.
+
+*Aucun taux n'est inventé sans être marqué comme tel.* Les seuls pourcentages
+qui ne viennent pas d'une source officielle appartiennent à des institutions
+**inventées** — la carte de la Banque Norlande à 19,90 %, la marge de la Caisse
+Sainte-Praxède à 9,45 %, son prêt personnel à 11,20 %, son dépôt à terme à
+3,10 % —, et les exercices de type `texte` le disent à l'élève dans leur
+bandeau : « Ce document-ci a été écrit pour le module. »
+
+Quatre choses trouvées en produisant celui-ci.
+
+**1. Le savoir lexical de la situation est le meilleur exercice du module, et
+il ne ressemble pas à du vocabulaire.** Le programme range sous « Transactions
+bancaires » trois points de lexique, dont celui-ci : « expressions pour
+reprendre une partie d'un discours et **exprimer une incompréhension
+partielle** ». C'est devenu `prReprise` et sa mini-leçon, et c'est le geste que
+le module enseigne d'un bout à l'autre — jusque dans la conduite du conseiller
+joué par l'assistant, qui **n'explique que ce qu'on lui demande**. Le mot qui
+compte est *partielle* : on n'apprend pas à dire « je n'ai pas compris », on
+apprend à dire *lequel* des vingt mots a échappé. Les agents des situations
+suivantes devraient lire les points de lexique **avant** de les prendre pour
+une liste de mots à traduire.
+
+**2. Trois exercices de type `texte`, et c'est le bon nombre pour ce niveau.**
+`t1doc` fait chercher des conditions dans une fiche de produit, `t2doc` des
+règles fiscales dans une documentation comparative, `t3doc` des gestes dans un
+avis de protection. Trois genres différents, trois lectures différentes :
+prélever une donnée, comparer trois colonnes, suivre une marche à suivre. La
+remarque de l'activité 110 se confirme et s'étend : deux `texte` tiennent sans
+se répéter à condition que les genres diffèrent, et trois aussi. C'est aussi là
+que se logent les faits vérifiés — un texte cliquable rend la vérification
+visible, puisque la phrase citée est celle que l'élève clique.
+
+**3. Un module dont le vocabulaire est abstrait ne doit pas illustrer ses
+cartes.** Sur seize mots — un solde, un taux, une cote, un rendement, une
+protection, une contestation —, **trois seulement** ont reçu une image. Donner
+une photo aux treize autres aurait mis derrière chaque mot une vue générique de
+comptoir de caisse, c'est-à-dire le thème du module à la place de ce que dit la
+carte : le quatrième défaut, commis volontairement et treize fois. Le poids
+visuel est porté par les deux `imgmatch`, dont les énoncés sont des scènes
+concrètes. C'est un renversement par rapport aux modules de niveau 2 et 3, où
+presque toutes les cartes sont illustrées ; le critère n'est pas le niveau,
+c'est le degré d'abstraction du lexique.
+
+**4. Sur les images, la parade par le cadrage marche, et elle marche du premier
+coup.** Treize images, **trois refaites**, seize appels à 0,0336 $ par la route
+Google directe, soit **0,54 $**. Aucune des trois ne se réparait en répétant
+une interdiction. `salle-de-repos` laissait dépasser du bord supérieur la
+moitié d'un cadran d'horloge et ses chiffres, alors que le prompt disait déjà
+« hors champ » : ce qui a marché est de **retirer l'objet**, pas de le cadrer
+plus serré — « aucune horloge, aucun cadran, aucun affichage nulle part sur les
+murs ». `salle-attente-caisse` affichait « EXIT » en rouge et en anglais sur la
+porte vitrée du fond **et** ne comptait que trois chaises quand son énoncé en
+dit quatre ; le prompt refait cadre **face à un mur plein**, sans porte dans le
+champ, et exige « exactement quatre chaises ». `poste-de-securite` montrait un
+téléphone de bureau et aucun casque d'écoute — le thème du module, un centre
+d'appels, à la place de la phrase de sa rangée `ok` ; le prompt refait fait du
+casque le **premier plan net**. Les trois reprises sont commentées dans
+`gen_images.py`, à côté de leur prompt. Et la précaution qui a évité les
+autres : dans ce module, tout objet qui porte des chiffres — calculatrice,
+carte de plastique, téléphone, relevé — est cadré **de dos, par la tranche ou
+l'afficheur hors champ**, et les dix images passées ainsi sont sorties bonnes
+du premier coup.
+
+*Sur l'originalité* : 1 480 énoncés visibles, **52 identiques** parmi les
+45 401 des soixante-cinq autres modules de `build/contenu/`, soit **3,5 %**. Le
+chiffre était de 4,4 % avant que les intitulés de bloc soient rendus
+distinctifs — quinze « Quatre questions, sans filet » et quinze « Trois faux
+pas, et comment s'en sortir », repris du même moule que le module voisin. La
+leçon de l'activité 109 se confirme une troisième fois, avec une précision
+utile : **l'opération est gratuite en audio**, `build/releve_sons.js` rendant
+les mêmes 280 clés avec les mêmes valeurs à l'octet près, parce qu'aucun `say:`
+n'a bougé. Les 52 qui restent sont cinq consignes du gabarit et des faits de
+langue qui ne se disent pas autrement.
+
+*Sur les contrôles* : les sept passent. `coherence.js` ne signale rien,
+`sections.py --verifier` et `materiel.py --verifier` sont à jour, les deux
+contrôles de couleur ne rendent rien, `sommaire.py --verifier` ne rend aucun
+lien cassé — à condition d'avoir lancé `python3 build/powerpoints/sommaire.py
+module-n7-banque`, qui manque toujours à la séquence —, et `pieds_de_page.py`
+lit « niveau 7 · numéro 7 · 16 pptx · vus ['7'] ». Le seul écart restant est
+`module-n3-horaire`, connu de longue date et qui n'est pas le mien. Le
+`node --check` du script produit passe, et la vérification dans le navigateur
+ne laisse aucune erreur de console : les six sections se rendent, les 200 zones
+sont enregistrées, les `cv` des deux `imgmatch` portent bien la bonne réponse,
+les trois exercices de type `texte` arment leur question et valident leur
+passage, et une bonne réponse est acceptée dans les trois types à correction
+automatique.
+
+*Un scénario de jeu de rôle a été ajouté à `server.py`* — `produitfinancier`,
+trois cas (la marge, le CELI, l'opération de 780 $), deux rôles. Aucun des
+scénarios existants ne convenait : `guichet` est du niveau 2 et fait retirer de
+l'argent à une machine, et aucun autre ne parle de taux, d'épargne ni de
+contestation. Sa conduite porte le cœur du module : **le conseiller n'explique
+que ce qu'on lui demande**, il emploie deux mots techniques sans les définir, et
+il ne propose jamais de mettre quoi que ce soit par écrit le premier.
+
+*Le module est livré muet* : les 370 extraits sont relevés, le générateur
+`generer_audio_module_n7_banque.py` s'importe et lit ses quatre dialogues sans
+erreur, et il partira avec les quatre-vingt-onze autres par
+`build/audio_tous.py`.
+
+*Une chose à savoir pour les agents parallèles, et elle n'est écrite nulle part
+ailleurs* : **le répertoire de travail temporaire de la session est partagé
+entre les agents**. Un script d'analyse déposé sous un nom générique
+(`originalite.js`, `inline.js`) s'y fait écraser en cours de route par celui
+d'un voisin, et rien ne le signale — le fichier existe, il s'exécute, et il
+rend un résultat qui n'est pas celui qu'on croit. C'est arrivé ici entre deux
+mesures d'originalité : le compte de chaînes a changé sans raison, et l'examen
+du dossier a montré les fichiers de trois autres activités à côté des miens. La
+parade est celle de `git add` : **des noms explicites**, préfixés du slug
+(`orig-n7-banque.js`).

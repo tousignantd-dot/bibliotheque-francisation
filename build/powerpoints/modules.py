@@ -1375,6 +1375,23 @@ MODULES = {
                         "Quand ce n'est pas écrit « publicité »"),
     },
 
+    # Ne recoupe ni `module-n2-guichet` (93), qui retire de l'argent au guichet
+    # et libelle un chèque, ni `module-banque` (46), qui ouvre un compte au
+    # comptoir au niveau 4, ni `module-procedure` (40), qui suit une marche à
+    # suivre administrative. Ici, on choisit entre deux produits dont le prix
+    # est un pourcentage et le défaut, une clause.
+    'module-n7-banque': {
+        'numero': 7, 'activite': 114, 'niveau': 7,
+        'titre': 'Emprunter, épargner, se protéger',
+        'chapeau': "Comprendre ce que coûte une dette de carte, comparer trois "
+                   "façons d'emprunter et trois façons d'épargner, puis "
+                   "contester une opération qu'on n'a pas faite.",
+        'seances': GRILLE_3_DEFIS,
+        'blocs': _blocs('Emprunter moins cher',
+                        "Faire travailler l'argent",
+                        "Une opération que je n'ai pas faite"),
+    },
+
     'module-n8-emploi': {
         'numero': 1, 'activite': 61, 'niveau': 8,
         'titre': "Tenir son bout au travail",
