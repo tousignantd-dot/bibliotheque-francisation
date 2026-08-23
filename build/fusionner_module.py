@@ -133,6 +133,45 @@ def doublons(source):
     return doubles
 
 
+def fermeture_manquante(lignes):
+    """Les lignes qui refermeraient ce bout de code Python resté ouvert.
+
+    Un côté de conflit s'arrête souvent au milieu d'un dictionnaire : git a
+    coupé là, et la fermeture est passée de l'autre côté du marqueur. On tient
+    une pile des délimiteurs ouverts — en sautant les chaînes et les
+    commentaires, sans quoi une accolade dans une réplique de dialogue
+    fausserait tout — et on rend une ligne par niveau à refermer, indentée
+    comme l'était sa ligne d'ouverture. C'est du style, pas du fonctionnement :
+    le fichier compilerait aussi bien sur une seule ligne, mais le prochain
+    diff serait illisible.
+    """
+    pile = []
+    for ligne in lignes:
+        i, chaine, echap = 0, None, False
+        while i < len(ligne):
+            c = ligne[i]
+            if chaine:
+                if echap:
+                    echap = False
+                elif c == '\\':
+                    echap = True
+                elif c == chaine:
+                    chaine = None
+            elif c in '"\'':
+                chaine = c
+            elif c == '#':
+                break
+            elif c in '([{':
+                pile.append((c, len(ligne) - len(ligne.lstrip())))
+            elif c in ')]}':
+                if pile:
+                    pile.pop()
+            i += 1
+    ferme = {'(': ')', '[': ']', '{': '}'}
+    return [' ' * indent + ferme[ouvert] + (',' if pile[:n] else '')
+            for n, (ouvert, indent) in reversed(list(enumerate(pile)))]
+
+
 def fusionner_catalogue(branche):
     """Toutes les activités des deux côtés, aucun identifiant en double."""
     def lire(ref):
@@ -220,6 +259,24 @@ def fusionner_python(chemin, branche):
                 queue.append(l)
             else:
                 break
+        # Les deux côtés rouvrent-ils le MÊME dictionnaire ? C'est le cas
+        # quand trois modules livrent la même nuit : chacun a ajouté sa clé à
+        # `JEU_DE_ROLE_SCENARIOS`, git ne voit pas une entrée de chaque côté
+        # mais deux versions entières du dictionnaire. Le recollage n'est
+        # alors ni « nôtre + fermeture + leur » ni « nôtre + leur » : c'est
+        # une seule ouverture, nos entrées, leur fermeture, puis les leurs
+        # privées de leur en-tête. Résolu trois fois à la main le 23 août 2026
+        # avant d'être écrit ici.
+        entete = re.compile(r'^([A-Z_][A-Z0-9_]*)\s*=\s*\{\s*$')
+        notre, leur = lignes[d + 1:m], lignes[m + 1:fin]
+        n_ouvre = entete.match(notre[0]) if notre else None
+        tete_leur = next((i for i, l in enumerate(leur) if l.strip()), None)
+        l_ouvre = entete.match(leur[tete_leur]) if tete_leur is not None else None
+        if n_ouvre and l_ouvre and n_ouvre.group(1) == l_ouvre.group(1):
+            lignes = (lignes[:d] + notre + fermeture_manquante(notre)[:-1]
+                      + leur[tete_leur + 1:] + lignes[fin + 1:])
+            continue
+
         # Pas de fermeture après le marqueur : les deux côtés ajoutent alors
         # des blocs **déjà complets** — deux entrées d'un même dictionnaire,
         # par exemple, chacune finie par son `},`. Le recollage est « le nôtre
