@@ -479,6 +479,15 @@ Deux pièges déjà payés :
   exactement celles des exercices `write` — la liste sert donc de
   contre-vérification. C'est ce que recommande l'épisode de l'`imgmatch`
   mort : un exercice qui ne lève aucune erreur peut être mort.
+  **Les deux signatures se lisent avant d'écrire le contrôle**, sans quoi il
+  ment : `checkOk(zid, iid, lbl)` prend **trois** arguments — les zones `vf`
+  et `lbl` se jugent sur le troisième, toutes les autres sur le deuxième — et
+  `checkWrite(exId, i)` veut l'**indice de l'item**, pas seulement l'exercice.
+  Un contrôle qui passe le `cv` en deuxième position pour tout le monde rend
+  un refus par tuile Vrai/Faux du module — 79 sur `module-n8-oeuvres`, le
+  23 août 2026, sur un module parfaitement sain. Un contrôle qui se trompe
+  coûte plus cher que pas de contrôle du tout : on cherche une panne qui
+  n'existe pas.
 - **Un bloc `savoir` ne rend ses pastilles que s'il porte `speak:true`.** Le
   gabarit teste `ex.savoir.speak && r[2]` : une troisième colonne de rangée
   écrite sans ce champ produit des pastilles qui n'existent pas — rien ne
@@ -1278,6 +1287,15 @@ visuelle. Quatrième onglet de `enseignant.html`, rendu par `js/materiel.js`.
   Les sons se nomment par leurs lettres et un mot repère (« le son *an*, comme
   dans *dent* »). `fontTools` doit être installé, sinon le garde-fou se tait et
   un carré vide part chez l'enseignant.
+- **Le garde-fou des tableaux a un budget, et le connaître épargne trois
+  reprises** : `d.tableau()` accepte six rangées, mais **pas** six rangées
+  plus une `note`. Il descend le corps jusqu'au plancher puis refuse, plutôt
+  que de livrer une diapositive tronquée — le message dit « coupez-le en deux
+  tableaux », et c'est rarement la bonne correction. La bonne est de descendre
+  la `note` dans les `notes` de l'enseignante : elle s'y lit de près, alors
+  qu'en petits caractères sous un tableau projeté personne ne la lit. Trois
+  déclenchements le 23 août 2026 en produisant `module-n8-oeuvres`, et les
+  trois avaient raison.
 - **`data/materiel.json` est produit, jamais écrit à la main**
   (`python3 build/materiel.py`). C'est le relevé de ce qui existe sur le
   disque : une entrée non vérifiée serait un lien mort. `--verifier` compare
