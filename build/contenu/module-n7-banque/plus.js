@@ -34,7 +34,7 @@ const PLUS = {
       {t:'labo', h:'Écoutez le même nombre dans les trois emplois',
        p:"Choisissez un nombre, puis ce qu'il annonce.",
        axes:[
-         {id:'n', lbl:'Quel nombre ?', opts:[['a','cinq'],['b','trois et dix'],['c','deux']]},
+         {id:'n', lbl:'Quel nombre entendez-vous ?', opts:[['a','cinq'],['b','trois et dix'],['c','deux']]},
          {id:'q', lbl:"Il annonce quoi ?", opts:[['t','un taux'],['m','un montant'],['d','une durée']]}],
        out:{
          at:{w:["cinq pour cent du solde"], say:"Le paiement minimum est de cinq pour cent du solde.", n:'le plancher fixé par la loi québécoise'},
@@ -63,8 +63,8 @@ const PLUS = {
          ["« sept cent quatre-vingts »","780 $ — le montant contesté"],
        ]},
 
-      {t:'check', h:'Quatre questions, sans filet',
-       p:"Répondez de mémoire, sans remonter plus haut.",
+      {t:'check', h:'Le mot qui suit, quatre fois',
+       p:"Répondez sans réécouter les extraits.",
        qs:[
          {q:"« Dix-neuf et quatre-vingt-dix pour cent », c'est…", opts:["par mois","par année"], ok:1,
           fb:"Toujours par année, même quand le mot « annuel » n'est pas dit."},
@@ -76,7 +76,7 @@ const PLUS = {
           fb:"Les gens qui font répéter sont ceux qui écoutent."},
        ]},
 
-      {t:'piege', h:'Trois faux pas, et comment s\'en sortir',
+      {t:'piege', h:'Trois chiffres mal entendus',
        rows:[
          ["entendre un taux comme un montant","se demander : est-ce qu'il y a « pour cent » à la fin ?",
           "C'est l'erreur qui coûte le plus cher du module entier : dix-neuf dollars et mille huit cents dollars, ce n'est pas le même problème."],
@@ -154,7 +154,7 @@ const PLUS = {
          ["« Sur mille dollars, ça ferait combien ? »","un chiffre à comparer"],
        ]},
 
-      {t:'check', h:'Quatre questions, sans filet',
+      {t:'check', h:'Quatre situations, une phrase chacune',
        p:"Répondez de mémoire, sans remonter plus haut.",
        qs:[
          {q:"« Quoi ? » obtient…", opts:["une explication","la même phrase"], ok:1,
@@ -167,7 +167,7 @@ const PLUS = {
           fb:"Partielle : il faut dire quel morceau manque, pas qu'on n'a rien compris."},
        ]},
 
-      {t:'piege', h:'Trois faux pas, et comment s\'en sortir',
+      {t:'piege', h:'Trois façons de rester dans le flou',
        rows:[
          ["faire oui de la tête pour ne pas déranger","préparer trois phrases d'avance",
           "Vous n'avez pas à les inventer sur le moment : « quand vous dites », « donc si je comprends bien », « sur mille dollars »."],
@@ -216,7 +216,7 @@ const PLUS = {
       {t:'labo', h:'Du verbe au nom, et retour',
        p:"Choisissez un verbe, puis ce que vous voulez en faire.",
        axes:[
-         {id:'v', lbl:'Quel verbe ?', opts:[['r','rembourser'],['c','contester'],['e','emprunter']]},
+         {id:'v', lbl:'Quel verbe du rendez-vous ?', opts:[['r','rembourser'],['c','contester'],['e','emprunter']]},
          {id:'s', lbl:'On veut quoi ?', opts:[['n','le nom'],['p','la phrase du document'],['o','la phrase orale']]}],
        out:{
          rn:{w:["le remboursement"], say:"le remboursement", n:'suffixe -ment, nom masculin'},
@@ -245,8 +245,8 @@ const PLUS = {
          ["le retrait au guichet","l'argent que vous sortez du compte"],
        ]},
 
-      {t:'check', h:'Quatre questions, sans filet',
-       p:"Répondez de mémoire, sans remonter plus haut.",
+      {t:'check', h:'Quatre noms, quatre genres',
+       p:"Quatre questions sur les suffixes ; répondez sans relire.",
        qs:[
          {q:"Les noms en -ment sont…", opts:["masculins","féminins"], ok:0,
           fb:"Le remboursement, le placement, le versement : tous masculins."},
@@ -258,7 +258,7 @@ const PLUS = {
           fb:"« Je conteste » se comprend mieux que « la contestation est déposée »."},
        ]},
 
-      {t:'piege', h:'Trois faux pas, et comment s\'en sortir',
+      {t:'piege', h:'Trois noms mal fabriqués',
        rows:[
          ["inventer un nom qui n'existe pas","vérifier dans le document lui-même",
           "« Déduisation », « contestement » : le document emploie déjà le bon nom, il suffit de le relever en lisant."],
@@ -316,8 +316,8 @@ const PLUS = {
          ["« sous réserve de l'approbation du crédit »","le taux annoncé n'est pas encore le vôtre"],
        ]},
 
-      {t:'check', h:'Quatre questions, sans filet',
-       p:"Répondez de mémoire, sans remonter plus haut.",
+      {t:'check', h:'Quatre lignes de fiche, de mémoire',
+       p:"Fermez la fiche avant de répondre.",
        qs:[
          {q:"Sur un achat payé en entier avant l'échéance, les frais sont…", opts:["nuls","calculés au prorata"], ok:0,
           fb:"Rien n'est porté au compte : c'est tout l'intérêt de payer en entier."},
@@ -329,7 +329,7 @@ const PLUS = {
           fb:"C'est la contrepartie d'un taux plus bas au départ."},
        ]},
 
-      {t:'piege', h:'Trois faux pas, et comment s\'en sortir',
+      {t:'piege', h:'Trois lectures trop rapides',
        rows:[
          ["comparer deux taux sans comparer les conditions","mettre les trois questions côte à côte",
           "Un taux plus bas assorti d'une pénalité de remboursement peut coûter davantage qu'un taux plus haut sans pénalité."],
@@ -378,7 +378,7 @@ const PLUS = {
       {t:'labo', h:'Trois verbes, trois emplois',
        p:"Choisissez un verbe, puis ce que vous voulez en faire.",
        axes:[
-         {id:'v', lbl:'Quel verbe ?', opts:[['p','pouvoir'],['e','être'],['f','faire']]},
+         {id:'v', lbl:'Quel verbe du rendez-vous ?', opts:[['p','pouvoir'],['e','être'],['f','faire']]},
          {id:'e', lbl:'Pour quoi faire ?', opts:[['d','demander'],['s','supposer'],['a','annoncer un chiffre']]}],
        out:{
          pd:{w:["Pourriez-vous répéter le dernier chiffre ?"], say:"Pourriez-vous répéter le dernier chiffre ?", n:'la demande la plus utile du module'},
@@ -405,8 +405,8 @@ const PLUS = {
          ["Si je prends la marge, je paie moins.","Si je prenais la marge, je paierais moins."],
        ]},
 
-      {t:'check', h:'Quatre questions, sans filet',
-       p:"Répondez de mémoire, sans remonter plus haut.",
+      {t:'check', h:'Quatre formes, sans les relire',
+       p:"Répondez sans revoir le tableau des formes.",
        qs:[
          {q:"Le conditionnel se forme sur le radical…", opts:["du futur","de l'imparfait"], ok:0,
           fb:"Radical du futur, terminaisons de l'imparfait. Les deux dans la même forme."},
@@ -418,7 +418,7 @@ const PLUS = {
           fb:"Et c'est justement pour cela qu'il dit oui."},
        ]},
 
-      {t:'piege', h:'Trois faux pas, et comment s\'en sortir',
+      {t:'piege', h:'Trois glissements du conditionnel',
        rows:[
          ["mettre le conditionnel après « si »","imparfait après si, toujours",
           "« Si je prendrais » s'entend souvent et se corrige vite : la moitié qui commence par si ne porte jamais le conditionnel."],
@@ -467,7 +467,7 @@ const PLUS = {
       {t:'labo', h:'Deux produits, quatre façons de les mettre côte à côte',
        p:"Choisissez une paire, puis le rapport que vous voulez dire.",
        axes:[
-         {id:'p', lbl:'Quelle paire ?', opts:[['a','marge et carte'],['b','prêt et marge'],['c','dépôt et compte chèque']]},
+         {id:'p', lbl:'Quelle paire de produits ?', opts:[['a','marge et carte'],['b','prêt et marge'],['c','dépôt et compte chèque']]},
          {id:'r', lbl:'Quel rapport ?', opts:[['i','l\'inégalité'],['e','l\'égalité'],['o','l\'opposition']]}],
        out:{
          ai:{w:["La marge coûte moins cher que la carte : neuf et quarante-cinq contre dix-neuf et quatre-vingt-dix."], say:"La marge coûte moins cher que la carte : neuf et quarante-cinq contre dix-neuf et quatre-vingt-dix.", n:'l\'inégalité, avec le chiffre qui la prouve'},
@@ -494,8 +494,8 @@ const PLUS = {
          ["« le prêt est meilleur »","une opinion, pas une comparaison"],
        ]},
 
-      {t:'check', h:'Quatre questions, sans filet',
-       p:"Répondez de mémoire, sans remonter plus haut.",
+      {t:'check', h:'Quatre comparaisons à trancher',
+       p:"Répondez de tête, sans remonter aux exemples.",
        qs:[
          {q:"Avec un nom, on emploie…", opts:["plus… que","plus de… que"], ok:1,
           fb:"Plus de frais que de capital. Le « de » est obligatoire devant le nom."},
@@ -507,7 +507,7 @@ const PLUS = {
           fb:"Sans chiffre ni fait, ce n'est qu'une impression."},
        ]},
 
-      {t:'piege', h:'Trois faux pas, et comment s\'en sortir',
+      {t:'piege', h:'Trois comparaisons qui ne comparent rien',
        rows:[
          ["laisser la comparaison sans deuxième terme","nommer les deux, toujours",
           "« C'est moins cher » ne veut rien dire, et c'est exactement l'effet recherché par ceux qui l'écrivent."],
@@ -565,8 +565,8 @@ const PLUS = {
          ["« Le taux annoncé sera le mien. »","faux : il dépend du dossier"],
        ]},
 
-      {t:'check', h:'Quatre questions, sans filet',
-       p:"Répondez de mémoire, sans remonter plus haut.",
+      {t:'check', h:'Quatre idées reçues sur le dossier',
+       p:"Répondez sans rouvrir le dossier de crédit.",
        qs:[
          {q:"Le pointage de crédit va de…", opts:["0 à 100","300 à 900"], ok:1,
           fb:"Trois cents à neuf cents, chez les deux agences."},
@@ -578,7 +578,7 @@ const PLUS = {
           fb:"Décaler de six mois fait voir une erreur un semestre plus tôt."},
        ]},
 
-      {t:'piege', h:'Trois faux pas, et comment s\'en sortir',
+      {t:'piege', h:'Trois croyances qui coûtent cher',
        rows:[
          ["ne jamais regarder son dossier","le demander avant le rendez-vous",
           "Vous saurez ce que le conseiller voit, et vous pourrez corriger une erreur avant qu'elle vous coûte un demi-point de taux."],
@@ -636,8 +636,8 @@ const PLUS = {
          ["« droits non utilisés des années passées »","le plafond de cette année n'est pas votre seule marge"],
        ]},
 
-      {t:'check', h:'Quatre questions, sans filet',
-       p:"Répondez de mémoire, sans remonter plus haut.",
+      {t:'check', h:'Quatre réflexes de lecture',
+       p:"Répondez avant de rouvrir le document.",
        qs:[
          {q:"Un document comparatif se lit…", opts:["du début à la fin","une question à la fois, sur les trois produits"], ok:1,
           fb:"On suit sa question horizontalement, pas le texte verticalement."},
@@ -649,7 +649,7 @@ const PLUS = {
           fb:"Et c'est parfois exactement ce que veut celui qui l'a écrit."},
        ]},
 
-      {t:'piege', h:'Trois faux pas, et comment s\'en sortir',
+      {t:'piege', h:'Trois manières de lire trop vite',
        rows:[
          ["lire un tableau ligne par ligne, de haut en bas","choisir une question et la poser aux trois",
           "C'est la différence entre trois minutes et vingt minutes, pour la même information."],
@@ -730,8 +730,8 @@ const PLUS = {
          ["« pénalité si vous reprenez avant »","le dépôt à terme"],
        ]},
 
-      {t:'check', h:'Quatre questions, sans filet',
-       p:"Répondez de mémoire, sans remonter plus haut.",
+      {t:'check', h:'Quatre chiffres à ne pas mêler',
+       p:"Répondez sans regarder le tableau des trois produits.",
        qs:[
          {q:"Le plafond du CELI pour 2026 est de…", opts:["7 000 $","10 000 $"], ok:0,
           fb:"Sept mille dollars, plus les droits non utilisés des années passées."},
@@ -743,7 +743,7 @@ const PLUS = {
           fb:"Le REER est un produit d'horizon long, et son retrait tombe au mauvais moment."},
        ]},
 
-      {t:'piege', h:'Trois faux pas, et comment s\'en sortir',
+      {t:'piege', h:'Trois régimes confondus',
        rows:[
          ["remettre dans un CELI l'argent qu'on vient d'en sortir","attendre le 1er janvier",
           "L'impôt de un pour cent par mois sur l'excédent tombe même quand la personne était de bonne foi."],
@@ -792,8 +792,8 @@ const PLUS = {
       {t:'labo', h:'De l\'actif au passif, et retour',
        p:"Choisissez une phrase, puis la forme voulue.",
        axes:[
-         {id:'p', lbl:'Quelle phrase ?', opts:[['a','protéger les dépôts'],['b','bloquer la carte'],['c','fixer le taux']]},
-         {id:'f', lbl:'Quelle forme ?', opts:[['a','active'],['p','passive avec agent'],['s','passive sans agent']]}],
+         {id:'p', lbl:'Quelle phrase du document ?', opts:[['a','protéger les dépôts'],['b','bloquer la carte'],['c','fixer le taux']]},
+         {id:'f', lbl:'Quelle forme voulez-vous ?', opts:[['a','active'],['p','passive avec agent'],['s','passive sans agent']]}],
        out:{
          aa:{w:["L'Autorité des marchés financiers protège les dépôts."], say:"L'Autorité des marchés financiers protège les dépôts.", n:'on sait qui fait quoi : la forme la plus claire'},
          ap:{w:["Les dépôts sont protégés par l'Autorité des marchés financiers."], say:"Les dépôts sont protégés par l'Autorité des marchés financiers.", n:'le passif met en avant ce qui est protégé'},
@@ -819,8 +819,8 @@ const PLUS = {
          ["Le plafond est fixé chaque année.","Le gouvernement fédéral fixe le plafond chaque année."],
        ]},
 
-      {t:'check', h:'Quatre questions, sans filet',
-       p:"Répondez de mémoire, sans remonter plus haut.",
+      {t:'check', h:'Quatre accords, quatre agents',
+       p:"Répondez sans relire les phrases plus haut.",
        qs:[
          {q:"Au passif, le verbe devient…", opts:["avoir + participe","être + participe"], ok:1,
           fb:"Être, au temps du verbe de départ. « A été bloquée » = être au passé composé."},
@@ -832,7 +832,7 @@ const PLUS = {
           fb:"On veut savoir qui parle et ce qu'il demande."},
        ]},
 
-      {t:'piege', h:'Trois faux pas, et comment s\'en sortir',
+      {t:'piege', h:'Trois passifs mal posés',
        rows:[
          ["oublier l'accord du participe","chercher le sujet avant d'écrire",
           "Quatre formes qui se disent pareil et s'écrivent différemment : protégé, protégée, protégés, protégées."],
@@ -909,8 +909,8 @@ const PLUS = {
          ["c'est pourquoi","il tire la conséquence avec vous"],
        ]},
 
-      {t:'check', h:'Quatre questions, sans filet',
-       p:"Répondez de mémoire, sans remonter plus haut.",
+      {t:'check', h:'Quatre connecteurs à placer',
+       p:"Répondez sans remonter à la liste des connecteurs.",
        qs:[
          {q:"« Puisque » présente une raison…", opts:["nouvelle","déjà connue de l'interlocuteur"], ok:1,
           fb:"« Parce que » apporte du neuf ; « puisque » s'appuie sur du su."},
@@ -922,7 +922,7 @@ const PLUS = {
           fb:"C'est un connecteur de phrase, pas de proposition."},
        ]},
 
-      {t:'piege', h:'Trois faux pas, et comment s\'en sortir',
+      {t:'piege', h:'Trois liaisons ratées',
        rows:[
          ["employer « par contre » à l'écrit formel","préférer « en revanche »",
           "« Par contre » est parfaitement correct, mais il appartient à la langue courante ; une lettre d'affaires prend l'autre."],
@@ -990,8 +990,8 @@ const PLUS = {
          ["trente jours passent sans correction","envoyer une lettre datée"],
        ]},
 
-      {t:'check', h:'Quatre questions, sans filet',
-       p:"Répondez de mémoire, sans remonter plus haut.",
+      {t:'check', h:'Quatre gestes, dans le bon ordre',
+       p:"Répondez de mémoire : ce sont des gestes, pas des règles.",
        qs:[
          {q:"La responsabilité maximale du titulaire est de…", opts:["50 $","500 $"], ok:0,
           fb:"Cinquante dollars, à condition d'aviser sans délai."},
@@ -1003,7 +1003,7 @@ const PLUS = {
           fb:"Public, gratuit, et il dit si la personne a le droit d'exercer."},
        ]},
 
-      {t:'piege', h:'Trois faux pas, et comment s\'en sortir',
+      {t:'piege', h:'Trois réflexes à désapprendre',
        rows:[
          ["attendre le prochain relevé pour être sûr","appeler le jour même",
           "« Sans délai » est la condition du plafond de cinquante dollars. Attendre, c'est risquer de la perdre."],
@@ -1053,7 +1053,7 @@ const PLUS = {
        p:"Choisissez l'information à mettre en avant, puis la tournure.",
        axes:[
          {id:'i', lbl:'Quoi mettre en avant ?', opts:[['a','moi'],['b','le montant'],['c','la date']]},
-         {id:'t', lbl:'Quelle tournure ?', opts:[['q','c\'est… qui / que'],['a','ce qui / ce que… c\'est'],['n','la forme négative']]}],
+         {id:'t', lbl:'Quelle tournure de relief ?', opts:[['q','c\'est… qui / que'],['a','ce qui / ce que… c\'est'],['n','la forme négative']]}],
        out:{
          aq:{w:["C'est moi qui ai signalé l'opération, le jour même."], say:"C'est moi qui ai signalé l'opération, le jour même.", n:'qui ne s\'élide pas, et le verbe s\'accorde avec « moi »'},
          aa:{w:["Ce qui compte ici, c'est que j'ai appelé le jour même."], say:"Ce qui compte ici, c'est que j'ai appelé le jour même.", n:'on annonce, puis on dit'},
@@ -1079,8 +1079,8 @@ const PLUS = {
          ["Je veux la correction du relevé.","Ce que j'attends, c'est la correction de mon relevé."],
        ]},
 
-      {t:'check', h:'Quatre questions, sans filet',
-       p:"Répondez de mémoire, sans remonter plus haut.",
+      {t:'check', h:'Quatre mises en relief',
+       p:"Répondez sans regarder les exemples ci-dessus.",
        qs:[
          {q:"On écrit…", opts:["c'est moi qu'ai appelé","c'est moi qui ai appelé"], ok:1,
           fb:"« Qui » ne s'élide jamais, devant aucune voyelle."},
@@ -1092,7 +1092,7 @@ const PLUS = {
           fb:"C'est moi qui ai, c'est nous qui avons, c'est vous qui avez."},
        ]},
 
-      {t:'piege', h:'Trois faux pas, et comment s\'en sortir',
+      {t:'piege', h:'Trois mises en relief manquées',
        rows:[
          ["élider « qui »","le laisser entier, toujours",
           "« C'est moi qu'ai appelé » s'entend dans la langue parlée ; à l'écrit, c'est une faute qui se voit tout de suite."],
@@ -1130,7 +1130,7 @@ const PLUS = {
        say:"J'espère que le montant sera retiré — jamais « soit retiré ».",
        note:"« Après que » prend l'indicatif, « avant que » le subjonctif : la chose est faite dans un cas, pas encore dans l'autre. C'est la seule paire où l'image du doute fonctionne."},
 
-      {t:'ana', h:"Comment il se forme",
+      {t:'ana', h:"Comment il se fabrique, en une ligne",
        p:"Radical de la troisième personne du pluriel du présent, plus les terminaisons.",
        mots:[['Les terminaisons','-e, -es, -e, -ions, -iez, -ent'],
              ['Deux exemples','ils retirent → que je retire · ils remboursent → que vous remboursiez', true],
@@ -1141,7 +1141,7 @@ const PLUS = {
       {t:'labo', h:'Le même verbe, avec et sans déclencheur',
        p:"Choisissez un verbe, puis le mot qui vient avant.",
        axes:[
-         {id:'v', lbl:'Quel verbe ?', opts:[['e','être'],['f','faire'],['r','rester']]},
+         {id:'v', lbl:'Quel verbe du rendez-vous ?', opts:[['e','être'],['f','faire'],['r','rester']]},
          {id:'d', lbl:'Quel mot avant ?', opts:[['d','je demande que'],['e','j\'espère que'],['c','à condition que']]}],
        out:{
          ed:{w:["Je demande que le montant soit retiré de mon relevé."], say:"Je demande que le montant soit retiré de mon relevé.", n:'déclencheur de volonté : subjonctif'},
@@ -1169,8 +1169,8 @@ const PLUS = {
          ["après que","indicatif — après que j'ai appelé"],
        ]},
 
-      {t:'check', h:'Quatre questions, sans filet',
-       p:"Répondez de mémoire, sans remonter plus haut.",
+      {t:'check', h:'Quatre déclencheurs à reconnaître',
+       p:"Répondez sans relire la liste des déclencheurs.",
        qs:[
          {q:"« J'espère que » demande…", opts:["le subjonctif","l'indicatif"], ok:1,
           fb:"C'est le faux ami le plus fréquent : j'espère qu'il sera, jamais qu'il soit."},
@@ -1182,7 +1182,7 @@ const PLUS = {
           fb:"« Je veux obtenir une réponse », jamais « je veux que j'obtienne »."},
        ]},
 
-      {t:'piege', h:'Trois faux pas, et comment s\'en sortir',
+      {t:'piege', h:'Trois modes échangés',
        rows:[
          ["mettre le subjonctif après « espérer »","retenir la paire espérer / souhaiter",
           "« Je souhaite que ce soit » — subjonctif ; « j'espère que ce sera » — indicatif. Deux verbes voisins, deux modes."],
@@ -1248,8 +1248,8 @@ const PLUS = {
          ["« En vous remerciant à l'avance »","« Veuillez agréer mes salutations distinguées »"],
        ]},
 
-      {t:'check', h:'Quatre questions, sans filet',
-       p:"Répondez de mémoire, sans remonter plus haut.",
+      {t:'check', h:'Quatre choix de rédaction',
+       p:"Répondez en pensant à votre propre lettre.",
        qs:[
          {q:"L'objet d'une lettre de réclamation contient…", opts:["une phrase complète","le motif, le numéro de dossier et le montant"], ok:1,
           fb:"Pas de verbe conjugué : c'est une étiquette, pas une phrase."},
@@ -1261,7 +1261,7 @@ const PLUS = {
           fb:"Choisi au premier mot, tenu jusqu'au dernier."},
        ]},
 
-      {t:'piege', h:'Trois faux pas, et comment s\'en sortir',
+      {t:'piege', h:"Trois lettres qui n'obtiennent rien",
        rows:[
          ["raconter toute l'histoire","garder les dates et les montants",
           "Ce qui prouve n'est pas ce qui émeut : la date de l'appel, l'heure, le nom de la personne, le numéro de dossier."],

@@ -86,8 +86,8 @@ const EXOS = [
      ["Le suffixe <b>-ment</b> fabrique un nom masculin","<span class='savoir-ex'>rembourser → le <b>remboursement</b> · placer → le <b>placement</b> · rendre → le <b>rendement</b> · verser → le <b>versement</b> · prélever → le <b>prélèvement</b></span> C'est le suffixe le plus fréquent des relevés : il nomme l'opération sans dire qui la fait."],
      ["Le suffixe <b>-tion</b> transforme l'action en chose","<span class='savoir-ex'>opérer → une <b>opération</b> · contester → une <b>contestation</b> · cotiser → une <b>cotisation</b> · déduire → une <b>déduction</b></span>"],
      ["Le suffixe <b>-ance</b> ou <b>-ence</b>","<span class='savoir-ex'>échoir → l'<b>échéance</b> · assurer → l'<b>assurance</b> · différer → la <b>différence</b></span> Ces noms-là sont presque tous féminins."],
-     ["Trois noms qui ne suivent aucune règle","<span class='savoir-ex'>emprunter → un <b>emprunt</b> · prêter → un <b>prêt</b> · retirer → un <b>retrait</b></span> Ils s'apprennent tels quels et reviennent partout dans ce module."],
-     ["Ce que ça change à la lecture","Le relevé écrit « échéance du paiement », pas « vous devez payer avant ». Retrouver le verbe sous le nom, c'est comprendre la ligne du premier coup au lieu de la relire trois fois."],
+     ["Quatre noms qui n'obéissent à rien","<span class='savoir-ex'>emprunter → un <b>emprunt</b> · prêter → un <b>prêt</b> · retirer → un <b>retrait</b></span> Ils s'apprennent tels quels et reviennent partout dans ce module."],
+     ["Ce que ça change quand on lit un relevé","Le relevé écrit « échéance du paiement », pas « vous devez payer avant ». Retrouver le verbe sous le nom, c'est comprendre la ligne du premier coup au lieu de la relire trois fois."],
    ]},
    items:[
     {q:"Elle rembourse le prêt chaque mois : le ___ s'étale sur quatre-vingts versements.", accept:["remboursement"], ph:"un nom en -ment"},
@@ -127,7 +127,7 @@ const EXOS = [
      ["Trois questions à poser à n'importe quel produit de crédit","Quel est le taux ? Quand les frais commencent-ils à courir ? Et qu'est-ce qui arrive si je rembourse plus vite que prévu ? Les trois réponses tiennent en trois lignes, et elles décident de tout."],
      ["Une avance de fonds n'est pas un achat","C'est la ligne que presque personne ne connaît : sur un achat, rien ne court tant que le solde est payé à temps ; sur une avance de fonds, les frais commencent le jour même. Retirer cent dollars au guichet avec une carte de crédit coûte donc de l'argent, même remboursé la semaine suivante."],
      ["Le paiement minimum a un plancher fixé par la loi","Au Québec, il ne peut pas être inférieur à cinq pour cent du solde à la fin de la période. Ce plancher protège le consommateur ; il ne le sort pas de sa dette pour autant."],
-     ["Ce document-ci est un exemple","Il est écrit pour ce module, dans la forme d'une fiche d'institution financière. Les règles qu'il énonce sont bien celles du Québec, mais la Caisse Sainte-Praxède et la Banque Norlande n'existent pas, et leurs taux sont inventés. Pour un vrai dossier, ce sont les documents de votre institution et la page de l'Office de la protection du consommateur qu'il faut ouvrir — pas celle-ci."],
+     ["Ce document-ci a été écrit pour le module","Il est écrit pour ce module, dans la forme d'une fiche d'institution financière. Les règles qu'il énonce sont bien celles du Québec, mais la Caisse Sainte-Praxède et la Banque Norlande n'existent pas, et leurs taux sont inventés. Pour un vrai dossier, ce sont les documents de votre institution et la page de l'Office de la protection du consommateur qu'il faut ouvrir — pas celle-ci."],
    ]},
    paras:[
      "CAISSE SAINTE-PRAXÈDE — Fiche remise à la cliente le 14 mars · Comparaison de trois façons d'emprunter · Document d'information, ne constitue pas une offre",
@@ -181,7 +181,7 @@ const EXOS = [
      ["La restriction avec <b>ne… que</b>","<span class='savoir-ex'>Elle <b>ne</b> paie de l'intérêt <b>que</b> sur ce qu'elle a pris.</span> <b>Ne… que</b> ne dit pas « non » : il dit « rien de plus que ». C'est une des tournures les plus fréquentes des documents financiers, et l'une des plus mal comprises — elle limite, elle ne nie pas."],
      ["La proportion avec <b>d'autant plus… que</b>","<span class='savoir-ex'>La dette est <b>d'autant plus</b> chère <b>que</b> le solde reste élevé.</span> Elle relie deux mouvements : quand l'un monte, l'autre monte avec lui."],
      ["L'opposition avec <b>tandis que</b> et <b>alors que</b>","<span class='savoir-ex'>La marge est variable, <b>tandis que</b> le prêt est fixe.</span> Les deux choses sont vraies en même temps ; on les met côte à côte sans dire que l'une est mieux."],
-     ["Le piège de la reprise floue","« C'est moins cher » — moins cher que quoi ? Une comparaison sans deuxième terme ne veut rien dire, et c'est exactement ce qu'une publicité financière fait exprès. Nommez toujours les deux."],
+     ["Le piège du deuxième terme absent","« C'est moins cher » — moins cher que quoi ? Une comparaison sans deuxième terme ne veut rien dire, et c'est exactement ce qu'une publicité financière fait exprès. Nommez toujours les deux."],
    ]},
    items:[
     {q:"La marge de crédit coûte ___ la carte : neuf et quarante-cinq contre dix-neuf et quatre-vingt-dix.", accept:["moins cher que"], ph:"moins … que"},
@@ -241,7 +241,7 @@ const EXOS = [
      ["Le titre d'un paragraphe est une promesse","« Ce que ça rapporte », « Ce que l'impôt en fait », « Quand on peut le reprendre » : les intertitres sont là pour qu'on saute directement à sa question. Un document sans intertitres se lit trois fois plus lentement."],
      ["Un abri n'est pas un placement","C'est la confusion la plus courante, et le document la dissipe d'entrée : le CELI et le REER ne rapportent rien par eux-mêmes. Ce sont des <b>enveloppes fiscales</b> ; ce qu'on met dedans, c'est le placement."],
      ["La question qui décide de tout","Quand est-ce que vous en avez besoin ? Deux ans écarte tout ce qui peut baisser ; vingt ans écarte tout ce qui rapporte trop peu. Le calendrier choisit le produit avant le rendement."],
-     ["Ce document-ci est un exemple","Il est écrit pour ce module. Les règles fiscales et la protection des dépôts qu'il énonce sont bien celles qui s'appliquent au Québec en 2026, mais la Caisse Sainte-Praxède n'existe pas et son taux de 3,10 % est inventé. Pour un vrai dossier, ce sont les pages de l'Agence du revenu du Canada et de l'Autorité des marchés financiers qu'il faut ouvrir — pas celle-ci."],
+     ["Ce document-ci a été écrit pour le module","Il est écrit pour ce module. Les règles fiscales et la protection des dépôts qu'il énonce sont bien celles qui s'appliquent au Québec en 2026, mais la Caisse Sainte-Praxède n'existe pas et son taux de 3,10 % est inventé. Pour un vrai dossier, ce sont les pages de l'Agence du revenu du Canada et de l'Autorité des marchés financiers qu'il faut ouvrir — pas celle-ci."],
    ]},
    paras:[
      "CAISSE SAINTE-PRAXÈDE — Document d'information · Mettre de l'argent de côté pour un projet daté · Remis le 4 avril",
@@ -294,7 +294,7 @@ const EXOS = [
      ["Le participe s'accorde avec le sujet","<span class='savoir-ex'>Le dépôt <b>est protégé</b> · La somme <b>est protégée</b> · Les dépôts <b>sont protégés</b> · Les sommes <b>sont protégées</b></span> C'est la faute la plus fréquente à l'écrit, parce qu'à l'oral les quatre formes se disent pareil."],
      ["Le complément par <b>par</b> peut disparaître","<span class='savoir-ex'>La carte a été bloquée <b>par l'agent</b>. → La carte <b>a été bloquée</b>.</span> Et c'est justement l'intérêt de la tournure pour une institution : elle annonce ce qui arrive sans nommer qui le décide. Quand un document écrit « des frais seront exigés », posez la question : exigés par qui ?"],
      ["Là où on la rencontre dans ce module","<span class='savoir-ex'>Les frais <b>sont calculés</b> chaque jour · La cotisation <b>est déduite</b> du revenu · L'argent <b>est immobilisé</b> jusqu'à l'échéance · Le montant <b>a été retiré</b> du solde</span>"],
-     ["Ce qu'elle ne fait pas","Elle ne rend pas une phrase plus polie ni plus savante. Employée partout, elle rend un texte lourd et impossible à discuter, parce qu'on ne sait plus qui fait quoi. Dans votre propre lettre, préférez la voix active : « Je conteste », pas « le montant est contesté »."],
+     ["Ce que ce plancher ne fait pas","Elle ne rend pas une phrase plus polie ni plus savante. Employée partout, elle rend un texte lourd et impossible à discuter, parce qu'on ne sait plus qui fait quoi. Dans votre propre lettre, préférez la voix active : « Je conteste », pas « le montant est contesté »."],
    ]},
    items:[
     {q:"L'Autorité des marchés financiers protège les dépôts. → Les dépôts ___ l'Autorité des marchés financiers.", accept:["sont protégés par"], ph:"être + participe + par"},
@@ -354,7 +354,7 @@ const EXOS = [
      ["Le mot « sans délai » est un délai","Il n'a pas de nombre, mais il en a l'effet : celui qui attend trois semaines devra expliquer pourquoi. Appeler le jour où l'on voit l'opération, et noter l'heure, est ce qui fait toute la différence dans un dossier."],
      ["Ce que la loi ne couvre pas","Elle ne protège pas celui qui a donné son NIP, qui l'a écrit sur la carte ou qui l'a laissé deviner. Ce n'est pas une clause cachée : c'est la contrepartie normale d'une protection automatique."],
      ["L'écrit n'est pas une formalité","Un appel ne laisse rien derrière lui. Une lettre datée, avec le numéro de dossier, est ce qui existe encore dans six mois — et c'est aussi ce qui fait courir les délais de l'institution."],
-     ["Ce document-ci est un exemple","Il est écrit pour ce module, dans la forme d'un avis d'information. Les règles qu'il énonce sont bien celles du Québec, mais pour un vrai dossier, ce sont les pages de l'Office de la protection du consommateur et de l'Autorité des marchés financiers qu'il faut ouvrir — pas celle-ci."],
+     ["Ce document-ci a été écrit pour le module","Il est écrit pour ce module, dans la forme d'un avis d'information. Les règles qu'il énonce sont bien celles du Québec, mais pour un vrai dossier, ce sont les pages de l'Office de la protection du consommateur et de l'Autorité des marchés financiers qu'il faut ouvrir — pas celle-ci."],
    ]},
    paras:[
      "AVIS AUX TITULAIRES DE CARTE — Utilisation non autorisée : vos protections et vos gestes · Document d'information",
