@@ -1,3 +1,4 @@
+const FC_CARDS = [
 // Seize mots, et seulement cinq portent une image.
 //
 // C'est un choix, pas un oubli : le lexique d'un processus de sélection est
@@ -7,7 +8,6 @@
 // la carte. C'est le quatrième défaut de la relecture du 22 août 2026, et
 // `module-n7-banque` avait déjà tranché dans le même sens. Le poids visuel du
 // module est porté par les deux `imgmatch`, dont les énoncés sont des scènes.
-const FC_CARDS = [
   {word:"un processus de sélection",
    def:"L'ensemble des étapes qu'un employeur fait franchir avant de choisir quelqu'un.",
    ex:"Le <strong>processus de sélection</strong> de Boréalis comporte trois étapes étalées sur deux semaines.",
