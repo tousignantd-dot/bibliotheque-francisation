@@ -120,12 +120,21 @@ IMAGES = [
 
  # « Une boîte aux lettres de métal si pleine de papier que le couvercle ne
  #   ferme plus. »
+ # Refaite une fois : la première version, décrite sans ancrage de lieu, est
+ # sortie européenne — crépi de pierre écaillé, porte de bois ancienne, boîte
+ # à couvercle bombé. C'est la règle 3, et elle ne se répare pas en ajoutant
+ # « au Québec » : il faut nommer les objets du décor. D'où le perron de
+ # béton, le revêtement de vinyle et le bloc de boîtes postales communautaires
+ # devenu, plus simplement, une boîte à courrier de galerie.
  ('boite-aux-lettres', 'images', P_EX, S_OBJET +
-  "Une boîte aux lettres murale en métal peint, fixée à côté d'une porte "
-  "d'entrée en bois, si pleine de papier journal en couleurs que le couvercle "
-  "reste entrouvert et qu'une liasse dépasse et se gondole. Le papier est "
-  "**entièrement hors du plan de netteté** : on ne distingue que des blocs de "
-  "couleur flous. Mise au point sur la charnière du couvercle." + SANS_MOT),
+  "Une boîte à courrier rectangulaire en métal peint, vissée sur le "
+  "**revêtement de vinyle beige** d'un duplex québécois, juste à côté d'une "
+  "porte d'entrée blanche à moustiquaire. Elle est si pleine de papier "
+  "journal en couleurs que le couvercle reste entrouvert et qu'une liasse "
+  "dépasse et se gondole. Une rampe de métal noir et une marche de béton "
+  "enneigée dans le coin du cadre. Le papier est **entièrement hors du plan "
+  "de netteté** : on ne distingue que des blocs de couleur flous. Mise au "
+  "point sur la charnière du couvercle." + SANS_MOT),
 
  # « Un téléviseur allumé dans un salon vide, en fin de soirée, personne dans
  #   le fauteuil. »
@@ -193,12 +202,19 @@ IMAGES = [
   "hors du plan de netteté** : des blocs de couleur, aucune ligne discernable. "
   "Mise au point sur la marche." + SANS_MOT),
 
+ # Refaite une fois : « une feuille pliée posée à plat » a donné une carte
+ # routière dépliée, fanée et pliée en accordéon — un objet qui n'a rien du
+ # dépliant commercial que l'énoncé décrit (« la feuille pliée en deux ou en
+ # trois qu'un commerce remet en main propre »). C'est la règle 4, et elle se
+ # répare en donnant à l'objet sa POSTURE : un dépliant se tient debout sur
+ # ses plis, papier glacé et neuf, pas étalé comme une carte.
  ('depliant', 'vocab', P_VOC, S_OBJET +
-  "Un dépliant de papier glacé plié en trois, à demi ouvert et posé à plat "
-  "sur une table de cuisine en bois clair, vu en plongée de trois quarts. Les "
-  "volets montrent des aplats de couleur et de très fines lignes grises "
-  "floues, aucune lettre. Une tasse de café et des lunettes de lecture à "
-  "côté, hors du plan de netteté." + SANS_MOT),
+  "Un dépliant publicitaire de papier glacé **plié en trois et posé debout "
+  "sur ses plis**, en accordéon, sur une table de cuisine en bois clair, vu "
+  "de face à hauteur de table. Papier neuf et brillant, angles vifs. Les "
+  "trois volets ne montrent que des **aplats de couleur vive** et de très "
+  "fines lignes grises floues, aucune lettre, aucune image reconnaissable. "
+  "Une tasse de café hors du plan de netteté derrière." + SANS_MOT),
 
  ('commandite', 'vocab', P_VOC, S_INT +
   "Un coin de salon aménagé pour filmer : un anneau lumineux allumé sur son "
