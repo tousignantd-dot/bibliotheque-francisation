@@ -335,6 +335,14 @@ def main():
     # des heures et laisse en permanence des milliers de fichiers modifiés ou
     # supprimés — exiger un arbre propre reviendrait à interdire toute fusion
     # pendant ce temps, ou à commiter un dépôt à moitié muet.
+    # Un merge resté ouvert doit arrêter le script net. Sans ce garde, un
+    # second appel travaille par-dessus le premier et empile deux fusions
+    # dans un même index — c'est arrivé le 23 août 2026 avec quatre modules
+    # d'affilée, dont le premier avait échoué sur un conflit non traité.
+    if (RACINE / '.git' / 'MERGE_HEAD').exists():
+        print('✗ une fusion est déjà ouverte — résous-la ou `git merge --abort`')
+        return 1
+
     sale = [l for l in git('status', '--porcelain',
                            '--untracked-files=no').stdout.splitlines()
             if not l.rstrip().endswith('.mp3')
