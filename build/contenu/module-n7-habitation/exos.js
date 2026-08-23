@@ -1,6 +1,6 @@
 const EXOS = [
  // ── JE DÉCOUVRE ─────────────────────────────────────────────
-  {sec:'prep', id:'prVocab', type:'match', num:'Vocabulaire · 1', tit:'Le mot et sa définition', color:'#0D7A6F',
+  {sec:'prep', id:'prVocab', type:'match', num:'Vocabulaire · 1', tit:'Le mot du voisinage et sa définition', color:'#0D7A6F',
    sub:'Choisissez un mot, puis sa définition. Six mots à la fois.',
    noQLbl:true, bankLbl:'Définitions', zonePh:'glissez la définition ici',
    rows: FC_CARDS.map((c,i)=>({id:'pv'+i, q:c.word, aid:'pv'+i, a:c.def}))},
@@ -193,9 +193,9 @@ const EXOS = [
    sub:"Chaque phrase de gauche emploie « seulement ». Trouvez à droite la même phrase construite avec « ne… que ».",
    bankLbl:'Avec « ne… que »', zonePh:'glissez la phrase ici',
    savoir:{h:"› « ne… que » : restreindre sans rien nier", rows:[
-     ["Ce n'est pas une négation","<b>ne… que</b> veut dire <b>seulement</b>. « Je n'entends que le moteur » ne dit pas que je n'entends rien : ça dit que je n'entends rien d'autre. Beaucoup d'élèves y voient un « ne… pas » et comprennent l'inverse."],
-     ["Où se place le <b>que</b>","Juste devant ce qu'on restreint, et non après le verbe comme « pas ». <span class='savoir-ex'>Je <b>ne</b> me plains <b>que</b> du matin. · Il <b>n'</b>a fait <b>qu'</b>une des trois choses. · Cela <b>ne</b> dure <b>que</b> quarante minutes.</span>"],
-     ["Pourquoi c'est utile ici","Restreindre désamorce. « Je ne me plains que du matin » dit à l'autre qu'il n'est pas attaqué sur tout le reste, et c'est souvent la phrase qui fait baisser les épaules."],
+     ["Le « ne » qui ne nie rien","<b>ne… que</b> veut dire <b>seulement</b>. « Je n'entends que le moteur » ne dit pas que je n'entends rien : ça dit que je n'entends rien d'autre. Beaucoup d'élèves y voient un « ne… pas » et comprennent l'inverse."],
+     ["Où se place le <b>que</b>","Juste juste devant le mot restreint, et non après le verbe comme « pas ». <span class='savoir-ex'>Je <b>ne</b> me plains <b>que</b> du matin. · Il <b>n'</b>a fait <b>qu'</b>une des trois choses. · Cela <b>ne</b> dure <b>que</b> quarante minutes.</span>"],
+     ["Ce que la restriction fait au voisin","Restreindre désamorce. « Je ne me plains que du matin » dit à l'autre qu'il n'est pas attaqué sur tout le reste, et c'est souvent la phrase qui fait baisser les épaules."],
      ["Le contraire dans une lettre","<span class='savoir-ex'>Il <b>n'</b>a posé <b>que</b> le caoutchouc.</span> Ici la restriction sert au contraire à montrer ce qui manque, sans un mot désagréable. C'est la tournure la plus efficace d'une mise en demeure."],
    ]},
    rows:[
@@ -288,7 +288,7 @@ const EXOS = [
     {id:'rg12', q:"Quelles pièces sont le plus souvent demandées avant une demande ?", ok:'pre'},
    ]},
 
-  {sec:'t2', id:'t2repr', type:'write', num:'Exercice 4', tit:'Reprendre sans répéter', color:'#B45309', cols:1,
+  {sec:'t2', id:'t2repr', type:'write', num:'Exercice 4', tit:'Reprendre sans se répéter huit fois', color:'#B45309', cols:1,
    sub:"Chaque item fait deux phrases : la première pose la chose, la seconde la reprend. Complétez la reprise.",
    savoir:{h:"› Reprendre l'information : trois procédés, un seul but", rows:[
      ["Pourquoi ça compte plus qu'on ne croit","Une lettre qui répète « le tapis roulant » huit fois se lit mal et se prend mal. Une lettre qui reprend son sujet autrement à chaque fois se lit d'un trait — et montre, sans le dire, que vous maîtrisez votre dossier."],
@@ -354,7 +354,7 @@ const EXOS = [
    sub:"Choisissez une question, puis cliquez dans le document le passage qui y répond. Un passage déjà pris se libère si vous le recliquez.",
    savoir:{h:"› La présentation matérielle d'une lettre qui obtient quelque chose", rows:[
      ["L'objet se lit avant la lettre","Un objet est un groupe de mots, jamais une phrase complète et jamais une plainte. <span class='savoir-ex'>Objet : bruit répété au logement 6 — demande d'intervention</span> Le destinataire doit savoir de quoi il s'agit sans ouvrir le paragraphe."],
-     ["Un paragraphe, une idée","Trois paragraphes suffisent presque toujours : ce qui se passe, ce que j'ai déjà fait, ce que je demande. Un mur de texte sans blanc se lit en diagonale, et ce qui se lit en diagonale ne se traite pas."],
+     ["Un paragraphe, une seule idée","Trois paragraphes suffisent presque toujours : ce qui se passe, ce que j'ai déjà fait, ce que je demande. Un mur de texte sans blanc se lit en diagonale, et ce qui se lit en diagonale ne se traite pas."],
      ["Les dates portent la lettre","Chaque affirmation gagne une date. <span class='savoir-ex'>Depuis le 4 février · le 19 février · le 26 février · au 12 mars</span> Quatre dates valent mieux que quatre adjectifs, et personne ne peut les discuter."],
      ["La demande se chiffre et se date","« Faire quelque chose » ne se répond pas. <span class='savoir-ex'>déplacer l'appareil contre le mur du couloir, dans un délai de dix jours</span> se répond par oui, par non, ou par une contre-proposition — et les trois vous font avancer."],
      ["Le ton se tient jusqu'à la fin","On ne finit pas une lettre formelle par une menace ni par une confidence. On rappelle ce qu'on veut vraiment — dormir, garder de bons rapports — et on salue. Une lettre qui se termine mal efface les trois paragraphes précédents."],
