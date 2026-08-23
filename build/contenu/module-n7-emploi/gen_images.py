@@ -116,10 +116,16 @@ IMAGES = [
   "papier blanche posée sur une table de réunion, à côté d'un crayon et d'une tasse. La "
   "feuille présente clairement une structure de liste numérotée, mais chaque ligne n'est "
   "qu'un trait gris." + SANS_MOTS),
- ('reunion-production', 'vocab', P_VOC, PERS + " Cinq personnes assises autour d'une "
-  "table de réunion d'usine, vues depuis le fond de la salle, de dos et de trois quarts "
-  "arrière. Une sixième personne debout près d'un tableau blanc, dos tourné. Feuilles et "
-  "tasses sur la table." + SANS_MOTS),
+ # Reprise du 23 août 2026 : la première version montrait les visages des cinq
+ # personnes assises, malgré la consigne. Le cadrage est donc imposé — appareil
+ # posé derrière la dernière chaise, à hauteur d'épaule, toutes les têtes vues
+ # par l'arrière du crâne.
+ ('reunion-production', 'vocab', P_VOC, PERS + " Vue prise depuis le fond d'une salle de "
+  "réunion d'usine, appareil placé derrière la dernière chaise, à hauteur d'épaule : on "
+  "voit l'arrière de la tête et les épaules de cinq personnes assises autour d'une table, "
+  "toutes tournées vers l'avant de la salle. Une sixième personne est debout au fond, "
+  "près d'un tableau blanc, également de dos. Aucun visage n'est visible, pas même de "
+  "profil. Feuilles et tasses sur la table." + SANS_MOTS),
  ('echeancier', 'vocab', P_VOC, STYLE + " Gros plan sur un grand calendrier mural de "
   "planification, quadrillé, punaisé au mur d'un bureau d'usine, avec des bandes de "
   "couleur horizontales qui traversent plusieurs colonnes. Les cases et les étiquettes ne "
@@ -143,9 +149,22 @@ IMAGES = [
   "et deux feuilles imprimées à en-tête, posées sur un bureau de bois, avec un tableau de "
   "prix en colonnes dont les chiffres sont flous et illisibles. Une paire de lunettes "
   "posée à côté." + SANS_MOTS),
- ('fournisseur', 'vocab', P_VOC, PERS + " Deux personnes debout dans une allée "
-  "d'entrepôt de matériel industriel, vues de dos, l'une montrant du doigt un équipement "
-  "sur une palette. Rayonnages hauts chargés de caisses. Aucun visage, aucune enseigne." +
+ # Reprise du 23 août 2026 : la première version montrait deux collègues dans
+ # l'atelier de meubles — c'est-à-dire le thème du module, et non l'énoncé de
+ # la carte, qui dit « l'entreprise qui vend à une autre entreprise ce dont
+ # elle a besoin ». Le défaut le plus fréquent de la vague. Le lieu change
+ # donc : ce n'est plus notre atelier, c'est le stock de quelqu'un d'autre.
+ ('fournisseur', 'vocab', P_VOC, STYLE.replace(
+  "Petite usine de fabrication de meubles au Québec, soixante employés, locaux "
+  "propres et ordinaires, sans luxe et sans esthétique publicitaire.",
+  "Entrepôt-magasin d'un distributeur d'équipement industriel au Québec, très haut "
+  "plafond, allées larges, tout est neuf et rangé.") +
+  " Une allée de distributeur d'équipement industriel : au premier plan, deux tables "
+  "élévatrices à ciseaux neuves, encore sur leur palette et partiellement emballées de "
+  "pellicule, alignées côte à côte. Derrière, un rayonnage d'acier jaune sur trois "
+  "niveaux chargé de caisses de bois neuves et de matériel emballé. Aucune personne "
+  "dans le cadre. On doit comprendre qu'il s'agit du stock d'un vendeur, pas d'un "
+  "atelier de fabrication : rien de bois travaillé, aucun établi, aucun copeau." +
   SANS_MOTS),
  ('note-service', 'vocab', P_VOC, STYLE + " Gros plan sur une feuille blanche unique "
   "punaisée au centre d'un babillard de liège, un peu de travers. La feuille présente une "
