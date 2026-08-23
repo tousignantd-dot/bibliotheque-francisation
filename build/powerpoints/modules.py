@@ -1446,6 +1446,26 @@ MODULES = {
                         'Le suivi, après'),
     },
 
+    # Niveau 7, situation « Découverte d'œuvres ». Quatre intentions, toutes
+    # orales, et les trois défis sont les trois genres qu'elles nomment : le
+    # sketch, la chanson, l'œuvre commentée devant d'autres. Ne recoupe ni
+    # `module-n5-oeuvres` (73), qui raconte une œuvre aimée devant un club,
+    # ni `module-n6-oeuvres` (103), qui résume un film et nuance par écrit :
+    # ici on défend un avis devant quelqu'un qui ne le partage pas, sur des
+    # œuvres qui ne disent pas ce qu'elles veulent dire.
+    'module-n7-oeuvres': {
+        'numero': 9, 'activite': 116, 'niveau': 7,
+        'titre': "Ce que j'en pense, et pourquoi",
+        'chapeau': "Comprendre un sketch qui dit le contraire de sa pensée, "
+                   "une chanson qui parle par images et une critique qui mêle "
+                   "le fait à l'opinion, puis défendre son avis devant "
+                   "quelqu'un qui ne le partage pas.",
+        'seances': GRILLE_3_DEFIS,
+        'blocs': _blocs("Ce qu'il ne dit pas sérieusement",
+                        'Une chanson dit deux choses à la fois',
+                        "Défendre son choix sans écraser l'autre"),
+    },
+
     'module-n8-emploi': {
         'numero': 1, 'activite': 61, 'niveau': 8,
         'titre': "Tenir son bout au travail",

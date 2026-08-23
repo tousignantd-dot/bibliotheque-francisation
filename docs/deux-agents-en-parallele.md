@@ -146,11 +146,35 @@ douze scénarios existants sont `louer`, `probleme`, `relations`, `chemin`,
 `activite`, `epicerie`, `appareil`, `restaurant`, `presenter`, `allees`,
 `vetement`, `autobus`. Tu devras en ajouter un.
 
-Deux pièges appris en le faisant pour le niveau 2 :
+Trois pièges appris en le faisant :
 
 - Un module se construit **sans erreur** même si son `jr_scenario` n'existe pas
   dans `server.py`. Rien ne le vérifie. Le jeu de rôle échoue seulement à
   l'exécution, chez l'élève. Vérifie que la clé existe.
+- **Pire que la clé absente : la clé en double.** Découvert le 23 août 2026 en
+  produisant `module-n7-oeuvres` (116), dont le scénario devait s'appeler
+  `oeuvres` — nom déjà pris par `module-n5-oeuvres` (73), avec une constante
+  `JEU_DE_ROLE_OEUVRES` du même nom. Deux clés identiques dans un littéral de
+  dictionnaire Python ne provoquent **rien** : la dernière gagne, en silence, et
+  la constante aussi. Le module aurait joué le scénario du niveau 5, avec des
+  rôles qui ne sont pas les siens. Le contrôle, à passer après tout ajout :
+
+      python3 - <<'PY'
+      import importlib.util, os, re
+      os.environ.setdefault('STORAGE_DIR', '/tmp/verif')
+      spec = importlib.util.spec_from_file_location("srv", "server.py")
+      m = importlib.util.module_from_spec(spec)
+      try: spec.loader.exec_module(m)
+      except SystemExit: pass
+      man = open('build/contenu/<slug>/manifest.py', encoding='utf-8').read()
+      sid  = re.search(r"'jr_scenario':\s*'([^']+)'", man).group(1)
+      role = re.search(r"'jr_role':\s*'([^']+)'", man).group(1)
+      s = m.JEU_DE_ROLE_SCENARIOS[sid]
+      print(sid, list(s['roles']), role in s['roles'])
+      PY
+
+  S'il rend des rôles que tu n'as pas écrits, ta clé est en collision :
+  renomme-la (`avisoeuvre` plutôt que `oeuvres`) **et** renomme ta constante.
 - Ne réutilise pas un scénario d'un autre niveau parce que le sujet ressemble.
   Ils portent leur niveau dans leur conduite : le scénario `chemin` du niveau 4
   donne six étapes et des noms de terminus, ce qui est ingérable au niveau 2. Un

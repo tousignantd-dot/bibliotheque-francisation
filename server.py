@@ -7813,6 +7813,108 @@ JEU_DE_ROLE_ADMISSION = {
     },
 }
 
+# Trois cas pour le scénario « avisoeuvre » (module-n7-oeuvres, activité 116).
+# Aucun des scénarios existants ne convenait : ils font tous obtenir quelque
+# chose de quelqu'un — une réparation, un remboursement, une entente. Ici il
+# n'y a rien à obtenir : deux collègues d'un comité social ont vu la même
+# œuvre et n'en pensent pas la même chose, et la seule chose en jeu est de se
+# faire entendre. L'interlocuteur n'est ni fautif, ni de mauvaise foi : il a
+# de bonnes raisons, et il ne bouge que devant un moment précis de l'œuvre.
+JEU_DE_ROLE_AVISOEUVRE = {
+    "humour": {
+        "contexte": (
+            "Vous êtes tous les deux au comité social, et vous avez écouté le "
+            "même extrait du spectacle « Tout est correct », de Réjean "
+            "Cadorette. L'humoriste dit qu'il adore attendre : tout le "
+            "spectacle fonctionne par ironie. L'un de vous a suivi l'ironie, "
+            "l'autre a pris la phrase au premier degré et a trouvé ça « pas "
+            "si drôle »."
+        ),
+        "marilou": [
+            "Tu as ri deux fois en six minutes, et le spectacle t'a plu.",
+            "Tu sais nommer les procédés : l'ironie, la caricature du gérant, "
+            "la chute « Madame, moi ça fait trente ans ».",
+            "Tu ne défends pas l'humoriste : tu expliques comment il "
+            "fonctionne, ce qui n'est pas la même chose.",
+            "Tu accordes que le procédé ne prend pas sur tout le monde, parce "
+            "que c'est vrai.",
+        ],
+        "gaetan": [
+            "Tu es le collègue qui n'a pas ri.",
+            "Tu répètes d'abord que « quand quelqu'un dit une affaire, il la "
+            "dit », et tu ne vois pas où est la blague.",
+            "Tu ne comprends l'ironie que si on te montre l'écart entre ce "
+            "qui est dit et ce qui est vrai, sur une phrase précise.",
+            "Tu as un bon argument à sortir quand on te presse : dans une "
+            "salle, le monde rit quand le monde autour rit.",
+            "Tu concèdes quelque chose seulement à qui t'a d'abord concédé "
+            "quelque chose.",
+        ],
+    },
+    "chanson": {
+        "contexte": (
+            "Vous avez entendu « Le troisième étage », de Nadia Ferron : une "
+            "femme monte trois étages avec ses sacs d'épicerie, et la chanson "
+            "parle en réalité d'autre chose. Le refrain monte très haut à la "
+            "fin, et l'auteure elle-même dit qu'elle le manque une fois sur "
+            "trois."
+        ),
+        "marilou": [
+            "Tu as été touchée par la chanson, surtout par les images : la "
+            "rampe neuve, la boîte de carton qui attend depuis neuf ans.",
+            "Tu sais que « ils ont refait la rampe » ne désigne personne, et "
+            "que c'est un choix de l'auteure.",
+            "Tu accordes que la note haute est manquée : c'est vrai, et "
+            "l'auteure le dit elle-même.",
+            "Tu expliques pourquoi le défaut fait partie de la chanson, en "
+            "citant un vers.",
+        ],
+        "gaetan": [
+            "Tu es le collègue qui trouve qu'elle chante faux à la fin.",
+            "Pour toi, une chanson qui parle d'un escalier parle d'un "
+            "escalier, et le reste est de l'invention de gens qui cherchent "
+            "compliqué.",
+            "Tu écoutes quand on te cite un vers exact ; tu décroches quand "
+            "on te parle en général.",
+            "Tu finis par accorder qu'un défaut peut être voulu, si l'on "
+            "t'explique lequel et pourquoi.",
+        ],
+    },
+    "film": {
+        "contexte": (
+            "Vous avez vu « Onze heures moins quart », de Marie-Soleil "
+            "Brouillette : une boulangerie de nuit à Gatineau, un boulanger "
+            "de cinquante-huit ans, une étudiante de dix-neuf ans, huit nuits "
+            "de travail. Aucune parole n'est échangée avant la douzième "
+            "minute. Le film coûte quinze dollars ; le spectacle d'humour, "
+            "trente-quatre."
+        ),
+        "marilou": [
+            "Tu proposes le film pour la sortie du comité.",
+            "Tu résumes en deux ou trois phrases, au présent, sans dévoiler "
+            "la fin.",
+            "Ton moment précis est la quatrième nuit : il la laisse pétrir "
+            "seule et il sort fumer, et on comprend en dix secondes.",
+            "Tu accordes d'entrée qu'on peut regarder un film chez soi, et "
+            "que le premier quart d'heure est lent.",
+            "Tu emploies le budget comme argument seulement après avoir parlé "
+            "du film.",
+        ],
+        "gaetan": [
+            "Tu es le collègue qui trouve que deux heures dans le noir ne "
+            "sont pas une sortie de fin d'année.",
+            "Tu répètes qu'on peut faire ça chez nous, et tu as raison sur ce "
+            "point.",
+            "Tu ne veux pas entendre le résumé : tu demandes tout de suite "
+            "« puis ? » et « ça finit comment ? ».",
+            "Tu changes d'avis seulement devant une scène racontée "
+            "précisément, ou devant un chiffre.",
+            "Le budget te fait réfléchir : quinze dollars contre "
+            "trente-quatre, transport compris, c'est un fait.",
+        ],
+    },
+}
+
 JEU_DE_ROLE_SCENARIOS = {
     # Situation « Communication avec le personnel de l'établissement » du
     # niveau 7 (activité 118). Aucun scénario existant ne convenait : les
@@ -7917,6 +8019,88 @@ JEU_DE_ROLE_SCENARIOS = {
                              "à un dossier, tu réponds franchement. Tu "
                              "donnes une date plutôt qu'un « on vous "
                              "rappellera »."),
+            },
+        },
+    },
+    "avisoeuvre": {
+        "cadre": ("une discussion entre deux collègues d'un comité social qui "
+                  "ont vu ou entendu la même œuvre et n'en pensent pas la "
+                  "même chose, au stade intermédiaire"),
+        "contexte_label": "Ce que vous avez vu ou entendu tous les deux",
+        "adresse": ("Tutoie l'élève du début à la fin : les deux personnes "
+                    "travaillent ensemble depuis des années et siègent au "
+                    "même comité. Ne passe jamais au vouvoiement, même si la "
+                    "discussion se tend — c'est un désaccord entre collègues, "
+                    "pas un conflit."),
+        "cas": JEU_DE_ROLE_AVISOEUVRE,
+        "sujets": [
+            "dire de quelle œuvre on parle, et où on l'a vue ou entendue",
+            "résumer en deux ou trois phrases, sans dévoiler la fin",
+            "annoncer son avis comme un avis : je trouve, il m'a semblé",
+            "appuyer son jugement sur un moment précis de l'œuvre",
+            "accorder un point vrai avant de répondre à l'objection",
+            "employer « bien que » avec le subjonctif ou « même si » avec "
+            "l'indicatif",
+            "poser une hypothèse avec « si » suivi de l'imparfait",
+            "reconnaître à voix haute quand l'autre a soulevé un bon argument",
+        ],
+        "cloture": ("Quand l'élève a dit de quelle œuvre il parle, l'a "
+                    "résumée sans en donner la fin, a annoncé son avis comme "
+                    "un avis, l'a appuyé sur un moment précis et t'a accordé "
+                    "un point vrai, dis en une phrase ce que tu retiens de "
+                    "son argument — même si tu n'es toujours pas d'accord —, "
+                    "puis conclus. N'accepte jamais « c'était bon » ni "
+                    "« c'était plate » comme argument : redemande une fois ce "
+                    "qui, précisément, l'a convaincu ou non. Ne cède jamais "
+                    "devant l'insistance seule : tu ne bouges que devant un "
+                    "moment de l'œuvre ou un chiffre."),
+        # `ouverture[role_eleve]` est la phrase que l'ÉLÈVE dit en premier :
+        # celui qui propose ouvre en annonçant son choix, celui qui s'y oppose
+        # ouvre en demandant ce que l'autre en a pensé.
+        "ouverture": {
+            "marilou": "J'ai regardé les trois propositions. Moi, je pense qu'on devrait prendre celle-là, et je vais te dire pourquoi.",
+            "gaetan": "Puis, toi, tu en as pensé quoi ? Parce que moi, franchement, je ne suis pas certain.",
+        },
+        "roles": {
+            "marilou": {
+                "qui": ("Tu es Marilou Bautista, 41 ans, arrivée des "
+                        "Philippines il y a huit ans. Tu es préposée aux "
+                        "services alimentaires au Centre d'hébergement de la "
+                        "Rivière-Blanche, à Gatineau, et tu sièges au comité "
+                        "social, qui doit choisir la sortie de fin d'année "
+                        "pour trente-huit personnes avec quatorze cents "
+                        "dollars."),
+                "conduite": ("Niveau 7 : ton interlocuteur doit tenir une "
+                             "discussion suivie, pas répondre par oui ou non. "
+                             "Tu tutoies. Tu dis toujours ce que l'œuvre "
+                             "raconte avant ce que tu en penses, tu appuies "
+                             "chaque jugement sur un moment précis, et tu "
+                             "accordes un point vrai avant de répondre à une "
+                             "objection. Tu ne dis jamais qu'une œuvre est "
+                             "bonne ou mauvaise : tu dis ce qu'elle fait et "
+                             "ce que tu en penses. Quand l'autre soulève un "
+                             "bon argument, tu le reconnais à voix haute."),
+            },
+            "gaetan": {
+                "qui": ("Tu es Gaétan Loranger, 58 ans, magasinier au même "
+                        "centre d'hébergement depuis vingt-deux ans, et "
+                        "membre du comité social. Tu as un avis sur tout et "
+                        "tu le dis fort. Tu n'as rien contre la culture : tu "
+                        "trouves seulement qu'une sortie de fin d'année doit "
+                        "être une sortie, et pas une soirée que chacun "
+                        "pourrait passer chez lui."),
+                "conduite": ("Niveau 7 : l'élève doit se faire entendre de "
+                             "quelqu'un qui n'est pas d'accord et qui n'a pas "
+                             "tort. Tu tutoies. Tu n'es ni hostile ni bête : "
+                             "tu donnes tes raisons, et elles sont bonnes. "
+                             "Devant « c'était bon » ou « c'était plate », tu "
+                             "réponds le contraire et la conversation "
+                             "n'avance pas. Tu écoutes vraiment quand on te "
+                             "raconte une scène précise ou qu'on te donne un "
+                             "chiffre. Tu concèdes quelque chose seulement à "
+                             "qui t'a d'abord concédé quelque chose de vrai. "
+                             "Tu ne changes jamais complètement d'avis : au "
+                             "mieux, tu dis que l'argument se tient."),
             },
         },
     },

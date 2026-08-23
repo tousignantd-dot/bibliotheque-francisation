@@ -2500,6 +2500,129 @@ raison d'en sortir, sauf pour `~/Claude/programme/` (le programme d'études),
 
 ### Journal de la vague 7
 
+**23 août 2026 — activité 116, `module-n7-oeuvres`.** « Ce que j'en pense, et
+pourquoi », niveau 7, `numero` 9, `GRILLE_3_DEFIS`. Scénario inventé : Marilou
+Bautista, 41 ans, arrivée des Philippines il y a huit ans, préposée aux
+services alimentaires au Centre d'hébergement de la Rivière-Blanche, à
+Gatineau. Le comité social doit choisir la sortie de fin d'année pour
+trente-huit personnes avec quatorze cents dollars, et trois propositions sont
+sur la table. Ghyslaine Turcotte, qui préside, refuse de lui dire ce qu'elle en
+pense et lui explique ce qu'on attend d'elle jeudi (Je découvre) ; elle écoute
+un extrait du spectacle « Tout est correct », de Réjean Cadorette, avec Gaétan
+Loranger, qui n'a pas ri aux mêmes endroits (défi 1) ; elle entend l'auteure-
+compositrice Nadia Ferron décortiquer « Le troisième étage » en entrevue avec
+Ludovic Massicotte (défi 2) ; puis elle défend le film « Onze heures moins
+quart » devant le comité, et rédige le compte rendu (défi 3). 24 exercices,
+16 mini-leçons, 4 dialogues (97 répliques), 19 mots, 16 images, 217 sons
+relevés — 314 extraits en tout —, 16 séances (178 diapositives, 129 blocs de
+fiches).
+
+*Ce qui le distingue de ses deux voisins de situation*, en une phrase écrite
+avant le scénario : `module-n5-oeuvres` (73) **raconte** une œuvre aimée devant
+un club qui écoute, `module-n6-oeuvres` (103) **résume** un film et nuance son
+avis par écrit — et ici, on ne raconte plus rien : on **défend un avis devant
+quelqu'un qui ne le partage pas**, sur des œuvres qui ne disent pas ce qu'elles
+veulent dire. C'est le seul module du dépôt où comprendre l'œuvre et se faire
+entendre sont **deux difficultés distinctes**, et où la seconde se joue contre
+un interlocuteur qui a de bonnes raisons.
+
+*La grille ne s'est pas discutée.* Quatre intentions, toutes orales, et les
+trois défis **sont** les trois genres qu'elles nomment : le sketch humoristique,
+la chanson, l'œuvre commentée devant d'autres. C'est le cas de figure décrit par
+l'activité 110 — au niveau 7, la situation peut être plus nette que le niveau, et
+il n'y a alors rien à choisir parmi les cinquante-sept savoirs avant d'avoir posé
+les intentions. La production **écrite**, elle, n'existe pas dans la situation :
+elle se tire des attentes de fin de cours, et le docstring du manifeste le dit.
+
+*Aucune œuvre réelle n'est nommée nulle part*, et c'est la contrainte propre à
+cette situation-ci. Le spectacle, la chanson, le film, leurs auteurs, la salle,
+l'hebdomadaire et le critique sont inventés de toutes pièces. Ce n'est pas une
+précaution juridique de façade : attribuer une fausse réplique, une fausse date
+de sortie ou une fausse critique à une œuvre qui existe serait **fabriquer un
+faux document**, et un module de francisation n'a pas à en produire. Les mots du
+métier — un tour de chant, une première partie, un rappel, une chute, un long
+métrage, un compte rendu — sont, eux, ceux qu'on emploie réellement au Québec.
+
+Trois choses apprises, pour les modules qui restent.
+
+**1. Une clé de scénario en double dans `server.py` ne lève aucune erreur.**
+Le scénario devait s'appeler `oeuvres` — et cette clé était déjà prise par
+`module-n5-oeuvres` (activité 73), avec une constante `JEU_DE_ROLE_OEUVRES` du
+même nom. Deux clés identiques dans un littéral de dictionnaire Python ne
+provoquent **rien** : la dernière gagne, en silence, et la constante aussi. Le
+module aurait joué le scénario du niveau 5, avec ses rôles `membre` et
+`interlocuteur` au lieu de `marilou` et `gaetan` ; le jeu de rôle aurait échoué
+chez l'élève, et ni le build, ni `coherence.js`, ni le `node --check` ne
+regardent là. `CLAUDE.md` avertissait qu'un `jr_scenario` **absent** n'est pas
+vérifié ; le cas du scénario **homonyme** est pire, puisque la clé existe. Le
+contrôle tient en quatre lignes de Python, il est écrit dans `CLAUDE.md`, et il
+est à passer après tout ajout : charger `server.py`, lire le `jr_scenario` du
+manifeste, et vérifier que ses rôles sont bien ceux qu'on vient d'écrire. D'où
+`avisoeuvre` et `JEU_DE_ROLE_AVISOEUVRE`.
+
+**2. Quand le texte est le sujet, il se compose en HTML — et ce module le
+confirme sur un autre terrain que la publicité.** L'activité 115 l'avait écrit
+pour les annonces ; ici ce sont une transcription de sketch, des paroles de
+chanson et une critique de journal. Les trois sont des exercices de type
+`texte`, de trois **genres** différents, et les seize images ne montrent alors
+que la scène autour : la salle vue de la scène, le hall du cinéma désert, la
+scène nue au rideau noir, l'escalier en colimaçon, la ruelle. Résultat : **seize
+images du premier coup, aucune reprise**, 0,54 $ pour l'ensemble. Aucun charabia
+nulle part, parce qu'aucune image n'avait à porter de mot. Le corollaire vaut
+pour toute situation à document, et il est maintenant vérifié deux fois.
+
+**3. Un module dont le vocabulaire est abstrait n'illustre que ce qui se
+photographie.** Sur dix-neuf cartes, **quatre** ont une image : la salle de
+spectacle, le tour de chant, le long métrage, la scène de sketch. Une ironie,
+une chute, une concession, un registre de langue ne se photographient pas, et
+leur donner une photo aurait mis derrière chaque mot une vue générique de salle
+— le quatrième défaut, commis quinze fois. Le poids visuel est porté par les
+deux `imgmatch`, dont les énoncés sont des scènes concrètes ; celui du défi 2
+est le meilleur du module, parce que ses six photos sont **les objets que la
+chanson nomme vraiment**. C'est la confirmation de ce que l'activité 114 avait
+trouvé : le critère n'est pas le niveau, c'est le degré d'abstraction du lexique.
+
+*Sur l'originalité* : 1 790 chaînes visibles, **53 identiques** parmi les 81 504
+des autres modules de `build/contenu/`, soit **3,0 %**. Le chiffre était de
+5,3 % avant une passe de soixante substitutions sur les intitulés repris du même
+moule — libellés d'axes de laboratoire (« Quelle idée ? », « Quel procédé ? »),
+en-têtes de bloc (« Le piège de l'accord », « La règle en une ligne ») et
+colonnes de gauche des blocs `ana` (« Ce qu'on entend », « Ce que ça fait »). La
+leçon de l'activité 109 se confirme une quatrième fois, et la condition tient :
+**aucun `say:` n'a bougé**, et `build/releve_sons.js` rend les mêmes 217 clés
+avec les mêmes valeurs, comparaison JSON faite avant et après. Les 53 qui
+restent sont les consignes du gabarit, des mots du programme et des faits de
+langue qui ne se disent pas autrement (« bien que + subjonctif », « pour que +
+subjonctif »).
+
+*Sur les contrôles* : les sept passent. `coherence.js` ne signale rien,
+`sections.py --verifier` et `materiel.py --verifier` sont à jour, les deux
+contrôles de couleur ne rendent rien, `sommaire.py --verifier` ne trouve aucun
+lien cassé — à condition d'avoir lancé `python3 build/powerpoints/sommaire.py
+module-n7-oeuvres`, qui manque toujours à la séquence —, et `pieds_de_page.py`
+lit « niveau 7 · numéro 9 · 16 pptx · vus ['9'] ». Son seul écart restant est
+`module-n3-horaire`, connu de longue date et qui n'est pas le mien. Le
+`node --check` du script produit passe. La vérification a été faite sur **un
+serveur et un onglet à moi** — `python3 -m http.server 8973` pointé sur mon
+worktree, puis `preview_start` : aucune erreur de console, aucun 404 (les quatre
+icônes, les images et les feuilles partagées répondent toutes 200), les six
+sections se rendent, les seize mini-leçons ont tous leurs laboratoires complets,
+et le contrôle qui compte a été passé sur les **207 zones** : les 157 zones à
+`cv` acceptent leur bonne réponse par `checkOk()`, aucune n'est refusée, et les
+50 autres sont les trous des six exercices `write`, qui portent tous une liste
+`accept` non vide.
+
+*Ce qui reste* : les **314 extraits audio**. `generer_audio_module_n7_oeuvres.py`
+est écrit, il s'importe sans erreur et retrouve ses six locuteurs sur quatre
+dialogues ; il attend `build/audio_tous.py` avec les autres. Le module est livré
+complet et muet. Le casting a été compté **par extrait et par genre avant**
+d'écrire les dialogues, comme les activités 112 et 115 le recommandent : aucun
+extrait ne réunit plus de trois locuteurs, Ghyslaine et Nadia partagent
+`enseignante` sans jamais se croiser, Réjean et Ludovic partagent `narrateur`
+de même. Réjean, l'humoriste, prend `narrateur` pour une raison qui n'est pas
+neutre : cette voix n'est pas ralentie par `voix_lente.py`, et un sketch tient
+sur ses silences.
+
 **23 août 2026 — activité 112, `module-n7-habitation`.** « Le bruit d'en
 haut », niveau 7, `numero` 5, `GRILLE_3_DEFIS`. Scénario inventé : Ruslana
 Kovalenko, 41 ans, arrivée d'Ukraine il y a trois ans, préposée à la
