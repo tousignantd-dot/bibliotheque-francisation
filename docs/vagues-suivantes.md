@@ -3530,3 +3530,154 @@ sont pas non plus** : ces deux tables se sont arrêtées aux modules du niveau 4
 et ne font plus partie de la chaîne. Le noter ici évite au prochain agent de
 se demander s'il a oublié une étape — et signale, s'il faut un jour les
 remettre à jour, que c'est un chantier à part et non un oubli de module.
+
+**23 août 2026 — activité 118, `module-n7-etablissement`.** « Entrer dans le
+programme », niveau 7, `numero` 11, `GRILLE_3_DEFIS`. **Le niveau 7 est
+fermé** : ses onze modules existent. Scénario inventé : Rania Nassar, 38 ans,
+arrivée de Syrie il y a cinq ans, préposée aux bénéficiaires au CHSLD des
+Quatre-Vents, à Granby, à l'unité prothétique. Deux années d'études en soins
+infirmiers faites à Alep, interrompues sans diplôme. Elle veut le DEP en
+santé, assistance et soins infirmiers ; il y a vingt-quatre places pour
+soixante-huit demandes, et il lui manque le préalable de mathématiques. Sa
+collègue Ghyslaine Bilodeau lui apprend au dîner que le programme est
+contingenté (Je découvre) ; Émilien Fiset, conseiller pédagogique du Centre de
+formation professionnelle du Ruisseau-Vert, relit sa lettre et lui montre non
+pas ses fautes mais ses trous (défi 1) ; elle passe l'entrevue devant Fiset et
+Yvan Lemay, infirmier auxiliaire et enseignant du programme (défi 2) ; puis
+elle rappelle après la décision, tombe sur Nadine Beaudet au secrétariat —
+« personne ne s'occupe de ça » — et obtient de Fiset ce qui manquait
+réellement (défi 3). 21 exercices dont **trois de type `texte`**,
+14 mini-leçons, 4 dialogues (104 répliques), 16 mots, 13 images, 170 sons
+relevés — 274 extraits en tout —, 16 séances (168 diapositives, 120 blocs de
+fiches).
+
+*Ce qui le distingue de ses quatre voisins de situation*, en une phrase écrite
+avant le scénario : **c'est le seul module du dépôt où l'établissement
+choisit, et où il peut dire non.** `module-n3-secretariat` (86) **informe**
+d'une absence, `module-n5-ecole` (74) **règle** une affaire au comptoir,
+`module-n6-etablissement` (102) **décide** d'un programme, et
+`module-n4-etablissement` (108) **transmet** des messages que personne
+n'écoute en direct. Dans les quatre, l'établissement sert. Ici il **trie** —
+et ce que le niveau 7 ajoute n'est pas la longueur des phrases, c'est qu'il
+n'y a plus de guichet : personne, au centre, n'a pour tâche de faire avancer
+un dossier sur une liste d'attente. Ce que Rania obtient au défi 3, elle
+l'obtient en **proposant** quelque chose que le centre n'avait pas devant lui.
+
+*Sur la grille* : la vague laissait le choix, et le cadre la tranche sans
+forcer. Trois intentions, et elles se lisent comme un plan — rédiger une
+lettre de motivation en vue de participer à une formation (PE), participer à
+une entrevue de sélection (CO/PO), téléphoner après une entrevue pour faire un
+suivi (CO/PO). Une par défi, dans l'ordre du calendrier réel d'une admission.
+C'est le troisième module de la vague à confirmer la remarque de l'activité
+110 : **au niveau 7, la situation peut être plus nette que le niveau**, et les
+défis *sont* alors les intentions. Corollaire agréable : les trois productions
+de « Je me lance » sont les trois intentions elles-mêmes, sans détour par les
+attentes de fin de cours.
+
+*Les faits québécois sont vérifiés, pas devinés*, le 23 août 2026. Le **DEP
+« Santé, assistance et soins infirmiers » (5325)** compte **1 800 heures** et
+mène au métier d'**infirmière ou infirmier auxiliaire** (fiche de programme du
+centre de services scolaire Marie-Victorin ; Inforoute FPT). Le **permis** est
+délivré par l'**Ordre des infirmières et infirmiers auxiliaires du Québec** :
+il faut le DEP — ou une reconnaissance de diplôme ou de formation — **et**
+réussir l'**examen professionnel de l'Ordre**, ajouté aux conditions
+d'admission à la profession en 2012, première séance en mars 2016 (OIIAQ). Les
+**conditions d'admission à un DEP** ont trois portes : le diplôme d'études
+secondaires ou un diplôme reconnu équivalent ; **16 ans au 30 septembre** plus
+les unités de **5e secondaire en langue d'enseignement** et de **4e secondaire
+en langue seconde et en mathématiques** ; ou, à **18 ans**, les **préalables
+fonctionnels** — réussite du **test de développement général**, plus les tests
+de préalables spécifiques s'il y a lieu —, le TDG ne devant être précédé
+**d'aucun exercice préparatoire ni d'aucun prétest** (ministère de
+l'Éducation ; Inforoute FPT). La **reconnaissance des acquis et des
+compétences** est offerte **gratuitement** dans les centres de formation
+professionnelle aux personnes de **16 ans et plus**, se demande au **centre de
+services scolaire** et se consigne dans un document officiel pouvant porter
+sur **une partie** du programme (art. 250 de la Loi sur l'instruction
+publique). La **sélection**, elle, n'est pas une règle ministérielle mais une
+pratique d'établissement : certains programmes exigent une entrevue ou des
+tests, et les candidatures les mieux évaluées sont retenues. Le Centre du
+Ruisseau-Vert, le CHSLD des Quatre-Vents, les personnes, les nombres et la
+lettre de décision sont **inventés** ; le mécanisme, non, et les trois
+exercices de type `texte` le disent à l'élève dans leur bandeau.
+
+Trois choses trouvées en produisant celui-ci.
+
+**1. Un exercice `write` n'a qu'un seul trou, et rien ne le dit.** Le moteur
+crée **un** champ par `item` (`wi_<exo>_<i>`) mais `blankify()` rend tous les
+`___` d'un énoncé. Un item écrit avec deux trous — « ___ je (avoir) ___ déjà
+suivi ce cours » — s'affiche donc avec deux blancs et une seule case, et
+l'élève ne peut pas répondre. Rien ne le signale : ni le build, ni
+`coherence.js`, ni le `node --check`. Trois exercices en portaient au premier
+jet, tous les trois sur le même modèle — un marqueur à trouver **et** un verbe
+à conjuguer. La correction est de couper en deux items : l'un demande le
+marqueur, l'autre le mode du verbe, et l'exercice y gagne en clarté. Le
+contrôle tient en une ligne : `grep -n "___.*___" exos.js` doit ne rien
+rendre.
+
+**2. Le contrôle des 187 zones se fait en dix lignes, et il vaut la peine.**
+Après avoir rendu les six sections, on parcourt `ZONES` et l'on vérifie que
+`checkOk()` accepte le `cv` de chacune ; puis on remplit tous les `.winput`
+avec `it.accept[0]` et l'on vérifie que `checkWrite()` rend `wfb ok`. Les
+56 zones sans `cv` sont exactement les zones de type `write`, qui n'en ont pas
+— la liste sert donc aussi de contre-vérification. C'est le contrôle que
+l'épisode de l'`imgmatch` mort recommande, et il attrape en une seconde ce
+qu'une relecture ne voit pas.
+
+**3. Treize images sur treize du premier coup, et ce n'était pas de la
+chance.** Un centre de formation est un piège à texte au moins aussi dense
+qu'une banque : enseigne, panneaux de porte, numéros de casier, babillards,
+caisson publicitaire d'abribus, étiquettes de laboratoire. La parade du
+23 août a été écrite dans chaque prompt **dès le premier jet**, et elle a tenu
+sans une seule reprise : l'enseigne du centre est au-dessus du bord supérieur,
+les plaques de casier sont des surfaces lisses vues en enfilade, l'abribus est
+photographié **par l'arrière** pour que son caisson soit derrière l'appareil,
+les panneaux de chambre du corridor sont coupés par le cadre, les flacons du
+laboratoire sont hors champ. Treize appels par la route Google : **0,44 $**
+pour le module entier, et zéro reprise. `node build/contexte_images.js` a
+confirmé les treize énoncés.
+
+*Sur l'originalité* : 1 471 chaînes visibles, **72 identiques** parmi les
+66 884 des autres modules de `build/contenu/`, soit **4,9 %**. Le premier
+relevé donnait 6,1 % ; vingt et une substitutions ont suffi — intitulés de
+bandeau de savoir, libellés d'axe de laboratoire, indices de champ (« un nom
+en -tion » devient « un nom féminin en -tion ») et une réplique de dialogue.
+La leçon des activités 109, 113, 114 et 115 se confirme une cinquième fois, et
+avec elle sa précision : **le relevé des sons n'a pas bougé d'un octet**, donc
+l'opération est gratuite en audio. Les 72 qui restent sont pour moitié des
+fragments de code attrapés par la mesure, et pour le reste les consignes du
+gabarit, les mots du programme et deux formules de lettre consacrées.
+
+*Sur les contrôles* : les sept passent. `coherence.js` ne signale rien, les
+deux relevés (`sections.py`, `materiel.py`) sont à jour, les deux contrôles de
+couleur ne rendent rien, `sommaire.py --verifier` ne trouve aucun lien cassé —
+à condition d'avoir lancé `python3 build/powerpoints/sommaire.py
+module-n7-etablissement`, qui manque toujours à la séquence —, et
+`pieds_de_page.py` lit « niveau 7 · numéro 11 · 16 pptx · vus ['11'] ». Le
+seul écart restant est `module-n3-horaire`, connu de longue date et qui n'est
+pas le mien. Le `node --check` du script produit passe. La vérification s'est
+faite **sur un serveur et un onglet à moi** (`python3 -m http.server 8931` sur
+le worktree, puis `tabs_create`) : aucune erreur de console, et **aucun 404** —
+les quatre icônes sont servies, le build les copie depuis le gabarit depuis le
+commit `5ba73688`, et le geste manuel décrit par les activités 112 et 113 n'a
+plus lieu d'être.
+
+*Deux flèches ont arrêté le build des séances* sur le garde-fou de Verdana, en
+C3 et D2, dans des items du type « phrase de départ → phrase transformée ».
+Elles sont devenues « On encadre : » et « On rapporte : », ce qui se lit mieux
+de loin qu'une flèche de toute façon.
+
+*Un scénario de jeu de rôle a été ajouté à `server.py`* — `admission`, trois
+cas (l'entrevue, la formation qui n'a pas été finie, le suivi après la
+décision), deux rôles. Aucun des scénarios existants ne convenait : les autres
+modules d'établissement informent, demandent ou règlent. La conduite du
+conseiller porte le cœur du module — il **ne remplit jamais un silence**, il
+exige un exemple concret derrière chaque adjectif, il distingue toujours les
+conditions d'admission (des cases, non négociables) de ce que le comité
+apprécie (sans case), il ne communique **jamais** un rang sur une liste
+d'attente et il ne promet aucune place.
+
+*Le module est livré muet* : les 274 extraits sont relevés,
+`generer_audio_module_n7_etablissement.py` s'importe sans erreur et retrouve
+ses 104 répliques sur quatre dialogues ; il partira avec les autres par
+`build/audio_tous.py`.
