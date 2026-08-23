@@ -2499,3 +2499,94 @@ raison d'en sortir, sauf pour `~/Claude/programme/` (le programme d'études),
 `~/Claude/generations/` (le registre des médias) et `~/Claude/.env` (les clés).
 
 ### Journal de la vague 7
+
+**23 août 2026 — activité 111, `module-n7-logement`.** « Rester locataire ou
+devenir propriétaire », niveau 7, `numero` 4, `GRILLE_3_DEFIS`. Scénario
+inventé : Sokhna Diagne, 43 ans, arrivée du Sénégal il y a onze ans, préposée
+aux bénéficiaires dans un CHSLD de Saint-Hyacinthe, locataire du même 5 ½ de la
+rue Bourdages depuis sept ans. Une enveloppe dans sa porte annonce
+quatre-vingt-quatre dollars de hausse ; elle a un mois pour répondre. Elle
+négocie avec Gérald Lheureux, son propriétaire (défi 1), visite un condo avec
+Josiane Bourbonnais, courtière **du vendeur** (défi 2), puis va chercher sa
+préautorisation auprès de Farah Zaoui, à la caisse, et lit une promesse d'achat
+(défi 3). 21 exercices, 15 mini-leçons, 4 dialogues (92 répliques), 16 mots,
+17 images, 294 extraits audio relevés, 16 séances.
+
+**Ce qui distingue ce module de ses quatre voisins de situation**, en une
+phrase, comme la vague le demande : c'est **le seul module du dépôt où
+quelqu'un achète**. Le niveau 4 visite et compare, le niveau 3 paie son loyer,
+le niveau 5 téléphone et lit son bail, le niveau 6 suit un texte de droits sur
+la sous-location. L'achat n'existe à aucun niveau inférieur, et il apporte un
+monde entier que personne n'avait rencontré : la courtière, la promesse
+d'achat, l'inspection préachat, la préautorisation, le notaire.
+
+*La situation n'a que deux intentions, et les deux sont orales* — négocier
+entre propriétaire et locataire, s'informer pour acheter une habitation. Ni
+compréhension ni production écrite ne lui sont rattachées. Les deux exercices
+de type `texte` et la lettre de « Je me lance » viennent donc des **attentes de
+fin de cours** du niveau 7, qui les portent explicitement — dont « il expose
+les avantages et les inconvénients de deux situations ou contextes pour prendre
+une décision durant une négociation », qui est le patron exact de la production
+orale. C'est écrit dans le docstring du manifeste pour que le relecteur suivant
+ne prenne pas ces tâches pour une invention hors programme.
+
+*Les faits québécois sont vérifiés, pas devinés*, le 22 août 2026 : auprès du
+**Tribunal administratif du logement** — pour un bail de douze mois ou plus,
+l'avis de modification se donne de **trois à six mois** avant la fin du bail,
+le locataire a **un mois** pour répondre, **son silence vaut acceptation**, et
+s'il refuse c'est au locateur de s'adresser au Tribunal dans le mois, faute de
+quoi le bail est reconduit aux mêmes conditions ; auprès de l'**OACIQ** — un
+courtier lié par un contrat de courtage avec le vendeur **ne représente pas
+l'acheteur**, il doit néanmoins traiter équitablement l'acheteur non représenté
+et ne peut lui réclamer aucune rétribution ; l'**inspection préachat** n'est pas
+obligatoire par la loi, mais le courtier doit la recommander ; **mise de
+fonds** minimale de 5 % jusqu'à 500 000 $ et 10 % au-delà, prêt assuré sous
+20 % ; le **notaire** est obligatoire pour l'acte hypothécaire et fait l'examen
+des titres ; les **droits de mutation** se paient à la municipalité par le
+nouveau propriétaire. Tout le reste — les personnes, l'immeuble, les montants,
+la caisse, l'agence — est inventé.
+
+*Le fait que le courtier ne représente pas l'acheteur est devenu le cœur du
+défi 2*, et non une note en bas de page. C'est un savoir, pas une méfiance : la
+courtière le dit elle-même à la troisième réplique, elle répond « je ne le sais
+pas » quand elle ne sait pas, et l'exercice porte sur les questions que
+l'acheteur doit donc poser lui-même. Un module qui aurait fait de la courtière
+une adversaire aurait mal enseigné la situation.
+
+*Sur l'originalité, une confirmation de ce que le pilote du niveau 6 a écrit* :
+le relevé sur `fccards.js`+`exos.js` rendait 6 coïncidences réelles sur 377
+chaînes (1,6 %) — quatre consignes du gabarit, un nom d'organisme, un mot du
+programme —, mais celui passé sur `plus.js` seul en rendait **14 sur 936**, et
+douze d'entre elles étaient des **en-têtes de bloc repris du même moule** d'un
+module à l'autre (« Quatre questions, une minute », « Trois ennuis courants,
+trois sorties »). Refaites. Il reste six coïncidences, toutes des faits de
+langue qui ne se disent pas autrement — les terminaisons du subjonctif,
+« qui » qui ne s'élide jamais. **Le relevé qui ne regarde que `exos.js` ne voit
+pas l'endroit où la coïncidence se loge**, et l'opération est gratuite en audio
+à la condition connue : les `say:` n'ont pas bougé de place, le manifeste est
+resté à 202 clés identiques à l'octet près.
+
+*Une image sur dix-sept a été refaite*, et c'est la règle 1 qui l'a prise :
+« un délai de réponse » avait reçu un calendrier mural dont l'en-tête portait
+**« March »** en toutes lettres, et en anglais. Le modèle écrit le nom du mois
+quoi qu'on lui demande — même avec la consigne « chiffres illisibles ». La
+sortie est de **cadrer l'en-tête hors champ** : il ne reste que la grille de
+cases, deux cercles rouges reliés par un trait, et le délai se lit sans un mot.
+Les seize autres ont été relues avec leur énoncé (`node
+build/contexte_images.js module-n7-logement`) : aucune ne montrait le thème à
+la place de sa phrase, les cinq images d'exercice ayant été écrites à partir de
+la phrase de leur rangée `ok`, recopiée en commentaire dans `gen_images.py`.
+
+*Sur les contrôles* : les sept passent. `pieds_de_page.py` sort deux écarts,
+sur `module-n3-horaire` (aucun `.pptx` sur cette branche) et
+`module-n6-relations` (numéro corrigé au registre, séances pas encore
+reconstruites) — aucun des deux n'est le mien, qui relève « niveau 7 · numéro 4
+· 16 pptx · vus ['4'] ». Le module est livré **muet** : les 294 extraits sont
+relevés et le générateur s'importe, mais les 92 générateurs de la vague partent
+ensemble par `build/audio_tous.py`.
+
+*Un scénario de jeu de rôle a été ajouté à `server.py`* — `louerouacheter`,
+trois cas (l'avis, la contrepartie, l'écrit), deux rôles. Aucun des scénarios
+existants ne convenait : `louer` est du niveau 4 et fait visiter un logement,
+là où celui-ci fait **négocier** un montant contre une contrepartie et demander
+que l'entente soit écrite.
