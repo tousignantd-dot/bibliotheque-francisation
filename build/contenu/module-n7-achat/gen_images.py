@@ -159,12 +159,22 @@ IMAGES = [
   "haut du cadre. Lumière grise du matin, quelques grains de gravier autour. "
   "Aucune personne." + SANS_MOTS),
  # « Un pare-brise couvert de givre, tôt le matin, dans une entrée encore sombre. »
- ('pare-brise-givre', 'images', P_EX2, STYLE + " Un pare-brise entièrement "
-  "couvert de givre blanc, vu de l'extérieur et de trois quarts, tôt le matin "
-  "dans une entrée résidentielle encore bleutée. On devine à peine l'intérieur "
-  "de l'habitacle derrière le givre. Le capot occupe le bas du cadre ; aucune "
-  "vignette, aucun autocollant, aucune inscription sur la vitre. Aucune "
-  "personne." + SANS_MOTS),
+ # Refaite le 23 août 2026. La première version rendait un pare-brise à peine
+ # voilé, à travers lequel on voyait l'habitacle en entier : l'énoncé dit
+ # « couvert de givre », et l'image ne le montrait pas — le quatrième défaut
+ # de la vague, sous sa forme la moins visible, celle du degré. Le prompt
+ # refait **serre le cadrage sur la vitre** au lieu de décrire la scène, et
+ # exige l'opacité en toutes lettres : c'est le sujet de la photo, pas son
+ # décor.
+ ('pare-brise-givre', 'images', P_EX2, STYLE + " Cadrage serré sur le "
+  "pare-brise d'une auto, vu de l'extérieur et légèrement de trois quarts : la "
+  "vitre est **entièrement opaque**, couverte d'une couche épaisse de givre "
+  "blanc cristallisé qui empêche complètement de voir l'habitacle. Les motifs "
+  "de gel dessinent des étoiles et des plumes sur toute la surface. Deux "
+  "essuie-glaces sombres se détachent en bas, pris dans le givre. Le pare-brise "
+  "occupe les trois quarts de l'image ; on ne voit du décor qu'un coin d'entrée "
+  "résidentielle enneigée, à peine éclairé par une aube bleutée. Aucune "
+  "vignette, aucun autocollant, aucune personne." + SANS_MOTS),
  # « Une petite montée de rue résidentielle, vue depuis l'intérieur d'une auto. »
  ('petite-montee', 'images', P_EX2, STYLE + " Vue depuis le siège du conducteur "
   "à travers un pare-brise propre : une rue résidentielle qui monte en pente "
