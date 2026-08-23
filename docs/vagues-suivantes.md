@@ -2500,6 +2500,143 @@ raison d'en sortir, sauf pour `~/Claude/programme/` (le programme d'études),
 
 ### Journal de la vague 7
 
+**23 août 2026 — activité 112, `module-n7-habitation`.** « Le bruit d'en
+haut », niveau 7, `numero` 5, `GRILLE_3_DEFIS`. Scénario inventé : Ruslana
+Kovalenko, 41 ans, arrivée d'Ukraine il y a trois ans, préposée à la
+stérilisation dans un hôpital de Québec, quart de soir de 15 h 30 à 23 h 30,
+locataire du logement 4 d'un triplex de la 8e Avenue, dans Limoilou. Depuis le
+4 février, le voisin du dessus court sur un tapis roulant de 5 h 45 à 6 h 25,
+tous les matins de semaine. Elle en parle à sa collègue Marlène Sauvageau (Je
+découvre), monte parler à Cédric Rondeau (défi 1), rapporte la conversation à
+sa propriétaire Ginette Ostiguy puis au médiateur Hubert Vachon (défi 2), et
+écrit les deux lettres (défi 3). 21 exercices, 15 mini-leçons, 4 dialogues
+(104 répliques), 16 mots, 15 images, 323 extraits audio relevés, 16 séances
+(170 diapositives, 122 blocs de fiches). Originalité : 1 480 chaînes visibles,
+**33 identiques** dans les 53 536 des soixante-cinq autres modules, soit
+**2,2 %**.
+
+**Ce qui distingue ce module de ses voisins de situation**, en une phrase,
+écrite avant le scénario : c'est **le seul module du dépôt où le problème n'a
+pas de responsable**. `module-probleme` (niveau 4) signale un défaut au
+propriétaire, `module-n5-degat` (62) décrit un sinistre et réclame,
+`module-n6-habitation` (106) fait faire des travaux ; dans les trois, quelqu'un
+doit réparer et l'on sait qui. `module-n3-voisins` (79) et
+`module-n5-voisinage` (68) parlent bien aux voisins, mais pour les inviter.
+Ici, un homme s'entraîne chez lui à cinq heures quarante-cinq — ce qui n'est ni
+interdit ni méchant — et une femme dort en dessous. Tout le module tient dans
+cet écart : obtenir quelque chose de quelqu'un qui n'est pas fautif, sans
+facture, en gardant un voisin avec qui l'on partagera encore un escalier
+demain.
+
+*La grille se choisit par les attentes de fin de cours, pas par le nombre
+d'intentions.* La situation n'en porte que deux — régler un problème de
+voisinage (CO et PO), rédiger une lettre pour régler un problème (PE) —, et le
+tableau de la vague disait « au choix ». Ce sont les attentes qui découpent le
+travail en trois : « il **mène une conversation** pour résoudre le problème »,
+« il **rapporte** aussi les éléments essentiels des propos de quelqu'un du
+voisinage », et « il **rédige** une lettre en vue de régler un problème de
+voisinage ». Mener, rapporter, écrire : trois interlocuteurs, trois canaux,
+trois grammaires — face à face au conditionnel, téléphone au discours indirect
+au passé, écrit aux connecteurs. `GRILLE_3_DEFIS`, donc, et les trois
+productions de « Je me lance » sortent directement de la situation, sans
+détour par les attentes — l'inverse du pilote du niveau 6.
+
+*Les faits québécois sont vérifiés, pas devinés*, le 23 août 2026, auprès du
+**Tribunal administratif du logement**, du **Code civil du Québec** (Légis
+Québec), du **Règlement sur le bruit de la Ville de Québec** (R.V.Q. 978) et
+d'**Équijustice** : art. **976** — les voisins doivent souffrir les
+inconvénients **normaux** du voisinage qui n'excèdent pas les limites de la
+tolérance qu'ils se doivent, suivant la nature des lieux et les usages locaux ;
+art. **1854** — le locateur doit procurer la **jouissance paisible** du bien
+pendant toute la durée du bail ; art. **1859** — il ne répond pas du trouble
+causé par un tiers, **sauf quand ce tiers est lui aussi son locataire dans le
+même immeuble**, ce qui est exactement le cas ici et ce qui met la
+propriétaire dans le dossier ; art. **1860** — le locataire doit se conduire de
+manière à ne pas troubler la jouissance normale des autres ; art. **1861** — le
+locataire troublé qui a **avisé** son locateur peut demander une diminution de
+loyer ou des dommages-intérêts. Démarche du Tribunal : s'entendre, puis une
+**mise en demeure** écrite fixant un délai précis (dix jours le plus souvent),
+envoyée par **courrier recommandé** ; à l'audience il faut prouver que les
+bruits sont répétitifs et persistants — registre quotidien, témoin, copie de la
+mise en demeure. Règlement de la ville : **jour 7 h–19 h, soir 19 h–23 h, nuit
+23 h–7 h** ; un bruit **excessif ou insolite** troublant la paix est une
+nuisance ; chambre à coucher **45 / 40 / 38 dB(A)** ; première infraction de
+**2 000 $ à 10 000 $** ; plainte au **311**. Médiation citoyenne : **gratuite,
+confidentielle et volontaire**, on peut s'en retirer en tout temps, et elle ne
+dit jamais qui a raison. Tout le reste — les personnes, le triplex, les heures,
+le service de médiation du quartier — est inventé.
+
+Trois choses apprises, pour les onze modules qui restent.
+
+**1. Le dépôt n'a que deux voix féminines, et un dialogue à trois femmes est
+impossible.** Le défi 2 fait parler la locataire, la propriétaire, puis le
+service de médiation — trois personnes dans le **même** dialogue. Avec
+`enseignante` et `feminin_2` pour seuls timbres féminins, deux d'entre elles
+auraient sonné pareil, et tout le défi porte justement sur **qui a dit quoi**.
+La médiatrice Huguette Vachon est donc devenue le médiateur **Hubert** Vachon,
+voix `narrateur`. Faire du propriétaire un homme était l'autre sortie ; elle a
+été écartée parce que `module-n7-logement`, le voisin immédiat du même niveau,
+a déjà un propriétaire masculin. **Le point à retenir : compter les
+personnages par dialogue, et par genre, avant d'écrire les dialogues** — la
+correction après coup a touché quatre fichiers de contenu et une quinzaine
+d'accords.
+
+**2. Les icônes du module ne sont pas produites par `build/module.py`.** Le
+gabarit référence `icons/play.svg`, `speaker.svg` et `mic.svg` dans le dossier
+du module, et le build ne les y met pas : trois 404 au premier chargement, sur
+le bouton d'écoute des dialogues et sur l'onglet « Je découvre ». Rien ne le
+signale — ni le build, ni `coherence.js`, ni le `node --check`. La correction
+tient en une ligne (`cp` depuis un module voisin) mais il faut y penser :
+**ouvrir le module dans un navigateur et regarder l'onglet réseau fait partie
+de la livraison**, pas seulement la console.
+
+**3. Les intitulés de bandeau se corrigent d'un coup, et ça vaut le détour.**
+Le relevé d'originalité rendait 47 coïncidences sur 1 479 chaînes (3,2 %), dont
+une quinzaine d'en-têtes repris du même moule — « Quatre questions, sans
+filet », « Trois faux pas, et comment s'en sortir », « Un paragraphe, une
+idée ». Dix-huit substitutions, et le chiffre est tombé à **33 sur 1 480
+(2,2 %)**. L'opération est **gratuite en audio** à la condition connue : on ne
+touche qu'aux `h:` et aux libellés de `check` et de `piege`, jamais aux `say:`
+— le manifeste est resté à 219 clés identiques à l'octet près, vérifié par
+comparaison JSON avant et après.
+
+*Sur les images* : quinze produites par la route Google directe, **une
+refaite** — `velo-dans-lentree` montrait le vélo **dehors**, appuyé contre
+l'escalier extérieur, avec la porte ouverte au fond, alors que son énoncé dit
+« appuyé contre le mur d'une **entrée de logement** ». Belle photo de rue,
+mauvaise réponse : le défaut n° 4, celui qui ne se voit qu'avec la phrase à
+côté. Le prompt refait **enferme la scène** — plus de rue, plus de neige, plus
+d'escalier extérieur, seulement le vestibule — et c'est passé du premier coup.
+Les cinq objets à inscriptions du module (console du tapis roulant, numéros de
+porte, numéros de casier, numéro civique, décalque de cadre de vélo) ont tous
+été **cadrés hors champ** plutôt qu'interdits, selon la parade du 23 août :
+aucun charabia sur les quinze images. 0,50 $ pour l'ensemble, plus 0,03 $ pour
+la reprise.
+
+*Sur les contrôles* : les sept passent. Le seul écart de `pieds_de_page.py` est
+`module-n3-horaire`, connu de longue date et qui n'est pas le mien ; le mien
+relève « niveau 7 · numéro 5 · 16 pptx · vus ['5'] ». Le `node --check` du
+script produit passe, et la vérification dans le navigateur ne laisse aucune
+erreur : glisser-déposer de l'`imgmatch` vérifié (bonne réponse acceptée,
+mauvaise refusée), les douze questions du `texte` `t2regl` validées, le `vf`
+`t1vf` à 8 sur 8. Un piège de séance rencontré : `theme.py` refuse la flèche
+`→`, que neuf items de pratique employaient pour figurer le passage au discours
+rapporté — remplacée par « — rapporté : ».
+
+*Ce qui reste* : les **323 extraits audio**.
+`generer_audio_module_n7_habitation.py` est écrit, le relevé est fait par
+`build/releve_sons.js`, le script s'importe sans erreur et retrouve ses cinq
+personnages ; il attend `build/audio_tous.py`. Le module est livré complet et
+muet.
+
+*Le scénario de jeu de rôle `voisinage` a été ajouté à `server.py`* — trois cas
+(`tapis`, `escalier`, `apres`), deux rôles (`ruslana`, `cedric`). Aucun des
+scénarios existants ne convenait : `probleme` et `degat` s'adressent à un
+propriétaire qui doit réparer quelque chose, `louerouacheter` négocie un
+montant. Ici l'assistant joue quelqu'un qui **n'a rien fait de mal** : sa
+conduite dit qu'il se braque devant un reproche et qu'il propose de lui-même
+dès qu'on lui donne une heure et une durée.
+
 **23 août 2026 — activité 111, `module-n7-logement`.** « Rester locataire ou
 devenir propriétaire », niveau 7, `numero` 4, `GRILLE_3_DEFIS`. Scénario
 inventé : Sokhna Diagne, 43 ans, arrivée du Sénégal il y a onze ans, préposée
