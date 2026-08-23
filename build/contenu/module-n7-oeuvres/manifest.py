@@ -113,7 +113,12 @@ MANIFESTE = {
 
     'jr_cas': 'humour',
     'jr_role': 'marilou',
-    'jr_scenario': 'oeuvres',
+    # Le scénario s'appelle « avisoeuvre » et non « oeuvres » : cette clé-là
+    # est déjà prise par module-n5-oeuvres (activité 73), et une clé en
+    # double dans JEU_DE_ROLE_SCENARIOS ne lève AUCUNE erreur — Python garde
+    # silencieusement la dernière définition, et le module aurait joué le
+    # scénario du niveau 5.
+    'jr_scenario': 'avisoeuvre',
     'ia_jeu_de_role': "L'élève discute d'une œuvre avec un collègue qui n'est "
                       "pas du tout du même avis : il dit ce qu'il a compris "
                       "de l'œuvre avant de dire ce qu'il en pense, il accorde "
