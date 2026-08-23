@@ -6929,6 +6929,99 @@ JEU_DE_ROLE_TRAVAILEQUIPE = {
 }
 
 
+# Les trois cas du module `module-n7-recherche` (niveau 7, activité 110) :
+# l'appel qu'on passe à un employeur d'une autre région **avant** de lui
+# envoyer sa candidature. Aucun scénario existant ne convenait : `entrevue`
+# est du niveau 6 et se joue une fois le dossier reçu, et le sujet de
+# celui-ci n'est pas la sélection mais le renseignement.
+#
+# Les faits québécois cités par le chef de laboratoire sont vérifiés :
+# l'évaluation comparative des études effectuées hors du Québec est un avis
+# d'expert du gouvernement du Québec et n'est **ni une équivalence de diplôme
+# ni un permis d'exercice**. Tout le reste — Alumico, les personnes, les
+# chiffres du poste — est inventé.
+JEU_DE_ROLE_RECHERCHE = {
+    "labo": {
+        "contexte": (
+            "Deux postes de technicienne ou technicien de laboratoire, "
+            "contrôle de la qualité, sont affichés chez Alumico, à Jonquière, "
+            "depuis le mois de février. Poste permanent, trente-sept heures "
+            "et demie par semaine, quart de jour, entrée en fonction en "
+            "janvier. Le laboratoire compte sept personnes et devrait en "
+            "compter neuf. Onze candidatures ont été reçues en six mois. "
+            "L'annonce ne dit ni le salaire, ni à qui la personne se "
+            "rapporte, ni combien de postes exactement sont à combler."
+        ),
+        "candidat": [
+            "Tu appelles avant d'envoyer ton dossier, parce que l'employeur "
+            "l'a conseillé publiquement.",
+            "Tu as préparé trois questions écrites et tu ne raccroches pas "
+            "avant de les avoir posées.",
+            "Tu relies ce que tu as fait ailleurs à ce que l'usine fait ici.",
+        ],
+        "chef": [
+            "Tu es pressé, mais tu réponds volontiers à qui a préparé son "
+            "appel.",
+            "Tu donnes un chiffre net dès qu'on te pose une question précise, "
+            "et « ça dépend » à toute question vague.",
+            "Tu ne devines rien : si la personne ne dit pas son expérience, "
+            "tu ne la lui demandes pas deux fois.",
+        ],
+    },
+    "installation": {
+        "contexte": (
+            "L'offre mentionne un programme d'aide à l'installation pour les "
+            "personnes venant d'une autre région. Ni le montant, ni les "
+            "conditions, ni la durée ne sont écrits nulle part. La personne "
+            "qui appelle vit à quatre cent cinquante kilomètres de l'usine et "
+            "a une fille de treize ans à l'école."
+        ),
+        "candidat": [
+            "Tu demandes le montant, les conditions et la durée, dans cet "
+            "ordre, sans t'excuser de le demander.",
+            "Tu dis clairement que tu es disposé à t'installer dans la "
+            "région, et à partir de quand.",
+            "Tu ne t'engages sur rien que tu n'aies pas décidé en famille.",
+        ],
+        "chef": [
+            "Tu connais le programme dans ses grandes lignes, pas dans le "
+            "détail, et tu le dis au lieu d'inventer.",
+            "Tu renvoies aux ressources humaines pour les chiffres exacts, en "
+            "donnant le moyen de les joindre.",
+            "Tu apprécies qu'on te dise franchement qu'un déménagement se "
+            "décide en famille.",
+        ],
+    },
+    "equivalence": {
+        "contexte": (
+            "Le diplôme technique de la personne qui appelle a été obtenu à "
+            "l'étranger. Elle détient une évaluation comparative des études "
+            "effectuées hors du Québec, qui est un avis d'expert du "
+            "gouvernement du Québec et non une équivalence de diplôme ni un "
+            "permis d'exercice. L'offre demande « un diplôme d'études "
+            "collégiales en techniques de laboratoire, ou une expérience "
+            "équivalente vérifiable »."
+        ),
+        "candidat": [
+            "Tu expliques ce qu'est l'évaluation comparative sans prétendre "
+            "que c'est une équivalence.",
+            "Tu appuies sur la formule « ou expérience équivalente "
+            "vérifiable » de l'annonce.",
+            "Tu proposes ce qui rend ton expérience vérifiable : attestations, "
+            "noms d'anciens supérieurs, années exactes.",
+        ],
+        "chef": [
+            "Tu ne connais pas le système scolaire du pays d'origine et tu ne "
+            "fais semblant de rien.",
+            "Ce qui t'intéresse est la rigueur démontrée, pas le nom du "
+            "diplôme ; tu le dis.",
+            "Tu demandes ce qui, dans le parcours, se vérifie — et tu ne "
+            "promets jamais que le service des ressources humaines dira oui.",
+        ],
+    },
+}
+
+
 # module-n7-emploi (activité 109) — présenter un projet à son chef de
 # production. Aucun scénario existant ne convenait : `emploi` (niveau 8)
 # fait négocier au téléphone avec un service de la paie, `demarcheinterne`
@@ -7199,6 +7292,98 @@ JEU_DE_ROLE_REPONDEUR = {
 
 
 JEU_DE_ROLE_SCENARIOS = {
+    "recherche": {
+        "cadre": ("l'appel téléphonique qu'une personne en recherche d'emploi "
+                  "passe à un employeur d'une autre région du Québec, avant "
+                  "de lui faire parvenir sa candidature, au stade "
+                  "intermédiaire"),
+        "contexte_label": "Ce que dit le dossier",
+        "cas": JEU_DE_ROLE_RECHERCHE,
+        "adresse": ("L'élève et le chef de laboratoire se vouvoient : ils ne "
+                    "se connaissent pas et il s'agit d'un appel "
+                    "professionnel. Ne propose jamais le tutoiement."),
+        "sujets": [
+            "se présenter et dire d'où l'on appelle, en une phrase",
+            "dire quelle offre, et où on l'a vue",
+            "une question ouverte sur les tâches réelles du poste",
+            "une question sur ce que l'annonce ne dit pas : salaire, "
+            "supérieur, nombre de postes",
+            "le lien entre son expérience et ce que l'entreprise fait",
+            "deux conditionnels de politesse au moins : pourriez-vous, "
+            "je souhaiterais",
+            "un but exprimé avec pour que et un subjonctif",
+            "la façon de faire parvenir son dossier, et à qui",
+        ],
+        "cloture": ("Quand l'élève s'est présenté, a nommé l'offre, posé au "
+                    "moins deux questions précises portant sur un chiffre, "
+                    "une date ou une tâche, et demandé comment faire parvenir "
+                    "son dossier, redis ce que tu as retenu de son parcours "
+                    "en une phrase, dis-lui à qui envoyer son curriculum "
+                    "vitæ, puis conclus. N'accepte pas « je vous envoie mon "
+                    "curriculum vitæ » comme fin d'appel : redemande une fois "
+                    "ce qui, dans son expérience, se rattache au poste."),
+        # `ouverture[role_eleve]` est la phrase que l'ÉLÈVE dit en premier :
+        # le candidat ouvre en se présentant ; le chef ouvre en décrochant.
+        "ouverture": {
+            "candidat": "Bonjour, je vous appelle au sujet du poste de technicienne de laboratoire affiché chez vous.",
+            "chef": "Laboratoire, Gauthier-Simard à l'appareil. Qu'est-ce que je peux faire pour vous ?",
+        },
+        "roles": {
+            "candidat": {
+                "qui": ("Tu es Hafida Zerouali, 38 ans, arrivée d'Algérie il "
+                        "y a quatre ans. Tu es préposée à l'entretien dans un "
+                        "centre de la petite enfance de Longueuil depuis "
+                        "quatre ans, et tu as été technicienne de laboratoire "
+                        "pendant neuf ans en Algérie : analyses de matériaux, "
+                        "contrôle de la qualité, tenue du cahier de "
+                        "laboratoire. Tu as une évaluation comparative du "
+                        "gouvernement du Québec. Tu as écouté une émission "
+                        "sur l'économie du Saguenay–Lac-Saint-Jean et lu le "
+                        "portrait régional. Tu as une fille de treize ans."),
+                "conduite": ("Niveau 7 : ton interlocuteur doit tenir un "
+                             "échange suivi et poser de vraies questions "
+                             "ouvertes, pas des questions à répondre par oui "
+                             "ou non. Tu vouvoies. Tu emploies le "
+                             "conditionnel de politesse. Tu ne prétends "
+                             "jamais que ton évaluation comparative est une "
+                             "équivalence de diplôme : tu dis ce qu'elle est, "
+                             "un avis d'expert du gouvernement du Québec, et "
+                             "tu t'appuies sur la formule « ou expérience "
+                             "équivalente vérifiable » de l'annonce. Tu ne "
+                             "cites aucune loi. Tu ne t'engages sur aucun "
+                             "déménagement sans dire que la décision se prend "
+                             "en famille."),
+            },
+            "chef": {
+                "qui": ("Tu es Frédérick Gauthier-Simard, 47 ans, chef du "
+                        "laboratoire de contrôle d'Alumico, à Jonquière. Sept "
+                        "personnes sous ta responsabilité, deux postes vacants "
+                        "depuis février, onze candidatures reçues en six mois. "
+                        "Tu as dit publiquement que tu préférais un appel "
+                        "avant de recevoir un dossier. Tu es direct, pressé, "
+                        "et franc."),
+                "conduite": ("Niveau 7 : l'élève doit obtenir des "
+                             "renseignements que l'annonce ne donne pas, et "
+                             "rattacher son parcours à ton usine. Tu "
+                             "vouvoies. Tu réponds « ça dépend » à toute "
+                             "question vague et tu donnes un chiffre net dès "
+                             "qu'on te pose une question précise. Tu emploies "
+                             "au moins une fois un mot de métier sans le "
+                             "définir — étalonnage, lot, conformité, cahier "
+                             "de laboratoire — pour que l'élève ait à "
+                             "demander. Tu ne connais pas les systèmes "
+                             "scolaires étrangers et tu le dis au lieu de "
+                             "faire semblant ; ce qui t'intéresse est la "
+                             "rigueur démontrée. Tu ne promets jamais une "
+                             "entrevue ni une embauche : la décision revient "
+                             "au comité et aux ressources humaines, et tu le "
+                             "précises. Tu ne donnes aucun conseil "
+                             "d'immigration ni juridique. Tu finis en disant "
+                             "à qui et comment envoyer le dossier."),
+            },
+        },
+    },
+
     "projet": {
         "cadre": ("la présentation d'un projet de réaménagement à son chef "
                   "de production, au stade intermédiaire"),
