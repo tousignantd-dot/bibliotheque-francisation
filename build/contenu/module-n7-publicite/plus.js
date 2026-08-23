@@ -3,19 +3,19 @@ const PLUS = {
   prDebit: {
     eye:'Mini-leçon', tit:"Le « e » que la vitesse fait disparaître",
     blocs:[
-      {t:'texte', h:"Un son qui n'est pas obligatoire",
+      {t:'texte', h:"Le seul son du français qui a le droit de ne pas se dire",
        p:"Il y a dans le français un petit son qui tantôt se dit, tantôt ne se dit pas : le « e » de <i>semaine</i>, de <i>rapidement</i>, de <i>depuis</i>. Ce ne sont pas deux façons de parler, l'une soignée et l'autre relâchée. Ce sont deux prononciations également correctes, et c'est la place du « e » dans le mot qui décide, pas le niveau de langue.",
        note:"On l'appelle le <b>e caduc</b> — « caduc » veut dire « qui tombe ». Il s'écrit <b>[ə]</b>."},
 
       {t:'texte', h:"Pourquoi cette leçon est dans un module sur la publicité",
        p:"Une capsule de radio finit par cinq secondes dites deux fois plus vite que le reste. À cette vitesse-là, tous les « e » qui peuvent tomber tombent : <i>gratuitement</i> devient <i>gratuit'ment</i>, <i>la semaine</i> devient <i>la s'maine</i>. Vous connaissez très bien ces mots — et vous ne les reconnaissez pas. Ce n'est pas un manque de vocabulaire, c'est un manque d'entraînement à la forme courte.",
-       note:"C'est la première cause d'incompréhension à l'oral chez les adultes qui lisent pourtant très bien."},
+       note:"On croit alors avoir manqué du vocabulaire, alors qu'on a manqué une syllabe."},
 
       {t:'ana', h:"Il tient — quand le mot commence par p, b, t, d, k, g",
        p:"Dans la <b>première syllabe</b>, après une consonne qui ferme complètement la bouche, le « e » reste.",
        mots:[['On écrit','d{e}puis · d{e}vant · t{e}nir · d{e}bout'],['On entend','le [ə] est bien là',true],['Le repère','la bouche se ferme, puis le « e » sort']],
        say:"depuis, devant, tenir, debout",
-       note:"Ces consonnes s'appellent des <b>occlusives</b> : l'air est bloqué un instant, puis relâché."},
+       note:"Ces six consonnes ferment complètement la bouche avant de la rouvrir : le « e » sort dans ce relâchement."},
 
       {t:'ana', h:"Il tient — quand deux consonnes le précèdent",
        p:"S'il fallait le laisser tomber, trois consonnes se suivraient et le mot deviendrait impossible à dire.",
@@ -38,7 +38,7 @@ const PLUS = {
       {t:'labo', h:"Écoutez la différence",
        p:"Choisissez un cas et un exemple.",
        axes:[
-         {id:'c', lbl:'Quel cas ?', opts:[['a','p, b, t, d au début'],['b','deux consonnes'],['c','devant ri / li'],['d','milieu de mot']]},
+         {id:'c', lbl:'Quel cas ?', opts:[['a','la bouche se ferme'],['b','deux consonnes butent'],['c','un ri ou un li suit'],['d','rien ne le retient']]},
          {id:'n', lbl:'Quel exemple ?', opts:[['1','le premier'],['2','le second']]}],
        out:{
          a1:{w:["depuis"], say:"depuis", n:'« d » est une occlusive : on entend « de-puis »'},
@@ -60,7 +60,7 @@ const PLUS = {
          ["rapidement","« rapid'ment » — le « e » tombe"],
          ["depuis","« de-puis » — le « e » se dit"],
          ["autrement","« au-tre-ment » — le « e » se dit"],
-         ["un atelier","« a-te-lier » — le « e » se dit"],
+         ["un atelier","trois syllabes pleines, le « e » tient"],
        ]},
 
       {t:'piege', h:"Deux pièges et une bonne nouvelle",
@@ -69,12 +69,12 @@ const PLUS = {
           "Dire « ra-pi-de-ment » en quatre morceaux se comprend, mais sonne appliqué et ralentit tout. Personne ne parle comme ça, et surtout pas dans une capsule de trente secondes."],
          ["croire qu'on a manqué un mot","reconnaître le mot amputé",
           "Quand vous entendez [lasmɛn] et que vous cherchez « la semaine », le problème n'est pas votre vocabulaire. Entraînez l'oreille à la forme courte, c'est celle que vous entendrez."],
-         ["s'inquiéter de se tromper","les deux formes se comprennent",
+         ["s'inquiéter de se tromper","aucune des deux formes ne trahit",
           "Garder un « e » qui aurait pu tomber ne provoque aucun malentendu. C'est à l'écoute que ça compte, pas à la production."],
        ]},
 
       {t:'check', h:"Est-ce que c'est clair maintenant ?",
-       p:"Quatre questions rapides.",
+       p:"Quatre mots, une décision chacun.",
        qs:[
          {q:"Dans « depuis », le « e » de la première syllabe…", opts:["se prononce","tombe"], ok:0,
           fb:"Première syllabe, et « d » est une occlusive : il se maintient."},
@@ -499,7 +499,7 @@ const PLUS = {
 
       {t:'ana', h:"L'agent introduit par « de »",
        p:"Un cas plus rare, avec les verbes de sentiment, d'accompagnement ou de connaissance.",
-       mots:[['Avec « de »','Ce centre est fréquenté de tout le quartier.'],['Autre exemple','Le dépliant était accompagné d\'un coupon.',true],['Ailleurs, c\'est « par »','Le tarif est prélevé par le centre.']],
+       mots:[['Avec « de »','Ce centre est fréquenté de tout le quartier.'],['Le même cas ailleurs','Le dépliant était accompagné d\'un coupon.',true],['Ailleurs, c\'est « par »','Le tarif est prélevé par le centre.']],
        say:"Ce centre est fréquenté de tout le quartier. Le dépliant était accompagné d'un coupon.",
        note:"À reconnaître, pas à produire : c'est une tournure de langue écrite soutenue."},
 
@@ -550,7 +550,7 @@ const PLUS = {
 
       {t:'ana', h:"Sans verbe : malgré + un nom",
        p:"La forme la plus courte, et souvent la plus élégante.",
-       mots:[['Avec un nom','Malgré l\'astérisque, le total n\'apparaît nulle part.'],['Avec un nom abstrait','Malgré ces explications, la somme reste inchangée.',true],['À ne pas confondre','« malgré que » demande un verbe au subjonctif ; « malgré » tout court, un nom']],
+       mots:[['Avec un nom','Malgré l\'astérisque, le total n\'apparaît nulle part.'],['Avec un nom abstrait','Malgré ces explications, la somme reste inchangée.',true],['Les deux « malgré »','« malgré que » demande un verbe au subjonctif ; « malgré » tout court, un nom']],
        say:"Malgré l'astérisque, le total n'apparaît nulle part.",
        note:"Si vous hésitez sur le mode, cette forme vous évite la question."},
 
@@ -878,7 +878,7 @@ const PLUS = {
 
       {t:'ana', h:"L'Office québécois de la langue française",
        p:"Il applique la Charte de la langue française. C'est la porte de la langue de l'affichage.",
-       mots:[['Ce qui relève de lui','la langue des enseignes, des affiches, de la publicité commerciale'],['La règle générale','l\'affichage se fait en français ; s\'il est bilingue, le français doit être nettement prédominant',true],['Depuis juin 2025','une marque dans une autre langue visible de la rue : le français occupe un espace au moins deux fois plus grand']],
+       mots:[['Ce qui relève de lui','la langue des enseignes, des affiches, de la publicité commerciale'],['Ce que la Charte demande','l\'affichage se fait en français ; s\'il est bilingue, le français doit être nettement prédominant',true],['Depuis juin 2025','une marque dans une autre langue visible de la rue : le français occupe un espace au moins deux fois plus grand']],
        say:"l'Office québécois de la langue française",
        note:"« Nettement prédominant » a une définition précise : espace deux fois plus grand, même visibilité, même permanence, même éclairage."},
 

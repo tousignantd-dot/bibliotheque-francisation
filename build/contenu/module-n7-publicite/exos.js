@@ -149,7 +149,7 @@ const EXOS = [
      ["Ce qu'il fait ici","Il présente une chose comme <b>possible</b>, jamais comme certaine. <span class='savoir-ex'>« Ce produit <b>pourrait</b> réduire vos coûts » ≠ « Ce produit <b>réduit</b> vos coûts ».</span> La première phrase ne peut pas être contredite : elle n'a rien affirmé."],
      ["Pourquoi la publicité l'aime tant","Une affirmation doit pouvoir se prouver. Une possibilité, non. Le conditionnel donne l'image du résultat sans en prendre la responsabilité — c'est le procédé le plus courant et le plus difficile à attaquer."],
      ["Son autre emploi, tout différent","Le même temps sert à la <b>politesse</b> : <span class='savoir-ex'>« <b>Pourriez</b>-vous me confirmer le montant ? »</span> C'est celui-là que vous emploierez au téléphone dans « Je me lance ». Même forme, deux usages : le contexte tranche."],
-     ["Le piège de l'oreille","À l'oral, <i>je pourrais</i> et <i>je pourrai</i> se ressemblent beaucoup. Le futur affirme, le conditionnel n'affirme pas. Dans une annonce, quand vous hésitez, c'est presque toujours le conditionnel."],
+     ["Le r qui décide, et qu'on entend mal","À l'oral, <i>je pourrais</i> et <i>je pourrai</i> se ressemblent beaucoup. Le futur affirme, le conditionnel n'affirme pas. Dans une annonce, quand vous hésitez, c'est presque toujours le conditionnel."],
    ]},
    items:[
     {q:"Nos entraîneurs ___ (pouvoir) vous faire découvrir un corps que vous ne connaissez pas.", accept:["pourraient"], ph:"3e pers. pluriel"},
@@ -170,7 +170,7 @@ const EXOS = [
      ["Avec un nom, on ajoute « de »","<span class='savoir-ex'><b>plus de</b> vingt appareils · <b>moins de</b> frais · <b>autant de</b> membres</span> Attention : « plus de vingt » est une quantité chiffrée, donc vérifiable. Ce n'est pas un comparatif tronqué."],
      ["Le superlatif engage vraiment","<span class='savoir-ex'><b>le plus grand</b> centre de la région · <b>le meilleur</b> prix en ville</span> Il se compare à tout le reste, donc il se vérifie. Un superlatif faux est une représentation trompeuse — et c'est pour ça que les agences préfèrent le comparatif vague."],
      ["Les deux formes irrégulières","<b>bon → meilleur</b> (jamais « plus bon ») et <b>bien → mieux</b> (jamais « plus bien »). <span class='savoir-ex'>Un meilleur prix. On y dort mieux.</span>"],
-     ["Le réflexe à prendre","Devant tout « plus », posez la question à voix haute : <b>plus que quoi ?</b> Si l'annonce ne répond pas, elle n'a rien dit."],
+     ["La question à poser tout haut","Devant tout « plus », posez la question à voix haute : <b>plus que quoi ?</b> Si l'annonce ne répond pas, elle n'a rien dit."],
    ]},
    items:[
     {q:"L'annonce dit : « Un environnement plus chaleureux. » Complétez : « Un environnement plus chaleureux ___ (celui de l'an dernier). »", accept:["que celui de l'an dernier","que celui de l’an dernier"], ph:"que + …"},
@@ -271,7 +271,7 @@ const EXOS = [
      ["Ce qui disparaît","Dans les conditions écrites, le « par… » saute presque toujours. <span class='savoir-ex'>Des frais <b>sont exigibles</b>. L'offre <b>peut être modifiée</b>. Le tarif <b>est prélevé</b>.</span> Personne n'agit, donc personne n'est responsable, donc il n'y a personne à qui se plaindre."],
      ["Au passé composé","On empile deux auxiliaires. <span class='savoir-ex'>Le prix <b>a été augmenté</b> le premier mars.</span> Par qui ? La phrase ne le dit pas, et ce n'est pas un oubli."],
      ["L'agent introduit par « de »","Avec certains verbes de sentiment ou d'accompagnement, l'agent vient avec <b>de</b> et non avec <b>par</b>. <span class='savoir-ex'>Ce centre <b>est fréquenté de</b> tout le quartier. · Le dépliant <b>était accompagné d'</b>un coupon.</span>"],
-     ["Le réflexe à prendre","Devant toute phrase passive d'un contrat, écrivez l'auteur en marge. Si vous n'arrivez pas à le nommer, vous venez de trouver la question à poser au téléphone."],
+     ["L'auteur s'écrit en marge","Devant toute phrase passive d'un contrat, écrivez l'auteur en marge. Si vous n'arrivez pas à le nommer, vous venez de trouver la question à poser au téléphone."],
    ]},
    items:[
     {q:"Des frais d'adhésion sont exigibles à la signature. (le centre) → Le centre ___ des frais d'adhésion à la signature.", accept:["exige"], ph:"un verbe"},
@@ -391,10 +391,10 @@ const EXOS = [
    sub:"Dans chaque paire de phrases, le pronom souligné n'a pas d'antécédent écrit. Écrivez qui il désigne, en un groupe de mots.",
    savoir:{h:"› Le « ils » sans antécédent", rows:[
      ["Ce que c'est","Un pronom qui reprend quelqu'un qui n'a jamais été nommé. <span class='savoir-ex'>« <b>Ils</b> me l'ont envoyée. » · « <b>Ils</b> ont encore augmenté les prix. »</span> Le référent est <b>implicite</b> : celui qui parle croit que vous savez de qui il parle."],
-     ["Pourquoi on l'emploie","Par économie, quand le contexte suffit. Mais aussi — et c'est le cas en publicité — pour <b>ne nommer personne</b> tout en donnant l'impression qu'il y a quelqu'un derrière."],
+     ["Pourquoi il arrange tout le monde","Par économie, quand le contexte suffit. Mais aussi — et c'est le cas en publicité — pour <b>ne nommer personne</b> tout en donnant l'impression qu'il y a quelqu'un derrière."],
      ["Comment le résoudre","Trois questions, dans l'ordre : de quoi parle la phrase ? qui, dans ce domaine, pose ce genre de geste ? est-ce que quelqu'un a été nommé dans les deux ou trois phrases d'avant ? La réponse est presque toujours un organisme, une entreprise ou un groupe professionnel."],
      ["Le cas dangereux","<span class='savoir-ex'>« <b>Ils</b> disent que c'est le meilleur produit sur le marché. »</span> Ici, « ils » sert à donner une caution qui n'existe pas. Demandez qui : s'il n'y a pas de réponse, il n'y a pas de caution."],
-     ["Le réflexe à prendre","Devant un « ils » d'annonce ou de vidéo, remplacez-le à voix haute par un nom précis. Si vous n'y arrivez pas, notez la question : c'est celle qu'il faudra poser."],
+     ["Le remplacer à voix haute","Devant un « ils » d'annonce ou de vidéo, remplacez-le à voix haute par un nom précis. Si vous n'y arrivez pas, notez la question : c'est celle qu'il faudra poser."],
    ]},
    items:[
     {q:"« J'ai reçu la trottinette. Ils me l'ont envoyée la semaine passée. » Qui, ils ?", accept:["l'entreprise","l’entreprise","la compagnie","Trotti-Vent","l'entreprise Trotti-Vent","le fabricant"], ph:"un groupe de mots"},
