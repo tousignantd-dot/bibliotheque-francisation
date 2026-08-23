@@ -483,6 +483,20 @@ Deux pièges déjà payés :
   assets/interactive/<slug>/icons/` — mais elle ne se voit qu'en **ouvrant le
   module dans un navigateur et en regardant l'onglet réseau**, pas seulement la
   console. Découvert le 23 août 2026 en produisant `module-n7-habitation`.
+- **Une clé de `JEU_DE_ROLE_SCENARIOS` en double ne lève aucune erreur.**
+  Découvert le 23 août 2026 en produisant `module-n7-oeuvres` : la clé
+  `oeuvres` était déjà prise par `module-n5-oeuvres` (73), avec une constante
+  `JEU_DE_ROLE_OEUVRES` du même nom. Deux clés identiques dans un littéral de
+  dictionnaire Python ne provoquent **rien** — la dernière gagne, en silence,
+  et la constante aussi. Le module neuf joue alors le scénario d'un autre
+  niveau, avec des rôles qui ne sont pas les siens, et le jeu de rôle échoue
+  chez l'élève sans que ni le build, ni `coherence.js`, ni le `node --check`
+  ne regardent là. `CLAUDE.md` avertissait déjà qu'un `jr_scenario` **absent**
+  n'est pas vérifié ; le cas de l'**homonyme** est pire, puisque la clé existe.
+  Le contrôle en quatre lignes est dans `docs/deux-agents-en-parallele.md`,
+  section « Un mot sur `server.py` » : charger `server.py`, lire le
+  `jr_scenario` du manifeste, et vérifier que ses rôles sont bien ceux qu'on
+  vient d'écrire.
 - **Le dépôt n'a que deux voix féminines**, `enseignante` et `feminin_2` (plus
   `masculin_1` et `narrateur`). Un dialogue qui fait parler **trois femmes** est
   donc impossible : deux d'entre elles sonneraient pareil, et l'élève ne
