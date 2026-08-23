@@ -224,7 +224,7 @@ const EXOS = [
     {id:'ib2', txt:"Une chaloupe d'aluminium retournée sur la berge, la coque vers le ciel.", ok:'ib2'},
     {id:'ib3', txt:"Une paire de bottes de caoutchouc vertes posées à côté de bottes de ville, sur un plancher de bois.", ok:'ib3'},
     {id:'ib4', txt:"Une corde enroulée en huit autour d'un taquet de métal vissé sur un quai.", ok:'ib4'},
-    {id:'ib5', txt:"La cuisine d'un chalet des Cantons-de-l'Est, une table de bois, une lampe allumée, personne.", ok:'ib5'},
+    {id:'ib5', txt:"La cuisine d'un chalet de la Haute-Mauricie, une table de bois, une lampe allumée, personne.", ok:'ib5'},
     {id:'ib6', txt:"Un chemin de terre entre les épinettes, l'auto stationnée au bout, portière fermée.", ok:'ib6'},
    ]},
 
