@@ -1,0 +1,23 @@
+const FC_CARDS = [
+  {word:"le marché du travail", def:"L'ensemble des postes offerts et des personnes qui les cherchent, dans un territoire donné.", ex:"Le <strong>marché du travail</strong> n'est pas le même à Montréal et à Jonquière.", img:"/assets/interactive/module-n7-recherche/vocab/marche-du-travail.jpg", tache:"prep"},
+  {word:"la salle multiservice", def:"La pièce d'un bureau public où l'on met gratuitement à votre disposition des ordinateurs, une imprimante et un agent qui répond.", ex:"Elle a écrit sa lettre dans la <strong>salle multiservice</strong>, un mardi matin.", img:"/assets/interactive/module-n7-recherche/vocab/salle-multiservice.jpg", tache:"prep"},
+  {word:"une évaluation comparative", def:"L'avis officiel qui dit à quel niveau d'études d'ici se compare un diplôme obtenu ailleurs.", ex:"Son <strong>évaluation comparative</strong> tient sur une seule page.", img:"/assets/interactive/module-n7-recherche/vocab/evaluation-comparative.jpg", tache:"prep"},
+  {word:"une perspective d'emploi", def:"Ce qu'on prévoit, pour les prochaines années, des chances de trouver du travail dans un métier.", ex:"Les <strong>perspectives d'emploi</strong> se lisent métier par métier et région par région.", tache:"prep"},
+  {word:"un curriculum vitæ", def:"Le document d'une ou deux pages qui résume la formation et l'expérience de travail d'une personne.", ex:"Elle a retaillé son <strong>curriculum vitæ</strong> pour cette offre-là.", img:"/assets/interactive/module-n7-recherche/vocab/curriculum-vitae.jpg", tache:"prep"},
+  {word:"une lettre d'accompagnement", def:"La lettre qu'on joint à sa candidature pour expliquer pourquoi ce poste et pourquoi soi.", ex:"Sa <strong>lettre d'accompagnement</strong> tient en trois paragraphes.", tache:"prep"},
+
+  {word:"un secteur d'activité", def:"Un grand groupe d'entreprises qui font le même genre de travail : la forêt, la santé, la construction.", ex:"La construction est le <strong>secteur d'activité</strong> qui a le plus grandi cette année.", tache:"t1"},
+  {word:"la transformation", def:"Le travail qui change une matière brute en produit utilisable : l'arbre en planche, le minerai en métal.", ex:"La région vit surtout de la <strong>transformation</strong> de ses ressources naturelles.", img:"/assets/interactive/module-n7-recherche/vocab/transformation.jpg", tache:"t1"},
+  {word:"une usine", def:"Le grand bâtiment où l'on fabrique ou transforme des produits à l'aide de machines.", ex:"L'<strong>usine</strong> de Jonquière emploie plus de six cents personnes.", img:"/assets/interactive/module-n7-recherche/vocab/usine.jpg", tache:"t1"},
+  {word:"la main-d'œuvre", def:"L'ensemble des personnes qui travaillent, ou qui pourraient travailler, dans une entreprise ou une région.", ex:"Il manque de <strong>main-d'œuvre</strong> dans les laboratoires de la région.", tache:"t1"},
+  {word:"la relève", def:"Les personnes plus jeunes qui prendront la place de celles qui partent à la retraite.", ex:"Dans ce métier-là, la <strong>relève</strong> ne suit plus depuis dix ans.", tache:"t1"},
+  {word:"un quart de travail", def:"La tranche d'heures pendant laquelle une équipe travaille : le jour, le soir ou la nuit.", ex:"Le poste affiché est sur le <strong>quart de travail</strong> de jour.", img:"/assets/interactive/module-n7-recherche/vocab/quart-de-travail.jpg", tache:"t1"},
+
+  {word:"le produit intérieur brut", def:"La valeur totale de ce qui est produit dans un territoire pendant une année.", ex:"Le <strong>produit intérieur brut</strong> de la région a atteint quinze virgule cinq milliards de dollars.", tache:"t2"},
+  {word:"un portrait économique", def:"Le document qui décrit, chiffres à l'appui, de quoi vit un territoire.", ex:"Le <strong>portrait économique</strong> de la région tient en douze pages.", img:"/assets/interactive/module-n7-recherche/vocab/portrait-economique.jpg", tache:"t2"},
+  {word:"l'embauche", def:"Le fait d'engager quelqu'un, et le moment où ça se décide.", ex:"L'<strong>embauche</strong> se fera avant la fin du mois.", tache:"t2"},
+
+  {word:"une offre d'emploi", def:"L'annonce par laquelle un employeur fait savoir qu'il cherche quelqu'un pour un poste précis.", ex:"L'<strong>offre d'emploi</strong> est affichée depuis le mois de février.", img:"/assets/interactive/module-n7-recherche/vocab/offre-emploi.jpg", tache:"t3"},
+  {word:"une candidature", def:"L'ensemble des documents qu'une personne envoie pour se proposer à un poste.", ex:"Il n'a reçu que onze <strong>candidatures</strong> en six mois.", tache:"t3"},
+  {word:"un atout", def:"Ce qui joue en votre faveur et vous distingue des autres personnes qui postulent.", ex:"Neuf ans de cahier de laboratoire, c'est un <strong>atout</strong> sérieux.", tache:"t3"},
+];
