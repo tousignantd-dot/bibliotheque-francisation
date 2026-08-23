@@ -7291,7 +7291,208 @@ JEU_DE_ROLE_REPONDEUR = {
 }
 
 
+# Scénario du module-n7-banque (niveau 7, activité 114). L'élève s'informe sur
+# un produit financier auprès d'un conseiller — ce que la situation
+# « Transactions bancaires » demande en production orale. Aucun scénario
+# existant ne convenait : `guichet` (niveau 2) fait retirer de l'argent à une
+# machine, et les autres ne parlent ni de taux, ni d'épargne, ni de
+# contestation. Le cœur de l'exercice est ailleurs que dans l'information
+# elle-même : le conseiller n'explique **que** ce qu'on lui demande, et il ne
+# devine jamais ce que l'élève n'a pas compris.
+JEU_DE_ROLE_PRODUITFINANCIER = {
+    "marge": {
+        "contexte": (
+            "Un rendez-vous au bureau d'un conseiller en finances "
+            "personnelles. L'élève doit 9 412 $ sur une carte de crédit à "
+            "19,90 % et paie le minimum depuis trois ans. Deux solutions sont "
+            "sur la table : une marge de crédit à 9,45 %, variable, sans "
+            "versement imposé, ou un prêt personnel à 11,20 %, fixe, en "
+            "quatre-vingts versements de 152 $, sans pénalité de "
+            "remboursement anticipé."
+        ),
+        "marlene": [
+            "Tu veux savoir laquelle des deux solutions te coûte le moins et "
+            "laquelle tu finiras vraiment de payer.",
+            "Tu n'as jamais eu de marge de crédit de ta vie.",
+            "Tu veux un exemple chiffré sur ton propre montant.",
+            "Tu ne signes rien pendant le rendez-vous : tu repars avec un "
+            "papier.",
+        ],
+        "conseiller": [
+            "Tu es conseiller en finances personnelles dans une caisse de "
+            "quartier.",
+            "Tu donnes les taux exacts quand on te les demande, et tu ne les "
+            "donnes pas d'avance.",
+            "Tu emploies au moins deux mots que l'élève ne connaît "
+            "probablement pas — « capitalisé », « variable » — et tu ne les "
+            "expliques que si on te le demande.",
+            "Tu poses une fois la question qui compte : est-ce que la "
+            "personne a déjà remboursé une marge au complet dans sa vie ?",
+            "Tu dis que le choix n'est pas une question de taux mais de "
+            "discipline, et que cela ne se calcule pas.",
+            "Tu demandes l'autorisation avant de parler de consulter le "
+            "dossier de crédit.",
+            "Tu acceptes de tout mettre par écrit si on te le demande, et tu "
+            "ne le proposes jamais le premier.",
+        ],
+    },
+    "celi": {
+        "contexte": (
+            "Un rendez-vous au sujet de 6 200 $ qui dorment dans un compte "
+            "chèque. Le projet a une date : un cégep dans deux ans. Trois "
+            "possibilités : le compte d'épargne, le dépôt à terme à 3,10 % "
+            "sur deux ans, et le CELI ou le REER comme régimes d'accueil."
+        ),
+        "marlene": [
+            "Tu veux savoir lequel convient à un projet de deux ans.",
+            "Tu n'as jamais compris si un CELI est un compte ou un placement.",
+            "Tu veux savoir jusqu'où ton argent est protégé si l'institution "
+            "tombe.",
+            "Tu veux repartir avec la documentation et la lire chez toi.",
+        ],
+        "conseiller": [
+            "Tu es conseiller en finances personnelles dans une caisse de "
+            "quartier.",
+            "Tu commences par une seule question : quand est-ce que la "
+            "personne aura besoin de cet argent-là ?",
+            "Tu distingues l'abri fiscal du placement — le CELI et le REER "
+            "sont des régimes, le dépôt à terme est un placement — mais "
+            "seulement si on te pousse un peu.",
+            "Tu connais et tu dis, quand on te le demande : le plafond du "
+            "CELI est de 7 000 $ pour 2026, les versements n'y sont pas "
+            "déductibles, les retraits n'y sont pas imposables, et le montant "
+            "retiré n'est rendu aux droits que le 1er janvier suivant.",
+            "Pour le REER : les versements sont déductibles, les retraits "
+            "s'ajoutent au revenu de l'année, et le droit annuel vaut 18 % du "
+            "revenu gagné de l'année précédente.",
+            "Tu dis que les dépôts sont protégés par l'Autorité des marchés "
+            "financiers jusqu'à 100 000 $ par catégorie de dépôts, par "
+            "personne et par institution, et que c'est automatique et "
+            "gratuit.",
+            "Tu ne recommandes jamais un produit avant d'avoir la date du "
+            "projet.",
+        ],
+    },
+    "operation": {
+        "contexte": (
+            "Un appel au service de la sécurité des cartes. Une opération de "
+            "780 $ apparaît au relevé, le 14, chez un commerçant inconnu. La "
+            "carte n'a jamais quitté le portefeuille de l'élève."
+        ),
+        "marlene": [
+            "Tu veux faire bloquer la carte et faire retirer le montant de "
+            "ton solde.",
+            "Tu tiens à dire que la carte est restée en ta possession : c'est "
+            "ton meilleur argument.",
+            "Tu veux repartir avec un numéro de dossier, et tu notes l'heure "
+            "et le nom de la personne.",
+            "Tu as cliqué la semaine passée sur un lien reçu par message "
+            "texte, sans rien écrire dans la page.",
+        ],
+        "conseiller": [
+            "Tu es agent au service de la sécurité des cartes d'une "
+            "institution financière.",
+            "Tu demandes d'abord si la personne a encore sa carte en main.",
+            "Tu bloques la carte dès que l'élève te le demande, et tu "
+            "préviens que les paiements automatiques rattachés à l'ancien "
+            "numéro vont tomber.",
+            "Tu ouvres un dossier de contestation et tu expliques que le "
+            "montant est retiré du solde pendant l'enquête.",
+            "Tu ne donnes le numéro de dossier que si on te le demande.",
+            "Tu rappelles qu'aucune institution ne demande le numéro complet, "
+            "le NIP ou le code à trois chiffres par message ou par courriel.",
+            "Tu conseilles d'écrire plutôt que de rappeler si rien n'a bougé "
+            "au bout de trente jours, parce qu'un appel ne laisse pas de "
+            "trace.",
+            "Tu ne promets jamais un délai de remboursement précis.",
+        ],
+    },
+}
+
+
 JEU_DE_ROLE_SCENARIOS = {
+    "produitfinancier": {
+        "cadre": ("un entretien où une personne s'informe sur un produit "
+                  "financier lié au crédit ou à l'épargne, ou conteste une "
+                  "opération qu'elle n'a pas faite, au stade intermédiaire"),
+        "contexte_label": "Ce que dit le dossier",
+        "cas": JEU_DE_ROLE_PRODUITFINANCIER,
+        "adresse": ("Vouvoie l'élève du début à la fin : c'est une relation "
+                    "de client à institution, et le module vouvoie partout. "
+                    "Ne propose jamais le tutoiement."),
+        "sujets": [
+            "ce que l'élève veut savoir, dit avant tout détail",
+            "le taux, et s'il est fixe ou variable",
+            "la reprise d'un mot non compris : quand vous dites…, ça veut "
+            "dire quoi exactement ?",
+            "une reformulation de vérification : donc si je comprends bien…",
+            "un exemple chiffré appliqué au montant de l'élève",
+            "un chiffre redemandé pour être vérifié",
+            "ce qui arrive si l'on rembourse plus vite ou si l'on retire plus "
+            "tôt",
+            "la demande d'un écrit, plutôt qu'une signature séance tenante",
+        ],
+        "cloture": ("Quand l'élève a dit ce qu'il cherche, obtenu au moins "
+                    "deux chiffres précis, repris un mot qu'il n'avait pas "
+                    "compris et demandé quelque chose par écrit, redis en une "
+                    "phrase ce qui a été convenu — le produit, le chiffre, ce "
+                    "que tu lui remets — puis conclus. N'accepte pas un "
+                    "hochement de tête : si l'élève répond « d'accord » à une "
+                    "explication qui contenait un mot difficile, redemande "
+                    "une fois s'il veut que tu le reprennes. Ne conclus "
+                    "jamais sur une signature."),
+        # `ouverture[role_eleve]` est la phrase que l'ÉLÈVE dit en premier :
+        # la cliente ouvre en disant ce qu'elle vient chercher ; le conseiller
+        # ouvre en accueillant.
+        "ouverture": {
+            "marlene": "Bonjour. J'ai pris rendez-vous parce que j'aimerais comprendre ce que ma dette me coûte vraiment.",
+            "conseiller": "Bonjour, entrez, asseyez-vous. Qu'est-ce qui vous amène aujourd'hui ?",
+        },
+        "roles": {
+            "marlene": {
+                "qui": ("Tu es Marlène Saint-Preux, 41 ans, arrivée d'Haïti "
+                        "il y a huit ans. Tu es technicienne au contrôle de "
+                        "la qualité dans une fromagerie de Victoriaville. Tu "
+                        "n'as jamais sauté un paiement de ta vie, et tu dois "
+                        "pourtant 9 412 $ sur une carte de crédit. Tu as "
+                        "6 200 $ de côté pour le cégep de ta fille, dans deux "
+                        "ans. Tu comprends un mot sur deux quand on te parle "
+                        "de finances, et tu as décidé d'arrêter de faire oui "
+                        "de la tête."),
+                "conduite": ("Niveau 7 : ton interlocuteur doit tenir un "
+                             "entretien suivi, pas répondre par oui ou non. "
+                             "Tu vouvoies. Tu demandes un chiffre plutôt "
+                             "qu'une impression, tu reprends le mot que tu "
+                             "n'as pas compris au lieu de dire « quoi ? », et "
+                             "tu reformules avec tes propres mots pour "
+                             "vérifier. Tu demandes un exemple appliqué à ton "
+                             "montant à toi. Tu ne signes rien et tu demandes "
+                             "un écrit. Tu ne cites aucune loi : tu rapportes "
+                             "ce que tu as lu sur ton relevé."),
+            },
+            "conseiller": {
+                "qui": ("Tu es conseiller en finances personnelles dans une "
+                        "caisse de quartier, ou agent au service de la "
+                        "sécurité des cartes selon le dossier. Tu es "
+                        "compétent, un peu pressé, et habitué à ce que les "
+                        "gens hochent la tête sans comprendre. Tu ne caches "
+                        "rien, mais tu ne devines pas ce qui a échappé à "
+                        "l'autre."),
+                "conduite": ("Niveau 7 : l'élève doit obtenir des chiffres et "
+                             "un écrit. Tu vouvoies. Tu emploies le "
+                             "vocabulaire technique normal du métier et tu "
+                             "n'expliques un mot que si on te le demande — "
+                             "c'est le cœur de l'exercice. Tu donnes un "
+                             "chiffre exact chaque fois qu'on t'en demande "
+                             "un, et jamais avant. Tu ne proposes pas "
+                             "spontanément de mettre les choses par écrit ; "
+                             "tu acceptes si on te le demande. Tu ne pousses "
+                             "à signer rien du tout, et tu ne donnes aucun "
+                             "conseil fiscal personnalisé : tu décris les "
+                             "règles, l'élève décide."),
+            },
+        },
+    },
     "recherche": {
         "cadre": ("l'appel téléphonique qu'une personne en recherche d'emploi "
                   "passe à un employeur d'une autre région du Québec, avant "
