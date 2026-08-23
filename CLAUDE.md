@@ -461,6 +461,24 @@ Deux pièges déjà payés :
   mètres carrés huit places quinze minutes le 1er novembre 2023 ». Ça ne se
   voit qu'au relevé des sons, une fois les MP3 payés.
 
+- **Un exercice `write` n'a qu'un seul trou par `item`, et rien ne le dit.**
+  Le moteur crée **un** champ par item (`wi_<exo>_<i>`), mais `blankify()`
+  rend tous les `___` de l'énoncé. Un item à deux trous — « ___ je (avoir)
+  ___ déjà suivi ce cours » — s'affiche donc avec deux blancs et une seule
+  case : l'élève ne peut pas répondre, et ni le build, ni `coherence.js`, ni
+  le `node --check` ne le signalent. La correction est de couper en deux
+  items (le marqueur d'un côté, le mode du verbe de l'autre), et le contrôle
+  tient en une ligne : `grep -n "___.*___" build/contenu/<slug>/exos.js` doit
+  ne rien rendre. Découvert le 23 août 2026 en produisant
+  `module-n7-etablissement`, sur trois exercices du même moule.
+- **Le contrôle des zones tient en dix lignes de console, et il vaut la
+  peine.** Après avoir rendu les six sections (`SECTIONS.forEach(s=>{curSec=
+  s.id; render();})`), parcourir `ZONES` et vérifier que `checkOk()` accepte
+  le `cv` de chacune, puis remplir chaque `.winput` avec `it.accept[0]` et
+  vérifier que `checkWrite()` rend `wfb ok`. Les zones sans `cv` sont
+  exactement celles des exercices `write` — la liste sert donc de
+  contre-vérification. C'est ce que recommande l'épisode de l'`imgmatch`
+  mort : un exercice qui ne lève aucune erreur peut être mort.
 - **Un bloc `savoir` ne rend ses pastilles que s'il porte `speak:true`.** Le
   gabarit teste `ex.savoir.speak && r[2]` : une troisième colonne de rangée
   écrite sans ce champ produit des pastilles qui n'existent pas — rien ne
