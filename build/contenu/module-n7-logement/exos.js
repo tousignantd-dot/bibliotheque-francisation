@@ -87,7 +87,7 @@ const EXOS = [
      ["Le suffixe <b>-ment</b> fabrique un nom masculin","<span class='savoir-ex'>financer → le <b>financement</b> · engager → l'<b>engagement</b> · rembourser → le <b>remboursement</b> · loger → le <b>logement</b></span>"],
      ["Trois noms qui ne suivent aucune règle","<span class='savoir-ex'>hausser → une <b>hausse</b> · promettre → une <b>promesse</b> · vendre → une <b>vente</b></span> Ils s'apprennent tels quels et reviennent partout dans ce module."],
      ["Le préfixe change le sens, pas la famille","<span class='savoir-ex'>une proposition → une <b>contre</b>-proposition · une partie → une <b>contre</b>partie</span> <b>Contre-</b> ne dit pas « contre vous » : il dit « qui répond à », « qui vient en retour »."],
-     ["Pourquoi ça change tout","L'avis écrit « la modification des conditions du bail », pas « je change le bail ». Retrouver le verbe sous le nom, c'est comprendre la phrase du premier coup au lieu de la relire trois fois."],
+     ["Ce que ça change à la lecture","L'avis écrit « la modification des conditions du bail », pas « je change le bail ». Retrouver le verbe sous le nom, c'est comprendre la phrase du premier coup au lieu de la relire trois fois."],
    ]},
    items:[
     {q:"Le propriétaire veut modifier une condition : il envoie un avis de ___ .", accept:["modification"], ph:"un nom en -tion"},

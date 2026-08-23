@@ -63,8 +63,8 @@ const PLUS = {
          ["Qu'est-ce que ça comprend exactement ?","un renseignement : la réponse est une liste"],
        ]},
 
-      {t:'check', h:'Quatre questions, une minute',
-       p:"Sans revenir en arrière.",
+      {t:'check', h:'Quatre questions, sans filet',
+       p:"Répondez de mémoire, sans remonter plus haut.",
        qs:[
          {q:"« Pourriez-vous m'accorder une semaine ? » est…", opts:["une demande","une exigence"], ok:0,
           fb:"Conditionnel et voix qui monte : la porte reste ouverte."},
@@ -76,7 +76,7 @@ const PLUS = {
           fb:"C'est tout l'intérêt : on ne peut pas y répondre « ça dépend »."},
        ]},
 
-      {t:'piege', h:'Trois ennuis courants, trois sorties',
+      {t:'piege', h:'Trois faux pas, et comment s\'en sortir',
        rows:[
          ["dire une demande avec la voix d'une exigence","ralentir sur les trois derniers mots",
           "Le débit rapide fait tomber la fin de la phrase. Ralentir suffit à faire remonter la voix, sans y penser."],
@@ -131,8 +131,8 @@ const PLUS = {
          ["le fonds de prévoyance","achat — l'argent commun de l'immeuble"],
        ]},
 
-      {t:'check', h:'Quatre questions, une minute',
-       p:"Sans revenir en arrière.",
+      {t:'check', h:'Quatre questions, sans filet',
+       p:"Répondez de mémoire, sans remonter plus haut.",
        qs:[
          {q:"Le Tribunal administratif du logement s'occupe…", opts:["des baux","des ventes de maisons"], ok:0,
           fb:"C'est le tribunal du logement loué. L'achat, lui, passe par le notaire et par les tribunaux ordinaires."},
@@ -181,7 +181,7 @@ const PLUS = {
        note:"« Un achat » et « une vente » désignent la même opération vue des deux côtés. Le document, lui, choisit son camp : il s'appelle promesse d'achat, pas promesse de vente."},
 
       {t:'labo', h:'Du verbe au nom, du nom au verbe',
-       p:"Choisissez un suffixe, puis un exemple.",
+       p:"Choisissez un suffixe, puis voyez l'exemple.",
        axes:[
          {id:'s', lbl:'Quel suffixe ?', opts:[['t','-tion'],['m','-ment'],['z','sans suffixe']]},
          {id:'n', lbl:'Quel exemple ?', opts:[['1','le premier'],['2','le second']]}],
@@ -195,7 +195,7 @@ const PLUS = {
        },
        note:"Faites l'exercice dans les deux sens : le nom vous sert à lire, le verbe vous sert à parler."},
 
-      {t:'piege', h:'Trois ennuis courants, trois sorties',
+      {t:'piege', h:'Trois faux pas, et comment s\'en sortir',
        rows:[
          ["lire trois fois la même phrase officielle","refaire la phrase avec le verbe",
           "« La modification des conditions du bail » devient « il veut changer des choses dans le bail ». La phrase se comprend en une seconde."],
@@ -253,8 +253,8 @@ const PLUS = {
          ["ferait l'objet d'un supplément de 25 $","le stationnement ne serait plus compris"],
        ]},
 
-      {t:'check', h:'Quatre questions, une minute',
-       p:"Sans revenir en arrière.",
+      {t:'check', h:'Quatre questions, sans filet',
+       p:"Répondez de mémoire, sans remonter plus haut.",
        qs:[
          {q:"Le délai d'un mois se compte à partir…", opts:["de la date écrite sur l'avis","du jour où vous l'avez reçu"], ok:1,
           fb:"C'est la réception qui compte, et c'est la date à noter le soir même."},
@@ -266,7 +266,7 @@ const PLUS = {
           fb:"Refuser une hausse et quitter son logement sont deux démarches sans rapport."},
        ]},
 
-      {t:'piege', h:'Trois ennuis courants, trois sorties',
+      {t:'piege', h:'Trois faux pas, et comment s\'en sortir',
        rows:[
          ["laisser passer le mois sans répondre","inscrire la date limite au calendrier",
           "C'est le seul vrai piège de cette démarche, et il est irréparable : après un mois, la hausse est acceptée."],
@@ -308,7 +308,7 @@ const PLUS = {
        p:"La formule des négociations : elle annonce une position et laisse la place à une réponse.",
        mots:[['On dit','Je vous <b>proposerais</b> cinquante-cinq dollars.'],
              ["Ce que l'autre entend",'un chiffre ferme, une porte ouverte', true],
-             ["Ce qu'il ne faut pas faire",'proposer sans chiffre : « ce serait moins cher »']],
+             ["Le geste à éviter",'proposer sans chiffre : « ce serait moins cher »']],
        say:"Je vous proposerais cinquante-cinq dollars plutôt que quatre-vingt-quatre.",
        note:"Le conditionnel ne remplace pas le chiffre : il l'accompagne. Une proposition sans montant n'appelle aucune réponse."},
 
@@ -348,8 +348,8 @@ const PLUS = {
          ["falloir","Il faudrait que nous fixions une date."],
        ]},
 
-      {t:'check', h:'Quatre questions, une minute',
-       p:"Sans revenir en arrière.",
+      {t:'check', h:'Quatre questions, sans filet',
+       p:"Répondez de mémoire, sans remonter plus haut.",
        qs:[
          {q:"« Je proposerai » et « je proposerais »…", opts:["se prononcent et s'écrivent pareil","diffèrent d'une lettre et de sens"], ok:1,
           fb:"Le premier est du futur : c'est décidé. Le second est du conditionnel : c'est une offre."},
@@ -361,7 +361,7 @@ const PLUS = {
           fb:"Et donc : vous pouvez encore refuser."},
        ]},
 
-      {t:'piege', h:'Trois ennuis courants, trois sorties',
+      {t:'piege', h:'Trois faux pas, et comment s\'en sortir',
        rows:[
          ["mettre un conditionnel après « si »","imparfait après si, conditionnel après la virgule",
           "« Si j'aurais » n'existe pas. La phrase juste est : si j'<b>avais</b>, je <b>ferais</b>."],
@@ -388,7 +388,7 @@ const PLUS = {
        mots:[['Phrase ordinaire',"Le propriétaire doit s'adresser au Tribunal."],
              ['Emphatique',"<b>C'est</b> au propriétaire <b>de</b> s'adresser au Tribunal.", true],
              ['Sujet mis en avant',"<b>C'est</b> la date de réception <b>qui</b> compte."],
-             ['Complément mis en avant',"<b>C'est</b> cette date-là <b>que</b> je note."]],
+             ['Le complément placé en tête',"<b>C'est</b> cette date-là <b>que</b> je note."]],
        say:"C'est la date de réception qui compte, pas celle qui est écrite dessus.",
        note:"On emploie <b>qui</b> si l'élément mis en avant est le sujet du verbe qui suit, <b>que</b> s'il en est le complément. C'est la seule chose à décider."},
 
@@ -419,8 +419,8 @@ const PLUS = {
          ["Je tiens à la condition d'inspection.","Ce à quoi je tiens, c'est la condition d'inspection."],
        ]},
 
-      {t:'check', h:'Quatre questions, une minute',
-       p:"Sans revenir en arrière.",
+      {t:'check', h:'Quatre questions, sans filet',
+       p:"Répondez de mémoire, sans remonter plus haut.",
        qs:[
          {q:"« C'est la date ___ compte. »", opts:["qui","que"], ok:0,
           fb:"La date est le sujet de « compte » : donc <b>qui</b>."},
@@ -432,7 +432,7 @@ const PLUS = {
           fb:"La reprise par un pronom appartient à l'oral."},
        ]},
 
-      {t:'piege', h:'Trois ennuis courants, trois sorties',
+      {t:'piege', h:'Trois faux pas, et comment s\'en sortir',
        rows:[
          ["mettre en avant trois choses dans la même phrase","une emphase, une seule, par idée",
           "Si tout est important, plus rien ne l'est. Choisissez le mot qui doit rester dans la tête de l'autre."],
@@ -492,8 +492,8 @@ const PLUS = {
          ["Ce n'est pas la peine de discuter.","recule : vous fermez la porte vous-même"],
        ]},
 
-      {t:'check', h:'Quatre questions, une minute',
-       p:"Sans revenir en arrière.",
+      {t:'check', h:'Quatre questions, sans filet',
+       p:"Répondez de mémoire, sans remonter plus haut.",
        qs:[
          {q:"Dans une phrase de négociation, on place la concession…", opts:["avant la demande","après la demande"], ok:0,
           fb:"On reconnaît, puis on tourne avec « mais » ou « cela dit », puis on demande."},
@@ -505,7 +505,7 @@ const PLUS = {
           fb:"Le recours existe et reste possible ; l'annoncer trop tôt supprime tout ce qui pouvait se régler autrement."},
        ]},
 
-      {t:'piege', h:'Trois ennuis courants, trois sorties',
+      {t:'piege', h:'Trois faux pas, et comment s\'en sortir',
        rows:[
          ["parler de la personne plutôt que du montant","dire « le montant », jamais « vous »",
           "« Le montant me paraît élevé » se discute. « Vous exagérez » ne se discute pas : ça se défend."],
@@ -565,8 +565,8 @@ const PLUS = {
          ["le syndicat","Combien y a-t-il dans le fonds, et une cotisation spéciale est-elle prévue ?"],
        ]},
 
-      {t:'check', h:'Quatre questions, une minute',
-       p:"Sans revenir en arrière.",
+      {t:'check', h:'Quatre questions, sans filet',
+       p:"Répondez de mémoire, sans remonter plus haut.",
        qs:[
          {q:"Le courtier lié au vendeur…", opts:["défend les deux parties","défend le vendeur"], ok:1,
           fb:"Il doit néanmoins traiter l'acheteur équitablement et l'informer objectivement."},
@@ -578,7 +578,7 @@ const PLUS = {
           fb:"C'est pour cela qu'on demande les procès-verbaux de ses assemblées."},
        ]},
 
-      {t:'piege', h:'Trois ennuis courants, trois sorties',
+      {t:'piege', h:'Trois faux pas, et comment s\'en sortir',
        rows:[
          ["prendre le courtier du vendeur pour son conseiller","poser la question du contrat de courtage",
           "La question se pose en dix mots et sans agressivité : « Avec qui avez-vous un contrat, dans cette transaction ? »"],
@@ -623,7 +623,7 @@ const PLUS = {
        mots:[['de + lequel','<b>duquel</b> — Duquel des deux immeubles parlez-vous ?'],
              ['de + laquelle','<b>de laquelle</b>, en deux mots', true],
              ['de + lesquels','<b>desquels</b>'],
-             ["Les verbes qui l'appellent","parler de, s'agir de, avoir besoin de, se souvenir de"]],
+             ["Les verbes qui la réclament","parler de, s'agir de, avoir besoin de, se souvenir de"]],
        say:"duquel, de laquelle, desquels, desquelles",
        note:"« Duquel des deux » est une tournure très utile en visite : elle force l'autre à choisir, au lieu de répondre à côté."},
 
@@ -655,8 +655,8 @@ const PLUS = {
          ["quatre professionnels au dossier","Auquel le vendeur paie-t-il la rétribution ?"],
        ]},
 
-      {t:'check', h:'Quatre questions, une minute',
-       p:"Sans revenir en arrière.",
+      {t:'check', h:'Quatre questions, sans filet',
+       p:"Répondez de mémoire, sans remonter plus haut.",
        qs:[
          {q:"« ___ des deux stationnements est inclus ? »", opts:["Lequel","Auquel"], ok:0,
           fb:"« Être inclus » n'appelle aucune préposition : forme simple."},
@@ -668,7 +668,7 @@ const PLUS = {
           fb:"Quel stationnement… (déterminant) / Lequel… (pronom)."},
        ]},
 
-      {t:'piege', h:'Trois ennuis courants, trois sorties',
+      {t:'piege', h:'Trois faux pas, et comment s\'en sortir',
        rows:[
          ["employer « quel » à la place de « lequel »","vérifier s'il y a un nom derrière",
           "S'il y a un nom : quel. S'il n'y en a pas : lequel."],
@@ -739,8 +739,8 @@ const PLUS = {
        },
        note:"Faites le test à voix haute : refaites la petite phrase toute seule et regardez s'il y a un « de » dedans. C'est le seul cas difficile."},
 
-      {t:'check', h:'Quatre questions, une minute',
-       p:"Sans revenir en arrière.",
+      {t:'check', h:'Quatre questions, sans filet',
+       p:"Répondez de mémoire, sans remonter plus haut.",
        qs:[
          {q:"« Le fonds ___ elle parle » demande…", opts:["que","dont"], ok:1,
           fb:"« Elle parle <b>de</b> ce fonds » : donc dont."},
@@ -752,7 +752,7 @@ const PLUS = {
           fb:"« J' » est le sujet ; le condo est complément direct."},
        ]},
 
-      {t:'piege', h:'Trois ennuis courants, trois sorties',
+      {t:'piege', h:'Trois faux pas, et comment s\'en sortir',
        rows:[
          ["éviter « dont » et couper la phrase en deux","faire le test du « de »",
           "Refaites la petite phrase seule. S'il y a un « de » dedans, c'est dont — et la phrase liée sera plus courte que les deux séparées."],
@@ -775,7 +775,7 @@ const PLUS = {
        note:"La situation du programme s'appelle « s'informer pour acheter une habitation ». S'informer est un acte de langage précis : il ne s'agit pas de bavarder, il s'agit d'obtenir des faits vérifiables."},
 
       {t:'ana', h:"Ce qui distingue une question précise",
-       p:"Elle appelle un chiffre, une date ou un document. Elle ne peut pas recevoir « ça dépend ».",
+       p:"Elle appelle un chiffre, une date ou un papier. Elle ne peut pas recevoir « ça dépend ».",
        mots:[['Un chiffre','Combien y a-t-il dans le fonds de prévoyance ?'],
              ['Une date','En quelle année le toit a-t-il été refait ?', true],
              ['Un document','Pouvez-vous me remettre le procès-verbal de la dernière assemblée ?'],
@@ -813,10 +813,10 @@ const PLUS = {
          ["Je devrais faire une offre ?","Y a-t-il d'autres promesses d'achat déposées ?"],
        ]},
 
-      {t:'check', h:'Quatre questions, une minute',
-       p:"Sans revenir en arrière.",
+      {t:'check', h:'Quatre questions, sans filet',
+       p:"Répondez de mémoire, sans remonter plus haut.",
        qs:[
-         {q:"Une question précise appelle…", opts:["une opinion","un chiffre, une date ou un document"], ok:1,
+         {q:"Une question précise appelle…", opts:["une opinion","un chiffre, une date ou un papier"], ok:1,
           fb:"C'est la définition, et c'est la seule qui compte."},
          {q:"« Je ne sais pas, je vérifie » est…", opts:["une mauvaise réponse","une bonne réponse"], ok:1,
           fb:"À condition de noter la question et de la faire revenir par écrit."},
@@ -874,8 +874,8 @@ const PLUS = {
        say:"l'examen des titres, l'acte de vente, les droits de mutation",
        note:"Les frais qui s'ajoutent au prix ne sont pas des extras : ils font partie du prix réel, et se calculent avant l'offre, pas après."},
 
-      {t:'check', h:'Quatre questions, une minute',
-       p:"Sans revenir en arrière.",
+      {t:'check', h:'Quatre questions, sans filet',
+       p:"Répondez de mémoire, sans remonter plus haut.",
        qs:[
          {q:"Une promesse d'achat acceptée…", opts:["est une intention","lie les deux parties"], ok:1,
           fb:"C'est pourquoi les conditions comptent autant que le prix."},
@@ -887,7 +887,7 @@ const PLUS = {
           fb:"Les stores et les luminaires partent avec le vendeur si personne ne les a nommés."},
        ]},
 
-      {t:'piege', h:'Trois ennuis courants, trois sorties',
+      {t:'piege', h:'Trois faux pas, et comment s\'en sortir',
        rows:[
          ["faire une offre sans condition pour être choisi","garder au moins le financement",
           "Une offre sans condition est plus attirante pour le vendeur, et elle vous laisse sans porte de sortie si la banque dit non."],
@@ -965,8 +965,8 @@ const PLUS = {
          ["à condition que","à condition que la fenêtre aille à un vitrier cet automne"],
        ]},
 
-      {t:'check', h:'Quatre questions, une minute',
-       p:"Sans revenir en arrière.",
+      {t:'check', h:'Quatre questions, sans filet',
+       p:"Répondez de mémoire, sans remonter plus haut.",
        qs:[
          {q:"Après « bien que », on emploie…", opts:["l'indicatif","le subjonctif"], ok:1,
           fb:"Bien que le fonds <b>ait</b> peu d'argent."},
@@ -978,7 +978,7 @@ const PLUS = {
           fb:"L'un des cinq irréguliers à connaître par cœur."},
        ]},
 
-      {t:'piege', h:'Trois ennuis courants, trois sorties',
+      {t:'piege', h:'Trois faux pas, et comment s\'en sortir',
        rows:[
          ["mettre du subjonctif après tous les « que »","chercher ce que le mot annonce",
           "Condition, but, concession, volonté : subjonctif. Fait établi : indicatif."],
@@ -1040,8 +1040,8 @@ const PLUS = {
          ["le Tribunal me protège","je me protège par mes conditions écrites"],
        ]},
 
-      {t:'check', h:'Quatre questions, une minute',
-       p:"Sans revenir en arrière.",
+      {t:'check', h:'Quatre questions, sans filet',
+       p:"Répondez de mémoire, sans remonter plus haut.",
        qs:[
          {q:"Devant un nom, on emploie…", opts:["aussi","autant de"], ok:1,
           fb:"Autant <b>de</b> liberté, autant <b>de</b> frais. « Aussi » va devant un adjectif."},
@@ -1053,7 +1053,7 @@ const PLUS = {
           fb:"Comparer sans trancher ne répond pas à la question posée."},
        ]},
 
-      {t:'piege', h:'Trois ennuis courants, trois sorties',
+      {t:'piege', h:'Trois faux pas, et comment s\'en sortir',
        rows:[
          ["remplir une seule colonne","se forcer à en trouver deux de chaque",
           "Si un côté n'a aucun inconvénient, c'est que la liste n'est pas finie."],
@@ -1102,8 +1102,8 @@ const PLUS = {
        say:"Cette année, je reste locataire, et je reviendrai voir si j'atteins trente mille dollars de mise de fonds.",
        note:"Le quatrième temps est celui qu'on oublie, et c'est celui qui transforme un exposé en décision."},
 
-      {t:'check', h:'Quatre questions, une minute',
-       p:"Sans revenir en arrière.",
+      {t:'check', h:'Quatre questions, sans filet',
+       p:"Répondez de mémoire, sans remonter plus haut.",
        qs:[
          {q:"L'argument « c'est un investissement » est…", opts:["toujours vrai","faux les premières années"], ok:1,
           fb:"Les frais d'entrée sont concentrés sur la première année."},
