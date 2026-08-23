@@ -1314,6 +1314,25 @@ MODULES = {
                         'Les deux écrits'),
     },
 
+    # Ne recoupe ni `module-n3-recherche-emploi` (83), qui offre ses services
+    # de vive voix au comptoir, ni `module-n6-recherche` (59), qui répond à une
+    # offre précise et passe l'entrevue. Ici on s'oriente **avant** de
+    # postuler : on lit l'économie d'une région pour décider où chercher, puis
+    # on taille son curriculum vitæ pour ce marché-là. Ne recoupe pas non plus
+    # `module-n7-emploi` (109), qui commence une fois la personne en poste.
+    'module-n7-recherche': {
+        'numero': 3, 'activite': 110, 'niveau': 7,
+        'titre': "Chercher un emploi en région",
+        'chapeau': "Écouter un reportage sur l'économie d'une région, lire un "
+                   "portrait régional et le comparer à un autre, puis "
+                   "retailler son curriculum vitæ et sa lettre "
+                   "d'accompagnement pour une offre précise.",
+        'seances': GRILLE_3_DEFIS,
+        'blocs': _blocs('Où travaille-t-on, là-bas ?',
+                        'Lire un portrait de région',
+                        'Mon curriculum vitæ parle à cette région'),
+    },
+
     'module-n7-logement': {
         'numero': 4, 'activite': 111, 'niveau': 7,
         'titre': "Rester locataire ou devenir propriétaire",
