@@ -77,7 +77,43 @@ Les faits québécois, vérifiés le 23 août 2026
 Rien de ce qui suit n'est deviné ; le détail des sources est au journal de la
 vague 7, dans `docs/vagues-suivantes.md`.
 
-%%FAITS%%
+  · **Le programme.** Le diplôme d'études professionnelles « Santé,
+    assistance et soins infirmiers » porte le numéro **5325** et compte
+    **1 800 heures**. Il mène au métier d'**infirmière ou infirmier
+    auxiliaire**. (Fiche de programme du centre de services scolaire
+    Marie-Victorin ; Inforoute FPT.)
+  · **Le permis d'exercice.** Il est délivré par l'**Ordre des infirmières et
+    infirmiers auxiliaires du Québec**. Il faut le DEP — ou une reconnaissance
+    de diplôme ou de formation — **et** réussir l'**examen professionnel de
+    l'Ordre**, ajouté aux conditions d'admission à la profession en 2012 et
+    dont la première séance a eu lieu en mars 2016. Le diplôme ne suffit donc
+    pas, et le module le dit. (OIIAQ.)
+  · **Les conditions d'admission à un DEP.** Être titulaire du diplôme
+    d'études secondaires ou d'un diplôme reconnu équivalent ; ou avoir
+    **16 ans au 30 septembre** de l'année scolaire où commence la formation et
+    avoir obtenu les unités de **5e secondaire en langue d'enseignement** et de
+    **4e secondaire en langue seconde et en mathématiques** ; ou, pour la
+    personne d'au moins **18 ans**, satisfaire aux **préalables
+    fonctionnels** — réussite du **test de développement général (TDG)** et
+    des tests de préalables spécifiques en langue d'enseignement et en
+    mathématiques, s'il y a lieu. Le TDG ne doit être précédé d'aucun exercice
+    préparatoire ni d'aucun prétest. (Ministère de l'Éducation ; Inforoute
+    FPT.)
+  · **La sélection.** Elle n'est pas une règle ministérielle : c'est une
+    pratique d'établissement. Certains programmes exigent une entrevue ou des
+    tests, et les candidatures les mieux évaluées sont retenues. L'inscription
+    se fait en ligne par le portail d'admission de la formation
+    professionnelle. Le nombre de places, le nombre de demandes, les rangs et
+    la lettre de décision du module sont **inventés** ; le mécanisme, non.
+  · **La reconnaissance des acquis et des compétences.** Les services de RAC
+    sont offerts **gratuitement** dans les centres de formation
+    professionnelle et les centres d'éducation des adultes, aux personnes de
+    **16 ans et plus** ; on s'adresse au **centre de services scolaire de sa
+    région**. La reconnaissance est consignée dans un document officiel —
+    relevé, attestation ou diplôme — et peut porter sur **une partie** du
+    programme. (Art. 250 de la Loi sur l'instruction publique ; cadre général
+    de la RAC en formation professionnelle.) Le module dit ce qu'elle **ne
+    fait pas** : elle ne fait pas entrer dans un programme contingenté.
 
 **Ce qui est inventé l'est entièrement** : le Centre de formation
 professionnelle du Ruisseau-Vert, le CHSLD des Quatre-Vents, toutes les
