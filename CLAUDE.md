@@ -425,6 +425,15 @@ Deux pièges déjà payés :
   s'arrête net, sans erreur, et le code de sortie est 0. Une commande longue se
   lance en **avant-plan** dans une tâche de fond de l'outil, sans `nohup` ni
   `&`.
+- **`build/module.py` ne copie pas le dossier `icons/`.** Les quatre SVG d'un
+  module — `play`, `speaker`, `mic`, `assistant` — sont un geste manuel de la
+  chaîne, et leur absence **ne se voit pas à l'écran** : la page se rend
+  normalement, les onglets s'affichent, aucune erreur de script n'est levée.
+  Elle se voit uniquement dans le journal du serveur, en trois 404 — et chez
+  l'élève, en puces vides à la place des icônes d'écoute. Découvert le 23 août
+  2026 en produisant `module-n7-achat`. Juste après le premier
+  `build/module.py`, recopier les quatre `*.svg` d'un module voisin dans
+  `assets/interactive/<slug>/icons/`.
 - **Le champ `theme` du manifeste échappe son apostrophe**, comme `bravo` et
   `relance` : le gabarit le place lui aussi dans une chaîne JavaScript à
   guillemets simples, et le build s'arrête tant que l'apostrophe n'est pas

@@ -3358,3 +3358,175 @@ mesures d'originalité : le compte de chaînes a changé sans raison, et l'exame
 du dossier a montré les fichiers de trois autres activités à côté des miens. La
 parade est celle de `git add` : **des noms explicites**, préfixés du slug
 (`orig-n7-banque.js`).
+
+**23 août 2026 — activité 113, `module-n7-achat`.** « Réclamer après
+l'achat », niveau 7, `numero` 6, `GRILLE_3_DEFIS`. Scénario inventé :
+Ernestine Kabuya, 41 ans, arrivée de la République démocratique du Congo il y
+a cinq ans, éducatrice spécialisée dans une école primaire de Victoriaville, à
+dix-huit kilomètres de chez elle — sans auto, elle ne peut pas travailler. Le
+6 avril, elle repart d'Autos Bulstrode avec une berline 2019 payée 11 400 $ à
+crédit, une étiquette de catégorie C et une garantie prolongée de 1 200 $
+qu'elle n'a pas demandée (Je découvre, avec Jean-Rock Vachon, le vendeur). Le
+24 avril, la transmission cogne : Wilfrid Frigon, conseiller au service du
+Garage Ducharme, lui apprend à décrire un bruit, un moment et une fréquence
+(défi 1). Le 2 mai, Maryse Turgeon, directrice du service à la clientèle,
+invoque l'usure normale ; Ernestine réclame en citant la catégorie de sa
+propre étiquette (défi 2). Le 8 mai, Édith Vanasse, agente de l'Office de la
+protection du consommateur, l'aide à mettre la réclamation par écrit (défi 3).
+21 exercices, 14 mini-leçons, 4 dialogues (96 répliques), 16 mots, 18 images,
+412 extraits audio relevés, 16 séances (183 diapositives, 126 blocs de
+fiches).
+
+*Ce qui le distingue de ses deux voisins de situation*, en une phrase, écrite
+avant le scénario : **ici le bien est déjà payé, et il brise.**
+`module-n3-electro` (76) lit la circulaire et fait livrer, `module-achat` (17,
+niveau 4) compare deux modèles et lit la garantie **avant** de signer. Tout ce
+module-ci se passe après la vente. Et c'est le seul du dépôt qui porte sur un
+**véhicule** plutôt que sur un électroménager — la situation nomme pourtant
+les deux depuis le début, et personne n'avait pris le second terme.
+
+*La grille était « au choix », et le cadre la tranche.* Trois intentions, et
+elles se lisent comme un plan : décrire un problème de fonctionnement, faire
+une réclamation, rédiger une lettre de réclamation. Une par défi. Le test des
+trois entrées passe sans forcer, parce que **le troisième défi est une
+intention à part entière** et non une redite du deuxième : au comptoir on
+parle, dans la lettre on écrit. C'est le même cas de figure que
+`module-n7-recherche` — au niveau 7, la situation peut être plus nette que le
+niveau, et les défis *sont* alors les intentions.
+
+*Les faits québécois sont vérifiés, pas devinés*, le 23 août 2026, auprès de
+l'**Office de la protection du consommateur** et de la **Loi sur la protection
+du consommateur** : la **garantie de bon fonctionnement** d'une auto
+d'occasion vendue par un commerçant, pour un contrat conclu depuis le 5 avril
+2024 — catégorie A (4 ans ou moins et au plus 80 000 km) 6 mois ou 10 000 km,
+B (5 ans, 100 000 km) 3 mois ou 5 000 km, C (7 ans, 120 000 km) **1 mois ou
+1 700 km**, D au-delà **aucune**, la première limite atteinte y mettant fin ;
+elle commence à la livraison, couvre **pièces et main-d'œuvre**, et se
+prolonge des jours d'immobilisation. L'**étiquette** obligatoire porte la
+description, le kilométrage à l'odomètre et le kilométrage réel s'il diffère,
+la **catégorie**, les usages antérieurs particuliers (taxi, école de conduite,
+location, police, ambulance, démonstration), les réparations faites depuis
+l'acquisition par le commerçant et la mention du droit d'obtenir le nom du
+dernier propriétaire ; elle est remise au consommateur et **fait partie du
+contrat**, sauf le prix et les caractéristiques de la garantie. La **garantie
+légale** (art. 37 et 38) veut qu'un bien serve à l'usage auquel il est
+normalement destiné et y serve **pendant une durée raisonnable, compte tenu du
+prix payé**. L'**article 228.1** oblige le commerçant à informer le
+consommateur, **verbalement et par écrit**, de l'existence et du contenu de la
+garantie légale **avant** de lui proposer une garantie supplémentaire payante
+— faute de quoi il est *réputé passer sous silence un fait important*, une
+pratique interdite au sens de l'art. 228. Le **droit de résolution** d'une
+garantie supplémentaire est de **dix jours** suivant la conclusion du contrat,
+par avis écrit, le délai courant du lendemain de l'achat. Un **contrat de
+vente à tempérament** doit indiquer le prix au comptant, l'acompte, le capital
+net, le **taux de crédit** annuel, les **frais de crédit**, les versements et
+l'**obligation totale** — le montant financé plus les frais —, et le
+consommateur peut payer d'avance sans frais ni pénalité. Une **mise en
+demeure** accorde un délai raisonnable, **généralement dix jours** ; la
+**Division des petites créances** entend les demandes de **15 000 $ ou moins**
+et l'on s'y représente soi-même. Tout le reste — les personnes, Autos
+Bulstrode, le Garage Ducharme, la berline, les montants — est inventé.
+
+Trois choses apprises, pour les onze modules qui restent.
+
+**1. Un contrat de crédit se lit à trois cases, et c'est un contenu, pas une
+compétence en plus.** Taux de crédit, frais de crédit, obligation totale. Le
+versement mensuel ne dit rien, puisqu'on le fait baisser en allongeant la
+durée — et l'obligation totale, elle, monte. Ce triplet-là est ce que la
+situation « Achat de biens de consommation durables » a de plus transférable :
+il vaut pour un meuble, un appareil, une auto, et il tient dans un `texte` de
+douze passages cliquables. Les modules à venir qui touchent au crédit
+(`module-n7-banque`, activité 114) peuvent le reprendre tel quel.
+
+**2. Trois exercices `texte`, et ils ne se répètent pas parce que les
+documents sont de trois genres.** L'**étiquette et le contrat** (`prEtiq`,
+treize questions) font chercher un renseignement dans un formulaire ; la
+**fiche de droits de l'Office** (`t2contrat`) fait chercher une règle sous un
+titre en majuscules ; la **mise en demeure d'Ernestine** (`t3lettre`) fait
+retrouver la fonction de chaque paragraphe dans une lettre qu'on va soi-même
+écrire. Trois lectures différentes du même type d'exercice — c'est la
+confirmation de ce que `module-n7-recherche` avait écrit avec deux, et le
+troisième tient très bien. La condition reste la même : des **genres**
+différents, pas trois documents administratifs de la même famille.
+
+**3. `build/module.py` ne copie pas le dossier `icons/`.** Les quatre SVG —
+`play`, `speaker`, `mic`, `assistant` — sont un geste manuel de la chaîne, et
+leur absence ne se voit **pas** à l'écran : la page se rend normalement, les
+onglets s'affichent, aucune erreur de script n'est levée. Elle se voit
+uniquement dans le journal du serveur, en trois 404. Un module livré sans eux
+aurait des puces vides à la place des icônes d'écoute. La parade tient en une
+ligne, à faire juste après le premier `build/module.py` : recopier les quatre
+`*.svg` d'un module voisin dans `assets/interactive/<slug>/icons/`.
+
+*Sur les images*, la vague avait sa règle depuis la veille et la consigne
+annonçait que ce module serait le pire — étiquettes de prix, plaques
+d'immatriculation, fenêtre des rapports d'un levier de vitesse, cadrans de
+tableau de bord, écran d'appareil de diagnostic, enseigne de concessionnaire.
+**La parade a été écrite dans les prompts dès le premier jet, et elle a tenu :
+dix-sept images sur dix-huit du premier coup.** Ce qui marche, dans les mots
+mêmes du prompt : « la plaque d'immatriculation est coupée par le bord
+inférieur de l'image », « la plaquette des rapports est entièrement masquée
+par l'angle de prise de vue », « les cadrans et les chiffres sont hors champ,
+coupés par les bords », « le cadrage s'arrête à la hauteur des vitres
+arrière : les pare-brise sont au-dessus du bord supérieur », « l'appareil au
+bout du câble n'apparaît pas dans l'image ». Aucune de ces phrases n'interdit
+quoi que ce soit : elles décrivent un cadrage, et c'est la seule chose qu'un
+modèle d'image sait exécuter.
+
+**La seule image refaite l'a été pour le quatrième défaut, sous sa forme la
+moins visible : celle du degré.** `pare-brise-givre` montrait un pare-brise à
+peine voilé, à travers lequel on voyait tout l'habitacle ; son énoncé dit « un
+pare-brise **couvert** de givre ». L'image n'était pas hors sujet, elle était
+**insuffisante** — et c'est un cas que `node build/contexte_images.js` attrape
+aussi, à condition de lire l'énoncé mot à mot au lieu de vérifier le thème. Le
+prompt refait serre le cadrage sur la vitre au lieu de décrire la scène, et
+exige l'opacité en toutes lettres. Une reprise, 0,0336 $.
+
+*Sur l'originalité* : 1 822 énoncés visibles, **65 identiques** parmi les
+55 384 des soixante-cinq autres modules de `build/contenu/`, soit **3,6 %**.
+Le premier relevé donnait 4,6 % ; les intitulés repris du moule ont été rendus
+distinctifs — quatorze en-têtes de bloc `check` (« Quatre questions, sans
+filet » devient « Quatre questions sur les trois garanties », « … sur les deux
+passés », « … sur le conditionnel »), sept libellés d'axe de labo et neuf
+intitulés de bandeau. Vingt minutes, un point de pourcentage. Ce qui reste est
+irréductible : des mots du programme, les consignes du gabarit, deux formules
+de lettre consacrées et des faits de langue qui ne se disent pas autrement.
+**Le relevé des sons est resté à 316 clés** — les `say:` n'ont pas bougé,
+l'opération est gratuite en audio, comme pour `module-n7-logement`.
+
+*Sur les contrôles* : les sept passent. `coherence.js` ne signale rien, les
+deux relevés (`sections.py`, `materiel.py`) sont à jour, les deux contrôles de
+couleur ne rendent rien, `sommaire.py --verifier` ne trouve aucun lien cassé,
+et `pieds_de_page.py` lit « niveau 7 · numéro 6 · 16 pptx · vus ['6'] ». Le
+seul écart qu'il rapporte est `module-n3-horaire`, connu de longue date et qui
+n'est pas le mien ; `module-n6-relations`, signalé la veille, est rentré dans
+le rang. Le `node --check` du script produit passe. **La vérification dans le
+navigateur a été faite sur un serveur et un onglet à moi** — un
+`python3 -m http.server` sur un port libre pointé sur mon worktree, puis
+`tabs_create` : aucune erreur de script, et le contrôle qui compte a été passé
+sur les **189 zones** du module, tous types confondus (`imgmatch`, `vf`,
+`match`, `texte`) — pour chacune, la bonne réponse est acceptée par
+`checkOk()`. C'est le contrôle que l'épisode du `imgmatch` mort recommande, et
+il tient en dix lignes dans la console.
+
+*Un scénario de jeu de rôle a été ajouté à `server.py`* — `reclamation`, trois
+cas (la transmission, la garantie qu'on n'a pas expliquée, la laveuse de
+quatorze mois), deux rôles. Aucun des scénarios existants ne convenait :
+`appareil` (niveau 4) et `electro` (niveau 3) se passent **avant** la vente, et
+`probleme` (niveau 4) réclame auprès d'un propriétaire de logement, sans
+garantie ni contrat de crédit. Le troisième cas n'est **pas** une auto, et
+c'est voulu : il montre que la garantie légale vise tout bien, là où celle de
+bon fonctionnement ne vise que les véhicules.
+
+*Ce qui reste* : les **412 extraits audio**. `generer_audio_module_n7_achat.py`
+est écrit, il s'importe sans erreur, il retrouve ses 96 répliques sur quatre
+dialogues et son manifeste de 316 sons — il attend `build/audio_tous.py` avec
+les quatre-vingt-onze autres. Le module est livré complet et muet.
+
+*Deux choses que je n'ai pas faites, et pourquoi* : ni `VOCAB_BANK` de
+`server.py`, ni la constante `DETAILS` de `js/enseignant.js` ne reçoivent quoi
+que ce soit pour ce module. Vérification faite, les activités **108 à 111 n'y
+sont pas non plus** : ces deux tables se sont arrêtées aux modules du niveau 4
+et ne font plus partie de la chaîne. Le noter ici évite au prochain agent de
+se demander s'il a oublié une étape — et signale, s'il faut un jour les
+remettre à jour, que c'est un chantier à part et non un oubli de module.

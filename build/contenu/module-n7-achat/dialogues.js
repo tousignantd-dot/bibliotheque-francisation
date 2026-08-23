@@ -1,0 +1,128 @@
+const DIALOGUES = {
+  // Quatre dialogues, volontairement longs : au niveau 7 la compétence porte
+  // sur des discours étendus, et deux des trois intentions de la situation
+  // sont orales. Ils se travaillent en écoutes successives — une fois pour le
+  // sujet, une fois pour les chiffres, une fois pour le détail.
+  //
+  // Cinq personnages, cinq timbres. ERNESTINE parle dans les quatre ;
+  // JEAN-ROCK, WILFRID, MARYSE et ÉDITH ne se rencontrent jamais.
+  prep: {
+    label: "Dialogue — La signature du lundi",
+    lines: [
+      ["JEAN-ROCK","Madame Kabuya ! Entrez, entrez. Elle est prête, la grise. Lavée, le plein fait."],
+      ["ERNESTINE","Merci. J'ai apporté le chèque de l'acompte, comme vous m'aviez dit. Deux mille."],
+      ["JEAN-ROCK","Parfait. On s'installe au bureau, j'imprime le contrat et vous repartez avec dans vingt minutes."],
+      ["ERNESTINE","Avant de signer, j'aimerais comprendre les chiffres. Le prix, c'est onze mille quatre cents, ça je l'ai vu sur le papier collé dans la vitre."],
+      ["JEAN-ROCK","Onze mille quatre cents, oui. Moins vos deux mille d'acompte, ça fait neuf mille quatre cents à financer."],
+      ["ERNESTINE","Et là, en bas, il y a écrit dix mille six cents. D'où vient la différence ?"],
+      ["JEAN-ROCK","Ah, ça, c'est la garantie prolongée. Douze cents. Je vous l'ai mise dedans, c'est plus simple, vous ne la voyez pas passer."],
+      ["ERNESTINE","Je ne l'ai pas demandée, cette garantie."],
+      ["JEAN-ROCK","Tout le monde la prend, madame Kabuya. Une auto de sept ans, moi, je ne partirais pas sans ça. Trois ans de couverture sur le moteur et la transmission."],
+      ["ERNESTINE","Et l'auto, elle n'a pas déjà une garantie ?"],
+      ["JEAN-ROCK","Le fabricant, c'est fini depuis longtemps. Elle est de 2019."],
+      ["ERNESTINE","Je ne parlais pas du fabricant. Il n'y a rien d'autre ?"],
+      ["JEAN-ROCK","Écoutez, ce qui compte, c'est ce que vous avez dans les mains. La prolongée, c'est du solide. Signez ici, ici, et les initiales là."],
+      ["ERNESTINE","Une minute. Le taux, il est où ?"],
+      ["JEAN-ROCK","Neuf virgule quarante-cinq pour cent. Soixante versements de deux cent vingt-deux et trente-six."],
+      ["ERNESTINE","Soixante versements de deux cent vingt-deux dollars. Ça fait combien, en tout ?"],
+      ["JEAN-ROCK","L'obligation totale ? Treize mille trois cent quarante et un et soixante. C'est écrit dans la case, en bas à droite."],
+      ["ERNESTINE","Donc les frais de crédit, c'est deux mille sept cent quarante et un dollars."],
+      ["JEAN-ROCK","Vous calculez vite, vous. Oui. Sur cinq ans, c'est normal."],
+      ["ERNESTINE","Et ce petit papier jaune, dans la vitre, je le garde ?"],
+      ["JEAN-ROCK","L'étiquette ? Prenez-la, elle est à vous. Bon. Les clés, le double, et les papiers d'immatriculation. Bonne route, madame Kabuya."],
+      ["ERNESTINE","Merci, monsieur Vachon. On est le six avril. Je note la date."],
+    ]
+  },
+
+  t1: {
+    label: "Dialogue — Ce que le bruit veut dire",
+    lines: [
+      ["ERNESTINE","Bonjour. Je viens pour mon auto. Elle fait un bruit."],
+      ["WILFRID","Bonjour madame. Un bruit. Bon. On va être plus précis que ça, sinon je vais chercher deux heures pour rien. Vous permettez ?"],
+      ["ERNESTINE","Allez-y."],
+      ["WILFRID","Premièrement : quel genre de bruit ? Un sifflement, un grincement, un cognement, un cliquetis ?"],
+      ["ERNESTINE","Un cognement. Comme si quelqu'un frappait une fois sous le plancher, du côté droit."],
+      ["WILFRID","Bon. Ça, c'est déjà utile. Deuxièmement : quand ?"],
+      ["ERNESTINE","Le matin, surtout. Quand l'auto a passé la nuit dehors."],
+      ["WILFRID","À froid, donc. Et après dix minutes de route, il est encore là ?"],
+      ["ERNESTINE","Non. Après, il s'en va. Le soir en revenant, je ne l'entends presque jamais."],
+      ["WILFRID","Troisièmement : à quel moment exactement ? Quand vous partez, quand vous freinez, quand vous montez une côte ?"],
+      ["ERNESTINE","Quand ça change de vitesse. Au coin de la rue Notre-Dame, il y a une petite montée : c'est là que ça cogne, chaque fois."],
+      ["WILFRID","Chaque fois, ou souvent ?"],
+      ["ERNESTINE","Chaque fois, le matin. Systématiquement."],
+      ["WILFRID","Là, vous venez de me donner trois choses : un cognement, à froid, au passage des rapports. Vous savez ce que ça veut dire pour moi ? Que je sais où regarder avant même de lever l'auto."],
+      ["ERNESTINE","Je pensais que c'était à vous de trouver."],
+      ["WILFRID","C'est à moi de trouver. Mais si vous me dites « ça marche mal », je pars de zéro et je vous facture deux heures de recherche. Si vous me dites ce que vous venez de me dire, je pars de la transmission et j'y suis en vingt minutes."],
+      ["ERNESTINE","Il y avait aussi une flaque rouge sous l'auto, samedi. Je ne sais pas si c'est lié."],
+      ["WILFRID","Rouge ? Ça, c'est du liquide de transmission. Vous auriez dû commencer par là, madame. Vous l'aviez remarqué avant le bruit ?"],
+      ["ERNESTINE","Non. Le bruit avait commencé le mercredi d'avant. La flaque, je l'ai vue seulement le samedi."],
+      ["WILFRID","D'accord. Donc le bruit avait déjà commencé quand la fuite est apparue. Je note. Vous l'avez achetée quand, cette auto ?"],
+      ["ERNESTINE","Le six avril. Chez Autos Bulstrode, sur le boulevard."],
+      ["WILFRID","Le six avril. On est le trente. Vous avez fait combien de kilomètres depuis ?"],
+      ["ERNESTINE","Neuf cents, à peu près. Je fais l'école et le retour, c'est tout."],
+      ["WILFRID","Neuf cents kilomètres en vingt-quatre jours et la transmission cogne. Madame Kabuya, je vais vous faire un rapport écrit, et vous, vous allez retourner voir votre vendeur avant de me faire réparer quoi que ce soit."],
+    ]
+  },
+
+  t2: {
+    label: "Dialogue — Au comptoir du service à la clientèle",
+    lines: [
+      ["ERNESTINE","Bonjour madame. Je viens pour l'auto que j'ai achetée ici le six avril. La transmission cogne."],
+      ["MARYSE","Bonjour. Vous avez votre contrat ? Bon. Kabuya, Ernestine. Berline 2019, cent quatre mille kilomètres à la livraison."],
+      ["ERNESTINE","C'est ça. Voici aussi le rapport du garage. Il est écrit noir sur blanc : fuite au carter de transmission et jeu anormal."],
+      ["MARYSE","Je vois. Écoutez, madame Kabuya, une auto de sept ans avec cent quatre mille kilomètres, c'est de l'usure normale. Ça ne se couvre pas."],
+      ["ERNESTINE","Vingt-quatre jours après l'achat ?"],
+      ["MARYSE","La date ne change rien à l'usure. Vous avez pris la garantie prolongée, ça je le vois. Mais la transmission, dans ce contrat-là, il y a une exclusion pour les joints et les carters."],
+      ["ERNESTINE","Donc j'ai payé douze cents dollars pour une garantie qui ne couvre pas la transmission."],
+      ["MARYSE","Elle couvre le bloc-moteur et la boîte, pas les fuites de joint. C'est écrit à la page trois."],
+      ["ERNESTINE","Madame Turgeon, ce n'est pas de la garantie prolongée que je viens vous parler. C'est de celle qui est dans la loi."],
+      ["MARYSE","Pardon ?"],
+      ["ERNESTINE","Sur l'étiquette que monsieur Vachon m'a remise, il y a une case « catégorie ». Elle dit C."],
+      ["MARYSE","Oui, catégorie C. Une auto de sept ans ou moins, moins de cent vingt mille kilomètres."],
+      ["ERNESTINE","Et une auto de catégorie C est couverte par une garantie de bon fonctionnement d'un mois ou de mille sept cents kilomètres, selon la première limite atteinte. Le six avril plus un mois, ça nous mène au six mai. On est le deux. J'ai fait neuf cents kilomètres."],
+      ["MARYSE","… Vous avez lu ça où ?"],
+      ["ERNESTINE","À l'Office de la protection du consommateur. Ce que je vous demande, ce n'est pas une faveur : c'est la réparation des pièces et de la main-d'œuvre, comme la garantie l'oblige."],
+      ["MARYSE","Il faudrait que j'en parle au directeur. Je ne peux pas décider ça toute seule."],
+      ["ERNESTINE","Je comprends. Est-ce que vous accepteriez de m'appeler d'ici vendredi ?"],
+      ["MARYSE","Je peux essayer, oui."],
+      ["ERNESTINE","Et il y a autre chose. Quand monsieur Vachon m'a vendu la garantie prolongée, il ne m'a jamais parlé de la garantie légale. Ni en paroles, ni par écrit."],
+      ["MARYSE","Il vous a remis le contrat."],
+      ["ERNESTINE","Le contrat de la prolongée. Pas l'information sur la garantie qui existe déjà, gratuitement, dans la loi. Je le lui ai demandé deux fois, ce jour-là. Vous pourrez réécouter : il m'a répondu que ce qui compte, c'est ce qu'on a dans les mains."],
+      ["MARYSE","Bon. Je note ce que vous me dites. Laissez-moi vos coordonnées."],
+      ["ERNESTINE","Elles sont au contrat. Vendredi, donc. Passé ce délai, je vous écrirai."],
+      ["MARYSE","Vous n'avez pas besoin de le prendre comme ça, madame Kabuya."],
+      ["ERNESTINE","Je ne le prends pas mal, madame Turgeon. Je le prends par écrit. Ce n'est pas la même chose."],
+    ]
+  },
+
+  t3: {
+    label: "Dialogue — L'appel à l'Office",
+    lines: [
+      ["ÉDITH","Office de la protection du consommateur, Édith Vanasse, bonjour."],
+      ["ERNESTINE","Bonjour madame. J'ai acheté une auto d'occasion le six avril, la transmission a lâché après vingt-quatre jours, et le commerçant refuse de réparer."],
+      ["ÉDITH","D'accord. Je ne peux pas régler le dossier à votre place, mais je peux vous dire quelles règles s'appliquent. Vous avez l'étiquette du véhicule ?"],
+      ["ERNESTINE","Oui. Catégorie C."],
+      ["ÉDITH","Alors la garantie de bon fonctionnement est d'un mois ou de mille sept cents kilomètres. Vous étiez dedans ?"],
+      ["ERNESTINE","Vingt-quatre jours et neuf cents kilomètres."],
+      ["ÉDITH","Vous étiez dedans, largement. Et même si vous n'y étiez plus, la garantie légale, elle, ne se compte pas en jours : un bien doit servir pendant une durée raisonnable, compte tenu du prix payé. Onze mille quatre cents dollars pour vingt-quatre jours, personne ne trouvera ça raisonnable."],
+      ["ERNESTINE","Ils m'ont dit que c'était de l'usure normale."],
+      ["ÉDITH","C'est la phrase qu'on entend le plus souvent. Elle ne veut rien dire toute seule. Ce qui compte, c'est ce que vous pouvez montrer : la date, le kilométrage, le rapport du garage."],
+      ["ERNESTINE","J'ai tout ça."],
+      ["ÉDITH","Alors l'étape suivante est écrite. Vous envoyez une mise en demeure."],
+      ["ERNESTINE","C'est un avocat qui la fait ?"],
+      ["ÉDITH","Pas du tout. C'est une lettre que vous écrivez vous-même. Elle raconte les faits dans l'ordre, elle dit exactement ce que vous demandez, et elle accorde un délai — dix jours, habituellement."],
+      ["ERNESTINE","Et si rien ne bouge après dix jours ?"],
+      ["ÉDITH","Vous pouvez vous adresser à la Division des petites créances. Quinze mille dollars ou moins, et vous vous représentez vous-même : pas d'avocat, pas de frais d'avocat."],
+      ["ERNESTINE","Il y a autre chose qui me chicote. On m'a vendu une garantie prolongée de douze cents dollars sans jamais me parler de la garantie légale."],
+      ["ÉDITH","Ça, madame, c'est important. Avant de vous proposer une garantie payante, le commerçant a l'obligation de vous informer, verbalement et par écrit, de la garantie que la loi vous donne déjà."],
+      ["ERNESTINE","Il ne l'a pas fait. Je le lui ai demandé deux fois."],
+      ["ÉDITH","Alors écrivez-le dans votre lettre, avec la date. Et sachez qu'un contrat de garantie supplémentaire peut se résoudre dans les dix jours suivant sa conclusion, par un simple avis écrit."],
+      ["ERNESTINE","Dix jours. Le six avril plus dix jours, c'est passé depuis longtemps."],
+      ["ÉDITH","C'est passé, oui. Je vous le dis quand même, parce que la prochaine fois vous le saurez, et parce que ça se plaide autrement quand l'information ne vous a jamais été donnée."],
+      ["ERNESTINE","Je note. Est-ce que j'envoie la lettre par la poste ?"],
+      ["ÉDITH","Par courrier recommandé, ou en main propre avec une signature. Ce que vous voulez, c'est une preuve de la date. Gardez-en une copie, et joignez le rapport du garage."],
+      ["ERNESTINE","Merci beaucoup, madame Vanasse. Je vais l'écrire ce soir."],
+      ["ÉDITH","Une dernière chose. Écrivez les faits, pas ce que vous ressentez. Une lettre qui donne des dates, des montants et un délai obtient une réponse ; une lettre qui accuse en obtient une autre."],
+    ]
+  },
+};

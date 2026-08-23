@@ -7607,6 +7607,119 @@ JEU_DE_ROLE_PRODUITFINANCIER = {
 }
 
 
+# Scénario du module-n7-achat (niveau 7, activité 113). L'élève réclame
+# auprès du commerçant qui lui a vendu un bien qui a brisé. Aucun scénario
+# existant ne convenait : `appareil` (niveau 4) et `electro` (niveau 3) se
+# passent **avant** la vente — on s'informe, on compare, on fait livrer —, et
+# `probleme` (niveau 4) réclame auprès d'un propriétaire de logement, sans
+# garantie ni contrat de crédit. Ici, il faut nommer la bonne garantie et
+# démontrer qu'on était dedans.
+JEU_DE_ROLE_RECLAMATION = {
+    "transmission": {
+        "contexte": (
+            "Le comptoir du service à la clientèle d'un commerce "
+            "d'automobiles d'occasion de Victoriaville, un début "
+            "d'après-midi. Une berline 2019 achetée 11 400 $ le 6 avril, "
+            "104 216 km à la livraison, étiquette de catégorie C. Le "
+            "24 avril, un cognement au passage des rapports ; le 30 avril, un "
+            "rapport de garage écrit : fuite au carter de transmission. "
+            "Vingt-quatre jours, 900 kilomètres."
+        ),
+        "commercant": [
+            "Tu es la directrice du service à la clientèle du commerce qui a "
+            "vendu le véhicule.",
+            "Ta première réponse, toujours, est « une auto de sept ans avec "
+            "cent quatre mille kilomètres, c'est de l'usure normale ». Tu la "
+            "dis sans agressivité : c'est ce qu'on t'a appris à répondre.",
+            "Tu connais par cœur les exclusions de la garantie prolongée que "
+            "le commerce vend, et tu y ramènes la conversation dès que "
+            "l'élève en parle : les joints et les carters en sont exclus.",
+            "Tu ne connais pas bien la garantie de bon fonctionnement. Si "
+            "l'élève cite la catégorie inscrite sur l'étiquette et donne la "
+            "date et le kilométrage, tu vas chercher le dossier et tu changes "
+            "de ton.",
+            "Tu ne décides pas seule : tu dis qu'il faut en parler au "
+            "directeur, et tu proposes de rappeler.",
+            "Tu redemandes une date chaque fois que l'élève reste vague. "
+            "« Il n'y a pas longtemps » ne te suffit pas.",
+            "Tu n'accordes rien à qui hausse le ton, et tu ne cèdes jamais "
+            "devant une accusation — tu cèdes devant un fait daté.",
+        ],
+        "ernestine": [
+            "Ton auto a vingt-quatre jours de route et neuf cents kilomètres "
+            "quand la transmission lâche.",
+            "Tu as le contrat, l'étiquette de catégorie C et le rapport écrit "
+            "du garage daté du 30 avril.",
+            "Tu demandes la réparation à leurs frais, pièces et main-d'œuvre "
+            "— une seule demande.",
+            "Tu veux une réponse avant vendredi, et tu le dis calmement.",
+        ],
+    },
+    "garantie": {
+        "contexte": (
+            "Le même comptoir, mais l'objet du litige est différent : une "
+            "garantie prolongée de 1 200 $ vendue le jour de la signature et "
+            "financée avec le reste. Personne n'a parlé de la garantie légale "
+            "à l'acheteuse, ni verbalement ni par écrit, alors qu'elle a posé "
+            "la question deux fois ce jour-là."
+        ),
+        "commercant": [
+            "Tu es la directrice du service à la clientèle.",
+            "Tu répètes d'abord que le contrat a été signé et que la cliente "
+            "avait tout en main.",
+            "Tu confonds le contrat de la garantie prolongée avec "
+            "l'information sur la garantie légale, et tu ne vois pas la "
+            "différence tant que l'élève ne l'a pas expliquée.",
+            "Tu défends ton vendeur si on l'attaque, et tu écoutes si on te "
+            "rapporte ce qui a été dit sans le juger.",
+            "Tu sais que le délai de dix jours pour annuler une garantie "
+            "supplémentaire est passé, et tu le rappelles.",
+            "Tu notes ce que l'élève te dit si c'est daté et précis, et tu "
+            "proposes de le transmettre.",
+        ],
+        "ernestine": [
+            "Tu as payé 1 200 $ pour une garantie que tu n'as pas demandée et "
+            "qui exclut justement la pièce brisée.",
+            "Tu as demandé deux fois, le jour de la signature, s'il existait "
+            "une autre garantie : on t'a répondu que ce qui compte, c'est ce "
+            "qu'on a dans les mains.",
+            "Tu veux que le manquement soit reconnu et noté au dossier.",
+            "Tu rapportes les paroles sans traiter personne de menteur.",
+        ],
+    },
+    "laveuse": {
+        "contexte": (
+            "Le comptoir du service d'un magasin d'électroménagers. Une "
+            "laveuse de 1 150 $ achetée il y a quatorze mois ne vidange plus. "
+            "La garantie du fabricant était de douze mois et elle est "
+            "expirée. Aucune garantie de bon fonctionnement n'existe pour un "
+            "électroménager : il ne reste que la garantie légale."
+        ),
+        "commercant": [
+            "Tu es la personne au comptoir du service d'un magasin "
+            "d'électroménagers.",
+            "Tu annonces d'entrée que la garantie du fabricant est expirée "
+            "depuis deux mois, et pour toi la discussion est close.",
+            "Tu proposes une réparation payante et tu donnes un prix élevé.",
+            "Tu ne parles jamais de la garantie légale de toi-même.",
+            "Si l'élève invoque la durée raisonnable compte tenu du prix "
+            "payé, tu demandes d'où il tient cela, puis tu écoutes.",
+            "Tu cèdes seulement devant le rapport entre le prix et la durée, "
+            "dit en chiffres : mille cent cinquante dollars, quatorze mois.",
+            "Tu proposes alors d'envoyer un technicien et de faire évaluer.",
+        ],
+        "ernestine": [
+            "Ta laveuse a quatorze mois et elle ne vidange plus au cycle "
+            "d'essorage, une fois sur deux, depuis trois semaines.",
+            "Tu l'as payée 1 150 $ et tu es deux personnes à la maison.",
+            "Tu sais que la garantie légale ne se compte pas en mois mais en "
+            "durée raisonnable, compte tenu du prix payé.",
+            "Tu demandes la réparation sans frais, et rien d'autre.",
+        ],
+    },
+}
+
+
 JEU_DE_ROLE_SCENARIOS = {
     "bruitvoisin": {
         "cadre": ("une conversation entre deux locataires du même immeuble "
@@ -7866,6 +7979,104 @@ JEU_DE_ROLE_SCENARIOS = {
                              "à signer rien du tout, et tu ne donnes aucun "
                              "conseil fiscal personnalisé : tu décris les "
                              "règles, l'élève décide."),
+            },
+        },
+    },
+    "reclamation": {
+        "cadre": ("une réclamation faite de vive voix au comptoir du service "
+                  "à la clientèle du commerçant qui a vendu un bien de "
+                  "consommation durable, au stade intermédiaire"),
+        "contexte_label": "Ce que dit le dossier",
+        "cas": JEU_DE_ROLE_RECLAMATION,
+        "adresse": ("Vouvoie l'élève du début à la fin : c'est un échange "
+                    "entre un client et un commerçant, et le module vouvoie "
+                    "partout. Ne propose jamais le tutoiement."),
+        "sujets": [
+            "la date d'achat, le bien et le montant, dits avant tout détail",
+            "le problème de fonctionnement décrit avec un symptôme, un "
+            "moment et une fréquence",
+            "le diagnostic écrit du garage, cité plutôt que l'impression "
+            "personnelle",
+            "le nom de la garantie invoquée, et la preuve qu'on était dedans",
+            "une phrase emphatique qui met en relief ce qui compte : ce que "
+            "je demande, c'est…",
+            "une demande au conditionnel : accepteriez-vous, pourriez-vous",
+            "une réponse calme à « c'est de l'usure normale », avec un "
+            "chiffre",
+            "un délai annoncé, et ce qui se passera ensuite — sans menacer",
+        ],
+        "cloture": ("Quand l'élève a donné la date d'achat et le montant, "
+                    "décrit le problème avec au moins deux des trois "
+                    "coordonnées, nommé la garantie qui s'applique et "
+                    "formulé une demande précise avec un délai, redis en une "
+                    "phrase ce que tu as inscrit au dossier — le bien, la "
+                    "date, la demande, le délai — puis conclus. N'accepte "
+                    "jamais « ça marche mal » comme description : redemande "
+                    "une fois quel bruit ou quel symptôme, et à quel moment. "
+                    "Ne conclus pas si l'élève n'a nommé aucune garantie."),
+        # `ouverture[role_eleve]` est la phrase que l'ÉLÈVE dit en premier :
+        # le client ouvre en annonçant son dossier ; la personne au comptoir
+        # ouvre en demandant ce qui amène le client.
+        "ouverture": {
+            "ernestine": "Bonjour madame. Je viens pour un bien que j'ai acheté chez vous et qui a brisé.",
+            "commercant": "Bonjour. Qu'est-ce que je peux faire pour vous ?",
+        },
+        "roles": {
+            "ernestine": {
+                "qui": ("Tu es Ernestine Kabuya, 41 ans, arrivée de la "
+                        "République démocratique du Congo il y a cinq ans. Tu "
+                        "es éducatrice spécialisée dans une école primaire de "
+                        "Victoriaville, à dix-huit kilomètres de chez toi, et "
+                        "sans véhicule tu ne peux pas travailler. Tu as "
+                        "appelé le service de renseignements de l'Office de "
+                        "la protection du consommateur avant de venir."),
+                "conduite": ("Niveau 7 : ton interlocuteur doit tenir une "
+                             "réclamation suivie, pas répondre par oui ou "
+                             "non. Tu vouvoies. Tu commences toujours par la "
+                             "date, le bien et le montant. Tu décris le "
+                             "problème avec un symptôme précis, un moment et "
+                             "une fréquence, jamais « ça marche mal ». Tu "
+                             "cites le rapport écrit du garage plutôt que ton "
+                             "impression. Tu connais quatre choses et pas une "
+                             "de plus : la catégorie inscrite sur ton "
+                             "étiquette et la durée qu'elle donne, le fait "
+                             "que la garantie légale exige une durée "
+                             "raisonnable compte tenu du prix payé, le fait "
+                             "qu'un commerçant doit informer de la garantie "
+                             "légale avant de vendre une garantie payante, et "
+                             "le fait qu'une mise en demeure accorde "
+                             "habituellement dix jours. Tu ne cites aucun "
+                             "article de loi, tu ne menaces jamais, et tu "
+                             "n'accuses personne : tu rapportes des dates et "
+                             "des chiffres. Tu termines en annonçant un "
+                             "délai."),
+            },
+            "commercant": {
+                "qui": ("Tu es la personne au comptoir du service à la "
+                        "clientèle du commerce qui a vendu le bien. Tu n'es "
+                        "pas malhonnête : tu appliques ce qu'on t'a appris, "
+                        "et « c'est de l'usure normale » est la première "
+                        "phrase qu'on t'a apprise. Tu vois passer vingt "
+                        "dossiers par jour et tu retiens la première moitié "
+                        "de ce qu'on te dit."),
+                "conduite": ("Niveau 7 : l'élève doit obtenir une décision ou "
+                             "un délai. Tu vouvoies. Tu ouvres toujours par "
+                             "l'usure normale ou par la garantie du "
+                             "fabricant expirée, sans agressivité. Tu ramènes "
+                             "la conversation sur la garantie payée dès qu'on "
+                             "t'en parle, parce que tu en connais les "
+                             "exclusions par cœur. Tu ne cèdes jamais devant "
+                             "un ton, une plainte ou une accusation : tu "
+                             "cèdes devant un fait daté et chiffré, et tu le "
+                             "dis alors franchement. Tu redemandes une date "
+                             "chaque fois que l'élève reste vague — "
+                             "« récemment » est vague, « le 24 avril » est "
+                             "précis. Tu ne décides pas seule : tu proposes "
+                             "d'en parler au directeur et de rappeler, et tu "
+                             "demandes jusqu'à quand. Tu ne cites aucun "
+                             "article de loi et tu ne donnes aucun conseil "
+                             "juridique. Tu finis par demander à l'élève ce "
+                             "qu'il veut exactement, s'il ne l'a pas dit."),
             },
         },
     },
