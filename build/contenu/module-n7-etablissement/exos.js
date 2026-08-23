@@ -33,7 +33,7 @@ const EXOS = [
      ["Trois questions à poser à n'importe quelle fiche","Qu'est-ce qu'il faut avoir avant ? Combien de temps ça dure, et à quel rythme ? Et le diplôme suffit-il pour travailler ? Les trois réponses sont toujours écrites, jamais mises en avant."],
      ["Un diplôme n'est pas toujours un droit de pratique","Pour plusieurs métiers, le diplôme ouvre la porte d'un ordre professionnel, qui ajoute ses propres conditions — un examen, une inscription, une cotisation. Le savoir d'avance change le plan de carrière : on prépare deux étapes, pas une."],
      ["Les préalables ont trois portes","Le diplôme d'études secondaires ; l'âge et les unités du secondaire ; ou, à dix-huit ans, les préalables fonctionnels avec le test de développement général. La troisième porte existe précisément pour les personnes qui n'ont pas fait leur secondaire ici."],
-     ["Ce document-ci a été écrit pour le module","Il est écrit dans la forme d'une fiche de centre de formation professionnelle. Les règles qu'il énonce sont bien celles du Québec, mais le Centre du Ruisseau-Vert n'existe pas, et le nombre de places comme celui des demandes sont inventés. Pour un vrai dossier, ce sont la fiche du centre et le portail d'admission de la formation professionnelle qu'il faut ouvrir — pas celle-ci."],
+     ["Ce document-ci est un exemple écrit pour ce module-ci","Il est écrit dans la forme d'une fiche de centre de formation professionnelle. Les règles qu'il énonce sont bien celles du Québec, mais le Centre du Ruisseau-Vert n'existe pas, et le nombre de places comme celui des demandes sont inventés. Pour un vrai dossier, ce sont la fiche du centre et le portail d'admission de la formation professionnelle qu'il faut ouvrir — pas celle-ci."],
    ]},
    paras:[
      "CENTRE DE FORMATION PROFESSIONNELLE DU RUISSEAU-VERT — Fiche de programme · Santé, assistance et soins infirmiers · Diplôme d'études professionnelles 5325 · Document d'information remis aux personnes candidates",
@@ -206,14 +206,14 @@ const EXOS = [
      ["Le piège de la lecture","Sous chaque nom se cache un verbe et, sous le verbe, quelqu'un. « Le refus de votre demande » ne dit pas qui a refusé : demandez-le si la réponse compte."],
    ]},
    items:[
-    {q:"Le comité a sélectionné vingt-quatre personnes : la ___ s'est faite en trois jours.", accept:["sélection","selection"], ph:"un nom en -tion"},
-    {q:"Elle s'est inscrite au cours du mercredi : son ___ date du 8 janvier.", accept:["inscription"], ph:"un nom en -tion"},
-    {q:"Elle a été admise l'an dernier : son ___ a été confirmée par courriel.", accept:["admission"], ph:"un nom en -tion"},
-    {q:"Une personne s'est désistée : le centre appelle la suivante dès que le ___ est confirmé.", accept:["désistement","desistement"], ph:"un nom en -ment"},
-    {q:"On classe les dossiers du premier au dernier : ce ___ n'est jamais communiqué.", accept:["classement"], ph:"un nom en -ment"},
-    {q:"Le programme exige un préalable de mathématiques : cette ___ figure sur la fiche.", accept:["exigence"], ph:"un nom en -ence"},
-    {q:"Le centre reconnaît ce qu'une personne sait déjà faire : c'est la ___ des acquis.", accept:["reconnaissance"], ph:"un nom en -ance"},
-    {q:"Elle pose sa candidature une deuxième fois : sa ___ est déposée le 26 février.", accept:["candidature"], ph:"un nom en -ure"},
+    {q:"Le comité a sélectionné vingt-quatre personnes : la ___ s'est faite en trois jours.", accept:["sélection","selection"], ph:"un nom féminin en -tion"},
+    {q:"Elle s'est inscrite au cours du mercredi : son ___ date du 8 janvier.", accept:["inscription"], ph:"un nom féminin en -tion"},
+    {q:"Elle a été admise l'an dernier : son ___ a été confirmée par courriel.", accept:["admission"], ph:"un nom féminin en -tion"},
+    {q:"Une personne s'est désistée : le centre appelle la suivante dès que le ___ est confirmé.", accept:["désistement","desistement"], ph:"un nom masculin en -ment"},
+    {q:"On classe les dossiers du premier au dernier : ce ___ n'est jamais communiqué.", accept:["classement"], ph:"un nom masculin en -ment"},
+    {q:"Le programme exige un préalable de mathématiques : cette ___ figure sur la fiche.", accept:["exigence"], ph:"un nom féminin en -ence"},
+    {q:"Le centre reconnaît ce qu'une personne sait déjà faire : c'est la ___ des acquis.", accept:["reconnaissance"], ph:"un nom féminin en -ance"},
+    {q:"Elle pose sa candidature une deuxième fois : sa ___ est déposée le 26 février.", accept:["candidature"], ph:"un nom féminin en -ure"},
    ]},
 
   {sec:'t1', id:'t1plan', type:'match', num:'Exercice 5', tit:'Les sept parties de la lettre, et ce que chacune fait', color:'#1D6B8F',
@@ -256,8 +256,8 @@ const EXOS = [
      ["Comment il se fabrique","Radical du <b>futur simple</b>, terminaisons de l'<b>imparfait</b> : <span class='savoir-ex'>-ais, -ais, -ait, -ions, -iez, -aient</span> Tout verbe irrégulier au futur l'est au conditionnel, de la même façon."],
      ["Les six de l'entrevue","<span class='savoir-ex'>pouvoir → <b>pourriez</b>-vous · vouloir → je <b>voudrais</b> · être → ce <b>serait</b> · avoir → j'<b>aurais</b> · savoir → je <b>saurais</b> · devoir → je <b>devrais</b></span>"],
      ["Ce qu'il fait dans une question","Il laisse à l'autre la possibilité de dire non — et c'est pour cela qu'il dit oui. <span class='savoir-ex'>« Vous pouvez me dire la date ? » → « <b>Pourriez</b>-vous me dire la date ? »</span> Le contenu ne change pas ; la place que vous prenez, oui."],
-     ["Ce qu'il fait dans une hypothèse","<b>Si</b> + imparfait, puis conditionnel : <span class='savoir-ex'>« <b>Si</b> j'<b>étais</b> admise en janvier, je <b>garderais</b> mes deux quarts de fin de semaine. »</span> Jamais de conditionnel après <b>si</b> : c'est la faute qui s'entend le plus vite."],
-     ["Le piège du -rais et du -rai","<span class='savoir-ex'>je <b>serai</b> disponible = c'est un engagement · je <b>serais</b> disponible = ça dépend d'une condition</span> En entrevue, dites <b>serai</b> quand la chose est réglée. Le conditionnel de politesse s'emploie pour demander, pas pour s'engager."],
+     ["Dans une hypothèse d'entrevue","<b>Si</b> + imparfait, puis conditionnel : <span class='savoir-ex'>« <b>Si</b> j'<b>étais</b> admise en janvier, je <b>garderais</b> mes deux quarts de fin de semaine. »</span> Jamais de conditionnel après <b>si</b> : c'est la faute qui s'entend le plus vite."],
+     ["Une lettre d'écart, un engagement de moins","<span class='savoir-ex'>je <b>serai</b> disponible = c'est un engagement · je <b>serais</b> disponible = ça dépend d'une condition</span> En entrevue, dites <b>serai</b> quand la chose est réglée. Le conditionnel de politesse s'emploie pour demander, pas pour s'engager."],
    ]},
    items:[
     {q:"(Pouvoir) ___-vous me préciser à quel moment la décision sera communiquée ?", accept:["Pourriez","pourriez"], ph:"pouvoir"},
@@ -270,14 +270,14 @@ const EXOS = [
     {q:"Si je faisais la mise à niveau d'ici décembre, mon dossier (être) ___ plus fort.", accept:["serait"], ph:"être"},
    ]},
 
-  {sec:'t2', id:'t2emph', type:'write', num:'Exercice 3', tit:'Mettre en avant ce qui compte : c\'est… qui, c\'est… que, ce que… c\'est', color:'#B45309', cols:1,
+  {sec:'t2', id:'t2emph', type:'write', num:'Exercice 3', tit:'Encadrer ce qui compte : c\'est… qui, c\'est… que, ce que… c\'est', color:'#B45309', cols:1,
    sub:"Récrivez le début de chaque phrase pour mettre en avant le mot souligné dans la consigne.",
    savoir:{h:"› Les trois façons de souligner à l'oral", rows:[
      ["Pourquoi on en a besoin","À l'écrit, on souligne. À l'oral, on encadre. Sans mise en relief, une phrase de vingt mots arrive plate au comité, et c'est le dernier mot qui reste — rarement le bon."],
      ["<b>C'est… qui</b> met en avant le sujet","<span class='savoir-ex'>Mon horaire a décidé de tout. → <b>C'est</b> mon horaire <b>qui</b> a décidé de tout.</span> Après <b>qui</b>, le verbe s'accorde avec ce qu'on encadre : <span class='savoir-ex'><b>C'est moi qui suis</b> allée la voir.</span>"],
      ["<b>C'est… que</b> met en avant tout le reste","Le complément, le temps, le lieu, la manière : <span class='savoir-ex'><b>C'est</b> en travaillant de nuit <b>que</b> j'ai appris à observer. · <b>C'est</b> à l'unité prothétique <b>que</b> je travaille.</span>"],
      ["<b>Ce que… c'est</b> ouvre une réponse","La forme la plus utile en entrevue, parce qu'elle annonce que le cœur arrive : <span class='savoir-ex'><b>Ce que</b> je veux, <b>c'est</b> être celle qu'on va chercher. · <b>Ce qui</b> me manque, <b>c'est</b> un préalable.</span>"],
-     ["Le piège de l'accord","<span class='savoir-ex'>C'est moi qui <b>suis</b> — jamais « qui est » · C'est vous qui <b>avez</b> — jamais « qui a »</span> Le pronom relatif prend la personne de ce qu'il reprend, et la 1re personne est celle qu'on rate le plus."],
+     ["L'accord après « qui », à la première personne","<span class='savoir-ex'>C'est moi qui <b>suis</b> — jamais « qui est » · C'est vous qui <b>avez</b> — jamais « qui a »</span> Le pronom relatif prend la personne de ce qu'il reprend, et la 1re personne est celle qu'on rate le plus."],
    ]},
    items:[
     {q:"Mon horaire a décidé de tout. → C'est mon horaire ___ a décidé de tout.", accept:["qui"], ph:"qui / que"},
@@ -355,7 +355,7 @@ const EXOS = [
      ["« Retenue » et « admise » ne sont pas la même chose","<b>Retenue</b> veut dire que le dossier a passé la sélection. <b>Admise</b> veut dire qu'il y avait une place. Entre les deux, il y a la liste d'attente — et c'est le mot qu'on lit le plus vite et qu'on comprend le moins."],
      ["Cherchez la phrase qui contient une date","C'est la seule qui vous donne prise. Une décision sans date ne se relance pas ; une décision datée se relance la veille de la date."],
      ["Cherchez le nom d'une personne","Un avis signé par une fonction ne se rappelle pas. Un avis signé par une personne, oui. S'il n'y en a pas, la personne qui vous a reçue en entrevue est celle à qui téléphoner."],
-     ["Ce document-ci a été écrit pour le module","La forme est celle d'une lettre de décision de centre de formation professionnelle. Le centre, les nombres, les dates et les personnes sont inventés."],
+     ["Ce document-ci est un exemple écrit pour ce module-ci","La forme est celle d'une lettre de décision de centre de formation professionnelle. Le centre, les nombres, les dates et les personnes sont inventés."],
    ]},
    paras:[
      "CENTRE DE FORMATION PROFESSIONNELLE DU RUISSEAU-VERT — Granby, le 10 avril",
@@ -430,7 +430,7 @@ const EXOS = [
      ["Exposer le motif : une phrase, au début","On dit pourquoi on appelle <b>avant</b> de raconter. <span class='savoir-ex'>« Je vous appelle au sujet de la lettre du 10 avril. »</span> L'histoire vient après, et seulement si on la demande."],
      ["Rapporter ce qui a été dit avant","C'est ce qui distingue un suivi d'une plainte : <span class='savoir-ex'>« Vous m'aviez dit de vous rappeler après la décision. »</span> On rapporte, on ne reproche pas."],
      ["Conclure : reformuler, puis fixer la suite","<span class='savoir-ex'>« Autrement dit, je m'inscris à la mise à niveau et je vous rappelle en décembre ? »</span> Un appel qui se termine sans date recommence au complet la fois suivante."],
-     ["Ce qu'on ne fait pas","On ne demande pas un passe-droit, on ne parle pas des autres candidats, et on ne raccroche pas sur un « merci » quand rien n'a été convenu. La question qui ouvre presque toujours quelque chose : « qu'est-ce que je peux faire d'ici là ? »"],
+     ["Ce qui ferme la conversation","On ne demande pas un passe-droit, on ne parle pas des autres candidats, et on ne raccroche pas sur un « merci » quand rien n'a été convenu. La question qui ouvre presque toujours quelque chose : « qu'est-ce que je peux faire d'ici là ? »"],
    ]},
    rows:[
     {id:'tt1', txt:"Bonjour, Rania Nassar, dossier 41-2887.", ok:'JE ME PRÉSENTE'},

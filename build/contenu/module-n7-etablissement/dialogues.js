@@ -65,7 +65,7 @@ const DIALOGUES = {
       ["ÉMILIEN","Pour l'admission, non : ce sont les préalables du secondaire d'ici qui décident, et ça se règle avec le service d'accueil. Pour le comité, oui — ça dit que vous savez ce qu'est un cours de soins et que vous n'idéalisez pas le métier."],
       ["RANIA","Bon. Et le reste de la lettre ? Le début, la fin ?"],
       ["ÉMILIEN","Votre objet est trop long, il fait deux lignes. Un objet, c'est six ou sept mots. Et vous finissez par « merci beaucoup pour votre temps » : ce n'est pas une formule de courtoisie, c'est une formule de reconnaissance."],
-      ["RANIA","Quelle est la différence ?"],
+      ["RANIA","En quoi est-ce différent ?"],
       ["ÉMILIEN","Une formule de courtoisie vous laisse debout. « Veuillez agréer, Madame, Monsieur, mes salutations distinguées. » Vous remerciez d'avance de quelque chose qui ne vous a pas encore été accordé, et ça se sent."],
       ["RANIA","Est-ce que je peux vous demander une dernière chose ? Combien de paragraphes ?"],
       ["ÉMILIEN","Trois, et un par idée. Le premier dit ce que vous demandez et pourquoi ce programme-ci. Le deuxième dit ce que vous apportez, avec des faits. Le troisième dit où vous allez après le diplôme, et ce que vous faites déjà pour y arriver."],

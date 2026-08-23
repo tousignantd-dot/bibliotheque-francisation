@@ -108,7 +108,7 @@ const PLUS = {
        p:"Choisissez ce que vous voulez dire, puis à qui.",
        axes:[
          {id:'q', lbl:'Vous voulez…', opts:[['r','remercier'],['d','demander une date'],['n','dire que vous êtes sans nouvelles']]},
-         {id:'a', lbl:'À qui parlez-vous ?', opts:[['f','à une collègue'],['s','au comité, en personne'],['e','au centre, par écrit']]}],
+         {id:'a', lbl:'À qui vous adressez-vous ?', opts:[['f','à une collègue'],['s','au comité, en personne'],['e','au centre, par écrit']]}],
        out:{
          rf:{w:["Merci ben, là, c'était le fun."], say:"Merci ben, là, c'était le fun.", n:'familier — entre collègues, personne n\'y trouve à redire'},
          rs:{w:["Je vous remercie de m'avoir reçue ce matin."], say:"Je vous remercie de m'avoir reçue ce matin.", n:'standard — le niveau de l\'entrevue'},
@@ -174,7 +174,7 @@ const PLUS = {
        note:"Ce sont des consonnes qui ferment complètement la bouche — on les appelle occlusives. Après elles, l'enchaînement sans « e » est impossible à dire vite."},
 
       {t:'labo', h:'Écoutez les deux traitements',
-       p:"Choisissez un mot, puis la façon de le dire.",
+       p:"Choisissez un mot, puis la prononciation à entendre.",
        axes:[
          {id:'m', lbl:'Quel mot ?', opts:[['a','serions'],['b','demander'],['c','semaine']]},
          {id:'t', lbl:'Comment ?', opts:[['g','le e gardé'],['p','le e tombé']]}],
@@ -218,9 +218,9 @@ const PLUS = {
        rows:[
          ["dire « nous srions » pour aller vite","garder le e devant « rions » et « riez »",
           "C'est le mot le plus fréquent du conditionnel de politesse : il vaut la peine d'être dit au complet."],
-         ["prononcer tous les « e » pour être clair","laisser tomber ceux qui tombent",
+         ["articuler tous les « e » pour se faire comprendre","laisser tomber ceux qui tombent",
           "Un français où tous les « e » sont dits sonne récité, et il ralentit tellement le débit qu'il devient plus difficile à suivre, pas plus facile."],
-         ["croire que c'est du relâchement","c'est la prononciation standard d'ici",
+         ["prendre le « e » tombé pour du relâchement","c'est la prononciation standard d'ici",
           "La radio de Radio-Canada dit « s'maine ». Ce n'est ni familier ni négligé."],
        ]},
 
@@ -274,7 +274,7 @@ const PLUS = {
          ["La formule de courtoisie","Ferme sans rien demander de plus."],
        ]},
 
-      {t:'check', h:'Quatre choix de rédaction',
+      {t:'check', h:'Quatre décisions de rédaction',
        p:"Laquelle des deux entre dans la lettre ?",
        qs:[
          {q:"Pour l'objet :", opts:["« Je souhaiterais vous soumettre ma candidature au programme de santé, assistance et soins infirmiers pour l'année prochaine »","« Candidature au programme Santé, assistance et soins infirmiers »"], ok:1,
@@ -563,11 +563,11 @@ const PLUS = {
 
       {t:'piege', h:'Trois erreurs de conditionnel',
        rows:[
-         ["mettre un conditionnel après « si »","imparfait après « si », conditionnel dans l'autre moitié",
+         ["glisser un conditionnel juste après « si »","l'imparfait suit « si » ; le conditionnel attend l'autre moitié",
           "C'est l'erreur la plus repérée du niveau, et elle s'entend immédiatement."],
          ["employer le conditionnel pour s'engager","« je serai », quand c'est réglé",
           "« Je serais disponible » laisse penser qu'il reste une condition. En entrevue, c'est exactement ce qu'il ne faut pas laisser penser."],
-         ["confondre -rai et -rais à l'écrit","-rai = c'est décidé · -rais = ça dépend",
+         ["écrire -rais là où l'on s'engage","-rai = c'est décidé · -rais = ça dépend",
           "Une lettre qui écrit « je serai présente » engage ; « je serais présente » n'engage à rien, et le lecteur le voit."],
        ]},
 
@@ -591,7 +591,7 @@ const PLUS = {
        say:"C'est mon horaire qui a décidé de tout.",
        note:"Après « qui », le verbe prend la personne de ce qu'on encadre. « C'est moi qui suis », « c'est vous qui avez » : c'est la 1re personne qu'on rate le plus."},
 
-      {t:'ana', h:"C'est… que — pour tout le reste",
+      {t:'ana', h:"C'est… que — le lieu, le temps, la manière",
        p:"Le complément, le lieu, le temps, la manière : tout ce qui n'est pas le sujet s'encadre avec « que ».",
        mots:[['Le lieu',"C'est à l'unité prothétique que je travaille."],
              ['La manière',"C'est en travaillant de nuit que j'ai appris à observer.", true],
