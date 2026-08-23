@@ -1392,6 +1392,32 @@ MODULES = {
                         "Une opération que je n'ai pas faite"),
     },
 
+    # Niveau 7, situation « Achat de biens de consommation durables ». Trois
+    # intentions, et elles se lisent comme un plan : décrire un problème de
+    # fonctionnement, faire une réclamation, rédiger une lettre de
+    # réclamation. Une par défi. La grille était « au choix » dans la
+    # vague 7 ; le test des trois entrées la tranche en faveur des trois
+    # défis, puisque le troisième — l'écrit — est une intention à part
+    # entière et non une redite du deuxième.
+    #
+    # Ne recoupe ni `module-n3-electro` (76), qui lit la circulaire et fait
+    # livrer, ni `module-achat` (17, niveau 4), qui compare deux modèles et
+    # lit la garantie **avant** de signer. Ici le bien est déjà payé et il
+    # brise : tout le module se passe après la vente. Seul module du dépôt
+    # qui porte sur un véhicule plutôt que sur un électroménager.
+    'module-n7-achat': {
+        'numero': 6, 'activite': 113, 'niveau': 7,
+        'titre': "Réclamer après l'achat",
+        'chapeau': "Lire l'étiquette et le contrat de crédit d'une auto "
+                   "d'occasion, décrire une panne assez précisément pour "
+                   "qu'on la cherche, distinguer trois garanties pour "
+                   "réclamer la bonne, puis rédiger une mise en demeure.",
+        'seances': GRILLE_3_DEFIS,
+        'blocs': _blocs("Le bruit qu'il faut décrire",
+                        'La réclamation au comptoir',
+                        'La lettre de réclamation'),
+    },
+
     'module-n8-emploi': {
         'numero': 1, 'activite': 61, 'niveau': 8,
         'titre': "Tenir son bout au travail",
