@@ -1533,6 +1533,41 @@ MODULES = {
                         "Lire l'entreprise",
                         "L'entrevue devant le comité"),
     },
+
+    # Niveau 8 · Suivi de l'actualité. `build/cadre.py 8 "actualité"` rend
+    # **sept** intentions, le plus gros cadre du niveau après « Emploi » :
+    # deux en compréhension orale (un point de vue, un reportage), une en
+    # production orale (commenter l'actualité en justifiant son point de vue),
+    # deux en compréhension écrite (un article d'opinion, une chronique, un
+    # éditorial ou un blogue ; des articles ou des reportages) et deux en
+    # production écrite (une lettre au courrier des lecteurs, le résumé d'un
+    # texte d'opinion). Trois façons distinctes d'entrer dans la situation,
+    # donc `GRILLE_3_DEFIS` : comparer deux comptes rendus d'un même fait,
+    # démonter un texte d'opinion, prendre position devant contradiction.
+    #
+    # Quatre voisins sur la même situation, et la progression est nette :
+    # `module-nouvelles` (41, niveau 4) repère qui, quoi, où dans un bulletin ;
+    # `module-n5-actualite` (71) **raconte** un fait divers à quelqu'un qui ne
+    # l'a pas lu ; `module-n6-actualite` (99) **suit un même sujet** à travers
+    # cinq genres ; `module-n7-actualite` (60) démêle le **fait de l'opinion**
+    # et intervient dans un blogue. Ici, la nouvelle est connue de tous et
+    # personne ne la conteste : ce qui se travaille, c'est le **désaccord**
+    # — deux comptes rendus qui choisissent autrement, un éditorial dont on
+    # discute la thèse, et un avis qu'il faut défendre en tenant compte de
+    # l'objection au lieu de l'ignorer.
+    'module-n8-actualite': {
+        'numero': 5, 'activite': 122, 'niveau': 8,
+        'titre': 'Deux versions, et la mienne',
+        'chapeau': "Comparer deux comptes rendus d'un même fait et voir ce "
+                   "que chacun choisit de taire, démonter la thèse d'un "
+                   "éditorial et suivre une chronique au débit rapide, puis "
+                   "défendre son point de vue devant la contradiction et "
+                   "écrire au courrier des lecteurs.",
+        'seances': GRILLE_3_DEFIS,
+        'blocs': _blocs("Deux versions du même fait",
+                        "L'éditorial et sa thèse",
+                        "Prendre position"),
+    },
 }
 
 # L'ordre d'affichage : par niveau, puis par numéro à l'intérieur du niveau.
