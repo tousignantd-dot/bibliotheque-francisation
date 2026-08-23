@@ -29,11 +29,13 @@ Ce que le script fait, dans l'ordre
 import argparse
 import pathlib
 import re
+import shutil
 import sys
 
 ROOT = pathlib.Path(__file__).resolve().parent.parent
 BUILD = ROOT / 'build'
-GABARIT = BUILD / 'gabarit/module.html'
+GABARIT_DIR = BUILD / 'gabarit'
+GABARIT = GABARIT_DIR / 'module.html'
 CONTENU = BUILD / 'contenu'
 
 sys.path.insert(0, str(BUILD))
@@ -229,6 +231,19 @@ def construire(slug, verbeux=True, gabarit=None):
     dst = ROOT / 'assets/interactive' / slug / ('%s-activite-interactive.html' % slug)
     dst.parent.mkdir(parents=True, exist_ok=True)
     dst.write_text(html, encoding='utf-8')
+
+    # Les icônes vont avec le moteur, pas avec le contenu : le gabarit les
+    # appelle par `/assets/interactive/<slug>/icons/…`, un chemin qu'il
+    # fabrique à partir du slug. Sans cette copie, chaque agent doit y penser
+    # — et le 23 août 2026 deux d'entre eux ont signalé les mêmes trois 404,
+    # qu'un troisième module traîne depuis sa livraison. Rien ne les montre à
+    # l'écran : le bouton reste cliquable, l'image seule manque, et ni le
+    # build, ni `coherence.js`, ni le `node --check` ne regardent là.
+    for icone in sorted((GABARIT_DIR / 'icons').glob('*.svg')):
+        cible = dst.parent / 'icons' / icone.name
+        cible.parent.mkdir(parents=True, exist_ok=True)
+        if not cible.exists() or cible.read_bytes() != icone.read_bytes():
+            shutil.copyfile(icone, cible)
     if verbeux:
         print('OK  %s' % dst)
         print('    gabarit %d octets → module %d octets' % (gab_len, len(html)))
