@@ -879,6 +879,49 @@ le vocabulaire se compose alors à partir des intentions.
 personnages, dialogues et exercices s'inventent — voir la règle du contenu
 inventé plutôt que copié.
 
+## Les ateliers générés
+
+Deux ateliers ne s'écrivent pas à la main. Leur HTML sort d'un script, et
+**l'éditer serait perdu au passage suivant** — même règle que les modules.
+
+| Atelier | Script | Contenu |
+|---|---|---|
+| `vocab-flash-sante`, `vocab-flash-conso` | `build/vocab_flash.py` | `assets/interactive/<slug>/mots.json` |
+| `polices-n1` — activité 124 | `build/polices.py` | `assets/interactive/polices-n1/mots.json` |
+
+**« Même mot, autre police » (activité 124, niveau 1)**, ajouté le 24 août
+2026. Le niveau 1 n'a que quatre situations au programme et les quatre ont
+déjà leur module : la place restante n'est pas dans un cinquième cours, elle
+est dans les savoirs que les modules ne peuvent pas drainer. Celui-ci est
+`n1-s32`, Éléments de graphie — « comprendre des mots écrits en caractères
+d'imprimerie différents ». L'atelier montre les quinze mots des quatre
+modules du niveau dans six écritures, chacune nommée par l'endroit où l'élève
+la rencontre : mon cahier, un livre, le panneau, le formulaire, la main, les
+lettres détachées. **C'est le nom du lieu qui fait la leçon** ; sans lui, ce
+serait une vitrine de polices.
+
+Trois choses à savoir avant d'y toucher :
+
+- **Cinq polices d'emprunt, importées par cette activité seule.** Le système
+  de design garde Nunito et ne bougera pas : `tokens/fonts.css` est intouché.
+  Hors ligne, les cinq tombent sur leurs replis système — les six écritures
+  restent distinctes, l'exercice reste juste, elles sont moins typées. Écart
+  accepté, pas défaut à corriger en embarquant des fichiers de police.
+- **Les pièges de « Je trouve le même mot » sont écrits à la main** dans
+  `mots.json`, deux par mot. Ce sont les confusions réelles du niveau —
+  *nom* / *non* / *nombre*, *prénom* / *pronom*, *accueil* et sa graphie
+  fautive *acceuil*, *code postal* / *carte postale*. Des leurres tirés au
+  hasard rendraient l'exercice trivial.
+- **La bonne réponse se marque au montage, jamais par son texte.**
+  `data-bonne` existe parce qu'un test par `startsWith` allumait deux boutons
+  en vert quand la cible était *nom* et le leurre *nombre*.
+
+L'audio des quinze mots (`audio/<slug>.mp3`, voix enseignante ralentie) reste
+**à produire** : `generer_audio_polices_n1.py` est écrit et relançable, mais
+le compte ElevenLabs était à zéro crédit le 24 août 2026. Les boutons
+d'écoute restent en place et sans effet — on ne masque pas un bouton pour
+cacher un média manquant.
+
 ## Cours et ateliers
 
 Chaque activité porte une `categorie` : `cours` (modules de 4 h, le matin) ou
