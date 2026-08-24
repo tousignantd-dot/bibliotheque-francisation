@@ -75,8 +75,11 @@ body { --sec: var(--niv-1-line); --sec-soft: var(--niv-1-bg); }
   display: flex; flex-direction: column; gap: var(--sp-3); min-height: 148px; }
 .pl-v__l { font-size: var(--fs-label); font-weight: var(--fw-black); letter-spacing: var(--ls-label);
   text-transform: uppercase; color: var(--sec); }
-.pl-v__m { font-size: clamp(26px, 3vw, 36px); line-height: 1.15; color: var(--text-strong);
-  overflow-wrap: anywhere; }
+/* `display:block` pour que `ajuster()` puisse mesurer un débordement, et
+   `overflow-wrap: normal` pour qu'un mot ne se coupe JAMAIS en deux : c'est
+   `ajuster()` qui règle le corps, pas le navigateur qui casse le mot. */
+.pl-v__m { display: block; font-size: clamp(26px, 3vw, 36px); line-height: 1.15;
+  color: var(--text-strong); overflow-wrap: normal; }
 /* Les mots longs — « date de naissance », « code postal » — passeraient sous
    la ligne du bas en Oswald ou en Caveat. On les descend d'un cran plutôt
    que de les tronquer : un mot coupé n'est plus le même mot. */
@@ -106,7 +109,7 @@ body { --sec: var(--niv-1-line); --sec-soft: var(--niv-1-bg); }
   margin-bottom: var(--sp-4); }
 .pl-cible { display: inline-block; padding: var(--sp-4) var(--sp-6); border: 2px solid var(--sec);
   border-radius: var(--r-md); background: var(--sec-soft); color: var(--text-strong);
-  font-size: clamp(30px, 3.6vw, 44px); line-height: 1.15; overflow-wrap: anywhere; }
+  font-size: clamp(30px, 3.6vw, 44px); line-height: 1.15; overflow-wrap: normal; }
 .pl-cible.is-long { font-size: clamp(22px, 2.6vw, 32px); }
 .pl-cible__ou { display: block; margin-top: var(--sp-2); font-family: var(--font-sans);
   font-size: var(--fs-label); font-weight: var(--fw-black); letter-spacing: var(--ls-label);
@@ -117,7 +120,7 @@ body { --sec: var(--niv-1-line); --sec-soft: var(--niv-1-bg); }
 .pl-rep { min-height: 84px; padding: var(--sp-3) var(--sp-4);
   border: 1px solid var(--border); border-radius: var(--r-md); background: var(--surface-card);
   color: var(--text-strong); font-size: clamp(22px, 2.4vw, 30px); line-height: 1.2; cursor: pointer;
-  overflow-wrap: anywhere;
+  overflow-wrap: normal;
   transition: background var(--dur) var(--ease), border-color var(--dur) var(--ease); }
 .pl-rep:hover:not(:disabled) { background: var(--paper-100); border-color: var(--sec); }
 .pl-rep:disabled { cursor: default; }
@@ -311,6 +314,26 @@ function casser(mot, casse){
   return mot.toLowerCase();
 }
 
+/* Le corps se réduit jusqu'à ce que le mot tienne dans sa case. Les classes
+   CSS ne suffisent pas : « TOILETTES » en Courier espacé déborde là où
+   « toilettes » en Nunito respire, et une classe posée sur la longueur en
+   caractères ne peut pas le savoir. Pire, hors ligne les polices de repli
+   n'ont pas les mêmes chasses — seule une mesure faite dans la page est
+   juste. Sans cette fonction, « TOILETTES » sortait coupé en TOILETT / ES. */
+function ajuster(el){
+  el.style.fontSize = '';
+  let t = parseFloat(getComputedStyle(el).fontSize);
+  while (el.scrollWidth > el.clientWidth && t > 13) { t -= 1; el.style.fontSize = t + 'px'; }
+}
+function ajusterTous(){ $$('.pl-v__m').forEach(ajuster); }
+// Les cinq polices arrivent après le premier rendu : sans ce rappel, la
+// mesure porte sur les replis système et le corps reste faux.
+if (document.fonts && document.fonts.ready) document.fonts.ready.then(ajusterTous);
+let minuterieAjust = null;
+addEventListener('resize', () => {
+  clearTimeout(minuterieAjust); minuterieAjust = setTimeout(ajusterTous, 120);
+});
+
 let sonCourant = null, boutonCourant = null;
 function jouer(src, bouton){
   if (!src) return;
@@ -394,6 +417,7 @@ function rendre(){
   $('#precedent').disabled = index === 0;
   $('#suivant').textContent = index === items.length - 1 ? 'Recommencer' : 'Suivant';
   rendreListe();
+  ajusterTous();
 }
 
 $('#ecouter').onclick = () => jouer(items[index].audio, $('#ecouter'));
@@ -463,6 +487,7 @@ function batirTrouver(){
     };
     zone.appendChild(b);
   });
+  ajusterTous();
 }
 $('#suivantTrouver').onclick = batirTrouver;
 $('#ecouterCible').onclick = () => cibleCourante && jouer(cibleCourante.audio, $('#ecouterCible'));
@@ -489,6 +514,7 @@ $('#profToggle').onclick = () => {
 function presentation(actif){
   document.body.classList.toggle('is-presentation', actif);
   $('#presToggle').setAttribute('aria-pressed', String(actif));
+  ajusterTous();
 }
 $('#presToggle').onclick = () => presentation(!document.body.classList.contains('is-presentation'));
 $('#sortiePres').onclick = () => presentation(false);

@@ -915,6 +915,14 @@ Trois choses à savoir avant d'y toucher :
 - **La bonne réponse se marque au montage, jamais par son texte.**
   `data-bonne` existe parce qu'un test par `startsWith` allumait deux boutons
   en vert quand la cible était *nom* et le leurre *nombre*.
+- **`ajuster()` mesure, les classes CSS ne suffisent pas.** Le corps de chaque
+  mot est réduit jusqu'à ce qu'il tienne dans sa case, et `overflow-wrap` est
+  à `normal` partout : sans ça, « TOILETTES » sortait coupé en TOILETT / ES
+  sur le formulaire. Une classe posée sur la longueur en caractères ne peut
+  pas savoir qu'un Courier espacé déborde là où un Nunito respire — et hors
+  ligne, les polices de repli n'ont pas les mêmes chasses. La mesure est
+  refaite à `document.fonts.ready`, au redimensionnement et à l'entrée en
+  mode présentation.
 
 L'audio des quinze mots (`audio/<slug>.mp3`, voix enseignante ralentie) reste
 **à produire** : `generer_audio_polices_n1.py` est écrit et relançable, mais
