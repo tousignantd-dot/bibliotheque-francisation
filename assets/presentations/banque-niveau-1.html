@@ -1,0 +1,577 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>La banque du niveau 1</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Courier+Prime:wght@400;700&family=Nunito:wght@600;700;900&family=Source+Serif+4:ital,opsz,wght@0,8..60,400;0,8..60,600;1,8..60,400&display=swap">
+
+<style>
+/* ═══════════════════════════════════════════════════════════════════
+   La banque du niveau 1 — plan de production
+   Palette : la framboise #A5335F est la couleur du niveau 1 dans le
+   système de design du projet. Elle n'est pas choisie ici, elle est
+   héritée — et les neutres sont biaisés vers elle plutôt que gris.
+   Trois fontes, chacune justifiée : Nunito est la fonte de la maison,
+   retenue pour ses formes ouvertes (le critère de tokens/fonts.css) ;
+   Source Serif porte la prose d'un document qui se lit en entier ;
+   Courier Prime cite le code et les savoirs, et fait écho à l'écriture
+   « sur le formulaire » de l'atelier livré.
+   ═══════════════════════════════════════════════════════════════════ */
+
+:root {
+  --paper:      #FBF7F9;
+  --card:       #FFFFFF;
+  --sunken:     #F4EDF1;
+  --ink:        #1B1418;
+  --ink-soft:   #6D5F66;
+  --ink-faint:  #94858C;
+  --rule:       #E2D6DC;
+  --rule-hard:  #1B1418;
+  --accent:     #A5335F;
+  --accent-bg:  #FCE9F0;
+  --vert:       #0A7A4E;
+  --vert-bg:    #E2F3EB;
+  --ambre:      #96450A;
+  --ambre-bg:   #FAEEE0;
+  --shadow:     0 1px 2px rgba(27, 20, 24, .05);
+
+  --serif: "Source Serif 4", Georgia, "Times New Roman", serif;
+  --sans:  "Nunito", system-ui, -apple-system, "Segoe UI", sans-serif;
+  --mono:  "Courier Prime", ui-monospace, "Courier New", monospace;
+}
+
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) {
+    --paper:      #141014;
+    --card:       #1D171B;
+    --sunken:     #241D22;
+    --ink:        #F3ECEF;
+    --ink-soft:   #AC9CA4;
+    --ink-faint:  #8A7A82;
+    --rule:       #342A30;
+    --rule-hard:  #6E5A64;
+    --accent:     #EE8CB1;
+    --accent-bg:  #3A1D29;
+    --vert:       #5FCF9C;
+    --vert-bg:    #10301F;
+    --ambre:      #E5A55E;
+    --ambre-bg:   #33220F;
+    --shadow:     0 1px 2px rgba(0, 0, 0, .3);
+  }
+}
+
+:root[data-theme="dark"] {
+  --paper:      #141014;
+  --card:       #1D171B;
+  --sunken:     #241D22;
+  --ink:        #F3ECEF;
+  --ink-soft:   #AC9CA4;
+  --ink-faint:  #8A7A82;
+  --rule:       #342A30;
+  --rule-hard:  #6E5A64;
+  --accent:     #EE8CB1;
+  --accent-bg:  #3A1D29;
+  --vert:       #5FCF9C;
+  --vert-bg:    #10301F;
+  --ambre:      #E5A55E;
+  --ambre-bg:   #33220F;
+  --shadow:     0 1px 2px rgba(0, 0, 0, .3);
+}
+
+* { box-sizing: border-box; }
+
+body {
+  background: var(--paper);
+  color: var(--ink);
+  font-family: var(--serif);
+  font-size: 17px;
+  line-height: 1.62;
+  margin: 0;
+  padding: 0 20px 96px;
+  -webkit-font-smoothing: antialiased;
+}
+
+.wrap { max-width: 780px; margin: 0 auto; }
+
+/* ── En-tête ────────────────────────────────────────────────────── */
+.masthead {
+  border-bottom: 3px solid var(--rule-hard);
+  padding: 64px 0 28px;
+  margin-bottom: 40px;
+}
+.eyebrow {
+  font-family: var(--sans);
+  font-size: 12px;
+  font-weight: 900;
+  letter-spacing: .13em;
+  text-transform: uppercase;
+  color: var(--accent);
+  margin: 0 0 18px;
+}
+h1 {
+  font-family: var(--sans);
+  font-size: clamp(38px, 6.4vw, 60px);
+  font-weight: 900;
+  line-height: 1.02;
+  letter-spacing: -.022em;
+  text-wrap: balance;
+  margin: 0 0 22px;
+}
+.lede {
+  font-size: 20px;
+  line-height: 1.52;
+  color: var(--ink-soft);
+  margin: 0;
+  max-width: 34em;
+}
+.lede strong { color: var(--ink); font-weight: 600; }
+
+.chiffres {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 36px;
+  margin-top: 34px;
+}
+.chiffre__n {
+  font-family: var(--sans);
+  font-size: 40px;
+  font-weight: 900;
+  line-height: 1;
+  letter-spacing: -.03em;
+  font-variant-numeric: tabular-nums;
+  display: block;
+}
+.chiffre__l {
+  font-family: var(--sans);
+  font-size: 12px;
+  font-weight: 700;
+  letter-spacing: .09em;
+  text-transform: uppercase;
+  color: var(--ink-faint);
+  display: block;
+  margin-top: 7px;
+}
+
+/* ── Sections ───────────────────────────────────────────────────── */
+section { margin-bottom: 56px; }
+
+h2 {
+  font-family: var(--sans);
+  font-size: 27px;
+  font-weight: 900;
+  letter-spacing: -.014em;
+  line-height: 1.2;
+  text-wrap: balance;
+  margin: 0 0 20px;
+  padding-top: 22px;
+  border-top: 1px solid var(--rule);
+}
+h3 {
+  font-family: var(--sans);
+  font-size: 18px;
+  font-weight: 700;
+  line-height: 1.3;
+  margin: 32px 0 10px;
+}
+p { margin: 0 0 17px; max-width: 36em; }
+p:last-child { margin-bottom: 0; }
+
+a { color: var(--accent); text-decoration-thickness: 1px; text-underline-offset: 2px; }
+a:focus-visible, button:focus-visible {
+  outline: 2px solid var(--accent);
+  outline-offset: 3px;
+}
+
+code {
+  font-family: var(--mono);
+  font-size: .87em;
+  background: var(--sunken);
+  padding: 1px 5px;
+  color: var(--ink);
+}
+
+.note {
+  background: var(--card);
+  border: 1px solid var(--rule);
+  border-left: 3px solid var(--ambre);
+  box-shadow: var(--shadow);
+  padding: 18px 22px;
+  margin: 26px 0;
+}
+.note p { margin-bottom: 0; }
+.note__t {
+  font-family: var(--sans);
+  font-size: 12px;
+  font-weight: 900;
+  letter-spacing: .1em;
+  text-transform: uppercase;
+  color: var(--ambre);
+  display: block;
+  margin-bottom: 7px;
+}
+
+/* ── Familles ───────────────────────────────────────────────────── */
+.famille {
+  border-top: 3px solid var(--rule-hard);
+  padding-top: 22px;
+  margin-top: 46px;
+}
+.famille__tete {
+  display: flex;
+  align-items: baseline;
+  gap: 16px;
+  flex-wrap: wrap;
+  margin-bottom: 14px;
+}
+.famille__lettre {
+  font-family: var(--sans);
+  font-size: 44px;
+  font-weight: 900;
+  line-height: .9;
+  color: var(--accent);
+  letter-spacing: -.04em;
+}
+.famille__nom {
+  font-family: var(--sans);
+  font-size: 25px;
+  font-weight: 900;
+  letter-spacing: -.015em;
+  line-height: 1.15;
+  margin: 0;
+}
+.famille__forme { font-size: 18px; color: var(--ink-soft); max-width: 38em; }
+.famille__gen {
+  font-family: var(--mono);
+  font-size: 13px;
+  color: var(--ink-faint);
+  margin: 14px 0 4px;
+}
+.famille__gen b { color: var(--ink-soft); font-weight: 700; }
+
+/* ── Tableaux ───────────────────────────────────────────────────── */
+.tableau { overflow-x: auto; margin: 20px 0 0; }
+table {
+  border-collapse: collapse;
+  width: 100%;
+  min-width: 560px;
+  font-family: var(--sans);
+  font-size: 15px;
+}
+th {
+  font-size: 11px;
+  font-weight: 900;
+  letter-spacing: .1em;
+  text-transform: uppercase;
+  color: var(--ink-faint);
+  text-align: left;
+  padding: 0 14px 9px 0;
+  border-bottom: 2px solid var(--rule-hard);
+  white-space: nowrap;
+}
+td {
+  padding: 13px 14px 13px 0;
+  border-bottom: 1px solid var(--rule);
+  vertical-align: top;
+  line-height: 1.42;
+}
+td:last-child, th:last-child { padding-right: 0; }
+.t-nom { font-weight: 700; white-space: nowrap; }
+.t-quoi { color: var(--ink-soft); font-family: var(--serif); font-size: 16px; }
+.t-savoir { font-family: var(--mono); font-size: 12.5px; color: var(--ink-faint); white-space: nowrap; }
+
+.pastille {
+  display: inline-block;
+  font-size: 12px;
+  font-weight: 700;
+  letter-spacing: .01em;
+  padding: 3px 9px;
+  white-space: nowrap;
+  border: 1px solid;
+}
+.p-livre  { color: var(--vert);  background: var(--vert-bg);  border-color: var(--vert); }
+.p-pret   { color: var(--ink-soft); background: var(--sunken); border-color: var(--rule); }
+.p-attend { color: var(--ambre); background: var(--ambre-bg); border-color: var(--ambre); }
+
+/* ── Couches et vagues ──────────────────────────────────────────── */
+.couche {
+  background: var(--card);
+  border: 1px solid var(--rule);
+  box-shadow: var(--shadow);
+  padding: 22px 24px;
+  margin-bottom: 16px;
+}
+.couche__t {
+  font-family: var(--sans);
+  font-size: 19px;
+  font-weight: 900;
+  margin: 0 0 4px;
+  letter-spacing: -.01em;
+}
+.couche__r {
+  font-family: var(--sans);
+  font-size: 12px;
+  font-weight: 700;
+  letter-spacing: .09em;
+  text-transform: uppercase;
+  color: var(--accent);
+  display: block;
+  margin-bottom: 11px;
+}
+.couche p { font-size: 16.5px; }
+
+.vague {
+  display: grid;
+  grid-template-columns: 46px minmax(0, 1fr);
+  gap: 0 20px;
+  padding: 22px 0;
+  border-bottom: 1px solid var(--rule);
+}
+.vague:first-of-type { border-top: 1px solid var(--rule); }
+.vague__n {
+  font-family: var(--sans);
+  font-size: 30px;
+  font-weight: 900;
+  line-height: 1;
+  color: var(--accent);
+  font-variant-numeric: tabular-nums;
+}
+.vague__t {
+  font-family: var(--sans);
+  font-size: 18px;
+  font-weight: 900;
+  margin: 0 0 6px;
+  line-height: 1.25;
+}
+.vague p { font-size: 16.5px; margin-bottom: 0; }
+.vague__cout {
+  font-family: var(--mono);
+  font-size: 12.5px;
+  color: var(--ink-faint);
+  margin-top: 9px;
+  display: block;
+}
+
+.fin {
+  border-top: 3px solid var(--rule-hard);
+  margin-top: 56px;
+  padding-top: 22px;
+  font-size: 15px;
+  color: var(--ink-faint);
+  font-family: var(--sans);
+}
+
+@media (max-width: 620px) {
+  body { font-size: 16.5px; padding-bottom: 64px; }
+  .masthead { padding-top: 44px; }
+  .chiffres { gap: 26px; }
+  .chiffre__n { font-size: 33px; }
+  .vague { grid-template-columns: 36px minmax(0, 1fr); gap: 0 14px; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  * { animation: none !important; transition: none !important; }
+}
+</style>
+</head>
+<body>
+
+<div class="wrap">
+
+<header class="masthead">
+  <p class="eyebrow">Bibliothèque Francisation · Plan de production</p>
+  <h1>La banque du niveau&nbsp;1</h1>
+  <p class="lede">Le niveau&nbsp;1 n'a que quatre situations au programme, et les quatre ont déjà leur module. La place qui reste n'est pas dans un cinquième cours : elle est dans les <strong>savoirs que les modules ne peuvent pas drainer</strong> — l'alphabet, les sons, la graphie, la phrase de trois mots.</p>
+
+  <div class="chiffres">
+    <div><span class="chiffre__n">22</span><span class="chiffre__l">exercices</span></div>
+    <div><span class="chiffre__n">4</span><span class="chiffre__l">générateurs</span></div>
+    <div><span class="chiffre__n">30<span style="font-size:.55em;font-weight:700;color:var(--ink-faint)"> / 32</span></span><span class="chiffre__l">savoirs couverts</span></div>
+  </div>
+</header>
+
+<section>
+  <h2>Pourquoi une banque, et pas dix modules de plus</h2>
+  <p>Un module de niveau&nbsp;1 coûte huit séances, deux défis, une quinzaine d'images et deux cents extraits audio. C'est le bon prix pour une <em>situation</em> — s'inscrire, lire les panneaux, comprendre une consigne. C'est le mauvais prix pour un <em>savoir</em> : personne ne monte un module de huit séances pour faire distinguer <code>a</code>, <code>i</code> et <code>ou</code>.</p>
+  <p>Or c'est exactement là que le niveau&nbsp;1 a faim. Le programme y met trente-deux savoirs, dont douze de phonétique et de graphie, et les quatre modules n'en effleurent qu'une partie&nbsp;: chacun est happé par sa situation. Un élève qui reconnaît <code>Toilettes</code> dans son cahier ne reconnaît pas <code>TOILETTES</code> sur la porte — et c'est la porte qu'il doit lire.</p>
+  <p>La réponse n'est donc pas une liste d'activités, qui s'épuiserait. C'est <strong>quatre générateurs</strong>. Chacun tient une <em>forme</em> d'exercice ; chaque exercice n'est plus qu'un fichier de contenu. Ajouter le vingt-troisième exercice devient une affaire de minutes, pas de jours — et l'enseignante peut le faire elle-même.</p>
+</section>
+
+<section>
+  <h2>Les quatre familles</h2>
+  <p>Une famille, une forme, un générateur. Les savoirs cités sont ceux du programme du niveau&nbsp;1, tels que <code>build/cadre.py&nbsp;1</code> les rend.</p>
+
+  <!-- ── A ────────────────────────────────────────────────────── -->
+  <div class="famille">
+    <div class="famille__tete">
+      <span class="famille__lettre">A</span>
+      <h3 class="famille__nom" style="margin:0">Apparier des représentations</h3>
+    </div>
+    <p class="famille__forme">Une seule et même chose, montrée de quatre ou six façons. L'élève reconnaît que c'est la même. Aucun son requis&nbsp;: la famille se tient debout sans un seul MP3.</p>
+    <p class="famille__gen"><b>build/appariement.py</b> — dérivé de <code>build/polices.py</code>, déjà écrit</p>
+    <div class="tableau">
+      <table>
+        <thead><tr><th>Exercice</th><th>Ce que l'élève fait</th><th>Savoir</th><th>État</th></tr></thead>
+        <tbody>
+          <tr><td class="t-nom">Même mot, autre police</td><td class="t-quoi">Retrouver un mot passé du cahier au panneau, du formulaire à la main</td><td class="t-savoir">n1-s32</td><td><span class="pastille p-livre">✓ Livré</span></td></tr>
+          <tr><td class="t-nom">L'heure, quatre horloges</td><td class="t-quoi">Apparier les aiguilles, <code>14 h 30</code>, <code>2:30 PM</code> et l'annonce orale</td><td class="t-savoir">n1-s32 · s27</td><td><span class="pastille p-pret">▸ À écrire</span></td></tr>
+          <tr><td class="t-nom">Les abréviations</td><td class="t-quoi">Décoder <code>app.</code>, <code>boul.</code>, <code>QC</code>, <code>NAS</code>, <code>F/H</code>, <code>n°</code></td><td class="t-savoir">n1-s32 · s25</td><td><span class="pastille p-pret">▸ À écrire</span></td></tr>
+          <tr><td class="t-nom">Trois façons d'écrire une date</td><td class="t-quoi">Relier <code>2026-03-04</code>, <code>4 mars 2026</code> et <code>04/03/26</code></td><td class="t-savoir">n1-s32 · s26</td><td><span class="pastille p-pret">▸ À écrire</span></td></tr>
+          <tr><td class="t-nom">Le chiffre et le mot</td><td class="t-quoi">Relier <code>7</code>, « sept » et sept objets comptés</td><td class="t-savoir">n1-s26 · s10</td><td><span class="pastille p-pret">▸ À écrire</span></td></tr>
+          <tr><td class="t-nom">Le panneau et son dessin</td><td class="t-quoi">Poser le pictogramme sur le mot qu'il annonce</td><td class="t-savoir">n1-s28</td><td><span class="pastille p-pret">▸ À écrire</span></td></tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+  <!-- ── B ────────────────────────────────────────────────────── -->
+  <div class="famille">
+    <div class="famille__tete">
+      <span class="famille__lettre">B</span>
+      <h3 class="famille__nom" style="margin:0">Discriminer à l'oreille</h3>
+    </div>
+    <p class="famille__forme">Un son joue, deux ou trois boutons, l'élève choisit. La famille la plus payante du niveau — et la seule qui n'existe pas sans audio&nbsp;: sans MP3, ces exercices ne sont pas muets, ils n'ont pas de contenu.</p>
+    <p class="famille__gen"><b>build/oreille.py</b> — mécanique éprouvée dans <code>essai-brin/</code></p>
+    <div class="tableau">
+      <table>
+        <thead><tr><th>Exercice</th><th>Ce que l'élève fait</th><th>Savoir</th><th>État</th></tr></thead>
+        <tbody>
+          <tr><td class="t-nom">a · i · ou</td><td class="t-quoi">Distinguer les trois voyelles du niveau sur des paires minimales</td><td class="t-savoir">n1-s22</td><td><span class="pastille p-attend">⏸ Audio</span></td></tr>
+          <tr><td class="t-nom">p/b · t/d · k/g</td><td class="t-quoi">Séparer les consonnes sourdes de leurs sonores</td><td class="t-savoir">n1-s23</td><td><span class="pastille p-attend">⏸ Audio</span></td></tr>
+          <tr><td class="t-nom">Le e qui tombe</td><td class="t-quoi">Barrer les <code>e</code> qu'on n'entend pas dans « J(e) m'appelle Caroline »</td><td class="t-savoir">n1-s22</td><td><span class="pastille p-attend">⏸ Audio</span></td></tr>
+          <tr><td class="t-nom">Question ou phrase&nbsp;?</td><td class="t-quoi">Juger à la seule intonation, sans lire</td><td class="t-savoir">n1-s21 · s03</td><td><span class="pastille p-attend">⏸ Audio</span></td></tr>
+          <tr><td class="t-nom">Chu · t'es · i'est</td><td class="t-quoi">Reconnaître « je suis », « tu es », « il est » dits vite, comme au guichet</td><td class="t-savoir">n1-s11 · s16</td><td><span class="pastille p-attend">⏸ Audio</span></td></tr>
+          <tr><td class="t-nom">Jean dit</td><td class="t-quoi">Exécuter la consigne entendue — <em>levez-vous, prenez, écrivez</em> — au pictogramme</td><td class="t-savoir">n1-s17 · s04</td><td><span class="pastille p-attend">⏸ Audio</span></td></tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+  <!-- ── C ────────────────────────────────────────────────────── -->
+  <div class="famille">
+    <div class="famille__tete">
+      <span class="famille__lettre">C</span>
+      <h3 class="famille__nom" style="margin:0">Construire une phrase</h3>
+    </div>
+    <p class="famille__forme">Des tuiles de mots à mettre en ordre, ou une case à remplir depuis un banc collant. Trois à sept mots, jamais plus&nbsp;: c'est la longueur de phrase du niveau. Aucun son requis.</p>
+    <p class="famille__gen"><b>build/phrase.py</b> — générateur neuf</p>
+    <div class="tableau">
+      <table>
+        <thead><tr><th>Exercice</th><th>Ce que l'élève fait</th><th>Savoir</th><th>État</th></tr></thead>
+        <tbody>
+          <tr><td class="t-nom">Qui fait quoi</td><td class="t-quoi">Remettre « Je · suis · mécanicien » dans l'ordre sujet + prédicat</td><td class="t-savoir">n1-s02 · s15 · s29</td><td><span class="pastille p-pret">▸ À écrire</span></td></tr>
+          <tr><td class="t-nom">La bonne question</td><td class="t-quoi">Choisir entre <em>d'où</em>, <em>comment</em>, <em>où</em>, <em>combien</em> devant une réponse donnée</td><td class="t-savoir">n1-s03 · s19 · s13</td><td><span class="pastille p-pret">▸ À écrire</span></td></tr>
+          <tr><td class="t-nom">Oui ou non</td><td class="t-quoi">Passer une phrase au négatif avec <code>(ne)…pas</code></td><td class="t-savoir">n1-s05</td><td><span class="pastille p-pret">▸ À écrire</span></td></tr>
+          <tr><td class="t-nom">Mon, ma, ton, ta</td><td class="t-quoi">Accorder le possessif au mot qui suit</td><td class="t-savoir">n1-s09</td><td><span class="pastille p-pret">▸ À écrire</span></td></tr>
+          <tr><td class="t-nom">Il ou elle</td><td class="t-quoi">Mettre au féminin un métier, une nationalité</td><td class="t-savoir">n1-s08 · s14</td><td><span class="pastille p-pret">▸ À écrire</span></td></tr>
+          <tr><td class="t-nom">J'ai deux enfants</td><td class="t-quoi">Compter, accorder, et joindre deux groupes par <em>et</em></td><td class="t-savoir">n1-s10 · s20</td><td><span class="pastille p-pret">▸ À écrire</span></td></tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+  <!-- ── D ────────────────────────────────────────────────────── -->
+  <div class="famille">
+    <div class="famille__tete">
+      <span class="famille__lettre">D</span>
+      <h3 class="famille__nom" style="margin:0">Écrire et copier</h3>
+    </div>
+    <p class="famille__forme">La main, pas seulement l'œil. C'est la famille qui touche le grand débutant qui n'a pas encore l'alphabet, et celle qu'aucun module n'a le temps de faire.</p>
+    <p class="famille__gen"><b>build/graphie.py</b> — générateur neuf</p>
+    <div class="tableau">
+      <table>
+        <thead><tr><th>Exercice</th><th>Ce que l'élève fait</th><th>Savoir</th><th>État</th></tr></thead>
+        <tbody>
+          <tr><td class="t-nom">Grande et petite</td><td class="t-quoi">Apparier <code>A</code> et <code>a</code> sur les vingt-six lettres</td><td class="t-savoir">n1-s32 · s30</td><td><span class="pastille p-pret">▸ À écrire</span></td></tr>
+          <tr><td class="t-nom">Ma-mi-mou</td><td class="t-quoi">Assembler des syllabes graphiques simples en mots du niveau</td><td class="t-savoir">n1-s24 · s32</td><td><span class="pastille p-pret">▸ À écrire</span></td></tr>
+          <tr><td class="t-nom">Je recopie ma fiche</td><td class="t-quoi">Transcrire ses propres renseignements, case par case, en lettres détachées</td><td class="t-savoir">n1-s25 · s31</td><td><span class="pastille p-pret">▸ À écrire</span></td></tr>
+          <tr><td class="t-nom">J'épelle mon nom</td><td class="t-quoi">Dire les lettres de <em>son</em> nom, à voix haute, et se faire entendre</td><td class="t-savoir">n1-s25 · s32</td><td><span class="pastille p-attend">⏸ Audio</span></td></tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+  <div class="note">
+    <span class="note__t">Ce que la banque ne couvre pas</span>
+    <p>Deux savoirs sur trente-deux restent dehors, et c'est voulu&nbsp;: les conventions de la communication (<code>n1-s01</code>) et la phrase emphatique (<code>n1-s06</code>). Ils ne s'isolent pas dans un exercice — saluer, remercier, se reprendre, ça se travaille en situation, dans un module. Les sortir de là les viderait.</p>
+  </div>
+</section>
+
+<section>
+  <h2>Comment ça s'intègre</h2>
+  <p>Trois couches, et elles répondent à trois questions différentes. Aucune n'est une refonte&nbsp;: les trois se branchent sur ce qui existe déjà.</p>
+
+  <div class="couche">
+    <span class="couche__r">Couche 1 · l'élève</span>
+    <p class="couche__t">Un banc toujours ouvert, jamais une file</p>
+    <p>Le portail élève range déjà les ateliers en trois tas, et le tri se fait sur un seul champ. <code>eleve.html</code> teste <code>domaineDeVie</code> contre <code>DOMAINES_LIBRES</code>&nbsp;; ce qui passe atterrit dans « Pour vous exercer seul » — <strong>sans date, sans état, toujours ouvert</strong>. Les vingt-deux exercices prennent donc un domaine transversal, et l'expression gagne <code>graphie</code>. Une ligne à changer, et l'élève qui a fini a toujours où aller sans que personne ait planifié quoi que ce soit.</p>
+  </div>
+
+  <div class="couche">
+    <span class="couche__r">Couche 2 · l'enseignante</span>
+    <p class="couche__t">Le portail répond « donnez-lui celui-là »</p>
+    <p>La vraie question n'est jamais « quelle activité&nbsp;? », c'est « cet élève n'entend pas <em>a</em> de <em>ou</em>, je lui donne quoi&nbsp;? ». Chaque exercice porte déjà son savoir dans son fichier de contenu — il suffit de le remonter. Le diagnostic (<code>assets/outils/diagnostic-modules.html</code>) sait dire ce qui coince&nbsp;; branché sur ce champ, il nomme l'exercice au lieu de laisser chercher dans une liste de vingt-deux.</p>
+  </div>
+
+  <div class="couche">
+    <span class="couche__r">Couche 3 · la suite</span>
+    <p class="couche__t">Le vingt-troisième exercice se fait sans moi</p>
+    <p>C'est la couche qui rend « ne jamais être en manque » vrai au-delà d'une liste fermée. <code>forge.py</code> et le compositeur produisent déjà une activité complète à partir des critères du programme, par le CLI installé sur le poste, et la publient en atelier. Il manque quatre <em>modèles</em> — un par famille — pour que l'enseignante compose « un exercice de discrimination, niveau 1, sur <em>p</em> et <em>b</em> » et l'obtienne. La forge existe&nbsp;; ce sont les moules qui manquent.</p>
+  </div>
+</section>
+
+<section>
+  <h2>L'ordre de production</h2>
+  <p>Il est dicté par une contrainte, pas par une préférence&nbsp;: <strong>le compte ElevenLabs est à zéro crédit.</strong> Tout ce qui s'entend attend&nbsp;; tout ce qui se lit peut partir demain.</p>
+
+  <div class="vague">
+    <div class="vague__n">1</div>
+    <div>
+      <p class="vague__t">Finir la famille A — cinq exercices</p>
+      <p>Le générateur est écrit à quatre cinquièmes&nbsp;: <code>polices.py</code> devient <code>appariement.py</code> et sert cinq contenus, comme <code>vocab_flash.py</code> sert déjà deux thèmes. C'est la vague la moins chère et celle qui valide la forme.</p>
+      <span class="vague__cout">aucun média payant · un générateur à généraliser</span>
+    </div>
+  </div>
+
+  <div class="vague">
+    <div class="vague__n">2</div>
+    <div>
+      <p class="vague__t">Les familles C et D — neuf exercices</p>
+      <p>Deux générateurs neufs, la phrase et la graphie. Tout se lit, rien ne s'entend&nbsp;: aucune dépendance au compte audio. C'est la vague qui fait passer la banque de six à quinze exercices.</p>
+      <span class="vague__cout">aucun média payant · deux générateurs neufs</span>
+    </div>
+  </div>
+
+  <div class="vague">
+    <div class="vague__n">3</div>
+    <div>
+      <p class="vague__t">Brancher les trois couches</p>
+      <p>Une ligne dans <code>eleve.html</code>, le champ du savoir remonté dans le diagnostic, quatre modèles ajoutés au compositeur. Rien de long — mais c'est ce qui transforme quinze fichiers en une banque dont l'enseignante se sert sans y penser.</p>
+      <span class="vague__cout">touche trois fichiers partagés · à faire quand personne d'autre n'écrit</span>
+    </div>
+  </div>
+
+  <div class="vague">
+    <div class="vague__n">4</div>
+    <div>
+      <p class="vague__t">La famille B, au retour des crédits</p>
+      <p>Six exercices d'écoute, plus « J'épelle mon nom ». C'est la vague qui débloque l'oreille — et la plus originale des quatre, parce que personne n'enseigne « chu » et « t'es » alors que c'est ce que l'élève entend au guichet dès le premier jour.</p>
+      <span class="vague__cout">≈ 90 extraits · quelques dollars · rien avant le rechargement du compte</span>
+    </div>
+  </div>
+</section>
+
+<section>
+  <h2>Ce qui reste à trancher</h2>
+  <p><strong>Le nom du domaine transversal.</strong> « Graphie et sons » couvrirait A, B et D&nbsp;; C irait plutôt sous « Grammaire transversale », qui existe déjà. Deux domaines valent mieux qu'un fourre-tout — mais c'est un mot dans le portail élève, pas une décision d'architecture.</p>
+  <p><strong>L'atelier déjà livré est mal rangé.</strong> « Même mot, autre police » porte <code>Éducation et monde du travail</code>&nbsp;: il tombe donc dans les activités thématiques et réclame une date. À corriger en même temps que la couche&nbsp;1, sans quoi le premier exercice de la banque n'est pas dans la banque.</p>
+  <p><strong>Le format court.</strong> Les quatre modules du niveau font huit séances. Un exercice de banque n'en fait aucune&nbsp;: il se prend en dix minutes, seul, autant de fois qu'on veut. Il n'entre donc ni dans le dépôt de matériel ni dans la grille des séances — et c'est bien ainsi, mais ça veut dire qu'aucun PowerPoint ne l'accompagne.</p>
+</section>
+
+<p class="fin">Bibliothèque Francisation · plan écrit le 24 août 2026, après la livraison de l'activité 124. La trace durable est dans <code>docs/plan-exercices-niveau-1.md</code> — ce fichier-ci se lit, celui-là survit.</p>
+
+</div>
+</body>
+</html>
