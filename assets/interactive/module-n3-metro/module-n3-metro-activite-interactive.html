@@ -61,6 +61,11 @@ body{display:flex;flex-direction:column;min-height:100vh}
 #btn-reset{background:var(--surface-card);color:var(--text-strong);border:1px solid var(--border);border-radius:999px;padding:10px 18px;font-family:'Nunito',sans-serif;font-size:15px;font-weight:800;cursor:pointer;white-space:nowrap;transition:background .15s}
 #btn-reset:hover{background:var(--paper-100)}
 #btn-reset:hover{background:rgba(255,255,255,.28)}
+/* VITESSE-VOIX:début — greffé par build/greffe_vitesse.py */
+#btn-vitesse{background:var(--surface-card);color:var(--text-strong);border:1px solid var(--border);border-radius:999px;padding:10px 18px;font-family:'Nunito',sans-serif;font-size:15px;font-weight:800;cursor:pointer;white-space:nowrap;transition:background .15s}
+#btn-vitesse:hover{background:var(--paper-100)}
+#btn-vitesse[data-cran="1"],#btn-vitesse[data-cran="2"]{background:var(--hdr-accent-soft,var(--accent-soft));border-color:var(--hdr-accent,var(--accent-ink));color:var(--hdr-accent,var(--accent-ink))}
+/* VITESSE-VOIX:fin */
 /* REPRISE-CSS:début — greffé par build/greffe_reprise.py */
 #re-banniere{display:flex;align-items:center;gap:12px;flex-wrap:wrap;margin:14px auto 0;max-width:1180px;padding:12px 18px;background:var(--surface-card,#fff);border:2px solid var(--border,#D9DCE0);border-left:6px solid var(--hdr-accent,var(--accent-ink,#0A8F5B));border-radius:14px;font-family:'Nunito',sans-serif;font-size:15px;font-weight:800;color:var(--text-strong,#17181A)}
 #re-banniere .re-txt{flex:1;min-width:200px}
@@ -959,6 +964,9 @@ textarea:focus-visible,.winput:focus-visible{outline:none;border-color:var(--ws-
   </div>
   <div class="hdr-r">
     <div id="prog-chip" aria-live="polite" tabindex="0" data-info="Le nombre de réponses justes que vous avez trouvées, sur le nombre total de réponses du module.">⭐ 0 / 0</div>
+    <!-- VITESSE-VOIX:début — greffé par build/greffe_vitesse.py -->
+    <button id="btn-vitesse" data-cran="0" data-info="Ralentit toutes les voix du module — les dialogues, les mots et le jeu de rôle. Trois crans : normal, lent, très lent. Votre choix est gardé d'un module à l'autre.">Débit normal</button>
+    <!-- VITESSE-VOIX:fin -->
     <button id="btn-reset" data-info="Vide les réponses placées pour recommencer les exercices. Vos textes écrits et votre étoile ne sont pas effacés.">↺ Réinitialiser</button>
   </div>
 </div>
@@ -1581,9 +1589,54 @@ function playDialogue(dialId, btn){
   const urls=lines.map((l,i)=>`/assets/interactive/${MODULE_SLUG}/${dialId}/line_${String(i+1).padStart(2,'0')}_${charSlug(l[0])}.mp3?v=${AUDIO_V}`);
   playAudioQueue(urls,0,btn,dialId,true);
 }
+/* VITESSE-VOIX:début — greffé par build/greffe_vitesse.py */
+/* Le débit des MP3 est figé à la production ; celui de la lecture ne l'est
+   pas. `playbackRate` étire le son sans le régénérer — et `preservesPitch`
+   empêche la voix de descendre dans les graves en ralentissant, ce qui la
+   rendrait plus difficile à comprendre, pas plus facile. Le choix suit
+   l'élève d'un module à l'autre : celui qui a besoin de lent en a besoin
+   partout. */
+const VIT_CRANS = [
+  {v:1,    lbl:'Débit normal'},
+  {v:0.8,  lbl:'Débit lent'},
+  {v:0.65, lbl:'Débit très lent'},
+];
+let vitCran = 0;
+try{ vitCran = Math.min(2, Math.max(0, parseInt(localStorage.getItem('saaf-vitesse'),10) || 0)); }catch(e){}
+const vitFacteur = ()=> VIT_CRANS[vitCran].v;
+/* Le facteur d'un `Audio`, posé à la création — et reposé sur celui qui joue
+   déjà, pour que le réglage s'entende tout de suite plutôt qu'au prochain
+   extrait. */
+function vitAudio(a){
+  if(!a) return a;
+  try{ a.preservesPitch = a.mozPreservesPitch = a.webkitPreservesPitch = true; }catch(e){}
+  try{ a.playbackRate = vitFacteur(); }catch(e){}
+  return a;
+}
+/* Les replis en synthèse vocale ont leur propre échelle de débit : le facteur
+   s'y multiplie au lieu de s'y substituer, sinon le repli parlerait plus vite
+   que le MP3 qu'il remplace. */
+const vitTaux = base => Math.max(0.1, base * vitFacteur());
+function vitAppliquer(){
+  const b = document.getElementById('btn-vitesse');
+  if(b){ b.textContent = VIT_CRANS[vitCran].lbl; b.setAttribute('data-cran', String(vitCran)); }
+  if(typeof dlgAudio !== 'undefined' && dlgAudio) vitAudio(dlgAudio);
+  if(typeof jrAudio !== 'undefined' && jrAudio) vitAudio(jrAudio);
+}
+document.addEventListener('DOMContentLoaded', ()=>{
+  const b = document.getElementById('btn-vitesse');
+  if(!b) return;
+  b.addEventListener('click', ()=>{
+    vitCran = (vitCran + 1) % VIT_CRANS.length;
+    try{ localStorage.setItem('saaf-vitesse', String(vitCran)); }catch(e){}
+    vitAppliquer();
+  });
+  vitAppliquer();
+});
+/* VITESSE-VOIX:fin */
 function playAudioQueue(urls, idx, btn, dialId, allowFallback){
   if(idx>=urls.length){ finishDialogue(btn,dialId); return; }
-  dlgAudio=new Audio(urls[idx]);
+  dlgAudio=vitAudio(new Audio(urls[idx]));
   dlgUsingSpeech=false;
   dlgState='playing'; btn.textContent='⏸ Pause';
   dlgAudio.onended=()=>playAudioQueue(urls, idx+1, btn, dialId, false);
@@ -1601,7 +1654,7 @@ function playSpeechQueue(lines, btn, dialId){
     const fr = voices.filter(v=>/^fr/i.test(v.lang));
     lines.forEach((l,i)=>{
       const u=new SpeechSynthesisUtterance(l[1]);
-      u.lang='fr-CA'; u.rate=0.95; u.pitch=(i%2===0)?1.12:0.9;
+      u.lang='fr-CA'; u.rate=vitTaux(0.95); u.pitch=(i%2===0)?1.12:0.9;
       if(fr.length) u.voice=(i%2===0)?fr[0]:(fr[1]||fr[0]);
       speechSynthesis.speak(u);
     });
@@ -1623,7 +1676,7 @@ function speakText(btn, text){
     const doSpeak = ()=>{
       try{
         const u=new SpeechSynthesisUtterance(text);
-        u.lang='fr-CA'; u.rate=0.9;
+        u.lang='fr-CA'; u.rate=vitTaux(0.9);
         const voices=speechSynthesis.getVoices();
         const fr=voices.find(v=>/^fr/i.test(v.lang));
         if(fr) u.voice=fr;
@@ -1647,7 +1700,7 @@ function playWord(btn, text, fileId){
   const old = btn ? btn.innerHTML : null;
   const reset = ()=>{ if(btn){ btn.disabled=false; btn.innerHTML=old; } };
   if(btn){ btn.disabled=true; btn.innerHTML=ICON_SPEAK+' …'; }
-  const a=new Audio(url);
+  const a=vitAudio(new Audio(url));
   a.onended=reset;
   a.onerror=()=>{ reset(); speakText(btn, text); };
   a.play().catch(()=>{ reset(); speakText(btn, text); });
@@ -3268,7 +3321,7 @@ function jrDireNavigateur(texte){
   try{
     speechSynthesis.cancel();
     const u=new SpeechSynthesisUtterance(texte);
-    u.lang='fr-CA'; u.rate=0.95;
+    u.lang='fr-CA'; u.rate=vitTaux(0.95);
     const v=jrVoixFr(); if(v) u.voice=v;
     speechSynthesis.speak(u);
   }catch(e){}
@@ -3281,7 +3334,7 @@ async function jrDire(texte){
       body:JSON.stringify({code:studentCode, texte:texte, role:JR.role})});
     if(!res.ok) throw new Error('voix serveur indisponible');
     const url=URL.createObjectURL(await res.blob());
-    const a=new Audio(url); jrAudio=a;
+    const a=vitAudio(new Audio(url)); jrAudio=a;
     a.onended=()=>{ URL.revokeObjectURL(url); if(jrAudio===a) jrAudio=null; };
     await a.play();
   }catch(e){
