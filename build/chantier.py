@@ -40,6 +40,11 @@ SORTIE = RACINE / 'assets/presentations/chantier-banques.html'
 # Le plan de production, et lui seul. Chaque vague dit les niveaux qu'elle
 # couvre et la cible d'ateliers par niveau ; l'avancement est compté sur le
 # disque, jamais coché ici.
+#
+# La cible a été ramenée de dix à six par niveau après la première vague : à
+# six ateliers, le niveau 2 touchait déjà 27 de ses 49 savoirs, et les quatre
+# suivants seraient tombés sur des savoirs que ses dix modules drainent déjà.
+# Le raisonnement est dans docs/plan-banques-niveaux-2-8.md.
 VAGUES = [
     ('Temps 0', 'Le registre commun',
      "Les quatre générateurs débranchés du niveau 1 : un atelier se déclare "
@@ -51,14 +56,14 @@ VAGUES = [
     ('Vague 1', 'Niveaux 2 et 3',
      "Les formes du niveau 1 s'y appliquent telles quelles : c'est le test le "
      "moins cher de la généralisation. Quatre savoirs phonétiques chacun, "
-     "donc la famille B sert une dernière fois.", [2, 3], 10),
+     "donc la famille B sert une dernière fois.", [2, 3], 6),
     ('Vague 2', 'Niveaux 7 et 8',
      "Les plus éloignés du niveau 1, donc ceux qui valident vraiment la "
      "famille « lire un texte ». Un seul savoir phonétique de chaque côté.",
-     [7, 8], 10),
+     [7, 8], 6),
     ('Vague 3', 'Niveaux 5 et 6',
      "Le niveau 5 porte 78 savoirs, le plus lourd des huit, dont 34 lexicaux.",
-     [5, 6], 10),
+     [5, 6], 6),
     ('Vague 4', 'Rattrapage du niveau 4',
      "Le niveau 4 a déjà cinquante et une activités, mais aucune banque "
      "raisonnée : quelques ateliers sur ses savoirs orphelins.", [4], 6),
