@@ -93,10 +93,18 @@ _T = 'fill="none" stroke="currentColor" stroke-width="7" stroke-linecap="round" 
 
 ACTIONS = {
     # La chaise vue de côté, et une flèche qui dit dans quel sens on va.
-    'leve-toi': ('<path d="M30 82 V44 h30 v38 M30 60 h30" %s/>'
-                 '<path d="M76 62 V26 M64 38 L76 26 L88 38" %s/>' % (_T, _T)),
-    'assieds-toi': ('<path d="M30 82 V44 h30 v38 M30 60 h30" %s/>'
-                    '<path d="M76 26 V62 M64 50 L76 62 L88 50" %s/>' % (_T, _T)),
+    # Deux essais avant celui-ci, et la leçon vaut d'être écrite : une chaise
+    # de profil dessinée au trait donne un dossier, une assise et deux pieds —
+    # soit exactement la lettre « A », puis exactement la lettre « h ». Dans un
+    # atelier d'alphabet, faire lire une lettre à la place d'un meuble est le
+    # pire contresens possible. C'est donc une silhouette : debout, jambes
+    # écartées ; assise, cuisse à l'horizontale et tibia à la verticale.
+    'leve-toi': ('<circle cx="38" cy="20" r="9" fill="currentColor"/>'
+                 '<path d="M38 31 V58 M38 58 L27 85 M38 58 L49 85 M23 41 H53" %s/>'
+                 '<path d="M82 68 V30 M70 42 L82 30 L94 42" %s/>' % (_T, _T)),
+    'assieds-toi': ('<circle cx="32" cy="20" r="9" fill="currentColor"/>'
+                    '<path d="M32 31 V56 H57 V84 M20 41 H45" %s/>'
+                    '<path d="M82 30 V68 M70 56 L82 68 L94 56" %s/>' % (_T, _T)),
     # Le crayon et sa ligne. La mine est un triangle plein : sans elle, le
     # crayon se lit comme une simple barre oblique.
     'ecris': ('<path d="M26 74 L62 38 l12 12 L38 86 L20 92 Z" %s/>'
@@ -104,9 +112,9 @@ ACTIONS = {
               '<path d="M18 96 H88" %s/>' % (_T, _T, _T)),
     # L'oreille : deux arcs. Le petit à l'intérieur est ce qui empêche de la
     # lire comme une virgule.
-    'ecoute': ('<path d="M62 22 a26 26 0 0 0-26 26 v18 a14 14 0 0 0 14 14 '
-               'a10 10 0 0 0 10-10 a12 12 0 0 1 12-12 a20 20 0 0 0 6-36 z" %s/>'
-               '<path d="M52 52 a10 10 0 0 1 16 0" %s/>' % (_T, _T)),
+    'ecoute': ('<path d="M34 46 a22 22 0 1 1 30 21 c-8 4-8 10-8 16 '
+               'a9 9 0 0 1-18 0 V46" %s/>'
+               '<path d="M46 48 a10 10 0 0 1 17 3" %s/>' % (_T, _T)),
     # L'œil : deux arcs qui se rejoignent, et la pupille.
     'regarde': ('<path d="M10 50 c14-20 28-30 40-30 s26 10 40 30 '
                 'c-14 20-28 30-40 30 s-26-10-40-30 z" %s/>'

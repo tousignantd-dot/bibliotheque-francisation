@@ -66,12 +66,32 @@ DOLLARS_PAR_CARACTERE = 0.00018
 # le seul à porter son contenu dans `mots.json` — il est antérieur au format
 # commun `contenu.json`, et le renommer casserait une activité livrée.
 ATELIERS = {
+    # Famille A — apparier. Le texte dit est le `nom` de la chose.
     'polices-n1':        ('mots.json',    'terme'),
     'heure-n1':          ('contenu.json', 'nom'),
     'abreviations-n1':   ('contenu.json', 'nom'),
     'dates-n1':          ('contenu.json', 'nom'),
     'chiffres-n1':       ('contenu.json', 'nom'),
     'panneaux-n1':       ('contenu.json', 'nom'),
+    'lettres-n1':        ('contenu.json', 'nom'),
+    # Famille C — construire une phrase. Le texte dit est la phrase entière,
+    # avec sa ponctuation : c'est le modèle que l'élève doit pouvoir répéter.
+    'phrase-ordre-n1':   ('contenu.json', 'phrase'),
+    'question-n1':       ('contenu.json', 'phrase'),
+    'negatif-n1':        ('contenu.json', 'phrase'),
+    'possessifs-n1':     ('contenu.json', 'phrase'),
+    'feminin-n1':        ('contenu.json', 'phrase'),
+    'nombres-phrase-n1': ('contenu.json', 'phrase'),
+    'syllabes-n1':       ('contenu.json', 'phrase'),
+    # Famille B — écouter. Ici le champ `dit` est obligatoire et il gagne
+    # toujours : il porte la forme orale réelle (« Chu mécanicien »), qui
+    # n'est justement pas ce qui est écrit sur le bouton.
+    'voyelles-n1':       ('contenu.json', 'dit'),
+    'consonnes-n1':      ('contenu.json', 'dit'),
+    'e-muet-n1':         ('contenu.json', 'dit'),
+    'intonation-n1':     ('contenu.json', 'dit'),
+    'formes-rapides-n1': ('contenu.json', 'dit'),
+    'jean-dit-n1':       ('contenu.json', 'dit'),
 }
 
 

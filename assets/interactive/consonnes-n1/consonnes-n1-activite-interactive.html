@@ -1,0 +1,466 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>p ou b, t ou d, k ou g — Niveau 1</title>
+<link rel="stylesheet" href="/assets/design-system/styles.css">
+<link rel="stylesheet" href="/assets/design-system/marque-saaf.css">
+<link rel="icon" type="image/svg+xml" href="/assets/design-system/marque-saaf-favicon.svg">
+<style>
+/* ══════════════════════════════════════════════════════════════════════
+   Famille B · discriminer à l'oreille
+   FICHIER GÉNÉRÉ — build/oreille.py. Ne modifiez pas ce HTML.
+   Aucune couleur en dur : uniquement des jetons du système de design.
+   Le repérage est celui du niveau 1 — framboise.
+   ══════════════════════════════════════════════════════════════════════ */
+body { --sec: var(--niv-1-line); --sec-soft: var(--niv-1-bg); }
+
+.or-band { padding: var(--sp-5) 0; }
+.or-band__in { max-width: var(--content-max); margin: 0 auto; padding: 0 var(--gutter);
+  display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: var(--sp-4); }
+.or-band__t { font-size: var(--fs-h2); font-weight: var(--fw-black);
+  letter-spacing: var(--ls-title); line-height: var(--lh-title); margin-top: var(--sp-2); }
+.or-band__a { display: flex; flex-wrap: wrap; gap: var(--sp-2); }
+
+.or-steps__in { max-width: var(--content-max); margin: 0 auto;
+  padding: var(--sp-3) var(--gutter); display: flex; flex-wrap: wrap; gap: var(--sp-2); align-items: center; }
+.step { font-family: var(--font-sans); cursor: pointer; }
+.step[aria-selected="true"] { background: var(--sel-bg); border-color: var(--sel-line); color: var(--sel-ink); }
+
+.or-wrap { max-width: var(--content-max); margin: 0 auto; padding: var(--sp-8) var(--gutter) var(--sp-12); }
+.view { display: none; }
+.view.is-on { display: block; }
+
+.or-lbl { font-size: var(--fs-label); font-weight: var(--fw-black); letter-spacing: var(--ls-label);
+  text-transform: uppercase; color: var(--text-muted); margin-bottom: var(--sp-3); }
+.or-barre { padding: var(--sp-3) var(--sp-6); border-bottom: 1px solid var(--border);
+  display: flex; align-items: center; gap: var(--sp-4);
+  font-size: var(--fs-ui-sm); font-weight: var(--fw-bold); color: var(--text-muted); }
+.or-pied { padding: var(--sp-4) var(--sp-6); border-top: 1px solid var(--border);
+  display: flex; flex-wrap: wrap; gap: var(--sp-3); align-items: center; justify-content: space-between; }
+.or-jeu { padding: var(--sp-6); }
+.or-consigne { font-size: var(--fs-body); font-weight: var(--fw-semi); color: var(--text-muted);
+  margin-bottom: var(--sp-5); text-align: center; }
+
+/* ── Le gros bouton d'écoute : c'est lui, la question ────────────────── */
+.or-ecoute { display: flex; justify-content: center; margin-bottom: var(--sp-6); }
+.or-ecoute .btn { font-size: var(--fs-h3); padding: var(--sp-4) var(--sp-8); min-height: 72px; }
+.or-ecoute .btn svg { width: 28px; height: 28px; }
+
+/* ── Mode « choisir » ───────────────────────────────────────────────── */
+.or-choix { display: flex; flex-wrap: wrap; gap: var(--sp-4); justify-content: center; }
+.or-rep { font-family: var(--font-sans); font-size: clamp(21px, 2.6vw, 32px);
+  font-weight: var(--fw-bold); line-height: 1.2;
+  padding: var(--sp-4) var(--sp-6); min-height: var(--tap-min); min-width: 148px;
+  border: 1px solid var(--border); border-radius: var(--r-md); background: var(--surface-card);
+  color: var(--text-strong); cursor: pointer;
+  display: flex; flex-direction: column; align-items: center; justify-content: center; gap: var(--sp-2);
+  transition: background var(--dur) var(--ease), border-color var(--dur) var(--ease); }
+.or-rep:hover:not(:disabled) { background: var(--paper-100); border-color: var(--sec); }
+.or-rep:disabled { cursor: default; }
+.or-rep.is-ok { border-color: var(--ok-line); background: var(--ok-bg); }
+.or-rep.is-no { border-color: var(--no-line); background: var(--no-bg); }
+.or-rep svg { width: 100%; max-width: 92px; height: auto; display: block; }
+
+/* ── Mode « barrer » ────────────────────────────────────────────────── */
+.or-phrase { font-family: var(--font-sans); font-size: clamp(26px, 3.4vw, 42px);
+  font-weight: var(--fw-bold); line-height: 1.6; text-align: center;
+  margin-bottom: var(--sp-6); }
+/* Chaque e est une cible de la taille du doigt, sans casser la ligne : le
+   padding est horizontal, la hauteur vient du line-height de la phrase. */
+.or-e { display: inline-block; padding: 0 4px; border-radius: var(--r-sm);
+  cursor: pointer; position: relative;
+  transition: background var(--dur) var(--ease), color var(--dur) var(--ease); }
+.or-e:hover { background: var(--sec-soft); }
+.or-e.is-barre { color: var(--text-muted); text-decoration: line-through;
+  text-decoration-thickness: 3px; }
+/* Après correction : ce qui était juste, ce qui était barré pour rien, et ce
+   qui a été oublié. Trois états, trois couleurs — mais chacun porte aussi une
+   marque de forme, parce que la couleur ne dit jamais l'information seule. */
+.or-e.is-juste { background: var(--ok-bg); color: var(--ok-line); }
+.or-e.is-trop { background: var(--no-bg); color: var(--no-line); }
+.or-e.is-oubli { background: var(--no-bg); color: var(--no-line);
+  text-decoration: underline wavy; text-decoration-thickness: 2px; }
+
+.or-legende { display: flex; flex-wrap: wrap; gap: var(--sp-4); justify-content: center;
+  font-size: var(--fs-ui-sm); color: var(--text-muted); margin-top: var(--sp-4); }
+
+.or-indice { margin-top: var(--sp-4); font-size: var(--fs-body-sm); color: var(--text-muted);
+  text-align: center; min-height: 24px; }
+.or-dit { margin-top: var(--sp-2); font-size: var(--fs-body); font-weight: var(--fw-bold);
+  text-align: center; min-height: 26px; }
+.or-retour { margin-top: var(--sp-4); min-height: 28px; text-align: center; }
+
+/* ── Je regarde les extraits ────────────────────────────────────────── */
+.or-liste { display: grid; grid-template-columns: repeat(auto-fit, minmax(258px, 1fr)); gap: var(--sp-4); }
+.or-carte { padding: var(--sp-5); border: 1px solid var(--border); border-radius: var(--r-md);
+  background: var(--surface-card); display: flex; flex-direction: column; gap: var(--sp-3); }
+.or-carte__p { font-family: var(--font-sans); font-size: clamp(19px, 2vw, 24px);
+  font-weight: var(--fw-bold); line-height: 1.3; }
+.or-carte__s { font-size: var(--fs-body-sm); color: var(--text-muted); }
+.or-carte__a { align-self: flex-start; }
+
+/* ── Où j'en suis ───────────────────────────────────────────────────── */
+.or-bilan { display: grid; grid-template-columns: repeat(auto-fit, minmax(160px, 1fr)); gap: var(--sp-4);
+  margin-bottom: var(--sp-6); }
+.or-chiffre { font-size: clamp(30px, 3.4vw, 42px); font-weight: var(--fw-black); line-height: 1; }
+.or-table { width: 100%; border-collapse: collapse; font-size: var(--fs-body-sm); }
+.or-table th, .or-table td { padding: var(--sp-3) var(--sp-4); border-bottom: 1px solid var(--border);
+  text-align: left; }
+.or-table th { font-size: var(--fs-label); font-weight: var(--fw-black); letter-spacing: var(--ls-label);
+  text-transform: uppercase; color: var(--text-muted); }
+.or-etat { font-weight: var(--fw-bold); white-space: nowrap; }
+
+.or-sortie { display: none; position: fixed; top: var(--sp-4); right: var(--sp-4); z-index: 50; }
+.is-presentation .or-band, .is-presentation .or-steps { display: none; }
+.is-presentation .or-sortie { display: inline-flex; }
+.is-presentation .or-rep { font-size: clamp(28px, 3.4vw, 44px); }
+.is-presentation .or-phrase { font-size: clamp(34px, 4.6vw, 60px); }
+
+@media (max-width: 640px) {
+  .or-band__in, .or-steps__in, .or-wrap { padding-left: var(--sp-5); padding-right: var(--sp-5); }
+  .or-bilan { grid-template-columns: 1fr 1fr; }
+  .or-jeu { padding: var(--sp-5) var(--sp-4); }
+  .or-rep { min-width: 120px; }
+}
+</style>
+</head>
+<body class="page">
+
+<header class="band or-band">
+  <div id="hdr">
+    <div class="saaf-bandeau">
+      <span class="saaf-lockup">
+        <span class="saaf-pilule"><span class="saaf-nom">SAAF</span></span>
+        <span class="saaf-filet" aria-hidden="true"></span>
+        <span class="saaf-desc">Système d'aide à l'apprentissage du français</span>
+      </span>
+    </div>
+  </div>
+  <div class="or-band__in">
+    <div>
+      <p class="band__eyebrow">Francisation · Niveau 1 · Système consonantique</p>
+      <h1 class="or-band__t">p ou b, t ou d, k ou g</h1>
+    </div>
+    <div class="or-band__a">
+      <button type="button" class="btn btn--ghost btn--sm" id="profToggle" aria-pressed="false">Mode enseignant</button>
+      <button type="button" class="btn btn--ghost btn--sm" id="presToggle" aria-pressed="false">Présentation</button>
+    </div>
+  </div>
+</header>
+
+<nav class="steps or-steps" aria-label="Étapes de l'activité">
+  <div class="steps__inner or-steps__in" role="tablist">
+    <button type="button" class="step" role="tab" aria-selected="true"  data-vue="vueJeu"><span class="step__dot"></span>J'écoute</button>
+    <button type="button" class="step" role="tab" aria-selected="false" data-vue="vueListe"><span class="step__dot"></span>Je regarde les extraits</button>
+    <button type="button" class="step" role="tab" aria-selected="false" data-vue="vueMaitrise"><span class="step__dot"></span>Où j'en suis</button>
+  </div>
+</nav>
+
+<button type="button" class="btn btn--pri btn--sm or-sortie" id="sortiePres">Quitter la présentation</button>
+
+<main class="or-wrap" id="app">
+
+  <section class="view is-on" id="vueJeu">
+    <div class="card card--flush">
+      <div class="or-barre">
+        <span id="score">0 point</span>
+        <span id="serie"></span>
+        <span id="avance"></span>
+      </div>
+      <div class="or-jeu">
+        <p class="or-consigne">Écoutez le mot. Cliquez le mot que vous entendez.</p>
+        <div class="or-ecoute">
+          <button type="button" class="btn btn--audio" id="ecouter"><svg viewBox="0 0 50 50" fill="currentColor" aria-hidden="true"><path d="M27 6.5c0-1.2-1.4-1.9-2.4-1.1L13.8 14H6c-1.1 0-2 .9-2 2v18c0 1.1.9 2 2 2h7.8l10.8 8.6c1 .8 2.4.1 2.4-1.1V6.5z"/><path d="M33.4 17.6c-.7-.6-1.8-.5-2.4.2-.6.7-.5 1.8.2 2.4 1.6 1.4 2.6 3.4 2.6 5.7s-1 4.3-2.6 5.7c-.7.6-.8 1.7-.2 2.4.6.7 1.7.8 2.4.2 2.3-2 3.7-5 3.7-8.3s-1.4-6.3-3.7-8.3z"/><path d="M38.5 11.2c-.7-.5-1.8-.4-2.3.4-.5.7-.4 1.8.4 2.3 3.6 2.6 5.9 6.9 5.9 11.6s-2.3 9-5.9 11.6c-.8.5-.9 1.6-.4 2.3.5.8 1.6.9 2.3.4C43 36.7 46 31.1 46 25s-3-11.7-7.5-13.8z"/></svg>Écouter</button>
+        </div>
+        <div id="aire"></div>
+        <p class="or-dit" id="dit"></p>
+        <p class="or-indice" id="indice"></p>
+        <div class="or-retour"><p class="fb" id="retour"></p></div>
+      </div>
+      <div class="or-pied">
+        <button type="button" class="btn btn--ghost btn--sm" id="verifier">Vérifier</button>
+        <button type="button" class="btn btn--pri btn--sm" id="suivantJeu">Suivant</button>
+      </div>
+    </div>
+  </section>
+
+  <section class="view" id="vueListe">
+    <p class="or-lbl">Tous les extraits de cet atelier</p>
+    <div class="or-liste" id="liste"></div>
+  </section>
+
+  <section class="view" id="vueMaitrise">
+    <div class="or-bilan">
+      <div class="card"><p class="or-lbl">Points</p><p class="or-chiffre" id="bXp">0</p></div>
+      <div class="card"><p class="or-lbl">Série</p><p class="or-chiffre" id="bSerie">0</p></div>
+      <div class="card"><p class="or-lbl">Meilleure série</p><p class="or-chiffre" id="bMeilleure">0</p></div>
+      <div class="card"><p class="or-lbl">Sûrs</p><p class="or-chiffre" id="bSurs">0</p></div>
+    </div>
+    <div class="card card--flush">
+      <table class="or-table">
+        <thead><tr><th>Extrait</th><th>Où j'en suis</th></tr></thead>
+        <tbody id="corpsTable"></tbody>
+      </table>
+    </div>
+    <p style="margin-top:var(--sp-5)">
+      <button type="button" class="btn btn--ghost btn--sm" id="resetMaitrise">Tout recommencer</button>
+    </p>
+  </section>
+
+  <aside class="card" id="panneauProf" style="display:none;margin-top:var(--sp-6)">
+    <p class="or-lbl">Mode enseignant</p>
+    <p>Le programme demande de « discriminer les consonnes / p /, / t /, / k /, / b /, / d /, / g / » et d'en produire trois : / p /, / t /, / k / (<code>n1-s23</code>). Les six vont par paires : même bouche, même langue, même endroit — une seule différence, la gorge qui vibre ou qui ne vibre pas. C'est le seul indice, et c'est pour ça que ces quinze mots se ressemblent autant.</p><p><strong>L'obstacle change selon la langue première.</strong> Un élève arabophone entend souvent <em>p</em> comme <em>b</em>, et écrira <em>bapa</em> ; un élève hispanophone entend la paire mais la produit à mi-chemin ; un élève tamoul ou coréen peut ne pas avoir l'opposition du tout. Ce n'est pas une question d'écoute fine : la catégorie n'existe pas encore. Et un élève qui n'entend pas <em>pain</em> / <em>bain</em> ne les écrira jamais correctement non plus — la dictée bloque ici, pas à l'orthographe.</p><p><strong>Le geste à montrer est la main sur la gorge.</strong> Deux doigts sur la pomme d'Adam, on fait <em>bbbb</em> : ça vibre. On fait <em>pppp</em> : rien. Faites-les alterner sans mot, juste la consonne, main sur la gorge, jusqu'à ce qu'ils sentent la différence dans leur propre cou. Deuxième geste, pour <em>p</em>, <em>t</em>, <em>k</em> : une feuille de papier devant la bouche — elle bouge sur <em>pain</em>, elle reste immobile sur <em>bain</em>. Un mot d'avertissement pour l'oreille de l'enseignante : au Québec, <em>t</em> et <em>d</em> devant <em>i</em> et <em>u</em> se prononcent <em>ts</em> et <em>dz</em> (« tsu dzis »). Ici les paires ont été choisies hors de ce contexte, sauf <em>tout</em> / <em>doux</em> — signalez-le, ne le corrigez pas.</p>
+    <p><strong>Cet atelier ne se fait pas sans le son.</strong> L'extrait
+    <em>est</em> la question : il n'y a rien à lire qui la remplace. Si les
+    boutons d'écoute restent muets, c'est que les extraits ne sont pas encore
+    produits — l'atelier n'est pas cassé, il est en attente.</p>
+    <p><strong>Faites-le écouter deux fois avant de laisser répondre.</strong>
+    La première écoute sert à reconnaître qu'il se passe quelque chose, la
+    deuxième à entendre quoi. Un élève qui répond après une seule écoute
+    devine.</p>
+  </aside>
+
+</main>
+
+<script>
+const CONTENU = {"slug": "consonnes-n1", "titre": "p ou b, t ou d, k ou g", "eyebrow": "Francisation · Niveau 1 · Système consonantique", "cle": "francisationConsonnesN1MaitriseV1", "mode": "choisir", "consigne": "Écoutez le mot. Cliquez le mot que vous entendez.", "savoirs": ["n1-s23"], "note_prof": "<p>Le programme demande de « discriminer les consonnes / p /, / t /, / k /, / b /, / d /, / g / » et d'en produire trois : / p /, / t /, / k / (<code>n1-s23</code>). Les six vont par paires : même bouche, même langue, même endroit — une seule différence, la gorge qui vibre ou qui ne vibre pas. C'est le seul indice, et c'est pour ça que ces quinze mots se ressemblent autant.</p><p><strong>L'obstacle change selon la langue première.</strong> Un élève arabophone entend souvent <em>p</em> comme <em>b</em>, et écrira <em>bapa</em> ; un élève hispanophone entend la paire mais la produit à mi-chemin ; un élève tamoul ou coréen peut ne pas avoir l'opposition du tout. Ce n'est pas une question d'écoute fine : la catégorie n'existe pas encore. Et un élève qui n'entend pas <em>pain</em> / <em>bain</em> ne les écrira jamais correctement non plus — la dictée bloque ici, pas à l'orthographe.</p><p><strong>Le geste à montrer est la main sur la gorge.</strong> Deux doigts sur la pomme d'Adam, on fait <em>bbbb</em> : ça vibre. On fait <em>pppp</em> : rien. Faites-les alterner sans mot, juste la consonne, main sur la gorge, jusqu'à ce qu'ils sentent la différence dans leur propre cou. Deuxième geste, pour <em>p</em>, <em>t</em>, <em>k</em> : une feuille de papier devant la bouche — elle bouge sur <em>pain</em>, elle reste immobile sur <em>bain</em>. Un mot d'avertissement pour l'oreille de l'enseignante : au Québec, <em>t</em> et <em>d</em> devant <em>i</em> et <em>u</em> se prononcent <em>ts</em> et <em>dz</em> (« tsu dzis »). Ici les paires ont été choisies hors de ce contexte, sauf <em>tout</em> / <em>doux</em> — signalez-le, ne le corrigez pas.</p>", "items": [{"slug": "pain-bain", "audio": "audio/pain-bain.mp3", "dit": "pain", "choix": ["pain", "bain"], "ok": "pain", "indice": "La gorge ne vibre pas."}, {"slug": "boule-poule", "audio": "audio/boule-poule.mp3", "dit": "boule", "choix": ["poule", "boule"], "ok": "boule", "indice": "La gorge vibre — mets la main dessus."}, {"slug": "pas-bas", "audio": "audio/pas-bas.mp3", "dit": "pas", "choix": ["pas", "bas"], "ok": "pas", "indice": "La gorge ne vibre pas."}, {"slug": "beau-peau", "audio": "audio/beau-peau.mp3", "dit": "beau", "choix": ["peau", "beau"], "ok": "beau", "indice": "La gorge vibre — mets la main dessus."}, {"slug": "pont-bond", "audio": "audio/pont-bond.mp3", "dit": "pont", "choix": ["pont", "bond"], "ok": "pont", "indice": "La gorge ne vibre pas."}, {"slug": "tout-doux", "audio": "audio/tout-doux.mp3", "dit": "tout", "choix": ["tout", "doux"], "ok": "tout", "indice": "La gorge ne vibre pas."}, {"slug": "don-ton", "audio": "audio/don-ton.mp3", "dit": "don", "choix": ["ton", "don"], "ok": "don", "indice": "La gorge vibre — mets la main dessus."}, {"slug": "temps-dent", "audio": "audio/temps-dent.mp3", "dit": "temps", "choix": ["temps", "dent"], "ok": "temps", "indice": "La gorge ne vibre pas."}, {"slug": "dos-tot", "audio": "audio/dos-tot.mp3", "dit": "dos", "choix": ["tôt", "dos"], "ok": "dos", "indice": "La gorge vibre — mets la main dessus."}, {"slug": "the-de", "audio": "audio/the-de.mp3", "dit": "thé", "choix": ["thé", "dé"], "ok": "thé", "indice": "La gorge ne vibre pas."}, {"slug": "quand-gant", "audio": "audio/quand-gant.mp3", "dit": "quand", "choix": ["quand", "gant"], "ok": "quand", "indice": "La gorge ne vibre pas."}, {"slug": "gare-car", "audio": "audio/gare-car.mp3", "dit": "gare", "choix": ["car", "gare"], "ok": "gare", "indice": "La gorge vibre — mets la main dessus."}, {"slug": "cou-gout", "audio": "audio/cou-gout.mp3", "dit": "cou", "choix": ["cou", "goût"], "ok": "cou", "indice": "La gorge ne vibre pas."}, {"slug": "gai-quai", "audio": "audio/gai-quai.mp3", "dit": "gai", "choix": ["quai", "gai"], "ok": "gai", "indice": "La gorge vibre — mets la main dessus."}, {"slug": "gris-cri", "audio": "audio/gris-cri.mp3", "dit": "gris", "choix": ["cri", "gris"], "ok": "gris", "indice": "La gorge vibre — mets la main dessus."}]};
+const PICTOS = {"sortie": "<rect x=\"4\" y=\"4\" width=\"92\" height=\"92\" rx=\"6\" fill=\"#127A46\"/><rect x=\"20\" y=\"22\" width=\"30\" height=\"56\" rx=\"3\" fill=\"none\" stroke=\"#FFFFFF\" stroke-width=\"6\"/><path d=\"M56 50 H86 M74 38 L86 50 L74 62\" fill=\"none\" stroke=\"#FFFFFF\" stroke-width=\"7\" stroke-linecap=\"round\" stroke-linejoin=\"round\"/>", "premiers-soins": "<rect x=\"4\" y=\"4\" width=\"92\" height=\"92\" rx=\"6\" fill=\"#127A46\"/><path d=\"M50 24 V76 M24 50 H76\" stroke=\"#FFFFFF\" stroke-width=\"14\" stroke-linecap=\"round\"/>", "escalier": "<rect x=\"4\" y=\"4\" width=\"92\" height=\"92\" rx=\"6\" fill=\"#127A46\"/><path d=\"M20 78 H38 V60 H56 V42 H74 V24 H86\" fill=\"none\" stroke=\"#FFFFFF\" stroke-width=\"7\" stroke-linejoin=\"round\" stroke-linecap=\"round\"/>", "accueil": "<rect x=\"4\" y=\"4\" width=\"92\" height=\"92\" rx=\"6\" fill=\"#1A5FA8\"/><circle cx=\"50\" cy=\"27\" r=\"7\" fill=\"#FFFFFF\"/><rect x=\"43\" y=\"41\" width=\"14\" height=\"36\" rx=\"4\" fill=\"#FFFFFF\"/>", "cafeteria": "<rect x=\"4\" y=\"4\" width=\"92\" height=\"92\" rx=\"6\" fill=\"#1A5FA8\"/><path d=\"M32 22 V50 M32 50 V80 M24 22 V40 M40 22 V40 M24 40 H40\" fill=\"none\" stroke=\"#FFFFFF\" stroke-width=\"5\" stroke-linecap=\"round\"/><path d=\"M68 80 V22 c9 4 9 26 0 30\" fill=\"none\" stroke=\"#FFFFFF\" stroke-width=\"5\" stroke-linecap=\"round\" stroke-linejoin=\"round\"/>", "ascenseur": "<rect x=\"4\" y=\"4\" width=\"92\" height=\"92\" rx=\"6\" fill=\"#1A5FA8\"/><path d=\"M36 46 L46 32 L56 46\" fill=\"none\" stroke=\"#FFFFFF\" stroke-width=\"6\" stroke-linecap=\"round\" stroke-linejoin=\"round\"/><path d=\"M36 58 L46 72 L56 58\" fill=\"none\" stroke=\"#FFFFFF\" stroke-width=\"6\" stroke-linecap=\"round\" stroke-linejoin=\"round\"/><rect x=\"66\" y=\"28\" width=\"14\" height=\"48\" rx=\"3\" fill=\"none\" stroke=\"#FFFFFF\" stroke-width=\"5\"/>", "telephone": "<rect x=\"4\" y=\"4\" width=\"92\" height=\"92\" rx=\"6\" fill=\"#1A5FA8\"/><path d=\"M32 26 c-6 0-10 5-9 11 3 20 20 37 40 40 6 1 11-3 11-9 v-8 c0-3-2-5-5-6l-9-2c-3-1-6 1-7 4l-2 4 c-7-4-13-10-17-17l4-2 c3-1 5-4 4-7 l-2-9 c-1-3-3-5-6-5 z\" fill=\"#FFFFFF\"/>", "defense-de-fumer": "<circle cx=\"50\" cy=\"50\" r=\"45\" fill=\"#FFFFFF\" stroke=\"#C8202B\" stroke-width=\"10\"/><line x1=\"19\" y1=\"81\" x2=\"81\" y2=\"19\" stroke=\"#C8202B\" stroke-width=\"10\" stroke-linecap=\"round\"/><rect x=\"26\" y=\"46\" width=\"42\" height=\"10\" rx=\"2\" fill=\"#1B1B1B\"/><rect x=\"71\" y=\"46\" width=\"7\" height=\"10\" rx=\"2\" fill=\"#1B1B1B\"/>", "stationnement-interdit": "<circle cx=\"50\" cy=\"50\" r=\"45\" fill=\"#FFFFFF\" stroke=\"#C8202B\" stroke-width=\"10\"/><line x1=\"19\" y1=\"81\" x2=\"81\" y2=\"19\" stroke=\"#C8202B\" stroke-width=\"10\" stroke-linecap=\"round\"/><path d=\"M38 74 V30 h16 a12 12 0 0 1 0 24 h-16\" fill=\"none\" stroke=\"#1B1B1B\" stroke-width=\"9\" stroke-linecap=\"round\" stroke-linejoin=\"round\"/>", "attention": "<path d=\"M50 6 L96 88 H4 Z\" fill=\"#F2C200\" stroke=\"#1B1B1B\" stroke-width=\"6\" stroke-linejoin=\"round\"/><rect x=\"45\" y=\"34\" width=\"10\" height=\"28\" rx=\"4\" fill=\"#1B1B1B\"/><circle cx=\"50\" cy=\"72\" r=\"6\" fill=\"#1B1B1B\"/>", "plancher-mouille": "<path d=\"M50 6 L96 88 H4 Z\" fill=\"#F2C200\" stroke=\"#1B1B1B\" stroke-width=\"6\" stroke-linejoin=\"round\"/><path d=\"M50 34 c-8 12-14 19-14 26 a14 14 0 0 0 28 0 c0-7-6-14-14-26 z\" fill=\"#1B1B1B\"/>", "leve-toi": "<path d=\"M30 82 V44 h30 v38 M30 60 h30\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"7\" stroke-linecap=\"round\" stroke-linejoin=\"round\"/><path d=\"M76 62 V26 M64 38 L76 26 L88 38\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"7\" stroke-linecap=\"round\" stroke-linejoin=\"round\"/>", "assieds-toi": "<path d=\"M30 82 V44 h30 v38 M30 60 h30\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"7\" stroke-linecap=\"round\" stroke-linejoin=\"round\"/><path d=\"M76 26 V62 M64 50 L76 62 L88 50\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"7\" stroke-linecap=\"round\" stroke-linejoin=\"round\"/>", "ecris": "<path d=\"M26 74 L62 38 l12 12 L38 86 L20 92 Z\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"7\" stroke-linecap=\"round\" stroke-linejoin=\"round\"/><path d=\"M62 38 l8-8 a6 6 0 0 1 8 0 l4 4 a6 6 0 0 1 0 8 l-8 8\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"7\" stroke-linecap=\"round\" stroke-linejoin=\"round\"/><path d=\"M18 96 H88\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"7\" stroke-linecap=\"round\" stroke-linejoin=\"round\"/>", "ecoute": "<path d=\"M62 22 a26 26 0 0 0-26 26 v18 a14 14 0 0 0 14 14 a10 10 0 0 0 10-10 a12 12 0 0 1 12-12 a20 20 0 0 0 6-36 z\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"7\" stroke-linecap=\"round\" stroke-linejoin=\"round\"/><path d=\"M52 52 a10 10 0 0 1 16 0\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"7\" stroke-linecap=\"round\" stroke-linejoin=\"round\"/>", "regarde": "<path d=\"M10 50 c14-20 28-30 40-30 s26 10 40 30 c-14 20-28 30-40 30 s-26-10-40-30 z\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"7\" stroke-linecap=\"round\" stroke-linejoin=\"round\"/><circle cx=\"50\" cy=\"50\" r=\"11\" fill=\"currentColor\"/>", "ouvre": "<path d=\"M50 30 C38 22 24 20 12 22 v50 c12-2 26 0 38 8 c12-8 26-10 38-8 V22 c-12-2-26 0-38 8 z\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"7\" stroke-linecap=\"round\" stroke-linejoin=\"round\"/><path d=\"M50 30 V80\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"7\" stroke-linecap=\"round\" stroke-linejoin=\"round\"/>", "ferme": "<rect x=\"24\" y=\"18\" width=\"52\" height=\"64\" rx=\"4\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"7\" stroke-linecap=\"round\" stroke-linejoin=\"round\"/><path d=\"M36 18 V82\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"7\" stroke-linecap=\"round\" stroke-linejoin=\"round\"/>", "prends": "<rect x=\"34\" y=\"46\" width=\"32\" height=\"24\" rx=\"3\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"7\" stroke-linecap=\"round\" stroke-linejoin=\"round\"/><path d=\"M50 38 V12 M38 24 L50 12 L62 24\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"7\" stroke-linecap=\"round\" stroke-linejoin=\"round\"/><path d=\"M14 84 H86\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"7\" stroke-linecap=\"round\" stroke-linejoin=\"round\"/>", "depose": "<rect x=\"34\" y=\"30\" width=\"32\" height=\"24\" rx=\"3\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"7\" stroke-linecap=\"round\" stroke-linejoin=\"round\"/><path d=\"M50 62 V88 M38 76 L50 88 L62 76\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"7\" stroke-linecap=\"round\" stroke-linejoin=\"round\"/><path d=\"M14 94 H86\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"7\" stroke-linecap=\"round\" stroke-linejoin=\"round\"/>", "repete": "<path d=\"M22 50 a28 28 0 1 1 10 21\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"7\" stroke-linecap=\"round\" stroke-linejoin=\"round\"/><path d=\"M18 30 L22 52 L44 46\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"7\" stroke-linecap=\"round\" stroke-linejoin=\"round\"/>"};
+const items = CONTENU.items;
+const MODE = CONTENU.mode;
+const PICTO = CONTENU.choix_type === 'picto';
+const CLE = CONTENU.cle;
+
+const $ = s => document.querySelector(s), $$ = s => [...document.querySelectorAll(s)];
+const esc = s => String(s).replace(/[&<>"]/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
+const melanger = a => a.map(v => [Math.random(), v]).sort((x, y) => x[0] - y[0]).map(p => p[1]);
+
+let sonCourant = null, boutonCourant = null;
+function jouer(src, bouton){
+  if (!src) return;
+  if (sonCourant) { sonCourant.pause(); sonCourant.currentTime = 0; }
+  if (boutonCourant) boutonCourant.removeAttribute('aria-busy');
+  sonCourant = new Audio(src); boutonCourant = bouton;
+  bouton.setAttribute('aria-busy', 'true');
+  const fini = () => bouton.removeAttribute('aria-busy');
+  sonCourant.onended = fini; sonCourant.onerror = fini;
+  sonCourant.play().catch(fini);
+}
+
+/* ── Maîtrise ───────────────────────────────────────────────────────── */
+let maitrise = { xp: 0, serie: 0, meilleure: 0, items: Array(items.length).fill(0) };
+try {
+  const brut = JSON.parse(localStorage.getItem(CLE) || 'null');
+  if (brut && Array.isArray(brut.items) && brut.items.length === items.length) maitrise = brut;
+} catch (e) {}
+function sauver(){ try { localStorage.setItem(CLE, JSON.stringify(maitrise)); } catch (e) {} }
+function ajouter(i, points){
+  maitrise.xp = Math.max(0, maitrise.xp + points);
+  maitrise.items[i] = Math.max(-3, Math.min(6, (maitrise.items[i] || 0) + (points > 0 ? 1 : -1)));
+  if (points > 0) { maitrise.serie++; maitrise.meilleure = Math.max(maitrise.meilleure, maitrise.serie); }
+  else maitrise.serie = 0;
+  sauver(); rendreMaitrise();
+}
+function etat(n){
+  if (n >= 4) return ['Sûr', '✓✓'];
+  if (n >= 2) return ['Ça vient', '✓'];
+  if (n >= 0) return ['À revoir', '·'];
+  return ['Difficile', '!'];
+}
+function libelle(x){ return x.dit || x.phrase || x.slug; }
+function rendreMaitrise(){
+  $('#bXp').textContent = maitrise.xp;
+  $('#bSerie').textContent = maitrise.serie;
+  $('#bMeilleure').textContent = maitrise.meilleure;
+  $('#bSurs').textContent = maitrise.items.filter(n => n >= 4).length + ' / ' + items.length;
+  $('#score').textContent = maitrise.xp + (maitrise.xp > 1 ? ' points' : ' point');
+  $('#serie').textContent = maitrise.serie > 1 ? 'Série de ' + maitrise.serie : '';
+  $('#corpsTable').innerHTML = items.map((x, i) => {
+    const [mot, glyphe] = etat(maitrise.items[i] || 0);
+    return '<tr><td><strong>' + esc(libelle(x)) + '</strong></td>'
+      + '<td class="or-etat"><span aria-hidden="true">' + glyphe + '</span> ' + mot + '</td></tr>';
+  }).join('');
+}
+
+/* ── L'ordre de passage ─────────────────────────────────────────────── */
+let ordre = melanger(items.map((_, i) => i));
+let rang = 0, courant = null, iCourant = 0, repondu = false, melangeCourant = [];
+
+/* ── Mode « choisir » ───────────────────────────────────────────────── */
+let choisi = null;
+
+function corpsChoix(v){
+  if (!PICTO) return esc(v);
+  const p = PICTOS[v];
+  return p ? '<svg viewBox="0 0 100 100" role="img" aria-label="' + esc(v) + '">' + p + '</svg>'
+           : esc(v);
+}
+
+function rendreChoisir(){
+  const x = courant;
+  $('#aire').innerHTML = '<div class="or-choix" id="choix"></div>';
+  const zone = $('#choix');
+  melangeCourant.forEach(c => {
+    const b = document.createElement('button');
+    b.type = 'button'; b.className = 'or-rep';
+    b.innerHTML = corpsChoix(c);
+    b.disabled = repondu;
+    if (repondu && c === x.ok) b.classList.add('is-ok');
+    if (repondu && c === choisi && c !== x.ok) b.classList.add('is-no');
+    b.onclick = () => { choisi = c; verifier(); };
+    zone.appendChild(b);
+  });
+}
+
+/* ── Mode « barrer » ────────────────────────────────────────────────── */
+/* `[e]` marque un e écrit qu'on n'entend pas. Tout autre `e` se prononce et
+   ne doit pas être barré — c'est ce qui empêche l'exercice de dégénérer en
+   « barre tous les e ». Les e accentués ne sont jamais cliquables : ils se
+   prononcent toujours, et les rendre cliquables ajouterait du bruit. */
+function parser(p){
+  const out = []; let tampon = '';
+  for (let i = 0; i < p.length; i++) {
+    if (p[i] === '[' && p[i + 1] === 'e' && p[i + 2] === ']') {
+      if (tampon) { out.push({ t: 'txt', v: tampon }); tampon = ''; }
+      out.push({ t: 'e', muet: true }); i += 2;
+    } else if (p[i] === 'e') {
+      if (tampon) { out.push({ t: 'txt', v: tampon }); tampon = ''; }
+      out.push({ t: 'e', muet: false });
+    } else tampon += p[i];
+  }
+  if (tampon) out.push({ t: 'txt', v: tampon });
+  return out;
+}
+
+let morceaux = [], barres = new Set();
+
+function rendreBarrer(){
+  $('#aire').innerHTML = '<p class="or-phrase" id="phrase"></p>'
+    + '<div class="or-legende">'
+    + '<span>Cliquez les <strong>e</strong> que vous n\'entendez pas.</span></div>';
+  const p = $('#phrase');
+  morceaux.forEach((m, i) => {
+    if (m.t === 'txt') { p.appendChild(document.createTextNode(m.v)); return; }
+    const s = document.createElement('span');
+    s.className = 'or-e'; s.textContent = 'e';
+    s.setAttribute('role', 'button'); s.tabIndex = repondu ? -1 : 0;
+    if (barres.has(i)) s.classList.add('is-barre');
+    if (repondu) {
+      const barre = barres.has(i);
+      if (m.muet && barre) s.classList.add('is-juste');
+      else if (!m.muet && barre) s.classList.add('is-trop');
+      else if (m.muet && !barre) s.classList.add('is-oubli');
+    } else {
+      const bascule = () => { barres.has(i) ? barres.delete(i) : barres.add(i); rendreBarrer(); };
+      s.onclick = bascule;
+      s.onkeydown = e => { if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); bascule(); } };
+    }
+    p.appendChild(s);
+  });
+  if (repondu) {
+    $('.or-legende').innerHTML =
+      '<span><span class="or-e is-juste">e</span> bien barré</span>'
+      + '<span><span class="or-e is-trop">e</span> barré pour rien</span>'
+      + '<span><span class="or-e is-oubli">e</span> oublié</span>';
+  }
+}
+
+function barrerJuste(){
+  return morceaux.every((m, i) => m.t !== 'e' || m.muet === barres.has(i));
+}
+
+/* ── Le tour ────────────────────────────────────────────────────────── */
+function rendreJeu(){
+  $('#avance').textContent = (rang % items.length + 1) + ' / ' + items.length;
+  $('#verifier').style.display = (MODE === 'barrer' && !repondu) ? '' : 'none';
+  if (MODE === 'barrer') rendreBarrer(); else rendreChoisir();
+}
+
+function nouveauTour(){
+  iCourant = ordre[rang % ordre.length];
+  courant = items[iCourant];
+  repondu = false; choisi = null; barres = new Set();
+  $('#retour').textContent = ''; $('#retour').className = 'fb';
+  $('#indice').textContent = ''; $('#dit').textContent = '';
+  if (MODE === 'barrer') morceaux = parser(courant.phrase);
+  else melangeCourant = melanger(courant.choix.slice());
+  rendreJeu();
+  // L'extrait part tout seul : c'est la question, et la faire cliquer une
+  // fois de plus n'apprend rien.
+  jouer(courant.audio, $('#ecouter'));
+}
+
+function verifier(){
+  repondu = true;
+  const juste = MODE === 'barrer' ? barrerJuste() : choisi === courant.ok;
+  const retour = $('#retour');
+  retour.className = 'fb ' + (juste ? 'fb--ok' : 'fb--no');
+  retour.textContent = juste ? 'Juste.' : 'Non. Écoutez encore.';
+  $('#dit').textContent = courant.dit ? '« ' + courant.dit + ' »' : '';
+  $('#indice').textContent = courant.indice || courant.sens || '';
+  ajouter(iCourant, juste ? 10 : -3);
+  rendreJeu();
+  lmsTrack('exercise_attempted', { correct: juste ? 1 : 0 });
+}
+
+$('#verifier').onclick = verifier;
+$('#suivantJeu').onclick = () => { rang++; nouveauTour(); };
+$('#ecouter').onclick = () => jouer(courant.audio, $('#ecouter'));
+
+/* ── Je regarde les extraits ────────────────────────────────────────── */
+function rendreListe(){
+  $('#liste').innerHTML = items.map((x, i) =>
+    '<div class="or-carte"><p class="or-carte__p">' + esc(libelle(x)) + '</p>'
+    + '<p class="or-carte__s">' + esc(x.indice || x.sens || '') + '</p>'
+    + '<button type="button" class="btn btn--audio btn--sm or-carte__a" data-i="' + i
+    + '"><svg viewBox="0 0 50 50" fill="currentColor" aria-hidden="true"><path d="M27 6.5c0-1.2-1.4-1.9-2.4-1.1L13.8 14H6c-1.1 0-2 .9-2 2v18c0 1.1.9 2 2 2h7.8l10.8 8.6c1 .8 2.4.1 2.4-1.1V6.5z"/><path d="M33.4 17.6c-.7-.6-1.8-.5-2.4.2-.6.7-.5 1.8.2 2.4 1.6 1.4 2.6 3.4 2.6 5.7s-1 4.3-2.6 5.7c-.7.6-.8 1.7-.2 2.4.6.7 1.7.8 2.4.2 2.3-2 3.7-5 3.7-8.3s-1.4-6.3-3.7-8.3z"/><path d="M38.5 11.2c-.7-.5-1.8-.4-2.3.4-.5.7-.4 1.8.4 2.3 3.6 2.6 5.9 6.9 5.9 11.6s-2.3 9-5.9 11.6c-.8.5-.9 1.6-.4 2.3.5.8 1.6.9 2.3.4C43 36.7 46 31.1 46 25s-3-11.7-7.5-13.8z"/></svg>Écouter</button></div>').join('');
+  $$('.or-carte__a').forEach(b => b.onclick = () => jouer(items[b.dataset.i].audio, b));
+}
+
+$('#resetMaitrise').onclick = () => {
+  if (confirm('Tout recommencer ?')) {
+    maitrise = { xp: 0, serie: 0, meilleure: 0, items: Array(items.length).fill(0) };
+    sauver(); rendreMaitrise();
+  }
+};
+
+$$('.step').forEach(s => s.onclick = () => {
+  $$('.step').forEach(x => x.setAttribute('aria-selected', String(x === s)));
+  $$('.view').forEach(v => v.classList.toggle('is-on', v.id === s.dataset.vue));
+});
+$('#profToggle').onclick = () => {
+  const p = $('#panneauProf');
+  const on = p.style.display === 'none';
+  p.style.display = on ? '' : 'none';
+  $('#profToggle').setAttribute('aria-pressed', String(on));
+};
+function presentation(actif){
+  document.body.classList.toggle('is-presentation', actif);
+  $('#presToggle').setAttribute('aria-pressed', String(actif));
+}
+$('#presToggle').onclick = () => presentation(!document.body.classList.contains('is-presentation'));
+$('#sortiePres').onclick = () => presentation(false);
+document.addEventListener('keydown', e => { if (e.key === 'Escape') presentation(false); });
+
+function lmsTrack(event, data) {
+  try { window.parent.postMessage(Object.assign({ lms: true, event: event }, data || {}), '*'); } catch (e) {}
+  try {
+    const up = new URLSearchParams(window.parent.location.search);
+    const code = up.get('code'), actId = parseInt(up.get('activityId')) || null, title = up.get('title') || '';
+    if (code && actId) {
+      fetch('/api/student/progress', {
+        method: 'POST', headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(Object.assign({ code, activityId: actId, activityTitle: title, event }, data || {})),
+      }).catch(() => {});
+    }
+  } catch (e2) {}
+}
+
+nouveauTour();
+rendreListe();
+rendreMaitrise();
+lmsTrack('file_opened');
+</script>
+</body>
+</html>
