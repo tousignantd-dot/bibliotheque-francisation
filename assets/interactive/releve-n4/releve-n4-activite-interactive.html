@@ -1,0 +1,442 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Le relevé de compte — Niveau 4</title>
+<link rel="stylesheet" href="/assets/design-system/styles.css">
+<link rel="stylesheet" href="/assets/design-system/marque-saaf.css">
+<link rel="icon" type="image/svg+xml" href="/assets/design-system/marque-saaf-favicon.svg">
+<style>
+/* ══════════════════════════════════════════════════════════════════════
+   Famille E · lire un texte
+   FICHIER GÉNÉRÉ — build/texte.py. Ne modifiez pas ce HTML.
+   Aucune couleur en dur : uniquement des jetons du système de design.
+   Le repérage est celui du niveau de l'atelier.
+   ══════════════════════════════════════════════════════════════════════ */
+body { --sec: var(--niv-4-line); --sec-soft: var(--niv-4-bg); }
+
+.tx-band { padding: var(--sp-5) 0; }
+.tx-band__in { max-width: var(--content-max); margin: 0 auto; padding: 0 var(--gutter);
+  display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: var(--sp-4); }
+.tx-band__t { font-size: var(--fs-h2); font-weight: var(--fw-black);
+  letter-spacing: var(--ls-title); line-height: var(--lh-title); margin-top: var(--sp-2); }
+.tx-band__a { display: flex; flex-wrap: wrap; gap: var(--sp-2); }
+
+.tx-steps__in { max-width: var(--content-max); margin: 0 auto;
+  padding: var(--sp-3) var(--gutter); display: flex; flex-wrap: wrap; gap: var(--sp-2); align-items: center; }
+.step { font-family: var(--font-sans); cursor: pointer; }
+.step[aria-selected="true"] { background: var(--sel-bg); border-color: var(--sel-line); color: var(--sel-ink); }
+
+.tx-wrap { max-width: var(--content-max); margin: 0 auto; padding: var(--sp-8) var(--gutter) var(--sp-12); }
+.view { display: none; }
+.view.is-on { display: block; }
+
+.tx-lbl { font-size: var(--fs-label); font-weight: var(--fw-black); letter-spacing: var(--ls-label);
+  text-transform: uppercase; color: var(--text-muted); margin-bottom: var(--sp-3); }
+.tx-barre { padding: var(--sp-3) var(--sp-6); border-bottom: 1px solid var(--border);
+  display: flex; align-items: center; gap: var(--sp-4);
+  font-size: var(--fs-ui-sm); font-weight: var(--fw-bold); color: var(--text-muted); }
+.tx-pied { padding: var(--sp-4) var(--sp-6); border-top: 1px solid var(--border);
+  display: flex; flex-wrap: wrap; gap: var(--sp-3); align-items: center; justify-content: space-between; }
+
+/* ── Les deux colonnes : le texte à gauche, la question à droite ─────── */
+/* Sous 900 px elles s'empilent, le texte en premier. On ne réduit jamais le
+   texte à un accordéon : un élève qui doit rouvrir le texte à chaque
+   question répond de mémoire, ce qui n'est pas l'exercice. */
+.tx-duo { display: grid; grid-template-columns: minmax(0, 1.15fr) minmax(0, 1fr);
+  gap: var(--sp-6); padding: var(--sp-6); align-items: start; }
+
+.tx-doc { border: 1px solid var(--border); border-radius: var(--r-md);
+  background: var(--surface-card); padding: var(--sp-5) var(--sp-6); }
+.tx-doc__src { font-size: var(--fs-label); font-weight: var(--fw-black); letter-spacing: var(--ls-label);
+  text-transform: uppercase; color: var(--sec); margin-bottom: var(--sp-2); }
+.tx-doc__t { font-size: var(--fs-h3); font-weight: var(--fw-black); line-height: var(--lh-title);
+  letter-spacing: var(--ls-title); margin-bottom: var(--sp-3); }
+.tx-doc__c { font-size: var(--fs-body); font-weight: var(--fw-semi); color: var(--text-muted);
+  margin-bottom: var(--sp-4); }
+.tx-doc p.tx-par { font-size: clamp(16px, 1.15vw, 18px); line-height: 1.72; margin-bottom: var(--sp-4); }
+.tx-doc p.tx-par:last-child { margin-bottom: 0; }
+.tx-extrait { background: var(--sel-bg); border-bottom: 2px solid var(--sel-line);
+  border-radius: 3px; padding: 1px 2px; }
+
+/* ── Le trou dans le texte ──────────────────────────────────────────── */
+.tx-trou { display: inline-block; min-width: 92px; text-align: center;
+  padding: 0 var(--sp-2); font-weight: var(--fw-bold);
+  border-bottom: 3px solid var(--border-firm); color: var(--text-muted); }
+.tx-trou.is-actif { border-color: var(--sec); color: var(--sec); }
+.tx-trou.is-ok { border-color: var(--ok-line); color: var(--ok-line); }
+.tx-trou.is-no { border-color: var(--no-line); color: var(--no-line); }
+
+/* ── La question ────────────────────────────────────────────────────── */
+.tx-q { position: sticky; top: var(--sp-4); }
+.tx-q__n { font-size: var(--fs-label); font-weight: var(--fw-black); letter-spacing: var(--ls-label);
+  text-transform: uppercase; color: var(--text-muted); margin-bottom: var(--sp-2); }
+.tx-q__t { font-size: clamp(18px, 1.6vw, 23px); font-weight: var(--fw-bold);
+  line-height: 1.4; margin-bottom: var(--sp-5); }
+.tx-choix { display: flex; flex-direction: column; gap: var(--sp-3); }
+.tx-choix button { font-family: var(--font-sans); text-align: left;
+  font-size: clamp(15px, 1.2vw, 18px); font-weight: var(--fw-semi); line-height: 1.4;
+  padding: var(--sp-3) var(--sp-4); min-height: var(--tap-min);
+  border: 1px solid var(--border); border-radius: var(--r-md); background: var(--surface-card);
+  color: var(--text-strong); cursor: pointer;
+  transition: background var(--dur) var(--ease), border-color var(--dur) var(--ease); }
+.tx-choix button:hover:not(:disabled) { background: var(--paper-100); border-color: var(--sec); }
+.tx-choix button:disabled { cursor: default; }
+.tx-choix button.is-ok { border-color: var(--ok-line); background: var(--ok-bg); }
+.tx-choix button.is-no { border-color: var(--no-line); background: var(--no-bg); }
+.tx-sens { margin-top: var(--sp-4); font-size: var(--fs-body-sm); color: var(--text-muted);
+  min-height: 24px; }
+.tx-retour { margin-top: var(--sp-3); min-height: 28px; }
+
+/* ── Où j'en suis ───────────────────────────────────────────────────── */
+.tx-bilan { display: grid; grid-template-columns: repeat(auto-fit, minmax(160px, 1fr)); gap: var(--sp-4);
+  margin-bottom: var(--sp-6); }
+.tx-chiffre { font-size: clamp(30px, 3.4vw, 42px); font-weight: var(--fw-black); line-height: 1; }
+.tx-table { width: 100%; border-collapse: collapse; font-size: var(--fs-body-sm); }
+.tx-table th, .tx-table td { padding: var(--sp-3) var(--sp-4); border-bottom: 1px solid var(--border);
+  text-align: left; }
+.tx-table th { font-size: var(--fs-label); font-weight: var(--fw-black); letter-spacing: var(--ls-label);
+  text-transform: uppercase; color: var(--text-muted); }
+.tx-etat { font-weight: var(--fw-bold); white-space: nowrap; }
+
+.tx-sortie { display: none; position: fixed; top: var(--sp-4); right: var(--sp-4); z-index: 50; }
+.is-presentation .tx-band, .is-presentation .tx-steps { display: none; }
+.is-presentation .tx-sortie { display: inline-flex; }
+.is-presentation .tx-doc p.tx-par { font-size: clamp(19px, 1.7vw, 24px); }
+.is-presentation .tx-q__t { font-size: clamp(24px, 2.4vw, 32px); }
+
+@media (max-width: 900px) {
+  .tx-duo { grid-template-columns: 1fr; }
+  .tx-q { position: static; }
+}
+@media (max-width: 640px) {
+  .tx-band__in, .tx-steps__in, .tx-wrap { padding-left: var(--sp-5); padding-right: var(--sp-5); }
+  .tx-bilan { grid-template-columns: 1fr 1fr; }
+  .tx-duo { padding: var(--sp-5) var(--sp-4); }
+  .tx-doc { padding: var(--sp-4); }
+}
+</style>
+</head>
+<body class="page">
+
+<header class="band tx-band">
+  <div id="hdr">
+    <div class="saaf-bandeau">
+      <span class="saaf-lockup">
+        <span class="saaf-pilule"><span class="saaf-nom">SAAF</span></span>
+        <span class="saaf-filet" aria-hidden="true"></span>
+        <span class="saaf-desc">Système d'aide à l'apprentissage du français</span>
+      </span>
+    </div>
+  </div>
+  <div class="tx-band__in">
+    <div>
+      <p class="band__eyebrow">Francisation · Niveau 4 · Grammaire transversale</p>
+      <h1 class="tx-band__t">Le relevé de compte</h1>
+    </div>
+    <div class="tx-band__a">
+      <button type="button" class="btn btn--ghost btn--sm" id="profToggle" aria-pressed="false">Mode enseignant</button>
+      <button type="button" class="btn btn--ghost btn--sm" id="presToggle" aria-pressed="false">Présentation</button>
+    </div>
+  </div>
+</header>
+
+<nav class="steps tx-steps" aria-label="Étapes de l'activité">
+  <div class="steps__inner tx-steps__in" role="tablist">
+    <button type="button" class="step" role="tab" aria-selected="true"  data-vue="vueJeu"><span class="step__dot"></span>Je lis et je réponds</button>
+    <button type="button" class="step" role="tab" aria-selected="false" data-vue="vueTexte"><span class="step__dot"></span>Le texte en entier</button>
+    <button type="button" class="step" role="tab" aria-selected="false" data-vue="vueMaitrise"><span class="step__dot"></span>Où j'en suis</button>
+  </div>
+</nav>
+
+<button type="button" class="btn btn--pri btn--sm tx-sortie" id="sortiePres">Quitter la présentation</button>
+
+<main class="tx-wrap" id="app">
+
+  <section class="view is-on" id="vueJeu">
+    <div class="card card--flush">
+      <div class="tx-barre">
+        <span id="score">0 point</span>
+        <span id="serie"></span>
+        <span id="avance"></span>
+      </div>
+      <div class="tx-duo">
+        <div class="tx-doc" id="doc"></div>
+        <div class="tx-q">
+          <p class="tx-q__n" id="numero"></p>
+          <p class="tx-q__t" id="question"></p>
+          <div class="tx-choix" id="choix"></div>
+          <p class="tx-sens" id="sens"></p>
+          <div class="tx-retour"><p class="fb" id="retour"></p></div>
+        </div>
+      </div>
+      <div class="tx-pied">
+        <div class="tx-band__a">
+          <button type="button" class="btn btn--audio btn--sm" id="ecouter"><svg viewBox="0 0 50 50" fill="currentColor" aria-hidden="true"><path d="M27 6.5c0-1.2-1.4-1.9-2.4-1.1L13.8 14H6c-1.1 0-2 .9-2 2v18c0 1.1.9 2 2 2h7.8l10.8 8.6c1 .8 2.4.1 2.4-1.1V6.5z"/><path d="M33.4 17.6c-.7-.6-1.8-.5-2.4.2-.6.7-.5 1.8.2 2.4 1.6 1.4 2.6 3.4 2.6 5.7s-1 4.3-2.6 5.7c-.7.6-.8 1.7-.2 2.4.6.7 1.7.8 2.4.2 2.3-2 3.7-5 3.7-8.3s-1.4-6.3-3.7-8.3z"/><path d="M38.5 11.2c-.7-.5-1.8-.4-2.3.4-.5.7-.4 1.8.4 2.3 3.6 2.6 5.9 6.9 5.9 11.6s-2.3 9-5.9 11.6c-.8.5-.9 1.6-.4 2.3.5.8 1.6.9 2.3.4C43 36.7 46 31.1 46 25s-3-11.7-7.5-13.8z"/></svg>Écouter le texte</button>
+        </div>
+        <button type="button" class="btn btn--pri btn--sm" id="suivantJeu">Suivant</button>
+      </div>
+    </div>
+  </section>
+
+  <section class="view" id="vueTexte">
+    <p class="tx-lbl">Le texte, et ce que chaque question demandait</p>
+    <div class="card"><div class="tx-doc" id="docPlein" style="border:0;padding:0"></div></div>
+    <div class="card card--flush" style="margin-top:var(--sp-5)">
+      <table class="tx-table">
+        <thead><tr><th>Question</th><th>Réponse</th><th>Pourquoi</th></tr></thead>
+        <tbody id="corpsReponses"></tbody>
+      </table>
+    </div>
+  </section>
+
+  <section class="view" id="vueMaitrise">
+    <div class="tx-bilan">
+      <div class="card"><p class="tx-lbl">Points</p><p class="tx-chiffre" id="bXp">0</p></div>
+      <div class="card"><p class="tx-lbl">Série</p><p class="tx-chiffre" id="bSerie">0</p></div>
+      <div class="card"><p class="tx-lbl">Meilleure série</p><p class="tx-chiffre" id="bMeilleure">0</p></div>
+      <div class="card"><p class="tx-lbl">Sûres</p><p class="tx-chiffre" id="bSurs">0</p></div>
+    </div>
+    <div class="card card--flush">
+      <table class="tx-table">
+        <thead><tr><th>Question</th><th>Ce qu'elle demande</th><th>Où j'en suis</th></tr></thead>
+        <tbody id="corpsTable"></tbody>
+      </table>
+    </div>
+    <p style="margin-top:var(--sp-5)">
+      <button type="button" class="btn btn--ghost btn--sm" id="resetMaitrise">Tout recommencer</button>
+    </p>
+  </section>
+
+  <aside class="card" id="panneauProf" style="display:none;margin-top:var(--sp-6)">
+    <p class="tx-lbl">Mode enseignant</p>
+    <p>Le relevé de compte est le texte que tout adulte reçoit chaque mois et que presque personne ne lit en entier. Il relève de la présentation matérielle (<code>n4-s04</code>) et des transactions bancaires (<code>n4-s56</code>), une situation du niveau 4 : ce n'est pas un exercice de lecture, c'est une compétence financière.</p><p><strong>Quatre mots décident de tout et ne s'expliquent nulle part</strong> : <em>solde</em>, <em>débit</em>, <em>crédit</em>, <em>frais</em>. Un élève qui croit que « débit » veut dire « argent qui entre » lit son relevé à l'envers. Trois questions portent sur ces mots, et les explications donnent une définition d'une ligne, pas un cours de finance.</p><p><strong>La question des frais est la raison d'être de l'atelier.</strong> Deux frais de 5,00 $ pour retrait au guichet d'une autre banque, cela fait cent vingt dollars par année — et c'est évitable. Un élève qui repère cette ligne sur son relevé gagne plus, concrètement, que dans bien des heures de cours.</p><p><strong>Les nombres sont volontairement rapprochés</strong> — 1 240,00 et 1 204,00, 5,00 et 50,00. Un relevé est une colonne de chiffres qui se ressemblent ; savoir lire lentement une seule ligne est exactement ce qu'il faut apprendre.</p>
+    <p><strong>Le texte ne disparaît jamais.</strong> Il reste à côté de la
+    question, y compris après la réponse. Un élève qui doit rouvrir le texte
+    pour vérifier répond de mémoire — ce n'est pas l'exercice.</p>
+    <p><strong>La correction montre où c'était écrit.</strong> Quand une
+    réponse est fausse, le passage qui la portait s'allume dans le texte. Le
+    but n'est pas de dire « c'est faux », c'est de faire relire.</p>
+  </aside>
+
+</main>
+
+<script>
+const CONTENU = {"slug": "releve-n4", "niveau": 4, "generateur": "texte", "activite": 209, "titre": "Le relevé de compte", "eyebrow": "Francisation · Niveau 4 · Grammaire transversale", "cle": "francisationReleveN4MaitriseV1", "mode": "questions", "consigne": "Lisez le relevé. Répondez aux questions. Le relevé reste sous vos yeux.", "savoirs": ["n4-s04", "n4-s56", "n4-s01", "n4-s03"], "motscles": ["relevé bancaire", "transactions", "frais", "solde", "niveau 4"], "note_prof": "<p>Le relevé de compte est le texte que tout adulte reçoit chaque mois et que presque personne ne lit en entier. Il relève de la présentation matérielle (<code>n4-s04</code>) et des transactions bancaires (<code>n4-s56</code>), une situation du niveau 4 : ce n'est pas un exercice de lecture, c'est une compétence financière.</p><p><strong>Quatre mots décident de tout et ne s'expliquent nulle part</strong> : <em>solde</em>, <em>débit</em>, <em>crédit</em>, <em>frais</em>. Un élève qui croit que « débit » veut dire « argent qui entre » lit son relevé à l'envers. Trois questions portent sur ces mots, et les explications donnent une définition d'une ligne, pas un cours de finance.</p><p><strong>La question des frais est la raison d'être de l'atelier.</strong> Deux frais de 5,00 $ pour retrait au guichet d'une autre banque, cela fait cent vingt dollars par année — et c'est évitable. Un élève qui repère cette ligne sur son relevé gagne plus, concrètement, que dans bien des heures de cours.</p><p><strong>Les nombres sont volontairement rapprochés</strong> — 1 240,00 et 1 204,00, 5,00 et 50,00. Un relevé est une colonne de chiffres qui se ressemblent ; savoir lire lentement une seule ligne est exactement ce qu'il faut apprendre.</p>", "texte": {"titre": "Relevé de compte — Compte chèques 0043-8127", "source": "Caisse populaire · période du 1er au 31 mars", "chapeau": "Titulaire : Amara Diallo · Solde au 1er mars : 340,00 $", "paragraphes": ["3 mars — Dépôt de salaire : 1 240,00 $ au crédit. Nouveau solde : 1 580,00 $.", "5 mars — Paiement du loyer, chèque n° 112 : 720,00 $ au débit. Nouveau solde : 860,00 $.", "9 mars — Retrait au guichet d'une autre institution : 50,00 $ au débit, plus des frais de 5,00 $.", "17 mars — Retrait au guichet d'une autre institution : 40,00 $ au débit, plus des frais de 5,00 $.", "20 mars — Achat à l'épicerie, carte de débit : 96,45 $ au débit.", "31 mars — Frais mensuels de tenue de compte : 4,95 $ au débit. Solde à la fin de la période : 658,60 $."]}, "items": [{"slug": "solde-debut", "q": "Combien y avait-il dans le compte au début du mois ?", "choix": ["340,00 $", "1 240,00 $", "1 580,00 $"], "ok": "340,00 $", "vise": "Trouver le solde d'ouverture", "sens": "Il est écrit en haut, avec le nom du titulaire, jamais dans la liste des opérations."}, {"slug": "credit", "q": "Que veut dire « au crédit » ?", "choix": ["De l'argent qui entre dans le compte", "De l'argent qui sort du compte", "Un emprunt à la caisse"], "ok": "De l'argent qui entre dans le compte", "extrait": "Dépôt de salaire : 1 240,00 $ au crédit", "vise": "Comprendre crédit et débit", "sens": "Crédit : ça entre. Débit : ça sort. Rien à voir avec la carte de crédit."}, {"slug": "loyer", "q": "Combien le loyer a-t-il coûté ?", "choix": ["720,00 $", "860,00 $", "1 580,00 $"], "ok": "720,00 $", "extrait": "Paiement du loyer, chèque n° 112 : 720,00 $ au débit", "vise": "Distinguer un montant d'un solde", "sens": "860,00 $ est ce qui reste après, pas ce qui a été payé."}, {"slug": "frais-guichet", "q": "Combien de frais de guichet ont été payés en mars ?", "choix": ["10,00 $", "5,00 $", "90,00 $"], "ok": "10,00 $", "extrait": "plus des frais de 5,00 $", "vise": "Additionner deux lignes semblables", "sens": "Deux retraits, cinq dollars chaque fois. Au même rythme, cela ferait cent vingt dollars par année."}, {"slug": "eviter-frais", "q": "Pourquoi ces frais ont-ils été facturés ?", "choix": ["Le retrait a été fait au guichet d'une autre institution", "Le compte était à découvert", "Le retrait dépassait 40 $"], "ok": "Le retrait a été fait au guichet d'une autre institution", "extrait": "Retrait au guichet d'une autre institution", "vise": "Comprendre la cause d'un frais", "sens": "Au guichet de sa propre caisse, ces frais n'existent pas. C'est la ligne la plus utile du relevé."}, {"slug": "frais-mensuels", "q": "Quels autres frais apparaissent sur le relevé ?", "choix": ["4,95 $ de tenue de compte", "96,45 $ à l'épicerie", "Aucun autre"], "ok": "4,95 $ de tenue de compte", "extrait": "Frais mensuels de tenue de compte : 4,95 $ au débit", "vise": "Repérer un frais parmi des achats", "sens": "L'achat à l'épicerie est une dépense choisie ; les frais de tenue de compte sont prélevés automatiquement."}, {"slug": "solde-fin", "q": "Combien reste-t-il à la fin du mois ?", "choix": ["658,60 $", "860,00 $", "340,00 $"], "ok": "658,60 $", "extrait": "Solde à la fin de la période : 658,60 $", "vise": "Trouver le solde de clôture", "sens": "Il est à la toute fin, sur la dernière ligne : c'est le seul chiffre qui compte pour le mois suivant."}, {"slug": "combien-sorti", "q": "Le compte a-t-il reçu plus d'argent qu'il n'en est sorti ?", "choix": ["Oui : le solde a augmenté depuis le 1er mars", "Non : le solde a baissé", "On ne peut pas le savoir"], "ok": "Oui : le solde a augmenté depuis le 1er mars", "vise": "Comparer deux soldes éloignés", "sens": "340,00 $ au début, 658,60 $ à la fin. Il faut aller chercher les deux chiffres, à deux endroits opposés du relevé."}]};
+const items = CONTENU.items;
+const MODE = CONTENU.mode;
+const CLE = CONTENU.cle;
+const TEXTE = CONTENU.texte;
+
+const $ = s => document.querySelector(s), $$ = s => [...document.querySelectorAll(s)];
+const esc = s => String(s).replace(/[&<>"]/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
+const melanger = a => a.map(v => [Math.random(), v]).sort((x, y) => x[0] - y[0]).map(p => p[1]);
+
+let sonCourant = null, boutonCourant = null;
+function jouer(src, bouton){
+  if (!src) return;
+  if (sonCourant) { sonCourant.pause(); sonCourant.currentTime = 0; }
+  if (boutonCourant) boutonCourant.removeAttribute('aria-busy');
+  sonCourant = new Audio(src); boutonCourant = bouton;
+  bouton.setAttribute('aria-busy', 'true');
+  const fini = () => bouton.removeAttribute('aria-busy');
+  sonCourant.onended = fini; sonCourant.onerror = fini;
+  sonCourant.play().catch(fini);
+}
+
+/* ── Maîtrise ───────────────────────────────────────────────────────── */
+let maitrise = { xp: 0, serie: 0, meilleure: 0, items: Array(items.length).fill(0) };
+try {
+  const brut = JSON.parse(localStorage.getItem(CLE) || 'null');
+  if (brut && Array.isArray(brut.items) && brut.items.length === items.length) maitrise = brut;
+} catch (e) {}
+function sauver(){ try { localStorage.setItem(CLE, JSON.stringify(maitrise)); } catch (e) {} }
+function ajouter(i, points){
+  maitrise.xp = Math.max(0, maitrise.xp + points);
+  maitrise.items[i] = Math.max(-3, Math.min(6, (maitrise.items[i] || 0) + (points > 0 ? 1 : -1)));
+  if (points > 0) { maitrise.serie++; maitrise.meilleure = Math.max(maitrise.meilleure, maitrise.serie); }
+  else maitrise.serie = 0;
+  sauver(); rendreMaitrise();
+}
+function etat(n){
+  if (n >= 4) return ['Sûre', '✓✓'];
+  if (n >= 2) return ['Ça vient', '✓'];
+  if (n >= 0) return ['À revoir', '·'];
+  return ['Difficile', '!'];
+}
+function rendreMaitrise(){
+  $('#bXp').textContent = maitrise.xp;
+  $('#bSerie').textContent = maitrise.serie;
+  $('#bMeilleure').textContent = maitrise.meilleure;
+  $('#bSurs').textContent = maitrise.items.filter(n => n >= 4).length + ' / ' + items.length;
+  $('#score').textContent = maitrise.xp + (maitrise.xp > 1 ? ' points' : ' point');
+  $('#serie').textContent = maitrise.serie > 1 ? 'Série de ' + maitrise.serie : '';
+  $('#corpsTable').innerHTML = items.map((x, i) => {
+    const [mot, glyphe] = etat(maitrise.items[i] || 0);
+    return '<tr><td><strong>' + esc(x.q || ('Le trou ' + x.numero)) + '</strong></td>'
+      + '<td>' + esc(x.vise || '') + '</td>'
+      + '<td class="tx-etat"><span aria-hidden="true">' + glyphe + '</span> ' + mot + '</td></tr>';
+  }).join('');
+}
+
+/* ── Le texte ───────────────────────────────────────────────────────── */
+/* Les trous sont écrits [[1]], [[2]]… dans les paragraphes. Le rendu les
+   remplace par un gabarit ; le contenu d'un trou est réécrit à chaque
+   réponse, sans toucher au reste du paragraphe. */
+function paragraphe(p, opts){
+  let h = esc(p);
+  if (opts.extrait) {
+    const e = esc(opts.extrait);
+    if (h.indexOf(e) !== -1) h = h.split(e).join('<mark class="tx-extrait">' + e + '</mark>');
+  }
+  h = h.replace(/\[\[(\d+)\]\]/g, function(_, n){
+    const it = items.find(x => String(x.numero) === n);
+    const rep = reponses[n];
+    let cls = 'tx-trou', txt = '·  ·  ·';
+    if (rep) { cls += rep.juste ? ' is-ok' : ' is-no'; txt = rep.choisi; }
+    else if (it && courant && String(courant.numero) === n) { cls += ' is-actif'; txt = '?'; }
+    return '<span class="' + cls + '" data-trou="' + n + '">' + esc(txt) + '</span>';
+  });
+  return '<p class="tx-par">' + h + '</p>';
+}
+
+function rendreDoc(cible, opts){
+  opts = opts || {};
+  const src = TEXTE.source ? '<p class="tx-doc__src">' + esc(TEXTE.source) + '</p>' : '';
+  const chap = TEXTE.chapeau ? '<p class="tx-doc__c">' + esc(TEXTE.chapeau) + '</p>' : '';
+  cible.innerHTML = src
+    + '<p class="tx-doc__t">' + esc(TEXTE.titre) + '</p>' + chap
+    + TEXTE.paragraphes.map(p => paragraphe(p, opts)).join('');
+}
+
+/* ── L'ordre de passage ─────────────────────────────────────────────── */
+/* En mode « trous », l'ordre est celui du texte : choisir un marqueur sans
+   avoir lu ce qui précède n'a pas de sens. En mode « questions », l'ordre
+   est mélangé une fois pour toutes, comme dans les autres familles. */
+let ordre = MODE === 'trous' ? items.map((_, i) => i) : melanger(items.map((_, i) => i));
+let rang = 0, courant = null, iCourant = 0, repondu = false, choisi = null;
+let melangeCourant = [];
+const reponses = {};   /* numéro de trou → {choisi, juste} */
+
+function itemCourant(){
+  iCourant = ordre[rang % ordre.length];
+  courant = items[iCourant];
+  return courant;
+}
+
+function rendreJeu(){
+  $('#avance').textContent = (rang % items.length + 1) + ' / ' + items.length;
+  $('#numero').textContent = MODE === 'trous'
+    ? 'Le trou ' + courant.numero
+    : 'Question ' + (rang % items.length + 1);
+  $('#question').textContent = MODE === 'trous'
+    ? (courant.q || 'Quel mot de liaison va dans ce trou ?')
+    : courant.q;
+  $('#ecouter').style.display = TEXTE.audio ? '' : 'none';
+  rendreDoc($('#doc'), { extrait: repondu ? courant.extrait : null });
+
+  const zone = $('#choix');
+  zone.innerHTML = '';
+  melangeCourant.forEach(c => {
+    const b = document.createElement('button');
+    b.type = 'button';
+    b.textContent = c;
+    b.disabled = repondu;
+    if (repondu && c === courant.ok) b.classList.add('is-ok');
+    if (repondu && c === choisi && c !== courant.ok) b.classList.add('is-no');
+    b.onclick = () => { choisi = c; verifier(); };
+    zone.appendChild(b);
+  });
+}
+
+function nouveauTour(){
+  itemCourant();
+  repondu = false; choisi = null;
+  $('#retour').textContent = ''; $('#retour').className = 'fb';
+  $('#sens').textContent = '';
+  melangeCourant = melanger(courant.choix.slice());
+  rendreJeu();
+}
+
+function verifier(){
+  repondu = true;
+  const juste = choisi === courant.ok;
+  if (MODE === 'trous') reponses[String(courant.numero)] = { choisi: choisi, juste: juste };
+  const retour = $('#retour');
+  if (juste) {
+    retour.className = 'fb fb--ok';
+    retour.textContent = 'Juste.';
+    ajouter(iCourant, 10);
+  } else {
+    retour.className = 'fb fb--no';
+    retour.textContent = 'La réponse était : ' + courant.ok;
+    ajouter(iCourant, -3);
+  }
+  $('#sens').textContent = courant.sens || '';
+  rendreJeu();
+  lmsTrack('exercise_attempted', { correct: juste ? 1 : 0 });
+}
+
+$('#suivantJeu').onclick = () => { rang++; nouveauTour(); };
+$('#ecouter').onclick = () => jouer(TEXTE.audio, $('#ecouter'));
+
+/* ── Le texte en entier ─────────────────────────────────────────────── */
+function rendreTexteComplet(){
+  const garde = Object.assign({}, reponses);
+  items.forEach(x => { if (MODE === 'trous') reponses[String(x.numero)] = { choisi: x.ok, juste: true }; });
+  rendreDoc($('#docPlein'), {});
+  Object.keys(reponses).forEach(k => delete reponses[k]);
+  Object.assign(reponses, garde);
+  $('#corpsReponses').innerHTML = items.map(x =>
+    '<tr><td>' + esc(x.q || ('Le trou ' + x.numero)) + '</td>'
+    + '<td><strong>' + esc(x.ok) + '</strong></td>'
+    + '<td>' + esc(x.sens || '') + '</td></tr>').join('');
+}
+
+$('#resetMaitrise').onclick = () => {
+  if (confirm('Tout recommencer ?')) {
+    maitrise = { xp: 0, serie: 0, meilleure: 0, items: Array(items.length).fill(0) };
+    sauver(); rendreMaitrise();
+  }
+};
+
+$$('.step').forEach(s => s.onclick = () => {
+  $$('.step').forEach(x => x.setAttribute('aria-selected', String(x === s)));
+  $$('.view').forEach(v => v.classList.toggle('is-on', v.id === s.dataset.vue));
+  if (s.dataset.vue === 'vueTexte') rendreTexteComplet();
+});
+$('#profToggle').onclick = () => {
+  const p = $('#panneauProf');
+  const on = p.style.display === 'none';
+  p.style.display = on ? '' : 'none';
+  $('#profToggle').setAttribute('aria-pressed', String(on));
+};
+function presentation(actif){
+  document.body.classList.toggle('is-presentation', actif);
+  $('#presToggle').setAttribute('aria-pressed', String(actif));
+}
+$('#presToggle').onclick = () => presentation(!document.body.classList.contains('is-presentation'));
+$('#sortiePres').onclick = () => presentation(false);
+document.addEventListener('keydown', e => { if (e.key === 'Escape') presentation(false); });
+
+function lmsTrack(event, data) {
+  try { window.parent.postMessage(Object.assign({ lms: true, event: event }, data || {}), '*'); } catch (e) {}
+  try {
+    const up = new URLSearchParams(window.parent.location.search);
+    const code = up.get('code'), actId = parseInt(up.get('activityId')) || null, title = up.get('title') || '';
+    if (code && actId) {
+      fetch('/api/student/progress', {
+        method: 'POST', headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(Object.assign({ code, activityId: actId, activityTitle: title, event }, data || {})),
+      }).catch(() => {});
+    }
+  } catch (e2) {}
+}
+
+nouveauTour();
+rendreMaitrise();
+lmsTrack('file_opened');
+</script>
+</body>
+</html>

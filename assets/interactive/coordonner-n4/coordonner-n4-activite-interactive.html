@@ -1,0 +1,470 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Et, mais, donc, car — Niveau 4</title>
+<link rel="stylesheet" href="/assets/design-system/styles.css">
+<link rel="stylesheet" href="/assets/design-system/marque-saaf.css">
+<link rel="icon" type="image/svg+xml" href="/assets/design-system/marque-saaf-favicon.svg">
+<style>
+/* ══════════════════════════════════════════════════════════════════════
+   Famille C · construire une phrase
+   FICHIER GÉNÉRÉ — build/phrase.py. Ne modifiez pas ce HTML.
+   Aucune couleur en dur : uniquement des jetons du système de design.
+   Le repérage est celui du niveau 1 — framboise.
+   ══════════════════════════════════════════════════════════════════════ */
+body { --sec: var(--niv-4-line); --sec-soft: var(--niv-4-bg); }
+
+.ph-band { padding: var(--sp-5) 0; }
+.ph-band__in { max-width: var(--content-max); margin: 0 auto; padding: 0 var(--gutter);
+  display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: var(--sp-4); }
+.ph-band__t { font-size: var(--fs-h2); font-weight: var(--fw-black);
+  letter-spacing: var(--ls-title); line-height: var(--lh-title); margin-top: var(--sp-2); }
+.ph-band__a { display: flex; flex-wrap: wrap; gap: var(--sp-2); }
+
+.ph-steps__in { max-width: var(--content-max); margin: 0 auto;
+  padding: var(--sp-3) var(--gutter); display: flex; flex-wrap: wrap; gap: var(--sp-2); align-items: center; }
+.step { font-family: var(--font-sans); cursor: pointer; }
+.step[aria-selected="true"] { background: var(--sel-bg); border-color: var(--sel-line); color: var(--sel-ink); }
+
+.ph-wrap { max-width: var(--content-max); margin: 0 auto; padding: var(--sp-8) var(--gutter) var(--sp-12); }
+.view { display: none; }
+.view.is-on { display: block; }
+
+.ph-lbl { font-size: var(--fs-label); font-weight: var(--fw-black); letter-spacing: var(--ls-label);
+  text-transform: uppercase; color: var(--text-muted); margin-bottom: var(--sp-3); }
+.ph-barre { padding: var(--sp-3) var(--sp-6); border-bottom: 1px solid var(--border);
+  display: flex; align-items: center; gap: var(--sp-4);
+  font-size: var(--fs-ui-sm); font-weight: var(--fw-bold); color: var(--text-muted); }
+.ph-pied { padding: var(--sp-4) var(--sp-6); border-top: 1px solid var(--border);
+  display: flex; flex-wrap: wrap; gap: var(--sp-3); align-items: center; justify-content: space-between; }
+
+/* ── L'aire de composition ──────────────────────────────────────────── */
+.ph-jeu { padding: var(--sp-6); }
+.ph-consigne { font-size: var(--fs-body); font-weight: var(--fw-semi); color: var(--text-muted);
+  margin-bottom: var(--sp-5); text-align: center; }
+
+/* La ligne où la phrase se construit. Elle garde sa hauteur même vide :
+   sinon la page saute d'un cran à chaque tuile posée, et l'élève de niveau 1
+   perd le fil de ce qu'il vient de faire. */
+.ph-ligne { min-height: 92px; display: flex; flex-wrap: wrap; gap: var(--sp-2);
+  align-items: center; justify-content: center;
+  padding: var(--sp-4); border: 2px dashed var(--border); border-radius: var(--r-md);
+  background: var(--surface-sunken); margin-bottom: var(--sp-5); }
+.ph-ligne.is-ok { border-style: solid; border-color: var(--ok-line); background: var(--ok-bg); }
+.ph-ligne.is-no { border-style: solid; border-color: var(--no-line); background: var(--no-bg); }
+.ph-vide { font-size: var(--fs-body-sm); color: var(--text-muted); font-style: italic; }
+
+.ph-banc { display: flex; flex-wrap: wrap; gap: var(--sp-3); align-items: center; justify-content: center;
+  min-height: 72px; }
+
+.ph-tuile { font-family: var(--font-sans); font-size: clamp(19px, 2.2vw, 26px);
+  font-weight: var(--fw-bold); line-height: 1.2;
+  padding: var(--sp-3) var(--sp-5); min-height: var(--tap-min);
+  border: 1px solid var(--border); border-radius: var(--r-md); background: var(--surface-card);
+  color: var(--text-strong); cursor: pointer; white-space: nowrap;
+  transition: background var(--dur) var(--ease), border-color var(--dur) var(--ease),
+              transform var(--dur) var(--ease); }
+.ph-tuile:hover:not(:disabled) { background: var(--paper-100); border-color: var(--sec); }
+.ph-tuile:disabled { opacity: .35; cursor: default; }
+.ph-tuile--posee { background: var(--sel-bg); border-color: var(--sel-line); color: var(--sel-ink); }
+
+/* ── Mode « choix » : la phrase à trou ──────────────────────────────── */
+.ph-phrase { font-family: var(--font-sans); font-size: clamp(22px, 2.8vw, 34px);
+  font-weight: var(--fw-bold); line-height: 1.45; text-align: center;
+  margin-bottom: var(--sp-5); }
+.ph-trou { display: inline-block; min-width: 112px; padding: 0 var(--sp-3);
+  border-bottom: 3px solid var(--sec); color: var(--sec); }
+.ph-trou.is-vide { color: var(--text-muted); }
+
+.ph-choix { display: flex; flex-wrap: wrap; gap: var(--sp-3); justify-content: center; }
+.ph-choix .ph-tuile.is-ok { border-color: var(--ok-line); background: var(--ok-bg); }
+.ph-choix .ph-tuile.is-no { border-color: var(--no-line); background: var(--no-bg); }
+
+.ph-sens { margin-top: var(--sp-4); font-size: var(--fs-body-sm); color: var(--text-muted);
+  text-align: center; min-height: 24px; }
+.ph-retour { margin-top: var(--sp-4); min-height: 28px; text-align: center; }
+
+/* ── Je regarde : le banc de modèles ────────────────────────────────── */
+.ph-modeles { display: grid; grid-template-columns: repeat(auto-fit, minmax(272px, 1fr)); gap: var(--sp-4); }
+.ph-modele { padding: var(--sp-5); border: 1px solid var(--border); border-radius: var(--r-md);
+  background: var(--surface-card); display: flex; flex-direction: column; gap: var(--sp-3); }
+.ph-modele__p { font-family: var(--font-sans); font-size: clamp(19px, 2vw, 24px);
+  font-weight: var(--fw-bold); line-height: 1.3; }
+.ph-modele__s { font-size: var(--fs-body-sm); color: var(--text-muted); }
+.ph-modele__a { align-self: flex-start; }
+
+/* ── Où j'en suis ───────────────────────────────────────────────────── */
+.ph-bilan { display: grid; grid-template-columns: repeat(auto-fit, minmax(160px, 1fr)); gap: var(--sp-4);
+  margin-bottom: var(--sp-6); }
+.ph-chiffre { font-size: clamp(30px, 3.4vw, 42px); font-weight: var(--fw-black); line-height: 1; }
+.ph-table { width: 100%; border-collapse: collapse; font-size: var(--fs-body-sm); }
+.ph-table th, .ph-table td { padding: var(--sp-3) var(--sp-4); border-bottom: 1px solid var(--border);
+  text-align: left; }
+.ph-table th { font-size: var(--fs-label); font-weight: var(--fw-black); letter-spacing: var(--ls-label);
+  text-transform: uppercase; color: var(--text-muted); }
+.ph-etat { font-weight: var(--fw-bold); white-space: nowrap; }
+
+.ph-sortie { display: none; position: fixed; top: var(--sp-4); right: var(--sp-4); z-index: 50; }
+.is-presentation .ph-band, .is-presentation .ph-steps { display: none; }
+.is-presentation .ph-sortie { display: inline-flex; }
+.is-presentation .ph-tuile { font-size: clamp(26px, 3vw, 38px); }
+.is-presentation .ph-phrase { font-size: clamp(30px, 4vw, 48px); }
+
+@media (max-width: 640px) {
+  .ph-band__in, .ph-steps__in, .ph-wrap { padding-left: var(--sp-5); padding-right: var(--sp-5); }
+  .ph-bilan { grid-template-columns: 1fr 1fr; }
+  .ph-jeu { padding: var(--sp-5) var(--sp-4); }
+}
+</style>
+</head>
+<body class="page">
+
+<header class="band ph-band">
+  <div id="hdr">
+    <div class="saaf-bandeau">
+      <span class="saaf-lockup">
+        <span class="saaf-pilule"><span class="saaf-nom">SAAF</span></span>
+        <span class="saaf-filet" aria-hidden="true"></span>
+        <span class="saaf-desc">Système d'aide à l'apprentissage du français</span>
+      </span>
+    </div>
+  </div>
+  <div class="ph-band__in">
+    <div>
+      <p class="band__eyebrow">Francisation · Niveau 4 · Grammaire transversale</p>
+      <h1 class="ph-band__t">Et, mais, donc, car</h1>
+    </div>
+    <div class="ph-band__a">
+      <button type="button" class="btn btn--ghost btn--sm" id="profToggle" aria-pressed="false">Mode enseignant</button>
+      <button type="button" class="btn btn--ghost btn--sm" id="presToggle" aria-pressed="false">Présentation</button>
+    </div>
+  </div>
+</header>
+
+<nav class="steps ph-steps" aria-label="Étapes de l'activité">
+  <div class="steps__inner ph-steps__in" role="tablist">
+    <button type="button" class="step" role="tab" aria-selected="true"  data-vue="vueJeu"><span class="step__dot"></span>Je choisis</button>
+    <button type="button" class="step" role="tab" aria-selected="false" data-vue="vueModeles"><span class="step__dot"></span>Je regarde les modèles</button>
+    <button type="button" class="step" role="tab" aria-selected="false" data-vue="vueMaitrise"><span class="step__dot"></span>Où j'en suis</button>
+  </div>
+</nav>
+
+<button type="button" class="btn btn--pri btn--sm ph-sortie" id="sortiePres">Quitter la présentation</button>
+
+<main class="ph-wrap" id="app">
+
+  <section class="view is-on" id="vueJeu">
+    <div class="card card--flush">
+      <div class="ph-barre">
+        <span id="score">0 point</span>
+        <span id="serie"></span>
+        <span id="avance"></span>
+      </div>
+      <div class="ph-jeu">
+        <p class="ph-consigne">Choisissez le mot qui relie les deux idées.</p>
+        <div id="aire"></div>
+        <p class="ph-sens" id="sens"></p>
+        <div class="ph-retour"><p class="fb" id="retour"></p></div>
+      </div>
+      <div class="ph-pied">
+        <div class="ph-band__a">
+          <button type="button" class="btn btn--audio btn--sm" id="ecouter"><svg viewBox="0 0 50 50" fill="currentColor" aria-hidden="true"><path d="M27 6.5c0-1.2-1.4-1.9-2.4-1.1L13.8 14H6c-1.1 0-2 .9-2 2v18c0 1.1.9 2 2 2h7.8l10.8 8.6c1 .8 2.4.1 2.4-1.1V6.5z"/><path d="M33.4 17.6c-.7-.6-1.8-.5-2.4.2-.6.7-.5 1.8.2 2.4 1.6 1.4 2.6 3.4 2.6 5.7s-1 4.3-2.6 5.7c-.7.6-.8 1.7-.2 2.4.6.7 1.7.8 2.4.2 2.3-2 3.7-5 3.7-8.3s-1.4-6.3-3.7-8.3z"/><path d="M38.5 11.2c-.7-.5-1.8-.4-2.3.4-.5.7-.4 1.8.4 2.3 3.6 2.6 5.9 6.9 5.9 11.6s-2.3 9-5.9 11.6c-.8.5-.9 1.6-.4 2.3.5.8 1.6.9 2.3.4C43 36.7 46 31.1 46 25s-3-11.7-7.5-13.8z"/></svg>Écouter</button>
+          <button type="button" class="btn btn--ghost btn--sm" id="effacer">Effacer</button>
+        </div>
+        <button type="button" class="btn btn--pri btn--sm" id="suivantJeu">Suivant</button>
+      </div>
+    </div>
+  </section>
+
+  <section class="view" id="vueModeles">
+    <p class="ph-lbl">Les phrases de cet atelier</p>
+    <div class="ph-modeles" id="modeles"></div>
+  </section>
+
+  <section class="view" id="vueMaitrise">
+    <div class="ph-bilan">
+      <div class="card"><p class="ph-lbl">Points</p><p class="ph-chiffre" id="bXp">0</p></div>
+      <div class="card"><p class="ph-lbl">Série</p><p class="ph-chiffre" id="bSerie">0</p></div>
+      <div class="card"><p class="ph-lbl">Meilleure série</p><p class="ph-chiffre" id="bMeilleure">0</p></div>
+      <div class="card"><p class="ph-lbl">Sûres</p><p class="ph-chiffre" id="bSurs">0</p></div>
+    </div>
+    <div class="card card--flush">
+      <table class="ph-table">
+        <thead><tr><th>Phrase</th><th>Ce que ça dit</th><th>Où j'en suis</th></tr></thead>
+        <tbody id="corpsTable"></tbody>
+      </table>
+    </div>
+    <p style="margin-top:var(--sp-5)">
+      <button type="button" class="btn btn--ghost btn--sm" id="resetMaitrise">Tout recommencer</button>
+    </p>
+  </section>
+
+  <aside class="card" id="panneauProf" style="display:none;margin-top:var(--sp-6)">
+    <p class="ph-lbl">Mode enseignant</p>
+    <p>Les phrases coordonnées (<code>n4-s12</code>) sont le premier outil de liaison du programme : six petits mots — <em>et, mais, ou, donc, car, ni</em> — qui suffisent à tenir un récit ou une explication. Le niveau 3 les rencontrait ; le niveau 4 doit les choisir juste.</p><p><strong>Le choix se fait sur la relation, pas sur le mot.</strong> Addition, opposition, conséquence, cause, alternative, double négation : six relations, six mots. L'atelier donne toujours les deux idées en entier, jamais un trou dans une phrase courte — sans les deux idées, il n'y a pas de relation à voir.</p><p><strong>La confusion la plus fréquente est <em>donc</em> contre <em>car</em></strong>, parce que les deux relient une cause et une conséquence, mais dans un ordre inverse : <em>il pleuvait, donc j'ai pris l'autobus</em> ; <em>j'ai pris l'autobus, car il pleuvait</em>. Quatre items l'opposent, avec les mêmes deux idées retournées.</p><p><strong><em>Ni</em> est le mot oublié du niveau</strong> : « je n'ai ni la facture ni la garantie » se dit couramment au comptoir, et un élève qui ne l'a pas construit « je n'ai pas la facture et je n'ai pas la garantie ». Deux items le travaillent — c'est peu, mais ce mot ne s'apprend pas autrement que par imitation.</p>
+    <p><strong>Les tuiles ne se traînent pas, elles se cliquent.</strong> Le
+    glisser-déposer demande une motricité fine à la souris que tous les élèves
+    n'ont pas, et il est franchement pénible au doigt sur une tablette. Un
+    clic pose la tuile, un autre la reprend.</p>
+    <p><strong>Une phrase fausse n'est jamais effacée toute seule.</strong>
+    L'élève la voit à côté de la bonne, le temps qu'il veut. C'est là que la
+    leçon se fait — pas au moment du clic.</p>
+  </aside>
+
+</main>
+
+<script>
+const CONTENU = {"slug": "coordonner-n4", "niveau": 4, "generateur": "phrase", "activite": 208, "titre": "Et, mais, donc, car", "eyebrow": "Francisation · Niveau 4 · Grammaire transversale", "cle": "francisationCoordonnerN4MaitriseV1", "mode": "choix", "consigne": "Choisissez le mot qui relie les deux idées.", "savoirs": ["n4-s12", "n4-s02", "n4-s05", "n4-s49"], "motscles": ["coordination", "et mais donc car", "connecteur", "niveau 4"], "note_prof": "<p>Les phrases coordonnées (<code>n4-s12</code>) sont le premier outil de liaison du programme : six petits mots — <em>et, mais, ou, donc, car, ni</em> — qui suffisent à tenir un récit ou une explication. Le niveau 3 les rencontrait ; le niveau 4 doit les choisir juste.</p><p><strong>Le choix se fait sur la relation, pas sur le mot.</strong> Addition, opposition, conséquence, cause, alternative, double négation : six relations, six mots. L'atelier donne toujours les deux idées en entier, jamais un trou dans une phrase courte — sans les deux idées, il n'y a pas de relation à voir.</p><p><strong>La confusion la plus fréquente est <em>donc</em> contre <em>car</em></strong>, parce que les deux relient une cause et une conséquence, mais dans un ordre inverse : <em>il pleuvait, donc j'ai pris l'autobus</em> ; <em>j'ai pris l'autobus, car il pleuvait</em>. Quatre items l'opposent, avec les mêmes deux idées retournées.</p><p><strong><em>Ni</em> est le mot oublié du niveau</strong> : « je n'ai ni la facture ni la garantie » se dit couramment au comptoir, et un élève qui ne l'a pas construit « je n'ai pas la facture et je n'ai pas la garantie ». Deux items le travaillent — c'est peu, mais ce mot ne s'apprend pas autrement que par imitation.</p>", "items": [{"slug": "donc-autobus", "avant": "Il pleuvait beaucoup, ", "ok": "donc", "apres": " j'ai pris l'autobus.", "phrase": "Il pleuvait beaucoup, donc j'ai pris l'autobus.", "choix": ["donc", "car", "mais"], "sens": "La cause vient en premier, la conséquence après : donc."}, {"slug": "car-autobus", "avant": "J'ai pris l'autobus, ", "ok": "car", "apres": " il pleuvait beaucoup.", "phrase": "J'ai pris l'autobus, car il pleuvait beaucoup.", "choix": ["car", "donc", "ou"], "sens": "Les mêmes deux idées, dans l'ordre inverse : la conséquence d'abord, la cause après. Car."}, {"slug": "mais-plombier", "avant": "Le plombier est venu, ", "ok": "mais", "apres": " il n'a rien réparé.", "phrase": "Le plombier est venu, mais il n'a rien réparé.", "choix": ["mais", "donc", "et"], "sens": "On attendait la réparation : les deux faits s'opposent."}, {"slug": "et-formulaire", "avant": "J'ai rempli le formulaire ", "ok": "et", "apres": " je l'ai envoyé le jour même.", "phrase": "J'ai rempli le formulaire et je l'ai envoyé le jour même.", "choix": ["et", "mais", "car"], "sens": "Deux actions qui s'ajoutent, sans surprise ni cause : et."}, {"slug": "ou-rendez-vous", "avant": "Vous pouvez venir jeudi matin ", "ok": "ou", "apres": " vendredi après-midi.", "phrase": "Vous pouvez venir jeudi matin ou vendredi après-midi.", "choix": ["ou", "et", "ni"], "sens": "Deux possibilités, une seule à choisir : ou."}, {"slug": "ni-facture", "avant": "Je n'ai ", "ok": "ni", "apres": " la facture ni la garantie.", "phrase": "Je n'ai ni la facture ni la garantie.", "choix": ["ni", "pas", "ou"], "sens": "Ni… ni remplace deux négations. Le pas disparaît : on n'écrit jamais « je n'ai pas ni »."}, {"slug": "donc-clinique", "avant": "La clinique était pleine, ", "ok": "donc", "apres": " nous sommes revenus le lendemain.", "phrase": "La clinique était pleine, donc nous sommes revenus le lendemain.", "choix": ["donc", "car", "ni"], "sens": "Encore la conséquence : donc."}, {"slug": "car-clinique", "avant": "Nous sommes revenus le lendemain, ", "ok": "car", "apres": " la clinique était pleine.", "phrase": "Nous sommes revenus le lendemain, car la clinique était pleine.", "choix": ["car", "donc", "et"], "sens": "Et la même paire retournée : car donne la cause après coup."}, {"slug": "mais-loyer", "avant": "Le loyer est raisonnable, ", "ok": "mais", "apres": " le chauffage n'est pas inclus.", "phrase": "Le loyer est raisonnable, mais le chauffage n'est pas inclus.", "choix": ["mais", "et", "donc"], "sens": "Le deuxième fait corrige la bonne impression du premier : mais."}, {"slug": "ni-eau-ni-chauffage", "avant": "L'immeuble n'a ", "ok": "ni", "apres": " eau chaude ni chauffage depuis hier.", "phrase": "L'immeuble n'a ni eau chaude ni chauffage depuis hier.", "choix": ["ni", "pas", "et"], "sens": "Après ni, l'article disparaît souvent : ni eau chaude, ni chauffage."}, {"slug": "et-liste", "avant": "Apportez votre bail ", "ok": "et", "apres": " une preuve de revenu.", "phrase": "Apportez votre bail et une preuve de revenu.", "choix": ["et", "ou", "ni"], "sens": "Les deux sont demandés : et. Avec ou, on pourrait n'en apporter qu'un."}, {"slug": "ou-payer", "avant": "Vous pouvez payer en ligne ", "ok": "ou", "apres": " au comptoir.", "phrase": "Vous pouvez payer en ligne ou au comptoir.", "choix": ["ou", "et", "donc"], "sens": "Deux moyens, un seul à employer : ou."}]};
+const items = CONTENU.items;
+const MODE = CONTENU.mode;
+const CLE = CONTENU.cle;
+
+const $ = s => document.querySelector(s), $$ = s => [...document.querySelectorAll(s)];
+const esc = s => String(s).replace(/[&<>"]/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
+const melanger = a => a.map(v => [Math.random(), v]).sort((x, y) => x[0] - y[0]).map(p => p[1]);
+
+let sonCourant = null, boutonCourant = null;
+function jouer(src, bouton){
+  if (!src) return;
+  if (sonCourant) { sonCourant.pause(); sonCourant.currentTime = 0; }
+  if (boutonCourant) boutonCourant.removeAttribute('aria-busy');
+  sonCourant = new Audio(src); boutonCourant = bouton;
+  bouton.setAttribute('aria-busy', 'true');
+  const fini = () => bouton.removeAttribute('aria-busy');
+  sonCourant.onended = fini; sonCourant.onerror = fini;
+  sonCourant.play().catch(fini);
+}
+
+/* ── Maîtrise ───────────────────────────────────────────────────────── */
+let maitrise = { xp: 0, serie: 0, meilleure: 0, items: Array(items.length).fill(0) };
+try {
+  const brut = JSON.parse(localStorage.getItem(CLE) || 'null');
+  if (brut && Array.isArray(brut.items) && brut.items.length === items.length) maitrise = brut;
+} catch (e) {}
+function sauver(){ try { localStorage.setItem(CLE, JSON.stringify(maitrise)); } catch (e) {} }
+function ajouter(i, points){
+  maitrise.xp = Math.max(0, maitrise.xp + points);
+  maitrise.items[i] = Math.max(-3, Math.min(6, (maitrise.items[i] || 0) + (points > 0 ? 1 : -1)));
+  if (points > 0) { maitrise.serie++; maitrise.meilleure = Math.max(maitrise.meilleure, maitrise.serie); }
+  else maitrise.serie = 0;
+  sauver(); rendreMaitrise();
+}
+function etat(n){
+  if (n >= 4) return ['Sûre', '✓✓'];
+  if (n >= 2) return ['Ça vient', '✓'];
+  if (n >= 0) return ['À revoir', '·'];
+  return ['Difficile', '!'];
+}
+function rendreMaitrise(){
+  $('#bXp').textContent = maitrise.xp;
+  $('#bSerie').textContent = maitrise.serie;
+  $('#bMeilleure').textContent = maitrise.meilleure;
+  $('#bSurs').textContent = maitrise.items.filter(n => n >= 4).length + ' / ' + items.length;
+  $('#score').textContent = maitrise.xp + (maitrise.xp > 1 ? ' points' : ' point');
+  $('#serie').textContent = maitrise.serie > 1 ? 'Série de ' + maitrise.serie : '';
+  $('#corpsTable').innerHTML = items.map((x, i) => {
+    const [mot, glyphe] = etat(maitrise.items[i] || 0);
+    return '<tr><td><strong>' + esc(x.phrase) + '</strong></td><td>' + esc(x.sens || '') + '</td>'
+      + '<td class="ph-etat"><span aria-hidden="true">' + glyphe + '</span> ' + mot + '</td></tr>';
+  }).join('');
+}
+
+/* ── L'ordre de passage ─────────────────────────────────────────────── */
+/* Les phrases défilent dans un ordre mélangé une fois pour toutes, plutôt
+   qu'au hasard à chaque tour : sans ça, l'élève retombe trois fois sur la
+   même et n'en voit jamais d'autres. */
+let ordre = melanger(items.map((_, i) => i));
+let rang = 0, courant = null, iCourant = 0, repondu = false;
+
+function itemCourant(){
+  iCourant = ordre[rang % ordre.length];
+  courant = items[iCourant];
+  return courant;
+}
+
+/* ── Mode « ordre » : les tuiles ────────────────────────────────────── */
+let posees = [];
+
+function rendreOrdre(){
+  const x = courant;
+  const restantes = x.mots.map((m, i) => ({ m, i })).filter(t => !posees.includes(t.i));
+  $('#aire').innerHTML =
+    '<div class="ph-ligne" id="ligne"></div><div class="ph-banc" id="banc"></div>';
+
+  const ligne = $('#ligne');
+  if (!posees.length) {
+    ligne.innerHTML = '<span class="ph-vide">Cliquez les mots, dans le bon ordre.</span>';
+  } else {
+    posees.forEach((idx, pos) => {
+      const b = document.createElement('button');
+      b.type = 'button'; b.className = 'ph-tuile ph-tuile--posee';
+      b.textContent = x.mots[idx];
+      b.disabled = repondu;
+      b.onclick = () => { posees.splice(pos, 1); rendreOrdre(); };
+      ligne.appendChild(b);
+    });
+  }
+  if (repondu) ligne.classList.add(estJuste() ? 'is-ok' : 'is-no');
+
+  const banc = $('#banc');
+  melangeStable(restantes).forEach(t => {
+    const b = document.createElement('button');
+    b.type = 'button'; b.className = 'ph-tuile';
+    b.textContent = t.m;
+    b.disabled = repondu;
+    b.onclick = () => {
+      posees.push(t.i);
+      if (posees.length === x.mots.length) verifier();
+      else rendreOrdre();
+    };
+    banc.appendChild(b);
+  });
+}
+
+/* Le banc garde le même désordre tant qu'on est sur la même phrase : le
+   remélanger à chaque tuile posée ferait danser les mots sous le doigt. */
+let melangeCourant = [];
+function melangeStable(restantes){
+  return restantes.slice().sort((a, b) => melangeCourant.indexOf(a.i) - melangeCourant.indexOf(b.i));
+}
+
+/* La justesse se juge sur les MOTS composés, jamais sur l'ordre des tuiles.
+   « J'ai un stylo et un livre » porte deux tuiles « un » : comparer les
+   indices y refuse une phrase parfaitement juste, selon laquelle des deux
+   l'élève a cliquée en premier. C'est le contrôle du build qui a signalé le
+   cas — en refusant le contenu, alors que c'était la méthode qui était
+   fausse. */
+function estJuste(){
+  if (posees.length !== courant.mots.length) return false;
+  return posees.map(i => courant.mots[i]).join(' ') === courant.mots.join(' ');
+}
+
+/* ── Mode « choix » : la phrase à trou ──────────────────────────────── */
+let choisi = null;
+
+function rendreChoix(){
+  const x = courant;
+  const rempli = choisi !== null ? esc(choisi) : '?';
+  $('#aire').innerHTML =
+    '<p class="ph-phrase">' + esc(x.avant || '')
+    + '<span class="ph-trou' + (choisi === null ? ' is-vide' : '') + '">' + rempli + '</span>'
+    + esc(x.apres || '') + '</p>'
+    + '<div class="ph-choix" id="choix"></div>';
+  const zone = $('#choix');
+  melangeCourant.forEach(c => {
+    const b = document.createElement('button');
+    b.type = 'button'; b.className = 'ph-tuile';
+    b.textContent = c;
+    b.disabled = repondu;
+    if (repondu && c === x.ok) b.classList.add('is-ok');
+    if (repondu && c === choisi && c !== x.ok) b.classList.add('is-no');
+    b.onclick = () => { choisi = c; verifier(); };
+    zone.appendChild(b);
+  });
+}
+
+/* ── Le tour ────────────────────────────────────────────────────────── */
+/* Ne touche PAS à la rétroaction : `verifier()` la pose, puis rappelle
+   `rendreJeu()` pour griser les tuiles. Une remise à zéro ici effaçait le
+   retour dans la milliseconde qui suivait — l'élève ne voyait jamais si
+   c'était juste. Le nettoyage appartient à `nouveauTour()`. */
+function rendreJeu(){
+  $('#avance').textContent = (rang % items.length + 1) + ' / ' + items.length;
+  $('#ecouter').style.display = courant.audio ? '' : 'none';
+  $('#effacer').style.display = (MODE === 'ordre' && !repondu) ? '' : 'none';
+  if (MODE === 'ordre') rendreOrdre(); else rendreChoix();
+}
+
+function nouveauTour(){
+  itemCourant();
+  repondu = false; posees = []; choisi = null;
+  $('#retour').textContent = ''; $('#retour').className = 'fb';
+  $('#sens').textContent = '';
+  melangeCourant = MODE === 'ordre'
+    ? melanger(courant.mots.map((_, i) => i))
+    : melanger(courant.choix.slice());
+  rendreJeu();
+}
+
+function verifier(){
+  repondu = true;
+  const juste = MODE === 'ordre' ? estJuste() : choisi === courant.ok;
+  const retour = $('#retour');
+  if (juste) {
+    retour.className = 'fb fb--ok';
+    retour.textContent = 'Juste. ' + courant.phrase;
+    ajouter(iCourant, 10);
+    jouer(courant.audio, $('#ecouter'));
+  } else {
+    retour.className = 'fb fb--no';
+    retour.textContent = 'On dit : ' + courant.phrase;
+    ajouter(iCourant, -3);
+  }
+  $('#sens').textContent = courant.sens || '';
+  rendreJeu();
+  lmsTrack('exercise_attempted', { correct: juste ? 1 : 0 });
+}
+
+$('#suivantJeu').onclick = () => { rang++; nouveauTour(); };
+$('#effacer').onclick = () => { posees = []; rendreOrdre(); };
+$('#ecouter').onclick = () => jouer(courant.audio, $('#ecouter'));
+
+/* ── Je regarde les modèles ─────────────────────────────────────────── */
+function rendreModeles(){
+  $('#modeles').innerHTML = items.map((x, i) =>
+    '<div class="ph-modele"><p class="ph-modele__p">' + esc(x.phrase) + '</p>'
+    + '<p class="ph-modele__s">' + esc(x.sens || '') + '</p>'
+    + (x.audio ? '<button type="button" class="btn btn--audio btn--sm ph-modele__a" data-i="' + i
+        + '"><svg viewBox="0 0 50 50" fill="currentColor" aria-hidden="true"><path d="M27 6.5c0-1.2-1.4-1.9-2.4-1.1L13.8 14H6c-1.1 0-2 .9-2 2v18c0 1.1.9 2 2 2h7.8l10.8 8.6c1 .8 2.4.1 2.4-1.1V6.5z"/><path d="M33.4 17.6c-.7-.6-1.8-.5-2.4.2-.6.7-.5 1.8.2 2.4 1.6 1.4 2.6 3.4 2.6 5.7s-1 4.3-2.6 5.7c-.7.6-.8 1.7-.2 2.4.6.7 1.7.8 2.4.2 2.3-2 3.7-5 3.7-8.3s-1.4-6.3-3.7-8.3z"/><path d="M38.5 11.2c-.7-.5-1.8-.4-2.3.4-.5.7-.4 1.8.4 2.3 3.6 2.6 5.9 6.9 5.9 11.6s-2.3 9-5.9 11.6c-.8.5-.9 1.6-.4 2.3.5.8 1.6.9 2.3.4C43 36.7 46 31.1 46 25s-3-11.7-7.5-13.8z"/></svg>Écouter</button>' : '')
+    + '</div>').join('');
+  $$('.ph-modele__a').forEach(b => b.onclick = () => jouer(items[b.dataset.i].audio, b));
+}
+
+$('#resetMaitrise').onclick = () => {
+  if (confirm('Tout recommencer ?')) {
+    maitrise = { xp: 0, serie: 0, meilleure: 0, items: Array(items.length).fill(0) };
+    sauver(); rendreMaitrise();
+  }
+};
+
+$$('.step').forEach(s => s.onclick = () => {
+  $$('.step').forEach(x => x.setAttribute('aria-selected', String(x === s)));
+  $$('.view').forEach(v => v.classList.toggle('is-on', v.id === s.dataset.vue));
+});
+$('#profToggle').onclick = () => {
+  const p = $('#panneauProf');
+  const on = p.style.display === 'none';
+  p.style.display = on ? '' : 'none';
+  $('#profToggle').setAttribute('aria-pressed', String(on));
+};
+function presentation(actif){
+  document.body.classList.toggle('is-presentation', actif);
+  $('#presToggle').setAttribute('aria-pressed', String(actif));
+}
+$('#presToggle').onclick = () => presentation(!document.body.classList.contains('is-presentation'));
+$('#sortiePres').onclick = () => presentation(false);
+document.addEventListener('keydown', e => { if (e.key === 'Escape') presentation(false); });
+
+function lmsTrack(event, data) {
+  try { window.parent.postMessage(Object.assign({ lms: true, event: event }, data || {}), '*'); } catch (e) {}
+  try {
+    const up = new URLSearchParams(window.parent.location.search);
+    const code = up.get('code'), actId = parseInt(up.get('activityId')) || null, title = up.get('title') || '';
+    if (code && actId) {
+      fetch('/api/student/progress', {
+        method: 'POST', headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(Object.assign({ code, activityId: actId, activityTitle: title, event }, data || {})),
+      }).catch(() => {});
+    }
+  } catch (e2) {}
+}
+
+nouveauTour();
+rendreModeles();
+rendreMaitrise();
+lmsTrack('file_opened');
+</script>
+</body>
+</html>
