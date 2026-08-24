@@ -1,0 +1,574 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Le chiffre et le mot — Niveau 1</title>
+<link rel="stylesheet" href="/assets/design-system/styles.css">
+<link rel="stylesheet" href="/assets/design-system/marque-saaf.css">
+<link rel="icon" type="image/svg+xml" href="/assets/design-system/marque-saaf-favicon.svg">
+<style>
+/* Trois polices d'emprunt, importées par la famille A seule. Le système de
+   design garde Nunito et ne bouge pas. Hors ligne, elles tombent sur leurs
+   replis système : les écritures restent distinctes, l'exercice reste juste. */
+@import url("https://fonts.googleapis.com/css2?family=Caveat:wght@600&family=Courier+Prime:wght@400;700&family=Oswald:wght@500&display=swap");
+
+/* ══════════════════════════════════════════════════════════════════════
+   Famille A · apparier des représentations
+   FICHIER GÉNÉRÉ — build/appariement.py. Ne modifiez pas ce HTML.
+   Aucune couleur en dur hors des pictogrammes, qui portent les couleurs
+   réelles de la signalisation. Le repérage est celui du niveau 1.
+   ══════════════════════════════════════════════════════════════════════ */
+body { --sec: var(--niv-1-line); --sec-soft: var(--niv-1-bg); }
+
+.ap-band { padding: var(--sp-5) 0; }
+.ap-band__in { max-width: var(--content-max); margin: 0 auto; padding: 0 var(--gutter);
+  display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: var(--sp-4); }
+.ap-band__t { font-size: var(--fs-h2); font-weight: var(--fw-black);
+  letter-spacing: var(--ls-title); line-height: var(--lh-title); margin-top: var(--sp-2); }
+.ap-band__a { display: flex; flex-wrap: wrap; gap: var(--sp-2); }
+
+.ap-steps__in { max-width: var(--content-max); margin: 0 auto;
+  padding: var(--sp-3) var(--gutter); display: flex; flex-wrap: wrap; gap: var(--sp-2); align-items: center; }
+.step { font-family: var(--font-sans); cursor: pointer; }
+.step[aria-selected="true"] { background: var(--sel-bg); border-color: var(--sel-line); color: var(--sel-ink); }
+
+.ap-wrap { max-width: var(--content-max); margin: 0 auto; padding: var(--sp-8) var(--gutter) var(--sp-12); }
+.view { display: none; }
+.view.is-on { display: block; }
+
+/* ── Colonne des choses ─────────────────────────────────────────────── */
+.ap-layout { display: grid; grid-template-columns: 260px minmax(0, 1fr); gap: var(--sp-5); align-items: start; }
+.ap-liste { display: flex; flex-direction: column; gap: var(--sp-2); }
+.ap-btn { display: flex; align-items: center; gap: var(--sp-3); width: 100%; text-align: left;
+  min-height: var(--tap-min); padding: var(--sp-2) var(--sp-4);
+  border: 1px solid var(--border); border-radius: var(--r-md); background: var(--surface-card);
+  color: var(--text-strong); font-family: var(--font-sans); font-size: var(--fs-body-sm);
+  font-weight: var(--fw-semi); line-height: 1.35; cursor: pointer;
+  transition: background var(--dur) var(--ease), border-color var(--dur) var(--ease), color var(--dur) var(--ease); }
+.ap-btn:hover { background: var(--paper-100); }
+.ap-btn[aria-current="true"] { background: var(--sel-bg); border-color: var(--sel-line); color: var(--sel-ink); }
+/* Le glyphe dit « vu », la couleur ne le dit jamais toute seule. */
+.ap-btn__e { flex-shrink: 0; width: 16px; font-weight: var(--fw-black); }
+.ap-lbl { font-size: var(--fs-label); font-weight: var(--fw-black); letter-spacing: var(--ls-label);
+  text-transform: uppercase; color: var(--text-muted); margin-bottom: var(--sp-3); }
+
+.ap-piste { display: flex; align-items: center; gap: var(--sp-4);
+  padding: var(--sp-3) var(--sp-6); border-bottom: 1px solid var(--border); }
+.ap-track { flex: 1; height: 6px; border-radius: 3px; background: var(--paper-200); overflow: hidden; }
+.ap-track span { display: block; height: 100%; background: var(--accent); transition: width var(--dur) var(--ease); }
+.ap-piste__n { font-size: var(--fs-ui-sm); font-weight: var(--fw-bold); color: var(--text-muted); white-space: nowrap; }
+
+.ap-tete { padding: var(--sp-6) var(--sp-6) var(--sp-4); display: flex; flex-wrap: wrap;
+  align-items: center; justify-content: space-between; gap: var(--sp-4); }
+.ap-nom { font-size: clamp(28px, 3.4vw, 40px); font-weight: var(--fw-black);
+  letter-spacing: var(--ls-title); line-height: 1.05; }
+.ap-ou { font-size: var(--fs-body-sm); font-weight: var(--fw-semi); color: var(--text-muted);
+  margin-top: var(--sp-2); }
+
+/* ── La planche des faces ───────────────────────────────────────────── */
+/* Le nombre de colonnes est celui des registres, posé par le build : avec
+   `auto-fit`, quatre faces décrochaient en 3 + 1 et la case manquante
+   s'affichait en gris. Le fond de la grille est celui de la carte, et les
+   filets sont portés par les cases — un « gap coloré » laisse voir le fond
+   partout où la grille n'est pas pleine. */
+.ap-planche { display: grid; grid-template-columns: repeat(var(--cols, 3), minmax(0, 1fr));
+  gap: 0; background: var(--surface-card); border-top: 1px solid var(--border); }
+.ap-face { padding: var(--sp-4) var(--sp-5) var(--sp-6);
+  border-right: 1px solid var(--border); border-bottom: 1px solid var(--border);
+  display: flex; flex-direction: column; gap: var(--sp-3); min-height: 168px; }
+.ap-face__l { font-size: var(--fs-label); font-weight: var(--fw-black); letter-spacing: var(--ls-label);
+  text-transform: uppercase; color: var(--sec); }
+.ap-face__v { display: flex; align-items: center; justify-content: flex-start; flex: 1; }
+
+/* Le texte d'une face. `ajuster()` règle le corps par mesure : une classe
+   posée sur la longueur en caractères ne peut pas savoir qu'un Courier
+   espacé déborde là où un Nunito respire, et hors ligne les replis n'ont pas
+   les mêmes chasses. Sans ça, « DATE DE NAISSANCE » sort coupé en deux. */
+.ap-t { display: block; width: 100%; font-size: clamp(26px, 3vw, 36px); line-height: 1.15;
+  color: var(--text-strong); overflow-wrap: normal; }
+.ap-t--cahier { font-family: var(--font-sans); font-weight: var(--fw-bold); }
+.ap-t--formulaire { font-family: "Courier Prime", ui-monospace, "Courier New", monospace;
+  font-weight: 700; letter-spacing: .04em; }
+.ap-t--panneau { font-family: "Oswald", "Arial Narrow", "Helvetica Neue", sans-serif;
+  font-weight: 500; letter-spacing: .06em; }
+.ap-t--main { font-family: "Caveat", "Segoe Script", "Bradley Hand", cursive;
+  font-weight: 600; font-size: clamp(36px, 4.2vw, 50px); }
+
+.ap-svg { width: 100%; max-width: 132px; height: auto; display: block; }
+.ap-svg--picto { max-width: 108px; }
+
+/* ── Je trouve ──────────────────────────────────────────────────────── */
+.ap-consigne { padding: var(--sp-6); text-align: center; border-bottom: 1px solid var(--border); }
+.ap-consigne__c { font-size: var(--fs-body); font-weight: var(--fw-semi); color: var(--text-muted);
+  margin-bottom: var(--sp-4); }
+.ap-cible { display: inline-flex; flex-direction: column; align-items: center; gap: var(--sp-2);
+  padding: var(--sp-4) var(--sp-6); border: 2px solid var(--sec); border-radius: var(--r-md);
+  background: var(--sec-soft); color: var(--text-strong); min-width: 200px; }
+.ap-cible__ou { font-family: var(--font-sans); font-size: var(--fs-label); font-weight: var(--fw-black);
+  letter-spacing: var(--ls-label); text-transform: uppercase; color: var(--sec); }
+
+.ap-reponses { padding: var(--sp-6); display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(212px, 1fr)); gap: var(--sp-3); }
+.ap-rep { min-height: 116px; padding: var(--sp-3) var(--sp-4);
+  border: 1px solid var(--border); border-radius: var(--r-md); background: var(--surface-card);
+  color: var(--text-strong); cursor: pointer; display: flex; flex-direction: column;
+  align-items: center; justify-content: center; gap: var(--sp-2);
+  transition: background var(--dur) var(--ease), border-color var(--dur) var(--ease); }
+.ap-rep:hover:not(:disabled) { background: var(--paper-100); border-color: var(--sec); }
+.ap-rep:disabled { cursor: default; }
+.ap-rep.is-ok { border-color: var(--ok-line); background: var(--ok-bg); }
+.ap-rep.is-no { border-color: var(--no-line); background: var(--no-bg); }
+.ap-rep .ap-t { text-align: center; font-size: clamp(21px, 2.3vw, 29px); }
+.ap-rep .ap-t--main { font-size: clamp(28px, 3.1vw, 38px); }
+.ap-rep .ap-svg { max-width: 104px; margin: 0 auto; }
+.ap-rep__e { font-family: var(--font-sans); font-size: var(--fs-label); font-weight: var(--fw-black);
+  letter-spacing: var(--ls-label); text-transform: uppercase; color: var(--text-muted); }
+.ap-retour { padding: 0 var(--sp-6) var(--sp-6); min-height: 28px; }
+.ap-barre { padding: var(--sp-3) var(--sp-6); border-bottom: 1px solid var(--border);
+  display: flex; align-items: center; gap: var(--sp-4);
+  font-size: var(--fs-ui-sm); font-weight: var(--fw-bold); color: var(--text-muted); }
+.ap-pied { padding: var(--sp-4) var(--sp-6); border-top: 1px solid var(--border);
+  display: flex; flex-wrap: wrap; gap: var(--sp-3); align-items: center; justify-content: space-between; }
+.ap-nav { display: flex; gap: var(--sp-2); }
+
+/* ── Où j'en suis ───────────────────────────────────────────────────── */
+.ap-bilan { display: grid; grid-template-columns: repeat(auto-fit, minmax(160px, 1fr)); gap: var(--sp-4);
+  margin-bottom: var(--sp-6); }
+.ap-chiffre { font-size: clamp(30px, 3.4vw, 42px); font-weight: var(--fw-black); line-height: 1; }
+.ap-table { width: 100%; border-collapse: collapse; font-size: var(--fs-body-sm); }
+.ap-table th, .ap-table td { padding: var(--sp-3) var(--sp-4); border-bottom: 1px solid var(--border);
+  text-align: left; }
+.ap-table th { font-size: var(--fs-label); font-weight: var(--fw-black); letter-spacing: var(--ls-label);
+  text-transform: uppercase; color: var(--text-muted); }
+.ap-etat { font-weight: var(--fw-bold); white-space: nowrap; }
+
+.ap-sortie { display: none; position: fixed; top: var(--sp-4); right: var(--sp-4); z-index: 50; }
+.is-presentation .ap-band, .is-presentation .ap-steps, .is-presentation .ap-cote { display: none; }
+.is-presentation .ap-sortie { display: inline-flex; }
+.is-presentation .ap-layout { grid-template-columns: 1fr; }
+.is-presentation .ap-t { font-size: clamp(34px, 4.4vw, 58px); }
+.is-presentation .ap-svg { max-width: 190px; }
+
+@media (max-width: 760px) { .ap-planche { grid-template-columns: 1fr 1fr; } }
+@media (max-width: 460px) { .ap-planche { grid-template-columns: 1fr; } }
+
+@media (max-width: 900px) {
+  .ap-layout { grid-template-columns: 1fr; }
+  .ap-band__in, .ap-steps__in, .ap-wrap { padding-left: var(--sp-5); padding-right: var(--sp-5); }
+  .ap-bilan { grid-template-columns: 1fr 1fr; }
+}
+</style>
+</head>
+<body class="page">
+
+<header class="band ap-band">
+  <div id="hdr">
+    <div class="saaf-bandeau">
+      <span class="saaf-lockup">
+        <span class="saaf-pilule"><span class="saaf-nom">SAAF</span></span>
+        <span class="saaf-filet" aria-hidden="true"></span>
+        <span class="saaf-desc">Système d'aide à l'apprentissage du français</span>
+      </span>
+    </div>
+  </div>
+  <div class="ap-band__in">
+    <div>
+      <p class="band__eyebrow">Francisation · Niveau 1 · Éléments de graphie</p>
+      <h1 class="ap-band__t">Le chiffre et le mot</h1>
+    </div>
+    <div class="ap-band__a">
+      <button type="button" class="btn btn--ghost btn--sm" id="profToggle" aria-pressed="false">Mode enseignant</button>
+      <button type="button" class="btn btn--ghost btn--sm" id="presToggle" aria-pressed="false">Présentation</button>
+    </div>
+  </div>
+</header>
+
+<nav class="steps ap-steps" aria-label="Étapes de l'activité">
+  <div class="steps__inner ap-steps__in" role="tablist">
+    <button type="button" class="step" role="tab" aria-selected="true"  data-vue="vueRegarder"><span class="step__dot"></span>Je regarde</button>
+    <button type="button" class="step" role="tab" aria-selected="false" data-vue="vueTrouver"><span class="step__dot"></span>Je trouve la même chose</button>
+    <button type="button" class="step" role="tab" aria-selected="false" data-vue="vueMaitrise"><span class="step__dot"></span>Où j'en suis</button>
+  </div>
+</nav>
+
+<button type="button" class="btn btn--pri btn--sm ap-sortie" id="sortiePres">Quitter la présentation</button>
+
+<main class="ap-wrap" id="app">
+
+  <section class="view is-on" id="vueRegarder">
+    <div class="ap-layout">
+      <aside class="ap-cote">
+        <p class="ap-lbl">Les nombres <span id="vus"></span></p>
+        <div class="ap-liste" id="listeItems"></div>
+      </aside>
+
+      <div class="card card--flush">
+        <div class="ap-piste">
+          <div class="ap-track"><span id="barreVus"></span></div>
+          <div class="ap-piste__n" id="compteVus"></div>
+        </div>
+
+        <div class="ap-tete">
+          <div>
+            <div class="ap-nom" id="nom"></div>
+            <p class="ap-ou" id="ou"></p>
+          </div>
+          <button type="button" class="btn btn--audio" id="ecouter"><svg viewBox="0 0 50 50" fill="currentColor" aria-hidden="true"><path d="M27 6.5c0-1.2-1.4-1.9-2.4-1.1L13.8 14H6c-1.1 0-2 .9-2 2v18c0 1.1.9 2 2 2h7.8l10.8 8.6c1 .8 2.4.1 2.4-1.1V6.5z"/><path d="M33.4 17.6c-.7-.6-1.8-.5-2.4.2-.6.7-.5 1.8.2 2.4 1.6 1.4 2.6 3.4 2.6 5.7s-1 4.3-2.6 5.7c-.7.6-.8 1.7-.2 2.4.6.7 1.7.8 2.4.2 2.3-2 3.7-5 3.7-8.3s-1.4-6.3-3.7-8.3z"/><path d="M38.5 11.2c-.7-.5-1.8-.4-2.3.4-.5.7-.4 1.8.4 2.3 3.6 2.6 5.9 6.9 5.9 11.6s-2.3 9-5.9 11.6c-.8.5-.9 1.6-.4 2.3.5.8 1.6.9 2.3.4C43 36.7 46 31.1 46 25s-3-11.7-7.5-13.8z"/></svg>Écouter</button>
+        </div>
+
+        <div class="ap-planche" id="planche" style="--cols:3"></div>
+
+        <div class="ap-pied">
+          <p class="ap-ou" id="rappel"></p>
+          <div class="ap-nav">
+            <button type="button" class="btn btn--ghost btn--sm" id="precedent">Précédent</button>
+            <button type="button" class="btn btn--pri btn--sm" id="suivant">Suivant</button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="view" id="vueTrouver">
+    <div class="card card--flush">
+      <div class="ap-barre">
+        <span id="scoreTrouver">0 point</span>
+        <span id="serieTrouver"></span>
+      </div>
+      <div class="ap-consigne">
+        <p class="ap-consigne__c" id="consigne">Ce nombre est écrit autrement, plus bas. Trouvez-le.</p>
+        <div class="ap-cible" id="cible"></div>
+      </div>
+      <div class="ap-reponses" id="reponses"></div>
+      <div class="ap-retour"><p class="fb" id="retour"></p></div>
+      <div class="ap-pied">
+        <button type="button" class="btn btn--audio btn--sm" id="ecouterCible"><svg viewBox="0 0 50 50" fill="currentColor" aria-hidden="true"><path d="M27 6.5c0-1.2-1.4-1.9-2.4-1.1L13.8 14H6c-1.1 0-2 .9-2 2v18c0 1.1.9 2 2 2h7.8l10.8 8.6c1 .8 2.4.1 2.4-1.1V6.5z"/><path d="M33.4 17.6c-.7-.6-1.8-.5-2.4.2-.6.7-.5 1.8.2 2.4 1.6 1.4 2.6 3.4 2.6 5.7s-1 4.3-2.6 5.7c-.7.6-.8 1.7-.2 2.4.6.7 1.7.8 2.4.2 2.3-2 3.7-5 3.7-8.3s-1.4-6.3-3.7-8.3z"/><path d="M38.5 11.2c-.7-.5-1.8-.4-2.3.4-.5.7-.4 1.8.4 2.3 3.6 2.6 5.9 6.9 5.9 11.6s-2.3 9-5.9 11.6c-.8.5-.9 1.6-.4 2.3.5.8 1.6.9 2.3.4C43 36.7 46 31.1 46 25s-3-11.7-7.5-13.8z"/></svg>Écouter</button>
+        <button type="button" class="btn btn--pri btn--sm" id="suivantTrouver">Suivant</button>
+      </div>
+    </div>
+  </section>
+
+  <section class="view" id="vueMaitrise">
+    <div class="ap-bilan">
+      <div class="card"><p class="ap-lbl">Points</p><p class="ap-chiffre" id="bXp">0</p></div>
+      <div class="card"><p class="ap-lbl">Série</p><p class="ap-chiffre" id="bSerie">0</p></div>
+      <div class="card"><p class="ap-lbl">Meilleure série</p><p class="ap-chiffre" id="bMeilleure">0</p></div>
+      <div class="card"><p class="ap-lbl">Sûrs</p><p class="ap-chiffre" id="bSurs">0</p></div>
+    </div>
+    <div class="card card--flush">
+      <table class="ap-table">
+        <thead><tr><th>Nombre</th><th>Par exemple</th><th>Où j'en suis</th></tr></thead>
+        <tbody id="corpsTable"></tbody>
+      </table>
+    </div>
+    <p style="margin-top:var(--sp-5)">
+      <button type="button" class="btn btn--ghost btn--sm" id="resetMaitrise">Tout recommencer</button>
+    </p>
+  </section>
+
+  <aside class="card" id="panneauProf" style="display:none;margin-top:var(--sp-6)">
+    <p class="ap-lbl">Mode enseignant</p>
+    <p>« Comprendre les chiffres arabes » et « utiliser les chiffres arabes de 0 à 9 » sont au programme (<code>n1-s32</code>), avec les déterminants numéraux (<code>n1-s10</code>).</p><p><strong>Les points ne sont pas une décoration : ils sont la troisième représentation</strong>, et c'est celle qui ne suppose aucune lecture. Un élève qui n'a pas encore l'alphabet peut compter. Ils sont rangés par cinq, exprès — au-delà, on recompte depuis le début au lieu de voir « une rangée pleine et deux ».</p><p><strong>Le chiffre se lit avant de s'écrire.</strong> Ne demandez pas d'écrire « sept » tant que « 7 » n'est pas reconnu du premier coup : l'orthographe des nombres vient après, et elle n'est pas au programme de ce niveau.</p>
+    <p><strong>La forme est toujours la même</strong> dans les cinq ateliers de
+    cette famille : une chose, plusieurs façons de l'écrire ou de la dessiner,
+    et l'élève reconnaît que c'est la même. Nommez le registre à voix haute
+    avec lui — « ça, c'est sur le formulaire » — avant de le laisser à
+    « Je trouve la même chose ». C'est le nom du registre qui fait la leçon.</p>
+    <p><strong>Hors ligne</strong>, les trois polices d'emprunt tombent sur
+    leurs replis système. Les écritures restent distinctes et l'exercice reste
+    juste ; elles sont seulement moins typées.</p>
+  </aside>
+
+</main>
+
+<script>
+const CONTENU = {"slug": "chiffres-n1", "titre": "Le chiffre et le mot", "eyebrow": "Francisation · Niveau 1 · Éléments de graphie", "cle": "francisationChiffresN1MaitriseV1", "liste_titre": "Les nombres", "etiquette_ou": "Par exemple :", "rappel": "Le chiffre, le mot et les points disent le même nombre.", "consigne": "Ce nombre est écrit autrement, plus bas. Trouvez-le.", "col1": "Nombre", "col2": "Par exemple", "savoirs": ["n1-s32", "n1-s26", "n1-s10"], "note_prof": "<p>« Comprendre les chiffres arabes » et « utiliser les chiffres arabes de 0 à 9 » sont au programme (<code>n1-s32</code>), avec les déterminants numéraux (<code>n1-s10</code>).</p><p><strong>Les points ne sont pas une décoration : ils sont la troisième représentation</strong>, et c'est celle qui ne suppose aucune lecture. Un élève qui n'a pas encore l'alphabet peut compter. Ils sont rangés par cinq, exprès — au-delà, on recompte depuis le début au lieu de voir « une rangée pleine et deux ».</p><p><strong>Le chiffre se lit avant de s'écrire.</strong> Ne demandez pas d'écrire « sept » tant que « 7 » n'est pas reconnu du premier coup : l'orthographe des nombres vient après, et elle n'est pas au programme de ce niveau.</p>", "registres": [{"cle": "chiffre", "nom": "en chiffres", "type": "texte", "police": "formulaire"}, {"cle": "mot", "nom": "en lettres", "type": "texte", "police": "cahier"}, {"cle": "points", "nom": "à compter", "type": "points"}], "items": [{"slug": "n01", "nom": "un", "ou": "Un enfant.", "audio": "audio/n01.mp3", "faces": {"chiffre": "1", "mot": "un", "points": 1}}, {"slug": "n02", "nom": "deux", "ou": "Deux enfants.", "audio": "audio/n02.mp3", "faces": {"chiffre": "2", "mot": "deux", "points": 2}}, {"slug": "n03", "nom": "trois", "ou": "Trois cases à remplir.", "audio": "audio/n03.mp3", "faces": {"chiffre": "3", "mot": "trois", "points": 3}}, {"slug": "n04", "nom": "quatre", "ou": "L'appartement 4.", "audio": "audio/n04.mp3", "faces": {"chiffre": "4", "mot": "quatre", "points": 4}}, {"slug": "n05", "nom": "cinq", "ou": "Cinq minutes de pause.", "audio": "audio/n05.mp3", "faces": {"chiffre": "5", "mot": "cinq", "points": 5}}, {"slug": "n06", "nom": "six", "ou": "Six élèves à la table.", "audio": "audio/n06.mp3", "faces": {"chiffre": "6", "mot": "six", "points": 6}}, {"slug": "n07", "nom": "sept", "ou": "Sept jours dans la semaine.", "audio": "audio/n07.mp3", "faces": {"chiffre": "7", "mot": "sept", "points": 7}}, {"slug": "n08", "nom": "huit", "ou": "Le cours commence à 8 h.", "audio": "audio/n08.mp3", "faces": {"chiffre": "8", "mot": "huit", "points": 8}}, {"slug": "n09", "nom": "neuf", "ou": "Le NAS a neuf chiffres.", "audio": "audio/n09.mp3", "faces": {"chiffre": "9", "mot": "neuf", "points": 9}}, {"slug": "n10", "nom": "dix", "ou": "Dix chiffres au téléphone.", "audio": "audio/n10.mp3", "faces": {"chiffre": "10", "mot": "dix", "points": 10}}, {"slug": "n11", "nom": "onze", "ou": "Onze heures moins quart.", "audio": "audio/n11.mp3", "faces": {"chiffre": "11", "mot": "onze", "points": 11}}, {"slug": "n12", "nom": "douze", "ou": "Douze mois dans l'année.", "audio": "audio/n12.mp3", "faces": {"chiffre": "12", "mot": "douze", "points": 12}}]};
+const PICTOS = {"sortie": "<rect x=\"4\" y=\"4\" width=\"92\" height=\"92\" rx=\"6\" fill=\"#127A46\"/><rect x=\"20\" y=\"22\" width=\"30\" height=\"56\" rx=\"3\" fill=\"none\" stroke=\"#FFFFFF\" stroke-width=\"6\"/><path d=\"M56 50 H86 M74 38 L86 50 L74 62\" fill=\"none\" stroke=\"#FFFFFF\" stroke-width=\"7\" stroke-linecap=\"round\" stroke-linejoin=\"round\"/>", "premiers-soins": "<rect x=\"4\" y=\"4\" width=\"92\" height=\"92\" rx=\"6\" fill=\"#127A46\"/><path d=\"M50 24 V76 M24 50 H76\" stroke=\"#FFFFFF\" stroke-width=\"14\" stroke-linecap=\"round\"/>", "escalier": "<rect x=\"4\" y=\"4\" width=\"92\" height=\"92\" rx=\"6\" fill=\"#127A46\"/><path d=\"M20 78 H38 V60 H56 V42 H74 V24 H86\" fill=\"none\" stroke=\"#FFFFFF\" stroke-width=\"7\" stroke-linejoin=\"round\" stroke-linecap=\"round\"/>", "accueil": "<rect x=\"4\" y=\"4\" width=\"92\" height=\"92\" rx=\"6\" fill=\"#1A5FA8\"/><circle cx=\"50\" cy=\"27\" r=\"7\" fill=\"#FFFFFF\"/><rect x=\"43\" y=\"41\" width=\"14\" height=\"36\" rx=\"4\" fill=\"#FFFFFF\"/>", "cafeteria": "<rect x=\"4\" y=\"4\" width=\"92\" height=\"92\" rx=\"6\" fill=\"#1A5FA8\"/><path d=\"M32 22 V50 M32 50 V80 M24 22 V40 M40 22 V40 M24 40 H40\" fill=\"none\" stroke=\"#FFFFFF\" stroke-width=\"5\" stroke-linecap=\"round\"/><path d=\"M68 80 V22 c9 4 9 26 0 30\" fill=\"none\" stroke=\"#FFFFFF\" stroke-width=\"5\" stroke-linecap=\"round\" stroke-linejoin=\"round\"/>", "ascenseur": "<rect x=\"4\" y=\"4\" width=\"92\" height=\"92\" rx=\"6\" fill=\"#1A5FA8\"/><path d=\"M36 46 L46 32 L56 46\" fill=\"none\" stroke=\"#FFFFFF\" stroke-width=\"6\" stroke-linecap=\"round\" stroke-linejoin=\"round\"/><path d=\"M36 58 L46 72 L56 58\" fill=\"none\" stroke=\"#FFFFFF\" stroke-width=\"6\" stroke-linecap=\"round\" stroke-linejoin=\"round\"/><rect x=\"66\" y=\"28\" width=\"14\" height=\"48\" rx=\"3\" fill=\"none\" stroke=\"#FFFFFF\" stroke-width=\"5\"/>", "telephone": "<rect x=\"4\" y=\"4\" width=\"92\" height=\"92\" rx=\"6\" fill=\"#1A5FA8\"/><path d=\"M32 26 c-6 0-10 5-9 11 3 20 20 37 40 40 6 1 11-3 11-9 v-8 c0-3-2-5-5-6l-9-2c-3-1-6 1-7 4l-2 4 c-7-4-13-10-17-17l4-2 c3-1 5-4 4-7 l-2-9 c-1-3-3-5-6-5 z\" fill=\"#FFFFFF\"/>", "defense-de-fumer": "<circle cx=\"50\" cy=\"50\" r=\"45\" fill=\"#FFFFFF\" stroke=\"#C8202B\" stroke-width=\"10\"/><line x1=\"19\" y1=\"81\" x2=\"81\" y2=\"19\" stroke=\"#C8202B\" stroke-width=\"10\" stroke-linecap=\"round\"/><rect x=\"26\" y=\"46\" width=\"42\" height=\"10\" rx=\"2\" fill=\"#1B1B1B\"/><rect x=\"71\" y=\"46\" width=\"7\" height=\"10\" rx=\"2\" fill=\"#1B1B1B\"/>", "stationnement-interdit": "<circle cx=\"50\" cy=\"50\" r=\"45\" fill=\"#FFFFFF\" stroke=\"#C8202B\" stroke-width=\"10\"/><line x1=\"19\" y1=\"81\" x2=\"81\" y2=\"19\" stroke=\"#C8202B\" stroke-width=\"10\" stroke-linecap=\"round\"/><path d=\"M38 74 V30 h16 a12 12 0 0 1 0 24 h-16\" fill=\"none\" stroke=\"#1B1B1B\" stroke-width=\"9\" stroke-linecap=\"round\" stroke-linejoin=\"round\"/>", "attention": "<path d=\"M50 6 L96 88 H4 Z\" fill=\"#F2C200\" stroke=\"#1B1B1B\" stroke-width=\"6\" stroke-linejoin=\"round\"/><rect x=\"45\" y=\"34\" width=\"10\" height=\"28\" rx=\"4\" fill=\"#1B1B1B\"/><circle cx=\"50\" cy=\"72\" r=\"6\" fill=\"#1B1B1B\"/>", "plancher-mouille": "<path d=\"M50 6 L96 88 H4 Z\" fill=\"#F2C200\" stroke=\"#1B1B1B\" stroke-width=\"6\" stroke-linejoin=\"round\"/><path d=\"M50 34 c-8 12-14 19-14 26 a14 14 0 0 0 28 0 c0-7-6-14-14-26 z\" fill=\"#1B1B1B\"/>"};
+const items = CONTENU.items;
+const registres = CONTENU.registres;
+const CLE = CONTENU.cle;
+
+const $ = s => document.querySelector(s), $$ = s => [...document.querySelectorAll(s)];
+const esc = s => String(s).replace(/[&<>"]/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
+const melanger = a => a.map(v => [Math.random(), v]).sort((x, y) => x[0] - y[0]).map(p => p[1]);
+
+/* ── Les quatre façons de dessiner une face ─────────────────────────── */
+
+/* L'horloge à aiguilles. Elle se dessine, elle ne se photographie pas : une
+   image d'horloge à 14 h 30 devrait être régénérée à chaque heure de la
+   liste, et un modèle d'image place les aiguilles au hasard. */
+function horloge(hhmm){
+  const [h, m] = String(hhmm).split(':').map(Number);
+  const ah = ((h % 12) + m / 60) * 30 - 90;   // -90 : midi est en haut
+  const am = m * 6 - 90;
+  const bras = (ang, lg, ep) => {
+    const r = ang * Math.PI / 180;
+    return '<line x1="50" y1="50" x2="' + (50 + lg * Math.cos(r)).toFixed(1)
+      + '" y2="' + (50 + lg * Math.sin(r)).toFixed(1) + '" stroke="currentColor" stroke-width="'
+      + ep + '" stroke-linecap="round"/>';
+  };
+  let traits = '';
+  for (let i = 0; i < 12; i++) {
+    const r = i * 30 * Math.PI / 180, gros = i % 3 === 0;
+    traits += '<line x1="' + (50 + 40 * Math.cos(r)).toFixed(1) + '" y1="' + (50 + 40 * Math.sin(r)).toFixed(1)
+      + '" x2="' + (50 + (gros ? 33 : 36) * Math.cos(r)).toFixed(1) + '" y2="' + (50 + (gros ? 33 : 36) * Math.sin(r)).toFixed(1)
+      + '" stroke="currentColor" stroke-width="' + (gros ? 3 : 1.6) + '" stroke-linecap="round" opacity="'
+      + (gros ? .9 : .45) + '"/>';
+  }
+  return '<svg class="ap-svg" viewBox="0 0 100 100" role="img" aria-label="horloge">'
+    + '<circle cx="50" cy="50" r="46" fill="none" stroke="currentColor" stroke-width="3" opacity=".55"/>'
+    + traits + bras(ah, 24, 6) + bras(am, 35, 3.6)
+    + '<circle cx="50" cy="50" r="3.6" fill="currentColor"/></svg>';
+}
+
+/* Les pastilles à compter. Cinq par rangée : au-delà, l'élève de niveau 1
+   recompte depuis le début à chaque fois au lieu de voir « une rangée pleine
+   et deux ». La rangée de cinq est ce qui rend le nombre lisible d'un coup. */
+function points(n){
+  n = Number(n);
+  let d = '';
+  for (let i = 0; i < n; i++) {
+    const x = 12 + (i % 5) * 19, y = 16 + Math.floor(i / 5) * 20;
+    d += '<circle cx="' + x + '" cy="' + y + '" r="7.5" fill="currentColor"/>';
+  }
+  const h = Math.max(1, Math.ceil(n / 5)) * 20 + 12;
+  return '<svg class="ap-svg" viewBox="0 0 100 ' + h + '" role="img" aria-label="' + n + ' points">'
+    + d + '</svg>';
+}
+
+function picto(nom){
+  const corps = PICTOS[nom];
+  if (!corps) return '<span class="ap-t ap-t--cahier">?</span>';
+  return '<svg class="ap-svg ap-svg--picto" viewBox="0 0 100 100" role="img" aria-label="pictogramme">'
+    + corps + '</svg>';
+}
+
+function face(reg, valeur){
+  if (valeur === undefined || valeur === null || valeur === '') return '';
+  if (reg.type === 'horloge') return horloge(valeur);
+  if (reg.type === 'points')  return points(valeur);
+  if (reg.type === 'picto')   return picto(valeur);
+  return '<span class="ap-t ap-t--' + (reg.police || 'cahier') + '">' + esc(valeur) + '</span>';
+}
+
+/* Le corps se réduit jusqu'à ce que le texte tienne dans sa case. Voir
+   build/polices.py : sans cette mesure, « DATE DE NAISSANCE » en Courier
+   espacé sortait coupé en deux, et une classe fondée sur la longueur en
+   caractères ne peut pas le prévoir — hors ligne, les replis système n'ont
+   pas les mêmes chasses. */
+function ajuster(el){
+  el.style.fontSize = '';
+  let t = parseFloat(getComputedStyle(el).fontSize);
+  while (el.scrollWidth > el.clientWidth && t > 13) { t -= 1; el.style.fontSize = t + 'px'; }
+}
+function ajusterTous(){ $$('.ap-t').forEach(ajuster); }
+if (document.fonts && document.fonts.ready) document.fonts.ready.then(ajusterTous);
+let minuterieAjust = null;
+addEventListener('resize', () => {
+  clearTimeout(minuterieAjust); minuterieAjust = setTimeout(ajusterTous, 120);
+});
+
+/* ── Son ────────────────────────────────────────────────────────────── */
+let sonCourant = null, boutonCourant = null;
+function jouer(src, bouton){
+  if (!src) return;
+  if (sonCourant) { sonCourant.pause(); sonCourant.currentTime = 0; }
+  if (boutonCourant) boutonCourant.removeAttribute('aria-busy');
+  sonCourant = new Audio(src); boutonCourant = bouton;
+  bouton.setAttribute('aria-busy', 'true');
+  const fini = () => bouton.removeAttribute('aria-busy');
+  sonCourant.onended = fini; sonCourant.onerror = fini;
+  sonCourant.play().catch(fini);
+}
+
+/* ── Maîtrise ───────────────────────────────────────────────────────── */
+let maitrise = { xp: 0, serie: 0, meilleure: 0, items: Array(items.length).fill(0) };
+try {
+  const brut = JSON.parse(localStorage.getItem(CLE) || 'null');
+  if (brut && Array.isArray(brut.items) && brut.items.length === items.length) maitrise = brut;
+} catch (e) {}
+function sauver(){ try { localStorage.setItem(CLE, JSON.stringify(maitrise)); } catch (e) {} }
+function ajouter(i, points){
+  maitrise.xp = Math.max(0, maitrise.xp + points);
+  maitrise.items[i] = Math.max(-3, Math.min(6, (maitrise.items[i] || 0) + (points > 0 ? 1 : -1)));
+  if (points > 0) { maitrise.serie++; maitrise.meilleure = Math.max(maitrise.meilleure, maitrise.serie); }
+  else maitrise.serie = 0;
+  sauver(); rendreMaitrise();
+}
+function etat(n){
+  if (n >= 4) return ['Sûr', '✓✓'];
+  if (n >= 2) return ['Ça vient', '✓'];
+  if (n >= 0) return ['À revoir', '·'];
+  return ['Difficile', '!'];
+}
+function rendreMaitrise(){
+  $('#bXp').textContent = maitrise.xp;
+  $('#bSerie').textContent = maitrise.serie;
+  $('#bMeilleure').textContent = maitrise.meilleure;
+  $('#bSurs').textContent = maitrise.items.filter(n => n >= 4).length + ' / ' + items.length;
+  $('#scoreTrouver').textContent = maitrise.xp + (maitrise.xp > 1 ? ' points' : ' point');
+  $('#serieTrouver').textContent = maitrise.serie > 1 ? 'Série de ' + maitrise.serie : '';
+  $('#corpsTable').innerHTML = items.map((x, i) => {
+    const [mot, glyphe] = etat(maitrise.items[i] || 0);
+    return '<tr><td><strong>' + esc(x.nom) + '</strong></td><td>' + esc(x.ou || '') + '</td>'
+      + '<td class="ap-etat"><span aria-hidden="true">' + glyphe + '</span> ' + mot + '</td></tr>';
+  }).join('');
+}
+
+/* ── Je regarde ─────────────────────────────────────────────────────── */
+let index = 0;
+const vus = new Set();
+
+function rendreListe(){
+  const liste = $('#listeItems'); liste.innerHTML = '';
+  items.forEach((item, i) => {
+    const b = document.createElement('button');
+    b.type = 'button'; b.className = 'ap-btn';
+    if (i === index) b.setAttribute('aria-current', 'true');
+    b.innerHTML = '<span class="ap-btn__e" aria-hidden="true">' + (vus.has(i) ? '✓' : '·') + '</span>'
+      + '<span>' + esc(item.nom) + '</span>';
+    b.onclick = () => { index = i; rendre(); };
+    liste.appendChild(b);
+  });
+}
+
+function rendre(){
+  const x = items[index];
+  $('#nom').textContent = x.nom;
+  $('#ou').textContent = x.ou ? CONTENU.etiquette_ou + ' ' + x.ou : '';
+  $('#rappel').textContent = CONTENU.rappel || '';
+  $('#planche').innerHTML = registres.map(r => {
+    const v = face(r, x.faces[r.cle]);
+    if (!v) return '';
+    return '<div class="ap-face"><div class="ap-face__l">' + esc(r.nom) + '</div>'
+      + '<div class="ap-face__v">' + v + '</div></div>';
+  }).join('');
+  vus.add(index);
+  $('#barreVus').style.width = (vus.size / items.length * 100) + '%';
+  $('#compteVus').textContent = vus.size + ' / ' + items.length + ' vus';
+  $('#vus').textContent = '(' + vus.size + ' / ' + items.length + ')';
+  $('#precedent').disabled = index === 0;
+  $('#suivant').textContent = index === items.length - 1 ? 'Recommencer' : 'Suivant';
+  $('#ecouter').style.display = x.audio ? '' : 'none';
+  rendreListe(); ajusterTous();
+}
+
+$('#ecouter').onclick = () => jouer(items[index].audio, $('#ecouter'));
+$('#precedent').onclick = () => { index = Math.max(0, index - 1); rendre(); };
+$('#suivant').onclick = () => { index = index === items.length - 1 ? 0 : index + 1; rendre(); };
+
+/* ── Je trouve la même chose ────────────────────────────────────────── */
+let cibleCourante = null;
+
+/* Les registres réellement portés par un item : un contenu peut laisser une
+   face vide (tous les mots n'ont pas de pictogramme), et proposer une case
+   vide comme réponse serait un choix impossible à faire. */
+function registresDe(item){ return registres.filter(r => item.faces[r.cle]); }
+
+function batirTrouver(){
+  const retour = $('#retour');
+  retour.textContent = ''; retour.className = 'fb';
+
+  // Il faut un item qui porte au moins deux faces : une pour l'énoncé, une
+  // pour la réponse. Sans ce filtre, un item à face unique bloquerait le tour.
+  const jouables = items.filter(x => registresDe(x).length >= 2);
+  cibleCourante = jouables[Math.floor(Math.random() * jouables.length)];
+  const iCible = items.indexOf(cibleCourante);
+
+  const dispo = melanger(registresDe(cibleCourante));
+  const rEnonce = dispo[0], rBonne = dispo[1];
+
+  $('#cible').innerHTML = face(rEnonce, cibleCourante.faces[rEnonce.cle])
+    + '<span class="ap-cible__ou">' + esc(rEnonce.nom) + '</span>';
+
+  // Les leurres sont les faces des AUTRES items dans le même registre que la
+  // bonne réponse. Les prendre dans un autre registre les rendrait
+  // reconnaissables à leur forme, sans rien lire.
+  const autres = melanger(items.filter(x => x !== cibleCourante && x.faces[rBonne.cle])).slice(0, 4);
+  const options = melanger([{ item: cibleCourante, bonne: true },
+    ...autres.map(x => ({ item: x, bonne: false }))]);
+
+  const zone = $('#reponses'); zone.innerHTML = '';
+  options.forEach(opt => {
+    const b = document.createElement('button');
+    b.type = 'button'; b.className = 'ap-rep';
+    // Par une marque posée au montage, jamais par le texte : deux valeurs
+    // peuvent commencer pareil (« 8 h » et « 8 h 30 »).
+    if (opt.bonne) b.dataset.bonne = '1';
+    b.innerHTML = face(rBonne, opt.item.faces[rBonne.cle])
+      + '<span class="ap-rep__e">' + esc(rBonne.nom) + '</span>';
+    b.onclick = () => {
+      $$('#reponses .ap-rep').forEach(x => x.disabled = true);
+      if (opt.bonne) {
+        b.classList.add('is-ok');
+        retour.className = 'fb fb--ok';
+        retour.textContent = 'Juste. C\'est bien ' + cibleCourante.nom + '.';
+        ajouter(iCible, 10);
+        jouer(cibleCourante.audio, $('#ecouterCible'));
+      } else {
+        b.classList.add('is-no');
+        const bonne = $('#reponses .ap-rep[data-bonne]');
+        if (bonne) bonne.classList.add('is-ok');
+        retour.className = 'fb fb--no';
+        retour.textContent = 'Non. C\'était ' + cibleCourante.nom + '.';
+        ajouter(iCible, -3);
+      }
+      lmsTrack('exercise_attempted', { correct: opt.bonne ? 1 : 0 });
+    };
+    zone.appendChild(b);
+  });
+  $('#ecouterCible').style.display = cibleCourante.audio ? '' : 'none';
+  ajusterTous();
+}
+$('#suivantTrouver').onclick = batirTrouver;
+$('#ecouterCible').onclick = () => cibleCourante && jouer(cibleCourante.audio, $('#ecouterCible'));
+
+$('#resetMaitrise').onclick = () => {
+  if (confirm('Tout recommencer ?')) {
+    maitrise = { xp: 0, serie: 0, meilleure: 0, items: Array(items.length).fill(0) };
+    sauver(); rendreMaitrise();
+  }
+};
+
+/* ── Étapes, enseignant, présentation ───────────────────────────────── */
+$$('.step').forEach(s => s.onclick = () => {
+  $$('.step').forEach(x => x.setAttribute('aria-selected', String(x === s)));
+  $$('.view').forEach(v => v.classList.toggle('is-on', v.id === s.dataset.vue));
+  if (s.dataset.vue === 'vueTrouver' && !cibleCourante) batirTrouver();
+});
+$('#profToggle').onclick = () => {
+  const p = $('#panneauProf');
+  const on = p.style.display === 'none';
+  p.style.display = on ? '' : 'none';
+  $('#profToggle').setAttribute('aria-pressed', String(on));
+};
+function presentation(actif){
+  document.body.classList.toggle('is-presentation', actif);
+  $('#presToggle').setAttribute('aria-pressed', String(actif));
+  ajusterTous();
+}
+$('#presToggle').onclick = () => presentation(!document.body.classList.contains('is-presentation'));
+$('#sortiePres').onclick = () => presentation(false);
+document.addEventListener('keydown', e => { if (e.key === 'Escape') presentation(false); });
+
+function lmsTrack(event, data) {
+  try { window.parent.postMessage(Object.assign({ lms: true, event: event }, data || {}), '*'); } catch (e) {}
+  try {
+    const up = new URLSearchParams(window.parent.location.search);
+    const code = up.get('code'), actId = parseInt(up.get('activityId')) || null, title = up.get('title') || '';
+    if (code && actId) {
+      fetch('/api/student/progress', {
+        method: 'POST', headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(Object.assign({ code, activityId: actId, activityTitle: title, event }, data || {})),
+      }).catch(() => {});
+    }
+  } catch (e2) {}
+}
+
+rendre();
+rendreMaitrise();
+lmsTrack('file_opened');
+</script>
+</body>
+</html>
