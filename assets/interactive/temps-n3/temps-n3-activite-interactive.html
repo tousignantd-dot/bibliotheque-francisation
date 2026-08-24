@@ -1,0 +1,458 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Hier, et demain — Niveau 3</title>
+<link rel="stylesheet" href="/assets/design-system/styles.css">
+<link rel="stylesheet" href="/assets/design-system/marque-saaf.css">
+<link rel="icon" type="image/svg+xml" href="/assets/design-system/marque-saaf-favicon.svg">
+<style>
+/* ══════════════════════════════════════════════════════════════════════
+   Famille F · conjuguer
+   FICHIER GÉNÉRÉ — build/conjugaison.py. Ne modifiez pas ce HTML.
+   Aucune couleur en dur : uniquement des jetons du système de design.
+   ══════════════════════════════════════════════════════════════════════ */
+body { --sec: var(--niv-3-line); --sec-soft: var(--niv-3-bg); }
+
+.cj-band { padding: var(--sp-5) 0; }
+.cj-band__in { max-width: var(--content-max); margin: 0 auto; padding: 0 var(--gutter);
+  display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: var(--sp-4); }
+.cj-band__t { font-size: var(--fs-h2); font-weight: var(--fw-black);
+  letter-spacing: var(--ls-title); line-height: var(--lh-title); margin-top: var(--sp-2); }
+.cj-band__a { display: flex; flex-wrap: wrap; gap: var(--sp-2); }
+
+.cj-steps__in { max-width: var(--content-max); margin: 0 auto;
+  padding: var(--sp-3) var(--gutter); display: flex; flex-wrap: wrap; gap: var(--sp-2); align-items: center; }
+.step { font-family: var(--font-sans); cursor: pointer; }
+.step[aria-selected="true"] { background: var(--sel-bg); border-color: var(--sel-line); color: var(--sel-ink); }
+
+.cj-wrap { max-width: var(--content-max); margin: 0 auto; padding: var(--sp-8) var(--gutter) var(--sp-12); }
+.view { display: none; }
+.view.is-on { display: block; }
+
+.cj-lbl { font-size: var(--fs-label); font-weight: var(--fw-black); letter-spacing: var(--ls-label);
+  text-transform: uppercase; color: var(--text-muted); margin-bottom: var(--sp-3); }
+.cj-barre { padding: var(--sp-3) var(--sp-6); border-bottom: 1px solid var(--border);
+  display: flex; align-items: center; gap: var(--sp-4);
+  font-size: var(--fs-ui-sm); font-weight: var(--fw-bold); color: var(--text-muted); }
+.cj-pied { padding: var(--sp-4) var(--sp-6); border-top: 1px solid var(--border);
+  display: flex; flex-wrap: wrap; gap: var(--sp-3); align-items: center; justify-content: space-between; }
+
+.cj-jeu { padding: var(--sp-6); }
+.cj-consigne { font-size: var(--fs-body); font-weight: var(--fw-semi); color: var(--text-muted);
+  margin-bottom: var(--sp-5); text-align: center; }
+
+/* ── La commande : l'infinitif et le temps demandé ──────────────────── */
+/* Les deux seuls indices dont l'élève dispose. Ils sont au-dessus de la
+   phrase, pas dedans : un infinitif glissé dans la phrase se lit comme un
+   mot de la phrase. */
+.cj-commande { display: flex; flex-wrap: wrap; gap: var(--sp-3); justify-content: center;
+  margin-bottom: var(--sp-5); }
+.cj-jeton { display: inline-flex; align-items: baseline; gap: var(--sp-2);
+  padding: var(--sp-2) var(--sp-4); border-radius: var(--r-pill);
+  background: var(--sec-soft); border: 1px solid var(--sec); }
+.cj-jeton b { font-size: clamp(17px, 1.5vw, 21px); font-weight: var(--fw-black); color: var(--sec); }
+.cj-jeton span { font-size: var(--fs-label); font-weight: var(--fw-black); letter-spacing: var(--ls-label);
+  text-transform: uppercase; color: var(--text-muted); }
+
+.cj-phrase { font-family: var(--font-sans); font-size: clamp(20px, 2.4vw, 30px);
+  font-weight: var(--fw-bold); line-height: 1.5; text-align: center; margin-bottom: var(--sp-5); }
+.cj-trou { display: inline-block; min-width: 132px; padding: 0 var(--sp-3);
+  border-bottom: 3px solid var(--sec); color: var(--sec); }
+.cj-trou.is-vide { color: var(--text-muted); }
+
+.cj-saisie { display: block; width: min(100%, 420px); margin: 0 auto;
+  font-family: var(--font-sans); font-size: clamp(20px, 2vw, 26px); font-weight: var(--fw-bold);
+  text-align: center; padding: var(--sp-3) var(--sp-4); min-height: var(--tap-min);
+  border: 2px solid var(--border-firm); border-radius: var(--r-md);
+  background: var(--surface-card); color: var(--text-strong); }
+.cj-saisie:focus { outline: none; border-color: var(--sec); }
+.cj-saisie.is-ok { border-color: var(--ok-line); background: var(--ok-bg); }
+.cj-saisie.is-no { border-color: var(--no-line); background: var(--no-bg); }
+
+.cj-choix { display: flex; flex-wrap: wrap; gap: var(--sp-3); justify-content: center; }
+.cj-choix button { font-family: var(--font-sans); font-size: clamp(18px, 1.8vw, 24px);
+  font-weight: var(--fw-bold); padding: var(--sp-3) var(--sp-5); min-height: var(--tap-min);
+  border: 1px solid var(--border); border-radius: var(--r-md); background: var(--surface-card);
+  color: var(--text-strong); cursor: pointer; }
+.cj-choix button:hover:not(:disabled) { background: var(--paper-100); border-color: var(--sec); }
+.cj-choix button.is-ok { border-color: var(--ok-line); background: var(--ok-bg); }
+.cj-choix button.is-no { border-color: var(--no-line); background: var(--no-bg); }
+
+/* ── La comparaison caractère par caractère ─────────────────────────── */
+.cj-compare { max-width: 520px; margin: var(--sp-5) auto 0;
+  font-family: var(--font-mono, ui-monospace, "SFMono-Regular", Menlo, monospace);
+  font-size: clamp(18px, 1.7vw, 22px); text-align: center; letter-spacing: .04em; }
+.cj-compare__l { font-family: var(--font-sans); font-size: var(--fs-label); font-weight: var(--fw-black);
+  letter-spacing: var(--ls-label); text-transform: uppercase; color: var(--text-muted);
+  text-align: center; }
+.cj-c--ok { color: var(--text-strong); }
+.cj-c--no { color: var(--no-line); background: var(--no-bg); border-radius: 3px; }
+.cj-c--vide { color: var(--text-muted); }
+
+.cj-sens { margin-top: var(--sp-4); font-size: var(--fs-body-sm); color: var(--text-muted);
+  text-align: center; min-height: 24px; }
+.cj-retour { margin-top: var(--sp-4); min-height: 28px; text-align: center; }
+
+/* ── Le tableau des formes ──────────────────────────────────────────── */
+.cj-bilan { display: grid; grid-template-columns: repeat(auto-fit, minmax(160px, 1fr)); gap: var(--sp-4);
+  margin-bottom: var(--sp-6); }
+.cj-chiffre { font-size: clamp(30px, 3.4vw, 42px); font-weight: var(--fw-black); line-height: 1; }
+.cj-table { width: 100%; border-collapse: collapse; font-size: var(--fs-body-sm); }
+.cj-table th, .cj-table td { padding: var(--sp-3) var(--sp-4); border-bottom: 1px solid var(--border);
+  text-align: left; }
+.cj-table th { font-size: var(--fs-label); font-weight: var(--fw-black); letter-spacing: var(--ls-label);
+  text-transform: uppercase; color: var(--text-muted); }
+.cj-etat { font-weight: var(--fw-bold); white-space: nowrap; }
+
+.cj-sortie { display: none; position: fixed; top: var(--sp-4); right: var(--sp-4); z-index: 50; }
+.is-presentation .cj-band, .is-presentation .cj-steps { display: none; }
+.is-presentation .cj-sortie { display: inline-flex; }
+.is-presentation .cj-phrase { font-size: clamp(28px, 3.6vw, 44px); }
+
+@media (max-width: 640px) {
+  .cj-band__in, .cj-steps__in, .cj-wrap { padding-left: var(--sp-5); padding-right: var(--sp-5); }
+  .cj-bilan { grid-template-columns: 1fr 1fr; }
+  .cj-jeu { padding: var(--sp-5) var(--sp-4); }
+}
+</style>
+</head>
+<body class="page">
+
+<header class="band cj-band">
+  <div id="hdr">
+    <div class="saaf-bandeau">
+      <span class="saaf-lockup">
+        <span class="saaf-pilule"><span class="saaf-nom">SAAF</span></span>
+        <span class="saaf-filet" aria-hidden="true"></span>
+        <span class="saaf-desc">Système d'aide à l'apprentissage du français</span>
+      </span>
+    </div>
+  </div>
+  <div class="cj-band__in">
+    <div>
+      <p class="band__eyebrow">Francisation · Niveau 3 · Grammaire transversale</p>
+      <h1 class="cj-band__t">Hier, et demain</h1>
+    </div>
+    <div class="cj-band__a">
+      <button type="button" class="btn btn--ghost btn--sm" id="profToggle" aria-pressed="false">Mode enseignant</button>
+      <button type="button" class="btn btn--ghost btn--sm" id="presToggle" aria-pressed="false">Présentation</button>
+    </div>
+  </div>
+</header>
+
+<nav class="steps cj-steps" aria-label="Étapes de l'activité">
+  <div class="steps__inner cj-steps__in" role="tablist">
+    <button type="button" class="step" role="tab" aria-selected="true"  data-vue="vueJeu"><span class="step__dot"></span>J'écris la forme</button>
+    <button type="button" class="step" role="tab" aria-selected="false" data-vue="vueFormes"><span class="step__dot"></span>Toutes les formes</button>
+    <button type="button" class="step" role="tab" aria-selected="false" data-vue="vueMaitrise"><span class="step__dot"></span>Où j'en suis</button>
+  </div>
+</nav>
+
+<button type="button" class="btn btn--pri btn--sm cj-sortie" id="sortiePres">Quitter la présentation</button>
+
+<main class="cj-wrap" id="app">
+
+  <section class="view is-on" id="vueJeu">
+    <div class="card card--flush">
+      <div class="cj-barre">
+        <span id="score">0 point</span>
+        <span id="serie"></span>
+        <span id="avance"></span>
+      </div>
+      <div class="cj-jeu">
+        <p class="cj-consigne">Écrivez le verbe au temps demandé. Seulement le verbe.</p>
+        <div class="cj-commande">
+          <span class="cj-jeton"><span>Verbe</span><b id="infinitif"></b></span>
+          <span class="cj-jeton"><span>Temps</span><b id="temps"></b></span>
+        </div>
+        <p class="cj-phrase" id="phrase"></p>
+        <div id="aire"></div>
+        <div id="compare"></div>
+        <p class="cj-sens" id="sens"></p>
+        <div class="cj-retour"><p class="fb" id="retour"></p></div>
+      </div>
+      <div class="cj-pied">
+        <div class="cj-band__a">
+          <button type="button" class="btn btn--audio btn--sm" id="ecouter"><svg viewBox="0 0 50 50" fill="currentColor" aria-hidden="true"><path d="M27 6.5c0-1.2-1.4-1.9-2.4-1.1L13.8 14H6c-1.1 0-2 .9-2 2v18c0 1.1.9 2 2 2h7.8l10.8 8.6c1 .8 2.4.1 2.4-1.1V6.5z"/><path d="M33.4 17.6c-.7-.6-1.8-.5-2.4.2-.6.7-.5 1.8.2 2.4 1.6 1.4 2.6 3.4 2.6 5.7s-1 4.3-2.6 5.7c-.7.6-.8 1.7-.2 2.4.6.7 1.7.8 2.4.2 2.3-2 3.7-5 3.7-8.3s-1.4-6.3-3.7-8.3z"/><path d="M38.5 11.2c-.7-.5-1.8-.4-2.3.4-.5.7-.4 1.8.4 2.3 3.6 2.6 5.9 6.9 5.9 11.6s-2.3 9-5.9 11.6c-.8.5-.9 1.6-.4 2.3.5.8 1.6.9 2.3.4C43 36.7 46 31.1 46 25s-3-11.7-7.5-13.8z"/></svg>Écouter</button>
+          <button type="button" class="btn btn--pri btn--sm" id="verifier">Vérifier</button>
+        </div>
+        <button type="button" class="btn btn--ghost btn--sm" id="suivantJeu">Suivant</button>
+      </div>
+    </div>
+  </section>
+
+  <section class="view" id="vueFormes">
+    <p class="cj-lbl">Les formes de cet atelier</p>
+    <div class="card card--flush">
+      <table class="cj-table">
+        <thead><tr><th>Verbe</th><th>Temps</th><th>Forme</th><th>La phrase</th></tr></thead>
+        <tbody id="corpsFormes"></tbody>
+      </table>
+    </div>
+  </section>
+
+  <section class="view" id="vueMaitrise">
+    <div class="cj-bilan">
+      <div class="card"><p class="cj-lbl">Points</p><p class="cj-chiffre" id="bXp">0</p></div>
+      <div class="card"><p class="cj-lbl">Série</p><p class="cj-chiffre" id="bSerie">0</p></div>
+      <div class="card"><p class="cj-lbl">Meilleure série</p><p class="cj-chiffre" id="bMeilleure">0</p></div>
+      <div class="card"><p class="cj-lbl">Sûres</p><p class="cj-chiffre" id="bSurs">0</p></div>
+    </div>
+    <div class="card card--flush">
+      <table class="cj-table">
+        <thead><tr><th>Forme</th><th>La phrase</th><th>Où j'en suis</th></tr></thead>
+        <tbody id="corpsTable"></tbody>
+      </table>
+    </div>
+    <p style="margin-top:var(--sp-5)">
+      <button type="button" class="btn btn--ghost btn--sm" id="resetMaitrise">Tout recommencer</button>
+    </p>
+  </section>
+
+  <aside class="card" id="panneauProf" style="display:none;margin-top:var(--sp-6)">
+    <p class="cj-lbl">Mode enseignant</p>
+    <p>Le niveau 3 ajoute deux temps au présent du niveau 2 : l'imparfait (<code>n3-s29</code>) et le futur simple (<code>n3-s30</code>). L'atelier les mélange, et c'est tout son objet. Séparés, chacun se réussit mécaniquement — on applique une terminaison. Mélangés, il faut d'abord lire le repère de temps de la phrase : <em>avant</em>, <em>l'année passée</em>, <em>la semaine prochaine</em>, <em>dans deux mois</em>.</p><p><strong>L'élève tape, à partir de ce niveau.</strong> Au niveau 2, le même générateur fait choisir : on reconnaît avant de produire. Ici, l'élève écrit — et la correction compare caractère par caractère, ce qui met le doigt sur la vraie difficulté de ces deux temps, qui n'est pas la terminaison mais l'accent : <em>j'étais</em>, <em>je serai</em>, <em>j'achèterai</em>.</p><p><strong>Le piège central de la série : -ais contre -ai.</strong> « Je parlais » et « je parlerai » se ressemblent à l'œil et se distinguent mal à l'oreille au Québec. Quatre items les opposent directement, avec le même verbe dans deux phrases voisines. C'est délibéré : la paire enseigne plus que deux items éloignés.</p><p><strong>Les verbes irréguliers au futur ne se devinent pas</strong> — <em>aller → j'irai</em>, <em>venir → je viendrai</em>, <em>voir → je verrai</em>, <em>faire → je ferai</em>. Ils sont quatre dans la série ; les huit autres items sont réguliers et se construisent sur l'infinitif, ce que l'explication redit à chaque fois.</p>
+    <p><strong>La correction ne dit pas « non », elle montre où.</strong> La
+    forme écrite est comparée caractère par caractère à la forme attendue :
+    l'élève voit d'un coup si c'est un accent isolé, une terminaison, ou
+    l'auxiliaire qui manque.</p>
+    <p><strong>Ce qui est pardonné, et ce qui ne l'est pas.</strong> Les
+    espaces du début, de la fin et les espaces doubles sont pardonnés — ce
+    sont des accidents de clavier. Les accents ne le sont pas : c'est
+    justement l'objet.</p>
+  </aside>
+
+</main>
+
+<script>
+const CONTENU = {"slug": "temps-n3", "niveau": 3, "generateur": "conjugaison", "activite": 156, "titre": "Hier, et demain", "eyebrow": "Francisation · Niveau 3 · Grammaire transversale", "cle": "francisationTempsN3MaitriseV1", "mode": "ecrire", "consigne": "Écrivez le verbe au temps demandé. Seulement le verbe.", "savoirs": ["n3-s29", "n3-s30", "n3-s27", "n3-s28"], "motscles": ["imparfait", "futur simple", "conjugaison", "hier demain", "niveau 3"], "note_prof": "<p>Le niveau 3 ajoute deux temps au présent du niveau 2 : l'imparfait (<code>n3-s29</code>) et le futur simple (<code>n3-s30</code>). L'atelier les mélange, et c'est tout son objet. Séparés, chacun se réussit mécaniquement — on applique une terminaison. Mélangés, il faut d'abord lire le repère de temps de la phrase : <em>avant</em>, <em>l'année passée</em>, <em>la semaine prochaine</em>, <em>dans deux mois</em>.</p><p><strong>L'élève tape, à partir de ce niveau.</strong> Au niveau 2, le même générateur fait choisir : on reconnaît avant de produire. Ici, l'élève écrit — et la correction compare caractère par caractère, ce qui met le doigt sur la vraie difficulté de ces deux temps, qui n'est pas la terminaison mais l'accent : <em>j'étais</em>, <em>je serai</em>, <em>j'achèterai</em>.</p><p><strong>Le piège central de la série : -ais contre -ai.</strong> « Je parlais » et « je parlerai » se ressemblent à l'œil et se distinguent mal à l'oreille au Québec. Quatre items les opposent directement, avec le même verbe dans deux phrases voisines. C'est délibéré : la paire enseigne plus que deux items éloignés.</p><p><strong>Les verbes irréguliers au futur ne se devinent pas</strong> — <em>aller → j'irai</em>, <em>venir → je viendrai</em>, <em>voir → je verrai</em>, <em>faire → je ferai</em>. Ils sont quatre dans la série ; les huit autres items sont réguliers et se construisent sur l'infinitif, ce que l'explication redit à chaque fois.</p>", "items": [{"slug": "avant-habitais", "avant": "Avant, j'", "ok": "habitais", "apres": " à Montréal.", "phrase": "Avant, j'habitais à Montréal.", "infinitif": "habiter", "temps": "imparfait", "sens": "« Avant » demande l'imparfait. Radical habit- + -ais."}, {"slug": "annee-prochaine-habiterai", "avant": "L'année prochaine, j'", "ok": "habiterai", "apres": " plus près du centre.", "phrase": "L'année prochaine, j'habiterai plus près du centre.", "infinitif": "habiter", "temps": "futur simple", "sens": "Le futur se construit sur l'infinitif entier : habiter + ai. Un seul i à la fin, pas -ais."}, {"slug": "etait-ferme", "avant": "Hier, la pharmacie ", "ok": "était", "apres": " fermée à six heures.", "phrase": "Hier, la pharmacie était fermée à six heures.", "infinitif": "être", "temps": "imparfait", "sens": "Être à l'imparfait : j'étais, tu étais, il était. L'accent aigu sur le é compte."}, {"slug": "sera-ouverte", "avant": "Demain, la pharmacie ", "ok": "sera", "apres": " ouverte jusqu'à vingt heures.", "phrase": "Demain, la pharmacie sera ouverte jusqu'à vingt heures.", "infinitif": "être", "temps": "futur simple", "sens": "Être au futur ne se construit pas sur l'infinitif : je serai, il sera."}, {"slug": "avais-rdv", "avant": "Quand j'", "ok": "avais", "apres": " mal au dos, j'allais à la clinique.", "phrase": "Quand j'avais mal au dos, j'allais à la clinique.", "infinitif": "avoir", "temps": "imparfait", "sens": "L'imparfait dit une habitude passée : quand j'avais mal, j'allais."}, {"slug": "irai-clinique", "avant": "La semaine prochaine, j'", "ok": "irai", "apres": " à la clinique sans rendez-vous.", "phrase": "La semaine prochaine, j'irai à la clinique sans rendez-vous.", "infinitif": "aller", "temps": "futur simple", "sens": "Aller au futur est irrégulier : j'irai. Rien à voir avec allerai, qui n'existe pas."}, {"slug": "prenais-autobus", "avant": "L'hiver passé, je ", "ok": "prenais", "apres": " l'autobus tous les jours.", "phrase": "L'hiver passé, je prenais l'autobus tous les jours.", "infinitif": "prendre", "temps": "imparfait", "sens": "L'imparfait part de « nous prenons » : pren- + -ais."}, {"slug": "prendrai-metro", "avant": "Dans deux mois, je ", "ok": "prendrai", "apres": " le métro pour aller travailler.", "phrase": "Dans deux mois, je prendrai le métro pour aller travailler.", "infinitif": "prendre", "temps": "futur simple", "sens": "L'infinitif prendre perd son e final au futur : je prendrai."}, {"slug": "faisait-menage", "avant": "Le samedi, elle ", "ok": "faisait", "apres": " le ménage avec sa sœur.", "phrase": "Le samedi, elle faisait le ménage avec sa sœur.", "infinitif": "faire", "temps": "imparfait", "sens": "Faire à l'imparfait garde le radical fais- : elle faisait."}, {"slug": "ferai-demande", "avant": "Lundi, je ", "ok": "ferai", "apres": " ma demande de logement.", "phrase": "Lundi, je ferai ma demande de logement.", "infinitif": "faire", "temps": "futur simple", "sens": "Faire au futur perd son ai : je ferai, pas je faireai."}, {"slug": "viendra-visiter", "avant": "Le propriétaire ", "ok": "viendra", "apres": " visiter jeudi.", "phrase": "Le propriétaire viendra visiter jeudi.", "infinitif": "venir", "temps": "futur simple", "sens": "Venir au futur double le d : je viendrai, il viendra."}, {"slug": "travaillais-soir", "avant": "À cette époque, je ", "ok": "travaillais", "apres": " le soir dans un restaurant.", "phrase": "À cette époque, je travaillais le soir dans un restaurant.", "infinitif": "travailler", "temps": "imparfait", "sens": "Deux l et un i : travaill- + -ais. C'est le mot le plus long de la série."}]};
+const items = CONTENU.items;
+const MODE = CONTENU.mode;
+const CLE = CONTENU.cle;
+
+const $ = s => document.querySelector(s), $$ = s => [...document.querySelectorAll(s)];
+const esc = s => String(s).replace(/[&<>"]/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
+const melanger = a => a.map(v => [Math.random(), v]).sort((x, y) => x[0] - y[0]).map(p => p[1]);
+
+/* Ce qui est pardonné se décide ici, une fois : les espaces, rien d'autre. */
+function normaliser(s){ return String(s).trim().replace(/\s+/g, ' '); }
+
+let sonCourant = null, boutonCourant = null;
+function jouer(src, bouton){
+  if (!src) return;
+  if (sonCourant) { sonCourant.pause(); sonCourant.currentTime = 0; }
+  if (boutonCourant) boutonCourant.removeAttribute('aria-busy');
+  sonCourant = new Audio(src); boutonCourant = bouton;
+  bouton.setAttribute('aria-busy', 'true');
+  const fini = () => bouton.removeAttribute('aria-busy');
+  sonCourant.onended = fini; sonCourant.onerror = fini;
+  sonCourant.play().catch(fini);
+}
+
+/* ── Maîtrise ───────────────────────────────────────────────────────── */
+let maitrise = { xp: 0, serie: 0, meilleure: 0, items: Array(items.length).fill(0) };
+try {
+  const brut = JSON.parse(localStorage.getItem(CLE) || 'null');
+  if (brut && Array.isArray(brut.items) && brut.items.length === items.length) maitrise = brut;
+} catch (e) {}
+function sauver(){ try { localStorage.setItem(CLE, JSON.stringify(maitrise)); } catch (e) {} }
+function ajouter(i, points){
+  maitrise.xp = Math.max(0, maitrise.xp + points);
+  maitrise.items[i] = Math.max(-3, Math.min(6, (maitrise.items[i] || 0) + (points > 0 ? 1 : -1)));
+  if (points > 0) { maitrise.serie++; maitrise.meilleure = Math.max(maitrise.meilleure, maitrise.serie); }
+  else maitrise.serie = 0;
+  sauver(); rendreMaitrise();
+}
+function etat(n){
+  if (n >= 4) return ['Sûre', '✓✓'];
+  if (n >= 2) return ['Ça vient', '✓'];
+  if (n >= 0) return ['À revoir', '·'];
+  return ['Difficile', '!'];
+}
+function rendreMaitrise(){
+  $('#bXp').textContent = maitrise.xp;
+  $('#bSerie').textContent = maitrise.serie;
+  $('#bMeilleure').textContent = maitrise.meilleure;
+  $('#bSurs').textContent = maitrise.items.filter(n => n >= 4).length + ' / ' + items.length;
+  $('#score').textContent = maitrise.xp + (maitrise.xp > 1 ? ' points' : ' point');
+  $('#serie').textContent = maitrise.serie > 1 ? 'Série de ' + maitrise.serie : '';
+  $('#corpsTable').innerHTML = items.map((x, i) => {
+    const [mot, glyphe] = etat(maitrise.items[i] || 0);
+    return '<tr><td><strong>' + esc(x.ok) + '</strong></td><td>' + esc(x.phrase) + '</td>'
+      + '<td class="cj-etat"><span aria-hidden="true">' + glyphe + '</span> ' + mot + '</td></tr>';
+  }).join('');
+}
+
+/* ── L'ordre de passage ─────────────────────────────────────────────── */
+let ordre = melanger(items.map((_, i) => i));
+let rang = 0, courant = null, iCourant = 0, repondu = false, choisi = null;
+let melangeCourant = [];
+
+function itemCourant(){
+  iCourant = ordre[rang % ordre.length];
+  courant = items[iCourant];
+  return courant;
+}
+
+function rendreJeu(){
+  const x = courant;
+  $('#avance').textContent = (rang % items.length + 1) + ' / ' + items.length;
+  $('#infinitif').textContent = x.infinitif;
+  $('#temps').textContent = x.temps;
+  $('#ecouter').style.display = x.audio ? '' : 'none';
+  $('#verifier').style.display = (MODE === 'ecrire' && !repondu) ? '' : 'none';
+
+  const rempli = repondu ? esc(x.ok) : '?';
+  $('#phrase').innerHTML = esc(x.avant || '')
+    + '<span class="cj-trou' + (repondu ? '' : ' is-vide') + '">' + rempli + '</span>'
+    + esc(x.apres || '');
+
+  if (MODE === 'ecrire') {
+    if (!$('#saisie')) {
+      $('#aire').innerHTML = '<input type="text" class="cj-saisie" id="saisie" autocomplete="off" '
+        + 'autocapitalize="off" spellcheck="false" aria-label="La forme du verbe">';
+      $('#saisie').addEventListener('keydown', e => {
+        if (e.key === 'Enter') { e.preventDefault(); repondu ? suivant() : verifier(); }
+      });
+    }
+    $('#saisie').disabled = repondu;
+  } else {
+    $('#aire').innerHTML = '<div class="cj-choix" id="choix"></div>';
+    const zone = $('#choix');
+    melangeCourant.forEach(c => {
+      const b = document.createElement('button');
+      b.type = 'button'; b.textContent = c; b.disabled = repondu;
+      if (repondu && c === x.ok) b.classList.add('is-ok');
+      if (repondu && c === choisi && c !== x.ok) b.classList.add('is-no');
+      b.onclick = () => { choisi = c; verifier(); };
+      zone.appendChild(b);
+    });
+  }
+}
+
+function nouveauTour(){
+  itemCourant();
+  repondu = false; choisi = null;
+  $('#retour').textContent = ''; $('#retour').className = 'fb';
+  $('#sens').textContent = ''; $('#compare').innerHTML = '';
+  if ($('#saisie')) { $('#saisie').value = ''; $('#saisie').className = 'cj-saisie'; }
+  melangeCourant = MODE === 'choisir' ? melanger((courant.choix || []).slice()) : [];
+  rendreJeu();
+  if (MODE === 'ecrire' && $('#saisie')) $('#saisie').focus();
+}
+
+/* La comparaison caractère par caractère, sur les chaînes normalisées. On
+   marque tout ce qui diffère, pas seulement le premier écart : l'élève voit
+   d'un coup si c'est un accent isolé ou une terminaison entière. */
+function comparer(attendu, ecrit){
+  const a = [...attendu], b = [...ecrit];
+  const n = Math.max(a.length, b.length);
+  let out = '';
+  for (let i = 0; i < n; i++) {
+    const ca = a[i], cb = b[i];
+    if (cb === undefined) out += '<span class="cj-c cj-c--vide">_</span>';
+    else if (ca === cb) out += '<span class="cj-c cj-c--ok">' + esc(cb === ' ' ? ' ' : cb) + '</span>';
+    else out += '<span class="cj-c cj-c--no">' + esc(cb === ' ' ? ' ' : cb) + '</span>';
+  }
+  return out;
+}
+
+function verifier(){
+  if (repondu) return;
+  const x = courant;
+  let juste, ecrit = '';
+  if (MODE === 'ecrire') {
+    ecrit = normaliser($('#saisie').value);
+    if (!ecrit) return;   // rien à juger : on ne punit pas une case vide
+    /* La casse ne fait pas partie de la forme verbale : « Prends » en début
+       de phrase et « prends » au milieu sont la même conjugaison. */
+    juste = ecrit.toLocaleLowerCase('fr') === normaliser(x.ok).toLocaleLowerCase('fr');
+  } else {
+    juste = choisi === x.ok;
+  }
+  repondu = true;
+
+  const retour = $('#retour');
+  if (juste) {
+    retour.className = 'fb fb--ok';
+    retour.textContent = 'Juste. ' + x.phrase;
+    if (MODE === 'ecrire') $('#saisie').className = 'cj-saisie is-ok';
+    jouer(x.audio, $('#ecouter'));
+  } else {
+    retour.className = 'fb fb--no';
+    retour.textContent = 'On écrit : ' + x.ok;
+    if (MODE === 'ecrire') {
+      $('#saisie').className = 'cj-saisie is-no';
+      $('#compare').innerHTML =
+        '<p class="cj-compare__l">Ce que vous avez écrit</p>'
+        + '<div class="cj-compare">' + comparer(normaliser(x.ok), ecrit) + '</div>'
+        + '<p class="cj-compare__l" style="margin-top:var(--sp-4)">Ce qu\'il fallait écrire</p>'
+        + '<div class="cj-compare">' + esc(normaliser(x.ok)).replace(/ /g, '&nbsp;') + '</div>';
+    }
+  }
+  ajouter(iCourant, juste ? 10 : -3);
+  $('#sens').textContent = x.sens || '';
+  rendreJeu();
+  lmsTrack('exercise_attempted', { correct: juste ? 1 : 0 });
+}
+
+function suivant(){ rang++; nouveauTour(); }
+$('#suivantJeu').onclick = suivant;
+$('#verifier').onclick = verifier;
+$('#ecouter').onclick = () => jouer(courant.audio, $('#ecouter'));
+
+/* ── Toutes les formes ──────────────────────────────────────────────── */
+function rendreFormes(){
+  $('#corpsFormes').innerHTML = items.map(x =>
+    '<tr><td>' + esc(x.infinitif) + '</td><td>' + esc(x.temps) + '</td>'
+    + '<td><strong>' + esc(x.ok) + '</strong></td><td>' + esc(x.phrase) + '</td></tr>').join('');
+}
+
+$('#resetMaitrise').onclick = () => {
+  if (confirm('Tout recommencer ?')) {
+    maitrise = { xp: 0, serie: 0, meilleure: 0, items: Array(items.length).fill(0) };
+    sauver(); rendreMaitrise();
+  }
+};
+
+$$('.step').forEach(s => s.onclick = () => {
+  $$('.step').forEach(x => x.setAttribute('aria-selected', String(x === s)));
+  $$('.view').forEach(v => v.classList.toggle('is-on', v.id === s.dataset.vue));
+});
+$('#profToggle').onclick = () => {
+  const p = $('#panneauProf');
+  const on = p.style.display === 'none';
+  p.style.display = on ? '' : 'none';
+  $('#profToggle').setAttribute('aria-pressed', String(on));
+};
+function presentation(actif){
+  document.body.classList.toggle('is-presentation', actif);
+  $('#presToggle').setAttribute('aria-pressed', String(actif));
+}
+$('#presToggle').onclick = () => presentation(!document.body.classList.contains('is-presentation'));
+$('#sortiePres').onclick = () => presentation(false);
+document.addEventListener('keydown', e => { if (e.key === 'Escape') presentation(false); });
+
+function lmsTrack(event, data) {
+  try { window.parent.postMessage(Object.assign({ lms: true, event: event }, data || {}), '*'); } catch (e) {}
+  try {
+    const up = new URLSearchParams(window.parent.location.search);
+    const code = up.get('code'), actId = parseInt(up.get('activityId')) || null, title = up.get('title') || '';
+    if (code && actId) {
+      fetch('/api/student/progress', {
+        method: 'POST', headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(Object.assign({ code, activityId: actId, activityTitle: title, event }, data || {})),
+      }).catch(() => {});
+    }
+  } catch (e2) {}
+}
+
+nouveauTour();
+rendreFormes();
+rendreMaitrise();
+lmsTrack('file_opened');
+</script>
+</body>
+</html>
