@@ -2,9 +2,10 @@
 """
 Le manuel de l'élève d'un niveau : toutes ses fiches en un seul PDF relié.
 
-    python3 build/manuel_eleve.py 4              # le manuel du niveau 4
-    python3 build/manuel_eleve.py 4 --html       # s'arrête au HTML (débogage)
-    python3 build/manuel_eleve.py 4 --ou X.pdf   # ailleurs que par défaut
+    python3 build/manuel_eleve.py 4                      # format atelier
+    python3 build/manuel_eleve.py 4 --format condense    # relié, 9,3 pt
+    python3 build/manuel_eleve.py 4 --format serre       # relié, 8,6 pt
+    python3 build/manuel_eleve.py 4 --ou X.pdf           # ailleurs que par défaut
 
 Pourquoi ce fichier existe
 --------------------------
@@ -66,14 +67,27 @@ MOIS = ['janvier', 'février', 'mars', 'avril', 'mai', 'juin', 'juillet',
 # « e » = Je me lance. Le nom complet vient du registre, bloc par bloc.
 NOMS_BLOCS = {'A': 'Je découvre', 'E': 'Je me lance'}
 
-# Deux formats, un seul contenu. Le format « atelier » reprend la fiche telle
-# qu'elle est photocopiée — une séance, ses pages à elle. Le format
-# « condensé » est le même texte relié comme un livre : corps plus petit,
-# blocs resserrés, les séances qui s'enchaînent au lieu de repartir chacune en
-# haut d'une page. Rien n'est retiré, sauf ce qui n'a de sens que sur une
-# feuille volante : la ligne « Nom / Date » de chaque fiche (le manuel en porte
-# une sur sa couverture) et le pied de page répété (le folio le remplace).
-CONDENSE = False
+# Trois formats, un seul contenu — rien n'est jamais retiré d'un format à
+# l'autre, sauf ce qui n'a de sens que sur une feuille volante : la ligne
+# « Nom / Date » de chaque fiche (le manuel en porte une sur sa couverture) et
+# le pied de page répété (le folio le remplace).
+#
+#   · `atelier` — la fiche telle qu'elle est photocopiée, une séance par page.
+#   · `condense` — le même texte relié comme un livre : 9,3 pt, blocs
+#     resserrés, les séances qui s'enchaînent, les listes courtes sur deux
+#     colonnes, les longs exercices autorisés à se couper entre deux pages.
+#   · `serre` — le condensé poussé d'un cran : 8,6 pt, marges de 9 mm, lignes
+#     à écrire de 5 mm. La moitié des pages du format atelier.
+#
+# Le corps de 8,6 pt reste lisible mais il est petit : c'est un format de
+# consultation, pas la feuille qu'on met devant un élève en classe.
+FORMATS = ('atelier', 'condense', 'serre')
+FORMAT = 'atelier'
+
+
+def relie():
+    """Vrai dès que le manuel est composé comme un livre."""
+    return FORMAT in ('condense', 'serre')
 
 
 # ───────────────────────────── les fiches ──────────────────────────────
@@ -115,12 +129,70 @@ def depiece_fiche(chemin):
     corps = re.search(r'<body[^>]*>(.*)</body>', t, re.S)
     corps = corps.group(1).strip() if corps else ''
     corps = _BALISES_ECHAPPEES.sub(r'<\1\2>', corps)
+    if relie():
+        corps = deux_colonnes(corps)
     titre = re.search(r'<h1[^>]*>(.*?)</h1>', t, re.S)
     eye = re.search(r'<div class="eyebrow">(.*?)</div>', t, re.S)
     chap = re.search(r'<p class="chapeau">(.*?)</p>', t, re.S)
     denude = lambda s: re.sub(r'\s+', ' ', re.sub(r'<[^>]+>', '', s or '')).strip()
     return denude(titre and titre.group(1)), denude(eye and eye.group(1)), \
         denude(chap and chap.group(1)), corps
+
+
+# Deux colonnes quand les items sont courts. Une question de vrai ou faux tient
+# en quarante caractères et occupait toute la largeur de la page, sa ligne de
+# réponse avec : la moitié droite de la feuille ne portait rien. Le nombre de
+# colonnes ne se décide pas en CSS — il faut regarder le texte —, donc il se
+# décide ici, liste par liste, et seulement en format condensé.
+_LISTE = re.compile(r'<ol class="(ex|obj)">(.*?)</ol>', re.S)
+_ITEM = re.compile(r'<li>(.*?)</li>', re.S)
+_QUESTION = re.compile(r'<span class="q">(.*?)</span>', re.S)
+
+# Un item qui repasse sur deux lignes dans une demi-colonne occupe la même
+# hauteur qu'une ligne pleine largeur : la colonne ne perd donc rien tant que
+# l'item ne déborde pas de beaucoup. Le seuil ne protège que contre les phrases
+# à rallonge, qui casseraient mal. Mesuré sur les 2 189 listes du niveau 4 :
+# 983 tiennent en 45 caractères, 2 018 en 70.
+LARGEUR_COLONNE = 80
+ITEMS_MINIMUM = 4
+
+# Un bloc ne se coupe jamais entre deux pages — c'est la règle des fiches, et
+# elle est juste sur une feuille volante. Dans un manuel, un exercice de dix
+# items qui ne tient pas dans le bas d'une page laisse un quart de page blanc,
+# et recommence à la page suivante. Au-delà de ce nombre d'items, on autorise
+# la coupe : le titre reste attaché à son début (`h2.t{break-after:avoid}`).
+ITEMS_SECABLES = 6
+
+
+def deux_colonnes(corps):
+    """Marque les listes assez courtes pour tenir sur deux colonnes."""
+    def marque(m):
+        classe, dedans = m.group(1), m.group(2)
+        items = _ITEM.findall(dedans)
+        if len(items) < ITEMS_MINIMUM:
+            return m.group(0)
+        textes = []
+        for item in items:
+            q = _QUESTION.search(item)
+            textes.append(re.sub(r'\s+', ' ',
+                                 re.sub(r'<[^>]+>', '', q.group(1) if q else item)).strip())
+        if max((len(t) for t in textes), default=0) > LARGEUR_COLONNE:
+            return m.group(0)
+        return '<ol class="%s %s--2col">%s</ol>' % (classe, classe, dedans)
+    return _SECABLE.sub(secable, _LISTE.sub(marque, corps))
+
+
+# Le bloc d'un exercice long : on le rend sécable en le marquant à la source,
+# faute de pouvoir compter ses items en CSS.
+_SECABLE = re.compile(r'<section class="bloc card">(?=(?:(?!</section>).)*?'
+                      r'<ol class="ex[ "])((?:(?!</section>).)*?)</section>', re.S)
+
+
+def secable(m):
+    dedans = m.group(1)
+    if len(_ITEM.findall(dedans)) < ITEMS_SECABLES:
+        return m.group(0)
+    return '<section class="bloc card bloc--secable">%s</section>' % dedans
 
 
 def feuille_des_fiches(slug):
@@ -360,7 +432,11 @@ def part_module(slug, m, situation, feuille):
 
 
 def page_html(titre, corps, feuille):
-    supplement = SUPPLEMENT + (CONDENSATION if CONDENSE else '')
+    supplement = SUPPLEMENT
+    if relie():
+        supplement += CONDENSATION
+    if FORMAT == 'serre':
+        supplement += SERRAGE
     return """<!DOCTYPE html>
 <html lang="fr">
 <head>
@@ -519,6 +595,15 @@ body{font-size:9.3pt; line-height:1.36}
 h2.t{font-size:11.5pt; margin-bottom:4px}
 .consigne{font-size:9.3pt; margin-bottom:5px}
 ol.obj li{margin-bottom:3px} ol.ex li{margin-bottom:5px}
+ol.ex--2col, ol.obj--2col{columns:2; column-gap:10mm}
+ol.ex--2col li, ol.obj--2col li{break-inside:avoid; page-break-inside:avoid}
+/* Une ligne de réponse en demi-largeur reste une ligne de réponse : c'est le
+   blanc à droite d'une question de six mots qui disparaît, pas la place où
+   l'élève écrit. */
+ol.ex--2col .ligne--court{width:80%}
+.bloc--secable{break-inside:auto; page-break-inside:auto}
+.bloc--secable h2.t, .bloc--secable .lbl, .bloc--secable .consigne{
+  break-after:avoid; page-break-after:avoid}
 ol.obj li, ol.ex li{padding-left:7mm}
 ol.obj li::before, ol.ex li::before{width:5mm; height:5mm; font-size:8pt}
 .ligne{height:6mm}
@@ -550,6 +635,24 @@ ol.sommaire-ml{columns:3}
 .tdm .cols{columns:3; column-gap:12px}
 .tdm h1{font-size:22pt} .tdm .intro{font-size:9.5pt; margin-bottom:10px}
 .tdm .mod-t{font-size:10.5pt} .tdm ol li{font-size:9pt; padding:0.5px 0}
+"""
+
+
+# Le cran de plus. Mesuré sur `module-consultation` : 58 pages en condensé,
+# 51 en serré. Ce qui reste hors de cette feuille — deux colonnes, blocs
+# sécables — appartient au condensé et vaut pour les deux.
+SERRAGE = """
+/* ── format serré ── */
+@page{margin:9mm 10mm}
+body{font-size:8.6pt; line-height:1.3}
+.fiche{padding:9mm 10mm}
+@media print{ .fiche{padding:0} }
+.card, .regle, .billet{padding:5px 8px 6px}
+.bloc{margin-bottom:5px}
+.ligne{height:5mm}
+h2.t{font-size:10.5pt; margin-bottom:3px}
+.hdr{padding-bottom:4px; margin-bottom:6px}
+.chapeau{font-size:9.4pt; margin-bottom:7px}
 """
 
 
@@ -838,18 +941,18 @@ def main():
                                  formatter_class=argparse.RawDescriptionHelpFormatter)
     ap.add_argument('niveau', type=int, nargs='?', default=4)
     ap.add_argument('--ou', default=None, help='fichier PDF de sortie')
-    ap.add_argument('--condense', action='store_true',
-                    help='format relié : corps plus petit, séances enchaînées')
+    ap.add_argument('--format', choices=FORMATS, default='atelier',
+                    help='atelier (défaut) · condense · serre')
     ap.add_argument('--html', action='store_true',
                     help='garder le HTML de travail (débogage)')
     args = ap.parse_args()
     if not pathlib.Path(CHROME).exists():
         raise SystemExit('!! Chrome est introuvable : %s' % CHROME)
-    global CONDENSE
-    CONDENSE = args.condense
+    global FORMAT
+    FORMAT = args.format
+    suffixe = '' if args.format == 'atelier' else '-' + args.format
     sortie = pathlib.Path(args.ou) if args.ou else DOCUMENTS / (
-        'manuel-eleve-niveau-%d%s.pdf' % (args.niveau,
-                                          '-condense' if args.condense else ''))
+        'manuel-eleve-niveau-%d%s.pdf' % (args.niveau, suffixe))
     construire(args.niveau, sortie, garder_html=args.html)
     return 0
 
