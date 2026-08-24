@@ -44,18 +44,15 @@ import sys
 
 ROOT = pathlib.Path(__file__).resolve().parent.parent
 sys.path.insert(0, str(pathlib.Path(__file__).resolve().parent))
+from banque import paires_pour, option_niveau  # noqa: E402
+
+# Le nom de la famille dans le registre : c'est par lui que ce fichier
+# retrouve ses ateliers, à tous les niveaux.
+GENERATEUR = 'oreille'
 INTER = ROOT / 'assets/interactive'
 
 from pictos import TOUS as PICTOS
 
-ATELIERS = [
-    ('voyelles-n1',       140),
-    ('consonnes-n1',      141),
-    ('e-muet-n1',         142),
-    ('intonation-n1',     143),
-    ('formes-rapides-n1', 144),
-    ('jean-dit-n1',       145),
-]
 
 SPEAKER = ('<svg viewBox="0 0 50 50" fill="currentColor" aria-hidden="true">'
            '<path d="M27 6.5c0-1.2-1.4-1.9-2.4-1.1L13.8 14H6c-1.1 0-2 .9-2 2v18c0 1.1.9 2 2 2h7.8l10.8 8.6c1 .8 2.4.1 2.4-1.1V6.5z"/>'
@@ -68,7 +65,7 @@ GABARIT = r'''<!DOCTYPE html>
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>@@TITRE@@ — Niveau 1</title>
+<title>@@TITRE@@ — Niveau @@NIVEAU@@</title>
 <link rel="stylesheet" href="/assets/design-system/styles.css">
 <link rel="stylesheet" href="/assets/design-system/marque-saaf.css">
 <link rel="icon" type="image/svg+xml" href="/assets/design-system/marque-saaf-favicon.svg">
@@ -79,7 +76,7 @@ GABARIT = r'''<!DOCTYPE html>
    Aucune couleur en dur : uniquement des jetons du système de design.
    Le repérage est celui du niveau 1 — framboise.
    ══════════════════════════════════════════════════════════════════════ */
-body { --sec: var(--niv-1-line); --sec-soft: var(--niv-1-bg); }
+body { --sec: var(--niv-@@NIVEAU@@-line); --sec-soft: var(--niv-@@NIVEAU@@-bg); }
 
 .or-band { padding: var(--sp-5) 0; }
 .or-band__in { max-width: var(--content-max); margin: 0 auto; padding: 0 var(--gutter);
@@ -598,6 +595,7 @@ def rendre(slug):
     controler(slug, c)
     return (GABARIT
             .replace('@@SPEAKER@@', SPEAKER)
+            .replace('@@NIVEAU@@', str(c['niveau']))
             .replace('@@TITRE@@', c['titre'])
             .replace('@@EYEBROW@@', c['eyebrow'])
             .replace('@@CONSIGNE@@', c['consigne'])
@@ -613,17 +611,17 @@ def etat_audio():
     est ce qui décide de son inscription dans data/activities.json.
     """
     pret = 0
-    for slug, num in ATELIERS:
+    for slug, num in paires_pour(GENERATEUR, niveau):
         f = INTER / slug / 'contenu.json'
         if not f.exists():
             print('  · %-18s : pas de contenu' % slug); continue
         c = json.loads(io.open(f, encoding='utf-8').read())
         manquants = [it for it in c['items'] if not (INTER / slug / it['audio']).exists()]
         if manquants:
-            print('  ✗ %-18s (activité %d) : %d extrait(s) manquant(s) sur %d — hors catalogue'
+            print('  ✗ %-18s (activité %s) : %d extrait(s) manquant(s) sur %d — hors catalogue'
                   % (slug, num, len(manquants), len(c['items'])))
         else:
-            print('  ✓ %-18s (activité %d) : %d extraits, prêt pour le catalogue'
+            print('  ✓ %-18s (activité %s) : %d extraits, prêt pour le catalogue'
                   % (slug, num, len(c['items']))); pret += 1
     print('\n%d atelier(s) sur %d prêt(s).' % (pret, len(ATELIERS)))
     print("Tant qu'un atelier n'est pas prêt, ne l'inscrivez pas dans")
@@ -633,28 +631,29 @@ def etat_audio():
 
 
 def main(argv):
+    niveau, argv = option_niveau(argv)
     if '--audio' in argv:
         return etat_audio()
     verifier = '--verifier' in argv
     voulus = [a for a in argv if not a.startswith('--')]
     ecart = 0
-    for slug, num in ATELIERS:
+    for slug, num in paires_pour(GENERATEUR, niveau):
         if voulus and not any(v in slug for v in voulus):
             continue
         if not (INTER / slug / 'contenu.json').exists():
-            print('  · %-18s (activité %d) : contenu pas encore écrit' % (slug, num))
+            print('  · %-18s (activité %s) : contenu pas encore écrit' % (slug, num))
             continue
         cible = INTER / slug / ('%s-activite-interactive.html' % slug)
         neuf = rendre(slug)
         actuel = io.open(cible, encoding='utf-8').read() if cible.exists() else ''
         if actuel == neuf:
-            print('  = %-18s (activité %d) : à jour' % (slug, num))
+            print('  = %-18s (activité %s) : à jour' % (slug, num))
         elif verifier:
-            print('  ≠ %-18s (activité %d) : à regénérer' % (slug, num)); ecart = 1
+            print('  ≠ %-18s (activité %s) : à regénérer' % (slug, num)); ecart = 1
         else:
             cible.parent.mkdir(parents=True, exist_ok=True)
             io.open(cible, 'w', encoding='utf-8').write(neuf)
-            print('  → %-18s (activité %d) : écrit (%d octets)' % (slug, num, len(neuf)))
+            print('  → %-18s (activité %s) : écrit (%d octets)' % (slug, num, len(neuf)))
     return ecart
 
 

@@ -48,23 +48,16 @@ import sys
 
 ROOT = pathlib.Path(__file__).resolve().parent.parent
 sys.path.insert(0, str(pathlib.Path(__file__).resolve().parent))
+from banque import paires_pour, option_niveau  # noqa: E402
+
+# Le nom de la famille dans le registre : c'est par lui que ce fichier
+# retrouve ses ateliers, à tous les niveaux.
+GENERATEUR = 'appariement'
 INTER = ROOT / 'assets/interactive'
 
 # Les cinq ateliers de la famille. Le numéro d'activité est réservé dans
 # docs/deux-agents-en-parallele.md ; il ne sert pas au build, il est ici pour
 # qu'on sache de quoi on parle sans ouvrir le catalogue.
-ATELIERS = [
-    ('heure-n1',        125),
-    ('abreviations-n1', 126),
-    ('dates-n1',        127),
-    ('chiffres-n1',     128),
-    ('panneaux-n1',     129),
-    # « Grande et petite » vient de la famille D du plan. Il a atterri ici
-    # parce que majuscule / minuscule / écriture à la main sont trois
-    # registres d'une même lettre : c'est la forme de cette famille, au
-    # niveau de la lettre plutôt que du mot. Un générateur de moins.
-    ('lettres-n1',      136),
-]
 
 # Le haut-parleur du système de design, recopié tel quel — on ne le redessine
 # pas (même source que build/polices.py et build/vocab_flash.py).
@@ -86,7 +79,7 @@ GABARIT = r'''<!DOCTYPE html>
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>@@TITRE@@ — Niveau 1</title>
+<title>@@TITRE@@ — Niveau @@NIVEAU@@</title>
 <link rel="stylesheet" href="/assets/design-system/styles.css">
 <link rel="stylesheet" href="/assets/design-system/marque-saaf.css">
 <link rel="icon" type="image/svg+xml" href="/assets/design-system/marque-saaf-favicon.svg">
@@ -102,7 +95,7 @@ GABARIT = r'''<!DOCTYPE html>
    Aucune couleur en dur hors des pictogrammes, qui portent les couleurs
    réelles de la signalisation. Le repérage est celui du niveau 1.
    ══════════════════════════════════════════════════════════════════════ */
-body { --sec: var(--niv-1-line); --sec-soft: var(--niv-1-bg); }
+body { --sec: var(--niv-@@NIVEAU@@-line); --sec-soft: var(--niv-@@NIVEAU@@-bg); }
 
 .ap-band { padding: var(--sp-5) 0; }
 .ap-band__in { max-width: var(--content-max); margin: 0 auto; padding: 0 var(--gutter);
@@ -697,6 +690,7 @@ def rendre(slug):
 
     return (GABARIT
             .replace('@@SPEAKER@@', SPEAKER)
+            .replace('@@NIVEAU@@', str(c['niveau']))
             .replace('@@TITRE@@', c['titre'])
             .replace('@@EYEBROW@@', c['eyebrow'])
             .replace('@@COLS@@', str(len(c['registres'])))
@@ -710,24 +704,25 @@ def rendre(slug):
 
 
 def main(argv):
+    niveau, argv = option_niveau(argv)
     verifier = '--verifier' in argv
     voulus = [a for a in argv if not a.startswith('--')]
     ecart = 0
-    for slug, num in ATELIERS:
+    for slug, num in paires_pour(GENERATEUR, niveau):
         if voulus and not any(v in slug for v in voulus):
             continue
         cible = INTER / slug / ('%s-activite-interactive.html' % slug)
         neuf = rendre(slug)
         actuel = io.open(cible, encoding='utf-8').read() if cible.exists() else ''
         if actuel == neuf:
-            print('  = %-18s (activité %d) : à jour' % (slug, num))
+            print('  = %-18s (activité %s) : à jour' % (slug, num))
         elif verifier:
-            print('  ≠ %-18s (activité %d) : à regénérer' % (slug, num))
+            print('  ≠ %-18s (activité %s) : à regénérer' % (slug, num))
             ecart = 1
         else:
             cible.parent.mkdir(parents=True, exist_ok=True)
             io.open(cible, 'w', encoding='utf-8').write(neuf)
-            print('  → %-18s (activité %d) : écrit (%d octets)' % (slug, num, len(neuf)))
+            print('  → %-18s (activité %s) : écrit (%d octets)' % (slug, num, len(neuf)))
     return ecart
 
 

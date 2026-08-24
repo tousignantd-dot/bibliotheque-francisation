@@ -41,18 +41,15 @@ import sys
 
 ROOT = pathlib.Path(__file__).resolve().parent.parent
 INTER = ROOT / 'assets/interactive'
+sys.path.insert(0, str(pathlib.Path(__file__).resolve().parent))
+from banque import paires_pour, option_niveau  # noqa: E402
+
+# Le nom de la famille dans le registre : c'est par lui que ce fichier
+# retrouve ses ateliers, à tous les niveaux.
+GENERATEUR = 'phrase'
 
 # Les ateliers de la famille. Le numéro est réservé dans
 # docs/deux-agents-en-parallele.md ; il ne sert pas au build.
-ATELIERS = [
-    ('phrase-ordre-n1',   130),
-    ('question-n1',       131),
-    ('negatif-n1',        132),
-    ('possessifs-n1',     133),
-    ('feminin-n1',        134),
-    ('nombres-phrase-n1', 135),
-    ('syllabes-n1',       137),
-]
 
 SPEAKER = ('<svg viewBox="0 0 50 50" fill="currentColor" aria-hidden="true">'
            '<path d="M27 6.5c0-1.2-1.4-1.9-2.4-1.1L13.8 14H6c-1.1 0-2 .9-2 2v18c0 1.1.9 2 2 2h7.8l10.8 8.6c1 .8 2.4.1 2.4-1.1V6.5z"/>'
@@ -65,7 +62,7 @@ GABARIT = r'''<!DOCTYPE html>
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>@@TITRE@@ — Niveau 1</title>
+<title>@@TITRE@@ — Niveau @@NIVEAU@@</title>
 <link rel="stylesheet" href="/assets/design-system/styles.css">
 <link rel="stylesheet" href="/assets/design-system/marque-saaf.css">
 <link rel="icon" type="image/svg+xml" href="/assets/design-system/marque-saaf-favicon.svg">
@@ -76,7 +73,7 @@ GABARIT = r'''<!DOCTYPE html>
    Aucune couleur en dur : uniquement des jetons du système de design.
    Le repérage est celui du niveau 1 — framboise.
    ══════════════════════════════════════════════════════════════════════ */
-body { --sec: var(--niv-1-line); --sec-soft: var(--niv-1-bg); }
+body { --sec: var(--niv-@@NIVEAU@@-line); --sec-soft: var(--niv-@@NIVEAU@@-bg); }
 
 .ph-band { padding: var(--sp-5) 0; }
 .ph-band__in { max-width: var(--content-max); margin: 0 auto; padding: 0 var(--gutter);
@@ -599,6 +596,7 @@ def rendre(slug):
     etape1 = 'Je remets en ordre' if c['mode'] == 'ordre' else 'Je choisis'
     return (GABARIT
             .replace('@@SPEAKER@@', SPEAKER)
+            .replace('@@NIVEAU@@', str(c['niveau']))
             .replace('@@TITRE@@', c['titre'])
             .replace('@@EYEBROW@@', c['eyebrow'])
             .replace('@@CONSIGNE@@', c['consigne'])
@@ -608,26 +606,27 @@ def rendre(slug):
 
 
 def main(argv):
+    niveau, argv = option_niveau(argv)
     verifier = '--verifier' in argv
     voulus = [a for a in argv if not a.startswith('--')]
     ecart = 0
-    for slug, num in ATELIERS:
+    for slug, num in paires_pour(GENERATEUR, niveau):
         if voulus and not any(v in slug for v in voulus):
             continue
         if not (INTER / slug / 'contenu.json').exists():
-            print('  · %-18s (activité %d) : contenu pas encore écrit' % (slug, num))
+            print('  · %-18s (activité %s) : contenu pas encore écrit' % (slug, num))
             continue
         cible = INTER / slug / ('%s-activite-interactive.html' % slug)
         neuf = rendre(slug)
         actuel = io.open(cible, encoding='utf-8').read() if cible.exists() else ''
         if actuel == neuf:
-            print('  = %-18s (activité %d) : à jour' % (slug, num))
+            print('  = %-18s (activité %s) : à jour' % (slug, num))
         elif verifier:
-            print('  ≠ %-18s (activité %d) : à regénérer' % (slug, num)); ecart = 1
+            print('  ≠ %-18s (activité %s) : à regénérer' % (slug, num)); ecart = 1
         else:
             cible.parent.mkdir(parents=True, exist_ok=True)
             io.open(cible, 'w', encoding='utf-8').write(neuf)
-            print('  → %-18s (activité %d) : écrit (%d octets)' % (slug, num, len(neuf)))
+            print('  → %-18s (activité %s) : écrit (%d octets)' % (slug, num, len(neuf)))
     return ecart
 
 
