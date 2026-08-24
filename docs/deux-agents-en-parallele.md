@@ -12,10 +12,21 @@ la paire change, on réécrit la répartition, pas le protocole.
 
 ## La répartition en cours
 
-**L'activité 124 est réservée** — atelier « Même mot, autre police »,
-niveau 1, produite le 24 août 2026. Ce n'est pas un module : ni entrée dans
-`build/powerpoints/modules.py`, ni séances, ni fiches. Elle touche
-`data/activities.json` une seule fois.
+**Les activités 124 à 145 sont réservées** — la banque du niveau 1,
+produite le 24 août 2026. Ce ne sont **pas des modules** : aucune entrée dans
+`build/powerpoints/modules.py`, aucune séance, aucune fiche. Elles touchent
+`data/activities.json` une seule fois, à la livraison.
+
+| Numéros | Famille | Générateur |
+|---|---|---|
+| 124 | A · apparier — livré | `build/appariement.py` |
+| 125-129 | A · apparier | `build/appariement.py` |
+| 130-135 | C · construire une phrase | `build/phrase.py` |
+| 136-139 | D · écrire et copier | `build/graphie.py` |
+| 140-145 | B · discriminer à l'oreille | `build/oreille.py` |
+
+Le plan complet est dans `docs/plan-exercices-niveau-1.md`. Si une autre
+session a besoin d'un numéro pendant ce chantier, **prendre à partir de 146**.
 
 Les activités 60 à 64 sont livrées ; la file des modules reprend à **65**,
 consigne prête dans `docs/consignes-a-coller.md`. Le journal des vagues est
