@@ -12,9 +12,14 @@ la paire change, on réécrit la répartition, pas le protocole.
 
 ## La répartition en cours
 
-**Personne ne produit en ce moment.** Les activités 60 à 64 sont livrées ; la
-file reprend à **65**, consigne prête dans `docs/consignes-a-coller.md`. Le
-journal des vagues est dans `docs/vagues-suivantes.md`.
+**L'activité 124 est réservée** — atelier « Même mot, autre police »,
+niveau 1, produite le 24 août 2026. Ce n'est pas un module : ni entrée dans
+`build/powerpoints/modules.py`, ni séances, ni fiches. Elle touche
+`data/activities.json` une seule fois.
+
+Les activités 60 à 64 sont livrées ; la file des modules reprend à **65**,
+consigne prête dans `docs/consignes-a-coller.md`. Le journal des vagues est
+dans `docs/vagues-suivantes.md`.
 
 **Les numéros d'activité sont réservés d'avance, et c'est le point le plus
 important de ce fichier.** Le numéro d'activité est la clé qui relie
