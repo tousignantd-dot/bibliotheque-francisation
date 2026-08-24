@@ -1,92 +1,9 @@
-#!/usr/bin/env python3
-"""Famille A — apparier des représentations. Un générateur, cinq ateliers.
-
-La forme : **une même chose, montrée de plusieurs façons, et l'élève reconnaît
-que c'est la même.** Le programme du niveau 1 la demande quatre fois dans le
-seul savoir `n1-s32` (Éléments de graphie) — comprendre différentes
-représentations de l'heure, comprendre les dates abrégées ou non, comprendre
-les abréviations usuelles, comprendre les chiffres arabes — plus une fois dans
-`n1-s28`, décoder les panneaux avec ou sans pictogrammes.
-
-    python3 build/appariement.py             → réécrit les cinq ateliers
-    python3 build/appariement.py heure       → seulement celui-là
-    python3 build/appariement.py --verifier  → dit qui est à jour, n'écrit rien
-
-N'ÉDITEZ PAS LE HTML PRODUIT : le prochain passage l'écraserait. Le contenu
-vit dans `assets/interactive/<slug>/contenu.json` ; la forme vit ici.
-
-Ce que ce fichier ne fait pas
------------------------------
-Il ne reprend **pas** `polices-n1` (activité 124), qui reste sur son propre
-`build/polices.py`. Le plan annonçait la fusion ; elle est repoussée, pour une
-raison qui vaut d'être écrite. Les deux exercices se ressemblent pour l'élève,
-mais leur contenu n'a pas le même modèle : dans `polices-n1`, les six faces
-d'un mot sont **calculées** par la casse et la police, alors qu'ici chaque face
-est **donnée** (« 14 h 30 », « 2:30 PM », les aiguilles). Fondre les deux
-demanderait un mode de plus dans ce script et la réécriture d'une activité
-livrée et vérifiée — le genre de refonte que ce dépôt a déjà payé une fois. La
-fusion se fera le jour où l'on pourra comparer l'ancien et le neuf octet pour
-octet, pas avant.
-
-Les quatre types de face
-------------------------
-`texte` — une chaîne, rendue dans l'une des quatre écritures (`cahier`,
-`formulaire`, `panneau`, `main`) ; `horloge` — « 14:30 », dessiné en aiguilles ;
-`points` — un entier, dessiné en pastilles à compter ; `picto` — un nom pris
-dans la bibliothèque `PICTOS` ci-dessous.
-
-**Les pictogrammes sont dessinés, jamais générés.** Un modèle d'image écrit du
-charabia dès qu'un panneau porte une inscription (voir `CLAUDE.md`, « Les
-images d'un module ») — et un pictogramme est justement de la géométrie, pas
-une photo. Ils sont donc en SVG dans ce fichier : cadre (forme + couleur, qui
-portent la moitié du sens dans la vraie signalisation) plus un glyphe simple.
-"""
-import io
-import json
-import pathlib
-import sys
-
-ROOT = pathlib.Path(__file__).resolve().parent.parent
-sys.path.insert(0, str(pathlib.Path(__file__).resolve().parent))
-INTER = ROOT / 'assets/interactive'
-
-# Les cinq ateliers de la famille. Le numéro d'activité est réservé dans
-# docs/deux-agents-en-parallele.md ; il ne sert pas au build, il est ici pour
-# qu'on sache de quoi on parle sans ouvrir le catalogue.
-ATELIERS = [
-    ('heure-n1',        125),
-    ('abreviations-n1', 126),
-    ('dates-n1',        127),
-    ('chiffres-n1',     128),
-    ('panneaux-n1',     129),
-    # « Grande et petite » vient de la famille D du plan. Il a atterri ici
-    # parce que majuscule / minuscule / écriture à la main sont trois
-    # registres d'une même lettre : c'est la forme de cette famille, au
-    # niveau de la lettre plutôt que du mot. Un générateur de moins.
-    ('lettres-n1',      136),
-]
-
-# Le haut-parleur du système de design, recopié tel quel — on ne le redessine
-# pas (même source que build/polices.py et build/vocab_flash.py).
-SPEAKER = ('<svg viewBox="0 0 50 50" fill="currentColor" aria-hidden="true">'
-           '<path d="M27 6.5c0-1.2-1.4-1.9-2.4-1.1L13.8 14H6c-1.1 0-2 .9-2 2v18c0 1.1.9 2 2 2h7.8l10.8 8.6c1 .8 2.4.1 2.4-1.1V6.5z"/>'
-           '<path d="M33.4 17.6c-.7-.6-1.8-.5-2.4.2-.6.7-.5 1.8.2 2.4 1.6 1.4 2.6 3.4 2.6 5.7s-1 4.3-2.6 5.7c-.7.6-.8 1.7-.2 2.4.6.7 1.7.8 2.4.2 2.3-2 3.7-5 3.7-8.3s-1.4-6.3-3.7-8.3z"/>'
-           '<path d="M38.5 11.2c-.7-.5-1.8-.4-2.3.4-.5.7-.4 1.8.4 2.3 3.6 2.6 5.9 6.9 5.9 11.6s-2.3 9-5.9 11.6c-.8.5-.9 1.6-.4 2.3.5.8 1.6.9 2.3.4C43 36.7 46 31.1 46 25s-3-11.7-7.5-13.8z"/>'
-           '</svg>')
-
-# Les pictogrammes vivent dans `build/pictos.py`, partagé avec
-# `build/oreille.py` : la famille B fait cliquer des consignes en images, et
-# deux copies d'un même dessin divergeraient à la première retouche. Le jeu
-# `SIGNALISATION` est celui des panneaux ; le déplacement n'a pas changé un
-# octet du HTML produit, ce que `--verifier` confirme.
-from pictos import SIGNALISATION as PICTOS
-
-GABARIT = r'''<!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="fr">
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>@@TITRE@@ — Niveau 1</title>
+<title>Grande et petite — Niveau 1</title>
 <link rel="stylesheet" href="/assets/design-system/styles.css">
 <link rel="stylesheet" href="/assets/design-system/marque-saaf.css">
 <link rel="icon" type="image/svg+xml" href="/assets/design-system/marque-saaf-favicon.svg">
@@ -257,8 +174,8 @@ body { --sec: var(--niv-1-line); --sec-soft: var(--niv-1-bg); }
   </div>
   <div class="ap-band__in">
     <div>
-      <p class="band__eyebrow">@@EYEBROW@@</p>
-      <h1 class="ap-band__t">@@TITRE@@</h1>
+      <p class="band__eyebrow">Francisation · Niveau 1 · Éléments de graphie</p>
+      <h1 class="ap-band__t">Grande et petite</h1>
     </div>
     <div class="ap-band__a">
       <button type="button" class="btn btn--ghost btn--sm" id="profToggle" aria-pressed="false">Mode enseignant</button>
@@ -282,7 +199,7 @@ body { --sec: var(--niv-1-line); --sec-soft: var(--niv-1-bg); }
   <section class="view is-on" id="vueRegarder">
     <div class="ap-layout">
       <aside class="ap-cote">
-        <p class="ap-lbl">@@LISTE_TITRE@@ <span id="vus"></span></p>
+        <p class="ap-lbl">L'alphabet <span id="vus"></span></p>
         <div class="ap-liste" id="listeItems"></div>
       </aside>
 
@@ -297,10 +214,10 @@ body { --sec: var(--niv-1-line); --sec-soft: var(--niv-1-bg); }
             <div class="ap-nom" id="nom"></div>
             <p class="ap-ou" id="ou"></p>
           </div>
-          <button type="button" class="btn btn--audio" id="ecouter">@@SPEAKER@@Écouter</button>
+          <button type="button" class="btn btn--audio" id="ecouter"><svg viewBox="0 0 50 50" fill="currentColor" aria-hidden="true"><path d="M27 6.5c0-1.2-1.4-1.9-2.4-1.1L13.8 14H6c-1.1 0-2 .9-2 2v18c0 1.1.9 2 2 2h7.8l10.8 8.6c1 .8 2.4.1 2.4-1.1V6.5z"/><path d="M33.4 17.6c-.7-.6-1.8-.5-2.4.2-.6.7-.5 1.8.2 2.4 1.6 1.4 2.6 3.4 2.6 5.7s-1 4.3-2.6 5.7c-.7.6-.8 1.7-.2 2.4.6.7 1.7.8 2.4.2 2.3-2 3.7-5 3.7-8.3s-1.4-6.3-3.7-8.3z"/><path d="M38.5 11.2c-.7-.5-1.8-.4-2.3.4-.5.7-.4 1.8.4 2.3 3.6 2.6 5.9 6.9 5.9 11.6s-2.3 9-5.9 11.6c-.8.5-.9 1.6-.4 2.3.5.8 1.6.9 2.3.4C43 36.7 46 31.1 46 25s-3-11.7-7.5-13.8z"/></svg>Écouter</button>
         </div>
 
-        <div class="ap-planche" id="planche" style="--cols:@@COLS@@"></div>
+        <div class="ap-planche" id="planche" style="--cols:3"></div>
 
         <div class="ap-pied">
           <p class="ap-ou" id="rappel"></p>
@@ -320,13 +237,13 @@ body { --sec: var(--niv-1-line); --sec-soft: var(--niv-1-bg); }
         <span id="serieTrouver"></span>
       </div>
       <div class="ap-consigne">
-        <p class="ap-consigne__c" id="consigne">@@CONSIGNE@@</p>
+        <p class="ap-consigne__c" id="consigne">Cette lettre est écrite autrement, plus bas. Trouvez-la.</p>
         <div class="ap-cible" id="cible"></div>
       </div>
       <div class="ap-reponses" id="reponses"></div>
       <div class="ap-retour"><p class="fb" id="retour"></p></div>
       <div class="ap-pied">
-        <button type="button" class="btn btn--audio btn--sm" id="ecouterCible">@@SPEAKER@@Écouter</button>
+        <button type="button" class="btn btn--audio btn--sm" id="ecouterCible"><svg viewBox="0 0 50 50" fill="currentColor" aria-hidden="true"><path d="M27 6.5c0-1.2-1.4-1.9-2.4-1.1L13.8 14H6c-1.1 0-2 .9-2 2v18c0 1.1.9 2 2 2h7.8l10.8 8.6c1 .8 2.4.1 2.4-1.1V6.5z"/><path d="M33.4 17.6c-.7-.6-1.8-.5-2.4.2-.6.7-.5 1.8.2 2.4 1.6 1.4 2.6 3.4 2.6 5.7s-1 4.3-2.6 5.7c-.7.6-.8 1.7-.2 2.4.6.7 1.7.8 2.4.2 2.3-2 3.7-5 3.7-8.3s-1.4-6.3-3.7-8.3z"/><path d="M38.5 11.2c-.7-.5-1.8-.4-2.3.4-.5.7-.4 1.8.4 2.3 3.6 2.6 5.9 6.9 5.9 11.6s-2.3 9-5.9 11.6c-.8.5-.9 1.6-.4 2.3.5.8 1.6.9 2.3.4C43 36.7 46 31.1 46 25s-3-11.7-7.5-13.8z"/></svg>Écouter</button>
         <button type="button" class="btn btn--pri btn--sm" id="suivantTrouver">Suivant</button>
       </div>
     </div>
@@ -341,7 +258,7 @@ body { --sec: var(--niv-1-line); --sec-soft: var(--niv-1-bg); }
     </div>
     <div class="card card--flush">
       <table class="ap-table">
-        <thead><tr><th>@@COL1@@</th><th>@@COL2@@</th><th>Où j'en suis</th></tr></thead>
+        <thead><tr><th>Lettre</th><th>Comme dans</th><th>Où j'en suis</th></tr></thead>
         <tbody id="corpsTable"></tbody>
       </table>
     </div>
@@ -352,7 +269,7 @@ body { --sec: var(--niv-1-line); --sec-soft: var(--niv-1-bg); }
 
   <aside class="card" id="panneauProf" style="display:none;margin-top:var(--sp-6)">
     <p class="ap-lbl">Mode enseignant</p>
-    @@NOTE_PROF@@
+    <p>« Utiliser l'alphabet romain » et « distinguer lettres majuscules et lettres minuscules » sont au programme (<code>n1-s32</code>), avec le métalangage qui va avec — lettre, majuscule, minuscule (<code>n1-s30</code>).</p><p><strong>Sept lettres ne changent que de taille</strong> — C, O, S, V, W, X, Z — et dix-neuf changent de forme. Ce sont ces dix-neuf qui coûtent, et quatre d'entre elles s'attrapent entre elles : <strong>b et d, p et q</strong> sont la même forme retournée. Un élève qui les confond n'a pas un problème de mémoire, il a un problème d'orientation — montrez-lui de quel côté part le ventre.</p><p><strong>La troisième colonne est l'écriture à la main</strong>, celle du tableau et celle des notes que vous lui donnerez. C'est souvent la seule qu'il n'a jamais vue avant d'arriver ici.</p>
     <p><strong>La forme est toujours la même</strong> dans les cinq ateliers de
     cette famille : une chose, plusieurs façons de l'écrire ou de la dessiner,
     et l'élève reconnaît que c'est la même. Nommez le registre à voix haute
@@ -366,8 +283,8 @@ body { --sec: var(--niv-1-line); --sec-soft: var(--niv-1-bg); }
 </main>
 
 <script>
-const CONTENU = @@CONTENU@@;
-const PICTOS = @@PICTOS@@;
+const CONTENU = {"slug": "lettres-n1", "titre": "Grande et petite", "eyebrow": "Francisation · Niveau 1 · Éléments de graphie", "cle": "francisationLettresN1MaitriseV1", "liste_titre": "L'alphabet", "etiquette_ou": "Comme dans :", "rappel": "C'est trois fois la même lettre.", "consigne": "Cette lettre est écrite autrement, plus bas. Trouvez-la.", "col1": "Lettre", "col2": "Comme dans", "savoirs": ["n1-s32", "n1-s30"], "note_prof": "<p>« Utiliser l'alphabet romain » et « distinguer lettres majuscules et lettres minuscules » sont au programme (<code>n1-s32</code>), avec le métalangage qui va avec — lettre, majuscule, minuscule (<code>n1-s30</code>).</p><p><strong>Sept lettres ne changent que de taille</strong> — C, O, S, V, W, X, Z — et dix-neuf changent de forme. Ce sont ces dix-neuf qui coûtent, et quatre d'entre elles s'attrapent entre elles : <strong>b et d, p et q</strong> sont la même forme retournée. Un élève qui les confond n'a pas un problème de mémoire, il a un problème d'orientation — montrez-lui de quel côté part le ventre.</p><p><strong>La troisième colonne est l'écriture à la main</strong>, celle du tableau et celle des notes que vous lui donnerez. C'est souvent la seule qu'il n'a jamais vue avant d'arriver ici.</p>", "registres": [{"cle": "majuscule", "nom": "en grande lettre", "type": "texte", "police": "panneau"}, {"cle": "minuscule", "nom": "en petite lettre", "type": "texte", "police": "cahier"}, {"cle": "main", "nom": "écrite à la main", "type": "texte", "police": "main"}], "items": [{"slug": "lettre-a", "nom": "La lettre A", "ou": "le mot « adresse ».", "audio": "audio/lettre-a.mp3", "faces": {"majuscule": "A", "minuscule": "a", "main": "a"}}, {"slug": "lettre-b", "nom": "La lettre B", "ou": "le mot « bonjour ».", "audio": "audio/lettre-b.mp3", "faces": {"majuscule": "B", "minuscule": "b", "main": "b"}}, {"slug": "lettre-c", "nom": "La lettre C", "ou": "le mot « cafétéria ».", "audio": "audio/lettre-c.mp3", "faces": {"majuscule": "C", "minuscule": "c", "main": "c"}}, {"slug": "lettre-d", "nom": "La lettre D", "ou": "le mot « dessin ».", "audio": "audio/lettre-d.mp3", "faces": {"majuscule": "D", "minuscule": "d", "main": "d"}}, {"slug": "lettre-e", "nom": "La lettre E", "ou": "le mot « entrée ».", "audio": "audio/lettre-e.mp3", "faces": {"majuscule": "E", "minuscule": "e", "main": "e"}}, {"slug": "lettre-f", "nom": "La lettre F", "ou": "le mot « fiche ».", "audio": "audio/lettre-f.mp3", "faces": {"majuscule": "F", "minuscule": "f", "main": "f"}}, {"slug": "lettre-g", "nom": "La lettre G", "ou": "le mot « garçon ».", "audio": "audio/lettre-g.mp3", "faces": {"majuscule": "G", "minuscule": "g", "main": "g"}}, {"slug": "lettre-h", "nom": "La lettre H", "ou": "le mot « horloge ».", "audio": "audio/lettre-h.mp3", "faces": {"majuscule": "H", "minuscule": "h", "main": "h"}}, {"slug": "lettre-i", "nom": "La lettre I", "ou": "le mot « inscription ».", "audio": "audio/lettre-i.mp3", "faces": {"majuscule": "I", "minuscule": "i", "main": "i"}}, {"slug": "lettre-j", "nom": "La lettre J", "ou": "le mot « jour ».", "audio": "audio/lettre-j.mp3", "faces": {"majuscule": "J", "minuscule": "j", "main": "j"}}, {"slug": "lettre-k", "nom": "La lettre K", "ou": "le mot « kilo ».", "audio": "audio/lettre-k.mp3", "faces": {"majuscule": "K", "minuscule": "k", "main": "k"}}, {"slug": "lettre-l", "nom": "La lettre L", "ou": "le mot « livre ».", "audio": "audio/lettre-l.mp3", "faces": {"majuscule": "L", "minuscule": "l", "main": "l"}}, {"slug": "lettre-m", "nom": "La lettre M", "ou": "le mot « merci ».", "audio": "audio/lettre-m.mp3", "faces": {"majuscule": "M", "minuscule": "m", "main": "m"}}, {"slug": "lettre-n", "nom": "La lettre N", "ou": "le mot « nom ».", "audio": "audio/lettre-n.mp3", "faces": {"majuscule": "N", "minuscule": "n", "main": "n"}}, {"slug": "lettre-o", "nom": "La lettre O", "ou": "le mot « ouvrir ».", "audio": "audio/lettre-o.mp3", "faces": {"majuscule": "O", "minuscule": "o", "main": "o"}}, {"slug": "lettre-p", "nom": "La lettre P", "ou": "le mot « prénom ».", "audio": "audio/lettre-p.mp3", "faces": {"majuscule": "P", "minuscule": "p", "main": "p"}}, {"slug": "lettre-q", "nom": "La lettre Q", "ou": "le mot « Québec ».", "audio": "audio/lettre-q.mp3", "faces": {"majuscule": "Q", "minuscule": "q", "main": "q"}}, {"slug": "lettre-r", "nom": "La lettre R", "ou": "le mot « remplir ».", "audio": "audio/lettre-r.mp3", "faces": {"majuscule": "R", "minuscule": "r", "main": "r"}}, {"slug": "lettre-s", "nom": "La lettre S", "ou": "le mot « sortie ».", "audio": "audio/lettre-s.mp3", "faces": {"majuscule": "S", "minuscule": "s", "main": "s"}}, {"slug": "lettre-t", "nom": "La lettre T", "ou": "le mot « toilettes ».", "audio": "audio/lettre-t.mp3", "faces": {"majuscule": "T", "minuscule": "t", "main": "t"}}, {"slug": "lettre-u", "nom": "La lettre U", "ou": "le mot « une ».", "audio": "audio/lettre-u.mp3", "faces": {"majuscule": "U", "minuscule": "u", "main": "u"}}, {"slug": "lettre-v", "nom": "La lettre V", "ou": "le mot « vestiaire ».", "audio": "audio/lettre-v.mp3", "faces": {"majuscule": "V", "minuscule": "v", "main": "v"}}, {"slug": "lettre-w", "nom": "La lettre W", "ou": "le mot « wagon ».", "audio": "audio/lettre-w.mp3", "faces": {"majuscule": "W", "minuscule": "w", "main": "w"}}, {"slug": "lettre-x", "nom": "La lettre X", "ou": "le mot « taxi ».", "audio": "audio/lettre-x.mp3", "faces": {"majuscule": "X", "minuscule": "x", "main": "x"}}, {"slug": "lettre-y", "nom": "La lettre Y", "ou": "le mot « yeux ».", "audio": "audio/lettre-y.mp3", "faces": {"majuscule": "Y", "minuscule": "y", "main": "y"}}, {"slug": "lettre-z", "nom": "La lettre Z", "ou": "le mot « zéro ».", "audio": "audio/lettre-z.mp3", "faces": {"majuscule": "Z", "minuscule": "z", "main": "z"}}]};
+const PICTOS = {"sortie": "<rect x=\"4\" y=\"4\" width=\"92\" height=\"92\" rx=\"6\" fill=\"#127A46\"/><rect x=\"20\" y=\"22\" width=\"30\" height=\"56\" rx=\"3\" fill=\"none\" stroke=\"#FFFFFF\" stroke-width=\"6\"/><path d=\"M56 50 H86 M74 38 L86 50 L74 62\" fill=\"none\" stroke=\"#FFFFFF\" stroke-width=\"7\" stroke-linecap=\"round\" stroke-linejoin=\"round\"/>", "premiers-soins": "<rect x=\"4\" y=\"4\" width=\"92\" height=\"92\" rx=\"6\" fill=\"#127A46\"/><path d=\"M50 24 V76 M24 50 H76\" stroke=\"#FFFFFF\" stroke-width=\"14\" stroke-linecap=\"round\"/>", "escalier": "<rect x=\"4\" y=\"4\" width=\"92\" height=\"92\" rx=\"6\" fill=\"#127A46\"/><path d=\"M20 78 H38 V60 H56 V42 H74 V24 H86\" fill=\"none\" stroke=\"#FFFFFF\" stroke-width=\"7\" stroke-linejoin=\"round\" stroke-linecap=\"round\"/>", "accueil": "<rect x=\"4\" y=\"4\" width=\"92\" height=\"92\" rx=\"6\" fill=\"#1A5FA8\"/><circle cx=\"50\" cy=\"27\" r=\"7\" fill=\"#FFFFFF\"/><rect x=\"43\" y=\"41\" width=\"14\" height=\"36\" rx=\"4\" fill=\"#FFFFFF\"/>", "cafeteria": "<rect x=\"4\" y=\"4\" width=\"92\" height=\"92\" rx=\"6\" fill=\"#1A5FA8\"/><path d=\"M32 22 V50 M32 50 V80 M24 22 V40 M40 22 V40 M24 40 H40\" fill=\"none\" stroke=\"#FFFFFF\" stroke-width=\"5\" stroke-linecap=\"round\"/><path d=\"M68 80 V22 c9 4 9 26 0 30\" fill=\"none\" stroke=\"#FFFFFF\" stroke-width=\"5\" stroke-linecap=\"round\" stroke-linejoin=\"round\"/>", "ascenseur": "<rect x=\"4\" y=\"4\" width=\"92\" height=\"92\" rx=\"6\" fill=\"#1A5FA8\"/><path d=\"M36 46 L46 32 L56 46\" fill=\"none\" stroke=\"#FFFFFF\" stroke-width=\"6\" stroke-linecap=\"round\" stroke-linejoin=\"round\"/><path d=\"M36 58 L46 72 L56 58\" fill=\"none\" stroke=\"#FFFFFF\" stroke-width=\"6\" stroke-linecap=\"round\" stroke-linejoin=\"round\"/><rect x=\"66\" y=\"28\" width=\"14\" height=\"48\" rx=\"3\" fill=\"none\" stroke=\"#FFFFFF\" stroke-width=\"5\"/>", "telephone": "<rect x=\"4\" y=\"4\" width=\"92\" height=\"92\" rx=\"6\" fill=\"#1A5FA8\"/><path d=\"M32 26 c-6 0-10 5-9 11 3 20 20 37 40 40 6 1 11-3 11-9 v-8 c0-3-2-5-5-6l-9-2c-3-1-6 1-7 4l-2 4 c-7-4-13-10-17-17l4-2 c3-1 5-4 4-7 l-2-9 c-1-3-3-5-6-5 z\" fill=\"#FFFFFF\"/>", "defense-de-fumer": "<circle cx=\"50\" cy=\"50\" r=\"45\" fill=\"#FFFFFF\" stroke=\"#C8202B\" stroke-width=\"10\"/><line x1=\"19\" y1=\"81\" x2=\"81\" y2=\"19\" stroke=\"#C8202B\" stroke-width=\"10\" stroke-linecap=\"round\"/><rect x=\"26\" y=\"46\" width=\"42\" height=\"10\" rx=\"2\" fill=\"#1B1B1B\"/><rect x=\"71\" y=\"46\" width=\"7\" height=\"10\" rx=\"2\" fill=\"#1B1B1B\"/>", "stationnement-interdit": "<circle cx=\"50\" cy=\"50\" r=\"45\" fill=\"#FFFFFF\" stroke=\"#C8202B\" stroke-width=\"10\"/><line x1=\"19\" y1=\"81\" x2=\"81\" y2=\"19\" stroke=\"#C8202B\" stroke-width=\"10\" stroke-linecap=\"round\"/><path d=\"M38 74 V30 h16 a12 12 0 0 1 0 24 h-16\" fill=\"none\" stroke=\"#1B1B1B\" stroke-width=\"9\" stroke-linecap=\"round\" stroke-linejoin=\"round\"/>", "attention": "<path d=\"M50 6 L96 88 H4 Z\" fill=\"#F2C200\" stroke=\"#1B1B1B\" stroke-width=\"6\" stroke-linejoin=\"round\"/><rect x=\"45\" y=\"34\" width=\"10\" height=\"28\" rx=\"4\" fill=\"#1B1B1B\"/><circle cx=\"50\" cy=\"72\" r=\"6\" fill=\"#1B1B1B\"/>", "plancher-mouille": "<path d=\"M50 6 L96 88 H4 Z\" fill=\"#F2C200\" stroke=\"#1B1B1B\" stroke-width=\"6\" stroke-linejoin=\"round\"/><path d=\"M50 34 c-8 12-14 19-14 26 a14 14 0 0 0 28 0 c0-7-6-14-14-26 z\" fill=\"#1B1B1B\"/>"};
 const items = CONTENU.items;
 const registres = CONTENU.registres;
 const CLE = CONTENU.cle;
@@ -655,81 +572,3 @@ lmsTrack('file_opened');
 </script>
 </body>
 </html>
-'''
-
-CHAMPS = {'slug', 'titre', 'eyebrow', 'cle', 'consigne', 'liste_titre',
-          'etiquette_ou', 'col1', 'col2', 'note_prof', 'registres', 'items'}
-
-
-def rendre(slug):
-    dossier = INTER / slug
-    fichier = dossier / 'contenu.json'
-    if not fichier.exists():
-        sys.exit('!! %s introuvable' % fichier)
-    c = json.loads(io.open(fichier, encoding='utf-8').read())
-
-    manquants = CHAMPS - set(c)
-    if manquants:
-        sys.exit('!! %s : champs manquants — %s' % (slug, ', '.join(sorted(manquants))))
-    if c['slug'] != slug:
-        sys.exit('!! %s : le slug du contenu dit « %s »' % (slug, c['slug']))
-
-    # Un item sans deux faces ne peut pas faire une question : l'énoncé et la
-    # réponse en demandent une chacun. Le dire ici plutôt que de laisser
-    # l'exercice se bloquer chez l'élève.
-    cles = {r['cle'] for r in c['registres']}
-    for it in c['items']:
-        inconnues = set(it['faces']) - cles
-        if inconnues:
-            sys.exit('!! %s / %s : registre inconnu — %s'
-                     % (slug, it['slug'], ', '.join(sorted(inconnues))))
-        portees = [k for k, v in it['faces'].items() if v not in (None, '')]
-        if len(portees) < 2:
-            sys.exit('!! %s / %s : une seule face, l\'item ne peut pas être joué'
-                     % (slug, it['slug']))
-    for r in c['registres']:
-        if r['type'] == 'picto':
-            for it in c['items']:
-                v = it['faces'].get(r['cle'])
-                if v and v not in PICTOS:
-                    sys.exit('!! %s / %s : pictogramme « %s » absent de la bibliothèque'
-                             % (slug, it['slug'], v))
-
-    return (GABARIT
-            .replace('@@SPEAKER@@', SPEAKER)
-            .replace('@@TITRE@@', c['titre'])
-            .replace('@@EYEBROW@@', c['eyebrow'])
-            .replace('@@COLS@@', str(len(c['registres'])))
-            .replace('@@LISTE_TITRE@@', c['liste_titre'])
-            .replace('@@CONSIGNE@@', c['consigne'])
-            .replace('@@COL1@@', c['col1'])
-            .replace('@@COL2@@', c['col2'])
-            .replace('@@NOTE_PROF@@', c['note_prof'])
-            .replace('@@PICTOS@@', json.dumps(PICTOS, ensure_ascii=False))
-            .replace('@@CONTENU@@', json.dumps(c, ensure_ascii=False)))
-
-
-def main(argv):
-    verifier = '--verifier' in argv
-    voulus = [a for a in argv if not a.startswith('--')]
-    ecart = 0
-    for slug, num in ATELIERS:
-        if voulus and not any(v in slug for v in voulus):
-            continue
-        cible = INTER / slug / ('%s-activite-interactive.html' % slug)
-        neuf = rendre(slug)
-        actuel = io.open(cible, encoding='utf-8').read() if cible.exists() else ''
-        if actuel == neuf:
-            print('  = %-18s (activité %d) : à jour' % (slug, num))
-        elif verifier:
-            print('  ≠ %-18s (activité %d) : à regénérer' % (slug, num))
-            ecart = 1
-        else:
-            cible.parent.mkdir(parents=True, exist_ok=True)
-            io.open(cible, 'w', encoding='utf-8').write(neuf)
-            print('  → %-18s (activité %d) : écrit (%d octets)' % (slug, num, len(neuf)))
-    return ecart
-
-
-if __name__ == '__main__':
-    sys.exit(main(sys.argv[1:]))
