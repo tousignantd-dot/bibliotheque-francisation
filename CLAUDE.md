@@ -881,13 +881,132 @@ inventé plutôt que copié.
 
 ## Les ateliers générés
 
-Deux ateliers ne s'écrivent pas à la main. Leur HTML sort d'un script, et
+Aucun de ces ateliers ne s'écrit à la main. Leur HTML sort d'un script, et
 **l'éditer serait perdu au passage suivant** — même règle que les modules.
 
 | Atelier | Script | Contenu |
 |---|---|---|
 | `vocab-flash-sante`, `vocab-flash-conso` | `build/vocab_flash.py` | `assets/interactive/<slug>/mots.json` |
 | `polices-n1` — activité 124 | `build/polices.py` | `assets/interactive/polices-n1/mots.json` |
+| **la banque du niveau 1** — activités 124 à 145 | `build/banque_n1.py` (qui appelle les quatre autres) | `assets/interactive/<slug>/contenu.json` |
+
+## La banque du niveau 1 (activités 124 à 145)
+
+Vingt et un ateliers, **quatre générateurs**, un contrat de contenu. Le plan
+est dans `docs/plan-exercices-niveau-1.md`, le format dans
+`docs/schemas-banque-n1.md`, et l'état réel se lit d'une commande :
+
+```
+python3 build/banque_n1.py --etat       # où en est la banque
+python3 build/banque_n1.py --verifier   # code 1 sur écart, s'enchaîne avec les six autres
+python3 build/banque_n1.py              # reconstruit tout
+```
+
+**Pourquoi une banque plutôt que des modules.** Le niveau 1 n'a que quatre
+situations au programme et les quatre ont leur module (56, 96, 97, 98). Un
+cinquième cours referait ce qui existe. La place restante est dans les
+**savoirs** que les modules ne peuvent pas drainer — douze des trente-deux
+sont phonétiques ou graphiques. Un module de huit séances est le bon prix pour
+une situation, le mauvais pour faire distinguer `a`, `i` et `ou`.
+
+**Quatre familles, quatre formes.** Une famille = une forme d'exercice = un
+générateur. Ajouter un atelier, c'est écrire un `contenu.json`, pas du code.
+
+| Famille | Générateur | Forme | Ateliers |
+|---|---|---|---|
+| A · apparier | `build/appariement.py` | une chose, plusieurs représentations | heure, abréviations, dates, chiffres, panneaux, lettres |
+| B · écouter | `build/oreille.py` | un extrait, on tranche | voyelles, consonnes, e muet, intonation, formes rapides, Jean dit |
+| C · construire | `build/phrase.py` | des morceaux à mettre en place | six ateliers de phrase, plus les syllabes |
+| D · écrire | `build/graphie.py` | on recopie, caractère par caractère | Je recopie ma fiche |
+
+`polices-n1` (124) garde `build/polices.py` : ses faces sont **calculées** par
+la casse et la police, alors que celles de la famille A sont **données**. La
+fusion se fera le jour où l'on pourra comparer l'ancien et le neuf octet pour
+octet — pas avant, c'est une activité livrée et vérifiée.
+
+**Deux exercices du plan sont retombés dans des formes existantes**, et c'est
+une meilleure nouvelle qu'un générateur de plus : les lettres majuscule /
+minuscule sont trois registres d'une même lettre, donc de l'appariement ; les
+syllabes sont des morceaux à remettre en ordre, donc de la phrase.
+
+### Ce qui n'entre pas au catalogue, et pourquoi
+
+Un atelier de la famille B sans ses MP3 n'est pas « muet », il est
+**injouable** : l'extrait *est* la question. Or le portail élève range ces
+ateliers dans le banc des exercices libres, **toujours ouvert, sans date** —
+les y inscrire les offrirait cassés, sans issue. Les six restent donc hors de
+`data/activities.json` jusqu'à ce que `build/oreille.py --audio` les déclare
+prêts. `banque_n1.py` sort en écart si l'on oublie la règle dans un sens ou
+dans l'autre.
+
+### Le banc des exercices libres : un filtre, trois copies
+
+`eleve.html` range un atelier selon `domaineDeVie` testé contre une expression
+régulière. Ce qui passe atterrit dans « Pour vous exercer seul » — sans date,
+sans état, toujours ouvert. La banque emploie deux domaines : **« Graphie et
+sons »** (familles A, B, D) et **« Grammaire transversale »** (famille C, qui
+existait déjà).
+
+**La même expression est écrite en trois endroits** — `eleve.html`
+(`DOMAINES_LIBRES`), `catalogue.html` et `js/enseignant.js` (`DOMAINES_OUTILS`).
+Elles ont été mises d'accord dans le même commit le 24 août 2026, mais trois
+copies d'une règle est le défaut « deux sources pour une idée » que ce dépôt
+connaît déjà. Les unifier est une refonte transversale : à faire quand
+personne d'autre n'écrit, pas au passage.
+
+### Les savoirs sont dans les mots-clés
+
+Chaque activité de la banque porte ses identifiants de savoir
+(`n1-s22`, `n1-s32`…) dans ses `keywords`. La recherche du catalogue les indexe
+déjà : **chercher « n1-s22 » rend les ateliers qui travaillent ce savoir.**
+C'est le routeur prévu au plan — « cet élève n'entend pas *a* de *ou*, je lui
+donne quoi ? » — obtenu sans toucher au diagnostic.
+
+Couverture au 24 août 2026 : **31 savoirs sur 32**. Le seul dehors est
+`n1-s01`, les conventions de la communication — saluer, remercier, se
+reprendre. Ça se travaille en situation, dans un module ; l'isoler dans un
+exercice le viderait.
+
+### Quatre pièges déjà payés
+
+- **La rétroaction effacée par le rendu.** Dans `phrase.py`, `verifier()`
+  posait le retour puis appelait `rendreJeu()`, qui commençait par l'effacer.
+  L'élève n'aurait jamais su si sa phrase était juste, ni en vert ni en rouge.
+  Ni le build, ni la console ne le signalaient — c'est le contrôle automatisé
+  des douze items dans le navigateur qui l'a rendu visible. Le nettoyage
+  appartient au début d'un tour, pas à chaque rendu.
+- **Un contrôle qui a tort coûte plus cher que pas de contrôle.** Le build
+  refusait « J'ai un stylo et un livre » parce que la phrase porte deux tuiles
+  « un ». C'était la méthode qui était fausse : la justesse se juge sur les
+  **mots composés**, jamais sur l'ordre des tuiles.
+- **Un exemple faux dans un contrat de format enseigne une erreur.**
+  `docs/schemas-banque-n1.md` donnait « m'app\[e\]ll\[e\] » comme e muet. Le e
+  du milieu d'*appelle* se prononce \[ɛ\], et le programme le transcrit
+  lui-même. Corrigé, avec la règle en deux temps.
+- **Un pictogramme qui se lit comme une lettre.** La chaise de profil dessinée
+  au trait donne successivement un « A » puis un « h ». Dans un niveau qui
+  apprend l'alphabet, c'est le contresens à ne pas livrer : ce sont donc des
+  silhouettes. Les pictogrammes se relisent sur une planche de contact, jamais
+  un par un.
+
+### Les médias
+
+Tout est **dessiné ou composé, rien n'est généré** : horloges à aiguilles,
+pastilles à compter, vingt et un pictogrammes, quatre écritures typographiques.
+Coût média de la banque : zéro. C'est la règle des images du dépôt appliquée à
+la lettre — un modèle écrit du charabia dès qu'un panneau porte une
+inscription, et un pictogramme est de la géométrie, pas une photo.
+
+L'audio, lui, est **préparé et non produit** :
+
+```
+python3 generer_audio_banque_n1.py --compter   # 262 extraits, ~0,76 $, sans rien payer
+```
+
+Le compte ElevenLabs était à zéro crédit (401 `quota_exceeded`) le 24 août
+2026. Les boutons d'écoute restent en place et sans effet — on ne masque
+jamais un bouton pour cacher un média manquant.
+
 
 **« Même mot, autre police » (activité 124, niveau 1)**, ajouté le 24 août
 2026. Le niveau 1 n'a que quatre situations au programme et les quatre ont

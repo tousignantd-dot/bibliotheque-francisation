@@ -4,6 +4,14 @@
 (« Même mot, autre police »). Il y a une version à lire, publiée comme
 artefact ; celle-ci est la trace qui survit à la session.
 
+> **Bâti le même jour.** Ce plan n'est plus une proposition : les vingt et un
+> ateliers existent, quinze sont au catalogue et six attendent leur audio. Ce
+> qui suit est le plan d'origine, **laissé tel qu'il a été écrit** — il dit
+> pourquoi, et le pourquoi n'a pas changé. Ce qui a changé est consigné à la
+> fin, sous « Ce que la réalisation a démenti ». L'état vivant se lit avec
+> `python3 build/banque_n1.py --etat`, jamais ici : un plan qu'on met à jour à
+> la main ment au premier oubli.
+
 ## Le constat
 
 Le niveau 1 n'a que **quatre situations** au programme — Inscription,
@@ -164,3 +172,79 @@ s'entend attend ; tout ce qui se lit peut partir tout de suite.
   l'accompagne, et c'est voulu.
 
 Voir aussi : `CLAUDE.md`, section « Les ateliers générés ».
+
+
+---
+
+## Ce que la réalisation a démenti
+
+Écrit le 24 août 2026 au soir, une fois la banque bâtie. Cinq écarts au plan,
+et chacun a une raison.
+
+**1. Quatre générateurs, pas quatre familles.** Le plan associait une famille à
+un générateur. Deux exercices de la famille D sont retombés dans des formes qui
+existaient déjà : les lettres majuscule / minuscule sont trois registres d'une
+même lettre (donc de l'appariement), et les syllabes sont des morceaux à
+remettre en ordre (donc de la phrase). Il reste `build/graphie.py` pour le seul
+exercice qui fait vraiment **produire** l'élève, « Je recopie ma fiche ». Un
+générateur de moins est une meilleure nouvelle qu'un de plus.
+
+**2. `polices-n1` n'a pas été absorbé.** Le plan disait « `polices.py` devient
+`appariement.py` ». Les deux contenus n'ont pas le même modèle — faces
+**calculées** d'un côté, **données** de l'autre — et fondre les deux demandait
+de réécrire une activité livrée et vérifiée. Repoussé jusqu'à ce qu'on puisse
+comparer l'ancien et le neuf octet pour octet.
+
+**3. Vingt et un ateliers, pas vingt-deux.** « J'épelle mon nom » (139) n'est
+pas construit : il demande à la fois l'audio des lettres et la reconnaissance
+vocale du navigateur, donc il dépend de deux choses absentes plutôt qu'une.
+C'est le seul exercice du plan qui manque.
+
+**4. Trente et un savoirs sur trente-deux, pas trente.** Le plan visait 30 ; le
+contrôle d'ensemble a d'abord annoncé **26**, ce qui était la vérité du disque
+contre l'optimisme du plan. Trois corrections ont suivi : déclarer des savoirs
+réellement travaillés mais tus (`n1-s07`, `n1-s18`), construire l'atelier qui
+portait `n1-s31`, et loger `n1-s06` et `n1-s12` dans deux items plutôt que dans
+un atelier. Seul `n1-s01` reste dehors, comme prévu.
+
+**5. La troisième couche n'est faite qu'à moitié.** Le routeur de l'enseignante
+est livré, et pour moins cher que prévu : les identifiants de savoir sont dans
+les `keywords`, que la recherche du catalogue indexe déjà — chercher
+« n1-s22 » rend les ateliers qui travaillent ce savoir, sans toucher au
+diagnostic. En revanche **les quatre modèles du compositeur ne sont pas
+faits**. Sa source vit hors du dépôt (`~/Claude/compositeur-activite.html`) et
+demande une regreffe puis une recopie ; et son mécanisme de « modèle » reprend
+une activité de son catalogue local, pas de `data/activities.json`. C'est un
+vrai morceau de travail sur un outil qui marche : à faire en regardant, pas en
+tâche de fond.
+
+## Ce qui reste
+
+| | État |
+|---|---|
+| Les 262 extraits audio | prêts à produire, ~0,76 $ — compte à recharger |
+| Les six ateliers d'écoute au catalogue | dès que leurs MP3 existent |
+| « J'épelle mon nom » (139) | dépend de l'audio **et** de la reconnaissance vocale |
+| Les quatre modèles du compositeur | source hors dépôt, à faire en regardant |
+| Le filtre en trois copies | refonte transversale, quand personne d'autre n'écrit |
+
+## Les réserves des agents de contenu
+
+Quatre agents ont écrit les contenus des familles B et C. Leurs réserves valent
+d'être gardées : ce sont les endroits à écouter en premier quand les MP3
+existeront.
+
+- **Les paires minimales `tas`/`tout` et `bas`/`boue`** — en québécois, le *a*
+  postérieur long glisse vers l'arrière et la marge se referme pour une oreille
+  débutante. `la`/`loup`, `rat`/`roue` et `balle`/`boule` sont plus sûres.
+- **`car`/`gare`** — la voyelle aide autant que la consonne, ce qui vide un peu
+  l'item de son objet.
+- **`È à la cafétéria`** (formes rapides) — un È isolé risque d'être lu comme
+  le **nom de la lettre**. C'est l'item à réécouter en premier ; la parade
+  habituelle du dépôt s'applique, respeler jusqu'à obtenir le son.
+- **Le `j[e]` de « Je m'appelle »** — la forme vedette du programme, mais
+  ElevenLabs peut la dire \[ʒə\] en registre soigné, ce qui contredirait
+  l'exercice.
+- **Le déterminant de `journaliste`** (féminin) — l'item change la nature de
+  l'exercice au milieu de la série : l'élève cherche un métier et trouve un
+  déterminant. C'est le premier à retirer si la série doit être resserrée.
