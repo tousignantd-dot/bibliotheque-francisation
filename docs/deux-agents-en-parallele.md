@@ -28,6 +28,25 @@ produite le 24 août 2026. Ce ne sont **pas des modules** : aucune entrée dans
 Le plan complet est dans `docs/plan-exercices-niveau-1.md`. Si une autre
 session a besoin d'un numéro pendant ce chantier, **prendre à partir de 146**.
 
+**Les activités 146 à 211 sont réservées** — les banques des niveaux 2 à 8,
+commencées le 24 août 2026. Même nature que celles du niveau 1 : des ateliers,
+pas des modules, donc aucune entrée dans `build/powerpoints/modules.py`, aucune
+séance, aucun PowerPoint. Le plan est dans `docs/plan-banques-niveaux-2-8.md`
+et l'état se lit d'une commande, `python3 build/banque.py --etat`.
+
+| Numéros | Niveau |
+|---|---|
+| 146-155 | niveau 2 |
+| 156-165 | niveau 3 |
+| 166-175 | niveau 5 |
+| 176-185 | niveau 6 |
+| 186-195 | niveau 7 |
+| 196-205 | niveau 8 |
+| 206-211 | niveau 4 (rattrapage) |
+
+Une autre session qui aurait besoin d'un numéro pendant ce chantier **prend à
+partir de 212**.
+
 Les activités 60 à 64 sont livrées ; la file des modules reprend à **65**,
 consigne prête dans `docs/consignes-a-coller.md`. Le journal des vagues est
 dans `docs/vagues-suivantes.md`.
