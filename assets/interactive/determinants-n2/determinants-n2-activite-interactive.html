@@ -1,68 +1,9 @@
-#!/usr/bin/env python3
-"""Famille C — construire une phrase. Un générateur, deux modes, sept ateliers.
-
-La forme : **des morceaux à mettre en place**, et jamais plus de sept mots.
-C'est la longueur de phrase du niveau 1, et c'est aussi la limite au-delà de
-laquelle un débutant manipule des tuiles sans plus lire ce qu'il compose.
-
-    python3 build/phrase.py             → réécrit les sept ateliers
-    python3 build/phrase.py possessifs  → seulement celui-là
-    python3 build/phrase.py --verifier  → dit qui est à jour, n'écrit rien
-
-N'ÉDITEZ PAS LE HTML PRODUIT : le prochain passage l'écraserait. Le contenu
-vit dans `assets/interactive/<slug>/contenu.json`, dont le contrat est écrit
-dans `docs/schemas-banque-n1.md`.
-
-Les deux modes
---------------
-`ordre` — la phrase est en tuiles mélangées, l'élève les remet en place.
-`choix` — la phrase a un trou, l'élève choisit parmi deux à quatre réponses.
-
-Pourquoi `syllabes-n1` est ici et pas dans une famille à lui
-------------------------------------------------------------
-Assembler `ma` + `ti` + `n` pour faire « matin » est exactement le mode
-`ordre`, à un niveau plus bas : des morceaux, un ordre, une seule bonne
-réponse. Le plan prévoyait un générateur `graphie.py` pour toute la famille D ;
-deux de ses quatre exercices sont retombés dans des formes qui existaient
-déjà — les syllabes ici, les lettres majuscule/minuscule dans
-`build/appariement.py`. Trois générateurs suffisent donc là où le plan en
-annonçait quatre, et c'est une meilleure nouvelle qu'un générateur de plus.
-
-Le contrôle qui compte
-----------------------
-En mode `choix`, `avant` + `ok` + `apres` doit redonner `phrase` **exactement**.
-Sans ce contrôle au build, un espace en trop passe inaperçu et l'élève voit une
-phrase corrigée qui ne ressemble pas à celle qu'il vient de composer.
-"""
-import io
-import json
-import pathlib
-import sys
-
-ROOT = pathlib.Path(__file__).resolve().parent.parent
-INTER = ROOT / 'assets/interactive'
-sys.path.insert(0, str(pathlib.Path(__file__).resolve().parent))
-from banque import paires_pour, option_niveau  # noqa: E402
-
-# Le nom de la famille dans le registre : c'est par lui que ce fichier
-# retrouve ses ateliers, à tous les niveaux.
-GENERATEUR = 'phrase'
-
-# Les ateliers de la famille. Le numéro est réservé dans
-# docs/deux-agents-en-parallele.md ; il ne sert pas au build.
-
-SPEAKER = ('<svg viewBox="0 0 50 50" fill="currentColor" aria-hidden="true">'
-           '<path d="M27 6.5c0-1.2-1.4-1.9-2.4-1.1L13.8 14H6c-1.1 0-2 .9-2 2v18c0 1.1.9 2 2 2h7.8l10.8 8.6c1 .8 2.4.1 2.4-1.1V6.5z"/>'
-           '<path d="M33.4 17.6c-.7-.6-1.8-.5-2.4.2-.6.7-.5 1.8.2 2.4 1.6 1.4 2.6 3.4 2.6 5.7s-1 4.3-2.6 5.7c-.7.6-.8 1.7-.2 2.4.6.7 1.7.8 2.4.2 2.3-2 3.7-5 3.7-8.3s-1.4-6.3-3.7-8.3z"/>'
-           '<path d="M38.5 11.2c-.7-.5-1.8-.4-2.3.4-.5.7-.4 1.8.4 2.3 3.6 2.6 5.9 6.9 5.9 11.6s-2.3 9-5.9 11.6c-.8.5-.9 1.6-.4 2.3.5.8 1.6.9 2.3.4C43 36.7 46 31.1 46 25s-3-11.7-7.5-13.8z"/>'
-           '</svg>')
-
-GABARIT = r'''<!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="fr">
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>@@TITRE@@ — Niveau @@NIVEAU@@</title>
+<title>Le petit mot devant le nom — Niveau 2</title>
 <link rel="stylesheet" href="/assets/design-system/styles.css">
 <link rel="stylesheet" href="/assets/design-system/marque-saaf.css">
 <link rel="icon" type="image/svg+xml" href="/assets/design-system/marque-saaf-favicon.svg">
@@ -73,7 +14,7 @@ GABARIT = r'''<!DOCTYPE html>
    Aucune couleur en dur : uniquement des jetons du système de design.
    Le repérage est celui du niveau 1 — framboise.
    ══════════════════════════════════════════════════════════════════════ */
-body { --sec: var(--niv-@@NIVEAU@@-line); --sec-soft: var(--niv-@@NIVEAU@@-bg); }
+body { --sec: var(--niv-2-line); --sec-soft: var(--niv-2-bg); }
 
 .ph-band { padding: var(--sp-5) 0; }
 .ph-band__in { max-width: var(--content-max); margin: 0 auto; padding: 0 var(--gutter);
@@ -192,8 +133,8 @@ body { --sec: var(--niv-@@NIVEAU@@-line); --sec-soft: var(--niv-@@NIVEAU@@-bg); 
   </div>
   <div class="ph-band__in">
     <div>
-      <p class="band__eyebrow">@@EYEBROW@@</p>
-      <h1 class="ph-band__t">@@TITRE@@</h1>
+      <p class="band__eyebrow">Francisation · Niveau 2 · Grammaire transversale</p>
+      <h1 class="ph-band__t">Le petit mot devant le nom</h1>
     </div>
     <div class="ph-band__a">
       <button type="button" class="btn btn--ghost btn--sm" id="profToggle" aria-pressed="false">Mode enseignant</button>
@@ -204,7 +145,7 @@ body { --sec: var(--niv-@@NIVEAU@@-line); --sec-soft: var(--niv-@@NIVEAU@@-bg); 
 
 <nav class="steps ph-steps" aria-label="Étapes de l'activité">
   <div class="steps__inner ph-steps__in" role="tablist">
-    <button type="button" class="step" role="tab" aria-selected="true"  data-vue="vueJeu"><span class="step__dot"></span>@@ETAPE1@@</button>
+    <button type="button" class="step" role="tab" aria-selected="true"  data-vue="vueJeu"><span class="step__dot"></span>Je choisis</button>
     <button type="button" class="step" role="tab" aria-selected="false" data-vue="vueModeles"><span class="step__dot"></span>Je regarde les modèles</button>
     <button type="button" class="step" role="tab" aria-selected="false" data-vue="vueMaitrise"><span class="step__dot"></span>Où j'en suis</button>
   </div>
@@ -222,14 +163,14 @@ body { --sec: var(--niv-@@NIVEAU@@-line); --sec-soft: var(--niv-@@NIVEAU@@-bg); 
         <span id="avance"></span>
       </div>
       <div class="ph-jeu">
-        <p class="ph-consigne">@@CONSIGNE@@</p>
+        <p class="ph-consigne">Choisissez le petit mot qui va devant le nom.</p>
         <div id="aire"></div>
         <p class="ph-sens" id="sens"></p>
         <div class="ph-retour"><p class="fb" id="retour"></p></div>
       </div>
       <div class="ph-pied">
         <div class="ph-band__a">
-          <button type="button" class="btn btn--audio btn--sm" id="ecouter">@@SPEAKER@@Écouter</button>
+          <button type="button" class="btn btn--audio btn--sm" id="ecouter"><svg viewBox="0 0 50 50" fill="currentColor" aria-hidden="true"><path d="M27 6.5c0-1.2-1.4-1.9-2.4-1.1L13.8 14H6c-1.1 0-2 .9-2 2v18c0 1.1.9 2 2 2h7.8l10.8 8.6c1 .8 2.4.1 2.4-1.1V6.5z"/><path d="M33.4 17.6c-.7-.6-1.8-.5-2.4.2-.6.7-.5 1.8.2 2.4 1.6 1.4 2.6 3.4 2.6 5.7s-1 4.3-2.6 5.7c-.7.6-.8 1.7-.2 2.4.6.7 1.7.8 2.4.2 2.3-2 3.7-5 3.7-8.3s-1.4-6.3-3.7-8.3z"/><path d="M38.5 11.2c-.7-.5-1.8-.4-2.3.4-.5.7-.4 1.8.4 2.3 3.6 2.6 5.9 6.9 5.9 11.6s-2.3 9-5.9 11.6c-.8.5-.9 1.6-.4 2.3.5.8 1.6.9 2.3.4C43 36.7 46 31.1 46 25s-3-11.7-7.5-13.8z"/></svg>Écouter</button>
           <button type="button" class="btn btn--ghost btn--sm" id="effacer">Effacer</button>
         </div>
         <button type="button" class="btn btn--pri btn--sm" id="suivantJeu">Suivant</button>
@@ -262,7 +203,7 @@ body { --sec: var(--niv-@@NIVEAU@@-line); --sec-soft: var(--niv-@@NIVEAU@@-bg); 
 
   <aside class="card" id="panneauProf" style="display:none;margin-top:var(--sp-6)">
     <p class="ph-lbl">Mode enseignant</p>
-    @@NOTE_PROF@@
+    <p>Le programme du niveau 2 distingue quatre sortes de déterminants là où le niveau 1 n'en voyait qu'une : définis (<code>n2-s13</code>), possessifs (<code>n2-s14</code>), démonstratifs (<code>n2-s15</code>) et numéraux (<code>n2-s18</code>). L'atelier les mélange volontairement : isolés, ils se réussissent par imitation ; mélangés, il faut comprendre ce que chacun fait.</p><p><strong>La difficulté n'est pas la liste, c'est le genre.</strong> Un élève qui sait que <em>ma</em> est possessif écrit quand même « ma bureau ». Chaque item porte donc un nom dont le genre se devine mal — <em>bureau</em>, <em>carte</em>, <em>adresse</em>, <em>colis</em> —, et l'explication rappelle le genre plutôt que la règle.</p><p><strong>Trois pièges de série.</strong> <em>Cette</em> contre <em>cet</em> devant une voyelle (item « cet été ») ; <em>mon</em> devant un nom féminin qui commence par une voyelle (« mon adresse », pas « ma adresse ») ; et <em>des</em> qui devient <em>de</em> après une négation, que la série ne travaille pas et qu'il ne faut pas confondre ici.</p><p>En classe, faites-le à l'oral avec les objets de la salle avant l'écran : chacun montre un objet et dit les trois formes — <em>le</em> crayon, <em>mon</em> crayon, <em>ce</em> crayon. La forme s'installe par la répétition, pas par la règle.</p>
     <p><strong>Les tuiles ne se traînent pas, elles se cliquent.</strong> Le
     glisser-déposer demande une motricité fine à la souris que tous les élèves
     n'ont pas, et il est franchement pénible au doigt sur une tablette. Un
@@ -275,7 +216,7 @@ body { --sec: var(--niv-@@NIVEAU@@-line); --sec-soft: var(--niv-@@NIVEAU@@-bg); 
 </main>
 
 <script>
-const CONTENU = @@CONTENU@@;
+const CONTENU = {"slug": "determinants-n2", "niveau": 2, "generateur": "phrase", "activite": 146, "titre": "Le petit mot devant le nom", "eyebrow": "Francisation · Niveau 2 · Grammaire transversale", "cle": "francisationDeterminantsN2MaitriseV1", "mode": "choix", "consigne": "Choisissez le petit mot qui va devant le nom.", "savoirs": ["n2-s13", "n2-s14", "n2-s15", "n2-s18", "n2-s12"], "motscles": ["déterminant", "le la les", "mon ma mes", "ce cette", "niveau 2"], "note_prof": "<p>Le programme du niveau 2 distingue quatre sortes de déterminants là où le niveau 1 n'en voyait qu'une : définis (<code>n2-s13</code>), possessifs (<code>n2-s14</code>), démonstratifs (<code>n2-s15</code>) et numéraux (<code>n2-s18</code>). L'atelier les mélange volontairement : isolés, ils se réussissent par imitation ; mélangés, il faut comprendre ce que chacun fait.</p><p><strong>La difficulté n'est pas la liste, c'est le genre.</strong> Un élève qui sait que <em>ma</em> est possessif écrit quand même « ma bureau ». Chaque item porte donc un nom dont le genre se devine mal — <em>bureau</em>, <em>carte</em>, <em>adresse</em>, <em>colis</em> —, et l'explication rappelle le genre plutôt que la règle.</p><p><strong>Trois pièges de série.</strong> <em>Cette</em> contre <em>cet</em> devant une voyelle (item « cet été ») ; <em>mon</em> devant un nom féminin qui commence par une voyelle (« mon adresse », pas « ma adresse ») ; et <em>des</em> qui devient <em>de</em> après une négation, que la série ne travaille pas et qu'il ne faut pas confondre ici.</p><p>En classe, faites-le à l'oral avec les objets de la salle avant l'écran : chacun montre un objet et dit les trois formes — <em>le</em> crayon, <em>mon</em> crayon, <em>ce</em> crayon. La forme s'installe par la répétition, pas par la règle.</p>", "items": [{"slug": "le-bureau", "avant": "Le secrétariat est au fond, à côté de ", "ok": "la", "apres": " cafétéria.", "phrase": "Le secrétariat est au fond, à côté de la cafétéria.", "choix": ["la", "le", "les"], "sens": "Cafétéria est un nom féminin : la cafétéria."}, {"slug": "mon-adresse", "avant": "Je dois changer ", "ok": "mon", "apres": " adresse au dossier.", "phrase": "Je dois changer mon adresse au dossier.", "choix": ["mon", "ma", "mes"], "sens": "Adresse est féminin, mais il commence par une voyelle : on dit mon adresse, jamais ma adresse."}, {"slug": "ce-formulaire", "avant": "Remplissez ", "ok": "ce", "apres": " formulaire, s'il vous plaît.", "phrase": "Remplissez ce formulaire, s'il vous plaît.", "choix": ["ce", "cette", "ces"], "sens": "Formulaire est masculin singulier : ce formulaire."}, {"slug": "cette-carte", "avant": "Gardez ", "ok": "cette", "apres": " carte dans votre portefeuille.", "phrase": "Gardez cette carte dans votre portefeuille.", "choix": ["cette", "ce", "cet"], "sens": "Carte est féminin : cette carte."}, {"slug": "cet-ete", "avant": "Le centre est fermé deux semaines ", "ok": "cet", "apres": " été.", "phrase": "Le centre est fermé deux semaines cet été.", "choix": ["cet", "ce", "cette"], "sens": "Été est masculin et commence par une voyelle : cet été. On n'écrit pas ce été."}, {"slug": "trois-timbres", "avant": "J'achète ", "ok": "trois", "apres": " timbres pour envoyer la lettre.", "phrase": "J'achète trois timbres pour envoyer la lettre.", "choix": ["trois", "le", "des"], "sens": "Quand on dit le nombre exact, le nombre remplace le petit mot : trois timbres."}, {"slug": "mes-papiers", "avant": "J'ai oublié ", "ok": "mes", "apres": " papiers à la maison.", "phrase": "J'ai oublié mes papiers à la maison.", "choix": ["mes", "mon", "ma"], "sens": "Papiers est au pluriel : mes papiers."}, {"slug": "les-autobus", "avant": "À sept heures, ", "ok": "les", "apres": " autobus sont pleins.", "phrase": "À sept heures, les autobus sont pleins.", "choix": ["les", "le", "la"], "sens": "Le verbe est sont : le nom est au pluriel, donc les autobus."}, {"slug": "votre-colis", "avant": "Votre nom est sur ", "ok": "le", "apres": " colis.", "phrase": "Votre nom est sur le colis.", "choix": ["le", "la", "les"], "sens": "Colis est masculin, et le s à la fin ne veut pas dire pluriel : le colis."}, {"slug": "ma-classe", "avant": "Je cherche ", "ok": "ma", "apres": " classe, c'est le local 12.", "phrase": "Je cherche ma classe, c'est le local 12.", "choix": ["ma", "mon", "mes"], "sens": "Classe est féminin et commence par une consonne : ma classe."}, {"slug": "deux-cafes", "avant": "Je voudrais ", "ok": "deux", "apres": " cafés, s'il vous plaît.", "phrase": "Je voudrais deux cafés, s'il vous plaît.", "choix": ["deux", "des", "les"], "sens": "On dit le nombre quand on commande : deux cafés."}, {"slug": "ces-souliers", "avant": "Combien coûtent ", "ok": "ces", "apres": " souliers ?", "phrase": "Combien coûtent ces souliers ?", "choix": ["ces", "cette", "cet"], "sens": "Souliers est au pluriel : ces souliers, pour les montrer du doigt."}]};
 const items = CONTENU.items;
 const MODE = CONTENU.mode;
 const CLE = CONTENU.cle;
@@ -476,7 +417,7 @@ function rendreModeles(){
     '<div class="ph-modele"><p class="ph-modele__p">' + esc(x.phrase) + '</p>'
     + '<p class="ph-modele__s">' + esc(x.sens || '') + '</p>'
     + (x.audio ? '<button type="button" class="btn btn--audio btn--sm ph-modele__a" data-i="' + i
-        + '">@@SPEAKER@@Écouter</button>' : '')
+        + '"><svg viewBox="0 0 50 50" fill="currentColor" aria-hidden="true"><path d="M27 6.5c0-1.2-1.4-1.9-2.4-1.1L13.8 14H6c-1.1 0-2 .9-2 2v18c0 1.1.9 2 2 2h7.8l10.8 8.6c1 .8 2.4.1 2.4-1.1V6.5z"/><path d="M33.4 17.6c-.7-.6-1.8-.5-2.4.2-.6.7-.5 1.8.2 2.4 1.6 1.4 2.6 3.4 2.6 5.7s-1 4.3-2.6 5.7c-.7.6-.8 1.7-.2 2.4.6.7 1.7.8 2.4.2 2.3-2 3.7-5 3.7-8.3s-1.4-6.3-3.7-8.3z"/><path d="M38.5 11.2c-.7-.5-1.8-.4-2.3.4-.5.7-.4 1.8.4 2.3 3.6 2.6 5.9 6.9 5.9 11.6s-2.3 9-5.9 11.6c-.8.5-.9 1.6-.4 2.3.5.8 1.6.9 2.3.4C43 36.7 46 31.1 46 25s-3-11.7-7.5-13.8z"/></svg>Écouter</button>' : '')
     + '</div>').join('');
   $$('.ph-modele__a').forEach(b => b.onclick = () => jouer(items[b.dataset.i].audio, b));
 }
@@ -527,114 +468,3 @@ lmsTrack('file_opened');
 </script>
 </body>
 </html>
-'''
-
-COMMUNS = {'slug', 'niveau', 'generateur', 'titre', 'eyebrow', 'cle', 'consigne',
-           'note_prof', 'savoirs', 'mode', 'items'}
-
-
-def controler(slug, c):
-    """Ce que le build refuse de laisser passer.
-
-    Les trois contrôles ci-dessous attrapent des fautes qui ne lèvent aucune
-    erreur : l'exercice s'affiche, et c'est l'élève qui découvre qu'il est
-    injouable. C'est la leçon de l'`imgmatch` mort de `CLAUDE.md`.
-    """
-    manquants = COMMUNS - set(c)
-    if manquants:
-        sys.exit('!! %s : champs manquants — %s' % (slug, ', '.join(sorted(manquants))))
-    if c['slug'] != slug:
-        sys.exit('!! %s : le slug du contenu dit « %s »' % (slug, c['slug']))
-    if c['mode'] not in ('ordre', 'choix'):
-        sys.exit('!! %s : mode inconnu « %s »' % (slug, c['mode']))
-
-    vus = set()
-    for it in c['items']:
-        s = it.get('slug')
-        if not s or s in vus:
-            sys.exit('!! %s : slug d\'item manquant ou en double — %r' % (slug, s))
-        vus.add(s)
-        if not it.get('phrase'):
-            sys.exit('!! %s / %s : pas de phrase' % (slug, s))
-
-        if c['mode'] == 'ordre':
-            mots = it.get('mots') or []
-            # La limite de tuiles suit le niveau : sept mots sont la phrase du
-            # débutant et la limite au-delà de laquelle il manipule des tuiles
-            # sans plus lire ce qu'il compose. Un élève du niveau 5 lit ce
-            # qu'il compose bien plus loin.
-            haut = 7 if c['niveau'] <= 2 else (10 if c['niveau'] <= 4 else 12)
-            if not 2 <= len(mots) <= haut:
-                sys.exit('!! %s / %s : %d tuiles — le niveau %d en veut de 2 à %d'
-                         % (slug, s, len(mots), c['niveau'], haut))
-            # Pas de refus des tuiles identiques : « J'ai un stylo et un
-            # livre » en porte deux, et c'est une phrase du niveau. Le moteur
-            # juge sur les mots composés, pas sur l'ordre des tuiles — il
-            # accepte donc les deux façons de la cliquer. La première version
-            # comparait les indices et refusait cette phrase-là ; le contrôle
-            # a été retiré en même temps que la cause.
-        else:
-            for champ in ('choix', 'ok'):
-                if not it.get(champ):
-                    sys.exit('!! %s / %s : pas de %s' % (slug, s, champ))
-            if it['ok'] not in it['choix']:
-                sys.exit('!! %s / %s : la bonne réponse n\'est pas dans les choix'
-                         % (slug, s))
-            if not 2 <= len(it['choix']) <= 4:
-                sys.exit('!! %s / %s : %d choix — il en faut de 2 à 4'
-                         % (slug, s, len(it['choix'])))
-            if len(set(it['choix'])) != len(it['choix']):
-                sys.exit('!! %s / %s : deux choix identiques' % (slug, s))
-            # Le contrôle qui compte : la phrase reconstituée doit être celle
-            # qu'on montre en correction, à l'espace près.
-            recompose = (it.get('avant') or '') + it['ok'] + (it.get('apres') or '')
-            if recompose != it['phrase']:
-                sys.exit('!! %s / %s : avant+ok+apres ne redonne pas la phrase\n'
-                         '   composé : %r\n   attendu : %r' % (slug, s, recompose, it['phrase']))
-
-
-def rendre(slug):
-    fichier = INTER / slug / 'contenu.json'
-    if not fichier.exists():
-        sys.exit('!! %s introuvable' % fichier)
-    c = json.loads(io.open(fichier, encoding='utf-8').read())
-    controler(slug, c)
-    etape1 = 'Je remets en ordre' if c['mode'] == 'ordre' else 'Je choisis'
-    return (GABARIT
-            .replace('@@SPEAKER@@', SPEAKER)
-            .replace('@@NIVEAU@@', str(c['niveau']))
-            .replace('@@TITRE@@', c['titre'])
-            .replace('@@EYEBROW@@', c['eyebrow'])
-            .replace('@@CONSIGNE@@', c['consigne'])
-            .replace('@@ETAPE1@@', etape1)
-            .replace('@@NOTE_PROF@@', c['note_prof'])
-            .replace('@@CONTENU@@', json.dumps(c, ensure_ascii=False)))
-
-
-def main(argv):
-    niveau, argv = option_niveau(argv)
-    verifier = '--verifier' in argv
-    voulus = [a for a in argv if not a.startswith('--')]
-    ecart = 0
-    for slug, num in paires_pour(GENERATEUR, niveau):
-        if voulus and not any(v in slug for v in voulus):
-            continue
-        if not (INTER / slug / 'contenu.json').exists():
-            print('  · %-18s (activité %s) : contenu pas encore écrit' % (slug, num))
-            continue
-        cible = INTER / slug / ('%s-activite-interactive.html' % slug)
-        neuf = rendre(slug)
-        actuel = io.open(cible, encoding='utf-8').read() if cible.exists() else ''
-        if actuel == neuf:
-            print('  = %-18s (activité %s) : à jour' % (slug, num))
-        elif verifier:
-            print('  ≠ %-18s (activité %s) : à regénérer' % (slug, num)); ecart = 1
-        else:
-            cible.parent.mkdir(parents=True, exist_ok=True)
-            io.open(cible, 'w', encoding='utf-8').write(neuf)
-            print('  → %-18s (activité %s) : écrit (%d octets)' % (slug, num, len(neuf)))
-    return ecart
-
-
-if __name__ == '__main__':
-    sys.exit(main(sys.argv[1:]))
