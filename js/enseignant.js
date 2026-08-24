@@ -436,7 +436,7 @@
   /* Les outils transversaux — « Corrige-moi ! », les cartes de vocabulaire,
      l'analyse grammaticale — ne se planifient pas : ils restent ouverts. Même
      règle de reconnaissance que le catalogue et le portail élève. */
-  const DOMAINES_OUTILS = /^(vocabulaire|grammaire transversale|pratique orale libre)/i;
+  const DOMAINES_OUTILS = /^(vocabulaire|grammaire transversale|pratique orale libre|graphie et sons)/i;
   const estOutil = (a) => DOMAINES_OUTILS.test(a.domaineDeVie || '');
 
   function visibles() {
