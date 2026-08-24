@@ -888,19 +888,28 @@ Aucun de ces ateliers ne s'écrit à la main. Leur HTML sort d'un script, et
 |---|---|---|
 | `vocab-flash-sante`, `vocab-flash-conso` | `build/vocab_flash.py` | `assets/interactive/<slug>/mots.json` |
 | `polices-n1` — activité 124 | `build/polices.py` | `assets/interactive/polices-n1/mots.json` |
-| **la banque du niveau 1** — activités 124 à 145 | `build/banque_n1.py` (qui appelle les quatre autres) | `assets/interactive/<slug>/contenu.json` |
+| **les banques des huit niveaux** — activités 124 à 211 | `build/banque.py` (qui appelle les générateurs de familles) | `assets/interactive/<slug>/contenu.json` |
 
-## La banque du niveau 1 (activités 124 à 145)
+## Les banques des huit niveaux (activités 124 à 211)
 
-Vingt et un ateliers, **quatre générateurs**, un contrat de contenu. Le plan
-est dans `docs/plan-exercices-niveau-1.md`, le format dans
+Soixante-trois ateliers, **six générateurs**, un contrat de contenu. Les plans
+sont dans `docs/plan-exercices-niveau-1.md` (la banque d'origine) et
+`docs/plan-banques-niveaux-2-8.md` (les sept autres), le format dans
 `docs/schemas-banque-n1.md`, et l'état réel se lit d'une commande :
 
 ```
-python3 build/banque_n1.py --etat       # où en est la banque
-python3 build/banque_n1.py --verifier   # code 1 sur écart, s'enchaîne avec les six autres
-python3 build/banque_n1.py              # reconstruit tout
+python3 build/banque.py --etat            # où en sont les huit banques
+python3 build/banque.py --etat --niveau 5 # un seul niveau
+python3 build/banque.py --verifier        # code 1 sur écart, s'enchaîne avec les autres
+python3 build/banque.py                   # reconstruit tout
+python3 build/inscrire_ateliers.py        # inscrit au catalogue ce qui est jouable
 ```
+
+**Un atelier se déclare lui-même.** Le registre n'est pas une liste écrite à la
+main : c'est le balayage de `assets/interactive/*/contenu.json`, et la clé
+`generateur` est l'opt-in. Ajouter un atelier, c'est déposer un fichier de
+contenu portant `niveau`, `generateur` et `activite` ; rien à inscrire
+ailleurs. `build/banque_n1.py` reste comme renvoi vers `banque.py --niveau 1`.
 
 **Pourquoi une banque plutôt que des modules.** Le niveau 1 n'a que quatre
 situations au programme et les quatre ont leur module (56, 96, 97, 98). Un
@@ -912,12 +921,20 @@ une situation, le mauvais pour faire distinguer `a`, `i` et `ou`.
 **Quatre familles, quatre formes.** Une famille = une forme d'exercice = un
 générateur. Ajouter un atelier, c'est écrire un `contenu.json`, pas du code.
 
-| Famille | Générateur | Forme | Ateliers |
+| Famille | Générateur | Forme | Où elle sert |
 |---|---|---|---|
-| A · apparier | `build/appariement.py` | une chose, plusieurs représentations | heure, abréviations, dates, chiffres, panneaux, lettres |
-| B · écouter | `build/oreille.py` | un extrait, on tranche | voyelles, consonnes, e muet, intonation, formes rapides, Jean dit |
-| C · construire | `build/phrase.py` | des morceaux à mettre en place | six ateliers de phrase, plus les syllabes |
-| D · écrire | `build/graphie.py` | on recopie, caractère par caractère | Je recopie ma fiche |
+| A · apparier | `build/appariement.py` | une chose, plusieurs représentations | tous les niveaux — graphie au 1, abréviations au 3, registres au 5, familles de mots au 6 |
+| B · écouter | `build/oreille.py` | un extrait, on tranche | niveaux 1 à 3 seulement : au-dessus du 4, le programme n'a plus qu'un ou deux savoirs phonétiques |
+| C · construire | `build/phrase.py` | des morceaux à mettre en place | tous les niveaux ; la limite de tuiles suit le niveau (7 au débutant, 12 au 5 et plus) |
+| D · écrire | `build/graphie.py` | on recopie, caractère par caractère | niveau 1 |
+| E · lire un texte | `build/texte.py` | un texte sous les yeux, des questions qui y ramènent | niveaux 2 à 8 ; modes `questions` et `trous` |
+| F · conjuguer | `build/conjugaison.py` | une phrase, un infinitif, un temps | niveaux 2 à 8 ; mode `choisir` au 2, `ecrire` à partir du 3 |
+
+**Le profil des savoirs bascule avec le niveau**, et c'est ce qui décide des
+familles à employer : la phonétique passe de quatre savoirs au niveau 1 à un
+seul aux niveaux 7 et 8, pendant que le lexique triple et que la catégorie
+« texte » quintuple. Une banque de niveau 7 bâtie sur le modèle du niveau 1
+travaillerait des savoirs qui n'y sont plus.
 
 `polices-n1` (124) garde `build/polices.py` : ses faces sont **calculées** par
 la casse et la police, alors que celles de la famille A sont **données**. La
