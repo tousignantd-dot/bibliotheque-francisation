@@ -1,0 +1,442 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>L'offre d'emploi — Niveau 6</title>
+<link rel="stylesheet" href="/assets/design-system/styles.css">
+<link rel="stylesheet" href="/assets/design-system/marque-saaf.css">
+<link rel="icon" type="image/svg+xml" href="/assets/design-system/marque-saaf-favicon.svg">
+<style>
+/* ══════════════════════════════════════════════════════════════════════
+   Famille E · lire un texte
+   FICHIER GÉNÉRÉ — build/texte.py. Ne modifiez pas ce HTML.
+   Aucune couleur en dur : uniquement des jetons du système de design.
+   Le repérage est celui du niveau de l'atelier.
+   ══════════════════════════════════════════════════════════════════════ */
+body { --sec: var(--niv-6-line); --sec-soft: var(--niv-6-bg); }
+
+.tx-band { padding: var(--sp-5) 0; }
+.tx-band__in { max-width: var(--content-max); margin: 0 auto; padding: 0 var(--gutter);
+  display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: var(--sp-4); }
+.tx-band__t { font-size: var(--fs-h2); font-weight: var(--fw-black);
+  letter-spacing: var(--ls-title); line-height: var(--lh-title); margin-top: var(--sp-2); }
+.tx-band__a { display: flex; flex-wrap: wrap; gap: var(--sp-2); }
+
+.tx-steps__in { max-width: var(--content-max); margin: 0 auto;
+  padding: var(--sp-3) var(--gutter); display: flex; flex-wrap: wrap; gap: var(--sp-2); align-items: center; }
+.step { font-family: var(--font-sans); cursor: pointer; }
+.step[aria-selected="true"] { background: var(--sel-bg); border-color: var(--sel-line); color: var(--sel-ink); }
+
+.tx-wrap { max-width: var(--content-max); margin: 0 auto; padding: var(--sp-8) var(--gutter) var(--sp-12); }
+.view { display: none; }
+.view.is-on { display: block; }
+
+.tx-lbl { font-size: var(--fs-label); font-weight: var(--fw-black); letter-spacing: var(--ls-label);
+  text-transform: uppercase; color: var(--text-muted); margin-bottom: var(--sp-3); }
+.tx-barre { padding: var(--sp-3) var(--sp-6); border-bottom: 1px solid var(--border);
+  display: flex; align-items: center; gap: var(--sp-4);
+  font-size: var(--fs-ui-sm); font-weight: var(--fw-bold); color: var(--text-muted); }
+.tx-pied { padding: var(--sp-4) var(--sp-6); border-top: 1px solid var(--border);
+  display: flex; flex-wrap: wrap; gap: var(--sp-3); align-items: center; justify-content: space-between; }
+
+/* ── Les deux colonnes : le texte à gauche, la question à droite ─────── */
+/* Sous 900 px elles s'empilent, le texte en premier. On ne réduit jamais le
+   texte à un accordéon : un élève qui doit rouvrir le texte à chaque
+   question répond de mémoire, ce qui n'est pas l'exercice. */
+.tx-duo { display: grid; grid-template-columns: minmax(0, 1.15fr) minmax(0, 1fr);
+  gap: var(--sp-6); padding: var(--sp-6); align-items: start; }
+
+.tx-doc { border: 1px solid var(--border); border-radius: var(--r-md);
+  background: var(--surface-card); padding: var(--sp-5) var(--sp-6); }
+.tx-doc__src { font-size: var(--fs-label); font-weight: var(--fw-black); letter-spacing: var(--ls-label);
+  text-transform: uppercase; color: var(--sec); margin-bottom: var(--sp-2); }
+.tx-doc__t { font-size: var(--fs-h3); font-weight: var(--fw-black); line-height: var(--lh-title);
+  letter-spacing: var(--ls-title); margin-bottom: var(--sp-3); }
+.tx-doc__c { font-size: var(--fs-body); font-weight: var(--fw-semi); color: var(--text-muted);
+  margin-bottom: var(--sp-4); }
+.tx-doc p.tx-par { font-size: clamp(16px, 1.15vw, 18px); line-height: 1.72; margin-bottom: var(--sp-4); }
+.tx-doc p.tx-par:last-child { margin-bottom: 0; }
+.tx-extrait { background: var(--sel-bg); border-bottom: 2px solid var(--sel-line);
+  border-radius: 3px; padding: 1px 2px; }
+
+/* ── Le trou dans le texte ──────────────────────────────────────────── */
+.tx-trou { display: inline-block; min-width: 92px; text-align: center;
+  padding: 0 var(--sp-2); font-weight: var(--fw-bold);
+  border-bottom: 3px solid var(--border-firm); color: var(--text-muted); }
+.tx-trou.is-actif { border-color: var(--sec); color: var(--sec); }
+.tx-trou.is-ok { border-color: var(--ok-line); color: var(--ok-line); }
+.tx-trou.is-no { border-color: var(--no-line); color: var(--no-line); }
+
+/* ── La question ────────────────────────────────────────────────────── */
+.tx-q { position: sticky; top: var(--sp-4); }
+.tx-q__n { font-size: var(--fs-label); font-weight: var(--fw-black); letter-spacing: var(--ls-label);
+  text-transform: uppercase; color: var(--text-muted); margin-bottom: var(--sp-2); }
+.tx-q__t { font-size: clamp(18px, 1.6vw, 23px); font-weight: var(--fw-bold);
+  line-height: 1.4; margin-bottom: var(--sp-5); }
+.tx-choix { display: flex; flex-direction: column; gap: var(--sp-3); }
+.tx-choix button { font-family: var(--font-sans); text-align: left;
+  font-size: clamp(15px, 1.2vw, 18px); font-weight: var(--fw-semi); line-height: 1.4;
+  padding: var(--sp-3) var(--sp-4); min-height: var(--tap-min);
+  border: 1px solid var(--border); border-radius: var(--r-md); background: var(--surface-card);
+  color: var(--text-strong); cursor: pointer;
+  transition: background var(--dur) var(--ease), border-color var(--dur) var(--ease); }
+.tx-choix button:hover:not(:disabled) { background: var(--paper-100); border-color: var(--sec); }
+.tx-choix button:disabled { cursor: default; }
+.tx-choix button.is-ok { border-color: var(--ok-line); background: var(--ok-bg); }
+.tx-choix button.is-no { border-color: var(--no-line); background: var(--no-bg); }
+.tx-sens { margin-top: var(--sp-4); font-size: var(--fs-body-sm); color: var(--text-muted);
+  min-height: 24px; }
+.tx-retour { margin-top: var(--sp-3); min-height: 28px; }
+
+/* ── Où j'en suis ───────────────────────────────────────────────────── */
+.tx-bilan { display: grid; grid-template-columns: repeat(auto-fit, minmax(160px, 1fr)); gap: var(--sp-4);
+  margin-bottom: var(--sp-6); }
+.tx-chiffre { font-size: clamp(30px, 3.4vw, 42px); font-weight: var(--fw-black); line-height: 1; }
+.tx-table { width: 100%; border-collapse: collapse; font-size: var(--fs-body-sm); }
+.tx-table th, .tx-table td { padding: var(--sp-3) var(--sp-4); border-bottom: 1px solid var(--border);
+  text-align: left; }
+.tx-table th { font-size: var(--fs-label); font-weight: var(--fw-black); letter-spacing: var(--ls-label);
+  text-transform: uppercase; color: var(--text-muted); }
+.tx-etat { font-weight: var(--fw-bold); white-space: nowrap; }
+
+.tx-sortie { display: none; position: fixed; top: var(--sp-4); right: var(--sp-4); z-index: 50; }
+.is-presentation .tx-band, .is-presentation .tx-steps { display: none; }
+.is-presentation .tx-sortie { display: inline-flex; }
+.is-presentation .tx-doc p.tx-par { font-size: clamp(19px, 1.7vw, 24px); }
+.is-presentation .tx-q__t { font-size: clamp(24px, 2.4vw, 32px); }
+
+@media (max-width: 900px) {
+  .tx-duo { grid-template-columns: 1fr; }
+  .tx-q { position: static; }
+}
+@media (max-width: 640px) {
+  .tx-band__in, .tx-steps__in, .tx-wrap { padding-left: var(--sp-5); padding-right: var(--sp-5); }
+  .tx-bilan { grid-template-columns: 1fr 1fr; }
+  .tx-duo { padding: var(--sp-5) var(--sp-4); }
+  .tx-doc { padding: var(--sp-4); }
+}
+</style>
+</head>
+<body class="page">
+
+<header class="band tx-band">
+  <div id="hdr">
+    <div class="saaf-bandeau">
+      <span class="saaf-lockup">
+        <span class="saaf-pilule"><span class="saaf-nom">SAAF</span></span>
+        <span class="saaf-filet" aria-hidden="true"></span>
+        <span class="saaf-desc">Système d'aide à l'apprentissage du français</span>
+      </span>
+    </div>
+  </div>
+  <div class="tx-band__in">
+    <div>
+      <p class="band__eyebrow">Francisation · Niveau 6 · Grammaire transversale</p>
+      <h1 class="tx-band__t">L'offre d'emploi</h1>
+    </div>
+    <div class="tx-band__a">
+      <button type="button" class="btn btn--ghost btn--sm" id="profToggle" aria-pressed="false">Mode enseignant</button>
+      <button type="button" class="btn btn--ghost btn--sm" id="presToggle" aria-pressed="false">Présentation</button>
+    </div>
+  </div>
+</header>
+
+<nav class="steps tx-steps" aria-label="Étapes de l'activité">
+  <div class="steps__inner tx-steps__in" role="tablist">
+    <button type="button" class="step" role="tab" aria-selected="true"  data-vue="vueJeu"><span class="step__dot"></span>Je lis et je réponds</button>
+    <button type="button" class="step" role="tab" aria-selected="false" data-vue="vueTexte"><span class="step__dot"></span>Le texte en entier</button>
+    <button type="button" class="step" role="tab" aria-selected="false" data-vue="vueMaitrise"><span class="step__dot"></span>Où j'en suis</button>
+  </div>
+</nav>
+
+<button type="button" class="btn btn--pri btn--sm tx-sortie" id="sortiePres">Quitter la présentation</button>
+
+<main class="tx-wrap" id="app">
+
+  <section class="view is-on" id="vueJeu">
+    <div class="card card--flush">
+      <div class="tx-barre">
+        <span id="score">0 point</span>
+        <span id="serie"></span>
+        <span id="avance"></span>
+      </div>
+      <div class="tx-duo">
+        <div class="tx-doc" id="doc"></div>
+        <div class="tx-q">
+          <p class="tx-q__n" id="numero"></p>
+          <p class="tx-q__t" id="question"></p>
+          <div class="tx-choix" id="choix"></div>
+          <p class="tx-sens" id="sens"></p>
+          <div class="tx-retour"><p class="fb" id="retour"></p></div>
+        </div>
+      </div>
+      <div class="tx-pied">
+        <div class="tx-band__a">
+          <button type="button" class="btn btn--audio btn--sm" id="ecouter"><svg viewBox="0 0 50 50" fill="currentColor" aria-hidden="true"><path d="M27 6.5c0-1.2-1.4-1.9-2.4-1.1L13.8 14H6c-1.1 0-2 .9-2 2v18c0 1.1.9 2 2 2h7.8l10.8 8.6c1 .8 2.4.1 2.4-1.1V6.5z"/><path d="M33.4 17.6c-.7-.6-1.8-.5-2.4.2-.6.7-.5 1.8.2 2.4 1.6 1.4 2.6 3.4 2.6 5.7s-1 4.3-2.6 5.7c-.7.6-.8 1.7-.2 2.4.6.7 1.7.8 2.4.2 2.3-2 3.7-5 3.7-8.3s-1.4-6.3-3.7-8.3z"/><path d="M38.5 11.2c-.7-.5-1.8-.4-2.3.4-.5.7-.4 1.8.4 2.3 3.6 2.6 5.9 6.9 5.9 11.6s-2.3 9-5.9 11.6c-.8.5-.9 1.6-.4 2.3.5.8 1.6.9 2.3.4C43 36.7 46 31.1 46 25s-3-11.7-7.5-13.8z"/></svg>Écouter le texte</button>
+        </div>
+        <button type="button" class="btn btn--pri btn--sm" id="suivantJeu">Suivant</button>
+      </div>
+    </div>
+  </section>
+
+  <section class="view" id="vueTexte">
+    <p class="tx-lbl">Le texte, et ce que chaque question demandait</p>
+    <div class="card"><div class="tx-doc" id="docPlein" style="border:0;padding:0"></div></div>
+    <div class="card card--flush" style="margin-top:var(--sp-5)">
+      <table class="tx-table">
+        <thead><tr><th>Question</th><th>Réponse</th><th>Pourquoi</th></tr></thead>
+        <tbody id="corpsReponses"></tbody>
+      </table>
+    </div>
+  </section>
+
+  <section class="view" id="vueMaitrise">
+    <div class="tx-bilan">
+      <div class="card"><p class="tx-lbl">Points</p><p class="tx-chiffre" id="bXp">0</p></div>
+      <div class="card"><p class="tx-lbl">Série</p><p class="tx-chiffre" id="bSerie">0</p></div>
+      <div class="card"><p class="tx-lbl">Meilleure série</p><p class="tx-chiffre" id="bMeilleure">0</p></div>
+      <div class="card"><p class="tx-lbl">Sûres</p><p class="tx-chiffre" id="bSurs">0</p></div>
+    </div>
+    <div class="card card--flush">
+      <table class="tx-table">
+        <thead><tr><th>Question</th><th>Ce qu'elle demande</th><th>Où j'en suis</th></tr></thead>
+        <tbody id="corpsTable"></tbody>
+      </table>
+    </div>
+    <p style="margin-top:var(--sp-5)">
+      <button type="button" class="btn btn--ghost btn--sm" id="resetMaitrise">Tout recommencer</button>
+    </p>
+  </section>
+
+  <aside class="card" id="panneauProf" style="display:none;margin-top:var(--sp-6)">
+    <p class="tx-lbl">Mode enseignant</p>
+    <p>La recherche d'emploi (<code>n6-s43</code>) est une situation du niveau 6, et la première chose qu'elle demande n'est pas de parler : c'est de lire une offre sans se décourager ni se tromper. La présentation matérielle (<code>n6-s05</code>) y fait tout le travail — titres, listes à puces, mots en gras — et une offre se lit en diagonale, pas ligne à ligne.</p><p><strong>La distinction qui compte : exigé contre atout.</strong> Une offre sépare presque toujours ce qui est obligatoire de ce qui est souhaité, et un élève qui les confond s'interdit lui-même de postuler. Deux questions portent là-dessus, et c'est peut-être ce que cet atelier apporte de plus concret : le permis de conduire est un atout, l'attestation de secourisme ne l'est pas.</p><p><strong>Le vocabulaire piégé de l'offre est signalé dans les explications</strong> : <em>temps partiel</em>, <em>quart de soir</em>, <em>poste permanent</em>, <em>période de probation</em>, <em>atout</em>. Ce ne sont pas des mots rares, ce sont des mots dont le sens précis engage l'élève pour des mois.</p><p><strong>La dernière question ne se répond pas dans le texte.</strong> Elle demande ce que le candidat doit faire, et l'offre ne le dit qu'en creux : envoyer un CV, avant une date, à une adresse. Réunir trois informations dispersées est exactement ce qu'on fait devant une vraie offre.</p>
+    <p><strong>Le texte ne disparaît jamais.</strong> Il reste à côté de la
+    question, y compris après la réponse. Un élève qui doit rouvrir le texte
+    pour vérifier répond de mémoire — ce n'est pas l'exercice.</p>
+    <p><strong>La correction montre où c'était écrit.</strong> Quand une
+    réponse est fausse, le passage qui la portait s'allume dans le texte. Le
+    but n'est pas de dire « c'est faux », c'est de faire relire.</p>
+  </aside>
+
+</main>
+
+<script>
+const CONTENU = {"slug": "offre-emploi-n6", "niveau": 6, "generateur": "texte", "activite": 179, "titre": "L'offre d'emploi", "eyebrow": "Francisation · Niveau 6 · Grammaire transversale", "cle": "francisationOffreEmploiN6MaitriseV1", "mode": "questions", "consigne": "Lisez l'offre. Répondez aux questions. L'offre reste sous vos yeux.", "savoirs": ["n6-s43", "n6-s05", "n6-s01", "n6-s03"], "motscles": ["offre d'emploi", "recherche d'emploi", "exigences", "lecture", "niveau 6"], "note_prof": "<p>La recherche d'emploi (<code>n6-s43</code>) est une situation du niveau 6, et la première chose qu'elle demande n'est pas de parler : c'est de lire une offre sans se décourager ni se tromper. La présentation matérielle (<code>n6-s05</code>) y fait tout le travail — titres, listes à puces, mots en gras — et une offre se lit en diagonale, pas ligne à ligne.</p><p><strong>La distinction qui compte : exigé contre atout.</strong> Une offre sépare presque toujours ce qui est obligatoire de ce qui est souhaité, et un élève qui les confond s'interdit lui-même de postuler. Deux questions portent là-dessus, et c'est peut-être ce que cet atelier apporte de plus concret : le permis de conduire est un atout, l'attestation de secourisme ne l'est pas.</p><p><strong>Le vocabulaire piégé de l'offre est signalé dans les explications</strong> : <em>temps partiel</em>, <em>quart de soir</em>, <em>poste permanent</em>, <em>période de probation</em>, <em>atout</em>. Ce ne sont pas des mots rares, ce sont des mots dont le sens précis engage l'élève pour des mois.</p><p><strong>La dernière question ne se répond pas dans le texte.</strong> Elle demande ce que le candidat doit faire, et l'offre ne le dit qu'en creux : envoyer un CV, avant une date, à une adresse. Réunir trois informations dispersées est exactement ce qu'on fait devant une vraie offre.</p>", "texte": {"titre": "Préposé(e) à l'entretien — Résidence Les Trois Saules", "source": "Offre affichée au centre d'emploi · 8 avril", "chapeau": "Poste permanent, temps partiel — 24 heures par semaine", "paragraphes": ["La Résidence Les Trois Saules cherche une personne pour l'entretien ménager des aires communes.", "Horaire : du jeudi au samedi, quart de soir, de 15 h à 23 h, soit 24 heures par semaine. Une fin de semaine sur deux est obligatoire.", "Salaire : 21,40 $ l'heure, plus une prime de soir de 1,25 $ l'heure. Période de probation de trois mois.", "Exigences : expérience de six mois en entretien ménager, capacité à soulever des charges de quinze kilos, français parlé fonctionnel.", "Atouts : permis de conduire, expérience auprès des personnes âgées, connaissance des produits d'entretien commerciaux.", "Avantages : uniforme fourni, stationnement gratuit, quatre jours de congé de maladie par année après la probation.", "Faire parvenir votre curriculum vitæ avant le 22 avril à madame Renée Cormier, 88 rue des Saules, ou par courriel à l'adresse indiquée sur l'affiche."]}, "items": [{"slug": "heures", "q": "Combien d'heures par semaine ce poste demande-t-il ?", "choix": ["24 heures", "40 heures", "15 heures"], "ok": "24 heures", "extrait": "soit 24 heures par semaine", "vise": "Lire le temps de travail", "sens": "Temps partiel : moins qu'une semaine complète. Le 15 est une heure de début, pas un nombre d'heures."}, {"slug": "horaire", "q": "Quand la personne travaillera-t-elle ?", "choix": ["Du jeudi au samedi, le soir", "Du lundi au vendredi, le jour", "Seulement la fin de semaine"], "ok": "Du jeudi au samedi, le soir", "extrait": "du jeudi au samedi, quart de soir, de 15 h à 23 h", "vise": "Lire un horaire complet", "sens": "Quart de soir : le bloc d'heures qui finit tard. Une offre parle en quarts, pas en journées."}, {"slug": "salaire", "q": "Combien gagne la personne, l'heure, le soir ?", "choix": ["22,65 $", "21,40 $", "1,25 $"], "ok": "22,65 $", "extrait": "21,40 $ l'heure, plus une prime de soir de 1,25 $ l'heure", "vise": "Additionner un salaire et sa prime", "sens": "Le poste est de soir : la prime s'ajoute toujours. C'est le calcul que personne ne fait, et il vaut plus de mille dollars par année."}, {"slug": "exigence", "q": "Laquelle de ces conditions est obligatoire ?", "choix": ["Six mois d'expérience en entretien", "Le permis de conduire", "L'expérience auprès des aînés"], "ok": "Six mois d'expérience en entretien", "extrait": "Exigences : expérience de six mois en entretien ménager", "vise": "Distinguer une exigence d'un atout", "sens": "Les deux autres sont dans la ligne « Atouts » : souhaités, pas obligatoires."}, {"slug": "atout", "q": "Que veut dire « atout » dans une offre d'emploi ?", "choix": ["Un avantage souhaité, pas obligatoire", "Une condition obligatoire", "Un avantage offert par l'employeur"], "ok": "Un avantage souhaité, pas obligatoire", "vise": "Comprendre un mot qui décide si l'on postule", "sens": "Un candidat qui n'a aucun atout peut quand même postuler. Un candidat qui n'a pas les exigences, rarement."}, {"slug": "probation", "q": "À partir de quand a-t-on droit aux congés de maladie ?", "choix": ["Après trois mois", "Dès la première semaine", "Après un an"], "ok": "Après trois mois", "extrait": "quatre jours de congé de maladie par année après la probation", "vise": "Relier deux informations éloignées", "sens": "La durée de la probation est au troisième paragraphe, l'avantage au sixième. Il faut lire les deux."}, {"slug": "charges", "q": "Quelle capacité physique est demandée ?", "choix": ["Soulever quinze kilos", "Soulever vingt-quatre kilos", "Aucune"], "ok": "Soulever quinze kilos", "extrait": "capacité à soulever des charges de quinze kilos", "vise": "Repérer une exigence physique", "sens": "Le 24 est le nombre d'heures. Deux nombres dans la même offre, deux choses sans rapport."}, {"slug": "postuler", "q": "Que doit faire une personne intéressée ?", "choix": ["Envoyer son CV avant le 22 avril à madame Cormier", "Se présenter à la résidence le 8 avril", "Téléphoner au centre d'emploi"], "ok": "Envoyer son CV avant le 22 avril à madame Cormier", "extrait": "Faire parvenir votre curriculum vitæ avant le 22 avril", "vise": "Réunir trois informations dispersées", "sens": "Quoi, avant quand, à qui : les trois sont dans la dernière phrase. Le 8 avril est la date de l'affichage."}]};
+const items = CONTENU.items;
+const MODE = CONTENU.mode;
+const CLE = CONTENU.cle;
+const TEXTE = CONTENU.texte;
+
+const $ = s => document.querySelector(s), $$ = s => [...document.querySelectorAll(s)];
+const esc = s => String(s).replace(/[&<>"]/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
+const melanger = a => a.map(v => [Math.random(), v]).sort((x, y) => x[0] - y[0]).map(p => p[1]);
+
+let sonCourant = null, boutonCourant = null;
+function jouer(src, bouton){
+  if (!src) return;
+  if (sonCourant) { sonCourant.pause(); sonCourant.currentTime = 0; }
+  if (boutonCourant) boutonCourant.removeAttribute('aria-busy');
+  sonCourant = new Audio(src); boutonCourant = bouton;
+  bouton.setAttribute('aria-busy', 'true');
+  const fini = () => bouton.removeAttribute('aria-busy');
+  sonCourant.onended = fini; sonCourant.onerror = fini;
+  sonCourant.play().catch(fini);
+}
+
+/* ── Maîtrise ───────────────────────────────────────────────────────── */
+let maitrise = { xp: 0, serie: 0, meilleure: 0, items: Array(items.length).fill(0) };
+try {
+  const brut = JSON.parse(localStorage.getItem(CLE) || 'null');
+  if (brut && Array.isArray(brut.items) && brut.items.length === items.length) maitrise = brut;
+} catch (e) {}
+function sauver(){ try { localStorage.setItem(CLE, JSON.stringify(maitrise)); } catch (e) {} }
+function ajouter(i, points){
+  maitrise.xp = Math.max(0, maitrise.xp + points);
+  maitrise.items[i] = Math.max(-3, Math.min(6, (maitrise.items[i] || 0) + (points > 0 ? 1 : -1)));
+  if (points > 0) { maitrise.serie++; maitrise.meilleure = Math.max(maitrise.meilleure, maitrise.serie); }
+  else maitrise.serie = 0;
+  sauver(); rendreMaitrise();
+}
+function etat(n){
+  if (n >= 4) return ['Sûre', '✓✓'];
+  if (n >= 2) return ['Ça vient', '✓'];
+  if (n >= 0) return ['À revoir', '·'];
+  return ['Difficile', '!'];
+}
+function rendreMaitrise(){
+  $('#bXp').textContent = maitrise.xp;
+  $('#bSerie').textContent = maitrise.serie;
+  $('#bMeilleure').textContent = maitrise.meilleure;
+  $('#bSurs').textContent = maitrise.items.filter(n => n >= 4).length + ' / ' + items.length;
+  $('#score').textContent = maitrise.xp + (maitrise.xp > 1 ? ' points' : ' point');
+  $('#serie').textContent = maitrise.serie > 1 ? 'Série de ' + maitrise.serie : '';
+  $('#corpsTable').innerHTML = items.map((x, i) => {
+    const [mot, glyphe] = etat(maitrise.items[i] || 0);
+    return '<tr><td><strong>' + esc(x.q || ('Le trou ' + x.numero)) + '</strong></td>'
+      + '<td>' + esc(x.vise || '') + '</td>'
+      + '<td class="tx-etat"><span aria-hidden="true">' + glyphe + '</span> ' + mot + '</td></tr>';
+  }).join('');
+}
+
+/* ── Le texte ───────────────────────────────────────────────────────── */
+/* Les trous sont écrits [[1]], [[2]]… dans les paragraphes. Le rendu les
+   remplace par un gabarit ; le contenu d'un trou est réécrit à chaque
+   réponse, sans toucher au reste du paragraphe. */
+function paragraphe(p, opts){
+  let h = esc(p);
+  if (opts.extrait) {
+    const e = esc(opts.extrait);
+    if (h.indexOf(e) !== -1) h = h.split(e).join('<mark class="tx-extrait">' + e + '</mark>');
+  }
+  h = h.replace(/\[\[(\d+)\]\]/g, function(_, n){
+    const it = items.find(x => String(x.numero) === n);
+    const rep = reponses[n];
+    let cls = 'tx-trou', txt = '·  ·  ·';
+    if (rep) { cls += rep.juste ? ' is-ok' : ' is-no'; txt = rep.choisi; }
+    else if (it && courant && String(courant.numero) === n) { cls += ' is-actif'; txt = '?'; }
+    return '<span class="' + cls + '" data-trou="' + n + '">' + esc(txt) + '</span>';
+  });
+  return '<p class="tx-par">' + h + '</p>';
+}
+
+function rendreDoc(cible, opts){
+  opts = opts || {};
+  const src = TEXTE.source ? '<p class="tx-doc__src">' + esc(TEXTE.source) + '</p>' : '';
+  const chap = TEXTE.chapeau ? '<p class="tx-doc__c">' + esc(TEXTE.chapeau) + '</p>' : '';
+  cible.innerHTML = src
+    + '<p class="tx-doc__t">' + esc(TEXTE.titre) + '</p>' + chap
+    + TEXTE.paragraphes.map(p => paragraphe(p, opts)).join('');
+}
+
+/* ── L'ordre de passage ─────────────────────────────────────────────── */
+/* En mode « trous », l'ordre est celui du texte : choisir un marqueur sans
+   avoir lu ce qui précède n'a pas de sens. En mode « questions », l'ordre
+   est mélangé une fois pour toutes, comme dans les autres familles. */
+let ordre = MODE === 'trous' ? items.map((_, i) => i) : melanger(items.map((_, i) => i));
+let rang = 0, courant = null, iCourant = 0, repondu = false, choisi = null;
+let melangeCourant = [];
+const reponses = {};   /* numéro de trou → {choisi, juste} */
+
+function itemCourant(){
+  iCourant = ordre[rang % ordre.length];
+  courant = items[iCourant];
+  return courant;
+}
+
+function rendreJeu(){
+  $('#avance').textContent = (rang % items.length + 1) + ' / ' + items.length;
+  $('#numero').textContent = MODE === 'trous'
+    ? 'Le trou ' + courant.numero
+    : 'Question ' + (rang % items.length + 1);
+  $('#question').textContent = MODE === 'trous'
+    ? (courant.q || 'Quel mot de liaison va dans ce trou ?')
+    : courant.q;
+  $('#ecouter').style.display = TEXTE.audio ? '' : 'none';
+  rendreDoc($('#doc'), { extrait: repondu ? courant.extrait : null });
+
+  const zone = $('#choix');
+  zone.innerHTML = '';
+  melangeCourant.forEach(c => {
+    const b = document.createElement('button');
+    b.type = 'button';
+    b.textContent = c;
+    b.disabled = repondu;
+    if (repondu && c === courant.ok) b.classList.add('is-ok');
+    if (repondu && c === choisi && c !== courant.ok) b.classList.add('is-no');
+    b.onclick = () => { choisi = c; verifier(); };
+    zone.appendChild(b);
+  });
+}
+
+function nouveauTour(){
+  itemCourant();
+  repondu = false; choisi = null;
+  $('#retour').textContent = ''; $('#retour').className = 'fb';
+  $('#sens').textContent = '';
+  melangeCourant = melanger(courant.choix.slice());
+  rendreJeu();
+}
+
+function verifier(){
+  repondu = true;
+  const juste = choisi === courant.ok;
+  if (MODE === 'trous') reponses[String(courant.numero)] = { choisi: choisi, juste: juste };
+  const retour = $('#retour');
+  if (juste) {
+    retour.className = 'fb fb--ok';
+    retour.textContent = 'Juste.';
+    ajouter(iCourant, 10);
+  } else {
+    retour.className = 'fb fb--no';
+    retour.textContent = 'La réponse était : ' + courant.ok;
+    ajouter(iCourant, -3);
+  }
+  $('#sens').textContent = courant.sens || '';
+  rendreJeu();
+  lmsTrack('exercise_attempted', { correct: juste ? 1 : 0 });
+}
+
+$('#suivantJeu').onclick = () => { rang++; nouveauTour(); };
+$('#ecouter').onclick = () => jouer(TEXTE.audio, $('#ecouter'));
+
+/* ── Le texte en entier ─────────────────────────────────────────────── */
+function rendreTexteComplet(){
+  const garde = Object.assign({}, reponses);
+  items.forEach(x => { if (MODE === 'trous') reponses[String(x.numero)] = { choisi: x.ok, juste: true }; });
+  rendreDoc($('#docPlein'), {});
+  Object.keys(reponses).forEach(k => delete reponses[k]);
+  Object.assign(reponses, garde);
+  $('#corpsReponses').innerHTML = items.map(x =>
+    '<tr><td>' + esc(x.q || ('Le trou ' + x.numero)) + '</td>'
+    + '<td><strong>' + esc(x.ok) + '</strong></td>'
+    + '<td>' + esc(x.sens || '') + '</td></tr>').join('');
+}
+
+$('#resetMaitrise').onclick = () => {
+  if (confirm('Tout recommencer ?')) {
+    maitrise = { xp: 0, serie: 0, meilleure: 0, items: Array(items.length).fill(0) };
+    sauver(); rendreMaitrise();
+  }
+};
+
+$$('.step').forEach(s => s.onclick = () => {
+  $$('.step').forEach(x => x.setAttribute('aria-selected', String(x === s)));
+  $$('.view').forEach(v => v.classList.toggle('is-on', v.id === s.dataset.vue));
+  if (s.dataset.vue === 'vueTexte') rendreTexteComplet();
+});
+$('#profToggle').onclick = () => {
+  const p = $('#panneauProf');
+  const on = p.style.display === 'none';
+  p.style.display = on ? '' : 'none';
+  $('#profToggle').setAttribute('aria-pressed', String(on));
+};
+function presentation(actif){
+  document.body.classList.toggle('is-presentation', actif);
+  $('#presToggle').setAttribute('aria-pressed', String(actif));
+}
+$('#presToggle').onclick = () => presentation(!document.body.classList.contains('is-presentation'));
+$('#sortiePres').onclick = () => presentation(false);
+document.addEventListener('keydown', e => { if (e.key === 'Escape') presentation(false); });
+
+function lmsTrack(event, data) {
+  try { window.parent.postMessage(Object.assign({ lms: true, event: event }, data || {}), '*'); } catch (e) {}
+  try {
+    const up = new URLSearchParams(window.parent.location.search);
+    const code = up.get('code'), actId = parseInt(up.get('activityId')) || null, title = up.get('title') || '';
+    if (code && actId) {
+      fetch('/api/student/progress', {
+        method: 'POST', headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(Object.assign({ code, activityId: actId, activityTitle: title, event }, data || {})),
+      }).catch(() => {});
+    }
+  } catch (e2) {}
+}
+
+nouveauTour();
+rendreMaitrise();
+lmsTrack('file_opened');
+</script>
+</body>
+</html>
