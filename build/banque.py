@@ -213,7 +213,9 @@ def etat(niveau=None):
         lignes.append('    %s %-20s %2d items · %s · %s · %s'
                       % (marque, slug, len(e['items']),
                          'html' if html.exists() else 'PAS DE HTML',
-                         'audio complet' if son else 'audio à produire',
+                         ('sans audio' if not any(
+                             isinstance(i, dict) and i.get('audio') for i in e['items'])
+                          else ('audio complet' if son else 'audio à produire')),
                          ('activité %s' % act['id'] if act
                           else 'réservé %s' % (e['activite'] or '—'))))
 
