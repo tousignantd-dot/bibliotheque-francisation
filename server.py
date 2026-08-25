@@ -1338,6 +1338,70 @@ def centre_racine(orgs=None):
     return centres[0] if centres else None
 
 
+def centre_de_rattachement(teacher, orgs=None, acces=None):
+    """Le centre où poser ce qu'une personne crée.
+
+    Le premier centre de sa portée, sinon le centre d'amorce. Sans cette
+    fonction, un groupe créé après l'étape 1 sortirait sans `centreId` et
+    l'arbre se mettrait à mentir dès la première rentrée — le genre de
+    pourriture qui ne lève aucune erreur et qu'on ne voit qu'au contrôle.
+    """
+    orgs = load_organisations() if orgs is None else orgs
+    for a in acces_of_teacher(teacher["id"], acces) if teacher else []:
+        org = find_org(a.get("orgId"), orgs)
+        if org and org.get("type") == "centre":
+            return org
+        for descendant_id in sorted(org_subtree_ids(a["orgId"], orgs)) if org else []:
+            d = find_org(descendant_id, orgs)
+            if d and d.get("type") == "centre":
+                return d
+    return centre_racine(orgs)
+
+
+def poser_acces(teacher_id, org_id, role, accorde_par=None):
+    """Ajoute une ligne d'accès si la même n'existe pas déjà. Rend la ligne.
+
+    Idempotente sur le triplet (personne, nœud, rôle) : rejouer un ajout ne
+    fabrique pas de doublon, que le contrôle refuserait de toute façon.
+    """
+    acces = load_acces()
+    for a in acces:
+        if (a.get("teacherId") == teacher_id and a.get("orgId") == org_id
+                and a.get("role") == role):
+            if not a.get("actif", True):
+                a["actif"] = True
+                save_acces(acces)
+            return a
+    ligne = {
+        "id": max((a.get("id", 0) for a in acces), default=0) + 1,
+        "teacherId": teacher_id, "orgId": org_id, "role": role, "actif": True,
+        "accordePar": accorde_par, "accordeLe": date.today().isoformat(),
+    }
+    save_acces(acces + [ligne])
+    return ligne
+
+
+def retirer_acces(teacher_id, org_id=None):
+    """Éteint les accès d'une personne — à un nœud, ou partout si org_id est None.
+
+    **On éteint, on ne supprime pas**, et on ne touche jamais au compte : une
+    personne rattachée à deux centres qui quitte l'un des deux garde l'autre.
+    C'est la raison d'être de la table ; une colonne sur le compte aurait
+    forcé à choisir entre la couper partout ou nulle part.
+    """
+    acces = load_acces()
+    touches = 0
+    for a in acces:
+        if a.get("teacherId") != teacher_id or not a.get("actif", True):
+            continue
+        if org_id is None or a.get("orgId") == org_id:
+            a["actif"] = False
+            touches += 1
+    if touches:
+        save_acces(acces)
+    return touches
+
+
 def arbre_pour_lecture():
     """L'arbre, les accès et les groupes, en une réponse lisible à l'œil.
 
@@ -14886,10 +14950,14 @@ class Handler(http.server.SimpleHTTPRequestHandler):
                 return
             titulaire_id = candidat
         groups = load_groups()
+        # Un groupe appartient à un centre. Le titulaire reste ce qu'il était :
+        # qui l'enseigne, pas qui le possède.
+        centre = centre_de_rattachement(teacher)
         group = {
             "id": max((g["id"] for g in groups), default=0) + 1,
             "nom": nom[:80],
             "teacherId": titulaire_id,
+            "centreId": centre["id"] if centre else None,
             "teams": normalize_lien(body.get("teams")),
             "createdAt": date.today().isoformat(),
         }
@@ -15328,6 +15396,18 @@ class Handler(http.server.SimpleHTTPRequestHandler):
         }
         teachers.append(teacher)
         save_teachers(teachers)
+        # Le compte entre dans l'arbre tout de suite. Sans cette ligne, un
+        # enseignant créé après l'étape 1 n'aurait aucune portée — invisible
+        # tant que rien ne s'appuie sur l'arbre, enfermé dehors à l'étape 2.
+        centre = centre_de_rattachement(admin)
+        if centre:
+            poser_acces(teacher["id"],
+                        centre["id"],
+                        "direction" if teacher["role"] == "admin" else "prof",
+                        admin["id"])
+        else:
+            print(f"[WARN] compte {teacher['id']} créé sans accès : "
+                  "aucun centre dans l'arbre", flush=True)
         json_response(self, {"success": True, "enseignant": public_teacher(teacher)}, 201)
 
     def _handle_teacher_update(self, teacher_id):
@@ -15397,6 +15477,9 @@ class Handler(http.server.SimpleHTTPRequestHandler):
             }, 409)
             return
         save_teachers([t for t in teachers if t["id"] != teacher_id])
+        # Les accès s'éteignent, ils ne se suppriment pas : le journal doit
+        # pouvoir dire dans six mois qui voyait quoi, et depuis quand.
+        retirer_acces(teacher_id)
         # Déconnexion immédiate du compte supprimé
         sessions = {tok: s for tok, s in load_sessions().items()
                     if s.get("teacherId") != teacher_id}
