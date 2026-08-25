@@ -15,6 +15,7 @@ vraiment de qui voit quoi, ces écarts-là fermeraient une classe.
 
     python3 build/controles/organisations.py             # contrôle
     python3 build/controles/organisations.py --etat      # + l'arbre à l'écran
+    python3 build/controles/organisations.py --portee    # + ancienne règle ↔ arbre
 """
 import importlib.util
 import pathlib
@@ -128,6 +129,50 @@ def controler(srv):
     return ecarts
 
 
+def comparer_portees(srv):
+    """L'ancienne règle et la nouvelle, comparées compte par compte.
+
+    C'est le filet de l'étape 2. Le remplacement de `groups_of_teacher()` et
+    `teacher_can_access_group()` par la portée de l'arbre ne doit **rien**
+    changer sur une installation à un seul centre : si les deux règles
+    divergent ici, c'est l'arbre qui est faux, pas l'ancienne règle qu'il faut
+    suivre. On le prouve avant d'échanger, pas après.
+
+    Depuis l'échange, la comparaison porte sur
+    `_groups_of_teacher_avant_larbre()` — la règle d'origine, gardée comme
+    repli — et non sur `groups_of_teacher()`, qui rend maintenant la portée de
+    l'arbre par construction et ne prouverait plus rien.
+
+    Elle reste juste tant qu'il n'y a **qu'un centre**. Le jour où un deuxième
+    ouvre, une divergence devient normale et attendue : c'est précisément ce
+    que l'étape 2 change. Le contrôle le dit alors au lieu de crier au défaut.
+    """
+    ecarts = []
+    groups = srv.load_groups()
+    centres = [o for o in srv.load_organisations() if o.get("type") == "centre"]
+    if len(centres) > 1:
+        print(f"{len(centres)} centres dans l'arbre — la comparaison avec "
+              "l'ancienne règle n'a plus de sens et n'est pas faite.")
+        return []
+    for t in srv.load_teachers():
+        ancien = {g["id"] for g in srv._groups_of_teacher_avant_larbre(t)}
+        nouveau = {g["id"] for g in srv.groupes_de_portee(t)}
+        if ancien != nouveau:
+            ecarts.append(
+                f"compte {t['id']} « {t.get('nom')} » : l'ancienne règle donne "
+                f"{sorted(ancien)}, l'arbre donne {sorted(nouveau)} "
+                f"(en trop : {sorted(nouveau - ancien)}, "
+                f"manquants : {sorted(ancien - nouveau)})")
+        for g in groups:
+            a = g["id"] in ancien
+            n = bool(srv.teacher_can_access_group(t, g["id"]))
+            if a != n:
+                ecarts.append(
+                    f"compte {t['id']} × groupe {g['id']} : ancienne règle "
+                    f"{'oui' if a else 'non'}, arbre {'oui' if n else 'non'}")
+    return ecarts
+
+
 def afficher_arbre(srv):
     orgs = srv.load_organisations()
     acces = srv.load_acces()
@@ -161,6 +206,8 @@ def main():
         afficher_arbre(srv)
         print()
     ecarts = controler(srv)
+    if "--portee" in sys.argv:
+        ecarts += comparer_portees(srv)
     if ecarts:
         print(f"ÉCART — {len(ecarts)} problème(s) dans l'arbre des organisations :")
         for e in ecarts:

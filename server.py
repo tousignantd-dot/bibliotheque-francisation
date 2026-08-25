@@ -1206,19 +1206,57 @@ def find_group(group_id):
     return next((g for g in load_groups() if g["id"] == group_id), None)
 
 
-def groups_of_teacher(teacher):
-    """Un administrateur voit tous les groupes ; un enseignant, les siens."""
+def _groups_of_teacher_avant_larbre(teacher):
+    """La règle d'avant le réseau multi-centres : admin voit tout, prof voit
+    les siens. Gardée comme **repli**, pas par nostalgie — voir ci-dessous."""
     groups = load_groups()
     if teacher.get("role") == "admin":
         return groups
     return [g for g in groups if g.get("teacherId") == teacher["id"]]
 
 
+def groups_of_teacher(teacher):
+    """Les groupes qu'une personne voit — désormais décidé par l'arbre.
+
+    Étape 2 du chantier « Le réseau des centres ». La portée se lit dans
+    `data/acces.json` : un rôle posé sur un nœud vaut sur tout son sous-arbre,
+    sauf `prof`, dont l'accès dit où il enseigne et non ce qu'il voit.
+
+    **Deux replis sur l'ancienne règle, et ils ne sont pas de la prudence
+    décorative.** Un verrou qui se trompe ferme une classe, et c'est le seul
+    défaut de ce dépôt qu'on ne peut pas rattraper le lendemain :
+
+    1. **Pas d'arbre du tout** — installation neuve dont la migration n'a pas
+       encore tourné, ou volume vide. Sans ce repli, plus personne ne voit
+       rien tant que `migrate_organisations()` n'a pas fini.
+    2. **Une personne sans aucune ligne d'accès.** La migration et la création
+       de comptes en posent une systématiquement ; s'il en manque une malgré
+       tout, on préfère la laisser travailler et le dire au journal. Le
+       contrôle `build/controles/organisations.py` sort en écart sur ce cas.
+
+    L'équivalence entre les deux règles a été prouvée avant l'échange, sur les
+    vraies données, par `organisations.py --portee`.
+    """
+    orgs = load_organisations()
+    if not orgs:
+        return _groups_of_teacher_avant_larbre(teacher)
+    if teacher and not acces_of_teacher(teacher["id"]):
+        print(f"[WARN] compte {teacher['id']} sans accès dans l'arbre — "
+              "repli sur l'ancienne règle de portée", flush=True)
+        return _groups_of_teacher_avant_larbre(teacher)
+    return groupes_de_portee(teacher, orgs)
+
+
 def teacher_can_access_group(teacher, group_id):
-    if teacher.get("role") == "admin":
-        return find_group(group_id) is not None
-    g = find_group(group_id)
-    return g is not None and g.get("teacherId") == teacher["id"]
+    """Même règle et mêmes replis que `groups_of_teacher()`, sur un seul groupe.
+
+    Elle passe par la liste plutôt que de retester la portée : deux
+    formulations d'une même règle finiraient par diverger, et c'est
+    exactement le défaut que l'étape 2 vient de supprimer.
+    """
+    if find_group(group_id) is None:
+        return False
+    return any(g["id"] == group_id for g in groups_of_teacher(teacher))
 
 
 # ── L'arbre des organisations et la table des accès ─────────────────────────

@@ -178,19 +178,19 @@ reste dans l'adresse, donc une vue se partage par son lien.
   historique tout ce qui lui était déjà visible, pour ne rien retirer à la
   classe en cours.
 
-## Le réseau multi-centres (étape 1 : l'arbre est posé, rien ne s'y appuie)
+## Le réseau multi-centres (étapes 1 et 2 : l'arbre décide de la portée)
 
 Le chantier est décrit dans `assets/presentations/reseau-des-centres.html`
-(fiche sur `presentations.html`). Étape 1 livrée le 25 août 2026 : **l'arbre
-des organisations existe et se tient à jour, mais aucune autorisation ne passe
-encore par lui**. `groups_of_teacher()` et `teacher_can_access_group()` restent
-seules en service — c'est l'étape 2 qui les remplacera, dans le même geste.
+(fiche sur `presentations.html`). **Étapes 1 et 2 livrées le 25 août 2026** :
+l'arbre des organisations existe, se tient à jour, et c'est lui qui décide
+désormais qui voit quels groupes.
 
-Cette séparation est volontaire, et c'est le point à ne pas défaire par
-« nettoyage » : elle permet de poser l'arbre en production, de le regarder
-vivre et de le corriger, sans qu'une erreur de portée puisse fermer une classe.
-Brancher la portée à moitié serait pire que ne pas la brancher — les deux
-règles cohabiteraient et la plus permissive gagnerait.
+**`role: "admin"` ne veut plus dire « voit tout ».** Un administrateur voit ce
+que son accès lui donne — son centre, s'il y est posé en `direction`. Le champ
+`role` du compte ne sert plus qu'aux **pouvoirs** (ouvrir un compte, promouvoir
+un dépôt) ; la **portée**, elle, se lit dans `data/acces.json`. Ne pas
+rebrancher l'un sur l'autre : c'est précisément la confusion que l'étape 2 a
+défaite.
 
 - **Deux fichiers du volume, non versionnés** : `data/organisations.json`
   (`{id, type, parentId, nom, actif}`, type parmi `reseau · css · centre`) et
@@ -229,6 +229,29 @@ règles cohabiteraient et la plus permissive gagnerait.
   sans accès, deux fondateurs. Les six ont été **injectés dans un bac d'essai et
   vus détectés** — un contrôle qu'on n'a pas fait échouer ne prouve rien.
 
+- **Les deux replis de `groups_of_teacher()`, à ne pas retirer.** Un verrou qui
+  se trompe ferme une classe, et c'est le seul défaut de ce dépôt qu'on ne
+  rattrape pas le lendemain. La portée retombe donc sur l'ancienne règle quand
+  **l'arbre est vide** (installation neuve, migration pas encore passée) et
+  quand **une personne n'a aucune ligne d'accès** — celle-là avec un `[WARN]`
+  au journal, et le contrôle sort en écart. `_groups_of_teacher_avant_larbre()`
+  n'est pas du code mort : c'est ce repli.
+- **`teacher_can_access_group()` passe par `groups_of_teacher()`** au lieu de
+  retester la portée. Deux formulations d'une même règle finissent toujours par
+  diverger — c'est le défaut que l'étape 2 vient de supprimer, on ne le
+  réintroduit pas dans la même fonction.
+- **L'équivalence a été prouvée avant l'échange, pas après** :
+  `organisations.py --portee` compare l'ancienne règle et l'arbre compte par
+  compte et groupe par groupe. Elle ne vaut que tant qu'il n'y a **qu'un
+  centre** ; au-delà, une divergence est normale et le contrôle le dit au lieu
+  de crier au défaut. Elle a été **vue échouer** sur un arbre où un groupe avait
+  changé de centre sans son enseignant — quatre écarts nommés.
+- **Créer nourrit l'arbre, supprimer l'éteint.** Un groupe créé reçoit son
+  `centreId`, un compte créé sa ligne d'accès (`prof`, ou `direction` si le
+  compte est `admin`), et supprimer un compte **éteint** ses accès au lieu de
+  les effacer. `retirer_acces(teacherId, orgId=None)` retire d'un centre sans
+  toucher au compte : une personne rattachée à deux centres qui quitte l'un
+  garde l'autre.
 - **Ce qui n'est pas fait, et pourquoi** : la migration vers Postgres, annoncée
   avec cette étape dans le document. Elle est restée dehors — `requirements.txt`
   dit « aucune dépendance externe », et toucher les trente `load_*`/`save_*` de
