@@ -61,6 +61,13 @@
       background: var(--surface-card); border: 1px solid var(--border);
       border-radius: var(--r-lg); box-shadow: var(--sh-card); overflow: hidden;
     }
+    /* `overflow: hidden` fait du panneau un conteneur de défilement, et un tel
+       conteneur DÉSACTIVE `position: sticky` sur ce qu'il contient — c'est ce
+       qui empêchait la barre de filtres de tenir en haut. `overflow: clip`
+       rogne exactement pareil sans créer ce conteneur. Le @supports laisse les
+       navigateurs qui l'ignorent au comportement d'avant : barre non collante,
+       et rien d'autre de changé. */
+    @supports (overflow: clip) { .panel { overflow: clip; } }
     .panel-header {
       padding: var(--sp-5) var(--sp-5) var(--sp-4); border-bottom: 1px solid var(--border);
       display: flex; align-items: center; gap: var(--sp-3);
@@ -145,6 +152,13 @@
     .list-header {
       display: flex; align-items: center; gap: var(--sp-3); flex-wrap: wrap;
       padding: var(--sp-5) var(--sp-5) var(--sp-4); border-bottom: 1px solid var(--border);
+      /* Collante sous l'en-tête, pour qu'on voie toujours le niveau choisi en
+         parcourant la liste. `--h-entete` est mesurée au chargement et à
+         chaque redimensionnement : l'en-tête passe à la ligne sur écran
+         étroit, une valeur en dur serait fausse la moitié du temps. */
+      position: sticky; top: var(--h-entete, 64px); z-index: 30;
+      background: var(--surface-card);
+      border-radius: var(--r-lg) var(--r-lg) 0 0;
     }
     .list-search { position: relative; width: 220px; }
     .list-search-icon {
@@ -162,6 +176,11 @@
       background: var(--surface-card);
     }
     .list-filtre { width: auto; min-width: 160px; font-size: var(--fs-ui-sm); font-weight: var(--fw-semi); }
+    /* Sous 900 px, l'en-tête ET la barre se replient sur plusieurs lignes : à
+       deux, ils prenaient 35 % de l'écran à 820 px et 62 % sur un téléphone,
+       mesuré. Voir le niveau choisi ne vaut pas de perdre la liste — la barre
+       repasse donc au fil du texte. */
+    @media (max-width: 900px) { .list-header { position: static; } }
 
     .activity-list { list-style: none; margin: 0; padding: 0; }
 
@@ -1143,6 +1162,37 @@ document.getElementById('listSearch').addEventListener('input', applyFilters);
 document.getElementById('filterNiveau').addEventListener('change', applyFilters);
 document.getElementById('filterTemps').addEventListener('change', applyFilters);
 document.getElementById('filterDomaine').addEventListener('change', applyFilters);
+
+/* ======================================================
+   La hauteur de l'en-tête, mesurée et non devinée
+   ======================================================
+   La barre de filtres se colle SOUS l'en-tête : il lui faut donc sa hauteur
+   exacte. Elle n'est pas constante — l'en-tête passe à la ligne sur écran
+   étroit, et `js/prof.js` y injecte sa barre de groupe après coup. Un
+   `--h-entete` écrit en dur laisserait un trou ou un recouvrement dès que la
+   fenêtre change. */
+(function suivreHauteurEntete(){
+  const entete = document.querySelector('.header');
+  if (!entete) return;
+  const poser = () => document.documentElement.style.setProperty(
+    '--h-entete', entete.offsetHeight + 'px');
+  poser();
+  /* Trois déclencheurs, et non un seul. La première version ne posait
+     `resize` qu'en repli de `ResizeObserver` — or l'observateur ne suffit
+     pas : ses rappels passent par la boucle de rendu, et une page qui ne
+     peint pas (onglet en arrière-plan, aperçu figé) ne les délivre jamais.
+     Constaté en vérifiant : l'en-tête passait de 81 à 141 px en repliant, la
+     variable restait à 81, et la barre de filtres se collait DERRIÈRE
+     l'en-tête. `resize` est un événement ordinaire, il part dans tous les
+     cas ; l'observateur attrape en plus les changements qui ne viennent pas
+     de la fenêtre — `js/prof.js` injecte sa barre de groupe après coup. */
+  addEventListener('resize', poser);
+  addEventListener('orientationchange', poser);
+  addEventListener('load', poser);
+  if (window.ResizeObserver) new ResizeObserver(poser).observe(entete);
+  // Les polices arrivent après le premier rendu et changent la hauteur.
+  if (document.fonts && document.fonts.ready) document.fonts.ready.then(poser);
+})();
 
 /* ======================================================
    Amorçage — la session enseignante conditionne tout le reste :
