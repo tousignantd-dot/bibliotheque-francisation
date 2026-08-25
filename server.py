@@ -699,6 +699,74 @@ except Exception as _e:                                  # pragma: no cover
     print(f"[WARN] module db indisponible ({_e}) — stockage en fichiers", flush=True)
 
 
+# Témoin lu par /api/health. « jamais » tant que le serveur n'a pas eu à
+# décider, puis « faite », « inutile » (base déjà peuplée) ou le motif d'échec.
+_POSTGRES_MIGRE = "jamais"
+
+
+def migrer_vers_postgres():
+    """Copie le volume vers Postgres, **une seule fois**, au démarrage.
+
+    Elle tourne ici et non en ligne de commande parce que les fichiers source
+    vivent sur le volume Railway : une commande lancée d'un poste local
+    migrerait les données du poste local, ce qui serait pire que ne rien faire.
+
+    **Trois verrous, et le premier est le vrai** : elle ne fait rien si la base
+    contient déjà quoi que ce soit. Rejouer une migration sur une base en
+    service remettrait l'état des fichiers par-dessus le travail fait depuis —
+    c'est le seul geste irréversible du chantier, et il est donc interdit par
+    défaut. Elle n'efface aucun fichier : le volume reste le filet.
+    """
+    global _POSTGRES_MIGRE
+    if not (_db and _db.disponible()):
+        _POSTGRES_MIGRE = "sans objet"
+        return
+    try:
+        _db.init_schema()
+        etat = _db.compter()
+    except Exception as e:
+        _POSTGRES_MIGRE = f"base injoignable : {e}"
+        print(f"[ERREUR] Postgres injoignable au démarrage : {e}", flush=True)
+        return
+
+    peuplee = bool(etat["documents"]) or any(
+        etat[t] for t in ("progression", "journal_acces", "signaux_aide",
+                          "vocab_progression"))
+    if peuplee:
+        _POSTGRES_MIGRE = "inutile"
+        print("[postgres] La base contient déjà des données — aucune migration.",
+              flush=True)
+        return
+
+    dossier = STORAGE_DIR / "data"
+    total = 0
+    try:
+        for fichier in sorted(_db.DOCUMENTS):
+            chemin = dossier / fichier
+            if not chemin.exists():
+                continue
+            with open(chemin, "r", encoding="utf-8") as f:
+                donnees = json.load(f)
+            _db.ecrire_document(fichier, donnees)
+            total += len(donnees) if isinstance(donnees, list) else 1
+        for fichier in sorted(_db.JOURNAUX):
+            chemin = dossier / fichier
+            if not chemin.exists():
+                continue
+            with open(chemin, "r", encoding="utf-8") as f:
+                donnees = json.load(f)
+            _db.remplacer_journal(fichier, donnees)
+            total += len(donnees)
+    except Exception as e:
+        _POSTGRES_MIGRE = f"échec : {e}"
+        print(f"[ERREUR] migration Postgres interrompue : {e}", flush=True)
+        return
+
+    _POSTGRES_MIGRE = "faite"
+    print(f"[postgres] Migration faite — {total} enregistrements copiés depuis "
+          f"{dossier}. Les fichiers ne sont pas touchés.", flush=True)
+
+
 def _postgres(path):
     """Ce fichier est-il servi par Postgres ? Le nom décide, pas le chemin."""
     return bool(_db and _db.disponible() and _db.gere(path.name))
@@ -711,11 +779,25 @@ def _load_json_list(path):
                 return _db.lire_journal(path.name)
             return _db.lire_document(path.name)
         except Exception as e:
-            # On ne retombe **pas** sur le fichier en cas d'erreur de base :
-            # le fichier est périmé depuis la migration, et le servir ferait
-            # réapparaître d'anciennes données comme si de rien n'était. Mieux
-            # vaut une liste vide et un cri dans le journal qu'une vérité morte.
-            print(f"[ERREUR] lecture Postgres de {path.name} : {e}", flush=True)
+            # **Correction du 25 août 2026.** Le premier jet rendait une liste
+            # vide sur erreur de base, au motif que le fichier est périmé après
+            # la migration. Mais si la base tombe en pleine séance, une liste
+            # vide vide le portail : plus de groupes, plus d'élèves, plus de
+            # modules — et l'enseignante recrée ce qu'elle croit perdu. Le
+            # fichier, lui, est peut-être en retard, mais il est plausible et
+            # la classe continue de lire son matériel. Les écritures, elles,
+            # échouent bruyamment de toute façon : la base est injoignable.
+            #
+            # Même principe que le verrou des sections : un dispositif qui se
+            # trompe ne doit pas fermer la classe.
+            print(f"[ERREUR] lecture Postgres de {path.name} : {e} — "
+                  "repli sur le fichier du volume", flush=True)
+            if path.exists():
+                try:
+                    with open(path, "r", encoding="utf-8") as f:
+                        return json.load(f)
+                except json.JSONDecodeError:
+                    pass
             return []
     if path.exists():
         try:
@@ -733,7 +815,14 @@ def _load_json_doc(path, defaut):
         try:
             return _db.lire_document(path.name, defaut)
         except Exception as e:
-            print(f"[ERREUR] lecture Postgres de {path.name} : {e}", flush=True)
+            print(f"[ERREUR] lecture Postgres de {path.name} : {e} — "
+                  "repli sur le fichier du volume", flush=True)
+            if path.exists():
+                try:
+                    with open(path, "r", encoding="utf-8") as f:
+                        return json.load(f)
+                except json.JSONDecodeError:
+                    pass
             return defaut
     if path.exists():
         try:
@@ -14318,7 +14407,15 @@ class Handler(http.server.SimpleHTTPRequestHandler):
 
         # Sonde de santé Railway : doit rester publique et sans effet de bord.
         if path == "/api/health":
-            json_response(self, {"ok": True})
+            # Le nom du stockage, jamais l'adresse ni les identifiants.
+            # Railway ne passe pas DATABASE_URL d'un service à l'autre tout
+            # seul : sans ce témoin, rien ne dit de l'extérieur si la variable
+            # est bien arrivée jusqu'au serveur.
+            json_response(self, {
+                "ok": True,
+                "stockage": "postgres" if (_db and _db.disponible()) else "fichiers",
+                "migre": _POSTGRES_MIGRE,
+            })
             return
         if path == "/api/prof/me":
             self._handle_prof_me()
@@ -17576,6 +17673,16 @@ class Handler(http.server.SimpleHTTPRequestHandler):
         consigne = body.get("consigne", "").strip()[:400]
         reponse = body.get("reponse", "").strip()[:600]
         attendu = body.get("attendu", "").strip()[:400]
+        # Numéro d'essai de l'élève sur CETTE réponse. Il change le ton de la
+        # rétroaction, pas le verdict : au premier essai le commentaire situe
+        # l'erreur sans écrire la phrase attendue — l'élève doit garder quelque
+        # chose à réparer. Le champ « correction » est renvoyé dans les deux
+        # cas : le module le garde de côté pour le bouton « Montrez-moi la
+        # réponse », ce qui évite un second appel à l'API.
+        try:
+            essai = max(1, min(9, int(body.get("essai", 1))))
+        except (TypeError, ValueError):
+            essai = 1
         if not reponse:
             json_response(self, {"error": "Réponse vide"}, 400)
             return
@@ -17589,6 +17696,25 @@ class Handler(http.server.SimpleHTTPRequestHandler):
             "Accepte les réponses courtes ou différentes si elles sont correctes "
             "et pertinentes. Ne pénalise pas les majuscules ni la ponctuation "
             "finale manquantes.\n"
+        )
+        if essai <= 1:
+            system_prompt += (
+                "C'est le PREMIER essai de l'élève. Si la réponse est fautive, "
+                "ton commentaire MONTRE OÙ ÇA CLOCHE SANS DONNER LA RÉPONSE : "
+                "tu nommes ce qu'il faut regarder (« regarde ton verbe : "
+                "l'action est finie »), tu renvoies à la phrase du dialogue, ou "
+                "tu poses une question plus facile. Tu n'écris JAMAIS la phrase "
+                "corrigée ni le mot attendu dans le champ feedback — l'élève "
+                "doit avoir encore quelque chose à trouver.\n"
+            )
+        else:
+            system_prompt += (
+                "C'est le DEUXIÈME essai de l'élève : il a déjà cherché une "
+                "fois. Si la réponse est encore fautive, ton commentaire dit "
+                "clairement ce qui manque, et la correction sera affichée à "
+                "côté. On ne le fait plus deviner.\n"
+            )
+        system_prompt += (
             "Réponds UNIQUEMENT par un objet JSON strict, sans texte autour :\n"
             '{\"correct\": true|false, \"feedback\": \"une phrase courte, en '
             'tutoyant l\'élève, qui explique ce qui va ou ce qui cloche\", '
@@ -18448,6 +18574,19 @@ if __name__ == "__main__":
     # port (le healthcheck passe immédiatement), puis on initialise le stockage
     # en arrière-plan sans jamais faire planter le serveur.
     def _init_storage_safe():
+        # **Postgres d'abord, et l'ordre a été payé.** Le premier jet plaçait
+        # la migration en dernier, « pour copier l'état corrigé par les
+        # migrations ci-dessus ». Mais celles-ci écrivent par la couche de
+        # stockage : sans schéma, chacune échouait sur « relation "documents"
+        # does not exist », et la copie n'avait jamais lieu. Le serveur
+        # tournait sur le repli fichier en croyant être en base.
+        #
+        # Le bon ordre est l'inverse : poser le schéma, copier le volume, puis
+        # laisser les migrations idempotentes travailler sur la base.
+        try:
+            migrer_vers_postgres()
+        except Exception as e:
+            print(f"[WARN] migrer_vers_postgres a échoué : {e}", flush=True)
         try:
             init_storage()
             print("[init] Stockage initialisé", flush=True)
@@ -18465,6 +18604,7 @@ if __name__ == "__main__":
             migrate_organisations()
         except Exception as e:
             print(f"[WARN] migrate_organisations a échoué : {e}", flush=True)
+
 
     threading.Thread(target=_init_storage_safe, daemon=True).start()
 
