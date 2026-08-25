@@ -192,6 +192,7 @@
           <div class="pc-nom" id="nomEnseignant"></div>
           <div class="pc-session-etat" id="etatSession">Session ouverte</div>
         </div>
+        <a class="btn btn--ghost btn--sm" href="reseau.html" id="lienReseau" hidden>Console du réseau</a>
         <button type="button" class="btn btn--ghost btn--sm" id="boutonDeconnexion">Déconnexion</button>
       </div>
     </div>
@@ -214,7 +215,7 @@
         <div class="pc-entete-section">
           <div>
             <div class="pc-titre-section">Comptes du centre</div>
-            <p class="pc-consigne">Tous les comptes, administrateurs compris. Un compte « administrateur » ouvre des comptes enseignants, réinitialise un mot de passe et voit tous les groupes ; un compte « enseignant » ne voit que les siens. <strong>Ouvrir un compte « administrateur » est réservé au compte fondateur</strong>, celui du premier démarrage.</p>
+            <p class="pc-consigne">Tous les comptes, administrateurs compris. Un compte « administrateur » ouvre des comptes enseignants et réinitialise un mot de passe ; un compte « enseignant » ne fait ni l'un ni l'autre. <strong>Ce que chacun voit ne dépend plus du rôle</strong> mais de son rattachement dans l'arbre du réseau : un administrateur voit son centre, pas ceux des autres. <strong>Ouvrir un compte « administrateur » est réservé au compte fondateur</strong>, celui du premier démarrage.</p>
           </div>
           <div class="pc-compte" id="resumeComptes"></div>
         </div>
@@ -467,6 +468,9 @@ function ouvrirGestion() {
     // tranche de toute façon (403) ; la page n'offre pas un geste refusé.
     $('champRole').hidden = !e.fondateur;
     $('noteRole').hidden = !!e.fondateur;
+    // La console du réseau est réservée au fondateur (403 côté serveur).
+    // Sans ce lien, la page n'était atteignable qu'en tapant son adresse.
+    $('lienReseau').hidden = !e.fondateur;
     chargerEnseignants();
   } else {
     $('sectionReservee').hidden = false;

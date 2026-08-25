@@ -1,0 +1,325 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Console du réseau — Francisation</title>
+  <link rel="stylesheet" href="assets/design-system/styles.css" />
+  <link rel="stylesheet" href="assets/design-system/marque-saaf.css" />
+  <link rel="icon" type="image/svg+xml" href="assets/design-system/marque-saaf-favicon.svg" />
+  <style>
+    /* Console du réseau — étape 3 du chantier « Le réseau des centres ».
+       En lecture pour l'instant : elle montre l'arbre de production et ses
+       orphelins, qui ne se voyaient jusqu'ici que dans les journaux Railway.
+       Réservée au compte fondateur, côté serveur comme à l'écran.
+       Aucune couleur en dur : uniquement des jetons du système de design. */
+    body { margin: 0; background: var(--surface-page); }
+
+    .rs-haut { position: sticky; top: 0; z-index: 30; background: var(--surface-card);
+               border-bottom: 1px solid var(--border); }
+    .rs-haut > .container { display: flex; align-items: center; gap: var(--sp-4);
+                            flex-wrap: wrap; padding-top: var(--sp-3);
+                            padding-bottom: var(--sp-3); }
+    .rs-haut a { font-size: var(--fs-ui); font-weight: var(--fw-bold);
+                 color: var(--text-muted); text-decoration: underline; }
+    .rs-haut a:hover { color: var(--text-accent); }
+    .rs-haut .rs-qui { margin-left: auto; font-size: var(--fs-ui-sm);
+                       font-weight: var(--fw-bold); color: var(--text-muted); }
+
+    .rs-titre { margin: var(--sp-2) 0 var(--sp-2); }
+    .rs-sous { color: var(--text-muted); margin: 0; }
+
+    .rs-tuiles { display: grid; gap: var(--sp-3);
+                 grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+                 margin: var(--sp-8) 0 0; }
+    .rs-tuile { background: var(--surface-card); border: 1px solid var(--border);
+                border-radius: var(--r-md); padding: var(--sp-4) var(--sp-5); }
+    .rs-tuile b { display: block; font-size: var(--fs-h3); font-weight: var(--fw-black);
+                  color: var(--text-strong); font-variant-numeric: tabular-nums; }
+    .rs-tuile span { font-size: var(--fs-ui-sm); color: var(--text-muted);
+                     font-weight: var(--fw-bold); }
+
+    h2.rs-sect { font-size: var(--fs-ui); font-weight: var(--fw-black);
+                 letter-spacing: .08em; text-transform: uppercase;
+                 color: var(--text-muted); margin: var(--sp-8) 0 var(--sp-3); }
+
+    /* — L'arbre — */
+    .rs-arbre { background: var(--surface-card); border: 1px solid var(--border);
+                border-radius: var(--r-md); padding: var(--sp-5); overflow-x: auto; }
+    .rs-niv { list-style: none; margin: 0; padding: 0;
+              display: flex; flex-direction: column; gap: var(--sp-2); }
+    .rs-niv .rs-niv { margin: var(--sp-2) 0 0 var(--sp-4);
+                      padding-left: var(--sp-4); border-left: 2px solid var(--line-200); }
+    .rs-noeud { border: 1px solid var(--border); border-radius: var(--r-sm);
+                padding: var(--sp-3) var(--sp-4); background: var(--surface-sunken); }
+    .rs-noeud--reseau { background: var(--marque-100); border-color: var(--marque-100); }
+    .rs-noeud--css    { background: var(--acier-100); border-color: var(--acier-100); }
+    .rs-noeud--centre { background: var(--teal-100);  border-color: var(--teal-100); }
+    .rs-tete { display: flex; align-items: baseline; gap: var(--sp-3); flex-wrap: wrap; }
+    .rs-type { font-size: var(--fs-meta); font-weight: var(--fw-black);
+               letter-spacing: .1em; text-transform: uppercase;
+               color: var(--text-muted); white-space: nowrap; }
+    .rs-nom { font-weight: var(--fw-black); color: var(--text-strong); }
+    .rs-id { font-size: var(--fs-meta); color: var(--text-muted);
+             font-variant-numeric: tabular-nums; }
+    .rs-lignes { margin: var(--sp-2) 0 0; padding: 0; list-style: none;
+                 display: flex; flex-direction: column; gap: 2px; }
+    .rs-lignes li { font-size: var(--fs-ui-sm); color: var(--text-body); }
+    .rs-role { font-weight: var(--fw-black); }
+    .rs-vide { font-size: var(--fs-ui-sm); color: var(--text-muted); font-style: italic; }
+
+    /* — Tableau des accès — */
+    .rs-cadre { overflow-x: auto; border: 1px solid var(--border);
+                border-radius: var(--r-md); background: var(--surface-card); }
+    table.rs-table { border-collapse: collapse; width: 100%; min-width: 560px; }
+    .rs-table th, .rs-table td { text-align: left; padding: var(--sp-3) var(--sp-4);
+                                 border-bottom: 1px solid var(--border);
+                                 font-size: var(--fs-ui-sm); }
+    .rs-table thead th { font-size: var(--fs-meta); font-weight: var(--fw-black);
+                         letter-spacing: .08em; text-transform: uppercase;
+                         color: var(--text-muted); background: var(--surface-sunken);
+                         white-space: nowrap; }
+    .rs-table tbody tr:last-child td { border-bottom: 0; }
+    .rs-eteint { color: var(--text-muted); }
+
+    .rs-fin { margin: var(--sp-12) 0 var(--sp-12); color: var(--text-muted);
+              font-size: var(--fs-ui-sm); }
+    @media (max-width: 640px) { .rs-arbre { padding: var(--sp-3); } }
+  </style>
+</head>
+<body>
+
+  <div class="rs-haut">
+    <div class="container">
+      <a href="enseignant.html">← Espace enseignant</a>
+      <span class="rs-qui" id="rsQui"></span>
+    </div>
+  </div>
+
+  <section class="band">
+    <div class="container">
+      <div class="saaf-bandeau-portail">
+        <span class="saaf-lockup">
+          <span class="saaf-pilule"><span class="saaf-nom">SAAF</span></span>
+          <span class="saaf-filet" aria-hidden="true"></span>
+          <span class="saaf-desc">Système d'aide à l'apprentissage du français</span>
+        </span>
+      </div>
+      <p class="band__eyebrow">Console du réseau</p>
+      <h1 class="rs-titre">Le réseau</h1>
+      <p class="rs-sous" id="rsSous">Chargement…</p>
+    </div>
+  </section>
+
+  <main class="container" id="rsCorps" hidden>
+    <div id="rsAlerte"></div>
+
+    <div class="rs-tuiles" id="rsTuiles"></div>
+
+    <h2 class="rs-sect">L'arbre</h2>
+    <div class="rs-arbre"><ul class="rs-niv" id="rsArbre"></ul></div>
+
+    <h2 class="rs-sect">Les accès</h2>
+    <div class="rs-cadre">
+      <table class="rs-table">
+        <thead>
+          <tr><th>Personne</th><th>Rôle</th><th>Posé sur</th><th>Depuis</th><th>État</th></tr>
+        </thead>
+        <tbody id="rsAcces"></tbody>
+      </table>
+    </div>
+
+    <p class="rs-fin">Cette console est en <strong>lecture seule</strong>. Créer un
+    centre, poser un accès ou inviter une personne viendra dans la suite de
+    l'étape 3 ; pour l'instant, les comptes s'ouvrent depuis
+    <a href="prof.html">l'écran des comptes</a>.</p>
+  </main>
+
+  <main class="container" id="rsRefus" hidden>
+    <div class="card" style="margin-top:var(--sp-8)">
+      <h2 style="margin-top:0">Réservé au compte fondateur</h2>
+      <p>Cette console montre l'ensemble du réseau — tous les centres de services
+      scolaires, tous les centres de francisation et tous les accès. Elle n'est
+      ouverte qu'au compte fondateur.</p>
+      <p style="margin-bottom:0"><a class="btn btn--pri" href="enseignant.html">Revenir à l'espace enseignant</a></p>
+    </div>
+  </main>
+
+  <script src="js/prof.js"></script>
+  <script>
+  (function () {
+    'use strict';
+
+    var LIBELLE_ROLE = {
+      fondateur: 'Fondateur', gestion_css: 'Gestion CSS',
+      direction: 'Direction', conseiller: 'Conseiller', prof: 'Enseignant'
+    };
+    var LIBELLE_TYPE = { reseau: 'Réseau', css: 'CSS', centre: 'Centre' };
+
+    function ech(s) {
+      return String(s == null ? '' : s).replace(/[&<>"']/g, function (c) {
+        return { '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c];
+      });
+    }
+
+    /* Les dates se découpent à la chaîne, jamais par `new Date('2026-08-16')` :
+       la chaîne serait lue en temps universel et affichée la veille au Québec.
+       Même règle que dans la fiche de l'élève et la progression. */
+    function jour(iso) {
+      if (!iso) return '—';
+      var p = String(iso).slice(0, 10).split('-');
+      if (p.length !== 3) return ech(iso);
+      var MOIS = ['janvier','février','mars','avril','mai','juin','juillet',
+                  'août','septembre','octobre','novembre','décembre'];
+      return Number(p[2]) + ' ' + MOIS[Number(p[1]) - 1] + ' ' + p[0];
+    }
+
+    function pluriel(n, sing, plur) {
+      return n + ' ' + (n > 1 ? (plur || sing + 's') : sing);
+    }
+
+    function tuile(n, mot) {
+      return '<div class="rs-tuile"><b>' + n + '</b><span>' + ech(mot) + '</span></div>';
+    }
+
+    function rendreNoeud(org, parAcces, tousLesOrgs) {
+      var li = '<li><div class="rs-noeud rs-noeud--' + ech(org.type) + '">';
+      li += '<div class="rs-tete">'
+          + '<span class="rs-type">' + ech(LIBELLE_TYPE[org.type] || org.type) + '</span>'
+          + '<span class="rs-nom">' + ech(org.nom) + '</span>'
+          + '<span class="rs-id">n° ' + ech(org.id) + '</span>'
+          + (org.actif === false ? '<span class="rs-id">— inactif</span>' : '')
+          + '</div>';
+
+      var lignes = (parAcces[org.id] || []).map(function (a) {
+        return '<li><span class="rs-role">' + ech(LIBELLE_ROLE[a.role] || a.role)
+             + '</span> · ' + ech(a.nom)
+             + (a.actif === false ? ' <span class="rs-eteint">(accès éteint)</span>' : '')
+             + '</li>';
+      });
+      (org.groupes || []).forEach(function (g) {
+        lignes.push('<li>Groupe · ' + ech(g.nom) + ' <span class="rs-id">n° '
+                  + ech(g.id) + '</span></li>');
+      });
+      if (lignes.length) li += '<ul class="rs-lignes">' + lignes.join('') + '</ul>';
+      else if (org.type === 'centre')
+        li += '<p class="rs-vide" style="margin:var(--sp-2) 0 0">Aucun compte, aucun groupe.</p>';
+      li += '</div>';
+
+      var enfants = tousLesOrgs.filter(function (o) { return o.parentId === org.id; });
+      if (enfants.length) {
+        li += '<ul class="rs-niv">'
+            + enfants.map(function (e) { return rendreNoeud(e, parAcces, tousLesOrgs); }).join('')
+            + '</ul>';
+      }
+      return li + '</li>';
+    }
+
+    function rendre(data, moi) {
+      var orgs = data.organisations || [];
+      var acces = data.acces || [];
+      var orph = data.orphelins || {};
+
+      var parAcces = {};
+      acces.forEach(function (a) {
+        (parAcces[a.orgId] = parAcces[a.orgId] || []).push(a);
+      });
+
+      var sansCentre = orph.groupesSansCentre || [];
+      var sansAcces = orph.comptesSansAcces || [];
+
+      var nbCss = orgs.filter(function (o) { return o.type === 'css'; }).length;
+      var centres = orgs.filter(function (o) { return o.type === 'centre'; });
+      /* Les orphelins comptent dans le total. Sans eux, la page annoncerait
+         « 2 groupes » juste au-dessus d'une bannière qui en signale un
+         troisième — et c'est la page qui aurait l'air fausse, pas la donnée. */
+      var nbGroupes = orgs.reduce(function (n, o) { return n + (o.groupes || []).length; }, 0)
+                    + sansCentre.length;
+      var nbActifs = acces.filter(function (a) { return a.actif !== false; }).length;
+
+      document.getElementById('rsSous').textContent =
+        pluriel(nbCss, 'centre de services scolaire', 'centres de services scolaires')
+        + ', ' + pluriel(centres.length, 'centre de francisation', 'centres de francisation')
+        + ', ' + pluriel(nbGroupes, 'groupe') + '.';
+
+      document.getElementById('rsTuiles').innerHTML =
+          tuile(nbCss, nbCss > 1 ? 'CSS' : 'CSS')
+        + tuile(centres.length, centres.length > 1 ? 'centres' : 'centre')
+        + tuile(nbActifs, nbActifs > 1 ? 'accès actifs' : 'accès actif')
+        + tuile(nbGroupes, nbGroupes > 1 ? 'groupes' : 'groupe');
+
+      /* Les orphelins d'abord : c'est la raison d'être de cette page. Un groupe
+         sans centre ou un compte sans accès travaille aujourd'hui grâce au repli
+         de l'étape 2, et ne se voyait jusqu'ici que dans les journaux Railway. */
+      var alerte = document.getElementById('rsAlerte');
+      if (sansCentre.length || sansAcces.length) {
+        var quoi = [];
+        if (sansCentre.length) quoi.push(pluriel(sansCentre.length, 'groupe') + ' sans centre (n° ' + sansCentre.join(', ') + ')');
+        if (sansAcces.length) quoi.push(pluriel(sansAcces.length, 'compte') + ' sans accès (n° ' + sansAcces.join(', ') + ')');
+        alerte.innerHTML =
+          '<div class="banner" style="margin-top:var(--sp-8)">'
+          + '<strong>⚠ À rattacher : ' + ech(quoi.join(' et ')) + '.</strong> '
+          + 'Ces éléments continuent de fonctionner — la portée retombe sur '
+          + 'l\'ancienne règle et le journal du serveur le dit — mais ils sont '
+          + 'hors de l\'arbre, donc invisibles à toute portée qui s\'y appuie.'
+          + '</div>';
+      } else {
+        alerte.innerHTML = '<p class="rs-vide" style="margin-top:var(--sp-8)">'
+          + 'Aucun orphelin : tous les groupes ont un centre et tous les comptes ont un accès.</p>';
+      }
+
+      var racines = orgs.filter(function (o) { return o.parentId === null || o.parentId === undefined; });
+      document.getElementById('rsArbre').innerHTML =
+        racines.map(function (r) { return rendreNoeud(r, parAcces, orgs); }).join('')
+        || '<li class="rs-vide">Aucune organisation. L\'arbre sera posé au prochain démarrage du serveur.</li>';
+
+      document.getElementById('rsAcces').innerHTML = acces.map(function (a) {
+        return '<tr' + (a.actif === false ? ' class="rs-eteint"' : '') + '>'
+          + '<td>' + ech(a.nom) + '</td>'
+          + '<td>' + ech(LIBELLE_ROLE[a.role] || a.role) + '</td>'
+          + '<td>' + ech(a.organisation) + '</td>'
+          + '<td>' + jour(a.accordeLe) + '</td>'
+          + '<td>' + (a.actif === false ? 'Éteint' : 'Actif') + '</td>'
+          + '</tr>';
+      }).join('') || '<tr><td colspan="5" class="rs-vide">Aucun accès.</td></tr>';
+
+      document.getElementById('rsQui').textContent = moi ? moi.nom : '';
+      document.getElementById('rsCorps').hidden = false;
+    }
+
+    async function demarrer() {
+      var moi;
+      try {
+        var res = await Prof.fetch('/api/prof/me');
+        var data = await res.json();
+        if (!data.connecte) { Prof.versConnexion(); return; }
+        moi = data.enseignant;
+      } catch (e) { return; }   // 401 : prof.js a déjà redirigé
+
+      document.getElementById('rsQui').textContent = moi.nom || '';
+
+      /* Le refus qui compte est celui du serveur (403). Celui-ci ne fait que
+         ne pas promettre un écran que le serveur ne servira pas — même parti
+         pris que `prof.html`, qui n'offre pas un geste qui sera refusé. */
+      if (!moi.fondateur) {
+        document.getElementById('rsSous').textContent =
+          'Cette console est réservée au compte fondateur.';
+        document.getElementById('rsRefus').hidden = false;
+        return;
+      }
+
+      try {
+        var r = await Prof.fetch('/api/admin/organisations');
+        if (!r.ok) throw new Error('HTTP ' + r.status);
+        rendre(await r.json(), moi);
+      } catch (e) {
+        document.getElementById('rsSous').textContent =
+          "L'arbre n'a pas pu être lu (" + e.message + ').';
+      }
+    }
+
+    demarrer();
+  })();
+  </script>
+</body>
+</html>

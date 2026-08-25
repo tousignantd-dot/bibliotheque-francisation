@@ -252,6 +252,37 @@ défaite.
   les effacer. `retirer_acces(teacherId, orgId=None)` retire d'un centre sans
   toucher au compte : une personne rattachée à deux centres qui quitte l'un
   garde l'autre.
+### La console du réseau (`reseau.html`)
+
+Étape 3, première tranche. **Lecture seule**, réservée au **compte fondateur**
+— refus côté serveur (403), et la page ne promet pas un écran qu'elle
+n'obtiendra pas. On y entre par le bouton « Console du réseau » de `prof.html`,
+qui ne paraît qu'au fondateur ; sans lui, la page n'était atteignable qu'en
+tapant son adresse.
+
+- **Sa raison d'être, ce sont les orphelins.** Un groupe sans centre ou un
+  compte sans accès continue de travailler — c'est le repli de l'étape 2 — et
+  ne se voyait jusqu'ici que dans les journaux Railway, que personne ne lit.
+  `build/controles/organisations.py` ne lit que le volume **local** : il ne peut
+  rien dire de la production. Cette page est le seul endroit d'où l'on voit
+  l'arbre réel.
+- **Les orphelins comptent dans les totaux.** Sans cela, la page annonçait
+  « 2 groupes » juste au-dessus d'une bannière qui en signalait un troisième —
+  et c'est la page qui avait l'air fausse, pas la donnée. Trouvé en jouant la
+  page avec un orphelin fabriqué, pas en relisant le code.
+- **Aucune couleur en dur, aucun jeton inventé** : un contrôle en dix lignes
+  compare les `var(--…)` de la page aux jetons réellement définis dans
+  `assets/design-system/`. Il a rendu zéro manquant.
+- **`prof.html` disait une chose devenue fausse** : « un compte administrateur
+  … voit tous les groupes ». Depuis l'étape 2, le rôle ne porte plus que les
+  **pouvoirs** ; ce que chacun voit vient de son rattachement. La consigne a été
+  réécrite dans le même commit — une interface qui décrit l'ancienne règle est
+  un défaut, pas un détail.
+
+Reste à faire dans l'étape 3 : les gestes d'écriture (créer un CSS ou un centre,
+poser et retirer un accès, déplacer un groupe), l'invitation par jeton avec
+l'import d'une liste de courriels, et le journal d'audit.
+
 - **Ce qui n'est pas fait, et pourquoi** : la migration vers Postgres, annoncée
   avec cette étape dans le document. Elle est restée dehors — `requirements.txt`
   dit « aucune dépendance externe », et toucher les trente `load_*`/`save_*` de
