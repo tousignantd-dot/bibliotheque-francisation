@@ -1,0 +1,541 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Le réseau des centres</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800;900&display=swap">
+<style>
+  /* Système de design Francisation / SAAF — thème clair unique, comme les
+     autres documents de la banque de présentations. Le violet est exclusif
+     à la marque : aucun état, aucun repérage ne le porte. */
+  :root{
+    --accent:#0A8F5B; --accent-soft:#E6F5EE; --accent-ink:#07734A;
+    --surface-band:#EDF6F1;
+    --ink-900:#17181A; --ink-700:#3A3D40; --ink-500:#4B4F52; --ink-400:#6E7175;
+    --surface-page:#F7F7F5; --surface-card:#FFFFFF; --surface-sunken:#FBFBFA;
+    --paper-200:#F0F0EE;
+    --border:#EAEAE8; --border-firm:#D6D6D2; --border-tint:#D8E8DF;
+    --acier-600:#1D6B8F; --acier-100:#E7F0F6;
+    --ambre-700:#B45309; --ambre-100:#FBEEDC;
+    --teal-700:#0D7A6F;  --teal-100:#E3F2F0;
+    --indigo-600:#3B49A0; --indigo-100:#E8EAFA;
+    --pourpre-700:#7E3F98; --pourpre-100:#F3E8F7;
+    --framboise-600:#A5335F; --framboise-100:#FCE9F0;
+    --marque-600:#6B4FBB; --marque-100:#EDE7F9; --marque-filet:#C3B4EA;
+    --font-sans:"Nunito",system-ui,-apple-system,"Segoe UI",sans-serif;
+    --content-max:880px;
+  }
+  *{box-sizing:border-box}
+  body{margin:0; background:var(--surface-page); color:var(--ink-900);
+    font-family:var(--font-sans); font-size:18px; font-weight:600; line-height:1.55;
+    -webkit-font-smoothing:antialiased; -webkit-text-size-adjust:100%}
+  :focus-visible{outline:3px solid var(--accent); outline-offset:2px; border-radius:4px}
+  .conteneur{max-width:var(--content-max); margin:0 auto; padding:0 24px}
+
+  /* — marque — */
+  .verrou{display:inline-flex; align-items:center; gap:12px}
+  .pilule{display:inline-flex; align-items:center; justify-content:center;
+    border:3px solid var(--marque-600); background:#FFFFFF; border-radius:999px;
+    padding:6px 18px; font-weight:900; font-size:20px; letter-spacing:0;
+    color:var(--marque-600); line-height:1}
+  .verrou .filet{width:1px; height:26px; background:var(--marque-filet)}
+  .verrou .desc{font-size:12px; font-weight:800; letter-spacing:.1em;
+    text-transform:uppercase; color:var(--ink-500); max-width:16ch; line-height:1.3}
+
+  /* — bande de tête — */
+  .bande{background:var(--surface-band); border-bottom:1px solid var(--border-tint);
+    padding:44px 0 34px}
+  .bande .conteneur{display:flex; flex-direction:column; gap:22px}
+  .surtitre{font-size:13px; font-weight:800; letter-spacing:.12em;
+    text-transform:uppercase; color:var(--ink-400); margin:0}
+  h1{font-size:clamp(32px,5.4vw,46px); font-weight:900; letter-spacing:-.02em;
+    line-height:1.14; margin:0; text-wrap:balance}
+  .chapeau{font-size:19px; font-weight:600; color:var(--ink-500); margin:0; max-width:62ch}
+  .quand{font-size:14px; color:var(--ink-400); margin:0}
+
+  main{padding:8px 0 80px}
+  section{padding:38px 0 0}
+  h2{font-size:27px; font-weight:900; letter-spacing:-.015em; margin:0 0 6px;
+    text-wrap:balance}
+  h3{font-size:19px; font-weight:900; margin:26px 0 6px}
+  p{margin:0 0 14px; max-width:66ch}
+  .eyebrow{display:inline-block; font-size:12px; font-weight:800; letter-spacing:.12em;
+    text-transform:uppercase; padding:4px 10px; border-radius:999px; margin:0 0 10px}
+  .e-acier{background:var(--acier-100); color:var(--acier-600)}
+  .e-ambre{background:var(--ambre-100); color:var(--ambre-700)}
+  .e-teal{background:var(--teal-100); color:var(--teal-700)}
+  .e-indigo{background:var(--indigo-100); color:var(--indigo-600)}
+  .e-pourpre{background:var(--pourpre-100); color:var(--pourpre-700)}
+  .e-framboise{background:var(--framboise-100); color:var(--framboise-600)}
+  strong{font-weight:900}
+  code{font-family:ui-monospace,Menlo,Consolas,monospace; font-size:.86em;
+    background:var(--paper-200); padding:1px 5px; border-radius:5px; font-weight:700}
+
+  .carte{background:var(--surface-card); border:1px solid var(--border);
+    border-radius:14px; padding:18px 20px}
+  .pile{display:flex; flex-direction:column; gap:12px}
+
+  /* — l'arbre — */
+  .arbre{background:var(--surface-card); border:1px solid var(--border);
+    border-radius:16px; padding:22px; overflow-x:auto}
+  .niv{display:flex; flex-direction:column; gap:8px; margin:0; padding:0; list-style:none}
+  .niv .niv{margin:8px 0 0 20px; padding-left:18px; border-left:2px solid var(--border-firm)}
+  .noeud{display:flex; align-items:baseline; gap:10px; flex-wrap:wrap;
+    background:var(--surface-sunken); border:1px solid var(--border);
+    border-radius:10px; padding:9px 13px}
+  .noeud .t{font-size:12px; font-weight:800; letter-spacing:.1em; text-transform:uppercase;
+    color:var(--ink-400); white-space:nowrap}
+  .noeud .n{font-weight:900}
+  .noeud .g{font-size:15px; font-weight:600; color:var(--ink-500)}
+  .noeud--reseau{border-color:var(--marque-filet); background:var(--marque-100)}
+  .noeud--css{border-color:#BBD5E5; background:var(--acier-100)}
+  .noeud--centre{border-color:#CDE3DF; background:var(--teal-100)}
+  .noeud--groupe{border-color:#E8D7B8; background:var(--ambre-100)}
+
+  /* — tableaux — */
+  .cadre-table{overflow-x:auto; border:1px solid var(--border); border-radius:14px;
+    background:var(--surface-card)}
+  table{border-collapse:collapse; width:100%; min-width:640px; font-size:15px}
+  th,td{text-align:left; padding:11px 14px; border-bottom:1px solid var(--border);
+    vertical-align:top}
+  thead th{font-size:12px; font-weight:800; letter-spacing:.08em; text-transform:uppercase;
+    color:var(--ink-400); background:var(--surface-sunken); white-space:nowrap}
+  tbody tr:last-child td{border-bottom:0}
+  td.oui{color:var(--accent-ink); font-weight:900}
+  td.non{color:var(--ink-400); font-weight:700}
+  td.part{color:var(--ambre-700); font-weight:800}
+  .role{font-weight:900; white-space:nowrap}
+  .role span{display:block; font-size:13px; font-weight:600; color:var(--ink-500);
+    white-space:normal}
+
+  /* — listes — */
+  ul.points{list-style:none; padding:0; margin:0 0 14px; display:flex;
+    flex-direction:column; gap:10px}
+  ul.points li{position:relative; padding-left:20px; max-width:66ch}
+  ul.points li::before{content:""; position:absolute; left:2px; top:.62em;
+    width:7px; height:7px; border-radius:50%; background:var(--accent)}
+
+  /* — étapes — */
+  ol.etapes{list-style:none; counter-reset:e; padding:0; margin:0;
+    display:flex; flex-direction:column; gap:10px}
+  ol.etapes li{counter-increment:e; display:flex; gap:14px;
+    background:var(--surface-card); border:1px solid var(--border);
+    border-radius:14px; padding:15px 18px}
+  ol.etapes li::before{content:counter(e); flex:0 0 auto; width:30px; height:30px;
+    border-radius:50%; background:var(--ink-900); color:#FFF; font-weight:900;
+    font-size:15px; display:flex; align-items:center; justify-content:center}
+  ol.etapes b{display:block; font-size:17px}
+  ol.etapes p{margin:2px 0 0; font-size:16px; color:var(--ink-500)}
+
+  /* — avertissement — */
+  .garde{background:var(--ambre-100); border:1px solid #E8D7B8; border-radius:14px;
+    padding:18px 20px}
+  .garde p{color:#6B4708}
+  .garde p:last-child{margin-bottom:0}
+
+  /* — tuiles de chiffres — */
+  .tuiles{display:grid; grid-template-columns:repeat(auto-fit,minmax(190px,1fr)); gap:12px}
+  .tuile{background:var(--surface-card); border:1px solid var(--border);
+    border-radius:14px; padding:15px 17px}
+  .tuile b{display:block; font-size:16px; font-weight:900; margin-bottom:3px}
+  .tuile span{font-size:15px; font-weight:600; color:var(--ink-500)}
+
+  hr{border:0; border-top:1px solid var(--border-firm); margin:44px 0 0}
+  footer{padding:26px 0 0; color:var(--ink-400); font-size:15px}
+  @media (max-width:640px){
+    .conteneur{padding:0 16px}
+    body{font-size:17px}
+  }
+</style>
+<link rel="icon" type="image/svg+xml" href="../design-system/marque-saaf-favicon.svg">
+</head>
+<body>
+
+<header class="bande">
+  <div class="conteneur">
+    <div class="verrou">
+      <span class="pilule">SAAF</span>
+      <span class="filet"></span>
+      <span class="desc">Système d'aide à l'apprentissage du français</span>
+    </div>
+    <div>
+      <p class="surtitre">Chantier · Proposition</p>
+      <h1>Le réseau des centres</h1>
+    </div>
+    <p class="chapeau">Ouvrir SAAF à plusieurs centres de services scolaires demande deux
+    choses qui n'existent pas encore : un arbre pour dire qui voit quoi, et un endroit
+    où les chiffres d'usage remontent sans que les élèves remontent avec eux. Voici
+    comment je les bâtirais.</p>
+    <p class="quand">25 août 2026</p>
+  </div>
+</header>
+
+<main class="conteneur">
+
+  <section>
+    <span class="eyebrow e-acier">Le point de départ</span>
+    <h2>Ce qui existe aujourd'hui, et où ça casse</h2>
+    <p>Le portail connaît trois niveaux : <strong>enseignant → groupe → élève</strong>.
+    Un compte porte un rôle, <code>prof</code> ou <code>admin</code>, et
+    <code>admin</code> veut dire « voit tout ». Le compte fondateur, lui, est simplement
+    le plus petit identifiant de <code>teachers.json</code>.</p>
+    <p>Ça tient pour un centre. À deux centres de services scolaires, trois choses
+    cèdent en même temps :</p>
+    <ul class="points">
+      <li><strong>« Voit tout » n'a plus de sens.</strong> Une direction de centre doit
+      voir son centre — pas celui du CSS voisin. Il n'y a aujourd'hui aucune portée
+      entre « mes groupes » et « tous les groupes ».</li>
+      <li><strong>Un enseignant n'appartient pas à un lieu.</strong> Rien dans le modèle
+      ne dit dans quel centre il enseigne, et plusieurs en font deux.</li>
+      <li><strong>Personne n'a le droit de créer des comptes chez le voisin</strong>, or
+      la règle actuelle donne ce droit à tout administrateur.</li>
+    </ul>
+  </section>
+
+  <section>
+    <span class="eyebrow e-teal">Première pièce</span>
+    <h2>Un seul arbre, quatre types de nœuds</h2>
+    <p>Plutôt que d'ajouter deux tables — une pour les CSS, une pour les centres — je
+    poserais <strong>une seule table d'organisations</strong> : un identifiant, un type,
+    un parent, un nom. Le jour où une commission veut un point de service entre le
+    centre et le groupe, ou un regroupement régional au-dessus du CSS, on ajoute une
+    ligne, pas une migration.</p>
+
+    <div class="arbre">
+      <ul class="niv">
+        <li>
+          <div class="noeud noeud--reseau">
+            <span class="t">réseau</span><span class="n">SAAF</span>
+            <span class="g">le catalogue, les modules, les huit niveaux</span>
+          </div>
+          <ul class="niv">
+            <li>
+              <div class="noeud noeud--css">
+                <span class="t">CSS</span><span class="n">CSS de la Rivière</span>
+                <span class="g">contrat, comptes, redditions de comptes</span>
+              </div>
+              <ul class="niv">
+                <li>
+                  <div class="noeud noeud--centre">
+                    <span class="t">centre</span><span class="n">Centre Marie-Rollet</span>
+                    <span class="g">une direction, des enseignants, des locaux</span>
+                  </div>
+                  <ul class="niv">
+                    <li>
+                      <div class="noeud noeud--groupe">
+                        <span class="t">groupe</span><span class="n">Niveau 4 — avant-midi</span>
+                        <span class="g">un titulaire, des élèves, une planification</span>
+                      </div>
+                    </li>
+                    <li>
+                      <div class="noeud noeud--groupe">
+                        <span class="t">groupe</span><span class="n">Niveau 2 — soir</span>
+                      </div>
+                    </li>
+                  </ul>
+                </li>
+                <li>
+                  <div class="noeud noeud--centre">
+                    <span class="t">centre</span><span class="n">Centre des Deux-Rives</span>
+                  </div>
+                </li>
+              </ul>
+            </li>
+            <li>
+              <div class="noeud noeud--css">
+                <span class="t">CSS</span><span class="n">CSS des Grands-Portages</span>
+              </div>
+            </li>
+          </ul>
+        </li>
+      </ul>
+    </div>
+
+    <h3>Le groupe change de propriétaire</h3>
+    <p>Aujourd'hui un groupe porte un <code>teacherId</code> : il appartient à une
+    personne. Il doit désormais appartenir à un <strong>centre</strong>, et porter un
+    <em>titulaire</em> plus, éventuellement, des co-enseignants. C'est ce qui permet à
+    une suppléance de reprendre un groupe sans qu'une direction touche à la base, et à
+    une direction de voir ses groupes même quand l'enseignante est absente.</p>
+    <p>L'élève, lui, ne bouge pas : il reste attaché à son groupe, avec son
+    <strong>pseudo</strong> et son code à six caractères. Cette règle-là devient un
+    argument de vente à l'échelle d'un CSS, pas seulement une préférence.</p>
+  </section>
+
+  <section>
+    <span class="eyebrow e-indigo">Deuxième pièce</span>
+    <h2>Une permission, c'est un rôle posé sur un nœud</h2>
+    <p>Le cœur de la proposition tient en une phrase :
+    <strong>un accès est un couple (rôle, nœud de l'arbre), et il vaut sur tout le
+    sous-arbre.</strong> Un rôle n'est plus une colonne du compte ; c'est une ligne
+    d'une table d'accès. Une enseignante qui travaille dans deux centres a deux lignes.
+    Une conseillère pédagogique en a une, posée sur le CSS.</p>
+    <p>Toute la vérification côté serveur se ramène alors à une seule fonction : partir
+    du groupe visé, remonter ses parents, et regarder si l'une des lignes d'accès du
+    compte couvre l'un d'eux. <code>groups_of_teacher()</code> et
+    <code>teacher_can_access_group()</code> deviennent deux appels à cette
+    fonction-là — et rien d'autre dans le serveur n'a le droit de décider d'une
+    portée.</p>
+
+    <div class="cadre-table">
+      <table>
+        <thead>
+          <tr>
+            <th>Rôle</th><th>Portée</th><th>Ouvre des comptes</th>
+            <th>Voit les élèves</th><th>Voit les chiffres</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td class="role">Fondateur<span>vous</span></td>
+            <td>le réseau</td>
+            <td class="oui">tous les rôles</td>
+            <td class="non">non — agrégats</td>
+            <td class="oui">tout, jusqu'à l'enseignant</td>
+          </tr>
+          <tr>
+            <td class="role">Gestion CSS<span>répondant du contrat</span></td>
+            <td>son CSS</td>
+            <td class="oui">directions et enseignants de son CSS</td>
+            <td class="non">non</td>
+            <td class="oui">ses centres</td>
+          </tr>
+          <tr>
+            <td class="role">Direction<span>direction de centre</span></td>
+            <td>son centre</td>
+            <td class="oui">enseignants du centre</td>
+            <td class="part">effectifs et présence, sans les productions</td>
+            <td class="oui">ses enseignants</td>
+          </tr>
+          <tr>
+            <td class="role">Conseiller<span>conseillance pédagogique</span></td>
+            <td>un CSS ou un centre</td>
+            <td class="non">aucun</td>
+            <td class="non">non</td>
+            <td class="oui">sa portée, en lecture seule</td>
+          </tr>
+          <tr>
+            <td class="role">Enseignant<span>titulaire ou co-enseignant</span></td>
+            <td>ses groupes</td>
+            <td class="non">aucun</td>
+            <td class="oui">tout de ses élèves</td>
+            <td class="part">ses groupes</td>
+          </tr>
+          <tr>
+            <td class="role">Élève</td>
+            <td>lui-même</td>
+            <td class="non">aucun</td>
+            <td class="non">lui seul</td>
+            <td class="non">sa propre progression</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+
+    <h3>Deux garde-fous qui existent déjà, généralisés</h3>
+    <ul class="points">
+      <li><strong>On n'ouvre jamais un compte de son propre rang.</strong> La règle du
+      fondateur — seul à créer des administrateurs — devient générale : chaque rôle
+      n'ouvre que des comptes strictement en dessous de lui, et seulement dans son
+      sous-arbre. Un gestionnaire de CSS ne fabrique pas ses pairs, exactement comme un
+      administrateur ne fabrique pas les siens aujourd'hui.</li>
+      <li><strong>Le refus est au serveur, l'interface ne fait que le prévenir.</strong>
+      C'est déjà le parti pris de <code>prof.html</code>, qui n'offre pas un geste que le
+      serveur refusera. À l'échelle d'un réseau, la tentation d'un filtre côté client
+      sera constante, et ce serait la première faille.</li>
+    </ul>
+  </section>
+
+  <section>
+    <span class="eyebrow e-framboise">La décision qui compte</span>
+    <h2>Ce qui monte, et ce qui ne monte pas</h2>
+    <div class="garde">
+      <p><strong>Un enregistrement d'élève, un texte d'élève et une correction ne
+      remontent jamais au-dessus de son enseignant.</strong> Ni la direction, ni le CSS,
+      ni moi. Ce qui monte, ce sont des <em>compteurs</em>.</p>
+      <p>Ce n'est pas de la prudence juridique, c'est ce qui décide de l'adoption. Un
+      outil où la direction peut écouter les élèves d'une enseignante devient un outil de
+      surveillance, et le syndicat le dira avant les enseignants. Le projet a déjà tranché
+      dans ce sens deux fois — les corrections IA ne sont jamais gardées, et rien n'atteint
+      l'enseignant sans que l'élève appuie sur « Envoyer ». La cloison proposée ici n'est
+      que la même règle, un étage plus haut.</p>
+    </div>
+    <p style="margin-top:16px">Deux flux séparés, donc, et ils ne se croisent nulle
+    part :</p>
+    <ul class="points">
+      <li><strong>Le flux pédagogique descend</strong> — planification, sections datées,
+      productions, rétroaction — et il s'arrête à l'enseignant du groupe.</li>
+      <li><strong>Le flux statistique monte</strong> — nombres, durées, taux — et il est
+      agrégé dès le premier étage. Un tableau de bord de direction ne lit pas la table
+      des événements : il lit un relevé quotidien qui ne contient déjà plus de
+      pseudos.</li>
+    </ul>
+    <h3>Le point sensible : les chiffres par enseignant</h3>
+    <p>Vous les demandez, et à l'échelle du réseau ils sont légitimes — c'est ce qui dit
+    si un centre s'est vraiment mis en marche. Mais un tableau qui classe des enseignants
+    par « minutes d'usage » sera lu comme une évaluation. Ma recommandation :
+    <strong>les chiffres par enseignant mesurent l'adoption, jamais la performance</strong>
+    (dernière connexion, groupes actifs, activités planifiées, séances projetées), ils
+    sont visibles à la direction du centre et au réseau, et le CSS voit
+    <strong>par centre</strong> avec le détail sur demande. Aucun classement, aucun
+    palmarès : une liste alphabétique et des chiffres bruts.</p>
+  </section>
+
+  <section>
+    <span class="eyebrow e-pourpre">Troisième pièce</span>
+    <h2>Le portail des chiffres : une page par étage</h2>
+    <p>Le même écran ne peut pas servir un ministère et une enseignante. Quatre vues,
+    chacune répondant à une seule question.</p>
+
+    <h3>Réseau — « qui s'en sert vraiment ? »</h3>
+    <div class="tuiles">
+      <div class="tuile"><b>Centres actifs</b><span>ceux qui ont eu un élève en activité
+      dans les 7 jours — pas ceux qui ont signé</span></div>
+      <div class="tuile"><b>Élèves actifs</b><span>7 jours et 30 jours, par niveau du
+      programme</span></div>
+      <div class="tuile"><b>Modules ouverts</b><span>et surtout : ceux que personne
+      n'ouvre jamais</span></div>
+      <div class="tuile"><b>Coût des médias</b><span>appels d'API par centre, le seul
+      chiffre qui devient une facture</span></div>
+    </div>
+    <p style="margin-top:14px">Cette vue-là pilote la production : un module jamais
+    ouvert dans huit centres est un module à reprendre ou à retirer, et c'est une
+    information qu'aucun autre écran ne donne.</p>
+
+    <h3>CSS — « mes centres avancent-ils au même rythme ? »</h3>
+    <p>Une ligne par centre, les mêmes colonnes pour tous : comptes ouverts et comptes
+    jamais utilisés, élèves inscrits et élèves actifs, groupes avec une planification,
+    répartition des niveaux 1 à 8. La colonne la plus utile est la moins flatteuse —
+    <strong>les comptes créés qui n'ont jamais servi</strong>, parce qu'elle dit où la
+    formation n'a pas été faite.</p>
+
+    <h3>Centre — « où en sont mes enseignants ? »</h3>
+    <p>Une ligne par enseignant, alphabétique : dernière connexion, groupes,
+    activités planifiées sur les quatre prochaines semaines, séances projetées, productions
+    reçues. Plus la <strong>couverture du programme</strong> — quelles situations des
+    huit niveaux sont travaillées dans le centre, quelles situations ne le sont jamais.
+    C'est la vue qui sert à une reddition de comptes, et elle se lit sans nommer un
+    élève.</p>
+
+    <h3>Enseignant — ce qui existe déjà</h3>
+    <p><code>progression.html</code> répond à « où en est la classe » et
+    <code>fiche-eleve.html</code> à « qu'a fait cette personne ». Rien à refaire : le
+    portail de statistiques s'arrête au-dessus d'eux et pointe vers eux.</p>
+
+    <h3>Cinq indicateurs, et pas trente</h3>
+    <div class="cadre-table">
+      <table>
+        <thead><tr><th>Indicateur</th><th>Définition exacte</th><th>Le piège</th></tr></thead>
+        <tbody>
+          <tr><td class="role">Élève actif</td>
+            <td>au moins un événement de progression dans la période</td>
+            <td>une connexion sans activité ne compte pas</td></tr>
+          <tr><td class="role">Temps d'activité</td>
+            <td>somme des séances, une séance se ferme après 30 min sans événement</td>
+            <td>sans cette borne, un onglet oublié la nuit gonfle tout un centre</td></tr>
+          <tr><td class="role">Achèvement</td>
+            <td>activités terminées ÷ activités planifiées au groupe</td>
+            <td>un groupe neuf n'a rien de planifié : le taux n'existe pas, il ne vaut pas zéro</td></tr>
+          <tr><td class="role">Réussite au premier coup</td>
+            <td>le <code>firstTry</code> déjà enregistré, agrégé</td>
+            <td>pédagogique, jamais nominatif au-dessus de l'enseignant</td></tr>
+          <tr><td class="role">Adoption enseignante</td>
+            <td>jours distincts avec au moins un geste d'administration</td>
+            <td>mesure un usage, pas une qualité — et ça doit être écrit sur l'écran</td></tr>
+        </tbody>
+      </table>
+    </div>
+    <p style="margin-top:14px">Un chiffre à ne pas afficher : le « temps passé » par
+    élève. Rien ne mesure le temps réel dans une activité — le portail élève l'estime
+    déjà à partir des traces, et il le dit. Le hisser au rang d'indicateur de gestion,
+    ce serait donner à une estimation l'autorité d'une mesure.</p>
+  </section>
+
+  <section>
+    <span class="eyebrow e-ambre">Ce qui bloque</span>
+    <h2>Les fichiers JSON ne passeront pas l'échelle</h2>
+    <p>Il faut le dire avant de dessiner des écrans. Les données vivent dans des fichiers
+    JSON réécrits en entier à chaque modification, sur un volume Railway.
+    <code>progress.json</code> grossit sans plafond, <code>access_log.json</code> aussi,
+    et deux écritures simultanées se marchent dessus. À un enseignant, c'est élégant. À
+    quarante centres, c'est une perte de données.</p>
+    <ul class="points">
+      <li><strong>Le contenu reste dans le dépôt.</strong> Catalogue, modules, sections,
+      inventaire du matériel : c'est du code versionné, et ça doit le rester.</li>
+      <li><strong>Les personnes et les événements passent en base.</strong> Postgres, que
+      Railway fournit : organisations, comptes, accès, groupes, élèves, événements.</li>
+      <li><strong>Un seul journal d'événements, en ajout seulement</strong>, qui absorbe
+      le journal d'accès, la progression et les signaux d'aide. Les tableaux de bord ne
+      le lisent jamais directement : une table de relevés quotidiens est calculée chaque
+      nuit, et c'est elle qu'on affiche. Sans ça, la vue réseau relit des millions de
+      lignes à chaque ouverture.</li>
+      <li><strong>Un journal d'audit des gestes d'administration</strong> — qui a ouvert,
+      retiré, réinitialisé quoi. Dès qu'il y a plus d'une organisation, c'est la première
+      chose qu'on demande après un incident.</li>
+    </ul>
+  </section>
+
+  <section>
+    <span class="eyebrow e-acier">Le cycle de vie</span>
+    <h2>Trois règles qui évitent trois dégâts</h2>
+    <ul class="points">
+      <li><strong>Un compte s'ouvre par invitation, jamais par un mot de passe envoyé.</strong>
+      Un jeton à durée limitée, et la personne pose son mot de passe elle-même.</li>
+      <li><strong>Un groupe s'archive, il ne se supprime pas.</strong> Il porte son année
+      scolaire. Supprimer un groupe de juin efface les statistiques de l'année — celles
+      qu'on demandera précisément en septembre.</li>
+      <li><strong>Un compte se désactive.</strong> Le supprimer orphelinerait ses traces
+      et ferait mentir tous les relevés passés.</li>
+    </ul>
+  </section>
+
+  <section>
+    <span class="eyebrow e-teal">La livraison</span>
+    <h2>Quatre temps, et rien ne casse en route</h2>
+    <ol class="etapes">
+      <li><div><b>L'arbre et la base, ensemble</b>
+        <p>La migration est l'occasion de poser les organisations. Tout l'existant entre
+        dans un réseau à un CSS et un centre ; aucune page ne change, aucun élève ne voit
+        de différence. C'est l'étape la plus longue et la moins visible.</p></div></li>
+      <li><div><b>Les rôles et la portée</b>
+        <p>La table d'accès, la fonction unique d'autorisation, et le remplacement des
+        deux fonctions actuelles. À la fin de cette étape, un deuxième centre peut être
+        ouvert sans que personne voie chez le voisin.</p></div></li>
+      <li><div><b>Les écrans d'administration</b>
+        <p>L'arbre, les comptes, les invitations, le journal d'audit. C'est la première
+        étape qui se montre à quelqu'un.</p></div></li>
+      <li><div><b>Le portail des chiffres</b>
+        <p>Les relevés quotidiens, puis les quatre vues. Il arrive en dernier parce qu'il
+        n'a rien à afficher tant que les trois premières n'ont pas tourné une session
+        complète.</p></div></li>
+    </ol>
+  </section>
+
+  <section>
+    <span class="eyebrow e-ambre">Avant d'écrire une ligne</span>
+    <h2>Trois choses que je ne peux pas trancher seul</h2>
+    <ul class="points">
+      <li><strong>Le CSS voit-il ses enseignants un par un, ou seulement ses centres ?</strong>
+      Ma recommandation est « ses centres, avec le détail sur demande ». C'est une
+      question de relations de travail avant d'être une question technique.</li>
+      <li><strong>Qui ouvre les comptes en pratique ?</strong> Si c'est vous pour tout le
+      monde au début, le rôle « gestion CSS » peut attendre l'étape 3 et on gagne du
+      temps. S'il faut que chaque CSS soit autonome dès le premier jour, il est dans
+      l'étape 2.</li>
+      <li><strong>Une même personne enseigne-t-elle dans deux centres, chez vos
+      collègues ?</strong> Toute la proposition tient debout sans ce cas, mais il décide
+      si l'accès est une ligne à part ou une simple colonne sur le compte.</li>
+    </ul>
+  </section>
+
+  <hr>
+  <footer class="conteneur" style="padding-left:0;padding-right:0">
+    <p>Proposition de chantier — aucune ligne de code écrite. L'état actuel du portail
+    est décrit dans la hiérarchie du site et dans le <code>CLAUDE.md</code> du dépôt.</p>
+  </footer>
+</main>
+</body>
+</html>
