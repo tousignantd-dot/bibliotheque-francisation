@@ -91,7 +91,17 @@
 .saaf-bandeau{
   flex:1 1 100%;
   display:flex;align-items:center;
+  /* Le verrouillage a besoin d'air sous lui : sans cette marge, le filet
+     violet et le sur-titre du module se touchent presque (le `gap` de
+     #hdr, 16 px, sert aussi d'écart entre le titre et les boutons, on ne
+     peut donc pas l'élargir sans écarter tout le reste). */
+  margin-bottom:14px;
 }
+/* Dans les ateliers générés, le verrouillage est seul dans `#hdr` — le titre
+   vit dans le `.band` d'à côté, et il n'y a donc pas le `gap:16px` que
+   l'en-tête d'un module ajoute par-dessus la marge. On le rattrape ici, pour
+   que l'air sous la pilule soit le même partout. */
+#hdr > .saaf-bandeau:only-child{margin-bottom:26px}
 
 /* ── Place du verrouillage dans un bandeau de portail ──────────────
    Les pages du portail composent leur en-tête avec `.band` du système de
