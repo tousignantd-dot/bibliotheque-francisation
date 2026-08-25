@@ -169,7 +169,7 @@
     choses qui n'existent pas encore : un arbre pour dire qui voit quoi, et un endroit
     où les chiffres d'usage remontent sans que les élèves remontent avec eux. Voici
     comment je les bâtirais.</p>
-    <p class="quand">25 août 2026</p>
+    <p class="quand">25 août 2026 — les deux décisions du même jour sont intégrées.</p>
   </div>
 </header>
 
@@ -292,21 +292,21 @@
           <tr>
             <td class="role">Fondateur<span>vous</span></td>
             <td>le réseau</td>
-            <td class="oui">tous les rôles</td>
+            <td class="oui">tous, et seul à le faire</td>
             <td class="non">non — agrégats</td>
             <td class="oui">tout, jusqu'à l'enseignant</td>
           </tr>
           <tr>
             <td class="role">Gestion CSS<span>répondant du contrat</span></td>
             <td>son CSS</td>
-            <td class="oui">directions et enseignants de son CSS</td>
+            <td class="non">aucun</td>
             <td class="non">non</td>
-            <td class="oui">ses centres</td>
+            <td class="part">ses centres, en agrégat — jamais l'enseignant</td>
           </tr>
           <tr>
             <td class="role">Direction<span>direction de centre</span></td>
             <td>son centre</td>
-            <td class="oui">enseignants du centre</td>
+            <td class="non">aucun</td>
             <td class="part">effectifs et présence, sans les productions</td>
             <td class="oui">ses enseignants</td>
           </tr>
@@ -335,18 +335,31 @@
       </table>
     </div>
 
-    <h3>Deux garde-fous qui existent déjà, généralisés</h3>
+    <h3 id="creation">Décision : un seul créateur de comptes</h3>
+    <p>C'est vous qui ouvrez tous les comptes, à tous les étages. Cela change davantage
+    que ça n'en a l'air : dans une première version, <strong>aucun rôle sauf le vôtre
+    n'écrit quoi que ce soit dans l'arbre</strong>. Gestion CSS, direction et conseiller
+    deviennent trois portées de <em>lecture</em>, et rien d'autre.</p>
     <ul class="points">
-      <li><strong>On n'ouvre jamais un compte de son propre rang.</strong> La règle du
-      fondateur — seul à créer des administrateurs — devient générale : chaque rôle
-      n'ouvre que des comptes strictement en dessous de lui, et seulement dans son
-      sous-arbre. Un gestionnaire de CSS ne fabrique pas ses pairs, exactement comme un
-      administrateur ne fabrique pas les siens aujourd'hui.</li>
-      <li><strong>Le refus est au serveur, l'interface ne fait que le prévenir.</strong>
-      C'est déjà le parti pris de <code>prof.html</code>, qui n'offre pas un geste que le
-      serveur refusera. À l'échelle d'un réseau, la tentation d'un filtre côté client
-      sera constante, et ce serait la première faille.</li>
+      <li><strong>Ce qui disparaît du chantier :</strong> l'écran de gestion des comptes
+      par centre, la délégation, et toute la logique « qui a le droit d'ouvrir quoi pour
+      qui ». C'est l'étape 2 qui maigrit, et c'est la moitié du risque en moins.</li>
+      <li><strong>Ce qui reste nécessaire :</strong> l'invitation. Vous ouvrez le compte,
+      la personne reçoit un jeton à durée limitée et pose son mot de passe elle-même. On
+      n'envoie jamais un mot de passe par courriel, même quand c'est vous qui créez.</li>
+      <li><strong>Ce qu'on garde en réserve, écrit mais éteint :</strong> la règle « on
+      n'ouvre jamais un compte de son propre rang, ni hors de son sous-arbre ». Elle
+      existe déjà pour le fondateur ; le jour où un CSS voudra son autonomie, c'est un
+      rôle à activer, pas un modèle à refaire.</li>
+      <li><strong>Le refus reste au serveur.</strong> C'est déjà le parti pris de
+      <code>prof.html</code>, qui n'offre pas un geste que le serveur refusera. À
+      l'échelle d'un réseau, la tentation d'un filtre côté client sera constante, et ce
+      serait la première faille.</li>
     </ul>
+    <p>Le prix à surveiller : <strong>vous devenez le goulot</strong>. Trente enseignants
+    à inscrire en août, c'est trente courriels à taper. L'import d'une liste — un
+    collage de courriels, une invitation par ligne — n'est pas un luxe, c'est ce qui rend
+    la décision tenable.</p>
   </section>
 
   <section>
@@ -373,15 +386,20 @@
       des événements : il lit un relevé quotidien qui ne contient déjà plus de
       pseudos.</li>
     </ul>
-    <h3>Le point sensible : les chiffres par enseignant</h3>
-    <p>Vous les demandez, et à l'échelle du réseau ils sont légitimes — c'est ce qui dit
-    si un centre s'est vraiment mis en marche. Mais un tableau qui classe des enseignants
-    par « minutes d'usage » sera lu comme une évaluation. Ma recommandation :
-    <strong>les chiffres par enseignant mesurent l'adoption, jamais la performance</strong>
-    (dernière connexion, groupes actifs, activités planifiées, séances projetées), ils
-    sont visibles à la direction du centre et au réseau, et le CSS voit
-    <strong>par centre</strong> avec le détail sur demande. Aucun classement, aucun
-    palmarès : une liste alphabétique et des chiffres bruts.</p>
+    <h3 id="par-enseignant">Décision : le CSS s'arrête au centre</h3>
+    <p>Un gestionnaire de CSS voit <strong>ses centres</strong>, et la ligne s'arrête là.
+    Aucun détail par enseignant, pas même sur demande — parce qu'un « sur demande » finit
+    toujours par être demandé, et qu'une porte qui n'existe pas est la seule qui ne
+    s'ouvre pas.</p>
+    <p>Les chiffres par enseignant existent, mais deux étages seulement les voient : la
+    <strong>direction de son propre centre</strong>, et vous. Et ils mesurent l'adoption,
+    jamais la performance — dernière connexion, groupes actifs, activités planifiées,
+    séances projetées. Aucun classement, aucun palmarès : une liste alphabétique et des
+    chiffres bruts, avec la phrase écrite sur l'écran même.</p>
+    <p>Cette décision a une conséquence technique qu'il vaut mieux poser tout de suite :
+    <strong>le relevé quotidien du CSS ne contient pas d'identifiant d'enseignant.</strong>
+    Ce n'est pas un filtre à l'affichage, c'est une agrégation faite à l'écriture. Un
+    filtre s'oublie dans une requête ; une colonne absente ne fuit pas.</p>
   </section>
 
   <section>
@@ -411,6 +429,10 @@
     répartition des niveaux 1 à 8. La colonne la plus utile est la moins flatteuse —
     <strong>les comptes créés qui n'ont jamais servi</strong>, parce qu'elle dit où la
     formation n'a pas été faite.</p>
+    <p><strong>Pas de ligne par enseignant sur cet écran</strong>, ni de chevron pour
+    déplier. Un centre où deux enseignants sur douze se sont connectés se lit très bien
+    en « 2 comptes actifs sur 12 » : c'est le même constat, et il désigne le centre au
+    lieu de désigner une personne.</p>
 
     <h3>Centre — « où en sont mes enseignants ? »</h3>
     <p>Une ligne par enseignant, alphabétique : dernière connexion, groupes,
@@ -500,13 +522,15 @@
         <p>La migration est l'occasion de poser les organisations. Tout l'existant entre
         dans un réseau à un CSS et un centre ; aucune page ne change, aucun élève ne voit
         de différence. C'est l'étape la plus longue et la moins visible.</p></div></li>
-      <li><div><b>Les rôles et la portée</b>
+      <li><div><b>Les rôles et la portée, en lecture seule</b>
         <p>La table d'accès, la fonction unique d'autorisation, et le remplacement des
-        deux fonctions actuelles. À la fin de cette étape, un deuxième centre peut être
-        ouvert sans que personne voie chez le voisin.</p></div></li>
-      <li><div><b>Les écrans d'administration</b>
-        <p>L'arbre, les comptes, les invitations, le journal d'audit. C'est la première
-        étape qui se montre à quelqu'un.</p></div></li>
+        deux fonctions actuelles. Trois rôles de lecture, aucun d'écriture : la
+        délégation est écrite dans le modèle mais éteinte. À la fin de cette étape, un
+        deuxième centre peut être ouvert sans que personne voie chez le voisin.</p></div></li>
+      <li><div><b>Votre console</b>
+        <p>L'arbre, la création des comptes et des invitations — pour vous seul —, l'import
+        d'une liste de courriels, et le journal d'audit. C'est la première étape qui se
+        montre à quelqu'un, et la seule qui écrit dans l'arbre.</p></div></li>
       <li><div><b>Le portail des chiffres</b>
         <p>Les relevés quotidiens, puis les quatre vues. Il arrive en dernier parce qu'il
         n'a rien à afficher tant que les trois premières n'ont pas tourné une session
@@ -515,19 +539,20 @@
   </section>
 
   <section>
-    <span class="eyebrow e-ambre">Avant d'écrire une ligne</span>
-    <h2>Trois choses que je ne peux pas trancher seul</h2>
+    <span class="eyebrow e-ambre">Où on en est</span>
+    <h2>Deux décisions prises, une question ouverte</h2>
     <ul class="points">
-      <li><strong>Le CSS voit-il ses enseignants un par un, ou seulement ses centres ?</strong>
-      Ma recommandation est « ses centres, avec le détail sur demande ». C'est une
-      question de relations de travail avant d'être une question technique.</li>
-      <li><strong>Qui ouvre les comptes en pratique ?</strong> Si c'est vous pour tout le
-      monde au début, le rôle « gestion CSS » peut attendre l'étape 3 et on gagne du
-      temps. S'il faut que chaque CSS soit autonome dès le premier jour, il est dans
-      l'étape 2.</li>
-      <li><strong>Une même personne enseigne-t-elle dans deux centres, chez vos
-      collègues ?</strong> Toute la proposition tient debout sans ce cas, mais il décide
-      si l'accès est une ligne à part ou une simple colonne sur le compte.</li>
+      <li><strong>Tranché — le CSS voit ses centres, et pas ses enseignants.</strong> Le
+      relevé du CSS n'emporte aucun identifiant d'enseignant : l'agrégation se fait à
+      l'écriture, pas à l'affichage. <a href="#par-enseignant">Le détail</a>.</li>
+      <li><strong>Tranché — vous ouvrez tous les comptes.</strong> Les trois autres rôles
+      sont des portées de lecture ; la délégation reste écrite dans le modèle et éteinte.
+      Ce qu'il faut ajouter en échange : l'import d'une liste de courriels, sinon la
+      rentrée d'août vous passe dessus. <a href="#creation">Le détail</a>.</li>
+      <li><strong>Ouverte — une même personne enseigne-t-elle dans deux centres, chez vos
+      collègues ?</strong> Toute la proposition tient debout dans les deux cas, mais ce
+      point décide si l'accès est une ligne à part ou une simple colonne sur le compte.
+      La question peut attendre l'étape 2 ; elle ne peut pas attendre l'étape 3.</li>
     </ul>
   </section>
 
