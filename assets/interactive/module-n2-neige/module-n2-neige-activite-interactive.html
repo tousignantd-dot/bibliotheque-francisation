@@ -61,11 +61,6 @@ body{display:flex;flex-direction:column;min-height:100vh}
 #btn-reset{background:var(--surface-card);color:var(--text-strong);border:1px solid var(--border);border-radius:999px;padding:10px 18px;font-family:'Nunito',sans-serif;font-size:15px;font-weight:800;cursor:pointer;white-space:nowrap;transition:background .15s}
 #btn-reset:hover{background:var(--paper-100)}
 #btn-reset:hover{background:rgba(255,255,255,.28)}
-/* VITESSE-VOIX:début — greffé par build/greffe_vitesse.py */
-#btn-vitesse{background:var(--surface-card);color:var(--text-strong);border:1px solid var(--border);border-radius:999px;padding:10px 18px;font-family:'Nunito',sans-serif;font-size:15px;font-weight:800;cursor:pointer;white-space:nowrap;transition:background .15s}
-#btn-vitesse:hover{background:var(--paper-100)}
-#btn-vitesse[data-cran="1"],#btn-vitesse[data-cran="2"]{background:var(--hdr-accent-soft,var(--accent-soft));border-color:var(--hdr-accent,var(--accent-ink));color:var(--hdr-accent,var(--accent-ink))}
-/* VITESSE-VOIX:fin */
 /* REPRISE-CSS:début — greffé par build/greffe_reprise.py */
 #re-banniere{display:flex;align-items:center;gap:12px;flex-wrap:wrap;margin:14px auto 0;max-width:1180px;padding:12px 18px;background:var(--surface-card,#fff);border:2px solid var(--border,#D9DCE0);border-left:6px solid var(--hdr-accent,var(--accent-ink,#0A8F5B));border-radius:14px;font-family:'Nunito',sans-serif;font-size:15px;font-weight:800;color:var(--text-strong,#17181A)}
 #re-banniere .re-txt{flex:1;min-width:200px}
@@ -74,6 +69,11 @@ body{display:flex;flex-direction:column;min-height:100vh}
 #re-banniere button:hover{background:var(--paper-100,#F2F4F5)}
 #re-banniere #re-fermer{padding:9px 13px}
 /* REPRISE-CSS:fin */
+/* VITESSE-VOIX:début — greffé par build/greffe_vitesse.py */
+#btn-vitesse{background:var(--surface-card);color:var(--text-strong);border:1px solid var(--border);border-radius:999px;padding:10px 18px;font-family:'Nunito',sans-serif;font-size:15px;font-weight:800;cursor:pointer;white-space:nowrap;transition:background .15s}
+#btn-vitesse:hover{background:var(--paper-100)}
+#btn-vitesse[data-cran="1"],#btn-vitesse[data-cran="2"]{background:var(--hdr-accent-soft,var(--accent-soft));border-color:var(--hdr-accent,var(--accent-ink));color:var(--hdr-accent,var(--accent-ink))}
+/* VITESSE-VOIX:fin */
 
 #tabs{position:sticky;top:0;z-index:5;background:rgba(247,247,245,.94);backdrop-filter:blur(8px);display:flex;gap:8px;padding:12px 32px;border-bottom:1px solid var(--border);flex-wrap:wrap}
 .tab{min-height:var(--tap-min);border:1px solid var(--border);border-radius:999px;padding:0 16px;font-family:'Nunito',sans-serif;font-size:14px;font-weight:800;cursor:pointer;background:var(--surface-card);color:var(--text-body);transition:background .15s,border-color .15s;display:inline-flex;align-items:center;gap:8px}
@@ -728,27 +728,51 @@ body{
   .bsec.b1{
     position:sticky; top:auto; bottom:0;
     max-height:none;
-    margin:0 -22px -22px;
+    margin:0 calc(-1 * var(--pad-card)) calc(-1 * var(--pad-card));
     border-radius:0;
     border-left:none; border-right:none; border-bottom:none;
     box-shadow:0 -6px 18px rgba(20,20,20,.10);
     padding:10px 14px calc(10px + env(safe-area-inset-bottom));
   }
   .bsec.b1 .blbl{margin-bottom:6px}
-  /* Les tuiles s'alignent en file et défilent horizontalement plutôt que
-     d'empiler une colonne qui mangerait tout l'écran. */
+  /* Les tuiles reviennent à la ligne. La file horizontale coupait la réponse
+     à droite — 245 px de bande visible pour des tuiles de 370 px — et son
+     défilement était le seul geste que le glisser-déposer confisquait. Le
+     banc se borne à 40 % de l'écran pour ne pas manger l'exercice ; au-delà,
+     il défile verticalement, comme le reste de la page. */
   .bsec.b1 .btiles,.bsec.b1 .btiles.vert{
-    flex-direction:row; flex-wrap:nowrap;
-    overflow-x:auto; overflow-y:hidden;
+    flex-direction:row; flex-wrap:wrap;
+    overflow-x:hidden; overflow-y:auto;
+    max-height:40vh;
     justify-content:flex-start;
     gap:8px; padding-bottom:4px;
     -webkit-overflow-scrolling:touch;
   }
-  .bsec.b1 .btiles > *{flex:0 0 auto}
+  .bsec.b1 .btiles > *{flex:0 1 auto; max-width:100%}
 }
 @media(prefers-reduced-motion:no-preference){
   .bsec.b1{scroll-behavior:smooth}
 }
+
+/* ── Gouttières d'un téléphone ─────────────────────────────────────────
+   32 px de page plus 22 px de carte de chaque côté, c'était 108 px des
+   390 px d'un iPhone — 28 % de l'écran perdus avant d'afficher un mot. Les
+   valeurs de la page (--pad-x) sont écrites en dur dans les blocs de section
+   depuis l'origine : on les reprend ici plutôt que de les refactoriser dans
+   les quatre-vingt-sept modules. */
+@media(max-width:640px){
+  body{--pad-x:16px; --pad-card:16px; --bleed:-17px}
+  #hdr{padding:20px 16px 24px}
+  #tabs{padding:10px 16px}
+  #sel-banner{padding:10px 16px}
+  .dial-sec{padding:16px}
+  .intro{padding:14px 16px}
+  .exs{padding:18px 16px 40px}
+  .vocab-sec{padding:14px 16px 18px}
+  .cta{padding:22px 18px; margin:0 16px 24px}
+  .card{padding:16px}
+}
+
 
 /* ── Lisibilité des encadrés de savoir ────────────────────────────────
    Deux besoins distincts, deux traitements. (1) Repérer les mots qui
@@ -2426,13 +2450,29 @@ function drp(el, zid) {
   el.addEventListener('drop', e => { e.preventDefault(); el.classList.remove('dov'); let d=dd; if(!d){try{d=JSON.parse(e.dataTransfer.getData('text/plain'))}catch{}} if(!d)return; doPlace(zid, d.iid, d.lbl, d.cat, d.from); dd=null; });
 }
 let ts=null, ghost=null;
+// Sur un téléphone, le doigt posé sur une tuile veut le plus souvent faire
+// défiler la page — le banc de réponses occupe la bande du bas, c'est de là
+// qu'on pousse l'écran. Prendre tout mouvement pour un glisser confisquait
+// ce geste : plus moyen d'atteindre les réponses suivantes, et le moindre
+// tremblement transformait une sélection en glisser avorté.
+//
+// D'où l'appui maintenu, la convention de l'iPhone : on glisse ce qu'on a
+// d'abord tenu. Un mouvement immédiat reste un défilement, quelle que soit
+// sa direction ; un appui bref sans mouvement reste une sélection ; et
+// sélectionner puis toucher la case reste le chemin le plus simple.
+const TCH_SEUIL = 12;   // px avant de décider — 8 px, c'était un tremblement
+const TCH_TENUE = 250;  // ms d'appui maintenu avant qu'un glisser puisse partir
 function tch(el, iid, lbl, cat, from) {
-  el.addEventListener('touchstart', e => { const t=e.touches[0]; ts={x:t.clientX,y:t.clientY,iid,lbl,cat,from:from||null,el,moved:false}; }, {passive:true});
+  el.addEventListener('touchstart', e => { const t=e.touches[0]; ts={x:t.clientX,y:t.clientY,t0:Date.now(),iid,lbl,cat,from:from||null,el,moved:false,rendu:false}; }, {passive:true});
 }
 document.addEventListener('touchmove', e => {
-  if(!ts) return;
+  if(!ts || ts.rendu) return;
   const t=e.touches[0], dx=t.clientX-ts.x, dy=t.clientY-ts.y;
-  if(!ts.moved && Math.sqrt(dx*dx+dy*dy)>8){
+  if(!ts.moved && Math.sqrt(dx*dx+dy*dy)>TCH_SEUIL){
+    if((Date.now() - ts.t0) < TCH_TENUE){
+      ts.rendu = true;   // parti tout de suite : c'est un défilement
+      return;
+    }
     ts.moved=true;
     const r=ts.el.getBoundingClientRect();
     ghost=ts.el.cloneNode(true);

@@ -776,6 +776,36 @@ exportée par un bundler — porte encore un `#6B4FBB` dans un rectangle SVG
 décoratif. Elle est hors du système de design ; la reprendre serait la
 réécrire.
 
+## Le glisser-déposer au doigt
+
+Trois défauts mesurés le 24 août 2026 en émulation iPhone (390 px), sur
+`module-achat`, corrigés ensemble par `python3 build/tactile_mobile.py`
+(`--verifier` pour un état des lieux ; substitutions exactes, un fichier qui a
+divergé est signalé et laissé tel quel). Le script traite le gabarit et les dix
+modules écrits à la main ; les 77 générés reçoivent le correctif à la
+reconstruction — donc `build/module.py --tous` après.
+
+- **Un glisser qui part trop vite confisque le défilement.** Le seuil était de
+  8 px, sans autre condition : sur un téléphone, où le banc de réponses occupe
+  la bande du bas, tout doigt qui poussait l'écran depuis le banc créait un
+  fantôme de glisser et le gestionnaire appelait `preventDefault()`. Plus moyen
+  d'atteindre les réponses suivantes, et le moindre tremblement transformait
+  une sélection en glisser avorté. Le glisser part maintenant sur un **appui
+  maintenu** de 250 ms — la convention de l'iPhone — et le seuil est à 12 px.
+  Une première tentative distinguait les gestes par leur **direction**
+  (horizontal = défilement, vertical = glisser) : elle tombe sur un glisser
+  diagonal, où un pixel d'écart entre `dx` et `dy` décide de tout. Vérifié en
+  jouant les quatre gestes, pas en lisant le code.
+- **Une réponse doit tenir dans le banc.** Les tuiles défilaient en file
+  horizontale : bande visible de 245 px pour des tuiles allant jusqu'à 370 px,
+  donc du texte coupé à droite. Elles reviennent à la ligne, dans un banc borné
+  à 40 % de la hauteur de l'écran.
+- **Les gouttières se réduisent sous 640 px.** 32 px de page plus 22 px de
+  carte de chaque côté, c'était 108 px des 390 px d'un iPhone. Elles passent à
+  16 px. Les valeurs sont écrites en dur dans les blocs de section depuis
+  l'origine : le correctif les reprend dans une requête de média plutôt que de
+  les refactoriser dans les quatre-vingt-sept modules.
+
 ## Les images d'un module
 
 Elles se relisent **avec l'énoncé qu'elles illustrent**, jamais seules :
