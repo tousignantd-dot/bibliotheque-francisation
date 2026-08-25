@@ -82,6 +82,23 @@
     .rs-table tbody tr:last-child td { border-bottom: 0; }
     .rs-eteint { color: var(--text-muted); }
 
+    /* — Gestes — */
+    .rs-actions { display: flex; gap: var(--sp-2); flex-wrap: wrap;
+                  margin: var(--sp-3) 0 0; }
+    .rs-form { display: flex; gap: var(--sp-2); flex-wrap: wrap; align-items: flex-end;
+               margin: var(--sp-3) 0 0; padding: var(--sp-3);
+               background: var(--surface-sunken); border: 1px solid var(--border);
+               border-radius: var(--r-sm); }
+    .rs-form label { display: block; font-size: var(--fs-meta);
+                     font-weight: var(--fw-black); letter-spacing: .06em;
+                     text-transform: uppercase; color: var(--text-muted);
+                     margin: 0 0 2px; }
+    .rs-form .field { min-width: 160px; }
+    .rs-msg { margin: var(--sp-3) 0 0; font-size: var(--fs-ui-sm);
+              font-weight: var(--fw-bold); }
+    .rs-msg--no { color: var(--warn-ink); }
+    .rs-msg--ok { color: var(--text-accent); }
+
     .rs-fin { margin: var(--sp-12) 0 var(--sp-12); color: var(--text-muted);
               font-size: var(--fs-ui-sm); }
     @media (max-width: 640px) { .rs-arbre { padding: var(--sp-3); } }
@@ -112,6 +129,7 @@
   </section>
 
   <main class="container" id="rsCorps" hidden>
+    <p class="rs-msg" id="rsMsg" role="status" aria-live="polite"></p>
     <div id="rsAlerte"></div>
 
     <div class="rs-tuiles" id="rsTuiles"></div>
@@ -129,10 +147,19 @@
       </table>
     </div>
 
-    <p class="rs-fin">Cette console est en <strong>lecture seule</strong>. Créer un
-    centre, poser un accès ou inviter une personne viendra dans la suite de
-    l'étape 3 ; pour l'instant, les comptes s'ouvrent depuis
-    <a href="prof.html">l'écran des comptes</a>.</p>
+    <h2 class="rs-sect">Le journal</h2>
+    <div class="rs-cadre">
+      <table class="rs-table">
+        <thead>
+          <tr><th>Quand</th><th>Qui</th><th>Quoi</th><th>Détail</th></tr>
+        </thead>
+        <tbody id="rsAudit"></tbody>
+      </table>
+    </div>
+
+    <p class="rs-fin">Les comptes s'ouvrent toujours depuis
+    <a href="prof.html">l'écran des comptes</a> ; c'est ici qu'on leur donne
+    leur place dans l'arbre. L'invitation par courriel viendra ensuite.</p>
   </main>
 
   <main class="container" id="rsRefus" hidden>
@@ -204,6 +231,23 @@
       if (lignes.length) li += '<ul class="rs-lignes">' + lignes.join('') + '</ul>';
       else if (org.type === 'centre')
         li += '<p class="rs-vide" style="margin:var(--sp-2) 0 0">Aucun compte, aucun groupe.</p>';
+
+      /* Les gestes sont posés là où ils s'appliquent : on ouvre un centre
+         depuis son CSS, pas depuis un formulaire qui demanderait ensuite
+         « sous quoi ? ». Un bouton absent est un geste que le serveur
+         refuserait — même parti pris que `prof.html`. */
+      var gestes = [];
+      if (org.type === 'reseau') gestes.push(['ouvrir-css', 'Ouvrir un CSS']);
+      if (org.type === 'css') gestes.push(['ouvrir-centre', 'Ouvrir un centre']);
+      if (org.type !== 'reseau') gestes.push(['renommer', 'Renommer']);
+      if (org.type === 'centre') gestes.push(['poser-acces', 'Poser un accès']);
+      if (gestes.length) {
+        li += '<div class="rs-actions">' + gestes.map(function (g) {
+          return '<button type="button" class="btn btn--ghost btn--sm" data-geste="'
+               + g[0] + '" data-org="' + org.id + '">' + ech(g[1]) + '</button>';
+        }).join('') + '</div>';
+      }
+      li += '<div data-form="' + org.id + '"></div>';
       li += '</div>';
 
       var enfants = tousLesOrgs.filter(function (o) { return o.parentId === org.id; });
@@ -256,12 +300,26 @@
         var quoi = [];
         if (sansCentre.length) quoi.push(pluriel(sansCentre.length, 'groupe') + ' sans centre (n° ' + sansCentre.join(', ') + ')');
         if (sansAcces.length) quoi.push(pluriel(sansAcces.length, 'compte') + ' sans accès (n° ' + sansAcces.join(', ') + ')');
+        var choixCentre = centres.map(function (c) {
+          return '<option value="' + c.id + '">' + ech(c.nom) + '</option>';
+        }).join('');
+        var rattacher = sansCentre.length && centres.length
+          ? sansCentre.map(function (gid) {
+              return '<div class="rs-form">'
+                + '<div><label for="rsC' + gid + '">Groupe n° ' + gid + ' → centre</label>'
+                + '<select class="field" id="rsC' + gid + '">' + choixCentre + '</select></div>'
+                + '<button type="button" class="btn btn--pri btn--sm" '
+                + 'data-geste="rattacher" data-groupe="' + gid + '">Rattacher</button>'
+                + '</div>';
+            }).join('')
+          : '';
         alerte.innerHTML =
           '<div class="banner" style="margin-top:var(--sp-8)">'
           + '<strong>⚠ À rattacher : ' + ech(quoi.join(' et ')) + '.</strong> '
           + 'Ces éléments continuent de fonctionner — la portée retombe sur '
           + 'l\'ancienne règle et le journal du serveur le dit — mais ils sont '
           + 'hors de l\'arbre, donc invisibles à toute portée qui s\'y appuie.'
+          + rattacher
           + '</div>';
       } else {
         alerte.innerHTML = '<p class="rs-vide" style="margin-top:var(--sp-8)">'
@@ -279,12 +337,150 @@
           + '<td>' + ech(LIBELLE_ROLE[a.role] || a.role) + '</td>'
           + '<td>' + ech(a.organisation) + '</td>'
           + '<td>' + jour(a.accordeLe) + '</td>'
-          + '<td>' + (a.actif === false ? 'Éteint' : 'Actif') + '</td>'
+          + '<td>' + (a.actif === false ? 'Éteint'
+              : a.role === 'fondateur'
+                ? 'Actif'
+                : 'Actif · <button type="button" class="rs-lien-retirer btn btn--ghost btn--sm" '
+                  + 'data-geste="retirer-acces" data-acces="' + a.id + '">Retirer</button>')
+          + '</td>'
           + '</tr>';
       }).join('') || '<tr><td colspan="5" class="rs-vide">Aucun accès.</td></tr>';
 
       document.getElementById('rsQui').textContent = moi ? moi.nom : '';
       document.getElementById('rsCorps').hidden = false;
+    }
+
+    /* ── Les gestes ──────────────────────────────────────────────────────
+       Un seul chemin d'écriture : `agir()` appelle, dit ce qui s'est passé,
+       puis recharge. Le message d'erreur affiché est celui du serveur, jamais
+       une reformulation — c'est lui qui connaît le motif du refus. */
+    var COMPTES = [];
+    var MOI = null;
+
+    function message(texte, ok) {
+      var el = document.getElementById('rsMsg');
+      el.className = 'rs-msg ' + (ok ? 'rs-msg--ok' : 'rs-msg--no');
+      el.textContent = texte;
+      if (ok) setTimeout(function () { if (el.textContent === texte) el.textContent = ''; }, 6000);
+    }
+
+    async function agir(methode, url, corps) {
+      try {
+        var r = await Prof.fetch(url, {
+          method: methode,
+          headers: { 'Content-Type': 'application/json' },
+          body: corps ? JSON.stringify(corps) : undefined
+        });
+        var data = await r.json().catch(function () { return {}; });
+        if (!r.ok) { message(data.error || ('Refusé (' + r.status + ')'), false); return false; }
+        message('C\'est fait.', true);
+        await recharger();
+        return true;
+      } catch (e) { message('Échec : ' + e.message, false); return false; }
+    }
+
+    function formulaire(orgId, html) {
+      document.querySelectorAll('[data-form]').forEach(function (z) { z.innerHTML = ''; });
+      var zone = document.querySelector('[data-form="' + orgId + '"]');
+      if (zone) { zone.innerHTML = '<div class="rs-form">' + html + '</div>'; }
+      var champ = zone && zone.querySelector('input, select');
+      if (champ) champ.focus();
+    }
+
+    function formNom(orgId, geste, etiquette, valeur) {
+      formulaire(orgId,
+        '<div style="flex:1 1 240px"><label for="rsN">' + ech(etiquette) + '</label>'
+        + '<input class="field" id="rsN" type="text" style="width:100%" value="'
+        + ech(valeur || '') + '"></div>'
+        + '<button type="button" class="btn btn--pri btn--sm" data-geste="' + geste
+        + '-ok" data-org="' + orgId + '">Enregistrer</button>'
+        + '<button type="button" class="btn btn--ghost btn--sm" data-geste="annuler">Annuler</button>');
+    }
+
+    document.addEventListener('click', async function (ev) {
+      var b = ev.target.closest('[data-geste]');
+      if (!b) return;
+      var geste = b.dataset.geste;
+      var orgId = Number(b.dataset.org);
+
+      if (geste === 'annuler') { formulaire(orgId, ''); return; }
+
+      if (geste === 'ouvrir-css')    return formNom(orgId, 'creer-css', 'Nom du centre de services scolaire', '');
+      if (geste === 'ouvrir-centre') return formNom(orgId, 'creer-centre', 'Nom du centre de francisation', '');
+      if (geste === 'renommer') {
+        var n = (DONNEES.organisations || []).find(function (o) { return o.id === orgId; });
+        return formNom(orgId, 'renommer', 'Nouveau nom', n && n.nom);
+      }
+      if (geste === 'poser-acces') {
+        /* Le rôle « prof » est proposé ici comme les autres : c'est le geste
+           qui rattache une enseignante à un centre. Les rôles qui n'ont pas
+           de sens sur un centre ne sont pas offerts — le serveur les
+           refuserait, et une liste qui les montre ment. */
+        var comptes = COMPTES.map(function (t) {
+          return '<option value="' + t.id + '">' + ech(t.nom) + ' — ' + ech(t.courriel) + '</option>';
+        }).join('');
+        return formulaire(orgId,
+          '<div style="flex:1 1 240px"><label for="rsT">Personne</label>'
+          + '<select class="field" id="rsT" style="width:100%">' + comptes + '</select></div>'
+          + '<div><label for="rsR">Rôle</label><select class="field" id="rsR">'
+          + '<option value="prof">Enseignant</option>'
+          + '<option value="direction">Direction</option>'
+          + '<option value="conseiller">Conseiller</option>'
+          + '</select></div>'
+          + '<button type="button" class="btn btn--pri btn--sm" data-geste="poser-ok" data-org="' + orgId + '">Poser</button>'
+          + '<button type="button" class="btn btn--ghost btn--sm" data-geste="annuler">Annuler</button>');
+      }
+
+      var nom = (document.getElementById('rsN') || {}).value;
+      if (geste === 'creer-css-ok')
+        return void agir('POST', '/api/admin/organisations', { type: 'css', parentId: orgId, nom: nom });
+      if (geste === 'creer-centre-ok')
+        return void agir('POST', '/api/admin/organisations', { type: 'centre', parentId: orgId, nom: nom });
+      if (geste === 'renommer-ok')
+        return void agir('PATCH', '/api/admin/organisations/' + orgId, { nom: nom });
+      if (geste === 'poser-ok')
+        return void agir('POST', '/api/admin/acces', {
+          teacherId: Number(document.getElementById('rsT').value),
+          orgId: orgId,
+          role: document.getElementById('rsR').value
+        });
+
+      if (geste === 'rattacher') {
+        var gid = Number(b.dataset.groupe);
+        return void agir('PATCH', '/api/admin/groupes/' + gid + '/centre',
+                         { centreId: Number(document.getElementById('rsC' + gid).value) });
+      }
+      if (geste === 'retirer-acces') {
+        if (!confirm('Retirer cet accès ? La personne garde son compte et ses '
+                   + 'autres centres ; elle perd seulement celui-ci.')) return;
+        return void agir('DELETE', '/api/admin/acces/' + Number(b.dataset.acces));
+      }
+    });
+
+    var DONNEES = {};
+
+    async function recharger() {
+      var r = await Prof.fetch('/api/admin/organisations');
+      if (!r.ok) throw new Error('HTTP ' + r.status);
+      DONNEES = await r.json();
+      rendre(DONNEES, MOI);
+      try {
+        var ra = await Prof.fetch('/api/admin/audit?limite=40');
+        if (ra.ok) rendreAudit(await ra.json());
+      } catch (e) { /* le journal est un confort, pas la page */ }
+    }
+
+    function rendreAudit(lignes) {
+      document.getElementById('rsAudit').innerHTML = (lignes || []).map(function (l) {
+        var d = l.details || {};
+        var detail = d.nom || d.courriel || d.centre
+                   || (d.role ? LIBELLE_ROLE[d.role] || d.role : '')
+                   || (d.apres && d.apres.nom) || '';
+        return '<tr><td>' + jour(l.quand) + '</td>'
+             + '<td>' + ech(l.quiNom || '—') + '</td>'
+             + '<td>' + ech(l.quoi) + '</td>'
+             + '<td>' + ech(detail) + '</td></tr>';
+      }).join('') || '<tr><td colspan="4" class="rs-vide">Aucun geste enregistré.</td></tr>';
     }
 
     async function demarrer() {
@@ -308,10 +504,16 @@
         return;
       }
 
+      MOI = moi;
       try {
-        var r = await Prof.fetch('/api/admin/organisations');
-        if (!r.ok) throw new Error('HTTP ' + r.status);
-        rendre(await r.json(), moi);
+        // Les comptes servent à peupler « Poser un accès ». La route est
+        // réservée aux administrateurs, ce que le fondateur est toujours.
+        var rc = await Prof.fetch('/api/prof/enseignants');
+        if (rc.ok) COMPTES = await rc.json();
+      } catch (e) { /* on posera un accès sans liste, plutôt que rien */ }
+
+      try {
+        await recharger();
       } catch (e) {
         document.getElementById('rsSous').textContent =
           "L'arbre n'a pas pu être lu (" + e.message + ').';

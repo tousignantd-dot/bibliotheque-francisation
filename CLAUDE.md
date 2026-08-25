@@ -313,8 +313,34 @@ tapant son adresse.
   neuves mentirait par omission.
 - `data/audit.json` est du volume, non versionné, en **ajout seulement**.
 
-Reste à faire dans l'étape 3 : l'écran d'écriture dans `reseau.html`, et
-l'invitation par jeton avec l'import d'une liste de courriels.
+### Les gestes à l'écran
+
+Étape 3, troisième tranche. `reseau.html` n'est plus en lecture : on y ouvre un
+CSS et un centre, on renomme, on pose et on retire un accès, et on rattache un
+groupe orphelin.
+
+- **Chaque geste est posé là où il s'applique** : « Ouvrir un centre » est sur
+  son CSS, « Poser un accès » sur son centre. Aucun formulaire ne demande
+  « sous quoi ? » après coup. Un bouton absent est un geste que le serveur
+  refuserait — même parti pris que `prof.html`.
+- **Le message d'erreur affiché est celui du serveur, mot pour mot.** La page ne
+  reformule pas un refus : c'est le serveur qui en connaît le motif, et deux
+  formulations d'une même règle finiraient par diverger.
+- **Un seul chemin d'écriture** : `agir()` appelle, affiche, puis recharge tout.
+  Pas de mise à jour locale de l'affichage — une page qui se croit à jour sans
+  avoir relu le serveur finit par montrer un arbre qui n'existe pas.
+- **Le geste qui compte est « Rattacher »** : la bannière des orphelins porte un
+  sélecteur de centre par groupe sans centre. C'est la réparation pour laquelle
+  la console a été faite.
+- **Tous les gestes ont été joués dans la page, pas seulement appelés** :
+  rattacher un orphelin (bannière disparue), ouvrir un CSS puis son centre,
+  refuser un renommage à nom vide (« Le nom est requis », en style d'erreur),
+  renommer pour de bon, poser un accès `direction`, le retirer (la ligne passe
+  à « Éteint », elle ne disparaît pas), et le journal qui enregistre les six.
+  L'arbre construit ainsi repasse le contrôle sans écart.
+
+Reste à faire dans l'étape 3 : l'invitation par jeton avec l'import d'une liste
+de courriels.
 
 - **Ce qui n'est pas fait, et pourquoi** : la migration vers Postgres, annoncée
   avec cette étape dans le document. Elle est restée dehors — `requirements.txt`
