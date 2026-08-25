@@ -181,6 +181,11 @@ SESSIONS_FILE  = STORAGE_DIR / "data" / "prof_sessions.json"
 # assets/presentations/reseau-des-centres.html.
 ORGANISATIONS_FILE = STORAGE_DIR / "data" / "organisations.json"
 ACCES_FILE         = STORAGE_DIR / "data" / "acces.json"
+# Journal d'audit des gestes d'administration. En **ajout seulement** : dès
+# qu'il y a plus d'une organisation, « qui a fait ça, et quand ? » est la
+# première question posée après un incident, et une donnée effacée ne répond
+# jamais.
+AUDIT_FILE         = STORAGE_DIR / "data" / "audit.json"
 # Fichiers partagés par l'enseignant à un groupe (notes de cours, grilles,
 # corrigés). Ils ne sont pas des activités : ils ont leur propre période de
 # parution et l'élève ne les voit que pendant celle-ci.
@@ -1438,6 +1443,89 @@ def retirer_acces(teacher_id, org_id=None):
     if touches:
         save_acces(acces)
     return touches
+
+
+def load_audit():
+    return _load_json_list(AUDIT_FILE)
+
+
+# Le serveur est multi-thread : deux écritures simultanées perdraient une
+# ligne. Même raison que le verrou des traductions.
+_AUDIT_LOCK = threading.Lock()
+
+
+def journal(qui, quoi, cible="", details=None):
+    """Ajoute une ligne au journal d'audit. N'échoue jamais l'appelant.
+
+    Un journal qui fait planter le geste qu'il enregistre serait pire que pas
+    de journal : on perdrait l'action *et* la trace. Il crie dans la sortie
+    standard et laisse passer.
+    """
+    try:
+        with _AUDIT_LOCK:
+            lignes = load_audit()
+            lignes.append({
+                "id": max((l.get("id", 0) for l in lignes), default=0) + 1,
+                "quand": datetime.now().isoformat(timespec="seconds"),
+                "qui": (qui or {}).get("id") if isinstance(qui, dict) else qui,
+                "quiNom": (qui or {}).get("nom", "") if isinstance(qui, dict) else "",
+                "quoi": quoi,
+                "cible": str(cible),
+                "details": details or {},
+            })
+            _save_json(AUDIT_FILE, lignes)
+    except Exception as e:
+        print(f"[WARN] journal d'audit : {e}", flush=True)
+
+
+def creer_organisation(type_, parent_id, nom):
+    """Crée un CSS ou un centre. Rend (organisation, None) ou (None, motif).
+
+    Les refus sont ici, pas à l'écran : un arbre mal formé ne se répare pas en
+    corrigeant l'interface, et le contrôle sortirait en écart de toute façon.
+    """
+    nom = (nom or "").strip()
+    if not nom:
+        return None, "Le nom est requis"
+    if type_ not in ("css", "centre"):
+        return None, "Un réseau ne se crée pas : il n'y en a qu'un"
+    orgs = load_organisations()
+    parent = find_org(parent_id, orgs)
+    if parent is None:
+        return None, "Organisation parente introuvable"
+    attendu = "reseau" if type_ == "css" else "css"
+    if parent.get("type") != attendu:
+        libelle = {"reseau": "le réseau", "css": "un CSS"}[attendu]
+        return None, f"Un {type_} se place sous {libelle}, pas sous un {parent.get('type')}"
+    org = {
+        "id": max((o["id"] for o in orgs), default=0) + 1,
+        "type": type_, "parentId": parent["id"], "nom": nom[:120],
+        "actif": True, "createdAt": date.today().isoformat(),
+    }
+    save_organisations(orgs + [org])
+    return org, None
+
+
+def valider_acces(teacher_id, org_id, role):
+    """Dit si un accès a un sens. Rend None si oui, le motif du refus sinon."""
+    if role not in ROLES_ACCES:
+        return "Rôle inconnu"
+    if role == "fondateur":
+        # Le fondateur n'est pas un rôle qu'on distribue : il se déduit du
+        # compte du premier démarrage (`founder_id`). En poser un second
+        # ferait deux vérités pour une même question.
+        return "Le rôle « fondateur » ne s'accorde pas : il appartient au compte du premier démarrage"
+    if not any(t["id"] == teacher_id for t in load_teachers()):
+        return "Compte introuvable"
+    org = find_org(org_id)
+    if org is None:
+        return "Organisation introuvable"
+    attendus = NOEUD_DU_ROLE[role]
+    if org.get("type") not in attendus:
+        quoi = " ou ".join({"reseau": "le réseau", "css": "un CSS",
+                            "centre": "un centre"}[t] for t in attendus)
+        return f"Le rôle « {role} » se pose sur {quoi}, pas sur un {org.get('type')}"
+    return None
 
 
 def arbre_pour_lecture():
@@ -14028,6 +14116,9 @@ class Handler(http.server.SimpleHTTPRequestHandler):
                 return
             json_response(self, arbre_pour_lecture())
             return
+        if path == "/api/admin/audit":
+            self._handle_audit_list(params)
+            return
         if path == "/api/admin/oral-submissions":
             self._handle_oral_submissions_list(params)
             return
@@ -14098,6 +14189,10 @@ class Handler(http.server.SimpleHTTPRequestHandler):
             self._handle_prof_password()
         elif path == "/api/prof/groupes":
             self._handle_group_add()
+        elif path == "/api/admin/organisations":
+            self._handle_org_add()
+        elif path == "/api/admin/acces":
+            self._handle_acces_add()
         elif path == "/api/prof/enseignants":
             self._handle_teacher_add()
         elif path == "/api/prof/documents":
@@ -14182,6 +14277,12 @@ class Handler(http.server.SimpleHTTPRequestHandler):
     def do_PATCH(self):
         parsed = urllib.parse.urlparse(self.path)
         path = parsed.path
+        if re.match(r"^/api/admin/organisations/\d+$", path):
+            self._handle_org_update(int(path.rsplit("/", 1)[1]))
+            return
+        if re.match(r"^/api/admin/groupes/\d+/centre$", path):
+            self._handle_groupe_centre(int(path.split("/")[4]))
+            return
         if re.match(r"^/api/admin/students/\d+$", path):
             teacher = self._require_teacher()
             if not teacher:
@@ -14231,6 +14332,9 @@ class Handler(http.server.SimpleHTTPRequestHandler):
         parsed = urllib.parse.urlparse(self.path)
         path = parsed.path
 
+        if re.match(r"^/api/admin/acces/\d+$", path):
+            self._handle_acces_delete(int(path.rsplit("/", 1)[1]))
+            return
         if re.match(r"^/api/admin/students/\d+$", path):
             try:
                 student_id = int(path.split("/")[4])
@@ -14966,6 +15070,150 @@ class Handler(http.server.SimpleHTTPRequestHandler):
             })
         json_response(self, enriched)
 
+    def _require_founder(self):
+        """La console du réseau n'est ouverte qu'au fondateur — décision du
+        25 août 2026 : c'est lui, et lui seul, qui ouvre les comptes."""
+        teacher = self._require_teacher()
+        if not teacher:
+            return None
+        if not is_founder(teacher):
+            json_response(self, {"error": "Réservé au compte fondateur"}, 403)
+            return None
+        return teacher
+
+    def _handle_org_add(self):
+        fondateur = self._require_founder()
+        if not fondateur:
+            return
+        body = self._read_json_body()
+        try:
+            parent_id = int(body.get("parentId"))
+        except (TypeError, ValueError):
+            json_response(self, {"error": "Organisation parente manquante"}, 400)
+            return
+        org, motif = creer_organisation(body.get("type"), parent_id, body.get("nom"))
+        if org is None:
+            json_response(self, {"error": motif}, 400)
+            return
+        journal(fondateur, "organisation.creee", org["id"],
+                {"type": org["type"], "nom": org["nom"], "parentId": parent_id})
+        json_response(self, {"success": True, "organisation": org}, 201)
+
+    def _handle_org_update(self, org_id):
+        fondateur = self._require_founder()
+        if not fondateur:
+            return
+        body = self._read_json_body()
+        orgs = load_organisations()
+        org = find_org(org_id, orgs)
+        if org is None:
+            json_response(self, {"error": "Organisation introuvable"}, 404)
+            return
+        avant = {"nom": org.get("nom"), "actif": org.get("actif", True)}
+        if "nom" in body:
+            nom = (body.get("nom") or "").strip()
+            if not nom:
+                json_response(self, {"error": "Le nom est requis"}, 400)
+                return
+            org["nom"] = nom[:120]
+        if "actif" in body:
+            actif = bool(body.get("actif"))
+            # Désactiver la racine éteindrait la portée du fondateur, donc la
+            # console elle-même : on ne se coupe pas la branche.
+            if not actif and org.get("type") == "reseau":
+                json_response(self, {"error": "Le réseau ne se désactive pas"}, 409)
+                return
+            org["actif"] = actif
+        save_organisations(orgs)
+        journal(fondateur, "organisation.modifiee", org_id,
+                {"avant": avant, "apres": {"nom": org.get("nom"),
+                                           "actif": org.get("actif", True)}})
+        json_response(self, {"success": True, "organisation": org})
+
+    def _handle_acces_add(self):
+        fondateur = self._require_founder()
+        if not fondateur:
+            return
+        body = self._read_json_body()
+        try:
+            teacher_id = int(body.get("teacherId"))
+            org_id = int(body.get("orgId"))
+        except (TypeError, ValueError):
+            json_response(self, {"error": "Compte ou organisation manquant"}, 400)
+            return
+        role = body.get("role")
+        motif = valider_acces(teacher_id, org_id, role)
+        if motif:
+            json_response(self, {"error": motif}, 400)
+            return
+        ligne = poser_acces(teacher_id, org_id, role, fondateur["id"])
+        journal(fondateur, "acces.pose", ligne["id"],
+                {"teacherId": teacher_id, "orgId": org_id, "role": role})
+        json_response(self, {"success": True, "acces": ligne}, 201)
+
+    def _handle_acces_delete(self, acces_id):
+        fondateur = self._require_founder()
+        if not fondateur:
+            return
+        acces = load_acces()
+        ligne = next((a for a in acces if a.get("id") == acces_id), None)
+        if ligne is None:
+            json_response(self, {"error": "Accès introuvable"}, 404)
+            return
+        # Retirer son propre accès au réseau fermerait la console à la seule
+        # personne qui peut la rouvrir. Le refus est ici, pas à l'écran.
+        if ligne.get("role") == "fondateur":
+            json_response(self, {
+                "error": "L'accès du fondateur ne se retire pas : il n'y aurait "
+                         "plus personne pour rouvrir la console."
+            }, 403)
+            return
+        ligne["actif"] = False
+        save_acces(acces)
+        journal(fondateur, "acces.retire", acces_id,
+                {"teacherId": ligne.get("teacherId"), "orgId": ligne.get("orgId"),
+                 "role": ligne.get("role")})
+        json_response(self, {"success": True})
+
+    def _handle_groupe_centre(self, group_id):
+        """Déplace un groupe vers un centre — c'est ainsi qu'on rattache un
+        orphelin, le geste pour lequel la console existe."""
+        fondateur = self._require_founder()
+        if not fondateur:
+            return
+        body = self._read_json_body()
+        groups = load_groups()
+        groupe = next((g for g in groups if g["id"] == group_id), None)
+        if groupe is None:
+            json_response(self, {"error": "Groupe introuvable"}, 404)
+            return
+        try:
+            centre_id = int(body.get("centreId"))
+        except (TypeError, ValueError):
+            json_response(self, {"error": "Centre manquant"}, 400)
+            return
+        centre = find_org(centre_id)
+        if centre is None or centre.get("type") != "centre":
+            json_response(self, {"error": "Ce n'est pas un centre"}, 400)
+            return
+        avant = groupe.get("centreId")
+        groupe["centreId"] = centre_id
+        save_groups(groups)
+        journal(fondateur, "groupe.rattache", group_id,
+                {"avant": avant, "apres": centre_id, "centre": centre.get("nom")})
+        json_response(self, {"success": True, "groupe": groupe})
+
+    def _handle_audit_list(self, params):
+        fondateur = self._require_founder()
+        if not fondateur:
+            return
+        try:
+            limite = max(1, min(500, int((params.get("limite") or ["100"])[0])))
+        except (TypeError, ValueError):
+            limite = 100
+        # Les plus récentes d'abord : un journal se lit par la fin.
+        json_response(self, list(reversed(load_audit()))[:limite])
+
     def _handle_group_add(self):
         teacher = self._require_teacher()
         if not teacher:
@@ -15001,6 +15249,9 @@ class Handler(http.server.SimpleHTTPRequestHandler):
         }
         groups.append(group)
         save_groups(groups)
+        journal(teacher, "groupe.cree", group["id"],
+                {"nom": group["nom"], "centreId": group.get("centreId"),
+                 "titulaire": titulaire_id})
         json_response(self, {"success": True, "groupe": group}, 201)
 
     def _handle_group_update(self, group_id):
@@ -15446,6 +15697,9 @@ class Handler(http.server.SimpleHTTPRequestHandler):
         else:
             print(f"[WARN] compte {teacher['id']} créé sans accès : "
                   "aucun centre dans l'arbre", flush=True)
+        journal(admin, "compte.ouvert", teacher["id"],
+                {"courriel": email, "role": teacher["role"],
+                 "centreId": centre["id"] if centre else None})
         json_response(self, {"success": True, "enseignant": public_teacher(teacher)}, 201)
 
     def _handle_teacher_update(self, teacher_id):
@@ -15518,6 +15772,8 @@ class Handler(http.server.SimpleHTTPRequestHandler):
         # Les accès s'éteignent, ils ne se suppriment pas : le journal doit
         # pouvoir dire dans six mois qui voyait quoi, et depuis quand.
         retirer_acces(teacher_id)
+        journal(admin, "compte.supprime", teacher_id,
+                {"courriel": target.get("courriel"), "nom": target.get("nom")})
         # Déconnexion immédiate du compte supprimé
         sessions = {tok: s for tok, s in load_sessions().items()
                     if s.get("teacherId") != teacher_id}

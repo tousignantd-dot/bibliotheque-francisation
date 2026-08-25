@@ -279,9 +279,42 @@ tapant son adresse.
   réécrite dans le même commit — une interface qui décrit l'ancienne règle est
   un défaut, pas un détail.
 
-Reste à faire dans l'étape 3 : les gestes d'écriture (créer un CSS ou un centre,
-poser et retirer un accès, déplacer un groupe), l'invitation par jeton avec
-l'import d'une liste de courriels, et le journal d'audit.
+### Les gestes d'écriture et le journal d'audit
+
+Étape 3, deuxième tranche. **Toutes ces routes sont réservées au fondateur**
+(`_require_founder()`, 403 sinon) et **toutes écrivent au journal**.
+
+| Route | Geste |
+|---|---|
+| `POST /api/admin/organisations` | ouvrir un CSS ou un centre |
+| `PATCH /api/admin/organisations/<id>` | renommer, activer, désactiver |
+| `POST /api/admin/acces` | poser un accès |
+| `DELETE /api/admin/acces/<id>` | **éteindre** un accès (jamais l'effacer) |
+| `PATCH /api/admin/groupes/<id>/centre` | rattacher un groupe — le geste qui répare un orphelin |
+| `GET /api/admin/audit` | le journal, les plus récentes d'abord (`?limite=`) |
+
+- **Les refus sont au serveur, et ils ont chacun leur motif en clair.** Sept
+  d'entre eux ont été joués et vus refuser : un centre sous le réseau, un CSS
+  sous un centre, un second réseau, un nom vide, un rôle `prof` sur un CSS, une
+  `direction` sur le réseau, un compte inexistant.
+- **Deux refus protègent la console d'elle-même** : on ne retire pas l'accès du
+  fondateur (plus personne ne pourrait la rouvrir) et on ne désactive pas le
+  réseau (sa portée s'éteindrait avec). Ce sont les seuls gestes irréparables
+  par l'interface elle-même.
+- **Le rôle `fondateur` ne s'accorde pas.** Il se déduit de `founder_id()` — le
+  compte du premier démarrage. Le distribuer ferait deux vérités pour une même
+  question, et le contrôle sort déjà en écart sur deux fondateurs.
+- **`journal()` n'échoue jamais l'appelant.** Un journal qui fait planter le
+  geste qu'il enregistre est pire que pas de journal : on perdrait l'action
+  *et* la trace. Il écrit un `[WARN]` et laisse passer. Verrou d'écriture,
+  comme le cache des traductions — le serveur est multi-thread.
+- **Les gestes qui existaient déjà y sont aussi** : ouvrir un compte, le
+  supprimer, créer un groupe. Un journal qui ne couvrirait que les routes
+  neuves mentirait par omission.
+- `data/audit.json` est du volume, non versionné, en **ajout seulement**.
+
+Reste à faire dans l'étape 3 : l'écran d'écriture dans `reseau.html`, et
+l'invitation par jeton avec l'import d'une liste de courriels.
 
 - **Ce qui n'est pas fait, et pourquoi** : la migration vers Postgres, annoncée
   avec cette étape dans le document. Elle est restée dehors — `requirements.txt`
