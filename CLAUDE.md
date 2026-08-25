@@ -386,8 +386,72 @@ compte.
   Annuler, c'est faire expirer : la ligne reste, le journal aussi.
 - `data/invitations.json` est du volume, non versionné.
 
-**L'étape 3 est complète.** Reste l'étape 4 (le portail des chiffres) et la
-migration Postgres, qui attend une décision sur la dépendance externe.
+**L'étape 3 est complète.**
+
+## Le portail des chiffres (étape 4)
+
+### Le relevé quotidien, et la cloison qu'il porte
+
+**Les tableaux de bord ne lisent jamais le journal d'événements** : ils lisent
+`data/stats_jour.json`. Ce n'est pas une optimisation, c'est la cloison
+elle-même — le relevé a **deux grains**, et la vue d'un CSS ne lit que le
+premier :
+
+- `jours` — par journée et par **centre**. Aucun identifiant d'enseignant.
+- `parEnseignant` — par journée, centre **et** enseignant. Lu seulement par la
+  vue d'un centre et par celle du réseau.
+
+L'agrégation se fait donc à l'écriture, pas à l'affichage. Un filtre s'oublie
+dans une requête ; une colonne absente ne fuit pas. **Vérifié sur la réponse
+réelle** : la vue CSS ne contient ni `teacherId`, ni nom de personne, et sa
+colonne s'appelle `rattachements`, jamais « enseignants ».
+
+- **Les jours passés ne se recalculent jamais.** Le journal est en ajout
+  seulement : une journée close ne bouge plus. Seul le jour courant est refait.
+  C'est ce qui permettra au relevé de tenir quand `progress.json` fera des
+  millions de lignes, et c'est pourquoi il n'a besoin d'**aucune tâche de
+  nuit** — vérifié : un second passage sans événement du jour ne réécrit même
+  pas le fichier.
+- **Une séance d'élève se ferme après 30 minutes sans événement**
+  (`STATS_PAUSE_MIN`), et un événement isolé compte pour une minute
+  (`STATS_EVENEMENT_MIN`). Sans la borne, un onglet resté ouvert la nuit
+  gonflerait tout un centre ; avec zéro pour l'événement isolé, un élève qui a
+  réellement travaillé disparaîtrait. **Ce chiffre est un plancher**, et les
+  écrans doivent le dire — rien ne mesure le temps réel passé dans une activité.
+- **Les élèves actifs ne s'additionnent pas** d'une journée à l'autre : un élève
+  venu cinq jours ferait cinq élèves. Le relevé ne garde qu'un nombre, donc on
+  rend `elevesActifsPointe`, le maximum d'une journée — le seul chiffre honnête
+  qu'il permette.
+
+### Les trois vues, et qui y entre
+
+| Route | Qui y entre |
+|---|---|
+| `GET /api/stats/reseau` | le fondateur seul |
+| `GET /api/stats/css?orgId=` | `gestion_css` ou `conseiller` **sur ce CSS ou au-dessus** |
+| `GET /api/stats/centre?orgId=` | `direction` ou `conseiller` **posé sur ce centre précis** |
+
+- **`a_role_sur(..., exact=True)` tient la décision du 25 août 2026.** La vue
+  par enseignant exige un accès posé **sur le centre lui-même** : un
+  gestionnaire de CSS a le centre dans son sous-arbre et reste refusé. Joué et
+  vu refuser, avec le motif en clair.
+- **Réseau : personnes ≠ rattachements.** Les deux chiffres sont rendus
+  séparément et nommés dans la réponse. Une même personne dans deux centres est
+  *un* enseignant pour le réseau et *deux* lignes pour la somme des centres ;
+  les deux sont justes et ne seront jamais égaux.
+- **La vue d'un centre réunit deux sources** : les personnes rattachées, et
+  celles qui y sont **titulaires d'un groupe**. Elles ne se recouvrent pas —
+  le fondateur enseigne sans être rattaché à un centre. N'en lire qu'une faisait
+  disparaître un enseignant de la liste pendant que son activité comptait au
+  total du centre : le détail et le total se contredisaient, et c'est le détail
+  qui avait tort. Un titulaire sans rattachement sort avec `rattache: false`.
+- **`derniereConnexion` est écrite à la connexion.** C'était la seule mesure
+  honnête de « ce compte a-t-il déjà servi ? » ; la deviner depuis les traces
+  d'élèves se tromperait sur une enseignante qui prépare avant que sa classe
+  ait rien ouvert. Elle appartient à la **personne**, pas au rattachement.
+
+Reste : les écrans du portail des chiffres, et la migration Postgres, qui
+attend une décision sur la dépendance externe.
 
 - **Ce qui n'est pas fait, et pourquoi** : la migration vers Postgres, annoncée
   avec cette étape dans le document. Elle est restée dehors — `requirements.txt`

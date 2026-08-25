@@ -190,6 +190,18 @@ AUDIT_FILE         = STORAGE_DIR / "data" / "audit.json"
 # passe**, même quand c'est le fondateur qui crée le compte. Le jeton n'est
 # rendu qu'une fois, à la création ; seule son empreinte est gardée.
 INVITATIONS_FILE   = STORAGE_DIR / "data" / "invitations.json"
+# Relevé quotidien — étape 4. Les tableaux de bord ne lisent **jamais** le
+# journal d'événements : ils lisent ce relevé. C'est ce qui permet à la vue
+# d'un CSS de ne contenir aucun identifiant d'enseignant — l'agrégation se
+# fait à l'écriture, pas à l'affichage. Un filtre s'oublie dans une requête ;
+# une colonne absente ne fuit pas.
+STATS_JOUR_FILE    = STORAGE_DIR / "data" / "stats_jour.json"
+# Une séance d'élève se ferme après trente minutes sans événement. Sans cette
+# borne, un onglet resté ouvert la nuit gonflerait les minutes de tout un
+# centre. Un événement isolé compte pour une minute : zéro effacerait un
+# élève qui a réellement travaillé.
+STATS_PAUSE_MIN    = 30
+STATS_EVENEMENT_MIN = 1
 INVITATION_JOURS   = 14
 # Fichiers partagés par l'enseignant à un groupe (notes de cours, grilles,
 # corrigés). Ils ne sont pas des activités : ils ont leur propre période de
@@ -1639,6 +1651,160 @@ def invitation_publique(inv):
         "creeLe": inv.get("creeLe"), "expire": inv.get("expire"),
         "utiliseLe": inv.get("utiliseLe", ""),
     }
+
+
+# ── Le relevé quotidien ─────────────────────────────────────────────────────
+
+def load_stats_jour():
+    if STATS_JOUR_FILE.exists():
+        try:
+            with open(STATS_JOUR_FILE, "r", encoding="utf-8") as f:
+                return json.load(f)
+        except json.JSONDecodeError:
+            print("[WARN] stats_jour.json illisible, relevé refait", flush=True)
+    return {"jours": {}, "parEnseignant": {}}
+
+
+def save_stats_jour(data):
+    _save_json(STATS_JOUR_FILE, data)
+
+
+def _minutes_de_seance(horodatages):
+    """Somme des séances d'un élève dans une journée, en minutes.
+
+    Une séance se ferme après `STATS_PAUSE_MIN` sans événement. Rien ne mesure
+    le temps réel passé dans une activité — le portail élève le dit déjà de
+    son estimation — donc ce chiffre est un **plancher**, et les écrans
+    doivent l'annoncer comme tel.
+    """
+    if not horodatages:
+        return 0
+    marques = sorted(horodatages)
+    total, debut, precedent = 0, marques[0], marques[0]
+    for t in marques[1:]:
+        if (t - precedent) > STATS_PAUSE_MIN * 60:
+            total += max((precedent - debut) / 60, STATS_EVENEMENT_MIN)
+            debut = t
+        precedent = t
+    total += max((precedent - debut) / 60, STATS_EVENEMENT_MIN)
+    return round(total)
+
+
+def _horodatage(iso):
+    try:
+        return datetime.fromisoformat(str(iso)[:19]).timestamp()
+    except (ValueError, TypeError):
+        return None
+
+
+def calculer_jour(jour, progres, eleve_vers_centre, eleve_vers_prof):
+    """Le relevé d'une journée, à deux grains.
+
+    Deux dictionnaires, et c'est **la** décision de l'étape 4 : `centres` ne
+    porte aucun identifiant d'enseignant, `enseignants` en porte. La vue d'un
+    CSS ne lit que le premier. Les mélanger remettrait le filtrage à
+    l'affichage, où il s'oublie.
+    """
+    centres, enseignants = {}, {}
+    seances = {}   # (clé, studentId) -> [horodatages]
+
+    def sac(table, cle):
+        return table.setdefault(cle, {
+            "eleves": set(), "evenements": 0, "activitesTerminees": 0,
+            "premierCoupOk": 0, "premierCoupTotal": 0, "minutes": 0,
+        })
+
+    for e in progres:
+        if str(e.get("timestamp", ""))[:10] != jour:
+            continue
+        sid = e.get("studentId")
+        centre = eleve_vers_centre.get(sid)
+        if centre is None:
+            continue
+        prof = eleve_vers_prof.get(sid)
+        cles = [("c", centre)] + ([("t", centre, prof)] if prof else [])
+        for cle in cles:
+            table = centres if cle[0] == "c" else enseignants
+            k = str(centre) if cle[0] == "c" else f"{centre}:{prof}"
+            d = sac(table, k)
+            d["eleves"].add(sid)
+            d["evenements"] += 1
+            if e.get("event") == "exercise_completed":
+                d["activitesTerminees"] += 1
+            ft, zones = e.get("firstTry"), e.get("zones")
+            if isinstance(ft, int) and isinstance(zones, int) and zones > 0:
+                d["premierCoupOk"] += ft
+                d["premierCoupTotal"] += zones
+            ts = _horodatage(e.get("timestamp"))
+            if ts is not None:
+                seances.setdefault((k, sid), []).append(ts)
+
+    for (k, _sid), marques in seances.items():
+        table = enseignants if ":" in k else centres
+        table[k]["minutes"] += _minutes_de_seance(marques)
+
+    for table in (centres, enseignants):
+        for d in table.values():
+            d["elevesActifs"] = len(d.pop("eleves"))
+    return centres, enseignants
+
+
+def relever_stats(force=False):
+    """Met le relevé à jour. Les jours passés ne se recalculent jamais.
+
+    Le journal d'événements est en ajout seulement : une journée close ne
+    bouge plus. On ne recalcule donc que le jour courant — c'est ce qui
+    permettra à ce relevé de tenir quand `progress.json` fera des millions de
+    lignes, et c'est aussi pourquoi il n'a besoin d'aucune tâche de nuit.
+    """
+    data = load_stats_jour()
+    if force:
+        data = {"jours": {}, "parEnseignant": {}}
+    progres = load_progress()
+    groupes = {g["id"]: g for g in load_groups()}
+    eleve_vers_centre, eleve_vers_prof = {}, {}
+    for el in load_students():
+        g = groupes.get(el.get("groupId"))
+        if not g:
+            continue
+        if g.get("centreId"):
+            eleve_vers_centre[el["id"]] = g["centreId"]
+            eleve_vers_prof[el["id"]] = g.get("teacherId")
+
+    aujourdhui = date.today().isoformat()
+    jours = {str(e.get("timestamp", ""))[:10] for e in progres}
+    jours = {j for j in jours if len(j) == 10}
+    a_faire = [j for j in jours if j not in data["jours"] or j == aujourdhui]
+    for j in sorted(a_faire):
+        centres, enseignants = calculer_jour(j, progres, eleve_vers_centre,
+                                             eleve_vers_prof)
+        data["jours"][j] = centres
+        data["parEnseignant"][j] = enseignants
+    if a_faire:
+        data["calculeLe"] = datetime.now().isoformat(timespec="seconds")
+        save_stats_jour(data)
+    return data
+
+
+def a_role_sur(teacher, org_id, roles, exact=False):
+    """La personne a-t-elle l'un de ces rôles sur ce nœud ?
+
+    `exact=True` exige que l'accès soit posé **sur ce nœud précis**, sans
+    remonter la chaîne. C'est ce qui tient la décision du 25 août 2026 : un
+    gestionnaire de CSS voit ses centres, jamais leurs enseignants. Sa ligne
+    d'accès est sur le CSS ; la vue par enseignant demande un accès posé sur
+    le centre lui-même.
+    """
+    if not teacher:
+        return False
+    if is_founder(teacher):
+        return True
+    orgs = load_organisations()
+    chaine = {o["id"] for o in org_chain(org_id, orgs)} if not exact else {org_id}
+    for a in acces_of_teacher(teacher["id"]):
+        if a.get("role") in roles and a.get("orgId") in chaine:
+            return True
+    return False
 
 
 def arbre_pour_lecture():
@@ -14229,6 +14395,15 @@ class Handler(http.server.SimpleHTTPRequestHandler):
                 return
             json_response(self, arbre_pour_lecture())
             return
+        if path == "/api/stats/reseau":
+            self._handle_stats_reseau(params)
+            return
+        if path == "/api/stats/css":
+            self._handle_stats_css(params)
+            return
+        if path == "/api/stats/centre":
+            self._handle_stats_centre(params)
+            return
         if path == "/api/admin/audit":
             self._handle_audit_list(params)
             return
@@ -15131,6 +15306,15 @@ class Handler(http.server.SimpleHTTPRequestHandler):
             json_response(self, {"error": "Courriel ou mot de passe invalide"}, 401)
             return
         token = create_session(teacher["id"])
+        # La dernière connexion est la seule mesure honnête de « ce compte
+        # a-t-il déjà servi ? ». Sans elle, la vue d'un centre devrait la
+        # deviner à partir des traces d'élèves — donc se tromper sur une
+        # enseignante qui prépare sans que sa classe ait encore rien ouvert.
+        tous = load_teachers()
+        for t in tous:
+            if t["id"] == teacher["id"]:
+                t["derniereConnexion"] = datetime.now().isoformat(timespec="seconds")
+        save_teachers(tous)
         json_response(self, {
             "success": True,
             "token": token,
@@ -15467,6 +15651,248 @@ class Handler(http.server.SimpleHTTPRequestHandler):
                 {"courriel": inv["courriel"], "role": inv.get("role"),
                  "orgId": inv.get("orgId")})
         json_response(self, {"success": True, "jeton": create_session(teacher["id"])}, 201)
+
+    # ── Le portail des chiffres ─────────────────────────────────────────────
+
+    def _stats_fenetre(self, jours):
+        """Les relevés des N derniers jours, à deux grains."""
+        data = relever_stats()
+        depuis = (date.today() - timedelta(days=jours - 1)).isoformat()
+        return (
+            {j: v for j, v in data.get("jours", {}).items() if j >= depuis},
+            {j: v for j, v in data.get("parEnseignant", {}).items() if j >= depuis},
+        )
+
+    @staticmethod
+    def _cumuler(releves, cle_de):
+        """Additionne des relevés journaliers. Les élèves actifs se comptent en
+        **distincts** : les additionner ferait d'un élève venu cinq jours cinq
+        élèves. On ne peut pas les distinguer depuis le relevé — il ne garde
+        qu'un nombre — donc on rend le **maximum d'une journée**, qui est le
+        seul chiffre honnête qu'il permette, et l'écran l'annonce ainsi."""
+        total = {}
+        for jour, table in releves.items():
+            for k, d in table.items():
+                cle = cle_de(k)
+                if cle is None:
+                    continue
+                t = total.setdefault(cle, {
+                    "evenements": 0, "activitesTerminees": 0, "minutes": 0,
+                    "premierCoupOk": 0, "premierCoupTotal": 0,
+                    "elevesActifsPointe": 0, "jours": set(),
+                })
+                for champ in ("evenements", "activitesTerminees", "minutes",
+                              "premierCoupOk", "premierCoupTotal"):
+                    t[champ] += d.get(champ, 0)
+                t["elevesActifsPointe"] = max(t["elevesActifsPointe"],
+                                              d.get("elevesActifs", 0))
+                if d.get("evenements"):
+                    t["jours"].add(jour)
+        for t in total.values():
+            t["joursActifs"] = len(t.pop("jours"))
+            t["premierCoupPct"] = (round(100 * t["premierCoupOk"] / t["premierCoupTotal"])
+                                   if t["premierCoupTotal"] else None)
+        return total
+
+    def _handle_stats_reseau(self, params):
+        fondateur = self._require_founder()
+        if not fondateur:
+            return
+        jours = 30
+        par_jour, _ = self._stats_fenetre(jours)
+        par_centre = self._cumuler(par_jour, lambda k: int(k))
+        orgs = load_organisations()
+        groupes = load_groups()
+        eleves = load_students()
+        activites = load_activities()
+        schedule = load_schedule()
+
+        centres = [o for o in orgs if o.get("type") == "centre"]
+        groupes_par_centre = {}
+        for g in groupes:
+            groupes_par_centre.setdefault(g.get("centreId"), []).append(g["id"])
+
+        lignes = []
+        for c in centres:
+            ids = groupes_par_centre.get(c["id"], [])
+            t = par_centre.get(c["id"], {})
+            css = next((o for o in org_chain(c["id"], orgs) if o.get("type") == "css"), None)
+            lignes.append({
+                "centreId": c["id"], "centre": c.get("nom"),
+                "css": (css or {}).get("nom", ""),
+                "groupes": len(ids),
+                "eleves": sum(1 for e in eleves if e.get("groupId") in ids),
+                "elevesActifsPointe": t.get("elevesActifsPointe", 0),
+                "minutes": t.get("minutes", 0),
+                "joursActifs": t.get("joursActifs", 0),
+                "premierCoupPct": t.get("premierCoupPct"),
+                "actif": t.get("joursActifs", 0) > 0,
+            })
+
+        # Les modules que personne n'ouvre pilotent la production : c'est le
+        # seul écran qui puisse le dire, et aucun autre ne le regarde.
+        ouverts = {e.get("activityId") for e in schedule if e.get("datePrevue")}
+        modules = [a for a in activites if a.get("categorie") == "cours"]
+        jamais = sorted((a.get("titre") or a.get("title") or f"activité {a['id']}")
+                        for a in modules if a["id"] not in ouverts)
+
+        json_response(self, {
+            "fenetreJours": jours,
+            "centres": sorted(lignes, key=lambda l: (l["css"], l["centre"])),
+            "totaux": {
+                "css": sum(1 for o in orgs if o.get("type") == "css"),
+                "centres": len(centres),
+                "centresActifs": sum(1 for l in lignes if l["actif"]),
+                # Des **personnes**, pas des rattachements : une même personne
+                # dans deux centres est un enseignant pour le réseau et deux
+                # lignes pour la somme des centres. Les deux chiffres sont
+                # justes et ne seront jamais égaux.
+                "personnes": len({a["teacherId"] for a in load_acces()
+                                  if a.get("actif", True)}),
+                "rattachements": sum(1 for a in load_acces() if a.get("actif", True)),
+                "eleves": len(eleves),
+                "modules": len(modules),
+                "modulesJamaisOuverts": len(jamais),
+            },
+            "modulesJamaisOuverts": jamais[:40],
+        })
+
+    def _handle_stats_css(self, params):
+        """Une ligne par centre. **Aucune ligne par enseignant** : décision du
+        25 août 2026, et elle est tenue par la source lue, pas par un filtre."""
+        teacher = self._require_teacher()
+        if not teacher:
+            return
+        try:
+            org_id = int((params.get("orgId") or [""])[0])
+        except (TypeError, ValueError):
+            json_response(self, {"error": "Organisation manquante"}, 400)
+            return
+        org = find_org(org_id)
+        if org is None or org.get("type") != "css":
+            json_response(self, {"error": "Ce n'est pas un CSS"}, 400)
+            return
+        if not a_role_sur(teacher, org_id, ("gestion_css", "conseiller")):
+            json_response(self, {"error": "Ce CSS n'est pas dans votre portée"}, 403)
+            return
+
+        jours = 30
+        par_jour, _ = self._stats_fenetre(jours)
+        par_centre = self._cumuler(par_jour, lambda k: int(k))
+        orgs = load_organisations()
+        sous = org_subtree_ids(org_id, orgs)
+        centres = [o for o in orgs if o.get("type") == "centre" and o["id"] in sous]
+        groupes = load_groups()
+        eleves = load_students()
+        planifies = {e.get("groupId") for e in load_schedule() if e.get("datePrevue")}
+        acces = [a for a in load_acces() if a.get("actif", True)]
+        teachers = {t["id"]: t for t in load_teachers()}
+
+        lignes = []
+        for c in centres:
+            ids = [g["id"] for g in groupes if g.get("centreId") == c["id"]]
+            t = par_centre.get(c["id"], {})
+            # « Rattachements », pas « enseignants » : le mot est dans
+            # l'intitulé parce que la somme des centres dépassera le nombre de
+            # personnes du réseau dès qu'une personne enseignera dans deux.
+            rattaches = [a for a in acces if a.get("orgId") == c["id"]]
+            jamais_venus = sum(1 for a in rattaches
+                               if not (teachers.get(a["teacherId"]) or {}).get("derniereConnexion"))
+            lignes.append({
+                "centreId": c["id"], "centre": c.get("nom"),
+                "rattachements": len(rattaches),
+                "rattachementsJamaisConnectes": jamais_venus,
+                "groupes": len(ids),
+                "groupesPlanifies": sum(1 for i in ids if i in planifies),
+                "eleves": sum(1 for e in eleves if e.get("groupId") in ids),
+                "elevesActifsPointe": t.get("elevesActifsPointe", 0),
+                "minutes": t.get("minutes", 0),
+                "joursActifs": t.get("joursActifs", 0),
+                "premierCoupPct": t.get("premierCoupPct"),
+            })
+        json_response(self, {"fenetreJours": jours, "css": org.get("nom"),
+                             "centres": sorted(lignes, key=lambda l: l["centre"])})
+
+    def _handle_stats_centre(self, params):
+        """Une ligne par enseignant, alphabétique. Réservée à la direction **de
+        ce centre** et au fondateur — un gestionnaire de CSS n'y entre pas,
+        même s'il a le centre dans sa portée."""
+        teacher = self._require_teacher()
+        if not teacher:
+            return
+        try:
+            org_id = int((params.get("orgId") or [""])[0])
+        except (TypeError, ValueError):
+            json_response(self, {"error": "Organisation manquante"}, 400)
+            return
+        org = find_org(org_id)
+        if org is None or org.get("type") != "centre":
+            json_response(self, {"error": "Ce n'est pas un centre"}, 400)
+            return
+        if not a_role_sur(teacher, org_id, ("direction", "conseiller"), exact=True):
+            json_response(self, {
+                "error": "La vue par enseignant est réservée à la direction du "
+                         "centre. Un CSS voit ses centres, pas leurs enseignants."
+            }, 403)
+            return
+
+        jours = 30
+        _, par_prof = self._stats_fenetre(jours)
+        cumul = self._cumuler(
+            par_prof,
+            lambda k: int(k.split(":")[1]) if k.startswith(f"{org_id}:") else None)
+        groupes = [g for g in load_groups() if g.get("centreId") == org_id]
+        eleves = load_students()
+        planifies = {}
+        for e in load_schedule():
+            if e.get("datePrevue"):
+                planifies[e.get("groupId")] = planifies.get(e.get("groupId"), 0) + 1
+        teachers = {t["id"]: t for t in load_teachers()}
+
+        # Deux sources, réunies : les personnes **rattachées** au centre, et
+        # celles qui y sont **titulaires d'un groupe**. Elles ne se recouvrent
+        # pas toujours — le fondateur enseigne sans être rattaché à un centre,
+        # et un rattachement retiré laisse le groupe en place. N'en lire qu'une
+        # faisait disparaître des enseignants de la liste pendant que leur
+        # activité continuait de compter au niveau du centre : le total et le
+        # détail se contredisaient, et c'est le détail qui avait tort.
+        roles = {}
+        for a in load_acces():
+            if a.get("orgId") == org_id and a.get("actif", True):
+                roles[a["teacherId"]] = a.get("role")
+        for g in groupes:
+            if g.get("teacherId") and g["teacherId"] not in roles:
+                roles[g["teacherId"]] = ""      # titulaire sans rattachement
+
+        lignes = []
+        for teacher_id, role in roles.items():
+            t = teachers.get(teacher_id)
+            if not t:
+                continue
+            siens = [g for g in groupes if g.get("teacherId") == t["id"]]
+            ids = [g["id"] for g in siens]
+            c = cumul.get(t["id"], {})
+            lignes.append({
+                "teacherId": t["id"], "nom": t.get("nom", ""),
+                "role": role,
+                # Un titulaire sans ligne d'accès sur ce centre : la console du
+                # réseau est l'endroit pour le réparer, l'écran le signale.
+                "rattache": bool(role),
+                # Elle appartient à la personne, pas au rattachement : une
+                # enseignante qui travaille dans deux centres se connecte une
+                # fois. On l'affiche telle quelle plutôt que de la fabriquer.
+                "derniereConnexion": t.get("derniereConnexion", ""),
+                "groupes": len(siens),
+                "eleves": sum(1 for e in eleves if e.get("groupId") in ids),
+                "activitesPlanifiees": sum(planifies.get(i, 0) for i in ids),
+                "joursActifs": c.get("joursActifs", 0),
+                "minutes": c.get("minutes", 0),
+                "premierCoupPct": c.get("premierCoupPct"),
+            })
+        json_response(self, {
+            "fenetreJours": jours, "centre": org.get("nom"),
+            "enseignants": sorted(lignes, key=lambda l: (l["nom"] or "").lower()),
+        })
 
     def _handle_audit_list(self, params):
         fondateur = self._require_founder()
