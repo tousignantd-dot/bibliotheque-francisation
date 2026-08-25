@@ -528,6 +528,16 @@ a{color:inherit;}
       <p class="titre">Trois quarts de la facture tiennent dans deux fonctions</p>
       <p>L'assistant et le jeu de rôle — texte et voix — font 32,40 $ des 36,42 $. Tout le reste de la plateforme, dix routes de correction et de traduction, coûte 4,02 $ pour vingt élèves sur tout le module. <strong>Faire tourner l'assistant et le jeu de rôle sur Haiku 4.5 au lieu d'Opus 5 ramènerait le module à 21 $</strong>, soit 1,05 $ par élève — au prix d'un partenaire de conversation nettement moins fin, ce qui est précisément la compétence travaillée.</p>
     </div>
+
+    <div class="encadre sarcelle">
+      <p class="titre">Ces chiffres ont maintenant un compteur en face</p>
+      <p>Le serveur tient depuis le 25 août un registre des appels payants — une ligne par
+      tentative, les jetons tels que l'API les renvoie, aucun texte et aucun code d'élève.
+      Il se lit par <span class="mono">python3 build/couts_api.py</span> en local, ou par
+      <span class="mono">GET /api/admin/appels?groupId=</span> en ligne, réservé à
+      l'enseignant du groupe. Le tableau ci-dessus reste une hypothèse jusqu'à ce qu'un
+      groupe ait traversé un module ; à ce moment-là, il se remplace par une mesure.</p>
+    </div>
   </section>
 
   <section>
@@ -554,7 +564,7 @@ a{color:inherit;}
 
   <footer class="pied">
     <p><strong>Ce qui est mesuré, et ce qui est supposé.</strong> Les tarifs des modèles Anthropic et les compteurs de la bibliothèque — 77 modules, 6 886 MP3, 1 502 images, 1 586 appels d'image pour 90,15 $ — sont relevés sur le dépôt et sur <span class="mono">appels.jsonl</span>. Les médianes de caractères viennent des relevés de sons et des fichiers de dialogues des 77 modules.</p>
-    <p><strong>Les hypothèses d'usage sont inventées</strong> : rien ne compte aujourd'hui les appels d'un élève. Vingt tours d'assistant et vingt répliques de jeu de rôle par module sont un ordre de grandeur, pas une mesure — un élève bavard doublerait sa part, un élève silencieux la diviserait par cinq.</p>
+    <p><strong>Les hypothèses d'usage sont inventées.</strong> Vingt tours d'assistant et vingt répliques de jeu de rôle par module sont un ordre de grandeur, pas une mesure — un élève bavard doublerait sa part, un élève silencieux la diviserait par cinq. <strong>Depuis le 25 août, le serveur compte pour de vrai</strong> : chaque appel payant pose une ligne dans <span class="mono">data/appels_api.jsonl</span> — route, modèle, élève, jetons réels renvoyés par l'API, montant. Les tableaux ci-dessus seront remplacés par le relevé dès qu'un groupe aura joué un module en entier.</p>
     <p><strong>Le tarif ElevenLabs est déduit, pas facturé.</strong> Le service compte au caractère et le montant retenu ici, 0,22 $ pour mille caractères, vient de l'estimation du chantier audio du 24 août. fal.ai, de son côté, ne renvoie aucun montant dans sa réponse : le registre des appels donne un plancher, jamais la facture.</p>
   </footer>
 

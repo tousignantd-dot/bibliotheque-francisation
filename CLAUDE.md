@@ -2212,6 +2212,58 @@ vers les diapositives.
   dialogues. `narrer.py` ne repaie pas un plan déjà narré (facturation au
   caractère) : effacer un MP3 précis pour le refaire.
 
+## Le registre des appels d'API (`journal_api.py`)
+
+**Une ligne par tentative, réussie ou non**, dans `data/appels_api.jsonl`
+(volume, non versionné). Il existe parce que
+`assets/presentations/prix-dun-module.html` chiffrait un module à 36 $ pour
+vingt élèves sur des **hypothèses d'usage inventées** — vingt tours
+d'assistant, vingt répliques de jeu de rôle. Personne ne comptait.
+
+```
+python3 build/couts_api.py                 # par élève
+python3 build/couts_api.py --par-route     # par route
+python3 build/couts_api.py --depuis 2026-08-25
+```
+
+En ligne, `GET /api/admin/appels?groupId=&depuis=` rend le même calcul,
+filtré au groupe et réservé à son enseignant. Le script ne lit que le volume
+**local** : il ne peut rien dire de la production, comme
+`build/controles/organisations.py`.
+
+- **Les jetons sont ceux que l'API renvoie**, jamais une estimation : le
+  champ `usage` de la réponse est recopié tel quel. Le montant en dollars,
+  lui, vient de la table `TARIFS` de `journal_api.py` — il vieillit, et c'est
+  un montant estimé, jamais la facture. Même réserve que pour les images.
+- **Les quatre compteurs de jetons se tarifent séparément.** Entrée, sortie,
+  écriture de cache (1,25 × entrée) et lecture de cache (0,1 × entrée). Les
+  additionner comme un seul nombre surestime d'un tiers un tour de jeu de
+  rôle, dont la consigne système est mise en cache. Vérifié sur une réponse
+  canonique : 0,0093 $ contre 0,0201 $ si l'on ignore le cache.
+- **Ni texte ni code d'élève n'entrent dans le registre.** Le texte, parce que
+  les corrections IA restent privées ; le code, parce qu'il *authentifie* —
+  l'écrire dans un journal reviendrait à écrire un mot de passe. On garde
+  l'`id` de l'élève et celui de son groupe. `_repere_eleve()` fait la
+  résolution, au prix d'une relecture de `students.json` que
+  l'authentification de la route venait déjà de faire.
+- **Un appel servi par le cache est noté à zéro dollar, et noté quand même.**
+  C'est la mesure qui intéresse : un registre qui ne verrait que les appels
+  payés ne dirait jamais combien il en a épargné. Idem pour un refus (401,
+  quota épuisé) : la ligne garde son nombre de caractères, son montant tombe
+  à zéro.
+- **`route`, `code` et `module` sont passés explicitement** aux deux
+  fonctions d'appel, jamais devinés depuis le contexte de la requête. Une
+  route mal étiquetée fausserait le compte par élève sans rien casser
+  d'autre — donc sans que rien ne le signale.
+- **`noter()` n'échoue jamais l'appelant**, comme `journal()` de l'audit : un
+  registre qui fait planter le geste qu'il enregistre ferait perdre l'appel
+  *et* la trace. Et l'import de `journal_api` est protégé comme celui de
+  `forge` — un fichier oublié dans un commit ne doit pas tuer le conteneur.
+- **Les trois modèles sont nommés une fois** (`MODELE_CORRECTION`,
+  `MODELE_CONVERSATION`, `MODELE_VOIX`). Le registre les tarife par leur
+  identifiant : un modèle changé dans un payload sans l'être dans la
+  constante serait compté au prix de l'autre, en silence.
+
 ## Signalements (« Outil en développement »)
 
 Le portail enseignant porte, sous la barre de parcours, un bandeau ambre qui
