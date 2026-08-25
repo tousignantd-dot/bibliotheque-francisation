@@ -171,6 +171,16 @@ TEACHERS_FILE  = STORAGE_DIR / "data" / "teachers.json"
 GROUPS_FILE    = STORAGE_DIR / "data" / "groups.json"
 SCHEDULE_FILE  = STORAGE_DIR / "data" / "schedule.json"
 SESSIONS_FILE  = STORAGE_DIR / "data" / "prof_sessions.json"
+# Réseau multi-centres — étape 1. L'arbre des organisations (réseau · CSS ·
+# centre) et la table des accès. Une permission est un rôle posé sur un nœud
+# et vaut sur tout le sous-arbre ; c'est une **table**, jamais une colonne sur
+# le compte, parce qu'une même personne enseigne parfois dans deux centres.
+# Ces deux fichiers sont posés et tenus à jour dès maintenant, mais **aucune
+# autorisation ne s'y appuie encore** : c'est l'étape 2 qui remplacera
+# groups_of_teacher() et teacher_can_access_group(). Voir
+# assets/presentations/reseau-des-centres.html.
+ORGANISATIONS_FILE = STORAGE_DIR / "data" / "organisations.json"
+ACCES_FILE         = STORAGE_DIR / "data" / "acces.json"
 # Fichiers partagés par l'enseignant à un groupe (notes de cours, grilles,
 # corrigés). Ils ne sont pas des activités : ils ont leur propre période de
 # parution et l'élève ne les voit que pendant celle-ci.
@@ -1211,6 +1221,198 @@ def teacher_can_access_group(teacher, group_id):
     return g is not None and g.get("teacherId") == teacher["id"]
 
 
+# ── L'arbre des organisations et la table des accès ─────────────────────────
+#
+# Étape 1 du chantier « Le réseau des centres ». Tout ce qui suit **décrit** la
+# hiérarchie sans encore l'appliquer : les deux fonctions d'autorisation
+# ci-dessus restent seules en service jusqu'à l'étape 2. Cette séparation est
+# volontaire — elle permet de poser l'arbre en production, de le regarder vivre
+# et de le corriger, sans qu'une erreur de portée puisse fermer une classe.
+
+TYPES_ORG = ("reseau", "css", "centre")
+
+# Les cinq rôles. Trois d'entre eux ne sont que des portées de **lecture** :
+# le fondateur ouvre tous les comptes, décision du 25 août 2026.
+ROLES_ACCES = ("fondateur", "gestion_css", "direction", "conseiller", "prof")
+
+# Le type de nœud sur lequel chaque rôle a un sens. Un « direction » posé sur
+# un CSS n'est pas une permission plus large : c'est une faute de saisie.
+NOEUD_DU_ROLE = {
+    "fondateur":   ("reseau",),
+    "gestion_css": ("css",),
+    "direction":   ("centre",),
+    "conseiller":  ("css", "centre"),
+    "prof":        ("centre",),
+}
+
+
+def load_organisations():
+    """[{id, type, parentId, nom, actif, createdAt}] — un seul arbre."""
+    return _load_json_list(ORGANISATIONS_FILE)
+
+
+def save_organisations(orgs):
+    _save_json(ORGANISATIONS_FILE, orgs)
+
+
+def load_acces():
+    """[{id, teacherId, orgId, role, actif, accordePar, accordeLe}]."""
+    return _load_json_list(ACCES_FILE)
+
+
+def save_acces(acces):
+    _save_json(ACCES_FILE, acces)
+
+
+def find_org(org_id, orgs=None):
+    orgs = load_organisations() if orgs is None else orgs
+    return next((o for o in orgs if o["id"] == org_id), None)
+
+
+def orgs_of_type(type_, orgs=None):
+    orgs = load_organisations() if orgs is None else orgs
+    return [o for o in orgs if o.get("type") == type_]
+
+
+def org_chain(org_id, orgs=None):
+    """Le nœud, puis ses parents jusqu'à la racine. [] si l'identifiant est inconnu.
+
+    Le garde-fou contre les cycles n'est pas décoratif : un parentId saisi de
+    travers ferait tourner cette boucle indéfiniment, et elle sera appelée à
+    chaque requête une fois l'étape 2 en service.
+    """
+    orgs = load_organisations() if orgs is None else orgs
+    par_id = {o["id"]: o for o in orgs}
+    chaine, vus, courant = [], set(), org_id
+    while courant is not None and courant in par_id and courant not in vus:
+        vus.add(courant)
+        noeud = par_id[courant]
+        chaine.append(noeud)
+        courant = noeud.get("parentId")
+    return chaine
+
+
+def org_subtree_ids(org_id, orgs=None):
+    """Les identifiants du nœud et de toute sa descendance."""
+    orgs = load_organisations() if orgs is None else orgs
+    enfants = {}
+    for o in orgs:
+        enfants.setdefault(o.get("parentId"), []).append(o["id"])
+    trouves, a_voir = set(), [org_id]
+    while a_voir:
+        courant = a_voir.pop()
+        if courant in trouves:
+            continue
+        trouves.add(courant)
+        a_voir.extend(enfants.get(courant, []))
+    return trouves
+
+
+def acces_of_teacher(teacher_id, acces=None):
+    """Les lignes d'accès actives d'une personne. Plusieurs, c'est le cas normal."""
+    acces = load_acces() if acces is None else acces
+    return [a for a in acces
+            if a.get("teacherId") == teacher_id and a.get("actif", True)]
+
+
+def portee_orgs(teacher, orgs=None, acces=None):
+    """Les organisations qu'une personne voit — ses nœuds et leur descendance.
+
+    C'est la fonction unique d'autorisation prévue à l'étape 2. Elle est écrite
+    et éprouvée maintenant, mais **rien ne l'appelle encore** : la brancher
+    demande de retirer les deux anciennes fonctions dans le même geste, sans
+    quoi les deux règles cohabiteraient et la plus permissive gagnerait.
+    """
+    if not teacher:
+        return set()
+    orgs = load_organisations() if orgs is None else orgs
+    portee = set()
+    for a in acces_of_teacher(teacher["id"], acces):
+        portee |= org_subtree_ids(a["orgId"], orgs)
+    return portee
+
+
+def centre_racine(orgs=None):
+    """Le premier centre de l'arbre — celui où tout l'existant a été rattaché."""
+    centres = orgs_of_type("centre", orgs)
+    return centres[0] if centres else None
+
+
+def arbre_pour_lecture():
+    """L'arbre, les accès et les groupes, en une réponse lisible à l'œil.
+
+    Sert la vérification, pas une interface : tant qu'il n'y a pas d'écran, il
+    faut bien un endroit où regarder ce que la migration a posé.
+    """
+    orgs = load_organisations()
+    acces = load_acces()
+    groups = load_groups()
+    teachers = {t["id"]: t for t in load_teachers()}
+    par_centre = {}
+    for g in groups:
+        par_centre.setdefault(g.get("centreId"), []).append(
+            {"id": g["id"], "nom": g.get("nom", ""), "titulaire": g.get("teacherId")})
+    return {
+        "organisations": [
+            {**o,
+             "enfants": sorted(x["id"] for x in orgs if x.get("parentId") == o["id"]),
+             "groupes": par_centre.get(o["id"], [])}
+            for o in orgs
+        ],
+        "acces": [
+            {**a,
+             "nom": teachers.get(a.get("teacherId"), {}).get("nom", "compte inconnu"),
+             "organisation": (find_org(a.get("orgId"), orgs) or {}).get("nom", "")}
+            for a in acces
+        ],
+        "orphelins": {
+            "groupesSansCentre": [g["id"] for g in groups if not g.get("centreId")],
+            "comptesSansAcces": sorted(
+                set(teachers) - {a.get("teacherId") for a in acces}),
+        },
+    }
+
+
+def groupes_de_portee(teacher, orgs=None, acces=None):
+    """Les groupes visibles d'une personne, selon l'arbre. Pas encore en service.
+
+    Un groupe appartient à un **centre** ; le `teacherId` du groupe ne dit plus
+    que qui en est titulaire. Une personne rattachée à deux centres voit les
+    groupes des deux, et le nom du centre doit être écrit à côté du groupe —
+    deux « Niveau 4 » dans deux centres est une certitude, pas une hypothèse.
+
+    **Le rôle « prof » est le seul qui ne voit pas tout son sous-arbre.** Son
+    accès dit *où il enseigne*, pas *ce qu'il voit* : sans cette exception, un
+    enseignant rattaché à un centre verrait les groupes de tous ses collègues,
+    et l'ouverture à un deuxième centre commencerait par élargir les droits de
+    tout le monde à l'intérieur du premier. Le défaut a été trouvé au bac
+    d'essai de l'étape 1 — deux groupes dans un même centre, et le second
+    enseignant les voyait tous les deux.
+    """
+    if not teacher:
+        return []
+    orgs = load_organisations() if orgs is None else orgs
+    lignes = acces_of_teacher(teacher["id"], acces)
+    large, restreint = set(), set()
+    for a in lignes:
+        cible = restreint if a.get("role") == "prof" else large
+        cible |= org_subtree_ids(a["orgId"], orgs)
+    return [
+        g for g in load_groups()
+        if g.get("centreId") in large
+        or (g.get("centreId") in restreint and est_enseignant_du_groupe(teacher, g))
+    ]
+
+
+def est_enseignant_du_groupe(teacher, group):
+    """Titulaire ou co-enseignant. Le champ `coEnseignants` n'existe pas encore
+    dans les groupes ; il est lu dès maintenant pour que l'ajouter plus tard ne
+    demande pas de repasser ici."""
+    if group.get("teacherId") == teacher["id"]:
+        return True
+    return teacher["id"] in (group.get("coEnseignants") or [])
+
+
 # ── Mots de passe et sessions enseignants ───────────────────────────────────
 
 def hash_password(password, salt=None, iterations=200_000):
@@ -1426,6 +1628,87 @@ def migrate_multi_groupes():
                 changed = True
         if changed:
             save_groups(groups)
+
+
+def migrate_organisations():
+    """Pose l'arbre des organisations sur une installation à un seul centre.
+
+    Idempotente, et **sans effet visible** : aucune page ne change, aucun élève
+    ne voit de différence, aucune autorisation ne passe encore par l'arbre.
+    Elle se contente de dire de qui relève ce qui existe déjà — un réseau, un
+    CSS, un centre — pour que l'étape 2 n'ait plus qu'à brancher la portée.
+
+    Trois écritures, chacune gardée par sa propre condition : on ne réécrit
+    jamais un rattachement posé à la main, et un fichier déjà peuplé est laissé
+    tel quel.
+    """
+    orgs = load_organisations()
+
+    # 1. L'arbre d'amorce. Les noms se règlent par variables d'environnement
+    #    pour qu'une installation chez un partenaire n'hérite pas des nôtres.
+    if not orgs:
+        aujourdhui = date.today().isoformat()
+        orgs = [
+            {"id": 1, "type": "reseau", "parentId": None,
+             "nom": os.environ.get("RESEAU_NOM", "SAAF"),
+             "actif": True, "createdAt": aujourdhui},
+            {"id": 2, "type": "css", "parentId": 1,
+             "nom": os.environ.get("CSS_NOM", "Centre de services scolaire"),
+             "actif": True, "createdAt": aujourdhui},
+            {"id": 3, "type": "centre", "parentId": 2,
+             "nom": os.environ.get("CENTRE_NOM", "Centre de francisation"),
+             "actif": True, "createdAt": aujourdhui},
+        ]
+        save_organisations(orgs)
+        print("[migration] Arbre d'amorce créé : réseau → CSS → centre", flush=True)
+
+    centre = centre_racine(orgs)
+    if centre is None:
+        print("[WARN] migrate_organisations : aucun centre dans l'arbre, "
+              "rattachements laissés en l'état", flush=True)
+        return
+
+    # 2. Les groupes existants entrent dans le centre d'amorce. Le `teacherId`
+    #    reste : il ne dit plus la propriété, il dit qui est titulaire.
+    groups = load_groups()
+    sans_centre = [g for g in groups if not g.get("centreId")]
+    if sans_centre:
+        for g in sans_centre:
+            g["centreId"] = centre["id"]
+        save_groups(groups)
+        print(f"[migration] {len(sans_centre)} groupes rattachés au centre "
+              f"{centre['id']} « {centre['nom']} »", flush=True)
+
+    # 3. Une ligne d'accès par personne qui n'en a aucune. Le rôle est déduit
+    #    de l'ancien champ `role`, et le fondateur se pose sur le réseau — pas
+    #    sur le centre, sans quoi il ne verrait pas les CSS à venir.
+    teachers = load_teachers()
+    acces = load_acces()
+    deja = {a.get("teacherId") for a in acces}
+    fondateur = founder_id(teachers)
+    reseaux = orgs_of_type("reseau", orgs)
+    racine = reseaux[0] if reseaux else centre
+    prochain = max([a.get("id", 0) for a in acces], default=0) + 1
+    ajouts = []
+    for t in teachers:
+        if t["id"] in deja:
+            continue
+        if t["id"] == fondateur:
+            role, org = "fondateur", racine
+        elif t.get("role") == "admin":
+            role, org = "direction", centre
+        else:
+            role, org = "prof", centre
+        ajouts.append({
+            "id": prochain, "teacherId": t["id"], "orgId": org["id"],
+            "role": role, "actif": True,
+            "accordePar": fondateur, "accordeLe": date.today().isoformat(),
+        })
+        prochain += 1
+    if ajouts:
+        save_acces(acces + ajouts)
+        resume = ", ".join(f"{a['role']}→{a['orgId']}" for a in ajouts)
+        print(f"[migration] {len(ajouts)} accès posés ({resume})", flush=True)
 
 
 def load_vocab_progress():
@@ -13630,6 +13913,19 @@ class Handler(http.server.SimpleHTTPRequestHandler):
                 if e.get("studentId") in student_ids or e.get("groupId") == group_id
             ])
             return
+        if path == "/api/admin/organisations":
+            # Lecture seule, réservée au fondateur. C'est la fenêtre sur
+            # l'arbre posé par migrate_organisations() : tant que l'étape 2
+            # n'est pas faite, c'est le seul moyen de vérifier en production
+            # que les rattachements sont ceux qu'on croit.
+            teacher = self._require_teacher()
+            if not teacher:
+                return
+            if not is_founder(teacher):
+                json_response(self, {"error": "Réservé au compte fondateur"}, 403)
+                return
+            json_response(self, arbre_pour_lecture())
+            return
         if path == "/api/admin/oral-submissions":
             self._handle_oral_submissions_list(params)
             return
@@ -16989,6 +17285,12 @@ if __name__ == "__main__":
             migrate_multi_groupes()
         except Exception as e:
             print(f"[WARN] migrate_multi_groupes a échoué : {e}", flush=True)
+        # Doit suivre migrate_multi_groupes() : elle rattache les groupes et
+        # les comptes que celle-ci vient éventuellement de créer.
+        try:
+            migrate_organisations()
+        except Exception as e:
+            print(f"[WARN] migrate_organisations a échoué : {e}", flush=True)
 
     threading.Thread(target=_init_storage_safe, daemon=True).start()
 

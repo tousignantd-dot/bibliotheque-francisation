@@ -178,6 +178,64 @@ reste dans l'adresse, donc une vue se partage par son lien.
   historique tout ce qui lui était déjà visible, pour ne rien retirer à la
   classe en cours.
 
+## Le réseau multi-centres (étape 1 : l'arbre est posé, rien ne s'y appuie)
+
+Le chantier est décrit dans `assets/presentations/reseau-des-centres.html`
+(fiche sur `presentations.html`). Étape 1 livrée le 25 août 2026 : **l'arbre
+des organisations existe et se tient à jour, mais aucune autorisation ne passe
+encore par lui**. `groups_of_teacher()` et `teacher_can_access_group()` restent
+seules en service — c'est l'étape 2 qui les remplacera, dans le même geste.
+
+Cette séparation est volontaire, et c'est le point à ne pas défaire par
+« nettoyage » : elle permet de poser l'arbre en production, de le regarder
+vivre et de le corriger, sans qu'une erreur de portée puisse fermer une classe.
+Brancher la portée à moitié serait pire que ne pas la brancher — les deux
+règles cohabiteraient et la plus permissive gagnerait.
+
+- **Deux fichiers du volume, non versionnés** : `data/organisations.json`
+  (`{id, type, parentId, nom, actif}`, type parmi `reseau · css · centre`) et
+  `data/acces.json` (`{id, teacherId, orgId, role, actif, accordePar,
+  accordeLe}`). Un groupe porte désormais un `centreId` ; son `teacherId` ne
+  dit plus la propriété, il dit **qui est titulaire**.
+- **Une permission est un rôle posé sur un nœud, et vaut sur tout le
+  sous-arbre.** C'est une **table**, jamais une colonne sur le compte : une
+  même personne enseigne parfois dans deux centres, et on doit pouvoir lui
+  retirer un rattachement sans toucher à son compte — le désactiver la
+  couperait de l'autre centre.
+- **Le rôle `prof` est le seul qui ne voit pas tout son sous-arbre.** Son accès
+  dit *où il enseigne*, pas *ce qu'il voit* : `groupes_de_portee()` le restreint
+  aux groupes dont il est titulaire. Sans cette exception, un enseignant
+  rattaché à un centre verrait les groupes de tous ses collègues — défaut trouvé
+  au bac d'essai de l'étape 1, pas en relisant le code.
+- **`migrate_organisations()` tourne au démarrage, après
+  `migrate_multi_groupes()`**, et elle est idempotente : arbre d'amorce (réseau
+  → CSS → centre, noms réglables par `RESEAU_NOM` / `CSS_NOM` / `CENTRE_NOM`),
+  groupes sans centre rattachés au centre d'amorce, une ligne d'accès par compte
+  qui n'en a aucune. Le fondateur se pose sur le **réseau**, pas sur le centre :
+  sur le centre, il ne verrait pas les CSS à venir.
+- **`GET /api/admin/organisations`** — lecture seule, **fondateur seulement**
+  (403 pour tout le reste, y compris un `admin`). C'est la seule fenêtre sur
+  l'arbre tant qu'il n'y a pas d'écran, et elle rend aussi les orphelins
+  (groupes sans centre, comptes sans accès).
+- **Le contrôle, à passer comme les autres** — il n'écrit rien et sort en
+  code 1 au premier écart :
+
+      python3 build/controles/organisations.py           # contrôle
+      python3 build/controles/organisations.py --etat    # + l'arbre à l'écran
+
+  Il attrape ce que rien d'autre ne regarde et qui ne lève aucune erreur en
+  service : un `parentId` dans le vide, un cycle, un rôle posé sur un type de
+  nœud qui n'a pas de sens (`prof` sur un CSS), un groupe sans centre, un compte
+  sans accès, deux fondateurs. Les six ont été **injectés dans un bac d'essai et
+  vus détectés** — un contrôle qu'on n'a pas fait échouer ne prouve rien.
+
+- **Ce qui n'est pas fait, et pourquoi** : la migration vers Postgres, annoncée
+  avec cette étape dans le document. Elle est restée dehors — `requirements.txt`
+  dit « aucune dépendance externe », et toucher les trente `load_*`/`save_*` de
+  `server.py` dans le même commit que l'arbre aurait rendu la régression
+  impossible à isoler. L'arbre étant maintenant figé, la migration déplacera un
+  schéma arrêté au lieu d'une cible mouvante.
+
 ## Sections datées (« sous-modules »)
 
 Un module s'ouvre **par sections** : l'enseignante donne une date à « Défi 2 »
