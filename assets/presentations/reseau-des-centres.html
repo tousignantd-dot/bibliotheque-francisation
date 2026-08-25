@@ -360,6 +360,33 @@
     à inscrire en août, c'est trente courriels à taper. L'import d'une liste — un
     collage de courriels, une invitation par ligne — n'est pas un luxe, c'est ce qui rend
     la décision tenable.</p>
+
+    <h3 id="deux-centres">Décision : une personne, plusieurs rattachements</h3>
+    <p>Oui, une même personne peut enseigner dans deux centres. C'est ce qui tranche la
+    forme de l'accès : <strong>une table, jamais une colonne sur le compte</strong>. Le
+    modèle proposé plus haut tenait déjà les deux cas ; ce choix-ci en fait le cas normal
+    plutôt que l'exception, et il porte quatre conséquences qui ne se voient pas de
+    loin.</p>
+    <ul class="points">
+      <li><strong>Un compte, une personne, une seule adresse.</strong> Pas de deuxième
+      compte « chez l'autre centre » : la même connexion donne accès aux deux, et le
+      sélecteur de groupe devient un sélecteur <em>par centre</em>. Deux groupes appelés
+      « Niveau 4 » dans deux centres, c'est une certitude — le nom du centre doit être
+      écrit à côté, pas déduit.</li>
+      <li><strong>On retire un rattachement, jamais le compte.</strong> Si un centre se
+      sépare d'une enseignante, on désactive <em>sa ligne d'accès à ce centre</em>.
+      Désactiver le compte la couperait de l'autre centre, qui n'a rien demandé. C'est
+      exactement le piège que la table évite et que la colonne aurait créé.</li>
+      <li><strong>La direction du centre A ne voit pas le centre B.</strong> Sur l'écran
+      d'un centre, la ligne d'une enseignante est bornée <em>aux groupes de ce
+      centre-là</em> : ses activités planifiées ailleurs n'y paraissent pas. Une seule
+      colonne échappe à la règle et c'est inévitable — la <em>dernière connexion</em>
+      appartient à la personne, pas au rattachement. Elle reste affichée telle quelle
+      plutôt que d'être bricolée : une date honnête vaut mieux qu'une date fabriquée.</li>
+      <li><strong>L'audit enregistre qui a accordé quel accès, et quand.</strong> Un
+      rattachement est un geste daté, pas un état. Sans cela, on ne saura pas dire dans
+      six mois pourquoi telle personne voyait tel centre.</li>
+    </ul>
   </section>
 
   <section>
@@ -470,7 +497,15 @@
         </tbody>
       </table>
     </div>
-    <p style="margin-top:14px">Un chiffre à ne pas afficher : le « temps passé » par
+    <p style="margin-top:14px"><strong>Le piège du double compte.</strong> Une personne
+    rattachée à deux centres est <em>un</em> enseignant pour le réseau et <em>deux</em>
+    lignes pour la somme des centres. Les deux chiffres sont justes et ils ne seront
+    jamais égaux : la vue réseau compte des <strong>personnes distinctes</strong>, la vue
+    CSS compte des <strong>rattachements</strong>. Le jour où quelqu'un additionnera les
+    colonnes de trois centres et tombera sur un total qui dépasse le vôtre, il faudra que
+    l'écran l'ait déjà dit — l'intitulé de chaque colonne porte donc le mot, « personnes »
+    ou « rattachements », et jamais le mot vague « enseignants ».</p>
+    <p>Un chiffre à ne pas afficher : le « temps passé » par
     élève. Rien ne mesure le temps réel dans une activité — le portail élève l'estime
     déjà à partir des traces, et il le dit. Le hisser au rang d'indicateur de gestion,
     ce serait donner à une estimation l'autorité d'une mesure.</p>
@@ -509,8 +544,11 @@
       <li><strong>Un groupe s'archive, il ne se supprime pas.</strong> Il porte son année
       scolaire. Supprimer un groupe de juin efface les statistiques de l'année — celles
       qu'on demandera précisément en septembre.</li>
-      <li><strong>Un compte se désactive.</strong> Le supprimer orphelinerait ses traces
-      et ferait mentir tous les relevés passés.</li>
+      <li><strong>Un compte se désactive, un rattachement aussi — et ce n'est pas le
+      même geste.</strong> Supprimer un compte orphelinerait ses traces et ferait mentir
+      tous les relevés passés. Retirer une personne d'un centre, c'est éteindre sa ligne
+      d'accès à ce centre : son compte, ses autres centres et son historique ne
+      bougent pas.</li>
     </ul>
   </section>
 
@@ -540,7 +578,7 @@
 
   <section>
     <span class="eyebrow e-ambre">Où on en est</span>
-    <h2>Deux décisions prises, une question ouverte</h2>
+    <h2>Les trois décisions sont prises</h2>
     <ul class="points">
       <li><strong>Tranché — le CSS voit ses centres, et pas ses enseignants.</strong> Le
       relevé du CSS n'emporte aucun identifiant d'enseignant : l'agrégation se fait à
@@ -549,11 +587,14 @@
       sont des portées de lecture ; la délégation reste écrite dans le modèle et éteinte.
       Ce qu'il faut ajouter en échange : l'import d'une liste de courriels, sinon la
       rentrée d'août vous passe dessus. <a href="#creation">Le détail</a>.</li>
-      <li><strong>Ouverte — une même personne enseigne-t-elle dans deux centres, chez vos
-      collègues ?</strong> Toute la proposition tient debout dans les deux cas, mais ce
-      point décide si l'accès est une ligne à part ou une simple colonne sur le compte.
-      La question peut attendre l'étape 2 ; elle ne peut pas attendre l'étape 3.</li>
+      <li><strong>Tranché — une même personne peut enseigner dans deux centres.</strong>
+      L'accès est donc une table et non une colonne, on retire un rattachement sans
+      toucher au compte, et les compteurs de personnes ne s'additionnent pas d'un centre
+      à l'autre. <a href="#deux-centres">Le détail</a>.</li>
     </ul>
+    <p>Il n'y a plus rien à décider avant d'écrire du code. Ce qui manque désormais est du
+    travail, pas de l'arbitrage — et il commence par l'étape 1, la moins visible des
+    quatre.</p>
   </section>
 
   <hr>
