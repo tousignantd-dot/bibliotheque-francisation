@@ -178,6 +178,38 @@ reste dans l'adresse, donc une vue se partage par son lien.
   historique tout ce qui lui était déjà visible, pour ne rien retirer à la
   classe en cours.
 
+## Les écritures concurrentes (verrou et écriture atomique)
+
+**Trouvé le 25 août 2026 en préparant la migration Postgres, et mesuré :
+trente élèves qui terminent un exercice en même temps écrivaient
+8 enregistrements sur 30.** Huit connexions étaient coupées par-dessus le
+marché. Ce n'était pas un risque théorique — c'était une classe entière qui
+perdait son travail, en silence, sans une ligne dans le journal.
+
+La cause : presque toutes les écritures sont des **lecture-modification-
+écriture du fichier entier** (`load_progress()`, on ajoute, `save_progress()`),
+et le serveur est multi-thread depuis l'ajout des appels d'API. Deux requêtes
+lisent la même liste et la réécrivent l'une après l'autre ; la seconde efface
+la première.
+
+- **`_VERROU_DONNEES`, réentrant, couvre la séquence entière** — la lecture
+  autant que l'écriture. Protéger le seul `save` ne sert à rien : c'est la
+  lecture qui doit être dans la section critique.
+- **Le décorateur `@sous_verrou` plutôt qu'un `with` au milieu de la méthode.**
+  La séquence à protéger commence à la première lecture ; un bloc posé à la
+  main se décale au premier remaniement, et l'indentation à retoucher est une
+  source d'erreur en soi. Onze méthodes le portent — vocabulaire, journal
+  d'accès, dépôts oral et écrit, « Corrige-moi ! », signaux d'aide, ajout et
+  retrait d'élève.
+- **`_save_json` écrit maintenant de façon atomique** (fichier voisin puis
+  `os.replace`). Un serveur tué au milieu d'un `json.dump` laissait un fichier
+  tronqué — et `_load_json_list` repart alors sur une **liste vide**, ce qui
+  efface tout ce que le fichier contenait.
+- **La mesure est le contrôle.** Trente requêtes simultanées sur
+  `/api/student/progress`, `/api/student/access` et les signaux d'aide :
+  8/30 avant, **30/30 après**, sur les trois. Un correctif de concurrence qu'on
+  n'a pas fait échouer d'abord ne prouve rien.
+
 ## Le réseau multi-centres (étapes 1 et 2 : l'arbre décide de la portée)
 
 Le chantier est décrit dans `assets/presentations/reseau-des-centres.html`
