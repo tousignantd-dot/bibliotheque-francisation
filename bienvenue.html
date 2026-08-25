@@ -1,0 +1,153 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Bienvenue — Francisation</title>
+  <link rel="stylesheet" href="assets/design-system/styles.css" />
+  <link rel="stylesheet" href="assets/design-system/marque-saaf.css" />
+  <link rel="icon" type="image/svg+xml" href="assets/design-system/marque-saaf-favicon.svg" />
+  <style>
+    /* Bienvenue — la personne invitée pose son mot de passe elle-même.
+       C'est la seule page du portail enseignant qu'on atteint sans compte :
+       elle ne doit donc rien révéler qu'un jeton valide n'autorise.
+       Aucune couleur en dur : uniquement des jetons du système de design. */
+    body { margin: 0; background: var(--surface-page); }
+    .bv-boite { max-width: 480px; margin: 0 auto; padding: var(--sp-12) var(--sp-4); }
+    .bv-carte { background: var(--surface-card); border: 1px solid var(--border);
+                border-radius: var(--r-md); padding: var(--sp-6); }
+    .bv-marque { display: flex; justify-content: center; margin: 0 0 var(--sp-6); }
+    h1 { font-size: var(--fs-h2); margin: 0 0 var(--sp-2); }
+    .bv-lead { color: var(--text-muted); margin: 0 0 var(--sp-5); }
+    .bv-qui { background: var(--surface-sunken); border: 1px solid var(--border);
+              border-radius: var(--r-sm); padding: var(--sp-3) var(--sp-4);
+              margin: 0 0 var(--sp-5); }
+    .bv-qui dt { font-size: var(--fs-meta); font-weight: var(--fw-black);
+                 letter-spacing: .06em; text-transform: uppercase;
+                 color: var(--text-muted); }
+    .bv-qui dd { margin: 0 0 var(--sp-3); font-weight: var(--fw-bold);
+                 color: var(--text-strong); }
+    .bv-qui dd:last-child { margin-bottom: 0; }
+    label { display: block; font-size: var(--fs-ui-sm); font-weight: var(--fw-black);
+            margin: 0 0 var(--sp-1); }
+    .field { width: 100%; }
+    .bv-champ { margin: 0 0 var(--sp-4); }
+    .bv-aide { font-size: var(--fs-meta); color: var(--text-muted);
+               font-weight: var(--fw-bold); margin: var(--sp-1) 0 0; }
+    .bv-msg { margin: var(--sp-4) 0 0; font-size: var(--fs-ui-sm);
+              font-weight: var(--fw-bold); color: var(--warn-ink); }
+  </style>
+</head>
+<body>
+  <div class="bv-boite">
+    <div class="bv-marque">
+      <span class="saaf-lockup">
+        <span class="saaf-pilule"><span class="saaf-nom">SAAF</span></span>
+        <span class="saaf-filet" aria-hidden="true"></span>
+        <span class="saaf-desc">Système d'aide à l'apprentissage du français</span>
+      </span>
+    </div>
+
+    <div class="bv-carte" id="bvChargement">
+      <p class="bv-lead" style="margin:0">Vérification de votre invitation…</p>
+    </div>
+
+    <div class="bv-carte" id="bvRefus" hidden>
+      <h1>Cette invitation n'est plus valable</h1>
+      <p class="bv-lead">Un lien d'invitation vaut quatorze jours et ne sert
+      qu'une fois. Si vous avez déjà créé votre mot de passe, entrez plutôt par
+      l'écran de connexion. Sinon, demandez qu'on vous en renvoie un.</p>
+      <p style="margin:0"><a class="btn btn--pri" href="prof.html">Aller à la connexion</a></p>
+    </div>
+
+    <form class="bv-carte" id="bvForm" hidden autocomplete="on">
+      <h1>Bienvenue</h1>
+      <p class="bv-lead">Choisissez votre mot de passe. Personne d'autre ne le
+      connaîtra — il ne vous a pas été envoyé, et il ne le sera jamais.</p>
+
+      <dl class="bv-qui">
+        <dt>Votre adresse</dt><dd id="bvCourriel"></dd>
+        <dt>Votre établissement</dt><dd id="bvOrg"></dd>
+      </dl>
+
+      <div class="bv-champ">
+        <label for="bvNom">Votre nom</label>
+        <input class="field" id="bvNom" name="name" type="text" autocomplete="name" required />
+      </div>
+
+      <div class="bv-champ">
+        <label for="bvMot">Mot de passe</label>
+        <input class="field" id="bvMot" name="new-password" type="password"
+               autocomplete="new-password" minlength="8" required />
+        <p class="bv-aide">Au moins 8 caractères.</p>
+      </div>
+
+      <div class="bv-champ">
+        <label for="bvMot2">Encore une fois</label>
+        <input class="field" id="bvMot2" name="new-password" type="password"
+               autocomplete="new-password" minlength="8" required />
+      </div>
+
+      <button class="btn btn--pri" type="submit" id="bvValider">Créer mon compte</button>
+      <p class="bv-msg" id="bvMsg" role="status" aria-live="polite"></p>
+    </form>
+  </div>
+
+  <script>
+  (function () {
+    'use strict';
+    var jeton = new URLSearchParams(location.search).get('jeton') || '';
+    var $ = function (id) { return document.getElementById(id); };
+
+    function montrer(quoi) {
+      ['bvChargement', 'bvRefus', 'bvForm'].forEach(function (id) {
+        $(id).hidden = (id !== quoi);
+      });
+    }
+
+    async function verifier() {
+      if (!jeton) { montrer('bvRefus'); return; }
+      try {
+        var r = await fetch('/api/invitation?jeton=' + encodeURIComponent(jeton));
+        var d = await r.json();
+        if (!d.valide) { montrer('bvRefus'); return; }
+        $('bvCourriel').textContent = d.courriel;
+        $('bvOrg').textContent = d.organisation || '—';
+        if (d.nom) $('bvNom').value = d.nom;
+        montrer('bvForm');
+        $('bvNom').focus();
+      } catch (e) { montrer('bvRefus'); }
+    }
+
+    $('bvForm').addEventListener('submit', async function (ev) {
+      ev.preventDefault();
+      var mot = $('bvMot').value, mot2 = $('bvMot2').value;
+      /* Les deux mots de passe se comparent ici : faire l'aller-retour pour
+         apprendre qu'on s'est trompé en les recopiant serait cruel, et le
+         serveur ne voit qu'un seul des deux de toute façon. */
+      if (mot !== mot2) { $('bvMsg').textContent = 'Les deux mots de passe ne sont pas les mêmes.'; return; }
+      $('bvValider').disabled = true;
+      $('bvMsg').textContent = '';
+      try {
+        var r = await fetch('/api/invitation', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ jeton: jeton, nom: $('bvNom').value, motDePasse: mot })
+        });
+        var d = await r.json();
+        if (!r.ok) { $('bvMsg').textContent = d.error || 'Refusé.'; $('bvValider').disabled = false; return; }
+        /* Le serveur rend une session : on entre directement, sans redemander
+           le mot de passe qu'on vient de choisir. */
+        if (d.jeton) localStorage.setItem('prof_token', d.jeton);
+        location.href = 'enseignant.html';
+      } catch (e) {
+        $('bvMsg').textContent = 'Échec : ' + e.message;
+        $('bvValider').disabled = false;
+      }
+    });
+
+    verifier();
+  })();
+  </script>
+</body>
+</html>

@@ -99,6 +99,15 @@
     .rs-msg--no { color: var(--warn-ink); }
     .rs-msg--ok { color: var(--text-accent); }
 
+    .rs-lien { display: flex; gap: var(--sp-2); align-items: center;
+               flex-wrap: wrap; padding: var(--sp-2) 0;
+               border-bottom: 1px solid var(--border); }
+    .rs-lien code { flex: 1 1 320px; font-size: var(--fs-meta);
+                    background: var(--surface-sunken); border: 1px solid var(--border);
+                    border-radius: var(--r-sm); padding: var(--sp-2);
+                    overflow-wrap: anywhere; }
+    .rs-lien b { flex: 0 0 auto; }
+
     .rs-fin { margin: var(--sp-12) 0 var(--sp-12); color: var(--text-muted);
               font-size: var(--fs-ui-sm); }
     @media (max-width: 640px) { .rs-arbre { padding: var(--sp-3); } }
@@ -145,6 +154,37 @@
         </thead>
         <tbody id="rsAcces"></tbody>
       </table>
+    </div>
+
+    <h2 class="rs-sect">Inviter</h2>
+    <div class="card">
+      <p style="margin-top:0">Collez des courriels — virgules, points-virgules ou
+      retours de ligne, peu importe. Chaque personne recevra un lien pour
+      <strong>choisir son propre mot de passe</strong> ; aucun mot de passe n'est
+      jamais envoyé. Un lien vaut quatorze jours et ne sert qu'une fois.</p>
+      <div class="rs-form" style="align-items:flex-start">
+        <div style="flex:1 1 280px">
+          <label for="rsCourriels">Courriels</label>
+          <textarea class="field" id="rsCourriels" rows="4" style="width:100%"
+                    placeholder="anne@exemple.qc.ca, bruno@exemple.qc.ca"></textarea>
+        </div>
+        <div>
+          <label for="rsRoleInv">Rôle</label>
+          <select class="field" id="rsRoleInv">
+            <option value="prof">Enseignant</option>
+            <option value="direction">Direction</option>
+            <option value="conseiller">Conseiller</option>
+            <option value="gestion_css">Gestion CSS</option>
+          </select>
+        </div>
+        <div>
+          <label for="rsOrgInv">Rattaché à</label>
+          <select class="field" id="rsOrgInv"></select>
+        </div>
+        <button type="button" class="btn btn--pri btn--sm" data-geste="inviter">Créer les invitations</button>
+      </div>
+      <div id="rsInvResultat"></div>
+      <div id="rsInvListe"></div>
     </div>
 
     <h2 class="rs-sect">Le journal</h2>
@@ -450,6 +490,40 @@
         return void agir('PATCH', '/api/admin/groupes/' + gid + '/centre',
                          { centreId: Number(document.getElementById('rsC' + gid).value) });
       }
+      if (geste === 'inviter') {
+        var role = document.getElementById('rsRoleInv').value;
+        var org = Number(document.getElementById('rsOrgInv').value);
+        var courriels = document.getElementById('rsCourriels').value;
+        if (!courriels.trim()) { message('Aucun courriel collé.', false); return; }
+        b.disabled = true;
+        try {
+          var r = await Prof.fetch('/api/admin/invitations', {
+            method: 'POST', headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ courriels: courriels, role: role, orgId: org })
+          });
+          var d = await r.json().catch(function () { return {}; });
+          rendreResultatInvitations(d);
+          if (d.success) {
+            document.getElementById('rsCourriels').value = '';
+            message(d.invitations.length + ' invitation(s) créée(s).', true);
+            await recharger();
+          } else {
+            message(d.error || 'Aucune invitation créée.', false);
+          }
+        } catch (e) { message('Échec : ' + e.message, false); }
+        b.disabled = false;
+        return;
+      }
+      if (geste === 'copier') {
+        var lien = b.dataset.lien;
+        try { await navigator.clipboard.writeText(lien); message('Lien copié.', true); }
+        catch (e) { message('La copie a échoué — sélectionnez le lien à la main.', false); }
+        return;
+      }
+      if (geste === 'annuler-invitation') {
+        if (!confirm('Annuler cette invitation ? Son lien cessera de fonctionner.')) return;
+        return void agir('DELETE', '/api/admin/invitations/' + Number(b.dataset.inv));
+      }
       if (geste === 'retirer-acces') {
         if (!confirm('Retirer cet accès ? La personne garde son compte et ses '
                    + 'autres centres ; elle perd seulement celui-ci.')) return;
@@ -464,10 +538,80 @@
       if (!r.ok) throw new Error('HTTP ' + r.status);
       DONNEES = await r.json();
       rendre(DONNEES, MOI);
+      rendreChoixOrg();
+      try {
+        var ri = await Prof.fetch('/api/admin/invitations');
+        if (ri.ok) rendreInvitations(await ri.json());
+      } catch (e) { /* la liste est un confort, pas la page */ }
       try {
         var ra = await Prof.fetch('/api/admin/audit?limite=40');
         if (ra.ok) rendreAudit(await ra.json());
       } catch (e) { /* le journal est un confort, pas la page */ }
+    }
+
+    /* Le lien complet, pas le chemin : le fondateur va le coller dans un
+       courriel, et « /bienvenue.html?jeton=… » n'y mènerait nulle part. */
+    function lienComplet(chemin) { return location.origin + chemin; }
+
+    function rendreResultatInvitations(d) {
+      var zone = document.getElementById('rsInvResultat');
+      var html = '';
+      (d.invitations || []).forEach(function (i) {
+        var url = lienComplet(i.lien);
+        html += '<div class="rs-lien"><b>' + ech(i.courriel) + '</b>'
+             + '<code>' + ech(url) + '</code>'
+             + '<button type="button" class="btn btn--ghost btn--sm" data-geste="copier" '
+             + 'data-lien="' + ech(url) + '">Copier</button></div>';
+      });
+      (d.refusees || []).forEach(function (r) {
+        html += '<div class="rs-lien"><b>' + ech(r.courriel) + '</b>'
+             + '<span class="rs-msg rs-msg--no" style="margin:0">' + ech(r.motif) + '</span></div>';
+      });
+      /* Les liens ne repassent jamais : le serveur ne garde que leur
+         empreinte. C'est le seul moment où on peut les copier, et la page
+         doit le dire — sinon on ferme l'onglet et on repart à zéro. */
+      zone.innerHTML = html
+        ? '<p class="rs-msg" style="color:var(--text-muted)">Copiez ces liens '
+          + 'maintenant : ils ne seront plus affichables. Le serveur n\'en garde '
+          + 'que l\'empreinte, comme un mot de passe.</p>' + html
+        : '';
+    }
+
+    function rendreInvitations(liste) {
+      var maintenant = new Date().toISOString().slice(0, 19);
+      var ouvertes = (liste || []).filter(function (i) {
+        return !i.utiliseLe && i.expire > maintenant;
+      });
+      document.getElementById('rsInvListe').innerHTML = ouvertes.length
+        ? '<h3 style="font-size:var(--fs-ui);margin:var(--sp-5) 0 var(--sp-2)">'
+          + 'Invitations en cours</h3>'
+          + ouvertes.map(function (i) {
+              return '<div class="rs-lien"><b>' + ech(i.courriel) + '</b>'
+                   + '<span style="flex:1 1 200px">' + ech(LIBELLE_ROLE[i.role] || i.role)
+                   + ' · ' + ech(i.organisation) + ' · jusqu\'au ' + jour(i.expire) + '</span>'
+                   + '<button type="button" class="btn btn--ghost btn--sm" '
+                   + 'data-geste="annuler-invitation" data-inv="' + i.id + '">Annuler</button></div>';
+            }).join('')
+        : '';
+    }
+
+    function rendreChoixOrg() {
+      /* La liste des rattachements suit le rôle choisi : proposer un centre
+         pour une « gestion CSS » serait offrir un geste que le serveur
+         refuse. */
+      var role = document.getElementById('rsRoleInv').value;
+      var TYPES = { prof: ['centre'], direction: ['centre'],
+                    conseiller: ['css', 'centre'], gestion_css: ['css'] };
+      var permis = TYPES[role] || ['centre'];
+      var sel = document.getElementById('rsOrgInv');
+      var avant = sel.value;
+      sel.innerHTML = (DONNEES.organisations || [])
+        .filter(function (o) { return permis.indexOf(o.type) !== -1; })
+        .map(function (o) {
+          return '<option value="' + o.id + '">' + ech(o.nom)
+               + ' (' + ech(LIBELLE_TYPE[o.type]) + ')</option>';
+        }).join('');
+      if (avant && sel.querySelector('option[value="' + avant + '"]')) sel.value = avant;
     }
 
     function rendreAudit(lignes) {
@@ -505,6 +649,7 @@
       }
 
       MOI = moi;
+      document.getElementById('rsRoleInv').addEventListener('change', rendreChoixOrg);
       try {
         // Les comptes servent à peupler « Poser un accès ». La route est
         // réservée aux administrateurs, ce que le fondateur est toujours.

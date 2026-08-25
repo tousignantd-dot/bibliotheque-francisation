@@ -186,6 +186,11 @@ ACCES_FILE         = STORAGE_DIR / "data" / "acces.json"
 # première question posée après un incident, et une donnée effacée ne répond
 # jamais.
 AUDIT_FILE         = STORAGE_DIR / "data" / "audit.json"
+# Invitations. Un compte s'ouvre par jeton : **on n'envoie jamais un mot de
+# passe**, même quand c'est le fondateur qui crée le compte. Le jeton n'est
+# rendu qu'une fois, à la création ; seule son empreinte est gardée.
+INVITATIONS_FILE   = STORAGE_DIR / "data" / "invitations.json"
+INVITATION_JOURS   = 14
 # Fichiers partagés par l'enseignant à un groupe (notes de cours, grilles,
 # corrigés). Ils ne sont pas des activités : ils ont leur propre période de
 # parution et l'élève ne les voit que pendant celle-ci.
@@ -1526,6 +1531,114 @@ def valider_acces(teacher_id, org_id, role):
                             "centre": "un centre"}[t] for t in attendus)
         return f"Le rôle « {role} » se pose sur {quoi}, pas sur un {org.get('type')}"
     return None
+
+
+def load_invitations():
+    return _load_json_list(INVITATIONS_FILE)
+
+
+def save_invitations(inv):
+    _save_json(INVITATIONS_FILE, inv)
+
+
+def empreinte_jeton(jeton):
+    """Le jeton d'invitation se garde comme un mot de passe : en empreinte.
+
+    Il ouvre la création d'un compte ; le lire dans un fichier reviendrait à
+    lire un mot de passe. Pas de PBKDF2 ici — un jeton de 256 bits tiré au
+    hasard n'a pas de dictionnaire à lui opposer, un SHA-256 suffit.
+    """
+    return hashlib.sha256((jeton or "").encode("utf-8")).hexdigest()
+
+
+def invitation_valide(jeton, invitations=None):
+    """Rend l'invitation ouverte correspondant au jeton, ou None.
+
+    La comparaison passe par `hmac.compare_digest` : comparer deux empreintes
+    avec `==` laisse fuir leur préfixe commun par le temps de réponse.
+    """
+    if not jeton:
+        return None
+    cible = empreinte_jeton(jeton)
+    maintenant = datetime.now().isoformat(timespec="seconds")
+    for inv in (load_invitations() if invitations is None else invitations):
+        if inv.get("utiliseLe"):
+            continue
+        if inv.get("expire", "") <= maintenant:
+            continue
+        if hmac.compare_digest(inv.get("empreinte", ""), cible):
+            return inv
+    return None
+
+
+def creer_invitation(courriel, role, org_id, nom="", par=None, invitations=None):
+    """Prépare une invitation. Rend (invitation, jeton_en_clair) ou (None, motif).
+
+    Le jeton en clair ne repasse jamais : c'est la seule fois qu'on le voit.
+    """
+    courriel = normalize_email(courriel)
+    if not courriel or "@" not in courriel:
+        return None, f"Courriel invalide : {courriel or '(vide)'}"
+    if any(normalize_email(t.get("courriel")) == courriel for t in load_teachers()):
+        return None, f"{courriel} a déjà un compte"
+    motif = valider_acces_sans_compte(org_id, role)
+    if motif:
+        return None, motif
+    invitations = load_invitations() if invitations is None else invitations
+    if any(i.get("courriel") == courriel and not i.get("utiliseLe")
+           and i.get("expire", "") > datetime.now().isoformat(timespec="seconds")
+           for i in invitations):
+        return None, f"{courriel} a déjà une invitation en cours"
+    jeton = uuid.uuid4().hex + uuid.uuid4().hex
+    inv = {
+        "id": max((i.get("id", 0) for i in invitations), default=0) + 1,
+        "courriel": courriel,
+        "nom": (nom or "").strip()[:80],
+        "role": role,
+        "orgId": org_id,
+        "empreinte": empreinte_jeton(jeton),
+        "creeLe": datetime.now().isoformat(timespec="seconds"),
+        "expire": (datetime.now() + timedelta(days=INVITATION_JOURS)).isoformat(timespec="seconds"),
+        "utiliseLe": "",
+        "creePar": par,
+    }
+    return inv, jeton
+
+
+def valider_acces_sans_compte(org_id, role):
+    """La moitié de `valider_acces()` qui ne regarde pas le compte.
+
+    Une invitation vise un courriel qui n'a pas encore de compte : on ne peut
+    pas vérifier l'existence du compte, mais on doit vérifier que le rôle a un
+    sens sur ce nœud — sinon l'invitation créerait un accès que le contrôle
+    déclarerait en écart le lendemain.
+    """
+    if role not in ROLES_ACCES:
+        return "Rôle inconnu"
+    if role == "fondateur":
+        return "Le rôle « fondateur » ne s'accorde pas"
+    org = find_org(org_id)
+    if org is None:
+        return "Organisation introuvable"
+    attendus = NOEUD_DU_ROLE[role]
+    if org.get("type") not in attendus:
+        quoi = " ou ".join({"reseau": "le réseau", "css": "un CSS",
+                            "centre": "un centre"}[t] for t in attendus)
+        return f"Le rôle « {role} » se pose sur {quoi}, pas sur un {org.get('type')}"
+    return None
+
+
+def invitation_publique(inv):
+    """Ce qu'on montre d'une invitation — jamais l'empreinte."""
+    org = find_org(inv.get("orgId"))
+    return {
+        "id": inv.get("id"), "courriel": inv.get("courriel"),
+        "nom": inv.get("nom", ""), "role": inv.get("role"),
+        "orgId": inv.get("orgId"),
+        "organisation": (org or {}).get("nom", ""),
+        "creeLe": inv.get("creeLe"), "expire": inv.get("expire"),
+        "utiliseLe": inv.get("utiliseLe", ""),
+    }
 
 
 def arbre_pour_lecture():
@@ -14119,6 +14232,13 @@ class Handler(http.server.SimpleHTTPRequestHandler):
         if path == "/api/admin/audit":
             self._handle_audit_list(params)
             return
+        if path == "/api/admin/invitations":
+            self._handle_invitations_list()
+            return
+        if path == "/api/invitation":
+            # Publique : la personne invitée n'a pas encore de compte.
+            self._handle_invitation_lire(params)
+            return
         if path == "/api/admin/oral-submissions":
             self._handle_oral_submissions_list(params)
             return
@@ -14193,6 +14313,10 @@ class Handler(http.server.SimpleHTTPRequestHandler):
             self._handle_org_add()
         elif path == "/api/admin/acces":
             self._handle_acces_add()
+        elif path == "/api/admin/invitations":
+            self._handle_invitations_add()
+        elif path == "/api/invitation":
+            self._handle_invitation_accepter()
         elif path == "/api/prof/enseignants":
             self._handle_teacher_add()
         elif path == "/api/prof/documents":
@@ -14334,6 +14458,9 @@ class Handler(http.server.SimpleHTTPRequestHandler):
 
         if re.match(r"^/api/admin/acces/\d+$", path):
             self._handle_acces_delete(int(path.rsplit("/", 1)[1]))
+            return
+        if re.match(r"^/api/admin/invitations/\d+$", path):
+            self._handle_invitation_delete(int(path.rsplit("/", 1)[1]))
             return
         if re.match(r"^/api/admin/students/\d+$", path):
             try:
@@ -15202,6 +15329,144 @@ class Handler(http.server.SimpleHTTPRequestHandler):
         journal(fondateur, "groupe.rattache", group_id,
                 {"avant": avant, "apres": centre_id, "centre": centre.get("nom")})
         json_response(self, {"success": True, "groupe": groupe})
+
+    def _handle_invitations_add(self):
+        """Invite une ou plusieurs personnes d'un coup.
+
+        L'import d'une liste n'est pas un confort : le fondateur ouvre **tous**
+        les comptes du réseau, et trente enseignants à inscrire un lundi de
+        rentrée le rendraient goulot. On accepte donc un collage de courriels,
+        séparés par des virgules, des points-virgules ou des retours de ligne.
+        """
+        fondateur = self._require_founder()
+        if not fondateur:
+            return
+        body = self._read_json_body()
+        brut = body.get("courriels")
+        if isinstance(brut, list):
+            adresses = brut
+        else:
+            adresses = re.split(r"[\s,;]+", str(brut or ""))
+        adresses = [a.strip() for a in adresses if a and a.strip()]
+        if not adresses:
+            json_response(self, {"error": "Aucun courriel"}, 400)
+            return
+        if len(adresses) > 200:
+            json_response(self, {"error": "Deux cents adresses au maximum d'un coup"}, 400)
+            return
+        role = body.get("role")
+        try:
+            org_id = int(body.get("orgId"))
+        except (TypeError, ValueError):
+            json_response(self, {"error": "Organisation manquante"}, 400)
+            return
+
+        invitations = load_invitations()
+        faites, refusees = [], []
+        # Une adresse fautive n'annule pas les autres : sur un collage de
+        # trente, tout refuser pour une faute de frappe ferait recommencer les
+        # vingt-neuf bonnes. On rend les deux listes et l'écran les montre.
+        for adresse in adresses:
+            inv, jeton_ou_motif = creer_invitation(
+                adresse, role, org_id, par=fondateur["id"], invitations=invitations)
+            if inv is None:
+                refusees.append({"courriel": adresse, "motif": jeton_ou_motif})
+                continue
+            invitations.append(inv)
+            vue = invitation_publique(inv)
+            vue["lien"] = f"/bienvenue.html?jeton={jeton_ou_motif}"
+            faites.append(vue)
+        if faites:
+            save_invitations(invitations)
+            journal(fondateur, "invitations.creees", org_id,
+                    {"role": role, "nombre": len(faites),
+                     "courriels": [f["courriel"] for f in faites]})
+        # `success` suit ce qui s'est réellement passé : une réponse qui dit
+        # « réussi » avec zéro invitation et trois refus se contredit, et
+        # l'écran s'y fierait.
+        json_response(self, {"success": bool(faites), "invitations": faites,
+                             "refusees": refusees}, 201 if faites else 400)
+
+    def _handle_invitations_list(self):
+        fondateur = self._require_founder()
+        if not fondateur:
+            return
+        json_response(self, [invitation_publique(i) for i in load_invitations()])
+
+    def _handle_invitation_delete(self, inv_id):
+        fondateur = self._require_founder()
+        if not fondateur:
+            return
+        invitations = load_invitations()
+        inv = next((i for i in invitations if i.get("id") == inv_id), None)
+        if inv is None:
+            json_response(self, {"error": "Invitation introuvable"}, 404)
+            return
+        if inv.get("utiliseLe"):
+            json_response(self, {"error": "Cette invitation a déjà servi"}, 409)
+            return
+        # Annuler, c'est faire expirer : la ligne reste, le journal aussi.
+        inv["expire"] = datetime.now().isoformat(timespec="seconds")
+        save_invitations(invitations)
+        journal(fondateur, "invitation.annulee", inv_id,
+                {"courriel": inv.get("courriel")})
+        json_response(self, {"success": True})
+
+    def _handle_invitation_lire(self, params):
+        """Route **publique** : la personne invitée n'a pas encore de compte.
+
+        Elle ne dit rien d'un jeton faux ou périmé qu'un simple « non » — pas
+        le courriel visé, pas le centre, pas si le jeton a existé.
+        """
+        inv = invitation_valide((params.get("jeton") or [""])[0])
+        if inv is None:
+            json_response(self, {"valide": False}, 200)
+            return
+        org = find_org(inv.get("orgId"))
+        json_response(self, {
+            "valide": True,
+            "courriel": inv.get("courriel"),
+            "nom": inv.get("nom", ""),
+            "organisation": (org or {}).get("nom", ""),
+        })
+
+    def _handle_invitation_accepter(self):
+        """Route **publique** : crée le compte et pose son accès, d'un coup."""
+        body = self._read_json_body()
+        invitations = load_invitations()
+        inv = invitation_valide(body.get("jeton"), invitations)
+        if inv is None:
+            json_response(self, {"error": "Cette invitation n'est plus valable."}, 403)
+            return
+        mot = body.get("motDePasse", "")
+        if len(mot) < 8:
+            json_response(self, {"error": "Le mot de passe doit faire au moins 8 caractères"}, 400)
+            return
+        teachers = load_teachers()
+        if any(normalize_email(t.get("courriel")) == inv["courriel"] for t in teachers):
+            json_response(self, {"error": "Ce courriel a déjà un compte."}, 409)
+            return
+        nom = (body.get("nom") or inv.get("nom") or "").strip()
+        teacher = {
+            "id": max((t["id"] for t in teachers), default=0) + 1,
+            "nom": nom or inv["courriel"].split("@")[0],
+            "courriel": inv["courriel"],
+            "motDePasse": hash_password(mot),
+            # Le champ `role` ne porte plus que les pouvoirs ; la portée vient
+            # de la ligne d'accès posée juste en dessous.
+            "role": "admin" if inv.get("role") == "direction" else "prof",
+            "createdAt": date.today().isoformat(),
+        }
+        teachers.append(teacher)
+        save_teachers(teachers)
+        poser_acces(teacher["id"], inv["orgId"], inv["role"], inv.get("creePar"))
+        inv["utiliseLe"] = datetime.now().isoformat(timespec="seconds")
+        save_invitations(invitations)
+        journal({"id": teacher["id"], "nom": teacher["nom"]},
+                "invitation.acceptee", inv.get("id"),
+                {"courriel": inv["courriel"], "role": inv.get("role"),
+                 "orgId": inv.get("orgId")})
+        json_response(self, {"success": True, "jeton": create_session(teacher["id"])}, 201)
 
     def _handle_audit_list(self, params):
         fondateur = self._require_founder()

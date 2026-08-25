@@ -339,8 +339,55 @@ groupe orphelin.
   à « Éteint », elle ne disparaît pas), et le journal qui enregistre les six.
   L'arbre construit ainsi repasse le contrôle sans écart.
 
-Reste à faire dans l'étape 3 : l'invitation par jeton avec l'import d'une liste
-de courriels.
+### Les invitations (`bienvenue.html`)
+
+Étape 3, quatrième et dernière tranche. **Un compte s'ouvre par jeton : on
+n'envoie jamais un mot de passe**, même quand c'est le fondateur qui crée le
+compte.
+
+| Route | Qui | Geste |
+|---|---|---|
+| `POST /api/admin/invitations` | fondateur | inviter une personne **ou une liste collée** |
+| `GET /api/admin/invitations` | fondateur | les invitations, sans jamais un jeton |
+| `DELETE /api/admin/invitations/<id>` | fondateur | annuler — le lien cesse aussitôt |
+| `GET /api/invitation?jeton=` | **public** | ce que la personne invitée voit |
+| `POST /api/invitation` | **public** | crée le compte, pose l'accès, ouvre la session |
+
+- **Le jeton se garde comme un mot de passe, en empreinte.** Il ouvre la
+  création d'un compte ; le lire dans un fichier reviendrait à lire un mot de
+  passe. SHA-256 suffit — un jeton de 256 bits tiré au hasard n'a pas de
+  dictionnaire à lui opposer — et la comparaison passe par
+  `hmac.compare_digest`, parce que `==` laisse fuir le préfixe commun par le
+  temps de réponse. **Vérifié : le jeton en clair n'est nulle part sur le
+  disque.**
+- **Le lien ne s'affiche qu'une fois**, à la création, et la page le dit en
+  toutes lettres. Sans cet avertissement, on ferme l'onglet et on recommence.
+- **Une adresse fautive n'annule pas les autres.** Sur un collage de trente,
+  tout refuser pour une faute de frappe ferait recommencer les vingt-neuf
+  bonnes : le serveur rend deux listes, `invitations` et `refusees`, chacune
+  avec son motif, et l'écran montre les deux.
+- **Les deux routes publiques ne disent rien de plus qu'un « non ».** Un jeton
+  faux ou périmé ne révèle ni le courriel visé, ni le centre, ni s'il a jamais
+  existé.
+- **`valider_acces_sans_compte()` existe parce qu'une invitation vise un
+  courriel sans compte.** On ne peut pas vérifier le compte, mais on doit
+  vérifier que le rôle a un sens sur ce nœud — sinon l'invitation créerait un
+  accès que le contrôle déclarerait en écart le lendemain.
+- **La liste des rattachements suit le rôle choisi**, à l'écran comme au
+  serveur : proposer un centre pour une « gestion CSS » serait offrir un geste
+  qui sera refusé.
+- **Le parcours a été joué en entier dans le navigateur** : lien valide,
+  mots de passe différents, mot de passe trop court, création, atterrissage
+  direct dans `enseignant.html` avec la session déjà ouverte, puis le même
+  jeton refusé la seconde fois. Et côté console : import d'une liste mêlant
+  bonnes et mauvaises adresses, annulation d'une invitation — **suivie de la
+  preuve que son lien ne fonctionne plus**, qui est le seul test qui compte.
+- Une invitation vaut `INVITATION_JOURS` (14 jours) et ne sert qu'une fois.
+  Annuler, c'est faire expirer : la ligne reste, le journal aussi.
+- `data/invitations.json` est du volume, non versionné.
+
+**L'étape 3 est complète.** Reste l'étape 4 (le portail des chiffres) et la
+migration Postgres, qui attend une décision sur la dépendance externe.
 
 - **Ce qui n'est pas fait, et pourquoi** : la migration vers Postgres, annoncée
   avec cette étape dans le document. Elle est restée dehors — `requirements.txt`
