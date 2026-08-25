@@ -65,7 +65,7 @@ def build(dossier):
               notes="Relier à l'accord de l'adjectif travaillé en A4. C'est exactement la "
                     "même logique, appliquée à un autre mot.")
 
-    d.cartes('En apprendre plus', "Quatre choses à savoir en plus", [
+    d.cartes('Ouvrir la mini-leçon', "Quatre choses à savoir en plus", [
         ("Avec avoir, pas d'accord avec le sujet",
          "« Elle a mis » — pas de e. Beaucoup d'élèves accordent par réflexe. Avec "
          "avoir, le participe ne bouge pas."),

@@ -45,7 +45,7 @@ def build(dossier):
               notes="C'est le point le plus fin de la séance. Faire souligner l'expansion "
                     "dans la première colonne : elle disparaît dans la seconde.")
 
-    d.cartes('En apprendre plus', "Quatre choses à savoir en plus", [
+    d.cartes('Ouvrir la mini-leçon', "Quatre choses à savoir en plus", [
         ("Pourquoi ce, cette, ces",
          "Ces déterminants disent « celui dont je viens de parler ». Ils font le lien "
          "entre les deux phrases : sans eux, on ne saurait pas qu'il s'agit du même."),

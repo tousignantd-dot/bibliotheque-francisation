@@ -59,7 +59,7 @@ def build(dossier):
               notes="Six verbes irréguliers, tous fréquents dans un bulletin. Les faire "
                     "copier : ils s'apprennent par cœur, il n'y a pas de règle.")
 
-    d.cartes('En apprendre plus', "Quatre choses à savoir en plus", [
+    d.cartes('Ouvrir la mini-leçon', "Quatre choses à savoir en plus", [
         ("Le r est toujours là",
          "Tomber-a, descendr-a, ser-a, fer-a. Le son r avant la terminaison est la "
          "marque du futur : c'est ce qu'on entend."),

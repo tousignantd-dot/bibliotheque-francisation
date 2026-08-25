@@ -81,7 +81,7 @@ def build(dossier):
     ], notes="« Référer » est le verbe le plus utile et le moins connu. Le faire "
              "employer dans une phrase par chaque élève.")
 
-    d.cartes('En apprendre plus', "Quatre choses à savoir sur le billet de repos", [
+    d.cartes('Ouvrir la mini-leçon', "Quatre choses à savoir sur le billet de repos", [
         ("À qui il sert",
          "À l'employeur. Il dit combien de jours vous ne pouvez pas travailler, sans "
          "dire pourquoi : votre diagnostic reste privé."),

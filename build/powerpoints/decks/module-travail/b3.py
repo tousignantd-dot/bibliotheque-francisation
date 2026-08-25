@@ -55,7 +55,7 @@ def build(dossier):
                     "Faire souligner le groupe repris dans chaque phrase. Le motif est "
                     "toujours le même, et c'est ce qui rend la règle facile.")
 
-    d.cartes('En apprendre plus', "Quatre choses à savoir en plus", [
+    d.cartes('Ouvrir la mini-leçon', "Quatre choses à savoir en plus", [
         ("« Qui » est toujours suivi d'un verbe",
          "C'est le repère le plus sûr. « Le collègue qui remplace » — le verbe "
          "« remplace » suit immédiatement. S'il n'y a pas de verbe, ce n'est pas ce "

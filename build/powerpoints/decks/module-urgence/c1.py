@@ -71,7 +71,7 @@ def build(dossier):
             notes="Diapo à laisser affichée longtemps. C'est le savoir de sécurité de "
                   "la séance, et il vaut pour toute plaie, pas seulement les brûlures.")
 
-    d.cartes('En apprendre plus', "Quatre choses sur le congé de maladie", [
+    d.cartes('Ouvrir la mini-leçon', "Quatre choses sur le congé de maladie", [
         ("C'est un papier officiel",
          "Il porte le nom du médecin, la date et le nombre de jours. Gardez-en une "
          "copie ou une photo avant de le remettre à l'employeur."),

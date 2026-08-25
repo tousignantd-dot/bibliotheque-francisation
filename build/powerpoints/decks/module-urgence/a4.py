@@ -38,7 +38,7 @@ def build(dossier):
                     "adjectif : stérile, élastique, jetables, de survie. C'est le sujet "
                     "de la deuxième partie de la séance.")
 
-    d.cartes('En apprendre plus', "Quatre choses à savoir sur les gants", [
+    d.cartes('Ouvrir la mini-leçon', "Quatre choses à savoir sur les gants", [
         ("Ils protègent celui qui soigne",
          "Pas seulement le blessé. Le sang d'une autre personne peut transmettre des "
          "infections : les gants sont d'abord pour vous."),

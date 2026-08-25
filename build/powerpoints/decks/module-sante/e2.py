@@ -98,8 +98,8 @@ def build(dossier):
          "Votre phrase de symptôme, votre formule pour faire répéter, vos besoins : "
          "gardez-les ensemble."),
         ("Les mini-leçons",
-         "Les quatre points de langue sont expliqués dans l'activité, sous « En "
-         "apprendre plus »."),
+         "Les quatre points de langue sont expliqués dans l'activité, sous "
+         "« Ouvrir la mini-leçon »."),
         ("Le vrai monde",
          "Le prochain rendez-vous, la prochaine ordonnance. C'est là que ça se vérifie."),
     ], notes="Terminer là-dessus. Le module ne se referme pas sur un test mais sur la "

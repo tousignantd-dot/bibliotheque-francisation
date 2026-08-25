@@ -45,7 +45,7 @@ def build(dossier):
             notes="Écrire les deux formules au tableau. Ce sont celles à employer quand "
                   "un mot manque en pleine conversation.")
 
-    d.cartes('En apprendre plus', "Quatre stratégies quand un mot manque", [
+    d.cartes('Ouvrir la mini-leçon', "Quatre stratégies quand un mot manque", [
         ("Décrire l'objet",
          "« C'est une feuille de papier qu'on colle sur un mur, avec un message "
          "dessus. » Cela prend dix secondes et fonctionne toujours."),

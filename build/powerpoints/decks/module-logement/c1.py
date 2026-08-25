@@ -96,7 +96,7 @@ def build(dossier):
        notes="La troisième question porte sur une solution, pas sur un problème. C'est "
              "celle qui compte le plus.")
 
-    d.cartes('En apprendre plus', "Le 1er juillet, jour de déménagement", [
+    d.cartes('Ouvrir la mini-leçon', "Le 1er juillet, jour de déménagement", [
         ("Une tradition québécoise",
          "La plupart des baux se terminent le 30 juin. Le 1er juillet, des milliers de "
          "ménages déménagent le même jour."),

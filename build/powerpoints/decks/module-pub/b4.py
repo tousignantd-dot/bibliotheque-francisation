@@ -53,7 +53,7 @@ def build(dossier):
               notes="« Pré- » et « inter- » sont fréquents dans les documents "
                     "administratifs. Le signaler : ils servent au-delà du module.")
 
-    d.cartes('En apprendre plus', "Quatre choses à savoir en plus", [
+    d.cartes('Ouvrir la mini-leçon', "Quatre choses à savoir en plus", [
         ("Le préfixe s'adapte au mot",
          "« In- » devient « im- » devant m, b, p (impossible), et « ir- » devant r "
          "(irréparable). C'est une question de prononciation."),

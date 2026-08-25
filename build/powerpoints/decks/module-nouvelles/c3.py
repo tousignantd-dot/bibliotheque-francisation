@@ -53,7 +53,7 @@ def build(dossier):
             notes="Écrire la liste au tableau et l'y laisser toute la séance. Ajouter les "
                   "verbes pronominaux, qui prennent tous être.")
 
-    d.cartes('En apprendre plus', "Quatre choses à savoir en plus", [
+    d.cartes('Ouvrir la mini-leçon', "Quatre choses à savoir en plus", [
         ("Avec avoir, aucun accord avec le sujet",
          "« Elle a organisé la collecte » — pas de e. L'accord ne se fait qu'avec "
          "l'auxiliaire être."),

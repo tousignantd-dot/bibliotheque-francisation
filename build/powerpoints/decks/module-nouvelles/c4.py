@@ -53,7 +53,7 @@ def build(dossier):
               notes="Faire chercher les paires de contraires. C'est le meilleur moyen "
                     "mnémotechnique pour cette liste.")
 
-    d.cartes('En apprendre plus', "Quatre pièges de l'auxiliaire", [
+    d.cartes('Ouvrir la mini-leçon', "Quatre pièges de l'auxiliaire", [
         ("« Passer » prend les deux",
          "« Je suis passé à la bibliothèque » (déplacement). « J'ai passé une "
          "radiographie » (faire quelque chose). Deux sens, deux auxiliaires."),

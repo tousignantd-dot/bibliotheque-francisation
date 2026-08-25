@@ -60,7 +60,7 @@ def build(dossier):
                   "montrer en enlevant le pronom : « on lui a brûlé son bras » redevient "
                   "possible.")
 
-    d.cartes('En apprendre plus', "Quatre choses à savoir en plus", [
+    d.cartes('Ouvrir la mini-leçon', "Quatre choses à savoir en plus", [
         ("Mon, ton, son devant une voyelle",
          "Au féminin, devant une voyelle, on dit « mon » et non « ma » : mon épaule, "
          "mon ordonnance. C'est une question de son, pas de genre."),

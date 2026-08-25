@@ -90,7 +90,7 @@ def build(dossier):
 
     d.cartes("Si vous bloquez", "Trois secours", [
         ("Les mini-leçons",
-         "Sept panneaux « En apprendre plus » dans l'activité, avec l'audio. Ils restent "
+         "Sept panneaux « Ouvrir la mini-leçon » dans l'activité, avec l'audio. Ils restent "
          "ouverts pendant la production."),
         ("Les cartes mémoire",
          "Seize mots avec définition, exemple et image. Section « Je retiens des mots »."),

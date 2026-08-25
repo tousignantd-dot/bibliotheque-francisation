@@ -63,7 +63,7 @@ def build(dossier):
               notes="Faire appliquer le test à voix haute sur les quatre lignes. C'est "
                     "un test mécanique : il ne demande pas de comprendre pourquoi.")
 
-    d.cartes('En apprendre plus', "Quatre choses à savoir en plus", [
+    d.cartes('Ouvrir la mini-leçon', "Quatre choses à savoir en plus", [
         ("« Que » devient « qu' » devant une voyelle",
          "« La procédure qu'on lui a montrée. » « L'application qu'elle utilise. » "
          "Contrairement à « qui », qui ne s'élide jamais."),

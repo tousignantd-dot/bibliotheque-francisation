@@ -107,7 +107,7 @@ def build(dossier):
               notes="La quatrième ligne surprend. La traiter lentement : c'est la seule "
                     "exception à l'exception.")
 
-    d.cartes('En apprendre plus', "Quatre choses à savoir en plus", [
+    d.cartes('Ouvrir la mini-leçon', "Quatre choses à savoir en plus", [
         ("Me devient moi, te devient toi",
          "« Vous me remettez le formulaire » devient « Remettez-moi le formulaire ». "
          "Seulement à l'impératif affirmatif."),

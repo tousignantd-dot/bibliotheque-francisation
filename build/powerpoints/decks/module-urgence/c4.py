@@ -39,7 +39,7 @@ def build(dossier):
               notes="Faire dire pour chacun : est-ce que ça fait mal ? Les réponses "
                     "honnêtes rassurent plus que les réponses rassurantes.")
 
-    d.cartes('En apprendre plus', "Quatre choses sur les points de suture", [
+    d.cartes('Ouvrir la mini-leçon', "Quatre choses sur les points de suture", [
         ("Ils se posent vite",
          "Une plaie doit être refermée dans les six à huit heures. Passé ce délai, le "
          "risque d'infection est trop grand et on la laisse ouverte."),

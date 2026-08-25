@@ -56,7 +56,7 @@ def build(dossier):
             notes="Écrire au tableau : g + e, i, y = le son de « jour ». g + a, o, u = le "
                   "son de « gare ». C'est la règle la plus rentable de la séance.")
 
-    d.cartes('En apprendre plus', "Quatre choses à savoir en plus", [
+    d.cartes('Ouvrir la mini-leçon', "Quatre choses à savoir en plus", [
         ("Le « e » qui sert de pont",
          "Dans « orangé », le g garde son son parce qu'il est devant e. Dans "
          "« mangeons », on ajoute un e exprès pour garder le son devant o."),

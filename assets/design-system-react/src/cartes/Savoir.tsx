@@ -17,7 +17,7 @@ export interface SavoirProps extends HTMLAttributes<HTMLDivElement> {
 
 /**
  * Encadré de savoir explicite : bandeau coloré + rangées à deux colonnes.
- * C'est la mini-leçon « En apprendre plus » — la règle à gauche, les exemples à droite.
+ * C'est la mini-leçon « Ouvrir la mini-leçon » — la règle à gauche, les exemples à droite.
  */
 export function Savoir({ bandeau, rangees, className, ...rest }: SavoirProps) {
   return (

@@ -64,7 +64,7 @@ def build(dossier):
             notes="Faire pratiquer ce test à voix haute sur cinq exemples inventés par le "
                   "groupe avant de passer à l'écrit.")
 
-    d.cartes('En apprendre plus', "Ce qui n'est pas dans la règle", [
+    d.cartes('Ouvrir la mini-leçon', "Ce qui n'est pas dans la règle", [
         ("« car » s'écrit, ne se dit pas",
          "Car fonctionne comme parce que — une phrase complète le suit — mais il "
          "appartient à l'écrit. Ne jamais commencer une réponse orale par « car »."),

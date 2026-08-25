@@ -57,7 +57,7 @@ def build(dossier):
               notes="Le deuxième repère est le plus visible, mais le premier est le plus "
                     "fiable. Insister sur « être + participe passé ».")
 
-    d.cartes('En apprendre plus', "Pourquoi les nouvelles emploient le passif", [
+    d.cartes('Ouvrir la mini-leçon', "Pourquoi les nouvelles emploient le passif", [
         ("Pour mettre l'événement en tête",
          "« La collecte a été organisée » commence par la collecte, qui est le sujet du "
          "reportage. C'est ce que le lecteur cherche."),

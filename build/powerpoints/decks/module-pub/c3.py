@@ -45,7 +45,7 @@ def build(dossier):
               notes="Faire lire le tableau colonne par colonne. La régularité est totale, "
                     "et c'est ce qui rend la règle facile.")
 
-    d.cartes('En apprendre plus', "Quatre choses à savoir en plus", [
+    d.cartes('Ouvrir la mini-leçon', "Quatre choses à savoir en plus", [
         ("« Ne » devient « n' »",
          "Devant ai, as, a, avons, avez, ont, est, êtes : toutes des voyelles. Seul "
          "« ne sont » et « ne suis » gardent le e."),

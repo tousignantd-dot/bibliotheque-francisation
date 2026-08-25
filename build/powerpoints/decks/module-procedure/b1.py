@@ -68,7 +68,7 @@ def build(dossier):
             notes="Écrire les trois au tableau. Ce sont celles de l'exercice oral de B4, "
                   "et elles reviennent dans le module 4 entier.")
 
-    d.cartes('En apprendre plus', "Quatre choses à savoir en plus", [
+    d.cartes('Ouvrir la mini-leçon', "Quatre choses à savoir en plus", [
         ("Vérifiez toujours à la source",
          "Un collègue peut se tromper ou donner une information périmée. Le service "
          "concerné a la version officielle."),
