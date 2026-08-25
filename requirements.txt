@@ -1,1 +1,8 @@
-# Aucune dépendance externe — bibliothèque standard Python uniquement
+# Le serveur tourne en bibliothèque standard **sauf pour Postgres**.
+#
+# Sans DATABASE_URL, ces paquets ne sont jamais importés avec succès et le
+# serveur écrit dans les fichiers du volume, exactement comme avant la
+# migration. `server.py` attrape l'ImportError et le dit dans son journal :
+# une dépendance absente ne doit pas empêcher une classe de commencer.
+psycopg[binary]>=3.1
+psycopg_pool>=3.2

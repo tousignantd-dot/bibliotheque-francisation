@@ -150,7 +150,7 @@ ANALYSES_ERREURS_FILE = STORAGE_DIR / "data" / "analyses_erreurs.json"
 # ajout. Au-delà, on jette les plus anciennes.
 ANALYSES_ERREURS_MAX = 3000
 # Le parcours de l'aide après erreurs : proposée, acceptée, analysée, refusée,
-# et l'ouverture d'une mini-leçon « En apprendre plus ». Les modules émettaient
+# et l'ouverture d'une mini-leçon « Ouvrir la mini-leçon ». Les modules émettaient
 # déjà ces cinq signaux ; le serveur les refusait et l'erreur était avalée par
 # le .catch() de lmsTrack. Un cumul par (élève, activité, exercice), comme
 # corrige_moi.json : ce qui compte est la fréquence, pas l'horodatage.
@@ -663,47 +663,60 @@ def save_activities(activities):
 
 
 def load_students():
-    if STUDENTS_FILE.exists():
-        with open(STUDENTS_FILE, "r", encoding="utf-8") as f:
-            return json.load(f)
-    return []
+    return _load_json_list(STUDENTS_FILE)
 
 
 def save_students(students):
-    STUDENTS_FILE.parent.mkdir(parents=True, exist_ok=True)
-    with open(STUDENTS_FILE, "w", encoding="utf-8") as f:
-        json.dump(students, f, ensure_ascii=False, indent=2)
+    _save_json(STUDENTS_FILE, students)
 
 
 def load_access_log():
-    if ACCESS_LOG_FILE.exists():
-        with open(ACCESS_LOG_FILE, "r", encoding="utf-8") as f:
-            return json.load(f)
-    return []
+    return _load_json_list(ACCESS_LOG_FILE)
 
 
 def save_access_log(log):
-    ACCESS_LOG_FILE.parent.mkdir(parents=True, exist_ok=True)
-    with open(ACCESS_LOG_FILE, "w", encoding="utf-8") as f:
-        json.dump(log, f, ensure_ascii=False, indent=2)
+    _save_json(ACCESS_LOG_FILE, log)
 
 
 def load_progress():
-    if PROGRESS_FILE.exists():
-        with open(PROGRESS_FILE, "r", encoding="utf-8") as f:
-            return json.load(f)
-    return []
+    return _load_json_list(PROGRESS_FILE)
 
 
 def save_progress(data):
-    PROGRESS_FILE.parent.mkdir(parents=True, exist_ok=True)
-    with open(PROGRESS_FILE, "w", encoding="utf-8") as f:
-        json.dump(data, f, ensure_ascii=False, indent=2)
+    _save_json(PROGRESS_FILE, data)
 
 
 # ── Enseignants, groupes, planification ─────────────────────────────────────
 
+# Stockage Postgres. Le module se déclare indisponible sans DATABASE_URL, et
+# tout retombe alors sur les fichiers du volume — le comportement d'avant la
+# migration, à l'octet près. Un import qui échoue ne doit pas empêcher le
+# serveur de démarrer : c'est le stockage de secours qui prend le relais.
+try:
+    import db as _db
+except Exception as _e:                                  # pragma: no cover
+    _db = None
+    print(f"[WARN] module db indisponible ({_e}) — stockage en fichiers", flush=True)
+
+
+def _postgres(path):
+    """Ce fichier est-il servi par Postgres ? Le nom décide, pas le chemin."""
+    return bool(_db and _db.disponible() and _db.gere(path.name))
+
+
 def _load_json_list(path):
+    if _postgres(path):
+        try:
+            if path.name in _db.JOURNAUX:
+                return _db.lire_journal(path.name)
+            return _db.lire_document(path.name)
+        except Exception as e:
+            # On ne retombe **pas** sur le fichier en cas d'erreur de base :
+            # le fichier est périmé depuis la migration, et le servir ferait
+            # réapparaître d'anciennes données comme si de rien n'était. Mieux
+            # vaut une liste vide et un cri dans le journal qu'une vérité morte.
+            print(f"[ERREUR] lecture Postgres de {path.name} : {e}", flush=True)
+            return []
     if path.exists():
         try:
             with open(path, "r", encoding="utf-8") as f:
@@ -713,7 +726,33 @@ def _load_json_list(path):
     return []
 
 
+def _load_json_doc(path, defaut):
+    """Comme `_load_json_list`, pour les collections qui sont un dictionnaire
+    (les sessions, le cache des traductions). Le repli n'est pas `[]`."""
+    if _postgres(path):
+        try:
+            return _db.lire_document(path.name, defaut)
+        except Exception as e:
+            print(f"[ERREUR] lecture Postgres de {path.name} : {e}", flush=True)
+            return defaut
+    if path.exists():
+        try:
+            with open(path, "r", encoding="utf-8") as f:
+                return json.load(f)
+        except json.JSONDecodeError:
+            print(f"[WARN] {path.name} illisible, repli sur le défaut", flush=True)
+    return defaut
+
+
 def _save_json(path, data):
+    if _postgres(path):
+        if path.name in _db.JOURNAUX:
+            # Réécrire un journal en entier est précisément ce que la migration
+            # supprime du chemin normal ; ce cas ne sert plus qu'aux purges.
+            _db.remplacer_journal(path.name, data)
+        else:
+            _db.ecrire_document(path.name, data)
+        return
     path.parent.mkdir(parents=True, exist_ok=True)
     # Écriture atomique : on écrit à côté, puis on remplace d'un seul geste.
     # Sans ça, un serveur tué au milieu d'un json.dump laisse un fichier
@@ -1953,13 +1992,15 @@ def verify_password(password, stored):
 
 
 def load_sessions():
-    if SESSIONS_FILE.exists():
-        try:
-            with open(SESSIONS_FILE, "r", encoding="utf-8") as f:
-                return json.load(f)
-        except json.JSONDecodeError:
-            pass
-    return {}
+    """Les sessions enseignantes. Un **dictionnaire**, pas une liste.
+
+    Elle lisait le fichier en direct, ce qui a suffi à casser toute
+    l'authentification dès que `save_sessions` a commencé à écrire en base :
+    les jetons partaient dans Postgres et on les cherchait sur le disque.
+    Trouvé en jouant la migration, pas en la relisant — le serveur démarrait
+    parfaitement et répondait 401 à tout le monde.
+    """
+    return _load_json_doc(SESSIONS_FILE, {})
 
 
 def save_sessions(sessions):
@@ -2232,16 +2273,11 @@ def migrate_organisations():
 
 
 def load_vocab_progress():
-    if VOCAB_PROGRESS_FILE.exists():
-        with open(VOCAB_PROGRESS_FILE, "r", encoding="utf-8") as f:
-            return json.load(f)
-    return []
+    return _load_json_list(VOCAB_PROGRESS_FILE)
 
 
 def save_vocab_progress(data):
-    VOCAB_PROGRESS_FILE.parent.mkdir(parents=True, exist_ok=True)
-    with open(VOCAB_PROGRESS_FILE, "w", encoding="utf-8") as f:
-        json.dump(data, f, ensure_ascii=False, indent=2)
+    _save_json(VOCAB_PROGRESS_FILE, data)
 
 
 # Le serveur est multi-thread : deux élèves peuvent demander une traduction en
@@ -2258,22 +2294,15 @@ def translation_key(langue, mot, definition):
 
 
 def load_translations():
-    if VOCAB_TRANSLATIONS_FILE.exists():
-        try:
-            with open(VOCAB_TRANSLATIONS_FILE, "r", encoding="utf-8") as f:
-                return json.load(f)
-        except (json.JSONDecodeError, OSError):
-            return {}
-    return {}
+    """Le cache des traductions — un dictionnaire, comme les sessions."""
+    return _load_json_doc(VOCAB_TRANSLATIONS_FILE, {})
 
 
 def save_translation(key, value):
     with _VOCAB_TR_LOCK:
         cache = load_translations()
         cache[key] = value
-        VOCAB_TRANSLATIONS_FILE.parent.mkdir(parents=True, exist_ok=True)
-        with open(VOCAB_TRANSLATIONS_FILE, "w", encoding="utf-8") as f:
-            json.dump(cache, f, ensure_ascii=False, indent=2)
+        _save_json(VOCAB_TRANSLATIONS_FILE, cache)
 
 
 _OUTILS_LOCK = threading.Lock()
@@ -2387,68 +2416,43 @@ def log_translation_report(entry):
 
 
 def load_oral_submissions():
-    if ORAL_SUBMISSIONS_FILE.exists():
-        with open(ORAL_SUBMISSIONS_FILE, "r", encoding="utf-8") as f:
-            return json.load(f)
-    return []
+    return _load_json_list(ORAL_SUBMISSIONS_FILE)
 
 
 def save_oral_submissions(data):
-    ORAL_SUBMISSIONS_FILE.parent.mkdir(parents=True, exist_ok=True)
-    with open(ORAL_SUBMISSIONS_FILE, "w", encoding="utf-8") as f:
-        json.dump(data, f, ensure_ascii=False, indent=2)
+    _save_json(ORAL_SUBMISSIONS_FILE, data)
 
 
 def load_corrige_moi():
-    if CORRIGE_MOI_FILE.exists():
-        with open(CORRIGE_MOI_FILE, "r", encoding="utf-8") as f:
-            return json.load(f)
-    return []
+    return _load_json_list(CORRIGE_MOI_FILE)
 
 
 def save_corrige_moi(data):
-    CORRIGE_MOI_FILE.parent.mkdir(parents=True, exist_ok=True)
-    with open(CORRIGE_MOI_FILE, "w", encoding="utf-8") as f:
-        json.dump(data, f, ensure_ascii=False, indent=2)
+    _save_json(CORRIGE_MOI_FILE, data)
 
 
 def load_written_submissions():
-    if WRITTEN_SUBMISSIONS_FILE.exists():
-        with open(WRITTEN_SUBMISSIONS_FILE, "r", encoding="utf-8") as f:
-            return json.load(f)
-    return []
+    return _load_json_list(WRITTEN_SUBMISSIONS_FILE)
 
 
 def save_written_submissions(data):
-    WRITTEN_SUBMISSIONS_FILE.parent.mkdir(parents=True, exist_ok=True)
-    with open(WRITTEN_SUBMISSIONS_FILE, "w", encoding="utf-8") as f:
-        json.dump(data, f, ensure_ascii=False, indent=2)
+    _save_json(WRITTEN_SUBMISSIONS_FILE, data)
 
 
 def load_analyses_erreurs():
-    if ANALYSES_ERREURS_FILE.exists():
-        with open(ANALYSES_ERREURS_FILE, "r", encoding="utf-8") as f:
-            return json.load(f)
-    return []
+    return _load_json_list(ANALYSES_ERREURS_FILE)
 
 
 def save_analyses_erreurs(data):
-    ANALYSES_ERREURS_FILE.parent.mkdir(parents=True, exist_ok=True)
-    with open(ANALYSES_ERREURS_FILE, "w", encoding="utf-8") as f:
-        json.dump(data, f, ensure_ascii=False, indent=2)
+    _save_json(ANALYSES_ERREURS_FILE, data)
 
 
 def load_signaux_aide():
-    if SIGNAUX_AIDE_FILE.exists():
-        with open(SIGNAUX_AIDE_FILE, "r", encoding="utf-8") as f:
-            return json.load(f)
-    return []
+    return _load_json_list(SIGNAUX_AIDE_FILE)
 
 
 def save_signaux_aide(data):
-    SIGNAUX_AIDE_FILE.parent.mkdir(parents=True, exist_ok=True)
-    with open(SIGNAUX_AIDE_FILE, "w", encoding="utf-8") as f:
-        json.dump(data, f, ensure_ascii=False, indent=2)
+    _save_json(SIGNAUX_AIDE_FILE, data)
 
 
 # ── Signalements (« J'ai vu un problème ») ───────────────────────────────────
@@ -2459,16 +2463,11 @@ def save_signaux_aide(data):
 # déjà sa confirmation, elle n'attend ni l'API ni le serveur de courriel.
 
 def load_signalements():
-    if SIGNALEMENTS_FILE.exists():
-        with open(SIGNALEMENTS_FILE, "r", encoding="utf-8") as f:
-            return json.load(f)
-    return []
+    return _load_json_list(SIGNALEMENTS_FILE)
 
 
 def save_signalements(data):
-    SIGNALEMENTS_FILE.parent.mkdir(parents=True, exist_ok=True)
-    with open(SIGNALEMENTS_FILE, "w", encoding="utf-8") as f:
-        json.dump(data, f, ensure_ascii=False, indent=2)
+    _save_json(SIGNALEMENTS_FILE, data)
 
 
 def maj_signalement(sid, champs):
@@ -18365,9 +18364,38 @@ class Handler(http.server.SimpleHTTPRequestHandler):
             self._enregistrer_signal_aide(student, event, body)
             json_response(self, {"success": True})
             return
-        # Le verrou couvre la lecture **et** l'écriture : c'est la séquence
-        # entière qui est en cause, pas le seul `save`. Sans lui, trente élèves
-        # qui terminent un exercice ensemble écrivent 8 lignes sur 30 — mesuré.
+        entree = {
+            "studentId": student["id"],
+            "studentLabel": student.get("label", ""),
+            "groupId": student.get("groupId"),
+            "activityId": body.get("activityId"),
+            "activityTitle": body.get("activityTitle", ""),
+            "event": event,
+            "score": body.get("score"),
+            "zones": body.get("zones"),
+            "zonesDone": body.get("zonesDone"),
+            "firstTry": body.get("firstTry"),
+            "totalErrors": body.get("totalErrors"),
+            "timestamp": datetime.now().isoformat(timespec="seconds"),
+        }
+        if _postgres(PROGRESS_FILE):
+            # Le chemin d'après la migration : **on n'a plus besoin de lire la
+            # liste pour y ajouter une ligne.** La règle « un enregistrement par
+            # (élève, activité, événement) » est portée par l'index unique de la
+            # table, donc ni le verrou ni la relecture ne sont nécessaires — et
+            # l'écriture ne dépend plus de la taille du journal.
+            #
+            # Une nuance qui compte : pour `exercise_completed`, l'ancien code
+            # écrasait les statistiques ; l'`ON CONFLICT DO UPDATE` fait pareil.
+            # Pour les deux autres événements, il ne réécrivait rien du tout —
+            # ici la ligne est réécrite à l'identique sauf l'horodatage, ce qui
+            # rapproche « dernière trace » de la réalité au lieu de la figer au
+            # premier passage.
+            _db.enregistrer("progress.json", entree)
+            json_response(self, {"success": True})
+            return
+
+        # Sans base, l'ancien chemin, verrou compris.
         with donnees_verrouillees():
             progress = load_progress()
             # Un seul enregistrement par (élève, activité, événement). Pour
@@ -18381,20 +18409,7 @@ class Handler(http.server.SimpleHTTPRequestHandler):
                 None,
             )
             if existing is None:
-                progress.append({
-                    "studentId": student["id"],
-                    "studentLabel": student.get("label", ""),
-                    "groupId": student.get("groupId"),
-                    "activityId": body.get("activityId"),
-                    "activityTitle": body.get("activityTitle", ""),
-                    "event": event,
-                    "score": body.get("score"),
-                    "zones": body.get("zones"),
-                    "zonesDone": body.get("zonesDone"),
-                    "firstTry": body.get("firstTry"),
-                    "totalErrors": body.get("totalErrors"),
-                    "timestamp": datetime.now().isoformat(timespec="seconds"),
-                })
+                progress.append(entree)
                 save_progress(progress)
             elif event == "exercise_completed":
                 existing["score"] = body.get("score")

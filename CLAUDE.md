@@ -178,6 +178,58 @@ reste dans l'adresse, donc une vue se partage par son lien.
   historique tout ce qui lui était déjà visible, pour ne rien retirer à la
   classe en cours.
 
+## Le stockage Postgres (`db.py`)
+
+**Le repli est la règle, pas l'exception.** Sans `DATABASE_URL`, ou sans le
+pilote, `db.disponible()` répond « non » et tout écrit dans les fichiers du
+volume — le comportement d'avant la migration. Revenir en arrière, c'est
+retirer une variable d'environnement ; les fichiers ne sont jamais effacés.
+
+    DATABASE_URL=… python3 build/migrer_postgres.py --etat    # ce qu'il y a
+    DATABASE_URL=… python3 build/migrer_postgres.py --essai   # sans écrire
+    DATABASE_URL=… python3 build/migrer_postgres.py           # migre
+
+- **Deux formes de rangement, et la différence n'est pas cosmétique.** Les
+  collections petites et bornées (comptes, groupes, arbre, accès, planification,
+  invitations…) sont une **ligne de `documents`**, la liste entière en JSONB :
+  on y gagne l'atomicité et l'indépendance du volume. Les **journaux d'élèves**
+  (progression, accès, signaux d'aide, vocabulaire) sont une **ligne par
+  enregistrement**, avec l'index unique qui porte la règle métier. L'écriture
+  devient un `INSERT … ON CONFLICT DO UPDATE` : on ne relit plus la liste pour
+  y ajouter une ligne. **C'est là qu'était le mur.**
+- **Mesuré, pas supposé** : 600 écritures (30 élèves × 20 activités, 30 en
+  parallèle) — **7,89 s en fichiers, 2,63 s en base**, et l'écart grandit avec
+  la taille, puisque le fichier se réécrit en entier à chaque appel. Après ces
+  600 écritures, `progress.json` pesait déjà 176 Ko.
+- **La liste `db.DOCUMENTS` est explicite, jamais « tout ce qui traîne dans
+  data/ ».** `materiel.json` et `sections.json` sont **produits par le build**
+  et décrivent ce que le dépôt livre : les mettre en base créerait une deuxième
+  vérité. Ce qui n'est pas nommé reste sur le volume, et c'est le défaut sûr.
+- **Une erreur de base ne retombe pas sur le fichier.** Depuis la migration le
+  fichier est périmé ; le servir ferait réapparaître d'anciennes données comme
+  si de rien n'était. On rend une liste vide et on crie dans le journal.
+- **`migrer_postgres.py` refuse d'écraser une base déjà peuplée** sans
+  `--forcer` : rejouer la migration remettrait l'état des fichiers par-dessus
+  le travail fait depuis. C'est le seul geste vraiment irréversible.
+
+### Le défaut que seul l'essai pouvait trouver
+
+`load_sessions()` lisait le fichier **en direct**, sans passer par
+`_load_json_list`. Dès que `save_sessions` a écrit en base, les jetons partaient
+dans Postgres et on les cherchait sur le disque : **plus aucune connexion
+enseignante n'était valide**. Le serveur démarrait parfaitement et répondait 401
+à tout le monde.
+
+Neuf autres collections avaient le même défaut. Toutes passent désormais par
+`_load_json_list` / `_load_json_doc` / `_save_json`, qui sont **les seuls points
+qui connaissent Postgres**. Le contrôle tient en une ligne, et il doit rendre
+zéro :
+
+    grep -n "open(\(STUDENTS\|ACCESS_LOG\|PROGRESS\|SESSIONS\|VOCAB_PROGRESS\|VOCAB_TRANSLATIONS\|ORAL_SUBMISSIONS\|WRITTEN_SUBMISSIONS\|CORRIGE_MOI\|SIGNAUX_AIDE\|SIGNALEMENTS\|ANALYSES_ERREURS\)_FILE" server.py
+
+La leçon générale : **une couche d'abstraction ne vaut que si personne ne
+passe à côté**, et c'est un `grep`, pas une relecture, qui le dit.
+
 ## Les écritures concurrentes (verrou et écriture atomique)
 
 **Trouvé le 25 août 2026 en préparant la migration Postgres, et mesuré :
