@@ -169,7 +169,16 @@
     choses qui n'existent pas encore : un arbre pour dire qui voit quoi, et un endroit
     où les chiffres d'usage remontent sans que les élèves remontent avec eux. Voici
     comment je les bâtirais.</p>
-    <p class="quand">25 août 2026 — les deux décisions du même jour sont intégrées.</p>
+    <p class="quand">25 août 2026 — proposé, décidé et livré le même jour.</p>
+
+    <div class="garde" style="background:var(--accent-soft); border-color:#BFE3D2">
+      <p style="color:var(--accent-ink)"><strong>Tout ce qui suit est construit et
+      en service.</strong> Les quatre étapes ont été livrées le 25 août 2026, la
+      migration Postgres comprise. Ce document reste écrit au futur : c'est la
+      proposition telle qu'elle a été acceptée. Ce que la réalisation a démenti ou
+      ajouté est dit à la fin, et le <code>CLAUDE.md</code> du dépôt porte la
+      procédure.</p>
+    </div>
   </div>
 </header>
 
@@ -595,6 +604,36 @@
     <p>Il n'y a plus rien à décider avant d'écrire du code. Ce qui manque désormais est du
     travail, pas de l'arbitrage — et il commence par l'étape 1, la moins visible des
     quatre.</p>
+  </section>
+
+  <section>
+    <span class="eyebrow e-teal">Après coup</span>
+    <h2>Ce que la réalisation a démenti</h2>
+    <p>Les quatre étapes sont faites, dans l'ordre prévu. Trois choses n'étaient pas
+    dans le plan, et ce sont les plus instructives.</p>
+    <ul class="points">
+      <li><strong>Le vrai défaut n'était pas le stockage : c'était l'absence de
+      verrou.</strong> Avant de migrer quoi que ce soit, une mesure : trente élèves
+      qui terminent un exercice ensemble écrivaient <strong>8 enregistrements sur
+      30</strong>, en silence, sans une ligne dans aucun journal. Ça durait depuis
+      que le serveur est multi-thread. Réparé et livré séparément, avant Postgres —
+      mesurer avant de refondre a changé l'ordre des travaux.</li>
+      <li><strong>Le rôle « enseignant » ne peut pas voir tout son sous-arbre.</strong>
+      La règle « une permission vaut sur tout le sous-arbre » est juste pour quatre
+      rôles sur cinq. L'accès d'un enseignant dit <em>où il enseigne</em>, pas
+      <em>ce qu'il voit</em> : sans l'exception, ouvrir un deuxième centre aurait
+      commencé par élargir les droits de tout le monde dans le premier. Trouvé au
+      bac d'essai, pas en relisant le modèle.</li>
+      <li><strong>Poser une structure et l'alimenter sont deux travaux.</strong>
+      L'arbre posé à l'étape 1 n'était nourri par aucun geste du portail : un groupe
+      créé sortait sans centre, un compte sans accès. Invisible tant que rien ne
+      s'appuie dessus — et enfermé dehors dès que la portée s'y branche.</li>
+    </ul>
+    <p>Le gain de la migration, mesuré plutôt que supposé : 600 écritures concurrentes
+    en <strong>7,89 s en fichiers contre 2,63 s en base</strong>, et l'écart grandit
+    avec la taille du journal, puisque le fichier se réécrit en entier à chaque appel.
+    Le volume n'est pas effacé : retirer une variable d'environnement ramène tout à
+    l'état d'avant.</p>
   </section>
 
   <hr>
