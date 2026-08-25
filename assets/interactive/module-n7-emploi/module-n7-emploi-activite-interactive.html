@@ -3713,6 +3713,37 @@ function normWrite(s){
   return (s||'').toLowerCase().trim().normalize('NFD').replace(/[̀-ͯ]/g,'')
     .replace(/\s+/g,' ').replace(/[.!?;:]+$/,'').replace(/^["«»']+|["«»']+$/g,'').trim();
 }
+// La réponse n'arrive pas au premier essai. Un élève à qui on montre la
+// phrase corrigée dès le premier envoi la recopie et passe : le seul moment
+// où il apprend quelque chose, la réparation de sa propre phrase, est
+// escamoté. Donc : essai 1, un commentaire qui situe l'erreur, et le choix
+// entre retenter et cliquer « Montrez-moi la réponse ». Essai 2 raté, la
+// réponse vient d'elle-même — faire deviner un troisième tour décourage.
+// WESSAI compte les essais ratés, WSOL garde la réponse à dévoiler, WFB le
+// dernier commentaire (pour ne pas le perdre quand on ajoute la réponse).
+const WESSAI={}, WSOL={}, WFB={};
+
+function wBoutonReponse(exId, i){
+  return '<br><button type="button" class="btn btn-ghost" style="margin-top:8px;padding:7px 12px;font-size:12px" '
+    + 'onclick="wDevoiler(\'' + exId + '\',' + i + ')">Montrez-moi la réponse</button>';
+}
+
+// Le bouton ne coûte aucun appel : la correction est déjà arrivée avec le
+// commentaire, le module la gardait simplement de côté. Dévoiler clôt le
+// cycle (essai forcé à 2) et rouvre la case : lire une phrase ne laisse pas
+// la trace que laisse le fait de la réécrire.
+function wDevoiler(exId, i){
+  const k=exId+'_'+i, sol=WSOL[k];
+  if(!sol) return;
+  WESSAI[k]=Math.max(WESSAI[k]||0, 2);
+  const fb=document.getElementById('wf_'+exId+'_'+i);
+  const inp=document.getElementById('wi_'+exId+'_'+i);
+  fb.className='wfb no';
+  fb.innerHTML=(WFB[k]?WFB[k]+'<br>':'')+'<b>La réponse :</b> '+esc(sol)
+    +'<br><span style="font-weight:600">Réécris-la dans la case, puis vérifie.</span>';
+  if(inp){ inp.value=''; inp.focus(); }
+}
+
 async function checkWrite(exId, i){
   const ex=EXOS.find(e=>e.id===exId); if(!ex) return;
   const it=ex.items[i];
@@ -3720,38 +3751,67 @@ async function checkWrite(exId, i){
   const fb=document.getElementById('wf_'+exId+'_'+i);
   const val=inp.value.trim();
   const zid='w_'+exId+'_'+i;
+  const k=exId+'_'+i;
   if(!val){ fb.className='wfb no'; fb.textContent="✏️ Écris ta réponse d'abord."; return; }
 
   // Mode autocorrection (réponse connue)
   if(it.accept){
     const ok=it.accept.map(normWrite).includes(normWrite(val));
-    fb.className='wfb '+(ok?'ok':'no');
-    fb.innerHTML= ok ? '✅ Bravo, c\'est exact !'
-      : '❌ Presque ! La bonne réponse est : <b>'+esc(it.accept[0])+'</b>';
-    if(ok){ inp.classList.add('good'); inp.disabled=true; trackPlacement(zid,true); }
-    else {
-      trackPlacement(zid,false);
-      // Ici le cumul a du sens : chaque envoi raté est une tentative distincte.
-      const rates = ex.items.reduce((s,_,k)=> s + (TR.attempts['w_'+exId+'_'+k]||0), 0);
-      evaluerAide(exId, rates);
+    if(ok){
+      fb.className='wfb ok'; fb.innerHTML='✅ Bravo, c\'est exact !';
+      inp.classList.add('good'); inp.disabled=true; trackPlacement(zid,true);
+      return;
     }
+    WESSAI[k]=(WESSAI[k]||0)+1;
+    WSOL[k]=it.accept[0];
+    WFB[k]='❌ Presque !';
+    fb.className='wfb no';
+    fb.innerHTML = (WESSAI[k]<2)
+      ? '❌ Presque ! Relis ta réponse et essaie encore.'+wBoutonReponse(exId,i)
+      : '💡 La réponse est : <b>'+esc(it.accept[0])+'</b>'
+        +'<br><span style="font-weight:600">Réécris-la dans la case, puis vérifie.</span>';
+    trackPlacement(zid,false);
+    // Ici le cumul a du sens : chaque envoi raté est une tentative distincte.
+    const rates = ex.items.reduce((s,_,k2)=> s + (TR.attempts['w_'+exId+'_'+k2]||0), 0);
+    evaluerAide(exId, rates);
     return;
   }
 
   // Mode IA (réponse ouverte)
+  // La réponse est déjà sortie : on ne rappelle plus le serveur. Un troisième
+  // appel ne dirait rien de neuf et se paierait à chaque frappe. On compare
+  // sur place, et une phrase écrite autrement n'est pas comptée comme fautive.
+  if(WSOL[k] && (WESSAI[k]||0)>=2){
+    const juste = normWrite(val)===normWrite(WSOL[k]);
+    fb.className='wfb '+(juste?'ok':'no');
+    fb.innerHTML = juste
+      ? '✅ Voilà, tu l\'as réécrite.'
+      : '💡 C\'est noté. La phrase à écrire : <b>'+esc(WSOL[k])+'</b>';
+    if(juste){ inp.classList.add('good'); trackPlacement(zid,true); }
+    return;
+  }
   fb.className='wfb wait'; fb.textContent='⏳ L\'assistant corrige ta réponse…';
   const btn=inp.parentElement.querySelector('.wbtn'); if(btn) btn.disabled=true;
+  const essai=(WESSAI[k]||0)+1;
   try{
     const res=await fetch('/api/check-written',{method:'POST',headers:{'Content-Type':'application/json'},
-      body:JSON.stringify({code:studentCode, consigne:(ex.sub||'')+' '+(it.q||''), reponse:val, attendu:it.hint||''})});
+      body:JSON.stringify({code:studentCode, consigne:(ex.sub||'')+' '+(it.q||''), reponse:val, attendu:it.hint||'', essai:essai})});
     const d=await res.json();
     if(btn) btn.disabled=false;
     if(!res.ok){ fb.className='wfb no'; fb.textContent=d.error||'Service momentanément indisponible.'; return; }
-    fb.className='wfb '+(d.correct?'ok':'no');
-    let html=(d.correct?'✅ ':'💡 ')+esc(d.feedback||'');
-    if(!d.correct && d.correction){ html+='<br><b>Suggestion :</b> '+esc(d.correction); }
-    fb.innerHTML=html;
-    if(d.correct){ inp.classList.add('good'); trackPlacement(zid,true); }
+    if(d.correct){
+      fb.className='wfb ok'; fb.innerHTML='✅ '+esc(d.feedback||'');
+      inp.classList.add('good'); trackPlacement(zid,true);
+      return;
+    }
+    WESSAI[k]=essai;
+    WSOL[k]=d.correction||'';
+    WFB[k]='💡 '+esc(d.feedback||'');
+    fb.className='wfb no';
+    if(!WSOL[k]) fb.innerHTML=WFB[k];
+    else if(essai<2) fb.innerHTML=WFB[k]+wBoutonReponse(exId,i);
+    else fb.innerHTML=WFB[k]+'<br><b>La réponse :</b> '+esc(WSOL[k])
+      +'<br><span style="font-weight:600">Réécris-la dans la case, puis vérifie.</span>';
   }catch(e){
     if(btn) btn.disabled=false;
     fb.className='wfb no'; fb.textContent='Impossible de contacter le serveur. Réessaie.';
