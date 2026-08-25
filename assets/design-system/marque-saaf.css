@@ -101,7 +101,19 @@
    vit dans le `.band` d'à côté, et il n'y a donc pas le `gap:16px` que
    l'en-tête d'un module ajoute par-dessus la marge. On le rattrape ici, pour
    que l'air sous la pilule soit le même partout. */
-#hdr > .saaf-bandeau:only-child{margin-bottom:26px}
+/* Le verrouillage est alors posé **hors** du conteneur intérieur du bandeau
+   (`.xx-band__in`), qui porte la gouttière : sans les lignes ci-dessous, la
+   pilule colle au bord de la page pendant que le sur-titre est en retrait.
+   On lui redonne la même colonne — contenu centré, gouttière, et la
+   gouttière réduite des huit générateurs sous 900 px. */
+#hdr > .saaf-bandeau:only-child{
+  max-width:var(--content-max);
+  margin:0 auto 26px;
+  padding:0 var(--gutter);
+}
+@media (max-width:900px){
+  #hdr > .saaf-bandeau:only-child{padding-left:var(--sp-5);padding-right:var(--sp-5)}
+}
 
 /* ── Place du verrouillage dans un bandeau de portail ──────────────
    Les pages du portail composent leur en-tête avec `.band` du système de
