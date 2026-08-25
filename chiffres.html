@@ -1,0 +1,335 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Les chiffres — Francisation</title>
+  <link rel="stylesheet" href="assets/design-system/styles.css" />
+  <link rel="stylesheet" href="assets/design-system/marque-saaf.css" />
+  <link rel="icon" type="image/svg+xml" href="assets/design-system/marque-saaf-favicon.svg" />
+  <style>
+    /* Les chiffres — étape 4 du chantier « Le réseau des centres ».
+       Trois vues dans une page : réseau, CSS, centre. Ce n'est pas la page qui
+       décide ce qu'on voit — elle demande sa portée au serveur, et n'affiche
+       que ce qu'il lui rend. Un CSS n'obtient jamais de vue par enseignant.
+       Aucune couleur en dur : uniquement des jetons du système de design. */
+    body { margin: 0; background: var(--surface-page); }
+
+    .ch-haut { position: sticky; top: 0; z-index: 30; background: var(--surface-card);
+               border-bottom: 1px solid var(--border); }
+    .ch-haut > .container { display: flex; align-items: center; gap: var(--sp-4);
+                            flex-wrap: wrap; padding: var(--sp-3) var(--gutter); }
+    .ch-haut a { font-size: var(--fs-ui); font-weight: var(--fw-bold);
+                 color: var(--text-muted); text-decoration: underline; }
+    .ch-haut a:hover { color: var(--text-accent); }
+    .ch-qui { margin-left: auto; font-size: var(--fs-ui-sm);
+              font-weight: var(--fw-bold); color: var(--text-muted); }
+
+    .ch-titre { margin: var(--sp-2) 0; }
+    .ch-sous { color: var(--text-muted); margin: 0; }
+
+    .ch-onglets { display: flex; flex-wrap: wrap; gap: var(--sp-2);
+                  margin: var(--sp-8) 0 0; }
+    .ch-onglet { font: inherit; font-size: var(--fs-ui-sm); font-weight: var(--fw-black);
+                 padding: var(--sp-2) var(--sp-4); border-radius: var(--r-pill);
+                 border: 1px solid var(--line-300); background: var(--surface-card);
+                 color: var(--text-body); cursor: pointer; }
+    .ch-onglet:hover { background: var(--paper-200); }
+    .ch-onglet[aria-pressed="true"] { background: var(--ink-900); color: var(--white);
+                                      border-color: var(--ink-900); }
+
+    .ch-tuiles { display: grid; gap: var(--sp-3);
+                 grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
+                 margin: var(--sp-6) 0 0; }
+    .ch-tuile { background: var(--surface-card); border: 1px solid var(--border);
+                border-radius: var(--r-md); padding: var(--sp-4) var(--sp-5); }
+    .ch-tuile b { display: block; font-size: var(--fs-h3); font-weight: var(--fw-black);
+                  color: var(--text-strong); font-variant-numeric: tabular-nums; }
+    .ch-tuile span { font-size: var(--fs-ui-sm); color: var(--text-muted);
+                     font-weight: var(--fw-bold); }
+
+    h2.ch-sect { font-size: var(--fs-ui); font-weight: var(--fw-black);
+                 letter-spacing: .08em; text-transform: uppercase;
+                 color: var(--text-muted); margin: var(--sp-8) 0 var(--sp-3); }
+
+    .ch-cadre { overflow-x: auto; border: 1px solid var(--border);
+                border-radius: var(--r-md); background: var(--surface-card); }
+    table.ch-table { border-collapse: collapse; width: 100%; min-width: 640px; }
+    .ch-table th, .ch-table td { text-align: left; padding: var(--sp-3) var(--sp-4);
+                                 border-bottom: 1px solid var(--border);
+                                 font-size: var(--fs-ui-sm); }
+    .ch-table thead th { font-size: var(--fs-meta); font-weight: var(--fw-black);
+                         letter-spacing: .08em; text-transform: uppercase;
+                         color: var(--text-muted); background: var(--surface-sunken);
+                         white-space: nowrap; }
+    .ch-table tbody tr:last-child td { border-bottom: 0; }
+    .ch-table td.n { text-align: right; font-variant-numeric: tabular-nums; }
+    .ch-table th.n { text-align: right; }
+    .ch-muet { color: var(--text-muted); }
+
+    .ch-note { font-size: var(--fs-ui-sm); color: var(--text-muted);
+               margin: var(--sp-3) 0 0; max-width: 70ch; }
+    .ch-note strong { color: var(--text-body); }
+    .ch-liste { columns: 2 260px; gap: var(--sp-5); margin: var(--sp-3) 0 0;
+                padding-left: var(--sp-5); font-size: var(--fs-ui-sm); }
+    .ch-fin { margin: var(--sp-12) 0; }
+  </style>
+</head>
+<body>
+
+  <div class="ch-haut">
+    <div class="container">
+      <a href="enseignant.html">← Espace enseignant</a>
+      <span class="ch-qui" id="chQui"></span>
+    </div>
+  </div>
+
+  <section class="band">
+    <div class="container">
+      <div class="saaf-bandeau-portail">
+        <span class="saaf-lockup">
+          <span class="saaf-pilule"><span class="saaf-nom">SAAF</span></span>
+          <span class="saaf-filet" aria-hidden="true"></span>
+          <span class="saaf-desc">Système d'aide à l'apprentissage du français</span>
+        </span>
+      </div>
+      <p class="band__eyebrow">Usage</p>
+      <h1 class="ch-titre">Les chiffres</h1>
+      <p class="ch-sous" id="chSous">Chargement…</p>
+    </div>
+  </section>
+
+  <main class="container">
+    <div class="ch-onglets" id="chOnglets" role="group" aria-label="Choisir la vue"></div>
+    <div id="chVue"></div>
+
+    <div class="card ch-fin" id="chRien" hidden>
+      <h2 style="margin-top:0">Rien à afficher ici</h2>
+      <p>Cette page rassemble l'usage d'un réseau, d'un centre de services
+      scolaire ou d'un centre de francisation. Elle s'ouvre à qui en a la
+      charge.</p>
+      <p style="margin-bottom:0">Pour suivre <strong>votre</strong> classe, allez
+      plutôt à <a href="progression.html">la progression des élèves</a> : c'est
+      la page qui répond à « où en est mon groupe ? ».</p>
+    </div>
+  </main>
+
+  <script src="js/prof.js"></script>
+  <script>
+  (function () {
+    'use strict';
+
+    var PORTEES = null, VUE = null;
+
+    function ech(s) {
+      return String(s == null ? '' : s).replace(/[&<>"']/g, function (c) {
+        return { '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c];
+      });
+    }
+    /* Les dates se découpent à la chaîne : `new Date('2026-08-16')` serait lu
+       en temps universel et affiché la veille au Québec. */
+    function jour(iso) {
+      if (!iso) return '—';
+      var p = String(iso).slice(0, 10).split('-');
+      if (p.length !== 3) return ech(iso);
+      var M = ['janvier','février','mars','avril','mai','juin','juillet',
+               'août','septembre','octobre','novembre','décembre'];
+      return Number(p[2]) + ' ' + M[Number(p[1]) - 1] + ' ' + p[0];
+    }
+    function pct(v) { return v === null || v === undefined ? '—' : v + ' %'; }
+    function tuile(n, mot) {
+      return '<div class="ch-tuile"><b>' + n + '</b><span>' + ech(mot) + '</span></div>';
+    }
+    function tableau(entetes, rangees) {
+      return '<div class="ch-cadre"><table class="ch-table"><thead><tr>'
+        + entetes.map(function (h) {
+            return '<th' + (h.n ? ' class="n"' : '') + '>' + ech(h.t) + '</th>';
+          }).join('')
+        + '</tr></thead><tbody>'
+        + (rangees.join('') || '<tr><td colspan="' + entetes.length
+           + '" class="ch-muet">Rien à afficher.</td></tr>')
+        + '</tbody></table></div>';
+    }
+
+    /* Les deux mises en garde ne sont pas des notes de bas de page : elles
+       changent la lecture des colonnes qu'elles décrivent. Elles sont donc
+       collées sous le tableau, pas reléguées en fin de page. */
+    var NOTE_MINUTES =
+      '<p class="ch-note"><strong>Les minutes sont un plancher.</strong> Rien ne '
+      + 'mesure le temps réel passé dans une activité : on additionne des séances '
+      + 'déduites des traces, et une séance se ferme après trente minutes sans '
+      + 'événement. <strong>La pointe d\'élèves actifs</strong> est le maximum '
+      + 'd\'une seule journée, jamais une somme — un élève venu cinq jours reste '
+      + 'un élève.</p>';
+
+    async function charger(url) {
+      var r = await Prof.fetch(url);
+      if (!r.ok) {
+        var d = await r.json().catch(function () { return {}; });
+        throw new Error(d.error || ('HTTP ' + r.status));
+      }
+      return r.json();
+    }
+
+    function vueReseau(d) {
+      var t = d.totaux;
+      var html = '<div class="ch-tuiles">'
+        + tuile(t.css, t.css > 1 ? 'CSS' : 'CSS')
+        + tuile(t.centresActifs + ' / ' + t.centres, 'centres actifs')
+        + tuile(t.personnes, 'personnes')
+        + tuile(t.rattachements, 'rattachements')
+        + tuile(t.eleves, 'élèves inscrits')
+        + tuile(t.modulesJamaisOuverts, 'modules jamais ouverts')
+        + '</div>'
+        + '<p class="ch-note"><strong>Personnes et rattachements ne sont pas le '
+        + 'même chiffre</strong> et ne seront jamais égaux : une personne qui '
+        + 'enseigne dans deux centres est un enseignant pour le réseau et deux '
+        + 'lignes pour la somme des centres. Les deux sont justes.</p>';
+
+      html += '<h2 class="ch-sect">Par centre</h2>' + tableau(
+        [{t:'Centre'},{t:'CSS'},{t:'Groupes',n:1},{t:'Élèves',n:1},
+         {t:'Pointe active',n:1},{t:'Jours actifs',n:1},{t:'Minutes',n:1},
+         {t:'1er coup',n:1},{t:'État'}],
+        d.centres.map(function (c) {
+          return '<tr><td>' + ech(c.centre) + '</td><td class="ch-muet">' + ech(c.css) + '</td>'
+            + '<td class="n">' + c.groupes + '</td><td class="n">' + c.eleves + '</td>'
+            + '<td class="n">' + c.elevesActifsPointe + '</td>'
+            + '<td class="n">' + c.joursActifs + '</td><td class="n">' + c.minutes + '</td>'
+            + '<td class="n">' + pct(c.premierCoupPct) + '</td>'
+            + '<td>' + (c.actif ? '✓ actif' : '· silencieux') + '</td></tr>';
+        })) + NOTE_MINUTES;
+
+      if (d.modulesJamaisOuverts.length) {
+        html += '<h2 class="ch-sect">Modules que personne n\'ouvre</h2>'
+          + '<p class="ch-note">Un module jamais ouvert dans aucun centre est un '
+          + 'module à reprendre ou à retirer. Aucun autre écran ne dit cela.</p>'
+          + '<ul class="ch-liste">'
+          + d.modulesJamaisOuverts.map(function (m) { return '<li>' + ech(m) + '</li>'; }).join('')
+          + '</ul>';
+        if (d.totaux.modulesJamaisOuverts > d.modulesJamaisOuverts.length) {
+          html += '<p class="ch-note">… et ' + (d.totaux.modulesJamaisOuverts
+            - d.modulesJamaisOuverts.length) + ' autres, non listés ici.</p>';
+        }
+      }
+      return html;
+    }
+
+    function vueCss(d) {
+      return '<h2 class="ch-sect">' + ech(d.css) + '</h2>' + tableau(
+        [{t:'Centre'},{t:'Rattachements',n:1},{t:'Jamais connectés',n:1},
+         {t:'Groupes',n:1},{t:'Planifiés',n:1},{t:'Élèves',n:1},
+         {t:'Pointe active',n:1},{t:'Jours actifs',n:1},{t:'Minutes',n:1},{t:'1er coup',n:1}],
+        d.centres.map(function (c) {
+          return '<tr><td>' + ech(c.centre) + '</td>'
+            + '<td class="n">' + c.rattachements + '</td>'
+            + '<td class="n">' + c.rattachementsJamaisConnectes + '</td>'
+            + '<td class="n">' + c.groupes + '</td>'
+            + '<td class="n">' + c.groupesPlanifies + '</td>'
+            + '<td class="n">' + c.eleves + '</td>'
+            + '<td class="n">' + c.elevesActifsPointe + '</td>'
+            + '<td class="n">' + c.joursActifs + '</td>'
+            + '<td class="n">' + c.minutes + '</td>'
+            + '<td class="n">' + pct(c.premierCoupPct) + '</td></tr>';
+        }))
+        + '<p class="ch-note">La colonne dit <strong>rattachements</strong>, pas '
+        + '« enseignants » : une même personne peut être rattachée à deux centres. '
+        + '<strong>Jamais connectés</strong> est la colonne la moins flatteuse et '
+        + 'la plus utile — elle dit où la formation n\'a pas été faite.</p>'
+        + '<p class="ch-note">Cette vue s\'arrête au centre. Le détail par '
+        + 'enseignant appartient à la direction de son centre.</p>'
+        + NOTE_MINUTES;
+    }
+
+    function vueCentre(d) {
+      return '<h2 class="ch-sect">' + ech(d.centre) + '</h2>' + tableau(
+        [{t:'Personne'},{t:'Rôle'},{t:'Dernière connexion'},{t:'Groupes',n:1},
+         {t:'Élèves',n:1},{t:'Activités planifiées',n:1},{t:'Jours actifs',n:1},
+         {t:'Minutes',n:1},{t:'1er coup',n:1}],
+        d.enseignants.map(function (e) {
+          return '<tr><td>' + ech(e.nom)
+            + (e.rattache ? '' : ' <span class="ch-muet">· non rattaché</span>') + '</td>'
+            + '<td class="ch-muet">' + ech(e.role || '—') + '</td>'
+            + '<td>' + (e.derniereConnexion ? jour(e.derniereConnexion)
+                        : '<span class="ch-muet">jamais</span>') + '</td>'
+            + '<td class="n">' + e.groupes + '</td><td class="n">' + e.eleves + '</td>'
+            + '<td class="n">' + e.activitesPlanifiees + '</td>'
+            + '<td class="n">' + e.joursActifs + '</td><td class="n">' + e.minutes + '</td>'
+            + '<td class="n">' + pct(e.premierCoupPct) + '</td></tr>';
+        }))
+        + '<p class="ch-note"><strong>Ces chiffres mesurent l\'adoption, pas la '
+        + 'performance.</strong> Ils disent si l\'outil a été pris en main, jamais '
+        + 'si quelqu\'un enseigne bien. La liste est alphabétique : il n\'y a pas '
+        + 'de classement, et il n\'y en aura pas.</p>'
+        + '<p class="ch-note">Une personne <em>non rattachée</em> est titulaire '
+        + 'd\'un groupe du centre sans y avoir d\'accès. Elle travaille, mais elle '
+        + 'est hors de l\'arbre : cela se répare dans la console du réseau.</p>'
+        + NOTE_MINUTES;
+    }
+
+    async function afficher(vue) {
+      VUE = vue;
+      Array.prototype.forEach.call(document.querySelectorAll('.ch-onglet'), function (b) {
+        b.setAttribute('aria-pressed', b.dataset.vue === vue.cle ? 'true' : 'false');
+      });
+      var zone = document.getElementById('chVue');
+      zone.innerHTML = '<p class="ch-note">Chargement…</p>';
+      try {
+        var d = await charger(vue.url);
+        zone.innerHTML = vue.rendu(d);
+        document.getElementById('chSous').textContent =
+          'Usage des ' + d.fenetreJours + ' derniers jours.';
+      } catch (e) {
+        zone.innerHTML = '<p class="ch-note">' + ech(e.message) + '</p>';
+      }
+    }
+
+    async function demarrer() {
+      var moi;
+      try {
+        var res = await Prof.fetch('/api/prof/me');
+        var data = await res.json();
+        if (!data.connecte) { Prof.versConnexion(); return; }
+        moi = data.enseignant;
+      } catch (e) { return; }
+      document.getElementById('chQui').textContent = moi.nom || '';
+
+      try { PORTEES = await charger('/api/stats/portees'); }
+      catch (e) { PORTEES = { reseau: false, css: [], centres: [] }; }
+
+      var vues = [];
+      if (PORTEES.reseau) vues.push({ cle: 'reseau', nom: 'Réseau',
+        url: '/api/stats/reseau', rendu: vueReseau });
+      PORTEES.css.forEach(function (o) {
+        vues.push({ cle: 'css' + o.id, nom: o.nom,
+                    url: '/api/stats/css?orgId=' + o.id, rendu: vueCss });
+      });
+      PORTEES.centres.forEach(function (o) {
+        vues.push({ cle: 'centre' + o.id, nom: o.nom,
+                    url: '/api/stats/centre?orgId=' + o.id, rendu: vueCentre });
+      });
+
+      if (!vues.length) {
+        document.getElementById('chSous').textContent =
+          'Vous n\'avez la charge d\'aucun centre.';
+        document.getElementById('chRien').hidden = false;
+        return;
+      }
+
+      document.getElementById('chOnglets').innerHTML = vues.map(function (v) {
+        return '<button type="button" class="ch-onglet" data-vue="' + v.cle
+             + '" aria-pressed="false">' + ech(v.nom) + '</button>';
+      }).join('');
+      document.getElementById('chOnglets').addEventListener('click', function (ev) {
+        var b = ev.target.closest('.ch-onglet');
+        if (!b) return;
+        var v = vues.filter(function (x) { return x.cle === b.dataset.vue; })[0];
+        if (v && (!VUE || v.cle !== VUE.cle)) afficher(v);
+      });
+      afficher(vues[0]);
+    }
+
+    demarrer();
+  })();
+  </script>
+</body>
+</html>

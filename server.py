@@ -14395,6 +14395,9 @@ class Handler(http.server.SimpleHTTPRequestHandler):
                 return
             json_response(self, arbre_pour_lecture())
             return
+        if path == "/api/stats/portees":
+            self._handle_stats_portees()
+            return
         if path == "/api/stats/reseau":
             self._handle_stats_reseau(params)
             return
@@ -15693,6 +15696,29 @@ class Handler(http.server.SimpleHTTPRequestHandler):
             t["premierCoupPct"] = (round(100 * t["premierCoupOk"] / t["premierCoupTotal"])
                                    if t["premierCoupTotal"] else None)
         return total
+
+    def _handle_stats_portees(self):
+        """Ce que la personne connectée a le droit de regarder.
+
+        La page ne devine pas sa propre portée : elle la demande. Sans cette
+        route, l'écran devrait essayer chaque vue et lire les 403 — il
+        connaîtrait alors l'existence de CSS et de centres qu'il n'a pas le
+        droit de voir, rien qu'en comptant les refus.
+        """
+        teacher = self._require_teacher()
+        if not teacher:
+            return
+        orgs = load_organisations()
+        json_response(self, {
+            "reseau": is_founder(teacher),
+            "css": [{"id": o["id"], "nom": o.get("nom")} for o in orgs
+                    if o.get("type") == "css"
+                    and a_role_sur(teacher, o["id"], ("gestion_css", "conseiller"))],
+            "centres": [{"id": o["id"], "nom": o.get("nom")} for o in orgs
+                        if o.get("type") == "centre"
+                        and a_role_sur(teacher, o["id"], ("direction", "conseiller"),
+                                       exact=True)],
+        })
 
     def _handle_stats_reseau(self, params):
         fondateur = self._require_founder()

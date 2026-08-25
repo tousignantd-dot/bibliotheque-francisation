@@ -350,6 +350,14 @@
     });
     $('nomEnseignant').textContent = etat.enseignant.nom;
     $('carteEnseignants').hidden = etat.enseignant.role !== 'admin';
+    // « Les chiffres » ne paraît qu'à qui a la charge d'un réseau, d'un CSS ou
+    // d'un centre. C'est le serveur qui le dit — le rôle du compte ne porte
+    // plus la portée depuis l'étape 2, et le deviner ici le referait mentir.
+    try {
+      const p = await json('/api/stats/portees');
+      const lien = $('lienChiffres');
+      if (lien) lien.hidden = !(p.reseau || p.css.length || p.centres.length);
+    } catch { /* pas de chiffres, pas de lien : le défaut est le silence */ }
     // `/api/prof/me` renvoie les groupes bruts ; la liste dédiée y ajoute le
     // nombre d'élèves et le titulaire, affichés dans « Groupes et comptes ».
     try { poserGroupes(await json('/api/prof/groupes')); } catch { /* liste brute */ }

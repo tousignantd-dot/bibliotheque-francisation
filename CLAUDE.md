@@ -450,8 +450,35 @@ colonne s'appelle `rattachements`, jamais « enseignants ».
   d'élèves se tromperait sur une enseignante qui prépare avant que sa classe
   ait rien ouvert. Elle appartient à la **personne**, pas au rattachement.
 
-Reste : les écrans du portail des chiffres, et la migration Postgres, qui
-attend une décision sur la dépendance externe.
+### L'écran (`chiffres.html`)
+
+Trois vues dans une page — réseau, CSS, centre — en onglets. On y entre par
+« Les chiffres » dans la barre de `enseignant.html`.
+
+- **La page ne devine jamais sa propre portée : elle la demande.**
+  `GET /api/stats/portees` rend ce que la personne a le droit de regarder.
+  Sans cette route, l'écran devrait essayer chaque vue et lire les 403 — il
+  apprendrait alors l'existence de CSS et de centres interdits rien qu'en
+  comptant les refus. **Vérifié : un gestionnaire de CSS reçoit son CSS et une
+  liste de centres vide**, donc il n'apprend même pas quels centres ont une vue
+  par enseignant.
+- **Le lien de la barre suit la même règle** : il ne paraît que si la portée
+  n'est pas vide, et c'est le serveur qui le dit. Le `role` du compte ne porte
+  plus la portée depuis l'étape 2 ; le deviner dans la page le referait mentir.
+- **Un compte enseignant ne voit rien ici**, et la page l'envoie à
+  `progression.html`, qui répond à « où en est mon groupe ? ». Vérifié qu'aucun
+  nom de CSS ni de centre ne fuit dans son HTML.
+- **Trois mises en garde sont écrites à l'écran, pas en note de bas de page**,
+  parce qu'elles changent la lecture des colonnes qu'elles touchent : les
+  minutes sont un **plancher**, la pointe d'élèves actifs est le **maximum d'une
+  journée** et jamais une somme, et les chiffres par enseignant mesurent
+  **l'adoption, pas la performance** — liste alphabétique, aucun classement.
+- **La vue d'un CSS dit « rattachements », jamais « enseignants »**, et la
+  colonne la plus utile est la moins flatteuse : *jamais connectés*, qui dit où
+  la formation n'a pas été faite.
+
+**L'étape 4 est complète.** Reste la migration Postgres, qui attend une
+décision sur la dépendance externe.
 
 - **Ce qui n'est pas fait, et pourquoi** : la migration vers Postgres, annoncée
   avec cette étape dans le document. Elle est restée dehors — `requirements.txt`
