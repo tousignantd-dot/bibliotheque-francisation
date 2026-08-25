@@ -64,6 +64,32 @@ except ImportError:
     forge = _ForgeAbsente()
     print("[WARN] forge.py absent : la forge d'activités est désactivée", flush=True)
 
+try:
+    import journal_api
+except ImportError:
+    # Même filet que pour la forge : un fichier oublié dans un commit ne doit
+    # pas tuer le conteneur au démarrage. Sans registre, les appels d'API
+    # partent quand même — on perd le compte, pas le service.
+    class _JournalAbsent:
+        @staticmethod
+        def configurer(_chemin):
+            return None
+
+        @staticmethod
+        def noter(*args, **kwargs):
+            return None
+
+        @staticmethod
+        def lire(*args, **kwargs):
+            return []
+
+        @staticmethod
+        def par_eleve(lignes, eleves=None):
+            return {"parEleve": {}, "total": {}}
+
+    journal_api = _JournalAbsent()
+    print("[WARN] journal_api.py absent : les appels d'API ne sont pas comptés", flush=True)
+
 BASE_DIR = Path(__file__).parent.resolve()
 
 
@@ -197,6 +223,19 @@ INVITATIONS_FILE   = STORAGE_DIR / "data" / "invitations.json"
 # fait à l'écriture, pas à l'affichage. Un filtre s'oublie dans une requête ;
 # une colonne absente ne fuit pas.
 STATS_JOUR_FILE    = STORAGE_DIR / "data" / "stats_jour.json"
+# Registre des appels d'API payants — une ligne par tentative, en ajout
+# seulement. Il répond à la seule question que la page « Le prix d'un module »
+# ne pouvait pas trancher : combien d'appels un élève fait-il vraiment ? Ni
+# texte ni code d'élève n'y entrent, seulement des compteurs. Volume, non
+# versionné : c'est une trace d'exploitation, pas une description du code.
+APPELS_API_FILE    = STORAGE_DIR / "data" / "appels_api.jsonl"
+journal_api.configurer(APPELS_API_FILE)
+# Les trois modèles appelés en service, nommés une fois. Le registre les
+# tarife par leur identifiant : un modèle changé dans un payload sans l'être
+# ici serait compté au prix de l'autre, sans que rien ne proteste.
+MODELE_CORRECTION   = "claude-haiku-4-5-20251001"   # les dix routes de correction
+MODELE_CONVERSATION = "claude-opus-5"               # jeu de rôle et assistant
+MODELE_VOIX         = "eleven_multilingual_v2"      # ElevenLabs
 # Une séance d'élève se ferme après trente minutes sans événement. Sans cette
 # borne, un onglet resté ouvert la nuit gonflerait les minutes de tout un
 # centre. Un événement isolé compte pour une minute : zéro effacerait un
@@ -2714,7 +2753,7 @@ def triage_signalement(entry):
     if not api_key:
         return None
     payload = json.dumps({
-        "model": "claude-haiku-4-5-20251001",
+        "model": MODELE_CORRECTION,
         "max_tokens": 400,
         "messages": [{"role": "user", "content": _prompt_triage(entry)}],
     }).encode("utf-8")
@@ -2733,7 +2772,12 @@ def triage_signalement(entry):
             result = json.loads(resp.read().decode("utf-8"))
     except Exception as e:                      # noqa: BLE001 — jamais fatal
         print(f"[signalement] triage impossible : {e}", flush=True)
+        journal_api.noter("triage-signalement", MODELE_CORRECTION, statut="echec")
         return None
+    # Le seul appel payant qui n'est imputable à aucun élève : il tombe dans
+    # « sansEleve » au relevé, où il doit se voir plutôt que disparaître.
+    journal_api.noter("triage-signalement", MODELE_CORRECTION,
+                      usage=result.get("usage"))
     texte = " ".join(
         b.get("text", "") for b in result.get("content", [])
         if b.get("type") == "text"
@@ -14573,6 +14617,9 @@ class Handler(http.server.SimpleHTTPRequestHandler):
         if path == "/api/admin/corrige-moi":
             self._handle_corrige_moi_list(params)
             return
+        if path == "/api/admin/appels":
+            self._handle_appels_api(params)
+            return
         if path in ("/api/admin/analyses-erreurs", "/api/admin/signaux-aide"):
             self._handle_journal_list(path, params)
             return
@@ -16879,7 +16926,9 @@ class Handler(http.server.SimpleHTTPRequestHandler):
         )
         user_content = f"Réponse de l'élève : {guess}"
 
-        parsed, err = self._call_anthropic_json(system_prompt, user_content, max_tokens=20)
+        parsed, err = self._call_anthropic_json(
+            system_prompt, user_content, max_tokens=20,
+            route="vocab-verifier", code=code)
         if err:
             # Le service IA est indisponible : on retombe sur le refus strict
             # déjà appliqué côté client plutôt que de bloquer l'élève.
@@ -16951,7 +17000,9 @@ class Handler(http.server.SimpleHTTPRequestHandler):
         if exemple:
             user_content += "\nExemple : %s" % exemple
 
-        parsed, err = self._call_anthropic_json(system_prompt, user_content, max_tokens=300)
+        parsed, err = self._call_anthropic_json(
+            system_prompt, user_content, max_tokens=300,
+            route="vocab-traduire", code=code)
         if err:
             json_response(self, {"error": err[0]}, err[1])
             return
@@ -17188,7 +17239,24 @@ class Handler(http.server.SimpleHTTPRequestHandler):
         save_access_log(log)
         json_response(self, {"success": True})
 
-    def _call_anthropic_dialogue(self, system_prompt, messages, max_tokens=300):
+    def _repere_eleve(self, code):
+        """Rend (id de l'élève, id de son groupe) à partir de son code.
+
+        Le registre ne garde jamais le code lui-même : il authentifie, donc
+        l'écrire dans un journal reviendrait à écrire un mot de passe. Cette
+        résolution coûte une relecture de students.json, déjà faite par
+        l'authentification de la route — négligeable devant l'appel réseau
+        qu'elle accompagne.
+        """
+        if not code:
+            return None, None
+        eleve = validate_student_code(str(code).strip().upper())
+        if not eleve:
+            return None, None
+        return eleve.get("id"), eleve.get("groupId")
+
+    def _call_anthropic_dialogue(self, system_prompt, messages, max_tokens=300,
+                                 route="?", code=None, module=None):
         """Appelle l'API Anthropic pour une conversation à plusieurs tours et
         renvoie (texte, None) ou (None, (message d'erreur, code)).
 
@@ -17201,9 +17269,10 @@ class Handler(http.server.SimpleHTTPRequestHandler):
         api_key = os.environ.get("ANTHROPIC_API_KEY", "")
         if not api_key:
             return None, ("Clé API non configurée sur le serveur", 503)
+        eleve_id, groupe_id = self._repere_eleve(code)
 
         payload = json.dumps({
-            "model": "claude-opus-5",
+            "model": MODELE_CONVERSATION,
             "max_tokens": max_tokens,
             # Une réplique de deux phrases n'a rien à gagner d'une longue
             # réflexion, et la classe attend la réponse : effort au minimum.
@@ -17231,16 +17300,27 @@ class Handler(http.server.SimpleHTTPRequestHandler):
             method="POST",
         )
 
+        def _noter(usage=None, statut="ok", http=None):
+            journal_api.noter(route, MODELE_CONVERSATION, eleve_id, groupe_id,
+                              module=module, usage=usage, statut=statut, http=http)
+
         try:
             with urllib.request.urlopen(req, timeout=40) as resp:
                 result = json.loads(resp.read().decode("utf-8"))
         except urllib.error.HTTPError as e:
             detail = e.read().decode("utf-8", errors="replace")
             print(f"[WARN] Anthropic API HTTPError {e.code}: {detail[:300]}", flush=True)
+            _noter(statut="echec", http=e.code)
             return None, ("L'assistant est momentanément indisponible", 502)
         except (urllib.error.URLError, TimeoutError) as e:
             print(f"[WARN] Anthropic API injoignable : {e}", flush=True)
+            _noter(statut="echec")
             return None, ("L'assistant est momentanément indisponible", 502)
+
+        # Un refus est un 200 : il a été produit, donc facturé. Noté avant le
+        # test, comme les réponses vides.
+        _noter(result.get("usage"),
+               statut="refus" if result.get("stop_reason") == "refusal" else "ok")
 
         # Le refus est un 200 avec un contenu vide : à vérifier avant de lire
         # les blocs, sinon on plante sur une liste vide.
@@ -17255,7 +17335,7 @@ class Handler(http.server.SimpleHTTPRequestHandler):
             return None, ("Réponse vide de l'assistant", 502)
 
         usage = result.get("usage", {})
-        print("[jeu-de-role] entrée %s · cache lu %s · sortie %s" % (
+        print("[" + route + "] entrée %s · cache lu %s · sortie %s" % (
             usage.get("input_tokens"), usage.get("cache_read_input_tokens"),
             usage.get("output_tokens")), flush=True)
         return texte, None
@@ -17301,7 +17381,8 @@ class Handler(http.server.SimpleHTTPRequestHandler):
         premier_tour = not recu
 
         texte, err = self._call_anthropic_dialogue(
-            jeu_de_role_system(scenario, cas, role), messages)
+            jeu_de_role_system(scenario, cas, role), messages,
+            route="jeu-de-role", code=code, module=scenario)
         if err:
             json_response(self, {"error": err[0]}, err[1])
             return
@@ -17329,9 +17410,11 @@ class Handler(http.server.SimpleHTTPRequestHandler):
             json_response(self, {"error": "Requête invalide"}, 400)
             return
 
-        if not validate_student_code(body.get("code", "").strip().upper()):
+        eleve = validate_student_code(body.get("code", "").strip().upper())
+        if not eleve:
             json_response(self, {"error": "Non autorisé"}, 401)
             return
+        eleve_id, groupe_id = eleve.get("id"), eleve.get("groupId")
 
         # Borne de coût : ElevenLabs facture au caractère, et une réplique du
         # jeu de rôle tient largement sous cette limite.
@@ -17356,6 +17439,11 @@ class Handler(http.server.SimpleHTTPRequestHandler):
         audio = voix_cache_lire(chemin)
         if audio is not None:
             print(f"[voix] cache : {len(texte)} caractères", flush=True)
+            # Noté à zéro dollar, et noté quand même : le cache est justement
+            # la mesure qui intéresse ici. Un registre qui ne verrait que les
+            # appels payés ne dirait jamais combien il en a épargné.
+            journal_api.noter("voix", MODELE_VOIX, eleve_id, groupe_id,
+                              caracteres=len(texte), statut="cache")
             self._envoyer_mp3(audio)
             return
 
@@ -17366,7 +17454,7 @@ class Handler(http.server.SimpleHTTPRequestHandler):
 
         payload = json.dumps({
             "text": texte,
-            "model_id": "eleven_multilingual_v2",
+            "model_id": MODELE_VOIX,
             "voice_settings": {"stability": 0.5, "similarity_boost": 0.75},
         }).encode("utf-8")
         req = urllib.request.Request(
@@ -17381,13 +17469,19 @@ class Handler(http.server.SimpleHTTPRequestHandler):
         except urllib.error.HTTPError as e:
             detail = e.read().decode("utf-8", errors="replace")
             print(f"[WARN] ElevenLabs HTTPError {e.code}: {detail[:200]}", flush=True)
+            journal_api.noter("voix", MODELE_VOIX, eleve_id, groupe_id,
+                              caracteres=len(texte), statut="echec", http=e.code)
             json_response(self, {"error": "La voix est momentanément indisponible"}, 502)
             return
         except (urllib.error.URLError, TimeoutError) as e:
             print(f"[WARN] ElevenLabs injoignable : {e}", flush=True)
+            journal_api.noter("voix", MODELE_VOIX, eleve_id, groupe_id,
+                              caracteres=len(texte), statut="echec")
             json_response(self, {"error": "La voix est momentanément indisponible"}, 502)
             return
 
+        journal_api.noter("voix", MODELE_VOIX, eleve_id, groupe_id,
+                          caracteres=len(texte))
         print(f"[voix] {len(texte)} caractères → {len(audio)} octets", flush=True)
         voix_cache_ecrire(chemin, audio)
         self._envoyer_mp3(audio)
@@ -17459,7 +17553,10 @@ class Handler(http.server.SimpleHTTPRequestHandler):
         user_content = texte if not contexte else (
             "Contexte (ne pas traduire) : %s\n\nPassage à traduire :\n%s" % (contexte, texte))
 
-        parsed, err = self._call_anthropic_json(system_prompt, user_content, max_tokens=900)
+        parsed, err = self._call_anthropic_json(
+            system_prompt, user_content, max_tokens=900,
+            route="outil-traduire", code=body.get("code"),
+            module=body.get("module"))
         if err:
             json_response(self, {"error": err[0]}, err[1])
             return
@@ -17500,7 +17597,10 @@ class Handler(http.server.SimpleHTTPRequestHandler):
             "a pas de mot difficile."
         )
 
-        parsed, err = self._call_anthropic_json(system_prompt, texte, max_tokens=700)
+        parsed, err = self._call_anthropic_json(
+            system_prompt, texte, max_tokens=700,
+            route="outil-simplifier", code=body.get("code"),
+            module=body.get("module"))
         if err:
             json_response(self, {"error": err[0]}, err[1])
             return
@@ -17601,22 +17701,33 @@ class Handler(http.server.SimpleHTTPRequestHandler):
                 f"{contexte}"
             )
 
-        texte, err = self._call_anthropic_dialogue(system_prompt, messages, max_tokens=400)
+        texte, err = self._call_anthropic_dialogue(
+            system_prompt, messages, max_tokens=400,
+            route="outil-assistant", code=body.get("code"),
+            module=body.get("module"))
         if err:
             json_response(self, {"error": err[0]}, err[1])
             return
         json_response(self, {"reponse": texte})
 
-    def _call_anthropic_json(self, system_prompt, user_content, max_tokens=400):
+    def _call_anthropic_json(self, system_prompt, user_content, max_tokens=400,
+                             route="?", code=None, module=None):
         """Appelle l'API Anthropic et retourne (parsed_dict, None) en cas de
         succès, ou (None, (error_message, status_code)) en cas d'échec. Le
-        modèle doit répondre avec un objet JSON pur (voir prompts appelants)."""
+        modèle doit répondre avec un objet JSON pur (voir prompts appelants).
+
+        `route`, `code` et `module` ne servent qu'au registre des appels. Ils
+        sont passés explicitement plutôt que devinés : deux formulations d'une
+        même information finissent toujours par diverger, et une route mal
+        étiquetée rendrait le compte par élève faux sans rien casser d'autre.
+        """
         api_key = os.environ.get("ANTHROPIC_API_KEY", "")
         if not api_key:
             return None, ("Clé API non configurée sur le serveur", 503)
+        eleve_id, groupe_id = self._repere_eleve(code)
 
         payload = json.dumps({
-            "model": "claude-haiku-4-5-20251001",
+            "model": MODELE_CORRECTION,
             "max_tokens": max_tokens,
             "system": system_prompt,
             "messages": [{"role": "user", "content": user_content}],
@@ -17633,16 +17744,28 @@ class Handler(http.server.SimpleHTTPRequestHandler):
             method="POST",
         )
 
+        def _noter(usage=None, statut="ok", http=None):
+            journal_api.noter(route, MODELE_CORRECTION, eleve_id, groupe_id,
+                              module=module, usage=usage, statut=statut, http=http)
+
         try:
             with urllib.request.urlopen(req, timeout=25) as resp:
                 result = json.loads(resp.read().decode("utf-8"))
         except urllib.error.HTTPError as e:
             detail = e.read().decode("utf-8", errors="replace")
             print(f"[WARN] Anthropic API HTTPError {e.code}: {detail}", flush=True)
+            _noter(statut="echec", http=e.code)
             return None, ("Le service de correction est momentanément indisponible", 502)
         except (urllib.error.URLError, TimeoutError) as e:
             print(f"[WARN] Anthropic API injoignable : {e}", flush=True)
+            _noter(statut="echec")
             return None, ("Le service de correction est momentanément indisponible", 502)
+
+        # Noté avant la lecture du contenu : une réponse mal formée a été
+        # produite, donc facturée. Ne compter que le JSON exploitable
+        # sous-estimerait la facture — le défaut même que le registre des
+        # images a été écrit pour corriger.
+        _noter(result.get("usage"))
 
         try:
             raw_text = result["content"][0]["text"].strip()
@@ -17727,7 +17850,9 @@ class Handler(http.server.SimpleHTTPRequestHandler):
             + f"Réponse de l'élève : « {reponse} »"
         )
 
-        parsed, err = self._call_anthropic_json(system_prompt, user_content, max_tokens=250)
+        parsed, err = self._call_anthropic_json(
+            system_prompt, user_content, max_tokens=250,
+            route="verifier-ecrit", code=code)
         if err:
             json_response(self, {"error": err[0]}, err[1])
             return
@@ -17816,7 +17941,9 @@ class Handler(http.server.SimpleHTTPRequestHandler):
             + "Réponses de l'élève :\n" + "\n".join(lignes)
         )
 
-        parsed, err = self._call_anthropic_json(system_prompt, user_content, max_tokens=500)
+        parsed, err = self._call_anthropic_json(
+            system_prompt, user_content, max_tokens=500,
+            route="analyser-erreurs", code=code)
         if err:
             json_response(self, {"error": err[0]}, err[1])
             return
@@ -17895,7 +18022,8 @@ class Handler(http.server.SimpleHTTPRequestHandler):
             "fidèlement l'intention de l'élève."
         )
 
-        parsed, err = self._call_anthropic_json(system_prompt, text)
+        parsed, err = self._call_anthropic_json(
+            system_prompt, text, route="corriger-phrase", code=code)
         if err:
             json_response(self, {"error": err[0]}, err[1])
             return
@@ -17983,7 +18111,9 @@ class Handler(http.server.SimpleHTTPRequestHandler):
         # Un bulletin ou une affiche n'a pas d'objet : la ligne vide ferait
         # inventer un objet à corriger.
         user_content = f"Objet : {subject}\n\n{text}" if subject else text
-        parsed, err = self._call_anthropic_json(system_prompt, user_content, max_tokens=900)
+        parsed, err = self._call_anthropic_json(
+            system_prompt, user_content, max_tokens=900,
+            route="corriger-courriel", code=code)
         if err:
             json_response(self, {"error": err[0]}, err[1])
             return
@@ -18035,7 +18165,9 @@ class Handler(http.server.SimpleHTTPRequestHandler):
             "\"Pronom\", \"Autre\". Ne saute aucun mot de la phrase originale."
         )
 
-        parsed, err = self._call_anthropic_json(system_prompt, text, max_tokens=1400)
+        parsed, err = self._call_anthropic_json(
+            system_prompt, text, max_tokens=1400,
+            route="analyser-grammaire", code=code)
         if err:
             json_response(self, {"error": err[0]}, err[1])
             return
@@ -18392,6 +18524,50 @@ class Handler(http.server.SimpleHTTPRequestHandler):
              if e.get("groupId") == group_id or e.get("studentId") in student_ids),
             key=lambda e: e.get("lastSeen", ""), reverse=True)
         json_response(self, entries)
+
+    def _handle_appels_api(self, params):
+        """Le compte réel des appels d'API, par élève, pour un groupe.
+
+        `depuis` accepte une date (« 2026-08-25 ») ; sans elle, tout le
+        registre. La réponse ne porte que des compteurs : ni texte, ni code
+        d'élève, ni contenu d'échange — le registre n'en contient pas.
+
+        Réservée à l'enseignant du groupe, comme les productions et le
+        journal : un compte d'appels dit quand un élève a travaillé et
+        combien il a demandé d'aide.
+        """
+        teacher = self._require_teacher()
+        if not teacher:
+            return
+        group_id = self._group_from_params(teacher, params)
+        if group_id is None:
+            return
+
+        eleves = {s["id"]: s for s in load_students() if s.get("groupId") == group_id}
+        depuis = (params.get("depuis", [""])[0] or "").strip()[:25] or None
+        releve = journal_api.par_eleve(journal_api.lire(depuis), eleves=set(eleves))
+
+        rangees = []
+        for eid, seau in releve["parEleve"].items():
+            if eid == "sansEleve":
+                continue
+            eleve = eleves.get(eid, {})
+            rangees.append(dict(seau, eleveId=eid,
+                                prenom=eleve.get("prenom", "")))
+        rangees.sort(key=lambda r: r["cout_usd"], reverse=True)
+
+        # Le dénominateur qui manque autrement : un groupe garde des codes
+        # d'avance et des absents, et une moyenne sur l'effectif ne dit rien.
+        entres = len(rangees)
+        json_response(self, {
+            "depuis": depuis,
+            "elevesDuGroupe": len(eleves),
+            "elevesAvecAppels": entres,
+            "total": releve["total"],
+            "moyenneParEleve": round(
+                releve["total"].get("cout_usd", 0) / entres, 6) if entres else 0,
+            "eleves": rangees,
+        })
 
     @sous_verrou
     def _handle_add_student(self):
