@@ -189,6 +189,28 @@ retirer une variable d'environnement ; les fichiers ne sont jamais effacés.
     DATABASE_URL=… python3 build/migrer_postgres.py --essai   # sans écrire
     DATABASE_URL=… python3 build/migrer_postgres.py           # migre
 
+**En production, la migration se fait au démarrage, pas en ligne de commande.**
+`migrer_vers_postgres()` tourne dans le fil d'initialisation : les fichiers
+source vivent sur le volume Railway, et une commande lancée d'un poste local
+migrerait les données du poste local. Elle ne fait rien si la base contient
+déjà quoi que ce soit — rejouer une migration remettrait l'état des fichiers
+par-dessus le travail fait depuis. `build/migrer_postgres.py` reste l'outil
+d'inspection (`--etat`) et de reprise manuelle.
+
+**`GET /api/health` dit quel stockage sert** : `{"stockage": "postgres" |
+"fichiers", "migre": "faite" | "inutile" | "jamais" | …}`. Railway ne passe pas
+`DATABASE_URL` d'un service à l'autre tout seul ; sans ce témoin, rien ne dit
+de l'extérieur si la variable est arrivée jusqu'au serveur. Il ne rend que le
+nom du stockage, jamais l'adresse ni les identifiants.
+
+**L'ordre du démarrage a été payé.** Le premier jet plaçait la migration en
+dernier, « pour copier l'état corrigé par les migrations précédentes ». Mais
+celles-ci écrivent par la couche de stockage : sans schéma, chacune échouait
+sur `relation "documents" does not exist`, et la copie n'avait jamais lieu — le
+serveur tournait sur le repli fichier **en croyant être en base**. Le bon ordre
+est l'inverse : poser le schéma, copier le volume, puis laisser les migrations
+idempotentes travailler sur la base.
+
 - **Deux formes de rangement, et la différence n'est pas cosmétique.** Les
   collections petites et bornées (comptes, groupes, arbre, accès, planification,
   invitations…) sont une **ligne de `documents`**, la liste entière en JSONB :
@@ -205,9 +227,14 @@ retirer une variable d'environnement ; les fichiers ne sont jamais effacés.
   data/ ».** `materiel.json` et `sections.json` sont **produits par le build**
   et décrivent ce que le dépôt livre : les mettre en base créerait une deuxième
   vérité. Ce qui n'est pas nommé reste sur le volume, et c'est le défaut sûr.
-- **Une erreur de base ne retombe pas sur le fichier.** Depuis la migration le
-  fichier est périmé ; le servir ferait réapparaître d'anciennes données comme
-  si de rien n'était. On rend une liste vide et on crie dans le journal.
+- **Une erreur de base retombe sur le fichier, et c'est une correction.** Le
+  premier jet rendait une liste vide, au motif que le fichier est périmé après
+  la migration. Mais si la base tombe en pleine séance, une liste vide **vide le
+  portail** — plus de groupes, plus d'élèves — et l'enseignante recrée ce
+  qu'elle croit perdu. Le fichier est peut-être en retard, mais il est
+  plausible et la classe continue de lire son matériel ; les écritures, elles,
+  échouent bruyamment de toute façon. Même principe que le verrou des
+  sections : un dispositif qui se trompe ne doit pas fermer la classe.
 - **`migrer_postgres.py` refuse d'écraser une base déjà peuplée** sans
   `--forcer` : rejouer la migration remettrait l'état des fichiers par-dessus
   le travail fait depuis. C'est le seul geste vraiment irréversible.
