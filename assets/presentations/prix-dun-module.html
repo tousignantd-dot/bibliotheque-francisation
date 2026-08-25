@@ -1,0 +1,563 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Le prix d'un module</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Nunito:ital,wght@0,400;0,600;0,700;0,900;1,400&family=IBM+Plex+Mono:wght@400;500;600&display=swap">
+<style>
+:root{
+  --paper:#F4F5F2;
+  --sheet:#FFFFFF;
+  --ink:#16181C;
+  --ink-600:#4A4F58;
+  --ink-400:#767C86;
+  --rule:#D9DCD6;
+  --rule-fort:#B8BDB5;
+  --indigo:#3B49A0;
+  --indigo-bg:#E8EAFA;
+  --sarcelle:#0D7A6F;
+  --sarcelle-bg:#DCF2EF;
+  --ambre:#B45309;
+  --ambre-bg:#FBEEDC;
+  --framboise:#A5335F;
+  --framboise-bg:#FCE9F0;
+  --marque:#6B4FBB;
+  --neutre-bg:#E9EBE6;
+}
+@media (prefers-color-scheme: dark){
+  :root:not([data-theme="light"]){
+    --paper:#14161A;
+    --sheet:#1B1E23;
+    --ink:#ECEEEA;
+    --ink-600:#A8AEB6;
+    --ink-400:#7C838C;
+    --rule:#2E333A;
+    --rule-fort:#454C55;
+    --indigo:#93A0EC;
+    --indigo-bg:#232842;
+    --sarcelle:#4FC4B5;
+    --sarcelle-bg:#123632;
+    --ambre:#E0973F;
+    --ambre-bg:#3A2A14;
+    --framboise:#E480A5;
+    --framboise-bg:#3A1A27;
+    --marque:#A891E4;
+    --neutre-bg:#242830;
+  }
+}
+:root[data-theme="dark"]{
+  --paper:#14161A;
+  --sheet:#1B1E23;
+  --ink:#ECEEEA;
+  --ink-600:#A8AEB6;
+  --ink-400:#7C838C;
+  --rule:#2E333A;
+  --rule-fort:#454C55;
+  --indigo:#93A0EC;
+  --indigo-bg:#232842;
+  --sarcelle:#4FC4B5;
+  --sarcelle-bg:#123632;
+  --ambre:#E0973F;
+  --ambre-bg:#3A2A14;
+  --framboise:#E480A5;
+  --framboise-bg:#3A1A27;
+  --marque:#A891E4;
+  --neutre-bg:#242830;
+}
+
+*{box-sizing:border-box;}
+body{
+  margin:0;
+  background:var(--paper);
+  color:var(--ink);
+  font-family:"Nunito",-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;
+  font-size:16.5px;
+  line-height:1.6;
+  -webkit-font-smoothing:antialiased;
+}
+.page{max-width:1080px;margin:0 auto;padding:0 24px 96px;}
+
+/* ---------- en-tête ---------- */
+.tete{
+  padding:56px 0 32px;
+  border-bottom:2px solid var(--ink);
+  display:flex;
+  flex-direction:column;
+  gap:18px;
+}
+.pilule{
+  display:inline-flex;align-items:center;gap:9px;
+  align-self:flex-start;
+  border:2.5px solid var(--marque);
+  border-radius:999px;
+  padding:5px 14px;
+  background:var(--sheet);
+}
+.pilule b{font-weight:900;letter-spacing:.01em;color:var(--marque);font-size:14px;}
+.pilule span{
+  border-left:1.5px solid var(--rule-fort);
+  padding-left:9px;
+  font-size:11.5px;text-transform:uppercase;letter-spacing:.09em;
+  color:var(--ink-600);font-weight:700;
+}
+h1{
+  font-size:clamp(34px,5.6vw,54px);
+  font-weight:900;line-height:1.02;letter-spacing:-.022em;
+  margin:0;text-wrap:balance;
+}
+.chapeau{
+  margin:0;max-width:60ch;
+  font-size:18px;color:var(--ink-600);
+}
+.date{
+  font-family:"IBM Plex Mono",ui-monospace,monospace;
+  font-size:12px;letter-spacing:.04em;color:var(--ink-400);
+  text-transform:uppercase;
+}
+
+/* ---------- addition ---------- */
+.addition{
+  display:grid;grid-template-columns:repeat(auto-fit,minmax(210px,1fr));
+  gap:0;
+  border-bottom:1px solid var(--rule);
+  margin-bottom:8px;
+}
+.poste{
+  padding:26px 22px 24px;
+  border-right:1px solid var(--rule);
+}
+.poste:last-child{border-right:0;}
+.poste .lbl{
+  font-size:11.5px;text-transform:uppercase;letter-spacing:.1em;
+  font-weight:700;color:var(--ink-400);margin-bottom:10px;
+}
+.poste .chiffre{
+  font-family:"IBM Plex Mono",monospace;
+  font-size:34px;font-weight:600;letter-spacing:-.03em;
+  font-variant-numeric:tabular-nums;line-height:1;
+}
+.poste .note{font-size:13.5px;color:var(--ink-600);margin-top:9px;}
+.c-indigo{color:var(--indigo);} .c-sarcelle{color:var(--sarcelle);}
+.c-ambre{color:var(--ambre);} .c-framboise{color:var(--framboise);}
+
+/* ---------- sections ---------- */
+section{padding:52px 0 8px;border-top:1px solid var(--rule);}
+section:first-of-type{border-top:0;}
+.eyebrow{
+  font-family:"IBM Plex Mono",monospace;
+  font-size:11.5px;letter-spacing:.14em;text-transform:uppercase;
+  color:var(--ink-400);margin:0 0 10px;
+}
+h2{
+  font-size:clamp(23px,3vw,30px);font-weight:800;letter-spacing:-.015em;
+  margin:0 0 12px;text-wrap:balance;
+}
+h3{font-size:18px;font-weight:800;margin:34px 0 10px;letter-spacing:-.005em;}
+p{margin:0 0 14px;max-width:66ch;}
+p.lead{font-size:17.5px;color:var(--ink-600);}
+strong{font-weight:800;}
+em{font-style:italic;color:var(--ink-600);}
+
+/* ---------- tableaux ---------- */
+.tw{overflow-x:auto;margin:22px 0 8px;border-top:1.5px solid var(--ink);}
+table{border-collapse:collapse;width:100%;min-width:620px;font-size:15px;}
+thead th{
+  text-align:left;font-size:11.5px;text-transform:uppercase;letter-spacing:.08em;
+  font-weight:700;color:var(--ink-400);
+  padding:11px 12px 10px;border-bottom:1px solid var(--rule-fort);
+  white-space:nowrap;
+}
+td{padding:12px;border-bottom:1px solid var(--rule);vertical-align:top;}
+tbody tr:last-child td{border-bottom:1px solid var(--rule-fort);}
+.num{
+  text-align:right;font-family:"IBM Plex Mono",monospace;
+  font-variant-numeric:tabular-nums;white-space:nowrap;font-size:14px;
+}
+tr.total td{
+  border-bottom:0;border-top:2px solid var(--ink);
+  font-weight:800;padding-top:14px;background:transparent;
+}
+tr.total .num{font-size:16px;font-weight:600;}
+.mono{font-family:"IBM Plex Mono",monospace;font-size:13.5px;}
+.sub{display:block;font-size:13px;color:var(--ink-400);margin-top:3px;}
+
+.tag{
+  display:inline-block;font-size:11px;font-weight:800;letter-spacing:.05em;
+  text-transform:uppercase;padding:2.5px 8px;border-radius:3px;white-space:nowrap;
+}
+.t-indigo{background:var(--indigo-bg);color:var(--indigo);}
+.t-sarcelle{background:var(--sarcelle-bg);color:var(--sarcelle);}
+.t-ambre{background:var(--ambre-bg);color:var(--ambre);}
+.t-framboise{background:var(--framboise-bg);color:var(--framboise);}
+.t-neutre{background:var(--neutre-bg);color:var(--ink-600);}
+
+/* ---------- barres ---------- */
+.barres{display:flex;flex-direction:column;gap:11px;margin:24px 0 6px;}
+.barre{display:grid;grid-template-columns:minmax(140px,1.1fr) 3fr auto;gap:14px;align-items:center;font-size:14.5px;}
+.barre .piste{background:var(--neutre-bg);height:16px;border-radius:2px;overflow:hidden;}
+.barre .rempli{height:100%;border-radius:2px;}
+.barre .val{font-family:"IBM Plex Mono",monospace;font-variant-numeric:tabular-nums;font-size:14px;color:var(--ink-600);}
+@media (max-width:620px){
+  .barre{grid-template-columns:1fr auto;}
+  .barre .piste{grid-column:1 / -1;order:3;}
+}
+
+/* ---------- encadré ---------- */
+.encadre{
+  background:var(--sheet);
+  border-left:3px solid var(--ambre);
+  padding:20px 22px;margin:26px 0;
+}
+.encadre.indigo{border-left-color:var(--indigo);}
+.encadre.sarcelle{border-left-color:var(--sarcelle);}
+.encadre p:last-child{margin-bottom:0;}
+.encadre .titre{font-weight:800;margin:0 0 8px;font-size:15.5px;}
+
+ul{margin:0 0 16px;padding-left:20px;max-width:66ch;}
+li{margin-bottom:8px;}
+
+.pied{
+  margin-top:56px;padding-top:22px;border-top:2px solid var(--ink);
+  font-size:13.5px;color:var(--ink-400);max-width:70ch;
+}
+.pied p{max-width:none;margin-bottom:9px;}
+a{color:inherit;}
+:focus-visible{outline:2px solid var(--indigo);outline-offset:2px;}
+@media (prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important;}}
+</style>
+</head>
+<body>
+<div class="page">
+
+  <header class="tete">
+    <div class="pilule"><b>SAAF</b><span>Coûts d'infrastructure</span></div>
+    <h1>Le prix d'un module</h1>
+    <p class="chapeau">Ce que la plateforme appelle, à quel tarif, et ce que coûte un module joué par un groupe de vingt élèves. Les montants sont des <em>estimations</em> — aucune facture n'a été reconstituée ici.</p>
+    <p class="date">Relevé du 25 août 2026 · 77 modules assemblés · 6 886 MP3 · 1 502 images</p>
+  </header>
+
+  <div class="addition">
+    <div class="poste">
+      <div class="lbl">Produire un module</div>
+      <div class="chiffre c-ambre">≈ 8 $</div>
+      <div class="note">Une seule fois. Images et voix enregistrées, payées à la fabrication.</div>
+    </div>
+    <div class="poste">
+      <div class="lbl">Le jouer à 20 élèves</div>
+      <div class="chiffre c-framboise">≈ 36 $</div>
+      <div class="note">À chaque groupe. Correction, assistant, jeu de rôle, voix en direct.</div>
+    </div>
+    <div class="poste">
+      <div class="lbl">Par élève</div>
+      <div class="chiffre c-indigo">≈ 1,80 $</div>
+      <div class="note">Pour un module entier : seize séances, quatre matinées de quatre heures.</div>
+    </div>
+    <div class="poste">
+      <div class="lbl">Déjà dépensé en images</div>
+      <div class="chiffre c-sarcelle">90,15 $</div>
+      <div class="note">1 586 appels inscrits au registre, toute la bibliothèque confondue.</div>
+    </div>
+  </div>
+
+  <section>
+    <p class="eyebrow">01 — L'inventaire</p>
+    <h2>Quatre fournisseurs, six modèles</h2>
+    <p class="lead">Trois services facturent à l'usage. Les trois autres colonnes du budget ne coûtent rien : la reconnaissance vocale se fait dans le navigateur de l'élève, le courriel passe par un palier gratuit, et la fabrication du contenu passe par le CLI Claude Code, couvert par l'abonnement.</p>
+
+    <div class="tw">
+      <table>
+        <thead>
+          <tr>
+            <th>Modèle</th>
+            <th>Fournisseur</th>
+            <th>Où il sert</th>
+            <th class="num">Tarif</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td><span class="mono">claude-haiku-4-5</span><span class="sub">API Messages</span></td>
+            <td><span class="tag t-indigo">Anthropic</span></td>
+            <td>Dix routes de correction : phrase, courriel, grammaire, analyse d'erreurs, traduction et simplification d'un passage, vocabulaire, tri des signalements</td>
+            <td class="num">1,00 $ / M entrée<br>5,00 $ / M sortie</td>
+          </tr>
+          <tr>
+            <td><span class="mono">claude-opus-5</span><span class="sub">API Messages</span></td>
+            <td><span class="tag t-indigo">Anthropic</span></td>
+            <td>Les deux conversations : jeu de rôle et assistant de la barre d'outils</td>
+            <td class="num">5,00 $ / M entrée<br>25,00 $ / M sortie</td>
+          </tr>
+          <tr>
+            <td><span class="mono">eleven_multilingual_v2</span><span class="sub">Text-to-speech</span></td>
+            <td><span class="tag t-sarcelle">ElevenLabs</span></td>
+            <td>Les MP3 des modules, produits d'avance — et les répliques du jeu de rôle, synthétisées en direct</td>
+            <td class="num">≈ 0,22 $ / 1 000 car.</td>
+          </tr>
+          <tr>
+            <td><span class="mono">fal-ai/nano-banana-2</span><span class="sub">Image</span></td>
+            <td><span class="tag t-ambre">fal.ai</span></td>
+            <td>Illustrations des exercices et cartes de vocabulaire — 802 appels inscrits</td>
+            <td class="num">0,08 $ / image</td>
+          </tr>
+          <tr>
+            <td><span class="mono">gemini-3.1-flash-lite-image</span><span class="sub">Image — hors service</span></td>
+            <td><span class="tag t-neutre">Google</span></td>
+            <td>Premier fournisseur d'images, 776 appels. La clé renvoie <span class="mono">403</span> depuis le 11 août ; tout est passé à fal.ai</td>
+            <td class="num">0,0336 $ / image</td>
+          </tr>
+          <tr>
+            <td>Web Speech API<span class="sub">Reconnaissance et synthèse</span></td>
+            <td><span class="tag t-neutre">Navigateur</span></td>
+            <td>Transcription des productions orales, et voix de repli quand un MP3 manque</td>
+            <td class="num">0 $</td>
+          </tr>
+          <tr>
+            <td>Resend<span class="sub">Courriel des signalements</span></td>
+            <td><span class="tag t-neutre">Resend</span></td>
+            <td>Une note à la personne responsable après chaque signalement</td>
+            <td class="num">0 $ (palier gratuit)</td>
+          </tr>
+          <tr>
+            <td>CLI Claude Code<span class="sub">Forge et chaîne de production</span></td>
+            <td><span class="tag t-neutre">Abonnement</span></td>
+            <td>Écrit les modules, les séances et les activités de la forge</td>
+            <td class="num">hors facturation<br>au jeton</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+
+    <div class="encadre indigo">
+      <p class="titre">Deux modèles, deux régimes</p>
+      <p>Haiku 4.5 fait le gros du volume pour presque rien : une correction de phrase revient à un demi-centième de dollar. Opus 5 ne sert que là où l'élève <em>parle</em> à la machine — l'assistant et le jeu de rôle — et coûte cinq fois plus par jeton, sur des échanges dix fois plus longs. À eux deux, ces échanges pèsent plus de la moitié de la facture d'un groupe.</p>
+    </div>
+  </section>
+
+  <section>
+    <p class="eyebrow">02 — Fabrication</p>
+    <h2>Ce qu'un module coûte à produire</h2>
+    <p class="lead">Payé une fois, pour tous les groupes à venir. Un module médian porte vingt images et vingt-cinq mille caractères de voix — pastilles de mots, bandeaux de savoir, mini-leçons et répliques de dialogue réunies.</p>
+
+    <div class="tw">
+      <table>
+        <thead>
+          <tr><th>Poste</th><th>Modèle</th><th class="num">Quantité</th><th class="num">Coût</th></tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>Images d'exercices et de vocabulaire</td>
+            <td class="mono">nano-banana-2</td>
+            <td class="num">20 images</td>
+            <td class="num">1,60 $</td>
+          </tr>
+          <tr>
+            <td>Relances<span class="sub">Une image refusée se repaie à chaque essai</span></td>
+            <td class="mono">nano-banana-2</td>
+            <td class="num">+ 30 %</td>
+            <td class="num">0,50 $</td>
+          </tr>
+          <tr>
+            <td>Voix des dialogues<span class="sub">Médiane relevée : 5 401 caractères</span></td>
+            <td class="mono">eleven_multilingual_v2</td>
+            <td class="num">5 400 car.</td>
+            <td class="num">1,19 $</td>
+          </tr>
+          <tr>
+            <td>Pastilles de mots et bandeaux<span class="sub">Médiane relevée : 7 143 caractères</span></td>
+            <td class="mono">eleven_multilingual_v2</td>
+            <td class="num">7 100 car.</td>
+            <td class="num">1,56 $</td>
+          </tr>
+          <tr>
+            <td>Mini-leçons « En apprendre plus »<span class="sub">Le plus gros bloc, et le seul vraiment optionnel</span></td>
+            <td class="mono">eleven_multilingual_v2</td>
+            <td class="num">12 500 car.</td>
+            <td class="num">2,75 $</td>
+          </tr>
+          <tr>
+            <td>Texte, exercices, seize séances</td>
+            <td class="mono">CLI Claude Code</td>
+            <td class="num">—</td>
+            <td class="num">abonnement</td>
+          </tr>
+          <tr class="total">
+            <td>Un module complet</td>
+            <td></td>
+            <td class="num">≈ 25 000 car.</td>
+            <td class="num">7,60 $</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+
+    <div class="encadre sarcelle">
+      <p class="titre">Le levier, ce sont les mini-leçons</p>
+      <p>Elles représentent 81 % des fichiers audio qui restent à produire dans la bibliothèque. Les laisser tomber sur la synthèse vocale du navigateur — le repli est déjà branché — ramènerait le reste du chantier de 177 $ à environ 90 $, et le coût de fabrication d'un module de 7,60 $ à 4,85 $.</p>
+    </div>
+  </section>
+
+  <section>
+    <p class="eyebrow">03 — Salle de classe</p>
+    <h2>Un groupe de vingt, un module</h2>
+    <p class="lead">Seize séances, réparties sur quatre matinées de quatre heures — seize heures de classe. Les hypothèses d'usage sont posées par élève et par module ; ce sont elles, bien plus que les tarifs, qui décident du montant. Les MP3 déjà produits ne coûtent rien à rejouer : ce sont des fichiers statiques.</p>
+
+    <div class="tw">
+      <table>
+        <thead>
+          <tr>
+            <th>Ce que fait l'élève</th>
+            <th>Modèle</th>
+            <th class="num">Appels<br>par élève</th>
+            <th class="num">Coût<br>par appel</th>
+            <th class="num">Groupe<br>de 20</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>Écouter les dialogues, les mots, les mini-leçons</td>
+            <td class="mono">— MP3 sur disque</td>
+            <td class="num">∞</td>
+            <td class="num">0,00 $</td>
+            <td class="num">0,00 $</td>
+          </tr>
+          <tr>
+            <td>Faire vérifier une réponse de vocabulaire</td>
+            <td class="mono">haiku-4-5</td>
+            <td class="num">60</td>
+            <td class="num">0,0005 $</td>
+            <td class="num">0,60 $</td>
+          </tr>
+          <tr>
+            <td>Traduire un mot de la liste<span class="sub">Mis en cache pour toute la classe : payé une fois</span></td>
+            <td class="mono">haiku-4-5</td>
+            <td class="num">3</td>
+            <td class="num">0,0020 $</td>
+            <td class="num">0,12 $</td>
+          </tr>
+          <tr>
+            <td>Traduire un passage surligné</td>
+            <td class="mono">haiku-4-5</td>
+            <td class="num">15</td>
+            <td class="num">0,0040 $</td>
+            <td class="num">1,20 $</td>
+          </tr>
+          <tr>
+            <td>Faire simplifier une consigne</td>
+            <td class="mono">haiku-4-5</td>
+            <td class="num">10</td>
+            <td class="num">0,0030 $</td>
+            <td class="num">0,60 $</td>
+          </tr>
+          <tr>
+            <td>Faire corriger une phrase, un courriel, la grammaire</td>
+            <td class="mono">haiku-4-5</td>
+            <td class="num">15</td>
+            <td class="num">0,0050 $</td>
+            <td class="num">1,50 $</td>
+          </tr>
+          <tr>
+            <td>Poser une question à l'assistant<span class="sub">12 tours d'historique + jusqu'à 6 000 car. de contexte</span></td>
+            <td class="mono">opus-5</td>
+            <td class="num">20 tours</td>
+            <td class="num">0,0280 $</td>
+            <td class="num">11,20 $</td>
+          </tr>
+          <tr>
+            <td>Jouer le jeu de rôle — le texte<span class="sub">24 tours d'historique renvoyés à chaque réplique</span></td>
+            <td class="mono">opus-5</td>
+            <td class="num">20 tours</td>
+            <td class="num">0,0200 $</td>
+            <td class="num">8,00 $</td>
+          </tr>
+          <tr>
+            <td>Jouer le jeu de rôle — la voix<span class="sub">150 caractères par réplique, cache peu efficace : chaque réplique est unique</span></td>
+            <td class="mono">eleven_multilingual_v2</td>
+            <td class="num">3 000 car.</td>
+            <td class="num">0,22 $/1 000</td>
+            <td class="num">13,20 $</td>
+          </tr>
+          <tr class="total">
+            <td>Un module, un groupe de vingt</td>
+            <td></td>
+            <td class="num"></td>
+            <td class="num">1,82 $ / élève</td>
+            <td class="num">36,42 $</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+
+    <h3>Où part l'argent</h3>
+    <div class="barres">
+      <div class="barre">
+        <div>Voix du jeu de rôle</div>
+        <div class="piste"><div class="rempli" style="width:100%;background:var(--sarcelle);"></div></div>
+        <div class="val">13,20 $ · 36 %</div>
+      </div>
+      <div class="barre">
+        <div>Assistant (Opus 5)</div>
+        <div class="piste"><div class="rempli" style="width:84.8%;background:var(--indigo);"></div></div>
+        <div class="val">11,20 $ · 31 %</div>
+      </div>
+      <div class="barre">
+        <div>Jeu de rôle, texte (Opus 5)</div>
+        <div class="piste"><div class="rempli" style="width:60.6%;background:var(--indigo);"></div></div>
+        <div class="val">8,00 $ · 22 %</div>
+      </div>
+      <div class="barre">
+        <div>Corrections (Haiku 4.5)</div>
+        <div class="piste"><div class="rempli" style="width:11.4%;background:var(--framboise);"></div></div>
+        <div class="val">1,50 $ · 4 %</div>
+      </div>
+      <div class="barre">
+        <div>Barre d'outils (Haiku 4.5)</div>
+        <div class="piste"><div class="rempli" style="width:13.6%;background:var(--framboise);"></div></div>
+        <div class="val">1,80 $ · 5 %</div>
+      </div>
+      <div class="barre">
+        <div>Vocabulaire (Haiku 4.5)</div>
+        <div class="piste"><div class="rempli" style="width:5.5%;background:var(--framboise);"></div></div>
+        <div class="val">0,72 $ · 2 %</div>
+      </div>
+    </div>
+
+    <div class="encadre">
+      <p class="titre">Trois quarts de la facture tiennent dans deux fonctions</p>
+      <p>L'assistant et le jeu de rôle — texte et voix — font 32,40 $ des 36,42 $. Tout le reste de la plateforme, dix routes de correction et de traduction, coûte 4,02 $ pour vingt élèves sur tout le module. <strong>Faire tourner l'assistant et le jeu de rôle sur Haiku 4.5 au lieu d'Opus 5 ramènerait le module à 21 $</strong>, soit 1,05 $ par élève — au prix d'un partenaire de conversation nettement moins fin, ce qui est précisément la compétence travaillée.</p>
+    </div>
+  </section>
+
+  <section>
+    <p class="eyebrow">04 — À l'échelle</p>
+    <h2>Ce que ça donne sur une session</h2>
+    <p class="lead">Une session compte une quarantaine de matinées enseignables, soit une dizaine de modules à quatre matinées chacun. Les chiffres ci-dessous supposent que les modules existent déjà — leur fabrication ne se paie pas deux fois.</p>
+
+    <div class="tw">
+      <table>
+        <thead>
+          <tr><th>Échelle</th><th class="num">Modules</th><th class="num">Élèves</th><th class="num">Coût d'usage</th><th class="num">Par élève</th></tr>
+        </thead>
+        <tbody>
+          <tr><td>Un module, un groupe<span class="sub">Quatre matinées</span></td><td class="num">1</td><td class="num">20</td><td class="num">36 $</td><td class="num">1,82 $</td></tr>
+          <tr><td>Une session, un groupe<span class="sub">Une quarantaine de matinées</span></td><td class="num">10</td><td class="num">20</td><td class="num">364 $</td><td class="num">18,21 $</td></tr>
+          <tr><td>Une session, un centre de cinq groupes</td><td class="num">10</td><td class="num">100</td><td class="num">1 821 $</td><td class="num">18,21 $</td></tr>
+          <tr class="total"><td>Une année, un centre de cinq groupes<span class="sub">Deux sessions</span></td><td class="num">20</td><td class="num">100</td><td class="num">≈ 3 642 $</td><td class="num">36,42 $</td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <p>La fabrication, elle, ne monte pas avec le nombre d'élèves : les 77 modules déjà assemblés représentent de l'ordre de <strong>600 $</strong> d'images et de voix, dont 90,15 $ d'images sont inscrits au registre des appels et le reste attend le rechargement du compte ElevenLabs. Servi à mille élèves, ça fait soixante cents par personne.</p>
+  </section>
+
+  <footer class="pied">
+    <p><strong>Ce qui est mesuré, et ce qui est supposé.</strong> Les tarifs des modèles Anthropic et les compteurs de la bibliothèque — 77 modules, 6 886 MP3, 1 502 images, 1 586 appels d'image pour 90,15 $ — sont relevés sur le dépôt et sur <span class="mono">appels.jsonl</span>. Les médianes de caractères viennent des relevés de sons et des fichiers de dialogues des 77 modules.</p>
+    <p><strong>Les hypothèses d'usage sont inventées</strong> : rien ne compte aujourd'hui les appels d'un élève. Vingt tours d'assistant et vingt répliques de jeu de rôle par module sont un ordre de grandeur, pas une mesure — un élève bavard doublerait sa part, un élève silencieux la diviserait par cinq.</p>
+    <p><strong>Le tarif ElevenLabs est déduit, pas facturé.</strong> Le service compte au caractère et le montant retenu ici, 0,22 $ pour mille caractères, vient de l'estimation du chantier audio du 24 août. fal.ai, de son côté, ne renvoie aucun montant dans sa réponse : le registre des appels donne un plancher, jamais la facture.</p>
+  </footer>
+
+</div>
+</body>
+</html>
