@@ -14411,10 +14411,17 @@ class Handler(http.server.SimpleHTTPRequestHandler):
             # Railway ne passe pas DATABASE_URL d'un service à l'autre tout
             # seul : sans ce témoin, rien ne dit de l'extérieur si la variable
             # est bien arrivée jusqu'au serveur.
+            # « sans objet » confondait deux causes très différentes : pas de
+            # variable, ou pas de pilote installé. On les sépare — un
+            # diagnostic qui mélange deux pannes fait chercher au mauvais
+            # endroit, et c'est arrivé.
             json_response(self, {
                 "ok": True,
                 "stockage": "postgres" if (_db and _db.disponible()) else "fichiers",
                 "migre": _POSTGRES_MIGRE,
+                # Des booléens, jamais l'adresse ni les identifiants.
+                "pilote": bool(_db and getattr(_db, "_PILOTE", False)),
+                "url": bool(_db and _db.url()),
             })
             return
         if path == "/api/prof/me":
