@@ -1,0 +1,335 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Le tableau de bord du projet — SAAF</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800;900&display=swap">
+<link rel="stylesheet" href="../design-system/marque-saaf.css">
+<link rel="icon" type="image/svg+xml" href="../design-system/marque-saaf-favicon.svg">
+<style>
+  /* Page générée par build/tableau_bord.py — ne pas retoucher à la main.
+     Téléphone d'abord : une colonne, des chiffres gros, les alertes en haut. */
+  :root{
+    --ink-900:#17181A; --ink-700:#3A3D40; --ink-500:#4B4F52; --ink-400:#6E7175;
+    --surface-page:#F7F7F5; --surface-card:#FFFFFF;
+    --border:#EAEAE8; --border-firm:#D6D6D2;
+    --grave:#A8321F; --grave-f:#FBEAE6; --tiede:#8C6A07; --tiede-f:#F7F0DA;
+    --calme:#0D7A6F; --calme-f:#DCF2EF;
+    --font-sans:"Nunito",system-ui,-apple-system,"Segoe UI",sans-serif;
+  }
+  *{box-sizing:border-box}
+  body{margin:0;font-family:var(--font-sans);background:var(--surface-page);
+       color:var(--ink-900);line-height:1.5;-webkit-text-size-adjust:100%}
+  .wrap{max-width:900px;margin:0 auto;padding:24px 16px 64px}
+  .eyebrow{font-size:13px;font-weight:800;letter-spacing:.08em;text-transform:uppercase;
+           color:var(--ink-400);margin:0 0 6px}
+  h1{font-size:28px;font-weight:900;letter-spacing:-.02em;margin:0 0 8px}
+  .sous{color:var(--ink-500);margin:0 0 4px}
+  .quand{color:var(--ink-400);font-size:14px;margin:0 0 24px}
+  h2.sect{font-size:15px;font-weight:900;letter-spacing:.06em;text-transform:uppercase;
+          color:var(--ink-400);margin:32px 0 12px}
+  .tuiles{display:grid;grid-template-columns:repeat(2,1fr);gap:10px}
+  .tuile{background:var(--surface-card);border:1px solid var(--border);
+         border-radius:14px;padding:14px 16px}
+  .tuile b{display:block;font-size:26px;font-weight:900;letter-spacing:-.02em;
+           font-variant-numeric:tabular-nums}
+  .tuile span{display:block;font-size:13px;color:var(--ink-500);font-weight:700}
+  .tuile i{display:block;font-style:normal;font-size:12px;color:var(--ink-400);
+           margin-top:2px}
+  ul.alertes{list-style:none;padding:0;margin:0}
+  .al{display:flex;gap:12px;background:var(--surface-card);border:1px solid var(--border);
+      border-left:5px solid var(--border-firm);border-radius:14px;
+      padding:12px 16px;margin:0 0 8px}
+  .al-m{font-size:18px;font-weight:900;line-height:1.4;color:var(--ink-400)}
+  .al.grave{border-left-color:var(--grave);background:var(--grave-f)}
+  .al.grave .al-m{color:var(--grave)}
+  .al.tiede{border-left-color:var(--tiede);background:var(--tiede-f)}
+  .al.tiede .al-m{color:var(--tiede)}
+  .al.calme{border-left-color:var(--calme);background:var(--calme-f)}
+  .al.calme .al-m{color:var(--calme)}
+  .al-t{margin:0;font-weight:800;font-size:15px}
+  .al-d{margin:2px 0 0;font-size:13px;color:var(--ink-500);word-break:break-word}
+  .niv{background:var(--surface-card);border:1px solid var(--border);
+       border-left:5px solid var(--c);border-radius:14px;padding:16px;margin:0 0 12px}
+  .niv-e{margin:0 0 2px;font-size:12px;font-weight:800;letter-spacing:.06em;
+         text-transform:uppercase;color:var(--c)}
+  .niv h3{font-size:19px;font-weight:900;margin:0 0 12px;letter-spacing:-.01em}
+  .chiffres{display:grid;grid-template-columns:repeat(4,1fr);gap:8px;margin:0 0 14px}
+  .chiffres div{background:var(--f);border-radius:10px;padding:8px 10px}
+  .chiffres b{display:block;font-size:19px;font-weight:900;color:var(--c);
+              font-variant-numeric:tabular-nums}
+  .chiffres span{font-size:11px;color:var(--ink-500)}
+  .jauge{height:8px;background:var(--f);border-radius:99px;overflow:hidden;margin:0 0 10px}
+  .jauge-in{height:100%;background:var(--c);border-radius:99px}
+  .jauge-l{font-size:13px;color:var(--ink-500);margin:0 0 4px}
+  details{margin-top:6px}
+  summary{cursor:pointer;font-size:13px;font-weight:800;color:var(--c);
+          padding:6px 0;list-style:none}
+  summary::-webkit-details-marker{display:none}
+  summary::before{content:"▸ ";}
+  details[open] summary::before{content:"▾ ";}
+  table{border-collapse:collapse;width:100%;margin-top:6px}
+  th,td{text-align:left;padding:7px 8px;border-bottom:1px solid var(--border);
+        font-size:13px;vertical-align:top}
+  thead th{font-size:11px;font-weight:900;letter-spacing:.06em;text-transform:uppercase;
+           color:var(--ink-400);white-space:nowrap}
+  td i{display:block;font-style:normal;font-size:11px;color:var(--ink-400)}
+  .n{text-align:right;font-variant-numeric:tabular-nums;white-space:nowrap}
+  tr.creux td{background:#FCFBF6}
+  td.vide{color:var(--ink-400);text-align:center}
+  table.plate{background:var(--surface-card);border:1px solid var(--border);
+              border-radius:14px;overflow:hidden}
+  table.plate th,table.plate td{padding:10px 14px}
+  .note{font-size:14px;color:var(--ink-500);margin:0 0 10px}
+  ul.commits{list-style:none;padding:0;margin:0;background:var(--surface-card);
+             border:1px solid var(--border);border-radius:14px}
+  ul.commits li{padding:9px 14px;border-bottom:1px solid var(--border);font-size:14px}
+  ul.commits li:last-child{border-bottom:0}
+  .date{color:var(--ink-400);font-size:12px;margin:0 6px}
+  code{background:#EFEFED;border-radius:6px;padding:1px 5px;font-size:12px}
+  footer{margin-top:36px;padding-top:16px;border-top:1px solid var(--border);
+         color:var(--ink-400);font-size:13px}
+  @media(min-width:700px){.tuiles{grid-template-columns:repeat(3,1fr)}h1{font-size:34px}}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <header>
+    <p class="eyebrow">Francisation · SAAF</p>
+    <h1>Le tableau de bord du projet</h1>
+    <p class="sous">Tout l’état de la production sur une page : ce qui est
+      produit, ce qui manque, ce que ça coûte. Aucun chiffre n’est saisi à la
+      main — ils sont relus sur le disque à chaque construction.</p>
+    <p class="quand">État lu le 25 août 2026, 20h33.</p>
+  </header>
+
+  <div class="tuiles"><div class="tuile"><b>86</b><span>modules</span><i>8 niveaux</i></div><div class="tuile"><b>1 238 / 1 264</b><span>séances en PowerPoint</span><i>98 %</i></div><div class="tuile"><b>177</b><span>activités au catalogue</span><i>90 atelier · 87 cours</i></div><div class="tuile"><b>63</b><span>ateliers de banque</span><i>184 savoirs touchés</i></div><div class="tuile"><b>6 579</b><span>pistes audio des modules</span><i>1 317 fiches élèves</i></div><div class="tuile"><b>85 / 85</b><span>situations du programme couvertes</span><i>100 %</i></div></div>
+
+  <h2 class="sect">Ce qui demande une action</h2>
+  <ul class="alertes"><li class="al grave"><span class="al-m">!</span><div><p class="al-t">1 module(s) sans aucune séance en PowerPoint</p><p class="al-d">module-n3-horaire</p></div></li><li class="al tiede"><span class="al-m">·</span><div><p class="al-t">1 module(s) aux séances incomplètes</p><p class="al-d">module-n3-voisins (6/16)</p></div></li><li class="al tiede"><span class="al-m">·</span><div><p class="al-t">35 module(s) sans une seule piste audio</p><p class="al-d">module-n3-poste, module-n3-loyer, module-n3-voisins, module-n3-recherche-emploi, module-n3-secretariat, module-n4-etablissement, module-n5-quebec, module-n5-actualite … et 27 autres</p></div></li><li class="al tiede"><span class="al-m">·</span><div><p class="al-t">263 savoir(s) du programme ne sont touchés par aucun atelier</p><p class="al-d">niveau 1 : 1 · niveau 2 : 22 · niveau 3 : 39 · niveau 4 : 43 · niveau 5 : 60 · niveau 6 : 30 · niveau 7 : 36 · niveau 8 : 32</p></div></li><li class="al tiede"><span class="al-m">·</span><div><p class="al-t">376 fichier(s) modifiés et non commités</p><p class="al-d">donc absents de la production</p></div></li></ul>
+
+  <h2 class="sect">Niveau par niveau</h2>
+  
+        <article class="niv" style="--c:#A5335F;--f:#FCE9F0">
+          <header>
+            <p class="niv-e">Niveau 1 · débutant</p>
+            <h3>Des mots pour se présenter</h3>
+          </header>
+          <div class="chiffres">
+            <div><b>4</b><span>modules</span></div>
+            <div><b>21</b><span>ateliers</span></div>
+            <div><b>4/4</b><span>situations</span></div>
+            <div><b>580</b><span>MP3</span></div>
+          </div>
+          <p class="jauge-l">Séances en PowerPoint — 32 sur 32</p>
+          <div class="jauge"><div class="jauge-in" style="width:100%"></div></div>
+          <p class="jauge-l">Savoirs du programme touchés par un atelier — 31 sur 32</p>
+          <div class="jauge"><div class="jauge-in" style="width:97%"></div></div>
+          <details>
+            <summary>Les 4 modules du niveau</summary>
+            <table>
+              <thead><tr><th class="n">N°</th><th>Module</th><th class="n">Séances</th>
+                <th class="n">MP3</th><th class="n">Fiches</th></tr></thead>
+              <tbody><tr class=""><td class="n">1</td><td>Je me présente<i>module-n1-presenter</i></td><td class="n">8/8</td><td class="n">120</td><td class="n">9</td></tr><tr class=""><td class="n">2</td><td>Je remplis ma fiche<i>module-n1-inscription</i></td><td class="n">8/8</td><td class="n">144</td><td class="n">9</td></tr><tr class=""><td class="n">3</td><td>Je lis les panneaux du centre<i>module-n1-orientation</i></td><td class="n">8/8</td><td class="n">156</td><td class="n">9</td></tr><tr class=""><td class="n">4</td><td>Regardez le tableau<i>module-n1-classe</i></td><td class="n">8/8</td><td class="n">160</td><td class="n">9</td></tr></tbody>
+            </table>
+          </details>
+        </article>
+        <article class="niv" style="--c:#A83A22;--f:#FBEAE4">
+          <header>
+            <p class="niv-e">Niveau 2 · débutant</p>
+            <h3>Des mots de tous les jours</h3>
+          </header>
+          <div class="chiffres">
+            <div><b>10</b><span>modules</span></div>
+            <div><b>6</b><span>ateliers</span></div>
+            <div><b>10/10</b><span>situations</span></div>
+            <div><b>2 267</b><span>MP3</span></div>
+          </div>
+          <p class="jauge-l">Séances en PowerPoint — 80 sur 80</p>
+          <div class="jauge"><div class="jauge-in" style="width:100%"></div></div>
+          <p class="jauge-l">Savoirs du programme touchés par un atelier — 27 sur 49</p>
+          <div class="jauge"><div class="jauge-in" style="width:55%"></div></div>
+          <details>
+            <summary>Les 10 modules du niveau</summary>
+            <table>
+              <thead><tr><th class="n">N°</th><th>Module</th><th class="n">Séances</th>
+                <th class="n">MP3</th><th class="n">Fiches</th></tr></thead>
+              <tbody><tr class=""><td class="n">1</td><td>Prendre l&#x27;autobus<i>module-n2-autobus</i></td><td class="n">8/8</td><td class="n">143</td><td class="n">9</td></tr><tr class=""><td class="n">2</td><td>Remplir mon panier<i>module-n2-panier</i></td><td class="n">8/8</td><td class="n">189</td><td class="n">9</td></tr><tr class=""><td class="n">3</td><td>Bonjour, ça va ?<i>module-n2-bonjour</i></td><td class="n">8/8</td><td class="n">214</td><td class="n">9</td></tr><tr class=""><td class="n">4</td><td>Ouvrez votre cahier<i>module-n2-classe</i></td><td class="n">8/8</td><td class="n">280</td><td class="n">9</td></tr><tr class=""><td class="n">5</td><td>Où est le local 214 ?<i>module-n2-couloirs</i></td><td class="n">8/8</td><td class="n">261</td><td class="n">9</td></tr><tr class=""><td class="n">6</td><td>Je m&#x27;inscris au cours de français<i>module-n2-inscription</i></td><td class="n">8/8</td><td class="n">244</td><td class="n">9</td></tr><tr class=""><td class="n">7</td><td>Il fait froid, je m&#x27;habille<i>module-n2-neige</i></td><td class="n">8/8</td><td class="n">234</td><td class="n">9</td></tr><tr class=""><td class="n">8</td><td>Je retire de l&#x27;argent<i>module-n2-guichet</i></td><td class="n">8/8</td><td class="n">242</td><td class="n">9</td></tr><tr class=""><td class="n">9</td><td>J&#x27;envoie une lettre et un colis<i>module-n2-colis</i></td><td class="n">8/8</td><td class="n">231</td><td class="n">9</td></tr><tr class=""><td class="n">10</td><td>Je vais au secrétariat<i>module-n2-secretaire</i></td><td class="n">8/8</td><td class="n">229</td><td class="n">9</td></tr></tbody>
+            </table>
+          </details>
+        </article>
+        <article class="niv" style="--c:#B45309;--f:#FBEEDC">
+          <header>
+            <p class="niv-e">Niveau 3 · débutant</p>
+            <h3>Des propos au quotidien</h3>
+          </header>
+          <div class="chiffres">
+            <div><b>13</b><span>modules</span></div>
+            <div><b>6</b><span>ateliers</span></div>
+            <div><b>13/13</b><span>situations</span></div>
+            <div><b>1 119</b><span>MP3</span></div>
+          </div>
+          <p class="jauge-l">Séances en PowerPoint — 182 sur 208</p>
+          <div class="jauge"><div class="jauge-in" style="width:88%"></div></div>
+          <p class="jauge-l">Savoirs du programme touchés par un atelier — 20 sur 59</p>
+          <div class="jauge"><div class="jauge-in" style="width:34%"></div></div>
+          <details>
+            <summary>Les 13 modules du niveau</summary>
+            <table>
+              <thead><tr><th class="n">N°</th><th>Module</th><th class="n">Séances</th>
+                <th class="n">MP3</th><th class="n">Fiches</th></tr></thead>
+              <tbody><tr class=""><td class="n">1</td><td>À l&#x27;épicerie<i>module-n3-epicerie</i></td><td class="n">16/16</td><td class="n">204</td><td class="n">17</td></tr><tr class=""><td class="n">2</td><td>Magasiner du linge<i>module-n3-vetements</i></td><td class="n">16/16</td><td class="n">57</td><td class="n">17</td></tr><tr class=""><td class="n">3</td><td>Acheter un appareil<i>module-n3-electro</i></td><td class="n">16/16</td><td class="n">246</td><td class="n">17</td></tr><tr class=""><td class="n">4</td><td>Commander au comptoir<i>module-n3-restaurant</i></td><td class="n">16/16</td><td class="n">49</td><td class="n">17</td></tr><tr class=""><td class="n">5</td><td>Aller à la pharmacie<i>module-n3-pharmacie</i></td><td class="n">16/16</td><td class="n">64</td><td class="n">17</td></tr><tr class=""><td class="n">6</td><td>Le bon titre de transport<i>module-n3-metro</i></td><td class="n">16/16</td><td class="n">50</td><td class="n">17</td></tr><tr class="creux"><td class="n">7</td><td>Le colis de Yassine<i>module-n3-poste</i></td><td class="n">16/16</td><td class="n">0</td><td class="n">17</td></tr><tr class="creux"><td class="n">8</td><td>Trois questions avant de louer<i>module-n3-loyer</i></td><td class="n">16/16</td><td class="n">0</td><td class="n">17</td></tr><tr class="creux"><td class="n">9</td><td>L&#x27;escalier de la rue Dézéry<i>module-n3-voisins</i></td><td class="n">6/16</td><td class="n">0</td><td class="n">0</td></tr><tr class="creux"><td class="n">10</td><td>On embauche<i>module-n3-recherche-emploi</i></td><td class="n">16/16</td><td class="n">0</td><td class="n">17</td></tr><tr class="creux"><td class="n">11</td><td>Mon quart de travail<i>module-n3-horaire</i></td><td class="n">0/16</td><td class="n">277</td><td class="n">0</td></tr><tr class=""><td class="n">12</td><td>Choisir une activité au centre<i>module-n3-loisirs</i></td><td class="n">16/16</td><td class="n">172</td><td class="n">17</td></tr><tr class="creux"><td class="n">13</td><td>L&#x27;absence de Nawel<i>module-n3-secretariat</i></td><td class="n">16/16</td><td class="n">0</td><td class="n">17</td></tr></tbody>
+            </table>
+          </details>
+        </article>
+        <article class="niv" style="--c:#8C6A07;--f:#F7F0DA">
+          <header>
+            <p class="niv-e">Niveau 4 · débutant</p>
+            <h3>Des propos sur des thèmes familiers</h3>
+          </header>
+          <div class="chiffres">
+            <div><b>18</b><span>modules</span></div>
+            <div><b>6</b><span>ateliers</span></div>
+            <div><b>17/17</b><span>situations</span></div>
+            <div><b>1 918</b><span>MP3</span></div>
+          </div>
+          <p class="jauge-l">Séances en PowerPoint — 288 sur 288</p>
+          <div class="jauge"><div class="jauge-in" style="width:100%"></div></div>
+          <p class="jauge-l">Savoirs du programme touchés par un atelier — 17 sur 60</p>
+          <div class="jauge"><div class="jauge-in" style="width:28%"></div></div>
+          <details>
+            <summary>Les 18 modules du niveau</summary>
+            <table>
+              <thead><tr><th class="n">N°</th><th>Module</th><th class="n">Séances</th>
+                <th class="n">MP3</th><th class="n">Fiches</th></tr></thead>
+              <tbody><tr class=""><td class="n">1</td><td>Consulter au bon endroit<i>module-consultation</i></td><td class="n">16/16</td><td class="n">122</td><td class="n">17</td></tr><tr class=""><td class="n">2</td><td>Une urgence au travail<i>module-urgence</i></td><td class="n">16/16</td><td class="n">153</td><td class="n">17</td></tr><tr class=""><td class="n">3</td><td>Prendre rendez-vous et aller à la pharmacie<i>module-sante</i></td><td class="n">16/16</td><td class="n">90</td><td class="n">17</td></tr><tr class=""><td class="n">4</td><td>Absent ou en retard : que faire ?<i>module-travail</i></td><td class="n">16/16</td><td class="n">126</td><td class="n">17</td></tr><tr class=""><td class="n">5</td><td>Quelle est la procédure ?<i>module-procedure</i></td><td class="n">16/16</td><td class="n">111</td><td class="n">17</td></tr><tr class=""><td class="n">6</td><td>C&#x27;est l&#x27;heure des nouvelles<i>module-nouvelles</i></td><td class="n">16/16</td><td class="n">84</td><td class="n">17</td></tr><tr class=""><td class="n">7</td><td>Quelles sont les prévisions ?<i>module-meteo</i></td><td class="n">16/16</td><td class="n">74</td><td class="n">17</td></tr><tr class=""><td class="n">8</td><td>Des publicités efficaces<i>module-pub</i></td><td class="n">16/16</td><td class="n">73</td><td class="n">17</td></tr><tr class=""><td class="n">9</td><td>Comment est le logement ?<i>module-logement</i></td><td class="n">16/16</td><td class="n">58</td><td class="n">18</td></tr><tr class=""><td class="n">10</td><td>Pouvez-vous régler le problème ?<i>module-probleme</i></td><td class="n">16/16</td><td class="n">41</td><td class="n">17</td></tr><tr class=""><td class="n">11</td><td>Des nouvelles à donner<i>module-relations</i></td><td class="n">16/16</td><td class="n">42</td><td class="n">17</td></tr><tr class=""><td class="n">12</td><td>Trouver son chemin<i>module-deplacement</i></td><td class="n">16/16</td><td class="n">182</td><td class="n">17</td></tr><tr class=""><td class="n">13</td><td>S&#x27;inscrire à une activité<i>module-activite</i></td><td class="n">16/16</td><td class="n">200</td><td class="n">17</td></tr><tr class=""><td class="n">14</td><td>Faire l&#x27;épicerie<i>module-alimentation</i></td><td class="n">16/16</td><td class="n">204</td><td class="n">17</td></tr><tr class=""><td class="n">15</td><td>Acheter un appareil<i>module-achat</i></td><td class="n">16/16</td><td class="n">210</td><td class="n">17</td></tr><tr class=""><td class="n">16</td><td>Au restaurant<i>module-restaurant</i></td><td class="n">16/16</td><td class="n">66</td><td class="n">17</td></tr><tr class="creux"><td class="n">17</td><td>Prévenir le centre<i>module-n4-etablissement</i></td><td class="n">16/16</td><td class="n">0</td><td class="n">17</td></tr><tr class=""><td class="n">18</td><td>Acheter des vêtements<i>module-vetements</i></td><td class="n">16/16</td><td class="n">82</td><td class="n">17</td></tr></tbody>
+            </table>
+          </details>
+        </article>
+        <article class="niv" style="--c:#0D7A6F;--f:#DCF2EF">
+          <header>
+            <p class="niv-e">Niveau 5 · intermédiaire</p>
+            <h3>Des discours simples et organisés</h3>
+          </header>
+          <div class="chiffres">
+            <div><b>14</b><span>modules</span></div>
+            <div><b>6</b><span>ateliers</span></div>
+            <div><b>14/14</b><span>situations</span></div>
+            <div><b>544</b><span>MP3</span></div>
+          </div>
+          <p class="jauge-l">Séances en PowerPoint — 224 sur 224</p>
+          <div class="jauge"><div class="jauge-in" style="width:100%"></div></div>
+          <p class="jauge-l">Savoirs du programme touchés par un atelier — 18 sur 78</p>
+          <div class="jauge"><div class="jauge-in" style="width:23%"></div></div>
+          <details>
+            <summary>Les 14 modules du niveau</summary>
+            <table>
+              <thead><tr><th class="n">N°</th><th>Module</th><th class="n">Séances</th>
+                <th class="n">MP3</th><th class="n">Fiches</th></tr></thead>
+              <tbody><tr class=""><td class="n">1</td><td>Louer un logement<i>module-n5-logement</i></td><td class="n">16/16</td><td class="n">67</td><td class="n">17</td></tr><tr class=""><td class="n">2</td><td>Un dégât d&#x27;eau<i>module-n5-degat</i></td><td class="n">16/16</td><td class="n">38</td><td class="n">17</td></tr><tr class=""><td class="n">3</td><td>Emménager dans un nouveau logement<i>module-n5-emmenagement</i></td><td class="n">16/16</td><td class="n">88</td><td class="n">17</td></tr><tr class=""><td class="n">4</td><td>Les services de ma ville<i>module-n5-services</i></td><td class="n">16/16</td><td class="n">61</td><td class="n">17</td></tr><tr class=""><td class="n">5</td><td>Prendre rendez-vous chez le médecin<i>module-n5-rendezvous</i></td><td class="n">16/16</td><td class="n">65</td><td class="n">17</td></tr><tr class=""><td class="n">6</td><td>Une nuit à l&#x27;urgence<i>module-n5-urgence</i></td><td class="n">16/16</td><td class="n">75</td><td class="n">17</td></tr><tr class=""><td class="n">7</td><td>Le travail par écrit<i>module-n5-travail</i></td><td class="n">16/16</td><td class="n">71</td><td class="n">17</td></tr><tr class=""><td class="n">8</td><td>La ruelle en fête<i>module-n5-voisinage</i></td><td class="n">16/16</td><td class="n">65</td><td class="n">17</td></tr><tr class=""><td class="n">9</td><td>Ça bloque ce matin<i>module-n5-transport</i></td><td class="n">16/16</td><td class="n">14</td><td class="n">17</td></tr><tr class="creux"><td class="n">10</td><td>Une semaine au Bic<i>module-n5-quebec</i></td><td class="n">16/16</td><td class="n">0</td><td class="n">17</td></tr><tr class="creux"><td class="n">11</td><td>Raconter une nouvelle<i>module-n5-actualite</i></td><td class="n">16/16</td><td class="n">0</td><td class="n">17</td></tr><tr class="creux"><td class="n">12</td><td>Quand la météo décide<i>module-n5-saisons</i></td><td class="n">16/16</td><td class="n">0</td><td class="n">17</td></tr><tr class="creux"><td class="n">13</td><td>Le club du jeudi<i>module-n5-oeuvres</i></td><td class="n">16/16</td><td class="n">0</td><td class="n">17</td></tr><tr class="creux"><td class="n">14</td><td>Régler une affaire au centre<i>module-n5-ecole</i></td><td class="n">16/16</td><td class="n">0</td><td class="n">17</td></tr></tbody>
+            </table>
+          </details>
+        </article>
+        <article class="niv" style="--c:#1D6B8F;--f:#E7F0F6">
+          <header>
+            <p class="niv-e">Niveau 6 · intermédiaire</p>
+            <h3>Des discours détaillés et structurés</h3>
+          </header>
+          <div class="chiffres">
+            <div><b>10</b><span>modules</span></div>
+            <div><b>6</b><span>ateliers</span></div>
+            <div><b>10/10</b><span>situations</span></div>
+            <div><b>40</b><span>MP3</span></div>
+          </div>
+          <p class="jauge-l">Séances en PowerPoint — 160 sur 160</p>
+          <div class="jauge"><div class="jauge-in" style="width:100%"></div></div>
+          <p class="jauge-l">Savoirs du programme touchés par un atelier — 24 sur 54</p>
+          <div class="jauge"><div class="jauge-in" style="width:44%"></div></div>
+          <details>
+            <summary>Les 10 modules du niveau</summary>
+            <table>
+              <thead><tr><th class="n">N°</th><th>Module</th><th class="n">Séances</th>
+                <th class="n">MP3</th><th class="n">Fiches</th></tr></thead>
+              <tbody><tr class=""><td class="n">1</td><td>Chercher un emploi<i>module-n6-recherche</i></td><td class="n">16/16</td><td class="n">40</td><td class="n">17</td></tr><tr class="creux"><td class="n">2</td><td>Suivre un sujet dans les médias<i>module-n6-actualite</i></td><td class="n">16/16</td><td class="n">0</td><td class="n">17</td></tr><tr class="creux"><td class="n">3</td><td>Le poste affiché à l&#x27;interne<i>module-n6-emploi</i></td><td class="n">16/16</td><td class="n">0</td><td class="n">17</td></tr><tr class="creux"><td class="n">4</td><td>Reprendre le fil<i>module-n6-relations</i></td><td class="n">16/16</td><td class="n">0</td><td class="n">17</td></tr><tr class="creux"><td class="n">5</td><td>Choisir la suite<i>module-n6-etablissement</i></td><td class="n">16/16</td><td class="n">0</td><td class="n">17</td></tr><tr class="creux"><td class="n">6</td><td>Un film, et ce qu&#x27;on en écrit<i>module-n6-oeuvres</i></td><td class="n">16/16</td><td class="n">0</td><td class="n">17</td></tr><tr class="creux"><td class="n">7</td><td>Nommer ce qu&#x27;on a<i>module-n6-sante</i></td><td class="n">16/16</td><td class="n">0</td><td class="n">17</td></tr><tr class="creux"><td class="n">8</td><td>Six mois ailleurs<i>module-n6-logement</i></td><td class="n">16/16</td><td class="n">0</td><td class="n">17</td></tr><tr class="creux"><td class="n">9</td><td>Faire faire des travaux<i>module-n6-habitation</i></td><td class="n">16/16</td><td class="n">0</td><td class="n">17</td></tr><tr class="creux"><td class="n">10</td><td>Un travail de recherche en équipe<i>module-n6-classe</i></td><td class="n">16/16</td><td class="n">0</td><td class="n">17</td></tr></tbody>
+            </table>
+          </details>
+        </article>
+        <article class="niv" style="--c:#3B49A0;--f:#E8EAFA">
+          <header>
+            <p class="niv-e">Niveau 7 · intermédiaire</p>
+            <h3>Des communications sur des thèmes concrets</h3>
+          </header>
+          <div class="chiffres">
+            <div><b>11</b><span>modules</span></div>
+            <div><b>6</b><span>ateliers</span></div>
+            <div><b>11/11</b><span>situations</span></div>
+            <div><b>58</b><span>MP3</span></div>
+          </div>
+          <p class="jauge-l">Séances en PowerPoint — 176 sur 176</p>
+          <div class="jauge"><div class="jauge-in" style="width:100%"></div></div>
+          <p class="jauge-l">Savoirs du programme touchés par un atelier — 21 sur 57</p>
+          <div class="jauge"><div class="jauge-in" style="width:37%"></div></div>
+          <details>
+            <summary>Les 11 modules du niveau</summary>
+            <table>
+              <thead><tr><th class="n">N°</th><th>Module</th><th class="n">Séances</th>
+                <th class="n">MP3</th><th class="n">Fiches</th></tr></thead>
+              <tbody><tr class=""><td class="n">1</td><td>Suivre l&#x27;actualité<i>module-n7-actualite</i></td><td class="n">16/16</td><td class="n">58</td><td class="n">17</td></tr><tr class="creux"><td class="n">2</td><td>Présenter un projet au travail<i>module-n7-emploi</i></td><td class="n">16/16</td><td class="n">0</td><td class="n">17</td></tr><tr class="creux"><td class="n">3</td><td>Chercher un emploi en région<i>module-n7-recherche</i></td><td class="n">16/16</td><td class="n">0</td><td class="n">17</td></tr><tr class="creux"><td class="n">4</td><td>Rester locataire ou devenir propriétaire<i>module-n7-logement</i></td><td class="n">16/16</td><td class="n">0</td><td class="n">17</td></tr><tr class="creux"><td class="n">5</td><td>Le bruit d&#x27;en haut<i>module-n7-habitation</i></td><td class="n">16/16</td><td class="n">0</td><td class="n">17</td></tr><tr class="creux"><td class="n">6</td><td>Réclamer après l&#x27;achat<i>module-n7-achat</i></td><td class="n">16/16</td><td class="n">0</td><td class="n">17</td></tr><tr class="creux"><td class="n">7</td><td>Emprunter, épargner, se protéger<i>module-n7-banque</i></td><td class="n">16/16</td><td class="n">0</td><td class="n">17</td></tr><tr class="creux"><td class="n">8</td><td>Ce que la publicité ne dit pas<i>module-n7-publicite</i></td><td class="n">16/16</td><td class="n">0</td><td class="n">17</td></tr><tr class="creux"><td class="n">9</td><td>Ce que j&#x27;en pense, et pourquoi<i>module-n7-oeuvres</i></td><td class="n">16/16</td><td class="n">0</td><td class="n">17</td></tr><tr class="creux"><td class="n">10</td><td>Faire parler l&#x27;équipe<i>module-n7-classe</i></td><td class="n">16/16</td><td class="n">0</td><td class="n">17</td></tr><tr class="creux"><td class="n">11</td><td>Entrer dans le programme<i>module-n7-etablissement</i></td><td class="n">16/16</td><td class="n">0</td><td class="n">17</td></tr></tbody>
+            </table>
+          </details>
+        </article>
+        <article class="niv" style="--c:#7E3F98;--f:#F3E8F7">
+          <header>
+            <p class="niv-e">Niveau 8 · intermédiaire</p>
+            <h3>Des communications complexes</h3>
+          </header>
+          <div class="chiffres">
+            <div><b>6</b><span>modules</span></div>
+            <div><b>6</b><span>ateliers</span></div>
+            <div><b>6/6</b><span>situations</span></div>
+            <div><b>53</b><span>MP3</span></div>
+          </div>
+          <p class="jauge-l">Séances en PowerPoint — 96 sur 96</p>
+          <div class="jauge"><div class="jauge-in" style="width:100%"></div></div>
+          <p class="jauge-l">Savoirs du programme touchés par un atelier — 26 sur 58</p>
+          <div class="jauge"><div class="jauge-in" style="width:45%"></div></div>
+          <details>
+            <summary>Les 6 modules du niveau</summary>
+            <table>
+              <thead><tr><th class="n">N°</th><th>Module</th><th class="n">Séances</th>
+                <th class="n">MP3</th><th class="n">Fiches</th></tr></thead>
+              <tbody><tr class=""><td class="n">1</td><td>Tenir son bout au travail<i>module-n8-emploi</i></td><td class="n">16/16</td><td class="n">53</td><td class="n">17</td></tr><tr class="creux"><td class="n">2</td><td>Passer au travers du processus<i>module-n8-recherche</i></td><td class="n">16/16</td><td class="n">0</td><td class="n">17</td></tr><tr class="creux"><td class="n">3</td><td>Ce qui est couvert, et ce qui se défend<i>module-n8-emmenagement</i></td><td class="n">16/16</td><td class="n">0</td><td class="n">17</td></tr><tr class="creux"><td class="n">4</td><td>Faire renverser une décision<i>module-n8-habitation</i></td><td class="n">16/16</td><td class="n">0</td><td class="n">17</td></tr><tr class="creux"><td class="n">5</td><td>Deux versions, et la mienne<i>module-n8-actualite</i></td><td class="n">16/16</td><td class="n">0</td><td class="n">17</td></tr><tr class="creux"><td class="n">6</td><td>Ce que l&#x27;œuvre ne dit pas<i>module-n8-oeuvres</i></td><td class="n">16/16</td><td class="n">0</td><td class="n">17</td></tr></tbody>
+            </table>
+          </details>
+        </article>
+
+  <h2 class="sect">La dépense</h2>
+  
+          <p class="note">3 appels payants enregistrés depuis le 2026-08-25, pour <b>0.0046 $</b>
+            estimés. <b>C’est le registre de ce poste</b> : celui qui compte vit
+            sur le volume Railway et se lit par <code>GET /api/admin/appels</code>.</p>
+          <table class="plate">
+            <thead><tr><th>Route</th><th class="n">Appels</th><th class="n">Coût</th></tr></thead>
+            <tbody><tr><td>voix</td><td class="n">2</td><td class="n">0.0046 $</td></tr><tr><td>corriger-phrase</td><td class="n">1</td><td class="n">0.0000 $</td></tr></tbody>
+          </table>
+
+  <h2 class="sect">Les derniers commits</h2>
+  <p class="note">376 fichier(s) modifiés non commités · 0 commit(s)
+    non poussés. Railway déploie sur <code>push</code> : ce qui n’est pas poussé
+    n’est pas en ligne.</p>
+  <ul class="commits"><li><code>5414b7e3</code> <span class="date">2026-08-25</span> Compter les vrais appels d&#x27;API, par élève</li><li><code>73c49826</code> <span class="date">2026-08-25</span> La réponse écrite n&#x27;arrive plus au premier essai</li><li><code>3c725003</code> <span class="date">2026-08-25</span> Postgres : migrer au démarrage, et dire quel stockage sert</li><li><code>7e10e8e8</code> <span class="date">2026-08-25</span> Le bouton des mini-leçons dit ce qu&#x27;il fait : « Ouvrir la mini-leçon »</li><li><code>8e65cd86</code> <span class="date">2026-08-25</span> Calibrer le débit de chaque voix, et donner leur scène aux répliques</li><li><code>40e82886</code> <span class="date">2026-08-25</span> Migration Postgres : la base devient la source, les fichiers restent le filet</li><li><code>aa7bbab7</code> <span class="date">2026-08-25</span> Écritures concurrentes : 8 enregistrements sur 30 devenaient 30 sur 30</li><li><code>b0e9e16f</code> <span class="date">2026-08-25</span> Le prix d&#x27;un module : les API, les modèles et le coût d&#x27;un groupe</li></ul>
+
+  <footer>
+    <p>Page générée par <code>python3 build/tableau_bord.py</code>, et l’état en
+      clair dans un terminal par <code>python3 build/tableau_bord.py --texte</code>.</p>
+    <p>Les détails d’un chantier restent dans leur page :
+      <a href="chantier-banques.html">les banques d’exercices</a>,
+      <code>build/bilan_programme.py</code> pour la couverture du programme,
+      <code>build/couts_api.py</code> pour le registre des appels.</p>
+  </footer>
+</div>
+</body>
+</html>

@@ -1052,6 +1052,32 @@ Deux pièges de lecture :
   lançant `python3 build/sections.py` à la livraison — pas en modifiant
   `data/sections.json` à la main.
 
+## Le tableau de bord du projet (`build/tableau_bord.py`)
+
+L'état entier de la production sur une page, relu sur le disque :
+
+    python3 build/tableau_bord.py           # → assets/presentations/tableau-de-bord.html
+    python3 build/tableau_bord.py --texte    # le même état, en clair, sans rien écrire
+
+Il ne remplace pas les trois relevés existants, il les réunit et ajoute ce
+qu'aucun ne regardait : les modules sans séance en PowerPoint ou sans une seule
+piste audio, les liens de `activities.json` qui pointent dans le vide, ce qui
+n'est ni commité ni poussé. `chantier.py` reste la page des banques,
+`bilan_programme.py` celle de la couverture, `couts_api.py` celle de la
+facture — le tableau de bord les importe plutôt que de recompter.
+
+- **Rien n'y est écrit à la main.** Modules du registre `powerpoints/
+  modules.py`, séances des `.pptx` livrés, fiches des noms de
+  `assets/documents/`, audio des `.mp3` du dossier du module, ateliers et
+  savoirs du relevé de `chantier.py`, dépense de `journal_api`.
+- **Un module est comparé au nombre de séances qu'il déclare**, jamais à seize
+  en dur : les niveaux 1 et 2 en ont huit.
+- **La dépense affichée est celle du poste.** Le registre qui compte vit sur le
+  volume Railway (`GET /api/admin/appels`) ; la page le dit à l'écran plutôt
+  que de laisser croire que la production ne coûte rien.
+- **La liste des alertes vide est une bonne nouvelle**, et elle s'écrit comme
+  telle — une page qui n'affiche rien se lit comme une page cassée.
+
 ## L'identité de marque SAAF
 
 La plateforme s'appelle **SAAF** — Système d'aide à l'apprentissage du
