@@ -5549,4 +5549,240 @@ lmsTrack('file_opened');
 })();
 </script>
 <!-- SECTIONS-DATEES:fin -->
+<!-- SANS-IA:début — greffé par build/greffe_sans_ia.py -->
+<style>
+/* Le repli ne s'applique qu'une fois la réponse du serveur arrivée : sans la
+   classe sur <body>, la page reste exactement celle d'avant. */
+body.sans-ia #voc-head { display: none; }
+body.sans-ia .vc-actions:has(button[id^="voctr"]) { display: none; }
+body.sans-ia .sans-ia-mot {
+  margin-top: 12px; padding: 10px 14px; border-radius: 10px;
+  background: #f1f3f6; border-left: 4px solid #9aa3af;
+  font-size: 14px; line-height: 1.5; color: #35404f;
+}
+</style>
+<script>
+(function () {
+  'use strict';
+
+  /* ── Ce que le module devient sans assistant ─────────────────────────── */
+
+  function note(texte) {
+    var d = document.createElement('div');
+    d.className = 'sans-ia-mot';
+    d.textContent = texte;
+    return d;
+  }
+
+  /* Production orale — l'envoi n'attend plus une rétroaction qui ne viendra
+     pas. Dès qu'il y a un enregistrement, le bouton est là. */
+  function replierOral() {
+    var btn = document.getElementById('poFbBtn');
+    if (btn) btn.style.display = 'none';
+    var prev = document.getElementById('poPrev');
+    if (prev && !prev.querySelector('.sans-ia-mot')) {
+      prev.appendChild(note("Écoute-toi, corrige ta transcription si besoin, "
+        + "puis envoie ton enregistrement à ton enseignant."));
+    }
+    if (typeof stopRec === 'function') {
+      var orig = stopRec;
+      stopRec = function () {
+        var r = orig.apply(this, arguments);
+        var zone = document.getElementById('poSend');
+        if (zone) zone.style.display = 'flex';
+        if (typeof recStep === 'function') recStep(3);
+        return r;
+      };
+    }
+  }
+
+  /* Production écrite — le dépôt est ouvert tout de suite, et il part sans
+     commentaire : `peSend` lit le champ, pas une correction. L'enseignant
+     reçoit le texte tel que l'élève l'a écrit. */
+  function replierEcrit() {
+    var btn = document.getElementById('peBtn');
+    if (btn) btn.style.display = 'none';
+    var zone = document.getElementById('peSend');
+    if (zone) zone.style.display = 'flex';
+    var champ = document.getElementById('peText');
+    var carte = champ && champ.closest('.card');
+    if (carte && zone && !carte.querySelector('.sans-ia-mot')) {
+      zone.parentNode.insertBefore(
+        note("Relis ton message, puis envoie-le à ton enseignant. "
+           + "C'est lui qui te le corrigera."), zone);
+    }
+  }
+
+  /* Jeu de rôle — seule la moitié « avec l'assistant » tombe. Ce qui précède
+     le séparateur est l'activité de classe : les situations, les sujets à
+     couvrir, le rappel de grammaire, et parfois des fiches à découper. Les
+     78 modules à jeu de rôle en ont tous, et ça ne doit rien à l'IA.
+
+     Deux corrections indispensables une fois l'assistant parti. D'abord la
+     phrase d'ouverture, qui le promet dans 77 modules sur 78 : la laisser,
+     c'est annoncer à l'élève quelque chose qui n'arrivera pas. Ensuite le mot
+     qui explique ce que devient l'exercice — et il ne peut pas parler de
+     fiches à imprimer, puisqu'un seul module en a. */
+  function replierJeuDeRole() {
+    var depart = document.getElementById('jrStart');
+    if (!depart) return;
+    var carte = depart.closest('.card') || depart.parentElement;
+    var sep = carte && carte.querySelector('.jr-sep');
+    if (!sep) { carte.style.display = 'none'; return; }
+
+    var fiches = null;
+    for (var n = sep; n; ) {
+      var suivant = n.nextElementSibling;
+      n.style.display = 'none';
+      n = suivant;
+    }
+    fiches = carte.querySelector('.jr-print');
+    var aDesFiches = !!(fiches && fiches.style.display !== 'none');
+
+    /* On ne réécrit aucune phrase : on retire celles qui ne sont plus vraies.
+       Un « bloc de texte » est un élément dont les enfants sont tous en ligne
+       (gras, italique, saut de ligne). Se limiter aux feuilles ne suffisait
+       pas : la phrase d'ouverture porte presque toujours un <b>, et elle
+       restait affichée dans les 77 modules qu'il fallait corriger. Un bloc
+       qui contient d'autres blocs, lui, n'est jamais retiré — il emporterait
+       les situations avec lui. */
+    var mort = /assistant/i;
+    var EN_LIGNE = /^(B|I|EM|STRONG|SPAN|BR|A|CODE|SMALL|U|SUP|SUB)$/;
+    [].slice.call(carte.querySelectorAll('p, div, span, li')).forEach(function (e) {
+      if (e.classList.contains('sans-ia-mot')) return;
+      if (!mort.test(e.textContent || '')) return;
+      for (var i = 0; i < e.children.length; i++)
+        if (!EN_LIGNE.test(e.children[i].tagName)) return;
+      e.style.display = 'none';
+    });
+
+    var tete = carte.querySelector('.c-hdr');
+    var mot = note(aDesFiches
+      ? "Cet entraînement se fait à deux, en classe, avec les fiches à imprimer."
+      : "Cet entraînement se fait à deux, en classe : la situation et les sujets "
+        + "à couvrir sont ci-dessous.");
+    if (tete && tete.nextSibling) carte.insertBefore(mot, tete.nextSibling);
+    else carte.insertBefore(mot, sep);
+  }
+
+  /* Aide après erreurs — « Pourquoi je me trompe ? » part, « Revoir
+     l'explication » reste : une mini-leçon est du texte écrit d'avance. Un
+     panneau qui n'aurait plus que « Plus tard » à offrir est un reproche, pas
+     une aide : on le retire au lieu de l'afficher vide. */
+  function replierAide() {
+    if (typeof analyserErreurs === 'function') analyserErreurs = function () {};
+    if (typeof proposerAide !== 'function') return;
+    var orig = proposerAide;
+    proposerAide = function (exId) {
+      var r = orig.apply(this, arguments);
+      var el = document.getElementById('aide-' + exId);
+      if (!el) return r;
+      var ia = el.querySelector('button[onclick^="analyserErreurs"]');
+      if (ia) ia.remove();
+      var reste = el.querySelector('.aide-btns button[onclick^="accepterAide"]');
+      if (!reste) el.remove();
+      return r;
+    };
+  }
+
+  /* Exercices écrits — la correction par comparaison de chaînes (`it.accept`)
+     n'a jamais rien eu d'une IA : elle reste, telle quelle. Seule la réponse
+     ouverte change : plus d'appel, et la réponse attendue après deux essais,
+     le même rythme que la version avec assistant. */
+  function replierExercicesEcrits() {
+    if (typeof checkWrite !== 'function' || typeof EXOS === 'undefined') return;
+    var orig = checkWrite;
+    var essais = {};
+    checkWrite = function (exId, i) {
+      var ex = EXOS.find(function (e) { return e.id === exId; });
+      if (!ex) return;
+      var it = ex.items[i];
+      if (it && it.accept) return orig.apply(this, arguments);
+
+      var inp = document.getElementById('wi_' + exId + '_' + i);
+      var fb = document.getElementById('wf_' + exId + '_' + i);
+      if (!inp || !fb) return;
+      var val = (inp.value || '').trim();
+      if (!val) { fb.className = 'wfb no'; fb.textContent = "✏️ Écris ta réponse d'abord."; return; }
+
+      var k = exId + '_' + i;
+      var n = essais[k] = (essais[k] || 0) + 1;
+      var attendu = (it && it.hint) || '';
+
+      if (!attendu) {
+        /* Rien à comparer et personne pour lire : le dire franchement vaut
+           mieux qu'un ✅ qui ne vérifie rien. */
+        fb.className = 'wfb';
+        fb.innerHTML = "📝 Ta réponse est notée. Vous la corrigerez en classe.";
+        if (typeof trackPlacement === 'function') trackPlacement('w_' + exId + '_' + i, false);
+        return;
+      }
+
+      /* WSOL et WFB appartiennent à la greffe « deux essais » : quand elle est
+         là, on s'en sert pour que « Montrez-moi la réponse » se comporte
+         exactement comme dans l'autre version. */
+      if (typeof WSOL !== 'undefined') WSOL[k] = attendu;
+      if (typeof WFB !== 'undefined') WFB[k] = '';
+
+      fb.className = 'wfb no';
+      if (n < 2 && typeof wBoutonReponse === 'function') {
+        fb.innerHTML = "💡 Relis ta phrase et vérifie chaque mot."
+                     + wBoutonReponse(exId, i);
+      } else {
+        fb.innerHTML = "💡 <b>La réponse attendue :</b> "
+                     + (typeof esc === 'function' ? esc(attendu) : attendu)
+                     + '<br><span style="font-weight:600">Compare-la avec la tienne, '
+                     + 'puis réécris-la dans la case.</span>';
+      }
+      if (typeof trackPlacement === 'function') trackPlacement('w_' + exId + '_' + i, false);
+      if (typeof evaluerAide === 'function') {
+        var rates = ex.items.reduce(function (s, _, j) {
+          return s + (essais[exId + '_' + j] || 0);
+        }, 0);
+        evaluerAide(exId, rates);
+      }
+    };
+  }
+
+  /* La barre « Mes outils » porte la plus grosse part d'IA du module :
+     traduire, simplifier, demander. Elle sait se replier elle-même — elle est
+     partagée par les 87 modules, et la règle doit vivre à un seul endroit. */
+  function replierOutils() {
+    if (window.Outils && typeof Outils.sansIA === 'function') Outils.sansIA();
+  }
+
+  function replier() {
+    document.body.classList.add('sans-ia');
+    window.MODE_IA = false;
+    replierOral();
+    replierEcrit();
+    replierJeuDeRole();
+    replierAide();
+    replierExercicesEcrits();
+    replierOutils();
+  }
+
+  /* ── La question, posée une seule fois ───────────────────────────────── */
+
+  async function demander() {
+    var code = (typeof studentCode !== 'undefined' && studentCode) ? studentCode : '';
+    try {
+      var res = await fetch('/api/student/ia?code=' + encodeURIComponent(code));
+      var data = await res.json();
+      /* Une panne de réseau ne coupe rien : les routes IA sont gardées côté
+         serveur de toute façon, et replier sur un délai d'attente ferait
+         clignoter le module d'une classe à l'autre. */
+      if (data && data.ia === false) replier();
+    } catch (e) { /* on laisse le module tel quel */ }
+  }
+
+  /* On passe APRÈS l'initialisation de la barre d'outils, qui se fait au
+     chargement du module : sinon il n'y aurait encore rien à retirer. */
+  function departer() { setTimeout(demander, 0); }
+  if (document.readyState === 'loading')
+    document.addEventListener('DOMContentLoaded', departer);
+  else departer();
+})();
+</script>
+<!-- SANS-IA:fin -->
 </body></html>
