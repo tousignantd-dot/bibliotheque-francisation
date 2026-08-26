@@ -16,6 +16,11 @@
 :root{
   --oe-dock:86px;
   --oe-dock-fil:#9DB2A6;
+  /* Le rail se pose SUR la page : son gris est un cran plus foncé que
+     le fond de page (#F7F7F5), sinon la bande d'outils et la page ne
+     font qu'une seule surface. Un cran sous --paper-200, même famille
+     de neutres chauds. Vaut pour la colonne comme pour la bande. */
+  --oe-dock-bg:#E8E8E4;
   --oe-panel:400px;
   --oe-card:var(--surface-card,#FFFFFF);
   --oe-page:var(--surface-page,#F7F7F5);
@@ -76,7 +81,7 @@
    surcouche doit couvrir le rail, pas l'inverse. */
 .oe-dock{
   position:fixed;top:0;right:0;width:var(--oe-dock);height:100vh;
-  background:var(--oe-page);border-left:1px solid var(--oe-paper-200);
+  background:var(--oe-dock-bg);border-left:1px solid var(--oe-line-2);
   display:flex;flex-direction:column;align-items:center;gap:8px;
   padding:14px 6px;z-index:8000;overflow-y:auto;
   transition:transform .22s ease;
@@ -89,7 +94,7 @@
   background:var(--oe-dock-fil);border-radius:0 var(--oe-r-pill) var(--oe-r-pill) 0;
 }
 .oe-dock-t{font-size:11px;font-weight:800;letter-spacing:.08em;text-transform:uppercase;
-  color:var(--oe-muted);text-align:center;margin-bottom:4px;line-height:1.35}
+  color:var(--oe-body);text-align:center;margin-bottom:4px;line-height:1.35}
 .oe-tool{
   width:100%;border:0;background:transparent;border-radius:var(--oe-r-md);
   padding:6px 2px;display:flex;flex-direction:column;align-items:center;justify-content:center;
@@ -102,14 +107,14 @@
 .oe-tool .oe-lb{font-size:12.5px;font-weight:700;line-height:1.2;text-align:center}
 /* Le rouge est réservé à l'audio : « Lire » est le seul outil qui le porte. */
 .oe-tool.oe-audio{color:var(--oe-audio)}
-.oe-tool:hover{background:var(--oe-sunken)}
+.oe-tool:hover{background:var(--oe-card)}
 .oe-tool.oe-audio:hover{background:var(--oe-no-bg)}
 /* Sélectionné = plaque encre, jamais une teinte de plus — « Lire » compris,
    qui perd son rouge au profit du blanc sur encre. Posé après les règles de
    survol pour gagner sans !important. */
 .oe-dock .oe-tool[aria-pressed="true"],
 .oe-dock .oe-tool[aria-pressed="true"]:hover{background:var(--oe-ink);color:#fff}
-.oe-dock-sep{width:44px;height:1px;background:var(--oe-paper-200);margin:5px 0;flex:none}
+.oe-dock-sep{width:44px;height:1px;background:var(--oe-line-2);margin:5px 0;flex:none}
 
 /* ── Masquer / rappeler le rail ─────────────────────────────────
    Le rail est toujours présent à l'ouverture du module : l'état masqué
@@ -123,13 +128,13 @@
   border:1px solid var(--oe-line-2);
   background:transparent;border-radius:var(--oe-r-pill);
   padding:6px 2px;display:flex;align-items:center;justify-content:center;gap:3px;
-  color:var(--oe-muted);overflow:hidden;
+  color:var(--oe-body);overflow:hidden;
 }
 .oe-dock-cacher svg{width:13px;height:13px}
 /* La taille vit sur le libellé, pas sur le bouton : `.oe-root button{font:inherit}`
    l'emporterait et le mot repartirait à 18 px, donc tronqué dans le rail. */
 .oe-dock-cacher .oe-dock-cacher-t{font-size:11px;font-weight:800;line-height:1.2;white-space:nowrap}
-.oe-dock-cacher:hover{background:var(--oe-sunken);color:var(--oe-ink)}
+.oe-dock-cacher:hover{background:var(--oe-card);color:var(--oe-ink)}
 .oe-dock-cacher svg{flex:none}
 .oe-montrer{
   display:none;position:fixed;top:50%;right:0;transform:translateY(-50%);
@@ -298,7 +303,7 @@ body.oe-host{transition:padding-right .22s ease}
   .oe-dock{
     top:auto;bottom:0;left:0;right:0;width:100%;height:auto;
     flex-direction:row;justify-content:space-around;gap:0;overflow:visible;
-    border-left:0;border-top:1px solid var(--oe-line);
+    border-left:0;border-top:1px solid var(--oe-line-2);
     padding:4px 4px calc(4px + env(safe-area-inset-bottom));
     box-shadow:0 -6px 22px rgba(0,0,0,.07);
   }
