@@ -65,7 +65,7 @@ def build(dossier):
               notes="Faire appliquer le test à voix haute sur les quatre lignes. C'est "
                     "un test mécanique : il ne demande pas de comprendre pourquoi.")
 
-    d.cartes('En apprendre plus', "Quatre verbes pronominaux du travail", [
+    d.cartes('Ouvrir la mini-leçon', "Quatre verbes pronominaux du travail", [
         ("se blesser",
          "Le mot général : « je me suis blessé au travail ». C'est celui à employer "
          "quand on remplit une déclaration d'accident."),

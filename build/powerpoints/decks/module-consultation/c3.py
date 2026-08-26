@@ -65,7 +65,7 @@ def build(dossier):
             notes="Faire lire « je ne ai pas » à voix haute : le groupe entendra "
                   "lui-même que c'est impossible à dire.")
 
-    d.cartes('En apprendre plus', "Quatre choses à savoir en plus", [
+    d.cartes('Ouvrir la mini-leçon', "Quatre choses à savoir en plus", [
         ("« du, de la, des » deviennent « de »",
          "J'ai de la fièvre devient je n'ai pas de fièvre. Je prends des médicaments "
          "devient je ne prends pas de médicaments. Une règle à part, très fréquente."),

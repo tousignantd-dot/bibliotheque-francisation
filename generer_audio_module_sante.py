@@ -3,7 +3,7 @@
 Générateur d'audio — Module « Prendre rendez-vous et aller à la pharmacie » (Santé)
 Lit la clé dans ELEVENLABS_API_KEY (fichier .env à la racine).
 
-Ce module n'a ni mini-leçons « En apprendre plus » (PLUS est vide) ni boutons
+Ce module n'a ni mini-leçons « Ouvrir la mini-leçon » (PLUS est vide) ni boutons
 d'écoute mot à mot : il n'y a donc rien à mettre dans sons/, seulement les
 répliques des deux dialogues.
 """
@@ -22,7 +22,7 @@ except ImportError:
 from voix_lente import ralentir_si_enseignante
 import sys as _sys, pathlib as _pl
 _sys.path.insert(0, str(_pl.Path(__file__).resolve().parent / 'build'))
-from voix import enrichir  # contexte français pour les mots isolés
+from voix import charge_utile  # contexte français, générique ou de dialogue
 
 VOICES = {
     "enseignante": "mActWQg9kibLro6Z2ouY",   # 👩 Féminine #1
@@ -82,16 +82,14 @@ def char_slug(name):
     return s.replace("'", "").replace(" ", "_")
 
 
-def generate_audio(api_key, text, voice_id, output_path, voice_settings):
+def generate_audio(api_key, text, voice_id, output_path, voice_settings,
+                   avant=None, apres=None):
     url = f"https://api.elevenlabs.io/v1/text-to-speech/{voice_id}"
     headers = {"xi-api-key": api_key, "Content-Type": "application/json"}
-    payload = {
-        "text": text,
-        "model_id": "eleven_multilingual_v2",
-        "voice_settings": voice_settings,
-    }
+    payload = charge_utile(text, voice_id, avant=avant, apres=apres)
+    payload["voice_settings"] = voice_settings   # garde la dérogation
     try:
-        r = requests.post(url, json=enrichir(payload), headers=headers, timeout=45)
+        r = requests.post(url, json=payload, headers=headers, timeout=45)
         if r.status_code != 200:
             print(f"   ❌ {r.status_code}: {r.text[:200]}")
             return False
@@ -130,6 +128,11 @@ def main():
         dir_path = base_dir / dial_id
         dir_path.mkdir(parents=True, exist_ok=True)
         for i, (character, text) in enumerate(data["lines"], 1):
+            # La réplique d'avant et celle d'après partent avec
+            # l'extrait, en `previous_text` / `next_text` : du français qui
+            # conditionne la synthèse sans être prononcé.
+            avant = data["lines"][i - 2][1] if i >= 2 else None
+            apres = data["lines"][i][1] if i < len(data["lines"]) else None
             if only_character and character.upper() != only_character:
                 continue
             voice_key = VOICE_ASSOC.get(character, "feminin_2")
@@ -138,7 +141,8 @@ def main():
             filename = f"line_{i:02d}_{char_slug(character)}.mp3"
             print(f"  {i:2d}. {character[:18]:18s} → ", end="", flush=True)
             total += 1
-            if generate_audio(api_key, text, voice_id, dir_path / filename, settings):
+            if generate_audio(api_key, text, voice_id, dir_path / filename,
+                              settings, avant, apres):
                 print(f"✓ {filename}")
                 success += 1
             else:

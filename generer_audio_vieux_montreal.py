@@ -8,7 +8,7 @@ import sys
 from pathlib import Path
 import sys as _sys, pathlib as _pl
 _sys.path.insert(0, str(_pl.Path(__file__).resolve().parent / 'build'))
-from voix import enrichir  # contexte français pour les mots isolés
+from voix import charge_utile  # contexte français, générique ou de dialogue
 
 try:
     import requests
@@ -89,19 +89,17 @@ DIALOGUES = {
 }
 
 # ── GÉNÉRATION ────────────────────────────────────────────────────────
-def generate_audio(api_key, text, voice_id, output_path):
+def generate_audio(api_key, text, voice_id, output_path,
+                   avant=None, apres=None):
     url = f"https://api.elevenlabs.io/v1/text-to-speech/{voice_id}"
     headers = {
         "xi-api-key": api_key,
         "Content-Type": "application/json",
     }
-    payload = {
-        "text": text,
-        "model_id": "eleven_multilingual_v2",
-        "voice_settings": {"stability": 0.5, "similarity_boost": 0.75}
-    }
+    payload = charge_utile(text, voice_id, avant=avant, apres=apres)
     try:
-        response = requests.post(url, json=enrichir(payload), headers=headers, timeout=30)
+        response = requests.post(url, json=payload, headers=headers,
+                                 timeout=30)
         if response.status_code != 200:
             print(f"   ❌ Erreur {response.status_code}: {response.text[:200]}")
             return False
@@ -134,6 +132,12 @@ def main():
         dir_path.mkdir(parents=True, exist_ok=True)
 
         for i, (character, text) in enumerate(dial_data["lines"], 1):
+            # La réplique d'avant et celle d'après partent avec
+            # l'extrait, en `previous_text` / `next_text` : du français qui
+            # conditionne la synthèse sans être prononcé.
+            avant = dial_data["lines"][i - 2][1] if i >= 2 else None
+            apres = (dial_data["lines"][i][1]
+                     if i < len(dial_data["lines"]) else None)
             voice_name = VOICE_ASSOC.get(character, "feminin_2")
             voice_id = VOICES[voice_name]
 
@@ -143,7 +147,8 @@ def main():
             print(f"  {i:2d}. {character[:20]:20s} → ", end="", flush=True)
             total += 1
 
-            if generate_audio(api_key, text, voice_id, output_path):
+            if generate_audio(api_key, text, voice_id, output_path,
+                              avant, apres):
                 print(f"✓ {filename}")
                 success += 1
             else:

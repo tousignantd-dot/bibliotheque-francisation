@@ -65,7 +65,7 @@ def build(dossier):
             notes="Faire corriger oralement cinq questions mal placées. C'est une erreur "
                   "d'ordre, pas de vocabulaire : elle se corrige vite.")
 
-    d.cartes('En apprendre plus', "Ce qu'il faut savoir en plus", [
+    d.cartes('Ouvrir la mini-leçon', "Ce qu'il faut savoir en plus", [
         ("L'inversion : à comprendre, pas à produire",
          "« Avez-vous mal ? » — le sujet passe après le verbe, avec un trait d'union. "
          "Le personnel l'emploie souvent. Vous n'êtes pas obligé de l'employer."),

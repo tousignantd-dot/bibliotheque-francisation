@@ -53,7 +53,7 @@ def build(dossier):
             notes="Lier au module 1, séance B2 : le motif est identique. Les élèves qui "
                   "l'ont vu là-bas le retrouveront ici sans effort.")
 
-    d.cartes('En apprendre plus', "Quatre choses à savoir en plus", [
+    d.cartes('Ouvrir la mini-leçon', "Quatre choses à savoir en plus", [
         ("Deux sujets différents",
          "« Pendant que » sert surtout quand les deux actions ont des sujets "
          "différents : je remplis, tu prends. Avec le même sujet, on préfère le "

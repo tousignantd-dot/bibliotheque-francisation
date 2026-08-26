@@ -55,7 +55,7 @@ def build(dossier):
               notes="Erreur fréquente : croire que « lui » est masculin et « elle » "
                     "féminin. Devant le verbe, c'est « lui » dans les deux cas.")
 
-    d.cartes('En apprendre plus', "Quatre choses à savoir en plus", [
+    d.cartes('Ouvrir la mini-leçon', "Quatre choses à savoir en plus", [
         ("« Leur » sans s devant un verbe",
          "« Je leur écris » — jamais de s. Le « leurs » avec s est un déterminant : "
          "« leurs outils ». Devant un verbe, jamais."),

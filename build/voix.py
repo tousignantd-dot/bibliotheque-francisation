@@ -53,7 +53,15 @@ SEUIL_MOTS = 4
 
 
 def compte_mots(texte):
-    return len(re.findall(r"[\w'’-]+", texte or ""))
+    """Le nombre de mots — un tiret seul n'en est pas un.
+
+    `[\w'’-]+` laisse passer un tiret isolé, si bien que « A - M - I - N - A »
+    comptait neuf mots au lieu de cinq. Aucun extrait du dépôt ne changeait de
+    classement à cause de ça au 25 août 2026, mais la règle était fausse et
+    c'est précisément sur une épellation que la question s'est posée.
+    """
+    return len([m for m in re.findall(r"[\w'’-]+", texte or "")
+                if re.search(r"\w", m)])
 
 
 def est_court(texte):

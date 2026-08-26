@@ -86,7 +86,7 @@ def build(dossier):
               notes="La forme « ils doivent » complète le tableau ; la donner à l'oral. "
                     "Elle est peu utile en consultation, où l'on parle de soi ou à vous.")
 
-    d.cartes('En apprendre plus', "Quatre nuances de l'obligation", [
+    d.cartes('Ouvrir la mini-leçon', "Quatre nuances de l'obligation", [
         ("« Il faut » est plus doux",
          "Dire « il faut mettre de la glace » est moins direct que « vous devez mettre "
          "de la glace ». Le personnel de santé emploie souvent la première forme."),

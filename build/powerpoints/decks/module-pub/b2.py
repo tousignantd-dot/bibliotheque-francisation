@@ -57,7 +57,7 @@ def build(dossier):
               notes="Le premier élément est avant le verbe, le second après « que ». "
                     "C'est mécanique.")
 
-    d.cartes('En apprendre plus', "Quatre choses à savoir en plus", [
+    d.cartes('Ouvrir la mini-leçon', "Quatre choses à savoir en plus", [
         ("« Celui de », « celle de »",
          "« Le grille-pain de Solange est plus vieux que celui d'Omar. » On évite de "
          "répéter « le grille-pain » : « celui » le remplace."),

@@ -46,7 +46,7 @@ def build(dossier):
             notes="Diapo centrale de la séance. C'est un savoir juridique simple et il "
                   "évite des mois de discussions.")
 
-    d.cartes('En apprendre plus', "Le 1er juillet au Québec", [
+    d.cartes('Ouvrir la mini-leçon', "Le 1er juillet au Québec", [
         ("Une tradition",
          "La plupart des baux se terminent le 30 juin. Le 1er juillet, des milliers de "
          "ménages déménagent le même jour, partout dans la province."),

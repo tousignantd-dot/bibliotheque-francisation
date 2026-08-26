@@ -82,6 +82,18 @@
     .rs-table tbody tr:last-child td { border-bottom: 0; }
     .rs-eteint { color: var(--text-muted); }
 
+    /* — L'IA, autorisée ou non — */
+    .rs-ia { font-size: var(--fs-meta); font-weight: var(--fw-black);
+             letter-spacing: .06em; text-transform: uppercase;
+             padding: 2px var(--sp-2); border-radius: var(--r-sm);
+             white-space: nowrap; }
+    .rs-ia--oui { background: var(--teal-100); color: var(--teal-700, var(--text-strong)); }
+    .rs-ia--non { background: var(--surface-sunken); color: var(--text-strong);
+                  border: 1px solid var(--text-strong); }
+    /* L'état hérité s'écrit en toutes lettres à côté du badge : sans ça, la
+       question « qui a décidé ça ? » revient par courriel. */
+    .rs-ia-src { font-size: var(--fs-meta); color: var(--text-muted); }
+
     /* — Gestes — */
     .rs-actions { display: flex; gap: var(--sp-2); flex-wrap: wrap;
                   margin: var(--sp-3) 0 0; }
@@ -249,6 +261,20 @@
       return '<div class="rs-tuile"><b>' + n + '</b><span>' + ech(mot) + '</span></div>';
     }
 
+    /* L'état posé sur le nœud (« hérité », « autorisée », « interdite ») et
+       l'état qui s'applique vraiment sont deux choses. La page montre le
+       second — c'est lui que vivent les élèves — et nomme le premier quand
+       la décision vient d'ailleurs. */
+    function badgeIA(org) {
+      var oui = org.iaEffective !== 'interdite';
+      var pose = org.ia || 'herite';
+      var src = (pose === 'herite' && org.iaDecidePar && org.iaDecidePar !== org.nom)
+        ? ' <span class="rs-ia-src">hérité de ' + ech(org.iaDecidePar) + '</span>'
+        : (pose === 'herite' ? ' <span class="rs-ia-src">par défaut</span>' : '');
+      return '<span class="rs-ia rs-ia--' + (oui ? 'oui' : 'non') + '">IA '
+           + (oui ? 'autorisée' : 'interdite') + '</span>' + src;
+    }
+
     function rendreNoeud(org, parAcces, tousLesOrgs) {
       var li = '<li><div class="rs-noeud rs-noeud--' + ech(org.type) + '">';
       li += '<div class="rs-tete">'
@@ -256,6 +282,7 @@
           + '<span class="rs-nom">' + ech(org.nom) + '</span>'
           + '<span class="rs-id">n° ' + ech(org.id) + '</span>'
           + (org.actif === false ? '<span class="rs-id">— inactif</span>' : '')
+          + badgeIA(org)
           + '</div>';
 
       var lignes = (parAcces[org.id] || []).map(function (a) {
@@ -280,6 +307,7 @@
       if (org.type === 'reseau') gestes.push(['ouvrir-css', 'Ouvrir un CSS']);
       if (org.type === 'css') gestes.push(['ouvrir-centre', 'Ouvrir un centre']);
       if (org.type !== 'reseau') gestes.push(['renommer', 'Renommer']);
+      gestes.push(['regler-ia', "Régler l'IA"]);
       if (org.type === 'centre') gestes.push(['poser-acces', 'Poser un accès']);
       if (gestes.length) {
         li += '<div class="rs-actions">' + gestes.map(function (g) {
@@ -451,6 +479,27 @@
         var n = (DONNEES.organisations || []).find(function (o) { return o.id === orgId; });
         return formNom(orgId, 'renommer', 'Nouveau nom', n && n.nom);
       }
+      if (geste === 'regler-ia') {
+        var o = (DONNEES.organisations || []).find(function (x) { return x.id === orgId; });
+        var pose = (o && o.ia) || 'herite';
+        /* Le réseau n'a personne au-dessus de lui : lui offrir « hériter »
+           serait offrir un choix que le serveur refuse. */
+        var choix = (o && o.type === 'reseau')
+          ? [['autorisee', 'Autorisée'], ['interdite', 'Interdite']]
+          : [['herite', 'Hériter du niveau au-dessus'],
+             ['autorisee', 'Autorisée'], ['interdite', 'Interdite']];
+        return formulaire(orgId,
+          '<div style="flex:1 1 260px"><label for="rsIA">Aide de l\'assistant</label>'
+          + '<select class="field" id="rsIA" style="width:100%">'
+          + choix.map(function (c) {
+              return '<option value="' + c[0] + '"' + (c[0] === pose ? ' selected' : '')
+                   + '>' + c[1] + '</option>';
+            }).join('')
+          + '</select></div>'
+          + '<button type="button" class="btn btn--pri btn--sm" data-geste="regler-ia-ok" data-org="' + orgId + '">Appliquer</button>'
+          + '<button type="button" class="btn btn--ghost btn--sm" data-geste="annuler">Annuler</button>');
+      }
+
       if (geste === 'poser-acces') {
         /* Le rôle « prof » est proposé ici comme les autres : c'est le geste
            qui rattache une enseignante à un centre. Les rôles qui n'ont pas
@@ -478,6 +527,9 @@
         return void agir('POST', '/api/admin/organisations', { type: 'centre', parentId: orgId, nom: nom });
       if (geste === 'renommer-ok')
         return void agir('PATCH', '/api/admin/organisations/' + orgId, { nom: nom });
+      if (geste === 'regler-ia-ok')
+        return void agir('PATCH', '/api/admin/organisations/' + orgId,
+                         { ia: document.getElementById('rsIA').value });
       if (geste === 'poser-ok')
         return void agir('POST', '/api/admin/acces', {
           teacherId: Number(document.getElementById('rsT').value),

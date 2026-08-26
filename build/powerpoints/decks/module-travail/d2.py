@@ -45,7 +45,7 @@ def build(dossier):
             notes="Beaucoup d'élèves croient qu'un sujet sérieux impose le registre "
                   "officiel. Le corriger explicitement.")
 
-    d.cartes('En apprendre plus', "Quatre repères pour choisir", [
+    d.cartes('Ouvrir la mini-leçon', "Quatre repères pour choisir", [
         ("Est-ce que je la tutoie ?",
          "Si oui, registre familier. Si non ou si vous hésitez, registre officiel. "
          "C'est le repère le plus fiable."),

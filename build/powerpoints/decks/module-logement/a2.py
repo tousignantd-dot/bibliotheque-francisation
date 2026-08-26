@@ -75,7 +75,7 @@ def build(dossier):
             notes="Faire le calcul au tableau avec des chiffres réels. C'est un savoir "
                   "financier autant que linguistique.")
 
-    d.cartes('En apprendre plus', "Quatre coûts qu'on oublie", [
+    d.cartes('Ouvrir la mini-leçon', "Quatre coûts qu'on oublie", [
         ("L'électricité",
          "Si le logement n'est pas « éclairé », comptez de quarante à cent cinquante "
          "dollars par mois selon la saison et l'isolation."),

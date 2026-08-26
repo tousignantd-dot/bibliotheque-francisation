@@ -52,7 +52,7 @@ def build(dossier):
             notes="Diapo centrale. Beaucoup d'élèves écrivent le futur des deux côtés : "
                   "c'est logique, mais c'est faux.")
 
-    d.cartes('En apprendre plus', "Quatre choses à savoir en plus", [
+    d.cartes('Ouvrir la mini-leçon', "Quatre choses à savoir en plus", [
         ("« Si » devient « s' » devant il",
          "« S'il pleut », « s'il commence à venter ». Mais on écrit « si elle », « si "
          "on » : l'élision ne se fait que devant « il » et « ils »."),

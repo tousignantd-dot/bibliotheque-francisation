@@ -58,7 +58,7 @@ def build(dossier):
               notes="Faire poser la question à voix haute pour chaque phrase, avant "
                     "d'écrire. C'est la méthode de toute la séance.")
 
-    d.cartes('En apprendre plus', "Quatre choses à savoir en plus", [
+    d.cartes('Ouvrir la mini-leçon', "Quatre choses à savoir en plus", [
         ("À la négative, le pronom reste devant",
          "« Je ne le change pas. » Le pronom se glisse entre « ne » et le verbe. Les "
          "deux morceaux de la négation encadrent l'ensemble."),

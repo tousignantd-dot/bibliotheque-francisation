@@ -2317,6 +2317,77 @@ Personne d'autre ne le voit : le portail élève ne porte rien de cela.
 - Le signalement ne porte **aucun nom d'élève ni aucune de leurs réponses** :
   nom de l'enseignante, écran, adresse de la page, navigateur, description.
 
+## Le mode sans IA (un centre peut refuser l'assistant)
+
+Une direction peut refuser que ses élèves parlent à une IA. Le refus se pose
+sur **l'arbre des organisations**, pas sur un groupe ni sur un compte : c'est
+la seule autorité qui a un sens ici, et elle est déjà en place.
+
+- **Champ `ia` sur un nœud** : `herite` · `autorisee` · `interdite`.
+  `ia_effective(orgId)` remonte vers la racine et **le premier réglage
+  explicite tranche** — « interdite » sur un CSS ferme ses douze centres, et
+  celui qui a négocié une exception la porte écrite sur lui-même. Sans réglage
+  nulle part, l'IA reste **autorisée** : une mise en service ne doit rien
+  éteindre au passage. Le réseau ne peut pas « hériter » — il n'a personne
+  au-dessus.
+- **Le bouton est dans `reseau.html`** (« Régler l'IA »), réservé au fondateur
+  comme les autres gestes de l'arbre. Le badge de chaque nœud dit l'état
+  **effectif** et, quand il vient d'ailleurs, de qui : « hérité de CSS X ».
+  L'héritage est calculé au serveur (`arbre_pour_lecture`) — deux calculs
+  d'une même règle finissent toujours par diverger.
+- **Dix routes sont gardées, pas sept.** Les sept du module
+  (`correct-french`, `correct-email`, `check-written`, `jeu-de-role`,
+  `analyser-erreurs`, `vocab/translate`, `voix`) **et les trois de la barre
+  « Mes outils »** (`outils/traduire`, `outils/simplifier`,
+  `outils/assistant`), qui sont la plus grosse surface d'IA d'un module et
+  qu'on oublie parce qu'elles ne sont pas dans le HTML. Le garde est
+  `_ia_refusee()`, appelé juste après l'authentification.
+- **`GET /api/student/ia?code=`** est la seule question que pose le module. Un
+  code inconnu obtient `false` : un module ouvert hors du portail ne doit pas
+  montrer des boutons que les routes refuseront.
+
+Le repli côté élève est **cosmétique**, et c'est voulu : une page se modifie
+avec deux touches, la décision vit au serveur.
+
+    python3 build/greffe_sans_ia.py --tous       # gabarit + les 87 modules
+    python3 build/greffe_sans_ia.py --un <slug>
+    python3 build/greffe_sans_ia.py --tous --retirer
+
+Ce qui tombe et ce qui reste : plus de rétroaction avant l'envoi (l'enseignant
+reçoit le texte **non corrigé**), la moitié « avec l'assistant » du jeu de rôle
+disparaît mais l'activité de classe reste, « Pourquoi je me trompe ? » part et
+la mini-leçon reste, les réponses à réponse connue se corrigent comme avant
+(c'est de la comparaison de chaînes), les réponses ouvertes donnent la réponse
+attendue après deux essais. Dans le rail, `Outils.sansIA()` retire **traduire ·
+simplifier · demander** et le bandeau de langue maternelle ; **lire · prononcer
+· carnet · réviser** restent — quand `/api/voix` refuse, `dit()` retombe sur la
+voix du navigateur, qui est une fonction du système d'exploitation.
+
+Trois choses payées en le faisant :
+
+- **La carte du jeu de rôle promet l'assistant dans 77 modules sur 78**, dans
+  une phrase d'ouverture qui vit **avant** le séparateur, donc que le masquage
+  ne touchait pas. Un module qui annonce « L'assistant joue la personne qui
+  t'accueille » puis n'offre rien est pire que pas de repli du tout. La greffe
+  retire les **blocs de texte** qui le mentionnent — un élément dont les
+  enfants sont tous en ligne (`b`, `span`, `br`) ; se limiter aux feuilles ne
+  suffit pas, ces phrases portent presque toutes un `<b>`.
+- **Un seul module sur 78 a des fiches à imprimer** (`module-logement`). Le mot
+  qui explique ce que devient l'exercice se règle donc sur la présence de
+  `.jr-print`, sinon il renverrait 77 classes vers des fiches qui n'existent
+  pas. Les 78 gardent, eux, du contenu de classe avant le séparateur —
+  situations, sujets à couvrir, rappel de grammaire.
+- **`marqueBlocs()` de la barre d'outils repousse à chaque `render()`.** Le
+  drapeau `SANS_IA` du fichier partagé existe pour ça : retirer les marqueurs
+  de traduction une fois au chargement les laisse revenir à la première
+  section rendue.
+
+Vérifié en jouant, jamais en relisant : les 87 modules ouverts un à un dans le
+navigateur avec un centre à « interdite » — repli complet, aucune promesse
+d'assistant visible, zéro erreur de console — puis quatre rouverts avec le
+centre remis à « autorisée », qui retrouvent leurs sept outils et leurs deux
+boutons de vérification. Le même fichier sert les deux versions.
+
 ## Voix des modules (ElevenLabs)
 
 Les MP3 des modules sont produits par les scripts `generer_audio_*.py` à la

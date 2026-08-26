@@ -92,7 +92,7 @@ def build(dossier):
          "Le mot et sa définition, le mot et l'image, le mot à écrire. Les mêmes quinze "
          "mots."),
         ("Les six mini-leçons",
-         "Six panneaux « En apprendre plus », avec de l'audio. Ils restent accessibles "
+         "Six panneaux « Ouvrir la mini-leçon », avec de l'audio. Ils restent accessibles "
          "après la fin du module."),
     ], notes="Montrer les trois à l'écran, une minute chacun.")
 

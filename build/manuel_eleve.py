@@ -18,7 +18,7 @@ fiches dans l'ordre d'enseignement, et les mini-leçons.
 
 Les mini-leçons ne sont pas dans les fiches
 -------------------------------------------
-54 fiches sur 289 portent un bloc « En apprendre plus » ; les mini-leçons
+54 fiches sur 289 portent un bloc « Ouvrir la mini-leçon » ; les mini-leçons
 complètes, elles, vivent dans le module interactif (`PLUS`). Les imprimer était
 la moitié de la demande. `build/plus_json.js` les sort des deux origines — le
 `plus.js` des modules générés, le `const PLUS` du HTML des neuf modules d'avant
@@ -344,7 +344,7 @@ def mini_lecons_html(slug, numero):
         '<span class="repere">[[SECTION:%s:plus]]</span>'
         '<div class="eyebrow">Module %d</div><h1 class="tt">Les mini-leçons</h1>'
         '<p class="chapeau">Ce que le module explique à l’écran quand on clique '
-        '« En apprendre plus » : la règle, ses cas particuliers, les pièges et '
+        '« Ouvrir la mini-leçon » : la règle, ses cas particuliers, les pièges et '
         'quatre questions pour vérifier qu’on a compris. Rien de tout cela n’est '
         'exigé en classe — c’est là pour la personne qui veut savoir pourquoi.</p>'
         '<ol class="sommaire-ml">%s</ol></article>'
@@ -689,7 +689,7 @@ def couverture_html(niv, niveau, compte, feuille, date_fr):
   que celle distribuée en classe : celui qui perd la sienne la retrouve ici.</p></section>
   <section class="bloc card"><h3>Les mini-leçons, à la fin de chaque module</h3>
   <p>Ce sont les explications que le module donne à l’écran quand on clique
-  « En apprendre plus » : la règle, ses cas particuliers, les pièges les plus
+  « Ouvrir la mini-leçon » : la règle, ses cas particuliers, les pièges les plus
   fréquents et quatre questions pour vérifier. Les réponses sont écrites juste
   en dessous. Personne n’est obligé de les lire ; elles sont là pour qui veut
   comprendre pourquoi.</p></section>

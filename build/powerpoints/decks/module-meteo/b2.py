@@ -43,7 +43,7 @@ def build(dossier):
             notes="Erreur fréquente chez les anglophones et les hispanophones. La "
                   "corriger une fois, clairement.")
 
-    d.cartes('En apprendre plus', "Quatre pièges des chiffres à l'oral", [
+    d.cartes('Ouvrir la mini-leçon', "Quatre pièges des chiffres à l'oral", [
         ("Soixante et soixante-dix",
          "Au Québec comme en France, on dit « soixante-dix », pas « septante ». Mais "
          "« soixante » et « soixante-dix » se ressemblent : écoutez la fin."),

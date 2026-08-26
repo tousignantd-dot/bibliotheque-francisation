@@ -43,7 +43,7 @@ def build(dossier):
               notes="Quatre des cinq fabriquent des noms. Le faire remarquer : le suffixe "
                     "sert surtout à transformer une action en chose.")
 
-    d.cartes('En apprendre plus', "Quatre choses à savoir en plus", [
+    d.cartes('Ouvrir la mini-leçon', "Quatre choses à savoir en plus", [
         ("« -able » veut dire « qu'on peut »",
          "Réparable : qu'on peut réparer. Jetable : qu'on peut jeter. Lavable, "
          "buvable, faisable. Le sens est toujours le même."),

@@ -90,6 +90,11 @@
   var selectionBloc = '';  // le bloc entier qui le contient (voir blocDe)
   var chat = [];       // historique de l'assistant
   var audioEnCours = null;
+  // Le centre de l'élève a-t-il refusé l'IA ? Posé après coup par sansIA(),
+  // quand la réponse du serveur arrive — donc après bati() : tout ce qui est
+  // déjà dans la page se retire, et tout ce qui repousse doit consulter ce
+  // drapeau. C'est le cas de marqueBlocs(), rappelé à chaque render().
+  var SANS_IA = false;
 
   // ══ Petits utilitaires ════════════════════════════════════════
   function esc(s) {
@@ -268,6 +273,7 @@
   }
 
   function marqueBlocs() {
+    if (SANS_IA) return;
     document.querySelectorAll(selecteurBlocs()).forEach(function (bloc) {
       if (el.racine && (el.racine.contains(bloc) || el.tete.contains(bloc))) return;
       if (bloc.querySelector(':scope > .oe-tag')) return;
@@ -977,6 +983,47 @@
       if (cfg) { cfg.section = titre; if (courant) el.sub.textContent = titre; }
     },
     ouvrir: function (id) { if (cfg) ouvrir(id, true); },
+
+    // ── Le mode sans assistant ────────────────────────────────────────
+    // Trois outils sur sept parlent à une IA : traduire, simplifier,
+    // demander. Ils partent. « Lire » et « Prononcer » restent : quand
+    // /api/voix refuse, dit() retombe sur la voix du navigateur, qui est une
+    // fonction du système d'exploitation. Le carnet et la révision n'ont
+    // jamais rien demandé à personne.
+    //
+    // Le choix de la langue maternelle part avec eux : il ne servait qu'à la
+    // traduction, et un bandeau noir qui réclame une langue pour un outil
+    // qui n'existe plus est une porte sur un mur.
+    sansIA: function () {
+      SANS_IA = true;
+      ['trad', 'simp', 'chat'].forEach(function (id) {
+        document.querySelectorAll('[data-oe-outil="' + id + '"], [data-oe-sel="' + id + '"]')
+          .forEach(function (n) { n.remove(); });
+        var pane = document.getElementById('oe-pane-' + id);
+        if (pane) pane.remove();
+      });
+      document.querySelectorAll('.oe-tag, .oe-trad').forEach(function (n) { n.remove(); });
+      document.querySelectorAll('.oe-lang, .oe-langbar').forEach(function (n) { n.remove(); });
+      // La bulle de sélection ouvre par un séparateur quand son premier
+      // bouton est parti : on renormalise plutôt que de laisser un trait
+      // flotter en tête.
+      var bulle = document.getElementById('oe-sel');
+      if (bulle) {
+        while (bulle.firstElementChild && bulle.firstElementChild.classList.contains('oe-sep'))
+          bulle.firstElementChild.remove();
+      }
+      // Idem pour le rail : deux séparateurs collés, ou un séparateur en
+      // dernier, se voient tout de suite.
+      var dock = document.querySelector('.oe-dock');
+      if (dock) {
+        dock.querySelectorAll('.oe-dock-sep').forEach(function (sep) {
+          var p = sep.previousElementSibling, n = sep.nextElementSibling;
+          if (!p || !n || p.classList.contains('oe-dock-sep')
+              || n.classList.contains('oe-dock-cacher')) sep.remove();
+        });
+      }
+      if (courant === 'trad' || courant === 'simp' || courant === 'chat') fermer();
+    },
     rafraichirBlocs: marqueBlocs,
 
     // Un module qui a sa propre surcouche — les cartes mémoire du vocabulaire —

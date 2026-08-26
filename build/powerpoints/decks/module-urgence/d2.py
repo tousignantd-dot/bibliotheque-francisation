@@ -54,7 +54,7 @@ def build(dossier):
                   "permission : monter, entrer, rester, téléphoner, apporter quelque "
                   "chose.")
 
-    d.cartes('En apprendre plus', "Quatre degrés de politesse", [
+    d.cartes('Ouvrir la mini-leçon', "Quatre degrés de politesse", [
         ("L'impératif · direct",
          "« Donnez-moi son nom. » Correct entre proches ou dans l'urgence. Trop sec "
          "avec un inconnu."),

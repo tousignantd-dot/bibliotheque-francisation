@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 """
-Générateur d'audio — boutons d'écoute des mini-leçons « En apprendre plus »
+Générateur d'audio — boutons d'écoute des mini-leçons « Ouvrir la mini-leçon »
 du module « module-consultation ».
 
 fileId → texte lu ; doit correspondre aux appels playWord() générés par
@@ -128,7 +128,7 @@ def generate(api_key, text, path):
 
 
 def main():
-    print(f"🔊 Mini-leçons « En apprendre plus » — {len(CLIPS)} extraits\n")
+    print(f"🔊 Mini-leçons « Ouvrir la mini-leçon » — {len(CLIPS)} extraits\n")
     api_key = os.environ.get("ELEVENLABS_API_KEY", "").strip()
     if not api_key:
         print("❌ ELEVENLABS_API_KEY absente"); sys.exit(1)

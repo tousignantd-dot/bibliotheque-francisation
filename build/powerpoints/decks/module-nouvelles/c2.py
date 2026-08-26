@@ -52,7 +52,7 @@ def build(dossier):
             notes="Diapo centrale de la séance. Faire chercher les deux temps dans le "
                   "texte du concours, en C1.")
 
-    d.cartes('En apprendre plus', "Quatre emplois de l'imparfait", [
+    d.cartes('Ouvrir la mini-leçon', "Quatre emplois de l'imparfait", [
         ("L'heure et la date",
          "« Il était 8 h. » « C'était un samedi. » Toujours à l'imparfait, jamais au "
          "passé composé."),

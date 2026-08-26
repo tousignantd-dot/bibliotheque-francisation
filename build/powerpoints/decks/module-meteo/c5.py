@@ -44,7 +44,7 @@ def build(dossier):
               notes="Le repère le plus fiable : y a-t-il un « si » dans la phrase, ou "
                     "une condition sous-entendue ? Si oui, conditionnel.")
 
-    d.cartes('En apprendre plus', "Quatre emplois du conditionnel", [
+    d.cartes('Ouvrir la mini-leçon', "Quatre emplois du conditionnel", [
         ("Une action sous condition",
          "« Je prendrais l'autoroute 10 si la visibilité s'améliorait. » C'est "
          "l'emploi principal, et le plus fréquent."),

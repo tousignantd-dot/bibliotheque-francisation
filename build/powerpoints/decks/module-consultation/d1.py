@@ -47,7 +47,7 @@ def build(dossier):
             notes="Cette règle est l'inverse de celle des exercices oraux du module. "
                   "Le dire explicitement, sinon les élèves croient s'être trompés avant.")
 
-    d.cartes('En apprendre plus', "Quatre pièges des formulaires de santé", [
+    d.cartes('Ouvrir la mini-leçon', "Quatre pièges des formulaires de santé", [
         ("« Aucune » plutôt que le vide",
          "Une case laissée vide veut dire « je n'ai pas lu ». Écrivez « aucune » ou "
          "« non » : c'est une réponse, et elle compte."),

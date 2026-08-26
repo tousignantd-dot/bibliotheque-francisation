@@ -56,7 +56,7 @@ def build(dossier):
             notes="Faire remarquer que les reportages commencent presque toujours par le "
                   "moment : « Hier, dans une école de Longueuil… »")
 
-    d.cartes('En apprendre plus', "Quatre choses à savoir en plus", [
+    d.cartes('Ouvrir la mini-leçon', "Quatre choses à savoir en plus", [
         ("La virgule après le marqueur",
          "Quand le marqueur ouvre la phrase, une virgule le suit : « Hier, un feu s'est "
          "déclaré. » Pas de virgule quand il est à la fin."),

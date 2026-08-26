@@ -117,7 +117,7 @@ def generate(api_key, text, path):
 
 
 def main():
-    print(f"🔊 Mini-leçons « En apprendre plus » — {len(CLIPS)} extraits\n")
+    print(f"🔊 Mini-leçons « Ouvrir la mini-leçon » — {len(CLIPS)} extraits\n")
     api_key = os.environ.get("ELEVENLABS_API_KEY", "").strip()
     if not api_key:
         print("❌ ELEVENLABS_API_KEY absente"); sys.exit(1)

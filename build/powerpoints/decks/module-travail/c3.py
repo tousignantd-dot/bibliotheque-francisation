@@ -55,7 +55,7 @@ def build(dossier):
             notes="Faire appliquer la méthode à voix haute sur trois exemples avant de "
                   "lancer les exercices écrits.")
 
-    d.cartes('En apprendre plus', "Quatre choses à savoir en plus", [
+    d.cartes('Ouvrir la mini-leçon', "Quatre choses à savoir en plus", [
         ("Le nom peut venir après le verbe",
          "« Quelle est ton adresse ? » — le nom « adresse » est après « est ». On "
          "l'accorde quand même : c'est de lui qu'on parle."),

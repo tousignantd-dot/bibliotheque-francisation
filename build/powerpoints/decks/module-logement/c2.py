@@ -52,7 +52,7 @@ def build(dossier):
             notes="Le repère du module 4 fonctionne encore : après « qui », un verbe ; "
                   "après « que », un sujet.")
 
-    d.cartes('En apprendre plus', "Quatre choses à savoir en plus", [
+    d.cartes('Ouvrir la mini-leçon', "Quatre choses à savoir en plus", [
         ("« Celui que », « celle que »",
          "Pour une personne ou une chose déjà nommée : « Celui que je crains, c'est le "
          "camion. » « Celle que je préfère, c'est la chambre. »"),

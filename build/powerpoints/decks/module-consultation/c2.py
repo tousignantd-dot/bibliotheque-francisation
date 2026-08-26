@@ -67,7 +67,7 @@ def build(dossier):
               notes="Trois verbes, dix-huit formes. Ce sont les trois verbes les plus "
                     "fréquents du français : ce qui est appris ici sert partout ailleurs.")
 
-    d.cartes('En apprendre plus', "Ce qui n'est pas dans le tableau", [
+    d.cartes('Ouvrir la mini-leçon', "Ce qui n'est pas dans le tableau", [
         ("Les accents de « soulever »",
          "Le e du radical prend un accent grave quand la terminaison est muette : je "
          "soulève, mais nous soulevons. Même chose pour « lever », « emmener »."),

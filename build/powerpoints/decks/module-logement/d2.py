@@ -42,7 +42,7 @@ def build(dossier):
               notes="Faire poser la question à voix haute avant chaque réponse. C'est la "
                     "méthode, et elle ne se trompe pas.")
 
-    d.cartes('En apprendre plus', "Quatre choses à savoir en plus", [
+    d.cartes('Ouvrir la mini-leçon', "Quatre choses à savoir en plus", [
         ("Pourquoi cette distinction sert",
          "Le pronom n'est pas le même : « je le vois » (direct) et « je lui parle » "
          "(indirect). C'est la règle du module 6, et elle repose sur celle-ci."),

@@ -54,7 +54,7 @@ def build(dossier):
             notes="Le mot savant est « t euphonique ». Ne pas l'employer : dire "
                   "simplement que c'est un t de liaison.")
 
-    d.cartes('En apprendre plus', "Quatre choses à savoir en plus", [
+    d.cartes('Ouvrir la mini-leçon', "Quatre choses à savoir en plus", [
         ("Trois façons de poser la même question",
          "« Est-ce que le bail commence… ? » à l'oral. « Le bail commence-t-il… ? » à "
          "l'écrit. « Le bail commence le 1er septembre ? » entre proches."),

@@ -22,7 +22,8 @@ navigateur**, par :
 un seul envoi, et il a déjà écrasé un relevé complet par un relevé partiel
 longtemps après qu'on avait cessé d'y penser.
 
-**Les mots isolés passent par `enrichir()` de `build/voix.py`.** Rien de ce
+**Les mots isolés passent par `charge_utile()` de `build/voix.py`**, qui
+donne aussi aux répliques de dialogue leurs voisines de scène.** Rien de ce
 contexte n'est prononcé ni facturé ; il sert à ce qu'un extrait de quatre mots
 ou moins ne sorte pas à l'anglaise ou à l'espagnole.
 
@@ -64,7 +65,7 @@ import sys
 import time
 import sys as _sys, pathlib as _pl
 _sys.path.insert(0, str(_pl.Path(__file__).resolve().parent / 'build'))
-from voix import enrichir  # contexte français pour les mots isolés
+from voix import charge_utile  # contexte français, générique ou de dialogue
 import unicodedata
 from pathlib import Path
 
@@ -149,7 +150,7 @@ ATTENTE_BASE_S = 4   # 429 et 5xx, doublée à chaque échec : 4, 8, 16, 32 s
 ATTENTE_RESEAU_S = 1  # coupure TLS : 1, 2, 4, 8 s — voir parle()
 
 
-def parle(cle, texte, voix, chemin):
+def parle(cle, texte, voix, chemin, avant=None, apres=None):
     """Un extrait, avec reprise sur coupure réseau.
 
     Une panne passagère du fournisseur n'est pas une erreur du programme : on
@@ -162,8 +163,7 @@ def parle(cle, texte, voix, chemin):
         try:
             r = requests.post(
                 f"https://api.elevenlabs.io/v1/text-to-speech/{voix}",
-                json=enrichir({"text": texte, "model_id": "eleven_multilingual_v2",
-                      "voice_settings": {"stability": 0.5, "similarity_boost": 0.75}}),
+                json=charge_utile(texte, voix, avant=avant, apres=apres),
                 headers={"xi-api-key": cle, "Content-Type": "application/json"},
                 timeout=60)
         except requests.exceptions.RequestException as e:
@@ -218,8 +218,16 @@ def main():
     for dial_id, lignes in dialogues.items():
         for i, (perso, texte) in enumerate(lignes, 1):
             nom = f"line_{i:02d}_{slug(perso)}.mp3"
+            # La réplique d'avant et celle d'après partent avec l'extrait, en
+            # `previous_text` / `next_text` : du français qui conditionne la
+            # synthèse sans être prononcé. Sur un mot isolé, `charge_utile`
+            # retombe sur sa phrase de classe générique ; ici on a mieux à
+            # offrir — la scène elle-même.
+            avant = lignes[i - 2][1] if i >= 2 else None
+            apres = lignes[i][1] if i < len(lignes) else None
             taches.append((f"{dial_id}/{nom}", texte,
-                           VOIX[VOIX_PERSO[perso]], SORTIE / dial_id / nom))
+                           VOIX[VOIX_PERSO[perso]], SORTIE / dial_id / nom,
+                           avant, apres))
 
     if not MANIFESTE.exists():
         print(f"❌ {MANIFESTE.name} introuvable — le produire par "
@@ -229,14 +237,14 @@ def main():
     sons = json.loads(MANIFESTE.read_text(encoding="utf-8"))
     for file_id, texte in sons.items():
         taches.append((f"sons/{file_id}", texte, VOIX_MOTS,
-                       SORTIE / "sons" / f"{file_id}.mp3"))
+                       SORTIE / "sons" / f"{file_id}.mp3", None, None))
 
     print(f"🔊 module-n7-banque — {len(taches)} extraits "
           f"({sum(len(v) for v in dialogues.values())} répliques "
           f"sur {len(dialogues)} dialogues + {len(sons)} sons)\n")
 
     ok = saute = echec = 0
-    for etiquette, texte, voix, chemin in taches:
+    for etiquette, texte, voix, chemin, avant, apres in taches:
         if only and not any(etiquette.startswith(o) or
                             chemin.stem.startswith(o) for o in only):
             continue
@@ -246,7 +254,7 @@ def main():
             saute += 1
             continue
         print(f"  {etiquette:34s} « {texte[:40]} » → ", end="", flush=True)
-        if parle(cle, texte, voix, chemin):
+        if parle(cle, texte, voix, chemin, avant, apres):
             print("✓"); ok += 1
         else:
             print("✗"); echec += 1

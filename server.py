@@ -1570,6 +1570,50 @@ def org_chain(org_id, orgs=None):
     return chaine
 
 
+# ── L'IA, autorisée ou non, centre par centre ────────────────────────────────
+# Une direction peut refuser que ses élèves parlent à un assistant. Le refus se
+# pose sur un nœud de l'arbre et descend : « interdite » sur un CSS ferme ses
+# douze centres d'un geste, et celui qui a négocié une exception la porte
+# écrite sur lui-même. Rien n'est décidé dans la page de l'élève — les routes
+# refusent, sinon ce ne serait pas une décision mais des boutons cachés.
+IA_ETATS = ("herite", "autorisee", "interdite")
+
+
+def ia_effective(org_id, orgs=None):
+    """Dit si l'IA est autorisée sur ce nœud. Rend (autorisée, nœud décideur).
+
+    On remonte vers la racine et le PREMIER réglage explicite tranche. Faute
+    de réglage nulle part, l'IA reste autorisée : c'est l'état d'avant ce
+    champ, et une mise en service ne doit rien éteindre au passage.
+    """
+    for noeud in org_chain(org_id, orgs):
+        if noeud.get("ia") in ("autorisee", "interdite"):
+            return noeud["ia"] == "autorisee", noeud
+    return True, None
+
+
+def centre_de_eleve(student, groups=None):
+    """Le centre auquel l'élève est rattaché, par son groupe. None si aucun."""
+    if not student:
+        return None
+    groups = load_groups() if groups is None else groups
+    groupe = next((g for g in groups if g.get("id") == student.get("groupId")), None)
+    return (groupe or {}).get("centreId")
+
+
+def ia_pour_eleve(student):
+    """(autorisée, nœud décideur) pour un élève donné.
+
+    Un groupe pas encore rattaché à un centre retombe sur le réglage du
+    réseau : un rattachement oublié ne doit pas devenir une porte ouverte.
+    """
+    centre = centre_de_eleve(student)
+    if centre is not None:
+        return ia_effective(centre)
+    racine = orgs_of_type("reseau")
+    return ia_effective(racine[0]["id"]) if racine else (True, None)
+
+
 def org_subtree_ids(org_id, orgs=None):
     """Les identifiants du nœud et de toute sa descendance."""
     orgs = load_organisations() if orgs is None else orgs
@@ -2042,6 +2086,13 @@ def arbre_pour_lecture():
     return {
         "organisations": [
             {**o,
+             "ia": o.get("ia", "herite"),
+             # L'état effectif est calculé ici, pas dans la page : l'héritage
+             # est une règle du serveur, et deux calculs de la même règle
+             # finissent toujours par diverger.
+             "iaEffective": ("autorisee" if ia_effective(o["id"], orgs)[0]
+                             else "interdite"),
+             "iaDecidePar": (ia_effective(o["id"], orgs)[1] or {}).get("nom", ""),
              "enfants": sorted(x["id"] for x in orgs if x.get("parentId") == o["id"]),
              "groupes": par_centre.get(o["id"], [])}
             for o in orgs
@@ -14545,6 +14596,9 @@ class Handler(http.server.SimpleHTTPRequestHandler):
         if path == "/api/sections":
             self._handle_sections(params)
             return
+        if path == "/api/student/ia":
+            self._handle_student_ia(params)
+            return
         if path == "/api/student/sections":
             self._handle_student_sections(params)
             return
@@ -15135,6 +15189,22 @@ class Handler(http.server.SimpleHTTPRequestHandler):
             for aid, secs in load_sections_catalogue().items()
         })
 
+    def _handle_student_ia(self, params):
+        """Dit au module s'il doit se replier en version sans assistant.
+
+        Une seule question, posée au chargement. Un code inconnu obtient
+        `false` plutôt qu'un 401 : le module s'ouvre parfois hors du portail,
+        et mieux vaut qu'il se replie que qu'il montre des boutons morts.
+        """
+        code = params.get("code", [""])[0].strip().upper()
+        eleve = validate_student_code(code)
+        if not eleve:
+            json_response(self, {"ia": False, "raison": "code inconnu"})
+            return
+        autorisee, decideur = ia_pour_eleve(eleve)
+        json_response(self, {"ia": bool(autorisee),
+                             "decidePar": (decideur or {}).get("nom", "")})
+
     def _handle_student_sections(self, params):
         """Ce qui est ouvert, pour le module lui-même : c'est lui qui verrouille
         ses onglets, l'élève ouvrant le fichier directement."""
@@ -15625,7 +15695,8 @@ class Handler(http.server.SimpleHTTPRequestHandler):
         if org is None:
             json_response(self, {"error": "Organisation introuvable"}, 404)
             return
-        avant = {"nom": org.get("nom"), "actif": org.get("actif", True)}
+        avant = {"nom": org.get("nom"), "actif": org.get("actif", True),
+                 "ia": org.get("ia", "herite")}
         if "nom" in body:
             nom = (body.get("nom") or "").strip()
             if not nom:
@@ -15640,10 +15711,22 @@ class Handler(http.server.SimpleHTTPRequestHandler):
                 json_response(self, {"error": "Le réseau ne se désactive pas"}, 409)
                 return
             org["actif"] = actif
+        if "ia" in body:
+            etat = (body.get("ia") or "herite").strip()
+            if etat not in IA_ETATS:
+                json_response(self, {"error": "État d'IA inconnu"}, 400)
+                return
+            # « Hériter » n'a personne au-dessus quand on est la racine : le
+            # réseau doit trancher, sinon l'arbre entier flotte.
+            if etat == "herite" and org.get("type") == "reseau":
+                json_response(self, {"error": "Le réseau tranche : il n'hérite de personne"}, 400)
+                return
+            org["ia"] = etat
         save_organisations(orgs)
         journal(fondateur, "organisation.modifiee", org_id,
                 {"avant": avant, "apres": {"nom": org.get("nom"),
-                                           "actif": org.get("actif", True)}})
+                                           "actif": org.get("actif", True),
+                                           "ia": org.get("ia", "herite")}})
         json_response(self, {"success": True, "organisation": org})
 
     def _handle_acces_add(self):
@@ -16944,6 +17027,25 @@ class Handler(http.server.SimpleHTTPRequestHandler):
 
         json_response(self, {"correct": bool(parsed.get("correct", False))})
 
+    def _ia_refusee(self, eleve_ou_code):
+        """Répond 403 et rend True quand le centre de l'élève n'a pas l'IA.
+
+        Le refus vit ici et pas seulement dans la page : une page se modifie
+        avec deux touches, et une direction qui a dit non a dit non.
+        """
+        eleve = eleve_ou_code
+        if isinstance(eleve_ou_code, str):
+            eleve = validate_student_code(eleve_ou_code.strip().upper())
+        autorisee, decideur = ia_pour_eleve(eleve)
+        if autorisee:
+            return False
+        json_response(self, {
+            "error": "L'aide de l'assistant n'est pas activée dans ton centre.",
+            "iaInterdite": True,
+            "decidePar": (decideur or {}).get("nom", ""),
+        }, 403)
+        return True
+
     def _handle_vocab_translate(self):
         """Traduit un mot, sa définition et — si elle est fournie — sa phrase
         d'exemple.
@@ -16960,6 +17062,8 @@ class Handler(http.server.SimpleHTTPRequestHandler):
         code = body.get("code", "").strip().upper()
         if not validate_student_code(code):
             json_response(self, {"error": "Non autorisé"}, 401)
+            return
+        if self._ia_refusee(code):
             return
 
         language = (body.get("language") or body.get("langue") or "").strip()[:60]
@@ -17371,6 +17475,8 @@ class Handler(http.server.SimpleHTTPRequestHandler):
         if not validate_student_code(code):
             json_response(self, {"error": "Non autorisé"}, 401)
             return
+        if self._ia_refusee(code):
+            return
 
         scenario = body.get("scenario") or "louer"
         cas = body.get("cas") or body.get("logement", "")
@@ -17420,6 +17526,8 @@ class Handler(http.server.SimpleHTTPRequestHandler):
         eleve = validate_student_code(body.get("code", "").strip().upper())
         if not eleve:
             json_response(self, {"error": "Non autorisé"}, 401)
+            return
+        if self._ia_refusee(eleve):
             return
         eleve_id, groupe_id = eleve.get("id"), eleve.get("groupId")
 
@@ -17520,6 +17628,8 @@ class Handler(http.server.SimpleHTTPRequestHandler):
             return None, None
         if not validate_student_code(body.get("code", "").strip().upper()):
             json_response(self, {"error": "Non autorisé"}, 401)
+            return None, None
+        if self._ia_refusee(body.get("code", "")):
             return None, None
         texte = strip_tags(str(body.get(cle_texte, ""))).strip()[:maxi]
         if not texte:
@@ -17643,6 +17753,8 @@ class Handler(http.server.SimpleHTTPRequestHandler):
             return
         if not validate_student_code(body.get("code", "").strip().upper()):
             json_response(self, {"error": "Non autorisé"}, 401)
+            return
+        if self._ia_refusee(body.get("code", "")):
             return
 
         recu = body.get("historique")
@@ -17799,6 +17911,8 @@ class Handler(http.server.SimpleHTTPRequestHandler):
         if not validate_student_code(code):
             json_response(self, {"error": "Non autorisé"}, 401)
             return
+        if self._ia_refusee(code):
+            return
 
         consigne = body.get("consigne", "").strip()[:400]
         reponse = body.get("reponse", "").strip()[:600]
@@ -17885,6 +17999,8 @@ class Handler(http.server.SimpleHTTPRequestHandler):
         student = validate_student_code(code)
         if not student:
             json_response(self, {"error": "Non autorisé"}, 401)
+            return
+        if self._ia_refusee(student):
             return
 
         exercice = body.get("exercice", "").strip()[:200]
@@ -17994,6 +18110,8 @@ class Handler(http.server.SimpleHTTPRequestHandler):
         if not validate_student_code(code):
             json_response(self, {"error": "Non autorisé"}, 401)
             return
+        if self._ia_refusee(code):
+            return
 
         text = body.get("text", "").strip()
         if not text:
@@ -18048,6 +18166,8 @@ class Handler(http.server.SimpleHTTPRequestHandler):
         code = body.get("code", "").strip().upper()
         if not validate_student_code(code):
             json_response(self, {"error": "Non autorisé"}, 401)
+            return
+        if self._ia_refusee(code):
             return
 
         scenario = body.get("scenario", "").strip()[:1500]
