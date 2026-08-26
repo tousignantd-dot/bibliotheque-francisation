@@ -45,6 +45,20 @@ const Prof = (() => {
 
   function onGroupeChange(fn) { listeners.push(fn); }
 
+  /** Le niveau du groupe actif, sous la forme « Niveau N ».
+
+      Un groupe est d'un niveau, et ce niveau borne ce que l'enseignante voit
+      du catalogue et du dépôt de matériel : on ne planifie pas un module de
+      niveau 7 dans une classe de niveau 4. Le serveur écrit toujours le
+      champ ; le repli sur le nom sert aux pages ouvertes avant qu'il ne
+      réponde, et à un jeu de données plus ancien. */
+  function niveauGroupe(groupe = groupeActif()) {
+    const pose = ((groupe || {}).niveau || '').trim();
+    if (/^Niveau [1-8]$/.test(pose)) return pose;
+    const trouve = /niveau\s*([1-8])/i.exec((groupe || {}).nom || '');
+    return trouve ? `Niveau ${trouve[1]}` : 'Niveau 4';
+  }
+
   function groupeActif() {
     return state.groupes.find(g => g.id === state.groupeId) || null;
   }
@@ -189,7 +203,7 @@ const Prof = (() => {
 
   return {
     state, init, logout, fetch: fetchAuth, withGroup, body,
-    setToken, setGroupes, setGroupeActif, onGroupeChange, groupeActif,
+    setToken, setGroupes, setGroupeActif, onGroupeChange, groupeActif, niveauGroupe,
     renderBar, versConnexion,
     get groupeId() { return state.groupeId; },
   };

@@ -78,7 +78,7 @@ window.Materiel = (() => {
     role: 'prof',
     charge: false,
     q: '',
-    cat: '', niv: '', dom: '', typ: '', bloc: '',
+    cat: '', dom: '', typ: '', bloc: '',
     ouverts: {},                    // activiteId → module déplié
     detail: null,                   // { activiteId, code } — code null = atelier
     sel: {},                        // "activiteId:code" → true
@@ -94,6 +94,17 @@ window.Materiel = (() => {
   const porteurs = () => (etat.inventaire && etat.inventaire.porteurs) || [];
   const porteur = (id) => porteurs().find((p) => p.activiteId === id) || null;
   const activite = (id) => ctx.activites().find((a) => a.id === id) || null;
+
+  /** Le niveau du groupe. Le dépôt est un outil de groupe : il ne montre que
+      les modules du niveau que la classe suit. Un groupe sans niveau connu
+      (jeu de données ancien) ne filtre rien — mieux vaut tout montrer que
+      vider le dépôt sans que personne comprenne pourquoi. */
+  const niveau = () => (ctx.niveau ? ctx.niveau() : '');
+  /* « Corrige-moi ! » échappe au niveau : l'assistant oral ne fait passer
+     aucune notion, il reprend l'élève là où il en est, et toute classe y a
+     droit. Même règle qu'au catalogue. */
+  const ouvertATous = (a) => /^pratique orale libre/i.test((a || {}).domaineDeVie || '');
+  const duNiveau = (a) => !niveau() || !a || !a.level || ouvertATous(a) || a.level === niveau();
   const seanceDe = (p, code) => (p ? p.seances.find((s) => (s.code || null) === code) : null);
   const blocNom = (b) => (etat.inventaire.blocs || {})[b] || '';
 
@@ -282,8 +293,8 @@ window.Materiel = (() => {
   function garde(p) {
     const a = activite(p.activiteId);
     if (!a) return false;
+    if (!duNiveau(a)) return false;
     if (etat.cat && a.categorie !== etat.cat) return false;
-    if (etat.niv && a.level !== etat.niv) return false;
     if (etat.dom && a.domaineDeVie !== etat.dom) return false;
     if (etat.typ && !p.seances.some((s) => s.fichiers.some((f) => f.type === etat.typ))) return false;
     if (etat.bloc && !p.seances.some((s) => s.bloc === etat.bloc)) return false;
@@ -315,11 +326,10 @@ window.Materiel = (() => {
     const retenus = porteurs().filter(garde);
     const cours = retenus.filter((p) => p.categorie === 'cours');
     const ateliers = retenus.filter((p) => p.categorie === 'atelier');
-    const niveaux = optionsDe('level');
     const domaines = optionsDe('domaineDeVie');
 
     const nbSeances = cours.reduce((n, p) => n + p.seancesEquipees, 0);
-    const nbNeufs = porteurs().reduce((n, p) => n + p.seances
+    const nbNeufs = porteurs().filter((p) => duNiveau(activite(p.activiteId))).reduce((n, p) => n + p.seances
       .reduce((m, s) => m + s.fichiers.filter((f) => estNeuf(f.majLe)).length, 0), 0);
 
     let html = `<div class="card">
@@ -332,13 +342,12 @@ window.Materiel = (() => {
         </div>
         <div class="mat-filtres-grille">
           ${selecteur('cat', 'Type de séance', [{ val: 'cours', lib: 'Cours (4 h, matin)' }, { val: 'atelier', lib: 'Ateliers (2 h, après-midi)' }], etat.cat, 'Cours et ateliers')}
-          ${niveaux.length > 1 ? selecteur('niv', 'Niveau', niveaux, etat.niv, 'Tous les niveaux') : ''}
           ${selecteur('dom', 'Domaine de vie', domaines, etat.dom, 'Tous les domaines')}
           ${selecteur('typ', 'Type de fichier', [{ val: 'presentation', lib: 'Présentation' }, { val: 'fiche', lib: 'Fiche à imprimer' }, { val: 'plan', lib: 'Plan de cours' }], etat.typ, 'Tous les fichiers')}
           ${selecteur('bloc', 'Bloc de séance', Object.entries(etat.inventaire.blocs || {}).map(([k, v]) => ({ val: k, lib: `${k} · ${v}` })), etat.bloc, 'Tous les blocs')}
         </div>
         <div style="font-size:var(--fs-ui-sm);font-weight:var(--fw-medium);color:var(--text-muted)">
-          ${cours.length} module${cours.length > 1 ? 's' : ''} · ${nbSeances} séance${nbSeances > 1 ? 's' : ''} équipée${nbSeances > 1 ? 's' : ''} ·
+          ${esc(niveau() || 'Tous niveaux')} · ${cours.length} module${cours.length > 1 ? 's' : ''} · ${nbSeances} séance${nbSeances > 1 ? 's' : ''} équipée${nbSeances > 1 ? 's' : ''} ·
           ${ateliers.length} atelier${ateliers.length > 1 ? 's' : ''} · ${nbNeufs} fichier${nbNeufs > 1 ? 's' : ''} nouveau${nbNeufs > 1 ? 'x' : ''}${etat.derniereVisite ? ` depuis votre dernière visite du ${esc(longDate(etat.derniereVisite))}` : ''}.
         </div>
       </div>
@@ -905,7 +914,7 @@ window.Materiel = (() => {
         case 'vider':
           etat.sel = {}; rendre(); break;
         case 'reinitialiser':
-          etat.q = ''; etat.cat = ''; etat.niv = ''; etat.dom = ''; etat.typ = ''; etat.bloc = '';
+          etat.q = ''; etat.cat = ''; etat.dom = ''; etat.typ = ''; etat.bloc = '';
           rendre(); break;
         case 'retirer-depot':
           retirerDepot(b.dataset.dep); break;
@@ -947,7 +956,7 @@ window.Materiel = (() => {
   /* ══════════ Interface publique ══════════ */
 
   return {
-    /** @param c {{ json, api, activites, groupe }} fourni par enseignant.js.
+    /** @param c {{ json, api, activites, groupe, niveau }} fourni par enseignant.js.
         `ouvrirPortail()` peut être rappelée (reconnexion après expiration) :
         les écoutes ne se posent qu'une fois, sinon chaque clic agirait deux
         fois. */

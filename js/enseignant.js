@@ -283,6 +283,19 @@
 
   const groupeActif = () => etat.groupes.find((g) => g.id === etat.groupeId) || null;
 
+  /* Le niveau du groupe, sous la forme « Niveau N ». C'est lui qui borne le
+     catalogue et le dépôt de matériel : on ne planifie pas un module de
+     niveau 7 dans une classe de niveau 4. Le serveur écrit toujours le champ ;
+     le repli sur le nom sert aux groupes créés avant qu'on le demande. */
+  const NIVEAUX = Array.from({ length: 8 }, (_, i) => `Niveau ${i + 1}`);
+  function niveauDe(groupe) {
+    const pose = ((groupe || {}).niveau || '').trim();
+    if (NIVEAUX.includes(pose)) return pose;
+    const trouve = /niveau\s*([1-8])/i.exec((groupe || {}).nom || '');
+    return trouve ? `Niveau ${trouve[1]}` : 'Niveau 4';
+  }
+  const niveauGroupe = () => niveauDe(groupeActif());
+
   let minuterie;
   function dire(texte) {
     clearTimeout(minuterie);
@@ -347,6 +360,7 @@
       api,
       activites: () => etat.activites,
       groupe: groupeActif,
+      niveau: niveauGroupe,
     });
     $('nomEnseignant').textContent = etat.enseignant.nom;
     $('carteEnseignants').hidden = etat.enseignant.role !== 'admin';
@@ -430,6 +444,10 @@
     $('resumeGroupe').textContent = groupe
       ? `${pluriel(nbEleves, 'élève')} · ${datees} activité${datees > 1 ? 's' : ''} planifiée${datees > 1 ? 's' : ''} sur ${etat.activites.length}`
       : 'Aucun groupe : créez-en un dans « Groupes et comptes ».';
+
+    // Le catalogue s'ouvre déjà borné : il ne montre que le niveau du groupe.
+    const cat = $('lienCatalogue');
+    if (cat) cat.href = groupe ? `catalogue.html?niveau=${encodeURIComponent(niveauDe(groupe))}` : 'catalogue.html';
 
     const lien = $('lienTeams');
     lien.hidden = !(groupe && groupe.teams);
@@ -1006,10 +1024,11 @@
       <div class="card__row pe-rangee">
         <div class="pe-rangee-txt">
           <button type="button" class="pe-lien" style="color:var(--text-accent)" data-voir-groupe="${g.id}">${esc(g.nom)}</button>
-          <div class="pe-rangee-meta">${pluriel(g.nbEleves || 0, 'élève')} · ${esc(g.titulaire || 'sans titulaire')} · ${g.teams ? 'rencontre Teams liée' : 'aucun lien Teams'}</div>
+          <div class="pe-rangee-meta">${esc(niveauDe(g))} · ${pluriel(g.nbEleves || 0, 'élève')} · ${esc(g.titulaire || 'sans titulaire')} · ${g.teams ? 'rencontre Teams liée' : 'aucun lien Teams'}</div>
         </div>
         <button type="button" class="btn btn--ghost btn--sm" data-activer-groupe="${g.id}">Planifier ce groupe</button>
         <button type="button" class="btn btn--ghost btn--sm" data-renommer-groupe="${g.id}">Renommer</button>
+        <button type="button" class="btn btn--ghost btn--sm" data-niveau-groupe="${g.id}">Changer le niveau</button>
       </div>`).join('')
       || '<div class="card__row" style="font-size:var(--fs-body-sm);font-weight:var(--fw-bold);color:var(--text-muted)">Aucun groupe pour l’instant. Créez-en un ci-dessous.</div>';
 
@@ -1077,6 +1096,14 @@
     $('vueEleves').hidden = nom !== 'eleves';
     $('vueGroupes').hidden = nom !== 'groupes';
     $('vueMateriel').hidden = nom !== 'materiel';
+    // « Matériel » a quitté la barre des sections pour la ligne du groupe :
+    // il se marque là où il est, faute d'onglet à allumer.
+    const lienMat = document.querySelector('.pe-liens [data-ecran="materiel"]');
+    if (lienMat) {
+      lienMat.classList.toggle('is-actif', nom === 'materiel');
+      if (nom === 'materiel') lienMat.setAttribute('aria-current', 'page');
+      else lienMat.removeAttribute('aria-current');
+    }
     document.querySelectorAll('.pe-onglet').forEach((b) => {
       const courant = b.dataset.ecran === nom;
       b.classList.toggle('is-done', courant);
@@ -1502,10 +1529,14 @@
   $('formGroupe').addEventListener('submit', async (e) => {
     e.preventDefault();
     const nom = $('nouveauGroupe').value.trim();
+    const niveau = $('nouveauNiveau').value;
     if (!nom) return;
+    // Le niveau ouvre le catalogue et le dépôt : le groupe ne part pas sans lui.
+    if (!niveau) { dire('Choisissez le niveau du groupe.'); $('nouveauNiveau').focus(); return; }
     try {
-      const res = await envoyer('/api/prof/groupes', { nom });
+      const res = await envoyer('/api/prof/groupes', { nom, niveau });
       $('nouveauGroupe').value = '';
+      $('nouveauNiveau').value = '';
       etat.groupes = await json('/api/prof/groupes');
       etat.groupeId = res.groupe.id;
       localStorage.setItem(CLE_GROUPE, String(etat.groupeId));
@@ -1527,6 +1558,28 @@
       localStorage.setItem(CLE_GROUPE, String(id));
       await chargerGroupe();
       montrerEcran(voir ? 'eleves' : 'planif');
+      return;
+    }
+    const changerNiveau = e.target.closest('[data-niveau-groupe]');
+    if (changerNiveau) {
+      const id = Number(changerNiveau.dataset.niveauGroupe);
+      const groupe = etat.groupes.find((g) => g.id === id);
+      const rep = prompt(`Niveau du groupe « ${groupe ? groupe.nom : ''} » — un chiffre de 1 à 8.\n\nIl décide de ce que le catalogue et le dépôt de matériel montrent.`,
+        String(niveauDe(groupe)).replace(/\D/g, ''));
+      if (rep === null) return;
+      const n = parseInt(rep.trim(), 10);
+      if (!(n >= 1 && n <= 8)) { dire('Le niveau doit être un chiffre de 1 à 8.'); return; }
+      try {
+        await envoyer(`/api/prof/groupes/${id}`, { niveau: `Niveau ${n}` }, 'PATCH');
+        etat.groupes = await json('/api/prof/groupes');
+        rendreBandeGroupe();
+        rendreGroupes();
+        // Le dépôt montre le niveau du groupe : il doit se redessiner.
+        Materiel.changerGroupe();
+        dire(`Groupe passé au niveau ${n}. Le catalogue et le matériel suivent.`);
+      } catch (err) {
+        dire(`Changement impossible : ${err.message}`);
+      }
       return;
     }
     if (renommer) {

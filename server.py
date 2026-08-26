@@ -608,6 +608,29 @@ def normalize_level(value):
     return value if value in NIVEAUX else NIVEAU_DEFAUT
 
 
+def niveau_de_groupe(group):
+    """Le niveau d'un groupe, toujours sous la forme « Niveau N ».
+
+    Un groupe porte désormais son niveau : c'est lui qui borne ce que
+    l'enseignante voit du catalogue et du dépôt de matériel. Les groupes
+    créés avant ce champ n'en ont pas — leur nom le dit presque toujours
+    (« Niveau 4 automne 2026 »), et c'est de là qu'on le tire. Sans indice,
+    le niveau 4 : le cours pour lequel tout a été écrit.
+    """
+    group = group or {}
+    pose = (group.get("niveau") or "").strip()
+    if pose in NIVEAUX:
+        return pose
+    trouve = re.search(r"niveau\s*([1-8])", group.get("nom", "") or "", re.I)
+    return f"Niveau {trouve.group(1)}" if trouve else NIVEAU_DEFAUT
+
+
+def groupes_avec_niveau(groups):
+    """Les groupes tels qu'ils partent au client : le niveau toujours écrit,
+    même s'il n'est pas encore dans le fichier."""
+    return [{**g, "niveau": niveau_de_groupe(g)} for g in groups]
+
+
 def load_activities():
     """Le catalogue, avec un filet sous le fichier du volume.
 
@@ -15568,7 +15591,7 @@ class Handler(http.server.SimpleHTTPRequestHandler):
             "success": True,
             "token": token,
             "enseignant": public_teacher(teacher),
-            "groupes": groups_of_teacher(teacher),
+            "groupes": groupes_avec_niveau(groups_of_teacher(teacher)),
         }, 201)
 
     def _handle_prof_login(self):
@@ -15651,6 +15674,7 @@ class Handler(http.server.SimpleHTTPRequestHandler):
             titulaire = teachers_by_id.get(g.get("teacherId"))
             enriched.append({
                 **g,
+                "niveau": niveau_de_groupe(g),
                 "nbEleves": sum(1 for s in students if s.get("groupId") == g["id"]),
                 "titulaire": titulaire.get("nom", "") if titulaire else "",
             })
@@ -16244,6 +16268,9 @@ class Handler(http.server.SimpleHTTPRequestHandler):
         group = {
             "id": max((g["id"] for g in groups), default=0) + 1,
             "nom": nom[:80],
+            # Le niveau borne le catalogue et le dépôt de matériel du groupe.
+            # Sans choix explicite, il se lit dans le nom.
+            "niveau": niveau_de_groupe({"niveau": body.get("niveau"), "nom": nom}),
             "teacherId": titulaire_id,
             "centreId": centre["id"] if centre else None,
             "teams": normalize_lien(body.get("teams")),
@@ -16273,6 +16300,8 @@ class Handler(http.server.SimpleHTTPRequestHandler):
                         json_response(self, {"error": "Le nom du groupe est requis"}, 400)
                         return
                     g["nom"] = nom[:80]
+                if "niveau" in body:
+                    g["niveau"] = normalize_level(body["niveau"])
                 if "teams" in body:
                     g["teams"] = normalize_lien(body["teams"])
                 # Seul un administrateur peut réaffecter un groupe

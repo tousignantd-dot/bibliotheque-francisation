@@ -71,6 +71,8 @@
       background: none; border: none; padding: 0; font: inherit; cursor: pointer;
       text-decoration: underline;
     }
+    /* La section ouverte se dit à la graisse, pas à une couleur de plus. */
+    .pe-liens .pe-lien-plat.is-actif { font-weight: var(--fw-black); color: var(--accent); }
 
     /* — Amorce « Programme du jour » — */
     .pe-amorce {
@@ -633,7 +635,6 @@
       <button type="button" class="step pe-onglet" data-ecran="planif"><span class="step__dot"></span>Planifier</button>
       <button type="button" class="step pe-onglet" data-ecran="eleves"><span class="step__dot"></span>Élèves</button>
       <button type="button" class="step pe-onglet" data-ecran="groupes"><span class="step__dot"></span>Groupes et comptes</button>
-      <button type="button" class="step pe-onglet" data-ecran="materiel"><span class="step__dot"></span>Matériel</button>
       <!-- Le correcteur collaboratif est une application distincte, déployée
            ailleurs. Il tient la place d'un onglet, mais la teinte ambre du
            système (celle de l'écriture) dit qu'il mène hors de la page. -->
@@ -667,7 +668,11 @@
         </span>
       </div>
       <div class="pe-liens">
-        <a href="catalogue.html">Catalogue</a>
+        <!-- Le catalogue et le dépôt de matériel appartiennent au groupe : ils
+             ne montrent que le niveau qu'il suit. Ils voisinent donc ici, sous
+             le sélecteur de groupe, et non dans la barre des sections. -->
+        <a id="lienCatalogue" href="catalogue.html">Catalogue</a>
+        <button type="button" class="pe-lien-plat" data-ecran="materiel">Matériel</button>
         <!-- Les chiffres : usage d'un réseau, d'un CSS ou d'un centre. Le lien
              ne paraît qu'à qui en a la charge — c'est le serveur qui le dit
              (`/api/stats/portees`), jamais un rôle deviné dans la page. Une
@@ -848,7 +853,25 @@
           <form class="card__row" id="formGroupe" style="background:var(--surface-sunken);display:flex;gap:var(--sp-3);align-items:flex-end;flex-wrap:wrap">
             <div style="flex:1;min-width:240px">
               <label class="field-label" for="nouveauGroupe">Nouveau groupe</label>
-              <input id="nouveauGroupe" class="field" type="text" placeholder="Niveau 4 — avant-midi" required />
+              <input id="nouveauGroupe" class="field" type="text" placeholder="Avant-midi — Marie" required />
+            </div>
+            <!-- Le niveau est choisi ici, une fois pour toutes : c'est lui qui
+                 ouvre le catalogue et le dépôt de matériel du groupe. Aucune
+                 valeur par défaut — un mauvais niveau posé sans y penser
+                 cacherait tous les modules de la classe. -->
+            <div style="min-width:170px">
+              <label class="field-label" for="nouveauNiveau">Niveau du groupe</label>
+              <select id="nouveauNiveau" class="field" required>
+                <option value="" disabled selected>Choisir…</option>
+                <option value="Niveau 1">Niveau 1</option>
+                <option value="Niveau 2">Niveau 2</option>
+                <option value="Niveau 3">Niveau 3</option>
+                <option value="Niveau 4">Niveau 4</option>
+                <option value="Niveau 5">Niveau 5</option>
+                <option value="Niveau 6">Niveau 6</option>
+                <option value="Niveau 7">Niveau 7</option>
+                <option value="Niveau 8">Niveau 8</option>
+              </select>
             </div>
             <button type="submit" class="btn btn--pri">Créer le groupe</button>
           </form>
