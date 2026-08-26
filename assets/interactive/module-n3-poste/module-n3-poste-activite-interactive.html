@@ -170,6 +170,11 @@ body{display:flex;flex-direction:column;min-height:100vh}
 .rrow{display:flex;align-items:center;gap:10px}
 .stxt{flex:1;background:#F1F9F7;border-radius:10px;padding:14px 18px;font-size:20px;font-weight:700;color:#123B32;line-height:1.4}
 .rrow2{display:grid;grid-template-columns:1fr 1fr;gap:8px;align-items:stretch}
+/* Appariement de phrases : la zone de dépôt prenait la moitié de la rangée,
+   soit le double de la tuile qui vient s'y poser — une grande case vide
+   entre la question et sa réponse. Elle se cale sur la largeur du banc
+   (300 px) : la tuile garde sa forme en passant de l'un à l'autre. */
+.rrow2.rz{grid-template-columns:minmax(0,1fr) minmax(0,300px)}
 .qcard{background:#F0FAF7;border-left:4px solid #1D6B8F;border-radius:0 10px 10px 0;padding:12px 16px;display:flex;flex-direction:column;justify-content:center}
 .qlbl{font-size:13px;font-weight:800;color:#1D6B8F;text-transform:uppercase;letter-spacing:.1em;margin-bottom:4px}
 .qtxt{font-size:20px;font-weight:700;color:#123B32;line-height:1.4}
@@ -404,7 +409,7 @@ textarea:focus{outline:none;border-color:#1D6B8F}
 .wfb.ok{color:var(--ok-ink)}.wfb.no{color:var(--warn-ink)}.wfb.wait{color:#4A6F68}
 .wfb b{color:#154F68}
 
-@media(max-width:900px){.vocab-grid{grid-template-columns:1fr 1fr}.rrow2{grid-template-columns:1fr}}
+@media(max-width:900px){.vocab-grid{grid-template-columns:1fr 1fr}.rrow2,.rrow2.rz{grid-template-columns:1fr}}
 
 /* ── ESSAI DE STYLE : "Je découvre" seulement (inspiré Wealthsimple) ── */
 /* Fond neutre, cartes blanches épurées, police géométrique sobre, accent unique. */
@@ -5082,7 +5087,7 @@ function render(){
     }
     if(ex.type==='match'){
       ex.rows.forEach(r=>{
-        const row=document.createElement('div');row.className='rrow2';
+        const row=document.createElement('div');row.className='rrow2 rz';
         const qc=document.createElement('div');qc.className='qcard';
         qc.innerHTML=(ex.noQLbl?'':'<div class="qlbl">Question</div>')+'<div class="qtxt">'+esc(r.q)+'</div>';
         row.appendChild(qc);row.appendChild(mkZone(r.id,null,ex.zonePh||'glissez la réponse ici'));
