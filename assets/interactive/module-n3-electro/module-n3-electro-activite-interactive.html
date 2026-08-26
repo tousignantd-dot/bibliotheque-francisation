@@ -769,9 +769,12 @@ body{
      qu'on ait à le faire défiler — un choix caché est un choix perdu. */
   .bsec.b1 .tile{padding:7px 12px; font-size:16px; box-shadow:0 1px 4px rgba(0,0,0,.07)}
   .bsec.b1 .tn,.bsec.b1 .tv,.bsec.b1 .tf,.bsec.b1 .ta{font-size:16px}
-  /* Le banc s'étale sur toute la largeur : une vignette à 100 % ferait une
-     photo par écran. Elles reviennent à leur format de bande, deux par rangée. */
-  .bsec.b1 .imgtile{width:150px}
+  /* Deux vignettes par rangée, quelle que soit la largeur que le banc
+     obtient — elle n'est pas celle de l'écran (305 px pour 390 px de
+     téléphone, à cause des marges de la carte). Une largeur fixe de 150 px
+     ne tenait pas à deux dans ces 277 px utiles : le banc montrait trois
+     photos sur sept. En moitiés, la rangée est pleine par construction. */
+  .bsec.b1 .imgtile{width:calc(50% - 4px)}
 }
 @media(prefers-reduced-motion:no-preference){
   .bsec.b1{scroll-behavior:smooth}
