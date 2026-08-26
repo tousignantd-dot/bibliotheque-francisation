@@ -43,6 +43,11 @@
   --oe-warn-ink:var(--warn-ink,#8A5206);
   --oe-r-sm:10px; --oe-r-md:14px; --oe-r-lg:18px; --oe-r-pill:999px;
   --oe-tap:48px;
+  /* Hauteur de la bande d'outils, publiée pour les pages hôtes : sur
+     téléphone, un bloc collé en bas (le banc de réponses des modules)
+     doit s'arrêter au-dessus du rail, sinon le rail le recouvre.
+     Nulle au bureau, où le rail est une colonne de droite. */
+  --oe-dock-h:0px;
 }
 .oe-root{font-family:var(--font-sans,"Nunito",system-ui,sans-serif)}
 .oe-root *,.oe-root *::before,.oe-root *::after{box-sizing:border-box}
@@ -284,12 +289,17 @@ body.oe-host{transition:padding-right .22s ease}
 
 /* ── Téléphone : barre en bas, panneau en feuille ──────────── */
 @media (max-width:900px){
-  body.oe-host,body.oe-host.oe-open{padding-right:0;padding-bottom:96px}
+  /* La bande faisait 72 px avant l'encoche : autant de pris sur l'exercice,
+     et le banc de réponses passait dessous. Elle descend à 52 px — le glyphe
+     rétréci, le mot gardé, la cible tactile à 44 px de haut sur toute la
+     largeur du bouton. */
+  :root{--oe-dock-h:calc(52px + env(safe-area-inset-bottom))}
+  body.oe-host,body.oe-host.oe-open{padding-right:0;padding-bottom:var(--oe-dock-h)}
   .oe-dock{
     top:auto;bottom:0;left:0;right:0;width:100%;height:auto;
     flex-direction:row;justify-content:space-around;gap:0;overflow:visible;
     border-left:0;border-top:1px solid var(--oe-line);
-    padding:8px 4px calc(8px + env(safe-area-inset-bottom));
+    padding:4px 4px calc(4px + env(safe-area-inset-bottom));
     box-shadow:0 -6px 22px rgba(0,0,0,.07);
   }
   .oe-dock-t,.oe-dock-sep{display:none}
@@ -303,6 +313,8 @@ body.oe-host{transition:padding-right .22s ease}
   .oe-dock-cacher svg{transform:rotate(90deg)}
   .oe-montrer svg{transform:rotate(-90deg)}
   body.oe-host.oe-cache{padding-bottom:0}
+  /* Rail escamoté : la place réservée en bas disparaît aussi. */
+  body.oe-cache{--oe-dock-h:0px}
   body.oe-cache .oe-dock{transform:translateY(100%)}
   .oe-montrer{top:auto;bottom:12px;transform:none}
   /* Six libellés côte à côte sur 375 px : le mot reste obligatoire, c'est le
@@ -311,10 +323,10 @@ body.oe-host{transition:padding-right .22s ease}
      libellé part du haut, sinon « Mon carnet », seul à passer sur deux
      lignes, décale son glyphe et casse l'alignement de la rangée. */
   .oe-dock{align-items:stretch}
-  .oe-tool{width:auto;flex:1;min-width:0;padding:6px 1px;min-height:56px;gap:2px;
-    justify-content:flex-start}
-  .oe-tool .oe-lb{font-size:11.5px;font-weight:700}
-  .oe-dock .oe-tool .oe-ic svg{width:22px;height:22px}
+  .oe-tool{width:auto;flex:1;min-width:0;padding:2px 1px;min-height:44px;gap:1px;
+    justify-content:center}
+  .oe-tool .oe-lb{font-size:11px;font-weight:700;line-height:1.15}
+  .oe-dock .oe-tool .oe-ic svg{width:19px;height:19px}
   .oe-panel{
     right:0;left:0;width:100%;top:auto;bottom:0;height:80vh;
     border-left:0;border-top:1px solid var(--oe-line);
@@ -328,8 +340,8 @@ body.oe-host{transition:padding-right .22s ease}
 @media (max-width:420px){
   .oe-dock{padding-left:2px;padding-right:2px}
   .oe-dock-cacher{padding:6px 4px}
-  .oe-tool .oe-lb{font-size:10px;letter-spacing:-.01em}
-  .oe-dock .oe-tool .oe-ic svg{width:20px;height:20px}
+  .oe-tool .oe-lb{font-size:9.5px;letter-spacing:-.01em}
+  .oe-dock .oe-tool .oe-ic svg{width:18px;height:18px}
 }
 
 @media (prefers-reduced-motion:reduce){

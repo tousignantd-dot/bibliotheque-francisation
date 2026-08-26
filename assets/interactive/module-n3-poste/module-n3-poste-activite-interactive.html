@@ -174,7 +174,9 @@ body{display:flex;flex-direction:column;min-height:100vh}
 .qlbl{font-size:13px;font-weight:800;color:#1D6B8F;text-transform:uppercase;letter-spacing:.1em;margin-bottom:4px}
 .qtxt{font-size:20px;font-weight:700;color:#123B32;line-height:1.4}
 .timelbl{flex:0 0 90px;background:var(--warn-bg);border-radius:10px;padding:12px 8px;font-size:15px;font-weight:900;color:var(--warn-ink);text-align:center}
-.blanks-p{font-size:20px;line-height:2.9;font-weight:600;color:#123B32}
+/* L'interligne du paragraphe ne sert qu'à loger les cases : il vaut la
+   hauteur d'une case (mot + rembourrage + bordure), pas davantage. */
+.blanks-p{font-size:20px;line-height:2.1;font-weight:600;color:#123B32}
 
 .zone{display:flex;align-items:center;justify-content:center;min-height:54px;border-radius:10px;font-weight:800;font-family:'Nunito',sans-serif;cursor:pointer;transition:background .18s,border-color .18s,color .18s,transform .12s;user-select:none;text-align:center;padding:10px 14px;border:2.5px solid;line-height:1.35}
 .zone.empty{background:var(--drop-bg);border-color:var(--drop-line);border-style:dashed;color:#5A6B7D;font-size:17px}
@@ -212,7 +214,7 @@ body{display:flex;flex-direction:column;min-height:100vh}
 .vf-summary.ok{color:var(--ok-ink)}
 .vf-summary.warn{color:var(--warn-ink)}
 
-.blank{display:inline-block;min-width:130px;padding:4px 14px;margin:0 3px;border-radius:8px;font-weight:800;vertical-align:middle;cursor:pointer;transition:background .18s,border-color .18s,color .18s;user-select:none;border:2.5px dashed #93C5D6;background:#F0F9FF;color:#94A3B8;font-size:20px;text-align:center}
+.blank{display:inline-block;min-width:130px;padding:4px 14px;margin:0 3px;border-radius:8px;font-weight:800;vertical-align:middle;cursor:pointer;transition:background .18s,border-color .18s,color .18s;user-select:none;border:2.5px dashed #93C5D6;background:#F0F9FF;color:#94A3B8;font-size:20px;text-align:center;line-height:1.35}
 .blank.filled{border-style:solid;border-color:var(--sel-line);background:var(--sel-bg);color:var(--sel-ink)}
 .blank.fb-ok{border-style:solid;border-color:var(--ok-line);background:var(--ok-bg);color:var(--ok-ink)}
 .blank.fb-no{border-style:solid;border-color:var(--no-line);background:var(--no-bg);color:var(--no-ink);animation:shk .5s ease}
@@ -725,8 +727,10 @@ body{
      franchement au lieu de se disputer une rangée trop étroite. */
   .exo-main{min-width:0!important; flex:1 1 100%!important}
   .bsec.b1{flex:1 1 100%!important}
+  /* La bande d'outils occupe le bas de l'écran et recouvrait le banc : il
+     s'arrête à sa hauteur, publiée par outils-eleve.css (0 sans le rail). */
   .bsec.b1{
-    position:sticky; top:auto; bottom:0;
+    position:sticky; top:auto; bottom:var(--oe-dock-h,0px);
     max-height:none;
     margin:0 calc(-1 * var(--pad-card)) calc(-1 * var(--pad-card));
     border-radius:0;
@@ -743,12 +747,16 @@ body{
   .bsec.b1 .btiles,.bsec.b1 .btiles.vert{
     flex-direction:row; flex-wrap:wrap;
     overflow-x:hidden; overflow-y:auto;
-    max-height:40vh;
+    max-height:52vh;
     justify-content:flex-start;
     gap:8px; padding-bottom:4px;
     -webkit-overflow-scrolling:touch;
   }
   .bsec.b1 .btiles > *{flex:0 1 auto; max-width:100%}
+  /* Des tuiles plus compactes : le banc doit montrer TOUS les choix sans
+     qu'on ait à le faire défiler — un choix caché est un choix perdu. */
+  .bsec.b1 .tile{padding:7px 12px; font-size:16px; box-shadow:0 1px 4px rgba(0,0,0,.07)}
+  .bsec.b1 .tn,.bsec.b1 .tv,.bsec.b1 .tf,.bsec.b1 .ta{font-size:16px}
 }
 @media(prefers-reduced-motion:no-preference){
   .bsec.b1{scroll-behavior:smooth}
@@ -771,6 +779,11 @@ body{
   .vocab-sec{padding:14px 16px 18px}
   .cta{padding:22px 18px; margin:0 16px 24px}
   .card{padding:16px}
+  /* Les cases à remplir tenaient la moitié d'une ligne de texte en hauteur
+     pour un mot déposé : elles se serrent sur le mot, et l'interligne du
+     paragraphe suit. */
+  .blanks-p{font-size:18px; line-height:1.95}
+  .blank{font-size:18px; min-width:92px; padding:2px 10px; line-height:1.25}
 }
 
 
@@ -1593,7 +1606,7 @@ let dialogueRead = false;
 const MODULE_SLUG = 'module-n3-poste';
 // Bump ce numéro chaque fois qu'un MP3 est régénéré, pour forcer le
 // navigateur à recharger le fichier au lieu de servir une version en cache.
-const AUDIO_V = '6';
+const AUDIO_V = '11';
 // Icônes des boutons son/micro de "Je découvre" — change ces deux valeurs
 // pour remplacer les emojis par une image (ex. '<img src="/assets/interactive/module-n3-poste/icons/speaker.svg">').
 const ICON_SPEAK = '<img class="icon-svg" src="/assets/interactive/module-n3-poste/icons/speaker.svg" alt="Écouter">';
@@ -5355,206 +5368,6 @@ if (reReprise) { reMarquerEcrits(); reMarquerVf(); reBanniere(reReprise); }
 measureChrome();
 lmsTrack('file_opened');
 </script>
-<!-- OUTILS-ELEVE:début — greffé par build/greffe_outils.py -->
-<script src="/assets/design-system/outils-eleve.js"></script>
-<script>
-(function () {
-  function sectionCourante() {
-    if (typeof SECTIONS === 'undefined' || typeof curSec === 'undefined') return null;
-    return SECTIONS.filter(function (s) { return s.id === curSec; })[0] || null;
-  }
-  var depart = sectionCourante();
-  Outils.init({
-    code: typeof studentCode !== 'undefined' ? studentCode : '',
-    module: 'module-n3-poste',
-    section: depart ? depart.title : '',
-    blocs: '.card, .savoir'
-  });
-  // Le titre de section suit les onglets : l'assistant doit savoir où en est
-  // l'élève. render() est une fonction globale du module ; on l'enveloppe
-  // plutôt que d'ajouter un écouteur sur chaque onglet.
-  if (typeof render === 'function') {
-    var rendreOrig = render;
-    render = function () {
-      var r = rendreOrig.apply(this, arguments);
-      var s = sectionCourante();
-      if (s) Outils.setSection(s.title);
-      return r;
-    };
-  }
-})();
-</script>
-<!-- OUTILS-ELEVE:fin -->
-<!-- DEPOT-ECRIT-JS:début — greffé par build/greffe_depot_ecrit.py -->
-<script>
-(function () {
-  var texteDepose = '', retroDeposee = '';
-
-  function carteEcrite() {
-    var t = document.getElementById('peText');
-    return t ? t.closest('.card') : null;
-  }
-  function libelle() {
-    var c = carteEcrite(), h = c && c.querySelector('.prod-tit');
-    return h ? h.textContent.trim() : 'Production écrite';
-  }
-  function consigne() {
-    var c = carteEcrite(), p = c && c.querySelector('.prod-lead');
-    return p ? p.textContent.trim() : '';
-  }
-
-  // renderCorr est globale au module et sert aussi à l'oral : on n'ouvre le
-  // dépôt que pour la zone écrite.
-  if (typeof renderCorr === 'function') {
-    var rendreOrig = renderCorr;
-    renderCorr = function (elId, data, orig) {
-      var r = rendreOrig.apply(this, arguments);
-      if (elId === 'peFb') {
-        texteDepose = orig || '';
-        retroDeposee = (typeof corrSummary === 'function') ? corrSummary(data, orig) : '';
-        var zone = document.getElementById('peSend');
-        if (zone) zone.style.display = 'flex';
-      }
-      return r;
-    };
-  }
-
-  window.peSend = async function () {
-    var btn = document.getElementById('peSendBtn');
-    var texte = (document.getElementById('peText') || {}).value || texteDepose;
-    texte = (texte || '').trim();
-    if (!texte) { showErr('peErr', "Écris ton message d'abord."); return; }
-    hideErr('peErr');
-    btn.disabled = true; btn.textContent = 'Envoi…';
-    try {
-      var res = await fetch('/api/ecrit/submit', {
-        method: 'POST', headers: {'Content-Type': 'application/json'},
-        body: JSON.stringify({
-          code: typeof studentCode !== 'undefined' ? studentCode : '',
-          theme: 'Démarches à la poste', taskId: 'module-n3-poste-pe',
-          taskLabel: libelle(), question: consigne(),
-          texte: texte, feedback: retroDeposee,
-        }),
-      });
-      var data = await res.json();
-      if (!res.ok) {
-        showErr('peErr', data.error || "L'envoi a échoué.");
-        btn.disabled = false; btn.textContent = 'Envoyer à mon enseignant';
-        return;
-      }
-      document.getElementById('peSend').innerHTML =
-        '<span class="sent">✅ Envoyé à ton enseignant !</span>';
-    } catch (e) {
-      showErr('peErr', "Impossible d'envoyer.");
-      btn.disabled = false; btn.textContent = 'Envoyer à mon enseignant';
-    }
-  };
-})();
-</script>
-<!-- DEPOT-ECRIT-JS:fin -->
-<!-- SECTIONS-DATEES:début — greffé par build/greffe_sections.py -->
-<style>
-  .tab.verrouillee { opacity: .55; cursor: not-allowed; }
-  .tab.verrouillee .tchk { visibility: visible; opacity: 1; }
-  #verrou-avis {
-    margin: 10px 0 0; padding: 10px 14px; border-radius: 10px;
-    background: #FDF3E3; color: #7A4A12; border: 1px solid #E8CDA0;
-    font-size: 15px; font-weight: 700;
-  }
-</style>
-<script>
-(function () {
-  var ACTIVITE = 80;
-
-  function joli(iso) {
-    if (!iso) return '';
-    var p = iso.split('-');
-    var mois = ['janvier','février','mars','avril','mai','juin','juillet',
-                'août','septembre','octobre','novembre','décembre'];
-    return Number(p[2]) + ' ' + mois[Number(p[1]) - 1];
-  }
-
-  function avis(texte) {
-    var el = document.getElementById('verrou-avis');
-    if (!el) {
-      var tabs = document.getElementById('tabs');
-      if (!tabs || !tabs.parentNode) return;
-      el = document.createElement('p');
-      el.id = 'verrou-avis';
-      tabs.parentNode.insertBefore(el, tabs.nextSibling);
-    }
-    el.textContent = texte;
-    el.hidden = !texte;
-  }
-
-  function appliquer(sections) {
-    var parId = {};
-    sections.forEach(function (s) { parId[s.id] = s; });
-
-    SECTIONS.forEach(function (sec) {
-      var etat = parId[sec.id];
-      var bouton = document.getElementById('tab-' + sec.id);
-      if (!bouton || !etat) return;
-      var fermee = !etat.ouverte;
-      bouton.classList.toggle('verrouillee', fermee);
-      bouton.setAttribute('aria-disabled', fermee ? 'true' : 'false');
-      var chk = bouton.querySelector('.tchk');
-      if (chk && fermee) chk.textContent = '🔒';
-      bouton.title = fermee
-        ? (etat.datePrevue ? 'Cette partie s’ouvre le ' + joli(etat.datePrevue)
-                           : 'Cette partie n’est pas encore ouverte.')
-        : '';
-    });
-
-    // Capture : l'écouteur du module est posé sur le bouton lui-même, il faut
-    // donc arrêter le clic avant lui plutôt qu'après.
-    var tabs = document.getElementById('tabs');
-    if (tabs && !tabs.dataset.verrou) {
-      tabs.dataset.verrou = '1';
-      tabs.addEventListener('click', function (e) {
-        var b = e.target.closest ? e.target.closest('.tab') : null;
-        if (!b || !b.classList.contains('verrouillee')) return;
-        e.stopPropagation();
-        e.preventDefault();
-        avis(b.title || 'Cette partie n’est pas encore ouverte.');
-      }, true);
-    }
-
-    var ouvertes = sections.filter(function (s) { return s.ouverte; });
-    if (!ouvertes.length) {
-      avis('Aucune partie de ce module n’est ouverte pour l’instant. '
-           + 'Ton enseignante les ouvrira une à une.');
-      return;
-    }
-    var courante = parId[curSec];
-    if (courante && !courante.ouverte) {
-      curSec = ouvertes[0].id;
-      avis('Cette partie n’est pas encore ouverte : voici celle que tu peux faire.');
-    }
-    if (typeof render === 'function') render();
-  }
-
-  function demarrer() {
-    if (typeof SECTIONS === 'undefined' || typeof curSec === 'undefined') return;
-    var code = (typeof studentCode !== 'undefined' && studentCode) || '';
-    if (!code) return;   // hors session : le module s'ouvre en entier
-    fetch('/api/student/sections?code=' + encodeURIComponent(code)
-          + '&activityId=' + ACTIVITE)
-      .then(function (r) { return r.ok ? r.json() : null; })
-      .then(function (d) {
-        if (d && d.decoupe && d.sections && d.sections.length) appliquer(d.sections);
-      })
-      .catch(function () { /* serveur muet : on n'enlève rien à l'élève */ });
-  }
-
-  if (document.readyState === 'loading') {
-    document.addEventListener('DOMContentLoaded', demarrer);
-  } else {
-    demarrer();
-  }
-})();
-</script>
-<!-- SECTIONS-DATEES:fin -->
 <!-- SANS-IA:début — greffé par build/greffe_sans_ia.py -->
 <style>
 /* Le repli ne s'applique qu'une fois la réponse du serveur arrivée : sans la
@@ -5791,4 +5604,204 @@ body.sans-ia .sans-ia-mot {
 })();
 </script>
 <!-- SANS-IA:fin -->
+<!-- OUTILS-ELEVE:début — greffé par build/greffe_outils.py -->
+<script src="/assets/design-system/outils-eleve.js"></script>
+<script>
+(function () {
+  function sectionCourante() {
+    if (typeof SECTIONS === 'undefined' || typeof curSec === 'undefined') return null;
+    return SECTIONS.filter(function (s) { return s.id === curSec; })[0] || null;
+  }
+  var depart = sectionCourante();
+  Outils.init({
+    code: typeof studentCode !== 'undefined' ? studentCode : '',
+    module: 'module-n3-poste',
+    section: depart ? depart.title : '',
+    blocs: '.card, .savoir'
+  });
+  // Le titre de section suit les onglets : l'assistant doit savoir où en est
+  // l'élève. render() est une fonction globale du module ; on l'enveloppe
+  // plutôt que d'ajouter un écouteur sur chaque onglet.
+  if (typeof render === 'function') {
+    var rendreOrig = render;
+    render = function () {
+      var r = rendreOrig.apply(this, arguments);
+      var s = sectionCourante();
+      if (s) Outils.setSection(s.title);
+      return r;
+    };
+  }
+})();
+</script>
+<!-- OUTILS-ELEVE:fin -->
+<!-- DEPOT-ECRIT-JS:début — greffé par build/greffe_depot_ecrit.py -->
+<script>
+(function () {
+  var texteDepose = '', retroDeposee = '';
+
+  function carteEcrite() {
+    var t = document.getElementById('peText');
+    return t ? t.closest('.card') : null;
+  }
+  function libelle() {
+    var c = carteEcrite(), h = c && c.querySelector('.prod-tit');
+    return h ? h.textContent.trim() : 'Production écrite';
+  }
+  function consigne() {
+    var c = carteEcrite(), p = c && c.querySelector('.prod-lead');
+    return p ? p.textContent.trim() : '';
+  }
+
+  // renderCorr est globale au module et sert aussi à l'oral : on n'ouvre le
+  // dépôt que pour la zone écrite.
+  if (typeof renderCorr === 'function') {
+    var rendreOrig = renderCorr;
+    renderCorr = function (elId, data, orig) {
+      var r = rendreOrig.apply(this, arguments);
+      if (elId === 'peFb') {
+        texteDepose = orig || '';
+        retroDeposee = (typeof corrSummary === 'function') ? corrSummary(data, orig) : '';
+        var zone = document.getElementById('peSend');
+        if (zone) zone.style.display = 'flex';
+      }
+      return r;
+    };
+  }
+
+  window.peSend = async function () {
+    var btn = document.getElementById('peSendBtn');
+    var texte = (document.getElementById('peText') || {}).value || texteDepose;
+    texte = (texte || '').trim();
+    if (!texte) { showErr('peErr', "Écris ton message d'abord."); return; }
+    hideErr('peErr');
+    btn.disabled = true; btn.textContent = 'Envoi…';
+    try {
+      var res = await fetch('/api/ecrit/submit', {
+        method: 'POST', headers: {'Content-Type': 'application/json'},
+        body: JSON.stringify({
+          code: typeof studentCode !== 'undefined' ? studentCode : '',
+          theme: 'Démarches à la poste', taskId: 'module-n3-poste-pe',
+          taskLabel: libelle(), question: consigne(),
+          texte: texte, feedback: retroDeposee,
+        }),
+      });
+      var data = await res.json();
+      if (!res.ok) {
+        showErr('peErr', data.error || "L'envoi a échoué.");
+        btn.disabled = false; btn.textContent = 'Envoyer à mon enseignant';
+        return;
+      }
+      document.getElementById('peSend').innerHTML =
+        '<span class="sent">✅ Envoyé à ton enseignant !</span>';
+    } catch (e) {
+      showErr('peErr', "Impossible d'envoyer.");
+      btn.disabled = false; btn.textContent = 'Envoyer à mon enseignant';
+    }
+  };
+})();
+</script>
+<!-- DEPOT-ECRIT-JS:fin -->
+<!-- SECTIONS-DATEES:début — greffé par build/greffe_sections.py -->
+<style>
+  .tab.verrouillee { opacity: .55; cursor: not-allowed; }
+  .tab.verrouillee .tchk { visibility: visible; opacity: 1; }
+  #verrou-avis {
+    margin: 10px 0 0; padding: 10px 14px; border-radius: 10px;
+    background: #FDF3E3; color: #7A4A12; border: 1px solid #E8CDA0;
+    font-size: 15px; font-weight: 700;
+  }
+</style>
+<script>
+(function () {
+  var ACTIVITE = 80;
+
+  function joli(iso) {
+    if (!iso) return '';
+    var p = iso.split('-');
+    var mois = ['janvier','février','mars','avril','mai','juin','juillet',
+                'août','septembre','octobre','novembre','décembre'];
+    return Number(p[2]) + ' ' + mois[Number(p[1]) - 1];
+  }
+
+  function avis(texte) {
+    var el = document.getElementById('verrou-avis');
+    if (!el) {
+      var tabs = document.getElementById('tabs');
+      if (!tabs || !tabs.parentNode) return;
+      el = document.createElement('p');
+      el.id = 'verrou-avis';
+      tabs.parentNode.insertBefore(el, tabs.nextSibling);
+    }
+    el.textContent = texte;
+    el.hidden = !texte;
+  }
+
+  function appliquer(sections) {
+    var parId = {};
+    sections.forEach(function (s) { parId[s.id] = s; });
+
+    SECTIONS.forEach(function (sec) {
+      var etat = parId[sec.id];
+      var bouton = document.getElementById('tab-' + sec.id);
+      if (!bouton || !etat) return;
+      var fermee = !etat.ouverte;
+      bouton.classList.toggle('verrouillee', fermee);
+      bouton.setAttribute('aria-disabled', fermee ? 'true' : 'false');
+      var chk = bouton.querySelector('.tchk');
+      if (chk && fermee) chk.textContent = '🔒';
+      bouton.title = fermee
+        ? (etat.datePrevue ? 'Cette partie s’ouvre le ' + joli(etat.datePrevue)
+                           : 'Cette partie n’est pas encore ouverte.')
+        : '';
+    });
+
+    // Capture : l'écouteur du module est posé sur le bouton lui-même, il faut
+    // donc arrêter le clic avant lui plutôt qu'après.
+    var tabs = document.getElementById('tabs');
+    if (tabs && !tabs.dataset.verrou) {
+      tabs.dataset.verrou = '1';
+      tabs.addEventListener('click', function (e) {
+        var b = e.target.closest ? e.target.closest('.tab') : null;
+        if (!b || !b.classList.contains('verrouillee')) return;
+        e.stopPropagation();
+        e.preventDefault();
+        avis(b.title || 'Cette partie n’est pas encore ouverte.');
+      }, true);
+    }
+
+    var ouvertes = sections.filter(function (s) { return s.ouverte; });
+    if (!ouvertes.length) {
+      avis('Aucune partie de ce module n’est ouverte pour l’instant. '
+           + 'Ton enseignante les ouvrira une à une.');
+      return;
+    }
+    var courante = parId[curSec];
+    if (courante && !courante.ouverte) {
+      curSec = ouvertes[0].id;
+      avis('Cette partie n’est pas encore ouverte : voici celle que tu peux faire.');
+    }
+    if (typeof render === 'function') render();
+  }
+
+  function demarrer() {
+    if (typeof SECTIONS === 'undefined' || typeof curSec === 'undefined') return;
+    var code = (typeof studentCode !== 'undefined' && studentCode) || '';
+    if (!code) return;   // hors session : le module s'ouvre en entier
+    fetch('/api/student/sections?code=' + encodeURIComponent(code)
+          + '&activityId=' + ACTIVITE)
+      .then(function (r) { return r.ok ? r.json() : null; })
+      .then(function (d) {
+        if (d && d.decoupe && d.sections && d.sections.length) appliquer(d.sections);
+      })
+      .catch(function () { /* serveur muet : on n'enlève rien à l'élève */ });
+  }
+
+  if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', demarrer);
+  } else {
+    demarrer();
+  }
+})();
+</script>
+<!-- SECTIONS-DATEES:fin -->
 </body></html>

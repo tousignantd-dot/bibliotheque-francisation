@@ -140,7 +140,7 @@ body{display:flex;flex-direction:column;min-height:100vh}
 .qlbl{font-size:13px;font-weight:800;color:#1D6B8F;text-transform:uppercase;letter-spacing:.1em;margin-bottom:4px}
 .qtxt{font-size:20px;font-weight:700;color:#123B32;line-height:1.4}
 .timelbl{flex:0 0 90px;background:var(--warn-bg);border-radius:10px;padding:12px 8px;font-size:15px;font-weight:900;color:var(--warn-ink);text-align:center}
-.blanks-p{font-size:20px;line-height:2.9;font-weight:600;color:#123B32}
+.blanks-p{font-size:20px;line-height:2.1;font-weight:600;color:#123B32}
 
 .zone{display:flex;align-items:center;justify-content:center;min-height:54px;border-radius:10px;font-weight:800;font-family:'Nunito',sans-serif;cursor:pointer;transition:background .18s,border-color .18s,color .18s,transform .12s;user-select:none;text-align:center;padding:10px 14px;border:2.5px solid;line-height:1.35}
 .zone.empty{background:var(--drop-bg);border-color:var(--drop-line);border-style:dashed;color:#5A6B7D;font-size:17px}
@@ -173,7 +173,7 @@ body{display:flex;flex-direction:column;min-height:100vh}
 .vf-summary.ok{color:var(--ok-ink)}
 .vf-summary.warn{color:var(--warn-ink)}
 
-.blank{display:inline-block;min-width:130px;padding:4px 14px;margin:0 3px;border-radius:8px;font-weight:800;vertical-align:middle;cursor:pointer;transition:background .18s,border-color .18s,color .18s;user-select:none;border:2.5px dashed #93C5D6;background:#F0F9FF;color:#94A3B8;font-size:20px;text-align:center}
+.blank{display:inline-block;min-width:130px;padding:4px 14px;margin:0 3px;border-radius:8px;font-weight:800;vertical-align:middle;cursor:pointer;transition:background .18s,border-color .18s,color .18s;user-select:none;border:2.5px dashed #93C5D6;background:#F0F9FF;color:#94A3B8;font-size:20px;text-align:center;line-height:1.35}
 .blank.filled{border-style:solid;border-color:var(--sel-line);background:var(--sel-bg);color:var(--sel-ink)}
 .blank.fb-ok{border-style:solid;border-color:var(--ok-line);background:var(--ok-bg);color:var(--ok-ink)}
 .blank.fb-no{border-style:solid;border-color:var(--no-line);background:var(--no-bg);color:var(--no-ink);animation:shk .5s ease}
@@ -683,7 +683,7 @@ body{
   .exo-main{min-width:0!important; flex:1 1 100%!important}
   .bsec.b1{flex:1 1 100%!important}
   .bsec.b1{
-    position:sticky; top:auto; bottom:0;
+    position:sticky; top:auto; bottom:var(--oe-dock-h,0px);
     max-height:none;
     margin:0 calc(-1 * var(--pad-card)) calc(-1 * var(--pad-card));
     border-radius:0;
@@ -700,12 +700,14 @@ body{
   .bsec.b1 .btiles,.bsec.b1 .btiles.vert{
     flex-direction:row; flex-wrap:wrap;
     overflow-x:hidden; overflow-y:auto;
-    max-height:40vh;
+    max-height:52vh;
     justify-content:flex-start;
     gap:8px; padding-bottom:4px;
     -webkit-overflow-scrolling:touch;
   }
   .bsec.b1 .btiles > *{flex:0 1 auto; max-width:100%}
+  .bsec.b1 .tile{padding:7px 12px; font-size:16px; box-shadow:0 1px 4px rgba(0,0,0,.07)}
+  .bsec.b1 .tn,.bsec.b1 .tv,.bsec.b1 .tf,.bsec.b1 .ta{font-size:16px}
 }
 @media(prefers-reduced-motion:no-preference){
   .bsec.b1{scroll-behavior:smooth}
@@ -728,6 +730,11 @@ body{
   .vocab-sec{padding:14px 16px 18px}
   .cta{padding:22px 18px; margin:0 16px 24px}
   .card{padding:16px}
+  /* Les cases à remplir tenaient la moitié d'une ligne de texte en hauteur
+     pour un mot déposé : elles se serrent sur le mot, et l'interligne du
+     paragraphe suit. */
+  .blanks-p{font-size:18px; line-height:1.95}
+  .blank{font-size:18px; min-width:92px; padding:2px 10px; line-height:1.25}
 }
 
 

@@ -198,6 +198,24 @@
     tete.innerHTML = bandeauLangue();
     document.body.insertBefore(tete, document.body.firstChild);
 
+    // La hauteur réelle de la bande d'outils est publiée en jeton CSS : sur
+    // téléphone, un bloc collé en bas de la page hôte — le banc de réponses
+    // des modules — s'arrête dessus. La valeur écrite dans la feuille de
+    // style ne vaut que si aucun libellé ne passe sur deux lignes ; on mesure
+    // donc plutôt que de s'y fier. Nulle au bureau, où le rail est en colonne.
+    var dockEl = racine.querySelector('.oe-dock');
+    function mesurerDock() {
+      var enBande = matchMedia('(max-width:900px)').matches;
+      var h = (enBande && !document.body.classList.contains('oe-cache'))
+        ? dockEl.getBoundingClientRect().height : 0;
+      document.documentElement.style.setProperty('--oe-dock-h', Math.round(h) + 'px');
+    }
+    mesurerDock();
+    addEventListener('resize', mesurerDock);
+    addEventListener('orientationchange', mesurerDock);
+    if (window.ResizeObserver) new ResizeObserver(mesurerDock).observe(dockEl);
+    el.mesurerDock = mesurerDock;
+
     el.tete = tete;
     el.racine = racine;
     el.panel = racine.querySelector('.oe-panel');
@@ -403,6 +421,7 @@
   function montreRail(oui) {
     if (!oui) fermer();
     document.body.classList.toggle('oe-cache', !oui);
+    if (el.mesurerDock) el.mesurerDock();
     var b = el.racine.querySelector(oui ? '#oe-cacher' : '#oe-montrer');
     if (b) b.focus();
   }
