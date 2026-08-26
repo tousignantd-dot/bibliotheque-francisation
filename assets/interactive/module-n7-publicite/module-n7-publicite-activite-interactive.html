@@ -214,7 +214,7 @@ body{display:flex;flex-direction:column;min-height:100vh}
 .vf-summary.ok{color:var(--ok-ink)}
 .vf-summary.warn{color:var(--warn-ink)}
 
-.blank{display:inline-block;min-width:130px;padding:4px 14px;margin:0 3px;border-radius:8px;font-weight:800;vertical-align:middle;cursor:pointer;transition:background .18s,border-color .18s,color .18s;user-select:none;border:2.5px dashed #93C5D6;background:#F0F9FF;color:#94A3B8;font-size:20px;text-align:center;line-height:1.35}
+.blank{display:inline-block;min-width:var(--blank-w,130px);padding:4px 14px;margin:0 3px;border-radius:8px;font-weight:800;vertical-align:middle;cursor:pointer;transition:background .18s,border-color .18s,color .18s;user-select:none;border:2.5px dashed #93C5D6;background:#F0F9FF;color:#94A3B8;font-size:20px;text-align:center;line-height:1.35}
 .blank.filled{border-style:solid;border-color:var(--sel-line);background:var(--sel-bg);color:var(--sel-ink)}
 .blank.fb-ok{border-style:solid;border-color:var(--ok-line);background:var(--ok-bg);color:var(--ok-ink)}
 .blank.fb-no{border-style:solid;border-color:var(--no-line);background:var(--no-bg);color:var(--no-ink);animation:shk .5s ease}
@@ -783,7 +783,7 @@ body{
      pour un mot déposé : elles se serrent sur le mot, et l'interligne du
      paragraphe suit. */
   .blanks-p{font-size:18px; line-height:1.95}
-  .blank{font-size:18px; min-width:92px; padding:2px 10px; line-height:1.25}
+  .blank{font-size:18px; min-width:var(--blank-w,92px); padding:2px 10px; line-height:1.25}
 }
 
 
@@ -2836,6 +2836,30 @@ function mkBlank(zid){
   if(placed&&!fb){drg(el,placed.iid,placed.lbl,placed.cat,zid);tch(el,placed.iid,placed.lbl,placed.cat,zid)}
   return el;
 }
+// La case vide prend la largeur du mot le plus long du banc, mesuré dans le
+// style d'une case remplie : plus étroite, elle couperait la réponse déposée ;
+// plus large, elle troue la phrase pour rien. On mesure au lieu de compter les
+// lettres — « allons attendre » et « IIIIIIIIIIIIIII » n'ont pas la même
+// largeur, et la valeur doit suivre le corps du texte, qui change avec l'écran.
+const BLANCS = {};
+function calerBlancs(mount, mots){
+  const p=document.createElement('span');
+  p.className='blank filled';
+  p.style.cssText='position:absolute;visibility:hidden;min-width:0;white-space:pre';
+  mount.appendChild(p);
+  let w=0;
+  mots.forEach(function(m){p.textContent=m.l; w=Math.max(w,p.getBoundingClientRect().width)});
+  p.remove();
+  // Un plancher : sur une liste de mots-outils (« le », « la »), la case
+  // deviendrait une fente de 30 px — illisible comme cible de dépôt.
+  mount.style.setProperty('--blank-w', Math.max(72, Math.ceil(w))+'px');
+}
+addEventListener('resize', function(){
+  Object.keys(BLANCS).forEach(function(k){
+    const b=BLANCS[k];
+    if(b.mount.isConnected) calerBlancs(b.mount, b.mots);
+  });
+});
 function mkTile(iid,lbl,cat,cls){
   const t=document.createElement('div');
   t.className='tile '+cls+(S.sel&&S.sel.iid===iid&&!S.sel.from?' sel':'');
@@ -5221,6 +5245,8 @@ function render(){
     }
     if(ex.type==='blanks'){
       ex.segs.forEach(sg=>{ if(sg.k==='t'){mount.appendChild(document.createTextNode(sg.t))} else{mount.appendChild(mkBlank(sg.id))} });
+      calerBlancs(mount, ex.words);
+      BLANCS[ex.id]={mount:mount, mots:ex.words};
       shuffled(ex.words,23).forEach(w=>{ if(used.has(w.id))return; bank.appendChild(mkTile(w.id,w.l,ex.id,'tn')); });
       if(!bank.children.length)bank.innerHTML='<div class="bempty">Tous les mots sont placés !</div>';
     }
