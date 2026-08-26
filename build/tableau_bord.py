@@ -394,12 +394,12 @@ GABARIT = """<!DOCTYPE html>
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Le tableau de bord du projet — SAAF</title>
+<title>Le tableau de bord du projet — francis</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800;900&display=swap">
-<link rel="stylesheet" href="../design-system/marque-saaf.css">
-<link rel="icon" type="image/svg+xml" href="../design-system/marque-saaf-favicon.svg">
+<link rel="stylesheet" href="../design-system/marque-francis.css">
+<link rel="icon" type="image/svg+xml" href="../design-system/marque-francis-favicon.svg">
 <style>
   /* Page générée par build/tableau_bord.py — ne pas retoucher à la main.
      Téléphone d'abord : une colonne, des chiffres gros, les alertes en haut. */
@@ -489,7 +489,14 @@ GABARIT = """<!DOCTYPE html>
 <body>
 <div class="wrap">
   <header>
-    <p class="eyebrow">Francisation · SAAF</p>
+    <div class="fr-bandeau-portail">
+      <span class="fr-lockup">
+        <span class="fr-nom" role="img" aria-label="francis">franc<span class="fr-i" aria-hidden="true">ı<span class="fr-point"></span></span>s</span>
+        <span class="fr-trait" aria-hidden="true"></span>
+        <span class="fr-desc">Aide à l'apprentissage du français</span>
+      </span>
+    </div>
+    <p class="eyebrow">Francisation · État de la production</p>
     <h1>Le tableau de bord du projet</h1>
     <p class="sous">Tout l’état de la production sur une page : ce qui est
       produit, ce qui manque, ce que ça coûte. Aucun chiffre n’est saisi à la

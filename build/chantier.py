@@ -253,12 +253,12 @@ GABARIT = """<!DOCTYPE html>
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Le chantier des banques d'exercices — SAAF</title>
+<title>Le chantier des banques d'exercices — francis</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800;900&display=swap">
-<link rel="stylesheet" href="../design-system/marque-saaf.css">
-<link rel="icon" type="image/svg+xml" href="../design-system/marque-saaf-favicon.svg">
+<link rel="stylesheet" href="../design-system/marque-francis.css">
+<link rel="icon" type="image/svg+xml" href="../design-system/marque-francis-favicon.svg">
 <style>
   /* Page générée par build/chantier.py — ne pas retoucher à la main.
      Pensée pour un téléphone d'abord : une colonne, des chiffres gros. */
@@ -323,7 +323,14 @@ GABARIT = """<!DOCTYPE html>
 <body>
 <div class="wrap">
   <header class="top">
-    <p class="eyebrow">Francisation · SAAF</p>
+    <div class="fr-bandeau-portail">
+      <span class="fr-lockup">
+        <span class="fr-nom" role="img" aria-label="francis">franc<span class="fr-i" aria-hidden="true">ı<span class="fr-point"></span></span>s</span>
+        <span class="fr-trait" aria-hidden="true"></span>
+        <span class="fr-desc">Aide à l'apprentissage du français</span>
+      </span>
+    </div>
+    <p class="eyebrow">Francisation · Chantier</p>
     <h1>Le chantier des banques d'exercices</h1>
     <p class="sous">Les modules couvrent les 85 situations des huit niveaux. Ce qui
       s'ajoute ici, ce sont les <b>savoirs qu'un module ne peut pas drainer</b> —

@@ -93,7 +93,7 @@ fal.ai), et aligner le CSS pour ne plus recadrer :
   zone vide annonce la forme de ce qu'elle attend.
 
 **Ces trois retouches vivent dans le gabarit**, qu'une autre session est en
-train de modifier (l'identité de marque SAAF). Elles se feront quand elle aura
+train de modifier (l'identité de marque francis). Elles se feront quand elle aura
 commité — avant la génération d'images du premier module, pas après.
 
 ## Le suivi des images sur le mur

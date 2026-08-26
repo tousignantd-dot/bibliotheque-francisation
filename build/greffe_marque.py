@@ -1,10 +1,10 @@
 #!/usr/bin/env python3
-"""Greffe l'identité de marque SAAF dans l'en-tête des modules interactifs.
+"""Greffe l'identité de marque francis dans l'en-tête des modules interactifs.
 
 Trois morceaux, encadrés par des marqueurs de commentaire : la feuille de
-style de la marque, le favicon du monogramme, et le verrouillage horizontal
-(pilule « SAAF » · filet · descripteur) posé en première ligne de `#hdr`,
-au-dessus du sur-titre du module.
+style de la marque, le favicon (le point du « i », seul), et le verrouillage
+horizontal (nom « francis » · trait · descripteur) posé en première ligne de
+`#hdr`, au-dessus du sur-titre du module.
 
 Le script est idempotent : il retire d'abord une greffe existante, puis la
 repose. On peut donc le relancer après toute modification du gabarit.
@@ -18,8 +18,11 @@ leur construction : ne pas les greffer à la main ici, ils seraient écrasés à
 la reconstruction suivante.
 
 Ce que la greffe NE fait pas, volontairement : elle ne touche ni à la couleur
-d'accent du module, ni au sur-titre, ni au score. Le violet reste réservé à la
-marque — il ne va sur aucun bouton, aucun état, aucune rétroaction.
+d'accent du module, ni au sur-titre, ni au score. Le mauve reste réservé à la
+marque — il ne va sur aucun bouton, aucun état, aucune rétroaction. Elle ne
+pose pas non plus la fermeture mauve du verrouillage A : ici le logotype vit
+sur le bandeau teinté de l'en-tête, où un deuxième filet ferait une deuxième
+ligne d'en-tête.
 """
 import pathlib
 import re
@@ -38,25 +41,27 @@ def modules_generes():
         return set()
     return {d.name for d in contenu.iterdir() if (d / 'manifest.py').exists()}
 
-DEBUT = '<!-- MARQUE-SAAF:début — greffé par build/greffe_marque.py -->'
-FIN = '<!-- MARQUE-SAAF:fin -->'
-TETE_DEBUT = '<!-- MARQUE-SAAF-TETE:début -->'
-TETE_FIN = '<!-- MARQUE-SAAF-TETE:fin -->'
+DEBUT = '<!-- MARQUE-FRANCIS:début — greffé par build/greffe_marque.py -->'
+FIN = '<!-- MARQUE-FRANCIS:fin -->'
+TETE_DEBUT = '<!-- MARQUE-FRANCIS-TETE:début -->'
+TETE_FIN = '<!-- MARQUE-FRANCIS-TETE:fin -->'
 
 TETE = (TETE_DEBUT + '\n'
-        '<link rel="stylesheet" href="/assets/design-system/marque-saaf.css">\n'
+        '<link rel="stylesheet" href="/assets/design-system/marque-francis.css">\n'
         '<link rel="icon" type="image/svg+xml" '
-        'href="/assets/design-system/marque-saaf-favicon.svg">\n'
+        'href="/assets/design-system/marque-francis-favicon.svg">\n'
         + TETE_FIN + '\n')
 
-# Le descripteur va **à droite** du contour, séparé par le filet, jamais en
-# dessous : sous 320 px de large, c'est la feuille de style qui l'empile.
+# Le nom est composé avec « ı » (U+0131, i sans point) : un « i » ordinaire
+# laisserait son propre point sous le disque. D'où le role="img" et
+# l'aria-label, pour que rien ne lise « francıs ». Le descripteur va à droite
+# du trait, jamais dessous : sous 480 px, la feuille de style l'efface.
 LOCKUP = DEBUT + """
-<div class="saaf-bandeau">
-  <span class="saaf-lockup">
-    <span class="saaf-pilule"><span class="saaf-nom">SAAF</span></span>
-    <span class="saaf-filet" aria-hidden="true"></span>
-    <span class="saaf-desc">Système d'aide à l'apprentissage du français</span>
+<div class="fr-bandeau">
+  <span class="fr-lockup">
+    <span class="fr-nom" role="img" aria-label="francis">franc<span class="fr-i" aria-hidden="true">ı<span class="fr-point"></span></span>s</span>
+    <span class="fr-trait" aria-hidden="true"></span>
+    <span class="fr-desc">Aide à l'apprentissage du français</span>
   </span>
 </div>
 """ + FIN

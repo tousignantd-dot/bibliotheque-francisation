@@ -68,8 +68,8 @@ GABARIT = r'''<!DOCTYPE html>
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Même mot, autre police — Niveau 1</title>
 <link rel="stylesheet" href="/assets/design-system/styles.css">
-<link rel="stylesheet" href="/assets/design-system/marque-saaf.css">
-<link rel="icon" type="image/svg+xml" href="/assets/design-system/marque-saaf-favicon.svg">
+<link rel="stylesheet" href="/assets/design-system/marque-francis.css">
+<link rel="icon" type="image/svg+xml" href="/assets/design-system/marque-francis-favicon.svg">
 <style>
 /* Les cinq polices d'emprunt. @import en tête du bloc, comme la spécification
    l'exige. Nunito est déjà chargée par le système de design. */
@@ -227,11 +227,11 @@ body { --sec: var(--niv-1-line); --sec-soft: var(--niv-1-bg); }
 
 <header class="band pl-band">
   <div id="hdr">
-    <div class="saaf-bandeau">
-      <span class="saaf-lockup">
-        <span class="saaf-pilule"><span class="saaf-nom">SAAF</span></span>
-        <span class="saaf-filet" aria-hidden="true"></span>
-        <span class="saaf-desc">Système d'aide à l'apprentissage du français</span>
+    <div class="fr-bandeau">
+      <span class="fr-lockup">
+        <span class="fr-nom" role="img" aria-label="francis">franc<span class="fr-i" aria-hidden="true">ı<span class="fr-point"></span></span>s</span>
+        <span class="fr-trait" aria-hidden="true"></span>
+        <span class="fr-desc">Aide à l'apprentissage du français</span>
       </span>
     </div>
   </div>

@@ -696,7 +696,7 @@ Deux pièges déjà payés :
   consultation. Sans ce dégreffage, un module hériterait du carnet d'un autre.
 - **Régénérer le gabarit ne détruit aucune greffe** — et la raison est le
   dégreffage ci-dessus, pas autre chose. Le gabarit **porte** les marqueurs des
-  greffes : `MARQUE-SAAF` s'y lit aux alentours de la ligne 904, arrivé là par
+  greffes : `MARQUE-FRANCIS` s'y lit aux alentours de la ligne 904, arrivé là par
   le HTML de `module-consultation`, déjà greffé. Ce sont `build/module.py` et
   ses cinq greffes qui les remettent d'aplomb à chaque construction, chacune en
   retirant d'abord la précédente. Conséquence pratique : `python3
@@ -1078,22 +1078,39 @@ facture — le tableau de bord les importe plutôt que de recompter.
 - **La liste des alertes vide est une bonne nouvelle**, et elle s'écrit comme
   telle — une page qui n'affiche rien se lit comme une page cassée.
 
-## L'identité de marque SAAF
+## L'identité de marque francis
 
-La plateforme s'appelle **SAAF** — Système d'aide à l'apprentissage du
-français. Le logotype est la **pilule à contour violet** (variante « 5c ») :
-contour de 3 px `#6B4FBB`, fond blanc, « SAAF » en Nunito 900, descripteur **à
-droite** du contour et séparé par un filet vertical. Il est purement
-typographique — aucun fichier image, tout se construit en markup et en CSS — et
-**statique** : aucun survol, aucune animation.
+La plateforme s'appelle **francis** — descripteur « Aide à l'apprentissage du
+français ». Le nom s'écrit **toujours en minuscules**, en Nunito 900, à
+`-0.035em`. Le logotype tient en trois éléments sur une ligne :
 
-- `assets/design-system/marque-saaf.css` — les jetons et les classes du
-  verrouillage et du monogramme. Les jetons s'appellent `--marque-600` et
-  `--marque-100`, **pas** `--violet-600` : le système de design emploie déjà ce
-  dernier nom comme couleur de repérage de la section « Les sons ». Deux noms,
-  une seule valeur, pour que la marque ne dépende pas d'un jeton de repérage.
-- `assets/design-system/marque-saaf-favicon.svg` — le monogramme « à », aplat
-  violet, pastille ronde. Sous 44 px, la règle est l'aplat et non le contour.
+```
+franc[i]s  │  Aide à l'apprentissage du français
+```
+
+Le **seul** signe de marque est **le point du « i »** : un disque plein dessiné
+en CSS. Aucune pastille, aucun monogramme, aucun fichier image — tout se
+construit en markup et en CSS. Il est **statique** : aucun survol, aucune
+animation.
+
+Le nom se compose avec **« ı » (U+0131, i sans point)** — un « i » ordinaire
+laisserait son propre point sous le disque — et le bloc du nom porte
+`role="img"` + `aria-label="francis"`, pour que ni un lecteur d'écran ni la
+recherche ne lisent « francıs ».
+
+**Jamais de boîte, de contour ni de pilule autour du nom.** C'est la raison
+d'être de cette identité : la marque précédente (SAAF, pilule à contour mauve)
+se lisait comme un bouton. Remise du 26 août 2026,
+`~/Downloads/design_handoff_francis`.
+
+- `assets/design-system/marque-francis.css` — les jetons et les classes du
+  verrouillage. Les jetons s'appellent `--marque-600` et `--marque-100`, **pas**
+  `--violet-600` : le système de design emploie déjà ce dernier nom comme
+  couleur de repérage. Deux noms, une seule valeur, pour que la marque ne
+  dépende pas d'un jeton de repérage.
+- `assets/design-system/marque-francis-favicon.svg` — le point seul, blanc sur
+  cadre mauve ; `marque-francis-favicon-clair.svg` en donne la version mauve sur
+  blanc. Jamais une lettre.
 - `build/greffe_marque.py` — pose le verrouillage en première ligne de `#hdr`,
   au-dessus du sur-titre du module. Idempotente, comme les autres greffes :
 
@@ -1107,36 +1124,55 @@ Les modules qui ont un manifeste dans `build/contenu/` sont sautés : leur
 greffe est posée par `build/module.py` pendant la construction. Le script lit
 le dossier plutôt que d'en tenir une liste, qui vieillirait.
 
-**Le violet est réservé à la marque** : il ne va sur aucun bouton, aucun état,
+`build/marque_francis_bascule.py` a fait la bascule de SAAF vers francis sur
+tout le dépôt — HTML construit et sources qui le construisent. Il est
+idempotent et se garde : il documente la correspondance entre les deux marques.
+
+**Les classes** : `.fr-lockup` (28 px, barre d'application) avec les tailles
+`--grand` (36 px, en-tête de page), `--etroit` (24 px), `--courriel` (nom seul),
+`--mauve` (fond mauve), `--blanc` (fond blanc, le trait reprend `--paper-200`).
+`.fr-bandeau` place le verrouillage dans l'en-tête d'un module,
+`.fr-bandeau-portail` dans un bandeau de portail, `.fr-barre` compose la barre
+de marque blanche à fermeture mauve d'un en-tête d'application.
+
+**Sur fond mauve ou noir, le nom n'est jamais blanc pur** : le point doit se
+détacher **des lettres**, pas seulement du fond. Nom blanc + point blanc, c'est
+1.07:1 entre les deux, donc aucun signe visible. D'où le nom en `--marque-100`
+sur mauve, en `#B4B4B4` sur noir.
+
+**Sous 480 px**, le trait et le descripteur disparaissent : le nom reste seul.
+Le descripteur ne passe jamais sur deux lignes et ne se met jamais en
+majuscules.
+
+**À l'impression, aucune couleur** : nom et point en noir, trait `#C8C8C8`.
+
+**Le mauve est réservé à la marque** : il ne va sur aucun bouton, aucun état,
 aucune rétroaction. L'action reste le vert `--accent`, l'audio reste le rouge
 `--audio`, et le bandeau d'en-tête reste clair — jamais noir.
 
 Dans le portail, la marque ne passe pas par une greffe : ces pages sont écrites
-à la main et ne se régénèrent pas. Chacune lie `marque-saaf.css` et pose le
+à la main et ne se régénèrent pas. Chacune lie `marque-francis.css` et pose le
 verrouillage **une fois**, dans son en-tête principal — jamais dans les
 bandeaux de sous-vue, qui ne sont pas des en-têtes de page.
 
 | Page | Verrouillage |
 |---|---|
-| `eleve.html` | grand (64 px) sur l'écran de connexion — c'est le `h1` ; réduit (44 px) sur l'accueil |
-| `enseignant.html`, `prof.html` | grand sur la connexion, réduit dans l'en-tête permanent |
-| `progression.html`, `fiche-eleve.html` | réduit, dans le bandeau d'identité — pas dans la barre collante |
-| `catalogue.html` | de barre : pilule · filet · `.header-brand`, la disposition de l'en-tête de module |
+| `eleve.html` | grand sur l'écran de connexion — c'est le `h1` ; taille de barre sur l'accueil |
+| `enseignant.html`, `prof.html` | grand sur la connexion, taille de barre dans l'en-tête permanent |
+| `progression.html`, `fiche-eleve.html` | taille de barre, dans le bandeau d'identité — pas dans la barre collante |
+| `catalogue.html` | taille de barre, la disposition de l'en-tête de module |
 | `presentations.html` | grand ; sa copie locale du logotype a été retirée au profit de la feuille partagée |
 
 `lms.html` et `viewer.html` sont restés à l'écart : ils ne parlent pas le
 système de design Francisation (Inter, accent bleu, chrome foncé pour le
-lecteur). Y poser la pilule mettrait la marque sur une page qui la contredit ;
+lecteur). Y poser le logotype mettrait la marque sur une page qui la contredit ;
 c'est une refonte, pas une greffe.
 
-Le mot-symbole étiré de `eleve.html` (`letter-spacing: .06em`) a disparu : la
-remise interdit l'interlettrage positif sur le nom.
-
-Un écart assumé : le filet du verrouillage est `--violet-100` dans la remise,
-sur fond blanc. Or ici le verrouillage vit toujours sur un bandeau teinté — un
-en-tête de module porte sa couleur de repérage, ceux du portail la teinte acier
-— où cette valeur s'efface au point de disparaître. `--marque-filet` vaut donc
-`#C3B4EA` par défaut ; sur un fond blanc, le rendre à `--marque-100`.
+Un écart assumé : le trait du verrouillage vaut `--paper-200` (#F0F0EE) dans la
+remise, sur fond blanc. Or ici le verrouillage vit presque toujours sur un
+bandeau teinté — un en-tête de module porte sa couleur de repérage, ceux du
+portail leur teinte — où cette valeur s'efface. `--marque-trait` vaut donc
+`#D8D8D3` par défaut ; sur un fond blanc, poser `.fr-lockup--blanc`.
 
 ### Le violet n'est plus qu'à la marque
 
@@ -1156,7 +1192,7 @@ d'état. Ce qu'il occupait a été redistribué :
 
 `--violet-600` et `--violet-100` **n'existent plus** dans
 `assets/design-system/tokens/colors.css`. Le seul violet du dépôt est
-`--marque-600` / `--marque-100`, dans `marque-saaf.css`. Le changement a touché
+`--marque-600` / `--marque-100`, dans `marque-francis.css`. Le changement a touché
 les jetons, `.exo--phonie`, le paquet React, `theme.py` et les sept decks `a2`,
 les contenus de `build/contenu/`, les modules écrits à la main, les pages
 d'outils et le compositeur — puis la reconstruction des huit modules générés et

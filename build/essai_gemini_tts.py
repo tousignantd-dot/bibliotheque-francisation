@@ -51,6 +51,7 @@ import os
 import pathlib
 import subprocess
 import sys
+import time
 import urllib.error
 import urllib.request
 
@@ -81,6 +82,26 @@ PHRASE = ("Au centre, à la clinique, à la banque. "
           "On vous demandera d'épeler votre nom, lettre par lettre.")
 
 
+class Transitoire(Exception):
+    """Un refus qui ne dit rien du texte demandé : 503, quota, candidat vide."""
+
+
+def avec_reprises(fn, essais=4):
+    """Réessaie en doublant l'attente. Le 503 « high demand » est fréquent sur
+    les modèles TTS en préversion, et il passe presque toujours au deuxième
+    coup — abandonner à la première tentative laissait des trous dans le banc.
+    """
+    for i in range(essais):
+        try:
+            return fn()
+        except Transitoire as e:
+            if i == essais - 1:
+                raise
+            attente = 5 * 2 ** i
+            print("      %s — reprise dans %d s" % (e, attente))
+            time.sleep(attente)
+
+
 def cle():
     env = pathlib.Path.home() / "Claude" / ".env"
     k = os.environ.get("GOOGLE_API_KEY")
@@ -101,12 +122,30 @@ def synthese(consigne, texte, voix, k, dest):
                 "prebuiltVoiceConfig": {"voiceName": voix}}},
         },
     }
-    req = urllib.request.Request(
-        "%s?key=%s" % (API, k), data=json.dumps(corps).encode(),
-        headers={"Content-Type": "application/json"}, method="POST")
-    with urllib.request.urlopen(req, timeout=120) as r:
-        d = json.load(r)
-    part = d["candidates"][0]["content"]["parts"][0]["inlineData"]
+    # urllib se bloque sur cet hôte depuis le poste (le premier essai a
+    # tourné dix minutes sans un octet) ; curl passe sans broncher. Le corps
+    # transite par un fichier pour ne pas dépendre de la longueur d'argv.
+    tmp = dest.with_suffix(".req.json")
+    tmp.write_text(json.dumps(corps))
+    out = subprocess.run(
+        ["curl", "-s", "-m", "180", "-X", "POST",
+         "-H", "Content-Type: application/json", "--data-binary", "@%s" % tmp,
+         "%s?key=%s" % (API, k)],
+        capture_output=True, check=True)
+    tmp.unlink()
+    d = json.loads(out.stdout)
+    if "error" in d:
+        raise Transitoire("%s %s" % (d["error"]["code"], d["error"]["message"][:120]))
+    # Un candidat peut revenir **sans `parts`** : le modèle a rendu un tour vide,
+    # avec un `finishReason` et rien d'autre. Ce n'est pas une erreur HTTP, et
+    # ça a fait tomber le premier passage sur un KeyError. C'est transitoire :
+    # le même appel repassé aussitôt a rendu l'audio.
+    cand = (d.get("candidates") or [{}])[0]
+    parts = (cand.get("content") or {}).get("parts")
+    if not parts:
+        raise Transitoire("candidat vide (finishReason=%s)"
+                          % cand.get("finishReason", "?"))
+    part = parts[0]["inlineData"]
     pcm = base64.b64decode(part["data"])
     # L16 24 kHz mono : ffmpeg a besoin qu'on le lui dise, il n'y a pas d'en-tête.
     subprocess.run(
@@ -115,6 +154,16 @@ def synthese(consigne, texte, voix, k, dest):
         input=pcm, check=True, capture_output=True)
     jetons = d["usageMetadata"]["candidatesTokenCount"]
     return len(pcm) / 2 / 24000, jetons
+
+
+def duree_mp3(chemin):
+    out = subprocess.run(["ffprobe", "-v", "error", "-show_entries",
+                          "format=duration", "-of", "default=nw=1:nk=1",
+                          str(chemin)], capture_output=True, text=True)
+    try:
+        return float(out.stdout.strip())
+    except ValueError:
+        return 0.0
 
 
 def plan():
@@ -178,23 +227,38 @@ def main():
         return 1
     SORTIE.mkdir(parents=True, exist_ok=True)
     travaux, res, jetons = plan(), [], 0
+    neufs = neufs_secs = 0
     print("%d extraits, modèle %s" % (len(travaux), MODELE))
     for bloc, nom, consigne, texte, voix, affiche in travaux:
         f = SORTIE / ("%s--%s.mp3" % (bloc, nom))
+        if f.exists() and f.stat().st_size > 1000:
+            # Reprise : le banc se relance sans repayer les extraits déjà là.
+            res.append({"bloc": bloc, "nom": nom, "texte": texte,
+                        "affiche": affiche, "fichier": f.name,
+                        "duree": duree_mp3(f)})
+            print("  %-24s (déjà là)" % nom)
+            continue
         try:
-            d, j = synthese(consigne, texte, voix, k, f)
-        except urllib.error.HTTPError as e:
-            print("  %-24s HTTP %s %s" % (nom, e.code, e.read().decode()[:160]))
+            d, j = avec_reprises(
+                lambda: synthese(consigne, texte, voix, k, f))
+        except (Transitoire, subprocess.CalledProcessError) as e:
+            print("  %-24s ÉCHEC %s" % (nom, e))
             continue
         jetons += j
+        neufs += 1
+        neufs_secs += d
         res.append({"bloc": bloc, "nom": nom, "texte": texte, "affiche": affiche,
                     "fichier": f.name, "duree": d})
         print("  %-24s %5.2f s  %4d jetons" % (nom, d, j))
     (SORTIE / "comparer.html").write_text(page(res))
     secs = sum(r["duree"] for r in res)
-    print("\n%d fichiers · %.0f s d'audio · %d jetons audio" % (len(res), secs, jetons))
-    if secs:
-        print("→ %.1f jetons/seconde de parole" % (jetons / secs))
+    print("\n%d fichiers · %.0f s d'audio" % (len(res), secs))
+    # Le ratio ne vaut que sur les extraits **produits pendant ce passage** :
+    # les reprises ont une durée mais pas de jetons, et les mêler donnait
+    # 6 jetons/s au lieu de 32 — de quoi sous-estimer le coût par cinq.
+    if neufs_secs:
+        print("→ %.1f jetons/seconde (sur %d extraits produits à l'instant)"
+              % (jetons / neufs_secs, neufs))
     print("Ouvrir %s/comparer.html" % SORTIE)
     return 0
 

@@ -74,7 +74,7 @@ C = {
 }
 
 # Les cinq couleurs de section, chacune avec sa teinte pâle. La graphie-phonie
-# était violette ; le violet #6B4FBB est passé à la marque SAAF, qui le veut
+# était violette ; le violet #6B4FBB est passé à la marque francis, qui le veut
 # exclusif, et l'indigo l'a remplacé au repérage. Le vocabulaire était forêt ;
 # le 20 août 2026 le vert est sorti du repérage — dans les modules comme ici,
 # pour que la diapositive et l'écran s'accordent — et la framboise a pris sa

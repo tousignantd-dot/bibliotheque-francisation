@@ -8,7 +8,7 @@
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800;900&display=swap">
 <style>
-  /* Système de design Francisation / SAAF — thème clair unique, comme les
+  /* Système de design Francisation / francis — thème clair unique, comme les
      autres documents de la banque de présentations. Le violet est exclusif
      à la marque : aucun état, aucun repérage ne le porte. */
   :root{
@@ -35,15 +35,19 @@
   :focus-visible{outline:3px solid var(--accent); outline-offset:2px; border-radius:4px}
   .conteneur{max-width:var(--content-max); margin:0 auto; padding:0 24px}
 
-  /* — marque — */
-  .verrou{display:inline-flex; align-items:center; gap:12px}
-  .pilule{display:inline-flex; align-items:center; justify-content:center;
-    border:3px solid var(--marque-600); background:#FFFFFF; border-radius:999px;
-    padding:6px 18px; font-weight:900; font-size:20px; letter-spacing:0;
-    color:var(--marque-600); line-height:1}
-  .verrou .filet{width:1px; height:26px; background:var(--marque-filet)}
-  .verrou .desc{font-size:12px; font-weight:800; letter-spacing:.1em;
-    text-transform:uppercase; color:var(--ink-500); max-width:16ch; line-height:1.3}
+  /* — marque francis — le nom, un trait, le descripteur. Le seul signe de
+     marque est le point du « i » : un disque plein. Aucune boîte autour du
+     nom — une pilule se lirait comme un bouton. — */
+  .verrou{display:inline-flex; align-items:center; gap:16px; flex-wrap:wrap}
+  .verrou .nom{font-weight:900; font-size:28px; letter-spacing:-.035em;
+    line-height:1; color:var(--ink-900); white-space:nowrap}
+  .verrou .i{position:relative; display:inline-block}
+  .verrou .point{position:absolute; left:1px; top:2px; width:7px; height:7px;
+    border-radius:999px; background:var(--marque-600)}
+  .verrou .filet{width:2px; height:24px; background:var(--marque-filet)}
+  .verrou .desc{font-size:16px; font-weight:900; letter-spacing:-.015em;
+    line-height:1; color:var(--marque-600); white-space:nowrap}
+  @media (max-width:480px){ .verrou .filet,.verrou .desc{display:none} }
 
   /* — bande de tête — */
   .bande{background:var(--surface-band); border-bottom:1px solid var(--border-tint);
@@ -150,22 +154,22 @@
     body{font-size:17px}
   }
 </style>
-<link rel="icon" type="image/svg+xml" href="../design-system/marque-saaf-favicon.svg">
+<link rel="icon" type="image/svg+xml" href="../design-system/marque-francis-favicon.svg">
 </head>
 <body>
 
 <header class="bande">
   <div class="conteneur">
     <div class="verrou">
-      <span class="pilule">SAAF</span>
-      <span class="filet"></span>
-      <span class="desc">Système d'aide à l'apprentissage du français</span>
+      <span class="nom" role="img" aria-label="francis">franc<span class="i" aria-hidden="true">ı<span class="point"></span></span>s</span>
+      <span class="filet" aria-hidden="true"></span>
+      <span class="desc">Aide à l'apprentissage du français</span>
     </div>
     <div>
       <p class="surtitre">Chantier · Proposition</p>
       <h1>Le réseau des centres</h1>
     </div>
-    <p class="chapeau">Ouvrir SAAF à plusieurs centres de services scolaires demande deux
+    <p class="chapeau">Ouvrir francis à plusieurs centres de services scolaires demande deux
     choses qui n'existent pas encore : un arbre pour dire qui voit quoi, et un endroit
     où les chiffres d'usage remontent sans que les élèves remontent avec eux. Voici
     comment je les bâtirais.</p>
@@ -217,7 +221,7 @@
       <ul class="niv">
         <li>
           <div class="noeud noeud--reseau">
-            <span class="t">réseau</span><span class="n">SAAF</span>
+            <span class="t">réseau</span><span class="n">francis</span>
             <span class="g">le catalogue, les modules, les huit niveaux</span>
           </div>
           <ul class="niv">

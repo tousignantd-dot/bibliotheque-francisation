@@ -64,9 +64,9 @@ Cinq couleurs de section (acier, indigo, ambre, teal, forêt) servent **au repé
 n'apparaissent qu'à quatre endroits : la pastille numérotée, le sur-titre, un filet gauche de
 4 px, le point de la barre de parcours. Le **rouge est réservé à l'audio** et à l'erreur ; l'erreur
 n'a pas d'aplat saturé (fond #FFF6F5, filet et texte rouges) afin que le seul rouge plein de la
-page reste le bouton « Écouter ». Le **violet #6B4FBB appartient à la marque SAAF** et à elle
+page reste le bouton « Écouter ». Le **violet #6B4FBB appartient à la marque francis** et à elle
 seule : il ne sert ni de couleur de section, ni de couleur de niveau, ni d'état. Il vit dans
-`marque-saaf.css` sous les noms `--marque-600` et `--marque-100`.
+`marque-francis.css` sous les noms `--marque-600` et `--marque-100`.
 
 **Sélection.** Un élément choisi devient une **plaque encre** (fond #17181A, texte blanc) — pas
 une teinte de plus. La couleur reste ainsi entièrement disponible pour dire « juste » ou

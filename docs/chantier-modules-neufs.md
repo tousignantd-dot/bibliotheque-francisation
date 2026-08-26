@@ -168,7 +168,7 @@ désormais la première chose que vérifie le relevé fait dans le navigateur.
   étiquette · un mode d'emploi en trois blocs. Tous neufs dans la collection.
 - **Couleur** : teal `#0D7A6F` / `#DCF2EF`. **Activité** : 51.
   (Elle était violette. Le violet `#6B4FBB` est devenu la couleur de la marque
-  SAAF, qui le veut exclusif : il ne sert plus au repérage.)
+  francis, qui le veut exclusif : il ne sert plus au repérage.)
 - Médias : 21 images (0,71 $), 204 MP3. Les **225 URL** de la page répondent.
 - Séances : 16 présentations, 194 diapositives, 16 fiches (150 blocs).
   `MODULE 14` dans les seize `.pptx`.
@@ -190,7 +190,7 @@ contenant une apostrophe non échappée. Plus de liste de champs à tenir à jou
 
 Pendant la production de ce module, deux autres sessions travaillaient dans
 `bibliotheque-francisation` : l'une sur une banque de présentations (commitée),
-l'autre sur une marque « SAAF » greffée dans `build/gabarit/module.html` et
+l'autre sur une marque « francis » greffée dans `build/gabarit/module.html` et
 dans les quatorze modules produits. Conséquences, et ce qui a été fait :
 
 - **Ne pas lancer `build/gabarit.py`** tant que la greffe de marque n'est pas
@@ -241,7 +241,7 @@ fini.
 - Séances : 16 présentations, 192 diapositives, 16 fiches (149 blocs).
   `MODULE 15` dans les seize `.pptx`.
 - Septième scénario de jeu de rôle, aux rôles « acheteur » et « vendeur ».
-- La marque SAAF a de nouveau été retirée du HTML avant le commit : la session
+- La marque francis a de nouveau été retirée du HTML avant le commit : la session
   qui la pose regreffe les fichiers produits, et son travail n'est toujours pas
   commité.
 
@@ -315,6 +315,6 @@ modules) :
 - Le délai de mise de côté disait « trente jours » en D2 alors que la carte
   mémoire dit quatorze. Aligné sur « souvent quatorze jours, parfois trente ».
 - La greffe d'identité de marque (travail d'une autre session, non commité)
-  ajoutait un bandeau SAAF dont le CSS n'est pas encore au dépôt. Les deux
+  ajoutait un bandeau francis dont le CSS n'est pas encore au dépôt. Les deux
   régions marquées ont été retirées du HTML avant le commit, comme pour les
   six modules précédents.

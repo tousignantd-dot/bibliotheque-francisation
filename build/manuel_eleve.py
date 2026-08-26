@@ -471,11 +471,16 @@ body{width:215.9mm; margin:0 auto; padding:0}
 
 /* ── couverture ── */
 .couv{display:flex; flex-direction:column; min-height:245mm; padding-top:26mm}
-.couv .pilule{display:inline-flex; align-items:center; justify-content:center;
-  border:3px solid var(--rule); border-radius:999px; padding:7px 22px;
-  font-size:26pt; font-weight:900; letter-spacing:.02em; color:var(--ink)}
-.couv .desc{margin-top:9px; font-size:11pt; font-weight:800; color:var(--muted);
-  text-transform:uppercase; letter-spacing:.1em}
+/* Marque francis, verrouillage d'impression : une seule encre, le noir.
+   Aucune boîte autour du nom, et pour tout signe le point du « i » — un
+   disque plein. Le « ı » est le U+0131, sans point. */
+.couv .marque{font-size:26pt; font-weight:900; letter-spacing:-.035em;
+  line-height:1; color:var(--ink)}
+.couv .marque .i{position:relative; display:inline-block}
+.couv .marque .point{position:absolute; left:1px; top:2px; width:8px; height:8px;
+  border-radius:999px; background:var(--ink)}
+.couv .desc{margin-top:10px; font-size:11pt; font-weight:900; color:var(--ink);
+  letter-spacing:-.015em}
 .couv h1{font-size:44pt; font-weight:900; line-height:1.02; margin-top:32mm;
   letter-spacing:-0.02em}
 .couv .niv{font-size:20pt; font-weight:800; color:var(--soft); margin-top:10px}
@@ -661,8 +666,8 @@ def couverture_html(niv, niveau, compte, feuille, date_fr):
     code = ('%s · stade %s' % (niv['code'], niv['stade'])) if niv else ''
     corps = """
 <article class="fiche couv"><span class="repere">[[COUV]]</span>
-  <div><span class="pilule">SAAF</span>
-  <div class="desc">Système d’aide à l’apprentissage du français</div></div>
+  <div><span class="marque" role="img" aria-label="francis">franc<span class="i" aria-hidden="true">ı<span class="point"></span></span>s</span>
+  <div class="desc">Aide à l'apprentissage du français</div></div>
   <h1>Manuel<br>de l’élève</h1>
   <div class="niv">Niveau %d — %s</div>
   <div class="code">%s</div>

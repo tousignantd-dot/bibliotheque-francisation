@@ -1,0 +1,188 @@
+/* ═══════════════════════════════════════════════════════════════════
+   Identité de marque « francis » — remise du 26 août 2026.
+   Source : ~/Downloads/design_handoff_francis (README + « Francis -
+   Branding final.dc.html », variante retenue 25b).
+
+   Remplace l'ancienne marque francis (pilule à contour violet), retirée
+   parce qu'elle se lisait comme un bouton. Ici, aucune boîte, aucun
+   contour, aucune pilule autour du nom.
+
+   Trois éléments sur une ligne :
+
+       franc[i]s  │  Aide à l'apprentissage du français
+
+   Le seul signe de marque est **le point du « i »** : un disque plein,
+   dessiné en CSS. Le nom est composé avec « ı » (U+0131, i sans point) —
+   un « i » ordinaire laisserait son propre point sous le disque. Le bloc
+   du nom porte donc role="img" + aria-label="francis" pour que les
+   lecteurs d'écran ne lisent pas « francıs ».
+
+   Le logotype est **typographique et statique** : aucune image, aucun
+   survol, aucune animation. Le mauve est réservé à la marque — il ne
+   touche jamais un bouton, un état ni une rétroaction : l'action reste
+   --accent (#0A8F5B), l'audio reste --audio (#DC2626).
+
+   Les jetons portent le préfixe --marque- et non --violet- : le système
+   de design emploie déjà --violet-600 comme couleur de repérage. Deux
+   noms, une seule valeur, pour que la marque ne dépende pas d'un jeton
+   de repérage.
+   ═══════════════════════════════════════════════════════════════════ */
+
+:root{
+  --marque-600:#6B4FBB;   /* couleur de marque — point du « i », descripteur */
+  --marque-100:#EFEAFA;   /* nom sur fond mauve (verrouillage B) */
+  /* Trait vertical. La remise le dessine en --paper-200 (#F0F0EE), sur
+     fond blanc. Or dans ce projet le verrouillage vit presque toujours
+     sur un bandeau teinté — l'en-tête d'un module porte sa couleur de
+     repérage, ceux du portail la teinte verte — où ce gris-là s'efface.
+     Le trait prend donc une valeur plus soutenue. Écart assumé, le même
+     qu'à l'époque de francis : sur fond blanc, poser .fr-lockup--blanc,
+     qui rend le trait à la valeur de la remise. */
+  --marque-trait:#D8D8D3;
+}
+
+/* ── Verrouillage A (principal) ─────────────────────────────────────
+   Nom · trait · descripteur, sur une seule ligne. Les quatre mesures
+   de l'échelle (nom, descripteur, disque, trait) tiennent dans des
+   variables : une seule règle par taille, jamais de valeur en double. */
+.fr-lockup{
+  --fr-nom:28px; --fr-desc:16px;                 /* barre d'application */
+  --fr-pt:7px; --fr-pt-l:1px; --fr-pt-t:2px;
+  --fr-trait:24px;
+  display:inline-flex;align-items:center;gap:16px;flex-wrap:wrap;
+  color:inherit;text-decoration:none;
+}
+.fr-nom{
+  font-family:'Nunito','Arial Rounded MT Bold',sans-serif;
+  font-size:var(--fr-nom,28px);font-weight:900;line-height:1;
+  letter-spacing:-.035em;                        /* plus serré que tous les titres : voulu */
+  color:var(--ink-900,#17181A);
+  text-transform:none;                           /* « francis » est déjà en minuscules */
+  white-space:nowrap;
+}
+/* Le « ı » sans point et son disque. `inline-block` et non `inline` : la boîte
+   d'un élément en ligne monte jusqu'à l'ascendante de la police, et le disque,
+   posé à 2 px du haut, se retrouverait alors au-dessus des lettres. Le bloc en
+   ligne fait exactement la hauteur de l'interligne — c'est sur elle que les
+   quatre mesures de la remise sont calées. */
+.fr-i{position:relative;display:inline-block}
+.fr-point{
+  position:absolute;
+  left:var(--fr-pt-l,1px);top:var(--fr-pt-t,2px);
+  width:var(--fr-pt,7px);height:var(--fr-pt,7px);
+  border-radius:999px;background:var(--marque-600);
+}
+.fr-trait{
+  width:2px;height:var(--fr-trait,24px);flex-shrink:0;
+  background:var(--marque-trait,#F0F0EE);
+}
+.fr-desc{
+  font-family:'Nunito','Arial Rounded MT Bold',sans-serif;
+  font-size:var(--fr-desc,16px);font-weight:900;line-height:1;
+  letter-spacing:-.015em;
+  color:var(--marque-600);
+  white-space:nowrap;                            /* jamais deux lignes, jamais de majuscules */
+}
+
+/* Le logotype ne bouge pas. S'il devient un lien, seul le focus se voit. */
+.fr-lockup:hover{cursor:pointer}
+.fr-lockup:focus-visible{
+  outline:3px solid var(--focus-ring,var(--accent,#0A8F5B));
+  outline-offset:2px;border-radius:4px;
+}
+
+/* Les quatre mesures portent une valeur de repli : le nom s'emploie parfois
+   seul, hors d'un `.fr-lockup` — un pied de page, une signature — et il doit
+   alors sortir à la taille de la barre d'application. */
+
+/* ── Échelle — trois tailles, et rien entre les deux ──────────────── */
+.fr-lockup--grand{                                /* en-tête de page */
+  --fr-nom:36px; --fr-desc:20px;
+  --fr-pt:8px; --fr-pt-l:1px; --fr-pt-t:2px;
+  --fr-trait:30px;
+}
+.fr-lockup--etroit{                               /* barre étroite */
+  --fr-nom:24px; --fr-desc:14px;
+  --fr-pt:6px; --fr-pt-l:1px; --fr-pt-t:1px;
+  --fr-trait:20px;
+}
+.fr-lockup--courriel{                             /* nom seul, en-tête de courriel */
+  --fr-nom:20px; --fr-pt:5px; --fr-pt-l:1px; --fr-pt-t:1px;
+}
+.fr-lockup--courriel .fr-trait,
+.fr-lockup--courriel .fr-desc{display:none}
+
+/* Sous 480 px, le descripteur et le trait disparaissent : le nom reste seul. */
+@media (max-width:480px){
+  .fr-lockup{--fr-nom:20px; --fr-pt:5px; --fr-pt-l:1px; --fr-pt-t:1px}
+  .fr-lockup .fr-trait,.fr-lockup .fr-desc{display:none}
+}
+
+/* ── Verrouillage B — sur fond mauve ──────────────────────────────
+   Le nom pâlit : le point doit se détacher **des lettres**, pas seulement
+   du fond. Nom blanc + point blanc = 1.07:1 entre les deux, donc aucun
+   signe visible. Ne jamais mettre le nom en blanc pur ici. */
+.fr-lockup--mauve{--fr-pt:11px; --fr-pt-l:0; --fr-pt-t:1px}
+.fr-lockup--mauve .fr-nom{color:var(--marque-100)}
+.fr-lockup--mauve .fr-point{background:#FFFFFF}
+.fr-lockup--mauve .fr-trait{background:rgba(255,255,255,.42)}
+.fr-lockup--mauve .fr-desc{color:#FFFFFF}
+.fr-lockup--mauve.fr-lockup--etroit{--fr-pt:9px}
+
+/* Sur fond blanc, le trait reprend la valeur de la remise. */
+.fr-lockup--blanc{--marque-trait:var(--paper-200,#F0F0EE)}
+
+/* ── Place du verrouillage dans l'en-tête d'un module ──────────────
+   Une ligne à elle seule, au-dessus du sur-titre du module. */
+.fr-bandeau{
+  flex:1 1 100%;
+  display:flex;align-items:center;
+  /* Le verrouillage a besoin d'air sous lui : le `gap` de #hdr (16 px)
+     sert aussi d'écart entre le titre et les boutons, on ne peut donc pas
+     l'élargir sans écarter tout le reste. */
+  margin-bottom:14px;
+}
+/* Dans les ateliers générés, le verrouillage est seul dans `#hdr` et posé
+   **hors** du conteneur intérieur du bandeau, qui porte la gouttière : sans
+   ces lignes, le nom colle au bord de la page pendant que le sur-titre est
+   en retrait. On lui redonne la même colonne. */
+#hdr > .fr-bandeau:only-child{
+  max-width:var(--content-max);
+  margin:0 auto 26px;
+  padding:0 var(--gutter);
+}
+@media (max-width:900px){
+  #hdr > .fr-bandeau:only-child{padding-left:var(--sp-5);padding-right:var(--sp-5)}
+}
+
+/* ── Place du verrouillage dans un bandeau de portail ────────────── */
+.fr-bandeau-portail{margin:0 0 var(--sp-5,20px)}
+
+/* ── Barre de marque — en-tête d'application (verrouillage A complet) ─
+   Fond blanc, fermeture mauve de 2 px. C'est la seule surface où la
+   fermeture s'emploie : sur un bandeau teinté, elle ferait une deuxième
+   ligne d'en-tête. */
+.fr-barre{
+  background:var(--surface-card,#FFFFFF);
+  border-bottom:2px solid var(--marque-600);
+  padding:16px 0;
+}
+/* La colonne intérieure, alignée sur celle du reste de la page. La session —
+   nom de la personne connectée, bouton de déconnexion — vit ici et non dans le
+   bandeau de page : c'est ce qui rend l'en-tête lisible. */
+.fr-barre__in{
+  max-width:var(--content-max,1000px);margin:0 auto;
+  padding:0 var(--gutter,32px);
+  display:flex;align-items:center;justify-content:space-between;
+  gap:18px;flex-wrap:wrap;
+}
+
+/* ── Impression — une seule encre ─────────────────────────────────
+   Aucune couleur : tout passe en noir (verrouillage C). */
+@media print{
+  .fr-nom{color:#000000}
+  .fr-point{background:#000000}
+  .fr-trait{background:#C8C8C8}
+  .fr-desc{color:#000000}
+  .fr-barre{border-bottom-color:#000000}
+}

@@ -2413,7 +2413,7 @@ def migrate_organisations():
         aujourdhui = date.today().isoformat()
         orgs = [
             {"id": 1, "type": "reseau", "parentId": None,
-             "nom": os.environ.get("RESEAU_NOM", "SAAF"),
+             "nom": os.environ.get("RESEAU_NOM", "francis"),
              "actif": True, "createdAt": aujourdhui},
             {"id": 2, "type": "css", "parentId": 1,
              "nom": os.environ.get("CSS_NOM", "Centre de services scolaire"),

@@ -10,7 +10,7 @@ MANIFESTE = {
     # chaîne JavaScript à guillemets simples.
     'theme': "Achat d\\'aliments ou de produits d\\'entretien",
 
-    # Teal : le violet est passé à la marque SAAF, qui le veut exclusif. Les
+    # Teal : le violet est passé à la marque francis, qui le veut exclusif. Les
     # voisins immédiats sont vert (13) et acier (15) ; le teal se distingue des
     # deux.
     'accent': '#8C6A07',

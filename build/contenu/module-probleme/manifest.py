@@ -16,7 +16,7 @@ MANIFESTE = {
     'theme': 'Logement',
 
     # Couleur d'en-tête : ambre. Elle était violette, mais le violet est passé
-    # à la marque SAAF, qui le veut exclusif. L'ambre se distingue de ses deux
+    # à la marque francis, qui le veut exclusif. L'ambre se distingue de ses deux
     # voisins immédiats — module-logement (9, acier) et module-relations
     # (11, teal) — et du gabarit (acier).
     'accent': '#8C6A07',

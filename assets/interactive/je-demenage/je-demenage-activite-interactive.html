@@ -18,7 +18,7 @@ body{display:flex;flex-direction:column;min-height:100vh}
 .hdr-ic{width:44px;height:44px;background:rgba(255,255,255,.18);border-radius:50%;display:flex;align-items:center;justify-content:center;flex-shrink:0;font-size:22px}
 .hdr-eye{font-size:11px;font-weight:800;text-transform:uppercase;letter-spacing:.2em;opacity:.7;line-height:1}
 .hdr-h1{font-size:28px;font-weight:900;line-height:1.15}
-.hdr-r{display:flex;align-items:center;gap:14px}
+.hdr-r{display:flex;align-items:center;gap:14px;flex-wrap:wrap;row-gap:10px}
 #prog-chip{background:rgba(255,255,255,.15);border:2px solid rgba(255,255,255,.45);border-radius:999px;padding:8px 18px;font-size:16px;font-weight:900;white-space:nowrap}
 #btn-reset{background:rgba(255,255,255,.15);color:#fff;border:2px solid rgba(255,255,255,.45);border-radius:10px;padding:10px 18px;font-family:'Nunito',sans-serif;font-size:16px;font-weight:800;cursor:pointer;white-space:nowrap;transition:background .15s}
 #btn-reset:hover{background:rgba(255,255,255,.28)}
@@ -175,6 +175,18 @@ body{display:flex;flex-direction:column;min-height:100vh}
 .vw span.dot{display:inline-block;width:8px;height:8px;border-radius:50%;background:#7B4F9E;flex-shrink:0}
 .vw span.w{font-size:18px;font-weight:700;color:#1A2E35}
 @media(max-width:900px){.vocab-grid{grid-template-columns:1fr 1fr}.rrow2{grid-template-columns:1fr}}
+/* ── Téléphone ─────────────────────────────────────────────────────────
+   Ces pages n'ont jamais reçu le travail de mise en page fait sur les
+   modules : à 390 px, l'en-tête, les rangées Vrai/Faux et les tableaux de
+   savoir sortaient de l'écran, et la page entière se poussait de côté.
+   On corrige ici ce qui débordait, mesuré, et rien d'autre. */
+@media(max-width:640px){
+  .rrow{flex-wrap:wrap}
+  .stxt{min-width:0; flex:1 1 100%}
+  .savoir table,.savoir tbody,.savoir tr,.savoir td{display:block;width:100%}
+  .savoir td{border-bottom:none; padding:4px 0}
+  .savoir tr{padding-bottom:10px; margin-bottom:6px}
+}
 </style>
 </head>
 <body>
