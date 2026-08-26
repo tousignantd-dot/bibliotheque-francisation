@@ -1392,7 +1392,7 @@ let dialogueRead = false;
 const MODULE_SLUG = 'module-n1-presenter';
 // Bump ce numéro chaque fois qu'un MP3 est régénéré, pour forcer le
 // navigateur à recharger le fichier au lieu de servir une version en cache.
-const AUDIO_V = '6';
+const AUDIO_V = '11';
 // Icônes des boutons son/micro de "Je découvre" — change ces deux valeurs
 // pour remplacer les emojis par une image (ex. '<img src="/assets/interactive/module-n1-presenter/icons/speaker.svg">').
 const ICON_SPEAK = '<img class="icon-svg" src="/assets/interactive/module-n1-presenter/icons/speaker.svg" alt="Écouter">';
@@ -1555,9 +1555,14 @@ function pronMatches(said, target){
 // ⚠️ À reproduire dans TOUS les futurs modules dès qu'un mot isolé est
 // demandé en prononciation (voir aussi memory: cours-niveau4-modules.md).
 const CARRIER_PHRASES = {
+  // Les clés sont les mots tels qu'ils paraissent dans les listes `speak` des
+  // blocs `savoir` de `exos.js`, article retiré, accents et espaces compris.
+  // Une clé écrite en slug n'est jamais trouvée : la pastille lit alors le mot
+  // seul — ce que la phrase porteuse existe précisément pour éviter. Trois
+  // clés d'ici (`prenom`, `epeler`, `de_rien`) ont eu ce défaut.
   'nom':      "Quel est votre nom de famille ?",
-  'prenom':   "Mon prénom, c'est Amina.",
-  'epeler':   "Pouvez-vous épeler votre nom ?",
+  'prénom':   "Mon prénom, c'est Amina.",
+  'épeler':   "Pouvez-vous épeler votre nom ?",
   'adresse':  "Mon adresse, c'est 4520, rue Bélanger.",
   'pays':     "Je viens d'un pays chaud.",
   'langue':   "Je parle deux langues.",
@@ -1568,7 +1573,7 @@ const CARRIER_PHRASES = {
   'merci':    "Merci beaucoup.",
   'pardon':   "Pardon ? Je ne comprends pas.",
   'bonsoir':  "Bonsoir ! À demain.",
-  'de_rien':  "De rien. Ça me fait plaisir.",
+  'de rien':  "De rien. Ça me fait plaisir.",
   'lentement':"Plus lentement, s'il vous plaît.",
 };
 function pronCheck(btn, expected){
