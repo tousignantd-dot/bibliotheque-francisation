@@ -87,11 +87,12 @@
   transition:transform .22s ease;
 }
 /* Un fil vert-gris posé sur le bord gauche du rail : il marque la limite
-   entre la page et les outils sans ajouter une bordure de plus. Le trait
-   s'arrête avant le haut et le bas — d'où la « petite » ligne. */
+   entre la page et les outils sans ajouter une bordure de plus. Il court sur
+   toute la longueur de la bande — c'est une arête, pas un accent : un trait
+   qui s'arrêtait avant les bouts laissait les coins du rail sans limite. */
 .oe-dock::before{
-  content:"";position:absolute;left:0;top:18%;bottom:18%;width:3px;
-  background:var(--oe-dock-fil);border-radius:0 var(--oe-r-pill) var(--oe-r-pill) 0;
+  content:"";position:absolute;left:0;top:0;bottom:0;width:3px;
+  background:var(--oe-dock-fil);
 }
 .oe-dock-t{font-size:11px;font-weight:800;letter-spacing:.08em;text-transform:uppercase;
   color:var(--oe-body);text-align:center;margin-bottom:4px;line-height:1.35}
@@ -308,9 +309,9 @@ body.oe-host{transition:padding-right .22s ease}
     box-shadow:0 -6px 22px rgba(0,0,0,.07);
   }
   .oe-dock-t,.oe-dock-sep{display:none}
-  /* En bande horizontale, le fil se couche sur le bord supérieur. */
-  .oe-dock::before{left:18%;right:18%;top:0;bottom:auto;width:auto;height:3px;
-    border-radius:0 0 var(--oe-r-pill) var(--oe-r-pill)}
+  /* En bande horizontale, le fil se couche sur le bord supérieur, d'un bord
+     de l'écran à l'autre. */
+  .oe-dock::before{left:0;right:0;top:0;bottom:auto;width:auto;height:3px}
   /* En bande horizontale, le bouton « Masquer » se réduit au chevron et
      le rail s'efface vers le bas. */
   .oe-dock-cacher{margin-top:0;width:auto;flex:0 0 auto;padding:6px 8px;align-self:center}
