@@ -6,15 +6,29 @@ lire comme un seul mot (/ɛskə/). Cette page rassemble, module par module,
 chaque MP3 déjà produit dont le texte contient la locution, pour qu'on
 puisse repérer à l'oreille lesquels sont saccadés.
 
+Le texte lu ne vit pas au même endroit selon le son, et il faut les trois
+sources pour ne rien manquer :
+
+  · sons_module_<slug>.json ........ manifeste des sons d'un module récent
+  · generer_audio_module_<slug>{,_plus,_sons}.py .. dict CLIPS des modules
+      plus anciens, qui n'ont jamais eu de manifeste (consultation, meteo,
+      travail, urgence, sante, pub, logement, banque, nouvelles, procedure)
+  · DIALOGUES dans ces mêmes scripts et dans generer_audio_dialogues.py ..
+      les répliques, rangées hors de sons/ en <module>/<bloc>/line_NN_x.mp3
+
+Les scripts sont lus par `ast`, jamais importés : aucune clé d'API en jeu.
+
     python3 build/essai_estceque.py
 
 Écrit essai-estceque.html à la racine. Ne touche à aucun module.
 """
+import ast
 import glob
 import html
 import json
 import os
 import re
+import unicodedata
 
 RACINE = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 LOCUTION = re.compile(r"(est-ce\s+qu[a-zéêè’']*)", re.I)
@@ -33,19 +47,101 @@ def titres():
     return out
 
 
-def releve():
-    """[(slug, id, texte, mp3 existe)] pour chaque son contenant la locution."""
-    lignes = []
+def _slug_module(chemin):
+    """generer_audio_module_n3_poste_plus.py -> module-n3-poste"""
+    nom = os.path.basename(chemin)[len("generer_audio_module_"):-len(".py")]
+    for suffixe in ("_plus", "_sons"):
+        if nom.endswith(suffixe):
+            nom = nom[: -len(suffixe)]
+    return "module-" + nom.replace("_", "-")
+
+
+def _litteraux(chemin, noms):
+    """Les dicts de haut niveau nommés `noms`, lus sans exécuter le script."""
+    with open(chemin, encoding="utf-8") as f:
+        arbre = ast.parse(f.read(), filename=chemin)
+    out = {}
+    for noeud in arbre.body:
+        if not isinstance(noeud, ast.Assign):
+            continue
+        for cible in noeud.targets:
+            if isinstance(cible, ast.Name) and cible.id in noms:
+                try:
+                    out[cible.id] = ast.literal_eval(noeud.value)
+                except ValueError:
+                    pass
+    return out
+
+
+def _slugs_personnage(nom):
+    """Les deux règles de nommage en usage : avec et sans accents retirés."""
+    brut = nom.lower().replace(" ", "_")
+    sans = unicodedata.normalize("NFD", nom.lower())
+    sans = "".join(c for c in sans if unicodedata.category(c) != "Mn")
+    sans = sans.replace("'", "").replace(" ", "_")
+    return [sans, brut]
+
+
+def _des_manifestes():
     for f in sorted(glob.glob(os.path.join(RACINE, "sons_module_*.json"))):
         base = os.path.basename(f)
         slug = "module-" + base[len("sons_module_"):-len(".json")].replace("_", "-")
         with open(f, encoding="utf-8") as fh:
             sons = json.load(fh)
         for sid, texte in sons.items():
-            if isinstance(texte, str) and LOCUTION.search(texte):
-                rel = f"assets/interactive/{slug}/sons/{sid}.mp3"
-                lignes.append((slug, sid, texte, os.path.exists(os.path.join(RACINE, rel))))
-    return lignes
+            if isinstance(texte, str):
+                yield slug, f"assets/interactive/{slug}/sons/{sid}.mp3", sid, texte
+
+
+def _des_scripts():
+    motifs = ["generer_audio_module_*.py", "generer_audio_dialogues.py"]
+    for motif in motifs:
+        for f in sorted(glob.glob(os.path.join(RACINE, motif))):
+            trouve = _litteraux(f, {"CLIPS", "DIALOGUES"})
+
+            for sid, texte in (trouve.get("CLIPS") or {}).items():
+                if isinstance(texte, str):
+                    slug = _slug_module(f)
+                    yield slug, f"assets/interactive/{slug}/sons/{sid}.mp3", sid, texte
+
+            for dial_id, data in (trouve.get("DIALOGUES") or {}).items():
+                # Selon le script, la valeur est {"lines": [...]} ou la
+                # liste des répliques elle-même.
+                lignes = data.get("lines") if isinstance(data, dict) else data
+                lignes = lignes or []
+                slug = dial_id.split("/")[0]
+                for i, ligne in enumerate(lignes, 1):
+                    if not (isinstance(ligne, (list, tuple)) and len(ligne) >= 2):
+                        continue
+                    perso, texte = ligne[0], ligne[1]
+                    if not isinstance(texte, str):
+                        continue
+                    rel = None
+                    for s_perso in _slugs_personnage(perso):
+                        essai = f"assets/interactive/{dial_id}/line_{i:02d}_{s_perso}.mp3"
+                        if os.path.exists(os.path.join(RACINE, essai)):
+                            rel = essai
+                            break
+                    if rel is None:
+                        rel = (f"assets/interactive/{dial_id}/"
+                               f"line_{i:02d}_{_slugs_personnage(perso)[0]}.mp3")
+                    yield slug, rel, f"{dial_id.split('/')[-1]} · {perso}", texte
+
+
+def releve():
+    """[(slug, chemin mp3, étiquette, texte, existe)] pour chaque son visé.
+
+    Un même MP3 peut être décrit par deux sources (manifeste et script) :
+    le chemin sert de clé, la première description gagne.
+    """
+    vus = {}
+    for source in (_des_manifestes(), _des_scripts()):
+        for slug, rel, etiq, texte in source:
+            if not LOCUTION.search(texte) or rel in vus:
+                continue
+            vus[rel] = (slug, rel, etiq, texte,
+                        os.path.exists(os.path.join(RACINE, rel)))
+    return sorted(vus.values(), key=lambda r: (r[0], r[1]))
 
 
 def surligne(texte):
@@ -109,16 +205,17 @@ JS = """
 def main():
     noms = titres()
     lignes = releve()
-    avec = [l for l in lignes if l[3]]
+    avec = [l for l in lignes if l[4]]
     modules = sorted({l[0] for l in lignes},
-                     key=lambda s: (0 if any(x[0] == s and x[3] for x in lignes) else 1, s))
+                     key=lambda s: (0 if any(x[0] == s and x[4] for x in lignes) else 1, s))
 
     out = ["<!doctype html>", '<html lang="fr"><head><meta charset="utf-8">',
            '<meta name="viewport" content="width=device-width,initial-scale=1">',
            "<title>Est-ce que — écoute</title>", f"<style>{CSS}</style></head><body>",
            "<h1>« Est-ce que » dans les modules</h1>",
            '<p class="intro">Chaque phrase déjà enregistrée qui contient la locution, '
-           'module par module. La locution est surlignée dans le texte.</p>',
+           'module par module — répliques de dialogue, mots isolés et mini-leçons. '
+           'La locution est surlignée dans le texte.</p>',
            '<div class="rappel"><strong>Ce qu\'on cherche :</strong> « est-ce que » doit '
            's\'entendre comme un seul mot, <em>èss-ke</em>, en une seule émission. '
            'Notez les extraits où les trois morceaux se détachent — '
@@ -131,18 +228,18 @@ def main():
     for slug in modules:
         titre, niveau = noms.get(slug, (slug, ""))
         sons = [l for l in lignes if l[0] == slug]
-        n_audio = sum(1 for l in sons if l[3])
+        n_audio = sum(1 for l in sons if l[4])
         etiq = f"{n_audio} extrait{'s' if n_audio > 1 else ''}" if n_audio else "audio pas encore produit"
         out.append(f"<section><h2>{html.escape(titre)} "
                    f"<span>· {html.escape(niveau)} · {etiq} · {len(sons)} phrase"
                    f"{'s' if len(sons) > 1 else ''}</span></h2>")
-        for _, sid, texte, ok in sons:
-            src = f"assets/interactive/{slug}/sons/{sid}.mp3"
-            lecteur = (f'<audio controls preload="none" src="{src}"></audio>' if ok
+        for _, rel, ident, texte, ok in sons:
+            lecteur = (f'<audio controls preload="none" src="{rel}"></audio>' if ok
                        else '<div class="vide">MP3 pas encore produit</div>')
             out.append(f'<div class="son{"" if ok else " attente"}" '
                        f'data-t="{html.escape(texte.lower(), quote=True)}" data-a="{1 if ok else 0}">'
-                       f'<div class="txt">{surligne(texte)}<span class="id">{sid}</span></div>'
+                       f'<div class="txt">{surligne(texte)}'
+                       f'<span class="id">{html.escape(ident)}</span></div>'
                        f"{lecteur}</div>")
         out.append("</section>")
 
