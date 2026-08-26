@@ -144,6 +144,27 @@ def releve():
     return sorted(vus.values(), key=lambda r: (r[0], r[1]))
 
 
+def comparaisons(lignes):
+    """[(titre module, id, texte, mp3 avant, mp3 après)] pour chaque MP3 gardé.
+
+    Un MP3 copié dans essai-estceque/avant/<module>/<id>.mp3 avant d'être
+    régénéré donne une paire à écouter côte à côte : c'est la seule façon de
+    juger si la reprise a réglé le hachage.
+    """
+    par_id = {(l[0], os.path.basename(l[1])[:-len(".mp3")]): l for l in lignes}
+    paires = []
+    for avant in sorted(glob.glob(os.path.join(
+            RACINE, "essai-estceque", "avant", "*", "*.mp3"))):
+        slug = os.path.basename(os.path.dirname(avant))
+        sid = os.path.basename(avant)[:-len(".mp3")]
+        ligne = par_id.get((slug, sid))
+        if ligne is None:
+            continue
+        paires.append((slug, sid, ligne[3],
+                       os.path.relpath(avant, RACINE), ligne[1]))
+    return paires
+
+
 def surligne(texte):
     return LOCUTION.sub(lambda m: f"<mark>{html.escape(m.group(1))}</mark>",
                         html.escape(texte))
@@ -173,6 +194,12 @@ CSS = """
  .id{display:block;font-size:11.5px;color:var(--gris);margin-top:3px;font-family:ui-monospace,Menlo,monospace}
  audio{height:34px;width:100%}
  .vide{font-size:12.5px;color:var(--gris);text-align:center}
+ .paire{display:grid;grid-template-columns:minmax(0,1fr) 200px 200px;gap:12px;
+        align-items:center;padding:10px 12px;border:1px solid var(--enc);
+        border-radius:8px;background:var(--fond);margin:0 0 8px}
+ .paire .col{font-size:11.5px;color:var(--gris);text-align:center;margin-bottom:2px}
+ h2.compare{border-top:none;padding-top:0;margin-top:0}
+ @media (max-width:640px){.paire{grid-template-columns:1fr}}
  .bilan{font-size:13.5px;color:var(--gris);margin:22px 0 0;padding-top:14px;border-top:1px solid var(--enc)}
  @media (max-width:640px){.son{grid-template-columns:1fr}}
 """
@@ -224,6 +251,24 @@ def main():
            '<input type="search" id="filtre" placeholder="un mot de la phrase…">'
            '<label><input type="checkbox" id="seul" checked> seulement ce qui a un MP3</label>'
            "</div>"]
+
+    paires = comparaisons(lignes)
+    if paires:
+        out.append('<div class="compare"><h2 class="compare">Reprises — avant et après</h2>')
+        out.append('<p class="intro">Les extraits régénérés, face à la version '
+                   'qu\'ils remplacent. Le module sert déjà la colonne « après ».</p>')
+        for slug, sid, texte, avant, apres in paires:
+            titre = noms.get(slug, (slug, ""))[0]
+            out.append(
+                '<div class="paire">'
+                f'<div class="txt">{surligne(texte)}'
+                f'<span class="id">{html.escape(titre)} · {sid}</span></div>'
+                f'<div><div class="col">avant</div>'
+                f'<audio controls preload="none" src="{avant}"></audio></div>'
+                f'<div><div class="col">après</div>'
+                f'<audio controls preload="none" src="{apres}"></audio></div>'
+                "</div>")
+        out.append("</div>")
 
     for slug in modules:
         titre, niveau = noms.get(slug, (slug, ""))
