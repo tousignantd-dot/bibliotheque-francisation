@@ -2078,7 +2078,12 @@ function buildStatic(){
     else h+='<div class="rows" id="mount-'+ex.id+'"></div>';
     h+='</div>';
     const vert=(ex.type==='match'||ex.type==='rows'||ex.type==='imgmatch')?' vert':'';
-    const bw=ex.type==='imgmatch'?'240px':((ex.type==='match'||ex.type==='rows')?'300px':'220px');
+    // Le banc mesurait 220 px : une seule tuile par rangée, donc une colonne
+    // aussi haute que le nombre de réponses, et la carte de l'exercice
+    // réservait cette hauteur — un grand vide sous les phrases. À 340 px, les
+    // tuiles se rangent deux par deux et le banc redescend à la hauteur de
+    // l'énoncé. Les bancs `vert` (phrases entières) gardent leur colonne.
+    const bw=ex.type==='imgmatch'?'240px':((ex.type==='match'||ex.type==='rows')?'300px':'340px');
     h+='<div class="bsec b1" style="flex:0 0 '+bw+'"><div class="blbl">'+(ex.bankLbl||'Réponses')+'</div><div class="btiles'+vert+'" id="bank-'+ex.id+'"></div></div>';
     h+='</div>';
     card.innerHTML=h;
