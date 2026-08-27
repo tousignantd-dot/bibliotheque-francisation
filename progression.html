@@ -468,6 +468,8 @@
   let DIRECT = null;          // la dernière réponse du serveur
   let DIRECT_ON = true;       // le direct tourne-t-il ?
   let DIRECT_NOMS = false;    // pseudos affichés, ou « Élève N »
+  const DR_OUVERTS = new Set();  // les exercices que l'enseignante a dépliés
+  const DR_VUS = new Set();      // ceux déjà passés à l'écran une première fois
   let DIRECT_SECTION = null;  // null = pas encore choisie, '' = tout le module
   let DIRECT_HORLOGE = null;
   let DIRECT_QUAND = 0;       // horodatage local du dernier rafraîchissement
@@ -739,7 +741,18 @@
     const type = DR_TYPES[ex.type] || 'Exercice';
     const titre = `${esc(ex.num || ex.exo)}${ex.titre ? ' · ' + esc(ex.titre) : ''}`;
 
-    return `<details class="dr-ex${alerte ? ' dr-ex--alerte' : ''}"${alerte ? ' open' : ''}>
+    // Le direct se redessine toutes les cinq secondes : sans mémoire, un
+    // exercice déplié se refermerait sous les yeux de qui vient de l'ouvrir.
+    // L'ouverture d'office d'un exercice en difficulté n'a donc lieu qu'à sa
+    // première apparition — passé cela, c'est l'enseignante qui décide.
+    const cle = `${ex.section || ''}|${ex.exo}`;
+    if (!DR_VUS.has(cle)) {
+      DR_VUS.add(cle);
+      if (alerte) DR_OUVERTS.add(cle);
+    }
+    const ouvert = DR_OUVERTS.has(cle);
+
+    return `<details class="dr-ex${alerte ? ' dr-ex--alerte' : ''}" data-cle="${esc(cle)}"${ouvert ? ' open' : ''}>
       <summary>
         <div class="dr-ex-tete">
           <span class="dr-type">${esc(type)}</span>
@@ -898,6 +911,10 @@
   function drRelancer() {
     DIRECT = null;
     DIRECT_SECTION = null;
+    // On change de module : ce qui était déplié dans l'ancien n'a plus de sens,
+    // et les exercices en difficulté du nouveau doivent pouvoir s'ouvrir.
+    DR_OUVERTS.clear();
+    DR_VUS.clear();
     drRendre();
     if (MODULE) drTirer();
     drHorloge();
@@ -921,6 +938,15 @@
       if (DIRECT_ON) drTirer();
     }
   });
+
+  // `toggle` ne remonte pas l'arbre : on l'attrape à la descente. Reconstruire
+  // une carte déjà ouverte n'en déclenche pas — l'attribut vient du HTML, ce
+  // n'est pas une bascule —, donc rien ne vient brouiller ce qui est noté ici.
+  document.addEventListener('toggle', e => {
+    const d = e.target.closest && e.target.closest('.dr-ex[data-cle]');
+    if (!d) return;
+    if (d.open) DR_OUVERTS.add(d.dataset.cle); else DR_OUVERTS.delete(d.dataset.cle);
+  }, true);
 
   document.addEventListener('change', e => {
     if (e.target.id !== 'drSection') return;
