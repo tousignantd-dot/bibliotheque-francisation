@@ -1,5 +1,13 @@
 #!/usr/bin/env python3
 """
+[Obsolète depuis le 26 août 2026 — l'audio vient d'Azure Speech.]
+Ce qui suit décrit la synthèse par ElevenLabs, remplacée depuis. Le contexte
+français (`charge_utile`, `previous_text`/`next_text`) n'a plus lieu d'être :
+le `xml:lang="fr-CA"` du SSML tient la langue des mots isolés. Le ralenti ne
+se fait plus à l'`atempo` après coup mais à la synthèse, par `<prosody rate>`.
+Le raisonnement pédagogique du texte reste valable ; les moyens ont changé.
+Voir `build/azure_voix.py`.
+
 Générateur d'audio — la banque du niveau 1 (ateliers 124 à 145).
 
 Un seul générateur pour toute la banque, au lieu d'un par atelier. Ce que les
@@ -39,15 +47,8 @@ import sys
 import time
 from pathlib import Path
 
-try:
-    import requests
-except ImportError:
-    print("❌ pip install requests"); sys.exit(1)
-
-from voix_lente import ralentir_si_enseignante
 import sys as _sys, pathlib as _pl
 _sys.path.insert(0, str(_pl.Path(__file__).resolve().parent / 'build'))
-from voix import enrichir  # contexte français pour les mots isolés
 
 RACINE = Path(__file__).resolve().parent
 INTER = RACINE / "assets/interactive"
@@ -111,47 +112,15 @@ def taches_de(slug):
     return out
 
 
+# L'audio du cours vient d'Azure Speech depuis le 26 août 2026. La fonction
+# ci-dessous garde son nom et sa signature — `main()` l'appelle telle quelle —
+# mais délègue. La clé ElevenLabs et le contexte `avant`/`apres` sont acceptés
+# et ignorés : le `xml:lang="fr-CA"` du SSML rend ce dernier inutile.
+from azure_voix import parle_compat  # noqa: E402
+
+
 def parle(cle, texte, voix, chemin):
-    """Un extrait, avec reprise sur coupure réseau.
-
-    Copiée de `generer_audio_module_n2_autobus.py`, comme le demande
-    `docs/deux-agents-en-parallele.md` : ElevenLabs coupe la liaison par
-    intermittence. Une panne passagère du fournisseur n'est pas une erreur du
-    programme — on réessaie en doublant l'attente, échec après cinq essais.
-    """
-    for essai in range(1, ESSAIS + 1):
-        try:
-            r = requests.post(
-                f"https://api.elevenlabs.io/v1/text-to-speech/{voix}",
-                json=enrichir({"text": texte, "model_id": "eleven_multilingual_v2",
-                               "voice_settings": {"stability": 0.5, "similarity_boost": 0.75}}),
-                headers={"xi-api-key": cle, "Content-Type": "application/json"},
-                timeout=60)
-        except requests.exceptions.RequestException as e:
-            if essai == ESSAIS:
-                print(f"   ❌ réseau après {ESSAIS} essais : {type(e).__name__}")
-                return False
-            attente = ATTENTE_BASE_S * (2 ** (essai - 1))
-            print(f"⏳{attente}s", end="", flush=True)
-            time.sleep(attente)
-            continue
-
-        if r.status_code in (429, 500, 502, 503, 504) and essai < ESSAIS:
-            attente = ATTENTE_BASE_S * (2 ** (essai - 1))
-            print(f"⏳{r.status_code}/{attente}s", end="", flush=True)
-            time.sleep(attente)
-            continue
-        if r.status_code != 200:
-            print(f"   ❌ {r.status_code}: {r.text[:150]}")
-            return False
-
-        chemin.parent.mkdir(parents=True, exist_ok=True)
-        chemin.write_bytes(r.content)
-        ralentir_si_enseignante(chemin, voix)
-        return True
-    return False
-
-
+    return parle_compat(cle, texte, voix, chemin)
 def compter(slugs):
     """Le volume et l'ordre de grandeur du coût, sans appeler l'API."""
     total_c = total_n = deja = 0
@@ -181,15 +150,15 @@ def main():
     if '--compter' in argv:
         return compter(slugs)
 
-    cle = os.environ.get("ELEVENLABS_API_KEY", "").strip()
+    cle = os.environ.get("AZURE_SPEECH_KEY", "").strip()
     if not cle:
-        env = RACINE / ".env"
+        env = Path.home() / "Claude" / ".env"
         if env.exists():
             for ligne in env.read_text(encoding="utf-8").splitlines():
-                if ligne.strip().startswith("ELEVENLABS_API_KEY="):
+                if ligne.strip().startswith("AZURE_SPEECH_KEY="):
                     cle = ligne.split("=", 1)[1].strip().strip("\"'")
     if not cle:
-        print("❌ ELEVENLABS_API_KEY absente (variable d'environnement ou .env)")
+        print("❌ AZURE_SPEECH_KEY absente (variable d'environnement ou .env)")
         sys.exit(1)
 
     force = "--force" in argv

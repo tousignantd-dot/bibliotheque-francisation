@@ -1,5 +1,13 @@
 #!/usr/bin/env python3
 """
+[Obsolète depuis le 26 août 2026 — l'audio vient d'Azure Speech.]
+Ce qui suit décrit la synthèse par ElevenLabs, remplacée depuis. Le contexte
+français (`charge_utile`, `previous_text`/`next_text`) n'a plus lieu d'être :
+le `xml:lang="fr-CA"` du SSML tient la langue des mots isolés. Le ralenti ne
+se fait plus à l'`atempo` après coup mais à la synthèse, par `<prosody rate>`.
+Le raisonnement pédagogique du texte reste valable ; les moyens ont changé.
+Voir `build/azure_voix.py`.
+
 Générateur d'audio — module « Le bon titre de transport » (module-n3-metro, niveau 3).
 
 Deux familles de fichiers, comme dans les autres modules :
@@ -44,15 +52,8 @@ import time
 import unicodedata
 from pathlib import Path
 
-try:
-    import requests
-except ImportError:
-    print("❌ pip install requests"); sys.exit(1)
-
-from voix_lente import ralentir_si_enseignante
 import sys as _sys, pathlib as _pl
 _sys.path.insert(0, str(_pl.Path(__file__).resolve().parent / 'build'))
-from voix import charge_utile  # contexte français, générique ou de dialogue
 
 RACINE = Path(__file__).resolve().parent
 SORTIE = RACINE / "assets/interactive/module-n3-metro"
@@ -128,70 +129,22 @@ ATTENTE_BASE_S = 4   # 429 et 5xx, doublée à chaque échec : 4, 8, 16, 32 s
 ATTENTE_RESEAU_S = 1  # coupure TLS : 1, 2, 4, 8 s — voir parle()
 
 
-def parle(cle, texte, voix, chemin, avant=None, apres=None):
-    """Un extrait, avec reprise sur coupure réseau.
-
-    Le 20 août 2026, l'API d'ElevenLabs a coupé la liaison en plein
-    téléversement (`SSLEOFError`) pendant une bonne heure, par intermittence.
-    Le script s'arrêtait alors sur la trace d'une exception, au milieu d'une
-    série de deux cents extraits — il fallait le relancer à la main, et il
-    reprenait où il en était, mais sans personne pour le surveiller il ne
-    faisait rien. Une panne passagère du fournisseur n'est pas une erreur du
-    programme : on réessaie, en doublant l'attente, et on ne déclare l'échec
-    qu'après cinq tentatives.
-    """
-    for essai in range(1, ESSAIS + 1):
-        try:
-            r = requests.post(
-                f"https://api.elevenlabs.io/v1/text-to-speech/{voix}",
-                json=charge_utile(texte, voix, avant=avant, apres=apres),
-                headers={"xi-api-key": cle, "Content-Type": "application/json"},
-                timeout=60)
-        except requests.exceptions.RequestException as e:
-            if essai == ESSAIS:
-                print(f"   ❌ réseau après {ESSAIS} essais : {type(e).__name__}")
-                return False
-            # Une coupure TLS n'est pas un refus de débit : rien ne se calme en
-            # attendant une minute, la liaison revient d'elle-même en quelques
-            # secondes. Le 21 août, la panne d'ElevenLabs faisait échouer une
-            # requête sur deux, et l'attente de 4-8-16-32 s coûtait plus de
-            # temps que la génération elle-même — huit extraits par tranche de
-            # dix minutes. On garde le doublement, sur une base plus courte.
-            # Le 429 et les 5xx, eux, gardent l'attente longue plus bas : là,
-            # insister trop vite aggrave vraiment les choses.
-            attente = ATTENTE_RESEAU_S * (2 ** (essai - 1))
-            print(f"⏳{attente}s", end="", flush=True)
-            time.sleep(attente)
-            continue
-
-        # 429 (débit) et 5xx (panne du service) valent aussi une reprise ;
-        # un 401 ou un 422 sont des erreurs à nous, inutile d'insister.
-        if r.status_code in (429, 500, 502, 503, 504) and essai < ESSAIS:
-            attente = ATTENTE_BASE_S * (2 ** (essai - 1))
-            print(f"⏳{r.status_code}/{attente}s", end="", flush=True)
-            time.sleep(attente)
-            continue
-        if r.status_code != 200:
-            print(f"   ❌ {r.status_code}: {r.text[:150]}")
-            return False
-
-        chemin.parent.mkdir(parents=True, exist_ok=True)
-        chemin.write_bytes(r.content)
-        ralentir_si_enseignante(chemin, voix)
-        return True
-    return False
+# L'audio du cours vient d'Azure Speech depuis le 26 août 2026. `parle_compat`
+# porte la signature qu'avait la fonction locale — `cle` et le contexte
+# `avant`/`apres` sont acceptés et ignorés, le SSML n'en a plus besoin.
+from azure_voix import parle_compat as parle  # noqa: E402
 
 
 def main():
-    cle = os.environ.get("ELEVENLABS_API_KEY", "").strip()
+    cle = os.environ.get("AZURE_SPEECH_KEY", "").strip()
     if not cle:
-        env = RACINE / ".env"
+        env = Path.home() / "Claude" / ".env"
         if env.exists():
             for ligne in env.read_text(encoding="utf-8").splitlines():
-                if ligne.strip().startswith("ELEVENLABS_API_KEY="):
+                if ligne.strip().startswith("AZURE_SPEECH_KEY="):
                     cle = ligne.split("=", 1)[1].strip().strip("\"'")
     if not cle:
-        print("❌ ELEVENLABS_API_KEY absente (variable d'environnement ou .env)")
+        print("❌ AZURE_SPEECH_KEY absente (variable d'environnement ou .env)")
         sys.exit(1)
 
     force = "--force" in sys.argv
@@ -209,11 +162,12 @@ def main():
     for dial_id, lignes in dialogues.items():
         for i, (perso, texte) in enumerate(lignes, 1):
             nom = f"line_{i:02d}_{slug(perso)}.mp3"
-            # La réplique d'avant et celle d'après partent avec l'extrait, en
-            # `previous_text` / `next_text` : du français qui conditionne la
-            # synthèse sans être prononcé. Sur un mot isolé, `charge_utile`
-            # retombe sur sa phrase de classe générique ; ici on a mieux à
-            # offrir — la scène elle-même.
+            # `avant` et `apres` ne servent plus depuis le passage à Azure :
+            # c'était le `previous_text` / `next_text` d'ElevenLabs, du
+            # français qui conditionnait la synthèse sans être prononcé, pour
+            # qu'un mot isolé ne sorte pas à l'anglaise. Le `xml:lang="fr-CA"`
+            # du SSML le fait désormais. On les calcule encore parce que la
+            # signature les accepte, et `parle_compat` les ignore.
             avant = lignes[i - 2][1] if i >= 2 else None
             apres = lignes[i][1] if i < len(lignes) else None
             taches.append((f"{dial_id}/{nom}", texte,

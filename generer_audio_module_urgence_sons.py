@@ -8,15 +8,8 @@ prononciation, pas un dialogue.
 import os, sys
 from pathlib import Path
 
-try:
-    import requests
-except ImportError:
-    print("❌ pip install requests"); sys.exit(1)
-
-from voix_lente import ralentir_si_enseignante
 import sys as _sys, pathlib as _pl
 _sys.path.insert(0, str(_pl.Path(__file__).resolve().parent / 'build'))
-from voix import enrichir  # contexte français pour les mots isolés
 
 VOICE = "mActWQg9kibLro6Z2ouY"   # 👩 enseignante
 
@@ -61,26 +54,20 @@ TEXT_OVERRIDES = {
 }
 
 
+# L'audio du cours vient d'Azure Speech depuis le 26 août 2026. La fonction
+# ci-dessous garde son nom et sa signature — `main()` l'appelle telle quelle —
+# mais délègue. La clé ElevenLabs et le contexte `avant`/`apres` sont acceptés
+# et ignorés : le `xml:lang="fr-CA"` du SSML rend ce dernier inutile.
+from azure_voix import parle_compat  # noqa: E402
+
+
 def generate(api_key, text, path):
-    url = f"https://api.elevenlabs.io/v1/text-to-speech/{VOICE}"
-    payload = {"text": text, "model_id": "eleven_multilingual_v2",
-               "voice_settings": {"stability": 0.5, "similarity_boost": 0.75}}
-    r = requests.post(url, json=enrichir(payload),
-                      headers={"xi-api-key": api_key, "Content-Type": "application/json"},
-                      timeout=45)
-    if r.status_code != 200:
-        print(f"   ❌ {r.status_code}: {r.text[:150]}")
-        return False
-    path.write_bytes(r.content)
-    ralentir_si_enseignante(path, VOICE)
-    return True
-
-
+    return parle_compat(api_key, text, VOICE, path)
 def main():
     print("🔊 Mots isolés — Une urgence au travail\n")
-    api_key = os.environ.get("ELEVENLABS_API_KEY", "").strip()
+    api_key = os.environ.get("AZURE_SPEECH_KEY", "").strip()
     if not api_key:
-        print("❌ ELEVENLABS_API_KEY absente"); sys.exit(1)
+        print("❌ AZURE_SPEECH_KEY absente"); sys.exit(1)
 
     out = Path(__file__).resolve().parent / "assets/interactive/module-urgence/sons"
     out.mkdir(parents=True, exist_ok=True)

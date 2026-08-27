@@ -47,10 +47,12 @@ caractères par mois, soit largement de quoi faire cet essai — et une bonne
 part de la production. Poser dans `~/Claude/.env` :
 
     AZURE_SPEECH_KEY=...
-    AZURE_SPEECH_REGION=canadaeast
+    AZURE_SPEECH_REGION=canadacentral
 
-La région doit être celle de la ressource : la clé d'une ressource `eastus`
-revient en 401 sur `canadaeast`, et le message ne le dit pas.
+La région doit être celle de la ressource, et le 401 qu'on récolte sinon ne
+dit pas que c'est la cause. À noter pour la prochaine ressource : un
+abonnement **Azure for Students** refuse la plupart des régions par politique
+(`RequestDisallowedByAzure`) — `eastus` est bloquée, `canadacentral` passe.
 """
 import html
 import json
@@ -62,6 +64,7 @@ import urllib.error
 import urllib.request
 
 sys.path.insert(0, str(pathlib.Path(__file__).resolve().parent))
+from page_ecoute import page
 from voix import MOTS_DIFFICILES                      # noqa: E402
 
 SORTIE = pathlib.Path.home() / "Claude" / "generations" / "essai-azure"
@@ -127,7 +130,7 @@ def cle_et_region():
                 vals[k.strip()] = v.strip()
     cle = os.environ.get("AZURE_SPEECH_KEY") or vals.get("AZURE_SPEECH_KEY")
     reg = (os.environ.get("AZURE_SPEECH_REGION")
-           or vals.get("AZURE_SPEECH_REGION") or "canadaeast")
+           or vals.get("AZURE_SPEECH_REGION") or "canadacentral")
     return cle, reg
 
 
@@ -192,36 +195,6 @@ def plan():
     return p
 
 
-def page(resultats):
-    """Une page pour écouter les quatre blocs sans chercher les fichiers."""
-    blocs = {}
-    for r in resultats:
-        blocs.setdefault(r["bloc"], []).append(r)
-    parts = ["<meta charset='utf-8'><title>Essai Azure fr-CA</title>",
-             "<style>body{font:16px/1.5 system-ui;max-width:52rem;margin:2rem "
-             "auto;padding:0 1rem}h2{margin-top:2.5rem;border-bottom:1px solid "
-             "#ddd;padding-bottom:.3rem}tr>td{padding:.35rem .8rem .35rem 0;"
-             "vertical-align:middle}td.t{color:#444}td.d{color:#888;"
-             "font-variant-numeric:tabular-nums;white-space:nowrap}"
-             "audio{height:2rem}</style>",
-             "<h1>Azure Speech — fr-CA</h1>",
-             "<p>Mini-leçon <b>prAlpha « Épeler son nom »</b>. "
-             "Le bloc décisif est le premier : comparer <i>brut</i>, "
-             "<i>say-as</i> et <i>pauses</i> sur le même nom.</p>"]
-    for nom in ("epellation", "ralenti", "voix", "mots-nus"):
-        if nom not in blocs:
-            continue
-        parts.append("<h2>%s</h2><table>" % nom)
-        for r in blocs[nom]:
-            cs = (len(r["texte"]) / r["duree"]) if r["duree"] else 0
-            parts.append(
-                "<tr><td><audio controls src='%s'></audio></td>"
-                "<td class='t'>%s</td><td class='d'>%.1f s · %.1f c/s</td></tr>"
-                % (r["fichier"], html.escape(r["texte"]), r["duree"], cs))
-        parts.append("</table>")
-    return "\n".join(parts)
-
-
 def main():
     cle, region = cle_et_region()
     travaux = plan()
@@ -253,9 +226,14 @@ def main():
                 return 1
             continue
         resultats.append({"bloc": bloc, "nom": nom, "texte": texte,
-                          "fichier": f.name, "duree": d})
+                          "affiche": texte, "fichier": f.name, "duree": d})
         print("  %-28s %5.2f s" % (nom, d))
-    (SORTIE / "comparer.html").write_text(page(resultats))
+    (SORTIE / "comparer.html").write_text(page(
+        resultats, "Azure Speech — voix fr-CA",
+        "Mini-leçon <b>prAlpha « Épeler son nom »</b>. Le bloc "
+        "<b>épellation</b> compare trois traitements du même nom : texte brut, "
+        "<code>say-as</code>, et lettres séparées par des <code>break</code>.",
+        ("voix", "epellation", "ralenti", "mots-nus"), cle="banc-azure"))
     print("\n%d fichiers dans %s" % (len(resultats), SORTIE))
     print("Ouvrir %s/comparer.html" % SORTIE)
     return 0

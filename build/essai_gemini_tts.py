@@ -56,6 +56,7 @@ import urllib.error
 import urllib.request
 
 sys.path.insert(0, str(pathlib.Path(__file__).resolve().parent))
+from page_ecoute import page
 from voix import MOTS_DIFFICILES                      # noqa: E402
 
 SORTIE = pathlib.Path.home() / "Claude" / "generations" / "essai-gemini"
@@ -189,37 +190,6 @@ def plan():
     return p
 
 
-def page(res):
-    blocs = {}
-    for r in res:
-        blocs.setdefault(r["bloc"], []).append(r)
-    out = ["<meta charset='utf-8'><title>Essai Gemini TTS fr-CA</title>",
-           "<style>body{font:16px/1.5 system-ui;max-width:54rem;margin:2rem "
-           "auto;padding:0 1rem}h2{margin-top:2.5rem;border-bottom:1px solid "
-           "#ddd;padding-bottom:.3rem}td{padding:.35rem .8rem .35rem 0;"
-           "vertical-align:middle}td.t{color:#444}td.d{color:#888;"
-           "font-variant-numeric:tabular-nums;white-space:nowrap}"
-           "audio{height:2rem}</style>",
-           "<h1>Gemini TTS — français québécois</h1>",
-           "<p>Mini-leçon <b>prAlpha « Épeler son nom »</b>. "
-           "Écouter d'abord le bloc <b>voix</b> : l'accent est-il d'ici ? "
-           "Puis <b>épellation</b> : les lettres sortent-elles en français ?</p>"]
-    for nom in ("voix", "epellation", "ralenti", "mots-nus"):
-        for r in blocs.get(nom, []):
-            pass
-        if nom not in blocs:
-            continue
-        out.append("<h2>%s</h2><table>" % nom)
-        for r in blocs[nom]:
-            cs = len(r["texte"]) / r["duree"] if r["duree"] else 0
-            out.append("<tr><td><audio controls src='%s'></audio></td>"
-                       "<td class='t'>%s</td>"
-                       "<td class='d'>%.1f s · %.1f c/s</td></tr>"
-                       % (r["fichier"], html.escape(r["affiche"]), r["duree"], cs))
-        out.append("</table>")
-    return "\n".join(out)
-
-
 def main():
     k = cle()
     if not k:
@@ -250,7 +220,10 @@ def main():
         res.append({"bloc": bloc, "nom": nom, "texte": texte, "affiche": affiche,
                     "fichier": f.name, "duree": d})
         print("  %-24s %5.2f s  %4d jetons" % (nom, d, j))
-    (SORTIE / "comparer.html").write_text(page(res))
+    (SORTIE / "comparer.html").write_text(page(
+        res, "Gemini TTS — français québécois",
+        "Mini-leçon <b>prAlpha « Épeler son nom »</b>.",
+        ("voix", "epellation", "ralenti", "mots-nus"), cle="banc-gemini"))
     secs = sum(r["duree"] for r in res)
     print("\n%d fichiers · %.0f s d'audio" % (len(res), secs))
     # Le ratio ne vaut que sur les extraits **produits pendant ce passage** :

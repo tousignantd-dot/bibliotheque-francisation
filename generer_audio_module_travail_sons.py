@@ -11,7 +11,6 @@ import sys
 from pathlib import Path
 import sys as _sys, pathlib as _pl
 _sys.path.insert(0, str(_pl.Path(__file__).resolve().parent / 'build'))
-from voix import enrichir  # contexte français pour les mots isolés
 
 try:
     import requests
@@ -73,31 +72,22 @@ CLIPS = {
 }
 
 
-def generate_audio(api_key, text, voice_id, output_path):
-    url = f"https://api.elevenlabs.io/v1/text-to-speech/{voice_id}"
-    headers = {"xi-api-key": api_key, "Content-Type": "application/json"}
-    payload = {
-        "text": text,
-        "model_id": "eleven_multilingual_v2",
-        "voice_settings": {"stability": 0.5, "similarity_boost": 0.75},
-    }
-    try:
-        response = requests.post(url, json=enrichir(payload), headers=headers, timeout=30)
-        if response.status_code != 200:
-            print(f"   ❌ Erreur {response.status_code}: {response.text[:200]}")
-            return False
-        with open(output_path, "wb") as f:
-            f.write(response.content)
-        return True
-    except Exception as e:
-        print(f"   ❌ Erreur : {e}")
-        return False
+# L'audio du cours vient d'Azure Speech depuis le 26 août 2026. La fonction
+# ci-dessous garde son nom et sa signature — `main()` l'appelle telle quelle —
+# mais délègue. La clé ElevenLabs et le contexte `avant`/`apres` sont acceptés
+# et ignorés : le `xml:lang="fr-CA"` du SSML rend ce dernier inutile.
+from azure_voix import parle_compat  # noqa: E402
 
 
+def generate_audio(api_key, text, voice_id, output_path, *reste, **nommes):
+    # `voice_settings`, `avant`, `apres` : avalés et ignorés. Les deux
+    # derniers étaient le contexte français d'ElevenLabs, le premier une
+    # dérogation de stabilité qui n'a pas d'équivalent en SSML.
+    return parle_compat(api_key, text, voice_id, output_path)
 def main():
     print("🎙️  Générateur d'audio — Je découvre (mots et phrases isolés)\n")
 
-    api_key = os.environ.get("ELEVENLABS_API_KEY", "").strip()
+    api_key = os.environ.get("AZURE_SPEECH_KEY", "").strip()
     if not api_key:
         api_key = input("Colle ta clé ElevenLabs : ").strip()
         if not api_key:

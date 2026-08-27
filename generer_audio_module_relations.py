@@ -26,15 +26,8 @@ import time
 import unicodedata
 from pathlib import Path
 
-try:
-    import requests
-except ImportError:
-    print("❌ pip install requests"); sys.exit(1)
-
-from voix_lente import ralentir_si_enseignante
 import sys as _sys, pathlib as _pl
 _sys.path.insert(0, str(_pl.Path(__file__).resolve().parent / 'build'))
-from voix import charge_utile  # contexte français, générique ou de dialogue
 
 RACINE = Path(__file__).resolve().parent
 SORTIE = RACINE / "assets/interactive/module-relations"
@@ -102,31 +95,22 @@ def lire_dialogues():
     return dialogues
 
 
-def parle(cle, texte, voix, chemin, avant=None, apres=None):
-    r = requests.post(
-        f"https://api.elevenlabs.io/v1/text-to-speech/{voix}",
-        json=charge_utile(texte, voix, avant=avant, apres=apres),
-        headers={"xi-api-key": cle, "Content-Type": "application/json"},
-        timeout=60)
-    if r.status_code != 200:
-        print(f"   ❌ {r.status_code}: {r.text[:150]}")
-        return False
-    chemin.parent.mkdir(parents=True, exist_ok=True)
-    chemin.write_bytes(r.content)
-    ralentir_si_enseignante(chemin, voix)
-    return True
+# L'audio du cours vient d'Azure Speech depuis le 26 août 2026. `parle_compat`
+# porte la signature qu'avait la fonction locale — `cle` et le contexte
+# `avant`/`apres` sont acceptés et ignorés, le SSML n'en a plus besoin.
+from azure_voix import parle_compat as parle  # noqa: E402
 
 
 def main():
-    cle = os.environ.get("ELEVENLABS_API_KEY", "").strip()
+    cle = os.environ.get("AZURE_SPEECH_KEY", "").strip()
     if not cle:
-        env = RACINE / ".env"
+        env = Path.home() / "Claude" / ".env"
         if env.exists():
             for ligne in env.read_text(encoding="utf-8").splitlines():
-                if ligne.strip().startswith("ELEVENLABS_API_KEY="):
+                if ligne.strip().startswith("AZURE_SPEECH_KEY="):
                     cle = ligne.split("=", 1)[1].strip().strip("\"'")
     if not cle:
-        print("❌ ELEVENLABS_API_KEY absente (variable d'environnement ou .env)")
+        print("❌ AZURE_SPEECH_KEY absente (variable d'environnement ou .env)")
         sys.exit(1)
 
     force = "--force" in sys.argv
@@ -144,11 +128,12 @@ def main():
     for dial_id, lignes in dialogues.items():
         for i, (perso, texte) in enumerate(lignes, 1):
             nom = f"line_{i:02d}_{slug(perso)}.mp3"
-            # La réplique d'avant et celle d'après partent avec l'extrait, en
-            # `previous_text` / `next_text` : du français qui conditionne la
-            # synthèse sans être prononcé. Sur un mot isolé, `charge_utile`
-            # retombe sur sa phrase de classe générique ; ici on a mieux à
-            # offrir — la scène elle-même.
+            # `avant` et `apres` ne servent plus depuis le passage à Azure :
+            # c'était le `previous_text` / `next_text` d'ElevenLabs, du
+            # français qui conditionnait la synthèse sans être prononcé, pour
+            # qu'un mot isolé ne sorte pas à l'anglaise. Le `xml:lang="fr-CA"`
+            # du SSML le fait désormais. On les calcule encore parce que la
+            # signature les accepte, et `parle_compat` les ignore.
             avant = lignes[i - 2][1] if i >= 2 else None
             apres = lignes[i][1] if i < len(lignes) else None
             taches.append((f"{dial_id}/{nom}", texte,

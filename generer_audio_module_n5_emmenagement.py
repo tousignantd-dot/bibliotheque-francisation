@@ -35,14 +35,7 @@ import subprocess
 import unicodedata
 from pathlib import Path
 
-try:
-    import requests
-except ImportError:
-    print("❌ pip install requests"); sys.exit(1)
-
-from voix_lente import ralentir_si_enseignante
 sys.path.insert(0, str(Path(__file__).resolve().parent / 'build'))
-from voix import charge_utile  # contexte français, générique ou de dialogue
 
 RACINE = Path(__file__).resolve().parent
 SORTIE = RACINE / "assets/interactive/module-n5-emmenagement"
@@ -185,65 +178,22 @@ def slug(nom):
     return s.replace("'", "").replace(" ", "_")
 
 
-def parle(cle, texte, voix, chemin, avant=None, apres=None):
-    """Un extrait, avec reprise sur coupure réseau.
-
-    **Le transport est `curl`, pas `requests`.** Le Python du système est en
-    3.9.6, compilé avec LibreSSL 2.8.3, et sa liaison TLS vers
-    api.elevenlabs.io tombe en `SSLEOFError` deux fois sur trois — pas une
-    panne du fournisseur, un défaut de la pile TLS locale. Le même appel par
-    `curl` passe trois fois sur trois. Mesuré le 21 août 2026 en produisant
-    module-n5-emmenagement ; voir docs/deux-agents-en-parallele.md.
-
-    Le script reste relançable : il saute ce qui existe déjà.
-    """
-    corps = json.dumps(charge_utile(texte, voix, avant=avant, apres=apres),
-                       ensure_ascii=False)
-    chemin.parent.mkdir(parents=True, exist_ok=True)
-    tmp = chemin.with_suffix(".part")
-
-    for essai in range(1, ESSAIS + 1):
-        proc = subprocess.run([
-            "curl", "-s", "-o", str(tmp), "-w", "%{http_code}", "--max-time", "120",
-            "-X", "POST",
-            f"https://api.elevenlabs.io/v1/text-to-speech/{voix}",
-            "-H", f"xi-api-key: {cle}",
-            "-H", "Content-Type: application/json",
-            "--data-binary", "@-",
-        ], input=corps.encode("utf-8"), capture_output=True)
-        code = proc.stdout.decode().strip()
-
-        if code == "200" and tmp.exists() and tmp.stat().st_size > 500:
-            tmp.replace(chemin)
-            ralentir_si_enseignante(chemin, voix)
-            return True
-
-        # 429 (débit) et 5xx (panne du service) valent une reprise ; un 401 ou
-        # un 422 sont des erreurs à nous, inutile d'insister.
-        if code in ("401", "422") :
-            print(f"   ❌ {code}: {tmp.read_bytes()[:150] if tmp.exists() else b''}")
-            tmp.unlink(missing_ok=True)
-            return False
-        if essai == ESSAIS:
-            print(f"   ❌ après {ESSAIS} essais : code {code or 'aucun'}")
-            tmp.unlink(missing_ok=True)
-            return False
-        attente = ATTENTE_BASE_S * (2 ** (essai - 1))
-        print(f"⏳{code or 'net'}/{attente}s", end="", flush=True)
-        time.sleep(attente)
-    return False
+# L'audio du cours vient d'Azure Speech depuis le 26 août 2026. `parle_compat`
+# porte la signature qu'avait la fonction locale — `cle` et le contexte
+# `avant`/`apres` sont acceptés et ignorés, le SSML n'en a plus besoin.
+from azure_voix import parle_compat as parle  # noqa: E402
 
 
 def main():
-    cle = os.environ.get("ELEVENLABS_API_KEY", "").strip()
+    cle = os.environ.get("AZURE_SPEECH_KEY", "").strip()
     if not cle:
-        env = RACINE / ".env"
+        env = Path.home() / "Claude" / ".env"
         if env.exists():
             for ligne in env.read_text(encoding="utf-8").splitlines():
-                if ligne.strip().startswith("ELEVENLABS_API_KEY="):
+                if ligne.strip().startswith("AZURE_SPEECH_KEY="):
                     cle = ligne.split("=", 1)[1].strip().strip("\"'")
     if not cle:
-        print("❌ ELEVENLABS_API_KEY absente (variable d'environnement ou .env)")
+        print("❌ AZURE_SPEECH_KEY absente (variable d'environnement ou .env)")
         sys.exit(1)
 
     force = "--force" in sys.argv
@@ -257,11 +207,12 @@ def main():
     for dial_id, lignes in DIALOGUES.items():
         for i, (perso, texte) in enumerate(lignes, 1):
             nom = f"line_{i:02d}_{slug(perso)}.mp3"
-            # La réplique d'avant et celle d'après partent avec l'extrait, en
-            # `previous_text` / `next_text` : du français qui conditionne la
-            # synthèse sans être prononcé. Sur un mot isolé, `charge_utile`
-            # retombe sur sa phrase de classe générique ; ici on a mieux à
-            # offrir — la scène elle-même.
+            # `avant` et `apres` ne servent plus depuis le passage à Azure :
+            # c'était le `previous_text` / `next_text` d'ElevenLabs, du
+            # français qui conditionnait la synthèse sans être prononcé, pour
+            # qu'un mot isolé ne sorte pas à l'anglaise. Le `xml:lang="fr-CA"`
+            # du SSML le fait désormais. On les calcule encore parce que la
+            # signature les accepte, et `parle_compat` les ignore.
             avant = lignes[i - 2][1] if i >= 2 else None
             apres = lignes[i][1] if i < len(lignes) else None
             taches.append((f"{dial_id}/{nom}", texte,
