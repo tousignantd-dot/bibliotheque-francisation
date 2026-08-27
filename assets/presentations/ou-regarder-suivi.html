@@ -1,0 +1,730 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Où regarder pour le suivi</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Nunito:ital,wght@0,400;0,600;0,700;0,900;1,400&display=swap">
+
+<style>
+  :root{
+    --paper:#FFFFFF;
+    --paper-50:#FAFAF8;
+    --paper-100:#F5F5F2;
+    --paper-200:#EBEAE6;
+    --rule:#DEDDD8;
+    --ink:#17181A;
+    --ink-700:#3A3C40;
+    --ink-500:#6B6E74;
+    --ink-400:#8B8E94;
+
+    --marque:#6B4FBB;
+    --accent:#0A8F5B;
+
+    --acier:#1D6B8F;   --acier-bg:#E7F0F6;
+    --sarcelle:#0D7A6F; --sarcelle-bg:#DCF2EF;
+    --ambre:#B45309;   --ambre-bg:#FBEEDC;
+    --indigo:#3B49A0;  --indigo-bg:#E8EAFA;
+    --ardoise:#5A5E66; --ardoise-bg:#EEEEEC;
+
+    --shadow:0 1px 2px rgba(23,24,26,.05), 0 8px 24px -16px rgba(23,24,26,.28);
+    --content:1080px;
+  }
+  @media (prefers-color-scheme: dark){
+    :root:not([data-theme="light"]){
+      --paper:#131416;
+      --paper-50:#17181B;
+      --paper-100:#1D1F22;
+      --paper-200:#25272B;
+      --rule:#31343A;
+      --ink:#F2F1EE;
+      --ink-700:#CFCEC9;
+      --ink-500:#9B9EA5;
+      --ink-400:#7C7F86;
+      --marque:#A992F0;
+      --accent:#3FBE87;
+      --acier:#79B8DC;   --acier-bg:#16262F;
+      --sarcelle:#5CC7B8; --sarcelle-bg:#122824;
+      --ambre:#E39B4C;   --ambre-bg:#2C1F0F;
+      --indigo:#96A0EB;  --indigo-bg:#1B1E33;
+      --ardoise:#A9ADB5; --ardoise-bg:#212327;
+      --shadow:0 1px 2px rgba(0,0,0,.4), 0 8px 24px -16px rgba(0,0,0,.8);
+    }
+  }
+  :root[data-theme="dark"]{
+    --paper:#131416;
+    --paper-50:#17181B;
+    --paper-100:#1D1F22;
+    --paper-200:#25272B;
+    --rule:#31343A;
+    --ink:#F2F1EE;
+    --ink-700:#CFCEC9;
+    --ink-500:#9B9EA5;
+    --ink-400:#7C7F86;
+    --marque:#A992F0;
+    --accent:#3FBE87;
+    --acier:#79B8DC;   --acier-bg:#16262F;
+    --sarcelle:#5CC7B8; --sarcelle-bg:#122824;
+    --ambre:#E39B4C;   --ambre-bg:#2C1F0F;
+    --indigo:#96A0EB;  --indigo-bg:#1B1E33;
+    --ardoise:#A9ADB5; --ardoise-bg:#212327;
+    --shadow:0 1px 2px rgba(0,0,0,.4), 0 8px 24px -16px rgba(0,0,0,.8);
+  }
+
+  *{box-sizing:border-box}
+  body{
+    margin:0;
+    background:var(--paper);
+    color:var(--ink);
+    font-family:Nunito, "Segoe UI", system-ui, sans-serif;
+    font-size:16.5px;
+    line-height:1.6;
+    -webkit-font-smoothing:antialiased;
+  }
+  .wrap{max-width:var(--content);margin:0 auto;padding:0 24px}
+  @media (max-width:640px){ .wrap{padding:0 16px} }
+
+  /* ── barre de marque ─────────────────────────────── */
+  .fr-barre{
+    background:var(--paper);
+    border-bottom:2px solid var(--marque);
+  }
+  .fr-barre__in{
+    max-width:var(--content);margin:0 auto;padding:14px 24px;
+    display:flex;align-items:baseline;gap:12px;flex-wrap:wrap;
+  }
+  .fr-nom{
+    font-weight:900;letter-spacing:-.035em;font-size:26px;line-height:1;
+    color:var(--ink);position:relative;display:inline-block;
+  }
+  .fr-nom .pt{
+    position:absolute;width:.155em;height:.155em;border-radius:50%;
+    background:var(--marque);left:.598em;top:-.02em;
+  }
+  .fr-trait{width:1px;align-self:stretch;background:var(--rule)}
+  .fr-desc{font-size:13.5px;color:var(--ink-500);font-weight:600}
+  @media (max-width:480px){ .fr-trait,.fr-desc{display:none} }
+
+  /* ── en-tête ─────────────────────────────────────── */
+  header.hero{padding:56px 0 40px;border-bottom:1px solid var(--rule)}
+  .eyebrow{
+    font-size:12px;font-weight:700;letter-spacing:.14em;text-transform:uppercase;
+    color:var(--ink-400);margin:0 0 14px;
+  }
+  h1{
+    font-size:clamp(34px,5.4vw,52px);line-height:1.06;margin:0 0 18px;
+    font-weight:900;letter-spacing:-.028em;text-wrap:balance;
+  }
+  .chapeau{max-width:62ch;font-size:18px;color:var(--ink-700);margin:0}
+  .chapeau b{font-weight:700;color:var(--ink)}
+
+  h2{
+    font-size:clamp(23px,3vw,30px);font-weight:900;letter-spacing:-.02em;
+    margin:0 0 8px;text-wrap:balance;
+  }
+  h3{font-size:19px;font-weight:800;margin:0;letter-spacing:-.012em}
+  section{padding:52px 0;border-bottom:1px solid var(--rule)}
+  section:last-of-type{border-bottom:0}
+  .sec-lead{max-width:60ch;color:var(--ink-500);margin:0 0 28px;font-size:16px}
+
+  /* ── la question → la page ───────────────────────── */
+  .questions{display:grid;gap:14px;grid-template-columns:repeat(auto-fit,minmax(250px,1fr))}
+  .q{
+    background:var(--paper-50);border:1px solid var(--rule);border-radius:10px;
+    padding:20px 20px 18px;display:flex;flex-direction:column;gap:12px;
+  }
+  .q .demande{font-size:17px;font-weight:700;line-height:1.35;text-wrap:balance;margin:0}
+  .q .fleche{color:var(--ink-400);font-size:13px;font-weight:700;letter-spacing:.04em}
+  .q .cible{
+    font-size:15px;font-weight:800;margin:0;display:flex;align-items:center;gap:8px;
+  }
+  .q .pastille{width:9px;height:9px;border-radius:50%;flex:none}
+
+  /* ── plan du portail (schéma) ────────────────────── */
+  .schema{
+    background:var(--paper-50);border:1px solid var(--rule);border-radius:12px;
+    padding:12px;overflow-x:auto;
+  }
+  .schema svg{display:block;min-width:640px;width:100%;height:auto}
+
+  /* ── fiches d'outil ──────────────────────────────── */
+  .famille-tit{
+    display:flex;align-items:baseline;gap:12px;margin:0 0 4px;flex-wrap:wrap;
+  }
+  .famille-tit .n{
+    font-size:12px;font-weight:700;letter-spacing:.12em;text-transform:uppercase;
+    color:var(--ink-400);
+  }
+  .outils{display:flex;flex-direction:column;gap:18px;margin-top:24px}
+  .outil{
+    border:1px solid var(--rule);border-radius:12px;background:var(--paper);
+    box-shadow:var(--shadow);overflow:hidden;
+    display:grid;grid-template-columns:6px 1fr;
+  }
+  .outil .rail{background:var(--c)}
+  .outil .corps{padding:22px 24px 20px;display:flex;flex-direction:column;gap:16px}
+  .outil-tete{display:flex;flex-wrap:wrap;align-items:baseline;gap:10px 14px}
+  .outil-tete h3{color:var(--c)}
+  .fichier{
+    font-family:ui-monospace,"SF Mono",Menlo,Consolas,monospace;
+    font-size:12.5px;color:var(--ink-500);background:var(--paper-100);
+    border:1px solid var(--rule);border-radius:5px;padding:2px 7px;white-space:nowrap;
+  }
+  .qui{
+    font-size:11.5px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;
+    color:var(--c);background:var(--cbg);border-radius:20px;padding:3px 11px;
+  }
+  .repond{
+    font-size:17.5px;font-weight:700;line-height:1.4;margin:0;text-wrap:balance;
+    font-style:italic;
+  }
+  .repond::before{content:"« ";color:var(--ink-400);font-style:normal}
+  .repond::after{content:" »";color:var(--ink-400);font-style:normal}
+
+  .lignes{display:grid;gap:14px;grid-template-columns:repeat(auto-fit,minmax(230px,1fr))}
+  .ligne .etiq{
+    font-size:11.5px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;
+    color:var(--ink-400);margin:0 0 6px;
+  }
+  .ligne p{margin:0;font-size:15px;color:var(--ink-700)}
+  .blocs{display:flex;flex-wrap:wrap;gap:6px;list-style:none;padding:0;margin:0}
+  .blocs li{
+    font-size:13.5px;font-weight:600;background:var(--cbg);color:var(--c);
+    border-radius:6px;padding:3px 9px;
+  }
+  .pas{
+    border-top:1px dashed var(--rule);padding-top:13px;margin:0;
+    font-size:14.5px;color:var(--ink-500);
+  }
+  .pas b{color:var(--ink-700);font-weight:700}
+
+  /* ── règle centrale ──────────────────────────────── */
+  .regle{
+    background:var(--ink);color:var(--paper);border-radius:14px;padding:34px 32px;
+    display:grid;gap:24px;grid-template-columns:minmax(0,1fr) minmax(0,1fr);
+  }
+  @media (max-width:760px){ .regle{grid-template-columns:1fr;padding:26px 22px} }
+  .regle h2{color:var(--paper);margin-bottom:12px}
+  .regle p{color:#C9C8C4;margin:0 0 14px;font-size:16px}
+  .regle p:last-child{margin-bottom:0}
+  .regle b{color:var(--paper);font-weight:700}
+  .flux{display:flex;flex-direction:column;gap:10px}
+  .flux-ligne{
+    display:flex;align-items:flex-start;gap:12px;padding:12px 14px;
+    border-radius:9px;background:rgba(255,255,255,.06);font-size:14.5px;line-height:1.45;
+  }
+  .flux-ligne .glyphe{
+    flex:none;width:22px;height:22px;border-radius:50%;display:grid;place-items:center;
+    font-size:12px;font-weight:900;margin-top:1px;
+  }
+  .g-oui{background:var(--accent);color:#08130D}
+  .g-non{background:#5C5F66;color:#EDEDEB}
+  .flux-ligne b{display:block;color:var(--paper)}
+  .flux-ligne span{color:#B7B6B2}
+
+  /* ── pièges de lecture ───────────────────────────── */
+  .pieges{display:grid;gap:16px;grid-template-columns:repeat(auto-fit,minmax(270px,1fr))}
+  .piege{
+    border-left:3px solid var(--ambre);background:var(--ambre-bg);
+    border-radius:0 9px 9px 0;padding:16px 18px;
+  }
+  .piege h3{font-size:16px;margin-bottom:6px}
+  .piege p{margin:0;font-size:14.5px;color:var(--ink-700)}
+
+  /* ── aide-mémoire ────────────────────────────────── */
+  .tableau-boite{overflow-x:auto;border:1px solid var(--rule);border-radius:11px}
+  table{border-collapse:collapse;width:100%;min-width:600px;font-size:15px}
+  thead th{
+    text-align:left;font-size:11.5px;font-weight:700;letter-spacing:.1em;
+    text-transform:uppercase;color:var(--ink-400);padding:13px 18px;
+    background:var(--paper-100);border-bottom:1px solid var(--rule);
+  }
+  tbody td{padding:14px 18px;border-bottom:1px solid var(--rule);vertical-align:top}
+  tbody tr:last-child td{border-bottom:0}
+  tbody td:first-child{font-weight:700;width:44%}
+  tbody td:last-child{color:var(--ink-700)}
+  .lien-page{
+    font-family:ui-monospace,"SF Mono",Menlo,Consolas,monospace;font-size:12.5px;
+    display:block;color:var(--ink-400);font-weight:400;margin-top:3px;
+  }
+
+  footer{padding:36px 0 60px;color:var(--ink-400);font-size:13.5px}
+  footer p{margin:0;max-width:70ch}
+</style>
+
+</head>
+<body>
+<div class="fr-barre">
+  <div class="fr-barre__in">
+    <span class="fr-nom" role="img" aria-label="francis">franc<span class="pt"></span>ıs</span>
+    <span class="fr-trait" aria-hidden="true"></span>
+    <span class="fr-desc">Aide à l'apprentissage du français</span>
+  </div>
+</div>
+
+<div class="wrap">
+
+  <header class="hero">
+    <p class="eyebrow">Repères · Espace enseignant</p>
+    <h1>Où regarder pour le suivi</h1>
+    <p class="chapeau">Le portail offre <b>six écrans de suivi</b>, et ils ne répondent pas à la même
+      question. La confusion vient presque toujours de là : on ouvre la page de la classe pour
+      chercher ce qu'a fait une personne. Voici, pour chacune, la question à laquelle elle répond,
+      comment y entrer — et ce qu'elle ne dira jamais.</p>
+  </header>
+
+  <section>
+    <h2>Commencez par la question</h2>
+    <p class="sec-lead">Quatre questions couvrent presque tout le suivi quotidien. Chacune a une
+      seule bonne page.</p>
+    <div class="questions">
+      <article class="q">
+        <p class="demande">Où en est la classe dans le module qu'on fait ce soir ?</p>
+        <p class="fleche">↳</p>
+        <p class="cible"><span class="pastille" style="background:var(--acier)"></span>Progression des élèves</p>
+      </article>
+      <article class="q">
+        <p class="demande">Qu'est-ce que cette personne a fait depuis le début ?</p>
+        <p class="fleche">↳</p>
+        <p class="cible"><span class="pastille" style="background:var(--sarcelle)"></span>Fiche de l'élève</p>
+      </article>
+      <article class="q">
+        <p class="demande">Qui n'a pas encore de code, et qui n'est jamais entré ?</p>
+        <p class="fleche">↳</p>
+        <p class="cible"><span class="pastille" style="background:var(--indigo)"></span>Écran Élèves du portail</p>
+      </article>
+      <article class="q">
+        <p class="demande">Est-ce que le centre s'en sert vraiment ?</p>
+        <p class="fleche">↳</p>
+        <p class="cible"><span class="pastille" style="background:var(--ardoise)"></span>Les chiffres</p>
+      </article>
+    </div>
+  </section>
+
+  <section>
+    <h2>Le trajet dans le portail</h2>
+    <p class="sec-lead">Tout part de l'espace enseignant. Les deux pages de suivi qui comptent
+      s'ouvrent depuis l'écran <b>Élèves</b>, et chacune se partage par son adresse.</p>
+
+    <div class="schema">
+      <svg viewBox="0 0 900 300" role="img" aria-labelledby="sch-tit sch-desc">
+        <title id="sch-tit">Trajet vers les pages de suivi</title>
+        <desc id="sch-desc">Depuis enseignant point HTML, l'écran Élèves mène à la page Progression
+          des élèves pour le groupe et à la Fiche de l'élève pour une personne. La barre du haut
+          mène aux Chiffres, et le compte fondateur à la Console du réseau.</desc>
+
+        <!-- traits -->
+        <g fill="none" stroke="var(--rule)" stroke-width="2">
+          <path d="M182 118 H244"/>
+          <path d="M420 100 H478"/>
+          <path d="M420 152 H478"/>
+          <path d="M112 90 V52 H478"/>
+          <path d="M112 146 V248 H478"/>
+        </g>
+        <g fill="var(--ink-400)">
+          <path d="M244 118 l-9 -5 v10 z"/>
+          <path d="M478 100 l-9 -5 v10 z"/>
+          <path d="M478 152 l-9 -5 v10 z"/>
+          <path d="M478 52 l-9 -5 v10 z"/>
+          <path d="M478 248 l-9 -5 v10 z"/>
+        </g>
+
+        <!-- portail -->
+        <g>
+          <rect x="16" y="88" width="166" height="60" rx="9" fill="var(--paper-100)" stroke="var(--rule)" stroke-width="1.5"/>
+          <text x="99" y="112" text-anchor="middle" font-family="Nunito,sans-serif" font-size="15" font-weight="800" fill="var(--ink)">Espace enseignant</text>
+          <text x="99" y="132" text-anchor="middle" font-family="ui-monospace,monospace" font-size="11" fill="var(--ink-500)">enseignant.html</text>
+        </g>
+
+        <!-- écran élèves -->
+        <g>
+          <rect x="252" y="88" width="168" height="60" rx="9" fill="var(--indigo-bg)" stroke="var(--indigo)" stroke-width="1.5"/>
+          <text x="336" y="112" text-anchor="middle" font-family="Nunito,sans-serif" font-size="15" font-weight="800" fill="var(--indigo)">Écran « Élèves »</text>
+          <text x="336" y="132" text-anchor="middle" font-family="Nunito,sans-serif" font-size="12" fill="var(--ink-500)">codes · noms · Corrige-moi</text>
+        </g>
+
+        <!-- chiffres -->
+        <g>
+          <rect x="486" y="24" width="398" height="56" rx="9" fill="var(--ardoise-bg)" stroke="var(--rule)" stroke-width="1.5"/>
+          <text x="506" y="47" font-family="Nunito,sans-serif" font-size="14.5" font-weight="800" fill="var(--ardoise)">Les chiffres</text>
+          <text x="506" y="66" font-family="Nunito,sans-serif" font-size="12" fill="var(--ink-500)">l'usage du centre — direction, CSS, réseau</text>
+          <text x="864" y="47" text-anchor="end" font-family="ui-monospace,monospace" font-size="10.5" fill="var(--ink-400)">chiffres.html</text>
+        </g>
+
+        <!-- progression -->
+        <g>
+          <rect x="486" y="72" width="398" height="56" rx="9" fill="var(--acier-bg)" stroke="var(--acier)" stroke-width="2"/>
+          <text x="506" y="95" font-family="Nunito,sans-serif" font-size="15" font-weight="900" fill="var(--acier)">Progression des élèves</text>
+          <text x="506" y="114" font-family="Nunito,sans-serif" font-size="12" fill="var(--ink-500)">le groupe, module par module</text>
+          <text x="864" y="95" text-anchor="end" font-family="ui-monospace,monospace" font-size="10.5" fill="var(--ink-400)">progression.html</text>
+        </g>
+
+        <!-- fiche -->
+        <g>
+          <rect x="486" y="124" width="398" height="56" rx="9" fill="var(--sarcelle-bg)" stroke="var(--sarcelle)" stroke-width="2"/>
+          <text x="506" y="147" font-family="Nunito,sans-serif" font-size="15" font-weight="900" fill="var(--sarcelle)">Fiche de l'élève</text>
+          <text x="506" y="166" font-family="Nunito,sans-serif" font-size="12" fill="var(--ink-500)">une personne, tout son dossier</text>
+          <text x="864" y="147" text-anchor="end" font-family="ui-monospace,monospace" font-size="10.5" fill="var(--ink-400)">fiche-eleve.html?code=</text>
+        </g>
+
+        <!-- réseau -->
+        <g>
+          <rect x="486" y="220" width="398" height="56" rx="9" fill="var(--ardoise-bg)" stroke="var(--rule)" stroke-width="1.5"/>
+          <text x="506" y="243" font-family="Nunito,sans-serif" font-size="14.5" font-weight="800" fill="var(--ardoise)">Console du réseau</text>
+          <text x="506" y="262" font-family="Nunito,sans-serif" font-size="12" fill="var(--ink-500)">l'arbre des centres — compte fondateur</text>
+          <text x="864" y="243" text-anchor="end" font-family="ui-monospace,monospace" font-size="10.5" fill="var(--ink-400)">reseau.html</text>
+        </g>
+
+        <!-- légendes de traits -->
+        <text x="336" y="42" text-anchor="middle" font-family="Nunito,sans-serif" font-size="11.5" font-weight="700" fill="var(--ink-400)">barre du haut</text>
+        <text x="336" y="240" text-anchor="middle" font-family="Nunito,sans-serif" font-size="11.5" font-weight="700" fill="var(--ink-400)">par prof.html, fondateur seulement</text>
+        <text x="452" y="94" text-anchor="middle" font-family="Nunito,sans-serif" font-size="11" font-weight="700" fill="var(--ink-400)">bouton</text>
+        <text x="452" y="170" text-anchor="middle" font-family="Nunito,sans-serif" font-size="11" font-weight="700" fill="var(--ink-400)">icône ▤</text>
+      </svg>
+    </div>
+  </section>
+
+  <section>
+    <div class="famille-tit">
+      <h2>Suivre les élèves</h2>
+      <span class="n">Trois écrans</span>
+    </div>
+    <p class="sec-lead">Les trois qui servent tous les soirs. Ils lisent les mêmes données ;
+      ce qui change, c'est l'échelle — la classe, la personne, ou la liste des codes.</p>
+
+    <div class="outils">
+
+      <article class="outil" style="--c:var(--acier);--cbg:var(--acier-bg)">
+        <div class="rail"></div>
+        <div class="corps">
+          <div class="outil-tete">
+            <h3>Progression des élèves</h3>
+            <span class="fichier">progression.html</span>
+            <span class="qui">Le groupe</span>
+          </div>
+          <p class="repond">Où en est la classe dans ce module, et qu'est-ce qui m'est arrivé ce soir ?</p>
+
+          <div class="lignes">
+            <div class="ligne">
+              <p class="etiq">Comment y entrer</p>
+              <p>Le bouton <b>« Progression des élèves »</b> de l'écran Élèves. Le module choisi
+                reste dans l'adresse : la vue se partage par son lien.</p>
+            </div>
+            <div class="ligne">
+              <p class="etiq">Deux filtres, et tout en découle</p>
+              <p>Le <b>module</b> regardé (ou tous), puis la <b>période</b> : aujourd'hui ·
+                depuis l'ouverture du module · depuis le début.</p>
+            </div>
+            <div class="ligne">
+              <p class="etiq">Le chevron d'une rangée</p>
+              <p>Déplie les envois de cet élève, écoutables et lisibles sur place. Sans envoi
+                dans la période, pas de chevron : la page ne promet jamais du vide.</p>
+            </div>
+          </div>
+
+          <div>
+            <p class="etiq" style="font-size:11.5px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:var(--ink-400);margin:0 0 8px">Six blocs, dans cet ordre</p>
+            <ul class="blocs">
+              <li>Le bilan</li><li>Où en est chaque élève</li><li>Ce qui bloque</li>
+              <li>L'aide et les mini-leçons</li><li>Ce que les élèves ont envoyé</li>
+              <li>Les modules du groupe</li>
+            </ul>
+          </div>
+
+          <p class="pas"><b>Ce qu'elle ne dit pas :</b> le détail d'une personne sur toute la
+            session. Pour ça, le lien « dossier » au bout de sa rangée mène à sa fiche.</p>
+        </div>
+      </article>
+
+      <article class="outil" style="--c:var(--sarcelle);--cbg:var(--sarcelle-bg)">
+        <div class="rail"></div>
+        <div class="corps">
+          <div class="outil-tete">
+            <h3>Fiche de l'élève</h3>
+            <span class="fichier">fiche-eleve.html?code=XXXXXX</span>
+            <span class="qui">Une personne</span>
+          </div>
+          <p class="repond">Qu'est-ce que cette personne a fait ?</p>
+
+          <div class="lignes">
+            <div class="ligne">
+              <p class="etiq">Comment y entrer</p>
+              <p>L'icône de fiche à côté de chaque code, ou l'adresse avec le code.
+                C'est le code de l'URL qui choisit l'élève.</p>
+            </div>
+            <div class="ligne">
+              <p class="etiq">Quand elle sert</p>
+              <p>Avec l'élève devant soi, ou <b>imprimée pour une rencontre</b>. C'est la seule
+                page pensée pour être regardée à deux.</p>
+            </div>
+            <div class="ligne">
+              <p class="etiq">Le chevron d'une activité</p>
+              <p>Ouvre ce que l'élève y a remis — enregistrements et textes — sans recharger
+                le dossier.</p>
+            </div>
+          </div>
+
+          <div>
+            <p class="etiq" style="font-size:11.5px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:var(--ink-400);margin:0 0 8px">Sept blocs, dans cet ordre</p>
+            <ul class="blocs">
+              <li>Le bilan</li><li>Ce que l'élève a fait</li><li>Ce qui revient</li>
+              <li>Ce que l'élève a dit</li><li>Ce que l'élève a écrit</li>
+              <li>Vocabulaire et pratique libre</li><li>Les fichiers ouverts</li>
+            </ul>
+          </div>
+
+          <p class="pas"><b>Ce qu'elle ne dit pas :</b> comment se situe la personne dans son
+            groupe. La comparaison est l'affaire de la page de progression.</p>
+        </div>
+      </article>
+
+      <article class="outil" style="--c:var(--indigo);--cbg:var(--indigo-bg)">
+        <div class="rail"></div>
+        <div class="corps">
+          <div class="outil-tete">
+            <h3>Écran « Élèves » du portail</h3>
+            <span class="fichier">enseignant.html</span>
+            <span class="qui">La liste</span>
+          </div>
+          <p class="repond">Qui est inscrit, avec quel code ?</p>
+
+          <div class="lignes">
+            <div class="ligne">
+              <p class="etiq">Ce qu'on y fait</p>
+              <p>Ajouter des élèves au groupe actif, générer des codes à six caractères,
+                renommer, retirer, <b>imprimer les billets</b> en noir et blanc.</p>
+            </div>
+            <div class="ligne">
+              <p class="etiq">Le seul suivi qui n'est que là</p>
+              <p>Le panneau <b>« Corrige-moi ! — assistant oral »</b> : par élève et par thème,
+                le nombre de réponses et les réussites du premier coup.</p>
+            </div>
+            <div class="ligne">
+              <p class="etiq">Un code anonyme, c'est normal</p>
+              <p>On en prépare d'avance sans nom (« Élève 3 ») et on les nomme à l'arrivée.
+                D'où des lignes vides qui ne sont pas des absents.</p>
+            </div>
+          </div>
+
+          <p class="pas"><b>Ce qu'il ne dit pas :</b> l'avancement. C'est un annuaire, pas un
+            tableau de bord — les deux boutons du haut mènent au reste.</p>
+        </div>
+      </article>
+
+    </div>
+  </section>
+
+  <section>
+    <div class="famille-tit">
+      <h2>Suivre l'installation</h2>
+      <span class="n">Deux écrans, selon le compte</span>
+    </div>
+    <p class="sec-lead">Ceux-là ne parlent pas d'apprentissage. Ils disent si l'outil est
+      utilisé, et par qui — et ils ne s'ouvrent pas à tout le monde.</p>
+
+    <div class="outils">
+
+      <article class="outil" style="--c:var(--ardoise);--cbg:var(--ardoise-bg)">
+        <div class="rail"></div>
+        <div class="corps">
+          <div class="outil-tete">
+            <h3>Les chiffres</h3>
+            <span class="fichier">chiffres.html</span>
+            <span class="qui">Direction · CSS · réseau</span>
+          </div>
+          <p class="repond">Est-ce que le centre s'en sert ?</p>
+          <div class="lignes">
+            <div class="ligne">
+              <p class="etiq">Trois vues en onglets</p>
+              <p>Réseau, CSS, centre — la page demande au serveur ce que votre compte a le
+                droit de regarder, et n'affiche rien de plus.</p>
+            </div>
+            <div class="ligne">
+              <p class="etiq">La colonne la plus utile</p>
+              <p><b>Jamais connectés</b> : elle dit où la formation n'a pas été faite. La liste
+                est alphabétique, sans classement — c'est l'adoption qu'on mesure, pas la performance.</p>
+            </div>
+            <div class="ligne">
+              <p class="etiq">Un compte enseignant n'y voit rien</p>
+              <p>Et la page le dit : elle vous renvoie vers la progression de votre groupe.
+                Ce n'est pas une panne.</p>
+            </div>
+          </div>
+          <p class="pas"><b>Ce qu'elle ne dit pas :</b> le temps réellement passé. Les minutes
+            sont un <b>plancher</b>, et la pointe d'élèves actifs est le maximum d'une journée,
+            jamais une somme.</p>
+        </div>
+      </article>
+
+      <article class="outil" style="--c:var(--ardoise);--cbg:var(--ardoise-bg)">
+        <div class="rail"></div>
+        <div class="corps">
+          <div class="outil-tete">
+            <h3>Console du réseau</h3>
+            <span class="fichier">reseau.html</span>
+            <span class="qui">Compte fondateur</span>
+          </div>
+          <p class="repond">L'arbre des centres tient-il debout ?</p>
+          <div class="lignes">
+            <div class="ligne">
+              <p class="etiq">Sa raison d'être</p>
+              <p>Les <b>orphelins</b> : un groupe sans centre, un compte sans accès. Ils
+                continuent de travailler et ne se voient nulle part ailleurs.</p>
+            </div>
+            <div class="ligne">
+              <p class="etiq">Les gestes</p>
+              <p>Ouvrir un CSS ou un centre, renommer, poser ou retirer un accès, rattacher un
+                groupe, <b>régler l'IA</b> pour un centre qui la refuse, inviter par jeton.</p>
+            </div>
+            <div class="ligne">
+              <p class="etiq">Où est l'entrée</p>
+              <p>Le bouton « Console du réseau » de <span class="fichier">prof.html</span>,
+                qui ne paraît qu'au fondateur.</p>
+            </div>
+          </div>
+          <p class="pas"><b>Ce qu'elle ne dit pas :</b> rien d'un élève. C'est de
+            l'administration, pas du suivi pédagogique.</p>
+        </div>
+      </article>
+
+    </div>
+  </section>
+
+  <section>
+    <div class="famille-tit">
+      <h2>Suivre la production</h2>
+      <span class="n">Hors du portail</span>
+    </div>
+    <p class="sec-lead">Un mot pour lever la confusion la plus fréquente : ce « suivi »-là ne
+      regarde pas les élèves, il regarde <b>l'avancement du projet</b>. Il se lance depuis le
+      dépôt, pas depuis un navigateur.</p>
+
+    <div class="outils">
+      <article class="outil" style="--c:var(--ambre);--cbg:var(--ambre-bg)">
+        <div class="rail"></div>
+        <div class="corps">
+          <div class="outil-tete">
+            <h3>Tableau de bord du projet</h3>
+            <span class="fichier">python3 build/tableau_bord.py</span>
+            <span class="qui">Le chantier</span>
+          </div>
+          <p class="repond">Où en est la production, et qu'est-ce qui manque ?</p>
+          <div class="lignes">
+            <div class="ligne">
+              <p class="etiq">Ce qu'il relève</p>
+              <p>Modules, séances en PowerPoint, fiches, audio, liens morts du catalogue, et
+                ce qui n'est ni commité ni poussé. Tout est relu sur le disque.</p>
+            </div>
+            <div class="ligne">
+              <p class="etiq">Deux formes</p>
+              <p>Une page dans <span class="fichier">assets/presentations/</span>, ou
+                <span class="fichier">--texte</span> pour le même état en clair, sans rien écrire.</p>
+            </div>
+            <div class="ligne">
+              <p class="etiq">Les alertes d'abord</p>
+              <p>Une liste d'alertes vide est une bonne nouvelle, et elle s'écrit comme telle —
+                une page qui n'affiche rien se lit comme une page cassée.</p>
+            </div>
+          </div>
+          <p class="pas"><b>La réserve :</b> la dépense affichée est celle de votre poste. Le
+            registre qui compte vraiment vit sur le volume Railway.</p>
+        </div>
+      </article>
+    </div>
+  </section>
+
+  <section>
+    <div class="regle">
+      <div>
+        <h2>La règle qui explique tout le reste</h2>
+        <p><b>Rien n'atteint l'enseignant sans un geste de l'élève.</b> C'est ce qui décide de
+          ce que chaque page peut montrer — et de ce qu'aucune ne montrera jamais.</p>
+        <p>Les corrections par l'IA répondent à l'écran et n'écrivent rien. C'est délibéré :
+          c'est ce qui fait que les élèves osent se tromper devant ces outils. Ce que vous
+          recevez, c'est ce qu'ils ont <b>choisi</b> d'envoyer, avec le bouton
+          « Envoyer à mon enseignant ».</p>
+      </div>
+      <div class="flux">
+        <div class="flux-ligne"><span class="glyphe g-oui" aria-hidden="true">✓</span>
+          <span><b>Ce qui vous parvient</b>Enregistrements et textes envoyés · exercices faits et
+          taux du premier coup · mots de vocabulaire maîtrisés · fichiers ouverts · aides
+          proposées, acceptées, refusées</span></div>
+        <div class="flux-ligne"><span class="glyphe g-non" aria-hidden="true">✕</span>
+          <span><b>Ce qui reste privé</b>Les phrases corrigées à l'écran · les textes relus mais
+          non envoyés · les échanges avec l'assistant · les réponses exactes tapées dans les
+          exercices — seuls les compteurs remontent</span></div>
+      </div>
+    </div>
+  </section>
+
+  <section>
+    <h2>Trois pièges de lecture</h2>
+    <p class="sec-lead">Les chiffres sont justes ; c'est leur définition qui surprend. Ces
+      trois-là expliquent la plupart des « ça ne concorde pas ».</p>
+    <div class="pieges">
+      <article class="piege">
+        <h3>« Aujourd'hui » veut dire <i>travaillé</i> aujourd'hui</h3>
+        <p>Un enregistrement porte la date de sa dernière mise à jour. La période retenue
+          montre donc les élèves actifs ce soir, pas seulement ce qui a été terminé ce soir.</p>
+      </article>
+      <article class="piege">
+        <h3>« Module fait » se compte sur les élèves <i>entrés</i></h3>
+        <p>Jamais sur l'effectif. Un groupe garde des codes d'avance et des absents, et la
+          moitié de douze n'est pas la moitié de la classe présente.</p>
+      </article>
+      <article class="piege">
+        <h3>Un envoi se range par le module, pas par le thème</h3>
+        <p>Il se rattache au module d'où il part. Un texte déposé dans un module apparaîtra
+          sous ce module même si son sujet ressemble à un autre.</p>
+      </article>
+    </div>
+  </section>
+
+  <section>
+    <h2>L'aide-mémoire</h2>
+    <p class="sec-lead">À garder sous la main : la question à gauche, la page à droite.</p>
+    <div class="tableau-boite">
+      <table>
+        <thead>
+          <tr><th>Ce que vous cherchez</th><th>Où c'est</th></tr>
+        </thead>
+        <tbody>
+          <tr><td>Qui a travaillé ce soir, et sur quoi</td>
+              <td>Progression des élèves, période <i>aujourd'hui</i><span class="lien-page">progression.html</span></td></tr>
+          <tr><td>Les enregistrements et les textes reçus</td>
+              <td>Progression, bloc « Ce que les élèves ont envoyé »<span class="lien-page">progression.html</span></td></tr>
+          <tr><td>Ce qui bloque dans le groupe</td>
+              <td>Progression, blocs « Ce qui bloque » et « L'aide et les mini-leçons »<span class="lien-page">progression.html</span></td></tr>
+          <tr><td>Le dossier complet d'une personne</td>
+              <td>Fiche de l'élève<span class="lien-page">fiche-eleve.html?code=XXXXXX</span></td></tr>
+          <tr><td>Un document à imprimer pour une rencontre</td>
+              <td>Fiche de l'élève, puis imprimer<span class="lien-page">fiche-eleve.html?code=XXXXXX</span></td></tr>
+          <tr><td>Le code d'accès d'un élève, ou un nom à corriger</td>
+              <td>Écran Élèves du portail<span class="lien-page">enseignant.html</span></td></tr>
+          <tr><td>La pratique libre avec l'assistant oral</td>
+              <td>Écran Élèves, panneau « Corrige-moi ! »<span class="lien-page">enseignant.html</span></td></tr>
+          <tr><td>Les modules ouverts au groupe et leurs dates</td>
+              <td>Écran Planifier, ou le dernier bloc de la progression<span class="lien-page">enseignant.html</span></td></tr>
+          <tr><td>Qui, dans le centre, ne s'est jamais connecté</td>
+              <td>Les chiffres, vue du centre<span class="lien-page">chiffres.html</span></td></tr>
+          <tr><td>Un groupe qui n'apparaît nulle part</td>
+              <td>Console du réseau, bannière des orphelins<span class="lien-page">reseau.html</span></td></tr>
+          <tr><td>Ce qui reste à produire dans le projet</td>
+              <td>Tableau de bord du projet<span class="lien-page">python3 build/tableau_bord.py --texte</span></td></tr>
+        </tbody>
+      </table>
+    </div>
+  </section>
+
+  <footer>
+    <p>Une page ancienne subsiste, <span class="fichier">lms.html</span> : elle portait les
+      tableaux de groupe avant le portail unifié et n'est plus la voie normale. Si vous y
+      atterrissez par un vieux signet, revenez à l'espace enseignant — tout ce qu'elle montrait
+      est réparti entre l'écran Élèves, la progression et la fiche.</p>
+  </footer>
+
+</div>
+</body>
+</html>
