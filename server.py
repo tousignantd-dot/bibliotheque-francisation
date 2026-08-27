@@ -14,6 +14,7 @@ import mimetypes
 import os
 import shutil
 import threading
+import time
 import cgi
 import smtplib
 from email.message import EmailMessage
@@ -2829,6 +2830,137 @@ def load_analyses_erreurs():
 
 def save_analyses_erreurs(data):
     _save_json(ANALYSES_ERREURS_FILE, data)
+
+
+# ── Conservation limitée ──────────────────────────────────────────────────
+# Rien ne s'effaçait tout seul. Un enseignant peut supprimer un dépôt à la
+# main, et les journaux ont des plafonds, mais l'audio et les productions
+# écrites s'accumulaient sans fin. Conserver un renseignement personnel plus
+# longtemps que sa finalité ne le demande est un défaut en soi, et il ne se
+# règle pas en changeant d'hébergeur.
+#
+# **La durée est une décision, pas un réglage technique**, et elle n'est donc
+# pas devinée ici. Sans `RETENTION_JOURS`, la tâche tourne en OBSERVATION :
+# elle compte ce qu'elle effacerait et l'écrit dans le journal, sans toucher à
+# rien. Poser la variable — `RETENTION_JOURS=180`, par exemple — l'active.
+#
+# Ce qui est purgé est ce que l'élève a produit : ses enregistrements (le
+# fichier autant que la fiche), ses textes, et les analyses de ses erreurs.
+# Ce qui reste est ce qui ne dit rien de personnel : l'avancement dans les
+# modules, les compteurs de « Corrige-moi ! », les signaux d'aide. Purger
+# l'avancement casserait le produit sans rien protéger.
+PURGE_CIBLES = (
+    ("productions orales", "oral"),
+    ("productions écrites", "ecrit"),
+    ("analyses d'erreurs", "analyses"),
+)
+
+
+def _age_en_jours(valeur, maintenant):
+    """Âge d'un horodatage ISO, ou None s'il est absent ou illisible.
+
+    Un enregistrement qu'on ne sait pas dater n'est jamais effacé : devant un
+    doute, on garde. Une purge qui se trompe ne se rattrape pas.
+    """
+    if not valeur:
+        return None
+    try:
+        return (maintenant - datetime.fromisoformat(str(valeur))).days
+    except (ValueError, TypeError):
+        return None
+
+
+def purger_donnees_expirees(jours, appliquer=False):
+    """Efface ce qui dépasse `jours`. Rend le bilan par catégorie.
+
+    `appliquer=False` compte sans rien toucher — c'est le mode d'observation.
+    """
+    maintenant = datetime.now()
+    bilan = {"jours": jours, "applique": bool(appliquer), "fichiers": 0}
+
+    for etiquette, cle in PURGE_CIBLES:
+        if cle == "oral":
+            charger, sauver, champ = load_oral_submissions, save_oral_submissions, "createdAt"
+        elif cle == "ecrit":
+            charger, sauver, champ = load_written_submissions, save_written_submissions, "createdAt"
+        else:
+            charger, sauver, champ = load_analyses_erreurs, save_analyses_erreurs, "timestamp"
+
+        try:
+            entrees = charger()
+        except (OSError, ValueError):
+            bilan[cle] = "illisible"
+            continue
+
+        garder, expirees = [], []
+        for e in entrees:
+            age = _age_en_jours(e.get(champ), maintenant)
+            (expirees if age is not None and age >= jours else garder).append(e)
+
+        bilan[cle] = len(expirees)
+        if not expirees or not appliquer:
+            continue
+
+        # L'audio d'abord : une fiche effacée sans son fichier laisserait la
+        # voix sur le disque en se croyant purgée.
+        for e in expirees:
+            url = e.get("audioUrl", "")
+            if not url:
+                continue
+            try:
+                chemin = STORAGE_DIR / url.lstrip("/")
+                if chemin.exists():
+                    chemin.unlink()
+                    bilan["fichiers"] += 1
+            except OSError:
+                pass
+        try:
+            sauver(garder)
+        except (OSError, ValueError):
+            bilan[cle] = "non écrit"
+
+    return bilan
+
+
+def _boucle_purge():
+    """Passe une fois par jour. Ne fait jamais tomber le serveur."""
+    brut = os.environ.get("RETENTION_JOURS", "").strip()
+    jours, refus = 0, ""
+    if brut:
+        try:
+            jours = int(brut)
+        except ValueError:
+            refus = "ce n'est pas un nombre de jours"
+        else:
+            # Un seuil trop court est presque sûrement une faute de frappe, et
+            # la conséquence serait irréversible. On refuse plutôt qu'effacer.
+            if jours < 30:
+                refus = "moins de 30 jours"
+    if refus:
+        print(f"[purge] RETENTION_JOURS={brut!r} ignoré : {refus} — "
+              f"on reste en observation", flush=True)
+        jours = 0
+    applique = jours > 0
+    if not applique:
+        jours = 180   # l'horizon d'observation, seulement pour compter
+
+    while True:
+        try:
+            b = purger_donnees_expirees(jours, appliquer=applique)
+            mot = "purgé" if applique else "à purger (observation)"
+            print("[purge] {} · oral {} · écrit {} · analyses {} · fichiers {} "
+                  "· seuil {} j".format(mot, b.get("oral"), b.get("ecrit"),
+                                        b.get("analyses"), b["fichiers"], jours),
+                  flush=True)
+        except Exception as e:            # noqa: BLE001 — le serveur prime
+            print(f"[purge] échec sans conséquence : {e}", flush=True)
+        time.sleep(24 * 3600)
+
+
+def demarrer_purge():
+    """Lance la tâche de conservation en arrière-plan, si elle a un sens."""
+    fil = threading.Thread(target=_boucle_purge, name="purge", daemon=True)
+    fil.start()
 
 
 def load_signaux_aide():
@@ -19760,4 +19892,7 @@ if __name__ == "__main__":
     with ThreadingServer(("", PORT), Handler) as httpd:
         print(f"Serveur démarré sur http://localhost:{PORT}", flush=True)
         print(f"STORAGE_DIR = {STORAGE_DIR}", flush=True)
+        # La conservation limitée tourne à part, une fois par jour. Sans
+        # RETENTION_JOURS elle se contente de compter — voir purger_donnees_expirees.
+        demarrer_purge()
         httpd.serve_forever()
