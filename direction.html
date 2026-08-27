@@ -90,7 +90,8 @@
              border-radius: var(--r-pill); overflow: hidden; }
     .dr-ia button { font: inherit; font-size: var(--fs-meta); font-weight: var(--fw-bold);
                     padding: var(--sp-1) var(--sp-2); border: 0; cursor: pointer;
-                    background: var(--surface-card); color: var(--text-muted); }
+                    background: var(--surface-card); color: var(--text-muted);
+                    white-space: nowrap; }
     .dr-ia button + button { border-left: 1px solid var(--border); }
     .dr-ia button:hover:not([aria-pressed="true"]) { color: var(--text-strong);
                                                      background: var(--surface-sunken); }
@@ -238,10 +239,16 @@
     }
 
     /* ── Le bouton IA ────────────────────────────────────────────────────
-       Trois états, et l'état effectif écrit à côté : « hérité » ne dit rien
-       tout seul, il faut savoir de qui. */
+       Trois états, et l'état effectif écrit à côté : « non réglé » ne dit rien
+       tout seul, il faut savoir qui décide à la place. */
     function boutonIA(ligne, peut) {
-      var etats = [['herite', 'Hérité'], ['autorisee', 'Autorisée'],
+      /* « Hérité » est le mot de l'arbre des organisations, pas celui d'une
+         direction : il oblige à demander « hérité de quoi ? ». Le bouton dit
+         donc ce que la personne fait — elle ne règle rien — et la ligne du
+         dessous dit d'où vient la décision, en toutes lettres. La valeur
+         envoyée au serveur reste `herite` : c'est l'étiquette qui change,
+         pas la donnée. */
+      var etats = [['herite', 'Non réglé'], ['autorisee', 'Autorisée'],
                    ['interdite', 'Interdite']];
       var html = '<div class="dr-ia" role="group" aria-label="Assistant IA">';
       etats.forEach(function (e) {
@@ -253,8 +260,8 @@
       html += '</div>';
       var d = ligne.iaDecidePar || {};
       var qui = ligne.ia === 'herite'
-        ? (d.nom ? 'hérité de ' + d.nom : 'aucun réglage')
-        : 'réglé sur la personne';
+        ? (d.nom ? 'suit ' + d.nom : 'personne n\'a rien réglé')
+        : 'réglé pour cette personne';
       html += '<span class="dr-second">' +
               (ligne.iaEffective ? '✓ active' : '✕ éteinte') + ' · ' + ech(qui) +
               '</span>';
@@ -352,9 +359,9 @@
           '<td class="num">' + c.eleves + '</td>' +
           '<td>' + etat(c.iaEffective, 'Active', 'Éteinte') +
             '<span class="dr-second">' +
-            ech(c.ia === 'herite' ? (c.iaDecidePar ? 'hérité de ' + c.iaDecidePar
-                                                   : 'aucun réglage')
-                                  : 'réglé sur le centre') + '</span></td>' +
+            ech(c.ia === 'herite' ? (c.iaDecidePar ? 'suit ' + c.iaDecidePar
+                                                   : 'personne n\'a rien réglé')
+                                  : 'réglé pour ce centre') + '</span></td>' +
           '<td class="num">' + argent(c.coutUsd) + '</td>' +
           '</tr>';
       });
@@ -538,7 +545,8 @@
             await recharger();
             message(nom + ' — assistant ' +
                     (d.iaEffective ? 'actif' : 'éteint') +
-                    (d.ia === 'herite' ? ' (hérité)' : ' (réglé sur la personne)') + '.');
+                    (d.ia === 'herite' ? ' (non réglé pour cette personne)'
+                                        : ' (réglé pour cette personne)') + '.');
           } catch (e) { message(e.message, true); }
         });
       });
