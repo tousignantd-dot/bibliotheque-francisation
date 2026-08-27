@@ -247,6 +247,7 @@ journal_api.configurer(APPELS_API_FILE)
 MODELE_CORRECTION   = "claude-haiku-4-5-20251001"   # les dix routes de correction
 MODELE_CONVERSATION = "claude-opus-5"               # jeu de rôle et assistant
 MODELE_VOIX         = "azure-fr-CA-neural"          # Azure Speech, fr-CA
+MODELE_TRANSCRIPTION = "azure-stt-fr-CA"            # Azure Speech, sens inverse
 # Une séance d'élève se ferme après trente minutes sans événement. Sans cette
 # borne, un onglet resté ouvert la nuit gonflerait les minutes de tout un
 # centre. Un événement isolé compte pour une minute : zéro effacerait un
@@ -2720,6 +2721,120 @@ def _synthese_azure(role, texte):
         raise _VoixIndisponible(f"HTTP {e.code}{indice} {detail}", e.code)
     except (urllib.error.URLError, TimeoutError) as e:
         raise _VoixIndisponible(f"injoignable : {e}")
+
+
+class _TranscriptionIndisponible(Exception):
+    """La transcription a échoué. `http` porte le code quand il y en a un."""
+
+    def __init__(self, message, http=None):
+        super().__init__(message)
+        self.http = http
+
+
+def _transcription_azure(audio_bytes, nom="production.webm"):
+    """Le texte d'un enregistrement d'élève, par Azure Speech. Rend une chaîne.
+
+    Pourquoi ici et non dans le navigateur : la reconnaissance du navigateur
+    n'est pas un moteur local, et la production orale est précisément le cas
+    où elle ne peut pas l'être — le modèle de parole suivie n'existe pas hors
+    ligne. Le confinement lui interdit donc d'écouter, et l'élève se retrouvait
+    à taper son texte. Or le fichier nous arrive déjà : le transcrire ici
+    remplace un envoi chez Google par un envoi à Toronto, sur une ressource
+    déjà payée.
+
+    « Fast transcription » et non la route « short audio » : celle-ci s'arrête
+    à soixante secondes, et une production orale les dépasse sans effort.
+
+    Comme pour la synthèse, la ressource demande **deux** variables. Une clé
+    juste avec la mauvaise région rend un 401 dont le message ne dit pas que
+    c'est la cause — d'où le rappel dans l'erreur.
+    """
+    cle = os.environ.get("AZURE_SPEECH_KEY", "").strip()
+    region = os.environ.get("AZURE_SPEECH_REGION", "").strip() or "canadacentral"
+    if not cle:
+        raise _TranscriptionIndisponible("AZURE_SPEECH_KEY absente de l'environnement")
+
+    limite = "----francisation" + uuid.uuid4().hex
+    corps = b"".join([
+        ("--%s\r\n" % limite).encode("utf-8"),
+        b'Content-Disposition: form-data; name="definition"\r\n',
+        b"Content-Type: application/json\r\n\r\n",
+        json.dumps({"locales": ["fr-CA"]}).encode("utf-8"), b"\r\n",
+        ("--%s\r\n" % limite).encode("utf-8"),
+        ('Content-Disposition: form-data; name="audio"; filename="%s"\r\n'
+         % nom.replace('"', "")).encode("utf-8"),
+        b"Content-Type: application/octet-stream\r\n\r\n",
+        audio_bytes, b"\r\n",
+        ("--%s--\r\n" % limite).encode("utf-8"),
+    ])
+    req = urllib.request.Request(
+        "https://%s.api.cognitive.microsoft.com/speechtotext/transcriptions"
+        ":transcribe?api-version=2024-11-15" % region,
+        data=corps,
+        headers={
+            "Ocp-Apim-Subscription-Key": cle,
+            "Content-Type": "multipart/form-data; boundary=%s" % limite,
+            "Accept": "application/json",
+            "User-Agent": "francisation",
+        },
+        method="POST",
+    )
+    try:
+        with urllib.request.urlopen(req, timeout=90) as resp:
+            data = json.loads(resp.read().decode("utf-8"))
+    except urllib.error.HTTPError as e:
+        detail = e.read().decode("utf-8", errors="replace")[:200]
+        indice = (" — la région « %s » ne correspond peut-être pas à la "
+                  "ressource" % region) if e.code == 401 else ""
+        raise _TranscriptionIndisponible("HTTP %s%s %s" % (e.code, indice, detail),
+                                         e.code)
+    except (urllib.error.URLError, TimeoutError) as e:
+        raise _TranscriptionIndisponible("injoignable : %s" % e)
+    except (ValueError, UnicodeDecodeError) as e:
+        raise _TranscriptionIndisponible("réponse illisible : %s" % e)
+
+    phrases = data.get("combinedPhrases") or []
+    return " ".join(p.get("text", "") for p in phrases).strip()
+
+
+def _transcrire_en_arriere_plan(sub_id, audio_bytes, nom, eleve_id, groupe_id):
+    """Transcrit après coup et complète la fiche du dépôt.
+
+    Hors du verrou, et hors de la réponse à l'élève. `_handle_oral_submit`
+    tient le verrou des données pendant tout son geste : y attendre Azure
+    bloquerait les écritures de toute la classe pendant plusieurs secondes.
+    Le dépôt est déjà enregistré et visible par l'enseignant ; la
+    transcription s'y ajoute quand elle arrive — ou jamais, sans que rien ne
+    soit perdu ni que personne n'attende.
+    """
+    try:
+        texte = _transcription_azure(audio_bytes, nom)
+    except _TranscriptionIndisponible as e:
+        print("[WARN] transcription Azure : %s" % e, flush=True)
+        journal_api.noter("transcription", MODELE_TRANSCRIPTION, eleve_id,
+                          groupe_id, statut="echec", http=getattr(e, "http", None))
+        return
+    except Exception as e:                      # noqa: BLE001 — le dépôt prime
+        print("[WARN] transcription : %s" % e, flush=True)
+        return
+
+    journal_api.noter("transcription", MODELE_TRANSCRIPTION, eleve_id,
+                      groupe_id, statut="ok")
+    if not texte:
+        return
+    try:
+        with donnees_verrouillees():
+            subs = load_oral_submissions()
+            for enr in subs:
+                # « et pas déjà transcrit » : l'enseignant a pu corriger le
+                # texte pendant l'appel, et sa version prime sur la machine.
+                if enr.get("id") == sub_id and not enr.get("transcription"):
+                    enr["transcription"] = texte[:2000]
+                    enr["transcriptionPar"] = "azure"
+                    save_oral_submissions(subs)
+                    break
+    except (OSError, ValueError) as e:
+        print("[WARN] transcription non enregistrée : %s" % e, flush=True)
 
 
 def voix_cache_chemin(voix, texte):
@@ -19127,6 +19242,16 @@ class Handler(http.server.SimpleHTTPRequestHandler):
         subs = load_oral_submissions()
         subs.append(record)
         save_oral_submissions(subs)
+
+        # Le navigateur ne transcrit plus : hors ligne, il ne sait pas faire de
+        # la parole suivie, et le confinement lui interdit de l'envoyer
+        # ailleurs. Le fichier est chez nous — on le transcrit chez nous.
+        if not record["transcription"]:
+            threading.Thread(
+                target=_transcrire_en_arriere_plan,
+                args=(sub_id, audio_bytes, audio_name,
+                      student.get("id"), student.get("groupId")),
+                name="transcription", daemon=True).start()
 
         json_response(self, {"success": True, "id": sub_id})
 

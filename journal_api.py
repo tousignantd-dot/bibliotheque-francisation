@@ -81,6 +81,7 @@ FOURNISSEURS = {
     "claude-opus-5": "anthropic",
     "eleven_multilingual_v2": "elevenlabs",
     "azure-fr-CA-neural": "azure",
+    "azure-stt-fr-CA": "azure",
 }
 
 # ── Le fichier ───────────────────────────────────────────────────────────
