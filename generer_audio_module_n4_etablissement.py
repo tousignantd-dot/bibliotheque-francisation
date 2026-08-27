@@ -7,8 +7,6 @@ se fait plus à l'`atempo` après coup mais à la synthèse, par `<prosody rate>
 Le raisonnement pédagogique du texte reste valable ; les moyens ont changé.
 Voir `build/azure_voix.py`.
 
-import sys as _sys, pathlib as _pl
-_sys.path.insert(0, str(_pl.Path(__file__).resolve().parent / 'build'))
 Générateur d'audio — module « Prévenir le centre »
 (module-n4-etablissement, niveau 4, activité 108).
 
@@ -76,6 +74,11 @@ insister ne le recharge pas.
 
 Usage :  python3 generer_audio_module_n4_etablissement.py [--force] [--only prefixe,...]
 """
+
+# Ces deux lignes étaient prisonnières de la docstring — donc jamais
+# exécutées. Le défaut ne se voyait pas tant que rien n'en dépendait.
+import sys as _sys, pathlib as _pl
+_sys.path.insert(0, str(_pl.Path(__file__).resolve().parent / 'build'))
 import json
 import os
 import re

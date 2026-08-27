@@ -85,9 +85,25 @@ def classer(f):
     if voix and ENSEIGNANTE not in voix.group(1):
         return "écarté", None, "sons dans une autre voix (%s)" % voix.group(1)[:12]
     if "line_" not in t:
-        return "lancer", [], "aucune réplique, tout est en voix enseignante"
+        # `--force` est indispensable ici, et son absence est **silencieuse** :
+        # ces générateurs sautent les fichiers déjà présents, or les MP3
+        # d'ElevenLabs sont précisément déjà présents. Sans lui, dix modules
+        # ont rapporté « 0 extrait · succès » en gardant leur ancien audio.
+        arg = ["--force"] if '"--force" in sys.argv' in t else []
+        return "lancer", arg, "aucune réplique, tout est en voix enseignante"
     if "--only" in t:
-        return "lancer", ["--only", "sons"], "mixte, restreint aux sons"
+        # `--force` aussi pour les mixtes, et ce n'est pas une redondance :
+        # dans 40 générateurs le test s'écrit `exists() and not force` sans
+        # `and not only`, si bien que `--only sons` **saute** les MP3 déjà en
+        # place — c'est-à-dire ceux d'ElevenLabs. Trois modules (n3-horaire,
+        # n3-electro, n3-loisirs) ont ainsi rapporté « 0 extrait · succès » en
+        # gardant leur ancien audio. Le commentaire de ces générateurs le dit :
+        # « `--only` ne veut pas dire refais-les ». Le filtre `--only`
+        # s'applique avant le test, donc `--force` ne déborde pas sur les
+        # répliques de dialogue.
+        arg = ["--only", "sons"] + (
+            ["--force"] if '"--force" in sys.argv' in t else [])
+        return "lancer", arg, "mixte, restreint aux sons"
     return "écarté", None, "mixte sans --only, on ne sait pas isoler les sons"
 
 

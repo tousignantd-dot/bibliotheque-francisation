@@ -79,6 +79,16 @@ def main():
     print("🎙️  Générateur d'audio — Des publicités efficaces\n")
     api_key = os.environ.get("AZURE_SPEECH_KEY", "").strip()
     if not api_key:
+        # Repli sur `~/Claude/.env`, où vit la clé Azure avec les autres clés
+        # de génération. Sans ça, ces générateurs de forme ancienne — qui ne
+        # lisaient que l'environnement — échouaient dès qu'ils étaient lancés
+        # autrement qu'à la main dans un shell où la clé était exportée.
+        _env = Path.home() / "Claude" / ".env"
+        if _env.exists():
+            for _l in _env.read_text(encoding="utf-8").splitlines():
+                if _l.strip().startswith("AZURE_SPEECH_KEY="):
+                    api_key = _l.split("=", 1)[1].strip().strip("\"'")
+    if not api_key:
         print("❌ AZURE_SPEECH_KEY absente (source .env)")
         sys.exit(1)
 

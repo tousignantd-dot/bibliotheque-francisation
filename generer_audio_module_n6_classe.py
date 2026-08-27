@@ -114,8 +114,13 @@ VOIX = {
 # Quatre personnages pour trois timbres. Deux peuvent partager une voix
 # seulement s'ils ne se répondent jamais dans un même dialogue ; c'est
 # vérifié dans le docstring.
+# MILAGROS s'appelait MARISOL jusqu'au commit ff45f091, qui l'a renommée dans
+# `dialogues.js` — quinze répliques, texte identique — sans toucher à cette
+# table. Le générateur refusait donc de démarrer depuis ce jour : il vérifie
+# que chaque personnage a une voix, et s'arrête net sinon. Elle garde la voix
+# de Marisol, la seule féminine encore libre du module.
 VOIX_PERSO = {
-    "MARISOL":  "feminin_2",
+    "MILAGROS": "feminin_2",
     "MIREILLE": "enseignante",
     "DANIÈLE":  "enseignante",
     "YOUSSEF":  "masculin_1",
