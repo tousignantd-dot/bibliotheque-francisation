@@ -241,21 +241,48 @@
     /* Le mur des questions */
     .dr-mur { display: grid; grid-template-columns: repeat(auto-fit, minmax(330px, 1fr));
               gap: var(--sp-4); }
+
+    /* Le mur des exercices. L'enseignante lit d'abord l'exercice — un chiffre,
+       une barre — et n'ouvre le détail que si ce chiffre l'inquiète. Les
+       questions restent les mêmes cartes : dépliées, elles reforment le mur. */
+    .dr-exos { display: flex; flex-direction: column; gap: var(--sp-4); }
+    .dr-ex { background: var(--surface-card); border: 1px solid var(--border);
+             border-radius: var(--r-lg, 18px); box-shadow: var(--sh-card); }
+    .dr-ex--alerte { border-color: var(--warn-line); box-shadow: 0 0 0 3px var(--warn-bg); }
+    .dr-ex > summary { list-style: none; cursor: pointer; padding: var(--sp-5);
+                       display: flex; flex-direction: column; gap: var(--sp-3); }
+    .dr-ex > summary::-webkit-details-marker { display: none; }
+    .dr-ex > summary:focus-visible { outline: var(--focus-width, 3px) solid var(--accent);
+                                     outline-offset: 2px; border-radius: var(--r-lg, 18px); }
+    .dr-ex-tete { display: flex; align-items: center; gap: var(--sp-3); }
+    .dr-ex-titre { font-size: var(--fs-body); font-weight: var(--fw-black);
+                   color: var(--text-strong); margin: 0; }
+    .dr-plier { display: flex; align-items: center; gap: var(--sp-2); margin: 0;
+                font-size: var(--fs-ui-sm); font-weight: var(--fw-bold);
+                color: var(--accent-ink); }
+    .dr-plier i { font-style: normal; transition: transform var(--dur, 140ms) var(--ease, ease); }
+    .dr-ex[open] .dr-plier i { transform: rotate(90deg); }
+    .dr-ex .dr-plier .dr-ferme, .dr-ex[open] .dr-plier .dr-ouvre { display: none; }
+    .dr-ex[open] .dr-plier .dr-ferme { display: inline; }
+    .dr-ex-corps { padding: 0 var(--sp-5) var(--sp-5); }
+    .dr-ex-corps .dr-q { background: var(--surface-sunken); }
     .dr-q { background: var(--surface-card); border: 1px solid var(--border);
             border-radius: var(--r-lg, 18px); padding: var(--sp-5);
             box-shadow: var(--sh-card); display: flex; flex-direction: column; gap: var(--sp-3); }
     .dr-q--alerte { border-color: var(--warn-line); box-shadow: 0 0 0 3px var(--warn-bg); }
-    .dr-q-tete { display: flex; align-items: flex-start; gap: var(--sp-3); }
+    .dr-q-tete { display: flex; align-items: center; gap: var(--sp-3); }
+    .dr-q-txt { min-width: 0; }
     .dr-type { font-size: 11px; font-weight: var(--fw-black); letter-spacing: .1em;
                text-transform: uppercase; border-radius: 999px; padding: 4px 10px;
-               white-space: nowrap; background: var(--accent-soft); color: var(--accent-ink); }
+               background: var(--accent-soft); color: var(--accent-ink);
+               min-width: 0; overflow-wrap: anywhere; }
     .dr-num { font-size: var(--fs-meta); font-weight: var(--fw-bold); letter-spacing: .08em;
               text-transform: uppercase; color: var(--text-muted); margin: 0 0 2px; }
     .dr-enonce { font-size: var(--fs-body-sm); font-weight: var(--fw-bold);
-                 color: var(--text-strong); margin: 0; }
-    .dr-pct { margin-left: auto; font-size: 36px; font-weight: var(--fw-black);
-              line-height: .9; color: var(--text-strong); font-variant-numeric: tabular-nums;
-              white-space: nowrap; }
+                 color: var(--text-strong); margin: 0; overflow-wrap: anywhere; }
+    .dr-pct { margin-left: auto; flex: 0 0 auto; font-size: 32px;
+              font-weight: var(--fw-black); line-height: 1; color: var(--text-strong);
+              font-variant-numeric: tabular-nums; white-space: nowrap; }
     .dr-pct small { font-size: var(--fs-ui-sm); }
     .dr-pct--ok { color: var(--ok-ink); } .dr-pct--warn { color: var(--warn-ink); }
     .dr-pct--no { color: var(--no-ink); } .dr-pct--vide { color: var(--text-muted); }
@@ -649,8 +676,6 @@
   /** Une zone en carte. La couleur ne dit jamais seule : la barre est doublée
       d'une légende chiffrée, et chaque réponse porte son glyphe. */
   function drCarteZone(ex, z) {
-    const total = Math.max(1, z.premierCoup + z.apresEssai + z.encoreFaux + z.sansReponse);
-    const part = n => (n / total * 100).toFixed(1) + '%';
     const cls = drPctClasse(z.pct);
     const alerte = z.repondu >= 3 && z.pct !== null && z.pct < 50;
     const reponses = (z.reponses || []).slice(0, 5).map(r => `
@@ -663,29 +688,75 @@
     return `<article class="dr-q${alerte ? ' dr-q--alerte' : ''}">
       <div class="dr-q-tete">
         <span class="dr-type">${esc(DR_TYPES[z.type] || 'Question')}</span>
-        <div>
-          <p class="dr-num">${esc(ex.num || ex.exo)}${ex.titre ? ' · ' + esc(ex.titre) : ''}</p>
-          <p class="dr-enonce">${esc(z.enonce || z.zone)}</p>
-        </div>
         <span class="dr-pct dr-pct--${cls}">${z.pct === null ? '—' : z.pct + '<small>%</small>'}</span>
       </div>
-      <div class="dr-seg" role="img" aria-label="${z.premierCoup} du premier coup, ${z.apresEssai} après un essai, ${z.encoreFaux} encore faux, ${z.sansReponse} sans réponse">
-        <i class="dr-s1" style="width:${part(z.premierCoup)}"></i>
-        <i class="dr-s2" style="width:${part(z.apresEssai)}"></i>
-        <i class="dr-s3" style="width:${part(z.encoreFaux)}"></i>
-        <i class="dr-s4" style="width:${part(z.sansReponse)}"></i>
+      <div class="dr-q-txt">
+        <p class="dr-num">${esc(ex.num || ex.exo)}${ex.titre ? ' · ' + esc(ex.titre) : ''}</p>
+        <p class="dr-enonce">${esc(z.enonce || z.zone)}</p>
       </div>
-      <p class="dr-leg">
-        <span><i class="dr-s1"></i>1<sup>er</sup> coup <b>${z.premierCoup}</b></span>
-        <span><i class="dr-s2"></i>après un essai <b>${z.apresEssai}</b></span>
-        <span><i class="dr-s3"></i>encore faux <b>${z.encoreFaux}</b></span>
-        <span><i class="dr-s4"></i>sans réponse <b>${z.sansReponse}</b></span>
-      </p>
+      ${drBarre(z, `${z.premierCoup} du premier coup, ${z.apresEssai} après un essai, ${z.encoreFaux} encore faux, ${z.sansReponse} sans réponse`)}
       ${reponses ? `<ul class="dr-rep">${reponses}</ul>` : ''}
       ${alerte ? `<p class="dr-alerte"><span aria-hidden="true">▲</span> Moins d’une réponse
         juste sur deux. À reprendre au tableau.</p>` : ''}
       ${!z.repondu ? '<p class="dr-note">Personne n’a encore répondu à cette question.</p>' : ''}
     </article>`;
+  }
+
+  /** La barre à quatre segments et sa légende chiffrée. Une carte de zone et
+      un bilan d'exercice comptent la même chose ; ils la dessinent pareil. */
+  function drBarre(n, etiquette) {
+    const total = Math.max(1, n.premierCoup + n.apresEssai + n.encoreFaux + n.sansReponse);
+    const part = v => (v / total * 100).toFixed(1) + '%';
+    return `<div class="dr-seg" role="img" aria-label="${etiquette}">
+        <i class="dr-s1" style="width:${part(n.premierCoup)}"></i>
+        <i class="dr-s2" style="width:${part(n.apresEssai)}"></i>
+        <i class="dr-s3" style="width:${part(n.encoreFaux)}"></i>
+        <i class="dr-s4" style="width:${part(n.sansReponse)}"></i>
+      </div>
+      <p class="dr-leg">
+        <span><i class="dr-s1"></i>1<sup>er</sup> coup <b>${n.premierCoup}</b></span>
+        <span><i class="dr-s2"></i>après un essai <b>${n.apresEssai}</b></span>
+        <span><i class="dr-s3"></i>encore faux <b>${n.encoreFaux}</b></span>
+        <span><i class="dr-s4"></i>sans réponse <b>${n.sansReponse}</b></span>
+      </p>`;
+  }
+
+  /** Un exercice, replié sur ses questions. Le repli est la décision : trente
+      cartes de zone d'affilée, on ne voyait plus quel exercice avait mal
+      passé. Le bilan tient sur une ligne ; le détail attend qu'on le demande. */
+  function drCarteExercice(ex) {
+    const zones = ex.zones || [];
+    const n = zones.reduce((a, z) => ({
+      premierCoup: a.premierCoup + z.premierCoup,
+      apresEssai: a.apresEssai + z.apresEssai,
+      encoreFaux: a.encoreFaux + z.encoreFaux,
+      sansReponse: a.sansReponse + z.sansReponse,
+    }), { premierCoup: 0, apresEssai: 0, encoreFaux: 0, sansReponse: 0 });
+    const repondu = zones.reduce((a, z) => a + z.repondu, 0);
+    const pct = ex.pct === undefined ? null : ex.pct;
+    const cls = drPctClasse(pct);
+    const alerte = repondu >= 3 && pct !== null && pct < 50;
+    const type = DR_TYPES[ex.type] || 'Exercice';
+    const titre = `${esc(ex.num || ex.exo)}${ex.titre ? ' · ' + esc(ex.titre) : ''}`;
+
+    return `<details class="dr-ex${alerte ? ' dr-ex--alerte' : ''}"${alerte ? ' open' : ''}>
+      <summary>
+        <div class="dr-ex-tete">
+          <span class="dr-type">${esc(type)}</span>
+          <span class="dr-pct dr-pct--${cls}">${pct === null ? '—' : pct + '<small>%</small>'}</span>
+        </div>
+        <p class="dr-ex-titre">${titre}</p>
+        ${drBarre(n, `${n.premierCoup} du premier coup, ${n.apresEssai} après un essai, ${n.encoreFaux} encore faux, ${n.sansReponse} sans réponse`)}
+        ${alerte ? `<p class="dr-alerte"><span aria-hidden="true">▲</span> Moins d’une réponse
+          juste sur deux dans cet exercice. À reprendre au tableau.</p>` : ''}
+        <p class="dr-plier"><i aria-hidden="true">▸</i>
+          <span class="dr-ouvre">Voir les ${pluriel(zones.length, 'question')}</span>
+          <span class="dr-ferme">Masquer les questions</span></p>
+      </summary>
+      <div class="dr-ex-corps">
+        <div class="dr-mur">${zones.map(z => drCarteZone(ex, z)).join('')}</div>
+      </div>
+    </details>`;
   }
 
   /** Les textes envoyés pour ce module, dans le mur. Ce sont les mêmes envois
@@ -782,12 +853,12 @@
         'Réponses justes du premier coup, sur les questions déjà tentées. Une case pâle veut dire « n’a rien envoyé encore ».',
         `<div class="dr-classe">${grille}</div>`)}
 
-      ${section('Question par question',
+      ${section('Exercice par exercice',
         zones.length
-          ? `${pluriel(zones.length, 'question')} ${DIRECT_SECTION ? 'dans cette section' : 'dans ce module'}. La carte qui passe sous 50 % se marque elle-même.`
+          ? `${pluriel(exos.length, 'exercice')} · ${pluriel(zones.length, 'question')} ${DIRECT_SECTION ? 'dans cette section' : 'dans ce module'}. Dépliez un exercice pour voir ses questions ; celui qui passe sous 50 % s’ouvre de lui-même.`
           : 'Rien encore : personne n’a répondu à une question de cette section.',
         zones.length
-          ? `<div class="dr-mur">${zones.map(({ ex, z }) => drCarteZone(ex, z)).join('')}</div>`
+          ? `<div class="dr-exos">${exos.map(ex => drCarteExercice(ex)).join('')}</div>`
           : `<p class="pg-note">Les cartes paraissent dès la première réponse envoyée. Rien ne
              remonte d’un module ouvert hors du portail — sans code d’élève, le module ne
              rapporte pas.</p>`)}
