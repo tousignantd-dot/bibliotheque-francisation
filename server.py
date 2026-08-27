@@ -1718,6 +1718,51 @@ def ia_pour_eleve(student):
     return ia_effective(racine[0]["id"]) if racine else (True, None)
 
 
+# ── Le confinement de la reconnaissance vocale ────────────────────────────
+# La reconnaissance du navigateur n'est pas un moteur local : Chrome expédie
+# l'audio capté à ses serveurs, Safari aux siens. Ce flux ne nous traverse pas
+# — ni notre serveur, ni nos clés — donc, contrairement aux routes d'IA, on ne
+# peut pas l'arrêter à l'arrivée. Tout ce qu'on peut faire est dire à la page
+# d'exiger le mode « sur l'appareil » avant d'ouvrir le micro.
+#
+# Le réglage vit sur l'arbre, comme celui de l'IA, mais **sur les
+# organisations seulement**. Le bouton par enseignant a du sens pour l'IA, qui
+# se décide au cas par cas ; le confinement de la voix est une position de
+# centre, et la démultiplier par personne inviterait à l'ouvrir par commodité.
+VOIX_ETATS = ("herite", "stricte", "souple")
+
+
+def voix_effective(org_id, orgs=None):
+    """Dit si la voix doit rester sur l'appareil. Rend (stricte, décideur).
+
+    Même remontée que `ia_effective` : le PREMIER réglage explicite tranche.
+
+    Le défaut, lui, est l'inverse, et c'est voulu. `ia_effective` rend
+    « autorisée » faute de réglage, pour qu'une mise en service n'éteigne rien
+    au passage. Ici, rendre « souple » par défaut rouvrirait le flux que les
+    modules viennent de fermer, et le rouvrirait en silence. Un réglage absent
+    doit laisser la voix là où elle est.
+    """
+    for noeud in org_chain(org_id, orgs):
+        if noeud.get("voix") in ("stricte", "souple"):
+            return noeud["voix"] == "stricte", noeud
+    return True, None
+
+
+def voix_pour_eleve(student):
+    """(stricte, décideur) pour un élève, par le centre de son groupe.
+
+    Un groupe pas encore rattaché retombe sur le réseau — et, faute de réseau,
+    sur le confinement. Un rattachement oublié ne doit pas ouvrir le micro.
+    """
+    groupe = groupe_de_eleve(student)
+    centre = (groupe or {}).get("centreId")
+    if centre is not None:
+        return voix_effective(centre)
+    racine = orgs_of_type("reseau")
+    return voix_effective(racine[0]["id"]) if racine else (True, None)
+
+
 def org_subtree_ids(org_id, orgs=None):
     """Les identifiants du nœud et de toute sa descendance."""
     orgs = load_organisations() if orgs is None else orgs
@@ -2191,6 +2236,10 @@ def arbre_pour_lecture():
         "organisations": [
             {**o,
              "ia": o.get("ia", "herite"),
+             "voix": o.get("voix", "herite"),
+             "voixEffective": ("stricte" if voix_effective(o["id"], orgs)[0]
+                               else "souple"),
+             "voixDecidePar": (voix_effective(o["id"], orgs)[1] or {}).get("nom", ""),
              # L'état effectif est calculé ici, pas dans la page : l'héritage
              # est une règle du serveur, et deux calculs de la même règle
              # finissent toujours par diverger.
@@ -15403,11 +15452,18 @@ class Handler(http.server.SimpleHTTPRequestHandler):
         code = params.get("code", [""])[0].strip().upper()
         eleve = validate_student_code(code)
         if not eleve:
-            json_response(self, {"ia": False, "raison": "code inconnu"})
+            json_response(self, {"ia": False, "voixStricte": True,
+                                 "raison": "code inconnu"})
             return
         autorisee, decideur = ia_pour_eleve(eleve)
+        # Le confinement de la voix voyage sur la même question : le module la
+        # pose déjà une fois au chargement, et en ajouter une seconde ferait
+        # deux allers-retours pour un seul réglage.
+        stricte, qui_voix = voix_pour_eleve(eleve)
         json_response(self, {"ia": bool(autorisee),
-                             "decidePar": (decideur or {}).get("nom", "")})
+                             "decidePar": (decideur or {}).get("nom", ""),
+                             "voixStricte": bool(stricte),
+                             "voixDecidePar": (qui_voix or {}).get("nom", "")})
 
     def _handle_student_sections(self, params):
         """Ce qui est ouvert, pour le module lui-même : c'est lui qui verrouille
@@ -15927,11 +15983,21 @@ class Handler(http.server.SimpleHTTPRequestHandler):
                 json_response(self, {"error": "Le réseau tranche : il n'hérite de personne"}, 400)
                 return
             org["ia"] = etat
+        if "voix" in body:
+            etat = (body.get("voix") or "herite").strip()
+            if etat not in VOIX_ETATS:
+                json_response(self, {"error": "État de voix inconnu"}, 400)
+                return
+            if etat == "herite" and org.get("type") == "reseau":
+                json_response(self, {"error": "Le réseau tranche : il n'hérite de personne"}, 400)
+                return
+            org["voix"] = etat
         save_organisations(orgs)
         journal(fondateur, "organisation.modifiee", org_id,
                 {"avant": avant, "apres": {"nom": org.get("nom"),
                                            "actif": org.get("actif", True),
-                                           "ia": org.get("ia", "herite")}})
+                                           "ia": org.get("ia", "herite"),
+                                           "voix": org.get("voix", "herite")}})
         json_response(self, {"success": True, "organisation": org})
 
     def _handle_acces_add(self):
@@ -16403,6 +16469,9 @@ class Handler(http.server.SimpleHTTPRequestHandler):
                 "eleves": sum(1 for e in eleves if e.get("groupId") in ids),
                 "ia": o.get("ia", "herite"),
                 "iaEffective": bool(autorisee),
+                "voix": o.get("voix", "herite"),
+                "voixEffective": ("stricte" if voix_effective(o["id"], orgs)[0]
+                                  else "souple"),
                 "iaDecidePar": (decideur or {}).get("nom", ""),
                 "coutUsd": round(cout, 4),
             })

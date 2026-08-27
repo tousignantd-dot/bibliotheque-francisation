@@ -286,6 +286,12 @@ body.sans-ia .sans-ia-mot {
          serveur de toute façon, et replier sur un délai d'attente ferait
          clignoter le module d'une classe à l'autre. */
       if (data && data.ia === false) replier();
+      /* La voix, elle, va dans l'autre sens. Ce flux-là ne traverse pas notre
+         serveur — le navigateur parle directement à son éditeur — donc rien
+         ne le rattrape à l'arrivée. La page part confinée, et seule une
+         réponse explicite « souple » la relâche : un silence, une panne ou un
+         module ouvert hors du portail gardent la voix sur l'appareil. */
+      if (data && data.voixStricte === false) window.RECO_STRICTE = false;
     } catch (e) { /* on laisse le module tel quel */ }
   }
 

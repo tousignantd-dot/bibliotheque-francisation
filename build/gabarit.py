@@ -773,12 +773,18 @@ HELPER_RECO = """// ── RECONNAISSANCE VOCALE : GARDE-FOU « SUR L'APPAREIL �
 // interdit tout envoi réseau. TOUT passe par reconnaissanceLocale() — aucun
 // « new SpeechRecognition() » ne doit reparaître ailleurs dans ce fichier.
 //
-// RECO_STRICTE=true : pas de reconnaissance locale possible ⇒ pas de
-// reconnaissance du tout. C'est le défaut, parce qu'un repli silencieux vers
-// le nuage annulerait exactement ce qu'on protège ici. Un centre qui préfère
-// le service au confinement met la constante à false ; la voix repart alors
-// chez l'éditeur du navigateur, en connaissance de cause.
-const RECO_STRICTE = true;
+// Strict = pas de reconnaissance locale possible ⇒ pas de reconnaissance du
+// tout. Un centre qui préfère le service au confinement peut le lever, et la
+// voix repart alors chez l'éditeur du navigateur, en connaissance de cause.
+//
+// La décision vient du SERVEUR, pas du build : la greffe « sans IA » pose
+// window.RECO_STRICTE au chargement, d'après le centre de l'élève. Tant que
+// la réponse n'est pas là — et si elle n'arrive jamais — on reste strict.
+// C'est le contraire du choix fait pour les routes d'IA, qui ne se replient
+// pas sur une panne de réseau : celles-là sont gardées côté serveur de toute
+// façon, alors que ce flux-ci ne le traverse pas. Un silence ne doit pas
+// ouvrir le micro.
+if (window.RECO_STRICTE === undefined) window.RECO_STRICTE = true;
 const RECO_LANGS = ['fr-CA'];
 const RECO_SRC = () => window.SpeechRecognition || window.webkitSpeechRecognition;
 // Le paquet de langue ne se télécharge qu'une fois par appareil, mais il pèse
@@ -792,10 +798,10 @@ async function recoEtat(quality){
   if(!SRC) return 'sans-api';
   // Navigateur d'avant l'API sur appareil : available() n'existe pas, donc
   // rien ne garantit que l'audio reste ici. En mode strict, on renonce.
-  if(typeof SRC.available !== 'function') return RECO_STRICTE ? 'sans-local' : 'distant';
+  if(typeof SRC.available !== 'function') return window.RECO_STRICTE ? 'sans-local' : 'distant';
   let dispo;
   try{ dispo = await SRC.available({langs:RECO_LANGS, quality, processLocally:true}); }
-  catch(e){ return RECO_STRICTE ? 'sans-local' : 'distant'; }
+  catch(e){ return window.RECO_STRICTE ? 'sans-local' : 'distant'; }
   if(dispo === 'available') return 'local';
   if(dispo === 'downloadable' || dispo === 'downloading'){
     if(!_recoInstall){
@@ -805,7 +811,7 @@ async function recoEtat(quality){
     }
     return 'telechargement';
   }
-  return RECO_STRICTE ? 'sans-local' : 'distant';
+  return window.RECO_STRICTE ? 'sans-local' : 'distant';
 }
 
 // Rend {rec, etat}. rec vaut null dès que l'exercice ne peut pas écouter.
