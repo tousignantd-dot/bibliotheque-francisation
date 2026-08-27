@@ -53,6 +53,12 @@
   h1{margin:6px 0 8px; font-size:32px; font-weight:900; color:var(--encre); line-height:1.15}
   .chapeau{max-width:72ch; color:var(--gris); font-size:15px; margin:0}
   .surtitre{font-size:12px; font-weight:800; letter-spacing:.12em; text-transform:uppercase; color:var(--gris)}
+  /* La date se lit avec le surtitre, pas dans le pied : une carte périmée
+     est pire qu'une carte absente, et c'est la première chose à savoir. */
+  .ligne-tete{display:flex; align-items:baseline; justify-content:space-between; gap:16px; flex-wrap:wrap}
+  .maj{font-size:12px; font-weight:800; letter-spacing:.06em; text-transform:uppercase; color:var(--gris);
+    border:1px solid var(--trait); background:var(--carte); border-radius:999px; padding:4px 12px; white-space:nowrap}
+  .maj b{color:var(--encre); font-weight:900}
 
   .legende{display:flex; flex-wrap:wrap; gap:10px; margin:22px 0 10px}
   .pastille{display:inline-flex; align-items:center; gap:8px; padding:6px 12px; border-radius:999px;
@@ -180,7 +186,10 @@
 </div>
 
 <header class="tete">
-  <div class="surtitre">francis · les huit niveaux du programme</div>
+  <div class="ligne-tete">
+    <div class="surtitre">francis · les huit niveaux du programme</div>
+    <div class="maj">Mise à jour le <b>27 août 2026</b></div>
+  </div>
   <h1>Hiérarchie des pages du site</h1>
   <p class="chapeau">Les deux portes d'entrée du site, ce qui s'ouvre derrière elles, et les pages qu'on n'atteint que par leur adresse. Chaque bloc est cliquable et s'ouvre dans un nouvel onglet, sur le serveur choisi ci-dessus. Un code élève saisi dans la barre est ajouté aux liens qui en attendent un.</p>
 </header>
