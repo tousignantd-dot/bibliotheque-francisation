@@ -235,7 +235,7 @@ journal_api.configurer(APPELS_API_FILE)
 # ici serait compté au prix de l'autre, sans que rien ne proteste.
 MODELE_CORRECTION   = "claude-haiku-4-5-20251001"   # les dix routes de correction
 MODELE_CONVERSATION = "claude-opus-5"               # jeu de rôle et assistant
-MODELE_VOIX         = "eleven_multilingual_v2"      # ElevenLabs
+MODELE_VOIX         = "azure-fr-CA-neural"          # Azure Speech, fr-CA
 # Une séance d'élève se ferme après trente minutes sans événement. Sans cette
 # borne, un onglet resté ouvert la nuit gonflerait les minutes de tout un
 # centre. Un événement isolé compte pour une minute : zéro effacerait un
@@ -2610,6 +2610,58 @@ def save_outils_entry(key, value):
             json.dump(cache, f, ensure_ascii=False, indent=2)
 
 
+class _VoixIndisponible(Exception):
+    """La synthèse a échoué. `http` porte le code quand il y en a un."""
+
+    def __init__(self, message, http=None):
+        super().__init__(message)
+        self.http = http
+
+
+def _synthese_azure(role, texte):
+    """Un extrait de parole, par Azure Speech. Renvoie du MP3 brut.
+
+    Le SSML est bâti par `build/azure_voix.py` et non recopié ici : c'est là
+    que vivent la table des rôles, le taux global du cours et la hauteur qui
+    distingue les deux voix féminines. Deux constructions séparées finiraient
+    par diverger, et l'élève entendrait au jeu de rôle une voix qui ne serait
+    plus celle de ses dialogues.
+
+    En production, la ressource Azure demande **deux** variables : la clé et
+    la région. Une clé juste avec la mauvaise région rend un 401 dont le
+    message ne dit pas que c'est la cause — d'où le rappel dans l'erreur.
+    """
+    cle = os.environ.get("AZURE_SPEECH_KEY", "").strip()
+    region = os.environ.get("AZURE_SPEECH_REGION", "").strip() or "canadacentral"
+    if not cle:
+        raise _VoixIndisponible("AZURE_SPEECH_KEY absente de l'environnement")
+
+    sys.path.insert(0, str(BASE_DIR / "build"))
+    from azure_voix import ssml as _ssml            # noqa: E402
+
+    req = urllib.request.Request(
+        f"https://{region}.tts.speech.microsoft.com/cognitiveservices/v1",
+        data=_ssml(texte, role).encode("utf-8"),
+        headers={
+            "Ocp-Apim-Subscription-Key": cle,
+            "Content-Type": "application/ssml+xml",
+            "X-Microsoft-OutputFormat": "audio-24khz-160kbitrate-mono-mp3",
+            "User-Agent": "francisation",
+        },
+        method="POST",
+    )
+    try:
+        with urllib.request.urlopen(req, timeout=25) as resp:
+            return resp.read()
+    except urllib.error.HTTPError as e:
+        detail = e.read().decode("utf-8", errors="replace")[:200]
+        indice = (f" — la région « {region} » ne correspond peut-être pas à la "
+                  "ressource") if e.code == 401 else ""
+        raise _VoixIndisponible(f"HTTP {e.code}{indice} {detail}", e.code)
+    except (urllib.error.URLError, TimeoutError) as e:
+        raise _VoixIndisponible(f"injoignable : {e}")
+
+
 def voix_cache_chemin(voix, texte):
     """Fichier où dort le MP3 d'un texte dit par une voix. La voix entre dans
     la clé : la même réplique lue par la propriétaire et par le visiteur sont
@@ -3244,17 +3296,22 @@ def json_response(handler, data, status=200):
 # suffirait à le lire si c'était côté client. Les mêmes contenus existent en
 # version papier dans assets/documents/module-logement-jeu-de-role.html.
 
-# Voix ElevenLabs du personnage joué par l'assistant. Mêmes identifiants que
-# les scripts de génération audio du module, pour que la visite sonne comme
-# les dialogues déjà enregistrés.
+# Voix Azure du personnage joué par l'assistant. Ce sont les **rôles** de
+# `build/azure_voix.py`, pas des identifiants : la table des voix vit là-bas,
+# et le serveur n'a pas à savoir que « feminin_2 » est Sylvie descendue de 7 %.
+#
+# Le 27 août 2026, cette route est passée d'ElevenLabs à Azure. Le motif est
+# le tarif : 220 $ le million de caractères contre 16 $, soit **13,75 fois
+# moins cher**, et c'est la seule dépense de synthèse qui grandisse avec le
+# nombre d'élèves — les MP3 des modules, eux, sont fabriqués une fois.
 VOIX_JEU_DE_ROLE = {
-    "proprietaire": "WW0JfNPk5DgcQdM0d6X6",   # féminine #2 — la propriétaire
-    "locataire":    "93nuHbke4dTER9x2pDwE",   # masculine #1 — le visiteur
+    "proprietaire": "feminin_2",    # la propriétaire
+    "locataire":    "masculin_1",   # le visiteur
 }
 
 # Voix de lecture de la barre d'outils élève (« Lire à voix haute »,
 # « Écouter le modèle »). Fixe, sans rapport avec les personnages.
-VOIX_LECTURE = "WW0JfNPk5DgcQdM0d6X6"
+VOIX_LECTURE = "feminin_2"
 
 JEU_DE_ROLE_SUJETS = [
     "ce qui est inclus dans le loyer",
@@ -17980,7 +18037,7 @@ class Handler(http.server.SimpleHTTPRequestHandler):
         json_response(self, out)
 
     def _handle_voix(self):
-        """Lit une réplique du jeu de rôle avec une voix ElevenLabs.
+        """Lit une réplique du jeu de rôle avec une voix Azure fr-CA.
 
         Corps attendu : {code, texte, role}. `role` est celui de l'ÉLÈVE ; la
         voix rendue est donc celle du personnage joué par l'assistant. Renvoie
@@ -18033,36 +18090,13 @@ class Handler(http.server.SimpleHTTPRequestHandler):
             self._envoyer_mp3(audio)
             return
 
-        api_key = os.environ.get("ELEVENLABS_API_KEY", "").strip()
-        if not api_key:
-            json_response(self, {"error": "Voix non configurée sur le serveur"}, 503)
-            return
-
-        payload = json.dumps({
-            "text": texte,
-            "model_id": MODELE_VOIX,
-            "voice_settings": {"stability": 0.5, "similarity_boost": 0.75},
-        }).encode("utf-8")
-        req = urllib.request.Request(
-            f"https://api.elevenlabs.io/v1/text-to-speech/{voix}",
-            data=payload,
-            headers={"xi-api-key": api_key, "Content-Type": "application/json"},
-            method="POST",
-        )
         try:
-            with urllib.request.urlopen(req, timeout=25) as resp:
-                audio = resp.read()
-        except urllib.error.HTTPError as e:
-            detail = e.read().decode("utf-8", errors="replace")
-            print(f"[WARN] ElevenLabs HTTPError {e.code}: {detail[:200]}", flush=True)
+            audio = _synthese_azure(voix, texte)
+        except _VoixIndisponible as e:
+            print(f"[WARN] Azure voix : {e}", flush=True)
             journal_api.noter("voix", MODELE_VOIX, eleve_id, groupe_id,
-                              caracteres=len(texte), statut="echec", http=e.code)
-            json_response(self, {"error": "La voix est momentanément indisponible"}, 502)
-            return
-        except (urllib.error.URLError, TimeoutError) as e:
-            print(f"[WARN] ElevenLabs injoignable : {e}", flush=True)
-            journal_api.noter("voix", MODELE_VOIX, eleve_id, groupe_id,
-                              caracteres=len(texte), statut="echec")
+                              caracteres=len(texte), statut="echec",
+                              http=getattr(e, "http", None))
             json_response(self, {"error": "La voix est momentanément indisponible"}, 502)
             return
 

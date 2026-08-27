@@ -55,15 +55,32 @@ TARIFS = {
     },
 }
 
-# ElevenLabs facture au caractère et ne renvoie aucun montant. 0,22 $ pour
-# mille caractères est le tarif déduit du chantier audio du 24 août 2026 —
-# un ordre de grandeur, pas un relevé de facture.
-TARIF_VOIX_PAR_CARACTERE = 0.00022
+# La synthèse vocale facture au caractère et ne renvoie aucun montant : c'est
+# nous qui multiplions. Un tarif par modèle, donc, et non un seul nombre — le
+# 27 août 2026 la route `/api/voix` est passée d'ElevenLabs à Azure, et
+# confondre les deux ferait lire l'ancienne dépense au nouveau prix.
+#
+#   ElevenLabs : 220 $ le million de caractères (déduit du chantier du 24 août,
+#                un ordre de grandeur, pas un relevé de facture)
+#   Azure      : 16 $ le million, tarif publié pour les voix neuronales
+TARIF_VOIX = {
+    "eleven_multilingual_v2": 0.00022,
+    "azure-fr-CA-neural":     0.000016,
+}
+
+# Conservé : d'anciennes lignes du registre n'ont pas de modèle reconnu, et
+# les compter à zéro effacerait une dépense réelle.
+TARIF_VOIX_PAR_CARACTERE = TARIF_VOIX["eleven_multilingual_v2"]
+
+
+def tarif_voix(modele):
+    return TARIF_VOIX.get(modele, TARIF_VOIX_PAR_CARACTERE)
 
 FOURNISSEURS = {
     "claude-haiku-4-5-20251001": "anthropic",
     "claude-opus-5": "anthropic",
     "eleven_multilingual_v2": "elevenlabs",
+    "azure-fr-CA-neural": "azure",
 }
 
 # ── Le fichier ───────────────────────────────────────────────────────────
@@ -134,7 +151,7 @@ def noter(route, modele, eleve_id=None, groupe_id=None, module=None,
         if caracteres is not None:
             # Voix : ElevenLabs compte des caractères, pas des jetons.
             ligne["caracteres"] = caracteres
-            ligne["cout_usd"] = round(caracteres * TARIF_VOIX_PAR_CARACTERE, 8)
+            ligne["cout_usd"] = round(caracteres * tarif_voix(modele), 8)
         else:
             u = usage if isinstance(usage, dict) else {}
             ligne["jetons"] = {
@@ -200,7 +217,8 @@ def _ajouter(seau, d):
     statut = d.get("statut")
     if statut == "cache":
         seau["cache"] += 1
-        seau["economie_cache_usd"] += (d.get("caracteres") or 0) * TARIF_VOIX_PAR_CARACTERE
+        seau["economie_cache_usd"] += ((d.get("caracteres") or 0)
+                                       * tarif_voix(d.get("modele")))
     elif statut != "ok":
         seau["echecs"] += 1
     seau["cout_usd"] += d.get("cout_usd") or 0
