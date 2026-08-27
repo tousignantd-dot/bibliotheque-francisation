@@ -270,16 +270,16 @@ ul.simple li strong{color:var(--ink)}
         <span class="etat">Fait</span>
         <span class="quoi">Les onze routes d'assistance sont sous drapeau</span>
       </div>
-      <div class="jalon reste">
-        <span class="etat">À faire</span>
+      <div class="jalon fait">
+        <span class="etat">Fait</span>
         <span class="quoi">Le confinement vocal piloté par le serveur</span>
       </div>
       <div class="jalon reste">
-        <span class="etat">À faire</span>
-        <span class="quoi">La purge en fin de session</span>
+        <span class="etat">Durée à poser</span>
+        <span class="quoi">La purge tourne, en observation</span>
       </div>
-      <div class="jalon reste">
-        <span class="etat">À faire</span>
+      <div class="jalon fait">
+        <span class="etat">Fait</span>
         <span class="quoi">La transcription orale par Azure</span>
       </div>
       <div class="jalon reste">
@@ -327,7 +327,7 @@ ul.simple li strong{color:var(--ink)}
               <small>Prononciation, production orale, jeu de rôle en mode voix</small></td>
             <td><strong>La voix de l'élève, en continu</strong></td>
             <td>Google ou Apple, selon le navigateur</td>
-            <td><span class="badge b-part">Garde-fou posé</span></td>
+            <td><span class="badge b-oui">Réglage par centre</span></td>
           </tr>
           <tr class="f-reste">
             <td class="q">Synthèse vocale
@@ -402,15 +402,17 @@ ul.simple li strong{color:var(--ink)}
         l'élève. Corrigé le 27 août : onze routes, zéro sans garde.</p>
       </div>
 
-      <div class="inter-item">
+      <div class="inter-item ok">
         <div class="ligne">
           <h3>La reconnaissance vocale</h3>
-          <span class="badge b-part">Garde-fou posé, réglage à faire</span>
+          <span class="badge b-oui">En place</span>
         </div>
-        <p>Le confinement sur l'appareil est en place dans le gabarit, mais c'est
-        une constante compilée dans les modules : une direction ne peut ni
-        l'activer ni la lever. Le module demande déjà au serveur, au chargement,
-        s'il doit se replier — le confinement doit voyager par ce même canal.</p>
+        <p>Le confinement descend maintenant par le serveur, sur la question que
+        le module pose déjà au chargement. Il se règle par centre et s'hérite le
+        long de l'arbre, comme l'assistance. Le défaut est fermé, et il l'est
+        dans l'autre sens que pour l'IA : un silence, une panne de réseau ou un
+        module ouvert hors du portail gardent la voix sur l'appareil, parce que
+        ce flux-là ne traverse pas le serveur et que rien ne le rattrape.</p>
       </div>
 
       <div class="inter-item">
@@ -425,12 +427,16 @@ ul.simple li strong{color:var(--ink)}
       <div class="inter-item">
         <div class="ligne">
           <h3>La conservation</h3>
-          <span class="badge b-non">Aucune purge automatique</span>
+          <span class="badge b-part">La purge tourne, la durée reste à poser</span>
         </div>
-        <p>Un enseignant peut supprimer une production à la main, et les journaux
-        ont des plafonds. Mais rien ne s'efface tout seul : l'audio et les
-        productions écrites s'accumulent indéfiniment. La conservation limitée est
-        une obligation en soi, indépendante de l'hébergeur.</p>
+        <p>Une tâche passe une fois par jour sur les enregistrements, les textes
+        et les analyses d'erreurs. Elle laisse l'avancement dans les modules et
+        les compteurs, qui ne disent rien de personnel.</p>
+        <p><strong>La durée est une décision, pas un réglage technique</strong> —
+        elle n'a donc pas été devinée. Tant que <code>RETENTION_JOURS</code> n'est
+        pas posée, la tâche compte ce qu'elle effacerait et l'écrit dans le
+        journal, sans toucher à rien. C'est le seul chiffre qui manque au
+        dossier, et il appartient au centre de services scolaire.</p>
       </div>
     </div>
   </section>
@@ -483,22 +489,28 @@ ul.simple li strong{color:var(--ink)}
         arrêté avant tout appel sortant, l'élève autorisé traverse le garde.</p>
         <p class="effort">Quatorze lignes.</p>
       </li>
-      <li>
+      <li class="fait">
         <h3>Faire descendre le confinement vocal par le serveur</h3>
-        <p>La décision passe d'une constante de build à un réglage par centre,
-        cohérent avec le reste du drapeau.</p>
-        <p class="effort">Un champ de plus dans une réponse qui existe déjà.</p>
+        <p>Fait. La décision est passée d'une constante compilée à un réglage
+        par centre, hérité le long de l'arbre. Vérifié sur cinq cas, dont
+        l'absence totale de réglage : le défaut est fermé partout.</p>
+        <p class="effort">Il reste à propager aux 88 autres modules — une commande.</p>
       </li>
       <li>
         <h3>Purger à la fin de la session</h3>
-        <p>Productions orales, productions écrites, analyses d'erreurs.</p>
-        <p class="effort">Une tâche périodique et une durée à décider.</p>
+        <p>La tâche existe et tourne en observation : elle compte ce qu'elle
+        effacerait sans rien toucher. Vérifiée sur des données fabriquées, y
+        compris les pièges — un dépôt qu'on ne sait pas dater n'est jamais
+        effacé, et l'audio part avant sa fiche.</p>
+        <p class="effort">Il manque le chiffre : poser <code>RETENTION_JOURS</code>.</p>
       </li>
-      <li>
+      <li class="fait">
         <h3>Transcrire la production orale avec Azure</h3>
-        <p>Remplace le dernier gros flux vers Google par un envoi à Toronto,
-        déjà payé.</p>
-        <p class="effort">Un chantier, mais sans nouveau flux de données.</p>
+        <p>Fait. Le dépôt part dans un fil après enregistrement, sans faire
+        attendre l'élève ni bloquer la classe, et ne réécrit jamais un texte
+        déjà corrigé par l'enseignante. Quinze contrôles contre un faux service,
+        multipart relu par un analyseur MIME.</p>
+        <p class="effort">Le premier dépôt en production confirmera le dialogue réel.</p>
       </li>
       <li>
         <h3>Déménager l'hébergement</h3>
@@ -519,6 +531,10 @@ ul.simple li strong{color:var(--ink)}
     <p>Les quatre premières actions coûtent presque rien et réduisent le risque
     réel. La cinquième coûte du temps de systèmes et n'en réduit aucun. C'est
     l'ordre qui compte, pas le geste.</p>
+    <p>Trois d'entre elles sont faites, et la quatrième attend un chiffre plutôt
+    que du travail. <strong>Le dossier ne tient plus qu'à deux décisions</strong>
+    — la durée de conservation, et le sort des enregistrements — qui
+    appartiennent toutes deux au centre, pas au code.</p>
   </section>
 
   <section>
@@ -535,7 +551,8 @@ ul.simple li strong{color:var(--ink)}
   </section>
 
   <div class="pied">
-    <span>Bibliothèque de francisation · état du dossier Loi 25 au 27 août 2026</span>
+    <span>Bibliothèque de francisation · état du dossier Loi 25 au 27 août 2026,
+    mis à jour le soir même après les chantiers 2 à 4</span>
     <span>Relevé fait dans <code>server.py</code>, <code>build/gabarit.py</code>
     et le gabarit des modules. Mesures de reconnaissance vocale prises dans Chrome 148.</span>
   </div>
