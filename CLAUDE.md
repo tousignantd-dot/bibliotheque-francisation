@@ -1151,6 +1151,13 @@ détacher **des lettres**, pas seulement du fond. Nom blanc + point blanc, c'est
 1.07:1 entre les deux, donc aucun signe visible. D'où le nom en `--marque-100`
 sur mauve, en `#B4B4B4` sur noir.
 
+**Le nom et le descripteur s'assoient sur la même ligne de base**
+(`align-items: baseline`). « francis » n'a aucune descendante — le bas de ses
+lettres EST sa ligne de base — tandis que le descripteur a un « A » capitale et
+trois descendantes. Centrer les boîtes, ce que la remise écrit littéralement,
+laissait le descripteur flotter 5 px sous le nom. Le trait, lui, n'a pas de
+ligne de base : il se centre à part.
+
 **Sous 480 px**, le trait et le descripteur disparaissent : le nom reste seul.
 Le descripteur ne passe jamais sur deux lignes et ne se met jamais en
 majuscules.

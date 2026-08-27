@@ -46,7 +46,13 @@
   --fr-nom:28px; --fr-desc:16px;                 /* barre d'application */
   --fr-pt:7px; --fr-pt-l:1px; --fr-pt-t:2px;
   --fr-trait:24px;
-  display:inline-flex;align-items:center;gap:16px;flex-wrap:nowrap;
+  /* Calage sur le bas : le nom et le descripteur s'assoient sur la même ligne
+     de base. « francis » n'a aucune descendante — le bas de ses lettres EST sa
+     ligne de base — tandis que le descripteur a un « A » capitale et trois
+     descendantes (pp, ç). Centrer les boîtes laissait le descripteur flotter
+     sous le nom ; les lignes de base le posent avec lui. Le trait, lui, n'a pas
+     de ligne de base : il se centre à part. */
+  display:inline-flex;align-items:baseline;gap:16px;flex-wrap:nowrap;
   color:inherit;text-decoration:none;
 }
 .fr-nom{
@@ -70,7 +76,7 @@
   border-radius:999px;background:var(--marque-600);
 }
 .fr-trait{
-  width:2px;height:var(--fr-trait,24px);flex-shrink:0;
+  width:2px;height:var(--fr-trait,24px);flex-shrink:0;align-self:center;
   background:var(--marque-trait,#F0F0EE);
 }
 .fr-desc{
