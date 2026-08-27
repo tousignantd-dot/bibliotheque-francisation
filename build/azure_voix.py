@@ -91,6 +91,34 @@ PALIERS = {"normal": None, "lent": "-20%", "tres-lent": "-35%"}
 # lentement qu'avant, et l'élève garde sa barre de vitesse par-dessus.
 TAUX_GLOBAL = "+15%"
 
+# Les mots isolés et les mini-leçons ont besoin d'un taux à eux. Mesuré le
+# 27 août 2026 : `+15%` rend le tempo des **dialogues** au centième (×1,02),
+# mais sur les mots et les phrases de mini-leçon il donne ×0,85 — 15 % plus
+# rapide qu'avant, et c'est trop. Les deux familles n'ont pas la même densité :
+# une phrase de dialogue et un mot nu ne se prononcent pas au même rythme, et
+# un taux unique ne peut convenir aux deux.
+#
+# `-10%` place la famille des sons **plus lentement qu'ElevenLabs**, ce qui est
+# voulu : un mot que l'élève doit imiter gagne à être plus posé que la parole
+# courante. C'est là que le cours sert de modèle.
+TAUX_SONS = "-10%"
+
+
+def famille(chemin):
+    """« dialogue » ou « sons », d'après le nom du fichier.
+
+    Les générateurs ne disent pas à quelle famille appartient un extrait, et
+    rouvrir les cent dix pour l'ajouter coûterait plus cher que ça ne
+    rapporterait. La règle se lit donc sur le nom : `line_NN_perso.mp3` est une
+    réplique, tout le reste appartient à la famille enseignante — mots,
+    phrases, mini-leçons, bancs de vocabulaire.
+
+    C'est implicite, et c'est le prix à payer. La convention `line_*` est tenue
+    par les 110 générateurs sans exception : elle a servi à vérifier, fichier
+    par fichier, qu'aucune réplique n'avait basculé pendant la migration.
+    """
+    return "dialogue" if pathlib.Path(chemin).name.startswith("line_") else "sons"
+
 # Azure pose ~0,19 s de silence en tête et en queue là où ElevenLabs n'en
 # mettait pas. Sur une phrase c'est imperceptible ; sur une lettre seule du
 # banc d'alphabet, ça double la durée du fichier. On rogne — sans appel d'API,
@@ -122,7 +150,8 @@ def cle_region():
             or v.get("AZURE_SPEECH_REGION") or REGION_DEFAUT)
 
 
-def ssml(texte, role, palier=None, epeler=None, pause_lettres="280ms"):
+def ssml(texte, role, palier=None, epeler=None, pause_lettres="280ms",
+         reference=None):
     """Le document SSML d'un extrait.
 
     `epeler` demande les lettres une par une, séparées par un silence, puis le
@@ -151,14 +180,22 @@ def ssml(texte, role, palier=None, epeler=None, pause_lettres="280ms"):
         corps = "<prosody%s>%s</prosody>" % (attrs, corps)
     if taux:
         corps = '<prosody rate="%s">%s</prosody>' % (taux, corps)
-    # Le taux global enveloppe tout le reste : c'est le débit de référence du
-    # cours, sur lequel palier et rôle viennent se composer.
-    if TAUX_GLOBAL:
-        corps = '<prosody rate="%s">%s</prosody>' % (TAUX_GLOBAL, corps)
+    # Le taux de référence enveloppe tout le reste ; palier et rôle se composent
+    # par-dessus. `reference` laisse l'appelant choisir celui de sa famille ;
+    # sans lui, c'est celui des dialogues.
+    #
+    # Ne pas nommer ce paramètre `taux` : c'est déjà le nom du taux **du
+    # palier**, quelques lignes plus haut. Le collision l'écrasait, et le
+    # palier se serait appliqué deux fois sans que rien ne le dise.
+    if reference is None:
+        reference = TAUX_GLOBAL
+    if reference:
+        corps = '<prosody rate="%s">%s</prosody>' % (reference, corps)
     return '%s<voice name="%s">%s</voice></speak>' % (EN_TETE, v["azure"], corps)
 
 
-def parle(texte, role, dest, palier=None, epeler=None, cle=None, region=None):
+def parle(texte, role, dest, palier=None, epeler=None, cle=None, region=None,
+          reference=None):
     """Synthétise un extrait dans `dest`. Renvoie sa durée en secondes.
 
     Les appels passent par `curl` et non `urllib` : sur le poste, `urllib` se
@@ -174,7 +211,8 @@ def parle(texte, role, dest, palier=None, epeler=None, cle=None, region=None):
     dest = pathlib.Path(dest)
     dest.parent.mkdir(parents=True, exist_ok=True)
     doc = dest.with_suffix(".ssml.xml")
-    doc.write_text(ssml(texte, role, palier, epeler), encoding="utf-8")
+    doc.write_text(ssml(texte, role, palier, epeler, reference=reference),
+                   encoding="utf-8")
     out = subprocess.run(
         ["curl", "-s", "-m", "120", "-X", "POST",
          "-H", "Ocp-Apim-Subscription-Key: %s" % cle,
@@ -285,7 +323,11 @@ def parle_compat(cle, texte, voix, chemin, avant=None, apres=None,
     chemin = pathlib.Path(chemin)
     for essai in range(1, ESSAIS + 1):
         try:
-            parle(texte, role, chemin, palier=palier, epeler=epeler)
+            # La famille se décide ici et nulle part ailleurs : les 110
+            # générateurs passent tous par cette porte.
+            ref = TAUX_SONS if famille(chemin) == "sons" else TAUX_GLOBAL
+            parle(texte, role, chemin, palier=palier, epeler=epeler,
+                  reference=ref)
             return True
         except RuntimeError as e:
             msg = str(e)

@@ -1,0 +1,312 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Où va la voix de mes élèves ? — Diagnostic</title>
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800;900&display=swap" />
+<link rel="stylesheet" href="/assets/design-system/styles.css" />
+<style>
+/* ═══════════════════════════════════════════════════════════════
+   OÙ VA LA VOIX DE MES ÉLÈVES ?
+   Diagnostic d'un poste. À ouvrir sur la machine à tester — c'est
+   le navigateur qui répond, pas le serveur, donc le résultat ne
+   vaut que pour l'appareil sous les yeux.
+
+   Le rouge est réservé à l'audio dans le système de design ; ici
+   il sert d'alarme, parce que toute la page porte sur la voix qui
+   s'échappe. Le vert garde son sens habituel : tout va bien.
+   ═══════════════════════════════════════════════════════════════ */
+:root{
+  --dv-page:var(--surface-page,#F7F7F5);
+  --dv-card:var(--surface-card,#FFFFFF);
+  --dv-ink:var(--text-strong,#17181A);
+  --dv-body:var(--text-body,#3A3D40);
+  --dv-muted:var(--text-muted,#6E7175);
+  --dv-line:var(--border,#EAEAE8);
+  --dv-ok-bg:var(--ok-bg,#E6F5EE);   --dv-ok-line:var(--ok-line,#0A8F5B);   --dv-ok-ink:var(--ok-ink,#07734A);
+  --dv-warn-bg:var(--warn-bg,#FEF6E7); --dv-warn-line:var(--warn-line,#D9880B); --dv-warn-ink:var(--warn-ink,#8A5206);
+  --dv-no-bg:var(--no-bg,#FFF6F5);   --dv-no-line:var(--no-line,#DC2626);   --dv-no-ink:var(--no-ink,#B91C1C);
+}
+*{box-sizing:border-box}
+body{
+  margin:0; padding:32px 20px 72px;
+  background:var(--dv-page); color:var(--dv-body);
+  font-family:Nunito,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;
+  line-height:1.55;
+}
+.dv-wrap{max-width:760px;margin:0 auto}
+h1{font-size:31px;line-height:1.2;color:var(--dv-ink);margin:0 0 6px;font-weight:900;letter-spacing:-.4px}
+.dv-sous{color:var(--dv-muted);margin:0 0 28px;font-size:16px}
+
+/* ── Le verdict : la seule chose qui compte au premier coup d'œil ── */
+.dv-verdict{
+  border:2px solid var(--dv-line); border-left-width:8px;
+  background:var(--dv-card); border-radius:14px;
+  padding:22px 24px; margin:0 0 26px;
+}
+.dv-verdict.ok  {border-color:var(--dv-ok-line);   background:var(--dv-ok-bg)}
+.dv-verdict.warn{border-color:var(--dv-warn-line); background:var(--dv-warn-bg)}
+.dv-verdict.no  {border-color:var(--dv-no-line);   background:var(--dv-no-bg)}
+.dv-verdict h2{margin:0 0 8px;font-size:22px;font-weight:800;color:var(--dv-ink);line-height:1.25}
+.dv-verdict.ok h2  {color:var(--dv-ok-ink)}
+.dv-verdict.warn h2{color:var(--dv-warn-ink)}
+.dv-verdict.no h2  {color:var(--dv-no-ink)}
+.dv-verdict p{margin:0;font-size:16px}
+.dv-verdict p + p{margin-top:10px}
+
+button{
+  font-family:inherit; font-size:16px; font-weight:700; cursor:pointer;
+  border-radius:10px; padding:13px 22px; min-height:48px;
+  border:2px solid var(--dv-ink); background:var(--dv-ink); color:#fff;
+}
+button:hover{opacity:.88}
+button[disabled]{opacity:.45;cursor:default}
+button.dv-2e{background:transparent;color:var(--dv-ink)}
+.dv-actions{display:flex;gap:12px;flex-wrap:wrap;margin:0 0 26px}
+
+/* ── Le détail, pour qui veut vérifier ── */
+h3{font-size:17px;color:var(--dv-ink);margin:30px 0 10px;font-weight:800}
+.dv-scroll{overflow-x:auto;border:1px solid var(--dv-line);border-radius:12px;background:var(--dv-card)}
+table{border-collapse:collapse;width:100%;font-size:15px;min-width:460px}
+th,td{padding:11px 14px;text-align:left;border-bottom:1px solid var(--dv-line)}
+th{font-weight:800;color:var(--dv-ink);background:var(--surface-sunken,#FBFBFA);white-space:nowrap}
+tr:last-child td{border-bottom:none}
+td.dv-r{font-weight:700}
+.dv-p-ok{color:var(--dv-ok-ink)} .dv-p-no{color:var(--dv-no-ink)} .dv-p-warn{color:var(--dv-warn-ink)}
+.dv-note{font-size:14px;color:var(--dv-muted);margin:12px 0 0}
+.dv-machine{font-size:13px;color:var(--dv-muted);word-break:break-word;
+  background:var(--dv-card);border:1px solid var(--dv-line);border-radius:10px;padding:14px 16px;margin-top:10px}
+.dv-essai{margin-top:10px;font-size:16px;min-height:26px}
+</style>
+</head>
+<body>
+<div class="dv-wrap">
+
+  <h1>Où va la voix de mes élèves ?</h1>
+  <p class="dv-sous">
+    Les exercices de prononciation, la production orale et le jeu de rôle ouvrent le micro.
+    Cette page dit si ce poste sait reconnaître la parole <strong>sans l'envoyer à l'extérieur</strong>.
+    Le résultat vaut pour cet appareil et ce navigateur seulement — à relancer sur chaque poste à vérifier.
+  </p>
+
+  <div class="dv-verdict" id="dvVerdict">
+    <h2 id="dvTitre">Vérification en cours…</h2>
+    <p id="dvTexte">Un instant.</p>
+  </div>
+
+  <div class="dv-actions">
+    <button type="button" id="dvRefaire">Refaire le test</button>
+    <button type="button" id="dvInstaller" class="dv-2e" hidden>Télécharger le français sur ce poste</button>
+    <button type="button" id="dvMicro" class="dv-2e">Essayer le micro</button>
+  </div>
+  <div class="dv-essai" id="dvEssai" aria-live="polite"></div>
+
+  <h3>Le détail</h3>
+  <div class="dv-scroll">
+    <table>
+      <thead>
+        <tr><th>Langue</th><th>Usage</th><th>Sur l'appareil</th><th>Sans contrainte</th></tr>
+      </thead>
+      <tbody id="dvCorps"><tr><td colspan="4">…</td></tr></tbody>
+    </table>
+  </div>
+  <p class="dv-note">
+    « Sur l'appareil » exige que rien ne sorte du poste. « Sans contrainte » laisse le navigateur
+    choisir — et il choisit presque toujours ses propres serveurs. Une ligne verte à gauche et
+    rouge à droite est le seul cas où la voix reste ici.
+  </p>
+
+  <h3>Ce poste</h3>
+  <div class="dv-machine" id="dvMachine">…</div>
+
+</div>
+
+<script>
+// ── Ce qu'on teste ──────────────────────────────────────────────────
+// fr-CA d'abord : c'est la langue des modules. fr-FR et en-US servent à
+// distinguer « pas de paquet français » de « pas de reconnaissance locale
+// du tout sur cette machine » — les deux se soignent différemment.
+const LANGUES = [
+  {code:'fr-CA', nom:'Français (Canada)', pivot:true},
+  {code:'fr-FR', nom:'Français (France)'},
+  {code:'en-US', nom:'Anglais (É.-U.)'}
+];
+// Les modules utilisent les deux : 'command' pour un mot répété au bouton
+// micro, 'dictation' pour une production orale suivie.
+const USAGES = [
+  {q:'command',   nom:'Un mot répété'},
+  {q:'dictation', nom:'Une production suivie'}
+];
+
+const SRC = window.SpeechRecognition || window.webkitSpeechRecognition;
+const $ = id => document.getElementById(id);
+
+function poser(etat, titre, ...paragraphes){
+  const boite = $('dvVerdict');
+  boite.className = 'dv-verdict ' + etat;
+  $('dvTitre').textContent = titre;
+  $('dvTexte').innerHTML = paragraphes.join('</p><p>');
+}
+
+async function sonder(lang, q, local){
+  if(!SRC || typeof SRC.available !== 'function') return 'sans-methode';
+  try{ return await SRC.available({langs:[lang], quality:q, processLocally:local}); }
+  catch(e){ return 'erreur'; }
+}
+
+const MOTS = {
+  'available':'disponible', 'downloadable':'à télécharger', 'downloading':'téléchargement…',
+  'unavailable':'non', 'sans-methode':'—', 'erreur':'erreur'
+};
+function classe(v){
+  if(v === 'available') return 'dv-p-ok';
+  if(v === 'downloadable' || v === 'downloading') return 'dv-p-warn';
+  return 'dv-p-no';
+}
+
+async function diagnostiquer(){
+  $('dvRefaire').disabled = true;
+  $('dvInstaller').hidden = true;
+  $('dvEssai').textContent = '';
+  poser('', 'Vérification en cours…', 'Un instant.');
+
+  $('dvMachine').textContent = navigator.userAgent;
+
+  // ── Aucun moteur du tout ──
+  if(!SRC){
+    poser('no', 'Ce navigateur ne reconnaît pas la parole',
+      'Les boutons micro ne fonctionneront pas ici, mais <strong>rien ne sort non plus</strong>. ' +
+      'Firefox est dans ce cas.',
+      'Pour les exercices de prononciation, il faut Chrome, Edge ou Safari — et alors cette page ' +
+      'redevient utile, parce que ces navigateurs-là envoient la voix par défaut.');
+    $('dvCorps').innerHTML = '<tr><td colspan="4">Aucun moteur de reconnaissance sur ce navigateur.</td></tr>';
+    $('dvRefaire').disabled = false;
+    return;
+  }
+
+  // ── Le tableau ──
+  const lignes = [];
+  const resultats = {};
+  for(const L of LANGUES){
+    for(const U of USAGES){
+      const local = await sonder(L.code, U.q, true);
+      const libre = await sonder(L.code, U.q, false);
+      resultats[L.code + '|' + U.q] = {local, libre};
+      lignes.push(
+        '<tr><td>' + L.nom + '</td><td>' + U.nom +
+        '</td><td class="dv-r ' + classe(local) + '">' + (MOTS[local] || local) +
+        '</td><td class="dv-r ' + classe(libre) + '">' + (MOTS[libre] || libre) + '</td></tr>');
+    }
+  }
+  $('dvCorps').innerHTML = lignes.join('');
+
+  // ── Le verdict, dicté par fr-CA ──
+  if(typeof SRC.available !== 'function'){
+    poser('no', 'Ce navigateur est trop ancien pour garantir quoi que ce soit',
+      'Il sait reconnaître la parole, mais il ne sait pas dire <em>où</em> il le fait — donc il ' +
+      'l\'envoie à ses serveurs, sans moyen de l\'en empêcher.',
+      'Mets-le à jour, puis relance ce test.');
+    $('dvRefaire').disabled = false;
+    return;
+  }
+
+  const cmd = resultats['fr-CA|command'].local;
+  const dic = resultats['fr-CA|dictation'].local;
+  const libre = resultats['fr-CA|command'].libre;
+  const enAttente = v => v === 'downloadable' || v === 'downloading';
+
+  if(cmd === 'available' && dic === 'available'){
+    poser('ok', 'La voix reste sur ce poste',
+      'Le français canadien est reconnu hors ligne, pour un mot répété comme pour une production ' +
+      'suivie. Avec le garde-fou en mode strict, <strong>plus rien ne sort d\'ici</strong> et tous ' +
+      'les exercices fonctionnent.');
+  } else if(cmd === 'available'){
+    // Le cas le plus fréquent en pratique : le modèle « mot répété » est
+    // installé, le modèle « production suivie » n'existe pas encore hors ligne.
+    // Ce n'est pas un demi-échec — c'est exactement le partage qu'il faut dire,
+    // parce que les deux usages ne se replient pas de la même façon.
+    poser('warn', 'La prononciation reste ici ; la production orale, non',
+      '<strong>Les boutons micro du vocabulaire fonctionnent sans que rien ne sorte du poste.</strong> ' +
+      'C\'est le geste le plus fréquent de la journée, et il devient privé.',
+      'La production orale et le mode voix du jeu de rôle, eux, demandent un modèle de parole ' +
+      'suivie qui n\'existe pas hors ligne ici. En mode strict, ils refusent d\'écouter — ' +
+      'l\'enregistrement des productions continue, l\'élève tape son texte au lieu de le dicter.',
+      'C\'est le cas où transcrire côté serveur, avec Azure au Canada, comble le reste : ' +
+      'le fichier audio arrive déjà chez nous de toute façon.');
+  } else if(dic === 'available'){
+    poser('warn', 'La production orale reste ici ; la prononciation, non',
+      'Partage inhabituel, mais net : le modèle de parole suivie est disponible hors ligne, ' +
+      'pas celui du mot isolé. En mode strict, les boutons micro du vocabulaire refuseront ' +
+      'd\'écouter, alors que la production orale sera transcrite sur le poste.');
+  } else if(enAttente(cmd) || enAttente(dic)){
+    poser('warn', 'Le français peut être installé sur ce poste',
+      'La reconnaissance hors ligne est possible, mais le paquet de langue n\'est pas encore là. ' +
+      'Le bouton ci-dessous le télécharge — une seule fois par appareil.',
+      'Prévois-le avant un cours : sur quinze postes en même temps, le téléchargement se sent ' +
+      'passer sur le réseau du centre.');
+    $('dvInstaller').hidden = false;
+  } else if(libre === 'available'){
+    poser('no', 'La reconnaissance marche, mais la voix part à l\'extérieur',
+      'Ce poste sait reconnaître le français — <strong>uniquement en envoyant l\'audio aux serveurs ' +
+      'de l\'éditeur du navigateur</strong>. Aucun réglage de la page ne peut l\'empêcher.',
+      'En mode strict, les boutons micro refuseront d\'écouter plutôt que de laisser la voix sortir. ' +
+      'L\'enregistrement des productions orales, lui, continue de fonctionner normalement.');
+  } else {
+    poser('no', 'Pas de reconnaissance du français sur ce poste',
+      'Ni hors ligne, ni même en ligne. Les boutons micro resteront muets ici, ' +
+      'mais aucune voix ne s\'échappe.');
+  }
+  $('dvRefaire').disabled = false;
+}
+
+// ── Installation du paquet de langue ────────────────────────────────
+$('dvInstaller').addEventListener('click', async () => {
+  const b = $('dvInstaller');
+  b.disabled = true; b.textContent = 'Téléchargement…';
+  try{
+    const ok = await SRC.install({langs:['fr-CA'], processLocally:true});
+    b.textContent = ok ? 'Téléchargé — je relance le test' : 'Échec du téléchargement';
+    if(ok) setTimeout(diagnostiquer, 400);
+  }catch(e){
+    b.textContent = 'Échec : ' + e.message;
+  }finally{
+    b.disabled = false;
+  }
+});
+
+// ── Essai réel : la preuve par le micro ─────────────────────────────
+// Le tableau dit ce que le navigateur PROMET ; ceci vérifie qu'il tient
+// parole. On demande le mode local et on regarde s'il démarre.
+$('dvMicro').addEventListener('click', async () => {
+  const zone = $('dvEssai');
+  if(!SRC){ zone.textContent = 'Pas de moteur sur ce navigateur.'; return; }
+  zone.textContent = 'Dis quelque chose…';
+  const rec = new SRC();
+  rec.lang = 'fr-CA'; rec.interimResults = true; rec.maxAlternatives = 1;
+  let local = false;
+  try{ rec.processLocally = true; local = rec.processLocally === true; }catch(e){}
+  rec.onresult = e => {
+    const r = e.results[e.results.length - 1];
+    zone.textContent = 'Entendu : « ' + r[0].transcript.trim() + ' »' +
+      (local ? ' — sans sortir du poste.' : ' — envoyé à l\'extérieur.');
+  };
+  rec.onerror = e => {
+    zone.textContent = e.error === 'not-allowed'
+      ? 'Micro refusé — autorise l\'accès au micro dans le navigateur.'
+      : (e.error === 'service-not-allowed'
+          ? 'Le navigateur refuse la reconnaissance hors ligne : la voix ne peut pas rester ici.'
+          : 'Rien entendu (' + e.error + ').');
+  };
+  try{ rec.start(); }
+  catch(e){ zone.textContent = 'Démarrage impossible : ' + e.message; }
+  setTimeout(() => { try{ rec.stop(); }catch(e){} }, 6000);
+});
+
+$('dvRefaire').addEventListener('click', diagnostiquer);
+diagnostiquer();
+</script>
+</body>
+</html>

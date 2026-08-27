@@ -81,6 +81,10 @@ def classer(f):
     entier.
     """
     t = f.read_text(encoding="utf-8")
+    # `"--force" in argv` chez les uns, `in sys.argv` chez les autres : chercher
+    # la chaîne exacte avait manqué `banque_n1`, qui accepte pourtant l'option.
+    # Il a sauté ses 264 extraits en rapportant « 0 · succès ».
+    accepte_force = bool(re.search(r'"--force" in (sys\.)?argv', t))
     voix = re.search(r'^VOICE\s*=\s*"([^"]+)"', t, re.M)
     if voix and ENSEIGNANTE not in voix.group(1):
         return "écarté", None, "sons dans une autre voix (%s)" % voix.group(1)[:12]
@@ -89,7 +93,7 @@ def classer(f):
         # ces générateurs sautent les fichiers déjà présents, or les MP3
         # d'ElevenLabs sont précisément déjà présents. Sans lui, dix modules
         # ont rapporté « 0 extrait · succès » en gardant leur ancien audio.
-        arg = ["--force"] if '"--force" in sys.argv' in t else []
+        arg = ["--force"] if accepte_force else []
         return "lancer", arg, "aucune réplique, tout est en voix enseignante"
     if "--only" in t:
         # `--force` aussi pour les mixtes, et ce n'est pas une redondance :
@@ -101,8 +105,7 @@ def classer(f):
         # « `--only` ne veut pas dire refais-les ». Le filtre `--only`
         # s'applique avant le test, donc `--force` ne déborde pas sur les
         # répliques de dialogue.
-        arg = ["--only", "sons"] + (
-            ["--force"] if '"--force" in sys.argv' in t else [])
+        arg = ["--only", "sons"] + (["--force"] if accepte_force else [])
         return "lancer", arg, "mixte, restreint aux sons"
     return "écarté", None, "mixte sans --only, on ne sait pas isoler les sons"
 
