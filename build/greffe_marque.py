@@ -2,9 +2,11 @@
 """Greffe l'identité de marque francis dans l'en-tête des modules interactifs.
 
 Trois morceaux, encadrés par des marqueurs de commentaire : la feuille de
-style de la marque, le favicon (le point du « i », seul), et le verrouillage
-horizontal (nom « francis » · trait · descripteur) posé en première ligne de
-`#hdr`, au-dessus du sur-titre du module.
+style de la marque, le favicon (le point du « i », seul), et la barre de
+marque — le verrouillage A de la remise : nom « francis » · trait ·
+descripteur, sur une bande blanche fermée par un filet mauve de 2 px, posée
+**au-dessus** de `#hdr`. Le blanc appartient à la plateforme, la teinte du
+bandeau au module.
 
 Le script est idempotent : il retire d'abord une greffe existante, puis la
 repose. On peut donc le relancer après toute modification du gabarit.
@@ -19,10 +21,8 @@ la reconstruction suivante.
 
 Ce que la greffe NE fait pas, volontairement : elle ne touche ni à la couleur
 d'accent du module, ni au sur-titre, ni au score. Le mauve reste réservé à la
-marque — il ne va sur aucun bouton, aucun état, aucune rétroaction. Elle ne
-pose pas non plus la fermeture mauve du verrouillage A : ici le logotype vit
-sur le bandeau teinté de l'en-tête, où un deuxième filet ferait une deuxième
-ligne d'en-tête.
+marque — il ne va sur aucun bouton, aucun état, aucune rétroaction, et la
+fermeture de 2 px sous la barre est le seul filet mauve de la page.
 """
 import pathlib
 import re
@@ -56,13 +56,19 @@ TETE = (TETE_DEBUT + '\n'
 # laisserait son propre point sous le disque. D'où le role="img" et
 # l'aria-label, pour que rien ne lise « francıs ». Le descripteur va à droite
 # du trait, jamais dessous : sous 480 px, la feuille de style l'efface.
+#
+# `--large` : l'en-tête d'un module occupe toute la largeur, avec la gouttière
+# pour seule marge. Sans cette classe, la barre centrerait une colonne de
+# 1000 px et le logotype se décalerait du titre qu'il surmonte.
 LOCKUP = DEBUT + """
-<div class="fr-bandeau">
-  <span class="fr-lockup">
-    <span class="fr-nom" role="img" aria-label="francis">franc<span class="fr-i" aria-hidden="true">ı<span class="fr-point"></span></span>s</span>
-    <span class="fr-trait" aria-hidden="true"></span>
-    <span class="fr-desc">Aide à l'apprentissage du français</span>
-  </span>
+<div class="fr-barre">
+  <div class="fr-barre__in fr-barre__in--large">
+    <span class="fr-lockup">
+      <span class="fr-nom" role="img" aria-label="francis">franc<span class="fr-i" aria-hidden="true">ı<span class="fr-point"></span></span>s</span>
+      <span class="fr-trait" aria-hidden="true"></span>
+      <span class="fr-desc">Aide à l'apprentissage du français</span>
+    </span>
+  </div>
 </div>
 """ + FIN
 
@@ -93,7 +99,7 @@ def greffe(html, slug=None):
 
     if html.count(ANCRE) != 1:
         raise ValueError('%s absent ou en double' % ANCRE)
-    return html.replace(ANCRE, ANCRE + '\n' + LOCKUP, 1)
+    return html.replace(ANCRE, LOCKUP + '\n' + ANCRE, 1)
 
 
 def fichier_du_module(dossier):

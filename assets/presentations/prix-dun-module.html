@@ -82,7 +82,7 @@ body{
 
 /* ---------- en-tête ---------- */
 .tete{
-  padding:56px 0 32px;
+  padding:40px 0 32px;
   border-bottom:2px solid var(--ink);
   display:flex;
   flex-direction:column;
@@ -91,6 +91,11 @@ body{
 /* — marque francis — le nom, un trait, le descripteur. Le seul signe de
    marque est le point du « i » : un disque plein. Aucune boîte autour du
    nom — une pilule se lirait comme un bouton. — */
+/* La barre de marque : la surface de la plateforme, fermée par le filet
+   mauve de 2 px. Le document commence en dessous. */
+.marque-barre{background:var(--sheet); border-bottom:2px solid var(--marque);
+  margin-bottom:8px;}
+.marque-barre__in{max-width:1080px;margin:0 auto;padding:16px 24px;}
 .verrou{
   display:inline-flex;align-items:center;gap:14px;flex-wrap:wrap;
   align-self:flex-start;
@@ -239,10 +244,15 @@ a{color:inherit;}
 </style>
 </head>
 <body>
+<div class="marque-barre">
+  <div class="marque-barre__in">
+    <div class="verrou"><b role="img" aria-label="francis">franc<span class="i" aria-hidden="true">ı<span class="point"></span></span>s</b><span class="filet" aria-hidden="true"></span><span class="desc">Coûts d'infrastructure</span></div>
+  </div>
+</div>
+
 <div class="page">
 
   <header class="tete">
-    <div class="verrou"><b role="img" aria-label="francis">franc<span class="i" aria-hidden="true">ı<span class="point"></span></span>s</b><span class="filet" aria-hidden="true"></span><span class="desc">Coûts d'infrastructure</span></div>
     <h1>Le prix d'un module</h1>
     <p class="chapeau">Ce que la plateforme appelle, à quel tarif, et ce que coûte un module joué par un groupe de vingt élèves. Les montants sont des <em>estimations</em> — aucune facture n'a été reconstituée ici.</p>
     <p class="date">Relevé du 25 août 2026 · 77 modules assemblés · 6 886 MP3 · 1 502 images</p>

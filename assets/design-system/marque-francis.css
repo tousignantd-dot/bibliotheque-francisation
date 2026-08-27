@@ -31,14 +31,11 @@
 :root{
   --marque-600:#6B4FBB;   /* couleur de marque — point du « i », descripteur */
   --marque-100:#EFEAFA;   /* nom sur fond mauve (verrouillage B) */
-  /* Trait vertical. La remise le dessine en --paper-200 (#F0F0EE), sur
-     fond blanc. Or dans ce projet le verrouillage vit presque toujours
-     sur un bandeau teinté — l'en-tête d'un module porte sa couleur de
-     repérage, ceux du portail la teinte verte — où ce gris-là s'efface.
-     Le trait prend donc une valeur plus soutenue. Écart assumé, le même
-     qu'à l'époque de francis : sur fond blanc, poser .fr-lockup--blanc,
-     qui rend le trait à la valeur de la remise. */
-  --marque-trait:#D8D8D3;
+  /* Trait vertical, à la valeur de la remise : le verrouillage vit sur du
+     blanc — sa propre bande, fermée par un filet mauve — et non plus sur le
+     bandeau teinté de la page. Sur une surface teintée ou sur du papier, où
+     ce gris s'efface, poser .fr-lockup--sombre, qui le fonce. */
+  --marque-trait:#F0F0EE;
 }
 
 /* ── Verrouillage A (principal) ─────────────────────────────────────
@@ -49,7 +46,7 @@
   --fr-nom:28px; --fr-desc:16px;                 /* barre d'application */
   --fr-pt:7px; --fr-pt-l:1px; --fr-pt-t:2px;
   --fr-trait:24px;
-  display:inline-flex;align-items:center;gap:16px;flex-wrap:wrap;
+  display:inline-flex;align-items:center;gap:16px;flex-wrap:nowrap;
   color:inherit;text-decoration:none;
 }
 .fr-nom{
@@ -112,6 +109,17 @@
 .fr-lockup--courriel .fr-trait,
 .fr-lockup--courriel .fr-desc{display:none}
 
+/* La grande taille redescend à celle de la barre avant d'être à l'étroit :
+   à 36 px, le verrouillage entier mesure près de 570 px avec ses gouttières,
+   et le descripteur passerait sur deux lignes — ce que la remise interdit. */
+@media (max-width:640px){
+  .fr-lockup--grand{
+    --fr-nom:28px; --fr-desc:16px;
+    --fr-pt:7px; --fr-pt-l:1px; --fr-pt-t:2px;
+    --fr-trait:24px;
+  }
+}
+
 /* Sous 480 px, le descripteur et le trait disparaissent : le nom reste seul. */
 @media (max-width:480px){
   .fr-lockup{--fr-nom:20px; --fr-pt:5px; --fr-pt-l:1px; --fr-pt-t:1px}
@@ -129,53 +137,38 @@
 .fr-lockup--mauve .fr-desc{color:#FFFFFF}
 .fr-lockup--mauve.fr-lockup--etroit{--fr-pt:9px}
 
-/* Sur fond blanc, le trait reprend la valeur de la remise. */
-.fr-lockup--blanc{--marque-trait:var(--paper-200,#F0F0EE)}
+/* Hors d'une barre blanche — sur un fond de papier ou une surface teintée —
+   le trait de la remise s'efface. Cette classe le fonce, juste assez. */
+.fr-lockup--sombre{--marque-trait:#D8D8D3}
 
-/* ── Place du verrouillage dans l'en-tête d'un module ──────────────
-   Une ligne à elle seule, au-dessus du sur-titre du module. */
-.fr-bandeau{
-  flex:1 1 100%;
-  display:flex;align-items:center;
-  /* Le verrouillage a besoin d'air sous lui : le `gap` de #hdr (16 px)
-     sert aussi d'écart entre le titre et les boutons, on ne peut donc pas
-     l'élargir sans écarter tout le reste. */
-  margin-bottom:14px;
-}
-/* Dans les ateliers générés, le verrouillage est seul dans `#hdr` et posé
-   **hors** du conteneur intérieur du bandeau, qui porte la gouttière : sans
-   ces lignes, le nom colle au bord de la page pendant que le sur-titre est
-   en retrait. On lui redonne la même colonne. */
-#hdr > .fr-bandeau:only-child{
-  max-width:var(--content-max);
-  margin:0 auto 26px;
-  padding:0 var(--gutter);
-}
-@media (max-width:900px){
-  #hdr > .fr-bandeau:only-child{padding-left:var(--sp-5);padding-right:var(--sp-5)}
-}
-
-/* ── Place du verrouillage dans un bandeau de portail ────────────── */
-.fr-bandeau-portail{margin:0 0 var(--sp-5,20px)}
-
-/* ── Barre de marque — en-tête d'application (verrouillage A complet) ─
-   Fond blanc, fermeture mauve de 2 px. C'est la seule surface où la
-   fermeture s'emploie : sur un bandeau teinté, elle ferait une deuxième
-   ligne d'en-tête. */
+/* ── Barre de marque — le verrouillage A, et la place normale du logotype ─
+   Fond blanc, fermeture mauve de 2 px, sur toute la largeur. Le logotype ne
+   vit pas dans le bandeau de la page : il a sa bande à lui, au-dessus. Le
+   blanc appartient à la plateforme, la teinte au module ou à la page. */
 .fr-barre{
   background:var(--surface-card,#FFFFFF);
   border-bottom:2px solid var(--marque-600);
   padding:16px 0;
 }
-/* La colonne intérieure, alignée sur celle du reste de la page. La session —
-   nom de la personne connectée, bouton de déconnexion — vit ici et non dans le
-   bandeau de page : c'est ce qui rend l'en-tête lisible. */
+/* La colonne intérieure, alignée sur celle du reste de la page. Sur les pages
+   du portail, la session — nom de la personne connectée, bouton de déconnexion
+   — vit ici et non dans le bandeau de page : c'est ce qui rend l'en-tête
+   lisible. */
 .fr-barre__in{
   max-width:var(--content-max,1000px);margin:0 auto;
   padding:0 var(--gutter,32px);
   display:flex;align-items:center;justify-content:space-between;
   gap:18px;flex-wrap:wrap;
 }
+/* Les modules ne centrent pas de colonne : leur en-tête occupe toute la
+   largeur, avec la gouttière pour seule marge. La barre les suit, sinon le
+   logotype se décale du titre qu'il surmonte. */
+.fr-barre__in--large{max-width:none}
+@media (max-width:900px){
+  .fr-barre__in{padding-left:var(--sp-5,20px);padding-right:var(--sp-5,20px)}
+}
+/* Dans la barre, le trait est déjà sur du blanc : rien à forcer. */
+.fr-barre .fr-lockup{--marque-trait:var(--paper-200,#F0F0EE)}
 
 /* ── Impression — une seule encre ─────────────────────────────────
    Aucune couleur : tout passe en noir (verrouillage C). */

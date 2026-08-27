@@ -23,6 +23,8 @@ Ce que le script NE touche pas, volontairement :
   · `/FolioSAAF`, un nom de police interne aux PDF du manuel.
   · lui-même : il porte les motifs de l'ancienne marque, il s'exclut donc de
     la liste des fichiers, sans quoi il se réécrirait et deviendrait faux.
+  · `CLAUDE.md`, où l'ancien nom est dit exprès : la section de marque raconte
+    d'où vient l'identité actuelle et pourquoi la pilule a été abandonnée.
 """
 import pathlib
 import re
@@ -32,6 +34,7 @@ ROOT = pathlib.Path(__file__).resolve().parent.parent
 MOI = pathlib.Path(__file__).resolve()
 SUFFIXES = {'.html', '.py', '.css', '.md', '.svg'}
 IGNORES = ('.claude/worktrees/', 'node_modules/', '.git/')
+GARDES = {'CLAUDE.md'}   # l'ancien nom y est dit exprès
 
 VIEUX = 'SAAF'          # écrit une fois, jamais en clair dans les motifs
 vieux_bas = VIEUX.lower()
@@ -74,7 +77,7 @@ def fichiers():
         if f.resolve() == MOI:
             continue
         rel = f.relative_to(ROOT).as_posix()
-        if any(i in rel + '/' for i in IGNORES):
+        if rel in GARDES or any(i in rel + '/' for i in IGNORES):
             continue
         yield f
 

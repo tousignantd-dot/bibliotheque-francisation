@@ -1111,8 +1111,8 @@ se lisait comme un bouton. Remise du 26 août 2026,
 - `assets/design-system/marque-francis-favicon.svg` — le point seul, blanc sur
   cadre mauve ; `marque-francis-favicon-clair.svg` en donne la version mauve sur
   blanc. Jamais une lettre.
-- `build/greffe_marque.py` — pose le verrouillage en première ligne de `#hdr`,
-  au-dessus du sur-titre du module. Idempotente, comme les autres greffes :
+- `build/greffe_marque.py` — pose la barre de marque **au-dessus** de `#hdr`.
+  Idempotente, comme les autres greffes :
 
 ```
 python3 build/greffe_marque.py            # tous les modules écrits à la main
@@ -1124,16 +1124,27 @@ Les modules qui ont un manifeste dans `build/contenu/` sont sautés : leur
 greffe est posée par `build/module.py` pendant la construction. Le script lit
 le dossier plutôt que d'en tenir une liste, qui vieillirait.
 
-`build/marque_francis_bascule.py` a fait la bascule de SAAF vers francis sur
-tout le dépôt — HTML construit et sources qui le construisent. Il est
-idempotent et se garde : il documente la correspondance entre les deux marques.
+**La barre de marque est la place normale du logotype.** C'est le verrouillage
+A de la remise : le nom, le trait et le descripteur sur du blanc, fermés par un
+filet mauve de 2 px, sur toute la largeur — et jamais dans le bandeau de la
+page. Le blanc appartient à la plateforme, la teinte au module ou à la page.
+C'est aussi le seul filet mauve de la page.
 
-**Les classes** : `.fr-lockup` (28 px, barre d'application) avec les tailles
-`--grand` (36 px, en-tête de page), `--etroit` (24 px), `--courriel` (nom seul),
-`--mauve` (fond mauve), `--blanc` (fond blanc, le trait reprend `--paper-200`).
-`.fr-bandeau` place le verrouillage dans l'en-tête d'un module,
-`.fr-bandeau-portail` dans un bandeau de portail, `.fr-barre` compose la barre
-de marque blanche à fermeture mauve d'un en-tête d'application.
+Deux scripts ont fait le chemin, gardés parce qu'ils le documentent :
+`build/marque_francis_bascule.py` a basculé SAAF vers francis sur tout le dépôt
+— HTML construit et sources qui le construisent — et `build/marque_barre.py` a
+ensuite sorti le verrouillage des bandeaux teintés pour lui donner sa barre.
+Tous deux idempotents.
+
+**Les classes** : `.fr-lockup` (28 px, taille de barre) avec les tailles
+`--grand` (36 px, en-tête de page ; redescend à 28 px sous 640 px), `--etroit`
+(24 px), `--courriel` (nom seul), `--mauve` (fond mauve), `--sombre` (le trait
+forci, pour les rares verrouillages posés hors d'une barre). `.fr-barre` est la
+bande blanche à fermeture mauve ; `.fr-barre__in` sa colonne intérieure —
+centrée sur `--content-max` pour le portail et les ateliers, ou
+`--fr-barre__in--large` en pleine largeur pour les modules, dont l'en-tête n'a
+que la gouttière pour marge. Sur les pages du portail, la session (nom, bouton
+de déconnexion) vit dans la barre et non dans le bandeau de page.
 
 **Sur fond mauve ou noir, le nom n'est jamais blanc pur** : le point doit se
 détacher **des lettres**, pas seulement du fond. Nom blanc + point blanc, c'est
@@ -1157,10 +1168,10 @@ bandeaux de sous-vue, qui ne sont pas des en-têtes de page.
 
 | Page | Verrouillage |
 |---|---|
-| `eleve.html` | grand sur l'écran de connexion — c'est le `h1` ; taille de barre sur l'accueil |
+| `eleve.html` | grand sur l'écran de connexion — c'est le `h1`, dans la barre ; taille de barre sur l'accueil, avec la déconnexion |
 | `enseignant.html`, `prof.html` | grand sur la connexion, taille de barre dans l'en-tête permanent |
-| `progression.html`, `fiche-eleve.html` | taille de barre, dans le bandeau d'identité — pas dans la barre collante |
-| `catalogue.html` | taille de barre, la disposition de l'en-tête de module |
+| `progression.html`, `fiche-eleve.html`, `chiffres.html`, `reseau.html` | la barre ouvre la page, au-dessus de leur barre d'outils collante |
+| `catalogue.html` | sa barre collante `.header` est la barre de marque : blanche, fermée en mauve |
 | `presentations.html` | grand ; sa copie locale du logotype a été retirée au profit de la feuille partagée |
 
 `lms.html` et `viewer.html` sont restés à l'écart : ils ne parlent pas le
@@ -1168,11 +1179,10 @@ système de design Francisation (Inter, accent bleu, chrome foncé pour le
 lecteur). Y poser le logotype mettrait la marque sur une page qui la contredit ;
 c'est une refonte, pas une greffe.
 
-Un écart assumé : le trait du verrouillage vaut `--paper-200` (#F0F0EE) dans la
-remise, sur fond blanc. Or ici le verrouillage vit presque toujours sur un
-bandeau teinté — un en-tête de module porte sa couleur de repérage, ceux du
-portail leur teinte — où cette valeur s'efface. `--marque-trait` vaut donc
-`#D8D8D3` par défaut ; sur un fond blanc, poser `.fr-lockup--blanc`.
+Le trait vaut `--paper-200` (#F0F0EE), la valeur de la remise : le verrouillage
+vit sur du blanc. Les rares logotypes posés ailleurs — un pied de page, un
+document sur fond de papier — prennent `.fr-lockup--sombre`, qui fonce le trait
+juste assez pour qu'il se voie.
 
 ### Le violet n'est plus qu'à la marque
 

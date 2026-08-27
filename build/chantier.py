@@ -321,15 +321,17 @@ GABARIT = """<!DOCTYPE html>
 </style>
 </head>
 <body>
+<div class="fr-barre">
+  <div class="fr-barre__in">
+    <span class="fr-lockup">
+      <span class="fr-nom" role="img" aria-label="francis">franc<span class="fr-i" aria-hidden="true">ı<span class="fr-point"></span></span>s</span>
+      <span class="fr-trait" aria-hidden="true"></span>
+      <span class="fr-desc">Aide à l'apprentissage du français</span>
+    </span>
+  </div>
+</div>
 <div class="wrap">
   <header class="top">
-    <div class="fr-bandeau-portail">
-      <span class="fr-lockup">
-        <span class="fr-nom" role="img" aria-label="francis">franc<span class="fr-i" aria-hidden="true">ı<span class="fr-point"></span></span>s</span>
-        <span class="fr-trait" aria-hidden="true"></span>
-        <span class="fr-desc">Aide à l'apprentissage du français</span>
-      </span>
-    </div>
     <p class="eyebrow">Francisation · Chantier</p>
     <h1>Le chantier des banques d'exercices</h1>
     <p class="sous">Les modules couvrent les 85 situations des huit niveaux. Ce qui

@@ -104,11 +104,10 @@
 
     .om-vide { font-size: var(--fs-body-sm); font-weight: var(--fw-semi); color: var(--text-muted); }
 
-    /* — Marque francis — la forme et les tailles viennent de marque-francis.css.
-         Ici, seulement sa place dans le bandeau. Le nom garde son
-         interlettrage serré (-0.035em) et ne prend jamais de boîte : le seul
-         signe de marque est le point du « i ». — */
-    .om-marque { margin: var(--sp-5) 0 0; }
+    /* — Marque francis — tout vient de marque-francis.css. Le logotype est le
+         titre de l'écran de connexion : c'est un h1, dans la barre de marque,
+         et il ne porte donc plus de marge à lui. — */
+    .om-marque { margin: 0; }
 
     @media (max-width: 720px) {
       .om-bilan { grid-template-columns: 1fr; }
@@ -121,14 +120,19 @@
 
 <!-- ÉCRAN 1 · CONNEXION -->
 <div class="page om-portail" id="ecranConnexion">
-  <header class="band">
-    <div class="container">
-      <div class="band__eyebrow">Centre Lartigue · CSSDM</div>
+  <div class="fr-barre">
+    <div class="fr-barre__in">
       <h1 class="fr-lockup fr-lockup--grand om-marque">
         <span class="fr-nom" role="img" aria-label="francis">franc<span class="fr-i" aria-hidden="true">ı<span class="fr-point"></span></span>s</span>
         <span class="fr-trait" aria-hidden="true"></span>
         <span class="fr-desc">Aide à l'apprentissage du français</span>
       </h1>
+    </div>
+  </div>
+
+  <header class="band">
+    <div class="container">
+      <div class="band__eyebrow">Centre Lartigue · CSSDM</div>
       <p class="band__lead">Niveau 4. Entrez votre code d'accès pour retrouver vos activités et votre bilan.</p>
       <div class="om-connexion">
         <div class="card">
@@ -153,21 +157,24 @@
 
 <!-- ÉCRAN 2 · ACCUEIL -->
 <div class="page om-portail" id="ecranAccueil" hidden>
+  <div class="fr-barre">
+    <div class="fr-barre__in">
+      <span class="fr-lockup">
+        <span class="fr-nom" role="img" aria-label="francis">franc<span class="fr-i" aria-hidden="true">ı<span class="fr-point"></span></span>s</span>
+        <span class="fr-trait" aria-hidden="true"></span>
+        <span class="fr-desc">Aide à l'apprentissage du français</span>
+      </span>
+      <button class="btn btn--ghost btn--sm" id="logoutBtn">Se déconnecter</button>
+    </div>
+  </div>
+
   <header class="band">
     <div class="container">
-      <div class="fr-bandeau-portail">
-        <span class="fr-lockup">
-          <span class="fr-nom" role="img" aria-label="francis">franc<span class="fr-i" aria-hidden="true">ı<span class="fr-point"></span></span>s</span>
-          <span class="fr-trait" aria-hidden="true"></span>
-          <span class="fr-desc">Aide à l'apprentissage du français</span>
-        </span>
-      </div>
       <div class="om-band-haut">
         <div>
           <div class="band__eyebrow" id="bandSurtitre">Niveau 4</div>
           <h1 id="bandTitre">Bonjour</h1>
         </div>
-        <button class="btn btn--ghost btn--sm" id="logoutBtn">Se déconnecter</button>
       </div>
       <p class="band__lead">Voici votre bilan et la suite de votre parcours.</p>
       <!-- Lien de rencontre du groupe : posé par l'enseignant, absent sinon. -->
