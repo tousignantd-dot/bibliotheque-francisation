@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Tableau de bord — Hiérarchie du site de francisation</title>
+<title>Hiérarchie des pages du site — francis</title>
 <style>
   :root{
     --papier:#FAF8F5; --carte:#FFFFFF; --bande:#F1EEE9;
@@ -12,6 +12,7 @@
     --eleve:#1F6F5C; --eleve-doux:#E4F1ED;
     --prof:#8A4B1E; --prof-doux:#F6EADF;
     --commun:#3B5A93; --commun-doux:#E6ECF7;
+    --dir:#6A3E7A; --dir-doux:#F0E7F4;
     --vieux:#7A7480; --vieux-doux:#EFEDF1;
   }
   *{box-sizing:border-box}
@@ -92,6 +93,7 @@
   .t-eleve{border-left-color:var(--eleve)}  .t-eleve .etiq{background:var(--eleve-doux); color:var(--eleve)}
   .t-prof{border-left-color:var(--prof)}    .t-prof .etiq{background:var(--prof-doux); color:var(--prof)}
   .t-commun{border-left-color:var(--commun)}.t-commun .etiq{background:var(--commun-doux); color:var(--commun)}
+  .t-dir{border-left-color:var(--dir)}      .t-dir .etiq{background:var(--dir-doux); color:var(--dir)}
   .t-vieux{border-left-color:var(--vieux); background:var(--vieux-doux)} .t-vieux .etiq{background:#fff; color:var(--vieux)}
   .t-feuille{border-left-color:var(--traitpale); background:var(--bande)}
 
@@ -141,7 +143,7 @@
 
 <!-- ══════════ Barre de commande ══════════ -->
 <div class="barre">
-  <div class="marque"><span>Francisation</span>Tableau de bord</div>
+  <div class="marque"><span>francis</span>Hiérarchie du site</div>
 
   <div class="champ-groupe">
     <label for="selBase">Serveur</label>
@@ -158,7 +160,17 @@
   </div>
 
   <div class="champ-groupe">
-    <input type="search" id="champRecherche" placeholder="Filtrer les 43 activités…" autocomplete="off">
+    <label for="selNiveau">Niveau</label>
+    <select id="selNiveau">
+      <option value="">Tous</option>
+      <option value="1">1</option><option value="2">2</option><option value="3">3</option>
+      <option value="4">4</option><option value="5">5</option><option value="6">6</option>
+      <option value="7">7</option><option value="8">8</option>
+    </select>
+  </div>
+
+  <div class="champ-groupe">
+    <input type="search" id="champRecherche" placeholder="Filtrer les 177 activités…" autocomplete="off">
   </div>
 
   <div class="base-actuelle" id="baseActuelle"></div>
@@ -168,14 +180,15 @@
 </div>
 
 <header class="tete">
-  <div class="surtitre">Bibliothèque Francisation · Niveau 4</div>
+  <div class="surtitre">francis · les huit niveaux du programme</div>
   <h1>Hiérarchie des pages du site</h1>
-  <p class="chapeau">Les deux portes d'entrée du site et tout ce qui s'ouvre derrière elles. Chaque bloc est cliquable et s'ouvre dans un nouvel onglet, sur le serveur choisi ci-dessus. Un code élève saisi dans la barre est ajouté aux liens qui en attendent un.</p>
+  <p class="chapeau">Les deux portes d'entrée du site, ce qui s'ouvre derrière elles, et les pages qu'on n'atteint que par leur adresse. Chaque bloc est cliquable et s'ouvre dans un nouvel onglet, sur le serveur choisi ci-dessus. Un code élève saisi dans la barre est ajouté aux liens qui en attendent un.</p>
 </header>
 
 <div class="legende">
   <span class="pastille"><i style="background:var(--eleve)"></i>Côté élève</span>
   <span class="pastille"><i style="background:var(--prof)"></i>Côté enseignant</span>
+  <span class="pastille"><i style="background:var(--dir)"></i>Direction et réseau</span>
   <span class="pastille"><i style="background:var(--commun)"></i>Outil autonome</span>
   <span class="pastille"><i style="background:var(--vieux)"></i>Ancienne page</span>
   <span class="pastille"><i style="background:var(--trait)"></i>Ressource terminale</span>
@@ -183,7 +196,7 @@
 
 <!-- ══════════ ENTRÉE 1 — ÉLÈVE ══════════ -->
 <h2 class="titre-bloc">Entrée 1 — l'élève <small>racine du site : <code>/</code> sert <code>eleve.html</code></small></h2>
-<p class="sous-bloc">L'élève n'a ni compte ni mot de passe : il entre un code à six caractères que l'enseignante lui a remis. Tout ce qu'il voit dépend de la planification de son groupe.</p>
+<p class="sous-bloc">L'élève n'a ni compte ni mot de passe : il entre un code à six caractères que l'enseignante lui a remis. Tout ce qu'il voit dépend de la planification de son groupe, et le niveau du groupe borne ce qu'on peut lui ouvrir.</p>
 
 <ul class="arbre">
   <li class="racine">
@@ -195,13 +208,13 @@
       <li>
         <a class="noeud t-eleve" data-href="viewer.html?src=assets/interactive/module-consultation/module-consultation-activite-interactive.html&amp;activityId=35&amp;title=Module%201" data-code="1">
           <div class="ligne1"><span class="nom">Cadre d'ouverture d'une activité</span><code>viewer.html?src=…&amp;code=…</code></div>
-          <div class="quoi">Barre de titre + iframe. Il passe le code élève à l'activité et remonte les traces de progression. Le lien ouvre le module 1 en exemple.</div>
+          <div class="quoi">Barre de titre + iframe. Il passe le code élève à l'activité et remonte les traces de progression. Le lien ouvre le module 1 du niveau 4 en exemple.</div>
         </a>
         <ul>
           <li>
             <div class="noeud t-eleve">
-              <div class="ligne1"><span class="nom">Modules de cours</span><code>assets/interactive/module-*/</code><span class="etiq">11 modules</span></div>
-              <div class="quoi">Cours de 4 h du matin. Chacun est un HTML autonome découpé en sections (Je découvre · Défis · Je me lance · Je retiens des mots).</div>
+              <div class="ligne1"><span class="nom">Modules de cours</span><code>assets/interactive/module-*/</code><span class="etiq">87 modules · 8 niveaux</span></div>
+              <div class="quoi">Cours de 4 h du matin, seize séances en quatre blocs. Chacun est un HTML autonome découpé en sections (Je découvre · Défis · Je me lance · Je retiens des mots). La couleur d'un module est celle de son niveau.</div>
               <details class="pli"><summary>Ouvrir la liste des modules</summary>
                 <div class="grille" data-liste="cours"></div>
               </details>
@@ -210,7 +223,7 @@
               <li>
                 <div class="noeud t-eleve">
                   <div class="ligne1"><span class="nom">Rail « Mes outils »</span><code>assets/design-system/outils-eleve.js</code><span class="etiq">7 outils</span></div>
-                  <div class="quoi">Traduire · Lire · Simplifier · Prononcer · Assistant · Mon carnet · Réviser. Greffé dans les onze modules, jamais écrit module par module — il n'a pas de page à lui.</div>
+                  <div class="quoi">Traduire · Lire · Simplifier · Prononcer · Demander à l'assistant · Mon carnet · Réviser. Greffé dans les modules, jamais écrit module par module — il n'a pas de page à lui. Un centre peut refuser l'assistant : les outils d'IA disparaissent alors, le module tient debout sans eux.</div>
                 </div>
                 <ul>
                   <li>
@@ -221,12 +234,18 @@
                   </li>
                 </ul>
               </li>
+              <li>
+                <div class="noeud t-eleve">
+                  <div class="ligne1"><span class="nom">Bouton de vitesse des voix</span><code>assets/design-system/</code><span class="etiq">En-tête</span></div>
+                  <div class="quoi">L'élève ralentit toutes les voix du module depuis l'en-tête. Greffé lui aussi, sur les modules et sur le gabarit.</div>
+                </div>
+              </li>
             </ul>
           </li>
           <li>
             <div class="noeud t-eleve">
-              <div class="ligne1"><span class="nom">Ateliers thématiques</span><code>assets/interactive/&lt;slug&gt;/</code><span class="etiq">32 ateliers</span></div>
-              <div class="quoi">Enquêtes, visites, jeux de rôle, mystères. Activités de 2 h de l'après-midi, par opposition aux modules du matin.</div>
+              <div class="ligne1"><span class="nom">Ateliers thématiques</span><code>assets/interactive/&lt;slug&gt;/</code><span class="etiq">27 ateliers</span></div>
+              <div class="quoi">Enquêtes, visites, jeux de rôle, mystères. Activités de 2 h de l'après-midi, par opposition aux modules du matin. Elles sont datées comme les modules.</div>
               <details class="pli"><summary>Ouvrir la liste des ateliers</summary>
                 <div class="grille" data-liste="atelier"></div>
               </details>
@@ -234,9 +253,9 @@
           </li>
           <li>
             <div class="noeud t-eleve">
-              <div class="ligne1"><span class="nom">Exercices libres</span><span class="etiq">Hors calendrier</span></div>
-              <div class="quoi">Domaines transversaux, affichés sans état d'avancement.</div>
-              <details class="pli"><summary>Ouvrir les cinq exercices libres</summary>
+              <div class="ligne1"><span class="nom">Exercices libres et banques des huit niveaux</span><span class="etiq">63 · hors calendrier</span></div>
+              <div class="quoi">Le banc « Pour vous exercer seul » : tout atelier dont le domaine de vie est transversal (graphie et sons, grammaire, vocabulaire, pratique orale). Sans date, sans état, toujours ouvert. Six familles d'exercices, un générateur par famille ; un atelier se déclare par son <code>contenu.json</code>.</div>
+              <details class="pli"><summary>Ouvrir la liste des exercices libres</summary>
                 <div class="grille" data-liste="libre"></div>
               </details>
             </div>
@@ -245,8 +264,8 @@
       </li>
       <li>
         <div class="noeud t-feuille">
-          <div class="ligne1"><span class="nom">Fiches à imprimer</span><code>assets/documents/*.html</code><span class="etiq">194 fiches</span></div>
-          <div class="quoi">Documents élèves en noir et blanc, format lettre. Un exemple ci-dessous ; les autres suivent la même adresse, un fichier par section de module.</div>
+          <div class="ligne1"><span class="nom">Fiches à imprimer</span><code>assets/documents/*.html</code><span class="etiq">1 340 fiches</span></div>
+          <div class="quoi">Documents élèves en noir et blanc, format lettre. Un fichier par section de module ; quelques exemples ci-dessous.</div>
           <details class="pli"><summary>Ouvrir une fiche d'exemple</summary>
             <div class="grille" data-liste="fiches"></div>
           </details>
@@ -256,33 +275,33 @@
   </li>
 </ul>
 
-<div class="note"><b>Ce que l'élève ne voit jamais :</b> le catalogue, la planification, les autres groupes, et les corrections IA de ses camarades. Le portail ne rend que les activités ouvertes à son groupe.</div>
+<div class="note"><b>Ce que l'élève ne voit jamais :</b> le catalogue, la planification, les autres groupes, et les corrections IA de ses camarades. Le portail ne rend que les activités ouvertes à son groupe — et rien ne part vers l'enseignante sans un geste de dépôt de sa part.</div>
 
 <!-- ══════════ ENTRÉE 2 — ENSEIGNANT ══════════ -->
 <h2 class="titre-bloc">Entrée 2 — l'enseignante <small>page d'accueil du personnel : <code>enseignant.html</code></small></h2>
-<p class="sous-bloc">Le portail enseignant porte sa propre connexion et remplace l'usage courant des anciennes pages. Plusieurs enseignantes, plusieurs groupes : le catalogue est commun, la planification se fait par groupe.</p>
+<p class="sous-bloc">Le portail enseignant porte sa propre connexion et remplace l'usage courant des anciennes pages. Plusieurs enseignantes, plusieurs groupes : le catalogue est commun, la planification se fait par groupe, et le niveau choisi à la création du groupe borne le catalogue et le matériel.</p>
 
 <ul class="arbre">
   <li class="racine">
     <a class="noeud t-prof" data-href="enseignant.html">
       <div class="ligne1"><span class="nom">Portail enseignant</span><code>enseignant.html</code><span class="etiq">Entrée</span></div>
-      <div class="quoi">Connexion, sélecteur de groupe, puis quatre onglets dans une seule page. Session partagée avec les autres pages du personnel par <code>localStorage</code>.</div>
+      <div class="quoi">Connexion, sélecteur de groupe, puis les vues dans une seule page. Session partagée avec les autres pages du personnel par <code>localStorage</code>.</div>
     </a>
     <ul>
       <li><div class="noeud t-prof"><div class="ligne1"><span class="nom">Onglet · Planifier</span><span class="etiq">Dans la page</span></div><div class="quoi">Dater les activités du groupe. Le chevron déplie les sections d'un module, cochables et datables une à une.</div></div></li>
-      <li><div class="noeud t-prof"><div class="ligne1"><span class="nom">Onglet · Élèves</span><span class="etiq">Dans la page</span></div><div class="quoi">Inscrire un élève, générer son code à six caractères, renommer, retirer, imprimer les billets. Un élève ne s'inscrit jamais lui-même.</div></div></li>
-      <li><div class="noeud t-prof"><div class="ligne1"><span class="nom">Onglet · Groupes et comptes</span><span class="etiq">Dans la page</span></div><div class="quoi">Créer un groupe, gérer les comptes enseignants, le mot de passe, le lien de rencontre et les fichiers partagés au groupe.</div></div></li>
+      <li><div class="noeud t-prof"><div class="ligne1"><span class="nom">Onglet · Élèves</span><span class="etiq">Dans la page</span></div><div class="quoi">Inscrire un élève sous un <b>pseudo</b>, générer son code à six caractères, renommer, retirer, imprimer les billets. Un élève ne s'inscrit jamais lui-même.</div></div></li>
+      <li><div class="noeud t-prof"><div class="ligne1"><span class="nom">Onglet · Groupes et comptes</span><span class="etiq">Dans la page</span></div><div class="quoi">Créer un groupe et son niveau, gérer les comptes enseignants, le mot de passe, le lien de rencontre et les fichiers partagés au groupe.</div></div></li>
       <li>
-        <div class="noeud t-prof"><div class="ligne1"><span class="nom">Onglet · Matériel</span><span class="etiq">Dans la page</span></div><div class="quoi">Dépôt des PowerPoints et des fiches à imprimer, avec promotion d'un dépôt vers l'officiel (réservé à l'admin).</div></div>
+        <div class="noeud t-prof"><div class="ligne1"><span class="nom">Vue · Matériel</span><span class="etiq">Dans la page</span></div><div class="quoi">Dépôt des PowerPoints et des fiches à imprimer, avec promotion d'un dépôt vers l'officiel (réservé à l'admin).</div></div>
         <ul>
           <li><a class="noeud t-feuille" data-href="assets/plans/enquete-criminelle-plan-de-cours.html"><div class="ligne1"><span class="nom">Plans de cours</span><code>assets/plans/</code><span class="etiq">12</span></div><div class="quoi">Le lien ouvre le plan de l'enquête criminelle, en exemple.</div></a></li>
-          <li><div class="noeud t-feuille"><div class="ligne1"><span class="nom">PowerPoints des séances</span><code>assets/powerpoints/</code><span class="etiq">144 séances</span></div><div class="quoi">Fichiers <code>.pptx</code>, un dossier par module — ils se téléchargent depuis l'onglet Matériel, pas depuis une page à eux.</div></div></li>
+          <li><div class="noeud t-feuille"><div class="ligne1"><span class="nom">PowerPoints des séances</span><code>assets/powerpoints/</code><span class="etiq">1 238 séances · 86 modules</span></div><div class="quoi">Fichiers <code>.pptx</code>, un dossier par module — ils se téléchargent depuis la vue Matériel, pas depuis une page à eux.</div></div></li>
         </ul>
       </li>
       <li>
         <a class="noeud t-prof" data-href="progression.html">
           <div class="ligne1"><span class="nom">Progression du groupe</span><code>progression.html</code></div>
-          <div class="quoi">Le tableau de bord du groupe, module par module : qui a fait quoi, où ça bloque.</div>
+          <div class="quoi">Le tableau de bord du groupe, module par module : qui a fait quoi, où ça bloque. En tête, <b>le direct de la classe</b> — la réussite question par question, pendant la séance.</div>
         </a>
         <ul>
           <li>
@@ -295,20 +314,20 @@
       </li>
       <li>
         <a class="noeud t-prof" data-href="catalogue.html">
-          <div class="ligne1"><span class="nom">Catalogue</span><code>catalogue.html</code></div>
-          <div class="quoi">Le fonds, pas la planification : toutes les activités, tous niveaux confondus, et le matériel qui va avec. Deux gestes seulement — ajouter une activité, ajouter du matériel. Aucune date, aucune suppression.</div>
+          <div class="ligne1"><span class="nom">Catalogue</span><code>catalogue.html</code><span class="etiq">177 activités</span></div>
+          <div class="quoi">Le fonds, pas la planification : toutes les activités, tous niveaux confondus, et les sept emplacements de matériel qui vont avec. Deux gestes seulement — ajouter une activité, ajouter du matériel. Aucune date, aucune suppression.</div>
         </a>
       </li>
       <li>
-        <a class="noeud t-prof" data-href="index.html">
-          <div class="ligne1"><span class="nom">Bibliothèque</span><code>index.html</code></div>
-          <div class="quoi">La vitrine de recherche des activités du groupe actif, avec dates, vignettes et filtres. Nav commune : Espace enseignant · Bibliothèque · Catalogue.</div>
+        <a class="noeud t-prof" data-href="prof.html">
+          <div class="ligne1"><span class="nom">Comptes du personnel</span><code>prof.html</code></div>
+          <div class="quoi">Connexion, installation du premier compte, et les comptes enseignants — ouvrir, retirer, réinitialiser un mot de passe. Les groupes en sont partis : ils vivent dans le portail.</div>
         </a>
       </li>
       <li>
         <a class="noeud t-commun" data-href="assets/outils/compositeur-activite.html?de=enseignant">
           <div class="ligne1"><span class="nom">Compositeur d'activité</span><code>assets/outils/compositeur-activite.html</code><span class="etiq">Autonome</span></div>
-          <div class="quoi">Ni session, ni groupe, ni appel au serveur : il assemble un prompt à partir des critères du programme. Le fichier du dépôt est une copie ; la source vit hors dépôt.</div>
+          <div class="quoi">Ni session, ni groupe : il assemble un prompt à partir des critères du programme. Sur le poste local, la forge le fait générer pour vrai.</div>
         </a>
       </li>
       <li>
@@ -320,69 +339,143 @@
           <li><a class="noeud t-feuille" data-href="assets/outils/guide-espace-enseignant.html"><div class="ligne1"><span class="nom">Guide de l'espace enseignant</span><code>guide-espace-enseignant.html</code></div></a></li>
         </ul>
       </li>
+      <li>
+        <div class="noeud t-feuille">
+          <div class="ligne1"><span class="nom">Correcteur collaboratif</span><span class="etiq">Hors dépôt</span></div>
+          <div class="quoi">Application distincte, déployée ailleurs et ouverte depuis la barre des sections. Son dépôt et son Railway sont séparés de celui-ci.</div>
+        </div>
+      </li>
     </ul>
   </li>
 </ul>
 
-<!-- ══════════ AUTONOMES ══════════ -->
-<h2 class="titre-bloc">Pages autonomes <small>aucune page du site n'y mène ; on les ouvre par leur adresse</small></h2>
+<!-- ══════════ ENTRÉE 3 — DIRECTION ══════════ -->
+<h2 class="titre-bloc">Entrée 3 — la direction <small>le lien « Espace direction » ne paraît qu'à qui a la charge d'un centre</small></h2>
+<p class="sous-bloc">Gérer des comptes et regarder une dépense n'est pas enseigner : ces pages sont sorties du portail enseignant. C'est le serveur qui dit qui y entre (<code>/api/direction/portees</code>), jamais un rôle deviné dans la page. La portée se lit dans l'arbre des organisations — réseau, CSS, centre — et non dans le rôle du compte.</p>
+
 <ul class="arbre">
+  <li class="racine">
+    <a class="noeud t-dir" data-href="direction.html">
+      <div class="ligne1"><span class="nom">Espace direction</span><code>direction.html</code><span class="etiq">Entrée</span></div>
+      <div class="quoi">Une seule page, deux portées : une direction y voit son centre, le fondateur voit le réseau. Comptes du centre, usage, drapeau IA par personne, invitations.</div>
+    </a>
+    <ul>
+      <li>
+        <a class="noeud t-dir" data-href="chiffres.html">
+          <div class="ligne1"><span class="nom">Les chiffres</span><code>chiffres.html</code><span class="etiq">3 vues</span></div>
+          <div class="quoi">Réseau, CSS, centre. Les tableaux lisent le relevé quotidien (<code>data/stats_jour.json</code>), jamais le journal d'événements : la vue d'un CSS ne porte aucun identifiant d'enseignant. Les minutes affichées sont un plancher, et les écrans le disent.</div>
+        </a>
+      </li>
+      <li>
+        <a class="noeud t-dir" data-href="reseau.html">
+          <div class="ligne1"><span class="nom">Console du réseau</span><code>reseau.html</code><span class="etiq">Fondateur</span></div>
+          <div class="quoi">L'arbre des organisations — réseau → CSS → centres → rattachements —, les accès, les invitations, et le drapeau « mode sans IA » qu'un centre peut lever.</div>
+        </a>
+        <ul>
+          <li>
+            <a class="noeud t-dir" data-href="bienvenue.html">
+              <div class="ligne1"><span class="nom">Accepter une invitation</span><code>bienvenue.html?jeton=…</code></div>
+              <div class="quoi">La page où un compte invité se crée son mot de passe. Sans jeton valable, elle ne dit rien d'autre que « cette invitation n'est plus valable ».</div>
+            </a>
+          </li>
+        </ul>
+      </li>
+    </ul>
+  </li>
+</ul>
+
+<div class="note"><b>Le mode sans IA :</b> une direction peut refuser l'assistant pour son centre, et le drapeau existe aussi sur un compte. Le plus précis gagne — la personne, puis les nœuds de l'arbre. Les modules se replient alors sans se casser.</div>
+
+<!-- ══════════ AUTONOMES ══════════ -->
+<h2 class="titre-bloc">Pages autonomes <small>aucune page du portail n'y mène ; on les ouvre par leur adresse</small></h2>
+<ul class="arbre">
+  <li>
+    <a class="noeud t-commun" data-href="presentations.html">
+      <div class="ligne1"><span class="nom">Banque de présentations</span><code>presentations.html</code><span class="etiq">Index</span></div>
+      <div class="quoi">Tout ce qui sert à présenter le projet, classé par public : convaincre et rendre des comptes, faire adopter, propositions et états d'avancement, index et guides. <b>Cette page-ci y est inscrite</b> — comme tout artefact produit sur le projet.</div>
+    </a>
+  </li>
   <li><a class="noeud t-commun" data-href="assets/outils/diagnostic-livre.html"><div class="ligne1"><span class="nom">Diagnostic — le livre</span><code>assets/outils/diagnostic-livre.html</code></div><div class="quoi">Relevé des notions du manuel, hors du portail.</div></a></li>
   <li><a class="noeud t-commun" data-href="assets/outils/diagnostic-modules.html"><div class="ligne1"><span class="nom">Diagnostic — les modules</span><code>assets/outils/diagnostic-modules.html</code></div><div class="quoi">Le même relevé, côté modules produits.</div></a></li>
   <li><a class="noeud t-commun" data-href="assets/outils/reconnaissance-vocale.html"><div class="ligne1"><span class="nom">Reconnaissance vocale</span><code>assets/outils/reconnaissance-vocale.html</code></div><div class="quoi">Banc d'essai de la dictée vocale.</div></a></li>
+  <li><a class="noeud t-commun" data-href="planche-images.html"><div class="ligne1"><span class="nom">Planche des images</span><code>planche-images.html</code><span class="etiq">1 447 images</span></div><div class="quoi">Toutes les images des modules sur une page, par niveau — pour voir d'un coup ce qui manque ou détonne.</div></a></li>
+  <li>
+    <div class="noeud t-commun">
+      <div class="ligne1"><span class="nom">Bancs d'essai des voix</span><code>essai-*.html</code><span class="etiq">6 pages</span></div>
+      <div class="quoi">Comparaisons de synthèse vocale, une question par page : <code>essai-voix</code>, <code>essai-debit</code>, <code>essai-lettres</code> (l'épellation), <code>essai-brin</code>, <code>essai-estceque</code>, <code>essai-outils</code>.</div>
+      <details class="pli"><summary>Ouvrir les bancs d'essai</summary>
+        <div class="grille" data-liste="essais"></div>
+      </details>
+    </div>
+  </li>
 </ul>
 
 <!-- ══════════ ANCIENNES ══════════ -->
-<h2 class="titre-bloc">Anciennes pages <small>conservées pour les signets et l'installation, remplacées à l'usage</small></h2>
+<h2 class="titre-bloc">Anciennes pages <small>conservées pour les signets, remplacées à l'usage</small></h2>
 <ul class="arbre">
   <li><a class="noeud t-vieux" data-href="admin.html"><div class="ligne1"><span class="nom">Ancien nom du catalogue</span><code>admin.html</code><span class="etiq">Redirection</span></div><div class="quoi">Ne fait plus que rediriger vers <code>catalogue.html</code>, pour les signets pris avant le renommage.</div></a></li>
-  <li><a class="noeud t-vieux" data-href="prof.html"><div class="ligne1"><span class="nom">Installation du premier compte</span><code>prof.html</code></div><div class="quoi">Sert encore à poser le tout premier compte enseignant ; sa partie « groupes » est reprise par le portail.</div></a></li>
-  <li><a class="noeud t-vieux" data-href="lms.html"><div class="ligne1"><span class="nom">Ancien tableau des élèves</span><code>lms.html</code></div><div class="quoi">Codes et suivi des élèves, remplacé par l'onglet « Élèves » et par <code>progression.html</code>.</div></a></li>
+  <li><a class="noeud t-vieux" data-href="lms.html"><div class="ligne1"><span class="nom">Ancien tableau des élèves</span><code>lms.html</code></div><div class="quoi">Codes et suivi des élèves, remplacé par l'écran « Élèves » du portail et par <code>progression.html</code>.</div></a></li>
   <li><a class="noeud t-vieux" data-href="maquette-outils-eleve.html"><div class="ligne1"><span class="nom">Maquette du rail d'outils</span><code>maquette-outils-eleve.html</code></div><div class="quoi">Banc d'essai du design, sans lien depuis le site. Voir aussi <code>essai-outils.html</code>.</div></a></li>
+  <li><div class="noeud t-vieux"><div class="ligne1"><span class="nom">La bibliothèque</span><code>index.html</code><span class="etiq">Supprimée</span></div><div class="quoi">La vitrine de recherche a quitté <code>index.html</code> pour le portail : la racine sert désormais <code>eleve.html</code>. Le fichier n'existe plus ; un signet vers lui tombe sur le portail élève.</div></div></li>
 </ul>
 
 <!-- ══════════ SERVEUR ══════════ -->
 <h2 class="titre-bloc">Derrière les pages <small>le serveur, en une ligne par famille</small></h2>
-<p class="sous-bloc">Un seul <code>server.py</code> (<code>http.server</code>, stdlib) sert les fichiers statiques et répond aux appels JSON. Aucune page n'a de base de données propre.</p>
+<p class="sous-bloc">Un seul <code>server.py</code> (<code>http.server</code>, stdlib) sert les fichiers statiques et répond aux appels JSON. Les traces vivent en fichiers JSON ou dans Postgres selon l'environnement (<code>db.py</code>) ; aucune page n'a de base à elle.</p>
 <table class="api">
   <thead><tr><th>Famille</th><th>Routes</th><th>Qui appelle</th></tr></thead>
   <tbody>
-    <tr><td>Élève</td><td><code>/api/auth</code>, <code>/api/student/dashboard</code>, <code>/activities</code>, <code>/progress</code>, <code>/sections</code></td><td><code>eleve.html</code>, <code>viewer.html</code></td></tr>
+    <tr><td>Élève</td><td><code>/api/auth</code>, <code>/api/student/dashboard</code>, <code>/progress</code>, <code>/activities</code>, <code>/sections</code></td><td><code>eleve.html</code>, <code>viewer.html</code></td></tr>
     <tr><td>Outils de l'élève</td><td><code>/api/outils/traduire</code>, <code>/simplifier</code>, <code>/assistant</code>, <code>/api/voix</code></td><td>rail « Mes outils » des modules</td></tr>
     <tr><td>Vocabulaire</td><td><code>/api/vocab/listes</code>, <code>/session</code>, <code>/answer</code>, <code>/translate</code>, <code>/signaler</code></td><td>cartes mémoire, « Je retiens des mots »</td></tr>
     <tr><td>Productions</td><td><code>/api/oral/submit</code>, <code>/api/ecrit/submit</code>, <code>/api/correct-french</code>, <code>/api/check-written</code>, <code>/api/corrige-moi/seance</code></td><td>modules et activités de correction</td></tr>
+    <tr><td>Le direct</td><td><code>/api/direct?groupId=&amp;activityId=&amp;section=</code></td><td>tête de <code>progression.html</code></td></tr>
     <tr><td>Enseignant</td><td><code>/api/prof/login</code>, <code>/me</code>, <code>/groupes</code>, <code>/enseignants</code>, <code>/documents</code>, <code>/planification/copier</code></td><td><code>enseignant.html</code>, <code>prof.html</code></td></tr>
-    <tr><td>Catalogue et matériel</td><td><code>/api/activities</code>, <code>/api/sections</code>, <code>/api/materiel</code>, <code>/depot</code>, <code>/promotion</code>, <code>/archive</code></td><td><code>catalogue.html</code>, <code>index.html</code>, onglet Matériel</td></tr>
+    <tr><td>Catalogue et matériel</td><td><code>/api/activities</code>, <code>/api/sections</code>, <code>/api/materiel</code>, <code>/depot</code>, <code>/promotion</code>, <code>/archive</code></td><td><code>catalogue.html</code>, vue Matériel</td></tr>
     <tr><td>Suivi</td><td><code>/api/admin/students</code>, <code>/oral-submissions</code>, <code>/written-submissions</code>, <code>/analyses-erreurs</code>, <code>/access-log</code></td><td><code>progression.html</code>, <code>fiche-eleve.html</code></td></tr>
+    <tr><td>Réseau et accès</td><td><code>/api/admin/organisations</code>, <code>/api/acces</code>, <code>/api/invitations</code></td><td><code>reseau.html</code>, <code>bienvenue.html</code></td></tr>
+    <tr><td>Direction</td><td><code>/api/direction/portees</code>, <code>/centre?orgId=</code>, <code>/reseau</code>, <code>/enseignants/&lt;id&gt;</code>, <code>/invitations</code></td><td><code>direction.html</code></td></tr>
+    <tr><td>Chiffres</td><td><code>/api/stats/reseau</code>, <code>/api/stats/css?orgId=</code>, <code>/api/stats/centre?orgId=</code></td><td><code>chiffres.html</code></td></tr>
     <tr><td>Forge (poste local)</td><td><code>/api/forge/commande</code>, <code>/etat</code>, <code>/fichier</code>, <code>/publier</code>, <code>/annuler</code></td><td>compositeur d'activité</td></tr>
   </tbody>
 </table>
 
 <footer>
-  Carte établie le 19 août 2026 à partir de <code>server.py</code>, des liens réels entre les pages et de <code>CLAUDE.md</code>. 43 activités au catalogue — 11 modules de cours, 32 ateliers — toutes de niveau 4.
+  Carte remise à jour le 27 août 2026 à partir de <code>data/activities.json</code>, des liens réels entre les pages, de <code>server.py</code> et de <code>CLAUDE.md</code>.
+  177 activités au catalogue — 87 modules de cours, 27 ateliers thématiques, 63 exercices libres — réparties sur les huit niveaux du programme.
 </footer>
 
 </div>
 
 <script>
-/* ═══ Le fonds : les 43 activités, lues dans data/activities.json ═══ */
-const ACTIVITES = [{"id":4,"t":"À la clinique","c":"atelier","h":"assets/interactive/a-la-clinique/a-la-clinique-activite-interactive-avec-bouton-1.html"},{"id":5,"t":"Le Marché Jean-Talon","c":"atelier","h":"assets/interactive/le-marche-jean-talon/marche-jean-talon-activite-interactive-avec-bouton.html"},{"id":6,"t":"La poutine","c":"atelier","h":"assets/interactive/la-poutine/poutine-activite-interactive-avec-bouton.html"},{"id":7,"t":"À l'épicerie","c":"atelier","h":"assets/interactive/a-lepicerie/epicerie-activite-interactive-avec-bouton.html"},{"id":8,"t":"Chez le Docteur","c":"atelier","h":"assets/interactive/chez-le-docteur/chez-le-docteur-activite-interactive-avec-bouton.html"},{"id":9,"t":"Le Mont-Royal","c":"atelier","h":"assets/interactive/le-mont-royal/mont-royal-activite-interactive-avec-bouton-1.html"},{"id":10,"t":"Jeux Olympique 1976","c":"atelier","h":"assets/interactive/jeux-olympique-1976/expo-1976-activite-interactive-avec-bouton.html"},{"id":11,"t":"Louer un appartement","c":"atelier","h":"assets/interactive/louer-un-appartement/logement-activite-interactive-avec-bouton-1.html"},{"id":12,"t":"Au travail","c":"atelier","h":"assets/interactive/au-travail/au-travail-activite-interactive-avec-bouton.html"},{"id":13,"t":"Sport et loisirs","c":"atelier","h":"assets/interactive/sport-et-loisirs/sport-activite-interactive-avec-bouton-1.html"},{"id":14,"t":"Trouver son chemin","c":"atelier","h":"assets/interactive/trouver-son-chemin/deplacement-activite-interactive-avec-bouton.html"},{"id":15,"t":"Le Vieux-port de Montréal","c":"atelier","h":"assets/interactive/le-vieux-port-de-montreal/vieux-port-activite-interactive-avec-bouton-2.html"},{"id":16,"t":"Je déménage !","c":"atelier","h":"assets/interactive/je-demenage/je-demenage-activite-interactive.html"},{"id":17,"t":"Parler de sa santé","c":"atelier","h":"assets/interactive/parler-de-sa-sante/parler-de-sa-sante-activite-interactive.html"},{"id":18,"t":"Visite du Vieux-Montréal","c":"atelier","h":"assets/interactive/visite-vieux-montreal/visite-vieux-montreal-activite-interactive.html"},{"id":19,"t":"L'enquête criminelle - vol de café","c":"atelier","h":"assets/interactive/lenquete-criminelle-vol-de-cafe/enquete-criminelle-activite-interactive.html"},{"id":20,"t":"Le mystère de la classe","c":"atelier","h":"assets/interactive/le-mystere-de-la-classe/myclassinter.html"},{"id":21,"t":"Le voleur de la cafétéria","c":"atelier","h":"assets/interactive/le-voleur-de-la-cafeteria/voleurcafetinter.html"},{"id":22,"t":"La vieille photo","c":"atelier","h":"assets/interactive/la-vieille-photo/vieillephotointer.html"},{"id":23,"t":"Une fête de quartier","c":"atelier","h":"assets/interactive/une-fete-de-quartier/fetequartinter.html"},{"id":24,"t":"Mystère à la bibliothèque","c":"atelier","h":"assets/interactive/mystere-a-la-bibliotheque/mystere-bibliotheque-interactive.html"},{"id":25,"t":"Mystère au laboratoire","c":"atelier","h":"assets/interactive/mystere-au-laboratoire/mystere-laboratoire-standalone.html"},{"id":26,"t":"Visite à la BANQ","c":"atelier","h":"assets/interactive/visite-a-la-banq/banq-standalone.html"},{"id":27,"t":"Visite au Jardin Botanique","c":"atelier","h":"assets/interactive/visite-au-jardin-botanique/jardin-botanique-standalone.html"},{"id":28,"t":"Détective des temps","c":"atelier","h":"assets/interactive/detective-des-temps/detective-des-temps-activite-interactive.html"},{"id":29,"t":"Corrige-moi ! (assistant oral)","c":"atelier","h":"assets/interactive/corrige-moi/corrige-moi-activite-interactive.html"},{"id":30,"t":"Rédaction de courriel (biochimiste)","c":"atelier","h":"assets/interactive/correction-courriel/correction-courriel-activite-interactive.html"},{"id":31,"t":"Vocabulaire — Cartes mémoire","c":"atelier","h":"assets/interactive/vocabulaire-flash/vocabulaire-flash-activite-interactive.html"},{"id":32,"t":"Analyse grammaticale","c":"atelier","h":"assets/interactive/analyse-grammaticale/analyse-grammaticale-activite-interactive.html"},{"id":33,"t":"Cabine d'enregistrement — Santé","c":"atelier","h":"assets/interactive/cabine-sante/cabine-sante-activite-interactive.html"},{"id":34,"t":"Module 3 — Prendre rendez-vous et aller à la pharmacie","c":"cours","h":"assets/interactive/module-sante/module-sante-activite-interactive.html"},{"id":35,"t":"Module 1 — Consulter au bon endroit","c":"cours","h":"assets/interactive/module-consultation/module-consultation-activite-interactive.html"},{"id":36,"t":"Module 2 — Une urgence au travail","c":"cours","h":"assets/interactive/module-urgence/module-urgence-activite-interactive.html"},{"id":37,"t":"Vocabulaire Santé — Cartes illustrées","c":"atelier","h":"assets/interactive/vocab-flash-sante/vocab-flash-sante-activite-interactive.html"},{"id":38,"t":"Vocabulaire Consommation — Cartes illustrées","c":"atelier","h":"assets/interactive/vocab-flash-conso/vocab-flash-conso-activite-interactive.html"},{"id":39,"t":"Module 4 — Absent ou en retard : que faire ?","c":"cours","h":"assets/interactive/module-travail/module-travail-activite-interactive.html"},{"id":40,"t":"Module 5 — Quelle est la procédure ?","c":"cours","h":"assets/interactive/module-procedure/module-procedure-activite-interactive.html"},{"id":41,"t":"Module 6 — C'est l'heure des nouvelles ?","c":"cours","h":"assets/interactive/module-nouvelles/module-nouvelles-activite-interactive.html"},{"id":42,"t":"Module 7 — Quelles sont les prévisions ?","c":"cours","h":"assets/interactive/module-meteo/module-meteo-activite-interactive.html"},{"id":43,"t":"Module 8 — Des publicités efficaces","c":"cours","h":"assets/interactive/module-pub/module-pub-activite-interactive.html"},{"id":44,"t":"Module 9 — Comment est le logement ?","c":"cours","h":"assets/interactive/module-logement/module-logement-activite-interactive.html"},{"id":45,"t":"Module 10 — Pouvez-vous régler le problème ?","c":"cours","h":"assets/interactive/module-probleme/module-probleme-activite-interactive.html"},{"id":46,"t":"Module 17 — Besoin d'un compte bancaire ?","c":"cours","h":"assets/interactive/module-banque/module-banque-activite-interactive.html"}];
+/* ═══ Le fonds : les activités, lues dans data/activities.json ═══
+   f : cours · atelier · libre — le rangement du portail élève.
+   n : le niveau, de 1 à 8. */
+const ACTIVITES = [{"id":4,"t":"À la clinique","f":"atelier","n":4,"h":"assets/interactive/a-la-clinique/a-la-clinique-activite-interactive-avec-bouton-1.html"},{"id":5,"t":"Le Marché Jean-Talon","f":"atelier","n":4,"h":"assets/interactive/le-marche-jean-talon/marche-jean-talon-activite-interactive-avec-bouton.html"},{"id":6,"t":"La poutine","f":"atelier","n":4,"h":"assets/interactive/la-poutine/poutine-activite-interactive-avec-bouton.html"},{"id":7,"t":"À l'épicerie","f":"atelier","n":4,"h":"assets/interactive/a-lepicerie/epicerie-activite-interactive-avec-bouton.html"},{"id":8,"t":"Chez le Docteur","f":"atelier","n":4,"h":"assets/interactive/chez-le-docteur/chez-le-docteur-activite-interactive-avec-bouton.html"},{"id":9,"t":"Le Mont-Royal","f":"atelier","n":4,"h":"assets/interactive/le-mont-royal/mont-royal-activite-interactive-avec-bouton-1.html"},{"id":10,"t":"Jeux Olympique 1976","f":"atelier","n":4,"h":"assets/interactive/jeux-olympique-1976/expo-1976-activite-interactive-avec-bouton.html"},{"id":11,"t":"Louer un appartement","f":"atelier","n":4,"h":"assets/interactive/louer-un-appartement/logement-activite-interactive-avec-bouton-1.html"},{"id":12,"t":"Au travail","f":"atelier","n":4,"h":"assets/interactive/au-travail/au-travail-activite-interactive-avec-bouton.html"},{"id":13,"t":"Sport et loisirs","f":"atelier","n":4,"h":"assets/interactive/sport-et-loisirs/sport-activite-interactive-avec-bouton-1.html"},{"id":14,"t":"Trouver son chemin","f":"atelier","n":4,"h":"assets/interactive/trouver-son-chemin/deplacement-activite-interactive-avec-bouton.html"},{"id":15,"t":"Le Vieux-port de Montréal","f":"atelier","n":4,"h":"assets/interactive/le-vieux-port-de-montreal/vieux-port-activite-interactive-avec-bouton-2.html"},{"id":16,"t":"Je déménage !","f":"atelier","n":4,"h":"assets/interactive/je-demenage/je-demenage-activite-interactive.html"},{"id":17,"t":"Parler de sa santé","f":"atelier","n":4,"h":"assets/interactive/parler-de-sa-sante/parler-de-sa-sante-activite-interactive.html"},{"id":18,"t":"Visite du Vieux-Montréal","f":"atelier","n":4,"h":"assets/interactive/visite-vieux-montreal/visite-vieux-montreal-activite-interactive.html"},{"id":19,"t":"L'enquête criminelle - vol de café","f":"atelier","n":4,"h":"assets/interactive/lenquete-criminelle-vol-de-cafe/enquete-criminelle-activite-interactive.html"},{"id":20,"t":"Le mystère de la classe","f":"atelier","n":4,"h":"assets/interactive/le-mystere-de-la-classe/myclassinter.html"},{"id":21,"t":"Le voleur de la cafétéria","f":"atelier","n":4,"h":"assets/interactive/le-voleur-de-la-cafeteria/voleurcafetinter.html"},{"id":22,"t":"La vieille photo","f":"atelier","n":4,"h":"assets/interactive/la-vieille-photo/vieillephotointer.html"},{"id":23,"t":"Une fête de quartier","f":"atelier","n":4,"h":"assets/interactive/une-fete-de-quartier/fetequartinter.html"},{"id":24,"t":"Mystère à la bibliothèque","f":"atelier","n":4,"h":"assets/interactive/mystere-a-la-bibliotheque/mystere-bibliotheque-interactive.html"},{"id":25,"t":"Mystère au laboratoire","f":"atelier","n":4,"h":"assets/interactive/mystere-au-laboratoire/mystere-laboratoire-standalone.html"},{"id":26,"t":"Visite à la BANQ","f":"atelier","n":4,"h":"assets/interactive/visite-a-la-banq/banq-standalone.html"},{"id":27,"t":"Visite au Jardin Botanique","f":"atelier","n":4,"h":"assets/interactive/visite-au-jardin-botanique/jardin-botanique-standalone.html"},{"id":28,"t":"Détective des temps","f":"libre","n":4,"h":"assets/interactive/detective-des-temps/detective-des-temps-activite-interactive.html"},{"id":29,"t":"Corrige-moi ! (assistant oral)","f":"libre","n":4,"h":"assets/interactive/corrige-moi/corrige-moi-activite-interactive.html"},{"id":30,"t":"Rédaction de courriel (biochimiste)","f":"atelier","n":4,"h":"assets/interactive/correction-courriel/correction-courriel-activite-interactive.html"},{"id":31,"t":"Vocabulaire — Cartes mémoire","f":"libre","n":4,"h":"assets/interactive/vocabulaire-flash/vocabulaire-flash-activite-interactive.html"},{"id":32,"t":"Analyse grammaticale","f":"libre","n":4,"h":"assets/interactive/analyse-grammaticale/analyse-grammaticale-activite-interactive.html"},{"id":33,"t":"Cabine d'enregistrement — Santé","f":"atelier","n":4,"h":"assets/interactive/cabine-sante/cabine-sante-activite-interactive.html"},{"id":34,"t":"Module 3 — Prendre rendez-vous et aller à la pharmacie","f":"cours","n":4,"h":"assets/interactive/module-sante/module-sante-activite-interactive.html"},{"id":35,"t":"Module 1 — Consulter au bon endroit","f":"cours","n":4,"h":"assets/interactive/module-consultation/module-consultation-activite-interactive.html"},{"id":36,"t":"Module 2 — Une urgence au travail","f":"cours","n":4,"h":"assets/interactive/module-urgence/module-urgence-activite-interactive.html"},{"id":37,"t":"Vocabulaire Santé — Cartes illustrées","f":"libre","n":4,"h":"assets/interactive/vocab-flash-sante/vocab-flash-sante-activite-interactive.html"},{"id":38,"t":"Vocabulaire Consommation — Cartes illustrées","f":"libre","n":4,"h":"assets/interactive/vocab-flash-conso/vocab-flash-conso-activite-interactive.html"},{"id":39,"t":"Module 4 — Absent ou en retard : que faire ?","f":"cours","n":4,"h":"assets/interactive/module-travail/module-travail-activite-interactive.html"},{"id":40,"t":"Module 5 — Quelle est la procédure ?","f":"cours","n":4,"h":"assets/interactive/module-procedure/module-procedure-activite-interactive.html"},{"id":41,"t":"Module 6 — C'est l'heure des nouvelles ?","f":"cours","n":4,"h":"assets/interactive/module-nouvelles/module-nouvelles-activite-interactive.html"},{"id":42,"t":"Module 7 — Quelles sont les prévisions ?","f":"cours","n":4,"h":"assets/interactive/module-meteo/module-meteo-activite-interactive.html"},{"id":43,"t":"Module 8 — Des publicités efficaces","f":"cours","n":4,"h":"assets/interactive/module-pub/module-pub-activite-interactive.html"},{"id":44,"t":"Module 9 — Comment est le logement ?","f":"cours","n":4,"h":"assets/interactive/module-logement/module-logement-activite-interactive.html"},{"id":45,"t":"Module 10 — Pouvez-vous régler le problème ?","f":"cours","n":4,"h":"assets/interactive/module-probleme/module-probleme-activite-interactive.html"},{"id":46,"t":"Module 17 — Besoin d'un compte bancaire ?","f":"cours","n":4,"h":"assets/interactive/module-banque/module-banque-activite-interactive.html"},{"id":47,"t":"Niveau 2 · Météo · Culture et médias","f":"atelier","n":2,"h":"assets/interactive/niveau-2-meteo-culture-et-medias/activite.html"},{"id":48,"t":"Module 11 — Des nouvelles à donner","f":"cours","n":4,"h":"assets/interactive/module-relations/module-relations-activite-interactive.html"},{"id":49,"t":"Module 12 — Trouver son chemin","f":"cours","n":4,"h":"assets/interactive/module-deplacement/module-deplacement-activite-interactive.html"},{"id":50,"t":"Module 13 — S'inscrire à une activité","f":"cours","n":4,"h":"assets/interactive/module-activite/module-activite-activite-interactive.html"},{"id":51,"t":"Module 14 — Faire l'épicerie","f":"cours","n":4,"h":"assets/interactive/module-alimentation/module-alimentation-activite-interactive.html"},{"id":52,"t":"Module 15 — Acheter un appareil","f":"cours","n":4,"h":"assets/interactive/module-achat/module-achat-activite-interactive.html"},{"id":53,"t":"Module 16 — Au restaurant","f":"cours","n":4,"h":"assets/interactive/module-restaurant/module-restaurant-activite-interactive.html"},{"id":54,"t":"Module 18 — Acheter des vêtements","f":"cours","n":4,"h":"assets/interactive/module-vetements/module-vetements-activite-interactive.html"},{"id":55,"t":"Module 1 — À l'épicerie","f":"cours","n":3,"h":"assets/interactive/module-n3-epicerie/module-n3-epicerie-activite-interactive.html"},{"id":56,"t":"Module 1 — Je me présente","f":"cours","n":1,"h":"assets/interactive/module-n1-presenter/module-n1-presenter-activite-interactive.html"},{"id":57,"t":"Module 1 — Prendre l'autobus","f":"cours","n":2,"h":"assets/interactive/module-n2-autobus/module-n2-autobus-activite-interactive.html"},{"id":58,"t":"Module 1 — Louer un logement","f":"cours","n":5,"h":"assets/interactive/module-n5-logement/module-n5-logement-activite-interactive.html"},{"id":59,"t":"Module 1 — Chercher un emploi","f":"cours","n":6,"h":"assets/interactive/module-n6-recherche/module-n6-recherche-activite-interactive.html"},{"id":60,"t":"Module 1 — Suivre l'actualité","f":"cours","n":7,"h":"assets/interactive/module-n7-actualite/module-n7-actualite-activite-interactive.html"},{"id":61,"t":"Module 1 — Tenir son bout au travail","f":"cours","n":8,"h":"assets/interactive/module-n8-emploi/module-n8-emploi-activite-interactive.html"},{"id":62,"t":"Module 2 — Un dégât d'eau","f":"cours","n":5,"h":"assets/interactive/module-n5-degat/module-n5-degat-activite-interactive.html"},{"id":63,"t":"Module 3 — Emménager dans un nouveau logement","f":"cours","n":5,"h":"assets/interactive/module-n5-emmenagement/module-n5-emmenagement-activite-interactive.html"},{"id":64,"t":"Module 4 — Les services de ma ville","f":"cours","n":5,"h":"assets/interactive/module-n5-services/module-n5-services-activite-interactive.html"},{"id":65,"t":"Module 5 — Prendre rendez-vous chez le médecin","f":"cours","n":5,"h":"assets/interactive/module-n5-rendezvous/module-n5-rendezvous-activite-interactive.html"},{"id":66,"t":"Module 6 — Une nuit à l'urgence","f":"cours","n":5,"h":"assets/interactive/module-n5-urgence/module-n5-urgence-activite-interactive.html"},{"id":67,"t":"Module 7 — Le travail par écrit","f":"cours","n":5,"h":"assets/interactive/module-n5-travail/module-n5-travail-activite-interactive.html"},{"id":68,"t":"Module 8 — La ruelle en fête","f":"cours","n":5,"h":"assets/interactive/module-n5-voisinage/module-n5-voisinage-activite-interactive.html"},{"id":69,"t":"Module 9 — Ça bloque ce matin","f":"cours","n":5,"h":"assets/interactive/module-n5-transport/module-n5-transport-activite-interactive.html"},{"id":70,"t":"Module 10 — Une semaine au Bic","f":"cours","n":5,"h":"assets/interactive/module-n5-quebec/module-n5-quebec-activite-interactive.html"},{"id":71,"t":"Module 11 — Raconter une nouvelle","f":"cours","n":5,"h":"assets/interactive/module-n5-actualite/module-n5-actualite-activite-interactive.html"},{"id":72,"t":"Module 12 — Quand la météo décide","f":"cours","n":5,"h":"assets/interactive/module-n5-saisons/module-n5-saisons-activite-interactive.html"},{"id":73,"t":"Module 13 — Le club du jeudi","f":"cours","n":5,"h":"assets/interactive/module-n5-oeuvres/module-n5-oeuvres-activite-interactive.html"},{"id":74,"t":"Module 14 — Régler une affaire au centre","f":"cours","n":5,"h":"assets/interactive/module-n5-ecole/module-n5-ecole-activite-interactive.html"},{"id":75,"t":"Module 2 — Magasiner du linge","f":"cours","n":3,"h":"assets/interactive/module-n3-vetements/module-n3-vetements-activite-interactive.html"},{"id":76,"t":"Module 3 — Acheter un appareil","f":"cours","n":3,"h":"assets/interactive/module-n3-electro/module-n3-electro-activite-interactive.html"},{"id":77,"t":"Module 4 — Commander au comptoir","f":"cours","n":3,"h":"assets/interactive/module-n3-restaurant/module-n3-restaurant-activite-interactive.html"},{"id":78,"t":"Module 5 — Aller à la pharmacie","f":"cours","n":3,"h":"assets/interactive/module-n3-pharmacie/module-n3-pharmacie-activite-interactive.html"},{"id":79,"t":"Module 6 — Le bon titre de transport","f":"cours","n":3,"h":"assets/interactive/module-n3-metro/module-n3-metro-activite-interactive.html"},{"id":80,"t":"Module 7 — Le colis de Yassine","f":"cours","n":3,"h":"assets/interactive/module-n3-poste/module-n3-poste-activite-interactive.html"},{"id":81,"t":"Module 8 — Trois questions avant de louer","f":"cours","n":3,"h":"assets/interactive/module-n3-loyer/module-n3-loyer-activite-interactive.html"},{"id":82,"t":"Module 9 — L'escalier de la rue Dézéry","f":"cours","n":3,"h":"assets/interactive/module-n3-voisins/module-n3-voisins-activite-interactive.html"},{"id":83,"t":"Module 10 — On embauche","f":"cours","n":3,"h":"assets/interactive/module-n3-recherche-emploi/module-n3-recherche-emploi-activite-interactive.html"},{"id":84,"t":"Module 11 — Mon quart de travail","f":"cours","n":3,"h":"assets/interactive/module-n3-horaire/module-n3-horaire-activite-interactive.html"},{"id":85,"t":"Module 12 — Choisir une activité au centre","f":"cours","n":3,"h":"assets/interactive/module-n3-loisirs/module-n3-loisirs-activite-interactive.html"},{"id":86,"t":"Module 13 — L'absence de Nawel","f":"cours","n":3,"h":"assets/interactive/module-n3-secretariat/module-n3-secretariat-activite-interactive.html"},{"id":87,"t":"Module 2 — Remplir mon panier","f":"cours","n":2,"h":"assets/interactive/module-n2-panier/module-n2-panier-activite-interactive.html"},{"id":88,"t":"Module 3 — Bonjour, ça va ?","f":"cours","n":2,"h":"assets/interactive/module-n2-bonjour/module-n2-bonjour-activite-interactive.html"},{"id":89,"t":"Module 4 — Ouvrez votre cahier","f":"cours","n":2,"h":"assets/interactive/module-n2-classe/module-n2-classe-activite-interactive.html"},{"id":90,"t":"Module 5 — Où est le local 214 ?","f":"cours","n":2,"h":"assets/interactive/module-n2-couloirs/module-n2-couloirs-activite-interactive.html"},{"id":91,"t":"Module 6 — Je m'inscris au cours de français","f":"cours","n":2,"h":"assets/interactive/module-n2-inscription/module-n2-inscription-activite-interactive.html"},{"id":92,"t":"Module 7 — Il fait froid, je m'habille","f":"cours","n":2,"h":"assets/interactive/module-n2-neige/module-n2-neige-activite-interactive.html"},{"id":93,"t":"Module 8 — Je retire de l'argent","f":"cours","n":2,"h":"assets/interactive/module-n2-guichet/module-n2-guichet-activite-interactive.html"},{"id":94,"t":"Module 9 — J'envoie une lettre et un colis","f":"cours","n":2,"h":"assets/interactive/module-n2-colis/module-n2-colis-activite-interactive.html"},{"id":95,"t":"Module 10 — Je vais au secrétariat","f":"cours","n":2,"h":"assets/interactive/module-n2-secretaire/module-n2-secretaire-activite-interactive.html"},{"id":96,"t":"Module 2 — Je remplis ma fiche","f":"cours","n":1,"h":"assets/interactive/module-n1-inscription/module-n1-inscription-activite-interactive.html"},{"id":97,"t":"Module 3 — Je lis les panneaux du centre","f":"cours","n":1,"h":"assets/interactive/module-n1-orientation/module-n1-orientation-activite-interactive.html"},{"id":98,"t":"Module 4 — Regardez le tableau","f":"cours","n":1,"h":"assets/interactive/module-n1-classe/module-n1-classe-activite-interactive.html"},{"id":99,"t":"Module 2 — Suivre un sujet dans les médias","f":"cours","n":6,"h":"assets/interactive/module-n6-actualite/module-n6-actualite-activite-interactive.html"},{"id":100,"t":"Module 3 — Le poste affiché à l'interne","f":"cours","n":6,"h":"assets/interactive/module-n6-emploi/module-n6-emploi-activite-interactive.html"},{"id":101,"t":"Module 3 — Reprendre le fil","f":"cours","n":6,"h":"assets/interactive/module-n6-relations/module-n6-relations-activite-interactive.html"},{"id":102,"t":"Module 5 — Choisir la suite","f":"cours","n":6,"h":"assets/interactive/module-n6-etablissement/module-n6-etablissement-activite-interactive.html"},{"id":103,"t":"Module 6 — Un film, et ce qu'on en écrit","f":"cours","n":6,"h":"assets/interactive/module-n6-oeuvres/module-n6-oeuvres-activite-interactive.html"},{"id":104,"t":"Module 7 — Nommer ce qu'on a","f":"cours","n":6,"h":"assets/interactive/module-n6-sante/module-n6-sante-activite-interactive.html"},{"id":105,"t":"Module 8 — Six mois ailleurs","f":"cours","n":6,"h":"assets/interactive/module-n6-logement/module-n6-logement-activite-interactive.html"},{"id":106,"t":"Module 9 — Faire faire des travaux","f":"cours","n":6,"h":"assets/interactive/module-n6-habitation/module-n6-habitation-activite-interactive.html"},{"id":107,"t":"Module 10 — Un travail de recherche en équipe","f":"cours","n":6,"h":"assets/interactive/module-n6-classe/module-n6-classe-activite-interactive.html"},{"id":108,"t":"Module 17 — Prévenir le centre","f":"cours","n":4,"h":"assets/interactive/module-n4-etablissement/module-n4-etablissement-activite-interactive.html"},{"id":109,"t":"Module 2 — Présenter un projet au travail","f":"cours","n":7,"h":"assets/interactive/module-n7-emploi/module-n7-emploi-activite-interactive.html"},{"id":110,"t":"Module 3 — Chercher un emploi en région","f":"cours","n":7,"h":"assets/interactive/module-n7-recherche/module-n7-recherche-activite-interactive.html"},{"id":111,"t":"Module 4 — Rester locataire ou devenir propriétaire","f":"cours","n":7,"h":"assets/interactive/module-n7-logement/module-n7-logement-activite-interactive.html"},{"id":112,"t":"Module 5 — Le bruit d'en haut","f":"cours","n":7,"h":"assets/interactive/module-n7-habitation/module-n7-habitation-activite-interactive.html"},{"id":113,"t":"Module 6 — Réclamer après l'achat","f":"cours","n":7,"h":"assets/interactive/module-n7-achat/module-n7-achat-activite-interactive.html"},{"id":114,"t":"Module 7 — Emprunter, épargner, se protéger","f":"cours","n":7,"h":"assets/interactive/module-n7-banque/module-n7-banque-activite-interactive.html"},{"id":115,"t":"Module 8 — Ce que la publicité ne dit pas","f":"cours","n":7,"h":"assets/interactive/module-n7-publicite/module-n7-publicite-activite-interactive.html"},{"id":116,"t":"Module 9 — Ce que j'en pense, et pourquoi","f":"cours","n":7,"h":"assets/interactive/module-n7-oeuvres/module-n7-oeuvres-activite-interactive.html"},{"id":117,"t":"Module 10 — Faire parler l'équipe","f":"cours","n":7,"h":"assets/interactive/module-n7-classe/module-n7-classe-activite-interactive.html"},{"id":118,"t":"Module 11 — Entrer dans le programme","f":"cours","n":7,"h":"assets/interactive/module-n7-etablissement/module-n7-etablissement-activite-interactive.html"},{"id":119,"t":"Module 2 — Passer au travers du processus","f":"cours","n":8,"h":"assets/interactive/module-n8-recherche/module-n8-recherche-activite-interactive.html"},{"id":120,"t":"Module 3 — Ce qui est couvert, et ce qui se défend","f":"cours","n":8,"h":"assets/interactive/module-n8-emmenagement/module-n8-emmenagement-activite-interactive.html"},{"id":121,"t":"Module 4 — Faire renverser une décision","f":"cours","n":8,"h":"assets/interactive/module-n8-habitation/module-n8-habitation-activite-interactive.html"},{"id":122,"t":"Module 5 — Deux versions, et la mienne","f":"cours","n":8,"h":"assets/interactive/module-n8-actualite/module-n8-actualite-activite-interactive.html"},{"id":123,"t":"Module 6 — Ce que l'œuvre ne dit pas","f":"cours","n":8,"h":"assets/interactive/module-n8-oeuvres/module-n8-oeuvres-activite-interactive.html"},{"id":124,"t":"Même mot, autre police","f":"libre","n":1,"h":"assets/interactive/polices-n1/polices-n1-activite-interactive.html"},{"id":125,"t":"L'heure, quatre horloges","f":"libre","n":1,"h":"assets/interactive/heure-n1/heure-n1-activite-interactive.html"},{"id":126,"t":"Les abréviations du formulaire","f":"libre","n":1,"h":"assets/interactive/abreviations-n1/abreviations-n1-activite-interactive.html"},{"id":127,"t":"Trois façons d'écrire une date","f":"libre","n":1,"h":"assets/interactive/dates-n1/dates-n1-activite-interactive.html"},{"id":128,"t":"Le chiffre et le mot","f":"libre","n":1,"h":"assets/interactive/chiffres-n1/chiffres-n1-activite-interactive.html"},{"id":129,"t":"Le panneau et son dessin","f":"libre","n":1,"h":"assets/interactive/panneaux-n1/panneaux-n1-activite-interactive.html"},{"id":130,"t":"Qui fait quoi","f":"libre","n":1,"h":"assets/interactive/phrase-ordre-n1/phrase-ordre-n1-activite-interactive.html"},{"id":131,"t":"La bonne question","f":"libre","n":1,"h":"assets/interactive/question-n1/question-n1-activite-interactive.html"},{"id":132,"t":"Oui ou non","f":"libre","n":1,"h":"assets/interactive/negatif-n1/negatif-n1-activite-interactive.html"},{"id":133,"t":"Mon, ma, ton, ta","f":"libre","n":1,"h":"assets/interactive/possessifs-n1/possessifs-n1-activite-interactive.html"},{"id":134,"t":"Il ou elle","f":"libre","n":1,"h":"assets/interactive/feminin-n1/feminin-n1-activite-interactive.html"},{"id":135,"t":"J'ai deux enfants","f":"libre","n":1,"h":"assets/interactive/nombres-phrase-n1/nombres-phrase-n1-activite-interactive.html"},{"id":136,"t":"Grande et petite","f":"libre","n":1,"h":"assets/interactive/lettres-n1/lettres-n1-activite-interactive.html"},{"id":137,"t":"Ma-mi-mou","f":"libre","n":1,"h":"assets/interactive/syllabes-n1/syllabes-n1-activite-interactive.html"},{"id":138,"t":"Je recopie ma fiche","f":"libre","n":1,"h":"assets/interactive/recopier-n1/recopier-n1-activite-interactive.html"},{"id":146,"t":"Le petit mot devant le nom","f":"libre","n":2,"h":"assets/interactive/determinants-n2/determinants-n2-activite-interactive.html"},{"id":147,"t":"La question au guichet","f":"libre","n":2,"h":"assets/interactive/questions-n2/questions-n2-activite-interactive.html"},{"id":148,"t":"Fais, ne fais pas","f":"libre","n":2,"h":"assets/interactive/imperatif-n2/imperatif-n2-activite-interactive.html"},{"id":149,"t":"Les huit verbes de tous les jours","f":"libre","n":2,"h":"assets/interactive/present-n2/present-n2-activite-interactive.html"},{"id":150,"t":"L'avis sur la porte","f":"libre","n":2,"h":"assets/interactive/avis-n2/avis-n2-activite-interactive.html"},{"id":151,"t":"Le mot qui remplace","f":"libre","n":2,"h":"assets/interactive/pronoms-n2/pronoms-n2-activite-interactive.html"},{"id":156,"t":"Hier, et demain","f":"libre","n":3,"h":"assets/interactive/temps-n3/temps-n3-activite-interactive.html"},{"id":157,"t":"À, au, chez, dans","f":"libre","n":3,"h":"assets/interactive/prepositions-n3/prepositions-n3-activite-interactive.html"},{"id":158,"t":"Le mot qui enchaîne","f":"libre","n":3,"h":"assets/interactive/enchainer-n3/enchainer-n3-activite-interactive.html"},{"id":159,"t":"Le mot qui décrit","f":"libre","n":3,"h":"assets/interactive/adjectifs-n3/adjectifs-n3-activite-interactive.html"},{"id":160,"t":"L'annonce de logement","f":"libre","n":3,"h":"assets/interactive/annonce-n3/annonce-n3-activite-interactive.html"},{"id":161,"t":"Les mots courts de l'annonce","f":"libre","n":3,"h":"assets/interactive/abrev-annonce-n3/abrev-annonce-n3-activite-interactive.html"},{"id":166,"t":"Il faut que je prenne rendez-vous","f":"libre","n":5,"h":"assets/interactive/subjonctif-n5/subjonctif-n5-activite-interactive.html"},{"id":167,"t":"Ne… plus, ne… rien, ne… personne","f":"libre","n":5,"h":"assets/interactive/negation-n5/negation-n5-activite-interactive.html"},{"id":168,"t":"Reçu, reçue, reçus","f":"libre","n":5,"h":"assets/interactive/participe-n5/participe-n5-activite-interactive.html"},{"id":169,"t":"La question qui ouvre les portes","f":"libre","n":5,"h":"assets/interactive/question-polie-n5/question-polie-n5-activite-interactive.html"},{"id":170,"t":"La lettre de la Ville","f":"libre","n":5,"h":"assets/interactive/lettre-ville-n5/lettre-ville-n5-activite-interactive.html"},{"id":171,"t":"Le même sens, trois tons","f":"libre","n":5,"h":"assets/interactive/trois-tons-n5/trois-tons-n5-activite-interactive.html"},{"id":176,"t":"Le lui, la leur, y en a","f":"libre","n":6,"h":"assets/interactive/reprise-n6/reprise-n6-activite-interactive.html"},{"id":177,"t":"Ce qui s'était passé avant","f":"libre","n":6,"h":"assets/interactive/plus-que-parfait-n6/plus-que-parfait-n6-activite-interactive.html"},{"id":178,"t":"Chacun, plusieurs, quelques-uns","f":"libre","n":6,"h":"assets/interactive/indefinis-n6/indefinis-n6-activite-interactive.html"},{"id":179,"t":"L'offre d'emploi","f":"libre","n":6,"h":"assets/interactive/offre-emploi-n6/offre-emploi-n6-activite-interactive.html"},{"id":180,"t":"Raconter un dégât d'eau","f":"libre","n":6,"h":"assets/interactive/degat-n6/degat-n6-activite-interactive.html"},{"id":181,"t":"Le verbe, le nom, l'adjectif","f":"libre","n":6,"h":"assets/interactive/famille-mots-n6/famille-mots-n6-activite-interactive.html"},{"id":186,"t":"Les mots qui relient","f":"libre","n":7,"h":"assets/interactive/connecteurs-n7/connecteurs-n7-activite-interactive.html"},{"id":187,"t":"Ce que je ferais si","f":"libre","n":7,"h":"assets/interactive/conditionnel-n7/conditionnel-n7-activite-interactive.html"},{"id":188,"t":"Dire la même chose autrement","f":"libre","n":7,"h":"assets/interactive/tournures-n7/tournures-n7-activite-interactive.html"},{"id":189,"t":"Qui, que, dont, où","f":"libre","n":7,"h":"assets/interactive/relatifs-n7/relatifs-n7-activite-interactive.html"},{"id":190,"t":"Lire entre les chiffres","f":"libre","n":7,"h":"assets/interactive/reportage-n7/reportage-n7-activite-interactive.html"},{"id":191,"t":"La lettre de réclamation","f":"libre","n":7,"h":"assets/interactive/reclamation-n7/reclamation-n7-activite-interactive.html"},{"id":196,"t":"Si l'usine était restée","f":"libre","n":8,"h":"assets/interactive/irreel-n8/irreel-n8-activite-interactive.html"},{"id":197,"t":"Elle le lui a demandé","f":"libre","n":8,"h":"assets/interactive/deux-pronoms-n8/deux-pronoms-n8-activite-interactive.html"},{"id":198,"t":"Ce que le texte dit, ce qu'il pense","f":"libre","n":8,"h":"assets/interactive/opinion-n8/opinion-n8-activite-interactive.html"},{"id":199,"t":"Avant, ou en même temps","f":"libre","n":8,"h":"assets/interactive/subjonctif-passe-n8/subjonctif-passe-n8-activite-interactive.html"},{"id":200,"t":"Le compte rendu de réunion","f":"libre","n":8,"h":"assets/interactive/compte-rendu-n8/compte-rendu-n8-activite-interactive.html"},{"id":201,"t":"Ce que ça veut vraiment dire","f":"libre","n":8,"h":"assets/interactive/expressions-n8/expressions-n8-activite-interactive.html"},{"id":206,"t":"La virgule change tout","f":"libre","n":4,"h":"assets/interactive/ponctuation-n4/ponctuation-n4-activite-interactive.html"},{"id":207,"t":"Ce jour-là, et d'habitude","f":"libre","n":4,"h":"assets/interactive/passe-imparfait-n4/passe-imparfait-n4-activite-interactive.html"},{"id":208,"t":"Et, mais, donc, car","f":"libre","n":4,"h":"assets/interactive/coordonner-n4/coordonner-n4-activite-interactive.html"},{"id":209,"t":"Le relevé de compte","f":"libre","n":4,"h":"assets/interactive/releve-n4/releve-n4-activite-interactive.html"},{"id":210,"t":"Les mots du guichet","f":"libre","n":4,"h":"assets/interactive/mots-banque-n4/mots-banque-n4-activite-interactive.html"},{"id":211,"t":"Depuis, pendant, il y a","f":"libre","n":4,"h":"assets/interactive/temps-prepositions-n4/temps-prepositions-n4-activite-interactive.html"}];
 
-/* Les cinq exercices libres : domaines transversaux, hors calendrier. */
-const LIBRES = [31, 37, 38, 32, 29];
-
-/* Quelques fiches d'exemple parmi les 194. */
+/* Quelques fiches d'exemple parmi les 1 340. */
 const FICHES = [
-  ["Module 1 · Le corps, les sens et la douleur", "assets/documents/module-consultation-a3-le-corps-les-sens-et-la-douleur.html"],
-  ["Module 3 · Dire comment on se sent", "assets/documents/module-sante-a4-dire-comment-on-se-sent.html"],
-  ["Module 10 · Fiches élèves (recueil)", "assets/documents/module-probleme-fiches-eleves.html"],
+  ["Module 1 (N4) · Le corps, les sens et la douleur", "assets/documents/module-consultation-a3-le-corps-les-sens-et-la-douleur.html"],
+  ["Module 3 (N4) · Dire comment on se sent", "assets/documents/module-sante-a4-dire-comment-on-se-sent.html"],
+  ["Module 10 (N4) · Fiches élèves (recueil)", "assets/documents/module-probleme-fiches-eleves.html"],
   ["Atelier · Je déménage", "assets/documents/je-demenage.html"]
+];
+
+/* Les bancs d'essai : des pages à la racine, sans lien depuis le site. */
+const ESSAIS = [
+  ["Essai des voix", "essai-voix.html"],
+  ["Le débit des voix", "essai-debit.html"],
+  ["La lettre I (épellation)", "essai-lettres.html"],
+  ["Brin contre brun", "essai-brin.html"],
+  ["Est-ce que — écoute", "essai-estceque.html"],
+  ["Barre d'outils élève", "essai-outils.html"]
 ];
 
 const CLE_BASE = "hierarchie_base";
 const CLE_CODE = "hierarchie_code";
 
 const selBase = document.getElementById("selBase");
+const selNiveau = document.getElementById("selNiveau");
 const champCode = document.getElementById("champCode");
 const champRecherche = document.getElementById("champRecherche");
 const baseActuelle = document.getElementById("baseActuelle");
@@ -426,55 +519,64 @@ function sansAccents(t) {
 }
 
 /* ─ Les listes dépliables ─ */
-function tuile(titre, chemin, num) {
+function tuile(titre, chemin, num, niveau) {
   const a = document.createElement("a");
   a.className = "tuile";
   a.target = "_blank";
   a.rel = "noopener";
   a.dataset.href = chemin;
   a.dataset.num = num == null ? "" : String(num);
+  a.dataset.niveau = niveau == null ? "" : String(niveau);
   a.dataset.cherche = sansAccents(titre + " " + chemin);
   const b = document.createElement("b");
   b.textContent = titre;
   const s = document.createElement("span");
-  s.textContent = chemin.replace("assets/interactive/", "").replace(/\/[^/]+$/, "");
+  const dossier = chemin.replace("assets/interactive/", "").replace(/\/[^/]+$/, "");
+  s.textContent = niveau ? "N" + niveau + " · " + dossier : dossier;
   a.append(b, s);
   return a;
 }
 
+/* Les modules se rangent par niveau, puis par numéro de module — c'est
+   l'ordre dans lequel une enseignante les cherche. */
 function numeroModule(titre) {
   const m = titre.match(/Module\s+(\d+)/);
   return m ? parseInt(m[1], 10) : 999;
 }
 
 function remplirListes() {
-  const cours = ACTIVITES.filter(a => a.c === "cours" && a.h)
-                         .sort((a, b) => numeroModule(a.t) - numeroModule(b.t));
-  const libres = LIBRES.map(id => ACTIVITES.find(a => a.id === id)).filter(a => a && a.h);
-  const idsLibres = new Set(libres.map(a => a.id));
-  const ateliers = ACTIVITES.filter(a => a.c === "atelier" && a.h && !idsLibres.has(a.id))
-                            .sort((a, b) => a.t.localeCompare(b.t, "fr"));
-
   const cible = n => document.querySelector('[data-liste="' + n + '"]');
-  cours.forEach(a => cible("cours").append(tuile(a.t, a.h, a.id)));
-  ateliers.forEach(a => cible("atelier").append(tuile(a.t, a.h, a.id)));
-  libres.forEach(a => cible("libre").append(tuile(a.t, a.h, a.id)));
-  FICHES.forEach(([titre, chemin]) => cible("fiches").append(tuile(titre, chemin, null)));
+
+  const cours = ACTIVITES.filter(a => a.f === "cours")
+    .sort((a, b) => a.n - b.n || numeroModule(a.t) - numeroModule(b.t) || a.t.localeCompare(b.t, "fr"));
+  const ateliers = ACTIVITES.filter(a => a.f === "atelier")
+    .sort((a, b) => a.n - b.n || a.t.localeCompare(b.t, "fr"));
+  const libres = ACTIVITES.filter(a => a.f === "libre")
+    .sort((a, b) => a.n - b.n || a.t.localeCompare(b.t, "fr"));
+
+  cours.forEach(a => cible("cours").append(tuile(a.t, a.h, a.id, a.n)));
+  ateliers.forEach(a => cible("atelier").append(tuile(a.t, a.h, a.id, a.n)));
+  libres.forEach(a => cible("libre").append(tuile(a.t, a.h, a.id, a.n)));
+  FICHES.forEach(([titre, chemin]) => cible("fiches").append(tuile(titre, chemin, null, null)));
+  ESSAIS.forEach(([titre, chemin]) => cible("essais").append(tuile(titre, chemin, null, null)));
 }
 
-/* ─ Le filtre ─ */
+/* ─ Le filtre : le texte et le niveau, ensemble ─ */
 function filtrer() {
   const q = sansAccents(champRecherche.value.trim());
+  const niv = selNiveau.value;
   document.querySelectorAll("details.pli").forEach(d => {
     const grille = d.querySelector(".grille");
     if (!grille) return;
     let visibles = 0;
     grille.querySelectorAll("a.tuile").forEach(a => {
-      const ok = !q || a.dataset.cherche.includes(q) || a.dataset.num === q;
+      const okTexte = !q || a.dataset.cherche.includes(q) || a.dataset.num === q;
+      const okNiveau = !niv || a.dataset.niveau === niv;
+      const ok = okTexte && okNiveau;
       a.style.display = ok ? "" : "none";
       if (ok) visibles++;
     });
-    if (q) { d.open = visibles > 0; }
+    if (q || niv) { d.open = visibles > 0; }
   });
 }
 
@@ -484,6 +586,7 @@ poserLiens();
 selBase.addEventListener("change", poserLiens);
 champCode.addEventListener("input", poserLiens);
 champRecherche.addEventListener("input", filtrer);
+selNiveau.addEventListener("change", filtrer);
 </script>
 </body>
 </html>
