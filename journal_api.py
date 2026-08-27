@@ -240,3 +240,28 @@ def par_eleve(lignes, eleves=None):
     for seau in par.values():
         _arrondir(seau)
     return {"parEleve": par, "total": _arrondir(total)}
+
+
+def par_cle(lignes, cle_de_ligne):
+    """Regroupe par une clé que l'appelant calcule lui-même.
+
+    `par_eleve` répond à « combien cet élève a-t-il coûté ? ». La direction
+    d'un centre pose la même question d'un cran plus haut — par enseignant,
+    par centre — et le registre ne porte ni l'un ni l'autre : il note l'élève
+    et le **groupe**. La clé se dérive donc (groupe → titulaire, groupe →
+    centre) et se passe ici, plutôt que d'ajouter au registre deux champs qui
+    seraient faux le jour où un groupe change de titulaire.
+
+    Une ligne dont la clé est None tombe dans `sansCle` : elle est payée, elle
+    doit se voir, et elle n'est imputable à personne — le tri d'un signalement
+    en est un cas. La rendre invisible ferait un total qui ne se recompose pas.
+    """
+    par = {}
+    total = _vide()
+    for d in lignes:
+        cle = cle_de_ligne(d)
+        _ajouter(par.setdefault(cle if cle is not None else "sansCle", _vide()), d)
+        _ajouter(total, d)
+    for seau in par.values():
+        _arrondir(seau)
+    return {"parCle": par, "total": _arrondir(total)}

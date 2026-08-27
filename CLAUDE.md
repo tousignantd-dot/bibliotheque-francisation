@@ -159,6 +159,91 @@ reste dans l'adresse, donc une vue se partage par son lien.
 - Mêmes règles que la fiche : jeton par `js/prof.js`, dates découpées à la
   chaîne, aucune couleur en dur, chaque état porte glyphe **et** mot.
 
+## L'espace direction (`direction.html`)
+
+**Gérer des comptes et regarder une dépense n'est pas enseigner.** « Les
+chiffres » s'ouvrait depuis la barre du portail enseignant : un écran de
+gestion dans la page où l'on prépare sa classe. Il en est sorti le 27 août
+2026, remplacé par le lien **« Espace direction »**, qui ne paraît qu'à qui a
+la charge d'un centre — et c'est le serveur qui le dit
+(`/api/direction/portees`), jamais un rôle deviné dans la page.
+
+**Une seule page, deux portées.** Une direction y voit son centre ; le
+fondateur voit le réseau et ouvre les comptes de direction. Deux pages
+auraient tenu les mêmes tableaux en double, et ce dépôt sait ce que deux
+formulations d'une même règle finissent par faire.
+
+| Route | Qui y entre |
+|---|---|
+| `GET /api/direction/portees` | toute session — rend ce que le compte peut administrer |
+| `GET /api/direction/centre?orgId=` | `direction`/`conseiller` **sur ce centre précis**, ou le fondateur |
+| `GET /api/direction/reseau` | le fondateur seul |
+| `PATCH /api/direction/enseignants/<id>` | idem centre — règle l'IA d'une personne |
+| `POST /api/direction/invitations` | `direction` sur le centre (rôle `prof`) ; `direction` en plus pour le fondateur |
+
+- **Le goulot supprimé** : les invitations étaient **fondateur seulement**, et
+  le commentaire du code le disait — « le fondateur ouvre tous les comptes du
+  réseau ». Une direction invite maintenant ses enseignants, bornée à son
+  centre. Ouvrir une **direction** reste au fondateur : ouvrir un pair est un
+  pouvoir, pas une tâche courante.
+- **Un conseiller consulte, il n'ouvre pas de compte.** `peutInviter` est
+  rendu par le serveur et revalidé à l'écriture — l'écran ne doit pas offrir un
+  geste que le serveur refusera.
+- **`a_role_sur(..., exact=True)`**, comme la vue par enseignant des chiffres :
+  un gestionnaire de CSS a le centre dans son sous-arbre et reste refusé. La
+  règle est la même des deux côtés parce que la donnée est la même.
+
+### Le drapeau IA par enseignant
+
+Le champ `ia` (`herite` · `autorisee` · `interdite`) existe désormais **sur le
+compte** en plus des nœuds de l'arbre. **Le plus précis gagne** : le drapeau de
+la personne tranche, puis on remonte les nœuds. C'est la règle déjà écrite pour
+les organisations — « celui qui a négocié une exception la porte écrite sur
+elle-même » — et en avoir une seconde ici obligerait à expliquer, devant chaque
+bouton grisé, laquelle des deux s'applique.
+
+- `ia_pour_eleve()` passe par **le titulaire du groupe** avant le centre.
+  `ia_pour_enseignant()` et `centre_de_enseignant()` portent la résolution ;
+  les dix routes gardées par `_ia_refusee()` n'ont pas bougé.
+- **Le message du refus ne nomme plus le centre** (« pas activée pour ta
+  classe ») : la décision peut venir de la personne. Une interface qui décrit
+  l'ancienne règle est un défaut, pas un détail.
+- **Vérifié en jouant les trois combinaisons**, pas en relisant : centre
+  *interdite* + personne *autorisée* → l'élève a l'IA ; centre *interdite* +
+  personne *héritée* → refus au nom du centre ; et `/api/outils/traduire`
+  répond bien 403 dans le second cas.
+
+### La dépense par enseignant
+
+**Le registre ne note ni l'enseignant ni le centre** : il note l'élève et son
+**groupe** (`journal_api.py`). La clé se dérive donc — groupe → titulaire,
+groupe → centre — par `journal_api.par_cle()`, plutôt que d'ajouter au registre
+deux champs qui seraient faux le jour où un groupe change de main et
+fausseraient rétroactivement tout l'historique.
+
+- **Ce que le chiffre dit est écrit à l'écran** : ce sont les **élèves** qui
+  appellent les modèles. « La dépense d'un enseignant », c'est ce que ses
+  groupes ont dépensé. Et c'est un montant **estimé** par la table de tarifs,
+  jamais la facture.
+- **`sansCle` est une chaîne, pas une paire.** Les appels qu'aucun groupe ne
+  porte — le tri d'un signalement — n'appartiennent à aucun centre. Les
+  déballer comme les autres faisait **planter la vue réseau entière** ; trouvé
+  en fabriquant la ligne dans un bac d'essai, pas en relisant. La vue rend donc
+  `totalUsd` **et** `totalCentresUsd`, et la page nomme l'écart : sans lui, la
+  somme des centres ne recompose pas le total et c'est la page qui a l'air
+  fausse.
+
+### Deux pièges de la page, tous deux vus en la jouant
+
+- **`Prof.init({ redirect: true })` éjecte qui n'a aucun groupe.** Le renvoi
+  vers `enseignant.html` est fait pour les pages de planification ; une
+  direction qui n'enseigne pas n'a pas de groupe et se retrouvait dehors de son
+  propre écran. `direction.html` appelle donc `redirect: false` et vérifie la
+  connexion sur `/api/prof/me`.
+- **La confirmation posée avant `recharger()` disparaît**, puisque le
+  rechargement remet la ligne d'état à vide : le réglage passait et l'écran
+  restait muet. Le message vient après.
+
 ## Multi-enseignants et multi-groupes
 
 - Hiérarchie : **enseignant → groupes → élèves**. Le catalogue d'activités est

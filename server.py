@@ -1624,13 +1624,84 @@ def centre_de_eleve(student, groups=None):
     return (groupe or {}).get("centreId")
 
 
-def ia_pour_eleve(student):
-    """(autorisée, nœud décideur) pour un élève donné.
+IA_VALEURS = ("herite", "autorisee", "interdite")
 
-    Un groupe pas encore rattaché à un centre retombe sur le réglage du
-    réseau : un rattachement oublié ne doit pas devenir une porte ouverte.
+
+def groupe_de_eleve(student, groups=None):
+    """Le groupe de l'élève, ou None."""
+    if not student:
+        return None
+    groups = load_groups() if groups is None else groups
+    return next((g for g in groups if g.get("id") == student.get("groupId")), None)
+
+
+def ia_pour_enseignant(teacher, orgs=None, acces=None):
+    """(autorisée, décideur) pour un enseignant.
+
+    **Le plus précis gagne**, comme sur l'arbre : le drapeau posé sur la
+    personne tranche avant tout, puis on remonte les nœuds. C'est la règle
+    déjà écrite pour les organisations — « celui qui a négocié une exception
+    la porte écrite sur lui-même » — et en avoir une seconde ici obligerait à
+    expliquer, devant chaque bouton grisé, laquelle des deux s'applique.
+
+    Le décideur rendu porte un `type` : l'écran doit pouvoir dire *qui* a
+    décidé, et « hérité de CSS X » ne se lit pas comme « réglé sur cette
+    personne ».
     """
-    centre = centre_de_eleve(student)
+    if not teacher:
+        return True, None
+    if teacher.get("ia") in ("autorisee", "interdite"):
+        return teacher["ia"] == "autorisee", {
+            "type": "enseignant", "id": teacher.get("id"),
+            "nom": teacher.get("nom", ""),
+        }
+    org_id = centre_de_enseignant(teacher, acces=acces)
+    if org_id is None:
+        racine = orgs_of_type("reseau", orgs)
+        org_id = racine[0]["id"] if racine else None
+    if org_id is None:
+        return True, None
+    autorisee, noeud = ia_effective(org_id, orgs)
+    return autorisee, (dict(noeud, type=noeud.get("type")) if noeud else None)
+
+
+def centre_de_enseignant(teacher, acces=None, groups=None):
+    """Le centre d'un enseignant : son rattachement, sinon celui de ses groupes.
+
+    Deux sources, et elles ne se recouvrent pas — c'est la leçon déjà payée
+    par la vue d'un centre : le fondateur enseigne sans être rattaché, et un
+    rattachement retiré laisse ses groupes en place. Lire une seule des deux
+    ferait disparaître des personnes de l'écran pendant que leurs élèves
+    continuent d'appeler les modèles.
+    """
+    if not teacher:
+        return None
+    for a in (load_acces() if acces is None else acces):
+        if a.get("teacherId") == teacher.get("id") and a.get("actif", True):
+            org = find_org(a.get("orgId"))
+            if org is not None and org.get("type") == "centre":
+                return org["id"]
+    for g in (load_groups() if groups is None else groups):
+        if g.get("teacherId") == teacher.get("id") and g.get("centreId"):
+            return g["centreId"]
+    return None
+
+
+def ia_pour_eleve(student):
+    """(autorisée, décideur) pour un élève donné.
+
+    L'ordre est celui de la précision : le titulaire de son groupe d'abord,
+    puis l'arbre. Un groupe pas encore rattaché à un centre retombe sur le
+    réglage du réseau — un rattachement oublié ne doit pas devenir une porte
+    ouverte.
+    """
+    groupe = groupe_de_eleve(student)
+    if groupe and groupe.get("teacherId"):
+        titulaire = next((t for t in load_teachers()
+                          if t.get("id") == groupe["teacherId"]), None)
+        if titulaire and titulaire.get("ia") in ("autorisee", "interdite"):
+            return ia_pour_enseignant(titulaire)
+    centre = (groupe or {}).get("centreId")
     if centre is not None:
         return ia_effective(centre)
     racine = orgs_of_type("reseau")
@@ -14670,6 +14741,15 @@ class Handler(http.server.SimpleHTTPRequestHandler):
                 return
             json_response(self, arbre_pour_lecture())
             return
+        if path == "/api/direction/portees":
+            self._handle_direction_portees()
+            return
+        if path == "/api/direction/centre":
+            self._handle_direction_centre(params)
+            return
+        if path == "/api/direction/reseau":
+            self._handle_direction_reseau(params)
+            return
         if path == "/api/stats/portees":
             self._handle_stats_portees()
             return
@@ -14773,6 +14853,8 @@ class Handler(http.server.SimpleHTTPRequestHandler):
             self._handle_invitations_add()
         elif path == "/api/invitation":
             self._handle_invitation_accepter()
+        elif path == "/api/direction/invitations":
+            self._handle_direction_inviter()
         elif path == "/api/prof/enseignants":
             self._handle_teacher_add()
         elif path == "/api/prof/documents":
@@ -14859,6 +14941,9 @@ class Handler(http.server.SimpleHTTPRequestHandler):
         path = parsed.path
         if re.match(r"^/api/admin/organisations/\d+$", path):
             self._handle_org_update(int(path.rsplit("/", 1)[1]))
+            return
+        if re.match(r"^/api/direction/enseignants/\d+$", path):
+            self._handle_direction_enseignant_update(int(path.rsplit("/", 1)[1]))
             return
         if re.match(r"^/api/admin/groupes/\d+/centre$", path):
             self._handle_groupe_centre(int(path.split("/")[4]))
@@ -16006,6 +16091,360 @@ class Handler(http.server.SimpleHTTPRequestHandler):
                                    if t["premierCoupTotal"] else None)
         return total
 
+    # ── L'espace direction ────────────────────────────────────────────
+    #
+    # Une seule page, deux portées : une direction y voit son centre, le
+    # fondateur voit le réseau et ouvre les comptes de direction. Deux pages
+    # auraient tenu les mêmes tableaux en double, et ce dépôt sait déjà ce que
+    # deux formulations d'une même règle finissent par faire.
+    #
+    # Elle sort du portail enseignant, où « Les chiffres » n'avait rien à
+    # faire : gérer des comptes et regarder une dépense n'est pas enseigner.
+
+    def _portee_direction(self, teacher, org_id):
+        """Refuse, avec son motif, qui n'a pas la charge de ce centre.
+
+        Le fondateur passe partout — c'est le seul rôle qui ne se lit pas dans
+        l'arbre. Pour les autres, l'accès doit être posé **sur le centre
+        lui-même** : un gestionnaire de CSS a le centre dans son sous-arbre et
+        reste refusé, comme pour la vue par enseignant des chiffres. La règle
+        est la même des deux côtés parce que la donnée est la même.
+        """
+        org = find_org(org_id)
+        if org is None or org.get("type") != "centre":
+            json_response(self, {"error": "Ce n'est pas un centre"}, 400)
+            return None
+        if is_founder(teacher):
+            return org
+        if not a_role_sur(teacher, org_id, ("direction", "conseiller"), exact=True):
+            json_response(self, {
+                "error": "Cet écran est réservé à la direction du centre."
+            }, 403)
+            return None
+        return org
+
+    def _depenses_par_prof(self, depuis=None):
+        """Le coût des appels de modèles, réparti par (centre, enseignant).
+
+        **Le registre ne note ni l'un ni l'autre** : il note l'élève et son
+        groupe. La clé se dérive donc du groupe — titulaire et centre — plutôt
+        que d'ajouter deux champs au registre, qui seraient faux le jour où un
+        groupe change de main et fausseraient rétroactivement tout l'historique.
+
+        Ce que ce chiffre dit, il faut l'écrire à l'écran : ce sont **les
+        élèves** qui appellent les modèles. « La dépense d'un enseignant », ici,
+        c'est ce que ses groupes ont dépensé. Et c'est un montant **estimé** par
+        la table de tarifs, jamais la facture.
+        """
+        groupes = {g["id"]: g for g in load_groups()}
+
+        def cle(ligne):
+            g = groupes.get(ligne.get("groupe"))
+            if not g:
+                return None
+            return (g.get("centreId"), g.get("teacherId"))
+
+        releve = journal_api.par_cle(journal_api.lire(depuis), cle)
+        return releve["parCle"], releve["total"]
+
+    def _roster_centre(self, org_id, groupes, acces):
+        """Qui compte dans ce centre : les rattachés et les titulaires.
+
+        Les deux ensembles ne se recouvrent pas — un rattachement retiré laisse
+        les groupes en place, et le fondateur enseigne sans être rattaché.
+        N'en lire qu'un ferait disparaître de l'écran une personne dont les
+        élèves continuent d'appeler les modèles : le total et le détail se
+        contrediraient, et ce serait le détail qui aurait tort.
+        """
+        roles = {}
+        for a in acces:
+            if a.get("orgId") == org_id and a.get("actif", True):
+                roles[a["teacherId"]] = a.get("role")
+        for g in groupes:
+            if g.get("centreId") == org_id and g.get("teacherId") \
+                    and g["teacherId"] not in roles:
+                roles[g["teacherId"]] = ""
+        return roles
+
+    def _handle_direction_portees(self):
+        """Ce que ce compte a le droit d'administrer.
+
+        La page ne devine pas sa portée, elle la demande — même parti pris que
+        `/api/stats/portees` : essayer chaque vue et compter les 403 ferait
+        apprendre à l'écran l'existence de centres qu'il n'a pas le droit de
+        voir.
+        """
+        teacher = self._require_teacher()
+        if not teacher:
+            return
+        orgs = load_organisations()
+        parents = {o["id"]: o for o in orgs}
+        centres = []
+        for o in orgs:
+            if o.get("type") != "centre":
+                continue
+            if not (is_founder(teacher)
+                    or a_role_sur(teacher, o["id"], ("direction", "conseiller"),
+                                  exact=True)):
+                continue
+            parent = parents.get(o.get("parentId")) or {}
+            centres.append({"id": o["id"], "nom": o.get("nom"),
+                            "css": parent.get("nom", ""),
+                            "actif": o.get("actif", True)})
+        json_response(self, {
+            "fondateur": is_founder(teacher),
+            "nom": teacher.get("nom", ""),
+            "centres": sorted(centres, key=lambda c: (c["nom"] or "").lower()),
+        })
+
+    def _handle_direction_centre(self, params):
+        teacher = self._require_teacher()
+        if not teacher:
+            return
+        try:
+            org_id = int(params.get("orgId", [""])[0])
+        except (TypeError, ValueError):
+            json_response(self, {"error": "Centre manquant"}, 400)
+            return
+        org = self._portee_direction(teacher, org_id)
+        if org is None:
+            return
+
+        depuis = (params.get("depuis", [""])[0] or "").strip()[:25] or None
+        groupes = load_groups()
+        acces = load_acces()
+        orgs = load_organisations()
+        eleves = load_students()
+        teachers = {t["id"]: t for t in load_teachers()}
+        depenses, _ = self._depenses_par_prof(depuis)
+        # Une invitation n'a pas de champ d'état : elle vaut tant qu'elle n'a
+        # pas servi et qu'elle n'est pas périmée. Montrer les autres ferait
+        # une liste de liens morts sur laquelle on cliquerait.
+        maintenant = datetime.now().isoformat(timespec="seconds")
+        invitations = [i for i in load_invitations()
+                       if i.get("orgId") == org_id
+                       and not i.get("utiliseLe")
+                       and (i.get("expire") or "") > maintenant]
+
+        lignes, total = [], 0.0
+        for teacher_id, role in self._roster_centre(org_id, groupes, acces).items():
+            t = teachers.get(teacher_id)
+            if not t:
+                continue
+            siens = [g for g in groupes
+                     if g.get("teacherId") == t["id"] and g.get("centreId") == org_id]
+            ids = {g["id"] for g in siens}
+            seau = depenses.get((org_id, t["id"]), {})
+            cout = seau.get("cout_usd", 0) or 0
+            total += cout
+            autorisee, decideur = ia_pour_enseignant(t, orgs=orgs, acces=acces)
+            lignes.append({
+                "teacherId": t["id"], "nom": t.get("nom", ""),
+                "courriel": t.get("courriel", ""),
+                "role": role, "rattache": bool(role),
+                # La seule mesure honnête de « ce compte a-t-il déjà servi ? ».
+                # La deviner depuis les traces d'élèves se tromperait sur une
+                # enseignante qui prépare avant que sa classe ait rien ouvert.
+                "derniereConnexion": t.get("derniereConnexion", ""),
+                "groupes": len(siens),
+                "eleves": sum(1 for e in eleves if e.get("groupId") in ids),
+                "ia": t.get("ia", "herite"),
+                "iaEffective": bool(autorisee),
+                "iaDecidePar": decideur or {},
+                "coutUsd": round(cout, 4),
+                "appels": seau.get("appels", 0),
+            })
+
+        json_response(self, {
+            "centre": {"id": org["id"], "nom": org.get("nom")},
+            "depuis": depuis,
+            # Un conseiller regarde ; il n'ouvre pas de compte. L'écran ne doit
+            # pas offrir un geste que le serveur refusera.
+            "peutInviter": bool(is_founder(teacher)
+                                or a_role_sur(teacher, org_id, ("direction",),
+                                              exact=True)),
+            "fondateur": is_founder(teacher),
+            "totalUsd": round(total, 4),
+            "enseignants": sorted(lignes, key=lambda l: (l["nom"] or "").lower()),
+            "invitations": [invitation_publique(i) for i in invitations],
+        })
+
+    def _handle_direction_reseau(self, params):
+        """La vue du fondateur : chaque centre, et les comptes de direction."""
+        fondateur = self._require_founder()
+        if not fondateur:
+            return
+        depuis = (params.get("depuis", [""])[0] or "").strip()[:25] or None
+        orgs = load_organisations()
+        groupes = load_groups()
+        acces = load_acces()
+        eleves = load_students()
+        teachers = {t["id"]: t for t in load_teachers()}
+        depenses, total = self._depenses_par_prof(depuis)
+        par_id = {o["id"]: o for o in orgs}
+
+        centres = []
+        for o in orgs:
+            if o.get("type") != "centre":
+                continue
+            roster = self._roster_centre(o["id"], groupes, acces)
+            ids = {g["id"] for g in groupes if g.get("centreId") == o["id"]}
+            # `sansCle` est une chaîne, pas une paire : les appels qu'aucun
+            # groupe ne porte n'appartiennent à aucun centre. Déballer sans
+            # ce test fait planter la vue entière — trouvé en le jouant.
+            cout = sum((seau.get("cout_usd", 0) or 0)
+                       for cle, seau in depenses.items()
+                       if isinstance(cle, tuple) and cle[0] == o["id"])
+            autorisee, decideur = ia_effective(o["id"], orgs)
+            centres.append({
+                "id": o["id"], "nom": o.get("nom"),
+                "css": (par_id.get(o.get("parentId")) or {}).get("nom", ""),
+                "actif": o.get("actif", True),
+                "enseignants": len(roster),
+                "directions": sum(1 for r in roster.values()
+                                  if r in ("direction", "conseiller")),
+                "groupes": len(ids),
+                "eleves": sum(1 for e in eleves if e.get("groupId") in ids),
+                "ia": o.get("ia", "herite"),
+                "iaEffective": bool(autorisee),
+                "iaDecidePar": (decideur or {}).get("nom", ""),
+                "coutUsd": round(cout, 4),
+            })
+
+        # Les directions en place, pour qu'on voie d'un coup qui tient quel
+        # centre — et qui n'est jamais venu.
+        directions = []
+        for a in acces:
+            if a.get("role") not in ("direction", "conseiller") or not a.get("actif", True):
+                continue
+            org = par_id.get(a.get("orgId")) or {}
+            t = teachers.get(a.get("teacherId"))
+            if not t:
+                continue
+            directions.append({
+                "teacherId": t["id"], "nom": t.get("nom", ""),
+                "courriel": t.get("courriel", ""), "role": a.get("role"),
+                "centre": org.get("nom", ""), "centreId": a.get("orgId"),
+                "derniereConnexion": t.get("derniereConnexion", ""),
+            })
+
+        json_response(self, {
+            "depuis": depuis,
+            # `sansCle` est le coût qu'aucun groupe ne porte — le tri d'un
+            # signalement, un appel d'un élève sans groupe. Il est payé, donc
+            # il se voit : sans lui, la somme des centres ne recompose pas le
+            # total et c'est la page qui a l'air fausse.
+            "totalUsd": round(total.get("cout_usd", 0) or 0, 4),
+            "totalCentresUsd": round(sum(c["coutUsd"] for c in centres), 4),
+            "centres": sorted(centres, key=lambda c: (c["nom"] or "").lower()),
+            "directions": sorted(directions, key=lambda d: (d["nom"] or "").lower()),
+        })
+
+    @sous_verrou
+    def _handle_direction_enseignant_update(self, teacher_id):
+        """Le bouton IA d'une personne. Rien d'autre ne se règle ici."""
+        teacher = self._require_teacher()
+        if not teacher:
+            return
+        teachers = load_teachers()
+        cible = next((t for t in teachers if t.get("id") == teacher_id), None)
+        if cible is None:
+            json_response(self, {"error": "Compte introuvable"}, 404)
+            return
+        acces = load_acces()
+        centre_id = centre_de_enseignant(cible, acces=acces)
+        if centre_id is None:
+            json_response(self, {
+                "error": "Cette personne n'est rattachée à aucun centre. "
+                         "Rattachez-la dans la console du réseau."}, 400)
+            return
+        if self._portee_direction(teacher, centre_id) is None:
+            return
+
+        body = self._read_json_body()
+        etat = (body.get("ia") or "").strip()
+        if etat not in IA_VALEURS:
+            json_response(self, {
+                "error": "L'état doit être « herite », « autorisee » ou « interdite »."
+            }, 400)
+            return
+        avant = cible.get("ia", "herite")
+        cible["ia"] = etat
+        save_teachers(teachers)
+        journal(teacher, "enseignant.ia", centre_id,
+                {"enseignant": cible.get("nom", ""), "avant": avant, "apres": etat})
+        autorisee, decideur = ia_pour_enseignant(cible, acces=acces)
+        json_response(self, {"success": True, "ia": etat,
+                             "iaEffective": bool(autorisee),
+                             "iaDecidePar": decideur or {}})
+
+    def _handle_direction_inviter(self):
+        """Ouvrir un compte depuis son centre, sans passer par le fondateur.
+
+        C'était le goulot : les invitations étaient réservées au fondateur, qui
+        ouvrait donc **tous** les comptes du réseau. Une direction invite
+        maintenant ses enseignants, bornée à son centre ; seul le fondateur
+        invite une direction, parce qu'ouvrir un pair est un pouvoir, pas une
+        tâche courante.
+        """
+        teacher = self._require_teacher()
+        if not teacher:
+            return
+        body = self._read_json_body()
+        try:
+            org_id = int(body.get("orgId"))
+        except (TypeError, ValueError):
+            json_response(self, {"error": "Centre manquant"}, 400)
+            return
+        role = (body.get("role") or "prof").strip()
+        if role not in ("prof", "direction"):
+            json_response(self, {
+                "error": "On invite un enseignant ou une direction."}, 400)
+            return
+        if role == "direction" and not is_founder(teacher):
+            json_response(self, {
+                "error": "Seul le compte fondateur ouvre un compte de direction."
+            }, 403)
+            return
+        if self._portee_direction(teacher, org_id) is None:
+            return
+        if not (is_founder(teacher)
+                or a_role_sur(teacher, org_id, ("direction",), exact=True)):
+            json_response(self, {
+                "error": "Un conseiller consulte le centre ; il n'ouvre pas de compte."
+            }, 403)
+            return
+
+        brut = body.get("courriels")
+        adresses = brut if isinstance(brut, list) else re.split(r"[\s,;]+", str(brut or ""))
+        adresses = [a.strip() for a in adresses if a and a.strip()]
+        if not adresses:
+            json_response(self, {"error": "Aucun courriel"}, 400)
+            return
+        if len(adresses) > 200:
+            json_response(self, {"error": "Deux cents adresses au maximum d'un coup"}, 400)
+            return
+
+        invitations = load_invitations()
+        faites, refusees = [], []
+        for adresse in adresses:
+            inv, jeton_ou_motif = creer_invitation(
+                adresse, role, org_id, par=teacher["id"], invitations=invitations)
+            if inv is None:
+                refusees.append({"courriel": adresse, "motif": jeton_ou_motif})
+                continue
+            invitations.append(inv)
+            vue = invitation_publique(inv)
+            vue["lien"] = f"/bienvenue.html?jeton={jeton_ou_motif}"
+            faites.append(vue)
+        if faites:
+            save_invitations(invitations)
+            journal(teacher, "invitations.creees", org_id,
+                    {"role": role, "nombre": len(faites),
+                     "courriels": [f["courriel"] for f in faites]})
+        json_response(self, {"success": bool(faites), "invitations": faites,
+                             "refusees": refusees}, 201 if faites else 400)
+
     def _handle_stats_portees(self):
         """Ce que la personne connectée a le droit de regarder.
 
@@ -17057,7 +17496,7 @@ class Handler(http.server.SimpleHTTPRequestHandler):
         json_response(self, {"correct": bool(parsed.get("correct", False))})
 
     def _ia_refusee(self, eleve_ou_code):
-        """Répond 403 et rend True quand le centre de l'élève n'a pas l'IA.
+        """Répond 403 et rend True quand l'IA n'est pas ouverte à cet élève.
 
         Le refus vit ici et pas seulement dans la page : une page se modifie
         avec deux touches, et une direction qui a dit non a dit non.
@@ -17069,7 +17508,10 @@ class Handler(http.server.SimpleHTTPRequestHandler):
         if autorisee:
             return False
         json_response(self, {
-            "error": "L'aide de l'assistant n'est pas activée dans ton centre.",
+            # Ne nomme plus le centre : depuis le bouton par enseignant, la
+            # décision peut venir de la personne titulaire du groupe. Un
+            # message qui décrit l'ancienne règle est un défaut, pas un détail.
+            "error": "L'aide de l'assistant n'est pas activée pour ta classe.",
             "iaInterdite": True,
             "decidePar": (decideur or {}).get("nom", ""),
         }, 403)

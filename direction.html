@@ -1,0 +1,654 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Espace direction — Francisation</title>
+  <link rel="stylesheet" href="assets/design-system/styles.css" />
+  <link rel="stylesheet" href="assets/design-system/marque-francis.css" />
+  <link rel="icon" type="image/svg+xml" href="assets/design-system/marque-francis-favicon.svg" />
+  <style>
+    /* Espace direction — une page, deux portées.
+       Une direction y voit son centre ; le fondateur voit le réseau et ouvre
+       les comptes de direction. Deux pages auraient tenu les mêmes tableaux
+       en double, et ce dépôt sait déjà ce que deux formulations d'une même
+       règle finissent par faire.
+       Aucune couleur en dur : uniquement des jetons du système de design.
+       Chaque état porte couleur ET glyphe ET mot. */
+    body { margin: 0; background: var(--surface-page); }
+
+    .dr-haut { position: sticky; top: 0; z-index: 30; background: var(--surface-card);
+               border-bottom: 1px solid var(--border); }
+    .dr-haut > .container { display: flex; align-items: center; gap: var(--sp-4);
+                            flex-wrap: wrap; padding-top: var(--sp-3);
+                            padding-bottom: var(--sp-3); }
+    .dr-haut a { font-size: var(--fs-ui); font-weight: var(--fw-bold);
+                 color: var(--text-muted); text-decoration: underline; }
+    .dr-haut a:hover { color: var(--text-accent); }
+    .dr-haut .dr-qui { margin-left: auto; font-size: var(--fs-ui-sm);
+                       font-weight: var(--fw-bold); color: var(--text-muted); }
+
+    .dr-titre { margin: var(--sp-2) 0 var(--sp-2); }
+    .dr-sous { color: var(--text-muted); margin: 0; max-width: 62ch; }
+
+    /* Onglets de portée : ils ne paraissent que si la personne en a plus d'une. */
+    .dr-portees { display: flex; flex-wrap: wrap; gap: var(--sp-2);
+                  margin-top: var(--sp-4); }
+    .dr-portee { font: inherit; font-size: var(--fs-ui-sm); font-weight: var(--fw-bold);
+                 padding: var(--sp-2) var(--sp-4); border-radius: var(--r-pill);
+                 border: 1px solid var(--border); background: var(--surface-card);
+                 color: var(--text-muted); cursor: pointer; }
+    .dr-portee:hover { color: var(--text-strong); border-color: var(--text-muted); }
+    .dr-portee[aria-pressed="true"] { background: var(--surface-inverse);
+                                      color: var(--text-inverse);
+                                      border-color: var(--surface-inverse); }
+
+    main { padding-bottom: var(--sp-12); }
+    .dr-msg { margin: var(--sp-4) 0 0; font-size: var(--fs-ui-sm);
+              font-weight: var(--fw-bold); color: var(--text-muted); }
+    .dr-msg.err { color: var(--text-accent); }
+
+    .dr-tuiles { display: grid; gap: var(--sp-3); margin: var(--sp-6) 0 0;
+                 grid-template-columns: repeat(auto-fit, minmax(150px, 1fr)); }
+    .dr-tuile { background: var(--surface-card); border: 1px solid var(--border);
+                border-radius: var(--r-md); padding: var(--sp-4); }
+    .dr-tuile .n { display: block; font-size: var(--fs-h2); font-weight: var(--fw-black);
+                   line-height: 1.05; letter-spacing: -.02em;
+                   font-variant-numeric: tabular-nums; }
+    .dr-tuile .l { display: block; margin-top: var(--sp-1); font-size: var(--fs-ui-sm);
+                   color: var(--text-muted); font-weight: var(--fw-bold); }
+
+    .dr-sec { margin-top: var(--sp-8); }
+    .dr-sec > h2 { margin: 0 0 var(--sp-1); }
+    .dr-sec > .dr-sous { margin-bottom: var(--sp-4); }
+
+    .dr-boite { background: var(--surface-card); border: 1px solid var(--border);
+                border-radius: var(--r-md); overflow-x: auto; }
+    table { border-collapse: collapse; width: 100%; min-width: 720px;
+            font-size: var(--fs-ui-sm); }
+    thead th { text-align: left; padding: var(--sp-3) var(--sp-4);
+               background: var(--surface-sunken); border-bottom: 1px solid var(--border);
+               font-size: var(--fs-meta); font-weight: var(--fw-bold);
+               letter-spacing: .08em; text-transform: uppercase; color: var(--text-muted);
+               white-space: nowrap; }
+    tbody td { padding: var(--sp-3) var(--sp-4); border-bottom: 1px solid var(--border);
+               vertical-align: middle; }
+    tbody tr:last-child td { border-bottom: 0; }
+    td.num { text-align: right; font-variant-numeric: tabular-nums; white-space: nowrap; }
+    .dr-nom { font-weight: var(--fw-bold); color: var(--text-strong); }
+    .dr-second { display: block; font-size: var(--fs-meta); color: var(--text-muted); }
+
+    /* Un état ne se dit jamais par la seule couleur. */
+    .dr-etat { display: inline-flex; align-items: center; gap: var(--sp-1);
+               font-weight: var(--fw-bold); white-space: nowrap; }
+    .dr-etat .g { font-weight: var(--fw-black); }
+    .dr-etat--oui { color: var(--text-accent); }
+    .dr-etat--non { color: var(--text-muted); }
+
+    /* Le bouton IA : trois états, un seul geste. */
+    .dr-ia { display: inline-flex; border: 1px solid var(--border);
+             border-radius: var(--r-pill); overflow: hidden; }
+    .dr-ia button { font: inherit; font-size: var(--fs-meta); font-weight: var(--fw-bold);
+                    padding: var(--sp-1) var(--sp-3); border: 0; cursor: pointer;
+                    background: var(--surface-card); color: var(--text-muted); }
+    .dr-ia button + button { border-left: 1px solid var(--border); }
+    .dr-ia button:hover:not([aria-pressed="true"]) { color: var(--text-strong);
+                                                     background: var(--surface-sunken); }
+    .dr-ia button[aria-pressed="true"] { background: var(--surface-inverse);
+                                         color: var(--text-inverse); }
+    .dr-ia button[disabled] { cursor: not-allowed; opacity: .5; }
+
+    .dr-form { background: var(--surface-card); border: 1px solid var(--border);
+               border-radius: var(--r-md); padding: var(--sp-5); }
+    .dr-form label { display: block; font-size: var(--fs-ui-sm);
+                     font-weight: var(--fw-bold); margin-bottom: var(--sp-1); }
+    .dr-form textarea, .dr-form select {
+      font: inherit; width: 100%; padding: var(--sp-2) var(--sp-3);
+      border: 1px solid var(--border); border-radius: var(--r-sm);
+      background: var(--surface-page); color: var(--text-body); }
+    .dr-form textarea { min-height: 76px; resize: vertical; }
+    .dr-form .rangee { display: flex; gap: var(--sp-4); flex-wrap: wrap;
+                       align-items: flex-end; margin-top: var(--sp-4); }
+    .dr-form .rangee > div { flex: 1 1 220px; }
+    .dr-aide { font-size: var(--fs-meta); color: var(--text-muted);
+               margin: var(--sp-2) 0 0; }
+
+    .dr-liens { margin-top: var(--sp-4); display: flex; flex-direction: column;
+                gap: var(--sp-2); }
+    .dr-lien { background: var(--surface-sunken); border: 1px solid var(--border);
+               border-radius: var(--r-sm); padding: var(--sp-3);
+               font-size: var(--fs-meta); word-break: break-all; }
+    .dr-lien b { display: block; font-size: var(--fs-ui-sm); word-break: normal; }
+
+    .dr-note { margin-top: var(--sp-4); font-size: var(--fs-meta);
+               color: var(--text-muted); max-width: 72ch; }
+    .dr-note b { color: var(--text-strong); }
+
+    .dr-vide { padding: var(--sp-6); text-align: center; color: var(--text-muted);
+               font-size: var(--fs-ui-sm); }
+  </style>
+</head>
+<body>
+
+<div class="fr-barre">
+  <div class="fr-barre__in">
+    <span class="fr-lockup">
+      <span class="fr-nom" role="img" aria-label="francis">franc<span class="fr-i" aria-hidden="true">ı<span class="fr-point"></span></span>s</span>
+      <span class="fr-trait" aria-hidden="true"></span>
+      <span class="fr-desc">Aide à l'apprentissage du français</span>
+    </span>
+  </div>
+</div>
+
+  <div class="dr-haut">
+    <div class="container">
+      <a href="enseignant.html">← Espace enseignant</a>
+      <a href="reseau.html" id="drLienReseau" hidden>Console du réseau</a>
+      <!-- « Les chiffres » ne disparaît pas, il change de porte : il sortait du
+           portail enseignant, où un écran de gestion n'avait rien à faire. Il
+           garde les vues CSS et réseau (minutes, adoption) que cette page ne
+           refait pas. -->
+      <a href="chiffres.html" id="drLienChiffres" hidden>Les chiffres</a>
+      <span class="dr-qui" id="drQui"></span>
+    </div>
+  </div>
+
+  <section class="band">
+    <div class="container">
+      <p class="band__eyebrow">Espace direction</p>
+      <h1 class="dr-titre" id="drTitre">Chargement…</h1>
+      <p class="dr-sous" id="drSous"></p>
+      <div class="dr-portees" id="drPortees" hidden role="group" aria-label="Choisir la portée"></div>
+    </div>
+  </section>
+
+  <main class="container" id="drCorps" hidden>
+    <p class="dr-msg" id="drMsg" role="status" aria-live="polite"></p>
+    <div id="drVues"></div>
+  </main>
+
+  <main class="container" id="drRefus" hidden>
+    <section class="card" style="margin-top:var(--sp-8)">
+      <h2>Cet écran n'est pas pour ce compte</h2>
+      <p>L'espace direction s'ouvre à qui a la charge d'un centre. Un compte
+      enseignant suit sa classe dans
+      <a href="progression.html">la progression des élèves</a>.</p>
+      <!-- Un gestionnaire de CSS n'a la charge d'aucun *centre* : il tombe donc
+           ici. Or « Les chiffres » a quitté le portail enseignant — sans cette
+           phrase, le déménagement lui couperait l'accès à sa propre vue. -->
+      <p id="drRenvoiChiffres" hidden>Votre compte a la charge d'un CSS ou du
+      réseau : les minutes, les jours actifs et l'adoption se lisent dans
+      <a href="chiffres.html">Les chiffres</a>.</p>
+      <p style="margin-bottom:0">
+        <a class="btn btn--pri" href="enseignant.html">Revenir à l'espace enseignant</a>
+        <a class="btn" id="drBoutonChiffres" href="chiffres.html" hidden>Les chiffres</a>
+      </p>
+    </section>
+  </main>
+
+  <script src="js/prof.js"></script>
+  <script>
+  (function () {
+    'use strict';
+
+    var MOI = null, PORTEES = null, VUE = null;   // VUE : 'reseau' ou un id de centre
+
+    var LIBELLE_ROLE = {
+      fondateur: 'Fondateur', gestion_css: 'Gestion CSS', direction: 'Direction',
+      conseiller: 'Conseiller', prof: 'Enseignant', '': 'Titulaire sans rattachement'
+    };
+
+    function ech(s) {
+      return String(s == null ? '' : s).replace(/[&<>"']/g, function (c) {
+        return { '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c];
+      });
+    }
+
+    /* Les dates se découpent à la chaîne, jamais par `new Date('2026-08-16')` :
+       la chaîne serait lue en temps universel et affichée la veille au Québec.
+       Même règle que la fiche de l'élève, la progression et la console. */
+    var MOIS = ['janvier', 'février', 'mars', 'avril', 'mai', 'juin', 'juillet',
+                'août', 'septembre', 'octobre', 'novembre', 'décembre'];
+    function jour(iso) {
+      if (!iso) return '';
+      var p = String(iso).slice(0, 10).split('-');
+      if (p.length !== 3) return String(iso);
+      return Number(p[2]) + ' ' + MOIS[Number(p[1]) - 1] + ' ' + p[0];
+    }
+
+    /* Un montant sous le dollar perdrait tout son sens à deux décimales : la
+       moitié des enseignants afficherait « 0,00 $ » alors que leurs classes
+       ont bel et bien appelé les modèles. */
+    function argent(v) {
+      var n = Number(v) || 0;
+      if (n === 0) return '—';
+      return (n < 1 ? n.toFixed(3) : n.toFixed(2)).replace('.', ',') + ' $';
+    }
+
+    function etat(oui, motOui, motNon) {
+      return '<span class="dr-etat dr-etat--' + (oui ? 'oui' : 'non') + '">' +
+             '<span class="g" aria-hidden="true">' + (oui ? '✓' : '○') + '</span>' +
+             ech(oui ? motOui : motNon) + '</span>';
+    }
+
+    function message(texte, erreur) {
+      var el = document.getElementById('drMsg');
+      el.textContent = texte || '';
+      el.className = 'dr-msg' + (erreur ? ' err' : '');
+    }
+
+    /* ── Le bouton IA ────────────────────────────────────────────────────
+       Trois états, et l'état effectif écrit à côté : « hérité » ne dit rien
+       tout seul, il faut savoir de qui. */
+    function boutonIA(ligne, peut) {
+      var etats = [['herite', 'Hérité'], ['autorisee', 'Autorisée'],
+                   ['interdite', 'Interdite']];
+      var html = '<div class="dr-ia" role="group" aria-label="Assistant IA">';
+      etats.forEach(function (e) {
+        html += '<button type="button" data-ia="' + e[0] +
+                '" data-prof="' + ligne.teacherId + '"' +
+                ' aria-pressed="' + (ligne.ia === e[0]) + '"' +
+                (peut ? '' : ' disabled') + '>' + e[1] + '</button>';
+      });
+      html += '</div>';
+      var d = ligne.iaDecidePar || {};
+      var qui = ligne.ia === 'herite'
+        ? (d.nom ? 'hérité de ' + d.nom : 'aucun réglage')
+        : 'réglé sur la personne';
+      html += '<span class="dr-second">' +
+              (ligne.iaEffective ? '✓ active' : '✕ éteinte') + ' · ' + ech(qui) +
+              '</span>';
+      return html;
+    }
+
+
+    /* ── Vue d'un centre ─────────────────────────────────────────────── */
+    function rendreCentre(d) {
+      var jamais = d.enseignants.filter(function (l) { return !l.derniereConnexion; }).length;
+      var eteintes = d.enseignants.filter(function (l) { return !l.iaEffective; }).length;
+      var h = '';
+
+      h += '<div class="dr-tuiles">';
+      h += tuile(d.enseignants.length, 'Enseignants');
+      h += tuile(jamais, jamais === 1 ? 'Jamais connecté' : 'Jamais connectés');
+      h += tuile(d.enseignants.reduce(function (s, l) { return s + l.groupes; }, 0), 'Groupes');
+      h += tuile(d.enseignants.reduce(function (s, l) { return s + l.eleves; }, 0), 'Élèves');
+      h += tuile(eteintes, eteintes === 1 ? 'IA éteinte' : 'IA éteintes');
+      h += tuile(argent(d.totalUsd), 'Dépense du centre');
+      h += '</div>';
+
+      h += '<section class="dr-sec"><h2>Les enseignants du centre</h2>' +
+           '<p class="dr-sous">Le compte a-t-il déjà servi, ses classes ont-elles ' +
+           'l\'assistant, et ce qu\'elles ont dépensé en appels de modèles.</p>';
+      if (!d.enseignants.length) {
+        h += '<div class="dr-boite"><p class="dr-vide">Aucun enseignant dans ce ' +
+             'centre pour l\'instant. Ouvrez un compte ci-dessous.</p></div>';
+      } else {
+        h += '<div class="dr-boite"><table><thead><tr>' +
+             '<th>Personne</th><th>Rôle</th><th>Compte</th>' +
+             '<th class="num">Groupes</th><th class="num">Élèves</th>' +
+             '<th>Assistant IA</th><th class="num">Dépense</th>' +
+             '</tr></thead><tbody>';
+        d.enseignants.forEach(function (l) {
+          h += '<tr>' +
+            '<td><span class="dr-nom">' + ech(l.nom || 'Sans nom') + '</span>' +
+              '<span class="dr-second">' + ech(l.courriel || '') + '</span></td>' +
+            '<td>' + ech(LIBELLE_ROLE[l.role] || l.role || '') +
+              (l.rattache ? '' : '<span class="dr-second">à rattacher</span>') + '</td>' +
+            '<td>' + (l.derniereConnexion
+                ? etat(true, 'Vu le ' + jour(l.derniereConnexion), '')
+                : etat(false, '', 'Jamais connecté')) + '</td>' +
+            '<td class="num">' + l.groupes + '</td>' +
+            '<td class="num">' + l.eleves + '</td>' +
+            '<td>' + boutonIA(l, d.peutInviter) + '</td>' +
+            '<td class="num">' + argent(l.coutUsd) +
+              '<span class="dr-second">' + (l.appels || 0) + ' appels</span></td>' +
+            '</tr>';
+        });
+        h += '</tbody></table></div>';
+      }
+      h += noteDepense();
+      h += '</section>';
+
+      if (d.peutInviter) {
+        h += '<section class="dr-sec"><h2>Ouvrir un compte enseignant</h2>' +
+             '<p class="dr-sous">La personne reçoit un lien et choisit son propre ' +
+             'mot de passe : on n\'envoie jamais un mot de passe.</p>' +
+             formulaire('prof', d.centre.id, '') +
+             liensInvitations(d.invitations) +
+             '</section>';
+      }
+      return h;
+    }
+
+    /* ── Vue du réseau (fondateur) ───────────────────────────────────── */
+    function rendreReseau(d) {
+      var h = '';
+      h += '<div class="dr-tuiles">';
+      h += tuile(d.centres.length, 'Centres');
+      h += tuile(d.centres.reduce(function (s, c) { return s + c.enseignants; }, 0), 'Enseignants');
+      h += tuile(d.directions.length, 'Directions en place');
+      h += tuile(d.centres.reduce(function (s, c) { return s + c.eleves; }, 0), 'Élèves');
+      h += tuile(argent(d.totalUsd), 'Dépense totale');
+      h += '</div>';
+
+      h += '<section class="dr-sec"><h2>Les centres</h2>' +
+           '<p class="dr-sous">Un centre par ligne, avec ce qu\'il a dépensé et ' +
+           'l\'état de l\'assistant pour l\'ensemble de ses classes.</p>' +
+           '<div class="dr-boite"><table><thead><tr>' +
+           '<th>Centre</th><th>CSS</th><th class="num">Enseignants</th>' +
+           '<th class="num">Groupes</th><th class="num">Élèves</th>' +
+           '<th>Assistant IA</th><th class="num">Dépense</th>' +
+           '</tr></thead><tbody>';
+      d.centres.forEach(function (c) {
+        h += '<tr>' +
+          '<td><span class="dr-nom">' + ech(c.nom || '') + '</span>' +
+            (c.actif ? '' : '<span class="dr-second">désactivé</span>') + '</td>' +
+          '<td>' + ech(c.css || '—') + '</td>' +
+          '<td class="num">' + c.enseignants +
+            '<span class="dr-second">' + c.directions + ' direction' +
+            (c.directions === 1 ? '' : 's') + '</span></td>' +
+          '<td class="num">' + c.groupes + '</td>' +
+          '<td class="num">' + c.eleves + '</td>' +
+          '<td>' + etat(c.iaEffective, 'Active', 'Éteinte') +
+            '<span class="dr-second">' +
+            ech(c.ia === 'herite' ? (c.iaDecidePar ? 'hérité de ' + c.iaDecidePar
+                                                   : 'aucun réglage')
+                                  : 'réglé sur le centre') + '</span></td>' +
+          '<td class="num">' + argent(c.coutUsd) + '</td>' +
+          '</tr>';
+      });
+      h += '</tbody></table></div>';
+
+      /* La somme des centres et le total ne sont pas le même nombre, et le
+         taire ferait une page qui se contredit : un appel qu'aucun groupe ne
+         porte — le tri d'un signalement — est payé sans être imputable. */
+      var horsCentre = Math.round((d.totalUsd - d.totalCentresUsd) * 10000) / 10000;
+      if (horsCentre > 0.0001) {
+        h += '<p class="dr-note"><b>' + argent(horsCentre) + '</b> de la dépense ' +
+             'totale n\'est rattaché à aucun centre : ce sont les appels qu\'aucun ' +
+             'groupe ne porte — le tri d\'un signalement, un élève sans groupe. ' +
+             'Ils sont payés, donc ils se voient.</p>';
+      }
+      h += noteDepense();
+      h += '</section>';
+
+      h += '<section class="dr-sec"><h2>Les comptes de direction</h2>' +
+           '<p class="dr-sous">Qui tient quel centre — et qui n\'est jamais venu.</p>';
+      if (!d.directions.length) {
+        h += '<div class="dr-boite"><p class="dr-vide">Aucune direction en place. ' +
+             'Ouvrez un compte ci-dessous.</p></div>';
+      } else {
+        h += '<div class="dr-boite"><table><thead><tr>' +
+             '<th>Personne</th><th>Rôle</th><th>Centre</th><th>Compte</th>' +
+             '</tr></thead><tbody>';
+        d.directions.forEach(function (l) {
+          h += '<tr>' +
+            '<td><span class="dr-nom">' + ech(l.nom || 'Sans nom') + '</span>' +
+              '<span class="dr-second">' + ech(l.courriel || '') + '</span></td>' +
+            '<td>' + ech(LIBELLE_ROLE[l.role] || l.role) + '</td>' +
+            '<td>' + ech(l.centre || '—') + '</td>' +
+            '<td>' + (l.derniereConnexion
+                ? etat(true, 'Vu le ' + jour(l.derniereConnexion), '')
+                : etat(false, '', 'Jamais connecté')) + '</td>' +
+            '</tr>';
+        });
+        h += '</tbody></table></div>';
+      }
+      h += '</section>';
+
+      h += '<section class="dr-sec"><h2>Ouvrir un compte de direction</h2>' +
+           '<p class="dr-sous">Ce geste n\'appartient qu\'au compte fondateur : ' +
+           'ouvrir un pair est un pouvoir, pas une tâche courante.</p>' +
+           formulaire('direction', null, PORTEES.centres) +
+           '</section>';
+      return h;
+    }
+
+    function tuile(n, l) {
+      return '<div class="dr-tuile"><span class="n">' + ech(n) + '</span>' +
+             '<span class="l">' + ech(l) + '</span></div>';
+    }
+
+    function noteDepense() {
+      return '<p class="dr-note"><b>Ce que ce montant dit.</b> Ce sont les ' +
+             '<b>élèves</b> qui appellent les modèles : la dépense d\'un enseignant, ' +
+             'c\'est ce que ses groupes ont dépensé. Le montant est <b>estimé</b> à ' +
+             'partir d\'une table de tarifs — c\'est un ordre de grandeur, jamais ' +
+             'la facture. Un appel servi par le cache est compté à zéro et compté ' +
+             'quand même.</p>';
+    }
+
+    function formulaire(role, centreId, centres) {
+      var h = '<form class="dr-form" data-role="' + role + '"' +
+              (centreId ? ' data-centre="' + centreId + '"' : '') + '>' +
+              '<label for="crl-' + role + '">Courriels</label>' +
+              '<textarea id="crl-' + role + '" name="courriels" required ' +
+              'placeholder="une adresse par ligne, ou séparées par des virgules">' +
+              '</textarea>';
+      if (centres && centres.length) {
+        h += '<div class="rangee"><div>' +
+             '<label for="ctr-' + role + '">Centre</label><select id="ctr-' + role + '" name="orgId">';
+        centres.forEach(function (c) {
+          h += '<option value="' + c.id + '">' + ech(c.nom) +
+               (c.css ? ' — ' + ech(c.css) : '') + '</option>';
+        });
+        h += '</select></div><div style="flex:0 0 auto">' +
+             '<button class="btn btn--pri" type="submit">Envoyer l\'invitation</button>' +
+             '</div></div>';
+      } else {
+        h += '<div class="rangee"><div style="flex:0 0 auto">' +
+             '<button class="btn btn--pri" type="submit">Envoyer l\'invitation</button>' +
+             '</div></div>';
+      }
+      h += '<p class="dr-aide">Une adresse fautive n\'annule pas les autres : ' +
+           'les refus sont listés avec leur motif. Une invitation vaut quatorze ' +
+           'jours et ne sert qu\'une fois.</p></form>' +
+           '<div class="dr-liens" data-liens="' + role + '"></div>';
+      return h;
+    }
+
+    function liensInvitations(liste) {
+      if (!liste || !liste.length) return '';
+      var h = '<p class="dr-note"><b>Invitations en attente.</b> Le lien ne ' +
+              's\'affiche qu\'à la création : celles-ci sont valides, mais leur ' +
+              'lien n\'est plus lisible ici.</p><div class="dr-liens">';
+      liste.forEach(function (i) {
+        h += '<div class="dr-lien"><b>' + ech(i.courriel) + '</b>' +
+             'expire le ' + ech(jour(i.expire)) + '</div>';
+      });
+      return h + '</div>';
+    }
+
+    /* ── Chargement ──────────────────────────────────────────────────── */
+    async function recharger() {
+      var vues = document.getElementById('drVues');
+      message('Chargement…');
+      var url = VUE === 'reseau'
+        ? '/api/direction/reseau'
+        : '/api/direction/centre?orgId=' + encodeURIComponent(VUE);
+      var res = await Prof.fetch(url);
+      var d = await res.json();
+      if (!res.ok) {
+        message(d.error || 'Lecture impossible', true);
+        vues.innerHTML = '';
+        return;
+      }
+      message('');
+      if (VUE === 'reseau') {
+        document.getElementById('drTitre').textContent = 'Le réseau';
+        document.getElementById('drSous').textContent =
+          'Les centres, ce qu\'ils dépensent, et les comptes de direction.';
+        vues.innerHTML = rendreReseau(d);
+      } else {
+        document.getElementById('drTitre').textContent = d.centre.nom || 'Le centre';
+        document.getElementById('drSous').textContent =
+          'Les comptes enseignants du centre : leur usage, leur assistant, leur dépense.';
+        vues.innerHTML = rendreCentre(d);
+      }
+      brancher();
+    }
+
+    function rendrePortees() {
+      var bande = document.getElementById('drPortees');
+      var choix = [];
+      if (PORTEES.fondateur) choix.push({ cle: 'reseau', nom: 'Le réseau' });
+      PORTEES.centres.forEach(function (c) { choix.push({ cle: String(c.id), nom: c.nom }); });
+      /* Un seul choix, pas d'onglet : une bande à un bouton est un bouton qui
+         ne fait rien. */
+      if (choix.length < 2) { bande.hidden = true; return; }
+      bande.hidden = false;
+      bande.innerHTML = choix.map(function (c) {
+        return '<button type="button" class="dr-portee" data-vue="' + ech(c.cle) +
+               '" aria-pressed="' + (String(VUE) === c.cle) + '">' + ech(c.nom) + '</button>';
+      }).join('');
+      bande.querySelectorAll('[data-vue]').forEach(function (b) {
+        b.addEventListener('click', function () {
+          VUE = b.dataset.vue;
+          rendrePortees();
+          recharger().catch(function (e) { message(e.message, true); });
+        });
+      });
+    }
+
+    function brancher() {
+      /* Le bouton IA. Un seul chemin d'écriture : on appelle, on affiche le
+         message du serveur, puis on recharge tout. Une page qui met à jour son
+         affichage sans avoir relu le serveur finit par montrer un état qui
+         n'existe pas. */
+      document.querySelectorAll('.dr-ia button[data-ia]').forEach(function (b) {
+        b.addEventListener('click', async function () {
+          if (b.disabled || b.getAttribute('aria-pressed') === 'true') return;
+          try {
+            var res = await Prof.fetch('/api/direction/enseignants/' + b.dataset.prof, {
+              method: 'PATCH',
+              headers: { 'Content-Type': 'application/json' },
+              body: JSON.stringify({ ia: b.dataset.ia })
+            });
+            var d = await res.json();
+            /* Le message affiché est celui du serveur, mot pour mot : c'est lui
+               qui connaît le motif d'un refus, et deux formulations d'une même
+               règle finissent toujours par diverger. */
+            if (!res.ok) { message(d.error || 'Refusé', true); return; }
+            /* Le message vient APRÈS le rechargement : `recharger()` remet la
+               ligne d'état à vide, et une confirmation posée avant disparaît
+               sans que rien ne le dise. Vu en jouant le bouton, pas en
+               relisant — le réglage passait, et l'écran restait muet. */
+            var nom = b.closest('tr').querySelector('.dr-nom').textContent;
+            await recharger();
+            message(nom + ' — assistant ' +
+                    (d.iaEffective ? 'actif' : 'éteint') +
+                    (d.ia === 'herite' ? ' (hérité)' : ' (réglé sur la personne)') + '.');
+          } catch (e) { message(e.message, true); }
+        });
+      });
+
+      document.querySelectorAll('form.dr-form').forEach(function (f) {
+        f.addEventListener('submit', async function (ev) {
+          ev.preventDefault();
+          var orgId = f.dataset.centre || (f.querySelector('[name=orgId]') || {}).value;
+          var courriels = f.querySelector('[name=courriels]').value;
+          try {
+            var res = await Prof.fetch('/api/direction/invitations', {
+              method: 'POST',
+              headers: { 'Content-Type': 'application/json' },
+              body: JSON.stringify({ orgId: Number(orgId), role: f.dataset.role,
+                                     courriels: courriels })
+            });
+            var d = await res.json();
+            if (!res.ok && !d.invitations) { message(d.error || 'Refusé', true); return; }
+            var boite = document.querySelector('[data-liens="' + f.dataset.role + '"]');
+            var h = '';
+            (d.invitations || []).forEach(function (i) {
+              /* Le lien ne s'affiche qu'une fois, et la page le dit en toutes
+                 lettres : sans cet avertissement, on ferme l'onglet et on
+                 recommence. */
+              h += '<div class="dr-lien"><b>' + ech(i.courriel) + '</b>' +
+                   location.origin + ech(i.lien) + '</div>';
+            });
+            (d.refusees || []).forEach(function (r) {
+              h += '<div class="dr-lien"><b>' + ech(r.courriel) + ' — refusé</b>' +
+                   ech(r.motif) + '</div>';
+            });
+            boite.innerHTML = h;
+            var n = (d.invitations || []).length;
+            var nr = (d.refusees || []).length;
+            message(
+              (n ? n + (n > 1 ? ' invitations créées' : ' invitation créée') +
+                   '. Copiez les liens maintenant : ils ne s\'affichent qu\'une fois.'
+                 : 'Aucune invitation créée.') +
+              (nr ? ' ' + nr + (nr > 1 ? ' adresses refusées' : ' adresse refusée') + '.' : ''),
+              !n);
+            f.reset();
+          } catch (e) { message(e.message, true); }
+        });
+      });
+    }
+
+    async function demarrer() {
+      /* `redirect: true` renverrait vers le portail quiconque n'a aucun
+         groupe — or une direction qui n'enseigne pas n'en a pas, et se
+         ferait éjecter de son propre écran. Le renvoi de `prof.js` est fait
+         pour les pages de planification ; celle-ci n'en est pas une. La
+         connexion, elle, se vérifie juste après, sur `/api/prof/me`. */
+      await Prof.init({ redirect: false });
+      var moi;
+      try {
+        var res = await Prof.fetch('/api/prof/me');
+        var data = await res.json();
+        if (!data.connecte) { Prof.versConnexion(); return; }
+        moi = data.enseignant;
+      } catch (e) { return; }   // 401 : prof.js a déjà redirigé
+
+      MOI = moi;
+      document.getElementById('drQui').textContent = moi.nom || '';
+      if (moi.fondateur) document.getElementById('drLienReseau').hidden = false;
+      try {
+        var rs = await Prof.fetch('/api/stats/portees');
+        var sp = await rs.json();
+        if (sp.reseau || (sp.css || []).length || (sp.centres || []).length) {
+          document.getElementById('drLienChiffres').hidden = false;
+        }
+      } catch (e) { /* pas de portée, pas de lien : le défaut est le silence */ }
+
+      try {
+        var rp = await Prof.fetch('/api/direction/portees');
+        PORTEES = await rp.json();
+      } catch (e) {
+        document.getElementById('drTitre').textContent = 'Espace direction';
+        document.getElementById('drSous').textContent =
+          'La portée n\'a pas pu être lue (' + e.message + ').';
+        return;
+      }
+
+      /* La page ne devine jamais sa portée : elle la demande. Sans portée, on
+         ne promet pas un écran que le serveur ne servira pas. */
+      if (!PORTEES.fondateur && !PORTEES.centres.length) {
+        document.getElementById('drTitre').textContent = 'Espace direction';
+        document.getElementById('drSous').textContent =
+          'Ce compte n\'a la charge d\'aucun centre.';
+        document.getElementById('drRefus').hidden = false;
+        /* Le lien de la barre a déjà été démasqué plus haut si la personne a
+           une portée de chiffres ; on le redit ici, où elle regarde. */
+        if (!document.getElementById('drLienChiffres').hidden) {
+          document.getElementById('drRenvoiChiffres').hidden = false;
+          document.getElementById('drBoutonChiffres').hidden = false;
+        }
+        return;
+      }
+
+      VUE = PORTEES.fondateur ? 'reseau' : String(PORTEES.centres[0].id);
+      rendrePortees();
+      document.getElementById('drCorps').hidden = false;
+      try {
+        await recharger();
+      } catch (e) {
+        message('Lecture impossible (' + e.message + ').', true);
+      }
+    }
+
+    demarrer();
+  })();
+  </script>
+</body>
+</html>
