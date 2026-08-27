@@ -190,8 +190,6 @@ body{display:flex;flex-direction:column;min-height:100vh}
 .qlbl{font-size:13px;font-weight:800;color:#1D6B8F;text-transform:uppercase;letter-spacing:.1em;margin-bottom:4px}
 .qtxt{font-size:20px;font-weight:700;color:#123B32;line-height:1.4}
 .timelbl{flex:0 0 90px;background:var(--warn-bg);border-radius:10px;padding:12px 8px;font-size:15px;font-weight:900;color:var(--warn-ink);text-align:center}
-/* L'interligne du paragraphe ne sert qu'à loger les cases : il vaut la
-   hauteur d'une case (mot + rembourrage + bordure), pas davantage. */
 .blanks-p{font-size:20px;line-height:2.1;font-weight:600;color:#123B32}
 
 .zone{display:flex;align-items:center;justify-content:center;min-height:54px;border-radius:10px;font-weight:800;font-family:'Nunito',sans-serif;cursor:pointer;transition:background .18s,border-color .18s,color .18s,transform .12s;user-select:none;text-align:center;padding:10px 14px;border:2.5px solid;line-height:1.35}
@@ -743,8 +741,6 @@ body{
      franchement au lieu de se disputer une rangée trop étroite. */
   .exo-main{min-width:0!important; flex:1 1 100%!important}
   .bsec.b1{flex:1 1 100%!important}
-  /* La bande d'outils occupe le bas de l'écran et recouvrait le banc : il
-     s'arrête à sa hauteur, publiée par outils-eleve.css (0 sans le rail). */
   .bsec.b1{
     position:sticky; top:auto; bottom:var(--oe-dock-h,0px);
     max-height:none;
@@ -769,8 +765,6 @@ body{
     -webkit-overflow-scrolling:touch;
   }
   .bsec.b1 .btiles > *{flex:0 1 auto; max-width:100%}
-  /* Des tuiles plus compactes : le banc doit montrer TOUS les choix sans
-     qu'on ait à le faire défiler — un choix caché est un choix perdu. */
   .bsec.b1 .tile{padding:7px 12px; font-size:16px; box-shadow:0 1px 4px rgba(0,0,0,.07)}
   .bsec.b1 .tn,.bsec.b1 .tv,.bsec.b1 .tf,.bsec.b1 .ta{font-size:16px}
   /* Deux vignettes par rangée, quelle que soit la largeur que le banc
@@ -1319,23 +1313,90 @@ function pronMatches(said, target){
 // ⚠️ À reproduire dans TOUS les futurs modules dès qu'un mot isolé est
 // demandé en prononciation (voir aussi memory: cours-niveau4-modules.md).
 %%CARRIER_PHRASES%%
-function pronCheck(btn, expected){
-  const SRC = window.SpeechRecognition || window.webkitSpeechRecognition;
+// ── RECONNAISSANCE VOCALE : GARDE-FOU « SUR L'APPAREIL » ──────────────
+// webkitSpeechRecognition n'est PAS un moteur local : Chrome expédie l'audio
+// capté à ses serveurs, Safari aux siens. Pour une classe de francisation cela
+// veut dire la voix d'élèves nouvellement arrivés qui sort du Québec à chaque
+// exercice oral — sans passer par notre serveur ni par nos clés, donc sans
+// qu'aucun choix d'hébergeur n'y change quoi que ce soit.
+//
+// La Web Speech API sait maintenant travailler hors ligne : available() dit si
+// le paquet de langue est présent, install() le télécharge, et processLocally
+// interdit tout envoi réseau. TOUT passe par reconnaissanceLocale() — aucun
+// « new SpeechRecognition() » ne doit reparaître ailleurs dans ce fichier.
+//
+// RECO_STRICTE=true : pas de reconnaissance locale possible ⇒ pas de
+// reconnaissance du tout. C'est le défaut, parce qu'un repli silencieux vers
+// le nuage annulerait exactement ce qu'on protège ici. Un centre qui préfère
+// le service au confinement met la constante à false ; la voix repart alors
+// chez l'éditeur du navigateur, en connaissance de cause.
+const RECO_STRICTE = true;
+const RECO_LANGS = ['fr-CA'];
+const RECO_SRC = () => window.SpeechRecognition || window.webkitSpeechRecognition;
+// Le paquet de langue ne se télécharge qu'une fois par appareil, mais il pèse
+// lourd : on ne relance pas l'installation à chaque touche de micro.
+let _recoInstall = false;
+
+// quality : 'command' pour un mot répété, 'dictation' pour une production
+// suivie. Le moteur local ne charge pas le même modèle selon le cas.
+async function recoEtat(quality){
+  const SRC = RECO_SRC();
+  if(!SRC) return 'sans-api';
+  // Navigateur d'avant l'API sur appareil : available() n'existe pas, donc
+  // rien ne garantit que l'audio reste ici. En mode strict, on renonce.
+  if(typeof SRC.available !== 'function') return RECO_STRICTE ? 'sans-local' : 'distant';
+  let dispo;
+  try{ dispo = await SRC.available({langs:RECO_LANGS, quality, processLocally:true}); }
+  catch(e){ return RECO_STRICTE ? 'sans-local' : 'distant'; }
+  if(dispo === 'available') return 'local';
+  if(dispo === 'downloadable' || dispo === 'downloading'){
+    if(!_recoInstall){
+      _recoInstall = true;
+      Promise.resolve(SRC.install({langs:RECO_LANGS, processLocally:true}))
+        .catch(()=>{}).then(()=>{ _recoInstall = false; });
+    }
+    return 'telechargement';
+  }
+  return RECO_STRICTE ? 'sans-local' : 'distant';
+}
+
+// Rend {rec, etat}. rec vaut null dès que l'exercice ne peut pas écouter.
+async function reconnaissanceLocale(quality){
+  const etat = await recoEtat(quality);
+  if(etat !== 'local' && etat !== 'distant') return {rec:null, etat};
+  const rec = new (RECO_SRC())();
+  rec.lang = RECO_LANGS[0]; rec.maxAlternatives = 1;
+  // processLocally n'est lu qu'au start() : le poser après ne servirait à rien.
+  if(etat === 'local'){ try{ rec.processLocally = true; }catch(e){} }
+  return {rec, etat};
+}
+
+// Un seul texte par état, pour que les trois exercices disent la même chose.
+function recoMessage(etat){
+  if(etat === 'sans-api')       return "Ce navigateur ne fait pas la reconnaissance vocale. Essaie avec Chrome, Edge ou Safari.";
+  if(etat === 'telechargement') return "Préparation de la reconnaissance vocale sur cet appareil — réessaie dans un moment.";
+  if(etat === 'sans-local')     return "La reconnaissance vocale hors ligne n'est pas disponible sur cet appareil.";
+  return "";
+}
+
+async function pronCheck(btn, expected){
   let fb = btn.nextElementSibling && btn.nextElementSibling.classList.contains('pron-fb') ? btn.nextElementSibling : null;
   if(!fb){ fb=document.createElement('span'); fb.className='pron-fb'; fb.setAttribute('aria-live','polite'); btn.insertAdjacentElement('afterend', fb); }
-  if(!SRC){ fb.className='pron-fb warn'; fb.textContent='Reconnaissance vocale non supportée (utilise Chrome).'; return; }
   const old = btn.innerHTML;
   btn.classList.remove('fb-ok','fb-no');
   btn.disabled=true; btn.innerHTML=ICON_MIC+' …';
-  fb.className='pron-fb'; fb.textContent='Écoute en cours…';
   const reset=()=>{ btn.disabled=false; btn.innerHTML=old; };
+  // Un mot répété : le modèle 'command' suffit, et il se télécharge plus vite.
+  fb.className='pron-fb'; fb.textContent='Préparation…';
+  const {rec, etat} = await reconnaissanceLocale('command');
+  if(!rec){ reset(); fb.className='pron-fb warn'; fb.textContent=recoMessage(etat); return; }
+  fb.className='pron-fb'; fb.textContent='Écoute en cours…';
   const target = normPron(expected);
   let done=false, lastInterim='';
-  const rec = new SRC();
   // interimResults:true — les mots très courts ("tôt", "mer"...) sont parfois
   // coupés par la détection de silence avant qu'un résultat final n'arrive ;
   // on garde le dernier résultat provisoire comme filet de secours.
-  rec.lang='fr-CA'; rec.interimResults=true; rec.maxAlternatives=1;
+  rec.interimResults=true;
   const evaluate=(heard)=>{
     heard=heard.trim();
     const said = normPron(heard);
@@ -2459,9 +2520,15 @@ async function toggleRec(){
     document.getElementById('poPrev').classList.remove('hidden');
     recStep(2);
   };
+  // Préparé AVANT mediaRecorder.start() : lancer la reconnaissance après coup
+  // lui ferait manquer les premiers mots de l'élève.
+  const reco = await reconnaissanceLocale('dictation');
+  if(!reco.rec){
+    showErr('poErr', recoMessage(reco.etat)+" L'enregistrement fonctionne quand même : écris ton texte à la main.");
+  }
   mediaRecorder.start();
-  if(SR){
-    recognition=new SR(); recognition.lang='fr-CA'; recognition.continuous=true; recognition.interimResults=false;
+  if(reco.rec){
+    recognition=reco.rec; recognition.continuous=true; recognition.interimResults=false;
     let tr='';
     recognition.onresult=e=>{ for(let i=e.resultIndex;i<e.results.length;i++){ if(e.results[i].isFinal)tr+=e.results[i][0].transcript+' '; } const b=document.getElementById('poText'); if(b)b.value=tr.trim(); };
     try{ recognition.start(); }catch(e){}
@@ -2638,10 +2705,12 @@ const jrSRC = () => window.SpeechRecognition || window.webkitSpeechRecognition;
 // Le mode voix ne change que l'entrée et la sortie : même conversation, même
 // endpoint. Le texte reste affiché — au niveau 4, du pur audio décroche
 // l'élève dès la première réplique mal saisie.
-function jrModeVoix(on){
-  if(on && !jrSRC()){
-    showErr('jrErr',"Ce navigateur ne fait pas la reconnaissance vocale. Essaie avec Chrome, Edge ou Safari.");
-    return;
+async function jrModeVoix(on){
+  // Le refus se dit ici, au moment où l'élève choisit le mode — pas plus tard,
+  // micro en main, quand il a déjà commencé à parler.
+  if(on){
+    const etat = await recoEtat('dictation');
+    if(etat !== 'local' && etat !== 'distant'){ showErr('jrErr', recoMessage(etat)); return; }
   }
   JR.voix=on;
   document.querySelectorAll('#jrModes .jr-opt').forEach(b=>
@@ -2695,9 +2764,7 @@ async function jrDire(texte){
 // La transcription atterrit dans le champ de saisie, modifiable : la
 // reconnaissance se trompe forcément sur un accent d'apprenant, et voir ce
 // qui a été entendu vaut mieux que de laisser partir une phrase fausse.
-function jrParler(){
-  const SRC=jrSRC();
-  if(!SRC){ showErr('jrErr',"Ce navigateur ne fait pas la reconnaissance vocale."); return; }
+async function jrParler(){
   if(JR.rec){ try{ JR.rec.stop(); }catch(e){} return; }   // deuxième touche = arrêter
   jrTaire();                    // sinon le micro réentend la voix de l'assistant
   hideErr('jrErr');
@@ -2705,8 +2772,13 @@ function jrParler(){
   const btn=document.getElementById('jrMic');
   const lbl=document.getElementById('jrMicLbl');
   inp.value='';
-  const rec=new SRC(); JR.rec=rec;
-  rec.lang='fr-CA'; rec.interimResults=true; rec.continuous=true; rec.maxAlternatives=1;
+  lbl.textContent='Préparation…';
+  const {rec, etat} = await reconnaissanceLocale('dictation');
+  if(!rec){ lbl.textContent='Touche pour parler'; showErr('jrErr', recoMessage(etat)); return; }
+  // Deux touches rapides pendant la préparation : la première a déjà gagné.
+  if(JR.rec){ return; }
+  JR.rec=rec;
+  rec.interimResults=true; rec.continuous=true;
   let acquis='', provisoire='';
   btn.classList.add('rec'); btn.textContent='⏹';
   lbl.textContent='Je t\'écoute… touche pour arrêter';

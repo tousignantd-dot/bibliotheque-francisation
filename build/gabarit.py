@@ -757,6 +757,219 @@ def images_en_paysage(html):
     return html
 
 
+# ── Confinement de la reconnaissance vocale ───────────────────────────────
+# Les repères sont ceux du gabarit ASSEMBLÉ (jeu de rôle greffé, production
+# refondue) : l'étape tourne en dernier dans main().
+
+HELPER_RECO = """// ── RECONNAISSANCE VOCALE : GARDE-FOU « SUR L'APPAREIL » ──────────────
+// webkitSpeechRecognition n'est PAS un moteur local : Chrome expédie l'audio
+// capté à ses serveurs, Safari aux siens. Pour une classe de francisation cela
+// veut dire la voix d'élèves nouvellement arrivés qui sort du Québec à chaque
+// exercice oral — sans passer par notre serveur ni par nos clés, donc sans
+// qu'aucun choix d'hébergeur n'y change quoi que ce soit.
+//
+// La Web Speech API sait maintenant travailler hors ligne : available() dit si
+// le paquet de langue est présent, install() le télécharge, et processLocally
+// interdit tout envoi réseau. TOUT passe par reconnaissanceLocale() — aucun
+// « new SpeechRecognition() » ne doit reparaître ailleurs dans ce fichier.
+//
+// RECO_STRICTE=true : pas de reconnaissance locale possible ⇒ pas de
+// reconnaissance du tout. C'est le défaut, parce qu'un repli silencieux vers
+// le nuage annulerait exactement ce qu'on protège ici. Un centre qui préfère
+// le service au confinement met la constante à false ; la voix repart alors
+// chez l'éditeur du navigateur, en connaissance de cause.
+const RECO_STRICTE = true;
+const RECO_LANGS = ['fr-CA'];
+const RECO_SRC = () => window.SpeechRecognition || window.webkitSpeechRecognition;
+// Le paquet de langue ne se télécharge qu'une fois par appareil, mais il pèse
+// lourd : on ne relance pas l'installation à chaque touche de micro.
+let _recoInstall = false;
+
+// quality : 'command' pour un mot répété, 'dictation' pour une production
+// suivie. Le moteur local ne charge pas le même modèle selon le cas.
+async function recoEtat(quality){
+  const SRC = RECO_SRC();
+  if(!SRC) return 'sans-api';
+  // Navigateur d'avant l'API sur appareil : available() n'existe pas, donc
+  // rien ne garantit que l'audio reste ici. En mode strict, on renonce.
+  if(typeof SRC.available !== 'function') return RECO_STRICTE ? 'sans-local' : 'distant';
+  let dispo;
+  try{ dispo = await SRC.available({langs:RECO_LANGS, quality, processLocally:true}); }
+  catch(e){ return RECO_STRICTE ? 'sans-local' : 'distant'; }
+  if(dispo === 'available') return 'local';
+  if(dispo === 'downloadable' || dispo === 'downloading'){
+    if(!_recoInstall){
+      _recoInstall = true;
+      Promise.resolve(SRC.install({langs:RECO_LANGS, processLocally:true}))
+        .catch(()=>{}).then(()=>{ _recoInstall = false; });
+    }
+    return 'telechargement';
+  }
+  return RECO_STRICTE ? 'sans-local' : 'distant';
+}
+
+// Rend {rec, etat}. rec vaut null dès que l'exercice ne peut pas écouter.
+async function reconnaissanceLocale(quality){
+  const etat = await recoEtat(quality);
+  if(etat !== 'local' && etat !== 'distant') return {rec:null, etat};
+  const rec = new (RECO_SRC())();
+  rec.lang = RECO_LANGS[0]; rec.maxAlternatives = 1;
+  // processLocally n'est lu qu'au start() : le poser après ne servirait à rien.
+  if(etat === 'local'){ try{ rec.processLocally = true; }catch(e){} }
+  return {rec, etat};
+}
+
+// Un seul texte par état, pour que les trois exercices disent la même chose.
+function recoMessage(etat){
+  if(etat === 'sans-api')       return "Ce navigateur ne fait pas la reconnaissance vocale. Essaie avec Chrome, Edge ou Safari.";
+  if(etat === 'telechargement') return "Préparation de la reconnaissance vocale sur cet appareil — réessaie dans un moment.";
+  if(etat === 'sans-local')     return "La reconnaissance vocale hors ligne n'est pas disponible sur cet appareil.";
+  return "";
+}
+
+"""
+
+OLD_PRON = """function pronCheck(btn, expected){
+  const SRC = window.SpeechRecognition || window.webkitSpeechRecognition;
+  let fb = btn.nextElementSibling && btn.nextElementSibling.classList.contains('pron-fb') ? btn.nextElementSibling : null;
+  if(!fb){ fb=document.createElement('span'); fb.className='pron-fb'; fb.setAttribute('aria-live','polite'); btn.insertAdjacentElement('afterend', fb); }
+  if(!SRC){ fb.className='pron-fb warn'; fb.textContent='Reconnaissance vocale non supportée (utilise Chrome).'; return; }
+  const old = btn.innerHTML;
+  btn.classList.remove('fb-ok','fb-no');
+  btn.disabled=true; btn.innerHTML=ICON_MIC+' …';
+  fb.className='pron-fb'; fb.textContent='Écoute en cours…';
+  const reset=()=>{ btn.disabled=false; btn.innerHTML=old; };
+  const target = normPron(expected);
+  let done=false, lastInterim='';
+  const rec = new SRC();
+  // interimResults:true — les mots très courts ("tôt", "mer"...) sont parfois
+  // coupés par la détection de silence avant qu'un résultat final n'arrive ;
+  // on garde le dernier résultat provisoire comme filet de secours.
+  rec.lang='fr-CA'; rec.interimResults=true; rec.maxAlternatives=1;
+"""
+
+NEW_PRON = """async function pronCheck(btn, expected){
+  let fb = btn.nextElementSibling && btn.nextElementSibling.classList.contains('pron-fb') ? btn.nextElementSibling : null;
+  if(!fb){ fb=document.createElement('span'); fb.className='pron-fb'; fb.setAttribute('aria-live','polite'); btn.insertAdjacentElement('afterend', fb); }
+  const old = btn.innerHTML;
+  btn.classList.remove('fb-ok','fb-no');
+  btn.disabled=true; btn.innerHTML=ICON_MIC+' …';
+  const reset=()=>{ btn.disabled=false; btn.innerHTML=old; };
+  // Un mot répété : le modèle 'command' suffit, et il se télécharge plus vite.
+  fb.className='pron-fb'; fb.textContent='Préparation…';
+  const {rec, etat} = await reconnaissanceLocale('command');
+  if(!rec){ reset(); fb.className='pron-fb warn'; fb.textContent=recoMessage(etat); return; }
+  fb.className='pron-fb'; fb.textContent='Écoute en cours…';
+  const target = normPron(expected);
+  let done=false, lastInterim='';
+  // interimResults:true — les mots très courts ("tôt", "mer"...) sont parfois
+  // coupés par la détection de silence avant qu'un résultat final n'arrive ;
+  // on garde le dernier résultat provisoire comme filet de secours.
+  rec.interimResults=true;
+"""
+
+OLD_ORAL = """  mediaRecorder.start();
+  if(SR){
+    recognition=new SR(); recognition.lang='fr-CA'; recognition.continuous=true; recognition.interimResults=false;
+    let tr='';
+    recognition.onresult=e=>{ for(let i=e.resultIndex;i<e.results.length;i++){ if(e.results[i].isFinal)tr+=e.results[i][0].transcript+' '; } const b=document.getElementById('poText'); if(b)b.value=tr.trim(); };
+    try{ recognition.start(); }catch(e){}
+  }
+  isRec=true;"""
+
+NEW_ORAL = """  // Préparé AVANT mediaRecorder.start() : lancer la reconnaissance après coup
+  // lui ferait manquer les premiers mots de l'élève.
+  const reco = await reconnaissanceLocale('dictation');
+  if(!reco.rec){
+    showErr('poErr', recoMessage(reco.etat)+" L'enregistrement fonctionne quand même : écris ton texte à la main.");
+  }
+  mediaRecorder.start();
+  if(reco.rec){
+    recognition=reco.rec; recognition.continuous=true; recognition.interimResults=false;
+    let tr='';
+    recognition.onresult=e=>{ for(let i=e.resultIndex;i<e.results.length;i++){ if(e.results[i].isFinal)tr+=e.results[i][0].transcript+' '; } const b=document.getElementById('poText'); if(b)b.value=tr.trim(); };
+    try{ recognition.start(); }catch(e){}
+  }
+  isRec=true;"""
+
+OLD_MODE = """function jrModeVoix(on){
+  if(on && !jrSRC()){
+    showErr('jrErr',"Ce navigateur ne fait pas la reconnaissance vocale. Essaie avec Chrome, Edge ou Safari.");
+    return;
+  }"""
+
+NEW_MODE = """async function jrModeVoix(on){
+  // Le refus se dit ici, au moment où l'élève choisit le mode — pas plus tard,
+  // micro en main, quand il a déjà commencé à parler.
+  if(on){
+    const etat = await recoEtat('dictation');
+    if(etat !== 'local' && etat !== 'distant'){ showErr('jrErr', recoMessage(etat)); return; }
+  }"""
+
+OLD_PARLER = """function jrParler(){
+  const SRC=jrSRC();
+  if(!SRC){ showErr('jrErr',"Ce navigateur ne fait pas la reconnaissance vocale."); return; }
+  if(JR.rec){ try{ JR.rec.stop(); }catch(e){} return; }   // deuxième touche = arrêter
+  jrTaire();                    // sinon le micro réentend la voix de l'assistant
+  hideErr('jrErr');
+  const inp=document.getElementById('jrInput');
+  const btn=document.getElementById('jrMic');
+  const lbl=document.getElementById('jrMicLbl');
+  inp.value='';
+  const rec=new SRC(); JR.rec=rec;
+  rec.lang='fr-CA'; rec.interimResults=true; rec.continuous=true; rec.maxAlternatives=1;"""
+
+NEW_PARLER = """async function jrParler(){
+  if(JR.rec){ try{ JR.rec.stop(); }catch(e){} return; }   // deuxième touche = arrêter
+  jrTaire();                    // sinon le micro réentend la voix de l'assistant
+  hideErr('jrErr');
+  const inp=document.getElementById('jrInput');
+  const btn=document.getElementById('jrMic');
+  const lbl=document.getElementById('jrMicLbl');
+  inp.value='';
+  lbl.textContent='Préparation…';
+  const {rec, etat} = await reconnaissanceLocale('dictation');
+  if(!rec){ lbl.textContent='Touche pour parler'; showErr('jrErr', recoMessage(etat)); return; }
+  // Deux touches rapides pendant la préparation : la première a déjà gagné.
+  if(JR.rec){ return; }
+  JR.rec=rec;
+  rec.interimResults=true; rec.continuous=true;"""
+
+
+def confiner_reconnaissance(html):
+    """Oblige la reconnaissance vocale à rester sur l'appareil de l'élève.
+
+    Trois exercices ouvrent le micro — vérification de prononciation,
+    production orale, jeu de rôle en mode voix — et chacun construisait son
+    propre SpeechRecognition. Ils passent maintenant tous par un portail
+    unique, reconnaissanceLocale(), qui exige processLocally avant d'écouter.
+    Les deux constantes qui donnaient un accès direct au constructeur
+    disparaissent : sinon un module futur reprendrait l'ancien geste sans que
+    personne le voie.
+
+    Posée en DERNIER dans main() : ses repères sont ceux du gabarit assemblé.
+    """
+    html = upgrade(html, OLD_PRON, HELPER_RECO + NEW_PRON,
+                   'confinement : pronCheck')
+    html = upgrade(html, OLD_ORAL, NEW_ORAL,
+                   'confinement : production orale')
+    html = upgrade(html,
+                   'const SR = window.SpeechRecognition || window.webkitSpeechRecognition;\n',
+                   '', 'confinement : constante SR devenue inutile')
+    html = upgrade(html,
+                   'const jrSRC = () => window.SpeechRecognition || window.webkitSpeechRecognition;\n',
+                   '', 'confinement : constante jrSRC devenue inutile')
+    html = upgrade(html, OLD_MODE, NEW_MODE, 'confinement : jrModeVoix')
+    html = upgrade(html, OLD_PARLER, NEW_PARLER, 'confinement : jrParler')
+
+    # Filet : plus aucun constructeur direct ne doit subsister.
+    reste = html.count('new SRC()') + html.count('new SR()')
+    if reste:
+        fatal('confinement : %d constructeur(s) de reconnaissance hors du '
+              'portail reconnaissanceLocale()' % reste)
+    return html
+
+
 def main():
     html = SRC.read_text(encoding='utf-8')
     src_len = len(html)
@@ -773,6 +986,7 @@ def main():
     html = styler_repere(html)
     html = percer_contenu(html)
     html = percer_identite(html)
+    html = confiner_reconnaissance(html)
 
     # Filet : plus rien de la consultation ne doit rester en dehors des
     # greffes (barre d'outils, dépôt, verrou), qui portent son slug et que

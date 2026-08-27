@@ -17553,6 +17553,14 @@ class Handler(http.server.SimpleHTTPRequestHandler):
         if not validate_student_code(code):
             json_response(self, {"error": "Non autorisé"}, 401)
             return
+        # La réponse écrite par l'élève part chez Anthropic pour être jugée :
+        # c'est une communication hors Québec, au même titre que les autres
+        # routes d'assistance. Le client traite tout refus comme « pas la
+        # bonne réponse » — exactement le repli déjà prévu quand le service
+        # est indisponible —, donc l'exercice continue sans rien montrer
+        # d'anormal à l'élève.
+        if self._ia_refusee(code):
+            return
 
         word_id = body.get("wordId", "")
         guess = body.get("guess", "").strip()[:100]
@@ -18805,6 +18813,12 @@ class Handler(http.server.SimpleHTTPRequestHandler):
         code = body.get("code", "").strip().upper()
         if not validate_student_code(code):
             json_response(self, {"error": "Non autorisé"}, 401)
+            return
+        # Jusqu'à 800 caractères écrits par l'élève partent chez Anthropic.
+        # C'est le texte le plus personnel que cette route ait à traiter, et
+        # elle échappait au drapeau : une direction qui avait dit non le
+        # voyait quand même sortir.
+        if self._ia_refusee(code):
             return
 
         text = body.get("text", "").strip()
