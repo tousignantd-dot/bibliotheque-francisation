@@ -190,8 +190,6 @@ body{display:flex;flex-direction:column;min-height:100vh}
 .qlbl{font-size:13px;font-weight:800;color:#1D6B8F;text-transform:uppercase;letter-spacing:.1em;margin-bottom:4px}
 .qtxt{font-size:20px;font-weight:700;color:#123B32;line-height:1.4}
 .timelbl{flex:0 0 90px;background:var(--warn-bg);border-radius:10px;padding:12px 8px;font-size:15px;font-weight:900;color:var(--warn-ink);text-align:center}
-/* L'interligne du paragraphe ne sert qu'à loger les cases : il vaut la
-   hauteur d'une case (mot + rembourrage + bordure), pas davantage. */
 .blanks-p{font-size:20px;line-height:2.1;font-weight:600;color:#123B32}
 
 .zone{display:flex;align-items:center;justify-content:center;min-height:54px;border-radius:10px;font-weight:800;font-family:'Nunito',sans-serif;cursor:pointer;transition:background .18s,border-color .18s,color .18s,transform .12s;user-select:none;text-align:center;padding:10px 14px;border:2.5px solid;line-height:1.35}
@@ -743,8 +741,6 @@ body{
      franchement au lieu de se disputer une rangée trop étroite. */
   .exo-main{min-width:0!important; flex:1 1 100%!important}
   .bsec.b1{flex:1 1 100%!important}
-  /* La bande d'outils occupe le bas de l'écran et recouvrait le banc : il
-     s'arrête à sa hauteur, publiée par outils-eleve.css (0 sans le rail). */
   .bsec.b1{
     position:sticky; top:auto; bottom:var(--oe-dock-h,0px);
     max-height:none;
@@ -769,8 +765,6 @@ body{
     -webkit-overflow-scrolling:touch;
   }
   .bsec.b1 .btiles > *{flex:0 1 auto; max-width:100%}
-  /* Des tuiles plus compactes : le banc doit montrer TOUS les choix sans
-     qu'on ait à le faire défiler — un choix caché est un choix perdu. */
   .bsec.b1 .tile{padding:7px 12px; font-size:16px; box-shadow:0 1px 4px rgba(0,0,0,.07)}
   .bsec.b1 .tn,.bsec.b1 .tv,.bsec.b1 .tf,.bsec.b1 .ta{font-size:16px}
   /* Deux vignettes par rangée, quelle que soit la largeur que le banc
@@ -1930,23 +1924,96 @@ const CARRIER_PHRASES = {
   'tout le lait':            "Ne versez pas tout le lait d'un coup.",
   'toutes les portions':     "Comptez toutes les portions avant de partir.",
 };
-function pronCheck(btn, expected){
-  const SRC = window.SpeechRecognition || window.webkitSpeechRecognition;
+// ── RECONNAISSANCE VOCALE : GARDE-FOU « SUR L'APPAREIL » ──────────────
+// webkitSpeechRecognition n'est PAS un moteur local : Chrome expédie l'audio
+// capté à ses serveurs, Safari aux siens. Pour une classe de francisation cela
+// veut dire la voix d'élèves nouvellement arrivés qui sort du Québec à chaque
+// exercice oral — sans passer par notre serveur ni par nos clés, donc sans
+// qu'aucun choix d'hébergeur n'y change quoi que ce soit.
+//
+// La Web Speech API sait maintenant travailler hors ligne : available() dit si
+// le paquet de langue est présent, install() le télécharge, et processLocally
+// interdit tout envoi réseau. TOUT passe par reconnaissanceLocale() — aucun
+// « new SpeechRecognition() » ne doit reparaître ailleurs dans ce fichier.
+//
+// Strict = pas de reconnaissance locale possible ⇒ pas de reconnaissance du
+// tout. Un centre qui préfère le service au confinement peut le lever, et la
+// voix repart alors chez l'éditeur du navigateur, en connaissance de cause.
+//
+// La décision vient du SERVEUR, pas du build : la greffe « sans IA » pose
+// window.RECO_STRICTE au chargement, d'après le centre de l'élève. Tant que
+// la réponse n'est pas là — et si elle n'arrive jamais — on reste strict.
+// C'est le contraire du choix fait pour les routes d'IA, qui ne se replient
+// pas sur une panne de réseau : celles-là sont gardées côté serveur de toute
+// façon, alors que ce flux-ci ne le traverse pas. Un silence ne doit pas
+// ouvrir le micro.
+if (window.RECO_STRICTE === undefined) window.RECO_STRICTE = true;
+const RECO_LANGS = ['fr-CA'];
+const RECO_SRC = () => window.SpeechRecognition || window.webkitSpeechRecognition;
+// Le paquet de langue ne se télécharge qu'une fois par appareil, mais il pèse
+// lourd : on ne relance pas l'installation à chaque touche de micro.
+let _recoInstall = false;
+
+// quality : 'command' pour un mot répété, 'dictation' pour une production
+// suivie. Le moteur local ne charge pas le même modèle selon le cas.
+async function recoEtat(quality){
+  const SRC = RECO_SRC();
+  if(!SRC) return 'sans-api';
+  // Navigateur d'avant l'API sur appareil : available() n'existe pas, donc
+  // rien ne garantit que l'audio reste ici. En mode strict, on renonce.
+  if(typeof SRC.available !== 'function') return window.RECO_STRICTE ? 'sans-local' : 'distant';
+  let dispo;
+  try{ dispo = await SRC.available({langs:RECO_LANGS, quality, processLocally:true}); }
+  catch(e){ return window.RECO_STRICTE ? 'sans-local' : 'distant'; }
+  if(dispo === 'available') return 'local';
+  if(dispo === 'downloadable' || dispo === 'downloading'){
+    if(!_recoInstall){
+      _recoInstall = true;
+      Promise.resolve(SRC.install({langs:RECO_LANGS, processLocally:true}))
+        .catch(()=>{}).then(()=>{ _recoInstall = false; });
+    }
+    return 'telechargement';
+  }
+  return window.RECO_STRICTE ? 'sans-local' : 'distant';
+}
+
+// Rend {rec, etat}. rec vaut null dès que l'exercice ne peut pas écouter.
+async function reconnaissanceLocale(quality){
+  const etat = await recoEtat(quality);
+  if(etat !== 'local' && etat !== 'distant') return {rec:null, etat};
+  const rec = new (RECO_SRC())();
+  rec.lang = RECO_LANGS[0]; rec.maxAlternatives = 1;
+  // processLocally n'est lu qu'au start() : le poser après ne servirait à rien.
+  if(etat === 'local'){ try{ rec.processLocally = true; }catch(e){} }
+  return {rec, etat};
+}
+
+// Un seul texte par état, pour que les trois exercices disent la même chose.
+function recoMessage(etat){
+  if(etat === 'sans-api')       return "Ce navigateur ne fait pas la reconnaissance vocale. Essaie avec Chrome, Edge ou Safari.";
+  if(etat === 'telechargement') return "Préparation de la reconnaissance vocale sur cet appareil — réessaie dans un moment.";
+  if(etat === 'sans-local')     return "La reconnaissance vocale hors ligne n'est pas disponible sur cet appareil.";
+  return "";
+}
+
+async function pronCheck(btn, expected){
   let fb = btn.nextElementSibling && btn.nextElementSibling.classList.contains('pron-fb') ? btn.nextElementSibling : null;
   if(!fb){ fb=document.createElement('span'); fb.className='pron-fb'; fb.setAttribute('aria-live','polite'); btn.insertAdjacentElement('afterend', fb); }
-  if(!SRC){ fb.className='pron-fb warn'; fb.textContent='Reconnaissance vocale non supportée (utilise Chrome).'; return; }
   const old = btn.innerHTML;
   btn.classList.remove('fb-ok','fb-no');
   btn.disabled=true; btn.innerHTML=ICON_MIC+' …';
-  fb.className='pron-fb'; fb.textContent='Écoute en cours…';
   const reset=()=>{ btn.disabled=false; btn.innerHTML=old; };
+  // Un mot répété : le modèle 'command' suffit, et il se télécharge plus vite.
+  fb.className='pron-fb'; fb.textContent='Préparation…';
+  const {rec, etat} = await reconnaissanceLocale('command');
+  if(!rec){ reset(); fb.className='pron-fb warn'; fb.textContent=recoMessage(etat); return; }
+  fb.className='pron-fb'; fb.textContent='Écoute en cours…';
   const target = normPron(expected);
   let done=false, lastInterim='';
-  const rec = new SRC();
   // interimResults:true — les mots très courts ("tôt", "mer"...) sont parfois
   // coupés par la détection de silence avant qu'un résultat final n'arrive ;
   // on garde le dernier résultat provisoire comme filet de secours.
-  rec.lang='fr-CA'; rec.interimResults=true; rec.maxAlternatives=1;
+  rec.interimResults=true;
   const evaluate=(heard)=>{
     heard=heard.trim();
     const said = normPron(heard);
@@ -3244,7 +3311,6 @@ function finishEval(){
 
 // ── ENREGISTREMENT (production orale) ─────────────────────────────────
 let mediaRecorder=null, audioChunks=[], audioBlob=null, audioUrl=null, recognition=null, isRec=false, poFeedback="";
-const SR = window.SpeechRecognition || window.webkitSpeechRecognition;
 async function toggleRec(){
   if(isRec){ stopRec(); return; }
   hideErr('poErr');
@@ -3264,9 +3330,15 @@ async function toggleRec(){
     document.getElementById('poPrev').classList.remove('hidden');
     recStep(2);
   };
+  // Préparé AVANT mediaRecorder.start() : lancer la reconnaissance après coup
+  // lui ferait manquer les premiers mots de l'élève.
+  const reco = await reconnaissanceLocale('dictation');
+  if(!reco.rec){
+    showErr('poErr', recoMessage(reco.etat)+" L'enregistrement fonctionne quand même : écris ton texte à la main.");
+  }
   mediaRecorder.start();
-  if(SR){
-    recognition=new SR(); recognition.lang='fr-CA'; recognition.continuous=true; recognition.interimResults=false;
+  if(reco.rec){
+    recognition=reco.rec; recognition.continuous=true; recognition.interimResults=false;
     let tr='';
     recognition.onresult=e=>{ for(let i=e.resultIndex;i<e.results.length;i++){ if(e.results[i].isFinal)tr+=e.results[i][0].transcript+' '; } const b=document.getElementById('poText'); if(b)b.value=tr.trim(); };
     try{ recognition.start(); }catch(e){}
@@ -3438,15 +3510,16 @@ function hideErr(id){ const e=document.getElementById(id); if(e)e.classList.remo
 // code source de la page suffirait à vider l'exercice de son sens.
 const JR = {log:'badminton', role:'visiteur', hist:[], occupe:false, voix:false, rec:null};
 
-const jrSRC = () => window.SpeechRecognition || window.webkitSpeechRecognition;
 
 // Le mode voix ne change que l'entrée et la sortie : même conversation, même
 // endpoint. Le texte reste affiché — au niveau 4, du pur audio décroche
 // l'élève dès la première réplique mal saisie.
-function jrModeVoix(on){
-  if(on && !jrSRC()){
-    showErr('jrErr',"Ce navigateur ne fait pas la reconnaissance vocale. Essaie avec Chrome, Edge ou Safari.");
-    return;
+async function jrModeVoix(on){
+  // Le refus se dit ici, au moment où l'élève choisit le mode — pas plus tard,
+  // micro en main, quand il a déjà commencé à parler.
+  if(on){
+    const etat = await recoEtat('dictation');
+    if(etat !== 'local' && etat !== 'distant'){ showErr('jrErr', recoMessage(etat)); return; }
   }
   JR.voix=on;
   document.querySelectorAll('#jrModes .jr-opt').forEach(b=>
@@ -3500,9 +3573,7 @@ async function jrDire(texte){
 // La transcription atterrit dans le champ de saisie, modifiable : la
 // reconnaissance se trompe forcément sur un accent d'apprenant, et voir ce
 // qui a été entendu vaut mieux que de laisser partir une phrase fausse.
-function jrParler(){
-  const SRC=jrSRC();
-  if(!SRC){ showErr('jrErr',"Ce navigateur ne fait pas la reconnaissance vocale."); return; }
+async function jrParler(){
   if(JR.rec){ try{ JR.rec.stop(); }catch(e){} return; }   // deuxième touche = arrêter
   jrTaire();                    // sinon le micro réentend la voix de l'assistant
   hideErr('jrErr');
@@ -3510,8 +3581,13 @@ function jrParler(){
   const btn=document.getElementById('jrMic');
   const lbl=document.getElementById('jrMicLbl');
   inp.value='';
-  const rec=new SRC(); JR.rec=rec;
-  rec.lang='fr-CA'; rec.interimResults=true; rec.continuous=true; rec.maxAlternatives=1;
+  lbl.textContent='Préparation…';
+  const {rec, etat} = await reconnaissanceLocale('dictation');
+  if(!rec){ lbl.textContent='Touche pour parler'; showErr('jrErr', recoMessage(etat)); return; }
+  // Deux touches rapides pendant la préparation : la première a déjà gagné.
+  if(JR.rec){ return; }
+  JR.rec=rec;
+  rec.interimResults=true; rec.continuous=true;
   let acquis='', provisoire='';
   btn.classList.add('rec'); btn.textContent='⏹';
   lbl.textContent='Je t\'écoute… touche pour arrêter';
@@ -5297,6 +5373,157 @@ if (reReprise) { reMarquerEcrits(); reMarquerVf(); reBanniere(reReprise); }
 measureChrome();
 lmsTrack('file_opened');
 </script>
+<!-- DIRECT-CLASSE:début — greffé par build/greffe_direct.py -->
+<script>
+(function () {
+  'use strict';
+
+  /* Ce que le module sait de l'adresse : le code de l'élève et le numéro de
+     l'activité. Sans les deux, on ne rapporte rien — un module ouvert par
+     double-clic ne doit pas essayer de parler à un serveur. */
+  function contexte() {
+    try {
+      var p = new URLSearchParams(window.parent.location.search);
+      var code = p.get('code');
+      var id = parseInt(p.get('activityId'), 10);
+      if (!code || !id) return null;
+      return { code: code, activityId: id, title: p.get('title') || '' };
+    } catch (e) { return null; }
+  }
+
+  var CTX = contexte();
+  if (!CTX) return;
+
+  function exoDe(exId) {
+    try { return EXOS.find(function (e) { return e.id === exId; }) || null; }
+    catch (e) { return null; }
+  }
+
+  /* L'étiquette visible d'une réponse du banc. `cv` d'une zone de placement est
+     un identifiant ; l'enseignante a besoin des mots. */
+  function etiquetteBanc(ex, id) {
+    if (!ex || !ex.bank) return '';
+    var b = ex.bank.find(function (t) { return t.id === id; });
+    return b ? String(b.l || '') : '';
+  }
+
+  /* L'énoncé de la zone, pris là où le module le tient déjà — jamais recopié
+     dans une table à tenir à jour. */
+  function enonceDe(ex, zid, z) {
+    if (!ex) return '';
+    try {
+      if (ex.type === 'vf' || ex.type === 'match' || ex.type === 'imgmatch'
+          || ex.type === 'rows' || ex.type === 'texte') {
+        var r = (ex.rows || []).find(function (x) { return x.id === zid; });
+        if (r) return String(r.txt || r.q || r.l || '').replace(/<[^>]+>/g, '');
+      }
+      if (ex.type === 'blanks') {
+        return (ex.segs || []).map(function (s) {
+          return s.k === 'b' ? ' ____ ' : String(s.t || '');
+        }).join('').replace(/\s+/g, ' ').trim();
+      }
+      if (ex.type === 'write') {
+        var i = parseInt(String(zid).split('_').pop(), 10);
+        var it = (ex.items || [])[i];
+        if (it) return String(it.q || '').replace(/<[^>]+>/g, '');
+      }
+    } catch (e) {}
+    return '';
+  }
+
+  /* La réponse donnée et la bonne réponse, dans les mots que l'enseignante lit.
+     Rendre une chaîne vide pour `bonne` suffit à ce que le serveur jette le
+     texte : c'est la garantie que porte une réponse ouverte. */
+  function reponseDe(ex, zid, z) {
+    var vide = { reponse: '', bonne: '' };
+    if (!ex) return vide;
+    try {
+      if (ex.type === 'write') {
+        var i = parseInt(String(zid).split('_').pop(), 10);
+        var it = (ex.items || [])[i];
+        var inp = document.getElementById('wi_' + ex.id + '_' + i);
+        // Sans `accept`, c'est l'assistant qui corrige : rien ne monte.
+        if (!it || !it.accept || !it.accept.length) return vide;
+        return { reponse: inp ? String(inp.value || '').trim() : '',
+                 bonne: String(it.accept[0] || '') };
+      }
+      // Une image ne se compte pas en mots : on garde le juste/faux et on
+      // laisse tomber la répartition, qui n'aurait rien à afficher.
+      if (ex.type === 'imgmatch') return vide;
+      if (z && (z.zcat === 'vf' || z.zcat === 'lbl')) {
+        var choix = (S.pl[zid] && S.pl[zid].lbl) || S.vfSel[zid] || '';
+        return { reponse: String(choix), bonne: String(z.cv || '') };
+      }
+      if (z) {
+        var mis = (S.pl[zid] && S.pl[zid].lbl) || etiquetteBanc(ex, S.pl[zid] && S.pl[zid].iid);
+        return { reponse: String(mis || ''), bonne: etiquetteBanc(ex, z.cv) };
+      }
+    } catch (e) {}
+    return vide;
+  }
+
+  function rapporter(zid, ok) {
+    var z = null;
+    try { z = ZONES[zid] || null; } catch (e) {}
+    var ex = exoDe(z ? z.exo : null);
+    var r = reponseDe(ex, zid, z);
+    var essais = 0;
+    try { essais = TR.attempts[zid] || 0; } catch (e) {}
+    var corps = {
+      code: CTX.code, activityId: CTX.activityId, activityTitle: CTX.title,
+      event: 'zone_repondue',
+      zone: zid,
+      exo: (ex && ex.id) || (z && z.exo) || '',
+      exoNum: (ex && ex.num) || '',
+      exoTitre: (ex && ex.tit) || '',
+      section: (ex && ex.sec) || '',
+      type: (ex && ex.type) || '',
+      enonce: enonceDe(ex, zid, z),
+      bonne: r.bonne,
+      reponse: r.reponse,
+      ok: !!ok,
+      essais: essais
+    };
+    fetch('/api/student/progress', {
+      method: 'POST', headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(corps)
+    }).catch(function () {});
+  }
+
+  /* L'enveloppe. Elle ne se pose qu'une fois, et jamais avant que le module ait
+     déclaré sa fonction — d'où l'attente du chargement complet. */
+  function envelopper() {
+    if (typeof window.trackPlacement !== 'function') return false;
+    if (window.trackPlacement.__direct) return true;
+    var origine = window.trackPlacement;
+    var enveloppe = function (zid, ok) {
+      var sortie = origine.apply(this, arguments);
+      // Le rapport ne doit jamais empêcher l'exercice de se corriger : ce que
+      // l'élève voit passe avant ce que l'enseignante voit.
+      try { rapporter(zid, ok); } catch (e) {}
+      return sortie;
+    };
+    enveloppe.__direct = true;
+    window.trackPlacement = enveloppe;
+    return true;
+  }
+
+  function departer() {
+    if (envelopper()) return;
+    // Un module dont le script n'a pas encore tourné : on repasse, sans
+    // s'acharner.
+    var restes = 20;
+    var iv = setInterval(function () {
+      if (envelopper() || --restes <= 0) clearInterval(iv);
+    }, 250);
+  }
+
+  if (document.readyState === 'loading')
+    document.addEventListener('DOMContentLoaded', departer);
+  else departer();
+})();
+</script>
+<!-- DIRECT-CLASSE:fin -->
 <!-- SANS-IA:début — greffé par build/greffe_sans_ia.py -->
 <style>
 /* Le repli ne s'applique qu'une fois la réponse du serveur arrivée : sans la
@@ -5521,6 +5748,12 @@ body.sans-ia .sans-ia-mot {
          serveur de toute façon, et replier sur un délai d'attente ferait
          clignoter le module d'une classe à l'autre. */
       if (data && data.ia === false) replier();
+      /* La voix, elle, va dans l'autre sens. Ce flux-là ne traverse pas notre
+         serveur — le navigateur parle directement à son éditeur — donc rien
+         ne le rattrape à l'arrivée. La page part confinée, et seule une
+         réponse explicite « souple » la relâche : un silence, une panne ou un
+         module ouvert hors du portail gardent la voix sur l'appareil. */
+      if (data && data.voixStricte === false) window.RECO_STRICTE = false;
     } catch (e) { /* on laisse le module tel quel */ }
   }
 
@@ -5733,155 +5966,4 @@ body.sans-ia .sans-ia-mot {
 })();
 </script>
 <!-- SECTIONS-DATEES:fin -->
-<!-- DIRECT-CLASSE:début — greffé par build/greffe_direct.py -->
-<script>
-(function () {
-  'use strict';
-
-  /* Ce que le module sait de l'adresse : le code de l'élève et le numéro de
-     l'activité. Sans les deux, on ne rapporte rien — un module ouvert par
-     double-clic ne doit pas essayer de parler à un serveur. */
-  function contexte() {
-    try {
-      var p = new URLSearchParams(window.parent.location.search);
-      var code = p.get('code');
-      var id = parseInt(p.get('activityId'), 10);
-      if (!code || !id) return null;
-      return { code: code, activityId: id, title: p.get('title') || '' };
-    } catch (e) { return null; }
-  }
-
-  var CTX = contexte();
-  if (!CTX) return;
-
-  function exoDe(exId) {
-    try { return EXOS.find(function (e) { return e.id === exId; }) || null; }
-    catch (e) { return null; }
-  }
-
-  /* L'étiquette visible d'une réponse du banc. `cv` d'une zone de placement est
-     un identifiant ; l'enseignante a besoin des mots. */
-  function etiquetteBanc(ex, id) {
-    if (!ex || !ex.bank) return '';
-    var b = ex.bank.find(function (t) { return t.id === id; });
-    return b ? String(b.l || '') : '';
-  }
-
-  /* L'énoncé de la zone, pris là où le module le tient déjà — jamais recopié
-     dans une table à tenir à jour. */
-  function enonceDe(ex, zid, z) {
-    if (!ex) return '';
-    try {
-      if (ex.type === 'vf' || ex.type === 'match' || ex.type === 'imgmatch'
-          || ex.type === 'rows' || ex.type === 'texte') {
-        var r = (ex.rows || []).find(function (x) { return x.id === zid; });
-        if (r) return String(r.txt || r.q || r.l || '').replace(/<[^>]+>/g, '');
-      }
-      if (ex.type === 'blanks') {
-        return (ex.segs || []).map(function (s) {
-          return s.k === 'b' ? ' ____ ' : String(s.t || '');
-        }).join('').replace(/\s+/g, ' ').trim();
-      }
-      if (ex.type === 'write') {
-        var i = parseInt(String(zid).split('_').pop(), 10);
-        var it = (ex.items || [])[i];
-        if (it) return String(it.q || '').replace(/<[^>]+>/g, '');
-      }
-    } catch (e) {}
-    return '';
-  }
-
-  /* La réponse donnée et la bonne réponse, dans les mots que l'enseignante lit.
-     Rendre une chaîne vide pour `bonne` suffit à ce que le serveur jette le
-     texte : c'est la garantie que porte une réponse ouverte. */
-  function reponseDe(ex, zid, z) {
-    var vide = { reponse: '', bonne: '' };
-    if (!ex) return vide;
-    try {
-      if (ex.type === 'write') {
-        var i = parseInt(String(zid).split('_').pop(), 10);
-        var it = (ex.items || [])[i];
-        var inp = document.getElementById('wi_' + ex.id + '_' + i);
-        // Sans `accept`, c'est l'assistant qui corrige : rien ne monte.
-        if (!it || !it.accept || !it.accept.length) return vide;
-        return { reponse: inp ? String(inp.value || '').trim() : '',
-                 bonne: String(it.accept[0] || '') };
-      }
-      // Une image ne se compte pas en mots : on garde le juste/faux et on
-      // laisse tomber la répartition, qui n'aurait rien à afficher.
-      if (ex.type === 'imgmatch') return vide;
-      if (z && (z.zcat === 'vf' || z.zcat === 'lbl')) {
-        var choix = (S.pl[zid] && S.pl[zid].lbl) || S.vfSel[zid] || '';
-        return { reponse: String(choix), bonne: String(z.cv || '') };
-      }
-      if (z) {
-        var mis = (S.pl[zid] && S.pl[zid].lbl) || etiquetteBanc(ex, S.pl[zid] && S.pl[zid].iid);
-        return { reponse: String(mis || ''), bonne: etiquetteBanc(ex, z.cv) };
-      }
-    } catch (e) {}
-    return vide;
-  }
-
-  function rapporter(zid, ok) {
-    var z = null;
-    try { z = ZONES[zid] || null; } catch (e) {}
-    var ex = exoDe(z ? z.exo : null);
-    var r = reponseDe(ex, zid, z);
-    var essais = 0;
-    try { essais = TR.attempts[zid] || 0; } catch (e) {}
-    var corps = {
-      code: CTX.code, activityId: CTX.activityId, activityTitle: CTX.title,
-      event: 'zone_repondue',
-      zone: zid,
-      exo: (ex && ex.id) || (z && z.exo) || '',
-      exoNum: (ex && ex.num) || '',
-      exoTitre: (ex && ex.tit) || '',
-      section: (ex && ex.sec) || '',
-      type: (ex && ex.type) || '',
-      enonce: enonceDe(ex, zid, z),
-      bonne: r.bonne,
-      reponse: r.reponse,
-      ok: !!ok,
-      essais: essais
-    };
-    fetch('/api/student/progress', {
-      method: 'POST', headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify(corps)
-    }).catch(function () {});
-  }
-
-  /* L'enveloppe. Elle ne se pose qu'une fois, et jamais avant que le module ait
-     déclaré sa fonction — d'où l'attente du chargement complet. */
-  function envelopper() {
-    if (typeof window.trackPlacement !== 'function') return false;
-    if (window.trackPlacement.__direct) return true;
-    var origine = window.trackPlacement;
-    var enveloppe = function (zid, ok) {
-      var sortie = origine.apply(this, arguments);
-      // Le rapport ne doit jamais empêcher l'exercice de se corriger : ce que
-      // l'élève voit passe avant ce que l'enseignante voit.
-      try { rapporter(zid, ok); } catch (e) {}
-      return sortie;
-    };
-    enveloppe.__direct = true;
-    window.trackPlacement = enveloppe;
-    return true;
-  }
-
-  function departer() {
-    if (envelopper()) return;
-    // Un module dont le script n'a pas encore tourné : on repasse, sans
-    // s'acharner.
-    var restes = 20;
-    var iv = setInterval(function () {
-      if (envelopper() || --restes <= 0) clearInterval(iv);
-    }, 250);
-  }
-
-  if (document.readyState === 'loading')
-    document.addEventListener('DOMContentLoaded', departer);
-  else departer();
-})();
-</script>
-<!-- DIRECT-CLASSE:fin -->
 </body></html>

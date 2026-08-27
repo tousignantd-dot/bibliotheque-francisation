@@ -60,6 +60,21 @@ def upgrade(text, old, new, label):
     fatal('%s : ni l\'ancienne ni la nouvelle forme dans le gabarit' % label)
 
 
+def retirer(text, ligne, label):
+    """Supprime une ligne devenue inutile, en tolérant qu'elle soit déjà partie.
+
+    `upgrade()` ne sait pas faire ça : elle teste `new in text` d'abord, et la
+    chaîne vide est dans tout texte. Une suppression écrite avec elle ne
+    s'exécute jamais.
+    """
+    n = text.count(ligne)
+    if n == 0:
+        return text
+    if n > 1:
+        fatal('%s : la ligne apparaît %d fois' % (label, n))
+    return text.replace(ligne, '', 1)
+
+
 def slice_between(text, start_marker, end_marker, label):
     a = text.find(start_marker)
     if a < 0:
@@ -959,12 +974,16 @@ def confiner_reconnaissance(html):
                    'confinement : pronCheck')
     html = upgrade(html, OLD_ORAL, NEW_ORAL,
                    'confinement : production orale')
-    html = upgrade(html,
+    # PAS `upgrade()` ici : sa première ligne est `if new in text: return text`,
+    # et la chaîne vide est contenue dans n'importe quel texte. Les deux appels
+    # rendaient donc le HTML inchangé, en silence, et les déclarations
+    # restaient en code mort — exactement le geste qu'on prétendait fermer.
+    html = retirer(html,
                    'const SR = window.SpeechRecognition || window.webkitSpeechRecognition;\n',
-                   '', 'confinement : constante SR devenue inutile')
-    html = upgrade(html,
+                   'confinement : constante SR devenue inutile')
+    html = retirer(html,
                    'const jrSRC = () => window.SpeechRecognition || window.webkitSpeechRecognition;\n',
-                   '', 'confinement : constante jrSRC devenue inutile')
+                   'confinement : constante jrSRC devenue inutile')
     html = upgrade(html, OLD_MODE, NEW_MODE, 'confinement : jrModeVoix')
     html = upgrade(html, OLD_PARLER, NEW_PARLER, 'confinement : jrParler')
 

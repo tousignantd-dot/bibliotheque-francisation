@@ -2506,7 +2506,6 @@ function finishEval(){
 
 // ── ENREGISTREMENT (production orale) ─────────────────────────────────
 let mediaRecorder=null, audioChunks=[], audioBlob=null, audioUrl=null, recognition=null, isRec=false, poFeedback="";
-const SR = window.SpeechRecognition || window.webkitSpeechRecognition;
 async function toggleRec(){
   if(isRec){ stopRec(); return; }
   hideErr('poErr');
@@ -2706,7 +2705,6 @@ function hideErr(id){ const e=document.getElementById(id); if(e)e.classList.remo
 // code source de la page suffirait à vider l'exercice de son sens.
 const JR = {log:'%%JR_CAS%%', role:'%%JR_ROLE%%', hist:[], occupe:false, voix:false, rec:null};
 
-const jrSRC = () => window.SpeechRecognition || window.webkitSpeechRecognition;
 
 // Le mode voix ne change que l'entrée et la sortie : même conversation, même
 // endpoint. Le texte reste affiché — au niveau 4, du pur audio décroche
