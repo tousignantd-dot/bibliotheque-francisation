@@ -1,0 +1,708 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<link rel="icon" type="image/svg+xml" href="../design-system/marque-francis-favicon.svg">
+<title>Le direct de la classe</title>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Nunito:ital,wght@0,400;0,600;0,700;0,800;0,900&display=swap">
+<style>
+/* ──────────────────────────────────────────────────────────────────────
+   Le direct de la classe — proposition pour progression.html
+   Jetons recopiés de assets/design-system/tokens/ : la page doit tenir
+   hors du dépôt (artefact) comme dedans, donc rien n'est lié.
+   ────────────────────────────────────────────────────────────────────── */
+:root{
+  --paper-50:#FBFBFA; --paper-100:#F7F7F5; --paper-200:#F0F0EE; --white:#fff;
+  --line-100:#EAEAE8; --line-300:#D6D6D2;
+  --ink-900:#17181A; --ink-700:#3A3D40; --ink-500:#4B4F52; --ink-400:#6E7175;
+  --green-800:#07734A; --green-600:#0A8F5B; --green-100:#E6F5EE;
+  --ok-bg:#E6F5EE; --ok-line:#0A8F5B; --ok-ink:#07734A;
+  --no-bg:#FFF6F5; --no-line:#DC2626; --no-ink:#B91C1C;
+  --warn-bg:#FEF6E7; --warn-line:#D9880B; --warn-ink:#8A5206;
+  --or-line:#8C6A07; --or-bg:#F7F0DA;
+  --acier-600:#1D6B8F; --acier-100:#E7F0F6;
+  --marque-600:#6B4FBB; --marque-100:#EFEAFB;
+  --audio:#DC2626;
+
+  --surface-page:var(--paper-100); --surface-card:var(--white);
+  --surface-sunken:var(--paper-50); --surface-inverse:var(--ink-900);
+  --text-strong:var(--ink-900); --text-body:var(--ink-700);
+  --text-muted:var(--ink-400); --text-accent:var(--green-800);
+  --border:var(--line-100); --accent:var(--green-600);
+  --accent-soft:var(--green-100); --accent-ink:var(--green-800);
+
+  --sp-1:4px; --sp-2:8px; --sp-3:12px; --sp-4:16px; --sp-5:20px;
+  --sp-6:24px; --sp-8:32px; --sp-12:48px;
+  --r-sm:10px; --r-lg:18px; --r-pill:999px;
+  --sh-card:0 1px 2px rgba(20,20,20,.04);
+  --sh-raise:0 4px 20px rgba(20,20,20,.06);
+  --font-sans:"Nunito",system-ui,-apple-system,"Segoe UI",sans-serif;
+}
+:root:not([data-theme="light"]){ color-scheme:light }
+@media (prefers-color-scheme:dark){
+  /* Les écrans du portail sont en thème clair unique ; on garde la maquette
+     fidèle à ce qu'elle montre, mais on peint tout explicitement pour ne pas
+     emprunter le fond de l'hôte. */
+  :root:not([data-theme="light"]){ color-scheme:light }
+}
+*{box-sizing:border-box}
+body{margin:0;background:var(--surface-page);color:var(--text-body);
+     font-family:var(--font-sans);font-size:17px;line-height:1.5;
+     -webkit-font-smoothing:antialiased}
+.wrap{max-width:1180px;margin:0 auto;padding:0 var(--sp-8)}
+@media(max-width:640px){ .wrap{padding:0 var(--sp-4)} }
+
+/* ── En-tête du document ─────────────────────────────────────────────── */
+.doc-tete{background:var(--white);border-bottom:2px solid var(--marque-600)}
+.doc-tete .wrap{display:flex;align-items:baseline;gap:var(--sp-3);
+                padding-top:var(--sp-4);padding-bottom:var(--sp-4)}
+.mq{display:flex;align-items:baseline;gap:var(--sp-3)}
+.mq b{font-size:20px;font-weight:900;letter-spacing:-.035em;color:var(--ink-900)}
+.mq .pt{display:inline-block;width:6px;height:6px;border-radius:50%;
+        background:var(--marque-600);vertical-align:baseline;margin-left:-11px;
+        position:relative;top:-13px}
+.mq i{width:1px;height:16px;background:var(--paper-200);display:block}
+.mq span{font-size:13px;font-weight:700;color:var(--ink-400)}
+.doc-date{margin-left:auto;font-size:13px;font-weight:800;letter-spacing:.1em;
+          text-transform:uppercase;color:var(--text-muted)}
+
+.hero{background:var(--acier-100);border-bottom:1px solid #D8E4EC;padding:var(--sp-12) 0}
+.eyebrow{font-size:13px;font-weight:800;letter-spacing:.12em;text-transform:uppercase;
+         color:var(--acier-600);margin:0 0 var(--sp-3)}
+h1{font-size:clamp(34px,5vw,54px);line-height:1.02;letter-spacing:-.02em;
+   font-weight:900;color:var(--text-strong);margin:0 0 var(--sp-4);text-wrap:balance}
+.lead{font-size:19px;color:var(--ink-500);margin:0;max-width:62ch}
+.lead b{color:var(--text-strong);font-weight:800}
+
+section.bloc{padding:var(--sp-12) 0 0}
+h2{font-size:24px;font-weight:900;color:var(--text-strong);margin:0 0 var(--sp-2);
+   letter-spacing:-.015em;text-wrap:balance}
+.chapeau{font-size:17px;color:var(--text-muted);margin:0 0 var(--sp-5);max-width:70ch}
+h3{font-size:19px;font-weight:900;color:var(--text-strong);margin:var(--sp-6) 0 var(--sp-2)}
+p{margin:0 0 var(--sp-4);max-width:70ch}
+
+/* ── Le cadre « écran » qui contient la maquette ─────────────────────── */
+.ecran{border:1px solid var(--line-300);border-radius:var(--r-lg);
+       background:var(--surface-page);box-shadow:var(--sh-raise);overflow:hidden}
+.ecran-chrome{display:flex;align-items:center;gap:var(--sp-2);
+              padding:10px var(--sp-4);background:var(--white);
+              border-bottom:1px solid var(--border)}
+.ecran-chrome .pastilles{display:flex;gap:6px}
+.ecran-chrome .pastilles i{width:10px;height:10px;border-radius:50%;
+                           background:var(--paper-200);display:block}
+.ecran-chrome code{font-family:ui-monospace,SFMono-Regular,Menlo,monospace;
+                   font-size:12px;color:var(--text-muted);background:var(--paper-100);
+                   border-radius:6px;padding:2px 8px}
+.ecran-corps{padding:var(--sp-5)}
+@media(max-width:640px){ .ecran-corps{padding:var(--sp-3)} }
+
+/* ── Barre de direct ─────────────────────────────────────────────────── */
+.dir{background:var(--surface-inverse);color:#fff;border-radius:var(--r-sm);
+     padding:var(--sp-4);display:flex;align-items:center;gap:var(--sp-4);
+     flex-wrap:wrap}
+.dir-pastille{display:inline-flex;align-items:center;gap:var(--sp-2);
+              font-size:12px;font-weight:900;letter-spacing:.12em;
+              text-transform:uppercase;background:rgba(255,255,255,.1);
+              border:1px solid rgba(255,255,255,.22);border-radius:var(--r-pill);
+              padding:6px 12px}
+.dir-pastille .pt{width:9px;height:9px;border-radius:50%;background:#FF5A4D;
+                  box-shadow:0 0 0 0 rgba(255,90,77,.7);animation:pulse 1.8s infinite}
+@keyframes pulse{70%{box-shadow:0 0 0 9px rgba(255,90,77,0)}100%{box-shadow:0 0 0 0 rgba(255,90,77,0)}}
+@media(prefers-reduced-motion:reduce){ .dir-pastille .pt{animation:none} }
+.dir-quoi b{display:block;font-size:17px;font-weight:900;color:#fff}
+.dir-quoi span{font-size:13px;color:#B4B4B4;font-weight:700}
+.dir-outils{margin-left:auto;display:flex;align-items:center;gap:var(--sp-3);flex-wrap:wrap}
+
+/* interrupteur noms / anonyme */
+.bascule{display:inline-flex;align-items:center;gap:10px;min-height:44px;
+         background:none;border:0;color:#fff;font:inherit;font-weight:800;
+         font-size:14px;cursor:pointer;padding:0}
+.bascule .piste{width:52px;height:28px;border-radius:var(--r-pill);
+                background:rgba(255,255,255,.22);position:relative;
+                transition:background 140ms cubic-bezier(.2,.7,.3,1);flex:0 0 auto}
+.bascule .piste::after{content:"";position:absolute;top:3px;left:3px;width:22px;height:22px;
+                       border-radius:50%;background:#fff;
+                       transition:transform 140ms cubic-bezier(.2,.7,.3,1)}
+.bascule[aria-pressed="true"] .piste{background:var(--accent)}
+.bascule[aria-pressed="true"] .piste::after{transform:translateX(24px)}
+.bascule:focus-visible{outline:3px solid #7DE0AE;outline-offset:3px;border-radius:var(--r-pill)}
+.bascule .etat{min-width:9ch;text-align:left}
+
+.btn{display:inline-flex;align-items:center;justify-content:center;gap:8px;
+     min-height:44px;padding:0 var(--sp-4);border-radius:var(--r-pill);
+     font:inherit;font-weight:800;font-size:14px;cursor:pointer;
+     border:1px solid transparent;text-decoration:none}
+.btn:focus-visible{outline:3px solid var(--accent);outline-offset:2px}
+.btn--clair{background:#fff;color:var(--ink-900);border-color:#fff}
+.btn--fant{background:transparent;color:#fff;border-color:rgba(255,255,255,.35)}
+.btn--pri{background:var(--accent);color:#fff}
+.btn--ghost{background:var(--white);color:var(--text-body);border-color:var(--border)}
+.btn--sm{min-height:36px;font-size:13px;padding:0 var(--sp-3)}
+
+/* ── Grille de classe ───────────────────────────────────────────────── */
+.sec-tete{display:flex;align-items:baseline;gap:var(--sp-3);flex-wrap:wrap;
+          margin:var(--sp-8) 0 var(--sp-4)}
+.sec-tete h4{font-size:13px;font-weight:900;letter-spacing:.12em;text-transform:uppercase;
+             color:var(--text-accent);margin:0}
+.sec-tete p{font-size:15px;color:var(--text-muted);margin:0}
+.classe{display:grid;grid-template-columns:repeat(auto-fill,minmax(126px,1fr));gap:var(--sp-3)}
+.el{background:var(--white);border:1px solid var(--border);border-radius:var(--r-sm);
+    border-left:4px solid var(--line-300);padding:10px var(--sp-3);box-shadow:var(--sh-card)}
+.el--ok{border-left-color:var(--ok-line)}
+.el--warn{border-left-color:var(--warn-line)}
+.el--no{border-left-color:var(--no-line)}
+.el--rien{border-left-color:var(--line-300);background:var(--surface-sunken)}
+.el b{display:block;font-size:14px;font-weight:800;color:var(--text-strong);
+      white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.el .chiffre{font-size:22px;font-weight:900;color:var(--text-strong);line-height:1.1;
+             font-variant-numeric:tabular-nums;margin-top:2px}
+.el .chiffre small{font-size:13px;font-weight:800;color:var(--text-muted)}
+.el .mot{font-size:12px;font-weight:800;color:var(--text-muted)}
+.el .mot--no{color:var(--no-ink)} .el .mot--warn{color:var(--warn-ink)}
+.el .mot--ok{color:var(--ok-ink)}
+
+/* ── Mur des questions ──────────────────────────────────────────────── */
+.mur{display:grid;grid-template-columns:repeat(auto-fit,minmax(330px,1fr));gap:var(--sp-4)}
+.q{background:var(--white);border:1px solid var(--border);border-radius:var(--r-lg);
+   padding:var(--sp-5);box-shadow:var(--sh-card);display:flex;flex-direction:column;gap:var(--sp-3)}
+.q--alerte{border-color:var(--warn-line);box-shadow:0 0 0 3px var(--warn-bg)}
+.q-tete{display:flex;align-items:flex-start;gap:var(--sp-3)}
+.q-type{font-size:11px;font-weight:900;letter-spacing:.1em;text-transform:uppercase;
+        border-radius:var(--r-pill);padding:4px 10px;white-space:nowrap}
+.q-type--vf{background:var(--acier-100);color:var(--acier-600)}
+.q-type--gd{background:var(--or-bg);color:var(--or-line)}
+.q-type--ec{background:var(--marque-100);color:#4B3A86}
+.q-enonce{font-size:17px;font-weight:800;color:var(--text-strong);margin:0}
+.q-num{font-size:12px;font-weight:800;letter-spacing:.08em;text-transform:uppercase;
+       color:var(--text-muted);margin:0 0 2px}
+.q-score{display:flex;align-items:baseline;gap:var(--sp-3);margin-left:auto}
+.q-pct{font-size:38px;font-weight:900;line-height:.9;color:var(--text-strong);
+       font-variant-numeric:tabular-nums}
+.q-pct--no{color:var(--no-ink)} .q-pct--warn{color:var(--warn-ink)} .q-pct--ok{color:var(--ok-ink)}
+
+/* barre segmentée : couleur ET mot, jamais la couleur seule */
+.seg{display:flex;height:14px;border-radius:var(--r-pill);overflow:hidden;
+     background:var(--paper-200)}
+.seg i{display:block;height:100%}
+.seg .s1{background:var(--ok-line)}
+.seg .s2{background:#7DC9A5}
+.seg .s3{background:var(--no-line)}
+.seg .s4{background:var(--paper-200);box-shadow:inset 0 0 0 1px var(--line-300)}
+.leg{display:flex;flex-wrap:wrap;gap:var(--sp-3);font-size:13px;font-weight:700;
+     color:var(--text-muted);margin:0}
+.leg span{display:inline-flex;align-items:center;gap:6px;white-space:nowrap}
+.leg i{width:10px;height:10px;border-radius:3px;display:block}
+.leg b{color:var(--text-strong);font-variant-numeric:tabular-nums}
+
+.rep{list-style:none;margin:0;padding:0;display:flex;flex-direction:column;gap:6px}
+.rep li{display:flex;align-items:center;gap:var(--sp-3);font-size:15px;
+        background:var(--surface-sunken);border:1px solid var(--border);
+        border-radius:var(--r-sm);padding:8px 10px}
+.rep .txt{font-weight:700;color:var(--text-body)}
+.rep .n{margin-left:auto;font-weight:900;color:var(--text-strong);
+        font-variant-numeric:tabular-nums;white-space:nowrap}
+.rep li.bonne{background:var(--ok-bg);border-color:#BFE6D2}
+.rep li.bonne .txt{color:var(--ok-ink);font-weight:800}
+.rep li.faute .txt{color:var(--no-ink)}
+.rep .glyphe{font-weight:900;width:1.2em;text-align:center}
+.note{font-size:14px;color:var(--text-muted);margin:0}
+.alerte{display:flex;align-items:center;gap:var(--sp-2);background:var(--warn-bg);
+        border-left:4px solid var(--warn-line);border-radius:8px;padding:10px var(--sp-3);
+        font-size:14px;font-weight:800;color:var(--warn-ink)}
+
+/* ── Mur des textes ─────────────────────────────────────────────────── */
+.textes{columns:3 300px;column-gap:var(--sp-4)}
+.tx{break-inside:avoid;background:var(--white);border:1px solid var(--border);
+    border-radius:var(--r-lg);padding:var(--sp-4);box-shadow:var(--sh-card);
+    margin:0 0 var(--sp-4)}
+.tx-tete{display:flex;align-items:center;gap:var(--sp-2);margin-bottom:var(--sp-3)}
+.tx-qui{font-size:15px;font-weight:900;color:var(--text-strong)}
+.tx-chip{font-size:11px;font-weight:900;letter-spacing:.08em;text-transform:uppercase;
+         border-radius:var(--r-pill);padding:3px 9px;background:var(--paper-200);
+         color:var(--ink-500);margin-left:auto;white-space:nowrap}
+.tx-chip--1{background:var(--ok-bg);color:var(--ok-ink)}
+.tx-chip--2{background:var(--warn-bg);color:var(--warn-ink)}
+.tx p{font-size:16px;color:var(--text-body);margin:0 0 var(--sp-3);max-width:none}
+.tx-pied{display:flex;gap:var(--sp-2);flex-wrap:wrap}
+
+/* ── La suite de la page, en sourdine ───────────────────────────────── */
+.suite{margin-top:var(--sp-8);padding-top:var(--sp-5);border-top:1px dashed var(--line-300);
+       opacity:.5}
+.suite h4{font-size:20px;font-weight:900;color:var(--text-strong);margin:0 0 var(--sp-3)}
+table.faux{width:100%;border-collapse:collapse;background:var(--white);
+           border:1px solid var(--border);border-radius:var(--r-sm)}
+table.faux th{text-align:left;font-size:11.5px;font-weight:800;letter-spacing:.05em;
+              text-transform:uppercase;color:var(--text-muted);padding:10px var(--sp-3);
+              background:var(--surface-sunken);border-bottom:1px solid var(--border)}
+table.faux td{padding:10px var(--sp-3);border-bottom:1px solid var(--paper-200);font-size:14px}
+.suite-mot{font-size:14px;font-weight:800;color:var(--text-muted);
+           text-align:center;margin:var(--sp-3) 0 0}
+
+/* ── Tableaux du texte ──────────────────────────────────────────────── */
+.tbl-scroll{overflow-x:auto}
+table.spec{width:100%;min-width:620px;border-collapse:collapse;background:var(--white);
+           border:1px solid var(--border);border-radius:var(--r-sm)}
+table.spec th{text-align:left;font-size:12px;font-weight:900;letter-spacing:.06em;
+              text-transform:uppercase;color:var(--text-muted);padding:10px var(--sp-3);
+              background:var(--surface-sunken);border-bottom:1px solid var(--border)}
+table.spec td{padding:12px var(--sp-3);border-bottom:1px solid var(--paper-200);
+              font-size:15px;vertical-align:top}
+table.spec tr:last-child td{border-bottom:none}
+table.spec code{font-family:ui-monospace,SFMono-Regular,Menlo,monospace;font-size:13px;
+                background:var(--paper-100);border-radius:5px;padding:1px 6px;
+                color:var(--ink-900);white-space:nowrap}
+.cartes{display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:var(--sp-4)}
+.carte{background:var(--white);border:1px solid var(--border);border-radius:var(--r-lg);
+       padding:var(--sp-5);box-shadow:var(--sh-card)}
+.carte h3{margin:0 0 var(--sp-2);font-size:17px}
+.carte p{font-size:15px;color:var(--text-body);margin:0}
+.carte .cle{font-size:12px;font-weight:900;letter-spacing:.1em;text-transform:uppercase;
+            color:var(--text-accent);margin:0 0 var(--sp-2)}
+.garde{background:var(--surface-inverse);color:#E8E8E8;border-radius:var(--r-lg);
+       padding:var(--sp-6);margin-top:var(--sp-5)}
+.garde h3{color:#fff;margin-top:0}
+.garde ul{margin:0;padding-left:1.2em}
+.garde li{margin-bottom:var(--sp-2);max-width:70ch}
+.garde b{color:#fff}
+.pied{padding:var(--sp-12) 0;color:var(--text-muted);font-size:14px}
+</style>
+</head>
+<body>
+<header class="doc-tete">
+  <div class="wrap">
+    <div class="mq" role="img" aria-label="francis">
+      <b>francıs<span class="pt" aria-hidden="true"></span></b>
+      <i aria-hidden="true"></i>
+      <span>Aide à l’apprentissage du français</span>
+    </div>
+    <div class="doc-date">Livré · 27 août 2026</div>
+  </div>
+</header>
+
+<section class="hero">
+  <div class="wrap">
+    <p class="eyebrow">progression.html · en service depuis le 27 août 2026</p>
+    <h1>Le direct de la classe</h1>
+    <p class="lead">L’enseignante ouvre un module, la classe répond sur ses téléphones,
+      et elle voit <b>le pourcentage de réussite question par question pendant qu’il
+      bouge</b>. Les textes longs s’affichent en mur, <b>anonymes ou nommés d’un
+      interrupteur</b>. Les dossiers individuels restent en dessous, inchangés.</p>
+  </div>
+</section>
+
+<section class="bloc">
+  <div class="wrap">
+    <h2>La maquette</h2>
+    <p class="chapeau">Le bloc se pose au-dessus de « Le bilan », dans la page qui existe
+      déjà. L’interrupteur des noms et la simulation du direct fonctionnent ici : les
+      chiffres bougent comme ils bougeraient en classe.</p>
+
+    <div class="ecran">
+      <div class="ecran-chrome">
+        <div class="pastilles" aria-hidden="true"><i></i><i></i><i></i></div>
+        <code>progression.html?module=35&amp;direct=1</code>
+      </div>
+      <div class="ecran-corps">
+
+        <!-- Barre de direct -->
+        <div class="dir">
+          <span class="dir-pastille"><span class="pt" aria-hidden="true"></span>En direct</span>
+          <div class="dir-quoi">
+            <b>Module 4 · Défi 2 — Expliquer un retard</b>
+            <span id="dirEtat">13 élèves sur 15 en ligne · mis à jour il y a 3 s</span>
+          </div>
+          <div class="dir-outils">
+            <button type="button" class="bascule" id="bNoms" aria-pressed="false">
+              <span class="piste" aria-hidden="true"></span>
+              <span class="etat" id="bNomsEtat">Anonyme</span>
+            </button>
+            <button type="button" class="btn btn--fant" id="bPause">Mettre en pause</button>
+            <button type="button" class="btn btn--clair">Projeter</button>
+          </div>
+        </div>
+
+        <!-- Grille de classe -->
+        <div class="sec-tete">
+          <h4>La classe d’un coup d’œil</h4>
+          <p>Réponses justes du premier coup, sur les questions déjà tentées. Une case pâle
+            veut dire « n’a rien envoyé encore ».</p>
+        </div>
+        <div class="classe" id="classe"></div>
+
+        <!-- Mur des questions -->
+        <div class="sec-tete">
+          <h4>Question par question</h4>
+          <p>Quatre questions ouvertes dans ce défi. La carte qui passe sous 50 % se marque
+            elle-même « à reprendre ».</p>
+        </div>
+        <div class="mur">
+
+          <!-- Q1 · vrai ou faux -->
+          <article class="q">
+            <div class="q-tete">
+              <span class="q-type q-type--vf">Vrai ou faux</span>
+              <div>
+                <p class="q-num">Question 1</p>
+                <p class="q-enonce">Josée doit appeler son employeur avant le début du quart.</p>
+              </div>
+              <div class="q-score"><span class="q-pct q-pct--ok" data-pct="92">92<small>%</small></span></div>
+            </div>
+            <div class="seg" role="img" aria-label="9 justes du premier coup, 2 après un essai, 1 encore faux, 1 sans réponse">
+              <i class="s1" style="width:69%"></i><i class="s2" style="width:15%"></i>
+              <i class="s3" style="width:8%"></i><i class="s4" style="width:8%"></i>
+            </div>
+            <p class="leg">
+              <span><i class="s1" style="background:var(--ok-line)"></i>1<sup>er</sup> coup <b>9</b></span>
+              <span><i style="background:#7DC9A5"></i>après un essai <b>2</b></span>
+              <span><i style="background:var(--no-line)"></i>encore faux <b>1</b></span>
+              <span><i style="background:var(--paper-200);box-shadow:inset 0 0 0 1px var(--line-300)"></i>sans réponse <b>1</b></span>
+            </p>
+            <ul class="rep">
+              <li class="bonne"><span class="glyphe">✓</span><span class="txt">Vrai</span><span class="n">11 réponses</span></li>
+              <li class="faute"><span class="glyphe">✕</span><span class="txt">Faux</span><span class="n">1 réponse</span></li>
+            </ul>
+          </article>
+
+          <!-- Q2 · glisser-déposer -->
+          <article class="q">
+            <div class="q-tete">
+              <span class="q-type q-type--gd">Glisser-déposer</span>
+              <div>
+                <p class="q-num">Question 2</p>
+                <p class="q-enonce">Associez chaque situation au document à fournir.</p>
+              </div>
+              <div class="q-score"><span class="q-pct q-pct--warn" data-pct="61">61<small>%</small></span></div>
+            </div>
+            <div class="seg" role="img" aria-label="6 justes du premier coup, 3 après un essai, 2 encore faux, 2 sans réponse">
+              <i class="s1" style="width:46%"></i><i class="s2" style="width:23%"></i>
+              <i class="s3" style="width:16%"></i><i class="s4" style="width:15%"></i>
+            </div>
+            <p class="leg">
+              <span><i style="background:var(--ok-line)"></i>1<sup>er</sup> coup <b>6</b></span>
+              <span><i style="background:#7DC9A5"></i>après un essai <b>3</b></span>
+              <span><i style="background:var(--no-line)"></i>encore faux <b>2</b></span>
+              <span><i style="background:var(--paper-200);box-shadow:inset 0 0 0 1px var(--line-300)"></i>sans réponse <b>2</b></span>
+            </p>
+            <p class="note"><b>Les deux confusions du moment</b></p>
+            <ul class="rep">
+              <li class="faute"><span class="glyphe">✕</span><span class="txt">« billet du médecin » posé sur <i>arriver en retard</i></span><span class="n">4 fois</span></li>
+              <li class="faute"><span class="glyphe">✕</span><span class="txt">« note de service » posée sur <i>s’absenter</i></span><span class="n">3 fois</span></li>
+            </ul>
+          </article>
+
+          <!-- Q3 · réponse écrite courte -->
+          <article class="q q--alerte">
+            <div class="q-tete">
+              <span class="q-type q-type--ec">Réponse à écrire</span>
+              <div>
+                <p class="q-num">Question 3</p>
+                <p class="q-enonce">Complétez : « Bonjour, c’est Josée. ______ de dix minutes. »</p>
+              </div>
+              <div class="q-score"><span class="q-pct q-pct--no" data-pct="47">47<small>%</small></span></div>
+            </div>
+            <div class="seg" role="img" aria-label="5 justes du premier coup, 1 après un essai, 5 encore faux, 2 sans réponse">
+              <i class="s1" style="width:39%"></i><i class="s2" style="width:8%"></i>
+              <i class="s3" style="width:38%"></i><i class="s4" style="width:15%"></i>
+            </div>
+            <p class="leg">
+              <span><i style="background:var(--ok-line)"></i>1<sup>er</sup> coup <b>5</b></span>
+              <span><i style="background:#7DC9A5"></i>après un essai <b>1</b></span>
+              <span><i style="background:var(--no-line)"></i>encore faux <b>5</b></span>
+              <span><i style="background:var(--paper-200);box-shadow:inset 0 0 0 1px var(--line-300)"></i>sans réponse <b>2</b></span>
+            </p>
+            <ul class="rep">
+              <li class="bonne"><span class="glyphe">✓</span><span class="txt">Je vais avoir un retard</span><span class="n">6</span></li>
+              <li class="faute"><span class="glyphe">✕</span><span class="txt">Je suis retard</span><span class="n">3</span></li>
+              <li class="faute"><span class="glyphe">✕</span><span class="txt">J’ai retard</span><span class="n">2</span></li>
+              <li class="faute"><span class="glyphe">✕</span><span class="txt">Je suis en retarde</span><span class="n">1</span></li>
+            </ul>
+            <p class="alerte"><span aria-hidden="true">▲</span> Moins d’une réponse juste sur deux —
+              cinq élèves oublient le verbe. À reprendre au tableau.</p>
+          </article>
+
+          <!-- Q4 -->
+          <article class="q">
+            <div class="q-tete">
+              <span class="q-type q-type--vf">Vrai ou faux</span>
+              <div>
+                <p class="q-num">Question 4</p>
+                <p class="q-enonce">Un message vocal remplace un billet du médecin.</p>
+              </div>
+              <div class="q-score"><span class="q-pct q-pct--ok" data-pct="100">100<small>%</small></span></div>
+            </div>
+            <div class="seg" role="img" aria-label="11 justes du premier coup, 1 après un essai, aucune erreur restante, 3 sans réponse">
+              <i class="s1" style="width:73%"></i><i class="s2" style="width:7%"></i>
+              <i class="s3" style="width:0"></i><i class="s4" style="width:20%"></i>
+            </div>
+            <p class="leg">
+              <span><i style="background:var(--ok-line)"></i>1<sup>er</sup> coup <b>11</b></span>
+              <span><i style="background:#7DC9A5"></i>après un essai <b>1</b></span>
+              <span><i style="background:var(--paper-200);box-shadow:inset 0 0 0 1px var(--line-300)"></i>sans réponse <b>3</b></span>
+            </p>
+            <p class="note">Question acquise. Rien à reprendre ici.</p>
+          </article>
+        </div>
+
+        <!-- Mur des textes -->
+        <div class="sec-tete">
+          <h4>Les textes envoyés</h4>
+          <p>« Je me lance » — le courriel à l’employeur. Sept envois sur quinze.
+            L’interrupteur de la barre décide si les noms paraissent.</p>
+        </div>
+        <div class="textes" id="textes"></div>
+
+        <!-- La page actuelle, en sourdine -->
+        <div class="suite" aria-hidden="true">
+          <h4>Où en est chaque élève</h4>
+          <table class="faux">
+            <thead><tr><th>Élève</th><th>Avancement</th><th>État</th><th>Réussi du 1<sup>er</sup> coup</th><th>Textes</th><th></th></tr></thead>
+            <tbody>
+              <tr><td><b>colibri07</b></td><td>18 exercices sur 24</td><td>75 %</td><td>82 %</td><td>1</td><td>Dossier ›</td></tr>
+              <tr><td><b>Amine</b></td><td>24 exercices sur 24</td><td>✓ Terminé</td><td>91 %</td><td>1</td><td>Dossier ›</td></tr>
+              <tr><td><b>tulipe22</b></td><td>9 exercices sur 24</td><td>38 %</td><td>54 %</td><td>—</td><td>Dossier ›</td></tr>
+            </tbody>
+          </table>
+          <p class="suite-mot">↑ la page telle qu’elle est aujourd’hui — rien n’en est retiré</p>
+        </div>
+
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="bloc">
+  <div class="wrap">
+    <h2>Les quatre partis pris</h2>
+    <p class="chapeau">Ce qui décide de la forme, avant toute question de code.</p>
+    <div class="cartes">
+      <article class="carte">
+        <p class="cle">01 · une page, pas deux</p>
+        <h3>Le direct entre dans la page qui existe</h3>
+        <p>Un troisième tableau de bord serait un troisième endroit à tenir à jour.
+          Le bloc se pose en tête de <code>progression.html</code>, au-dessus du bilan,
+          et disparaît quand aucun élève ne répond depuis dix minutes.</p>
+      </article>
+      <article class="carte">
+        <p class="cle">02 · lisible de loin</p>
+        <h3>Un chiffre par question, pas une grille</h3>
+        <p>Une matrice élèves × questions est illisible sur un projecteur. La question
+          porte son pourcentage en grand ; la ventilation par élève est déjà dans le
+          tableau du bas, et dans le dossier de chacun.</p>
+      </article>
+      <article class="carte">
+        <p class="cle">03 · la couleur ne dit jamais seule</p>
+        <h3>Chaque état porte un mot et un glyphe</h3>
+        <p>La barre segmentée est doublée d’une légende chiffrée, la bonne réponse
+          porte un ✓, les fautes un ✕. Règle du système de design, et la seule qui
+          tienne devant un projecteur qui délave les teintes.</p>
+      </article>
+      <article class="carte">
+        <p class="cle">04 · l’anonymat est un geste</p>
+        <h3>L’interrupteur ne cache rien à l’enseignante</h3>
+        <p>Elle a déjà accès aux dossiers nommés. L’interrupteur sert à <b>projeter</b>
+          un texte sans exposer son auteur devant la classe : c’est un réglage
+          d’affichage, pas une permission.</p>
+      </article>
+    </div>
+  </div>
+</section>
+
+<section class="bloc">
+  <div class="wrap">
+    <h2>Ce qui a été branché</h2>
+    <p class="chapeau"><code>/api/student/progress</code> n’envoyait que des compteurs —
+      <code>zonesDone</code>, <code>firstTry</code>, <code>totalErrors</code> — et jamais
+      les réponses : le pourcentage par question était incalculable. Trois pièces, posées
+      dans cet ordre.</p>
+    <div class="tbl-scroll">
+      <table class="spec">
+        <thead><tr><th>Pièce</th><th>Ce qu’elle fait</th><th>Ce qu’elle coûte</th></tr></thead>
+        <tbody>
+          <tr>
+            <td><b>1. Un événement par zone</b><br><code>zone_repondue</code></td>
+            <td>Le module envoie <code>{exo, zone, ok, essai}</code> à chaque tentative,
+              depuis <code>trackPlacement()</code> du gabarit — l’endroit qui compte déjà
+              les essais. Rien de neuf à écrire dans les modules : c’est une greffe,
+              comme les six autres.</td>
+            <td><code>build/greffe_direct.py --tous</code> — le gabarit et les
+              87 modules, en une commande. Réversible par <code>--retirer</code>.</td>
+          </tr>
+          <tr>
+            <td><b>2. Un journal court</b><br><code>data/direct.json</code></td>
+            <td>Un enregistrement par (élève, activité, zone) — le dernier état, jamais
+              l’historique. C’est le même parti pris que <code>corrige_moi.json</code> :
+              la table ne grandit pas avec le temps, elle grandit avec la classe —
+              <b>aucune purge à tenir</b>.</td>
+            <td>Une entrée dans les journaux de <code>db.py</code>, index unique sur le
+              triplet. Non versionné, comme les autres traces d’élèves.</td>
+          </tr>
+          <tr>
+            <td><b>3. Une lecture enseignante</b><br><code>GET /api/direct?groupId=&amp;activityId=</code></td>
+            <td>Rend, par zone : l’énoncé, le type, les quatre compteurs et la
+              répartition des réponses. Le regroupement des réponses écrites se fait
+              <b>au serveur</b> — sinon chaque poste referait le même calcul.</td>
+            <td>Jeton enseignant obligatoire, filtré au groupe. Relance toutes les 5 s
+              tant que l’onglet est visible.</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+
+    <div class="garde">
+      <h3>Trois garde-fous, qui sont la moitié du travail</h3>
+      <ul>
+        <li><b>Le direct ne remplace pas la trace.</b> <code>progress.json</code> continue
+          de porter l’avancement ; <code>direct.json</code> est un tampon qu’on peut perdre
+          sans rien perdre. Une panne du direct ne doit jamais effacer une progression.</li>
+        <li><b>Rien de neuf ne quitte le téléphone.</b> Une réponse d’exercice a une bonne
+          réponse connue : elle est déjà corrigée sur l’appareil. Ce qui reste privé le
+          reste — les corrections de l’IA ne sont toujours pas gardées, et un texte long
+          n’arrive qu’envoyé par l’élève.</li>
+        <li><b>Les pseudos, jamais les vrais noms</b>, ici comme ailleurs dans le portail —
+          et l’interrupteur remplace le pseudo par « Élève 7 », un rang stable pendant la
+          séance pour qu’on puisse dire « le troisième texte » sans nommer personne.</li>
+      </ul>
+    </div>
+  </div>
+</section>
+
+<section class="bloc">
+  <div class="wrap">
+    <h2>Les trois décisions, tranchées</h2>
+    <div class="cartes">
+      <article class="carte">
+        <p class="cle">tranché</p>
+        <h3>Direct sur un module, ou sur une section ?</h3>
+        <p>Le défi par défaut, le module en dépliant. Et la section montrée d’office est
+          celle dont la trace est <b>la plus fraîche</b> — celle où la classe travaille, pas
+          la première. Ses titres viennent du découpage produit par <code>build/sections.py</code>.</p>
+      </article>
+      <article class="carte">
+        <p class="cle">tranché</p>
+        <h3>Cinq secondes, ou à la demande ?</h3>
+        <p>Cinq secondes tant que l’onglet est visible, rien quand il est masqué, et un
+          bouton de pause. Un onglet oublié compterait des élèves partis comme des élèves
+          en ligne.</p>
+      </article>
+      <article class="carte">
+        <p class="cle">tranché</p>
+        <h3>L’élève voit-il le résultat de la classe ?</h3>
+        <p>Non, et sans réglage : aucune route ne rend le résultat de la classe à l’élève.
+          Un « 11 sur 13 ont trouvé » motive certains et écrase les autres — c’est
+          l’enseignante qui projette ce qu’elle décide de projeter.</p>
+      </article>
+    </div>
+  </div>
+</section>
+
+<footer class="pied">
+  <div class="wrap"><b>Livré le 27 août 2026</b> — greffe posée sur le gabarit et les
+    87 modules, journal et route dans <code>server.py</code>, bloc en tête de
+    <code>progression.html</code>. Vérifié en jouant un module réel : la réponse part, le
+    texte d’une réponse ouverte reste sur l’appareil, et la carte change à l’écran en moins
+    de cinq secondes. Les chiffres de la maquette ci-dessus, eux, restent inventés.</div>
+</footer>
+
+<script>
+(function(){
+  "use strict";
+  /* Données de démonstration. Pseudos, jamais de vrais noms : c'est la règle du
+     portail, et une maquette qui la contredirait enseignerait l'inverse. */
+  var ELEVES = [
+    {p:"colibri07", pct:82, n:22}, {p:"Amine",     pct:91, n:24},
+    {p:"tulipe22",  pct:54, n:9},  {p:"Nadiia",    pct:78, n:20},
+    {p:"erable_5",  pct:66, n:18}, {p:"Shirin",    pct:88, n:21},
+    {p:"pivoine",   pct:47, n:12}, {p:"Yacine",    pct:73, n:19},
+    {p:"nordet",    pct:95, n:24}, {p:"Mei",       pct:61, n:15},
+    {p:"harfang9",  pct:84, n:23}, {p:"Oksana",    pct:39, n:8},
+    {p:"cedre_3",   pct:70, n:17}, {p:"Ibrahim",   pct:null,n:0},
+    {p:"lilas14",   pct:null,n:0}
+  ];
+  var TEXTES = [
+    {i:0, essai:1, t:"Bonjour Madame Roy, c’est Josée. Je vous écris parce que mon autobus est en panne. Je vais arriver vers neuf heures trente. Je suis désolée pour le retard. Merci de votre comprehension."},
+    {i:1, essai:1, t:"Bonjour, je m’appelle Amine. Ce matin ma fille est malade et je dois aller à la clinique avec elle. Je ne peux pas venir travailler aujourd’hui. Je vais apporter le billet du médecin demain matin."},
+    {i:3, essai:2, t:"Madame, bonjour. Je suis Nadiia du quart de soir. Je vais avoir un retard de vingt minutes, le métro est arrêté à Jean-Talon. Est-ce que je peux commencer plus tard et finir plus tard ?"},
+    {i:5, essai:1, t:"Bonjour Monsieur Tremblay. Je vous appelle pour vous dire que je serai absente vendredi. J’ai un rendez-vous à l’immigration à dix heures et je ne peux pas le changer. Merci beaucoup."},
+    {i:6, essai:2, t:"Bonjour. Je suis en retarde parce que ma voiture ne demarre pas. Je viens en autobus. Excusez moi."},
+    {i:8, essai:1, t:"Bonjour Madame Roy. Mon fils a de la fièvre depuis hier soir. Je reste à la maison avec lui aujourd’hui. Je vous téléphone demain pour vous dire comment ça va. Bonne journée."},
+    {i:12,essai:1, t:"Allô, bonjour, c’est Marie-Ève du deuxième étage. Je vais être en retard de dix minutes, il y a un accident sur le boulevard. J’arrive le plus vite possible. Merci."}
+  ];
+
+  var avecNoms = false;
+  var enPause = false;
+
+  function classeDe(pct){
+    if(pct === null) return {c:"rien", m:"Rien envoyé", cm:""};
+    if(pct >= 80) return {c:"ok",   m:"Solide",     cm:"mot--ok"};
+    if(pct >= 60) return {c:"warn", m:"À suivre",   cm:"mot--warn"};
+    return          {c:"no",   m:"En difficulté", cm:"mot--no"};
+  }
+  function nomDe(el, rang){ return avecNoms ? el.p : "Élève " + (rang + 1); }
+
+  function rendreClasse(){
+    var h = "";
+    for(var i = 0; i < ELEVES.length; i++){
+      var e = ELEVES[i], k = classeDe(e.pct);
+      h += '<div class="el el--' + k.c + '">'
+        +  '<b>' + nomDe(e, i) + '</b>'
+        +  '<div class="chiffre">' + (e.pct === null ? "—" : e.pct + '<small>%</small>') + '</div>'
+        +  '<div class="mot ' + k.cm + '">' + k.m + '</div>'
+        +  '</div>';
+    }
+    document.getElementById("classe").innerHTML = h;
+  }
+
+  function rendreTextes(){
+    var h = "";
+    for(var j = 0; j < TEXTES.length; j++){
+      var t = TEXTES[j], el = ELEVES[t.i];
+      var chip = t.essai === 1
+        ? '<span class="tx-chip tx-chip--1">1<sup>er</sup> envoi</span>'
+        : '<span class="tx-chip tx-chip--2">2<sup>e</sup> envoi</span>';
+      h += '<article class="tx">'
+        +  '<div class="tx-tete"><span class="tx-qui">' + nomDe(el, t.i) + '</span>' + chip + '</div>'
+        +  '<p>' + t.t + '</p>'
+        +  '<div class="tx-pied">'
+        +    '<button type="button" class="btn btn--pri btn--sm">Projeter</button>'
+        +    '<button type="button" class="btn btn--ghost btn--sm">Épingler</button>'
+        +  '</div></article>';
+    }
+    document.getElementById("textes").innerHTML = h;
+  }
+
+  var bNoms = document.getElementById("bNoms");
+  bNoms.addEventListener("click", function(){
+    avecNoms = !avecNoms;
+    bNoms.setAttribute("aria-pressed", avecNoms ? "true" : "false");
+    document.getElementById("bNomsEtat").textContent = avecNoms ? "Noms affichés" : "Anonyme";
+    rendreClasse(); rendreTextes();
+  });
+
+  var bPause = document.getElementById("bPause");
+  bPause.addEventListener("click", function(){
+    enPause = !enPause;
+    bPause.textContent = enPause ? "Reprendre le direct" : "Mettre en pause";
+  });
+
+  /* Le direct simulé : les secondes montent, et un élève finit une question de
+     temps en temps. Assez pour juger de l'effet, pas assez pour distraire. */
+  var secondes = 3;
+  var etat = document.getElementById("dirEtat");
+  setInterval(function(){
+    if(enPause){ etat.textContent = "Direct en pause · 13 élèves sur 15 en ligne"; return; }
+    secondes = secondes >= 8 ? 1 : secondes + 1;
+    etat.textContent = "13 élèves sur 15 en ligne · mis à jour il y a " + secondes + " s";
+    if(secondes === 1){
+      var i = Math.floor(Math.random() * ELEVES.length);
+      var e = ELEVES[i];
+      if(e.pct !== null && e.n < 24){ e.n += 1; e.pct = Math.min(99, e.pct + 1); rendreClasse(); }
+    }
+  }, 1000);
+
+  rendreClasse();
+  rendreTextes();
+})();
+</script>
+</body>
+</html>

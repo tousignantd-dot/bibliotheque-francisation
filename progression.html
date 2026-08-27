@@ -163,8 +163,156 @@
 
     .pg-pied { padding: var(--sp-8) 0 var(--sp-12); }
 
+    /* ── Le direct de la classe ──────────────────────────────────────────
+       Aucune couleur en dur : les quatre états de réponse prennent les jetons
+       de rétroaction du système, et chacun porte son mot dans la légende — un
+       projecteur délave les teintes bien avant qu'il n'efface un chiffre. */
+    .dr { margin-top: var(--sp-8); }
+    .dr-barre { background: var(--surface-inverse); color: var(--text-inverse);
+                border-radius: var(--r-sm, 10px); padding: var(--sp-4);
+                display: flex; align-items: center; gap: var(--sp-4); flex-wrap: wrap;
+                position: sticky; top: 62px; z-index: 20; box-shadow: var(--sh-raise); }
+    .dr-vive { display: inline-flex; align-items: center; gap: var(--sp-2);
+               font-size: var(--fs-meta); font-weight: var(--fw-black);
+               letter-spacing: .12em; text-transform: uppercase;
+               background: rgba(255,255,255,.1); border: 1px solid rgba(255,255,255,.22);
+               border-radius: 999px; padding: 6px 12px; white-space: nowrap; }
+    .dr-vive i { width: 9px; height: 9px; border-radius: 50%; background: var(--no-line);
+                 display: block; animation: drPouls 1.8s infinite; }
+    .dr-vive--pause i { background: var(--text-muted); animation: none; }
+    @keyframes drPouls { 0%,100% { opacity: 1 } 50% { opacity: .25 } }
+    @media (prefers-reduced-motion: reduce) { .dr-vive i { animation: none } }
+    .dr-quoi b { display: block; font-size: var(--fs-body-sm); font-weight: var(--fw-black); }
+    /* Sur le bloc encre, le texte secondaire est du blanc voilé plutôt qu'un
+       gris nommé : une valeur de moins à tenir, et le même parti pris que les
+       filets de la barre juste au-dessus. */
+    .dr-quoi span { font-size: var(--fs-ui-sm); font-weight: var(--fw-semi);
+                    color: rgba(255,255,255,.72); }
+    .dr-outils { margin-left: auto; display: flex; align-items: center;
+                 gap: var(--sp-3); flex-wrap: wrap; }
+    .dr-outils select { min-height: var(--tap-min); border-radius: 999px;
+                        border: 1px solid rgba(255,255,255,.35); background: transparent;
+                        color: var(--text-inverse); font-family: inherit;
+                        font-size: var(--fs-ui-sm); font-weight: var(--fw-bold);
+                        padding: 0 var(--sp-3); }
+    .dr-outils select option { color: var(--text-strong); }
+    .dr-btn { min-height: var(--tap-min); padding: 0 var(--sp-4); border-radius: 999px;
+              font-family: inherit; font-size: var(--fs-ui-sm); font-weight: var(--fw-bold);
+              cursor: pointer; border: 1px solid rgba(255,255,255,.35);
+              background: transparent; color: var(--text-inverse); }
+    .dr-btn--clair { background: var(--white); color: var(--text-strong); border-color: var(--white); }
+    .dr-btn:focus-visible, .dr-bascule:focus-visible, .dr-outils select:focus-visible {
+      outline: var(--focus-width, 3px) solid var(--accent); outline-offset: 2px; }
+
+    /* L'interrupteur des noms : un vrai interrupteur, parce que c'est un
+       réglage qu'on cherche des yeux avant de projeter. */
+    .dr-bascule { display: inline-flex; align-items: center; gap: 10px;
+                  min-height: var(--tap-min); background: none; border: 0; padding: 0;
+                  color: var(--text-inverse); font: inherit;
+                  font-size: var(--fs-ui-sm); font-weight: var(--fw-bold); cursor: pointer; }
+    .dr-piste { width: 52px; height: 28px; border-radius: 999px; flex: 0 0 auto;
+                background: rgba(255,255,255,.22); position: relative;
+                transition: background var(--dur, 140ms) var(--ease, ease); }
+    .dr-piste::after { content: ""; position: absolute; top: 3px; left: 3px;
+                       width: 22px; height: 22px; border-radius: 50%; background: var(--white);
+                       transition: transform var(--dur, 140ms) var(--ease, ease); }
+    .dr-bascule[aria-pressed="true"] .dr-piste { background: var(--accent); }
+    .dr-bascule[aria-pressed="true"] .dr-piste::after { transform: translateX(24px); }
+    .dr-bascule .dr-mot { min-width: 10ch; text-align: left; }
+
+    /* La classe d'un coup d'œil */
+    .dr-classe { display: grid; grid-template-columns: repeat(auto-fill, minmax(122px, 1fr));
+                 gap: var(--sp-3); }
+    .dr-el { background: var(--surface-card); border: 1px solid var(--border);
+             border-left: 4px solid var(--line-300); border-radius: var(--r-sm, 10px);
+             padding: 10px var(--sp-3); box-shadow: var(--sh-card); }
+    .dr-el--ok { border-left-color: var(--ok-line); }
+    .dr-el--warn { border-left-color: var(--warn-line); }
+    .dr-el--no { border-left-color: var(--no-line); }
+    .dr-el--rien { background: var(--surface-sunken); }
+    .dr-el b { display: block; font-size: var(--fs-ui-sm); font-weight: var(--fw-bold);
+               color: var(--text-strong); white-space: nowrap; overflow: hidden;
+               text-overflow: ellipsis; }
+    .dr-el .dr-ch { font-size: 22px; font-weight: var(--fw-black); line-height: 1.1;
+                    color: var(--text-strong); font-variant-numeric: tabular-nums; }
+    .dr-el .dr-ch small { font-size: var(--fs-ui-sm); color: var(--text-muted); }
+    .dr-el .dr-mo { font-size: var(--fs-meta); font-weight: var(--fw-bold); color: var(--text-muted); }
+
+    /* Le mur des questions */
+    .dr-mur { display: grid; grid-template-columns: repeat(auto-fit, minmax(330px, 1fr));
+              gap: var(--sp-4); }
+    .dr-q { background: var(--surface-card); border: 1px solid var(--border);
+            border-radius: var(--r-lg, 18px); padding: var(--sp-5);
+            box-shadow: var(--sh-card); display: flex; flex-direction: column; gap: var(--sp-3); }
+    .dr-q--alerte { border-color: var(--warn-line); box-shadow: 0 0 0 3px var(--warn-bg); }
+    .dr-q-tete { display: flex; align-items: flex-start; gap: var(--sp-3); }
+    .dr-type { font-size: 11px; font-weight: var(--fw-black); letter-spacing: .1em;
+               text-transform: uppercase; border-radius: 999px; padding: 4px 10px;
+               white-space: nowrap; background: var(--accent-soft); color: var(--accent-ink); }
+    .dr-num { font-size: var(--fs-meta); font-weight: var(--fw-bold); letter-spacing: .08em;
+              text-transform: uppercase; color: var(--text-muted); margin: 0 0 2px; }
+    .dr-enonce { font-size: var(--fs-body-sm); font-weight: var(--fw-bold);
+                 color: var(--text-strong); margin: 0; }
+    .dr-pct { margin-left: auto; font-size: 36px; font-weight: var(--fw-black);
+              line-height: .9; color: var(--text-strong); font-variant-numeric: tabular-nums;
+              white-space: nowrap; }
+    .dr-pct small { font-size: var(--fs-ui-sm); }
+    .dr-pct--ok { color: var(--ok-ink); } .dr-pct--warn { color: var(--warn-ink); }
+    .dr-pct--no { color: var(--no-ink); } .dr-pct--vide { color: var(--text-muted); }
+
+    .dr-seg { display: flex; height: 14px; border-radius: 999px; overflow: hidden;
+              background: var(--paper-200); }
+    .dr-seg i { display: block; height: 100%; }
+    .dr-s1 { background: var(--ok-line); }
+    .dr-s2 { background: var(--accent-soft); box-shadow: inset 0 0 0 1px var(--ok-line); }
+    .dr-s3 { background: var(--no-line); }
+    .dr-s4 { background: var(--paper-200); box-shadow: inset 0 0 0 1px var(--line-300); }
+    .dr-leg { display: flex; flex-wrap: wrap; gap: var(--sp-3); margin: 0;
+              font-size: var(--fs-ui-sm); font-weight: var(--fw-semi); color: var(--text-muted); }
+    .dr-leg span { display: inline-flex; align-items: center; gap: 6px; white-space: nowrap; }
+    .dr-leg i { width: 10px; height: 10px; border-radius: 3px; display: block; }
+    .dr-leg b { color: var(--text-strong); font-variant-numeric: tabular-nums; }
+
+    .dr-rep { list-style: none; margin: 0; padding: 0; display: flex;
+              flex-direction: column; gap: 6px; }
+    .dr-rep li { display: flex; align-items: center; gap: var(--sp-3);
+                 font-size: var(--fs-ui); background: var(--surface-sunken);
+                 border: 1px solid var(--border); border-radius: 8px; padding: 8px 10px; }
+    .dr-rep .dr-g { font-weight: var(--fw-black); width: 1.2em; text-align: center; }
+    .dr-rep .dr-t { font-weight: var(--fw-semi); color: var(--text-body); }
+    .dr-rep .dr-n { margin-left: auto; font-weight: var(--fw-black); color: var(--text-strong);
+                    font-variant-numeric: tabular-nums; white-space: nowrap; }
+    .dr-rep li.dr-bonne { background: var(--ok-bg); border-color: var(--ok-line); }
+    .dr-rep li.dr-bonne .dr-t { color: var(--ok-ink); font-weight: var(--fw-bold); }
+    .dr-rep li.dr-faute .dr-t { color: var(--no-ink); }
+    .dr-alerte { display: flex; align-items: center; gap: var(--sp-2);
+                 background: var(--warn-bg); border-left: 4px solid var(--warn-line);
+                 border-radius: 8px; padding: 10px var(--sp-3);
+                 font-size: var(--fs-ui-sm); font-weight: var(--fw-bold); color: var(--warn-ink); }
+    .dr-note { font-size: var(--fs-ui-sm); color: var(--text-muted); margin: 0; }
+
+    /* Le mur des textes */
+    .dr-textes { columns: 3 300px; column-gap: var(--sp-4); }
+    .dr-tx { break-inside: avoid; background: var(--surface-card);
+             border: 1px solid var(--border); border-radius: var(--r-lg, 18px);
+             padding: var(--sp-4); box-shadow: var(--sh-card); margin: 0 0 var(--sp-4); }
+    .dr-tx-tete { display: flex; align-items: center; gap: var(--sp-2); margin-bottom: var(--sp-3); }
+    .dr-tx-qui { font-size: var(--fs-ui); font-weight: var(--fw-black); color: var(--text-strong); }
+    .dr-tx-chip { margin-left: auto; font-size: 11px; font-weight: var(--fw-black);
+                  letter-spacing: .08em; text-transform: uppercase; border-radius: 999px;
+                  padding: 3px 9px; background: var(--paper-200); color: var(--ink-500);
+                  white-space: nowrap; }
+    .dr-tx p { font-size: var(--fs-ui); color: var(--text-body); margin: 0; }
+
+    @media (max-width: 640px) {
+      .dr-barre { position: static; }
+      .dr-outils { margin-left: 0; width: 100%; }
+    }
+
     @media print {
       .pg-haut, .pg-filtres, .pg-envoi audio, .pg-pied { display: none !important; }
+      /* Le direct est un écran de séance : il ne va pas sur du papier. */
+      #pgDirect { display: none !important; }
       body { background: var(--white); }
       .pg-tete { background: var(--white); }
       .pg-sec { break-inside: avoid; }
@@ -239,6 +387,7 @@
         <p class="pg-note" id="pgPortee" style="flex-basis:100%"></p>
       </div>
     </div>
+    <div id="pgDirect"></div>
     <div id="pgContenu"></div>
   </div>
 </main>
@@ -282,6 +431,21 @@
   let MODULE = '';           // '' = tous les modules, sinon l'id de l'activité
   let PERIODE = 'jour';      // 'jour' | 'module' | 'tout'
   const DEPLIES = new Set(); // les élèves dont on a ouvert les envois
+
+  /* ---------- Le direct de la classe ---------- */
+  /* Ce bloc-ci ne partage rien avec le reste de la page : il a sa donnée
+     (/api/direct), son conteneur (#pgDirect) et son rythme (5 s). Le mêler au
+     rendu général ferait reconstruire les tableaux et refermer les chevrons
+     toutes les cinq secondes. */
+  let SECTIONS = {};          // {activityId: {sections:[{id,titre}], dates:{}}}
+  let DIRECT = null;          // la dernière réponse du serveur
+  let DIRECT_ON = true;       // le direct tourne-t-il ?
+  let DIRECT_NOMS = false;    // pseudos affichés, ou « Élève N »
+  let DIRECT_SECTION = null;  // null = pas encore choisie, '' = tout le module
+  let DIRECT_HORLOGE = null;
+  let DIRECT_QUAND = 0;       // horodatage local du dernier rafraîchissement
+  let DIRECT_ECRITS = [];     // les textes envoyés, relus à chaque tour
+  const DIRECT_PAS_MS = 5000;
 
   /* ---------- Démarrage ---------- */
   (async function () {
@@ -334,13 +498,14 @@
     MODULE ? url.searchParams.set('module', MODULE) : url.searchParams.delete('module');
     history.replaceState(null, '', url);
     rendre();
+    drRelancer();
   }
 
   async function charger() {
     document.getElementById('pgContenu').innerHTML =
       '<p class="pg-note" style="padding:var(--sp-8) 0">Chargement du groupe…</p>';
 
-    const [activites, eleves, progres, oraux, ecrits, analyses, signaux] = await Promise.all([
+    const [activites, eleves, progres, oraux, ecrits, analyses, signaux, sections] = await Promise.all([
       Prof.fetch(Prof.withGroup('/api/activities')).then(r => r.json()),
       Prof.fetch(Prof.withGroup('/api/admin/students')).then(r => r.json()),
       Prof.fetch(Prof.withGroup('/api/admin/progress')).then(r => r.json()),
@@ -348,6 +513,7 @@
       Prof.fetch(Prof.withGroup('/api/admin/written-submissions')).then(r => r.json()),
       Prof.fetch(Prof.withGroup('/api/admin/analyses-erreurs')).then(r => r.json()),
       Prof.fetch(Prof.withGroup('/api/admin/signaux-aide')).then(r => r.json()),
+      Prof.fetch(Prof.withGroup('/api/sections')).then(r => r.json()).catch(() => ({})),
     ]);
 
     ACTIVITES = Array.isArray(activites) ? activites : [];
@@ -357,6 +523,7 @@
     ECRITS = Array.isArray(ecrits) ? ecrits : [];
     ANALYSES = Array.isArray(analyses) ? analyses : [];
     SIGNAUX = Array.isArray(signaux) ? signaux : [];
+    SECTIONS = (sections && typeof sections === 'object') ? sections : {};
 
     // Les ateliers de l'après-midi ne sont pas des modules : le tableau de bord
     // suit les cours, c'est-à-dire ce que la planification ouvre par sections.
@@ -379,6 +546,7 @@
     document.getElementById('pgBande').textContent =
       `Espace enseignant · ${Prof.groupeActif()?.nom || ''}`;
     rendre();
+    drRelancer();
   }
 
   /* ---------- Portée : le module et la période ---------- */
@@ -423,6 +591,271 @@
   function deNom(nom) {
     return /^[aàâeéèêiîoôuùûyhAÀÂEÉÈÊIÎOÔUÙÛYH]/.test(String(nom || '')) ? `d’${nom}` : `de ${nom}`;
   }
+
+  /* ---------- Le direct de la classe ---------- */
+  /* Il répond à une question que ni le tableau du bas ni les dossiers ne
+     savent poser : « où en est la classe sur CETTE question, maintenant ? ».
+     Trois règles le tiennent :
+
+       — le défi par défaut, le module en dépliant. Vingt-quatre questions ne
+         tiennent pas sur un projecteur, et ce qu'on regarde en séance est le
+         défi ouvert ;
+       — cinq secondes tant que l'onglet est visible, rien quand il est
+         masqué. Un onglet oublié compterait des élèves partis ;
+       — l'anonymat est un réglage d'affichage, pas une permission : elle a
+         déjà accès aux dossiers nommés. L'interrupteur sert à projeter.
+
+     Ce que l'élève voit de tout ça : rien. Aucune route ne le lui rend, et
+     c'est l'enseignante qui décide de projeter. */
+
+  const drNomAnonyme = i => `Élève ${i + 1}`;
+
+  /** Le titre d'une section, lu dans le découpage produit par
+      `build/sections.py` — jamais une table écrite ici. */
+  function drTitreSection(id) {
+    const secs = SECTIONS[String(MODULE)]?.sections || [];
+    const s = secs.find(x => x.id === id);
+    return s ? s.titre : (id || 'Tout le module');
+  }
+
+  /** La section à montrer d'office : celle où la classe travaille, c'est-à-dire
+      celle dont la trace est la plus fraîche. Sans trace, la première. */
+  function drSectionParDefaut(d) {
+    let quand = '', choix = '';
+    (d.exercices || []).forEach(ex => {
+      (ex.zones || []).forEach(z => {
+        if ((z.quand || '') > quand) { quand = z.quand || ''; choix = ex.section || ''; }
+      });
+    });
+    return choix;
+  }
+
+  const DR_TYPES = { vf: 'Vrai ou faux', match: 'Glisser-déposer', imgmatch: 'Images à associer',
+                     rows: 'Glisser-déposer', blanks: 'Mots à placer', texte: 'Dans le texte',
+                     write: 'Réponse à écrire' };
+
+  function drClasseDe(pct, repondu) {
+    if (!repondu) return { c: 'rien', m: 'Rien envoyé' };
+    if (pct >= 80) return { c: 'ok', m: 'Solide' };
+    if (pct >= 60) return { c: 'warn', m: 'À suivre' };
+    return { c: 'no', m: 'En difficulté' };
+  }
+
+  function drPctClasse(pct) {
+    if (pct === null || pct === undefined) return 'vide';
+    return pct >= 80 ? 'ok' : pct >= 50 ? 'warn' : 'no';
+  }
+
+  /** Une zone en carte. La couleur ne dit jamais seule : la barre est doublée
+      d'une légende chiffrée, et chaque réponse porte son glyphe. */
+  function drCarteZone(ex, z) {
+    const total = Math.max(1, z.premierCoup + z.apresEssai + z.encoreFaux + z.sansReponse);
+    const part = n => (n / total * 100).toFixed(1) + '%';
+    const cls = drPctClasse(z.pct);
+    const alerte = z.repondu >= 3 && z.pct !== null && z.pct < 50;
+    const reponses = (z.reponses || []).slice(0, 5).map(r => `
+      <li class="${r.bonne ? 'dr-bonne' : 'dr-faute'}">
+        <span class="dr-g" aria-hidden="true">${r.bonne ? '✓' : '✕'}</span>
+        <span class="dr-t">${esc(r.texte)}</span>
+        <span class="dr-n">${r.n}</span>
+      </li>`).join('');
+
+    return `<article class="dr-q${alerte ? ' dr-q--alerte' : ''}">
+      <div class="dr-q-tete">
+        <span class="dr-type">${esc(DR_TYPES[z.type] || 'Question')}</span>
+        <div>
+          <p class="dr-num">${esc(ex.num || ex.exo)}${ex.titre ? ' · ' + esc(ex.titre) : ''}</p>
+          <p class="dr-enonce">${esc(z.enonce || z.zone)}</p>
+        </div>
+        <span class="dr-pct dr-pct--${cls}">${z.pct === null ? '—' : z.pct + '<small>%</small>'}</span>
+      </div>
+      <div class="dr-seg" role="img" aria-label="${z.premierCoup} du premier coup, ${z.apresEssai} après un essai, ${z.encoreFaux} encore faux, ${z.sansReponse} sans réponse">
+        <i class="dr-s1" style="width:${part(z.premierCoup)}"></i>
+        <i class="dr-s2" style="width:${part(z.apresEssai)}"></i>
+        <i class="dr-s3" style="width:${part(z.encoreFaux)}"></i>
+        <i class="dr-s4" style="width:${part(z.sansReponse)}"></i>
+      </div>
+      <p class="dr-leg">
+        <span><i class="dr-s1"></i>1<sup>er</sup> coup <b>${z.premierCoup}</b></span>
+        <span><i class="dr-s2"></i>après un essai <b>${z.apresEssai}</b></span>
+        <span><i class="dr-s3"></i>encore faux <b>${z.encoreFaux}</b></span>
+        <span><i class="dr-s4"></i>sans réponse <b>${z.sansReponse}</b></span>
+      </p>
+      ${reponses ? `<ul class="dr-rep">${reponses}</ul>` : ''}
+      ${alerte ? `<p class="dr-alerte"><span aria-hidden="true">▲</span> Moins d’une réponse
+        juste sur deux. À reprendre au tableau.</p>` : ''}
+      ${!z.repondu ? '<p class="dr-note">Personne n’a encore répondu à cette question.</p>' : ''}
+    </article>`;
+  }
+
+  /** Les textes envoyés pour ce module, dans le mur. Ce sont les mêmes envois
+      que la liste de la période — rien de neuf ne remonte du téléphone. */
+  function drMurTextes() {
+    const envois = (DIRECT_ECRITS.length ? DIRECT_ECRITS : ECRITS)
+      .map(e => ({ ...e, activite: activiteDEnvoi(e) }))
+      .filter(e => String(e.activite?.id) === String(MODULE))
+      .sort((a, b) => String(b.createdAt || '').localeCompare(String(a.createdAt || '')));
+    if (!envois.length) return '';
+    const rang = new Map((DIRECT?.eleves || []).map((e, i) => [e.studentId, i]));
+    const cartes = envois.map(e => {
+      const el = ELEVES.find(x => x.id === e.studentId);
+      const qui = DIRECT_NOMS ? (el ? nomEleve(el) : 'Élève retiré du groupe')
+                              : drNomAnonyme(rang.get(e.studentId) ?? 0);
+      return `<article class="dr-tx">
+        <div class="dr-tx-tete"><span class="dr-tx-qui">${esc(qui)}</span>
+          <span class="dr-tx-chip">${esc(heureDe(e.createdAt) || 'envoyé')}</span></div>
+        <p>${esc(e.texte || '')}</p>
+      </article>`;
+    }).join('');
+    return section('Les textes envoyés',
+      `${pluriel(envois.length, 'texte')} pour ce module. L’interrupteur de la barre décide si les noms paraissent.`,
+      `<div class="dr-textes">${cartes}</div>`);
+  }
+
+  /** L'heure seule d'un horodatage : dans une séance, la date est inutile. */
+  function heureDe(ts) {
+    const m = String(ts || '').match(/T(\d{2}):(\d{2})/);
+    return m ? `${m[1]} h ${m[2]}` : '';
+  }
+
+  function drRendre() {
+    const cible = document.getElementById('pgDirect');
+    if (!MODULE) {
+      cible.innerHTML = `<p class="pg-note" style="padding:var(--sp-8) 0 0">
+        <b>Le direct suit un module à la fois.</b> Choisissez-en un ci-dessus pour voir la
+        réussite question par question pendant que la classe répond.</p>`;
+      return;
+    }
+    const d = DIRECT;
+    if (!d) {
+      cible.innerHTML = `<p class="pg-note" style="padding:var(--sp-8) 0 0">Ouverture du direct…</p>`;
+      return;
+    }
+
+    if (DIRECT_SECTION === null) DIRECT_SECTION = drSectionParDefaut(d);
+    const sections = [...new Set((d.exercices || []).map(e => e.section || ''))];
+    const exos = (d.exercices || []).filter(e => !DIRECT_SECTION || e.section === DIRECT_SECTION);
+    const zones = exos.flatMap(ex => (ex.zones || []).map(z => ({ ex, z })));
+
+    const optionsSec = ['<option value="">Tout le module</option>'].concat(
+      sections.filter(Boolean).map(id =>
+        `<option value="${esc(id)}"${id === DIRECT_SECTION ? ' selected' : ''}>${esc(drTitreSection(id))}</option>`)
+    ).join('');
+
+    const secs = sections.length > 1 || sections[0]
+      ? `<select id="drSection" aria-label="Section suivie">${optionsSec}</select>` : '';
+
+    const quoi = titreCourt(moduleDe(MODULE)?.title || '');
+    const age = Math.max(0, Math.round((Date.now() - DIRECT_QUAND) / 1000));
+    const etat = DIRECT_ON
+      ? `${d.enLigne} élève${d.enLigne > 1 ? 's' : ''} sur ${d.elevesTotal} en ligne · mis à jour il y a ${age} s`
+      : `Direct en pause · ${d.enLigne} sur ${d.elevesTotal} étaient en ligne`;
+
+    const grille = (d.eleves || []).map((e, i) => {
+      const k = drClasseDe(e.pct, e.repondu);
+      return `<div class="dr-el dr-el--${k.c}">
+        <b>${esc(DIRECT_NOMS ? (e.pseudo || drNomAnonyme(i)) : drNomAnonyme(i))}</b>
+        <div class="dr-ch">${e.pct === null ? '—' : e.pct + '<small>%</small>'}</div>
+        <div class="dr-mo">${esc(k.m)}${e.repondu ? ` · ${e.repondu} rép.` : ''}</div>
+      </div>`;
+    }).join('');
+
+    cible.innerHTML = `<div class="dr">
+      <div class="dr-barre">
+        <span class="dr-vive${DIRECT_ON ? '' : ' dr-vive--pause'}">
+          <i aria-hidden="true"></i>${DIRECT_ON ? 'En direct' : 'En pause'}</span>
+        <div class="dr-quoi">
+          <b>${esc(quoi)}${DIRECT_SECTION ? ' · ' + esc(drTitreSection(DIRECT_SECTION)) : ' · tout le module'}</b>
+          <span id="drEtat">${esc(etat)}</span>
+        </div>
+        <div class="dr-outils">
+          ${secs}
+          <button type="button" class="dr-bascule" id="drNoms" aria-pressed="${DIRECT_NOMS}">
+            <span class="dr-piste" aria-hidden="true"></span>
+            <span class="dr-mot">${DIRECT_NOMS ? 'Noms affichés' : 'Anonyme'}</span>
+          </button>
+          <button type="button" class="dr-btn" id="drPause">${DIRECT_ON ? 'Mettre en pause' : 'Reprendre le direct'}</button>
+        </div>
+      </div>
+
+      ${section('La classe d’un coup d’œil',
+        'Réponses justes du premier coup, sur les questions déjà tentées. Une case pâle veut dire « n’a rien envoyé encore ».',
+        `<div class="dr-classe">${grille}</div>`)}
+
+      ${section('Question par question',
+        zones.length
+          ? `${pluriel(zones.length, 'question')} ${DIRECT_SECTION ? 'dans cette section' : 'dans ce module'}. La carte qui passe sous 50 % se marque elle-même.`
+          : 'Rien encore : personne n’a répondu à une question de cette section.',
+        zones.length
+          ? `<div class="dr-mur">${zones.map(({ ex, z }) => drCarteZone(ex, z)).join('')}</div>`
+          : `<p class="pg-note">Les cartes paraissent dès la première réponse envoyée. Rien ne
+             remonte d’un module ouvert hors du portail — sans code d’élève, le module ne
+             rapporte pas.</p>`)}
+
+      ${drMurTextes()}
+    </div>`;
+  }
+
+  /** Un tour de direct. Deux appels : les zones, et les textes envoyés. */
+  async function drTirer() {
+    if (!MODULE) { drRendre(); return; }
+    try {
+      const url = new URL('/api/direct', location.origin);
+      url.searchParams.set('activityId', MODULE);
+      const [d, ecrits] = await Promise.all([
+        Prof.fetch(Prof.withGroup(url.pathname + url.search)).then(r => r.ok ? r.json() : null),
+        Prof.fetch(Prof.withGroup('/api/admin/written-submissions'))
+          .then(r => r.ok ? r.json() : []).catch(() => []),
+      ]);
+      if (!d || d.error) return;
+      DIRECT = d;
+      DIRECT_ECRITS = Array.isArray(ecrits) ? ecrits : [];
+      DIRECT_QUAND = Date.now();
+    } catch (e) { /* Une séance ne s'arrête pas parce qu'un tour a manqué. */ }
+    drRendre();
+  }
+
+  /** L'horloge. Elle ne tourne que sur un onglet visible : un onglet oublié
+      compterait des élèves partis comme des élèves en ligne. */
+  function drHorloge() {
+    clearInterval(DIRECT_HORLOGE);
+    DIRECT_HORLOGE = null;
+    if (!DIRECT_ON || document.hidden || !MODULE) return;
+    DIRECT_HORLOGE = setInterval(drTirer, DIRECT_PAS_MS);
+  }
+
+  function drRelancer() {
+    DIRECT = null;
+    DIRECT_SECTION = null;
+    drRendre();
+    if (MODULE) drTirer();
+    drHorloge();
+  }
+
+  document.addEventListener('visibilitychange', () => {
+    drHorloge();
+    if (!document.hidden && DIRECT_ON && MODULE) drTirer();
+  });
+
+  document.addEventListener('click', e => {
+    if (e.target.closest('#drNoms')) {
+      DIRECT_NOMS = !DIRECT_NOMS;
+      drRendre();
+      return;
+    }
+    if (e.target.closest('#drPause')) {
+      DIRECT_ON = !DIRECT_ON;
+      drRendre();
+      drHorloge();
+      if (DIRECT_ON) drTirer();
+    }
+  });
+
+  document.addEventListener('change', e => {
+    if (e.target.id !== 'drSection') return;
+    DIRECT_SECTION = e.target.value;
+    drRendre();
+  });
 
   /* ---------- Rendu ---------- */
 

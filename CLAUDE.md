@@ -159,6 +159,93 @@ reste dans l'adresse, donc une vue se partage par son lien.
 - Mêmes règles que la fiche : jeton par `js/prof.js`, dates découpées à la
   chaîne, aucune couleur en dur, chaque état porte glyphe **et** mot.
 
+## Le direct de la classe (bloc en tête de `progression.html`)
+
+**Ce que `progress.json` ne pouvait pas dire.** `/api/student/progress`
+n'envoyait que des compteurs — `zonesDone`, `firstTry`, `totalErrors` — et
+jamais les réponses. On savait donc où en était un élève, mais **jamais la
+réussite d'une question**, qui est la seule chose utile pendant qu'une classe
+répond sur ses téléphones. Trois pièces, livrées le 27 août 2026 ; la
+proposition est dans `assets/presentations/direct-de-la-classe.html`.
+
+| Pièce | Où | Ce qu'elle fait |
+|---|---|---|
+| `zone_repondue` | `build/greffe_direct.py` | un envoi par tentative, avec l'énoncé de la zone |
+| `data/direct.json` | `server.py`, `db.py` | un enregistrement par (élève, activité, zone) |
+| `GET /api/direct?groupId=&activityId=&section=` | `server.py` | le regroupement, prêt à afficher |
+
+- **C'est un tampon, pas une trace.** `progress.json` continue de porter
+  l'avancement ; perdre `direct.json` ne fait perdre aucune progression. Il
+  n'est pas versionné, comme les autres traces d'élèves.
+- **Le verrou ne couvre que le chemin fichier.** `_enregistrer_direct` portait
+  d'abord `@sous_verrou`, comme les onze méthodes qui font une
+  lecture-modification-écriture. Mais en base, l'écriture est un `ON CONFLICT DO
+  UPDATE` qui ne relit rien : le verrou global aurait fait passer **toutes** les
+  écritures du serveur derrière une classe qui répond, pendant un aller-retour
+  vers Postgres — le mur que la migration avait fait tomber, remis en place par
+  une précaution. Le décorateur est donc retiré et `donnees_verrouillees()`
+  entoure la seule branche fichier, comme le fait déjà
+  `_handle_student_progress`. Mesuré : 30 écritures simultanées → **30
+  enregistrements sur 30** (0,17 s) sur le chemin fichier.
+- **Aucune purge à tenir.** Un enregistrement par (élève, activité, zone),
+  **réécrit** : la table grandit avec la classe, pas avec le temps. « En ligne »
+  n'est pas un état gardé, c'est une trace fraîche — `DIRECT_EN_LIGNE_MIN`,
+  dix minutes, parce qu'un exercice long se fait en silence.
+- **Le texte d'une réponse ouverte ne monte pas.** La greffe n'envoie `reponse`
+  que pour un vrai/faux, un glisser-déposer ou une case portant `accept` — de la
+  comparaison de chaînes, déjà corrigée sur l'appareil. Une case corrigée par
+  l'assistant n'envoie que juste/faux et le nombre d'essais. **Et le serveur ne
+  fait pas confiance au module sur ce point : sans `bonne`, il jette
+  `reponse`.** Vérifié en envoyant le texte quand même — il n'arrive pas dans
+  le fichier.
+- **Le ✓ d'une réponse suit le verdict du module**, jamais une comparaison
+  refaite au serveur. Le premier jet recomparait la chaîne à la bonne réponse :
+  une réponse marquée fausse dans le module ressortait cochée verte chez
+  l'enseignante dès que la casse différait. Deux normalisations pour une même
+  question, c'est le défaut « deux sources pour une idée » — vu à l'écran, pas
+  en relisant. `_direct_net()` ne sert plus qu'à **regrouper** les écritures
+  d'une même réponse (« Je suis retard » et « je suis retard. » font une ligne).
+
+### La greffe enveloppe, elle ne modifie pas
+
+`build/greffe_direct.py` remplace `window.trackPlacement` par une enveloppe qui
+appelle l'originale puis rapporte. Même parti pris que `greffe_depot_ecrit.py`
+avec `renderCorr()` : le module garde son code, et **les sept endroits** qui
+appellent `trackPlacement` — vrai/faux, glisser-déposer, vocabulaire, texte,
+cases à écrire — sont couverts d'un coup. Une fonction déclarée au premier
+niveau d'un script classique est une propriété de `window` : la remplacer
+change ce que voient les appels suivants.
+
+    python3 build/greffe_direct.py --tous     # gabarit + les 87 modules
+    python3 build/greffe_direct.py --retirer
+
+Elle **ne connaît ni slug ni numéro d'activité** : le code de l'élève et
+l'identifiant de l'activité se lisent dans l'adresse de la page parente, comme
+le fait déjà `lmsTrack()`. C'est ce qui permet de la poser sur le gabarit sans
+qu'un module généré hérite de l'identité d'un autre — et donc de ne pas
+l'ajouter aux cinq greffes de `build/module.py`.
+
+### Les trois décisions de l'écran
+
+- **Le défi par défaut, le module en dépliant.** Vingt-quatre questions ne
+  tiennent pas sur un projecteur. La section montrée d'office est celle dont la
+  trace est **la plus fraîche** — celle où la classe travaille, pas la première.
+  Les titres viennent de `/api/sections`, donc du découpage produit par
+  `build/sections.py` : aucune table de sections écrite dans la page.
+- **Cinq secondes tant que l'onglet est visible**, rien quand il est masqué
+  (`visibilitychange`), et un bouton de pause. Un onglet oublié compterait des
+  élèves partis comme des élèves en ligne.
+- **L'anonymat est un réglage d'affichage, pas une permission.** L'enseignante a
+  déjà accès aux dossiers nommés ; l'interrupteur sert à **projeter** un texte
+  sans exposer son auteur. En anonyme, un rang stable (« Élève 7 ») — le même
+  dans la grille et dans le mur des textes, pour qu'on puisse dire « le
+  troisième texte » sans nommer personne. Et **l'élève ne voit rien de tout
+  ça** : aucune route ne le lui rend.
+- **Le bloc a sa donnée, son conteneur et son rythme** (`#pgDirect`), séparés du
+  reste de la page. Le mêler à `rendre()` ferait reconstruire les tableaux et
+  refermer les chevrons toutes les cinq secondes.
+- Il ne s'imprime pas : c'est un écran de séance, pas un document.
+
 ## L'espace direction (`direction.html`)
 
 **Gérer des comptes et regarder une dépense n'est pas enseigner.** « Les

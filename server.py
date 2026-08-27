@@ -191,6 +191,16 @@ SIGNALEMENTS_MAX = 2000
 ALLOWED_EVENTS = {"dialogue_listened", "exercise_completed", "file_opened"}
 SIGNAUX_AIDE = {"aide_proposee", "aide_acceptee", "aide_analysee",
                 "aide_refusee", "plus_open"}
+# Le direct de la classe : une tentative par zone, pour que l'enseignante voie
+# la réussite question par question pendant que la classe répond. C'est le seul
+# événement qui porte une réponse d'élève, et il n'en porte que des réponses à
+# **bonne réponse connue** — voir _enregistrer_direct().
+EVENEMENTS_DIRECT = {"zone_repondue"}
+DIRECT_FILE = STORAGE_DIR / "data" / "direct.json"
+# « En ligne » n'est pas un état tenu par le serveur : c'est une trace récente.
+# Dix minutes, parce qu'un exercice long se fait en silence sans que personne
+# soit parti.
+DIRECT_EN_LIGNE_MIN = 10
 # Multi-enseignants : chaque enseignant possède un ou plusieurs groupes.
 # Le catalogue d'activités reste commun ; ce qui appartient au groupe, c'est la
 # planification (dates), les élèves, la progression et les productions orales.
@@ -2778,6 +2788,32 @@ def load_signaux_aide():
 
 def save_signaux_aide(data):
     _save_json(SIGNAUX_AIDE_FILE, data)
+
+
+# ── Le direct de la classe ───────────────────────────────────────────────────
+# Un tampon, pas une trace : progress.json continue de porter l'avancement, et
+# perdre direct.json ne fait perdre aucune progression. Un enregistrement par
+# (élève, activité, zone), réécrit à chaque tentative.
+
+def load_direct():
+    return _load_json_list(DIRECT_FILE)
+
+
+def save_direct(data):
+    _save_json(DIRECT_FILE, data)
+
+
+def _direct_net(v):
+    """La forme d'une réponse, pour regrouper les écritures d'une même réponse.
+
+    Sans elle, « Je suis retard » et « je suis retard. » font deux lignes à
+    l'écran alors que c'est la même faute, et l'enseignante lit 1 + 1 là où il
+    faut lire 2.
+    """
+    v = unicodedata.normalize("NFD", str(v or "").strip().lower())
+    v = "".join(c for c in v if unicodedata.category(c) != "Mn")
+    v = re.sub(r"\s+", " ", v)
+    return v.strip(" .!?;:,'\u2019")
 
 
 # ── Signalements (« J'ai vu un problème ») ───────────────────────────────────
@@ -14835,6 +14871,9 @@ class Handler(http.server.SimpleHTTPRequestHandler):
         if path == "/api/admin/written-submissions":
             self._handle_written_submissions_list(params)
             return
+        if path == "/api/direct":
+            self._handle_direct(params)
+            return
         if path == "/api/admin/corrige-moi":
             self._handle_corrige_moi_list(params)
             return
@@ -18953,6 +18992,130 @@ class Handler(http.server.SimpleHTTPRequestHandler):
 
         json_response(self, {"success": True, "id": record["id"]})
 
+    def _handle_direct(self, params):
+        """Le direct de la classe : la réussite zone par zone, pour un module.
+
+        Le regroupement se fait ici et pas dans la page : trente postes
+        enseignants refaisant le même comptage sur les mêmes lignes, c'est le
+        genre de calcul qu'on écrit une fois. Et la page n'a alors qu'à
+        afficher — ce qui la rend lisible.
+
+        Ce que la réponse **ne** contient pas : rien qui ne soit déjà dans les
+        écrans enseignants. Les codes des élèves n'en font pas partie (ils
+        authentifient), et le texte des réponses ouvertes non plus.
+        """
+        teacher = self._require_teacher()
+        if not teacher:
+            return
+        group_id = self._group_from_params(teacher, params)
+        if group_id is None:
+            return
+        try:
+            activity_id = int(params.get("activityId", [""])[0])
+        except (TypeError, ValueError):
+            json_response(self, {"error": "activityId requis"}, 400)
+            return
+        section = (params.get("section", [""])[0] or "").strip()
+
+        eleves = [s for s in load_students() if s.get("groupId") == group_id]
+        ids = {s["id"] for s in eleves}
+        lignes = [e for e in load_direct()
+                  if e.get("activityId") == activity_id
+                  and (e.get("studentId") in ids or e.get("groupId") == group_id)
+                  and (not section or e.get("section") == section)]
+
+        limite = (datetime.now() - timedelta(minutes=DIRECT_EN_LIGNE_MIN)) \
+            .isoformat(timespec="seconds")
+        en_ligne = {e["studentId"] for e in lignes if (e.get("lastSeen") or "") >= limite}
+
+        # ── par exercice, puis par zone ─────────────────────────────────────
+        exos = {}
+        for e in lignes:
+            ex = exos.setdefault(e.get("exo") or "?", {
+                "exo": e.get("exo") or "?", "num": e.get("exoNum") or "",
+                "titre": e.get("exoTitre") or "", "section": e.get("section") or "",
+                "type": e.get("type") or "", "zones": {},
+            })
+            z = ex["zones"].setdefault(e["zone"], {
+                "zone": e["zone"], "enonce": e.get("enonce") or "",
+                "bonne": e.get("bonne") or "", "type": e.get("type") or ex["type"],
+                "premierCoup": 0, "apresEssai": 0, "encoreFaux": 0,
+                "reponses": {}, "quand": "",
+            })
+            if e.get("ok"):
+                if e.get("essais"):
+                    z["apresEssai"] += 1
+                else:
+                    z["premierCoup"] += 1
+            else:
+                z["encoreFaux"] += 1
+            rep = (e.get("reponse") or "").strip()
+            if rep:
+                # La clé est la forme nette, le texte affiché la première
+                # écriture rencontrée : on regroupe sans réécrire personne.
+                r = z["reponses"].setdefault(_direct_net(rep),
+                                             {"texte": rep, "n": 0, "bonne": False})
+                r["n"] += 1
+                # Le ✓ suit le verdict du module, pas une comparaison refaite
+                # ici. Le module corrige avec sa propre normalisation ; en
+                # ajouter une seconde, c'est se donner deux vérités qui
+                # finiront par se contredire à l'écran — une réponse marquée
+                # fausse dans le module et cochée verte chez l'enseignante.
+                if e.get("ok"):
+                    r["bonne"] = True
+            if (e.get("lastSeen") or "") > z["quand"]:
+                z["quand"] = e.get("lastSeen") or ""
+
+        total = len(eleves)
+        sortie = []
+        for ex in exos.values():
+            zones = []
+            for z in ex["zones"].values():
+                repondu = z["premierCoup"] + z["apresEssai"] + z["encoreFaux"]
+                z["repondu"] = repondu
+                z["sansReponse"] = max(0, total - repondu)
+                z["reussi"] = z["premierCoup"] + z["apresEssai"]
+                z["pct"] = round(z["reussi"] / repondu * 100) if repondu else None
+                z["reponses"] = sorted(z["reponses"].values(),
+                                       key=lambda r: (-r["n"], r["texte"]))
+                zones.append(z)
+            zones.sort(key=lambda z: z["zone"])
+            ex["zones"] = zones
+            reussi = sum(z["reussi"] for z in zones)
+            repondu = sum(z["repondu"] for z in zones)
+            ex["pct"] = round(reussi / repondu * 100) if repondu else None
+            sortie.append(ex)
+        sortie.sort(key=lambda x: (x["section"], x["num"], x["exo"]))
+
+        # ── par élève : la grille de classe ─────────────────────────────────
+        par_eleve = []
+        for el in sorted(eleves, key=lambda s: (s.get("label") or "").lower()):
+            miennes = [e for e in lignes if e.get("studentId") == el["id"]]
+            reussi = sum(1 for e in miennes if e.get("ok"))
+            premier = sum(1 for e in miennes if e.get("ok") and not e.get("essais"))
+            par_eleve.append({
+                "studentId": el["id"],
+                # Le pseudo, jamais un vrai nom : c'est le champ que le portail
+                # remplit, et l'écran le remplace par un rang si l'anonymat est
+                # demandé.
+                "pseudo": el.get("label") or "",
+                "repondu": len(miennes),
+                "reussi": reussi,
+                "pct": round(premier / len(miennes) * 100) if miennes else None,
+                "enLigne": el["id"] in en_ligne,
+                "quand": max((e.get("lastSeen") or "") for e in miennes) if miennes else "",
+            })
+
+        json_response(self, {
+            "activityId": activity_id,
+            "section": section,
+            "elevesTotal": total,
+            "enLigne": len(en_ligne),
+            "exercices": sortie,
+            "eleves": par_eleve,
+            "maintenant": datetime.now().isoformat(timespec="seconds"),
+        })
+
     def _handle_written_submissions_list(self, params):
         teacher = self._require_teacher()
         if not teacher:
@@ -19279,6 +19442,86 @@ class Handler(http.server.SimpleHTTPRequestHandler):
         entree["lastSeen"] = datetime.now().isoformat(timespec="seconds")
         save_signaux_aide(entrees)
 
+    def _enregistrer_direct(self, student, body):
+        """Une tentative de zone, pour le direct de la classe.
+
+        Trois partis pris, et le troisième est le seul qui compte vraiment :
+
+        1. **Un enregistrement par (élève, activité, zone)**, réécrit. Ce que
+           l'enseignante regarde, c'est l'état courant de la question, pas
+           l'historique des clics — et la table cesse ainsi de grandir avec le
+           temps. Aucune purge à tenir.
+        2. **L'énoncé voyage avec la réponse.** Le serveur ne sait rien des
+           modules ; lui faire deviner le texte d'une zone demanderait une
+           table à tenir module par module, ce que ce dépôt évite partout
+           ailleurs. Le module, lui, l'a sous la main.
+        3. **Le texte d'une réponse n'est gardé que s'il a une bonne réponse
+           connue.** Le module envoie `reponse` pour un vrai/faux, un
+           glisser-déposer ou une case à réponse attendue — de la comparaison
+           de chaînes, déjà corrigée sur l'appareil. Pour une réponse ouverte,
+           corrigée par l'assistant, il n'envoie rien : cette correction reste
+           privée, comme partout ailleurs. Le serveur ne fait pas confiance au
+           module sur ce point, il le vérifie : sans `bonne`, pas de `reponse`.
+        """
+        try:
+            activity_id = int(body.get("activityId"))
+        except (TypeError, ValueError):
+            activity_id = None
+        zone = str(body.get("zone") or "")[:80]
+        if not zone:
+            return
+        try:
+            essais = max(0, min(99, int(body.get("essais") or 0)))
+        except (TypeError, ValueError):
+            essais = 0
+        bonne = str(body.get("bonne") or "")[:200]
+        reponse = str(body.get("reponse") or "")[:200]
+        entree = {
+            "studentId": student["id"],
+            "studentLabel": student.get("label", ""),
+            "groupId": student.get("groupId"),
+            "activityId": activity_id,
+            "activityTitle": str(body.get("activityTitle", ""))[:120],
+            "zone": zone,
+            "exo": str(body.get("exo") or "")[:40],
+            "exoNum": str(body.get("exoNum") or "")[:40],
+            "exoTitre": str(body.get("exoTitre") or "")[:160],
+            "section": str(body.get("section") or "")[:40],
+            "type": str(body.get("type") or "")[:20],
+            "enonce": str(body.get("enonce") or "")[:400],
+            "bonne": bonne,
+            # Sans bonne réponse déclarée, la zone est une réponse ouverte :
+            # son texte ne monte pas.
+            "reponse": reponse if bonne else "",
+            "ok": bool(body.get("ok")),
+            "essais": essais,
+            "lastSeen": datetime.now().isoformat(timespec="seconds"),
+        }
+        if _postgres(DIRECT_FILE):
+            # **Pas de verrou sur ce chemin, et c'est le point.** La règle « un
+            # enregistrement par (élève, activité, zone) » est portée par
+            # l'index unique de la table : l'écriture est un `ON CONFLICT DO
+            # UPDATE` qui ne relit rien. Prendre le verrou global ici ferait
+            # passer, pendant un aller-retour vers Postgres, *toutes* les
+            # écritures du serveur derrière une seule classe qui répond — le
+            # mur que la migration avait justement fait tomber. Même parti pris
+            # que `_handle_student_progress`, qui sort avant le verrou.
+            _db.enregistrer("direct.json", entree)
+            return
+        # Sans base, il faut relire la liste pour y remplacer une ligne : c'est
+        # là, et seulement là, que le verrou est nécessaire.
+        with donnees_verrouillees():
+            entrees = load_direct()
+            for i, e in enumerate(entrees):
+                if (e.get("studentId") == student["id"]
+                        and e.get("activityId") == activity_id
+                        and e.get("zone") == zone):
+                    entrees[i] = entree
+                    break
+            else:
+                entrees.append(entree)
+            save_direct(entrees)
+
     def _handle_student_progress(self):
         length = int(self.headers.get("Content-Length", 0))
         body = json.loads(self.rfile.read(length))
@@ -19288,8 +19531,16 @@ class Handler(http.server.SimpleHTTPRequestHandler):
             json_response(self, {"error": "Non autorisé"}, 401)
             return
         event = body.get("event", "")
-        if event not in ALLOWED_EVENTS and event not in SIGNAUX_AIDE:
+        if (event not in ALLOWED_EVENTS and event not in SIGNAUX_AIDE
+                and event not in EVENEMENTS_DIRECT):
             json_response(self, {"error": "Événement invalide"}, 400)
+            return
+        # Le direct va dans son propre tampon, pour la même raison que les
+        # signaux de l'aide : une zone n'est pas une activité, et les écrans de
+        # progression compteraient ces lignes comme des activités faites.
+        if event in EVENEMENTS_DIRECT:
+            self._enregistrer_direct(student, body)
+            json_response(self, {"success": True})
             return
         # Les cinq signaux de l'aide vont dans leur propre journal : progress.json
         # porte l'avancement dans le module, et les écrans de progression

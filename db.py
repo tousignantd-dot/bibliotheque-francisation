@@ -80,6 +80,13 @@ JOURNAUX = {
         "table": "vocab_progression",
         "cle": ("studentId", "wordId"),
     },
+    # Le direct de la classe : un enregistrement par (élève, activité, zone),
+    # réécrit à chaque tentative. La table ne grandit donc pas avec le temps,
+    # elle grandit avec la classe — c'est ce qui permet de s'en passer de purge.
+    "direct.json": {
+        "table": "direct",
+        "cle": ("studentId", "activityId", "zone"),
+    },
 }
 
 
@@ -174,6 +181,17 @@ CREATE TABLE IF NOT EXISTS vocab_progression (
 );
 CREATE UNIQUE INDEX IF NOT EXISTS vocab_progression_cle
     ON vocab_progression (student_id, word_id);
+
+CREATE TABLE IF NOT EXISTS direct (
+    id          bigserial PRIMARY KEY,
+    student_id  integer NOT NULL,
+    activity_id integer,
+    zone        text    NOT NULL DEFAULT '',
+    doc         jsonb   NOT NULL
+);
+CREATE UNIQUE INDEX IF NOT EXISTS direct_cle
+    ON direct (student_id, activity_id, zone);
+CREATE INDEX IF NOT EXISTS direct_activite ON direct (activity_id);
 """
 
 
@@ -244,6 +262,10 @@ def _colonnes(fichier, entree):
         return {"student_id": entree.get("studentId"),
                 "activity_id": entree.get("activityId"),
                 "exercice": entree.get("exercice") or ""}
+    if fichier == "direct.json":
+        return {"student_id": entree.get("studentId"),
+                "activity_id": entree.get("activityId"),
+                "zone": str(entree.get("zone") or "")}
     return {"student_id": entree.get("studentId"),
             "word_id": str(entree.get("wordId") or "")}
 
@@ -265,7 +287,8 @@ def enregistrer(fichier, entree):
     if cle:
         cles_sql = {"progress.json": "student_id, activity_id, evenement",
                     "signaux_aide.json": "student_id, activity_id, exercice",
-                    "vocab_progress.json": "student_id, word_id"}[fichier]
+                    "vocab_progress.json": "student_id, word_id",
+                    "direct.json": "student_id, activity_id, zone"}[fichier]
         maj = ", ".join(f"{k} = EXCLUDED.{k}" for k in cols if k not in cles_sql)
         sql = (f"INSERT INTO {table} ({noms}) VALUES ({valeurs}) "
                f"ON CONFLICT ({cles_sql}) DO UPDATE SET {maj}")
