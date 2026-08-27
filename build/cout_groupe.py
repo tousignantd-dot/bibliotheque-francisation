@@ -46,22 +46,46 @@ CARACTERES_REPLIQUE = 120   # longueur d'une réplique lue à voix haute
 CORRECTIONS_ECRITES = 3     # productions écrites soumises par module
 CORRECTIONS_COURTES = 20    # phrases corrigées au fil des exercices
 
-# Jetons par appel — ordres de grandeur, à remplacer par des mesures.
-# L'entrée du jeu de rôle grandit avec l'historique : 800 est la moyenne d'un
-# échange de dix tours, pas le premier tour.
+# Jetons par appel. Le jeu de rôle est **mesuré** : six tours joués contre
+# `claude-opus-5` le 27 août 2026, sur le scénario « louer / cas A », avec les
+# phrases fautives d'un vrai élève de niveau 5. Total relevé : 1 405 jetons
+# d'entrée, 531 de sortie, 5 820 lus en cache, pour 0,023 21 $.
+#
+# La mesure a corrigé une erreur d'un facteur 2,4 : j'avais supposé 800 jetons
+# d'entrée et 200 de sortie par tour, la réalité est 234 et 88. Une réplique de
+# jeu de rôle est courte — deux phrases — et l'historique part en cache dès le
+# deuxième tour, où il coûte le dixième. Supposer large n'est pas « prudent »,
+# c'est faux.
+#
+# Les deux routes de correction, elles, restent des hypothèses : personne ne
+# les a mesurées. Elles pèsent 14 % du total, donc l'erreur qu'elles portent
+# est bornée.
 JETONS = {
-    "jeu-de-role":      {"entree": 800, "sortie": 200, "systeme": 300},
+    "jeu-de-role":      {"entree": 234, "sortie": 88, "cache_lu": 970,
+                         "mesure": True},
     "analyser-erreurs": {"entree": 600, "sortie": 400, "systeme": 300},
     "corriger-phrase":  {"entree": 200, "sortie": 60,  "systeme": 180},
 }
 
 MODULES_PAR_NIVEAU = {5: 14}
 
+# Le modèle du jeu de rôle. `server.py` emploie Opus-5 ; Haiku est l'option
+# étudiée. Attention : ce n'est **pas** une constante à changer telle quelle —
+# le serveur envoie `"thinking": {"type": "adaptive"}`, que Haiku 4.5 refuse
+# avec un 400. Basculer demande aussi de retirer ce paramètre.
+MODELE_JEU_DE_ROLE = "claude-opus-5"
 
-def cout_appel(modele, entree, sortie, systeme=0, cache=False):
-    """Le coût d'un appel. `cache` : la consigne système est relue, pas réécrite."""
+
+def cout_appel(modele, entree, sortie, systeme=0, cache=False, cache_lu=0):
+    """Le coût d'un appel.
+
+    `cache_lu` est le nombre de jetons **relevés** en lecture de cache ; il
+    prend le pas sur `systeme`, qui n'est qu'une estimation de la consigne.
+    """
     t = journal_api.TARIFS[modele]
-    if cache:
+    if cache_lu:
+        sys_cout = cache_lu * t["cache_lecture"]
+    elif cache:
         sys_cout = systeme * t["cache_lecture"]
     else:
         sys_cout = systeme * t["cache_ecriture"]
@@ -72,13 +96,15 @@ def par_eleve_par_module(voix="azure"):
     """Détail du coût d'un élève sur un module. Renvoie (postes, total)."""
     postes = {}
 
-    # 1. Le jeu de rôle : un tour paie l'écriture du cache, les autres la lecture.
+    # 1. Le jeu de rôle, sur les jetons relevés. Le cache lu par tour est une
+    #    moyenne : il grandit avec l'historique, donc un échange plus long
+    #    coûte un peu plus que proportionnellement. L'écart reste sous 10 %
+    #    jusqu'à une quinzaine de tours.
     j = JETONS["jeu-de-role"]
-    postes["jeu de rôle (opus-5)"] = (
-        cout_appel("claude-opus-5", j["entree"], j["sortie"], j["systeme"])
-        + (TOURS_JEU_DE_ROLE - 1)
-        * cout_appel("claude-opus-5", j["entree"], j["sortie"], j["systeme"],
-                     cache=True))
+    postes["jeu de rôle (%s)" % MODELE_JEU_DE_ROLE.split("-")[1]] = (
+        TOURS_JEU_DE_ROLE
+        * cout_appel(MODELE_JEU_DE_ROLE, j["entree"], j["sortie"],
+                     cache_lu=j["cache_lu"]))
 
     # 2. La voix de l'assistant, une par tour.
     modele_voix = ("azure-fr-CA-neural" if voix == "azure"
@@ -104,7 +130,12 @@ def main():
     ap.add_argument("--eleves", type=int, default=20)
     ap.add_argument("--modules", type=int, default=MODULES_PAR_NIVEAU[5])
     ap.add_argument("--voix", choices=("azure", "elevenlabs"), default="azure")
+    ap.add_argument("--tours", type=int, default=TOURS_JEU_DE_ROLE)
+    ap.add_argument("--modele-jeu", default=MODELE_JEU_DE_ROLE,
+                    choices=tuple(journal_api.TARIFS))
     a = ap.parse_args()
+    globals()["TOURS_JEU_DE_ROLE"] = a.tours
+    globals()["MODELE_JEU_DE_ROLE"] = a.modele_jeu
 
     postes, unite = par_eleve_par_module(a.voix)
     print("Hypothèses : %d tours de jeu de rôle, %d caractères par réplique,"
