@@ -1195,6 +1195,18 @@
                             && dansPeriode(s.lastSeen, s.activityId));
   }
 
+  /* Sans enregistrement conservé, une transcription vide n’est plus un
+     détail : c’est tout le dépôt. L’écran doit dire pourquoi, sinon
+     l’enseignant conclut que son élève n’a rien dit. */
+  function motOral(e){
+    if (e.transcriptionEtat === 'attente') return 'Transcription en cours…';
+    if (e.transcriptionEtat === 'echec')
+      return 'La transcription n’a pas abouti. Demande à l’élève de recommencer.';
+    if (e.transcriptionEtat === 'vide')
+      return 'Rien n’a été reconnu dans l’enregistrement.';
+    return '(vide)';
+  }
+
   /** Ce que l'assistant a répondu quand un élève a demandé « pourquoi je me
       trompe ? ». Regroupé par notion : c'est la question « qu'est-ce que je
       reprends demain matin ? », pas « qui a eu combien ». */
@@ -1371,9 +1383,11 @@
       </div>
       ${e.question ? `<p class="pg-note" style="margin:0 0 var(--sp-3)">Consigne : ${esc(e.question)}</p>` : ''}
       ${e.genre === 'oral'
-        ? `<audio controls preload="none" src="${esc(e.audioUrl)}"></audio>
-           <div class="pg-bloc"><span class="pg-bloc-cle">Ce que l’élève a écrit</span>
-             <p>${esc(e.transcription || '(vide)')}</p></div>`
+        ? `${e.audioRetire
+              ? `<p class="pg-note" style="margin:0 0 var(--sp-3)">♪ Enregistrement non conservé : le centre ne garde que la transcription.</p>`
+              : `<audio controls preload="none" src="${esc(e.audioUrl)}"></audio>`}
+           <div class="pg-bloc"><span class="pg-bloc-cle">${e.audioRetire ? 'Ce que l’élève a dit' : 'Ce que l’élève a écrit'}</span>
+             <p>${esc(e.transcription || motOral(e))}</p></div>`
         : `<div class="pg-bloc"><span class="pg-bloc-cle">Le texte de l’élève</span>
              <p style="white-space:pre-wrap">${esc(e.texte || '(vide)')}</p></div>`}
       <div class="pg-bloc ${juste ? 'pg-bloc--ok' : 'pg-bloc--corr'}">

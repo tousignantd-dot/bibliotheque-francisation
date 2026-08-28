@@ -1765,6 +1765,61 @@ def voix_pour_eleve(student):
     return voix_effective(racine[0]["id"]) if racine else (True, None)
 
 
+# ── Le dépôt des productions orales ──────────────────────────────────────
+# Une voix identifie une personne, pseudo ou pas. C'est le seul dépôt de la
+# plateforme qui reste lourd sous pseudonyme, et le seul qui n'avait aucun
+# interrupteur. Il en a trois états, et celui du milieu est le vrai sujet.
+#
+#   complet        ce qui existait : le fichier est gardé, l'enseignant
+#                  réécoute son élève.
+#   transcription  l'enregistrement est transcrit, puis **jamais écrit sur le
+#                  disque**. L'enseignant lit ce qui a été dit et corrige ;
+#                  la voix, elle, n'a jamais atterri. C'est l'état qui ferme
+#                  le passif sans coûter la production orale.
+#   ferme          la route refuse le dépôt. L'élève s'enregistre et
+#                  s'écoute — rien ne part.
+#
+# Le réglage vit sur les organisations seulement, comme `voix` : refuser de
+# conserver la parole des élèves est une position de direction, pas une
+# préférence d'enseignant. Le démultiplier par personne inviterait à le
+# rouvrir par commodité, un formulaire à la fois.
+DEPOT_ETATS = ("herite", "complet", "transcription", "ferme")
+DEPOT_REELS = ("complet", "transcription", "ferme")
+
+
+def depot_effective(org_id, orgs=None):
+    """L'état du dépôt oral sur ce nœud. Rend (état, décideur).
+
+    Même remontée que `ia_effective` et `voix_effective` : le PREMIER réglage
+    explicite tranche.
+
+    Le défaut est `complet`, du côté d'`ia_effective` et non de
+    `voix_effective`. La raison est la même : ce flux-ci passe par nos mains,
+    donc une direction qui n'a rien réglé n'a rien perdu, et une classe dont
+    les dépôts disparaîtraient sans que personne l'ait demandé croirait à une
+    panne plutôt qu'à une politique.
+    """
+    for noeud in org_chain(org_id, orgs):
+        if noeud.get("depot") in DEPOT_REELS:
+            return noeud["depot"], noeud
+    return "complet", None
+
+
+def depot_pour_eleve(student):
+    """(état, décideur) pour un élève, par le centre de son groupe.
+
+    Un groupe pas encore rattaché retombe sur le réseau. Contrairement à la
+    voix, le rattachement oublié n'ouvre rien de neuf ici : il laisse le
+    dépôt tel qu'il était avant que ce champ existe.
+    """
+    groupe = groupe_de_eleve(student)
+    centre = (groupe or {}).get("centreId")
+    if centre is not None:
+        return depot_effective(centre)
+    racine = orgs_of_type("reseau")
+    return depot_effective(racine[0]["id"]) if racine else ("complet", None)
+
+
 def org_subtree_ids(org_id, orgs=None):
     """Les identifiants du nœud et de toute sa descendance."""
     orgs = load_organisations() if orgs is None else orgs
@@ -2242,6 +2297,9 @@ def arbre_pour_lecture():
              "voixEffective": ("stricte" if voix_effective(o["id"], orgs)[0]
                                else "souple"),
              "voixDecidePar": (voix_effective(o["id"], orgs)[1] or {}).get("nom", ""),
+             "depot": o.get("depot", "herite"),
+             "depotEffectif": depot_effective(o["id"], orgs)[0],
+             "depotDecidePar": (depot_effective(o["id"], orgs)[1] or {}).get("nom", ""),
              # L'état effectif est calculé ici, pas dans la page : l'héritage
              # est une règle du serveur, et deux calculs de la même règle
              # finissent toujours par diverger.
@@ -2797,7 +2855,29 @@ def _transcription_azure(audio_bytes, nom="production.webm"):
     return " ".join(p.get("text", "") for p in phrases).strip()
 
 
-def _transcrire_en_arriere_plan(sub_id, audio_bytes, nom, eleve_id, groupe_id):
+def _noter_etat_transcription(sub_id, etat):
+    """Écrit l'issue de la transcription sur la fiche du dépôt.
+
+    Ne sert que lorsque l'audio n'a pas été conservé. Quand le fichier est là,
+    une transcription manquée ne coûte rien : l'enseignant réécoute. Quand il
+    ne l'est pas, le silence serait un dépôt vide sans explication — l'écran
+    doit pouvoir dire « demande à l'élève de recommencer » plutôt que de
+    laisser croire que l'élève n'a rien dit.
+    """
+    try:
+        with donnees_verrouillees():
+            subs = load_oral_submissions()
+            for enr in subs:
+                if enr.get("id") == sub_id:
+                    enr["transcriptionEtat"] = etat
+                    save_oral_submissions(subs)
+                    break
+    except (OSError, ValueError) as e:
+        print("[WARN] état de transcription non enregistré : %s" % e, flush=True)
+
+
+def _transcrire_en_arriere_plan(sub_id, audio_bytes, nom, eleve_id, groupe_id,
+                                sans_audio=False):
     """Transcrit après coup et complète la fiche du dépôt.
 
     Hors du verrou, et hors de la réponse à l'élève. `_handle_oral_submit`
@@ -2806,6 +2886,10 @@ def _transcrire_en_arriere_plan(sub_id, audio_bytes, nom, eleve_id, groupe_id):
     Le dépôt est déjà enregistré et visible par l'enseignant ; la
     transcription s'y ajoute quand elle arrive — ou jamais, sans que rien ne
     soit perdu ni que personne n'attende.
+
+    `sans_audio` dit que le fichier n'a pas été gardé — centre réglé sur
+    « transcription ». Alors ce texte est tout ce qui restera du dépôt, et un
+    échec doit s'écrire sur la fiche au lieu de disparaître dans le journal.
     """
     try:
         texte = _transcription_azure(audio_bytes, nom)
@@ -2813,14 +2897,20 @@ def _transcrire_en_arriere_plan(sub_id, audio_bytes, nom, eleve_id, groupe_id):
         print("[WARN] transcription Azure : %s" % e, flush=True)
         journal_api.noter("transcription", MODELE_TRANSCRIPTION, eleve_id,
                           groupe_id, statut="echec", http=getattr(e, "http", None))
+        if sans_audio:
+            _noter_etat_transcription(sub_id, "echec")
         return
     except Exception as e:                      # noqa: BLE001 — le dépôt prime
         print("[WARN] transcription : %s" % e, flush=True)
+        if sans_audio:
+            _noter_etat_transcription(sub_id, "echec")
         return
 
     journal_api.noter("transcription", MODELE_TRANSCRIPTION, eleve_id,
                       groupe_id, statut="ok")
     if not texte:
+        if sans_audio:
+            _noter_etat_transcription(sub_id, "vide")
         return
     try:
         with donnees_verrouillees():
@@ -15700,6 +15790,7 @@ class Handler(http.server.SimpleHTTPRequestHandler):
         eleve = validate_student_code(code)
         if not eleve:
             json_response(self, {"ia": False, "voixStricte": True,
+                                 "depot": "ferme",
                                  "raison": "code inconnu"})
             return
         autorisee, decideur = ia_pour_eleve(eleve)
@@ -15707,10 +15798,17 @@ class Handler(http.server.SimpleHTTPRequestHandler):
         # pose déjà une fois au chargement, et en ajouter une seconde ferait
         # deux allers-retours pour un seul réglage.
         stricte, qui_voix = voix_pour_eleve(eleve)
+        # Le dépôt voyage sur la même question, pour la même raison. Le module
+        # n'a besoin que de savoir s'il doit retirer le bouton d'envoi : la
+        # route refuse de toute façon, et un bouton qui échoue devant la
+        # classe vaut moins qu'un bouton absent.
+        etat_depot, qui_depot = depot_pour_eleve(eleve)
         json_response(self, {"ia": bool(autorisee),
                              "decidePar": (decideur or {}).get("nom", ""),
                              "voixStricte": bool(stricte),
-                             "voixDecidePar": (qui_voix or {}).get("nom", "")})
+                             "voixDecidePar": (qui_voix or {}).get("nom", ""),
+                             "depot": etat_depot,
+                             "depotDecidePar": (qui_depot or {}).get("nom", "")})
 
     def _handle_student_sections(self, params):
         """Ce qui est ouvert, pour le module lui-même : c'est lui qui verrouille
@@ -16203,8 +16301,13 @@ class Handler(http.server.SimpleHTTPRequestHandler):
         if org is None:
             json_response(self, {"error": "Organisation introuvable"}, 404)
             return
+        # L'« avant » doit couvrir tout ce que l'« après » rapporte, sinon le
+        # journal montre un réglage qui apparaît sans qu'on sache d'où il
+        # vient — `voix` y manquait déjà.
         avant = {"nom": org.get("nom"), "actif": org.get("actif", True),
-                 "ia": org.get("ia", "herite")}
+                 "ia": org.get("ia", "herite"),
+                 "voix": org.get("voix", "herite"),
+                 "depot": org.get("depot", "herite")}
         if "nom" in body:
             nom = (body.get("nom") or "").strip()
             if not nom:
@@ -16239,12 +16342,22 @@ class Handler(http.server.SimpleHTTPRequestHandler):
                 json_response(self, {"error": "Le réseau tranche : il n'hérite de personne"}, 400)
                 return
             org["voix"] = etat
+        if "depot" in body:
+            etat = (body.get("depot") or "herite").strip()
+            if etat not in DEPOT_ETATS:
+                json_response(self, {"error": "État de dépôt inconnu"}, 400)
+                return
+            if etat == "herite" and org.get("type") == "reseau":
+                json_response(self, {"error": "Le réseau tranche : il n'hérite de personne"}, 400)
+                return
+            org["depot"] = etat
         save_organisations(orgs)
         journal(fondateur, "organisation.modifiee", org_id,
                 {"avant": avant, "apres": {"nom": org.get("nom"),
                                            "actif": org.get("actif", True),
                                            "ia": org.get("ia", "herite"),
-                                           "voix": org.get("voix", "herite")}})
+                                           "voix": org.get("voix", "herite"),
+                                           "depot": org.get("depot", "herite")}})
         json_response(self, {"success": True, "organisation": org})
 
     def _handle_acces_add(self):
@@ -16719,6 +16832,8 @@ class Handler(http.server.SimpleHTTPRequestHandler):
                 "voix": o.get("voix", "herite"),
                 "voixEffective": ("stricte" if voix_effective(o["id"], orgs)[0]
                                   else "souple"),
+                "depot": o.get("depot", "herite"),
+                "depotEffectif": depot_effective(o["id"], orgs)[0],
                 "iaDecidePar": (decideur or {}).get("nom", ""),
                 "coutUsd": round(cout, 4),
             })
@@ -19200,6 +19315,19 @@ class Handler(http.server.SimpleHTTPRequestHandler):
             json_response(self, {"error": "Non autorisé"}, 401)
             return
 
+        # Le dépôt de la voix se décide sur l'arbre, avant de regarder le
+        # fichier. Un centre « fermé » ne reçoit rien : le message est écrit
+        # pour l'élève, qui le lit dans le module, et non pour un journal.
+        etat_depot, decideur_depot = depot_pour_eleve(student)
+        if etat_depot == "ferme":
+            json_response(self, {
+                "error": "Ton école ne reçoit pas les enregistrements. "
+                         "Écoute-toi, puis montre ton travail à ton enseignant "
+                         "en classe.",
+                "depot": "ferme",
+            }, 403)
+            return
+
         if "audio" not in form or not form["audio"].filename:
             json_response(self, {"error": "Aucun enregistrement fourni"}, 400)
             return
@@ -19220,9 +19348,16 @@ class Handler(http.server.SimpleHTTPRequestHandler):
         }.get(mime, "webm")
 
         sub_id = uuid.uuid4().hex
-        ORAL_AUDIO_DIR.mkdir(parents=True, exist_ok=True)
         audio_name = f"{sub_id}.{ext}"
-        (ORAL_AUDIO_DIR / audio_name).write_bytes(audio_bytes)
+        # « transcription » : le fichier n'est pas écrit, pas même le temps de
+        # l'appel. Les octets restent en mémoire, le temps qu'Azure les lise,
+        # et rien de la voix ne touche le disque. Écrire puis effacer aurait
+        # été plus simple à coder et faux à dire : une sauvegarde prise entre
+        # les deux gardes l'enregistrement.
+        garde_audio = etat_depot != "transcription"
+        if garde_audio:
+            ORAL_AUDIO_DIR.mkdir(parents=True, exist_ok=True)
+            (ORAL_AUDIO_DIR / audio_name).write_bytes(audio_bytes)
 
         record = {
             "id": sub_id,
@@ -19236,9 +19371,18 @@ class Handler(http.server.SimpleHTTPRequestHandler):
             "question": field("question")[:400],
             "transcription": field("transcription")[:2000],
             "feedback": field("feedback")[:2000],
-            "audioUrl": f"/assets/oral-submissions/{audio_name}",
+            "audioUrl": (f"/assets/oral-submissions/{audio_name}"
+                         if garde_audio else ""),
+            "depot": etat_depot,
             "createdAt": datetime.now().isoformat(timespec="seconds"),
         }
+        if not garde_audio:
+            record["audioRetire"] = "transcription"
+            record["depotDecidePar"] = (decideur_depot or {}).get("nom", "")
+            if not record["transcription"]:
+                # L'écran de l'enseignant doit pouvoir dire « ça arrive »
+                # plutôt que d'afficher un dépôt vide pendant l'appel.
+                record["transcriptionEtat"] = "attente"
         subs = load_oral_submissions()
         subs.append(record)
         save_oral_submissions(subs)
@@ -19250,7 +19394,7 @@ class Handler(http.server.SimpleHTTPRequestHandler):
             threading.Thread(
                 target=_transcrire_en_arriere_plan,
                 args=(sub_id, audio_bytes, audio_name,
-                      student.get("id"), student.get("groupId")),
+                      student.get("id"), student.get("groupId"), not garde_audio),
                 name="transcription", daemon=True).start()
 
         json_response(self, {"success": True, "id": sub_id})

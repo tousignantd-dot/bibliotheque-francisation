@@ -365,6 +365,16 @@
     filterOral();
   }
 
+  /* Sans enregistrement conservé, une transcription vide n'est plus un
+     détail : c'est tout le dépôt. L'écran doit dire pourquoi. */
+  function motOral(e){
+    if (e.transcriptionEtat === 'attente') return 'transcription en cours…';
+    if (e.transcriptionEtat === 'echec')
+      return "la transcription n'a pas abouti — demande à l'élève de recommencer.";
+    if (e.transcriptionEtat === 'vide') return "rien n'a été reconnu dans l'enregistrement.";
+    return '(vide)';
+  }
+
   function filterOral() {
     const q = document.getElementById('oralSearch').value.toLowerCase();
     const rows = allOral.filter(s => {
@@ -389,8 +399,10 @@
           <span style="font-size:11px;color:var(--text-3);margin-left:auto;">${formatDateTime(s.createdAt)}</span>
         </div>
         <div style="font-size:12.5px;color:var(--text-2);margin-bottom:8px;"><em>« ${escHtml(s.question||'')} »</em></div>
-        <audio controls preload="none" src="${escHtml(s.audioUrl||'')}" style="width:100%;height:36px;margin-bottom:8px;"></audio>
-        <div style="font-size:13px;margin-bottom:4px;"><strong>Transcription :</strong> ${escHtml(s.transcription||'(vide)')}</div>
+        ${s.audioRetire
+          ? `<div style="font-size:12px;color:var(--text-3);margin-bottom:8px;">♪ Enregistrement non conservé : le centre ne garde que la transcription.</div>`
+          : `<audio controls preload="none" src="${escHtml(s.audioUrl||'')}" style="width:100%;height:36px;margin-bottom:8px;"></audio>`}
+        <div style="font-size:13px;margin-bottom:4px;"><strong>Transcription :</strong> ${escHtml(s.transcription||motOral(s))}</div>
         ${s.feedback ? `<div style="font-size:12px;color:var(--text-3);margin-bottom:8px;"><strong>Rétroaction IA :</strong> ${escHtml(s.feedback)}</div>` : ''}
         <button class="btn" style="height:28px;padding:0 12px;font-size:11.5px;background:var(--bg);border-color:var(--border);color:var(--text-2);" onclick="deleteOral('${s.id}')">Supprimer</button>
       </div>`;

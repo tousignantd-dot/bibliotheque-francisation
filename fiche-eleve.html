@@ -462,6 +462,18 @@
       </table>`);
   }
 
+  /* Sans enregistrement conservé, une transcription vide n’est plus un
+     détail : c’est tout le dépôt. L’écran doit dire pourquoi, sinon
+     l’enseignant conclut que son élève n’a rien dit. */
+  function motOral(e){
+    if (e.transcriptionEtat === 'attente') return 'Transcription en cours…';
+    if (e.transcriptionEtat === 'echec')
+      return 'La transcription n’a pas abouti. Demande à l’élève de recommencer.';
+    if (e.transcriptionEtat === 'vide')
+      return 'Rien n’a été reconnu dans l’enregistrement.';
+    return '(vide)';
+  }
+
   /** Une production remise, orale ou écrite : ce que l'élève a produit, puis
       la rétroaction qu'il a reçue. La même carte sert aux deux sections et au
       dépliement d'une rangée d'activité. */
@@ -477,10 +489,12 @@
       </div>
       ${e.question ? `<p class="fe-note" style="margin:0 0 var(--sp-3)">Consigne : ${esc(e.question)}</p>` : ''}
       ${oral
-        ? `<audio controls preload="none" src="${esc(e.audioUrl)}"></audio>
+        ? `${e.audioRetire
+              ? `<p class="fe-note" style="margin:0 0 var(--sp-3)">♪ Enregistrement non conservé : le centre ne garde que la transcription.</p>`
+              : `<audio controls preload="none" src="${esc(e.audioUrl)}"></audio>`}
            <div class="fe-bloc">
-             <span class="fe-bloc-cle">Ce que l’élève a écrit</span>
-             <p>${esc(e.transcription || '(vide)')}</p>
+             <span class="fe-bloc-cle">${e.audioRetire ? 'Ce que l’élève a dit' : 'Ce que l’élève a écrit'}</span>
+             <p>${esc(e.transcription || motOral(e))}</p>
            </div>`
         : `<div class="fe-bloc">
              <span class="fe-bloc-cle">Le texte de l’élève</span>

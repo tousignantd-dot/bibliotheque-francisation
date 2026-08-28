@@ -5303,6 +5303,16 @@ body.sans-ia .sans-ia-mot {
   background: #f1f3f6; border-left: 4px solid #9aa3af;
   font-size: 14px; line-height: 1.5; color: #35404f;
 }
+/* Le dépôt de la voix se ferme par une classe sur <body>, et non en posant
+   `display:none` sur le bouton. Le repli sans assistant rouvre la zone
+   d'envoi après chaque enregistrement — un style posé à la main serait
+   effacé au premier « stop ». La règle, elle, tient. */
+body.depot-ferme #poSend { display: none !important; }
+.depot-mot {
+  margin-top: 12px; padding: 10px 14px; border-radius: 10px;
+  background: #f1f3f6; border-left: 4px solid #9aa3af;
+  font-size: 14px; line-height: 1.5; color: #35404f;
+}
 </style>
 <script>
 (function () {
@@ -5315,6 +5325,43 @@ body.sans-ia .sans-ia-mot {
     d.className = 'sans-ia-mot';
     d.textContent = texte;
     return d;
+  }
+
+  /* ── Le dépôt de la voix ─────────────────────────────────────────────
+     Rien à voir avec l'assistant : c'est ce que le centre accepte de
+     conserver. Une voix identifie une personne même sous pseudo, et une
+     direction peut refuser qu'on la garde — soit en entier, soit en n'en
+     gardant que la transcription. */
+
+  function motDepot(texte) {
+    var d = document.createElement('div');
+    d.className = 'depot-mot';
+    d.textContent = texte;
+    return d;
+  }
+
+  /* Le mot va AVANT la zone d'envoi et non dedans : la zone est cachée dans
+     un cas sur deux, et un mot caché avec elle ne serait jamais lu. */
+  function poserMotDepot(texte) {
+    var zone = document.getElementById('poSend');
+    if (!zone || !zone.parentNode) return;
+    if (zone.parentNode.querySelector('.depot-mot')) return;
+    zone.parentNode.insertBefore(motDepot(texte), zone);
+  }
+
+  function fermerDepot(muet) {
+    document.body.classList.add('depot-ferme');
+    if (muet) return;      /* module ouvert hors du portail : rien à expliquer */
+    poserMotDepot("Ton école ne reçoit pas les enregistrements. Écoute-toi, "
+      + "puis montre ton travail à ton enseignant en classe.");
+  }
+
+  /* L'élève a le droit de savoir ce qui est gardé de lui. C'est la moitié
+     du dossier qui ne s'écrit pas dans le code, et elle tient en une
+     phrase. */
+  function direDepotSansVoix() {
+    poserMotDepot("Ton enseignant recevra ce que tu as dit, écrit en mots. "
+      + "Ta voix, elle, n'est pas conservée.");
   }
 
   /* Production orale — l'envoi n'attend plus une rétroaction qui ne viendra
@@ -5522,6 +5569,12 @@ body.sans-ia .sans-ia-mot {
          réponse explicite « souple » la relâche : un silence, une panne ou un
          module ouvert hors du portail gardent la voix sur l'appareil. */
       if (data && data.voixStricte === false) window.RECO_STRICTE = false;
+      /* Le dépôt passe APRÈS `replier()`, et l'ordre n'est pas cosmétique :
+         le repli sans assistant OUVRE la zone d'envoi, puisqu'il n'y a plus
+         de rétroaction à attendre avant d'envoyer. Dans l'ordre inverse, un
+         centre fermé se ferait rouvrir par le repli. */
+      if (data && data.depot === 'ferme') fermerDepot(data.raison === 'code inconnu');
+      else if (data && data.depot === 'transcription') direDepotSansVoix();
     } catch (e) { /* on laisse le module tel quel */ }
   }
 

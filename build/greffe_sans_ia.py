@@ -33,6 +33,17 @@ Ce qui change, et ce qui ne change pas :
   audio et images    — inchangés : ce sont des fichiers, produits une fois et
                        livrés avec le module.
 
+Le bloc porte aussi, depuis, le **dépôt de la parole**, qui ne doit rien à
+l'assistant : une voix identifie une personne même sous pseudo, et une
+direction peut refuser qu'on la conserve. Trois états, réglés sur l'arbre
+(`depot`) et lus dans la même question qu'au chargement :
+
+  complet        rien ne change ;
+  transcription  l'élève envoie, l'enseignant lit ce qui a été dit, et le
+                 module le dit à l'élève — la voix n'est pas gardée ;
+  ferme          le bouton « Envoyer à mon enseignant » disparaît ; l'élève
+                 s'enregistre et s'écoute, rien ne part.
+
 Le repli est cosmétique ; la vraie décision est côté serveur. Une page se
 modifie avec deux touches, et une direction qui a dit non a dit non.
 
@@ -73,6 +84,16 @@ body.sans-ia .sans-ia-mot {
   background: #f1f3f6; border-left: 4px solid #9aa3af;
   font-size: 14px; line-height: 1.5; color: #35404f;
 }
+/* Le dépôt de la voix se ferme par une classe sur <body>, et non en posant
+   `display:none` sur le bouton. Le repli sans assistant rouvre la zone
+   d'envoi après chaque enregistrement — un style posé à la main serait
+   effacé au premier « stop ». La règle, elle, tient. */
+body.depot-ferme #poSend { display: none !important; }
+.depot-mot {
+  margin-top: 12px; padding: 10px 14px; border-radius: 10px;
+  background: #f1f3f6; border-left: 4px solid #9aa3af;
+  font-size: 14px; line-height: 1.5; color: #35404f;
+}
 </style>
 <script>
 (function () {
@@ -85,6 +106,43 @@ body.sans-ia .sans-ia-mot {
     d.className = 'sans-ia-mot';
     d.textContent = texte;
     return d;
+  }
+
+  /* ── Le dépôt de la voix ─────────────────────────────────────────────
+     Rien à voir avec l'assistant : c'est ce que le centre accepte de
+     conserver. Une voix identifie une personne même sous pseudo, et une
+     direction peut refuser qu'on la garde — soit en entier, soit en n'en
+     gardant que la transcription. */
+
+  function motDepot(texte) {
+    var d = document.createElement('div');
+    d.className = 'depot-mot';
+    d.textContent = texte;
+    return d;
+  }
+
+  /* Le mot va AVANT la zone d'envoi et non dedans : la zone est cachée dans
+     un cas sur deux, et un mot caché avec elle ne serait jamais lu. */
+  function poserMotDepot(texte) {
+    var zone = document.getElementById('poSend');
+    if (!zone || !zone.parentNode) return;
+    if (zone.parentNode.querySelector('.depot-mot')) return;
+    zone.parentNode.insertBefore(motDepot(texte), zone);
+  }
+
+  function fermerDepot(muet) {
+    document.body.classList.add('depot-ferme');
+    if (muet) return;      /* module ouvert hors du portail : rien à expliquer */
+    poserMotDepot("Ton école ne reçoit pas les enregistrements. Écoute-toi, "
+      + "puis montre ton travail à ton enseignant en classe.");
+  }
+
+  /* L'élève a le droit de savoir ce qui est gardé de lui. C'est la moitié
+     du dossier qui ne s'écrit pas dans le code, et elle tient en une
+     phrase. */
+  function direDepotSansVoix() {
+    poserMotDepot("Ton enseignant recevra ce que tu as dit, écrit en mots. "
+      + "Ta voix, elle, n'est pas conservée.");
   }
 
   /* Production orale — l'envoi n'attend plus une rétroaction qui ne viendra
@@ -292,6 +350,12 @@ body.sans-ia .sans-ia-mot {
          réponse explicite « souple » la relâche : un silence, une panne ou un
          module ouvert hors du portail gardent la voix sur l'appareil. */
       if (data && data.voixStricte === false) window.RECO_STRICTE = false;
+      /* Le dépôt passe APRÈS `replier()`, et l'ordre n'est pas cosmétique :
+         le repli sans assistant OUVRE la zone d'envoi, puisqu'il n'y a plus
+         de rétroaction à attendre avant d'envoyer. Dans l'ordre inverse, un
+         centre fermé se ferait rouvrir par le repli. */
+      if (data && data.depot === 'ferme') fermerDepot(data.raison === 'code inconnu');
+      else if (data && data.depot === 'transcription') direDepotSansVoix();
     } catch (e) { /* on laisse le module tel quel */ }
   }
 
@@ -316,6 +380,25 @@ def cibles(args):
     ]
 
 
+def bloc_courant():
+    """Le bloc à poser, lu DANS le gabarit.
+
+    Le gabarit est la source ; `BLOC`, ci-dessus, n'en est qu'une copie de
+    secours pour le cas où on le lirait sans lui. Deux copies d'un même
+    script finissent toujours par diverger, et la leçon est déjà payée :
+    `greffe_confinement.py` importe les substitutions du gabarit au lieu de
+    les recopier, pour cette raison exacte.
+    """
+    try:
+        s = io.open(GABARIT, encoding="utf-8").read()
+    except IOError:
+        return BLOC
+    i, j = s.find(DEBUT), s.find(FIN)
+    if i < 0 or j < 0:
+        return BLOC
+    return s[i:j + len(FIN)] + "\n"
+
+
 def poser(chemin, retirer):
     try:
         s = io.open(chemin, encoding="utf-8").read()
@@ -329,11 +412,21 @@ def poser(chemin, retirer):
                    flags=re.S)
         io.open(chemin, "w", encoding="utf-8").write(s)
         return "retiré"
+    bloc = bloc_courant()
     if deja:
-        return "déjà fait"
+        # Un bloc déjà posé n'est PAS un bloc à jour. Repasser sans remplacer
+        # laisserait les 89 modules sur la version du jour de leur greffe,
+        # et le gabarit seul en avance — c'est-à-dire un repli qui marche
+        # sur le poste de développement et nulle part ailleurs.
+        actuel = re.search(re.escape(DEBUT) + r".*?" + re.escape(FIN) + r"\n?",
+                           s, flags=re.S).group(0)
+        if actuel == bloc:
+            return "déjà fait"
+        io.open(chemin, "w", encoding="utf-8").write(s.replace(actuel, bloc, 1))
+        return "mis à jour"
     if "</body>" not in s:
         return "introuvable"
-    io.open(chemin, "w", encoding="utf-8").write(s.replace("</body>", BLOC + "</body>", 1))
+    io.open(chemin, "w", encoding="utf-8").write(s.replace("</body>", bloc + "</body>", 1))
     return "greffé"
 
 
