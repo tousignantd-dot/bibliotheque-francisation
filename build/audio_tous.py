@@ -33,8 +33,13 @@ import sys
 import time
 
 RACINE = pathlib.Path(__file__).resolve().parent.parent
+# Comparés en minuscules : Azure rend « HTTP Error 401: Unauthorized », avec
+# des majuscules qu'un motif en minuscules ne rattraperait pas — et un
+# coupe-circuit qui ne coupe pas est pire que pas de coupe-circuit.
 MOTIFS_FATALS = ('invalid_api_key', 'authentication_error', 'quota_exceeded',
-                 'unauthorized', 'insufficient_credits')
+                 'unauthorized', 'insufficient_credits',
+                 'error 401', 'error 403', 'too many requests',
+                 'azure_speech_key absente')
 
 
 def generateurs(filtre=None):
@@ -81,47 +86,40 @@ def main():
               % (len(liste), total))
         return 0
 
-    # Les générateurs lisent la clé dans l'environnement, mais l'utilisateur la
-    # dépose dans ~/Claude/.env, où vivent déjà celles des images. On la charge
-    # ici plutôt que de lui demander de l'exporter à la main chaque fois.
-    if not os.environ.get('ELEVENLABS_API_KEY', '').strip():
+    # Les générateurs lisent la clé dans ~/Claude/.env par `build/azure_voix.py`.
+    # On vérifie seulement qu'elle y est, avant de sonder.
+    if not os.environ.get('AZURE_SPEECH_KEY', '').strip():
         env = pathlib.Path.home() / 'Claude' / '.env'
         if env.exists():
             for ligne in env.read_text(encoding='utf-8').splitlines():
-                if ligne.strip().startswith('ELEVENLABS_API_KEY') and '=' in ligne:
-                    os.environ['ELEVENLABS_API_KEY'] = (
-                        ligne.split('=', 1)[1].strip().strip('"').strip("'"))
-    if not os.environ.get('ELEVENLABS_API_KEY', '').strip():
-        print('✗ ELEVENLABS_API_KEY introuvable, ni dans l’environnement '
+                for nom in ('AZURE_SPEECH_KEY', 'AZURE_SPEECH_REGION'):
+                    if ligne.strip().startswith(nom) and '=' in ligne:
+                        os.environ.setdefault(
+                            nom, ligne.split('=', 1)[1].strip().strip('"').strip("'"))
+    if not os.environ.get('AZURE_SPEECH_KEY', '').strip():
+        print('✗ AZURE_SPEECH_KEY introuvable, ni dans l’environnement '
               'ni dans ~/Claude/.env.')
         return 2
 
-    # Une seule requête avant de lancer quoi que ce soit. Un jeton invalide ou
-    # un quota à zéro se voit ici, pour le prix d'un mot — au lieu de deux
+    # Une seule requête avant de lancer quoi que ce soit. Une clé invalide ou
+    # une région fausse se voit ici, pour le prix d'un mot — au lieu de deux
     # cents échecs par générateur pendant cinq minutes, comme le 22 août.
     #
-    # On sonde la SYNTHÈSE, pas l'abonnement : une clé restreinte au
-    # text-to-speech ne peut pas lire /v1/user/subscription et renvoie 401
-    # alors qu'elle parle très bien. Sonder autre chose que ce qu'on va faire,
-    # c'est se faire refuser pour la mauvaise raison.
+    # On sonde la SYNTHÈSE, pas l'abonnement : sonder autre chose que ce qu'on
+    # va faire, c'est se faire refuser pour la mauvaise raison. La sonde suit
+    # le fournisseur — elle interrogeait ElevenLabs, qui n'est plus appelé par
+    # aucun générateur de module depuis la bascule du 26 août 2026.
     sonde = subprocess.run(
         [sys.executable, '-c',
-         'import os, sys, json, urllib.request, urllib.error\n'
+         'import sys, pathlib, tempfile\n'
          'sys.path.insert(0, %r)\n'
-         'from voix import charge_utile, url\n'
-         'voix = "21m00Tcm4TlvDq8ikWAM"\n'
-         'req = urllib.request.Request(url(voix),\n'
-         '    data=json.dumps(charge_utile("oui", voix)).encode(),\n'
-         '    headers={"xi-api-key": os.environ["ELEVENLABS_API_KEY"],\n'
-         '             "Content-Type": "application/json"})\n'
-         'try:\n'
-         '    n = len(urllib.request.urlopen(req, timeout=60).read())\n'
-         '    print("OK — un mot synthétisé, %%.1f Ko" %% (n/1024))\n'
-         'except urllib.error.HTTPError as e:\n'
-         '    print("HTTP %%s %%s" %% (e.code, e.read()[:160].decode("utf-8","replace")))\n'
-         '    sys.exit(1)\n' % str(RACINE / 'build')],
+         'from azure_voix import parle\n'
+         'f = pathlib.Path(tempfile.mkdtemp()) / "sonde.mp3"\n'
+         'parle("oui", "enseignante", f)\n'
+         'print("OK — un mot synthétisé, %%.1f Ko" %% (f.stat().st_size/1024))\n'
+         % str(RACINE / 'build')],
         capture_output=True, text=True, env=os.environ)
-    print('Sonde de la synthèse : ' + (sonde.stdout or sonde.stderr).strip())
+    print('Sonde de la synthèse : ' + (sonde.stdout or sonde.stderr).strip()[-200:])
     if sonde.returncode:
         print('✗ L’API refuse déjà un seul mot. Rien n’est lancé.')
         return 2
@@ -137,7 +135,7 @@ def main():
         derniere = [l for l in sortie.strip().split('\n') if l.strip()][-1:] or ['']
         print('   ' + derniere[0][:120], flush=True)
 
-        fatal = any(m in sortie for m in MOTIFS_FATALS)
+        fatal = any(m in sortie.lower() for m in MOTIFS_FATALS)
         if r.returncode == 0 and not fatal:
             faits.append(f.name); consecutifs = 0
             continue
