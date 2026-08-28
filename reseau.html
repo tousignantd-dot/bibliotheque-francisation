@@ -87,9 +87,19 @@
              letter-spacing: .06em; text-transform: uppercase;
              padding: 2px var(--sp-2); border-radius: var(--r-sm);
              white-space: nowrap; }
-    .rs-ia--oui { background: var(--teal-100); color: var(--teal-700, var(--text-strong)); }
+    /* Le filet n'est pas décoratif : une carte de centre est elle-même sur
+       `--teal-100`, et un badge teal sans bordure y disparaissait. */
+    .rs-ia--oui { background: var(--teal-100); color: var(--teal-700, var(--text-strong));
+                  border: 1px solid var(--teal-700, var(--text-strong)); }
+    .rs-ia--part { background: var(--warn-bg); color: var(--warn-ink);
+                   border: 1px solid var(--warn-line); }
     .rs-ia--non { background: var(--surface-sunken); color: var(--text-strong);
                   border: 1px solid var(--text-strong); }
+    /* Les trois drapeaux tiennent sur une ligne qui se replie, et non dans
+       trois coins de la carte : ils répondent à une seule question — qu'est-ce
+       qui s'applique ici. */
+    .rs-drapeaux { display: flex; align-items: baseline; gap: var(--sp-2);
+                   flex-wrap: wrap; }
     /* L'état hérité s'écrit en toutes lettres à côté du badge : sans ça, la
        question « qui a décidé ça ? » revient par courriel. */
     .rs-ia-src { font-size: var(--fs-meta); color: var(--text-muted); }
@@ -264,18 +274,68 @@
       return '<div class="rs-tuile"><b>' + n + '</b><span>' + ech(mot) + '</span></div>';
     }
 
+    /* Trois drapeaux, trois flux, et ils ne se déduisent pas l'un de l'autre :
+       ce qu'un élève peut demander à l'assistant, où part sa voix pendant
+       qu'il parle, et ce qu'on garde de ce qu'il a dit. Une direction qui
+       coupe l'assistant n'a rien dit sur les deux autres.
+
+       Tous se règlent sur le même écran parce qu'ils répondent à la même
+       question — qu'est-ce qui sort d'ici, et qu'est-ce qui reste. Les
+       séparer obligerait à chercher trois fois.
+
+       Le ton du badge décrit l'état, pas sa vertu : `oui` = le flux est
+       ouvert, `non` = il est fermé, `part` = entre les deux. Un micro
+       confiné porte donc le badge sombre, et c'est le réglage prudent. */
+    var DRAPEAUX = [
+      { cle: 'ia', libelle: 'Aide de l\'assistant',
+        effectif: 'iaEffective', source: 'iaDecidePar', defaut: 'autorisee',
+        etats: [['autorisee', 'IA autorisée', 'oui'],
+                ['interdite', 'IA interdite', 'non']] },
+      { cle: 'voix', libelle: 'Reconnaissance vocale',
+        effectif: 'voixEffective', source: 'voixDecidePar', defaut: 'stricte',
+        etats: [['souple', 'Micro vers l\'éditeur', 'oui'],
+                ['stricte', 'Micro sur l\'appareil', 'non']] },
+      { cle: 'depot', libelle: 'Dépôt des enregistrements',
+        effectif: 'depotEffectif', source: 'depotDecidePar', defaut: 'complet',
+        etats: [['complet', 'Voix conservée', 'oui'],
+                ['transcription', 'Transcription seule', 'part'],
+                ['ferme', 'Dépôt fermé', 'non']] }
+    ];
+
     /* L'état posé sur le nœud (« hérité », « autorisée », « interdite ») et
        l'état qui s'applique vraiment sont deux choses. La page montre le
        second — c'est lui que vivent les élèves — et nomme le premier quand
        la décision vient d'ailleurs. */
-    function badgeIA(org) {
-      var oui = org.iaEffective !== 'interdite';
-      var pose = org.ia || 'herite';
-      var src = (pose === 'herite' && org.iaDecidePar && org.iaDecidePar !== org.nom)
-        ? ' <span class="rs-ia-src">hérité de ' + ech(org.iaDecidePar) + '</span>'
-        : (pose === 'herite' ? ' <span class="rs-ia-src">par défaut</span>' : '');
-      return '<span class="rs-ia rs-ia--' + (oui ? 'oui' : 'non') + '">IA '
-           + (oui ? 'autorisée' : 'interdite') + '</span>' + src;
+    function badges(org) {
+      var vus = DRAPEAUX.map(function (d) {
+        var etat = org[d.effectif] || d.defaut;
+        var trouve = d.etats.filter(function (e) { return e[0] === etat; })[0]
+                  || [etat, etat, 'non'];
+        var qui = org[d.source];
+        return {
+          badge: '<span class="rs-ia rs-ia--' + trouve[2] + '">' + ech(trouve[1]) + '</span>',
+          /* `null` quand le réglage est posé ICI : il n'y a alors personne
+             d'autre à nommer. */
+          source: (org[d.cle] || 'herite') !== 'herite' ? null
+                : (qui && qui !== org.nom ? 'hérité de ' + qui : 'par défaut')
+        };
+      });
+
+      /* Trois « hérité de Réseau » à la file diraient trois fois la même
+         chose. Quand les trois viennent du même endroit, on l'écrit une
+         fois ; quand ils divergent, chacun se nomme — c'est justement le
+         cas où la question se pose. */
+      var sources = vus.map(function (v) { return v.source; });
+      var commune = sources[0] !== null
+                 && sources.every(function (x) { return x === sources[0]; });
+      var corps = commune
+        ? vus.map(function (v) { return v.badge; }).join('')
+            + ' <span class="rs-ia-src">' + ech(sources[0]) + '</span>'
+        : vus.map(function (v) {
+            return v.badge + (v.source
+              ? ' <span class="rs-ia-src">' + ech(v.source) + '</span>' : '');
+          }).join(' ');
+      return '<span class="rs-drapeaux">' + corps + '</span>';
     }
 
     function rendreNoeud(org, parAcces, tousLesOrgs) {
@@ -285,7 +345,7 @@
           + '<span class="rs-nom">' + ech(org.nom) + '</span>'
           + '<span class="rs-id">n° ' + ech(org.id) + '</span>'
           + (org.actif === false ? '<span class="rs-id">— inactif</span>' : '')
-          + badgeIA(org)
+          + badges(org)
           + '</div>';
 
       var lignes = (parAcces[org.id] || []).map(function (a) {
@@ -310,7 +370,7 @@
       if (org.type === 'reseau') gestes.push(['ouvrir-css', 'Ouvrir un CSS']);
       if (org.type === 'css') gestes.push(['ouvrir-centre', 'Ouvrir un centre']);
       if (org.type !== 'reseau') gestes.push(['renommer', 'Renommer']);
-      gestes.push(['regler-ia', "Régler l'IA"]);
+      gestes.push(['regler', 'Régler les trois drapeaux']);
       if (org.type === 'centre') gestes.push(['poser-acces', 'Poser un accès']);
       if (gestes.length) {
         li += '<div class="rs-actions">' + gestes.map(function (g) {
@@ -482,24 +542,30 @@
         var n = (DONNEES.organisations || []).find(function (o) { return o.id === orgId; });
         return formNom(orgId, 'renommer', 'Nouveau nom', n && n.nom);
       }
-      if (geste === 'regler-ia') {
+      if (geste === 'regler') {
         var o = (DONNEES.organisations || []).find(function (x) { return x.id === orgId; });
-        var pose = (o && o.ia) || 'herite';
         /* Le réseau n'a personne au-dessus de lui : lui offrir « hériter »
            serait offrir un choix que le serveur refuse. */
-        var choix = (o && o.type === 'reseau')
-          ? [['autorisee', 'Autorisée'], ['interdite', 'Interdite']]
-          : [['herite', 'Hériter du niveau au-dessus'],
-             ['autorisee', 'Autorisée'], ['interdite', 'Interdite']];
+        var racine = !!(o && o.type === 'reseau');
         return formulaire(orgId,
-          '<div style="flex:1 1 260px"><label for="rsIA">Aide de l\'assistant</label>'
-          + '<select class="field" id="rsIA" style="width:100%">'
-          + choix.map(function (c) {
-              return '<option value="' + c[0] + '"' + (c[0] === pose ? ' selected' : '')
-                   + '>' + c[1] + '</option>';
-            }).join('')
-          + '</select></div>'
-          + '<button type="button" class="btn btn--pri btn--sm" data-geste="regler-ia-ok" data-org="' + orgId + '">Appliquer</button>'
+          DRAPEAUX.map(function (d) {
+            var pose = (o && o[d.cle]) || 'herite';
+            /* La racine sort de la migration sans réglage écrit, mais elle
+               n'a pas le droit d'hériter : sans ça, le menu s'ouvrirait sur
+               son premier choix — pas sur ce qui s'applique vraiment. */
+            if (racine && pose === 'herite') pose = (o && o[d.effectif]) || d.defaut;
+            var choix = d.etats.map(function (e) { return [e[0], e[1]]; });
+            if (!racine) choix.unshift(['herite', 'Hériter du niveau au-dessus']);
+            return '<div style="flex:1 1 220px"><label for="rsD-' + d.cle + '">'
+              + ech(d.libelle) + '</label>'
+              + '<select class="field" id="rsD-' + d.cle + '" style="width:100%">'
+              + choix.map(function (c) {
+                  return '<option value="' + c[0] + '"'
+                       + (c[0] === pose ? ' selected' : '') + '>' + ech(c[1]) + '</option>';
+                }).join('')
+              + '</select></div>';
+          }).join('')
+          + '<button type="button" class="btn btn--pri btn--sm" data-geste="regler-ok" data-org="' + orgId + '">Appliquer</button>'
           + '<button type="button" class="btn btn--ghost btn--sm" data-geste="annuler">Annuler</button>');
       }
 
@@ -530,9 +596,17 @@
         return void agir('POST', '/api/admin/organisations', { type: 'centre', parentId: orgId, nom: nom });
       if (geste === 'renommer-ok')
         return void agir('PATCH', '/api/admin/organisations/' + orgId, { nom: nom });
-      if (geste === 'regler-ia-ok')
-        return void agir('PATCH', '/api/admin/organisations/' + orgId,
-                         { ia: document.getElementById('rsIA').value });
+      if (geste === 'regler-ok') {
+        /* Les trois partent ensemble, dans un seul PATCH : trois appels
+           laisseraient l'arbre à moitié réglé si le deuxième échouait, et
+           le journal montrerait trois modifications pour un seul geste. */
+        var corps = {};
+        DRAPEAUX.forEach(function (d) {
+          var sel = document.getElementById('rsD-' + d.cle);
+          if (sel) corps[d.cle] = sel.value;
+        });
+        return void agir('PATCH', '/api/admin/organisations/' + orgId, corps);
+      }
       if (geste === 'poser-ok')
         return void agir('POST', '/api/admin/acces', {
           teacherId: Number(document.getElementById('rsT').value),
