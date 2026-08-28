@@ -1,0 +1,213 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Où manque l'audio</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Newsreader:ital,opsz,wght@0,6..72,400;0,6..72,500;0,6..72,600&family=Nunito:ital,wght@0,400;0,600;0,700;0,800&display=swap">
+<style>
+:root{
+  --ground:#F7F7F5; --card:#FFFFFF; --sunken:#FBFBFA;
+  --ink:#17181A; --body:#3A3D40; --muted:#6E7175;
+  --line:#E4E4E0; --line-fort:#D2D2CD;
+  --ok:#0A8F5B; --ok-bg:#E6F5EE;
+  --trou:#C7302B; --trou-bg:#FBEDEC;
+  --part:#C07A08; --part-bg:#FBF2E2;
+  --acier:#1D6B8F;
+  --niv-3:#B45309; --niv-4:#8C6A07; --niv-5:#0D7A6F;
+  --niv-6:#1D6B8F; --niv-7:#3B49A0; --niv-8:#7E3F98;
+  --mono:ui-monospace,SFMono-Regular,"SF Mono",Menlo,Consolas,monospace;
+}
+@media (prefers-color-scheme: dark){
+  :root:not([data-theme="light"]){
+    --ground:#151618; --card:#1D1F22; --sunken:#212326;
+    --ink:#F2F2F0; --body:#CFD1D3; --muted:#94979B;
+    --line:#2E3135; --line-fort:#3D4146;
+    --ok:#4BC48D; --ok-bg:#12291F;
+    --trou:#EE7A73; --trou-bg:#2E1917;
+    --part:#E0A63F; --part-bg:#2C2213;
+    --acier:#6DAFD2;
+    --niv-3:#E0A63F; --niv-4:#D4BC5C; --niv-5:#5FC3B8;
+    --niv-6:#6DAFD2; --niv-7:#8D97DE; --niv-8:#C089D6;
+  }
+}
+:root[data-theme="dark"]{
+  --ground:#151618; --card:#1D1F22; --sunken:#212326;
+  --ink:#F2F2F0; --body:#CFD1D3; --muted:#94979B;
+  --line:#2E3135; --line-fort:#3D4146;
+  --ok:#4BC48D; --ok-bg:#12291F;
+  --trou:#EE7A73; --trou-bg:#2E1917;
+  --part:#E0A63F; --part-bg:#2C2213;
+  --acier:#6DAFD2;
+  --niv-3:#E0A63F; --niv-4:#D4BC5C; --niv-5:#5FC3B8;
+  --niv-6:#6DAFD2; --niv-7:#8D97DE; --niv-8:#C089D6;
+}
+*{box-sizing:border-box}
+body{margin:0;background:var(--ground);color:var(--body);
+  font-family:Nunito,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;
+  font-size:17px;line-height:1.62;-webkit-font-smoothing:antialiased}
+.doc{max-width:880px;margin:0 auto;padding:56px 24px 96px}
+.eyebrow{font-size:12px;font-weight:800;letter-spacing:.13em;text-transform:uppercase;
+  color:var(--acier);margin:0 0 14px}
+h1{font-family:Newsreader,Georgia,serif;font-size:clamp(38px,6.4vw,58px);line-height:1.04;
+  font-weight:500;letter-spacing:-.02em;color:var(--ink);margin:0 0 20px;text-wrap:balance}
+.chapeau{font-size:19px;line-height:1.6;margin:0;max-width:62ch}
+.chapeau strong{color:var(--ink);font-weight:700}
+h2{font-family:Newsreader,Georgia,serif;font-size:29px;line-height:1.2;font-weight:600;
+  letter-spacing:-.01em;color:var(--ink);margin:0 0 4px;text-wrap:balance}
+p{margin:0;max-width:68ch}
+section{display:flex;flex-direction:column;gap:16px;padding:44px 0 0;margin:44px 0 0;
+  border-top:1px solid var(--line)}
+section.premier{border-top:none;margin-top:0;padding-top:40px}
+code{font-family:var(--mono);font-size:.86em;background:var(--sunken);
+  border:1px solid var(--line);border-radius:4px;padding:1px 5px;color:var(--ink)}
+ul.simple{margin:0;padding-left:20px;display:flex;flex-direction:column;gap:8px}
+ul.simple li{max-width:66ch} ul.simple li strong{color:var(--ink)}
+.these{background:var(--card);border:1px solid var(--line);border-left:5px solid var(--acier);
+  border-radius:3px;padding:26px 28px;display:flex;flex-direction:column;gap:12px}
+.these p{font-size:18px}
+.these .cle{font-family:Newsreader,Georgia,serif;font-size:23px;line-height:1.3;
+  font-weight:500;color:var(--ink);font-style:italic}
+.chiffres{display:grid;grid-template-columns:repeat(auto-fit,minmax(140px,1fr));gap:10px}
+.ch{background:var(--card);border:1px solid var(--line);border-radius:3px;
+  border-top:3px solid var(--trou);padding:15px 16px}
+.ch.bon{border-top-color:var(--ok)}
+.ch .n{font-family:Newsreader,Georgia,serif;font-size:30px;line-height:1;font-weight:500;
+  color:var(--ink);display:block;font-variant-numeric:tabular-nums}
+.ch .q{font-size:12.5px;font-weight:700;color:var(--muted);line-height:1.35;display:block;
+  margin-top:7px}
+.defile{overflow-x:auto;border:1px solid var(--line);border-radius:3px;background:var(--card)}
+table{border-collapse:collapse;width:100%;font-size:15px;min-width:620px}
+caption{caption-side:top;text-align:left;padding:0 0 10px;font-size:13.5px;color:var(--muted)}
+th,td{padding:11px 15px;text-align:left;border-bottom:1px solid var(--line);vertical-align:top}
+thead th{font-size:11.5px;font-weight:800;letter-spacing:.09em;text-transform:uppercase;
+  color:var(--muted);background:var(--sunken);white-space:nowrap}
+th.r,td.r{text-align:right;font-variant-numeric:tabular-nums;white-space:nowrap}
+tbody tr:last-child td{border-bottom:none}
+td.q{font-weight:700;color:var(--ink)}
+td small{display:block;color:var(--muted);font-size:13px;line-height:1.45;margin-top:2px}
+tbody tr td:first-child{border-left:4px solid transparent}
+tfoot td{font-weight:800;color:var(--ink);background:var(--sunken);
+  border-top:2px solid var(--line-fort)}
+.jauge{display:block;height:7px;border-radius:2px;background:var(--line);margin-top:6px;
+  width:150px;overflow:hidden}
+.jauge i{display:block;height:100%;background:var(--trou)}
+.badge{display:inline-block;font-size:11.5px;font-weight:800;letter-spacing:.05em;
+  text-transform:uppercase;padding:3px 9px;border-radius:2px;white-space:nowrap}
+.b-vide{background:var(--trou-bg);color:var(--trou)}
+.b-part{background:var(--part-bg);color:var(--part)}
+.b-ok{background:var(--ok-bg);color:var(--ok)}
+.reserve{border:1px dashed var(--line-fort);border-radius:3px;padding:20px 24px;
+  font-size:15px;color:var(--muted);display:flex;flex-direction:column;gap:9px}
+.reserve strong{color:var(--body)}
+.pied{margin-top:52px;padding-top:22px;border-top:1px solid var(--line);font-size:13.5px;
+  color:var(--muted);display:flex;flex-direction:column;gap:5px}
+@media (max-width:620px){ .doc{padding:36px 18px 72px} .jauge{width:96px} }
+</style>
+</head>
+<body>
+<article class="doc">
+<p class="eyebrow">Bibliothèque de francisation · 28 août 2026</p>
+<h1>Où manque l'audio</h1>
+<p class="chapeau">Le relevé de ce qui n'a pas encore de voix : <strong>51 modules sur 87</strong>, 3 497 fichiers, environ 403 min de synthèse. Compté sur le disque, jamais estimé.</p>
+<section class="premier"><div class="chiffres">
+<div class="ch"><span class="n">51</span><span class="q">modules avec des trous</span></div>
+<div class="ch"><span class="n">3 239</span><span class="q">répliques de dialogue</span></div>
+<div class="ch"><span class="n">258</span><span class="q">pastilles haut-parleur</span></div>
+<div class="ch"><span class="n">35</span><span class="q">modules sans un seul dialogue</span></div>
+<div class="ch"><span class="n">403 min</span><span class="q">de synthèse à produire</span></div>
+</div></section>
+<section><div class="these">
+<p class="cle">Ce qui manque n'est presque que le bouton « Écouter » de Je découvre.</p>
+<p>Les pastilles haut-parleur des exercices sont produites partout, à un module près. Tout le reste — 3 239 fichiers — ce sont les répliques des dialogues : sans elles, le bouton d'écoute ne joue rien, et c'est la première chose que l'élève touche dans un module.</p>
+</div></section>
+<section><p class="eyebrow">Par niveau</p>
+<h2>Où sont les trous</h2>
+<div class="defile"><table><caption>Les modules sans trou ne figurent pas dans les colonnes de droite.</caption>
+<thead><tr><th>Niveau</th><th class="r">Modules</th><th class="r">Troués</th><th class="r">Sons</th><th class="r">Répliques</th><th class="r">Durée</th></tr></thead><tbody>
+<tr><td class="q">Niveau ?</td><td class="r">1</td><td class="r">—</td><td class="r">—</td><td class="r">—</td><td class="r">—</td></tr>
+<tr><td class="q">Niveau 1</td><td class="r">4</td><td class="r">—</td><td class="r">—</td><td class="r">—</td><td class="r">—</td></tr>
+<tr><td class="q">Niveau 2</td><td class="r">10</td><td class="r">—</td><td class="r">—</td><td class="r">—</td><td class="r">—</td></tr>
+<tr><td class="q" style="border-left-color:var(--niv-3)">Niveau 3</td><td class="r">13</td><td class="r">8</td><td class="r">—</td><td class="r">409</td><td class="r">27 min</td></tr>
+<tr><td class="q" style="border-left-color:var(--niv-4)">Niveau 4</td><td class="r">18</td><td class="r">4</td><td class="r">—</td><td class="r">139</td><td class="r">12 min</td></tr>
+<tr><td class="q" style="border-left-color:var(--niv-5)">Niveau 5</td><td class="r">14</td><td class="r">12</td><td class="r">—</td><td class="r">514</td><td class="r">45 min</td></tr>
+<tr><td class="q" style="border-left-color:var(--niv-6)">Niveau 6</td><td class="r">10</td><td class="r">10</td><td class="r">258</td><td class="r">737</td><td class="r">115 min</td></tr>
+<tr><td class="q" style="border-left-color:var(--niv-7)">Niveau 7</td><td class="r">11</td><td class="r">11</td><td class="r">—</td><td class="r">956</td><td class="r">134 min</td></tr>
+<tr><td class="q" style="border-left-color:var(--niv-8)">Niveau 8</td><td class="r">6</td><td class="r">6</td><td class="r">—</td><td class="r">484</td><td class="r">71 min</td></tr>
+</tbody><tfoot><tr><td>Total</td><td class="r">87</td><td class="r">51</td><td class="r">258</td><td class="r">3 239</td><td class="r">403 min</td></tr></tfoot></table></div></section>
+<section><p class="eyebrow">Deux situations, pas une</p>
+<h2>Muet, ou commencé puis arrêté</h2>
+<ul class="simple">
+<li><strong>35 modules n'ont pas une seule réplique enregistrée.</strong> Leur bouton « Écouter » ne joue rien du tout.</li>
+<li><strong>16 modules ont un dialogue commencé puis arrêté</strong> — 340 répliques. Ceux-là sont les plus trompeurs : le bouton répond, et s'arrête au milieu.</li>
+<li><strong>Les pastilles manquantes se concentrent dans les mini-leçons</strong> : 228 pour les mini-leçons, 18 pour les bandeaux savoir, 12 pour les cartes et exercices.</li>
+</ul></section>
+<section><p class="eyebrow">Module par module</p>
+<h2>Du plus troué au moins troué</h2>
+<div class="defile"><table><caption>La jauge montre la part du dialogue qui manque.</caption>
+<thead><tr><th>Module</th><th>Ce qui manque</th><th class="r">Durée</th></tr></thead><tbody>
+<tr><td class="q" style="border-left-color:var(--niv-6)">module-n6-habitation<small>niveau 6 · Faire faire des travaux</small></td><td><span class="badge b-vide">muet</span> 258 pastilles sur 258 · 83 répliques sur 83<span class="jauge"><i style="width:100%"></i></span></td><td class="r">25 min</td></tr>
+<tr><td class="q" style="border-left-color:var(--niv-8)">module-n8-oeuvres<small>niveau 8 · Ce que l&#x27;œuvre ne dit pas</small></td><td><span class="badge b-vide">muet</span> 106 répliques sur 106<span class="jauge"><i style="width:100%"></i></span></td><td class="r">13 min</td></tr>
+<tr><td class="q" style="border-left-color:var(--niv-7)">module-n7-etablissement<small>niveau 7 · Entrer dans le programme</small></td><td><span class="badge b-vide">muet</span> 104 répliques sur 104<span class="jauge"><i style="width:100%"></i></span></td><td class="r">13 min</td></tr>
+<tr><td class="q" style="border-left-color:var(--niv-7)">module-n7-habitation<small>niveau 7 · Le bruit d&#x27;en haut</small></td><td><span class="badge b-vide">muet</span> 104 répliques sur 104<span class="jauge"><i style="width:100%"></i></span></td><td class="r">15 min</td></tr>
+<tr><td class="q" style="border-left-color:var(--niv-8)">module-n8-recherche<small>niveau 8 · Passer au travers du processus</small></td><td><span class="badge b-vide">muet</span> 100 répliques sur 100<span class="jauge"><i style="width:100%"></i></span></td><td class="r">15 min</td></tr>
+<tr><td class="q" style="border-left-color:var(--niv-7)">module-n7-oeuvres<small>niveau 7 · Ce que j&#x27;en pense, et pourquoi</small></td><td><span class="badge b-vide">muet</span> 97 répliques sur 97<span class="jauge"><i style="width:100%"></i></span></td><td class="r">13 min</td></tr>
+<tr><td class="q" style="border-left-color:var(--niv-7)">module-n7-achat<small>niveau 7 · Réclamer après l&#x27;achat</small></td><td><span class="badge b-vide">muet</span> 96 répliques sur 96<span class="jauge"><i style="width:100%"></i></span></td><td class="r">10 min</td></tr>
+<tr><td class="q" style="border-left-color:var(--niv-7)">module-n7-logement<small>niveau 7 · Rester locataire ou devenir propriétaire</small></td><td><span class="badge b-vide">muet</span> 92 répliques sur 92<span class="jauge"><i style="width:100%"></i></span></td><td class="r">11 min</td></tr>
+<tr><td class="q" style="border-left-color:var(--niv-7)">module-n7-publicite<small>niveau 7 · Ce que la publicité ne dit pas</small></td><td><span class="badge b-vide">muet</span> 92 répliques sur 92<span class="jauge"><i style="width:100%"></i></span></td><td class="r">14 min</td></tr>
+<tr><td class="q" style="border-left-color:var(--niv-8)">module-n8-emmenagement<small>niveau 8 · Ce qui est couvert, et ce qui se défend</small></td><td><span class="badge b-vide">muet</span> 92 répliques sur 92<span class="jauge"><i style="width:100%"></i></span></td><td class="r">13 min</td></tr>
+<tr><td class="q" style="border-left-color:var(--niv-7)">module-n7-banque<small>niveau 7 · Emprunter, épargner, se protéger</small></td><td><span class="badge b-vide">muet</span> 90 répliques sur 90<span class="jauge"><i style="width:100%"></i></span></td><td class="r">11 min</td></tr>
+<tr><td class="q" style="border-left-color:var(--niv-7)">module-n7-emploi<small>niveau 7 · Présenter un projet au travail</small></td><td><span class="badge b-vide">muet</span> 88 répliques sur 88<span class="jauge"><i style="width:100%"></i></span></td><td class="r">16 min</td></tr>
+<tr><td class="q" style="border-left-color:var(--niv-7)">module-n7-recherche<small>niveau 7 · Chercher un emploi en région</small></td><td><span class="badge b-vide">muet</span> 86 répliques sur 86<span class="jauge"><i style="width:100%"></i></span></td><td class="r">14 min</td></tr>
+<tr><td class="q" style="border-left-color:var(--niv-6)">module-n6-sante<small>niveau 6 · Nommer ce qu&#x27;on a</small></td><td><span class="badge b-vide">muet</span> 85 répliques sur 85<span class="jauge"><i style="width:100%"></i></span></td><td class="r">11 min</td></tr>
+<tr><td class="q" style="border-left-color:var(--niv-8)">module-n8-habitation<small>niveau 8 · Faire renverser une décision</small></td><td><span class="badge b-vide">muet</span> 85 répliques sur 85<span class="jauge"><i style="width:100%"></i></span></td><td class="r">12 min</td></tr>
+<tr><td class="q" style="border-left-color:var(--niv-6)">module-n6-emploi<small>niveau 6 · Le poste affiché à l&#x27;interne</small></td><td><span class="badge b-vide">muet</span> 84 répliques sur 84<span class="jauge"><i style="width:100%"></i></span></td><td class="r">13 min</td></tr>
+<tr><td class="q" style="border-left-color:var(--niv-7)">module-n7-classe<small>niveau 7 · Faire parler l&#x27;équipe</small></td><td><span class="badge b-vide">muet</span> 84 répliques sur 84<span class="jauge"><i style="width:100%"></i></span></td><td class="r">13 min</td></tr>
+<tr><td class="q" style="border-left-color:var(--niv-6)">module-n6-logement<small>niveau 6 · Six mois ailleurs</small></td><td><span class="badge b-vide">muet</span> 83 répliques sur 83<span class="jauge"><i style="width:100%"></i></span></td><td class="r">11 min</td></tr>
+<tr><td class="q" style="border-left-color:var(--niv-6)">module-n6-oeuvres<small>niveau 6 · Un film, et ce qu&#x27;on en écrit</small></td><td><span class="badge b-vide">muet</span> 82 répliques sur 82<span class="jauge"><i style="width:100%"></i></span></td><td class="r">12 min</td></tr>
+<tr><td class="q" style="border-left-color:var(--niv-5)">module-n5-actualite<small>niveau 5 · Raconter une nouvelle</small></td><td><span class="badge b-vide">muet</span> 80 répliques sur 80<span class="jauge"><i style="width:100%"></i></span></td><td class="r">5 min</td></tr>
+<tr><td class="q" style="border-left-color:var(--niv-5)">module-n5-ecole<small>niveau 5 · Régler une affaire au centre</small></td><td><span class="badge b-vide">muet</span> 80 répliques sur 80<span class="jauge"><i style="width:100%"></i></span></td><td class="r">6 min</td></tr>
+<tr><td class="q" style="border-left-color:var(--niv-5)">module-n5-oeuvres<small>niveau 5 · Le club du jeudi</small></td><td><span class="badge b-vide">muet</span> 80 répliques sur 80<span class="jauge"><i style="width:100%"></i></span></td><td class="r">5 min</td></tr>
+<tr><td class="q" style="border-left-color:var(--niv-6)">module-n6-etablissement<small>niveau 6 · Choisir la suite</small></td><td><span class="badge b-vide">muet</span> 80 répliques sur 80<span class="jauge"><i style="width:100%"></i></span></td><td class="r">10 min</td></tr>
+<tr><td class="q" style="border-left-color:var(--niv-6)">module-n6-relations<small>niveau 6 · Reprendre le fil</small></td><td><span class="badge b-vide">muet</span> 78 répliques sur 78<span class="jauge"><i style="width:100%"></i></span></td><td class="r">10 min</td></tr>
+<tr><td class="q" style="border-left-color:var(--niv-3)">module-n3-loyer<small>niveau 3 · Trois questions avant de louer</small></td><td><span class="badge b-vide">muet</span> 77 répliques sur 77<span class="jauge"><i style="width:100%"></i></span></td><td class="r">5 min</td></tr>
+<tr><td class="q" style="border-left-color:var(--niv-8)">module-n8-actualite<small>niveau 8 · Deux versions, et la mienne</small></td><td><span class="badge b-vide">muet</span> 76 répliques sur 76<span class="jauge"><i style="width:100%"></i></span></td><td class="r">12 min</td></tr>
+<tr><td class="q" style="border-left-color:var(--niv-6)">module-n6-actualite<small>niveau 6 · Suivre un sujet dans les médias</small></td><td><span class="badge b-vide">muet</span> 75 répliques sur 75<span class="jauge"><i style="width:100%"></i></span></td><td class="r">11 min</td></tr>
+<tr><td class="q" style="border-left-color:var(--niv-3)">module-n3-poste<small>niveau 3 · Le colis de Yassine</small></td><td><span class="badge b-vide">muet</span> 72 répliques sur 72<span class="jauge"><i style="width:100%"></i></span></td><td class="r">4 min</td></tr>
+<tr><td class="q" style="border-left-color:var(--niv-3)">module-n3-voisins<small>niveau 3 · L&#x27;escalier de la rue Dézéry</small></td><td><span class="badge b-vide">muet</span> 72 répliques sur 72<span class="jauge"><i style="width:100%"></i></span></td><td class="r">5 min</td></tr>
+<tr><td class="q" style="border-left-color:var(--niv-5)">module-n5-quebec<small>niveau 5 · Une semaine au Bic</small></td><td><span class="badge b-vide">muet</span> 70 répliques sur 70<span class="jauge"><i style="width:100%"></i></span></td><td class="r">7 min</td></tr>
+<tr><td class="q" style="border-left-color:var(--niv-3)">module-n3-secretariat<small>niveau 3 · L&#x27;absence de Nawel</small></td><td><span class="badge b-vide">muet</span> 68 répliques sur 68<span class="jauge"><i style="width:100%"></i></span></td><td class="r">4 min</td></tr>
+<tr><td class="q" style="border-left-color:var(--niv-4)">module-n4-etablissement<small>niveau 4 · Prévenir le centre</small></td><td><span class="badge b-vide">muet</span> 68 répliques sur 68<span class="jauge"><i style="width:100%"></i></span></td><td class="r">5 min</td></tr>
+<tr><td class="q" style="border-left-color:var(--niv-3)">module-n3-recherche-emploi<small>niveau 3 · On embauche</small></td><td><span class="badge b-vide">muet</span> 66 répliques sur 66<span class="jauge"><i style="width:100%"></i></span></td><td class="r">5 min</td></tr>
+<tr><td class="q" style="border-left-color:var(--niv-5)">module-n5-saisons<small>niveau 5 · Quand la météo décide</small></td><td><span class="badge b-vide">muet</span> 62 répliques sur 62<span class="jauge"><i style="width:100%"></i></span></td><td class="r">7 min</td></tr>
+<tr><td class="q" style="border-left-color:var(--niv-6)">module-n6-classe<small>niveau 6 · Un travail de recherche en équipe</small></td><td><span class="badge b-vide">muet</span> 62 répliques sur 62<span class="jauge"><i style="width:100%"></i></span></td><td class="r">9 min</td></tr>
+<tr><td class="q" style="border-left-color:var(--niv-5)">module-n5-transport<small>niveau 5 · Ça bloque ce matin</small></td><td><span class="badge b-part">partiel</span> 44 répliques sur 58<span class="jauge"><i style="width:76%"></i></span></td><td class="r">4 min</td></tr>
+<tr><td class="q" style="border-left-color:var(--niv-4)">module-relations<small>niveau 4 · Des nouvelles à donner</small></td><td><span class="badge b-part">partiel</span> 40 répliques sur 82<span class="jauge"><i style="width:49%"></i></span></td><td class="r">3 min</td></tr>
+<tr><td class="q" style="border-left-color:var(--niv-5)">module-n5-urgence<small>niveau 5 · Une nuit à l&#x27;urgence</small></td><td><span class="badge b-part">partiel</span> 25 répliques sur 100<span class="jauge"><i style="width:25%"></i></span></td><td class="r">3 min</td></tr>
+<tr><td class="q" style="border-left-color:var(--niv-6)">module-n6-recherche<small>niveau 6 · Chercher un emploi</small></td><td><span class="badge b-part">partiel</span> 25 répliques sur 65<span class="jauge"><i style="width:38%"></i></span></td><td class="r">3 min</td></tr>
+<tr><td class="q" style="border-left-color:var(--niv-8)">module-n8-emploi<small>niveau 8 · Tenir son bout au travail</small></td><td><span class="badge b-part">partiel</span> 25 répliques sur 78<span class="jauge"><i style="width:32%"></i></span></td><td class="r">5 min</td></tr>
+<tr><td class="q" style="border-left-color:var(--niv-5)">module-n5-degat<small>niveau 5 · Un dégât d&#x27;eau</small></td><td><span class="badge b-part">partiel</span> 24 répliques sur 62<span class="jauge"><i style="width:39%"></i></span></td><td class="r">3 min</td></tr>
+<tr><td class="q" style="border-left-color:var(--niv-3)">module-n3-vetements<small>niveau 3 · Magasiner du linge</small></td><td><span class="badge b-part">partiel</span> 23 répliques sur 80<span class="jauge"><i style="width:29%"></i></span></td><td class="r">2 min</td></tr>
+<tr><td class="q" style="border-left-color:var(--niv-7)">module-n7-actualite<small>niveau 7 · Suivre l&#x27;actualité</small></td><td><span class="badge b-part">partiel</span> 23 répliques sur 81<span class="jauge"><i style="width:28%"></i></span></td><td class="r">3 min</td></tr>
+<tr><td class="q" style="border-left-color:var(--niv-3)">module-n3-metro<small>niveau 3 · Le bon titre de transport</small></td><td><span class="badge b-part">partiel</span> 19 répliques sur 69<span class="jauge"><i style="width:28%"></i></span></td><td class="r">1 min</td></tr>
+<tr><td class="q" style="border-left-color:var(--niv-5)">module-n5-rendezvous<small>niveau 5 · Prendre rendez-vous chez le médecin</small></td><td><span class="badge b-part">partiel</span> 19 répliques sur 84<span class="jauge"><i style="width:23%"></i></span></td><td class="r">2 min</td></tr>
+<tr><td class="q" style="border-left-color:var(--niv-4)">module-restaurant<small>niveau 4 · Au restaurant</small></td><td><span class="badge b-part">partiel</span> 17 répliques sur 83<span class="jauge"><i style="width:20%"></i></span></td><td class="r">1 min</td></tr>
+<tr><td class="q" style="border-left-color:var(--niv-5)">module-n5-voisinage<small>niveau 5 · La ruelle en fête</small></td><td><span class="badge b-part">partiel</span> 16 répliques sur 81<span class="jauge"><i style="width:20%"></i></span></td><td class="r">1 min</td></tr>
+<tr><td class="q" style="border-left-color:var(--niv-4)">module-probleme<small>niveau 4 · Pouvez-vous régler le problème ?</small></td><td><span class="badge b-part">partiel</span> 14 répliques sur 55<span class="jauge"><i style="width:25%"></i></span></td><td class="r">2 min</td></tr>
+<tr><td class="q" style="border-left-color:var(--niv-3)">module-n3-restaurant<small>niveau 3 · Commander au comptoir</small></td><td><span class="badge b-part">partiel</span> 12 répliques sur 61<span class="jauge"><i style="width:20%"></i></span></td><td class="r">58 s</td></tr>
+<tr><td class="q" style="border-left-color:var(--niv-5)">module-n5-services<small>niveau 5 · Les services de ma ville</small></td><td><span class="badge b-part">partiel</span> 9 répliques sur 70<span class="jauge"><i style="width:13%"></i></span></td><td class="r">45 s</td></tr>
+<tr><td class="q" style="border-left-color:var(--niv-5)">module-n5-travail<small>niveau 5 · Le travail par écrit</small></td><td><span class="badge b-part">partiel</span> 5 répliques sur 76<span class="jauge"><i style="width:7%"></i></span></td><td class="r">1 min</td></tr>
+</tbody></table></div></section>
+<section><p class="eyebrow">Ce que ce relevé ne voit pas</p>
+<h2>Les réserves</h2><ul class="simple">
+<li><strong>11 modules n'ont pas de relevé de sons</strong> — <code>module-banque</code>, <code>module-consultation</code>, <code>module-logement</code>, <code>module-meteo</code>, <code>module-n5-actualite</code>, <code>module-nouvelles</code>, <code>module-procedure</code>, <code>module-pub</code>, <code>module-sante</code>, <code>module-travail</code>, <code>module-urgence</code>. Leurs pastilles ne peuvent pas être vérifiées : les dix plus anciens ont été sonorisés avant que les relevés existent et sont complets, mais le script les nomme au lieu de les déclarer bons sans preuve.</li>
+<li><strong>La durée est un ordre de grandeur</strong>, calculée sur la longueur du texte à débit constant. Elle sert à décider, pas à facturer.</li>
+<li><strong>Rien n'est repayé.</strong> Les générateurs sautent ce qui est déjà sur le disque : relancer après une coupure reprend où l'on en était.</li>
+</ul></section>
+<div class="reserve"><p><strong>Cette page est produite, pas écrite.</strong> <code>python3 build/audio_page.py</code> la relit du disque et la réécrit ; le relevé lui-même est <code>build/audio_manquant.py</code>, qui ne fait que comparer les relevés de sons et les dialogues à ce qui existe. Ni l'un ni l'autre n'appelle jamais l'API de synthèse. Après une production, la relancer remet les chiffres à jour.</p></div>
+<div class="pied"><p>Bibliothèque de francisation · relevé de l'audio manquant au 28 août 2026.</p><p>Compté par <code>build/audio_manquant.py</code> sur les 87 modules du dépôt.</p></div>
+</article>
+</body>
+</html>
