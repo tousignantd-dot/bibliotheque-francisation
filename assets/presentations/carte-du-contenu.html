@@ -1,0 +1,454 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>La carte du contenu</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Newsreader:ital,opsz,wght@0,6..72,400;0,6..72,500;0,6..72,600;1,6..72,400&family=Nunito:ital,wght@0,400;0,600;0,700;0,800;1,400&display=swap">
+
+<style>
+/* ═══════════════════════════════════════════════════════════
+   LA CARTE DU CONTENU
+   Tout ce qui a été écrit, enregistré, dessiné et monté.
+
+   La couleur ne décore rien : chaque niveau porte la teinte
+   que le système de design lui donne (--niv-N-line), la même
+   que dans le catalogue et dans l'en-tête des modules. Le vert
+   reste l'unique accent, l'acier ne fait que la structure.
+   ═══════════════════════════════════════════════════════════ */
+
+:root{
+  --ground:#F7F7F5;
+  --card:#FFFFFF;
+  --sunken:#FBFBFA;
+  --ink:#17181A;
+  --body:#3A3D40;
+  --muted:#6E7175;
+  --line:#E4E4E0;
+  --line-fort:#D2D2CD;
+
+  --accent:#0A8F5B;   --accent-bg:#E6F5EE;
+  --acier:#1D6B8F;    --acier-bg:#E7F0F6;
+  --ambre:#B45309;    --ambre-bg:#FBEEDC;
+
+  --niv-1:#A5335F;  --niv-2:#A83A22;  --niv-3:#B45309;  --niv-4:#8C6A07;
+  --niv-5:#0D7A6F;  --niv-6:#1D6B8F;  --niv-7:#3B49A0;  --niv-8:#7E3F98;
+
+  --mono:ui-monospace,SFMono-Regular,"SF Mono",Menlo,Consolas,monospace;
+}
+@media (prefers-color-scheme: dark){
+  :root:not([data-theme="light"]){
+    --ground:#151618; --card:#1D1F22; --sunken:#212326;
+    --ink:#F2F2F0; --body:#CFD1D3; --muted:#94979B;
+    --line:#2E3135; --line-fort:#3D4146;
+    --accent:#4BC48D; --accent-bg:#12291F;
+    --acier:#6DAFD2; --acier-bg:#14242C;
+    --ambre:#E0A63F; --ambre-bg:#2C2213;
+    --niv-1:#E58AAC; --niv-2:#E08A72; --niv-3:#E0A63F; --niv-4:#D4BC5C;
+    --niv-5:#5FC3B8; --niv-6:#6DAFD2; --niv-7:#8D97DE; --niv-8:#C089D6;
+  }
+}
+:root[data-theme="dark"]{
+  --ground:#151618; --card:#1D1F22; --sunken:#212326;
+  --ink:#F2F2F0; --body:#CFD1D3; --muted:#94979B;
+  --line:#2E3135; --line-fort:#3D4146;
+  --accent:#4BC48D; --accent-bg:#12291F;
+  --acier:#6DAFD2; --acier-bg:#14242C;
+  --ambre:#E0A63F; --ambre-bg:#2C2213;
+  --niv-1:#E58AAC; --niv-2:#E08A72; --niv-3:#E0A63F; --niv-4:#D4BC5C;
+  --niv-5:#5FC3B8; --niv-6:#6DAFD2; --niv-7:#8D97DE; --niv-8:#C089D6;
+}
+
+*{box-sizing:border-box}
+body{
+  margin:0; background:var(--ground); color:var(--body);
+  font-family:Nunito,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;
+  font-size:17px; line-height:1.62; -webkit-font-smoothing:antialiased;
+}
+.doc{max-width:880px;margin:0 auto;padding:56px 24px 96px}
+
+.eyebrow{font-size:12px;font-weight:800;letter-spacing:.13em;text-transform:uppercase;
+  color:var(--acier);margin:0 0 14px}
+h1{font-family:Newsreader,Georgia,serif;font-size:clamp(38px,6.4vw,58px);
+  line-height:1.04;font-weight:500;letter-spacing:-.02em;color:var(--ink);
+  margin:0 0 20px;text-wrap:balance}
+.chapeau{font-size:19px;line-height:1.6;color:var(--body);margin:0;max-width:62ch}
+.chapeau strong{color:var(--ink);font-weight:700}
+h2{font-family:Newsreader,Georgia,serif;font-size:29px;line-height:1.2;font-weight:600;
+  letter-spacing:-.01em;color:var(--ink);margin:0 0 4px;text-wrap:balance}
+h3{font-size:15px;font-weight:800;color:var(--ink);margin:0 0 6px;letter-spacing:-.005em}
+p{margin:0;max-width:68ch}
+section{display:flex;flex-direction:column;gap:16px;
+  padding:44px 0 0;margin:44px 0 0;border-top:1px solid var(--line)}
+section.premier{border-top:none;margin-top:0;padding-top:40px}
+code{font-family:var(--mono);font-size:.86em;background:var(--sunken);
+  border:1px solid var(--line);border-radius:4px;padding:1px 5px;color:var(--ink)}
+ul.simple{margin:0;padding-left:20px;display:flex;flex-direction:column;gap:8px}
+ul.simple li{max-width:66ch}
+ul.simple li strong{color:var(--ink)}
+
+/* ── Bandeau de chiffres ───────────────────────────────── */
+.chiffres{display:grid;grid-template-columns:repeat(auto-fit,minmax(132px,1fr));gap:10px}
+.ch{background:var(--card);border:1px solid var(--line);border-radius:3px;
+  border-top:3px solid var(--accent);padding:15px 16px}
+.ch .n{font-family:Newsreader,Georgia,serif;font-size:32px;line-height:1;
+  font-weight:500;color:var(--ink);display:block;font-variant-numeric:tabular-nums}
+.ch .q{font-size:12.5px;font-weight:700;color:var(--muted);line-height:1.35;
+  display:block;margin-top:7px}
+
+/* ── Le schéma ─────────────────────────────────────────── */
+.schema{background:var(--card);border:1px solid var(--line);border-radius:3px;
+  padding:26px 22px;overflow-x:auto}
+.schema svg{display:block;min-width:660px;width:100%;height:auto}
+.sc-legende{font-size:13.5px;color:var(--muted);margin-top:14px;max-width:70ch}
+svg .b-fill{fill:var(--sunken)} svg .b-line{stroke:var(--line-fort)}
+svg .t{fill:var(--ink);font-family:Nunito,sans-serif;font-size:13px;font-weight:800}
+svg .s{fill:var(--muted);font-family:Nunito,sans-serif;font-size:11px;font-weight:600}
+svg .fl{stroke:var(--line-fort);fill:none}
+svg .acc{fill:var(--accent)}
+svg .lab{fill:var(--acier);font-family:Nunito,sans-serif;font-size:10.5px;
+  font-weight:800;letter-spacing:.08em;text-transform:uppercase}
+
+/* ── Anatomie d'un module ──────────────────────────────── */
+.anat{display:flex;flex-direction:column;gap:2px}
+.anat-item{background:var(--card);border:1px solid var(--line);border-radius:3px;
+  border-left:5px solid var(--acier);padding:17px 21px;display:flex;
+  flex-direction:column;gap:5px}
+.anat-item:nth-child(2){border-left-color:var(--ambre)}
+.anat-item:nth-child(3){border-left-color:var(--accent)}
+.anat-item:nth-child(4){border-left-color:var(--niv-8)}
+.anat-item .ligne{display:flex;align-items:baseline;gap:12px;flex-wrap:wrap;
+  justify-content:space-between}
+.anat-item p{font-size:15.5px}
+.compte{font-family:var(--mono);font-size:12px;color:var(--muted);white-space:nowrap}
+
+/* ── Tableaux ──────────────────────────────────────────── */
+.defile{overflow-x:auto;border:1px solid var(--line);border-radius:3px;background:var(--card)}
+table{border-collapse:collapse;width:100%;font-size:15px;min-width:640px}
+caption{caption-side:top;text-align:left;padding:0 0 10px;font-size:13.5px;color:var(--muted)}
+th,td{padding:11px 15px;text-align:left;border-bottom:1px solid var(--line);vertical-align:top}
+thead th{font-size:11.5px;font-weight:800;letter-spacing:.09em;text-transform:uppercase;
+  color:var(--muted);background:var(--sunken);white-space:nowrap}
+tbody tr:last-child td{border-bottom:none}
+td.q{font-weight:700;color:var(--ink)}
+td.num{font-variant-numeric:tabular-nums;white-space:nowrap}
+td small{display:block;color:var(--muted);font-size:13px;line-height:1.45;margin-top:2px}
+tbody tr td:first-child{border-left:4px solid transparent}
+tr.n1 td:first-child{border-left-color:var(--niv-1)}
+tr.n2 td:first-child{border-left-color:var(--niv-2)}
+tr.n3 td:first-child{border-left-color:var(--niv-3)}
+tr.n4 td:first-child{border-left-color:var(--niv-4)}
+tr.n5 td:first-child{border-left-color:var(--niv-5)}
+tr.n6 td:first-child{border-left-color:var(--niv-6)}
+tr.n7 td:first-child{border-left-color:var(--niv-7)}
+tr.n8 td:first-child{border-left-color:var(--niv-8)}
+tfoot td{font-weight:800;color:var(--ink);background:var(--sunken);border-top:2px solid var(--line-fort)}
+
+.barre{display:block;height:7px;border-radius:2px;background:var(--line);margin-top:6px;
+  max-width:180px;overflow:hidden}
+.barre i{display:block;height:100%;background:var(--acier)}
+
+.badge{display:inline-block;font-size:11.5px;font-weight:800;letter-spacing:.05em;
+  text-transform:uppercase;padding:3px 9px;border-radius:2px;white-space:nowrap}
+.b-ok{background:var(--accent-bg);color:var(--accent)}
+.b-part{background:var(--ambre-bg);color:var(--ambre)}
+
+/* ── Encadré ───────────────────────────────────────────── */
+.these{background:var(--card);border:1px solid var(--line);border-left:5px solid var(--acier);
+  border-radius:3px;padding:26px 28px;display:flex;flex-direction:column;gap:12px}
+.these p{font-size:18px}
+.these .cle{font-family:Newsreader,Georgia,serif;font-size:23px;line-height:1.3;
+  font-weight:500;color:var(--ink);font-style:italic}
+.reserve{border:1px dashed var(--line-fort);border-radius:3px;padding:20px 24px;
+  font-size:15px;color:var(--muted);display:flex;flex-direction:column;gap:9px}
+.reserve strong{color:var(--body)}
+.pied{margin-top:52px;padding-top:22px;border-top:1px solid var(--line);
+  font-size:13.5px;color:var(--muted);display:flex;flex-direction:column;gap:5px}
+@media (max-width:620px){ .doc{padding:36px 18px 72px} }
+</style>
+</head>
+<body>
+<article class="doc">
+
+<p class="eyebrow">Bibliothèque de francisation · 27 août 2026</p>
+<h1>La carte du contenu</h1>
+<p class="chapeau">Tout ce qui a été écrit, enregistré, dessiné et monté depuis le
+début du projet — <strong>huit niveaux, 86 modules de cours, 90 ateliers</strong> —
+et comment ces pièces s'emboîtent. Les chiffres viennent du tableau de bord du
+dépôt, pas d'une estimation.</p>
+
+<section class="premier">
+  <div class="chiffres">
+    <div class="ch"><span class="n">8</span><span class="q">niveaux du programme couverts</span></div>
+    <div class="ch"><span class="n">86</span><span class="q">modules de cours</span></div>
+    <div class="ch"><span class="n">90</span><span class="q">ateliers d'exercices</span></div>
+    <div class="ch"><span class="n">1 238</span><span class="q">séances en PowerPoint</span></div>
+    <div class="ch"><span class="n">17 113</span><span class="q">pistes audio dans les modules</span></div>
+    <div class="ch"><span class="n">1 502</span><span class="q">images produites</span></div>
+    <div class="ch"><span class="n">1 342</span><span class="q">documents pour l'élève</span></div>
+    <div class="ch"><span class="n">177</span><span class="q">fiches au catalogue</span></div>
+  </div>
+</section>
+
+<section>
+  <p class="eyebrow">La chaîne</p>
+  <h2>D'une situation du programme à ce que l'élève ouvre</h2>
+  <p>Rien ne part d'une idée. Chaque module part d'une <strong>situation de vie</strong>
+  du programme ministériel de francisation, avec ses savoirs et ses critères ; le
+  scénario, lui, est inventé de toutes pièces.</p>
+
+  <div class="schema">
+  <svg viewBox="0 0 700 330" role="img" aria-label="Schéma : le programme d'études alimente le cadre d'un module, qui produit sept fichiers de contenu, assemblés en une page interactive, seize séances, des fiches, des sons et des images, tous rangés au catalogue.">
+    <defs>
+      <marker id="fleche" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="6" markerHeight="6" orient="auto">
+        <path d="M0 0 L10 5 L0 10 z" fill="currentColor"/>
+      </marker>
+    </defs>
+
+    <text class="lab" x="0" y="12">1 · La source</text>
+    <rect class="b-fill b-line" x="0" y="22" width="180" height="66" rx="3" stroke-width="1"/>
+    <text class="t" x="14" y="46">Programme d'études</text>
+    <text class="s" x="14" y="63">8 niveaux · 85 situations de vie</text>
+    <text class="s" x="14" y="78">savoirs, critères, durées</text>
+
+    <g class="fl" color="currentColor" stroke-width="1.4" marker-end="url(#fleche)">
+      <path d="M180 55 L246 55" style="stroke:var(--line-fort)"/>
+    </g>
+
+    <text class="lab" x="250" y="12">2 · L'écriture</text>
+    <rect class="b-fill b-line" x="250" y="22" width="190" height="66" rx="3" stroke-width="1"/>
+    <text class="t" x="264" y="46">Scénario inventé</text>
+    <text class="s" x="264" y="63">un personnage, un problème,</text>
+    <text class="s" x="264" y="78">une résolution — 0 % de copie</text>
+
+    <g class="fl" color="currentColor" stroke-width="1.4" marker-end="url(#fleche)">
+      <path d="M440 55 L506 55" style="stroke:var(--line-fort)"/>
+    </g>
+
+    <text class="lab" x="510" y="12">3 · La matière</text>
+    <rect class="b-fill b-line" x="510" y="22" width="190" height="66" rx="3" stroke-width="1"/>
+    <text class="t" x="524" y="46">7 fichiers de contenu</text>
+    <text class="s" x="524" y="63">dialogues, vocabulaire, exercices,</text>
+    <text class="s" x="524" y="78">mini-leçons, production, bilan</text>
+
+    <g class="fl" color="currentColor" stroke-width="1.4" marker-end="url(#fleche)">
+      <path d="M605 88 L605 118" style="stroke:var(--line-fort)"/>
+    </g>
+
+    <text class="lab" x="0" y="140">4 · Les cinq sorties d'un même module</text>
+    <rect x="0" y="150" width="700" height="1" style="fill:var(--line)"/>
+
+    <rect class="b-fill" x="0" y="166" width="132" height="92" rx="3" style="stroke:var(--accent);stroke-width:1.4"/>
+    <circle class="acc" cx="16" cy="186" r="4"/>
+    <text class="t" x="28" y="190">Page interactive</text>
+    <text class="s" x="14" y="212">Ce que l'élève ouvre.</text>
+    <text class="s" x="14" y="227">4 sections, 16 exercices,</text>
+    <text class="s" x="14" y="242">correction immédiate.</text>
+
+    <rect class="b-fill b-line" x="142" y="166" width="132" height="92" rx="3" stroke-width="1"/>
+    <text class="t" x="156" y="190">16 séances</text>
+    <text class="s" x="156" y="212">Un PowerPoint par</text>
+    <text class="s" x="156" y="227">séance de 4 h, en</text>
+    <text class="s" x="156" y="242">4 blocs.</text>
+
+    <rect class="b-fill b-line" x="284" y="166" width="132" height="92" rx="3" stroke-width="1"/>
+    <text class="t" x="298" y="190">Fiches élève</text>
+    <text class="s" x="298" y="212">Format lettre, noir</text>
+    <text class="s" x="298" y="227">et blanc, prêtes à</text>
+    <text class="s" x="298" y="242">photocopier.</text>
+
+    <rect class="b-fill b-line" x="426" y="166" width="132" height="92" rx="3" stroke-width="1"/>
+    <text class="t" x="440" y="190">Les sons</text>
+    <text class="s" x="440" y="212">Chaque phrase, chaque</text>
+    <text class="s" x="440" y="227">mot, deux vitesses,</text>
+    <text class="s" x="440" y="242">voix québécoises.</text>
+
+    <rect class="b-fill b-line" x="568" y="166" width="132" height="92" rx="3" stroke-width="1"/>
+    <text class="t" x="582" y="190">Les images</text>
+    <text class="s" x="582" y="212">Vocabulaire illustré,</text>
+    <text class="s" x="582" y="227">vignettes, planches —</text>
+    <text class="s" x="582" y="242">format 3:2.</text>
+
+    <g class="fl" color="currentColor" stroke-width="1.4" marker-end="url(#fleche)">
+      <path d="M350 258 L350 288" style="stroke:var(--line-fort)"/>
+    </g>
+
+    <rect class="b-fill" x="210" y="292" width="280" height="34" rx="3" style="stroke:var(--acier);stroke-width:1.4"/>
+    <text class="t" x="224" y="314">Catalogue · 177 fiches, rangées par niveau</text>
+  </svg>
+  <p class="sc-legende">Les cinq sorties ne sont pas cinq travaux : elles sont
+  <strong>assemblées à partir des mêmes sept fichiers</strong>. Corriger une phrase
+  dans le contenu la corrige dans la page, dans la séance et dans la fiche — c'est
+  ce qui rend la production tenable. Voir « La mécanique » pour le détail de
+  l'assemblage.</p>
+  </div>
+</section>
+
+<section>
+  <p class="eyebrow">L'unité de base</p>
+  <h2>Ce qu'il y a dans un module</h2>
+  <p>Un module de cours est <strong>16 séances de 4 heures, en 4 blocs</strong> —
+  soit environ 64 heures de classe. La page interactive de l'élève suit toujours
+  les quatre mêmes sections, dans le même ordre, dans les 86 modules.</p>
+
+  <div class="anat">
+    <div class="anat-item">
+      <div class="ligne"><h3>Je découvre</h3><span class="compte">bloc 1</span></div>
+      <p>Le dialogue de départ, écouté avant d'être lu. C'est la situation qui pose
+      le problème : Josée qui n'ose pas rappeler la clinique, Ibrahim devant un bail
+      qu'il ne comprend pas.</p>
+    </div>
+    <div class="anat-item">
+      <div class="ligne"><h3>Défi 1 à 4</h3><span class="compte">blocs 2 et 3</span></div>
+      <p>Les exercices, corrigés sur place : appariement, écoute, choix de forme,
+      dictée, reconstitution. Après deux essais manqués, l'assistant explique
+      l'erreur au lieu de donner la réponse.</p>
+    </div>
+    <div class="anat-item">
+      <div class="ligne"><h3>Je me lance</h3><span class="compte">bloc 4</span></div>
+      <p>La production : l'élève parle au micro ou écrit un courriel, s'écoute,
+      recommence, et n'envoie que quand il est prêt. C'est le cœur du cours — le
+      reste sert à rendre ce moment possible.</p>
+    </div>
+    <div class="anat-item">
+      <div class="ligne"><h3>Je retiens des mots</h3><span class="compte">tout au long</span></div>
+      <p>Le vocabulaire du module en trois exercices sur une seule liste, avec image,
+      son, et traduction masquée par défaut. Dix-sept boutons de micro par module :
+      c'est le geste le plus fréquent de la journée.</p>
+    </div>
+  </div>
+</section>
+
+<section>
+  <p class="eyebrow">L'inventaire</p>
+  <h2>Ce qui existe, niveau par niveau</h2>
+
+  <div class="defile">
+  <table>
+    <caption>Relevé du 27 août 2026, produit par <code>build/tableau_bord.py</code>.
+    « Situations » compte les situations de vie du programme qui ont un module.</caption>
+    <thead><tr>
+      <th>Niveau</th><th>Modules</th><th>Séances</th><th>Ateliers</th>
+      <th>Situations couvertes</th><th>Avancement</th>
+    </tr></thead>
+    <tbody>
+      <tr class="n1"><td class="q">Niveau 1</td><td class="num">4</td><td class="num">32 / 32</td><td class="num">21</td><td class="num">4 / 4</td><td><span class="badge b-ok">complet</span></td></tr>
+      <tr class="n2"><td class="q">Niveau 2</td><td class="num">10</td><td class="num">80 / 80</td><td class="num">6</td><td class="num">10 / 10</td><td><span class="badge b-ok">complet</span></td></tr>
+      <tr class="n3"><td class="q">Niveau 3</td><td class="num">13</td><td class="num">182 / 208</td><td class="num">6</td><td class="num">13 / 13</td><td><span class="badge b-part">2 modules à finir</span><span class="barre"><i style="width:87%"></i></span></td></tr>
+      <tr class="n4"><td class="q">Niveau 4</td><td class="num">18</td><td class="num">288 / 288</td><td class="num">6</td><td class="num">17 / 17</td><td><span class="badge b-ok">complet</span></td></tr>
+      <tr class="n5"><td class="q">Niveau 5</td><td class="num">14</td><td class="num">224 / 224</td><td class="num">6</td><td class="num">14 / 14</td><td><span class="badge b-ok">complet</span></td></tr>
+      <tr class="n6"><td class="q">Niveau 6</td><td class="num">10</td><td class="num">160 / 160</td><td class="num">6</td><td class="num">10 / 10</td><td><span class="badge b-ok">complet</span></td></tr>
+      <tr class="n7"><td class="q">Niveau 7</td><td class="num">11</td><td class="num">176 / 176</td><td class="num">6</td><td class="num">11 / 11</td><td><span class="badge b-ok">complet</span></td></tr>
+      <tr class="n8"><td class="q">Niveau 8</td><td class="num">6</td><td class="num">96 / 96</td><td class="num">6</td><td class="num">6 / 6</td><td><span class="badge b-ok">complet</span></td></tr>
+    </tbody>
+    <tfoot><tr><td>Total</td><td class="num">86</td><td class="num">1 238 / 1 264</td><td class="num">63</td><td class="num">85 / 85</td><td></td></tr></tfoot>
+  </table>
+  </div>
+
+  <p><strong>Les 85 situations de vie du programme ont toutes leur module.</strong>
+  C'est la ligne qui compte : la couverture du programme est faite, sur les huit
+  niveaux. Ce qui reste est du remplissage — des séances à monter, des sons à
+  produire — pas de la conception.</p>
+</section>
+
+<section>
+  <p class="eyebrow">L'autre moitié</p>
+  <h2>Les ateliers, et le reste du catalogue</h2>
+  <p>À côté des modules — des cours de 4 heures le matin — vivent les
+  <strong>ateliers de 2 heures</strong> : de l'entraînement ciblé sur une seule
+  difficulté, à ouvrir l'après-midi ou en dépannage. Le catalogue en compte 90,
+  dont 63 rangés dans les banques par niveau.</p>
+
+  <div class="defile">
+  <table>
+    <caption>Les six familles d'ateliers. La famille « écouter » s'arrête au
+    niveau 3 : au-delà, l'écoute est portée par les modules eux-mêmes.</caption>
+    <thead><tr><th>Famille</th><th>Ce que l'élève y fait</th><th>Niveaux</th></tr></thead>
+    <tbody>
+      <tr><td class="q">Apparier</td><td>Relier un mot, une image, un son, une définition.</td><td class="num">1 à 8</td></tr>
+      <tr><td class="q">Discriminer</td><td>Entendre la différence entre deux formes proches.</td><td class="num">1 à 8</td></tr>
+      <tr><td class="q">Écouter</td><td>Répondre à ce qui vient d'être dit, sans lire.</td><td class="num">1 à 3</td></tr>
+      <tr><td class="q">Graphie-phonie</td><td>Passer du son à la lettre, et l'inverse.</td><td class="num">1 à 8</td></tr>
+      <tr><td class="q">Conjuguer et accorder</td><td>La forme juste, en contexte, jamais en tableau.</td><td class="num">1 à 8</td></tr>
+      <tr><td class="q">Intégration</td><td>Tout à la fois, sur une tâche complète.</td><td class="num">1 à 8</td></tr>
+    </tbody>
+  </table>
+  </div>
+
+  <p>S'ajoutent les <strong>outils</strong>, qui ne sont d'aucun niveau et restent
+  ouverts en permanence dans le rail « Mes outils » de l'élève : « Corrige-moi ! »
+  (une phrase corrigée et expliquée), la cabine de santé, le détective des temps,
+  les cartes de vocabulaire éclair, l'analyse grammaticale, la traduction et la
+  simplification d'un texte.</p>
+</section>
+
+<section>
+  <p class="eyebrow">Ce que ça pèse</p>
+  <h2>Les médias, en fichiers</h2>
+  <div class="defile">
+  <table>
+    <caption>Mesuré sur le dépôt le 27 août 2026.</caption>
+    <thead><tr><th>Média</th><th>Quantité</th><th>Poids</th><th>D'où ça vient</th></tr></thead>
+    <tbody>
+      <tr><td class="q">Pistes audio</td><td class="num">17 684 MP3<small>dont 17 113 dans les modules</small></td><td class="num">—</td><td>Synthèse vocale Azure, voix québécoises, deux vitesses.</td></tr>
+      <tr><td class="q">Séances</td><td class="num">1 238 PowerPoint</td><td class="num">192 Mo</td><td>Montées par programme, pas à la main.</td></tr>
+      <tr><td class="q">Documents élève</td><td class="num">1 342 fichiers</td><td class="num">99 Mo</td><td>Fiches, cahiers, corrigés — format lettre.</td></tr>
+      <tr><td class="q">Images</td><td class="num">1 502 fichiers</td><td class="num">58 Mo</td><td>Générées, recadrées en 3:2, compressées.</td></tr>
+      <tr><td class="q">Pages interactives</td><td class="num">183 dossiers</td><td class="num">1,2 Go</td><td>Modules, ateliers et outils, sons compris.</td></tr>
+      <tr><td class="q">Tutoriels vidéo</td><td class="num">7 capsules</td><td class="num">35 Mo</td><td>Prise en main de l'espace enseignant, sous-titrées.</td></tr>
+    </tbody>
+  </table>
+  </div>
+</section>
+
+<section>
+  <p class="eyebrow">Sans arrondir</p>
+  <h2>Ce qui n'est pas fini</h2>
+  <p>Le tableau de bord du dépôt lève ses alertes tout seul ; les voici telles
+  quelles.</p>
+  <ul class="simple">
+    <li><strong>Deux modules du niveau 3 n'ont pas leurs séances</strong> —
+    <code>module-n3-horaire</code> (aucune) et <code>module-n3-voisins</code> (6 sur 16).
+    Ce sont les 26 séances qui manquent au total de 1 264.</li>
+    <li><strong>Deux modules n'ont aucune piste audio</strong> —
+    <code>module-n5-actualite</code> et <code>module-n6-habitation</code>. Le contenu
+    existe, la voix n'a pas été produite.</li>
+    <li><strong>263 savoirs du programme ne sont touchés par aucun atelier.</strong>
+    Ils le sont par les modules ; ce chiffre mesure l'entraînement supplémentaire
+    disponible, pas la couverture du cours. C'est le chantier des banques
+    d'exercices, ouvert aux huit niveaux.</li>
+  </ul>
+</section>
+
+<section>
+  <div class="these">
+    <p class="cle">Le programme est couvert. Ce qui reste est du volume, pas de la
+    conception.</p>
+    <p>Les 85 situations de vie des huit niveaux ont leur module ; les quatre
+    manques ci-dessus se comptent en jours de production, pas en décisions. La
+    question suivante n'est plus « est-ce qu'il y a assez de matériel ? » mais
+    « qui l'utilise, et sous quelles règles ». C'est l'objet des deux autres
+    documents.</p>
+  </div>
+</section>
+
+<div class="reserve">
+  <p><strong>Comment ces chiffres sont obtenus.</strong> Ils sont comptés sur le
+  dépôt par <code>build/tableau_bord.py</code>, qui lit le programme d'études, les
+  fichiers de contenu, les PowerPoint produits et le catalogue. Aucun n'est saisi
+  à la main, donc aucun ne se périme en silence : relancer la commande donne
+  l'état du jour.</p>
+</div>
+
+<div class="pied">
+  <p>Bibliothèque de francisation · carte du contenu au 27 août 2026.</p>
+  <p>Compté par <code>build/tableau_bord.py</code>, <code>data/activities.json</code>
+  et le dépôt lui-même. Documents liés : « La mécanique » et « Guide pour la
+  direction ».</p>
+</div>
+
+</article>
+</body>
+</html>

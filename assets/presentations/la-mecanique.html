@@ -1,0 +1,484 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>La mécanique</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Newsreader:ital,opsz,wght@0,6..72,400;0,6..72,500;0,6..72,600;1,6..72,400&family=Nunito:ital,wght@0,400;0,600;0,700;0,800;1,400&display=swap">
+
+<style>
+/* ═══════════════════════════════════════════════════════════
+   LA MÉCANIQUE
+   Ce qui fabrique le contenu, ce qui le sert, ce qui l'encadre.
+
+   Trois couleurs et pas une de plus : l'acier pour l'atelier de
+   production, le vert pour ce qui reste sur le serveur, l'ambre
+   pour ce qui en sort. Un lecteur qui ne retient que ça a
+   compris le schéma.
+   ═══════════════════════════════════════════════════════════ */
+
+:root{
+  --ground:#F7F7F5; --card:#FFFFFF; --sunken:#FBFBFA;
+  --ink:#17181A; --body:#3A3D40; --muted:#6E7175;
+  --line:#E4E4E0; --line-fort:#D2D2CD;
+
+  --atelier:#1D6B8F;  --atelier-bg:#E7F0F6;
+  --reste:#0A8F5B;    --reste-bg:#E6F5EE;
+  --sort:#C07A08;     --sort-bg:#FBF2E2;
+  --alerte:#C7302B;   --alerte-bg:#FBEDEC;
+
+  --mono:ui-monospace,SFMono-Regular,"SF Mono",Menlo,Consolas,monospace;
+}
+@media (prefers-color-scheme: dark){
+  :root:not([data-theme="light"]){
+    --ground:#151618; --card:#1D1F22; --sunken:#212326;
+    --ink:#F2F2F0; --body:#CFD1D3; --muted:#94979B;
+    --line:#2E3135; --line-fort:#3D4146;
+    --atelier:#6DAFD2; --atelier-bg:#14242C;
+    --reste:#4BC48D;   --reste-bg:#12291F;
+    --sort:#E0A63F;    --sort-bg:#2C2213;
+    --alerte:#EE7A73;  --alerte-bg:#2E1917;
+  }
+}
+:root[data-theme="dark"]{
+  --ground:#151618; --card:#1D1F22; --sunken:#212326;
+  --ink:#F2F2F0; --body:#CFD1D3; --muted:#94979B;
+  --line:#2E3135; --line-fort:#3D4146;
+  --atelier:#6DAFD2; --atelier-bg:#14242C;
+  --reste:#4BC48D;   --reste-bg:#12291F;
+  --sort:#E0A63F;    --sort-bg:#2C2213;
+  --alerte:#EE7A73;  --alerte-bg:#2E1917;
+}
+
+*{box-sizing:border-box}
+body{margin:0;background:var(--ground);color:var(--body);
+  font-family:Nunito,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;
+  font-size:17px;line-height:1.62;-webkit-font-smoothing:antialiased}
+.doc{max-width:880px;margin:0 auto;padding:56px 24px 96px}
+
+.eyebrow{font-size:12px;font-weight:800;letter-spacing:.13em;text-transform:uppercase;
+  color:var(--atelier);margin:0 0 14px}
+h1{font-family:Newsreader,Georgia,serif;font-size:clamp(38px,6.4vw,58px);line-height:1.04;
+  font-weight:500;letter-spacing:-.02em;color:var(--ink);margin:0 0 20px;text-wrap:balance}
+.chapeau{font-size:19px;line-height:1.6;color:var(--body);margin:0;max-width:62ch}
+.chapeau strong{color:var(--ink);font-weight:700}
+h2{font-family:Newsreader,Georgia,serif;font-size:29px;line-height:1.2;font-weight:600;
+  letter-spacing:-.01em;color:var(--ink);margin:0 0 4px;text-wrap:balance}
+h3{font-size:15px;font-weight:800;color:var(--ink);margin:0 0 6px}
+p{margin:0;max-width:68ch}
+section{display:flex;flex-direction:column;gap:16px;padding:44px 0 0;margin:44px 0 0;
+  border-top:1px solid var(--line)}
+section.premier{border-top:none;margin-top:0;padding-top:40px}
+code{font-family:var(--mono);font-size:.86em;background:var(--sunken);
+  border:1px solid var(--line);border-radius:4px;padding:1px 5px;color:var(--ink)}
+ul.simple{margin:0;padding-left:20px;display:flex;flex-direction:column;gap:8px}
+ul.simple li{max-width:66ch} ul.simple li strong{color:var(--ink)}
+
+.these{background:var(--card);border:1px solid var(--line);border-left:5px solid var(--atelier);
+  border-radius:3px;padding:26px 28px;display:flex;flex-direction:column;gap:12px}
+.these p{font-size:18px}
+.these .cle{font-family:Newsreader,Georgia,serif;font-size:23px;line-height:1.3;
+  font-weight:500;color:var(--ink);font-style:italic}
+
+.schema{background:var(--card);border:1px solid var(--line);border-radius:3px;
+  padding:26px 22px;overflow-x:auto}
+.schema svg{display:block;min-width:680px;width:100%;height:auto}
+.sc-legende{font-size:13.5px;color:var(--muted);margin-top:14px;max-width:70ch}
+svg .b-fill{fill:var(--sunken)}
+svg .t{fill:var(--ink);font-family:Nunito,sans-serif;font-size:12.5px;font-weight:800}
+svg .s{fill:var(--muted);font-family:Nunito,sans-serif;font-size:10.5px;font-weight:600}
+svg .lab{fill:var(--muted);font-family:Nunito,sans-serif;font-size:10.5px;font-weight:800;
+  letter-spacing:.09em;text-transform:uppercase}
+svg .m{font-family:var(--mono);font-size:10px;fill:var(--muted)}
+
+.etages{display:flex;flex-direction:column;gap:2px}
+.etage{background:var(--card);border:1px solid var(--line);border-radius:3px;
+  border-left:5px solid var(--line-fort);padding:18px 22px;display:flex;
+  flex-direction:column;gap:6px}
+.etage.a{border-left-color:var(--atelier)}
+.etage.r{border-left-color:var(--reste)}
+.etage.s{border-left-color:var(--sort)}
+.etage .ligne{display:flex;align-items:baseline;gap:12px;flex-wrap:wrap;
+  justify-content:space-between}
+.etage p{font-size:15.5px}
+.tag{font-size:11.5px;font-weight:800;letter-spacing:.05em;text-transform:uppercase;
+  padding:3px 9px;border-radius:2px;white-space:nowrap}
+.t-a{background:var(--atelier-bg);color:var(--atelier)}
+.t-r{background:var(--reste-bg);color:var(--reste)}
+.t-s{background:var(--sort-bg);color:var(--sort)}
+.t-x{background:var(--alerte-bg);color:var(--alerte)}
+.t-n{background:var(--sunken);color:var(--muted);border:1px solid var(--line)}
+
+.defile{overflow-x:auto;border:1px solid var(--line);border-radius:3px;background:var(--card)}
+table{border-collapse:collapse;width:100%;font-size:15px;min-width:640px}
+caption{caption-side:top;text-align:left;padding:0 0 10px;font-size:13.5px;color:var(--muted)}
+th,td{padding:11px 15px;text-align:left;border-bottom:1px solid var(--line);vertical-align:top}
+thead th{font-size:11.5px;font-weight:800;letter-spacing:.09em;text-transform:uppercase;
+  color:var(--muted);background:var(--sunken);white-space:nowrap}
+tbody tr:last-child td{border-bottom:none}
+td.q{font-weight:700;color:var(--ink)}
+td.num{font-variant-numeric:tabular-nums;white-space:nowrap}
+td small{display:block;color:var(--muted);font-size:13px;line-height:1.45;margin-top:2px}
+tbody tr td:first-child{border-left:4px solid transparent}
+tr.f-sort td:first-child{border-left-color:var(--sort)}
+tr.f-reste td:first-child{border-left-color:var(--reste)}
+
+.chiffres{display:grid;grid-template-columns:repeat(auto-fit,minmax(130px,1fr));gap:10px}
+.ch{background:var(--card);border:1px solid var(--line);border-radius:3px;
+  border-top:3px solid var(--atelier);padding:15px 16px}
+.ch .n{font-family:Newsreader,Georgia,serif;font-size:30px;line-height:1;font-weight:500;
+  color:var(--ink);display:block;font-variant-numeric:tabular-nums}
+.ch .q{font-size:12.5px;font-weight:700;color:var(--muted);line-height:1.35;display:block;margin-top:7px}
+
+.reserve{border:1px dashed var(--line-fort);border-radius:3px;padding:20px 24px;
+  font-size:15px;color:var(--muted);display:flex;flex-direction:column;gap:9px}
+.reserve strong{color:var(--body)}
+.pied{margin-top:52px;padding-top:22px;border-top:1px solid var(--line);font-size:13.5px;
+  color:var(--muted);display:flex;flex-direction:column;gap:5px}
+@media (max-width:620px){ .doc{padding:36px 18px 72px} }
+</style>
+</head>
+<body>
+<article class="doc">
+
+<p class="eyebrow">Bibliothèque de francisation · 27 août 2026</p>
+<h1>La mécanique</h1>
+<p class="chapeau">Ce qui fabrique le contenu, ce qui le sert aux élèves, et ce qui
+permet à une direction de l'encadrer. <strong>Un atelier de production, un serveur,
+un arbre d'autorisations</strong> — et six flux qui sortent. Tout ce qui suit est
+lu dans le code, pas supposé.</p>
+
+<section class="premier">
+  <div class="these">
+    <p class="cle">Aucun module n'est écrit à la main. Le HTML est un produit, jamais
+    une source.</p>
+    <p>C'est la décision qui explique tout le reste : le volume produit, la
+    possibilité de changer une règle sur 86 modules d'un coup, et la seule vraie
+    interdiction de l'atelier — <strong>modifier le HTML d'un module est une
+    modification perdue</strong>, elle disparaît au prochain assemblage. On modifie
+    le contenu, ou le gabarit.</p>
+  </div>
+
+  <div class="chiffres">
+    <div class="ch"><span class="n">76</span><span class="q">programmes de production</span></div>
+    <div class="ch"><span class="n">15</span><span class="q">greffes appliquées à tous les modules</span></div>
+    <div class="ch"><span class="n">76</span><span class="q">routes du serveur</span></div>
+    <div class="ch"><span class="n">27</span><span class="q">fichiers de données</span></div>
+    <div class="ch"><span class="n">1 469</span><span class="q">versions déposées</span></div>
+    <div class="ch"><span class="n">6</span><span class="q">flux qui sortent du serveur</span></div>
+  </div>
+</section>
+
+<section>
+  <p class="eyebrow">Vue d'ensemble</p>
+  <h2>De l'atelier jusqu'à l'élève</h2>
+
+  <div class="schema">
+  <svg viewBox="0 0 700 420" role="img" aria-label="Schéma en quatre étages : l'atelier de production assemble les modules, le dépôt les publie sur l'hébergeur, le serveur les sert aux quatre portails, et l'arbre des organisations décide de ce qui est permis.">
+    <defs>
+      <marker id="f2" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="6" markerHeight="6" orient="auto">
+        <path d="M0 0 L10 5 L0 10 z" fill="currentColor"/>
+      </marker>
+    </defs>
+
+    <!-- étage 1 : atelier -->
+    <text class="lab" x="0" y="12">1 · L'atelier de production — sur le poste, jamais en ligne</text>
+    <rect x="0" y="20" width="700" height="88" rx="3" style="fill:var(--atelier-bg);stroke:var(--atelier);stroke-width:1.2"/>
+    <rect class="b-fill" x="14" y="34" width="146" height="60" rx="3" style="stroke:var(--line-fort);stroke-width:1"/>
+    <text class="t" x="26" y="55">Contenu du module</text>
+    <text class="s" x="26" y="71">7 fichiers par module</text>
+    <text class="m" x="26" y="86">build/contenu/&lt;slug&gt;/</text>
+
+    <rect class="b-fill" x="176" y="34" width="132" height="60" rx="3" style="stroke:var(--line-fort);stroke-width:1"/>
+    <text class="t" x="188" y="55">Le gabarit</text>
+    <text class="s" x="188" y="71">une seule page modèle</text>
+    <text class="m" x="188" y="86">build/gabarit.py</text>
+
+    <rect class="b-fill" x="324" y="34" width="132" height="60" rx="3" style="stroke:var(--line-fort);stroke-width:1"/>
+    <text class="t" x="336" y="55">15 greffes</text>
+    <text class="s" x="336" y="71">reprise, voix, outils,</text>
+    <text class="s" x="336" y="86">confinement, marque…</text>
+
+    <rect class="b-fill" x="472" y="34" width="214" height="60" rx="3" style="stroke:var(--line-fort);stroke-width:1"/>
+    <text class="t" x="484" y="55">Les médias</text>
+    <text class="s" x="484" y="71">voix Azure · images · séances</text>
+    <text class="s" x="484" y="86">PowerPoint · fiches élève</text>
+
+    <g color="currentColor" stroke-width="1.4" fill="none" marker-end="url(#f2)">
+      <path d="M350 108 L350 132" style="stroke:var(--line-fort)"/>
+    </g>
+
+    <!-- étage 2 : dépôt -->
+    <text class="lab" x="0" y="152">2 · La publication</text>
+    <rect class="b-fill" x="0" y="160" width="700" height="44" rx="3" style="stroke:var(--line-fort);stroke-width:1"/>
+    <text class="t" x="14" y="180">Dépôt Git</text>
+    <text class="s" x="14" y="195">1 469 versions</text>
+    <text class="t" x="230" y="180">→ envoi sur la branche principale</text>
+    <text class="s" x="230" y="195">un seul geste, réversible</text>
+    <text class="t" x="500" y="180">→ hébergeur</text>
+    <text class="s" x="500" y="195">redéploiement automatique</text>
+
+    <g color="currentColor" stroke-width="1.4" fill="none" marker-end="url(#f2)">
+      <path d="M350 204 L350 228" style="stroke:var(--line-fort)"/>
+    </g>
+
+    <!-- étage 3 : serveur -->
+    <text class="lab" x="0" y="248">3 · Le serveur — un seul programme, 76 routes</text>
+    <rect x="0" y="256" width="700" height="76" rx="3" style="fill:var(--reste-bg);stroke:var(--reste);stroke-width:1.2"/>
+    <text class="t" x="14" y="278">server.py</text>
+    <text class="s" x="14" y="294">bibliothèque standard</text>
+    <text class="s" x="14" y="309">multi-fils</text>
+    <text class="m" x="14" y="324">20 167 lignes</text>
+
+    <rect class="b-fill" x="150" y="266" width="152" height="56" rx="3" style="stroke:var(--line-fort);stroke-width:1"/>
+    <text class="t" x="162" y="286">Les données</text>
+    <text class="s" x="162" y="302">27 fichiers, sur un</text>
+    <text class="s" x="162" y="316">disque qui persiste</text>
+
+    <rect class="b-fill" x="318" y="266" width="152" height="56" rx="3" style="stroke:var(--line-fort);stroke-width:1"/>
+    <text class="t" x="330" y="286">Les fichiers</text>
+    <text class="s" x="330" y="302">modules, sons, images,</text>
+    <text class="s" x="330" y="316">documents</text>
+
+    <rect class="b-fill" x="486" y="266" width="200" height="56" rx="3" style="stroke:var(--sort);stroke-width:1.2"/>
+    <text class="t" x="498" y="286">Les appels sortants</text>
+    <text class="s" x="498" y="302">assistance, voix lue,</text>
+    <text class="s" x="498" y="316">transcription — sous drapeau</text>
+
+    <g color="currentColor" stroke-width="1.4" fill="none" marker-end="url(#f2)">
+      <path d="M350 332 L350 356" style="stroke:var(--line-fort)"/>
+    </g>
+
+    <!-- étage 4 : portails -->
+    <text class="lab" x="0" y="376">4 · Ce que chacun ouvre</text>
+    <rect class="b-fill" x="0" y="384" width="166" height="34" rx="3" style="stroke:var(--line-fort);stroke-width:1"/>
+    <text class="t" x="12" y="405">Élève · son parcours</text>
+    <rect class="b-fill" x="178" y="384" width="166" height="34" rx="3" style="stroke:var(--line-fort);stroke-width:1"/>
+    <text class="t" x="190" y="405">Enseignant · sa classe</text>
+    <rect class="b-fill" x="356" y="384" width="166" height="34" rx="3" style="stroke:var(--line-fort);stroke-width:1"/>
+    <text class="t" x="368" y="405">Direction · son centre</text>
+    <rect class="b-fill" x="534" y="384" width="166" height="34" rx="3" style="stroke:var(--line-fort);stroke-width:1"/>
+    <text class="t" x="546" y="405">Réseau · les réglages</text>
+  </svg>
+  <p class="sc-legende">Les deux premiers étages ne tournent que sur le poste de
+  production : rien de ce qui fabrique un module ne s'exécute en ligne. Le serveur
+  ne fait que servir ce qui a déjà été assemblé, plus les quelques appels du
+  troisième étage, encadrés par l'arbre décrit plus bas.</p>
+  </div>
+</section>
+
+<section>
+  <p class="eyebrow">Étage 1</p>
+  <h2>L'atelier : comment un module se fabrique</h2>
+  <p>Un module n'est pas un fichier, c'est une <strong>recette</strong>. Sept
+  fichiers de contenu, un gabarit commun, quinze greffes, et des générateurs de
+  médias. La commande se relance à volonté et redonne exactement le même module.</p>
+
+  <div class="etages">
+    <div class="etage a">
+      <div class="ligne"><h3>Le contenu — ce qu'on écrit</h3><span class="tag t-a">77 dossiers</span></div>
+      <p>Dialogues, vocabulaire, exercices, mini-leçons, consignes de production,
+      bilan. C'est le seul endroit où l'on écrit du français. Le reste est de
+      l'assemblage.</p>
+    </div>
+    <div class="etage a">
+      <div class="ligne"><h3>Le gabarit — la page modèle</h3><span class="tag t-a">1 fichier</span></div>
+      <p>La structure des quatre sections, la correction sur place, la reprise de
+      séance, la barre d'outils. Changer le gabarit change les 77 modules qui en
+      sortent : c'est le levier le plus puissant de l'atelier, et le plus
+      dangereux.</p>
+    </div>
+    <div class="etage a">
+      <div class="ligne"><h3>Les greffes — poser une règle partout</h3><span class="tag t-a">15 programmes</span></div>
+      <p>Une greffe ajoute un comportement à tous les modules d'un coup, y compris
+      aux dix dont le HTML est la source et aux deux bâtis autrement : reprise de
+      la séance, bouton de vitesse des voix, rail « Mes outils », mode sans
+      assistant, confinement du micro, deux essais avant la réponse. Chaque greffe
+      sait se retirer, à l'octet près.</p>
+    </div>
+    <div class="etage a">
+      <div class="ligne"><h3>Les médias — produits, jamais cherchés</h3><span class="tag t-a">4 chaînes</span></div>
+      <p>La voix par synthèse Azure en français québécois, à deux vitesses ; les
+      images par génération, recadrées en 3:2 ; les 16 séances en PowerPoint ; les
+      fiches élève en noir et blanc, format lettre. Chaque appel payant est inscrit
+      dans un registre, ce qui donne un plancher de coût vérifiable.</p>
+    </div>
+    <div class="etage a">
+      <div class="ligne"><h3>Le tableau de bord — le contrôle</h3><span class="tag t-a">1 commande</span></div>
+      <p>Une seule commande relit tout le dépôt et sort l'état réel : modules,
+      séances, sons, couverture du programme, et les alertes. C'est la source des
+      chiffres de « La carte du contenu ».</p>
+    </div>
+  </div>
+</section>
+
+<section>
+  <p class="eyebrow">Étage 3</p>
+  <h2>Le serveur, et ce qu'il garde</h2>
+  <p>Un seul programme de 20 167 lignes, écrit avec la bibliothèque standard de
+  Python — <strong>aucune dépendance externe</strong>. Il sert les fichiers, tient
+  76 routes, et écrit ses données dans 27 fichiers sur un disque qui survit aux
+  redéploiements. Il n'y a pas de base de données à administrer.</p>
+
+  <div class="defile">
+  <table>
+    <caption>Ce qui est conservé, et ce que ça pèse dans le dossier de la vie privée.</caption>
+    <thead><tr><th>Donnée</th><th>Pourquoi elle existe</th><th>Sensibilité</th></tr></thead>
+    <tbody>
+      <tr class="f-reste"><td class="q">Pseudos des élèves</td><td>Retrouver son parcours d'une séance à l'autre. <small>Jamais un vrai nom : le champ s'appelle « pseudo ».</small></td><td><span class="tag t-r">pseudonyme</span></td></tr>
+      <tr class="f-reste"><td class="q">Avancement et compteurs</td><td>Savoir qui a fait quoi, et où ça a bloqué.</td><td><span class="tag t-n">non personnel</span></td></tr>
+      <tr class="f-sort"><td class="q">Productions écrites</td><td>L'enseignant corrige et suit la progression. <small>Le texte porte le logement, la santé, le travail — l'information que le pseudo prétend cacher.</small></td><td><span class="tag t-x">sensible</span></td></tr>
+      <tr class="f-sort"><td class="q">Enregistrements oraux</td><td>Réécouter son élève. <small>Une voix identifie une personne, pseudo ou pas.</small></td><td><span class="tag t-x">sensible</span></td></tr>
+      <tr class="f-reste"><td class="q">Analyses d'erreurs</td><td>Le diagnostic de groupe : quelle notion manque à qui. <small>Plafonnées à 3 000 — borne technique, pas règle de conservation.</small></td><td><span class="tag t-s">à encadrer</span></td></tr>
+      <tr class="f-reste"><td class="q">Comptes des enseignants</td><td>Nom et courriel, fournis par la personne pour son propre compte. <small>Révocables, ne sortent jamais du serveur.</small></td><td><span class="tag t-r">faible</span></td></tr>
+    </tbody>
+  </table>
+  </div>
+
+  <p><strong>Les corrections faites par l'assistant ne sont jamais gardées.</strong>
+  Elles s'affichent à l'élève et disparaissent. Ce qui monte à l'enseignant, c'est
+  la production de l'élève, pas ce que la machine en a dit.</p>
+</section>
+
+<section>
+  <p class="eyebrow">Étage 4</p>
+  <h2>L'arbre : qui décide de quoi</h2>
+  <p>Les autorisations ne sont pas une liste, c'est un <strong>arbre</strong>. Un
+  réglage posé sur un nœud descend à tout ce qui est en dessous, jusqu'à ce qu'un
+  nœud plus bas le remplace. Chaque écran dit ce qui s'applique et <em>qui l'a
+  décidé</em> quand la décision vient d'ailleurs.</p>
+
+  <div class="schema">
+  <svg viewBox="0 0 700 262" role="img" aria-label="Schéma de l'arbre : réseau, centre de services scolaire, centre, enseignant, groupe, élève. Trois drapeaux — assistant, micro, dépôt — se posent sur n'importe quel nœud et descendent.">
+    <rect class="b-fill" x="0" y="20" width="150" height="40" rx="3" style="stroke:var(--line-fort);stroke-width:1"/>
+    <text class="t" x="12" y="38">Réseau</text><text class="s" x="12" y="53">la racine</text>
+    <path d="M75 60 L75 84" style="stroke:var(--line-fort);stroke-width:1.4;fill:none"/>
+
+    <rect class="b-fill" x="0" y="84" width="150" height="40" rx="3" style="stroke:var(--line-fort);stroke-width:1"/>
+    <text class="t" x="12" y="102">Centre de services scolaire</text><text class="s" x="12" y="117">l'échelon au-dessus</text>
+    <path d="M75 124 L75 148" style="stroke:var(--line-fort);stroke-width:1.4;fill:none"/>
+
+    <rect x="0" y="148" width="150" height="40" rx="3" style="fill:var(--sort-bg);stroke:var(--sort);stroke-width:1.4"/>
+    <text class="t" x="12" y="166">Centre</text><text class="s" x="12" y="181">c'est ici que ça se décide</text>
+    <path d="M75 188 L75 212" style="stroke:var(--line-fort);stroke-width:1.4;fill:none"/>
+
+    <rect class="b-fill" x="0" y="212" width="150" height="42" rx="3" style="stroke:var(--line-fort);stroke-width:1"/>
+    <text class="t" x="12" y="230">Enseignant → groupe</text>
+    <text class="s" x="12" y="245">→ élève</text>
+
+    <path d="M150 168 L196 168" style="stroke:var(--sort);stroke-width:1.4;fill:none"/>
+
+    <text class="lab" x="200" y="14">Trois interrupteurs, un seul écran, une seule écriture</text>
+
+    <rect x="200" y="24" width="500" height="60" rx="3" style="fill:var(--sort-bg);stroke:var(--sort);stroke-width:1.2"/>
+    <text class="t" x="214" y="45">L'assistant</text>
+    <text class="s" x="214" y="61">Les onze routes d'aide par intelligence artificielle.</text>
+    <text class="s" x="214" y="76">Défaut : ouvert. Fermé, le cours fonctionne quand même.</text>
+
+    <rect x="200" y="92" width="500" height="60" rx="3" style="fill:var(--sort-bg);stroke:var(--sort);stroke-width:1.2"/>
+    <text class="t" x="214" y="113">Le micro</text>
+    <text class="s" x="214" y="129">La reconnaissance vocale du navigateur, qui sort du serveur.</text>
+    <text class="s" x="214" y="144">Défaut : confiné. Un silence ou une panne garde la voix sur l'appareil.</text>
+
+    <rect x="200" y="160" width="500" height="76" rx="3" style="fill:var(--sort-bg);stroke:var(--sort);stroke-width:1.2"/>
+    <text class="t" x="214" y="181">Le dépôt de la voix</text>
+    <text class="s" x="214" y="197">Complet — le fichier est gardé, l'enseignant réécoute.</text>
+    <text class="s" x="214" y="212">Transcription — le texte seul ; l'audio n'est jamais écrit sur le disque.</text>
+    <text class="s" x="214" y="227">Fermé — la route refuse, le bouton disparaît du module.</text>
+  </svg>
+  <p class="sc-legende">Les trois drapeaux partent dans <strong>une seule
+  écriture</strong> : trois appels séparés laisseraient l'arbre à moitié réglé et
+  le journal montrerait trois modifications pour un seul geste. Cinq rôles
+  cohabitent sur l'arbre — fondateur, gestion du centre de services, direction,
+  conseiller, enseignant — chacun ne voyant que sa branche.</p>
+  </div>
+</section>
+
+<section>
+  <p class="eyebrow">Étage 3, la partie qui se discute</p>
+  <h2>Les six flux qui sortent</h2>
+  <p>Le reste du produit ne quitte jamais le serveur. Ce qui se discute tient en
+  six lignes — et le filet ambre marque celles qui emportent une donnée d'élève.</p>
+
+  <div class="defile">
+  <table>
+    <caption>Relevé dans <code>server.py</code> et dans le gabarit des modules.</caption>
+    <thead><tr><th>Flux</th><th>Ce qui part</th><th>Où</th><th>Coupable ?</th></tr></thead>
+    <tbody>
+      <tr class="f-sort"><td class="q">Neuf routes d'assistance<small>Correction, jeu de rôle, analyse d'erreurs, outils de l'élève</small></td><td>Textes et réponses d'élèves</td><td>Anthropic · États-Unis</td><td><span class="tag t-r">oui</span></td></tr>
+      <tr class="f-sort"><td class="q">Vérification du vocabulaire</td><td>La réponse écrite, jusqu'à 100 caractères</td><td>Anthropic · États-Unis</td><td><span class="tag t-r">oui</span></td></tr>
+      <tr class="f-sort"><td class="q">Analyse grammaticale</td><td>Le texte de l'élève, jusqu'à 800 caractères</td><td>Anthropic · États-Unis</td><td><span class="tag t-r">oui</span></td></tr>
+      <tr class="f-sort"><td class="q">Reconnaissance vocale<small>Ne traverse ni notre serveur ni nos clés</small></td><td>La voix de l'élève, en continu</td><td>Google ou Apple, selon le navigateur</td><td><span class="tag t-r">par centre</span></td></tr>
+      <tr class="f-reste"><td class="q">Synthèse vocale</td><td>Texte du module — aucune donnée d'élève</td><td>Microsoft · Toronto</td><td><span class="tag t-n">sans objet</span></td></tr>
+      <tr class="f-sort"><td class="q">Transcription orale</td><td>L'enregistrement, le temps de l'appel</td><td>Microsoft · Toronto</td><td><span class="tag t-r">par centre</span></td></tr>
+    </tbody>
+  </table>
+  </div>
+
+  <p>Deux modèles seulement sont appelés : un petit pour les dix routes de
+  correction, un grand pour le jeu de rôle et l'assistant. Le coût mesuré est de
+  <strong>0,08 $ par élève et par module</strong>, soit environ 21 $ pour un groupe
+  de 20 élèves sur une session de 14 modules.</p>
+</section>
+
+<section>
+  <p class="eyebrow">La boucle</p>
+  <h2>Ce que l'élève laisse, et ce que l'enseignant en voit</h2>
+  <ul class="simple">
+    <li><strong>L'élève travaille</strong> — le module garde son avancement dans son
+    navigateur, pour qu'il reprenne où il était, avec un bouton pour tout
+    recommencer. Cette mémoire-là ne quitte pas l'appareil.</li>
+    <li><strong>Il envoie quand il est prêt</strong> — la production orale ou écrite
+    part vers l'enseignant. Rien d'autre ne part : ni les brouillons, ni ce que
+    l'assistant a corrigé en chemin.</li>
+    <li><strong>Le serveur compte</strong> — combien d'exercices, réussis au premier
+    essai ou non, quels signaux d'aide, sur quel exercice nommé. Des compteurs,
+    jamais les réponses.</li>
+    <li><strong>L'enseignant lit trois écrans</strong> — la progression du groupe
+    module par module, la fiche d'un seul élève, et le diagnostic : quelle notion
+    manque, à qui, et sur quel exercice ça s'est vu.</li>
+    <li><strong>La direction en voit l'agrégat</strong> — les statistiques par
+    centre et par réseau, sans jamais descendre au dossier d'un élève.</li>
+  </ul>
+</section>
+
+<section>
+  <p class="eyebrow">Sans embellir</p>
+  <h2>Les points fragiles</h2>
+  <ul class="simple">
+    <li><strong>Une seule personne connaît l'atelier.</strong> C'est le vrai risque
+    du projet, et il ne se règle pas par du code. Il est atténué par le fait que
+    tout est écrit — les procédures de production sont dans le dépôt, pas dans une
+    tête — mais atténué seulement.</li>
+    <li><strong>Les données vivent dans des fichiers, pas dans une base.</strong>
+    C'est ce qui rend le serveur si simple et si peu cher ; cela tiendra pour des
+    centaines d'élèves, pas pour des dizaines de milliers. Le jour où ça change,
+    c'est un chantier, pas un réglage.</li>
+    <li><strong>La durée de conservation n'est pas posée.</strong> La purge
+    quotidienne tourne en observation : elle compte ce qu'elle effacerait, sans
+    rien toucher. Il manque un chiffre, et il appartient au centre de services
+    scolaire.</li>
+    <li><strong>Un seul hébergeur, un seul serveur.</strong> Pas de bascule
+    automatique en cas de panne. Une classe qui perd le portail perd la séance —
+    d'où les fiches élève en papier, qui ne sont pas un ornement.</li>
+  </ul>
+</section>
+
+<div class="reserve">
+  <p><strong>Ce document décrit l'état du code au 27 août 2026</strong>, relevé dans
+  <code>server.py</code>, <code>build/gabarit.py</code>, les quinze greffes et le
+  tableau de bord. Il ne remplace ni le dossier de la vie privée — voir « Ce qui
+  sort du Québec » — ni le guide destiné aux directions.</p>
+</div>
+
+<div class="pied">
+  <p>Bibliothèque de francisation · la mécanique au 27 août 2026.</p>
+  <p>Documents liés : « La carte du contenu », « Guide pour la direction »,
+  « Ce qui sort du Québec ».</p>
+</div>
+
+</article>
+</body>
+</html>

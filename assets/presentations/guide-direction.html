@@ -1,0 +1,487 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Guide pour la direction</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Newsreader:ital,opsz,wght@0,6..72,400;0,6..72,500;0,6..72,600;1,6..72,400&family=Nunito:ital,wght@0,400;0,600;0,700;0,800;1,400&display=swap">
+
+<style>
+/* ═══════════════════════════════════════════════════════════
+   GUIDE POUR LA DIRECTION
+   Ce qu'il faut décider, ce que la loi exige, ce que ça coûte.
+
+   La couleur sépare trois choses et rien d'autre : vert ce qui
+   est déjà en place, ambre ce qui attend une décision du centre,
+   rouge ce qui est une obligation légale de l'organisme. L'acier
+   ne fait que la structure.
+   ═══════════════════════════════════════════════════════════ */
+
+:root{
+  --ground:#F7F7F5; --card:#FFFFFF; --sunken:#FBFBFA;
+  --ink:#17181A; --body:#3A3D40; --muted:#6E7175;
+  --line:#E4E4E0; --line-fort:#D2D2CD;
+
+  --fait:#0A8F5B;    --fait-bg:#E6F5EE;
+  --decid:#C07A08;   --decid-bg:#FBF2E2;
+  --loi:#C7302B;     --loi-bg:#FBEDEC;
+  --acier:#1D6B8F;   --acier-bg:#E7F0F6;
+
+  --mono:ui-monospace,SFMono-Regular,"SF Mono",Menlo,Consolas,monospace;
+}
+@media (prefers-color-scheme: dark){
+  :root:not([data-theme="light"]){
+    --ground:#151618; --card:#1D1F22; --sunken:#212326;
+    --ink:#F2F2F0; --body:#CFD1D3; --muted:#94979B;
+    --line:#2E3135; --line-fort:#3D4146;
+    --fait:#4BC48D; --fait-bg:#12291F;
+    --decid:#E0A63F; --decid-bg:#2C2213;
+    --loi:#EE7A73; --loi-bg:#2E1917;
+    --acier:#6DAFD2; --acier-bg:#14242C;
+  }
+}
+:root[data-theme="dark"]{
+  --ground:#151618; --card:#1D1F22; --sunken:#212326;
+  --ink:#F2F2F0; --body:#CFD1D3; --muted:#94979B;
+  --line:#2E3135; --line-fort:#3D4146;
+  --fait:#4BC48D; --fait-bg:#12291F;
+  --decid:#E0A63F; --decid-bg:#2C2213;
+  --loi:#EE7A73; --loi-bg:#2E1917;
+  --acier:#6DAFD2; --acier-bg:#14242C;
+}
+
+*{box-sizing:border-box}
+body{margin:0;background:var(--ground);color:var(--body);
+  font-family:Nunito,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;
+  font-size:17px;line-height:1.62;-webkit-font-smoothing:antialiased}
+.doc{max-width:880px;margin:0 auto;padding:56px 24px 96px}
+
+.eyebrow{font-size:12px;font-weight:800;letter-spacing:.13em;text-transform:uppercase;
+  color:var(--acier);margin:0 0 14px}
+h1{font-family:Newsreader,Georgia,serif;font-size:clamp(38px,6.4vw,58px);line-height:1.04;
+  font-weight:500;letter-spacing:-.02em;color:var(--ink);margin:0 0 20px;text-wrap:balance}
+.chapeau{font-size:19px;line-height:1.6;color:var(--body);margin:0;max-width:62ch}
+.chapeau strong{color:var(--ink);font-weight:700}
+h2{font-family:Newsreader,Georgia,serif;font-size:29px;line-height:1.2;font-weight:600;
+  letter-spacing:-.01em;color:var(--ink);margin:0 0 4px;text-wrap:balance}
+h3{font-size:15px;font-weight:800;color:var(--ink);margin:0 0 6px}
+p{margin:0;max-width:68ch}
+section{display:flex;flex-direction:column;gap:16px;padding:44px 0 0;margin:44px 0 0;
+  border-top:1px solid var(--line)}
+section.premier{border-top:none;margin-top:0;padding-top:40px}
+code{font-family:var(--mono);font-size:.86em;background:var(--sunken);
+  border:1px solid var(--line);border-radius:4px;padding:1px 5px;color:var(--ink)}
+ul.simple{margin:0;padding-left:20px;display:flex;flex-direction:column;gap:8px}
+ul.simple li{max-width:66ch} ul.simple li strong{color:var(--ink)}
+em.art{font-style:normal;font-family:var(--mono);font-size:.82em;color:var(--muted);
+  white-space:nowrap}
+
+.these{background:var(--card);border:1px solid var(--line);border-left:5px solid var(--acier);
+  border-radius:3px;padding:26px 28px;display:flex;flex-direction:column;gap:12px}
+.these p{font-size:18px}
+.these .cle{font-family:Newsreader,Georgia,serif;font-size:23px;line-height:1.3;
+  font-weight:500;color:var(--ink);font-style:italic}
+
+/* ── Les décisions ─────────────────────────────────────── */
+.decisions{display:flex;flex-direction:column;gap:2px;counter-reset:d}
+.dec{counter-increment:d;background:var(--card);border:1px solid var(--line);
+  border-left:5px solid var(--decid);border-radius:3px;padding:19px 22px 19px 60px;
+  position:relative;display:flex;flex-direction:column;gap:8px}
+.dec.ok{border-left-color:var(--fait)}
+.dec::before{content:counter(d);position:absolute;left:24px;top:18px;
+  font-family:var(--mono);font-size:14px;color:var(--muted)}
+.dec .ligne{display:flex;align-items:baseline;gap:12px;flex-wrap:wrap;
+  justify-content:space-between}
+.dec p{font-size:15.5px}
+.dec .defaut{font-size:13.5px;color:var(--muted);font-style:italic}
+
+.badge{display:inline-block;font-size:11.5px;font-weight:800;letter-spacing:.05em;
+  text-transform:uppercase;padding:3px 9px;border-radius:2px;white-space:nowrap}
+.b-fait{background:var(--fait-bg);color:var(--fait)}
+.b-dec{background:var(--decid-bg);color:var(--decid)}
+.b-loi{background:var(--loi-bg);color:var(--loi)}
+.b-n{background:var(--sunken);color:var(--muted);border:1px solid var(--line)}
+
+/* ── Tableaux ──────────────────────────────────────────── */
+.defile{overflow-x:auto;border:1px solid var(--line);border-radius:3px;background:var(--card)}
+table{border-collapse:collapse;width:100%;font-size:15px;min-width:640px}
+caption{caption-side:top;text-align:left;padding:0 0 10px;font-size:13.5px;color:var(--muted)}
+th,td{padding:12px 15px;text-align:left;border-bottom:1px solid var(--line);vertical-align:top}
+thead th{font-size:11.5px;font-weight:800;letter-spacing:.09em;text-transform:uppercase;
+  color:var(--muted);background:var(--sunken);white-space:nowrap}
+tbody tr:last-child td{border-bottom:none}
+td.q{font-weight:700;color:var(--ink)}
+td.num{font-variant-numeric:tabular-nums;white-space:nowrap}
+td small{display:block;color:var(--muted);font-size:13px;line-height:1.45;margin-top:3px}
+tbody tr td:first-child{border-left:4px solid transparent}
+tr.l td:first-child{border-left-color:var(--loi)}
+tr.d td:first-child{border-left-color:var(--decid)}
+tr.f td:first-child{border-left-color:var(--fait)}
+
+/* ── Chiffres ──────────────────────────────────────────── */
+.chiffres{display:grid;grid-template-columns:repeat(auto-fit,minmax(140px,1fr));gap:10px}
+.ch{background:var(--card);border:1px solid var(--line);border-radius:3px;
+  border-top:3px solid var(--acier);padding:15px 16px}
+.ch .n{font-family:Newsreader,Georgia,serif;font-size:30px;line-height:1;font-weight:500;
+  color:var(--ink);display:block;font-variant-numeric:tabular-nums}
+.ch .q{font-size:12.5px;font-weight:700;color:var(--muted);line-height:1.35;display:block;margin-top:7px}
+
+/* ── Marche à suivre ───────────────────────────────────── */
+ol.actions{list-style:none;margin:0;padding:0;display:flex;flex-direction:column;gap:2px;
+  counter-reset:a}
+ol.actions li{counter-increment:a;background:var(--card);border:1px solid var(--line);
+  border-radius:3px;padding:18px 22px 18px 62px;position:relative;display:flex;
+  flex-direction:column;gap:6px}
+ol.actions li::before{content:counter(a);position:absolute;left:22px;top:17px;
+  font-family:var(--mono);font-size:14px;color:var(--muted)}
+ol.actions li p{font-size:15.5px}
+.qui{font-size:13px;color:var(--muted);font-style:italic}
+
+.reserve{border:1px dashed var(--line-fort);border-radius:3px;padding:20px 24px;
+  font-size:15px;color:var(--muted);display:flex;flex-direction:column;gap:9px}
+.reserve strong{color:var(--body)}
+.avert{background:var(--loi-bg);border:1px solid var(--loi);border-radius:3px;
+  padding:20px 24px;display:flex;flex-direction:column;gap:9px}
+.avert strong{color:var(--ink)}
+.avert p{font-size:15.5px;color:var(--body)}
+.pied{margin-top:52px;padding-top:22px;border-top:1px solid var(--line);font-size:13.5px;
+  color:var(--muted);display:flex;flex-direction:column;gap:5px}
+@media (max-width:620px){ .doc{padding:36px 18px 72px} }
+</style>
+</head>
+<body>
+<article class="doc">
+
+<p class="eyebrow">Bibliothèque de francisation · 27 août 2026</p>
+<h1>Guide pour la direction</h1>
+<p class="chapeau">Ce qu'est la plateforme, <strong>les six décisions qui vous
+appartiennent</strong>, les obligations légales que la mise en service déclenche
+pour l'organisme, et ce que tout cela coûte. Écrit pour être lu avant une mise en
+service, pas après.</p>
+
+<section class="premier">
+  <div class="these">
+    <p class="cle">Le produit est prêt ; ce qui reste à décider n'est pas technique.</p>
+    <p>Le code répond à toutes les questions qu'il pouvait résoudre seul :
+    l'assistant, le micro et l'enregistrement de la voix se coupent centre par
+    centre, sans que le cours cesse de fonctionner. Ce qui reste — la durée de
+    conservation, l'évaluation des facteurs relatifs à la vie privée, l'entente
+    écrite avec les fournisseurs — <strong>appartient au centre de services
+    scolaire</strong>, parce que ce sont des décisions d'organisme, pas des
+    réglages.</p>
+  </div>
+</section>
+
+<section>
+  <p class="eyebrow">En une page</p>
+  <h2>Ce que c'est</h2>
+  <p>Une bibliothèque de cours de francisation pour adultes, alignée sur le
+  programme d'études ministériel, utilisable en classe et à la maison. Le contenu
+  est <strong>entièrement original</strong> : aucun manuel n'est reproduit, ni en
+  texte ni en structure d'exercices.</p>
+
+  <div class="chiffres">
+    <div class="ch"><span class="n">8</span><span class="q">niveaux couverts</span></div>
+    <div class="ch"><span class="n">86</span><span class="q">modules de cours de 64 h</span></div>
+    <div class="ch"><span class="n">90</span><span class="q">ateliers de 2 h</span></div>
+    <div class="ch"><span class="n">85 / 85</span><span class="q">situations de vie du programme</span></div>
+    <div class="ch"><span class="n">1 238</span><span class="q">séances en PowerPoint</span></div>
+    <div class="ch"><span class="n">0,08 $</span><span class="q">par élève et par module</span></div>
+  </div>
+
+  <ul class="simple">
+    <li><strong>Pour l'élève</strong> — un parcours par module : écouter, s'exercer
+    avec correction immédiate, puis produire à l'oral ou à l'écrit. Il s'entraîne
+    sans témoin et n'envoie que quand il est prêt. C'est le cœur du dispositif : le
+    mur de la francisation adulte est de ne pas oser parler.</li>
+    <li><strong>Pour l'enseignant</strong> — un catalogue, une planification par
+    groupe, les productions déposées, la progression du groupe, la fiche d'un élève,
+    et un diagnostic qui dit quelle notion manque à qui.</li>
+    <li><strong>Pour la direction</strong> — les statistiques agrégées de son centre,
+    et les trois interrupteurs décrits plus bas. La direction ne descend jamais au
+    dossier d'un élève.</li>
+    <li><strong>Sur papier</strong> — chaque module a ses fiches en noir et blanc,
+    format lettre. Une panne de réseau ne fait pas perdre la séance.</li>
+  </ul>
+</section>
+
+<section>
+  <p class="eyebrow">La partie qui vous revient</p>
+  <h2>Les six décisions</h2>
+  <p>Trois sont des interrupteurs déjà construits : la réponse se pose dans un écran
+  et descend à tout le centre. Trois sont des décisions d'organisme, qui demandent
+  une signature plutôt qu'un clic.</p>
+
+  <div class="decisions">
+    <div class="dec">
+      <div class="ligne"><h3>L'assistant est-il ouvert&nbsp;?</h3><span class="badge b-dec">interrupteur</span></div>
+      <p>Onze fonctions d'aide s'appuient sur un service d'intelligence artificielle :
+      correction d'une phrase, explication d'une erreur après deux essais, jeu de
+      rôle, traduction et simplification d'un texte. Elles envoient du texte d'élève
+      à l'extérieur du Québec.</p>
+      <p class="defaut">Défaut : ouvert. Fermé, les 86 modules se replient — les
+      exercices, les sons et les productions continuent de fonctionner ; seule l'aide
+      disparaît, sans message d'erreur.</p>
+    </div>
+
+    <div class="dec">
+      <div class="ligne"><h3>Le micro écoute-t-il&nbsp;?</h3><span class="badge b-dec">interrupteur</span></div>
+      <p>La reconnaissance vocale du navigateur n'est pas un moteur local : Chrome
+      expédie l'audio capté à ses serveurs, Safari aux siens. Ce flux <em>ne traverse
+      ni notre serveur ni nos clés</em> — aucun choix d'hébergeur ne le touche, seul
+      ce réglage le ferme.</p>
+      <p class="defaut">Défaut : confiné. Mesuré sur un poste de classe : le bouton
+      micro du vocabulaire — le geste le plus fréquent de la journée — fonctionne
+      hors ligne en français canadien ; la production orale suivie, non. L'élève tape
+      alors son texte au lieu de le dicter.</p>
+    </div>
+
+    <div class="dec">
+      <div class="ligne"><h3>Garde-t-on la voix des élèves&nbsp;?</h3><span class="badge b-dec">interrupteur</span></div>
+      <p>Trois états, et c'est celui du milieu qui fait le travail. <strong>Complet</strong> :
+      le fichier est conservé, l'enseignant réécoute son élève. <strong>Transcription</strong> :
+      l'enregistrement est transcrit puis <em>jamais écrit sur le disque</em> — pas
+      écrit puis effacé : jamais écrit. L'enseignant lit ce qui a été dit et corrige.
+      <strong>Fermé</strong> : le bouton d'envoi disparaît, l'élève s'enregistre et
+      s'écoute, rien ne part.</p>
+      <p class="defaut">Défaut : complet — une mise en service n'éteint rien au
+      passage. L'élève est prévenu dans les deux cas où quelque chose change pour
+      lui.</p>
+    </div>
+
+    <div class="dec">
+      <div class="ligne"><h3>Combien de temps conserve-t-on&nbsp;?</h3><span class="badge b-loi">décision d'organisme</span></div>
+      <p>Une purge quotidienne existe et tourne déjà — mais <strong>en observation</strong> :
+      elle compte ce qu'elle effacerait sans rien toucher, faute d'une durée. Elle
+      vise les enregistrements, les textes déposés et les analyses d'erreurs, et
+      laisse l'avancement, qui ne dit rien de personnel.</p>
+      <p class="defaut">C'est le seul chiffre qui manque au dossier. Il doit
+      s'accorder au calendrier de conservation de l'organisme, approuvé sous la
+      <em class="art">Loi sur les archives</em> — donc être décidé avec la personne
+      responsable de la gestion documentaire, pas seule.</p>
+    </div>
+
+    <div class="dec">
+      <div class="ligne"><h3>Accepte-t-on les communications hors Québec&nbsp;?</h3><span class="badge b-loi">décision d'organisme</span></div>
+      <p>Trois des six flux sortants emportent du texte d'élève vers un fournisseur
+      établi aux États-Unis ; deux autres vont chez Microsoft à Toronto — ce qui est
+      aussi « hors Québec » au sens de la loi. Accepter ou refuser suppose
+      l'évaluation décrite à la section suivante.</p>
+      <p class="defaut">Refuser ne bloque pas la mise en service : c'est exactement ce
+      que ferme le premier interrupteur.</p>
+    </div>
+
+    <div class="dec">
+      <div class="ligne"><h3>Qui a accès, et à quoi&nbsp;?</h3><span class="badge b-dec">à poser une fois</span></div>
+      <p>Cinq rôles cohabitent sur l'arbre des organisations : fondateur, gestion du
+      centre de services, direction, conseiller pédagogique, enseignant. Chacun ne
+      voit que sa branche ; une direction voit son centre, jamais le voisin.</p>
+      <p class="defaut">Les comptes s'ouvrent par invitation et se révoquent. À poser
+      au moment de la mise en service, avec la liste réelle des personnes.</p>
+    </div>
+  </div>
+</section>
+
+<section>
+  <p class="eyebrow">Le cadre juridique</p>
+  <h2>Ce que la loi demande à l'organisme</h2>
+  <p>Un centre de services scolaire est un <strong>organisme public</strong>. Ce sont
+  donc les règles de la <em class="art">Loi sur l'accès aux documents des organismes
+  publics et sur la protection des renseignements personnels</em>, telles que
+  modifiées par la loi de 2021 dite « Loi 25 », qui s'appliquent — et non celles du
+  secteur privé. Les obligations ci-dessous existent que la plateforme soit adoptée
+  ou non ; la mise en service en déclenche seulement l'application à un nouveau
+  traitement.</p>
+
+  <div class="defile">
+  <table>
+    <caption>Les articles sont donnés comme repères de discussion avec la personne
+    responsable de la protection des renseignements personnels, pas comme un avis
+    juridique.</caption>
+    <thead><tr><th>Obligation</th><th>Ce que ça veut dire ici</th><th>État</th></tr></thead>
+    <tbody>
+      <tr class="l"><td class="q">Responsable de la protection des renseignements personnels <em class="art">art. 8</em></td><td>La fonction revient d'office à la personne ayant la plus haute autorité dans l'organisme, qui peut la déléguer par écrit. C'est cette personne qui porte le dossier ci-dessous.<small>À nommer dans le projet dès le départ.</small></td><td><span class="badge b-loi">organisme</span></td></tr>
+      <tr class="l"><td class="q">Comité sur l'accès et la protection <em class="art">art. 8.1</em></td><td>Le comité de l'organisme doit être saisi du projet : c'est lui qui reçoit l'évaluation et les mesures d'atténuation.</td><td><span class="badge b-loi">organisme</span></td></tr>
+      <tr class="l"><td class="q">Règles de gouvernance publiées <em class="art">art. 63.3</em></td><td>Conservation, destruction, rôles et responsabilités, gestion des incidents, formation. La plateforme s'y range comme un traitement de plus.</td><td><span class="badge b-loi">organisme</span></td></tr>
+      <tr class="l"><td class="q">Évaluation des facteurs relatifs à la vie privée <em class="art">art. 63.5</em></td><td><strong>Le point le plus souvent oublié.</strong> Tout projet de système d'information ou de prestation électronique de services impliquant des renseignements personnels en exige une — indépendamment de la question du hors-Québec.</td><td><span class="badge b-loi">à faire</span></td></tr>
+      <tr class="l"><td class="q">Communication hors Québec <em class="art">art. 70.1</em></td><td>Trois conditions avant de communiquer : une évaluation faite <em>avant</em>, une conclusion de protection « adéquate », et une entente écrite tenant compte des mesures d'atténuation.<small>Détaillé plus bas.</small></td><td><span class="badge b-loi">à faire</span></td></tr>
+      <tr class="l"><td class="q">Incidents de confidentialité <em class="art">art. 63.7 et 63.8</em></td><td>Mesures raisonnables pour limiter le préjudice, avis à la Commission d'accès à l'information et aux personnes concernées s'il y a risque de préjudice sérieux, et tenue d'un registre.<small>Le registre doit exister avant l'incident, pas après.</small></td><td><span class="badge b-loi">organisme</span></td></tr>
+      <tr class="f"><td class="q">Décision automatisée <em class="art">art. 65.2</em></td><td>Une décision fondée <em>exclusivement</em> sur un traitement automatisé oblige à en informer la personne. <strong>Ce n'est pas le cas ici</strong> : l'assistant explique une erreur, il ne note pas, ne classe pas et ne fait passer personne de niveau. Le classement et l'évaluation restent des gestes d'enseignant.</td><td><span class="badge b-fait">sans objet</span></td></tr>
+      <tr class="l"><td class="q">Conservation et destruction <em class="art">art. 73</em></td><td>Détruire ou anonymiser lorsque la finalité est accomplie, selon un calendrier de conservation. La purge quotidienne est l'outil ; la durée est la décision qui manque.</td><td><span class="badge b-dec">durée à poser</span></td></tr>
+      <tr class="l"><td class="q">Accès et rectification</td><td>Un élève peut demander ce qui est conservé sur lui et le faire corriger. Les données sont regroupées par pseudo, ce qui rend l'extraction possible — mais la procédure de réponse appartient à l'organisme.</td><td><span class="badge b-loi">procédure</span></td></tr>
+    </tbody>
+  </table>
+  </div>
+</section>
+
+<section>
+  <p class="eyebrow">Le malentendu le plus fréquent</p>
+  <h2>Est-il obligatoire de garder les données au Québec&nbsp;?</h2>
+
+  <div class="avert">
+    <p><strong>Non.</strong> La Loi 25 n'impose aucune localisation des données — ni
+    au Québec, ni même au Canada. Ce qu'elle impose est une <strong>condition à la
+    sortie</strong>, pas une frontière fermée.</p>
+  </div>
+
+  <ul class="simple">
+    <li><strong>Une évaluation faite avant la communication.</strong> Et « hors
+    Québec » comprend l'Ontario : un hébergement à Toronto est une sortie au même
+    titre qu'un hébergement en Virginie.</li>
+    <li><strong>Une conclusion de protection « adéquate »</strong>, au regard des
+    principes de protection généralement reconnus. Le projet de loi disait
+    « équivalente » ; le mot a été adouci avant l'adoption, et c'est précisément ce
+    qui rend praticable le recours à des services hors Québec.</li>
+    <li><strong>Une entente écrite</strong> qui tient compte des résultats de
+    l'évaluation et des mesures d'atténuation convenues.</li>
+  </ul>
+
+  <p>Autrement dit : c'est permis, à condition que l'évaluation ait été faite,
+  documentée, et suivie d'une entente. <strong>Sans évaluation, ce qui est en défaut
+  c'est le flux lui-même — pas l'emplacement du disque.</strong></p>
+
+  <p>Deux nuances comptent pour un déploiement réel. D'abord, la localisation peut
+  redevenir obligatoire <strong>par contrat</strong> : un centre de services scolaire
+  ou le Ministère peut l'exiger dans ses règles d'approvisionnement ou sa politique
+  de sécurité de l'information. Une telle exigence se respecte — mais elle vient de
+  l'institution, pas de la loi. Ensuite, <strong>déménager le serveur ne ferme aucun
+  des six flux</strong> : ce qui sort du Québec, c'est l'appel d'interface, pas le
+  disque dur. Un serveur à Beauharnois pendant que la voix des élèves part chez
+  Google ne règle rien ; il déplace le problème.</p>
+</section>
+
+<section>
+  <p class="eyebrow">Une idée reçue à écarter</p>
+  <h2>Le consentement de l'élève n'est pas une dispense</h2>
+  <ul class="simple">
+    <li><strong>L'évaluation est une obligation de l'organisme</strong>, pas un droit
+    auquel l'élève renonce. Faire signer un formulaire ne remplace ni l'évaluation ni
+    l'entente écrite.</li>
+    <li><strong>Dans cette population, le consentement est la base la plus
+    fragile.</strong> « Éclairé » suppose de comprendre un document en français, au
+    niveau 4 ; « libre » suppose de pouvoir refuser sans perdre le cours. C'est
+    exactement ce que rendent possible l'interrupteur de l'assistant et les trois
+    états du dépôt : un refus qui ne coûte pas la formation.</li>
+    <li><strong>Le pseudo réduit la gravité d'une fuite, il ne sort pas du champ de la
+    loi.</strong> Le portail ne connaît que des pseudos — jamais un vrai nom — mais
+    l'enseignant refait le lien, sinon l'outil ne servirait à rien. C'est de la
+    <em>pseudonymisation</em>, pas de l'anonymisation : tout ce qui est conservé
+    reste un renseignement personnel.</li>
+    <li><strong>Le texte trahit ce que le pseudo cache.</strong> Les modules portent
+    sur le logement, la santé, le travail : une production écrite peut contenir une
+    information sensible même sous pseudo. C'est le vrai motif de poser une durée de
+    conservation courte.</li>
+  </ul>
+</section>
+
+<section>
+  <p class="eyebrow">Les autres obligations</p>
+  <h2>Ce qui s'ajoute au dossier de la vie privée</h2>
+  <div class="defile">
+  <table>
+    <thead><tr><th>Sujet</th><th>Où en est le projet</th></tr></thead>
+    <tbody>
+      <tr class="f"><td class="q">Droit d'auteur</td><td>Le contenu est <strong>écrit de zéro</strong> : aucun manuel n'est reproduit, ni en texte ni en structure. Un manuel commercial a servi de modèle de progression grammaticale, jamais de source à recopier — c'est une règle explicite de l'atelier. Aucune redevance, aucune licence à renouveler.<small>Les images sont générées, non tirées de banques sous licence. Le statut du droit d'auteur sur une image générée reste débattu ; l'exposition est faible pour un usage pédagogique interne, et mérite d'être notée plutôt que tue.</small></td></tr>
+      <tr class="f"><td class="q">Langue</td><td>Tout le matériel, l'interface et les voix sont en français, en variété québécoise. Les outils de traduction servent d'appui à l'apprentissage, à la demande de l'élève, et se coupent avec l'assistant.</td></tr>
+      <tr class="d"><td class="q">Accessibilité</td><td>Le système de design impose des règles vérifiables : corps de texte d'au moins 17 px, cibles tactiles d'au moins 44 px, contraste d'au moins 4,5:1, focus clavier visible, zoom jamais désactivé, et la couleur jamais seule porteuse d'information. <strong>Un audit formel selon le standard applicable aux organismes publics n'a pas été fait</strong> — les fondations sont posées, la conformité n'est pas attestée.</td></tr>
+      <tr class="d"><td class="q">Sécurité de l'information</td><td>Le serveur ne conserve aucune clé dans son code ; les clés d'accès aux services externes sont des variables d'environnement. Les comptes enseignants sont nominatifs et révocables. <strong>Aucun test d'intrusion n'a été mené</strong> ; le projet n'a pas été soumis au processus de sécurité de l'information d'un centre de services scolaire.</td></tr>
+      <tr class="d"><td class="q">Continuité</td><td>Un seul serveur, un seul hébergeur, pas de bascule automatique. Le papier est le plan de repli, et il est réel : chaque module a ses fiches imprimables.</td></tr>
+    </tbody>
+  </table>
+  </div>
+</section>
+
+<section>
+  <p class="eyebrow">Ce que ça coûte</p>
+  <h2>Les chiffres, mesurés</h2>
+  <div class="defile">
+  <table>
+    <caption>Hypothèses du calcul : 10 tours de jeu de rôle, 3 productions écrites et
+    20 phrases corrigées par module et par élève. Le registre des appels donne le
+    plancher réel.</caption>
+    <thead><tr><th>Poste</th><th>Montant</th><th>Remarque</th></tr></thead>
+    <tbody>
+      <tr class="f"><td class="q">Assistance par élève et par module</td><td class="num">0,08 $</td><td>Dont la moitié pour le jeu de rôle, qui appelle le modèle le plus coûteux.</td></tr>
+      <tr class="f"><td class="q">Un groupe de 20 élèves, session de 14 modules</td><td class="num">≈ 21 $</td><td>Entre 11 $ et 43 $ si l'usage réel fait la moitié ou le double.</td></tr>
+      <tr class="f"><td class="q">Hébergement</td><td class="num">≈ 20 $ / mois</td><td>Un seul serveur, un disque persistant.</td></tr>
+      <tr class="f"><td class="q">Production des voix</td><td class="num">coût unique</td><td>Les 17 000 pistes sont produites une fois et servies ensuite comme des fichiers. Le changement de fournisseur de synthèse a réduit cette facture de 76 %.</td></tr>
+      <tr class="d"><td class="q">Licences de contenu</td><td class="num">0 $</td><td>Le contenu appartient au projet.</td></tr>
+    </tbody>
+  </table>
+  </div>
+  <p>L'ordre de grandeur mérite d'être dit clairement : <strong>l'assistance coûte
+  environ un dollar par élève pour une session complète</strong>. Le coût réel du
+  projet n'est pas l'infonuagique — c'est le temps de production, déjà dépensé, et le
+  temps d'accompagnement des enseignants, qui reste à prévoir.</p>
+</section>
+
+<section>
+  <p class="eyebrow">Dans l'ordre</p>
+  <h2>La marche à suivre pour une mise en service</h2>
+  <ol class="actions">
+    <li><p><strong>Nommer qui porte le dossier.</strong> La personne responsable de la
+    protection des renseignements personnels, et la personne responsable de la gestion
+    documentaire pour la durée de conservation.</p><p class="qui">Direction · une heure</p></li>
+    <li><p><strong>Faire l'évaluation des facteurs relatifs à la vie privée.</strong>
+    L'inventaire exact des six flux sortants et de ce qui est conservé existe déjà,
+    relevé dans le code — c'est la première chose qu'on demande et la plus longue à
+    reconstituer après coup. Voir le document « Ce qui sort du Québec ».</p><p class="qui">Responsable + comité · avec le matériel fourni</p></li>
+    <li><p><strong>Décider des trois interrupteurs</strong> — assistant, micro, dépôt
+    de la voix — et les poser sur le centre. Un seul écran, une seule écriture.</p><p class="qui">Direction · quinze minutes une fois la décision prise</p></li>
+    <li><p><strong>Poser la durée de conservation.</strong> Un seul réglage à
+    l'hébergeur fait passer la purge de l'observation à l'effacement. Une durée sous
+    30 jours ou mal formée est refusée exprès.</p><p class="qui">Responsable de la gestion documentaire</p></li>
+    <li><p><strong>Signer l'entente écrite</strong> avec les fournisseurs dont les
+    services restent activés, en y reportant les mesures d'atténuation retenues.</p><p class="qui">Organisme · service juridique ou approvisionnement</p></li>
+    <li><p><strong>Ouvrir les comptes et former les enseignants.</strong> Sept capsules
+    vidéo sous-titrées et un guide de l'espace enseignant existent. Prévoir une
+    demi-journée par groupe d'enseignants.</p><p class="qui">Direction + conseiller pédagogique</p></li>
+    <li><p><strong>Informer les élèves</strong> de ce qui est conservé, combien de
+    temps, et de leur droit d'y accéder. Dans une langue qu'ils comprennent — au
+    niveau 1, ce n'est pas le français.</p><p class="qui">Centre · à préparer avec les enseignants</p></li>
+  </ol>
+  <p>Les étapes 1 à 5 se font sans toucher au code. Aucune ne demande de
+  développement.</p>
+</section>
+
+<section>
+  <p class="eyebrow">Sans arrondir</p>
+  <h2>Ce que ce projet ne vous offre pas</h2>
+  <ul class="simple">
+    <li><strong>Une équipe.</strong> Une seule personne connaît l'atelier de
+    production. C'est le vrai risque, et il ne se règle pas par du code : tout est
+    écrit et versionné, ce qui atténue — pas plus.</li>
+    <li><strong>Une attestation de conformité.</strong> Ni sécurité, ni accessibilité,
+    ni vie privée. Ce document et l'état du dossier Loi 25 fournissent la matière de
+    ces examens, pas leur conclusion.</li>
+    <li><strong>Une échelle industrielle.</strong> Les données vivent dans des
+    fichiers, pas dans une base. Cela tient pour des centaines d'élèves ; des dizaines
+    de milliers demanderaient un chantier.</li>
+    <li><strong>Un service de soutien.</strong> Il n'y a pas de contrat d'assistance,
+    pas d'engagement de disponibilité, pas de garde. Un déploiement au-delà d'un
+    centre devrait poser cette question avant les autres.</li>
+  </ul>
+</section>
+
+<div class="reserve">
+  <p><strong>Ce document n'est pas un avis juridique.</strong> C'est un état du
+  produit et un repérage des obligations à vérifier. Les articles cités le sont
+  comme repères de discussion ; leur portée exacte, l'évaluation des facteurs
+  relatifs à la vie privée et la décision d'accepter ou non les communications hors
+  Québec relèvent de l'organisme et de son service juridique. Les dispositions
+  citées sont celles en vigueur à la connaissance de l'auteur au moment de la
+  rédaction — <strong>à faire confirmer</strong>, le droit ayant pu changer depuis.</p>
+</div>
+
+<div class="pied">
+  <p>Bibliothèque de francisation · guide pour la direction, 27 août 2026.</p>
+  <p>Documents liés : « La carte du contenu » (ce qui existe), « La mécanique »
+  (comment ça tient), « Ce qui sort du Québec » (l'inventaire des flux, relevé dans
+  le code).</p>
+</div>
+
+</article>
+</body>
+</html>
