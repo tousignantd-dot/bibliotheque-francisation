@@ -161,7 +161,11 @@ def lire_dialogues():
     for i, m in enumerate(blocs):
         debut = m.end()
         fin = blocs[i + 1].start() if i + 1 < len(blocs) else len(src)
-        lignes = re.findall(r'\["([^"]+)","((?:[^"\\]|\\.)*)"\]', src[debut:fin])
+        # L'espace après la virgule est facultatif : ce fichier-ci écrit
+        # ["DOÏNA", "…"], d'autres ["DOÏNA","…"]. Un motif qui exige l'un des
+        # deux déclare le module muet pour une question de mise en forme.
+        lignes = re.findall(r'\[\s*"([^"]+)"\s*,\s*"((?:[^"\\]|\\.)*)"\s*\]',
+                            src[debut:fin])
         if not lignes:
             sys.exit("❌ le dialogue « %s » ne rend aucune réplique — "
                      "la forme du fichier a changé" % m.group(1))
