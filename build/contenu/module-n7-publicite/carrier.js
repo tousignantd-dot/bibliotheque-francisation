@@ -38,7 +38,7 @@ const CARRIER_PHRASES = {
   'rapidement':    "La fin de l'annonce est dite très rapidement.",
   'tenir':         "Il faut tenir le dépliant à la lumière pour lire le bas de la page.",
   'la semaine':    "La semaine prochaine, la vente recommencera sous un autre nom.",
-  'le premier':    "Le premier relevé indiquait cent quatre-vingt-neuf dollars.",
+  'le premier':    "Le premier relevé indiquait cent quatorze dollars et quatre-vingt-treize cents.",
   'samedi':        "Samedi matin, elle est allée en parler à son voisin.",
   'un atelier':    "Un atelier sur le budget se donne le mardi soir au Carrefour.",
   'finalement':    "Finalement, elle a écrit une lettre au centre d'entraînement.",

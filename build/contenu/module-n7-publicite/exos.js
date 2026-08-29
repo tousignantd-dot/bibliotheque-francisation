@@ -14,7 +14,7 @@ const EXOS = [
      ["La répétition travaille sans vous","Trois semaines de la même image dans un <b>abribus</b>, et le nom vous paraît familier le jour où vous passez la porte. On ne paie pas l'affichage pour vous convaincre : on le paie pour que vous reconnaissiez.", ["un abribus"]],
    ]},
    rows:[
-    {id:'p1a', txt:"Yamilé a payé cent quatre-vingt-neuf dollars pour ses trois premières semaines.", ok:'VRAI'},
+    {id:'p1a', txt:"Yamilé a payé cent quatorze dollars et quatre-vingt-treize cents pour ses quatre premières semaines.", ok:'VRAI'},
     {id:'p1b', txt:"Réginald a travaillé trente ans dans une agence de publicité.", ok:'VRAI'},
     {id:'p1c', txt:"Selon Réginald, l'annonce a écrit une chose fausse.", ok:'FAUX'},
     {id:'p1d', txt:"Un message implicite est ce qu'une annonce fait comprendre sans l'écrire.", ok:'VRAI'},

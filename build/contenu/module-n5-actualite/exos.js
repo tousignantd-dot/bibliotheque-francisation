@@ -133,7 +133,7 @@ const EXOS = [
     {q:"Le feu ___ (éclater) vers quatre heures du matin.", accept:["a éclaté","a eclate","a éclate","a eclaté"], ph:"a + participe"},
     {q:"Les pompiers ___ (arriver) huit minutes après l'appel.", accept:["sont arrivés","sont arrives"], ph:"…"},
     {q:"Un locataire ___ (se réveiller) et il a cogné aux portes.", accept:["s'est réveillé","s est réveillé","s'est reveille","sest réveillé"], ph:"…"},
-    {q:"Personne ___ (ne pas être) blessé.", accept:["n'a pas été","n a pas été","n'a pas ete"], ph:"…"},
+    {q:"Personne ___ (ne… être) blessé.", accept:["n'a été","n a été","n'a ete"], ph:"…"},
     {q:"Onze personnes ___ (perdre) leur logement.", accept:["ont perdu"], ph:"…"},
     {q:"La Croix-Rouge ___ (héberger) les sinistrés pendant deux nuits.", accept:["a hébergé","a heberge","a hébergé"], ph:"…"},
    ]},

@@ -282,8 +282,8 @@ const EXOS = [
      ["Écouter ce que l'orateur dit ne pas pouvoir faire","La partie la plus utile d'un exposé de ce genre est souvent celle qui délimite : « nous ne sommes pas un tribunal ». Elle vous évite d'attendre des mois une chose qui n'arrivera pas."],
    ]},
    rows:[
-    {id:'t3a', txt:"Au sens du règlement, une plainte doit être écrite et demander une mesure précise.", ok:'VRAI'},
-    {id:'t3b', txt:"Un appel téléphonique fait courir les délais de traitement.", ok:'FAUX'},
+    {id:'t3a', txt:"Une plainte peut être communiquée verbalement, mais l'entreprise doit alors la consigner par écrit.", ok:'VRAI'},
+    {id:'t3b', txt:"Un appel téléphonique fait courir les délais de traitement.", ok:'VRAI'},
     {id:'t3c', txt:"Un courriel suffit, à condition d'en garder la date et une copie.", ok:'VRAI'},
     {id:'t3d', txt:"L'entreprise doit transmettre une réponse finale écrite dans les soixante jours.", ok:'VRAI'},
     {id:'t3e', txt:"Le délai peut aller jusqu'à quatre-vingt-dix jours, sans que l'entreprise ait à se justifier.", ok:'FAUX'},
@@ -311,7 +311,7 @@ const EXOS = [
     {id:'ep3', q:"Demander le transfert du dossier à l'Autorité des marchés financiers", aid:'ep3', a:"L'organisme examine le dossier et peut proposer une conciliation si les deux parties y consentent."},
     {id:'ep4', q:"S'adresser à la division des petites créances", aid:'ep4', a:"Un tribunal civil entend la demande sans avocat et peut condamner à payer."},
     {id:'ep5', q:"Contester une décision du Tribunal administratif du logement", aid:'ep5', a:"Une demande de rétractation, ou une permission d'appeler à la Cour du Québec dans les trente jours."},
-    {id:'ep6', q:"Téléphoner pour dire son mécontentement", aid:'ep6', a:"Rien ne commence : aucun délai ne court et rien n'est consigné au registre des plaintes."},
+    {id:'ep6', q:"Téléphoner sans garder de trace de son appel", aid:'ep6', a:"La plainte compte et doit être consignée, mais la date de réception sera difficile à prouver."},
    ]},
 
   {sec:'t3', id:'t3sub', type:'write', num:'Exercice 3', tit:"Le subjonctif de ce qu'on demande", color:'#A5335F', cols:1,

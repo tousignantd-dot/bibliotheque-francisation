@@ -145,8 +145,8 @@ const PLUS = {
           "« En » ne prend jamais d'article. On dit « en Gaspésie », comme on dit « en France ». L'article vient avec « au » et « dans les », jamais avec « en »."],
          ["choisir selon la taille du lieu","« au Rimouski » parce que c'est une grande ville",
           "La taille n'entre pas en jeu. Toutes les villes prennent « à », de Montréal au plus petit village. C'est le genre du nom qui décide, et une ville n'a pas de genre pour cette règle."],
-         ["dire « dans » un sentier ou une rue","« dans le sentier », « dans la rue Berri »",
-          "On est <b>sur</b> un sentier, <b>sur</b> une rue, <b>sur</b> une route ; on est <b>dans</b> un parc, <b>dans</b> un village, <b>dans</b> une région. « Dans la rue » existe, mais veut dire autre chose : sans domicile."],
+         ["dire « sur » une rue","« sur la rue Berri », « sur la rue Ontario »",
+          "On est <b>dans</b> une rue : « dans la rue Berri », « dans la rue Ontario », ou simplement « rue Berri ». « Sur la rue » est un calque de l'anglais ; on l'entend beaucoup ici, mais il ne s'écrit pas. On reste <b>sur</b> un sentier, <b>sur</b> une route, et <b>dans</b> un parc, <b>dans</b> un village, <b>dans</b> une région."],
        ]},
 
       {t:'check', h:"Est-ce que c'est clair maintenant ?",

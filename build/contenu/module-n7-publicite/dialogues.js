@@ -13,19 +13,19 @@ const DIALOGUES = {
   // le docstring de manifest.py, avec leur source.
 
   prep: {
-    label: "Dialogue — Cent quatre-vingt-neuf dollars pour neuf quatre-vingt-dix-neuf",
+    label: "Dialogue — Cent quatorze dollars pour neuf quatre-vingt-dix-neuf",
     lines: [
       ["YAMILÉ","Réginald, vous avez deux minutes ? J'ai une facture que je ne comprends pas."],
       ["RÉGINALD","J'ai tout mon avant-midi. Assoyez-vous. Montrez-moi ça."],
-      ["YAMILÉ","J'ai pris un abonnement au centre d'entraînement de la rue Parent, Élan Cardio. L'annonce disait neuf quatre-vingt-dix-neuf par semaine. Le premier relevé dit cent quatre-vingt-neuf dollars."],
-      ["RÉGINALD","Cent quatre-vingt-neuf. Et vous avez signé quand ?"],
-      ["YAMILÉ","Il y a trois semaines. Trois semaines à neuf quatre-vingt-dix-neuf, ça fait trente dollars, pas cent quatre-vingt-neuf."],
-      ["RÉGINALD","Non. Ça fait trente dollars, plus quelque chose que l'annonce ne vous a pas dit. Vous avez gardé le dépliant ?"],
+      ["YAMILÉ","J'ai pris un abonnement au centre d'entraînement de la rue Parent, Élan Cardio. L'annonce disait neuf quatre-vingt-dix-neuf par semaine. Le premier relevé dit cent quatorze dollars et quatre-vingt-treize cents."],
+      ["RÉGINALD","Cent quatorze et quatre-vingt-treize. Et vous avez signé quand ?"],
+      ["YAMILÉ","Il y a quatre semaines. Quatre semaines à neuf quatre-vingt-dix-neuf, ça fait quarante dollars, pas cent quatorze."],
+      ["RÉGINALD","Non. Ça fait quarante dollars, plus quelque chose que l'annonce ne vous a pas dit. Vous avez gardé le dépliant ?"],
       ["YAMILÉ","Je l'ai sur la table de cuisine. Il y a une grosse ligne, une photo, et une étoile après le prix."],
-      ["RÉGINALD","L'étoile. Voilà votre cent cinquante-neuf dollars. Je vais vous dire une chose que j'ai passé trente ans à faire, et je ne suis pas très fier de toutes les années. J'ai écrit de la publicité. À Laval, dans une agence. Des annonces de radio, surtout."],
+      ["RÉGINALD","L'étoile. Voilà vos soixante dollars de frais d'adhésion, et les taxes par-dessus. Je vais vous dire une chose que j'ai passé trente ans à faire, et je ne suis pas très fier de toutes les années. J'ai écrit de la publicité. À Laval, dans une agence. Des annonces de radio, surtout."],
       ["YAMILÉ","Vous ? Vous avez écrit des annonces comme celle-là ?"],
       ["RÉGINALD","Des centaines. Et je vais vous apprendre à les lire, parce que ça s'apprend. Ce n'est pas de l'intuition, c'est un métier avec des règles, et il y a des lois qui l'encadrent."],
-      ["YAMILÉ","Alors dites-moi pourquoi j'ai lu neuf quatre-vingt-dix-neuf et payé cent quatre-vingt-neuf."],
+      ["YAMILÉ","Alors dites-moi pourquoi j'ai lu neuf quatre-vingt-dix-neuf et payé cent quatorze."],
       ["RÉGINALD","Parce que l'annonce vous a laissée conclure. Elle n'a pas menti : elle a mis vrai à côté de vrai, et elle vous a laissée faire l'addition toute seule. Ça s'appelle un message implicite. Ce qu'elle vous fait comprendre sans jamais l'écrire."],
       ["YAMILÉ","Mais si c'est vrai, où est le problème ?"],
       ["RÉGINALD","Le problème, c'est qu'au Québec on ne juge pas une annonce mot par mot. La loi regarde l'impression générale qu'elle donne. Si l'impression générale est fausse, l'annonce est trompeuse, même si chaque mot pris tout seul est exact."],

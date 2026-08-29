@@ -33,7 +33,7 @@ const EXOS = [
     {id:'gp2', txt:"la technologie", ok:'COMME K'},
     {id:'gp3', txt:"un psychologue", ok:'COMME K'},
     {id:'gp4', txt:"le chaos", ok:'COMME K'},
-    {id:'gp5', txt:"dix-huit", ok:'COMME S'},
+    {id:'gp5', txt:"six", ok:'COMME S'},
     {id:'gp6', txt:"soixante-quinze", ok:'COMME S'},
     {id:'gp7', txt:"six mois", ok:'COMME S'},
     {id:'gp8', txt:"dix jours", ok:'COMME S'},

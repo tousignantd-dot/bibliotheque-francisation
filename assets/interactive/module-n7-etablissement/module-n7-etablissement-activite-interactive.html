@@ -1467,8 +1467,8 @@ const EXOS = [
     {id:'pe3', txt:"un atelier", ok:"LE E S'ENTEND"},
     {id:'pe4', txt:"un ouvrier", ok:"LE E S'ENTEND"},
     {id:'pe5', txt:"tenir", ok:"LE E S'ENTEND"},
-    {id:'pe6', txt:"demander", ok:"LE E S'ENTEND"},
-    {id:'pe7', txt:"petite", ok:"LE E S'ENTEND"},
+    {id:'pe6', txt:"demander", ok:'LE E TOMBE'},
+    {id:'pe7', txt:"petite", ok:'LE E TOMBE'},
     {id:'pe8', txt:"une semaine", ok:'LE E TOMBE'},
     {id:'pe9', txt:"je le dis", ok:'LE E TOMBE'},
     {id:'pe10', txt:"samedi matin", ok:'LE E TOMBE'},
@@ -4331,7 +4331,7 @@ const PLUS = {
     blocs:[
       {t:'texte', h:"Le petit son qui décide de la longueur d'un mot",
        p:"Le français d'ici laisse tomber beaucoup de « e » : on dit « s'maine », « j'te l'dis », « pt'être ». Mais il y a des endroits où le « e » se maintient toujours, et les rater rend un mot méconnaissable. Ce ne sont pas des exceptions à apprendre une par une : ce sont deux règles, et elles tiennent en deux lignes.",
-       note:"Le programme du niveau 7 range ce point sous « système prosodique » : maintenir le e quand il est suivi de [rj] ou [lj], et dans la syllabe initiale quand celle-ci commence par une consonne occlusive."},
+       note:"Le programme du niveau 7 range ce point sous « système prosodique » : maintenir le e quand il est suivi de [rj] ou [lj], et dans plusieurs des mots dont la syllabe initiale commence par une consonne occlusive."},
 
       {t:'ana', h:"Première règle : le « e » devant un « ri » ou un « li »",
        p:"Quand le « e » est suivi d'un son « ri » ou « li » — l'écrit « rions », « rier », « lier » —, il se garde toujours. Sans lui, le mot devient imprononçable.",
@@ -4342,12 +4342,12 @@ const PLUS = {
        note:"C'est la règle qui compte le plus en entrevue : le conditionnel de politesse à « nous » et à « vous » y revient sans arrêt."},
 
       {t:'ana', h:"Deuxième règle : le « e » de la première syllabe après p, t, k, b, d, g",
-       p:"Quand le mot commence par une consonne dure — p, t, c/qu, b, d, g — suivie d'un « e », ce « e » se maintient.",
-       mots:[['On garde',"te-nir · de-mander · pe-tite · que-relle · de-venir"],
-             ['On laisse tomber ailleurs',"s(e)maine · r(e)garder · c(e)pendant · j(e) le dis", true],
-             ['Le test',"prononcez sans le « e » : si la bouche bloque, il faut le garder"]],
-       say:"Il faut tenir bon et demander une petite précision.",
-       note:"Ce sont des consonnes qui ferment complètement la bouche — on les appelle occlusives. Après elles, l'enchaînement sans « e » est impossible à dire vite."},
+       p:"Quand le mot commence par une consonne dure — p, t, c/qu, b, d, g — suivie d'un « e », ce « e » se maintient dans plusieurs mots. Mais pas dans tous : les plus courants le perdent quand même.",
+       mots:[['On garde',"Be-noît · pe-ler · de-puis · de-venir · que-relle"],
+             ['On laisse tomber quand même',"p(e)tite · d(e)mander · s(e)maine · r(e)garder · j(e) le dis", true],
+             ['Ce qu\'il faut faire',"il n\'y a pas de test : on écoute, et on retient les mots courants qui perdent leur « e »"]],
+       say:"Depuis septembre, Benoît veut devenir mécanicien.",
+       note:"Ce sont des consonnes qui ferment complètement la bouche — on les appelle occlusives. Le « e » y résiste plus souvent qu'ailleurs, mais « p'tite » et « d'mander » se disent sans lui, et c'est la forme normale d'ici."},
 
       {t:'labo', h:'Écoutez les deux traitements',
        p:"Choisissez un mot, puis la prononciation à entendre.",
@@ -4357,8 +4357,8 @@ const PLUS = {
        out:{
          ag:{w:["nous serions disponibles"], say:"Nous serions disponibles dès septembre.", n:'la bonne forme : le e est suivi de « rions », il se garde'},
          ap:{w:["nous srions"], say:"Nous serions disponibles dès septembre.", n:'impossible à dire, et c\'est justement pourquoi la règle existe'},
-         bg:{w:["demander une précision"], say:"Je voudrais demander une précision.", n:'la bonne forme : « d » est une occlusive, le e se maintient'},
-         bp:{w:["dmander une précision"], say:"Je voudrais demander une précision.", n:'la bouche bloque sur « dm » : le e est obligatoire'},
+         bg:{w:["demander une précision"], say:"Je voudrais demander une précision.", n:'possible, et on l\'entend en lecture à voix haute — mais ce n\'est pas la forme courante'},
+         bp:{w:["d'mander une précision"], say:"Je voudrais demander une précision.", n:'la forme normale d\'ici : « demander » est un des mots courants qui perdent leur e'},
          cg:{w:["une semaine complète"], say:"Il reste une semaine complète avant l'entrevue.", n:'on peut le garder, mais personne ne le fait à l\'oral courant'},
          cp:{w:["une s'maine complète"], say:"Il reste une semaine complète avant l'entrevue.", n:'la forme normale d\'ici : « s » n\'est pas une occlusive, le e tombe'},
        },
@@ -4372,7 +4372,7 @@ const PLUS = {
          ["un atelier","le e se garde — suivi de « lier »"],
          ["un ouvrier","le e se garde — suivi de « rier »"],
          ["tenir, devenir","le e se garde — première syllabe après une occlusive"],
-         ["demander, petite","le e se garde — même règle"],
+         ["demander, petite","le e tombe — deux mots courants qui échappent à la règle"],
          ["une semaine","le e tombe — « s » n'est pas une occlusive"],
          ["je le dis, samedi","le e tombe — l'oral courant d'ici"],
        ]},
@@ -4384,8 +4384,8 @@ const PLUS = {
           fb:"Suivi de « riez » : trois syllabes, toujours."},
          {q:"« samedi matin »", opts:["le e se garde","le e tombe"], ok:1,
           fb:"« Sam'di » : c'est la forme normale, à l'oral comme à la radio."},
-         {q:"« demander »", opts:["le e se garde","le e tombe"], ok:0,
-          fb:"Après un « d », la bouche ne peut pas enchaîner sans lui."},
+         {q:"« demander »", opts:["le e se garde","le e tombe"], ok:1,
+          fb:"« D'mander » : malgré le « d », c'est un des mots courants qui perdent leur « e »."},
          {q:"« vous me rappelez »", opts:["le e se garde","le e tombe"], ok:1,
           fb:"« Vous m'rappelez » : le « m » n'est pas une occlusive."},
        ]},
@@ -4401,7 +4401,7 @@ const PLUS = {
        ]},
 
       {t:'revoir', h:'À retenir',
-       p:"Deux règles. Le <b>e se garde</b> devant un son « ri » ou « li » — <i>se-rions, fe-riez, ate-lier, ouv-rier</i> — et dans la <b>première syllabe</b> après p, t, c, b, d, g — <i>te-nir, de-mander, pe-tite</i>. Partout ailleurs, il tombe, et c'est la prononciation normale du Québec."},
+       p:"Deux règles. Le <b>e se garde</b> devant un son « ri » ou « li » — <i>se-rions, fe-riez, ate-lier, ouv-rier</i> — et souvent dans la <b>première syllabe</b> après p, t, c, b, d, g — <i>Be-noît, pe-ler, de-puis, de-venir</i>. Mais les mots les plus courants y échappent : on dit <i>p(e)tite</i> et <i>d(e)mander</i>. Partout ailleurs, il tombe, et c'est la prononciation normale du Québec."},
     ]
   },
 

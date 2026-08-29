@@ -19,7 +19,7 @@
   // Seule la situation publique est côté client ; ce que sait la personne
   // jouée par l'assistant vit dans server.py, scénario « publicite ».
   const ROLE_CAS = [
-    {id:'abonnement', titre:"L'abonnement à 9,99 $", txt:"L'annonce disait <b>neuf dollars quatre-vingt-dix-neuf par semaine</b>. Le premier relevé indique <b>cent quatre-vingt-neuf dollars</b>. Le dépliant portait un astérisque, et la condition en bas de page mentionnait douze mois et soixante dollars de frais d'adhésion."},
+    {id:'abonnement', titre:"L'abonnement à 9,99 $", txt:"L'annonce disait <b>neuf dollars quatre-vingt-dix-neuf par semaine</b>. Le premier relevé indique <b>cent quatorze dollars et quatre-vingt-treize cents</b>. Le dépliant portait un astérisque, et la condition en bas de page mentionnait douze mois et soixante dollars de frais d'adhésion."},
     {id:'trottinette', titre:"La trottinette « offerte »", txt:"Une vidéo présente une trottinette que la personne dit avoir <b>reçue de l'entreprise</b>. Rien n'indique nulle part qu'il s'agit d'une publicité, et un code de réduction est donné à la fin. Votre enfant de onze ans l'a vue."},
     {id:'affiche', titre:"L'affiche du commerce neuf", txt:"Un commerce a ouvert sur votre rue. Le nom, en anglais, occupe presque toute la devanture ; <b>trois mots de français</b> sont écrits en petit à côté. L'affichage est visible depuis le trottoir."},
   ];

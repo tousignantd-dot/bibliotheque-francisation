@@ -1,7 +1,7 @@
 const SECTIONS = [
   {id:'prep', no:'<img class="icon-svg tno-play" src="/assets/interactive/module-n7-publicite/icons/play.svg" alt="">', title:'Je découvre', color:'#0D7A6F',
    lead:"Nommer les pièces d'une publicité, distinguer ce qui est dit de ce qui est suggéré, et entendre les mots que le débit rapide avale.",
-   intro:"Yamilé Betancourt est préposée à l'accueil dans une clinique dentaire de Saint-Jérôme. Il y a trois semaines, elle a signé un abonnement à un centre d'entraînement pour « neuf quatre-vingt-dix-neuf par semaine ». Le premier relevé indique cent quatre-vingt-neuf dollars. Ce samedi matin, sur la galerie d'en avant, son voisin Réginald Nadon — qui a écrit des publicités pendant trente ans dans une agence de Laval — lui explique ce qu'elle a réellement lu.",
+   intro:"Yamilé Betancourt est préposée à l'accueil dans une clinique dentaire de Saint-Jérôme. Il y a quatre semaines, elle a signé un abonnement à un centre d'entraînement pour « neuf quatre-vingt-dix-neuf par semaine ». Le premier relevé indique cent quatorze dollars et quatre-vingt-treize cents. Ce samedi matin, sur la galerie d'en avant, son voisin Réginald Nadon — qui a écrit des publicités pendant trente ans dans une agence de Laval — lui explique ce qu'elle a réellement lu.",
    dialogue:'prep', next:{id:'t1', tit:'Défi 1 · Trente secondes, et la moitié à la fin', sub:"Écouter une publicité et séparer ce qu'elle affirme de ce qu'elle laisse croire."}},
 
   {id:'t1', no:'1', title:'Défi 1 · Trente secondes, et la moitié à la fin', color:'#3B49A0',

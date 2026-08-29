@@ -568,10 +568,10 @@ const PLUS = {
        note:"Cette mini-leçon décrit l'état du droit au Québec au moment où le module a été écrit. Les délais et les seuils changent : vérifiez-les sur le site de l'organisme avant d'agir."},
 
       {t:'ana', h:"Première porte — le service du traitement des plaintes de l'entreprise",
-       p:"Tout commence là, et rien ne commence ailleurs. Une plainte, au sens du règlement, est un reproche <b>écrit</b> adressé à l'entreprise, dans lequel on demande une <b>mesure correctrice</b>.",
-       mots:[['Ce qu\'on fait','on écrit, on demande quelque chose de précis, on garde copie'],['Ce que ça déclenche','le dossier s\'ouvre et les délais commencent à courir',true],['Ce qui ne marche pas','téléphoner pour dire son mécontentement']],
-       say:"Une plainte est un reproche écrit, adressé à l'entreprise, qui demande une mesure correctrice.",
-       note:"Tant que vous n'avez que téléphoné, il ne s'est rien passé au sens de la loi. C'est l'écrit qui déclenche tout."},
+       p:"Tout commence là, et rien ne commence ailleurs. Une plainte, au sens du règlement, est un reproche ou une insatisfaction <b>communiqué</b> à l'entreprise, dans lequel on demande une <b>mesure correctrice</b>. Elle peut être faite verbalement : l'entreprise doit alors aider à la formuler et la <b>consigner</b> par écrit à son registre.",
+       mots:[['Ce qu\'on fait','on demande quelque chose de précis, et on garde copie'],['Ce que ça déclenche','le dossier s\'ouvre et les délais commencent à courir',true],['Ce qui est plus sûr','écrire, ou demander une confirmation écrite de son appel']],
+       say:"Une plainte peut être communiquée verbalement ou par écrit, et l'entreprise doit alors la consigner.",
+       note:"Un appel compte, et l'entreprise doit le consigner. Écrire reste plus sûr : c'est vous qui devrez prouver la date de réception."},
 
       {t:'ana', h:"Deuxième porte — la réponse finale",
        p:"L'entreprise doit accuser réception, consigner la plainte à son registre, et transmettre une réponse finale écrite dans les soixante jours de la réception.",
@@ -607,8 +607,8 @@ const PLUS = {
 
       {t:'piege', h:"Trois erreurs de parcours",
        rows:[
-         ["téléphoner et croire que le dossier est ouvert","écrire, même trois lignes, et garder copie",
-          "Aucun délai ne court tant que rien n'est écrit, et rien n'est consigné au registre des plaintes."],
+         ["téléphoner et ne garder aucune trace de son appel","écrire, même trois lignes, et garder copie",
+          "L'appel compte et doit être consigné, mais sans trace, la date de réception sera votre parole contre la leur."],
          ["attendre indéfiniment la réponse","compter soixante jours à partir de la réception",
           "Passé ce délai sans réponse ni justification, vous pouvez demander le transfert comme si vous aviez reçu un refus."],
          ["s'adresser au Tribunal administratif du logement pour un refus d'assurance","s'adresser à l'Autorité des marchés financiers",
@@ -618,8 +618,8 @@ const PLUS = {
       {t:'check', h:"Est-ce que c'est clair maintenant ?",
        p:"Trois questions rapides.",
        qs:[
-         {q:"Une plainte, au sens du règlement, doit être…", opts:["écrite et demander une mesure","exprimée à un préposé"], ok:0,
-          fb:"Écrite, adressée à l'entreprise, et demandant quelque chose de précis."},
+         {q:"Une plainte faite au téléphone…", opts:["doit être consignée par l'entreprise","n'a aucune valeur"], ok:0,
+          fb:"L'entreprise doit la consigner et aider à la formuler. Écrire reste plus sûr pour la preuve de la date."},
          {q:"L'Autorité des marchés financiers peut…", opts:["ordonner l'indemnisation","examiner et proposer une conciliation"], ok:1,
           fb:"Elle n'est pas un tribunal et ne renverse aucune décision."},
          {q:"Un différend avec votre locataire relève…", opts:["du Tribunal administratif du logement","de l'Autorité des marchés financiers"], ok:0,
