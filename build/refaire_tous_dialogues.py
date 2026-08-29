@@ -24,6 +24,8 @@ import sys
 import time
 
 RACINE = pathlib.Path(__file__).resolve().parent.parent
+sys.path.insert(0, str(RACINE / 'build'))
+from fournisseur import protege                                  # noqa: E402
 INTER = RACINE / 'assets' / 'interactive'
 
 
@@ -44,6 +46,14 @@ def main():
     for m in modules:
         g = RACINE / ('generer_audio_%s.py' % m.replace('module-', 'module_').replace('-', '_'))
         (couples if g.exists() else sans).append((m, g))
+    # Les modules encore chez ElevenLabs sont **protégés** : l'utilisateur a
+    # retiré son autorisation de les remplacer le 29 août 2026. Les écraser
+    # changerait les comédiens, pas seulement la vitesse.
+    noms = [m for m, _ in couples]
+    permis, bloques = protege(noms)
+    couples = [(m, g) for m, g in couples if m in set(permis)]
+    for b in bloques:
+        print('   protégé (ElevenLabs, non autorisé) : %s' % b)
     n = len(list(INTER.glob('*/*/line_*.mp3')))
     print('%d modules · %d répliques · %d sans générateur' % (len(couples), n, len(sans)))
     for m, _ in sans:

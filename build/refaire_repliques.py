@@ -21,6 +21,8 @@ import subprocess
 import sys
 
 RACINE = pathlib.Path(__file__).resolve().parent.parent
+sys.path.insert(0, str(RACINE / 'build'))
+from fournisseur import protege                                  # noqa: E402
 
 
 def generateur(slug):
