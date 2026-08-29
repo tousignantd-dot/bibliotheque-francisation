@@ -25,7 +25,7 @@ import time
 
 RACINE = pathlib.Path(__file__).resolve().parent.parent
 sys.path.insert(0, str(RACINE / 'build'))
-from fournisseur import protege                                  # noqa: E402
+from fournisseur import repliques_du_module                      # noqa: E402
 INTER = RACINE / 'assets' / 'interactive'
 
 
@@ -46,31 +46,40 @@ def main():
     for m in modules:
         g = RACINE / ('generer_audio_%s.py' % m.replace('module-', 'module_').replace('-', '_'))
         (couples if g.exists() else sans).append((m, g))
-    # Les modules encore chez ElevenLabs sont **protégés** : l'utilisateur a
-    # retiré son autorisation de les remplacer le 29 août 2026. Les écraser
-    # changerait les comédiens, pas seulement la vitesse.
-    noms = [m for m, _ in couples]
-    permis, bloques = protege(noms)
-    couples = [(m, g) for m, g in couples if m in set(permis)]
-    for b in bloques:
-        print('   protégé (ElevenLabs, non autorisé) : %s' % b)
-    n = len(list(INTER.glob('*/*/line_*.mp3')))
-    print('%d modules · %d répliques · %d sans générateur' % (len(couples), n, len(sans)))
+    # La protection se décide **fichier par fichier** : les modules sont
+    # mixtes, et protéger le module entier bloquait des répliques déjà passées
+    # à Azure — celles de Kim dans module-n5-degat, par exemple — qui sont
+    # réglables sans remplacer un seul enregistrement d'origine.
+    travail, protegees = [], 0
+    for m, g in couples:
+        ok, bl = repliques_du_module(m)
+        protegees += len(bl)
+        if ok:
+            travail.append((m, g, ok, len(bl)))
+    couples = travail
+    n = sum(len(ok) for _, _, ok, _ in couples)
+    print('%d modules · %d répliques régénérables · %d protégées (ElevenLabs) '
+          '· %d modules sans générateur'
+          % (len(couples), n, protegees, len(sans)))
     for m, _ in sans:
         print('   sauté (aucun générateur) : %s' % m)
     if not lancer:
+        for m, _, ok, bl in couples[:6]:
+            print('   %-26s %3d à refaire · %3d protégées' % (m, len(ok), bl))
         return
 
     depart = time.time()
     ok = echec = 0
-    for i, (m, g) in enumerate(couples, 1):
+    for i, (m, g, cibles, bloquees) in enumerate(couples, 1):
         t = time.time()
-        r = subprocess.run([sys.executable, str(g), '--force', '--only', 'line_'],
+        r = subprocess.run([sys.executable, str(g), '--force',
+                            '--only', ','.join(cibles)],
                            cwd=RACINE, capture_output=True, text=True)
         bilan = [l for l in r.stdout.splitlines() if l.startswith('✅')]
-        print('[%2d/%d] %-28s %-42s %4.0f s'
+        garde = (' · %d protégées' % bloquees) if bloquees else ''
+        print('[%2d/%d] %-26s %-40s %4.0f s%s'
               % (i, len(couples), m, (bilan[-1] if bilan else '(pas de bilan)'),
-                 time.time() - t), flush=True)
+                 time.time() - t, garde), flush=True)
         if r.returncode:
             echec += 1
             print('        !! %s' % (r.stderr.strip().splitlines() or ['?'])[-1])

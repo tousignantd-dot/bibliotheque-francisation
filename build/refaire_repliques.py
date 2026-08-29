@@ -22,7 +22,7 @@ import sys
 
 RACINE = pathlib.Path(__file__).resolve().parent.parent
 sys.path.insert(0, str(RACINE / 'build'))
-from fournisseur import protege                                  # noqa: E402
+from fournisseur import protege, INTER                           # noqa: E402
 
 
 def generateur(slug):
@@ -37,10 +37,15 @@ def main():
     liste = json.loads(pathlib.Path(sys.argv[1]).read_text(encoding='utf-8'))
     lancer = sys.argv[2] == '--lancer'
 
+    # Protection fichier par fichier : une réplique venant d'ElevenLabs n'est
+    # jamais réécrite, même si le reste de son module l'est.
+    permis, bloques = protege([INTER / r for r in liste])
+    for b in bloques:
+        print('   protégée (ElevenLabs) : %s' % b.relative_to(INTER))
     par_module = collections.defaultdict(list)
-    for rel in liste:
-        slug, bloc, nom = rel.split('/')
-        par_module[slug].append('%s/%s' % (bloc, nom))
+    for c in permis:
+        par_module[c.parts[-3]].append('%s/%s' % (c.parent.name, c.name))
+    liste = permis
 
     sans = [m for m in par_module if not generateur(m)]
     if sans:
