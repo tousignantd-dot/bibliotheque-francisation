@@ -62,7 +62,38 @@ def registre():
             for slug, m in reg.MODULES.items()}
 
 
+def titres():
+    """Le titre de chaque module, pour l'écrire à côté de son slug."""
+    import sys
+    sys.path.insert(0, str(BASE / 'build' / 'powerpoints'))
+    try:
+        import modules as reg
+    except Exception:
+        return {}
+    return {slug: m.get('titre', '') for slug, m in reg.MODULES.items()}
+
+
 REGISTRE = registre()
+TITRES = titres()
+
+
+def lien_module(slug):
+    """Le chemin du module lui-même, pour aller vérifier une image en place.
+
+    Cherché sur le disque et non déduit du slug : la règle
+    `<slug>-activite-interactive.html` ne vaut que pour les modules produits
+    par le gabarit. Les activités plus anciennes portent d'autres noms
+    (`a-la-clinique-activite-interactive-avec-bouton-1.html`), et un lien
+    fabriqué à la règle y mènerait à une page absente.
+    """
+    dossier = RACINE / slug
+    if not dossier.is_dir():
+        return ""
+    fichiers = sorted(f for f in dossier.glob("*.html"))
+    if not fichiers:
+        return ""
+    pour = [f for f in fichiers if "activite-interactive" in f.name]
+    return (pour[0] if pour else fichiers[0]).relative_to(BASE).as_posix()
 
 
 def rang(module):
@@ -165,11 +196,28 @@ def page(images, ctx):
                      else 'Hors registre — ateliers et activités anciennes')
             blocs.append('<h1 class="niv" id="niv%s">%s</h1>'
                          % (niveau or 'x', html.escape(titre)))
+        # Le lien vers le module : une image se juge dans son exercice, pas
+        # seule sur une planche. Sans lui, vérifier demandait de retrouver le
+        # fichier à la main pour chacun des quatre-vingt-deux modules.
+        chemin_module = lien_module(module)
+        titre_module = TITRES.get(module, "")
+        numero_module = REGISTRE.get(module, (None, None))[1]
+        entete = html.escape(module)
+        if chemin_module:
+            entete = ('<a class="ouvrir" href="%s" target="_blank" '
+                      'rel="noopener">%s <span aria-hidden="true">↗</span></a>'
+                      % (html.escape(chemin_module), entete))
+        legende = []
+        if numero_module:
+            legende.append('module %d' % numero_module)
+        if titre_module:
+            legende.append(html.escape(titre_module))
+        legende.append('%d images · n° %d à %d'
+                       % (len(lot), lot[0][0], lot[-1][0]))
         blocs.append(
-            '<section><h2>%s <small>%d images · n° %d à %d</small></h2>'
+            '<section><h2>%s <small>%s</small></h2>'
             '<div class="grille">%s</div></section>'
-            % (html.escape(module), len(lot), lot[0][0], lot[-1][0],
-               "".join(vignettes)))
+            % (entete, ' · '.join(legende), "".join(vignettes)))
 
     index = {str(i): {"module": m, "chemin": c}
              for i, (m, c) in enumerate(images, start=1)}
@@ -193,6 +241,9 @@ def page(images, ctx):
   h1.niv:first-of-type { margin-top:20px; }
   h2 { margin:32px 0 10px; font-size:16px; }
   h2 small { color:var(--gris); font-weight:400; margin-left:8px; }
+  h2 .ouvrir { color:inherit; text-decoration:none; border-bottom:2px solid #c9c9c9; }
+  h2 .ouvrir:hover { border-bottom-color:#111; }
+  h2 .ouvrir span { font-size:12px; color:var(--gris); }
   .grille { display:grid; gap:14px;
             grid-template-columns:repeat(auto-fill, minmax(220px, 1fr)); }
   .v { margin:0; position:relative; cursor:pointer; border:2px solid transparent;
