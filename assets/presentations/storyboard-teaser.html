@@ -1,0 +1,400 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Storyboard du teaser francis — 12 plans</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800;900&display=swap">
+<style>
+  :root{
+    --accent:#0A8F5B; --accent-soft:#E6F5EE; --accent-ink:#07734A;
+    --surface-band:#EDF6F1;
+    --ink-900:#17181A; --ink-700:#3A3D40; --ink-500:#4B4F52; --ink-400:#6E7175;
+    --surface-page:#F7F7F5; --surface-card:#FFFFFF; --surface-sunken:#FBFBFA;
+    --paper-200:#F0F0EE;
+    --border:#EAEAE8; --border-firm:#D6D6D2; --border-tint:#D8E8DF;
+    --acier-600:#1D6B8F; --acier-100:#E7F0F6;
+    --ambre-700:#B45309; --ambre-100:#FBEEDC;
+    --teal-700:#0D7A6F;  --teal-100:#E3F2F0;
+    --indigo-600:#3B49A0; --indigo-100:#E8EAFA;
+    --pourpre-700:#7E3F98; --pourpre-100:#F3E8F7;
+    --marque-600:#6B4FBB; --marque-100:#EDE7F9; --marque-filet:#C3B4EA;
+    --font-sans:"Nunito",system-ui,-apple-system,"Segoe UI",sans-serif;
+    --content-max:1080px;
+  }
+  *{box-sizing:border-box}
+  body{margin:0; background:var(--surface-page); color:var(--ink-900);
+    font-family:var(--font-sans); font-size:18px; font-weight:600; line-height:1.55;
+    -webkit-font-smoothing:antialiased; -webkit-text-size-adjust:100%}
+  :focus-visible{outline:3px solid var(--accent); outline-offset:2px; border-radius:4px}
+  .conteneur{max-width:var(--content-max); margin:0 auto; padding:0 24px}
+
+  .verrou{display:inline-flex; align-items:center; gap:16px; flex-wrap:wrap}
+  .verrou .nom{font-weight:900; font-size:28px; letter-spacing:-.035em;
+    line-height:1; color:var(--ink-900); white-space:nowrap}
+  .verrou .i{position:relative; display:inline-block}
+  .verrou .point{position:absolute; left:1px; top:2px; width:7px; height:7px;
+    border-radius:999px; background:var(--marque-600)}
+  .verrou .filet{width:2px; height:24px; background:var(--marque-filet)}
+  .verrou .desc{font-size:16px; font-weight:900; letter-spacing:-.015em;
+    line-height:1; color:var(--marque-600); white-space:nowrap}
+  @media (max-width:480px){ .verrou .filet,.verrou .desc{display:none} }
+  .barre{background:#FFFFFF; border-bottom:2px solid var(--marque-600); padding:16px 0}
+
+  .bande{background:var(--surface-band); border-bottom:1px solid var(--border-tint);
+    padding:44px 0 34px}
+  .bande .conteneur{display:flex; flex-direction:column; gap:22px}
+  .surtitre{font-size:13px; font-weight:800; letter-spacing:.12em;
+    text-transform:uppercase; color:var(--ink-400); margin:0}
+  h1{font-size:clamp(32px,5.4vw,46px); font-weight:900; letter-spacing:-.02em;
+    line-height:1.14; margin:0; text-wrap:balance}
+  .chapeau{font-size:19px; font-weight:600; color:var(--ink-500); margin:0; max-width:62ch}
+  .quand{font-size:14px; color:var(--ink-400); margin:0}
+
+  .tuiles{display:grid; grid-template-columns:repeat(auto-fit,minmax(170px,1fr)); gap:12px}
+  .tuile{background:var(--surface-card); border:1px solid var(--border);
+    border-radius:14px; padding:15px 17px}
+  .tuile b{display:block; font-size:16px; font-weight:900; margin-bottom:3px}
+  .tuile span{font-size:15px; font-weight:600; color:var(--ink-500)}
+
+  main{padding:8px 0 80px}
+  section{padding:38px 0 0}
+  h2{font-size:27px; font-weight:900; letter-spacing:-.015em; margin:0 0 18px;
+    text-wrap:balance}
+  p{margin:0 0 14px; max-width:66ch}
+  .eyebrow{display:inline-block; font-size:12px; font-weight:800; letter-spacing:.12em;
+    text-transform:uppercase; padding:4px 10px; border-radius:999px; margin:0 0 10px;
+    font-variant-numeric:tabular-nums}
+  .e-ambre{background:var(--ambre-100); color:var(--ambre-700)}
+  .e-teal{background:var(--teal-100); color:var(--teal-700)}
+  .e-indigo{background:var(--indigo-100); color:var(--indigo-600)}
+  .e-pourpre{background:var(--pourpre-100); color:var(--pourpre-700)}
+  .e-acier{background:var(--acier-100); color:var(--acier-600)}
+  strong{font-weight:900}
+  code{font-family:ui-monospace,Menlo,Consolas,monospace; font-size:.86em;
+    background:var(--paper-200); padding:1px 5px; border-radius:5px; font-weight:700}
+
+  .planche{display:grid; grid-template-columns:repeat(auto-fit,minmax(320px,1fr)); gap:18px}
+  .plan{margin:0; background:var(--surface-card); border:1px solid var(--border);
+    border-radius:16px; overflow:hidden; display:flex; flex-direction:column}
+  .plan img{display:block; width:100%; height:auto; background:var(--paper-200);
+    border-bottom:1px solid var(--border)}
+  .plan figcaption{padding:16px 18px 18px}
+  .tete{display:flex; align-items:center; gap:10px; margin:0 0 4px}
+  .num{display:inline-flex; align-items:center; justify-content:center;
+    width:28px; height:28px; border-radius:50%; background:var(--ink-900); color:#FFF;
+    font-size:13px; font-weight:900; font-variant-numeric:tabular-nums}
+  .temps{font-size:14px; font-weight:800; color:var(--ink-400);
+    font-variant-numeric:tabular-nums; letter-spacing:.02em}
+  .plan h3{font-size:19px; font-weight:900; margin:0 0 8px}
+  .plan p{margin:0 0 9px; max-width:none; font-size:16px}
+  .action{color:var(--ink-700)}
+  .lab{display:inline-block; font-size:11px; font-weight:800; letter-spacing:.1em;
+    text-transform:uppercase; color:var(--ink-400); margin-right:8px}
+  .vo{font-weight:800; color:var(--indigo-600)}
+  .vo-muette{color:var(--ink-400); font-weight:700}
+  .son{font-size:15px; color:var(--ink-500)}
+  .note{margin:11px 0 0; padding-top:11px; border-top:1px solid var(--border);
+    font-size:14px; font-weight:700; color:var(--ink-400)}
+
+  .garde{background:var(--ambre-100); border:1px solid #E8D7B8; border-radius:14px;
+    padding:18px 20px}
+  .garde p{color:#6B4708; max-width:70ch}
+  .garde p:last-child{margin-bottom:0}
+  ul.points{list-style:none; padding:0; margin:0 0 14px; display:flex;
+    flex-direction:column; gap:10px}
+  ul.points li{position:relative; padding-left:20px; max-width:70ch}
+  ul.points li::before{content:""; position:absolute; left:2px; top:.62em;
+    width:7px; height:7px; border-radius:50%; background:var(--accent)}
+
+  hr{border:0; border-top:1px solid var(--border-firm); margin:44px 0 0}
+  footer{padding:26px 0 0; color:var(--ink-400); font-size:15px}
+  @media (max-width:640px){ .conteneur{padding:0 16px} body{font-size:17px} }
+  @media print{
+    body{background:#FFF} .barre,.bande{background:#FFF}
+    .planche{grid-template-columns:1fr 1fr} .plan{break-inside:avoid}
+  }
+</style>
+<link rel="icon" type="image/svg+xml" href="../design-system/marque-francis-favicon.svg">
+</head>
+<body>
+
+<div class="barre">
+  <div class="conteneur">
+    <div class="verrou">
+      <span class="nom" role="img" aria-label="francis">franc<span class="i" aria-hidden="true">ı<span class="point"></span></span>s</span>
+      <span class="filet" aria-hidden="true"></span>
+      <span class="desc">Aide à l'apprentissage du français</span>
+    </div>
+  </div>
+</div>
+
+<header class="bande">
+  <div class="conteneur">
+    <div>
+      <p class="surtitre">Communication · Storyboard</p>
+      <h1>Teaser francis — douze plans, quarante-huit secondes</h1>
+    </div>
+    <p class="chapeau">Le film de présentation de francis, plan par plan : ce qu'on voit,
+    ce que dit la voix off, ce qu'on entend. Le récit va d'une enseignante ensevelie sous
+    ses photocopies à un point de lumière — le point du « i » de la marque, qui ouvre et
+    ferme le film.</p>
+    <div class="tuiles">
+      <div class="tuile"><b>48 secondes</b><span>4 blocs, 12 plans · animatique montée</span></div>
+      <div class="tuile"><b>2D animé</b><span>Cartes d'interface, fausse profondeur</span></div>
+      <div class="tuile"><b>Aucun visage</b><span>Silhouettes, pseudos, jamais de vrai nom</span></div>
+      <div class="tuile"><b>Public</b><span>Les directions de centre</span></div>
+      <div class="tuile"><b>Version 15 s</b><span>Plans 05, 06, 11, 12</span></div>
+    </div>
+    <p class="quand">29 août 2026 — <b>plans 07 à 10 : captures réelles</b> du module Santé,
+    niveau 4. Les autres sont des repères dessinés, à valider avant toute production animée.</p>
+  </div>
+</header>
+
+<main class="conteneur">
+
+  <section style="padding-top:34px">
+    <span class="eyebrow e-pourpre">L'animatique</span>
+    <h2>Le montage, 48 secondes</h2>
+    <video controls preload="none" poster="storyboard-teaser/plan-06.jpg"
+      style="width:100%; display:block; border:1px solid var(--border);
+             border-radius:16px; background:#000">
+      <source src="storyboard-teaser/teaser-francis-animatique.mp4" type="video/mp4">
+      Votre navigateur ne lit pas cette vidéo&nbsp;:
+      <a href="storyboard-teaser/teaser-francis-animatique.mp4">la télécharger</a>.
+    </video>
+    <p style="margin-top:16px"><strong>Ce que c'est&nbsp;:</strong> les douze plans montés
+    à leur durée exacte, chacun avec le mouvement de caméra prévu, et la voix off posée
+    aux secondes du storyboard. C'est l'épreuve que le récit tient en 48&nbsp;secondes —
+    ni plus, ni moins.</p>
+    <p><strong>Ce que ce n'est pas&nbsp;:</strong> le film. Rien ne bouge à l'intérieur
+    des images&nbsp;; seul le cadre se déplace. Il n'y a pas de musique, et les effets
+    décrits sur les fiches — le papier aspiré, la carte qui se déplie, la bulle qui se
+    dissout — restent à animer. Le plan 11 y passe encore en esquisse.</p>
+    <p style="font-size:15px; color:var(--ink-400)">Voix&nbsp;: synthèse Azure,
+    <code>fr-CA-SylvieNeural</code>. Montage&nbsp;: images fixes et
+    <code>zoompan</code>, 1920&nbsp;×&nbsp;1080, 25&nbsp;images/s.</p>
+  </section>
+
+  <hr>
+
+  <section>
+    <span class="eyebrow e-ambre">0:00 → 0:11</span>
+    <h2>Le problème</h2>
+    <div class="planche">
+      <figure class="plan">
+        <img src="storyboard-teaser/plan-01.jpg" alt="Plan 01 — Le point qui écoute" loading="lazy" width="1200" height="675">
+        <figcaption>
+          <p class="tete"><span class="num">01</span><span class="temps">0:00 – 0:03</span></p>
+          <h3>Le point qui écoute</h3>
+          <p class="action">Noir. Un seul point lumineux au centre — le point du « i ». Il pulse, deux anneaux s&#x27;ouvrent autour de lui comme un micro qui capte.</p>
+          <p class="vo vo-muette"><span class="lab">Voix off</span>—</p>
+          <p class="son"><span class="lab">Son</span>Silence, puis une inspiration.</p>
+          <p class="note">C&#x27;est le seul plan noir du film. Tout le reste est crème.</p>
+        </figcaption>
+      </figure>
+      <figure class="plan">
+        <img src="storyboard-teaser/plan-02.jpg" alt="Plan 02 — Quinze pupitres" loading="lazy" width="1200" height="675">
+        <figcaption>
+          <p class="tete"><span class="num">02</span><span class="temps">0:03 – 0:07</span></p>
+          <h3>Quinze pupitres</h3>
+          <p class="action">Classe en vue isométrique. L&#x27;enseignante seule devant quinze pupitres. Au-dessus de chacun, une bulle vide d&#x27;une couleur différente.</p>
+          <p class="vo"><span class="lab">Voix off</span>« Quinze élèves. Quinze langues. Un seul enseignant. »</p>
+          <p class="son"><span class="lab">Son</span>Piano feutré, une note par phrase.</p>
+          <p class="note">Les bulles restent vides : personne ne parle encore.</p>
+        </figcaption>
+      </figure>
+      <figure class="plan">
+        <img src="storyboard-teaser/plan-03.jpg" alt="Plan 03 — La pile de photocopies" loading="lazy" width="1200" height="675">
+        <figcaption>
+          <p class="tete"><span class="num">03</span><span class="temps">0:07 – 0:11</span></p>
+          <h3>La pile de photocopies</h3>
+          <p class="action">Les piles montent de partout et se referment en arche au-dessus de l&#x27;enseignante, qui disparaît presque sous le papier.</p>
+          <p class="vo"><span class="lab">Voix off</span>« Et une préparation qui ne finit jamais. »</p>
+          <p class="son"><span class="lab">Son</span>Bruit de papier qui s&#x27;accumule, de plus en plus dense.</p>
+          <p class="note">Reprise du plan : il fallait qu&#x27;on la voie être ensevelie, pas seulement la pile.</p>
+        </figcaption>
+      </figure>
+    </div>
+  </section>
+  <section>
+    <span class="eyebrow e-indigo">0:11 → 0:20</span>
+    <h2>Le renversement</h2>
+    <div class="planche">
+      <figure class="plan">
+        <img src="storyboard-teaser/plan-04.jpg" alt="Plan 04 — L&#x27;aspiration" loading="lazy" width="1200" height="675">
+        <figcaption>
+          <p class="tete"><span class="num">04</span><span class="temps">0:11 – 0:13</span></p>
+          <h3>L&#x27;aspiration</h3>
+          <p class="action">Tout le papier s&#x27;étire, spirale et se fait avaler par un point unique. Traînées de vitesse.</p>
+          <p class="vo vo-muette"><span class="lab">Voix off</span>—</p>
+          <p class="son"><span class="lab">Son</span>Souffle d&#x27;aspiration — puis silence net. La musique se coupe.</p>
+          <p class="note">Le pivot du film. Deux secondes, pas plus.</p>
+        </figcaption>
+      </figure>
+      <figure class="plan">
+        <img src="storyboard-teaser/plan-05.jpg" alt="Plan 05 — La carte qui se déplie" loading="lazy" width="1200" height="675">
+        <figcaption>
+          <p class="tete"><span class="num">05</span><span class="temps">0:13 – 0:16</span></p>
+          <h3>La carte qui se déplie</h3>
+          <p class="action">Une carte de module s&#x27;ouvre en éventail : en-tête coloré, puis les quatre sections — Je découvre, Défi, Je me lance, Je retiens des mots.</p>
+          <p class="vo vo-muette"><span class="lab">Voix off</span>—</p>
+          <p class="son"><span class="lab">Son</span>Le piano redémarre, une note par section qui se déplie.</p>
+          <p class="note">Les quatre panneaux sortent dans l&#x27;ordre exact des sections d&#x27;un module.</p>
+        </figcaption>
+      </figure>
+      <figure class="plan">
+        <img src="storyboard-teaser/plan-06.jpg" alt="Plan 06 — La grille des modules" loading="lazy" width="1200" height="675">
+        <figcaption>
+          <p class="tete"><span class="num">06</span><span class="temps">0:16 – 0:20</span></p>
+          <h3>La grille des modules</h3>
+          <p class="action">La caméra recule. Des dizaines de cartes se rangent en huit bandes horizontales, une couleur par niveau, jusqu&#x27;à un horizon flou.</p>
+          <p class="vo"><span class="lab">Voix off</span>« francis. Le cours de francisation, déjà écrit. »</p>
+          <p class="son"><span class="lab">Son</span>La nappe s&#x27;installe sous le piano.</p>
+          <p class="note">Huit bandes = huit niveaux. Aucune n&#x27;est verte : la couleur d&#x27;un module est celle de son niveau.</p>
+        </figcaption>
+      </figure>
+    </div>
+  </section>
+  <section>
+    <span class="eyebrow e-teal">0:20 → 0:38</span>
+    <h2>Les trois preuves</h2>
+    <div class="planche">
+      <figure class="plan">
+        <img src="storyboard-teaser/plan-07.jpg" alt="Plan 07 — L&#x27;élève écoute" loading="lazy" width="1200" height="675">
+        <figcaption>
+          <p class="tete"><span class="num">07</span><span class="temps">0:20 – 0:26</span></p>
+          <h3>L&#x27;élève écoute</h3>
+          <p class="action">L&#x27;écran réel du module Santé, niveau 4. En haut à droite, le bouton de débit est au troisième cran : « Débit très lent ». Sous le dialogue, le lecteur et la liste de vocabulaire.</p>
+          <p class="vo"><span class="lab">Voix off</span>« L&#x27;élève écoute à sa vitesse. »</p>
+          <p class="son"><span class="lab">Son</span>La même réplique, jouée deux fois : vite, puis lentement.</p>
+          <p class="note">Capture réelle. L&#x27;animation n&#x27;ajoute que le curseur qui va cliquer le bouton de débit.</p>
+        </figcaption>
+      </figure>
+      <figure class="plan">
+        <img src="storyboard-teaser/plan-08.jpg" alt="Plan 08 — L&#x27;erreur corrigée" loading="lazy" width="1200" height="675">
+        <figcaption>
+          <p class="tete"><span class="num">08</span><span class="temps">0:20 – 0:26</span></p>
+          <h3>L&#x27;erreur corrigée</h3>
+          <p class="action">Un vrai ou faux corrigé : six énoncés, des crochets verts et des croix rouges, et le compte « 3 / 6 bonnes réponses » sous le bouton Corriger.</p>
+          <p class="vo"><span class="lab">Voix off</span>« Se trompe. Recommence. »</p>
+          <p class="son"><span class="lab">Son</span>Deux clics secs.</p>
+          <p class="note">Capture réelle, erreurs semées exprès. Le texte est lisible ici : c&#x27;est le seul plan où on assume de montrer du français.</p>
+        </figcaption>
+      </figure>
+      <figure class="plan">
+        <img src="storyboard-teaser/plan-09.jpg" alt="Plan 09 — L&#x27;élève parle" loading="lazy" width="1200" height="675">
+        <figcaption>
+          <p class="tete"><span class="num">09</span><span class="temps">0:26 – 0:32</span></p>
+          <h3>L&#x27;élève parle</h3>
+          <p class="action">L&#x27;écran « Je me lance ». Trois cartes de plan — qui tu es, pourquoi tu appelles, ce que tu demandes — puis les trois étapes et le gros bouton rouge « Touche pour t&#x27;enregistrer ».</p>
+          <p class="vo"><span class="lab">Voix off</span>« Il s&#x27;enregistre. Il reçoit une correction. »</p>
+          <p class="son"><span class="lab">Son</span>L&#x27;onde qui monte, une respiration.</p>
+          <p class="note">Capture réelle. L&#x27;animation fait pulser le bouton d&#x27;enregistrement et monter l&#x27;onde.</p>
+        </figcaption>
+      </figure>
+      <figure class="plan">
+        <img src="storyboard-teaser/plan-10.jpg" alt="Plan 10 — La correction qui s&#x27;efface" loading="lazy" width="1200" height="675">
+        <figcaption>
+          <p class="tete"><span class="num">10</span><span class="temps">0:26 – 0:32</span></p>
+          <h3>La correction qui s&#x27;efface</h3>
+          <p class="action">La production écrite : la liste de ce que le courriel doit contenir, puis le cadre du message adressé à la pharmacie. Par-dessus, une bulle de rétroaction se dissout en petits carrés.</p>
+          <p class="vo"><span class="lab">Voix off</span>« Elle n&#x27;est gardée nulle part. »</p>
+          <p class="son"><span class="lab">Son</span>Un souffle court, puis rien.</p>
+          <p class="note">Capture réelle, mais la bulle qui s&#x27;efface est un calque ajouté à l&#x27;animation : ce n&#x27;est pas un élément de l&#x27;interface. À l&#x27;écran, en petit : « aucune trace conservée ».</p>
+        </figcaption>
+      </figure>
+      <figure class="plan">
+        <img src="storyboard-teaser/plan-11.jpg" alt="Plan 11 — Le tableau du groupe" loading="lazy" width="1200" height="675">
+        <figcaption>
+          <p class="tete"><span class="num">11</span><span class="temps">0:32 – 0:38</span></p>
+          <h3>Le tableau du groupe</h3>
+          <p class="action">Un tableau de bord se dessine ligne par ligne : quinze rangées, des pastilles vertes, deux ambrées. Les noms sont des barres grises.</p>
+          <p class="vo"><span class="lab">Voix off</span>« Et l&#x27;enseignante, elle, voit enfin où chacun est rendu. »</p>
+          <p class="son"><span class="lab">Son</span>La nappe monte.</p>
+          <p class="note">ENCORE UNE ESQUISSE. La vraie page — progression.html — est derrière la connexion enseignante ; il faut une session ouverte pour la photographier.</p>
+        </figcaption>
+      </figure>
+    </div>
+  </section>
+  <section>
+    <span class="eyebrow e-pourpre">0:38 → 0:48</span>
+    <h2>Signature</h2>
+    <div class="planche">
+      <figure class="plan">
+        <img src="storyboard-teaser/plan-12.jpg" alt="Plan 12 — La signature" loading="lazy" width="1200" height="675">
+        <figcaption>
+          <p class="tete"><span class="num">12</span><span class="temps">0:42 – 0:48</span></p>
+          <h3>La signature</h3>
+          <p class="action">Cadre crème presque vide. La sphère s&#x27;est contractée en un seul point chaud, deux anneaux se referment sur lui. Sous le point : francis.</p>
+          <p class="vo vo-muette"><span class="lab">Voix off</span>—</p>
+          <p class="son"><span class="lab">Son</span>Coupure sèche, puis une note tenue qui s&#x27;éteint.</p>
+          <p class="note">Le film commence et finit sur le même point. C&#x27;est toute la marque.</p>
+        </figcaption>
+      </figure>
+    </div>
+  </section>
+
+  <hr>
+
+  <section>
+    <span class="eyebrow e-acier">Production</span>
+    <h2>Ce qui tient le film ensemble</h2>
+    <ul class="points">
+      <li><strong>Un seul motif traverse le film</strong> : le point du « i ». Micro qui
+      écoute au plan 01, sphère qui se contracte au plan 12. C'est lui qui porte la marque,
+      pas un logotype ajouté à la fin.</li>
+      <li><strong>Aucun texte lisible à l'écran</strong> avant la signature. Les mots sont
+      des blocs de lettres abstraits : le teaser doit se lire dans n'importe quelle langue,
+      et son public ne lit pas encore le français.</li>
+      <li><strong>Aucun visage, aucun vrai nom.</strong> Les silhouettes sont de dos et sans
+      traits, les noms du tableau sont des barres grises. La règle du portail vaut aussi
+      pour le film.</li>
+      <li><strong>Pas de vert dominant.</strong> Chaque module montré prend la couleur de son
+      niveau — les huit bandes du plan 06 sont les huit niveaux du programme.</li>
+      <li><strong>Le bloc 3 peut se tourner en captures réelles</strong> du portail plutôt
+      qu'en dessin : plus crédible, et bien moins coûteux qu'une animation 3D.</li>
+    </ul>
+  </section>
+
+  <section>
+    <span class="eyebrow e-acier">À décider</span>
+    <h2>Deux choix réglés, deux points ouverts</h2>
+    <div class="garde" style="background:var(--accent-soft); border-color:#BFE3D2">
+      <p style="color:var(--accent-ink)"><strong>Réglé — dessin ou capture&nbsp;?</strong>
+      Captures d'écran pour les plans 07 à 11. Le film montre le produit tel qu'il est
+      aujourd'hui, et ne vieillira qu'avec lui.</p>
+      <p style="color:var(--accent-ink)"><strong>Réglé — pour qui&nbsp;?</strong>
+      Les directions. C'est le montage ci-dessus&nbsp;: le bloc 1 pose le problème au complet,
+      parce qu'une direction ne le vit pas tous les jours.</p>
+    </div>
+    <h3 style="font-size:19px; font-weight:900; margin:26px 0 6px">Ce qui reste ouvert</h3>
+    <div class="garde">
+      <p><strong>Voix off ou cartons&nbsp;?</strong> Le texte est écrit pour une voix
+      québécoise au débit lent — le sujet même du produit. Une version muette à cartons
+      voyage mieux là où le son est coupé. Les deux sont possibles sur le même montage&nbsp;;
+      la voix off coûte une séance d'enregistrement de plus.</p>
+      <p><strong>Le plan 11 attend une capture.</strong> <code>progression.html</code> est
+      derrière la connexion enseignante&nbsp;: il faut ouvrir une session dans le portail pour
+      le photographier. D'ici là, le plan garde son esquisse.</p>
+    </div>
+  </div>
+  </section>
+
+  <hr>
+  <footer>
+    <p>Les plans 07 à 10 sont des <b>captures réelles</b> du module Santé, niveau 4, prises
+    par Chrome sans interface en 2400&nbsp;×&nbsp;1350. Les huit autres sont des repères
+    dessinés en brouillon (Nano Banana 2 Lite, route Google directe, treize appels,
+    environ 0,44&nbsp;$)&nbsp;: ils fixent le cadrage, la palette et le rythme, sans être des
+    images finales. Les esquisses remplacées sont gardées à côté, sous
+    <code>plan-NN-esquisse.jpg</code>&nbsp;: elles disent ce que l'animation ajoute par-dessus
+    l'écran réel. Fichiers sources dans <code>~/Claude/generations</code>, chacun avec son
+    journal.</p>
+  </footer>
+
+</main>
+</body>
+</html>
