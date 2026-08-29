@@ -96,8 +96,14 @@ def textes_dialogues(slug):
 
 def textes_sons(slug):
     """{clé : texte} d'après le manifeste, quand il existe."""
+    # Les manifestes nomment le module avec des tirets **bas** :
+    # `module-n5-oeuvres` → `sons_module_n5_oeuvres.json`. Chercher avec le
+    # slug tel quel ne trouve rien, et l'outil saute alors tout le dossier
+    # `sons/` sans le dire — un module entier peut paraître traité.
     court = slug[len("module-"):] if slug.startswith("module-") else slug
-    for nom in ("sons_%s.json" % slug, "sons_module_%s.json" % court):
+    for nom in ("sons_%s.json" % slug.replace("-", "_"),
+                "sons_module_%s.json" % court.replace("-", "_"),
+                "sons_%s.json" % slug, "sons_module_%s.json" % court):
         f = BASE / nom
         if f.is_file():
             return json.load(io.open(f, encoding="utf-8"))
