@@ -2639,6 +2639,68 @@ d'assistant visible, zéro erreur de console — puis quatre rouverts avec le
 centre remis à « autorisée », qui retrouvent leurs sept outils et leurs deux
 boutons de vérification. Le même fichier sert les deux versions.
 
+## Le mode séance (travailler sans compte élève)
+
+Un troisième mode, à côté d'« avec IA » et « sans IA ». L'enseignant ouvre une
+**séance** sur un module d'un de ses groupes ; les élèves y entrent par un code
+à six caractères (imprimé, un code QR) et travaillent **sans compte, sans
+pseudo, sans donnée identifiante**. Le point de départ reste le compte de
+l'enseignant : lui seul ouvre une séance, et tout remonte dans son portail, sur
+la progression de ce groupe-là. Deux groupes sur un même module = deux séances,
+deux codes, deux tableaux — le code dit d'où viennent les réponses.
+
+**Le pivot.** L'identité de l'élève voyage déjà par le seul paramètre `code`, et
+les vingt-sept routes qui la vérifient passent toutes par
+`validate_student_code`. Le jeton de séance emprunte ce chemin : **aucun des 87
+modules n'est retouché**, aucun ne sait ce qu'il transporte.
+
+- **Ce qu'on n'a pas eu à écrire, et c'est le meilleur du chantier.**
+  `ia_pour_eleve`, `voix_pour_eleve`, `depot_pour_eleve` et les sections
+  remontent tous par `groupId` ; un participant en porte un vrai. Le refus d'IA
+  d'une direction s'applique donc au mode séance **sans une ligne de plus** —
+  c'était le premier risque identifié, et la bonne réponse était de n'avoir rien
+  à écrire plutôt qu'un second chemin d'héritage à tenir.
+- **Liste blanche, jamais liste noire.** `ROUTES_SEANCE` nomme les routes
+  ouvertes à un participant ; le chemin de la requête est posé sur le fil par
+  `_REQUETE.chemin` dans les quatre `do_*`. Une route ajoutée demain est fermée
+  au mode séance d'office. Refusée, la couture rend `None` : les vingt-sept
+  routes répondent déjà 401 sur un code inconnu, il n'y a rien à ajouter chez
+  elles.
+- **Identifiants négatifs.** Les participants partagent `progress.json`,
+  `direct.json` et la colonne `student_id` de la base avec les vrais élèves. Il
+  faut donc un entier, et il faut qu'aucun ne tombe sur celui d'un élève : les
+  élèves comptent vers le haut depuis 1, les participants vers le bas depuis -1.
+- **Un seul module.** `activite_de_la_seance()` borne le participant au module
+  de sa séance ; sans elle, un code photocopié ouvre tout le catalogue du
+  groupe. Posée sur `/api/student/sections`, `/api/student/progress` et
+  `/api/student/access` — les trois routes ouvertes qui portent un `activityId`.
+- **Le code de séance évite les codes d'élèves.** `validate_student_code`
+  regarde les élèves d'abord : un code de séance tombé sur celui d'un élève
+  ferait entrer toute une classe dans son dossier, sans que rien ne le signale.
+- **Fermer ferme.** `participant_par_jeton` vérifie que la séance est encore
+  ouverte, et pas seulement l'entrée. Le contrôle du 29 août 2026 a pris le
+  premier jet en défaut : fermer n'empêchait que les entrées neuves, et tous les
+  appareils déjà entrés continuaient — c'est-à-dire exactement ceux d'un code
+  qui a circulé.
+- **Ce qui est refusé, et pourquoi.** `/api/oral/submit` : la voix est la donnée
+  la plus identifiante du portail, et le mode tire sa force de ne rien
+  collecter — l'élève s'enregistre et s'écoute, rien ne part. Le vocabulaire :
+  la répétition espacée suppose un lendemain. Le catalogue et le tableau de
+  bord : ils appartiennent à l'élève inscrit, une séance ouvre un module.
+- **Le jeton ne s'écrit nulle part.** Il authentifie ; l'inscrire dans un dépôt
+  reviendrait à écrire un mot de passe. Le dépôt écrit porte `studentLabel`
+  (« Participant 7 ») et un `seanceId`, jamais le jeton.
+
+Contrôles : `python3 build/controles/seances.py` (les gardes, fonction par
+fonction) et `python3 build/controles/seances_http.py` (les routes, jouées par
+HTTP sur un serveur jetable). Le second est celui qui compte : il vérifie que
+les refus **refusent**, ce qu'un test qui se contente d'entrer dans une séance
+laisserait passer même toutes gardes retirées.
+
+Plan du chantier : `assets/presentations/mode-seance-sans-compte.html`.
+Reste à faire : l'entrée de l'élève (page et adresse courte), la feuille
+imprimable avec le code QR, et le tableau de la classe.
+
 ## Voix des modules (ElevenLabs)
 
 Les MP3 des modules sont produits par les scripts `generer_audio_*.py` à la

@@ -279,6 +279,11 @@ DEPOTS_DIR = STORAGE_DIR / "assets" / "depots"
 # Promotions : quel dépôt tient lieu de fichier officiel. Une décision
 # d'administration, pas un fichier — voir `load_promotions()`.
 PROMOTIONS_FILE = STORAGE_DIR / "data" / "promotions.json"
+# Les séances sans compte élève. Une séance porte ses participants avec elle :
+# ils ne vivent pas plus longtemps qu'elle, et un fichier séparé aurait laissé
+# des participants orphelins que rien ne serait venu ramasser. Volume, comme
+# tout ce qui est saisi en classe.
+SEANCES_FILE = STORAGE_DIR / "data" / "seances.json"
 
 SESSION_DAYS = 30
 
@@ -3667,10 +3672,309 @@ def generate_code(existing_codes):
     return ''.join(random.choices(chars, k=8))
 
 
+# ── Les séances sans compte élève ───────────────────────────────────────────
+#
+# Un troisième mode, à côté d'« avec IA » et « sans IA » : l'enseignant ouvre
+# une **séance** sur un module d'un de ses groupes, imprime un code QR, et les
+# élèves répondent sans compte, sans pseudo et sans qu'aucune donnée
+# identifiante ne soit collectée.
+#
+# Tout le mode tient sur une observation : l'identité de l'élève voyage déjà
+# partout par le seul paramètre `code`, et les vingt-sept routes qui la
+# vérifient passent toutes par `validate_student_code`. Un jeton de séance qui
+# emprunte ce chemin ouvre le portail entier — et **aucun des 87 modules n'est
+# retouché**, puisqu'aucun ne sait ce qu'il transporte.
+#
+# Trois choses ne sont donc PAS écrites ici, et c'est voulu :
+#   • l'héritage de l'IA, de la voix et du dépôt : `ia_pour_eleve`,
+#     `voix_pour_eleve` et `depot_pour_eleve` remontent par `groupId`, et un
+#     participant en porte un vrai. Le refus d'IA d'une direction s'applique
+#     donc au mode séance sans une ligne de plus — c'était le premier risque
+#     du chantier, et la bonne réponse était de ne rien avoir à écrire ;
+#   • les sections offertes, qui se calculent aussi par le groupe ;
+#   • la correction, l'aide et l'audio, qui ne regardent pas qui appelle.
+
+SEANCE_ALPHABET = [c for c in string.ascii_uppercase + string.digits
+                   if c not in "OI01"]
+SEANCE_PLAFOND_DEFAUT = 40
+SEANCE_PLAFOND_MAX = 200
+# Le jeton du participant. Il voyage dans le paramètre `code`, que la moitié
+# des routes passent à `.upper()` — il est donc **en majuscules**, sur le même
+# alphabet sans ambiguïté, et jamais en base64 : une casse écrasée en route
+# aurait fait échouer une entrée sur deux, de façon intermittente.
+JETON_PREFIXE = "S"
+JETON_LONGUEUR = 16
+
+
+def load_seances():
+    return _load_json_list(SEANCES_FILE)
+
+
+def save_seances(seances):
+    _save_json(SEANCES_FILE, seances)
+
+
+def _tirage(n):
+    return "".join(random.SystemRandom().choices(SEANCE_ALPHABET, k=n))
+
+
+def code_de_seance_libre(seances=None):
+    """Un code à six caractères qui n'est ni pris par une séance, ni par un
+    élève.
+
+    La deuxième moitié compte autant que la première : `validate_student_code`
+    regarde les élèves d'abord. Un code de séance qui tomberait sur celui d'un
+    élève ferait entrer toute une classe dans le dossier de cette personne, et
+    rien ne le signalerait.
+    """
+    seances = load_seances() if seances is None else seances
+    pris = {s.get("code") for s in seances}
+    pris |= {e.get("code") for e in load_students()}
+    for _ in range(200):
+        code = _tirage(6)
+        if code not in pris:
+            return code
+    return _tirage(8)
+
+
+def seance_par_code(code, seances=None):
+    if not code:
+        return None
+    code = str(code).strip().upper()
+    seances = load_seances() if seances is None else seances
+    return next((s for s in seances if s.get("code") == code), None)
+
+
+def seance_ouverte(seance, aujourdhui=None):
+    """Une séance est ouverte tant qu'elle n'est pas fermée à la main et que
+    sa date d'expiration n'est pas passée.
+
+    L'expiration est une **date**, pas un instant : une séance ouverte à 8 h
+    doit tenir jusqu'à la fin du cours du soir, et une classe qui déborde de
+    dix minutes ne doit pas voir la porte se fermer au milieu d'un exercice.
+    """
+    if not seance or not seance.get("ouverte", True):
+        return False
+    expire = seance.get("expire") or ""
+    return not expire or (aujourdhui or date.today().isoformat()) <= expire
+
+
+def creer_seance(teacher, group_id, activity_id, titre="", jours=0,
+                 plafond=SEANCE_PLAFOND_DEFAUT):
+    """Ouvre une séance et rend son enregistrement. À appeler sous verrou."""
+    seances = load_seances()
+    try:
+        plafond = max(1, min(SEANCE_PLAFOND_MAX, int(plafond)))
+    except (TypeError, ValueError):
+        plafond = SEANCE_PLAFOND_DEFAUT
+    try:
+        jours = max(0, min(30, int(jours)))
+    except (TypeError, ValueError):
+        jours = 0
+    seance = {
+        "id": max((s.get("id", 0) for s in seances), default=0) + 1,
+        "code": code_de_seance_libre(seances),
+        "groupId": group_id,
+        "activityId": activity_id,
+        "activityTitle": str(titre or "")[:120],
+        "teacherId": teacher.get("id"),
+        "creeeLe": datetime.now().isoformat(timespec="seconds"),
+        "expire": (date.today() + timedelta(days=jours)).isoformat(),
+        "plafond": plafond,
+        "ouverte": True,
+        "participants": [],
+    }
+    seances.append(seance)
+    save_seances(seances)
+    return seance
+
+
+def _prochain_id_participant(seances):
+    """Les participants portent des identifiants **négatifs**.
+
+    Ils partagent les journaux avec les vrais élèves (`progress.json`,
+    `direct.json`, la colonne `student_id` de la base) : il faut un entier,
+    et il faut qu'aucun ne puisse tomber sur celui d'un élève. Les élèves
+    comptent vers le haut depuis 1, les participants vers le bas depuis -1 ;
+    les deux suites ne se rencontrent jamais.
+    """
+    bas = 0
+    for s in seances:
+        for p in s.get("participants", []):
+            bas = min(bas, p.get("id", 0))
+    return bas - 1
+
+
+def entrer_dans_seance(code):
+    """Fait entrer un appareil dans une séance. Rend (participant, séance, erreur).
+
+    À appeler sous verrou : deux élèves qui scannent à la même seconde lisent
+    la même liste de participants, et le second effacerait le premier.
+    """
+    seances = load_seances()
+    seance = seance_par_code(code, seances)
+    if seance is None:
+        return None, None, ("Ce code n'existe pas. Vérifie les six caractères.", 404)
+    if not seance_ouverte(seance):
+        return None, None, ("Cette séance est terminée. Demande le nouveau code "
+                            "à ton enseignant.", 403)
+    participants = seance.setdefault("participants", [])
+    if len(participants) >= seance.get("plafond", SEANCE_PLAFOND_DEFAUT):
+        return None, None, ("Cette séance est pleine. Demande à ton enseignant "
+                            "d'en ouvrir une autre.", 403)
+    participant = {
+        "id": _prochain_id_participant(seances),
+        "numero": len(participants) + 1,
+        "jeton": JETON_PREFIXE + _tirage(JETON_LONGUEUR),
+        "entreLe": datetime.now().isoformat(timespec="seconds"),
+    }
+    participants.append(participant)
+    save_seances(seances)
+    return participant, seance, None
+
+
+def identite_de_participant(participant, seance):
+    """Un participant, présenté au reste du serveur comme un élève.
+
+    Le contrat rendu est celui de `validate_student_code` : `id`, `label`,
+    `groupId`. Le `groupId` est un vrai groupe, et c'est lui qui fait marcher
+    l'héritage de l'IA, de la voix, du dépôt et des sections sans une ligne de
+    plus. Les trois clés supplémentaires servent aux gardes et à rien d'autre.
+    """
+    return {
+        "id": participant["id"],
+        "label": "Participant %d" % participant.get("numero", 0),
+        "prenom": "",
+        "groupId": seance.get("groupId"),
+        "anonyme": True,
+        "seanceId": seance.get("id"),
+        "seanceCode": seance.get("code"),
+        "activityId": seance.get("activityId"),
+    }
+
+
+def participant_par_jeton(jeton):
+    """(identité, séance) pour un jeton, ou (None, None).
+
+    **La séance close est vérifiée ici, et pas seulement à l'entrée.** Le
+    contrôle du 29 août 2026 l'a prise en défaut : fermer une séance
+    n'empêchait que les entrées neuves, et tous les appareils déjà entrés
+    continuaient de travailler — c'est-à-dire exactement ceux d'un code
+    photocopié qui a circulé. Fermer doit fermer.
+    """
+    if not jeton:
+        return None, None
+    jeton = str(jeton).strip().upper()
+    aujourdhui = date.today().isoformat()
+    for seance in load_seances():
+        for p in seance.get("participants", []):
+            if p.get("jeton") == jeton:
+                if not seance_ouverte(seance, aujourdhui):
+                    return None, None
+                return identite_de_participant(p, seance), seance
+    return None, None
+
+
+# Les routes ouvertes à un participant de séance. **Liste blanche : ce qui
+# n'est pas nommé est refusé.** Une route ajoutée demain est donc fermée au
+# mode séance jusqu'à ce que quelqu'un l'ouvre exprès — l'inverse d'une liste
+# noire, qu'on oublie de tenir à jour précisément le jour où ça compte.
+ROUTES_SEANCE = frozenset({
+    # Ce que le module demande pour se replier correctement.
+    "/api/student/ia",
+    "/api/student/sections",
+    # L'avancement dans le module, le direct de la classe, les signaux d'aide.
+    "/api/student/progress",
+    "/api/student/access",
+    # Les corrections et l'aide : elles répondent à l'écran et n'écrivent rien.
+    "/api/correct-french",
+    "/api/correct-email",
+    "/api/check-written",
+    "/api/analyze-grammar",
+    "/api/analyser-erreurs",
+    "/api/jeu-de-role",
+    "/api/voix",
+    "/api/outils/traduire",
+    "/api/outils/simplifier",
+    "/api/outils/assistant",
+    # L'écrit s'envoie à l'enseignant ; l'oral, non — voir plus bas.
+    "/api/ecrit/submit",
+})
+# Ce qui est refusé, et pourquoi — parce qu'une liste blanche ne dit pas ses
+# raisons et que celles-ci ont été discutées :
+#   /api/oral/submit ....... décision du 29 août 2026 : la voix est la donnée
+#                            la plus identifiante du portail, et une séance
+#                            sans compte tire sa force de ne rien collecter.
+#                            L'élève s'enregistre et s'écoute ; rien ne part.
+#   /api/vocab/* ........... la répétition espacée suppose un lendemain ; un
+#                            participant n'en a pas.
+#   /api/student/activities  le catalogue et le tableau de bord appartiennent
+#   /api/student/dashboard   à l'élève inscrit. Une séance ouvre un module.
+#   /api/corrige-moi/seance  un atelier, pas le module de la séance.
+#   /api/signalement ....... malgré son nom, c'est la route par laquelle un
+#                            *enseignant* signale un défaut de l'outil. Elle
+#                            exige une session enseignante, pas un code.
+
+# Le chemin de la requête en cours, par fil d'exécution. Le serveur sert une
+# requête par fil ; c'est donc l'endroit exact où poser ce que la couture doit
+# savoir et que sa signature ne transporte pas.
+_REQUETE = threading.local()
+
+
+def _identite_de_seance(jeton):
+    """La couture. Rend l'identité du participant si la route lui est ouverte.
+
+    Le refus est un `None`, comme un code d'élève inconnu : les vingt-sept
+    routes répondent déjà 401 sur ce cas, il n'y a donc rien à ajouter chez
+    elles. Une route hors liste blanche voit un jeton de séance comme un code
+    invalide — ce qu'il est, pour elle.
+    """
+    identite, _ = participant_par_jeton(jeton)
+    if identite is None:
+        return None
+    chemin = getattr(_REQUETE, "chemin", "")
+    if chemin not in ROUTES_SEANCE:
+        return None
+    return identite
+
+
+
+def activite_de_la_seance(identite, activity_id):
+    """Ce participant a-t-il le droit de toucher à ce module ?
+
+    Un élève inscrit : toujours — c'est sa planification qui décide, et elle
+    est vérifiée ailleurs. Un participant de séance : **le module de sa
+    séance, et lui seul**. Sans cette garde, un code de séance photocopié
+    ouvre tout le catalogue du groupe, puisque le module n'est qu'un nombre
+    dans une adresse.
+
+    Un `activity_id` absent passe : plusieurs routes n'en portent pas, et
+    refuser sur l'absence fermerait le mode au lieu de le border.
+    """
+    if not identite or not identite.get("anonyme"):
+        return True
+    if activity_id in (None, ""):
+        return True
+    try:
+        return int(activity_id) == int(identite.get("activityId"))
+    except (TypeError, ValueError):
+        return False
+
+
 def validate_student_code(code):
+    """Le code d'un élève, ou le jeton d'un participant de séance.
+
+    Les deux ne se confondent pas : un code d'élève fait six caractères, un
+    jeton en fait dix-sept et commence par S. Les élèves sont regardés en
+    premier, comme avant ce mode.
+    """
+    if not code:
+        return None
     for s in load_students():
         if s.get("code") == code:
             return s
+    if code.startswith(JETON_PREFIXE) and len(code) == 1 + JETON_LONGUEUR:
+        return _identite_de_seance(code)
     return None
 
 
@@ -15071,6 +15375,10 @@ class Handler(http.server.SimpleHTTPRequestHandler):
     def do_GET(self):
         parsed = urllib.parse.urlparse(self.path)
         path = parsed.path
+        # Le chemin, pour la couture des séances : la liste blanche des routes
+        # ouvertes à un participant se lit là. Posé ici et non dans chaque route —
+        # une route neuve doit être fermée au mode séance par défaut.
+        _REQUETE.chemin = path
         params = urllib.parse.parse_qs(parsed.query)
 
         # Sonde de santé Railway : doit rester publique et sans effet de bord.
@@ -15103,6 +15411,12 @@ class Handler(http.server.SimpleHTTPRequestHandler):
             return
         if path == "/api/prof/documents":
             self._handle_documents_list(params)
+            return
+        if path == "/api/prof/seances":
+            self._handle_seances_list(params)
+            return
+        if path == "/api/seance":
+            self._handle_seance_etat(params)
             return
         if path == "/api/materiel":
             self._handle_materiel(params)
@@ -15314,6 +15628,10 @@ class Handler(http.server.SimpleHTTPRequestHandler):
     def do_POST(self):
         parsed = urllib.parse.urlparse(self.path)
         path = parsed.path
+        # Le chemin, pour la couture des séances : la liste blanche des routes
+        # ouvertes à un participant se lit là. Posé ici et non dans chaque route —
+        # une route neuve doit être fermée au mode séance par défaut.
+        _REQUETE.chemin = path
 
         if path == "/api/auth":
             self._handle_auth()
@@ -15353,6 +15671,12 @@ class Handler(http.server.SimpleHTTPRequestHandler):
             self._handle_materiel_visite()
         elif path == "/api/materiel/promotion":
             self._handle_materiel_promotion()
+        elif path == "/api/prof/seances":
+            self._handle_seance_creer()
+        elif path == "/api/prof/seances/fermer":
+            self._handle_seance_fermer()
+        elif path == "/api/seance/entrer":
+            self._handle_seance_entrer()
         elif path == "/api/prof/planification/copier":
             self._handle_schedule_copy()
         elif path == "/api/student/access":
@@ -15421,6 +15745,10 @@ class Handler(http.server.SimpleHTTPRequestHandler):
     def do_PATCH(self):
         parsed = urllib.parse.urlparse(self.path)
         path = parsed.path
+        # Le chemin, pour la couture des séances : la liste blanche des routes
+        # ouvertes à un participant se lit là. Posé ici et non dans chaque route —
+        # une route neuve doit être fermée au mode séance par défaut.
+        _REQUETE.chemin = path
         if re.match(r"^/api/admin/organisations/\d+$", path):
             self._handle_org_update(int(path.rsplit("/", 1)[1]))
             return
@@ -15478,6 +15806,10 @@ class Handler(http.server.SimpleHTTPRequestHandler):
     def do_DELETE(self):
         parsed = urllib.parse.urlparse(self.path)
         path = parsed.path
+        # Le chemin, pour la couture des séances : la liste blanche des routes
+        # ouvertes à un participant se lit là. Posé ici et non dans chaque route —
+        # une route neuve doit être fermée au mode séance par défaut.
+        _REQUETE.chemin = path
 
         if re.match(r"^/api/admin/acces/\d+$", path):
             self._handle_acces_delete(int(path.rsplit("/", 1)[1]))
@@ -15823,6 +16155,8 @@ class Handler(http.server.SimpleHTTPRequestHandler):
         except (ValueError, IndexError):
             json_response(self, {"error": "activityId manquant"}, 400)
             return
+        if not self._garde_activite(student, activity_id):
+            return
         sections = sections_state_for_student(student.get("groupId"), activity_id)
         json_response(self, {
             "activityId": activity_id,
@@ -15907,7 +16241,167 @@ class Handler(http.server.SimpleHTTPRequestHandler):
         save_schedule([e for e in load_schedule() if e.get("activityId") != activity_id])
         json_response(self, {"success": True})
 
+    # ── Séances sans compte élève ─────────────────────────────────────────
+
+    def _seance_publique(self, seance):
+        """Ce qu'on montre d'une séance à l'enseignant. Jamais les jetons :
+        un jeton est un identifiant d'appareil, et l'écran n'en a aucun usage."""
+        return {
+            "id": seance.get("id"),
+            "code": seance.get("code"),
+            "groupId": seance.get("groupId"),
+            "activityId": seance.get("activityId"),
+            "activityTitle": seance.get("activityTitle", ""),
+            "creeeLe": seance.get("creeeLe", ""),
+            "expire": seance.get("expire", ""),
+            "plafond": seance.get("plafond", SEANCE_PLAFOND_DEFAUT),
+            "ouverte": seance_ouverte(seance),
+            "fermeeALaMain": not seance.get("ouverte", True),
+            "participants": len(seance.get("participants", [])),
+        }
+
+    def _handle_seances_list(self, params):
+        teacher = self._require_teacher()
+        if not teacher:
+            return
+        group_id = self._group_from_params(teacher, params)
+        if group_id is None:
+            return
+        seances = [s for s in load_seances() if s.get("groupId") == group_id]
+        seances.sort(key=lambda s: s.get("creeeLe", ""), reverse=True)
+        json_response(self, {"seances": [self._seance_publique(s) for s in seances]})
+
+    @sous_verrou
+    def _handle_seance_creer(self):
+        teacher = self._require_teacher()
+        if not teacher:
+            return
+        body = self._read_json_body()
+        group_id = self._require_group(teacher, body.get("groupId"))
+        if group_id is None:
+            return
+        try:
+            activity_id = int(body.get("activityId"))
+        except (TypeError, ValueError):
+            json_response(self, {"error": "Module manquant"}, 400)
+            return
+        activite = next((a for a in load_activities() if a.get("id") == activity_id),
+                        None)
+        if activite is None:
+            json_response(self, {"error": "Ce module n'existe pas"}, 404)
+            return
+        seance = creer_seance(
+            teacher, group_id, activity_id,
+            titre=body.get("activityTitle") or activite.get("title", ""),
+            jours=body.get("jours", 0),
+            plafond=body.get("plafond", SEANCE_PLAFOND_DEFAUT),
+        )
+        journal(teacher.get("courriel", teacher.get("email", "")),
+                "seance.ouvrir", str(seance["id"]),
+                {"groupe": group_id, "module": activity_id})
+        json_response(self, {"success": True, "seance": self._seance_publique(seance)})
+
+    @sous_verrou
+    def _handle_seance_fermer(self):
+        teacher = self._require_teacher()
+        if not teacher:
+            return
+        body = self._read_json_body()
+        seances = load_seances()
+        seance = next((s for s in seances if s.get("id") == body.get("id")), None)
+        if seance is None:
+            json_response(self, {"error": "Séance introuvable"}, 404)
+            return
+        if self._require_group(teacher, seance.get("groupId")) is None:
+            return
+        seance["ouverte"] = False
+        seance["fermeeLe"] = datetime.now().isoformat(timespec="seconds")
+        save_seances(seances)
+        journal(teacher.get("courriel", teacher.get("email", "")),
+                "seance.fermer", str(seance["id"]))
+        json_response(self, {"success": True, "seance": self._seance_publique(seance)})
+
+    def _handle_seance_etat(self, params):
+        """Ce qu'un appareil peut savoir d'une séance **avant** d'y entrer.
+
+        Volontairement pauvre : le titre du module et la porte, ouverte ou
+        non. Ni le groupe, ni l'enseignant, ni le nombre de participants — un
+        code se recopie, et cette route est la seule du mode qui réponde sans
+        rien exiger.
+        """
+        seance = seance_par_code(params.get("code", [""])[0])
+        if seance is None:
+            json_response(self, {"error": "Ce code n'existe pas."}, 404)
+            return
+        json_response(self, {
+            "ouverte": seance_ouverte(seance),
+            "activityTitle": seance.get("activityTitle", ""),
+        })
+
+    @sous_verrou
+    def _handle_seance_entrer(self):
+        code = (self._read_json_body().get("code") or "").strip().upper()
+        if not self._debit_entree_ok():
+            json_response(self, {
+                "error": "Trop d'essais. Attends une minute, puis réessaie.",
+            }, 429)
+            return
+        participant, seance, erreur = entrer_dans_seance(code)
+        if erreur:
+            json_response(self, {"error": erreur[0]}, erreur[1])
+            return
+        json_response(self, {
+            "success": True,
+            # Le jeton ne sort qu'ici, vers l'appareil qui vient d'entrer, et
+            # ne réapparaît dans aucune autre réponse du serveur.
+            "jeton": participant["jeton"],
+            "numero": participant["numero"],
+            "activityId": seance.get("activityId"),
+            "activityTitle": seance.get("activityTitle", ""),
+        })
+
+    # Un code de séance est court et se recopie ; il finira par circuler. La
+    # borne est par adresse et par minute, sur les seules **entrées** : une
+    # fois dedans, un participant est borné par le plafond de la séance.
+    _ENTREES = {}
+    _VERROU_ENTREES = threading.Lock()
+
+    def _debit_entree_ok(self, maxi=20, fenetre=60):
+        hote = self.client_address[0]
+        maintenant = time.time()
+        with Handler._VERROU_ENTREES:
+            essais = [t for t in Handler._ENTREES.get(hote, [])
+                      if maintenant - t < fenetre]
+            # Le ménage porte sur tout le tableau, pas sur la seule adresse
+            # courante : sans ça, une adresse vue une fois y resterait pour la
+            # vie du processus.
+            for adresse in list(Handler._ENTREES):
+                Handler._ENTREES[adresse] = [
+                    t for t in Handler._ENTREES[adresse] if maintenant - t < fenetre]
+                if not Handler._ENTREES[adresse]:
+                    del Handler._ENTREES[adresse]
+            if len(essais) >= maxi:
+                Handler._ENTREES[hote] = essais
+                return False
+            essais.append(maintenant)
+            Handler._ENTREES[hote] = essais
+            return True
+
     # ── Comptes enseignants ───────────────────────────────────────────────
+
+    def _garde_activite(self, identite, activity_id):
+        """Refuse un participant de séance qui vise un autre module que le sien.
+
+        Rend True quand la route peut continuer. Le 403 est écrit pour l'élève :
+        il arrive sur un lien qui n'est pas celui de sa feuille, ce n'est pas
+        une erreur de sa part.
+        """
+        if activite_de_la_seance(identite, activity_id):
+            return True
+        json_response(self, {
+            "error": "Ce code ouvre un seul module, et ce n'est pas celui-ci.",
+        }, 403)
+        return False
 
     def _read_json_body(self):
         length = int(self.headers.get("Content-Length", 0))
@@ -18342,6 +18836,8 @@ class Handler(http.server.SimpleHTTPRequestHandler):
         if not student:
             json_response(self, {"error": "Non autorisé"}, 401)
             return
+        if not self._garde_activite(student, body.get("activityId")):
+            return
         log = load_access_log()
         entry = {
             "studentId": student["id"],
@@ -19457,7 +19953,16 @@ class Handler(http.server.SimpleHTTPRequestHandler):
         record = {
             "id": uuid.uuid4().hex,
             "studentId": student["id"],
-            "studentCode": code,
+            # Le jeton d'un participant de séance n'est pas un code d'élève :
+            # c'est ce qui l'authentifie. Il ne s'écrit donc nulle part, pas
+            # plus qu'un mot de passe — et le dépôt anonyme n'a de toute façon
+            # rien à rattacher, puisqu'il n'y a pas de dossier au bout.
+            "studentCode": "" if student.get("anonyme") else code,
+            # Le nom affiché est écrit dans le dépôt, et non déduit du dossier
+            # au moment de l'afficher : un participant de séance n'a pas de
+            # dossier, et sa production serait arrivée sans nom du tout.
+            "studentLabel": student.get("label", ""),
+            "seanceId": student.get("seanceId"),
             "groupId": student.get("groupId"),
             "prenom": student.get("prenom", ""),
             "theme": str(body.get("theme", ""))[:80],
@@ -20013,6 +20518,8 @@ class Handler(http.server.SimpleHTTPRequestHandler):
         student = validate_student_code(code)
         if not student:
             json_response(self, {"error": "Non autorisé"}, 401)
+            return
+        if not self._garde_activite(student, body.get("activityId")):
             return
         event = body.get("event", "")
         if (event not in ALLOWED_EVENTS and event not in SIGNAUX_AIDE
