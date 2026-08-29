@@ -36,9 +36,15 @@ function bloc(h, nom) {
 function charger(slug) {
   const h = fs.readFileSync(`assets/interactive/${slug}/${slug}-activite-interactive.html`, 'utf8');
   let src = '';
-  for (const n of ['FC_CARDS', 'CARRIER_PHRASES', 'EXOS'])
+  for (const n of ['FC_CARDS', 'CARRIER_PHRASES', 'EXOS', 'SECTIONS'])
     src += `const ${n} = ${bloc(h, n) || '[]'};\n`;
-  return new Function(src + '; return EXOS;')();
+  src += `const DIALOGUES = ${bloc(h, 'DIALOGUES') || '{}'};\n`;
+  // `reste` sert au contrôle des noms de personnages : le nom peut vivre dans
+  // le vocabulaire, une mise en situation ou un bloc custom, hors des EXOS.
+  const reste = h.replace(/<script[\s\S]*?<\/script>/g, m => m.length > 60000 ? '' : m);
+  return Object.assign(
+    new Function(src + '; return {EXOS, SECTIONS, DIALOGUES};')(),
+    { reste: reste + JSON.stringify(bloc(h, 'FC_CARDS') || '') });
 }
 
 // ── la décision du moteur pour un item écrit, reproduite par appel ────
@@ -66,7 +72,8 @@ const slugs = fs.readdirSync('assets/interactive').filter(d => d.startsWith('mod
   .filter(s => !filtre || s.includes(filtre)).sort();
 let nMod = 0, nItems = 0, nEcarts = 0;
 for (const slug of slugs) {
-  let EXOS; try { EXOS = charger(slug); } catch (e) { console.log(`✗ ${slug} — illisible : ${e.message.slice(0, 60)}`); nEcarts++; continue; }
+  let EXOS;
+  try { ({ EXOS } = charger(slug)); } catch (e) { console.log(`✗ ${slug} — illisible : ${e.message.slice(0, 60)}`); nEcarts++; continue; }
   const ecarts = [];
   for (const ex of EXOS) {
     if (ex.type === 'write') for (const [i, it] of (ex.items || []).entries()) {
@@ -80,6 +87,46 @@ for (const slug of slugs) {
         ecarts.push(`${ex.id} ligne ${r.id} : la bonne réponse « ${r.ok} » n'est pas une des tuiles`);
     }
   }
+
+  // ── Trois motifs relevés par l'audit de contenu du 28 août 2026, ramenés
+  //    ici pour qu'ils ne se reperdent pas. Chacun est mécanique : il ne
+  //    demande aucun jugement, seulement de comparer le module à lui-même.
+
+  // 1. Deux trous, une seule case. `blankify` affiche tous les `___`, mais le
+  //    moteur ne crée qu'un `<input>` par item (wi_<exo>_<i>). L'élève voit
+  //    deux blancs et n'a qu'un champ : l'item est injouable. 66 items dans
+  //    11 modules le jour du relevé, dont 44 dans des modules que les agents
+  //    n'avaient pas lus — c'est le défaut le plus répandu du cours, et ni le
+  //    build ni la console ne le voyaient.
+  for (const ex of EXOS) {
+    if (ex.type !== 'write') continue;
+    for (const [i, it] of (ex.items || []).entries()) {
+      const trous = String(it.q || '').match(/_{3,}/g);
+      if (trous && trous.length > 1)
+        ecarts.push(`${ex.id} item ${i + 1} : ${trous.length} trous, une seule case de saisie`);
+    }
+  }
+
+  // 2. L'exercice qui n'en est pas un. Quand toutes les lignes d'un `vf`
+  //    portent la même bonne réponse, la tuile opposée est inatteignable :
+  //    l'élève clique huit fois le même bouton et « réussit ». Trouvé dans
+  //    module-activite, et le même patron copié dans deux autres modules.
+  for (const ex of EXOS) {
+    if (ex.type !== 'vf' || !ex.rows || ex.rows.length < 3) continue;
+    const rep = new Set(ex.rows.map(r => r.ok));
+    if (rep.size === 1)
+      ecarts.push(`${ex.id} : les ${ex.rows.length} lignes ont la même bonne réponse « ${[...rep][0]} » — l'autre tuile est inatteignable`);
+  }
+
+  // 3. « Deux noms pour un personnage » (CLAUDETTE aux dialogues, madame Leduc
+  //    partout ailleurs) N'EST PAS ici, et c'est délibéré. Deux tentatives le
+  //    28 août 2026 : chercher le nom dans le HTML brut ne déclenche jamais,
+  //    le HTML contenant les dialogues eux-mêmes ; le chercher dans EXOS et
+  //    SECTIONS ne déclenche pas davantage sur le cas connu. Un contrôle qui
+  //    ne trouve pas le défaut qu'on lui a montré donne une fausse assurance —
+  //    il vaut mieux pas de contrôle. À reprendre en cherchant d'où vient la
+  //    correspondance, plutôt qu'en élargissant le témoin au hasard.
+
   nMod++;
   if (ecarts.length) { nEcarts += ecarts.length; console.log(`✗ ${slug} — ${ecarts.length} écart(s)`); ecarts.forEach(e => console.log('    ' + e)); }
 }
