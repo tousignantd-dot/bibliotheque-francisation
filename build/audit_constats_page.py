@@ -98,6 +98,11 @@ details{margin-top:8px}summary{cursor:pointer;font-size:13px;color:var(--doux)}
 details p{font-size:14px;color:var(--doux);margin-top:6px}
 .act{display:flex;gap:6px;margin-top:12px;flex-wrap:wrap}
 .act button{font-size:12.5px}
+.act.voir{margin-top:10px;align-items:center}
+.lien{font-size:12.5px;padding:6px 10px;border:1px solid var(--trait);border-radius:7px;
+      background:var(--carte);color:var(--vedette);text-decoration:none}
+.lien:hover{border-color:var(--vedette)}
+.aide{font-size:12px;color:var(--doux)}
 .act button[aria-pressed=true]{background:var(--encre);color:var(--fond);border-color:var(--encre)}
 .vide{color:var(--doux);text-align:center;padding:40px}
 textarea{width:100%%;height:180px;font-family:ui-monospace,monospace;font-size:12px;
@@ -154,6 +159,13 @@ function carte(c) {
     <div class="lbl">Le problème — ${esc(LIB[c.categorie] || c.categorie)}</div><p>${esc(c.probleme)}</p>
     <div class="lbl">Correction proposée</div><p>${esc(c.correction)}</p>
     ${c.motifSceptique ? `<details><summary>Ce qu'en dit le sceptique</summary><p>${esc(c.motifSceptique)}</p></details>` : ''}
+    <div class="act voir">
+      <a class="lien" href="/assets/interactive/${c.module}/${c.module}-activite-interactive.html"
+         target="_blank" rel="noopener">Ouvrir le module ↗</a>
+      <a class="lien" href="/${esc(c.fichier.split(':')[0])}" target="_blank" rel="noopener">Ouvrir le fichier ↗</a>
+      <button class="cit-copie" data-cit="${esc(c.citation).replace(/"/g,'&quot;')}">Copier la citation</button>
+      <span class="aide">— puis ⌘F dans le fichier</span>
+    </div>
     <div class="act">${b('corriger', '✓ À corriger')}${b('rejeter', '✕ Rejeter')}${b('plus-tard', '⏳ Plus tard')}</div>
   </article>`;
 }
@@ -169,7 +181,19 @@ function rendre() {
   cpt.textContent = `${vus.length} affichés · ${juges} jugés sur ${CONSTATS.length}`;
 }
 
-liste.addEventListener('click', ev => {
+// Le chemin porte une ligne, mais un fichier servi en texte brut n'a pas
+// d'ancre : le plus court chemin vers l'endroit exact, c'est la citation dans
+// le presse-papiers et un ⌘F. C'est aussi ce qui permet de VÉRIFIER que la
+// citation existe vraiment — un constat dont la citation est introuvable est
+// un constat à rejeter.
+liste.addEventListener('click', async ev => {
+  const cc = ev.target.closest('.cit-copie');
+  if (cc) {
+    try { await navigator.clipboard.writeText(cc.dataset.cit); cc.textContent = 'Citation copiée'; }
+    catch (e) { cc.textContent = 'Copie refusée'; }
+    setTimeout(() => cc.textContent = 'Copier la citation', 1600);
+    return;
+  }
   const b = ev.target.closest('button[data-id]'); if (!b) return;
   const id = b.dataset.id, v = b.dataset.v;
   if (D[id] === v) delete D[id]; else D[id] = v;
