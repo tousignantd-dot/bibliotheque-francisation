@@ -10,12 +10,19 @@ dialogue sortent à leur débit d'origine. C'est un compromis figé — trop len
 pour l'élève de mars, trop rapide pour celui de septembre, et personne ne peut
 rien y faire pendant l'écoute.
 
-Cette greffe rend le débit réglable *à la lecture*, sans toucher aux fichiers
-et sans un octet de synthèse en plus : `playbackRate` sur l'élément `Audio`,
-avec `preservesPitch` pour que la voix ne descende pas dans les graves. Trois
-crans — normal, lent, très lent — dans un bouton de l'en-tête, à côté de
-« Réinitialiser ». Le choix est gardé dans `localStorage` et vaut pour tous
-les modules : l'élève qui a besoin de lent en a besoin partout.
+Cette greffe rend le débit réglable *à la lecture*, sans un octet de synthèse
+en plus. Trois crans — normal, lent, très lent — dans un bouton de l'en-tête,
+à côté de « Réinitialiser ». Le choix est gardé dans `localStorage` et vaut
+pour tous les modules : l'élève qui a besoin de lent en a besoin partout.
+
+Le ralenti se prend dans un **fichier produit d'avance** par
+`build/audio_lent.py` (`<nom>.lent.mp3`, `<nom>.tres-lent.mp3`). La première
+version demandait au navigateur d'étirer le son en direct — `playbackRate`
+plus `preservesPitch` — et à 0,65 la voix en ressortait métallique et
+tremblée : pour garder la hauteur, Chrome recolle des morceaux d'onde en
+temps réel avec un budget de calcul minuscule. `atempo` de ffmpeg fait le même
+travail hors ligne, sans artefact. L'étirement en direct reste comme repli,
+pour les fichiers dont la variante n'existe pas encore.
 
 Les six points de lecture sont touchés ensemble — les répliques de dialogue,
 les pastilles de mots, la voix du jeu de rôle, et les trois replis en synthèse
@@ -30,6 +37,7 @@ build.
 import argparse
 import glob
 import io
+import re
 import sys
 
 MODULES = "assets/interactive/module-*/module-*-activite-interactive.html"
@@ -64,20 +72,54 @@ JS = """/* VITESSE-VOIX:début — greffé par build/greffe_vitesse.py */
    l'élève d'un module à l'autre : celui qui a besoin de lent en a besoin
    partout. */
 const VIT_CRANS = [
-  {v:1,    lbl:'Débit normal'},
-  {v:0.8,  lbl:'Débit lent'},
-  {v:0.65, lbl:'Débit très lent'},
+  {v:1,    suf:'',            lbl:'Débit normal'},
+  {v:0.8,  suf:'.lent',       lbl:'Débit lent'},
+  {v:0.65, suf:'.tres-lent',  lbl:'Débit très lent'},
 ];
+/* Les suffixes sont ceux de `build/audio_lent.py` : les changer d'un côté
+   sans l'autre fait demander au bouton des fichiers qui n'existent pas. */
+const vitSansVariante = new Set();
+function vitUrlLente(url){
+  const suf = VIT_CRANS[vitCran].suf;
+  if(!suf || vitSansVariante.has(url)) return null;
+  const lente = url.replace(/\.mp3(\?|$)/, suf + '.mp3$1');
+  return lente === url ? null : lente;
+}
 let vitCran = 0;
 try{ vitCran = Math.min(2, Math.max(0, parseInt(localStorage.getItem('saaf-vitesse'),10) || 0)); }catch(e){}
 const vitFacteur = ()=> VIT_CRANS[vitCran].v;
-/* Le facteur d'un `Audio`, posé à la création — et reposé sur celui qui joue
-   déjà, pour que le réglage s'entende tout de suite plutôt qu'au prochain
-   extrait. */
+/* Le ralenti se prend d'abord dans un fichier produit d'avance par `atempo`
+   (build/audio_lent.py). L'étirement en direct par le navigateur ne sert plus
+   que de repli : à 0,65 il rend la voix métallique et tremblée, parce que
+   Chrome recolle les morceaux d'onde en temps réel, avec un budget de calcul
+   minuscule. Hors ligne, ffmpeg a tout le temps qu'il faut.
+
+   Si la variante manque — un module dont les fichiers ne sont pas encore
+   produits — l'erreur de chargement ramène l'original et l'ancien
+   comportement, sans que l'élève entende un silence. */
+function vitEtirer(a){
+  try{ a.preservesPitch = a.mozPreservesPitch = a.webkitPreservesPitch = true; }catch(e){}
+  /* `defaultPlaybackRate` en plus de `playbackRate` : un `load()` remet le
+     second à la valeur du premier, et le repli sortirait à vitesse normale. */
+  try{ a.defaultPlaybackRate = a.playbackRate = vitFacteur(); }catch(e){}
+}
 function vitAudio(a){
   if(!a) return a;
-  try{ a.preservesPitch = a.mozPreservesPitch = a.webkitPreservesPitch = true; }catch(e){}
-  try{ a.playbackRate = vitFacteur(); }catch(e){}
+  const original = a.getAttribute('src') || a.src || '';
+  const lente = vitUrlLente(original);
+  if(!lente){ vitEtirer(a); return a; }
+  a.dataset.vitOriginal = original;
+  a.addEventListener('error', function repli(){
+    if(a.dataset.vitRepli) return;
+    a.dataset.vitRepli = '1';
+    vitSansVariante.add(original);
+    a.src = original;
+    a.load();
+    vitEtirer(a);
+    a.play().catch(()=>{});
+  }, {once:true});
+  a.src = lente;
+  try{ a.playbackRate = 1; }catch(e){}
   return a;
 }
 /* Les replis en synthèse vocale ont leur propre échelle de débit : le facteur
@@ -87,8 +129,8 @@ const vitTaux = base => Math.max(0.1, base * vitFacteur());
 function vitAppliquer(){
   const b = document.getElementById('btn-vitesse');
   if(b){ b.textContent = VIT_CRANS[vitCran].lbl; b.setAttribute('data-cran', String(vitCran)); }
-  if(typeof dlgAudio !== 'undefined' && dlgAudio) vitAudio(dlgAudio);
-  if(typeof jrAudio !== 'undefined' && jrAudio) vitAudio(jrAudio);
+  /* Rien n'est reposé sur l'extrait en cours : changer de fichier en pleine
+     phrase la couperait. Le nouveau cran vaut au prochain extrait. */
 }
 document.addEventListener('DOMContentLoaded', ()=>{
   const b = document.getElementById('btn-vitesse');
@@ -144,15 +186,29 @@ def poser(chemin):
     return nom, True
 
 
+# Le retrait se fait **d'un marqueur à l'autre**, jamais par chaîne exacte.
+# La première version remplaçait `CSS_ANCRE + bloc` par `CSS_ANCRE` : le jour
+# où une autre greffe (« REPRISE-CSS ») s'est glissée entre l'ancre et le bloc,
+# la chaîne n'a plus correspondu, le retrait a échoué sans le dire, et la pose
+# suivante a vu le marqueur et tout sauté — 77 modules sont restés sans bouton.
+REGIONS = (
+    re.compile(r"\n?[ \t]*<!-- VITESSE-VOIX:début.*?<!-- VITESSE-VOIX:fin -->", re.S),
+    re.compile(r"\n?/\* VITESSE-VOIX:début.*?/\* VITESSE-VOIX:fin \*/", re.S),
+)
+
+
 def retirer(chemin):
     s = io.open(chemin, encoding="utf-8").read()
     nom = chemin.split("/")[-2] if "/module-" in chemin else "gabarit"
-    if DEBUT not in s:
+    if DEBUT not in s and "<!-- VITESSE-VOIX:début" not in s:
         return nom, False
-    for apres, avant in ((CSS, CSS_ANCRE), (HTML, HTML_ANCRE), (JS, JS_ANCRE)):
-        s = s.replace(apres, avant, 1)
+    for motif in REGIONS:
+        s = motif.sub("", s)
     for avant, apres in POINTS:
         s = s.replace(apres, avant, 1)
+    if "VITESSE-VOIX" in s:
+        print("   !! %s : marqueur restant après retrait, rien écrit" % nom)
+        return nom, False
     io.open(chemin, "w", encoding="utf-8").write(s)
     return nom, True
 
