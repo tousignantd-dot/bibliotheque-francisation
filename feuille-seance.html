@@ -1,0 +1,221 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>francis — Feuille de séance</title>
+  <link rel="icon" type="image/svg+xml" href="assets/design-system/marque-francis-favicon.svg" />
+  <style>
+    /* Feuille de séance — conçue pour la photocopieuse de l'école.
+       Format lettre, **aucune couleur** : la hiérarchie passe par la graisse,
+       les filets et les mots. Aucun aplat foncé — il vide une cartouche et
+       ressort illisible. Les gris sont assombris d'un cran, une photocopieuse
+       effaçant tout ce qui est plus clair que 15 % de noir. */
+    :root {
+      --encre: #000000;
+      --gris: #444444;
+      --filet: #000000;
+      --papier: #FFFFFF;
+      --serif: Georgia, "Times New Roman", serif;
+      --sans: "Helvetica Neue", Arial, sans-serif;
+    }
+    * { box-sizing: border-box; }
+    body {
+      margin: 0; background: #EDEDED; color: var(--encre);
+      font-family: var(--sans); -webkit-print-color-adjust: exact;
+    }
+
+    /* La barre d'écran : elle n'existe qu'avant l'impression. */
+    .ecran {
+      display: flex; gap: 12px; align-items: center; flex-wrap: wrap;
+      padding: 14px 20px; background: #FFFFFF; border-bottom: 1px solid #CCCCCC;
+      font-size: 14px;
+    }
+    .ecran b { font-size: 15px; }
+    .ecran button {
+      font: inherit; font-weight: 700; padding: 8px 16px; cursor: pointer;
+      background: #000000; color: #FFFFFF; border: 0; border-radius: 6px;
+    }
+    .ecran .note { color: #555555; }
+    .ecran .erreur { color: #A00000; font-weight: 700; }
+
+    .feuille {
+      width: 8.5in; min-height: 11in; margin: 24px auto; padding: 0.85in 0.9in;
+      background: var(--papier);
+      box-shadow: 0 2px 12px rgba(0, 0, 0, .18);
+      display: flex; flex-direction: column;
+    }
+
+    .titre {
+      font-family: var(--serif); font-size: 34pt; font-weight: 700;
+      line-height: 1.1; margin: 0 0 6pt; letter-spacing: -.01em;
+    }
+    .surtitre {
+      font-size: 10pt; font-weight: 700; letter-spacing: .18em;
+      text-transform: uppercase; margin: 0 0 14pt;
+    }
+    .filet { border: 0; border-top: 3px solid var(--filet); margin: 0 0 22pt; }
+    .filet-fin { border: 0; border-top: 1px solid var(--filet); margin: 22pt 0; }
+
+    /* Le carré et le code, côte à côte : ce sont les deux seules façons
+       d'entrer, et elles doivent se voir d'un même regard. */
+    .entree { display: flex; gap: 34pt; align-items: flex-start; }
+    .carre { flex: none; }
+    .carre svg { display: block; width: 2.6in; height: 2.6in; }
+    .carre figcaption {
+      margin-top: 8pt; font-size: 10pt; font-weight: 700; text-align: center;
+      max-width: 2.6in;
+    }
+    .cote { flex: 1; min-width: 0; }
+
+    .etiquette {
+      font-size: 10pt; font-weight: 700; letter-spacing: .14em;
+      text-transform: uppercase; margin: 0 0 4pt;
+    }
+    /* Le code : la seule chose qu'on recopie à la main. Espacé, en chiffres
+       tabulaires, dans un cadre — pour qu'on le relise caractère par
+       caractère sans perdre sa place. */
+    .code {
+      font-family: var(--serif); font-size: 40pt; font-weight: 700;
+      letter-spacing: .16em; padding: 10pt 14pt; margin: 0 0 18pt;
+      border: 3px solid var(--filet); display: inline-block;
+      font-variant-numeric: tabular-nums;
+    }
+    .adresse {
+      font-size: 15pt; font-weight: 700; word-break: break-all; margin: 0 0 4pt;
+    }
+    .adresse-note { font-size: 10pt; color: var(--gris); margin: 0; }
+
+    .marche { margin: 26pt 0 0; padding: 0; list-style: none; counter-reset: e; }
+    .marche li {
+      counter-increment: e; display: flex; gap: 12pt; align-items: baseline;
+      margin-bottom: 10pt; font-size: 13pt;
+    }
+    .marche li::before {
+      content: counter(e); flex: none; width: 22pt; height: 22pt;
+      border: 2px solid var(--filet); border-radius: 50%;
+      font-size: 11pt; font-weight: 700; text-align: center; line-height: 19pt;
+    }
+
+    .pied { margin-top: auto; padding-top: 18pt; }
+    .pied-ligne {
+      display: flex; justify-content: space-between; gap: 18pt;
+      font-size: 9.5pt; color: var(--gris); flex-wrap: wrap;
+    }
+    .pied-ligne b { color: var(--encre); }
+    /* La marque, en noir : le point du « i » est le seul signe, et il tient
+       en noir aussi bien qu'en violet. */
+    .marque { font-weight: 800; font-size: 12pt; letter-spacing: -.03em; }
+    .marque i { font-style: normal; position: relative; }
+    .marque i::after {
+      content: ""; position: absolute; left: 1px; top: 2px;
+      width: 4px; height: 4px; border-radius: 50%; background: var(--encre);
+    }
+
+    @media print {
+      body { background: #FFFFFF; }
+      .ecran { display: none; }
+      .feuille { width: auto; min-height: 0; margin: 0; padding: 0;
+                 box-shadow: none; }
+      @page { size: letter; margin: 0.75in; }
+    }
+  </style>
+</head>
+<body>
+
+<div class="ecran">
+  <b>Feuille de séance</b>
+  <button id="btnImprimer">Imprimer</button>
+  <span class="note">Format lettre, noir et blanc. Une feuille par groupe.</span>
+  <span class="erreur" id="erreur" hidden></span>
+</div>
+
+<div class="feuille" id="feuille" hidden>
+  <p class="surtitre" id="surtitre">Séance de classe</p>
+  <h1 class="titre" id="titre">L'activité</h1>
+  <hr class="filet" />
+
+  <div class="entree">
+    <figure class="carre" id="carre">
+      <figcaption>Vise ce carré avec l'appareil photo.</figcaption>
+    </figure>
+    <div class="cote">
+      <p class="etiquette">Ou écris ce code</p>
+      <p class="code" id="code">------</p>
+      <p class="etiquette">à cette adresse</p>
+      <p class="adresse" id="adresse">exemple.ca/s</p>
+      <p class="adresse-note">Sans espace. Les lettres sont des majuscules.</p>
+    </div>
+  </div>
+
+  <ol class="marche">
+    <li>Ouvre l'appareil photo de ton téléphone.</li>
+    <li>Vise le carré. Touche le lien qui apparaît.</li>
+    <li>Fais l'activité. Tes réponses partent toutes seules.</li>
+  </ol>
+
+  <hr class="filet-fin" />
+  <p style="font-size:12pt;margin:0"><b>Tu n'as pas besoin de compte, et tu
+  n'écris pas ton nom.</b> Personne ne saura quelles réponses sont les tiennes.</p>
+
+  <div class="pied">
+    <hr class="filet-fin" />
+    <div class="pied-ligne">
+      <span><span class="marque">franc<i>ı</i>s</span> — aide à l'apprentissage du français</span>
+      <span id="pied-groupe"></span>
+    </div>
+  </div>
+</div>
+
+<script>
+(function () {
+  'use strict';
+  var code = new URLSearchParams(location.search).get('code') || '';
+  // La même clé que `js/prof.js` : cette page s'ouvre depuis le portail
+  // enseignant, dans un onglet à part, et hérite donc de sa session.
+  var jeton = '';
+  try { jeton = localStorage.getItem('prof_token') || ''; } catch (e) {}
+
+  function erreur(texte) {
+    var el = document.getElementById('erreur');
+    el.textContent = texte;
+    el.hidden = false;
+  }
+
+  if (!code) { erreur('Aucun code de séance dans l’adresse.'); return; }
+
+  fetch('/api/prof/seances/feuille?code=' + encodeURIComponent(code),
+        {headers: jeton ? {'X-Prof-Token': jeton} : {}})
+    .then(function (r) {
+      return r.json().then(function (d) { return {ok: r.ok, d: d}; });
+    })
+    .then(function (rep) {
+      if (!rep.ok) {
+        erreur(rep.d.error || 'Feuille indisponible.');
+        return;
+      }
+      var d = rep.d;
+      document.getElementById('titre').textContent = d.activityTitle || 'L’activité';
+      document.getElementById('code').textContent = d.code;
+      document.getElementById('adresse').textContent = d.adresseCourte;
+      document.getElementById('carre').insertAdjacentHTML('afterbegin', d.qr || '');
+      if (!d.qr) {
+        document.querySelector('#carre figcaption').textContent =
+          'Écris l’adresse et le code ci-contre.';
+      }
+      var pied = [];
+      if (d.groupe) pied.push(d.groupe);
+      if (d.expire) pied.push('valable le ' + d.expire);
+      document.getElementById('pied-groupe').textContent = pied.join(' · ');
+      document.getElementById('feuille').hidden = false;
+      if (!d.ouverte) erreur('Cette séance est fermée : le code ne marchera pas.');
+    })
+    .catch(function () { erreur('La connexion au serveur a échoué.'); });
+
+  document.getElementById('btnImprimer').addEventListener('click', function () {
+    window.print();
+  });
+})();
+</script>
+</body>
+</html>

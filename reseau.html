@@ -95,7 +95,7 @@
                    border: 1px solid var(--warn-line); }
     .rs-ia--non { background: var(--surface-sunken); color: var(--text-strong);
                   border: 1px solid var(--text-strong); }
-    /* Les trois drapeaux tiennent sur une ligne qui se replie, et non dans
+    /* Les drapeaux tiennent sur une ligne qui se replie, et non dans
        trois coins de la carte : ils répondent à une seule question — qu'est-ce
        qui s'applique ici. */
     .rs-drapeaux { display: flex; align-items: baseline; gap: var(--sp-2);
@@ -274,10 +274,16 @@
       return '<div class="rs-tuile"><b>' + n + '</b><span>' + ech(mot) + '</span></div>';
     }
 
-    /* Trois drapeaux, trois flux, et ils ne se déduisent pas l'un de l'autre :
-       ce qu'un élève peut demander à l'assistant, où part sa voix pendant
-       qu'il parle, et ce qu'on garde de ce qu'il a dit. Une direction qui
-       coupe l'assistant n'a rien dit sur les deux autres.
+    /* Quatre drapeaux, quatre décisions, et elles ne se déduisent pas l'une
+       de l'autre : ce qu'un élève peut demander à l'assistant, où part sa
+       voix pendant qu'il parle, ce qu'on garde de ce qu'il a dit, et si une
+       classe peut travailler **sans compte du tout**. Une direction qui coupe
+       l'assistant n'a rien dit sur les trois autres.
+
+       Le quatrième est d'une autre nature que les trois premiers, et c'est
+       voulu qu'il siège ici quand même : les trois premiers décident de ce
+       qui sort de l'école, le dernier décide de ce que l'école accepte de ne
+       pas savoir de ses élèves. C'est la même autorité, et la même page.
 
        Tous se règlent sur le même écran parce qu'ils répondent à la même
        question — qu'est-ce qui sort d'ici, et qu'est-ce qui reste. Les
@@ -286,6 +292,7 @@
        Le ton du badge décrit l'état, pas sa vertu : `oui` = le flux est
        ouvert, `non` = il est fermé, `part` = entre les deux. Un micro
        confiné porte donc le badge sombre, et c'est le réglage prudent. */
+    var NOMBRES = ['zéro', 'un', 'deux', 'trois', 'quatre', 'cinq', 'six'];
     var DRAPEAUX = [
       { cle: 'ia', libelle: 'Aide de l\'assistant',
         effectif: 'iaEffective', source: 'iaDecidePar', defaut: 'autorisee',
@@ -299,7 +306,11 @@
         effectif: 'depotEffectif', source: 'depotDecidePar', defaut: 'complet',
         etats: [['complet', 'Voix conservée', 'oui'],
                 ['transcription', 'Transcription seule', 'part'],
-                ['ferme', 'Dépôt fermé', 'non']] }
+                ['ferme', 'Dépôt fermé', 'non']] },
+      { cle: 'seance', libelle: 'Classe sans compte élève',
+        effectif: 'seanceEffective', source: 'seanceDecidePar', defaut: 'autorisee',
+        etats: [['autorisee', 'Séances permises', 'oui'],
+                ['interdite', 'Séances interdites', 'non']] }
     ];
 
     /* L'état posé sur le nœud (« hérité », « autorisée », « interdite ») et
@@ -321,8 +332,8 @@
         };
       });
 
-      /* Trois « hérité de Réseau » à la file diraient trois fois la même
-         chose. Quand les trois viennent du même endroit, on l'écrit une
+      /* Plusieurs « hérité de Réseau » à la file diraient la même
+         chose. Quand ils viennent tous du même endroit, on l'écrit une
          fois ; quand ils divergent, chacun se nomme — c'est justement le
          cas où la question se pose. */
       var sources = vus.map(function (v) { return v.source; });
@@ -370,7 +381,10 @@
       if (org.type === 'reseau') gestes.push(['ouvrir-css', 'Ouvrir un CSS']);
       if (org.type === 'css') gestes.push(['ouvrir-centre', 'Ouvrir un centre']);
       if (org.type !== 'reseau') gestes.push(['renommer', 'Renommer']);
-      gestes.push(['regler', 'Régler les trois drapeaux']);
+      /* Le compte se lit sur la table, il ne s'écrit pas dans le libellé :
+         un quatrième drapeau ajouté sans toucher à cette ligne l'aurait fait
+         mentir, et c'est arrivé. */
+      gestes.push(['regler', 'Régler les ' + NOMBRES[DRAPEAUX.length] + ' drapeaux']);
       if (org.type === 'centre') gestes.push(['poser-acces', 'Poser un accès']);
       if (gestes.length) {
         li += '<div class="rs-actions">' + gestes.map(function (g) {

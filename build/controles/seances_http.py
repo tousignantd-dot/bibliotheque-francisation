@@ -189,6 +189,46 @@ try:
     verifie("code inconnu : 404", st == 404, str(st))
 
 
+
+    print("\n— La feuille à imprimer —")
+    st, r = appel("GET", "/api/prof/seances/feuille?code=" + CODE)
+    verifie("sans session enseignante : refusé", st == 401, str(st))
+    st, r = appel("GET", "/api/prof/seances/feuille?code=ZZZZZZ", jeton=JETON)
+    verifie("code inconnu : 404", st == 404, str(st))
+    st, r = appel("GET", "/api/prof/seances/feuille?code=" + CODE, jeton=JETON)
+    verifie("la feuille est servie", st == 200, str(r)[:160])
+    verifie("elle porte le code", r.get("code") == CODE, str(r.get("code")))
+    verifie("et le nom du groupe", r.get("groupe") == "Niveau 4 — matin",
+            str(r.get("groupe")))
+    verifie("l'adresse courte n'a pas de protocole",
+            "://" not in r.get("adresseCourte", "://"), str(r.get("adresseCourte")))
+    verifie("elle finit par l'adresse courte de la séance",
+            r.get("adresseCourte", "").endswith("/s/" + CODE),
+            str(r.get("adresseCourte")))
+    verifie("le carré est un SVG", r.get("qr", "").startswith("<svg"),
+            r.get("qr", "")[:40])
+    verifie("le carré ne va chercher aucune image ailleurs",
+            "http" not in r.get("qr", "").replace(
+                'xmlns="http://www.w3.org/2000/svg"', ""))
+
+    # Aucun nom de domaine n'est écrit dans le code : l'adresse imprimée est
+    # celle par laquelle le navigateur est arrivé. C'est ce qui fera qu'un
+    # domaine acheté plus tard n'obligera à toucher à rien.
+    req = urllib.request.Request(
+        BASE + "/api/prof/seances/feuille?code=" + CODE,
+        headers={"X-Prof-Token": JETON, "Host": "francis.quebec",
+                 "X-Forwarded-Proto": "https"})
+    with urllib.request.urlopen(req, timeout=10) as rep:
+        feuille = json.loads(rep.read())
+    verifie("l'adresse suit l'hôte de la requête",
+            feuille["adresse"] == "https://francis.quebec/s/" + CODE,
+            feuille["adresse"])
+    with urllib.request.urlopen(BASE + "/feuille-seance.html", timeout=10) as rep:
+        page = rep.read().decode()
+    verifie("la page de la feuille est servie", "Vise ce carré" in page)
+    verifie("elle s'imprime sans couleur",
+            "@page" in page and "size: letter" in page)
+
     print("\n— L'adresse courte et la page d'entrée —")
     req = urllib.request.Request(BASE + "/s/" + CODE, method="GET")
     class SansSuivi(urllib.request.HTTPRedirectHandler):

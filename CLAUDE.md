@@ -2731,6 +2731,38 @@ toucher à rien.
   `retour` est là, le viewer **navigue** au lieu de fermer l'onglet — une
   séance s'ouvre dans le même onglet, et le fermer emporterait tout.
 
+**La feuille imprimable.** `feuille-seance.html?code=…` (ouverte depuis le
+bouton « Séance sans compte » du portail enseignant) tire tout de
+`GET /api/prof/seances/feuille`. Format lettre, **aucune couleur** — c'est la
+photocopieuse de l'école qui la tire : la hiérarchie passe par la graisse et
+les filets, et le code est encadré, espacé, en chiffres tabulaires, parce que
+c'est la seule chose qu'on recopie à la main.
+
+- **Le code QR est fabriqué ici** (`qr.py`, bibliothèque standard, rendu en
+  SVG). Pas de service tiers : envoyer l'adresse d'une classe se faire dessiner
+  ailleurs serait un accroc gratuit à la Loi 25, sur le seul mode du portail
+  qui ne collecte rien — et une image distante manquante, le matin d'un cours,
+  laisse un trou au milieu de la feuille. Mode octet, correction **niveau Q**
+  (le seul qui survive à une photocopie de photocopie), versions 1 à 10.
+- **Aucun nom de domaine n'est écrit nulle part.** L'adresse imprimée se
+  fabrique à partir de l'en-tête `Host` (`_adresse_du_site`). Un domaine acheté
+  plus tard n'oblige à toucher à rien, et les feuilles déjà distribuées
+  continuent de pointer où elles pointaient.
+- Le contrôle `build/controles/codes_qr.py` compare la matrice à celle de
+  `segno` **à masque égal**, pour les dix versions et les huit masques, puis
+  fait relire le carré par OpenCV — y compris sur une image floutée, bruitée
+  et grisée, parce que c'est ce que la feuille va subir. Il ne s'appelle pas
+  `qr.py` : il masquerait le module de la racine.
+- Le *choix* du masque n'est pas comparé (les huit sont valides), et les textes
+  de comparaison remplissent la version exactement : `segno` écrit un octet de
+  remplissage `0x00` là où la norme prescrit `0xEC`, ce qui ferait échouer un
+  contrôle juste.
+
+**Le réglage de la direction** est le quatrième drapeau de `reseau.html`, à
+côté de l'IA, de la voix et du dépôt. Le libellé du bouton se calcule sur la
+table `DRAPEAUX` : « Régler les trois drapeaux » était écrit en dur et a menti
+dès le quatrième.
+
 Contrôles : `python3 build/controles/seances.py` (les gardes, fonction par
 fonction) et `python3 build/controles/seances_http.py` (les routes, jouées par
 HTTP sur un serveur jetable). Le second est celui qui compte : il vérifie que
@@ -2738,8 +2770,8 @@ les refus **refusent**, ce qu'un test qui se contente d'entrer dans une séance
 laisserait passer même toutes gardes retirées.
 
 Plan du chantier : `assets/presentations/mode-seance-sans-compte.html`.
-Reste à faire : la feuille imprimable avec le code QR (et le bouton « Ouvrir
-une séance » dans `enseignant.html`), puis le tableau de la classe.
+Reste à faire : le tableau de la classe — les participants sans nom, item par
+item, en direct.
 
 ## Voix des modules (ElevenLabs)
 

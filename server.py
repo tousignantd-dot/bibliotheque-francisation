@@ -66,6 +66,17 @@ except ImportError:
     print("[WARN] forge.py absent : la forge d'activités est désactivée", flush=True)
 
 try:
+    import qr
+except ImportError:
+    # Même filet que la forge et le registre : un fichier oublié dans un
+    # commit ne doit pas tuer le conteneur au démarrage. Sans `qr.py`, la
+    # feuille d'une séance sort avec son code et son adresse en toutes
+    # lettres, et sans le carré — dégradée, pas cassée.
+    qr = None
+    print("[WARN] qr.py absent : les feuilles de séance sortiront sans code QR",
+          flush=True)
+
+try:
     import journal_api
 except ImportError:
     # Même filet que pour la forge : un fichier oublié dans un commit ne doit
@@ -15504,6 +15515,9 @@ class Handler(http.server.SimpleHTTPRequestHandler):
         if path == "/api/prof/seances":
             self._handle_seances_list(params)
             return
+        if path == "/api/prof/seances/feuille":
+            self._handle_seance_feuille(params)
+            return
         if path == "/api/seance":
             self._handle_seance_etat(params)
             return
@@ -16348,6 +16362,49 @@ class Handler(http.server.SimpleHTTPRequestHandler):
             "fermeeALaMain": not seance.get("ouverte", True),
             "participants": len(seance.get("participants", [])),
         }
+
+    def _adresse_du_site(self):
+        """L'adresse publique du serveur, telle que le navigateur l'a jointe.
+
+        Lue sur la requête, **jamais écrite en dur**. C'est ce qui fait qu'un
+        nom de domaine acheté plus tard n'oblige à toucher à rien : la feuille
+        suivante sort à la nouvelle adresse, et les anciennes continuent de
+        pointer où elles pointaient.
+        """
+        hote = (self.headers.get("X-Forwarded-Host")
+                or self.headers.get("Host") or "localhost")
+        schema = (self.headers.get("X-Forwarded-Proto") or "").split(",")[0]
+        if not schema:
+            schema = "http" if hote.startswith(("localhost", "127.0.0.1")) else "https"
+        return "%s://%s" % (schema, hote.split(",")[0].strip())
+
+    def _handle_seance_feuille(self, params):
+        """De quoi imprimer la feuille d'une séance."""
+        teacher = self._require_teacher()
+        if not teacher:
+            return
+        seance = seance_par_code(params.get("code", [""])[0])
+        if seance is None:
+            json_response(self, {"error": "Séance introuvable"}, 404)
+            return
+        if self._require_group(teacher, seance.get("groupId")) is None:
+            return
+        adresse = self._adresse_du_site() + "/s/" + seance["code"]
+        groupe = find_group(seance.get("groupId")) or {}
+        json_response(self, {
+            "code": seance["code"],
+            "adresse": adresse,
+            # L'adresse sans le protocole : c'est elle qu'on écrit sur la
+            # feuille. « https:// » ne se tape pas, et l'afficher ferait
+            # recopier douze caractères de plus à quelqu'un qui apprend
+            # l'alphabet français.
+            "adresseCourte": adresse.split("://", 1)[-1],
+            "activityTitle": seance.get("activityTitle", ""),
+            "groupe": groupe.get("nom", ""),
+            "expire": seance.get("expire", ""),
+            "ouverte": seance_ouverte(seance),
+            "qr": qr.svg(adresse, cote=260) if qr else "",
+        })
 
     def _handle_seances_list(self, params):
         teacher = self._require_teacher()

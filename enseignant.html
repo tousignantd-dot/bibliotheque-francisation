@@ -347,6 +347,22 @@
     .pe-modale > div { width: 100%; max-width: 560px; margin: auto; }
     .pe-modale--apercu { z-index: 65; background: rgba(23, 24, 26, .5); }
     .pe-modale--apercu > div { max-width: 720px; }
+
+    /* Une séance ouverte, dans la modale : le code d'abord — c'est lui qu'on
+       lit à voix haute quand la caméra d'un élève refuse. */
+    .pe-seance {
+      display: flex; align-items: center; gap: var(--sp-4); flex-wrap: wrap;
+      padding: var(--sp-3) var(--sp-4);
+      background: var(--surface-sunken); border: 1px solid var(--border);
+      border-radius: var(--r-sm);
+    }
+    .pe-seance-code {
+      font-size: 22px; font-weight: var(--fw-black); letter-spacing: .12em;
+      font-variant-numeric: tabular-nums;
+    }
+    .pe-seance-quoi { flex: 1; min-width: 110px; font-size: var(--fs-body-sm); font-weight: var(--fw-semi); }
+    .pe-seance-quoi span { display: block; color: var(--text-muted); font-weight: var(--fw-medium); }
+    .pe-seance--close { opacity: .55; }
     .pe-apercu-carte {
       background: var(--surface-page); border-radius: var(--r-lg); overflow: hidden;
       box-shadow: 0 20px 60px rgba(23, 24, 26, .28);
@@ -674,6 +690,7 @@
           <a class="btn btn--ghost btn--sm" id="lienTeams" target="_blank" rel="noopener" hidden>Rejoindre la rencontre Teams</a>
           <button type="button" class="btn btn--ghost btn--sm" id="boutonTeams">Ajouter le lien Teams</button>
           <button type="button" class="btn btn--ghost btn--sm" id="boutonCopie">Copier une planification</button>
+          <button type="button" class="btn btn--ghost btn--sm" id="boutonSeance">Séance sans compte</button>
         </span>
       </div>
       <div class="pe-liens">
@@ -1054,6 +1071,36 @@
         </div>
       </div>
     </form>
+  </div>
+</div>
+
+<!-- Séance sans compte : choisir un module, sortir un code, imprimer la
+     feuille. Le bouton n'apparaît que si la direction laisse le mode ouvert —
+     c'est elle qui autorise, l'enseignant qui choisit. -->
+<div class="pe-modale" id="modaleSeance" hidden>
+  <div>
+    <div class="card">
+      <div class="stack">
+        <div class="pe-titre-section">Séance sans compte</div>
+        <p style="margin:0;font-size:var(--fs-body-sm);font-weight:var(--fw-semi);color:var(--ink-500)">
+          Les élèves entrent avec un code imprimé, sans compte et sans écrire leur nom.
+          Vous voyez leurs réponses, jamais qui les a données.</p>
+
+        <form id="formSeance" style="display:flex;gap:var(--sp-3);align-items:flex-end;flex-wrap:wrap">
+          <div style="flex:1;min-width:240px">
+            <label class="field-label" for="seanceModule">Le module de la séance</label>
+            <select class="field" id="seanceModule"></select>
+          </div>
+          <button type="submit" class="btn btn--pri" id="boutonOuvrirSeance">Ouvrir</button>
+        </form>
+
+        <div id="seanceListe" style="display:grid;gap:var(--sp-2)"></div>
+
+        <div style="display:flex;gap:var(--sp-3);flex-wrap:wrap">
+          <button type="button" class="btn btn--ghost" data-fermer="modaleSeance">Fermer</button>
+        </div>
+      </div>
+    </div>
   </div>
 </div>
 

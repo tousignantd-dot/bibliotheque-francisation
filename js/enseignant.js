@@ -322,6 +322,11 @@
       return;
     }
     etat.enseignant = data.enseignant;
+    // La direction autorise, l'enseignant choisit : sans autorisation, le
+    // bouton disparaît au lieu de rester là pour échouer devant la classe.
+    // Le serveur refuse de toute façon — c'est lui qui garde.
+    etat.seanceAutorisee = data.seanceAutorisee !== false;
+    $('boutonSeance').hidden = !etat.seanceAutorisee;
     poserGroupes(data.groupes);
     if (!etat.groupes.length) {
       // Un enseignant sans groupe ne peut rien planifier.
@@ -1441,6 +1446,92 @@
       await chargerGroupe();
     } catch (err) {
       dire(`Copie impossible : ${err.message}`);
+    }
+  });
+
+  // — Séance sans compte —
+  //
+  // La direction autorise, l'enseignant choisit : le bouton n'existe que si
+  // le mode est ouvert pour ce centre. Le serveur refuse de toute façon —
+  // c'est lui qui garde — mais un bouton qui échoue devant la classe vaut
+  // moins qu'un bouton absent.
+
+  function rendreSeances(seances) {
+    const liste = $('seanceListe');
+    if (!seances.length) {
+      liste.innerHTML = '<p style="margin:0;font-size:var(--fs-body-sm);'
+        + 'font-weight:var(--fw-semi);color:var(--ink-500)">'
+        + 'Aucune séance ouverte pour ce groupe.</p>';
+      return;
+    }
+    liste.innerHTML = seances.map((s) => `
+      <div class="pe-seance${s.ouverte ? '' : ' pe-seance--close'}">
+        <span class="pe-seance-code">${esc(s.code)}</span>
+        <span class="pe-seance-quoi">${esc(s.activityTitle || 'Module')}
+          <span>${s.ouverte ? pluriel(s.participants, 'participant')
+                            : 'fermée'}</span></span>
+        <a class="btn btn--ghost btn--sm" target="_blank" rel="noopener"
+           href="feuille-seance.html?code=${encodeURIComponent(s.code)}">La feuille</a>
+        ${s.ouverte ? `<button type="button" class="btn btn--ghost btn--sm"
+           data-fermer-seance="${s.id}">Fermer</button>` : ''}
+      </div>`).join('');
+  }
+
+  async function chargerSeances() {
+    try {
+      const res = await json(`/api/prof/seances?groupId=${etat.groupeId}`);
+      rendreSeances(res.seances || []);
+    } catch (err) {
+      $('seanceListe').textContent = `Séances indisponibles : ${err.message}`;
+    }
+  }
+
+  $('boutonSeance').addEventListener('click', async () => {
+    // Le choix se fait dans les modules qui ont un fichier à ouvrir : une
+    // séance sur un module sans fichier n'ouvrirait rien.
+    //
+    // Les chemins sont lus **à plat** (`a.interactive`) : cette page reçoit
+    // les enregistrements bruts du catalogue, et non la forme groupée `files`
+    // que sert le portail élève. Le premier jet filtrait sur `files` et
+    // rendait une liste vide — sans erreur, sans message, juste un menu sans
+    // rien dedans.
+    //
+    // Et volontairement sans regarder les dates : une séance s'ouvre sur ce
+    // qu'on fait aujourd'hui, planifié ou non.
+    const ouvrables = etat.activites.filter((a) => a.parcours || a.interactive);
+    $('seanceModule').innerHTML = ouvrables
+      .map((a) => `<option value="${a.id}">${esc(a.title)}</option>`).join('');
+    $('boutonOuvrirSeance').disabled = !ouvrables.length;
+    ouvrirModale('modaleSeance');
+    await chargerSeances();
+  });
+
+  $('formSeance').addEventListener('submit', async (e) => {
+    e.preventDefault();
+    const activityId = Number($('seanceModule').value);
+    if (!activityId) return;
+    try {
+      const res = await envoyer('/api/prof/seances',
+        { groupId: etat.groupeId, activityId });
+      dire(`Séance ouverte. Le code est ${res.seance.code}.`);
+      await chargerSeances();
+      window.open(`feuille-seance.html?code=${encodeURIComponent(res.seance.code)}`,
+                  '_blank');
+    } catch (err) {
+      dire(`Séance impossible : ${err.message}`);
+    }
+  });
+
+  $('seanceListe').addEventListener('click', async (e) => {
+    const bouton = e.target.closest('[data-fermer-seance]');
+    if (!bouton) return;
+    try {
+      await envoyer('/api/prof/seances/fermer',
+                    { id: Number(bouton.dataset.fermerSeance) });
+      await chargerSeances();
+      dire('Séance fermée. Le code ne marche plus.');
+    } catch (err) {
+      dire(`Fermeture impossible : ${err.message}`);
     }
   });
 
