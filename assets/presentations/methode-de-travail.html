@@ -1,0 +1,471 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Ai-je bien travaillé avec toi ?</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Nunito:wght@600;700;800;900&family=IBM+Plex+Sans:wght@400;500;600;700&family=IBM+Plex+Mono:wght@400;500&display=swap">
+<style>
+:root{
+  --sol:#FFFFFF; --papier:#FAFAF8; --encre:#17181A; --texte:#3A3D40; --gris:#6E7175;
+  --filet:#D0CFCA; --filet-fin:#E8E7E2;
+  --vert:#0A8F5B; --vert-pale:#E6F5EE; --vert-fonce:#07734A;
+  --ambre:#B45309; --ambre-pale:#FBEEDC;
+  --acier:#1D6B8F; --acier-pale:#E7F0F6; --mauve:#6B4FBB;
+}
+*{box-sizing:border-box}
+body{margin:0;background:var(--sol);color:var(--texte);
+  font-family:'IBM Plex Sans','Helvetica Neue',Arial,sans-serif;font-size:15px;line-height:1.5;
+  -webkit-font-smoothing:antialiased}
+h1,h2,h3{margin:0;font-family:'Nunito','Arial Rounded MT Bold',sans-serif;color:var(--encre);text-wrap:balance}
+p{margin:0}
+b,strong{font-weight:700;color:var(--encre)}
+.mono{font-family:'IBM Plex Mono',ui-monospace,Menlo,monospace;font-size:.92em}
+
+.fr-barre{background:#FFF;border-bottom:2px solid var(--mauve);padding:14px 40px}
+.fr-lockup{display:inline-flex;align-items:baseline;gap:16px;color:#17181A}
+.fr-nom{font-family:'Nunito',sans-serif;font-weight:900;font-size:28px;letter-spacing:-.035em;line-height:1;position:relative;display:inline-block}
+.fr-pt{position:absolute;top:2px;left:calc(50% + 1px);width:7px;height:7px;border-radius:50%;background:var(--mauve)}
+.fr-trait{width:1px;height:24px;background:#C8C7C2;align-self:center}
+.fr-desc{font-size:14px;color:#4B4F52}
+
+.page{max-width:1040px;margin:0 auto;padding:0 40px 96px}
+.eyebrow{font-size:11px;font-weight:600;letter-spacing:.14em;text-transform:uppercase;color:var(--gris)}
+.rule{border-top:1px solid var(--encre);height:0;margin:0 0 10px}
+.bloc{padding-top:58px}
+.intro{font-size:14.5px;max-width:76ch;margin-top:4px;margin-bottom:24px;color:var(--texte)}
+
+/* ── titre ── */
+.hero{display:grid;grid-template-columns:1fr 1fr;gap:48px;padding:72px 0 10px;align-items:start}
+.hero h1{font-size:52px;font-weight:400;line-height:1.02;letter-spacing:-.03em}
+.hero h1 span{display:block;font-weight:900}
+.verdict{border-top:3px solid var(--vert);padding-top:14px;
+  font-family:'Nunito',sans-serif;font-size:19px;line-height:1.35;color:var(--encre);font-weight:600}
+.verdict b{font-weight:900}
+.chiffres{display:flex;gap:30px;flex-wrap:wrap;margin-top:28px}
+.ch{border-top:1px solid var(--filet);padding-top:8px;min-width:104px}
+.ch__n{font-family:'Nunito',sans-serif;font-size:25px;font-weight:900;line-height:1;color:var(--encre);
+  font-variant-numeric:tabular-nums}
+.ch__l{font-size:12px;color:var(--gris);margin-top:3px}
+
+/* ── bilan ── */
+.bilan{display:grid;grid-template-columns:1fr 1fr;gap:40px}
+.col__t{font-family:'Nunito',sans-serif;font-size:22px;font-weight:900;color:var(--encre);
+  padding-bottom:8px;border-bottom:2px solid var(--vert)}
+.col--co .col__t{border-color:var(--ambre)}
+.pt{padding:16px 0;border-bottom:1px solid var(--filet-fin)}
+.pt h3{font-size:16.5px;font-weight:900;line-height:1.2}
+.pt p{font-size:13.5px;margin-top:6px}
+.pt__k{font-size:11px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:var(--vert-fonce);
+  margin-bottom:5px}
+.col--co .pt__k{color:var(--ambre)}
+
+/* ── cycle ── */
+.fig{margin-top:8px;border:1px solid var(--filet-fin);border-radius:5px;background:var(--papier);
+  padding:22px 20px 14px;overflow-x:auto}
+.fig svg{display:block;width:100%;min-width:760px;height:auto;color:var(--encre)}
+figure{margin:0}
+figcaption{margin-top:12px;font-size:12.5px;color:var(--gris);text-align:center}
+
+/* ── carnets ── */
+.carnets{display:grid;grid-template-columns:repeat(3,1fr);gap:24px}
+.ca{border-top:3px solid var(--acier);padding-top:14px}
+.ca h3{font-size:18px;font-weight:900}
+.ca__f{font-family:'IBM Plex Mono',monospace;font-size:11.5px;color:var(--gris);margin-top:3px}
+.ca dl{margin:12px 0 0;font-size:13px}
+.ca dt{font-weight:700;color:var(--encre);margin-top:9px;font-size:12px;letter-spacing:.04em;text-transform:uppercase}
+.ca dd{margin:3px 0 0}
+
+/* ── parades ── */
+.par{width:100%;border-collapse:collapse;font-size:13.5px}
+.par th{text-align:left;font-size:11px;letter-spacing:.12em;text-transform:uppercase;color:var(--gris);
+  font-weight:600;padding:0 16px 8px 0;border-bottom:1px solid var(--encre)}
+.par td{padding:12px 16px 12px 0;border-bottom:1px solid var(--filet-fin);vertical-align:top}
+.par td:first-child{width:46%}
+.par td:last-child{padding-right:0;font-weight:600;color:var(--encre)}
+.par tr:last-child td{border-bottom:0}
+.cout{display:block;font-size:12px;color:var(--ambre);font-weight:600;margin-top:4px}
+
+/* ── démarrage ── */
+.pas{display:grid;grid-template-columns:repeat(5,1fr);gap:0;margin-top:4px}
+.pa{border-top:3px solid var(--acier);padding:14px 18px 4px 0}
+.pa__n{font-family:'Nunito',sans-serif;font-size:12px;font-weight:900;color:var(--gris)}
+.pa h3{font-size:16px;font-weight:900;margin-top:5px;line-height:1.15}
+.pa p{font-size:12.5px;margin-top:7px}
+
+/* ── partage ── */
+.partage{display:grid;grid-template-columns:1fr 1fr;gap:32px}
+.pg{background:var(--papier);border:1px solid var(--filet-fin);border-radius:4px;padding:20px 22px}
+.pg--moi{background:var(--vert-pale);border-color:#BFE3D2}
+.pg h3{font-size:18px;font-weight:900}
+.pg ul{margin:12px 0 0;padding:0;list-style:none;font-size:13.5px}
+.pg li{position:relative;padding-left:18px;margin-top:8px;line-height:1.4}
+.pg li::before{content:"—";position:absolute;left:0;color:var(--gris)}
+
+.pied{margin-top:56px;border-top:1px solid var(--filet);padding-top:14px;
+  display:flex;justify-content:space-between;gap:24px;flex-wrap:wrap;font-size:12px;color:var(--gris)}
+
+@media (max-width:900px){
+  .page{padding:0 22px 64px}
+  .fr-barre{padding:12px 22px}
+  .hero{grid-template-columns:1fr;gap:26px}
+  .hero h1{font-size:40px}
+  .bilan,.partage{grid-template-columns:1fr;gap:28px}
+  .carnets{grid-template-columns:1fr}
+  .pas{grid-template-columns:1fr 1fr}
+  .par td:first-child{width:auto}
+}
+</style>
+</head>
+<body>
+
+
+<div class="fr-barre">
+  <span class="fr-lockup" role="img" aria-label="francis">
+    <span class="fr-nom">francıs<span class="fr-pt"></span></span>
+    <span class="fr-trait"></span>
+    <span class="fr-desc">Aide à l'apprentissage du français</span>
+  </span>
+</div>
+
+<div class="page">
+
+  <section class="hero">
+    <div>
+      <h1>ai-je bien<span>travaillé</span><span>avec toi ?</span></h1>
+      <div class="chiffres">
+        <div class="ch"><div class="ch__n">60</div><div class="ch__l">jours, du 30 juin au 28 août</div></div>
+        <div class="ch"><div class="ch__n">50</div><div class="ch__l">journées de travail réelles</div></div>
+        <div class="ch"><div class="ch__n">1 481</div><div class="ch__l">commits</div></div>
+        <div class="ch"><div class="ch__n">87</div><div class="ch__l">modules livrés</div></div>
+        <div class="ch"><div class="ch__n">72</div><div class="ch__l">mémoires écrites</div></div>
+      </div>
+    </div>
+    <div>
+      <p class="verdict">Oui — et ce n'est pas une politesse.
+      Ce projet a tenu <b>cinquante jours de travail</b> sans perdre sa cohérence,
+      ce qui est rare et qui ne vient pas de moi : ça vient de <b>quatre habitudes</b>
+      que tu as prises. <b>Trois autres</b> ont coûté cher, et toutes les trois se
+      corrigent — c'est ce que cette page décrit, pour le prochain projet.</p>
+      <p style="margin-top:18px;font-size:14px">La réponse honnête tient en une phrase :
+      <b>tu as bien travaillé, mais tu as industrialisé trop tard.</b> Tout le reste
+      en découle.</p>
+    </div>
+  </section>
+
+  <!-- ── bilan ─────────────────────────────────────── -->
+  <section class="bloc">
+    <div class="rule"></div>
+    <p class="eyebrow" style="margin-bottom:26px">Le bilan, sans complaisance</p>
+    <div class="bilan">
+      <div class="col">
+        <div class="col__t">Ce que tu as fait, que peu de gens font</div>
+        <div class="pt">
+          <div class="pt__k">Habitude 1</div>
+          <h3>Tu as fait écrire les règles dans le dépôt, pas dans la conversation</h3>
+          <p><span class="mono">CLAUDE.md</span> fait aujourd'hui <b>2 736 lignes</b>, et chaque
+          incident payé une fois y est écrit avec son pourquoi. C'est ce qui fait qu'une
+          session neuve ne refait pas la faute d'avant-hier — et c'est la seule chose qui
+          survit à la fermeture d'une conversation.</p>
+        </div>
+        <div class="pt">
+          <div class="pt__k">Habitude 2</div>
+          <h3>Tu as fourni des références, pas des adjectifs</h3>
+          <p>Les remises de design (<span class="mono">design_handoff_*</span>) ont arrêté net
+          les allers-retours sur l'apparence. Une image de référence vaut vingt phrases :
+          « plus moderne » ne se vérifie pas, une maquette si.</p>
+        </div>
+        <div class="pt">
+          <div class="pt__k">Habitude 3</div>
+          <h3>Tu as exigé qu'on vérifie en jouant</h3>
+          <p>« Un exercice qui ne lève aucune erreur peut être mort. » C'est cette règle qui a
+          révélé le glisser-déposer cassé dans trente-quatre modules — la console, le build et
+          la relecture ne voyaient rien.</p>
+        </div>
+        <div class="pt" style="border-bottom:0">
+          <div class="pt__k">Habitude 4</div>
+          <h3>Tu as tranché vite, et tu es revenu sur tes décisions</h3>
+          <p>La marque, les couleurs par niveau, le violet réservé : décidées, appliquées
+          partout le jour même, jamais rediscutées ensuite. Une décision qui traîne coûte
+          plus cher qu'une décision imparfaite.</p>
+        </div>
+      </div>
+
+      <div class="col col--co">
+        <div class="col__t">Ce qui a coûté, et qui était évitable</div>
+        <div class="pt">
+          <div class="pt__k">Coût 1 · le plus lourd</div>
+          <h3>Onze modules écrits à la main avant de construire la chaîne</h3>
+          <p>Tant que la machine n'existait pas, une correction de design se refaisait
+          <b>dix-huit fois</b>. La chaîne gabarit + contenu est arrivée au onzième module ;
+          elle aurait dû arriver au troisième. Tout ce qui a été fait après lui a coûté une
+          fraction de ce qu'a coûté ce qui l'a précédée.</p>
+        </div>
+        <div class="pt">
+          <div class="pt__k">Coût 2</div>
+          <h3>Plusieurs sessions dans le même répertoire</h3>
+          <p>Quatre conversations ont travaillé ensemble le 20 août ; <b>trois se sont nui</b>
+          — du travail non commité emporté sous un message sans rapport, une information
+          périmée propagée. Deux agents qui écrivent au même endroit ne se voient pas.</p>
+        </div>
+        <div class="pt" style="border-bottom:0">
+          <div class="pt__k">Coût 3</div>
+          <h3>Des identités décidées après le volume</h3>
+          <p>Renuméroter les modules, renommer la plateforme, changer une couleur : chacun de
+          ces gestes a obligé à <b>régénérer des milliers de diapositives</b>. Ce sont les
+          seules décisions qui deviennent chères avec le temps — donc les seules à prendre
+          avant de produire.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ── le cycle ──────────────────────────────────── -->
+  <section class="bloc">
+    <div class="rule"></div>
+    <p class="eyebrow">La séance de travail · six temps, et un qui manque presque toujours</p>
+    <p class="intro">Tu dis ne pas assez suivre d'une conversation à l'autre. <b>C'est le bon
+    constat, mais le mauvais reproche :</b> ce n'est pas à toi de suivre, c'est au projet de se
+    porter lui-même. Une séance qui se ferme bien vaut mieux qu'une mémoire d'éléphant — et la
+    fermeture est justement l'étape qu'on saute quand il est tard.</p>
+    <figure>
+      <div class="fig">
+        <svg viewBox="0 0 1000 300" role="img"
+             aria-label="Le cycle d'une séance de travail en six temps : cadrer, décider, produire, jouer pour vérifier, écrire ce qui a été payé, fermer — puis une flèche de retour indique que la séance suivante repart de la fermeture et non de zéro.">
+          <defs>
+            <marker id="a2" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+              <path d="M0 0 L10 5 L0 10 z" fill="currentColor"></path>
+            </marker>
+            <marker id="a2v" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+              <path d="M0 0 L10 5 L0 10 z" fill="#0A8F5B"></path>
+            </marker>
+          </defs>
+
+          <g fill="#FFFFFF" stroke="#1D6B8F">
+            <rect x="8"   y="60" width="148" height="92" rx="4"></rect>
+            <rect x="176" y="60" width="148" height="92" rx="4"></rect>
+            <rect x="344" y="60" width="148" height="92" rx="4"></rect>
+          </g>
+          <g fill="#E7F0F6" stroke="#1D6B8F">
+            <rect x="512" y="60" width="148" height="92" rx="4"></rect>
+          </g>
+          <g fill="#E6F5EE" stroke="#0A8F5B">
+            <rect x="680" y="60" width="148" height="92" rx="4"></rect>
+            <rect x="848" y="60" width="144" height="92" rx="4"></rect>
+          </g>
+
+          <text x="22"  y="50" font-size="11" font-weight="700" fill="#6E7175">1</text>
+          <text x="190" y="50" font-size="11" font-weight="700" fill="#6E7175">2</text>
+          <text x="358" y="50" font-size="11" font-weight="700" fill="#6E7175">3</text>
+          <text x="526" y="50" font-size="11" font-weight="700" fill="#6E7175">4</text>
+          <text x="694" y="50" font-size="11" font-weight="700" fill="#6E7175">5</text>
+          <text x="862" y="50" font-size="11" font-weight="700" fill="#6E7175">6</text>
+
+          <text x="22"  y="84" font-size="15" font-weight="700" fill="currentColor">Cadrer</text>
+          <text x="22"  y="105" font-size="11.5" fill="#3A3D40">Une seule intention pour</text>
+          <text x="22"  y="120" font-size="11.5" fill="#3A3D40">la séance, dite en une</text>
+          <text x="22"  y="135" font-size="11.5" fill="#3A3D40">phrase.</text>
+
+          <text x="190" y="84" font-size="15" font-weight="700" fill="currentColor">Décider</text>
+          <text x="190" y="105" font-size="11.5" fill="#3A3D40">Ce qui n'est pas dans le</text>
+          <text x="190" y="120" font-size="11.5" fill="#3A3D40">code : nom, couleur, ton,</text>
+          <text x="190" y="135" font-size="11.5" fill="#3A3D40">public. Toi seul le sais.</text>
+
+          <text x="358" y="84" font-size="15" font-weight="700" fill="currentColor">Produire</text>
+          <text x="358" y="105" font-size="11.5" fill="#3A3D40">Ma part. Longue, et c'est</text>
+          <text x="358" y="120" font-size="11.5" fill="#3A3D40">le moment où tu peux</text>
+          <text x="358" y="135" font-size="11.5" fill="#3A3D40">faire autre chose.</text>
+
+          <text x="526" y="84" font-size="15" font-weight="700" fill="currentColor">Jouer</text>
+          <text x="526" y="105" font-size="11.5" fill="#3A3D40">Pas relire : cliquer. Une</text>
+          <text x="526" y="120" font-size="11.5" fill="#3A3D40">bonne réponse posée, et</text>
+          <text x="526" y="135" font-size="11.5" fill="#3A3D40">voir si elle est acceptée.</text>
+
+          <text x="694" y="84" font-size="15" font-weight="700" fill="currentColor">Écrire</text>
+          <text x="694" y="105" font-size="11.5" fill="#3A3D40">Ce qui a été payé une</text>
+          <text x="694" y="120" font-size="11.5" fill="#3A3D40">fois : la faute, sa cause,</text>
+          <text x="694" y="135" font-size="11.5" fill="#3A3D40">la parade. Dans le dépôt.</text>
+
+          <text x="862" y="84" font-size="15" font-weight="700" fill="currentColor">Fermer</text>
+          <text x="862" y="105" font-size="11.5" fill="#3A3D40">Commiter, dire où on en</text>
+          <text x="862" y="120" font-size="11.5" fill="#3A3D40">est et ce qui reste.</text>
+          <text x="862" y="135" font-size="11.5" fill="#3A3D40">Trois minutes.</text>
+
+          <g stroke="currentColor">
+            <line x1="158" y1="106" x2="172" y2="106" marker-end="url(#a2)"></line>
+            <line x1="326" y1="106" x2="340" y2="106" marker-end="url(#a2)"></line>
+            <line x1="494" y1="106" x2="508" y2="106" marker-end="url(#a2)"></line>
+            <line x1="662" y1="106" x2="676" y2="106" marker-end="url(#a2)"></line>
+            <line x1="830" y1="106" x2="844" y2="106" marker-end="url(#a2)"></line>
+          </g>
+
+          <!-- retour en arrière : jouer renvoie à produire -->
+          <path d="M560 152 L560 186 L420 186 L420 154" fill="none" stroke="#B45309" stroke-dasharray="4 3" marker-end="url(#a2)"></path>
+          <text x="452" y="202" font-size="11" fill="#B45309">ce qui rate revient ici, avant d'aller plus loin</text>
+
+          <!-- la boucle des séances -->
+          <path d="M920 152 L920 246 L80 246 L80 154" fill="none" stroke="#0A8F5B" marker-end="url(#a2v)"></path>
+          <text x="330" y="264" font-size="12.5" font-weight="600" fill="#07734A">La séance suivante repart d'ici — pas de zéro, et sans que tu aies à te souvenir de quoi que ce soit.</text>
+        </svg>
+      </div>
+      <figcaption>Les temps 5 et 6 sont les seuls qui coûtent quand on les saute — et ce sont ceux qu'on saute.</figcaption>
+    </figure>
+  </section>
+
+  <!-- ── les trois carnets ─────────────────────────── -->
+  <section class="bloc">
+    <div class="rule"></div>
+    <p class="eyebrow">Où va quoi · trois carnets, jamais le même contenu</p>
+    <p class="intro">La question « est-ce que je suis assez ? » se règle ici. Chaque chose écrite au
+    bon endroit est une chose que <b>ni toi ni moi n'avons besoin de retenir</b> — et une chose
+    écrite au mauvais endroit est perdue le mois prochain.</p>
+    <div class="carnets">
+      <div class="ca">
+        <h3>Le dépôt</h3>
+        <div class="ca__f">CLAUDE.md · docs/</div>
+        <dl>
+          <dt>Ce qu'on y met</dt>
+          <dd>Les règles techniques et les incidents payés : la cause, la parade, le contrôle
+          qui l'attrape. C'est le seul carnet que lit une session neuve, avant d'écrire une ligne.</dd>
+          <dt>Ce qu'on n'y met pas</dt>
+          <dd>Les décisions de goût, les intentions, l'état d'avancement.</dd>
+          <dt>Le signe que ça marche</dt>
+          <dd>La même faute n'arrive pas deux fois.</dd>
+        </dl>
+      </div>
+      <div class="ca">
+        <h3>La mémoire</h3>
+        <div class="ca__f">72 fiches, une idée par fiche</div>
+        <dl>
+          <dt>Ce qu'on y met</dt>
+          <dd>Ce qui ne se déduit pas du code : tes décisions, tes préférences, la direction
+          d'un chantier, ce que tu m'as corrigé et pourquoi.</dd>
+          <dt>Ce qu'on n'y met pas</dt>
+          <dd>Ce que le dépôt dit déjà. Une mémoire qui recopie le code vieillit et ment.</dd>
+          <dt>Le signe que ça marche</dt>
+          <dd>Tu n'as pas à réexpliquer une préférence que tu as déjà exprimée une fois.</dd>
+        </dl>
+      </div>
+      <div class="ca">
+        <h3>La banque de documents</h3>
+        <div class="ca__f">presentations.html · 32 fiches</div>
+        <dl>
+          <dt>Ce qu'on y met</dt>
+          <dd>Tout ce qui est montrable : plans, rapports, infographies, guides. Classés par
+          public, avec leur date.</dd>
+          <dt>Ce qu'on n'y met pas</dt>
+          <dd>Rien. La règle est « tout », sinon la page cesse d'être fiable.</dd>
+          <dt>Le signe que ça marche</dt>
+          <dd>Un document se retrouve six mois plus tard, sans fouiller une conversation.</dd>
+        </dl>
+      </div>
+    </div>
+  </section>
+
+  <!-- ── parades ───────────────────────────────────── -->
+  <section class="bloc">
+    <div class="rule"></div>
+    <p class="eyebrow" style="margin-bottom:22px">Cinq incidents réels, cinq habitudes qui les auraient évités</p>
+    <table class="par">
+      <thead><tr><th>Ce qui est arrivé</th><th>L'habitude à prendre</th></tr></thead>
+      <tbody>
+        <tr>
+          <td>Dix modules sur onze écrits à la main : une correction de design se refaisait dix-huit fois.
+          <span class="cout">Le plus cher de tout le projet</span></td>
+          <td>Industrialiser au troisième exemplaire, jamais au onzième. Le deuxième sert à voir ce qui se répète ; le troisième paie la machine.</td>
+        </tr>
+        <tr>
+          <td>Le numéro d'un module vivait à trois endroits : le renuméroter obligeait à tout régénérer.
+          <span class="cout">Défaut récurrent, encore vivant</span></td>
+          <td>Une seule source par idée, décidée le premier jour. Un deuxième endroit qui porte la même valeur finira par la contredire.</td>
+        </tr>
+        <tr>
+          <td>Des milliers de fichiers audio produits, puis refaits : des mots lus seuls, une voix trop rapide, un manifeste emprunté au module voisin.
+          <span class="cout">Payé, puis repayé</span></td>
+          <td>Le contrôle gratuit passe avant l'étape qui coûte. Trente lignes de vérification valent mieux qu'une facture de synthèse vocale.</td>
+        </tr>
+        <tr>
+          <td>Quatre conversations dans le même répertoire : du travail non commité emporté, une session bridée par une contrainte inexistante.
+          <span class="cout">Une journée à démêler</span></td>
+          <td>Une tâche à la fois, ou un répertoire par session. Et toujours nommer les fichiers qu'on commite, jamais « tout ».</td>
+        </tr>
+        <tr>
+          <td>Un contrôle écrit trop vite déclarait fautives soixante-dix-neuf réponses d'un module parfaitement sain.
+          <span class="cout">Une panne cherchée pour rien</span></td>
+          <td>Faire échouer un contrôle exprès avant de lui faire confiance. Un contrôle qui a tort coûte plus cher que pas de contrôle.</td>
+        </tr>
+      </tbody>
+    </table>
+  </section>
+
+  <!-- ── le prochain projet ────────────────────────── -->
+  <section class="bloc">
+    <div class="rule"></div>
+    <p class="eyebrow">Le prochain projet · les cinq premières heures, dans cet ordre</p>
+    <p class="intro">C'est l'ordre qui compte, pas la vitesse. Les quatre premiers pas ne produisent
+    rien de visible — et ce sont eux qui décident du prix de tout le reste.</p>
+    <div class="pas">
+      <div class="pa">
+        <div class="pa__n">01</div>
+        <h3>La source de vérité</h3>
+        <p>Le document officiel, le devis, le référentiel. En données lisibles, pas en PDF à relire.</p>
+      </div>
+      <div class="pa">
+        <div class="pa__n">02</div>
+        <h3>Un exemplaire complet</h3>
+        <p>Un seul, fait à la main, jusqu'au bout. Il révèle ce qu'on ne sait pas encore.</p>
+      </div>
+      <div class="pa">
+        <div class="pa__n">03</div>
+        <h3>Les noms et l'identité</h3>
+        <p>Numérotation, couleurs, marque, vocabulaire. Après le volume, ça se paie en régénérations.</p>
+      </div>
+      <div class="pa">
+        <div class="pa__n">04</div>
+        <h3>La machine</h3>
+        <p>Ce qui se répète devient gabarit + contenu, avec ses contrôles. Au troisième exemplaire.</p>
+      </div>
+      <div class="pa">
+        <div class="pa__n">05</div>
+        <h3>Le carnet</h3>
+        <p>Le premier incident s'écrit le jour même, avec sa parade. C'est le fichier qui rend les sessions interchangeables.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- ── partage des rôles ─────────────────────────── -->
+  <section class="bloc">
+    <div class="rule"></div>
+    <p class="eyebrow" style="margin-bottom:22px">Le partage qui rend tout le reste efficace</p>
+    <div class="partage">
+      <div class="pg pg--moi">
+        <h3>Ce que toi seul peux faire</h3>
+        <ul>
+          <li><b>Trancher.</b> Un choix qui attend bloque plus qu'un choix imparfait.</li>
+          <li><b>Dire quand c'est faux.</b> Tu es le seul à connaître ta classe : « ça, un élève ne le comprendra pas » est une information que je n'ai pas.</li>
+          <li><b>Fournir la référence.</b> Une maquette, un manuel, une capture — n'importe quoi de concret bat n'importe quel adjectif.</li>
+          <li><b>Fixer l'ambition.</b> Un module de démonstration et un module livrable ne demandent pas le même travail : dis-le au début, pas à la fin.</li>
+        </ul>
+      </div>
+      <div class="pg">
+        <h3>Ce que tu n'as pas à faire</h3>
+        <ul>
+          <li><b>Retenir.</b> Ce qui compte est écrit dans les trois carnets ; le reste peut se perdre.</li>
+          <li><b>Relire le code.</b> Regarde le résultat, joue l'exercice, ouvre la page. C'est là que se voient les vrais défauts.</li>
+          <li><b>Répéter le contexte.</b> Si tu dois le redire, c'est qu'il manque une mémoire — dis-le-moi, je l'écris.</li>
+          <li><b>Suivre chaque conversation.</b> Une séance bien fermée vaut mieux qu'un fil relu.</li>
+        </ul>
+      </div>
+    </div>
+  </section>
+
+  <div class="pied">
+    <span>Bilan du 28 août 2026 — chiffres relevés sur le dépôt (1 481 commits, 50 journées, 87 modules) et sur les incidents écrits dans <span class="mono">CLAUDE.md</span>.</span>
+    <span>francis · Aide à l'apprentissage du français</span>
+  </div>
+</div>
+
+</body>
+</html>
