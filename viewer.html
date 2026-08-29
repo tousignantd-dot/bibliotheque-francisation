@@ -118,6 +118,14 @@
   const activityId = parseInt(params.get('activityId')) || null;
   const title      = params.get('title') || 'Activité interactive';
   const code       = params.get('code') || '';
+  // Où mène « Retour ». Le portail élève par défaut ; une séance sans compte
+  // passe son propre chemin, parce qu'il n'y a pas de compte au bout et que
+  // l'élève tomberait sur un écran de connexion qui ne le concerne pas.
+  const retourBrut = params.get('retour') || '';
+  // Chemin relatif du site seulement : jamais « // », jamais de schéma. Cette
+  // valeur vient de l'adresse, et une adresse se fabrique.
+  const retour = /^[A-Za-z0-9_.-]+\.html(\?[^#]*)?$/.test(retourBrut)
+    ? retourBrut : 'eleve.html';
   const color      = params.get('color') || '';
 
   document.getElementById('actTitle').textContent = title;
@@ -129,8 +137,12 @@
   // si ça échoue (onglet ouvert autrement), on retombe sur eleve.html.
   document.getElementById('btnBack').addEventListener('click', (e) => {
     e.preventDefault();
+    // Une séance sans compte arrive ici **dans le même onglet** : le fermer
+    // emporterait tout le contexte de l'élève, et il n'a pas de portail où
+    // revenir ensuite. Quand un retour explicite est demandé, on navigue.
+    if (retourBrut) { location.href = retour; return; }
     window.close();
-    setTimeout(() => { location.href = 'eleve.html'; }, 250);
+    setTimeout(() => { location.href = retour; }, 250);
   });
 
   // Charger l'activité dans l'iframe.

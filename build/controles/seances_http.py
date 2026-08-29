@@ -26,13 +26,6 @@ BAC = Path(tempfile.mkdtemp(prefix="seances-http-"))
 (BAC / "data").mkdir()
 (BAC / "assets").mkdir()
 shutil.copy(RACINE / "data" / "sections.json", BAC / "data" / "sections.json")
-# Le catalogue est semé à la main : la route qui ajoute une activité attend un
-# multipart, et ce contrôle-ci ne porte pas sur elle.
-(BAC / "data" / "activities.json").write_text(json.dumps([
-    {"id": 12, "title": "Au travail", "categorie": "cours", "slug": "au-travail"},
-    {"id": 13, "title": "À la clinique", "categorie": "cours", "slug": "clinique"},
-], ensure_ascii=False))
-ACT, AUTRE = 12, 13
 # Un arbre minimal : le réseau, un centre, et l'enseignant rattaché au centre.
 # C'est ce rattachement qui fait descendre l'autorisation du mode séance.
 (BAC / "data" / "organisations.json").write_text(json.dumps([
@@ -102,6 +95,26 @@ try:
                    "nom": "Prof d'essai"})
     verifie("compte fondateur créé", st in (200, 201), str(r))
     JETON = r.get("token")
+    # Le catalogue est celui du dépôt : `init_storage()` recopie le sien sur le
+    # volume au démarrage, et un catalogue semé à la main serait écrasé en
+    # pleine course — c'est ce qui a fait échouer ce contrôle une première fois.
+    # `init_storage()` tourne en arrière-plan au démarrage : le catalogue
+    # arrive une fraction de seconde après le premier appel, et lire trop tôt
+    # rendait une liste vide.
+    for _ in range(100):
+        st, cat = appel("GET", "/api/activities?catalogue=1", jeton=JETON)
+        liste = cat if isinstance(cat, list) else cat.get("activities", [])
+        # `?catalogue=1` rend les enregistrements bruts : les chemins y sont à
+        # plat, comme le serveur les lit.
+        modules = [a for a in liste if a.get("interactive")]
+        if len(modules) >= 2:
+            break
+        time.sleep(0.2)
+    verifie("le catalogue du dépôt porte des modules", len(modules) >= 2,
+            "%d module(s)" % len(modules))
+    ACT, AUTRE = modules[0]["id"], modules[1]["id"]
+    TITRE = modules[0]["title"]
+    FICHIER = modules[0]["interactive"]
     st, r = appel("POST", "/api/prof/groupes", {"nom": "Niveau 4 — matin"}, JETON)
     verifie("groupe créé", st in (200, 201), str(r))
     GROUPE = r["groupe"]["id"]
@@ -161,7 +174,7 @@ try:
     print("\n— L'état public d'une séance —")
     st, r = appel("GET", "/api/seance?code=" + CODE)
     verifie("ouverte, sans authentification", st == 200 and r["ouverte"], str(r))
-    verifie("le titre du module est dit", r.get("activityTitle") == "Au travail")
+    verifie("le titre du module est dit", r.get("activityTitle") == TITRE, str(r))
     verifie("le groupe n'est pas dit", "groupId" not in r and "groupe" not in r)
     st, r = appel("GET", "/api/seance?code=ZZZZZZ")
     verifie("code inconnu : 404", st == 404, str(st))
@@ -174,6 +187,61 @@ try:
     verifie("le module de la séance est dit", r.get("activityId") == ACT)
     st, r = appel("POST", "/api/seance/entrer", {"code": "ZZZZZZ"})
     verifie("code inconnu : 404", st == 404, str(st))
+
+
+    print("\n— L'adresse courte et la page d'entrée —")
+    req = urllib.request.Request(BASE + "/s/" + CODE, method="GET")
+    class SansSuivi(urllib.request.HTTPRedirectHandler):
+        def redirect_request(self, *a, **k):
+            return None
+    ouvreur = urllib.request.build_opener(SansSuivi)
+    try:
+        ouvreur.open(req, timeout=10)
+        verifie("l'adresse courte redirige", False, "aucune redirection")
+    except urllib.error.HTTPError as e:
+        verifie("l'adresse courte redirige", e.code == 302, str(e.code))
+        verifie("vers la page d'entrée, code en main",
+                e.headers.get("Location") == "/seance.html?c=" + CODE,
+                str(e.headers.get("Location")))
+    try:
+        ouvreur.open(urllib.request.Request(BASE + "/s/" + CODE.lower()), timeout=10)
+    except urllib.error.HTTPError as e:
+        verifie("le code minuscule est remis en majuscules",
+                e.headers.get("Location") == "/seance.html?c=" + CODE,
+                str(e.headers.get("Location")))
+    try:
+        ouvreur.open(urllib.request.Request(BASE + "/s/..%2fetc"), timeout=10)
+        verifie("une adresse courte tordue ne redirige pas", False, "redirigé")
+    except urllib.error.HTTPError as e:
+        verifie("une adresse courte tordue ne redirige pas",
+                e.code != 302 or "seance.html" not in (e.headers.get("Location") or ""),
+                str(e.code) + " " + str(e.headers.get("Location")))
+    with urllib.request.urlopen(BASE + "/seance.html", timeout=10) as rep:
+        page = rep.read().decode()
+    verifie("la page d'entrée est servie", "Le code de la feuille" in page)
+    verifie("elle ne parle jamais de compte",
+            "compte" not in page.replace("pas besoin de compte", "")
+                                .replace("Tu n'as pas besoin de compte", "")
+            or "sans compte" in page)
+
+    print("\n— Revenir sur le même appareil —")
+    st, r = appel("POST", "/api/seance/entrer", {"code": CODE, "jeton": JET})
+    verifie("le même jeton rend le même participant",
+            st == 200 and r.get("numero") == 1, str(r))
+    verifie("et aucun participant n'est créé", r.get("jeton") == JET, str(r))
+    st, r = appel("POST", "/api/seance/entrer", {"code": CODE})
+    verifie("sans jeton, c'est un participant de plus", r.get("numero") == 2, str(r))
+    JET2 = r["jeton"]
+    st, r = appel("POST", "/api/seance/entrer", {"code": "ZZZZZZ", "jeton": JET})
+    verifie("un jeton d'une autre séance ne sert à rien", st == 404, str(st))
+    st, r = appel("POST", "/api/seance/entrer", {"code": CODE, "jeton": "S" + "Z" * 16})
+    verifie("un jeton inventé retombe sur une entrée neuve",
+            st == 200 and r.get("numero") == 3, str(r))
+
+    print("\n— Ce que l'appareil reçoit pour ouvrir le module —")
+    verifie("le fichier du module est dit", r.get("fichier") == FICHIER,
+            str(r.get("fichier")))
+    verifie("le titre aussi", r.get("activityTitle") == TITRE, str(r))
 
     print("\n— Ce que le jeton ouvre —")
     st, r = appel("GET", "/api/student/ia?code=" + JET)
@@ -248,8 +316,10 @@ try:
     st, r = appel("GET", "/api/prof/seances?groupId=%d" % GROUPE, jeton=JETON)
     mienne = next((x for x in r.get("seances", []) if x["id"] == SEANCE["id"]), None)
     verifie("l'enseignant retrouve sa séance", st == 200 and mienne, str(r))
+    # Trois entrées, pas cinq : les deux retours avec le jeton d'un appareil
+    # déjà entré n'ont créé personne. C'est tout l'intérêt de la reprise.
     verifie("avec son compte de participants",
-            mienne and mienne["participants"] == 1, str(mienne))
+            mienne and mienne["participants"] == 3, str(mienne))
     verifie("et toujours aucun jeton", "jeton" not in json.dumps(r))
 
     print("\n— Le débit des entrées —")

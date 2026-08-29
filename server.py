@@ -3790,6 +3790,24 @@ def code_de_seance_libre(seances=None):
     return _tirage(8)
 
 
+def fichier_de_seance(activite):
+    """Le fichier que la séance ouvre, dans l'ordre de préférence d'eleve.html.
+
+    L'ordre est recopié de `fichierDe()` du portail élève et doit le rester :
+    deux ordres différents feraient s'ouvrir deux choses selon la porte
+    d'entrée, pour le même module.
+    """
+    # Les chemins sont **à plat** dans l'enregistrement (`a["interactive"]`) ;
+    # le `files` groupé n'existe que dans la réponse de l'API, pour le client.
+    # Lire `files` ici rendait une chaîne vide sans rien dire — c'est le
+    # contrôle qui l'a montré, pas la relecture.
+    activite = activite or {}
+    for cle in ("parcours", "interactive", "studentDoc"):
+        if activite.get(cle):
+            return activite[cle]
+    return ""
+
+
 def seance_par_code(code, seances=None):
     if not code:
         return None
@@ -15434,6 +15452,24 @@ class Handler(http.server.SimpleHTTPRequestHandler):
         _REQUETE.chemin = path
         params = urllib.parse.parse_qs(parsed.query)
 
+        # L'adresse courte d'une séance : `/s/KRB482`. C'est **elle** qui est
+        # imprimée sur la feuille, et donc elle qui est tapée à la main par
+        # quelqu'un qui apprend l'alphabet français. Elle ne porte aucun nom
+        # de domaine : le code QR et la ligne imprimée se fabriquent à partir
+        # de l'en-tête `Host`, pour qu'un domaine acheté plus tard n'oblige à
+        # toucher à rien.
+        court = re.match(r"^/s/([A-Za-z0-9]{4,10})/?$", path)
+        if court:
+            # Redirection interne seulement : le code est déjà borné à des
+            # lettres et des chiffres par l'expression, donc rien de ce que
+            # l'élève tape ne peut devenir une adresse ailleurs.
+            self.send_response(302)
+            self.send_header("Location",
+                             "/seance.html?c=" + court.group(1).upper())
+            self.send_header("Cache-Control", "no-store")
+            self.end_headers()
+            return
+
         # Sonde de santé Railway : doit rester publique et sans effet de bord.
         if path == "/api/health":
             # Le nom du stockage, jamais l'adresse ni les identifiants.
@@ -16404,9 +16440,50 @@ class Handler(http.server.SimpleHTTPRequestHandler):
             "activityTitle": seance.get("activityTitle", ""),
         })
 
+    def _ouverture_de_seance(self, seance, participant):
+        """Ce qu'un appareil reçoit quand il entre : de quoi ouvrir le module.
+
+        Le chemin du fichier est calculé ici et non deviné par la page : le
+        portail élève a la même règle, et deux règles pour un seul choix
+        finissent par ouvrir deux fichiers différents.
+        """
+        activite = next((a for a in load_activities()
+                         if a.get("id") == seance.get("activityId")), None)
+        return {
+            "success": True,
+            # Le jeton ne sort qu'ici, vers l'appareil concerné, et ne
+            # réapparaît dans aucune autre réponse du serveur.
+            "jeton": participant["jeton"],
+            "numero": participant["numero"],
+            "activityId": seance.get("activityId"),
+            "activityTitle": seance.get("activityTitle", ""),
+            "fichier": fichier_de_seance(activite),
+            "couleur": (activite or {}).get("nouveauDesignColor", ""),
+        }
+
     @sous_verrou
     def _handle_seance_entrer(self):
-        code = (self._read_json_body().get("code") or "").strip().upper()
+        """Entrer dans une séance, ou y revenir depuis le même appareil.
+
+        Une seule route pour les deux, et c'est voulu : recharger la page,
+        fermer l'onglet, revenir après la pause doivent rendre **le même**
+        participant. Deux routes auraient laissé le choix à la page, et un
+        rechargement mal branché aurait créé un Participant 8 à chaque F5 —
+        le tableau de la classe se serait rempli de fantômes.
+        """
+        corps = self._read_json_body()
+        code = (corps.get("code") or "").strip().upper()
+        jeton = (corps.get("jeton") or "").strip().upper()
+        if jeton:
+            identite, seance = participant_par_jeton(jeton)
+            # Le jeton doit valoir **pour ce code-là** : un appareil qui garde
+            # le jeton d'hier et scanne la feuille d'aujourd'hui doit entrer
+            # dans la séance du jour, pas rouvrir celle de la veille.
+            if identite and seance.get("code") == code:
+                participant = next(
+                    p for p in seance["participants"] if p["jeton"] == jeton)
+                json_response(self, self._ouverture_de_seance(seance, participant))
+                return
         if not self._debit_entree_ok():
             json_response(self, {
                 "error": "Trop d'essais. Attends une minute, puis réessaie.",
@@ -16416,15 +16493,7 @@ class Handler(http.server.SimpleHTTPRequestHandler):
         if erreur:
             json_response(self, {"error": erreur[0]}, erreur[1])
             return
-        json_response(self, {
-            "success": True,
-            # Le jeton ne sort qu'ici, vers l'appareil qui vient d'entrer, et
-            # ne réapparaît dans aucune autre réponse du serveur.
-            "jeton": participant["jeton"],
-            "numero": participant["numero"],
-            "activityId": seance.get("activityId"),
-            "activityTitle": seance.get("activityTitle", ""),
-        })
+        json_response(self, self._ouverture_de_seance(seance, participant))
 
     # Un code de séance est court et se recopie ; il finira par circuler. La
     # borne est par adresse et par minute, sur les seules **entrées** : une

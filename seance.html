@@ -1,0 +1,248 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>francis — Entrer dans la séance</title>
+  <link rel="stylesheet" href="assets/design-system/styles.css" />
+  <link rel="stylesheet" href="assets/design-system/marque-francis.css" />
+  <link rel="icon" type="image/svg+xml" href="assets/design-system/marque-francis-favicon.svg" />
+  <style>
+    /* Entrée d'une séance sans compte. Même variante 2a que le portail
+       élève : en-tête teinté acier, jetons du système, aucune couleur
+       inventée. La page est volontairement courte — c'est un seuil, pas un
+       écran de travail, et l'élève y arrive parfois avec une caméra ouverte
+       et vingt personnes qui attendent. */
+    body { margin: 0; }
+    .os-portail { --surface-band: var(--acier-100); --border-tint: var(--line-100); min-height: 100vh; }
+    .os-bloc { max-width: 560px; }
+    .os-rangee { display: flex; gap: var(--sp-4); align-items: flex-end; flex-wrap: wrap; }
+    .os-champ { flex: 1; min-width: 220px; }
+    /* Le code se tape en majuscules, espacé : six caractères recopiés d'une
+       feuille se relisent un par un, et un texte serré se perd. */
+    .os-bloc input {
+      text-transform: uppercase; letter-spacing: .22em;
+      font-weight: var(--fw-bold); font-size: 22px;
+    }
+    .os-aide { margin: var(--sp-4) 0 0; font-size: var(--fs-body-sm); font-weight: var(--fw-medium); color: var(--text-body); }
+    .os-erreur {
+      margin: var(--sp-4) 0 0; padding: var(--sp-3) var(--sp-4);
+      background: var(--no-bg); border: 1px solid var(--no-line); border-radius: var(--r-sm);
+      color: var(--no-ink); font-size: var(--fs-body-sm); font-weight: var(--fw-semi);
+    }
+    .os-module { display: flex; align-items: center; gap: var(--sp-5); flex-wrap: wrap; }
+    .os-module h2 { margin: 0; font-size: var(--fs-h3); font-weight: var(--fw-black); color: var(--text-strong); }
+    .os-module p { margin: var(--sp-2) 0 0; font-size: var(--fs-body-sm); font-weight: var(--fw-medium); color: var(--text-muted); }
+    .os-module > div { flex: 1; min-width: 200px; }
+    /* Le numéro du participant. Il tient lieu de nom pendant l'heure : quand
+       l'enseignant dit « participant 7 », l'élève doit pouvoir se reconnaître
+       sans chercher. */
+    .os-numero {
+      display: inline-flex; align-items: baseline; gap: var(--sp-3);
+      margin: 0 0 var(--sp-5); padding: var(--sp-3) var(--sp-5);
+      background: var(--surface-sunken); border: 1px solid var(--border);
+      border-radius: 999px;
+    }
+    .os-numero b { font-size: 26px; font-weight: var(--fw-black); line-height: 1; color: var(--text-strong); }
+    .os-numero span { font-size: var(--fs-ui); font-weight: var(--fw-semi); color: var(--text-muted); }
+    .os-prof { margin: var(--sp-5) 0 0; font-size: var(--fs-ui); font-weight: var(--fw-semi); }
+    .os-prof a { color: var(--text-muted); text-decoration: none; border-bottom: 1px solid var(--border); }
+    .os-prof a:hover { color: var(--text-accent); border-bottom-color: currentColor; }
+  </style>
+</head>
+<body>
+
+<div class="page os-portail">
+  <div class="fr-barre">
+    <div class="fr-barre__in">
+      <h1 class="fr-lockup fr-lockup--grand">
+        <span class="fr-nom" role="img" aria-label="francis">franc<span class="fr-i" aria-hidden="true">ı<span class="fr-point"></span></span>s</span>
+        <span class="fr-trait" aria-hidden="true"></span>
+        <span class="fr-desc">Aide à l'apprentissage du français</span>
+      </h1>
+    </div>
+  </div>
+
+  <header class="band">
+    <div class="container">
+      <div class="band__eyebrow">Séance de classe</div>
+      <p class="band__lead" id="chapeau">Écris le code de ta feuille pour commencer.</p>
+
+      <div class="os-bloc">
+        <!-- Écran 1 · le code -->
+        <div class="card" id="carteCode">
+          <div class="os-rangee">
+            <div class="os-champ">
+              <label class="field-label" for="champCode">Le code de la feuille</label>
+              <input id="champCode" class="field" type="text" maxlength="8" placeholder="XXXXXX"
+                     autocomplete="off" autocapitalize="characters" spellcheck="false"
+                     inputmode="text" />
+            </div>
+            <button class="btn btn--pri" id="btnCode">Continuer</button>
+          </div>
+          <p class="os-aide">Six lettres et chiffres. Tu n'as pas besoin de compte.</p>
+          <p class="os-erreur" id="erreurCode" hidden></p>
+        </div>
+
+        <!-- Écran 2 · le module, prêt à ouvrir -->
+        <div class="card" id="carteModule" hidden>
+          <p class="os-numero" id="pastilleNumero" hidden>
+            <b id="numeroChiffre">7</b><span>c'est toi, pour cette heure</span>
+          </p>
+          <div class="os-module">
+            <div>
+              <h2 id="titreModule">Le module</h2>
+              <p id="sousTitreModule">Tu peux commencer quand tu veux.</p>
+            </div>
+            <button class="btn btn--pri" id="btnCommencer">Commencer</button>
+          </div>
+          <p class="os-aide">Personne ne saura que c'est toi : tu n'écris pas ton nom.</p>
+          <p class="os-erreur" id="erreurModule" hidden></p>
+        </div>
+
+        <p class="os-prof"><a href="enseignant.html">Espace enseignant</a></p>
+      </div>
+    </div>
+  </header>
+</div>
+
+<script>
+(function () {
+  'use strict';
+  var API = location.origin;
+  var carteCode   = document.getElementById('carteCode');
+  var carteModule = document.getElementById('carteModule');
+  var champ       = document.getElementById('champCode');
+  var chapeau     = document.getElementById('chapeau');
+
+  // Le jeton vit dans le navigateur de l'appareil, rangé **par code de
+  // séance**. C'est ce qui fait qu'un rechargement, un retour depuis le
+  // module ou une pause retrouvent le même participant, et qu'un même
+  // appareil qui sert deux séances dans la journée ne mélange pas les deux.
+  var CLE = 'seances_jetons';
+  function jetons() {
+    try { return JSON.parse(localStorage.getItem(CLE) || '{}'); }
+    catch (e) { return {}; }
+  }
+  function garderJeton(code, jeton) {
+    try {
+      var tout = jetons();
+      tout[code] = jeton;
+      localStorage.setItem(CLE, JSON.stringify(tout));
+    } catch (e) { /* navigation privée : on continue sans mémoire */ }
+  }
+  function oublierJeton(code) {
+    try {
+      var tout = jetons();
+      delete tout[code];
+      localStorage.setItem(CLE, JSON.stringify(tout));
+    } catch (e) {}
+  }
+
+  function erreur(ou, texte) {
+    var el = document.getElementById(ou);
+    el.textContent = texte;
+    el.hidden = !texte;
+  }
+
+  function normalise(v) {
+    return String(v || '').toUpperCase().replace(/[^A-Z0-9]/g, '').slice(0, 8);
+  }
+
+  var codeCourant = '';
+  var ouverture = null;
+
+  function montrerModule(info) {
+    ouverture = info;
+    document.getElementById('titreModule').textContent =
+      info.activityTitle || 'Ton activité';
+    var reprise = !!info.dejaEntre;
+    document.getElementById('sousTitreModule').textContent = reprise
+      ? 'Tu as déjà commencé. Ton travail est gardé.'
+      : 'Tu peux commencer quand tu veux.';
+    document.getElementById('btnCommencer').textContent =
+      reprise ? 'Continuer' : 'Commencer';
+    if (info.numero) {
+      document.getElementById('numeroChiffre').textContent = info.numero;
+      document.getElementById('pastilleNumero').hidden = false;
+    }
+    chapeau.textContent = 'Voici ton activité.';
+    carteCode.hidden = true;
+    carteModule.hidden = false;
+  }
+
+  function entrer(code, jeton) {
+    erreur('erreurCode', '');
+    var corps = {code: code};
+    if (jeton) corps.jeton = jeton;
+    return fetch(API + '/api/seance/entrer', {
+      method: 'POST',
+      headers: {'Content-Type': 'application/json'},
+      body: JSON.stringify(corps),
+    }).then(function (r) {
+      return r.json().then(function (d) { return {ok: r.ok, d: d}; });
+    }).then(function (rep) {
+      if (!rep.ok) {
+        // Un jeton refusé n'est pas une impasse : la séance a peut-être été
+        // fermée puis rouverte sous un autre code. On oublie et on redemande.
+        if (jeton) oublierJeton(code);
+        erreur('erreurCode', rep.d.error || "Impossible d'entrer.");
+        carteCode.hidden = false;
+        carteModule.hidden = true;
+        return;
+      }
+      codeCourant = code;
+      garderJeton(code, rep.d.jeton);
+      rep.d.dejaEntre = !!jeton;
+      montrerModule(rep.d);
+    }).catch(function () {
+      erreur('erreurCode', "La connexion a échoué. Réessaie dans un instant.");
+    });
+  }
+
+  document.getElementById('btnCommencer').addEventListener('click', function () {
+    if (!ouverture || !ouverture.fichier) {
+      erreur('erreurModule', "Ce module n'a pas de fichier à ouvrir. "
+                           + "Préviens ton enseignant.");
+      return;
+    }
+    var p = new URLSearchParams({
+      src: API + '/' + ouverture.fichier,
+      activityId: ouverture.activityId,
+      title: ouverture.activityTitle || '',
+      code: ouverture.jeton,
+      // Le retour d'un participant ne va pas au portail élève — il n'y a pas
+      // de compte au bout. Il revient ici, sur sa séance.
+      retour: 'seance.html?c=' + encodeURIComponent(codeCourant),
+    });
+    if (ouverture.couleur) p.set('color', ouverture.couleur);
+    // Même onglet : la page n'a rien à garder derrière elle, et un onglet de
+    // plus sur un téléphone se perd.
+    location.href = 'viewer.html?' + p.toString();
+  });
+
+  document.getElementById('btnCode').addEventListener('click', function () {
+    var code = normalise(champ.value);
+    if (code.length < 4) {
+      erreur('erreurCode', 'Écris les six caractères de ta feuille.');
+      return;
+    }
+    entrer(code, jetons()[code]);
+  });
+  champ.addEventListener('keydown', function (e) {
+    if (e.key === 'Enter') document.getElementById('btnCode').click();
+  });
+
+  // Arrivée par le code QR : le code est déjà dans l'adresse, on ne fait pas
+  // recopier ce qui a été scanné.
+  var depart = normalise(new URLSearchParams(location.search).get('c'));
+  if (depart) {
+    champ.value = depart;
+    entrer(depart, jetons()[depart]);
+  } else {
+    champ.focus();
+  }
+})();
+</script>
+</body>
+</html>

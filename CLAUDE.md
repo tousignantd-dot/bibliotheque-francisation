@@ -2709,6 +2709,28 @@ modules n'est retouché**, aucun ne sait ce qu'il transporte.
   reviendrait à écrire un mot de passe. Le dépôt écrit porte `studentLabel`
   (« Participant 7 ») et un `seanceId`, jamais le jeton.
 
+**L'entrée de l'élève.** L'adresse imprimée est `/s/KRB482` : le `do_GET` la
+reconnaît avant tout le reste et redirige vers `seance.html?c=KRB482`. Elle ne
+porte **aucun nom de domaine** — le code QR et la ligne imprimée se fabriquent
+à partir de l'en-tête `Host`, pour qu'un domaine acheté plus tard n'oblige à
+toucher à rien.
+
+- `POST /api/seance/entrer` fait les deux gestes : entrer, et **revenir**.
+  L'appareil garde son jeton dans `localStorage`, **rangé par code de séance** ;
+  s'il le renvoie avec le bon code, il retrouve le même participant. Une seule
+  route pour les deux, sinon un rechargement mal branché crée un Participant 8
+  à chaque F5 et le tableau de la classe se remplit de fantômes.
+- Le chemin du fichier à ouvrir est calculé **par le serveur**
+  (`fichier_de_seance`), dans le même ordre de préférence que `fichierDe()` du
+  portail élève. Attention : les chemins sont **à plat** dans l'enregistrement
+  (`a["interactive"]`) ; le `files` groupé n'existe que dans la réponse de
+  l'API. Lire `files` côté serveur rend une chaîne vide sans rien dire.
+- `viewer.html` accepte un paramètre `retour` (borné à un `*.html` du site) :
+  un participant n'a pas de portail où revenir, et le renvoyer sur `eleve.html`
+  le poserait devant un écran de connexion qui ne le concerne pas. Quand
+  `retour` est là, le viewer **navigue** au lieu de fermer l'onglet — une
+  séance s'ouvre dans le même onglet, et le fermer emporterait tout.
+
 Contrôles : `python3 build/controles/seances.py` (les gardes, fonction par
 fonction) et `python3 build/controles/seances_http.py` (les routes, jouées par
 HTTP sur un serveur jetable). Le second est celui qui compte : il vérifie que
@@ -2716,8 +2738,8 @@ les refus **refusent**, ce qu'un test qui se contente d'entrer dans une séance
 laisserait passer même toutes gardes retirées.
 
 Plan du chantier : `assets/presentations/mode-seance-sans-compte.html`.
-Reste à faire : l'entrée de l'élève (page et adresse courte), la feuille
-imprimable avec le code QR, et le tableau de la classe.
+Reste à faire : la feuille imprimable avec le code QR (et le bouton « Ouvrir
+une séance » dans `enseignant.html`), puis le tableau de la classe.
 
 ## Voix des modules (ElevenLabs)
 
