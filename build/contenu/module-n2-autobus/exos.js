@@ -18,15 +18,15 @@ const EXOS = [
     {id:'p1d', txt:"C'est à trente minutes à pied.", ok:'FAUX'},
    ]},
 
-  {sec:'prep', id:'prHeure', type:'vf', num:'Exercice 2', tit:"Quelle heure entends-tu ?", color:'#0D7A6F', accent:'#0D7A6F', cards:true, listen:true,
-   sub:"Écoute bien. Ces heures se ressemblent.", tiles:['LA PREMIÈRE','LA DEUXIÈME'],
+  {sec:'prep', id:'prHeure', type:'vf', num:'Exercice 2', tit:"L'heure juste ou l'heure avec des minutes ?", color:'#0D7A6F', accent:'#0D7A6F', cards:true, listen:true,
+   sub:"Écoute chaque heure. Est-ce une heure juste, ou est-ce qu'on ajoute des minutes ?", tiles:['HEURE JUSTE','AVEC DES MINUTES'],
    rows:[
-    {id:'hra', txt:"huit heures dix", ok:'LA PREMIÈRE'},
-    {id:'hrb', txt:"huit heures et demie", ok:'LA DEUXIÈME'},
-    {id:'hrc', txt:"deux heures", ok:'LA PREMIÈRE'},
-    {id:'hrd', txt:"douze heures", ok:'LA DEUXIÈME'},
-    {id:'hre', txt:"trois heures et quart", ok:'LA PREMIÈRE'},
-    {id:'hrf', txt:"treize heures", ok:'LA DEUXIÈME'},
+    {id:'hra', txt:"huit heures dix", ok:'AVEC DES MINUTES'},
+    {id:'hrb', txt:"huit heures et demie", ok:'AVEC DES MINUTES'},
+    {id:'hrc', txt:"deux heures", ok:'HEURE JUSTE'},
+    {id:'hrd', txt:"douze heures", ok:'HEURE JUSTE'},
+    {id:'hre', txt:"trois heures et quart", ok:'AVEC DES MINUTES'},
+    {id:'hrf', txt:"treize heures", ok:'HEURE JUSTE'},
    ]},
 
   {sec:'prep', id:'prImg', type:'imgmatch', num:'Exercice 3', tit:'Dans la rue', color:'#0D7A6F',

@@ -31,9 +31,9 @@ const EXOS = [
     {id:'pnb', txt:"un gymnase", ok:'J · comme GYMNASE'},
     {id:'pnc', txt:"jeudi", ok:'J · comme GYMNASE'},
     {id:'pnd', txt:"chercher", ok:'CH · comme CHAUDRON'},
-    {id:'pne', txt:"une séance", ok:'CH · comme CHAUDRON'},
+    {id:'pne', txt:"le plancher", ok:'CH · comme CHAUDRON'},
     {id:'pnf', txt:"je voudrais", ok:'J · comme GYMNASE'},
-    {id:'png', txt:"la cuisine collective", ok:'CH · comme CHAUDRON'},
+    {id:'png', txt:"un pâté chinois", ok:'CH · comme CHAUDRON'},
     {id:'pnh', txt:"le congé", ok:'J · comme GYMNASE'},
    ]},
 

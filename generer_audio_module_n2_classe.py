@@ -43,7 +43,7 @@ VOIX = {
     "narrateur":   "IPgYtHTNLjC7Bq7IPHrm",   # 👨 narrateur
 }
 
-# Trois personnages pour trois voix. Madame Leduc — CLAUDETTE dans les
+# Trois personnages pour trois voix. Madame Leduc — MME LEDUC dans les
 # dialogues — prend la voix de l'enseignante, celle que `voix_lente` ralentit à
 # 0,85 : c'est elle qui donne toutes les consignes, et une consigne mal
 # entendue fait rater l'exercice entier. Tariq et Myriam se répondent dans le
@@ -51,7 +51,7 @@ VOIX = {
 VOIX_PERSO = {
     "TARIQ":     "masculin_1",
     "MYRIAM":    "feminin_2",
-    "CLAUDETTE": "enseignante",
+    "MME LEDUC": "enseignante",
 }
 
 # Voix des mots isolés et des mini-leçons : celle de l'enseignante.

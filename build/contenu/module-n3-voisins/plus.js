@@ -19,9 +19,9 @@ const PLUS = {
        note:"Les coins de la bouche s'écartent, comme pour sourire. Si tu souris en le disant, tu es dans le bon son."},
 
       {t:'ana', h:"Le mot qui contient les deux",
-       p:"« Une invitation » traverse les deux sons en trois syllabes.",
-       mots:[['On dit','{in}-vi-ta-ti{on}'],['Au début','le son de voisin',true],['À la fin','le son de content, arrondi : « on »']],
-       say:"J'ai glissé une invitation sous la porte.",
+       p:"« Maintenant » traverse les deux sons en trois syllabes.",
+       mots:[['On dit','m{ain}-te-n{ant}'],['Au début','le son de voisin',true],['À la fin','le son de content']],
+       say:"Je monte voir mon voisin maintenant.",
        note:"Retiens ce mot comme mot repère du module : il te redonne les deux sons chaque fois que tu le prononces."},
 
       {t:'labo', h:"Écoute les paires",
@@ -45,7 +45,7 @@ const PLUS = {
        p:"Six phrases de l'escalier.",
        rows:[
          ["Mon voisin part travailler le matin.","in trois fois"],
-         ["Je suis content de vous connaître.","an deux fois"],
+         ["Je suis content de vous connaître.","an une fois"],
          ["L'escalier monte en avant de l'immeuble.","an trois fois"],
          ["J'ai reçu une invitation ce matin.","in puis an"],
          ["Comment s'appelle le concierge ?","an au début et à la fin"],

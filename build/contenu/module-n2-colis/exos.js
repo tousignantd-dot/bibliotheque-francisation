@@ -185,7 +185,7 @@ const EXOS = [
      ["Au comptoir, on vous dit « vous »","<span class='savoir-ex'><b>Écrivez</b> votre nom. · <b>Signez</b> ici. · <b>Remplissez</b> le formulaire.</span>", ["formulaire"]],
      ["Le verbe finit par -ez","et il n'y a pas de « vous » devant. C'est la forme la plus courte."],
      ["Les six verbes de la poste","<span class='savoir-ex'>écrivez · remplissez · signez · posez · gardez · apportez</span>", ["signature"]],
-     ["Un ami dit « tu »","<span class='savoir-ex'><b>Écris</b> ton nom. · <b>Signe</b> ici.</span> — sans -ez, et sans s à écris."],
+     ["Un ami dit « tu »","<span class='savoir-ex'><b>Écris</b> ton nom. · <b>Signe</b> ici.</span> — sans -ez : <b>signe</b> sans s, <b>écris</b> avec un s."],
      ["On ne dit pas","« Vous écrivez votre nom » pour donner une consigne. On enlève le « vous ».", ["reçu"]],
    ]},
    items:[

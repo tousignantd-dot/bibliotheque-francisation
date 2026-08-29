@@ -25,7 +25,7 @@ const EXOS = [
    savoir:{h:"› Deux sons qui changent le mot", rows:[
      ["Le son de « bonjour » et de « cours »","<span class='savoir-ex'>b<b>on</b>j<b>ou</b>r · le c<b>ou</b>rs · le c<b>ou</b>loir · <b>ou</b>vert · v<b>ou</b>s</span>"],
      ["Il s'écrit d'une seule façon","<span class='savoir-ex'>ou</span> — deux lettres, toujours les mêmes."],
-     ["Le son de « une »","<span class='savoir-ex'>le b<b>u</b>rea<b>u</b> · une min<b>u</b>te · bien s<b>û</b>r · l<b>u</b>ndi · le n<b>u</b>méro</span>"],
+     ["Le son de « une »","<span class='savoir-ex'>le b<b>u</b>reau · une min<b>u</b>te · bien s<b>û</b>r · le n<b>u</b>méro</span>"],
      ["Il s'écrit u, ou û","<span class='savoir-ex'>u · û</span> — le petit chapeau ne change pas le son."],
      ["La bouche","Pour « ou », les lèvres avancent loin. Pour « u », les lèvres avancent aussi, mais la langue monte en avant."],
    ]},
@@ -35,7 +35,7 @@ const EXOS = [
     {id:'so3', txt:"le couloir", ok:'SON « OU »'},
     {id:'so4', txt:"une minute", ok:'SON « U »'},
     {id:'so5', txt:"ouvert", ok:'SON « OU »'},
-    {id:'so6', txt:"lundi", ok:'SON « U »'},
+    {id:'so6', txt:"bien sûr", ok:'SON « U »'},
     {id:'so7', txt:"bonjour", ok:'SON « OU »'},
     {id:'so8', txt:"le numéro", ok:'SON « U »'},
    ]},

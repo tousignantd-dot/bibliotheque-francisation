@@ -443,7 +443,7 @@ const PLUS = {
 
       {t:'ana', h:"Et quand on dit « tu »",
        p:"Un ami, un enfant, un camarade de classe.",
-       mots:[["On dit","{Signe} ici."],["Aussi","{Écris} ton nom."],["Aussi","{Remplis} le formulaire."],["Attention","pas de s à {écris} ni à {signe} quand on donne un ordre"],["On ne dit pas","« Tu signes ici » pour demander à quelqu'un de signer",true]],
+       mots:[["On dit","{Signe} ici."],["Aussi","{Écris} ton nom."],["Aussi","{Remplis} le formulaire."],["Attention","{signe} s'écrit sans s, mais {écris} et {remplis} gardent le leur"],["On ne dit pas","« Tu signes ici » pour demander à quelqu'un de signer",true]],
        say:"Signe ici. Écris ton nom. Remplis le formulaire.",
        note:"Le préposé vouvoie toujours. Karim tutoie Amara : c'est là qu'on entend la forme en « tu » dans le module."},
 
@@ -463,7 +463,7 @@ const PLUS = {
          b2:{w:["Écris ton nom ici."], say:"Écris ton nom ici.", n:'« ton » va avec « écris »'},
          b3:{w:["J'écris mon nom où ?"], say:"J'écris mon nom où ?", n:'on montre la feuille en le disant'},
          c1:{w:["Remplissez ce formulaire, s'il vous plaît."], say:"Remplissez ce formulaire, s'il vous plaît.", n:'le « s\'il vous plaît » adoucit l\'ordre'},
-         c2:{w:["Remplis le formulaire."], say:"Remplis le formulaire.", n:'sans s à la fin'},
+         c2:{w:["Remplis le formulaire."], say:"Remplis le formulaire.", n:'sans -ez, mais le s reste'},
          c3:{w:["Je remplis quelle case ?"], say:"Je remplis quelle case ?", n:'plus précis que « je fais quoi ? »'},
        },
        note:"Neuf extraits. Faire jouer le comptoir : un élève donne les six consignes, l'autre les exécute vraiment sur une feuille."},

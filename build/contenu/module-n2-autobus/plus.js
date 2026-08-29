@@ -68,7 +68,7 @@ const PLUS = {
        rows:[
          ["« je vais à le parc »","je vais au parc",
           "« À le » n'existe pas. Les deux mots se collent et donnent <b>au</b>. C'est une règle sans exception."],
-         ["oublier l'article","« je vais à bibliothèque »",
+         ["« je vais à bibliothèque »","je vais à la bibliothèque",
           "En français, un lieu garde presque toujours son article : <b>la</b> bibliothèque, <b>le</b> parc. Seuls les noms de villes n'en ont pas : « je vais à Montréal »."],
          ["« à la hôpital »","à l'hôpital",
           "Devant une voyelle ou un <b>h</b> muet, « la » et « le » deviennent <b>l'</b>. On dit donc « à l'hôpital », jamais « à la hôpital »."],
