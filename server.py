@@ -1792,6 +1792,55 @@ DEPOT_ETATS = ("herite", "complet", "transcription", "ferme")
 DEPOT_REELS = ("complet", "transcription", "ferme")
 
 
+# ── L'autorisation du mode séance ─────────────────────────────────────────
+# **La direction autorise, l'enseignant choisit.** Deux gestes différents, et
+# les confondre serait l'erreur : ouvrir une classe sans compte est une
+# décision d'établissement — qui touche à ce que l'école accepte de ne pas
+# savoir de ses élèves — alors que s'en servir un mardi matin est une décision
+# pédagogique, qui appartient à l'enseignant et à personne d'autre.
+#
+# Le réglage vit donc sur l'arbre, comme l'IA, la voix et le dépôt. **Sur les
+# organisations seulement** : un drapeau par enseignant, ici, ferait passer
+# pour une permission ce qui est un choix, et il n'y aurait plus moyen
+# d'expliquer un bouton absent.
+SEANCE_ETATS = ("herite", "autorisee", "interdite")
+
+
+def seance_effective(org_id, orgs=None):
+    """Le mode séance est-il ouvert sur ce nœud ? Rend (autorisé, décideur).
+
+    Même remontée que les trois autres : le PREMIER réglage explicite tranche.
+    Le défaut est « autorisée », du côté de l'IA et du dépôt : ce mode ne
+    collecte rien, il en collecte même moins que le portail ordinaire, et une
+    direction qui n'a rien réglé n'a rien perdu. Une direction qui ne veut pas
+    de classe anonyme le dit, et son refus descend sur tous ses centres.
+    """
+    for noeud in org_chain(org_id, orgs):
+        if noeud.get("seance") in ("autorisee", "interdite"):
+            return noeud["seance"] == "autorisee", noeud
+    return True, None
+
+
+def seance_pour_enseignant(teacher, orgs=None, acces=None):
+    """(autorisé, décideur) pour un enseignant, par son centre.
+
+    Pas de drapeau par personne, contrairement à l'IA : voir plus haut. Un
+    enseignant sans rattachement retombe sur le réseau — le fondateur enseigne
+    sans être rattaché à un centre, et lui fermer le mode par accident
+    fermerait le seul poste depuis lequel on peut l'ouvrir.
+    """
+    if not teacher:
+        return True, None
+    org_id = centre_de_enseignant(teacher, acces=acces)
+    if org_id is None:
+        racine = orgs_of_type("reseau", orgs)
+        org_id = racine[0]["id"] if racine else None
+    if org_id is None:
+        return True, None
+    autorise, noeud = seance_effective(org_id, orgs)
+    return autorise, noeud
+
+
 def depot_effective(org_id, orgs=None):
     """L'état du dépôt oral sur ce nœud. Rend (état, décideur).
 
@@ -2311,6 +2360,10 @@ def arbre_pour_lecture():
              "iaEffective": ("autorisee" if ia_effective(o["id"], orgs)[0]
                              else "interdite"),
              "iaDecidePar": (ia_effective(o["id"], orgs)[1] or {}).get("nom", ""),
+             "seance": o.get("seance", "herite"),
+             "seanceEffective": ("autorisee" if seance_effective(o["id"], orgs)[0]
+                                 else "interdite"),
+             "seanceDecidePar": (seance_effective(o["id"], orgs)[1] or {}).get("nom", ""),
              "enfants": sorted(x["id"] for x in orgs if x.get("parentId") == o["id"]),
              "groupes": par_centre.get(o["id"], [])}
             for o in orgs
@@ -16290,6 +16343,19 @@ class Handler(http.server.SimpleHTTPRequestHandler):
         if activite is None:
             json_response(self, {"error": "Ce module n'existe pas"}, 404)
             return
+        # La direction autorise, l'enseignant choisit. Le refus est vérifié
+        # ici, à l'ouverture, et non à l'entrée des élèves : une séance qui
+        # existe doit tenir jusqu'au bout de l'heure, et une direction qui
+        # ferme le mode pendant un cours ne doit pas éteindre la classe en
+        # train de travailler.
+        autorise, decideur = seance_pour_enseignant(teacher)
+        if not autorise:
+            json_response(self, {
+                "error": "Le mode séance est fermé par %s."
+                         % ((decideur or {}).get("nom", "votre établissement")),
+                "decidePar": (decideur or {}).get("nom", ""),
+            }, 403)
+            return
         seance = creer_seance(
             teacher, group_id, activity_id,
             titre=body.get("activityTitle") or activite.get("title", ""),
@@ -16710,11 +16776,17 @@ class Handler(http.server.SimpleHTTPRequestHandler):
                 "installationRequise": not load_teachers(),
             })
             return
+        autorise, decideur = seance_pour_enseignant(teacher)
         json_response(self, {
             "connecte": True,
             "installationRequise": False,
             "enseignant": public_teacher(teacher),
             "groupes": groups_of_teacher(teacher),
+            # Ce que la direction autorise, pour que l'écran n'offre pas un
+            # bouton que le serveur refusera. La route refuse de toute façon :
+            # c'est elle qui garde, pas la page.
+            "seanceAutorisee": bool(autorise),
+            "seanceDecidePar": (decideur or {}).get("nom", ""),
         })
 
     def _handle_prof_password(self):
@@ -16801,7 +16873,8 @@ class Handler(http.server.SimpleHTTPRequestHandler):
         avant = {"nom": org.get("nom"), "actif": org.get("actif", True),
                  "ia": org.get("ia", "herite"),
                  "voix": org.get("voix", "herite"),
-                 "depot": org.get("depot", "herite")}
+                 "depot": org.get("depot", "herite"),
+                 "seance": org.get("seance", "herite")}
         if "nom" in body:
             nom = (body.get("nom") or "").strip()
             if not nom:
@@ -16845,13 +16918,23 @@ class Handler(http.server.SimpleHTTPRequestHandler):
                 json_response(self, {"error": "Le réseau tranche : il n'hérite de personne"}, 400)
                 return
             org["depot"] = etat
+        if "seance" in body:
+            etat = (body.get("seance") or "herite").strip()
+            if etat not in SEANCE_ETATS:
+                json_response(self, {"error": "État de séance inconnu"}, 400)
+                return
+            if etat == "herite" and org.get("type") == "reseau":
+                json_response(self, {"error": "Le réseau tranche : il n'hérite de personne"}, 400)
+                return
+            org["seance"] = etat
         save_organisations(orgs)
         journal(fondateur, "organisation.modifiee", org_id,
                 {"avant": avant, "apres": {"nom": org.get("nom"),
                                            "actif": org.get("actif", True),
                                            "ia": org.get("ia", "herite"),
                                            "voix": org.get("voix", "herite"),
-                                           "depot": org.get("depot", "herite")}})
+                                           "depot": org.get("depot", "herite"),
+                                           "seance": org.get("seance", "herite")}})
         json_response(self, {"success": True, "organisation": org})
 
     def _handle_acces_add(self):

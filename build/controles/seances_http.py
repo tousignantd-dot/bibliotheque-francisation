@@ -33,6 +33,15 @@ shutil.copy(RACINE / "data" / "sections.json", BAC / "data" / "sections.json")
     {"id": 13, "title": "À la clinique", "categorie": "cours", "slug": "clinique"},
 ], ensure_ascii=False))
 ACT, AUTRE = 12, 13
+# Un arbre minimal : le réseau, un centre, et l'enseignant rattaché au centre.
+# C'est ce rattachement qui fait descendre l'autorisation du mode séance.
+(BAC / "data" / "organisations.json").write_text(json.dumps([
+    {"id": 1, "type": "reseau", "nom": "francis", "parentId": None, "actif": True},
+    {"id": 2, "type": "centre", "nom": "Centre d'essai", "parentId": 1, "actif": True},
+], ensure_ascii=False))
+(BAC / "data" / "acces.json").write_text(json.dumps([
+    {"teacherId": 1, "orgId": 2, "role": "enseignant", "actif": True},
+], ensure_ascii=False))
 
 ECHECS = []
 
@@ -96,6 +105,40 @@ try:
     st, r = appel("POST", "/api/prof/groupes", {"nom": "Niveau 4 — matin"}, JETON)
     verifie("groupe créé", st in (200, 201), str(r))
     GROUPE = r["groupe"]["id"]
+
+
+    print("\n— La direction autorise, l'enseignant choisit —")
+    st, r = appel("GET", "/api/prof/me", jeton=JETON)
+    verifie("l'écran sait qu'il a le droit", r.get("seanceAutorisee") is True, str(r))
+    st, arbre = appel("GET", "/api/admin/organisations", jeton=JETON)
+    racine = next(o for o in arbre["organisations"] if o["type"] == "reseau")
+    RACINE = racine["id"]
+    verifie("l'arbre porte le réglage", racine.get("seance") == "herite", str(racine))
+    verifie("et son état effectif", racine.get("seanceEffective") == "autorisee",
+            str(racine))
+    st, r = appel("PATCH", "/api/admin/organisations/%d" % RACINE,
+                  {"seance": "interdite"}, JETON)
+    verifie("le réseau ferme le mode", st == 200, str(r))
+    st, r = appel("GET", "/api/prof/me", jeton=JETON)
+    verifie("l'écran ne l'offre plus", r.get("seanceAutorisee") is False, str(r))
+    verifie("et sait qui a fermé", bool(r.get("seanceDecidePar")), str(r))
+    st, r = appel("POST", "/api/prof/seances",
+                  {"groupId": GROUPE, "activityId": ACT}, JETON)
+    verifie("et le serveur refuse d'ouvrir", st == 403, str(r))
+    verifie("le message nomme le décideur", "francis" in (r.get("error") or ""), str(r))
+    st, r = appel("PATCH", "/api/admin/organisations/%d" % RACINE,
+                  {"seance": "herite"}, JETON)
+    verifie("la racine n'hérite de personne", st == 400, str(r))
+    st, r = appel("PATCH", "/api/admin/organisations/%d" % RACINE,
+                  {"seance": "n'importe quoi"}, JETON)
+    verifie("un état inconnu est refusé", st == 400, str(r))
+    st, r = appel("PATCH", "/api/admin/organisations/%d" % RACINE,
+                  {"seance": "autorisee"}, JETON)
+    verifie("le réseau rouvre le mode", st == 200, str(r))
+    st, r = appel("POST", "/api/prof/seances",
+                  {"groupId": GROUPE, "activityId": ACT}, JETON)
+    verifie("et l'enseignant peut de nouveau ouvrir", st in (200, 201), str(r))
+    appel("POST", "/api/prof/seances/fermer", {"id": r["seance"]["id"]}, JETON)
 
     print("\n— Ouvrir une séance —")
     st, r = appel("POST", "/api/prof/seances",
@@ -203,9 +246,10 @@ try:
     st, r = appel("POST", "/api/seance/entrer", {"code": CODE})
     verifie("et plus personne n'entre", st == 403, str(st))
     st, r = appel("GET", "/api/prof/seances?groupId=%d" % GROUPE, jeton=JETON)
-    verifie("l'enseignant retrouve sa séance", st == 200 and r["seances"], str(r))
+    mienne = next((x for x in r.get("seances", []) if x["id"] == SEANCE["id"]), None)
+    verifie("l'enseignant retrouve sa séance", st == 200 and mienne, str(r))
     verifie("avec son compte de participants",
-            r["seances"][0]["participants"] == 1, str(r["seances"][0]))
+            mienne and mienne["participants"] == 1, str(mienne))
     verifie("et toujours aucun jeton", "jeton" not in json.dumps(r))
 
     print("\n— Le débit des entrées —")

@@ -179,6 +179,59 @@ verifie("et le jeton déjà donné cesse de valoir",
 _, _, err = S.entrer_dans_seance("ZZZZZZ")
 verifie("un code inconnu répond 404", err is not None and err[1] == 404)
 
+
+print("\n— La direction autorise, l'enseignant choisit —")
+ARBRE_OUVERT = [
+    {"id": 1, "type": "reseau", "nom": "francis", "parentId": None},
+    {"id": 2, "type": "css", "nom": "CSS d'essai", "parentId": 1},
+    {"id": 3, "type": "centre", "nom": "Centre d'essai", "parentId": 2},
+]
+S.save_organisations(ARBRE_OUVERT)
+S.save_acces([{"teacherId": 1, "orgId": 3, "role": "enseignant", "actif": True}])
+verifie("sans réglage, le mode est ouvert",
+        S.seance_pour_enseignant(PROF)[0] is True)
+
+ferme_au_css = [dict(o, **({"seance": "interdite"} if o["id"] == 2 else {}))
+                for o in ARBRE_OUVERT]
+S.save_organisations(ferme_au_css)
+autorise, decideur = S.seance_pour_enseignant(PROF)
+verifie("un CSS ferme le mode pour ses centres", autorise is False)
+verifie("et l'écran peut dire qui a décidé",
+        (decideur or {}).get("nom") == "CSS d'essai", str(decideur))
+
+exception = [dict(o, **({"seance": "interdite"} if o["id"] == 2 else
+                        {"seance": "autorisee"} if o["id"] == 3 else {}))
+             for o in ARBRE_OUVERT]
+S.save_organisations(exception)
+autorise, decideur = S.seance_pour_enseignant(PROF)
+verifie("un centre peut porter son exception", autorise is True)
+verifie("et c'est lui le décideur",
+        (decideur or {}).get("nom") == "Centre d'essai", str(decideur))
+
+S.save_acces([])
+S.save_groups([{"id": 7, "nom": "Niveau 4 — matin", "teacherId": 1, "centreId": None},
+               {"id": 8, "nom": "Niveau 4 — soir", "teacherId": 1, "centreId": None}])
+verifie("un enseignant sans rattachement retombe sur le réseau",
+        S.seance_pour_enseignant(PROF)[0] is True)
+S.save_organisations([{"id": 1, "type": "reseau", "nom": "francis",
+                       "parentId": None, "seance": "interdite"}])
+verifie("et le réseau peut fermer le mode partout",
+        S.seance_pour_enseignant(PROF)[0] is False)
+
+print("\n— Fermer le mode n'éteint pas une classe en train de travailler —")
+S.save_organisations(ARBRE_OUVERT)
+S.save_groups([{"id": 7, "nom": "Niveau 4 — matin", "teacherId": 1, "centreId": 3}])
+en_cours = S.creer_seance(PROF, 7, 12, titre="Au travail")
+p_cours, _, _ = S.entrer_dans_seance(en_cours["code"])
+S.save_organisations([dict(o, **({"seance": "interdite"} if o["id"] == 3 else {}))
+                      for o in ARBRE_OUVERT])
+route("/api/student/progress")
+verifie("le participant déjà entré continue",
+        S.validate_student_code(p_cours["jeton"]) is not None)
+_, _, err = S.entrer_dans_seance(en_cours["code"])
+verifie("et un retardataire entre encore", err is None, str(err))
+S.save_organisations(ARBRE_OUVERT)
+
 print("\n— Le fichier des séances ne fuit pas —")
 brut = (Path(BAC) / "data" / "seances.json").read_text()
 verifie("aucun code d'élève dans le fichier", "ABCDEF" not in brut)

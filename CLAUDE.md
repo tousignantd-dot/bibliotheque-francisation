@@ -2649,6 +2649,24 @@ l'enseignant : lui seul ouvre une séance, et tout remonte dans son portail, sur
 la progression de ce groupe-là. Deux groupes sur un même module = deux séances,
 deux codes, deux tableaux — le code dit d'où viennent les réponses.
 
+**La direction autorise, l'enseignant choisit.** Deux gestes, et les confondre
+serait l'erreur. Ouvrir une classe sans compte est une décision
+d'établissement — elle touche à ce que l'école accepte de ne pas savoir de ses
+élèves ; s'en servir un mardi matin est une décision pédagogique, qui
+appartient à l'enseignant. Le réglage vit donc sur **l'arbre des
+organisations**, à côté de `ia`, `voix` et `depot` : champ `seance`
+(`herite` · `autorisee` · `interdite`), `seance_effective()` remonte et le
+premier réglage explicite tranche, défaut « autorisée » — ce mode collecte
+moins que le portail ordinaire, une direction qui n'a rien réglé n'a rien
+perdu. **Sur les organisations seulement** : un drapeau par enseignant ferait
+passer pour une permission ce qui est un choix, et un bouton absent
+n'aurait plus d'explication. `seance_pour_enseignant()` remonte par le centre
+de rattachement ; `/api/prof/me` rend `seanceAutorisee` pour que l'écran
+n'offre pas un bouton mort, mais **c'est la route qui garde, pas la page**.
+L'autorisation est vérifiée **à l'ouverture d'une séance, jamais à l'entrée
+d'un élève** : une direction qui ferme le mode à 10 h ne doit pas éteindre une
+classe en train de travailler.
+
 **Le pivot.** L'identité de l'élève voyage déjà par le seul paramètre `code`, et
 les vingt-sept routes qui la vérifient passent toutes par
 `validate_student_code`. Le jeton de séance emprunte ce chemin : **aucun des 87
