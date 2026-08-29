@@ -102,8 +102,23 @@ for (const slug of slugs) {
     if (ex.type !== 'write') continue;
     for (const [i, it] of (ex.items || []).entries()) {
       const trous = String(it.q || '').match(/_{3,}/g);
-      if (trous && trous.length > 1)
-        ecarts.push(`${ex.id} item ${i + 1} : ${trous.length} trous, une seule case de saisie`);
+      if (!trous || trous.length < 2) continue;
+      // Deux trous ne sont pas toujours une faute : quand la réponse attendue
+      // couvre les deux et que l'indice le dit — accept:['ne que'] avec
+      // ph:'ne … que' —, l'élève sait qu'il tape les deux morceaux dans la
+      // seule case. C'est maladroit, ce n'est pas injouable. Vérifié le
+      // 29 août 2026 sur module-n7-publicite/t1que avant de « corriger » 72
+      // items dont une partie fonctionnait : un contrôle qui a tort coûte
+      // plus cher que pas de contrôle, et cette fois il aurait fait casser
+      // des exercices sains.
+      const ph = String(it.ph || '');
+      const mots = String((it.accept && it.accept[0]) || '').trim().split(/\s+/).filter(Boolean).length;
+      // `audio` marque la dictée : les trous sont DANS les mots, et la réponse
+      // attendue est la phrase entière — huit trous pour sept mots, ce qui
+      // faisait crier le contrôle sur un exercice parfaitement jouable.
+      const couvert = it.audio || /…|\.\.\./.test(ph) || mots >= trous.length;
+      if (!couvert)
+        ecarts.push(`${ex.id} item ${i + 1} : ${trous.length} trous, une seule case, et la réponse attendue n'en couvre qu'un`);
     }
   }
 

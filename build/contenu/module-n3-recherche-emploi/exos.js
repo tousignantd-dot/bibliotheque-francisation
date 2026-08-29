@@ -144,7 +144,7 @@ const EXOS = [
      ["Ce qu'il ne faut pas dire","« N'importe quand » n'est pas une disponibilité : le patron a besoin de jours et d'heures pour faire son horaire.", ["je suis libre du lundi au vendredi, le matin"]],
    ]},
    items:[
-    {q:"Je suis libre ___ lundi ___ vendredi.", accept:["du"], ph:"du / au / de / à / le / sauf"},
+    {q:"Je suis libre ___ lundi ___ vendredi.", accept:["du au","du … au"], ph:"deux mots : du … au"},
     {q:"Je peux travailler ___ neuf heures ___ une heure.", accept:["de"], ph:"…"},
     {q:"Je suis à l'école ___ après-midi.", accept:["l'","l"], ph:"…"},
     {q:"Je travaille du mardi au samedi, ___ le jeudi.", accept:["sauf"], ph:"…"},
