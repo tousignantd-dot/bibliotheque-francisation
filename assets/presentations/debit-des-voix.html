@@ -1,0 +1,187 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Le débit des voix : ce que la mesure montre</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Newsreader:opsz,wght@6..72,400;6..72,600&family=Nunito:wght@400;600;700;800;900&display=swap">
+<link rel="stylesheet" href="../design-system/marque-francis.css">
+<link rel="icon" type="image/svg+xml" href="../design-system/marque-francis-favicon.svg">
+<style>
+:root{--ground:#F7F7F5;--card:#fff;--sunken:#FBFBFA;--ink:#17181A;--body:#3A3D40;
+  --muted:#6E7175;--line:#E4E4E0;--line-fort:#D2D2CD;--ok:#0A8F5B;--ok-bg:#E6F5EE;
+  --chaud:#C7302B;--chaud-bg:#FBEDEC;--part:#C07A08;--part-bg:#FBF2E2;
+  --acier:#1D6B8F;--acier-bg:#E7F1F7;--mono:ui-monospace,SFMono-Regular,Menlo,monospace}
+@media (prefers-color-scheme:dark){:root:not([data-theme=light]){
+  --ground:#151618;--card:#1D1F22;--sunken:#212326;--ink:#F2F2F0;--body:#CFD1D3;
+  --muted:#94979B;--line:#2E3135;--line-fort:#3D4146;--ok:#4BC48D;--ok-bg:#12291F;
+  --chaud:#EE7A73;--chaud-bg:#2E1917;--part:#E0A63F;--part-bg:#2C2213;
+  --acier:#6DAFD2;--acier-bg:#132430}}
+*{box-sizing:border-box}
+body{margin:0;background:var(--ground);color:var(--body);font-family:Nunito,system-ui,sans-serif;
+     font-size:16px;line-height:1.55}
+.c{max-width:880px;margin:0 auto;padding:0 24px}
+header.bande{background:var(--card);border-bottom:1px solid var(--line);padding:28px 0 26px}
+.sur{font-size:12px;font-weight:800;letter-spacing:.10em;text-transform:uppercase;color:var(--muted)}
+h1{font-family:Newsreader,Georgia,serif;font-weight:600;font-size:34px;line-height:1.15;margin:8px 0 12px;color:var(--ink)}
+.chapeau{margin:0;max-width:64ch}.chapeau b{color:var(--ink)}
+h2{font-family:Newsreader,Georgia,serif;font-weight:600;font-size:25px;margin:38px 0 8px;color:var(--ink)}
+p{max-width:68ch}
+code{font-family:var(--mono);font-size:.88em;background:var(--sunken);border:1px solid var(--line);
+     border-radius:4px;padding:1px 5px}
+table{width:100%;border-collapse:collapse;margin:14px 0;font-size:14px}
+th,td{text-align:left;padding:8px 10px;border-bottom:1px solid var(--line)}
+th{font-size:11px;font-weight:900;letter-spacing:.05em;text-transform:uppercase;color:var(--muted)}
+td.n{font-family:var(--mono);text-align:right;white-space:nowrap}
+tr.fort td{background:var(--chaud-bg)}
+tr.fort td.n{color:var(--chaud);font-weight:800}
+/* la barre de débit */
+.barre{position:relative;height:16px;background:var(--sunken);border:1px solid var(--line);
+       border-radius:4px;overflow:hidden;min-width:130px}
+.barre i{position:absolute;left:0;top:0;bottom:0;background:var(--acier);opacity:.85}
+.barre i.vite{background:var(--chaud)}
+.barre i.lent{background:var(--ok)}
+.enc{background:var(--card);border:1px solid var(--line);border-radius:12px;padding:16px 18px;margin:16px 0}
+.enc.cle{border-left:4px solid var(--chaud);background:var(--chaud-bg)}
+.enc.bon{border-left:4px solid var(--ok);background:var(--ok-bg)}
+.enc h3{margin:0 0 8px;font-size:18px;color:var(--ink)}
+.enc p{margin:0 0 8px}.enc p:last-child{margin-bottom:0}
+.decision{background:var(--part-bg);border:1px solid var(--part);border-radius:12px;padding:18px;margin:18px 0 28px}
+.decision h3{margin:0 0 8px;font-size:18px;color:var(--ink)}
+.opt{background:var(--card);border:1px solid var(--line-fort);border-radius:8px;padding:12px 14px;margin:10px 0 0}
+.opt b{color:var(--ink)}
+.reco{font-size:11px;font-weight:900;letter-spacing:.05em;text-transform:uppercase;color:var(--ok);margin-left:6px}
+footer{margin:34px 0 70px;padding:18px;background:var(--card);border:1px solid var(--line);border-radius:12px;font-size:14px}
+footer b{color:var(--ink)}
+</style></head>
+<body>
+
+<header class="bande"><div class="c">
+  <div class="fr-lockup fr-lockup--grand" style="margin-bottom:18px">
+    <span class="fr-nom" role="img" aria-label="francis">franc<span class="fr-i" aria-hidden="true">ı<span class="fr-point"></span></span>s</span>
+    <span class="fr-trait" aria-hidden="true"></span>
+    <span class="fr-desc">Aide à l'apprentissage du français</span>
+  </div>
+  <div class="sur">Chantier · Qualité de l'audio · 29 août 2026</div>
+  <h1>Le débit des voix : ce que la mesure montre</h1>
+  <p class="chapeau">Vous avez signalé que le niveau 4 est <b>beaucoup trop rapide</b> et que le
+  niveau 5 va, sauf quelques personnages. La mesure vous donne raison sur le fond — mais la
+  cause n'est pas celle qu'on croirait. <b>Il n'y a pas d'échelle de débit par niveau.
+  Il y a une échelle par date de production.</b></p>
+</div></header>
+
+<main class="c">
+
+<h2>La mesure</h2>
+<p>Le <b>débit d'articulation</b> : caractères divisés par la durée <i>parlée</i>, silences
+internes et de bord retirés. Sur la durée brute, « Merci. » sort à 4 c/s et une longue phrase
+à 14 sans qu'aucune ne dise rien de la vitesse réelle — c'est l'erreur qui avait fait conclure
+n'importe quoi le 25 août. <b>5 936 répliques</b> mesurées, dialogues.js et modules hérités
+compris.</p>
+
+<h2>Le même niveau, deux vitesses</h2>
+<table>
+  <tr><th>Niveau</th><th>Modules ElevenLabs</th><th></th><th>Modules Azure</th><th></th><th>Écart</th></tr>
+  <tr><td>1 et 2</td><td class="n">17,9 · 18,1</td>
+      <td><div class="barre"><i class="lent" style="width:60%"></i></div></td>
+      <td class="n">—</td><td></td><td class="n">—</td></tr>
+  <tr><td>3</td><td class="n">20,5</td>
+      <td><div class="barre"><i class="lent" style="width:68%"></i></div></td>
+      <td class="n">24,5</td>
+      <td><div class="barre"><i class="vite" style="width:82%"></i></div></td><td class="n">+20 %</td></tr>
+  <tr class="fort"><td><b>4</b></td><td class="n">20,9</td>
+      <td><div class="barre"><i class="lent" style="width:70%"></i></div></td>
+      <td class="n"><b>25,2</b></td>
+      <td><div class="barre"><i class="vite" style="width:84%"></i></div></td><td class="n">+21 %</td></tr>
+  <tr><td>5</td><td class="n">21,3</td>
+      <td><div class="barre"><i class="lent" style="width:71%"></i></div></td>
+      <td class="n">25,0</td>
+      <td><div class="barre"><i class="vite" style="width:83%"></i></div></td><td class="n">+17 %</td></tr>
+  <tr><td>6 à 8</td><td class="n">20,7 · 22,0</td>
+      <td><div class="barre"><i class="lent" style="width:71%"></i></div></td>
+      <td class="n">25,2 · 25,9</td>
+      <td><div class="barre"><i class="vite" style="width:86%"></i></div></td><td class="n">+19 %</td></tr>
+</table>
+
+<div class="enc cle">
+  <h3>La cause : Azure parle 20 % plus vite qu'ElevenLabs, à tous les niveaux</h3>
+  <p>L'écart est <b>constant</b> — il ne vient pas du contenu ni du niveau, mais du
+  fournisseur. <code>TAUX_GLOBAL</code> vaut <code>+15 %</code> dans
+  <code>build/azure_voix.py</code> : chaque réplique Azure est produite 15 % plus vite que le
+  naturel de la voix, alors qu'ElevenLabs tournait à son rythme propre.</p>
+  <p>La progression apparente 18 → 22 → 25 des niveaux 1 à 8 <b>n'est donc pas une conception
+  pédagogique</b>. C'est la proportion de modules déjà passés à Azure qui monte avec le niveau,
+  parce que les niveaux hauts ont été produits plus tard.</p>
+</div>
+
+<h2>Pourquoi le niveau 4, précisément</h2>
+<p>Parce que ses <b>dix modules les plus anciens</b> — consultation, urgence, santé, travail,
+météo, pub, logement, nouvelles, procédure, banque — ont tous été repassés à Azure. Ils tournent
+entre <b>24,0 et 26,8 c/s</b>, soit la vitesse des niveaux 7 et 8.</p>
+<table>
+  <tr><th>Module (niveau 4)</th><th></th><th>c/s</th><th>Module (niveau 4)</th><th></th><th>c/s</th></tr>
+  <tr><td>logement</td><td><div class="barre"><i class="vite" style="width:89%"></i></div></td><td class="n">26,8</td>
+      <td>procédure</td><td><div class="barre"><i class="vite" style="width:85%"></i></div></td><td class="n">25,6</td></tr>
+  <tr><td>consultation</td><td><div class="barre"><i class="vite" style="width:88%"></i></div></td><td class="n">26,5</td>
+      <td>météo</td><td><div class="barre"><i class="vite" style="width:85%"></i></div></td><td class="n">25,6</td></tr>
+  <tr><td>santé · banque</td><td><div class="barre"><i class="vite" style="width:87%"></i></div></td><td class="n">26,0</td>
+      <td>travail</td><td><div class="barre"><i class="vite" style="width:84%"></i></div></td><td class="n">25,2</td></tr>
+  <tr><td>pub</td><td><div class="barre"><i class="vite" style="width:84%"></i></div></td><td class="n">25,1</td>
+      <td>nouvelles</td><td><div class="barre"><i class="vite" style="width:80%"></i></div></td><td class="n">24,0</td></tr>
+</table>
+<p>Un élève de niveau 4 y rencontre le débit d'un niveau 8. <b>Votre oreille avait raison, et la
+première mesure vous donnait tort</b> — parce qu'elle ne lisait que les modules munis d'un
+<code>dialogues.js</code> et laissait ces dix-là dehors. La lacune est corrigée.</p>
+
+<div class="enc bon">
+  <h3>Kim, et les autres voix rapides</h3>
+  <p>Kim est portée par la voix <b>« enseignante »</b> (Sylvie), à <b>26,7 c/s</b> de médiane —
+  alors que ses partenaires du même module sont à 20 et 21. C'est le personnage le plus rapide
+  d'un module par ailleurs correct, et ce n'est pas un hasard : la voix « enseignante » est la
+  plus rapide des quatre partout dans le cours (24,7 contre 21,9 pour le narrateur).</p>
+  <p>Ironie : c'est <b>la voix des consignes</b>, celle qu'on ralentit d'habitude pour les
+  modèles à imiter.</p>
+</div>
+
+<div class="decision">
+  <h3>Décision 1 · Quel débit viser ?</h3>
+  <p>Azure obéit à un nombre, à la milliseconde près : le réglage est fiable, il suffit de
+  choisir la cible. Le paramètre est <code>TAUX_GLOBAL</code>, aujourd'hui <code>+15 %</code>.</p>
+  <div class="opt"><b>Une échelle par niveau</b> <span class="reco">recommandé</span><br>
+  Environ 18 c/s aux niveaux 1-2, 20 aux niveaux 3-4, 22 aux niveaux 5-6, 24 aux niveaux 7-8.
+  L'élève accélère avec sa progression, ce qui n'existe pas aujourd'hui. Demande une table de
+  taux par niveau, et de <b>tout régénérer</b>.</div>
+  <div class="opt"><b>Un seul taux, aligné sur ElevenLabs (~21 c/s)</b><br>
+  Ramène <code>TAUX_GLOBAL</code> autour de <code>−8 %</code>. Uniforme, simple, et le cours
+  entier sonne comme les modules que vous trouvez déjà bons. Mais aucune progression.</div>
+  <div class="opt"><b>Ne toucher que le niveau 4</b><br>
+  Le moins de travail, mais laisse le reste du cours incohérent — et vous réentendrez le
+  problème aux niveaux 3, 6, 7 et 8.</div>
+</div>
+
+<div class="decision">
+  <h3>Décision 2 · Les 42 modules encore chez ElevenLabs</h3>
+  <p>La moitié du cours n'est jamais passée à Azure. Leur débit ne se règle pas : il est figé
+  dans les fichiers, et <b>le paramètre <code>speed</code> d'ElevenLabs rend le même fichier
+  octet pour octet</b> — c'est la raison qui avait fait abandonner cette piste.</p>
+  <div class="opt"><b>Les migrer vers Azure</b> <span class="reco">recommandé</span><br>
+  C'est la seule façon d'avoir un débit réglable partout, et de faire tenir une échelle par
+  niveau. Coût de la synthèse : de l'ordre d'une dizaine de dollars pour tout le dialogue du
+  cours. Risque : les voix changent de timbre sur la moitié du cours, d'un coup.</div>
+  <div class="opt"><b>Les laisser</b><br>
+  Zéro risque immédiat, mais le cours garde deux vitesses et deux familles de voix, et l'écart
+  se remarquera d'autant plus que les modules Azure seront ralentis.</div>
+</div>
+
+<footer>
+  <b>En attente de vos réponses :</b> les <b>95 répliques refaites</b> aujourd'hui (glitchs et
+  lexique de prononciation) ne sont pas encore poussées. Il serait maladroit de les publier
+  avant de savoir si leur débit doit changer — auquel cas elles seraient refaites une seconde
+  fois.
+  <br><br>
+  <b>Mesure :</b> <code>build/debit_par_voix.py</code>, en lecture seule. Le détail par
+  réplique est dans <code>build/.debits.json</code>.
+</footer>
+
+</main></body></html>

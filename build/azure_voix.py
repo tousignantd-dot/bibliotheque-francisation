@@ -104,6 +104,68 @@ TAUX_GLOBAL = "+15%"
 TAUX_SONS = "-10%"
 
 
+# --- L'échelle de débit par niveau -------------------------------------------
+#
+# Décidée le 29 août 2026, après la mesure des 5 936 répliques
+# (`build/debit_par_voix.py`). Le constat qui l'a imposée : à `+15%`, un module
+# Azure tourne à ~25 c/s **quel que soit son niveau**, et 20 % plus vite que
+# son voisin resté chez ElevenLabs. La progression apparente 18 → 25 c/s du
+# niveau 1 au niveau 8 n'était pas une conception pédagogique, seulement la
+# proportion de modules déjà migrés, qui montait avec le niveau parce que les
+# niveaux hauts avaient été produits plus tard.
+#
+# Le débit se déduit linéairement du taux : à `+15%` on mesure 25,2 c/s, donc
+# viser T revient à poser `1 + r = 1,15 × T / 25,2`. D'où :
+#
+#     niveaux 1-2  →  18 c/s  →  -18%
+#     niveaux 3-4  →  20 c/s  →   -9%
+#     niveaux 5-6  →  22 c/s  →    0%
+#     niveaux 7-8  →  24 c/s  →  +10%
+#
+# Le naturel de la voix s'écrit `""`, **jamais `None`** : dans `ssml()`,
+# `reference is None` veut dire « prends la valeur par défaut » et retombe sur
+# TAUX_GLOBAL. Le banc d'essai du 29 août l'a pris sur le fait — les niveaux 5
+# et 6 ressortaient à 26,2 c/s, exactement comme à `+15%`, sans que rien ne le
+# signale. La chaîne vide, elle, est fausse au test de vérité : aucune balise
+# `<prosody>` n'est posée.
+ECHELLE_NIVEAU = {1: "-18%", 2: "-18%", 3: "-9%", 4: "-9%",
+                  5: "",     6: "",     7: "+10%", 8: "+10%"}
+
+
+def niveau(chemin):
+    """Le niveau du module auquel appartient ce fichier, ou None.
+
+    Se lit sur le chemin — `assets/interactive/<slug>/<bloc>/line_NN.mp3` —
+    comme `famille()` se lit sur le nom. Même raison : les 110 générateurs ne
+    le disent pas, et les rouvrir coûterait plus que ça ne rapporterait.
+    """
+    try:
+        parties = pathlib.Path(chemin).resolve().parts
+        i = parties.index("interactive")
+        slug = parties[i + 1]
+    except (ValueError, IndexError):
+        return None
+    import sys as _s
+    _s.path.insert(0, str(RACINE / "build" / "powerpoints"))
+    try:
+        from modules import MODULES
+    except ImportError:
+        return None
+    return MODULES.get(slug, {}).get("niveau")
+
+
+def taux_dialogue(chemin):
+    """Le taux à poser sur une réplique, d'après le niveau de son module.
+
+    Un module hors registre — un atelier, un module neuf pas encore inscrit —
+    retombe sur `TAUX_GLOBAL`, qui reste la valeur par défaut du dépôt.
+    """
+    n = niveau(chemin)
+    if not n or n not in ECHELLE_NIVEAU:
+        return TAUX_GLOBAL
+    return ECHELLE_NIVEAU[n]
+
+
 def famille(chemin):
     """« dialogue » ou « sons », d'après le nom du fichier.
 
@@ -150,6 +212,125 @@ def cle_region():
             or v.get("AZURE_SPEECH_REGION") or REGION_DEFAUT)
 
 
+# --- Lexique de prononciation ------------------------------------------------
+#
+# Décidé le 29 août 2026, après l'écoute des niveaux 1 et 2. Azure lit
+# correctement le français courant, mais bute sur trois familles : les sigles
+# qu'il épelle au lieu de les dire, les noms propres dont il prononce la
+# consonne finale, et les lettres isolées, qu'il bascule en anglais.
+#
+# La correction passe par `<sub alias>` : le texte **affiché à l'élève** ne
+# change pas, seul ce qui est envoyé à la synthèse est réécrit. C'est ce qui
+# permet de garder « NIP » au tableau et d'entendre « nip ».
+#
+# Règle de sûreté : **jamais de substitution sur un mot du français courant.**
+# « point » revient dans 39 répliques de 17 modules, presque toujours au sens
+# ordinaire (« point de service ») — il est donc traité par PHRASES, sur son
+# contexte exact, et non par LEXIQUE.
+
+LEXIQUE = {                      # mot entier → ce que la voix doit dire
+    "NIP": "nipe",               # entendu « ni-pé » ou « enne-i-pé »
+    "Pelchat": "Pelcha",         # le t final ne se prononce pas
+}
+
+PHRASES = {                      # suite exacte → sa lecture, contexte compris
+    "a v point": "a vé point",           # l'abréviation « av. » épelée
+    "a p p point": "a pé pé point",       # « app. »
+    "T é l point": "té é elle point",     # « tél. »
+}
+
+# Les numéros civiques se disent par groupes de deux au Québec : le 3120 est
+# « trente et un vingt », jamais « trois mille cent vingt ». Seuls les nombres
+# **suivis d'une voie** sont concernés — sept dans tout le cours. Les numéros
+# de local, de téléphone et les années gardent leur lecture ordinaire.
+ADRESSES = {
+    "2140": "vingt et un quarante",
+    "3120": "trente et un vingt",
+    "3420": "trente-quatre vingt",
+    "4520": "quarante-cinq vingt",
+    "5680": "cinquante-six quatre-vingts",
+    "7412": "soixante-quatorze douze",
+}
+VOIE = r"(?=,?\s*(?:rue|avenue|av\.|boulevard|boul\.|chemin|place|côte)\b)"
+
+# Les noms français des lettres. Sans eux, une épellation part à l'anglaise :
+# le Y de « Yusuf. Y - U - S - U - F. » sortait « ouaï ». La docstring de
+# ssml() affirmait que le xml:lang suffisait — l'écoute l'a démentie.
+LETTRES = {
+    "A": "a", "B": "bé", "C": "cé", "D": "dé", "E": "eu", "F": "effe",
+    "G": "gé", "H": "ache", "I": "i", "J": "ji", "K": "ka", "L": "elle",
+    "M": "emme", "N": "enne", "O": "o", "P": "pé", "Q": "ku", "R": "erre",
+    "S": "esse", "T": "té", "U": "u", "V": "vé", "W": "double vé",
+    "X": "iks", "Y": "i grec", "Z": "zède",
+    # Les majuscules accentuées épellent des noms bien réels — Traoré, café.
+    # Sans elles, la suite « T-R-A-O-R-É » se coupait avant le É, qui repartait
+    # tout seul et à l'anglaise.
+    "É": "e accent aigu", "È": "e accent grave", "Ê": "e accent circonflexe",
+    "À": "a accent grave", "Ç": "c cédille", "Ô": "o accent circonflexe",
+    "Î": "i accent circonflexe", "Û": "u accent circonflexe",
+}
+# Une suite d'au moins deux lettres isolées : « D - A - O - U - D »,
+# « P, A, P, I, N, E, A, U ». Le mot qui précède n'est pas touché.
+# « ou » et « et » relient les lettres d'une liste — « P, M ou G » sur une
+# étiquette de vêtement. Sans eux, le G restait dehors et sortait « djî ».
+_L = "[A-ZÀÇÈÉÊÎÔÛ]"
+SUITE_LETTRES = re.compile(
+    r"(?:\b%s\b[ ]*(?:[-–,][ ]*|,?[ ]+(?:ou|et)[ ]+)){1,}\b%s\b" % (_L, _L))
+
+
+def _sub(texte, alias):
+    """La balise SSML qui fait dire `alias` là où le texte porte `texte`."""
+    return '<sub alias="%s">%s</sub>' % (html.escape(alias, quote=True),
+                                         html.escape(texte))
+
+
+def prononce(texte):
+    """Le texte, préparé pour la voix : échappé, et corrigé par le lexique.
+
+    Rend du SSML, donc **déjà échappé** — ne pas le repasser dans html.escape.
+    L'ordre compte : les suites de lettres d'abord, parce qu'elles contiennent
+    des majuscules isolées qu'un lexique de mots ne doit pas voir passer.
+    """
+    morceaux, reste = [], texte
+
+    def decoupe(motif, rendu):
+        nonlocal morceaux, reste
+        sortie, pos = [], 0
+        for m in re.finditer(motif, reste):
+            sortie.append((reste[pos:m.start()], rendu(m)))
+            pos = m.end()
+        sortie.append((reste[pos:], None))
+        return sortie
+
+    # 1. les épellations
+    parts, pos = [], 0
+    for m in SUITE_LETTRES.finditer(texte):
+        parts.append(html.escape(texte[pos:m.start()]))
+        # Ne prendre que les lettres **isolées** : « ou » et « et » relient
+        # la liste, ils ne s'épellent pas. Les chercher au motif, et non par
+        # isalpha(), qui rendait « pé emme o u gé » pour « P, M ou G ».
+        lu = " ".join(LETTRES.get(c, c)
+                      for c in re.findall(r"\b%s\b" % _L, m.group(0)))
+        parts.append(_sub(m.group(0), lu))
+        pos = m.end()
+    parts.append(html.escape(texte[pos:]))
+    out = "".join(parts)
+
+    # 2. les phrases à contexte, puis les mots du lexique, puis les adresses.
+    #    On travaille sur du texte déjà échappé : aucun de ces motifs ne
+    #    contient de caractère que l'échappement aurait transformé, et les
+    #    balises déjà posées ne contiennent aucun des motifs cherchés.
+    for phrase, lu in PHRASES.items():
+        out = out.replace(html.escape(phrase), _sub(phrase, lu))
+    for mot, lu in LEXIQUE.items():
+        out = re.sub(r"\b%s\b" % re.escape(html.escape(mot)),
+                     lambda m, lu=lu, mot=mot: _sub(mot, lu), out)
+    for num, lu in ADRESSES.items():
+        out = re.sub(r"\b%s\b%s" % (num, VOIE),
+                     lambda m, lu=lu, num=num: _sub(num, lu), out)
+    return out
+
+
 def ssml(texte, role, palier=None, epeler=None, pause_lettres="280ms",
          reference=None):
     """Le document SSML d'un extrait.
@@ -159,8 +340,14 @@ def ssml(texte, role, palier=None, epeler=None, pause_lettres="280ms",
     (« faites une pause entre chaque lettre »). On n'emploie pas
     `<say-as interpret-as="characters">`, qui enchaîne les lettres sans
     respirer : mesuré à 3,46 s contre 5,52 s pour la version à silences sur le
-    même prénom. Les lettres nues ne posent pas le problème de langue qu'elles
-    avaient chez ElevenLabs, le `xml:lang` du document les couvre.
+    même prénom.
+
+    Cette docstring a longtemps affirmé que « les lettres nues ne posent pas le
+    problème de langue qu'elles avaient chez ElevenLabs, le `xml:lang` du
+    document les couvre ». **C'est faux** : l'écoute des niveaux 1 et 2, le
+    29 août 2026, a trouvé le Y de « Yusuf. Y - U - S - U - F. » dit « ouaï »
+    et l'épellation de « Papineau » entièrement anglaise. Les lettres passent
+    désormais par `LETTRES`, dans `prononce()`.
     """
     v = VOIX[role]
     if epeler:
@@ -168,7 +355,7 @@ def ssml(texte, role, palier=None, epeler=None, pause_lettres="280ms",
         corps = '%s<break time="400ms"/>%s' % (lettres,
                                                html.escape(epeler.capitalize()))
     else:
-        corps = html.escape(texte)
+        corps = prononce(texte)
 
     # `rate` du palier et `rate` du rôle se cumulent : on les pose sur deux
     # balises imbriquées plutôt que d'additionner des pourcentages, qui ne
@@ -325,7 +512,8 @@ def parle_compat(cle, texte, voix, chemin, avant=None, apres=None,
         try:
             # La famille se décide ici et nulle part ailleurs : les 110
             # générateurs passent tous par cette porte.
-            ref = TAUX_SONS if famille(chemin) == "sons" else TAUX_GLOBAL
+            ref = (TAUX_SONS if famille(chemin) == "sons"
+                   else taux_dialogue(chemin))
             parle(texte, role, chemin, palier=palier, epeler=epeler,
                   reference=ref)
             return True

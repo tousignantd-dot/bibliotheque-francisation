@@ -79,7 +79,7 @@ h1{font-family:Newsreader,Georgia,serif;font-weight:600;font-size:34px;line-heig
      color:var(--muted);margin:16px 0 8px;padding-bottom:6px;border-bottom:1px solid var(--line)}
 
 /* --- une réplique --- */
-.rep{display:grid;grid-template-columns:auto 1fr auto;gap:12px;align-items:start;
+.rep{display:grid;grid-template-columns:auto 1fr auto;gap:6px 12px;align-items:start;
      padding:9px 0;border-bottom:1px solid var(--line)}
 .rep:last-child{border-bottom:none}
 .jouer{width:38px;height:38px;border-radius:999px;border:1px solid var(--line-fort);
@@ -104,6 +104,13 @@ h1{font-family:Newsreader,Georgia,serif;font-weight:600;font-size:34px;line-heig
 .v[data-v=chiffre][aria-pressed=true]{background:var(--acier)}
 .v[data-v=mot][aria-pressed=true]{background:#8C2F6B}
 .rep[data-signale=oui]{background:var(--sunken)}
+.quoi{grid-column:2/4;display:flex;gap:10px;align-items:center;margin-top:8px}
+.quoi span{font-size:11px;font-weight:900;letter-spacing:.05em;text-transform:uppercase;
+     color:var(--muted);white-space:nowrap}
+.quoi input{flex:1;font:inherit;font-size:14px;padding:7px 10px;color:var(--ink);
+     border:1px solid var(--line-fort);border-radius:8px;background:var(--card)}
+.quoi input:focus{outline:2px solid var(--ok);outline-offset:1px;border-color:var(--ok)}
+.rep[data-mot=manquant] .quoi input{border-color:var(--part);background:var(--part-bg)}
 
 /* --- barre du bas --- */
 .pied{position:fixed;left:0;right:0;bottom:0;z-index:30;background:var(--card);
@@ -112,6 +119,7 @@ h1{font-family:Newsreader,Georgia,serif;font-weight:600;font-size:34px;line-heig
 .pied .rang{display:flex;gap:10px;align-items:center;flex-wrap:wrap}
 .bilan{font-size:13px;font-weight:700;color:var(--body)}
 .bilan b{color:var(--ink)}
+.bilan .alerte{color:var(--part)}
 .btn{font:inherit;font-size:14px;font-weight:800;padding:9px 16px;cursor:pointer;
      border:1px solid var(--ink);border-radius:8px;background:var(--ink);color:var(--ground)}
 .btn-2{background:var(--card);color:var(--ink)}
@@ -134,6 +142,9 @@ h1{font-family:Newsreader,Georgia,serif;font-weight:600;font-size:34px;line-heig
       (le hoquet en fin de fichier), <b>pauses</b> (le silence entre les phrases),
       <b>chiffre mal dit</b> (un nombre, une heure, un prix, une adresse) ou
       <b>mot mal dit</b> (le reste — liaison, accent, mot avalé).
+      Pour ces deux-là, <b>écrivez le mot</b> : un nom ou un nombre mal lu l'est
+      presque toujours partout où il revient, et le corriger une fois le corrige
+      dans les 87 modules.
       Les verdicts restent dans ce navigateur ; le bouton du bas les exporte en JSON,
       qui sert ensuite à ne régénérer que les fichiers signalés.</p>
   </div>
@@ -264,7 +275,13 @@ function ligne(d) {
     <div class="verdicts">${VERDICTS.map(([cle, nom]) =>
       `<button type="button" class="v" data-v="${cle}"
          aria-pressed="${v.includes(cle)}">${nom}</button>`).join('')}
-    </div></div>`;
+    </div>
+    ${(v.includes('mot') || v.includes('chiffre')) ? `<label class="quoi">
+       <span>Quoi, exactement ?</span>
+       <input type="text" value="${echap(n.mot || '')}"
+              placeholder="le mot ou le nombre entendu de travers — « Bélanger », « 890 », « 14 h 30 »" />
+     </label>` : ''}
+  </div>`;
 }
 
 /* --- écoute --- */
@@ -289,18 +306,36 @@ document.addEventListener('click', e => {
     const i = n.v.indexOf(cle);
     if (i < 0) n.v.push(cle); else n.v.splice(i, 1);
     if (!n.v.length) delete notes[id];
-    b.setAttribute('aria-pressed', i < 0);
-    if (notes[id]) rep.setAttribute('data-signale', 'oui'); else rep.removeAttribute('data-signale');
+    const d = DONNEES.find(x => x.id === id);
+    rep.outerHTML = ligne(d);
+    const frais = document.querySelector(`.rep[data-id="${CSS.escape(id)}"] .quoi input`);
+    if (frais) frais.focus();
     sauve(); bilan();
   }
 });
 
+document.addEventListener('input', e => {
+  const c = e.target.closest('.quoi input');
+  if (!c) return;
+  const id = c.closest('.rep').dataset.id;
+  if (!notes[id]) return;
+  notes[id].mot = c.value.trim();
+  if (!notes[id].mot) delete notes[id].mot;
+  sauve(); bilan();
+});
+
 /* --- bilan et export --- */
+function aRemplir() {
+  return Object.keys(notes).filter(i =>
+    (notes[i].v.includes('mot') || notes[i].v.includes('chiffre')) && !notes[i].mot).length;
+}
+
 function bilan() {
   const ids = Object.keys(notes);
   const par = c => ids.filter(i => notes[i].v.includes(c)).length;
   $('#bilan').innerHTML = ids.length
     ? `<b>${ids.length}</b> signalée${ids.length > 1 ? 's' : ''} · ${VERDICTS.map(([c, n]) => `${par(c)} ${n}`).join(' · ')}`
+      + (aRemplir() ? ` · <b class="alerte">${aRemplir()} sans le mot</b>` : '')
     : 'Aucune réplique signalée pour l\'instant.';
 }
 
@@ -308,7 +343,8 @@ $('#export').addEventListener('click', () => {
   const sortie = Object.keys(notes).map(id => {
     const d = DONNEES.find(x => x.id === id) || {};
     return { module: d.module, bloc: d.bloc, rang: d.rang, perso: d.perso,
-             texte: d.texte, src: id, duree: d.duree, cps: d.cps, verdicts: notes[id].v };
+             texte: d.texte, src: id, duree: d.duree, cps: d.cps,
+             verdicts: notes[id].v, mot: notes[id].mot || null };
   });
   const texte = JSON.stringify(sortie, null, 2);
   const a = document.createElement('a');

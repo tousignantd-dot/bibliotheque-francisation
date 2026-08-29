@@ -1,0 +1,259 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Prononciation : trois décisions</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Newsreader:opsz,wght@6..72,400;6..72,600&family=Nunito:wght@400;600;700;800;900&display=swap">
+<link rel="stylesheet" href="../design-system/marque-francis.css">
+<link rel="icon" type="image/svg+xml" href="../design-system/marque-francis-favicon.svg">
+<style>
+:root{--ground:#F7F7F5;--card:#fff;--sunken:#FBFBFA;--ink:#17181A;--body:#3A3D40;
+      --muted:#6E7175;--line:#E4E4E0;--line-fort:#D2D2CD;
+      --ok:#0A8F5B;--ok-bg:#E6F5EE;--chaud:#C7302B;--chaud-bg:#FBEDEC;
+      --part:#C07A08;--part-bg:#FBF2E2;--acier:#1D6B8F;--acier-bg:#E7F1F7;
+      --mono:ui-monospace,SFMono-Regular,Menlo,monospace}
+@media (prefers-color-scheme:dark){:root:not([data-theme=light]){
+      --ground:#151618;--card:#1D1F22;--sunken:#212326;--ink:#F2F2F0;--body:#CFD1D3;
+      --muted:#94979B;--line:#2E3135;--line-fort:#3D4146;
+      --ok:#4BC48D;--ok-bg:#12291F;--chaud:#EE7A73;--chaud-bg:#2E1917;
+      --part:#E0A63F;--part-bg:#2C2213;--acier:#6DAFD2;--acier-bg:#132430}}
+*{box-sizing:border-box}
+body{margin:0;background:var(--ground);color:var(--body);
+     font-family:Nunito,system-ui,sans-serif;font-size:16px;line-height:1.55}
+.c{max-width:860px;margin:0 auto;padding:0 24px}
+header.bande{background:var(--card);border-bottom:1px solid var(--line);padding:28px 0 26px}
+.sur{font-size:12px;font-weight:800;letter-spacing:.10em;text-transform:uppercase;color:var(--muted)}
+h1{font-family:Newsreader,Georgia,serif;font-weight:600;font-size:34px;line-height:1.15;
+   margin:8px 0 12px;color:var(--ink)}
+.chapeau{margin:0;max-width:64ch}.chapeau b{color:var(--ink)}
+h2{font-family:Newsreader,Georgia,serif;font-weight:600;font-size:25px;margin:38px 0 6px;color:var(--ink)}
+h2 .n{color:var(--muted);font-size:18px;margin-right:8px}
+.intro{margin:0 0 16px;max-width:66ch}
+code,.m{font-family:var(--mono);font-size:.88em;background:var(--sunken);
+     border:1px solid var(--line);border-radius:4px;padding:1px 5px}
+/* bilan */
+.bilan{display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:12px;margin:22px 0}
+.tuile{background:var(--card);border:1px solid var(--line);border-radius:10px;padding:14px}
+.tuile .gros{font-size:30px;font-weight:900;color:var(--ink);line-height:1}
+.tuile .quoi{font-size:13px;color:var(--muted);margin-top:4px}
+.tuile.vert{border-left:4px solid var(--ok)}
+.tuile.ambre{border-left:4px solid var(--part)}
+.tuile.rouge{border-left:4px solid var(--chaud)}
+/* cas */
+.cas{background:var(--card);border:1px solid var(--line);border-radius:12px;
+     padding:16px 18px;margin:0 0 12px}
+.cas h3{font-size:17px;margin:0 0 4px;color:var(--ink);display:flex;gap:10px;align-items:baseline;flex-wrap:wrap}
+.portee{font-size:11px;font-weight:900;letter-spacing:.05em;text-transform:uppercase;
+     padding:3px 9px;border-radius:999px;background:var(--acier-bg);color:var(--acier)}
+.portee.large{background:var(--part-bg);color:var(--part)}
+.dit{display:grid;grid-template-columns:auto 1fr;gap:4px 12px;margin:10px 0 0;font-size:15px}
+.dit dt{font-size:11px;font-weight:900;letter-spacing:.05em;text-transform:uppercase;
+     color:var(--muted);padding-top:3px;white-space:nowrap}
+.dit dd{margin:0;color:var(--ink)}
+.dit .faux{color:var(--chaud)}
+.dit .vrai{color:var(--ok)}
+.note{font-size:14px;color:var(--body);margin:10px 0 0}
+/* décision */
+.decision{background:var(--part-bg);border:1px solid var(--part);border-radius:12px;
+     padding:18px;margin:16px 0 26px}
+.decision h3{margin:0 0 8px;font-size:17px;color:var(--ink)}
+.decision .q{font-weight:800;color:var(--ink)}
+.opt{background:var(--card);border:1px solid var(--line-fort);border-radius:8px;
+     padding:12px 14px;margin:10px 0 0}
+.opt b{color:var(--ink)}
+.opt .reco{font-size:11px;font-weight:900;letter-spacing:.05em;text-transform:uppercase;
+     color:var(--ok);margin-left:6px}
+table{width:100%;border-collapse:collapse;margin:12px 0;font-size:14px}
+th,td{text-align:left;padding:7px 10px;border-bottom:1px solid var(--line);vertical-align:top}
+th{font-size:11px;font-weight:900;letter-spacing:.05em;text-transform:uppercase;color:var(--muted)}
+td.n{font-family:var(--mono);white-space:nowrap}
+footer{margin:34px 0 70px;padding:18px;background:var(--card);border:1px solid var(--line);
+     border-radius:12px;font-size:14px}
+footer b{color:var(--ink)}
+.ok-bloc{background:var(--ok-bg);border:1px solid var(--ok);border-radius:12px;padding:16px 18px;margin:14px 0}
+.ok-bloc b{color:var(--ink)}
+</style>
+</head>
+<body>
+
+<header class="bande"><div class="c">
+  <div class="fr-lockup fr-lockup--grand" style="margin-bottom:18px">
+    <span class="fr-nom" role="img" aria-label="francis">franc<span class="fr-i" aria-hidden="true">ı<span class="fr-point"></span></span>s</span>
+    <span class="fr-trait" aria-hidden="true"></span>
+    <span class="fr-desc">Aide à l'apprentissage du français</span>
+  </div>
+  <div class="sur">Chantier · Qualité de l'audio · 29 août 2026</div>
+  <h1>Prononciation : trois décisions</h1>
+  <p class="chapeau">Vous avez écouté les niveaux 1 et 2 et posé <b>69 verdicts</b>. La plupart
+  se règlent sans vous. Mais trois questions touchent à ce que l'élève entend <b>dans les
+  87 modules</b>, y compris ceux que vous n'avez pas encore écoutés — et celles-là vous
+  reviennent.</p>
+</div></header>
+
+<main class="c">
+
+<div class="bilan">
+  <div class="tuile vert"><div class="gros">19</div><div class="quoi">glitchs déjà réparés par le rognage — vous les aviez marqués avant</div></div>
+  <div class="tuile rouge"><div class="gros">30</div><div class="quoi">glitchs à régénérer — la syllabe finale manque</div></div>
+  <div class="tuile ambre"><div class="gros">18</div><div class="quoi">mots et chiffres mal dits</div></div>
+  <div class="tuile"><div class="gros">2</div><div class="quoi">glitchs d'un autre type, que ma mesure ne voyait pas</div></div>
+</div>
+
+<p class="intro">Votre oreille et la mesure s'accordent à <b>96 %</b> : sur vos 51 « glitch »,
+49 étaient déjà repérés par <code>build/fin_de_fichier.py</code>. Les deux rescapés portent
+une signature différente — un claquement <b>40 ms avant la fin</b>, suivi d'une extinction
+normale. J'élargirai le détecteur ; c'est un réglage, pas une décision.</p>
+
+<h2><span class="n">1.</span> Ce qui se règle sans vous</h2>
+<div class="ok-bloc">
+  <p style="margin:0 0 10px"><b>32 fichiers à régénérer, tels quels.</b> Aucun changement de
+  texte : la voix a simplement mal tiré. Cela couvre les 30 glitchs mesurés, plus deux cas
+  que vous avez décrits et que je range ici :</p>
+  <table>
+    <tr><th>Réplique</th><th>Ce que vous entendez</th><th>Pourquoi c'est un simple retirage</th></tr>
+    <tr><td>« Qu'est-ce qui est écrit ? »</td><td>« qu'est-ce <b>que</b> qui est écrit »</td>
+        <td>Azure a inséré une syllabe. Le texte est correct.</td></tr>
+    <tr><td>« Mille neuf cent quatre-vingt-douze. »</td><td>mal dit</td>
+        <td>Le nombre est <b>déjà</b> écrit en toutes lettres. Rien à corriger dans le texte.</td></tr>
+  </table>
+  <p class="note" style="margin-bottom:0">Coût : quelques cents. Je ne vous en reparle que
+  pour dire quand c'est fait.</p>
+</div>
+
+<h2><span class="n">2.</span> Ce qui demande votre jugement</h2>
+<p class="intro">Sept mots reviennent ailleurs dans le cours. Les corriger un par un les
+laisserait ressortir au niveau suivant. La mécanique que je propose est un
+<b>lexique de prononciation</b> : une table dans <code>build/azure_voix.py</code> qui
+réécrit le texte <b>envoyé à Azure</b>, jamais celui qui s'affiche.
+L'élève lit « NIP », la voix dit « nip ». C'est la balise <code>&lt;sub alias&gt;</code>
+du SSML, faite pour ça.</p>
+
+<div class="cas">
+  <h3>NIP <span class="portee">5 répliques · 2 modules</span></h3>
+  <dl class="dit">
+    <dt>On entend</dt><dd class="faux">« ni-pé », ou « enne-i-pé »</dd>
+    <dt>Il faut</dt><dd class="vrai">« nip », comme un mot</dd>
+    <dt>Correction</dt><dd><code>&lt;sub alias="nipe"&gt;NIP&lt;/sub&gt;</code></dd>
+  </dl>
+</div>
+
+<div class="cas">
+  <h3>Pelchat <span class="portee">6 répliques · 2 modules</span></h3>
+  <dl class="dit">
+    <dt>On entend</dt><dd class="faux">le <b>t</b> final prononcé</dd>
+    <dt>Il faut</dt><dd class="vrai">« Pelcha »</dd>
+    <dt>Correction</dt><dd><code>&lt;sub alias="Pelcha"&gt;Pelchat&lt;/sub&gt;</code></dd>
+  </dl>
+  <p class="note">Revient au <b>niveau 8</b> avec « Marjolaine Pelchat » — que vous n'avez pas
+  encore écouté. C'est exactement le cas que le lexique évite de redécouvrir dans trois semaines.</p>
+</div>
+
+<div class="cas">
+  <h3>« point », dans les abréviations <span class="portee">cas ciblés</span></h3>
+  <dl class="dit">
+    <dt>On entend</dt><dd class="faux">« point » à l'anglaise, dans « a v point », « t é l point »</dd>
+    <dt>Il faut</dt><dd class="vrai">le mot français</dd>
+  </dl>
+  <p class="note"><b>Attention :</b> « point » apparaît dans <b>39 répliques de 17 modules</b>,
+  mais presque toujours au sens ordinaire (« point de service »). Une substitution globale
+  serait une faute. Je ne corrige que les répliques où il suit une abréviation épelée.</p>
+</div>
+
+<div class="cas">
+  <h3>« moins vingt » <span class="portee">1 réplique</span></h3>
+  <dl class="dit">
+    <dt>On entend</dt><dd class="faux">à l'anglaise</dd>
+    <dt>Correction</dt><dd>balise <code>&lt;lang xml:lang="fr-CA"&gt;</code> autour du groupe</dd>
+  </dl>
+</div>
+
+<div class="cas">
+  <h3>« 145 », « 214 » — inaudibles <span class="portee">2 répliques</span></h3>
+  <p class="note">Ce n'est pas une erreur de prononciation mais d'articulation : le nombre est
+  avalé. Un simple retirage suffit le plus souvent. Si le second tirage est aussi mauvais,
+  je ralentirai ces deux répliques seules.</p>
+</div>
+
+<div class="decision">
+  <h3>Décision 1 · Adopter le lexique de prononciation ?</h3>
+  <p class="q">Une table de substitutions appliquée à toute synthèse, invisible pour l'élève.</p>
+  <div class="opt"><b>Oui</b> <span class="reco">recommandé</span><br>
+  Un mot corrigé une fois l'est dans les 87 modules, y compris ceux produits plus tard.
+  Le risque : une substitution trop large abîme un mot ordinaire — d'où la règle
+  « jamais de substitution globale sur un mot du français courant ».</div>
+  <div class="opt"><b>Non — corriger réplique par réplique</b><br>
+  Plus sûr sur le coup, mais chaque nouveau module rejouera les mêmes erreurs, et vous les
+  réentendrez.</div>
+</div>
+
+<h2><span class="n">3.</span> Comment lire une adresse au Québec</h2>
+<p class="intro">C'est la question qui porte le plus loin : <b>72 répliques dans 31 modules</b>
+contiennent un nombre de trois ou quatre chiffres.</p>
+
+<div class="cas">
+  <h3>« J'habite au 3120, avenue Papineau »</h3>
+  <dl class="dit">
+    <dt>On entend</dt><dd class="faux">« trente cent vingt »</dd>
+    <dt>Vous attendiez</dt><dd class="vrai">« trente et un vingt »</dd>
+  </dl>
+  <p class="note">Même chose pour « 4520, rue Bélanger ». Azure lit les nombres comme des
+  quantités ; au Québec, une adresse se dit par groupes de deux.</p>
+</div>
+
+<div class="decision">
+  <h3>Décision 2 · Quelle lecture pour les adresses ?</h3>
+  <p class="q">Ce que l'élève doit apprendre à reconnaître à l'oral — et devra dire lui-même
+  au guichet.</p>
+  <div class="opt"><b>Usage québécois : « trente et un vingt »</b> <span class="reco">recommandé</span><br>
+  C'est ce qu'il entendra dans la vraie vie, et le cours prépare à la vraie vie.
+  Demande un alias par adresse — une trentaine de cas, écrits à la main, vérifiables.</div>
+  <div class="opt"><b>Lecture arithmétique : « trois mille cent vingt »</b><br>
+  Plus proche de l'écrit et plus facile à relier au nombre affiché, mais l'élève
+  n'entendra jamais ça au comptoir.</div>
+  <div class="opt"><b>Chiffre par chiffre : « trois, un, deux, zéro »</b><br>
+  Sans ambiguïté, mais artificiel — personne ne dicte une adresse comme ça au Québec.</div>
+</div>
+
+<h2><span class="n">4.</span> Épeler en français</h2>
+<div class="cas">
+  <h3>Les lettres sortent à l'anglaise <span class="portee large">14 répliques · 10 modules</span></h3>
+  <dl class="dit">
+    <dt>Vos exemples</dt><dd>« Daoud. D - A - O - U - D. » · « Yusuf. Y - U - S - U - F. » ·
+      « Papineau. P, A, P, I, N, E, A, U. »</dd>
+    <dt>On entend</dt><dd class="faux">le <b>Y</b> dit « ouaï » ou « i » — l'épellation bascule en anglais</dd>
+    <dt>Il faut</dt><dd class="vrai">« i grec »</dd>
+  </dl>
+  <p class="note">Le code porte déjà une note affirmant que « les lettres nues ne posent pas
+  le problème de langue qu'elles avaient chez ElevenLabs, le <code>xml:lang</code> les couvre ».
+  <b>Votre écoute la dément.</b> Je corrigerai cette note en même temps que le code —
+  c'est une leçon qui vaut d'être gardée juste.</p>
+</div>
+
+<div class="decision">
+  <h3>Décision 3 · Forcer les noms de lettres français ?</h3>
+  <p class="q">Écrire chaque lettre en toutes lettres dans le texte envoyé à Azure —
+  <span class="m">Y</span> devient <span class="m">i grec</span>, <span class="m">W</span>
+  devient <span class="m">double vé</span>, <span class="m">G</span> devient
+  <span class="m">gé</span>.</p>
+  <div class="opt"><b>Oui, pour toutes les épellations</b> <span class="reco">recommandé</span><br>
+  L'épellation est une compétence évaluée du programme : une lettre dite à l'anglaise
+  enseigne l'erreur. 14 répliques concernées, plus toutes les futures.</div>
+  <div class="opt"><b>Seulement les lettres qui dérapent (Y, W, G, J)</b><br>
+  Moins d'écriture, mais il faudra revenir dès qu'une autre lettre déraille.</div>
+</div>
+
+<footer>
+  <b>Ce que je fais dès que vous tranchez :</b> j'écris le lexique, je vous montre la liste
+  complète des substitutions <i>avant</i> de synthétiser, puis une seule passe Azure couvre
+  les 32 retirages et tous les mots corrigés — dans les 87 modules, pas seulement aux
+  niveaux 1 et 2. Je remesure, je pousse, et vous vérifiez un échantillon à l'oreille.
+  <br><br>
+  <b>Rien n'est modifié pour l'instant.</b> Le relevé de votre écoute est conservé, et les
+  19 glitchs que le rognage a déjà réparés sont en ligne depuis ce matin.
+</footer>
+
+</main>
+</body></html>
