@@ -1,0 +1,592 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Derrière les modules</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Nunito:wght@600;700;800;900&family=IBM+Plex+Sans:wght@400;500;600;700&family=IBM+Plex+Mono:wght@400;500;600&display=swap">
+<style>
+:root{
+  --sol:#FFFFFF; --papier:#FAFAF8; --encre:#17181A; --texte:#3A3D40; --gris:#6E7175;
+  --filet:#D0CFCA; --filet-fin:#E8E7E2;
+  --ambre:#B45309; --ambre-pale:#FBEEDC; --acier:#1D6B8F; --acier-pale:#E7F0F6;
+  --vert:#0A8F5B; --vert-pale:#E6F5EE; --mauve:#6B4FBB; --rouge:#B91C1C;
+}
+*{box-sizing:border-box}
+body{
+  margin:0;background:var(--sol);color:var(--texte);
+  font-family:'IBM Plex Sans','Helvetica Neue',Arial,sans-serif;
+  font-size:15px;line-height:1.5;-webkit-font-smoothing:antialiased;
+}
+h1,h2,h3{margin:0;font-family:'Nunito','Arial Rounded MT Bold',sans-serif;color:var(--encre);text-wrap:balance}
+p{margin:0}
+b,strong{font-weight:700;color:var(--encre)}
+code,.mono{font-family:'IBM Plex Mono',ui-monospace,Menlo,monospace}
+
+/* ── barre de marque ─────────────────────────────── */
+.fr-barre{background:#FFF;border-bottom:2px solid var(--mauve);padding:14px 40px}
+.fr-lockup{display:inline-flex;align-items:baseline;gap:16px;color:#17181A}
+.fr-nom{font-family:'Nunito',sans-serif;font-weight:900;font-size:28px;letter-spacing:-.035em;line-height:1;position:relative;display:inline-block}
+.fr-pt{position:absolute;top:2px;left:calc(50% + 1px);width:7px;height:7px;border-radius:50%;background:var(--mauve)}
+.fr-trait{width:1px;height:24px;background:#C8C7C2;align-self:center}
+.fr-desc{font-size:14px;color:#4B4F52}
+
+/* ── enveloppe ───────────────────────────────────── */
+.page{max-width:1040px;margin:0 auto;padding:0 40px 96px}
+.eyebrow{font-size:11px;font-weight:600;letter-spacing:.14em;text-transform:uppercase;color:var(--gris)}
+.rule{border-top:1px solid var(--encre);height:0;margin:0 0 10px}
+.bloc{padding-top:58px}
+
+/* ── titre ───────────────────────────────────────── */
+.hero{display:grid;grid-template-columns:340px 1fr;gap:48px;padding:72px 0 8px;align-items:end}
+.hero h1{font-size:60px;font-weight:400;line-height:.94;letter-spacing:-.03em}
+.hero h1 span{display:block;font-weight:900}
+.hero__sous{border-top:1px solid var(--encre);padding-top:14px;
+  font-family:'Nunito',sans-serif;font-size:20px;line-height:1.35;color:var(--encre);font-weight:600}
+.hero__sous b{font-weight:900}
+.hero__chiffres{display:flex;gap:32px;flex-wrap:wrap;margin-top:18px}
+.hc{border-top:1px solid var(--filet);padding-top:8px;min-width:118px}
+.hc__n{font-family:'Nunito',sans-serif;font-size:27px;font-weight:900;line-height:1;
+  color:var(--encre);font-variant-numeric:tabular-nums}
+.hc__l{font-size:12px;color:var(--gris);margin-top:3px}
+
+/* ── figure ──────────────────────────────────────── */
+figure{margin:0}
+.fig{margin-top:22px;border:1px solid var(--filet-fin);border-radius:5px;background:var(--papier);
+  padding:22px 20px 14px;overflow-x:auto}
+.fig svg{display:block;width:100%;min-width:720px;height:auto;color:var(--encre)}
+figcaption{margin-top:12px;font-size:12.5px;color:var(--gris);text-align:center}
+
+/* ── glossaire du schéma ─────────────────────────── */
+.gloss{display:grid;grid-template-columns:1fr 1fr;gap:0 40px;margin-top:26px}
+.gl{display:grid;grid-template-columns:26px 1fr;gap:12px;padding:13px 0;
+  border-top:1px solid var(--filet-fin)}
+.gl__n{width:22px;height:22px;border-radius:50%;border:1px solid var(--encre);color:var(--encre);
+  font-family:'Nunito',sans-serif;font-size:11.5px;font-weight:800;line-height:20px;text-align:center;
+  font-variant-numeric:tabular-nums}
+.gl__t{font-family:'IBM Plex Mono',monospace;font-size:12.5px;font-weight:600;color:var(--encre)}
+.gl__t em{font-style:normal;font-family:'Nunito',sans-serif;font-size:13.5px;font-weight:800}
+.gl__q{font-size:13px;color:var(--texte);margin-top:4px;line-height:1.45}
+.intro{font-size:14.5px;max-width:74ch;margin-top:2px;margin-bottom:22px;color:var(--texte)}
+
+/* ── greffes ─────────────────────────────────────── */
+.greffes{display:grid;grid-template-columns:repeat(4,1fr);gap:14px;margin-top:6px}
+.gr{border-top:2px solid var(--acier);padding:9px 0 0}
+.gr--src{border-color:var(--gris)}
+.gr__n{font-family:'IBM Plex Mono',monospace;font-size:12px;font-weight:600;color:var(--encre)}
+.gr__q{font-size:12.5px;color:var(--texte);margin-top:4px;line-height:1.35}
+.note-regle{margin-top:22px;background:var(--vert-pale);border-left:3px solid var(--vert);
+  padding:12px 16px;font-size:14px;border-radius:0 3px 3px 0}
+
+/* ── contrôles ───────────────────────────────────── */
+.ctrl{width:100%;border-collapse:collapse;margin-top:4px;font-size:13.5px}
+.ctrl th{text-align:left;font-size:11px;letter-spacing:.12em;text-transform:uppercase;color:var(--gris);
+  font-weight:600;padding:0 0 8px;border-bottom:1px solid var(--encre)}
+.ctrl td{padding:9px 16px 9px 0;border-bottom:1px solid var(--filet-fin);vertical-align:top}
+.ctrl td:first-child{font-family:'IBM Plex Mono',monospace;font-size:12px;color:var(--encre);
+  white-space:nowrap;font-weight:500}
+.ctrl tr:last-child td{border-bottom:0}
+
+/* ── serveur ─────────────────────────────────────── */
+.tuiles{display:grid;grid-template-columns:repeat(4,1fr);gap:22px;margin-top:6px}
+.tu{border-top:3px solid var(--acier);padding-top:12px}
+.tu__n{font-family:'Nunito',sans-serif;font-size:26px;font-weight:900;line-height:1.05;color:var(--encre);
+  font-variant-numeric:tabular-nums}
+.tu__n em{font-style:normal;color:var(--gris);font-size:19px}
+.tu__n i{font-style:normal;color:var(--vert)}
+.tu__t{font-family:'Nunito',sans-serif;font-size:15px;font-weight:800;color:var(--encre);margin-top:6px}
+.tu__q{font-size:12.5px;color:var(--texte);margin-top:5px;line-height:1.4}
+
+/* ── poids du code ───────────────────────────────── */
+.poids{margin-top:6px}
+.pl{display:grid;grid-template-columns:200px 1fr 96px;align-items:center;gap:14px;
+  padding:7px 0;border-bottom:1px solid var(--filet-fin);font-size:13px}
+.pl__n{font-weight:600;color:var(--encre)}
+.pl__n em{font-style:normal;font-weight:400;color:var(--gris);display:block;font-size:12px}
+.pl__b{height:11px;background:var(--filet-fin);border-radius:6px;overflow:hidden}
+.pl__b b{display:block;height:100%;border-radius:6px}
+.pl__v{text-align:right;font-weight:700;color:var(--encre);font-variant-numeric:tabular-nums}
+
+/* ── règles ──────────────────────────────────────── */
+.regles{display:grid;grid-template-columns:repeat(2,1fr);gap:20px;margin-top:6px}
+.re{background:var(--papier);border:1px solid var(--filet-fin);border-radius:4px;padding:18px 20px}
+.re h3{font-size:17px;font-weight:900;line-height:1.2}
+.re p{font-size:13.5px;margin-top:8px}
+.re__k{font-family:'Nunito',sans-serif;font-size:11px;font-weight:800;letter-spacing:.1em;
+  text-transform:uppercase;color:var(--ambre);margin-bottom:6px}
+
+.pied{margin-top:56px;border-top:1px solid var(--filet);padding-top:14px;
+  display:flex;justify-content:space-between;gap:24px;flex-wrap:wrap;font-size:12px;color:var(--gris)}
+
+@media (max-width:900px){
+  .page{padding:0 22px 64px}
+  .fr-barre{padding:12px 22px}
+  .hero{grid-template-columns:1fr;gap:24px;align-items:start}
+  .hero h1{font-size:46px}
+  .greffes{grid-template-columns:repeat(2,1fr)}
+  .gloss{grid-template-columns:1fr}
+  .tuiles{grid-template-columns:1fr 1fr}
+  .regles{grid-template-columns:1fr}
+  .pl{grid-template-columns:150px 1fr 76px}
+}
+</style>
+</head>
+<body>
+
+
+<div class="fr-barre">
+  <span class="fr-lockup" role="img" aria-label="francis">
+    <span class="fr-nom">francıs<span class="fr-pt"></span></span>
+    <span class="fr-trait"></span>
+    <span class="fr-desc">Aide à l'apprentissage du français</span>
+  </span>
+</div>
+
+<div class="page">
+
+  <section class="hero">
+    <div>
+      <h1>derrière<span>les modules</span></h1>
+    </div>
+    <div>
+      <p class="hero__sous">Un module n'est pas écrit : il est <b>assemblé</b>.
+      Un seul moteur, un contenu par module, des greffes qui reposent la même
+      pièce sur les quatre-vingt-sept d'un coup — et des contrôles qui refusent
+      de laisser passer.</p>
+      <div class="hero__chiffres">
+        <div class="hc"><div class="hc__n">1</div><div class="hc__l">gabarit pour 87 modules</div></div>
+        <div class="hc"><div class="hc__n">16</div><div class="hc__l">greffes idempotentes</div></div>
+        <div class="hc"><div class="hc__n">90</div><div class="hc__l">programmes dans <span class="mono">build/</span></div></div>
+        <div class="hc"><div class="hc__n">111</div><div class="hc__l">générateurs audio</div></div>
+        <div class="hc"><div class="hc__n">80+</div><div class="hc__l">routes du serveur</div></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ── le schéma ─────────────────────────────────── -->
+  <section class="bloc">
+    <div class="rule"></div>
+    <p class="eyebrow">La chaîne · d'une constante à ce que l'élève ouvre</p>
+    <figure>
+      <div class="fig">
+        <svg viewBox="0 0 1000 520" role="img"
+             aria-label="La chaîne de production : le registre des modules alimente quatre colonnes — contenu et gabarit, constantes du module, registre, relevé des sons — qui traversent chacune un programme du dossier build pour produire les modules web, les séances, les fiches et les pistes audio ; tous les contrôles ferment la chaîne. Chaque élément porte un numéro, repris dans la liste qui suit la figure.">
+          <defs>
+            <marker id="fl" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+              <path d="M0 0 L10 5 L0 10 z" fill="currentColor"></path>
+            </marker>
+            <marker id="flv" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+              <path d="M0 0 L10 5 L0 10 z" fill="#0A8F5B"></path>
+            </marker>
+          </defs>
+
+          <!-- source unique -->
+          <rect x="10" y="14" width="980" height="44" rx="4" fill="#E6F5EE" stroke="#0A8F5B"></rect>
+          <text x="26" y="34" font-size="12.5" font-weight="600" fill="currentColor">build/powerpoints/modules.py — le registre, source unique</text>
+          <text x="26" y="50" font-size="11.5" fill="#4B4F52">numéro · niveau · titre · nom des blocs. Aucun autre fichier ne porte ces valeurs.</text>
+          <line x1="120" y1="58" x2="120" y2="96" stroke="#0A8F5B" stroke-dasharray="3 3" marker-end="url(#flv)"></line>
+          <line x1="370" y1="58" x2="370" y2="96" stroke="#0A8F5B" stroke-dasharray="3 3" marker-end="url(#flv)"></line>
+          <line x1="620" y1="58" x2="620" y2="96" stroke="#0A8F5B" stroke-dasharray="3 3" marker-end="url(#flv)"></line>
+          <line x1="870" y1="58" x2="870" y2="96" stroke="#0A8F5B" stroke-dasharray="3 3" marker-end="url(#flv)"></line>
+
+          <!-- rangée 1 : les sources -->
+          <text x="10" y="88" font-size="10.5" letter-spacing="1.4" fill="#6E7175">CE QUI ENTRE</text>
+          <g fill="#FFFFFF" stroke="#D0CFCA">
+            <rect x="10" y="98" width="220" height="66" rx="4"></rect>
+            <rect x="260" y="98" width="220" height="66" rx="4"></rect>
+            <rect x="510" y="98" width="220" height="66" rx="4"></rect>
+            <rect x="760" y="98" width="220" height="66" rx="4"></rect>
+          </g>
+          <text x="24" y="120" font-size="12.5" font-weight="600" fill="currentColor">build/contenu/&lt;slug&gt;/</text>
+          <text x="24" y="137" font-size="11.5" fill="#4B4F52">7 fichiers : dialogues, sections,</text>
+          <text x="24" y="152" font-size="11.5" fill="#4B4F52">exercices, cartes, mini-leçons…</text>
+
+          <text x="274" y="120" font-size="12.5" font-weight="600" fill="currentColor">build/gabarit/module.html</text>
+          <text x="274" y="137" font-size="11.5" fill="#4B4F52">le moteur commun, 20 jetons</text>
+          <text x="274" y="152" font-size="11.5" fill="#4B4F52">%%NOM%%. Produit, jamais écrit.</text>
+
+          <text x="524" y="120" font-size="12.5" font-weight="600" fill="currentColor">Les constantes du module</text>
+          <text x="524" y="137" font-size="11.5" fill="#4B4F52">DIALOGUES · SECTIONS · EXOS ·</text>
+          <text x="524" y="152" font-size="11.5" fill="#4B4F52">PLUS · FC_CARDS</text>
+
+          <text x="774" y="120" font-size="12.5" font-weight="600" fill="currentColor">build/releve_sons.js</text>
+          <text x="774" y="137" font-size="11.5" fill="#4B4F52">le relevé hors navigateur :</text>
+          <text x="774" y="152" font-size="11.5" fill="#4B4F52">tout ce qui doit être dit.</text>
+
+          <!-- flèches vers les programmes -->
+          <line x1="120" y1="164" x2="120" y2="228" stroke="currentColor" marker-end="url(#fl)"></line>
+          <line x1="370" y1="164" x2="370" y2="228" stroke="currentColor" marker-end="url(#fl)"></line>
+          <line x1="620" y1="164" x2="620" y2="228" stroke="currentColor" marker-end="url(#fl)"></line>
+          <line x1="870" y1="164" x2="870" y2="228" stroke="currentColor" marker-end="url(#fl)"></line>
+          <text x="128" y="200" font-size="11" fill="#4B4F52">assemble</text>
+          <text x="378" y="200" font-size="11" fill="#4B4F52">remplit</text>
+          <text x="628" y="200" font-size="11" fill="#4B4F52">compose</text>
+          <text x="878" y="200" font-size="11" fill="#4B4F52">fait dire</text>
+          <path d="M230 131 L252 131" stroke="#D0CFCA"></path>
+
+          <!-- rangée 2 : les programmes -->
+          <text x="10" y="220" font-size="10.5" letter-spacing="1.4" fill="#6E7175">CE QUI TRAVAILLE</text>
+          <g fill="#E7F0F6" stroke="#1D6B8F">
+            <rect x="10" y="230" width="220" height="78" rx="4"></rect>
+            <rect x="260" y="230" width="220" height="78" rx="4"></rect>
+            <rect x="510" y="230" width="220" height="78" rx="4"></rect>
+            <rect x="760" y="230" width="220" height="78" rx="4"></rect>
+          </g>
+          <text x="24" y="252" font-size="12.5" font-weight="700" fill="currentColor">build/module.py</text>
+          <text x="24" y="269" font-size="11.5" fill="#3A3D40">Un HTML par module, puis</text>
+          <text x="24" y="284" font-size="11.5" fill="#3A3D40">six greffes reposées à chaque</text>
+          <text x="24" y="299" font-size="11.5" fill="#3A3D40">construction.</text>
+
+          <text x="274" y="252" font-size="12.5" font-weight="700" fill="currentColor">build/gabarit.py</text>
+          <text x="274" y="269" font-size="11.5" fill="#3A3D40">Régénère le moteur depuis un</text>
+          <text x="274" y="284" font-size="11.5" fill="#3A3D40">module de référence : une</text>
+          <text x="274" y="299" font-size="11.5" fill="#3A3D40">amélioration vaut pour tous.</text>
+
+          <text x="524" y="252" font-size="12.5" font-weight="700" fill="currentColor">powerpoints/build.py</text>
+          <text x="524" y="269" font-size="11.5" fill="#3A3D40">+ build_fiches.py. La séance</text>
+          <text x="524" y="284" font-size="11.5" fill="#3A3D40">est écrite en Python, à partir</text>
+          <text x="524" y="299" font-size="11.5" fill="#3A3D40">des constantes du module.</text>
+
+          <text x="774" y="252" font-size="12.5" font-weight="700" fill="currentColor">generer_audio_*.py</text>
+          <text x="774" y="269" font-size="11.5" fill="#3A3D40">111 générateurs branchés sur</text>
+          <text x="774" y="284" font-size="11.5" fill="#3A3D40">un seul point de sortie, et une</text>
+          <text x="774" y="299" font-size="11.5" fill="#3A3D40">voix ralentie après coup.</text>
+
+          <line x1="120" y1="308" x2="120" y2="368" stroke="currentColor" marker-end="url(#fl)"></line>
+          <line x1="370" y1="308" x2="370" y2="368" stroke="currentColor" marker-end="url(#fl)"></line>
+          <line x1="620" y1="308" x2="620" y2="368" stroke="currentColor" marker-end="url(#fl)"></line>
+          <line x1="870" y1="308" x2="870" y2="368" stroke="currentColor" marker-end="url(#fl)"></line>
+
+          <!-- rangée 3 : les sorties -->
+          <text x="10" y="360" font-size="10.5" letter-spacing="1.4" fill="#6E7175">CE QUI SORT</text>
+          <g fill="#FBEEDC" stroke="#B45309">
+            <rect x="10" y="370" width="220" height="60" rx="4"></rect>
+            <rect x="260" y="370" width="220" height="60" rx="4"></rect>
+            <rect x="510" y="370" width="220" height="60" rx="4"></rect>
+            <rect x="760" y="370" width="220" height="60" rx="4"></rect>
+          </g>
+          <text x="24" y="396" font-size="19" font-weight="700" fill="#17181A">87</text>
+          <text x="56" y="396" font-size="12.5" fill="#17181A">modules web</text>
+          <text x="24" y="415" font-size="11.5" fill="#4B4F52">77 assemblés · 10 écrits à la main</text>
+
+          <text x="274" y="396" font-size="19" font-weight="700" fill="#17181A">1</text>
+          <text x="292" y="396" font-size="12.5" fill="#17181A">moteur tenu à jour</text>
+          <text x="274" y="415" font-size="11.5" fill="#4B4F52">4 639 lignes, une seule fois</text>
+
+          <text x="524" y="396" font-size="19" font-weight="700" fill="#17181A">1 264</text>
+          <text x="588" y="396" font-size="12.5" fill="#17181A">séances projetées</text>
+          <text x="524" y="415" font-size="11.5" fill="#4B4F52">+ 1 374 fiches papier, même source</text>
+
+          <text x="774" y="396" font-size="19" font-weight="700" fill="#17181A">20 832</text>
+          <text x="846" y="396" font-size="12.5" fill="#17181A">pistes audio</text>
+          <text x="774" y="415" font-size="11.5" fill="#4B4F52">déposées dans le dossier du module</text>
+
+          <!-- la barrière des contrôles -->
+          <line x1="120" y1="470" x2="120" y2="434" stroke="#B91C1C" stroke-dasharray="4 3" marker-end="url(#fl)" opacity=".55"></line>
+          <line x1="370" y1="470" x2="370" y2="434" stroke="#B91C1C" stroke-dasharray="4 3" marker-end="url(#fl)" opacity=".55"></line>
+          <line x1="620" y1="470" x2="620" y2="434" stroke="#B91C1C" stroke-dasharray="4 3" marker-end="url(#fl)" opacity=".55"></line>
+          <line x1="870" y1="470" x2="870" y2="434" stroke="#B91C1C" stroke-dasharray="4 3" marker-end="url(#fl)" opacity=".55"></line>
+          <rect x="10" y="470" width="980" height="40" rx="4" fill="#FFFFFF" stroke="#B91C1C"></rect>
+          <text x="26" y="488" font-size="12.5" font-weight="700" fill="currentColor">Les contrôles — rien ne se publie sans eux</text>
+          <text x="26" y="503" font-size="11.5" fill="#4B4F52">cohérence · sections · matériel · couleurs · pieds de page · sommaire · banques. Chacun sort en code 1 au premier écart, donc ils s'enchaînent.</text>
+
+          <!-- repères, appelés un à un sous la figure -->
+          <g>
+            <circle cx="964" cy="32" r="10" fill="#FFFFFF" stroke="currentColor"></circle>
+            <text x="964" y="36" font-size="11" font-weight="700" text-anchor="middle" fill="currentColor">1</text>
+            <circle cx="214" cy="114" r="10" fill="#FFFFFF" stroke="currentColor"></circle>
+            <text x="214" y="118" font-size="11" font-weight="700" text-anchor="middle" fill="currentColor">2</text>
+            <circle cx="464" cy="114" r="10" fill="#FFFFFF" stroke="currentColor"></circle>
+            <text x="464" y="118" font-size="11" font-weight="700" text-anchor="middle" fill="currentColor">3</text>
+            <circle cx="714" cy="114" r="10" fill="#FFFFFF" stroke="currentColor"></circle>
+            <text x="714" y="118" font-size="11" font-weight="700" text-anchor="middle" fill="currentColor">4</text>
+            <circle cx="964" cy="114" r="10" fill="#FFFFFF" stroke="currentColor"></circle>
+            <text x="964" y="118" font-size="11" font-weight="700" text-anchor="middle" fill="currentColor">5</text>
+            <circle cx="214" cy="246" r="10" fill="#FFFFFF" stroke="currentColor"></circle>
+            <text x="214" y="250" font-size="11" font-weight="700" text-anchor="middle" fill="currentColor">6</text>
+            <circle cx="464" cy="246" r="10" fill="#FFFFFF" stroke="currentColor"></circle>
+            <text x="464" y="250" font-size="11" font-weight="700" text-anchor="middle" fill="currentColor">7</text>
+            <circle cx="714" cy="246" r="10" fill="#FFFFFF" stroke="currentColor"></circle>
+            <text x="714" y="250" font-size="11" font-weight="700" text-anchor="middle" fill="currentColor">8</text>
+            <circle cx="964" cy="246" r="10" fill="#FFFFFF" stroke="currentColor"></circle>
+            <text x="964" y="250" font-size="11" font-weight="700" text-anchor="middle" fill="currentColor">9</text>
+            <circle cx="214" cy="386" r="10" fill="#FFFFFF" stroke="currentColor"></circle>
+            <text x="214" y="390" font-size="11" font-weight="700" text-anchor="middle" fill="currentColor">10</text>
+            <circle cx="464" cy="386" r="10" fill="#FFFFFF" stroke="currentColor"></circle>
+            <text x="464" y="390" font-size="11" font-weight="700" text-anchor="middle" fill="currentColor">11</text>
+            <circle cx="714" cy="386" r="10" fill="#FFFFFF" stroke="currentColor"></circle>
+            <text x="714" y="390" font-size="11" font-weight="700" text-anchor="middle" fill="currentColor">12</text>
+            <circle cx="964" cy="386" r="10" fill="#FFFFFF" stroke="currentColor"></circle>
+            <text x="964" y="390" font-size="11" font-weight="700" text-anchor="middle" fill="currentColor">13</text>
+            <circle cx="964" cy="488" r="10" fill="#FFFFFF" stroke="currentColor"></circle>
+            <text x="964" y="492" font-size="11" font-weight="700" text-anchor="middle" fill="currentColor">14</text>
+          </g>
+        </svg>
+      </div>
+      <figcaption>Un seul sens de lecture : le registre décide, les sources alimentent, quatre programmes travaillent, et rien ne sort sans passer la barrière. Les quatorze numéros sont repris ci-dessous.</figcaption>
+    </figure>
+
+    <p class="eyebrow" style="margin-top:38px">Le schéma, élément par élément</p>
+    <div class="gloss">
+      <div class="gl">
+        <div class="gl__n">1</div>
+        <div>
+          <div class="gl__t"><em>Le registre</em> · build/powerpoints/modules.py</div>
+          <p class="gl__q">La liste des modules et de ce qui les identifie : leur numéro, leur niveau, leur titre, le nom de leurs blocs. Tout le reste va y chercher ces valeurs au lieu de les réécrire — c'est ce qui empêche un module de s'appeler « Module 12 » sur son en-tête et « Module 11 » dans son diaporama.</p>
+        </div>
+      </div>
+      <div class="gl">
+        <div class="gl__n">2</div>
+        <div>
+          <div class="gl__t"><em>Le contenu d'un module</em> · build/contenu/&lt;slug&gt;/</div>
+          <p class="gl__q">Sept fichiers par module, et rien d'autre : les dialogues, le découpage en sections, les exercices, les cartes de vocabulaire, les mini-leçons, les phrases porteuses des mots, l'identité du module. C'est là — et seulement là — qu'on écrit quand on veut changer un cours.</p>
+        </div>
+      </div>
+      <div class="gl">
+        <div class="gl__n">3</div>
+        <div>
+          <div class="gl__t"><em>Le gabarit, ou moteur</em> · build/gabarit/module.html</div>
+          <p class="gl__q">La page interactive complète, vide de contenu : les onglets, la correction, le glisser-déposer, l'audio, le jeu de rôle. Vingt emplacements marqués <span class="mono">%%NOM%%</span> attendent d'être remplis. Lui-même est produit à partir d'un module de référence, jamais tapé à la main.</p>
+        </div>
+      </div>
+      <div class="gl">
+        <div class="gl__n">4</div>
+        <div>
+          <div class="gl__t"><em>Les constantes du module</em> · DIALOGUES · EXOS · SECTIONS…</div>
+          <p class="gl__q">Une fois le module assemblé, son contenu vit dans quelques grandes listes JavaScript. Les diaporamas et les fiches vont les relire : la séance projetée est donc écrite à partir du cours réel, et non recopiée à côté.</p>
+        </div>
+      </div>
+      <div class="gl">
+        <div class="gl__n">5</div>
+        <div>
+          <div class="gl__t"><em>Le relevé des sons</em> · build/releve_sons.js</div>
+          <p class="gl__q">Il rejoue, hors du navigateur, les trois endroits du moteur qui font parler une voix, et rend la liste exacte de tout ce qui doit être enregistré. Sans lui, il fallait ouvrir le module et copier la console — d'où des modules muets par endroits.</p>
+        </div>
+      </div>
+      <div class="gl">
+        <div class="gl__n">6</div>
+        <div>
+          <div class="gl__t"><em>L'assembleur</em> · build/module.py</div>
+          <p class="gl__q">Il prend le gabarit, y verse le contenu du module, et écrit la page HTML que l'élève ouvrira. Puis il repose les six greffes communes. Une construction remplace entièrement la précédente.</p>
+        </div>
+      </div>
+      <div class="gl">
+        <div class="gl__n">7</div>
+        <div>
+          <div class="gl__t"><em>Le régénérateur du moteur</em> · build/gabarit.py</div>
+          <p class="gl__q">Quand on améliore le moteur — un nouveau type d'exercice, un correctif d'affichage — c'est lui qui le récupère et le remet au propre. L'amélioration passe ensuite dans les 87 modules à la construction suivante, sans reprise manuelle.</p>
+        </div>
+      </div>
+      <div class="gl">
+        <div class="gl__n">8</div>
+        <div>
+          <div class="gl__t"><em>Les séances et les fiches</em> · powerpoints/build.py</div>
+          <p class="gl__q">Il compose les diaporamas projetés en classe et les fiches à imprimer, en lisant les constantes du module et le registre. Un module de seize séances donne seize diaporamas et leurs fiches, tous datés du même contenu.</p>
+        </div>
+      </div>
+      <div class="gl">
+        <div class="gl__n">9</div>
+        <div>
+          <div class="gl__t"><em>Les générateurs de voix</em> · generer_audio_*.py</div>
+          <p class="gl__q">Un par module : ils envoient chaque réplique et chaque mot à la synthèse vocale, déposent les MP3 dans le dossier du module, et ralentissent la voix qui narre. Ils sautent ce qui existe déjà — on ne repaie pas un extrait produit.</p>
+        </div>
+      </div>
+      <div class="gl">
+        <div class="gl__n">10</div>
+        <div>
+          <div class="gl__t"><em>Ce que l'élève ouvre</em> · 87 modules web</div>
+          <p class="gl__q">Une page autonome par module : dialogues écoutables, exercices corrigés sur l'appareil, production orale et écrite. Soixante-dix-sept sortent de la chaîne, dix ont été écrits à la main avant elle.</p>
+        </div>
+      </div>
+      <div class="gl">
+        <div class="gl__n">11</div>
+        <div>
+          <div class="gl__t"><em>Le retour de la chaîne</em> · 1 moteur tenu à jour</div>
+          <p class="gl__q">Le gabarit régénéré est autant une sortie qu'une source : c'est lui qui referme la boucle. Corriger un défaut d'affichage une fois ici le corrige partout, au lieu de quatre-vingt-sept fois.</p>
+        </div>
+      </div>
+      <div class="gl">
+        <div class="gl__n">12</div>
+        <div>
+          <div class="gl__t"><em>La classe et le papier</em> · 1 264 séances + 1 374 fiches</div>
+          <p class="gl__q">Le même contenu sous deux autres formes : ce que l'enseignante projette, et ce que l'élève reçoit sur papier, en noir et blanc. Aucune des deux n'est ressaisie.</p>
+        </div>
+      </div>
+      <div class="gl">
+        <div class="gl__n">13</div>
+        <div>
+          <div class="gl__t"><em>La voix du cours</em> · 20 832 pistes audio</div>
+          <p class="gl__q">Chaque réplique de dialogue, chaque mot de vocabulaire, chaque mini-leçon. C'est ce qui permet à un élève de réécouter dix fois sans demander à personne.</p>
+        </div>
+      </div>
+      <div class="gl">
+        <div class="gl__n">14</div>
+        <div>
+          <div class="gl__t"><em>La barrière</em> · Les contrôles</div>
+          <p class="gl__q">Huit programmes qui ne réparent rien : ils refusent. Ils attrapent les fautes qui ne lèvent aucune erreur — un exercice sans bonne réponse, une image absente, un lien mort — et sortent en erreur au premier écart, ce qui les rend enchaînables.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ── les greffes ───────────────────────────────── -->
+  <section class="bloc">
+    <div class="rule"></div>
+    <p class="eyebrow">Les seize greffes · poser la même pièce sur 87 modules d'un seul geste</p>
+    <p class="intro"><b>Une greffe est un programme qui rouvre les modules déjà construits et y insère
+    un morceau identique</b>, entre deux marqueurs de commentaire. C'est ce qui permet d'ajouter une
+    fonction à tout un cours de niveau — un bouton, un verrou, un repli — sans rouvrir quatre-vingt-sept
+    fichiers à la main, et sans que le module ait à connaître la fonction qu'on lui ajoute.</p>
+    <div class="greffes">
+      <div class="gr"><div class="gr__n">greffe_outils</div><div class="gr__q">Le rail « Mes outils » : traduire, lire, prononcer, carnet, réviser.</div></div>
+      <div class="gr"><div class="gr__n">greffe_depot_ecrit</div><div class="gr__q">Le bouton d'envoi de la production écrite, après la correction seulement.</div></div>
+      <div class="gr"><div class="gr__n">greffe_sections</div><div class="gr__q">Le verrou des sections : un défi s'ouvre à sa date.</div></div>
+      <div class="gr"><div class="gr__n">greffe_reprise</div><div class="gr__q">L'élève revient là où il s'était arrêté — et peut tout recommencer.</div></div>
+      <div class="gr"><div class="gr__n">greffe_marque</div><div class="gr__q">La barre blanche de la marque, au-dessus du bandeau du module.</div></div>
+      <div class="gr"><div class="gr__n">greffe_direct</div><div class="gr__q">Chaque tentative rapportée, zone par zone, pour le direct de la classe.</div></div>
+      <div class="gr"><div class="gr__n">greffe_sans_ia</div><div class="gr__q">Le repli complet quand un centre refuse l'assistant.</div></div>
+      <div class="gr"><div class="gr__n">greffe_deux_essais</div><div class="gr__q">La réponse n'est plus donnée au premier envoi.</div></div>
+      <div class="gr"><div class="gr__n">greffe_vitesse</div><div class="gr__q">Un bouton d'en-tête qui ralentit toutes les voix, sans toucher aux MP3.</div></div>
+      <div class="gr"><div class="gr__n">greffe_cles</div><div class="gr__q">La réponse écrite cesse de se juger au caractère près.</div></div>
+      <div class="gr"><div class="gr__n">greffe_confinement</div><div class="gr__q">Le garde-fou vocal, posé aussi sur les modules non générés.</div></div>
+      <div class="gr"><div class="gr__n">greffe_titre_exercice</div><div class="gr__q">Les signaux d'aide nomment l'exercice, plus seulement son code.</div></div>
+      <div class="gr"><div class="gr__n">greffe_activite_analyse</div><div class="gr__q">L'analyse d'erreurs sait de quelle activité elle parle.</div></div>
+      <div class="gr"><div class="gr__n">greffe_infobulles</div><div class="gr__q">Une explication au survol sur les deux repères de l'en-tête.</div></div>
+      <div class="gr"><div class="gr__n">greffe_repere</div><div class="gr__q">« Module 12 · Niveau 3 » dans les modules écrits avant le gabarit.</div></div>
+      <div class="gr gr--src"><div class="gr__n">greffe_voix</div><div class="gr__q">Celle-ci greffe le <b>code</b> : 111 générateurs branchés sur un point unique.</div></div>
+    </div>
+    <p class="note-regle">Chaque greffe <b>retire la précédente avant de se reposer</b> — donc on la relance sans compter les passages, et un module n'hérite jamais du carnet d'un autre. C'est ce qui permet de régénérer le moteur sans rien casser.</p>
+  </section>
+
+  <!-- ── les contrôles ─────────────────────────────── -->
+  <section class="bloc">
+    <div class="rule"></div>
+    <p class="eyebrow">Les contrôles · ce qu'ils attrapent et qui ne lève aucune erreur</p>
+    <p class="intro"><b>Un contrôle n'écrit rien et ne répare rien : il compare, et il refuse.</b>
+    Chacun se lance seul, en une commande, et sort en erreur au premier écart — donc on les enchaîne
+    avant de publier. Ils existent parce que les fautes qui coûtent cher, ici, sont celles qui ne
+    provoquent aucun message : la page s'affiche, et c'est l'élève qui découvre le trou.</p>
+    <table class="ctrl">
+      <thead><tr><th>Commande</th><th>Ce qu'elle refuse de laisser passer</th></tr></thead>
+      <tbody>
+        <tr><td>node build/coherence.js --tous</td><td>Un exercice sans bonne réponse, une image qui n'existe pas, un mot à écouter sans phrase porteuse, une mini-leçon appelée et absente. Le module s'afficherait quand même.</td></tr>
+        <tr><td>node --check (script du module)</td><td>Une apostrophe non échappée dans un fichier de contenu : le HTML sort de la bonne taille, et tout le script meurt chez l'élève.</td></tr>
+        <tr><td>build/sections.py --verifier</td><td>Un découpage en sections qui ne correspond plus aux modules livrés — donc des dates posées sur des sections fantômes.</td></tr>
+        <tr><td>build/materiel.py --verifier</td><td>Un relevé de matériel qui promet un fichier absent du disque : un lien mort dans le portail.</td></tr>
+        <tr><td>build/couleurs_niveau.py --verifier</td><td>Un module dont l'en-tête ne porte pas la couleur de son niveau — la pastille du catalogue et le module se contrediraient.</td></tr>
+        <tr><td>build/powerpoints/sommaire.py --verifier</td><td>Un sommaire de diaporamas qui ne correspond plus aux séances existantes.</td></tr>
+        <tr><td>build/controles/organisations.py</td><td>Un centre rattaché au vide, un cycle dans l'arbre, un groupe sans centre, deux fondateurs. Les six ont été injectés dans un bac d'essai et vus détectés.</td></tr>
+        <tr><td>build/tableau_bord.py --texte</td><td>Rien — c'est le relevé : modules sans séance, sans audio, liens cassés, travail non commité. Les alertes viennent en tête.</td></tr>
+      </tbody>
+    </table>
+  </section>
+
+  <!-- ── le serveur ────────────────────────────────── -->
+  <section class="bloc">
+    <div class="rule"></div>
+    <p class="eyebrow">L'autre moitié · ce qui tourne pendant la classe</p>
+    <p class="intro">Le module est un fichier ; <b>le serveur est tout ce qui l'entoure</b> — les comptes,
+    les groupes, la planification, la progression, les productions déposées, les appels aux modèles.
+    Quatre choses s'y sont mesurées plutôt que supposées : chaque chiffre ci-dessous vient d'un essai
+    joué avant et après.</p>
+    <div class="tuiles">
+      <div class="tu">
+        <div class="tu__n"><em>8/30</em> → <i>30/30</i></div>
+        <div class="tu__t">Le verrou d'écriture</div>
+        <div class="tu__q">Trente élèves qui terminent en même temps écrivaient huit enregistrements sur trente, en silence. Mesuré avant, mesuré après.</div>
+      </div>
+      <div class="tu">
+        <div class="tu__n">7,89 s → <i>2,63 s</i></div>
+        <div class="tu__t">Postgres, repli fichier</div>
+        <div class="tu__q">600 écritures. Sans base de données, tout retombe sur les fichiers du volume : revenir en arrière, c'est retirer une variable.</div>
+      </div>
+      <div class="tu">
+        <div class="tu__n">80+</div>
+        <div class="tu__t">routes, et dix gardées</div>
+        <div class="tu__q">Un centre peut fermer l'IA : dix routes répondent alors non, et les 87 modules se replient sans perdre leur exercice.</div>
+      </div>
+      <div class="tu">
+        <div class="tu__n">0,0093 $</div>
+        <div class="tu__t">le tour d'assistant, compté</div>
+        <div class="tu__q">Une ligne par appel, jetons rendus par l'API — jamais estimés. Ni texte d'élève ni code dans le registre.</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ── ce que ça pèse ────────────────────────────── -->
+  <section class="bloc">
+    <div class="rule"></div>
+    <p class="eyebrow">Ce que ça pèse · lignes écrites, dépendances exclues</p>
+    <p class="intro">Le volume est presque entièrement du <b>contenu pédagogique</b> — les cours et les
+    séances. La mécanique, elle, est petite : c'est le signe que la chaîne fait son travail.</p>
+    <div class="poids">
+      <div class="pl">
+        <div class="pl__n">Les séances<em>1 264 fichiers Python</em></div>
+        <div class="pl__b"><b style="width:100%;background:var(--ambre)"></b></div>
+        <div class="pl__v">155 765</div>
+      </div>
+      <div class="pl">
+        <div class="pl__n">Le contenu des modules<em>702 fichiers, 7 par module</em></div>
+        <div class="pl__b"><b style="width:95%;background:var(--ambre)"></b></div>
+        <div class="pl__v">148 621</div>
+      </div>
+      <div class="pl">
+        <div class="pl__n">L'outillage<em>90 programmes dans build/</em></div>
+        <div class="pl__b"><b style="width:15%;background:var(--acier)"></b></div>
+        <div class="pl__v">24 014</div>
+      </div>
+      <div class="pl">
+        <div class="pl__n">Le serveur<em>server.py, sans dépendance externe</em></div>
+        <div class="pl__b"><b style="width:13%;background:var(--acier)"></b></div>
+        <div class="pl__v">20 167</div>
+      </div>
+      <div class="pl">
+        <div class="pl__n">Le gabarit<em>le moteur des 87 modules</em></div>
+        <div class="pl__b"><b style="width:3%;background:var(--vert)"></b></div>
+        <div class="pl__v">4 639</div>
+      </div>
+    </div>
+    <p class="picto__note" style="font-size:12.5px;color:var(--gris);margin-top:14px">
+      Le rapport est l'argument : <b>4 639 lignes de moteur</b> tiennent 87 modules, et une correction s'y fait une fois.</p>
+  </section>
+
+  <!-- ── les règles ────────────────────────────────── -->
+  <section class="bloc">
+    <div class="rule"></div>
+    <p class="eyebrow">Quatre règles, chacune payée une fois</p>
+    <p class="intro">Aucune de ces règles n'a été décidée d'avance : chacune est la trace d'un
+    incident qu'on ne veut pas revivre.</p>
+    <div class="regles">
+      <div class="re">
+        <div class="re__k">Règle 1</div>
+        <h3>Ne jamais éditer le HTML produit</h3>
+        <p>La construction suivante l'écrase. Une refonte a déjà été perdue ainsi ; toute correction se fait dans <span class="mono">build/</span>.</p>
+      </div>
+      <div class="re">
+        <div class="re__k">Règle 2</div>
+        <h3>Une seule source par idée</h3>
+        <p>Le numéro, le niveau et le titre d'un module vivent au registre, et nulle part ailleurs. Deux formulations d'une même règle finissent toujours par diverger.</p>
+      </div>
+      <div class="re">
+        <div class="re__k">Règle 3</div>
+        <h3>Vérifier en jouant, pas en relisant</h3>
+        <p>Un glisser-déposer mort ne lève aucune erreur : il a fallu poser une bonne réponse et voir qu'elle était refusée. La console et le build laissent passer.</p>
+      </div>
+      <div class="re">
+        <div class="re__k">Règle 4</div>
+        <h3>Un dispositif qui se trompe ne ferme pas la classe</h3>
+        <p>Verrous, sections, portée des groupes : sans donnée fiable, tout s'ouvre au lieu de se fermer. Un contrôle qui a tort coûte plus cher que pas de contrôle.</p>
+      </div>
+    </div>
+  </section>
+
+  <div class="pied">
+    <span>Relevé sur le dépôt le 28 août 2026 — comptes de fichiers et de lignes faits sur le disque, dépendances exclues.</span>
+    <span>francis · Aide à l'apprentissage du français</span>
+  </div>
+</div>
+
+</body>
+</html>

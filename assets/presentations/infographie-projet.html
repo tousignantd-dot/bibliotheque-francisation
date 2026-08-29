@@ -1,0 +1,419 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>L'usine à cours</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Nunito:wght@600;700;800;900&family=IBM+Plex+Sans:wght@400;500;600;700&display=swap">
+<style>
+:root{
+  --sol:#FFFFFF; --carte:#FFFFFF; --encre:#17181A; --texte:#3A3D40; --gris:#6E7175;
+  --filet:#D0CFCA; --filet-fin:#E8E7E2;
+  --ambre:#B45309; --ambre-clair:#E08A2E; --acier:#1D6B8F; --acier-clair:#3E9AC2;
+  --vert:#0A8F5B; --mauve:#6B4FBB; --neutre-pt:#C3C2BD;
+  --ombre:0 1px 2px rgba(23,24,26,.06);
+}
+
+*{box-sizing:border-box}
+body{
+  margin:0; background:var(--sol); color:var(--texte);
+  font-family:'IBM Plex Sans','Helvetica Neue',Arial,sans-serif;
+  font-size:15px; line-height:1.5;
+  -webkit-font-smoothing:antialiased;
+}
+h1,h2,h3{margin:0;font-family:'Nunito','Arial Rounded MT Bold',sans-serif;color:var(--encre);text-wrap:balance}
+p{margin:0}
+b,strong{font-weight:700;color:var(--encre)}
+
+/* ── barre de marque ───────────────────────────────── */
+.fr-barre{background:#FFF;border-bottom:2px solid var(--mauve);padding:14px 40px}
+.fr-lockup{display:inline-flex;align-items:baseline;gap:16px;color:#17181A}
+.fr-nom{font-family:'Nunito',sans-serif;font-weight:900;font-size:28px;letter-spacing:-.035em;line-height:1;position:relative;display:inline-block}
+.fr-pt{position:absolute;top:2px;left:calc(50% + 1px);width:7px;height:7px;border-radius:50%;background:var(--mauve)}
+.fr-trait{width:1px;height:24px;background:#C8C7C2;align-self:center}
+.fr-desc{font-family:'IBM Plex Sans',sans-serif;font-size:14px;color:#4B4F52}
+
+/* ── enveloppe ─────────────────────────────────────── */
+.page{max-width:1000px;margin:0 auto;padding:0 40px 96px}
+.eyebrow{
+  font-size:11px;font-weight:600;letter-spacing:.14em;text-transform:uppercase;color:var(--gris);
+}
+.rule{border-top:1px solid var(--encre);height:0;margin:0 0 10px}
+.rule--fin{border-top:1px solid var(--filet)}
+
+/* ── bloc 1 : titre + cercles ──────────────────────── */
+.hero{display:grid;grid-template-columns:300px 1fr;gap:48px;padding:72px 0 40px;align-items:start}
+.hero h1{font-size:64px;font-weight:400;line-height:.92;letter-spacing:-.03em}
+.hero h1 span{display:block;font-weight:900}
+.hero__sous{margin-top:28px;border-top:1px solid var(--encre);padding-top:14px;
+  font-family:'Nunito',sans-serif;font-size:21px;line-height:1.25;color:var(--encre);font-weight:600}
+.hero__sous b{font-weight:900}
+
+.venn{position:relative;min-height:430px}
+.venn__d{position:absolute;border-radius:50%;mix-blend-mode:multiply}
+.venn__d--a{
+  width:330px;height:330px;top:0;right:0;
+  background:radial-gradient(circle at 42% 40%,
+    var(--ambre) 0 6%, var(--ambre-clair) 6% 15%, rgba(224,138,46,.85) 15% 30%,
+    rgba(224,138,46,.62) 30% 48%, rgba(224,138,46,.45) 48% 70%, rgba(224,138,46,.3) 70% 100%);
+}
+.venn__d--b{
+  width:330px;height:330px;top:120px;left:20px;
+  background:radial-gradient(circle at 58% 45%,
+    #0B4A63 0 6%, var(--acier) 6% 16%, rgba(29,107,143,.8) 16% 32%,
+    rgba(62,154,194,.6) 32% 50%, rgba(62,154,194,.45) 50% 72%, rgba(62,154,194,.3) 72% 100%);
+}
+.venn__t{position:relative;z-index:2}
+.venn__t--a{max-width:250px}
+.venn__t--b{max-width:270px;margin:150px 0 0 auto;text-align:left}
+.venn h3{font-family:'Nunito',sans-serif;font-size:17px;font-weight:600;line-height:1.2}
+.venn h3 b{display:block;font-size:22px;font-weight:900}
+.venn p{font-size:12.5px;color:var(--texte);margin-top:4px}
+.venn ul{margin:12px 0 0;padding:0;list-style:none;font-size:14px;font-weight:600;color:var(--encre)}
+.venn li{padding-left:14px;position:relative;line-height:1.42}
+.venn li::before{content:"•";position:absolute;left:0;color:var(--encre)}
+
+/* ── bloc 2 : catalogue ────────────────────────────── */
+.bloc{padding-top:56px}
+.grid3{display:grid;grid-template-columns:300px 1fr;gap:48px;align-items:start}
+.titre-rail h2{font-size:40px;font-weight:400;line-height:1;letter-spacing:-.02em}
+.titre-rail h2 span{display:block;font-weight:900}
+.legende{margin-top:28px;border-top:1px solid var(--filet);padding-top:10px}
+.legende__l{display:flex;align-items:center;gap:9px;margin-top:7px;font-size:13px}
+.legende__l i{width:13px;height:13px;border-radius:2px;flex:none}
+
+.stats{display:grid;grid-template-columns:1fr 1fr;gap:36px}
+.stat{border-top:1px solid var(--encre);padding-top:10px}
+.stat__n{font-family:'Nunito',sans-serif;font-size:34px;font-weight:900;line-height:1;font-variant-numeric:tabular-nums}
+.stat--c .stat__n{color:var(--ambre)}
+.stat--a .stat__n{color:var(--acier)}
+.stat__l{font-family:'Nunito',sans-serif;font-size:20px;font-weight:800;color:var(--encre);line-height:1.15;margin-top:3px}
+.stat__s{font-size:12.5px;color:var(--gris);margin-top:6px}
+
+.picto{display:flex;flex-wrap:wrap;gap:5px;max-width:420px;margin-top:34px}
+.pc{width:12px;height:20px;border-radius:2px 2px 3px 3px;display:block}
+.pc--c{background:var(--ambre)}
+.pc--a{background:var(--acier)}
+.picto__note{font-size:12px;color:var(--gris);margin-top:14px}
+
+/* ── niveaux ───────────────────────────────────────── */
+.niveaux{margin-top:44px}
+.niv{display:grid;grid-template-columns:78px 1fr 92px 84px;align-items:center;gap:12px;
+  padding:6px 0;border-bottom:1px solid var(--filet-fin);font-size:13px}
+.niv__n{font-weight:600;color:var(--encre)}
+.niv__bar{height:9px;background:var(--filet-fin);border-radius:5px;overflow:hidden}
+.niv__bar b{display:block;height:100%;border-radius:5px}
+.niv__v{font-weight:700;color:var(--encre);text-align:right;font-variant-numeric:tabular-nums}
+.niv__a{color:var(--gris);text-align:right;font-variant-numeric:tabular-nums}
+
+/* ── bloc 3 : la chaîne ────────────────────────────── */
+.chaine{display:grid;grid-template-columns:repeat(5,1fr);gap:0;margin-top:6px}
+.etape{padding:16px 18px 20px 0;border-top:3px solid var(--acier);position:relative}
+.etape:nth-child(1){border-color:var(--ambre)}
+.etape:nth-child(2){border-color:#B8712A}
+.etape:nth-child(3){border-color:#8C7A4E}
+.etape:nth-child(4){border-color:#4F8FA6}
+.etape__n{font-family:'Nunito',sans-serif;font-size:13px;font-weight:900;color:var(--gris);
+  font-variant-numeric:tabular-nums}
+.etape h3{font-size:18px;font-weight:900;margin-top:5px;line-height:1.1}
+.etape p{font-size:12.5px;color:var(--texte);margin-top:7px}
+.chaine__pied{margin-top:14px;font-family:'Nunito',sans-serif;font-size:17px;font-weight:600;color:var(--encre)}
+.chaine__pied b{font-weight:900}
+
+/* ── bloc 4 : les trois sorties ────────────────────── */
+.sorties{display:grid;grid-template-columns:repeat(3,1fr);gap:28px;align-items:end;margin-top:10px}
+.sortie{text-align:center}
+.forme{margin:0 auto 16px;position:relative}
+.forme--ecran{width:150px;height:100px;border:3px solid var(--acier);border-radius:5px;
+  background:linear-gradient(180deg,rgba(29,107,143,.16),rgba(29,107,143,.04))}
+.forme--ecran::after{content:"";position:absolute;left:50%;transform:translateX(-50%);
+  bottom:-13px;width:56px;height:10px;background:var(--acier);border-radius:0 0 4px 4px}
+.forme--onde{width:150px;height:100px;display:flex;align-items:center;justify-content:center;gap:5px}
+.forme--onde i{width:7px;border-radius:4px;background:var(--vert);display:block}
+.forme--page{width:78px;height:100px;border:3px solid var(--ambre);border-radius:3px;
+  background:repeating-linear-gradient(180deg,transparent 0 14px,rgba(180,83,9,.22) 14px 17px)}
+.sortie__n{font-family:'Nunito',sans-serif;font-size:34px;font-weight:900;line-height:1;
+  font-variant-numeric:tabular-nums;color:var(--encre)}
+.sortie__l{font-family:'Nunito',sans-serif;font-size:17px;font-weight:800;color:var(--encre);margin-top:2px}
+.sortie__s{font-size:12.5px;color:var(--gris);margin-top:5px}
+.accolade{margin-top:26px;border-top:2px dotted var(--gris);padding-top:12px;text-align:center;
+  font-family:'Nunito',sans-serif;font-size:19px;font-weight:600;color:var(--encre)}
+.accolade b{font-weight:900}
+
+/* ── bloc 5 : les trois tenues ─────────────────────── */
+.tenues{display:grid;grid-template-columns:repeat(3,1fr);gap:26px;margin-top:6px}
+.tenue{background:#FAFAF8;border:1px solid var(--filet-fin);border-radius:4px;
+  padding:20px 22px 22px}
+.tenue h3{font-size:19px;font-weight:900;line-height:1.15}
+.tenue__k{font-family:'Nunito',sans-serif;font-size:12px;font-weight:800;letter-spacing:.1em;
+  text-transform:uppercase;color:var(--vert);margin-bottom:8px}
+.tenue p{font-size:13.5px;margin-top:9px}
+
+/* ── pied ──────────────────────────────────────────── */
+.pied{margin-top:56px;border-top:1px solid var(--filet);padding-top:14px;
+  display:flex;justify-content:space-between;gap:24px;flex-wrap:wrap;font-size:12px;color:var(--gris)}
+
+@media (max-width:860px){
+  .page{padding:0 22px 64px}
+  .fr-barre{padding:12px 22px}
+  .hero,.grid3{grid-template-columns:1fr;gap:28px}
+  .hero h1{font-size:48px}
+  .venn{min-height:520px}
+  .venn__d--a{width:270px;height:270px}
+  .venn__d--b{width:270px;height:270px;top:180px;left:0}
+  .venn__t--b{margin-top:190px}
+  .chaine{grid-template-columns:1fr 1fr}
+  .sorties,.tenues{grid-template-columns:1fr}
+  .stats{grid-template-columns:1fr}
+  .niv{grid-template-columns:70px 1fr 78px;row-gap:2px}
+  .niv__a{grid-column:3;text-align:right}
+}
+</style>
+</head>
+<body>
+
+
+<div class="fr-barre">
+  <span class="fr-lockup" role="img" aria-label="francis">
+    <span class="fr-nom">francıs<span class="fr-pt"></span></span>
+    <span class="fr-trait"></span>
+    <span class="fr-desc">Aide à l'apprentissage du français</span>
+  </span>
+</div>
+
+<div class="page">
+
+  <!-- 1 · titre + interdépendance -->
+  <section class="hero">
+    <div>
+      <h1>l'usine<span>à cours</span></h1>
+      <p class="hero__sous">Le programme<br>de francisation,<br><b>produit en série.</b></p>
+    </div>
+
+    <div class="venn">
+      <div class="venn__d venn__d--a"></div>
+      <div class="venn__d venn__d--b"></div>
+
+      <div class="venn__t venn__t--a">
+        <div class="rule"></div>
+        <h3>le programme donne<b>la spécification</b></h3>
+        <p>Les huit niveaux du référentiel ministériel, encodés en données interrogeables.</p>
+        <ul>
+          <li>situations de vie</li>
+          <li>intentions de communication</li>
+          <li>points de savoir</li>
+          <li>lexique</li>
+          <li>critères d'évaluation</li>
+        </ul>
+      </div>
+
+      <div class="venn__t venn__t--b">
+        <div class="rule"></div>
+        <h3>la chaîne écrit<b>le contenu</b></h3>
+        <p>Rien n'est copié d'un manuel : chaque module a son scénario et ses personnages.</p>
+        <ul>
+          <li>dialogues et exercices</li>
+          <li>mini-leçons</li>
+          <li>voix et illustrations</li>
+          <li>séances projetées</li>
+          <li>fiches à imprimer</li>
+        </ul>
+      </div>
+    </div>
+  </section>
+
+  <!-- 2 · l'état des lieux -->
+  <section class="bloc grid3">
+    <div class="titre-rail">
+      <div class="rule"></div>
+      <h2>ce qui<span>existe</span></h2>
+      <div class="legende">
+        <p class="eyebrow">Légende</p>
+        <div class="legende__l"><i style="background:var(--ambre)"></i> 1 carré = 1 cours de 4 h</div>
+        <div class="legende__l"><i style="background:var(--acier)"></i> 1 carré = 1 atelier de 2 h</div>
+      </div>
+    </div>
+
+    <div>
+      <div class="stats">
+        <div class="stat stat--c">
+          <div class="stat__n">87</div>
+          <div class="stat__l">cours interactifs</div>
+          <div class="stat__s">Modules de 4 h : dialogues, exercices corrigés, production orale et écrite.</div>
+        </div>
+        <div class="stat stat--a">
+          <div class="stat__n">90</div>
+          <div class="stat__l">ateliers</div>
+          <div class="stat__s">Séances de 2 h : graphie et sons, conjugaison, lecture, vocabulaire.</div>
+        </div>
+      </div>
+
+      <div class="picto" aria-hidden="true">
+      <i class="pc pc--c"></i><i class="pc pc--c"></i><i class="pc pc--c"></i><i class="pc pc--c"></i><i class="pc pc--c"></i><i class="pc pc--c"></i><i class="pc pc--c"></i><i class="pc pc--c"></i><i class="pc pc--c"></i><i class="pc pc--c"></i><i class="pc pc--c"></i><i class="pc pc--c"></i><i class="pc pc--c"></i><i class="pc pc--c"></i><i class="pc pc--c"></i>
+      <i class="pc pc--c"></i><i class="pc pc--c"></i><i class="pc pc--c"></i><i class="pc pc--c"></i><i class="pc pc--c"></i><i class="pc pc--c"></i><i class="pc pc--c"></i><i class="pc pc--c"></i><i class="pc pc--c"></i><i class="pc pc--c"></i><i class="pc pc--c"></i><i class="pc pc--c"></i><i class="pc pc--c"></i><i class="pc pc--c"></i><i class="pc pc--c"></i>
+      <i class="pc pc--c"></i><i class="pc pc--c"></i><i class="pc pc--c"></i><i class="pc pc--c"></i><i class="pc pc--c"></i><i class="pc pc--c"></i><i class="pc pc--c"></i><i class="pc pc--c"></i><i class="pc pc--c"></i><i class="pc pc--c"></i><i class="pc pc--c"></i><i class="pc pc--c"></i><i class="pc pc--c"></i><i class="pc pc--c"></i><i class="pc pc--c"></i>
+      <i class="pc pc--c"></i><i class="pc pc--c"></i><i class="pc pc--c"></i><i class="pc pc--c"></i><i class="pc pc--c"></i><i class="pc pc--c"></i><i class="pc pc--c"></i><i class="pc pc--c"></i><i class="pc pc--c"></i><i class="pc pc--c"></i><i class="pc pc--c"></i><i class="pc pc--c"></i><i class="pc pc--c"></i><i class="pc pc--c"></i><i class="pc pc--c"></i>
+      <i class="pc pc--c"></i><i class="pc pc--c"></i><i class="pc pc--c"></i><i class="pc pc--c"></i><i class="pc pc--c"></i><i class="pc pc--c"></i><i class="pc pc--c"></i><i class="pc pc--c"></i><i class="pc pc--c"></i><i class="pc pc--c"></i><i class="pc pc--c"></i><i class="pc pc--c"></i><i class="pc pc--c"></i><i class="pc pc--c"></i><i class="pc pc--c"></i>
+      <i class="pc pc--c"></i><i class="pc pc--c"></i><i class="pc pc--c"></i><i class="pc pc--c"></i><i class="pc pc--c"></i><i class="pc pc--c"></i><i class="pc pc--c"></i><i class="pc pc--c"></i><i class="pc pc--c"></i><i class="pc pc--c"></i><i class="pc pc--c"></i><i class="pc pc--c"></i><i class="pc pc--a"></i><i class="pc pc--a"></i><i class="pc pc--a"></i>
+      <i class="pc pc--a"></i><i class="pc pc--a"></i><i class="pc pc--a"></i><i class="pc pc--a"></i><i class="pc pc--a"></i><i class="pc pc--a"></i><i class="pc pc--a"></i><i class="pc pc--a"></i><i class="pc pc--a"></i><i class="pc pc--a"></i><i class="pc pc--a"></i><i class="pc pc--a"></i><i class="pc pc--a"></i><i class="pc pc--a"></i><i class="pc pc--a"></i>
+      <i class="pc pc--a"></i><i class="pc pc--a"></i><i class="pc pc--a"></i><i class="pc pc--a"></i><i class="pc pc--a"></i><i class="pc pc--a"></i><i class="pc pc--a"></i><i class="pc pc--a"></i><i class="pc pc--a"></i><i class="pc pc--a"></i><i class="pc pc--a"></i><i class="pc pc--a"></i><i class="pc pc--a"></i><i class="pc pc--a"></i><i class="pc pc--a"></i>
+      <i class="pc pc--a"></i><i class="pc pc--a"></i><i class="pc pc--a"></i><i class="pc pc--a"></i><i class="pc pc--a"></i><i class="pc pc--a"></i><i class="pc pc--a"></i><i class="pc pc--a"></i><i class="pc pc--a"></i><i class="pc pc--a"></i><i class="pc pc--a"></i><i class="pc pc--a"></i><i class="pc pc--a"></i><i class="pc pc--a"></i><i class="pc pc--a"></i>
+      <i class="pc pc--a"></i><i class="pc pc--a"></i><i class="pc pc--a"></i><i class="pc pc--a"></i><i class="pc pc--a"></i><i class="pc pc--a"></i><i class="pc pc--a"></i><i class="pc pc--a"></i><i class="pc pc--a"></i><i class="pc pc--a"></i><i class="pc pc--a"></i><i class="pc pc--a"></i><i class="pc pc--a"></i><i class="pc pc--a"></i><i class="pc pc--a"></i>
+      <i class="pc pc--a"></i><i class="pc pc--a"></i><i class="pc pc--a"></i><i class="pc pc--a"></i><i class="pc pc--a"></i><i class="pc pc--a"></i><i class="pc pc--a"></i><i class="pc pc--a"></i><i class="pc pc--a"></i><i class="pc pc--a"></i><i class="pc pc--a"></i><i class="pc pc--a"></i><i class="pc pc--a"></i><i class="pc pc--a"></i><i class="pc pc--a"></i>
+      <i class="pc pc--a"></i><i class="pc pc--a"></i><i class="pc pc--a"></i><i class="pc pc--a"></i><i class="pc pc--a"></i><i class="pc pc--a"></i><i class="pc pc--a"></i><i class="pc pc--a"></i><i class="pc pc--a"></i><i class="pc pc--a"></i><i class="pc pc--a"></i><i class="pc pc--a"></i>
+      </div>
+      <p class="picto__note">177 activités au catalogue, du niveau 1 au niveau 8 — produites par une seule personne.</p>
+
+      <div class="niveaux">
+        <div class="rule--fin rule"></div>
+        <p class="eyebrow" style="margin-bottom:8px">Les huit niveaux, aucun laissé vide</p>
+      <div class="niv">
+        <span class="niv__n">Niveau 1</span>
+        <span class="niv__bar"><b style="width:22%;background:#A5335F"></b></span>
+        <span class="niv__v">4 modules</span>
+        <span class="niv__a">21 ateliers</span>
+      </div>
+      <div class="niv">
+        <span class="niv__n">Niveau 2</span>
+        <span class="niv__bar"><b style="width:56%;background:#A83A22"></b></span>
+        <span class="niv__v">10 modules</span>
+        <span class="niv__a">6 ateliers</span>
+      </div>
+      <div class="niv">
+        <span class="niv__n">Niveau 3</span>
+        <span class="niv__bar"><b style="width:72%;background:#B45309"></b></span>
+        <span class="niv__v">13 modules</span>
+        <span class="niv__a">6 ateliers</span>
+      </div>
+      <div class="niv">
+        <span class="niv__n">Niveau 4</span>
+        <span class="niv__bar"><b style="width:100%;background:#8C6A07"></b></span>
+        <span class="niv__v">18 modules</span>
+        <span class="niv__a">6 ateliers</span>
+      </div>
+      <div class="niv">
+        <span class="niv__n">Niveau 5</span>
+        <span class="niv__bar"><b style="width:78%;background:#0D7A6F"></b></span>
+        <span class="niv__v">14 modules</span>
+        <span class="niv__a">6 ateliers</span>
+      </div>
+      <div class="niv">
+        <span class="niv__n">Niveau 6</span>
+        <span class="niv__bar"><b style="width:56%;background:#1D6B8F"></b></span>
+        <span class="niv__v">10 modules</span>
+        <span class="niv__a">6 ateliers</span>
+      </div>
+      <div class="niv">
+        <span class="niv__n">Niveau 7</span>
+        <span class="niv__bar"><b style="width:61%;background:#3B49A0"></b></span>
+        <span class="niv__v">11 modules</span>
+        <span class="niv__a">6 ateliers</span>
+      </div>
+      <div class="niv">
+        <span class="niv__n">Niveau 8</span>
+        <span class="niv__bar"><b style="width:33%;background:#7E3F98"></b></span>
+        <span class="niv__v">6 modules</span>
+        <span class="niv__a">6 ateliers</span>
+      </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 3 · la chaîne -->
+  <section class="bloc">
+    <div class="rule"></div>
+    <p class="eyebrow" style="margin-bottom:22px">Du référentiel officiel au cours donné · cinq étapes, cinq programmes</p>
+    <div class="chaine">
+      <div class="etape">
+        <div class="etape__n">01</div>
+        <h3>Le programme</h3>
+        <p>Les huit niveaux en données : situations, savoirs, critères.</p>
+      </div>
+      <div class="etape">
+        <div class="etape__n">02</div>
+        <h3>Le compositeur</h3>
+        <p>Il assemble la commande à partir des critères réels du niveau visé.</p>
+      </div>
+      <div class="etape">
+        <div class="etape__n">03</div>
+        <h3>La forge</h3>
+        <p>Scénario, dialogues, exercices, mini-leçons, banc de réponses.</p>
+      </div>
+      <div class="etape">
+        <div class="etape__n">04</div>
+        <h3>Les médias</h3>
+        <p>Une voix par réplique, une image par notion. Par lots, automatisés.</p>
+      </div>
+      <div class="etape">
+        <div class="etape__n">05</div>
+        <h3>Le rendu</h3>
+        <p>Module web, diapositives, fiches papier : une seule source.</p>
+      </div>
+    </div>
+    <p class="chaine__pied">Le secret n'est pas le prompt. <b>C'est l'atelier.</b></p>
+  </section>
+
+  <!-- 4 · les trois sorties -->
+  <section class="bloc">
+    <div class="rule"></div>
+    <p class="eyebrow" style="margin-bottom:26px">Ce que la chaîne a déjà produit</p>
+    <div class="sorties">
+      <div class="sortie">
+        <div class="forme forme--ecran"></div>
+        <div class="sortie__n">1 264</div>
+        <div class="sortie__l">séances projetées</div>
+        <div class="sortie__s">Un diaporama par période de classe, écrit à partir du module lui-même.</div>
+      </div>
+      <div class="sortie">
+        <div class="forme forme--onde">
+          <i style="height:22px"></i><i style="height:44px"></i><i style="height:72px"></i>
+          <i style="height:96px"></i><i style="height:66px"></i><i style="height:38px"></i>
+          <i style="height:58px"></i><i style="height:26px"></i>
+        </div>
+        <div class="sortie__n">20 832</div>
+        <div class="sortie__l">pistes audio</div>
+        <div class="sortie__s">Chaque réplique, chaque mot, chaque mini-leçon — dits par une voix, au débit d'un cours.</div>
+      </div>
+      <div class="sortie">
+        <div class="forme forme--page"></div>
+        <div class="sortie__n">2 752</div>
+        <div class="sortie__l">images et fiches</div>
+        <div class="sortie__s">Illustrations sans texte, décor québécois, plus les fiches imprimables noir et blanc.</div>
+      </div>
+    </div>
+    <p class="accolade">Trois sorties, <b>une seule source</b> : corriger une fois corrige partout.</p>
+  </section>
+
+  <!-- 5 · ce qui est tenu -->
+  <section class="bloc">
+    <div class="rule"></div>
+    <p class="eyebrow" style="margin-bottom:22px">Trois engagements, écrits dans le code et non dans une promesse</p>
+    <div class="tenues">
+      <div class="tenue">
+        <div class="tenue__k">Conformité</div>
+        <h3>Le programme est dans la chaîne, pas dans un PDF</h3>
+        <p>On peut répondre à « pourquoi cette activité, à ce niveau ? » en pointant le critère ministériel dont elle est issue.</p>
+      </div>
+      <div class="tenue">
+        <div class="tenue__k">Propriété</div>
+        <h3>Le contenu appartient au centre</h3>
+        <p>Aucun manuel n'est numérisé. Chaque module a ses personnages et son scénario ; le texte est écrit, pas repris.</p>
+      </div>
+      <div class="tenue">
+        <div class="tenue__k">Confidentialité</div>
+        <h3>Rien ne remonte sans un geste de l'élève</h3>
+        <p>Les corrections restent privées ; seules les productions envoyées atteignent l'enseignante. Un centre peut refuser l'IA d'un seul réglage.</p>
+      </div>
+    </div>
+  </section>
+
+  <div class="pied">
+    <span>Chiffres relevés sur le dépôt le 28 août 2026 — <b>build/tableau_bord.py</b>, jamais estimés.</span>
+    <span>francis · Aide à l'apprentissage du français</span>
+  </div>
+</div>
+
+</body>
+</html>
