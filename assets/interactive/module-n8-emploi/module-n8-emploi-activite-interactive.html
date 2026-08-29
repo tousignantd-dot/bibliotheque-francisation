@@ -65,11 +65,6 @@ body{display:flex;flex-direction:column;min-height:100vh}
 #btn-reset{background:var(--surface-card);color:var(--text-strong);border:1px solid var(--border);border-radius:999px;padding:10px 18px;font-family:'Nunito',sans-serif;font-size:15px;font-weight:800;cursor:pointer;white-space:nowrap;transition:background .15s}
 #btn-reset:hover{background:var(--paper-100)}
 #btn-reset:hover{background:rgba(255,255,255,.28)}
-/* VITESSE-VOIX:début — greffé par build/greffe_vitesse.py */
-#btn-vitesse{background:var(--surface-card);color:var(--text-strong);border:1px solid var(--border);border-radius:999px;padding:10px 18px;font-family:'Nunito',sans-serif;font-size:15px;font-weight:800;cursor:pointer;white-space:nowrap;transition:background .15s}
-#btn-vitesse:hover{background:var(--paper-100)}
-#btn-vitesse[data-cran="1"],#btn-vitesse[data-cran="2"]{background:var(--hdr-accent-soft,var(--accent-soft));border-color:var(--hdr-accent,var(--accent-ink));color:var(--hdr-accent,var(--accent-ink))}
-/* VITESSE-VOIX:fin */
 /* REPRISE-CSS:début — greffé par build/greffe_reprise.py */
 #re-banniere{display:flex;align-items:center;gap:12px;flex-wrap:wrap;margin:14px auto 0;max-width:1180px;padding:12px 18px;background:var(--surface-card,#fff);border:2px solid var(--border,#D9DCE0);border-left:6px solid var(--hdr-accent,var(--accent-ink,#0A8F5B));border-radius:14px;font-family:'Nunito',sans-serif;font-size:15px;font-weight:800;color:var(--text-strong,#17181A)}
 #re-banniere .re-txt{flex:1;min-width:200px}
@@ -78,6 +73,11 @@ body{display:flex;flex-direction:column;min-height:100vh}
 #re-banniere button:hover{background:var(--paper-100,#F2F4F5)}
 #re-banniere #re-fermer{padding:9px 13px}
 /* REPRISE-CSS:fin */
+/* VITESSE-VOIX:début — greffé par build/greffe_vitesse.py */
+#btn-vitesse{background:var(--surface-card);color:var(--text-strong);border:1px solid var(--border);border-radius:999px;padding:10px 18px;font-family:'Nunito',sans-serif;font-size:15px;font-weight:800;cursor:pointer;white-space:nowrap;transition:background .15s}
+#btn-vitesse:hover{background:var(--paper-100)}
+#btn-vitesse[data-cran="1"],#btn-vitesse[data-cran="2"]{background:var(--hdr-accent-soft,var(--accent-soft));border-color:var(--hdr-accent,var(--accent-ink));color:var(--hdr-accent,var(--accent-ink))}
+/* VITESSE-VOIX:fin */
 
 #tabs{position:sticky;top:0;z-index:5;background:rgba(247,247,245,.94);backdrop-filter:blur(8px);display:flex;gap:8px;padding:12px 32px;border-bottom:1px solid var(--border);flex-wrap:wrap}
 .tab{min-height:var(--tap-min);border:1px solid var(--border);border-radius:999px;padding:0 16px;font-family:'Nunito',sans-serif;font-size:14px;font-weight:800;cursor:pointer;background:var(--surface-card);color:var(--text-body);transition:background .15s,border-color .15s;display:inline-flex;align-items:center;gap:8px}
@@ -1774,54 +1774,20 @@ function playDialogue(dialId, btn){
    l'élève d'un module à l'autre : celui qui a besoin de lent en a besoin
    partout. */
 const VIT_CRANS = [
-  {v:1,    suf:'',            lbl:'Débit normal'},
-  {v:0.8,  suf:'.lent',       lbl:'Débit lent'},
-  {v:0.65, suf:'.tres-lent',  lbl:'Débit très lent'},
+  {v:1,    lbl:'Débit normal'},
+  {v:0.8,  lbl:'Débit lent'},
+  {v:0.65, lbl:'Débit très lent'},
 ];
-/* Les suffixes sont ceux de `build/audio_lent.py` : les changer d'un côté
-   sans l'autre fait demander au bouton des fichiers qui n'existent pas. */
-const vitSansVariante = new Set();
-function vitUrlLente(url){
-  const suf = VIT_CRANS[vitCran].suf;
-  if(!suf || vitSansVariante.has(url)) return null;
-  const lente = url.replace(/\.mp3(\?|$)/, suf + '.mp3$1');
-  return lente === url ? null : lente;
-}
 let vitCran = 0;
 try{ vitCran = Math.min(2, Math.max(0, parseInt(localStorage.getItem('saaf-vitesse'),10) || 0)); }catch(e){}
 const vitFacteur = ()=> VIT_CRANS[vitCran].v;
-/* Le ralenti se prend d'abord dans un fichier produit d'avance par `atempo`
-   (build/audio_lent.py). L'étirement en direct par le navigateur ne sert plus
-   que de repli : à 0,65 il rend la voix métallique et tremblée, parce que
-   Chrome recolle les morceaux d'onde en temps réel, avec un budget de calcul
-   minuscule. Hors ligne, ffmpeg a tout le temps qu'il faut.
-
-   Si la variante manque — un module dont les fichiers ne sont pas encore
-   produits — l'erreur de chargement ramène l'original et l'ancien
-   comportement, sans que l'élève entende un silence. */
-function vitEtirer(a){
-  try{ a.preservesPitch = a.mozPreservesPitch = a.webkitPreservesPitch = true; }catch(e){}
-  /* `defaultPlaybackRate` en plus de `playbackRate` : un `load()` remet le
-     second à la valeur du premier, et le repli sortirait à vitesse normale. */
-  try{ a.defaultPlaybackRate = a.playbackRate = vitFacteur(); }catch(e){}
-}
+/* Le facteur d'un `Audio`, posé à la création — et reposé sur celui qui joue
+   déjà, pour que le réglage s'entende tout de suite plutôt qu'au prochain
+   extrait. */
 function vitAudio(a){
   if(!a) return a;
-  const original = a.getAttribute('src') || a.src || '';
-  const lente = vitUrlLente(original);
-  if(!lente){ vitEtirer(a); return a; }
-  a.dataset.vitOriginal = original;
-  a.addEventListener('error', function repli(){
-    if(a.dataset.vitRepli) return;
-    a.dataset.vitRepli = '1';
-    vitSansVariante.add(original);
-    a.src = original;
-    a.load();
-    vitEtirer(a);
-    a.play().catch(()=>{});
-  }, {once:true});
-  a.src = lente;
-  try{ a.playbackRate = 1; }catch(e){}
+  try{ a.preservesPitch = a.mozPreservesPitch = a.webkitPreservesPitch = true; }catch(e){}
+  try{ a.playbackRate = vitFacteur(); }catch(e){}
   return a;
 }
 /* Les replis en synthèse vocale ont leur propre échelle de débit : le facteur
@@ -1831,8 +1797,8 @@ const vitTaux = base => Math.max(0.1, base * vitFacteur());
 function vitAppliquer(){
   const b = document.getElementById('btn-vitesse');
   if(b){ b.textContent = VIT_CRANS[vitCran].lbl; b.setAttribute('data-cran', String(vitCran)); }
-  /* Rien n'est reposé sur l'extrait en cours : changer de fichier en pleine
-     phrase la couperait. Le nouveau cran vaut au prochain extrait. */
+  if(typeof dlgAudio !== 'undefined' && dlgAudio) vitAudio(dlgAudio);
+  if(typeof jrAudio !== 'undefined' && jrAudio) vitAudio(jrAudio);
 }
 document.addEventListener('DOMContentLoaded', ()=>{
   const b = document.getElementById('btn-vitesse');

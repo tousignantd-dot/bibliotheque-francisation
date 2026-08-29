@@ -27,7 +27,6 @@ import zipfile
 import io
 import random
 import string
-import subprocess
 import uuid
 from pathlib import Path
 from datetime import date, datetime, timedelta
@@ -154,35 +153,6 @@ VOIX_CACHE_DIR = STORAGE_DIR / "data" / "voix-cache"
 # une fois et jamais relues. Sans borne, elles rempliraient le volume. Au-delà,
 # on élague les fichiers les moins récemment servis jusqu'aux 80 % du plafond.
 VOIX_CACHE_MAX_OCTETS = int(os.environ.get("VOIX_CACHE_MAX_MO", "300")) * 1024 * 1024
-# Cache des MP3 ralentis. Le bouton 🐢 des modules ne demande plus au
-# navigateur d'étirer le son pendant la lecture — à 0,65 Chrome recolle les
-# morceaux d'onde en temps réel et la voix en ressort métallique. Il demande
-# un `<nom>.tres-lent.mp3`, que `atempo` de ffmpeg produit sans artefact.
-#
-# Ces fichiers ne sont ni versionnés ni construits au déploiement : les
-# produire tous ferait 3 Go d'image et une demi-heure de build à chaque push,
-# pour un fonds dont les élèves n'écoutent au ralenti qu'une petite part. Ils
-# sont donc fabriqués **à la première demande** et gardés sur le volume,
-# exactement comme le cache des voix juste au-dessus.
-AUDIO_LENT_DIR = STORAGE_DIR / "data" / "audio-lent"
-# Plafond, même règle que le cache des voix : au-delà, on élague les moins
-# récemment servis. Rien n'est perdu — tout se refabrique en un centième de
-# seconde.
-AUDIO_LENT_MAX_OCTETS = int(os.environ.get("AUDIO_LENT_CACHE_MAX_MO", "1500")) * 1024 * 1024
-# Les suffixes sont ceux de `build/audio_lent.py` et de
-# `build/greffe_vitesse.py` : les trois doivent dire la même chose.
-AUDIO_LENT_CRANS = {".tres-lent.mp3": "0.65", ".lent.mp3": "0.80"}
-_AUDIO_LENT_LOCK = threading.Lock()
-_AUDIO_LENT_CHANTIERS = {}
-# ffmpeg doit exister dans l'image d'**exécution**, pas seulement de build :
-# sur Railway, la variable de service `RAILPACK_DEPLOY_APT_PACKAGES=ffmpeg`.
-# S'il manque, rien ne casse — la route rend 404 et le bouton du module
-# retombe sur l'étirement par le navigateur, c'est-à-dire l'état d'avant.
-_AUDIO_LENT_FFMPEG = shutil.which("ffmpeg")
-if not _AUDIO_LENT_FFMPEG:
-    print("[WARN] ffmpeg absent : les voix ralenties resteront étirées par le "
-          "navigateur (poser RAILPACK_DEPLOY_APT_PACKAGES=ffmpeg)", flush=True)
-
 ORAL_SUBMISSIONS_FILE = STORAGE_DIR / "data" / "oral_submissions.json"
 ORAL_AUDIO_DIR = STORAGE_DIR / "assets" / "oral-submissions"
 # « Corrige-moi ! » : pratique orale libre, sans enregistrement audio ni date
@@ -3018,102 +2988,6 @@ def _voix_cache_elaguer():
             except OSError:
                 pass
         print(f"[voix] cache élagué à {total / (1024 * 1024):.1f} Mo", flush=True)
-
-
-def audio_lent_cible(url_path):
-    """Pour l'URL d'une variante lente, rend (original, tempo, cache) — ou None
-    si ce n'en est pas une, ou si le chemin sort de `assets/interactive/`.
-
-    Le contrôle de sortie de dossier n'est pas décoratif : `url_path` vient du
-    réseau, et un `..` bien placé ferait lire n'importe quel MP3 du disque.
-    """
-    if not url_path.startswith("/assets/interactive/"):
-        return None
-    for suffixe, tempo in AUDIO_LENT_CRANS.items():
-        if not url_path.endswith(suffixe):
-            continue
-        relatif = url_path[len("/assets/"):-len(suffixe)] + ".mp3"
-        racine = (BASE_DIR / "assets" / "interactive").resolve()
-        original = (BASE_DIR / "assets" / relatif).resolve()
-        try:
-            original.relative_to(racine)
-        except ValueError:
-            return None
-        if not original.is_file():
-            return None
-        cache = AUDIO_LENT_DIR / (relatif[:-4] + suffixe)
-        return original, tempo, cache
-    return None
-
-
-def audio_lent_produire(original, tempo, cache):
-    """Fabrique la variante si elle manque, et rend son chemin — ou None.
-
-    Deux élèves qui demandent le même extrait en même temps ne doivent pas
-    lancer deux ffmpeg : un verrou par fichier suffit, et le second trouve le
-    travail déjà fait. L'écriture passe par un provisoire renommé, pour que
-    personne ne lise un MP3 tronqué.
-    """
-    if cache.is_file():
-        try:
-            os.utime(cache, None)   # la date de service décide de l'élagage
-        except OSError:
-            pass
-        return cache
-    if not _AUDIO_LENT_FFMPEG:
-        return None
-    with _AUDIO_LENT_LOCK:
-        verrou = _AUDIO_LENT_CHANTIERS.setdefault(str(cache), threading.Lock())
-    with verrou:
-        if cache.is_file():
-            return cache
-        provisoire = cache.with_name(cache.name + ".part-%s" % uuid.uuid4().hex[:8])
-        try:
-            cache.parent.mkdir(parents=True, exist_ok=True)
-            subprocess.run(
-                [_AUDIO_LENT_FFMPEG, "-y", "-loglevel", "error", "-i", str(original),
-                 "-filter:a", "atempo=%s" % tempo,
-                 "-ac", "1", "-ar", "24000", "-b:a", "96k",
-                 # `-f mp3` est obligatoire : sinon ffmpeg devine le format
-                 # d'après l'extension et cale sur un `.part-1a2b3c`.
-                 "-f", "mp3", str(provisoire)],
-                check=True, capture_output=True, timeout=60)
-            provisoire.replace(cache)
-        except Exception as e:
-            try:
-                provisoire.unlink(missing_ok=True)
-            except OSError:
-                pass
-            print("[WARN] ralenti non produit (%s) : %s" % (original.name, e), flush=True)
-            return None
-        finally:
-            with _AUDIO_LENT_LOCK:
-                _AUDIO_LENT_CHANTIERS.pop(str(cache), None)
-    _audio_lent_elaguer()
-    return cache
-
-
-def _audio_lent_elaguer():
-    """Même règle que le cache des voix : sous le plafond, les moins récemment
-    servis partent les premiers. Le cache n'est jamais une source de vérité."""
-    try:
-        fichiers = [(f.stat().st_mtime, f.stat().st_size, f)
-                    for f in AUDIO_LENT_DIR.rglob("*.mp3")]
-    except OSError:
-        return
-    total = sum(taille for _, taille, _ in fichiers)
-    if total <= AUDIO_LENT_MAX_OCTETS:
-        return
-    cible = int(AUDIO_LENT_MAX_OCTETS * 0.8)
-    for _, taille, f in sorted(fichiers):
-        if total <= cible:
-            break
-        try:
-            f.unlink()
-            total -= taille
-        except OSError:
-            pass
-    print("[audio] cache des ralentis élagué à %.1f Mo" % (total / (1024 * 1024)), flush=True)
 
 
 def log_translation_report(entry):
@@ -15401,13 +15275,6 @@ class Handler(http.server.SimpleHTTPRequestHandler):
 
         # Fichiers interactifs intégrés au code : servir directement depuis BASE_DIR
         if path.startswith("/assets/interactive/"):
-            # Sauf les versions lentes, qui n'existent pas sur le disque du
-            # code : elles se fabriquent à la première demande et dorment sur
-            # le volume. Un échec ne rend pas d'erreur bruyante — le module
-            # retombe tout seul sur l'original étiré par le navigateur.
-            if path.endswith(tuple(AUDIO_LENT_CRANS)):
-                self._servir_audio_lent(path)
-                return
             super().do_GET()
             return
 
@@ -15425,32 +15292,6 @@ class Handler(http.server.SimpleHTTPRequestHandler):
             return
 
         super().do_GET()
-
-    def _servir_audio_lent(self, url_path):
-        """Sert un `<nom>.lent.mp3` ou `<nom>.tres-lent.mp3`, en le fabriquant
-        au besoin. Le 404 est un chemin normal, pas une panne : le bouton du
-        module l'attrape et reprend l'original."""
-        # Une variante déposée à côté de l'original (build/audio_lent.py lancé
-        # localement) prime sur le cache : c'est la même chose, déjà prête.
-        deja = BASE_DIR / url_path.lstrip("/")
-        if deja.is_file():
-            super().do_GET()
-            return
-        cible = audio_lent_cible(url_path)
-        fichier = audio_lent_produire(*cible) if cible else None
-        if not fichier:
-            self.send_error(404)
-            return
-        try:
-            audio = fichier.read_bytes()
-        except OSError:
-            self.send_error(404)
-            return
-        self.send_response(200)
-        self.send_header("Content-Type", "audio/mpeg")
-        self.send_header("Content-Length", str(len(audio)))
-        self.end_headers()
-        self.wfile.write(audio)
 
     def _serve_from_storage(self, url_path):
         rel = url_path.lstrip("/")
