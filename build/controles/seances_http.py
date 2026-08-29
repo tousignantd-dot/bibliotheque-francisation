@@ -345,6 +345,70 @@ try:
     except urllib.error.HTTPError as e:
         verifie("le dépôt oral est refusé", e.code == 401, str(e.code))
 
+
+    print("\n— Le direct de la classe voit les participants —")
+    # Deux appareils dans la séance : l'un répond, l'autre entre et ne fait
+    # rien. Les deux doivent figurer pendant que la séance est ouverte.
+    st, a = appel("POST", "/api/seance/entrer", {"code": CODE})
+    JET_A = a["jeton"]
+    st, b = appel("POST", "/api/seance/entrer", {"code": CODE})
+    JET_B = b["jeton"]
+    # Des zones à part : « t1pc » a déjà servi plus haut, et le direct
+    # regroupe par exercice — deux exercices portant la même zone font deux
+    # lignes, ce qui a fait échouer une première version de ce contrôle.
+    for zone, ok in (("dr1", True), ("dr2", False)):
+        appel("POST", "/api/student/progress",
+              {"code": JET_A, "activityId": ACT, "event": "zone_repondue",
+               "zone": zone, "ok": ok, "essais": 0 if ok else 1,
+               "exo": "d1", "exoNum": "1", "exoTitre": "Défi 1",
+               "section": "defi1", "type": "vf",
+               "bonne": "vrai", "reponse": "vrai" if ok else "faux"})
+    st, d = appel("GET", "/api/direct?groupId=%d&activityId=%d" % (GROUPE, ACT),
+                  jeton=JETON)
+    verifie("le direct répond", st == 200, str(d)[:160])
+    noms = [e["pseudo"] for e in d.get("eleves", [])]
+    verifie("les deux participants figurent",
+            "Participant %d" % a["numero"] in noms
+            and "Participant %d" % b["numero"] in noms, str(noms))
+    verifie("ils sont marqués anonymes",
+            all(e["anonyme"] for e in d["eleves"]), str(d["eleves"])[:200])
+    verifie("le dénominateur les compte",
+            d["elevesTotal"] == len(noms), str(d["elevesTotal"]))
+    ligne_a = next(e for e in d["eleves"]
+                   if e["pseudo"] == "Participant %d" % a["numero"])
+    ligne_b = next(e for e in d["eleves"]
+                   if e["pseudo"] == "Participant %d" % b["numero"])
+    verifie("celui qui a répondu a ses deux zones", ligne_a["repondu"] == 2,
+            str(ligne_a))
+    verifie("et une seule réussie", ligne_a["reussi"] == 1, str(ligne_a))
+    verifie("celui qui n'a rien fait est là, à zéro",
+            ligne_b["repondu"] == 0, str(ligne_b))
+    verifie("celui qui a répondu est en ligne", ligne_a["enLigne"] is True,
+            str(ligne_a))
+    zones = [z for ex in d["exercices"] for z in ex["zones"]]
+    zones_d1 = [z for ex in d["exercices"] if ex["exo"] == "d1"
+                for z in ex["zones"]]
+    verifie("les questions sont comptées", len(zones_d1) == 2, str(len(zones_d1)))
+    juste = next(z for z in zones_d1 if z["zone"] == "dr1")
+    verifie("la bonne réponse est du premier coup", juste["premierCoup"] == 1,
+            str(juste))
+    verifie("et il reste des sans-réponse", juste["sansReponse"] >= 1, str(juste))
+    verifie("aucun jeton dans le direct", JET_A not in json.dumps(d))
+
+    print("\n— Une fois la séance fermée —")
+    st, seances = appel("GET", "/api/prof/seances?groupId=%d" % GROUPE, jeton=JETON)
+    mienne_id = next(x["id"] for x in seances["seances"] if x["code"] == CODE)
+    appel("POST", "/api/prof/seances/fermer", {"id": mienne_id}, JETON)
+    st, d2 = appel("GET", "/api/direct?groupId=%d&activityId=%d" % (GROUPE, ACT),
+                   jeton=JETON)
+    noms2 = [e["pseudo"] for e in d2.get("eleves", [])]
+    verifie("celui qui a travaillé reste au tableau",
+            "Participant %d" % a["numero"] in noms2, str(noms2))
+    verifie("celui qui n'a rien fait s'efface",
+            "Participant %d" % b["numero"] not in noms2, str(noms2))
+    verifie("et ses réponses restent comptées",
+            [z for ex in d2["exercices"] for z in ex["zones"]], "aucune zone")
+
     print("\n— Fermer —")
     st, r = appel("POST", "/api/prof/seances/fermer", {"id": SEANCE["id"]}, JETON)
     verifie("séance fermée", st == 200 and not r["seance"]["ouverte"], str(r))
@@ -358,8 +422,10 @@ try:
     verifie("l'enseignant retrouve sa séance", st == 200 and mienne, str(r))
     # Trois entrées, pas cinq : les deux retours avec le jeton d'un appareil
     # déjà entré n'ont créé personne. C'est tout l'intérêt de la reprise.
+    # Cinq entrées : trois plus haut, deux pour le direct. Les retours avec
+    # un jeton déjà connu n'ont créé personne — c'est l'intérêt de la reprise.
     verifie("avec son compte de participants",
-            mienne and mienne["participants"] == 3, str(mienne))
+            mienne and mienne["participants"] == 5, str(mienne))
     verifie("et toujours aucun jeton", "jeton" not in json.dumps(r))
 
     print("\n— Le débit des entrées —")

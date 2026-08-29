@@ -1472,6 +1472,8 @@
                             : 'fermée'}</span></span>
         <a class="btn btn--ghost btn--sm" target="_blank" rel="noopener"
            href="feuille-seance.html?code=${encodeURIComponent(s.code)}">La feuille</a>
+        ${s.ouverte ? `<a class="btn btn--ghost btn--sm" target="_blank" rel="noopener"
+           href="progression.html?module=${s.activityId}">Le direct</a>` : ''}
         ${s.ouverte ? `<button type="button" class="btn btn--ghost btn--sm"
            data-fermer-seance="${s.id}">Fermer</button>` : ''}
       </div>`).join('');

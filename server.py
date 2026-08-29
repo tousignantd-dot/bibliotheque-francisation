@@ -3935,6 +3935,34 @@ def identite_de_participant(participant, seance):
     }
 
 
+def participants_du_direct(group_id, activity_id, avec_traces=frozenset()):
+    """Les participants à faire figurer au direct de la classe.
+
+    Deux cas, et ils ne se recouvrent pas :
+
+    * **la séance est ouverte** — tout le monde figure, même qui n'a encore
+      rien répondu. C'est justement ce qu'on veut voir pendant l'heure :
+      « douze sont entrés, trois n'ont pas commencé » ;
+    * **la séance est fermée** — ne restent que ceux qui ont laissé une trace.
+      Sinon le tableau d'un module fait deux fois garderait pour toujours la
+      classe du mois dernier au dénominateur, et « sans réponse » compterait
+      des gens qui ne sont plus là.
+
+    Les identités rendues ont le contrat d'un élève : `id`, `label`, `groupId`.
+    """
+    sortie = []
+    for seance in load_seances():
+        if (seance.get("groupId") != group_id
+                or seance.get("activityId") != activity_id):
+            continue
+        ouverte = seance_ouverte(seance)
+        for p in seance.get("participants", []):
+            if ouverte or p.get("id") in avec_traces:
+                sortie.append(identite_de_participant(p, seance))
+    sortie.sort(key=lambda i: i["id"], reverse=True)   # Participant 1, 2, 3…
+    return sortie
+
+
 def participant_par_jeton(jeton):
     """(identité, séance) pour un jeton, ou (None, None).
 
@@ -20215,12 +20243,20 @@ class Handler(http.server.SimpleHTTPRequestHandler):
             return
         section = (params.get("section", [""])[0] or "").strip()
 
-        eleves = [s for s in load_students() if s.get("groupId") == group_id]
-        ids = {s["id"] for s in eleves}
+        inscrits = sorted((s for s in load_students()
+                           if s.get("groupId") == group_id),
+                          key=lambda s: (s.get("label") or "").lower())
+        ids = {s["id"] for s in inscrits}
         lignes = [e for e in load_direct()
                   if e.get("activityId") == activity_id
                   and (e.get("studentId") in ids or e.get("groupId") == group_id)
                   and (not section or e.get("section") == section)]
+        # Les participants d'une séance sans compte comptent comme des élèves
+        # ici : ce sont eux qui répondent. Leurs lignes entraient déjà dans les
+        # statistiques par exercice — elles portent le groupe — mais la grille
+        # de classe ne les voyait pas, et le dénominateur les ignorait.
+        eleves = inscrits + participants_du_direct(
+            group_id, activity_id, {e.get("studentId") for e in lignes})
 
         limite = (datetime.now() - timedelta(minutes=DIRECT_EN_LIGNE_MIN)) \
             .isoformat(timespec="seconds")
@@ -20286,13 +20322,20 @@ class Handler(http.server.SimpleHTTPRequestHandler):
         sortie.sort(key=lambda x: (x["section"], x["num"], x["exo"]))
 
         # ── par élève : la grille de classe ─────────────────────────────────
+        # L'ordre est déjà posé : les inscrits par pseudo, les participants par
+        # numéro. Retrier ici sur le libellé mettrait « Participant 10 » avant
+        # « Participant 2 ».
         par_eleve = []
-        for el in sorted(eleves, key=lambda s: (s.get("label") or "").lower()):
+        for el in eleves:
             miennes = [e for e in lignes if e.get("studentId") == el["id"]]
             reussi = sum(1 for e in miennes if e.get("ok"))
             premier = sum(1 for e in miennes if e.get("ok") and not e.get("essais"))
             par_eleve.append({
                 "studentId": el["id"],
+                # L'écran distingue les deux : un participant n'a pas de
+                # dossier à ouvrir, et proposer un lien mort serait pire que
+                # ne rien proposer.
+                "anonyme": bool(el.get("anonyme")),
                 # Le pseudo, jamais un vrai nom : c'est le champ que le portail
                 # remplit, et l'écran le remplace par un rang si l'anonymat est
                 # demandé.

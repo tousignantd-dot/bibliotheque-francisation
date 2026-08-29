@@ -465,6 +465,7 @@
      rendu général ferait reconstruire les tableaux et refermer les chevrons
      toutes les cinq secondes. */
   let SECTIONS = {};          // {activityId: {sections:[{id,titre}], dates:{}}}
+  let SEANCES = [];           // les séances sans compte encore ouvertes
   let DIRECT = null;          // la dernière réponse du serveur
   let DIRECT_ON = true;       // le direct tourne-t-il ?
   let DIRECT_NOMS = false;    // pseudos affichés, ou « Élève N »
@@ -534,7 +535,8 @@
     document.getElementById('pgContenu').innerHTML =
       '<p class="pg-note" style="padding:var(--sp-8) 0">Chargement du groupe…</p>';
 
-    const [activites, eleves, progres, oraux, ecrits, analyses, signaux, sections] = await Promise.all([
+    const [activites, eleves, progres, oraux, ecrits, analyses, signaux, sections,
+           seances] = await Promise.all([
       Prof.fetch(Prof.withGroup('/api/activities')).then(r => r.json()),
       Prof.fetch(Prof.withGroup('/api/admin/students')).then(r => r.json()),
       Prof.fetch(Prof.withGroup('/api/admin/progress')).then(r => r.json()),
@@ -543,6 +545,12 @@
       Prof.fetch(Prof.withGroup('/api/admin/analyses-erreurs')).then(r => r.json()),
       Prof.fetch(Prof.withGroup('/api/admin/signaux-aide')).then(r => r.json()),
       Prof.fetch(Prof.withGroup('/api/sections')).then(r => r.json()).catch(() => ({})),
+      // Les séances sans compte : une classe peut travailler ici sans qu'un
+      // seul élève soit inscrit au groupe. Un serveur plus ancien répond 404 —
+      // la page redevient alors ce qu'elle était.
+      Prof.fetch(Prof.withGroup('/api/prof/seances'))
+        .then(r => r.ok ? r.json() : { seances: [] })
+        .catch(() => ({ seances: [] })),
     ]);
 
     ACTIVITES = Array.isArray(activites) ? activites : [];
@@ -553,13 +561,21 @@
     ANALYSES = Array.isArray(analyses) ? analyses : [];
     SIGNAUX = Array.isArray(signaux) ? signaux : [];
     SECTIONS = (sections && typeof sections === 'object') ? sections : {};
+    SEANCES = ((seances || {}).seances || []).filter(s => s.ouverte);
 
     // Les ateliers de l'après-midi ne sont pas des modules : le tableau de bord
     // suit les cours, c'est-à-dire ce que la planification ouvre par sections.
     // Ordre des numéros de module, pas des dates : c'est ainsi que
     // l'enseignante les nomme, et une liste « 05, 01, 02 » se lit comme une
     // erreur même quand elle suit fidèlement la planification.
-    MODULES = ACTIVITES.filter(a => a.categorie === 'cours')
+    // Une séance ouverte peut porter sur un atelier — un remplacement, une
+    // heure isolée — et son module doit alors être choisissable ici, sinon le
+    // direct est inatteignable pour la classe qui est justement en train de
+    // répondre. Vu à l'écran : la page rejetait le module et retombait sur
+    // « Tous les modules », sans rien dire.
+    const enSeance = new Set(SEANCES.map(s => String(s.activityId)));
+    MODULES = ACTIVITES.filter(a => a.categorie === 'cours'
+                                 || enSeance.has(String(a.id)))
       .sort((a, b) => (numeroDe(a.title) || '99').localeCompare(numeroDe(b.title) || '99')
                    || String(a.title || '').localeCompare(String(b.title || '')));
 
@@ -958,9 +974,18 @@
 
   function rendre() {
     if (!ELEVES.length) {
-      document.getElementById('pgSous').textContent = 'Aucun élève inscrit à ce groupe.';
-      document.getElementById('pgContenu').innerHTML =
-        '<p class="pg-note" style="padding:var(--sp-8) 0">Inscrivez d’abord des élèves dans l’écran « Élèves » du portail enseignant.</p>';
+      // Une séance sans compte remplit le direct sans remplir cette table :
+      // dire « inscrivez des élèves » à quelqu'un dont la classe répond en ce
+      // moment se lit comme une panne.
+      const seance = SEANCES.length;
+      document.getElementById('pgSous').textContent = seance
+        ? 'Aucun élève inscrit : cette classe travaille en séance, sans compte.'
+        : 'Aucun élève inscrit à ce groupe.';
+      document.getElementById('pgContenu').innerHTML = seance
+        ? `<p class="pg-note" style="padding:var(--sp-8) 0">Ce tableau suit les élèves
+           inscrits. Les réponses d’une séance sans compte se lisent dans
+           <b>le direct</b>, plus bas — participant par participant, sans nom.</p>`
+        : '<p class="pg-note" style="padding:var(--sp-8) 0">Inscrivez d’abord des élèves dans l’écran « Élèves » du portail enseignant.</p>';
       majBoutons();
       return;
     }

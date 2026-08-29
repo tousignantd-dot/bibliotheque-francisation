@@ -2763,6 +2763,29 @@ côté de l'IA, de la voix et du dépôt. Le libellé du bouton se calcule sur l
 table `DRAPEAUX` : « Régler les trois drapeaux » était écrit en dur et a menti
 dès le quatrième.
 
+**Le tableau de la classe est celui qui existait déjà.** Les participants
+écrivent dans `direct.json` comme les élèves inscrits, et leurs lignes
+entraient donc **déjà** dans les statistiques par exercice — elles portent le
+`groupId`. Ce qui manquait tenait en deux endroits : la grille de classe
+n'itérait que sur les élèves inscrits, et le dénominateur les ignorait.
+`participants_du_direct()` complète le roster, avec une règle qui distingue
+deux moments :
+
+- **séance ouverte** : tout le monde figure, même qui n'a rien répondu — c'est
+  ce qu'on veut voir pendant l'heure (« douze entrés, trois n'ont pas
+  commencé ») ;
+- **séance fermée** : ne restent que ceux qui ont laissé une trace, sinon le
+  tableau d'un module fait deux fois garderait la classe du mois dernier au
+  dénominateur pour toujours.
+
+Côté page, deux corrections vues à l'écran et non en relisant :
+`progression.html` rejetait le module d'une séance quand c'était un **atelier**
+(la liste ne gardait que les `cours`) et retombait sur « Tous les modules »
+sans rien dire ; et un groupe sans élève inscrit affichait « Inscrivez d'abord
+des élèves » à quelqu'un dont la classe est en train de répondre — ce qui se
+lit comme une panne. La bascule « Anonyme » du direct fonctionne telle quelle :
+un participant s'appelle déjà « Participant 7 ».
+
 Contrôles : `python3 build/controles/seances.py` (les gardes, fonction par
 fonction) et `python3 build/controles/seances_http.py` (les routes, jouées par
 HTTP sur un serveur jetable). Le second est celui qui compte : il vérifie que
@@ -2770,8 +2793,7 @@ les refus **refusent**, ce qu'un test qui se contente d'entrer dans une séance
 laisserait passer même toutes gardes retirées.
 
 Plan du chantier : `assets/presentations/mode-seance-sans-compte.html`.
-Reste à faire : le tableau de la classe — les participants sans nom, item par
-item, en direct.
+Les quatre lots sont livrés.
 
 ## Voix des modules (ElevenLabs)
 
