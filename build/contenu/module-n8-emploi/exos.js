@@ -305,9 +305,9 @@ const EXOS = [
      ["Le doute se lève tout de suite","Si une consigne n'était pas claire, on la fait répéter <i>en réunion</i>, pas deux jours plus tard devant l'écran.<span class='savoir-ex'>« Pour être certaine : l'échéance du douze vaut pour les deux demandes ? »</span>"],
    ]},
    items:[
-    {q:"Ligne 1 — la demande de prix : décision, responsable, échéance.", accept:[], ph:"Demander à Lachance…"},
-    {q:"Ligne 2 — le calcul d'espace : décision, responsable, échéance.", accept:[], ph:"Chiffrer…"},
-    {q:"Ligne 3 — le choix du fournisseur : ce qui a été décidé du choix lui-même.", accept:[], ph:"Décision reportée…"},
+    {q:"Ligne 1 — la demande de prix : décision, responsable, échéance.", ph:"Demander à Lachance…"},
+    {q:"Ligne 2 — le calcul d'espace : décision, responsable, échéance.", ph:"Chiffrer…"},
+    {q:"Ligne 3 — le choix du fournisseur : ce qui a été décidé du choix lui-même.", ph:"Décision reportée…"},
    ]},
 
  // ── DÉFI 3 · SE PERFECTIONNER ───────────────────────────────
@@ -416,9 +416,9 @@ const EXOS = [
      ["La question qu'on oublie","<i>Qu'est-ce qui arrive si je dois m'absenter une semaine ?</i> Un adulte en emploi s'absente ; mieux vaut le savoir avant."],
    ]},
    items:[
-    {q:"Question 1 — sur la durée et l'horaire.", accept:[], ph:"Combien de temps…"},
-    {q:"Question 2 — sur le coût et sur qui l'assume.", accept:[], ph:"Quels sont les frais…"},
-    {q:"Question 3 — sur ce que la formation donne à la fin.", accept:[], ph:"Est-ce que cette formation mène à…"},
+    {q:"Question 1 — sur la durée et l'horaire.", ph:"Combien de temps…"},
+    {q:"Question 2 — sur le coût et sur qui l'assume.", ph:"Quels sont les frais…"},
+    {q:"Question 3 — sur ce que la formation donne à la fin.", ph:"Est-ce que cette formation mène à…"},
    ]},
 
  // ── JE ME LANCE ─────────────────────────────────────────────
@@ -438,8 +438,8 @@ const EXOS = [
   {sec:'appli', id:'aArgu', type:'write', num:'Exercice 2', tit:"Vos trois arguments, chiffrés", color:'#7E3F98', cols:1,
    sub:"Avant d'écrire votre demande de formation, posez vos arguments. Chacun doit contenir un chiffre.",
    items:[
-    {q:"Argument 1 — ce que la lacune vous coûte en temps chaque mois.", accept:[], ph:"Environ … heures par mois…"},
-    {q:"Argument 2 — ce que la formation coûte, et sur combien de semaines.", accept:[], ph:"Le cours coûte …"},
-    {q:"Argument 3 — comment votre travail se fait quand même pendant l'absence.", accept:[], ph:"Pendant la demi-journée…"},
+    {q:"Argument 1 — ce que la lacune vous coûte en temps chaque mois.", ph:"Environ … heures par mois…"},
+    {q:"Argument 2 — ce que la formation coûte, et sur combien de semaines.", ph:"Le cours coûte …"},
+    {q:"Argument 3 — comment votre travail se fait quand même pendant l'absence.", ph:"Pendant la demi-journée…"},
    ]},
 ];

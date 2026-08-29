@@ -152,8 +152,10 @@ body.depot-ferme #poSend { display: none !important; }
     if (btn) btn.style.display = 'none';
     var prev = document.getElementById('poPrev');
     if (prev && !prev.querySelector('.sans-ia-mot')) {
-      prev.appendChild(note("Écoute-toi, corrige ta transcription si besoin, "
-        + "puis envoie ton enregistrement à ton enseignant."));
+      /* Le mot ne parle plus de transcription : elle dépend du navigateur, pas
+         de nous, et `poPasDeTranscription()` le précisera si elle manque. */
+      prev.appendChild(note("Écoute-toi, puis envoie ton enregistrement à ton "
+        + "enseignant."));
     }
     if (typeof stopRec === 'function') {
       var orig = stopRec;
@@ -268,7 +270,11 @@ body.depot-ferme #poSend { display: none !important; }
       var ex = EXOS.find(function (e) { return e.id === exId; });
       if (!ex) return;
       var it = ex.items[i];
-      if (it && it.accept) return orig.apply(this, arguments);
+      /* `cles` se juge entièrement dans la page : le mode sans IA doit donc
+         le laisser passer au moteur, comme `accept`. Sans cette ligne, un
+         item à termes-clés ne pouvait JAMAIS être validé ici — la greffe
+         répondait « relis ta phrase » quoi que l'élève écrive. */
+      if (it && (it.accept || it.cles)) return orig.apply(this, arguments);
 
       var inp = document.getElementById('wi_' + exId + '_' + i);
       var fb = document.getElementById('wf_' + exId + '_' + i);
@@ -295,6 +301,20 @@ body.depot-ferme #poSend { display: none !important; }
       if (typeof WSOL !== 'undefined') WSOL[k] = attendu;
       if (typeof WFB !== 'undefined') WFB[k] = '';
 
+      /* Sans assistant, la seule chose qu'on savait faire était refuser : quoi
+         que l'élève écrive, « relis ta phrase », puis la réponse et l'ordre de
+         la recopier. Aucune question ouverte n'était donc réussissable dans un
+         centre qui refuse l'IA — 222 items du cours. La comparaison par mots de
+         contenu, elle, n'a besoin de personne : elle vit dans la page. */
+      if (typeof couvre === 'function' && typeof reponseAttendue === 'function'
+          && reponseAttendue(it) && couvre(reponseAttendue(it), val) >= COUV_MIN) {
+        fb.className = 'wfb ok';
+        fb.innerHTML = "✅ Bravo, c'est exact !";
+        inp.classList.add('good');
+        if (typeof trackPlacement === 'function') trackPlacement('w_' + exId + '_' + i, true);
+        return;
+      }
+
       fb.className = 'wfb no';
       if (n < 2 && typeof wBoutonReponse === 'function') {
         fb.innerHTML = "💡 Relis ta phrase et vérifie chaque mot."
@@ -303,7 +323,7 @@ body.depot-ferme #poSend { display: none !important; }
         fb.innerHTML = "💡 <b>La réponse attendue :</b> "
                      + (typeof esc === 'function' ? esc(attendu) : attendu)
                      + '<br><span style="font-weight:600">Compare-la avec la tienne, '
-                     + 'puis réécris-la dans la case.</span>';
+                     + 'puis écris-la à ta façon.</span>';
       }
       if (typeof trackPlacement === 'function') trackPlacement('w_' + exId + '_' + i, false);
       if (typeof evaluerAide === 'function') {

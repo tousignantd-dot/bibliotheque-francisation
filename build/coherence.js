@@ -136,6 +136,36 @@ function verifier(slug) {
     }
   }
 
+  // 3 bis. Un exercice écrit qui n'accepte rien. `accept: []` est un piège
+  //    silencieux : le tableau vide est *vrai* en JavaScript, le module prend
+  //    donc la branche autocorrection et compare la réponse de l'élève à une
+  //    liste sans aucune entrée. Rien ne peut jamais être accepté, et la
+  //    « bonne réponse » affichée est vide. Un item ouvert se laisse sans
+  //    `accept` du tout (correction par l'assistant) ou reçoit des `cles`.
+  //    Neuf items de module-n8-emploi étaient dans ce cas, et aucun des sept
+  //    contrôles ne le voyait — relevé le 28 août 2026.
+  for (const ex of EXOS) {
+    if (ex.type !== 'write') continue;
+    for (const [i, it] of (ex.items || []).entries()) {
+      if (Array.isArray(it.accept) && it.accept.length === 0)
+        dire(`${ex.id} item ${i + 1} : accept vide — rien ne pourra être accepté`);
+      // Une entrée vide n'est pas toujours une faute : « Je souhaite ___
+      // travailler » attend justement RIEN, et module-n6-recherche écrit
+      // accept:["","rien","—"]. C'est la liste entièrement vide de texte qui
+      // est fautive, pas la présence d'une entrée vide à côté des autres.
+      if (Array.isArray(it.accept) && it.accept.length
+          && !it.accept.some(a => typeof a === 'string' && a.trim()))
+        dire(`${ex.id} item ${i + 1} : aucune réponse acceptée n’a de texte`);
+      if (it.cles && !Array.isArray(it.cles))
+        dire(`${ex.id} item ${i + 1} : « cles » doit être un tableau de groupes`);
+      for (const [g, grp] of (Array.isArray(it.cles) ? it.cles : []).entries()) {
+        const mots = Array.isArray(grp) ? grp : (grp && grp.mots);
+        if (!Array.isArray(mots) || !mots.length)
+          dire(`${ex.id} item ${i + 1} : groupe de cles ${g + 1} sans aucun terme`);
+      }
+    }
+  }
+
   // 4. Les pastilles d'écoute : chaque mot du bloc `savoir` doit avoir sa
   //    phrase porteuse, et la clé de CARRIER_PHRASES est le **mot accentué**,
   //    jamais un slug. Douze mots de module-n3-epicerie ont lu le mot seul

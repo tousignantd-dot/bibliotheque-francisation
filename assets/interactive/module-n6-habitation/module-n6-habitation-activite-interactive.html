@@ -3394,6 +3394,31 @@ function finishEval(){
 }
 
 // ── ENREGISTREMENT (production orale) ─────────────────────────────────
+// Le bloc oral promet une transcription automatique à trois endroits : le
+// libellé de l'étape 2 (« Je m'écoute et je corrige »), le texte d'aide de la
+// case (« Transcription automatique (tu peux la corriger) ») et le mot du mode
+// sans assistant (« corrige ta transcription si besoin »). Aucune des trois
+// n'est tenue quand le navigateur ne sait pas reconnaître la parole SUR
+// L'APPAREIL : l'élève s'enregistre, et tombe devant une case vide qui lui
+// demande de corriger un texte qui n'existe pas.
+//
+// Relevé le 28 août 2026 en mode sans assistant — mais le défaut n'a RIEN à
+// voir avec l'assistant. La reconnaissance vocale vit dans le navigateur, elle
+// ne passe ni par nos serveurs ni par nos clés ; elle manque aussi bien dans
+// un centre qui a l'IA. L'ajustement est donc ici, dans le moteur, et il se
+// règle sur l'état réel de la reconnaissance plutôt que sur le drapeau du
+// centre. Ce qui reste, lui, marche sans personne : s'enregistrer, s'écouter,
+// écrire ce qu'on a dit, envoyer à son enseignant.
+function poPasDeTranscription(){
+  const t=document.getElementById('poText');
+  if(t){ t.placeholder="Écris ici, en quelques mots, ce que tu as dit."; }
+  const l=document.querySelector('#recStep2 .l');
+  if(l) l.textContent="Je m'écoute et j'écris ce que j'ai dit";
+  document.querySelectorAll('#poPrev .sans-ia-mot').forEach(n=>{
+    n.textContent="Écoute-toi, écris en quelques mots ce que tu as dit, "
+      + "puis envoie ton enregistrement à ton enseignant.";
+  });
+}
 let mediaRecorder=null, audioChunks=[], audioBlob=null, audioUrl=null, recognition=null, isRec=false, poFeedback="";
 async function toggleRec(){
   if(isRec){ stopRec(); return; }
@@ -3418,7 +3443,9 @@ async function toggleRec(){
   // lui ferait manquer les premiers mots de l'élève.
   const reco = await reconnaissanceLocale('dictation');
   if(!reco.rec){
-    showErr('poErr', recoMessage(reco.etat)+" L'enregistrement fonctionne quand même : écris ton texte à la main.");
+    poPasDeTranscription();
+    showErr('poErr', recoMessage(reco.etat)
+      + " Ton enregistrement, lui, fonctionne : écoute-toi, écris en quelques mots ce que tu as dit, puis envoie-le.");
   }
   mediaRecorder.start();
   if(reco.rec){
@@ -3816,6 +3843,105 @@ function normWrite(s){
 // dernier commentaire (pour ne pas le perdre quand on ajoute la réponse).
 const WESSAI={}, WSOL={}, WFB={};
 
+// ── CONTRÔLE PAR TERMES-CLÉS ────────────────────────────────────────────
+// Une réponse écrite était jugée par égalité de chaîne. Pour « arriverai »,
+// c'est juste. Pour « L'annonce 2 : cinq pièces, deux salles de bain, une
+// école et un parc tout près », c'est un test de dactylographie : aucun élève
+// ne retrouve une phrase de quinze mots au caractère près, et le module lui
+// répondait « Presque ! » puis lui demandait de la recopier. Relevé le
+// 28 août 2026 sur module-logement, et vrai de 159 items du cours qui
+// attendent quatre mots ou plus.
+//
+// Deux remèdes, tous deux sans appel à l'IA :
+//
+//   `cles` — l'auteur écrit des GROUPES de termes équivalents, et la réponse
+//   passe dès qu'elle touche un terme de chaque groupe, dans n'importe quel
+//   ordre. Le gain n'est pas que d'accepter plus large : un groupe manqué se
+//   nomme, donc l'élève lit ce qui manque au lieu d'un refus sec.
+//
+//   `couvre` — le filet, pour les items sans `cles`. Au-delà de trois mots
+//   attendus, la comparaison se fait sur les mots de contenu et non sur la
+//   forme : une phrase juste, ponctuée autrement, n'est plus une faute.
+//
+// Ce que ça ne fait pas, et il vaut mieux l'écrire : « ce n'est pas
+// l'annonce 2 » contient tous les bons termes. C'est à quoi sert `sauf`, et
+// la négation reste le trou de la méthode. C'est le prix de se passer de
+// l'IA, et il est petit devant celui qu'on payait.
+const WSTOP = new Set(('a au aux avec c ce ces cet cette d dans de des du elle en est et '
+  + 'eux il ils j je l la le les leur lui ma mais me mes moi mon n ne nos notre nous on '
+  + 'ou par pas plus pour qu que qui sa se ses son sont sur ta te tes toi ton tous tout '
+  + 'tres tu un une vos votre vous y').split(' '));
+
+// Les équivalences s'appliquent des DEUX côtés, donc une même ambiguïté ne
+// crée pas d'écart. « neuf » et « seconde » sont laissés de côté justement
+// parce qu'ils en créeraient une : un logement neuf n'est pas un 9.
+function normCle(s){
+  return (s||'').toString().toLowerCase().normalize('NFD').replace(/[̀-ͯ]/g,'')
+    .replace(/½/g,' et demi').replace(/(\d)\s*1\/2/g,'$1 et demi')
+    .replace(/\bpremieres?\b|\bpremiers?\b|\b1(?:er|re|ere)\b/g,'1')
+    .replace(/\bdeuxiemes?\b|\b2e\b/g,'2')
+    .replace(/\btroisiemes?\b|\b3e\b/g,'3')
+    .replace(/\bquatriemes?\b|\b4e\b/g,'4')
+    .replace(/\bcinquiemes?\b|\b5e\b/g,'5')
+    .replace(/\bdeux\b/g,'2').replace(/\btrois\b/g,'3').replace(/\bquatre\b/g,'4')
+    .replace(/\bcinq\b/g,'5').replace(/\bsix\b/g,'6').replace(/\bsept\b/g,'7')
+    .replace(/\bhuit\b/g,'8').replace(/\bdix\b/g,'10')
+    .replace(/[^a-z0-9]+/g,' ').replace(/\s+/g,' ').trim();
+}
+function motsUtiles(s){
+  return normCle(s).split(' ').filter(m=>m.length>1 && !WSTOP.has(m));
+}
+// La part des mots de contenu attendus qui se retrouvent dans la réponse.
+function couvre(attendu, donne){
+  const a=motsUtiles(attendu); if(!a.length) return 0;
+  const d=new Set(motsUtiles(donne));
+  return a.filter(m=>d.has(m)).length / a.length;
+}
+const COUV_MIN = 0.8;
+// Le seuil se compte en MOTS DE CONTENU, pas en mots. Compté sur les mots
+// bruts, « a-t-elle été » en fait quatre et tombait dans le filet : « a-t-il
+// été » y devenait juste, puisque tout ce qui les distingue est un mot vide.
+// Douze items de grammaire du cours étaient dans ce cas, relevés par le
+// contrôle des leurres. En mots de contenu, ils en font un — le filet les
+// laisse tranquilles, et c'est ce qu'il faut : là, la forme EST la réponse.
+//
+// Trois et non quatre : le seuil a été choisi en mesurant, sur les 3 904
+// items à liste fermée, combien d'items le filet couvre et combien de
+// réponses d'une AUTRE question il laisserait passer. À 4 : 25 items
+// couverts, 0 confusion. À 3 : 105 items couverts, 0 confusion. À 2 : 492
+// items, mais 6 confusions. Trois est le dernier seuil encore gratuit.
+const LONG_MIN = 3;
+
+// Un groupe s'écrit ['annonce 2','la 2','triplex'] — ou, pour que le module
+// puisse DIRE ce qui manque, {q:"pourquoi elle convient", mots:[…]}.
+// Un `hint` n'est pas toujours une réponse : dans les items de production
+// libre il commence par « Ex. : » et n'est qu'un modèle parmi d'autres. Le
+// distinguer permet d'accepter une bonne réponse sans déranger l'assistant —
+// et, dans les centres qui refusent l'IA, d'accepter tout court.
+function reponseAttendue(it){
+  const h=(it && it.hint || '').trim();
+  if(!h) return '';
+  if(/^(ex\.|exemple|reponse personnelle|réponse personnelle)/i.test(h)) return '';
+  return h;
+}
+function verifCles(it, val){
+  const n=' '+normCle(val)+' ';
+  const dedans = t => n.includes(' '+normCle(t)+' ');
+  for(const t of (it.sauf||[])) if(dedans(t))
+    return {ok:false, msg:'❌ Relis la question : ta phrase dit le contraire.'};
+  const manque=[];
+  for(const g0 of it.cles){
+    const g = Array.isArray(g0) ? {q:'', mots:g0} : g0;
+    if(!(g.mots||[]).some(dedans)) manque.push(g.q||'');
+  }
+  if(!manque.length) return {ok:true, msg:''};
+  const nommes=manque.filter(Boolean);
+  const partiel=manque.length < it.cles.length;
+  return {ok:false, msg:(partiel ? '💡 Tu tiens une partie de la réponse. ' : '❌ Pas encore. ')
+    + (nommes.length ? 'Il manque : <b>'+nommes.join('</b>, <b>')+'</b>.'
+                     : 'Relis la question : elle demande plus que ça.')};
+}
+
 function wBoutonReponse(exId, i){
   return '<br><button type="button" class="btn btn-ghost" style="margin-top:8px;padding:7px 12px;font-size:12px" '
     + 'onclick="wDevoiler(\'' + exId + '\',' + i + ')">Montrez-moi la réponse</button>';
@@ -3833,7 +3959,7 @@ function wDevoiler(exId, i){
   const inp=document.getElementById('wi_'+exId+'_'+i);
   fb.className='wfb no';
   fb.innerHTML=(WFB[k]?WFB[k]+'<br>':'')+'<b>La réponse :</b> '+esc(sol)
-    +'<br><span style="font-weight:600">Réécris-la dans la case, puis vérifie.</span>';
+    +'<br><span style="font-weight:600">Écris-la à ta façon, puis vérifie.</span>';
   if(inp){ inp.value=''; inp.focus(); }
 }
 
@@ -3847,9 +3973,32 @@ async function checkWrite(exId, i){
   const k=exId+'_'+i;
   if(!val){ fb.className='wfb no'; fb.textContent="✏️ Écris ta réponse d'abord."; return; }
 
+  // Termes-clés : passe avant tout le reste, et ne demande jamais de copie.
+  if(it.cles){
+    const r=verifCles(it, val);
+    if(r.ok){
+      fb.className='wfb ok'; fb.innerHTML='✅ Bravo, c\'est exact !';
+      inp.classList.add('good'); inp.disabled=true; trackPlacement(zid,true);
+      return;
+    }
+    WESSAI[k]=(WESSAI[k]||0)+1;
+    const modele=it.hint||(it.accept&&it.accept[0])||'';
+    fb.className='wfb no';
+    fb.innerHTML = r.msg + ((WESSAI[k]>=2 && modele)
+      ? '<br><b>Un exemple de réponse :</b> '+esc(modele)
+        +'<br><span style="font-weight:600">Écris-la à ta façon, puis vérifie.</span>'
+      : '');
+    trackPlacement(zid,false);
+    const ratesC = ex.items.reduce((s,_,k2)=> s + (TR.attempts['w_'+exId+'_'+k2]||0), 0);
+    evaluerAide(exId, ratesC);
+    return;
+  }
+
   // Mode autocorrection (réponse connue)
   if(it.accept){
-    const ok=it.accept.map(normWrite).includes(normWrite(val));
+    const long = motsUtiles(it.accept[0]).length >= LONG_MIN;
+    const ok = it.accept.map(normWrite).includes(normWrite(val))
+            || (long && it.accept.some(a=>couvre(a,val)>=COUV_MIN));
     if(ok){
       fb.className='wfb ok'; fb.innerHTML='✅ Bravo, c\'est exact !';
       inp.classList.add('good'); inp.disabled=true; trackPlacement(zid,true);
@@ -3862,7 +4011,9 @@ async function checkWrite(exId, i){
     fb.innerHTML = (WESSAI[k]<2)
       ? '❌ Presque ! Relis ta réponse et essaie encore.'+wBoutonReponse(exId,i)
       : '💡 La réponse est : <b>'+esc(it.accept[0])+'</b>'
-        +'<br><span style="font-weight:600">Réécris-la dans la case, puis vérifie.</span>';
+        +'<br><span style="font-weight:600">'
+        +(long?'Écris-la à ta façon, puis vérifie.':'Réécris-la dans la case, puis vérifie.')
+        +'</span>';
     trackPlacement(zid,false);
     // Ici le cumul a du sens : chaque envoi raté est une tentative distincte.
     const rates = ex.items.reduce((s,_,k2)=> s + (TR.attempts['w_'+exId+'_'+k2]||0), 0);
@@ -3875,12 +4026,22 @@ async function checkWrite(exId, i){
   // appel ne dirait rien de neuf et se paierait à chaque frappe. On compare
   // sur place, et une phrase écrite autrement n'est pas comptée comme fautive.
   if(WSOL[k] && (WESSAI[k]||0)>=2){
-    const juste = normWrite(val)===normWrite(WSOL[k]);
+    const juste = normWrite(val)===normWrite(WSOL[k]) || couvre(WSOL[k], val)>=COUV_MIN;
     fb.className='wfb '+(juste?'ok':'no');
     fb.innerHTML = juste
-      ? '✅ Voilà, tu l\'as réécrite.'
-      : '💡 C\'est noté. La phrase à écrire : <b>'+esc(WSOL[k])+'</b>';
+      ? '✅ Voilà, tu l\'as écrite.'
+      : '💡 C\'est noté. Ce qu\'il fallait dire : <b>'+esc(WSOL[k])+'</b>';
     if(juste){ inp.classList.add('good'); trackPlacement(zid,true); }
+    return;
+  }
+  // La réponse attendue est déjà là, en clair, dans l'item : quand l'élève la
+  // dit, il est inutile de la faire relire à un assistant — et surtout de la
+  // payer. C'est aussi ce qui réparait le cas relevé le 28 août 2026 : une
+  // bonne réponse refusée au premier envoi, puis exigée au caractère près.
+  const attenduIA = reponseAttendue(it);
+  if(attenduIA && couvre(attenduIA, val) >= COUV_MIN){
+    fb.className='wfb ok'; fb.innerHTML='✅ Bravo, c\'est exact !';
+    inp.classList.add('good'); trackPlacement(zid,true);
     return;
   }
   fb.className='wfb wait'; fb.textContent='⏳ L\'assistant corrige ta réponse…';
@@ -3904,13 +4065,12 @@ async function checkWrite(exId, i){
     if(!WSOL[k]) fb.innerHTML=WFB[k];
     else if(essai<2) fb.innerHTML=WFB[k]+wBoutonReponse(exId,i);
     else fb.innerHTML=WFB[k]+'<br><b>La réponse :</b> '+esc(WSOL[k])
-      +'<br><span style="font-weight:600">Réécris-la dans la case, puis vérifie.</span>';
+      +'<br><span style="font-weight:600">Écris-la à ta façon, puis vérifie.</span>';
   }catch(e){
     if(btn) btn.disabled=false;
     fb.className='wfb no'; fb.textContent='Impossible de contacter le serveur. Réessaie.';
   }
 }
-
 // ── MINI-LEÇONS « EN APPRENDRE PLUS » ──────────────────────────────────
 // Une entrée par exercice qui porte un `savoir`. Le bandeau noir reste le
 // résumé ; ceci est la leçon complète, ouverte à la demande dans un panneau.
@@ -6148,8 +6308,10 @@ body.depot-ferme #poSend { display: none !important; }
     if (btn) btn.style.display = 'none';
     var prev = document.getElementById('poPrev');
     if (prev && !prev.querySelector('.sans-ia-mot')) {
-      prev.appendChild(note("Écoute-toi, corrige ta transcription si besoin, "
-        + "puis envoie ton enregistrement à ton enseignant."));
+      /* Le mot ne parle plus de transcription : elle dépend du navigateur, pas
+         de nous, et `poPasDeTranscription()` le précisera si elle manque. */
+      prev.appendChild(note("Écoute-toi, puis envoie ton enregistrement à ton "
+        + "enseignant."));
     }
     if (typeof stopRec === 'function') {
       var orig = stopRec;
@@ -6264,7 +6426,11 @@ body.depot-ferme #poSend { display: none !important; }
       var ex = EXOS.find(function (e) { return e.id === exId; });
       if (!ex) return;
       var it = ex.items[i];
-      if (it && it.accept) return orig.apply(this, arguments);
+      /* `cles` se juge entièrement dans la page : le mode sans IA doit donc
+         le laisser passer au moteur, comme `accept`. Sans cette ligne, un
+         item à termes-clés ne pouvait JAMAIS être validé ici — la greffe
+         répondait « relis ta phrase » quoi que l'élève écrive. */
+      if (it && (it.accept || it.cles)) return orig.apply(this, arguments);
 
       var inp = document.getElementById('wi_' + exId + '_' + i);
       var fb = document.getElementById('wf_' + exId + '_' + i);
@@ -6291,6 +6457,20 @@ body.depot-ferme #poSend { display: none !important; }
       if (typeof WSOL !== 'undefined') WSOL[k] = attendu;
       if (typeof WFB !== 'undefined') WFB[k] = '';
 
+      /* Sans assistant, la seule chose qu'on savait faire était refuser : quoi
+         que l'élève écrive, « relis ta phrase », puis la réponse et l'ordre de
+         la recopier. Aucune question ouverte n'était donc réussissable dans un
+         centre qui refuse l'IA — 222 items du cours. La comparaison par mots de
+         contenu, elle, n'a besoin de personne : elle vit dans la page. */
+      if (typeof couvre === 'function' && typeof reponseAttendue === 'function'
+          && reponseAttendue(it) && couvre(reponseAttendue(it), val) >= COUV_MIN) {
+        fb.className = 'wfb ok';
+        fb.innerHTML = "✅ Bravo, c'est exact !";
+        inp.classList.add('good');
+        if (typeof trackPlacement === 'function') trackPlacement('w_' + exId + '_' + i, true);
+        return;
+      }
+
       fb.className = 'wfb no';
       if (n < 2 && typeof wBoutonReponse === 'function') {
         fb.innerHTML = "💡 Relis ta phrase et vérifie chaque mot."
@@ -6299,7 +6479,7 @@ body.depot-ferme #poSend { display: none !important; }
         fb.innerHTML = "💡 <b>La réponse attendue :</b> "
                      + (typeof esc === 'function' ? esc(attendu) : attendu)
                      + '<br><span style="font-weight:600">Compare-la avec la tienne, '
-                     + 'puis réécris-la dans la case.</span>';
+                     + 'puis écris-la à ta façon.</span>';
       }
       if (typeof trackPlacement === 'function') trackPlacement('w_' + exId + '_' + i, false);
       if (typeof evaluerAide === 'function') {
