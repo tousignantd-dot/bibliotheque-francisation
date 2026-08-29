@@ -1,0 +1,422 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Le mode séance — sans compte élève</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800;900&display=swap">
+<style>
+  /* Système de design Francisation / francis — thème clair unique, comme les
+     autres documents de la banque de présentations. Le violet est exclusif
+     à la marque : aucun état, aucun repérage ne le porte. */
+  :root{
+    --accent:#0A8F5B; --accent-soft:#E6F5EE; --accent-ink:#07734A;
+    --surface-band:#EDF6F1;
+    --ink-900:#17181A; --ink-700:#3A3D40; --ink-500:#4B4F52; --ink-400:#6E7175;
+    --surface-page:#F7F7F5; --surface-card:#FFFFFF; --surface-sunken:#FBFBFA;
+    --paper-200:#F0F0EE;
+    --border:#EAEAE8; --border-firm:#D6D6D2; --border-tint:#D8E8DF;
+    --acier-600:#1D6B8F; --acier-100:#E7F0F6;
+    --ambre-700:#B45309; --ambre-100:#FBEEDC;
+    --teal-700:#0D7A6F;  --teal-100:#E3F2F0;
+    --indigo-600:#3B49A0; --indigo-100:#E8EAFA;
+    --pourpre-700:#7E3F98; --pourpre-100:#F3E8F7;
+    --framboise-600:#A5335F; --framboise-100:#FCE9F0;
+    --marque-600:#6B4FBB; --marque-100:#EDE7F9; --marque-filet:#C3B4EA;
+    --font-sans:"Nunito",system-ui,-apple-system,"Segoe UI",sans-serif;
+    --content-max:880px;
+  }
+  *{box-sizing:border-box}
+  body{margin:0; background:var(--surface-page); color:var(--ink-900);
+    font-family:var(--font-sans); font-size:18px; font-weight:600; line-height:1.55;
+    -webkit-font-smoothing:antialiased; -webkit-text-size-adjust:100%}
+  :focus-visible{outline:3px solid var(--accent); outline-offset:2px; border-radius:4px}
+  .conteneur{max-width:var(--content-max); margin:0 auto; padding:0 24px}
+
+  /* — marque francis — le nom, un trait, le descripteur. Le seul signe de
+     marque est le point du « i » : un disque plein. Aucune boîte autour du
+     nom — une pilule se lirait comme un bouton. — */
+  .verrou{display:inline-flex; align-items:center; gap:16px; flex-wrap:wrap}
+  .verrou .nom{font-weight:900; font-size:28px; letter-spacing:-.035em;
+    line-height:1; color:var(--ink-900); white-space:nowrap}
+  .verrou .i{position:relative; display:inline-block}
+  .verrou .point{position:absolute; left:1px; top:2px; width:7px; height:7px;
+    border-radius:999px; background:var(--marque-600)}
+  .verrou .filet{width:2px; height:24px; background:var(--marque-filet)}
+  .verrou .desc{font-size:16px; font-weight:900; letter-spacing:-.015em;
+    line-height:1; color:var(--marque-600); white-space:nowrap}
+  @media (max-width:480px){ .verrou .filet,.verrou .desc{display:none} }
+
+  /* La barre de marque : blanche, fermée par le filet mauve de 2 px. Le
+     blanc appartient à la plateforme, la teinte au document. */
+  .barre{background:#FFFFFF; border-bottom:2px solid var(--marque-600);
+    padding:16px 0}
+
+  /* — bande de tête — */
+  .bande{background:var(--surface-band); border-bottom:1px solid var(--border-tint);
+    padding:44px 0 34px}
+  .bande .conteneur{display:flex; flex-direction:column; gap:22px}
+  .surtitre{font-size:13px; font-weight:800; letter-spacing:.12em;
+    text-transform:uppercase; color:var(--ink-400); margin:0}
+  h1{font-size:clamp(32px,5.4vw,46px); font-weight:900; letter-spacing:-.02em;
+    line-height:1.14; margin:0; text-wrap:balance}
+  .chapeau{font-size:19px; font-weight:600; color:var(--ink-500); margin:0; max-width:62ch}
+  .quand{font-size:14px; color:var(--ink-400); margin:0}
+
+  main{padding:8px 0 80px}
+  section{padding:38px 0 0}
+  h2{font-size:27px; font-weight:900; letter-spacing:-.015em; margin:0 0 6px;
+    text-wrap:balance}
+  h3{font-size:19px; font-weight:900; margin:26px 0 6px}
+  p{margin:0 0 14px; max-width:66ch}
+  .eyebrow{display:inline-block; font-size:12px; font-weight:800; letter-spacing:.12em;
+    text-transform:uppercase; padding:4px 10px; border-radius:999px; margin:0 0 10px}
+  .e-acier{background:var(--acier-100); color:var(--acier-600)}
+  .e-ambre{background:var(--ambre-100); color:var(--ambre-700)}
+  .e-teal{background:var(--teal-100); color:var(--teal-700)}
+  .e-indigo{background:var(--indigo-100); color:var(--indigo-600)}
+  .e-pourpre{background:var(--pourpre-100); color:var(--pourpre-700)}
+  .e-framboise{background:var(--framboise-100); color:var(--framboise-600)}
+  strong{font-weight:900}
+  code{font-family:ui-monospace,Menlo,Consolas,monospace; font-size:.86em;
+    background:var(--paper-200); padding:1px 5px; border-radius:5px; font-weight:700}
+
+  .carte{background:var(--surface-card); border:1px solid var(--border);
+    border-radius:14px; padding:18px 20px}
+  .pile{display:flex; flex-direction:column; gap:12px}
+
+  /* — l'arbre — */
+  .arbre{background:var(--surface-card); border:1px solid var(--border);
+    border-radius:16px; padding:22px; overflow-x:auto}
+  .niv{display:flex; flex-direction:column; gap:8px; margin:0; padding:0; list-style:none}
+  .niv .niv{margin:8px 0 0 20px; padding-left:18px; border-left:2px solid var(--border-firm)}
+  .noeud{display:flex; align-items:baseline; gap:10px; flex-wrap:wrap;
+    background:var(--surface-sunken); border:1px solid var(--border);
+    border-radius:10px; padding:9px 13px}
+  .noeud .t{font-size:12px; font-weight:800; letter-spacing:.1em; text-transform:uppercase;
+    color:var(--ink-400); white-space:nowrap}
+  .noeud .n{font-weight:900}
+  .noeud .g{font-size:15px; font-weight:600; color:var(--ink-500)}
+  .noeud--reseau{border-color:var(--marque-filet); background:var(--marque-100)}
+  .noeud--css{border-color:#BBD5E5; background:var(--acier-100)}
+  .noeud--centre{border-color:#CDE3DF; background:var(--teal-100)}
+  .noeud--groupe{border-color:#E8D7B8; background:var(--ambre-100)}
+
+  /* — tableaux — */
+  .cadre-table{overflow-x:auto; border:1px solid var(--border); border-radius:14px;
+    background:var(--surface-card)}
+  table{border-collapse:collapse; width:100%; min-width:640px; font-size:15px}
+  th,td{text-align:left; padding:11px 14px; border-bottom:1px solid var(--border);
+    vertical-align:top}
+  thead th{font-size:12px; font-weight:800; letter-spacing:.08em; text-transform:uppercase;
+    color:var(--ink-400); background:var(--surface-sunken); white-space:nowrap}
+  tbody tr:last-child td{border-bottom:0}
+  td.oui{color:var(--accent-ink); font-weight:900}
+  td.non{color:var(--ink-400); font-weight:700}
+  td.part{color:var(--ambre-700); font-weight:800}
+  .role{font-weight:900; white-space:nowrap}
+  .role span{display:block; font-size:13px; font-weight:600; color:var(--ink-500);
+    white-space:normal}
+
+  /* — listes — */
+  ul.points{list-style:none; padding:0; margin:0 0 14px; display:flex;
+    flex-direction:column; gap:10px}
+  ul.points li{position:relative; padding-left:20px; max-width:66ch}
+  ul.points li::before{content:""; position:absolute; left:2px; top:.62em;
+    width:7px; height:7px; border-radius:50%; background:var(--accent)}
+
+  /* — étapes — */
+  ol.etapes{list-style:none; counter-reset:e; padding:0; margin:0;
+    display:flex; flex-direction:column; gap:10px}
+  ol.etapes li{counter-increment:e; display:flex; gap:14px;
+    background:var(--surface-card); border:1px solid var(--border);
+    border-radius:14px; padding:15px 18px}
+  ol.etapes li::before{content:counter(e); flex:0 0 auto; width:30px; height:30px;
+    border-radius:50%; background:var(--ink-900); color:#FFF; font-weight:900;
+    font-size:15px; display:flex; align-items:center; justify-content:center}
+  ol.etapes b{display:block; font-size:17px}
+  ol.etapes p{margin:2px 0 0; font-size:16px; color:var(--ink-500)}
+
+  /* — avertissement — */
+  .garde{background:var(--ambre-100); border:1px solid #E8D7B8; border-radius:14px;
+    padding:18px 20px}
+  .garde p{color:#6B4708}
+  .garde p:last-child{margin-bottom:0}
+
+  /* — tuiles de chiffres — */
+  .tuiles{display:grid; grid-template-columns:repeat(auto-fit,minmax(190px,1fr)); gap:12px}
+  .tuile{background:var(--surface-card); border:1px solid var(--border);
+    border-radius:14px; padding:15px 17px}
+  .tuile b{display:block; font-size:16px; font-weight:900; margin-bottom:3px}
+  .tuile span{font-size:15px; font-weight:600; color:var(--ink-500)}
+
+  hr{border:0; border-top:1px solid var(--border-firm); margin:44px 0 0}
+  footer{padding:26px 0 0; color:var(--ink-400); font-size:15px}
+  @media (max-width:640px){
+    .conteneur{padding:0 16px}
+    body{font-size:17px}
+  }
+</style>
+<link rel="icon" type="image/svg+xml" href="../design-system/marque-francis-favicon.svg">
+</head>
+<body>
+
+<div class="barre">
+  <div class="conteneur">
+    <div class="verrou">
+      <span class="nom" role="img" aria-label="francis">franc<span class="i" aria-hidden="true">ı<span class="point"></span></span>s</span>
+      <span class="filet" aria-hidden="true"></span>
+      <span class="desc">Aide à l'apprentissage du français</span>
+    </div>
+  </div>
+</div>
+
+<header class="bande">
+  <div class="conteneur">
+    <div>
+      <p class="surtitre">Chantier · Proposition</p>
+      <h1>Le mode séance — travailler sans compte élève</h1>
+    </div>
+    <p class="chapeau">Un enseignant choisit un module, ouvre une séance, imprime une feuille
+    portant un code QR et un code à six caractères. Les élèves scannent, font le module et
+    envoient leurs réponses — sans compte, sans pseudo, sans qu'aucune donnée identifiante
+    ne soit collectée. L'enseignant voit le tableau de sa classe en direct, ligne par ligne,
+    sans savoir qui est qui.</p>
+    <p class="quand">29 août 2026 — proposé, trois décisions prises, aucune ligne écrite.</p>
+    <div class="garde" style="background:var(--accent-soft); border-color:#BFE3D2">
+      <p><strong>Ce qui rend le chantier faisable en une poignée de jours :</strong> l'identité
+      de l'élève voyage déjà partout par un seul paramètre d'URL, et toutes les routes du
+      serveur la vérifient par une seule fonction. Si le jeton de séance emprunte ce même
+      chemin, <strong>aucun des 87 modules n'est retouché</strong>.</p>
+    </div>
+  </div>
+</header>
+
+<main class="conteneur">
+
+  <section>
+    <span class="eyebrow e-acier">Le point de départ</span>
+    <h2>Pourquoi un troisième mode</h2>
+    <p>Le portail sait déjà se replier de deux façons : <strong>avec ou sans IA</strong>, selon
+    ce qu'une direction accepte. Il reste une porte fermée en amont de tout : pour qu'un élève
+    touche un module, quelqu'un doit lui avoir créé un compte, choisi un pseudo, imprimé un
+    code d'accès personnel, et l'avoir inscrit dans un groupe.</p>
+    <ul class="points">
+      <li>C'est du travail avant la première minute de classe, dans un milieu où les groupes
+      bougent chaque semaine.</li>
+      <li>C'est inutilisable pour un remplaçant, un atelier ponctuel, une classe d'accueil qui
+      change tous les lundis, ou simplement une première fois où l'on veut essayer.</li>
+      <li>C'est un dossier à ouvrir auprès d'une direction : des comptes, une liste, une
+      conservation. Alors que le besoin réel tient souvent en une heure de classe.</li>
+    </ul>
+    <p>Le mode séance retire cette porte. Il ne remplace pas les comptes — il couvre le cas où
+    le suivi individuel dans le temps n'est pas ce qu'on cherche.</p>
+  </section>
+
+  <section>
+    <span class="eyebrow e-teal">Première pièce</span>
+    <h2>La séance : un code, un module, une journée</h2>
+    <p>Une séance est un objet minuscule, créé par l'enseignant depuis sa planification, et
+    rattaché à un de ses groupes existants. <strong>Le point de départ reste le compte de
+    l'enseignant</strong> : lui seul a un compte, lui seul ouvre une séance, et tout ce que les
+    élèves envoient remonte dans <em>son</em> portail, sur la progression de <em>ce</em>
+    groupe-là.</p>
+    <p>Conséquence directe, et voulue : <strong>deux groupes qui font le même module ouvrent
+    deux séances</strong>, donc deux codes et deux feuilles. Les réponses ne se mélangent
+    jamais, parce que le code lui-même dit de quel groupe il vient. Le même enseignant peut
+    tenir plusieurs séances ouvertes en même temps ; il bascule de l'une à l'autre comme il
+    bascule aujourd'hui d'un groupe à l'autre.</p>
+    <div class="arbre">
+      <ul class="niv">
+        <li>
+          <div class="noeud noeud--centre">
+            <span class="t">centre</span><span class="n">le réglage d'IA et le réglage de dépôt</span>
+            <span class="g">décidés par la direction — la séance en hérite, sans exception</span>
+          </div>
+          <ul class="niv">
+            <li>
+              <div class="noeud noeud--groupe">
+                <span class="t">groupe</span><span class="n">Niveau 4 — avant-midi</span>
+                <span class="g">donne le niveau, le centre, l'enseignant</span>
+              </div>
+              <ul class="niv">
+                <li>
+                  <div class="noeud noeud--reseau">
+                    <span class="t">séance</span><span class="n">code KRB482 · un seul module</span>
+                    <span class="g">ouverte par l'enseignant, expire le soir même</span>
+                  </div>
+                  <ul class="niv">
+                    <li>
+                      <div class="noeud noeud--css">
+                        <span class="t">participant</span><span class="n">Participant 7</span>
+                        <span class="g">un jeton dans le navigateur de l'appareil — aucun nom</span>
+                      </div>
+                    </li>
+                  </ul>
+                </li>
+              </ul>
+            </li>
+          </ul>
+        </li>
+      </ul>
+    </div>
+    <h3>Ce que porte une séance</h3>
+    <div class="cadre-table">
+      <table>
+        <thead>
+          <tr><th>Champ</th><th>Valeur</th><th>Pourquoi il existe</th></tr>
+        </thead>
+        <tbody>
+          <tr><td class="role">code</td><td>six caractères sans ambiguïté (ni O ni 0, ni I ni 1)</td>
+          <td>il est lu à voix haute et recopié à la main quand la caméra refuse</td></tr>
+          <tr><td class="role">groupId</td><td>un groupe de l'enseignant</td>
+          <td>c'est de là que descendent le niveau, l'IA et le dépôt</td></tr>
+          <tr><td class="role">activityId</td><td>un seul module</td>
+          <td>le code ne doit jamais ouvrir le catalogue entier</td></tr>
+          <tr><td class="role">expire</td><td>fin de journée, ou fermeture manuelle</td>
+          <td>une feuille photocopiée finit par circuler</td></tr>
+          <tr><td class="role">plafond</td><td>40 participants par défaut</td>
+          <td>garde-fou si le code sort de la classe</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </section>
+
+  <section>
+    <span class="eyebrow e-indigo">Deuxième pièce</span>
+    <h2>Le chemin de l'élève, en quatre gestes</h2>
+    <ol class="etapes">
+      <li><div><b>Il scanne, ou il tape le code</b>
+        <p>Le code QR pointe une adresse courte, <code>/s/KRB482</code>. La feuille porte aussi
+        l'adresse écrite en toutes lettres et le code en gros caractères : une classe de
+        francisation compte toujours des appareils qui ne scannent pas.</p></div></li>
+      <li><div><b>Le serveur lui donne un numéro, pas un nom</b>
+        <p>Le premier chargement crée un participant et renvoie un jeton, gardé dans le
+        navigateur de l'appareil. Recharger la page, ou revenir après une pause, retrouve le
+        même participant. Aucun nom n'est demandé, jamais.</p></div></li>
+      <li><div><b>Le module s'ouvre comme d'habitude</b>
+        <p>Le jeton voyage dans le paramètre que les modules lisent déjà. Les dialogues,
+        les exercices, l'audio, les mini-leçons, l'aide après deux erreurs : rien ne change,
+        parce que rien n'est touché.</p></div></li>
+      <li><div><b>Il envoie ses réponses</b>
+        <p>Par le même chemin que les élèves inscrits. À la différence près qu'à la fermeture
+        de la séance, il n'y a aucun dossier d'élève où ranger le résultat — il reste dans la
+        séance, et l'enseignant l'exporte s'il le veut.</p></div></li>
+    </ol>
+  </section>
+
+  <section>
+    <span class="eyebrow e-pourpre">Ce qui rend le chantier court</span>
+    <h2>Une seule couture dans le serveur</h2>
+    <p>Un module ouvert par un élève, aujourd'hui, c'est
+    <code>viewer.html?src=…&amp;activityId=12&amp;code=XXXX</code>. Le module lit ce
+    <code>code</code> dans l'adresse de la page qui le porte, et le renvoie avec chaque
+    progression, chaque demande de correction, chaque appel d'aide.</p>
+    <p>Côté serveur, ces vingt-sept routes vérifient toutes ce code par
+    <strong>une seule fonction</strong>. Apprendre à cette fonction à reconnaître aussi un
+    jeton de séance — et à renvoyer alors un participant anonyme au lieu d'un élève — suffit
+    à ouvrir tout le portail au mode séance.</p>
+    <div class="tuiles">
+      <div class="tuile"><b>0 module</b><span>aucun des 87 modules n'est modifié</span></div>
+      <div class="tuile"><b>~400 lignes</b><span>de serveur, l'essentiel dans les gardes</span></div>
+      <div class="tuile"><b>2 pages</b><span>l'accueil de séance, la feuille imprimable</span></div>
+      <div class="tuile"><b>1 fonction</b><span>le seul point de couture</span></div>
+    </div>
+    <h3>Le code QR est fabriqué ici, jamais ailleurs</h3>
+    <p>Aucun service tiers d'images : envoyer l'adresse d'une séance à un serveur inconnu
+    pour qu'il en dessine le carré serait un accroc gratuit à la Loi 25, sur le seul mode du
+    portail qui ne collecte rien. Le QR est produit <strong>par le serveur, en SVG</strong> —
+    net à l'impression, et la feuille s'imprime même sans JavaScript.</p>
+  </section>
+
+  <section>
+    <span class="eyebrow e-ambre">Les trois décisions prises</span>
+    <h2>Ce qu'on a tranché, et pourquoi</h2>
+    <div class="pile">
+      <div class="carte">
+        <h3 style="margin-top:0">L'oral ne part pas</h3>
+        <p style="margin-bottom:0">L'élève peut s'enregistrer et s'écouter ; rien n'est envoyé.
+        La voix est la donnée la plus identifiante du portail, et une séance sans compte tire
+        toute sa force de ne rien collecter d'identifiant — c'est l'argument qu'on présente à
+        une direction. L'écrit, lui, s'envoie normalement.</p>
+      </div>
+      <div class="carte">
+        <h3 style="margin-top:0">Anonyme, mais distinct</h3>
+        <p style="margin-bottom:0">Participant 1 à N, une ligne chacun, item par item.
+        L'enseignant voit que trois personnes bloquent sur le même item sans savoir lesquelles.
+        Des compteurs seuls auraient été plus anonymes encore, et sans usage en classe : on ne
+        peut pas aller voir un compteur.</p>
+      </div>
+      <div class="carte">
+        <h3 style="margin-top:0">La séance appartient à un groupe</h3>
+        <p style="margin-bottom:0">Elle hérite ainsi du niveau, du centre, du réglage d'IA et du
+        réglage de dépôt sans qu'on écrive un second chemin d'héritage. Rattacher la séance
+        directement à l'enseignant aurait permis d'ouvrir une classe sans aucun groupe — au
+        prix exact de la faille décrite plus bas. Le groupe peut rester vide : c'est un
+        rattachement, pas une liste d'élèves.</p>
+      </div>
+    </div>
+  </section>
+
+  <section>
+    <span class="eyebrow e-framboise">Les cinq endroits où ça casse</span>
+    <h2>Ce qu'il faut garder, et non pas espérer</h2>
+    <div class="garde">
+      <p><strong>1. La garde d'IA est le vrai risque du chantier.</strong> Le refus d'IA d'une
+      direction se calcule aujourd'hui en remontant l'élève vers son groupe, puis vers son
+      centre. Un participant de séance n'a pas de dossier d'élève : s'il ne remonte pas par sa
+      séance vers le groupe, il <em>contourne le refus de la direction</em> — silencieusement.
+      Même chose pour le réglage de dépôt de la voix. Ces deux remontées se font en premier,
+      avant toute interface.</p>
+    </div>
+    <ul class="points">
+      <li><strong>Une séance ouvre un seul module.</strong> Le module est vérifié côté serveur
+      contre celui de la séance, jamais seulement lu dans l'adresse — sinon un code de séance
+      donne accès à tout le catalogue du groupe.</li>
+      <li><strong>Un code photocopié circule.</strong> Expiration le soir même, plafond de
+      participants, limitation de débit sur l'entrée, fermeture manuelle en un bouton.</li>
+      <li><strong>Les identifiants ne se croisent pas.</strong> Un participant ne doit jamais
+      pouvoir tomber sur le numéro d'un vrai élève : espace d'identifiants séparé, pas un
+      entier tiré du même compteur.</li>
+      <li><strong>Ce que le mode ne rend pas, et qu'il faut assumer :</strong> pas de
+      vocabulaire à répétition espacée (il n'y a pas de lendemain), pas de fiche d'élève, pas
+      de progression d'un module au suivant, pas de promotion de niveau. Un participant existe
+      le temps d'une séance.</li>
+    </ul>
+  </section>
+
+  <section>
+    <span class="eyebrow e-acier">Le découpage</span>
+    <h2>Cinq lots, dans cet ordre</h2>
+    <ol class="etapes">
+      <li><div><b>Le socle du serveur</b>
+        <p>Le fichier des séances et des participants, la couture sur la fonction de
+        vérification, et surtout les trois gardes : IA, dépôt, module unique. Rien de visible,
+        et c'est le lot qui décide si le reste est sûr.</p></div></li>
+      <li><div><b>L'entrée de l'élève</b>
+        <p>L'adresse courte, la page d'accueil de séance, le jeton dans le navigateur, et le
+        passage du jeton au module par le chemin existant.</p></div></li>
+      <li><div><b>Le côté enseignant</b>
+        <p>« Ouvrir une séance » depuis la planification, la feuille imprimable en noir et
+        blanc format lettre — code QR, code en gros, adresse en toutes lettres — la fermeture
+        et le plafond.</p></div></li>
+      <li><div><b>Le tableau de la classe</b>
+        <p>Les participants sans nom, item par item, en direct, et l'export au moment de
+        fermer la séance.</p></div></li>
+      <li><div><b>La vérification</b>
+        <p>Deux appareils sur un même code, l'exercice joué item par item par programme — pas
+        seulement chargé — et le repli sans IA vérifié <em>dans ce mode aussi</em> : c'est
+        exactement le genre d'endroit où une garde s'oublie.</p></div></li>
+    </ol>
+  </section>
+
+  <hr>
+  <footer class="conteneur" style="padding-left:0;padding-right:0">
+    <p>Proposition de chantier — aucune ligne de code écrite. Les deux modes existants (avec
+    et sans IA) sont décrits dans le <code>CLAUDE.md</code> du dépôt.</p>
+  </footer>
+</main>
+</body>
+</html>
