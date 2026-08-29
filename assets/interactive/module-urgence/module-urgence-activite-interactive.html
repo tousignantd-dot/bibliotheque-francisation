@@ -834,7 +834,7 @@ textarea:focus-visible,.winput:focus-visible{outline:none;border-color:var(--ws-
   <div class="hdr-r">
     <div id="prog-chip" aria-live="polite" tabindex="0" data-info="Le nombre de réponses justes que vous avez trouvées, sur le nombre total de réponses du module.">⭐ 0 / 0</div>
     <!-- VITESSE-VOIX:début — greffé par build/greffe_vitesse.py -->
-    <button id="btn-vitesse" data-cran="0" data-info="Ralentit toutes les voix du module — les dialogues, les mots et le jeu de rôle. Trois crans : normal, lent, très lent. Votre choix est gardé d'un module à l'autre.">Débit normal</button>
+    <button id="btn-vitesse" data-cran="0" data-info="Ralentit toutes les voix du module — les dialogues, les mots et le jeu de rôle. Deux crans : normal et lent. Votre choix est gardé d'un module à l'autre.">Débit normal</button>
     <!-- VITESSE-VOIX:fin -->
     <button id="btn-reset" data-info="Vide les réponses placées pour recommencer les exercices. Vos textes écrits et votre étoile ne sont pas effacés.">↺ Réinitialiser</button>
   </div>
@@ -1866,10 +1866,9 @@ function playDialogue(dialId, btn){
 const VIT_CRANS = [
   {v:1,    lbl:'Débit normal'},
   {v:0.8,  lbl:'Débit lent'},
-  {v:0.65, lbl:'Débit très lent'},
 ];
 let vitCran = 0;
-try{ vitCran = Math.min(2, Math.max(0, parseInt(localStorage.getItem('saaf-vitesse'),10) || 0)); }catch(e){}
+try{ vitCran = Math.min(1, Math.max(0, parseInt(localStorage.getItem('saaf-vitesse'),10) || 0)); }catch(e){}
 const vitFacteur = ()=> VIT_CRANS[vitCran].v;
 /* Le facteur d'un `Audio`, posé à la création — et reposé sur celui qui joue
    déjà, pour que le réglage s'entende tout de suite plutôt qu'au prochain

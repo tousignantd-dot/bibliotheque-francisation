@@ -13,7 +13,7 @@ rien y faire pendant l'écoute.
 Cette greffe rend le débit réglable *à la lecture*, sans toucher aux fichiers
 et sans un octet de synthèse en plus : `playbackRate` sur l'élément `Audio`,
 avec `preservesPitch` pour que la voix ne descende pas dans les graves. Trois
-crans — normal, lent, très lent — dans un bouton de l'en-tête, à côté de
+crans — normal et lent — dans un bouton de l'en-tête, à côté de
 « Réinitialiser ». Le choix est gardé dans `localStorage` et vaut pour tous
 les modules : l'élève qui a besoin de lent en a besoin partout.
 
@@ -50,14 +50,18 @@ CSS = CSS_ANCRE + """
 # ── 2. Le bouton lui-même, avant « Réinitialiser » ───────────────────────
 HTML_ANCRE = '    <button id="btn-reset"'
 HTML = """    <!-- VITESSE-VOIX:début — greffé par build/greffe_vitesse.py -->
-    <button id="btn-vitesse" data-cran="0" data-info="Ralentit toutes les voix du module — les dialogues, les mots et le jeu de rôle. Trois crans : normal, lent, très lent. Votre choix est gardé d'un module à l'autre.">Débit normal</button>
+    <button id="btn-vitesse" data-cran="0" data-info="Ralentit toutes les voix du module — les dialogues, les mots et le jeu de rôle. Deux crans : normal et lent. Votre choix est gardé d'un module à l'autre.">Débit normal</button>
     <!-- VITESSE-VOIX:fin -->
 """ + HTML_ANCRE
 
 # ── 3. Le réglage, et son bouton ─────────────────────────────────────────
 JS_ANCRE = "function playAudioQueue(urls, idx, btn, dialId, allowFallback){"
 JS = """/* VITESSE-VOIX:début — greffé par build/greffe_vitesse.py */
-/* Le débit des MP3 est figé à la production ; celui de la lecture ne l'est
+/* Le cran « très lent » (0,65) a été retiré le 29 août 2026 : à ce facteur,
+   l'étirement s'entend plus qu'il n'aide, et le résultat est franchement
+   mauvais. Deux crans suffisent — normal et lent.
+
+   Le débit des MP3 est figé à la production ; celui de la lecture ne l'est
    pas. `playbackRate` étire le son sans le régénérer — et `preservesPitch`
    empêche la voix de descendre dans les graves en ralentissant, ce qui la
    rendrait plus difficile à comprendre, pas plus facile. Le choix suit
@@ -66,10 +70,9 @@ JS = """/* VITESSE-VOIX:début — greffé par build/greffe_vitesse.py */
 const VIT_CRANS = [
   {v:1,    lbl:'Débit normal'},
   {v:0.8,  lbl:'Débit lent'},
-  {v:0.65, lbl:'Débit très lent'},
 ];
 let vitCran = 0;
-try{ vitCran = Math.min(2, Math.max(0, parseInt(localStorage.getItem('saaf-vitesse'),10) || 0)); }catch(e){}
+try{ vitCran = Math.min(1, Math.max(0, parseInt(localStorage.getItem('saaf-vitesse'),10) || 0)); }catch(e){}
 const vitFacteur = ()=> VIT_CRANS[vitCran].v;
 /* Le facteur d'un `Audio`, posé à la création — et reposé sur celui qui joue
    déjà, pour que le réglage s'entende tout de suite plutôt qu'au prochain
