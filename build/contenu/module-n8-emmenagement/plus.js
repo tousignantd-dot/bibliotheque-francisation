@@ -77,7 +77,7 @@ const PLUS = {
        p:"À l'inverse de la surprise : la mélodie descend, le débit ralentit, les syllabes se détachent. C'est la voix de l'engagement, et la seule qui convient à une négociation.",
        mots:[['On dit','Ce point-là, je le conteste, et je vais vous dire pourquoi.'],['La mélodie','descendante, appuyée sur « conteste »',true],['Le repère','on ne sourit pas en le disant']],
        say:"Ce point-là, je le conteste, et je vais vous dire pourquoi.",
-       note:"Le bouton fait entendre la phrase <b>trois fois</b> : ordinaire, puis avec l'accent, puis le mot seul. Écoutez ce qui change — c'est la comparaison qui rend l'accent audible, jamais l'accent tout seul. La même phrase dite en montant devient une demande d'autorisation. C'est exactement l'inverse de ce qu'on voulait."},
+       note:"Le bouton fait entendre la phrase <b>deux fois</b> : ordinaire, puis avec l'accent. Écoutez ce qui change — c'est la comparaison qui rend l'accent audible, jamais l'accent tout seul. La même phrase dite en montant devient une demande d'autorisation. C'est exactement l'inverse de ce qu'on voulait."},
 
       {t:'ana', h:"L'incompréhension — la voix freine au milieu",
        p:"On ne monte pas : on ralentit. Le débit se casse à l'endroit précis où le fil s'est rompu, avec un petit silence avant le mot en cause.",

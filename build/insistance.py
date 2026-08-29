@@ -33,8 +33,13 @@ import sys
 
 RACINE = pathlib.Path(__file__).resolve().parent.parent
 
-# Ce que l'audio contient désormais : la phrase **plate**, un silence, la même
-# phrase **appuyée**, un silence, puis le **mot seul** en guise de réponse.
+# Ce que l'audio contient : la phrase **plate**, un silence, la même phrase
+# **appuyée**. Rien d'autre.
+#
+# Un troisième temps — le mot seul, en guise de réponse — avait été essayé le
+# 29 août 2026 et retiré le jour même : hors de sa phrase, le mot sort sec et
+# ne ressemble plus à ce qu'on vient d'entendre. Il donnait la réponse au lieu
+# de la faire chercher, et c'est justement la comparaison qui enseigne.
 #
 # Pourquoi trois temps plutôt qu'un accent unique. Écouté isolément, l'accent
 # d'insistance d'Azure ne s'entend pas — vérifié à l'oreille le 29 août 2026,
@@ -49,8 +54,7 @@ RACINE = pathlib.Path(__file__).resolve().parent.parent
 # écrêtage, la crête restait à -5,8 dBFS avec 5 dB de marge. On allonge et on
 # appuie ; on **ne transpose pas**, ou très peu.
 RATE, PITCH, VOLUME = "-35%", "+10%", "loud"          # la phrase appuyée
-RATE_MOT, VOLUME_MOT = "-20%", "loud"                 # le mot seul, à la fin
-PAUSE_ENTRE = "700ms"                                 # entre les trois temps
+PAUSE_ENTRE = "700ms"                                 # entre les deux phrases
 PAUSE_AVANT = "220ms"                                 # juste avant le mot appuyé
 
 # La table est indexée par **fichier**, pas par phrase. Une première version

@@ -29,7 +29,7 @@ const PLUS = {
              ['La voix',"appuie sur « vous », débit qui s'accélère ensuite", true],
              ['Ce que ça produit',"la personne se défend : la conversation change de sujet"]],
        say:"Vous m'avez vendu une auto que vous saviez brisée.",
-       note:"Le bouton fait entendre la phrase <b>trois fois</b> : ordinaire, puis avec l'accent, puis le mot seul. Écoutez ce qui change — c'est la comparaison qui rend l'accent audible, jamais l'accent tout seul. L'accusation ferme la porte, même quand elle est vraie. Ce qui est vrai s'écrit dans la mise en demeure, où personne n'entend le ton — et où le fait, lui, reste."},
+       note:"Le bouton fait entendre la phrase <b>deux fois</b> : ordinaire, puis avec l'accent. Écoutez ce qui change — c'est la comparaison qui rend l'accent audible, jamais l'accent tout seul. L'accusation ferme la porte, même quand elle est vraie. Ce qui est vrai s'écrit dans la mise en demeure, où personne n'entend le ton — et où le fait, lui, reste."},
 
       {t:'labo', h:'La même information, dite trois fois',
        p:"Choisissez un fait, puis l'intention. Écoutez la différence avant de répéter.",

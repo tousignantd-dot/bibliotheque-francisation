@@ -27,7 +27,7 @@ const PLUS = {
        p:"Pour qu'un mot ressorte, on n'augmente pas le volume. On appuie sa <b>première</b> syllabe, on la tient un peu plus longtemps, et on ralentit juste avant.",
        mots:[['Ordinaire','la partie la moins spectaculaire du projet'],['Avec insistance','la partie la moins <b>spec</b>taculaire du projet',true],['Ce que ça fait','le mot se détache sans que la voix monte']],
        say:"C'est la partie la moins spectaculaire du projet, et c'est la plus importante.",
-       note:"Le bouton fait entendre la phrase <b>trois fois</b> : ordinaire, puis avec l'accent, puis le mot seul. Écoutez ce qui change — c'est la comparaison qui rend l'accent audible, jamais l'accent tout seul. Un ou deux accents d'insistance par minute. Trois de suite et plus rien ne ressort."},
+       note:"Le bouton fait entendre la phrase <b>deux fois</b> : ordinaire, puis avec l'accent. Écoutez ce qui change — c'est la comparaison qui rend l'accent audible, jamais l'accent tout seul. Un ou deux accents d'insistance par minute. Trois de suite et plus rien ne ressort."},
 
       {t:'labo', h:"Écoutez les deux mélodies",
        p:"Choisissez un moment de la présentation et voyez ce que la voix y fait.",
@@ -38,7 +38,7 @@ const PLUS = {
          a1:{w:["d'abord, on mesure"], say:"D'abord, on mesure, pendant deux semaines, chaque camion qui se présente.", n:'la voix monte : la phrase continue'},
          a2:{w:['Il y a quatre étapes'], say:"Ensuite, les étapes. Il y a quatre étapes, et je vais les nommer dans l'ordre.", n:'elle monte encore : une énumération s\'annonce'},
          b1:{w:['Voilà. Des questions ?'], say:"Deux mois et demi, quatre cents dollars pour savoir, et une décision en novembre. Voilà. Des questions ?", n:'elle descend : la parole est rendue à la salle'},
-         b2:{w:['la moins spectaculaire'], say:"C'est la partie la moins spectaculaire du projet, et c'est la plus importante.", n:'accent d\'insistance : la phrase ordinaire, puis la même appuyée, puis le mot seul'},
+         b2:{w:['la moins spectaculaire'], say:"C'est la partie la moins spectaculaire du projet, et c'est la plus importante.", n:'accent d\'insistance : la phrase ordinaire, puis la même appuyée'},
        },
        note:"Écoutez, puis redites la phrase à voix haute en exagérant un peu. On exagère toujours trop peu."},
 

@@ -285,12 +285,11 @@ def _sub(texte, alias):
 
 
 def _insiste(sortie, chemin):
-    """Monte les trois temps d'une leçon sur l'accent d'insistance.
+    """Monte les deux temps d'une leçon sur l'accent d'insistance.
 
-    La phrase plate, un silence, la même phrase **appuyée**, un silence, puis
-    le **mot seul** en guise de réponse. Un accent posé seul ne s'entend pas
-    chez Azure ; c'est la comparaison qui le rend audible. Le pourquoi, les
-    valeurs et leurs limites sont dans `build/insistance.py`.
+    La phrase plate, un silence, la même phrase **appuyée**. Un accent posé
+    seul ne s'entend pas chez Azure ; c'est la comparaison qui le rend audible.
+    Le pourquoi, les valeurs et leurs limites sont dans `build/insistance.py`.
 
     `sortie` est la phrase déjà échappée. Rendue telle quelle si **ce fichier**
     n'est pas dans la table, ou si le mot visé n'est plus dans la phrase — une
@@ -301,8 +300,8 @@ def _insiste(sortie, chemin):
     import sys as _s
     _s.path.insert(0, str(RACINE / "build"))
     try:
-        from insistance import (marque, RATE, PITCH, VOLUME, RATE_MOT,
-                                VOLUME_MOT, PAUSE_ENTRE, PAUSE_AVANT)
+        from insistance import (marque, RATE, PITCH, VOLUME,
+                                PAUSE_ENTRE, PAUSE_AVANT)
     except ImportError:
         return sortie
     mot = marque(chemin)
@@ -315,10 +314,8 @@ def _insiste(sortie, chemin):
         cible,
         '<break time="%s"/><prosody rate="%s" pitch="%s" volume="%s">%s</prosody>'
         % (PAUSE_AVANT, RATE, PITCH, VOLUME, cible), 1)
-    seul = '<prosody rate="%s" volume="%s">%s</prosody>' % (
-        RATE_MOT, VOLUME_MOT, cible)
     silence = '<break time="%s"/>' % PAUSE_ENTRE
-    return sortie + silence + appuyee + silence + seul
+    return sortie + silence + appuyee
 
 
 def prononce(texte, chemin=None):
