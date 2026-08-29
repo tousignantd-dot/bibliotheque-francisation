@@ -284,7 +284,44 @@ def _sub(texte, alias):
                                          html.escape(texte))
 
 
-def prononce(texte):
+def _insiste(sortie, chemin):
+    """Monte les trois temps d'une leçon sur l'accent d'insistance.
+
+    La phrase plate, un silence, la même phrase **appuyée**, un silence, puis
+    le **mot seul** en guise de réponse. Un accent posé seul ne s'entend pas
+    chez Azure ; c'est la comparaison qui le rend audible. Le pourquoi, les
+    valeurs et leurs limites sont dans `build/insistance.py`.
+
+    `sortie` est la phrase déjà échappée. Rendue telle quelle si **ce fichier**
+    n'est pas dans la table, ou si le mot visé n'est plus dans la phrase — une
+    leçon retouchée ne doit pas produire un fichier bancal en silence. La table
+    est indexée par fichier et non par texte : la même phrase sert ailleurs
+    dans des leçons où une démonstration en trois temps n'a rien à faire.
+    """
+    import sys as _s
+    _s.path.insert(0, str(RACINE / "build"))
+    try:
+        from insistance import (marque, RATE, PITCH, VOLUME, RATE_MOT,
+                                VOLUME_MOT, PAUSE_ENTRE, PAUSE_AVANT)
+    except ImportError:
+        return sortie
+    mot = marque(chemin)
+    if not mot:
+        return sortie
+    cible = html.escape(mot)
+    if cible not in sortie:
+        return sortie
+    appuyee = sortie.replace(
+        cible,
+        '<break time="%s"/><prosody rate="%s" pitch="%s" volume="%s">%s</prosody>'
+        % (PAUSE_AVANT, RATE, PITCH, VOLUME, cible), 1)
+    seul = '<prosody rate="%s" volume="%s">%s</prosody>' % (
+        RATE_MOT, VOLUME_MOT, cible)
+    silence = '<break time="%s"/>' % PAUSE_ENTRE
+    return sortie + silence + appuyee + silence + seul
+
+
+def prononce(texte, chemin=None):
     """Le texte, préparé pour la voix : échappé, et corrigé par le lexique.
 
     Rend du SSML, donc **déjà échappé** — ne pas le repasser dans html.escape.
@@ -328,11 +365,11 @@ def prononce(texte):
     for num, lu in ADRESSES.items():
         out = re.sub(r"\b%s\b%s" % (num, VOIE),
                      lambda m, lu=lu, num=num: _sub(num, lu), out)
-    return out
+    return _insiste(out, chemin)
 
 
 def ssml(texte, role, palier=None, epeler=None, pause_lettres="280ms",
-         reference=None):
+         reference=None, chemin=None):
     """Le document SSML d'un extrait.
 
     `epeler` demande les lettres une par une, séparées par un silence, puis le
@@ -355,7 +392,7 @@ def ssml(texte, role, palier=None, epeler=None, pause_lettres="280ms",
         corps = '%s<break time="400ms"/>%s' % (lettres,
                                                html.escape(epeler.capitalize()))
     else:
-        corps = prononce(texte)
+        corps = prononce(texte, chemin)
 
     # `rate` du palier et `rate` du rôle se cumulent : on les pose sur deux
     # balises imbriquées plutôt que d'additionner des pourcentages, qui ne
@@ -398,8 +435,8 @@ def parle(texte, role, dest, palier=None, epeler=None, cle=None, region=None,
     dest = pathlib.Path(dest)
     dest.parent.mkdir(parents=True, exist_ok=True)
     doc = dest.with_suffix(".ssml.xml")
-    doc.write_text(ssml(texte, role, palier, epeler, reference=reference),
-                   encoding="utf-8")
+    doc.write_text(ssml(texte, role, palier, epeler, reference=reference,
+                        chemin=dest), encoding="utf-8")
     out = subprocess.run(
         ["curl", "-s", "-m", "120", "-X", "POST",
          "-H", "Ocp-Apim-Subscription-Key: %s" % cle,

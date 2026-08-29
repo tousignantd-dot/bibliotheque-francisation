@@ -27,7 +27,7 @@ const PLUS = {
        p:"À l'inverse de la surprise : la mélodie descend, le débit ralentit, les syllabes se détachent. C'est la voix de l'engagement, celle d'une demande qu'on ne retirera pas.",
        mots:[['On dit','Ce document-là, je le veux avant mardi.'],['La mélodie','elle baisse, et « veux » reçoit tout le poids',true],['Le repère','on ne sourit pas en le disant']],
        say:"Ce document-là, je le veux avant mardi.",
-       note:"Une phrase de volonté dite en montant devient une demande de permission — exactement l'inverse de ce qu'on voulait."},
+       note:"Le bouton fait entendre la phrase <b>trois fois</b> : ordinaire, puis avec l'accent, puis le mot seul. Écoutez ce qui change — c'est la comparaison qui rend l'accent audible, jamais l'accent tout seul. Une phrase de volonté dite en montant devient une demande de permission — exactement l'inverse de ce qu'on voulait."},
 
       {t:'ana', h:"L'incompréhension — la voix freine au milieu",
        p:"On ne monte pas : on ralentit. Le débit se casse à l'endroit précis où le fil s'est rompu, souvent avec un petit silence avant le mot en cause.",

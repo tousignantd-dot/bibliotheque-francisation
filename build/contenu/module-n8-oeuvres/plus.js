@@ -15,7 +15,7 @@ const PLUS = {
        p:"La phrase s'ouvre, le débit ralentit un peu, et la voix s'appuie longuement sur le mot qui porte l'éloge. Ce n'est pas une montée brusque : c'est une tenue.",
        mots:[['On dit',"C'est la plus belle dernière page que j'aie lue cette année."],['La mélodie','soutenue, appuyée sur « belle »',true],['Le repère','on ralentit au lieu de monter']],
        say:"C'est la plus belle dernière page que j'aie lue cette année.",
-       note:"Une admiration dite vite passe pour de la politesse. C'est la lenteur qui la rend crédible."},
+       note:"Le bouton fait entendre la phrase <b>trois fois</b> : ordinaire, puis avec l'accent, puis le mot seul. Écoutez ce qui change — c'est la comparaison qui rend l'accent audible, jamais l'accent tout seul. Une admiration dite vite passe pour de la politesse. C'est la lenteur qui la rend crédible."},
 
       {t:'ana', h:"La déception — la voix tombe dès la première syllabe",
        p:"La mélodie descend tout de suite et ne remonte jamais. Le débit est régulier, presque lent, souvent précédé d'un « ah » ou d'un « bon » qui tombe tout seul.",
