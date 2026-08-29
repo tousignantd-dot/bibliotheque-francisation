@@ -463,8 +463,13 @@
   // garde le MP3 en mémoire pour ne pas refacturer les mêmes caractères.
   var cacheSons = {};
 
-  function dis(texte, vitesse) {
+  function dis(texte, vitesse, etat) {
     stopAudio();
+    // `etat` reçoit un mot sur ce qui a lu — ou sur ce qui n'a pas lu. Sans
+    // lui, un refus du serveur suivi d'un navigateur sans voix française ne
+    // laissait aucune trace : l'élève touchait « Écouter » et il ne se
+    // passait rien du tout, sans un mot d'explication.
+    var dire = etat || function () {};
     var t = propre(texte).slice(0, 400);
     if (!t) return Promise.resolve();
 
@@ -483,19 +488,33 @@
       return a.play();
     };
 
-    if (cacheSons[t]) return joue(cacheSons[t]);
+    if (cacheSons[t]) { dire(''); return joue(cacheSons[t]); }
 
     return fetch('/api/voix', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({ code: cfg.code, texte: t, voix: 'lecture' })
     }).then(function (r) {
-      if (!r.ok) throw new Error('voix');
+      // Le 401 n'est pas une panne : c'est une page ouverte sans code d'élève,
+      // et le remède n'est pas le même. On distingue donc les deux ici.
+      if (!r.ok) throw new Error(r.status === 401 ? 'code' : 'voix');
       return r.blob();
     }).then(function (blob) {
       cacheSons[t] = blob;
+      dire('');
       return joue(blob);
-    }).catch(function () { return navigateurDit(t, vitesse || 1); });
+    }).catch(function (e) {
+      var cause = (e && e.message === 'code')
+        ? 'La voix du cours a besoin de votre code : ouvrez le module depuis votre portail.'
+        : 'La voix du cours n\'a pas répondu.';
+      // Dit tout de suite ce qui se passe : `navigateurDit` ne se résout qu'à
+      // la fin de l'énoncé, et attendre trois secondes pour l'annoncer, c'est
+      // trois secondes pendant lesquelles l'élève croit que rien ne marche.
+      dire(cause + ' J\'emploie la voix de l\'appareil.');
+      return navigateurDit(t, vitesse || 1).then(function (parle) {
+        if (!parle) dire(cause + ' Et cet appareil n\'a pas de voix française : la lecture est impossible ici.');
+      });
+    });
   }
 
   // Repli quand ElevenLabs ne répond pas. Le délai n'est pas décoratif :
@@ -503,14 +522,23 @@
   // ignorer l'énoncé.
   function navigateurDit(t, vitesse) {
     return new Promise(function (res) {
-      if (!global.speechSynthesis) return res();
+      if (!global.speechSynthesis || !global.SpeechSynthesisUtterance) return res(false);
       global.speechSynthesis.cancel();
       setTimeout(function () {
+        var parti = false;
         var u = new SpeechSynthesisUtterance(t);
         u.lang = 'fr-CA';
         u.rate = vitesse || 1;
-        u.onend = res; u.onerror = res;
-        global.speechSynthesis.speak(u);
+        u.onstart = function () { parti = true; };
+        u.onend = function () { res(true); };
+        u.onerror = function () { res(parti); };
+        try { global.speechSynthesis.speak(u); } catch (e) { return res(false); }
+        // Un navigateur sans voix française avale l'énoncé sans lever
+        // d'erreur : rien ne commence, et onend ne vient jamais. Une seconde
+        // et demie suffit à séparer « ça parle » de « ça ne parlera pas ».
+        setTimeout(function () {
+          if (!parti && !global.speechSynthesis.speaking) res(false);
+        }, 1500);
       }, 120);
     });
   }
@@ -561,13 +589,16 @@
         + '<button type="button" class="oe-btn oe-dark oe-full" id="oe-l1">' + icone('lire', 18) + 'Écouter</button>'
         + '<button type="button" class="oe-btn oe-ghost oe-full" id="oe-l2">' + icone('lire', 18) + 'Écouter lentement</button>'
         + '<button type="button" class="oe-btn oe-ghost oe-full" id="oe-l3">Arrêter</button>'
+        + '<div class="oe-tip" id="oe-l-etat" aria-live="polite" hidden></div>'
       : '')
       + '<div class="oe-tip">Surlignez un passage pour le faire lire. La lecture '
       + 'prend le paragraphe au complet. Sans sélection, elle prend le premier '
       + 'bloc de la page.</div>';
     if (!t) return;
-    el.lire.querySelector('#oe-l1').onclick = function () { dis(t); };
-    el.lire.querySelector('#oe-l2').onclick = function () { dis(t, 0.7); };
+    var etat = el.lire.querySelector('#oe-l-etat');
+    var dire = function (m) { etat.textContent = m || ''; etat.hidden = !m; };
+    el.lire.querySelector('#oe-l1').onclick = function () { dire(''); dis(t, 1, dire); };
+    el.lire.querySelector('#oe-l2').onclick = function () { dire(''); dis(t, 0.7, dire); };
     el.lire.querySelector('#oe-l3').onclick = stopAudio;
   }
 

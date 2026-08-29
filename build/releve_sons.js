@@ -32,8 +32,13 @@ for (const ex of EXOS) {
       });
     });
   }
-  if (ex.cards && ex.listen && ex.rows) {
-    ex.rows.forEach(r => { sons[ex.id + '_' + r.id] = r.txt; });
+  // `cards && listen` était trop étroit : le gabarit pose un haut-parleur sur
+  // les lignes d'un `vf` dès que `listen` est là, cartes ou pas. Un exercice
+  // en liste avec `listen:true` sortait donc du relevé — boutons dans la page,
+  // aucun MP3 produit, et le repli en voix de navigateur pour seule lecture.
+  // Le texte est nettoyé de ses balises comme le fait le gabarit avant de lire.
+  if (ex.type === 'vf' && (ex.cards || ex.listen) && ex.rows) {
+    ex.rows.forEach(r => { sons[ex.id + '_' + r.id] = r.txt.replace(/<[^>]+>/g, ''); });
   }
 }
 for (const cle of Object.keys(PLUS)) {
