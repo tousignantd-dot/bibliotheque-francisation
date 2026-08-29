@@ -1,0 +1,338 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Révision des dialogues enregistrés</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Newsreader:ital,opsz,wght@0,6..72,400;0,6..72,600&family=Nunito:wght@400;600;700;800;900&display=swap">
+<link rel="stylesheet" href="../design-system/marque-francis.css">
+<link rel="icon" type="image/svg+xml" href="../design-system/marque-francis-favicon.svg">
+<style>
+:root{
+  --ground:#F7F7F5; --card:#FFFFFF; --sunken:#FBFBFA;
+  --ink:#17181A; --body:#3A3D40; --muted:#6E7175;
+  --line:#E4E4E0; --line-fort:#D2D2CD;
+  --ok:#0A8F5B; --ok-bg:#E6F5EE;
+  --chaud:#C7302B; --chaud-bg:#FBEDEC;
+  --froid:#1D6B8F; --froid-bg:#E7F1F7;
+  --part:#C07A08; --part-bg:#FBF2E2;
+  --acier:#1D6B8F;
+  --niv-1:#5B7A1F; --niv-2:#0A8F5B; --niv-3:#B45309; --niv-4:#8C6A07;
+  --niv-5:#0D7A6F; --niv-6:#1D6B8F; --niv-7:#3B49A0; --niv-8:#7E3F98;
+  --mono:ui-monospace,SFMono-Regular,"SF Mono",Menlo,Consolas,monospace;
+}
+@media (prefers-color-scheme: dark){:root:not([data-theme="light"]){
+  --ground:#151618; --card:#1D1F22; --sunken:#212326;
+  --ink:#F2F2F0; --body:#CFD1D3; --muted:#94979B;
+  --line:#2E3135; --line-fort:#3D4146;
+  --ok:#4BC48D; --ok-bg:#12291F;
+  --chaud:#EE7A73; --chaud-bg:#2E1917;
+  --froid:#6DAFD2; --froid-bg:#132430;
+  --part:#E0A63F; --part-bg:#2C2213;
+  --acier:#6DAFD2;
+  --niv-1:#A3C05A; --niv-2:#4BC48D; --niv-3:#E0A63F; --niv-4:#D4BC5C;
+  --niv-5:#5FC3B8; --niv-6:#6DAFD2; --niv-7:#8D97DE; --niv-8:#C089D6;
+}}
+*{box-sizing:border-box}
+body{margin:0;background:var(--ground);color:var(--body);
+     font-family:Nunito,system-ui,sans-serif;font-size:16px;line-height:1.5;
+     padding-bottom:96px}
+.conteneur{max-width:1080px;margin:0 auto;padding:0 24px}
+header.bande{background:var(--card);border-bottom:1px solid var(--line);padding:28px 0 24px}
+.surtitre{font-size:12px;font-weight:800;letter-spacing:.10em;text-transform:uppercase;
+          color:var(--muted);margin-bottom:8px}
+h1{font-family:Newsreader,Georgia,serif;font-weight:600;font-size:34px;line-height:1.15;
+   color:var(--ink);margin:0 0 10px}
+.chapeau{margin:0;max-width:64ch;color:var(--body)}
+.chapeau b{color:var(--ink)}
+
+/* --- filtres --- */
+.tri{position:sticky;top:0;z-index:20;background:var(--card);
+     border-bottom:1px solid var(--line);padding:12px 0}
+.tri .rang{display:flex;flex-wrap:wrap;gap:8px;align-items:center}
+.tri select,.tri input[type=search]{font:inherit;font-size:14px;padding:7px 10px;
+     border:1px solid var(--line-fort);border-radius:8px;background:var(--sunken);color:var(--ink)}
+.tri input[type=search]{flex:1;min-width:180px}
+.compteur{font-size:13px;color:var(--muted);font-weight:700;margin-left:auto}
+.bascule{font:inherit;font-size:13px;font-weight:700;padding:7px 12px;cursor:pointer;
+     border:1px solid var(--line-fort);border-radius:8px;background:var(--sunken);color:var(--body)}
+.bascule[aria-pressed=true]{background:var(--ink);color:var(--ground);border-color:var(--ink)}
+
+/* --- listes --- */
+.mod{background:var(--card);border:1px solid var(--line);border-radius:12px;
+     margin:18px 0;overflow:hidden}
+.mod > summary{cursor:pointer;padding:14px 18px;display:flex;gap:12px;align-items:baseline;
+     list-style:none;background:var(--sunken);border-bottom:1px solid var(--line)}
+.mod > summary::-webkit-details-marker{display:none}
+.mod:not([open]) > summary{border-bottom:none}
+.mod h2{font-family:Newsreader,Georgia,serif;font-weight:600;font-size:20px;margin:0;color:var(--ink)}
+.pastille{font-size:11px;font-weight:900;letter-spacing:.06em;text-transform:uppercase;
+     padding:3px 9px;border-radius:999px;color:#fff;white-space:nowrap}
+.n1{background:var(--niv-1)}.n2{background:var(--niv-2)}.n3{background:var(--niv-3)}
+.n4{background:var(--niv-4)}.n5{background:var(--niv-5)}.n6{background:var(--niv-6)}
+.n7{background:var(--niv-7)}.n8{background:var(--niv-8)}.n0{background:var(--muted)}
+.mod .cpt{font-size:13px;color:var(--muted);font-weight:700;margin-left:auto}
+.defi{padding:6px 18px 2px}
+.defi h3{font-size:13px;font-weight:900;letter-spacing:.05em;text-transform:uppercase;
+     color:var(--muted);margin:16px 0 8px;padding-bottom:6px;border-bottom:1px solid var(--line)}
+
+/* --- une réplique --- */
+.rep{display:grid;grid-template-columns:auto 1fr auto;gap:12px;align-items:start;
+     padding:9px 0;border-bottom:1px solid var(--line)}
+.rep:last-child{border-bottom:none}
+.jouer{width:38px;height:38px;border-radius:999px;border:1px solid var(--line-fort);
+     background:var(--sunken);color:var(--ink);font-size:14px;cursor:pointer;flex-shrink:0}
+.jouer:hover{background:var(--ok-bg);border-color:var(--ok);color:var(--ok)}
+.rep[data-joue=oui] .jouer{background:var(--ok);border-color:var(--ok);color:#fff}
+.txt{min-width:0}
+.perso{font-size:11px;font-weight:900;letter-spacing:.06em;text-transform:uppercase;color:var(--muted)}
+.dit{color:var(--ink);font-size:15px}
+.dit.vide{color:var(--muted);font-style:italic;font-family:var(--mono);font-size:13px}
+.mesure{font-family:var(--mono);font-size:11px;color:var(--muted);margin-top:2px}
+.mesure .vite{color:var(--chaud);font-weight:700}
+.verdicts{display:flex;gap:5px;flex-wrap:wrap;justify-content:flex-end;max-width:330px}
+.v{font:inherit;font-size:11px;font-weight:800;padding:5px 9px;cursor:pointer;white-space:nowrap;
+   border:1px solid var(--line-fort);border-radius:999px;background:var(--card);color:var(--muted)}
+.v:hover{border-color:var(--ink);color:var(--ink)}
+.v[aria-pressed=true]{color:#fff;border-color:transparent}
+.v[data-v=rapide][aria-pressed=true]{background:var(--chaud)}
+.v[data-v=lent][aria-pressed=true]{background:var(--froid)}
+.v[data-v=glitch][aria-pressed=true]{background:#7E3F98}
+.v[data-v=pauses][aria-pressed=true]{background:var(--part)}
+.v[data-v=chiffre][aria-pressed=true]{background:var(--acier)}
+.v[data-v=mot][aria-pressed=true]{background:#8C2F6B}
+.rep[data-signale=oui]{background:var(--sunken)}
+
+/* --- barre du bas --- */
+.pied{position:fixed;left:0;right:0;bottom:0;z-index:30;background:var(--card);
+     border-top:1px solid var(--line-fort);padding:12px 0;
+     box-shadow:0 -2px 16px rgba(0,0,0,.06)}
+.pied .rang{display:flex;gap:10px;align-items:center;flex-wrap:wrap}
+.bilan{font-size:13px;font-weight:700;color:var(--body)}
+.bilan b{color:var(--ink)}
+.btn{font:inherit;font-size:14px;font-weight:800;padding:9px 16px;cursor:pointer;
+     border:1px solid var(--ink);border-radius:8px;background:var(--ink);color:var(--ground)}
+.btn-2{background:var(--card);color:var(--ink)}
+.vide-total{padding:48px 24px;text-align:center;color:var(--muted)}
+</style>
+</head>
+<body>
+
+<header class="bande">
+  <div class="conteneur">
+    <div class="fr-lockup fr-lockup--grand" style="margin-bottom:18px">
+      <span class="fr-nom" role="img" aria-label="francis">franc<span class="fr-i" aria-hidden="true">ı<span class="fr-point"></span></span>s</span>
+      <span class="fr-trait" aria-hidden="true"></span>
+      <span class="fr-desc">Aide à l'apprentissage du français</span>
+    </div>
+    <div class="surtitre">Chantier · Qualité de l'audio</div>
+    <h1>Révision des dialogues enregistrés</h1>
+    <p class="chapeau">Toutes les répliques du cours, rangées par niveau, module et défi.
+      Écoutez, et posez un verdict : <b>trop rapide</b>, <b>trop lent</b>, <b>glitch</b>
+      (le hoquet en fin de fichier), <b>pauses</b> (le silence entre les phrases),
+      <b>chiffre mal dit</b> (un nombre, une heure, un prix, une adresse) ou
+      <b>mot mal dit</b> (le reste — liaison, accent, mot avalé).
+      Les verdicts restent dans ce navigateur ; le bouton du bas les exporte en JSON,
+      qui sert ensuite à ne régénérer que les fichiers signalés.</p>
+  </div>
+</header>
+
+<nav class="tri" aria-label="Filtrer les répliques">
+  <div class="conteneur rang">
+    <select id="f-niveau" aria-label="Niveau"><option value="">Tous les niveaux</option></select>
+    <select id="f-module" aria-label="Module"><option value="">Tous les modules</option></select>
+    <input type="search" id="f-texte" placeholder="Chercher dans le texte…" />
+    <button type="button" class="bascule" id="f-signales" aria-pressed="false">Signalés seulement</button>
+    <button type="button" class="bascule" id="f-vite" aria-pressed="false">Les plus rapides</button>
+    <span class="compteur" id="compteur"></span>
+  </div>
+</nav>
+
+<main class="conteneur" id="liste"></main>
+
+<div class="pied">
+  <div class="conteneur rang">
+    <span class="bilan" id="bilan"></span>
+    <span style="margin-left:auto"></span>
+    <button type="button" class="btn btn-2" id="raz">Tout effacer</button>
+    <button type="button" class="btn" id="export">Exporter les verdicts</button>
+  </div>
+</div>
+
+<script>
+const DONNEES = /*%%DONNEES%%*/[];
+const CLE = 'revision-dialogues-v1';
+const VERDICTS = [['rapide','trop rapide'],['lent','trop lent'],['glitch','glitch'],
+                  ['pauses','pauses'],['chiffre','chiffre mal dit'],['mot','mot mal dit']];
+
+let notes = {};
+try { notes = JSON.parse(localStorage.getItem(CLE) || '{}'); } catch (e) { notes = {}; }
+const sauve = () => { try { localStorage.setItem(CLE, JSON.stringify(notes)); } catch (e) {} };
+
+DONNEES.forEach((d, i) => { d.id = d.src; d.i = i; });
+
+/* --- seuil « rapide » : le neuvième décile des débits mesurés --- */
+const cps = DONNEES.map(d => d.cps).filter(x => x).sort((a, b) => a - b);
+const SEUIL = cps.length ? cps[Math.floor(cps.length * 0.9)] : 99;
+
+/* --- filtres --- */
+const $ = s => document.querySelector(s);
+const fNiveau = $('#f-niveau'), fModule = $('#f-module'), fTexte = $('#f-texte');
+const bSignales = $('#f-signales'), bVite = $('#f-vite');
+
+[...new Set(DONNEES.map(d => d.niveau))].sort((a, b) => a - b).forEach(n => {
+  fNiveau.insertAdjacentHTML('beforeend',
+    `<option value="${n}">Niveau ${n || '—'}</option>`);
+});
+function remplirModules() {
+  const niv = fNiveau.value;
+  const mods = [];
+  DONNEES.forEach(d => {
+    if (niv && String(d.niveau) !== niv) return;
+    if (!mods.some(m => m.module === d.module)) mods.push(d);
+  });
+  fModule.innerHTML = '<option value="">Tous les modules</option>' + mods.map(d =>
+    `<option value="${d.module}">${d.numero ? d.numero + ' · ' : ''}${echap(d.titre)}</option>`).join('');
+}
+remplirModules();
+
+function echap(s) {
+  return String(s == null ? '' : s).replace(/[&<>"]/g,
+    c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
+}
+const signale = d => { const n = notes[d.id]; return n && n.v && n.v.length; };
+
+function filtrer() {
+  const niv = fNiveau.value, mod = fModule.value;
+  const q = fTexte.value.trim().toLowerCase();
+  const sig = bSignales.getAttribute('aria-pressed') === 'true';
+  const vite = bVite.getAttribute('aria-pressed') === 'true';
+  return DONNEES.filter(d =>
+    (!niv || String(d.niveau) === niv) &&
+    (!mod || d.module === mod) &&
+    (!q || (d.texte || '').toLowerCase().includes(q) || (d.perso || '').toLowerCase().includes(q)) &&
+    (!sig || signale(d)) &&
+    (!vite || (d.cps && d.cps >= SEUIL)));
+}
+
+/* --- rendu --- */
+function rendre() {
+  const gardees = filtrer();
+  $('#compteur').textContent = gardees.length + ' réplique' + (gardees.length > 1 ? 's' : '');
+  const liste = $('#liste');
+  if (!gardees.length) { liste.innerHTML = '<p class="vide-total">Aucune réplique ne répond à ce filtre.</p>'; return; }
+
+  const parModule = new Map();
+  gardees.forEach(d => {
+    if (!parModule.has(d.module)) parModule.set(d.module, []);
+    parModule.get(d.module).push(d);
+  });
+
+  const ouvert = parModule.size <= 3;
+  liste.innerHTML = [...parModule].map(([slug, reps]) => {
+    const t = reps[0];
+    const parBloc = new Map();
+    reps.forEach(d => { if (!parBloc.has(d.bloc)) parBloc.set(d.bloc, []); parBloc.get(d.bloc).push(d); });
+    return `<details class="mod"${ouvert ? ' open' : ''}>
+      <summary>
+        <span class="pastille n${t.niveau || 0}">Niveau ${t.niveau || '—'}</span>
+        <h2>${t.numero ? t.numero + ' · ' : ''}${echap(t.titre)}</h2>
+        <span class="cpt">${reps.length} répliques</span>
+      </summary>
+      <div class="defi">${[...parBloc].map(([bloc, lignes]) => `
+        <h3>${echap(lignes[0].label || bloc)}</h3>
+        ${lignes.map(ligne).join('')}`).join('')}
+      </div></details>`;
+  }).join('');
+}
+
+function ligne(d) {
+  const n = notes[d.id] || {};
+  const v = n.v || [];
+  const rapide = d.cps && d.cps >= SEUIL;
+  return `<div class="rep" data-id="${echap(d.id)}"${v.length ? ' data-signale="oui"' : ''}>
+    <button type="button" class="jouer" data-src="${echap(d.src)}"
+            aria-label="Écouter la réplique">▶</button>
+    <div class="txt">
+      <div class="perso">${echap(d.perso) || '—'}</div>
+      <div class="dit${d.texte ? '' : ' vide'}">${echap(d.texte) || d.src.split('/').pop()}</div>
+      <div class="mesure">${d.duree ? d.duree.toFixed(2) + ' s' : 'durée inconnue'}${
+        d.cps ? ' · <span class="' + (rapide ? 'vite' : '') + '">' + d.cps + ' c/s</span>' : ''}</div>
+    </div>
+    <div class="verdicts">${VERDICTS.map(([cle, nom]) =>
+      `<button type="button" class="v" data-v="${cle}"
+         aria-pressed="${v.includes(cle)}">${nom}</button>`).join('')}
+    </div></div>`;
+}
+
+/* --- écoute --- */
+let audio = null, encours = null;
+document.addEventListener('click', e => {
+  const j = e.target.closest('.jouer');
+  if (j) {
+    if (audio) { audio.pause(); }
+    if (encours) { encours.removeAttribute('data-joue'); }
+    const rep = j.closest('.rep');
+    if (encours === rep && audio && !audio.ended) { encours = null; audio = null; return; }
+    audio = new Audio(j.dataset.src);
+    audio.play().catch(() => {});
+    encours = rep; rep.setAttribute('data-joue', 'oui');
+    audio.onended = () => rep.removeAttribute('data-joue');
+    return;
+  }
+  const b = e.target.closest('.v');
+  if (b) {
+    const rep = b.closest('.rep'), id = rep.dataset.id, cle = b.dataset.v;
+    const n = notes[id] || (notes[id] = { v: [] });
+    const i = n.v.indexOf(cle);
+    if (i < 0) n.v.push(cle); else n.v.splice(i, 1);
+    if (!n.v.length) delete notes[id];
+    b.setAttribute('aria-pressed', i < 0);
+    if (notes[id]) rep.setAttribute('data-signale', 'oui'); else rep.removeAttribute('data-signale');
+    sauve(); bilan();
+  }
+});
+
+/* --- bilan et export --- */
+function bilan() {
+  const ids = Object.keys(notes);
+  const par = c => ids.filter(i => notes[i].v.includes(c)).length;
+  $('#bilan').innerHTML = ids.length
+    ? `<b>${ids.length}</b> signalée${ids.length > 1 ? 's' : ''} · ${VERDICTS.map(([c, n]) => `${par(c)} ${n}`).join(' · ')}`
+    : 'Aucune réplique signalée pour l\'instant.';
+}
+
+$('#export').addEventListener('click', () => {
+  const sortie = Object.keys(notes).map(id => {
+    const d = DONNEES.find(x => x.id === id) || {};
+    return { module: d.module, bloc: d.bloc, rang: d.rang, perso: d.perso,
+             texte: d.texte, src: id, duree: d.duree, cps: d.cps, verdicts: notes[id].v };
+  });
+  const texte = JSON.stringify(sortie, null, 2);
+  const a = document.createElement('a');
+  a.href = URL.createObjectURL(new Blob([texte], { type: 'application/json' }));
+  a.download = 'verdicts-dialogues.json';
+  a.click();
+  navigator.clipboard && navigator.clipboard.writeText(texte).catch(() => {});
+});
+
+$('#raz').addEventListener('click', () => {
+  if (!confirm('Effacer tous les verdicts posés ?')) return;
+  notes = {}; sauve(); rendre(); bilan();
+});
+
+[fNiveau, fModule, fTexte].forEach(el => el.addEventListener('input', () => {
+  if (el === fNiveau) remplirModules();
+  rendre();
+}));
+[bSignales, bVite].forEach(b => b.addEventListener('click', () => {
+  b.setAttribute('aria-pressed', b.getAttribute('aria-pressed') !== 'true');
+  rendre();
+}));
+
+rendre(); bilan();
+</script>
+</body>
+</html>
