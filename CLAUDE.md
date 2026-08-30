@@ -1236,6 +1236,18 @@ Deux pièges déjà payés :
   s'affiche, rien ne s'entend, aucune erreur. Découvert le 21 août 2026 en
   produisant `module-n5-travail`, dont les quinze bandeaux ont été passés à
   `speak:true` d'un coup : le relevé des sons est passé de 206 à 233 clés.
+- **Il n'y a plus de micro par mot dans un module.** Le 30 août 2026, les
+  petits micros de « Je découvre » — l'élève répétait un mot, la reconnaissance
+  vocale du navigateur rendait « Bien prononcé ! » ou pas — ont été retirés des
+  87 modules et du gabarit par `build/retrait_micros.py`. **La seule façon de
+  vérifier sa prononciation est l'outil « Prononcer » de la barre d'outils** :
+  il fait entendre le modèle, enregistre, et laisse l'élève comparer, au lieu
+  de rendre un verdict sur un accent d'apprenant. Ne pas en remettre dans un
+  module neuf. Ce qui reste et ne doit pas être touché : le micro de la
+  production orale et celui du jeu de rôle, avec leur plomberie commune
+  `recoEtat` / `reconnaissanceLocale` / `recoMessage`, et `CARRIER_PHRASES`,
+  qui sert maintenant la synthèse (un mot français bref, lu seul, se fait dire
+  à l'anglaise).
 - **Le relevé des sons hors navigateur charge `fccards.js` en premier.**
   `exos.js` appelle `FC_CARDS.map()` à l'évaluation ; dans l'autre ordre, node
   s'arrête sur « Cannot access FC_CARDS before initialization ». Et en
@@ -1243,7 +1255,9 @@ Deux pièges déjà payés :
   faut terminer la source évaluée par `; ({EXOS, PLUS, CARRIER_PHRASES})` et
   déstructurer le résultat. Trente lignes de node, et `build/collecte_sons.py`
   n'a plus à être lancé du tout.
-- **`build/module.py` ne pose pas les icônes du module.** Le gabarit référence
+- **`build/module.py` ne pose pas les icônes du module.** *(Corrigé depuis : le
+  build recopie `build/gabarit/icons/*.svg`. Et `mic.svg` n'est plus référencé
+  du tout depuis le 30 août 2026 — voir le point suivant.)* Le gabarit référence
   `icons/play.svg`, `speaker.svg` et `mic.svg` **dans le dossier du module**, et
   rien ne les y met : un module neuf sort avec trois 404 sur le bouton d'écoute
   des dialogues et sur l'onglet « Je découvre ». Ni le build, ni

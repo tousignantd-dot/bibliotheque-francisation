@@ -167,7 +167,6 @@ body{display:flex;flex-direction:column;min-height:100vh}
 .icon-svg{width:1em;height:1em;vertical-align:middle;display:inline-block}
 .btn .icon-svg{width:15px;height:15px}
 .btn-ghost.wlisten .icon-svg,.btn-lu .icon-svg{width:17px;height:17px;margin-right:4px}
-.word-chip .pron-fb{flex-basis:100%;order:99;margin:4px 0 0}
 @media(max-width:640px){.savoir td:first-child{width:auto}.savoir table,.savoir tbody,.savoir tr,.savoir td{display:block;width:100%}.savoir td{border-bottom:none;padding:4px 0}.savoir tr{padding-bottom:10px;border-bottom:1px dashed #B7DED7;margin-bottom:6px}}
 
 .rows{display:flex;flex-direction:column;gap:8px}
@@ -210,10 +209,6 @@ body{display:flex;flex-direction:column;min-height:100vh}
 .vf-row{display:flex;align-items:center;gap:10px;flex-wrap:wrap;background:#F8FDFC;border:1.5px solid #DCEEEA;border-radius:12px;padding:10px 12px}
 .vf-row .stxt{background:transparent;padding:4px 0}
 .vf-opts{display:flex;gap:8px;flex:0 0 auto;margin-left:auto}
-.pron-fb{flex-basis:100%;font-size:13px;font-weight:800;display:inline-block;margin:2px 0 4px}
-.pron-fb.ok{color:var(--ok-ink)}
-.pron-fb.no{color:var(--no-ink)}
-.pron-fb.warn{color:var(--warn-ink)}
 .vf-opt{width:var(--vfw,72px);flex:0 0 var(--vfw,72px);padding:0 6px;min-height:44px;border-radius:10px;border:2.5px solid #CBD5E1;background:#F8FAFC;color:#64748B;font-weight:800;font-family:'Nunito',sans-serif;cursor:pointer;transition:background .15s,border-color .15s,color .15s}
 .vf-opt:hover{border-color:#94A3B8}
 .vf-opt.sel{background:var(--sel-bg)!important;border-color:var(--sel-line)!important;border-style:solid;color:var(--sel-ink)!important}
@@ -543,8 +538,6 @@ body{
 .fb-no{animation:none!important}
 .fb-ok::before{content:"✓ ";font-weight:800}
 .fb-no::before{content:"✕ ";font-weight:800}
-.pron-fb.ok::before{content:"✓ "}
-.pron-fb.no::before{content:"✕ "}
 .icon-svg{filter:none;opacity:.75}
 /* Badge rond seulement pour les boutons icône SEULE (sans texte à côté) —
    sinon un bouton comme "🔊 Écouter" se retrouve écrasé dans un rond de 34px. */
@@ -552,16 +545,13 @@ body{
   width:34px;height:34px;padding:0;border-radius:50%;display:inline-flex;
   align-items:center;justify-content:center;background:transparent;border:none;
 }
-/* Icônes seules (haut-parleur, micro) : pas de cadre, juste l'icône. */
-.word-chip .btn,.ph-mic{background:transparent!important;border:none!important;box-shadow:none!important}
-.word-chip .btn:hover,.ph-mic:hover{background:rgba(0,0,0,.05)!important}
+/* Icônes seules (haut-parleur) : pas de cadre, juste l'icône. */
+.word-chip .btn{background:transparent!important;border:none!important;box-shadow:none!important}
+.word-chip .btn:hover{background:rgba(0,0,0,.05)!important}
 .btn-ghost.wlisten{
   display:inline-flex;align-items:center;gap:8px;background:var(--ws-bg);
   border:1px solid var(--ws-line);border-radius:999px;padding:9px 18px;color:var(--ws-ink);font-weight:600;
 }
-.pron-fb{color:var(--ws-sub);font-weight:600;font-size:13px}
-.pron-fb.ok{color:var(--ok-ink)}
-.pron-fb.no{color:var(--no-ink)}
 .intro{background:var(--ws-card);color:var(--ws-ink);font-weight:600;border:1px solid var(--ws-line);border-radius:18px;margin:22px 32px 0;padding:18px 22px}
 .dial-sec{background:var(--ws-card);color:var(--ws-ink);border:1px solid var(--ws-line);border-bottom:1px solid var(--ws-line)!important;border-radius:18px;align-items:stretch;padding:18px 22px;margin:22px 32px 0;overflow:hidden}
 .situ{color:var(--ws-ink);opacity:1}
@@ -588,14 +578,10 @@ body{
 .ph-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(240px,1fr));gap:14px}
 .ph-card{background:var(--ws-card,#fff);border:1px solid var(--ws-line,#EAEAE8);border-radius:16px;padding:16px;display:flex;flex-direction:column;gap:12px}
 .ph-top{display:flex;align-items:center;gap:12px;flex-wrap:wrap}
-/* Le retour de prononciation est inséré après le micro, DANS .ph-top :
-   sans ces règles il se tasse dans une colonne de quelques pixels. */
-.ph-card .pron-fb{flex:1 0 100%;order:99;margin:0;line-height:1.35;overflow-wrap:anywhere}
 .ph-word{font-size:21px;font-weight:900;color:var(--ws-ink,#17181A)}
 .btn-audio-round{width:44px;height:44px;flex-shrink:0;border-radius:50%;border:none;background:#DC2626;color:#fff;display:inline-flex;align-items:center;justify-content:center;cursor:pointer;transition:background .15s}
 .btn-audio-round:hover{background:#B91C1C}
 .btn-audio-round .icon-svg{width:18px;height:18px;filter:brightness(0) invert(1)!important;opacity:1!important}
-.ph-mic{margin-left:auto;flex-shrink:0}
 .ph-opts{display:grid;grid-template-columns:1fr 1fr;gap:10px}
 .ph-opts .vf-opt{width:auto;flex:1 1 auto}
 .savoir--pron .savoir-band{background:var(--sec-color,var(--ws-accent))}
@@ -1550,10 +1536,9 @@ const MODULE_SLUG = 'module-n2-guichet';
 // Bump ce numéro chaque fois qu'un MP3 est régénéré, pour forcer le
 // navigateur à recharger le fichier au lieu de servir une version en cache.
 const AUDIO_V = '12';
-// Icônes des boutons son/micro de "Je découvre" — change ces deux valeurs
+// Icône du bouton son de "Je découvre" — change cette valeur
 // pour remplacer les emojis par une image (ex. '<img src="/assets/interactive/module-n2-guichet/icons/speaker.svg">').
 const ICON_SPEAK = '<img class="icon-svg" src="/assets/interactive/module-n2-guichet/icons/speaker.svg" alt="Écouter">';
-const ICON_MIC = '<img class="icon-svg" src="/assets/interactive/module-n2-guichet/icons/mic.svg" alt="Micro">';
 const ICON_ASSISTANT = '<img class="icon-svg" src="/assets/interactive/module-n2-guichet/icons/assistant.svg" alt="Assistant IA">';
 let dlgAudio=null, dlgBtn=null, dlgState='idle', dlgUsingSpeech=false, dlgFallbackLines=null, dlgPollIv=null;
 
@@ -1684,32 +1669,12 @@ function playWord(btn, text, fileId){
   a.onerror=()=>{ reset(); speakText(btn, text); };
   a.play().catch(()=>{ reset(); speakText(btn, text); });
 }
-// ── VÉRIFICATION DE PRONONCIATION (reconnaissance vocale native, "Je découvre" seulement) ──
-function normPron(s){
-  return String(s).toLowerCase().normalize('NFD').replace(/[̀-ͯ]/g,'').replace(/[^a-z0-9\s]/g,'').replace(/\s+/g,' ').trim();
-}
-// Certains mots courts sont mal transcrits par la reconnaissance vocale du
-// navigateur (nombres écrits en chiffres, homophones) même bien prononcés —
-// liste d'équivalences acceptées en plus de la comparaison normale.
-const PRON_ALIASES = {
-  'treize': ['13'],
-  'tot': ['sot','seau','saut','sceau'],
-};
-function pronMatches(said, target){
-  if(said===target || said.includes(target) || target.includes(said)) return true;
-  const alts = PRON_ALIASES[target] || [];
-  return alts.some(a=>said===a || said.includes(a) || a.includes(said));
-}
-// RÈGLE (validée par l'utilisateur le 2026-08-03 après test) : un mot isolé
-// (surtout une seule syllabe) est toujours plus difficile à reconnaître pour
-// le moteur de reconnaissance vocale du navigateur qu'un mot dans une phrase
-// avec du contexte. CHAQUE mot demandé en lecture/prononciation isolée doit
-// donc être présenté dans une courte phrase, avec le mot cible en gras —
-// jamais le mot tout seul. L'élève lit la phrase, mais on vérifie seulement
-// que le mot cible apparaît dans ce qui a été entendu (pronMatches fait déjà
-// cette vérification par inclusion — aucun changement de logique requis).
-// ⚠️ À reproduire dans TOUS les futurs modules dès qu'un mot isolé est
-// demandé en prononciation (voir aussi memory: cours-niveau4-modules.md).
+// Les mots à écouter sont présentés dans une courte phrase, le mot cible en
+// gras, plutôt que seuls. La règle datait de la vérification de prononciation
+// — un mot isolé, surtout d'une syllabe, était mal reconnu — et elle lui a
+// survécu pour une autre raison, toujours valable : un mot français bref ne
+// donne aucun indice de langue au moteur de synthèse et peut se faire lire à
+// l'anglaise. La phrase porteuse est ce qu'on affiche et ce qu'on fait lire.
 const CARRIER_PHRASES = {
   // Les clés sont les mots tels qu'ils sont écrits dans les tableaux `speak`
   // des blocs `savoir` — au caractère près, accents compris. Une clé écrite
@@ -1804,73 +1769,6 @@ function recoMessage(etat){
   return "";
 }
 
-async function pronCheck(btn, expected){
-  let fb = btn.nextElementSibling && btn.nextElementSibling.classList.contains('pron-fb') ? btn.nextElementSibling : null;
-  if(!fb){ fb=document.createElement('span'); fb.className='pron-fb'; fb.setAttribute('aria-live','polite'); btn.insertAdjacentElement('afterend', fb); }
-  const old = btn.innerHTML;
-  btn.classList.remove('fb-ok','fb-no');
-  btn.disabled=true; btn.innerHTML=ICON_MIC+' …';
-  const reset=()=>{ btn.disabled=false; btn.innerHTML=old; };
-  // Un mot répété : le modèle 'command' suffit, et il se télécharge plus vite.
-  fb.className='pron-fb'; fb.textContent='Préparation…';
-  const {rec, etat} = await reconnaissanceLocale('command');
-  if(!rec){ reset(); fb.className='pron-fb warn'; fb.textContent=recoMessage(etat); return; }
-  fb.className='pron-fb'; fb.textContent='Écoute en cours…';
-  const target = normPron(expected);
-  let done=false, lastInterim='';
-  // interimResults:true — les mots très courts ("tôt", "mer"...) sont parfois
-  // coupés par la détection de silence avant qu'un résultat final n'arrive ;
-  // on garde le dernier résultat provisoire comme filet de secours.
-  rec.interimResults=true;
-  const evaluate=(heard)=>{
-    heard=heard.trim();
-    const said = normPron(heard);
-    const ok = pronMatches(said, target);
-    reset();
-    btn.classList.add(ok?'fb-ok':'fb-no');
-    fb.className='pron-fb '+(ok?'ok':'no');
-    fb.textContent = ok ? 'Bien prononcé !' : ('On a entendu : « '+heard+' »');  // ✓/✕ ajoutés par .pron-fb::before
-    setTimeout(()=>{ btn.classList.remove('fb-ok','fb-no'); }, 4000);
-  };
-  rec.onresult=e=>{
-    const res=e.results[e.results.length-1];
-    if(res.isFinal){ done=true; evaluate(res[0].transcript); }
-    else{ lastInterim=res[0].transcript; }
-  };
-  rec.onerror=e=>{
-    if(!done){
-      done=true;
-      if(lastInterim){ evaluate(lastInterim); return; }
-      reset();
-      fb.className='pron-fb warn';
-      fb.textContent = e.error==='not-allowed' ? 'Micro refusé — autorise l\'accès au micro.' : 'Aucun son détecté, réessaie.';
-    }
-  };
-  // Filet de sécurité : certains navigateurs déclenchent onend sans jamais
-  // appeler onresult(final) ni onerror (silence, coupure) — sans ce filet le
-  // message restait bloqué sur « Écoute en cours… ». On récupère le dernier
-  // résultat provisoire s'il y en a un, plutôt que de déclarer un échec.
-  rec.onend=()=>{
-    if(!done){
-      done=true;
-      if(lastInterim){ evaluate(lastInterim); return; }
-      reset();
-      fb.className='pron-fb warn';
-      fb.textContent='Aucun son détecté, réessaie.';
-    }
-  };
-  setTimeout(()=>{
-    if(!done){
-      done=true;
-      try{ rec.stop(); }catch(e){}
-      if(lastInterim){ evaluate(lastInterim); return; }
-      reset();
-      fb.className='pron-fb warn';
-      fb.textContent='Aucun son détecté, réessaie.';
-    }
-  }, 7000);
-  try{ rec.start(); }catch(e){ done=true; reset(); fb.className='pron-fb warn'; fb.textContent='Impossible de démarrer le micro.'; }
-}
 function pauseDialogue(){
   if(dlgUsingSpeech){ try{speechSynthesis.pause();}catch(e){} } else if(dlgAudio){ dlgAudio.pause(); }
   dlgState='paused'; if(dlgBtn) dlgBtn.textContent='▶ Reprendre';
@@ -2804,7 +2702,6 @@ function buildStatic(){
             // de langue au moteur de synthèse — un mot français bref peut se
             // faire lire à l'anglaise sans le contexte d'une phrase.
             h+='<button class="btn btn-ghost" type="button" onclick="playWord(this,\''+jsq(phrase||w)+'\',\''+fid+'\')" title="Écouter">'+ICON_SPEAK+'</button>';
-            h+='<button class="btn btn-ghost" type="button" onclick="pronCheck(this,\''+jsq(w)+'\')" title="Répète le mot à voix haute">'+ICON_MIC+'</button>';
             h+='</div>';
           });
           h+='</div>';
@@ -4758,10 +4655,6 @@ function render(){
         top.appendChild(sb);
         const w=document.createElement('div');w.className='ph-word';w.textContent=word;
         top.appendChild(w);
-        const mb=document.createElement('button');
-        mb.type='button'; mb.className='btn btn-ghost ph-mic'; mb.title='Répète le mot à voix haute';
-        mb.innerHTML=ICON_MIC; mb.onclick=()=>pronCheck(mb, word);
-        top.appendChild(mb);
         card.appendChild(top);
         const opts=document.createElement('div');opts.className='ph-opts';
         ex.tiles.forEach(lbl=>{
@@ -4785,11 +4678,6 @@ function render(){
           sb.type='button'; sb.className='btn btn-ghost'; sb.style.cssText='flex:0 0 auto;padding:8px 12px;font-size:16px';
           sb.innerHTML=ICON_SPEAK; sb.onclick=()=>playWord(sb, r.txt.replace(/<[^>]+>/g,''), ex.id+'_'+r.id);
           row.appendChild(sb);
-          const mb=document.createElement('button');
-          mb.type='button'; mb.className='btn btn-ghost'; mb.style.cssText='flex:0 0 auto;padding:8px 12px;font-size:16px';
-          mb.title='Répète le mot à voix haute';
-          mb.innerHTML=ICON_MIC; mb.onclick=()=>pronCheck(mb, r.txt.replace(/<[^>]+>/g,''));
-          row.appendChild(mb);
         }
         const txt=document.createElement('div');txt.className='stxt';txt.innerHTML=r.txt;
         row.appendChild(txt);
