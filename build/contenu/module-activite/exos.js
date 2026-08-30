@@ -23,7 +23,7 @@ const EXOS = [
     {id:'p1j', txt:"L'inscription se fait seulement en personne.", ok:'FAUX'},
    ]},
 
-  {sec:'prep', id:'prChiffres', type:'vf', num:'Exercice 2', tit:'Moins de cent dollars, ou cent dollars et plus ?', color:'#A5335F', accent:'#A5335F', cards:true, listen:true,
+  {sec:'prep', id:'prChiffres', masque:true, type:'vf', num:'Exercice 2', tit:'Moins de cent dollars, ou cent dollars et plus ?', color:'#A5335F', accent:'#A5335F', cards:true, listen:true,
    sub:"Écoute chaque tarif. Est-ce moins de cent dollars, ou cent dollars et plus ?", tiles:['MOINS DE 100 $','100 $ ET PLUS'],
    rows:[
     {id:'cha', txt:"Quatre-vingt-cinq dollars.", ok:'MOINS DE 100 $'},

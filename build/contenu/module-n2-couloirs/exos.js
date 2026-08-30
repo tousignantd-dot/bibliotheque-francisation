@@ -20,7 +20,7 @@ const EXOS = [
     {id:'p1e', txt:"Il n'y a pas d'ascenseur dans le centre.", ok:'FAUX'},
    ]},
 
-  {sec:'prep', id:'prSons', type:'vf', num:'Exercice 2', tit:'Le petit nombre ou le grand ?', color:'#0D7A6F', accent:'#0D7A6F', cards:true, listen:true,
+  {sec:'prep', id:'prSons', masque:true, type:'vf', num:'Exercice 2', tit:'Le petit nombre ou le grand ?', color:'#0D7A6F', accent:'#0D7A6F', cards:true, listen:true,
    sub:"Écoute chaque nombre. Est-ce qu'il est avant 10 ou après 10 ?", tiles:['AVANT 10','APRÈS 10'],
    savoir:{h:"› Les nombres qui se ressemblent", rows:[
      ["deux et douze","<span class='savoir-ex'><b>deux</b> · <b>douze</b> — le grand finit par « ouze »</span>"],

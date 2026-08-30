@@ -43,7 +43,7 @@ const EXOS = [
      {id:'im6', txt:"Le transpalette manuel, qu'on pousse à la main dans l'allée.", ok:'im6'},
    ]},
 
-  {sec:'prep', id:'prProso', type:'vf', num:'Exercice 2', cards:true, listen:true,
+  {sec:'prep', id:'prProso', masque:true, type:'vf', num:'Exercice 2', cards:true, listen:true,
    tit:"La voix qui continue et la voix qui finit", color:'#0D7A6F',
    sub:"Écoutez chaque groupe. Est-ce que la voix monte, parce que la phrase continue ? Ou est-ce qu'elle descend, parce que la phrase est finie ?",
    tiles:['ELLE MONTE','ELLE DESCEND'],

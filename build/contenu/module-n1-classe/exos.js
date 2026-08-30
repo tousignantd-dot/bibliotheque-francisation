@@ -22,7 +22,7 @@ const EXOS = [
     {id:'p1e', txt:"Bopha ne dit pas merci.", ok:'FAUX'},
    ]},
 
-  {sec:'prep', id:'prNombres', type:'vf', num:'Exercice 2', tit:'Petit nombre ou grand nombre ?', color:'#1D6B8F', accent:'#1D6B8F', cards:true, listen:true,
+  {sec:'prep', id:'prNombres', masque:true, type:'vf', num:'Exercice 2', tit:'Petit nombre ou grand nombre ?', color:'#1D6B8F', accent:'#1D6B8F', cards:true, listen:true,
    sub:"Écoute bien. Ces nombres se ressemblent beaucoup.", tiles:['AVANT DIX','APRÈS DIX'],
    rows:[
     {id:'nba', txt:"deux", ok:'AVANT DIX'},

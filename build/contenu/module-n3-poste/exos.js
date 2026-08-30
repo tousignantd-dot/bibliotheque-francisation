@@ -127,7 +127,7 @@ const EXOS = [
     {id:'x6', q:"« Un mandat-poste, ça coûte quelque chose ? »", aid:'x6', a:"huit dollars cinquante, jusqu'à mille dollars"},
    ]},
 
-  {sec:'t1', id:'t1qui', type:'vf', num:'Exercice 5', tit:'La préposée ou le client ?', color:'#B45309', accent:'#B45309', cards:true, listen:true,
+  {sec:'t1', id:'t1qui', masque:true, type:'vf', num:'Exercice 5', tit:'La préposée ou le client ?', color:'#B45309', accent:'#B45309', cards:true, listen:true,
    sub:"Écoute la phrase. Qui la dit : la préposée derrière le comptoir, ou le client ?",
    tiles:['LA PRÉPOSÉE','LE CLIENT'],
    rows:[

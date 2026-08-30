@@ -202,7 +202,7 @@ const EXOS = [
     {q:"« Comme breuvage ? » (un jus de pomme)", accept:["un jus de pomme","un jus de pomme s'il vous plaît","jus de pomme"], ph:"…"},
    ]},
 
-  {sec:'t2', id:'t2qui', type:'vf', num:'Exercice 4', tit:'Le préposé ou le client ?', color:'#B45309', accent:'#B45309', cards:true, listen:true,
+  {sec:'t2', id:'t2qui', masque:true, type:'vf', num:'Exercice 4', tit:'Le préposé ou le client ?', color:'#B45309', accent:'#B45309', cards:true, listen:true,
    sub:"Écoute la phrase. Qui la dit : le préposé derrière le comptoir, ou le client ?",
    tiles:['LE PRÉPOSÉ','LE CLIENT'],
    rows:[

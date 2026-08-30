@@ -19,7 +19,7 @@ const EXOS = [
     {id:'p1e', txt:"On écrit en lettres majuscules.", ok:'VRAI'},
    ]},
 
-  {sec:'prep', id:'prSons', type:'vf', num:'Exercice 2', tit:"Treize ou trente ?", color:'#1D6B8F', accent:'#1D6B8F', cards:true, listen:true,
+  {sec:'prep', id:'prSons', masque:true, type:'vf', num:'Exercice 2', tit:"Treize ou trente ?", color:'#1D6B8F', accent:'#1D6B8F', cards:true, listen:true,
    sub:"Écoute le nombre. Est-ce qu'il finit par le son « ze » ou par le son « te » ?", tiles:['LE SON « ZE »','LE SON « TE »'],
    savoir:{h:"› Deux nombres qui se ressemblent", speak:true, rows:[
      ["13 et 30","La fin change tout : trei<b>ze</b>, tren<b>te</b>.", ["treize","trente"]],

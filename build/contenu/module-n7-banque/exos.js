@@ -23,7 +23,7 @@ const EXOS = [
     {id:'pf8', txt:"Huguette lui conseille de signer pendant le rendez-vous pour ne pas perdre l'offre.", ok:'FAUX'},
    ]},
 
-  {sec:'prep', id:'prChiffres', type:'vf', num:'Exercice 2', tit:'Un taux, un montant ou une durée ?', color:'#0D7A6F', accent:'#0D7A6F', cards:true, listen:true,
+  {sec:'prep', id:'prChiffres', masque:true, type:'vf', num:'Exercice 2', tit:'Un taux, un montant ou une durée ?', color:'#0D7A6F', accent:'#0D7A6F', cards:true, listen:true,
    sub:"Écoutez chaque phrase et dites ce que le chiffre annonce : un taux, un montant en dollars, ou une durée. Douze cartes.",
    tiles:['UN TAUX','UN MONTANT','UNE DURÉE'],
    rows:[

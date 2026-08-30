@@ -19,7 +19,7 @@ const EXOS = [
     {id:'p1j', txt:"Les deux femmes arrivent en retard à l'entraînement.", ok:'FAUX'},
    ]},
 
-  {sec:'prep', id:'prPhon', type:'vf', num:'Exercice 2', tit:"On insiste, ou pas ?", color:'#0D7A6F', accent:'#0D7A6F', cards:true, listen:true,
+  {sec:'prep', id:'prPhon', masque:true, type:'vf', num:'Exercice 2', tit:"On insiste, ou pas ?", color:'#0D7A6F', accent:'#0D7A6F', cards:true, listen:true,
    sub:"Écoute chaque phrase. Est-ce que la personne dit la chose calmement, ou est-ce qu'elle insiste ?", tiles:['ON INSISTE','C\'EST NEUTRE'],
    rows:[
     {id:'pha', txt:"Des sandales ! En janvier !", ok:'ON INSISTE'},

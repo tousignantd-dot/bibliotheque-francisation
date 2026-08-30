@@ -19,7 +19,7 @@ const EXOS = [
     {id:'p1e', txt:"Les deux voisines se disent « à demain ».", ok:'VRAI'},
    ]},
 
-  {sec:'prep', id:'prSons', type:'vf', num:'Exercice 2', tit:"Question ou réponse ?", color:'#0D7A6F', accent:'#0D7A6F', cards:true, listen:true,
+  {sec:'prep', id:'prSons', masque:true, type:'vf', num:'Exercice 2', tit:"Question ou réponse ?", color:'#0D7A6F', accent:'#0D7A6F', cards:true, listen:true,
    sub:"Écoute chaque phrase. Est-ce que la voix monte à la fin (une question) ou descend (une réponse) ?", tiles:['QUESTION','RÉPONSE'],
    savoir:{h:"› La voix monte, ou la voix descend", rows:[
      ["La voix monte à la fin","C'est une question. <span class='savoir-ex'>Ça va ↗ ? · Tu travailles ↗ ?</span>"],

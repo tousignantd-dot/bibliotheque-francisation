@@ -21,7 +21,7 @@ const EXOS = [
     {id:'p1e', txt:"Il faut attendre : le guichet est occupé.", ok:'FAUX'},
    ]},
 
-  {sec:'prep', id:'prSon', type:'vf', num:'Exercice 2', tit:"Treize ou trente ?", color:'#0D7A6F', accent:'#0D7A6F', cards:true, listen:true,
+  {sec:'prep', id:'prSon', masque:true, type:'vf', num:'Exercice 2', tit:"Treize ou trente ?", color:'#0D7A6F', accent:'#0D7A6F', cards:true, listen:true,
    sub:"Écoute chaque nombre. Est-ce le petit nombre ou le grand nombre ?", tiles:['13 · 14 · 15 · 16','30 · 40 · 50 · 60'],
    savoir:{h:"› Quatre paires de nombres qui coûtent cher", rows:[
      ["Les petits","<span class='savoir-ex'>tre<b>ize</b> · quat<b>orze</b> · qu<b>inze</b> · s<b>eize</b></span>"],

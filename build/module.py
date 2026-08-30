@@ -215,7 +215,7 @@ def construire(slug, verbeux=True, gabarit=None):
             ('verrou des sections', greffe_sections,    ids[slug]),
             ('reprise de séance',   greffe_reprise,     slug),
             ('identité de marque',  greffe_marque,      slug),
-            ('verrou de transcription', greffe_transcription, slug)]:
+            ('verrou de transcription', greffe_transcription, ids[slug])]:
         try:
             html = fonction(html, argument)
         except ValueError as e:

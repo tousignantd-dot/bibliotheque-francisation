@@ -24,7 +24,7 @@ const EXOS = [
     {id:'p1i', txt:"Cette raison-là est écrite dans la description de tâches.", ok:'FAUX'},
    ]},
 
-  {sec:'prep', id:'prProso', type:'vf', num:'Exercice 2', tit:"La phrase continue, ou elle finit ?", color:'#A5335F', accent:'#A5335F', cards:true, listen:true,
+  {sec:'prep', id:'prProso', masque:true, type:'vf', num:'Exercice 2', tit:"La phrase continue, ou elle finit ?", color:'#A5335F', accent:'#A5335F', cards:true, listen:true,
    sub:"Écoutez le groupe de mots. Est-ce que la voix monte — la phrase n'est pas finie — ou est-ce qu'elle descend ?", tiles:['↗ ÇA CONTINUE','↘ ÇA FINIT'],
    rows:[
     {id:'psa', txt:"Le premier bloc, c'est la réception des commandes", ok:'↗ ÇA CONTINUE'},

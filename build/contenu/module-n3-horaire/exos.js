@@ -143,7 +143,7 @@ const EXOS = [
     {q:"___ est-ce que je poinçonne ? — À côté de la porte grise.", accept:["où","ou"], ph:"…"},
    ]},
 
-  {sec:'t1', id:'t1ecoute', type:'vf', num:'Exercice 5', tit:"Matin ou après-midi ?", color:'#B45309', accent:'#B45309', cards:true, listen:true,
+  {sec:'t1', id:'t1ecoute', masque:true, type:'vf', num:'Exercice 5', tit:"Matin ou après-midi ?", color:'#B45309', accent:'#B45309', cards:true, listen:true,
    sub:"Écoute l'heure. Est-ce le matin ou l'après-midi ?", tiles:['LE MATIN','L’APRÈS-MIDI'],
    rows:[
     {id:'ea', txt:"six heures", ok:'LE MATIN'},
@@ -214,7 +214,7 @@ const EXOS = [
     {q:"Il accepte ton échange de quart. Tu réponds.", accept:["merci beaucoup","merci","merci beaucoup monsieur roy","merci beaucoup, monsieur roy"], ph:"…"},
    ]},
 
-  {sec:'t2', id:'t2ecoute', type:'vf', num:'Exercice 5', tit:"Permission ou aide ?", color:'#A5335F', accent:'#A5335F', cards:true, listen:true,
+  {sec:'t2', id:'t2ecoute', masque:true, type:'vf', num:'Exercice 5', tit:"Permission ou aide ?", color:'#A5335F', accent:'#A5335F', cards:true, listen:true,
    sub:"Écoute la phrase. Est-ce qu'on demande la permission de faire quelque chose, ou de l'aide ?", tiles:['UNE PERMISSION','DE L’AIDE'],
    rows:[
     {id:'pa', txt:"Est-ce que je peux prendre ma pause maintenant ?", ok:'UNE PERMISSION'},
@@ -285,7 +285,7 @@ const EXOS = [
     {id:'nt6', q:"« Avisez-moi trois jours avant. »", aid:'nt6', a:"aviser 3 jours d'avance"},
    ]},
 
-  {sec:'t3', id:'t3ecoute', type:'vf', num:'Exercice 5', tit:"C'est fait, ou ce n'est pas fait ?", color:'#0D7A6F', accent:'#0D7A6F', cards:true, listen:true,
+  {sec:'t3', id:'t3ecoute', masque:true, type:'vf', num:'Exercice 5', tit:"C'est fait, ou ce n'est pas fait ?", color:'#0D7A6F', accent:'#0D7A6F', cards:true, listen:true,
    sub:"Écoute la phrase. Est-ce que la tâche est terminée ?", tiles:['C’EST FAIT','PAS ENCORE'],
    rows:[
     {id:'fa', txt:"Je viens de finir les plateaux.", ok:'C’EST FAIT'},

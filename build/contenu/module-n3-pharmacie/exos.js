@@ -136,7 +136,7 @@ const EXOS = [
     {q:"Il a de la fièvre ___ hier soir.", accept:["depuis"], ph:"…"},
    ]},
 
-  {sec:'t1', id:'t1qui', type:'vf', num:'Exercice 5', tit:'Le pharmacien ou le client ?', color:'#1D6B8F', accent:'#1D6B8F', cards:true, listen:true,
+  {sec:'t1', id:'t1qui', masque:true, type:'vf', num:'Exercice 5', tit:'Le pharmacien ou le client ?', color:'#1D6B8F', accent:'#1D6B8F', cards:true, listen:true,
    sub:"Écoute la phrase. Qui la dit : le pharmacien derrière le comptoir, ou le client ?",
    tiles:['LE PHARMACIEN','LE CLIENT'],
    rows:[

@@ -22,7 +22,7 @@ const EXOS = [
     {id:'p1g', txt:"Kim trouve qu'on peut attendre midi pour appeler le propriétaire.", ok:'FAUX'},
    ]},
 
-  {sec:'prep', id:'prSon', type:'vf', num:'Exercice 2', tit:"Le son [o] : eau, au ou o ?", color:'#3B49A0', accent:'#3B49A0', cards:true, listen:true,
+  {sec:'prep', id:'prSon', masque:true, type:'vf', num:'Exercice 2', tit:"Le son [o] : eau, au ou o ?", color:'#3B49A0', accent:'#3B49A0', cards:true, listen:true,
    sub:"Un seul son, trois orthographes. Écoutez la phrase, puis dites comment le son [o] s'écrit dans le mot souligné.", tiles:['EAU','AU','O'],
    rows:[
     {id:'so1', txt:"L'eau tombait du plafond.", ok:'EAU'},

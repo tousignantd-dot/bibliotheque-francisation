@@ -152,7 +152,7 @@ const EXOS = [
     {q:"Du lundi ___ vendredi, ça me convient très bien.", accept:["au"], ph:"…"},
    ]},
 
-  {sec:'t1', id:'t1qui', type:'vf', num:'Exercice 6', tit:"Fanta ou Gilles ?", color:'#B45309', accent:'#B45309', cards:true, listen:true,
+  {sec:'t1', id:'t1qui', masque:true, type:'vf', num:'Exercice 6', tit:"Fanta ou Gilles ?", color:'#B45309', accent:'#B45309', cards:true, listen:true,
    sub:"Écoute chaque phrase. Qui la dit : Fanta, qui offre ses services, ou Gilles, le patron de la boulangerie ?",
    tiles:['FANTA','GILLES'],
    rows:[
@@ -307,7 +307,7 @@ const EXOS = [
    ]},
 
  // ── JE ME LANCE ─────────────────────────────────────────────
-  {sec:'appli', id:'aQui', type:'vf', num:'Exercice 1', tit:"Celui qui cherche, ou celui qui engage ?", color:'#7E3F98', accent:'#7E3F98', cards:true, listen:true,
+  {sec:'appli', id:'aQui', masque:true, type:'vf', num:'Exercice 1', tit:"Celui qui cherche, ou celui qui engage ?", color:'#7E3F98', accent:'#7E3F98', cards:true, listen:true,
    sub:"Écoute chaque phrase du module. Est-ce la personne qui cherche du travail, ou celle qui engage ?",
    tiles:['CELLE QUI CHERCHE','CELUI QUI ENGAGE'],
    rows:[

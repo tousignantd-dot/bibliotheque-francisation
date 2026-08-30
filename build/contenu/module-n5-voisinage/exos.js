@@ -31,7 +31,7 @@ const EXOS = [
     {id:'p1h', txt:"Réjean se contente d'un « peut-être » comme réponse.", ok:'FAUX'},
    ]},
 
-  {sec:'prep', id:'prPhon', type:'vf', num:'Exercice 2',
+  {sec:'prep', id:'prPhon', masque:true, type:'vf', num:'Exercice 2',
    tit:"La voix qui monte, la voix qui descend", color:'#1D6B8F', cards:true, listen:true,
    sub:"Écoutez la phrase, puis dites si la voix monte à la fin ou si elle descend.",
    tiles:['LA VOIX MONTE','LA VOIX DESCEND'],

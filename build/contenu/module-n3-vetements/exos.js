@@ -274,7 +274,7 @@ const EXOS = [
     {id:'f6', txt:"Elle jette la facture avant de partir.", ok:'FAUX'},
    ]},
 
-  {sec:'t3', id:'t3montant', type:'vf', num:'Exercice 5', tit:'Le montant que tu entends', color:'#0D7A6F', accent:'#0D7A6F', cards:true, listen:true,
+  {sec:'t3', id:'t3montant', masque:true, type:'vf', num:'Exercice 5', tit:'Le montant que tu entends', color:'#0D7A6F', accent:'#0D7A6F', cards:true, listen:true,
    sub:"Écoute le montant. Est-il en dessous ou au-dessus de cinquante dollars ?", tiles:['MOINS DE 50 $','PLUS DE 50 $'],
    rows:[
     {id:'ma', txt:"quarante-neuf dollars et quatre-vingt-dix-neuf", ok:'MOINS DE 50 $'},

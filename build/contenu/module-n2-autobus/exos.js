@@ -18,7 +18,7 @@ const EXOS = [
     {id:'p1d', txt:"C'est à trente minutes à pied.", ok:'FAUX'},
    ]},
 
-  {sec:'prep', id:'prHeure', type:'vf', num:'Exercice 2', tit:"L'heure juste ou l'heure avec des minutes ?", color:'#0D7A6F', accent:'#0D7A6F', cards:true, listen:true,
+  {sec:'prep', id:'prHeure', masque:true, type:'vf', num:'Exercice 2', tit:"L'heure juste ou l'heure avec des minutes ?", color:'#0D7A6F', accent:'#0D7A6F', cards:true, listen:true,
    sub:"Écoute chaque heure. Est-ce une heure juste, ou est-ce qu'on ajoute des minutes ?", tiles:['HEURE JUSTE','AVEC DES MINUTES'],
    rows:[
     {id:'hra', txt:"huit heures dix", ok:'AVEC DES MINUTES'},

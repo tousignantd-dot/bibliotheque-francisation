@@ -211,7 +211,7 @@ const EXOS = [
     {id:'f6', q:"Livraison en sus", aid:'f6', a:"la livraison n'est pas dans le prix"},
    ]},
 
-  {sec:'t2', id:'t2mesures', type:'vf', num:'Exercice 5', tit:'Un prix ou une mesure ?', color:'#B45309', accent:'#B45309', cards:true, listen:true,
+  {sec:'t2', id:'t2mesures', masque:true, type:'vf', num:'Exercice 5', tit:'Un prix ou une mesure ?', color:'#B45309', accent:'#B45309', cards:true, listen:true,
    sub:"Écoute. Est-ce que tu entends un prix ou une mesure ?", tiles:['UN PRIX','UNE MESURE'],
    rows:[
     {id:'m1', txt:"huit cent quarante-neuf dollars", ok:'UN PRIX'},

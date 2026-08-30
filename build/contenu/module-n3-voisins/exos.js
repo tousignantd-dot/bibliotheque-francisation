@@ -134,7 +134,7 @@ const EXOS = [
     {q:"Mes boîtes sont encore pleines : je vais ___ vider ce soir.", accept:["les"], ph:"…"},
    ]},
 
-  {sec:'t1', id:'t1qui', type:'vf', num:'Exercice 5', tit:'Celui qui demande, ou celle qui répond ?', color:'#B45309', accent:'#B45309', cards:true, listen:true,
+  {sec:'t1', id:'t1qui', masque:true, type:'vf', num:'Exercice 5', tit:'Celui qui demande, ou celle qui répond ?', color:'#B45309', accent:'#B45309', cards:true, listen:true,
    sub:"Écoute chaque phrase. Est-ce Rachid qui demande la permission, ou Manon qui répond ?",
    tiles:['RACHID DEMANDE','MANON RÉPOND'],
    rows:[
@@ -307,7 +307,7 @@ const EXOS = [
    ]},
 
  // ── JE ME LANCE ─────────────────────────────────────────────
-  {sec:'appli', id:'aQui', type:'vf', num:'Exercice 1', tit:'Rachid ou Manon ?', color:'#7E3F98', accent:'#7E3F98', cards:true, listen:true,
+  {sec:'appli', id:'aQui', masque:true, type:'vf', num:'Exercice 1', tit:'Rachid ou Manon ?', color:'#7E3F98', accent:'#7E3F98', cards:true, listen:true,
    sub:"Écoute chaque phrase du module. Qui la dit : Rachid, le nouveau du troisième, ou Manon, la voisine du deuxième ?",
    tiles:['RACHID','MANON'],
    rows:[

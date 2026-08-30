@@ -23,7 +23,7 @@ const EXOS = [
     {id:'p1j', txt:"On peut essayer plusieurs manteaux.", ok:'VRAI'},
    ]},
 
-  {sec:'prep', id:'prPhon', type:'vf', num:'Exercice 2', tit:"Masculin ou féminin ?", color:'#B45309', accent:'#B45309', cards:true, listen:true,
+  {sec:'prep', id:'prPhon', masque:true, type:'vf', num:'Exercice 2', tit:"Masculin ou féminin ?", color:'#B45309', accent:'#B45309', cards:true, listen:true,
    sub:"Écoute chaque mot. Entends-tu la consonne de la fin ? Si oui, c'est le féminin.", tiles:['MASCULIN','FÉMININ'],
    rows:[
     {id:'pha', txt:"petit", ok:'MASCULIN'},

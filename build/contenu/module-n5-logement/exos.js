@@ -22,7 +22,7 @@ const EXOS = [
     {id:'p1g', txt:"La fille de Nadège dort dans le salon.", ok:'VRAI'},
    ]},
 
-  {sec:'prep', id:'prPhon', type:'vf', num:'Exercice 2', tit:"Sur, dans ou à ?", color:'#A5335F', accent:'#A5335F', cards:true, listen:true,
+  {sec:'prep', id:'prPhon', masque:true, type:'vf', num:'Exercice 2', tit:"Sur, dans ou à ?", color:'#A5335F', accent:'#A5335F', cards:true, listen:true,
    sub:"À l'oral, la préposition et le déterminant se collent en un seul son. Écoutez, puis dites quelle préposition vous avez entendue.", tiles:['SUR','DANS','À'],
    rows:[
     {id:'fu1', txt:"Les clés sont sur le comptoir.", ok:'SUR'},
