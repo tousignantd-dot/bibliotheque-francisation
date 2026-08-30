@@ -95,6 +95,25 @@
   // déjà dans la page se retire, et tout ce qui repousse doit consulter ce
   // drapeau. C'est le cas de marqueBlocs(), rappelé à chaque render().
   var SANS_IA = false;
+  // Séance sans compte : le « code » est un jeton de participant. Deux outils
+  // s'en vont — voir SANS_CARNET et estJetonDeSeance().
+  var SEANCE = false;
+  // Les outils qui supposent un lendemain. Le carnet garde des mots pour
+  // plus tard, la révision espace des rappels sur des jours : ni l'un ni
+  // l'autre n'a de sens pour un participant qui n'existe que le temps d'une
+  // séance, et le serveur refuse d'ailleurs `/api/vocab/*` à son jeton
+  // (liste blanche ROUTES_SEANCE, server.py). Sans ce retrait, les deux
+  // boutons s'ouvraient sur un message d'erreur.
+  var SANS_CARNET = ['carn', 'revi'];
+
+  // Un code d'élève fait six caractères ; un jeton de séance en fait
+  // dix-sept et commence par S. La règle est celle de
+  // `validate_student_code` (server.py) — si elle change là-bas, elle change
+  // ici. Se tromper ne rouvre rien : le serveur refuse toujours, seuls les
+  // deux boutons réapparaîtraient.
+  function estJetonDeSeance(code) {
+    return /^S[A-Za-z0-9]{16}$/.test(String(code || ''));
+  }
 
   // ══ Petits utilitaires ════════════════════════════════════════
   function esc(s) {
@@ -148,6 +167,7 @@
     var dock = '<nav class="oe-dock" aria-label="Mes outils"><div class="oe-dock-t">Mes<br>outils</div>';
     OUTILS.forEach(function (o) {
       if (o.sep) { dock += '<div class="oe-dock-sep"></div>'; return; }
+      if (SEANCE && SANS_CARNET.indexOf(o.id) >= 0) return;
       dock += '<button type="button" class="oe-tool' + (o.audio ? ' oe-audio' : '')
         + '" data-oe-outil="' + o.id + '" aria-pressed="false">'
         + '<span class="oe-ic">' + icone(o.id) + '</span>'
@@ -179,7 +199,9 @@
       + '</div></aside>';
 
     var actions = [['trad', 'Traduire'], ['lire', 'Écouter'], ['simp', 'Simplifier'],
-      ['pron', 'Prononcer'], ['carn', 'Garder']];
+      ['pron', 'Prononcer'], ['carn', 'Garder']].filter(function (a) {
+        return !(SEANCE && SANS_CARNET.indexOf(a[0]) >= 0);
+      });
     var sel = '<div class="oe-sel" id="oe-sel">' + actions.map(function (a, i) {
       return (i ? '<span class="oe-sep"></span>' : '')
         + '<button type="button" data-oe-sel="' + a[0] + '">'
@@ -566,7 +588,9 @@
       + '<div class="oe-lbl">' + esc(L.loc) + '</div><div id="oe-trad-r"></div>'
       + '<div class="oe-row" style="margin-top:20px">'
       + '<button type="button" class="oe-btn oe-ghost" id="oe-trad-son">' + icone('lire', 18) + 'Écouter</button>'
-      + '<button type="button" class="oe-btn oe-ghost" id="oe-trad-gard">' + icone('carn', 18) + 'Garder</button></div>';
+      + (SEANCE ? ''
+        : '<button type="button" class="oe-btn oe-ghost" id="oe-trad-gard">' + icone('carn', 18) + 'Garder</button>')
+      + '</div>';
 
     var r = z.querySelector('#oe-trad-r');
     var passage = selection;
@@ -575,9 +599,8 @@
       .then(function (d) {
         r.innerHTML = '<div class="oe-res"' + (L.rtl ? ' dir="rtl"' : '') + '>'
           + esc(d.traduction).replace(/\n/g, '<br>') + '</div>';
-        z.querySelector('#oe-trad-gard').onclick = function () {
-          ajouteCarnet(passage, d.traduction);
-        };
+        var g = z.querySelector('#oe-trad-gard');
+        if (g) g.onclick = function () { ajouteCarnet(passage, d.traduction); };
       })
       .catch(function (e) { erreur(r, e); });
 
@@ -637,8 +660,9 @@
         if (d.mot) {
           h += '<div class="oe-lbl" style="margin-top:20px">Le mot difficile</div>'
             + '<div class="oe-quote"><b>' + esc(d.mot) + '</b> — ' + esc(d.explication) + '</div>'
-            + '<button type="button" class="oe-btn oe-soft oe-full" id="oe-simp-g">'
-            + icone('carn', 18) + 'Garder « ' + esc(d.mot) + ' »</button>';
+            + (SEANCE ? ''
+              : '<button type="button" class="oe-btn oe-soft oe-full" id="oe-simp-g">'
+                + icone('carn', 18) + 'Garder « ' + esc(d.mot) + ' »</button>');
         }
         h += '<div class="oe-row" style="margin-top:12px">'
           + '<button type="button" class="oe-btn oe-ghost" id="oe-simp-s">' + icone('lire', 18) + 'Écouter</button>'
@@ -862,6 +886,7 @@
   function cleCarnet() { return 'francisation-carnet-' + (cfg.module || 'module'); }
 
   function ajouteCarnet(mot, trad) {
+    if (SEANCE) return;
     var m = propre(mot).slice(0, 120);
     if (!m) return;
     var liste = lire(cleCarnet(), []);
@@ -1008,6 +1033,7 @@
     if (cfg) return;                       // une seule barre par page
     cfg = Object.assign({ code: '', module: 'module', section: '', contexte: null, blocs: '' },
       options || {});
+    SEANCE = estJetonDeSeance(cfg.code);
     bati();
     brancheLangue();
     marqueBlocs();
@@ -1039,7 +1065,11 @@
     setSection: function (titre) {
       if (cfg) { cfg.section = titre; if (courant) el.sub.textContent = titre; }
     },
-    ouvrir: function (id) { if (cfg && !SANS_IA) ouvrir(id, true); },
+    ouvrir: function (id) {
+      if (!cfg || SANS_IA) return;
+      if (SEANCE && SANS_CARNET.indexOf(id) >= 0) return;
+      ouvrir(id, true);
+    },
 
     // ── Le mode sans assistant ────────────────────────────────────────
     // La barre disparaît **en entier**. Une première version n'en retirait
