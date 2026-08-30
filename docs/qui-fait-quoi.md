@@ -31,6 +31,7 @@ autre chose.
 | Session | Ouverte | Ce que je tiens | Jusqu'à |
 |---|---|---|---|
 | `claude-38` | 30 août, 10 h | `modules-autonomes/`, `build/gabarit/storyline.html`, `build/storyline.py`, `build/contenu/module-n5-rendezvous/storyline.js`, `presentations.html` (par à-coups) | la démo storyline livrée |
+| `claude-71` | 30 août, 11 h | `assets/presentations/` (la banque et ses pages), `build/trousse.py`, `build/materiel_pages.py`, `build/menage_proposition.py`, `build/greffe_retour.py`, `build/powerpoints/pitch/`, `presentations.html` (par à-coups) | la trousse de présentation livrée |
 
 Le nom de session est celui que donne `ListAgents` (`claude-38`, `claude-71`…).
 Il ne survit pas à la fermeture, et c'est voulu : une ligne dont le nom ne
