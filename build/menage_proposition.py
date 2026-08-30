@@ -10,6 +10,7 @@ page redit la vérité du jour.
 
     python3 build/menage_proposition.py            # mesure et écrit la page
     python3 build/menage_proposition.py --vite     # réutilise les mesures de disque
+    python3 build/menage_proposition.py --fige     # chiffres d'avant + bandeau d'après
 
 Les décisions vivent dans le `localStorage` du poste et s'exportent en JSON :
 c'est ce fichier qui pilote la session suivante, pas la mémoire d'une
@@ -53,7 +54,27 @@ def taille(chemin, minutes=6):
         return "?"
 
 
-def mesures(vite=False):
+def mesures(vite=False, fige=False):
+    """`fige` : garder les chiffres d'AVANT (le cache) et n'ajouter que l'après.
+
+    Une fois le ménage fait, les mesures vives ne disent plus rien du constat :
+    il n'y a plus de worktree à compter. La page raconte alors deux états, et
+    c'est le cache qui porte le premier.
+    """
+    if fige and CACHE.exists():
+        m = json.loads(CACHE.read_text())
+        m["apres"] = {
+            "racine": len([p for p in RACINE.iterdir() if not p.name.startswith(".")]),
+            "branches": len(lignes(git("branch"))),
+            "worktrees": len(lignes(git("worktree", "list"))) - 1,
+            "paquet_git": next((l.split(":")[1].strip()
+                                for l in git("count-objects", "-vH").splitlines()
+                                if l.startswith("size-pack")), "?"),
+            "disque_total": taille(RACINE),
+            "disque_claude": taille(RACINE / ".claude", minutes=1),
+            "quand": time.strftime("%Y-%m-%d %H:%M"),
+        }
+        return m
     m = {}
     if vite and CACHE.exists():
         m = json.loads(CACHE.read_text())
@@ -181,6 +202,12 @@ def chantiers(m):
                 "Ce qui disparaît est du travail déjà repris dans main ou des images "
                 "que plus rien n'appelle. À faire quand aucune session n'est en cours "
                 "dans le dépôt — un worktree retiré sous les pieds d'un agent le casse."),
+            "etat": "fait",
+            "resultat": (
+                "Les deux plans rapatriés dans <code>docs/</code>, puis <b>60 worktrees "
+                "retirés</b> (57 dans <code>.claude</code>, 3 dans <code>~/Claude</code>) "
+                "et <b>74 branches</b> supprimées. <code>.claude</code> passe de "
+                "<b>51 Go à 4 Ko</b> ; il reste une seule branche, <code>main</code>."),
             "commandes": [
                 "# 1. récupérer ce qui n'existe nulle part ailleurs",
                 "git show <branche>:docs/plan-module-n3-horaire.md > docs/plan-module-n3-horaire.md",
@@ -204,6 +231,14 @@ def chantiers(m):
             "propose": "Après le chantier précédent, compacter l'historique.",
             "risque": "nul",
             "risque_mot": "Aucune perte possible : <code>gc</code> ne touche qu'au rangement interne.",
+            "etat": "fait",
+            "resultat": (
+                "Fait — et <b>le gain est petit</b> : 3,23 → <b>3,16 Gio</b>. Je l'avais "
+                "annoncé plus gros, à tort. L'historique n'était pas gonflé par les "
+                "branches d'agents mais par <b>le matériel lui-même</b> : images, MP3, "
+                "PDF et vidéos de main, qui restent dans l'historique par construction. "
+                "Le seul geste qui les en sortirait est une réécriture de l'historique — "
+                "un chantier à part, qu'on ne fait pas à la légère sur un dépôt déployé."),
             "commandes": ["git reflog expire --expire=now --all",
                           "git gc --prune=now --aggressive"],
         },
@@ -232,6 +267,14 @@ def chantiers(m):
                 "L'audio est gelé, donc rien ne se régénère pendant l'opération. Mais les "
                 "chemins se vérifient <b>en jouant</b> les contrôles : "
                 "<code>build/audio_manquant.py</code> doit continuer de rendre zéro module muet."),
+            "etat": "fait",
+            "resultat": (
+                "<b>La racine passe de 245 entrées à 39.</b> Douze scripts patchés, une "
+                "ligne chacun. Contrôle joué : les <b>86 manifestes</b> sont retrouvés et "
+                "les <b>14 813 sons</b> attendus sont tous là. Le piège évité : un chemin "
+                "resté à la racine ne fait pas échouer le contrôle, il lui fait dire "
+                "« zéro trou » parce qu'il n'attend plus rien — c'est le nombre de "
+                "manifestes trouvés qu'il faut lire, pas le nombre de trous."),
             "commandes": [
                 "mkdir -p audio manifestes",
                 "git mv generer_audio_*.py audio/",
@@ -256,6 +299,11 @@ def chantiers(m):
                 "preuves. Un banc qu'on jette, c'est une décision qu'on redémontrera."),
             "risque": "faible",
             "risque_mot": "Rien ne les appelle ; seuls des liens dans mes notes pourraient tomber.",
+            "etat": "fait",
+            "resultat": (
+                "Les onze bancs sont dans <code>essais/</code>. Les six liens du plan du "
+                "site et les chemins de <code>build/essai_estceque.py</code> ont suivi ; "
+                "<code>/essais/essai-voix.html</code> répond."),
             "commandes": ["mkdir -p essais", "git mv essai-* essais/"],
         },
         {
@@ -280,6 +328,16 @@ def chantiers(m):
             "risque_mot": (
                 "Le lien de la banque de présentations tomberait : il faudrait dire où le "
                 "manuel se trouve désormais."),
+            "etat": "pas fait",
+            "resultat": (
+                "<b>Je ne l'ai pas fait, et c'est moi qui avais mal posé la question.</b> "
+                "Ces deux PDF ne sont pas un document tiers : ils sont <b>produits par "
+                "notre propre chaîne</b> (<code>build/manuel_eleve.py</code>) à partir des "
+                "289 fiches de nos modules. L'argument des droits tombe. Restait le poids "
+                "— mais <code>git rm --cached</code> ne libère <b>rien</b> : les objets "
+                "restent dans l'historique. On perdrait un téléchargement qui marche pour "
+                "un gain nul. À rouvrir seulement si l'on décide de réécrire l'historique, "
+                "et alors pour tout le matériel, pas pour ces deux fichiers."),
             "commandes": ["git rm --cached assets/documents/manuel-eleve-niveau-4*.pdf",
                           "# puis retirer les deux boutons de presentations.html"],
         },
@@ -300,6 +358,13 @@ def chantiers(m):
                 "retombe."),
             "risque": "faible",
             "risque_mot": "À vérifier avant : que chaque capsule montée existe bien dans <code>assets/</code>.",
+            "etat": "fait",
+            "resultat": (
+                "Vérifié d'abord : <b>les sept films sont livrés</b> dans "
+                "<code>assets/tutoriels</code>. Rushes, voix et montages sortis dans "
+                "<code>~/Claude/rushes-francisation</code> — <b>1,3 Go</b> de moins dans "
+                "le dossier de travail. Rien n'était versionné : le <code>.gitignore</code> "
+                "les couvrait déjà."),
             "commandes": ["mv build/tutoriels/capsules ~/Claude/rushes-tutoriels",
                           "echo 'build/tutoriels/capsules/' >> .gitignore"],
         },
@@ -319,6 +384,11 @@ def chantiers(m):
             "propose": "Les retirer, ou les dater et les sortir de <code>data/</code>.",
             "risque": "faible",
             "risque_mot": "Ce sont des traces fictives ; aucune donnée d'élève réel.",
+            "etat": "fait",
+            "resultat": (
+                "Les trois dossiers sont sortis dans "
+                "<code>~/Claude/archives-menage-2026-08-30</code> — déplacés, pas "
+                "supprimés. <code>data/</code> passe de 3,4 à 2,7 Mo."),
             "commandes": ["rm -rf data/_sauvegarde-avant-demo data/_sauvegarde-avant-demo-classe"],
         },
     ]
@@ -409,6 +479,20 @@ GABARIT = """<!DOCTYPE html>
     padding:9px 16px; min-height:44px; cursor:pointer}
   .choix button:hover{background:var(--paper-200)}
   .choix button[aria-pressed="true"]{background:var(--ink-900); border-color:var(--ink-900); color:#FFF}
+  .resultat{margin:14px 0 0; padding:13px 16px; border-radius:12px;
+    background:var(--accent-soft); border:1px solid #BFE3D2}
+  .resultat.pas-fait{background:var(--ambre-100); border-color:#E8D7B8}
+  .resultat p{margin:0; max-width:none}
+  .resultat .t{color:var(--accent-ink)}
+  .resultat.pas-fait .t{color:var(--ambre-700)}
+  .lot--fait .gain{background:var(--paper-200); color:var(--ink-400)}
+  .apres{background:var(--ink-900); color:#F4F4F2; border-radius:16px; padding:18px 22px;
+    margin:26px 0 0}
+  .apres h2{color:#FFF; font-size:20px; margin:0 0 10px}
+  .apres .grille{display:grid; gap:12px; grid-template-columns:repeat(auto-fit,minmax(min(150px,100%),1fr))}
+  .apres .c{background:rgba(255,255,255,.07); border-radius:10px; padding:10px 12px}
+  .apres .n{display:block; font-size:22px; font-weight:900; line-height:1.15}
+  .apres .l{font-size:12.5px; font-weight:700; color:rgba(255,255,255,.7)}
   .barre-bas{position:sticky; bottom:0; background:rgba(247,247,245,.95);
     backdrop-filter:blur(8px); border-top:1px solid var(--border-firm); padding:12px 0; margin-top:30px}
   .barre-bas .conteneur{display:flex; gap:12px; align-items:center; flex-wrap:wrap}
@@ -444,9 +528,10 @@ GABARIT = """<!DOCTYPE html>
       <p class="surtitre">Chantier · Décisions à prendre</p>
       <h1>Ménage du dépôt</h1>
     </div>
-    <p class="chapeau">Sept chantiers, chacun avec ce que j'ai mesuré, ce que je propose, ce
-    que ça libère et ce que ça risque. Tranchez chantier par chantier ; le bouton du bas
-    exporte vos décisions pour la session qui fera le travail.</p>
+    <p class="chapeau">Sept chantiers, chacun avec ce qui a été mesuré, ce qui a été
+    proposé, et — en vert — <b>ce qui a été fait</b>. Les sept ont été tranchés le
+    30 août 2026 ; six ont été exécutés, et le septième ne l'a pas été parce que la
+    question était mal posée. Le détail est dans son bloc.</p>
     <p class="quand">Mesuré le __QUAND__ — page produite par <code>build/menage_proposition.py</code>,
     jamais écrite à la main : les chiffres bougent, et une page recopiée serait fausse le lendemain.</p>
   </div>
@@ -457,6 +542,8 @@ GABARIT = """<!DOCTYPE html>
   <div class="tuiles">__TUILES__</div>
   <p style="margin-top:16px">__RESUME__</p>
 </section>
+
+<section class="conteneur">__APRES__</section>
 
 <section class="conteneur" id="lots">__LOTS__</section>
 
@@ -469,19 +556,6 @@ GABARIT = """<!DOCTYPE html>
   </div>
 </section>
 
-<div class="barre-bas">
-  <div class="conteneur">
-    <span class="etat" id="etat">Aucune décision prise</span>
-    <button type="button" class="sec" id="raz">Tout remettre à zéro</button>
-    <button type="button" id="exporter">Exporter mes décisions</button>
-  </div>
-</div>
-
-<section class="conteneur" id="sortie" hidden>
-  <p class="quand">À recoller dans la prochaine session :</p>
-  <textarea id="json" readonly></textarea>
-</section>
-
 <hr>
 <footer class="conteneur">
   <p>Relancer <code>python3 build/menage_proposition.py</code> refait les mesures et réécrit
@@ -490,61 +564,6 @@ GABARIT = """<!DOCTYPE html>
 </footer>
 </main>
 
-<script>
-(function(){
-  "use strict";
-  var CLE = 'menage-depot-decisions';
-  var etat = {};
-  try { etat = JSON.parse(localStorage.getItem(CLE) || '{}'); } catch(e) { etat = {}; }
-
-  function peindre(){
-    var faits = 0, gardes = 0, tard = 0;
-    document.querySelectorAll('.lot').forEach(function(lot){
-      var id = lot.dataset.lot, d = etat[id] || '';
-      lot.classList.toggle('faire', d === 'faire');
-      lot.classList.toggle('garder', d === 'garder');
-      lot.querySelectorAll('.choix button').forEach(function(b){
-        b.setAttribute('aria-pressed', String(b.dataset.d === d));
-      });
-      if (d === 'faire') faits++; else if (d === 'garder') gardes++; else if (d === 'tard') tard++;
-    });
-    var n = document.querySelectorAll('.lot').length;
-    document.getElementById('etat').textContent =
-      (faits + gardes + tard) === 0 ? 'Aucune décision prise'
-      : faits + ' à faire · ' + gardes + ' à garder tel quel · ' + tard + ' plus tard · '
-        + (n - faits - gardes - tard) + ' sans réponse';
-  }
-
-  document.getElementById('lots').addEventListener('click', function(ev){
-    var b = ev.target.closest('.choix button'); if (!b) return;
-    var id = b.closest('.lot').dataset.lot;
-    etat[id] = (etat[id] === b.dataset.d) ? '' : b.dataset.d;
-    try { localStorage.setItem(CLE, JSON.stringify(etat)); } catch(e){}
-    peindre();
-  });
-
-  document.getElementById('raz').addEventListener('click', function(){
-    etat = {}; try { localStorage.removeItem(CLE); } catch(e){} peindre();
-    document.getElementById('sortie').hidden = true;
-  });
-
-  document.getElementById('exporter').addEventListener('click', function(){
-    var out = {mesure: document.title, decisions: {}};
-    document.querySelectorAll('.lot').forEach(function(lot){
-      out.decisions[lot.dataset.lot] = {
-        titre: lot.querySelector('h2').textContent.trim(),
-        decision: etat[lot.dataset.lot] || 'sans réponse'
-      };
-    });
-    var z = document.getElementById('sortie');
-    z.hidden = false;
-    document.getElementById('json').value = JSON.stringify(out, null, 2);
-    document.getElementById('json').select();
-  });
-
-  peindre();
-})();
-</script>
 </body>
 </html>
 """
@@ -556,8 +575,13 @@ def bloc_lot(c):
         else html.escape(l) for l in c["commandes"])
     classe = {"nul": "r-nul", "faible": "r-faible", "moyen": "r-moyen",
               "à trancher": "r-trancher"}[c["risque"]]
+    etat = c.get("etat", "")
+    resultat = ""
+    if c.get("resultat"):
+        resultat = ('<div class="resultat %s"><p class="t">Ce qui a été fait</p><p>%s</p></div>'
+                    % ("fait" if etat == "fait" else "pas-fait", c["resultat"]))
     return """
-  <article class="lot" data-lot="%s">
+  <article class="lot lot--%s" data-lot="%s">
     <div class="tete"><h2>%s</h2><span class="gain">Libère %s</span></div>
     <div class="bloc"><p class="t">Ce que j'ai mesuré</p><p>%s</p></div>
     <div class="bloc"><p class="t">Ce que j'ai vérifié avant de proposer</p><p>%s</p></div>
@@ -565,14 +589,11 @@ def bloc_lot(c):
     <div class="bloc"><p class="t">Le risque</p>
       <p><span class="risque %s">%s</span>%s</p></div>
     <div class="bloc"><p class="t">Les gestes</p><pre>%s</pre></div>
-    <div class="choix" role="group" aria-label="Décision">
-      <button type="button" data-d="faire">Faire</button>
-      <button type="button" data-d="garder">Garder tel quel</button>
-      <button type="button" data-d="tard">Plus tard</button>
-    </div>
-  </article>""" % (c["id"], html.escape(c["titre"]), html.escape(c["gain"]),
+    %s
+  </article>""" % ("fait" if etat == "fait" else "suspens",
+                   c["id"], html.escape(c["titre"]), html.escape(c["gain"]),
                    c["constat"], c["verifie"], c["propose"],
-                   classe, c["risque"], c["risque_mot"], cmds)
+                   classe, c["risque"], c["risque_mot"], cmds, resultat)
 
 
 def ecrire(m):
@@ -595,7 +616,22 @@ def ecrire(m):
         "grand-chose en octets — ils rendent le dépôt <i>lisible</i>, ce qui est l'autre "
         "moitié du ménage."
         % (m.get("disque_total", "?"), m.get("disque_worktrees", "?"), m["worktrees"]))
+    a = m.get("apres")
+    h_apres = ""
+    if a:
+        cases = [(a["disque_total"], "sur le disque (58 Go avant)"),
+                 (a["disque_claude"], "dans .claude (51 Go avant)"),
+                 (a["paquet_git"], "d'historique git (3,23 Gio avant)"),
+                 (str(a["worktrees"]), "worktrees (60 avant)"),
+                 (str(a["branches"]), "branche (75 avant)"),
+                 (str(a["racine"]), "entrées à la racine (245 avant)")]
+        h_apres = ('<div class="apres"><h2>Après le ménage — mesuré le %s</h2>'
+                   '<div class="grille">%s</div></div>'
+                   % (a["quand"], "".join(
+                       '<div class="c"><span class="n">%s</span><span class="l">%s</span></div>'
+                       % (html.escape(v), l) for v, l in cases)))
     page = (GABARIT
+            .replace("__APRES__", h_apres)
             .replace("__QUAND__", m["quand"])
             .replace("__TUILES__", h_tuiles)
             .replace("__RESUME__", resume)
@@ -610,5 +646,7 @@ if __name__ == "__main__":
     ap = argparse.ArgumentParser(description=__doc__)
     ap.add_argument("--vite", action="store_true",
                     help="réutilise les mesures de disque déjà prises")
+    ap.add_argument("--fige", action="store_true",
+                    help="garde les chiffres d'avant le ménage et n'ajoute que l'après")
     a = ap.parse_args()
-    ecrire(mesures(vite=a.vite))
+    ecrire(mesures(vite=a.vite, fige=a.fige))

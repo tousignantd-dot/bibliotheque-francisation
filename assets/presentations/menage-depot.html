@@ -81,6 +81,20 @@
     padding:9px 16px; min-height:44px; cursor:pointer}
   .choix button:hover{background:var(--paper-200)}
   .choix button[aria-pressed="true"]{background:var(--ink-900); border-color:var(--ink-900); color:#FFF}
+  .resultat{margin:14px 0 0; padding:13px 16px; border-radius:12px;
+    background:var(--accent-soft); border:1px solid #BFE3D2}
+  .resultat.pas-fait{background:var(--ambre-100); border-color:#E8D7B8}
+  .resultat p{margin:0; max-width:none}
+  .resultat .t{color:var(--accent-ink)}
+  .resultat.pas-fait .t{color:var(--ambre-700)}
+  .lot--fait .gain{background:var(--paper-200); color:var(--ink-400)}
+  .apres{background:var(--ink-900); color:#F4F4F2; border-radius:16px; padding:18px 22px;
+    margin:26px 0 0}
+  .apres h2{color:#FFF; font-size:20px; margin:0 0 10px}
+  .apres .grille{display:grid; gap:12px; grid-template-columns:repeat(auto-fit,minmax(min(150px,100%),1fr))}
+  .apres .c{background:rgba(255,255,255,.07); border-radius:10px; padding:10px 12px}
+  .apres .n{display:block; font-size:22px; font-weight:900; line-height:1.15}
+  .apres .l{font-size:12.5px; font-weight:700; color:rgba(255,255,255,.7)}
   .barre-bas{position:sticky; bottom:0; background:rgba(247,247,245,.95);
     backdrop-filter:blur(8px); border-top:1px solid var(--border-firm); padding:12px 0; margin-top:30px}
   .barre-bas .conteneur{display:flex; gap:12px; align-items:center; flex-wrap:wrap}
@@ -116,9 +130,10 @@
       <p class="surtitre">Chantier · Décisions à prendre</p>
       <h1>Ménage du dépôt</h1>
     </div>
-    <p class="chapeau">Sept chantiers, chacun avec ce que j'ai mesuré, ce que je propose, ce
-    que ça libère et ce que ça risque. Tranchez chantier par chantier ; le bouton du bas
-    exporte vos décisions pour la session qui fera le travail.</p>
+    <p class="chapeau">Sept chantiers, chacun avec ce qui a été mesuré, ce qui a été
+    proposé, et — en vert — <b>ce qui a été fait</b>. Les sept ont été tranchés le
+    30 août 2026 ; six ont été exécutés, et le septième ne l'a pas été parce que la
+    question était mal posée. Le détail est dans son bloc.</p>
     <p class="quand">Mesuré le 2026-08-30 09:15 — page produite par <code>build/menage_proposition.py</code>,
     jamais écrite à la main : les chiffres bougent, et une page recopiée serait fausse le lendemain.</p>
   </div>
@@ -130,8 +145,10 @@
   <p style="margin-top:16px">Le dépôt pèse <b>58G</b>, et <b>51G</b> de ce total ne sont ni le code ni le matériel : ce sont <b>60 copies complètes du dépôt</b>, laissées par les agents qui ont produit les modules en parallèle. Le reste des chantiers ne libère pas grand-chose en octets — ils rendent le dépôt <i>lisible</i>, ce qui est l'autre moitié du ménage.</p>
 </section>
 
+<section class="conteneur"><div class="apres"><h2>Après le ménage — mesuré le 2026-08-30 09:37</h2><div class="grille"><div class="c"><span class="n">5.8G</span><span class="l">sur le disque (58 Go avant)</span></div><div class="c"><span class="n">4.0K</span><span class="l">dans .claude (51 Go avant)</span></div><div class="c"><span class="n">3.27 GiB</span><span class="l">d'historique git (3,23 Gio avant)</span></div><div class="c"><span class="n">0</span><span class="l">worktrees (60 avant)</span></div><div class="c"><span class="n">1</span><span class="l">branche (75 avant)</span></div><div class="c"><span class="n">39</span><span class="l">entrées à la racine (245 avant)</span></div></div></div></section>
+
 <section class="conteneur" id="lots">
-  <article class="lot" data-lot="worktrees">
+  <article class="lot lot--fait" data-lot="worktrees">
     <div class="tete"><h2>Les 60 worktrees d&#x27;agents</h2><span class="gain">Libère 51G</span></div>
     <div class="bloc"><p class="t">Ce que j'ai mesuré</p><p>Chaque agent lancé en parallèle a reçu une copie complète du dépôt. Il en reste <b>60</b>, qui pèsent <b>51G</b> — c'est-à-dire la quasi-totalité des 58G du dossier. Le travail, lui, est ailleurs : sur les 75 branches, <b>66 sont déjà fusionnées</b> dans main.</p></div>
     <div class="bloc"><p class="t">Ce que j'ai vérifié avant de proposer</p><p>Les <b>8 branches non fusionnées</b> ont été dépouillées fichier par fichier. Elles touchent en tout 38 fichiers qui n'existent pas dans main : <b>36 images</b> — vérifiées une à une, <b>aucune n'est appelée</b> par le module auquel elle appartient (ce sont des générations abandonnées, refaites depuis) — et <b>2 documents de planification</b> (<code>docs/plan-module-n3-horaire.md</code>, <code>docs/plan-module-n5-saisons.md</code>). Par ailleurs <b>18 worktrees</b> portent des fichiers jamais commités (46 fichiers neufs, dont <b>46 existent déjà dans main</b> : PowerPoints, fiches, scripts audio produits ensuite par le chemin normal).</p></div>
@@ -145,13 +162,9 @@ git show &lt;branche&gt;:docs/plan-module-n5-saisons.md &gt; docs/plan-module-n5
 git worktree list | grep .claude/worktrees | awk &#x27;{print $1}&#x27; | xargs -n1 git worktree remove --force
 git worktree prune
 git branch -D $(git branch | grep worktree-agent)</pre></div>
-    <div class="choix" role="group" aria-label="Décision">
-      <button type="button" data-d="faire">Faire</button>
-      <button type="button" data-d="garder">Garder tel quel</button>
-      <button type="button" data-d="tard">Plus tard</button>
-    </div>
+    <div class="resultat fait"><p class="t">Ce qui a été fait</p><p>Les deux plans rapatriés dans <code>docs/</code>, puis <b>60 worktrees retirés</b> (57 dans <code>.claude</code>, 3 dans <code>~/Claude</code>) et <b>74 branches</b> supprimées. <code>.claude</code> passe de <b>51 Go à 4 Ko</b> ; il reste une seule branche, <code>main</code>.</p></div>
   </article>
-  <article class="lot" data-lot="gc">
+  <article class="lot lot--fait" data-lot="gc">
     <div class="tete"><h2>Le paquet git, une fois les branches parties</h2><span class="gain">Libère 3.23 GiB</span></div>
     <div class="bloc"><p class="t">Ce que j'ai mesuré</p><p>L'historique pèse <b>3.23 GiB</b> pour 30167 fichiers suivis. Tant que les branches d'agents existent, git garde tous leurs objets — y compris les images abandonnées.</p></div>
     <div class="bloc"><p class="t">Ce que j'ai vérifié avant de proposer</p><p>Mesuré par <code>git count-objects -vH</code>, avant tout ménage.</p></div>
@@ -160,13 +173,9 @@ git branch -D $(git branch | grep worktree-agent)</pre></div>
       <p><span class="risque r-nul">nul</span>Aucune perte possible : <code>gc</code> ne touche qu'au rangement interne.</p></div>
     <div class="bloc"><p class="t">Les gestes</p><pre>git reflog expire --expire=now --all
 git gc --prune=now --aggressive</pre></div>
-    <div class="choix" role="group" aria-label="Décision">
-      <button type="button" data-d="faire">Faire</button>
-      <button type="button" data-d="garder">Garder tel quel</button>
-      <button type="button" data-d="tard">Plus tard</button>
-    </div>
+    <div class="resultat fait"><p class="t">Ce qui a été fait</p><p>Fait — et <b>le gain est petit</b> : 3,23 → <b>3,16 Gio</b>. Je l'avais annoncé plus gros, à tort. L'historique n'était pas gonflé par les branches d'agents mais par <b>le matériel lui-même</b> : images, MP3, PDF et vidéos de main, qui restent dans l'historique par construction. Le seul geste qui les en sortirait est une réécriture de l'historique — un chantier à part, qu'on ne fait pas à la légère sur un dépôt déployé.</p></div>
   </article>
-  <article class="lot" data-lot="racine">
+  <article class="lot lot--fait" data-lot="racine">
     <div class="tete"><h2>La racine : 245 entrées, dont 198 de la même famille</h2><span class="gain">Libère 198 fichiers de moins à la racine</span></div>
     <div class="bloc"><p class="t">Ce que j'ai mesuré</p><p>À la racine du dépôt : <b>111 scripts <code>generer_audio_*.py</code></b> et <b>87 manifestes <code>sons_*.json</code></b>, pour <b>245</b> entrées en tout. Le reste — le serveur, la base, la forge, les pages — se cherche entre les deux.</p></div>
     <div class="bloc"><p class="t">Ce que j'ai vérifié avant de proposer</p><p>Les manifestes sont lus par <b>10 fichiers</b> (<code>build/audio_manquant.py</code>, <code>build/audio_tous.py</code>, <code>build/collecte_sons.py</code>, <code>build/contenu/module-n8-habitation/_forger_generateur.py</code>, <code>build/contenu/module-n8-recherche/_forger_generateur.py</code>, <code>build/essai_estceque.py</code>), toujours par le même motif <code>RACINE / ('sons_%s.json' % slug)</code> : le rangement se fait en changeant <b>une ligne par fichier</b>, pas en cherchant des chemins partout.</p></div>
@@ -178,13 +187,9 @@ git mv generer_audio_*.py audio/
 git mv sons_*.json manifestes/
 <span class="cm"># puis la ligne de chemin dans chacun des lecteurs, et :</span>
 python3 build/audio_manquant.py    # doit rester à zéro</pre></div>
-    <div class="choix" role="group" aria-label="Décision">
-      <button type="button" data-d="faire">Faire</button>
-      <button type="button" data-d="garder">Garder tel quel</button>
-      <button type="button" data-d="tard">Plus tard</button>
-    </div>
+    <div class="resultat fait"><p class="t">Ce qui a été fait</p><p><b>La racine passe de 245 entrées à 39.</b> Douze scripts patchés, une ligne chacun. Contrôle joué : les <b>86 manifestes</b> sont retrouvés et les <b>14 813 sons</b> attendus sont tous là. Le piège évité : un chemin resté à la racine ne fait pas échouer le contrôle, il lui fait dire « zéro trou » parce qu'il n'attend plus rien — c'est le nombre de manifestes trouvés qu'il faut lire, pas le nombre de trous.</p></div>
   </article>
-  <article class="lot" data-lot="essais">
+  <article class="lot lot--fait" data-lot="essais">
     <div class="tete"><h2>Les bancs d&#x27;essai laissés à la racine</h2><span class="gain">Libère 11 fichiers</span></div>
     <div class="bloc"><p class="t">Ce que j'ai mesuré</p><p><b>11 entrées <code>essai-*</code></b> : <code>essai-brin</code>, <code>essai-brin.html</code>, <code>essai-debit</code>, <code>essai-debit.html</code>, <code>essai-estceque</code>, <code>essai-estceque.html</code>, <code>essai-lettres</code>, <code>essai-lettres.html</code>, <code>essai-outils.html</code>, <code>essai-voix</code>, <code>essai-voix.html</code>. Ce sont des bancs d'essai — débit des voix, épellation, outils, brins de dialogue — utiles le jour où on les a écrits.</p></div>
     <div class="bloc"><p class="t">Ce que j'ai vérifié avant de proposer</p><p>Aucun n'est appelé par le serveur ni par une page du portail.</p></div>
@@ -193,13 +198,9 @@ python3 build/audio_manquant.py    # doit rester à zéro</pre></div>
       <p><span class="risque r-faible">faible</span>Rien ne les appelle ; seuls des liens dans mes notes pourraient tomber.</p></div>
     <div class="bloc"><p class="t">Les gestes</p><pre>mkdir -p essais
 git mv essai-* essais/</pre></div>
-    <div class="choix" role="group" aria-label="Décision">
-      <button type="button" data-d="faire">Faire</button>
-      <button type="button" data-d="garder">Garder tel quel</button>
-      <button type="button" data-d="tard">Plus tard</button>
-    </div>
+    <div class="resultat fait"><p class="t">Ce qui a été fait</p><p>Les onze bancs sont dans <code>essais/</code>. Les six liens du plan du site et les chemins de <code>build/essai_estceque.py</code> ont suivi ; <code>/essais/essai-voix.html</code> répond.</p></div>
   </article>
-  <article class="lot" data-lot="manuels">
+  <article class="lot lot--suspens" data-lot="manuels">
     <div class="tete"><h2>Les deux manuels de l&#x27;élève (40 Mo chacun)</h2><span class="gain">Libère 80 Mo dans le dépôt, et davantage dans l&#x27;historique</span></div>
     <div class="bloc"><p class="t">Ce que j'ai mesuré</p><p><code>assets/documents/manuel-eleve-niveau-4.pdf</code> (1 753 pages) et sa version serrée pèsent <b>80 Mo</b> à eux deux — les deux plus gros fichiers suivis, loin devant. Ils ne sont liés que depuis la banque de présentations.</p></div>
     <div class="bloc"><p class="t">Ce que j'ai vérifié avant de proposer</p><p>Ce sont des documents dont nous ne sommes pas l'auteur. La règle du projet est claire sur le contenu — le manuel est un <b>modèle de structure</b>, jamais une source à reproduire — mais le fichier, lui, voyage avec le dépôt et se retrouve sur l'hébergeur.</p></div>
@@ -208,13 +209,9 @@ git mv essai-* essais/</pre></div>
       <p><span class="risque r-trancher">à trancher</span>Le lien de la banque de présentations tomberait : il faudrait dire où le manuel se trouve désormais.</p></div>
     <div class="bloc"><p class="t">Les gestes</p><pre>git rm --cached assets/documents/manuel-eleve-niveau-4*.pdf
 <span class="cm"># puis retirer les deux boutons de presentations.html</span></pre></div>
-    <div class="choix" role="group" aria-label="Décision">
-      <button type="button" data-d="faire">Faire</button>
-      <button type="button" data-d="garder">Garder tel quel</button>
-      <button type="button" data-d="tard">Plus tard</button>
-    </div>
+    <div class="resultat pas-fait"><p class="t">Ce qui a été fait</p><p><b>Je ne l'ai pas fait, et c'est moi qui avais mal posé la question.</b> Ces deux PDF ne sont pas un document tiers : ils sont <b>produits par notre propre chaîne</b> (<code>build/manuel_eleve.py</code>) à partir des 289 fiches de nos modules. L'argument des droits tombe. Restait le poids — mais <code>git rm --cached</code> ne libère <b>rien</b> : les objets restent dans l'historique. On perdrait un téléchargement qui marche pour un gain nul. À rouvrir seulement si l'on décide de réécrire l'historique, et alors pour tout le matériel, pas pour ces deux fichiers.</p></div>
   </article>
-  <article class="lot" data-lot="intermediaires">
+  <article class="lot lot--fait" data-lot="intermediaires">
     <div class="tete"><h2>Les intermédiaires de montage</h2><span class="gain">Libère 1.3G + 119M</span></div>
     <div class="bloc"><p class="t">Ce que j'ai mesuré</p><p><code>build/tutoriels</code> pèse <b>1.3G</b> et <code>build/teaser</code> <b>119M</b> : rushes, capsules et rendus intermédiaires. Le teaser est déjà ignoré par git ; les tutoriels ne le sont qu'en partie (les scripts sont suivis, les vidéos non).</p></div>
     <div class="bloc"><p class="t">Ce que j'ai vérifié avant de proposer</p><p>Les montages finis vivent dans <code>assets/tutoriels</code> et sont suivis.</p></div>
@@ -223,13 +220,9 @@ git mv essai-* essais/</pre></div>
       <p><span class="risque r-faible">faible</span>À vérifier avant : que chaque capsule montée existe bien dans <code>assets/</code>.</p></div>
     <div class="bloc"><p class="t">Les gestes</p><pre>mv build/tutoriels/capsules ~/Claude/rushes-tutoriels
 echo &#x27;build/tutoriels/capsules/&#x27; &gt;&gt; .gitignore</pre></div>
-    <div class="choix" role="group" aria-label="Décision">
-      <button type="button" data-d="faire">Faire</button>
-      <button type="button" data-d="garder">Garder tel quel</button>
-      <button type="button" data-d="tard">Plus tard</button>
-    </div>
+    <div class="resultat fait"><p class="t">Ce qui a été fait</p><p>Vérifié d'abord : <b>les sept films sont livrés</b> dans <code>assets/tutoriels</code>. Rushes, voix et montages sortis dans <code>~/Claude/rushes-francisation</code> — <b>1,3 Go</b> de moins dans le dossier de travail. Rien n'était versionné : le <code>.gitignore</code> les couvrait déjà.</p></div>
   </article>
-  <article class="lot" data-lot="sauvegardes">
+  <article class="lot lot--fait" data-lot="sauvegardes">
     <div class="tete"><h2>Les sauvegardes de données laissées dans data/</h2><span class="gain">Libère trois dossiers</span></div>
     <div class="bloc"><p class="t">Ce que j'ai mesuré</p><p><code>data/_sauvegarde-avant-demo</code>, <code>data/_sauvegarde-avant-demo-classe</code> et <code>data/sauvegardes</code> gardent l'état des traces d'élèves avant la pose des classes de démonstration.</p></div>
     <div class="bloc"><p class="t">Ce que j'ai vérifié avant de proposer</p><p>Les classes de démonstration se posent et se retirent par script (<code>--install</code> / <code>--purge</code>) : ces copies ne servent plus de filet.</p></div>
@@ -237,11 +230,7 @@ echo &#x27;build/tutoriels/capsules/&#x27; &gt;&gt; .gitignore</pre></div>
     <div class="bloc"><p class="t">Le risque</p>
       <p><span class="risque r-faible">faible</span>Ce sont des traces fictives ; aucune donnée d'élève réel.</p></div>
     <div class="bloc"><p class="t">Les gestes</p><pre>rm -rf data/_sauvegarde-avant-demo data/_sauvegarde-avant-demo-classe</pre></div>
-    <div class="choix" role="group" aria-label="Décision">
-      <button type="button" data-d="faire">Faire</button>
-      <button type="button" data-d="garder">Garder tel quel</button>
-      <button type="button" data-d="tard">Plus tard</button>
-    </div>
+    <div class="resultat fait"><p class="t">Ce qui a été fait</p><p>Les trois dossiers sont sortis dans <code>~/Claude/archives-menage-2026-08-30</code> — déplacés, pas supprimés. <code>data/</code> passe de 3,4 à 2,7 Mo.</p></div>
   </article></section>
 
 <section class="conteneur">
@@ -253,19 +242,6 @@ echo &#x27;build/tutoriels/capsules/&#x27; &gt;&gt; .gitignore</pre></div>
   </div>
 </section>
 
-<div class="barre-bas">
-  <div class="conteneur">
-    <span class="etat" id="etat">Aucune décision prise</span>
-    <button type="button" class="sec" id="raz">Tout remettre à zéro</button>
-    <button type="button" id="exporter">Exporter mes décisions</button>
-  </div>
-</div>
-
-<section class="conteneur" id="sortie" hidden>
-  <p class="quand">À recoller dans la prochaine session :</p>
-  <textarea id="json" readonly></textarea>
-</section>
-
 <hr>
 <footer class="conteneur">
   <p>Relancer <code>python3 build/menage_proposition.py</code> refait les mesures et réécrit
@@ -274,60 +250,5 @@ echo &#x27;build/tutoriels/capsules/&#x27; &gt;&gt; .gitignore</pre></div>
 </footer>
 </main>
 
-<script>
-(function(){
-  "use strict";
-  var CLE = 'menage-depot-decisions';
-  var etat = {};
-  try { etat = JSON.parse(localStorage.getItem(CLE) || '{}'); } catch(e) { etat = {}; }
-
-  function peindre(){
-    var faits = 0, gardes = 0, tard = 0;
-    document.querySelectorAll('.lot').forEach(function(lot){
-      var id = lot.dataset.lot, d = etat[id] || '';
-      lot.classList.toggle('faire', d === 'faire');
-      lot.classList.toggle('garder', d === 'garder');
-      lot.querySelectorAll('.choix button').forEach(function(b){
-        b.setAttribute('aria-pressed', String(b.dataset.d === d));
-      });
-      if (d === 'faire') faits++; else if (d === 'garder') gardes++; else if (d === 'tard') tard++;
-    });
-    var n = document.querySelectorAll('.lot').length;
-    document.getElementById('etat').textContent =
-      (faits + gardes + tard) === 0 ? 'Aucune décision prise'
-      : faits + ' à faire · ' + gardes + ' à garder tel quel · ' + tard + ' plus tard · '
-        + (n - faits - gardes - tard) + ' sans réponse';
-  }
-
-  document.getElementById('lots').addEventListener('click', function(ev){
-    var b = ev.target.closest('.choix button'); if (!b) return;
-    var id = b.closest('.lot').dataset.lot;
-    etat[id] = (etat[id] === b.dataset.d) ? '' : b.dataset.d;
-    try { localStorage.setItem(CLE, JSON.stringify(etat)); } catch(e){}
-    peindre();
-  });
-
-  document.getElementById('raz').addEventListener('click', function(){
-    etat = {}; try { localStorage.removeItem(CLE); } catch(e){} peindre();
-    document.getElementById('sortie').hidden = true;
-  });
-
-  document.getElementById('exporter').addEventListener('click', function(){
-    var out = {mesure: document.title, decisions: {}};
-    document.querySelectorAll('.lot').forEach(function(lot){
-      out.decisions[lot.dataset.lot] = {
-        titre: lot.querySelector('h2').textContent.trim(),
-        decision: etat[lot.dataset.lot] || 'sans réponse'
-      };
-    });
-    var z = document.getElementById('sortie');
-    z.hidden = false;
-    document.getElementById('json').value = JSON.stringify(out, null, 2);
-    document.getElementById('json').select();
-  });
-
-  peindre();
-})();
-</script>
 </body>
 </html>
