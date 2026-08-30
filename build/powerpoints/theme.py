@@ -388,10 +388,15 @@ class Deck:
                        line=C['line_100'], radius=RADIUS_CARD)
 
     # ── gabarit 1 · page de titre ───────────────────────────────────
-    def titre(self, notes=''):
-        """Bandeau clair pleine largeur — jamais noir, le système l'interdit."""
+    def titre(self, notes='', surtitre=None):
+        """Bandeau clair pleine largeur — jamais noir, le système l'interdit.
+
+        `surtitre` remplace « SÉANCE x · MODULE n » : les diaporamas de
+        présentation ne sont pas des séances, et annoncer « SÉANCE P1 » à une
+        direction serait faux. Sans lui, rien ne change pour les 1 264 séances.
+        """
         sl = self._new(fond='green_050', pied=False)
-        sl.text(f"SÉANCE {self.code}  ·  MODULE {self.numero}",
+        sl.text(surtitre or f"SÉANCE {self.code}  ·  MODULE {self.numero}",
                 MARGIN, 1.35, CONTENT_W, 0.3,
                 size=FS['label'], color=self.sec_key, bold=True,
                 spc=0.12, autofit=False)
@@ -406,6 +411,60 @@ class Deck:
         sl.text(f"{self.duree}  ·  {self.MODULE}", MARGIN, 6.6, CONTENT_W, 0.3,
                 size=FS['ui'], color='ink_400', autofit=False)
         sl.notes(notes or f"Séance {self.code}. Durée prévue : {self.duree}.")
+        return sl
+
+    # ── gabarit 1 bis · chapitre ────────────────────────────────────
+    # Emprunté au canevas « Travailler avec Claude » produit par Claude
+    # Design : une diapositive qui n'est QUE l'énoncé, sur fond encre, en
+    # très gros. Ce n'est pas un en-tête foncé — le système l'interdit — mais
+    # un **jalon** : la diapositive ne porte rien d'autre, comme le billet de
+    # sortie qui est, lui aussi, le seul bloc foncé de sa page.
+    #
+    # Réservé aux diaporamas de présentation (`pitch/`). Une séance de cours
+    # n'en a pas besoin : elle a déjà ses blocs et sa barre de parcours.
+    def chapitre(self, numero, titre, phrase=None, notes=''):
+        """Jalon plein cadre, fond encre. Le numéro, le titre, une phrase."""
+        sl = self._new(fond='ink_900', pied=False)
+        sl.text(numero.upper(), MARGIN, 2.05, CONTENT_W, 0.32,
+                size=FS['label'], color='green_600', bold=True, spc=0.14,
+                autofit=False)
+        size = fit(titre, CONTENT_W - 0.6, 1.9, FS['hero'] + 12, True, 1.02)
+        sl.text(titre, MARGIN, 2.55, CONTENT_W - 0.6, 1.95,
+                size=size, color='white', bold=True, lh=1.02, autofit=False)
+        if phrase:
+            sl.rect(MARGIN, 4.75, 1.1, 0.05, fill=C['green_600'])
+            sl.text(phrase, MARGIN, 5.05, CONTENT_W - 2.6, 1.1,
+                    size=FS['lead'], color='line_300', lh=1.45, autofit=False)
+        if notes:
+            sl.notes(notes)
+        return sl
+
+    # ── gabarit 1 ter · barre de parcours ───────────────────────────
+    # Le même canevas ouvre sur « six temps » et rappelle où l'on en est.
+    # Une salle qui sait combien il reste écoute mieux : c'est la barre de
+    # parcours des modules, transposée à une rencontre.
+    def parcours(self, etapes, courant, titre='Le parcours', notes=''):
+        """`etapes` = [(titre, durée)] ; `courant` est l'index actif."""
+        sl = self._new()
+        self._entete(sl, titre, 'Trois temps, vingt minutes')
+        y = 2.55
+        for i, (nom, duree) in enumerate(etapes):
+            actif = (i == courant)
+            self._carte(sl, MARGIN, y, CONTENT_W, 0.95,
+                        teinte=C['green_100'] if actif else None)
+            sl.rect(MARGIN, y, 0.06, 0.95,
+                    fill=C['green_600'] if actif else C['line_100'])
+            sl.text('%d' % (i + 1), MARGIN + 0.36, y + 0.28, 0.5, 0.4,
+                    size=FS['lead'], color='green_800' if actif else 'ink_400',
+                    bold=True, autofit=False)
+            sl.text(nom, MARGIN + 0.95, y + 0.24, CONTENT_W - 3.2, 0.5,
+                    size=FS['h3'] - 2, color='ink_900' if actif else 'ink_500',
+                    bold=actif, autofit=False)
+            sl.text(duree, MARGIN + CONTENT_W - 2.0, y + 0.3, 1.7, 0.4,
+                    size=FS['ui'], color='ink_400', align='r', autofit=False)
+            y += 1.15
+        if notes:
+            sl.notes(notes)
         return sl
 
     # ── gabarit 2 · objectifs ───────────────────────────────────────

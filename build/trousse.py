@@ -401,6 +401,34 @@ def page(m):
 </section>
 
 <section class="conteneur">
+  <p class="eyebrow e-indigo">À projeter</p>
+  <h2>Les trois diaporamas</h2>
+  <p>Les trois temps du milieu existent en PowerPoint, dans le même système de design
+  que les %s diaporamas de séance — c'est le produit qui se présente lui-même. Chacun
+  ouvre sur la barre de parcours, puis sur son jalon plein cadre, et porte ses notes de
+  présentateur.</p>
+  <div class="cadre-table"><table>
+    <thead><tr><th>Diaporama</th><th>Ce qu'il couvre</th></tr></thead>
+    <tbody>
+      <tr><td><a href="diaporamas/P1-ce-qu-il-y-a-dans-la-boite.pptx">P1 · Ce qu'il y a dans la boîte</a></td>
+        <td>le matériel, en chiffres et en structure — 10 diapositives</td></tr>
+      <tr><td><a href="diaporamas/P2-ce-que-la-direction-decide.pptx">P2 · Ce que la direction décide</a></td>
+        <td>les quatre interrupteurs et le mode séance — 10 diapositives</td></tr>
+      <tr><td><a href="diaporamas/P3-les-questions-de-conformite.pptx">P3 · Les questions de conformité</a></td>
+        <td>l'inventaire des flux et l'article 70.1 — 11 diapositives</td></tr>
+    </tbody>
+  </table></div>
+  <div class="garde" style="margin-top:16px">
+    <p><b>Ils se refabriquent :</b> <code>python3 build/powerpoints/pitch.py</code>
+    recompte les chiffres et réécrit les trois fichiers. Un diaporama de vente qui
+    annonce un chiffre périmé se retourne contre celui qui le projette.</p>
+  </div>
+  <p style="margin-top:16px">Pour une formation plutôt qu'un pitch, le canevas
+  <a href="travailler-avec-claude.html"><b>Travailler avec Claude</b></a> (29 écrans,
+  animés, six temps) se projette directement dans le navigateur.</p>
+</section>
+
+<section class="conteneur">
   <p class="eyebrow e-teal">Sur papier</p>
   <h2>La liasse à imprimer</h2>
   <p>Toutes en couleur, format lettre — cinquante-deux pages en tout. C'est ce qu'on
