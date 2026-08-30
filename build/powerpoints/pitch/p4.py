@@ -132,7 +132,13 @@ def build(dossier):
                   "huit verbes avant d'avoir dit un mot de la règle.")
 
     d.cartes("LES TROIS GAMMES", "Où ça se range", [
-        ("Le module · 4 h, le matin, en groupe",
+        # « en groupe » est retiré du titre, pas de la carte : à 23 points dans
+        # une colonne de 3,21 po, trois faits passaient sur trois lignes dans
+        # une boîte qui en tient deux. Le contraste groupe / seul est déjà
+        # porté par les corps — « L'enseignant est là » ici, « Personne n'est
+        # à côté » plus loin — tandis que matin / après-midi n'est écrit que
+        # dans les titres. C'est donc le fait redondant qui part.
+        ("Le module · 4 h, le matin",
          "Une situation de la vie réelle en seize séances. « Que faut-il savoir faire pour "
          "prendre un rendez-vous ? » L'enseignant est là, et c'est sa force."),
         ("L'atelier · 2 h, l'après-midi",
