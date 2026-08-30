@@ -100,8 +100,12 @@ IMAGES = [
   "propres posées sur un banc de bois, une bouteille d'eau réutilisable "
   "debout à côté. Les chaussures sont unies, sans marque visible."),
  ('horaire-mur', 'images', P_EX1, PAPIER + " Une grande feuille quadrillée "
-  "affichée au mur d'un corridor, sept colonnes et une douzaine de rangées, "
-  "quelques cases colorées au surligneur."),
+  "affichée au mur d'un corridor, sept colonnes et une douzaine de rangées. "
+  "La première rangée d'en-têtes porte les sept jours de la semaine en "
+  "français écrits à la main, lisibles : lundi, mardi, mercredi, jeudi, "
+  "vendredi, samedi, dimanche. Les cases du corps ne contiennent que des "
+  "traits et des blocs de surligneur, aucun mot. Aucun titre au-dessus du "
+  "tableau."),
 
  # ── Exercice 5 du Défi 3 — les outils de la cuisine collective ────────
  ('bol', 'images', P_EX3, CUISINE + " Un grand bol de métal creux posé seul "

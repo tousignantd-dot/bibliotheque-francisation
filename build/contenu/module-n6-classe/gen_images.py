@@ -110,7 +110,10 @@ IMAGES = [
   "un tracé gris entièrement illisible, sans aucune lettre reconnaissable." + SANS_MOTS),
  ('expose-classe', 'images', P_EX, PERS + " Deux personnes debout devant un groupe "
   "d'adultes assis, vues de dos depuis le fond de la classe, l'une tenant une feuille. "
-  "Un tableau blanc vierge derrière elles. Aucun visage visible." + SANS_MOTS),
+  "Cadrage serré sur l'axe central : seules les deux personnes debout et les rangées "
+  "qui leur font face sont dans le champ, les places latérales sont hors cadre, "
+  "toutes les têtes sont vues de dos. Un tableau blanc vierge derrière elles. Aucun "
+  "visage visible." + SANS_MOTS),
 
  # ── Les quatorze photos du banc de vocabulaire ───────────────────────────
  ('travail-de-recherche', 'vocab', P_VOC, PERS + " Trois adultes assis autour d'une "
@@ -124,8 +127,10 @@ IMAGES = [
   "paragraphes séparés par des blancs, une liste au bas de la page. Chaque ligne est "
   "un trait gris illisible." + SANS_MOTS),
  ('expose', 'vocab', P_VOC, PERS + " Une personne debout devant un groupe assis dans "
-  "une classe, vue de dos et de loin, une petite feuille à la main, l'autre main "
-  "ouverte en train d'expliquer. Tableau blanc vierge au fond." + SANS_MOTS),
+  "une classe, une petite feuille à la main, l'autre main ouverte en train "
+  "d'expliquer. Vue depuis le fond de la salle, à hauteur d'épaule : tous les "
+  "participants sont strictement de dos, aucune tête n'est tournée vers la fenêtre "
+  "ni vers le côté. Tableau blanc vierge au fond." + SANS_MOTS),
  ('echeance', 'vocab', P_VOC, STYLE + " Gros plan sur un calendrier mural de bureau, "
   "une case entourée deux fois au marqueur rouge pâle. Les chiffres et les noms de "
   "jours sont des traits gris entièrement illisibles. Une punaise en haut." + SANS_MOTS),
@@ -142,12 +147,15 @@ IMAGES = [
   "lignes avec des puces. L'écriture est un tracé gris entièrement illisible." + SANS_MOTS),
  ('source', 'vocab', P_VOC, STYLE + " Gros plan sur trois documents empilés en "
   "éventail sur une table : un journal, une page imprimée et une brochure pliée, de "
-  "sorte qu'on voie un coin de chacun. Toutes les lignes sont des traits gris "
-  "illisibles." + SANS_MOTS),
+  "sorte qu'on voie un coin de chacun. La pile est inclinée vers l'objectif et le "
+  "haut du journal est coupé par le bord supérieur du cadre : on garde le pli et la "
+  "tranche, le bandeau-titre reste hors champ. Toutes les lignes sont des traits "
+  "gris illisibles." + SANS_MOTS),
  ('article-informatif', 'vocab', P_VOC, STYLE + " Gros plan sur une page de journal "
-  "ouverte à plat : deux colonnes de texte, un titre en haut et une petite photo "
-  "carrée floue en médaillon. Chaque ligne de texte est un trait gris entièrement "
-  "illisible." + SANS_MOTS),
+  "ouverte à plat, cadrée à partir du haut des colonnes : sa manchette et son titre "
+  "sortent du cadre par le bord supérieur. Seules restent visibles les deux colonnes "
+  "de traits gris et une petite photo carrée floue en médaillon. Chaque ligne de "
+  "texte est un trait gris entièrement illisible." + SANS_MOTS),
  ('bulletin-municipal', 'vocab', P_VOC, STYLE + " Gros plan sur un journal mince en "
   "papier glacé posé sur une table de cuisine, plié en deux, à côté d'une enveloppe "
   "et d'une tasse. On distingue la disposition d'une première page — bandeau, grande "

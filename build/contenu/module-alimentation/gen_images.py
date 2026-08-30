@@ -68,12 +68,17 @@ IMAGES = [
  ('produits-entretien', 'images', P_EX, STYLE + " Une allée de produits d'entretien : "
   "bouteilles de plastique de différentes tailles et couleurs alignées sur trois "
   "tablettes, sans aucune étiquette lisible. Plancher clair."),
- ('etiquette-dos', 'images', P_EX, STYLE + " Gros plan sur le dos d'une boîte de conserve "
-  "tenue de côté, montrant un tableau imprimé en noir sur fond blanc, encadré, avec des "
-  "lignes régulières. Les caractères restent flous et illisibles."),
- ('frigo-bas', 'images', P_EX, STYLE + " L'intérieur d'un réfrigérateur ouvert, vu de "
-  "face : trois tablettes de verre, un tiroir à légumes en bas, quelques contenants de "
-  "plastique fermés. Lumière intérieure allumée."),
+ ('etiquette-dos', 'images', P_EX, STYLE + " Gros plan sur le bas du tableau imprimé en "
+  "noir sur fond blanc au dos d'une boîte de conserve posée sur un comptoir de cuisine : "
+  "la ligne de titre du tableau est coupée par le bord supérieur de l'image et reste "
+  "hors champ. Seuls les filets, les lignes horizontales et le cadre du tableau sont "
+  "visibles. Aucun mot, aucun chiffre, aucun caractère lisible."),
+ ('frigo-bas', 'images', P_EX, STYLE + " Gros plan en contre-plongée sur le bas d'un "
+  "réfrigérateur ouvert : le tiroir du bas, tiré vers l'avant, remplit les deux tiers du "
+  "cadre, avec des légumes et un plateau de viande emballée à l'intérieur. Une fine buée "
+  "froide monte du tiroir. Au-dessus, seul le rebord de la tablette de verre la plus "
+  "basse est visible, coupé par le bord supérieur de l'image. Lumière intérieure "
+  "allumée."),
  ('balance', 'images', P_EX, STYLE + " Gros plan sur une balance de comptoir d'épicerie, "
   "plateau d'acier inoxydable, écran numérique éteint et illisible. Papier d'emballage "
   "blanc à côté."),
@@ -94,9 +99,11 @@ IMAGES = [
  ('comptoir', 'vocab', P_VOC, STYLE + " Un comptoir de service d'épicerie vu de face : "
   "vitrine réfrigérée basse, dessus d'acier inoxydable, rouleau de papier d'emballage "
   "et balance. Aucune personne."),
- ('livre', 'vocab', P_VOC, STYLE + " Gros plan en plongée sur une balance de cuisine "
-  "numérique portant un morceau de viande emballé dans du papier blanc. L'écran est "
-  "éteint et illisible."),
+ ('livre', 'vocab', P_VOC, STYLE + " Gros plan en plongée sur un seul paquet de viande "
+  "enveloppé de papier blanc, de la grosseur d'un poing, posé au repos bien au centre du "
+  "plateau d'une balance de cuisine. Aucune main dans le champ, rien qu'on soulève, "
+  "aucun autre aliment autour : la quantité posée est le sujet. L'écran de la balance "
+  "est tourné vers le bord du cadre, éteint et illisible."),
  ('boeuf-hache', 'vocab', P_VOC, STYLE + " Gros plan sur un plateau de bœuf haché frais "
   "recouvert d'une pellicule transparente, posé sur un comptoir de cuisine. Texture bien "
   "visible."),
@@ -110,8 +117,10 @@ IMAGES = [
   "produit nettoyant, montrant trois blocs de texte séparés par des filets. Les "
   "caractères restent flous et illisibles."),
  ('diluer', 'vocab', P_VOC, STYLE + " Un seau de plastique rempli d'eau posé sur un "
-  "plancher de céramique, à côté d'une bouteille de nettoyant avec son bouchon doseur "
-  "dévissé. Aucune étiquette lisible."),
+  "plancher de céramique, à côté d'une bouteille de nettoyant tournée de trois quarts "
+  "arrière : sa face étiquetée est détournée de l'objectif et reste hors du champ, on ne "
+  "voit que le plastique nu du dos de la bouteille. Le bouchon doseur est dévissé et posé "
+  "à côté. Aucun nom de produit, aucune marque, aucune étiquette imprimée visible."),
  ('avertissement', 'vocab', P_VOC, STYLE + " Gros plan sur un pictogramme triangulaire "
   "noir sur fond jaune, imprimé sur une bouteille de plastique blanche. Aucun texte "
   "autour, seulement le symbole."),

@@ -55,15 +55,19 @@ IMAGES = [
  ('rayon-laveuses', 'images', P_EX, STYLE + " Trois laveuses blanches alignées côte à "
   "côte sur une estrade basse, dans un grand magasin. Éclairage au plafond, plancher de "
   "béton poli. Aucune étiquette lisible."),
- ('etiquette-energie', 'images', P_EX, STYLE + " Gros plan sur une étiquette autocollante "
-  "rectangulaire posée sur la porte d'un appareil blanc, montrant une échelle de barres "
-  "colorées. Aucun chiffre ni texte lisible."),
+ ('etiquette-energie', 'images', P_EX, STYLE + " Gros plan cadré serré sur la porte d'un "
+  "réfrigérateur blanc qui remplit tout le champ, une étiquette autocollante "
+  "rectangulaire collée dessus, montrant une échelle de barres colorées. Aucun autre "
+  "décor, aucun mobilier, aucune rue, aucun poteau, aucune personne. Aucun chiffre ni "
+  "texte lisible."),
  ('ruban-mesurer', 'images', P_EX, STYLE + " Un ruban à mesurer jaune déroulé sur le sol "
   "devant l'ouverture d'un petit local, avec un carnet et un crayon posés à côté. "
   "Graduations floues."),
- ('local-sous-sol', 'images', P_EX, STYLE + " Un petit local de sous-sol vide, murs de "
-  "béton peints en blanc, deux tuyaux et un renvoi au sol, une prise électrique au mur. "
-  "Éclairage d'ampoule nue."),
+ ('local-sous-sol', 'images', P_EX, STYLE + " Un petit local de sous-sol vide photographié "
+  "de l'intérieur, en vue directe : murs de béton peints en blanc, deux tuyaux et un "
+  "renvoi au sol, une prise électrique au mur. Éclairage d'ampoule nue. Une seule image "
+  "qui occupe tout le cadre : aucune vitre, aucun reflet, aucun miroir, aucune fenêtre, "
+  "aucun rectangle ni cadre incrusté dans la photo."),
  ('camion-livraison', 'images', P_EX, STYLE + " Un camion de livraison blanc stationné "
   "devant une maison de banlieue, porte arrière ouverte, diable de transport posé sur le "
   "trottoir. Aucune inscription sur le camion."),
@@ -90,8 +94,11 @@ IMAGES = [
   "cadre."),
  ('garantie', 'vocab', P_VOC, STYLE + " Une chemise de carton ouverte sur une table, "
   "contenant deux feuilles et une facture agrafée. Aucun texte lisible."),
- ('versement', 'vocab', P_VOC, STYLE + " Un calendrier mural de bureau où douze cases "
-  "sont marquées d'un point, posé à côté d'une calculatrice. Aucun chiffre lisible."),
+ ('versement', 'vocab', P_VOC, STYLE + " Gros plan sur la grille d'un calendrier mural de "
+  "bureau, cadré sous l'en-tête : la bande du haut portant le nom du mois est coupée par "
+  "le bord supérieur de l'image et reste hors champ. Douze cases de la grille sont "
+  "marquées d'un point de crayon rouge. Une calculatrice à touches nues est posée à "
+  "côté. Aucun nom de mois, aucun chiffre, aucun jour de la semaine lisible."),
  ('livraison', 'vocab', P_VOC, PERS + " Deux personnes en vêtements de travail, vues de "
   "dos, descendent un gros appareil blanc d'un camion à l'aide d'un diable. Rue "
   "résidentielle."),

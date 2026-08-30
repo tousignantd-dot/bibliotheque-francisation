@@ -67,8 +67,10 @@ IMAGES = [
   "cousue à l'intérieur du col d'un manteau, tenue entre deux doigts. Le lettrage "
   "reste flou et illisible."),
  ('affiche-rabais', 'images', P_EX, STYLE + " Une grande affiche cartonnée suspendue "
-  "au-dessus d'un présentoir de vêtements, vue en légère contre-plongée. Le lettrage "
-  "est flou et entièrement illisible."),
+  "au-dessus d'un présentoir de vêtements, coupée par le bord haut de l'image : seule "
+  "sa bordure inférieure et sa tranche paraissent au-dessus du présentoir, la face "
+  "écrite hors du cadre. Aucune inscription, aucun lettrage, aucun chiffre visible "
+  "nulle part dans l'image."),
  ('etiquette-prix-reduit', 'images', P_EX, STYLE + " Gros plan sur un petit carton de "
   "prix attaché par une ficelle à la manche d'un manteau. Deux lignes de chiffres y "
   "sont visibles comme des traits gris, entièrement illisibles."),

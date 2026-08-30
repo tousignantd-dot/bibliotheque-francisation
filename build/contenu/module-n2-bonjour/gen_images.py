@@ -111,15 +111,19 @@ IMAGES = [
  ('a-pied', 'vocab', P_VOC, RUE + " Gros plan sur des pieds en bottes qui "
   "marchent sur un trottoir, cadré aux genoux, en mouvement."),
  ('travailler', 'vocab', P_VOC, "Photographie réaliste, format paysage, lumière "
-  "de néons doux. Le comptoir d'une petite pharmacie de quartier, vu de "
-  "derrière : des mains rangent des boîtes sur une tablette. " + SANS),
+  "de néons doux. Le comptoir et les tablettes de boîtes d'une petite pharmacie "
+  "de quartier, vus de derrière : des mains rangent des boîtes sur une tablette. "
+  "La vitrine et son enseigne sont entièrement hors cadre ; aucune fenêtre dans "
+  "le champ. " + SANS),
  ('porte', 'vocab', P_VOC, IMMEUBLE + " La porte d'entrée d'un logement, "
   "entrouverte, avec sa poignée de laiton usée, vue du palier."),
  ('carte-voeux', 'vocab', P_VOC, CUISINE + " Une carte de vœux blanche, ouverte "
   "et debout sur la table, avec une petite fleur imprimée sur le devant et "
   "une enveloppe à côté."),
  ('fete', 'vocab', P_VOC, CUISINE + " Un petit gâteau rond posé sur une "
-  "assiette, avec deux bougies allumées, dans une pièce un peu sombre."),
+  "assiette, avec deux bougies allumées, au centre d'une table de cuisine en "
+  "bois. Cadrage serré sur la table : aucune fenêtre, aucune vue extérieure "
+  "dans l'image."),
 ]
 
 

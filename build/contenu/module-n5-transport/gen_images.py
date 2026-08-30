@@ -90,9 +90,10 @@ IMAGES = [
   "haut et de loin depuis un viaduc, un matin gris. Feux arrière rouges alignés "
   "jusqu'à l'horizon. Aucun véhicule au premier plan."),
  ('accotement-panne', 'images', P_EX1, ROUTE + " Une automobile berline grise "
-  "immobilisée sur l'accotement, en dehors des voies marquées, feux de détresse "
-  "allumés, vue de trois quarts arrière et de loin. Les voies de circulation sont "
-  "vides à côté d'elle. Aucune plaque lisible, aucune personne."),
+  "arrêtée à cheval sur l'accotement de gravier, ses deux roues droites hors de "
+  "l'asphalte, contre la glissière. Un cône orange est posé derrière elle et son "
+  "coffre est entrouvert. Vue de trois quarts arrière et de loin. Aucune plaque "
+  "lisible, aucune personne."),
  ('chantier-cones', 'images', P_EX1, CHANTIER + " Une longue rangée de cônes "
   "orange qui ferme la voie de droite d'un boulevard, vue au ras du sol, avec des "
   "barrières de plastique orange et blanc derrière. Aucun ouvrier, aucun panneau "

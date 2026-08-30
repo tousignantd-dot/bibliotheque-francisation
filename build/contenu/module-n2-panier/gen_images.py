@@ -77,10 +77,11 @@ IMAGES = [
  ('panier-plein', 'images', P_EX, EPICERIE + " Un panier de magasinage en "
   "plastique posé au sol, à moitié plein : des légumes, une bouteille de lait, "
   "une boîte. Vu de trois quarts, de près."),
- ('balance-fruits', 'images', P_EX, EPICERIE + " Une balance de comptoir au rayon "
-  "des fruits et légumes, avec des pommes posées dessus dans un sac de "
-  "plastique transparent. L'afficheur de la balance est allumé mais ses "
-  "chiffres sont flous."),
+ ('balance-fruits', 'images', P_EX, EPICERIE + " Une balance de comptoir en gros "
+  "plan, avec un sac de plastique transparent rempli de pommes posé dessus. "
+  "Cadrage serré à hauteur de comptoir, le fond entièrement flou : aucun mur, "
+  "aucune enseigne, aucun néon dans l'image. L'afficheur de la balance est "
+  "allumé mais ses chiffres sont flous."),
  ('produits-entretien', 'images', P_EX, EPICERIE + " Une tablette entière de "
   "bouteilles de savon et de nettoyants colorés, vue de face, avec des "
   "rouleaux de papier essuie-tout au-dessus. Aucune étiquette lisible, aucune "
@@ -107,12 +108,15 @@ IMAGES = [
   "douze œufs bruns, vue de trois quarts, posée sur la table."),
  ('kilo', 'vocab', P_VOC, EPICERIE + " Un sac de plastique transparent rempli de "
   "pommes rouges, posé sur le plateau d'une balance de comptoir."),
- ('etiquette', 'vocab', P_VOC, EPICERIE + " Gros plan extrême sur un petit "
-  "autocollant blanc collé sur l'emballage d'un produit, avec un code-barres "
-  "et des caractères flous."),
+ ('etiquette', 'vocab', P_VOC, EPICERIE + " Macro sur un autocollant blanc collé "
+  "sur un emballage de plastique : l'étiquette remplit le cadre, seul le "
+  "code-barres est net et les lignes de caractères sont réduites à des traits "
+  "gris. Le fond est entièrement flou, aucun emballage de marque "
+  "reconnaissable."),
  ('affichette', 'vocab', P_VOC, EPICERIE + " Gros plan sur un petit carton de "
-  "prix glissé dans un rail de tablette, sous un produit. Le carton est net, "
-  "les caractères imprimés dessus restent flous."),
+  "prix glissé dans un rail de tablette, vu de trois quarts très rasant, sa "
+  "face imprimée presque parallèle à l'objectif, si bien qu'aucun caractère "
+  "n'est déchiffrable. Aucun emballage lisible sur la tablette au-dessus."),
  ('litre', 'vocab', P_VOC, EPICERIE + " Un carton de lait d'un litre et une "
   "bouteille de jus, debout côte à côte sur une tablette réfrigérée. Aucune "
   "marque, aucun texte lisible."),

@@ -116,11 +116,11 @@ IMAGES = [
   "quatre ou cinq feuilles blanches punaisées à des hauteurs différentes, et des "
   "punaises de couleur. Toutes les lignes des feuilles sont des traits gris "
   "illisibles." + SANS_MOTS),
- ('affichage-interne', 'vocab', P_VOC, STYLE + " Gros plan sur une seule feuille "
-  "blanche punaisée au centre d'un babillard, plus grande que les autres et bien "
-  "droite. On voit la disposition d'une annonce — un titre en haut, un bloc de "
-  "paragraphes, une liste à puces — mais toutes les lignes sont des traits gris "
-  "illisibles." + SANS_MOTS),
+ ('affichage-interne', 'vocab', P_VOC, STYLE + " Gros plan en contre-plongée, pris "
+  "depuis le bas, sur une seule feuille blanche punaisée au centre d'un babillard, "
+  "plus grande que les autres et bien droite. Le tiers supérieur de la feuille, avec "
+  "son titre, sort du cadre par le haut : on ne voit que le corps de l'annonce et sa "
+  "liste à puces, dont toutes les lignes sont des traits gris illisibles." + SANS_MOTS),
  ('candidature-interne', 'vocab', P_VOC, PERS + " Une personne vue de dos, debout "
   "devant un comptoir de bureau, qui tend une feuille de papier par-dessus le "
   "comptoir. Les visages sont hors cadrage et la feuille ne porte que des traits gris "

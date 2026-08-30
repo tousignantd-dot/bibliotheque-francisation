@@ -219,12 +219,13 @@ IMAGES = [
   "matin. Aucune personne, aucun papier ouvert, aucune affiche." + SANS_MOTS),
  # « l'hameçonnage » — « Le message annonçait une carte bloquée et demandait de
  #   cliquer : c'était de l'hameçonnage. »
- ('hameconnage', 'vocab', P_VOC, STYLE + " Un ordinateur portable ouvert sur "
-  "une table de cuisine, **vu de dos** : on n'aperçoit que le dos de l'écran "
-  "et le bord du clavier, l'affichage est entièrement hors champ. La lueur "
-  "bleutée de l'écran éclaire le mur derrière. Une tasse froide et un "
-  "trousseau de clés à côté. Pièce sombre, tard le soir. Aucune personne, "
-  "aucune main, aucune interface visible." + SANS_MOTS),
+ ('hameconnage', 'vocab', P_VOC, STYLE + " Gros plan sur un hameçon de pêche "
+  "métallique posé en travers des touches d'un clavier d'ordinateur portable, "
+  "lumière rasante, fond sombre. L'écran est hors champ, rabattu ou coupé par "
+  "le bord du cadre : aucune surface écrite, aucun affichage, aucune interface "
+  "n'entre dans l'image. Les touches du clavier sont noires et nues, aucun "
+  "caractère n'y est gravé. Boîtier nu, aucun nom de fabricant. Aucune "
+  "personne, aucune main." + SANS_MOTS),
 ]
 
 

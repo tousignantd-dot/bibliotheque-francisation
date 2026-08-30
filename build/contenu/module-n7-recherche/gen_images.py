@@ -138,9 +138,11 @@ IMAGES = [
   "et tous les blocs de texte autour sont de simples traits gris. Aucun "
   "crochet, aucun caractère, aucun pourcentage nulle part." + SANS_MOT),
  ('offre-emploi', 'vocab', P_VOC, STYLE + " Gros plan sur une feuille "
-  "d'annonce punaisée seule au centre d'un babillard de liège, un peu "
-  "gondolée, avec un titre en gras en haut et trois blocs de lignes en "
-  "dessous." + SANS_MOT),
+  "blanche imprimée au laser, punaisée seule au centre d'un babillard de "
+  "liège : un titre en gros caractères gras réduit à une barre grise pleine "
+  "en haut, puis trois blocs de lignes grises régulières en dessous. Papier "
+  "blanc net, jamais jauni ; aucune écriture à la main nulle part, aucun "
+  "trait de stylo ni de crayon." + SANS_MOT),
 ]
 
 

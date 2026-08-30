@@ -105,8 +105,12 @@ IMAGES = [
  ('benevole', 'vocab', P_VOC, PERS + " Deux personnes en chandail uni, vues de dos, "
   "installent des chaises pliantes dans une salle communautaire. Lumière naturelle par "
   "de grandes fenêtres."),
- ('chorale', 'vocab', P_VOC, STYLE + " Des chaises pliantes disposées en demi-cercle "
-  "dans une salle claire, un piano droit au fond, quelques lutrins. Aucune personne."),
+ ('chorale', 'vocab', P_VOC, PERS + " Une douzaine de personnes debout sur trois rangs "
+  "serrés dans une salle communautaire claire, vues de dos et de trois quarts arrière, "
+  "bouche ouverte en train de chanter, une partition ouverte tenue à deux mains devant "
+  "la poitrine. Devant elles, de dos aussi, une personne dirige les bras levés. Un piano "
+  "droit au fond. Aucun visage reconnaissable, aucune note ni écriture lisible sur les "
+  "partitions."),
  ('places', 'vocab', P_VOC, STYLE + " Une rangée de chaises pliantes vides dans une "
   "salle communautaire, dont trois se détachent au premier plan. Plancher de bois, mur "
   "clair."),

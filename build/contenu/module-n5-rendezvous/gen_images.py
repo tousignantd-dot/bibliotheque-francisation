@@ -114,9 +114,10 @@ IMAGES = [
  ('gmf', 'vocab', P_VOC, STYLE + " La façade d'une petite clinique de quartier au "
   "rez-de-chaussée d'un immeuble, porte vitrée et fenêtres, un banc devant. Aucune "
   "enseigne, aucune inscription lisible."),
- ('carte-assurance-maladie', 'vocab', P_VOC, DOC + " Une carte de plastique posée sur un "
-  "comptoir clair à côté d'un portefeuille ouvert, en légère plongée. Aucun caractère "
-  "lisible, aucun visage sur la carte."),
+ ('carte-assurance-maladie', 'vocab', P_VOC, DOC + " Une carte de plastique unie vert "
+  "pâle et blanche, sans logo ni bande magnétique, posée seule sur un comptoir clair, "
+  "en légère plongée. Aucun portefeuille, aucune carte bancaire ni autre carte de "
+  "plastique à logo dans le cadre. Aucun caractère lisible, aucun visage sur la carte."),
  ('sans-rendez-vous', 'vocab', P_VOC, PERS + " Une file de quelques personnes debout dans "
   "l'entrée d'une clinique, vues de dos, tôt le matin, lumière rasante par la porte "
   "vitrée. Aucune affiche lisible."),
@@ -129,8 +130,9 @@ IMAGES = [
  ('disponibilite', 'vocab', P_VOC, ECRAN + " Un agenda affiché à l'écran : une grille de "
   "cases, quelques-unes grisées et d'autres vides. Tout le texte est flou."),
  ('rendez-vous-suivi', 'vocab', P_VOC, DOC + " Une petite carte de rappel de rendez-vous "
-  "posée sur une table à côté d'un trousseau de clés, en légère plongée. Lignes de texte "
-  "réduites à des traits gris."),
+  "posée sur une table à côté d'un trousseau de clés, vue en biais depuis le bas, son "
+  "bord supérieur sorti du cadre : seules les lignes remplies et la case à cocher sont "
+  "visibles, réduites à des traits gris."),
  ('agente-administrative', 'vocab', P_VOC, PERS + " Une personne assise derrière un "
   "comptoir d'accueil, casque téléphonique sur la tête, vue de trois quarts arrière devant "
   "un écran flou. Aucun visage, aucun logo."),

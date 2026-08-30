@@ -88,13 +88,16 @@ IMAGES = [
   "hors cadrage. Le micro n'a aucune inscription ni logo."),
 
  # ── Les sept photos du banc de vocabulaire ────────────────────────────
- ('reportage', 'vocab', P_VOC, PERS + " Une personne vue de dos, un enregistreur "
-  "numérique à la main, debout devant la devanture d'un commerce de quartier. "
-  "L'enregistreur est net mais ne porte aucune inscription lisible."),
+ ('reportage', 'vocab', P_VOC, PERS + " Une personne vue de dos, tournée face à la "
+  "rue, un enregistreur numérique tendu au bout du bras. L'enregistreur est net, "
+  "boîtier nu, aucun nom de fabricant, aucune inscription. La façade du commerce "
+  "derrière elle est entièrement hors mise au point : aucune enseigne n'est nette, "
+  "aucun néon n'est allumé, aucune vitrine ne porte d'écriture visible."),
  ('blogue', 'vocab', P_VOC, STYLE + " Un ordinateur portable posé sur une table de "
-  "cuisine le soir, affichant une page de blogue : un titre en haut, un bloc de "
-  "paragraphes, et une zone de commentaires en dessous. Tout le texte de l'écran est "
-  "flou, réduit à des traits gris entièrement illisibles."),
+  "cuisine le soir, affichant une page de blogue — un bloc de paragraphes et une zone "
+  "de commentaires en dessous. L'écran est vu en biais et son contenu est délavé par "
+  "le reflet de la fenêtre : aucun caractère n'est formé, tout se réduit à des bandes "
+  "grises hors mise au point. Boîtier nu, aucun nom de fabricant."),
  ('source', 'vocab', P_VOC, STYLE + " Gros plan sur un carnet de notes à spirale ouvert, "
   "posé à côté d'un téléphone et d'un enregistreur, sur une table de café. Les lignes "
   "manuscrites du carnet sont des traits gris illisibles."),

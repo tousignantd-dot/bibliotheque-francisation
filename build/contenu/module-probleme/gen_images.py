@@ -58,9 +58,11 @@ IMAGES = [
   "marqué d'une grande auréole brune irrégulière aux bords plus foncés, causée par une "
   "infiltration d'eau. La peinture s'écaille légèrement au centre de la tache."),
  ('ordures', PAGE_PB, STYLE + " Le coin d'un local à ordures d'immeuble : deux bacs "
-  "roulants pleins, couvercles entrouverts, et plusieurs sacs de plastique noirs et des "
-  "boîtes de carton détrempées empilés par terre à côté, bloquant le passage. Éclairage "
-  "de sous-sol, murs de béton."),
+  "roulants pleins vus de trois quarts arrière, leur face avant tournée vers le mur et "
+  "hors du champ, couvercles entrouverts. Plusieurs sacs de plastique noirs et des "
+  "boîtes de carton détrempées empilés par terre à côté, bloquant le passage. Les bacs "
+  "sont d'un plastique uni, sans une seule lettre ni un seul pictogramme visible. "
+  "Éclairage de sous-sol, murs de béton."),
  # ── Les huit professionnels ───────────────────────────────────────────
  ('plombiere', PAGE_PRO, PORTRAIT + " Une plombière d'une quarantaine d'années, cheveux "
   "attachés, salopette de travail bleu marine, agenouillée sous un évier de cuisine. Elle "

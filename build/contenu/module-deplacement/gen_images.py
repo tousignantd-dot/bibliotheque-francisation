@@ -55,8 +55,9 @@ IMAGES = [
   "un passage piéton peint au sol, un poteau d'arrêt, et les deux rues qui se croisent en "
   "angle droit. Arbres et maisons de chaque côté."),
  ('arret-autobus', 'images', P_EX, PERS + " Un abribus vitré au bord d'une rue de "
-  "quartier, avec un banc et un poteau d'arrêt. Une personne attend, vue de dos. Fin "
-  "d'après-midi."),
+  "quartier, avec un banc et un poteau de métal nu. Une personne attend, vue de dos. Le "
+  "haut du poteau et son panneau sont coupés par le bord supérieur ; aucun pictogramme, "
+  "aucun numéro de ligne, aucune plaque dans le champ. Fin d'après-midi."),
  ('quai-metro', 'images', P_EX, STYLE + " Un quai de station de métro vide : ligne de "
   "sécurité peinte au sol le long du bord, carrelage, bancs alignés contre le mur, "
   "éclairage au plafond. Tunnel sombre au bout."),
@@ -78,8 +79,10 @@ IMAGES = [
   "rues résidentielles, avec les passages piétons peints en blanc sur l'asphalte et les "
   "quatre coins de trottoir visibles."),
  ('feu-circulation', 'vocab', P_VOC, STYLE + " Gros plan sur un feu de circulation pour "
-  "piétons montrant une main rouge, monté sur un poteau gris, avec un bouton d'appel "
-  "en dessous. Ciel dégagé en arrière-plan."),
+  "véhicules, suspendu au-dessus d'un croisement de rues : un boîtier vertical à trois "
+  "lentilles rondes, rouge en haut, jaune au centre, vert en bas, la lentille rouge "
+  "allumée. Aucun signal pour piétons, aucune main lumineuse dans le champ. Ciel dégagé "
+  "en arrière-plan."),
  ('trottoir', 'vocab', P_VOC, STYLE + " Un trottoir de béton bordé d'une bande de gazon et "
   "d'arbres, longeant une rue résidentielle. Vue à hauteur de piéton, perspective vers "
   "l'avant."),
@@ -87,13 +90,18 @@ IMAGES = [
   "autobus blancs stationnés en épi le long de quais couverts, marquises de métal, "
   "asphalte propre. Aucune inscription lisible."),
  ('quai', 'vocab', P_VOC, STYLE + " Un quai d'embarquement d'autobus sous une marquise "
-  "vitrée, avec un banc, une poubelle et un poteau numéroté flou. Sol de béton lisse."),
- ('correspondance', 'vocab', P_VOC, STYLE + " Un couloir de correspondance de métro : "
-  "deux escaliers partant dans des directions opposées, carrelage clair, rampes "
-  "métalliques, panneaux de signalisation flous au plafond."),
+  "vitrée, avec un banc et une poubelle. Le poteau d'arrêt est coupé à mi-hauteur par le "
+  "bord droit du cadre, sa plaque entièrement hors champ ; aucun chiffre, aucun "
+  "pictogramme, aucun panneau dans le champ. Sol de béton lisse."),
+ ('correspondance', 'vocab', P_VOC, STYLE + " Un couloir de correspondance de métro "
+  "presque vide : deux escaliers partant dans des directions opposées, carrelage clair, "
+  "rampes métalliques. Le plafond et tout ce qui y pend sont coupés par le bord "
+  "supérieur ; aucun panneau, aucune plaque, aucun nom de station dans le champ. Deux ou "
+  "trois silhouettes lointaines et floues, une par escalier."),
  ('direction', 'vocab', P_VOC, STYLE + " Un poteau portant deux flèches directionnelles "
-  "pointant en sens opposés, au bord d'une rue de quartier. Les inscriptions sur les "
-  "flèches restent floues et illisibles."),
+  "pointant en sens opposés, au bord d'une rue de quartier, cadré en contre-plongée. Les "
+  "deux flèches sont vues de trois quarts arrière, leur face écrite tournée à l'opposé de "
+  "l'objectif ; seules leurs silhouettes fléchées se découpent sur le ciel."),
  ('sentier', 'vocab', P_VOC, STYLE + " Un sentier de terre serpentant dans un boisé de "
   "quartier, avec des arbres feuillus de chaque côté et de la lumière filtrant entre les "
   "branches."),
@@ -107,8 +115,9 @@ IMAGES = [
   "abribus, montrant une grille de colonnes et de lignes. Les chiffres restent flous et "
   "illisibles. Reflet léger sur la vitre."),
  ('interruption', 'vocab', P_VOC, STYLE + " Une barrière de chantier orange et blanche "
-  "bloquant l'entrée d'un accès de métro, avec des cônes orange devant. Aucun texte "
-  "lisible sur la barrière."),
+  "vue de face, bloquant le haut d'un escalier qui descend sous le trottoir, avec des "
+  "cônes orange devant. L'enseigne du métro reste hors cadre au-dessus ; aucun sigle, "
+  "aucun pictogramme de transport, aucune plaque dans le champ."),
  ('plan-reseau', 'vocab', P_VOC, STYLE + " Un plan de réseau de transport affiché derrière "
   "une vitre dans une station : des lignes de couleur qui se croisent, des cercles blancs "
   "et noirs le long des lignes. Aucun nom lisible."),

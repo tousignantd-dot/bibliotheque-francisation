@@ -73,9 +73,10 @@ P_VOC = "Je retiens des mots — banc de vocabulaire"
 IMAGES = [
  # ── Les sept images de l'exercice 3 ───────────────────────────────────
  ('affiche-vitrine', 'images', P_EX, COMMERCE + " Une feuille de papier rouge "
-  "vif scotchée de l'intérieur dans la vitrine d'une boulangerie, vue de la "
-  "rue. On distingue deux gros mots en haut et une ligne plus fine en dessous, "
-  "mais aucune lettre n'est déchiffrable. Reflets doux sur la vitre."),
+  "vif entièrement vierge, scotchée de l'intérieur dans la vitrine d'une "
+  "boulangerie, vue de la rue : aucune écriture, aucune trace de marqueur, "
+  "aucune impression sur la feuille. La devanture est cadrée sous le niveau "
+  "de l'enseigne, qui reste hors champ. Reflets doux sur la vitre."),
  ('babillard-epicerie', 'images', P_EX, COMMERCE + " Un grand babillard de "
   "liège près de l'entrée d'une épicerie de quartier, couvert de petites "
   "feuilles et de cartons punaisés à des hauteurs différentes, certains avec "
@@ -97,11 +98,11 @@ IMAGES = [
   "communautaire : grandes tables de travail en acier inoxydable, gros "
   "chaudrons sur une cuisinière, étagères de vaisselle, éviers doubles au "
   "fond. Propre et vide."),
- ('petite-annonce', 'images', P_EX, PAPIER + " Un petit carton blanc écrit à "
-  "la main, punaisé sur un babillard de liège, avec des languettes découpées "
-  "au bas — dont deux déjà arrachées. On devine un titre en gros en haut, "
-  "trois lignes au milieu et une suite de chiffres en gros en bas ; rien "
-  "n'est déchiffrable."),
+ ('petite-annonce', 'images', P_EX, PAPIER + " Un petit carton blanc manuscrit "
+  "en alphabet latin uniquement, punaisé sur un babillard de liège, sans "
+  "titre en haut : seulement trois lignes de traits gris au milieu et une "
+  "rangée de languettes découpées au bas — dont deux déjà arrachées. Aucun "
+  "caractère d'un autre alphabet, aucun numéro de téléphone."),
 
  # ── Les dix-huit photos du banc de vocabulaire ────────────────────────
  ('emploi', 'vocab', P_VOC, PERS + " Une personne vue de dos, en tablier, qui "
@@ -115,10 +116,10 @@ IMAGES = [
  ('patron', 'vocab', P_VOC, PERS + " Une personne vue de dos derrière le "
   "comptoir d'un petit commerce, en tablier, en train de vérifier une liste "
   "sur un carnet. Aucun mot lisible."),
- ('affiche', 'vocab', P_VOC, PAPIER + " Une feuille de papier rouge collée "
-  "avec du ruban adhésif à l'intérieur d'une vitrine de commerce, vue de "
-  "près. Deux gros mots en haut, une ligne fine en dessous, rien de "
-  "déchiffrable."),
+ ('affiche', 'vocab', P_VOC, PAPIER + " Une feuille de papier rouge vierge, "
+  "sans une seule marque d'encre, scotchée à l'intérieur d'une vitrine de "
+  "commerce, vue de près et de biais. Le papier est uni d'un bord à l'autre, "
+  "aucun mot, aucun trait, aucune impression."),
  ('offrir-ses-services', 'vocab', P_VOC, PERS + " Une personne vue de dos qui "
   "pousse la porte vitrée d'un petit commerce, une main sur la poignée, "
   "clochette au-dessus de la porte."),
@@ -153,10 +154,11 @@ IMAGES = [
   "qui écrit une lettre majuscule au stylo dans une grille de petites cases "
   "carrées d'un formulaire. Les cases voisines sont vides ; aucun mot ne se "
   "forme."),
- ('petite-annonce', 'vocab', P_VOC, PAPIER + " Un carton écrit à la main "
-  "punaisé sur un babillard, avec des languettes découpées au bas dont une "
-  "est arrachée. Titre en gros, trois lignes, chiffres en bas — rien de "
-  "déchiffrable."),
+ ('petite-annonce', 'vocab', P_VOC, PAPIER + " Un carton punaisé sur un "
+  "babillard, dont le contenu se réduit à un titre en gros traits illisibles, "
+  "trois lignes de traits gris et des languettes découpées au bas dont une "
+  "est arrachée. Aucune date, aucune heure, aucun montant, aucun symbole de "
+  "devise."),
  ('curriculum-vitae', 'vocab', P_VOC, PAPIER + " Une feuille blanche unique "
   "posée sur une table de bois, tenue par une main au coin : un bloc de "
   "lignes en haut, deux blocs de lignes plus bas, marges larges. Aucun mot "

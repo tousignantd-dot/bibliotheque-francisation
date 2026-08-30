@@ -85,9 +85,11 @@ IMAGES = [
  ('salle-attente', 'images', P_EX, CENTRE + " La salle d'attente d'une "
   "clinique de quartier : une rangée de chaises vides alignées contre un mur, "
   "une petite table basse, lumière du matin."),
- ('main-signature', 'images', P_EX, PERS + " Gros plan sur une main qui tient "
-  "un stylo et écrit au bas d'une feuille posée sur un comptoir. Le trait de "
-  "l'écriture reste flou et illisible."),
+ ('main-signature', 'images', P_EX, PERS + " Très gros plan sur une seule main, "
+  "un stylo et le bas d'une feuille libre posée sur un comptoir clair. Aucune "
+  "personne dans le champ, aucun cahier relié, aucun décor de café : rien que "
+  "le comptoir, la feuille et la main. Le trait de l'écriture reste flou et "
+  "illisible."),
  ('horloge-corridor', 'images', P_EX, CENTRE + " Une horloge ronde "
   "institutionnelle accrochée au mur d'un corridor d'école, aiguilles un peu "
   "avant huit heures, casiers flous à l'arrière-plan."),
@@ -133,8 +135,10 @@ IMAGES = [
   "en-tête posée sur un bureau, avec un cadre et un espace de signature en "
   "bas. Le texte est une suite de traits gris illisibles."),
  ('signer', 'vocab', P_VOC, PERS + " Gros plan sur une main qui signe le bas "
-  "d'un formulaire posé sur un comptoir, un stylo bleu entre les doigts. "
-  "L'écriture reste illisible."),
+  "d'un formulaire posé sur un comptoir de bureau ou de guichet, un stylo bleu "
+  "entre les doigts. Arrière-plan neutre et flou, aucun aliment, aucune "
+  "viennoiserie, aucun terminal de paiement dans le champ. L'écriture reste "
+  "illisible."),
 ]
 
 

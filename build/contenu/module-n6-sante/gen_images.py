@@ -123,9 +123,10 @@ IMAGES = [
 
  # ── Les douze photos du banc de vocabulaire ───────────────────────────
  ('clinique-externe', 'vocab', P_VOC, STYLE + " L'entrée intérieure d'un service "
-  "de clinique externe : une double porte vitrée, un panneau directionnel dont les "
-  "inscriptions sont des traits gris illisibles, un banc vide, une plante. Aucune "
-  "personne." + SANS_MOTS),
+  "de clinique externe : une double porte vitrée, un banc vide, une plante. Le point "
+  "de vue est bas, sous le panneau directionnel suspendu, qui est coupé par le bord "
+  "supérieur du cadre : on n'en voit que la tranche et son support, jamais sa face "
+  "écrite. Aucune personne." + SANS_MOTS),
  ('demande-de-consultation', 'vocab', P_VOC, STYLE + " Gros plan sur un formulaire "
   "imprimé posé sur un bureau, à moitié rempli à la main : des cases, deux "
   "colonnes et une signature manuscrite illisible. Toutes les lignes sont des "

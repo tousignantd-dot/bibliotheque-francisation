@@ -61,9 +61,11 @@ P_VOC = "Je retiens des mots — banc de vocabulaire"
 IMAGES = [
  # ── Les six images de l'exercice de glisser-déposer ───────────────────
  ('offre-ecran', 'images', P_EX, STYLE + " Un ordinateur portable posé sur une table "
-  "de bois clair, affichant une page d'offre d'emploi : un titre en haut et plusieurs "
-  "blocs de paragraphes. Tout le texte de l'écran est flou, réduit à des traits gris "
-  "entièrement illisibles. Une tasse de café à côté."),
+  "de bois clair, vu de trois quarts, affichant une page d'offre d'emploi réduite à "
+  "des blocs gris hors mise au point : aucun caractère n'est formé, ni dans le corps "
+  "du texte ni en haut de la page. Boîtier nu : aucun logo de fabricant sur "
+  "l'ordinateur, le repose-poignet et le cadre de l'écran sont entièrement lisses et "
+  "nus, aucun nom de marque nulle part. Une tasse de café à côté."),
  ('entrepot', 'images', P_EX, STYLE + " L'intérieur d'un entrepôt de taille moyenne : "
   "de hautes étagères métalliques chargées de boîtes de carton et de palettes de bois, "
   "une allée centrale dégagée, un chariot élévateur au fond. Aucune personne au premier "

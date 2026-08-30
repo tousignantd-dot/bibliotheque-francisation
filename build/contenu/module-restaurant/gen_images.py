@@ -61,8 +61,11 @@ IMAGES = [
  ('table-deux', 'images', P_EX, STYLE + " Une petite table pour deux près d'une fenêtre, "
   "avec deux couverts dressés, deux verres et une petite bougie. Rue floue derrière la "
   "vitre."),
- ('assiette-plat', 'images', P_EX, STYLE + " Une assiette blanche vue de dessus, avec un "
-  "filet de poisson grillé, du riz et des légumes verts. Fourchette et couteau à côté."),
+ ('assiette-plat', 'images', P_EX, STYLE + " Salle à manger d'un restaurant de quartier "
+  "au Québec, table dressée. Plongée serrée sur une assiette blanche posée sur la "
+  "table, avec un filet de poisson grillé, du riz et des légumes verts ; fourchette et "
+  "couteau à côté. L'assiette remplit le cadre, l'arrière-plan réduit à un flou de "
+  "salle — aucun siège, aucune fenêtre de véhicule."),
  ('carafe-eau', 'images', P_EX, STYLE + " Une carafe de verre remplie d'eau posée sur une "
   "table de restaurant, à côté de deux verres. Reflets de lumière sur le verre."),
  ('facture-table', 'images', P_EX, STYLE + " Une petite assiette ou un porte-addition de "
@@ -78,20 +81,32 @@ IMAGES = [
   "sur une table, montrant deux colonnes de lignes imprimées. Aucun caractère lisible."),
  ('menu-jour', 'vocab', P_VOC, STYLE + " Une petite ardoise posée sur un chevalet de bois "
   "sur une table de restaurant, avec quelques traits de craie. Aucun mot lisible."),
- ('table-hote', 'vocab', P_VOC, STYLE + " Trois petites assiettes alignées sur une nappe "
-  "claire : une soupe, un plat de viande et un dessert, vues de dessus."),
+ ('table-hote', 'vocab', P_VOC, STYLE + " Table dressée d'un restaurant de quartier au "
+  "Québec. Trois petites assiettes alignées — une soupe, un plat de viande et un "
+  "dessert — vues de dessus, à la verticale, sur une nappe claire qui remplit tout le "
+  "cadre. Aucun siège, aucune fenêtre, aucune tablette de véhicule."),
  ('entree', 'vocab', P_VOC, STYLE + " Un bol de soupe fumante posé sur une assiette, avec "
   "une cuillère à côté et un petit pain. Table de restaurant."),
- ('plat', 'vocab', P_VOC, STYLE + " Une assiette de poulet avec pommes de terre et "
-  "légumes, vue de trois quarts, sur une nappe blanche."),
- ('plat-jour', 'vocab', P_VOC, STYLE + " Un filet de truite grillée avec du riz et des "
-  "légumes verts, dans une assiette blanche, vue de dessus."),
- ('carafe', 'vocab', P_VOC, STYLE + " Gros plan sur une carafe de verre transparente "
-  "remplie d'eau, posée sur une table de bois."),
+ ('plat', 'vocab', P_VOC, STYLE + " Salle à manger d'un restaurant de quartier au "
+  "Québec, table dressée, nappe blanche, chaise de bois. Une assiette de poulet avec "
+  "pommes de terre et légumes, vue de trois quarts sur la nappe. Aucun siège de "
+  "véhicule, aucune fenêtre d'autobus, aucune tablette : rien que la table du "
+  "restaurant et un fond de salle flou."),
+ ('plat-jour', 'vocab', P_VOC, STYLE + " Salle à manger d'un restaurant de quartier au "
+  "Québec, table dressée, nappe claire. Un filet de truite grillée avec du riz et des "
+  "légumes verts, dans une assiette blanche vue de dessus. L'assiette est posée sur "
+  "une table, jamais sur un siège, un dossier, un rebord ou une tablette de véhicule."),
+ ('carafe', 'vocab', P_VOC, STYLE + " Salle à manger d'un restaurant de quartier au "
+  "Québec. Gros plan sur une carafe de verre transparente remplie d'eau, posée sur une "
+  "table de bois dressée, deux verres à côté. Fond de salle flou — aucun siège de "
+  "véhicule, aucune poignée suspendue, aucune rue derrière une vitre."),
  ('robinet', 'vocab', P_VOC, STYLE + " Un verre d'eau rempli au robinet d'un évier de "
   "cuisine, en gros plan, l'eau coulant encore."),
- ('accompagnement', 'vocab', P_VOC, STYLE + " Un petit bol de riz et un petit bol de "
-  "légumes verts posés à côté d'une assiette principale, sur une nappe claire."),
+ ('accompagnement', 'vocab', P_VOC, STYLE + " Salle à manger d'un restaurant de "
+  "quartier au Québec, table dressée, nappe claire, chaise de bois. Un petit bol de "
+  "riz et un petit bol de légumes verts posés à côté d'une assiette principale. Tout "
+  "repose sur la table du restaurant, jamais sur un siège, un rebord ou une tablette "
+  "de véhicule."),
  ('addition', 'vocab', P_VOC, STYLE + " Un porte-addition de cuir noir ouvert sur une "
   "table, avec un papier plié à l'intérieur. Aucun chiffre lisible."),
  ('pourboire', 'vocab', P_VOC, STYLE + " Quelques billets et pièces de monnaie posés sur "

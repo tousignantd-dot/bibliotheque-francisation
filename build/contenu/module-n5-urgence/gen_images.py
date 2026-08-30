@@ -103,9 +103,9 @@ IMAGES = [
   "fenêtre. Aucune personne."),
 
  # ── Je retiens des mots · les treize photos du banc ───────────────────
- ('malaise', 'vocab', P_VOC, PERS + " Une personne âgée assise dans un fauteuil de salon, "
-  "penchée en avant, une main appuyée sur l'accoudoir, vue de trois quarts arrière. "
-  "Aucun visage, atmosphère calme et non dramatique."),
+ ('malaise', 'vocab', P_VOC, PERS + " Une personne âgée penchée en avant sur le bord d'un "
+  "fauteuil de salon, le front dans une main, l'autre main serrée sur l'accoudoir. Une "
+  "tasse renversée sur la table basse à côté. Vue de trois quarts arrière, aucun visage."),
  ('811', 'vocab', P_VOC, ECRAN + " Un téléphone tenu à la main dans une cuisine le soir, "
   "l'écran d'appel allumé, tout le texte et les chiffres flous et illisibles."),
  ('fievre', 'vocab', P_VOC, STYLE + " Un thermomètre numérique posé sur un drap froissé à "

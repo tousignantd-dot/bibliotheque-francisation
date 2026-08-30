@@ -79,9 +79,11 @@ IMAGES = [
   "carton rectangulaire posé sur un support, devant un électroménager blanc. "
   "Les lignes de texte apparaissent comme des traits gris, entièrement "
   "illisibles."),
- ('affiche-rayon', 'images', P_EX, STYLE + " Une grande affiche suspendue au "
-  "plafond au-dessus d'un rayon d'électroménagers, vue en contre-plongée. Le "
-  "lettrage est flou et entièrement illisible."),
+ ('affiche-rayon', 'images', P_EX, STYLE + " La scène est prise sous une grande "
+  "affiche suspendue au plafond au-dessus d'un rayon d'électroménagers : seules "
+  "sa face inférieure et ses chaînes de suspension entrent dans le champ, "
+  "l'affiche étant coupée par le bord haut du cadre. Aucune surface écrite "
+  "visible."),
  ('ruban-mesurer', 'images', P_EX, MAISON + " Un ruban à mesurer jaune déroulé "
   "sur le plancher entre un mur et l'encadrement d'une porte, dans une cuisine "
   "vide. Les chiffres du ruban restent flous."),
@@ -109,8 +111,9 @@ IMAGES = [
   "ouvert sur une table de cuisine, écran éteint et sombre, à côté d'un "
   "cahier fermé."),
  ('circulaire', 'vocab', P_VOC, MAISON + " Un dépliant publicitaire de magasin "
-  "ouvert sur une table, plusieurs cases avec des photos d'appareils. Aucun "
-  "mot ni chiffre lisible."),
+  "ouvert sur une table et vu de biais, son bandeau de titre sortant du cadre "
+  "par le haut : seules les cases de produits, avec leurs photos d'appareils, "
+  "restent visibles. Aucun mot ni chiffre lisible."),
  ('prix-regulier', 'vocab', P_VOC, STYLE + " Gros plan sur un petit carton de "
   "prix devant un électroménager, où deux lignes de chiffres se devinent, "
   "l'une barrée. Les chiffres restent entièrement illisibles."),
@@ -129,9 +132,10 @@ IMAGES = [
  ('livraison', 'vocab', P_VOC, PERS + " Un camion de livraison blanc arrêté "
   "devant un immeuble, hayon ouvert, un gros appareil blanc emballé sur une "
   "diable de transport. Aucun logo."),
- ('bon-livraison', 'vocab', P_VOC, PERS + " Une feuille de papier tenue entre "
-  "deux doigts devant un arrière-plan flou de comptoir de magasin. Les lignes "
-  "de texte sont grises et illisibles."),
+ ('bon-livraison', 'vocab', P_VOC, STYLE + " Gros plan en plongée sur un "
+  "formulaire imprimé posé sur un comptoir de mélamine claire, mise en page en "
+  "colonnes et cases, lignes de texte réduites à des traits gris. Rien d'autre "
+  "n'entre dans le champ : aucun mur, aucune tablette, aucun présentoir."),
 ]
 
 

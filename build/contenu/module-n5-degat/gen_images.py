@@ -73,8 +73,11 @@ IMAGES = [
   "au milieu d'une chambre, à moitié pleine d'eau, avec une serviette pliée autour de sa "
   "base et un plafond taché au-dessus, hors mise au point."),
  ('chauffe-eau-sous-sol', 'images', P_EX, STYLE + " Un chauffe-eau électrique cylindrique de "
-  "couleur crème, dans un placard technique de logement, tuyaux de cuivre au-dessus, "
-  "petite flaque d'eau à sa base."),
+  "couleur crème, dans un placard technique de logement, vu de trois quarts arrière, sa "
+  "face avant contre le mur du placard : aucune étiquette, aucun nom de fabricant, aucune "
+  "plaque signalétique dans le champ. Le cadrage retient le bas de la cuve, les tuyaux de "
+  "cuivre et une petite flaque d'eau à sa base ; la partie haute est coupée par le bord "
+  "supérieur."),
  ('peinture-cloque', 'images', P_EX, STYLE + " Gros plan sur un mur de cuisine peint en "
   "beige dont la peinture cloque et se décolle en petites bulles sur une trentaine de "
   "centimètres, à mi-hauteur."),
@@ -83,10 +86,13 @@ IMAGES = [
   "fil électrique qui court sur le plancher."),
  ('avis-entree-immeuble', 'images', P_EX, DOC + " Une feuille de papier blanche fixée avec "
   "du ruban adhésif sur le mur d'une entrée d'immeuble, à côté d'une rangée de boîtes aux "
-  "lettres de métal, vue de trois quarts."),
- ('boite-documents-trempee', 'images', P_EX, DOC + " Une boîte de carton ouverte posée par "
-  "terre, ses papiers gonflés d'eau et gondolés, le carton foncé par l'humidité sur le "
-  "bas des parois."),
+  "lettres de métal. Feuille vue à 45° et prise d'assez loin pour n'occuper que le tiers "
+  "de la largeur, lumière rasante : les lignes s'écrasent en simples traits gris."),
+ ('boite-documents-trempee', 'images', P_EX, DOC + " Une boîte de carton ouverte et "
+  "détrempée posée sur le plancher de bois d'un sous-sol de logement québécois ordinaire, "
+  "plinthe et mur peints visibles derrière : ni ruine, ni bâtiment abandonné, ni bois "
+  "noirci. Ses papiers sont gonflés d'eau et gondolés, le carton foncé par l'humidité sur "
+  "le bas des parois."),
 
  # ── Le banc de vocabulaire ────────────────────────────────────────────
  ('degat-eau', 'vocab', P_VOC, STYLE + " Une chambre de logement dont le plafond porte une "

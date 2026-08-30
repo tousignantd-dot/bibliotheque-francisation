@@ -61,50 +61,59 @@ IMAGES = [
  ('etiquette-col', 'images', P_EX, STYLE + " Gros plan sur une petite étiquette de tissu "
   "blanche cousue dans le col d'un manteau, portant une série de petits pictogrammes "
   "noirs alignés. Les symboles sont visibles mais les mots restent illisibles."),
- ('bottes-hiver', 'images', P_EX, STYLE + " Une paire de bottes d'hiver noires posées côte "
-  "à côte sur un plancher de magasin, l'une inclinée pour montrer la semelle à gros "
-  "relief."),
+ ('bottes-hiver', 'images', P_EX, STYLE + " Une paire de bottes d'hiver noires, neuves et "
+  "propres, posées côte à côte sur un présentoir bas d'un magasin de chaussures, l'une "
+  "inclinée pour montrer la semelle à gros relief. Arrière-plan de rayonnages flous, "
+  "aucun chariot ni client dans le champ."),
  ('miroir-essayage', 'images', P_EX, STYLE + " Un grand miroir sur pied dans un coin de "
   "magasin de vêtements, avec un tabouret bas à côté et un portemanteau vide. Personne "
   "dans le reflet."),
  ('comptoir-service', 'images', P_EX, STYLE + " Un comptoir de service à la clientèle dans "
   "un magasin : dessus de mélamine claire, terminal de paiement, petite pile de sacs "
   "pliés. Aucune inscription."),
- ('facture-sac', 'images', P_EX, STYLE + " Un sac de magasin en papier posé sur une table, "
-  "avec un ruban de caisse dépassant du haut. Les chiffres du reçu restent flous et "
-  "illisibles."),
+ ('facture-sac', 'images', P_EX, STYLE + " Un sac de magasin en papier posé au premier plan "
+  "sur un comptoir de magasin, avec un ruban de caisse dépassant du haut. Arrière-plan "
+  "flou ; les chiffres du reçu restent hors mise au point et illisibles."),
  ('capuchon-fourrure', 'images', P_EX, STYLE + " Gros plan sur le capuchon d'un manteau "
   "d'hiver bordé de fourrure épaisse, vu de trois quarts, posé sur un mannequin sans "
-  "tête."),
+  "tête, à l'intérieur d'un magasin de vêtements, arrière-plan flou. Aucun véhicule ni "
+  "passant dans le champ."),
 
  # ── Les treize mots du banc de vocabulaire ────────────────────────────
  ('manteau', 'vocab', P_VOC, STYLE + " Un manteau d'hiver noir à capuchon, suspendu seul "
   "sur un cintre devant un mur clair, vu de face. Fermeture éclair visible."),
- ('cabine', 'vocab', P_VOC, STYLE + " Une cabine d'essayage ouverte, rideau tiré de côté, "
-  "montrant un miroir, un crochet et un petit banc de bois."),
+ ('cabine', 'vocab', P_VOC, STYLE + " Intérieur d'un magasin de vêtements québécois, "
+  "tringles et vêtements pliés en arrière-plan flou. Une cabine d'essayage vue de face, "
+  "porte ouverte, le miroir, le crochet et le petit banc de bois plein cadre. Aucune "
+  "personne dans le champ."),
  ('taille', 'vocab', P_VOC, STYLE + " Gros plan sur une rangée de cintres portant des "
   "petites étiquettes rondes de taille, sans aucune inscription lisible."),
  ('pointure', 'vocab', P_VOC, STYLE + " Gros plan en plongée sur une boîte de chaussures "
   "ouverte, avec du papier de soie et une paire de bottes à l'intérieur. Aucune "
   "inscription sur la boîte."),
- ('manche', 'vocab', P_VOC, STYLE + " Gros plan sur la manche d'un manteau d'hiver, "
-  "montrant le poignet ajusté et la fermeture à bouton-pression."),
+ ('manche', 'vocab', P_VOC, STYLE + " La manche d'un manteau d'hiver posée à plat sur une "
+  "table de magasin, poignet ajusté et bouton-pression au centre du cadre. Aucune main, "
+  "aucun gant dans le champ."),
  ('duvet', 'vocab', P_VOC, STYLE + " Gros plan sur les compartiments matelassés d'un "
   "manteau en duvet, montrant les coutures horizontales et le gonflant du tissu."),
  ('capuchon', 'vocab', P_VOC, STYLE + " Un capuchon de manteau relevé, vu de dos, bordé "
   "d'une fourrure épaisse. Fond neutre."),
- ('entretien', 'vocab', P_VOC, STYLE + " Gros plan sur une étiquette de tissu portant "
-  "quatre pictogrammes d'entretien alignés : un bac, un triangle, un carré, un fer. "
-  "Symboles visibles, texte illisible."),
+ ('entretien', 'vocab', P_VOC, STYLE + " Gros plan à 45 degrés sur une étiquette de tissu "
+  "cousue dans un vêtement, à l'intérieur d'un magasin de vêtements : seule la rangée de "
+  "quatre pictogrammes d'entretien est dans le cadre — un bac, un triangle, un carré, un "
+  "fer — le bas de l'étiquette coupé hors champ."),
  ('secheuse', 'vocab', P_VOC, STYLE + " Une sécheuse blanche vue de face, porte "
   "entrouverte, dans une petite salle de lavage. Panier de linge posé devant."),
  ('echange', 'vocab', P_VOC, STYLE + " Un vêtement plié posé sur un comptoir de service à "
   "côté d'un ruban de caisse et d'un sac de magasin. Aucune inscription lisible."),
- ('remboursement', 'vocab', P_VOC, STYLE + " Un terminal de paiement posé sur un comptoir "
-  "à côté d'une carte de plastique retournée, face vierge visible. Écran illisible."),
- ('mise-de-cote', 'vocab', P_VOC, STYLE + " Deux vêtements suspendus à part sur une tringle "
-  "isolée, avec une petite étiquette de carton attachée à chacun. Aucune écriture "
-  "lisible."),
+ ('remboursement', 'vocab', P_VOC, STYLE + " Comptoir de service à la clientèle d'un "
+  "magasin : un terminal de paiement et une carte retournée, face vierge visible, posés "
+  "sur le comptoir. Écran éteint. Aucun panneau, aucune enseigne, aucun logo d'organisme "
+  "dans le champ ; arrière-plan hors mise au point."),
+ ('mise-de-cote', 'vocab', P_VOC, STYLE + " Une tringle isolée dans l'arrière-boutique d'un "
+  "magasin de vêtements, murs neutres : deux vêtements seuls y sont suspendus, une petite "
+  "étiquette de carton attachée à chacun. Aucune écriture lisible, aucun élément de "
+  "transport en commun."),
  ('depot', 'vocab', P_VOC, STYLE + " Quelques billets et un reçu posés sur un comptoir de "
   "magasin, à côté d'un stylo. Les billets sont vus de biais, sans détail lisible."),
 ]

@@ -72,9 +72,11 @@ IMAGES = [
  ('plan-quartier', 'images', P_EX, RUE + " Un panneau-plan de quartier sous vitre, "
   "planté au bord d'un trottoir. Le plan montre des lignes de rues et des formes "
   "colorées, mais aucun mot n'est lisible."),
- ('horaire-affiche', 'images', P_EX, RUE + " Gros plan sur un panneau d'horaire "
-  "d'autobus fixé à un poteau d'arrêt : des colonnes de chiffres alignées sous "
-  "vitre. Les chiffres restent flous et illisibles."),
+ ('horaire-affiche', 'images', P_EX, RUE + " Gros plan serré sur le boîtier vitré "
+  "d'un horaire d'autobus seul, qui remplit l'image : des colonnes de chiffres "
+  "alignées sous vitre, floues et illisibles. Le haut du poteau et tout panonceau "
+  "d'arrêt sont hors cadre ; aucun sigle, aucun logo, aucun pictogramme de "
+  "transporteur."),
  ('coin-rue', 'images', P_EX, RUE + " Le coin de deux rues résidentielles, vu du "
   "trottoir opposé : deux trottoirs qui se rencontrent à angle droit, un lampadaire, "
   "un bâtiment de brique à l'angle."),

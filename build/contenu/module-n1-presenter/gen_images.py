@@ -74,18 +74,23 @@ IMAGES = [
  ('epeler', 'vocab', P_VOC, STYLE + " Des lettres magnétiques en plastique alignées sur "
   "un tableau blanc, vues de près. Les lettres sont nettes mais ne forment aucun mot "
   "reconnaissable."),
- ('adresse', 'vocab', P_VOC, STYLE + " Une boîte aux lettres de métal devant une maison, "
-  "avec un numéro civique à côté. Le chiffre reste flou."),
+ ('adresse', 'vocab', P_VOC, STYLE + " Gros plan sur un numéro civique de métal à trois "
+  "chiffres, vissé sur le mur de brique à côté de la porte d'entrée d'une maison, "
+  "extérieur de jour. Les chiffres sont le seul sujet net ; aucune boîte aux lettres, "
+  "aucune plaque, aucun objet portant une inscription dans le champ."),
  ('pays', 'vocab', P_VOC, STYLE + " Un globe terrestre posé sur une table, vu de près. "
   "Les noms de pays sont flous et illisibles."),
- ('langue', 'vocab', P_VOC, STYLE + " Deux dictionnaires bilingues empilés sur une table, "
-  "vus de trois quarts. Les titres sont flous."),
+ ('langue', 'vocab', P_VOC, STYLE + " Deux gros livres épais empilés sur une table de "
+  "classe, vus de trois quarts avant, tranches de pages vers l'objectif et dos tournés à "
+  "l'opposé. Aucune couverture ni aucun dos visible ; aucune étiquette, aucun nom "
+  "d'éditeur dans le champ."),
  ('enfant', 'vocab', P_VOC, PERS + " Un adulte et un enfant marchent main dans la main "
   "sur un trottoir, vus de dos."),
  ('metier', 'vocab', P_VOC, STYLE + " Des outils de travail posés côte à côte sur un "
   "établi : une clé, un tournevis, des gants de travail."),
- ('bonjour', 'vocab', P_VOC, PERS + " Une personne vue de dos ouvre une porte vitrée de "
-  "commerce, la main levée en signe de salut."),
+ ('bonjour', 'vocab', P_VOC, PERS + " Une personne vue de dos ouvre une porte vitrée "
+  "pleine, la main levée en signe de salut. La vitrine et son enseigne sont entièrement "
+  "hors cadre à droite ; aucun lettrage sur le verre, aucune affiche dans le champ."),
 ]
 
 

@@ -69,8 +69,9 @@ IMAGES = [
   "métal dans l'entrée commune d'un petit immeuble à logements, avec une enveloppe qui "
   "dépasse de l'une d'elles. Numéros flous et illisibles."),
  ('panneau-a-louer', 'images', P_EX1, STYLE + " Un carton « à louer » posé dans la fenêtre "
-  "d'un logement au deuxième étage, vu de la rue en légère contre-plongée. Le lettrage "
-  "du carton reste flou et illisible."),
+  "d'un logement au deuxième étage, en légère contre-plongée, cadrage resserré sur la "
+  "façade et cette fenêtre. Le lettrage du carton reste flou et illisible. Aucun "
+  "véhicule dans le champ, aucun sigle ni nom de constructeur visible."),
  ('buanderie-sous-sol', 'images', P_EX1, STYLE + " Une buanderie commune au sous-sol d'un "
   "immeuble : deux laveuses et deux sécheuses blanches côte à côte, un panier de linge "
   "posé dessus, murs de béton peint, éclairage au plafond."),
@@ -110,12 +111,15 @@ IMAGES = [
 
  # ── Les seize photos du banc de vocabulaire ───────────────────────────
  ('bail', 'vocab', P_VOC, DOC + " Un contrat de plusieurs pages agrafées posé sur une "
-  "table, avec un stylo posé en travers."),
+  "table, avec un stylo posé en travers, pris de biais. Le cadrage commence au "
+  "deuxième tiers de la page : aucun titre, aucun en-tête, aucun bandeau dans le "
+  "champ, seulement des lignes de texte réduites à des traits gris."),
  ('avis-modification', 'vocab', P_VOC, DOC + " Une lettre d'une seule page sortie de son "
   "enveloppe, posée sur une table de cuisine à côté de l'enveloppe ouverte."),
- ('loyer', 'vocab', P_VOC, STYLE + " Un calendrier mural ouvert au mois en cours, accroché "
-  "près d'une porte de cuisine, avec le premier jour du mois entouré au crayon. Chiffres "
-  "flous et illisibles."),
+ ('loyer', 'vocab', P_VOC, STYLE + " Une enveloppe blanche non affranchie et quelques "
+  "billets de banque canadiens posés sur la table d'une cuisine de logement québécois, "
+  "un trousseau de clés à côté. Aucun chiffre, aucune inscription, aucun calendrier "
+  "dans le champ."),
  ('quatre-et-demie', 'vocab', P_VOC, STYLE + " Vue en enfilade d'un logement vide depuis le "
   "corridor : on aperçoit une cuisine à gauche, un salon au fond et deux portes de "
   "chambre fermées."),
@@ -123,8 +127,9 @@ IMAGES = [
   "d'un mur et, au-dessus, une lampe allumée au plafond d'une pièce vide, en fin de "
   "journée."),
  ('date-occupation', 'vocab', P_VOC, PERS + " Des boîtes de carton empilées près d'une "
-  "porte d'entrée ouverte, un trousseau de clés posé sur la boîte du dessus, jour de "
-  "déménagement d'été."),
+  "porte d'entrée ouverte, jour de déménagement d'été. Les boîtes présentent leurs "
+  "faces vierges à la caméra, les faces annotées tournées vers le mur ; le trousseau "
+  "de clés bien net sur la boîte du dessus."),
  ('electromenagers', 'vocab', P_VOC, STYLE + " Une cuisinière et un réfrigérateur blancs "
   "côte à côte dans une cuisine de logement vide, comptoir dégagé, sans marque ni "
   "lettrage."),

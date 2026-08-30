@@ -162,9 +162,10 @@ IMAGES = [
   "ouverte sur une pièce éclairée, l'autre fermée. Vue centrée dans l'axe du "
   "corridor, personne dedans."),
  ('attestation', 'vocab', P_VOC, S_PAPIER +
-  "Une feuille qui sort d'une imprimante de bureau posée sur un comptoir, "
-  "encore à moitié engagée dans l'appareil. On voit des blocs de lignes "
-  "grises et un espace de signature en bas."),
+  "Une feuille seule, à moitié sortie d'une fente sombre au bord gauche de "
+  "l'image, posée sur un comptoir clair : aucun appareil, aucune façade, "
+  "aucun panneau de commande, aucun nom de fabricant visible. On voit des "
+  "blocs de lignes grises et un espace de signature en bas."),
  ('releve', 'vocab', P_VOC, S_PAPIER +
   "Une feuille tenue à deux mains devant une table, montrant un tableau à "
   "colonnes régulières avec des cases remplies de traits gris courts. Les "

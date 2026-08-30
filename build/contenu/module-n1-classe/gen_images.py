@@ -130,10 +130,11 @@ IMAGES = [
   "vitré de bâtiment public en plein soleil de la mi-journée, la lumière "
   "tombant à la verticale sur le sol de tuiles, quelques silhouettes floues "
   "vues de dos au loin, l'heure du jour rendue par la lumière seule. " + SANS),
- ('semaine', 'vocab', P_VOC, PRES + " Un calendrier mensuel de papier "
-  "accroché à un mur clair, vu de face : la grille des cases est nette, les "
-  "chiffres et les mots restent entièrement flous et illisibles, une punaise "
-  "en haut."),
+ ('semaine', 'vocab', P_VOC, PRES + " Gros plan sur la grille d'un calendrier "
+  "mural de papier accroché à un mur clair, vu de face : l'en-tête du mois et "
+  "la rangée des noms de jours sont coupés par le bord supérieur du cadre. On "
+  "ne voit que les cases carrées et les filets qui les séparent ; aucun mot, "
+  "aucun nom de jour, aucune case cochée dans le champ."),
  ('horaire', 'vocab', P_VOC, PRES + " Une feuille imprimée en forme de tableau "
   "à deux colonnes, posée à plat sur une table claire à côté d'un stylo, vue "
   "en plongée : les lignes du tableau sont nettes, aucun mot n'est lisible."),

@@ -62,8 +62,10 @@ IMAGES = [
   "en inox posé sur une cuisinière, rempli d'un ragoût qui mijote. À côté, six "
   "contenants de plastique alignés, prêts à être remplis et congelés."),
  ('reveil', 'images', P_EX, STYLE + " Gros plan sur un réveille-matin numérique posé "
-  "sur une table de chevet, affichant une heure très matinale. La chambre est encore "
-  "sombre, une faible lueur bleutée passe par la fenêtre."),
+  "sur une table de chevet, dont l'afficheur rouge marque exactement cinq heures "
+  "quinze : le chiffre 5, deux points, puis 15 — aucune autre heure, aucun autre "
+  "chiffre visible. La chambre est encore sombre, une faible lueur bleutée passe par "
+  "la fenêtre."),
  ('gymnase', 'images', P_EX, STYLE + " Un gymnase de centre communautaire vu du bord "
   "du terrain : filet de volleyball tendu, plancher de bois verni marqué de lignes de "
   "couleur, quelques ballons au sol, gradins vides. Éclairage au plafond."),
@@ -94,8 +96,9 @@ IMAGES = [
   "communautaire de quartier en brique claire, avec de grandes fenêtres éclairées, un "
   "escalier de béton et une rampe d'accès. Fin d'après-midi d'automne, feuilles au sol."),
  ('coequipiere', 'vocab', P_VOC, PERS + " Deux joueuses de volleyball en chandail "
-  "d'équipe se tapent la main au filet, vues de côté, visages hors cadre. Gymnase "
-  "éclairé, plancher de bois."),
+  "d'équipe se tapent la main au filet, vues de dos, les deux têtes coupées par le "
+  "bord haut du cadre : on voit les dos, les bras levés et les mains qui se touchent, "
+  "jamais une joue, un nez ni un menton. Gymnase éclairé, plancher de bois."),
  ('sentrainer', 'vocab', P_VOC, PERS + " Une personne s'exerce seule à faire des "
   "passes de volleyball contre un mur de gymnase, ballon en l'air, vue de dos. "
   "Plancher de bois, lignes de terrain visibles."),
@@ -103,8 +106,10 @@ IMAGES = [
   "de volleyball côte à côte séparés par des filets, gradins avec quelques spectateurs "
   "flous, sacs de sport alignés le long du mur."),
  ('demenagement', 'vocab', P_VOC, STYLE + " Le salon d'un logement à moitié vidé : "
-  "une dizaine de boîtes de carton empilées, un matelas appuyé contre le mur, du ruban "
-  "d'emballage sur le plancher de bois. Pluie visible par la fenêtre."),
+  "une dizaine de boîtes de carton brun neuf empilées, faces lisses et scellées de "
+  "ruban beige, aucun marqueur nulle part et aucune inscription à la main sur le "
+  "carton. Un matelas appuyé contre le mur, du ruban d'emballage sur le plancher de "
+  "bois. Pluie visible par la fenêtre."),
  ('naissance', 'vocab', P_VOC, STYLE + " Un petit lit de bébé en bois clair dans une "
   "chambre calme, avec une couverture tricotée pliée sur le bord et un mobile suspendu "
   "au-dessus. Lumière douce de fin de journée. Aucun bébé visible."),

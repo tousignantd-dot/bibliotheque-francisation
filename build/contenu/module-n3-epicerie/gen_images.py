@@ -56,9 +56,10 @@ IMAGES = [
  ('allee-numerotee', 'images', P_EX, STYLE + " Vue en enfilade d'une allée d'épicerie "
   "bordée de tablettes garnies, avec un grand panneau suspendu au bout de la rangée "
   "portant un chiffre. Le chiffre reste flou et illisible."),
- ('affichette-rayon', 'images', P_EX, STYLE + " Un panneau rectangulaire suspendu au-dessus "
-  "d'une allée, vu d'en dessous en légère contre-plongée. Le lettrage est flou et "
-  "illisible. Tablettes garnies en arrière-plan."),
+ ('affichette-rayon', 'images', P_EX, STYLE + " Un panneau d'allée suspendu au-dessus "
+  "d'une allée, vu d'en dessous en légère contre-plongée, portant uniquement un grand "
+  "chiffre peint : aucune ligne de texte sous le chiffre, aucune liste de catégories. "
+  "Tablettes garnies en arrière-plan."),
  ('circulaire-ouverte', 'images', P_EX, STYLE + " Un dépliant publicitaire de papier ouvert "
   "à plat sur une table de cuisine, montrant une grille de photos de produits et de "
   "pastilles de prix. Tous les chiffres et tous les mots restent flous et illisibles."),
@@ -97,8 +98,10 @@ IMAGES = [
  ('mise-en-garde', 'vocab', P_VOC, STYLE + " Gros plan sur le losange d'avertissement d'une "
   "étiquette de produit d'entretien : pictogramme noir sur fond blanc, contour épais. "
   "Aucun mot lisible."),
- ('caisse', 'vocab', P_VOC, PERS + " Un client de dos qui dépose des articles sur le tapis "
-  "roulant d'une caisse d'épicerie."),
+ ('caisse', 'vocab', P_VOC, STYLE + " Cadrage rapproché sur le tapis roulant d'une caisse "
+  "d'épicerie et quelques articles en emballage neutre sans étiquette. Aucune enseigne, "
+  "aucun sac imprimé, aucun personnel dans le champ : seules deux mains hors mise au "
+  "point poussent un article."),
  ('facture', 'vocab', P_VOC, STYLE + " Un reçu de caisse tenu entre deux doigts, en gros "
   "plan, devant un arrière-plan flou de magasin. Lignes de texte illisibles."),
  ('sac', 'vocab', P_VOC, PERS + " Une personne vue de dos qui porte deux sacs d'épicerie "

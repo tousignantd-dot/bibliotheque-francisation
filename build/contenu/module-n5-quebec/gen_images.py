@@ -136,10 +136,11 @@ IMAGES = [
   "contre-plongée serrée depuis sa base, dans une lumière de fin de jour, "
   "l'herbe rase au premier plan et le ciel derrière. Cadrage différent d'une "
   "vue de loin : la tour remplit l'image. Aucune personne, aucun texte."),
- ('horaire', 'vocab', P_VOC, GARE + " Gros plan de biais sur un tableau "
-  "d'affichage d'horaires accroché au mur d'une gare : une grille de lignes "
-  "et de colonnes régulières, avec des heures et des noms rendus illisibles "
-  "par le flou et l'angle. Aucun mot déchiffrable, aucun logo."),
+ ('horaire', 'vocab', P_VOC, GARE + " Gros plan sur un tableau d'affichage "
+  "d'horaires accroché au mur d'une gare, pris de biais à 60°, son bandeau "
+  "d'en-tête coupé par le bord supérieur du cadre : seule la grille de lignes "
+  "et de colonnes régulières est dans le champ, heures et noms rendus "
+  "illisibles par le flou et l'angle. Aucun mot déchiffrable, aucun logo."),
  ('soute', 'vocab', P_VOC, "Photographie réaliste, format paysage, flanc "
   "d'un autocar interurbain gris avec la trappe de soute ouverte au ras du "
   "sol, laissant voir des valises rangées à l'intérieur du compartiment. Vue "

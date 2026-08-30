@@ -164,8 +164,10 @@ IMAGES = [
   "latérale ouverte et une rampe d'accès abaissée jusqu'au sol. Vue de trois "
   "quarts. Aucun logo, aucune inscription."),
  ('correspondance', 'vocab', P_VOC, PERS + " Une personne vue de dos, sac au "
-  "dos, descendant d'un autobus et marchant vers l'entrée éclairée d'une "
-  "station, en fin d'après-midi. Visage hors champ. Aucun texte, aucun logo."),
+  "dos, descendant d'un autobus et marchant vers l'entrée d'une station, en "
+  "fin d'après-midi. L'entrée de la station est vue de trois quarts, son "
+  "bandeau lumineux sort du cadre par le haut ; seule la lueur portée sur le "
+  "trottoir dit l'entrée. Visage hors champ. Aucun texte, aucun logo."),
 ]
 
 

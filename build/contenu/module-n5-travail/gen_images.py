@@ -105,9 +105,10 @@ IMAGES = [
   "chargeur sur le dessus."),
  ('formulaire-rempli', 'images', P_EX1, PAPIER + " Une feuille à cases posée sur un bureau, "
   "un stylo bleu à côté, une signature manuscrite illisible en bas de la page."),
- ('ecran-courriel', 'images', P_EX1, ECRAN + " Un écran d'ordinateur de bureau vu de trois "
-  "quarts qui affiche une liste de messages : des rangées grises et des rectangles flous, "
-  "aucun mot lisible."),
+ ('ecran-courriel', 'images', P_EX1, ECRAN + " Cadrage serré sur la dalle de l'écran seule, "
+  "son bord inférieur et le pied du moniteur hors champ, aucun lettrage ni logo sur le "
+  "matériel, aucun nom de fabricant. Elle affiche une liste de messages : des rangées "
+  "grises et des rectangles flous, aucun mot lisible."),
 
  # ── Je retiens des mots · les quatorze photos du banc ─────────────────
  ('accueil', 'vocab', P_VOC, BUREAU + " Le comptoir d'accueil d'un petit organisme "
@@ -116,9 +117,9 @@ IMAGES = [
  ('tache', 'vocab', P_VOC, PAPIER + " Une liste manuscrite sur un bloc-notes posé à côté "
   "d'une tasse de café, avec des cases à cocher en marge. Les mots de la liste sont des "
   "traits gris, entièrement illisibles."),
- ('directives', 'vocab', P_VOC, PAPIER + " Une feuille plastifiée fixée au mur à côté d'un "
-  "appareil de bureau, vue de biais, avec des petits schémas et des lignes. Aucun mot "
-  "lisible."),
+ ('directives', 'vocab', P_VOC, PAPIER + " Cadrage serré et oblique sur une feuille "
+  "plastifiée punaisée au mur, couverte de petits schémas et de lignes. Aucun appareil et "
+  "aucune autre feuille dans le champ, aucun nom de fabricant. Aucun mot lisible."),
  ('registre', 'vocab', P_VOC, PAPIER + " Un grand cahier ouvert sur un bureau, avec des "
   "colonnes et des rangées tracées, une règle et un stylo posés dessus. Aucun chiffre ni "
   "mot lisible."),

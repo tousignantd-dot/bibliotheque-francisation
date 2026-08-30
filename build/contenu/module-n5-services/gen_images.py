@@ -87,15 +87,16 @@ IMAGES = [
   "trois quarts arrière, visage hors cadrage."),
  ('formulaire-ecran', 'images', P_EX1, ECRAN + " Un formulaire à remplir : une colonne de "
   "champs rectangulaires vides et un bouton en bas de page, tout flou."),
- ('billet-file-attente', 'images', P_EX1, DOC + " Un petit billet de papier numéroté tenu "
-  "entre deux doigts, au-dessus de rangées de chaises floues à l'arrière-plan. Le numéro "
-  "reste illisible."),
+ ('billet-file-attente', 'images', P_EX1, STYLE + " Gros plan sur un billet de papier "
+  "numéroté tenu entre le pouce et l'index, remplissant le tiers du cadre. Des rangées de "
+  "chaises de salle d'attente entièrement floues derrière. Aucune feuille, aucun document "
+  "et aucune table dans le champ."),
  ('comptoir-guichet', 'images', P_EX1, PERS + " Un comptoir de service au public, vu depuis "
   "la salle d'attente : une vitre basse, un écran d'ordinateur de dos, une chaise vide "
   "devant le comptoir. Aucune enseigne, aucun logo."),
- ('preuve-residence', 'images', P_EX1, DOC + " Une facture d'une page et une carte de "
-  "plastique posées côte à côte sur une table, en légère plongée. Tous les caractères "
-  "sont flous et illisibles."),
+ ('preuve-residence', 'images', P_EX1, DOC + " Une facture d'une page et une enveloppe "
+  "adressée posées côte à côte sur une table, en légère plongée. Aucune carte de plastique "
+  "à logo dans le champ. Tous les caractères sont flous et illisibles."),
 
  # ── Les seize photos du banc de vocabulaire ───────────────────────────
  ('brochure', 'vocab', P_VOC, DOC + " Un dépliant de plusieurs volets, à demi ouvert, posé "
@@ -108,14 +109,17 @@ IMAGES = [
  ('ecocentre', 'vocab', P_VOC, STYLE + " De grands conteneurs métalliques ouverts alignés "
   "sur une aire asphaltée, avec des branches et de vieux meubles empilés à l'intérieur."),
  ('preuve-residence', 'vocab', P_VOC, DOC + " Une facture d'une page posée sur une table, "
-  "un permis de plastique posé par-dessus, en légère plongée."),
+  "et par-dessus, en travers, une carte de plastique bleu pâle sans en-tête ni drapeau, sa "
+  "photo d'identité tournée vers le bord du cadre. En légère plongée."),
  ('prepose', 'vocab', P_VOC, PERS + " Une personne assise derrière un comptoir de service, "
   "casque téléphonique sur la tête, vue de trois quarts arrière devant un écran flou."),
- ('requete', 'vocab', P_VOC, ECRAN + " Une fiche de suivi affichée à l'écran : un long "
-  "numéro flou en haut, puis des lignes grises."),
- ('jour-ouvrable', 'vocab', P_VOC, STYLE + " Un calendrier mural ouvert au mois en cours, "
-  "accroché près d'une porte de cuisine, avec quelques cases entourées au crayon. Chiffres "
-  "flous et illisibles."),
+ ('requete', 'vocab', P_VOC, ECRAN + " L'ordinateur portable est vu de trois quarts "
+  "arrière, le bord inférieur de son écran sorti du cadre, aucun logo ni lettrage sur le "
+  "châssis, aucun nom de fabricant. À l'écran, une fiche de suivi : un long numéro net en "
+  "haut, puis des lignes grises."),
+ ('jour-ouvrable', 'vocab', P_VOC, STYLE + " Un calendrier mural accroché près d'une porte "
+  "de cuisine, vu de biais. Son titre et sa rangée de noms de jours sortent du cadre par le "
+  "haut : seules la grille de cases et deux dates entourées au crayon restent visibles."),
  ('epeler', 'vocab', P_VOC, PERS + " Une main qui écrit des lettres majuscules espacées sur "
   "un bloc-notes posé près d'un téléphone, vue en plongée. L'écriture reste illisible."),
  ('formulaire', 'vocab', P_VOC, DOC + " Un formulaire de papier posé sur une table avec un "
@@ -128,8 +132,9 @@ IMAGES = [
   "détache nettement du reste, en haut à droite. Tout le texte est flou."),
  ('guichet', 'vocab', P_VOC, PERS + " Un comptoir de service au public vu de côté, une "
   "personne debout devant, de dos, un dossier de papiers sous le bras."),
- ('billet-attente', 'vocab', P_VOC, DOC + " Un petit billet de papier numéroté posé sur "
-  "l'accoudoir d'une chaise de salle d'attente. Le numéro reste illisible."),
+ ('billet-attente', 'vocab', P_VOC, STYLE + " Un seul petit billet de papier crème posé au "
+  "centre de l'assise d'une chaise de salle d'attente, vu de près. Le numéro imprimé dessus "
+  "est net. Aucun autre papier, aucune table et aucun document dans le cadre."),
  ('piece-identite', 'vocab', P_VOC, DOC + " Deux cartes de plastique posées côte à côte sur "
   "un comptoir clair, en légère plongée, aucun caractère lisible, aucun visage."),
 ]

@@ -124,9 +124,11 @@ IMAGES = [
    "serrées et parfois une photo carrée, mais l'écriture reste floue "
    "et illisible. Aucun texte lisible, aucun mot déchiffrable, aucun "
    "logo, aucun filigrane, aucune personne identifiable, aucun "
-   "visage reconnaissable. Très gros plan sur le haut d'un article : "
-   "un titre en gros caractères, puis deux ou trois lignes plus "
-   "grasses que le reste du texte, puis le corps en lignes fines."),
+   "visage reconnaissable. Très gros plan rasant sur la jonction "
+   "entre deux ou trois lignes plus grasses et le corps du texte en "
+   "lignes fines, prise de vue à 30° pour que rien ne se déchiffre. "
+   "Le titre est coupé par le bord supérieur de l'image, aucun gros "
+   "caractère dans le champ."),
  ('declaration', 'vocab', P_VOC,
   "Photographie réaliste, format paysage, une ou deux personnes "
    "vues de dos, de trois quarts ou hors cadrage du visage, lumière "
@@ -178,8 +180,11 @@ IMAGES = [
    "serrées et parfois une photo carrée, mais l'écriture reste floue "
    "et illisible. Aucun texte lisible, aucun mot déchiffrable, aucun "
    "logo, aucun filigrane, aucune personne identifiable, aucun "
-   "visage reconnaissable. Une pile de journaux gratuits pliés dans "
-   "un présentoir de métal, à l'entrée d'une épicerie de quartier."),
+   "visage reconnaissable. Une pile de journaux pliés dans un "
+   "présentoir de métal, vue du dessus et de trois quarts : la "
+   "manchette est sous le pli, donc hors du champ. Le présentoir "
+   "seul, aucune devanture de commerce, aucune enseigne, aucun "
+   "panneau derrière."),
  ('incendie', 'vocab', P_VOC,
   "Photographie réaliste, format paysage, rue ordinaire d'un "
    "quartier de Montréal, lumière naturelle, ciel couvert. Palette "

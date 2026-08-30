@@ -89,7 +89,8 @@ IMAGES = [
  # ── Les treize photos du banc de vocabulaire ──────────────────────────
  ('voisin', 'vocab', P_VOC, PERS + " Deux personnes qui se parlent brièvement "
   "sur le palier d'un immeuble, l'une sur le pas de sa porte, l'autre dans le "
-  "corridor, vues de dos et de trois quarts."),
+  "corridor, toutes deux vues de dos, la seconde tournée vers la porte. Aucun "
+  "visage au-delà du profil de la tempe. Corridor éclairé par le fond."),
  ('immeuble', 'vocab', P_VOC, IMMEUBLE + " La façade complète d'un immeuble de "
   "six logements en brique rouge, escaliers de métal en avant, vue de la rue, "
   "ciel clair."),

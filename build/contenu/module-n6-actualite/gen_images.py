@@ -99,10 +99,10 @@ IMAGES = [
   "micro sur bras articulé, deux casques d'écoute posés. Mur de mousse acoustique. "
   "Aucune personne, aucune inscription sur les micros ni sur la console." + SANS_MOTS),
  ('page-courrier', 'images', P_EX, STYLE + " Une page de journal de papier, pliée en "
-  "deux et posée à plat sur une table de salle des employés, à côté d'une tasse. La "
-  "page montre une colonne de courtes lettres séparées par des filets, chacune suivie "
-  "d'une ligne de signature. Toutes les lignes de texte sont des traits gris "
-  "entièrement illisibles." + SANS_MOTS),
+  "deux et posée bien à plat sur une table de salle des employés, à côté d'une tasse. "
+  "Elle porte une colonne de six courts blocs de texte séparés par des filets fins, "
+  "chacun terminé par un trait plus court en italique. Chaque ligne est un trait gris "
+  "abstrait ; aucun caractère isolé nulle part." + SANS_MOTS),
  ('ecran-documentaire', 'images', P_EX, STYLE + " Un écran de télévision dans un salon "
   "obscur, le soir, qui montre une image d'archives en noir et blanc : l'intérieur d'une "
   "usine ancienne, des machines et des courroies. Le reste de la pièce est sombre. "

@@ -67,11 +67,13 @@ IMAGES = [
  # ── Les huit images d'exercice ────────────────────────────────────────
  ('file-comptoir', 'images', P_EX, PERS + " Trois personnes debout en file "
   "devant un comptoir de casse-croûte, vues de dos, plateaux vides à la main. "
-  "L'arrière-plan du comptoir est net, aucun panneau lisible."),
+  "La cabane de casse-croûte est cadrée à hauteur du comptoir, le bandeau "
+  "d'enseigne sort du cadre par le haut. Aucun panneau lisible."),
  ('tableau-menu-haut', 'images', P_EX, STYLE + " Vue en contre-plongée d'un "
-  "grand panneau de menu accroché au mur, au-dessus d'une caisse. Trois "
-  "colonnes de lignes régulières avec des prix alignés à droite ; le lettrage "
-  "est flou et entièrement illisible."),
+  "grand panneau de menu accroché au mur, au-dessus d'une caisse. Un unique "
+  "bandeau de titre en haut du panneau ; les trois colonnes en dessous n'ont "
+  "aucun en-tête propre, et le lettrage de leur corps est réduit à des "
+  "traits, avec des prix alignés à droite."),
  ('plateau-repas', 'images', P_EX, TABLE + " Un plateau de plastique brun posé "
   "sur une table, avec un sandwich coupé en deux dans un papier, un bol de "
   "soupe fumante et un verre de jus."),
@@ -86,7 +88,9 @@ IMAGES = [
   "aucune inscription sur le carton."),
  ('sac-emporter', 'images', P_EX, TABLE + " Un sac de papier brun ouvert posé "
   "sur un comptoir, un contenant de soupe fermé d'un couvercle blanc qui "
-  "dépasse du haut. Le papier est uni, sans aucune impression."),
+  "dépasse du haut. Le contenant qui dépasse du sac est entièrement blanc, "
+  "sans une seule marque d'encre ni étiquette. Le papier du sac est uni, sans "
+  "aucune impression."),
  ('recu-numero', 'images', P_EX, TABLE + " Gros plan sur un petit reçu de "
   "papier blanc posé sur un comptoir, à côté d'un plateau. Les lignes "
   "d'impression sont des traits gris entièrement illisibles."),
@@ -98,9 +102,10 @@ IMAGES = [
  ('comptoir', 'vocab', P_VOC, STYLE + " Un long comptoir de service vu de "
   "trois quarts, surface claire, caisse enregistreuse au bout, tabourets "
   "devant."),
- ('tableau-menu', 'vocab', P_VOC, STYLE + " Un panneau de menu accroché au mur "
-  "derrière un comptoir, deux colonnes de lignes régulières et une colonne de "
-  "prix à droite. Le lettrage est flou et illisible."),
+ ('tableau-menu', 'vocab', P_VOC, STYLE + " Un panneau de menu vierge, surface "
+  "blanche unie sans une seule ligne écrite, accroché au mur derrière un "
+  "comptoir de casse-croûte. Le panneau est nu d'un bord à l'autre : aucune "
+  "colonne, aucun prix, aucune trace de craie ni d'encre."),
  ('plateau', 'vocab', P_VOC, TABLE + " Une pile de plateaux de plastique brun "
   "empilés au bout d'un comptoir, vus de trois quarts."),
  ('format', 'vocab', P_VOC, TABLE + " Trois contenants de soupe de carton "

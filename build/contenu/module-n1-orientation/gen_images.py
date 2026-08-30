@@ -153,9 +153,11 @@ IMAGES = [
  ('tirez', 'vocab', P_VOC, CENTRE + " Cadrage serré sur une main qui saisit "
   "la poignée verticale de métal d'une porte de bois et la ramène vers elle. "
   "On ne voit que la main et la poignée, aucun visage."),
- ('defense-de-fumer', 'vocab', P_VOC, ENTREE + " Un cendrier de métal sur "
-  "pied posé dehors, très loin des portes vitrées floues à l'arrière-plan, "
-  "sous un ciel gris. Aucune cigarette allumée, aucune personne."),
+ ('defense-de-fumer', 'vocab', P_VOC, ENTREE + " Gros plan sur un panneau rond "
+  "blanc à large bordure rouge, vissé sur un mur de brique près d'une entrée : "
+  "il porte une cigarette dessinée en noir, barrée d'un trait rouge en "
+  "diagonale. Aucune lettre, aucun mot, aucun chiffre sur le panneau ni autour "
+  "de lui. Aucune cigarette allumée, aucune personne."),
  ('sortie-de-secours', 'vocab', P_VOC, CENTRE + " Une porte de métal peinte "
   "en vert avec une longue barre horizontale d'ouverture en travers, au bout "
   "d'un corridor, vue de face. Rien d'écrit dessus."),

@@ -154,9 +154,16 @@ IMAGES = [
  ('silhouette', 'vocab', P_VOC, PERS + " Une personne seule à contre-jour devant une "
   "grande fenêtre de salle d'attente, vue de dos : seule la forme générale se "
   "distingue." + SANS_MOTS),
- ('visage-allonge', 'vocab', P_VOC, STYLE + " Un miroir ovale ancien accroché à un mur "
-  "clair, qui ne reflète que la pièce vide et une fenêtre. Aucune personne, aucun "
-  "reflet de visage." + SANS_MOTS),
+ # Seule image du module qui n'est pas une photographie : un visage vu de face
+ # est nécessaire pour que la forme se compare, et un dessin au trait la montre
+ # sans rendre personne reconnaissable.
+ ('visage-allonge', 'vocab', P_VOC,
+  "Dessin au trait noir sur fond uni beige clair, format paysage, style d'illustration "
+  "sobre. Deux têtes d'adulte vues de face, côte à côte, dessinées au seul contour : "
+  "celle de gauche nettement plus longue que large, avec un menton fin et étroit ; "
+  "celle de droite ronde, large aux joues. Aucun trait de visage détaillé — pas d'yeux, "
+  "pas de bouche, pas de nez —, aucune personne identifiable, aucun ombrage, aucune "
+  "couleur." + SANS_MOTS),
  ('cheveux-ondules', 'vocab', P_VOC, PERS + " Gros plan sur des cheveux bruns ondulés "
   "détachés tombant sur les épaules, vus de dos, lumière naturelle de fenêtre. Le "
   "visage n'apparaît pas." + SANS_MOTS),

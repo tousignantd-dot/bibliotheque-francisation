@@ -35,6 +35,13 @@ STYLE = ("Photographie réaliste, format carré, lumière naturelle douce, faibl
          "profondeur de champ. Palette sobre. Aucun texte, aucune écriture, "
          "aucun logo, aucune marque, aucun filigrane, aucune personne.")
 
+# « Empirer » est un état qui se dégrade : il lui faut une personne, que STYLE
+# interdit. D'où cette variante, réservée à ce mot, qui garde tout le reste.
+MALADE = ("Photographie réaliste, format carré, lumière naturelle douce, faible "
+          "profondeur de champ. Palette sobre. Aucun texte, aucune écriture, "
+          "aucun logo, aucune marque, aucun filigrane. Une seule personne, vue "
+          "de trois quarts arrière, aucun visage reconnaissable.")
+
 # (deck, slug du mot, prompt)
 IMAGES = [
  ('vocab-flash-conso', 'le_fromage_en_grains', STYLE + " Gros plan sur du fromage en "
@@ -45,6 +52,31 @@ IMAGES = [
   "bien distincts les uns des autres, en vrac dans un petit bol de bois clair posé "
   "sur une table de cuisine. Ce ne sont ni des cubes, ni des dés taillés au couteau, "
   "ni des billes, ni des granules, ni de la poudre, ni du fromage râpé."),
+ ('vocab-flash-conso', 'un_produit_local', STYLE + " Un étalage de bois brut "
+  "d'épicerie garni de légumes du Québec en caisses de bois : carottes en bottes, "
+  "choux, betteraves, pommes de terre encore terreuses, courges. Vue de trois quarts "
+  "en lumière de fin d'été. Aucune pancarte, aucune ardoise, aucune étiquette, aucun "
+  "carton dressé, aucune surface écrite dans le champ."),
+ ('vocab-flash-conso', 'un_rabais', STYLE + " Gros plan serré, à hauteur d'étal, sur "
+  "UNE SEULE petite étiquette de carton blanc piquée dans une caisse de pommes, au "
+  "centre du cadre. Elle porte deux nombres l'un au-dessus de l'autre. Celui du haut, "
+  "le plus grand des deux, est rayé d'un gros trait de marqueur rouge épais tracé en "
+  "diagonale. Celui du bas est écrit plus gros, en noir, et vaut visiblement beaucoup "
+  "moins : il a un chiffre de moins que celui du haut. Les deux nombres doivent être "
+  "clairement différents l'un de l'autre. Le trait rouge est l'élément le plus net de "
+  "l'image. Aucune autre étiquette, aucune affiche, aucune pancarte, aucun mot, aucune "
+  "lettre nulle part dans le champ."),
+ ('vocab-flash-sante', 'empirer', MALADE + " Une personne assise sur le bord d'un lit "
+  "défait, épaules affaissées, une couverture remontée sur les épaules, la tête "
+  "penchée. Sur la table de chevet, une boîte de mouchoirs entamée, des mouchoirs "
+  "froissés, un thermomètre et un verre d'eau à moitié bu. Lumière déclinante de fin "
+  "de journée par la fenêtre. Aucune main gantée, aucune seringue, aucun soignant, "
+  "aucun matériel médical dans le champ."),
+ ('vocab-flash-sante', 'la_carte_d_assurance_maladie', STYLE + " Une carte de plastique "
+  "bleu uni, aux coins arrondis, posée à plat sur un comptoir de clinique et vue de "
+  "trois quarts. Sa surface est entièrement lisse et vierge : aucun logo, aucune "
+  "armoirie, aucune fleur de lys, aucun numéro, aucune photo, aucune bande, aucune "
+  "ligne gravée. Rien d'autre sur le comptoir."),
 ]
 
 def par_google(prompt):
