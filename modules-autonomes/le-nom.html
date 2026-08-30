@@ -3,7 +3,7 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Le nom — cinq candidats, une épreuve</title>
+<title>Le nom — deux tours, une épreuve</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Nunito:wght@600;700;800;900&family=IBM+Plex+Sans:wght@400;500;600;700&family=IBM+Plex+Mono:wght@400;500&display=swap">
@@ -62,6 +62,9 @@ button{font-family:inherit;cursor:pointer}
 
 /* ── les candidats ── */
 .cand{border-top:1px solid var(--filet-fin);padding:22px 0}
+.tour-1 .cand h3{color:var(--gris)}
+.tour-1 .cand{opacity:.72}
+.tour-1 .reco{background:var(--filet);color:#FFF}
 .cand:first-of-type{border-top:1.5px solid var(--encre)}
 .cand__t{display:grid;grid-template-columns:36px minmax(0,1fr) auto;gap:16px;align-items:start}
 .cand__case button{width:24px;height:24px;border:1.5px solid var(--filet);border-radius:5px;
@@ -82,6 +85,16 @@ button{font-family:inherit;cursor:pointer}
   margin-bottom:4px}
 .pc-pour .r{color:var(--niv)}
 .pc-contre .r{color:var(--ambre-fonce)}
+
+/* ── les directions du deuxième tour ── */
+.dir{margin-top:34px}
+.dir__t{display:flex;align-items:baseline;gap:14px;flex-wrap:wrap;
+  border-bottom:2px solid var(--niv);padding-bottom:8px}
+.dir__t span{font-size:10.5px;font-weight:800;letter-spacing:.12em;text-transform:uppercase;
+  color:var(--niv);background:var(--niv-pale);padding:3px 9px;border-radius:11px}
+.dir__t h3{font-size:19px;font-weight:900}
+.dir__p{font-size:14px;margin-top:12px;max-width:80ch}
+.tour-2 .cand:first-of-type{border-top:1px solid var(--filet-fin)}
 
 /* ── écartés ── */
 .ecarte{display:grid;grid-template-columns:190px minmax(0,1fr);gap:20px;
@@ -147,6 +160,9 @@ button{font-family:inherit;cursor:pointer}
       <p class="verdict">Le nom doit tenir dans une phrase que l'enseignant dira cinquante fois
       par semaine&nbsp;: «&nbsp;<b>Je t'envoie un ___ sur le passé composé.</b>&nbsp;»
       C'est la seule épreuve qui compte.</p>
+      <p style="margin-top:18px;font-size:14px"><b>Premier tour&nbsp;: les cinq sont
+      écartés</b> (30 août). Le deuxième tour est plus bas — et il change de
+      direction, pas seulement de mots.</p>
     </div>
   </div>
 
@@ -170,11 +186,13 @@ button{font-family:inherit;cursor:pointer}
   </section>
 
   <!-- ─────────────────────────────────────────────── -->
-  <section class="bloc">
-    <span class="eyebrow">Les candidats</span>
-    <h2>Cinq noms, et ce que chacun donne</h2>
-    <p class="intro">Cochez celui que vous voulez, exportez, et je le pose partout — interface,
-    étagère, page de présentation. <b>Priorité au premier</b>, mais la décision est la vôtre.</p>
+  <section class="bloc tour-1">
+    <span class="eyebrow">Premier tour · écarté</span>
+    <h2>Les cinq premiers, et ce qu'ils avaient en commun</h2>
+    <p class="intro">Tous rejetés d'un bloc, ce qui est une information en soi. En les
+    relisant&nbsp;: <b>aucun ne nommait ce que l'élève y gagne.</b> Trois nommaient le
+    contenant — le véhicule, la durée, l'aide —, deux nommaient l'effort. Pas un ne disait ce
+    qui change dans sa tête. Le deuxième tour part de là. Gardés ici pour ne pas y revenir.</p>
 
     <div class="cand" data-id="trajet">
       <div class="cand__t">
@@ -183,7 +201,7 @@ button{font-family:inherit;cursor:pointer}
           <h3>Le trajet</h3>
           <p class="accroche">« Le temps d'un trajet. »</p>
         </div>
-        <div><span class="reco">Recommandé</span></div>
+        <div><span class="reco">Écarté</span></div>
       </div>
       <div class="essais">
         <div class="essai"><b>L'enseignant</b><i>« Je t'envoie un trajet sur le passé composé. »</i></div>
@@ -320,6 +338,200 @@ button{font-family:inherit;cursor:pointer}
       <span id="etat">Rien de choisi.</span>
     </div>
     <textarea id="sortie" readonly></textarea>
+  </section>
+
+
+  <!-- ─────────────────────────────────────────────── -->
+  <section class="bloc tour-2">
+    <span class="eyebrow">Deuxième tour</span>
+    <h2>Quatre directions, six noms</h2>
+    <p class="intro">Le premier tour nommait <b>le contenant</b>. Celui-ci nomme autre chose —
+    et j'ai rangé les propositions par <b>ce dont le nom parle</b>, parce que si les six sont
+    rejetés d'un coup, c'est la direction qu'il faudra me dire, pas le mot. Vous pouvez donc me
+    répondre par une direction plutôt que par un nom.</p>
+
+    <div class="dir">
+      <div class="dir__t"><span>Direction 1</span><h3>Le nom dit ce qui se passe dans la tête</h3></div>
+      <p class="dir__p">On ne nomme ni l'outil ni le temps qu'il prend, mais <b>l'effet</b>&nbsp;:
+      le moment où ça débloque. C'est ce que produit un rattrapage bien écrit, et c'est ce dont
+      l'élève se souvient.</p>
+
+      <div class="cand" data-id="declic">
+        <div class="cand__t">
+          <div class="cand__case"><button type="button" aria-pressed="false" aria-label="Choisir">✓</button></div>
+          <div><h3>Le déclic</h3><p class="accroche">« Dix minutes pour un déclic. »</p></div>
+          <div><span class="reco">Le plus fort</span></div>
+        </div>
+        <div class="essais">
+          <div class="essai"><b>L'enseignant</b><i>« Je t'envoie un déclic sur le passé composé. »</i></div>
+          <div class="essai"><b>L'élève</b><i>Mes déclics</i></div>
+          <div class="essai"><b>Le pluriel</b><i>les déclics</i> — et on peut les compter</div>
+          <div class="essai"><b>La direction</b><i>« … des modules, des ateliers et des déclics. »</i></div>
+        </div>
+        <div class="pourcontre">
+          <div class="pc-pour"><p class="r">Pour</p>
+            <p>Il nomme <b>la seule chose qui compte pour l'élève</b> — comprendre enfin. Positif
+            sans être mièvre, court, masculin, et il se compte&nbsp;: « j'ai fait trois déclics
+            cette semaine » se dit tout seul. Un mot que personne d'autre n'emploie en
+            francisation.</p></div>
+          <div class="pc-contre"><p class="r">Contre</p>
+            <p>Mot un peu <b>avancé pour un niveau 3</b> — il s'apprend, mais il ne se devine
+            pas. Et il <b>promet</b>&nbsp;: si le parcours ne provoque pas de déclic, le nom se
+            retourne contre nous.</p></div>
+        </div>
+      </div>
+
+      <div class="cand" data-id="reflexe">
+        <div class="cand__t">
+          <div class="cand__case"><button type="button" aria-pressed="false" aria-label="Choisir">✓</button></div>
+          <div><h3>Le réflexe</h3><p class="accroche">« Un réflexe de plus, chaque semaine. »</p></div>
+          <div></div>
+        </div>
+        <div class="essais">
+          <div class="essai"><b>L'enseignant</b><i>« Je t'envoie un réflexe sur le passé composé. »</i></div>
+          <div class="essai"><b>L'élève</b><i>Mes réflexes</i></div>
+          <div class="essai"><b>Le pluriel</b><i>les réflexes</i></div>
+          <div class="essai"><b>La direction</b><i>« … et des réflexes. »</i></div>
+        </div>
+        <div class="pourcontre">
+          <div class="pc-pour"><p class="r">Pour</p>
+            <p>Dit exactement <b>l'objectif d'une remédiation</b>&nbsp;: que ça devienne
+            automatique, qu'on n'ait plus à y penser en parlant. Mot international, compris
+            très tôt.</p></div>
+          <div class="pc-contre"><p class="r">Contre</p>
+            <p>Un réflexe <b>se construit par la répétition</b>, pas en dix minutes&nbsp;: le nom
+            promet un régime, alors qu'on livre une séance. Et il sonne un peu mécanique pour un
+            travail qui demande de comprendre.</p></div>
+        </div>
+      </div>
+    </div>
+
+    <div class="dir">
+      <div class="dir__t"><span>Direction 2</span><h3>Le nom emprunte le signe de la marque</h3></div>
+      <p class="dir__p">francis n'a qu'un signe&nbsp;: <b>le point du «&nbsp;i&nbsp;»</b>. Un nom
+      qui le reprend fait de la gamme une extension de la marque plutôt qu'une marque de plus —
+      et il est déjà dessiné.</p>
+
+      <div class="cand" data-id="le-point">
+        <div class="cand__t">
+          <div class="cand__case"><button type="button" aria-pressed="false" aria-label="Choisir">✓</button></div>
+          <div><h3>Le point</h3><p class="accroche">« Un point à la fois. »</p></div>
+          <div><span class="reco">Le plus juste</span></div>
+        </div>
+        <div class="essais">
+          <div class="essai"><b>L'enseignant</b><i>« Je t'envoie un point sur le passé composé. »</i></div>
+          <div class="essai"><b>L'élève</b><i>Mes points</i> — ou « Faire le point »</div>
+          <div class="essai"><b>Le pluriel</b><i>les points</i></div>
+          <div class="essai"><b>La direction</b><i>« … des modules, des ateliers et des points. »</i></div>
+        </div>
+        <div class="pourcontre">
+          <div class="pc-pour"><p class="r">Pour</p>
+            <p>«&nbsp;<b>Un point de grammaire</b>&nbsp;», «&nbsp;<b>faire le point</b>&nbsp;» —
+            c'est déjà, en français, le mot exact pour «&nbsp;une chose précise qu'on travaille&nbsp;».
+            Rien à expliquer à personne. Et il <b>est le logo</b>&nbsp;: le disque mauve du
+            «&nbsp;i&nbsp;» devient l'icône de la gamme, sans dessiner quoi que ce soit de neuf.
+            Le plus court des six.</p></div>
+          <div class="pc-contre"><p class="r">Contre</p>
+            <p>«&nbsp;<b>Mes points</b>&nbsp;» se lit comme <b>une note, un score</b> — exactement
+            ce que ce projet refuse. Contournable (« Mes points de français », « Faire le
+            point »), mais c'est une vigilance permanente. Et le mot est très
+            polysémique.</p></div>
+        </div>
+      </div>
+    </div>
+
+    <div class="dir">
+      <div class="dir__t"><span>Direction 3</span><h3>Le nom parle à la première personne, comme le reste</h3></div>
+      <p class="dir__p">Les sections d'un module s'appellent <b>Je découvre · Je me lance · Je
+      retiens des mots</b>, et l'atelier de correction <b>Corrige-moi&nbsp;!</b> La gamme
+      pourrait entrer dans cette famille au lieu d'ouvrir un vocabulaire à part.</p>
+
+      <div class="cand" data-id="je-continue">
+        <div class="cand__t">
+          <div class="cand__case"><button type="button" aria-pressed="false" aria-label="Choisir">✓</button></div>
+          <div><h3>Je continue</h3><p class="accroche">« Le cours est fini. Je continue. »</p></div>
+          <div></div>
+        </div>
+        <div class="essais">
+          <div class="essai"><b>L'enseignant</b><i>« Je t'ai mis quelque chose dans Je continue. »</i></div>
+          <div class="essai"><b>L'élève</b><i>Je continue</i> — en tête de son portail</div>
+          <div class="essai"><b>Le pluriel</b>impossible — ce n'est pas un nom</div>
+          <div class="essai"><b>La direction</b><i>« … et Je continue. »</i> — il faut expliquer</div>
+        </div>
+        <div class="pourcontre">
+          <div class="pc-pour"><p class="r">Pour</p>
+            <p>Entre <b>exactement dans la famille</b> des noms de sections&nbsp;: même voix,
+            même simplicité, aucun mot neuf à apprendre. Et il dit la chose juste — <b>le cours
+            ne s'arrête pas à la porte de la classe</b>.</p></div>
+          <div class="pc-contre"><p class="r">Contre</p>
+            <p>Comme «&nbsp;En attendant&nbsp;» au premier tour&nbsp;: <b>ce n'est pas un
+            nom</b>. On ne peut ni en envoyer un, ni en compter trois. Il faudrait un second mot
+            pour la chose, donc deux vocabulaires.</p></div>
+        </div>
+      </div>
+    </div>
+
+    <div class="dir">
+      <div class="dir__t"><span>Direction 4</span><h3>Le nom dit le concept de biais</h3></div>
+      <p class="dir__p">Ni l'outil, ni l'effet&nbsp;: <b>l'idée</b> — on avance sans s'en rendre
+      compte, avec du temps qui ne servait à rien. C'est la direction la plus risquée et la plus
+      mémorable.</p>
+
+      <div class="cand" data-id="mine-de-rien">
+        <div class="cand__t">
+          <div class="cand__case"><button type="button" aria-pressed="false" aria-label="Choisir">✓</button></div>
+          <div><h3>Mine de rien</h3><p class="accroche">« Mine de rien, vous avancez. »</p></div>
+          <div></div>
+        </div>
+        <div class="essais">
+          <div class="essai"><b>L'enseignant</b><i>« Je t'ai mis un Mine de rien sur le passé composé. »</i></div>
+          <div class="essai"><b>L'élève</b><i>Mine de rien</i></div>
+          <div class="essai"><b>Le pluriel</b>lourd — « des Mine de rien »</div>
+          <div class="essai"><b>La direction</b><i>« … et Mine de rien. »</i></div>
+        </div>
+        <div class="pourcontre">
+          <div class="pc-pour"><p class="r">Pour</p>
+            <p>Expression <b>d'ici</b>, chaleureuse, et qui dit <b>tout le concept en trois
+            mots</b>&nbsp;: dix minutes qui ne coûtent rien, et au bout d'un mois on a avancé.
+            C'est le seul candidat qui ferait sourire quelqu'un.</p></div>
+          <div class="pc-contre"><p class="r">Contre</p>
+            <p><b>Idiomatique</b> — donc opaque pour un élève de niveau 1 à 4, c'est-à-dire pour
+            la moitié de nos élèves. Un nom qu'il faut traduire est un nom qui a déjà
+            échoué.</p></div>
+        </div>
+      </div>
+
+      <div class="cand" data-id="la-reprise">
+        <div class="cand__t">
+          <div class="cand__case"><button type="button" aria-pressed="false" aria-label="Choisir">✓</button></div>
+          <div><h3>La reprise</h3><p class="accroche">« On reprend, autrement. »</p></div>
+          <div></div>
+        </div>
+        <div class="essais">
+          <div class="essai"><b>L'enseignant</b><i>« Je t'envoie une reprise sur le passé composé. »</i></div>
+          <div class="essai"><b>L'élève</b><i>Mes reprises</i></div>
+          <div class="essai"><b>Le pluriel</b><i>les reprises</i></div>
+          <div class="essai"><b>La direction</b><i>« … et des reprises. »</i></div>
+        </div>
+        <div class="pourcontre">
+          <div class="pc-pour"><p class="r">Pour</p>
+            <p>Le mot le plus <b>honnête</b> des six&nbsp;: c'est exactement le geste — on
+            reprend ce qui a coincé, autrement que la première fois. En couture, une reprise
+            <b>répare sans que ça se voie</b>, ce qui est une belle image pour une lacune
+            comblée.</p></div>
+          <div class="pc-contre"><p class="r">Contre</p>
+            <p>Il nomme <b>le manque plutôt que le gain</b>. Recevoir « une reprise » peut se
+            lire comme un redoublement — devant un adulte qui a déjà changé de pays, ce n'est pas
+            rien.</p></div>
+        </div>
+      </div>
+    </div>
+
+    <div class="note"><b>Si aucune des quatre directions ne vous parle, dites-la-moi comme
+    ça</b> — « pas l'effet », « pas la marque » — et j'en ouvre d'autres. Il en reste&nbsp;: le
+    nom pourrait parler <b>du niveau qu'on gagne</b>, du <b>geste de l'enseignant</b> qui
+    l'envoie, ou ne rien dire du tout et n'être qu'un mot court à faire nôtre, comme le sont
+    la plupart des marques.</div>
   </section>
 
   <!-- ─────────────────────────────────────────────── -->
