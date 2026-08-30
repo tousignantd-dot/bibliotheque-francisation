@@ -145,21 +145,28 @@ DIAPOS = PRES / "diaporamas"
 
 
 def formes(base, code):
-    """(page, diaporama, papier) — chacun un chemin relatif, ou None.
+    """(page, web, pptx, papier, vignette) — chacun un chemin relatif, ou None.
 
     Ne rend que ce qui est **sur le disque**. Le jour où une autre session
     renomme un diaporama, la case se vide au lieu de pointer dans le vide.
+
+    `web` est la version **HTML animée**, celle qu'on projette ; `pptx` la
+    même chose en PowerPoint, pour qui en veut un. Les deux sortent des mêmes
+    fichiers de contenu — voir `build/powerpoints/pitch/web.py`.
     """
     page = ("%s.html" % base) if base and (PRES / ("%s.html" % base)).exists() else None
     pdf = ("%s.pdf" % base) if base and (PRES / ("%s.pdf" % base)).exists() else None
-    deck = vign = None
+    web = pptx = vign = None
     if code:
+        for f in sorted(DIAPOS.glob("%s-*.html" % code)):
+            web = "diaporamas/%s" % f.name
+            break
         for f in sorted(DIAPOS.glob("%s-*.pptx" % code)):
-            deck = "diaporamas/%s" % f.name
+            pptx = "diaporamas/%s" % f.name
             break
         if (DIAPOS / "apercus" / ("%s.png" % code)).exists():
             vign = "diaporamas/apercus/%s.png" % code
-    return page, deck, pdf, vign
+    return page, web, pptx, pdf, vign
 
 
 def orphelins():
@@ -170,8 +177,8 @@ def orphelins():
     puisque rien ne manque à l'écran.
     """
     connus = {c for _, _, _, c in TROUSSE if c}
-    return sorted(f.name.split("-")[0] for f in DIAPOS.glob("*.pptx")
-                  if f.name.split("-")[0] not in connus)
+    return sorted({f.name.split("-")[0] for f in DIAPOS.glob("*.pptx")
+                   if f.name.split("-")[0] not in connus})
 
 
 DEROULE = [
@@ -303,21 +310,28 @@ def page(m):
 
     rangs = []
     for titre, phrase, base, code in TROUSSE:
-        page, deck, pdf, _ = formes(base, code)
+        page, web, pptx, pdf, _ = formes(base, code)
+        # « À projeter » montre d'abord le HTML animé — c'est ce qu'on projette.
+        # Le PowerPoint reste offert en second, plus petit : il existe pour qui
+        # en veut un, il n'est pas la version de référence.
+        proj = cellule(web, code or "")
+        if pptx:
+            proj += ' <span class="sous">· <a href="%s">pptx</a></span>' % pptx
         rangs.append(
             '<tr><td><b>%s</b><br><span class="sous">%s</span></td>'
             '<td>%s</td><td>%s</td><td>%s</td></tr>'
-            % (titre, phrase, cellule(page, "la page"),
-               cellule(deck, code or ""), cellule(pdf, "le PDF")))
+            % (titre, phrase, cellule(page, "la page"), proj,
+               cellule(pdf, "le PDF")))
     h_trousse = "".join(rangs)
 
     # La galerie : on ne montre que les documents qui ont un diaporama, dans
     # l'ordre du catalogue — donc le pitch avant les annexes.
     vign = []
     for titre, phrase, base, code in TROUSSE:
-        page, deck, pdf, image = formes(base, code)
+        page, web, deck, pdf, image = formes(base, code)
         if not deck:
             continue
+        deck = web or deck      # la vignette ouvre la version projetable
         vign.append(
             '<figure><img src="%s" alt="Première diapositive de %s" loading="lazy">'
             '<figcaption><span class="code">%s</span>'

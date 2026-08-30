@@ -102,6 +102,36 @@ def _reduire(src, dst, largeur=720):
             dst, quality=86, optimize=True)
 
 
+def construire_web(codes):
+    """Les mêmes fichiers de contenu, rendus en HTML animé.
+
+    Les dix modules font `from theme import Deck` : on échange la classe dans
+    `theme` puis on les **recharge**, sinon l'import déjà résolu garderait
+    l'ancienne. C'est le seul moyen de ne pas toucher aux dix fichiers — et de
+    garantir qu'aucun texte n'existe en deux exemplaires.
+    """
+    import theme
+    import web
+    preparer()
+    os.makedirs(SORTIE, exist_ok=True)
+    vraie = theme.Deck
+    theme.Deck = web.Deck
+    faits = []
+    try:
+        for code in codes:
+            mod = importlib.reload(importlib.import_module(code))
+            chemin, n = mod.build(SORTIE)
+            print('  %-52s %2d écrans' % (os.path.basename(chemin), n))
+            faits.append(chemin)
+    finally:
+        theme.Deck = vraie
+        # Remettre les modules d'aplomb : une construction .pptx qui suivrait
+        # dans le même processus repartirait sinon sur la classe HTML.
+        for code in codes:
+            importlib.reload(importlib.import_module(code))
+    return faits
+
+
 def construire(codes, apercu=False):
     preparer()
     os.makedirs(SORTIE, exist_ok=True)
@@ -120,8 +150,11 @@ def construire(codes, apercu=False):
 if __name__ == '__main__':
     args = [a for a in sys.argv[1:] if not a.startswith('--')]
     codes = args or DECKS
-    construire(codes, apercu='--apercu' in sys.argv)
-    if '--vignettes' in sys.argv:
+    if '--web' in sys.argv:
+        construire_web(codes)
+    else:
+        construire(codes, apercu='--apercu' in sys.argv)
+    if '--vignettes' in sys.argv and '--web' not in sys.argv:
         faites = vignettes(codes)
         print('  vignettes : %d dans %s'
               % (len(faites), os.path.relpath(VIGNETTES, os.getcwd())))

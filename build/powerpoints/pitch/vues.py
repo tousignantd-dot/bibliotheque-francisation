@@ -33,6 +33,12 @@ SOURCES = {'cas': PRES / 'captures-cas',
            'tel': PRES / 'captures-telephone',
            'mat': PRES / 'captures-materiel'}
 
+# En HTML, on sert le JPEG d'origine plutôt que l'épreuve PNG : le dossier
+# d'épreuves n'est pas versionné, et le JPEG est trois fois plus léger pour un
+# écran de navigateur. Le diaporama HTML vit dans `diaporamas/`, d'où le `..`.
+SOURCES_WEB = {'cas': '../captures-cas', 'tel': '../captures-telephone',
+               'mat': '../captures-materiel'}
+
 
 def poser(famille, nom):
     """Recopie une capture en PNG dans le dossier d'épreuves, rend son code.
@@ -64,6 +70,20 @@ def poser(famille, nom):
     return code
 
 
+def chemin_web(code):
+    """Le chemin relatif du JPEG d'origine, pour le diaporama HTML."""
+    famille, nom = code.split('-', 1)
+    return '%s/%s.jpg' % (SOURCES_WEB[famille], nom)
+
+
+def taille(code):
+    """(largeur, hauteur) du JPEG d'origine — pour choisir la disposition."""
+    famille, nom = code.split('-', 1)
+    from PIL import Image
+    with Image.open(SOURCES[famille] / (nom + '.jpg')) as im:
+        return im.size
+
+
 def ecran(d, surtitre, titre, code, consigne, notes=''):
     """Une capture d'écran, plein cadre, avec son sur-titre à nous.
 
@@ -81,6 +101,11 @@ def ecran(d, surtitre, titre, code, consigne, notes=''):
     au-delà de trois lignes — au-delà, ce n'est plus une consigne, c'est une
     diapositive de texte à laquelle on a collé une image.
     """
+    # Le deck HTML porte sa propre méthode : il place une image dans une page,
+    # pas dans une boîte de 13,3 pouces, et rien de ce qui suit ne le concerne.
+    if hasattr(d, 'ecran'):
+        return d.ecran(surtitre, titre, code, consigne, notes)
+
     chemin = str(EPREUVES / (code + '.png'))
     if not os.path.exists(chemin):
         raise SystemExit('!! épreuve manquante : %s' % chemin)
@@ -120,4 +145,4 @@ def nettoyer():
         shutil.rmtree(EPREUVES)
 
 
-__all__ = ['poser', 'ecran', 'nettoyer', 'EPREUVES']
+__all__ = ['poser', 'ecran', 'chemin_web', 'taille', 'nettoyer', 'EPREUVES']

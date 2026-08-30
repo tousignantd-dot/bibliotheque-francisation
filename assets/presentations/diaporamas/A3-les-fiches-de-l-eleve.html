@@ -1,0 +1,290 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>A3 · Les fiches de l'élève</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800;900&display=swap">
+<style>
+  :root{
+    --sec:#B45309; --sec-doux:#FBEEDC;
+    --ink-900:#17181A; --ink-700:#3A3D40; --ink-500:#4B4F52;
+    --ink-400:#6E7175; --line-100:#EAEAE8; --line-200:#D8E8DF;
+    --line-300:#D6D6D2; --paper-50:#FBFBFA; --paper-100:#F7F7F5;
+    /* **Les tailles suivent la hauteur autant que la largeur.** Un écran de
+       1280x600 — la forme d'un portable très ordinaire — est large mais bas :
+       en ne dimensionnant que sur `vw`, cinq écrans de F1 débordaient de 12 à
+       79 px et devenaient défilants. En projection, ce qui défile est ce que
+       la salle ne voit pas. Mesuré dans la page à trois formats, pas deviné. */
+    --marge: clamp(20px, min(4.4vw, 6.2vh), 78px);
+  }
+  *{box-sizing:border-box}
+  html,body{height:100%; margin:0}
+  body{background:var(--paper-100); color:var(--ink-900); overflow:hidden;
+    font-family:"Nunito",system-ui,-apple-system,"Segoe UI",sans-serif;
+    font-size:clamp(14px, min(1.5vw, 2.5vh), 21px); line-height:1.42;}
+
+  /* Un seul écran visible. Le suivant est en place, prêt, mais retiré du flux
+     et de l'ordre de tabulation — sans quoi la touche Tab visiterait les
+     quinze écrans du diaporama. */
+  .scene{position:absolute; inset:0}
+  .dia{position:absolute; inset:0; overflow-y:auto;
+    padding:var(--marge) var(--marge) calc(var(--marge) + 42px);
+    opacity:0; visibility:hidden; pointer-events:none;
+    display:flex; flex-direction:column; justify-content:center;}
+  .dia.ici{opacity:1; visibility:visible; pointer-events:auto}
+
+  /* Les cinq mouvements du canevas. Le décalage fait la vie, pas la durée :
+     90 ms entre deux blocs, jamais plus — au-delà, la salle attend. */
+  @keyframes monte{from{opacity:0; transform:translateY(18px)} to{opacity:1; transform:none}}
+  @keyframes tombe{from{opacity:0; transform:translateY(-14px)} to{opacity:1; transform:none}}
+  @keyframes eclot{from{opacity:0; transform:scale(.94)} to{opacity:1; transform:none}}
+  @keyframes grandit{from{opacity:0; transform:scale(.86)} to{opacity:1; transform:none}}
+  @keyframes cote{from{opacity:0; transform:translateX(-22px)} to{opacity:1; transform:none}}
+
+  .dia.ici [data-anim]{animation:monte .42s both;
+    animation-delay:calc((var(--d,0) + 0) * 90ms)}
+  .dia.ici [data-anim="1"]{--d:0; animation-name:tombe}
+  .dia.ici [data-anim="2"]{--d:1}
+  .dia.ici [data-anim="3"]{--d:2}
+  .dia.ici [data-anim="4"]{--d:3; animation-name:eclot}
+  .dia.ici li[style*="--i"], .dia.ici article[style*="--i"],
+  .dia.ici tr[style*="--i"]{animation:monte .42s both;
+    animation-delay:calc(var(--i, 3) * 90ms)}
+  .dia.ici .est-grand{animation-name:grandit}
+  @media (prefers-reduced-motion: reduce){
+    .dia.ici *{animation:none !important}
+  }
+
+  h1,h2,h3{margin:0; line-height:1.1; letter-spacing:-.02em}
+  h1{font-size:clamp(34px, min(6.2vw, 10vh), 86px); font-weight:900}
+  h2{font-size:clamp(24px, min(3.8vw, 6.4vh), 54px); font-weight:900;
+    max-width:22ch}
+  h3{font-size:1.02em; font-weight:800; color:var(--sec)}
+  p{margin:0}
+  .sur{font-size:.66em; font-weight:800; letter-spacing:.14em;
+    text-transform:uppercase; color:var(--sec); margin-bottom:.7em}
+  .chapeau{margin-top:.9em; font-size:1.06em; color:var(--ink-700); max-width:56ch}
+  .duree{margin-top:1.6em; font-size:.8em; color:var(--ink-400)}
+  .precision{margin-top:1.1em; font-size:.98em; color:var(--ink-700); max-width:64ch}
+  .consigne{margin:.9em 0 0; font-size:.9em; color:var(--ink-400); max-width:72ch}
+  .note{margin-top:1em; font-size:.82em; color:var(--ink-400)}
+
+  .dia--titre h1{margin-top:.1em}
+  .est-jalon{background:var(--ink-900); color:#fff}
+  .est-jalon .num{font-size:.66em; font-weight:800; letter-spacing:.14em;
+    text-transform:uppercase; color:var(--sec-doux); margin-bottom:.8em}
+  .est-jalon h2{color:#fff; font-size:clamp(28px, min(5.2vw, 8.6vh), 72px);
+    max-width:18ch}
+  .est-jalon .phrase{margin-top:.9em; color:#C9CBCE; font-size:1.05em; max-width:52ch}
+
+  .est-regle h2{font-size:clamp(26px, min(4.4vw, 7.4vh), 62px); max-width:19ch}
+  .est-piege h2{color:var(--ink-500); font-weight:700}
+  .juste{margin-top:.8em; font-size:clamp(21px, min(3.1vw, 5.2vh), 42px);
+    font-weight:900;
+    color:var(--sec); max-width:22ch; line-height:1.14}
+
+  .parcours{list-style:none; margin:2em 0 0; padding:0; display:grid; gap:14px;
+    max-width:44ch}
+  .parcours li{display:flex; align-items:center; gap:14px; padding:12px 16px;
+    border:1px solid var(--line-200); border-radius:12px; background:#fff}
+  .parcours li.ici{border-color:var(--sec); background:var(--sec-doux)}
+  .parcours li.fait{opacity:.5}
+  .parcours .pastille{width:1.9em; height:1.9em; flex:0 0 auto; border-radius:50%;
+    display:grid; place-items:center; font-weight:800; font-size:.8em;
+    background:var(--line-100); color:var(--ink-500)}
+  .parcours li.ici .pastille{background:var(--sec); color:#fff}
+  .parcours .nom{font-weight:700; flex:1}
+  .parcours .min{color:var(--ink-400); font-size:.86em}
+
+  .objectifs{list-style:none; margin:1.6em 0 0; padding:0; display:grid; gap:12px;
+    max-width:58ch}
+  .objectifs li{padding-left:1.6em; position:relative; color:var(--ink-700)}
+  .objectifs li::before{content:""; position:absolute; left:0; top:.55em;
+    width:.6em; height:.6em; border-radius:50%; background:var(--sec)}
+
+  .cadre{margin-top:1.5em; border:1px solid var(--line-200); border-radius:14px;
+    overflow:auto; background:#fff}
+  table{border-collapse:collapse; width:100%; font-size:.92em}
+  th,td{text-align:left; padding:12px 16px; border-bottom:1px solid var(--line-100)}
+  th{font-size:.74em; font-weight:800; letter-spacing:.1em; text-transform:uppercase;
+    color:var(--ink-400); background:var(--paper-50)}
+  tbody tr:last-child td{border-bottom:0}
+  td.cle{font-weight:800}
+
+  .cartes{margin-top:1.5em; display:grid; gap:16px;
+    grid-template-columns:repeat(auto-fit,minmax(min(280px,100%),1fr))}
+  .cartes article{background:#fff; border:1px solid var(--line-200);
+    border-radius:14px; padding:18px 20px}
+  .cartes p{margin-top:.45em; color:var(--ink-700); font-size:.93em}
+
+  .dialogue{list-style:none; margin:1.3em 0 0; padding:0; display:grid; gap:10px;
+    max-width:74ch}
+  .dialogue li{display:grid; grid-template-columns:minmax(90px,auto) 1fr; gap:16px;
+    padding:10px 14px; border-radius:10px}
+  .dialogue li.fort{background:var(--sec-doux)}
+  .dialogue b{color:var(--sec); font-weight:800; font-size:.86em;
+    letter-spacing:.04em; text-transform:uppercase}
+
+  /* `flex:1 1 0` et non `1 1 auto` : avec `auto`, la base est la hauteur de
+     l'image, donc une capture haute pousse le bloc et déborde par le bas au
+     lieu de se réduire. Vu à l'écran, pas en relisant. */
+  /* **Le cadre porte le rapport de l'image**, connu à la génération. Sans lui,
+     `max-height:100%` ne mord pas : la boîte est dimensionnée par son contenu,
+     la contrainte tourne en rond et le navigateur la laisse tomber — une
+     capture de 782 px tenait dans un cadre de 550 et débordait. Mesuré dans la
+     page, pas deviné. Avec `aspect-ratio`, le cadre se réduit à la hauteur
+     disponible et la largeur suit : le filet épouse l'image, sans bande vide. */
+  .est-ecran{gap:0}
+  .ecran{margin:1.1em auto 0; aspect-ratio:var(--ar, 16/9);
+    max-height:100%; max-width:100%; min-height:0; height:auto;
+    border:1px solid var(--line-300); border-radius:12px; overflow:hidden;
+    background:#fff; box-shadow:0 18px 44px rgba(0,0,0,.09)}
+  .ecran img{display:block; width:100%; height:100%; object-fit:contain}
+  /* Capture debout : le texte à gauche, l'écran à droite, sur toute la
+     hauteur. C'est la seule façon d'employer un 16:9 avec une image 9:19. */
+  @media (min-width: 860px){
+    /* `stretch` et non `center` : avec `center`, la figure prend la hauteur de
+       son contenu, `height:100%` ne résout contre rien, et `overflow:hidden`
+       rogne le bas de la capture. Vu à l'écran. */
+    .est-ecran.debout{flex-direction:row; align-items:stretch;
+      gap:clamp(24px,4vw,64px)}
+    .est-ecran.debout .bloc{flex:1 1 auto; max-width:52ch;
+      display:flex; flex-direction:column; justify-content:center}
+    .est-ecran.debout .ecran{margin:0; flex:0 1 auto; align-self:center}
+  }
+
+  .est-billet{background:var(--ink-900); color:#fff}
+  .est-billet .sur{color:var(--sec-doux)}
+  .est-billet .grand{font-size:clamp(23px, min(3.6vw, 6vh), 50px); font-weight:900;
+    line-height:1.14; max-width:26ch}
+  .est-billet .ex{list-style:none; margin:1.6em 0 0; padding:0; display:grid;
+    gap:10px; max-width:52ch; color:#C9CBCE}
+  .est-billet .ex li{padding-left:1.4em; position:relative}
+  .est-billet .ex li::before{content:""; position:absolute; left:0; top:.62em;
+    width:.5em; height:.5em; border-radius:50%; background:var(--sec-doux)}
+
+  /* — la barre du bas — */
+  .barre{position:fixed; left:0; right:0; bottom:0; height:42px; display:flex;
+    align-items:center; gap:14px; padding:0 var(--marge);
+    background:rgba(255,255,255,.86); backdrop-filter:blur(8px);
+    border-top:1px solid var(--line-100); font-size:13px; color:var(--ink-400)}
+  .est-jalon ~ .barre, body.sombre .barre{background:rgba(23,24,26,.8);
+    border-top-color:#2A2C2F; color:#9A9DA1}
+  .barre button{font:inherit; font-weight:700; color:inherit; background:none;
+    border:0; cursor:pointer; padding:6px 8px; border-radius:8px}
+  .barre button:hover{background:var(--line-100); color:var(--ink-900)}
+  .barre .cpt{margin-left:auto; font-variant-numeric:tabular-nums}
+  .jauge{position:fixed; left:0; bottom:42px; height:3px; background:var(--sec);
+    transition:width .3s ease; z-index:5}
+
+  /* — notes du présentateur — */
+  .panneau{position:fixed; right:0; top:0; bottom:42px; width:min(420px,86vw);
+    background:#17181A; color:#E7E8EA; padding:26px 24px; overflow-y:auto;
+    transform:translateX(101%); transition:transform .25s ease; z-index:6;
+    font-size:15px; line-height:1.6; border-left:1px solid #2A2C2F}
+  body.notes .panneau{transform:none}
+  .panneau h3{color:#9A9DA1; font-size:11px; letter-spacing:.12em;
+    text-transform:uppercase; margin-bottom:12px}
+
+  /* — sommaire — */
+  .som{position:fixed; inset:0; background:rgba(23,24,26,.55); z-index:8;
+    display:grid; place-items:center; padding:24px}
+  .som[hidden]{display:none}
+  .som ol{list-style:none; margin:0; padding:22px; background:#fff;
+    border-radius:16px; max-height:80vh; overflow-y:auto; min-width:min(560px,92vw)}
+  .som button{display:flex; gap:14px; width:100%; text-align:left; font:inherit;
+    background:none; border:0; padding:9px 12px; border-radius:9px; cursor:pointer}
+  .som button:hover{background:var(--paper-50)}
+  .som span{color:var(--ink-400); font-variant-numeric:tabular-nums; min-width:2ch}
+
+  /* — à l'impression, tous les écrans se déplient — */
+  @media print{
+    @page{size:landscape; margin:12mm}
+    html,body{height:auto; overflow:visible; background:#fff}
+    .barre,.jauge,.panneau,.som{display:none !important}
+    .scene{position:static}
+    .dia{position:static; opacity:1 !important; visibility:visible !important;
+      break-after:page; min-height:auto; padding:0 0 10mm;
+      border-bottom:1px solid #DDD; margin-bottom:10mm}
+    .dia *{animation:none !important}
+    .est-jalon,.est-billet{background:#fff; color:#000}
+    .est-jalon h2,.est-billet .grand{color:#000}
+    .notes{display:block !important; margin-top:8mm; font-size:10pt; color:#555}
+  }
+</style>
+</head>
+<body>
+<div class="scene"><section class="dia est-titre" data-n="1" aria-hidden="false"><div class="dia--titre"><p class="sur" data-anim="1">ANNEXE  ·  LE PAPIER</p><h1 data-anim="2">Les fiches de l'élève</h1><p class="chapeau" data-anim="3">Une fiche par séance, format lettre, en noir et blanc — 1 264 fiches. Elles s'impriment sur la photocopieuse de l'école, elles se rangent dans un cartable, et elles ne demandent aucun appareil.</p><p class="duree" data-anim="4">5 minutes</p></div><div class="notes" hidden>Annexe. Elle sert surtout devant une direction qui doute que le numérique convienne à son public : la réponse est qu'on n'a jamais retiré le papier.</div></section><section class="dia est-regle" data-n="2" aria-hidden="true"><p class="sur" data-anim="1">LA RÈGLE QUI TIENT TOUT</p><h2 data-anim="2">Une séance, c'est une fiche pour l'élève et un diaporama pour vous.</h2><p class="precision" data-anim="3">Les deux sortent du même fichier de contenu. Corriger une règle la corrige des deux côtés : il n'existe pas de version à jour et de version oubliée.</p><div class="notes" hidden>C'est la même diapositive que dans P1. La répéter est voulu : c'est la seule idée que la salle doit emporter des deux.</div></section><section class="dia est-ecran debout" data-n="3" aria-hidden="true"><div class="bloc"><p class="sur" data-anim="1">UNE SÉANCE</p><h2 data-anim="2">La fiche que l'élève reçoit</h2><p class="consigne" data-anim="3">Nom, date, l'objectif de la séance, les exercices. Noir et blanc : la hiérarchie passe par la graisse et les filets, jamais par la couleur.</p></div><figure class="ecran" data-anim="4" style="--ar:982/1500"><img src="../captures-materiel/01-fiche-seance.jpg" alt="La fiche que l'élève reçoit" loading="lazy"></figure><div class="notes" hidden>Le noir et blanc n'est pas une économie de style : c'est la seule façon qu'une fiche sorte juste d'une photocopieuse d'école.</div></section><section class="dia est-ecran debout" data-n="4" aria-hidden="true"><div class="bloc"><p class="sur" data-anim="1">UNE SÉANCE</p><h2 data-anim="2">Le dialogue, écrit</h2><p class="consigne" data-anim="3">Ce que l'élève a entendu dans le module, il le retrouve écrit. Il peut le relire chez lui sans rouvrir un écran.</p></div><figure class="ecran" data-anim="4" style="--ar:982/1500"><img src="../captures-materiel/02-fiche-dialogue.jpg" alt="Le dialogue, écrit" loading="lazy"></figure><div class="notes" hidden>Point à faire : l'audio est dans le module, le texte est sur la fiche. Un élève sans données mobiles travaille quand même.</div></section><section class="dia est-ecran debout" data-n="5" aria-hidden="true"><div class="bloc"><p class="sur" data-anim="1">UN MODULE</p><h2 data-anim="2">Le sommaire de ses séances</h2><p class="consigne" data-anim="3">Les seize séances d'un module en une page. C'est ce que l'enseignant imprime en premier, pour savoir où il va.</p></div><figure class="ecran" data-anim="4" style="--ar:1026/1400"><img src="../captures-materiel/03-sommaire-module.jpg" alt="Le sommaire de ses séances" loading="lazy"></figure><div class="notes" hidden>Seize séances par module aux niveaux 3 à 8 ; huit aux niveaux 1 et 2. Le dire seulement si on le demande.</div></section><section class="dia est-ecran debout" data-n="6" aria-hidden="true"><div class="bloc"><p class="sur" data-anim="1">TOUTES ENSEMBLE</p><h2 data-anim="2">Le manuel de l'élève</h2><p class="consigne" data-anim="3">Les 288 séances d'un niveau reliées en un manuel, avec sa table des matières. Il se fabrique en une commande.</p></div><figure class="ecran" data-anim="4" style="--ar:772/1000"><img src="../captures-materiel/06-manuel-couverture.jpg" alt="Le manuel de l'élève" loading="lazy"></figure><div class="notes" hidden>C'est le document qui impressionne le plus en salle, et c'est le moins cher à produire : il est assemblé à partir des fiches qui existent déjà.</div></section><section class="dia " data-n="7" aria-hidden="true"><p class="sur" data-anim="1">CE QUE LE PAPIER PERMET</p><h2 data-anim="2">Quatre situations, toutes réelles</h2><div class="cartes" style="--cols:2"><article style="--i:3"><h3>Un élève sans appareil</h3><p>Il fait la séance sur sa fiche, et rattrape l'écoute en classe. Rien ne l'exclut du cours.</p></article><article style="--i:4"><h3>Une panne de réseau</h3><p>La séance se donne quand même : l'enseignant a son diaporama, l'élève a sa fiche.</p></article><article style="--i:5"><h3>Un cartable qui reste</h3><p>À la fin du niveau, l'élève repart avec un manuel. C'est ce qu'il montre chez lui.</p></article><article style="--i:6"><h3>Une correction à la main</h3><p>L'enseignant qui préfère corriger sur papier le peut. Le module n'oblige personne.</p></article></div><div class="notes" hidden>Ces quatre-là viennent de vraies objections. Ne pas les inventer en salle : les lire.</div></section><section class="dia est-billet" data-n="8" aria-hidden="true"><div class="dia--billet"><p class="sur" data-anim="1">POUR FINIR</p><p class="grand" data-anim="2">Le papier n'est pas la version dégradée du cours. C'est la moitié qui reste quand tout le reste tombe.</p><ul class="ex"><li style="--i:3">1 264 fiches, une par séance.</li><li style="--i:4">Le document « Les fiches de l'élève » tient sur neuf pages.</li></ul></div><div class="notes" hidden>Fermer là-dessus. C'est la phrase qui désamorce l'objection du tout-numérique.</div></section></div>
+<div class="jauge" style="width:0"></div>
+<nav class="barre">
+  <button id="prec" aria-label="Écran précédent">&#8592;</button>
+  <button id="suiv" aria-label="Écran suivant">&#8594;</button>
+  <button id="bsom">Sommaire</button>
+  <button id="bnotes">Notes</button>
+  <button id="bplein">Plein écran</button>
+  <span class="cpt"><b id="ici">1</b> / 8 &nbsp;·&nbsp; A3</span>
+</nav>
+<aside class="panneau"><h3>Notes du présentateur</h3><div id="lesnotes"></div></aside>
+<div class="som" id="som" hidden><ol><li><button data-va="1"><span>1</span>Les fiches de l'élève</button></li><li><button data-va="2"><span>2</span>Une séance, c'est une fiche pour l'élève et un diaporama pour vous.</button></li><li><button data-va="3"><span>3</span>La fiche que l'élève reçoit</button></li><li><button data-va="4"><span>4</span>Le dialogue, écrit</button></li><li><button data-va="5"><span>5</span>Le sommaire de ses séances</button></li><li><button data-va="6"><span>6</span>Le manuel de l'élève</button></li><li><button data-va="7"><span>7</span>Quatre situations, toutes réelles</button></li><li><button data-va="8"><span>8</span>Pour finir</button></li></ol></div>
+<script>
+(function(){
+  var dias = [].slice.call(document.querySelectorAll('.dia'));
+  var n = dias.length, i = 0;
+  var jauge = document.querySelector('.jauge');
+  var som = document.getElementById('som');
+
+  function montrer(k){
+    i = Math.max(0, Math.min(n - 1, k));
+    dias.forEach(function(d, j){
+      d.classList.toggle('ici', j === i);
+      d.setAttribute('aria-hidden', j === i ? 'false' : 'true');
+    });
+    document.getElementById('ici').textContent = i + 1;
+    jauge.style.width = ((i + 1) / n * 100) + '%';
+    /* Le fond du jalon et du billet est sombre : la barre du bas doit suivre,
+       sinon elle reste blanche par-dessus du noir. */
+    var d = dias[i];
+    document.body.classList.toggle('sombre',
+      d.classList.contains('est-jalon') || d.classList.contains('est-billet'));
+    var nt = d.querySelector('.notes');
+    document.getElementById('lesnotes').innerHTML = nt ? nt.innerHTML : '';
+    d.scrollTop = 0;
+    try{ history.replaceState(null, '', '#' + (i + 1)); }catch(e){}
+  }
+
+  document.getElementById('suiv').onclick = function(){ montrer(i + 1); };
+  document.getElementById('prec').onclick = function(){ montrer(i - 1); };
+  document.getElementById('bnotes').onclick = function(){
+    document.body.classList.toggle('notes'); };
+  document.getElementById('bplein').onclick = function(){
+    if (document.fullscreenElement) document.exitFullscreen();
+    else document.documentElement.requestFullscreen(); };
+  document.getElementById('bsom').onclick = function(){ som.hidden = false; };
+  som.onclick = function(ev){
+    if (ev.target === som) { som.hidden = true; return; }
+    var b = ev.target.closest('button[data-va]');
+    if (b) { som.hidden = true; montrer(parseInt(b.dataset.va, 10) - 1); }
+  };
+
+  document.addEventListener('keydown', function(ev){
+    if (ev.metaKey || ev.ctrlKey || ev.altKey) return;
+    if (!som.hidden) { if (ev.key === 'Escape') { som.hidden = true; } return; }
+    var k = ev.key;
+    if (k === 'ArrowRight' || k === 'PageDown' || k === ' ') { ev.preventDefault(); montrer(i + 1); }
+    else if (k === 'ArrowLeft' || k === 'PageUp') { ev.preventDefault(); montrer(i - 1); }
+    else if (k === 'Home') { ev.preventDefault(); montrer(0); }
+    else if (k === 'End') { ev.preventDefault(); montrer(n - 1); }
+    else if (k === 'n' || k === 'N') { document.body.classList.toggle('notes'); }
+    else if (k === 'f' || k === 'F') { document.getElementById('bplein').click(); }
+    else if (k === 's' || k === 'S') { som.hidden = false; }
+  });
+
+  var depart = parseInt((location.hash || '').replace('#', ''), 10);
+  montrer(isNaN(depart) ? 0 : depart - 1);
+})();
+</script>
+</body>
+</html>
