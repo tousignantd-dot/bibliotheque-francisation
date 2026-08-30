@@ -51,43 +51,45 @@ import server  # noqa: E402  — on réemploie ses load_*/save_*, qui savent dé
                # première, et c'est le défaut que ce dépôt paie ailleurs.
 
 
-# ── Les journaux d'élèves : on les vide en entier ───────────────────────────
-# (nom lisible, chargeur, sauveur)
-JOURNAUX = [
-    ("progression",            server.load_progress,           server.save_progress),
-    ("journal d'accès",        server.load_access_log,         server.save_access_log),
-    ("signaux d'aide",         server.load_signaux_aide,        server.save_signaux_aide),
-    ("vocabulaire",            server.load_vocab_progress,      server.save_vocab_progress),
-    ("direct de la classe",    server.load_direct,              server.save_direct),
-    ("« Corrige-moi ! »",      server.load_corrige_moi,         server.save_corrige_moi),
-    ("analyses d'erreurs",     server.load_analyses_erreurs,    server.save_analyses_erreurs),
-    ("productions orales",     server.load_oral_submissions,    server.save_oral_submissions),
-    ("productions écrites",    server.load_written_submissions, server.save_written_submissions),
-    ("fichiers de groupe",     server.load_documents,           server.save_documents),
-    ("planification",          server.load_schedule,            server.save_schedule),
-    ("signalements",           server.load_signalements,        server.save_signalements),
-]
-
-# Les dossiers de fichiers déposés par les élèves. Effacer la fiche sans
-# effacer l'audio laisserait des enregistrements de personnes réelles sur le
-# volume, sans plus rien pour dire à qui ils appartiennent.
-DOSSIERS = ["assets/oral-submissions", "assets/documents-groupe"]
-
-# Le relevé quotidien et le registre des appels ne passent pas par un
-# load_/save_ : ce sont des fichiers à part.
-FICHIERS = ["data/stats_jour.json", "data/appels_api.jsonl"]
-
-
 def dossier_donnees():
     return pathlib.Path(os.environ.get("STORAGE_DIR", str(RACINE)))
 
 
-def stockage():
-    """« postgres » ou « fichiers » — la même question que `/api/health`."""
+def base_demandee():
+    """`DATABASE_URL` est-elle posée ? — c'est l'intention, pas le résultat."""
+    return bool(os.environ.get("DATABASE_URL", "").strip())
+
+
+def base_repond():
+    """La base répond-elle vraiment ? Rend (oui, motif).
+
+    **Ce contrôle est le filet de tout l'outil, et il a été ajouté après un
+    incident.** `_load_json_list` retombe sur le fichier du volume quand la
+    base est injoignable — c'est **voulu** côté serveur : si la base tombe en
+    pleine séance, rendre une liste vide viderait le portail et l'enseignante
+    recréerait ce qu'elle croit perdu. Mais un outil de purge qui hérite de ce
+    repli montre le disque du poste **en annonçant la production**, et invite
+    à effacer en croyant viser ailleurs.
+
+    On ne se fie donc pas à `db.disponible()`, qui ne regarde que la présence
+    d'une adresse et d'un pilote : on ouvre la connexion et on interroge.
+    """
+    if not base_demandee():
+        return False, "DATABASE_URL n'est pas posée"
+    if not (server._db and server._db.disponible()):
+        return False, "le pilote psycopg est absent du poste"
     try:
-        return "postgres" if server._db and server._db.disponible() else "fichiers"
-    except Exception:
-        return "fichiers"
+        with server._db.connexion() as c:
+            with c.cursor() as cur:
+                cur.execute("SELECT 1")
+        return True, ""
+    except Exception as e:
+        return False, str(e).strip().splitlines()[0]
+
+
+def stockage():
+    """« postgres » ou « fichiers » — mesuré, pas déduit."""
+    return "postgres" if base_repond()[0] else "fichiers"
 
 
 def releve():
@@ -115,27 +117,18 @@ def releve():
         "journaux": [],
         "fichiers": [],
     }
-    for nom, charger, _ in JOURNAUX:
-        try:
-            etat["journaux"].append((nom, len(charger())))
-        except Exception as e:
-            etat["journaux"].append((nom, "illisible : %s" % e))
-    base = dossier_donnees()
-    for rel in DOSSIERS:
-        d = base / rel
-        n = sum(1 for _ in d.rglob("*") if _.is_file()) if d.exists() else 0
-        etat["fichiers"].append((rel, n))
-    for rel in FICHIERS:
-        f = base / rel
-        etat["fichiers"].append((rel, 1 if f.exists() else 0))
+    vu = server.menage_releve()
+    etat["journaux"] = [(j["nom"], j["n"] if j["n"] is not None else j.get("erreur"))
+                        for j in vu["journaux"]]
+    etat["fichiers"] = [(f["nom"], f["n"]) for f in vu["fichiers"]]
     return etat
 
 
 def afficher(etat):
-    print("Stockage : %s" % etat["stockage"])
+    print("Stockage : %s  (vérifié par une requête, pas déduit)" % etat["stockage"])
     if etat["stockage"] == "fichiers":
-        print("  ⚠ Sans DATABASE_URL, ce ménage ne touche QUE le volume local")
-        print("    (%s). La production n'en saura rien." % dossier_donnees())
+        print("  ⚠ Ce ménage ne touche QUE le volume local (%s)." % dossier_donnees())
+        print("    La production n'en saura rien.")
     print()
     print("CE QUI RESTE")
     r, f = etat["reseau"], etat["fondateur"]
@@ -162,60 +155,17 @@ def afficher(etat):
 
 
 def menage(etat):
-    reseau = etat["reseau"]
-    fondateur = etat["fondateur"]
-    if reseau is None:
-        print("Refus : aucun nœud « reseau » dans l'arbre. Sans racine, le "
-              "ménage laisserait une installation sans portée.")
+    """Le geste lui-même vit dans `server.menage_executer()`, qui sert aussi le
+    bouton de la console. Deux implémentations d'un même effacement, ce serait
+    deux façons de se tromper."""
+    fait, motif = server.menage_executer(etat["fondateur"])
+    if not fait:
+        print("Refus : %s" % motif)
         return 1
-    if fondateur is None:
-        print("Refus : aucun compte fondateur. Le ménage fermerait la porte "
-              "derrière lui.")
-        return 1
-
-    # 1. L'arbre : on ne garde que la racine.
-    server.save_organisations([reseau])
-    # 2. Les accès : seul celui du fondateur sur le réseau survit.
-    server.save_acces([a for a in server.load_acces()
-                       if a.get("teacherId") == fondateur["id"]
-                       and a.get("orgId") == reseau["id"]])
-    # 3. Groupes et élèves, en entier.
-    server.save_groups([])
-    server.save_students([])
-    # 4. Tout ce que les élèves ont laissé.
-    for nom, _, sauver in JOURNAUX:
-        try:
-            sauver([])
-        except Exception as e:
-            print("  ! %s : %s" % (nom, e))
-    # 5. Les comptes s'éteignent, ils ne s'effacent pas.
-    teachers = server.load_teachers()
-    for t in teachers:
-        if t["id"] != fondateur["id"]:
-            t["actif"] = False
-    server.save_teachers(teachers)
-    # 6. Les sessions ouvertes : un jeton d'essai qui survit au ménage
-    #    rouvrirait une porte qu'on croit fermée.
-    sessions = server.load_sessions()
-    server.save_sessions({j: s for j, s in sessions.items()
-                          if s.get("teacherId") == fondateur["id"]})
-    # 7. Les fichiers déposés et les deux relevés à part.
-    base = dossier_donnees()
-    for rel in DOSSIERS:
-        d = base / rel
-        if d.exists():
-            shutil.rmtree(d, ignore_errors=True)
-            d.mkdir(parents=True, exist_ok=True)
-    for rel in FICHIERS:
-        f = base / rel
-        if f.exists():
-            f.unlink()
-
-    server.journal(fondateur, "installation.menage", str(reseau["id"]),
-                   {"organisations": len(etat["orgs"]),
-                    "groupes": len(etat["groupes"]),
-                    "eleves": len(etat["eleves"]),
-                    "comptesEteints": len(etat["comptes"])})
+    server.journal(etat["fondateur"], "installation.menage",
+                   str((etat["reseau"] or {}).get("id", "")),
+                   {"organisations": len(etat["orgs"]), "groupes": len(etat["groupes"]),
+                    "eleves": len(etat["eleves"]), "comptesEteints": len(etat["comptes"])})
     return 0
 
 
@@ -227,10 +177,47 @@ def main():
                     help="montrer ce qui partirait, sans rien écrire (défaut)")
     ap.add_argument("--forcer", action="store_true",
                     help="faire le ménage pour de bon")
+    ap.add_argument("--local", action="store_true",
+                    help="viser le volume de ce poste, et non la production")
     args = ap.parse_args()
+
+    # Le refus vient avant le relevé : un inventaire du mauvais volume est
+    # exactement ce qui fait effacer à côté.
+    if base_demandee():
+        ok, motif = base_repond()
+        if not ok:
+            print("Refus : DATABASE_URL est posée, mais la base ne répond pas.")
+            print("  %s" % motif)
+            print()
+            print("Sans elle, chaque lecture retomberait en silence sur le volume")
+            print("local (%s) et l'inventaire montrerait les données de ce poste" % dossier_donnees())
+            print("en croyant montrer la production. Rien n'a été lu ni écrit.")
+            print()
+            print("À vérifier : l'adresse est bien celle du proxy public")
+            print("(DATABASE_PUBLIC_URL, hôte en .proxy.rlwy.net), entre guillemets")
+            print("simples, et collée en entier — elle commence par postgresql://")
+            return 1
 
     etat = releve()
     afficher(etat)
+
+    # **Le refus qui manquait, et qui a coûté un volume.** Le 29 août 2026, un
+    # `--forcer` lancé sans `DATABASE_URL` — l'adresse n'avait pas été prise par
+    # le shell — a vidé le disque du poste au lieu de la production. Le script
+    # avertissait pourtant, en toutes lettres, deux lignes plus haut : un
+    # avertissement ne retient pas la main de quelqu'un qui vient de taper la
+    # commande qu'on lui a donnée. Viser son propre poste doit donc se demander,
+    # et jamais être ce qui arrive par défaut quand la vraie cible manque.
+    if args.forcer and not base_demandee() and not args.local:
+        print()
+        print("Refus : rien n'indique quelle installation vider.")
+        print("  Sans DATABASE_URL, la cible serait le volume de ce poste —")
+        print("  %s — et non la production." % dossier_donnees())
+        print()
+        print("  Pour la production : posez DATABASE_URL (DATABASE_PUBLIC_URL")
+        print("  du service Postgres) et relancez.")
+        print("  Pour ce poste, en connaissance de cause : ajoutez --local.")
+        return 1
     if not args.forcer:
         print()
         print("Rien n'a été écrit. Relancez avec --forcer pour agir.")

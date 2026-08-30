@@ -2500,6 +2500,16 @@ def migrate_multi_groupes():
     """
     groups = load_groups()
     if not groups:
+        # **Le groupe historique ne se crée que s'il y a quelque chose à y
+        # mettre.** Cette migration existe pour ranger dans un groupe les
+        # élèves d'avant le multi-groupes ; sans élève orphelin, il n'y a rien
+        # à ranger. Le créer quand même fabriquait un « Niveau 4 » vide et sans
+        # centre — donc un orphelin que la console signale — à chaque
+        # redémarrage suivant un ménage, et sur toute installation neuve.
+        # Trouvé le 29 août 2026 en éprouvant `menage`, dans le journal du
+        # serveur : le groupe reparaissait après la purge.
+        if not any(not s.get("groupId") for s in load_students()):
+            return
         groups = [{
             "id": 1,
             "nom": "Niveau 4",
@@ -2576,6 +2586,132 @@ def migrate_multi_groupes():
                 changed = True
         if changed:
             save_groups(groups)
+
+
+# ── Vider l'installation avant la mise en service ───────────────────────────
+#
+# La logique vit ici, et non dans `build/menage.py`, pour une raison : le
+# serveur est le seul endroit qui a **toujours** la bonne cible sous la main.
+# Un script lancé d'un poste doit d'abord joindre la base, et c'est là que le
+# 29 août 2026 un volume local a été vidé à la place de la production. Le
+# script garde son CLI et ses gardes ; il importe ces deux fonctions.
+
+# (nom lisible, chargeur, sauveur) — les journaux qu'un ménage vide en entier.
+def _menage_journaux():
+    return [
+        ("progression",         load_progress,           save_progress),
+        ("journal d'accès",     load_access_log,         save_access_log),
+        ("signaux d'aide",      load_signaux_aide,       save_signaux_aide),
+        ("vocabulaire",         load_vocab_progress,     save_vocab_progress),
+        ("direct de la classe", load_direct,             save_direct),
+        ("« Corrige-moi ! »",   load_corrige_moi,        save_corrige_moi),
+        ("analyses d'erreurs",  load_analyses_erreurs,   save_analyses_erreurs),
+        ("productions orales",  load_oral_submissions,   save_oral_submissions),
+        ("productions écrites", load_written_submissions, save_written_submissions),
+        ("fichiers de groupe",  load_documents,          save_documents),
+        ("planification",       load_schedule,           save_schedule),
+        ("signalements",        load_signalements,       save_signalements),
+    ]
+
+
+# Effacer la fiche d'un dépôt sans effacer son fichier laisserait des
+# enregistrements de personnes réelles sur le volume, sans plus rien pour dire
+# à qui ils appartiennent.
+MENAGE_DOSSIERS = ["assets/oral-submissions", "assets/documents-groupe"]
+MENAGE_FICHIERS = ["data/stats_jour.json", "data/appels_api.jsonl"]
+
+
+def menage_releve():
+    """Ce qu'un ménage emporterait, sans rien écrire."""
+    orgs = load_organisations()
+    reseau = next((o for o in orgs if o.get("type") == "reseau"), None)
+    teachers = load_teachers()
+    fid = founder_id(teachers)
+    fondateur = next((t for t in teachers if t["id"] == fid), None)
+
+    journaux = []
+    for nom, charger, _ in _menage_journaux():
+        try:
+            journaux.append({"nom": nom, "n": len(charger())})
+        except Exception as e:
+            journaux.append({"nom": nom, "n": None, "erreur": str(e)})
+
+    fichiers = []
+    for rel in MENAGE_DOSSIERS:
+        d = STORAGE_DIR / rel
+        fichiers.append({"nom": rel,
+                         "n": sum(1 for f in d.rglob("*") if f.is_file()) if d.exists() else 0})
+    for rel in MENAGE_FICHIERS:
+        fichiers.append({"nom": rel, "n": 1 if (STORAGE_DIR / rel).exists() else 0})
+
+    return {
+        "reseau": {"id": reseau["id"], "nom": reseau.get("nom")} if reseau else None,
+        "fondateur": ({"id": fondateur["id"], "nom": fondateur.get("nom"),
+                       "code": fondateur.get("code", "")} if fondateur else None),
+        "organisations": [{"id": o["id"], "type": o.get("type"), "nom": o.get("nom")}
+                          for o in orgs if not reseau or o["id"] != reseau["id"]],
+        "groupes": len(load_groups()),
+        "eleves": len(load_students()),
+        "acces": sum(1 for a in load_acces()
+                     if not (fondateur and a.get("teacherId") == fondateur["id"]
+                             and reseau and a.get("orgId") == reseau["id"])),
+        "comptes": [{"id": t["id"], "nom": t.get("nom", ""), "code": t.get("code", "")}
+                    for t in teachers
+                    if (not fondateur or t["id"] != fondateur["id"])
+                    and t.get("actif") is not False],
+        "journaux": journaux,
+        "fichiers": fichiers,
+    }
+
+
+def menage_executer(fondateur):
+    """Vide l'installation. Rend (fait, motif).
+
+    Deux choses ne bougent jamais : le nœud **réseau** et le **compte
+    fondateur** avec son accès. Sans eux, la console ne se rouvre plus et
+    l'installation est morte — c'est le seul geste que l'interface elle-même ne
+    pourrait pas réparer.
+    """
+    orgs = load_organisations()
+    reseau = next((o for o in orgs if o.get("type") == "reseau"), None)
+    if reseau is None:
+        return False, ("Aucun nœud « réseau » dans l'arbre. Sans racine, le "
+                       "ménage laisserait une installation sans portée.")
+    if fondateur is None:
+        return False, "Aucun compte fondateur. Le ménage fermerait la porte derrière lui."
+
+    save_organisations([reseau])
+    save_acces([a for a in load_acces()
+                if a.get("teacherId") == fondateur["id"] and a.get("orgId") == reseau["id"]])
+    save_groups([])
+    save_students([])
+    for nom, _, sauver in _menage_journaux():
+        try:
+            sauver([])
+        except Exception as e:
+            print(f"[WARN] ménage, {nom} : {e}", flush=True)
+
+    # Les comptes s'éteignent, ils ne s'effacent pas — mais leurs sessions se
+    # ferment : un jeton qui survit au ménage rouvrirait une porte qu'on croit
+    # fermée.
+    teachers = load_teachers()
+    for t in teachers:
+        if t["id"] != fondateur["id"]:
+            t["actif"] = False
+    save_teachers(teachers)
+    save_sessions({j: s for j, s in load_sessions().items()
+                   if s.get("teacherId") == fondateur["id"]})
+
+    for rel in MENAGE_DOSSIERS:
+        d = STORAGE_DIR / rel
+        if d.exists():
+            shutil.rmtree(d, ignore_errors=True)
+            d.mkdir(parents=True, exist_ok=True)
+    for rel in MENAGE_FICHIERS:
+        f = STORAGE_DIR / rel
+        if f.exists():
+            f.unlink()
+    return True, ""
 
 
 def migrer_codes_enseignants():
@@ -15679,6 +15815,11 @@ class Handler(http.server.SimpleHTTPRequestHandler):
                 if e.get("studentId") in student_ids or e.get("groupId") == group_id
             ])
             return
+        if path == "/api/admin/menage":
+            if not self._require_founder():
+                return
+            json_response(self, menage_releve())
+            return
         if path == "/api/admin/organisations":
             # Lecture seule, réservée au fondateur. C'est la fenêtre sur
             # l'arbre posé par migrate_organisations() : tant que l'étape 2
@@ -15800,6 +15941,8 @@ class Handler(http.server.SimpleHTTPRequestHandler):
             self._handle_group_add()
         elif path == "/api/admin/organisations":
             self._handle_org_add()
+        elif path == "/api/admin/menage":
+            self._handle_menage()
         elif path == "/api/admin/acces":
             self._handle_acces_add()
         elif path == "/api/direction/enseignants":
@@ -17581,6 +17724,45 @@ class Handler(http.server.SimpleHTTPRequestHandler):
         json_response(self, {"success": True, "ia": etat,
                              "iaEffective": bool(autorisee),
                              "iaDecidePar": decideur or {}})
+
+    @sous_verrou
+    def _handle_menage(self):
+        """Vide l'installation. Fondateur seulement, et confirmé par écrit.
+
+        **Le geste est ici et non dans un script parce que le serveur est le
+        seul à toujours viser la bonne installation.** Un outil lancé d'un
+        poste doit d'abord joindre la base ; le 29 août 2026, une adresse qui
+        n'était pas passée par le shell a fait vider un volume local à la place
+        de la production. Ici, il n'y a rien à joindre : on est dedans.
+
+        La confirmation est le **nom du nœud réseau**, à retaper. Un « oui »
+        se clique sans lire ; un nom se cherche, et le chercher oblige à
+        regarder quelle installation on a sous les yeux.
+        """
+        fondateur = self._require_founder()
+        if not fondateur:
+            return
+        body = self._read_json_body()
+        etat = menage_releve()
+        attendu = (etat.get("reseau") or {}).get("nom") or ""
+        donne = (body.get("confirmation") or "").strip()
+        if not attendu:
+            json_response(self, {"error": "Aucun nœud réseau : rien à vider."}, 409)
+            return
+        if donne != attendu:
+            json_response(self, {
+                "error": "Pour confirmer, retapez le nom du réseau : « %s »." % attendu
+            }, 400)
+            return
+
+        fait, motif = menage_executer(fondateur)
+        if not fait:
+            json_response(self, {"error": motif}, 409)
+            return
+        journal(fondateur, "installation.menage", str((etat["reseau"] or {}).get("id", "")),
+                {"organisations": len(etat["organisations"]), "groupes": etat["groupes"],
+                 "eleves": etat["eleves"], "comptesEteints": len(etat["comptes"])})
+        json_response(self, {"success": True, "avant": etat})
 
     def _handle_direction_ouvrir_comptes(self):
         """Ouvrir un compte depuis son centre, sans passer par le fondateur.

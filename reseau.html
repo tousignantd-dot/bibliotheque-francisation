@@ -133,6 +133,20 @@
     .rs-fin { margin: var(--sp-12) 0 var(--sp-12); color: var(--text-muted);
               font-size: var(--fs-ui-sm); }
     @media (max-width: 640px) { .rs-arbre { padding: var(--sp-3); } }
+    .rs-menage { border-color: var(--warn-line); }
+    .rs-menage-avert { background: var(--warn-bg); border-left: 4px solid var(--warn-line);
+                       border-radius: 8px; padding: 10px var(--sp-3);
+                       color: var(--warn-ink); font-weight: var(--fw-bold); }
+    .rs-menage-liste { list-style: none; margin: var(--sp-4) 0; padding: 0;
+                       display: grid; grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+                       gap: 6px var(--sp-4); }
+    .rs-menage-liste li { display: flex; gap: var(--sp-3); font-size: var(--fs-ui-sm);
+                          border-bottom: 1px solid var(--paper-200); padding: 4px 0; }
+    .rs-menage-liste b { margin-left: auto; font-variant-numeric: tabular-nums;
+                         color: var(--text-strong); }
+    .rs-menage-vide { color: var(--text-muted); }
+    .rs-menage-conf { display: flex; gap: var(--sp-3); align-items: flex-end;
+                      flex-wrap: wrap; margin-top: var(--sp-4); }
   </style>
 </head>
 <body>
@@ -209,6 +223,19 @@
         <button type="button" class="btn btn--pri btn--sm" data-geste="ouvrir-comptes">Ouvrir les comptes</button>
       </div>
       <div id="rsInvResultat"></div>
+    </div>
+
+    <h2 class="rs-sect">Vider l'installation</h2>
+    <div class="card rs-menage" id="rsMenageCarte">
+      <p style="margin-top:0"><b>À faire une fois, avant la mise en service.</b>
+      Efface les CSS, les centres, les groupes, les élèves et tout ce que ces
+      élèves ont laissé — progression, vocabulaire, productions déposées et
+      leurs fichiers audio. Les comptes ne disparaissent pas : ils
+      <b>s'éteignent</b> et leurs sessions se ferment. Le nœud réseau et votre
+      compte restent.</p>
+      <p class="rs-menage-avert"><b>C'est irréversible.</b> Rien de ce qui part
+      ici ne se récupère depuis cette page.</p>
+      <div id="rsMenageEtat"><p class="rs-msg" style="color:var(--text-muted)">Chargement de l'inventaire…</p></div>
     </div>
 
     <h2 class="rs-sect">Le journal</h2>
@@ -632,6 +659,22 @@
         return void agir('PATCH', '/api/admin/groupes/' + gid + '/centre',
                          { centreId: Number(document.getElementById('rsC' + gid).value) });
       }
+      if (geste === 'menage') {
+        var conf = (document.getElementById('rsMenageConf') || {}).value || '';
+        b.disabled = true;
+        try {
+          var r = await Prof.fetch('/api/admin/menage', {
+            method: 'POST', headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ confirmation: conf })
+          });
+          var d = await r.json().catch(function () { return {}; });
+          if (!r.ok) { message(d.error || 'Refusé', false); b.disabled = false; return; }
+          message('Installation vidée. Il reste le réseau et votre compte.', true);
+          await recharger();
+        } catch (e) { message('Échec : ' + e.message, false); }
+        b.disabled = false;
+        return;
+      }
       if (geste === 'ouvrir-comptes') {
         var role = document.getElementById('rsRoleInv').value;
         var org = Number(document.getElementById('rsOrgInv').value);
@@ -678,9 +721,72 @@
       rendre(DONNEES, MOI);
       rendreChoixOrg();
       try {
+        await rendreMenage();
+      } catch (e) { /* l'inventaire est un confort, pas la page */ }
+      try {
         var ra = await Prof.fetch('/api/admin/audit?limite=40');
         if (ra.ok) rendreAudit(await ra.json());
       } catch (e) { /* le journal est un confort, pas la page */ }
+    }
+
+    /* L'inventaire se relit au serveur à chaque fois : montrer des chiffres
+       d'il y a dix minutes devant un bouton irréversible serait pire que ne
+       rien montrer. */
+    async function rendreMenage() {
+      var zone = document.getElementById('rsMenageEtat');
+      var d;
+      try {
+        var r = await Prof.fetch('/api/admin/menage');
+        if (!r.ok) throw new Error('HTTP ' + r.status);
+        d = await r.json();
+      } catch (e) {
+        zone.innerHTML = '<p class="rs-msg rs-msg--no">Inventaire illisible : ' + ech(e.message) + '</p>';
+        return;
+      }
+      var lignes = [
+        ['organisations', d.organisations.length],
+        ['groupes', d.groupes],
+        ['élèves', d.eleves],
+        ['accès', d.acces],
+      ].concat(d.journaux.map(function (j) { return [j.nom, j.n === null ? '?' : j.n]; }))
+       .concat(d.fichiers.map(function (f) { return [f.nom.split('/').pop(), f.n]; }));
+
+      var rien = lignes.every(function (l) { return !l[1]; }) && !d.comptes.length;
+      var h = '';
+      if (d.organisations.length) {
+        h += '<p class="rs-msg" style="color:var(--text-muted)">'
+           + d.organisations.map(function (o) {
+               return ech(o.type) + ' « ' + ech(o.nom) + ' »';
+             }).join(' · ') + '</p>';
+      }
+      h += '<ul class="rs-menage-liste">'
+         + lignes.map(function (l) {
+             return '<li><span' + (l[1] ? '' : ' class="rs-menage-vide"') + '>'
+                  + ech(l[0]) + '</span><b>' + l[1] + '</b></li>';
+           }).join('') + '</ul>';
+      h += '<p class="rs-msg" style="color:var(--text-muted)">'
+         + (d.comptes.length
+            ? 'Comptes qui s\'éteignent : '
+              + d.comptes.map(function (c) { return ech(c.nom) + ' (' + ech(c.code) + ')'; }).join(', ')
+            : 'Aucun compte à éteindre.')
+         + '</p>';
+
+      if (rien) {
+        h += '<p class="rs-msg rs-msg--ok">L\'installation est déjà vide : il ne reste que '
+           + 'le réseau « ' + ech((d.reseau || {}).nom || '') + ' » et votre compte.</p>';
+      } else {
+        /* La confirmation est le nom du réseau, à retaper. Un « oui » se
+           clique sans lire ; un nom se cherche, et le chercher oblige à
+           regarder quelle installation on a sous les yeux. */
+        h += '<div class="rs-menage-conf">'
+           + '<div style="flex:1 1 240px"><label for="rsMenageConf">Pour confirmer, tapez '
+           + '<b>' + ech((d.reseau || {}).nom || '') + '</b></label>'
+           + '<input class="field" id="rsMenageConf" autocomplete="off" spellcheck="false"></div>'
+           + '<button type="button" class="btn btn--sm" data-geste="menage" '
+           + 'style="background:var(--no-line);color:#fff;border-color:var(--no-line)">'
+           + 'Vider l\'installation</button></div>';
+      }
+      zone.innerHTML = h;
     }
 
     function rendreComptesOuverts(d) {

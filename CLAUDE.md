@@ -404,7 +404,33 @@ fausseraient rétroactivement tout l'historique.
   rechargement remet la ligne d'état à vide : le réglage passait et l'écran
   restait muet. Le message vient après.
 
-## Vider l'installation avant la mise en service (`build/menage.py`)
+## Vider l'installation avant la mise en service
+
+**Deux portes, une seule logique.** `menage_releve()` et `menage_executer()`
+vivent dans `server.py` ; `build/menage.py` et le bouton de `reseau.html` les
+appellent tous deux. Deux implémentations d'un même effacement, ce seraient
+deux façons de se tromper.
+
+### Le bouton de la console (à préférer)
+
+`reseau.html` → **« Vider l'installation »**, tout en bas : c'est un geste de
+mise en service, pas un geste courant. Réservé au **fondateur** (403 sinon),
+`GET /api/admin/menage` rend l'inventaire et `POST` l'exécute.
+
+- **Il existe parce que le script a échoué là où il comptait.** Le 29 août
+  2026, après quatre tentatives pour faire arriver l'adresse de la base
+  jusqu'au shell, un `--forcer` sans `DATABASE_URL` a vidé le volume du poste.
+  Le serveur, lui, **est déjà dans la bonne installation** : il n'y a rien à
+  joindre, donc rien à se tromper de cible.
+- **La confirmation est le nom du nœud réseau, à retaper.** Un « oui » se
+  clique sans lire ; un nom se cherche, et le chercher oblige à regarder quelle
+  installation on a sous les yeux. Le serveur revalide — l'écran ne décide
+  rien.
+- **L'inventaire se relit à chaque affichage** : montrer des chiffres d'il y a
+  dix minutes devant un bouton irréversible serait pire que ne rien montrer.
+- Le geste est **journalisé** comme les autres gestes de l'arbre.
+
+### Le script (`build/menage.py`)
 
     DATABASE_URL=… python3 build/menage.py --etat     # ce qui partirait
     DATABASE_URL=… python3 build/menage.py --forcer   # le fait
@@ -439,6 +465,49 @@ qu'on croit fait est pire qu'un ménage pas fait.
   ménage lui-même), et les caches de traduction et de voix, qui se regénèrent
   et ne nomment personne.
 - **Idempotent** : un second passage ne casse rien et ne rend pas d'erreur.
+- **`migrate_multi_groupes()` ne fabrique plus de groupe vide.** Elle créait
+  « Niveau 4 » dès qu'aucun groupe n'existait — donc **au redémarrage suivant
+  chaque ménage**, et sur toute installation neuve : un groupe sans centre, que
+  la console signale ensuite comme orphelin. Elle ne le crée maintenant que
+  s'il y a des **élèves sans groupe** à y ranger, ce qui est sa raison d'être.
+  Vu dans le journal du serveur en éprouvant le ménage, pas en relisant. Les
+  deux sens ont été joués : un volume vidé qui redémarre reste sans groupe, une
+  installation d'avant le multi-groupes retrouve le sien et ses élèves.
+  **Attention en éprouvant une migration** : elle tourne dans le fil
+  d'initialisation, derrière `init_storage()` qui copie plusieurs Mo. Un
+  contrôle qui lit le fichier cinq secondes après le démarrage voit l'état
+  d'avant et conclut à tort — attendre `[init] Stockage initialisé` dans le
+  journal.
+- **Il vérifie la connexion, il ne la déduit pas** — corrigé le 28 août 2026,
+  après un essai qui a failli coûter cher. `db.disponible()` ne regarde que la
+  présence d'une adresse et d'un pilote : avec une `DATABASE_URL` invalide,
+  elle répond « oui », chaque lecture retombe **en silence** sur le fichier du
+  volume (le repli voulu de `_load_json_list`), et la bannière annonçait
+  pourtant `Stockage : postgres`. L'inventaire montrait donc les 26 élèves du
+  **poste** en se présentant comme celui de la production, et le contrôle donné
+  à l'utilisateur comme filet était exactement celui qui ne tenait pas.
+  `base_repond()` ouvre maintenant la connexion et fait un `SELECT 1` ; le
+  script **refuse et sort en 1** avant même de relever quoi que ce soit quand
+  `DATABASE_URL` est posée mais muette. Vérifié avec l'adresse fautive
+  elle-même.
+- **`--forcer` sans cible refuse, et il faut `--local` pour viser son poste.**
+  Le même jour, une heure plus tard : `DATABASE_URL` n'avait pas été prise par
+  le shell (l'adresse copiée de Railway était le **gabarit** `${{PGUSER}}…`,
+  pas la valeur résolue), le `--forcer` est parti sans elle, et **le volume du
+  poste a été vidé**. Le script avertissait pourtant en toutes lettres, deux
+  lignes plus haut. La leçon est là : **un avertissement ne retient pas la main
+  de quelqu'un qui vient de taper la commande qu'on lui a donnée.** Viser son
+  propre poste se demande maintenant (`--local`) ; sans `DATABASE_URL` et sans
+  ce drapeau, `--forcer` refuse et sort en 1. Vérifié en rejouant exactement la
+  commande qui avait vidé le volume.
+- **Ce qui s'est récupéré, et ce qui ne l'aurait pas été.** `progress.json`,
+  `access_log.json`, `signaux_aide.json`, `analyses_erreurs.json` et
+  `oral_submissions.json` sont **versionnés** : `git checkout` les a rendus
+  intacts. Le reste — groupes, élèves, planification, arbre — ne l'est pas, et
+  n'est revenu que parce que ce sont des **fixtures reproductibles**
+  (`build/demo_classe.py --install`, les migrations du démarrage, et la
+  sauvegarde `data/_sauvegarde-avant-demo-classe/`). Sur une vraie installation,
+  rien de tout cela n'aurait existé.
 
 ## Multi-enseignants et multi-groupes
 
