@@ -201,6 +201,14 @@
               cursor: pointer; border: 1px solid rgba(255,255,255,.35);
               background: transparent; color: var(--text-inverse); }
     .dr-btn--clair { background: var(--white); color: var(--text-strong); border-color: var(--white); }
+    /* « La feuille » est un lien — elle ouvre un onglet, et un enseignant doit
+       pouvoir la mettre de côté ou l'imprimer par les moyens du navigateur.
+       Elle se tient comme les autres commandes de la barre. */
+    a.dr-btn { display: inline-flex; align-items: center; text-decoration: none; }
+    /* Fermer n'est pas une commande qu'on cherche : elle se tient en retrait
+       des trois autres, à droite, et ne prend pas le cerne. */
+    .dr-btn--fin { border-color: transparent; color: rgba(255,255,255,.72); padding: 0 var(--sp-3); }
+    .dr-btn--fin:hover { color: var(--text-inverse); border-color: rgba(255,255,255,.35); }
     .dr-btn:focus-visible, .dr-bascule:focus-visible, .dr-outils select:focus-visible {
       outline: var(--focus-width, 3px) solid var(--accent); outline-offset: 2px; }
 
@@ -468,6 +476,12 @@
   let SEANCES = [];           // les séances sans compte encore ouvertes
   let DIRECT = null;          // la dernière réponse du serveur
   let DIRECT_ON = true;       // le direct tourne-t-il ?
+  // Fermé, c'est plus que mis en pause : le bloc s'efface, et plus rien n'est
+  // demandé au serveur. La pause garde l'écran sous les yeux — on la met pour
+  // parler à la classe sans que les chiffres bougent ; on ferme quand on a fini
+  // de regarder. L'état ne survit pas au rechargement : le direct est l'écran
+  // par défaut de cette page.
+  let DIRECT_FERME = false;
   let DIRECT_NOMS = false;    // pseudos affichés, ou « Élève N »
   const DR_OUVERTS = new Set();  // les exercices que l'enseignante a dépliés
   const DR_VUS = new Set();      // ceux déjà passés à l'écran une première fois
@@ -823,12 +837,36 @@
     return m ? `${m[1]} h ${m[2]}` : '';
   }
 
+  /** Le lien vers la feuille de la séance ouverte sur ce module, s'il y en a
+      une. C'est le geste de l'élève qui arrive en retard : l'enseignant
+      rouvre la feuille, la projette ou la lui montre, et le retardataire
+      scanne le carré. Rien à retrouver dans un autre écran.
+
+      Une séance fermée n'y donne pas droit : son code ne fait plus entrer
+      personne, et montrer un carré mort est pire que ne rien montrer.
+      `SEANCES` ne garde d'ailleurs que les séances ouvertes. */
+  function drLienFeuille() {
+    const s = SEANCES.find(x => String(x.activityId) === String(MODULE));
+    if (!s) return '';
+    return `<a class="dr-btn" target="_blank" rel="noopener"
+       href="feuille-seance.html?code=${encodeURIComponent(s.code)}"
+       title="Le carré à scanner et le code — pour un élève qui arrive en retard.">La feuille</a>`;
+  }
+
   function drRendre() {
     const cible = document.getElementById('pgDirect');
     if (!MODULE) {
       cible.innerHTML = `<p class="pg-note" style="padding:var(--sp-8) 0 0">
         <b>Le direct suit un module à la fois.</b> Choisissez-en un ci-dessus pour voir la
         réussite question par question pendant que la classe répond.</p>`;
+      return;
+    }
+    if (DIRECT_FERME) {
+      cible.innerHTML = `<p class="pg-note" style="padding:var(--sp-8) 0 0">
+        <b>Le direct est fermé.</b> Plus rien n’est demandé au serveur. Les réponses
+        continuent d’arriver : elles seront toutes là à la réouverture.
+        <button type="button" class="btn btn--ghost btn--sm" id="drRouvrir"
+                style="margin-left:var(--sp-3)">Rouvrir le direct</button></p>`;
       return;
     }
     const d = DIRECT;
@@ -879,7 +917,9 @@
             <span class="dr-piste" aria-hidden="true"></span>
             <span class="dr-mot">${DIRECT_NOMS ? 'Noms affichés' : 'Anonyme'}</span>
           </button>
+          ${drLienFeuille()}
           <button type="button" class="dr-btn" id="drPause">${DIRECT_ON ? 'Mettre en pause' : 'Reprendre le direct'}</button>
+          <button type="button" class="dr-btn dr-btn--fin" id="drFermer">Fermer</button>
         </div>
       </div>
 
@@ -925,7 +965,7 @@
   function drHorloge() {
     clearInterval(DIRECT_HORLOGE);
     DIRECT_HORLOGE = null;
-    if (!DIRECT_ON || document.hidden || !MODULE) return;
+    if (!DIRECT_ON || DIRECT_FERME || document.hidden || !MODULE) return;
     DIRECT_HORLOGE = setInterval(drTirer, DIRECT_PAS_MS);
   }
 
@@ -937,13 +977,13 @@
     DR_OUVERTS.clear();
     DR_VUS.clear();
     drRendre();
-    if (MODULE) drTirer();
+    if (MODULE && !DIRECT_FERME) drTirer();
     drHorloge();
   }
 
   document.addEventListener('visibilitychange', () => {
     drHorloge();
-    if (!document.hidden && DIRECT_ON && MODULE) drTirer();
+    if (!document.hidden && DIRECT_ON && !DIRECT_FERME && MODULE) drTirer();
   });
 
   document.addEventListener('click', e => {
@@ -957,6 +997,21 @@
       drRendre();
       drHorloge();
       if (DIRECT_ON) drTirer();
+      return;
+    }
+    if (e.target.closest('#drFermer')) {
+      DIRECT_FERME = true;
+      DIRECT = null;          // à la réouverture, on repart d'un tour frais
+      drRendre();
+      drHorloge();
+      return;
+    }
+    if (e.target.closest('#drRouvrir')) {
+      DIRECT_FERME = false;
+      DIRECT_ON = true;       // rouvrir en pause serait un écran mort
+      drRendre();
+      drTirer();
+      drHorloge();
     }
   });
 
