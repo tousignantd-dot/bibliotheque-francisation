@@ -1,0 +1,585 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Bac à sable — tous les cas de figure</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800;900&display=swap">
+<style>
+  /* Système de design Francisation / francis — thème clair unique, comme les
+     autres documents de la banque de présentations. Le violet est exclusif à
+     la marque : aucun état, aucun repérage ne le porte. */
+  :root{
+    --accent:#0A8F5B; --accent-soft:#E6F5EE; --accent-ink:#07734A;
+    --surface-band:#EDF6F1;
+    --ink-900:#17181A; --ink-700:#3A3D40; --ink-500:#4B4F52; --ink-400:#6E7175;
+    --surface-page:#F7F7F5; --surface-card:#FFFFFF; --surface-sunken:#FBFBFA;
+    --paper-200:#F0F0EE;
+    --border:#EAEAE8; --border-firm:#D6D6D2; --border-tint:#D8E8DF;
+    --acier-600:#1D6B8F; --acier-100:#E7F0F6;
+    --ambre-700:#B45309; --ambre-100:#FBEEDC;
+    --teal-700:#0D7A6F;  --teal-100:#E3F2F0;
+    --indigo-600:#3B49A0; --indigo-100:#E8EAFA;
+    --rouge-700:#B02D33; --rouge-100:#FBEAEA;
+    --marque-600:#6B4FBB; --marque-100:#EDE7F9; --marque-filet:#C3B4EA;
+    --font-sans:"Nunito",system-ui,-apple-system,"Segoe UI",sans-serif;
+    --content-max:1060px;
+  }
+  *{box-sizing:border-box}
+  body{margin:0; background:var(--surface-page); color:var(--ink-900);
+    font-family:var(--font-sans); font-size:18px; font-weight:600; line-height:1.55;
+    -webkit-font-smoothing:antialiased; -webkit-text-size-adjust:100%}
+  :focus-visible{outline:3px solid var(--accent); outline-offset:2px; border-radius:4px}
+  .conteneur{max-width:var(--content-max); margin:0 auto; padding:0 24px}
+
+  /* — marque francis : le nom, un trait, le descripteur. Le seul signe est le
+     point du « i ». Aucune boîte autour du nom. — */
+  .verrou{display:inline-flex; align-items:center; gap:16px; flex-wrap:wrap}
+  .verrou .nom{font-weight:900; font-size:28px; letter-spacing:-.035em; line-height:1;
+    color:var(--ink-900); white-space:nowrap}
+  .verrou .i{position:relative; display:inline-block}
+  .verrou .point{position:absolute; left:1px; top:2px; width:7px; height:7px;
+    border-radius:999px; background:var(--marque-600)}
+  .verrou .filet{width:2px; height:24px; background:var(--marque-filet)}
+  .verrou .desc{font-size:16px; font-weight:900; letter-spacing:-.015em; line-height:1;
+    color:var(--marque-600); white-space:nowrap}
+  @media (max-width:480px){ .verrou .filet,.verrou .desc{display:none} }
+  .barre{background:#FFFFFF; border-bottom:2px solid var(--marque-600); padding:16px 0}
+
+  .bande{background:var(--surface-band); border-bottom:1px solid var(--border-tint);
+    padding:44px 0 34px}
+  .bande .conteneur{display:flex; flex-direction:column; gap:20px}
+  .surtitre{font-size:13px; font-weight:800; letter-spacing:.12em; text-transform:uppercase;
+    color:var(--ink-400); margin:0}
+  h1{font-size:clamp(32px,5.4vw,46px); font-weight:900; letter-spacing:-.02em;
+    line-height:1.14; margin:0; text-wrap:balance}
+  .chapeau{font-size:19px; font-weight:600; color:var(--ink-500); margin:0; max-width:64ch}
+  .quand{font-size:14px; color:var(--ink-400); margin:0}
+
+  main{padding:8px 0 80px}
+  section{padding:40px 0 0}
+  h2{font-size:27px; font-weight:900; letter-spacing:-.015em; margin:0 0 6px; text-wrap:balance}
+  h3{font-size:19px; font-weight:900; margin:24px 0 6px}
+  p{margin:0 0 14px; max-width:68ch}
+  .eyebrow{display:inline-block; font-size:12px; font-weight:800; letter-spacing:.12em;
+    text-transform:uppercase; padding:4px 10px; border-radius:999px; margin:0 0 10px}
+  .e-acier{background:var(--acier-100); color:var(--acier-600)}
+  .e-ambre{background:var(--ambre-100); color:var(--ambre-700)}
+  .e-teal{background:var(--teal-100); color:var(--teal-700)}
+  .e-indigo{background:var(--indigo-100); color:var(--indigo-600)}
+  strong,b{font-weight:900}
+  code{font-family:ui-monospace,Menlo,Consolas,monospace; font-size:.86em;
+    background:var(--paper-200); padding:1px 5px; border-radius:5px; font-weight:700}
+  .carte{background:var(--surface-card); border:1px solid var(--border);
+    border-radius:14px; padding:18px 20px}
+  .garde{background:var(--accent-soft); border:1px solid #BFE3D2; border-radius:14px;
+    padding:16px 20px}
+  .garde p:last-child{margin-bottom:0}
+
+  /* — tableaux — */
+  .cadre-table{overflow-x:auto; border:1px solid var(--border); border-radius:14px;
+    background:var(--surface-card)}
+  table{border-collapse:collapse; width:100%; min-width:660px; font-size:15px}
+  th,td{text-align:left; padding:10px 14px; border-bottom:1px solid var(--border);
+    vertical-align:top}
+  thead th{font-size:12px; font-weight:800; letter-spacing:.08em; text-transform:uppercase;
+    color:var(--ink-400); background:var(--surface-sunken); white-space:nowrap}
+  tbody tr:last-child td{border-bottom:0}
+  tbody tr.actif{background:var(--accent-soft)}
+
+  /* — le pupitre du bac à sable — */
+  .pupitre{background:var(--surface-card); border:1px solid var(--border-firm);
+    border-radius:16px; padding:18px 20px; display:flex; flex-direction:column; gap:16px;
+    position:sticky; top:0; z-index:5; box-shadow:0 6px 18px rgba(23,24,26,.05)}
+  .reglages{display:grid; gap:14px; grid-template-columns:repeat(auto-fit,minmax(min(228px,100%),1fr))}
+  .reglage .lab{font-size:12px; font-weight:800; letter-spacing:.1em; text-transform:uppercase;
+    color:var(--ink-400); margin:0 0 6px}
+  .choix{display:flex; flex-wrap:wrap; gap:6px}
+  .choix button{font-family:inherit; font-size:15px; font-weight:800; color:var(--ink-700);
+    background:var(--surface-sunken); border:1px solid var(--border-firm); border-radius:999px;
+    padding:8px 14px; min-height:44px; cursor:pointer}
+  .choix button:hover{background:var(--paper-200)}
+  /* Sélection = plaque encre. Jamais une teinte. */
+  .choix button[aria-pressed="true"]{background:var(--ink-900); border-color:var(--ink-900);
+    color:#FFFFFF}
+  .presets{display:flex; flex-wrap:wrap; gap:8px; align-items:center;
+    border-top:1px solid var(--border); padding-top:14px}
+  .presets .t{font-size:12px; font-weight:800; letter-spacing:.1em; text-transform:uppercase;
+    color:var(--ink-400); margin-right:4px}
+  .presets button{font-family:inherit; font-size:14px; font-weight:800; color:var(--ink-900);
+    background:#FFFFFF; border:1px dashed var(--border-firm); border-radius:999px;
+    padding:8px 13px; min-height:44px; cursor:pointer}
+  .presets button:hover{border-style:solid; background:var(--paper-200)}
+  .qui{font-size:15px; font-weight:700; color:var(--ink-500); margin:0}
+  .qui b{color:var(--ink-900)}
+
+  /* — les trois panneaux — */
+  .panneaux{display:grid; gap:16px; grid-template-columns:repeat(auto-fit,minmax(min(300px,100%),1fr));
+    margin-top:18px}
+  .panneau{background:var(--surface-card); border:1px solid var(--border); border-radius:16px;
+    padding:18px 20px; border-left:4px solid var(--border-firm)}
+  .panneau--eleve{border-left-color:var(--acier-600)}
+  .panneau--prof{border-left-color:var(--teal-700)}
+  .panneau--garde{border-left-color:var(--indigo-600)}
+  .panneau h3{margin:0 0 2px; font-size:20px}
+  .panneau .sous{font-size:14px; font-weight:700; color:var(--ink-400); margin:0 0 12px}
+  .liste{list-style:none; margin:0; padding:0; display:flex; flex-direction:column; gap:9px}
+  .liste li{display:flex; gap:9px; font-size:15.5px; font-weight:600; line-height:1.45}
+  .liste .g{flex:0 0 auto; width:22px; height:22px; border-radius:6px; display:grid;
+    place-items:center; font-size:13px; font-weight:900; margin-top:1px}
+  .g-oui{background:var(--accent-soft); color:var(--accent-ink)}
+  .g-non{background:var(--paper-200); color:var(--ink-400)}
+  .g-att{background:var(--ambre-100); color:var(--ambre-700)}
+  .g-jam{background:var(--rouge-100); color:var(--rouge-700)}
+
+  /* — la grille de classe, en miniature — */
+  .grille{margin-top:14px; border:1px solid var(--border); border-radius:12px; overflow:hidden}
+  .grille table{min-width:0; font-size:13.5px}
+  .grille th,.grille td{padding:7px 9px}
+  .grille td.q{text-align:center; font-weight:900; width:34px}
+  .grille td.ok{color:var(--accent-ink)}
+  .grille td.ko{color:var(--rouge-700)}
+  .grille td.vide{color:var(--ink-400)}
+  .legende{font-size:13px; font-weight:700; color:var(--ink-400); margin:8px 0 0}
+
+  .duo{display:grid; gap:16px; grid-template-columns:repeat(auto-fit,minmax(min(300px,100%),1fr))}
+  hr{border:0; border-top:1px solid var(--border); margin:44px 0 0}
+  footer p{font-size:16px; color:var(--ink-500)}
+  ol.etapes{margin:0; padding-left:22px}
+  ol.etapes li{margin-bottom:10px}
+  .voir{font-family:inherit; font-size:13px; font-weight:800; color:var(--ink-900);
+    background:var(--surface-sunken); border:1px solid var(--border-firm); border-radius:999px;
+    padding:6px 12px; min-height:36px; cursor:pointer; white-space:nowrap}
+  .voir:hover{background:var(--paper-200)}
+  @media print{ .pupitre{position:static; box-shadow:none} .voir{display:none} }
+</style>
+</head>
+<body>
+
+<div class="barre">
+  <div class="conteneur">
+    <div class="verrou">
+      <span class="nom" role="img" aria-label="francis">franc<span class="i" aria-hidden="true">ı<span class="point"></span></span>s</span>
+      <span class="filet" aria-hidden="true"></span>
+      <span class="desc">Aide à l'apprentissage du français</span>
+    </div>
+  </div>
+</div>
+
+<header class="bande">
+  <div class="conteneur">
+    <div>
+      <p class="surtitre">Direction et enseignants · Démonstration</p>
+      <h1>Le bac à sable : tous les cas de figure</h1>
+    </div>
+    <p class="chapeau">La plateforme se déplie de plusieurs façons selon ce que le centre
+    accepte et ce que l'enseignant choisit. Réglez les quatre interrupteurs ci-dessous :
+    la page dit aussitôt <b>ce que voit l'élève</b>, <b>ce que voit l'enseignant</b> et
+    <b>ce qui est conservé sur nos serveurs</b>. Il n'y a pas deux versions du produit —
+    c'est le même matériel qui se replie.</p>
+    <p class="quand">30 août 2026 — les quatre interrupteurs et les deux modes d'identité sont
+    en service. Rien sur cette page n'est un projet.</p>
+    <p style="margin:0"><a href="captures-cas-de-figure.html" style="font-size:15px;font-weight:800;
+    text-decoration:none;color:var(--ink-900);background:#FFFFFF;border:1px solid var(--border-firm);
+    border-radius:999px;padding:9px 15px;display:inline-block">Voir les écrans, cas par cas — treize captures</a></p>
+  </div>
+</header>
+
+<main>
+
+<section class="conteneur">
+  <p class="eyebrow e-acier">Avant de jouer</p>
+  <h2>Qui décide quoi</h2>
+  <p>Quatre décisions appartiennent au centre — elles se posent sur l'arbre des
+  organisations, pas sur une classe. Une cinquième appartient à l'enseignant : se servir,
+  ou non, du mode séance un mardi matin. Confondre les deux serait l'erreur : ce que
+  l'école accepte de ne pas savoir de ses élèves est une position d'établissement ; ce
+  qu'on fait en classe mardi est une décision pédagogique.</p>
+  <div class="cadre-table">
+    <table>
+      <thead><tr><th>Décision</th><th>Qui la prend</th><th>Sans réglage</th><th>La règle</th></tr></thead>
+      <tbody>
+        <tr><td><b>L'assistant (IA)</b></td><td>La direction du centre ou du CSS ; une
+          exception peut se poser sur un enseignant précis</td><td>Autorisé</td>
+          <td>Dix routes du serveur sont gardées. Le refus se pose une fois et descend.</td></tr>
+        <tr><td><b>Le micro</b></td><td>La direction, sur l'organisation seulement</td>
+          <td>Confiné à l'appareil</td>
+          <td>La reconnaissance du navigateur expédie l'audio chez Google ou Apple : on ne
+          peut pas l'arrêter à l'arrivée, seulement exiger le mode « sur l'appareil ».</td></tr>
+        <tr><td><b>Le dépôt de la voix</b></td><td>La direction, sur l'organisation seulement</td>
+          <td>Complet</td>
+          <td>Trois états, et celui du milieu est le vrai sujet : garder l'enregistrement,
+          n'en garder que la transcription, ou ne rien recevoir.</td></tr>
+        <tr><td><b>Le mode séance</b></td><td>La direction autorise…</td><td>Autorisé</td>
+          <td>Vérifié à l'ouverture d'une séance, jamais à l'entrée d'un élève : fermer le
+          mode à 10 h n'éteint pas une classe en train de travailler.</td></tr>
+        <tr><td><b>Ouvrir une séance</b></td><td>… l'enseignant s'en sert</td><td>—</td>
+          <td>Un module, un groupe, un code de six caractères, une feuille photocopiée.</td></tr>
+      </tbody>
+    </table>
+  </div>
+  <p style="margin-top:14px">L'héritage est simple : <b>le premier réglage explicite
+  tranche</b>. « Interdit » posé sur un centre de services ferme ses douze centres ; celui
+  qui a négocié une exception la porte écrite sur lui-même. Un réglage absent ne ferme
+  rien — une mise en service n'éteint rien au passage.</p>
+</section>
+
+<section class="conteneur">
+  <p class="eyebrow e-teal">La démonstration</p>
+  <h2>Réglez, et regardez les trois colonnes</h2>
+
+  <div class="pupitre">
+    <div class="reglages" id="reglages"></div>
+    <div class="presets" id="presets">
+      <span class="t">Cas types</span>
+    </div>
+    <p class="qui" id="qui"></p>
+  </div>
+
+  <div class="panneaux">
+    <article class="panneau panneau--eleve">
+      <h3>Ce que voit l'élève</h3>
+      <p class="sous">Sur son téléphone, dans le module</p>
+      <ul class="liste" id="pEleve"></ul>
+    </article>
+    <article class="panneau panneau--prof">
+      <h3>Ce que voit l'enseignant</h3>
+      <p class="sous">Le direct de la classe et le dossier</p>
+      <ul class="liste" id="pProf"></ul>
+      <div class="grille" id="grille"></div>
+      <p class="legende" id="legende"></p>
+    </article>
+    <article class="panneau panneau--garde">
+      <h3>Ce qui est conservé</h3>
+      <p class="sous">Sur nos serveurs, après la classe</p>
+      <ul class="liste" id="pGarde"></ul>
+    </article>
+  </div>
+</section>
+
+<section class="conteneur">
+  <p class="eyebrow e-ambre">Le tableau complet</p>
+  <h2>Les vingt-quatre combinaisons</h2>
+  <p>Deux modes d'identité, l'assistant ouvert ou fermé, le micro confiné ou libre, trois
+  états du dépôt de la voix. Le tableau est calculé par le même code que les panneaux
+  ci-dessus — il ne peut pas s'en écarter. Cliquez une ligne pour la charger dans le bac
+  à sable.</p>
+  <div class="cadre-table">
+    <table>
+      <thead><tr>
+        <th>Identité</th><th>Assistant</th><th>Micro</th><th>Dépôt</th>
+        <th>Ce que l'enseignant reçoit</th><th>Ce qui reste après</th><th></th>
+      </tr></thead>
+      <tbody id="corpsCombis"></tbody>
+    </table>
+  </div>
+</section>
+
+<section class="conteneur">
+  <p class="eyebrow e-indigo">Sept règles</p>
+  <h2>Ce qui ne change jamais</h2>
+  <div class="duo">
+    <div class="carte"><p><b>Aucun vrai nom.</b> Le champ s'appelle « pseudo », et c'est
+    l'enseignant qui tient la correspondance, hors de la plateforme.</p></div>
+    <div class="carte"><p><b>Les corrections de l'assistant restent privées.</b> Elles
+    s'affichent à l'élève ; rien n'est écrit. Ce qui atteint l'enseignant, c'est ce que
+    l'élève <i>envoie</i>.</p></div>
+    <div class="carte"><p><b>Rien ne part sans un geste.</b> Un enregistrement ou un texte
+    remonte parce que l'élève a appuyé sur « Envoyer », jamais parce qu'il a travaillé.</p></div>
+    <div class="carte"><p><b>Le texte des réponses ouvertes ne monte pas au direct.</b>
+    L'enseignant y voit juste ou faux et le nombre d'essais ; le serveur jette le texte
+    même si un module l'envoyait.</p></div>
+    <div class="carte"><p><b>L'élève ne voit jamais le tableau de la classe.</b> Aucune
+    route ne le lui rend — ni son rang, ni celui des autres.</p></div>
+    <div class="carte"><p><b>Le registre des appels ne garde aucun texte.</b> Il compte des
+    jetons et estime un montant ; ni la phrase de l'élève, ni la correction, ni la question
+    posée à l'assistant.</p></div>
+    <div class="carte"><p><b>Un seul jeu de fichiers.</b> Les 87 modules servent tous les
+    cas de figure ; la décision vit au serveur. Deux versions du matériel auraient divergé
+    en trois mois.</p></div>
+    <div class="carte"><p><b>Les dialogues sont enregistrés d'avance.</b> Écouter, réécouter
+    et ralentir une voix ne demande aucun appel : cela fonctionne dans tous les cas de
+    figure, y compris assistant fermé.</p></div>
+  </div>
+</section>
+
+<hr>
+<footer class="conteneur">
+  <p><b>Comment lire cette page devant une direction :</b> les quatre interrupteurs ne sont
+  pas des promesses, ce sont des champs sur l'arbre des organisations, gardés au serveur et
+  vérifiés en jouant les combinaisons — pas en relisant le code. La question posée en
+  réunion n'est donc jamais « est-ce que ce serait possible ? » mais « qu'est-ce que nous
+  choisissons ? ». Les documents voisins de la banque de présentations portent le détail :
+  le mode séance et son code QR, le guide pour la direction et la Loi 25, l'arbre des
+  centres, et « Où regarder » pour les sept écrans de suivi.</p>
+</footer>
+</main>
+
+<script>
+(function(){
+  "use strict";
+
+  // Un seul état, une seule fonction de règles : les panneaux et le tableau des
+  // vingt-quatre combinaisons sortent du même calcul. Deux formulations d'une
+  // même règle finissent toujours par diverger.
+  var etat = { identite:"compte", ia:"oui", voix:"stricte", depot:"complet" };
+
+  var REGLAGES = [
+    { cle:"identite", lab:"L'élève entre…", options:[
+        ["compte","Avec son compte"], ["seance","Par une séance, sans compte"] ] },
+    { cle:"ia", lab:"L'assistant", options:[ ["oui","Autorisé"], ["non","Interdit"] ] },
+    { cle:"voix", lab:"Le micro", options:[
+        ["stricte","Sur l'appareil"], ["souple","Par le navigateur"] ] },
+    { cle:"depot", lab:"Le dépôt de la voix", options:[
+        ["complet","Complet"], ["transcription","Transcription"], ["ferme","Fermé"] ] }
+  ];
+
+  var PRESETS = [
+    ["Réglage par défaut",     {identite:"compte", ia:"oui", voix:"stricte", depot:"complet"}],
+    ["Centre qui refuse l'IA", {identite:"compte", ia:"non", voix:"stricte", depot:"complet"}],
+    ["La voix ne s'écrit pas", {identite:"compte", ia:"oui", voix:"stricte", depot:"transcription"}],
+    ["Classe d'un remplaçant", {identite:"seance", ia:"oui", voix:"stricte", depot:"complet"}],
+    ["Le plus fermé possible", {identite:"seance", ia:"non", voix:"stricte", depot:"ferme"}]
+  ];
+
+  var GLYPHES = { oui:["✓","g-oui"], non:["–","g-non"], att:["!","g-att"], jam:["✕","g-jam"] };
+
+  function li(t, txt){
+    var g = GLYPHES[t];
+    return '<li><span class="g ' + g[1] + '" aria-hidden="true">' + g[0] + '</span>'
+         + '<span>' + txt + '</span></li>';
+  }
+
+  // ── Les règles ──────────────────────────────────────────────────────────
+  function eleve(e){
+    var l = [];
+    l.push(["oui","Les dialogues, écoutés et ralentis autant de fois qu'il veut — les voix sont enregistrées d'avance."]);
+    l.push(["oui","Les exercices à réponse connue se corrigent sur l'appareil, sans appel."]);
+    l.push(["oui","Les mini-leçons « En apprendre plus », et il s'enregistre pour se réécouter."]);
+    if (e.ia === "oui"){
+      l.push(["oui","« Corrige-moi ! » : une rétroaction sur ce qu'il vient de dire."]);
+      l.push(["oui","La vérification de son texte <b>avant</b> de l'envoyer, et « Pourquoi je me trompe ? » après une erreur."]);
+      l.push(["oui","Le jeu de rôle avec l'assistant, en plus de l'activité de classe."]);
+      l.push(["oui","Le rail « Mes outils » : traduire, simplifier, demander, lire, prononcer, carnet, réviser."]);
+    } else {
+      l.push(["non","Aucune rétroaction avant l'envoi : son texte part tel quel."]);
+      l.push(["att","La réponse attendue s'affiche <b>après deux essais</b> — il n'est jamais laissé devant un mur."]);
+      l.push(["oui","Le jeu de rôle garde son activité de classe ; les mini-leçons restent."]);
+      l.push(["non","Le rail « Mes outils » disparaît en entier : rail, bandeau de langue, bulle de sélection."]);
+    }
+    if (e.voix === "stricte")
+      l.push(["att","Le micro n'ouvre que si le navigateur sait reconnaître la parole sur l'appareil ; sinon il écrit sa réponse."]);
+    else
+      l.push(["att","La reconnaissance passe par le navigateur : Chrome expédie l'audio chez lui, Safari chez lui. Ce flux ne nous traverse pas."]);
+    if (e.identite === "seance"){
+      l.push(["att","Aucun compte, aucun pseudo : un code de six caractères, scanné ou recopié."]);
+      l.push(["non","Un seul module — celui de la séance. Ni catalogue, ni tableau de bord, ni vocabulaire à réviser."]);
+      l.push(["jam","Son oral ne part jamais, quel que soit le réglage du dépôt : il s'enregistre, il s'écoute, rien ne sort."]);
+      l.push(["oui","Son texte peut partir, signé « Participant 7 »."]);
+    } else {
+      l.push(["oui","Son dossier le suit : le catalogue de son groupe, son vocabulaire, sa révision."]);
+      if (e.depot === "complet")
+        l.push(["oui","« Envoyer à mon enseignant » : l'enregistrement part."]);
+      else if (e.depot === "transcription")
+        l.push(["att","« Envoyer » : ce qu'il a dit est transcrit ; l'enregistrement n'est jamais écrit sur le disque."]);
+      else
+        l.push(["non","Pas d'envoi oral : il s'enregistre, s'écoute, et rien ne part."]);
+    }
+    return l;
+  }
+
+  function prof(e){
+    var l = [];
+    l.push(["oui","Le direct de la classe : une ligne par personne, une colonne par question, juste ou faux et le nombre d'essais."]);
+    l.push(["oui","La progression du groupe : avancement, taux du premier coup, dernière trace."]);
+    l.push(["oui","La bascule « Anonyme » pour projeter un texte sans exposer son auteur."]);
+    if (e.identite === "seance"){
+      l.push(["att","Les lignes s'appellent « Participant 1 » à « Participant N » : anonymes, mais distincts — il peut aller voir quelqu'un."]);
+      l.push(["att","Séance ouverte, tout le monde figure, même qui n'a rien répondu ; fermée, seulement qui a laissé une trace."]);
+      l.push(["non","Aucun dossier individuel : la séance expire le soir, il reste le tableau du groupe."]);
+      l.push(["non","Aucun oral à écouter : en séance, la voix ne remonte pas."]);
+    } else {
+      l.push(["oui","Le dossier de chaque élève : activité par activité, erreurs, envois, vocabulaire."]);
+      l.push(["oui","Les lignes portent le pseudo choisi par l'élève."]);
+      if (e.depot === "complet")
+        l.push(["oui","Il réécoute ses élèves, dans la fiche comme dans la progression."]);
+      else if (e.depot === "transcription")
+        l.push(["att","Il <b>lit</b> ce qui a été dit ; il ne l'entend pas. La production orale reste corrigeable."]);
+      else
+        l.push(["non","Rien à écouter ni à lire : l'oral se vérifie en classe."]);
+    }
+    if (e.ia === "oui")
+      l.push(["oui","Les textes arrivent déjà relus par l'assistant ; la dépense de ses groupes est comptée, appel par appel."]);
+    else
+      l.push(["att","Les textes arrivent <b>non corrigés</b> : c'est lui qui corrige. En contrepartie, la classe ne coûte rien à l'usage."]);
+    return l;
+  }
+
+  function garde(e){
+    var l = [];
+    l.push(["oui","L'avancement : zones faites, taux du premier coup, erreurs."]);
+    l.push(["oui","Le direct : un enregistrement par personne, activité et question — réécrit, jamais empilé."]);
+    if (e.identite === "seance"){
+      l.push(["jam","Aucun nom, aucun pseudo, aucun courriel. Un numéro, et une séance qui expire le soir."]);
+      l.push(["jam","Le jeton d'entrée de l'appareil n'est écrit dans aucun dépôt."]);
+    } else {
+      l.push(["oui","Le pseudo, le dossier et les envois, tant que le compte existe."]);
+      l.push(["jam","Jamais le vrai nom : la plateforme ne le connaît pas."]);
+    }
+    l.push(["jam","Jamais les corrections de l'assistant : elles s'affichent, rien n'est écrit."]);
+    l.push(["jam","Jamais le texte des réponses ouvertes du direct — juste ou faux, et le nombre d'essais."]);
+    if (e.ia === "oui")
+      l.push(["att","Le registre des appels : élève, groupe, modèle, jetons, montant estimé. Jamais le texte."]);
+    else
+      l.push(["non","Aucun appel payant, donc aucune ligne au registre."]);
+    if (e.voix === "souple")
+      l.push(["att","L'audio du micro passe par le navigateur (Google, Apple) : hors de nos serveurs, hors de notre contrôle."]);
+    else
+      l.push(["oui","Rien du micro ne quitte l'appareil de l'élève."]);
+    if (e.identite === "seance")
+      l.push(["jam","Aucun enregistrement d'élève : la route du dépôt oral est refusée en séance."]);
+    else if (e.depot === "complet")
+      l.push(["att","Le fichier audio et sa fiche, jusqu'à ce que l'enseignant l'efface."]);
+    else if (e.depot === "transcription")
+      l.push(["att","Le texte de ce qui a été dit, 2 000 caractères au plus. L'enregistrement n'est jamais écrit sur le disque."]);
+    else
+      l.push(["jam","Aucun oral conservé, sous aucune forme."]);
+    return l;
+  }
+
+  // Résumés courts, pour le tableau des combinaisons.
+  function recu(e){
+    var oral = (e.identite === "seance" || e.depot === "ferme") ? "aucun oral"
+             : (e.depot === "complet" ? "l'oral à réécouter" : "l'oral en texte");
+    var ecrit = (e.ia === "oui") ? "des textes relus" : "des textes non corrigés";
+    var qui = (e.identite === "seance") ? "Participants 1..N" : "des élèves nommés par pseudo";
+    return "De " + qui + " : l'avancement, " + ecrit + ", " + oral + ".";
+  }
+  function reste(e){
+    var bouts = [];
+    bouts.push(e.identite === "seance" ? "aucune identité" : "pseudo et dossier");
+    bouts.push(e.identite === "seance" || e.depot === "ferme" ? "rien de la voix"
+      : (e.depot === "complet" ? "l'enregistrement" : "la transcription seule"));
+    bouts.push(e.ia === "oui" ? "le compte des appels" : "aucun appel");
+    return bouts.join(" · ") + ".";
+  }
+
+  // ── La grille de classe, en miniature ───────────────────────────────────
+  function grille(e){
+    var noms = (e.identite === "seance")
+      ? ["Participant 1","Participant 2","Participant 3","Participant 4"]
+      : ["Amina","Wei","Oksana","Ibrahim"];
+    var rep = [["ok","ok","ok"],["ok","ko","ok"],["ok","ok","vide"],["ko","ok","ok"]];
+    var oral = (e.identite === "seance" || e.depot === "ferme") ? "—"
+             : (e.depot === "complet" ? "1 enregistrement" : "1 transcription");
+    var ecrit = (e.ia === "oui") ? "relu" : "non corrigé";
+    var h = '<table><thead><tr><th>' + (e.identite === "seance" ? "Participant" : "Élève")
+          + '</th><th>Q1</th><th>Q2</th><th>Q3</th><th>Oral</th><th>Texte</th></tr></thead><tbody>';
+    for (var i = 0; i < noms.length; i++){
+      h += '<tr><td>' + noms[i] + '</td>';
+      for (var j = 0; j < 3; j++){
+        var c = rep[i][j];
+        h += '<td class="q ' + c + '">' + (c === "ok" ? "✓" : c === "ko" ? "✕" : "·") + '</td>';
+      }
+      h += '<td>' + (i === 3 ? "—" : oral) + '</td><td>' + (i === 2 ? "—" : ecrit) + '</td></tr>';
+    }
+    return h + '</tbody></table>';
+  }
+
+  // ── Rendu ───────────────────────────────────────────────────────────────
+  function peindre(){
+    document.querySelectorAll('.choix button').forEach(function(b){
+      b.setAttribute('aria-pressed', String(etat[b.dataset.cle] === b.dataset.val));
+    });
+    var mets = function(id, items){
+      document.getElementById(id).innerHTML = items.map(function(x){ return li(x[0], x[1]); }).join('');
+    };
+    mets('pEleve', eleve(etat));
+    mets('pProf',  prof(etat));
+    mets('pGarde', garde(etat));
+    document.getElementById('grille').innerHTML = grille(etat);
+    document.getElementById('legende').textContent =
+      (etat.identite === "seance")
+        ? "Le tableau est celui du groupe : une séance appartient à un groupe existant, dont elle hérite le niveau, le centre et les réglages."
+        : "La bascule « Anonyme » remplace les pseudos par un rang stable — « Élève 7 » — pour projeter sans nommer personne.";
+
+    var qui = [];
+    qui.push("<b>La direction</b> a réglé l'assistant (" + (etat.ia === "oui" ? "autorisé" : "interdit")
+      + "), le micro (" + (etat.voix === "stricte" ? "sur l'appareil" : "par le navigateur")
+      + ") et le dépôt de la voix (" + ({complet:"complet",transcription:"transcription",ferme:"fermé"}[etat.depot]) + ").");
+    qui.push(etat.identite === "seance"
+      ? "<b>L'enseignant</b> a ouvert une séance sur un module de son groupe."
+      : "<b>L'enseignant</b> travaille avec les comptes de ses élèves.");
+    document.getElementById('qui').innerHTML = qui.join(" ");
+
+    var lignes = document.querySelectorAll('#corpsCombis tr');
+    for (var i = 0; i < lignes.length; i++){
+      var l = lignes[i];
+      l.classList.toggle('actif', l.dataset.cle === cle(etat));
+    }
+  }
+
+  function cle(e){ return [e.identite, e.ia, e.voix, e.depot].join('|'); }
+
+  function poser(e){ etat = { identite:e.identite, ia:e.ia, voix:e.voix, depot:e.depot }; peindre(); }
+
+  // Le pupitre
+  var hReg = REGLAGES.map(function(r){
+    var boutons = r.options.map(function(o){
+      return '<button type="button" data-cle="' + r.cle + '" data-val="' + o[0]
+           + '" aria-pressed="false">' + o[1] + '</button>';
+    }).join('');
+    return '<div class="reglage"><p class="lab">' + r.lab + '</p>'
+         + '<div class="choix" role="group" aria-label="' + r.lab + '">' + boutons + '</div></div>';
+  }).join('');
+  document.getElementById('reglages').innerHTML = hReg;
+  document.getElementById('reglages').addEventListener('click', function(ev){
+    var b = ev.target.closest('button'); if (!b) return;
+    etat[b.dataset.cle] = b.dataset.val; peindre();
+  });
+
+  var zp = document.getElementById('presets');
+  PRESETS.forEach(function(p){
+    var b = document.createElement('button');
+    b.type = 'button'; b.textContent = p[0];
+    b.addEventListener('click', function(){ poser(p[1]); });
+    zp.appendChild(b);
+  });
+
+  // Les vingt-quatre combinaisons, calculées par les mêmes règles.
+  var MOTS = {
+    compte:"Compte élève", seance:"Séance sans compte",
+    oui:"Autorisé", non:"Interdit",
+    stricte:"Sur l'appareil", souple:"Par le navigateur",
+    complet:"Complet", transcription:"Transcription", ferme:"Fermé"
+  };
+  var corps = document.getElementById('corpsCombis'), h = '';
+  ["compte","seance"].forEach(function(id){
+    ["oui","non"].forEach(function(ia){
+      ["stricte","souple"].forEach(function(vx){
+        ["complet","transcription","ferme"].forEach(function(dp){
+          var e = { identite:id, ia:ia, voix:vx, depot:dp };
+          h += '<tr data-cle="' + cle(e) + '">'
+            + '<td>' + MOTS[id] + '</td><td>' + MOTS[ia] + '</td><td>' + MOTS[vx] + '</td>'
+            + '<td>' + MOTS[dp] + (id === "seance" ? ' <span style="color:var(--ink-400)">(sans effet)</span>' : '') + '</td>'
+            + '<td>' + recu(e) + '</td><td>' + reste(e) + '</td>'
+            + '<td><button type="button" class="voir">Voir</button></td></tr>';
+        });
+      });
+    });
+  });
+  corps.innerHTML = h;
+  corps.addEventListener('click', function(ev){
+    var tr = ev.target.closest('tr'); if (!tr) return;
+    var p = tr.dataset.cle.split('|');
+    poser({ identite:p[0], ia:p[1], voix:p[2], depot:p[3] });
+    document.querySelector('.pupitre').scrollIntoView({ behavior:'smooth', block:'start' });
+  });
+
+  peindre();
+})();
+</script>
+</body>
+</html>

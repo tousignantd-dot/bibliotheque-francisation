@@ -799,8 +799,13 @@
     const rang = new Map((DIRECT?.eleves || []).map((e, i) => [e.studentId, i]));
     const cartes = envois.map(e => {
       const el = ELEVES.find(x => x.id === e.studentId);
-      const qui = DIRECT_NOMS ? (el ? nomEleve(el) : 'Élève retiré du groupe')
-                              : drNomAnonyme(rang.get(e.studentId) ?? 0);
+      // Un envoi de séance n'a pas d'élève inscrit derrière lui : il porte son
+      // `studentLabel` (« Participant 7 »), qui est déjà anonyme. Sans ce
+      // repli, le mur des textes d'une classe sans compte annonce quatorze
+      // fois « Élève retiré du groupe », ce qui se lit comme une panne.
+      const qui = DIRECT_NOMS
+        ? (el ? nomEleve(el) : (e.studentLabel || 'Élève retiré du groupe'))
+        : drNomAnonyme(rang.get(e.studentId) ?? 0);
       return `<article class="dr-tx">
         <div class="dr-tx-tete"><span class="dr-tx-qui">${esc(qui)}</span>
           <span class="dr-tx-chip">${esc(heureDe(e.createdAt) || 'envoyé')}</span></div>

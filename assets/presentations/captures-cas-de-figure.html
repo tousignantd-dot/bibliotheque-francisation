@@ -1,0 +1,387 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Les écrans, cas par cas</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800;900&display=swap">
+<style>
+  :root{
+    --accent:#0A8F5B; --accent-soft:#E6F5EE; --accent-ink:#07734A;
+    --surface-band:#EDF6F1;
+    --ink-900:#17181A; --ink-700:#3A3D40; --ink-500:#4B4F52; --ink-400:#6E7175;
+    --surface-page:#F7F7F5; --surface-card:#FFFFFF; --surface-sunken:#FBFBFA;
+    --paper-200:#F0F0EE;
+    --border:#EAEAE8; --border-firm:#D6D6D2; --border-tint:#D8E8DF;
+    --acier-600:#1D6B8F; --acier-100:#E7F0F6;
+    --ambre-700:#B45309; --ambre-100:#FBEEDC;
+    --teal-700:#0D7A6F;  --teal-100:#E3F2F0;
+    --indigo-600:#3B49A0; --indigo-100:#E8EAFA;
+    --marque-600:#6B4FBB; --marque-100:#EDE7F9; --marque-filet:#C3B4EA;
+    --font-sans:"Nunito",system-ui,-apple-system,"Segoe UI",sans-serif;
+    --content-max:1120px;
+  }
+  *{box-sizing:border-box}
+  body{margin:0; background:var(--surface-page); color:var(--ink-900);
+    font-family:var(--font-sans); font-size:18px; font-weight:600; line-height:1.55;
+    -webkit-font-smoothing:antialiased; -webkit-text-size-adjust:100%}
+  :focus-visible{outline:3px solid var(--accent); outline-offset:2px; border-radius:4px}
+  .conteneur{max-width:var(--content-max); margin:0 auto; padding:0 24px}
+  .verrou{display:inline-flex; align-items:center; gap:16px; flex-wrap:wrap}
+  .verrou .nom{font-weight:900; font-size:28px; letter-spacing:-.035em; line-height:1;
+    color:var(--ink-900); white-space:nowrap}
+  .verrou .i{position:relative; display:inline-block}
+  .verrou .point{position:absolute; left:1px; top:2px; width:7px; height:7px;
+    border-radius:999px; background:var(--marque-600)}
+  .verrou .filet{width:2px; height:24px; background:var(--marque-filet)}
+  .verrou .desc{font-size:16px; font-weight:900; letter-spacing:-.015em; line-height:1;
+    color:var(--marque-600); white-space:nowrap}
+  @media (max-width:480px){ .verrou .filet,.verrou .desc{display:none} }
+  .barre{background:#FFFFFF; border-bottom:2px solid var(--marque-600); padding:16px 0}
+  .bande{background:var(--surface-band); border-bottom:1px solid var(--border-tint);
+    padding:44px 0 34px}
+  .bande .conteneur{display:flex; flex-direction:column; gap:20px}
+  .surtitre{font-size:13px; font-weight:800; letter-spacing:.12em; text-transform:uppercase;
+    color:var(--ink-400); margin:0}
+  h1{font-size:clamp(32px,5.4vw,46px); font-weight:900; letter-spacing:-.02em;
+    line-height:1.14; margin:0; text-wrap:balance}
+  .chapeau{font-size:19px; font-weight:600; color:var(--ink-500); margin:0; max-width:64ch}
+  .quand{font-size:14px; color:var(--ink-400); margin:0}
+  main{padding:8px 0 80px}
+  section{padding:44px 0 0}
+  h2{font-size:27px; font-weight:900; letter-spacing:-.015em; margin:0 0 6px; text-wrap:balance}
+  p{margin:0 0 14px; max-width:68ch}
+  .eyebrow{display:inline-block; font-size:12px; font-weight:800; letter-spacing:.12em;
+    text-transform:uppercase; padding:4px 10px; border-radius:999px; margin:0 0 10px}
+  .e-acier{background:var(--acier-100); color:var(--acier-600)}
+  .e-ambre{background:var(--ambre-100); color:var(--ambre-700)}
+  .e-teal{background:var(--teal-100); color:var(--teal-700)}
+  .e-indigo{background:var(--indigo-100); color:var(--indigo-600)}
+  strong,b{font-weight:900}
+  code{font-family:ui-monospace,Menlo,Consolas,monospace; font-size:.86em;
+    background:var(--paper-200); padding:1px 5px; border-radius:5px; font-weight:700}
+  .garde{background:var(--accent-soft); border:1px solid #BFE3D2; border-radius:14px;
+    padding:16px 20px}
+  .garde p:last-child{margin-bottom:0}
+
+  /* — une capture — */
+  .prise{background:var(--surface-card); border:1px solid var(--border);
+    border-radius:16px; overflow:hidden; margin:22px 0 0}
+  .prise > figure{margin:0}
+  .prise .tete{padding:16px 20px 12px; border-bottom:1px solid var(--border)}
+  .prise .no{display:inline-block; font-size:12px; font-weight:900; letter-spacing:.1em;
+    color:var(--ink-400); margin-right:8px}
+  .prise h3{font-size:20px; font-weight:900; margin:0 0 4px; letter-spacing:-.01em}
+  .prise .cas{font-size:14px; font-weight:800; color:var(--accent-ink);
+    background:var(--accent-soft); border-radius:999px; padding:3px 11px;
+    display:inline-block; margin:0 0 8px}
+  .prise .quoi{font-size:16px; font-weight:600; color:var(--ink-500); margin:0; max-width:78ch}
+  .prise img{display:block; width:100%; height:auto; background:var(--surface-sunken)}
+  .prise figcaption{padding:13px 20px 16px; font-size:15px; font-weight:600;
+    color:var(--ink-500); border-top:1px solid var(--border); background:var(--surface-sunken)}
+  .prise figcaption b{color:var(--ink-900)}
+  .paire{display:grid; gap:22px; grid-template-columns:repeat(auto-fit,minmax(min(360px,100%),1fr))}
+  .paire .prise{margin:0}
+  hr{border:0; border-top:1px solid var(--border); margin:48px 0 0}
+  footer p{font-size:16px; color:var(--ink-500)}
+  .liens{display:flex; flex-wrap:wrap; gap:10px; margin-top:6px}
+  .lien{display:inline-block; font-size:15px; font-weight:800; text-decoration:none;
+    color:var(--ink-900); background:#FFFFFF; border:1px solid var(--border-firm);
+    border-radius:999px; padding:9px 15px}
+  .lien:hover{background:var(--paper-200)}
+</style>
+</head>
+<body>
+
+<div class="barre">
+  <div class="conteneur">
+    <div class="verrou">
+      <span class="nom" role="img" aria-label="francis">franc<span class="i" aria-hidden="true">ı<span class="point"></span></span>s</span>
+      <span class="filet" aria-hidden="true"></span>
+      <span class="desc">Aide à l'apprentissage du français</span>
+    </div>
+  </div>
+</div>
+
+<header class="bande">
+  <div class="conteneur">
+    <div>
+      <p class="surtitre">Direction et enseignants · Captures d'écran</p>
+      <h1>Les écrans, cas par cas</h1>
+    </div>
+    <p class="chapeau">Treize captures des <b>vraies pages</b>, prises l'une après l'autre en
+    changeant un seul réglage à la fois : la classe suivie avec des comptes d'élèves, puis la
+    même classe en <b>séance sans compte</b>, le module avec et sans assistant, ce que le
+    dépôt de la voix laisse arriver, et l'écran où la direction décide. À chaque image, ce
+    qu'il faut regarder est écrit dessous.</p>
+    <p class="quand">30 août 2026 — les élèves sont fictifs et portent des pseudonymes ; les
+    réponses et les textes ont été fabriqués pour la démonstration. Les écrans, eux, ne sont
+    pas des maquettes : c'est le portail qui tourne.</p>
+    <div class="liens">
+      <a class="lien" href="bac-a-sable-cas-de-figure.html">Le bac à sable des cas de figure</a>
+      <a class="lien" href="mode-seance-sans-compte.html">Le mode séance</a>
+      <a class="lien" href="guide-direction.html">Guide pour la direction</a>
+    </div>
+  </div>
+</header>
+
+<main>
+
+<section class="conteneur">
+  <p class="eyebrow e-acier">Cas 1</p>
+  <h2>La classe suivie avec des comptes d'élèves</h2>
+  <p>Le cas ordinaire : chaque élève a un code de six caractères et un <b>pseudonyme</b> —
+  jamais son vrai nom. Tout ce qu'il fait s'accumule dans son dossier, et l'enseignant a les
+  deux écrans qui répondent aux deux questions : « où en est la classe ? » et « qu'a fait
+  cette personne ? ».</p>
+
+  <article class="prise">
+    <figure>
+      <div class="tete">
+        <p class="cas">Comptes d'élèves · assistant autorisé · dépôt complet</p>
+        <h3><span class="no">01</span>Où en est la classe</h3>
+        <p class="quoi">Le tableau du groupe, module par module, avec le direct de la classe
+        en tête : une case par élève, le taux de réussite du premier coup, et les textes
+        envoyés lisibles sur place.</p>
+      </div>
+      <img src="captures-cas/01-suivi-comptes.jpg" alt="Écran « Où en est la classe » avec les pseudonymes des élèves, les pourcentages de réussite et les textes envoyés">
+      <figcaption><b>À regarder :</b> les noms sont des pseudonymes choisis par les élèves
+      (Alouette, Lupin, Marguerite…). Le bandeau noir dit « 14 élèves sur 16 en ligne » —
+      « en ligne » n'est pas un état gardé, c'est une trace de moins de dix minutes. Deux
+      cases pâles : deux élèves n'ont rien envoyé encore.</figcaption>
+    </figure>
+  </article>
+
+  <article class="prise">
+    <figure>
+      <div class="tete">
+        <p class="cas">Le même écran, interrupteur « Anonyme »</p>
+        <h3><span class="no">02</span>Projeter sans exposer personne</h3>
+        <p class="quoi">Le même tableau, la bascule de la barre noire poussée sur
+        « Anonyme » : chacun devient « Élève 7 », <b>au même rang</b> dans la grille et dans
+        le mur des textes.</p>
+      </div>
+      <img src="captures-cas/02-suivi-anonyme.jpg" alt="Le même écran de suivi, en mode anonyme : les élèves sont nommés Élève 1 à Élève 16">
+      <figcaption><b>À regarder :</b> c'est un réglage d'affichage, pas une permission —
+      l'enseignante a déjà accès aux dossiers nommés. Il sert à <b>projeter</b> un texte au
+      tableau et à pouvoir dire « le troisième texte » sans nommer son auteur.</figcaption>
+    </figure>
+  </article>
+
+  <article class="prise">
+    <figure>
+      <div class="tete">
+        <p class="cas">Comptes d'élèves · dépôt de la voix complet</p>
+        <h3><span class="no">03</span>Le dossier d'un élève</h3>
+        <p class="quoi">Une personne à la fois : son bilan, activité par activité, ce qui
+        revient dans ses erreurs, ce qu'elle a dit et ce qu'elle a écrit.</p>
+      </div>
+      <img src="captures-cas/03-fiche-eleve.jpg" alt="Fiche d'un élève : bilan, activités, notions qui reviennent, enregistrements avec transcription et rétroaction">
+      <figcaption><b>À regarder :</b> les deux enregistrements s'écoutent dans la page, avec
+      la transcription et la rétroaction reçue. C'est ce que le réglage « dépôt complet »
+      autorise ; en <b>transcription</b>, il ne resterait que le texte et le lecteur audio
+      disparaîtrait ; en <b>dépôt fermé</b>, la section resterait vide et l'oral se
+      vérifierait en classe.</figcaption>
+    </figure>
+  </article>
+</section>
+
+<section class="conteneur">
+  <p class="eyebrow e-teal">Cas 2</p>
+  <h2>La même classe, sans dossier d'élèves</h2>
+  <p>L'enseignant ouvre une <b>séance</b> sur un module d'un de ses groupes, imprime une
+  feuille, et les élèves entrent avec un code. Aucun compte, aucun pseudonyme, aucune donnée
+  identifiante — et pourtant un tableau de classe utilisable pendant l'heure.</p>
+
+  <article class="prise">
+    <figure>
+      <div class="tete">
+        <p class="cas">Séance sans compte · groupe sans élève inscrit</p>
+        <h3><span class="no">04</span>Le suivi d'une classe sans compte</h3>
+        <p class="quoi">Le même écran que le premier, sur un groupe où personne n'est
+        inscrit : les lignes s'appellent « Participant 1 » à « Participant 14 ».</p>
+      </div>
+      <img src="captures-cas/04-suivi-seance.jpg" alt="Écran de suivi d'une séance : quatorze participants anonymes mais distincts, avec leurs pourcentages">
+      <figcaption><b>À regarder :</b> en tête, « Aucun élève inscrit : cette classe travaille
+      en séance, sans compte ». Les participants sont <b>anonymes mais distincts</b> — sans
+      cela, l'enseignant ne pourrait aller voir personne. Trois d'entre eux sont entrés sans
+      rien répondre : séance ouverte, tout le monde figure au dénominateur.</figcaption>
+    </figure>
+  </article>
+
+  <div class="paire">
+    <article class="prise">
+      <figure>
+        <div class="tete">
+          <p class="cas">Ce que l'enseignant imprime</p>
+          <h3><span class="no">05</span>La feuille de séance</h3>
+          <p class="quoi">Format lettre, <b>aucune couleur</b> : c'est la photocopieuse de
+          l'école qui la tire.</p>
+        </div>
+        <img src="captures-cas/05-feuille-seance.jpg" alt="Feuille imprimable en noir et blanc : code QR, code à six caractères, adresse et trois consignes">
+        <figcaption><b>À regarder :</b> le code QR est dessiné par notre serveur, sans
+        service tiers. L'adresse imprimée se fabrique à partir du nom de domaine par lequel
+        on arrive — rien n'est écrit en dur. Et la phrase du bas : « Tu n'as pas besoin de
+        compte, et tu n'écris pas ton nom. »</figcaption>
+      </figure>
+    </article>
+
+    <article class="prise">
+      <figure>
+        <div class="tete">
+          <p class="cas">Ce que voit l'élève</p>
+          <h3><span class="no">06</span>Entrer dans la séance</h3>
+          <p class="quoi">Il scanne le carré, et il est déjà dedans : pas de compte à
+          créer, pas de mot de passe, pas de nom à écrire.</p>
+        </div>
+        <img src="captures-cas/06-entree-seance.jpg" alt="Écran d'entrée d'un participant : son numéro, le module à faire et le bouton Continuer">
+        <figcaption><b>À regarder :</b> « 14 — c'est toi, pour cette heure » et « Personne ne
+        saura que c'est toi ». L'appareil garde un jeton : recharger la page ne crée pas un
+        quinzième participant, il retrouve le sien.</figcaption>
+      </figure>
+    </article>
+  </div>
+</section>
+
+<section class="conteneur">
+  <p class="eyebrow e-ambre">Cas 3</p>
+  <h2>Le module, avec et sans assistant</h2>
+  <p>Un centre peut refuser que ses élèves parlent à une IA. C'est <b>le même fichier</b> qui
+  sert les deux cas : la décision vit au serveur, et dix routes s'y ferment. Voici la même
+  page, à deux minutes d'intervalle, avec le seul réglage du centre qui change.</p>
+
+  <div class="paire">
+    <article class="prise">
+      <figure>
+        <div class="tete">
+          <p class="cas">Assistant autorisé</p>
+          <h3><span class="no">07</span>Le module avec l'assistant</h3>
+        </div>
+        <img src="captures-cas/07-module-avec-ia.jpg" alt="Module ouvert avec le rail « Mes outils » à droite et le bandeau de langue maternelle">
+        <figcaption><b>À regarder :</b> le rail « Mes outils » à droite — traduire,
+        simplifier, demander, lire, prononcer, carnet, réviser — et le bandeau qui demande la
+        langue maternelle, qui sert aux traductions.</figcaption>
+      </figure>
+    </article>
+
+    <article class="prise">
+      <figure>
+        <div class="tete">
+          <p class="cas">Assistant interdit par le centre</p>
+          <h3><span class="no">08</span>Le même module, replié</h3>
+        </div>
+        <img src="captures-cas/08-module-sans-ia.jpg" alt="Le même module sans le rail d'outils ni le bandeau de langue">
+        <figcaption><b>À regarder :</b> le rail est parti <b>en entier</b>, le bandeau de
+        langue aussi. Les dialogues, les exercices et les mini-leçons ne bougent pas : les
+        voix sont enregistrées d'avance et les réponses connues se corrigent sur
+        l'appareil.</figcaption>
+      </figure>
+    </article>
+  </div>
+
+  <div class="paire" style="margin-top:22px">
+    <article class="prise">
+      <figure>
+        <div class="tete">
+          <p class="cas">Assistant autorisé</p>
+          <h3><span class="no">09</span>Produire, avec la relecture</h3>
+        </div>
+        <img src="captures-cas/09-production-avec-ia.jpg" alt="Section « Je me lance » : production orale en trois temps puis courriel avec le bouton Vérifier mon message">
+        <figcaption><b>À regarder :</b> le bouton <b>« Vérifier mon message »</b> : l'élève
+        fait relire son texte, corrige, puis envoie. Cette correction s'affiche et n'est
+        <b>jamais conservée</b> — ce qui atteint l'enseignant, c'est ce que l'élève
+        envoie.</figcaption>
+      </figure>
+    </article>
+
+    <article class="prise">
+      <figure>
+        <div class="tete">
+          <p class="cas">Assistant interdit</p>
+          <h3><span class="no">10</span>Produire, sans la relecture</h3>
+        </div>
+        <img src="captures-cas/10-production-sans-ia.jpg" alt="La même section sans assistant : le texte part directement à l'enseignant">
+        <figcaption><b>À regarder :</b> à la place, « Relis ton message, puis envoie-le à ton
+        enseignant. C'est lui qui te le corrigera. » Le travail de correction revient à
+        l'enseignant — c'est le vrai coût du refus, et il se voit ici.</figcaption>
+      </figure>
+    </article>
+  </div>
+</section>
+
+<section class="conteneur">
+  <p class="eyebrow e-indigo">Cas 4</p>
+  <h2>L'écran où la direction décide</h2>
+  <p>Les quatre réglages ne sont pas des promesses : ce sont des champs posés sur l'arbre des
+  organisations, et le premier réglage explicite tranche pour tout ce qui est en dessous.</p>
+
+  <div class="paire">
+    <article class="prise">
+      <figure>
+        <div class="tete">
+          <p class="cas">Rien n'a été réglé</p>
+          <h3><span class="no">11</span>L'arbre, tout ouvert</h3>
+        </div>
+        <img src="captures-cas/11-arbre-tout-ouvert.jpg" alt="Console du réseau : réseau, centre de services et centre, chacun portant quatre pastilles « par défaut »">
+        <figcaption><b>À regarder :</b> les quatre pastilles de chaque nœud, suivies de
+        « par défaut ». Une mise en service n'éteint rien au passage : sans réglage, tout
+        reste ouvert et rien ne se ferme en silence.</figcaption>
+      </figure>
+    </article>
+
+    <article class="prise">
+      <figure>
+        <div class="tete">
+          <p class="cas">Un centre refuse deux choses</p>
+          <h3><span class="no">12</span>L'arbre, après décision</h3>
+        </div>
+        <img src="captures-cas/12-arbre-refus.jpg" alt="Le même arbre avec « IA interdite » et « Dépôt fermé » sur le centre, et le micro hérité du centre de services">
+        <figcaption><b>À regarder :</b> le centre porte <b>IA interdite</b> et <b>dépôt
+        fermé</b> ; son micro, lui, dit « hérité de Centre de services scolaire ». La règle
+        est écrite à l'écran : celui qui a négocié une exception la porte sur
+        lui-même.</figcaption>
+      </figure>
+    </article>
+  </div>
+
+  <article class="prise">
+    <figure>
+      <div class="tete">
+        <p class="cas">Ce que voit une direction</p>
+        <h3><span class="no">13</span>L'espace direction</h3>
+        <p class="quoi">Les centres, ce qu'ils dépensent, l'état de l'assistant, et les
+        comptes — sans jamais entrer dans les classes.</p>
+      </div>
+      <img src="captures-cas/13-espace-direction.jpg" alt="Espace direction : nombre de centres, d'enseignants et d'élèves, dépense par centre, comptes de direction">
+      <figcaption><b>À regarder :</b> une direction voit des <b>compteurs</b> et une dépense
+      estimée, jamais les réponses d'un élève. Et la phrase sous le tableau : ce sont les
+      élèves qui appellent les modèles, donc « la dépense d'un enseignant » veut dire ce que
+      ses groupes ont dépensé.</figcaption>
+    </figure>
+  </article>
+</section>
+
+<section class="conteneur">
+  <div class="garde">
+    <p><b>Ce que ces treize écrans ne montrent pas, et qui compte autant :</b> aucune de ces
+    pages n'existe en deux versions. C'est un seul jeu de fichiers — les 87 modules, les
+    quatre écrans de suivi — qui se replie selon ce que le centre a décidé. Deux jeux
+    auraient divergé en trois mois, et la démonstration d'aujourd'hui ne dirait plus rien de
+    ce qui tournerait l'an prochain.</p>
+  </div>
+</section>
+
+<hr>
+<footer class="conteneur">
+  <p><b>Comment ces captures ont été prises :</b> le portail a été lancé avec une classe de
+  démonstration — seize élèves fictifs, leurs pseudonymes, leurs réponses — puis une séance
+  sans compte a été ouverte sur un groupe vide et quatorze participants y sont entrés. Entre
+  chaque paire d'images, un seul réglage a changé sur l'arbre des organisations. Les données
+  sont inventées ; les écrans sont ceux du portail. Le détail de chaque réglage, et les
+  vingt-quatre combinaisons possibles, sont dans <b>le bac à sable des cas de figure</b>.</p>
+</footer>
+</main>
+</body>
+</html>
