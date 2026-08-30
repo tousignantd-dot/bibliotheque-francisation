@@ -87,6 +87,23 @@
     color:var(--ink-400); background:var(--surface-sunken)}
   tbody tr:last-child td{border-bottom:0}
   td a{color:var(--ink-900); font-weight:800}
+  /* Trois vignettes de front sur un portable, une seule sur un téléphone.
+     `minmax(min(280px,100%,1fr))` plutôt que `minmax(280px,1fr)` : sous 280 px
+     la seconde forme déborde de la colonne au lieu de se replier. */
+  .sous{color:var(--ink-400); font-size:14px;}
+  .rien{color:var(--ink-400);}
+  .vign{display:grid; gap:18px; margin-top:20px;
+    grid-template-columns:repeat(auto-fill,minmax(min(280px,100%),1fr));}
+  .vign figure{margin:0; background:var(--surface-card);
+    border:1px solid var(--border); border-radius:14px; overflow:hidden;}
+  .vign img{display:block; width:100%; height:auto; border-bottom:1px solid var(--border);}
+  .vign figcaption{padding:12px 16px 14px;}
+  .vign .code{font-size:12px; font-weight:800; letter-spacing:.10em;
+    text-transform:uppercase; color:var(--ink-400);}
+  .vign .nom{display:block; font-weight:800; margin:2px 0 4px; color:var(--ink-900);
+    text-decoration:none;}
+  .vign a.nom:hover{text-decoration:underline;}
+  .vign p{margin:0; font-size:14px; color:var(--ink-500);}
   .garde{background:var(--accent-soft); border:1px solid #BFE3D2; border-radius:14px; padding:16px 20px}
   .garde p:last-child{margin-bottom:0}
   .alerte{background:var(--ambre-100); border:1px solid #E8D7B8; border-radius:14px; padding:16px 20px}
@@ -105,6 +122,7 @@
     section{ padding:6mm 0 0; }
     section > h2, section > .eyebrow{ break-after:avoid; }
     .etape, .qr, .tuiles, .garde, .alerte, .cadre-table{ break-inside:avoid; }
+    .vign figure{ break-inside:avoid; }
     .etape{ margin-top:3mm; padding:10px 12px; }
     .qr{ margin-top:3mm; padding:10px 12px; }
     .lien{ display:none; }
@@ -114,24 +132,7 @@
 </style>
 </head>
 <body>
-<!-- RETOUR-BANQUE:début — greffé par build/greffe_retour.py -->
-<style>
-  .retour-banque{background:#FFFFFF; border-bottom:1px solid #EAEAE8;
-    font-family:"Nunito",system-ui,-apple-system,"Segoe UI",sans-serif;}
-  .retour-banque a{display:inline-flex; align-items:center; gap:8px;
-    max-width:1120px; margin:0 auto; padding:11px 24px; min-height:44px;
-    font-size:15px; font-weight:800; color:#4B4F52; text-decoration:none;}
-  .retour-banque a:hover{color:#17181A;}
-  .retour-banque a:focus-visible{outline:3px solid #0A8F5B; outline-offset:-3px;}
-  .retour-banque .fl{font-size:17px; line-height:1;}
-  .retour-banque .où{color:#6E7175; font-weight:700;}
-  @media print{ .retour-banque{display:none !important;} }
-</style>
-<div class="retour-banque">
-  <a href="/presentations.html"><span class="fl" aria-hidden="true">&#8592;</span>
-  Banque de présentations <span class="où">· toutes les pages du projet</span></a>
-</div>
-<!-- RETOUR-BANQUE:fin -->
+
 <div class="barre">
   <div class="conteneur">
     <div class="verrou">
@@ -158,6 +159,44 @@
 </header>
 
 <main>
+
+<section class="conteneur" id="tout">
+  <p class="eyebrow e-indigo">Tout d'un coup d'œil</p>
+  <h2>Ce qu'il y a dans la trousse</h2>
+  <p>11 documents, et trois formes possibles pour chacun : la <b>page</b> qu'on
+  ouvre dans un onglet, le <b>diaporama</b> qu'on projette, la <b>feuille</b> qu'on laisse
+  sur la table. Un tiret veut dire que cette forme n'existe pas — pas qu'elle est
+  ailleurs.</p>
+  <div class="cadre-table"><table>
+    <thead><tr><th>Document</th><th>À l'écran</th><th>À projeter</th><th>Sur papier</th></tr></thead>
+    <tbody><tr><td><b>Le déroulé de la rencontre</b><br><span class="sous">Vingt minutes, sept temps, et la question par laquelle on finit.</span></td><td><a href="trousse-presentation.html">la page</a></td><td><span class="rien">—</span></td><td><a href="trousse-presentation.pdf">le PDF</a></td></tr><tr><td><b>Le point express</b><br><span class="sous">La version courte, quand on a dix minutes dans un corridor.</span></td><td><a href="point-express.html">la page</a></td><td><a href="diaporamas/P4-le-point-express.pptx">P4</a></td><td><a href="point-express.pdf">le PDF</a></td></tr><tr><td><b>Ce qu'il y a dans la boîte</b><br><span class="sous">Le matériel, en chiffres et en structure. Le premier temps du pitch.</span></td><td><span class="rien">—</span></td><td><a href="diaporamas/P1-ce-qu-il-y-a-dans-la-boite.pptx">P1</a></td><td><span class="rien">—</span></td></tr><tr><td><b>Ce que la direction décide</b><br><span class="sous">Les quatre interrupteurs, et ce que chacun change à l'écran.</span></td><td><a href="bac-a-sable-cas-de-figure.html">la page</a></td><td><a href="diaporamas/P2-ce-que-la-direction-decide.pptx">P2</a></td><td><span class="rien">—</span></td></tr><tr><td><b>Les questions de conformité</b><br><span class="sous">Loi 25, hébergement, conservation — ce que le centre décide lui-même.</span></td><td><a href="guide-direction.html">la page</a></td><td><a href="diaporamas/P3-les-questions-de-conformite.pptx">P3</a></td><td><span class="rien">—</span></td></tr><tr><td><b>Les écrans, cas par cas</b><br><span class="sous">Treize captures du portail en marche, selon la décision prise.</span></td><td><a href="captures-cas-de-figure.html">la page</a></td><td><a href="diaporamas/A1-les-ecrans-cas-par-cas.pptx">A1</a></td><td><a href="captures-cas-de-figure.pdf">le PDF</a></td></tr><tr><td><b>Le cours sur un téléphone</b><br><span class="sous">Les sept familles d'exercices, au doigt. Dix-huit captures.</span></td><td><a href="captures-telephone.html">la page</a></td><td><a href="diaporamas/A2-le-cours-sur-un-telephone.pptx">A2</a></td><td><a href="captures-telephone.pdf">le PDF</a></td></tr><tr><td><b>Les fiches de l'élève</b><br><span class="sous">Ce qu'on lui met dans les mains, sur papier.</span></td><td><a href="fiches-eleve.html">la page</a></td><td><a href="diaporamas/A3-les-fiches-de-l-eleve.pptx">A3</a></td><td><a href="fiches-eleve.pdf">le PDF</a></td></tr><tr><td><b>Les diaporamas de séance</b><br><span class="sous">Ce que l'enseignant projette en classe, bloc par bloc.</span></td><td><a href="powerpoints-enseignant.html">la page</a></td><td><a href="diaporamas/A4-les-diaporamas-de-seance.pptx">A4</a></td><td><a href="powerpoints-enseignant.pdf">le PDF</a></td></tr><tr><td><b>Les sept objections</b><br><span class="sous">Celles qui viennent vraiment, et quoi répondre.</span></td><td><span class="rien">—</span></td><td><a href="diaporamas/A5-les-sept-objections.pptx">A5</a></td><td><span class="rien">—</span></td></tr><tr><td><b>Le prix d'un module</b><br><span class="sous">Le coût par élève, mesuré sur le registre des appels.</span></td><td><a href="prix-dun-module.html">la page</a></td><td><span class="rien">—</span></td><td><span class="rien">—</span></td></tr></tbody>
+  </table></div>
+  <div class="garde" style="margin-top:16px">
+    <p><b>Ce tableau est relevé sur le disque</b>, pas écrit à la main : une case ne
+    s'affiche que si le fichier existe vraiment. Le jour où un diaporama est renommé, la
+    case se vide au lieu de pointer dans le vide — on l'apprend en relançant le script,
+    pas devant la salle.</p>
+  </div>
+</section>
+
+<section class="conteneur">
+  <p class="eyebrow e-teal">À projeter</p>
+  <h2>Les diaporamas, en images</h2>
+  <p>Deux familles. <b>P</b>, le pitch, dans l'ordre où on le projette — vingt minutes en
+  tout. <b>A</b>, les annexes, qu'on ouvre seulement quand la salle demande à voir. Tous
+  sortent du même système de design que les diaporamas de séance : c'est le produit qui
+  se présente lui-même.</p>
+  <div class="vign"><figure><img src="diaporamas/apercus/P4.png" alt="Première diapositive de Le point express" loading="lazy"><figcaption><span class="code">P4</span><a class="nom" href="diaporamas/P4-le-point-express.pptx">Le point express</a><p>La version courte, quand on a dix minutes dans un corridor.</p></figcaption></figure><figure><img src="diaporamas/apercus/P1.png" alt="Première diapositive de Ce qu'il y a dans la boîte" loading="lazy"><figcaption><span class="code">P1</span><a class="nom" href="diaporamas/P1-ce-qu-il-y-a-dans-la-boite.pptx">Ce qu'il y a dans la boîte</a><p>Le matériel, en chiffres et en structure. Le premier temps du pitch.</p></figcaption></figure><figure><img src="diaporamas/apercus/P2.png" alt="Première diapositive de Ce que la direction décide" loading="lazy"><figcaption><span class="code">P2</span><a class="nom" href="diaporamas/P2-ce-que-la-direction-decide.pptx">Ce que la direction décide</a><p>Les quatre interrupteurs, et ce que chacun change à l'écran.</p></figcaption></figure><figure><img src="diaporamas/apercus/P3.png" alt="Première diapositive de Les questions de conformité" loading="lazy"><figcaption><span class="code">P3</span><a class="nom" href="diaporamas/P3-les-questions-de-conformite.pptx">Les questions de conformité</a><p>Loi 25, hébergement, conservation — ce que le centre décide lui-même.</p></figcaption></figure><figure><img src="diaporamas/apercus/A1.png" alt="Première diapositive de Les écrans, cas par cas" loading="lazy"><figcaption><span class="code">A1</span><a class="nom" href="diaporamas/A1-les-ecrans-cas-par-cas.pptx">Les écrans, cas par cas</a><p>Treize captures du portail en marche, selon la décision prise.</p></figcaption></figure><figure><img src="diaporamas/apercus/A2.png" alt="Première diapositive de Le cours sur un téléphone" loading="lazy"><figcaption><span class="code">A2</span><a class="nom" href="diaporamas/A2-le-cours-sur-un-telephone.pptx">Le cours sur un téléphone</a><p>Les sept familles d'exercices, au doigt. Dix-huit captures.</p></figcaption></figure><figure><img src="diaporamas/apercus/A3.png" alt="Première diapositive de Les fiches de l'élève" loading="lazy"><figcaption><span class="code">A3</span><a class="nom" href="diaporamas/A3-les-fiches-de-l-eleve.pptx">Les fiches de l'élève</a><p>Ce qu'on lui met dans les mains, sur papier.</p></figcaption></figure><figure><img src="diaporamas/apercus/A4.png" alt="Première diapositive de Les diaporamas de séance" loading="lazy"><figcaption><span class="code">A4</span><a class="nom" href="diaporamas/A4-les-diaporamas-de-seance.pptx">Les diaporamas de séance</a><p>Ce que l'enseignant projette en classe, bloc par bloc.</p></figcaption></figure><figure><img src="diaporamas/apercus/A5.png" alt="Première diapositive de Les sept objections" loading="lazy"><figcaption><span class="code">A5</span><a class="nom" href="diaporamas/A5-les-sept-objections.pptx">Les sept objections</a><p>Celles qui viennent vraiment, et quoi répondre.</p></figcaption></figure></div>
+  <div class="garde" style="margin-top:18px">
+    <p><b>Ils se refabriquent :</b>
+    <code>python3 build/powerpoints/pitch.py --vignettes</code> recompte les chiffres,
+    réécrit les neuf fichiers et refait les images ci-dessus. Un diaporama de vente qui
+    annonce un chiffre périmé se retourne contre celui qui le projette.</p>
+  </div>
+  <p style="margin-top:16px">Pour une formation plutôt qu'un pitch, le canevas
+  <a href="travailler-avec-claude.html"><b>Travailler avec Claude</b></a> (29 écrans,
+  animés, six temps) se projette directement dans le navigateur.</p>
+</section>
 
 <section class="conteneur">
   <p class="eyebrow e-acier">Vingt minutes</p>
@@ -234,45 +273,6 @@
   directement : <a href="/feuille-seance.html">feuille-seance.html?code=XXXXXX</a> —
   remplacez les six X. La feuille se fabrique côté serveur, code QR compris : aucun
   service tiers ne voit l'adresse de votre classe.</p>
-</section>
-
-<section class="conteneur">
-  <p class="eyebrow e-indigo">À projeter</p>
-  <h2>Les trois diaporamas</h2>
-  <p>Les trois temps du milieu existent en PowerPoint, dans le même système de design
-  que les %s diaporamas de séance — c'est le produit qui se présente lui-même. Chacun
-  ouvre sur la barre de parcours, puis sur son jalon plein cadre, et porte ses notes de
-  présentateur.</p>
-  <div class="cadre-table"><table>
-    <thead><tr><th>Diaporama</th><th>Ce qu'il couvre</th></tr></thead>
-    <tbody>
-      <tr><td><a href="diaporamas/P1-ce-qu-il-y-a-dans-la-boite.pptx">P1 · Ce qu'il y a dans la boîte</a></td>
-        <td>le matériel, en chiffres et en structure — 10 diapositives</td></tr>
-      <tr><td><a href="diaporamas/P2-ce-que-la-direction-decide.pptx">P2 · Ce que la direction décide</a></td>
-        <td>les quatre interrupteurs et le mode séance — 10 diapositives</td></tr>
-      <tr><td><a href="diaporamas/P3-les-questions-de-conformite.pptx">P3 · Les questions de conformité</a></td>
-        <td>l'inventaire des flux et l'article 70.1 — 11 diapositives</td></tr>
-    </tbody>
-  </table></div>
-  <div class="garde" style="margin-top:16px">
-    <p><b>Ils se refabriquent :</b> <code>python3 build/powerpoints/pitch.py</code>
-    recompte les chiffres et réécrit les trois fichiers. Un diaporama de vente qui
-    annonce un chiffre périmé se retourne contre celui qui le projette.</p>
-  </div>
-  <p style="margin-top:16px">Pour une formation plutôt qu'un pitch, le canevas
-  <a href="travailler-avec-claude.html"><b>Travailler avec Claude</b></a> (29 écrans,
-  animés, six temps) se projette directement dans le navigateur.</p>
-</section>
-
-<section class="conteneur">
-  <p class="eyebrow e-teal">Sur papier</p>
-  <h2>La liasse à imprimer</h2>
-  <p>Toutes en couleur, format lettre — cinquante-deux pages en tout. C'est ce qu'on
-  laisse sur la table : celui qui repart avec le papier y revient.</p>
-  <div class="cadre-table"><table>
-    <thead><tr><th>Document</th><th>Longueur</th></tr></thead>
-    <tbody><tr><td><a href="captures-cas-de-figure.pdf">Les écrans, cas par cas</a></td><td>15 pages</td></tr><tr><td><a href="captures-telephone.pdf">Le cours sur un téléphone</a></td><td>12 pages</td></tr><tr><td><a href="fiches-eleve.pdf">Les fiches de l'élève</a></td><td>9 pages</td></tr><tr><td><a href="powerpoints-enseignant.pdf">Les diaporamas de séance</a></td><td>11 pages</td></tr><tr><td><a href="trousse-presentation.pdf">Cette trousse</a></td><td>à garder pour soi</td></tr></tbody>
-  </table></div>
 </section>
 
 <hr>

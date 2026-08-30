@@ -90,6 +90,87 @@ def mesures():
 
 # ── Le contenu éditorial ──────────────────────────────────────────────────
 
+# ── Ce qu'il y a dans la trousse ─────────────────────────────────────
+# Une ligne par document, et **trois formes possibles** : la page qu'on ouvre
+# dans un onglet, le diaporama qu'on projette, la feuille qu'on laisse sur la
+# table. Le premier jet de cette page rangeait les documents par forme — les
+# PPTX dans une section, les PDF dans une autre, les pages dans le déroulé :
+# le même document paraissait à trois endroits et nulle part en entier, et on
+# ne pouvait pas savoir d'un coup d'œil ce qui existait.
+#
+# Les cases se remplissent **en regardant le disque** (`formes()`), jamais de
+# mémoire : une case qui annonce un fichier absent est pire qu'une case vide,
+# parce qu'on ne s'en aperçoit que devant la salle.
+TROUSSE = [
+    ("Le déroulé de la rencontre",
+     "Vingt minutes, sept temps, et la question par laquelle on finit.",
+     "trousse-presentation", None),
+    ("Le point express",
+     "La version courte, quand on a dix minutes dans un corridor.",
+     "point-express", "P4"),
+    ("Ce qu'il y a dans la boîte",
+     "Le matériel, en chiffres et en structure. Le premier temps du pitch.",
+     None, "P1"),
+    ("Ce que la direction décide",
+     "Les quatre interrupteurs, et ce que chacun change à l'écran.",
+     "bac-a-sable-cas-de-figure", "P2"),
+    ("Les questions de conformité",
+     "Loi 25, hébergement, conservation — ce que le centre décide lui-même.",
+     "guide-direction", "P3"),
+    ("Les écrans, cas par cas",
+     "Treize captures du portail en marche, selon la décision prise.",
+     "captures-cas-de-figure", "A1"),
+    ("Le cours sur un téléphone",
+     "Les sept familles d'exercices, au doigt. Dix-huit captures.",
+     "captures-telephone", "A2"),
+    ("Les fiches de l'élève",
+     "Ce qu'on lui met dans les mains, sur papier.",
+     "fiches-eleve", "A3"),
+    ("Les diaporamas de séance",
+     "Ce que l'enseignant projette en classe, bloc par bloc.",
+     "powerpoints-enseignant", "A4"),
+    ("Les sept objections",
+     "Celles qui viennent vraiment, et quoi répondre.",
+     None, "A5"),
+    ("Le prix d'un module",
+     "Le coût par élève, mesuré sur le registre des appels.",
+     "prix-dun-module", None),
+]
+
+PRES = RACINE / "assets" / "presentations"
+DIAPOS = PRES / "diaporamas"
+
+
+def formes(base, code):
+    """(page, diaporama, papier) — chacun un chemin relatif, ou None.
+
+    Ne rend que ce qui est **sur le disque**. Le jour où une autre session
+    renomme un diaporama, la case se vide au lieu de pointer dans le vide.
+    """
+    page = ("%s.html" % base) if base and (PRES / ("%s.html" % base)).exists() else None
+    pdf = ("%s.pdf" % base) if base and (PRES / ("%s.pdf" % base)).exists() else None
+    deck = vign = None
+    if code:
+        for f in sorted(DIAPOS.glob("%s-*.pptx" % code)):
+            deck = "diaporamas/%s" % f.name
+            break
+        if (DIAPOS / "apercus" / ("%s.png" % code)).exists():
+            vign = "diaporamas/apercus/%s.png" % code
+    return page, deck, pdf, vign
+
+
+def orphelins():
+    """Les diaporamas que le catalogue ne nomme pas.
+
+    Sans ce contrôle, un diaporama ajouté par une autre session existerait sur
+    le disque sans jamais paraître dans la trousse — et personne ne le saurait,
+    puisque rien ne manque à l'écran.
+    """
+    connus = {c for _, _, _, c in TROUSSE if c}
+    return sorted(f.name.split("-")[0] for f in DIAPOS.glob("*.pptx")
+                  if f.name.split("-")[0] not in connus)
+
+
 DEROULE = [
     ("0-2 min", "Le problème, pas le produit",
      "Une classe de francisation, seize personnes, huit niveaux de français dans la même "
@@ -212,16 +293,43 @@ def page(m):
     h_limites = "".join("<li>%s</li>" % l for l in LIMITES)
     h_avant = "".join("<li>%s</li>" % a for a in AVANT)
 
-    liasse = [
-        ("captures-cas-de-figure.pdf", "Les écrans, cas par cas", "15 pages"),
-        ("captures-telephone.pdf", "Le cours sur un téléphone", "12 pages"),
-        ("fiches-eleve.pdf", "Les fiches de l'élève", "9 pages"),
-        ("powerpoints-enseignant.pdf", "Les diaporamas de séance", "11 pages"),
-        ("trousse-presentation.pdf", "Cette trousse", "à garder pour soi"),
-    ]
-    h_liasse = "".join(
-        '<tr><td><a href="%s">%s</a></td><td>%s</td></tr>' % (f, t, p)
-        for f, t, p in liasse)
+    # Le tableau unique : une ligne par document, trois formes possibles. Les
+    # cellules se remplissent en regardant le disque — voir `formes()`.
+    def cellule(chemin, mot):
+        return ('<a href="%s">%s</a>' % (chemin, mot)) if chemin else '<span class="rien">—</span>'
+
+    rangs = []
+    for titre, phrase, base, code in TROUSSE:
+        page, deck, pdf, _ = formes(base, code)
+        rangs.append(
+            '<tr><td><b>%s</b><br><span class="sous">%s</span></td>'
+            '<td>%s</td><td>%s</td><td>%s</td></tr>'
+            % (titre, phrase, cellule(page, "la page"),
+               cellule(deck, code or ""), cellule(pdf, "le PDF")))
+    h_trousse = "".join(rangs)
+
+    # La galerie : on ne montre que les documents qui ont un diaporama, dans
+    # l'ordre du catalogue — donc le pitch avant les annexes.
+    vign = []
+    for titre, phrase, base, code in TROUSSE:
+        page, deck, pdf, image = formes(base, code)
+        if not deck:
+            continue
+        vign.append(
+            '<figure><img src="%s" alt="Première diapositive de %s" loading="lazy">'
+            '<figcaption><span class="code">%s</span>'
+            '<a class="nom" href="%s">%s</a><p>%s</p></figcaption></figure>'
+            % (image or deck, titre, code, deck, titre, phrase)
+            if image else
+            '<figure><figcaption><span class="code">%s</span>'
+            '<a class="nom" href="%s">%s</a><p>%s</p></figcaption></figure>'
+            % (code, deck, titre, phrase))
+    h_vignettes = "".join(vign)
+
+    manquants = orphelins()
+    if manquants:
+        print("  !! diaporama(s) hors catalogue : %s" % ", ".join(manquants))
+        print("     Ajoutez-les à TROUSSE, sinon ils n'apparaissent nulle part.")
 
     return """<!DOCTYPE html>
 <html lang="fr">
@@ -312,6 +420,23 @@ def page(m):
     color:var(--ink-400); background:var(--surface-sunken)}
   tbody tr:last-child td{border-bottom:0}
   td a{color:var(--ink-900); font-weight:800}
+  /* Trois vignettes de front sur un portable, une seule sur un téléphone.
+     `minmax(min(280px,100%,1fr))` plutôt que `minmax(280px,1fr)` : sous 280 px
+     la seconde forme déborde de la colonne au lieu de se replier. */
+  .sous{color:var(--ink-400); font-size:14px;}
+  .rien{color:var(--ink-400);}
+  .vign{display:grid; gap:18px; margin-top:20px;
+    grid-template-columns:repeat(auto-fill,minmax(min(280px,100%),1fr));}
+  .vign figure{margin:0; background:var(--surface-card);
+    border:1px solid var(--border); border-radius:14px; overflow:hidden;}
+  .vign img{display:block; width:100%; height:auto; border-bottom:1px solid var(--border);}
+  .vign figcaption{padding:12px 16px 14px;}
+  .vign .code{font-size:12px; font-weight:800; letter-spacing:.10em;
+    text-transform:uppercase; color:var(--ink-400);}
+  .vign .nom{display:block; font-weight:800; margin:2px 0 4px; color:var(--ink-900);
+    text-decoration:none;}
+  .vign a.nom:hover{text-decoration:underline;}
+  .vign p{margin:0; font-size:14px; color:var(--ink-500);}
   .garde{background:var(--accent-soft); border:1px solid #BFE3D2; border-radius:14px; padding:16px 20px}
   .garde p:last-child{margin-bottom:0}
   .alerte{background:var(--ambre-100); border:1px solid #E8D7B8; border-radius:14px; padding:16px 20px}
@@ -330,6 +455,7 @@ def page(m):
     section{ padding:6mm 0 0; }
     section > h2, section > .eyebrow{ break-after:avoid; }
     .etape, .qr, .tuiles, .garde, .alerte, .cadre-table{ break-inside:avoid; }
+    .vign figure{ break-inside:avoid; }
     .etape{ margin-top:3mm; padding:10px 12px; }
     .qr{ margin-top:3mm; padding:10px 12px; }
     .lien{ display:none; }
@@ -366,6 +492,44 @@ def page(m):
 </header>
 
 <main>
+
+<section class="conteneur" id="tout">
+  <p class="eyebrow e-indigo">Tout d'un coup d'œil</p>
+  <h2>Ce qu'il y a dans la trousse</h2>
+  <p>__NDOCS__ documents, et trois formes possibles pour chacun : la <b>page</b> qu'on
+  ouvre dans un onglet, le <b>diaporama</b> qu'on projette, la <b>feuille</b> qu'on laisse
+  sur la table. Un tiret veut dire que cette forme n'existe pas — pas qu'elle est
+  ailleurs.</p>
+  <div class="cadre-table"><table>
+    <thead><tr><th>Document</th><th>À l'écran</th><th>À projeter</th><th>Sur papier</th></tr></thead>
+    <tbody>__TROUSSE__</tbody>
+  </table></div>
+  <div class="garde" style="margin-top:16px">
+    <p><b>Ce tableau est relevé sur le disque</b>, pas écrit à la main : une case ne
+    s'affiche que si le fichier existe vraiment. Le jour où un diaporama est renommé, la
+    case se vide au lieu de pointer dans le vide — on l'apprend en relançant le script,
+    pas devant la salle.</p>
+  </div>
+</section>
+
+<section class="conteneur">
+  <p class="eyebrow e-teal">À projeter</p>
+  <h2>Les diaporamas, en images</h2>
+  <p>Deux familles. <b>P</b>, le pitch, dans l'ordre où on le projette — vingt minutes en
+  tout. <b>A</b>, les annexes, qu'on ouvre seulement quand la salle demande à voir. Tous
+  sortent du même système de design que les diaporamas de séance : c'est le produit qui
+  se présente lui-même.</p>
+  <div class="vign">__VIGNETTES__</div>
+  <div class="garde" style="margin-top:18px">
+    <p><b>Ils se refabriquent :</b>
+    <code>python3 build/powerpoints/pitch.py --vignettes</code> recompte les chiffres,
+    réécrit les neuf fichiers et refait les images ci-dessus. Un diaporama de vente qui
+    annonce un chiffre périmé se retourne contre celui qui le projette.</p>
+  </div>
+  <p style="margin-top:16px">Pour une formation plutôt qu'un pitch, le canevas
+  <a href="travailler-avec-claude.html"><b>Travailler avec Claude</b></a> (29 écrans,
+  animés, six temps) se projette directement dans le navigateur.</p>
+</section>
 
 <section class="conteneur">
   <p class="eyebrow e-acier">Vingt minutes</p>
@@ -444,45 +608,6 @@ def page(m):
   service tiers ne voit l'adresse de votre classe.</p>
 </section>
 
-<section class="conteneur">
-  <p class="eyebrow e-indigo">À projeter</p>
-  <h2>Les trois diaporamas</h2>
-  <p>Les trois temps du milieu existent en PowerPoint, dans le même système de design
-  que les %s diaporamas de séance — c'est le produit qui se présente lui-même. Chacun
-  ouvre sur la barre de parcours, puis sur son jalon plein cadre, et porte ses notes de
-  présentateur.</p>
-  <div class="cadre-table"><table>
-    <thead><tr><th>Diaporama</th><th>Ce qu'il couvre</th></tr></thead>
-    <tbody>
-      <tr><td><a href="diaporamas/P1-ce-qu-il-y-a-dans-la-boite.pptx">P1 · Ce qu'il y a dans la boîte</a></td>
-        <td>le matériel, en chiffres et en structure — 10 diapositives</td></tr>
-      <tr><td><a href="diaporamas/P2-ce-que-la-direction-decide.pptx">P2 · Ce que la direction décide</a></td>
-        <td>les quatre interrupteurs et le mode séance — 10 diapositives</td></tr>
-      <tr><td><a href="diaporamas/P3-les-questions-de-conformite.pptx">P3 · Les questions de conformité</a></td>
-        <td>l'inventaire des flux et l'article 70.1 — 11 diapositives</td></tr>
-    </tbody>
-  </table></div>
-  <div class="garde" style="margin-top:16px">
-    <p><b>Ils se refabriquent :</b> <code>python3 build/powerpoints/pitch.py</code>
-    recompte les chiffres et réécrit les trois fichiers. Un diaporama de vente qui
-    annonce un chiffre périmé se retourne contre celui qui le projette.</p>
-  </div>
-  <p style="margin-top:16px">Pour une formation plutôt qu'un pitch, le canevas
-  <a href="travailler-avec-claude.html"><b>Travailler avec Claude</b></a> (29 écrans,
-  animés, six temps) se projette directement dans le navigateur.</p>
-</section>
-
-<section class="conteneur">
-  <p class="eyebrow e-teal">Sur papier</p>
-  <h2>La liasse à imprimer</h2>
-  <p>Toutes en couleur, format lettre — cinquante-deux pages en tout. C'est ce qu'on
-  laisse sur la table : celui qui repart avec le papier y revient.</p>
-  <div class="cadre-table"><table>
-    <thead><tr><th>Document</th><th>Longueur</th></tr></thead>
-    <tbody>__LIASSE__</tbody>
-  </table></div>
-</section>
-
 <hr>
 <footer class="conteneur">
   <p>Cette page est <b>générée</b> : relancer <code>build/trousse.py</code> recompte les
@@ -496,7 +621,8 @@ def page(m):
 """.replace("__PLAFOND__", str(m["plafond"])).replace("__QUAND__", m["quand"]).replace("__TUILES__", h_tuiles) \
    .replace("__DEROULE__", h_deroule).replace("__QUESTIONS__", h_questions) \
    .replace("__LIMITES__", h_limites).replace("__AVANT__", h_avant) \
-   .replace("__LIASSE__", h_liasse) \
+   .replace("__TROUSSE__", h_trousse).replace("__VIGNETTES__", h_vignettes) \
+   .replace("__NDOCS__", str(len(TROUSSE))) \
    .replace("__TROIS__", "<b>%s modules de cours</b> sur %d niveaux, "
                          "<b>%s heures de classe préparées</b>, "
                          "<b>une fiche et un diaporama pour chacune des %s séances</b>"
@@ -504,8 +630,26 @@ def page(m):
 
 
 if __name__ == "__main__":
+    import argparse
+    import sys
+    sys.path.insert(0, str(pathlib.Path(__file__).resolve().parent))
+    from imprimer import imprimer
+
+    ap = argparse.ArgumentParser(description=__doc__)
+    ap.add_argument("--sans-pdf", action="store_true",
+                    help="n'écrit que la page HTML")
+    a = ap.parse_args()
+
     m = mesures()
     SORTIE.write_text(page(m))
     print("écrit :", SORTIE.relative_to(RACINE))
     print("%d cours · %d ateliers · %s fiches · %s diaporamas · %s h"
           % (m["cours"], m["ateliers"], m["fiches"], m["decks"], m["heures"]))
+
+    # Le PDF est ce qu'on laisse sur la table : une page réorganisée au-dessus
+    # d'un PDF resté à l'ancienne organisation ne signale rien, et c'est le
+    # papier que la direction relit une semaine plus tard.
+    if not a.sans_pdf:
+        pdf = SORTIE.with_suffix(".pdf")
+        n = imprimer(SORTIE, pdf)
+        print("  %-30s %s" % (pdf.name, ("%d pages" % n) if n else "produit"))
