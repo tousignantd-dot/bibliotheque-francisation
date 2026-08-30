@@ -1,0 +1,431 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Le nom — cinq candidats, une épreuve</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Nunito:wght@600;700;800;900&family=IBM+Plex+Sans:wght@400;500;600;700&family=IBM+Plex+Mono:wght@400;500&display=swap">
+<style>
+:root{
+  --sol:#FFFFFF; --papier:#FAFAF8; --encre:#17181A; --texte:#3A3D40; --gris:#6E7175;
+  --filet:#D0CFCA; --filet-fin:#E8E7E2;
+  --niv:#0D7A6F; --niv-pale:#DCF2EF; --niv-fonce:#08463F;
+  --ambre:#B45309; --ambre-pale:#FBEEDC; --ambre-fonce:#7A3806;
+  --mauve:#6B4FBB;
+}
+*{box-sizing:border-box}
+body{margin:0;background:var(--sol);color:var(--texte);
+  font-family:'IBM Plex Sans','Helvetica Neue',Arial,sans-serif;font-size:15px;line-height:1.55;
+  -webkit-font-smoothing:antialiased}
+h1,h2,h3,h4{margin:0;font-family:'Nunito','Arial Rounded MT Bold',sans-serif;color:var(--encre);text-wrap:balance}
+p{margin:0}
+b,strong{font-weight:700;color:var(--encre)}
+code,.mono{font-family:'IBM Plex Mono',ui-monospace,Menlo,monospace;font-size:.9em;color:var(--encre)}
+a{color:var(--encre)}
+button{font-family:inherit;cursor:pointer}
+
+.fr-barre{background:#FFF;border-bottom:2px solid var(--mauve);padding:14px 40px;
+  display:flex;align-items:center;gap:20px;flex-wrap:wrap}
+.fr-lockup{display:inline-flex;align-items:baseline;gap:16px;color:#17181A}
+.fr-nom{font-family:'Nunito',sans-serif;font-weight:900;font-size:28px;letter-spacing:-.035em;line-height:1;color:var(--encre);white-space:nowrap;text-decoration:none}
+.fr-i{position:relative;display:inline-block}
+.fr-point{position:absolute;left:1px;top:2px;width:7px;height:7px;border-radius:999px;background:var(--mauve)}
+.fr-trait{width:1px;height:24px;background:#C8C7C2;align-self:center}
+.fr-desc{font-size:14px;color:#4B4F52}
+.fr-liens{margin-left:auto;display:flex;gap:16px;font-size:13px}
+.fr-liens a{color:var(--gris);text-decoration:none}
+.fr-liens a:hover{color:var(--encre);text-decoration:underline}
+
+.page{max-width:1040px;margin:0 auto;padding:0 40px 110px}
+.eyebrow{font-size:11px;font-weight:600;letter-spacing:.14em;text-transform:uppercase;color:var(--gris)}
+.bloc{padding-top:58px}
+.bloc > .eyebrow{display:block;margin-bottom:6px}
+.bloc > h2{font-size:28px;font-weight:900;letter-spacing:-.02em;line-height:1.12;
+  border-top:2px solid var(--encre);padding-top:12px}
+.intro{font-size:15px;max-width:78ch;margin-top:14px}
+
+.hero{display:grid;grid-template-columns:1.1fr 1fr;gap:52px;padding:72px 0 6px;align-items:start}
+.hero h1{font-size:46px;font-weight:400;line-height:1.05;letter-spacing:-.03em}
+.hero h1 span{display:block;font-weight:900}
+.verdict{border-top:3px solid var(--niv);padding-top:14px;
+  font-family:'Nunito',sans-serif;font-size:18px;line-height:1.4;color:var(--encre);font-weight:600}
+.verdict b{font-weight:900}
+
+/* ── l'épreuve ── */
+.epreuve{background:var(--papier);border:1px solid var(--filet-fin);border-left:3px solid var(--encre);
+  border-radius:4px;padding:16px 20px;margin-top:22px}
+.epreuve ol{margin:8px 0 0;padding-left:20px}
+.epreuve li{font-size:13.8px;margin-bottom:6px}
+.epreuve li:last-child{margin-bottom:0}
+
+/* ── les candidats ── */
+.cand{border-top:1px solid var(--filet-fin);padding:22px 0}
+.cand:first-of-type{border-top:1.5px solid var(--encre)}
+.cand__t{display:grid;grid-template-columns:36px minmax(0,1fr) auto;gap:16px;align-items:start}
+.cand__case button{width:24px;height:24px;border:1.5px solid var(--filet);border-radius:5px;
+  background:#FFF;padding:0;color:transparent;font-size:14px;font-weight:800;line-height:1;margin-top:4px}
+.cand__case button[aria-pressed="true"]{background:var(--niv);border-color:var(--niv);color:#FFF}
+.cand h3{font-size:24px;font-weight:900;letter-spacing:-.01em}
+.cand .accroche{font-size:14px;color:var(--gris);margin-top:3px}
+.reco{display:inline-block;font-size:10px;font-weight:800;letter-spacing:.1em;text-transform:uppercase;
+  background:var(--niv);color:#FFF;padding:3px 9px;border-radius:11px;white-space:nowrap}
+.essais{display:grid;grid-template-columns:1fr 1fr;gap:0 28px;margin:14px 0 0 52px}
+.essai{border-top:1px solid var(--filet-fin);padding:9px 0;font-size:13.6px}
+.essai b{display:block;font-size:10.5px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;
+  color:var(--gris);margin-bottom:3px}
+.essai i{font-style:normal;font-family:'Nunito',sans-serif;font-weight:700;color:var(--encre)}
+.pourcontre{margin:12px 0 0 52px;display:grid;grid-template-columns:1fr 1fr;gap:24px}
+.pourcontre p{font-size:13.6px}
+.pourcontre .r{font-size:10.5px;font-weight:700;letter-spacing:.12em;text-transform:uppercase;
+  margin-bottom:4px}
+.pc-pour .r{color:var(--niv)}
+.pc-contre .r{color:var(--ambre-fonce)}
+
+/* ── écartés ── */
+.ecarte{display:grid;grid-template-columns:190px minmax(0,1fr);gap:20px;
+  border-top:1px solid var(--filet-fin);padding:12px 0;font-size:13.6px}
+.ecarte:first-of-type{border-top:1.5px solid var(--encre)}
+.ecarte b{font-family:'Nunito',sans-serif;font-size:16px;font-weight:900;color:var(--encre)}
+
+/* ── la ligne ── */
+.lignes{display:grid;grid-template-columns:repeat(auto-fill,minmax(250px,1fr));gap:14px;margin-top:20px}
+.ligne{border:1px solid var(--filet-fin);border-left:3px solid var(--niv);background:var(--papier);
+  border-radius:3px;padding:14px 16px}
+.ligne p:first-child{font-family:'Nunito',sans-serif;font-size:17px;font-weight:900;color:var(--encre)}
+.ligne p:last-child{font-size:12.8px;color:var(--gris);margin-top:6px}
+
+.note{background:var(--papier);border-left:3px solid var(--ambre);padding:14px 18px;margin-top:24px;
+  font-size:13.8px;max-width:84ch}
+.barre-export{position:sticky;bottom:0;background:rgba(255,255,255,.96);border-top:1px solid var(--filet);
+  padding:12px 0;margin-top:26px;display:flex;align-items:center;gap:14px;font-size:13px;color:var(--gris);
+  flex-wrap:wrap}
+.btn{border:1px solid var(--encre);background:var(--encre);color:#FFF;border-radius:4px;padding:9px 16px;
+  font-family:'Nunito',sans-serif;font-weight:800;font-size:13px}
+.btn.b2{background:#FFF;color:var(--encre)}
+#sortie{width:100%;min-height:90px;margin-top:12px;font-family:'IBM Plex Mono',monospace;font-size:12px;
+  border:1px solid var(--filet);border-radius:4px;padding:10px;display:none}
+.pied{margin-top:70px;border-top:1px solid var(--filet);padding-top:14px;font-size:12.5px;color:var(--gris)}
+
+@media (max-width:900px){
+  .hero{grid-template-columns:1fr;gap:26px}
+  .hero h1{font-size:36px}
+  .essais,.pourcontre{grid-template-columns:1fr;margin-left:0}
+  .cand__t{grid-template-columns:30px minmax(0,1fr)}
+  .ecarte{grid-template-columns:1fr;gap:4px}
+  .page,.fr-barre{padding-left:20px;padding-right:20px}
+}
+</style>
+</head>
+<body>
+
+<div class="fr-barre">
+  <div class="fr-lockup">
+    <span class="fr-nom" role="img" aria-label="francis">franc<span class="fr-i" aria-hidden="true">ı<span class="fr-point"></span></span>s</span>
+    <span class="fr-trait"></span>
+    <span class="fr-desc">Modules autonomes · le nom</span>
+  </div>
+  <nav class="fr-liens">
+    <a href="index.html">← Modules autonomes</a>
+    <a href="heure-et-date/index.html">Un parcours</a>
+  </nav>
+</div>
+
+<div class="page">
+
+  <div class="hero">
+    <div>
+      <p class="eyebrow">Chantier · 30 août 2026</p>
+      <h1>Dans l'autobus,<br><span>au lieu de rien.</span></h1>
+      <p class="intro">C'est le concept, et il n'a pas encore de nom. Tout le monde sort son
+      téléphone dans le métro et fait défiler. L'élève de francisation aussi — et lui,
+      contrairement à nous, a quelque chose à y gagner. <b>Dix minutes de temps mort qui font
+      avancer son niveau</b>, sur une difficulté que son enseignant a repérée.</p>
+    </div>
+    <div>
+      <p class="verdict">Le nom doit tenir dans une phrase que l'enseignant dira cinquante fois
+      par semaine&nbsp;: «&nbsp;<b>Je t'envoie un ___ sur le passé composé.</b>&nbsp;»
+      C'est la seule épreuve qui compte.</p>
+    </div>
+  </div>
+
+  <!-- ─────────────────────────────────────────────── -->
+  <section class="bloc">
+    <span class="eyebrow">L'épreuve</span>
+    <h2>Cinq phrases, les mêmes pour tous les candidats</h2>
+    <p class="intro">Un nom ne se choisit pas parce qu'il est joli. Il se choisit parce qu'il
+    survit à l'usage. Chaque candidat passe donc les mêmes cinq&nbsp;:</p>
+    <div class="epreuve">
+      <ol>
+        <li><b>L'enseignant</b>, en classe&nbsp;: «&nbsp;Je t'envoie un ___ sur le passé
+        composé.&nbsp;»</li>
+        <li><b>L'élève</b>, dans son portail&nbsp;: le titre au-dessus de ce qu'il a reçu.</li>
+        <li><b>Le pluriel</b>&nbsp;: l'étagère où ils sont rangés.</li>
+        <li><b>La direction</b>&nbsp;: «&nbsp;francis, c'est des modules, des ateliers,
+        et des ___.&nbsp;»</li>
+        <li><b>L'élève de niveau 3</b> comprend-il le mot sans qu'on le lui explique&nbsp;?</li>
+      </ol>
+    </div>
+  </section>
+
+  <!-- ─────────────────────────────────────────────── -->
+  <section class="bloc">
+    <span class="eyebrow">Les candidats</span>
+    <h2>Cinq noms, et ce que chacun donne</h2>
+    <p class="intro">Cochez celui que vous voulez, exportez, et je le pose partout — interface,
+    étagère, page de présentation. <b>Priorité au premier</b>, mais la décision est la vôtre.</p>
+
+    <div class="cand" data-id="trajet">
+      <div class="cand__t">
+        <div class="cand__case"><button type="button" aria-pressed="false" aria-label="Choisir">✓</button></div>
+        <div>
+          <h3>Le trajet</h3>
+          <p class="accroche">« Le temps d'un trajet. »</p>
+        </div>
+        <div><span class="reco">Recommandé</span></div>
+      </div>
+      <div class="essais">
+        <div class="essai"><b>L'enseignant</b><i>« Je t'envoie un trajet sur le passé composé. »</i></div>
+        <div class="essai"><b>L'élève</b><i>Mes trajets</i> — « Dix minutes pour avancer »</div>
+        <div class="essai"><b>Le pluriel</b><i>les trajets</i></div>
+        <div class="essai"><b>La direction</b><i>« … des modules, des ateliers et des trajets. »</i></div>
+      </div>
+      <div class="pourcontre">
+        <div class="pc-pour"><p class="r">Pour</p>
+          <p>Le mot dit <b>les deux choses à la fois</b> — le déplacement en autobus et le
+          chemin qu'on fait dans son apprentissage. Il porte donc le concept sans avoir à
+          l'expliquer. Court, courant, féminin&nbsp;/&nbsp;masculin sans piège, et il se plie à
+          toutes les phrases de l'épreuve sans forcer. C'est le seul candidat dont
+          <b>l'accroche s'écrit toute seule</b>&nbsp;: « le temps d'un trajet ».</p></div>
+        <div class="pc-contre"><p class="r">Contre</p>
+          <p>Le mot est <b>enseigné comme vocabulaire</b> au niveau 5, dans les modules de
+          déplacement — un élève pourrait d'abord penser à l'autobus. C'est un risque
+          acceptable, et peut-être un avantage&nbsp;: le mot est déjà connu. Et un trajet peut
+          se faire à pied ou en auto — la marque ne se limite donc pas au métro, ce qui est
+          voulu.</p></div>
+      </div>
+    </div>
+
+    <div class="cand" data-id="dix-minutes">
+      <div class="cand__t">
+        <div class="cand__case"><button type="button" aria-pressed="false" aria-label="Choisir">✓</button></div>
+        <div>
+          <h3>Dix minutes</h3>
+          <p class="accroche">« Fais tes dix minutes. »</p>
+        </div>
+        <div></div>
+      </div>
+      <div class="essais">
+        <div class="essai"><b>L'enseignant</b><i>« Je t'envoie un dix minutes sur le passé composé. »</i></div>
+        <div class="essai"><b>L'élève</b><i>Mes dix minutes</i></div>
+        <div class="essai"><b>Le pluriel</b><i>les dix minutes</i> — le nom ne se pluralise pas</div>
+        <div class="essai"><b>La direction</b><i>« … et des dix minutes. »</i> — bancal</div>
+      </div>
+      <div class="pourcontre">
+        <div class="pc-pour"><p class="r">Pour</p>
+          <p><b>La promesse est dans le nom</b>, et c'est imbattable devant quelqu'un qui hésite&nbsp;:
+          personne ne refuse dix minutes. Aucun mot à expliquer, aucun niveau de français
+          requis, et ça se dit dans toutes les langues du groupe.</p></div>
+        <div class="pc-contre"><p class="r">Contre</p>
+          <p>Ça nomme <b>la durée, pas la chose</b> — et ça enferme&nbsp;: le jour où un parcours
+          en prend quinze, le nom ment. Comme nom commun il résiste mal
+          (« un dix minutes » se dit mal, « les dix minutes » ne veut plus rien dire).</p></div>
+      </div>
+    </div>
+
+    <div class="cand" data-id="coup-de-pouce">
+      <div class="cand__t">
+        <div class="cand__case"><button type="button" aria-pressed="false" aria-label="Choisir">✓</button></div>
+        <div>
+          <h3>Le coup de pouce</h3>
+          <p class="accroche">« Un coup de pouce, quand vous en avez besoin. »</p>
+        </div>
+        <div></div>
+      </div>
+      <div class="essais">
+        <div class="essai"><b>L'enseignant</b><i>« Je t'envoie un coup de pouce sur le passé composé. »</i></div>
+        <div class="essai"><b>L'élève</b><i>Mes coups de pouce</i></div>
+        <div class="essai"><b>Le pluriel</b><i>les coups de pouce</i></div>
+        <div class="essai"><b>La direction</b><i>« … et des coups de pouce. »</i></div>
+      </div>
+      <div class="pourcontre">
+        <div class="pc-pour"><p class="r">Pour</p>
+          <p>Expression <b>québécoise et chaleureuse</b>, qui passe très bien de la bouche d'un
+          enseignant. Elle dit exactement le geste&nbsp;: quelqu'un a vu que ça coinçait et
+          tend la main.</p></div>
+        <div class="pc-contre"><p class="r">Contre</p>
+          <p>Elle dit <b>l'aide, pas l'entraînement</b> — or le concept est que l'élève
+          <i>avance</i>, pas qu'on le dépanne. Devant des adultes, «&nbsp;j'ai besoin d'un coup
+          de pouce&nbsp;» n'est pas neutre. Et trois mots, c'est long pour une étiquette.</p></div>
+      </div>
+    </div>
+
+    <div class="cand" data-id="en-attendant">
+      <div class="cand__t">
+        <div class="cand__case"><button type="button" aria-pressed="false" aria-label="Choisir">✓</button></div>
+        <div>
+          <h3>En attendant</h3>
+          <p class="accroche">« En attendant, vous avancez. »</p>
+        </div>
+        <div></div>
+      </div>
+      <div class="essais">
+        <div class="essai"><b>L'enseignant</b><i>« Je t'ai mis un exercice dans En attendant. »</i></div>
+        <div class="essai"><b>L'élève</b><i>En attendant</i></div>
+        <div class="essai"><b>Le pluriel</b>impossible — ce n'est pas un nom</div>
+        <div class="essai"><b>La direction</b><i>« … et En attendant. »</i> — il faut expliquer</div>
+      </div>
+      <div class="pourcontre">
+        <div class="pc-pour"><p class="r">Pour</p>
+          <p>Le <b>double sens est parfait</b>&nbsp;: pendant que j'attends l'autobus, et
+          entre-temps, d'ici le prochain cours. C'est le candidat qui dit le mieux
+          <i>l'insight</i> de départ.</p></div>
+        <div class="pc-contre"><p class="r">Contre</p>
+          <p>Ce n'est <b>pas un nom</b>&nbsp;: on ne peut ni le compter, ni le pluraliser, ni
+          l'envoyer. Il faudrait un second mot pour désigner la chose, donc deux vocabulaires à
+          tenir. Et «&nbsp;attendre&nbsp;» est passif là où le produit est actif.</p></div>
+      </div>
+    </div>
+
+    <div class="cand" data-id="un-pas-de-plus">
+      <div class="cand__t">
+        <div class="cand__case"><button type="button" aria-pressed="false" aria-label="Choisir">✓</button></div>
+        <div>
+          <h3>Un pas de plus</h3>
+          <p class="accroche">« Un pas de plus, chaque jour. »</p>
+        </div>
+        <div></div>
+      </div>
+      <div class="essais">
+        <div class="essai"><b>L'enseignant</b><i>« Je t'envoie un pas de plus sur le passé composé. »</i></div>
+        <div class="essai"><b>L'élève</b><i>Mes pas</i> — ambigu</div>
+        <div class="essai"><b>Le pluriel</b><i>des pas de plus</i> — lourd</div>
+        <div class="essai"><b>La direction</b><i>« … et des pas de plus. »</i></div>
+      </div>
+      <div class="pourcontre">
+        <div class="pc-pour"><p class="r">Pour</p>
+          <p>Dit <b>la progression par petites doses</b>, ce qui est exactement le modèle. Mots
+          simples, compréhensibles dès le niveau 2.</p></div>
+        <div class="pc-contre"><p class="r">Contre</p>
+          <p>Générique et un peu <b>motivationnel creux</b> — ça pourrait nommer n'importe quel
+          produit d'apprentissage. «&nbsp;Mes pas&nbsp;» évoque la marche, pas le français. Le
+          seul candidat qui ne dit rien de particulier sur <i>notre</i> concept.</p></div>
+      </div>
+    </div>
+
+    <div class="barre-export">
+      <button class="btn" id="exporter">Exporter mon choix</button>
+      <button class="btn b2" id="rien">Effacer</button>
+      <span id="etat">Rien de choisi.</span>
+    </div>
+    <textarea id="sortie" readonly></textarea>
+  </section>
+
+  <!-- ─────────────────────────────────────────────── -->
+  <section class="bloc">
+    <span class="eyebrow">Écartés</span>
+    <h2>Ce que je n'ai pas retenu, et pourquoi</h2>
+
+    <div class="ecarte"><div><b>Parcours</b></div>
+      <div>C'est le mot du métier — celui que j'emploie depuis ce matin dans le code. Tout le
+      monde en fait s'en sert&nbsp;: ce n'est pas une marque, c'est une catégorie. Il reste très
+      bien comme mot technique, dans <code>build/parcours/</code>.</div></div>
+
+    <div class="ecarte"><div><b>Capsule</b></div>
+      <div>Jargon de la formation en ligne, et ça évoque une <b>vidéo</b> qu'on regarde. Or
+      l'élève ne regarde pas&nbsp;: il tranche, il se trompe, il recommence.</div></div>
+
+    <div class="ecarte"><div><b>Micro-leçon</b></div>
+      <div>Contient «&nbsp;leçon&nbsp;» — et on vient précisément d'établir que <b>ce n'en est
+      pas une</b>&nbsp;: la leçon donne la règle puis la fait appliquer, le parcours fait
+      l'inverse. Le nom dirait le contraire du produit.</div></div>
+
+    <div class="ecarte"><div><b>Tout anglicisme</b></div>
+      <div><i>Boost</i>, <i>quiz</i>, <i>scroll</i>, <i>daily</i>. Une plateforme qui enseigne le
+      français ne se nomme pas en anglais. Non négociable.</div></div>
+
+    <div class="ecarte"><div><b>Défi</b></div>
+      <div>Déjà pris&nbsp;: c'est le nom des sections d'un module («&nbsp;Défi 1 · L'appel à la
+      clinique&nbsp;»). Le réemployer ferait deux choses du même nom.</div></div>
+  </section>
+
+  <!-- ─────────────────────────────────────────────── -->
+  <section class="bloc">
+    <span class="eyebrow">Si « Le trajet » l'emporte</span>
+    <h2>Ce que ça donne, écrit partout</h2>
+    <div class="lignes">
+      <div class="ligne"><p>Le temps d'un trajet.</p>
+        <p>L'accroche. Elle dit la durée, le lieu et la promesse en quatre mots.</p></div>
+      <div class="ligne"><p>Mes trajets</p>
+        <p>Dans le portail de l'élève, au-dessus de ce que son enseignant lui a envoyé.</p></div>
+      <div class="ligne"><p>Envoyer un trajet</p>
+        <p>Le bouton, chez l'enseignant, à côté du point faible qu'il vient de voir.</p></div>
+      <div class="ligne"><p>Votre enseignant vous a envoyé un trajet.</p>
+        <p>La bande, en tête du portail élève. Avec son mot, s'il en a laissé un.</p></div>
+      <div class="ligne"><p>Dix minutes. Une seule difficulté.</p>
+        <p>Le sous-titre, partout où le nom paraît seul.</p></div>
+      <div class="ligne"><p>francis · les trajets</p>
+        <p>Le verrouillage. La marque reste francis&nbsp;; le trajet en est une gamme, pas une
+        marque concurrente.</p></div>
+    </div>
+
+    <div class="note"><b>Ce que le nom ne doit pas faire, quel qu'il soit.</b> Ne pas devenir une
+    seconde marque. Le point mauve, le logotype, la barre blanche restent ceux de <b>francis</b> —
+    le trajet est une gamme, au même titre que les modules et les ateliers, et il prend la
+    couleur de son niveau comme tout le reste. Aucun logo, aucune couleur propre, aucune
+    typographie à part.</div>
+  </section>
+
+  <p class="pied">francis · modules autonomes · le nom · 30 août 2026 ·
+  <span class="mono">modules-autonomes/le-nom.html</span></p>
+
+</div>
+
+<script>
+(function () {
+  var CLE = 'francis.nom.trajets';
+  var choisi = null;
+  try { choisi = localStorage.getItem(CLE); } catch (e) {}
+
+  var cands = Array.prototype.slice.call(document.querySelectorAll('.cand'));
+  var etat = document.getElementById('etat');
+  var sortie = document.getElementById('sortie');
+
+  function majEtat() {
+    var c = cands.filter(function (x) { return x.getAttribute('data-id') === choisi; })[0];
+    etat.textContent = choisi && c
+      ? 'Choisi : ' + c.querySelector('h3').textContent + '.'
+      : 'Rien de choisi.';
+  }
+  function poser(id) {
+    choisi = id;
+    cands.forEach(function (c) {
+      c.querySelector('.cand__case button')
+        .setAttribute('aria-pressed', c.getAttribute('data-id') === id ? 'true' : 'false');
+    });
+    try { id ? localStorage.setItem(CLE, id) : localStorage.removeItem(CLE); } catch (e) {}
+    majEtat();
+  }
+
+  cands.forEach(function (c) {
+    var b = c.querySelector('.cand__case button');
+    b.addEventListener('click', function () {
+      poser(b.getAttribute('aria-pressed') === 'true' ? null : c.getAttribute('data-id'));
+    });
+  });
+
+  document.getElementById('exporter').addEventListener('click', function () {
+    sortie.style.display = 'block';
+    sortie.value = JSON.stringify({ page: 'le-nom', nom: choisi }, null, 2);
+    sortie.select();
+  });
+  document.getElementById('rien').addEventListener('click', function () {
+    poser(null); sortie.style.display = 'none';
+  });
+
+  if (choisi) poser(choisi); else majEtat();
+})();
+</script>
+</body>
+</html>
