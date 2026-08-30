@@ -1,5 +1,5 @@
 // ═══════════════════════════════════════════════════════════════════════════
-// Point express — Poser une question : trois façons, et laquelle au téléphone
+// Point express — Trois façons de poser une question, et laquelle au téléphone
 //
 // Savoir n5-s07. Dix minutes, dix écrans.
 //
@@ -24,7 +24,7 @@
 const PARCOURS = {
   slug:     'poser-une-question',
   module:   'module-n5-rendezvous',
-  titre:    "Poser une question : trois façons",
+  titre:    "Trois façons de poser une question — et à qui",
   surtitre: "Point express · 10 minutes",
   niveau:   5,
   savoir:   'n5-s07',
