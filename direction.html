@@ -86,6 +86,11 @@
     .dr-etat--non { color: var(--text-muted); }
 
     /* Le bouton IA : trois états, un seul geste. */
+    /* Le geste le plus rare de l'écran : un cerne, jamais un aplat. */
+    .dr-btn-min { font: inherit; font-size: var(--fs-meta); font-weight: var(--fw-bold);
+      padding: 5px 10px; border-radius: 999px; cursor: pointer;
+      border: 1px solid var(--border); background: none; color: var(--text-strong); }
+    .dr-btn-min:hover { border-color: var(--text-strong); }
     .dr-ia { display: inline-flex; border: 1px solid var(--border);
              border-radius: var(--r-pill); overflow: hidden; }
     .dr-ia button { font: inherit; font-size: var(--fs-meta); font-weight: var(--fw-bold);
@@ -295,10 +300,18 @@
         h += '<div class="dr-boite"><p class="dr-vide">Aucun enseignant dans ce ' +
              'centre pour l\'instant. Ouvrez un compte ci-dessous.</p></div>';
       } else {
+        // « Réinitialiser » n'est offert qu'à un compte **administrateur**,
+        // parce que c'est ce que la route exige (`_handle_teacher_update`,
+        // `admin=True`). Une direction qui n'est pas administratrice ne voit
+        // donc pas le geste, plutôt que de le voir échouer en 403 : c'est
+        // exactement le public qui l'avait dans le portail enseignant, d'où
+        // cette action arrive.
+        var peutReinit = (Prof.state.enseignant || {}).role === 'admin';
         h += '<div class="dr-boite"><table><thead><tr>' +
              '<th>Personne</th><th>Rôle</th><th>Compte</th>' +
              '<th class="num">Groupes</th><th class="num">Élèves</th>' +
              '<th>Assistance</th><th class="num">Dépense</th>' +
+             (peutReinit ? '<th>Mot de passe</th>' : '') +
              '</tr></thead><tbody>';
         d.enseignants.forEach(function (l) {
           h += '<tr>' +
@@ -316,6 +329,16 @@
             '<td>' + boutonIA(l, d.peutInviter) + '</td>' +
             '<td class="num">' + argent(l.coutUsd) +
               '<span class="dr-second">' + (l.appels || 0) + ' appels</span></td>' +
+            (peutReinit
+              // `teacherId`, jamais `id` : c'est le nom du champ dans la réponse
+              // de `/api/direction/centre`. Avec `id`, l'adresse partait en
+              // « /api/prof/enseignants/undefined », la route ne reconnaissait
+              // pas le chemin et rendait la page 404 — donc du HTML là où le
+              // script attendait du JSON, et un message d'erreur qui parlait
+              // de « token < » au lieu de dire ce qui n'allait pas.
+              ? '<td><button type="button" class="dr-btn-min" data-reinit="' + l.teacherId + '"'
+                + ' data-nom="' + ech(l.nom || '') + '">Réinitialiser</button></td>'
+              : '') +
             '</tr>';
         });
         h += '</tbody></table></div>';
@@ -515,6 +538,47 @@
     }
 
     function brancher() {
+      /* Réinitialiser le mot de passe d'un enseignant. Arrivé du portail
+         enseignant le 30 août 2026 : c'était le seul geste sur un compte
+         qu'on ne pouvait faire que là-bas, et l'espace direction ouvrait des
+         comptes sans savoir en dépanner un.
+
+         **C'est le serveur qui tire le mot de passe**, sur `reinitialiser`,
+         et il le rend une seule fois — même corridor qu'à l'ouverture d'un
+         compte. Le bouton d'origine, lui, en demandait un par `prompt()` et
+         l'envoyait sous la clé `motDePasse` : la route ne la lit plus depuis
+         qu'elle tire elle-même, répondait 200, et ne changeait rien. Il ne
+         marchait donc plus, sans que rien ne le dise — trouvé en le jouant
+         pour de vrai après l'avoir déplacé. */
+      document.querySelectorAll('[data-reinit]').forEach(function (b) {
+        b.addEventListener('click', async function () {
+          var qui = b.dataset.nom || 'ce compte';
+          if (!confirm('Réinitialiser le mot de passe de ' + qui + ' ?\n\n'
+                       + 'Le serveur en tire un nouveau, à remettre en main propre. '
+                       + 'L\'ancien cesse aussitôt de fonctionner.')) return;
+          try {
+            var res = await Prof.fetch('/api/prof/enseignants/' + b.dataset.reinit, {
+              method: 'PATCH',
+              headers: { 'Content-Type': 'application/json' },
+              body: JSON.stringify({ reinitialiser: true })
+            });
+            var d = await res.json();
+            if (!res.ok) throw new Error(d.error || 'Réinitialisation refusée');
+            /* Rendu une seule fois : il s'affiche jusqu'au prochain
+               rafraîchissement, et on ne le redemande pas au serveur. */
+            var zone = b.closest('td');
+            if (zone) {
+              zone.innerHTML = '<span class="dr-second">mot de passe temporaire</span>'
+                + '<span class="dr-code">' + ech(d.motDePasseTemporaire || '') + '</span>';
+            }
+            message('Mot de passe réinitialisé pour ' + qui
+                    + '. Notez-le : il ne sera plus affiché.');
+          } catch (e) {
+            message(e.message, true);
+          }
+        });
+      });
+
       /* Le bouton IA. Un seul chemin d'écriture : on appelle, on affiche le
          message du serveur, puis on recharge tout. Une page qui met à jour son
          affichage sans avoir relu le serveur finit par montrer un état qui

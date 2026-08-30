@@ -45,16 +45,11 @@
 
     /* La barre de parcours garde le comportement collant du système : sur une
        longue liste d'activités, les quatre sections restent atteignables. */
-    .pe-parcours { z-index: 30; }
-    .pe-parcours .step { font: inherit; font-size: var(--fs-ui-sm); font-weight: var(--fw-bold); cursor: pointer; }
-    .pe-parcours .step[aria-current="page"] { --sec: var(--green-600); --sec-soft: var(--green-100); }
     /* Le correcteur n'est pas une section de la page : il ouvre une autre
        application. Teinte ambre du système — celle de l'écriture — pour qu'on
-       le distingue des quatre onglets sans sortir des jetons. */
-    .pe-parcours .pe-externe {
-      background: var(--ambre-100); border-color: var(--ambre-700); color: var(--ambre-700);
-    }
-    .pe-parcours .pe-externe:hover { background: var(--ambre-100); box-shadow: inset 0 0 0 1px var(--ambre-700); }
+       le distingue de ses voisins sans sortir des jetons. */
+    .pe-liens .pe-externe { color: var(--ambre-700); }
+    .pe-liens .pe-externe:hover { color: var(--ambre-700); text-decoration-thickness: 2px; }
 
     /* — Contexte de groupe — */
     .pe-contexte { padding: var(--sp-8) 0 var(--sp-6); }
@@ -73,6 +68,20 @@
     }
     /* La section ouverte se dit à la graisse, pas à une couleur de plus. */
     .pe-liens .pe-lien-plat.is-actif { font-weight: var(--fw-black); color: var(--accent); }
+    /* Le filet qui détache le geste sur le groupe des sept outils de classe. */
+    .pe-sep-lien { width: 1px; height: 16px; background: var(--border-tint); flex: none; }
+
+    /* — Le premier écran : ouvrir un groupe — ────────────────────────────
+       Sans groupe, il n'y a pas de niveau ; sans niveau, ni catalogue à
+       montrer ni élève à inscrire. La page ne montre donc que ceci, et le
+       reste — contexte, menu, vues — reste caché jusqu'à ce qu'un groupe
+       existe. Un menu grisé aurait laissé chercher ce qui n'est pas là. */
+    .pe-accueil { padding: var(--sp-10) 0 var(--sp-12); }
+    .pe-accueil .card { max-width: 620px; margin: 0 auto; }
+    .pe-accueil h2 { margin-bottom: var(--sp-3); }
+    .pe-accueil .pe-consigne { margin-bottom: var(--sp-6); }
+    .pe-accueil-champs { display: flex; flex-wrap: wrap; gap: var(--sp-4); align-items: flex-end; }
+    .pe-accueil-champs > div { flex: 1; min-width: 200px; }
 
     /* — Amorce « Programme du jour » — */
     .pe-amorce {
@@ -684,6 +693,12 @@
           <div class="pe-nom" id="nomEnseignant"></div>
           <div class="pe-session-etat">Session ouverte</div>
         </div>
+        <!-- L'espace direction n'est pas un outil de classe : il a quitté la
+             ligne du groupe pour l'en-tête, à côté de la session, avec les
+             comptes du centre qu'il porte désormais seul. Il ne paraît qu'à
+             qui a la charge d'un centre — c'est le serveur qui le dit
+             (`/api/direction/portees`), jamais un rôle deviné dans la page. -->
+        <a class="btn btn--ghost btn--sm" id="lienDirection" href="direction.html" hidden>Espace direction</a>
         <button type="button" class="btn btn--ghost btn--sm" id="boutonDeconnexion">Déconnexion</button>
       </div>
     </div>
@@ -698,19 +713,12 @@
     </div>
   </header>
 
-  <nav class="steps pe-parcours" aria-label="Sections de l'espace enseignant">
-    <div class="steps__inner">
-      <button type="button" class="step pe-onglet" data-ecran="planif"><span class="step__dot"></span>Planifier</button>
-      <button type="button" class="step pe-onglet" data-ecran="eleves"><span class="step__dot"></span>Élèves</button>
-      <button type="button" class="step pe-onglet" data-ecran="groupes"><span class="step__dot"></span>Groupes et comptes</button>
-      <!-- Le correcteur collaboratif est une application distincte, déployée
-           ailleurs. Il tient la place d'un onglet, mais la teinte ambre du
-           système (celle de l'écriture) dit qu'il mène hors de la page. -->
-      <a class="step pe-externe" id="lienCorrecteur"
-         href="https://correcteur-collaboratif-production.up.railway.app/"
-         target="_blank" rel="noopener"><span class="step__dot"></span>Correcteur collaboratif</a>
-    </div>
-  </nav>
+  <!-- La barre des sections a disparu le 30 août 2026. Elle offrait
+       « Planifier », « Élèves », « Groupes et comptes » et le correcteur
+       **avant** que l'enseignant ait un groupe — donc avant qu'aucune d'elles
+       n'ait de sens : sans niveau, il n'y a ni catalogue à montrer ni élève à
+       inscrire. Tout est descendu dans la ligne du groupe, qui ne paraît
+       qu'une fois le groupe ouvert. -->
 
   <!-- L'outil est en développement : l'enseignante doit le savoir avant de
        s'étonner, et pouvoir le dire au moment où elle voit le défaut. -->
@@ -733,40 +741,91 @@
           <a class="btn btn--ghost btn--sm" id="lienTeams" target="_blank" rel="noopener" hidden>Rejoindre la rencontre Teams</a>
           <button type="button" class="btn btn--ghost btn--sm" id="boutonTeams">Ajouter le lien Teams</button>
           <button type="button" class="btn btn--ghost btn--sm" id="boutonCopie">Copier une planification</button>
-          <button type="button" class="btn btn--ghost btn--sm" id="boutonSeance">Séance sans compte</button>
         </span>
       </div>
+      <!-- Le menu de l'espace enseignant. Il vit **sous le groupe**, et c'est
+           tout le propos : chacun de ces liens ne veut dire quelque chose
+           qu'une fois le niveau connu. Le catalogue et le matériel ne montrent
+           que le niveau du groupe ; « Planifier » et « Élèves » ne s'adressent
+           qu'à ses élèves à lui. Les mettre au-dessus, dans une barre de
+           sections, laissait croire qu'on pouvait s'en servir sans groupe. -->
       <div class="pe-liens">
-        <!-- Le catalogue et le dépôt de matériel appartiennent au groupe : ils
-             ne montrent que le niveau qu'il suit. Ils voisinent donc ici, sous
-             le sélecteur de groupe, et non dans la barre des sections. -->
         <a id="lienCatalogue" href="catalogue.html">Catalogue</a>
+        <button type="button" class="pe-lien-plat" data-ecran="planif">Planifier</button>
+        <button type="button" class="pe-lien-plat" id="lienEleves" data-ecran="eleves"></button>
         <button type="button" class="pe-lien-plat" data-ecran="materiel">Matériel</button>
-        <!-- L'espace direction : les comptes du centre, leur usage, leur
-             assistant, leur dépense. Le lien ne paraît qu'à qui a la charge
-             d'un centre — c'est le serveur qui le dit
-             (`/api/direction/portees`), jamais un rôle deviné dans la page.
-             Une enseignante n'a rien à y voir : sa classe est dans
-             « Progression des élèves ».
-             Il a remplacé « Les chiffres », qui ouvrait un écran de gestion
-             depuis le portail où l'on enseigne. `chiffres.html` reste servi
-             pour les vues CSS et réseau ; l'espace direction y renvoie. -->
-        <a id="lienDirection" href="direction.html" hidden>Espace direction</a>
-        <!-- Le compositeur est une page autonome, sans session ni groupe : il
-             assemble un prompt à partir du programme. Nouvel onglet, pour ne
-             pas faire perdre à l'enseignante la planification en cours. -->
-        <a id="lienCompositeur" href="assets/outils/compositeur-activite.html?de=enseignant"
-           target="_blank" rel="noopener">Composer une activité</a>
+        <!-- La séance sans compte a quitté la ligne du haut pour celle-ci :
+             c'est une façon de faire travailler la classe du jour, au même
+             titre que planifier ou ouvrir le catalogue, et non un réglage du
+             groupe. Le bouton se cache tout seul quand la direction a fermé
+             le mode — c'est le serveur qui le dit. -->
+        <button type="button" class="pe-lien-plat" id="boutonSeance">Séance sans compte</button>
         <!-- Les tutoriels : autonomes comme le compositeur, donc nouvel onglet
              eux aussi. La page vidéo est la porte d'entrée ; elle renvoie
              elle-même vers la version en diapositives. -->
         <a id="lienTutoriels" href="assets/outils/tutoriels-enseignant.html?de=enseignant"
            target="_blank" rel="noopener">Tutoriels</a>
-        <button type="button" class="pe-lien-plat" id="lienEleves"></button>
+        <!-- Le correcteur collaboratif est une application distincte, déployée
+             ailleurs. Il descend ici avec les autres liens qui mènent hors de
+             la page, et garde la teinte ambre du système, celle de l'écriture. -->
+        <a class="pe-externe" id="lienCorrecteur"
+           href="https://correcteur-collaboratif-production.up.railway.app/"
+           target="_blank" rel="noopener">Correcteur collaboratif</a>
+        <!-- Le compositeur est une page autonome, sans session ni groupe : il
+             assemble un prompt à partir du programme. Nouvel onglet, pour ne
+             pas faire perdre à l'enseignante la planification en cours. Il est
+             au bout de la ligne : on compose une activité quand le catalogue
+             n'a pas ce qu'il faut, donc après l'avoir regardé. -->
+        <a id="lienCompositeur" href="assets/outils/compositeur-activite.html?de=enseignant"
+           target="_blank" rel="noopener">Composer une activité</a>
+        <!-- Le filet, puis « Nouveau groupe » : ce n'est pas un outil de
+             classe mais un geste sur le contenant, et il se lit mieux détaché
+             des sept qui précèdent. -->
+        <span class="pe-sep-lien" aria-hidden="true"></span>
+        <button type="button" class="pe-lien-plat" data-ecran="groupes">Nouveau groupe</button>
         <span class="pe-resume" id="resumeGroupe" style="margin-left:auto"></span>
       </div>
     </div>
   </div>
+
+  <!-- ── Le premier écran : ouvrir un groupe ── -->
+  <main id="vueAccueil" class="pe-accueil" hidden>
+    <div class="container">
+      <div class="card">
+        <div class="card__body">
+          <span class="pe-eyebrow">Pour commencer</span>
+          <h2>Ouvrez votre premier groupe</h2>
+          <p class="pe-consigne">Le niveau que vous choisissez ici décide de tout le reste :
+            le catalogue, le matériel et les activités que vous pourrez planifier ne montreront
+            que ce niveau-là. Vous pourrez ouvrir d'autres groupes ensuite, à d'autres niveaux.</p>
+          <form id="formPremierGroupe">
+            <div class="pe-accueil-champs">
+              <div>
+                <label class="field-label" for="premierGroupeNom">Nom du groupe</label>
+                <input id="premierGroupeNom" class="field" type="text"
+                       placeholder="Avant-midi — Marie" required />
+              </div>
+              <div style="max-width:190px">
+                <label class="field-label" for="premierGroupeNiveau">Niveau du groupe</label>
+                <select id="premierGroupeNiveau" class="field" required>
+                  <option value="" disabled selected>Choisir…</option>
+                  <option value="Niveau 1">Niveau 1</option>
+                  <option value="Niveau 2">Niveau 2</option>
+                  <option value="Niveau 3">Niveau 3</option>
+                  <option value="Niveau 4">Niveau 4</option>
+                  <option value="Niveau 5">Niveau 5</option>
+                  <option value="Niveau 6">Niveau 6</option>
+                  <option value="Niveau 7">Niveau 7</option>
+                  <option value="Niveau 8">Niveau 8</option>
+                </select>
+              </div>
+              <button type="submit" class="btn btn--pri">Ouvrir le groupe</button>
+            </div>
+          </form>
+        </div>
+      </div>
+    </div>
+  </main>
 
   <!-- ── Planifier ── -->
   <main id="vuePlanif">
@@ -913,9 +972,9 @@
   <main id="vueGroupes" hidden>
     <header class="band">
       <div class="container">
-        <div class="band__eyebrow">Comptes et groupes</div>
+        <div class="band__eyebrow">Espace enseignant · Francisation</div>
         <h1 style="margin:var(--sp-3) 0 0;font-size:var(--fs-h2);font-weight:var(--fw-black)">Vos groupes</h1>
-        <p class="band__lead">Chaque groupe a ses élèves, ses dates et sa progression. Le catalogue d'activités, lui, est commun à tous les enseignants.</p>
+        <p class="band__lead">Chaque groupe a ses élèves, ses dates et sa progression — et son <b>niveau</b>, qui décide de ce que montrent le catalogue et le dépôt de matériel. Les comptes des enseignants s'administrent dans l'espace direction.</p>
       </div>
     </header>
     <div class="container">
@@ -950,10 +1009,13 @@
           </form>
         </div>
 
-        <div class="card card--flush" id="carteEnseignants" hidden>
-          <div class="card__band">Enseignants</div>
-          <div id="listeEnseignants"></div>
-        </div>
+        <!-- La carte « Enseignants » est partie dans l'espace direction le
+             30 août 2026, avec l'ouverture des comptes qui s'y trouvait déjà.
+             Administrer des comptes n'est pas un geste de classe, et cet
+             écran-ci n'a plus qu'un objet : les groupes. La seule chose que
+             l'espace direction n'avait pas — réinitialiser un mot de passe —
+             y a été posée en même temps ; sans quoi un mot de passe oublié
+             devenait irrécupérable depuis n'importe quel écran. -->
       </div>
     </div>
   </main>

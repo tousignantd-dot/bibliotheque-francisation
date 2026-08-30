@@ -296,6 +296,14 @@
   }
   const niveauGroupe = () => niveauDe(groupeActif());
 
+  /** Les activités du niveau du groupe, plus celles qu'il a déjà datées. */
+  function bornerAuNiveau(activites) {
+    const liste = Array.isArray(activites) ? activites : [];
+    const niveau = niveauGroupe();
+    if (!niveau) return liste;
+    return liste.filter((a) => (a.level || '') === niveau || a.datePrevue);
+  }
+
   let minuterie;
   function dire(texte) {
     clearTimeout(minuterie);
@@ -328,10 +336,11 @@
     etat.seanceAutorisee = data.seanceAutorisee !== false;
     $('boutonSeance').hidden = !etat.seanceAutorisee;
     poserGroupes(data.groupes);
-    if (!etat.groupes.length) {
-      // Un enseignant sans groupe ne peut rien planifier.
-      etat.ecran = 'groupes';
-    }
+    // Sans groupe, il n'y a pas de niveau ; sans niveau, ni catalogue à
+    // montrer ni élève à inscrire. La page se réduit donc à un seul écran,
+    // et le contexte comme le menu restent cachés jusqu'à ce qu'un groupe
+    // existe : un menu offert d'avance laisse chercher ce qui n'est pas là.
+    if (!etat.groupes.length) etat.ecran = 'accueil';
     ouvrirPortail();
   }
 
@@ -368,7 +377,6 @@
       niveau: niveauGroupe,
     });
     $('nomEnseignant').textContent = etat.enseignant.nom;
-    $('carteEnseignants').hidden = etat.enseignant.role !== 'admin';
     // « Espace direction » ne paraît qu'à qui a la charge d'un centre. C'est le
     // serveur qui le dit — le rôle du compte ne porte plus la portée depuis
     // l'étape 2, et le deviner ici le referait mentir.
@@ -408,7 +416,16 @@
         // redevient plate, sans casser la page.
         json(`/api/sections?${g}`).catch(() => ({})),
       ]);
-      etat.activites = activites;
+      // Le niveau du groupe borne **tout** ce que l'enseignant voit, et pas
+      // seulement `catalogue.html` : la liste à planifier, les compteurs, le
+      // programme du jour. Un groupe de niveau 2 devant les 177 activités des
+      // huit niveaux, c'est chercher les siennes à chaque fois.
+      //
+      // Exception, et elle compte : ce qui porte **déjà une date pour ce
+      // groupe** reste visible même hors du niveau. Un groupe dont on change
+      // le niveau perdrait sinon sa planification de vue — elle existerait
+      // toujours côté serveur, et l'élève la verrait, mais plus l'enseignant.
+      etat.activites = bornerAuNiveau(activites);
       etat.documents = documents;
       etat.eleves = eleves;
       etat.progression = progression;
@@ -443,8 +460,12 @@
       .join('') || '<option>Aucun groupe</option>';
 
     const nbEleves = etat.eleves.length;
-    $('lienEleves').textContent = nbEleves === 0 ? 'Aucun élève inscrit'
-      : nbEleves === 1 ? 'Voir l’élève' : `Voir les ${nbEleves} élèves`;
+    // Le libellé était une phrase — « Aucun élève inscrit », « Voir les 12
+    // élèves » — parce que ce lien vivait seul au bout de la ligne. Il est
+    // maintenant la troisième entrée d'un menu : il prend le nom de sa vue,
+    // et le compte le suit sans faire de phrase. Le résumé du bout de ligne
+    // dit déjà l'état complet du groupe.
+    $('lienEleves').textContent = nbEleves ? `Élèves · ${nbEleves}` : 'Élèves';
     const datees = etat.activites.filter((a) => a.datePrevue).length;
     $('resumeGroupe').textContent = groupe
       ? `${pluriel(nbEleves, 'élève')} · ${datees} activité${datees > 1 ? 's' : ''} planifiée${datees > 1 ? 's' : ''} sur ${etat.activites.length}`
@@ -1036,25 +1057,6 @@
         <button type="button" class="btn btn--ghost btn--sm" data-niveau-groupe="${g.id}">Changer le niveau</button>
       </div>`).join('')
       || '<div class="card__row" style="font-size:var(--fs-body-sm);font-weight:var(--fw-bold);color:var(--text-muted)">Aucun groupe pour l’instant. Créez-en un ci-dessous.</div>';
-
-    if (etat.enseignant.role !== 'admin') return;
-    $('listeEnseignants').innerHTML = etat.enseignants.map((e) => `
-      <div class="card__row pe-rangee">
-        <div class="pe-rangee-txt">
-          <div class="pe-rangee-titre" style="font-size:var(--fs-body-sm)">${esc(e.nom)}</div>
-          <div class="pe-rangee-meta"><span class="pe-code-champ">${esc(e.code || '')}</span> · ${pluriel(e.nbGroupes || 0, 'groupe')}${e.doitChanger ? ' · <b>compte pas encore ouvert</b>' : ''}</div>
-        </div>
-        <span class="pe-pastille ${e.role === 'admin' ? 'pe-pastille--offerte' : 'pe-pastille--vide'}">${e.role === 'admin' ? 'Administrateur' : 'Enseignant'}</span>
-        <button type="button" class="btn btn--ghost btn--sm" data-reinit="${e.id}">Réinitialiser le mot de passe</button>
-      </div>`).join('');
-  }
-
-  async function chargerEnseignants() {
-    if (!etat.enseignant || etat.enseignant.role !== 'admin') return;
-    try {
-      etat.enseignants = await json('/api/prof/enseignants');
-      rendreGroupes();
-    } catch { /* un enseignant non administrateur n'a pas cette liste */ }
   }
 
   /* ══════════ Aperçu élève ══════════ */
@@ -1096,26 +1098,29 @@
   /* ══════════ Navigation ══════════ */
 
   function montrerEcran(nom) {
+    // Aucun groupe : quoi qu'on demande, il n'y a qu'un écran possible.
+    if (!etat.groupes.length) nom = 'accueil';
     etat.ecran = nom;
-    $('vuePlanif').hidden = nom !== 'planif';
-    $('vueEleves').hidden = nom !== 'eleves';
-    $('vueGroupes').hidden = nom !== 'groupes';
-    $('vueMateriel').hidden = nom !== 'materiel';
-    // « Matériel » a quitté la barre des sections pour la ligne du groupe :
-    // il se marque là où il est, faute d'onglet à allumer.
-    const lienMat = document.querySelector('.pe-liens [data-ecran="materiel"]');
-    if (lienMat) {
-      lienMat.classList.toggle('is-actif', nom === 'materiel');
-      if (nom === 'materiel') lienMat.setAttribute('aria-current', 'page');
-      else lienMat.removeAttribute('aria-current');
-    }
-    document.querySelectorAll('.pe-onglet').forEach((b) => {
+    const accueil = nom === 'accueil';
+    $('vueAccueil').hidden = !accueil;
+    $('vuePlanif').hidden = accueil || nom !== 'planif';
+    $('vueEleves').hidden = accueil || nom !== 'eleves';
+    $('vueGroupes').hidden = accueil || nom !== 'groupes';
+    $('vueMateriel').hidden = accueil || nom !== 'materiel';
+    // Le contexte de groupe et son menu n'ont rien à dire tant qu'aucun
+    // groupe n'existe : ils s'effacent en entier plutôt que de s'afficher
+    // vides. C'est aussi ce qui rend l'écran d'accueil sans issue — et c'est
+    // voulu : la seule chose à faire est d'ouvrir un groupe.
+    const contexte = document.querySelector('.pe-contexte');
+    if (contexte) contexte.hidden = accueil;
+    // La barre des sections a disparu : chaque vue se marque dans la ligne
+    // de liens, là où on a cliqué.
+    document.querySelectorAll('.pe-liens [data-ecran]').forEach((b) => {
       const courant = b.dataset.ecran === nom;
-      b.classList.toggle('is-done', courant);
+      b.classList.toggle('is-actif', courant);
       if (courant) b.setAttribute('aria-current', 'page');
       else b.removeAttribute('aria-current');
     });
-    if (nom === 'groupes') chargerEnseignants();
     // Le dépôt se charge à la première ouverture de l'onglet, pas au
     // démarrage : la plupart des visites au portail ne le touchent pas.
     if (nom === 'materiel') Materiel.afficher();
@@ -1158,7 +1163,7 @@
                                  { code: code, motDePasse: mdp });
       etat.enseignant = data.enseignant;
       $('ecranPremiere').hidden = true;
-      etat.ecran = etat.groupes.length ? 'planif' : 'groupes';
+      etat.ecran = etat.groupes.length ? 'planif' : 'accueil';
       await ouvrirPortail();
     } catch (err) {
       dire(err.message);
@@ -1192,7 +1197,7 @@
       // toute façon le jour où on l'y obligera, et surtout ce qui a circulé
       // sur un billet ne doit pas rester la clé du compte.
       if (data.doitChanger) { ouvrirPremiereConnexion(); return; }
-      etat.ecran = etat.groupes.length ? 'planif' : 'groupes';
+      etat.ecran = etat.groupes.length ? 'planif' : 'accueil';
       await ouvrirPortail();
     } catch (err) {
       const boite = $('erreurConnexion');
@@ -1234,6 +1239,30 @@
     await chargerGroupe();
   });
 
+  // Le premier groupe. Même route et même refus que le formulaire de la vue
+  // « Nouveau groupe » — un seul chemin serveur, deux portes. Le niveau est
+  // obligatoire des deux côtés : c'est lui qui ouvrira le catalogue.
+  $('formPremierGroupe').addEventListener('submit', async (e) => {
+    e.preventDefault();
+    const nom = $('premierGroupeNom').value.trim();
+    const niveau = $('premierGroupeNiveau').value;
+    if (!nom) return;
+    if (!niveau) { dire('Choisissez le niveau du groupe.'); $('premierGroupeNiveau').focus(); return; }
+    try {
+      const res = await envoyer('/api/prof/groupes', { nom, niveau });
+      $('premierGroupeNom').value = '';
+      $('premierGroupeNiveau').value = '';
+      // Le groupe neuf devient l'actif : c'est celui qu'on vient de nommer.
+      etat.groupes = await json('/api/prof/groupes');
+      etat.groupeId = res.groupe.id;
+      localStorage.setItem(CLE_GROUPE, String(etat.groupeId));
+      await chargerGroupe();
+      montrerEcran('planif');
+      dire(`Groupe « ${nom} » ouvert en ${niveau}. Il part vide : donnez-lui ses premières dates.`);
+    } catch (err) {
+      dire(`Groupe impossible : ${err.message}`);
+    }
+  });
   $('lienEleves').addEventListener('click', () => montrerEcran('eleves'));
 
   // — Recherche et filtres —
@@ -1747,19 +1776,6 @@
       } catch (err) {
         dire(`Renommage impossible : ${err.message}`);
       }
-    }
-  });
-
-  $('listeEnseignants').addEventListener('click', async (e) => {
-    const bouton = e.target.closest('[data-reinit]');
-    if (!bouton) return;
-    const mot = prompt('Mot de passe provisoire (8 caractères ou plus)');
-    if (!mot) return;
-    try {
-      await envoyer(`/api/prof/enseignants/${bouton.dataset.reinit}`, { motDePasse: mot }, 'PATCH');
-      dire('Mot de passe réinitialisé. Communiquez-le à la personne concernée.');
-    } catch (err) {
-      dire(`Réinitialisation impossible : ${err.message}`);
     }
   });
 
