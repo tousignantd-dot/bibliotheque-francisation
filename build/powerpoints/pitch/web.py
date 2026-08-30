@@ -45,14 +45,21 @@ en porte une dizaine, soixante kilo-octets chacune : on les charge toutes
 d'avance, c'est le seul moment où personne ne regarde.
 """
 
+import base64
 import html
 import os
 import re
+import sys
 
 from theme import C, SECTIONS
 
+# `pitch/` → `powerpoints/` → `build/`, où vit `police_nunito`.
+sys.path.insert(0, os.path.dirname(os.path.dirname(
+    os.path.dirname(os.path.abspath(__file__)))))
+import police_nunito  # noqa: E402
+
 ICI = os.path.dirname(os.path.abspath(__file__))
-RACINE = os.path.dirname(os.path.dirname(ICI))
+BUILD = os.path.dirname(os.path.dirname(ICI))   # `pitch/` → `powerpoints/` → `build/`
 
 
 def e(t):
@@ -65,6 +72,46 @@ def e(t):
         t = t.replace('&lt;%s&gt;' % balise, '<%s>' % balise)
         t = t.replace('&lt;/%s&gt;' % balise, '</%s>' % balise)
     return t
+
+
+def police():
+    """Nunito incorporée en base64 — le diaporama ne demande rien au réseau.
+
+    Un diaporama se projette dans une école dont le réseau invité tombe, ou
+    depuis un portable débranché. Sans la police, il s'affiche dans un repli
+    aux chasses différentes : les retours à la ligne changent, et des écrans
+    qui tenaient se mettent à déborder. C'est le seul défaut qu'on ne peut pas
+    réparer devant la salle.
+
+    Deux fichiers, 54 Ko — Nunito est **variable**, un seul `.woff2` couvre 400
+    à 900. En base64 cela fait ~72 Ko par diaporama : le prix d'être un fichier
+    autonome, qu'on peut envoyer par courriel ou copier sur une clé.
+
+    Si les fichiers manquent, on retombe sur Google Fonts plutôt que d'échouer :
+    un diaporama sans sa police reste lisible, un build qui s'arrête ne produit
+    rien. Le script le dit à l'écran.
+    """
+    fichiers = {}
+    for style, nom in police_nunito.FICHIERS.items():
+        chemin = police_nunito.DOSSIER / nom
+        if not chemin.exists():
+            print("  !! Nunito absente (%s) — le diaporama la demandera au "
+                  "réseau.\n     python3 build/police_nunito.py --recuperer"
+                  % nom)
+            return ('<link rel="preconnect" href="https://fonts.googleapis.com">\n'
+                    '<link rel="stylesheet" href="https://fonts.googleapis.com/'
+                    'css2?family=Nunito:ital,wght@0,400;0,700;0,800;0,900;1,400'
+                    '&display=swap">')
+        fichiers[style] = base64.b64encode(chemin.read_bytes()).decode('ascii')
+    plage = police_nunito.plage() or 'U+0000-00FF, U+0131, U+0152-0153'
+    faces = []
+    for style, b64 in sorted(fichiers.items()):
+        faces.append(
+            "@font-face{font-family:'Nunito';font-style:%s;font-weight:400 900;"
+            "font-display:block;"
+            "src:url(data:font/woff2;base64,%s) format('woff2');"
+            "unicode-range:%s;}" % (style, b64, plage))
+    return '<style>\n%s\n</style>' % '\n'.join(faces)
 
 
 def slug(s):
@@ -252,6 +299,7 @@ class Deck:
             'line300': C['line_300'], 'paper50': C['paper_50'],
             'paper100': C['paper_100'],
             'n': len(self.ecrans), 'dias': ''.join(dias), 'sommaire': som,
+            'police': police(),
         }
 
 
@@ -261,9 +309,7 @@ GABARIT = """<!DOCTYPE html>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>%(code)s · %(titre)s</title>
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800;900&display=swap">
+%(police)s
 <style>
   :root{
     --sec:#%(sec600)s; --sec-doux:#%(sec100)s;
