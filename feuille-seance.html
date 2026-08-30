@@ -6,118 +6,155 @@
   <title>francis — Feuille de séance</title>
   <link rel="icon" type="image/svg+xml" href="assets/design-system/marque-francis-favicon.svg" />
   <style>
-    /* Feuille de séance — conçue pour la photocopieuse de l'école.
-       Format lettre, **aucune couleur** : la hiérarchie passe par la graisse,
-       les filets et les mots. Aucun aplat foncé — il vide une cartouche et
-       ressort illisible. Les gris sont assombris d'un cran, une photocopieuse
-       effaçant tout ce qui est plus clair que 15 % de noir. */
+    /* ═══════════════════════════════════════════════════════════════
+       Feuille de séance — conçue pour la photocopieuse de l'école.
+       Elle suit la mise en page des fiches de l'élève
+       (`assets/documents/*-fiches-eleves.html`) : c'est le même papier,
+       remis aux mêmes gens, le même jour. Nunito, format lettre à
+       14/15 mm de marge, sur-titre espacé, titre de 22 points, filet
+       structurant sous l'en-tête, pied fin.
+
+       **Aucune couleur** : la hiérarchie passe par la graisse, les
+       filets et les mots. Aucun aplat foncé — il vide une cartouche et
+       ressort illisible. Les gris sont ceux des fiches, assombris d'un
+       cran par rapport à l'écran : une photocopieuse efface tout ce qui
+       est plus clair que 15 % de noir.
+       ═══════════════════════════════════════════════════════════════ */
+
+    /* La police est prise **dans le dépôt**, pas chez Google : cette
+       feuille s'imprime dans une école dont le réseau invité bloque
+       souvent les tiers, et une police de repli change les chasses,
+       donc les retours à la ligne — sur une adresse à recopier, c'est
+       exactement ce qu'il ne faut pas. Le fichier est variable : un
+       seul appel couvre 400 à 900. */
+    @font-face {
+      font-family: 'Nunito'; font-style: normal; font-weight: 400 900;
+      font-display: swap;
+      src: url('/assets/design-system/fonts/nunito-latin.woff2') format('woff2');
+    }
+
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
     :root {
-      --encre: #000000;
-      --gris: #444444;
-      --filet: #000000;
-      --papier: #FFFFFF;
-      --serif: Georgia, "Times New Roman", serif;
-      --sans: "Helvetica Neue", Arial, sans-serif;
+      --paper:#FFFFFF;
+      --line:#C9C9C6;          /* filet fin */
+      --rule:#17181A;          /* filet structurant */
+      --ink:#17181A;           /* titres */
+      --body:#2B2E30;          /* texte courant */
+      --soft:#4B4F52;          /* texte secondaire */
+      --muted:#5E6165;         /* sur-titres, méta */
     }
-    * { box-sizing: border-box; }
+    html { background:#BBBBBB; }
     body {
-      margin: 0; background: #EDEDED; color: var(--encre);
-      font-family: var(--sans); -webkit-print-color-adjust: exact;
+      font-family:'Nunito','Trebuchet MS',sans-serif;
+      font-size:11.5pt; line-height:1.5; color:var(--body);
+      background:var(--paper);
+      -webkit-print-color-adjust:exact; print-color-adjust:exact;
     }
+    h1 { color:var(--ink); line-height:1.2; letter-spacing:-0.01em; }
 
     /* La barre d'écran : elle n'existe qu'avant l'impression. */
     .ecran {
-      display: flex; gap: 12px; align-items: center; flex-wrap: wrap;
-      padding: 14px 20px; background: #FFFFFF; border-bottom: 1px solid #CCCCCC;
-      font-size: 14px;
+      display:flex; gap:12px; align-items:center; flex-wrap:wrap;
+      padding:14px 20px; background:#FFFFFF; border-bottom:1px solid var(--line);
+      font-size:14px;
     }
-    .ecran b { font-size: 15px; }
+    .ecran b { font-size:15px; }
     .ecran button {
-      font: inherit; font-weight: 700; padding: 8px 16px; cursor: pointer;
-      background: #000000; color: #FFFFFF; border: 0; border-radius: 6px;
+      font:inherit; font-weight:800; padding:8px 16px; cursor:pointer;
+      background:var(--ink); color:#FFFFFF; border:0; border-radius:6px;
     }
-    .ecran .note { color: #555555; }
-    .ecran .erreur { color: #A00000; font-weight: 700; }
+    .ecran .note { color:var(--muted); }
+    .ecran .erreur { color:#A00000; font-weight:800; }
 
+    /* Format lettre, marges des fiches. */
     .feuille {
-      width: 8.5in; min-height: 11in; margin: 24px auto; padding: 0.85in 0.9in;
-      background: var(--papier);
-      box-shadow: 0 2px 12px rgba(0, 0, 0, .18);
-      display: flex; flex-direction: column;
+      width:215.9mm; min-height:279.4mm; margin:0 auto;
+      padding:14mm 15mm 16mm; background:var(--paper);
+      display:flex; flex-direction:column;
     }
 
-    .titre {
-      font-family: var(--serif); font-size: 34pt; font-weight: 700;
-      line-height: 1.1; margin: 0 0 6pt; letter-spacing: -.01em;
-    }
-    .surtitre {
-      font-size: 10pt; font-weight: 700; letter-spacing: .18em;
-      text-transform: uppercase; margin: 0 0 14pt;
-    }
-    .filet { border: 0; border-top: 3px solid var(--filet); margin: 0 0 22pt; }
-    .filet-fin { border: 0; border-top: 1px solid var(--filet); margin: 22pt 0; }
+    /* ── En-tête ── */
+    .hdr { border-bottom:2.5px solid var(--rule); padding-bottom:8px;
+           margin-bottom:16px; }
+    .eyebrow { font-size:9.5pt; font-weight:800; text-transform:uppercase;
+               letter-spacing:.12em; color:var(--muted); }
+    .hdr h1 { font-size:22pt; font-weight:900; margin-top:3px; }
 
-    /* Le carré et le code, côte à côte : ce sont les deux seules façons
-       d'entrer, et elles doivent se voir d'un même regard. */
-    .entree { display: flex; gap: 34pt; align-items: flex-start; }
-    .carre { flex: none; }
-    .carre svg { display: block; width: 2.6in; height: 2.6in; }
-    .carre figcaption {
-      margin-top: 8pt; font-size: 10pt; font-weight: 700; text-align: center;
-      max-width: 2.6in;
-    }
-    .cote { flex: 1; min-width: 0; }
+    /* ── Les deux façons d'entrer, d'un même regard ── */
+    .entree { display:flex; gap:12mm; align-items:flex-start; }
+    .carre { flex:none; }
+    .carre svg { display:block; width:66mm; height:66mm; }
+    .carre figcaption { margin-top:6px; font-size:9.5pt; font-weight:700;
+                        color:var(--soft); text-align:center; max-width:66mm; }
+    .cote { flex:1; min-width:0; }
 
-    .etiquette {
-      font-size: 10pt; font-weight: 700; letter-spacing: .14em;
-      text-transform: uppercase; margin: 0 0 4pt;
-    }
-    /* Le code : la seule chose qu'on recopie à la main. Espacé, en chiffres
-       tabulaires, dans un cadre — pour qu'on le relise caractère par
-       caractère sans perdre sa place. */
+    .lbl { font-size:9.5pt; font-weight:800; text-transform:uppercase;
+           letter-spacing:.12em; color:var(--muted); margin-bottom:5px; }
+    /* Le code : la seule chose qu'on recopie à la main. Espacé, cerné,
+       jamais en aplat — et en Nunito, dont les chiffres sont alignés sur
+       les capitales. En Georgia, le « 3 » de QM3ZMP descendait sous la
+       ligne et se lisait comme une lettre minuscule. */
     .code {
-      font-family: var(--serif); font-size: 40pt; font-weight: 700;
-      letter-spacing: .16em; padding: 10pt 14pt; margin: 0 0 18pt;
-      border: 3px solid var(--filet); display: inline-block;
-      font-variant-numeric: tabular-nums;
+      font-size:38pt; font-weight:900; line-height:1.1; letter-spacing:.14em;
+      color:var(--ink); padding:8px 6px 8px 12px; margin-bottom:14px;
+      border:2.5px solid var(--rule); text-align:center;
+      font-variant-numeric:lining-nums tabular-nums;
     }
-    .adresse {
-      font-size: 15pt; font-weight: 700; word-break: break-all; margin: 0 0 4pt;
-    }
-    .adresse-note { font-size: 10pt; color: var(--gris); margin: 0; }
 
-    .marche { margin: 26pt 0 0; padding: 0; list-style: none; counter-reset: e; }
+    /* ── L'adresse : pleine largeur ──────────────────────────────────
+       Elle fait une soixantaine de caractères. Dans la colonne de
+       droite, elle se cassait au milieu d'un mot (« …-pr / oduction »),
+       ce qui est illisible pour quelqu'un qui apprend l'alphabet. Sur
+       toute la largeur elle tient d'un trait, et si un domaine plus
+       long l'obligeait à passer à la ligne, le `<wbr>` posé devant
+       « /s/ » la coupe à un endroit qui a un sens. */
+    .adresse-bloc { margin-top:18px; }
+    .adresse {
+      font-size:14pt; font-weight:800; color:var(--ink);
+      line-height:1.35; overflow-wrap:break-word;
+    }
+    .adresse-note { font-size:9.5pt; font-weight:600; color:var(--muted);
+                    margin-top:2px; }
+
+    /* ── La marche à suivre ── */
+    .marche { list-style:none; counter-reset:e; margin-top:22px; }
     .marche li {
-      counter-increment: e; display: flex; gap: 12pt; align-items: baseline;
-      margin-bottom: 10pt; font-size: 13pt;
+      counter-increment:e; position:relative; padding-left:9mm;
+      font-weight:600; margin-bottom:9px;
     }
     .marche li::before {
-      content: counter(e); flex: none; width: 22pt; height: 22pt;
-      border: 2px solid var(--filet); border-radius: 50%;
-      font-size: 11pt; font-weight: 700; text-align: center; line-height: 19pt;
+      content:counter(e); position:absolute; left:0; top:1px;
+      width:6mm; height:6mm; border-radius:50%;
+      border:1.5px solid var(--rule); color:var(--ink);
+      font-size:9.5pt; font-weight:800;
+      display:flex; align-items:center; justify-content:center;
     }
 
-    .pied { margin-top: auto; padding-top: 18pt; }
-    .pied-ligne {
-      display: flex; justify-content: space-between; gap: 18pt;
-      font-size: 9.5pt; color: var(--gris); flex-wrap: wrap;
+    .promesse { margin-top:22px; padding-top:12px;
+                border-top:1px solid var(--line); font-weight:600; }
+    .promesse b { color:var(--ink); font-weight:800; }
+
+    /* ── Pied ── */
+    .pied {
+      margin-top:auto; padding-top:7px; border-top:1px solid var(--line);
+      font-size:9.5pt; font-weight:700; color:var(--muted);
+      display:flex; justify-content:space-between; gap:10mm;
     }
-    .pied-ligne b { color: var(--encre); }
-    /* La marque, en noir : le point du « i » est le seul signe, et il tient
-       en noir aussi bien qu'en violet. */
-    .marque { font-weight: 800; font-size: 12pt; letter-spacing: -.03em; }
-    .marque i { font-style: normal; position: relative; }
+    /* La marque, en noir : le point du « i » est le seul signe, et il
+       tient en noir aussi bien qu'en violet. */
+    .marque { font-weight:900; font-size:11pt; letter-spacing:-.03em;
+              color:var(--ink); }
+    .marque i { font-style:normal; position:relative; }
     .marque i::after {
-      content: ""; position: absolute; left: 1px; top: 2px;
-      width: 4px; height: 4px; border-radius: 50%; background: var(--encre);
+      content:""; position:absolute; left:1px; top:2px;
+      width:3.5px; height:3.5px; border-radius:50%; background:var(--ink);
     }
 
+    @page { size:8.5in 11in; margin:14mm 15mm; }
     @media print {
-      body { background: #FFFFFF; }
-      .ecran { display: none; }
-      .feuille { width: auto; min-height: 0; margin: 0; padding: 0;
-                 box-shadow: none; }
-      @page { size: letter; margin: 0.75in; }
+      html { background:#FFFFFF; }
+      .ecran { display:none; }
+      .feuille { width:auto; min-height:0; margin:0; padding:0; }
     }
   </style>
 </head>
@@ -131,21 +168,25 @@
 </div>
 
 <div class="feuille" id="feuille" hidden>
-  <p class="surtitre" id="surtitre">Séance de classe</p>
-  <h1 class="titre" id="titre">L'activité</h1>
-  <hr class="filet" />
+  <header class="hdr">
+    <div class="eyebrow" id="surtitre">Séance de classe</div>
+    <h1 id="titre">L'activité</h1>
+  </header>
 
   <div class="entree">
     <figure class="carre" id="carre">
       <figcaption>Vise ce carré avec l'appareil photo.</figcaption>
     </figure>
     <div class="cote">
-      <p class="etiquette">Ou écris ce code</p>
+      <p class="lbl">Ou écris ce code</p>
       <p class="code" id="code">------</p>
-      <p class="etiquette">à cette adresse</p>
-      <p class="adresse" id="adresse">exemple.ca/s</p>
-      <p class="adresse-note">Sans espace. Les lettres sont des majuscules.</p>
     </div>
+  </div>
+
+  <div class="adresse-bloc">
+    <p class="lbl">à cette adresse</p>
+    <p class="adresse" id="adresse">exemple.ca/s</p>
+    <p class="adresse-note">Sans espace. Les lettres sont des majuscules.</p>
   </div>
 
   <ol class="marche">
@@ -154,16 +195,12 @@
     <li>Fais l'activité. Tes réponses partent toutes seules.</li>
   </ol>
 
-  <hr class="filet-fin" />
-  <p style="font-size:12pt;margin:0"><b>Tu n'as pas besoin de compte, et tu
-  n'écris pas ton nom.</b> Personne ne saura quelles réponses sont les tiennes.</p>
+  <p class="promesse"><b>Tu n'as pas besoin de compte, et tu n'écris pas ton
+  nom.</b> Personne ne saura quelles réponses sont les tiennes.</p>
 
   <div class="pied">
-    <hr class="filet-fin" />
-    <div class="pied-ligne">
-      <span><span class="marque">franc<i>ı</i>s</span> — aide à l'apprentissage du français</span>
-      <span id="pied-groupe"></span>
-    </div>
+    <span><span class="marque">franc<i>ı</i>s</span> — aide à l'apprentissage du français</span>
+    <span id="pied-groupe"></span>
   </div>
 </div>
 
@@ -175,6 +212,12 @@
   // enseignant, dans un onglet à part, et hérite donc de sa session.
   var jeton = '';
   try { jeton = localStorage.getItem('prof_token') || ''; } catch (e) {}
+
+  function echappe(t) {
+    return String(t).replace(/[&<>"']/g, function (c) {
+      return {'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c];
+    });
+  }
 
   function erreur(texte) {
     var el = document.getElementById('erreur');
@@ -197,7 +240,14 @@
       var d = rep.d;
       document.getElementById('titre').textContent = d.activityTitle || 'L’activité';
       document.getElementById('code').textContent = d.code;
-      document.getElementById('adresse').textContent = d.adresseCourte;
+      // `textContent` interdirait le <wbr> ; on découpe donc devant « /s/ »
+      // et on pose le point de coupure nous-mêmes. Le texte reste échappé :
+      // il vient du serveur, mais l'en-tête Host qui le fabrique, non.
+      var a = String(d.adresseCourte || '');
+      var coupe = a.indexOf('/s/');
+      document.getElementById('adresse').innerHTML = coupe > 0
+        ? echappe(a.slice(0, coupe)) + '<wbr>' + echappe(a.slice(coupe))
+        : echappe(a);
       document.getElementById('carre').insertAdjacentHTML('afterbegin', d.qr || '');
       if (!d.qr) {
         document.querySelector('#carre figcaption').textContent =
