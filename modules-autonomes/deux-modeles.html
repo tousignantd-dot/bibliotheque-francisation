@@ -1,0 +1,402 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Deux modèles — ce que chacun sait faire</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Nunito:wght@600;700;800;900&family=IBM+Plex+Sans:wght@400;500;600;700&family=IBM+Plex+Mono:wght@400;500&display=swap">
+<style>
+:root{
+  --sol:#FFFFFF; --papier:#FAFAF8; --encre:#17181A; --texte:#3A3D40; --gris:#6E7175;
+  --filet:#D0CFCA; --filet-fin:#E8E7E2;
+  --niv:#0D7A6F; --niv-pale:#DCF2EF; --niv-fonce:#08463F;
+  --or:#8C6A07; --or-pale:#F7F0DA; --or-fonce:#5E4705;
+  --ambre:#B45309; --ambre-pale:#FBEEDC; --ambre-fonce:#7A3806;
+  --mauve:#6B4FBB;
+}
+*{box-sizing:border-box}
+body{margin:0;background:var(--sol);color:var(--texte);
+  font-family:'IBM Plex Sans','Helvetica Neue',Arial,sans-serif;font-size:15px;line-height:1.55;
+  -webkit-font-smoothing:antialiased}
+h1,h2,h3,h4{margin:0;font-family:'Nunito','Arial Rounded MT Bold',sans-serif;color:var(--encre);text-wrap:balance}
+p{margin:0}
+b,strong{font-weight:700;color:var(--encre)}
+code,.mono{font-family:'IBM Plex Mono',ui-monospace,Menlo,monospace;font-size:.9em;color:var(--encre)}
+a{color:var(--encre)}
+
+.fr-barre{background:#FFF;border-bottom:2px solid var(--mauve);padding:14px 40px;
+  display:flex;align-items:center;gap:20px;flex-wrap:wrap}
+.fr-lockup{display:inline-flex;align-items:baseline;gap:16px;color:#17181A}
+.fr-nom{font-family:'Nunito',sans-serif;font-weight:900;font-size:28px;letter-spacing:-.035em;line-height:1;position:relative;display:inline-block}
+.fr-pt{position:absolute;top:2px;left:calc(50% + 1px);width:7px;height:7px;border-radius:50%;background:var(--mauve)}
+.fr-trait{width:1px;height:24px;background:#C8C7C2;align-self:center}
+.fr-desc{font-size:14px;color:#4B4F52}
+.fr-liens{margin-left:auto;display:flex;gap:16px;font-size:13px}
+.fr-liens a{color:var(--gris);text-decoration:none}
+.fr-liens a:hover{color:var(--encre);text-decoration:underline}
+
+.page{max-width:1060px;margin:0 auto;padding:0 40px 110px}
+.eyebrow{font-size:11px;font-weight:600;letter-spacing:.14em;text-transform:uppercase;color:var(--gris)}
+.bloc{padding-top:60px}
+.bloc > .eyebrow{display:block;margin-bottom:6px}
+.bloc > h2{font-size:29px;font-weight:900;letter-spacing:-.02em;line-height:1.12;
+  border-top:2px solid var(--encre);padding-top:12px}
+.intro{font-size:15px;max-width:78ch;margin-top:14px}
+
+.hero{display:grid;grid-template-columns:1.1fr 1fr;gap:52px;padding:74px 0 6px;align-items:start}
+.hero h1{font-size:50px;font-weight:400;line-height:1.03;letter-spacing:-.03em}
+.hero h1 span{display:block;font-weight:900}
+.verdict{border-top:3px solid var(--niv);padding-top:14px;
+  font-family:'Nunito',sans-serif;font-size:18px;line-height:1.4;color:var(--encre);font-weight:600}
+.verdict b{font-weight:900}
+.chiffres{display:flex;gap:28px;flex-wrap:wrap;margin-top:26px}
+.ch{border-top:1px solid var(--filet);padding-top:8px;min-width:104px}
+.ch__n{font-family:'Nunito',sans-serif;font-size:24px;font-weight:900;line-height:1;color:var(--encre);
+  font-variant-numeric:tabular-nums}
+.ch__l{font-size:12px;color:var(--gris);margin-top:3px}
+
+/* ── les deux colonnes ── */
+.duo{display:grid;grid-template-columns:1fr 1fr;gap:0;margin-top:26px;
+  border:1px solid var(--filet);border-radius:5px;overflow:hidden}
+.col{padding:0}
+.col + .col{border-left:1px solid var(--filet)}
+.col__t{padding:18px 22px 16px;border-bottom:1px solid var(--filet)}
+.col--a .col__t{background:var(--or-pale)}
+.col--b .col__t{background:var(--niv-pale)}
+.col__t h3{font-size:20px;font-weight:900}
+.col--a .col__t h3{color:var(--or-fonce)}
+.col--b .col__t h3{color:var(--niv-fonce)}
+.col__t p{font-size:12.5px;margin-top:3px;color:var(--gris)}
+.col__t .n{font-family:'Nunito',sans-serif;font-size:12.5px;font-weight:800;margin-top:8px;display:block}
+.col--a .col__t .n{color:var(--or-fonce)}
+.col--b .col__t .n{color:var(--niv-fonce)}
+.pc{padding:16px 22px 18px}
+.pc + .pc{border-top:1px solid var(--filet-fin)}
+.pc__r{font-size:10.5px;font-weight:700;letter-spacing:.14em;text-transform:uppercase;margin-bottom:10px}
+.pc--pour .pc__r{color:var(--niv)}
+.pc--contre .pc__r{color:var(--ambre-fonce)}
+.pc ul{margin:0;padding-left:17px}
+.pc li{margin-bottom:9px;font-size:13.8px}
+.pc li:last-child{margin-bottom:0}
+.pc li b{font-weight:700}
+
+/* ── le tableau de face à face ── */
+table{border-collapse:collapse;width:100%;margin-top:22px;font-size:13.6px}
+th{text-align:left;font-family:'Nunito',sans-serif;font-size:11px;font-weight:800;letter-spacing:.1em;
+  text-transform:uppercase;color:var(--gris);border-bottom:1.5px solid var(--encre);padding:0 14px 8px 0}
+td{border-bottom:1px solid var(--filet-fin);padding:11px 14px 11px 0;vertical-align:top}
+td.q{width:210px;font-weight:700;color:var(--encre)}
+td.a{width:calc((100% - 210px)/2)}
+.gagne{display:inline-block;font-size:10.5px;font-weight:800;letter-spacing:.06em;text-transform:uppercase;
+  padding:2px 7px;border-radius:10px;margin-right:7px;vertical-align:1px}
+.gagne.a{background:var(--or-pale);color:var(--or-fonce)}
+.gagne.b{background:var(--niv-pale);color:var(--niv-fonce)}
+.gagne.x{background:var(--papier);color:var(--gris);border:1px solid var(--filet)}
+
+/* ── le prix ── */
+.calc{background:var(--papier);border:1px solid var(--filet-fin);border-left:3px solid var(--ambre);
+  border-radius:4px;padding:18px 22px;margin-top:22px}
+.calc table{margin-top:0}
+.calc td{border-bottom:1px solid var(--filet-fin);padding:8px 14px 8px 0}
+.calc tr:last-child td{border-bottom:0;padding-top:12px;
+  font-family:'Nunito',sans-serif;font-weight:900;color:var(--encre);font-size:15px}
+.calc td.n{text-align:right;font-variant-numeric:tabular-nums;width:120px}
+
+/* ── les voies ── */
+.voie{border-top:1px solid var(--filet-fin);padding:18px 0;display:grid;
+  grid-template-columns:210px minmax(0,1fr);gap:24px}
+.voie:first-of-type{border-top:1.5px solid var(--encre)}
+.voie h3{font-size:17px;font-weight:900}
+.voie .cout{font-family:'IBM Plex Mono',monospace;font-size:12px;color:var(--gris);margin-top:5px}
+.voie p{font-size:13.8px}
+.voie p + p{margin-top:8px}
+.reco{display:inline-block;font-size:10px;font-weight:800;letter-spacing:.1em;text-transform:uppercase;
+  background:var(--niv);color:#FFF;padding:2px 8px;border-radius:10px;margin-bottom:7px}
+
+.note{background:var(--papier);border-left:3px solid var(--ambre);padding:14px 18px;margin-top:24px;
+  font-size:13.8px;max-width:84ch}
+.pied{margin-top:70px;border-top:1px solid var(--filet);padding-top:14px;font-size:12.5px;color:var(--gris)}
+
+@media (max-width:900px){
+  .hero,.duo{grid-template-columns:1fr;gap:26px}
+  .duo{gap:0}
+  .col + .col{border-left:0;border-top:1px solid var(--filet)}
+  .hero h1{font-size:38px}
+  .voie{grid-template-columns:1fr;gap:10px}
+  td.q,td.a{width:auto}
+  .page,.fr-barre{padding-left:20px;padding-right:20px}
+}
+</style>
+</head>
+<body>
+
+<div class="fr-barre">
+  <div class="fr-lockup">
+    <span class="fr-nom">franc<span class="fr-pt"></span>is</span>
+    <span class="fr-trait"></span>
+    <span class="fr-desc">Modules autonomes · l'arbitrage</span>
+  </div>
+  <nav class="fr-liens">
+    <a href="index.html">← Modules autonomes</a>
+    <a href="plan-storyline.html">Le plan</a>
+    <a href="n5-rendezvous-defi1/index.html">La démo</a>
+  </nav>
+</div>
+
+<div class="page">
+
+  <div class="hero">
+    <div>
+      <p class="eyebrow">Chantier · 30 août 2026</p>
+      <h1>Deux modèles.<br><span>Ce que chacun sait faire.</span></h1>
+      <p class="intro">La décision n° 2 du plan est restée ouverte : « on décide après la démo ».
+      La démo tourne. Voici le pour et le contre des deux modèles, <b>chiffrés là où c'est
+      chiffrable</b> — et la question qui tranche n'est pas « lequel est meilleur », c'est
+      <b>« qui est dans la pièce ? »</b></p>
+    </div>
+    <div>
+      <p class="verdict">Le module de classe est fait pour <b>une matinée avec un
+      enseignant</b>. Le module autonome est fait pour <b>un mardi soir sans personne</b>.
+      Aucun des deux ne fait le travail de l'autre.</p>
+      <div class="chiffres">
+        <div class="ch"><div class="ch__n">87</div><div class="ch__l">modules produits</div></div>
+        <div class="ch"><div class="ch__n">21 403</div><div class="ch__l">MP3 en place</div></div>
+        <div class="ch"><div class="ch__n">2</div><div class="ch__l">écrans autonomes</div></div>
+        <div class="ch"><div class="ch__n">~6 700</div><div class="ch__l">écrans pour tout convertir</div></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ─────────────────────────────────────────────── -->
+  <section class="bloc">
+    <span class="eyebrow">Le pour et le contre</span>
+    <h2>Les deux modèles, face à face</h2>
+    <p class="intro">Rien ici n'est une préférence de goût. Chaque ligne dit ce que le modèle
+    <i>fait</i> ou <i>ne fait pas</i>, et se vérifie sur le matériel existant ou sur la démo.</p>
+
+    <div class="duo">
+      <div class="col col--a">
+        <div class="col__t">
+          <h3>Le module de classe</h3>
+          <p>La longue page qu'on défile · le support d'une matinée en groupe</p>
+          <span class="n">87 produits · 16 séances chacun · éprouvés en classe</span>
+        </div>
+        <div class="pc pc--pour">
+          <p class="pc__r">Pour</p>
+          <ul>
+            <li><b>L'enseignant est là.</b> C'est la ressource la plus efficace de la pièce, et
+            le support n'a pas à la remplacer : il la sert. Aucun écran ne relance un élève
+            silencieux, ne reformule à la volée, ne voit qu'une personne décroche.</li>
+            <li><b>La densité.</b> Seize séances, quatre blocs, tout visible d'un coup :
+            l'enseignant choisit ce qu'il prend, saute, revient. Un parcours guidé ne se
+            réordonne pas devant la classe.</li>
+            <li><b>Il se projette, il se photocopie, il se découpe.</b> PowerPoints, fiches
+            noir et blanc, sections datables une à une. Un storyline n'a rien de ça.</li>
+            <li><b>Il porte l'oral entre humains</b> — jeu de rôle à deux, production orale
+            déposée, correction par l'enseignant. Ce qui compte le plus au niveau 5.</li>
+            <li><b>La chaîne est rodée</b> : sept fichiers de contenu, un <code>build</code>,
+            les médias. Faite 87 fois, avec ses contrôles.</li>
+            <li><b>Le suivi est branché</b> : progression du groupe, direct de la classe,
+            fiche de l'élève, séances sans compte.</li>
+          </ul>
+        </div>
+        <div class="pc pc--contre">
+          <p class="pc__r">Contre</p>
+          <ul>
+            <li><b>Seul, l'élève ne sait pas par où entrer</b> — ni quand il a fini. Rien ne
+            dit « il reste six écrans ».</li>
+            <li><b>L'explication est à côté de la difficulté</b>, repliée dans « En apprendre
+            plus ». On la lit avant de s'être trompé, donc trop tôt, donc pas du tout.</li>
+            <li><b>Rien n'oblige à une idée par écran.</b> Une page accepte six idées sans
+            protester ; c'est l'enseignant qui fait le tri, à l'oral.</li>
+            <li><b>Le suivi dit un résultat, pas un endroit.</b> « 62 % au premier coup » ne
+            dit pas <i>quelle</i> notion a manqué.</li>
+            <li><b>La correction IA remplace mal l'enseignant absent</b> : elle juge un texte,
+            elle n'explique pas pourquoi l'erreur était tentante.</li>
+          </ul>
+        </div>
+      </div>
+
+      <div class="col col--b">
+        <div class="col__t">
+          <h3>Le module autonome</h3>
+          <p>Le parcours qu'on avance, un écran à la fois · le soir, le téléphone</p>
+          <span class="n">2 écrans sur 18 · un seul défi · jamais essayé en classe</span>
+        </div>
+        <div class="pc pc--pour">
+          <p class="pc__r">Pour</p>
+          <ul>
+            <li><b>L'explication arrive au moment de l'erreur.</b> C'est le seul moment où on
+            la lit vraiment. Le rattrapage ne dit pas « faux » : il dit pourquoi la mauvaise
+            réponse était tentante.</li>
+            <li><b>L'élève sait où il en est</b> : jauge, paliers, point de reprise. Il ferme
+            l'onglet et rouvre au même endroit — la chose qui manquait le plus au travail à
+            la maison.</li>
+            <li><b>Le suivi devient un trajet.</b> « Trois élèves sur douze ont rouvert le
+            rattrapage de l'écran 15 » se traduit en dix minutes de classe le lendemain.
+            Un pourcentage, non.</li>
+            <li><b>Le cadre 16:9 est un budget.</b> Un écran qui déborde est un écran qui
+            porte deux idées : la forme impose la discipline que la page n'impose pas.</li>
+            <li><b>Il fonctionne sans personne</b> — le soir, une absence, un élève arrivé en
+            cours de session, un rattrapage.</li>
+            <li><b>Coût média nul</b> quand il s'appuie sur un module existant : il rejoue les
+            MP3 déjà produits, sans en copier un seul.</li>
+          </ul>
+        </div>
+        <div class="pc pc--contre">
+          <p class="pc__r">Contre</p>
+          <ul>
+            <li><b>Le prix, et c'est le point qui décide.</b> Environ <b>77 écrans par
+            module</b> ; convertir les 87 en demanderait <b>~6 700</b>. Ce n'est pas une
+            conversion, c'est une réécriture complète.</li>
+            <li><b>Un écran n'est pas mécanisable.</b> Chaque écran veut une idée, une action,
+            et chaque mauvaise réponse veut son rattrapage écrit — deux à trois fois le texte
+            d'un exercice ordinaire.</li>
+            <li><b>Il enferme.</b> Le verrou doux atténue, mais l'adulte qui sait déjà subit
+            quand même un chemin fait pour celui qui ne sait pas.</li>
+            <li><b>Il ne se projette pas et ne se photocopie pas.</b> Devant un groupe, un
+            écran à la fois est trop lent ; sur papier, il n'existe pas.</li>
+            <li><b>Il ne fait pas parler à un humain.</b> Pas de jeu de rôle à deux, pas de
+            production orale relue par l'enseignant : le cœur du niveau 5 lui échappe.</li>
+            <li><b>Il n'est branché à rien encore</b> : le suivi est local, les séances datées
+            et la fiche de l'élève l'ignorent.</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ─────────────────────────────────────────────── -->
+  <section class="bloc">
+    <span class="eyebrow">Là où ils se rencontrent</span>
+    <h2>Huit questions, et qui l'emporte</h2>
+    <table>
+      <thead><tr><th>La question</th><th>Module de classe</th><th>Module autonome</th></tr></thead>
+      <tbody>
+        <tr><td class="q">Une matinée en groupe</td>
+          <td class="a"><span class="gagne a">Gagne</span>Densité, projection, réordonnable en direct.</td>
+          <td class="a">Trop lent : un écran à la fois devant vingt personnes.</td></tr>
+        <tr><td class="q">Un mardi soir, seul</td>
+          <td class="a">L'élève flotte : ni entrée, ni fin, ni reprise.</td>
+          <td class="a"><span class="gagne b">Gagne</span>C'est sa raison d'être.</td></tr>
+        <tr><td class="q">Expliquer une notion</td>
+          <td class="a">L'enseignant le fait mieux que n'importe quel écran.</td>
+          <td class="a"><span class="gagne b">Gagne</span>… mais seulement quand il n'y a pas d'enseignant.</td></tr>
+        <tr><td class="q">Faire parler l'élève</td>
+          <td class="a"><span class="gagne a">Gagne</span>Jeu de rôle à deux, dépôt oral, correction humaine.</td>
+          <td class="a">Le micro s'écoute lui-même. Ce n'est pas parler à quelqu'un.</td></tr>
+        <tr><td class="q">Savoir où ça a coincé</td>
+          <td class="a">Un pourcentage et un compte d'erreurs.</td>
+          <td class="a"><span class="gagne b">Gagne</span>L'écran, l'essai, le rattrapage ouvert.</td></tr>
+        <tr><td class="q">Sur un téléphone</td>
+          <td class="a">Une longue page, corrigée pour le doigt mais longue.</td>
+          <td class="a"><span class="gagne b">Gagne</span>Plein écran, un geste, le pied sous le pouce.</td></tr>
+        <tr><td class="q">Coût de production</td>
+          <td class="a"><span class="gagne a">Gagne</span>Chaîne rodée, faite 87 fois, médias compris.</td>
+          <td class="a">~77 écrans à écrire un par un, rattrapages compris.</td></tr>
+        <tr><td class="q">Sans IA, sans réseau</td>
+          <td class="a"><span class="gagne x">Égalité</span>Le repli est en place sur les 87.</td>
+          <td class="a"><span class="gagne x">Égalité</span>Aucune vérification n'a besoin d'un modèle.</td></tr>
+      </tbody>
+    </table>
+  </section>
+
+  <!-- ─────────────────────────────────────────────── -->
+  <section class="bloc">
+    <span class="eyebrow">Le chiffre qui tranche</span>
+    <h2>Ce que coûterait le remplacement</h2>
+    <p class="intro">Le défi 1 du module <i>rendez-vous</i> fait <b>18 écrans</b>. Un module
+    complet en compte six sections. En reportant le même grain :</p>
+
+    <div class="calc">
+      <table>
+        <tbody>
+          <tr><td>Je découvre</td><td class="n">~10 écrans</td></tr>
+          <tr><td>Trois défis, à 18 écrans</td><td class="n">54 écrans</td></tr>
+          <tr><td>Je me lance</td><td class="n">~8 écrans</td></tr>
+          <tr><td>Je retiens des mots</td><td class="n">~5 écrans</td></tr>
+          <tr><td>Un module complet</td><td class="n">~77 écrans</td></tr>
+          <tr><td>Les 87 modules du catalogue</td><td class="n">~6 700 écrans</td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <div class="note"><b>Ce que ce chiffre veut dire, et ce qu'il ne veut pas dire.</b>
+    Il ne dit pas « impossible » : les 87 modules ont bien été écrits, et les 21 403 MP3
+    produits. Il dit que <b>remplacer n'est pas une conversion mécanique</b> — aucun script ne
+    transforme une page en parcours, parce que découper en idées et écrire un rattrapage par
+    mauvaise réponse sont des décisions d'auteur. Et il dit qu'on <b>doublerait le matériel à
+    tenir</b> : une correction de contenu se ferait alors à deux endroits, ce que ce dépôt sait
+    déjà payer cher.</div>
+  </section>
+
+  <!-- ─────────────────────────────────────────────── -->
+  <section class="bloc">
+    <span class="eyebrow">Ce qu'on peut en faire</span>
+    <h2>Trois voies, et celle que je recommande</h2>
+
+    <div class="voie">
+      <div>
+        <span class="reco">Recommandé</span>
+        <h3>Deux portes, et le storyline là où la classe ne va pas</h3>
+        <p class="cout">~5 parcours · ~90 écrans · les 87 modules intacts</p>
+      </div>
+      <div>
+        <p>Le module de classe reste le support du matin, sans une ligne de changement. Le
+        storyline ne couvre <b>pas</b> les mêmes contenus : il prend ce que la classe ne peut
+        pas faire — <b>le travail seul</b>. Trois ou quatre situations où l'élève se retrouve
+        seul pour de vrai : téléphoner, comprendre un avis reçu par la poste, remplir un
+        formulaire, rappeler pour annuler.</p>
+        <p>On n'écrit alors que <b>le défi qui coince</b> de chaque module, pas le module
+        entier — 18 écrans, pas 77. Cinq parcours coûtent ce que coûte un module et demi, et
+        ils répondent à la seule question à laquelle rien ne répond aujourd'hui : que fait
+        l'élève entre deux matinées ?</p>
+      </div>
+    </div>
+
+    <div class="voie">
+      <div>
+        <h3>Le storyline remplace</h3>
+        <p class="cout">~6 700 écrans · les 87 modules à réécrire</p>
+      </div>
+      <div>
+        <p>Un seul format, cohérent, qui impose partout une idée par écran. C'est le meilleur
+        modèle sur le papier — et il fait perdre ce que le module de classe sait faire : la
+        projection, les fiches papier, le jeu de rôle à deux, la production orale relue.
+        <b>Ce n'est pas un coût de production, c'est un changement de métier</b> : le cours
+        cesse d'être une matinée animée pour devenir un parcours surveillé.</p>
+        <p>À rouvrir seulement si l'usage réel montre que les élèves travaillent surtout seuls.
+        Aujourd'hui, rien ne le dit — le portail n'est pas encore en service.</p>
+      </div>
+    </div>
+
+    <div class="voie">
+      <div>
+        <h3>On s'arrête ici</h3>
+        <p class="cout">2 écrans · rien de plus</p>
+      </div>
+      <div>
+        <p>La démo a répondu à sa question — la forme tient, le rattrapage fonctionne, le
+        cadre 16:9 se projette et le téléphone suit. On garde le moteur, on n'écrit pas les
+        seize autres écrans, et on y revient quand une classe aura réellement demandé du
+        travail à la maison.</p>
+        <p>Défendable, et pas cher. Mais un moteur sans un seul parcours complet ne se montre
+        à personne : on ne saurait toujours pas si un élève va au bout d'un parcours de
+        vingt-cinq minutes.</p>
+      </div>
+    </div>
+
+    <div class="note"><b>Ce que la démo n'a pas encore prouvé, et qu'aucun raisonnement ne
+    remplacera.</b> Qu'un élève de niveau 5, seul, à la maison, va au bout de dix-huit écrans.
+    C'est la seule inconnue qui compte, et elle ne se lève qu'en le mettant devant une classe
+    réelle. Les seize écrans qui restent servent d'abord à ça.</div>
+  </section>
+
+  <p class="pied">francis · modules autonomes · l'arbitrage · 30 août 2026 ·
+  <span class="mono">modules-autonomes/deux-modeles.html</span></p>
+
+</div>
+</body>
+</html>
