@@ -112,6 +112,19 @@ def build(dossier):
                     "beaucoup d'énergie à comprendre une interface, et celle-là il "
                     "la comprend une seule fois." % n(CH['cours']))
 
+    d.regle("La forme des exercices",
+            "Sept familles, pas une de plus.",
+            precision="Vrai ou faux, associer, des cases à écrire, un texte à trous, "
+                      "des images, une question ouverte, un tableau. Un élève de "
+                      "francisation dépense beaucoup d'énergie à comprendre ce qu'on "
+                      "lui demande : il l'apprend une fois, puis il ne pense plus "
+                      "qu'au français.",
+            notes="La contrainte a été tenue sur les 87 modules et les huit niveaux. "
+                  "Elle coûte cher à l'écriture — il faut faire entrer une intention "
+                  "dans une forme existante — et c'est l'élève qui encaisse la "
+                  "différence quand on ne la tient pas. Les sept sont montrées en "
+                  "images dans l'annexe A2.")
+
     d.regle("Le moment de la règle",
             "La règle arrive quand l'élève s'est trompé, jamais avant.",
             precision="Les mini-leçons ne sont pas en tête de module : elles s'ouvrent "
