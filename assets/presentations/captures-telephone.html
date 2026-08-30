@@ -1,0 +1,352 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Le cours sur un téléphone</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800;900&display=swap">
+<style>
+  :root{
+    --accent:#0A8F5B; --accent-soft:#E6F5EE; --accent-ink:#07734A;
+    --surface-band:#EDF6F1;
+    --ink-900:#17181A; --ink-700:#3A3D40; --ink-500:#4B4F52; --ink-400:#6E7175;
+    --surface-page:#F7F7F5; --surface-card:#FFFFFF; --surface-sunken:#FBFBFA;
+    --paper-200:#F0F0EE;
+    --border:#EAEAE8; --border-firm:#D6D6D2; --border-tint:#D8E8DF;
+    --acier-600:#1D6B8F; --acier-100:#E7F0F6;
+    --ambre-700:#B45309; --ambre-100:#FBEEDC;
+    --teal-700:#0D7A6F;  --teal-100:#E3F2F0;
+    --indigo-600:#3B49A0; --indigo-100:#E8EAFA;
+    --framboise-600:#A5335F; --framboise-100:#FCE9F0;
+    --marque-600:#6B4FBB; --marque-100:#EDE7F9; --marque-filet:#C3B4EA;
+    --font-sans:"Nunito",system-ui,-apple-system,"Segoe UI",sans-serif;
+    --content-max:1120px;
+  }
+  *{box-sizing:border-box}
+  body{margin:0; background:var(--surface-page); color:var(--ink-900);
+    font-family:var(--font-sans); font-size:18px; font-weight:600; line-height:1.55;
+    -webkit-font-smoothing:antialiased; -webkit-text-size-adjust:100%}
+  :focus-visible{outline:3px solid var(--accent); outline-offset:2px; border-radius:4px}
+  .conteneur{max-width:var(--content-max); margin:0 auto; padding:0 24px}
+  .verrou{display:inline-flex; align-items:center; gap:16px; flex-wrap:wrap}
+  .verrou .nom{font-weight:900; font-size:28px; letter-spacing:-.035em; line-height:1;
+    color:var(--ink-900); white-space:nowrap}
+  .verrou .i{position:relative; display:inline-block}
+  .verrou .point{position:absolute; left:1px; top:2px; width:7px; height:7px;
+    border-radius:999px; background:var(--marque-600)}
+  .verrou .filet{width:2px; height:24px; background:var(--marque-filet)}
+  .verrou .desc{font-size:16px; font-weight:900; letter-spacing:-.015em; line-height:1;
+    color:var(--marque-600); white-space:nowrap}
+  @media (max-width:480px){ .verrou .filet,.verrou .desc{display:none} }
+  .barre{background:#FFFFFF; border-bottom:2px solid var(--marque-600); padding:16px 0}
+  .bande{background:var(--surface-band); border-bottom:1px solid var(--border-tint);
+    padding:44px 0 34px}
+  .bande .conteneur{display:flex; flex-direction:column; gap:20px}
+  .surtitre{font-size:13px; font-weight:800; letter-spacing:.12em; text-transform:uppercase;
+    color:var(--ink-400); margin:0}
+  h1{font-size:clamp(32px,5.4vw,46px); font-weight:900; letter-spacing:-.02em;
+    line-height:1.14; margin:0; text-wrap:balance}
+  .chapeau{font-size:19px; font-weight:600; color:var(--ink-500); margin:0; max-width:64ch}
+  .quand{font-size:14px; color:var(--ink-400); margin:0}
+  main{padding:8px 0 80px}
+  section{padding:44px 0 0}
+  h2{font-size:27px; font-weight:900; letter-spacing:-.015em; margin:0 0 6px; text-wrap:balance}
+  p{margin:0 0 14px; max-width:68ch}
+  .eyebrow{display:inline-block; font-size:12px; font-weight:800; letter-spacing:.12em;
+    text-transform:uppercase; padding:4px 10px; border-radius:999px; margin:0 0 10px}
+  .e-acier{background:var(--acier-100); color:var(--acier-600)}
+  .e-ambre{background:var(--ambre-100); color:var(--ambre-700)}
+  .e-teal{background:var(--teal-100); color:var(--teal-700)}
+  .e-indigo{background:var(--indigo-100); color:var(--indigo-600)}
+  .e-framboise{background:var(--framboise-100); color:var(--framboise-600)}
+  strong,b{font-weight:900}
+  .garde{background:var(--accent-soft); border:1px solid #BFE3D2; border-radius:14px;
+    padding:16px 20px}
+  .garde p:last-child{margin-bottom:0}
+  .liens{display:flex; flex-wrap:wrap; gap:10px; margin-top:6px}
+  .lien{display:inline-block; font-size:15px; font-weight:800; text-decoration:none;
+    color:var(--ink-900); background:#FFFFFF; border:1px solid var(--border-firm);
+    border-radius:999px; padding:9px 15px}
+  .lien:hover{background:var(--paper-200)}
+
+  /* — les téléphones — */
+  .rangee{display:grid; gap:26px; margin:22px 0 0;
+    grid-template-columns:repeat(auto-fit,minmax(min(240px,100%),1fr))}
+  .tel{margin:0; display:flex; flex-direction:column; gap:12px}
+  .tel .cadre{background:#17181A; border-radius:34px; padding:10px 8px;
+    box-shadow:0 10px 26px rgba(23,24,26,.16)}
+  .tel .ecran{position:relative; border-radius:26px; overflow:hidden; background:#FFFFFF}
+  .tel .encoche{position:absolute; top:0; left:50%; transform:translateX(-50%);
+    width:36%; height:20px; background:#17181A; border-radius:0 0 12px 12px; z-index:2}
+  .tel img{display:block; width:100%; height:auto}
+  .tel figcaption{font-size:15px; font-weight:600; color:var(--ink-500); line-height:1.45}
+  .tel figcaption b{display:block; font-size:16.5px; font-weight:900; color:var(--ink-900);
+    margin-bottom:2px}
+  .tel .fam{display:inline-block; font-size:11.5px; font-weight:800; letter-spacing:.1em;
+    text-transform:uppercase; color:var(--accent-ink); background:var(--accent-soft);
+    border-radius:999px; padding:3px 9px; margin-bottom:6px}
+  .cadre-table{overflow-x:auto; border:1px solid var(--border); border-radius:14px;
+    background:var(--surface-card); margin-top:16px}
+  table{border-collapse:collapse; width:100%; min-width:620px; font-size:15px}
+  th,td{text-align:left; padding:10px 14px; border-bottom:1px solid var(--border);
+    vertical-align:top}
+  thead th{font-size:12px; font-weight:800; letter-spacing:.08em; text-transform:uppercase;
+    color:var(--ink-400); background:var(--surface-sunken); white-space:nowrap}
+  tbody tr:last-child td{border-bottom:0}
+  hr{border:0; border-top:1px solid var(--border); margin:48px 0 0}
+  footer p{font-size:16px; color:var(--ink-500)}
+</style>
+</head>
+<body>
+
+<div class="barre">
+  <div class="conteneur">
+    <div class="verrou">
+      <span class="nom" role="img" aria-label="francis">franc<span class="i" aria-hidden="true">ı<span class="point"></span></span>s</span>
+      <span class="filet" aria-hidden="true"></span>
+      <span class="desc">Aide à l'apprentissage du français</span>
+    </div>
+  </div>
+</div>
+
+<header class="bande">
+  <div class="conteneur">
+    <div>
+      <p class="surtitre">Direction et enseignants · Captures d'écran</p>
+      <h1>Le cours sur un téléphone</h1>
+    </div>
+    <p class="chapeau">Nos élèves n'ont pas d'ordinateur : ils ont un téléphone, souvent
+    le seul appareil de la maison. Voici <b>dix-huit écrans</b> pris sur un iPhone —
+    l'entrée dans le cours, les <b>sept familles d'exercices</b>, la prise de parole,
+    la barre d'outils et l'entrée sans compte. Aucune application à installer : c'est le
+    navigateur du téléphone, et c'est le même matériel que sur un portable.</p>
+    <p class="quand">30 août 2026 — captures prises en émulation d'iPhone (390 × 844 points,
+    écran de 1170 × 2532 pixels), avec un élève fictif. Les écrans ne sont pas des maquettes.</p>
+    <div class="liens">
+      <a class="lien" href="captures-cas-de-figure.html">Les écrans, cas par cas</a>
+      <a class="lien" href="bac-a-sable-cas-de-figure.html">Le bac à sable des cas de figure</a>
+    </div>
+  </div>
+</header>
+
+<main>
+
+<section class="conteneur">
+  <p class="eyebrow e-acier">Ce qui change sur un petit écran</p>
+  <h2>Cinq décisions, et elles se voient dans chaque capture</h2>
+  <div class="cadre-table">
+    <table>
+      <thead><tr><th>La décision</th><th>Sur un portable</th><th>Sur un téléphone</th></tr></thead>
+      <tbody>
+        <tr><td><b>Les outils</b></td><td>Un rail vertical à droite, toujours visible</td>
+          <td>Une <b>barre au bas de l'écran</b>, sept icônes, repliable d'un geste</td></tr>
+        <tr><td><b>Le banc de réponses</b></td><td>Une colonne à côté des questions</td>
+          <td>Un <b>bandeau collant</b> juste au-dessus de la barre d'outils : la réponse
+          reste sous le pouce pendant qu'on fait défiler</td></tr>
+        <tr><td><b>Les colonnes</b></td><td>Question et réponse côte à côte</td>
+          <td>Empilées, la zone de dépôt sous sa question</td></tr>
+        <tr><td><b>Le glisser-déposer</b></td><td>À la souris</td>
+          <td><b>Au doigt</b> — et un appui simple suffit : choisir l'étiquette, puis
+          toucher la case</td></tr>
+        <tr><td><b>Le texte et les cibles</b></td><td>17 px, boutons de 44 px</td>
+          <td>Les mêmes : rien n'est rapetissé pour faire entrer plus de choses</td></tr>
+      </tbody>
+    </table>
+  </div>
+</section>
+
+<section class="conteneur">
+  <p class="eyebrow e-teal">Entrer</p>
+  <h2>Du portail au module</h2>
+  <div class="rangee">
+    <figure class="tel">
+      <div class="cadre"><div class="ecran"><span class="encoche" aria-hidden="true"></span>
+        <img src="captures-telephone/01-portail.jpg" alt="Portail élève sur téléphone : bonjour, bilan en tuiles empilées"></div></div>
+      <figcaption><b>01 · Le portail de l'élève</b>Il entre avec son code à six caractères.
+      Le bilan passe en tuiles empilées : modules terminés, mots maîtrisés, temps de la
+      semaine.</figcaption>
+    </figure>
+    <figure class="tel">
+      <div class="cadre"><div class="ecran"><span class="encoche" aria-hidden="true"></span>
+        <img src="captures-telephone/02-portail-cours.jpg" alt="Liste des cours du groupe sur téléphone"></div></div>
+      <figcaption><b>02 · Ses cours</b>La liste de ce que son enseignant a mis à
+      l'horaire, une carte par cours, du plus proche au plus loin.</figcaption>
+    </figure>
+    <figure class="tel">
+      <div class="cadre"><div class="ecran"><span class="encoche" aria-hidden="true"></span>
+        <img src="captures-telephone/03-langue.jpg" alt="Bandeau qui demande la langue maternelle avant de commencer"></div></div>
+      <figcaption><b>03 · Sa langue maternelle</b>Demandée une seule fois, avant de
+      commencer : elle sert aux outils de traduction. Elle se change ensuite en un
+      geste.</figcaption>
+    </figure>
+    <figure class="tel">
+      <div class="cadre"><div class="ecran"><span class="encoche" aria-hidden="true"></span>
+        <img src="captures-telephone/04-module-tete.jpg" alt="En-tête du module et pastilles de sections sur téléphone"></div></div>
+      <figcaption><b>04 · Le module</b>Le titre, le compte d'exercices réussis, le
+      réglage du débit des voix — et les six sections en pastilles qui se replient sur
+      trois lignes.</figcaption>
+    </figure>
+  </div>
+</section>
+
+<section class="conteneur">
+  <p class="eyebrow e-ambre">Comprendre</p>
+  <h2>Écouter, puis retenir les mots</h2>
+  <div class="rangee">
+    <figure class="tel">
+      <div class="cadre"><div class="ecran"><span class="encoche" aria-hidden="true"></span>
+        <img src="captures-telephone/05-dialogue.jpg" alt="La situation et le bouton rouge Écouter le dialogue"></div></div>
+      <figcaption><b>05 · Le dialogue</b>La situation en trois lignes, puis le seul bouton
+      rouge de la page : <b>Écouter</b>. Autant de fois qu'il veut, au débit qu'il
+      choisit — les voix sont enregistrées d'avance, donc cela marche même sur une
+      connexion faible.</figcaption>
+    </figure>
+    <figure class="tel">
+      <div class="cadre"><div class="ecran"><span class="encoche" aria-hidden="true"></span>
+        <img src="captures-telephone/06-vocabulaire.jpg" alt="Les mots du dialogue, un par ligne, sur téléphone"></div></div>
+      <figcaption><b>06 · Les mots du dialogue</b>Trois colonnes sur un portable, une
+      seule ici : un mot par ligne, touchable, et le lien vers les cartes
+      mémoire.</figcaption>
+    </figure>
+  </div>
+</section>
+
+<section class="conteneur">
+  <p class="eyebrow e-indigo">Répondre</p>
+  <h2>Les sept familles d'exercices</h2>
+  <p>Les 87 modules sont construits avec sept familles d'exercices, et sept seulement.
+  C'est ce qui rend le cours reconnaissable : l'élève apprend une fois comment on répond,
+  puis il ne réapprend plus jamais.</p>
+  <div class="rangee">
+    <figure class="tel">
+      <div class="cadre"><div class="ecran"><span class="encoche" aria-hidden="true"></span>
+        <img src="captures-telephone/07-vrai-faux.jpg" alt="Exercice vrai ou faux corrigé, avec les cases vertes et une rouge"></div></div>
+      <figcaption><span class="fam">Vrai ou faux</span><b>07 · Corrigé sur l'appareil</b>
+      Neuf bonnes réponses sur dix. La justesse ne passe pas que par la couleur : un
+      glyphe et un mot l'accompagnent. Aucun appel n'est nécessaire — c'est une
+      comparaison faite sur le téléphone.</figcaption>
+    </figure>
+    <figure class="tel">
+      <div class="cadre"><div class="ecran"><span class="encoche" aria-hidden="true"></span>
+        <img src="captures-telephone/08-association.jpg" alt="Association mot-définition avec le banc de réponses collant en bas"></div></div>
+      <figcaption><span class="fam">Association</span><b>08 · Le banc reste sous le pouce</b>
+      Les questions s'empilent avec leur zone « glissez la réponse ici », et le banc de
+      réponses se colle au bas de l'écran, juste au-dessus de la barre
+      d'outils.</figcaption>
+    </figure>
+    <figure class="tel">
+      <div class="cadre"><div class="ecran"><span class="encoche" aria-hidden="true"></span>
+        <img src="captures-telephone/09-cases-ecrire.jpg" alt="Mini-leçon puis exercice à compléter avec un banc de réponses"></div></div>
+      <figcaption><span class="fam">Cases à écrire</span><b>09 · La règle avant l'exercice</b>
+      Le bandeau noir donne la règle avec ses exemples, « Ouvrir la mini-leçon » en donne
+      davantage, puis l'élève complète — au clavier ou en touchant une étiquette du
+      banc.</figcaption>
+    </figure>
+    <figure class="tel">
+      <div class="cadre"><div class="ecran"><span class="encoche" aria-hidden="true"></span>
+        <img src="captures-telephone/10-texte-a-trous.jpg" alt="Texte à trous du futur proche avec les réponses proposées en bas"></div></div>
+      <figcaption><span class="fam">Texte à trous</span><b>10 · Des phrases entières</b>
+      Le trou est dans la phrase, pas dans une grille : l'élève lit ce qu'il écrit. Les
+      réponses possibles sont en bas, en étiquettes de 44 px.</figcaption>
+    </figure>
+    <figure class="tel">
+      <div class="cadre"><div class="ecran"><span class="encoche" aria-hidden="true"></span>
+        <img src="captures-telephone/11-images.jpg" alt="Exercice d'association d'images sur téléphone"></div></div>
+      <figcaption><span class="fam">Images</span><b>11 · Associer une scène et une phrase</b>
+      Les images passent en pleine largeur, l'une sous l'autre. Elles sont cadrées en 3:2,
+      donc rien n'est rogné d'un appareil à l'autre.</figcaption>
+    </figure>
+    <figure class="tel">
+      <div class="cadre"><div class="ecran"><span class="encoche" aria-hidden="true"></span>
+        <img src="captures-telephone/17-question-ouverte.jpg" alt="Question ouverte avec un texte source à lire"></div></div>
+      <figcaption><span class="fam">Question ouverte</span><b>12 · Répondre dans ses mots</b>
+      Un texte à lire, puis une réponse libre. C'est la seule famille que l'appareil ne
+      peut pas corriger seul : c'est l'assistant qui relit — ou l'enseignant, quand le
+      centre a fermé l'assistant.</figcaption>
+    </figure>
+    <figure class="tel">
+      <div class="cadre"><div class="ecran"><span class="encoche" aria-hidden="true"></span>
+        <img src="captures-telephone/18-tableau.jpg" alt="Exercice en tableau, replié en cartes sur téléphone"></div></div>
+      <figcaption><span class="fam">Tableau</span><b>13 · Un tableau qui se replie</b>
+      Sur un portable, c'est un tableau à colonnes. Ici, chaque ligne devient une carte :
+      rien ne déborde, et la page ne défile jamais sur le côté.</figcaption>
+    </figure>
+  </div>
+</section>
+
+<section class="conteneur">
+  <p class="eyebrow e-framboise">Produire</p>
+  <h2>Parler et écrire depuis le téléphone</h2>
+  <div class="rangee">
+    <figure class="tel">
+      <div class="cadre"><div class="ecran"><span class="encoche" aria-hidden="true"></span>
+        <img src="captures-telephone/12-production-orale.jpg" alt="Production orale : trois temps, gros bouton d'enregistrement rouge"></div></div>
+      <figcaption><b>14 · S'enregistrer</b>Trois cartes de plan (où et quoi · depuis quand ·
+      ce qui l'aggrave), puis un bouton d'enregistrement qu'on ne peut pas manquer. Trois
+      étapes numérotées : je m'enregistre, je m'écoute et je corrige, j'envoie à mon
+      enseignant.</figcaption>
+    </figure>
+    <figure class="tel">
+      <div class="cadre"><div class="ecran"><span class="encoche" aria-hidden="true"></span>
+        <img src="captures-telephone/13-production-ecrite.jpg" alt="Production écrite : liste à cocher puis cadre de courriel"></div></div>
+      <figcaption><b>15 · Écrire un courriel</b>La liste de ce que le message doit
+      contenir, puis un vrai cadre de courriel — destinataire, objet, message — pour que
+      l'élève reconnaisse la chose qu'il aura à écrire dans la vraie
+      vie.</figcaption>
+    </figure>
+  </div>
+</section>
+
+<section class="conteneur">
+  <p class="eyebrow e-acier">S'aider, réviser, entrer sans compte</p>
+  <h2>Le reste de l'écran</h2>
+  <div class="rangee">
+    <figure class="tel">
+      <div class="cadre"><div class="ecran"><span class="encoche" aria-hidden="true"></span>
+        <img src="captures-telephone/14-outils.jpg" alt="Panneau « Demander à l'assistant » ouvert sur le téléphone"></div></div>
+      <figcaption><b>16 · Demander de l'aide</b>La barre du bas ouvre un panneau qui
+      couvre l'écran, avec trois questions déjà écrites pour celui qui n'ose pas
+      demander. En haut, sa langue maternelle, changeable en un geste. Ce panneau
+      disparaît en entier quand un centre refuse l'assistant.</figcaption>
+    </figure>
+    <figure class="tel">
+      <div class="cadre"><div class="ecran"><span class="encoche" aria-hidden="true"></span>
+        <img src="captures-telephone/15-cartes-memoire.jpg" alt="Section « Je retiens des mots » avec les amorces à compléter"></div></div>
+      <figcaption><b>17 · Je retiens des mots</b>La fin du module : l'élève note ses
+      propres phrases sous des amorces, et révise avec les cartes mémoire. C'est le carnet
+      qu'il ramène chez lui.</figcaption>
+    </figure>
+    <figure class="tel">
+      <div class="cadre"><div class="ecran"><span class="encoche" aria-hidden="true"></span>
+        <img src="captures-telephone/16-seance.jpg" alt="Écran d'entrée dans une séance après avoir scanné le code QR"></div></div>
+      <figcaption><b>18 · Entrer sans compte</b>Il vise le carré imprimé avec l'appareil
+      photo, et il est dedans : pas de compte, pas de mot de passe, pas de nom. « C'est
+      toi, pour cette heure. »</figcaption>
+    </figure>
+  </div>
+</section>
+
+<section class="conteneur">
+  <div class="garde">
+    <p><b>Ce qu'il n'y a pas :</b> pas d'application à installer, pas de compte
+    d'App Store, pas de mise à jour à faire faire à seize personnes en même temps. Le
+    cours s'ouvre dans le navigateur du téléphone, et c'est <b>le même fichier</b> qui
+    sert le portable de l'école, la tablette du local et le téléphone de l'élève. Ce que
+    la direction règle vaut donc pour les trois d'un coup.</p>
+  </div>
+</section>
+
+<hr>
+<footer class="conteneur">
+  <p><b>Comment ces captures ont été prises :</b> le portail tourne, un élève fictif ouvre
+  ses modules, et chaque écran est photographié en émulation d'iPhone — 390 points de
+  large, écran de 1170 × 2532 pixels, gestes tactiles activés. Les sept familles
+  d'exercices viennent de cinq modules différents (santé, travail, déménagement, classe,
+  consultation) : ce sont les mêmes composants partout, et c'est exactement ce que la
+  page cherche à montrer.</p>
+</footer>
+</main>
+</body>
+</html>
