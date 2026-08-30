@@ -1,0 +1,333 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Ménage du dépôt</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800;900&display=swap">
+<style>
+  :root{
+    --accent:#0A8F5B; --accent-soft:#E6F5EE; --accent-ink:#07734A;
+    --surface-band:#EDF6F1;
+    --ink-900:#17181A; --ink-700:#3A3D40; --ink-500:#4B4F52; --ink-400:#6E7175;
+    --surface-page:#F7F7F5; --surface-card:#FFFFFF; --surface-sunken:#FBFBFA;
+    --paper-200:#F0F0EE; --border:#EAEAE8; --border-firm:#D6D6D2; --border-tint:#D8E8DF;
+    --acier-600:#1D6B8F; --acier-100:#E7F0F6;
+    --ambre-700:#B45309; --ambre-100:#FBEEDC;
+    --teal-700:#0D7A6F;  --teal-100:#E3F2F0;
+    --rouge-700:#B02D33; --rouge-100:#FBEAEA;
+    --marque-600:#6B4FBB; --marque-100:#EDE7F9; --marque-filet:#C3B4EA;
+    --font-sans:"Nunito",system-ui,-apple-system,"Segoe UI",sans-serif;
+  }
+  *{box-sizing:border-box}
+  body{margin:0; background:var(--surface-page); color:var(--ink-900);
+    font-family:var(--font-sans); font-size:18px; font-weight:600; line-height:1.55;
+    -webkit-font-smoothing:antialiased}
+  :focus-visible{outline:3px solid var(--accent); outline-offset:2px; border-radius:4px}
+  .conteneur{max-width:1000px; margin:0 auto; padding:0 24px}
+  .verrou{display:inline-flex; align-items:center; gap:16px; flex-wrap:wrap}
+  .verrou .nom{font-weight:900; font-size:28px; letter-spacing:-.035em; line-height:1; white-space:nowrap}
+  .verrou .i{position:relative; display:inline-block}
+  .verrou .point{position:absolute; left:1px; top:2px; width:7px; height:7px;
+    border-radius:999px; background:var(--marque-600)}
+  .verrou .filet{width:2px; height:24px; background:var(--marque-filet)}
+  .verrou .desc{font-size:16px; font-weight:900; color:var(--marque-600); white-space:nowrap}
+  @media (max-width:480px){ .verrou .filet,.verrou .desc{display:none} }
+  .barre{background:#FFFFFF; border-bottom:2px solid var(--marque-600); padding:16px 0}
+  .bande{background:var(--surface-band); border-bottom:1px solid var(--border-tint); padding:44px 0 34px}
+  .bande .conteneur{display:flex; flex-direction:column; gap:18px}
+  .surtitre{font-size:13px; font-weight:800; letter-spacing:.12em; text-transform:uppercase;
+    color:var(--ink-400); margin:0}
+  h1{font-size:clamp(32px,5.4vw,46px); font-weight:900; letter-spacing:-.02em; line-height:1.14; margin:0}
+  .chapeau{font-size:19px; font-weight:600; color:var(--ink-500); margin:0; max-width:64ch}
+  .quand{font-size:14px; color:var(--ink-400); margin:0}
+  main{padding:8px 0 90px}
+  h2{font-size:24px; font-weight:900; letter-spacing:-.015em; margin:0}
+  p{margin:0 0 12px; max-width:70ch}
+  strong,b{font-weight:900}
+  code{font-family:ui-monospace,Menlo,Consolas,monospace; font-size:.85em;
+    background:var(--paper-200); padding:1px 5px; border-radius:5px; font-weight:700}
+  .tuiles{display:grid; gap:14px; grid-template-columns:repeat(auto-fit,minmax(min(180px,100%),1fr));
+    margin:26px 0 6px}
+  .tuile{background:var(--surface-card); border:1px solid var(--border); border-left:4px solid var(--acier-600);
+    border-radius:14px; padding:14px 16px}
+  .tuile .n{font-size:27px; font-weight:900; letter-spacing:-.02em; display:block; line-height:1.1}
+  .tuile .l{font-size:13.5px; font-weight:700; color:var(--ink-500)}
+  .lot{background:var(--surface-card); border:1px solid var(--border); border-radius:16px;
+    padding:20px 22px; margin:20px 0 0}
+  .lot.faire{border-color:#BFE3D2; background:#FCFEFD}
+  .lot.garder{opacity:.62}
+  .lot .tete{display:flex; gap:14px; align-items:baseline; flex-wrap:wrap; margin-bottom:4px}
+  .gain{font-size:13px; font-weight:800; letter-spacing:.06em; text-transform:uppercase;
+    color:var(--accent-ink); background:var(--accent-soft); border-radius:999px; padding:4px 11px;
+    white-space:nowrap}
+  .bloc{margin:12px 0 0}
+  .bloc .t{font-size:12px; font-weight:800; letter-spacing:.1em; text-transform:uppercase;
+    color:var(--ink-400); margin:0 0 3px}
+  .risque{display:inline-block; font-size:12.5px; font-weight:800; border-radius:999px;
+    padding:3px 10px; margin-right:8px}
+  .r-nul,.r-faible{background:var(--accent-soft); color:var(--accent-ink)}
+  .r-moyen{background:var(--ambre-100); color:var(--ambre-700)}
+  .r-trancher{background:var(--rouge-100); color:var(--rouge-700)}
+  pre{background:#17181A; color:#F4F4F2; border-radius:12px; padding:14px 16px; overflow-x:auto;
+    font-size:13.5px; font-weight:600; line-height:1.6; margin:8px 0 0}
+  pre .cm{color:#9BB7A9}
+  .choix{display:flex; flex-wrap:wrap; gap:8px; margin-top:16px; padding-top:14px;
+    border-top:1px solid var(--border)}
+  .choix button{font-family:inherit; font-size:15px; font-weight:800; color:var(--ink-700);
+    background:var(--surface-sunken); border:1px solid var(--border-firm); border-radius:999px;
+    padding:9px 16px; min-height:44px; cursor:pointer}
+  .choix button:hover{background:var(--paper-200)}
+  .choix button[aria-pressed="true"]{background:var(--ink-900); border-color:var(--ink-900); color:#FFF}
+  .barre-bas{position:sticky; bottom:0; background:rgba(247,247,245,.95);
+    backdrop-filter:blur(8px); border-top:1px solid var(--border-firm); padding:12px 0; margin-top:30px}
+  .barre-bas .conteneur{display:flex; gap:12px; align-items:center; flex-wrap:wrap}
+  .barre-bas .etat{font-size:15px; font-weight:700; color:var(--ink-500); margin-right:auto}
+  .barre-bas button{font-family:inherit; font-size:15px; font-weight:800; border-radius:999px;
+    padding:10px 18px; min-height:44px; cursor:pointer; border:1px solid var(--ink-900);
+    background:var(--ink-900); color:#FFF}
+  .barre-bas button.sec{background:#FFF; color:var(--ink-900); border-color:var(--border-firm)}
+  textarea{width:100%; min-height:150px; font-family:ui-monospace,Menlo,monospace; font-size:12.5px;
+    border:1px solid var(--border-firm); border-radius:12px; padding:12px; margin-top:12px}
+  .garde{background:var(--accent-soft); border:1px solid #BFE3D2; border-radius:14px; padding:16px 20px;
+    margin-top:26px}
+  .garde p:last-child{margin-bottom:0}
+  hr{border:0; border-top:1px solid var(--border); margin:40px 0 0}
+  footer p{font-size:16px; color:var(--ink-500)}
+</style>
+</head>
+<body>
+
+<div class="barre">
+  <div class="conteneur">
+    <div class="verrou">
+      <span class="nom" role="img" aria-label="francis">franc<span class="i" aria-hidden="true">ı<span class="point"></span></span>s</span>
+      <span class="filet" aria-hidden="true"></span>
+      <span class="desc">Aide à l'apprentissage du français</span>
+    </div>
+  </div>
+</div>
+
+<header class="bande">
+  <div class="conteneur">
+    <div>
+      <p class="surtitre">Chantier · Décisions à prendre</p>
+      <h1>Ménage du dépôt</h1>
+    </div>
+    <p class="chapeau">Sept chantiers, chacun avec ce que j'ai mesuré, ce que je propose, ce
+    que ça libère et ce que ça risque. Tranchez chantier par chantier ; le bouton du bas
+    exporte vos décisions pour la session qui fera le travail.</p>
+    <p class="quand">Mesuré le 2026-08-30 09:15 — page produite par <code>build/menage_proposition.py</code>,
+    jamais écrite à la main : les chiffres bougent, et une page recopiée serait fausse le lendemain.</p>
+  </div>
+</header>
+
+<main>
+<section class="conteneur">
+  <div class="tuiles"><div class="tuile"><span class="n">58G</span><span class="l">sur le disque</span></div><div class="tuile"><span class="n">51G</span><span class="l">dans les worktrees d'agents</span></div><div class="tuile"><span class="n">3.23 GiB</span><span class="l">d'historique git</span></div><div class="tuile"><span class="n">60</span><span class="l">copies du dépôt</span></div><div class="tuile"><span class="n">75</span><span class="l">branches locales</span></div><div class="tuile"><span class="n">245</span><span class="l">entrées à la racine</span></div></div>
+  <p style="margin-top:16px">Le dépôt pèse <b>58G</b>, et <b>51G</b> de ce total ne sont ni le code ni le matériel : ce sont <b>60 copies complètes du dépôt</b>, laissées par les agents qui ont produit les modules en parallèle. Le reste des chantiers ne libère pas grand-chose en octets — ils rendent le dépôt <i>lisible</i>, ce qui est l'autre moitié du ménage.</p>
+</section>
+
+<section class="conteneur" id="lots">
+  <article class="lot" data-lot="worktrees">
+    <div class="tete"><h2>Les 60 worktrees d&#x27;agents</h2><span class="gain">Libère 51G</span></div>
+    <div class="bloc"><p class="t">Ce que j'ai mesuré</p><p>Chaque agent lancé en parallèle a reçu une copie complète du dépôt. Il en reste <b>60</b>, qui pèsent <b>51G</b> — c'est-à-dire la quasi-totalité des 58G du dossier. Le travail, lui, est ailleurs : sur les 75 branches, <b>66 sont déjà fusionnées</b> dans main.</p></div>
+    <div class="bloc"><p class="t">Ce que j'ai vérifié avant de proposer</p><p>Les <b>8 branches non fusionnées</b> ont été dépouillées fichier par fichier. Elles touchent en tout 38 fichiers qui n'existent pas dans main : <b>36 images</b> — vérifiées une à une, <b>aucune n'est appelée</b> par le module auquel elle appartient (ce sont des générations abandonnées, refaites depuis) — et <b>2 documents de planification</b> (<code>docs/plan-module-n3-horaire.md</code>, <code>docs/plan-module-n5-saisons.md</code>). Par ailleurs <b>18 worktrees</b> portent des fichiers jamais commités (46 fichiers neufs, dont <b>46 existent déjà dans main</b> : PowerPoints, fiches, scripts audio produits ensuite par le chemin normal).</p></div>
+    <div class="bloc"><p class="t">Ce que je propose</p><p>Récupérer les 2 documents de planification dans <code>docs/</code>, puis retirer les 60 worktrees et les branches qui vont avec.</p></div>
+    <div class="bloc"><p class="t">Le risque</p>
+      <p><span class="risque r-faible">faible</span>Ce qui disparaît est du travail déjà repris dans main ou des images que plus rien n'appelle. À faire quand aucune session n'est en cours dans le dépôt — un worktree retiré sous les pieds d'un agent le casse.</p></div>
+    <div class="bloc"><p class="t">Les gestes</p><pre><span class="cm"># 1. récupérer ce qui n&#x27;existe nulle part ailleurs</span>
+git show &lt;branche&gt;:docs/plan-module-n3-horaire.md &gt; docs/plan-module-n3-horaire.md
+git show &lt;branche&gt;:docs/plan-module-n5-saisons.md &gt; docs/plan-module-n5-saisons.md
+<span class="cm"># 2. retirer les worktrees, puis leurs branches</span>
+git worktree list | grep .claude/worktrees | awk &#x27;{print $1}&#x27; | xargs -n1 git worktree remove --force
+git worktree prune
+git branch -D $(git branch | grep worktree-agent)</pre></div>
+    <div class="choix" role="group" aria-label="Décision">
+      <button type="button" data-d="faire">Faire</button>
+      <button type="button" data-d="garder">Garder tel quel</button>
+      <button type="button" data-d="tard">Plus tard</button>
+    </div>
+  </article>
+  <article class="lot" data-lot="gc">
+    <div class="tete"><h2>Le paquet git, une fois les branches parties</h2><span class="gain">Libère 3.23 GiB</span></div>
+    <div class="bloc"><p class="t">Ce que j'ai mesuré</p><p>L'historique pèse <b>3.23 GiB</b> pour 30167 fichiers suivis. Tant que les branches d'agents existent, git garde tous leurs objets — y compris les images abandonnées.</p></div>
+    <div class="bloc"><p class="t">Ce que j'ai vérifié avant de proposer</p><p>Mesuré par <code>git count-objects -vH</code>, avant tout ménage.</p></div>
+    <div class="bloc"><p class="t">Ce que je propose</p><p>Après le chantier précédent, compacter l'historique.</p></div>
+    <div class="bloc"><p class="t">Le risque</p>
+      <p><span class="risque r-nul">nul</span>Aucune perte possible : <code>gc</code> ne touche qu'au rangement interne.</p></div>
+    <div class="bloc"><p class="t">Les gestes</p><pre>git reflog expire --expire=now --all
+git gc --prune=now --aggressive</pre></div>
+    <div class="choix" role="group" aria-label="Décision">
+      <button type="button" data-d="faire">Faire</button>
+      <button type="button" data-d="garder">Garder tel quel</button>
+      <button type="button" data-d="tard">Plus tard</button>
+    </div>
+  </article>
+  <article class="lot" data-lot="racine">
+    <div class="tete"><h2>La racine : 245 entrées, dont 198 de la même famille</h2><span class="gain">Libère 198 fichiers de moins à la racine</span></div>
+    <div class="bloc"><p class="t">Ce que j'ai mesuré</p><p>À la racine du dépôt : <b>111 scripts <code>generer_audio_*.py</code></b> et <b>87 manifestes <code>sons_*.json</code></b>, pour <b>245</b> entrées en tout. Le reste — le serveur, la base, la forge, les pages — se cherche entre les deux.</p></div>
+    <div class="bloc"><p class="t">Ce que j'ai vérifié avant de proposer</p><p>Les manifestes sont lus par <b>10 fichiers</b> (<code>build/audio_manquant.py</code>, <code>build/audio_tous.py</code>, <code>build/collecte_sons.py</code>, <code>build/contenu/module-n8-habitation/_forger_generateur.py</code>, <code>build/contenu/module-n8-recherche/_forger_generateur.py</code>, <code>build/essai_estceque.py</code>), toujours par le même motif <code>RACINE / ('sons_%s.json' % slug)</code> : le rangement se fait en changeant <b>une ligne par fichier</b>, pas en cherchant des chemins partout.</p></div>
+    <div class="bloc"><p class="t">Ce que je propose</p><p>Deux dossiers : <code>audio/</code> pour les scripts de génération, <code>manifestes/</code> pour les <code>sons_*.json</code>. La racine retombe à une trentaine d'entrées, toutes lisibles d'un coup d'œil.</p></div>
+    <div class="bloc"><p class="t">Le risque</p>
+      <p><span class="risque r-moyen">moyen</span>L'audio est gelé, donc rien ne se régénère pendant l'opération. Mais les chemins se vérifient <b>en jouant</b> les contrôles : <code>build/audio_manquant.py</code> doit continuer de rendre zéro module muet.</p></div>
+    <div class="bloc"><p class="t">Les gestes</p><pre>mkdir -p audio manifestes
+git mv generer_audio_*.py audio/
+git mv sons_*.json manifestes/
+<span class="cm"># puis la ligne de chemin dans chacun des lecteurs, et :</span>
+python3 build/audio_manquant.py    # doit rester à zéro</pre></div>
+    <div class="choix" role="group" aria-label="Décision">
+      <button type="button" data-d="faire">Faire</button>
+      <button type="button" data-d="garder">Garder tel quel</button>
+      <button type="button" data-d="tard">Plus tard</button>
+    </div>
+  </article>
+  <article class="lot" data-lot="essais">
+    <div class="tete"><h2>Les bancs d&#x27;essai laissés à la racine</h2><span class="gain">Libère 11 fichiers</span></div>
+    <div class="bloc"><p class="t">Ce que j'ai mesuré</p><p><b>11 entrées <code>essai-*</code></b> : <code>essai-brin</code>, <code>essai-brin.html</code>, <code>essai-debit</code>, <code>essai-debit.html</code>, <code>essai-estceque</code>, <code>essai-estceque.html</code>, <code>essai-lettres</code>, <code>essai-lettres.html</code>, <code>essai-outils.html</code>, <code>essai-voix</code>, <code>essai-voix.html</code>. Ce sont des bancs d'essai — débit des voix, épellation, outils, brins de dialogue — utiles le jour où on les a écrits.</p></div>
+    <div class="bloc"><p class="t">Ce que j'ai vérifié avant de proposer</p><p>Aucun n'est appelé par le serveur ni par une page du portail.</p></div>
+    <div class="bloc"><p class="t">Ce que je propose</p><p>Les regrouper dans <code>essais/</code> et les garder : ce sont des preuves. Un banc qu'on jette, c'est une décision qu'on redémontrera.</p></div>
+    <div class="bloc"><p class="t">Le risque</p>
+      <p><span class="risque r-faible">faible</span>Rien ne les appelle ; seuls des liens dans mes notes pourraient tomber.</p></div>
+    <div class="bloc"><p class="t">Les gestes</p><pre>mkdir -p essais
+git mv essai-* essais/</pre></div>
+    <div class="choix" role="group" aria-label="Décision">
+      <button type="button" data-d="faire">Faire</button>
+      <button type="button" data-d="garder">Garder tel quel</button>
+      <button type="button" data-d="tard">Plus tard</button>
+    </div>
+  </article>
+  <article class="lot" data-lot="manuels">
+    <div class="tete"><h2>Les deux manuels de l&#x27;élève (40 Mo chacun)</h2><span class="gain">Libère 80 Mo dans le dépôt, et davantage dans l&#x27;historique</span></div>
+    <div class="bloc"><p class="t">Ce que j'ai mesuré</p><p><code>assets/documents/manuel-eleve-niveau-4.pdf</code> (1 753 pages) et sa version serrée pèsent <b>80 Mo</b> à eux deux — les deux plus gros fichiers suivis, loin devant. Ils ne sont liés que depuis la banque de présentations.</p></div>
+    <div class="bloc"><p class="t">Ce que j'ai vérifié avant de proposer</p><p>Ce sont des documents dont nous ne sommes pas l'auteur. La règle du projet est claire sur le contenu — le manuel est un <b>modèle de structure</b>, jamais une source à reproduire — mais le fichier, lui, voyage avec le dépôt et se retrouve sur l'hébergeur.</p></div>
+    <div class="bloc"><p class="t">Ce que je propose</p><p>Décision à prendre, pas un geste technique : soit les sortir du dépôt et les garder hors ligne, soit assumer leur présence. Les retirer de l'<b>historique</b> est une opération à part, plus lourde (réécriture) — à ne faire que si la réponse est « ils ne doivent pas être là ».</p></div>
+    <div class="bloc"><p class="t">Le risque</p>
+      <p><span class="risque r-trancher">à trancher</span>Le lien de la banque de présentations tomberait : il faudrait dire où le manuel se trouve désormais.</p></div>
+    <div class="bloc"><p class="t">Les gestes</p><pre>git rm --cached assets/documents/manuel-eleve-niveau-4*.pdf
+<span class="cm"># puis retirer les deux boutons de presentations.html</span></pre></div>
+    <div class="choix" role="group" aria-label="Décision">
+      <button type="button" data-d="faire">Faire</button>
+      <button type="button" data-d="garder">Garder tel quel</button>
+      <button type="button" data-d="tard">Plus tard</button>
+    </div>
+  </article>
+  <article class="lot" data-lot="intermediaires">
+    <div class="tete"><h2>Les intermédiaires de montage</h2><span class="gain">Libère 1.3G + 119M</span></div>
+    <div class="bloc"><p class="t">Ce que j'ai mesuré</p><p><code>build/tutoriels</code> pèse <b>1.3G</b> et <code>build/teaser</code> <b>119M</b> : rushes, capsules et rendus intermédiaires. Le teaser est déjà ignoré par git ; les tutoriels ne le sont qu'en partie (les scripts sont suivis, les vidéos non).</p></div>
+    <div class="bloc"><p class="t">Ce que j'ai vérifié avant de proposer</p><p>Les montages finis vivent dans <code>assets/tutoriels</code> et sont suivis.</p></div>
+    <div class="bloc"><p class="t">Ce que je propose</p><p>Sortir les rushes du dossier de travail — un disque externe ou un dossier hors dépôt — et compléter <code>.gitignore</code> pour que rien n'y retombe.</p></div>
+    <div class="bloc"><p class="t">Le risque</p>
+      <p><span class="risque r-faible">faible</span>À vérifier avant : que chaque capsule montée existe bien dans <code>assets/</code>.</p></div>
+    <div class="bloc"><p class="t">Les gestes</p><pre>mv build/tutoriels/capsules ~/Claude/rushes-tutoriels
+echo &#x27;build/tutoriels/capsules/&#x27; &gt;&gt; .gitignore</pre></div>
+    <div class="choix" role="group" aria-label="Décision">
+      <button type="button" data-d="faire">Faire</button>
+      <button type="button" data-d="garder">Garder tel quel</button>
+      <button type="button" data-d="tard">Plus tard</button>
+    </div>
+  </article>
+  <article class="lot" data-lot="sauvegardes">
+    <div class="tete"><h2>Les sauvegardes de données laissées dans data/</h2><span class="gain">Libère trois dossiers</span></div>
+    <div class="bloc"><p class="t">Ce que j'ai mesuré</p><p><code>data/_sauvegarde-avant-demo</code>, <code>data/_sauvegarde-avant-demo-classe</code> et <code>data/sauvegardes</code> gardent l'état des traces d'élèves avant la pose des classes de démonstration.</p></div>
+    <div class="bloc"><p class="t">Ce que j'ai vérifié avant de proposer</p><p>Les classes de démonstration se posent et se retirent par script (<code>--install</code> / <code>--purge</code>) : ces copies ne servent plus de filet.</p></div>
+    <div class="bloc"><p class="t">Ce que je propose</p><p>Les retirer, ou les dater et les sortir de <code>data/</code>.</p></div>
+    <div class="bloc"><p class="t">Le risque</p>
+      <p><span class="risque r-faible">faible</span>Ce sont des traces fictives ; aucune donnée d'élève réel.</p></div>
+    <div class="bloc"><p class="t">Les gestes</p><pre>rm -rf data/_sauvegarde-avant-demo data/_sauvegarde-avant-demo-classe</pre></div>
+    <div class="choix" role="group" aria-label="Décision">
+      <button type="button" data-d="faire">Faire</button>
+      <button type="button" data-d="garder">Garder tel quel</button>
+      <button type="button" data-d="tard">Plus tard</button>
+    </div>
+  </article></section>
+
+<section class="conteneur">
+  <div class="garde">
+    <p><b>L'ordre compte.</b> Les worktrees d'abord, le compactage ensuite — l'inverse ne
+    libère rien, puisque git garde les objets tant qu'une branche les tient. Et rien de tout
+    cela pendant qu'une session travaille dans le dépôt : plusieurs sessions partagent cet
+    arbre.</p>
+  </div>
+</section>
+
+<div class="barre-bas">
+  <div class="conteneur">
+    <span class="etat" id="etat">Aucune décision prise</span>
+    <button type="button" class="sec" id="raz">Tout remettre à zéro</button>
+    <button type="button" id="exporter">Exporter mes décisions</button>
+  </div>
+</div>
+
+<section class="conteneur" id="sortie" hidden>
+  <p class="quand">À recoller dans la prochaine session :</p>
+  <textarea id="json" readonly></textarea>
+</section>
+
+<hr>
+<footer class="conteneur">
+  <p>Relancer <code>python3 build/menage_proposition.py</code> refait les mesures et réécrit
+  cette page. Les décisions, elles, vivent dans le navigateur de ce poste : elles survivent à
+  une régénération, et le bouton « Exporter » les sort en JSON.</p>
+</footer>
+</main>
+
+<script>
+(function(){
+  "use strict";
+  var CLE = 'menage-depot-decisions';
+  var etat = {};
+  try { etat = JSON.parse(localStorage.getItem(CLE) || '{}'); } catch(e) { etat = {}; }
+
+  function peindre(){
+    var faits = 0, gardes = 0, tard = 0;
+    document.querySelectorAll('.lot').forEach(function(lot){
+      var id = lot.dataset.lot, d = etat[id] || '';
+      lot.classList.toggle('faire', d === 'faire');
+      lot.classList.toggle('garder', d === 'garder');
+      lot.querySelectorAll('.choix button').forEach(function(b){
+        b.setAttribute('aria-pressed', String(b.dataset.d === d));
+      });
+      if (d === 'faire') faits++; else if (d === 'garder') gardes++; else if (d === 'tard') tard++;
+    });
+    var n = document.querySelectorAll('.lot').length;
+    document.getElementById('etat').textContent =
+      (faits + gardes + tard) === 0 ? 'Aucune décision prise'
+      : faits + ' à faire · ' + gardes + ' à garder tel quel · ' + tard + ' plus tard · '
+        + (n - faits - gardes - tard) + ' sans réponse';
+  }
+
+  document.getElementById('lots').addEventListener('click', function(ev){
+    var b = ev.target.closest('.choix button'); if (!b) return;
+    var id = b.closest('.lot').dataset.lot;
+    etat[id] = (etat[id] === b.dataset.d) ? '' : b.dataset.d;
+    try { localStorage.setItem(CLE, JSON.stringify(etat)); } catch(e){}
+    peindre();
+  });
+
+  document.getElementById('raz').addEventListener('click', function(){
+    etat = {}; try { localStorage.removeItem(CLE); } catch(e){} peindre();
+    document.getElementById('sortie').hidden = true;
+  });
+
+  document.getElementById('exporter').addEventListener('click', function(){
+    var out = {mesure: document.title, decisions: {}};
+    document.querySelectorAll('.lot').forEach(function(lot){
+      out.decisions[lot.dataset.lot] = {
+        titre: lot.querySelector('h2').textContent.trim(),
+        decision: etat[lot.dataset.lot] || 'sans réponse'
+      };
+    });
+    var z = document.getElementById('sortie');
+    z.hidden = false;
+    document.getElementById('json').value = JSON.stringify(out, null, 2);
+    document.getElementById('json').select();
+  });
+
+  peindre();
+})();
+</script>
+</body>
+</html>
