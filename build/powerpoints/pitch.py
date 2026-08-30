@@ -36,7 +36,10 @@ SORTIE = os.path.abspath(os.path.join(ICI, '..', '..', 'assets', 'presentations'
 # A = les annexes, ouvertes quand la salle demande à voir.
 PITCH = ['p1', 'p2', 'p3', 'p4']
 ANNEXES = ['a1', 'a2', 'a3', 'a4', 'a5']
-DECKS = PITCH + ANNEXES
+# F = les fondements. Il ne vend rien : il explique sur quoi c'est bâti,
+# et il se projette devant un public qui connaît le métier.
+FONDEMENTS = ['f1']
+DECKS = PITCH + ANNEXES + FONDEMENTS
 
 
 def preparer():

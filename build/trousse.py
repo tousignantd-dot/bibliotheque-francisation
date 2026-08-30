@@ -108,6 +108,9 @@ TROUSSE = [
     ("Le point express",
      "La version courte, quand on a dix minutes dans un corridor.",
      "point-express", "P4"),
+    ("La logique pédagogique",
+     "Sur quoi le cours est bâti : le contenu, l'ordre, ce que la machine refuse.",
+     None, "F1"),
     ("Ce qu'il y a dans la boîte",
      "Le matériel, en chiffres et en structure. Le premier temps du pitch.",
      None, "P1"),
@@ -515,10 +518,12 @@ def page(m):
 <section class="conteneur">
   <p class="eyebrow e-teal">À projeter</p>
   <h2>Les diaporamas, en images</h2>
-  <p>Deux familles. <b>P</b>, le pitch, dans l'ordre où on le projette — vingt minutes en
-  tout. <b>A</b>, les annexes, qu'on ouvre seulement quand la salle demande à voir. Tous
-  sortent du même système de design que les diaporamas de séance : c'est le produit qui
-  se présente lui-même.</p>
+  <p>Trois familles. <b>P</b>, le pitch, dans l'ordre où on le projette — vingt minutes en
+  tout. <b>A</b>, les annexes, qu'on ouvre seulement quand la salle demande à voir.
+  <b>F</b>, les fondements : celui-là ne vend rien, il explique sur quoi le cours est
+  bâti, et il se projette devant des gens qui connaissent le métier. Tous sortent du
+  même système de design que les diaporamas de séance : c'est le produit qui se présente
+  lui-même.</p>
   <div class="vign">__VIGNETTES__</div>
   <div class="garde" style="margin-top:18px">
     <p><b>Ils se refabriquent :</b>

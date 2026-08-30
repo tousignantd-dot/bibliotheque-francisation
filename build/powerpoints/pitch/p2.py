@@ -72,9 +72,9 @@ def build(dossier):
               ("Ce qui reste", "Les dialogues enregistrés, les %s exercices corrigés sur "
                "l'appareil, les mini-leçons, le vocabulaire, la production orale et "
                "écrite." % "sept familles d'"),
-              ("Ce qui change pour l'élève", "La réponse attendue s'affiche après deux "
+              ("Pour l'élève", "La réponse attendue s'affiche après deux "
                "essais : il n'est jamais laissé devant un mur."),
-              ("Ce qui change pour l'enseignant", "Les textes arrivent non corrigés. "
+              ("Pour l'enseignant", "Les textes arrivent non corrigés. "
                "C'est lui qui corrige — c'est le vrai coût du refus, et il se voit.")],
              notes="Ne pas vendre le mode sans assistance comme équivalent. Dire le coût : le "
                    "travail de correction revient à l'enseignant.")
