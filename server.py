@@ -1441,6 +1441,14 @@ MARQUE_DIRECT = "zone_repondue"
 # ou de taille, donc la réponse se refait toute seule.
 _CACHE_DIRECT = {}
 
+# Les marques d'une transcription de dialogue. Trois formes cohabitent :
+# `toggleScript` et la classe `dial-txt` chez les modules du gabarit, la classe
+# `dial-txt` seule chez les activités qui l'ont précédé, et l'identifiant
+# `dial-txt` avec son bouton « Cacher le dialogue » chez les douze ateliers
+# sortis du bundler. Le point commun tient en un mot.
+MARQUES_TRANSCRIPTION = ("dial-txt", "toggleScript", "Cacher le dialogue")
+_CACHE_TRANSCRIPTION = {}
+
 
 def rapporte_au_direct(activite):
     """Cette activité renvoie-t-elle la réussite question par question ?
@@ -1480,6 +1488,44 @@ def rapporte_au_direct(activite):
     return rapporte
 
 
+def a_une_transcription(activite):
+    """L'activité montre-t-elle le texte d'un dialogue ?
+
+    Lu dans le fichier, comme `rapporte_au_direct()` et pour la même raison :
+    un champ dans `data/activities.json` serait une seconde vérité à tenir, et
+    elle divergerait au premier atelier reconstruit.
+
+    Sert à décider si l'enseignant voit l'interrupteur « transcription ».
+    L'écran s'en remettait à `categorie === 'cours'` : vrai aujourd'hui — les
+    87 cours en ont une, aucun des 90 ateliers de la banque — mais vrai par
+    habitude, pas par construction, et faux dès qu'on regarde les ateliers de
+    la première époque, dont vingt-sept ont un dialogue sans être des cours.
+    """
+    chemin = (activite or {}).get("interactive") or ""
+    if not chemin:
+        return False
+    reel = STORAGE_DIR / chemin
+    if not reel.exists():
+        reel = Path(chemin)
+    try:
+        st = reel.stat()
+    except OSError:
+        return False
+    cle = str(reel)
+    marque = (st.st_mtime, st.st_size)
+    garde = _CACHE_TRANSCRIPTION.get(cle)
+    if garde and garde[0] == marque:
+        return garde[1]
+    try:
+        with io.open(reel, encoding="utf-8", errors="ignore") as f:
+            texte = f.read()
+    except OSError:
+        return False
+    trouve = any(m in texte for m in MARQUES_TRANSCRIPTION)
+    _CACHE_TRANSCRIPTION[cle] = (marque, trouve)
+    return trouve
+
+
 def activities_for_group(group_id):
     """Le catalogue commun, avec les dates du groupe superposées."""
     sched = schedule_for_group(group_id)
@@ -1491,6 +1537,7 @@ def activities_for_group(group_id):
             entry[key] = dates.get(key, "")
         # Calculé, jamais stocké — voir rapporte_au_direct().
         entry["suivable"] = rapporte_au_direct(a)
+        entry["aUneTranscription"] = a_une_transcription(a)
         result.append(entry)
     return result
 

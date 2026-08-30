@@ -273,6 +273,93 @@
     frame.style.transform = 'scale(' + k.toFixed(4) + ')';
   }
 
+  /* ── La transcription fermée par l'enseignant ───────────────────────
+     Les 87 modules portent eux-mêmes ce verrou (build/greffe_transcription.py).
+     Les activités d'avant le gabarit, non : ce sont des fichiers uniques, et
+     les douze qui sortent d'un bundler **réécrivent leur document** au
+     démarrage — un bloc greffé dans leur `<head>` serait emporté. Le cadre est
+     donc le seul endroit d'où on peut les atteindre, comme pour la feuille
+     mobile.
+
+     Deux formes de dialogue, un seul mot commun : `dial-txt`, identifiant chez
+     les douze, classe chez les autres et chez le gabarit. Le lecteur audio est
+     laissé intact — c'est tout l'objet de la consigne : écouter sans lire. */
+  const NOTE_FERMEE = 'Ton enseignante a fermé la transcription : écoute le dialogue.';
+  let TRANSCRIPTION_FERMEE = false;
+
+  function fermerLaTranscription(doc) {
+    if (!TRANSCRIPTION_FERMEE || !doc) return;
+
+    // Le bouton qui l'ouvrait s'en va **sans phrase** : l'explication se met là
+    // où était le texte, et une seule fois. Deux messages pour un dialogue
+    // (un dans l'en-tête, un dans le corps) se lisaient comme un bégaiement.
+    doc.querySelectorAll('[onclick^="toggleScript"]').forEach(function (b) {
+      b.parentNode.removeChild(b);
+    });
+    // Les douze ateliers du bundler n'ont pas d'`onclick` : leur bouton se
+    // reconnaît à son texte, et il est redessiné à chaque rendu.
+    doc.querySelectorAll('button, [role="button"]').forEach(function (b) {
+      if (!/(Cacher|Afficher|Montrer) le dialogue/i.test(b.textContent || '')) return;
+      if (b.children.length > 2) return;
+      b.parentNode.removeChild(b);
+    });
+
+    const textes = doc.querySelectorAll('#dial-txt, .dial-txt');
+    textes.forEach(function (el) {
+      if (el.dataset.transcriptionFermee) return;
+      el.dataset.transcriptionFermee = '1';
+      el.style.display = 'none';
+      const det = el.closest ? el.closest('details') : null;
+      if (det) det.style.display = 'none';
+      const note = doc.createElement('div');
+      note.className = 'transcription-fermee';
+      note.style.cssText = 'font-size:13px;font-weight:700;opacity:.75;padding:8px 0';
+      note.textContent = NOTE_FERMEE;
+      el.parentNode.insertBefore(note, el);
+    });
+  }
+
+  function surveillerTranscription(doc) {
+    fermerLaTranscription(doc);
+    // Ces applications se redessinent : sans observation, la transcription
+    // revient au premier changement d'écran.
+    if (!doc.body || doc.body.dataset.transcriptionObservee) return;
+    doc.body.dataset.transcriptionObservee = '1';
+    let enAttente = false;
+    new (doc.defaultView.MutationObserver)(function () {
+      if (enAttente) return;
+      enAttente = true;
+      doc.defaultView.setTimeout(function () {
+        enAttente = false;
+        fermerLaTranscription(doc);
+      }, 120);
+    }).observe(doc.body, { childList: true, subtree: true });
+  }
+
+  (function demanderLaTranscription() {
+    if (!code || !activityId) return;   // hors session : rien à demander
+    fetch('/api/student/sections?code=' + encodeURIComponent(code)
+          + '&activityId=' + activityId)
+      .then(function (r) { return r.ok ? r.json() : null; })
+      .then(function (d) {
+        // Seul un `false` franc ferme quelque chose : un serveur qui ne connaît
+        // pas le champ n'enlève rien à l'élève.
+        if (!d || d.transcription !== false) return;
+        TRANSCRIPTION_FERMEE = true;
+        const frame = document.getElementById('actFrame');
+        try {
+          if (frame.contentDocument) surveillerTranscription(frame.contentDocument);
+        } catch (e) { /* autre origine */ }
+        frame.addEventListener('load', function () {
+          try { surveillerTranscription(frame.contentDocument); } catch (e) {}
+          setTimeout(function () {
+            try { surveillerTranscription(frame.contentDocument); } catch (e) {}
+          }, 1200);
+        });
+      })
+      .catch(function () { /* serveur muet : la transcription reste offerte */ });
+  })();
+
   (function surveillerLechelle() {
     const frame = document.getElementById('actFrame');
     if (!frame) return;
