@@ -1,0 +1,226 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Les diaporamas de séance</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800;900&display=swap">
+<style>
+  :root{
+    --accent:#0A8F5B; --accent-soft:#E6F5EE; --accent-ink:#07734A;
+    --surface-band:#EDF6F1;
+    --ink-900:#17181A; --ink-700:#3A3D40; --ink-500:#4B4F52; --ink-400:#6E7175;
+    --surface-page:#F7F7F5; --surface-card:#FFFFFF; --surface-sunken:#FBFBFA;
+    --paper-200:#F0F0EE; --border:#EAEAE8; --border-firm:#D6D6D2; --border-tint:#D8E8DF;
+    --acier-600:#1D6B8F; --acier-100:#E7F0F6;
+    --ambre-700:#B45309; --ambre-100:#FBEEDC;
+    --teal-700:#0D7A6F;  --teal-100:#E3F2F0;
+    --indigo-600:#3B49A0; --indigo-100:#E8EAFA;
+    --marque-600:#6B4FBB; --marque-100:#EDE7F9; --marque-filet:#C3B4EA;
+    --font-sans:"Nunito",system-ui,-apple-system,"Segoe UI",sans-serif;
+    --content-max:1120px;
+  }
+  *{box-sizing:border-box}
+  body{margin:0; background:var(--surface-page); color:var(--ink-900);
+    font-family:var(--font-sans); font-size:18px; font-weight:600; line-height:1.55;
+    -webkit-font-smoothing:antialiased; -webkit-text-size-adjust:100%}
+  :focus-visible{outline:3px solid var(--accent); outline-offset:2px; border-radius:4px}
+  .conteneur{max-width:var(--content-max); margin:0 auto; padding:0 24px}
+  .verrou{display:inline-flex; align-items:center; gap:16px; flex-wrap:wrap}
+  .verrou .nom{font-weight:900; font-size:28px; letter-spacing:-.035em; line-height:1;
+    color:var(--ink-900); white-space:nowrap}
+  .verrou .i{position:relative; display:inline-block}
+  .verrou .point{position:absolute; left:1px; top:2px; width:7px; height:7px;
+    border-radius:999px; background:var(--marque-600)}
+  .verrou .filet{width:2px; height:24px; background:var(--marque-filet)}
+  .verrou .desc{font-size:16px; font-weight:900; letter-spacing:-.015em; line-height:1;
+    color:var(--marque-600); white-space:nowrap}
+  @media (max-width:480px){ .verrou .filet,.verrou .desc{display:none} }
+  .barre{background:#FFFFFF; border-bottom:2px solid var(--marque-600); padding:16px 0}
+  .bande{background:var(--surface-band); border-bottom:1px solid var(--border-tint);
+    padding:44px 0 34px}
+  .bande .conteneur{display:flex; flex-direction:column; gap:20px}
+  .surtitre{font-size:13px; font-weight:800; letter-spacing:.12em; text-transform:uppercase;
+    color:var(--ink-400); margin:0}
+  h1{font-size:clamp(32px,5.4vw,46px); font-weight:900; letter-spacing:-.02em;
+    line-height:1.14; margin:0; text-wrap:balance}
+  .chapeau{font-size:19px; font-weight:600; color:var(--ink-500); margin:0; max-width:64ch}
+  .quand{font-size:14px; color:var(--ink-400); margin:0}
+  main{padding:8px 0 80px}
+  section{padding:42px 0 0}
+  h2{font-size:27px; font-weight:900; letter-spacing:-.015em; margin:0 0 6px; text-wrap:balance}
+  h3{font-size:19px; font-weight:900; margin:24px 0 6px}
+  p{margin:0 0 14px; max-width:68ch}
+  .eyebrow{display:inline-block; font-size:12px; font-weight:800; letter-spacing:.12em;
+    text-transform:uppercase; padding:4px 10px; border-radius:999px; margin:0 0 10px}
+  .e-acier{background:var(--acier-100); color:var(--acier-600)}
+  .e-ambre{background:var(--ambre-100); color:var(--ambre-700)}
+  .e-teal{background:var(--teal-100); color:var(--teal-700)}
+  .e-indigo{background:var(--indigo-100); color:var(--indigo-600)}
+  strong,b{font-weight:900}
+  code{font-family:ui-monospace,Menlo,Consolas,monospace; font-size:.86em;
+    background:var(--paper-200); padding:1px 5px; border-radius:5px; font-weight:700}
+  .garde{background:var(--accent-soft); border:1px solid #BFE3D2; border-radius:14px;
+    padding:16px 20px}
+  .garde p:last-child{margin-bottom:0}
+  .alerte{background:var(--ambre-100); border:1px solid #E8D7B8; border-radius:14px;
+    padding:16px 20px}
+  .alerte p:last-child{margin-bottom:0}
+  .liens{display:flex; flex-wrap:wrap; gap:10px; margin-top:6px}
+  .lien{display:inline-block; font-size:15px; font-weight:800; text-decoration:none;
+    color:var(--ink-900); background:#FFFFFF; border:1px solid var(--border-firm);
+    border-radius:999px; padding:9px 15px}
+  .lien:hover{background:var(--paper-200)}
+  .tuiles{display:grid; gap:14px; grid-template-columns:repeat(auto-fit,minmax(min(170px,100%),1fr));
+    margin:24px 0 4px}
+  .tuile{background:var(--surface-card); border:1px solid var(--border);
+    border-left:4px solid var(--accent); border-radius:14px; padding:14px 16px}
+  .tuile .n{font-size:26px; font-weight:900; letter-spacing:-.02em; display:block; line-height:1.12}
+  .tuile .l{font-size:13.5px; font-weight:700; color:var(--ink-500)}
+  .cadre-table{overflow-x:auto; border:1px solid var(--border); border-radius:14px;
+    background:var(--surface-card); margin-top:14px}
+  table{border-collapse:collapse; width:100%; min-width:560px; font-size:15px}
+  th,td{text-align:left; padding:10px 14px; border-bottom:1px solid var(--border);
+    vertical-align:top}
+  thead th{font-size:12px; font-weight:800; letter-spacing:.08em; text-transform:uppercase;
+    color:var(--ink-400); background:var(--surface-sunken); white-space:nowrap}
+  tbody tr:last-child td{border-bottom:0}
+  td.n{font-variant-numeric:tabular-nums; font-weight:800; white-space:nowrap}
+  .prise{background:var(--surface-card); border:1px solid var(--border); border-radius:16px;
+    overflow:hidden; margin:22px 0 0}
+  .prise > figure{margin:0}
+  .prise .tete{padding:16px 20px 12px; border-bottom:1px solid var(--border)}
+  .prise h3{font-size:20px; font-weight:900; margin:0 0 4px; letter-spacing:-.01em}
+  .prise .quoi{font-size:16px; font-weight:600; color:var(--ink-500); margin:0; max-width:78ch}
+  .prise img{display:block; width:100%; height:auto; background:var(--surface-sunken)}
+  .prise figcaption{padding:13px 20px 16px; font-size:15px; font-weight:600;
+    color:var(--ink-500); border-top:1px solid var(--border); background:var(--surface-sunken)}
+  .prise figcaption b{color:var(--ink-900)}
+  .paire{display:grid; gap:22px; grid-template-columns:repeat(auto-fit,minmax(min(340px,100%),1fr))}
+  .paire .prise{margin:0}
+  hr{border:0; border-top:1px solid var(--border); margin:44px 0 0}
+  footer p{font-size:16px; color:var(--ink-500)}
+
+  /* ── Version papier — imprimée en couleur, format lettre ─────────── */
+  @media print{
+    @page{ size:letter; margin:14mm 14mm 16mm; }
+    *{ -webkit-print-color-adjust:exact; print-color-adjust:exact; }
+    html,body{ background:#FFFFFF; font-size:10.5pt; }
+    .conteneur{ max-width:none; padding:0; }
+    .barre{ padding:0 0 4mm; border-bottom-width:1.2pt; }
+    .bande{ background:#FFFFFF; border-bottom:1px solid var(--border); padding:0 0 6mm; }
+    .liens{ display:none; }
+    h1{ font-size:26pt; } h2{ font-size:15pt; } h3{ font-size:12.5pt; }
+    .chapeau{ font-size:12pt; } .quand{ font-size:9.5pt; }
+    p{ max-width:none; }
+    section{ padding:7mm 0 0; }
+    section > h2, section > .eyebrow{ break-after:avoid; }
+    table{ min-width:0; font-size:9.5pt; }
+    .cadre-table, .garde, .alerte, .tuiles{ break-inside:avoid; }
+    .prise{ break-inside:avoid; page-break-inside:avoid; margin:6mm 0 0; }
+    .prise img{ width:auto; max-width:100%; max-height:150mm; margin:0 auto; }
+    .prise figcaption{ font-size:9.5pt; padding:9px 14px 11px; }
+    .paire{ display:block; }
+    .paire .prise{ margin:6mm 0 0; }
+    a[href]{ color:inherit; text-decoration:none; }
+  }
+</style>
+</head>
+<body>
+
+<div class="barre">
+  <div class="conteneur">
+    <div class="verrou">
+      <span class="nom" role="img" aria-label="francis">franc<span class="i" aria-hidden="true">ı<span class="point"></span></span>s</span>
+      <span class="filet" aria-hidden="true"></span>
+      <span class="desc">Aide à l'apprentissage du français</span>
+    </div>
+  </div>
+</div>
+
+<header class="bande">
+  <div class="conteneur">
+    <div>
+      <p class="surtitre">Direction et enseignants · Le matériel</p>
+      <h1>Les diaporamas de séance</h1>
+    </div>
+    <p class="chapeau">Ce que l'enseignant projette en classe, sans rien préparer : <b>1 264 diaporamas</b>, un par séance, <b>15 154 diapositives</b> en tout, et <b>12 524 notes de présentateur</b> qui disent quoi faire à chaque page. Douze types de diapositives, pas un de plus, et le même fichier de contenu que la fiche remise à l'élève.</p>
+    <p class="quand">Compté sur le dépôt le 30 août 2026. Les diapositives montrées sont des fichiers réels.</p>
+    <div class="liens"><a class="lien" href="fiches-eleve.html">Les fiches de l'élève</a><a class="lien" href="powerpoints-enseignant.pdf">Version papier (PDF)</a></div>
+  </div>
+</header>
+
+<main>
+
+<section class="conteneur">
+  <div class="tuiles"><div class="tuile"><span class="n">1 264</span><span class="l">diaporamas de séance</span></div><div class="tuile"><span class="n">15 154</span><span class="l">diapositives</span></div><div class="tuile"><span class="n">12 524</span><span class="l">notes de présentateur</span></div><div class="tuile"><span class="n">1518 h</span><span class="l">de classe préparées</span></div><div class="tuile"><span class="n">1 238</span><span class="l">vignettes d'aperçu</span></div></div>
+  <p style="margin-top:16px">Chaque séance a <b>son diaporama</b>, prêt à projeter : pas un
+  gabarit à remplir, une séance construite. L'enseignant l'ouvre dans PowerPoint, Keynote
+  ou Google Slides — c'est un <code>.pptx</code> ordinaire, sans dépendance et sans
+  compte.</p>
+</section>
+
+<section class="conteneur">
+  <p class="eyebrow e-acier">Ce qu'il y a dedans</p>
+  <h2>Douze types de diapositives, et pas un de plus</h2>
+  <p>Les 15 154 diapositives des 1 264 diaporamas sont bâties avec douze blocs. C'est ce qui rend
+  la collection reconnaissable : l'enseignant qui a projeté une séance sait lire toutes les
+  autres, et l'élève reconnaît la page où il est.</p>
+  <div class="cadre-table"><table><thead><tr><th>Bloc</th><th>Fois</th><th>Ce qu'il fait</th></tr></thead><tbody><tr><td>Pratique</td><td class="n">2245</td><td>l'exercice projeté — suivi de son corrigé, même mise en page</td></tr><tr><td>Tableau</td><td class="n">1600</td><td>l'analyse en rangées, séparées par un filet</td></tr><tr><td>Regle</td><td class="n">1450</td><td>un énoncé, gros, seul — la diapositive qu'on photographie</td></tr><tr><td>Titre</td><td class="n">1264</td><td>la page de garde : le code de la séance, son titre, sa durée</td></tr><tr><td>Objectifs</td><td class="n">1264</td><td>« À la fin, je serai capable de… » — la voix de l'élève, pas celle du programme</td></tr><tr><td>Billet</td><td class="n">1264</td><td>le seul bloc foncé autorisé, et il ferme la séance</td></tr><tr><td>Piege</td><td class="n">1039</td><td>ce qu'on entend souvent, à côté de ce qu'il faut dire</td></tr><tr><td>Dialogue</td><td class="n">1003</td><td>les répliques, le locuteur en gras</td></tr><tr><td>Cartes</td><td class="n">875</td><td>une grille de cas, deux ou trois colonnes</td></tr><tr><td>Declencheur</td><td class="n">840</td><td>la question d'ouverture, avec sa photo pédagogique</td></tr><tr><td>Vocabulaire</td><td class="n">395</td><td>les mots avec leur définition, l'article compris</td></tr><tr><td>Capture</td><td class="n">17</td><td>l'écran de l'exercice interactif, projeté avant qu'on l'ouvre</td></tr></tbody></table></div>
+  <div class="garde" style="margin-top:18px">
+    <p><b>12 524 diapositives sur 13 256 portent des notes de présentateur</b> — pas un résumé de
+    la diapositive, mais ce qu'il faut faire : la question à poser, ce qu'on écrit au
+    tableau, l'erreur qui va venir et quoi en faire. C'est ce qui permet à un remplaçant de
+    prendre la séance.</p>
+  </div>
+</section>
+
+<section class="conteneur">
+  <p class="eyebrow e-ambre">À quoi ça ressemble</p>
+  <h2>Une séance, de la première à la dernière diapositive</h2>
+  <p>Voici six diapositives de la même séance — B2 du module 1, « Dire pourquoi » —
+  redessinées à partir du fichier livré.</p>
+  <div class="paire"><article class="prise"><figure><div class="tete"><h3>1 · La page de garde</h3><p class="quoi">Le code, le titre, la durée.</p></div><img src="captures-materiel/10-diapo-titre.jpg" alt="Diapositive de titre"><figcaption><b>À regarder :</b> jamais de bandeau noir — le système l'interdit en tête. La durée est annoncée, parce qu'une séance se planifie.</figcaption></figure></article><article class="prise"><figure><div class="tete"><h3>2 · Les objectifs</h3><p class="quoi">Ce que l'élève saura faire à la fin.</p></div><img src="captures-materiel/11-diapo-objectifs.jpg" alt="Diapositive des objectifs"><figcaption><b>À regarder :</b> « À la fin, je serai capable de… » — écrit du point de vue de l'élève, comme les titres d'exercice du module.</figcaption></figure></article></div>
+  <div class="paire" style="margin-top:22px"><article class="prise"><figure><div class="tete"><h3>3 · La règle</h3><p class="quoi">Un énoncé, gros, seul.</p></div><img src="captures-materiel/12-diapo-regle.jpg" alt="Diapositive de règle"><figcaption><b>À regarder :</b> c'est la diapositive que les élèves photographient. Elle tient en une phrase testable, pas en une définition.</figcaption></figure></article><article class="prise"><figure><div class="tete"><h3>4 · L'exercice projeté</h3><p class="quoi">Le même exercice que dans le module.</p></div><img src="captures-materiel/13-diapo-exercice.jpg" alt="Diapositive d&#x27;exercice"><figcaption><b>À regarder :</b> la classe travaille ensemble sur ce que l'élève retrouvera seul sur son téléphone.</figcaption></figure></article></div>
+  <div class="paire" style="margin-top:22px"><article class="prise"><figure><div class="tete"><h3>5 · Le corrigé</h3><p class="quoi">Généré juste après, même mise en page.</p></div><img src="captures-materiel/14-diapo-corrige.jpg" alt="Diapositive de corrigé"><figcaption><b>À regarder :</b> l'œil ne se déplace pas d'un pixel entre la question et la réponse — on compare, on ne cherche pas.</figcaption></figure></article><article class="prise"><figure><div class="tete"><h3>6 · Le piège</h3><p class="quoi">Ce qu'on entend souvent, ce qu'il faut dire.</p></div><img src="captures-materiel/15-diapo-piege.jpg" alt="Diapositive de piège"><figcaption><b>À regarder :</b> chaque colonne porte son mot et son glyphe (✕ / ✓) : jamais la couleur seule, ici comme partout.</figcaption></figure></article></div>
+</section>
+
+<section class="conteneur">
+  <p class="eyebrow e-teal">Un module d'un coup d'œil</p>
+  <h2>Les seize séances d'un module</h2>
+  <article class="prise"><figure><div class="tete"><h3>Les seize vignettes du module 1</h3><p class="quoi">Une image par séance, celle que le portail montre à l'enseignant.</p></div><img src="captures-materiel/17-planche-vignettes.jpg" alt="Planche des seize vignettes de séance"><figcaption><b>À regarder :</b> le module entier tient sur une planche — cinq blocs, seize séances, de « Le genou de Yannick » à « Je retiens des mots ». L'enseignant choisit une séance en la voyant.</figcaption></figure></article>
+</section>
+
+<section class="conteneur">
+  <p class="eyebrow e-indigo">Comment l'enseignant les obtient</p>
+  <h2>Le même dépôt que les fiches</h2>
+  <p>Les diaporamas et les fiches vivent au même endroit, dans l'onglet <b>Matériel</b> du
+  portail : « Tout prendre » descend la séance entière — le diaporama, la fiche, et le
+  corrigé s'il existe.</p>
+  <article class="prise"><figure><div class="tete"><h3>Le catalogue du dépôt</h3><p class="quoi">Diaporamas et fiches, au même endroit.</p></div><img src="captures-materiel/05-materiel-catalogue.jpg" alt="Onglet Matériel du portail enseignant"><figcaption><b>À regarder :</b> « 16 séances équipées sur 16 », et les filtres par bloc — l'enseignant qui prépare son bloc C ne descend que le bloc C.</figcaption></figure></article>
+</section>
+
+<section class="conteneur">
+  <div class="garde">
+    <p><b>Un seul contenu, deux sorties.</b> Le fichier de séance qui produit ce diaporama
+    produit aussi la fiche de l'élève. Corriger une règle la corrige des deux côtés — et
+    c'est la seule façon connue d'éviter qu'un paquet de photocopies dise autre chose que
+    ce qui est projeté au tableau.</p>
+  </div>
+</section>
+
+<hr>
+<footer class="conteneur">
+  <p>Les nombres sont comptés sur le dépôt par <code>build/materiel_pages.py</code> : les
+  diapositives sont dénombrées dans les <code>.pptx</code> eux-mêmes, les types relevés
+  dans les 1264 fichiers de séance. Les six diapositives ci-dessus sont un <b>rendu
+  d'épreuve</b> : le poste n'a pas de suite bureautique en ligne de commande, alors la
+  chaîne relit le fichier produit et le redessine — elle ne simule pas la mise en page,
+  elle lit ce qui a été écrit.</p>
+</footer>
+
+</main>
+</body>
+</html>
