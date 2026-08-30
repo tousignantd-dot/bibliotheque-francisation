@@ -1,0 +1,308 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Modules autonomes — la section</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Nunito:wght@600;700;800;900&family=IBM+Plex+Sans:wght@400;500;600;700&family=IBM+Plex+Mono:wght@400;500&display=swap">
+<style>
+:root{
+  --sol:#FFFFFF; --papier:#FAFAF8; --encre:#17181A; --texte:#3A3D40; --gris:#6E7175;
+  --filet:#D0CFCA; --filet-fin:#E8E7E2;
+  --niv:#0D7A6F; --niv-pale:#DCF2EF;
+  --ambre:#B45309; --ambre-pale:#FBEEDC;
+  --acier:#1D6B8F; --acier-pale:#E7F0F6;
+  --mauve:#6B4FBB;
+}
+*{box-sizing:border-box}
+body{margin:0;background:var(--sol);color:var(--texte);
+  font-family:'IBM Plex Sans','Helvetica Neue',Arial,sans-serif;font-size:15px;line-height:1.55;
+  -webkit-font-smoothing:antialiased}
+h1,h2,h3,h4{margin:0;font-family:'Nunito','Arial Rounded MT Bold',sans-serif;color:var(--encre);text-wrap:balance}
+p{margin:0}
+b,strong{font-weight:700;color:var(--encre)}
+code,.mono{font-family:'IBM Plex Mono',ui-monospace,Menlo,monospace;font-size:.9em;color:var(--encre)}
+a{color:var(--encre)}
+
+.fr-barre{background:#FFF;border-bottom:2px solid var(--mauve);padding:14px 40px;
+  display:flex;align-items:center;gap:20px;flex-wrap:wrap}
+.fr-lockup{display:inline-flex;align-items:baseline;gap:16px;color:#17181A}
+.fr-nom{font-family:'Nunito',sans-serif;font-weight:900;font-size:28px;letter-spacing:-.035em;line-height:1;position:relative;display:inline-block}
+.fr-pt{position:absolute;top:2px;left:calc(50% + 1px);width:7px;height:7px;border-radius:50%;background:var(--mauve)}
+.fr-trait{width:1px;height:24px;background:#C8C7C2;align-self:center}
+.fr-desc{font-size:14px;color:#4B4F52}
+.fr-liens{margin-left:auto;display:flex;gap:16px;font-size:13px}
+.fr-liens a{color:var(--gris);text-decoration:none}
+.fr-liens a:hover{color:var(--encre);text-decoration:underline}
+
+.page{max-width:1040px;margin:0 auto;padding:0 40px 110px}
+.eyebrow{font-size:11px;font-weight:600;letter-spacing:.14em;text-transform:uppercase;color:var(--gris)}
+.bloc{padding-top:60px}
+.bloc > .eyebrow{display:block;margin-bottom:6px}
+.bloc > h2{font-size:28px;font-weight:900;letter-spacing:-.02em;line-height:1.12;
+  border-top:2px solid var(--encre);padding-top:12px}
+.intro{font-size:15px;max-width:78ch;margin-top:14px}
+
+.hero{display:grid;grid-template-columns:1.1fr 1fr;gap:52px;padding:74px 0 6px;align-items:start}
+.hero h1{font-size:50px;font-weight:400;line-height:1.03;letter-spacing:-.03em}
+.hero h1 span{display:block;font-weight:900}
+.verdict{border-top:3px solid var(--niv);padding-top:14px;
+  font-family:'Nunito',sans-serif;font-size:18px;line-height:1.4;color:var(--encre);font-weight:600}
+.verdict b{font-weight:900}
+
+/* ── comparaison ── */
+.duo{display:grid;grid-template-columns:1fr 1fr;gap:34px;margin-top:24px}
+.duo__c{border-top:2px solid var(--filet);padding-top:12px}
+.duo__c.on{border-top-color:var(--niv)}
+.duo__c h3{font-size:18px;font-weight:900}
+.duo__c .sub{font-size:12px;color:var(--gris);margin-top:2px}
+.duo__c p.q{font-size:14px;margin-top:12px}
+
+/* ── pièces de la section ── */
+.piece{display:grid;grid-template-columns:112px minmax(0,1fr) 132px;gap:20px;align-items:start;
+  border-top:1px solid var(--filet-fin);padding:16px 0}
+.piece:first-of-type{border-top:1.5px solid var(--encre)}
+.piece h3{font-size:17px;font-weight:900}
+.piece p{font-size:13.6px;margin-top:5px}
+.piece .ou{font-family:'IBM Plex Mono',monospace;font-size:11.5px;color:var(--gris);margin-top:7px}
+.etat{font-size:11px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;
+  padding:4px 10px;border-radius:12px;display:inline-block;white-space:nowrap}
+.etat.fait{background:var(--niv-pale);color:#08463F}
+.etat.encours{background:var(--ambre-pale);color:#7A3806}
+.etat.avenir{background:var(--papier);color:var(--gris);border:1px solid var(--filet)}
+.act{text-align:right}
+.btn{display:inline-block;border:1px solid var(--encre);background:var(--encre);color:#FFF;
+  border-radius:4px;padding:8px 15px;font-family:'Nunito',sans-serif;font-weight:800;font-size:12.5px;
+  text-decoration:none}
+.btn.b2{background:#FFF;color:var(--encre)}
+
+/* ── décisions ── */
+table{border-collapse:collapse;width:100%;margin-top:20px;font-size:13.6px}
+th{text-align:left;font-family:'Nunito',sans-serif;font-size:11px;font-weight:800;letter-spacing:.1em;
+  text-transform:uppercase;color:var(--gris);border-bottom:1.5px solid var(--encre);padding:0 14px 8px 0}
+td{border-bottom:1px solid var(--filet-fin);padding:11px 14px 11px 0;vertical-align:top}
+td.k{width:190px;font-weight:700;color:var(--encre)}
+td.v{width:230px}
+td.v b{font-family:'Nunito',sans-serif;font-weight:900}
+
+/* ── règles ── */
+.regles{display:grid;grid-template-columns:repeat(auto-fill,minmax(238px,1fr));gap:16px;margin-top:22px}
+.regle{background:var(--papier);border:1px solid var(--filet-fin);border-left:3px solid var(--acier);
+  border-radius:3px;padding:14px 16px}
+.regle h4{font-size:14.5px;font-weight:900}
+.regle p{font-size:13px;margin-top:6px}
+
+pre.arbo{background:var(--papier);border:1px solid var(--filet-fin);border-radius:4px;
+  padding:16px 18px;margin-top:20px;overflow-x:auto;font-family:'IBM Plex Mono',monospace;
+  font-size:12.5px;line-height:1.7;color:var(--encre)}
+pre.arbo b{color:var(--niv)}
+pre.arbo i{color:var(--gris);font-style:normal}
+
+.note{background:var(--papier);border-left:3px solid var(--ambre);padding:14px 18px;margin-top:24px;
+  font-size:13.6px;max-width:84ch}
+.pied{margin-top:70px;border-top:1px solid var(--filet);padding-top:14px;font-size:12.5px;color:var(--gris)}
+
+@media (max-width:900px){
+  .hero,.duo{grid-template-columns:1fr;gap:26px}
+  .hero h1{font-size:38px}
+  .piece{grid-template-columns:1fr}
+  .act{text-align:left}
+  .page,.fr-barre{padding-left:20px;padding-right:20px}
+}
+</style>
+</head>
+<body>
+
+<div class="fr-barre">
+  <div class="fr-lockup">
+    <span class="fr-nom">franc<span class="fr-pt"></span>is</span>
+    <span class="fr-trait"></span>
+    <span class="fr-desc">Modules autonomes</span>
+  </div>
+  <nav class="fr-liens">
+    <a href="/catalogue.html">Catalogue</a>
+    <a href="/presentations.html">Présentations</a>
+    <a href="/enseignant.html">Espace enseignant</a>
+  </nav>
+</div>
+
+<div class="page">
+
+  <div class="hero">
+    <div>
+      <p class="eyebrow">Section du dépôt · ouverte le 30 août 2026</p>
+      <h1>Modules<br><span>autonomes.</span></h1>
+      <p class="intro">Un <b>module autonome</b> s'apprend sans personne à côté : un écran à la
+      fois, l'explication au moment où elle sert, et un parcours qui a un début et une fin.
+      C'est l'autre forme de nos modules — celle du soir, du téléphone, de l'élève qui reprend
+      là où il s'est arrêté. Cette section garde tout ce qui s'y rapporte : le plan, le moteur,
+      les parcours, et ce que le suivi en rend.</p>
+    </div>
+    <div>
+      <p class="verdict">Rien ici n'est un deuxième catalogue. C'est <b>un chantier</b> : une
+      forme qu'on essaie sur <b>un seul défi</b> avant de décider si elle mérite les
+      quatre-vingt-sept modules.</p>
+    </div>
+  </div>
+
+  <!-- ─────────────────────────────────────────────── -->
+  <section class="bloc">
+    <span class="eyebrow">La distinction</span>
+    <h2>Module de classe, module autonome</h2>
+    <div class="duo">
+      <div class="duo__c">
+        <h3>Module de classe</h3>
+        <p class="sub">Les 87 modules du catalogue</p>
+        <p class="q">Une longue page qu'on <b>défile</b>. Tout est visible d'un coup, rien n'est
+        obligatoire, et le rythme est celui de l'enseignant qui parle par-dessus. Seize séances,
+        quatre blocs. C'est le support d'une matinée en groupe, et il est bon à ça.</p>
+      </div>
+      <div class="duo__c on">
+        <h3>Module autonome</h3>
+        <p class="sub">Ce qui se développe ici</p>
+        <p class="q">Un parcours qu'on <b>avance</b>. Un écran, une idée, une action. L'erreur
+        n'est pas sanctionnée : elle ouvre l'explication qui lui correspond, puis renvoie à la
+        question. À la fin, l'élève voit son trajet — et l'enseignant aussi.</p>
+      </div>
+    </div>
+    <div class="note"><b>Les deux coexistent</b> tant que la démo n'a pas tranché. Le module de
+    classe ne bouge pas, et aucun des 87 n'est réécrit pour l'instant.</div>
+  </section>
+
+  <!-- ─────────────────────────────────────────────── -->
+  <section class="bloc">
+    <span class="eyebrow">Ce que contient la section</span>
+    <h2>Les pièces, et où elles en sont</h2>
+
+    <div class="piece">
+      <div><span class="etat fait">Livré</span></div>
+      <div>
+        <h3>Le plan de la démo storyline</h3>
+        <p>Le problème, l'anatomie d'un écran, la grammaire des neuf types, le storyboard des
+        dix-huit écrans du défi 1, ce que le suivi enregistre, et les six décisions — désormais
+        prises.</p>
+        <p class="ou">modules-autonomes/plan-storyline.html · 30 août 2026</p>
+      </div>
+      <div class="act"><a class="btn" href="plan-storyline.html">Ouvrir</a></div>
+    </div>
+
+    <div class="piece">
+      <div><span class="etat encours">Prochaine étape</span></div>
+      <div>
+        <h3>Le moteur, et deux écrans</h3>
+        <p>Gabarit, navigation, jauge, lecteur audio, et deux types d'écran seulement — une
+        notion et une vérification. À regarder avant d'écrire les seize autres : si la forme ne
+        parle pas, on n'aura perdu que ça.</p>
+        <p class="ou">build/gabarit/storyline.html · build/storyline.py</p>
+      </div>
+      <div class="act"><span class="etat avenir">À venir</span></div>
+    </div>
+
+    <div class="piece">
+      <div><span class="etat avenir">Ensuite</span></div>
+      <div>
+        <h3>Le parcours — niveau 5 · l'appel à la clinique</h3>
+        <p>Les dix-huit écrans du défi 1 de <b>Prendre un rendez-vous</b>, montés sur les
+        267 MP3 déjà produits pour le module de classe. Aucun média neuf.</p>
+        <p class="ou">modules-autonomes/n5-rendezvous-defi1/ · build/contenu/module-n5-rendezvous/storyline.js</p>
+      </div>
+      <div class="act"><span class="etat avenir">À venir</span></div>
+    </div>
+
+    <div class="piece">
+      <div><span class="etat avenir">Ensuite</span></div>
+      <div>
+        <h3>Le suivi du parcours</h3>
+        <p>Les événements par écran, le point de reprise, l'écran de bilan. Local d'abord ;
+        la remontée vers la fiche élève et la progression du groupe vient une fois la forme
+        acceptée.</p>
+        <p class="ou">journal_api.py · fiche-eleve.html · progression.html</p>
+      </div>
+      <div class="act"><span class="etat avenir">À venir</span></div>
+    </div>
+  </section>
+
+  <!-- ─────────────────────────────────────────────── -->
+  <section class="bloc">
+    <span class="eyebrow">Décisions</span>
+    <h2>Ce qui a été tranché le 30 août 2026</h2>
+    <p class="intro">Les six décisions de la page du plan, rendues et gardées ici. Elles pilotent
+    tout ce qui suit ; les changer, c'est changer le travail.</p>
+    <table>
+      <thead><tr><th>La question</th><th>La réponse</th><th>Ce que ça engage</th></tr></thead>
+      <tbody>
+        <tr><td class="k">Le module</td><td class="v"><b>Prendre un rendez-vous</b><br>niveau 5</td>
+          <td>L'appel téléphonique de Rachid Benali à la Clinique de la Rive. Contenu et voix
+          déjà produits : la démo ne fabrique que de la forme.</td></tr>
+        <tr><td class="k">La place du storyline</td><td class="v"><b>On décide après la démo</b></td>
+          <td>Aucun des 87 modules de classe n'est touché. La question « deux portes ou une
+          seule » se rouvre quand le défi 1 se joue du début à la fin.</td></tr>
+        <tr><td class="k">La longueur</td><td class="v"><b>Un défi · 18 écrans</b></td>
+          <td>Vingt à vingt-cinq minutes. Le storyboard du plan, sans « Je découvre ».</td></tr>
+        <tr><td class="k">La circulation</td><td class="v"><b>Verrou doux</b></td>
+          <td>On avance quand on a agi, mais on revient toujours en arrière, et un menu montre
+          les écrans déjà vus. Un adulte qui sait déjà n'est pas retenu.</td></tr>
+        <tr><td class="k">La narration</td><td class="v"><b>Écrite, pas parlée</b></td>
+          <td>Les consignes restent du texte. <b>Aucun MP3 neuf</b> : le gel des voix tient, et
+          la démo ne dépend d'aucun budget.</td></tr>
+        <tr><td class="k">Le suivi</td><td class="v"><b>Local pour la démo</b></td>
+          <td>Tout s'enregistre sur le poste, et l'écran de bilan le montre. Le branchement au
+          journal du serveur suit.</td></tr>
+      </tbody>
+    </table>
+  </section>
+
+  <!-- ─────────────────────────────────────────────── -->
+  <section class="bloc">
+    <span class="eyebrow">Les règles de la section</span>
+    <h2>Ce qui vaut ici, et qui ne se rediscute pas</h2>
+    <div class="regles">
+      <div class="regle"><h4>Généré, jamais édité</h4>
+        <p>Le HTML d'un parcours sort d'un gabarit et d'un fichier de contenu. Retoucher le HTML
+        produit, c'est perdre le travail à la construction suivante.</p></div>
+      <div class="regle"><h4>Les médias se réutilisent</h4>
+        <p>Un parcours rejoue les MP3 et les images du module de classe correspondant, par
+        chemin absolu. Rien n'est copié, rien n'est resynthétisé.</p></div>
+      <div class="regle"><h4>Aucune IA nécessaire</h4>
+        <p>Chaque vérification se corrige sans modèle. Un centre en mode sans assistant doit
+        pouvoir jouer le parcours entier.</p></div>
+      <div class="regle"><h4>Le pseudo, jamais le nom</h4>
+        <p>Comme partout dans le portail. Et aucun enregistrement vocal ne part sans que l'élève
+        l'envoie.</p></div>
+      <div class="regle"><h4>Vérifié en le jouant</h4>
+        <p>Un parcours se contrôle par programme, écran par écran, bonne réponse et mauvaise.
+        Une capture d'écran ne prouve rien.</p></div>
+      <div class="regle"><h4>Inscrit aux présentations</h4>
+        <p>Tout document produit ici reçoit sa fiche sur <code>presentations.html</code>. Un
+        document qui n'y est pas est un document perdu.</p></div>
+    </div>
+  </section>
+
+  <!-- ─────────────────────────────────────────────── -->
+  <section class="bloc">
+    <span class="eyebrow">Où vont les choses</span>
+    <h2>L'arborescence</h2>
+<pre class="arbo"><b>modules-autonomes/</b>
+├── index.html              <i>cette page — l'état du chantier</i>
+├── README.md               <i>la même chose, pour une session qui arrive</i>
+├── plan-storyline.html     <i>le plan et les six décisions</i>
+└── n5-rendezvous-defi1/    <i>le parcours construit (à venir)</i>
+
+<b>build/</b>
+├── gabarit/storyline.html  <i>la coquille : jauge, navigation, 9 mises en page</i>
+├── storyline.py            <i>le moteur — assemble gabarit + contenu + médias</i>
+└── contenu/module-n5-rendezvous/storyline.js   <i>les 18 écrans, en données</i>
+
+<b>assets/interactive/module-n5-rendezvous/</b>   <i>lu, jamais copié</i>
+└── prep/ t1/ t2/ t3/ sons/ images/             <i>267 MP3, 24 images</i>
+</pre>
+  </section>
+
+  <p class="pied">francis · section « Modules autonomes » · ouverte le 30 août 2026 ·
+  <span class="mono">modules-autonomes/index.html</span></p>
+
+</div>
+</body>
+</html>

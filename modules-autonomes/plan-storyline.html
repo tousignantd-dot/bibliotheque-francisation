@@ -1,0 +1,738 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Le module qui s'explique tout seul — plan d'une démo storyline</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Nunito:wght@600;700;800;900&family=IBM+Plex+Sans:wght@400;500;600;700&family=IBM+Plex+Mono:wght@400;500&display=swap">
+<style>
+:root{
+  --sol:#FFFFFF; --papier:#FAFAF8; --encre:#17181A; --texte:#3A3D40; --gris:#6E7175;
+  --filet:#D0CFCA; --filet-fin:#E8E7E2;
+  --niv:#0D7A6F; --niv-pale:#DCF2EF;      /* niveau 5 — sarcelle */
+  --ambre:#B45309; --ambre-pale:#FBEEDC;
+  --acier:#1D6B8F; --acier-pale:#E7F0F6;
+  --mauve:#6B4FBB; --rouge:#A5335F;
+}
+*{box-sizing:border-box}
+body{margin:0;background:var(--sol);color:var(--texte);
+  font-family:'IBM Plex Sans','Helvetica Neue',Arial,sans-serif;font-size:15px;line-height:1.55;
+  -webkit-font-smoothing:antialiased}
+h1,h2,h3,h4{margin:0;font-family:'Nunito','Arial Rounded MT Bold',sans-serif;color:var(--encre);text-wrap:balance}
+p{margin:0}
+b,strong{font-weight:700;color:var(--encre)}
+code,.mono{font-family:'IBM Plex Mono',ui-monospace,Menlo,monospace;font-size:.9em;color:var(--encre)}
+
+.fr-barre{background:#FFF;border-bottom:2px solid var(--mauve);padding:14px 40px}
+.fr-lockup{display:inline-flex;align-items:baseline;gap:16px;color:#17181A}
+.fr-nom{font-family:'Nunito',sans-serif;font-weight:900;font-size:28px;letter-spacing:-.035em;line-height:1;position:relative;display:inline-block}
+.fr-pt{position:absolute;top:2px;left:calc(50% + 1px);width:7px;height:7px;border-radius:50%;background:var(--mauve)}
+.fr-trait{width:1px;height:24px;background:#C8C7C2;align-self:center}
+.fr-desc{font-size:14px;color:#4B4F52}
+.fr-barre{display:flex;align-items:center;gap:20px;flex-wrap:wrap}
+.fr-liens{margin-left:auto;font-size:13px}
+.fr-liens a{color:var(--gris);text-decoration:none}
+.fr-liens a:hover{color:var(--encre);text-decoration:underline}
+
+.page{max-width:1060px;margin:0 auto;padding:0 40px 110px}
+.eyebrow{font-size:11px;font-weight:600;letter-spacing:.14em;text-transform:uppercase;color:var(--gris)}
+.bloc{padding-top:62px}
+.bloc > .eyebrow{display:block;margin-bottom:6px}
+.bloc > h2{font-size:30px;font-weight:900;letter-spacing:-.02em;line-height:1.1;
+  border-top:2px solid var(--encre);padding-top:12px}
+.intro{font-size:15px;max-width:78ch;margin-top:14px;color:var(--texte)}
+
+/* ── titre ── */
+.hero{display:grid;grid-template-columns:1.15fr 1fr;gap:52px;padding:76px 0 6px;align-items:start}
+.hero h1{font-size:50px;font-weight:400;line-height:1.03;letter-spacing:-.03em}
+.hero h1 span{display:block;font-weight:900}
+.verdict{border-top:3px solid var(--niv);padding-top:14px;
+  font-family:'Nunito',sans-serif;font-size:18.5px;line-height:1.4;color:var(--encre);font-weight:600}
+.verdict b{font-weight:900}
+.chiffres{display:flex;gap:30px;flex-wrap:wrap;margin-top:30px}
+.ch{border-top:1px solid var(--filet);padding-top:8px;min-width:112px}
+.ch__n{font-family:'Nunito',sans-serif;font-size:25px;font-weight:900;line-height:1;color:var(--encre);
+  font-variant-numeric:tabular-nums}
+.ch__l{font-size:12px;color:var(--gris);margin-top:3px}
+
+/* ── deux colonnes comparées ── */
+.duo{display:grid;grid-template-columns:1fr 1fr;gap:34px;margin-top:26px}
+.duo__c{border-top:2px solid var(--filet);padding-top:12px}
+.duo__c.on{border-top-color:var(--niv)}
+.duo__c h3{font-size:19px;font-weight:900}
+.duo__c .sub{font-size:12px;color:var(--gris);margin-top:2px}
+.duo__c ul{margin:14px 0 0;padding-left:18px}
+.duo__c li{margin-bottom:8px;font-size:14px}
+
+/* ── grilles de cartes ── */
+.cartes{display:grid;grid-template-columns:repeat(auto-fill,minmax(232px,1fr));gap:16px;margin-top:24px}
+.carte{background:var(--papier);border:1px solid var(--filet-fin);border-left:3px solid var(--niv);
+  border-radius:3px;padding:14px 16px}
+.carte h4{font-size:15px;font-weight:900;line-height:1.2}
+.carte .r{font-size:11px;font-weight:600;letter-spacing:.1em;text-transform:uppercase;color:var(--gris);margin-bottom:5px}
+.carte p{font-size:13.2px;margin-top:6px;color:var(--texte)}
+.carte.amb{border-left-color:var(--ambre)}
+.carte.aci{border-left-color:var(--acier)}
+.carte.rou{border-left-color:var(--rouge)}
+
+/* ── écran type ── */
+.ecran{display:grid;grid-template-columns:minmax(0,1fr) 300px;gap:34px;margin-top:26px;align-items:start}
+.maquette{border:1px solid var(--filet);border-radius:5px;overflow:hidden;background:#FFF}
+.maq__barre{display:flex;align-items:center;gap:10px;padding:9px 14px;border-bottom:1px solid var(--filet-fin);
+  background:var(--papier);font-size:12px;color:var(--gris)}
+.maq__jauge{flex:1;height:4px;border-radius:2px;background:var(--filet-fin);position:relative}
+.maq__jauge i{position:absolute;inset:0 62% 0 0;background:var(--niv);border-radius:2px}
+.maq__corps{padding:22px 24px 24px}
+.maq__eye{font-size:10.5px;font-weight:700;letter-spacing:.14em;text-transform:uppercase;color:var(--niv)}
+.maq__t{font-size:23px;font-weight:900;line-height:1.15;margin-top:6px}
+.maq__p{font-size:14px;margin-top:10px;max-width:56ch}
+.maq__son{display:flex;align-items:center;gap:10px;margin-top:16px;padding:10px 12px;
+  background:var(--niv-pale);border-radius:4px;font-size:13px;color:#0A5F57}
+.maq__son b{color:#08463F}
+.rond{width:26px;height:26px;border-radius:50%;background:var(--niv);flex:0 0 26px;position:relative}
+.rond::after{content:"";position:absolute;top:8px;left:10px;border-left:8px solid #FFF;
+  border-top:5px solid transparent;border-bottom:5px solid transparent}
+.maq__choix{display:flex;flex-direction:column;gap:8px;margin-top:16px;max-width:440px}
+.maq__choix span{border:1px solid var(--filet);border-radius:4px;padding:9px 12px;font-size:13.5px}
+.maq__choix span.ok{border-color:var(--niv);background:var(--niv-pale);font-weight:600;color:#08463F}
+.maq__pied{display:flex;justify-content:space-between;align-items:center;margin-top:20px;
+  padding-top:12px;border-top:1px solid var(--filet-fin);font-size:12.5px;color:var(--gris)}
+.maq__pied b{background:var(--encre);color:#FFF;border-radius:3px;padding:6px 14px;font-size:12.5px}
+.legende .l{border-top:1px solid var(--filet-fin);padding:11px 0}
+.legende .l:first-child{border-top:0;padding-top:0}
+.legende .l h4{font-size:14px;font-weight:900}
+.legende .l p{font-size:13px;margin-top:3px}
+
+/* ── tableau storyboard ── */
+table{border-collapse:collapse;width:100%;margin-top:22px;font-size:13.4px}
+th{text-align:left;font-family:'Nunito',sans-serif;font-size:11px;font-weight:800;letter-spacing:.1em;
+  text-transform:uppercase;color:var(--gris);border-bottom:1.5px solid var(--encre);padding:0 12px 8px 0}
+td{border-bottom:1px solid var(--filet-fin);padding:10px 12px 10px 0;vertical-align:top}
+td.no{font-family:'IBM Plex Mono',monospace;color:var(--gris);width:34px;white-space:nowrap}
+td.ty{width:150px}
+.pastille{display:inline-block;font-size:11px;font-weight:700;padding:2px 8px;border-radius:11px;
+  background:var(--niv-pale);color:#08463F;white-space:nowrap}
+.pastille.a{background:var(--ambre-pale);color:#7A3806}
+.pastille.b{background:var(--acier-pale);color:#134F6B}
+.pastille.c{background:#F6E3EA;color:#7C2145}
+tr.pal td{background:var(--papier)}
+
+/* ── étapes ── */
+.etapes{margin-top:24px}
+.et{display:grid;grid-template-columns:52px minmax(0,1fr) 168px;gap:18px;
+  border-top:1px solid var(--filet-fin);padding:16px 0}
+.et__n{font-family:'Nunito',sans-serif;font-size:26px;font-weight:900;color:var(--filet);line-height:1}
+.et h3{font-size:17px;font-weight:900}
+.et p{font-size:13.6px;margin-top:5px}
+.et__d{font-size:12.5px;color:var(--gris);text-align:right}
+.et__d b{display:block;font-family:'Nunito',sans-serif;font-size:14px;color:var(--encre)}
+
+/* ── décisions ── */
+.dec{border:1px solid var(--filet);border-radius:5px;padding:18px 20px;margin-top:16px;background:#FFF}
+.dec h3{font-size:18px;font-weight:900}
+.dec > p{font-size:13.8px;margin-top:6px;max-width:82ch}
+.opts{display:flex;flex-wrap:wrap;gap:10px;margin-top:14px}
+.opt{border:1px solid var(--filet);border-radius:4px;background:var(--papier);cursor:pointer;
+  padding:10px 14px;text-align:left;max-width:330px;font-family:inherit;font-size:13.3px;color:var(--texte)}
+.opt b{display:block;font-family:'Nunito',sans-serif;font-size:14px;font-weight:900;color:var(--encre);margin-bottom:3px}
+.opt:hover{background:#F2F1EC}
+.opt[aria-pressed="true"]{background:var(--niv-pale);border-color:var(--niv);box-shadow:inset 0 0 0 1px var(--niv)}
+.reco{font-size:10.5px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:var(--niv)}
+.barre-export{position:sticky;bottom:0;background:rgba(255,255,255,.96);border-top:1px solid var(--filet);
+  padding:12px 0;margin-top:30px;display:flex;align-items:center;gap:14px;font-size:13px;color:var(--gris)}
+.btn{border:1px solid var(--encre);background:var(--encre);color:#FFF;border-radius:4px;padding:9px 16px;
+  font-family:'Nunito',sans-serif;font-weight:800;font-size:13px;cursor:pointer}
+.btn.b2{background:#FFF;color:var(--encre)}
+#sortie{width:100%;min-height:120px;margin-top:12px;font-family:'IBM Plex Mono',monospace;font-size:12px;
+  border:1px solid var(--filet);border-radius:4px;padding:10px;display:none}
+
+.rendu{background:var(--niv-pale);border-left:3px solid var(--niv);padding:13px 18px;
+  margin-top:20px;font-size:13.6px;max-width:84ch;color:#08463F}
+.rendu b{color:#08463F}
+.note{background:var(--papier);border-left:3px solid var(--ambre);padding:14px 18px;margin-top:24px;
+  font-size:13.6px;max-width:84ch}
+.pied{margin-top:70px;border-top:1px solid var(--filet);padding-top:14px;font-size:12.5px;color:var(--gris)}
+
+@media (max-width:900px){
+  .hero,.duo,.ecran{grid-template-columns:1fr;gap:26px}
+  .hero h1{font-size:38px}
+  .et{grid-template-columns:38px 1fr}
+  .et__d{grid-column:2;text-align:left}
+  .page,.fr-barre{padding-left:20px;padding-right:20px}
+}
+</style>
+</head>
+<body>
+
+<div class="fr-barre">
+  <div class="fr-lockup">
+    <span class="fr-nom">franc<span class="fr-pt"></span>is</span>
+    <span class="fr-trait"></span>
+    <span class="fr-desc">Francisation · niveau 5 · plan de démo</span>
+  </div>
+  <nav class="fr-liens"><a href="index.html">← Modules autonomes</a></nav>
+</div>
+
+<div class="page">
+
+  <div class="hero">
+    <div>
+      <p class="eyebrow">Chantier · 30 août 2026</p>
+      <h1>Le module qui<br><span>s'explique tout seul.</span></h1>
+      <p class="intro">Nos onze modules sont des <b>supports de classe</b> : on défile, et
+      l'enseignant explique. Ce plan propose l'autre forme — un <b>parcours guidé, un écran à
+      la fois</b>, où l'explication est <i>dans</i> l'écran. L'élève avance seul, le soir, sur
+      son téléphone, et l'enseignant retrouve le lendemain où il a buté.</p>
+    </div>
+    <div>
+      <p class="verdict">La démo se fait sur <b>un seul défi</b> d'un module de niveau 5 déjà
+      écrit — <b>Prendre un rendez-vous</b>. Le contenu existe, les voix existent :
+      ce qu'on fabrique, c'est <b>la forme</b>.</p>
+      <div class="chiffres">
+        <div class="ch"><div class="ch__n">18</div><div class="ch__l">écrans dans la démo</div></div>
+        <div class="ch"><div class="ch__n">267</div><div class="ch__l">MP3 déjà produits</div></div>
+        <div class="ch"><div class="ch__n">0 $</div><div class="ch__l">de médias neufs</div></div>
+        <div class="ch"><div class="ch__n">9</div><div class="ch__l">types d'écran</div></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ─────────────────────────────────────────────────────────────── -->
+  <section class="bloc">
+    <span class="eyebrow">1 · Le problème</span>
+    <h2>Une page de module n'enseigne pas — elle accompagne quelqu'un qui enseigne</h2>
+    <p class="intro">Un module actuel est une longue page : six sections, des dialogues, des
+    exercices, des mini-leçons repliées. C'est excellent devant un groupe. Seul à la maison,
+    l'élève ne sait pas par où entrer, ne sait pas quand il a terminé, et lit une explication
+    <b>avant</b> d'avoir rencontré la difficulté qu'elle règle. Le storyline inverse cet ordre.</p>
+
+    <div class="duo">
+      <div class="duo__c">
+        <h3>La page-module d'aujourd'hui</h3>
+        <p class="sub">Onze modules, 16 séances chacun</p>
+        <ul>
+          <li>On <b>défile</b> : tout est visible d'un coup, rien n'est obligatoire.</li>
+          <li>L'explication est <b>à côté</b> de l'exercice, repliée dans « En apprendre plus ».</li>
+          <li>Le rythme est celui de l'enseignant, pas celui de l'écran.</li>
+          <li>Le suivi enregistre des <b>résultats</b> : réussi, raté.</li>
+          <li>Excellent en classe. Flottant à la maison.</li>
+        </ul>
+      </div>
+      <div class="duo__c on">
+        <h3>Le storyline qu'on propose</h3>
+        <p class="sub">Un défi, 18 écrans, 20 à 25 minutes</p>
+        <ul>
+          <li>On <b>avance</b> : un écran, une idée, une action, puis le suivant.</li>
+          <li>L'explication arrive <b>au moment de l'erreur</b>, et seulement là.</li>
+          <li>Le rythme est celui de l'élève : la narration l'attend.</li>
+          <li>Le suivi enregistre un <b>trajet</b> : où il a ralenti, ce qu'il a rouvert.</li>
+          <li>Fait pour le soir, le téléphone, et personne à côté.</li>
+        </ul>
+      </div>
+    </div>
+  </section>
+
+  <!-- ─────────────────────────────────────────────────────────────── -->
+  <section class="bloc">
+    <span class="eyebrow">2 · Le module choisi</span>
+    <h2>Niveau 5 · <span style="color:var(--niv)">Prendre, annuler ou modifier un rendez-vous</span></h2>
+    <p class="intro">Quatorze situations composent le niveau 5 et les quatorze ont déjà un module.
+    Pour une démo, ce n'est pas le sujet le plus riche qu'il faut, c'est celui où la forme
+    storyline <b>change quelque chose</b> — et où rien n'est à produire.</p>
+
+    <div class="cartes">
+      <div class="carte">
+        <div class="r">Pourquoi celui-là</div>
+        <h4>Tout se joue à l'oreille</h4>
+        <p>C'est un appel téléphonique : pas de visage, pas de lèvres, pas de geste. Un écran qui
+        fait écouter puis choisir est exactement le bon outil. Une page qui défile, non.</p>
+      </div>
+      <div class="carte">
+        <div class="r">Pourquoi celui-là</div>
+        <h4>Une seule bonne réponse à la fois</h4>
+        <p>Épeler son nom, donner un numéro de carte, choisir entre mardi 14 h 10 et jeudi 17 h,
+        confirmer. Chaque geste se vérifie sans juger un texte libre — donc <b>sans IA</b>,
+        donc en mode hors ligne comme en mode sans assistant.</p>
+      </div>
+      <div class="carte">
+        <div class="r">Pourquoi celui-là</div>
+        <h4>Le contenu est écrit</h4>
+        <p><code>build/contenu/module-n5-rendezvous/</code> : 23 répliques pour le seul défi 1,
+        un banc de vocabulaire, quatre mini-leçons, dont une sur <b>[y] / [u]</b> qui est déjà
+        une leçon autonome.</p>
+      </div>
+      <div class="carte">
+        <div class="r">Pourquoi celui-là</div>
+        <h4>Les voix sont produites</h4>
+        <p>267 MP3 dans <code>assets/interactive/module-n5-rendezvous/</code>. Le storyline les
+        <b>rejoue</b> : aucune synthèse neuve, aucun coût, et le gel des MP3 reste respecté.</p>
+      </div>
+    </div>
+
+    <div class="note"><b>Le scénario, en une phrase.</b> Rachid Benali, 52 ans, préposé à
+    l'entretien, a des étourdissements depuis trois mois et appelle la Clinique de la Rive.
+    Manon, agente administrative, décide sans le dire si son rendez-vous durera quinze
+    minutes ou trente. <b>Le défi 1 — l'appel — est ce qu'on met en storyline.</b></div>
+  </section>
+
+  <!-- ─────────────────────────────────────────────────────────────── -->
+  <section class="bloc">
+    <span class="eyebrow">3 · Le grain</span>
+    <h2>Ce qu'est un écran</h2>
+    <p class="intro">La règle qui tient tout le reste : <b>un écran = une idée + une action</b>.
+    S'il faut deux explications, ce sont deux écrans. S'il n'y a rien à faire, ce n'est pas un
+    écran, c'est une transition.</p>
+
+    <div class="ecran">
+      <div class="maquette">
+        <div class="maq__barre">
+          <span>Défi 1 · L'appel à la clinique</span>
+          <span class="maq__jauge"><i></i></span>
+          <span>11 / 18</span>
+        </div>
+        <div class="maq__corps">
+          <p class="maq__eye">Vérification</p>
+          <h3 class="maq__t">Manon vous propose deux moments. Lequel prenez-vous ?</h3>
+          <p class="maq__p">Rachid finit de travailler à seize heures. Écoutez la proposition,
+          puis choisissez la seule réponse possible.</p>
+          <div class="maq__son"><span class="rond"></span>
+            <span><b>Manon</b> — « J'ai le mardi 17 juin à quatorze heures dix, ou le jeudi 19
+            en fin de journée, à dix-sept heures. » &nbsp;·&nbsp; 0:07</span></div>
+          <div class="maq__choix">
+            <span>Mardi 17 juin, quatorze heures dix.</span>
+            <span class="ok">Jeudi 19 juin, dix-sept heures. ✓</span>
+            <span>Les deux conviennent.</span>
+          </div>
+          <div class="maq__pied"><span>Réécouter · Ralentir · Transcription</span><b>Continuer</b></div>
+        </div>
+      </div>
+      <div class="legende">
+        <div class="l"><h4>La jauge, toujours</h4><p>L'élève sait combien il en reste. C'est ce
+        qui distingue un parcours d'une page sans fond.</p></div>
+        <div class="l"><h4>Le son avant le texte</h4><p>La réplique se joue ; la transcription
+        n'apparaît que si on la demande. Le bouton de vitesse est celui des modules.</p></div>
+        <div class="l"><h4>Une seule action</h4><p>Trois choix, un clic. Pas de deuxième
+        question sur le même écran.</p></div>
+        <div class="l"><h4>Le mauvais choix n'est pas une punition</h4><p>Il ouvre l'écran
+        d'explication qui lui correspond — « fin de journée » veut dire 17 h, pas 14 h — puis
+        renvoie ici.</p></div>
+        <div class="l"><h4>« Continuer » se mérite</h4><p>Le bouton reste gris tant que l'action
+        n'est pas faite. C'est le seul verrou du parcours.</p></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ─────────────────────────────────────────────────────────────── -->
+  <section class="bloc">
+    <span class="eyebrow">4 · La grammaire</span>
+    <h2>Neuf types d'écran, et rien d'autre</h2>
+    <p class="intro">Une grammaire fermée : chaque type a sa mise en page, son comportement et
+    son événement de suivi. Fermée, elle rend le module suivant presque gratuit — on n'écrit
+    plus que du contenu.</p>
+
+    <div class="cartes">
+      <div class="carte amb"><div class="r">Type 1</div><h4>Accroche</h4>
+        <p>Une image, une phrase, une question qu'on ne répond pas encore. Sert à installer la
+        situation en dix secondes.</p></div>
+      <div class="carte amb"><div class="r">Type 2</div><h4>Notion</h4>
+        <p>L'explication autonome : ce qu'il faut savoir, en 60 mots, avec un exemple entendu.
+        Jamais deux notions dans le même écran.</p></div>
+      <div class="carte b"><div class="r">Type 3</div><h4>Dialogue commenté</h4>
+        <p>Le dialogue se déroule réplique par réplique. On peut arrêter sur une réplique : une
+        note explique ce que la personne vient de <i>faire</i>, pas ce qu'elle a dit.</p></div>
+      <div class="carte b"><div class="r">Type 4</div><h4>Loupe</h4>
+        <p>Un gros plan sur trois mots : la formule exacte, ce qu'on entend, ce qu'on répond.
+        C'est l'écran qu'on relit avant de téléphoner pour vrai.</p></div>
+      <div class="carte"><div class="r">Type 5</div><h4>Essai guidé</h4>
+        <p>L'élève assemble une réponse avec des morceaux donnés. Impossible de se tromper
+        gravement : on apprend l'ordre, pas les mots.</p></div>
+      <div class="carte"><div class="r">Type 6</div><h4>Vérification</h4>
+        <p>Une question, une réponse, correction immédiate. Deux essais avant la réponse —
+        la règle des modules s'applique ici aussi.</p></div>
+      <div class="carte rou"><div class="r">Type 7</div><h4>Rattrapage</h4>
+        <p>N'existe que sur erreur. Explique <b>pourquoi</b> la mauvaise réponse était
+        tentante, puis renvoie à la question. C'est le cœur de l'autonomie.</p></div>
+      <div class="carte rou"><div class="r">Type 8</div><h4>Palier</h4>
+        <p>Tous les cinq ou six écrans : ce qui est acquis, en trois lignes. Point de reprise
+        si l'élève ferme l'onglet.</p></div>
+      <div class="carte"><div class="r">Type 9</div><h4>Bilan</h4>
+        <p>Le trajet de l'élève, montré à l'élève : ce qu'il a réussi seul, ce qu'il a rouvert,
+        et la seule chose à revoir demain.</p></div>
+    </div>
+  </section>
+
+  <!-- ─────────────────────────────────────────────────────────────── -->
+  <section class="bloc">
+    <span class="eyebrow">5 · Le storyboard</span>
+    <h2>Les dix-huit écrans de la démo</h2>
+    <p class="intro">Défi 1 · <b>L'appel à la clinique</b>. Vingt à vingt-cinq minutes pour un
+    élève de niveau 5 travaillant seul. Les répliques citées sont celles du dialogue déjà
+    écrit ; les écrans de rattrapage ne comptent pas dans les dix-huit — ils s'ouvrent sur
+    erreur.</p>
+
+    <table>
+      <thead><tr><th class="no">#</th><th class="ty">Type</th><th>Ce que l'écran fait</th></tr></thead>
+      <tbody>
+        <tr><td class="no">1</td><td class="ty"><span class="pastille a">Accroche</span></td>
+          <td><b>« Trois mois, et je travaille tous les jours. »</b> La cuisine, un mardi soir.
+          Rachid va appeler demain matin. Une question posée, sans réponse : <i>qui va répondre
+          au bout du fil ?</i></td></tr>
+        <tr><td class="no">2</td><td class="ty"><span class="pastille a">Notion</span></td>
+          <td><b>Ce n'est pas un médecin qui répond.</b> C'est une agente administrative. Elle ne
+          soigne pas ; elle choisit la durée du rendez-vous. Tout l'appel découle de ça.</td></tr>
+        <tr><td class="no">3</td><td class="ty"><span class="pastille a">Notion</span></td>
+          <td><b>Les quatre portes du réseau</b> — GMF, sans-rendez-vous, 8-1-1, urgence.
+          Une carte, quatre cases, un exemple par case. Écran de référence : on y revient.</td></tr>
+        <tr><td class="no">4</td><td class="ty"><span class="pastille b">Vérification</span></td>
+          <td>Trois situations, quelle porte ? <i>Rattrapage : « ça dure depuis trois mois »
+          n'est jamais une urgence — et pourquoi le sans-rendez-vous serait un mauvais choix
+          ici.</i></td></tr>
+        <tr><td class="no">5</td><td class="ty"><span class="pastille b">Dialogue commenté</span></td>
+          <td><b>Le message enregistré</b> (2 répliques). On écoute le répondeur. Note d'arrêt :
+          l'information qui compte arrive avant la fin de la phrase.</td></tr>
+        <tr><td class="no">6</td><td class="ty"><span class="pastille">Loupe</span></td>
+          <td><b>« Bonjour. J'aimerais… s'il vous plaît. »</b> La phrase d'ouverture, décomposée
+          en trois morceaux. On l'écoute, on la répète, le micro écoute.</td></tr>
+        <tr><td class="no">7</td><td class="ty"><span class="pastille">Essai guidé</span></td>
+          <td>Reconstruire sa propre phrase d'ouverture avec ses mots à soi : un médecin, un
+          motif, la formule de politesse.</td></tr>
+        <tr class="pal"><td class="no">8</td><td class="ty"><span class="pastille c">Palier</span></td>
+          <td><b>Vous savez ouvrir l'appel.</b> Trois lignes de récapitulation. Point de reprise
+          n° 1.</td></tr>
+        <tr><td class="no">9</td><td class="ty"><span class="pastille b">Dialogue commenté</span></td>
+          <td><b>S'identifier</b> (4 répliques) : le nom épelé, le numéro de carte. Note d'arrêt
+          sur <i>pourquoi Rachid épelle sans qu'on le lui demande</i>.</td></tr>
+        <tr><td class="no">10</td><td class="ty"><span class="pastille a">Notion</span></td>
+          <td><b>Épeler au téléphone.</b> Les six lettres qui se confondent en français —
+          et la parade : donner un mot. Rejoue les MP3 d'épellation existants.</td></tr>
+        <tr><td class="no">11</td><td class="ty"><span class="pastille b">Vérification</span></td>
+          <td>Épeler son propre nom de famille, lettre par lettre, au micro. Corrigé par
+          comparaison à ce que l'élève a inscrit — pas d'IA nécessaire.</td></tr>
+        <tr><td class="no">12</td><td class="ty"><span class="pastille a">Notion</span></td>
+          <td><b>Dire son affaire en deux phrases.</b> Le quoi, et depuis quand. Ni plus long,
+          ni plus court : c'est la durée du rendez-vous qui se joue là.</td></tr>
+        <tr><td class="no">13</td><td class="ty"><span class="pastille b">Vérification</span></td>
+          <td>Quatre formulations, une seule tient en deux phrases avec une durée.
+          <i>Rattrapage : « je suis malade » ne dit rien à personne.</i></td></tr>
+        <tr class="pal"><td class="no">14</td><td class="ty"><span class="pastille c">Palier</span></td>
+          <td><b>Vous savez vous identifier et dire votre affaire.</b> Point de reprise n° 2.</td></tr>
+        <tr><td class="no">15</td><td class="ty"><span class="pastille b">Vérification</span></td>
+          <td><b>Choisir le moment.</b> L'écran de la maquette ci-dessus : mardi 14 h 10 ou
+          jeudi 17 h, sachant qu'il finit à 16 h. <i>Rattrapage : « en fin de journée ».</i></td></tr>
+        <tr><td class="no">16</td><td class="ty"><span class="pastille">Loupe</span></td>
+          <td><b>Ce qu'on n'oublie jamais de demander</b> : quoi apporter, à quelle heure se
+          présenter, le délai d'annulation. Trois questions, trois formules.</td></tr>
+        <tr><td class="no">17</td><td class="ty"><span class="pastille">Essai guidé</span></td>
+          <td><b>Reformuler avant de raccrocher.</b> « Alors jeudi 19 juin, dix-sept heures,
+          arriver à seize heures quarante-cinq. C'est bien ça ? » — l'élève écrit la sienne à
+          partir de son propre rendez-vous.</td></tr>
+        <tr class="pal"><td class="no">18</td><td class="ty"><span class="pastille c">Bilan</span></td>
+          <td><b>Votre trajet.</b> Réussi seul / réussi au deuxième essai / rattrapage ouvert.
+          Une seule chose à revoir demain, nommée. Et l'appel entier à réécouter d'un trait.</td></tr>
+      </tbody>
+    </table>
+  </section>
+
+  <!-- ─────────────────────────────────────────────────────────────── -->
+  <section class="bloc">
+    <span class="eyebrow">6 · Le suivi</span>
+    <h2>Ce que l'écran sait, et ce que l'enseignant en voit</h2>
+    <p class="intro">C'est le « éventuellement un suivi » de la commande, et c'est ce qui
+    sépare un diaporama d'un parcours. Chaque écran émet un événement ; le parcours en fait
+    un trajet ; la fiche élève en fait une phrase.</p>
+
+    <div class="duo">
+      <div class="duo__c on">
+        <h3>Ce qu'on enregistre</h3>
+        <p class="sub">Un événement par écran, rien de plus</p>
+        <ul>
+          <li>Écran <b>vu</b>, et combien de temps.</li>
+          <li>Réponse donnée, <b>au premier ou au deuxième essai</b>.</li>
+          <li>Rattrapage <b>ouvert</b> — le signal le plus utile de tous.</li>
+          <li>Réécoutes, ralentissements, transcription demandée.</li>
+          <li>Point de reprise, si l'élève ferme et revient.</li>
+        </ul>
+      </div>
+      <div class="duo__c">
+        <h3>Ce qu'on n'enregistre pas</h3>
+        <p class="sub">La règle du dépôt s'applique telle quelle</p>
+        <ul>
+          <li>Aucun <b>enregistrement vocal</b> ne quitte le poste sans que l'élève l'envoie.</li>
+          <li>Aucune <b>correction d'IA</b> n'est conservée côté serveur.</li>
+          <li>Aucun <b>vrai nom</b> : le pseudo, comme partout.</li>
+          <li>En <b>mode sans IA</b>, le parcours entier fonctionne — c'est pour ça qu'aucune
+          vérification n'exige de texte libre jugé par un modèle.</li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="note"><b>La phrase que l'enseignant lit le lendemain.</b> Pas un pourcentage :
+    « <i>Trois élèves sur douze ont rouvert le rattrapage de l'écran 15. La consigne
+    « en fin de journée » ne passe pas. À reprendre en dix minutes demain matin.</i> »
+    C'est ce que la démo doit rendre visible — sur la fiche élève et sur la page de
+    progression du groupe, là où le suivi vit déjà.</div>
+  </section>
+
+  <!-- ─────────────────────────────────────────────────────────────── -->
+  <section class="bloc">
+    <span class="eyebrow">7 · La fabrication</span>
+    <h2>Généré, comme tout le reste</h2>
+    <p class="intro">Le HTML du storyline ne s'écrit pas à la main — la règle du dépôt, apprise
+    à ses dépens. Un gabarit, un moteur, un fichier de contenu.</p>
+
+    <div class="cartes">
+      <div class="carte"><div class="r">Contenu</div>
+        <h4><code>storyline.js</code></h4>
+        <p>Dans <code>build/contenu/module-n5-rendezvous/</code>, à côté des fichiers existants.
+        Les 18 écrans, en données. C'est le seul fichier qu'on écrit pour le module suivant.</p></div>
+      <div class="carte"><div class="r">Gabarit</div>
+        <h4><code>build/gabarit/storyline.html</code></h4>
+        <p>La coquille : jauge, navigation, lecteur audio, les neuf mises en page. Habillage du
+        système de design, sarcelle du niveau 5.</p></div>
+      <div class="carte"><div class="r">Moteur</div>
+        <h4><code>build/storyline.py</code></h4>
+        <p>Assemble gabarit + contenu + médias existants →
+        <code>assets/interactive/module-n5-rendezvous/storyline.html</code>. Multi-module dès
+        le départ, comme <code>build/module.py</code>.</p></div>
+      <div class="carte"><div class="r">Suivi</div>
+        <h4><code>journal_api.py</code></h4>
+        <p>Les événements passent par le journal déjà en place. Rien de neuf côté serveur pour
+        la démo — un type d'événement de plus.</p></div>
+    </div>
+  </section>
+
+  <!-- ─────────────────────────────────────────────────────────────── -->
+  <section class="bloc">
+    <span class="eyebrow">8 · Le chemin</span>
+    <h2>Quatre étapes, dans cet ordre</h2>
+    <div class="etapes">
+      <div class="et">
+        <div class="et__n">1</div>
+        <div>
+          <h3>Le moteur et deux écrans</h3>
+          <p>Gabarit, navigation, jauge, lecteur audio, et <b>deux</b> types d'écran seulement :
+          une notion et une vérification. On regarde ça ensemble avant d'écrire la suite — si la
+          forme ne vous parle pas, on n'a perdu que ça.</p>
+        </div>
+        <div class="et__d"><b>Première livraison</b>2 écrans jouables</div>
+      </div>
+      <div class="et">
+        <div class="et__n">2</div>
+        <div>
+          <h3>Les dix-huit écrans</h3>
+          <p>Les neuf types, le contenu écrit, les MP3 existants branchés, les rattrapages.
+          Le défi 1 se joue du début à la fin.</p>
+        </div>
+        <div class="et__d"><b>La démo</b>Défi 1 complet</div>
+      </div>
+      <div class="et">
+        <div class="et__n">3</div>
+        <div>
+          <h3>Le suivi</h3>
+          <p>Les événements, le point de reprise, l'écran de bilan, et la remontée jusqu'à la
+          fiche élève et la progression du groupe.</p>
+        </div>
+        <div class="et__d"><b>Le suivi</b>Bout à bout</div>
+      </div>
+      <div class="et">
+        <div class="et__n">4</div>
+        <div>
+          <h3>Vérifié en le jouant</h3>
+          <p>Pas une capture d'écran : le parcours est <b>joué par programme</b>, écran par
+          écran, chaque bonne réponse et chaque mauvaise, pour vérifier que les rattrapages
+          s'ouvrent et que les événements partent. C'est la seule vérification qui vaut.</p>
+        </div>
+        <div class="et__d"><b>Contrôle</b>18 écrans × 2 chemins</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ─────────────────────────────────────────────────────────────── -->
+  <section class="bloc" id="decisions">
+    <span class="eyebrow">9 · À vous</span>
+    <h2>Six décisions avant de commencer</h2>
+    <p class="intro">Cochez, puis exportez : le JSON se recolle dans la prochaine session et
+    pilote la production. Ce qui n'est pas coché, je le tranche moi-même par le choix marqué
+    « proposé ».</p>
+
+    <div class="rendu"><b>Rendues le 30 août 2026.</b> Les six réponses ci-dessous sont
+    celles qui pilotent le travail : elles sont préchoisies à l'ouverture de la page, et
+    gardées sur la <a href="index.html">page de la section</a>. Recliquer change l'état local
+    du poste, pas la décision — pour la changer pour de bon, exportez et dites-le-moi.</div>
+
+    <div class="dec" data-q="module">
+      <h3>1 · Le module</h3>
+      <p>Quatorze modules de niveau 5 existent. Je propose <b>Prendre un rendez-vous</b> parce
+      que tout s'y joue à l'oreille et que les médias sont produits.</p>
+      <div class="opts">
+        <button class="opt" aria-pressed="false" data-v="rendezvous"><span class="reco">Proposé</span>
+          <b>Prendre un rendez-vous</b>L'appel téléphonique. 267 MP3 prêts, une seule bonne
+          réponse à chaque étape.</button>
+        <button class="opt" aria-pressed="false" data-v="degat">
+          <b>Un dégât d'eau</b>Problèmes d'habitation : plus visuel, mais tout serait à
+          re-scénariser.</button>
+        <button class="opt" aria-pressed="false" data-v="services">
+          <b>Les services publics</b>Aussi téléphonique, plus administratif — moins d'émotion
+          pour porter un parcours seul.</button>
+      </div>
+    </div>
+
+    <div class="dec" data-q="portee">
+      <h3>2 · La place du storyline</h3>
+      <p>Est-ce une <b>forme de plus</b> à côté de la page-module, ou l'avenir de la
+      page-module ? La réponse change tout ce qui suit.</p>
+      <div class="opts">
+        <button class="opt" aria-pressed="false" data-v="deux-portes"><span class="reco">Proposé</span>
+          <b>Deux portes</b>La page reste le support de classe ; le storyline est la porte
+          « je travaille seul ». Le catalogue offre les deux.</button>
+        <button class="opt" aria-pressed="false" data-v="remplace">
+          <b>Le storyline remplace</b>Un seul format à terme. Beaucoup plus lourd : onze
+          modules à reprendre.</button>
+        <button class="opt" aria-pressed="false" data-v="essai">
+          <b>On décide après la démo</b>On ne tranche pas maintenant.</button>
+      </div>
+    </div>
+
+    <div class="dec" data-q="longueur">
+      <h3>3 · La longueur de la démo</h3>
+      <p>Un module complet fait six sections. La démo n'a pas à les couvrir pour être
+      convaincante.</p>
+      <div class="opts">
+        <button class="opt" aria-pressed="false" data-v="un-defi"><span class="reco">Proposé</span>
+          <b>Un défi · 18 écrans</b>Le storyboard ci-dessus. De quoi juger la forme, et
+          jouable en 25 minutes.</button>
+        <button class="opt" aria-pressed="false" data-v="decouvre-defi">
+          <b>Je découvre + défi 1 · 28 écrans</b>On voit aussi comment un module
+          <i>commence</i>.</button>
+        <button class="opt" aria-pressed="false" data-v="module-entier">
+          <b>Le module entier · ~75 écrans</b>Ce n'est plus une démo, c'est la production.</button>
+      </div>
+    </div>
+
+    <div class="dec" data-q="verrou">
+      <h3>4 · La liberté de circuler</h3>
+      <p>Un storyline verrouillé enseigne mieux ; un storyline libre respecte mieux un adulte
+      qui sait déjà.</p>
+      <div class="opts">
+        <button class="opt" aria-pressed="false" data-v="doux"><span class="reco">Proposé</span>
+          <b>Verrou doux</b>On avance quand on a agi, mais on peut toujours revenir en
+          arrière, et un menu montre les écrans déjà vus.</button>
+        <button class="opt" aria-pressed="false" data-v="strict">
+          <b>Strictement linéaire</b>Avant, arrière, rien d'autre.</button>
+        <button class="opt" aria-pressed="false" data-v="libre">
+          <b>Entièrement libre</b>Le menu donne accès à tout dès le départ.</button>
+      </div>
+    </div>
+
+    <div class="dec" data-q="voix">
+      <h3>5 · La narration</h3>
+      <p>Les répliques du dialogue existent en MP3. Mais un storyline a aussi une <b>voix qui
+      accompagne</b> — celle qui dit « écoutez encore une fois, et guettez le mot
+      <i>jeudi</i> ». Cette voix-là n'existe pas.</p>
+      <div class="opts">
+        <button class="opt" aria-pressed="false" data-v="texte"><span class="reco">Proposé</span>
+          <b>Écrite, pas parlée</b>La consigne reste du texte. Zéro média neuf, le gel des MP3
+          intact, et la démo juge la forme sans dépendre d'un budget.</button>
+        <button class="opt" aria-pressed="false" data-v="narration">
+          <b>Une voix d'accompagnement</b>Environ 60 phrases neuves chez Azure. Plus immersif,
+          mais c'est un feu vert sur le gel.</button>
+        <button class="opt" aria-pressed="false" data-v="apres">
+          <b>Texte d'abord, voix ensuite</b>Si la démo convainc, on sonorise.</button>
+      </div>
+    </div>
+
+    <div class="dec" data-q="suivi">
+      <h3>6 · Le suivi, tout de suite ou après</h3>
+      <p>L'étape 3 du chemin peut se faire en même temps que la démo ou après.</p>
+      <div class="opts">
+        <button class="opt" aria-pressed="false" data-v="local"><span class="reco">Proposé</span>
+          <b>Local pour la démo</b>Tout est enregistré sur le poste ; l'écran de bilan le
+          montre. Le branchement serveur suit une fois la forme acceptée.</button>
+        <button class="opt" aria-pressed="false" data-v="serveur">
+          <b>Branché dès la démo</b>La fiche élève et la progression du groupe montrent le
+          trajet dès le premier jour.</button>
+      </div>
+    </div>
+
+    <div class="barre-export">
+      <button class="btn" id="exporter">Exporter mes décisions</button>
+      <button class="btn b2" id="effacer">Revenir aux décisions rendues</button>
+      <span id="etat">Rien de choisi pour l'instant.</span>
+    </div>
+    <textarea id="sortie" readonly></textarea>
+  </section>
+
+  <p class="pied">francis · plan de démo storyline · niveau 5 · 30 août 2026 ·
+  <span class="mono">assets/presentations/storyline-niveau-5.html</span></p>
+
+</div>
+
+<script>
+(function () {
+  var CLE = 'francis.storyline.decisions';
+  // Les décisions rendues le 30 août 2026. Elles sont l'état de départ de la
+  // page : un poste qui n'a jamais rien coché voit ce qui a été décidé, et non
+  // une page vierge qui contredirait la section.
+  var RENDUES = {
+    module: 'rendezvous', portee: 'essai', longueur: 'un-defi',
+    verrou: 'doux', voix: 'texte', suivi: 'local'
+  };
+  var lu = null;
+  try { lu = JSON.parse(localStorage.getItem(CLE) || 'null'); } catch (e) { lu = null; }
+  if (!lu || typeof lu !== 'object') { lu = JSON.parse(JSON.stringify(RENDUES)); }
+
+  var decs = Array.prototype.slice.call(document.querySelectorAll('.dec'));
+  var etat = document.getElementById('etat');
+  var sortie = document.getElementById('sortie');
+
+  function majEtat() {
+    var n = Object.keys(lu).length;
+    etat.textContent = n === 0 ? 'Rien de choisi pour l’instant.'
+      : n + ' décision' + (n > 1 ? 's' : '') + ' sur 6.'
+        + (n === 6 ? ' Le compte y est.' : '');
+  }
+
+  function garder() {
+    try { localStorage.setItem(CLE, JSON.stringify(lu)); } catch (e) {}
+    majEtat();
+  }
+
+  decs.forEach(function (d) {
+    var q = d.getAttribute('data-q');
+    var opts = Array.prototype.slice.call(d.querySelectorAll('.opt'));
+    opts.forEach(function (o) {
+      if (lu[q] === o.getAttribute('data-v')) o.setAttribute('aria-pressed', 'true');
+      o.addEventListener('click', function () {
+        var v = o.getAttribute('data-v');
+        var deja = o.getAttribute('aria-pressed') === 'true';
+        opts.forEach(function (x) { x.setAttribute('aria-pressed', 'false'); });
+        if (deja) { delete lu[q]; } else { o.setAttribute('aria-pressed', 'true'); lu[q] = v; }
+        garder();
+      });
+    });
+  });
+
+  document.getElementById('exporter').addEventListener('click', function () {
+    sortie.style.display = 'block';
+    sortie.value = JSON.stringify({ page: 'storyline-niveau-5', decisions: lu }, null, 2);
+    sortie.select();
+  });
+
+  document.getElementById('effacer').addEventListener('click', function () {
+    lu = JSON.parse(JSON.stringify(RENDUES));
+    try { localStorage.removeItem(CLE); } catch (e) {}
+    document.querySelectorAll('.opt').forEach(function (x) {
+      var q = x.closest('.dec').getAttribute('data-q');
+      x.setAttribute('aria-pressed', lu[q] === x.getAttribute('data-v') ? 'true' : 'false');
+    });
+    sortie.style.display = 'none';
+    majEtat();
+  });
+
+  majEtat();
+})();
+</script>
+</body>
+</html>
