@@ -1,0 +1,602 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Parcours de remédiation — sujets et suivi</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Nunito:wght@600;700;800;900&family=IBM+Plex+Sans:wght@400;500;600;700&family=IBM+Plex+Mono:wght@400;500&display=swap">
+<style>
+:root{
+  --sol:#FFFFFF; --papier:#FAFAF8; --encre:#17181A; --texte:#3A3D40; --gris:#6E7175;
+  --filet:#D0CFCA; --filet-fin:#E8E7E2;
+  --niv:#0D7A6F; --niv-pale:#DCF2EF; --niv-fonce:#08463F;
+  --acier:#1D6B8F; --acier-pale:#E7F0F6; --acier-fonce:#134F6B;
+  --ambre:#B45309; --ambre-pale:#FBEEDC; --ambre-fonce:#7A3806;
+  --or:#8C6A07; --or-pale:#F7F0DA; --or-fonce:#5E4705;
+  --mauve:#6B4FBB;
+}
+*{box-sizing:border-box}
+body{margin:0;background:var(--sol);color:var(--texte);
+  font-family:'IBM Plex Sans','Helvetica Neue',Arial,sans-serif;font-size:15px;line-height:1.55;
+  -webkit-font-smoothing:antialiased}
+h1,h2,h3,h4{margin:0;font-family:'Nunito','Arial Rounded MT Bold',sans-serif;color:var(--encre);text-wrap:balance}
+p{margin:0}
+b,strong{font-weight:700;color:var(--encre)}
+code,.mono{font-family:'IBM Plex Mono',ui-monospace,Menlo,monospace;font-size:.9em;color:var(--encre)}
+a{color:var(--encre)}
+button{font-family:inherit;cursor:pointer}
+
+.fr-barre{background:#FFF;border-bottom:2px solid var(--mauve);padding:14px 40px;
+  display:flex;align-items:center;gap:20px;flex-wrap:wrap}
+.fr-lockup{display:inline-flex;align-items:baseline;gap:16px;color:#17181A}
+.fr-nom{font-family:'Nunito',sans-serif;font-weight:900;font-size:28px;letter-spacing:-.035em;line-height:1;color:var(--encre);white-space:nowrap;text-decoration:none}
+.fr-i{position:relative;display:inline-block}
+.fr-point{position:absolute;left:1px;top:2px;width:7px;height:7px;border-radius:999px;background:var(--mauve)}
+.fr-trait{width:1px;height:24px;background:#C8C7C2;align-self:center}
+.fr-desc{font-size:14px;color:#4B4F52}
+.fr-liens{margin-left:auto;display:flex;gap:16px;font-size:13px}
+.fr-liens a{color:var(--gris);text-decoration:none}
+.fr-liens a:hover{color:var(--encre);text-decoration:underline}
+
+.page{max-width:1060px;margin:0 auto;padding:0 40px 110px}
+.eyebrow{font-size:11px;font-weight:600;letter-spacing:.14em;text-transform:uppercase;color:var(--gris)}
+.bloc{padding-top:60px}
+.bloc > .eyebrow{display:block;margin-bottom:6px}
+.bloc > h2{font-size:29px;font-weight:900;letter-spacing:-.02em;line-height:1.12;
+  border-top:2px solid var(--encre);padding-top:12px}
+.intro{font-size:15px;max-width:78ch;margin-top:14px}
+
+.hero{display:grid;grid-template-columns:1.1fr 1fr;gap:52px;padding:74px 0 6px;align-items:start}
+.hero h1{font-size:48px;font-weight:400;line-height:1.04;letter-spacing:-.03em}
+.hero h1 span{display:block;font-weight:900}
+.verdict{border-top:3px solid var(--niv);padding-top:14px;
+  font-family:'Nunito',sans-serif;font-size:18px;line-height:1.4;color:var(--encre);font-weight:600}
+.verdict b{font-weight:900}
+.chiffres{display:flex;gap:28px;flex-wrap:wrap;margin-top:26px}
+.ch{border-top:1px solid var(--filet);padding-top:8px;min-width:100px}
+.ch__n{font-family:'Nunito',sans-serif;font-size:24px;font-weight:900;line-height:1;color:var(--encre);
+  font-variant-numeric:tabular-nums}
+.ch__l{font-size:12px;color:var(--gris);margin-top:3px}
+
+/* ── le renversement ── */
+.avant-apres{display:grid;grid-template-columns:1fr 1fr;gap:34px;margin-top:24px}
+.aa{border-top:2px solid var(--filet);padding-top:12px}
+.aa.on{border-top-color:var(--niv)}
+.aa h3{font-size:18px;font-weight:900}
+.aa .sub{font-size:12px;color:var(--gris);margin-top:2px}
+.aa p{font-size:14px;margin-top:12px}
+
+/* ── le cycle ── */
+.cycle{display:grid;grid-template-columns:repeat(4,1fr);gap:0;margin-top:24px;
+  border:1px solid var(--filet);border-radius:5px;overflow:hidden}
+.et{padding:16px 18px}
+.et + .et{border-left:1px solid var(--filet)}
+.et__n{font-family:'Nunito',sans-serif;font-size:11px;font-weight:800;letter-spacing:.1em;
+  text-transform:uppercase;color:var(--niv)}
+.et h4{font-size:16px;font-weight:900;margin-top:5px}
+.et p{font-size:13px;margin-top:6px}
+.et .qui{font-size:11.5px;color:var(--gris);margin-top:8px;font-style:italic}
+
+/* ── les sujets ── */
+.famille{margin-top:30px}
+.famille__t{display:flex;align-items:baseline;gap:12px;border-bottom:1.5px solid var(--encre);
+  padding-bottom:8px}
+.famille__t h3{font-size:20px;font-weight:900}
+.famille__t span{font-size:12.5px;color:var(--gris)}
+.sujet{display:grid;grid-template-columns:38px minmax(0,1fr) 128px;gap:16px;align-items:start;
+  border-bottom:1px solid var(--filet-fin);padding:14px 0}
+.sujet__case{padding-top:2px}
+.sujet__case button{width:24px;height:24px;border:1.5px solid var(--filet);border-radius:5px;
+  background:#FFF;padding:0;color:transparent;font-size:14px;font-weight:800;line-height:1}
+.sujet__case button[aria-pressed="true"]{background:var(--niv);border-color:var(--niv);color:#FFF}
+.sujet h4{font-size:16px;font-weight:900}
+.sujet .quoi{font-size:13.6px;margin-top:5px}
+.sujet .meta{font-size:11.5px;color:var(--gris);margin-top:7px;font-family:'IBM Plex Mono',monospace}
+.sujet .droite{text-align:right}
+.pastille{display:inline-block;font-size:10.5px;font-weight:700;padding:3px 9px;border-radius:11px;
+  white-space:nowrap;margin-bottom:5px}
+.pastille.p1{background:var(--niv-pale);color:var(--niv-fonce)}
+.pastille.p2{background:var(--acier-pale);color:var(--acier-fonce)}
+.pastille.p3{background:var(--papier);color:var(--gris);border:1px solid var(--filet)}
+.sujet .ecrans{font-family:'IBM Plex Mono',monospace;font-size:11.5px;color:var(--gris);display:block}
+
+/* ── le modèle de données ── */
+pre.code{background:var(--papier);border:1px solid var(--filet-fin);border-radius:4px;
+  padding:16px 18px;margin-top:18px;overflow-x:auto;font-family:'IBM Plex Mono',monospace;
+  font-size:12.3px;line-height:1.65;color:var(--encre)}
+pre.code i{color:var(--gris);font-style:normal}
+
+table{border-collapse:collapse;width:100%;margin-top:20px;font-size:13.6px}
+th{text-align:left;font-family:'Nunito',sans-serif;font-size:11px;font-weight:800;letter-spacing:.1em;
+  text-transform:uppercase;color:var(--gris);border-bottom:1.5px solid var(--encre);padding:0 14px 8px 0}
+td{border-bottom:1px solid var(--filet-fin);padding:11px 14px 11px 0;vertical-align:top}
+td.k{width:220px;font-weight:700;color:var(--encre)}
+
+.note{background:var(--papier);border-left:3px solid var(--ambre);padding:14px 18px;margin-top:24px;
+  font-size:13.8px;max-width:84ch}
+.note.ok{border-left-color:var(--niv)}
+
+.barre-export{position:sticky;bottom:0;background:rgba(255,255,255,.96);border-top:1px solid var(--filet);
+  padding:12px 0;margin-top:26px;display:flex;align-items:center;gap:14px;font-size:13px;color:var(--gris);
+  flex-wrap:wrap}
+.btn{border:1px solid var(--encre);background:var(--encre);color:#FFF;border-radius:4px;padding:9px 16px;
+  font-family:'Nunito',sans-serif;font-weight:800;font-size:13px}
+.btn.b2{background:#FFF;color:var(--encre)}
+#sortie{width:100%;min-height:110px;margin-top:12px;font-family:'IBM Plex Mono',monospace;font-size:12px;
+  border:1px solid var(--filet);border-radius:4px;padding:10px;display:none}
+
+.pied{margin-top:70px;border-top:1px solid var(--filet);padding-top:14px;font-size:12.5px;color:var(--gris)}
+
+@media (max-width:900px){
+  .hero,.avant-apres{grid-template-columns:1fr;gap:26px}
+  .cycle{grid-template-columns:1fr}
+  .et + .et{border-left:0;border-top:1px solid var(--filet)}
+  .hero h1{font-size:36px}
+  .sujet{grid-template-columns:34px minmax(0,1fr)}
+  .sujet .droite{grid-column:2;text-align:left}
+  td.k{width:auto}
+  .page,.fr-barre{padding-left:20px;padding-right:20px}
+}
+</style>
+</head>
+<body>
+
+<div class="fr-barre">
+  <div class="fr-lockup">
+    <span class="fr-nom" role="img" aria-label="francis">franc<span class="fr-i" aria-hidden="true">ı<span class="fr-point"></span></span>s</span>
+    <span class="fr-trait"></span>
+    <span class="fr-desc">Modules autonomes · la remédiation</span>
+  </div>
+  <nav class="fr-liens">
+    <a href="index.html">← Modules autonomes</a>
+    <a href="deux-modeles.html">Deux modèles</a>
+    <a href="n5-rendezvous-defi1/index.html">La démo</a>
+  </nav>
+</div>
+
+<div class="page">
+
+  <div class="hero">
+    <div>
+      <p class="eyebrow">Chantier · 30 août 2026</p>
+      <h1>Ce n'est pas un cours.<br><span>C'est une ordonnance.</span></h1>
+      <p class="intro">Le parcours autonome ne double pas le module : il traite <b>une seule
+      difficulté</b>, constatée chez un élève précis, et l'enseignant le lui <b>envoie</b>.
+      Dix minutes, huit à douze écrans, un savoir du programme. Ça change le sujet, la
+      longueur, le prix — et surtout ce que le suivi doit savoir faire.</p>
+    </div>
+    <div>
+      <p class="verdict">Le calcul du remplacement donnait <b>~6 700 écrans</b>. Quatorze
+      parcours de remédiation en font <b>~140</b> — et ils servent les <b>87 modules</b> à la
+      fois, parce qu'ils sont rangés par <b>savoir</b>, pas par situation.</p>
+      <div class="chiffres">
+        <div class="ch"><div class="ch__n">~10</div><div class="ch__l">écrans par parcours</div></div>
+        <div class="ch"><div class="ch__n">10 min</div><div class="ch__l">pour l'élève</div></div>
+        <div class="ch"><div class="ch__n">78</div><div class="ch__l">savoirs au niveau 5</div></div>
+        <div class="ch"><div class="ch__n">14</div><div class="ch__l">sujets proposés</div></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ─────────────────────────────────────────────── -->
+  <section class="bloc">
+    <span class="eyebrow">Ce que ça change</span>
+    <h2>Le parcours cesse d'être un cours et devient une réponse</h2>
+    <p class="intro">La différence n'est pas de taille, elle est de <b>nature</b>. Un module
+    couvre une situation pour tout un groupe, à l'avance. Un parcours de remédiation traite un
+    savoir pour une personne, <b>après coup</b>, parce que quelque chose a échoué.</p>
+
+    <div class="avant-apres">
+      <div class="aa">
+        <h3>Le storyline dont on parlait hier</h3>
+        <p class="sub">Un module autonome, 77 écrans</p>
+        <p>Il refait ce que le module de classe fait déjà, dans une autre forme. Il coûte cher,
+        il double le matériel à tenir, et il entre en concurrence avec la matinée en groupe —
+        qui reste meilleure, parce qu'un enseignant y est.</p>
+      </div>
+      <div class="aa on">
+        <h3>Le parcours de remédiation</h3>
+        <p class="sub">Un savoir, 8 à 12 écrans</p>
+        <p>Il fait ce que <b>personne</b> ne fait aujourd'hui : reprendre une notion précise
+        avec un élève qui a buté dessus, seul, entre deux cours. Il ne concurrence rien, il ne
+        double rien — et il sert tous les niveaux, puisqu'un savoir traverse les modules.</p>
+      </div>
+    </div>
+
+    <div class="note ok"><b>Pourquoi c'est le bon usage du format, et pas seulement un usage
+    moins cher.</b> Les trois forces du storyline sont exactement ce qu'une remédiation
+    demande : <b>une idée par écran</b> (une notion se découpe, une situation non),
+    <b>l'explication au moment de l'erreur</b> (c'est tout ce qu'est une remédiation), et
+    <b>le trajet plutôt que le résultat</b> — l'enseignant a besoin de savoir si la lacune est
+    comblée, pas d'un pourcentage. Ses trois faiblesses — le prix, l'enfermement, l'absence de
+    parole humaine — deviennent sans objet sur dix minutes ciblées.</div>
+  </section>
+
+  <!-- ─────────────────────────────────────────────── -->
+  <section class="bloc">
+    <span class="eyebrow">Le suivi</span>
+    <h2>Constater · envoyer · faire · refermer</h2>
+    <p class="intro">Aujourd'hui le suivi répond à « où en est la classe dans ce module ». Il
+    devra répondre à « <b>quel savoir bloque, chez qui, et est-ce réglé</b> ». C'est un cycle,
+    et il a un début et une fin — ce qui est nouveau : rien ne se referme, aujourd'hui.</p>
+
+    <div class="cycle">
+      <div class="et">
+        <div class="et__n">1 · Constater</div>
+        <h4>Une lacune se voit</h4>
+        <p>Dans la progression du groupe, la fiche de l'élève, le direct de la classe — ou
+        simplement en corrigeant un texte.</p>
+        <p class="qui">L'enseignant</p>
+      </div>
+      <div class="et">
+        <div class="et__n">2 · Envoyer</div>
+        <h4>« Envoyer un parcours »</h4>
+        <p>Un bouton à côté du point faible. On choisit le parcours dans l'étagère, on ajoute
+        un mot si on veut, on envoie à une personne ou à quatre.</p>
+        <p class="qui">L'enseignant, en deux clics</p>
+      </div>
+      <div class="et">
+        <div class="et__n">3 · Faire</div>
+        <h4>« Votre enseignant vous a envoyé… »</h4>
+        <p>Le parcours paraît en tête du portail de l'élève, avec le mot. Dix minutes, le soir,
+        sur son téléphone. Il reprend où il s'est arrêté.</p>
+        <p class="qui">L'élève, seul</p>
+      </div>
+      <div class="et">
+        <div class="et__n">4 · Refermer</div>
+        <h4>La lacune est-elle comblée ?</h4>
+        <p>Le parcours finit par trois vérifications sur le même savoir. Trois sur trois sans
+        rattrapage : c'est réglé. Sinon, l'enseignant le sait, et sait où.</p>
+        <p class="qui">Le parcours, puis l'enseignant</p>
+      </div>
+    </div>
+
+    <p class="intro"><b>Ce que ça demande d'ajouter</b> — et c'est peu, parce que presque tout
+    existe :</p>
+
+    <table>
+      <tbody>
+        <tr><td class="k">Une étagère de parcours</td>
+          <td>Chaque parcours porte son <b>savoir</b> (<code>n5-s31</code>) et son niveau. Le
+          catalogue les range à part : ce ne sont ni des cours ni des ateliers, on ne les
+          planifie pas — on les envoie.</td></tr>
+        <tr><td class="k">Un envoi</td>
+          <td>Un enregistrement : <code>{élève, parcours, envoyé par, quand, motif, état}</code>.
+          C'est la seule pièce vraiment neuve, et elle ressemble à ce que
+          <code>schedule.json</code> fait déjà pour les activités d'un groupe.</td></tr>
+        <tr><td class="k">Une bande dans le portail élève</td>
+          <td>« Votre enseignant vous a envoyé » — au-dessus des modules, avec le mot de
+          l'enseignant. Sans cette bande, l'envoi ne se voit pas.</td></tr>
+        <tr><td class="k">Le retour du parcours</td>
+          <td>Ce que le moteur enregistre déjà — écran vu, essai 1 ou 2, rattrapage ouvert,
+          terminé — remonte au serveur au lieu de rester sur le poste. Le suivi <b>local</b>
+          de la démo devient le suivi <b>d'un envoi</b>.</td></tr>
+        <tr><td class="k">Rien d'autre</td>
+          <td>Ni nouveau tableau de bord, ni nouvelle page : l'état d'un envoi se lit sur la
+          <b>fiche de l'élève</b> et dans la <b>progression du groupe</b>, où l'enseignant
+          regarde déjà.</td></tr>
+      </tbody>
+    </table>
+
+    <pre class="code">envoi = {
+  eleveId, parcours: 'passe-compose-etre-avoir', savoir: 'n5-s31',
+  envoyePar, envoyeLe, mot: "Regarde ça avant jeudi — c'est ce qui revient dans ton texte.",
+  etat: 'envoye' | 'commence' | 'termine',
+  <i>// ce que le parcours rend en se refermant</i>
+  resultat: { reussiSeul: 2, avecRattrapage: 1, rattrapagesOuverts: ['ecran-07'] }
+}</pre>
+
+    <div class="note"><b>Le morceau qui manque vraiment, et il faut le dire.</b> Pour que le
+    système <b>suggère</b> un parcours tout seul — « Fatima a raté quatre zones sur le passé
+    composé » — il faudrait que chaque exercice des 87 modules porte le savoir qu'il teste.
+    Ce lien n'existe qu'au niveau du <b>module</b>, pas de l'exercice. C'est un travail
+    d'étiquetage réel, et c'est pourquoi je propose de <b>ne pas commencer par là</b> :
+    dans la première version, <b>c'est l'enseignant qui choisit</b> dans l'étagère. La
+    suggestion automatique vient après, quand on saura quels parcours servent vraiment.</div>
+  </section>
+
+  <!-- ─────────────────────────────────────────────── -->
+  <section class="bloc">
+    <span class="eyebrow">Les sujets</span>
+    <h2>Quatorze parcours, tirés des savoirs du programme</h2>
+    <p class="intro">Chacun porte l'identifiant du savoir au niveau 5 — le programme en compte
+    <b>78</b> : 37 sur la phrase, 34 sur le lexique, 5 sur le texte, 2 sur les sons. Cochez ce
+    que vous voulez voir produit ; l'export se recolle dans une session.
+    <b>Priorité 1</b> = je le ferais en premier.</p>
+
+    <div class="famille">
+      <div class="famille__t"><h3>Les verbes</h3>
+        <span>ce qui revient le plus dans les textes d'élèves</span></div>
+
+      <div class="sujet" data-id="pc-etre-avoir">
+        <div class="sujet__case"><button type="button" aria-pressed="false" aria-label="Choisir">✓</button></div>
+        <div>
+          <h4>Passé composé : être ou avoir ?</h4>
+          <p class="quoi">Les quatorze verbes qui prennent <i>être</i>, l'accord qui suit, et le
+          piège des verbes qui prennent les deux selon le sens (<i>je suis sorti</i> /
+          <i>j'ai sorti les poubelles</i>). Le savoir le plus visible dans une production
+          écrite : une faute là se voit à chaque phrase.</p>
+          <p class="meta">n5-s31 · réutilise les dialogues des modules santé et travail</p>
+        </div>
+        <div class="droite"><span class="pastille p1">Priorité 1</span>
+          <span class="ecrans">12 écrans</span></div>
+      </div>
+
+      <div class="sujet" data-id="imparfait-vs-pc">
+        <div class="sujet__case"><button type="button" aria-pressed="false" aria-label="Choisir">✓</button></div>
+        <div>
+          <h4>Raconter : ce qui durait, ce qui est arrivé</h4>
+          <p class="quoi">L'imparfait contre le passé composé — pas par la règle, par le récit.
+          « Je me levais le matin et tout tournait » / « Ça a commencé au mois de mars ».
+          C'est exactement ce que le défi 2 du module <i>rendez-vous</i> demande de faire, et
+          c'est là que tout le monde trébuche.</p>
+          <p class="meta">n5-s32 + n5-s31 · les MP3 du défi 2 existent déjà</p>
+        </div>
+        <div class="droite"><span class="pastille p1">Priorité 1</span>
+          <span class="ecrans">12 écrans</span></div>
+      </div>
+
+      <div class="sujet" data-id="subjonctif-il-faut">
+        <div class="sujet__case"><button type="button" aria-pressed="false" aria-label="Choisir">✓</button></div>
+        <div>
+          <h4>« Il faut que… » — le subjonctif en un seul emploi</h4>
+          <p class="quoi">Ne pas enseigner le subjonctif : enseigner <i>il faut que je vienne</i>,
+          <i>il faut que vous soyez à jeun</i>. Un emploi, six verbes, et on couvre 80 % de ce
+          qu'un élève de niveau 5 entend dans une clinique ou un bureau.</p>
+          <p class="meta">n5-s34 · découpage volontairement plus étroit que le programme</p>
+        </div>
+        <div class="droite"><span class="pastille p2">Priorité 2</span>
+          <span class="ecrans">10 écrans</span></div>
+      </div>
+
+      <div class="sujet" data-id="futur">
+        <div class="sujet__case"><button type="button" aria-pressed="false" aria-label="Choisir">✓</button></div>
+        <div>
+          <h4>Demain : « je vais » ou « j'irai » ?</h4>
+          <p class="quoi">Le futur proche et le futur simple, et le fait qu'au Québec on emploie
+          le premier presque partout à l'oral. Un élève qui dit « j'irai demain » n'a pas
+          tort — il sonne écrit.</p>
+          <p class="meta">n5-s33 · repère culturel autant que grammatical</p>
+        </div>
+        <div class="droite"><span class="pastille p2">Priorité 2</span>
+          <span class="ecrans">10 écrans</span></div>
+      </div>
+
+      <div class="sujet" data-id="aspect">
+        <div class="sujet__case"><button type="button" aria-pressed="false" aria-label="Choisir">✓</button></div>
+        <div>
+          <h4>« Je suis en train de », « je viens de »</h4>
+          <p class="quoi">Dire qu'une action est en cours ou vient de finir. Invisible pour
+          beaucoup d'élèves, et pourtant c'est ce qu'on répond au téléphone quand on demande
+          « vous êtes disponible ? ».</p>
+          <p class="meta">n5-s38 · auxiliaires d'aspect</p>
+        </div>
+        <div class="droite"><span class="pastille p3">Priorité 3</span>
+          <span class="ecrans">8 écrans</span></div>
+      </div>
+    </div>
+
+    <div class="famille">
+      <div class="famille__t"><h3>La phrase</h3>
+        <span>ce qui bloque à l'oral, en direct</span></div>
+
+      <div class="sujet" data-id="questions">
+        <div class="sujet__case"><button type="button" aria-pressed="false" aria-label="Choisir">✓</button></div>
+        <div>
+          <h4>Poser une question : trois façons, et laquelle au téléphone</h4>
+          <p class="quoi"><i>Est-ce que vous avez…</i> · <i>Avez-vous…</i> · <i>Vous avez-tu…</i>
+          Les trois sont justes ; elles ne se disent pas aux mêmes personnes. Le programme
+          nomme explicitement la particule <b>-tu</b> québécoise, que nos élèves entendent
+          partout et qu'aucun manuel ne leur explique.</p>
+          <p class="meta">n5-s07 · phrases interrogatives, avec la particule -tu</p>
+        </div>
+        <div class="droite"><span class="pastille p1">Priorité 1</span>
+          <span class="ecrans">12 écrans</span></div>
+      </div>
+
+      <div class="sujet" data-id="pronoms-cod-coi">
+        <div class="sujet__case"><button type="button" aria-pressed="false" aria-label="Choisir">✓</button></div>
+        <div>
+          <h4>« Je vous le confirme » — deux pronoms d'affilée</h4>
+          <p class="quoi"><i>le, la, les</i> et <i>lui, leur</i>, puis l'ordre quand il y en a
+          deux. La phrase de l'agente au téléphone est pleine de ça : <i>je vous la réserve</i>,
+          <i>je le lui envoie</i>. Un élève qui ne les place pas se fait comprendre, mais il
+          entend mal ce qu'on lui dit.</p>
+          <p class="meta">n5-s24 · pronoms personnels conjoints</p>
+        </div>
+        <div class="droite"><span class="pastille p1">Priorité 1</span>
+          <span class="ecrans">12 écrans</span></div>
+      </div>
+
+      <div class="sujet" data-id="negation">
+        <div class="sujet__case"><button type="button" aria-pressed="false" aria-label="Choisir">✓</button></div>
+        <div>
+          <h4>La négation, et le « ne » qu'on n'entend jamais</h4>
+          <p class="quoi"><i>ne pas</i> devant l'infinitif (<i>ne pas oublier votre carte</i>),
+          et le fait qu'à l'oral le <i>ne</i> tombe presque toujours. L'élève qui lit un avis
+          écrit et qui écoute une consigne parlée n'entend pas la même langue.</p>
+          <p class="meta">n5-s10 · phrases négatives</p>
+        </div>
+        <div class="droite"><span class="pastille p2">Priorité 2</span>
+          <span class="ecrans">10 écrans</span></div>
+      </div>
+
+      <div class="sujet" data-id="qui-que-ou">
+        <div class="sujet__case"><button type="button" aria-pressed="false" aria-label="Choisir">✓</button></div>
+        <div>
+          <h4>« qui », « que », « où » : joindre deux idées</h4>
+          <p class="quoi">Le passage de deux phrases courtes à une phrase d'adulte. C'est le
+          critère qui sépare un texte de niveau 4 d'un texte de niveau 5, et il tient dans
+          trois mots.</p>
+          <p class="meta">n5-s25 + n5-s16 · pronoms et subordonnées relatives</p>
+        </div>
+        <div class="droite"><span class="pastille p2">Priorité 2</span>
+          <span class="ecrans">10 écrans</span></div>
+      </div>
+
+      <div class="sujet" data-id="imperatif">
+        <div class="sujet__case"><button type="button" aria-pressed="false" aria-label="Choisir">✓</button></div>
+        <div>
+          <h4>Donner et recevoir une consigne</h4>
+          <p class="quoi">L'impératif et ses pronoms accrochés derrière — <i>présentez-vous</i>,
+          <i>apportez-la</i>, <i>ne le jetez pas</i>. Ce sont les phrases qu'on <b>reçoit</b> à
+          un comptoir : les comprendre compte plus que les produire.</p>
+          <p class="meta">n5-s09 · phrases impératives, formes postverbales</p>
+        </div>
+        <div class="droite"><span class="pastille p3">Priorité 3</span>
+          <span class="ecrans">10 écrans</span></div>
+      </div>
+    </div>
+
+    <div class="famille">
+      <div class="famille__t"><h3>Les mots, les nombres, les sons</h3>
+        <span>ce qui fait rater une information précise</span></div>
+
+      <div class="sujet" data-id="heure-date">
+        <div class="sujet__case"><button type="button" aria-pressed="false" aria-label="Choisir">✓</button></div>
+        <div>
+          <h4>L'heure et la date au Québec</h4>
+          <p class="quoi">« Quatorze heures dix », « en fin de journée », « le 19 », « d'ici
+          vingt-quatre heures ». <b>C'est exactement ce que la démo fait rater</b> — et une
+          erreur là coûte un rendez-vous manqué, pas une faute d'accord.</p>
+          <p class="meta">lexique · repère culturel · réutilise les MP3 du défi 1</p>
+        </div>
+        <div class="droite"><span class="pastille p1">Priorité 1</span>
+          <span class="ecrans">10 écrans</span></div>
+      </div>
+
+      <div class="sujet" data-id="nombres-telephone">
+        <div class="sujet__case"><button type="button" aria-pressed="false" aria-label="Choisir">✓</button></div>
+        <div>
+          <h4>Les nombres au téléphone</h4>
+          <p class="quoi">Un numéro d'assurance maladie, un code postal, un montant, une adresse.
+          Dictés vite, sans visage, sans possibilité de faire répéter trois fois. Le seul
+          parcours qui se corrige entièrement tout seul : on écrit, on compare.</p>
+          <p class="meta">lexique · s'appuie sur le module rendez-vous et le module banque</p>
+        </div>
+        <div class="droite"><span class="pastille p1">Priorité 1</span>
+          <span class="ecrans">10 écrans</span></div>
+      </div>
+
+      <div class="sujet" data-id="y-u">
+        <div class="sujet__case"><button type="button" aria-pressed="false" aria-label="Choisir">✓</button></div>
+        <div>
+          <h4>« une » et « vous » — deux sons que personne ne voit</h4>
+          <p class="quoi">Le [y] et le [u]. La mini-leçon <b>existe déjà</b>, écrite et
+          sonorisée, dans le module <i>rendez-vous</i> : la porter en parcours coûte le montage,
+          pas l'écriture. Bon candidat pour éprouver la chaîne à moindre prix.</p>
+          <p class="meta">phonétique · contenu et MP3 déjà produits</p>
+        </div>
+        <div class="droite"><span class="pastille p2">Priorité 2</span>
+          <span class="ecrans">8 écrans</span></div>
+      </div>
+
+      <div class="sujet" data-id="lien-recit">
+        <div class="sujet__case"><button type="button" aria-pressed="false" aria-label="Choisir">✓</button></div>
+        <div>
+          <h4>Mettre de l'ordre : d'abord, ensuite, finalement</h4>
+          <p class="quoi">Les mots qui font tenir un récit debout, et la virgule qui va avec.
+          Ce que l'enseignant écrit le plus souvent dans la marge d'une production écrite :
+          « c'est juste, mais on ne suit pas ».</p>
+          <p class="meta">n5-s41 + n5-s42 · adverbes, ponctuation</p>
+        </div>
+        <div class="droite"><span class="pastille p3">Priorité 3</span>
+          <span class="ecrans">10 écrans</span></div>
+      </div>
+    </div>
+
+    <div class="barre-export">
+      <button class="btn" id="exporter">Exporter ma sélection</button>
+      <button class="btn b2" id="p1">Cocher les priorité 1</button>
+      <button class="btn b2" id="rien">Tout décocher</button>
+      <span id="etat">Rien de choisi.</span>
+    </div>
+    <textarea id="sortie" readonly></textarea>
+  </section>
+
+  <!-- ─────────────────────────────────────────────── -->
+  <section class="bloc">
+    <span class="eyebrow">Ce que je ferais</span>
+    <h2>Un parcours d'abord, pas six</h2>
+    <p class="intro">Les six priorité 1 font environ 68 écrans — un module. Mais je n'en
+    écrirais <b>qu'un</b> avant de vous le remontrer, et je choisirais
+    <b>« L'heure et la date au Québec »</b> : c'est celui dont la démo a déjà prouvé qu'il
+    manque, il réutilise des MP3 produits, il se corrige sans IA, et il est assez court pour
+    qu'on juge la forme complète — un parcours qui commence, qui vérifie et qui <b>se
+    referme</b>, ce qu'aucun de nos deux écrans ne fait encore.</p>
+    <p class="intro">Ensuite seulement l'envoi : le bouton chez l'enseignant, la bande chez
+    l'élève, le retour du résultat. Écrire quatorze parcours avant d'avoir vu un seul envoi
+    aller au bout serait refaire l'erreur que le calcul des 6 700 écrans a évitée.</p>
+
+    <div class="note"><b>Et l'inconnue reste la même.</b> On ne sait toujours pas si un élève,
+    seul chez lui, va au bout d'un parcours. Dix minutes est un pari plus raisonnable que
+    vingt-cinq — c'est un argument de plus pour la remédiation, pas une preuve.</div>
+  </section>
+
+  <p class="pied">francis · modules autonomes · parcours de remédiation · 30 août 2026 ·
+  <span class="mono">modules-autonomes/parcours-de-remediation.html</span></p>
+
+</div>
+
+<script>
+(function () {
+  var CLE = 'francis.parcours.remediation.choix';
+  var choisis = {};
+  try { choisis = JSON.parse(localStorage.getItem(CLE) || '{}') || {}; } catch (e) { choisis = {}; }
+
+  var sujets = Array.prototype.slice.call(document.querySelectorAll('.sujet'));
+  var etat = document.getElementById('etat');
+  var sortie = document.getElementById('sortie');
+
+  function majEtat() {
+    var n = Object.keys(choisis).filter(function (k) { return choisis[k]; }).length;
+    etat.textContent = n === 0 ? 'Rien de choisi.'
+      : n + ' parcours choisi' + (n > 1 ? 's' : '') + ' · ~' + (n * 10) + ' écrans.';
+  }
+  function garder() {
+    try { localStorage.setItem(CLE, JSON.stringify(choisis)); } catch (e) {}
+    majEtat();
+  }
+  function poser(s, val) {
+    var b = s.querySelector('.sujet__case button');
+    b.setAttribute('aria-pressed', val ? 'true' : 'false');
+    if (val) choisis[s.getAttribute('data-id')] = true;
+    else delete choisis[s.getAttribute('data-id')];
+  }
+
+  sujets.forEach(function (s) {
+    var b = s.querySelector('.sujet__case button');
+    if (choisis[s.getAttribute('data-id')]) b.setAttribute('aria-pressed', 'true');
+    b.addEventListener('click', function () {
+      poser(s, b.getAttribute('aria-pressed') !== 'true');
+      garder();
+    });
+  });
+
+  document.getElementById('p1').addEventListener('click', function () {
+    sujets.forEach(function (s) {
+      if (s.querySelector('.pastille.p1')) poser(s, true);
+    });
+    garder();
+  });
+  document.getElementById('rien').addEventListener('click', function () {
+    sujets.forEach(function (s) { poser(s, false); });
+    sortie.style.display = 'none';
+    garder();
+  });
+  document.getElementById('exporter').addEventListener('click', function () {
+    sortie.style.display = 'block';
+    sortie.value = JSON.stringify({
+      page: 'parcours-de-remediation',
+      parcours: Object.keys(choisis).filter(function (k) { return choisis[k]; })
+    }, null, 2);
+    sortie.select();
+  });
+
+  majEtat();
+})();
+</script>
+</body>
+</html>
