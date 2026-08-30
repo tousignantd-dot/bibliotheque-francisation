@@ -8,15 +8,22 @@
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet" />
   <style>
     *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
-    body { font-family: 'Inter', system-ui, sans-serif; background: #0f1117; display: flex; flex-direction: column; height: 100vh; overflow: hidden; }
+    /* La hauteur se prend sur le viewport DYNAMIQUE. Sur iPhone, `100vh`
+       vaut la fenêtre barres masquées : le bas du cadre passait sous la
+       barre d'outils de Safari, donc le bas du module restait inatteignable
+       et la bande « Mes outils » du module — collée en bas du cadre —
+       ne s'affichait jamais. `100dvh` suit les barres du navigateur ;
+       `100vh` reste écrit d'abord pour les navigateurs qui l'ignorent. */
+    body { font-family: 'Inter', system-ui, sans-serif; background: #0f1117; display: flex; flex-direction: column; height: 100vh; height: 100dvh; overflow: hidden; }
 
     .bar {
       background: var(--bar-color, #171922); border-bottom: 1px solid rgba(255,255,255,.08);
       padding: 0 20px; height: 52px; display: flex; align-items: center;
       justify-content: space-between; gap: 16px; flex-shrink: 0;
     }
-    .bar-title { font-size: 14px; font-weight: 600; color: #f1f5f9; letter-spacing: -.2px; }
-    .bar-right { display: flex; align-items: center; gap: 12px; }
+    .bar-title { font-size: 14px; font-weight: 600; color: #f1f5f9; letter-spacing: -.2px;
+                 min-width: 0; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+    .bar-right { display: flex; align-items: center; gap: 12px; flex-shrink: 0; }
 
     .status-badges { display: flex; gap: 8px; }
     .badge {
@@ -82,6 +89,21 @@
 
     iframe {
       flex: 1; width: 100%; border: none; background: #fff;
+    }
+
+    /* ── Téléphone ──────────────────────────────────────────────
+       Le nom du module passe avant les voyants : les deux mots
+       « Dialogue » et « Exercices » se retirent, le glyphe et sa
+       couleur suffisent, et la place gagnée revient au titre. Sans
+       ça, le titre était comprimé à trois lignes dans une barre
+       haute de 52 px, donc coupé. */
+    @media (max-width: 640px) {
+      .bar { padding: 0 12px; gap: 8px; }
+      .bar-title { font-size: 13.5px; }
+      .bar-right { gap: 6px; }
+      .badge { font-size: 0; gap: 0; padding: 6px; }
+      .badge svg { width: 14px; height: 14px; }
+      .btn-back { padding: 5px 8px; gap: 4px; }
     }
   </style>
 </head>
