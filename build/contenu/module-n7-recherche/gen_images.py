@@ -137,12 +137,12 @@ IMAGES = [
   "sans aucun chiffre, sans aucune légende et sans axe gradué** ; les titres "
   "et tous les blocs de texte autour sont de simples traits gris. Aucun "
   "crochet, aucun caractère, aucun pourcentage nulle part." + SANS_MOT),
- ('offre-emploi', 'vocab', P_VOC, STYLE + " Gros plan sur une feuille "
-  "blanche imprimée au laser, punaisée seule au centre d'un babillard de "
-  "liège : un titre en gros caractères gras réduit à une barre grise pleine "
-  "en haut, puis trois blocs de lignes grises régulières en dessous. Papier "
-  "blanc net, jamais jauni ; aucune écriture à la main nulle part, aucun "
-  "trait de stylo ni de crayon." + SANS_MOT),
+ ('offre-emploi', 'vocab', P_VOC, STYLE + " Gros plan sur une feuille blanche punaisée à un babillard de liège : "
+  "un titre réduit à une barre grise pleine en haut, puis trois blocs "
+  "de lignes grises régulières. Au bas de la feuille, une rangée de "
+  "languettes détachables prédécoupées en dents de peigne, dont trois "
+  "ont déjà été arrachées, bien nettes et bien visibles. Papier blanc "
+  "net, aucune écriture à la main." + SANS_MOT),
 ]
 
 

@@ -68,11 +68,17 @@ IMAGES = [
  ('produits-entretien', 'images', P_EX, STYLE + " Une allée de produits d'entretien : "
   "bouteilles de plastique de différentes tailles et couleurs alignées sur trois "
   "tablettes, sans aucune étiquette lisible. Plancher clair."),
- ('etiquette-dos', 'images', P_EX, STYLE + " Gros plan sur le bas du tableau imprimé en "
-  "noir sur fond blanc au dos d'une boîte de conserve posée sur un comptoir de cuisine : "
-  "la ligne de titre du tableau est coupée par le bord supérieur de l'image et reste "
-  "hors champ. Seuls les filets, les lignes horizontales et le cadre du tableau sont "
-  "visibles. Aucun mot, aucun chiffre, aucun caractère lisible."),
+ ('etiquette-dos', 'images', P_EX, "Photographie réaliste, format paysage, "
+  "lumière naturelle douce, faible profondeur de champ, comptoir de cuisine "
+  "québécoise ordinaire. Gros plan net et de face sur le dos d'une boîte de conserve "
+  "propre et sans marque, tenue debout, l'étiquette occupant toute la hauteur de "
+  "l'image. On y lit un vrai tableau de valeur nutritive canadien, imprimé en noir "
+  "sur fond blanc et parfaitement net : le titre « Valeur nutritive », la mention "
+  "« pour 1 tasse (250 mL) », un trait épais, puis les lignes Calories, Lipides, "
+  "Sodium, Glucides, Fibres, Sucres, Protéines, chacune suivie de sa quantité en "
+  "grammes ou en milligrammes et de son pourcentage. Le texte est en français du "
+  "Québec, correctement orthographié, sans un mot d\u2019anglais. Aucun nom de "
+  "marque, aucun logo, aucune personne."),
  ('frigo-bas', 'images', P_EX, STYLE + " Gros plan en contre-plongée sur le bas d'un "
   "réfrigérateur ouvert : le tiroir du bas, tiré vers l'avant, remplit les deux tiers du "
   "cadre, avec des légumes et un plateau de viande emballée à l'intérieur. Une fine buée "

@@ -93,15 +93,18 @@ IMAGES = [
   "vitrée, avec un banc et une poubelle. Le poteau d'arrêt est coupé à mi-hauteur par le "
   "bord droit du cadre, sa plaque entièrement hors champ ; aucun chiffre, aucun "
   "pictogramme, aucun panneau dans le champ. Sol de béton lisse."),
- ('correspondance', 'vocab', P_VOC, STYLE + " Un couloir de correspondance de métro "
-  "presque vide : deux escaliers partant dans des directions opposées, carrelage clair, "
-  "rampes métalliques. Le plafond et tout ce qui y pend sont coupés par le bord "
-  "supérieur ; aucun panneau, aucune plaque, aucun nom de station dans le champ. Deux ou "
-  "trois silhouettes lointaines et floues, une par escalier."),
- ('direction', 'vocab', P_VOC, STYLE + " Un poteau portant deux flèches directionnelles "
-  "pointant en sens opposés, au bord d'une rue de quartier, cadré en contre-plongée. Les "
-  "deux flèches sont vues de trois quarts arrière, leur face écrite tournée à l'opposé de "
-  "l'objectif ; seules leurs silhouettes fléchées se découpent sur le ciel."),
+ ('correspondance', 'vocab', P_VOC, STYLE + " Un quai de métro vu depuis le fond : à gauche, une rame arrêtée "
+  "portes ouvertes ; à droite, au-delà d'un court passage voûté, une "
+  "seconde rame attend sur un autre quai. Deux voyageurs vus de dos "
+  "marchent du premier quai vers le second. Une grande flèche blanche "
+  "peinte au sol indique le passage. Aucun panneau, aucune plaque, "
+  "aucun nom de station, aucun chiffre dans le champ."),
+ ('direction', 'vocab', P_VOC, STYLE + " L'avant d'un autobus de ville arrêté à un arrêt, vu de trois quarts "
+  "depuis le trottoir. Au-dessus du pare-brise, le panneau de "
+  "destination est une bande lumineuse ambrée entièrement floue, où "
+  "aucun caractère n'est formé. Au premier plan, une personne vue de "
+  "dos lève la tête vers ce panneau. Aucun numéro, aucun mot, aucun "
+  "sigle de société de transport nulle part."),
  ('sentier', 'vocab', P_VOC, STYLE + " Un sentier de terre serpentant dans un boisé de "
   "quartier, avec des arbres feuillus de chaque côté et de la lumière filtrant entre les "
   "branches."),

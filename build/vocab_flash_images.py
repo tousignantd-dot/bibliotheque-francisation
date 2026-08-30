@@ -42,6 +42,13 @@ MALADE = ("Photographie réaliste, format carré, lumière naturelle douce, faib
           "aucun logo, aucune marque, aucun filigrane. Une seule personne, vue "
           "de trois quarts arrière, aucun visage reconnaissable.")
 
+# Comme MALADE : STYLE interdit toute personne, et certains mots ne se montrent
+# que par un geste. Ici deux mains, jamais un visage.
+MAINS = ("Photographie réaliste, format carré, lumière naturelle douce, faible "
+         "profondeur de champ. Palette sobre. Aucun texte, aucune écriture, "
+         "aucun logo, aucune marque, aucun filigrane. Deux mains seulement, "
+         "cadrées aux avant-bras, aucun visage nulle part dans l'image.")
+
 # (deck, slug du mot, prompt)
 IMAGES = [
  ('vocab-flash-conso', 'le_fromage_en_grains', STYLE + " Gros plan sur du fromage en "
@@ -72,11 +79,12 @@ IMAGES = [
   "froissés, un thermomètre et un verre d'eau à moitié bu. Lumière déclinante de fin "
   "de journée par la fenêtre. Aucune main gantée, aucune seringue, aucun soignant, "
   "aucun matériel médical dans le champ."),
- ('vocab-flash-sante', 'la_carte_d_assurance_maladie', STYLE + " Une carte de plastique "
-  "bleu uni, aux coins arrondis, posée à plat sur un comptoir de clinique et vue de "
-  "trois quarts. Sa surface est entièrement lisse et vierge : aucun logo, aucune "
-  "armoirie, aucune fleur de lys, aucun numéro, aucune photo, aucune bande, aucune "
-  "ligne gravée. Rien d'autre sur le comptoir."),
+ ('vocab-flash-sante', 'la_carte_d_assurance_maladie', MAINS + " Au comptoir d'accueil d'une "
+  "clinique, une main tend une carte de plastique unie, vert pâle et blanche, aux coins "
+  "arrondis, vers la main d'une réceptionniste qui s'avance pour la prendre. La carte "
+  "est entièrement lisse et vierge : aucun logo, aucune armoirie, aucune fleur de lys, "
+  "aucun numéro, aucune photo, aucune bande. Derrière le comptoir, un poste de travail "
+  "de clinique entièrement flou."),
 ]
 
 def par_google(prompt):

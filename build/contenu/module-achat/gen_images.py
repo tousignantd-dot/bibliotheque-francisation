@@ -94,11 +94,13 @@ IMAGES = [
   "cadre."),
  ('garantie', 'vocab', P_VOC, STYLE + " Une chemise de carton ouverte sur une table, "
   "contenant deux feuilles et une facture agrafée. Aucun texte lisible."),
- ('versement', 'vocab', P_VOC, STYLE + " Gros plan sur la grille d'un calendrier mural de "
-  "bureau, cadré sous l'en-tête : la bande du haut portant le nom du mois est coupée par "
-  "le bord supérieur de l'image et reste hors champ. Douze cases de la grille sont "
-  "marquées d'un point de crayon rouge. Une calculatrice à touches nues est posée à "
-  "côté. Aucun nom de mois, aucun chiffre, aucun jour de la semaine lisible."),
+ ('versement', 'vocab', P_VOC, STYLE + " Sur une table de cuisine, une enveloppe brune ouverte d'où sortent "
+  "quelques billets de banque canadiens et un chèque plié. À côté, une "
+  "page de calendrier mural posée à plat où une seule case est entourée "
+  "d'un gros cercle au crayon rouge. Le nom du mois et la rangée des "
+  "noms de jours sont coupés par le bord supérieur de l'image. L'argent "
+  "est au premier plan et reste net. Aucun mot, aucun chiffre lisible "
+  "nulle part."),
  ('livraison', 'vocab', P_VOC, PERS + " Deux personnes en vêtements de travail, vues de "
   "dos, descendent un gros appareil blanc d'un camion à l'aide d'un diable. Rue "
   "résidentielle."),

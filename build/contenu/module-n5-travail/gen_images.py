@@ -117,9 +117,12 @@ IMAGES = [
  ('tache', 'vocab', P_VOC, PAPIER + " Une liste manuscrite sur un bloc-notes posé à côté "
   "d'une tasse de café, avec des cases à cocher en marge. Les mots de la liste sont des "
   "traits gris, entièrement illisibles."),
- ('directives', 'vocab', P_VOC, PAPIER + " Cadrage serré et oblique sur une feuille "
-  "plastifiée punaisée au mur, couverte de petits schémas et de lignes. Aucun appareil et "
-  "aucune autre feuille dans le champ, aucun nom de fabricant. Aucun mot lisible."),
+ ('directives', 'vocab', P_VOC, PAPIER + " Une feuille plastifiée punaisée au mur, vue de face, qui montre "
+  "quatre pictogrammes simples et nets alignés de gauche à droite, "
+  "séparés par trois grosses flèches noires menant de l'un au suivant : "
+  "une main qui ouvre, un contenant qu'on remplit, un couvercle qu'on "
+  "referme, une porte. Rien d'autre sur la feuille : aucune ligne de "
+  "texte, aucun chiffre, aucun cadre."),
  ('registre', 'vocab', P_VOC, PAPIER + " Un grand cahier ouvert sur un bureau, avec des "
   "colonnes et des rangées tracées, une règle et un stylo posés dessus. Aucun chiffre ni "
   "mot lisible."),

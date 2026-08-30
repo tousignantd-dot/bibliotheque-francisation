@@ -117,9 +117,12 @@ IMAGES = [
   "arrière, le bord inférieur de son écran sorti du cadre, aucun logo ni lettrage sur le "
   "châssis, aucun nom de fabricant. À l'écran, une fiche de suivi : un long numéro net en "
   "haut, puis des lignes grises."),
- ('jour-ouvrable', 'vocab', P_VOC, STYLE + " Un calendrier mural accroché près d'une porte "
-  "de cuisine, vu de biais. Son titre et sa rangée de noms de jours sortent du cadre par le "
-  "haut : seules la grille de cases et deux dates entourées au crayon restent visibles."),
+ ('jour-ouvrable', 'vocab', P_VOC, STYLE + " Gros plan sur une seule rangée de sept cases d'un calendrier mural. "
+  "Les cinq cases de gauche portent chacune un petit crochet au crayon "
+  "; les deux dernières, à droite, sont entièrement grisées au crayon "
+  "et laissées vides. Le titre et la rangée des noms de jours sont "
+  "coupés par le bord supérieur de l'image. Aucun mot, aucun chiffre "
+  "lisible."),
  ('epeler', 'vocab', P_VOC, PERS + " Une main qui écrit des lettres majuscules espacées sur "
   "un bloc-notes posé près d'un téléphone, vue en plongée. L'écriture reste illisible."),
  ('formulaire', 'vocab', P_VOC, DOC + " Un formulaire de papier posé sur une table avec un "

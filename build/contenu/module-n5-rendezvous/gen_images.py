@@ -114,10 +114,12 @@ IMAGES = [
  ('gmf', 'vocab', P_VOC, STYLE + " La façade d'une petite clinique de quartier au "
   "rez-de-chaussée d'un immeuble, porte vitrée et fenêtres, un banc devant. Aucune "
   "enseigne, aucune inscription lisible."),
- ('carte-assurance-maladie', 'vocab', P_VOC, DOC + " Une carte de plastique unie vert "
-  "pâle et blanche, sans logo ni bande magnétique, posée seule sur un comptoir clair, "
-  "en légère plongée. Aucun portefeuille, aucune carte bancaire ni autre carte de "
-  "plastique à logo dans le cadre. Aucun caractère lisible, aucun visage sur la carte."),
+ ('carte-assurance-maladie', 'vocab', P_VOC, PERS + " Au comptoir d'accueil d'une clinique, une main tend une carte de "
+  "plastique unie, vert pâle et blanche, vers la réceptionniste dont on "
+  "ne voit que la main qui s'avance et une épaule. La carte est "
+  "entièrement lisse : aucun logo, aucune armoirie, aucun numéro, "
+  "aucune photo, aucune bande magnétique. Derrière le comptoir, un "
+  "poste de travail de clinique entièrement flou."),
  ('sans-rendez-vous', 'vocab', P_VOC, PERS + " Une file de quelques personnes debout dans "
   "l'entrée d'une clinique, vues de dos, tôt le matin, lumière rasante par la porte "
   "vitrée. Aucune affiche lisible."),

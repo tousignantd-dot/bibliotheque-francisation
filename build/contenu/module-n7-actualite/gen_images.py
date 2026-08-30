@@ -88,11 +88,12 @@ IMAGES = [
   "hors cadrage. Le micro n'a aucune inscription ni logo."),
 
  # ── Les sept photos du banc de vocabulaire ────────────────────────────
- ('reportage', 'vocab', P_VOC, PERS + " Une personne vue de dos, tournée face à la "
-  "rue, un enregistreur numérique tendu au bout du bras. L'enregistreur est net, "
-  "boîtier nu, aucun nom de fabricant, aucune inscription. La façade du commerce "
-  "derrière elle est entièrement hors mise au point : aucune enseigne n'est nette, "
-  "aucun néon n'est allumé, aucune vitrine ne porte d'écriture visible."),
+ ('reportage', 'vocab', P_VOC, PERS + " Sur le trottoir d'une rue commerçante, une journaliste vue de dos "
+  "tend un enregistreur numérique vers une passante qui lui répond, "
+  "cadrée de trois quarts arrière, visage hors champ, une main ouverte "
+  "en l'air. L'enregistreur est net, boîtier nu, aucune inscription. La "
+  "façade derrière elles est entièrement hors mise au point : aucune "
+  "enseigne nette, aucun néon allumé."),
  ('blogue', 'vocab', P_VOC, STYLE + " Un ordinateur portable posé sur une table de "
   "cuisine le soir, affichant une page de blogue — un bloc de paragraphes et une zone "
   "de commentaires en dessous. L'écran est vu en biais et son contenu est délavé par "
