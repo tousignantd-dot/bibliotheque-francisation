@@ -45,6 +45,21 @@
     .pg-filtre-cle { display: block; font-size: var(--fs-label); font-weight: var(--fw-bold);
                      letter-spacing: .12em; text-transform: uppercase; color: var(--text-accent);
                      margin-bottom: var(--sp-2); }
+    /* Le module est verrouillé pendant le direct. Un champ grisé sans un mot
+       à côté se lit comme une panne : la ligne dit l'état, l'infobulle dit
+       pourquoi et par où sortir. */
+    .pg-verrou { display: inline-flex; align-items: center; gap: 6px;
+                 margin-top: var(--sp-2); font-size: var(--fs-ui-sm);
+                 font-weight: var(--fw-bold); color: var(--text-muted);
+                 cursor: help; }
+    .pg-verrou::before { content: ""; width: 9px; height: 9px; flex: none;
+                         border-radius: 2px 2px 0 0;
+                         border: 2px solid currentColor; border-bottom: 0; }
+    .pg-verrou:focus-visible { outline: var(--focus-width, 3px) solid var(--accent);
+                               outline-offset: 3px; border-radius: 4px; }
+    select#pgModule:disabled { opacity: 1; color: var(--text-muted);
+                               background: var(--paper-100, #F2F2F0); cursor: not-allowed; }
+
     /* Les trois périodes sont un choix unique : des boutons collés, l'actif
        marqué par le fond ET le mot, jamais par la seule couleur. */
     .pg-choix { display: flex; flex-wrap: wrap; gap: var(--sp-2); }
@@ -410,6 +425,8 @@
         <div style="min-width:280px;flex:1">
           <label class="pg-filtre-cle" for="pgModule">Module regardé</label>
           <select id="pgModule" class="field" style="width:100%"></select>
+          <span class="pg-verrou" id="pgVerrou" hidden tabindex="0"
+                data-info="Le direct suit un seul module à la fois. En changer ici l’arrêterait et effacerait ce qui est à l’écran, pendant que la classe répond. Fermez le direct, dans la barre noire plus bas, pour en choisir un autre.">Verrouillé pendant le direct</span>
         </div>
         <div>
           <span class="pg-filtre-cle">Période</span>
@@ -853,7 +870,25 @@
        title="Le carré à scanner et le code — pour un élève qui arrive en retard.">La feuille</a>`;
   }
 
+  /** Le module ne se change pas pendant que le direct tourne.
+
+      Ce n'est pas une précaution technique — `drRelancer()` sait très bien
+      repartir sur un autre module. C'est que ce menu-ci commande **toute la
+      page**, et qu'un doigt qui glisse dessus pendant une séance efface d'un
+      coup l'écran que la classe est en train de remplir, sans rien demander.
+      Le direct a maintenant un bouton « Fermer » : il y a une sortie, donc on
+      peut fermer la porte. */
+  function majVerrouModule() {
+    const sel = document.getElementById('pgModule');
+    const note = document.getElementById('pgVerrou');
+    if (!sel || !note) return;
+    const verrouille = Boolean(MODULE) && !DIRECT_FERME;
+    sel.disabled = verrouille;
+    note.hidden = !verrouille;
+  }
+
   function drRendre() {
+    majVerrouModule();
     const cible = document.getElementById('pgDirect');
     if (!MODULE) {
       cible.innerHTML = `<p class="pg-note" style="padding:var(--sp-8) 0 0">
@@ -972,6 +1007,11 @@
   function drRelancer() {
     DIRECT = null;
     DIRECT_SECTION = null;
+    // Changer de module rouvre le direct. « Fermer » vaut pour le module
+    // qu'on regardait ; choisir le suivant est justement la demande de le
+    // regarder, et le menu ne se déverrouille que le direct fermé — laisser
+    // l'écran fermé obligerait à un deuxième clic qui ne dit rien de plus.
+    DIRECT_FERME = false;
     // On change de module : ce qui était déplié dans l'ancien n'a plus de sens,
     // et les exercices en difficulté du nouveau doivent pouvoir s'ouvrir.
     DR_OUVERTS.clear();
