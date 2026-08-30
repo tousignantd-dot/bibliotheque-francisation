@@ -1379,10 +1379,18 @@
     $('dFermeture').value = source.dateFin || '';
     $('dVue').value = source.dateVue || '';
     $('dLien').value = source.lien || '';
-    // Un module, un dialogue : les 87 cours en ont un, aucun atelier. La
-    // catégorie suffit donc à décider, sans aller lire le fichier. Et jamais
-    // sur une section — le serveur ne lit le champ que sur l'entrée du module.
-    const avecDialogue = !sec && a.categorie === 'cours';
+    // `aUneTranscription` est calculé par le serveur, qui va voir dans le
+    // fichier. L'écran s'en remettait à `categorie === 'cours'` : vrai sur les
+    // 177 activités mesurées, mais vrai par habitude et non par construction.
+    // Quinze ateliers de la première époque ont un dialogue sans être des
+    // cours — et si la mesure ne les avait pas vus, c'est que la sonde
+    // cherchait « Lire la transcription », la façon dont les *modules*
+    // montrent un texte. Un raccourci vérifié par un test qui partage son
+    // hypothèse ne prouve rien : c'est au fichier qu'il faut demander.
+    //
+    // Toujours pas sur une section — le serveur ne lit le champ que sur
+    // l'entrée du module.
+    const avecDialogue = !sec && a.aUneTranscription;
     $('dTranscriptionBloc').hidden = !avecDialogue;
     $('dTranscription').value = a.transcription === 'fermee' ? 'fermee' : '';
     ouvrirModale('modaleDates');
