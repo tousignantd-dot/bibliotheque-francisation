@@ -116,13 +116,35 @@ try:
         time.sleep(0.2)
     verifie("le catalogue du dépôt porte des modules", len(modules) >= 2,
             "%d module(s)" % len(modules))
-    ACT, AUTRE = modules[0]["id"], modules[1]["id"]
-    TITRE = modules[0]["title"]
-    FICHIER = modules[0]["interactive"]
     st, r = appel("POST", "/api/prof/groupes", {"nom": "Niveau 4 — matin"}, JETON)
     verifie("groupe créé", st in (200, 201), str(r))
     GROUPE = r["groupe"]["id"]
+    # Une séance ne s'ouvre que sur une activité qui **renvoie les réponses**
+    # (30 août 2026). Le drapeau `suivable` est calculé par le serveur, en
+    # allant voir dans le fichier ; il ne paraît que sur le catalogue d'un
+    # groupe, pas sur `?catalogue=1` qui rend les enregistrements bruts. Le
+    # premier jet de ce contrôle prenait `modules[0]`, qui se trouve être un
+    # atelier écrit à la main : le décor tombait sur le refus, et c'est le
+    # refus qui avait raison.
+    st, cat = appel("GET", "/api/activities?groupId=%d" % GROUPE, jeton=JETON)
+    suivables = [a for a in cat if a.get("suivable")]
+    muets = [a for a in cat if a.get("interactive") and not a.get("suivable")]
+    verifie("le catalogue dit ce qui est suivable en direct", len(suivables) >= 2,
+            "%d suivable(s)" % len(suivables))
+    verifie("et ce qui ne l'est pas", bool(muets), "%d muet(s)" % len(muets))
+    ACT, AUTRE = suivables[0]["id"], suivables[1]["id"]
+    TITRE = suivables[0]["title"]
+    FICHIER = suivables[0]["interactive"]
+    MUET = muets[0]["id"] if muets else None
 
+
+    print("\n— Une séance ne s'ouvre pas sur une activité muette —")
+    if MUET is not None:
+        st, r = appel("POST", "/api/prof/seances",
+                      {"groupId": GROUPE, "activityId": MUET}, JETON)
+        verifie("le serveur refuse", st == 400, str(st))
+        verifie("et dit pourquoi", "ne renvoie pas les réponses" in (r.get("error") or ""),
+                str(r)[:90])
 
     print("\n— La direction autorise, l'enseignant choisit —")
     st, r = appel("GET", "/api/prof/me", jeton=JETON)
@@ -230,8 +252,13 @@ try:
     with urllib.request.urlopen(BASE + "/feuille-seance.html", timeout=10) as rep:
         page = rep.read().decode()
     verifie("la page de la feuille est servie", "Vise ce carré" in page)
-    verifie("elle s'imprime sans couleur",
-            "@page" in page and "size: letter" in page)
+    # Le format lettre s'écrit maintenant en pouces — `size:8.5in 11in` —
+    # depuis que la feuille a pris la mise en page des fiches de l'élève
+    # (30 août 2026). L'ancienne forme `size: letter` est acceptée aussi :
+    # ce contrôle garde le **format**, pas une façon de l'écrire.
+    verifie("elle s'imprime au format lettre",
+            "@page" in page
+            and ("size: letter" in page or "size:8.5in 11in" in page))
 
     print("\n— L'adresse courte et la page d'entrée —")
     req = urllib.request.Request(BASE + "/s/" + CODE, method="GET")

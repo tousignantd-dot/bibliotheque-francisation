@@ -592,6 +592,9 @@ function batirTrouver(){
         ajouter(iCible, -3);
       }
       lmsTrack('exercise_attempted', { correct: opt.bonne ? 1 : 0 });
+      directZone({ slug: cibleCourante.slug, ok: !!opt.bonne,
+        enonce: cibleCourante.nom + ' (' + rEnonce.nom + ' → ' + rBonne.nom + ')',
+        bonne: cibleCourante.nom, reponse: opt.item.nom });
     };
     zone.appendChild(b);
   });
@@ -642,6 +645,33 @@ function lmsTrack(event, data) {
     }
   } catch (e2) {}
 }
+/* DIRECT-ATELIER:début — posé par build/direct_atelier.py */
+/* Le direct de la classe : une tentative par question. Même charge utile que
+   les modules — voir build/greffe_direct.py. L'identifiant de la question est
+   le `slug` de l'item : l'ordre de tirage change d'un élève à l'autre, un
+   numéro de tour ne regrouperait rien. */
+var DZ_ESSAIS = {};
+function directZone(z) {
+  if (!z || !z.slug) return;
+  var faits = DZ_ESSAIS[z.slug] || 0;
+  lmsTrack('zone_repondue', {
+    zone: String(z.slug),
+    exo: (typeof CONTENU !== 'undefined' && CONTENU.slug) || 'atelier',
+    exoTitre: (typeof CONTENU !== 'undefined' && CONTENU.titre) || '',
+    type: (typeof CONTENU !== 'undefined' && (CONTENU.mode || CONTENU.generateur)) || '',
+    enonce: String(z.enonce == null ? '' : z.enonce).slice(0, 400),
+    bonne: String(z.bonne == null ? '' : z.bonne),
+    reponse: String(z.reponse == null ? '' : z.reponse),
+    ok: !!z.ok,
+    /* Les essais déjà ratés sur CETTE question, avant celui-ci : c'est ce
+       qui sépare « juste du premier coup » de « juste après essai » dans le
+       direct. Un item revient plus tard dans le tirage, donc le compte se
+       tient par slug et non par tour. */
+    essais: faits
+  });
+  if (!z.ok) DZ_ESSAIS[z.slug] = faits + 1;
+}
+/* DIRECT-ATELIER:fin */
 
 rendre();
 rendreMaitrise();

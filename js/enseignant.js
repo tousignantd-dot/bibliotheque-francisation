@@ -1544,9 +1544,23 @@
     //
     // Et volontairement sans regarder les dates : une séance s'ouvre sur ce
     // qu'on fait aujourd'hui, planifié ou non.
-    const ouvrables = etat.activites.filter((a) => a.parcours || a.interactive);
+    //
+    // `suivable` est calculé par le serveur, qui va voir dans le fichier si
+    // l'activité renvoie vraiment les réponses (`rapporte_au_direct`). Les
+    // 87 modules et les 56 ateliers de la banque le font ; les ateliers
+    // écrits à la main, les cartes mémoire et la cabine d'enregistrement,
+    // non. Ouvrir une séance sur l'une d'elles donnait une feuille, une
+    // classe qui répond, et un tableau vide sans un mot d'explication.
+    const avecFichier = etat.activites.filter((a) => a.parcours || a.interactive);
+    const ouvrables = avecFichier.filter((a) => a.suivable);
+    const ecartes = avecFichier.length - ouvrables.length;
     $('seanceModule').innerHTML = ouvrables
       .map((a) => `<option value="${a.id}">${esc(a.title)}</option>`).join('');
+    $('seanceEcartees').textContent = ecartes
+      ? `${ecartes} activité${ecartes > 1 ? 's ne sont' : ' n\'est'} pas dans cette liste : `
+        + `${ecartes > 1 ? 'elles ne renvoient' : 'elle ne renvoie'} pas les réponses des `
+        + `élèves, et le tableau de la classe resterait vide.`
+      : '';
     $('boutonOuvrirSeance').disabled = !ouvrables.length;
     ouvrirModale('modaleSeance');
     await chargerSeances();

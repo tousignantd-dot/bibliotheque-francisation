@@ -1423,6 +1423,55 @@ def construire_archive(fichiers, slug=None):
     return tampon.getvalue()
 
 
+# Ce qu'une activité doit contenir pour que le direct de la classe ait
+# quelque chose à montrer. C'est l'événement lui-même, pas un drapeau posé à
+# côté : un drapeau se serait mis à mentir au premier atelier reconstruit.
+MARQUE_DIRECT = "zone_repondue"
+# {chemin: (mtime, taille, rapporte)} — le fichier d'un module fait trois cent
+# kilooctets et le catalogue en compte cent soixante-dix-sept. On le lit une
+# fois, puis on ne fait plus qu'un `stat`. Un fichier réécrit change de date
+# ou de taille, donc la réponse se refait toute seule.
+_CACHE_DIRECT = {}
+
+
+def rapporte_au_direct(activite):
+    """Cette activité renvoie-t-elle la réussite question par question ?
+
+    Les 87 modules le font (`build/greffe_direct.py`) et 56 ateliers de la
+    banque aussi depuis le 30 août 2026 (`build/direct_atelier.py`). Les
+    autres — les ateliers écrits à la main, les cartes mémoire, la cabine
+    d'enregistrement — n'envoient que des compteurs, ou rien.
+
+    **La question se pose au fichier**, et c'est le point : ouvrir une séance
+    sur une activité muette donne un direct vide et un enseignant qui croit à
+    une panne. Un champ dans `data/activities.json` aurait été une deuxième
+    vérité à tenir à jour, et elle aurait divergé le jour où un atelier est
+    reconstruit.
+    """
+    chemin = (activite or {}).get("interactive") or ""
+    if not chemin:
+        return False
+    reel = STORAGE_DIR / chemin
+    if not reel.exists():
+        reel = Path(chemin)
+    try:
+        st = reel.stat()
+    except OSError:
+        return False
+    cle = str(reel)
+    marque = (st.st_mtime, st.st_size)
+    garde = _CACHE_DIRECT.get(cle)
+    if garde and garde[0] == marque:
+        return garde[1]
+    try:
+        with io.open(reel, encoding="utf-8", errors="ignore") as f:
+            rapporte = MARQUE_DIRECT in f.read()
+    except OSError:
+        return False
+    _CACHE_DIRECT[cle] = (marque, rapporte)
+    return rapporte
+
+
 def activities_for_group(group_id):
     """Le catalogue commun, avec les dates du groupe superposées."""
     sched = schedule_for_group(group_id)
@@ -1432,6 +1481,8 @@ def activities_for_group(group_id):
         dates = sched.get(a["id"], {})
         for key in SCHEDULE_FIELDS:
             entry[key] = dates.get(key, "")
+        # Calculé, jamais stocké — voir rapporte_au_direct().
+        entry["suivable"] = rapporte_au_direct(a)
         result.append(entry)
     return result
 
@@ -16698,6 +16749,19 @@ class Handler(http.server.SimpleHTTPRequestHandler):
                          % ((decideur or {}).get("nom", "votre établissement")),
                 "decidePar": (decideur or {}).get("nom", ""),
             }, 403)
+            return
+        # Une séance sans direct n'est pas une séance : l'enseignant imprime
+        # une feuille, la classe répond, et le tableau reste vide sans que rien
+        # ne l'explique. Le menu ne les propose plus ; la route le vérifie, car
+        # une liste n'est pas une garde.
+        if not rapporte_au_direct(activite):
+            json_response(self, {
+                "error": "« %s » ne renvoie pas les réponses des élèves : une "
+                         "séance ouverte dessus donnerait un tableau vide. "
+                         "Choisissez un module, ou un atelier de la banque."
+                         % activite.get("title", "Cette activité"),
+                "suivable": False,
+            }, 400)
             return
         seance = creer_seance(
             teacher, group_id, activity_id,
