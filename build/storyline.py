@@ -11,9 +11,15 @@ Où vivent les choses
 - `build/gabarit/storyline.html` — le moteur, commun à tous les parcours, percé
   de jetons `%%NOM%%`. Il ne connaît que des écrans : une liste de données, un
   type par écran, une mise en page par type.
-- `build/contenu/<module>/storyline.js` — le contenu : `const PARCOURS = {…}`
-  (l'identité) et `const ECRANS = [ … ]` (les écrans). Un seul fichier à écrire
-  pour un parcours de plus.
+- Le contenu, dans l'un des deux endroits, selon ce que le parcours est :
+  - `build/parcours/<slug>.js` — un **parcours de remédiation**, rangé par
+    savoir du programme et non par situation. Il ne dépend d'aucun module ;
+    l'enseignant l'envoie à un élève chez qui il a constaté la lacune.
+  - `build/contenu/<module>/storyline.js` — un parcours **attaché à un
+    module**, qui en reprend une section.
+
+  Les deux portent `const PARCOURS = {…}` (l'identité) et `const ECRANS = [ … ]`
+  (les écrans). Un seul fichier à écrire pour un parcours de plus.
 - `modules-autonomes/<slug>/index.html` — le produit.
 
 **Ne jamais éditer le HTML produit** : la prochaine construction l'écrase. Une
@@ -43,11 +49,15 @@ import sys
 ROOT = pathlib.Path(__file__).resolve().parent.parent
 GABARIT = ROOT / 'build' / 'gabarit' / 'storyline.html'
 CONTENU = ROOT / 'build' / 'contenu'
+PARCOURS_DIR = ROOT / 'build' / 'parcours'
 SORTIE = ROOT / 'modules-autonomes'
 
 # Les types que le gabarit sait dessiner. Un type absent d'ici s'affiche chez
 # l'élève comme une erreur visible — mais autant l'attraper à la construction.
-TYPES = ('notion', 'verif')
+#   notion — ce qu'il faut savoir, en un écran
+#   verif  — une question, un rattrapage par mauvaise réponse
+#   tri    — trancher des cas AVANT qu'aucune règle ne soit dite
+TYPES = ('notion', 'verif', 'tri')
 
 # La couleur d'un parcours est celle de son niveau, comme pour les modules :
 # les jetons `--niv-N-line` / `--niv-N-bg` de assets/design-system/tokens/colors.css.
@@ -192,17 +202,36 @@ def controler(parcours, ecrans, module):
             if not e.get('pourquoi'):
                 ecarts.append('%s : pas de `pourquoi` — la réponse tomberait sans explication' % ou)
 
+        if e.get('type') == 'tri':
+            cols = [c.get('id') for c in e.get('colonnes', [])]
+            if len(cols) < 2:
+                ecarts.append('%s : un tri veut au moins deux colonnes' % ou)
+            if len(set(cols)) != len(cols):
+                ecarts.append('%s : deux colonnes portent le même identifiant' % ou)
+            if not e.get('items'):
+                ecarts.append('%s : un tri sans cas à trancher' % ou)
+            for it in e.get('items', []):
+                if it.get('ok') not in cols:
+                    ecarts.append('%s : le cas « %s » range dans une colonne qui n\'existe pas'
+                                  % (ou, str(it.get('txt'))[:30]))
+                if not it.get('rat'):
+                    ecarts.append('%s : le cas « %s » n\'a pas de rattrapage'
+                                  % (ou, str(it.get('txt'))[:30]))
+
         for s in e.get('sons', []):
+            if not module:
+                ecarts.append('%s : un extrait sonore, mais le parcours ne dit de quel module '
+                              'il le tire (champ `module`)' % ou)
+                continue
             f = ROOT / 'assets' / 'interactive' / module / s['fichier']
             if not f.exists():
                 ecarts.append('%s : extrait absent du disque — %s' % (ou, s['fichier']))
     return ecarts
 
 
-def construire(dossier, verifier=False):
-    js = (dossier / 'storyline.js')
+def construire(js, verifier=False):
     if not js.exists():
-        fatal('pas de storyline.js dans %s' % dossier)
+        fatal('fichier de contenu introuvable : %s' % js)
     src = js.read_text(encoding='utf-8')
 
     parcours = lire_bloc(src, 'PARCOURS')
@@ -210,7 +239,9 @@ def construire(dossier, verifier=False):
     if parcours is None or ecrans is None:
         fatal('%s : il faut `const PARCOURS = {…}` et `const ECRANS = [ … ]`' % js)
 
-    module = parcours.get('module') or dossier.name
+    # Un parcours de remédiation ne dépend d'aucun module : il n'a de `module`
+    # que s'il rejoue les extraits de l'un d'eux.
+    module = parcours.get('module') or ''
     ecarts = controler(parcours, ecrans, module)
     if ecarts:
         for e in ecarts:
@@ -223,7 +254,7 @@ def construire(dossier, verifier=False):
         '%%TITRE%%':         parcours['titre'],
         '%%SUR_TITRE%%':     parcours.get('surtitre', ''),
         '%%SLUG%%':          parcours['slug'],
-        '%%MEDIA%%':         '/assets/interactive/%s/' % module,
+        '%%MEDIA%%':         ('/assets/interactive/%s/' % module) if module else '/',
         '%%RETOUR%%':        '../index.html',
         '%%ACCENT%%':        acc,
         '%%ACCENT_DOUX%%':   doux,
@@ -251,9 +282,12 @@ def construire(dossier, verifier=False):
     return False
 
 
-def dossiers():
-    """Les modules qui ont un parcours, dans l'ordre."""
-    return sorted(d for d in CONTENU.iterdir() if (d / 'storyline.js').exists())
+def fichiers():
+    """Tous les contenus de parcours, les remédiations d'abord."""
+    liste = sorted(PARCOURS_DIR.glob('*.js')) if PARCOURS_DIR.exists() else []
+    liste += sorted(d / 'storyline.js' for d in CONTENU.iterdir()
+                    if (d / 'storyline.js').exists())
+    return liste
 
 
 def main():
@@ -268,11 +302,11 @@ def main():
     if not a.tous and not a.slug:
         ap.error('donne un slug, ou --tous')
 
-    cibles = dossiers()
+    cibles = fichiers()
     if not a.tous:
-        cibles = [d for d in cibles
-                  if d.name == a.slug
-                  or a.slug in (lire_bloc((d / 'storyline.js').read_text(encoding='utf-8'),
+        cibles = [f for f in cibles
+                  if f.stem == a.slug or f.parent.name == a.slug
+                  or a.slug == (lire_bloc(f.read_text(encoding='utf-8'),
                                           'PARCOURS') or {}).get('slug', '')]
         if not cibles:
             fatal('aucun parcours nommé « %s »' % a.slug)

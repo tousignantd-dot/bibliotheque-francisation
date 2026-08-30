@@ -105,6 +105,36 @@ button:disabled{cursor:not-allowed}
 .choix button[data-etat="faux"] .marq{color:var(--ambre)}
 .choix button[data-etat="ecarte"]{opacity:.45}
 
+/* ── le tri : trancher des cas AVANT qu'aucune règle ne soit dite ──
+   L'écran qui distingue un parcours d'une mini-leçon. Pas de glisser-déposer :
+   une rangée par cas, un bouton par colonne — un doigt sur un téléphone ne
+   traîne pas une étiquette à travers l'écran. */
+.tri{margin-top:18px;border:1px solid var(--filet);border-radius:5px;overflow:hidden}
+.tri__tete{display:grid;background:var(--papier);border-bottom:1px solid var(--filet)}
+.tri__tete span{padding:9px 14px;font-size:11.5px;font-weight:700;letter-spacing:.06em;
+  text-transform:uppercase;color:var(--gris);text-align:center}
+.tri__tete span:first-child{text-align:left}
+.tri__l{display:grid;align-items:center;border-top:1px solid var(--filet-fin)}
+.tri__l:first-of-type{border-top:0}
+.tri__mot{padding:10px 14px;font-size:15.5px;color:var(--encre)}
+.tri__mot i{font-style:normal;color:var(--gris);font-size:13px;display:block}
+.tri__c{padding:7px 8px;text-align:center}
+.tri__c button{width:100%;border:1px solid var(--filet);background:#FFF;border-radius:4px;
+  padding:9px 6px;font-size:14px;color:var(--texte)}
+.tri__c button:hover:not([disabled]){border-color:var(--encre);background:var(--papier)}
+.tri__c button[data-etat="juste"]{border-color:var(--acc);background:var(--acc-doux);
+  color:var(--acc-fonce);font-weight:700}
+.tri__c button[data-etat="faux"]{border-color:var(--ambre);background:var(--ambre-pale);
+  color:var(--ambre-fonce)}
+.tri__l[data-fait="1"] .tri__mot{color:var(--gris)}
+.tri__note{grid-column:1/-1;padding:0 14px 12px;font-size:13.5px;color:var(--ambre-fonce)}
+.tri__note b{color:var(--ambre-fonce)}
+/* Un cas tranché juste ne se lit pas en ambre : la note devient une
+   confirmation, pas un avertissement. */
+.tri__l[data-fait="1"] .tri__note,
+.tri__l[data-fait="1"] .tri__note b{color:var(--acc-fonce)}
+.compte{font-size:12.5px;color:var(--gris);margin-top:10px}
+
 /* ── le rattrapage : n'existe que sur erreur ─────────────────────── */
 .rattrap{border:1px solid var(--ambre);border-left-width:3px;background:#FFF;border-radius:5px;
   padding:15px 17px;margin-top:16px}
@@ -543,6 +573,107 @@ button:disabled{cursor:not-allowed}
     }
 
     fini(!!etat.faits[e.id]);
+    return f;
+  };
+
+  /* Trier des cas. C'est l'écran qui porte le parti pris du parcours : l'élève
+     tranche AVANT qu'aucune règle ne lui soit dite, et chaque erreur explique
+     ce cas-là — jamais la règle entière. Une mini-leçon fait l'inverse. */
+  TYPES.tri = function (e, fini) {
+    var f = document.createDocumentFragment();
+    if (e.consigne) {
+      var c = document.createElement('p');
+      c.className = 'ecran__p';
+      c.innerHTML = e.consigne;
+      f.appendChild(c);
+    }
+    (e.sons || []).forEach(function (s) { f.appendChild(bloc_son(s)); });
+
+    var grille = '1fr ' + e.colonnes.map(function () { return 'minmax(88px,.42fr)'; }).join(' ');
+    var box = document.createElement('div');
+    box.className = 'tri';
+
+    // L'en-tête ne sert que si les boutons portent autre chose que le nom de
+    // leur colonne. Quand ils sont identiques, l'afficher écrit deux fois la
+    // même chose et n'apprend rien.
+    if (e.colonnes.some(function (co) { return co.b && co.b !== co.t; })) {
+      var tete = document.createElement('div');
+      tete.className = 'tri__tete';
+      tete.style.gridTemplateColumns = grille;
+      tete.appendChild(document.createElement('span'));
+      e.colonnes.forEach(function (co) {
+        var s2 = document.createElement('span');
+        s2.innerHTML = co.t;
+        tete.appendChild(s2);
+      });
+      box.appendChild(tete);
+    }
+
+    var restants = e.items.length;
+    var compte = document.createElement('p');
+    compte.className = 'compte';
+
+    function majCompte() {
+      compte.textContent = restants > 0
+        ? restants + (restants > 1 ? ' cas à trancher.' : ' cas à trancher.')
+        : 'Les ' + e.items.length + ' cas sont tranchés.';
+    }
+
+    e.items.forEach(function (it, k) {
+      var l = document.createElement('div');
+      l.className = 'tri__l';
+      l.style.gridTemplateColumns = grille;
+
+      var mot = document.createElement('div');
+      mot.className = 'tri__mot';
+      mot.innerHTML = it.txt + (it.sous ? '<i>' + it.sous + '</i>' : '');
+      l.appendChild(mot);
+
+      var note = document.createElement('p');
+      note.className = 'tri__note';
+      note.hidden = true;
+
+      e.colonnes.forEach(function (co) {
+        var d = document.createElement('div');
+        d.className = 'tri__c';
+        var b = document.createElement('button');
+        b.type = 'button';
+        b.innerHTML = co.b || co.t;
+        b.addEventListener('click', function () {
+          if (l.getAttribute('data-fait') === '1') return;
+          var juste = co.id === it.ok;
+          b.setAttribute('data-etat', juste ? 'juste' : 'faux');
+          noter('tri', { cas: it.txt, juste: juste });
+          if (juste) {
+            l.setAttribute('data-fait', '1');
+            restants--;
+            majCompte();
+            Array.prototype.forEach.call(l.querySelectorAll('button'), function (x) {
+              x.disabled = true;
+            });
+            if (it.pourquoi) { note.innerHTML = it.pourquoi; note.hidden = false; }
+            if (restants === 0) fini(true);
+          } else {
+            b.disabled = true;
+            note.innerHTML = '<b>Pas celle-là.</b> ' + (it.rat || '');
+            note.hidden = false;
+            etat.rattrapages[e.id] = (etat.rattrapages[e.id] || 0) + 1;
+            garder();
+          }
+        });
+        d.appendChild(b);
+        l.appendChild(d);
+      });
+
+      l.appendChild(note);
+      box.appendChild(l);
+    });
+
+    f.appendChild(box);
+    majCompte();
+    f.appendChild(compte);
+
+    if (etat.faits[e.id]) fini(true); else fini(false);
     return f;
   };
 

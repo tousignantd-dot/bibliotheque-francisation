@@ -72,31 +72,74 @@ build/
 └── contenu/module-n5-rendezvous/storyline.js   les écrans, en données
 ```
 
+## Un parcours est une ordonnance, pas un cours
+
+Il traite **un savoir**, pas une situation ; l'enseignant l'**envoie** à un élève
+chez qui il a constaté la lacune. Dix minutes, huit à douze écrans.
+
+**Le diagnostic reste à l'enseignant.** Rien ne se déclenche tout seul, et ce
+n'est pas une étape en attendant mieux : c'est une décision, prise le
+30 août 2026. Ne pas proposer de suggestion automatique.
+
+### Ce qui sépare un parcours d'une mini-leçon
+
+Huit modules portent déjà une mini-leçon sur le passé composé, six sur l'heure.
+Un élève envoyé sur un parcours en a probablement lu deux : **le redire
+autrement ne sert à rien**. Cinq écarts, à tenir dans chaque parcours neuf.
+
+| | La mini-leçon | Le parcours |
+|---|---|---|
+| L'ordre | la règle, puis l'application | des cas tranchés, **puis** la règle |
+| L'étendue | exhaustive, consultable | **partielle** : un test réutilisable, les cas fréquents |
+| Le métalangage | en tête | **après** avoir manipulé la chose |
+| Les exemples | ceux du module | pris à **plusieurs** situations |
+| Le geste | elle se lit | il **se traverse** — chaque écran demande une décision |
+
+L'écran `tri` est ce qui rend le premier écart possible : l'élève range des cas
+sans qu'aucune règle ne lui ait été donnée, et chaque erreur explique **ce
+cas-là**, jamais la règle entière.
+
 ## Construire un parcours
 
 ```
 python3 build/storyline.py --tous          # tout reconstruire
-python3 build/storyline.py n5-rendezvous-defi1
+python3 build/storyline.py heure-et-date
 python3 build/storyline.py --tous --verifier   # code 1 si un parcours est à reconstruire
 ```
+
+Le contenu d'un parcours de remédiation vit dans **`build/parcours/<slug>.js`**
+— un seul fichier, `const PARCOURS` et `const ECRANS`. Un parcours attaché à un
+module vit, lui, dans `build/contenu/<module>/storyline.js`.
+
+Trois types d'écran : **`notion`** (ce qu'il faut savoir, en un écran),
+**`verif`** (une question, un rattrapage par mauvaise réponse, la réponse au
+second essai) et **`tri`** (trancher des cas, un bouton par colonne — pas de
+glisser-déposer : un doigt ne traîne pas une étiquette sur un téléphone).
 
 Le contrôle refuse d'écrire quand quelque chose casserait chez l'élève sans
 casser la construction : un type d'écran inconnu, un identifiant en double, une
 vérification sans bonne réponse ou sans rattrapage, un extrait sonore absent du
 disque.
 
-## État
+## État — 30 août 2026
 
-**Deux écrans sur dix-huit**, livrés le 30 août 2026 — une *notion* et une
-*vérification* avec son rattrapage. Le moteur porte déjà la jauge, le menu des
-écrans vus, le lecteur d'extraits (ralenti, transcription), le verrou doux, le
-point de reprise et le journal du suivi.
+**Deux parcours de remédiation, dix écrans chacun**, plus les deux écrans de la
+démo d'origine.
 
-Vérifié **en le jouant**, par programme : les deux chemins de la vérification
-(juste du premier coup / deux erreurs), l'ouverture du rattrapage, la réponse
-donnée au second essai seulement, la reprise après rechargement, et les
-événements du journal.
+| Parcours | Savoir | Sons |
+|---|---|---|
+| `heure-et-date` | lexique, repère culturel | 4 extraits de `module-n5-rendezvous`, rejoués |
+| `passe-compose-etre-avoir` | `n5-s31` | aucun — la faute n'existe qu'à l'écrit |
+| `n5-rendezvous-defi1` | la démo de forme, 2 écrans sur 18 | 3 extraits |
+
+Vérifiés **en les jouant**, par programme, écran par écran et dans les deux
+chemins : chaque mauvaise réponse ouvre son rattrapage, la réponse n'est donnée
+qu'au second essai, chaque tri se verrouille cas par cas, « Continuer » ne se
+déverrouille qu'une fois l'écran fait, et les quatre extraits répondent 200.
 
 ## Prochaine étape
 
-Les **seize écrans qui restent**, et les sept types d'écran qu'ils demandent.
+Les faire essayer. Puis **l'envoi** : le bouton chez l'enseignant, la bande
+« votre enseignant vous a envoyé » chez l'élève, et le retour du résultat.
+Écrire douze parcours de plus avant d'avoir vu un envoi aller au bout serait
+refaire l'erreur qu'évite le calcul de `deux-modeles.html`.
