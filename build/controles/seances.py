@@ -106,9 +106,14 @@ for chemin in sorted(S.ROUTES_SEANCE):
     if S.validate_student_code(p1["jeton"]) is None:
         verifie("ouverte : %s" % chemin, False)
 verifie("les %d routes de la liste sont ouvertes" % len(S.ROUTES_SEANCE), True)
+# `/api/vocab/translate` et `/api/vocab/signaler` ont quitté cette liste le
+# 30 août 2026 : ce qui est refusé au participant, c'est la mémorisation dans
+# la durée, pas la traduction d'un mot à l'écran. Les routes de répétition
+# espacée, elles, restent fermées — et c'est ce que ce contrôle garde.
 FERMEES = ["/api/oral/submit", "/api/vocab/session", "/api/vocab/answer",
+           "/api/vocab/listes", "/api/vocab/check-answer",
            "/api/student/dashboard", "/api/student/activities",
-           "/api/corrige-moi/seance", "/api/vocab/translate",
+           "/api/corrige-moi/seance",
            "/api/admin/students", "/api/prof/seances"]
 for chemin in FERMEES:
     route(chemin)

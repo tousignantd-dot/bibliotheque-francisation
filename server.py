@@ -4204,6 +4204,15 @@ ROUTES_SEANCE = frozenset({
     "/api/outils/traduire",
     "/api/outils/simplifier",
     "/api/outils/assistant",
+    # La section « Je retiens des mots » des modules. Même nature que
+    # `/api/outils/traduire` : elle traduit un mot à l'écran et met le
+    # résultat dans un cache partagé par toute la classe, sans rien attacher
+    # à personne. Le signalement, lui, n'écrit que le mot, la langue et la
+    # traduction douteuse — pas le code, pas d'identité (voir
+    # `_handle_vocab_report`) : c'est un défaut de la liste de vocabulaire
+    # qu'on note, pas un geste d'élève.
+    "/api/vocab/translate",
+    "/api/vocab/signaler",
     # L'écrit s'envoie à l'enseignant ; l'oral, non — voir plus bas.
     "/api/ecrit/submit",
 })
@@ -4213,8 +4222,14 @@ ROUTES_SEANCE = frozenset({
 #                            la plus identifiante du portail, et une séance
 #                            sans compte tire sa force de ne rien collecter.
 #                            L'élève s'enregistre et s'écoute ; rien ne part.
-#   /api/vocab/* ........... la répétition espacée suppose un lendemain ; un
-#                            participant n'en a pas.
+#   /api/vocab/answer ...... la répétition espacée suppose un lendemain ; un
+#   /api/vocab/listes        participant n'en a pas. C'est la *mémorisation
+#   /api/vocab/check-answer  dans la durée* qui est refusée, pas la
+#                            traduction : `/api/vocab/translate` et
+#                            `/api/vocab/signaler` sont ouverts plus haut,
+#                            depuis le 30 août 2026 — sans eux, la section
+#                            « Je retiens des mots » d'un module tombait en
+#                            erreur pour toute une classe en séance.
 #   /api/student/activities  le catalogue et le tableau de bord appartiennent
 #   /api/student/dashboard   à l'élève inscrit. Une séance ouvre un module.
 #   /api/corrige-moi/seance  un atelier, pas le module de la séance.

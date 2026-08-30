@@ -90,8 +90,12 @@ try:
         raise SystemExit("le serveur n'a pas démarré")
 
     print("\n— Le décor —")
+    # Le fondateur **choisit son code** ; il n'y a plus de courriel dans ce
+    # portail (voir `_handle_prof_setup`). Ce contrôle a passé quelque temps
+    # à échouer sur son décor, donc en silence sur tout le reste : le
+    # `verifie` ci-dessous est ce qui l'a rendu visible.
     st, r = appel("POST", "/api/prof/setup",
-                  {"courriel": "prof@essai.test", "motDePasse": "motdepasse1",
+                  {"code": "PROF01", "motDePasse": "motdepasse1",
                    "nom": "Prof d'essai"})
     verifie("compte fondateur créé", st in (200, 201), str(r))
     JETON = r.get("token")
@@ -332,6 +336,24 @@ try:
     verifie("et le jeton n'y est pas", JET not in json.dumps(dep))
     st, r = appel("GET", "/api/prof/seances?groupId=%d" % GROUPE, jeton=JET)
     verifie("les séances de l'enseignant : refusé", st == 401, str(st))
+
+    print("\n— Les mots du module se traduisent quand même —")
+    # Ouvertes le 30 août 2026. Ce qu'on vérifie ici, c'est le **passage du
+    # portier** : un 401 voudrait dire que le jeton n'est pas reconnu sur ces
+    # chemins-là. Le reste (clé d'API absente sur un serveur jetable, IA
+    # refusée) donne un autre code, et ne regarde pas ce contrôle.
+    st, r = appel("POST", "/api/vocab/signaler",
+                  {"code": JET, "module": "module-essai", "mot": "arrêt",
+                   "langue": "anglais", "traduction": "stop"})
+    verifie("un signalement de traduction passe", st != 401, str(st))
+    st, r = appel("POST", "/api/vocab/translate",
+                  {"code": JET, "langue": "anglais", "mot": "arrêt",
+                   "definition": "l'endroit où l'autobus s'arrête"})
+    verifie("et la traduction d'un mot n'est pas refusée au portier",
+            st != 401, str(st))
+    # Ce qui reste fermé : la répétition espacée, qui suppose un lendemain.
+    st, r = appel("POST", "/api/vocab/answer", {"code": JET, "wordId": "x"})
+    verifie("mais la répétition espacée reste fermée", st == 401, str(st))
 
     print("\n— L'oral ne part pas —")
     limite = urllib.request.Request(
