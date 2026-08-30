@@ -33,6 +33,7 @@ catalogue ne bougent pas.
 | Circulation | **verrou doux** — on avance quand on a agi, on revient toujours |
 | Narration | **écrite, pas parlée** — aucun MP3 neuf |
 | Suivi | **local pour la démo**, branchement serveur ensuite |
+| Format de l'écran | **16:9 figé au-dessus de 900 px**, pleine hauteur de fenêtre en dessous |
 
 ## Les règles
 
@@ -52,6 +53,9 @@ catalogue ne bougent pas.
    mauvaise. Une capture d'écran ne prouve rien.
 6. **Inscrit aux présentations.** Tout document produit ici reçoit sa fiche sur
    `presentations.html`.
+7. **La hauteur du cadre 16:9 est calculée, jamais laissée à `aspect-ratio`.**
+   Avec le rapport seul, un rattrapage qui s'ouvre fait grandir le cadre —
+   mesuré à 1,63 au lieu de 1,78. C'est le corps qui défile, pas la page.
 
 ## L'arborescence
 

@@ -29,7 +29,8 @@ button:disabled{cursor:not-allowed}
 
 /* ── barre du haut : marque, jauge, position ─────────────────────── */
 .tete{background:#FFF;border-bottom:1px solid var(--filet);padding:10px 20px;
-  display:flex;align-items:center;gap:16px;flex-wrap:wrap;flex:0 0 auto}
+  display:flex;align-items:center;gap:16px;flex-wrap:wrap;flex:0 0 auto;
+  position:sticky;top:0;z-index:5}
 .fr-nom{font-family:'Nunito',sans-serif;font-weight:900;font-size:21px;letter-spacing:-.035em;
   line-height:1;position:relative;display:inline-block;color:var(--encre);text-decoration:none}
 .fr-pt{position:absolute;top:1px;left:calc(50% + 1px);width:5px;height:5px;border-radius:50%;background:var(--mauve)}
@@ -128,13 +129,63 @@ button:disabled{cursor:not-allowed}
 .fin h2{font-size:26px;font-weight:900}
 .fin p{margin-top:10px}
 
+/* ── le cadre 16:9 ────────────────────────────────────────────────
+   Au-dessus de 900 px, l'écran est une diapositive : rapport fixe, hauteur
+   bornée par la fenêtre, et c'est le CORPS qui défile — jamais la page. En
+   dessous, on retombe sur la carte au fil du contenu : un téléphone est en
+   9:19,5, et un cadre 16:9 y deviendrait une bande au milieu de l'écran.
+   ─────────────────────────────────────────────────────────────── */
+@media (min-width:900px){
+  .scene{align-items:center;padding:24px 24px 28px}
+  /* La hauteur est CALCULÉE, pas déduite d'un `aspect-ratio` : avec le
+     rapport seul, un rattrapage qui s'ouvre fait grandir le cadre — mesuré à
+     1,63 au lieu de 1,78. On prend donc le plus petit des deux budgets, la
+     fenêtre et la largeur, et la largeur suit la hauteur. */
+  .ecran{
+    --h:min(calc(100vh - 132px), calc(min(1180px, 100vw - 48px) * 9 / 16));
+    height:var(--h);
+    width:calc(var(--h) * 16 / 9);
+    max-width:100%;
+    overflow:hidden;
+    padding:30px 44px 22px;
+    display:flex;flex-direction:column;align-self:center;
+    box-shadow:0 1px 3px rgba(23,24,26,.06),0 8px 24px rgba(23,24,26,.05);
+  }
+  .ecran__corps{flex:1 1 auto;min-height:0;overflow-y:auto;padding-right:6px}
+  .ecran__corps::-webkit-scrollbar{width:8px}
+  .ecran__corps::-webkit-scrollbar-thumb{background:var(--filet);border-radius:4px}
+  .pied{flex:0 0 auto;margin-top:16px}
+  .ecran__t{font-size:30px}
+  .ecran__p{font-size:16.5px;max-width:66ch}
+}
+
 @media (max-width:640px){
-  .ecran{padding:22px 18px 20px;border-radius:0;border-left:0;border-right:0}
+  /* L'écran occupe la fenêtre : une carte blanche qui s'arrête à mi-hauteur
+     sur du gris se lit comme une page tronquée. */
+  .ecran{padding:22px 18px 0;border-radius:0;border-left:0;border-right:0;
+    border-bottom:0;min-height:calc(100vh - 49px);display:flex;flex-direction:column}
+  .ecran__corps{flex:1 1 auto}
   .scene{padding:0}
   .ecran__t{font-size:22px}
+
+  /* La barre tient sur UNE ligne : sur 375 px, le bouton du menu passait
+     dessous et mangeait quarante pixels avant même le premier mot. */
+  .tete{gap:10px;padding:9px 14px;flex-wrap:nowrap}
   .tete__t{display:none}
-  .pied{flex-wrap:wrap}
-  .consigne{order:3;flex-basis:100%;text-align:left}
+  .fr-nom{font-size:19px}
+  .jauge{flex:1 1 40px;min-width:40px}
+  .pos{font-size:12px}
+  .btn-menu{padding:6px 10px;font-size:12px;white-space:nowrap}
+  .menu button{max-width:none;flex:1 1 100%}
+
+  /* « Continuer » ne se cherche pas. Sur un téléphone, le pied de l'écran
+     reste au bas de la fenêtre pendant qu'on lit — c'est le seul geste de
+     l'écran, il doit être là où le pouce l'attend. */
+  .pied{position:sticky;bottom:0;background:#FFF;flex-wrap:wrap;
+    margin-top:20px;padding:12px 0 14px;
+    box-shadow:0 -10px 14px -10px rgba(23,24,26,.16)}
+  .consigne{order:3;flex-basis:100%;text-align:left;margin-top:2px}
+  .btn{padding:12px 20px}
 }
 </style>
 </head>
@@ -451,6 +502,7 @@ button:disabled{cursor:not-allowed}
         r.appendChild(encore);
       }
       zone.appendChild(r);
+      if (r.scrollIntoView) r.scrollIntoView({ block: 'nearest' });
       etat.rattrapages[e.id] = (etat.rattrapages[e.id] || 0) + 1;
       noter('rattrapage', { ouvert: o.rat_t || '' });
 
@@ -499,15 +551,21 @@ button:disabled{cursor:not-allowed}
     var e = ECRANS[i];
     elEcran.innerHTML = '';
 
+    // Le corps est un conteneur à part : dans le cadre 16:9, c'est lui qui
+    // défile quand un rattrapage s'ouvre, pendant que le pied et la jauge
+    // restent en place. Sans lui, la diapositive grandirait hors de l'écran.
+    var corps = document.createElement('div');
+    corps.className = 'ecran__corps';
+
     var eye = document.createElement('p');
     eye.className = 'ecran__eye';
     eye.textContent = e.eye || '';
-    elEcran.appendChild(eye);
+    corps.appendChild(eye);
 
     var t = document.createElement('h1');
     t.className = 'ecran__t';
     t.innerHTML = e.titre;
-    elEcran.appendChild(t);
+    corps.appendChild(t);
 
     var pied = document.createElement('div');
     pied.className = 'pied';
@@ -544,12 +602,13 @@ button:disabled{cursor:not-allowed}
       err.className = 'ecran__p';
       err.innerHTML = '<b>Type d\'écran inconnu : « ' + e.type + ' ».</b> '
         + 'Le moteur ne sait pas le dessiner. À corriger dans le contenu, pas ici.';
-      elEcran.appendChild(err);
+      corps.appendChild(err);
       fini(true);
     } else {
-      elEcran.appendChild(rendu(e, fini));
+      corps.appendChild(rendu(e, fini));
     }
 
+    elEcran.appendChild(corps);
     pied.appendChild(prec);
     pied.appendChild(consigne);
     pied.appendChild(suite);
@@ -561,12 +620,15 @@ button:disabled{cursor:not-allowed}
     majMenu();
     noter('vu', {});
     elEcran.focus();
+    corps.scrollTop = 0;
     window.scrollTo(0, 0);
   }
 
   function terminer() {
     noter('termine', {});
     elEcran.innerHTML = '';
+    var corps = document.createElement('div');
+    corps.className = 'ecran__corps';
     var f = document.createElement('div');
     f.className = 'fin';
     var seuls = 0, aide = 0;
@@ -592,7 +654,8 @@ button:disabled{cursor:not-allowed}
       montrer(0, false);
     });
     f.appendChild(r);
-    elEcran.appendChild(f);
+    corps.appendChild(f);
+    elEcran.appendChild(corps);
     elJauge.style.width = '100%';
   }
 
