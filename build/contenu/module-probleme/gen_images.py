@@ -22,11 +22,11 @@ FAL = cle('FAL_KEY')
 if not FAL:
     sys.exit('FAL_KEY absente de ~/Claude/.env')
 
-STYLE = ("Photographie réaliste, format carré, lumière naturelle douce, faible "
+STYLE = ("Photographie réaliste, format paysage 3:2, lumière naturelle douce, faible "
          "profondeur de champ. Palette sobre et froide. Aucun texte, aucune "
          "écriture, aucun logo, aucun filigrane, aucune personne identifiable.")
 
-PORTRAIT = ("Photographie réaliste, format carré, portrait en buste d'une personne "
+PORTRAIT = ("Photographie réaliste, format paysage 3:2, portrait en buste d'une personne "
             "au travail dans un logement québécois ordinaire. Lumière naturelle douce, "
             "faible profondeur de champ, arrière-plan flou. Expression calme et "
             "professionnelle. Aucun texte, aucune écriture, aucun logo, aucun filigrane.")
@@ -90,7 +90,7 @@ IMAGES = [
 ]
 
 def genere(nom, prompt):
-    corps = json.dumps({"prompt": prompt, "num_images": 1, "aspect_ratio": "1:1",
+    corps = json.dumps({"prompt": prompt, "num_images": 1, "aspect_ratio": "3:2",
                         "resolution": "1K", "output_format": "jpeg"}).encode()
     req = urllib.request.Request(
         "https://fal.run/fal-ai/nano-banana-2", data=corps,
@@ -123,7 +123,7 @@ for nom, page, prompt in IMAGES:
         "model": "fal-ai/nano-banana-2",
         "prompt": prompt,
         "refs": [],
-        "params": {"num_images": 1, "aspect_ratio": "1:1",
+        "params": {"num_images": 1, "aspect_ratio": "3:2",
                    "resolution": "1K", "output_format": "jpeg"},
         "provider": "fal.ai",
         "cost_estimate_usd": 0.034,

@@ -32,12 +32,16 @@ FAL = cle('FAL_KEY')
 if not FAL:
     sys.exit('FAL_KEY absente de ~/Claude/.env')
 
-STYLE = ("Photographie réaliste, format carré, lumière naturelle de jour, faible "
-         "profondeur de champ. Rue ou transport en commun d'une ville québécoise "
-         "ordinaire, palette sobre. Aucun texte lisible, aucune écriture, aucun logo, "
+# Le décor est celui de CE module. La phrase « Rue ou transport en commun »
+# qui tenait ici venait de module-deplacement, recopiée par erreur : le
+# générateur la prenait au mot et servait les assiettes dans un autobus.
+STYLE = ("Photographie réaliste, format paysage 3:2, lumière naturelle de jour, faible "
+         "profondeur de champ. Magasin d'électroménagers ou logement "
+         "québécois ordinaire où l'appareil est installé, palette sobre. "
+         "Aucun texte lisible, aucune écriture, aucun logo, "
          "aucun filigrane, aucune personne identifiable.")
 
-PERS = ("Photographie réaliste, format carré, scène de la vie quotidienne au Québec "
+PERS = ("Photographie réaliste, format paysage 3:2, scène de la vie quotidienne au Québec "
         "avec une ou deux personnes vues de dos, de trois quarts ou hors cadrage du "
         "visage. Lumière naturelle douce, faible profondeur de champ. Aucun visage "
         "reconnaissable, aucun texte, aucun logo, aucun filigrane.")
@@ -110,7 +114,7 @@ IMAGES = [
 
 
 def genere(prompt):
-    corps = json.dumps({"prompt": prompt, "num_images": 1, "aspect_ratio": "1:1",
+    corps = json.dumps({"prompt": prompt, "num_images": 1, "aspect_ratio": "3:2",
                         "resolution": "1K", "output_format": "jpeg"}).encode()
     req = urllib.request.Request(
         "https://fal.run/fal-ai/nano-banana-2", data=corps,
@@ -122,10 +126,15 @@ def genere(prompt):
 
 
 def reduire(data, cote=800, qualite=82):
-    """Les photos du banc sont vues petites : 1024 px n'y sert à rien."""
+    """Les photos du banc sont vues petites : 1024 px n'y sert à rien.
+
+    En 3:2, comme le gabarit qui les affiche — `.imgzone`, `.imgtile` et
+    `.vc-photo` sont tous en `aspect-ratio:3/2`. Redimensionner en carré
+    faisait recadrer d'un tiers à l'affichage, et c'était le sujet qui
+    partait."""
     from PIL import Image
     im = Image.open(io.BytesIO(data)).convert('RGB')
-    im = im.resize((cote, cote), Image.LANCZOS)
+    im = im.resize((cote, round(cote * 2 / 3)), Image.LANCZOS)
     tampon = io.BytesIO()
     im.save(tampon, 'JPEG', quality=qualite, optimize=True)
     return tampon.getvalue()
@@ -166,7 +175,7 @@ for nom, dossier, page, prompt in IMAGES:
         "model": "fal-ai/nano-banana-2",
         "prompt": prompt,
         "refs": [],
-        "params": {"num_images": 1, "aspect_ratio": "1:1",
+        "params": {"num_images": 1, "aspect_ratio": "3:2",
                    "resolution": "1K", "output_format": "jpeg"},
         "provider": "fal.ai",
         "cost_estimate_usd": 0.034,
