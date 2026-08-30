@@ -1256,8 +1256,9 @@ Deux pièges déjà payés :
   déstructurer le résultat. Trente lignes de node, et `build/collecte_sons.py`
   n'a plus à être lancé du tout.
 - **`build/module.py` ne pose pas les icônes du module.** *(Corrigé depuis : le
-  build recopie `build/gabarit/icons/*.svg`. Et `mic.svg` n'est plus référencé
-  du tout depuis le 30 août 2026 — voir le point suivant.)* Le gabarit référence
+  build recopie `build/gabarit/icons/*.svg`. Et `mic.svg` a été supprimé du
+  dépôt le 30 août 2026, avec les micros par mot — voir le point suivant : il
+  ne reste que `play.svg`, `speaker.svg` et `assistant.svg`.)* Le gabarit référence
   `icons/play.svg`, `speaker.svg` et `mic.svg` **dans le dossier du module**, et
   rien ne les y met : un module neuf sort avec trois 404 sur le bouton d'écoute
   des dialogues et sur l'onglet « Je découvre ». Ni le build, ni
