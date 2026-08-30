@@ -499,6 +499,9 @@
   // de regarder. L'état ne survit pas au rechargement : le direct est l'écran
   // par défaut de cette page.
   let DIRECT_FERME = false;
+  // La dernière fermeture a-t-elle coupé une séance ? Ce n'est pas la même
+  // chose que fermer l'écran, et la note qui reste ne dit pas la même chose.
+  let SEANCE_CLOSE = false;
   let DIRECT_NOMS = false;    // pseudos affichés, ou « Élève N »
   const DR_OUVERTS = new Set();  // les exercices que l'enseignante a dépliés
   const DR_VUS = new Set();      // ceux déjà passés à l'écran une première fois
@@ -594,28 +597,41 @@
     SECTIONS = (sections && typeof sections === 'object') ? sections : {};
     SEANCES = ((seances || {}).seances || []).filter(s => s.ouverte);
 
-    // Les ateliers de l'après-midi ne sont pas des modules : le tableau de bord
-    // suit les cours, c'est-à-dire ce que la planification ouvre par sections.
-    // Ordre des numéros de module, pas des dates : c'est ainsi que
-    // l'enseignante les nomme, et une liste « 05, 01, 02 » se lit comme une
-    // erreur même quand elle suit fidèlement la planification.
-    // Une séance ouverte peut porter sur un atelier — un remplacement, une
-    // heure isolée — et son module doit alors être choisissable ici, sinon le
-    // direct est inatteignable pour la classe qui est justement en train de
-    // répondre. Vu à l'écran : la page rejetait le module et retombait sur
-    // « Tous les modules », sans rien dire.
+    // Ce menu ouvre maintenant les séances : il doit donc offrir tout ce sur
+    // quoi une séance peut s'ouvrir, et pas seulement les cours à l'horaire.
+    // C'est ce que faisait la fenêtre du portail enseignant, disparue le
+    // 30 août 2026 — `a.parcours || a.interactive`, et **volontairement sans
+    // regarder les dates** : une séance s'ouvre sur ce qu'on fait aujourd'hui,
+    // planifié ou non. Une séance sur un atelier était rejetée sans un mot.
+    //
+    // Deux familles, deux groupes dans le menu plutôt qu'une liste à plat de
+    // cent soixante-dix entrées : ce que ce groupe suit d'abord, le reste
+    // ensuite. L'enseignante cherche presque toujours dans le premier.
     const enSeance = new Set(SEANCES.map(s => String(s.activityId)));
-    MODULES = ACTIVITES.filter(a => a.categorie === 'cours'
-                                 || enSeance.has(String(a.id)))
-      .sort((a, b) => (numeroDe(a.title) || '99').localeCompare(numeroDe(b.title) || '99')
-                   || String(a.title || '').localeCompare(String(b.title || '')));
+    const ordre = (a, b) => (numeroDe(a.title) || '99').localeCompare(numeroDe(b.title) || '99')
+                         || String(a.title || '').localeCompare(String(b.title || ''));
+    const duGroupe = ACTIVITES.filter(a => a.categorie === 'cours'
+                                        || enSeance.has(String(a.id))).sort(ordre);
+    const dejaLa = new Set(duGroupe.map(a => String(a.id)));
+    // Ouvrable = un fichier à ouvrir. Un module sans fichier n'ouvrirait rien.
+    const autres = ACTIVITES.filter(a => (a.parcours || a.interactive)
+                                      && !dejaLa.has(String(a.id))).sort(ordre);
+    MODULES = duGroupe.concat(autres);
 
+    const optionDe = m => {
+      const num = numeroDe(m.title);
+      return `<option value="${m.id}">${num ? num + ' · ' : ''}${esc(titreCourt(m.title))}</option>`;
+    };
     const sel = document.getElementById('pgModule');
-    sel.innerHTML = ['<option value="">Tous les modules</option>'].concat(
-      MODULES.map(m => {
-        const num = numeroDe(m.title);
-        return `<option value="${m.id}">${num ? num + ' · ' : ''}${esc(titreCourt(m.title))}</option>`;
-      })).join('');
+    sel.innerHTML = '<option value="">Tous les modules</option>'
+      + (duGroupe.length
+          ? `<optgroup label="Ce que ce groupe suit">${duGroupe.map(optionDe).join('')}</optgroup>` : '')
+      + (autres.length
+          ? `<optgroup label="Les autres, ouvrables en séance">${autres.map(optionDe).join('')}</optgroup>` : '');
+    // Le module retenu peut n'être dans aucune des deux familles — il a été
+    // retiré du catalogue, ou l'adresse porte un identifiant inventé. On
+    // retombe alors sur « Tous les modules », comme avant l'élargissement ;
+    // ce qui change, c'est qu'un atelier ne tombe plus dans ce cas.
     if (!MODULES.some(m => String(m.id) === String(MODULE))) MODULE = '';
     sel.value = MODULE;
 
@@ -862,12 +878,34 @@
       Une séance fermée n'y donne pas droit : son code ne fait plus entrer
       personne, et montrer un carré mort est pire que ne rien montrer.
       `SEANCES` ne garde d'ailleurs que les séances ouvertes. */
+  /** La séance ouverte sur le module regardé, s'il y en a une. */
+  const seanceDuModule = () =>
+    SEANCES.find(x => String(x.activityId) === String(MODULE)) || null;
+
+  /** Ouvrir une séance, ou retrouver sa feuille — au même endroit.
+
+      C'est ici, et nulle part ailleurs, qu'une séance se crée depuis le
+      30 août 2026 : la fenêtre du portail enseignant a disparu. Le geste vit
+      là où on regarde la classe répondre, plutôt que dans un écran qu'il
+      fallait quitter pour voir le résultat.
+
+      Sans séance : « Ouvrir la séance ». Avec : « La feuille » — le carré à
+      scanner et le code, pour un élève qui arrive en retard. Une séance
+      fermée n'y donne pas droit : son code ne fait plus entrer personne, et
+      `SEANCES` ne garde que les ouvertes. */
   function drLienFeuille() {
-    const s = SEANCES.find(x => String(x.activityId) === String(MODULE));
-    if (!s) return '';
-    return `<a class="dr-btn" target="_blank" rel="noopener"
-       href="feuille-seance.html?code=${encodeURIComponent(s.code)}"
-       title="Le carré à scanner et le code — pour un élève qui arrive en retard.">La feuille</a>`;
+    const s = seanceDuModule();
+    if (s) {
+      return `<a class="dr-btn" target="_blank" rel="noopener"
+         href="feuille-seance.html?code=${encodeURIComponent(s.code)}"
+         title="Le carré à scanner et le code — pour un élève qui arrive en retard.">La feuille</a>`;
+    }
+    // La direction peut avoir fermé le mode : le bouton disparaît plutôt que
+    // de rester là pour échouer devant la classe. Le serveur refuse de toute
+    // façon — c'est lui qui garde.
+    if (!Prof.state.seanceAutorisee) return '';
+    return `<button type="button" class="dr-btn" id="drSeance"
+       title="Les élèves entrent avec un code imprimé, sans compte et sans écrire leur nom.">Ouvrir la séance</button>`;
   }
 
   /** Le module ne se change pas pendant que le direct tourne.
@@ -897,11 +935,22 @@
       return;
     }
     if (DIRECT_FERME) {
-      cible.innerHTML = `<p class="pg-note" style="padding:var(--sp-8) 0 0">
-        <b>Le direct est fermé.</b> Plus rien n’est demandé au serveur. Les réponses
-        continuent d’arriver : elles seront toutes là à la réouverture.
-        <button type="button" class="btn btn--ghost btn--sm" id="drRouvrir"
-                style="margin-left:var(--sp-3)">Rouvrir le direct</button></p>`;
+      // Deux fermetures, deux vérités. Fermer l'écran laisse les réponses
+      // arriver ; fermer la séance coupe le code, et prétendre le contraire
+      // ferait croire à l'enseignant qu'il peut revenir en arrière.
+      cible.innerHTML = SEANCE_CLOSE
+        ? `<p class="pg-note" style="padding:var(--sp-8) 0 0">
+            <b>La séance est fermée.</b> Le code ne fait plus entrer personne et
+            les réponses ne rentrent plus. Ce qui a déjà été envoyé reste au
+            tableau. Pour refaire travailler la classe, rouvrez le direct et
+            ouvrez une nouvelle séance — elle aura un nouveau code.
+            <button type="button" class="btn btn--ghost btn--sm" id="drRouvrir"
+                    style="margin-left:var(--sp-3)">Rouvrir le direct</button></p>`
+        : `<p class="pg-note" style="padding:var(--sp-8) 0 0">
+            <b>Le direct est fermé.</b> Plus rien n’est demandé au serveur. Les réponses
+            continuent d’arriver : elles seront toutes là à la réouverture.
+            <button type="button" class="btn btn--ghost btn--sm" id="drRouvrir"
+                    style="margin-left:var(--sp-3)">Rouvrir le direct</button></p>`;
       return;
     }
     const d = DIRECT;
@@ -954,7 +1003,8 @@
           </button>
           ${drLienFeuille()}
           <button type="button" class="dr-btn" id="drPause">${DIRECT_ON ? 'Mettre en pause' : 'Reprendre le direct'}</button>
-          <button type="button" class="dr-btn dr-btn--fin" id="drFermer">Fermer</button>
+          <button type="button" class="dr-btn dr-btn--fin" id="drFermer">${
+            seanceDuModule() ? 'Fermer la séance' : 'Fermer'}</button>
         </div>
       </div>
 
@@ -1039,21 +1089,95 @@
       if (DIRECT_ON) drTirer();
       return;
     }
+    if (e.target.closest('#drSeance')) {
+      drOuvrirSeance();
+      return;
+    }
     if (e.target.closest('#drFermer')) {
-      DIRECT_FERME = true;
-      DIRECT = null;          // à la réouverture, on repart d'un tour frais
-      drRendre();
-      drHorloge();
+      drFermer();
       return;
     }
     if (e.target.closest('#drRouvrir')) {
       DIRECT_FERME = false;
+      SEANCE_CLOSE = false;
       DIRECT_ON = true;       // rouvrir en pause serait un écran mort
       drRendre();
       drTirer();
       drHorloge();
     }
   });
+
+  /** Ouvrir une séance sur le module regardé.
+
+      Le même appel que faisait la fenêtre du portail enseignant, qui a
+      disparu : un seul chemin serveur, et maintenant une seule porte. La
+      feuille s'ouvre dans la foulée — c'est ce qu'on veut voir tout de suite,
+      le carré à projeter. */
+  async function drOuvrirSeance() {
+    const bouton = document.getElementById('drSeance');
+    if (!MODULE || (bouton && bouton.disabled)) return;
+    if (bouton) { bouton.disabled = true; bouton.textContent = 'Ouverture…'; }
+    try {
+      const r = await Prof.fetch('/api/prof/seances', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: Prof.body({ activityId: Number(MODULE) }),   // ajoute groupId
+      });
+      const d = await r.json();
+      if (!r.ok) throw new Error(d.error || 'Séance impossible');
+      SEANCES = SEANCES.concat([d.seance]);
+      SEANCE_CLOSE = false;
+      drRendre();
+      window.open(`feuille-seance.html?code=${encodeURIComponent(d.seance.code)}`,
+                  '_blank', 'noopener');
+    } catch (err) {
+      if (bouton) { bouton.disabled = false; bouton.textContent = 'Ouvrir la séance'; }
+      alert(err.message);
+    }
+  }
+
+  /** Fermer : l'écran, et la séance s'il y en a une.
+
+      Deux gestes sous un mot, et c'est voulu — l'enseignant qui a fini avec sa
+      classe fait un seul geste. Mais fermer une séance **coupe le code** :
+      personne n'entre plus, et un nouveau module voudra un nouveau code. On le
+      dit avant, en décrivant ce qui va se passer plutôt qu'en demandant si on
+      est sûr. Sans séance, « Fermer » garde son sens d'avant : il ferme
+      l'écran, point — le bouton ne change pas de sens pour un enseignant qui
+      n'ouvre jamais de séance. */
+  async function drFermer() {
+    const s = seanceDuModule();
+    if (s) {
+      const ok = confirm(
+        `Fermer la séance ${s.code} ?\n\n`
+        + 'Le code cesse aussitôt de faire entrer les élèves, et ceux qui sont '
+        + 'en train de répondre ne pourront plus rien envoyer. Les réponses '
+        + 'déjà reçues restent au tableau.\n\n'
+        + 'Pour refaire travailler la classe, il faudra ouvrir une nouvelle '
+        + 'séance, avec un nouveau code.');
+      if (!ok) return;
+      try {
+        const r = await Prof.fetch('/api/prof/seances/fermer', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ id: s.id }),
+        });
+        const d = await r.json();
+        if (!r.ok) throw new Error(d.error || 'Fermeture impossible');
+        SEANCES = SEANCES.filter(x => x.id !== s.id);
+        SEANCE_CLOSE = true;
+      } catch (err) {
+        alert(err.message);
+        return;                 // l'écran reste ouvert : la séance, elle, ne l'est pas
+      }
+    } else {
+      SEANCE_CLOSE = false;
+    }
+    DIRECT_FERME = true;
+    DIRECT = null;              // à la réouverture, on repart d'un tour frais
+    drRendre();
+    drHorloge();
+  }
 
   // `toggle` ne remonte pas l'arbre : on l'attrape à la descente. Reconstruire
   // une carte déjà ouverte n'en déclenche pas — l'attribut vient du HTML, ce

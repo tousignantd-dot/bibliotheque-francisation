@@ -17,6 +17,9 @@ const Prof = (() => {
     enseignant: null,
     groupes: [],
     groupeId: null,
+    // Le mode séance est-il ouvert à ce compte ? Décidé par la direction,
+    // remonté par `/api/prof/me`. Vrai par défaut : c'est le réglage hérité.
+    seanceAutorisee: true,
   };
 
   const listeners = [];
@@ -113,6 +116,10 @@ const Prof = (() => {
       return null;
     }
     state.enseignant = data.enseignant;
+    // La direction autorise, l'enseignant choisit. Le drapeau voyage déjà dans
+    // cette réponse ; il était jeté, et chaque écran qui en avait besoin
+    // redemandait `/api/prof/me`. On le garde ici, une fois.
+    state.seanceAutorisee = data.seanceAutorisee !== false;
     setGroupes(data.groupes);
     if (!state.groupes.length && redirect) {
       // Un enseignant sans groupe ne peut rien planifier : on l'envoie

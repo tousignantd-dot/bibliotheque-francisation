@@ -1524,104 +1524,18 @@
 
   // — Séance sans compte —
   //
-  // La direction autorise, l'enseignant choisit : le bouton n'existe que si
-  // le mode est ouvert pour ce centre. Le serveur refuse de toute façon —
-  // c'est lui qui garde — mais un bouton qui échoue devant la classe vaut
-  // moins qu'un bouton absent.
-
-  function rendreSeances(seances) {
-    const liste = $('seanceListe');
-    if (!seances.length) {
-      liste.innerHTML = '<p style="margin:0;font-size:var(--fs-body-sm);'
-        + 'font-weight:var(--fw-semi);color:var(--ink-500)">'
-        + 'Aucune séance ouverte pour ce groupe.</p>';
-      return;
-    }
-    liste.innerHTML = seances.map((s) => `
-      <div class="pe-seance${s.ouverte ? '' : ' pe-seance--close'}">
-        <span class="pe-seance-code">${esc(s.code)}</span>
-        <span class="pe-seance-quoi">${esc(s.activityTitle || 'Module')}
-          <span>${s.ouverte ? pluriel(s.participants, 'participant')
-                            : 'fermée'}</span></span>
-        <a class="btn btn--ghost btn--sm" target="_blank" rel="noopener"
-           href="feuille-seance.html?code=${encodeURIComponent(s.code)}">La feuille</a>
-        ${s.ouverte ? `<a class="btn btn--ghost btn--sm" target="_blank" rel="noopener"
-           href="progression.html?module=${s.activityId}">Le direct</a>` : ''}
-        ${s.ouverte ? `<button type="button" class="btn btn--ghost btn--sm"
-           data-fermer-seance="${s.id}">Fermer</button>` : ''}
-      </div>`).join('');
-  }
-
-  async function chargerSeances() {
-    try {
-      const res = await json(`/api/prof/seances?groupId=${etat.groupeId}`);
-      rendreSeances(res.seances || []);
-    } catch (err) {
-      $('seanceListe').textContent = `Séances indisponibles : ${err.message}`;
-    }
-  }
-
-  $('boutonSeance').addEventListener('click', async () => {
-    // Le choix se fait dans les modules qui ont un fichier à ouvrir : une
-    // séance sur un module sans fichier n'ouvrirait rien.
-    //
-    // Les chemins sont lus **à plat** (`a.interactive`) : cette page reçoit
-    // les enregistrements bruts du catalogue, et non la forme groupée `files`
-    // que sert le portail élève. Le premier jet filtrait sur `files` et
-    // rendait une liste vide — sans erreur, sans message, juste un menu sans
-    // rien dedans.
-    //
-    // Et volontairement sans regarder les dates : une séance s'ouvre sur ce
-    // qu'on fait aujourd'hui, planifié ou non.
-    //
-    // `suivable` est calculé par le serveur, qui va voir dans le fichier si
-    // l'activité renvoie vraiment les réponses (`rapporte_au_direct`). Les
-    // 87 modules et les 56 ateliers de la banque le font ; les ateliers
-    // écrits à la main, les cartes mémoire et la cabine d'enregistrement,
-    // non. Ouvrir une séance sur l'une d'elles donnait une feuille, une
-    // classe qui répond, et un tableau vide sans un mot d'explication.
-    const avecFichier = etat.activites.filter((a) => a.parcours || a.interactive);
-    const ouvrables = avecFichier.filter((a) => a.suivable);
-    const ecartes = avecFichier.length - ouvrables.length;
-    $('seanceModule').innerHTML = ouvrables
-      .map((a) => `<option value="${a.id}">${esc(a.title)}</option>`).join('');
-    $('seanceEcartees').textContent = ecartes
-      ? `${ecartes} activité${ecartes > 1 ? 's ne sont' : ' n\'est'} pas dans cette liste : `
-        + `${ecartes > 1 ? 'elles ne renvoient' : 'elle ne renvoie'} pas les réponses des `
-        + `élèves, et le tableau de la classe resterait vide.`
-      : '';
-    $('boutonOuvrirSeance').disabled = !ouvrables.length;
-    ouvrirModale('modaleSeance');
-    await chargerSeances();
-  });
-
-  $('formSeance').addEventListener('submit', async (e) => {
-    e.preventDefault();
-    const activityId = Number($('seanceModule').value);
-    if (!activityId) return;
-    try {
-      const res = await envoyer('/api/prof/seances',
-        { groupId: etat.groupeId, activityId });
-      dire(`Séance ouverte. Le code est ${res.seance.code}.`);
-      await chargerSeances();
-      window.open(`feuille-seance.html?code=${encodeURIComponent(res.seance.code)}`,
-                  '_blank');
-    } catch (err) {
-      dire(`Séance impossible : ${err.message}`);
-    }
-  });
-
-  $('seanceListe').addEventListener('click', async (e) => {
-    const bouton = e.target.closest('[data-fermer-seance]');
-    if (!bouton) return;
-    try {
-      await envoyer('/api/prof/seances/fermer',
-                    { id: Number(bouton.dataset.fermerSeance) });
-      await chargerSeances();
-      dire('Séance fermée. Le code ne marche plus.');
-    } catch (err) {
-      dire(`Fermeture impossible : ${err.message}`);
-    }
+  // Le bouton mène au direct, où la séance s'ouvre, se lit et se ferme. Il ne
+  // fait plus rien lui-même : la fenêtre qui portait le formulaire, la liste
+  // des séances et leur fermeture a disparu le 30 août 2026. Elle obligeait à
+  // quitter l'écran pour voir la classe répondre, alors que c'est la seule
+  // chose qu'on veut regarder pendant une séance.
+  //
+  // La direction autorise, l'enseignant choisit : le lien n'existe que si le
+  // mode est ouvert pour ce centre (posé plus haut, avec `seanceAutorisee`).
+  // Le serveur refuse de toute façon — c'est lui qui garde — mais un bouton
+  // qui échoue devant la classe vaut moins qu'un bouton absent.
+  $('boutonSeance').addEventListener('click', () => {
+    location.href = 'progression.html';
   });
 
   // — Aperçu élève —
