@@ -227,6 +227,19 @@
      mesurer au seul événement `load` donne la largeur d'une page vide. */
   const MIN_LARGEUR = 320, MAX_LARGEUR = 2000;
 
+  /* La feuille qui replie les vieux ateliers. Elle ne peut pas être liée
+     depuis leurs fichiers : ils réécrivent leur document au démarrage et
+     emporteraient le lien. On la repose donc ici, après eux, à chaque
+     mesure — deux lignes qui valent quinze ateliers rendus lisibles. */
+  function poserLaFeuilleMobile(doc) {
+    if (doc.getElementById('feuille-ateliers-mobile')) return;
+    const lien = doc.createElement('link');
+    lien.id = 'feuille-ateliers-mobile';
+    lien.rel = 'stylesheet';
+    lien.href = '/assets/design-system/ateliers-mobile.css';
+    (doc.head || doc.documentElement).appendChild(lien);
+  }
+
   function ajusterLechelle() {
     const frame = document.getElementById('actFrame');
     const boite = document.getElementById('actFit');
@@ -234,6 +247,7 @@
     let doc;
     try { doc = frame.contentDocument; } catch (e) { return; }  // autre origine
     if (!doc || !doc.documentElement) return;
+    poserLaFeuilleMobile(doc);
 
     const dispo = boite.clientWidth;
     const hauteur = boite.clientHeight;
@@ -242,6 +256,9 @@
     frame.style.cssText = '';
     const naturel = Math.max(doc.documentElement.scrollWidth,
                              doc.body ? doc.body.scrollWidth : 0);
+    // Le repli d'abord : si la feuille a fait entrer l'atelier, on ne réduit
+    // rien et le texte garde sa taille. La réduction ne sert plus qu'aux
+    // douze ateliers hors de la famille, qui n'ont pas de vocabulaire commun.
     if (naturel <= dispo + 4) return;
     if (naturel < MIN_LARGEUR || naturel > MAX_LARGEUR) return;
 
