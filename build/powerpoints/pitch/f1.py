@@ -120,6 +120,13 @@ def build(dossier):
                     "beaucoup d'énergie à comprendre une interface, et celle-là il "
                     "la comprend une seule fois." % n(CH['cours']))
 
+    ecran(d, "Le chemin, à l'écran", "Les sections d'un module",
+          poser('tel', '04-module-tete'),
+          "Les six étapes sont là, tout le temps, dans le même ordre. L'élève "
+          "sait où il en est sans qu'on le lui dise.",
+          notes="Faire remarquer « Tu reprends où tu étais » : il s'arrête et "
+                "revient quand il veut, et rien ne recommence à zéro.")
+
     d.regle("La forme des exercices",
             "Sept familles, pas une de plus.",
             precision="Vrai ou faux, associer, des cases à écrire, un texte à trous, "
@@ -148,6 +155,13 @@ def build(dossier):
             notes="C'est la décision la plus discutée du projet, et la plus facile à "
                   "défendre en salle : demander qui, dans la salle, se souvient d'une "
                   "règle apprise avant d'en avoir eu besoin.")
+
+    ecran(d, "Au moment de l'erreur", "La mini-leçon s'ouvre là",
+          poser('cas', '14-minilecon'),
+          "Elle n'est pas en tête de module : elle s'ouvre depuis l'exercice. "
+          "Sa première section s'appelle « L'erreur de départ à corriger ».",
+          notes="Lire ce premier titre à voix haute — il dit toute la démarche. "
+                "La leçon part de ce que l'élève croit, pas de la règle.")
 
     d.piege("Ce qu'on nous dit",
             "« Si la machine corrige tout de suite, l'élève ne cherche plus. »",
