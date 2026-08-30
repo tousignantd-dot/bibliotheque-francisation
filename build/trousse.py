@@ -74,6 +74,12 @@ def mesures():
     m["heures"] = round(minutes / 60)
     m["notes"] = notes
 
+    # Le plafond d'une séance se lit dans le serveur : l'écrire ici en dur, ce
+    # serait promettre quarante appareils le jour où il en accepte trente.
+    srv = (RACINE / "server.py").read_text(errors="ignore")
+    mm = re.search(r"SEANCE_PLAFOND_DEFAUT\s*=\s*(\d+)", srv)
+    m["plafond"] = int(mm.group(1)) if mm else 40
+
     m["mp3"] = len(list((RACINE / "assets" / "interactive").rglob("*.mp3")))
     m["images"] = sum(len(list((RACINE / "assets" / "interactive").rglob(e)))
                       for e in ("*.jpg", "*.png", "*.webp"))
@@ -90,9 +96,10 @@ DEROULE = [
      "salle, et une enseignante qui photocopie la veille au soir. On ne parle pas encore "
      "d'outil.", None, None),
     ("2-5 min", "Ce que l'élève voit",
-     "Ouvrir un module sur un téléphone — le vôtre, pas une capture. Écouter un dialogue, "
-     "le ralentir, répondre à deux questions. C'est le moment qui vend, et il dure trois "
-     "minutes.", "captures-telephone.html", "Le cours sur un téléphone"),
+     "Ouvrir un module sur un téléphone — le vôtre, pas une capture. Puis leur faire "
+     "sortir le leur : le code QR de la séance est sur la feuille, ils entrent sans "
+     "compte et ils ont l'assistance. C'est le moment qui vend.",
+     "captures-telephone.html", "Le cours sur un téléphone"),
     ("5-8 min", "Ce que l'enseignant voit",
      "Le direct de la classe : quatorze élèves sur seize en ligne, question par question. "
      "Puis le dossier d'un élève. Dire tout de suite que les noms sont des pseudonymes.",
@@ -401,6 +408,43 @@ def page(m):
 </section>
 
 <section class="conteneur">
+  <p class="eyebrow e-ambre">Le moment qui vend</p>
+  <h2>Faire essayer la salle, sur leurs téléphones</h2>
+  <p>Douze personnes qui regardent une démonstration se souviennent d'une démonstration.
+  Douze personnes qui <b>font l'exercice</b> se souviennent de l'exercice. Le mode séance
+  est fait pour ça : une feuille photocopiée, un code QR, et personne n'a de compte à
+  créer.</p>
+  <div class="cadre-table"><table>
+    <thead><tr><th>Quand</th><th>Le geste</th></tr></thead>
+    <tbody>
+      <tr><td>La veille</td><td>Dans le portail, onglet <b>Élèves</b> → « Séance sans
+        compte » : choisir un groupe de démonstration et un module court. Le serveur rend
+        un code de six caractères.</td></tr>
+      <tr><td>La veille</td><td>Ouvrir <b>la feuille</b> et l'imprimer — code QR, code en
+        gros, adresse en toutes lettres, noir et blanc. En apporter une dizaine, ou une
+        seule à projeter.</td></tr>
+      <tr><td>Pendant</td><td>« Sortez votre téléphone, visez le carré. » Ils entrent en
+        deux secondes, sans compte et sans nom.</td></tr>
+      <tr><td>Après</td><td>Projeter <b>le direct de la classe</b> : leurs réponses
+        arrivent, question par question, sous « Participant 1 » à « Participant N ».</td></tr>
+    </tbody>
+  </table></div>
+  <div class="garde" style="margin-top:16px">
+    <p><b>Ils auront l'assistance</b> — traduire, simplifier, demander, « Corrige-moi ! » —
+    parce qu'une séance hérite des réglages de son centre, et que l'assistance est
+    autorisée par défaut. C'est justement ce qu'il faut leur faire toucher : la salle
+    essaie exactement ce que la direction s'apprête à autoriser ou non.</p>
+    <p style="margin-top:10px"><b>Deux bornes à connaître :</b> la séance <b>expire le
+    soir même</b> et accepte <b>__PLAFOND__ appareils</b>. Pour une rencontre, c'est large ; pour
+    une journée portes ouvertes, en ouvrir une par demi-journée.</p>
+  </div>
+  <p style="margin-top:16px"><b>Vous avez déjà le code ?</b> Ouvrez la feuille
+  directement : <a href="/feuille-seance.html">feuille-seance.html?code=XXXXXX</a> —
+  remplacez les six X. La feuille se fabrique côté serveur, code QR compris : aucun
+  service tiers ne voit l'adresse de votre classe.</p>
+</section>
+
+<section class="conteneur">
   <p class="eyebrow e-indigo">À projeter</p>
   <h2>Les trois diaporamas</h2>
   <p>Les trois temps du milieu existent en PowerPoint, dans le même système de design
@@ -449,7 +493,7 @@ def page(m):
 </main>
 </body>
 </html>
-""".replace("__QUAND__", m["quand"]).replace("__TUILES__", h_tuiles) \
+""".replace("__PLAFOND__", str(m["plafond"])).replace("__QUAND__", m["quand"]).replace("__TUILES__", h_tuiles) \
    .replace("__DEROULE__", h_deroule).replace("__QUESTIONS__", h_questions) \
    .replace("__LIMITES__", h_limites).replace("__AVANT__", h_avant) \
    .replace("__LIASSE__", h_liasse) \

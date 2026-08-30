@@ -254,7 +254,7 @@
          pas la donnée. */
       var etats = [['herite', 'Non réglé'], ['autorisee', 'Autorisée'],
                    ['interdite', 'Interdite']];
-      var html = '<div class="dr-ia" role="group" aria-label="Assistant IA">';
+      var html = '<div class="dr-ia" role="group" aria-label="Assistance">';
       etats.forEach(function (e) {
         html += '<button type="button" data-ia="' + e[0] +
                 '" data-prof="' + ligne.teacherId + '"' +
@@ -284,7 +284,7 @@
       h += tuile(jamais, jamais === 1 ? 'Jamais connecté' : 'Jamais connectés');
       h += tuile(d.enseignants.reduce(function (s, l) { return s + l.groupes; }, 0), 'Groupes');
       h += tuile(d.enseignants.reduce(function (s, l) { return s + l.eleves; }, 0), 'Élèves');
-      h += tuile(eteintes, eteintes === 1 ? 'IA éteinte' : 'IA éteintes');
+      h += tuile(eteintes, eteintes === 1 ? 'Assistance éteinte' : 'Assistances éteintes');
       h += tuile(argent(d.totalUsd), 'Dépense du centre');
       h += '</div>';
 
@@ -298,7 +298,7 @@
         h += '<div class="dr-boite"><table><thead><tr>' +
              '<th>Personne</th><th>Rôle</th><th>Compte</th>' +
              '<th class="num">Groupes</th><th class="num">Élèves</th>' +
-             '<th>Assistant IA</th><th class="num">Dépense</th>' +
+             '<th>Assistance</th><th class="num">Dépense</th>' +
              '</tr></thead><tbody>';
         d.enseignants.forEach(function (l) {
           h += '<tr>' +
@@ -350,7 +350,7 @@
            '<div class="dr-boite"><table><thead><tr>' +
            '<th>Centre</th><th>CSS</th><th class="num">Enseignants</th>' +
            '<th class="num">Groupes</th><th class="num">Élèves</th>' +
-           '<th>Assistant IA</th><th class="num">Dépense</th>' +
+           '<th>Assistance</th><th class="num">Dépense</th>' +
            '</tr></thead><tbody>';
       d.centres.forEach(function (c) {
         h += '<tr>' +

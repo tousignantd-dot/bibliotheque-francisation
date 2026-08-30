@@ -1,7 +1,8 @@
 # -*- coding: utf-8 -*-
 """P2 · Ce que la direction décide — les quatre interrupteurs et le mode séance.
 Section acier · le quatrième quart d'heure d'une rencontre.
-Source : la section « Le mode sans IA » du CLAUDE.md et le bac à sable.
+Source : la section « Le mode sans IA » du CLAUDE.md (le champ reste `ia` ;
+c'est l'étiquette qui a changé) et le bac à sable.
 """
 from theme import Deck
 from chiffres import CH, n
@@ -75,7 +76,7 @@ def build(dossier):
                "essais : il n'est jamais laissé devant un mur."),
               ("Ce qui change pour l'enseignant", "Les textes arrivent non corrigés. "
                "C'est lui qui corrige — c'est le vrai coût du refus, et il se voit.")],
-             notes="Ne pas vendre le mode sans IA comme équivalent. Dire le coût : le "
+             notes="Ne pas vendre le mode sans assistance comme équivalent. Dire le coût : le "
                    "travail de correction revient à l'enseignant.")
 
     d.piege('Le malentendu le plus fréquent',

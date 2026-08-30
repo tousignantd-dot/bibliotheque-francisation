@@ -58,7 +58,7 @@ def poser(chemin):
     # sur la fin du <head>, puis sur le tout début du fichier.
     m = re.search(r"<body[^>]*>", s) or re.search(r"</head>", s)
     if m:
-        s = s[:m.end()] + "\n" + BLOC + s[m.end():]
+        s = s[:m.end()] + "\n" + BLOC + s[m.end():].lstrip("\n")
     else:
         s = BLOC + s
     chemin.write_text(s)
@@ -68,7 +68,9 @@ def poser(chemin):
 def retirer_de(s):
     """D'un marqueur à l'autre. Une chaîne exacte échouerait en silence le jour
     où le bloc change d'une virgule."""
-    return re.sub(re.escape(DEBUT) + r".*?" + re.escape(FIN) + r"\n?", "", s,
+    # La ligne vide qui précède part avec le bloc : sans elle, chaque passage
+    # en laisse une de plus, et le fichier grossit d'une ligne par exécution.
+    return re.sub(r"\n?" + re.escape(DEBUT) + r".*?" + re.escape(FIN) + r"\n?", "", s,
                   flags=re.S)
 
 
