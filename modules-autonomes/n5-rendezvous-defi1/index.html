@@ -214,6 +214,18 @@ button:disabled{cursor:not-allowed}
   .btn-menu{padding:6px 10px;font-size:12px;white-space:nowrap}
   .menu button{max-width:none;flex:1 1 100%}
 
+  /* Un tri s'empile. En colonnes, sur 375 px, il reste 73 px pour le mot dès
+     qu'il y a trois colonnes — « En avant-midi » se lit alors à la verticale,
+     une lettre par ligne. Le cas passe donc au-dessus, et les boutons dessous,
+     à égale largeur : ils y gagnent des cibles plus grandes pour le pouce. */
+  .tri__tete{display:none}
+  .tri__l{display:flex;flex-wrap:wrap;padding:4px 10px 0}
+  .tri__mot{flex:1 1 100%;padding:10px 4px 8px}
+  .tri__mot i{display:inline;margin-left:6px}
+  .tri__c{flex:1 1 0;min-width:0;padding:0 3px 10px}
+  .tri__c button{padding:11px 4px}
+  .tri__note{flex:1 1 100%;padding:0 4px 10px}
+
   /* « Continuer » ne se cherche pas. Sur un téléphone, le pied de l'écran
      reste au bas de la fenêtre pendant qu'on lit — c'est le seul geste de
      l'écran, il doit être là où le pouce l'attend. */
