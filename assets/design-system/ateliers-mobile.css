@@ -1,0 +1,73 @@
+/* Les ateliers de la première époque, sur un téléphone.
+   ====================================================
+
+   Quinze activités de `assets/interactive/` sortent d'un même générateur :
+   elles partagent 52 classes au caractère près. Aucune n'a la moindre media
+   query — elles sont mises en page pour un écran large, en rangées qui ne se
+   replient jamais. Cette feuille écrit la seule qui leur manquait.
+
+   Elle n'est pas liée depuis les fichiers : ceux-ci **réécrivent leur document
+   entier** au démarrage et emporteraient le lien. C'est `viewer.html` qui la
+   pose dans l'iframe, après coup (voir « poserLaFeuilleMobile »).
+
+   Le parti pris est de **replier, pas de réduire**. Une page large ramenée à
+   l'échelle reste lisible à la loupe ; un élève qui apprend à lire le français
+   a besoin du texte à sa taille. Tout ce qui suit ne fait que passer des
+   rangées en colonnes.
+
+   Les `!important` ne sont pas une facilité : les règles d'origine vivent dans
+   une feuille injectée par le JavaScript de l'atelier, donc **après** celle-ci
+   dans l'ordre du document. */
+
+@media (max-width: 640px) {
+
+  /* L'en-tête : titre, consigne et boutons se suivent au lieu de se serrer.
+     Il ne colle plus en haut — sur un écran de téléphone, une bande fixe de
+     cette hauteur mange le tiers de la page. */
+  #hdr { padding: 12px 14px !important; flex-wrap: wrap !important;
+         gap: 8px !important; position: static !important; }
+  .hdr-l, .hdr-r { flex-wrap: wrap !important; width: 100% !important;
+                   justify-content: flex-start !important; }
+
+  /* Le dialogue : le lecteur audio passe au-dessus du texte au lieu de lui
+     voler la moitié de la largeur. Sans ça, les répliques se cassaient à
+     deux mots par ligne. */
+  #dial-sec { flex-direction: column !important; }
+  #audio-pl { width: 100% !important; border-right: none !important; }
+
+  /* Les exercices. Une carte range son énoncé, ses cases et son banc de
+     réponses côte à côte : sur un téléphone, ils se suivent. */
+  #exs { padding: 14px 12px 32px !important; }
+  .card { flex-direction: column !important; }
+  .c-hdr { flex-wrap: wrap !important; }
+  .r1row, .r2row, .rrow, .rrow2, .rows {
+    display: grid !important; grid-template-columns: 1fr !important; }
+  .tile, .zone, .blank { max-width: 100% !important; }
+
+  /* Le banc de réponses reste sous les yeux pendant qu'on remplit les cases.
+     Renvoyé en bas de carte, il aurait obligé à faire l'aller-retour entre le
+     bas de l'exercice et chaque case. */
+  .bsec { position: sticky !important; bottom: 0 !important;
+          width: 100% !important; max-width: none !important;
+          z-index: 50 !important;
+          box-shadow: 0 -6px 18px rgba(0, 0, 0, .10) !important; }
+
+  /* ── Les ateliers hors de la famille ────────────────────────────────
+     Douze activités ne partagent pas ce vocabulaire : ce sont des pièces
+     uniques. Quatre règles génériques suffisent pourtant à en ramener la
+     moitié à taille de texte pleine.
+
+     `min-width: 0` sur tout : ces pages posent des planchers de 160, 280,
+     320 et 420 px sur leurs colonnes, et c'est ce plancher — pas le
+     contenu — qui débordait. Un élément de grille ou de flex a d'ailleurs
+     `min-width: auto` par défaut, ce qui l'empêche de rétrécir sous son
+     contenu : c'est la cause de moitié des débordements du Web.
+
+     Un tableau passe en bloc : mieux vaut une liste qui défile qu'un
+     tableau qui pousse la page. */
+  * { min-width: 0 !important; }
+  .cl-row, [class*="-row"] {
+    display: grid !important; grid-template-columns: 1fr !important; }
+  table { width: 100% !important; display: block !important; }
+  img { max-width: 100% !important; height: auto !important; }
+}

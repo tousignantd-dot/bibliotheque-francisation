@@ -87,6 +87,13 @@
     }
     .btn-back:hover { background: rgba(255,255,255,.12); color: #f1f5f9; }
 
+    /* Le cadre qui rogne. Une activité plus large que le téléphone est
+       réduite à l'échelle (voir « ajusterLechelle » plus bas) : la mise à
+       l'échelle ne change pas la place prise dans la mise en page, donc sans
+       ce conteneur en `overflow: hidden` la page entière se mettrait à
+       défiler de côté. */
+    .fit { flex: 1; min-height: 0; display: flex; position: relative; overflow: hidden; }
+
     iframe {
       flex: 1; width: 100%; border: none; background: #fff;
     }
@@ -132,7 +139,9 @@
   </div>
 </div>
 
-<iframe id="actFrame" src="" allow="autoplay; fullscreen" allowfullscreen></iframe>
+<div class="fit" id="actFit">
+  <iframe id="actFrame" src="" allow="autoplay; fullscreen" allowfullscreen></iframe>
+</div>
 
 <script>
   const params = new URLSearchParams(location.search);
@@ -198,6 +207,85 @@
     frame.src = src + (src.includes('?') ? '&' : '?') + params.toString();
   }
   loadActivity();
+
+  /* ── Les activités qui ne connaissent pas le téléphone ──────────────
+     Vingt-sept ateliers de la première époque sont mis en page pour un
+     écran large : pas une seule media query dans leur feuille de style.
+     Leur poser un `<meta name="viewport">` ne sert à rien — **une iframe
+     ignore le viewport de son document**, sa largeur de mise en page est
+     la taille du cadre. Le remède ne peut donc vivre que dans le cadre.
+
+     On mesure la largeur naturelle du contenu et, si elle dépasse la
+     place, on donne à l'iframe cette largeur-là puis on la réduit à
+     l'échelle. Le navigateur transporte les coordonnées du pointeur à
+     travers la transformation : le glisser-déposer, qui est le geste
+     principal de ces ateliers, continue de tomber juste — ce qu'un
+     `zoom` ou une réécriture des largeurs ne garantissaient pas.
+
+     Trois mesures échelonnées : ces fichiers sortent d'un bundler et
+     **réécrivent le document entier** après leur chargement, si bien que
+     mesurer au seul événement `load` donne la largeur d'une page vide. */
+  const MIN_LARGEUR = 320, MAX_LARGEUR = 2000;
+
+  /* La feuille qui replie les vieux ateliers. Elle ne peut pas être liée
+     depuis leurs fichiers : ils réécrivent leur document au démarrage et
+     emporteraient le lien. On la repose donc ici, après eux, à chaque
+     mesure — deux lignes qui valent quinze ateliers rendus lisibles. */
+  function poserLaFeuilleMobile(doc) {
+    if (doc.getElementById('feuille-ateliers-mobile')) return;
+    const lien = doc.createElement('link');
+    lien.id = 'feuille-ateliers-mobile';
+    lien.rel = 'stylesheet';
+    lien.href = '/assets/design-system/ateliers-mobile.css';
+    (doc.head || doc.documentElement).appendChild(lien);
+  }
+
+  function ajusterLechelle() {
+    const frame = document.getElementById('actFrame');
+    const boite = document.getElementById('actFit');
+    if (!frame || !boite) return;
+    let doc;
+    try { doc = frame.contentDocument; } catch (e) { return; }  // autre origine
+    if (!doc || !doc.documentElement) return;
+    poserLaFeuilleMobile(doc);
+
+    const dispo = boite.clientWidth;
+    const hauteur = boite.clientHeight;
+    if (!dispo || !hauteur) return;
+
+    frame.style.cssText = '';
+    const naturel = Math.max(doc.documentElement.scrollWidth,
+                             doc.body ? doc.body.scrollWidth : 0);
+    // Le repli d'abord : si la feuille a fait entrer l'atelier, on ne réduit
+    // rien et le texte garde sa taille. La réduction ne sert plus qu'aux
+    // douze ateliers hors de la famille, qui n'ont pas de vocabulaire commun.
+    if (naturel <= dispo + 4) return;
+    if (naturel < MIN_LARGEUR || naturel > MAX_LARGEUR) return;
+
+    const k = dispo / naturel;
+    frame.style.position = 'absolute';
+    frame.style.top = '0';
+    frame.style.left = '0';
+    frame.style.flex = 'none';
+    frame.style.width = naturel + 'px';
+    frame.style.height = Math.round(hauteur / k) + 'px';
+    frame.style.transformOrigin = '0 0';
+    frame.style.transform = 'scale(' + k.toFixed(4) + ')';
+  }
+
+  (function surveillerLechelle() {
+    const frame = document.getElementById('actFrame');
+    if (!frame) return;
+    frame.addEventListener('load', () => {
+      ajusterLechelle();
+      setTimeout(ajusterLechelle, 300);
+      setTimeout(ajusterLechelle, 1500);
+    });
+    window.addEventListener('resize', ajusterLechelle);
+    window.addEventListener('orientationchange',
+                            () => setTimeout(ajusterLechelle, 250));
+  })();
+
 
   // ── Suivi d'événements ──────────────────────────────────────────────────
 

@@ -1,11 +1,83 @@
 <!DOCTYPE html>
-<html>
+<html lang="fr" data-greffe-lang="1">
 <head>
+<!-- ATELIERS-MOBILE:début — greffé par build/greffe_ateliers.py -->
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<link rel="icon" type="image/svg+xml" href="/assets/design-system/marque-francis-favicon.svg">
+<style>
+  html { -webkit-text-size-adjust: 100%; text-size-adjust: 100%; }
+</style>
+<script>
+(function () {
+  var MIN = 320, MAX = 1200;   // hors de ces bornes, on ne croit pas la mesure
+
+  function balise() {
+    var m = document.querySelector('meta[name="viewport"][data-greffe]');
+    if (!m) {
+      m = document.createElement('meta');
+      m.name = 'viewport';
+      m.setAttribute('data-greffe', '1');
+      (document.head || document.documentElement).appendChild(m);
+    }
+    return m;
+  }
+
+  function poser(contenu) {
+    var m = balise();
+    if (m.content !== contenu) m.content = contenu;
+    // Les balises de l'application : on les neutralise plutôt que de les
+    // retirer, pour ne pas surprendre un code qui les relit.
+    var autres = document.querySelectorAll('meta[name="viewport"]:not([data-greffe])');
+    for (var i = 0; i < autres.length; i++) autres[i].name = 'viewport-remplace';
+    if (m !== document.head.lastElementChild) document.head.appendChild(m);
+  }
+
+  var FIXE = '';
+
+  function ajuster() {
+    if (FIXE) { poser(FIXE); return; }
+    poser('width=device-width, initial-scale=1, viewport-fit=cover');
+    var d = document.documentElement;
+    var large = Math.max(d.scrollWidth, document.body ? document.body.scrollWidth : 0);
+    if (large > d.clientWidth + 4 && large >= MIN && large <= MAX) {
+      FIXE = 'width=' + Math.ceil(large) + ', viewport-fit=cover';
+      poser(FIXE);
+    }
+  }
+
+  // L'application se dessine après nous : mesurer trop tôt donne la largeur
+  // d'une page vide. Trois rendez-vous valent mieux qu'un pari.
+  if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', ajuster);
+  }
+  window.addEventListener('load', function () { setTimeout(ajuster, 150); });
+  setTimeout(ajuster, 1200);
+  window.addEventListener('orientationchange', function () {
+    FIXE = ''; setTimeout(ajuster, 200);
+  });
+
+  // Et si l'application repose la sienne plus tard, on repasse derrière.
+  if (window.MutationObserver && document.head) {
+    new MutationObserver(function (muts) {
+      for (var i = 0; i < muts.length; i++) {
+        var aj = muts[i].addedNodes;
+        for (var j = 0; j < aj.length; j++) {
+          if (aj[j].nodeName === 'META' && aj[j].name === 'viewport') {
+            poser(FIXE || 'width=device-width, initial-scale=1, viewport-fit=cover');
+            return;
+          }
+        }
+      }
+    }).observe(document.head, { childList: true });
+  }
+})();
+</script>
+<!-- ATELIERS-MOBILE:fin -->
   <meta charset="utf-8">
   <title>Le mystère de la classe — Qui laisse un cadeau mystère ?</title>
   <style>
     * { margin: 0; padding: 0; box-sizing: border-box; }
-    body { background: #1C1633; display: flex; align-items: center; justify-content: center; min-height: 100vh; font-family: -apple-system, BlinkMacSystemFont, sans-serif; }
+    body { background: #1C1633; display: flex; align-items: center; justify-content: center; min-height: 100vh;min-height:100dvh; font-family: -apple-system, BlinkMacSystemFont, sans-serif; }
     #__bundler_loading { position: fixed; bottom: 20px; right: 20px; font: 13px/1.4 -apple-system, BlinkMacSystemFont, sans-serif; color: #666; background: #fff; padding: 8px 14px; border-radius: 8px; box-shadow: 0 1px 4px rgba(0,0,0,0.12); z-index: 10000; }
     #__bundler_thumbnail { position: fixed; inset: 0; width: 100%; height: 100%; display: flex; align-items: center; justify-content: center; background: #1C1633; z-index: 9999; }
     #__bundler_thumbnail svg { width: 100%; height: 100%; object-fit: contain; }
