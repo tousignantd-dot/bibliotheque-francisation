@@ -31,9 +31,15 @@ button:disabled{cursor:not-allowed}
 .tete{background:#FFF;border-bottom:1px solid var(--filet);padding:10px 20px;
   display:flex;align-items:center;gap:16px;flex-wrap:wrap;flex:0 0 auto;
   position:sticky;top:0;z-index:5}
-.fr-nom{font-family:'Nunito',sans-serif;font-weight:900;font-size:21px;letter-spacing:-.035em;
-  line-height:1;position:relative;display:inline-block;color:var(--encre);text-decoration:none}
-.fr-pt{position:absolute;top:1px;left:calc(50% + 1px);width:5px;height:5px;border-radius:50%;background:var(--mauve)}
+.fr-nom{font-family:'Nunito',sans-serif;font-weight:900;font-size:24px;letter-spacing:-.035em;line-height:1;color:var(--encre);white-space:nowrap;text-decoration:none}
+/* Le « ı » sans point (U+0131) et son disque. Le disque se cale sur CE
+   caractère, jamais sur la largeur du mot : posé à 50% du nom entier, il
+   tombait au-dessus du « n ». `inline-block` et non `inline` — la boîte d'un
+   élément en ligne monte jusqu'à l'ascendante de la police, et le disque se
+   retrouverait au-dessus des lettres. Valeurs de assets/design-system/marque-francis.css. */
+.fr-i{position:relative;display:inline-block}
+.fr-point{position:absolute;left:1px;top:1px;width:6px;height:6px;
+  border-radius:999px;background:var(--mauve)}
 .tete__t{font-size:13px;color:var(--gris);border-left:1px solid var(--filet);padding-left:16px}
 .tete__t b{color:var(--encre);font-weight:600}
 .jauge{flex:1 1 160px;height:5px;border-radius:3px;background:var(--filet-fin);position:relative;min-width:100px}
@@ -192,7 +198,7 @@ button:disabled{cursor:not-allowed}
 <body>
 
 <header class="tete">
-  <a class="fr-nom" href="%%RETOUR%%">franc<span class="fr-pt"></span>is</a>
+  <a class="fr-nom" aria-label="francis" href="%%RETOUR%%">franc<span class="fr-i" aria-hidden="true">ı<span class="fr-point"></span></span>s</a>
   <span class="tete__t"><b>%%TITRE%%</b> · %%SUR_TITRE%%</span>
   <span class="jauge" role="progressbar" aria-label="Progression du parcours"
         aria-valuemin="0" aria-valuemax="100" aria-valuenow="0"><i id="jauge"></i></span>
