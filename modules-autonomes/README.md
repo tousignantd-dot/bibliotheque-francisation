@@ -1,4 +1,15 @@
-# Modules autonomes
+# Modules autonomes — « le point express »
+
+**La gamme s'appelle « le point express »** (tranché le 30 août 2026 ;
+`modules-autonomes/le-nom.html` garde les deux tours et leurs motifs).
+Accroche : **dix minutes, une seule difficulté**. Deux mots français — *point*
+est le mot du programme pour une notion précise, *express* est invariable et
+n'est pas un anglicisme — et le disque mauve du « i » fait l'icône sans qu'on
+dessine quoi que ce soit. Ce n'est **pas une seconde marque** : le logotype,
+le point mauve et la barre blanche restent ceux de francis.
+
+La présentation en trois formes — écran, PDF, PowerPoint — se produit par
+`python3 build/point_express.py` et `python3 build/powerpoints/pitch.py p4`.
 
 La section du dépôt où vit l'**autre forme** de nos modules : un parcours qui
 s'apprend **sans personne à côté** — un écran à la fois, l'explication au moment

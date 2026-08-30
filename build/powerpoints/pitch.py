@@ -27,7 +27,7 @@ import modules  # noqa: E402
 SLUG = 'presentation-francis'
 SORTIE = os.path.abspath(os.path.join(ICI, '..', '..', 'assets', 'presentations',
                                       'diaporamas'))
-DECKS = ['p1', 'p2', 'p3']
+DECKS = ['p1', 'p2', 'p3', 'p4']
 
 
 def preparer():

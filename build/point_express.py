@@ -1,0 +1,512 @@
+#!/usr/bin/env python3
+# -*- coding: utf-8 -*-
+"""Le point express — la page de présentation, écran et papier.
+
+Ce qu'on montre à quelqu'un pour expliquer la gamme : ce que c'est, pourquoi
+elle existe, comment elle circule entre l'enseignant et l'élève, et ce qu'elle
+coûte. Même chaîne que la trousse de présentation — une page produite par un
+script, jamais écrite à la main, parce que les chiffres qu'elle porte bougent.
+
+    python3 build/point_express.py            # la page + le PDF
+    python3 build/point_express.py --sans-pdf # la page seule (rapide)
+
+Sorties :
+    assets/presentations/point-express.html   l'écran
+    assets/presentations/point-express.pdf    le papier (Chrome, format lettre)
+
+Le diaporama, lui, vit avec les autres diaporamas de présentation :
+    python3 build/powerpoints/pitch.py p4     → assets/presentations/diaporamas/
+
+**Les chiffres sont comptés sur le dépôt, jamais recopiés.** C'est le seul
+moyen qu'ils soient encore vrais dans un mois — et c'est la règle que la
+trousse tient déjà. Un chiffre qu'on ne sait pas compter n'est pas écrit.
+"""
+import argparse
+import html
+import json
+import pathlib
+import re
+import subprocess
+import sys
+import time
+
+RACINE = pathlib.Path(__file__).resolve().parent.parent
+SORTIE = RACINE / "assets" / "presentations" / "point-express.html"
+PDF = SORTIE.with_suffix(".pdf")
+CHROME = "/Applications/Google Chrome.app/Contents/MacOS/Google Chrome"
+
+MOIS = {"January": "janvier", "February": "février", "March": "mars", "April": "avril",
+        "May": "mai", "June": "juin", "July": "juillet", "August": "août",
+        "September": "septembre", "October": "octobre", "November": "novembre",
+        "December": "décembre"}
+
+
+def nb(v):
+    return "{:,}".format(v).replace(",", " ") if isinstance(v, int) else str(v)
+
+
+def mesures():
+    """Ce que la page affiche en chiffres, relevé sur le disque."""
+    sys.path.insert(0, str(RACINE / "build"))
+    from storyline import lire_bloc, fichiers
+
+    m = {}
+    quand = time.strftime("%-d %B %Y")
+    for en, fr in MOIS.items():
+        quand = quand.replace(en, fr)
+    m["quand"] = quand
+
+    # Les points express produits, et leurs écrans.
+    points = []
+    for f in fichiers():
+        p = lire_bloc(f.read_text(encoding="utf-8"), "PARCOURS") or {}
+        e = lire_bloc(f.read_text(encoding="utf-8"), "ECRANS") or []
+        if f.parent.name != "parcours":       # les parcours attachés à un module
+            continue                          # ne sont pas des points express
+        points.append({"titre": p.get("titre", f.stem), "slug": p.get("slug", f.stem),
+                       "savoir": p.get("savoir", ""), "ecrans": len(e),
+                       "sons": sum(len(x.get("sons", [])) for x in e)})
+    m["points"] = points
+    m["n_points"] = len(points)
+    m["n_ecrans"] = sum(p["ecrans"] for p in points)
+
+    # Le matériel de cours, pour situer la gamme.
+    m["modules"] = len(list((RACINE / "assets" / "interactive").glob("module-*")))
+    m["mp3"] = len(list((RACINE / "assets" / "interactive").rglob("*.mp3")))
+    m["minilecons"] = sum(
+        len(re.findall(r"eye:'Mini-leçon'", f.read_text(encoding="utf-8")))
+        for f in (RACINE / "build" / "contenu").glob("*/plus.js"))
+
+    # Les savoirs du programme — hors dépôt, donc facultatif.
+    prog = pathlib.Path.home() / "Claude" / "programme" / "programme-francisation.json"
+    m["savoirs5"] = None
+    if prog.exists():
+        try:
+            d = json.loads(prog.read_text(encoding="utf-8"))
+            n5 = [x for x in d["niveaux"] if x.get("niveau") == 5][0]
+            m["savoirs5"] = len(n5.get("savoirs") or [])
+        except Exception:
+            pass
+    return m
+
+
+# ── la page ────────────────────────────────────────────────────────────────
+GABARIT = """<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Le point express — dix minutes, une seule difficulté</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Nunito:wght@600;700;800;900&family=IBM+Plex+Sans:wght@400;500;600;700&family=IBM+Plex+Mono:wght@400;500&display=swap">
+<style>
+:root{
+  --sol:#FFFFFF; --papier:#FAFAF8; --encre:#17181A; --texte:#3A3D40; --gris:#6E7175;
+  --filet:#D0CFCA; --filet-fin:#E8E7E2;
+  --niv:#0D7A6F; --niv-pale:#DCF2EF; --niv-fonce:#08463F;
+  --or:#8C6A07; --or-pale:#F7F0DA; --or-fonce:#5E4705;
+  --ambre:#B45309; --ambre-pale:#FBEEDC; --ambre-fonce:#7A3806;
+  --mauve:#6B4FBB;
+}
+*{box-sizing:border-box}
+body{margin:0;background:var(--sol);color:var(--texte);
+  font-family:'IBM Plex Sans','Helvetica Neue',Arial,sans-serif;font-size:15px;line-height:1.55;
+  -webkit-font-smoothing:antialiased}
+h1,h2,h3,h4{margin:0;font-family:'Nunito','Arial Rounded MT Bold',sans-serif;color:var(--encre);text-wrap:balance}
+p{margin:0}
+b,strong{font-weight:700;color:var(--encre)}
+code,.mono{font-family:'IBM Plex Mono',ui-monospace,Menlo,monospace;font-size:.9em;color:var(--encre)}
+a{color:var(--encre)}
+
+.fr-barre{background:#FFF;border-bottom:2px solid var(--mauve);padding:14px 40px;
+  display:flex;align-items:center;gap:20px;flex-wrap:wrap}
+.fr-lockup{display:inline-flex;align-items:baseline;gap:16px;color:#17181A}
+.fr-nom{font-family:'Nunito',sans-serif;font-weight:900;font-size:28px;letter-spacing:-.035em;
+  line-height:1;color:var(--encre);white-space:nowrap;text-decoration:none}
+.fr-i{position:relative;display:inline-block}
+.fr-point{position:absolute;left:1px;top:2px;width:7px;height:7px;border-radius:999px;background:var(--mauve)}
+.fr-trait{width:1px;height:24px;background:#C8C7C2;align-self:center}
+.fr-desc{font-size:14px;color:#4B4F52}
+
+.page{max-width:1040px;margin:0 auto;padding:0 40px 96px}
+.eyebrow{font-size:11px;font-weight:600;letter-spacing:.14em;text-transform:uppercase;color:var(--gris)}
+.bloc{padding-top:56px}
+.bloc > .eyebrow{display:block;margin-bottom:6px}
+.bloc > h2{font-size:28px;font-weight:900;letter-spacing:-.02em;line-height:1.12;
+  border-top:2px solid var(--encre);padding-top:12px}
+.intro{font-size:15px;max-width:78ch;margin-top:14px}
+
+/* ── titre ── */
+.hero{display:grid;grid-template-columns:1.15fr 1fr;gap:52px;padding:70px 0 4px;align-items:start}
+.hero .marque{font-family:'Nunito',sans-serif;font-weight:900;font-size:15px;
+  letter-spacing:.02em;color:var(--niv);margin-bottom:10px}
+.hero h1{font-size:52px;font-weight:400;line-height:1.02;letter-spacing:-.03em}
+.hero h1 span{display:block;font-weight:900}
+.verdict{border-top:3px solid var(--niv);padding-top:14px;
+  font-family:'Nunito',sans-serif;font-size:18.5px;line-height:1.38;color:var(--encre);font-weight:600}
+.verdict b{font-weight:900}
+.chiffres{display:flex;gap:28px;flex-wrap:wrap;margin-top:26px}
+.ch{border-top:1px solid var(--filet);padding-top:8px;min-width:104px}
+.ch__n{font-family:'Nunito',sans-serif;font-size:25px;font-weight:900;line-height:1;color:var(--encre);
+  font-variant-numeric:tabular-nums}
+.ch__l{font-size:12px;color:var(--gris);margin-top:3px}
+
+/* ── le cycle ── */
+.cycle{display:grid;grid-template-columns:repeat(4,1fr);gap:0;margin-top:22px;
+  border:1px solid var(--filet);border-radius:5px;overflow:hidden}
+.et{padding:16px 18px}
+.et + .et{border-left:1px solid var(--filet)}
+.et__n{font-family:'Nunito',sans-serif;font-size:11px;font-weight:800;letter-spacing:.1em;
+  text-transform:uppercase;color:var(--niv)}
+.et h4{font-size:16px;font-weight:900;margin-top:5px}
+.et p{font-size:13px;margin-top:6px}
+.et .qui{font-size:11.5px;color:var(--gris);margin-top:8px;font-style:italic}
+
+/* ── trois gammes ── */
+.gammes{display:grid;grid-template-columns:repeat(3,1fr);gap:18px;margin-top:22px}
+.gamme{border-top:3px solid var(--filet);padding-top:12px}
+.gamme.on{border-top-color:var(--niv)}
+.gamme h3{font-size:18px;font-weight:900}
+.gamme .q{font-size:12px;color:var(--gris);margin-top:2px}
+.gamme p{font-size:13.4px;margin-top:10px}
+
+/* ── tableaux ── */
+table{border-collapse:collapse;width:100%;margin-top:20px;font-size:13.6px}
+th{text-align:left;font-family:'Nunito',sans-serif;font-size:11px;font-weight:800;letter-spacing:.1em;
+  text-transform:uppercase;color:var(--gris);border-bottom:1.5px solid var(--encre);padding:0 14px 8px 0}
+td{border-bottom:1px solid var(--filet-fin);padding:11px 14px 11px 0;vertical-align:top}
+td.k{width:210px;font-weight:700;color:var(--encre)}
+td.n{text-align:right;font-variant-numeric:tabular-nums;width:110px;white-space:nowrap}
+
+/* ── l'étagère ── */
+.rayon{display:grid;grid-template-columns:minmax(0,1fr) 150px;gap:20px;align-items:baseline;
+  border-bottom:1px solid var(--filet-fin);padding:12px 0}
+.rayon:first-of-type{border-top:1.5px solid var(--encre)}
+.rayon h4{font-size:16.5px;font-weight:900}
+.rayon .meta{font-family:'IBM Plex Mono',monospace;font-size:11.5px;color:var(--gris);margin-top:4px}
+.rayon .droite{text-align:right;font-family:'IBM Plex Mono',monospace;font-size:12.5px;color:var(--gris)}
+
+.note{background:var(--papier);border-left:3px solid var(--ambre);padding:14px 18px;margin-top:22px;
+  font-size:13.8px;max-width:84ch}
+.note.ok{border-left-color:var(--niv)}
+.pied{margin-top:64px;border-top:1px solid var(--filet);padding-top:14px;font-size:12.5px;color:var(--gris)}
+
+@media (max-width:900px){
+  .hero,.gammes{grid-template-columns:1fr;gap:24px}
+  .cycle{grid-template-columns:1fr}
+  .et + .et{border-left:0;border-top:1px solid var(--filet)}
+  .hero h1{font-size:38px}
+  .rayon{grid-template-columns:1fr;gap:4px}
+  .rayon .droite{text-align:left}
+  td.k,td.n{width:auto}
+  .page,.fr-barre{padding-left:20px;padding-right:20px}
+}
+
+/* ── le papier ────────────────────────────────────────────────────────────
+   943 px utiles par page, la mesure du dépôt. On ne coupe jamais un bloc en
+   deux : un cycle à cheval sur deux pages ne se lit plus. */
+@media print{
+  @page{size:letter;margin:14mm}
+  body{font-size:10.5pt}
+  .fr-barre{padding:0 0 10px;border-bottom-width:1.5px}
+  .page{max-width:none;padding:0}
+  .hero{padding-top:18px;gap:28px}
+  .hero h1{font-size:34pt}
+  .bloc{padding-top:26px;break-inside:avoid}
+  .bloc > h2{font-size:17pt}
+  .cycle,.gammes,.note,.rayon,table,.et{break-inside:avoid}
+  a{text-decoration:none}
+  .ecran-seul{display:none}
+}
+</style>
+</head>
+<body>
+
+<div class="fr-barre">
+  <div class="fr-lockup">
+    <span class="fr-nom" role="img" aria-label="francis">franc<span class="fr-i" aria-hidden="true">ı<span class="fr-point"></span></span>s</span>
+    <span class="fr-trait"></span>
+    <span class="fr-desc">Le point express</span>
+  </div>
+</div>
+
+<div class="page">
+
+  <div class="hero">
+    <div>
+      <p class="marque">LE POINT EXPRESS</p>
+      <h1>Dix minutes.<br><span>Une seule difficulté.</span></h1>
+      <p class="intro">Dans l'autobus, tout le monde sort son téléphone et fait défiler.
+      L'élève de francisation aussi — et lui, contrairement à nous, a quelque chose à y gagner.
+      Un <b>point express</b>, c'est dix minutes de temps mort transformées en une notion
+      réglée&nbsp;: celle que son enseignant a vue coincer, et qu'il lui a envoyée.</p>
+    </div>
+    <div>
+      <p class="verdict">Ce n'est ni un cours ni un exercice de plus. C'est <b>une réponse</b> —
+      envoyée à une personne, sur une difficulté précise, et qui <b>se referme</b> quand la
+      difficulté est réglée.</p>
+      <div class="chiffres">%(chiffres)s</div>
+    </div>
+  </div>
+
+  <!-- ─────────────────────────────────────────────── -->
+  <section class="bloc">
+    <span class="eyebrow">Le problème</span>
+    <h2>Deux personnes, la même impasse</h2>
+    <div class="gammes" style="grid-template-columns:1fr 1fr">
+      <div class="gamme">
+        <h3>L'élève, le mardi soir</h3>
+        <p class="q">Entre deux matinées de cours</p>
+        <p>Il sait qu'il se trompe sur quelque chose, sans savoir quoi exactement. Il a une
+        longue page de module ouverte&nbsp;: il ne sait ni par où entrer, ni quand il aura
+        fini. Alors il fait défiler autre chose. <b>Le temps est là — l'occasion, non.</b></p>
+      </div>
+      <div class="gamme">
+        <h3>L'enseignant, le lendemain</h3>
+        <p class="q">Devant une production écrite</p>
+        <p>Il voit la faute, il sait laquelle, il sait même qui l'a faite trois fois. Et il n'a
+        <b>rien à envoyer</b> — sinon reprendre la notion devant vingt-quatre personnes dont
+        vingt n'en ont pas besoin. <b>Le diagnostic est là — le remède, non.</b></p>
+      </div>
+    </div>
+    <div class="note ok"><b>Le point express est le chaînon manquant entre les deux.</b>
+    L'enseignant constate et envoie&nbsp;; l'élève reçoit et fait, quand il veut, où il veut.
+    Rien de tout cela n'existe aujourd'hui&nbsp;: c'est la seule chose que ni le cours du matin
+    ni l'atelier de l'après-midi ne savent faire.</div>
+  </section>
+
+  <!-- ─────────────────────────────────────────────── -->
+  <section class="bloc">
+    <span class="eyebrow">Comment ça circule</span>
+    <h2>Constater · envoyer · faire · refermer</h2>
+    <p class="intro">Un cycle, et c'est ce qui le distingue de tout le reste du matériel&nbsp;:
+    il a une fin. Aujourd'hui, rien ne se referme.</p>
+    <div class="cycle">
+      <div class="et"><div class="et__n">1 · Constater</div>
+        <h4>Une lacune se voit</h4>
+        <p>Dans la progression du groupe, la fiche de l'élève, le direct de la classe — ou
+        simplement en corrigeant un texte.</p>
+        <p class="qui">L'enseignant</p></div>
+      <div class="et"><div class="et__n">2 · Envoyer</div>
+        <h4>« Envoyer un point express »</h4>
+        <p>Un bouton à côté du point faible. On choisit dans l'étagère, on ajoute un mot, on
+        envoie à une personne ou à quatre.</p>
+        <p class="qui">L'enseignant, en deux clics</p></div>
+      <div class="et"><div class="et__n">3 · Faire</div>
+        <h4>« Votre enseignant vous a envoyé… »</h4>
+        <p>En tête du portail de l'élève, avec le mot. Dix minutes, le soir, sur son téléphone.
+        Il reprend où il s'est arrêté.</p>
+        <p class="qui">L'élève, seul</p></div>
+      <div class="et"><div class="et__n">4 · Refermer</div>
+        <h4>La lacune est-elle comblée&nbsp;?</h4>
+        <p>Le point finit par des vérifications sur le même savoir. Réussies sans rattrapage&nbsp;:
+        c'est réglé. Sinon, l'enseignant sait <b>où</b>.</p>
+        <p class="qui">Le point, puis l'enseignant</p></div>
+    </div>
+    <div class="note"><b>Le diagnostic reste à l'enseignant.</b> Rien ne se déclenche tout seul,
+    et ce n'est pas une étape en attendant mieux&nbsp;: c'est une décision. L'outil montre ce
+    qu'il a vu — il ne conclut pas à la place de quelqu'un qui connaît ses élèves.</div>
+  </section>
+
+  <!-- ─────────────────────────────────────────────── -->
+  <section class="bloc">
+    <span class="eyebrow">Où ça se range</span>
+    <h2>Trois gammes, trois questions différentes</h2>
+    <div class="gammes">
+      <div class="gamme">
+        <h3>Le module</h3>
+        <p class="q">Le matin · 4 heures · en groupe</p>
+        <p>Une situation de la vie réelle, traitée en seize séances. On y répond à
+        «&nbsp;<b>que faut-il savoir faire</b> pour prendre un rendez-vous&nbsp;?&nbsp;»
+        L'enseignant est là, et c'est ce qui fait sa force.</p>
+      </div>
+      <div class="gamme">
+        <h3>L'atelier</h3>
+        <p class="q">L'après-midi · 2 heures</p>
+        <p>Une pratique libre, ouverte à tous, sans date. On y répond à
+        «&nbsp;<b>comment m'exercer</b> à ce que je viens de voir&nbsp;?&nbsp;»</p>
+      </div>
+      <div class="gamme on">
+        <h3>Le point express</h3>
+        <p class="q">N'importe quand · 10 minutes · seul</p>
+        <p>Une notion précise, envoyée à une personne. On y répond à
+        «&nbsp;<b>pourquoi est-ce que je me trompe encore là-dessus</b>&nbsp;?&nbsp;»
+        Personne n'est à côté&nbsp;: l'explication doit donc être <i>dans</i> l'écran.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- ─────────────────────────────────────────────── -->
+  <section class="bloc">
+    <span class="eyebrow">Ce que ce n'est pas</span>
+    <h2>Un point express n'est pas une leçon, et c'est tout le travail</h2>
+    <p class="intro">Nos modules portent déjà <b>%(minilecons)s mini-leçons</b>. Un élève envoyé
+    sur un point express en a très probablement lu deux sur le même sujet&nbsp;: <b>redire la
+    même chose autrement ne servirait à rien</b>. Le point express procède donc à l'envers.</p>
+    <table>
+      <thead><tr><th>&nbsp;</th><th>La mini-leçon</th><th>Le point express</th></tr></thead>
+      <tbody>
+        <tr><td class="k">L'ordre</td><td>la règle, puis l'application</td>
+          <td><b>des cas tranchés, puis la règle</b> — écrite comme un constat de ce que l'élève
+          vient de faire</td></tr>
+        <tr><td class="k">L'étendue</td><td>exhaustive, consultable</td>
+          <td><b>partielle</b> : un test réutilisable, et les cas fréquents</td></tr>
+        <tr><td class="k">Le métalangage</td><td>en tête</td>
+          <td><b>après</b> avoir manipulé la chose</td></tr>
+        <tr><td class="k">Les exemples</td><td>ceux du module</td>
+          <td>pris à <b>plusieurs</b> situations</td></tr>
+        <tr><td class="k">L'erreur</td><td>sanctionnée, corrigée</td>
+          <td><b>c'est l'enseignement</b> : elle ouvre l'explication de ce cas-là</td></tr>
+        <tr><td class="k">Le geste</td><td>elle se lit</td>
+          <td>il <b>se traverse</b> — chaque écran demande une décision</td></tr>
+      </tbody>
+    </table>
+  </section>
+
+  <!-- ─────────────────────────────────────────────── -->
+  <section class="bloc">
+    <span class="eyebrow">Ce qui existe</span>
+    <h2>L'étagère, aujourd'hui</h2>
+    <p class="intro">Les points express ne sont pas rangés par situation mais <b>par
+    savoir</b>&nbsp;: un point sur le passé composé sert les %(modules)s modules à la fois, à
+    tous les niveaux où le savoir est au programme.</p>
+    %(rayons)s
+    <div class="note ok"><b>Coût média&nbsp;: zéro.</b> Un point express rejoue les extraits
+    déjà produits pour les cours — %(mp3)s fichiers sonores sont en place — et n'en copie aucun.
+    Celui sur le passé composé n'a d'ailleurs pas de son du tout&nbsp;: cette faute n'existe
+    qu'à l'écrit, et c'est le sujet même du point.</div>
+  </section>
+
+  <!-- ─────────────────────────────────────────────── -->
+  <section class="bloc">
+    <span class="eyebrow">Ce que ça coûte</span>
+    <h2>Dix écrans, pas soixante-dix-sept</h2>
+    <p class="intro">La question s'est posée autrement au départ&nbsp;: fallait-il refaire les
+    modules dans cette forme&nbsp;? Le calcul a tranché.</p>
+    <table>
+      <tbody>
+        <tr><td class="k">Convertir un module entier</td><td>six sections, trois défis</td>
+          <td class="n">~77 écrans</td></tr>
+        <tr><td class="k">Convertir le catalogue</td><td>les %(modules)s modules</td>
+          <td class="n">~6 700 écrans</td></tr>
+        <tr><td class="k">Un point express</td><td>un savoir, dix minutes</td>
+          <td class="n">~10 écrans</td></tr>
+        <tr><td class="k">Quatorze points express</td><td>de quoi couvrir ce qui coince le plus</td>
+          <td class="n">~140 écrans</td></tr>
+      </tbody>
+    </table>
+    <div class="note">Et le prix n'est pas le seul argument. Refaire les modules dans cette forme
+    leur ferait <b>perdre ce qu'ils savent faire</b>&nbsp;: la projection, les fiches papier, le
+    jeu de rôle à deux, la production orale relue par un humain. Le point express ne remplace
+    rien&nbsp;— <b>il occupe une place vide</b>.</div>
+  </section>
+
+  <!-- ─────────────────────────────────────────────── -->
+  <section class="bloc">
+    <span class="eyebrow">Ce qui reste à faire</span>
+    <h2>L'envoi</h2>
+    <p class="intro">Le moteur tourne, les premiers points se jouent. Ce qui manque est le
+    chaînon du milieu — et il est court, parce que presque tout existe déjà.</p>
+    <table>
+      <tbody>
+        <tr><td class="k">Fait</td><td>Le moteur, trois types d'écran, le rattrapage, le point de
+          reprise, le suivi local. %(n_points)s points express jouables, %(n_ecrans)s écrans.</td></tr>
+        <tr><td class="k">À faire</td><td>Le bouton «&nbsp;Envoyer un point express&nbsp;» chez
+          l'enseignant, la bande «&nbsp;votre enseignant vous a envoyé&nbsp;» chez l'élève, et la
+          remontée du résultat vers la fiche de l'élève.</td></tr>
+        <tr><td class="k">Plus tard</td><td>Étiqueter les exercices des modules par savoir, pour
+          que le système puisse <i>proposer</i> — sans jamais décider.</td></tr>
+      </tbody>
+    </table>
+  </section>
+
+  <p class="pied">francis · le point express · %(quand)s ·
+  <span class="mono">assets/presentations/point-express.html</span> ·
+  page produite par <span class="mono">build/point_express.py</span>, chiffres relevés sur le dépôt</p>
+
+</div>
+</body>
+</html>
+"""
+
+
+def rendre(m):
+    chiffres = [
+        (str(m["n_points"]), "points express jouables"),
+        (str(m["n_ecrans"]), "écrans écrits"),
+        ("10 min", "pour l'élève"),
+        ("0 $", "de médias neufs"),
+    ]
+    if m["savoirs5"]:
+        chiffres.insert(2, (str(m["savoirs5"]), "savoirs au niveau 5"))
+    ch = "".join('<div class="ch"><div class="ch__n">%s</div><div class="ch__l">%s</div></div>'
+                 % (html.escape(a), html.escape(b)) for a, b in chiffres)
+
+    rayons = []
+    for p in m["points"]:
+        detail = "%d écrans" % p["ecrans"]
+        detail += " · %d extraits" % p["sons"] if p["sons"] else " · sans son"
+        rayons.append(
+            '<div class="rayon"><div><h4>%s</h4><p class="meta">%s</p></div>'
+            '<div class="droite">%s</div></div>'
+            % (html.escape(p["titre"]),
+               html.escape(p["savoir"] or "savoir à préciser"),
+               html.escape(detail)))
+    if not rayons:
+        rayons.append('<div class="rayon"><div><h4>Rien encore</h4></div><div></div></div>')
+
+    # Substitution par remplacement, pas par `%` : le gabarit est truffé de CSS
+    # (`100%`, `50%`) et il faudrait doubler chaque signe — une source de fautes
+    # invisibles pour un gain nul.
+    valeurs = {
+        "chiffres": ch,
+        "rayons": "\n    ".join(rayons),
+        "modules": nb(m["modules"]),
+        "mp3": nb(m["mp3"]),
+        "minilecons": nb(m["minilecons"]),
+        "n_points": nb(m["n_points"]),
+        "n_ecrans": nb(m["n_ecrans"]),
+        "quand": m["quand"],
+    }
+    page = GABARIT
+    for cle, val in valeurs.items():
+        page = page.replace("%(" + cle + ")s", val)
+    reste = re.findall(r"%\((\w+)\)s", page)
+    if reste:
+        raise SystemExit("!! jeton(s) non remplis : " + ", ".join(sorted(set(reste))))
+    return page
+
+
+def imprimer(source, cible):
+    """Le PDF, par Chrome. `@page` de la feuille décide du format — lettre."""
+    cmd = [CHROME, "--headless=new", "--disable-gpu", "--no-pdf-header-footer",
+           "--run-all-compositor-stages-before-draw", "--virtual-time-budget=20000",
+           "--print-to-pdf=%s" % cible, pathlib.Path(source).as_uri()]
+    subprocess.run(cmd, capture_output=True, text=True, timeout=300)
+    if not pathlib.Path(cible).exists():
+        raise SystemExit("!! Chrome n'a produit aucun PDF.")
+    try:
+        from pypdf import PdfReader
+        return len(PdfReader(str(cible)).pages)
+    except Exception:
+        return None
+
+
+def main():
+    ap = argparse.ArgumentParser(description=__doc__,
+                                 formatter_class=argparse.RawDescriptionHelpFormatter)
+    ap.add_argument("--sans-pdf", action="store_true")
+    a = ap.parse_args()
+
+    m = mesures()
+    SORTIE.write_text(rendre(m), encoding="utf-8")
+    print("  %-34s %d points · %d écrans" % (SORTIE.name, m["n_points"], m["n_ecrans"]))
+
+    if not a.sans_pdf:
+        n = imprimer(SORTIE, PDF)
+        print("  %-34s %s" % (PDF.name, ("%d pages" % n) if n else "produit"))
+
+
+if __name__ == "__main__":
+    main()
