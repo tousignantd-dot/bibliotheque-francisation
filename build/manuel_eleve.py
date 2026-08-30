@@ -796,7 +796,7 @@ def poser_folios(writer, premier_numerote, depart=1):
         boite = page.mediabox
         x = (float(boite.width) - largeur) / 2
         flux = DecodedStreamObject()
-        flux.set_data(('Q q 0.37 0.38 0.40 rg BT /FolioSAAF 9 Tf 1 0 0 1 %.1f 24 Tm '
+        flux.set_data(('Q q 0.37 0.38 0.40 rg BT /FolioFrancis 9 Tf 1 0 0 1 %.1f 24 Tm '
                        '(%s) Tj ET Q' % (x, texte)).encode('latin-1'))
         ouvre = DecodedStreamObject()
         ouvre.set_data(b'q')                    # le contenu d'origine reste isolé
@@ -808,7 +808,7 @@ def poser_folios(writer, premier_numerote, depart=1):
         if polices is None:
             polices = DictionaryObject()
             ressources[NameObject('/Font')] = polices
-        polices[NameObject('/FolioSAAF')] = police
+        polices[NameObject('/FolioFrancis')] = police
         contenu = page.get('/Contents')
         anciens = list(contenu) if isinstance(contenu, ArrayObject) else [contenu]
         page[NameObject('/Contents')] = ArrayObject(

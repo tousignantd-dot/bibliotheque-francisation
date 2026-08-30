@@ -9,12 +9,17 @@ le dépôt lui-même, jamais de mémoire : les fiches sont comptées dans
 diapositives sont relevés dans les scripts de `build/powerpoints/decks`.
 
     python3 build/materiel_pages.py
+    python3 build/materiel_pages.py --sans-pdf
 
 Écrit `assets/presentations/fiches-eleve.html` et
-`assets/presentations/powerpoints-enseignant.html`. Les captures, elles, sont
-posées à la main dans `assets/presentations/captures-materiel/`.
+`assets/presentations/powerpoints-enseignant.html`, **et leurs PDF** : la
+version papier est ce qu'on laisse sur la table, et une page refaite dont le
+PDF reste à l'ancienne édition est pire qu'un PDF absent — rien ne signale
+l'écart. Les captures, elles, sont posées à la main dans
+`assets/presentations/captures-materiel/`.
 """
 
+import argparse
 import collections
 import html
 import json
@@ -22,10 +27,14 @@ import pathlib
 import re
 import statistics
 import time
+import sys
 import zipfile
 
 RACINE = pathlib.Path(__file__).resolve().parent.parent
 PRES = RACINE / "assets" / "presentations"
+
+sys.path.insert(0, str(pathlib.Path(__file__).resolve().parent))
+from imprimer import imprimer  # noqa: E402
 
 
 # ── Mesures ───────────────────────────────────────────────────────────────
@@ -624,8 +633,18 @@ def page_decks(m):
 
 
 if __name__ == "__main__":
+    ap = argparse.ArgumentParser(description=__doc__)
+    ap.add_argument("--sans-pdf", action="store_true",
+                    help="n'écrit que les pages HTML")
+    a = ap.parse_args()
+
     m = mesures()
     page_fiches(m)
     page_decks(m)
     print("%d fiches · %d diaporamas · %d diapositives · %d h de classe"
           % (m["fiches"], m["decks"], m["diapos"], m["heures"]))
+
+    if not a.sans_pdf:
+        for nom in ("fiches-eleve", "powerpoints-enseignant"):
+            n = imprimer(PRES / (nom + ".html"), PRES / (nom + ".pdf"))
+            print("  %-30s %s" % (nom + ".pdf", ("%d pages" % n) if n else "produit"))

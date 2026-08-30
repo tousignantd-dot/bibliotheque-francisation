@@ -20,7 +20,10 @@ Il est idempotent : un fichier déjà basculé ne bouge plus.
 Ce que le script NE touche pas, volontairement :
   · `saaf-vitesse`, la clé de localStorage du bouton de débit — la renommer
     effacerait le réglage gardé par les élèves ; elle n'est pas visible.
-  · `/FolioSAAF`, un nom de police interne aux PDF du manuel.
+  · `/FolioSAAF`, un nom de police interne aux PDF du manuel — renomme
+    `/FolioFrancis` le 30 aout 2026, non pas qu'il se voie, mais parce
+    qu'il faisait rendre 3 484 occurrences a un `strings manuel.pdf |
+    grep SAAF` : un scan qui ne peut pas rendre zero ne prouve rien.
   · lui-même : il porte les motifs de l'ancienne marque, il s'exclut donc de
     la liste des fichiers, sans quoi il se réécrirait et deviendrait faux.
   · `CLAUDE.md`, où l'ancien nom est dit exprès : la section de marque raconte
