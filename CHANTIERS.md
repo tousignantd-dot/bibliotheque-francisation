@@ -27,7 +27,7 @@ le **verrou** : on l'inscrit avant de toucher au code, on le raye en finissant.
 | Couloir | Répertoire | Fichiers tenus | État |
 |---|---|---|---|
 | `seance-sans-compte` | dépôt principal | `seance.html`, `feuille-seance.html`, `progression.html`, `qr.py` | en cours |
-| `validation` | `~/Claude/wt-validation` | à préciser à l'ouverture | ouvert, portée à définir |
+| `validation` | `~/Claude/wt-validation` | `viewer.html`, `build/greffe_ateliers.py`, les 27 ateliers d'avant le système de design | en cours — branche `couloir/validation` |
 
 ## Couloirs fermés
 
