@@ -67,10 +67,12 @@ function cibles() {
   return par;
 }
 
-// Les sept exercices d'intention : la voix porte la réponse, mais la réplique
-// écrite la porte peut-être aussi. À trancher par une oreille, pas par un
-// script — d'où leur section à part.
-const A_TRANCHER = [
+// Les sept exercices d'intention. Proposés au masquage, **gardés** : décision
+// de l'utilisateur le 30 août 2026. Masquer aurait supposé que les MP3 portent
+// vraiment la surprise, la déception, la volonté — et si l'intention n'est pas
+// dans la voix, l'exercice devient impossible au lieu d'être honnête. Ils
+// restent listés à part pour que la décision se relise, pas pour la rouvrir.
+const INTENTION = [
   ['module-n7-achat', 'prProso'], ['module-n7-logement', 'prTon'],
   ['module-n8-actualite', 'prInto'], ['module-n8-emmenagement', 'prInto'],
   ['module-n8-habitation', 'prInto'], ['module-n8-oeuvres', 'prInto'],
@@ -94,7 +96,7 @@ function carte(e, verdict) {
     + '</article>';
 }
 
-function page(tous, masques, atrancher, gardes) {
+function page(tous, masques, intention, gardes) {
   const styleSource = fs.readFileSync(path.join(RACINE, 'assets', 'presentations', 'audio-manquant.html'), 'utf8');
   const style = styleSource.slice(styleSource.indexOf('<style>'), styleSource.indexOf('</style>') + 8);
   const familles = {};
@@ -160,8 +162,7 @@ h4{font-size:13px;font-weight:800;letter-spacing:.08em;text-transform:uppercase;
   <div class="chiffres">
     <div class="chiffre"><b>${tous.length}</b><span>exercices d'écoute</span></div>
     <div class="chiffre"><b>${masques.length}</b><span>énoncé masqué</span></div>
-    <div class="chiffre"><b>${atrancher.length}</b><span>à trancher</span></div>
-    <div class="chiffre"><b>${gardes.length}</b><span>énoncé gardé</span></div>
+    <div class="chiffre"><b>${intention.length + gardes.length}</b><span>énoncé gardé</span></div>
   </div>
 
   <div class="bloc">
@@ -183,14 +184,14 @@ h4{font-size:13px;font-weight:800;letter-spacing:.08em;text-transform:uppercase;
   </div>
 
   <div class="bloc">
-    <h2>À trancher</h2>
-    <p>Ceux-là demandent <i>ce que la voix ajoute aux mots</i> : surprise, déception,
-    volonté. La consigne dit que les mots seuls ne suffisent pas — mais les répliques
-    proposées sont si différentes qu'on les classe sans doute à la lecture.
-    <strong>Masquer suppose que les MP3 portent vraiment l'intention</strong> ; si ce
-    n'est pas le cas, l'exercice devient impossible. Cela se juge à l'oreille, pas au
-    script. <b>${atrancher.length} exercices.</b></p>
-    <div class="grille">${atrancher.map(e => carte(e, 'trancher')).join('')}</div>
+    <h2>Ce que la voix ajoute — gardés</h2>
+    <p>Ceux-là demandent une intention : surprise, déception, volonté. Ils avaient été
+    proposés au masquage, et <strong>la décision du 30 août 2026 est de les garder</strong>.
+    Masquer aurait supposé que les MP3 portent vraiment l'intention ; si elle n'est pas
+    dans la voix, l'exercice ne devient pas plus honnête — il devient impossible. Le
+    doute est noté ici plutôt que réglé par un script.
+    <b>${intention.length} exercices.</b></p>
+    <div class="grille">${intention.map(e => carte(e, 'trancher')).join('')}</div>
   </div>
 
   <div class="bloc">
@@ -221,12 +222,13 @@ h4{font-size:13px;font-weight:800;letter-spacing:.08em;text-transform:uppercase;
 const tous = releve();
 const CIB = cibles();
 const estMasque = e => (CIB[e.slug] || []).includes(e.id);
-const estATrancher = e => A_TRANCHER.some(([s, i]) => s === e.slug && i === e.id);
+const estIntention = e => INTENTION.some(([s, i]) => s === e.slug && i === e.id);
 const masques = tous.filter(estMasque);
-const atrancher = tous.filter(e => !estMasque(e) && estATrancher(e));
-const gardes = tous.filter(e => !estMasque(e) && !estATrancher(e));
+const intention = tous.filter(e => !estMasque(e) && estIntention(e));
+const gardes = tous.filter(e => !estMasque(e) && !estIntention(e));
 const sortie = path.join(RACINE, 'assets', 'presentations', 'exercices-ecoute.html');
-fs.writeFileSync(sortie, page(tous, masques, atrancher, gardes));
+fs.writeFileSync(sortie, page(tous, masques, intention, gardes));
 console.log(tous.length + ' exercices d\'écoute — ' + masques.length + ' masqués, '
-  + atrancher.length + ' à trancher, ' + gardes.length + ' gardés');
+  + (intention.length + gardes.length) + ' gardés (dont ' + intention.length
+  + ' d\'intention, gardés sur décision)');
 console.log('→ ' + path.relative(RACINE, sortie));
