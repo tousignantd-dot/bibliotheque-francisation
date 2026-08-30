@@ -58,7 +58,7 @@ DOCUMENTS = {
     "documents.json", "prof_sessions.json", "depots.json", "promotions.json",
     "corrige_moi.json", "oral_submissions.json", "written_submissions.json",
     "signalements.json", "analyses_erreurs.json", "traductions.json",
-    "seances.json",
+    "seances.json", "envois.json",
 }
 
 # Les journaux d'élèves, rangés en lignes. La clé est le nom du fichier JSON

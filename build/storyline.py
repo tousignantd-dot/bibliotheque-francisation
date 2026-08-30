@@ -51,6 +51,10 @@ GABARIT = ROOT / 'build' / 'gabarit' / 'storyline.html'
 CONTENU = ROOT / 'build' / 'contenu'
 PARCOURS_DIR = ROOT / 'build' / 'parcours'
 SORTIE = ROOT / 'modules-autonomes'
+# Le registre que le serveur lit pour offrir l'étagère à l'enseignant. Produit,
+# versionné, lu depuis BASE_DIR : il décrit ce que le code livre, comme
+# `data/sections.json` et `data/materiel.json`. Jamais écrit à la main.
+REGISTRE = ROOT / 'data' / 'points_express.json'
 
 # Les types que le gabarit sait dessiner. Un type absent d'ici s'affiche chez
 # l'élève comme une erreur visible — mais autant l'attraper à la construction.
@@ -282,6 +286,35 @@ def construire(js, verifier=False):
     return False
 
 
+def registre(verifier=False):
+    """Écrit `data/points_express.json` — l'étagère, telle que le serveur la voit.
+
+    Seuls les **points express** y figurent : un parcours attaché à un module
+    n'est pas une ordonnance, il ne s'envoie pas.
+    """
+    liste = []
+    for f in sorted(PARCOURS_DIR.glob('*.js')) if PARCOURS_DIR.exists() else []:
+        src = f.read_text(encoding='utf-8')
+        p = lire_bloc(src, 'PARCOURS') or {}
+        e = lire_bloc(src, 'ECRANS') or []
+        liste.append({
+            'slug': p.get('slug', f.stem),
+            'titre': p.get('titre', f.stem),
+            'savoir': p.get('savoir', ''),
+            'niveau': p.get('niveau'),
+            'ecrans': len(e),
+            'minutes': 10,
+            'fichier': 'modules-autonomes/%s/index.html' % p.get('slug', f.stem),
+        })
+    texte = json.dumps(liste, ensure_ascii=False, indent=2) + '\n'
+    if verifier:
+        actuel = REGISTRE.read_text(encoding='utf-8') if REGISTRE.exists() else ''
+        return actuel != texte
+    REGISTRE.parent.mkdir(parents=True, exist_ok=True)
+    REGISTRE.write_text(texte, encoding='utf-8')
+    return False
+
+
 def fichiers():
     """Tous les contenus de parcours, les remédiations d'abord."""
     liste = sorted(PARCOURS_DIR.glob('*.js')) if PARCOURS_DIR.exists() else []
@@ -315,6 +348,17 @@ def main():
     ecart = False
     for d in cibles:
         ecart = construire(d, a.verifier) or ecart
+
+    # Le registre se refait dès qu'on touche à un parcours : un envoi qui
+    # pointerait vers un point disparu serait un cul-de-sac chez l'élève.
+    if a.tous:
+        if registre(a.verifier):
+            print('  ÉCART  data/points_express.json est à refaire')
+            ecart = True
+        elif not a.verifier:
+            print('  %-26s %2d point(s) express'
+                  % ('data/points_express.json',
+                     len(json.loads(REGISTRE.read_text(encoding='utf-8')))))
     sys.exit(1 if (a.verifier and ecart) else 0)
 
 

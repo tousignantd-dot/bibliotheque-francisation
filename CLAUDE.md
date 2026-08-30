@@ -2423,6 +2423,66 @@ visuelle. Quatrième onglet de `enseignant.html`, rendu par `js/materiel.js`.
   l'imprimante) : l'inventaire compte des **blocs**, écrits dans la fiche.
   N'affichez pas « 2 pages » quelque part sans l'avoir mesuré.
 
+## Les points express (constater · envoyer · faire · refermer)
+
+La gamme du chantier `modules-autonomes/` : **dix minutes, une seule
+difficulté**, envoyée par l'enseignant à l'élève chez qui il a vu la lacune.
+Le concept et sa présentation sont dans
+`assets/presentations/point-express.html`.
+
+**Le diagnostic reste à l'enseignant.** Aucune route ne suggère quoi que ce
+soit, et ce n'est pas une étape en attendant l'étiquetage des exercices par
+savoir : c'est une décision. Ne pas ajouter de détection automatique de lacune.
+
+- **L'étagère est produite, jamais écrite** : `python3 build/storyline.py --tous`
+  écrit `data/points_express.json` en lisant `build/parcours/*.js`. Elle est
+  **versionnée et lue depuis BASE_DIR**, comme `sections.json` — elle décrit ce
+  que le code livre. Les **envois**, eux, sont des traces : volume,
+  `data/envois.json`, non versionné.
+- **Un envoi par élève**, jamais un envoi pour un groupe : c'est ce qui permet
+  d'en refermer un sans refermer les autres. Un même point non terminé ne se
+  renvoie pas (`deja` dans la réponse le dit) ; une fois terminé, il se renvoie.
+
+| Route | Qui |
+|---|---|
+| `GET /api/prof/points-express` | l'étagère, session enseignante |
+| `GET/POST /api/prof/envois` | lister par groupe · envoyer |
+| `DELETE /api/prof/envois/<id>` | retirer |
+| `GET /api/student/envois?code=` | ce que l'élève a reçu |
+| `POST /api/student/envois/<id>` | le parcours rapporte `commence` / `termine` |
+
+- **Le résultat ne porte aucune réponse d'élève** : le nombre d'écrans réussis
+  seul, ceux avec rattrapage, les identifiants des écrans rouverts, les
+  minutes. C'est ce qu'il faut à l'enseignant, et rien de plus — le contrôle le
+  vérifie explicitement.
+- **Le parcours ne rapporte que s'il est ouvert depuis le portail** : l'adresse
+  porte alors `?code=&envoi=`. Sans ces deux paramètres, le suivi reste local
+  et tout fonctionne pareil. Un point express ouvert hors du portail ne doit
+  rien casser.
+- **Rouvrir un point terminé ne le rouvre pas** : `termine` ne redevient jamais
+  `commence`. Un élève qui relit son point n'annule pas son ordonnance.
+- Côté écran : le bouton **« Envoyer un point express »** est dans
+  `fiche-eleve.html`, en tête du dossier — c'est l'écran où l'on vient de voir
+  la lacune. La bande **« Votre enseignant vous a envoyé »** est en tête de
+  `eleve.html`, avant le bilan.
+
+**Le contrôle, à passer après toute modification** — il monte un serveur
+jetable, joue le cycle entier et vérifie surtout que **les refus refusent** :
+
+    python3 build/controles/points_express.py
+
+Deux pièges déjà payés, tous deux invisibles à la relecture :
+
+- **`Prof.body()` rend déjà une chaîne JSON**, groupe compris. L'envelopper
+  dans un second `JSON.stringify` envoie une chaîne là où le serveur attend un
+  objet — et le fil de la requête mourait sur un `AttributeError`, si bien que
+  le navigateur ne recevait **rien du tout** (`ERR_EMPTY_RESPONSE`). Les deux
+  routes POST refusent maintenant un corps qui n'est pas un objet, et le
+  contrôle le joue.
+- **Le compte d'essai s'ouvre par un `code` de six caractères**, pas par un
+  courriel : `build/controles/seances_http.py` porte encore l'ancienne charge
+  utile et sortirait en erreur si on la recopiait.
+
 ## Fichiers du groupe et lien de rencontre
 
 - Un fichier partagé (`data/documents.json`) a une **période de parution**

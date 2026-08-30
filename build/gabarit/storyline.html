@@ -290,6 +290,28 @@ button:disabled{cursor:not-allowed}
   /* ── l'état, et sa persistance ─────────────────────────────────── */
   var VIERGE = { i: 0, vus: [], faits: {}, essais: {}, rattrapages: {}, reponses: {}, journal: [] };
   var etat = JSON.parse(JSON.stringify(VIERGE));
+
+  /* ── L'envoi ────────────────────────────────────────────────────────────
+     Quand l'élève ouvre son point express depuis son portail, l'adresse porte
+     son code et le numéro de l'envoi. Le parcours rapporte alors deux choses,
+     et deux seulement : qu'il a commencé, et qu'il a fini — avec le compte des
+     vérifications réussies seul. **Aucune réponse d'élève ne monte.**
+     Sans ces deux paramètres, tout fonctionne pareil : le suivi reste local.
+     Un parcours ouvert hors du portail ne doit rien casser. */
+  var URL_P = new URLSearchParams(location.search);
+  var CODE = URL_P.get('code') || '';
+  var ENVOI = URL_P.get('envoi') || '';
+
+  function rapporter(quoi, resultat) {
+    if (!CODE || !ENVOI) return;
+    try {
+      fetch('/api/student/envois/' + encodeURIComponent(ENVOI), {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ code: CODE, etat: quoi, resultat: resultat || null })
+      }).catch(function () { /* hors ligne : le parcours continue */ });
+    } catch (e) { /* idem */ }
+  }
   try {
     var brut = JSON.parse(localStorage.getItem(CLE) || 'null');
     if (brut && typeof brut === 'object') {
@@ -708,6 +730,7 @@ button:disabled{cursor:not-allowed}
     elPos.textContent = (i + 1) + ' / ' + ECRANS.length;
     majMenu();
     noter('vu', {});
+    if (!etat.rapporteDebut) { etat.rapporteDebut = true; garder(); rapporter('commence'); }
     elEcran.focus();
     corps.scrollTop = 0;
     window.scrollTo(0, 0);
@@ -722,16 +745,25 @@ button:disabled{cursor:not-allowed}
     f.className = 'fin';
     var seuls = 0, aide = 0;
     ECRANS.forEach(function (e) {
-      if (e.type !== 'verif') return;
+      if (e.type !== 'verif' && e.type !== 'tri') return;
       if (etat.rattrapages[e.id]) aide++; else if (etat.faits[e.id]) seuls++;
+    });
+    rapporter('termine', {
+      reussiSeul: seuls, avecRattrapage: aide,
+      rattrapages: Object.keys(etat.rattrapages || {}),
+      minutes: Math.max(1, Math.round(
+        (etat.journal.length ? (etat.journal[etat.journal.length - 1].t
+          - etat.journal[0].t) : 0) / 60000))
     });
     f.innerHTML = '<h2>C\'est fini pour cette fois.</h2>'
       + '<p class="ecran__p" style="margin-left:auto;margin-right:auto">'
-      + 'Vérifications réussies seul : <b>' + seuls + '</b>'
+      + 'Écrans réussis seul : <b>' + seuls + '</b>'
       + ' · avec un rattrapage : <b>' + aide + '</b>.</p>'
       + '<p class="ecran__p" style="margin-left:auto;margin-right:auto;color:#6E7175;font-size:13.5px">'
-      + 'Le suivi est gardé sur ce poste seulement. L\'écran de bilan complet vient avec '
-      + 'les dix-huit écrans.</p>';
+      + (CODE && ENVOI
+          ? 'Votre enseignant verra que vous l\'avez fait, et sur quoi vous avez hésité — '
+            + 'jamais vos réponses.</p>'
+          : 'Le suivi est gardé sur ce poste seulement.</p>');
     var r = document.createElement('button');
     r.className = 'btn-2';
     r.type = 'button';
@@ -739,6 +771,7 @@ button:disabled{cursor:not-allowed}
     r.textContent = 'Recommencer';
     r.addEventListener('click', function () {
       etat = JSON.parse(JSON.stringify(VIERGE));
+      etat.rapporteDebut = true;      // on ne re-signale pas un début déjà signalé
       garder();
       montrer(0, false);
     });

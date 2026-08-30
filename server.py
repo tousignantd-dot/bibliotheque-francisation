@@ -272,6 +272,7 @@ STATS_EVENEMENT_MIN = 1
 # corrigés). Ils ne sont pas des activités : ils ont leur propre période de
 # parution et l'élève ne les voit que pendant celle-ci.
 DOCUMENTS_FILE = STORAGE_DIR / "data" / "documents.json"
+ENVOIS_FILE = STORAGE_DIR / "data" / "envois.json"
 GROUP_DOCS_DIR = STORAGE_DIR / "assets" / "documents-groupe"
 
 # Dépôt de matériel. L'inventaire est **produit par le build**
@@ -284,6 +285,12 @@ MATERIEL_FILE = BASE_DIR / "data" / "materiel.json"
 # constante `SECTIONS` de chaque module : même raison que l'inventaire, il
 # décrit ce que le code livre et se lit donc depuis BASE_DIR.
 SECTIONS_FILE = BASE_DIR / "data" / "sections.json"
+
+# L'étagère des points express. Produite par `build/storyline.py`, versionnée,
+# et lue depuis **BASE_DIR** : elle décrit ce que le code livre, comme
+# `sections.json` et `materiel.json`. Les envois, eux, sont des traces : ils
+# vivent sur le volume.
+POINTS_EXPRESS_FILE = BASE_DIR / "data" / "points_express.json"
 # Les fichiers téléversés par les enseignants, eux, sont mutables : ils vivent
 # dans le volume, à part de l'inventaire. Les mêler reviendrait à effacer le
 # dépôt d'une collègue à chaque build.
@@ -1135,6 +1142,33 @@ def copy_schedule(source_group_id, target_group_id, decalage=0):
 
 
 # ── Fichiers partagés au groupe ─────────────────────────────────────────────
+
+def load_points_express():
+    """L'étagère. Une liste vide n'est pas une erreur : un dépôt sans points
+    express est un dépôt d'avant la gamme, et l'écran doit le dire poliment."""
+    if not POINTS_EXPRESS_FILE.exists():
+        return []
+    try:
+        return json.loads(POINTS_EXPRESS_FILE.read_text(encoding="utf-8"))
+    except Exception:
+        print("[WARN] points_express.json illisible", flush=True)
+        return []
+
+
+def load_envois():
+    return _load_json_list(ENVOIS_FILE)
+
+
+def save_envois(envois):
+    _save_json(ENVOIS_FILE, envois)
+
+
+def point_express(slug):
+    for p in load_points_express():
+        if p.get("slug") == slug:
+            return p
+    return None
+
 
 def load_documents():
     """[{id, groupId, nom, fichier, taille, ouverture, fermeture}]."""
@@ -15703,6 +15737,12 @@ class Handler(http.server.SimpleHTTPRequestHandler):
         if path == "/api/prof/documents":
             self._handle_documents_list(params)
             return
+        if path == "/api/prof/points-express":
+            self._handle_points_express()
+            return
+        if path == "/api/prof/envois":
+            self._handle_envois_liste(params)
+            return
         if path == "/api/prof/seances":
             self._handle_seances_list(params)
             return
@@ -15779,6 +15819,9 @@ class Handler(http.server.SimpleHTTPRequestHandler):
             return
         if path == "/api/student/ia":
             self._handle_student_ia(params)
+            return
+        if path == "/api/student/envois":
+            self._handle_student_envois(params)
             return
         if path == "/api/student/sections":
             self._handle_student_sections(params)
@@ -15951,6 +15994,10 @@ class Handler(http.server.SimpleHTTPRequestHandler):
             self._handle_teacher_add()
         elif path == "/api/prof/documents":
             self._handle_document_add()
+        elif path == "/api/prof/envois":
+            self._handle_envoi_creer()
+        elif re.match(r"^/api/student/envois/\d+$", path):
+            self._handle_student_envoi_etat(int(path.rsplit("/", 1)[1]))
         elif path == "/api/forge/commande":
             self._handle_forge_creer()
         elif path == "/api/forge/annuler":
@@ -16136,6 +16183,8 @@ class Handler(http.server.SimpleHTTPRequestHandler):
                 self._handle_teacher_delete(int(path.rsplit("/", 1)[1]))
             except ValueError:
                 self.send_error(400, "ID invalide")
+        elif re.match(r"^/api/prof/envois/\d+$", path):
+            self._handle_envoi_retirer(int(path.rsplit("/", 1)[1]))
         else:
             self.send_error(404)
 
@@ -18430,6 +18479,174 @@ class Handler(http.server.SimpleHTTPRequestHandler):
         if group_id is None:
             return
         json_response(self, documents_for_group(group_id))
+
+
+    # ══════════════════════════════════════════════════════════════════════
+    # Les points express : l'étagère, l'envoi, et le retour
+    #
+    # Le cycle du chantier `modules-autonomes/` : l'enseignant constate,
+    # envoie ; l'élève fait ; le parcours referme. **Le diagnostic reste à
+    # l'enseignant** — aucune route ne suggère quoi que ce soit, et c'est une
+    # décision, pas une limite.
+    # ══════════════════════════════════════════════════════════════════════
+
+    def _handle_points_express(self):
+        """L'étagère, telle que le build l'a produite. Lecture seule."""
+        if not self._require_teacher():
+            return
+        json_response(self, load_points_express())
+
+    def _handle_envois_liste(self, query):
+        """Les envois d'un groupe. L'enseignant ne voit que les siens."""
+        teacher = self._require_teacher()
+        if not teacher:
+            return
+        group_id = self._require_group(teacher, (query.get("groupId") or [""])[0])
+        if group_id is None:
+            return
+        envois = [e for e in load_envois() if e.get("groupId") == group_id]
+        envois.sort(key=lambda e: e.get("envoyeLe", ""), reverse=True)
+        json_response(self, envois)
+
+    @sous_verrou
+    def _handle_envoi_creer(self):
+        """Envoyer un point express à un ou plusieurs élèves du groupe.
+
+        Un envoi par élève : c'est ce qui permet de suivre chacun, et de
+        refermer l'un sans refermer les autres. Un même point déjà en cours
+        chez un élève n'est pas doublé — on ne renvoie pas deux fois la même
+        ordonnance.
+        """
+        teacher = self._require_teacher()
+        if not teacher:
+            return
+        data = self._read_json_body()
+        # Un corps mal formé — une chaîne au lieu d'un objet, par exemple —
+        # faisait mourir le fil de la requête sur un AttributeError, et le
+        # navigateur ne recevait rien du tout. Un refus se refuse ; il ne
+        # plante pas.
+        if not isinstance(data, dict):
+            json_response(self, {"error": "Corps de requête invalide"}, 400)
+            return
+        group_id = self._require_group(teacher, data.get("groupId"))
+        if group_id is None:
+            return
+
+        point = point_express(str(data.get("parcours") or ""))
+        if not point:
+            json_response(self, {"error": "Point express inconnu"}, 400)
+            return
+
+        eleves = [e for e in load_students() if e.get("groupId") == group_id]
+        vises = {int(i) for i in (data.get("eleveIds") or []) if str(i).isdigit()}
+        vises = [e for e in eleves if e.get("id") in vises]
+        if not vises:
+            json_response(self, {"error": "Aucun élève choisi"}, 400)
+            return
+
+        mot = (data.get("mot") or "").strip()[:280]
+        envois = load_envois()
+        ouverts = {(e.get("eleveId"), e.get("parcours")) for e in envois
+                   if e.get("etat") != "termine"}
+        prochain = max((e.get("id", 0) for e in envois), default=0) + 1
+        neufs = []
+        for eleve in vises:
+            if (eleve.get("id"), point["slug"]) in ouverts:
+                continue
+            envoi = {
+                "id": prochain,
+                "eleveId": eleve.get("id"),
+                "groupId": group_id,
+                "parcours": point["slug"],
+                "titre": point.get("titre", ""),
+                "savoir": point.get("savoir", ""),
+                "fichier": point.get("fichier", ""),
+                "envoyePar": teacher.get("id"),
+                "envoyeLe": datetime.now().isoformat(timespec="seconds"),
+                "mot": mot,
+                "etat": "envoye",
+                "resultat": None,
+            }
+            envois.append(envoi)
+            neufs.append(envoi)
+            prochain += 1
+        save_envois(envois)
+        json_response(self, {"success": True, "envois": neufs,
+                             "deja": len(vises) - len(neufs)}, 201)
+
+    @sous_verrou
+    def _handle_envoi_retirer(self, envoi_id):
+        """Retirer un envoi. L'élève ne le voit plus ; sa trace part avec."""
+        teacher = self._require_teacher()
+        if not teacher:
+            return
+        envois = load_envois()
+        vise = next((e for e in envois if e.get("id") == envoi_id), None)
+        if not vise:
+            json_response(self, {"error": "Envoi introuvable"}, 404)
+            return
+        if self._require_group(teacher, vise.get("groupId")) is None:
+            return
+        save_envois([e for e in envois if e.get("id") != envoi_id])
+        json_response(self, {"success": True})
+
+    def _handle_student_envois(self, query):
+        """Ce que l'élève a reçu. Les terminés restent une semaine, puis
+        s'effacent de sa vue : une ordonnance réglée n'encombre pas."""
+        student = validate_student_code((query.get("code") or [""])[0])
+        if not student:
+            json_response(self, {"error": "Code invalide"}, 401)
+            return
+        limite = (datetime.now() - timedelta(days=7)).isoformat(timespec="seconds")
+        miens = [e for e in load_envois()
+                 if e.get("eleveId") == student.get("id")
+                 and (e.get("etat") != "termine" or (e.get("termineLe") or "") > limite)]
+        miens.sort(key=lambda e: e.get("envoyeLe", ""), reverse=True)
+        json_response(self, miens)
+
+    @sous_verrou
+    def _handle_student_envoi_etat(self, envoi_id):
+        """Le parcours rapporte où il en est. C'est lui qui referme le cycle.
+
+        Le résultat ne porte **aucune réponse d'élève** : le nombre d'écrans
+        réussis seul, le nombre avec rattrapage, et les identifiants des écrans
+        rouverts. C'est ce qu'il faut à l'enseignant, et rien de plus.
+        """
+        data = self._read_json_body()
+        if not isinstance(data, dict):
+            json_response(self, {"error": "Corps de requête invalide"}, 400)
+            return
+        student = validate_student_code(str(data.get("code") or ""))
+        if not student:
+            json_response(self, {"error": "Code invalide"}, 401)
+            return
+        envois = load_envois()
+        vise = next((e for e in envois if e.get("id") == envoi_id), None)
+        if not vise or vise.get("eleveId") != student.get("id"):
+            json_response(self, {"error": "Envoi introuvable"}, 404)
+            return
+
+        etat = str(data.get("etat") or "")
+        if etat not in ("commence", "termine"):
+            json_response(self, {"error": "État inconnu"}, 400)
+            return
+        # On n'écrase pas « terminé » par « commencé » : un élève qui rouvre
+        # son point express après l'avoir fini ne rouvre pas l'ordonnance.
+        if not (vise.get("etat") == "termine" and etat == "commence"):
+            vise["etat"] = etat
+        if etat == "commence" and not vise.get("commenceLe"):
+            vise["commenceLe"] = datetime.now().isoformat(timespec="seconds")
+        if etat == "termine":
+            vise["termineLe"] = datetime.now().isoformat(timespec="seconds")
+            r = data.get("resultat") or {}
+            vise["resultat"] = {
+                "reussiSeul": int(r.get("reussiSeul") or 0),
+                "avecRattrapage": int(r.get("avecRattrapage") or 0),
+                "rattrapages": [str(x)[:40] for x in (r.get("rattrapages") or [])][:20],
+                "minutes": int(r.get("minutes") or 0),
+            }
+        save_envois(envois)
+        json_response(self, {"success": True, "etat": vise["etat"]})
 
     def _handle_document_add(self):
         """Dépôt d'un fichier : il paraît dès aujourd'hui, sans date de retrait.

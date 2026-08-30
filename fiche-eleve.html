@@ -141,7 +141,42 @@
       .fe-table th { white-space: normal; font-size: 10px; padding: 6px 8px; }
       .fe-table td { font-size: 11px; padding: 6px 8px; }
     }
-  </style>
+  
+  /* ── Points express : la liste et la fenêtre d'envoi ─────────────── */
+  .fe-pe-liste{display:flex;flex-direction:column}
+  .fe-pe-l{display:grid;grid-template-columns:minmax(0,1fr) 120px 80px;gap:var(--sp-3,12px);
+    align-items:center;padding:12px 0;border-bottom:1px solid var(--rule-soft,#E8E7E2)}
+  .fe-pe-l--fait{opacity:.7}
+  .fe-pe-t{font-family:var(--font-titre,'Nunito',sans-serif);font-weight:800;
+    font-size:15px;color:var(--ink-900);margin:0}
+  .fe-pe-b{font-size:13px;color:var(--ink-500);margin:3px 0 0}
+  .fe-pe-e{font-size:12px;font-weight:700;letter-spacing:.06em;text-transform:uppercase;
+    color:var(--niv-5-line,#0D7A6F);white-space:nowrap}
+  .fe-pe-x{border:1px solid var(--rule,#D0CFCA);background:#FFF;border-radius:4px;
+    padding:5px 10px;font-size:12px;color:var(--ink-500);cursor:pointer}
+  .fe-pe-x:hover{border-color:var(--ink-900);color:var(--ink-900)}
+  .fe-pe-actions{margin-top:var(--sp-4,16px)}
+
+  .fe-modale{position:fixed;inset:0;background:rgba(23,24,26,.42);z-index:60;
+    display:flex;align-items:center;justify-content:center;padding:20px}
+  .fe-modale__in{background:#FFF;border-radius:6px;max-width:560px;width:100%;
+    max-height:88vh;overflow:auto;padding:24px 26px}
+  .fe-modale__in h3{font-family:var(--font-titre,'Nunito',sans-serif);font-size:20px;
+    font-weight:900;margin:0 0 4px;color:var(--ink-900)}
+  .fe-modale__pied{display:flex;justify-content:flex-end;gap:10px;margin-top:18px}
+  .fe-pe-opts{display:flex;flex-direction:column;gap:8px;margin:16px 0}
+  .fe-pe-opt{display:flex;gap:10px;align-items:flex-start;padding:10px 12px;
+    border:1px solid var(--rule,#D0CFCA);border-radius:5px;cursor:pointer}
+  .fe-pe-opt:hover{border-color:var(--ink-900)}
+  .fe-pe-opt--pris{opacity:.5;cursor:not-allowed}
+  .fe-pe-opt b{display:block;font-family:var(--font-titre,'Nunito',sans-serif);
+    font-size:14.5px;color:var(--ink-900)}
+  .fe-pe-opt i{font-style:normal;font-size:12px;color:var(--ink-500)}
+  .fe-pe-mot{display:block;font-size:13px;color:var(--ink-500)}
+  .fe-pe-mot textarea{display:block;width:100%;margin-top:6px;padding:9px 11px;
+    border:1px solid var(--rule,#D0CFCA);border-radius:5px;font:inherit;font-size:14px}
+  .fe-pe-err{color:var(--ambre-700,#7A3806);font-size:13px;margin-top:10px}
+</style>
 </head>
 <body>
 
@@ -263,6 +298,8 @@
   }
 
   /* ---------- Rendu ---------- */
+  let ETAGERE = [], ENVOIS = [];
+
   async function rendre() {
     const code = ELEVE.code;
     document.getElementById('feNom').textContent = ELEVE.prenom || ELEVE.label || code;
@@ -273,7 +310,7 @@
     // session enseignante. Les quatre journaux couvrent le groupe entier : on
     // ne garde que les lignes de l'élève regardé.
     const [bilan, activites, progres, oraux, ecrits, corrige, journal,
-           analyses, signaux] = await Promise.all([
+           analyses, signaux, etagere, envois] = await Promise.all([
       fetch(`/api/student/dashboard?code=${encodeURIComponent(code)}`).then(r => r.json()),
       fetch(`/api/student/activities?code=${encodeURIComponent(code)}`).then(r => r.json()),
       Prof.fetch(Prof.withGroup('/api/admin/progress')).then(r => r.json()),
@@ -283,6 +320,8 @@
       Prof.fetch(Prof.withGroup('/api/admin/access-log')).then(r => r.json()),
       Prof.fetch(Prof.withGroup('/api/admin/analyses-erreurs')).then(r => r.json()),
       Prof.fetch(Prof.withGroup('/api/admin/signaux-aide')).then(r => r.json()),
+      Prof.fetch('/api/prof/points-express').then(r => r.ok ? r.json() : []).catch(() => []),
+      Prof.fetch(Prof.withGroup('/api/prof/envois')).then(r => r.ok ? r.json() : []).catch(() => []),
     ]);
 
     const mien = liste => liste.filter(e => e.studentId === ELEVE.id);
@@ -301,7 +340,11 @@
       `Code <span class="fe-code">${esc(code)}</span> · groupe ${esc(bilan.groupe || Prof.groupeActif()?.nom || '')}`
       + (derniere ? ` · dernière trace le ${dateHeure(derniere)}` : ' · aucune trace pour l’instant');
 
+    ETAGERE = Array.isArray(etagere) ? etagere : [];
+    ENVOIS = (Array.isArray(envois) ? envois : []).filter(e => e.eleveId === ELEVE.id);
+
     document.getElementById('feContenu').innerHTML = [
+      blocPointsExpress(),
       blocBilan(bilan, activites),
       blocActivites(mesProgres, activites, [...mesOraux, ...mesEcrits]),
       blocDiagnostic(mesAnalyses, mesSignaux),
@@ -311,6 +354,19 @@
       blocJournal(monJournal),
       '<div class="fe-pied"></div>',
     ].join('');
+
+    // Un seul chemin d'écriture : on agit, puis on relit tout. Une page qui se
+    // croit à jour sans avoir relu le serveur finit par montrer un envoi qui
+    // n'existe plus.
+    const ouvrir = document.getElementById('fePeOuvrir');
+    if (ouvrir) ouvrir.addEventListener('click', ouvrirEnvoi);
+    document.querySelectorAll('[data-retirer]').forEach(b => {
+      b.addEventListener('click', async () => {
+        if (!confirm("Retirer cet envoi ? L'élève ne le verra plus.")) return;
+        await Prof.fetch('/api/prof/envois/' + b.dataset.retirer, { method: 'DELETE' });
+        rendre();
+      });
+    });
   }
 
   function section(titre, chapeau, corps) {
@@ -318,6 +374,107 @@
       <div class="fe-sec-tete"><h2>${esc(titre)}</h2><p>${esc(chapeau)}</p></div>
       ${corps}
     </section>`;
+  }
+
+  /* ══════════════════════════════════════════════════════════════════════
+     Les points express — constater, puis envoyer.
+
+     Le bouton est posé ICI, dans le dossier de l'élève, parce que c'est
+     l'écran où l'on vient de voir la lacune. **Rien n'est suggéré** : c'est
+     l'enseignant qui choisit dans l'étagère, et c'est une décision, pas une
+     limite technique.
+     ══════════════════════════════════════════════════════════════════════ */
+  function blocPointsExpress() {
+    const rangee = e => {
+      const fait = e.etat === 'termine';
+      const r = e.resultat || {};
+      const etat = fait ? '✓ Fait' : e.etat === 'commence' ? '→ Commencé' : '· Envoyé';
+      const bilan = fait
+        ? `${r.reussiSeul || 0} écran(s) réussis seul · ${r.avecRattrapage || 0} avec rattrapage`
+          + (r.rattrapages && r.rattrapages.length
+             ? ` · a rouvert : ${r.rattrapages.map(esc).join(', ')}` : '')
+        : (e.mot ? `« ${esc(e.mot)} »` : 'Pas encore ouvert');
+      return `<div class="fe-pe-l${fait ? ' fe-pe-l--fait' : ''}">
+        <div>
+          <p class="fe-pe-t">${esc(e.titre || e.parcours)}</p>
+          <p class="fe-pe-b">${bilan}</p>
+        </div>
+        <div class="fe-pe-e">${etat}</div>
+        <div><button type="button" class="fe-pe-x" data-retirer="${e.id}"
+          title="Retirer cet envoi">Retirer</button></div>
+      </div>`;
+    };
+    const corps = ENVOIS.length
+      ? `<div class="fe-pe-liste">${ENVOIS.map(rangee).join('')}</div>`
+      : `<p class="fe-note">Rien d'envoyé pour l'instant.</p>`;
+    return section('Points express',
+      "Dix minutes sur une seule difficulté, à faire seul. C'est vous qui choisissez : "
+      + "rien n'est proposé automatiquement.",
+      corps + `<div class="fe-pe-actions">
+        <button type="button" class="btn btn--pri" id="fePeOuvrir">Envoyer un point express</button>
+      </div>`);
+  }
+
+  function ouvrirEnvoi() {
+    if (!ETAGERE.length) {
+      alert("L'étagère est vide : aucun point express n'est encore produit.");
+      return;
+    }
+    const dejaOuvert = new Set(ENVOIS.filter(e => e.etat !== 'termine').map(e => e.parcours));
+    const options = ETAGERE.map(p => {
+      const pris = dejaOuvert.has(p.slug);
+      return `<label class="fe-pe-opt${pris ? ' fe-pe-opt--pris' : ''}">
+        <input type="radio" name="pe" value="${esc(p.slug)}" ${pris ? 'disabled' : ''}>
+        <span><b>${esc(p.titre)}</b>
+        <i>${esc(p.savoir || '')} · ${p.ecrans} écrans · ${p.minutes} minutes${
+          pris ? ' · déjà envoyé, pas encore terminé' : ''}</i></span>
+      </label>`;
+    }).join('');
+    const d = document.createElement('div');
+    d.className = 'fe-modale';
+    d.innerHTML = `<div class="fe-modale__in" role="dialog" aria-label="Envoyer un point express">
+      <h3>Envoyer un point express</h3>
+      <p class="fe-note">À ${esc(ELEVE.prenom || ELEVE.label || ELEVE.code)}. Il le verra en tête
+      de son portail, et pourra le faire quand il veut.</p>
+      <div class="fe-pe-opts">${options}</div>
+      <label class="fe-pe-mot">Un mot, si vous voulez
+        <textarea id="fePeMot" rows="2" maxlength="280"
+          placeholder="Regarde ça avant jeudi — c'est ce qui revient dans ton texte."></textarea>
+      </label>
+      <div class="fe-modale__pied">
+        <button type="button" class="btn" id="fePeAnnuler">Annuler</button>
+        <button type="button" class="btn btn--pri" id="fePeEnvoyer">Envoyer</button>
+      </div>
+      <p class="fe-pe-err" id="fePeErr" hidden></p>
+    </div>`;
+    document.body.appendChild(d);
+    const fermer = () => d.remove();
+    d.addEventListener('click', ev => { if (ev.target === d) fermer(); });
+    d.querySelector('#fePeAnnuler').addEventListener('click', fermer);
+    d.querySelector('#fePeEnvoyer').addEventListener('click', async () => {
+      const choix = d.querySelector('input[name="pe"]:checked');
+      const err = d.querySelector('#fePeErr');
+      if (!choix) { err.textContent = 'Choisissez un point express.'; err.hidden = false; return; }
+      const res = await Prof.fetch('/api/prof/envois', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        // `Prof.body` rend DÉJÀ une chaîne JSON, groupe compris : l'envelopper
+        // dans un second JSON.stringify envoie une chaîne là où le serveur
+        // attend un objet.
+        body: Prof.body({
+          eleveIds: [ELEVE.id], parcours: choix.value,
+          mot: d.querySelector('#fePeMot').value,
+        }),
+      });
+      if (!res.ok) {
+        const j = await res.json().catch(() => ({}));
+        err.textContent = j.error || "L'envoi a échoué.";
+        err.hidden = false;
+        return;
+      }
+      fermer();
+      rendre();
+    });
   }
 
   function blocBilan(b, activites) {

@@ -114,7 +114,29 @@
       .om-rangee { flex-wrap: wrap; }
       .om-rangee-etat { width: 100%; }
     }
-  </style>
+  
+  /* ── Les points express envoyés par l'enseignant ─────────────────────
+     Aucune couleur en dur : les jetons du système de design. L'état porte
+     toujours un glyphe ET un mot. */
+  .pe-bloc{margin-bottom:var(--sp-8)}
+  .pe-tete h2{font-family:var(--font-titre,'Nunito',sans-serif);font-size:var(--fs-h3,20px);
+    font-weight:800;color:var(--ink-900);margin:0}
+  .pe-tete p{font-size:var(--fs-meta,13px);color:var(--ink-500);margin:4px 0 0}
+  .pe-liste{display:grid;grid-template-columns:repeat(auto-fill,minmax(250px,1fr));
+    gap:var(--sp-3,12px);margin-top:var(--sp-4,16px)}
+  .pe-carte{display:flex;flex-direction:column;gap:5px;padding:14px 16px;
+    background:var(--paper-100,#FFF);border:1px solid var(--rule,#D0CFCA);
+    border-left:3px solid var(--niv-5-line,#0D7A6F);border-radius:5px;
+    text-decoration:none;color:inherit}
+  .pe-carte:hover{border-color:var(--ink-900);border-left-color:var(--niv-5-line,#0D7A6F)}
+  .pe-carte--fait{opacity:.66}
+  .pe-etat{font-size:11px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;
+    color:var(--niv-5-line,#0D7A6F)}
+  .pe-titre{font-family:var(--font-titre,'Nunito',sans-serif);font-size:16px;font-weight:800;
+    color:var(--ink-900);line-height:1.2}
+  .pe-mot{font-size:13px;color:var(--ink-700,#3A3D40)}
+  .pe-duree{font-size:12px;color:var(--ink-500)}
+</style>
 </head>
 <body>
 
@@ -283,14 +305,19 @@
   async function charger() {
     const contenu = document.getElementById('contenu');
     try {
-      const [resAct, resBilan] = await Promise.all([
+      const [resAct, resBilan, resEnvois] = await Promise.all([
         fetch(`${API}/api/student/activities?code=${encodeURIComponent(session.code)}`),
         fetch(`${API}/api/student/dashboard?code=${encodeURIComponent(session.code)}`),
+        // Les points express envoyés par l'enseignant. Un dépôt d'avant la
+        // gamme répond 404 : la bande ne paraît simplement pas.
+        fetch(`${API}/api/student/envois?code=${encodeURIComponent(session.code)}`)
+          .catch(() => null),
       ]);
       if (resAct.status === 401) { deconnecter(); return; }
       const activites = await resAct.json();
       const bilan = resBilan.ok ? await resBilan.json() : {};
-      rendre(activites, bilan);
+      const envois = (resEnvois && resEnvois.ok) ? await resEnvois.json() : [];
+      rendre(activites, bilan, Array.isArray(envois) ? envois : []);
     } catch (e) {
       contenu.innerHTML = `<p class="om-erreur">Impossible de charger vos activités. Rafraîchissez la page ou réessayez dans quelques instants.</p>`;
     }
@@ -378,7 +405,7 @@
   }
 
   // ---- RENDU ----
-  function rendre(activites, bilan) {
+  function rendre(activites, bilan, envois) {
     CATALOGUE = {};
     activites.forEach(a => { CATALOGUE[String(a.id)] = a; });
 
@@ -390,6 +417,10 @@
 
     const blocs = [];
     if (ANNOUNCEMENT) blocs.push(`<div class="banner">${escHtml(ANNOUNCEMENT)}</div>`);
+    // Ce que l'enseignant a envoyé passe AVANT tout le reste : c'est la seule
+    // chose de cette page qui attend une réponse de l'élève.
+    const pe = blocPointsExpress(envois || []);
+    if (pe) blocs.push(pe);
     blocs.push(blocBilan(modules, bilan));
     const etape = blocProchaineEtape(modules, bilan);
     if (etape) blocs.push(etape);
@@ -426,6 +457,32 @@
       <div class="om-sec"><span>Documents à consulter</span><i></i></div>
       <div class="card card--flush">${rangees}</div>
     </div>`;
+  }
+
+  /* Les points express envoyés. Trois états, trois mots — jamais une couleur
+     seule : « à faire », « commencé », « fait ». Un point terminé reste une
+     semaine, pour que l'élève voie qu'il l'a fait, puis disparaît. */
+  function blocPointsExpress(envois) {
+    if (!envois.length) return '';
+    const carte = e => {
+      const fait = e.etat === 'termine';
+      const commence = e.etat === 'commence';
+      const etat = fait ? '✓ Fait' : commence ? '→ Commencé' : '· À faire';
+      const url = `/${e.fichier}?code=${encodeURIComponent(session.code)}&envoi=${e.id}`;
+      return `<a class="pe-carte${fait ? ' pe-carte--fait' : ''}" href="${url}">
+        <span class="pe-etat">${etat}</span>
+        <span class="pe-titre">${escHtml(e.titre || 'Point express')}</span>
+        ${e.mot ? `<span class="pe-mot">« ${escHtml(e.mot)} »</span>` : ''}
+        <span class="pe-duree">10 minutes${fait ? '' : ' · sur votre téléphone'}</span>
+      </a>`;
+    };
+    return `<section class="pe-bloc">
+      <div class="pe-tete">
+        <h2>Votre enseignant vous a envoyé</h2>
+        <p>Dix minutes chacun. À faire quand vous voulez — dans l'autobus, le soir.</p>
+      </div>
+      <div class="pe-liste">${envois.map(carte).join('')}</div>
+    </section>`;
   }
 
   function blocBilan(modules, bilan) {
