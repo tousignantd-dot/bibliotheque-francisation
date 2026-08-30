@@ -1077,6 +1077,22 @@
           <input id="dVue" class="field" type="date" />
           <div class="field-hint">Votre trace de cours. L'élève ne la voit jamais.</div>
         </div>
+        <!-- La transcription du dialogue. Le réglage vit sur le **module**,
+             jamais sur une section : c'est une consigne d'écoute, pas un
+             découpage — et le serveur ne lit le champ que sur l'entrée du
+             module. Le bloc s'efface donc quand on date une section, et
+             quand l'activité n'a pas de dialogue (les ateliers n'en ont
+             aucun ; les 87 modules en ont tous un). -->
+        <div id="dTranscriptionBloc" hidden>
+          <label class="field-label" for="dTranscription">Transcription du dialogue</label>
+          <select id="dTranscription" class="field">
+            <option value="">Offerte — l'élève peut lire le texte en écoutant</option>
+            <option value="fermee">Fermée — l'élève écoute sans voir le texte</option>
+          </select>
+          <div class="field-hint">Ne vaut que pour ce groupe et ce module. Fermée, le bouton
+            « Écouter le dialogue » reste : c'est le texte qui disparaît, remplacé par une
+            phrase qui dit que vous l'avez fermé.</div>
+        </div>
         <div>
           <label class="field-label" for="dLien">Lien de la rencontre pour cette activité</label>
           <input id="dLien" class="field" type="url" placeholder="https://teams.microsoft.com/l/meetup-join/..." />

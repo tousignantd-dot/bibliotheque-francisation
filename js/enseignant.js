@@ -591,9 +591,16 @@
         : `${etiquetteNiveau}${etiquetteType}${esc(a.domaineDeVie || 'domaine à préciser')} · ${esc(temps.join(', ') || '—')}`;
 
       const coche = etat.selection.has(cle(a.id));
-      const metaSec = secs.length
+      // Une transcription fermée se dit dans la liste, pas seulement au fond
+      // de la fenêtre des dates. C'est un réglage qu'on pose un jour et qu'on
+      // oublie ; « pourquoi mon élève ne voit plus le texte ? » est la
+      // question qu'il coûte le plus cher de ne pas pouvoir répondre d'un
+      // coup d'œil.
+      const sansTexte = a.transcription === 'fermee'
+        ? ' · <b>transcription fermée</b>' : '';
+      const metaSec = (secs.length
         ? `${meta} · ${secs.length} sections`
-        : meta;
+        : meta) + sansTexte;
       const rangee = `
         <div class="card__row pe-rangee pe-rangee--${outil ? 'outil' : estCours ? 'cours' : 'atelier'}${coche ? ' is-checked' : ''}" data-id="${a.id}">
           ${deployable(a)
@@ -1372,22 +1379,35 @@
     $('dFermeture').value = source.dateFin || '';
     $('dVue').value = source.dateVue || '';
     $('dLien').value = source.lien || '';
+    // Un module, un dialogue : les 87 cours en ont un, aucun atelier. La
+    // catégorie suffit donc à décider, sans aller lire le fichier. Et jamais
+    // sur une section — le serveur ne lit le champ que sur l'entrée du module.
+    const avecDialogue = !sec && a.categorie === 'cours';
+    $('dTranscriptionBloc').hidden = !avecDialogue;
+    $('dTranscription').value = a.transcription === 'fermee' ? 'fermee' : '';
     ouvrirModale('modaleDates');
   }
 
   $('formDates').addEventListener('submit', async (e) => {
     e.preventDefault();
     try {
-      await envoyer(`/api/activities/${etat.detail}/dates`, {
+      const corps = {
         groupId: etat.groupeId,
         datePrevue: $('dOuverture').value,
         dateFin: $('dFermeture').value,
         dateVue: $('dVue').value,
         lien: $('dLien').value,
         sectionId: etat.detailSection || '',
-      });
+      };
+      // La clé ne part que quand le bloc était offert : l'écrire sur une
+      // section poserait un champ que rien ne relit jamais.
+      const ferme = !$('dTranscriptionBloc').hidden && $('dTranscription').value === 'fermee';
+      if (!$('dTranscriptionBloc').hidden) corps.transcription = ferme ? 'fermee' : '';
+      await envoyer(`/api/activities/${etat.detail}/dates`, corps);
       fermerModale('modaleDates');
-      dire('Dates enregistrées.');
+      dire(ferme
+        ? 'Enregistré. La transcription de ce dialogue est fermée pour ce groupe.'
+        : 'Dates enregistrées.');
       await chargerGroupe();
     } catch (err) {
       dire(`Enregistrement impossible : ${err.message}`);
