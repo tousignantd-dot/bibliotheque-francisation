@@ -104,9 +104,18 @@ def charger(dossier):
             'accord': ('arbitré' if a else 'remis en doute à la main' if force
                        else 'confirmé' if w else 'non vérifié'),
         })
+    # Les images déjà reprises n'ont plus à être jugées ici : elles portaient
+    # la critique de l'image d'AVANT, sous la photo d'APRÈS, ce qui trompe le
+    # lecteur. Elles se jugent sur la page avant/après, qui montre les deux.
+    faites = set()
+    f = dossier / 'reprise.json'
+    if f.exists():
+        faites = {x['id'] for x in json.loads(f.read_text())}
+    reprises = sum(1 for L in lignes if L['id'] in faites)
+    lignes = [L for L in lignes if L['id'] not in faites]
     lignes.sort(key=lambda x: (ORDRE.get(x['gravite'], 3), x['module'], x['mot']))
     leves = sum(1 for v in lecteur.values() if v.get('verdict') == 'doute')
-    return lignes, len(travail), leves
+    return lignes, len(travail), leves, reprises
 
 
 STYLE = """
@@ -170,7 +179,7 @@ footer button { border:1px solid var(--trait); background:#fff; border-radius:6p
 """
 
 
-def page(lignes, total, leves):
+def page(lignes, total, leves, reprises=0):
     cartes = []
     for L in lignes:
         motifs = ''.join(f'<span>{html.escape(m)}</span>' for m in L['motifs'])
@@ -216,10 +225,12 @@ def page(lignes, total, leves):
 <header>
   <h1>Audit des images — ce qui reste en doute</h1>
   <p>{total} images passées en revue, {leves} levées au premier passage,
-     <strong>{len(lignes)}</strong> encore en doute : {resume}. Les 91 bloquantes
-     sont passées une troisième fois, en arbitrage : celles qui portent
-     <em>À corriger au prompt</em> disent quoi changer avant de les refaire.
-     Les images blanchies en cours de route ne sont pas ici.</p>
+     <strong>{len(lignes)}</strong> restent à trancher : {resume}.
+     {reprises} autres ont déjà été refaites — leur prompt avait été corrigé —
+     et se jugent sur la page <a href="audit-avant-apres.html">avant et après</a>,
+     qui montre l’ancienne et la neuve côte à côte. Celles qui sont ici ont un
+     prompt inchangé : les régénérer telles quelles reviendrait à relancer le
+     même dé. Les images blanchies en cours de route n’y sont pas non plus.</p>
   <div class="filtres">
     <button class="on" data-f="tout">tout</button>
     <button data-f="bloquant">à refaire</button>
@@ -286,10 +297,11 @@ peindre();
 
 def main():
     dossier = pathlib.Path(sys.argv[1]) if len(sys.argv) > 1 else pathlib.Path('.')
-    lignes, total, leves = charger(dossier)
+    lignes, total, leves, reprises = charger(dossier)
     SORTIE.parent.mkdir(parents=True, exist_ok=True)
-    SORTIE.write_text(page(lignes, total, leves), encoding='utf-8')
-    print(f'{SORTIE} · {total} images, {leves} levées, {len(lignes)} en doute après vérification')
+    SORTIE.write_text(page(lignes, total, leves, reprises), encoding='utf-8')
+    print(f'{SORTIE} · {total} images · {leves} levées · {reprises} déjà refaites · '
+          f'{len(lignes)} à trancher')
 
 
 if __name__ == '__main__':
