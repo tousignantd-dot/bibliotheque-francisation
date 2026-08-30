@@ -4,6 +4,7 @@ Section teal · le troisième quart d'heure d'une rencontre.
 Source : les comptes de `pitch/chiffres.py`, relevés sur le dépôt.
 """
 from theme import Deck
+from vues import ecran, poser
 from chiffres import CH, n
 from parcours import TEMPS
 
@@ -70,6 +71,13 @@ def build(dossier):
               notes="Ne pas lire le tableau. Le laisser à l'écran et donner la dernière "
                     "ligne : c'est la seule que quelqu'un retient.")
 
+    ecran(d, "Ce que l'enseignant ouvre", "Le dépôt de matériel",
+          poser('mat', '05-materiel-catalogue'),
+          "Diaporamas et fiches au même endroit, filtrés par bloc. « 16 séances "
+          "équipées sur 16 » : rien à préparer.",
+          notes="La capture qui répond à « qui va préparer tout ça ? » mieux que "
+                "n'importe quel chiffre. Laisser deux secondes de silence.")
+
     d.cartes('Dans un module', "Ce que l'élève trouve, et ce qu'il ne trouve pas ailleurs",
              [("Des voix, pas une lecture", "Chaque dialogue est enregistré par des voix "
                "différentes, au débit qu'on choisit. %s pistes audio produites."
@@ -95,6 +103,13 @@ def build(dossier):
                "séance — %s notes de présentateur en tout" % n(CH['notes']))],
              notes="Le chiffre des notes est celui qui compte pour un remplaçant : la "
                    "séance se donne sans avoir été écrite par soi.")
+
+    ecran(d, "Pour vous", "Une séance, telle qu'elle est projetée",
+          poser('mat', '10-diapo-titre'),
+          "La première diapositive d'une séance de quatre heures. Il y en a "
+          "seize par module, et elles se donnent sans avoir été écrites par soi.",
+          notes="Dire que ce que la salle regarde en ce moment sort du même "
+                "système : c'est le produit qui se présente lui-même.")
 
     d.piege('Ce qu\'on entend',
             "« Du matériel tout fait, mes enseignants n'en voudront pas. »",

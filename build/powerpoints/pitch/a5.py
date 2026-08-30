@@ -18,6 +18,7 @@ import sys
 
 from theme import Deck
 from chiffres import CH, n
+from vues import ecran, poser
 
 sys.path.insert(0, str(pathlib.Path(__file__).resolve().parents[3] / 'build'))
 import trousse  # noqa: E402
@@ -46,19 +47,27 @@ def _reponses():
 # La phrase qu'on projette, dans l'ordre de la trousse. La clé est le début de
 # la question : elle sert à retrouver la réponse longue, et à faire échouer le
 # build si la trousse réécrit une objection sans qu'on le sache.
+#
+# Le quatrième champ, facultatif, est **une copie d'écran qui répond mieux que
+# la phrase**. Quatre objections sur sept en ont une ; les trois autres se
+# règlent par un chiffre ou par un principe, et leur coller une image serait
+# décoratif. On ne met pas d'écran pour meubler.
 COURT = [
     ("Nous ne voulons pas d'intelligence",
      "Alors ne l'ouvrez pas.",
      "C'est un réglage, pas une négociation : le centre le pose une fois, et les "
-     "87 modules se replient. Le même fichier, sans l'assistant."),
+     "87 modules se replient. Le même fichier, sans l'assistant.",
+     ('cas', '08-module-sans-ia', "Le module, assistance fermée")),
     ("Où sont hébergées les données",
      "Rien d'identifiant n'a besoin d'exister.",
      "En mode séance, l'élève n'a ni compte, ni pseudonyme, ni trace qui lui "
-     "survive à la soirée. La question de l'hébergement se pose alors sur du vide."),
+     "survive à la soirée. La question de l'hébergement se pose alors sur du vide.",
+     ('cas', '04-suivi-seance', "Une classe entière, sans un compte")),
     ("Il faut créer des comptes",
      "Non. Une feuille photocopiée suffit.",
      "Un code à six caractères, un code QR, et la classe travaille. Le suivi de "
-     "l'enseignant est exactement le même écran."),
+     "l'enseignant est exactement le même écran.",
+     ('cas', '05-feuille-seance', "Ce qu'on photocopie")),
     ("Combien ça coûte",
      "Ce qu'on mesure, pas ce qu'on estime.",
      "Chaque appel à un modèle est inscrit dans un registre, avec ses jetons. Un "
@@ -74,7 +83,8 @@ COURT = [
     ("Nos élèves n'ont pas d'ordinateur",
      "Le cours entier se fait sur un téléphone.",
      "Les sept familles d'exercices, l'enregistrement de la voix, le dépôt d'un "
-     "texte. Et la fiche papier existe pour ceux qui n'ont rien."),
+     "texte. Et la fiche papier existe pour ceux qui n'ont rien.",
+     ('tel', '02-portail-cours', "Le cours entier, sur un téléphone")),
 ]
 
 
@@ -101,7 +111,9 @@ def build(dossier):
             notes="Ne pas projeter les sept d'affilée : c'est une réserve, pas un "
                   "chapitre. On y va chercher celle qui vient de tomber.")
 
-    for cle, courte, detail in COURT:
+    for entree in COURT:
+        cle, courte, detail = entree[:3]
+        vue = entree[3] if len(entree) > 3 else None
         longue = next((v for k, v in rep.items() if cle in k), None)
         if longue is None:
             raise SystemExit(
@@ -113,6 +125,12 @@ def build(dossier):
         d.piege("Ce qu'on entend", question, courte, detail,
                 notes="Réponse complète, telle qu'elle est dans la trousse :\n\n"
                       + longue)
+        if vue:
+            famille, nom, titre_vue = vue
+            ecran(d, "La preuve", titre_vue, poser(famille, nom), courte,
+                  notes="À projeter juste après la réponse, sans commenter. "
+                        "Une objection tombe mieux devant un écran que devant "
+                        "une phrase.")
 
     d.billet("Une objection qui ne vient pas est une objection qui n'a pas été dite. "
              "Demander : « qu'est-ce qui vous ferait dire non ? »",

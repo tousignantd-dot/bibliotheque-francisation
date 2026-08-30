@@ -4,6 +4,7 @@ Section ambre · le cinquième quart d'heure d'une rencontre.
 Source : `assets/presentations/loi-25.html`, qui porte l'inventaire des flux.
 """
 from theme import Deck
+from vues import ecran, poser
 from chiffres import CH, n
 from parcours import TEMPS
 
@@ -74,6 +75,13 @@ def build(dossier):
              notes="La quatrième carte est celle qui intéresse un conseiller juridique : "
                    "la transcription ferme le passif sans coûter la production orale.")
 
+    ecran(d, "Ce que la direction voit", "L'espace direction",
+          poser('cas', '13-espace-direction'),
+          "Les comptes du centre, les réglages, et la dépense estimée. Aucune "
+          "réponse d'élève n'y figure.",
+          notes="La question qui suit est toujours « et les données des élèves ? ». "
+                "La réponse est à l'écran : elles n'y sont pas.")
+
     d.regle("La règle de l'article 70.1",
             "Hors Québec est permis, à trois conditions.",
             precision="Une évaluation des facteurs relatifs à la vie privée faite avant "
@@ -102,6 +110,13 @@ def build(dossier):
                    "construits, celles-ci s'écrivent.",
               notes="Terminer là-dessus : ce sont des décisions d'organisme, pas des "
                     "fonctionnalités à attendre.")
+
+    ecran(d, "Sans rien collecter", "Une classe entière, sans un compte",
+          poser('cas', '04-suivi-seance'),
+          "Le suivi de l'enseignant est le même écran. Les élèves s'appellent "
+          "« Participant 3 » : il n'existe aucune donnée pour les nommer.",
+          notes="C'est la réponse la plus courte à la Loi 25 : on ne protège pas "
+                "une donnée qu'on n'a pas créée.")
 
     d.billet("La question à emporter : qui, chez vous, signe l'évaluation des facteurs "
              "relatifs à la vie privée ?",

@@ -15,6 +15,7 @@ Les quinze décisions qu'il expose sont documentées dans `CLAUDE.md` ; celle-ci
 en est la synthèse projetable, pas une source de plus.
 """
 from theme import Deck
+from vues import ecran, poser
 from chiffres import CH, n
 
 
@@ -73,6 +74,13 @@ def build(dossier):
                      "négation, une subordonnée — et surtout du vocabulaire qu'on "
                      "n'apprend nulle part ailleurs (calorifère, disjoncteur).")
 
+    ecran(d, "Le même dialogue", "Tel que l'élève l'entend",
+          poser('tel', '05-dialogue'),
+          "Une voix par personnage, au débit qu'il choisit. Il réécoute une "
+          "réplique quinze fois sans user la patience de personne.",
+          notes="Faire remarquer le bouton de vitesse : c'est ce qui distingue un "
+                "enregistrement pédagogique d'un texte lu.")
+
     d.cartes("Comment un module s'écrit", "Quatre décisions, toujours dans cet ordre",
              [("La situation d'abord", "On prend une situation du programme — appeler "
                "un propriétaire, consulter un médecin, répondre à une offre d'emploi. "
@@ -125,6 +133,13 @@ def build(dossier):
                   "différence quand on ne la tient pas. Les sept sont montrées en "
                   "images dans l'annexe A2.")
 
+    ecran(d, "Une des sept formes", "Des cases à écrire",
+          poser('tel', '09-cases-ecrire'),
+          "La même forme dans les 87 modules et les huit niveaux. L'élève "
+          "l'apprend une fois, puis ne pense plus qu'au français.",
+          notes="Si on demande à voir les six autres, elles sont en images dans "
+                "l'annexe A2.")
+
     d.regle("Le moment de la règle",
             "La règle arrive quand l'élève s'est trompé, jamais avant.",
             precision="Les mini-leçons ne sont pas en tête de module : elles s'ouvrent "
@@ -156,6 +171,13 @@ def build(dossier):
                   "adulte qui sait qu'on l'observe ne s'enregistre pas. Celui qui sait "
                   "que personne n'écoute recommence jusqu'à être content.")
 
+    ecran(d, "Rien ne part sans lui", "La relecture, puis l'envoi",
+          poser('cas', '09-production-avec-ia'),
+          "La correction s'affiche et n'est gardée nulle part. Le bouton "
+          "d'envoi est un geste distinct, et il appartient à l'élève.",
+          notes="Le point que les enseignants comprennent le plus vite : un adulte "
+                "qui se sait observé ne s'enregistre pas.")
+
     d.cartes("Écouter", "Ce qu'il a fallu pour que l'oral serve à quelque chose",
              [("Une voix par personnage", "Oksana et Bertrand ne sonnent pas pareil. "
                "Sans ça, l'élève ne sait pas qui parle et n'entend qu'un texte lu."),
@@ -182,6 +204,13 @@ def build(dossier):
                   "divergent. Et reconnaître n'est pas savoir : on écrit.")
 
     # ── 4. Ce que la machine n'a pas le droit de faire ────────────────
+    ecran(d, "Une seule porte d'entrée", "Les cartes mémoire",
+          poser('tel', '15-cartes-memoire'),
+          "L'élève écrit le mot à partir de sa définition — il ne le reconnaît "
+          "pas dans une liste. Sept boîtes, en répétition espacée.",
+          notes="Reconnaître n'est pas savoir. C'est la raison pour laquelle la "
+                "carte demande d'écrire, ce qui est plus lent et plus coûteux.")
+
     d.piege("La question qui vient toujours",
             "« Votre assistant va faire les exercices à leur place. »",
             "« Il a interdiction de donner une réponse. »",
@@ -201,6 +230,13 @@ def build(dossier):
             notes="À dire fermement : ce n'est pas une fonctionnalité manquante. "
                   "Diagnostiquer est le métier, et une machine qui range des élèves "
                   "dans des cases se trompe sur ceux qui en ont le plus besoin.")
+
+    ecran(d, "Ce que l'enseignant voit", "Le dossier d'un élève",
+          poser('cas', '03-fiche-eleve'),
+          "Où il en est, où il s'est trompé, ce qu'il a remis. Aucune "
+          "conclusion, aucune suggestion de parcours : c'est lui qui tranche.",
+          notes="Insister : rien ici ne propose quoi que ce soit. Le diagnostic "
+                "est le métier, et c'est un choix, pas une étape transitoire.")
 
     d.cartes("Ce qu'on n'a pas retiré", "Quatre choses qui restent, et c'est délibéré",
              [("L'enseignant", "Rien ne s'ouvre tout seul à un élève. C'est "

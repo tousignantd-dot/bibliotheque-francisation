@@ -5,6 +5,7 @@ Source : la section « Le mode sans IA » du CLAUDE.md (le champ reste `ia` ;
 c'est l'étiquette qui a changé) et le bac à sable.
 """
 from theme import Deck
+from vues import ecran, poser
 from chiffres import CH, n
 from parcours import TEMPS
 
@@ -56,6 +57,13 @@ def build(dossier):
                     "c'est celle-ci. Laisser le temps de la lire. Préciser que le "
                     "réglage vit sur l'organisation, jamais sur un groupe.")
 
+    ecran(d, "Où ils vivent", "L'arbre des organisations",
+          poser('cas', '11-arbre-tout-ouvert'),
+          "Chaque nœud porte ses quatre réglages. Le premier réglage explicite "
+          "tranche, et il descend sur tout ce qui est en dessous.",
+          notes="Montrer le badge qui dit d'où vient la décision. Une direction "
+                "comprend l'héritage en le voyant, jamais en l'écoutant décrire.")
+
     d.regle("L'héritage",
             "Le premier réglage explicite tranche, et il descend.",
             precision="« Interdit » posé sur un centre de services ferme ses douze "
@@ -79,6 +87,13 @@ def build(dossier):
              notes="Ne pas vendre le mode sans assistance comme équivalent. Dire le coût : le "
                    "travail de correction revient à l'enseignant.")
 
+    ecran(d, "Assistance ouverte", "Ce que l'élève voit avant d'envoyer",
+          poser('cas', '09-production-avec-ia'),
+          "La relecture s'affiche à l'écran, elle n'est gardée nulle part. "
+          "L'enseignant reçoit ce que l'élève décide de lui envoyer.",
+          notes="C'est la diapositive qui désamorce « vous gardez leurs textes ». "
+                "La correction est privée ; l'envoi est un geste de l'élève.")
+
     d.piege('Le malentendu le plus fréquent',
             "« Fermer l'assistant, c'est perdre le cours. »",
             "« Fermer l'assistant, c'est perdre l'aide immédiate, pas le cours. »",
@@ -98,6 +113,13 @@ def build(dossier):
                    "un mardi matin. Les deux gestes sont distincts.",
               notes="Utile pour les groupes qui changent chaque semaine et pour les "
                     "remplaçants : aucun compte à créer avant la première minute.")
+
+    ecran(d, "Le troisième mode", "Ce que l'élève voit en entrant",
+          poser('cas', '06-entree-seance'),
+          "Un code à six caractères, pris sur une feuille photocopiée. Ni "
+          "compte, ni pseudonyme, ni trace qui lui survive à la soirée.",
+          notes="Enchaîner tout de suite sur la feuille imprimable si on la "
+                "demande — elle est dans l'annexe A1.")
 
     d.billet("La décision à prendre aujourd'hui n'est pas « oui ou non » : c'est "
              "« lesquels des quatre, et par qui ».",

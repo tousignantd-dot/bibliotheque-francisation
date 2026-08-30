@@ -37,6 +37,12 @@ Trois choses en plus, que le papier et le `.pptx` ne savent pas faire :
     est sans compter ;
   · le **plein écran** (touche `F`), sans quoi la barre du navigateur mange le
     haut de la projection.
+
+**Pas de `loading="lazy"` sur les captures.** Une image qui ne charge qu'au
+moment où l'on arrive sur son écran, c'est un cadre vide devant la salle — et
+sur le réseau d'une école, il peut le rester une seconde ou deux. Un diaporama
+en porte une dizaine, soixante kilo-octets chacune : on les charge toutes
+d'avance, c'est le seul moment où personne ne regarde.
 """
 
 import html
@@ -191,10 +197,15 @@ class Deck:
         from vues import chemin_web, taille
         src = chemin_web(code)
         w, h = taille(code)
-        debout = h > w * 1.15
+        # Le partage est net, mesuré sur les 45 captures du dépôt : une page
+        # web ou un téléphone font de 1,0 à 2,5 en hauteur, une diapositive
+        # 0,56. Le seuil est donc « plus haut que large », sans marge — à 1,15
+        # il coupait au milieu des captures de portail, qui se retrouvaient
+        # sous le texte et minuscules.
+        debout = h >= w
         corps = ('<div class="bloc">%s%s</div>'
                  '<figure class="ecran" data-anim="4" style="--ar:%d/%d">'
-                 '<img src="%s" alt="%s" loading="lazy"></figure>'
+                 '<img src="%s" alt="%s" decoding="sync"></figure>'
                  % (self._entete(surtitre, titre),
                     '<p class="consigne" data-anim="3">%s</p>' % e(consigne),
                     w, h, src, e(titre)))
@@ -399,7 +410,10 @@ GABARIT = """<!DOCTYPE html>
       gap:clamp(24px,4vw,64px)}
     .est-ecran.debout .bloc{flex:1 1 auto; max-width:52ch;
       display:flex; flex-direction:column; justify-content:center}
-    .est-ecran.debout .ecran{margin:0; flex:0 1 auto; align-self:center}
+    /* Une capture presque carrée, tirée sur toute la hauteur, deviendrait
+       aussi large que haute et mangerait le texte : on la borne. */
+    .est-ecran.debout .ecran{margin:0; flex:0 1 auto; align-self:center;
+      max-width:min(52%%, 100%%)}
   }
 
   .est-billet{background:var(--ink-900); color:#fff}
