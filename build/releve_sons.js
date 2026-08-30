@@ -1,9 +1,9 @@
 // Relevé des identifiants d'audio d'un module, hors navigateur.
 //
-//     node build/releve_sons.js module-n2-classe > sons_module_n2_classe.json
+//     node build/releve_sons.js module-n2-classe > manifestes/sons_module_n2_classe.json
 //
 // Il remplace `build/collecte_sons.py`, dont le port peut être occupé par une
-// session voisine : le relevé part alors écrire dans le `sons_<slug>.json`
+// session voisine : le relevé part alors écrire dans le `manifestes/sons_<slug>.json`
 // d'un autre module sans que rien ne le dise, et le script échoue en silence
 // dans un `nohup`. Ici, rien n'écoute et rien ne s'écrase.
 //

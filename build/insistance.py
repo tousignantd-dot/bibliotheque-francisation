@@ -109,7 +109,7 @@ def verifie():
     import json
     perdues, ok = [], 0
     for (module, fid), mot in sorted(TABLE.items()):
-        manifeste = RACINE / ('sons_%s.json' % module.replace('module-', 'module_').replace('-', '_'))
+        manifeste = RACINE / 'manifestes' / ('sons_%s.json' % module.replace('module-', 'module_').replace('-', '_'))
         if not manifeste.exists():
             perdues.append('%s → manifeste absent' % module)
             continue

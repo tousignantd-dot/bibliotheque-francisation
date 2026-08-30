@@ -1,7 +1,7 @@
 // Relevé des identifiants d'audio d'un module **écrit à la main**, depuis le
 // HTML livré.
 //
-//     node build/releve_sons_livre.js module-logement > sons_module_logement.json
+//     node build/releve_sons_livre.js module-logement > manifestes/sons_module_logement.json
 //     node build/releve_sons_livre.js --tous          # dit ce qui manque, n'écrit rien
 //
 // `build/releve_sons.js` lit `build/contenu/<slug>/`. Dix modules — ceux du

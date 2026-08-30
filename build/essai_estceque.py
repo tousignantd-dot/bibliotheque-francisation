@@ -9,18 +9,18 @@ puisse repérer à l'oreille lesquels sont saccadés.
 Le texte lu ne vit pas au même endroit selon le son, et il faut les trois
 sources pour ne rien manquer :
 
-  · sons_module_<slug>.json ........ manifeste des sons d'un module récent
-  · generer_audio_module_<slug>{,_plus,_sons}.py .. dict CLIPS des modules
+  · manifestes/sons_module_<slug>.json .. manifeste des sons d'un module
+  · audio/generer_audio_module_<slug>{,_plus,_sons}.py .. dict CLIPS des modules
       plus anciens, qui n'ont jamais eu de manifeste (consultation, meteo,
       travail, urgence, sante, pub, logement, banque, nouvelles, procedure)
-  · DIALOGUES dans ces mêmes scripts et dans generer_audio_dialogues.py ..
+  · DIALOGUES dans ces mêmes scripts et dans audio/generer_audio_dialogues.py ..
       les répliques, rangées hors de sons/ en <module>/<bloc>/line_NN_x.mp3
 
 Les scripts sont lus par `ast`, jamais importés : aucune clé d'API en jeu.
 
     python3 build/essai_estceque.py
 
-Écrit essai-estceque.html à la racine. Ne touche à aucun module.
+Écrit essais/essai-estceque.html. Ne touche à aucun module.
 """
 import ast
 import glob
@@ -83,7 +83,7 @@ def _slugs_personnage(nom):
 
 
 def _des_manifestes():
-    for f in sorted(glob.glob(os.path.join(RACINE, "sons_module_*.json"))):
+    for f in sorted(glob.glob(os.path.join(RACINE, "manifestes", "sons_module_*.json"))):
         base = os.path.basename(f)
         slug = "module-" + base[len("sons_module_"):-len(".json")].replace("_", "-")
         with open(f, encoding="utf-8") as fh:
@@ -96,7 +96,7 @@ def _des_manifestes():
 def _des_scripts():
     motifs = ["generer_audio_module_*.py", "generer_audio_dialogues.py"]
     for motif in motifs:
-        for f in sorted(glob.glob(os.path.join(RACINE, motif))):
+        for f in sorted(glob.glob(os.path.join(RACINE, "audio", motif))):
             trouve = _litteraux(f, {"CLIPS", "DIALOGUES"})
 
             for sid, texte in (trouve.get("CLIPS") or {}).items():
@@ -147,14 +147,14 @@ def releve():
 def comparaisons(lignes):
     """[(titre module, id, texte, mp3 avant, mp3 après)] pour chaque MP3 gardé.
 
-    Un MP3 copié dans essai-estceque/avant/<module>/<id>.mp3 avant d'être
+    Un MP3 copié dans essais/essai-estceque/avant/<module>/<id>.mp3 avant d'être
     régénéré donne une paire à écouter côte à côte : c'est la seule façon de
     juger si la reprise a réglé le hachage.
     """
     par_id = {(l[0], os.path.basename(l[1])[:-len(".mp3")]): l for l in lignes}
     paires = []
     for avant in sorted(glob.glob(os.path.join(
-            RACINE, "essai-estceque", "avant", "*", "*.mp3"))):
+            RACINE, "essais", "essai-estceque", "avant", "*", "*.mp3"))):
         slug = os.path.basename(os.path.dirname(avant))
         sid = os.path.basename(avant)[:-len(".mp3")]
         ligne = par_id.get((slug, sid))
@@ -293,7 +293,7 @@ def main():
                f'{len(lignes) - len(avec)} attendent leur audio.</p>')
     out.append(f"<script>{JS}</script></body></html>")
 
-    dest = os.path.join(RACINE, "essai-estceque.html")
+    dest = os.path.join(RACINE, "essais", "essai-estceque.html")
     with open(dest, "w", encoding="utf-8") as f:
         f.write("\n".join(out))
     print(f"{dest} — {len(lignes)} phrases, {len(avec)} avec MP3, {len(modules)} modules")

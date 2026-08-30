@@ -78,7 +78,7 @@ def repliques():
         if not dossier.is_dir():
             continue
         dialogues = RACINE / "build/contenu" / dossier.name / "dialogues.js"
-        gen = RACINE / GENERATEUR.get(
+        gen = RACINE / "audio" / GENERATEUR.get(
             dossier.name, "generer_audio_%s.py" % dossier.name.replace("-", "_"))
         if not dialogues.exists() or not gen.exists():
             continue

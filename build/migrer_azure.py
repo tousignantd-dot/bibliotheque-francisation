@@ -2,7 +2,7 @@
 """Faire passer les générateurs d'audio d'ElevenLabs à Azure, mécaniquement.
 
     python3 build/migrer_azure.py --essai              # ce qui serait changé, sans rien écrire
-    python3 build/migrer_azure.py generer_audio_module_n1_presenter.py
+    python3 build/migrer_azure.py audio/generer_audio_module_n1_presenter.py
     python3 build/migrer_azure.py --tous
 
 Ce que la migration change, et ce qu'elle ne touche pas
@@ -181,7 +181,7 @@ def main():
     a = ap.parse_args()
 
     if a.tous or (a.essai and not a.fichiers):
-        cibles = sorted(RACINE.glob("generer_audio*.py"))
+        cibles = sorted((RACINE / "audio").glob("generer_audio*.py"))
     else:
         cibles = [pathlib.Path(f) if pathlib.Path(f).exists() else RACINE / f
                   for f in a.fichiers]

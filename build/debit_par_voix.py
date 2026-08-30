@@ -58,7 +58,7 @@ def duree_parlee(f):
 
 def voix_des_persos(module):
     """Le personnage → rôle de voix, lu dans le générateur du module."""
-    g = RACINE / ('generer_audio_%s.py' % module.replace('module-', 'module_').replace('-', '_'))
+    g = RACINE / 'audio' / ('generer_audio_%s.py' % module.replace('module-', 'module_').replace('-', '_'))
     if not g.exists():
         return {}
     m = re.search(r'VOIX_PERSO\s*=\s*\{(.*?)\n\}', g.read_text(encoding='utf-8'), re.S)

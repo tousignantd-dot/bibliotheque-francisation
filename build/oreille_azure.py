@@ -180,7 +180,7 @@ def couvre(attendu, entendu):
 def cibles(filtre):
     """(slug, file_id, chemin, texte attendu) pour tout ce que les relevés annoncent."""
     out = []
-    for rel in sorted(RACINE.glob("sons_module_*.json")):
+    for rel in sorted((RACINE / "manifestes").glob("sons_module_*.json")):
         slug = "module-" + rel.stem[len("sons_module_"):].replace("_", "-")
         if filtre and filtre not in slug:
             continue

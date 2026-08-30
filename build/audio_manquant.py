@@ -16,7 +16,7 @@ exactement le cas de `module-n3-voisins`, 244 sons sur 244 et pas une seule
 ligne de dialogue.
 
 - `assets/interactive/<slug>/sons/<id>.mp3` — les pastilles haut-parleur.
-  Attendus = les clés de `sons_<slug>.json`, à la racine du dépôt.
+  Attendus = les clés de `manifestes/sons_<slug>.json`.
 - `assets/interactive/<slug>/<dialogue>/line_NN_<perso>.mp3` — le bouton
   « Écouter » de Je découvre. Attendues = les lignes de
   `build/contenu/<slug>/dialogues.js`.
@@ -83,7 +83,7 @@ def etat(slug):
          'dial_attendues': 0, 'dial_presentes': 0, 'dial_manquantes': 0,
          'sec_dial': 0.0, 'dial_trous': []}
 
-    releve = RACINE / ('sons_%s.json' % slug.replace('-', '_'))
+    releve = RACINE / 'manifestes' / ('sons_%s.json' % slug.replace('-', '_'))
     dossier = RACINE / 'assets' / 'interactive' / slug
     presents = {p.stem for p in (dossier / 'sons').glob('*.mp3')} \
         if (dossier / 'sons').is_dir() else set()

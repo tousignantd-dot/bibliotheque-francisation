@@ -80,7 +80,7 @@ def envelopper(s):
 def main():
     essai = '--essai' in sys.argv
     faits, sautes, echecs = [], [], []
-    for f in sorted(RACINE.glob('generer_audio_*.py')):
+    for f in sorted((RACINE / 'audio').glob('generer_audio_*.py')):
         s = f.read_text(encoding='utf-8')
         if deja_greffe(s):
             sautes.append(f.name); continue

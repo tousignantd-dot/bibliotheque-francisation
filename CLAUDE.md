@@ -1140,7 +1140,7 @@ Deux pièges déjà payés :
 - **Le relevé des sons se fait maintenant par `build/releve_sons.js`**, et
   `build/collecte_sons.py` n'a plus à être lancé du tout :
 
-      node build/releve_sons.js module-n2-classe > sons_module_n2_classe.json
+      node build/releve_sons.js module-n2-classe > manifestes/sons_module_n2_classe.json
 
   Vingt lignes de node sur `exos.js`, `carrier.js` et `plus.js`, qui
   reproduisent les trois endroits du gabarit appelant `playWord`. Écrit le
@@ -1151,7 +1151,7 @@ Deux pièges déjà payés :
   perdre si le gabarit change : le suffixe des clés de `plus.js` est
   **l'indice du bloc** dans `blocs`, pas un compteur.
 - **Arrêter `build/collecte_sons.py` dès que le relevé est obtenu autrement.**
-  Il n'expire pas : il attend un seul envoi, et il écrit `sons_<slug>.json`
+  Il n'expire pas : il attend un seul envoi, et il écrit `manifestes/sons_<slug>.json`
   quand celui-ci arrive — même longtemps après qu'on a cessé d'y penser. Laissé
   en tâche de fond après un relevé fait hors navigateur, il a écrasé un relevé
   de 169 clés par un relevé partiel de 164, une fois les MP3 déjà générés et
@@ -1861,7 +1861,7 @@ inscription, et un pictogramme est de la géométrie, pas une photo.
 L'audio, lui, est **préparé et non produit** :
 
 ```
-python3 generer_audio_banque_n1.py --compter   # 262 extraits, ~0,76 $, sans rien payer
+python3 audio/generer_audio_banque_n1.py --compter   # 262 extraits, ~0,76 $, sans rien payer
 ```
 
 Le compte ElevenLabs était à zéro crédit (401 `quota_exceeded`) le 24 août
@@ -1905,7 +1905,7 @@ Trois choses à savoir avant d'y toucher :
   mode présentation.
 
 L'audio des quinze mots (`audio/<slug>.mp3`, voix enseignante ralentie) reste
-**à produire** : `generer_audio_polices_n1.py` est écrit et relançable, mais
+**à produire** : `audio/generer_audio_polices_n1.py` est écrit et relançable, mais
 le compte ElevenLabs était à zéro crédit le 24 août 2026. Les boutons
 d'écoute restent en place et sans effet — on ne masque pas un bouton pour
 cacher un média manquant.
@@ -2938,10 +2938,32 @@ laisserait passer même toutes gardes retirées.
 Plan du chantier : `assets/presentations/mode-seance-sans-compte.html`.
 Les quatre lots sont livrés.
 
+## La racine du dépôt (ménage du 30 août 2026)
+
+Trois dossiers ont vidé la racine, qui portait 245 entrées dont 198 de la même
+famille — on ne trouvait plus le serveur entre deux scripts audio.
+
+| Dossier | Ce qu'il contient |
+|---|---|
+| `audio/` | les 111 scripts `generer_audio_*.py` |
+| `manifestes/` | les 87 relevés `sons_*.json` |
+| `essais/` | les onze bancs d'essai `essai-*` (voix, débit, épellation, outils) |
+
+**Rien ne les lit à l'exécution** : aucun module, aucune page, aucune route du
+serveur ne va chercher un `sons_*.json`. Ce sont des fichiers de production,
+lus par une dizaine de scripts de `build/`, toujours par le même motif
+(`RACINE / 'manifestes' / ('sons_%s.json' % slug)`). C'est ce qui a rendu le
+rangement possible en une ligne par script.
+
+**Le contrôle qui tranche** : `python3 build/audio_manquant.py` doit trouver
+les 86 manifestes et rendre **zéro son manquant**. Un chemin resté à la racine
+n'échoue pas — il rend « 0 module troué » parce qu'il n'attend plus rien.
+Vérifier le nombre de manifestes trouvés, pas seulement le nombre de trous.
+
 ## Voix des modules (ElevenLabs)
 
-Les MP3 des modules sont produits par les scripts `generer_audio_*.py` à la
-racine : `<module>.py` pour les dialogues (une voix par personnage),
+Les MP3 des modules sont produits par les scripts `generer_audio_*.py` du
+dossier `audio/` : `<module>.py` pour les dialogues (une voix par personnage),
 `<module>_sons.py` pour les mots isolés, `<module>_plus.py` pour les
 mini-leçons. Les identifiants de voix sont volontairement les mêmes d'un
 module à l'autre, pour qu'un personnage sonne pareil partout.

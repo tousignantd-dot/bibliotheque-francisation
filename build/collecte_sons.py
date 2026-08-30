@@ -26,7 +26,7 @@ def main():
         sys.exit(__doc__)
     slug = sys.argv[1]
     port = int(sys.argv[2]) if len(sys.argv) > 2 else 8799
-    cible = RACINE / ('sons_%s.json' % slug.replace('-', '_'))
+    cible = RACINE / 'manifestes' / ('sons_%s.json' % slug.replace('-', '_'))
 
     class H(http.server.BaseHTTPRequestHandler):
         def _cors(self):

@@ -43,7 +43,7 @@ MOTIFS_FATALS = ('invalid_api_key', 'authentication_error', 'quota_exceeded',
 
 
 def generateurs(filtre=None):
-    g = sorted(RACINE.glob('generer_audio_*.py'))
+    g = sorted((RACINE / 'audio').glob('generer_audio_*.py'))
     if filtre:
         g = [f for f in g if filtre in f.name]
     return g
@@ -52,7 +52,7 @@ def generateurs(filtre=None):
 def a_produire(chemin):
     """Ce que ce générateur annonce, sans rien appeler : son relevé de sons."""
     nom = chemin.stem.replace('generer_audio_', '')
-    releve = RACINE / ('sons_%s.json' % nom)
+    releve = RACINE / 'manifestes' / ('sons_%s.json' % nom)
     if not releve.exists():
         return None
     import json
