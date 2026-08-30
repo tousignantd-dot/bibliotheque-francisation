@@ -1021,7 +1021,15 @@ def save_schedule(entries):
     _save_json(SCHEDULE_FILE, entries)
 
 
-SCHEDULE_FIELDS = ("dateVue", "datePrevue", "dateFin", "lien")
+SCHEDULE_FIELDS = ("dateVue", "datePrevue", "dateFin", "lien",
+                   "transcription")
+
+# `transcription` : "" quand la transcription du dialogue reste offerte à
+# l'élève (le défaut, et ce que valent toutes les entrées écrites avant ce
+# champ), "fermee" quand l'enseignant veut qu'on écoute sans lire. Une
+# chaîne plutôt qu'un booléen : tout le tuyau de la planification passe des
+# chaînes, du formulaire au fichier, et un booléen y serait le seul cas
+# particulier.
 
 
 def _section_id(entry):
@@ -16485,6 +16493,13 @@ class Handler(http.server.SimpleHTTPRequestHandler):
         if "lien" in body:
             body["lien"] = normalize_lien(body["lien"])
 
+        # Deux états, pas davantage : une valeur libre finirait par arriver au
+        # module, qui n'en attend qu'une.
+        if "transcription" in body:
+            body["transcription"] = (
+                "fermee" if str(body["transcription"]).strip().lower()
+                in ("fermee", "fermée", "false", "non", "0") else "")
+
         # Une date peut viser une section du module (« Défi 2 ») plutôt que le
         # module entier. On refuse une section inconnue : une faute de frappe
         # créerait une entrée que plus rien ne lit ni n'efface.
@@ -16562,10 +16577,17 @@ class Handler(http.server.SimpleHTTPRequestHandler):
         if not self._garde_activite(student, activity_id):
             return
         sections = sections_state_for_student(student.get("groupId"), activity_id)
+        # La transcription se règle sur le module entier, jamais par section :
+        # « écouter sans lire » est une consigne d'écoute, pas un découpage.
+        # Elle voyage ici parce que c'est le seul appel que **tout** module fait
+        # déjà au démarrage — lui en ajouter un second pour un booléen serait
+        # une requête de plus sur le réseau d'une classe entière.
+        planif = schedule_for_group(student.get("groupId")).get(activity_id, {})
         json_response(self, {
             "activityId": activity_id,
             "decoupe": bool(sections),
             "sections": sections,
+            "transcription": planif.get("transcription", "") != "fermee",
         })
 
     @sous_verrou

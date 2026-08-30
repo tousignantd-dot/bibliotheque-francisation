@@ -6106,4 +6106,92 @@ body.depot-ferme #poSend { display: none !important; }
 })();
 </script>
 <!-- SECTIONS-DATEES:fin -->
+<!-- TRANSCRIPTION:début — greffé par build/greffe_transcription.py -->
+<script>
+(function () {
+  var OUVERTE = true;      // le défaut : on n'enlève rien à l'élève
+  var NOTE = 'Ton enseignante a fermé la transcription : écoute le dialogue.';
+
+  /* Les deux endroits où un module montre le texte d'un dialogue :
+     — la section de mise en situation, bouton « Lire la transcription » et
+       bloc `#script-<sectionId>` ;
+     — un exercice bâti sur un dialogue, avec son `<details>` « Afficher le
+       texte du dialogue ».
+     Les deux sont redessinés à chaque `render()`, donc on repasse après lui
+     plutôt que de nettoyer une fois. */
+  function retirer() {
+    if (OUVERTE) return;
+    var boutons = document.querySelectorAll(
+      'button[onclick^="toggleScript"], [onclick^="toggleScript"]');
+    for (var i = 0; i < boutons.length; i++) {
+      var b = boutons[i];
+      var note = document.createElement('span');
+      note.className = 'transcription-fermee';
+      note.textContent = NOTE;
+      note.style.cssText = 'font-size:13px;font-weight:700;color:var(--ink-500,'
+        + '#64748b);align-self:center';
+      b.parentNode.replaceChild(note, b);
+    }
+    // Le bloc de texte lui-même, et le `<details>` des exercices.
+    var textes = document.querySelectorAll('.dial-txt');
+    for (var j = 0; j < textes.length; j++) {
+      var t = textes[j];
+      var det = t.closest ? t.closest('details') : null;
+      var mort = det || t;
+      if (det) {
+        var note2 = document.createElement('div');
+        note2.className = 'transcription-fermee';
+        note2.style.cssText = 'font-size:13px;font-weight:700;margin-bottom:12px;'
+          + 'color:var(--ink-500,#64748b)';
+        note2.textContent = NOTE;
+        mort.parentNode.replaceChild(note2, mort);
+      } else {
+        mort.parentNode.removeChild(mort);
+      }
+    }
+  }
+
+  /* Ceinture : si un bouton nous échappe, il ne doit rien ouvrir. */
+  if (typeof window.toggleScript === 'function') {
+    var toggleOrig = window.toggleScript;
+    window.toggleScript = function () {
+      if (!OUVERTE) return;
+      return toggleOrig.apply(this, arguments);
+    };
+  }
+
+  function surveiller() {
+    if (typeof render === 'function') {
+      var rendreOrig = render;
+      render = function () {
+        var r = rendreOrig.apply(this, arguments);
+        retirer();
+        return r;
+      };
+    }
+    retirer();
+  }
+
+  function demarrer() {
+    var code = (typeof studentCode !== 'undefined' && studentCode) || '';
+    if (!code) return;   // hors session : le module s'ouvre en entier
+    fetch('/api/student/sections?code=' + encodeURIComponent(code)
+          + '&activityId=' + 83)
+      .then(function (r) { return r.ok ? r.json() : null; })
+      .then(function (d) {
+        // `undefined` sur un serveur qui ne connaît pas encore le champ :
+        // seul un `false` franc ferme quelque chose.
+        if (d && d.transcription === false) { OUVERTE = false; surveiller(); }
+      })
+      .catch(function () { /* serveur muet : la transcription reste offerte */ });
+  }
+
+  if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', demarrer);
+  } else {
+    demarrer();
+  }
+})();
+</script>
+<!-- TRANSCRIPTION:fin -->
 </body></html>
