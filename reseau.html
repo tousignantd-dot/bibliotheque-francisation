@@ -406,7 +406,15 @@
       var gestes = [];
       if (org.type === 'reseau') gestes.push(['ouvrir-css', 'Ouvrir un CSS']);
       if (org.type === 'css') gestes.push(['ouvrir-centre', 'Ouvrir un centre']);
-      if (org.type !== 'reseau') gestes.push(['renommer', 'Renommer']);
+      /* Le réseau se renomme comme les autres. Il en était exclu — reste
+         d'une prudence qui visait la *désactivation*, le seul geste vraiment
+         irréparable sur la racine, et que le serveur refuse déjà. Résultat :
+         le nœud d'amorce gardait le nom de l'ancienne marque et rien dans la
+         page ne permettait d'en changer, alors que `PATCH` l'acceptait très
+         bien. Un bouton absent doit signifier « le serveur refuserait » ;
+         celui-là ne refusait rien. Vu le 29 août 2026, en cherchant à
+         renommer « SAAF » en « francis ». */
+      gestes.push(['renommer', 'Renommer']);
       /* Le compte se lit sur la table, il ne s'écrit pas dans le libellé :
          un quatrième drapeau ajouté sans toucher à cette ligne l'aurait fait
          mentir, et c'est arrivé. */

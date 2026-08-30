@@ -762,6 +762,14 @@ tapant son adresse.
   fondateur (plus personne ne pourrait la rouvrir) et on ne désactive pas le
   réseau (sa portée s'éteindrait avec). Ce sont les seuls gestes irréparables
   par l'interface elle-même.
+- **Le réseau se renomme, lui.** Il était exclu du bouton « Renommer » — reste
+  d'une prudence qui visait la *désactivation*, le seul geste vraiment
+  irréparable sur la racine, et que le serveur refuse déjà (409). Résultat : le
+  nœud d'amorce gardait le nom de l'ancienne marque et **rien dans la page ne
+  permettait d'en changer**, alors que `PATCH` l'acceptait très bien. Un bouton
+  absent doit vouloir dire « le serveur refuserait » ; celui-là ne refusait
+  rien. Corrigé le 29 août 2026, en cherchant à renommer « SAAF » en
+  « francis » — et vérifié dans la page, journal d'audit à l'appui.
 - **Le rôle `fondateur` ne s'accorde pas.** Il se déduit de `founder_id()` — le
   compte du premier démarrage. Le distribuer ferait deux vérités pour une même
   question, et le contrôle sort déjà en écart sur deux fondateurs.
